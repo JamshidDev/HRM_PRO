@@ -1,9 +1,10 @@
 <script setup>
-  import { ref, computed, onMounted } from 'vue'
+  import { computed, onMounted } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
-  import { UIPageContent, NoDataPicture } from '@/components/index.js'
-  import { ArrowLeft24Regular, Delete24Regular, Add24Regular, Eye24Regular, ArrowSync24Regular } from '@vicons/fluent'
+  import { UIPageContent } from '@/components/index.js'
+  import { ArrowLeft24Regular, Delete24Regular, Edit16Filled } from '@vicons/fluent'
   import StoryFields from './ui/StoryFields.vue'
+  import SlideStrip from './ui/SlideStrip.vue'
   import { useMobileStoryStore } from '@/store/modules/index.js'
   import { AppPaths } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
@@ -14,43 +15,24 @@
   const route = useRoute()
   const router = useRouter()
 
-  const fileInput = ref(null)
-  const replaceInput = ref(null)
-  const replaceTargetId = ref(null)
+  const fieldsRef = ref(null)
   const isCreate = computed(() => route.params.id === 'create')
-
-  const langKey = () => localStorage.getItem('language') || localStorage.getItem('lang') || 'uz'
-  const pick = (obj) => obj?.[langKey()] ?? obj?.uz ?? null
 
   const onSaveFields = async () => {
     if (isCreate.value) {
-      await store._create() // yaratadi + /:id ga o'tadi
+      await store._create() // yaratadi + slaydlarni yuklaydi + /:id ga o'tadi
     } else {
       await store._update()
     }
     window.$Toast?.success(t('mobileStoryPage.saved'))
   }
 
-  const triggerUpload = () => fileInput.value?.click()
-  // Ketma-ket — siqish async, parallel yuborilsa sort takrorlanadi.
-  const onPickFiles = async (e) => {
-    const files = Array.from(e.target.files ?? [])
-    e.target.value = ''
-    for (const f of files) await store._addSlide(f)
-  }
-
-  const triggerReplace = (slideId) => {
-    replaceTargetId.value = slideId
-    replaceInput.value?.click()
-  }
-  const onReplaceFile = (e) => {
-    const f = e.target.files?.[0]
-    if (f && replaceTargetId.value != null) store._replaceSlide(replaceTargetId.value, f)
-    e.target.value = ''
-    replaceTargetId.value = null
-  }
-
   const goBack = () => router.push(Utils.routeChatPathMaker(AppPaths.MobileStories))
+
+  const onDeleteStory = async () => {
+    await store._deleteStory(store.elementId)
+    goBack()
+  }
 
   onMounted(() => {
     if (isCreate.value) store.resetForm()
@@ -61,169 +43,78 @@
 <template>
   <UIPageContent>
     <!-- Header -->
-    <div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
+    <div class="flex items-center justify-between gap-3 flex-wrap">
       <div class="flex items-center gap-3">
         <n-button quaternary circle @click="goBack">
           <template #icon><n-icon :component="ArrowLeft24Regular" /></template>
         </n-button>
         <h2 class="text-lg font-semibold text-textColor0">
-          {{ isCreate ? $t('mobileStoryPage.createTitle') : (pick(store.payload.title) || $t('mobileStoryPage.updateTitle')) }}
+          {{ isCreate ? $t('mobileStoryPage.createTitle') : store.previewTitle || $t('mobileStoryPage.updateTitle') }}
         </h2>
         <n-tag v-if="!isCreate" :type="store.payload.status === 2 ? 'success' : 'default'" size="small" round>
           {{ store.payload.status === 2 ? $t('mobileStoryPage.status.published') : $t('mobileStoryPage.status.draft') }}
         </n-tag>
       </div>
+
+      <n-popconfirm v-if="!isCreate" @positive-click="onDeleteStory">
+        <template #trigger>
+          <n-button quaternary type="error" size="small" :loading="store.deleteLoading">
+            <template #icon><n-icon :component="Delete24Regular" /></template>
+            {{ $t('content.delete') }}
+          </n-button>
+        </template>
+        {{ $t('mobileStoryPage.deleteConfirm') }}
+      </n-popconfirm>
     </div>
 
     <n-spin :show="store.detailLoading">
-      <!-- CREATE: faqat maydon formasi -->
-      <div v-if="isCreate" class="max-w-[640px]">
-        <n-card :bordered="true" size="small">
-          <StoryFields @save="onSaveFields" />
-        </n-card>
-      </div>
-
-      <!-- EDIT: 2 panel — chap slideshow, o'ng ma'lumot+tahrir (ikkalasi card, bir xil balandlik) -->
-      <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
-        <!-- CHAP: slaydlar slideshow (card) -->
-        <n-card size="small" :bordered="true" class="h-full">
-          <div class="flex justify-end mb-3">
-            <n-button type="primary" ghost size="small" @click="triggerUpload" :loading="store.slideUploading">
-              <template #icon><n-icon :component="Add24Regular" /></template>
-              {{ $t('mobileStoryPage.form.addSlide') }}
-            </n-button>
+      <div class="max-w-[1000px] flex flex-col gap-4">
+        <n-card size="small" :bordered="true" class="story-card">
+          <!-- Slaydlar -->
+          <div class="story-panel-title">
+            <n-icon :component="Edit16Filled" :size="16" />
+            {{ $t('mobileStoryPage.form.slidesPanel') }}
           </div>
-          <input ref="fileInput" type="file" class="hidden" multiple accept=".png,.jpg,.jpeg,.webp,.mp4,.mov,.webm" @change="onPickFiles" />
-          <input ref="replaceInput" type="file" class="hidden" accept=".png,.jpg,.jpeg,.webp,.mp4,.mov,.webm" @change="onReplaceFile" />
-
-          <div v-if="store.slides.length > 0" class="flex justify-center">
-            <n-carousel
-              :key="store.slides.map((s) => s.id).join('-')"
-              effect="card"
-              :show-arrow="store.slides.length > 1"
-              class="story-carousel"
-              draggable
-            >
-              <div v-for="s in store.slides" :key="s.id" class="story-slide">
-                <video v-if="s.media_type === 'video'" :src="s.url" class="story-media" muted playsinline controls />
-                <img v-else :src="s.url" class="story-media" alt="" />
-                <div class="story-views">
-                  <n-icon :component="Eye24Regular" :size="14" />
-                  <span>{{ store.viewsCount }}</span>
-                </div>
-                <div class="story-overlay">
-                  <div class="story-text">
-                    <h3 v-if="pick(store.payload.title)" class="story-title">{{ pick(store.payload.title) }}</h3>
-                    <p v-if="pick(store.payload.subtitle)" class="story-subtitle">{{ pick(store.payload.subtitle) }}</p>
-                  </div>
-                  <n-button v-if="store.payload.action_type" size="small" type="primary" class="story-action">
-                    {{ $t('mobileStoryPage.form.detailsButton') }}
-                  </n-button>
-                </div>
-                <n-button
-                  circle
-                  size="small"
-                  type="primary"
-                  class="story-change"
-                  :loading="store.slideUploading"
-                  @click="triggerReplace(s.id)"
-                >
-                  <template #icon><n-icon :component="ArrowSync24Regular" /></template>
-                </n-button>
-                <n-popconfirm @positive-click="store._deleteSlide(s.id)">
-                  <template #trigger>
-                    <n-button circle size="small" type="error" class="story-del" :loading="store.slideDeletingId === s.id">
-                      <template #icon><n-icon :component="Delete24Regular" /></template>
-                    </n-button>
-                  </template>
-                  {{ $t('mobileStoryPage.slideDeleteConfirm') }}
-                </n-popconfirm>
-              </div>
-            </n-carousel>
+          <div class="mt-4">
+            <SlideStrip />
           </div>
-          <div v-else class="text-center py-8 border border-dashed border-surface-line rounded-xl">
-            <NoDataPicture />
-            <p class="text-textColor3 text-sm mt-2">{{ $t('mobileStoryPage.form.noSlides') }}</p>
+
+          <div class="border-t border-surface-line mt-4 pt-4">
+            <StoryFields ref="fieldsRef" @save="onSaveFields" />
           </div>
         </n-card>
 
-        <!-- O'NG: ma'lumot + tahrir (card) -->
-        <n-card :title="$t('mobileStoryPage.updateTitle')" size="small" :bordered="true" class="h-full">
-          <StoryFields @save="onSaveFields" />
-        </n-card>
+        <div class="flex justify-end">
+          <n-button
+            type="primary"
+            class="min-w-[160px]"
+            :loading="store.saveLoading || store.slideUploading"
+            @click="fieldsRef?.submit()"
+          >
+            {{ $t('content.save') }}
+          </n-button>
+        </div>
       </div>
     </n-spin>
   </UIPageContent>
 </template>
 
 <style scoped>
-  .story-carousel {
-    width: 300px;
-    height: 530px;
-    border-radius: 16px;
-    overflow: hidden;
-  }
-  .story-slide {
-    position: relative;
-    width: 300px;
-    height: 530px;
-    background: #000;
-  }
-  .story-media {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .story-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 18px;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 0%, transparent 28%, transparent 62%, rgba(0, 0, 0, 0.55) 100%);
-    pointer-events: none;
-  }
-  .story-title {
-    color: #fff;
-    font-size: 17px;
-    font-weight: 700;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-  }
-  .story-subtitle {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 13px;
-    margin-top: 4px;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-  }
-  .story-action {
-    pointer-events: auto;
-    align-self: center;
-  }
-  .story-del {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 5;
-  }
-  .story-change {
-    position: absolute;
-    top: 10px;
-    right: 52px;
-    z-index: 5;
-  }
-  .story-views {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    z-index: 5;
+  /* Maketdagidek ko'k fonli sarlavha qatori. */
+  .story-panel-title {
     display: flex;
     align-items: center;
-    gap: 4px;
-    padding: 3px 9px;
-    border-radius: 12px;
-    background: rgba(0, 0, 0, 0.55);
-    color: #fff;
-    font-size: 12px;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: var(--color-brand-surface);
+    color: var(--primary-color);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* Dark theme'da och-ko'k fon o'rniga to'q kulrang (UIPageFilter bilan bir xil yondashuv). */
+  :global([data-theme='dark'] .story-panel-title) {
+    background: #344054;
   }
 </style>

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import router from '@/router/index.js'
-import { AppPaths, compressImageFile, MAX_UPLOAD_SIZE } from '@/utils/index.js'
+import { AppPaths, compressImageFile, generateUUIDKey, MAX_UPLOAD_SIZE } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
 import i18n from '@/i18n/index.js'
 
@@ -41,10 +41,20 @@ export const useMobileStoryStore = defineStore('mobileStory', {
     saveLoading: false,
     payload: emptyPayload(),
     slides: [], // {id, media_type, url, sort}
+    // Create rejimida — story hali yaratilmagani uchun slaydlar lokal to'planadi
+    // ({id, media_type, url: objectURL, file, pending: true}) va saqlashda yuklanadi.
+    pendingSlides: [],
     viewsCount: 0,
     slideUploading: false,
     slideDeletingId: null
   }),
+  getters: {
+    // Preview/overlay matni — joriy interfeys tili, bo'lmasa uz.
+    previewTitle: (s) => s.payload.title?.[i18n.global.locale] || s.payload.title?.uz || null,
+    previewSubtitle: (s) => s.payload.subtitle?.[i18n.global.locale] || s.payload.subtitle?.uz || null,
+    // Lenta va preview shu ro'yxatni ko'rsatadi: yuklangan slaydlar yoki (create) lokal tanlanganlar.
+    displaySlides: (s) => (s.slides.length ? s.slides : s.pendingSlides)
+  },
   actions: {
     // ── LIST ──
     _index() {
@@ -86,7 +96,36 @@ export const useMobileStoryStore = defineStore('mobileStory', {
       this.elementId = null
       this.payload = emptyPayload()
       this.slides = []
+      this._clearPendingSlides()
       this.viewsCount = 0
+    },
+
+    // Create rejimida slaydni lokal to'plash (server'ga saqlash paytida ketadi).
+    _addPendingSlide(file) {
+      const isVideo = (file.type ?? '').startsWith('video/')
+      // Rasm keyinchalik siqiladi, videoni brauzerda siqib bo'lmaydi — darhol tekshiramiz.
+      if (isVideo && file.size > MAX_UPLOAD_SIZE) {
+        window.$Toast?.error(t('mobileStoryPage.form.fileTooLarge'))
+        return
+      }
+      this.pendingSlides.push({
+        id: generateUUIDKey(),
+        media_type: isVideo ? 'video' : 'image',
+        url: URL.createObjectURL(file),
+        file,
+        pending: true
+      })
+    },
+
+    _removePendingSlide(id) {
+      const slide = this.pendingSlides.find((s) => s.id === id)
+      if (slide) URL.revokeObjectURL(slide.url)
+      this.pendingSlides = this.pendingSlides.filter((s) => s.id !== id)
+    },
+
+    _clearPendingSlides() {
+      this.pendingSlides.forEach((s) => URL.revokeObjectURL(s.url))
+      this.pendingSlides = []
     },
 
     // Edit rejimi: story + slaydlarni (preview URL bilan) yuklaydi.
@@ -133,19 +172,22 @@ export const useMobileStoryStore = defineStore('mobileStory', {
       }
     },
 
-    // Yangi story yaratiladi → detail sahifaga (o'sha id) o'tadi, u yerда slayd qo'shiladi.
-    _create() {
+    // Yangi story yaratiladi → lokal to'plangan slaydlar ketma-ket yuklanadi → detail sahifaga o'tadi.
+    async _create() {
       this.saveLoading = true
-      return $ApiService.mobileStoryService
-        ._create({ data: this._buildData() })
-        .then((res) => {
-          const id = res.data.data.id
-          this.elementId = id
-          router.replace(Utils.routeChatPathMaker(`${AppPaths.MobileStories}/${id}`))
-        })
-        .finally(() => {
-          this.saveLoading = false
-        })
+      try {
+        const res = await $ApiService.mobileStoryService._create({ data: this._buildData() })
+        const id = res.data.data.id
+        this.elementId = id
+
+        const pending = [...this.pendingSlides]
+        this._clearPendingSlides()
+        for (const slide of pending) await this._addSlide(slide.file)
+
+        router.replace(Utils.routeChatPathMaker(`${AppPaths.MobileStories}/${id}`))
+      } finally {
+        this.saveLoading = false
+      }
     },
 
     // Mavjud story maydonlarini saqlash.

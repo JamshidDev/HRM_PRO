@@ -3501,7 +3501,11 @@
       "editFields": "Редактировать данные",
       "noSlides": "Слайдов пока нет — добавьте кнопкой выше",
       "detailsButton": "Подробнее",
-      "fileTooLarge": "Файл слишком большой — максимум 4 МБ"
+      "fileTooLarge": "Файл слишком большой — максимум 4 МБ",
+      "preview": "Предпросмотр",
+      "replaceSlide": "Заменить",
+      "slidesPanel": "Слайды",
+      "addSlideHint": "Добавить фото или видео"
     },
     "deleteConfirm": "Удалить эту story?",
     "slideDeleteConfirm": "Удалить этот слайд?",
