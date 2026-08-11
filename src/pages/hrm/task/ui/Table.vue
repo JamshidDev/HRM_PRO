@@ -121,7 +121,6 @@
         :show-icon="false"
         :label="Utils.timeOnlyDate(row.deadline)"
       />
-      <span v-else>—</span>
     </template>
 
     <template #cell-created_at="{ row }">
