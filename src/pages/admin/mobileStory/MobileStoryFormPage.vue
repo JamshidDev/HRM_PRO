@@ -48,7 +48,7 @@
     replaceTargetId.value = null
   }
 
-  const goBack = () => router.push(Utils.routePathMaker(AppPaths.MobileStories))
+  const goBack = () => router.push(Utils.routeChatPathMaker(AppPaths.MobileStories))
 
   onMounted(() => {
     if (isCreate.value) store.resetForm()

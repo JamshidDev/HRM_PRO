@@ -124,6 +124,8 @@ export const AppPaths = {
   SalaryCategory: '/salary-category',
   SalaryReport: '/salary-report',
   PensionPayment: '/pension-payment',
+  TariffGrid: '/tariff-grid',
+  Salary1c: '/salary-1c',
   HcServer: '/hc-server',
   HcEvents: '/hc-events',
   HcEventsV2: '/hc-events-v2',

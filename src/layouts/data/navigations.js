@@ -72,6 +72,7 @@ import ExtraDepartmentLocationIcon from '@assets/icons/DepartmentLocation.svg'
 import AdminFolderIcon from '@assets/icons/adminFolder.svg'
 import {
   BookDatabase24Regular,
+  Calculator24Regular,
   ClipboardTaskListLtr24Filled,
   Grid20Filled,
   RibbonStar24Filled
@@ -599,7 +600,9 @@ export const navigations = [
         path: Utils.routeTurnstilePathMaker(AppPaths.TurnstileSchedule),
         icon: TurnstileScheduleIcon,
         color: 'bg-dark',
-        permission: appPermissions.turnstileSheets
+        // Ilgari «Navbatchilik grafigi» bilan BITTA slugda edi (`turnstile-sheets`) —
+        // birini berib ikkinchisini yopib bo'lmasdi. Endi o'z slugi.
+        permission: appPermissions.turnstileSchedule
       },
       {
         label: 'approve.name', // Yuborilgan xodimlar
@@ -758,6 +761,20 @@ export const navigations = [
         permission: appPermissions.economistPensionPayments
       },
       {
+        label: 'tariffGrid.name', // Tarif setkasi
+        path: Utils.routeAccountantPathMaker(AppPaths.TariffGrid),
+        icon: Grid20Filled,
+        color: 'bg-dark',
+        permission: appPermissions.economist
+      },
+      {
+        label: 'salary1c.name', // Oylik hisobot (1C)
+        path: Utils.routeAccountantPathMaker(AppPaths.Salary1c),
+        icon: Calculator24Regular,
+        color: 'bg-primary',
+        permission: appPermissions.economist
+      },
+      {
         label: 'report.name', // Plan va Fakt
         path: Utils.routeAccountantPathMaker(AppPaths.Report),
         icon: EconomistReportIcon,
@@ -831,7 +848,7 @@ export const navigations = [
       },
       {
         label: 'mobileStoryPage.name',
-        path: Utils.routePathMaker(AppPaths.MobileStories),
+        path: Utils.routeChatPathMaker(AppPaths.MobileStories),
         icon: ChatMobileStoryIcon,
         color: 'bg-dark',
         permission: appPermissions.chat

@@ -40,7 +40,7 @@ export const ENFORCED = new Set([
   'quotes-write', 'regions-delete', 'regions-write', 'roles-delete', 'roles-read', 'roles-write',
   'schedules-delete', 'schedules-write', 'specialities-delete', 'specialities-write', 'telegram-read', 'telegram-write',
   'turnstile-absent-workers-export', 'turnstile-approve-delete', 'turnstile-approve-read', 'turnstile-approve-write', 'turnstile-building-delete', 'turnstile-building-read',
-  'turnstile-building-write', 'turnstile-devices-delete', 'turnstile-devices-read', 'turnstile-devices-write', 'turnstile-hik-central-tg-user-delete', 'turnstile-hik-central-tg-user-read',
+  'turnstile-devices-export', 'turnstile-devices-stat-export', 'turnstile-sheets-timesheet-export', 'turnstile-schedule', 'turnstile-schedule-read', 'turnstile-hik-central-sync', 'turnstile-hik-central-sync-read', 'turnstile-building-write', 'turnstile-devices-delete', 'turnstile-devices-read', 'turnstile-devices-write', 'turnstile-hik-central-tg-user-delete', 'turnstile-hik-central-tg-user-read',
   'turnstile-hik-central-tg-user-write', 'turnstile-hik-central-workers-delete', 'turnstile-hik-central-workers-read', 'turnstile-hik-central-workers-write', 'turnstile-sheets-delete', 'turnstile-sheets-groups-delete',
   'turnstile-sheets-groups-read', 'turnstile-sheets-groups-write', 'turnstile-sheets-read', 'turnstile-sheets-workers-delete', 'turnstile-sheets-workers-read', 'turnstile-sheets-workers-write',
   'turnstile-sheets-write', 'turnstile-terminal-delete', 'turnstile-terminal-read', 'turnstile-terminal-write', 'universities-delete', 'universities-write',
@@ -71,7 +71,7 @@ export const MEANINGFUL = new Set([
   'hr', 'hr-business-trip', 'hr-business-trip-read', 'hr-business-trip-write', 'hr-check-worker', 'hr-commands',
   'hr-commands-blank', 'hr-commands-delete', 'hr-commands-read', 'hr-commands-write', 'hr-confirmations', 'hr-confirmations-delete',
   'hr-confirmations-read', 'hr-confirmations-write', 'hr-contract-additional', 'hr-contract-additional-delete', 'hr-contract-additional-read', 'hr-contract-additional-write',
-  'hr-kpi-read', 'hr-certificates-read', 'hr-contracts', 'hr-contracts-delete', 'hr-contracts-read', 'hr-contracts-write', 'hr-dashboard', 'hr-dashboard-audit', 'hr-dashboard-read',
+  'hr-kpi', 'hr-kpi-read', 'hr-certificates-read', 'hr-contracts', 'hr-contracts-delete', 'hr-contracts-read', 'hr-contracts-write', 'hr-dashboard', 'hr-dashboard-audit', 'hr-dashboard-read',
   'hr-departments', 'hr-departments-delete', 'hr-departments-read', 'hr-departments-write', 'hr-discips', 'hr-discips-read',
   'hr-documents', 'hr-documents-delete', 'hr-documents-read', 'hr-documents-write', 'hr-edu-plans-read', 'hr-edu-plans-write',
   'hr-export', 'hr-incentives', 'hr-incentives-read', 'hr-incentives-write', 'hr-tasks', 'hr-tasks-read', 'hr-tasks-write', 'hr-tasks-delete', 'hr-jobs', 'hr-jobs-read',
@@ -103,7 +103,7 @@ export const MEANINGFUL = new Set([
   'specialities-write', 'telegram', 'telegram-read', 'telegram-write', 'turnstile', 'turnstile-absent-workers-export',
   'turnstile-access-levels', 'turnstile-access-levels-read', 'turnstile-access-levels-write', 'turnstile-approve', 'turnstile-approve-delete', 'turnstile-approve-read',
   'turnstile-approve-write', 'turnstile-building', 'turnstile-building-delete', 'turnstile-building-read', 'turnstile-building-write', 'turnstile-dashboard',
-  'turnstile-dashboard-read', 'turnstile-devices', 'turnstile-devices-delete', 'turnstile-devices-read', 'turnstile-devices-write', 'turnstile-hc-invalid-user',
+  'turnstile-devices-export', 'turnstile-devices-stat-export', 'turnstile-sheets-timesheet-export', 'turnstile-schedule', 'turnstile-schedule-read', 'turnstile-hik-central-sync', 'turnstile-hik-central-sync-read', 'turnstile-dashboard-read', 'turnstile-devices', 'turnstile-devices-delete', 'turnstile-devices-read', 'turnstile-devices-write', 'turnstile-hc-invalid-user',
   'turnstile-hc-user-image-logs', 'turnstile-hcp-duration', 'turnstile-hcp-duration-read', 'turnstile-hik-central-events', 'turnstile-hik-central-events-read', 'turnstile-hik-central-job',
   'turnstile-hik-central-job-read', 'turnstile-hik-central-job-write', 'turnstile-hik-central-sync', 'turnstile-hik-central-sync-read', 'turnstile-hik-central-sync-write', 'turnstile-hik-central-tg-user',
   'turnstile-hik-central-tg-user-delete', 'turnstile-hik-central-tg-user-read', 'turnstile-hik-central-tg-user-write', 'turnstile-hik-central-workers', 'turnstile-hik-central-workers-delete', 'turnstile-hik-central-workers-read',
@@ -204,9 +204,29 @@ export const PERMISSION_GROUPS = [
       { prefix: 'turnstile-hik-central-sync', label: 'hcEvent.syncTitle' },
       { prefix: 'turnstile-absent-workers-export', label: 'hcEvent.tabDownload' },
       { prefix: 'turnstile-worker-image', label: 'workerImage.name' },
-      { prefix: 'turnstile-devices', label: 'devices.name' },
+      {
+        prefix: 'turnstile-devices',
+        label: 'devices.name',
+        actions: [
+          { slug: 'turnstile-devices-read', label: "Ko'rish" },
+          { slug: 'turnstile-devices-write', label: 'Yaratish / Tahrirlash' },
+          { slug: 'turnstile-devices-delete', label: "O'chirish" },
+          { slug: 'turnstile-devices-export', label: 'Yuklash' },
+          { slug: 'turnstile-devices-stat-export', label: 'Hisobot yuklash' }
+        ]
+      },
+      { prefix: 'turnstile-schedule', label: 'turnstileSchedule.name' },
       { prefix: 'turnstile-others', label: 'additionalPage.name' },
-      { prefix: 'turnstile-sheets', label: 'schedule.name' },
+      {
+        prefix: 'turnstile-sheets',
+        label: 'schedule.name',
+        actions: [
+          { slug: 'turnstile-sheets-read', label: "Ko'rish" },
+          { slug: 'turnstile-sheets-write', label: 'Yaratish / Tahrirlash' },
+          { slug: 'turnstile-sheets-delete', label: "O'chirish" },
+          { slug: 'turnstile-sheets-timesheet-export', label: 'Tabel yuklash' }
+        ]
+      },
       { prefix: 'turnstile-sheets-workers', label: 'shiftType.name' },
       { prefix: 'turnstile-sheets-groups', label: 'shiftType.groupName' },
       { prefix: 'turnstile-approve', label: 'approve.name' },
