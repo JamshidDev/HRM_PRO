@@ -1,5 +1,5 @@
 <script setup>
-  import { CloudArrowDown24Regular, Eye16Regular, History24Regular, Search24Regular, ArrowDownload24Regular } from '@vicons/fluent'
+  import { CloudArrowDown24Regular, Eye16Regular, History24Regular, Search24Regular, ArrowDownload24Regular, Calculator24Regular } from '@vicons/fluent'
   import { NoDataPicture, UIBadge, UIModal, UIPageContent, UIPagination, UIYearMonth, UISelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useSalary1cStore } from '@/store/modules/index.js'
   import { useDebounceFn } from '@vueuse/core'
@@ -38,6 +38,18 @@
 
   const pullCodeSet = computed(() => new Set(store.pullCodeIds))
 
+  // Joriy sahifadagi (kodli) vedlar hammasi tanlanganmi — «hammasini tanlash» checkbox holati.
+  const allPageVedsSelected = computed(() => {
+    const codes = store.vedList.map((v) => v.paying_code).filter((c) => c != null)
+    return codes.length > 0 && codes.every((c) => store.selectedVedCodes.includes(c))
+  })
+
+  // Solishtirish qatorlari — «faqat farqli» toggle bo'yicha filtrlanadi.
+  const reconcileRows = computed(() => {
+    const rows = store.reconcile?.rows ?? []
+    return store.reconcileOnlyDiff ? rows.filter((r) => r.diff !== 0) : rows
+  })
+
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.economist)) return
     if (componentStore.structureList.length === 0) componentStore._structures()
@@ -48,12 +60,18 @@
   const onApply = () => {
     store.params.page = 1
     store.orgTotalsParams.page = 1
+    store.vedParams.page = 1
     if (activeTab.value === 'workers') store._index()
-    else store._orgTotals()
+    else if (activeTab.value === 'orgs') store._orgTotals()
+    else store._veds()
   }
   watch(activeTab, (v) => {
+    store.activeTab = v
     if (v === 'orgs') store._orgTotals()
-    else store._index()
+    else if (v === 'veds') store._veds()
+    else if (v === 'reconcile') {
+      /* foydalanuvchi «Solishtirish» tugmasini bosadi */
+    } else store._index()
   })
 
   // Batch pull (background job) progress
@@ -173,6 +191,8 @@
       <n-tabs type="segment" v-model:value="activeTab" size="small" class="s1-seg">
         <n-tab-pane name="workers" :tab="$t('salary1c.workers')" />
         <n-tab-pane name="orgs" :tab="$t('salary1c.byOrg')" />
+        <n-tab-pane name="veds" :tab="$t('salary1c.veds.tab')" />
+        <n-tab-pane name="reconcile" :tab="$t('salary1c.reconcile.tab')" />
       </n-tabs>
       <n-button size="small" tertiary @click="store._openPullLog()">
         <template #icon><n-icon><History24Regular /></n-icon></template>
@@ -274,7 +294,7 @@
     </template>
 
     <!-- Korxonalar kesimida -->
-    <template v-else>
+    <template v-else-if="activeTab === 'orgs'">
       <div v-if="store.orgTotals" class="s1-stats">
         <div class="s1-stat">
           <span class="s1-stat-lbl">{{ $t('salary1c.employees') }}</span>
@@ -321,6 +341,293 @@
         <UIPagination :total="store.orgTotals.total" :page="store.orgTotalsParams.page"
           :per_page="store.orgTotalsParams.per_page" @changePage="store.onOrgTotalsPage" />
       </div>
+    </template>
+
+    <!-- Ved kesimida: vedlar ro'yxati (tanlash) → «Hisoblash» → natija modali -->
+    <template v-else-if="activeTab === 'veds'">
+      <div class="s1-card">
+        <div class="s1-card-hd s1-ved-hd">
+          <span class="s1-card-title">{{ $t('salary1c.veds.listTitle') }}</span>
+          <div class="s1-ved-tools">
+            <n-input v-model:value="store.vedParams.search" size="small" clearable class="skip-format"
+              :style="{ width: '240px', flex: '0 0 auto' }"
+              :placeholder="$t('salary1c.veds.searchPh')" @keyup.enter="store.onVedsSearch()" />
+            <n-button size="small" secondary @click="store.onVedsSearch()">{{ $t('content.search') }}</n-button>
+            <n-button type="primary" size="small" :disabled="!store.selectedVedCodes.length"
+              @click="store.openVedMatrix()">
+              <template #icon><n-icon><Calculator24Regular /></n-icon></template>
+              {{ $t('salary1c.veds.compute') }} ({{ store.selectedVedCodes.length }})
+            </n-button>
+          </div>
+        </div>
+
+        <!-- Tanlangan vedlar chiplari -->
+        <div v-if="store.selectedVedCodes.length" class="s1-chips">
+          <n-tag v-for="code in store.selectedVedCodes" :key="code" size="small" round closable
+            @close="store.toggleVed(code)">{{ code }}</n-tag>
+        </div>
+
+        <n-spin :show="store.vedLoading">
+          <div class="s1-ved-box" v-if="store.vedList.length">
+            <n-table :single-line="false" size="small">
+              <thead>
+                <tr>
+                  <th class="w-[40px] text-center!">
+                    <n-checkbox :checked="allPageVedsSelected" @update:checked="store.toggleAllVeds()" />
+                  </th>
+                  <th class="w-[90px]">{{ $t('salary1c.veds.code') }}</th>
+                  <th class="min-w-[320px]">{{ $t('salary1c.veds.name') }}</th>
+                  <th class="w-[100px] text-center!">{{ $t('salary1c.veds.type') }}</th>
+                  <th class="text-right! min-w-[150px]">{{ $t('salary1c.veds.summa') }}</th>
+                  <th class="text-center! w-[80px]">{{ $t('salary1c.veds.workers') }}</th>
+                  <th class="text-center! w-[80px]">{{ $t('salary1c.veds.orgs') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="v in store.vedList" :key="(v.paying_code ?? 'null') + '-' + v.type"
+                  class="s1-ved-row" :class="{ 's1-ved-row--sel': store.selectedVedCodes.includes(v.paying_code) }"
+                  @click="v.paying_code != null && store.toggleVed(v.paying_code)">
+                  <td class="text-center!" @click.stop>
+                    <n-checkbox :checked="store.selectedVedCodes.includes(v.paying_code)"
+                      :disabled="v.paying_code == null" @update:checked="store.toggleVed(v.paying_code)" />
+                  </td>
+                  <td class="font-mono text-xs">{{ v.paying_code ?? '—' }}</td>
+                  <td class="text-xs">{{ v.paying_name || '—' }}</td>
+                  <td class="text-center!">
+                    <n-tag :type="v.type === 2 ? 'error' : 'success'" size="tiny" round>
+                      {{ v.type === 2 ? $t('salary1c.veds.deduction') : $t('salary1c.veds.accrual') }}
+                    </n-tag>
+                  </td>
+                  <td class="text-right! tnum">{{ fmt(v.total_summa) }}</td>
+                  <td class="text-center! text-textColor3">{{ v.worker_count }}</td>
+                  <td class="text-center! text-textColor3">{{ v.org_count }}</td>
+                </tr>
+              </tbody>
+            </n-table>
+          </div>
+          <div v-if="!store.vedLoading && !store.vedList.length" class="s1-empty">
+            <NoDataPicture />
+          </div>
+        </n-spin>
+        <div v-if="store.vedTotal > store.vedParams.per_page" class="s1-pager s1-pager--pad">
+          <UIPagination :total="store.vedTotal" :page="store.vedParams.page" :per_page="store.vedParams.per_page"
+            @changePage="store.onVedsPage" />
+        </div>
+      </div>
+
+      <!-- Natija modali: korxona × ved matritsasi (to'liq kenglik, thead+banner qotib turadi) -->
+      <UIModal :width="'94%'" :height="'86vh'" :visible="store.vedMatrixVisible"
+        @update:visible="(v) => (store.vedMatrixVisible = v)" :title="$t('salary1c.veds.resultTitle')">
+        <div class="s1-matrix-wrap">
+          <div v-if="store.vedMatrix && store.vedMatrix.data.length" class="s1-net shrink-0">
+            <span>{{ $t('salary1c.veds.grandTotal') }}
+              ({{ store.vedMatrix.total }} {{ $t('salary1c.organization').toLowerCase() }})</span>
+            <span class="text-primary">{{ fmt(store.vedMatrix.grand_total) }}</span>
+          </div>
+
+          <n-spin :show="store.vedMatrixLoading" class="s1-spin-fill">
+            <div class="s1-matrix-box" v-if="store.vedMatrix && store.vedMatrix.data.length">
+              <n-table :single-line="false" size="small">
+                <thead>
+                  <tr>
+                    <th class="min-w-[240px] s1-sticky-col">{{ $t('salary1c.organization') }}</th>
+                    <th v-for="c in store.vedMatrix.columns" :key="c.paying_code" class="text-right! min-w-[140px]"
+                      :title="c.paying_name || ''">
+                      <div class="font-mono">{{ c.paying_code }}</div>
+                      <div class="s1-col-name">{{ (c.paying_name || '').slice(0, 26) }}</div>
+                    </th>
+                    <th class="text-right! min-w-[150px]">{{ $t('salary1c.veds.rowTotal') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="o in store.vedMatrix.data" :key="o.organization_id">
+                    <td class="s1-sticky-col">{{ o.organization || '—' }}</td>
+                    <td v-for="c in store.vedMatrix.columns" :key="c.paying_code" class="text-right! tnum">
+                      {{ o.cells[c.paying_code] ? fmt(o.cells[c.paying_code]) : '—' }}
+                    </td>
+                    <td class="text-right! tnum font-semibold">{{ fmt(o.row_total) }}</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr class="s1-ved-foot">
+                    <td class="s1-sticky-col">{{ $t('salary1c.veds.total') }}</td>
+                    <td v-for="c in store.vedMatrix.columns" :key="c.paying_code" class="text-right! tnum">
+                      {{ fmt(store.vedMatrix.column_totals[c.paying_code] || 0) }}
+                    </td>
+                    <td class="text-right! tnum text-primary">{{ fmt(store.vedMatrix.grand_total) }}</td>
+                  </tr>
+                </tfoot>
+              </n-table>
+            </div>
+            <div v-if="!store.vedMatrixLoading && !(store.vedMatrix && store.vedMatrix.data.length)" class="s1-empty">
+              <n-icon size="40" class="text-textColor3"><Calculator24Regular /></n-icon>
+              <p>{{ $t('salary1c.noData') }}</p>
+            </div>
+          </n-spin>
+
+          <div v-if="store.vedMatrix && store.vedMatrix.total > store.vedMatrixParams.per_page"
+            class="shrink-0 flex justify-end pt-2">
+            <UIPagination :total="store.vedMatrix.total" :page="store.vedMatrixParams.page"
+              :per_page="store.vedMatrixParams.per_page" @changePage="store.onVedMatrixPage" />
+          </div>
+        </div>
+      </UIModal>
+    </template>
+
+    <!-- Solishtirish (1C AccruedByType ↔ bizning hisob) -->
+    <template v-else>
+      <div class="s1-card">
+        <div class="s1-card-hd s1-ved-hd">
+          <span class="s1-card-title">{{ $t('salary1c.reconcile.tab') }}</span>
+          <div class="s1-ved-tools">
+            <n-checkbox v-model:checked="store.reconcileOnlyDiff" v-if="store.reconcile">
+              {{ $t('salary1c.reconcile.onlyDiff') }}
+            </n-checkbox>
+            <n-button type="primary" size="small" :loading="store.reconcileLoading"
+              @click="store._reconcile()">
+              <template #icon><n-icon><Calculator24Regular /></n-icon></template>
+              {{ $t('salary1c.reconcile.run') }}
+            </n-button>
+          </div>
+        </div>
+
+        <n-spin :show="store.reconcileLoading">
+          <div v-if="store.reconcile" class="p-3">
+            <!-- Xulosa kartalar -->
+            <div class="s1-rec-info">
+              <span>{{ store.reconcile.organization }}
+                <b v-if="store.reconcile.ones_org_code">({{ store.reconcile.ones_org_code }})</b></span>
+              <n-tag :type="store.reconcile.has_diff ? 'warning' : 'success'" round size="small">
+                {{ store.reconcile.has_diff ? $t('salary1c.reconcile.hasDiff') : $t('salary1c.reconcile.match') }}
+              </n-tag>
+            </div>
+            <div class="s1-stats mb-3">
+              <div class="s1-stat">
+                <span class="s1-stat-lbl">{{ $t('salary1c.veds.accrual') }} — {{ $t('salary1c.reconcile.ours') }}</span>
+                <span class="s1-stat-val">{{ fmt(store.reconcile.totals.ours_accrual) }}</span>
+              </div>
+              <div class="s1-stat">
+                <span class="s1-stat-lbl">{{ $t('salary1c.veds.accrual') }} — 1C</span>
+                <span class="s1-stat-val">{{ fmt(store.reconcile.totals.ones_accrual) }}</span>
+              </div>
+              <div class="s1-stat" :class="store.reconcile.totals.diff_accrual !== 0 && 's1-stat--warn'">
+                <span class="s1-stat-lbl">{{ $t('salary1c.veds.accrual') }} — {{ $t('salary1c.reconcile.diff') }}</span>
+                <span class="s1-stat-val">{{ signed(store.reconcile.totals.diff_accrual) }}</span>
+              </div>
+              <div class="s1-stat">
+                <span class="s1-stat-lbl">{{ $t('salary1c.veds.deduction') }} — {{ $t('salary1c.reconcile.ours') }}</span>
+                <span class="s1-stat-val">{{ fmt(store.reconcile.totals.ours_deduction) }}</span>
+              </div>
+              <div class="s1-stat">
+                <span class="s1-stat-lbl">{{ $t('salary1c.veds.deduction') }} — 1C</span>
+                <span class="s1-stat-val">{{ fmt(store.reconcile.totals.ones_deduction) }}</span>
+              </div>
+              <div class="s1-stat" :class="store.reconcile.totals.diff_deduction !== 0 && 's1-stat--warn'">
+                <span class="s1-stat-lbl">{{ $t('salary1c.veds.deduction') }} — {{ $t('salary1c.reconcile.diff') }}</span>
+                <span class="s1-stat-val">{{ signed(store.reconcile.totals.diff_deduction) }}</span>
+              </div>
+            </div>
+
+            <div class="s1-ved-box">
+              <n-table :single-line="false" size="small">
+                <thead>
+                  <tr>
+                    <th class="w-[90px]">{{ $t('salary1c.veds.code') }}</th>
+                    <th class="min-w-[300px]">{{ $t('salary1c.veds.name') }}</th>
+                    <th class="w-[100px] text-center!">{{ $t('salary1c.veds.type') }}</th>
+                    <th class="text-right! min-w-[150px]">{{ $t('salary1c.reconcile.ours') }}</th>
+                    <th class="text-right! min-w-[150px]">1C</th>
+                    <th class="text-right! min-w-[140px]">{{ $t('salary1c.reconcile.diff') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(r, i) in reconcileRows" :key="i" :class="{ 's1-rec-diff': r.diff !== 0 }">
+                    <td class="font-mono text-xs">{{ r.code || '—' }}</td>
+                    <td class="text-xs">{{ r.name || '—' }}</td>
+                    <td class="text-center!">
+                      <n-tag :type="r.type === 2 ? 'error' : 'success'" size="tiny" round>
+                        {{ r.type === 2 ? $t('salary1c.veds.deduction') : $t('salary1c.veds.accrual') }}
+                      </n-tag>
+                    </td>
+                    <td class="text-right! tnum">
+                      <span v-if="r.ours" class="s1-drill" @click="store.openVedWorkers(r)"
+                        :title="$t('salary1c.workers')">{{ fmt(r.ours) }}</span>
+                      <span v-else>{{ fmt(r.ours) }}</span>
+                    </td>
+                    <td class="text-right! tnum">{{ fmt(r.ones) }}</td>
+                    <td class="text-right! tnum" :class="r.diff > 0 ? 'text-green-600' : r.diff < 0 ? 'text-red-600' : 'text-textColor3'">
+                      {{ r.diff === 0 ? '0' : signed(r.diff) }}
+                    </td>
+                  </tr>
+                </tbody>
+              </n-table>
+            </div>
+          </div>
+          <div v-else class="s1-empty">
+            <n-icon size="40" class="text-textColor3"><Calculator24Regular /></n-icon>
+            <p>{{ $t('salary1c.reconcile.hint') }}</p>
+          </div>
+        </n-spin>
+      </div>
+
+      <!-- Ved drill-down modal: bir ved summasi qaysi xodimlardan -->
+      <UIModal :width="'1040px'" :visible="store.vedWorkersVisible"
+        @update:visible="(v) => (store.vedWorkersVisible = v)"
+        :title="$t('salary1c.workers')">
+        <div v-if="store.vedWorkersRow" class="mb-2 text-sm text-textColor2">
+          <b>{{ store.vedWorkersRow.code || '—' }}</b>
+          {{ store.vedWorkersRow.name }}
+        </div>
+        <div class="flex items-center gap-2 mb-2">
+          <n-input v-model:value="store.vedWorkersParams.search" size="small" clearable class="skip-format max-w-[260px]"
+            :placeholder="$t('salary1c.searchPh')" @keyup.enter="store.onVedWorkersSearch()" />
+          <n-button size="small" secondary @click="store.onVedWorkersSearch()">{{ $t('content.search') }}</n-button>
+          <span v-if="store.vedWorkers" class="text-xs text-textColor3 ml-auto">
+            {{ $t('salary1c.veds.total') }}: <b class="text-primary">{{ fmt(store.vedWorkers.total_summa) }}</b>
+            ({{ store.vedWorkers.total }})
+          </span>
+        </div>
+        <n-spin :show="store.vedWorkersLoading" style="min-height: 200px">
+          <div class="s1-ved-box" v-if="store.vedWorkers && store.vedWorkers.data.length">
+            <n-table :single-line="false" size="small">
+              <thead>
+                <tr>
+                  <th class="w-[56px] text-center!">{{ $t('salary1c.rowNo') }}</th>
+                  <th class="min-w-[200px]">{{ $t('salary1c.fio') }}</th>
+                  <th class="min-w-[130px]">PINFL</th>
+                  <th class="w-[90px]">{{ $t('salary1c.tabNo') }}</th>
+                  <th class="min-w-[180px]">{{ $t('salary1c.position') }}</th>
+                  <th class="min-w-[160px]">{{ $t('salary1c.department') }}</th>
+                  <th class="min-w-[170px]">{{ $t('salary1c.organization') }}</th>
+                  <th class="text-right! min-w-[130px]">{{ $t('salary1c.veds.summa') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(w, i) in store.vedWorkers.data" :key="i">
+                  <td class="text-center! text-textColor3">
+                    {{ (store.vedWorkersParams.page - 1) * store.vedWorkersParams.per_page + i + 1 }}
+                  </td>
+                  <td>{{ w.fio || '—' }}</td>
+                  <td>{{ w.pinfl || '—' }}</td>
+                  <td>{{ w.tab_nomer || '—' }}</td>
+                  <td class="text-xs">{{ w.position || '—' }}</td>
+                  <td class="text-xs text-textColor2">{{ w.department || '—' }}</td>
+                  <td class="text-xs text-textColor2">{{ w.organization || '—' }}</td>
+                  <td class="text-right! tnum">{{ fmt(w.summa) }}</td>
+                </tr>
+              </tbody>
+            </n-table>
+          </div>
+          <div v-if="!store.vedWorkersLoading && !(store.vedWorkers && store.vedWorkers.data.length)" class="s1-empty">
+            <NoDataPicture />
+          </div>
+        </n-spin>
+        <div v-if="store.vedWorkers && store.vedWorkers.total > store.vedWorkersParams.per_page"
+          class="mt-3 flex justify-end">
+          <UIPagination :total="store.vedWorkers.total" :page="store.vedWorkersParams.page"
+            :per_page="store.vedWorkersParams.per_page" short @changePage="store.onVedWorkersPage" />
+        </div>
+      </UIModal>
     </template>
 
     <!-- Payslip modal -->
@@ -720,7 +1027,7 @@
     border: 1px solid var(--surface-line, #e5e7eb); border-radius: 16px; padding: 14px 16px;
   }
   .s1-lbl { display: block; font-size: 11px; color: var(--textColor3, #98a2b3); margin-bottom: 3px; }
-  .s1-seg { max-width: 380px; }
+  .s1-seg { max-width: 560px; }
 
   /* «1C dan tortish» tugmasi jarayonда — strelka bulutga «tushib» yo'qoladi (download) */
   .s1-dl-arrow {
@@ -778,4 +1085,63 @@
   .s1-pinfo-lbl { font-size: 11px; color: var(--textColor3, #98a2b3); }
   .s1-pinfo b { font-size: 15px; color: var(--textColor1, #101828); }
   .s1-cmp-sec { font-size: 13px; font-weight: 600; margin: 6px 0 4px; color: var(--textColor2, #475467); }
+
+  /* Ved kesimida — kartalar (tizim dizayni) */
+  .s1-ved-wrap { align-items: start; }
+  .s1-card {
+    display: flex; flex-direction: column; overflow: hidden;
+    border: 1px solid var(--surface-line, #e5e7eb); border-radius: 16px;
+    background: var(--surface-section, #ffffff);
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  }
+  .s1-card-hd {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    padding: 10px 14px; border-bottom: 1px solid var(--surface-line, #e5e7eb);
+    background: var(--surface-ground, rgba(148, 163, 184, 0.04));
+  }
+  .s1-card-title { font-size: 13px; font-weight: 700; color: var(--textColor2, #475467); }
+  /* Ved ro'yxati sarlavha paneli — tor ekranda toza o'raladi (input+tugmalar birga) */
+  .s1-ved-hd { flex-wrap: wrap; row-gap: 8px; }
+  .s1-ved-tools { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  /* Jadval — cheklangan balandlik + ichki scroll + sticky sarlavha */
+  .s1-ved-box { max-height: 560px; overflow: auto; }
+  .s1-ved-box :deep(thead th) {
+    position: sticky; top: 0; z-index: 2;
+    background: var(--surface-section, #ffffff);
+  }
+  .s1-ved-row { cursor: pointer; transition: background .12s; }
+  .s1-ved-row:hover > :deep(td) { background: var(--surface-ground, #f6f8fb); }
+  .s1-ved-row--sel > :deep(td) { background: var(--color-brand-surface, #eff8ff) !important; }
+  .s1-ved-foot > :deep(td) {
+    position: sticky; bottom: 0; z-index: 2; font-weight: 700;
+    background: var(--surface-ground, #f2f6fc); border-top: 2px solid var(--surface-line, #e5e7eb);
+  }
+  .s1-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 14px; border-bottom: 1px solid var(--surface-line, #eef0f3); }
+  .s1-empty {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px; min-height: 260px; padding: 30px 20px; text-align: center;
+    color: var(--textColor3, #98a2b3); font-size: 13px;
+  }
+  .s1-pager--pad { padding: 8px 14px; }
+
+  /* Natija modali — matritsa: to'liq balandlik, faqat jadval scroll (banner+thead qotadi) */
+  .s1-matrix-wrap { display: flex; flex-direction: column; height: 100%; gap: 12px; }
+  .s1-spin-fill { flex: 1 1 auto; min-height: 0; }
+  .s1-spin-fill :deep(.n-spin-container),
+  .s1-spin-fill :deep(.n-spin-content) { height: 100%; }
+  .s1-matrix-box { height: 100%; overflow: auto; border: 1px solid var(--surface-line, #e5e7eb); border-radius: 12px; }
+  .s1-matrix-box :deep(thead th) {
+    position: sticky; top: 0; z-index: 2; background: var(--surface-ground, #f6f8fb);
+  }
+  .s1-sticky-col { position: sticky; left: 0; z-index: 1; background: var(--surface-section, #ffffff); }
+  .s1-matrix-box :deep(thead th.s1-sticky-col) { z-index: 3; }
+  .s1-matrix-box :deep(.s1-ved-foot .s1-sticky-col) { background: var(--surface-ground, #f2f6fc); }
+  .s1-col-name { font-size: 10px; font-weight: 400; color: var(--textColor3, #98a2b3); line-height: 1.1; }
+
+  /* Solishtirish */
+  .s1-rec-info { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 14px; font-weight: 600; color: var(--textColor1, #101828); }
+  .s1-rec-diff > :deep(td) { background: #fff7ed; }
+  /* «Bizniki» drill-down — bosiladigan summa */
+  .s1-drill { color: var(--primary-color, #1279f0); cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px; }
+  .s1-drill:hover { text-decoration: underline; }
 </style>

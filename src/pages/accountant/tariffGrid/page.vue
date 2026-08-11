@@ -1,5 +1,5 @@
 <script setup>
-  import { History24Regular, Link24Regular } from '@vicons/fluent'
+  import { History24Regular, Link24Regular, Money24Regular, ReceiptMoney24Regular } from '@vicons/fluent'
   import { UIMenuButton, UIModal, UIPageContent, UIPageFilter, UIPagination } from '@/components/index.js'
   import { useAccountStore, useTariffGridStore, useTariffBaseStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
@@ -8,6 +8,8 @@
   import HistoryModal from './ui/HistoryModal.vue'
   import CompareModal from './ui/CompareModal.vue'
   import ScopeModal from './ui/ScopeModal.vue'
+  import ApplyModal from './ui/ApplyModal.vue'
+  import ApplyLogsModal from './ui/ApplyLogsModal.vue'
   import BaseForm from './ui/BaseForm.vue'
   import BaseViewModal from './ui/BaseViewModal.vue'
   import Utils from '@/utils/Utils.js'
@@ -18,9 +20,18 @@
   const accStore = useAccountStore()
 
   const activeTab = ref('grids') // 'grids' | 'bases'
-  const extraOptions = computed(() => [
+  // Setka tabi uchun — qo'shimcha "Lavozimlarga qo'llash" + "Qo'llash tarixi".
+  const gridExtraOptions = computed(() => [
     { label: t('tariffGrid.action.scope'), key: 'scope', icon: Link24Regular },
-    { label: t('tariffGrid.action.history'), key: 'history', icon: History24Regular }
+    { label: t('tariffGrid.action.history'), key: 'history', icon: History24Regular },
+    { label: t('tariffGrid.apply.title'), key: 'apply', icon: Money24Regular },
+    { label: t('tariffGrid.applyLog.title'), key: 'apply-logs', icon: ReceiptMoney24Regular }
+  ])
+  // Baza tabi uchun — tarix + "Lavozimlarga qo'llash" + "Qo'llash tarixi".
+  const baseExtraOptions = computed(() => [
+    { label: t('tariffGrid.action.history'), key: 'history', icon: History24Regular },
+    { label: t('tariffGrid.apply.title'), key: 'apply', icon: Money24Regular },
+    { label: t('tariffGrid.applyLog.title'), key: 'apply-logs', icon: ReceiptMoney24Regular }
   ])
 
   onMounted(() => {
@@ -48,7 +59,13 @@
     if (v.key === Utils.ActionTypes.view) openView(row.id)
     else if (v.key === 'scope') store.openScope(row.id, row.name)
     else if (v.key === 'history') store.openHistory(row.id, row.name)
-    else if (v.key === Utils.ActionTypes.download) store._excel(row.id)
+    else if (v.key === 'apply') {
+      if (!accStore.checkAction(accStore.pn.economist)) return
+      store.openApply(row.id, row.name, 'grid')
+    } else if (v.key === 'apply-logs') {
+      if (!accStore.checkAction(accStore.pn.economist)) return
+      store.openApplyLogs(row.id, row.name, 'grid')
+    } else if (v.key === Utils.ActionTypes.download) store._excel(row.id)
     else if (v.key === Utils.ActionTypes.delete) store._delete(row.id)
   }
 
@@ -70,7 +87,13 @@
     const row = v.data
     if (v.key === Utils.ActionTypes.view) openBaseView(row.id)
     else if (v.key === 'history') baseStore.openHistory(row.id)
-    else if (v.key === Utils.ActionTypes.edit) baseStore.startEditMeta(row)
+    else if (v.key === 'apply') {
+      if (!accStore.checkAction(accStore.pn.economist)) return
+      store.openApply(row.id, row.name, 'base')
+    } else if (v.key === 'apply-logs') {
+      if (!accStore.checkAction(accStore.pn.economist)) return
+      store.openApplyLogs(row.id, row.name, 'base')
+    } else if (v.key === Utils.ActionTypes.edit) baseStore.startEditMeta(row)
     else if (v.key === Utils.ActionTypes.delete) baseStore._delete(row.id)
   }
 
@@ -91,6 +114,12 @@
   )
   const scopeTitle = computed(
     () => `${store.scopeGridName || t('tariffGrid.detailTitle')} — ${t('tariffGrid.action.scope')}`
+  )
+  const applyTitle = computed(
+    () => `${store.applyGridName || t('tariffGrid.detailTitle')} — ${t('tariffGrid.apply.title')}`
+  )
+  const applyLogsTitle = computed(
+    () => `${store.applyLogsName || t('tariffGrid.detailTitle')} — ${t('tariffGrid.applyLog.title')}`
   )
   const baseViewTitle = computed(() => {
     const name = baseStore.detail?.name ?? t('tariffBase.title')
@@ -137,7 +166,7 @@
                   <span v-if="g.created_at"> · {{ fmtDT(g.created_at) }}</span>
                 </div>
               </div>
-              <UIMenuButton @selectEv="onSelect" show-view show-download :extra-options="extraOptions" :data="g" />
+              <UIMenuButton @selectEv="onSelect" show-view show-download :extra-options="gridExtraOptions" :data="g" />
             </div>
           </div>
           <n-empty v-if="!store.loading && !store.list.length" :description="$t('tariffGrid.noData')" class="py-10" />
@@ -175,7 +204,7 @@
                     <b class="text-surface-800">{{ b.effective_date ?? '—' }}</b></span>
                 </div>
               </div>
-              <UIMenuButton @selectEv="onBaseSelect" show-view show-edit :extra-options="extraOptions" :data="b" />
+              <UIMenuButton @selectEv="onBaseSelect" show-view show-edit :extra-options="baseExtraOptions" :data="b" />
             </div>
           </div>
           <n-empty v-if="!baseStore.loading && !baseStore.list.length" :description="$t('tariffGrid.noData')" class="py-10" />
@@ -205,6 +234,14 @@
     <!-- Setka: korxona/bo'limlarga biriktirish -->
     <UIModal :width="'780px'" :visible="store.scopeVisible" @update:visible="(v) => (store.scopeVisible = v)" :title="scopeTitle">
       <ScopeModal />
+    </UIModal>
+    <!-- Setka/baza: lavozimlarga qo'llash (ta'sir preview + sabab + hujjat) -->
+    <UIModal :width="'92%'" :visible="store.applyVisible" @update:visible="(v) => (store.applyVisible = v)" :title="applyTitle">
+      <ApplyModal />
+    </UIModal>
+    <!-- Setka/baza: qo'llash tarixi (audit jurnali) -->
+    <UIModal :width="'820px'" :visible="store.applyLogsVisible" @update:visible="(v) => (store.applyLogsVisible = v)" :title="applyLogsTitle">
+      <ApplyLogsModal />
     </UIModal>
 
     <!-- Baza: yaratish / meta tahrir -->

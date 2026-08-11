@@ -9,6 +9,13 @@ const _payslip = async (payload) => axios.get(`/v1/economist/salary-1c/${payload
 const _history = async (payload) => axios.get(`/v1/economist/salary-1c/history`, { params: payload?.params })
 const _compareHistory = async (payload) => axios.get(`/v1/economist/salary-1c/history/compare`, { params: payload?.params })
 const _orgTotals = async (payload) => axios.get(`/v1/economist/salary-1c/org-totals`, { params: payload?.params })
+// Vedlar (1C to'lov turlari) ro'yxati + korxona×ved matritsasi.
+const _veds = async (payload) => axios.get(`/v1/economist/salary-1c/veds`, { params: payload?.params })
+const _vedMatrix = async (payload) => axios.get(`/v1/economist/salary-1c/veds-matrix`, { params: payload?.params })
+// 1C AccruedByType bilan solishtirish (bitta korxona + oy).
+const _reconcile = async (payload) => axios.get(`/v1/economist/salary-1c/reconcile`, { params: payload?.params })
+// Ved drill-down: bir ved summasi qaysi xodimlardan.
+const _vedWorkers = async (payload) => axios.get(`/v1/economist/salary-1c/ved-workers`, { params: payload?.params })
 const _pullableOrgs = async () => axios.get(`/v1/economist/salary-1c/pullable-orgs`)
 const _startBatchPull = async (payload) => axios.post(`/v1/economist/salary-1c/pull-batch`, payload.data)
 const _activeBatchJob = async () => axios.get(`/v1/economist/salary-1c/pull-batch/active`)
@@ -32,6 +39,10 @@ export default {
   _history,
   _compareHistory,
   _orgTotals,
+  _veds,
+  _vedMatrix,
+  _reconcile,
+  _vedWorkers,
   _pullableOrgs,
   _startBatchPull,
   _activeBatchJob,

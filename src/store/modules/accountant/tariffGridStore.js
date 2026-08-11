@@ -183,7 +183,32 @@ export const useTariffGridStore = defineStore('tariffGridStore', {
     scopeSaving: false,
     scopeForm: { organization_ids: [], department_ids: [] },
     scopeOrgLabels: {}, // id -> nom (korxona chiplari uchun)
-    scopeDeptLabels: {} // id -> { name, org_name } (bo'lim chiplari uchun)
+    scopeDeptLabels: {}, // id -> { name, org_name } (bo'lim chiplari uchun)
+
+    // "Lavozimlarga qo'llash" — ta'sir preview + sabab + hujjat. Setka VA baza uchun umumiy.
+    applyVisible: false,
+    applyType: 'grid', // 'grid' | 'base'
+    applyGridId: null,
+    applyGridName: '',
+    applyPreviewLoading: false,
+    applySubmitLoading: false,
+    applyData: null, // { grid_id, base_id, version_id, base_amount, total, changed, data:[] }
+    applyPayload: { reason: null, effective_date: null },
+    applyFiles: [], // UIUpload modeli (asos-hujjat, ixtiyoriy)
+    // B: tanlash + filtr
+    applySelectedIds: [], // tanlangan lavozim id'lari (bo'sh → barcha o'zgaradiganlar)
+    applySearch: '', // lavozim/bo'lim bo'yicha qidiruv
+    applyOnlyChanged: false, // faqat okladi o'zgaradiganlar
+
+    // "Qo'llash tarixi" (audit jurnali) — setka/baza uchun.
+    applyLogsVisible: false,
+    applyLogsType: 'grid', // 'grid' | 'base'
+    applyLogsId: null,
+    applyLogsName: '',
+    applyLogsLoading: false,
+    applyLogsList: [],
+    applyLogsTotal: 0,
+    applyLogsParams: { page: 1, per_page: 10 }
   }),
 
   getters: {
@@ -570,6 +595,97 @@ export const useTariffGridStore = defineStore('tariffGridStore', {
         .finally(() => {
           this.scopeSaving = false
         })
+    },
+
+    // --- "Lavozimlarga qo'llash": setka/baza o'zgarishini lavozimlarga tarqatish ---
+    // applyService — type bo'yicha setka yoki baza servisini qaytaradi.
+    _applyService() {
+      return this.applyType === 'base'
+        ? $ApiService.tariffBaseService
+        : $ApiService.tariffGridService
+    },
+    // Ta'sir preview'ini yuklaydi (joriy vs yangi oklad + farq), modalni ochadi.
+    openApply(id, name = '', type = 'grid') {
+      this.applyType = type
+      this.applyGridId = id
+      this.applyGridName = name
+      this.applyPayload = { reason: null, effective_date: null }
+      this.applyFiles = []
+      this.applyData = null
+      this.applySelectedIds = []
+      this.applySearch = ''
+      this.applyOnlyChanged = false
+      this.applyVisible = true
+      this.applyPreviewLoading = true
+      this._applyService()
+        ._affectedPositions({ id })
+        .then((res) => {
+          this.applyData = res.data.data
+        })
+        .catch((e) => {
+          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          this.applyVisible = false
+        })
+        .finally(() => {
+          this.applyPreviewLoading = false
+        })
+    },
+    // Setka/bazani lavozimlarga qo'llaydi (sabab + ixtiyoriy hujjat + tanlangan lavozimlar).
+    async _applyToPositions() {
+      this.applySubmitLoading = true
+      try {
+        let document
+        const file = this.applyFiles?.[0]?.file
+        if (file) document = await Utils.fileToBase64(file)
+        const data = {
+          reason: this.applyPayload.reason || undefined,
+          effective_date: this.applyPayload.effective_date || undefined,
+          document,
+          // Tanlangan bo'lsa faqat o'shalar; aks holda barcha o'zgaradiganlar (backend default).
+          position_ids: this.applySelectedIds.length ? this.applySelectedIds : undefined
+        }
+        const res = await this._applyService()._applyToPositions({ id: this.applyGridId, data })
+        $Toast.success(res?.data?.message ?? t('content.success'))
+        this.applyVisible = false
+        this.applyFiles = []
+        this._index()
+      } catch (e) {
+        $Toast.error(e?.response?.data?.message ?? t('content.error'))
+      } finally {
+        this.applySubmitLoading = false
+      }
+    },
+    // --- "Qo'llash tarixi" (audit jurnali) ---
+    openApplyLogs(id, name = '', type = 'grid') {
+      this.applyLogsType = type
+      this.applyLogsId = id
+      this.applyLogsName = name
+      this.applyLogsParams.page = 1
+      this.applyLogsList = []
+      this.applyLogsTotal = 0
+      this.applyLogsVisible = true
+      this._applyLogs()
+    },
+    _applyLogs() {
+      const svc =
+        this.applyLogsType === 'base'
+          ? $ApiService.tariffBaseService
+          : $ApiService.tariffGridService
+      this.applyLogsLoading = true
+      svc
+        ._applyLogs({ id: this.applyLogsId, params: { ...this.applyLogsParams } })
+        .then((res) => {
+          this.applyLogsList = res.data.data.data
+          this.applyLogsTotal = res.data.data.total
+        })
+        .finally(() => {
+          this.applyLogsLoading = false
+        })
+    },
+    onApplyLogsPage(v) {
+      this.applyLogsParams.page = v.page
+      this.applyLogsParams.per_page = v.per_page
+      this._applyLogs()
     },
 
     // --- Form ochish/yopish ---

@@ -4,7 +4,7 @@ import i18n from '@/i18n/index.js'
 import UIHelper from '@/utils/UIHelper.js'
 import { useAccountStore, useComponentStore, useDepartmentPositionStore } from '@stores'
 import { Utils } from '@utils'
-import { Delete24Regular, Edit32Regular, Eye16Regular } from '@vicons/fluent'
+import { Delete24Regular, Edit32Regular, Eye16Regular, History16Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
 
@@ -131,12 +131,23 @@ import { Delete24Regular, Edit32Regular, Eye16Regular } from '@vicons/fluent'
     }
   ])
 
+  const onSalaryHistory = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrPositionsRead)) return
+    store.openSalaryHistory(row.id)
+  }
+
   const actions = computed(() => [
     {
       label: t('content.view'),
       key: Utils.ActionTypes.view,
       icon: UIHelper.renderIcon(Eye16Regular),
       action: onPreview
+    },
+    {
+      label: t('departmentPositionPage.salaryHistory.title'),
+      key: 'salary-history',
+      icon: UIHelper.renderIcon(History16Regular),
+      action: onSalaryHistory
     },
     {
       label: t('content.edit'),

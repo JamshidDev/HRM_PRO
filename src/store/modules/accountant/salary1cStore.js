@@ -19,6 +19,9 @@ export const useSalary1cStore = defineStore('salary1cStore', {
       matched: null // null=barchasi | 'out'=faqat tizimda yo'q | 'in'=faqat tizimda bor
     },
 
+    // Joriy tab (page bilan sinxron) — org filtri o'zgarganда to'g'ri ro'yxatni yangilash uchun
+    activeTab: 'workers', // 'workers' | 'orgs' | 'veds'
+
     // UISelect (org tree) uchun: tanlangan korxona(lar) va yoyilgan tugunlar
     selectedOrgs: [],
     structureCheck: [],
@@ -73,6 +76,29 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     orgTotalsLoading: false,
     orgTotalsParams: { page: 1, per_page: 20 },
 
+    // Ved kesimida — vedlar ro'yxati + tanlash + korxona×ved matritsasi
+    vedList: [],
+    vedTotal: 0,
+    vedLoading: false,
+    vedParams: { page: 1, per_page: 20, search: null },
+    selectedVedCodes: [], // tanlangan paying_code lar
+    vedMatrix: null, // { columns, data, column_totals, grand_total, total }
+    vedMatrixLoading: false,
+    vedMatrixVisible: false, // natija modali
+    vedMatrixParams: { page: 1, per_page: 20 },
+
+    // Solishtirish (1C AccruedByType ↔ bizning hisob) — bitta korxona
+    reconcile: null, // { organization, ones_org_code, totals, rows, has_diff }
+    reconcileLoading: false,
+    reconcileOnlyDiff: false, // faqat farqli qatorlar
+
+    // Ved drill-down: bir ved summasi qaysi xodimlardan (modal)
+    vedWorkersVisible: false,
+    vedWorkersLoading: false,
+    vedWorkers: null, // { current_page, total, total_summa, data }
+    vedWorkersRow: null, // tanlangan ved qatori {type, code, name}
+    vedWorkersParams: { page: 1, per_page: 20, search: null },
+
     // Tanlangan korxona 1C kodi (biriktirish)
     orgCode: null,
     orgCodeInput: '',
@@ -85,7 +111,23 @@ export const useSalary1cStore = defineStore('salary1cStore', {
       this.selectedOrgs = v
       this.params.matched = null
       this.params.page = 1
-      this._index()
+      // Joriy tabga qarab mos ro'yxatni yangilaymiz (org filtri hammasiga ta'sir qiladi).
+      if (this.activeTab === 'veds') {
+        this.vedParams.page = 1
+        this._veds()
+      } else if (this.activeTab === 'orgs') {
+        this.orgTotalsParams.page = 1
+        this._orgTotals()
+      } else if (this.activeTab === 'reconcile') {
+        // Solishtirish — foydalanuvchi «Solishtirish» tugmasini bosadi (avtomatik emas).
+        this.reconcile = null
+      } else {
+        this._index()
+      }
+    },
+    // Tanlangan korxonalar CSV (bo'sh bo'lsa — barcha korxona / umumiy).
+    _orgCsv() {
+      return (this.selectedOrgs || []).map((o) => o.id).join(',') || undefined
     },
     _index() {
       const ids = (this.selectedOrgs || []).map((o) => o.id)
@@ -398,6 +440,173 @@ export const useSalary1cStore = defineStore('salary1cStore', {
       this.orgTotalsParams.page = v.page
       this.orgTotalsParams.per_page = v.per_page
       this._orgTotals()
+    },
+
+    // --- Ved kesimida ---
+    _veds() {
+      this.vedLoading = true
+      $ApiService.salary1cService
+        ._veds({
+          params: {
+            year: this.params.year,
+            month: this.params.month,
+            organizations: this._orgCsv(),
+            page: this.vedParams.page,
+            per_page: this.vedParams.per_page,
+            search: this.vedParams.search || undefined
+          }
+        })
+        .then((res) => {
+          this.vedList = res.data.data.data
+          this.vedTotal = res.data.data.total
+        })
+        .finally(() => {
+          this.vedLoading = false
+        })
+    },
+    onVedsPage(v) {
+      this.vedParams.page = v.page
+      this.vedParams.per_page = v.per_page
+      this._veds()
+    },
+    onVedsSearch() {
+      this.vedParams.page = 1
+      this._veds()
+    },
+    toggleVed(code) {
+      const i = this.selectedVedCodes.indexOf(code)
+      if (i >= 0) this.selectedVedCodes.splice(i, 1)
+      else this.selectedVedCodes.push(code)
+    },
+    toggleAllVeds() {
+      // Joriy sahifadagi (kodli) vedlarni tanlash/bekor qilish.
+      const codes = this.vedList.map((v) => v.paying_code).filter((c) => c != null)
+      const allSel = codes.length > 0 && codes.every((c) => this.selectedVedCodes.includes(c))
+      if (allSel) {
+        this.selectedVedCodes = this.selectedVedCodes.filter((c) => !codes.includes(c))
+      } else {
+        for (const c of codes) if (!this.selectedVedCodes.includes(c)) this.selectedVedCodes.push(c)
+      }
+    },
+    // «Hisoblash» — natija modalini ochib, matritsani yuklaydi.
+    openVedMatrix() {
+      if (!this.selectedVedCodes.length) {
+        $Toast.warning(t('salary1c.veds.selectFirst'))
+        return
+      }
+      this.vedMatrixParams.page = 1
+      this.vedMatrix = null
+      this.vedMatrixVisible = true
+      this._vedMatrix()
+    },
+    // Tanlangan vedlar bo'yicha korxona×ved matritsasini hisoblaydi.
+    _vedMatrix() {
+      if (!this.selectedVedCodes.length) {
+        $Toast.warning(t('salary1c.veds.selectFirst'))
+        return
+      }
+      this.vedMatrixLoading = true
+      $ApiService.salary1cService
+        ._vedMatrix({
+          params: {
+            year: this.params.year,
+            month: this.params.month,
+            paying_codes: this.selectedVedCodes.join(','),
+            organizations: this._orgCsv(),
+            page: this.vedMatrixParams.page,
+            per_page: this.vedMatrixParams.per_page
+          }
+        })
+        .then((res) => {
+          this.vedMatrix = res.data.data
+        })
+        .catch((e) => {
+          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+        })
+        .finally(() => {
+          this.vedMatrixLoading = false
+        })
+    },
+    onVedMatrixPage(v) {
+      this.vedMatrixParams.page = v.page
+      this.vedMatrixParams.per_page = v.per_page
+      this._vedMatrix()
+    },
+
+    // --- Ved drill-down: bir ved summasi qaysi xodimlardan (modal) ---
+    openVedWorkers(row) {
+      const org = (this.selectedOrgs || [])[0]
+      if (!org?.id) {
+        $Toast.warning(t('salary1c.reconcile.selectOneOrg'))
+        return
+      }
+      this.vedWorkersRow = { type: row.type, code: row.code, name: row.name }
+      this.vedWorkersParams = { page: 1, per_page: 20, search: null }
+      this.vedWorkers = null
+      this.vedWorkersVisible = true
+      this._vedWorkers()
+    },
+    _vedWorkers() {
+      const org = (this.selectedOrgs || [])[0]
+      const row = this.vedWorkersRow
+      if (!org?.id || !row) return
+      this.vedWorkersLoading = true
+      $ApiService.salary1cService
+        ._vedWorkers({
+          params: {
+            year: this.params.year,
+            month: this.params.month,
+            organization_id: org.id,
+            type: row.type,
+            code: row.code || undefined,
+            name: row.code ? undefined : row.name || undefined,
+            page: this.vedWorkersParams.page,
+            per_page: this.vedWorkersParams.per_page,
+            search: this.vedWorkersParams.search || undefined
+          }
+        })
+        .then((res) => {
+          this.vedWorkers = res.data.data
+        })
+        .finally(() => {
+          this.vedWorkersLoading = false
+        })
+    },
+    onVedWorkersPage(v) {
+      this.vedWorkersParams.page = v.page
+      this.vedWorkersParams.per_page = v.per_page
+      this._vedWorkers()
+    },
+    onVedWorkersSearch() {
+      this.vedWorkersParams.page = 1
+      this._vedWorkers()
+    },
+
+    // --- Solishtirish (1C bilan) — bitta korxona ---
+    _reconcile() {
+      const org = (this.selectedOrgs || [])[0]
+      if (!org?.id) {
+        $Toast.warning(t('salary1c.reconcile.selectOneOrg'))
+        return
+      }
+      this.reconcileLoading = true
+      $ApiService.salary1cService
+        ._reconcile({
+          params: {
+            year: this.params.year,
+            month: this.params.month,
+            organization_id: org.id
+          }
+        })
+        .then((res) => {
+          this.reconcile = res.data.data
+        })
+        .catch((e) => {
+          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+        })
+        .finally(() => {
+          this.reconcileLoading = false
+        })
     },
     onChangePage(v) {
       this.params.page = v.page

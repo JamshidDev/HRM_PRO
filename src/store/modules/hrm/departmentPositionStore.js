@@ -78,6 +78,19 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
         per_page: 15,
         search: null
       }
+    },
+
+    // Oklad o'zgarish tarixi (lavozim darajasi)
+    salaryHistory: {
+      visible: false,
+      loading: false,
+      total: 0,
+      list: [],
+      dpId: null,
+      params: {
+        page: 1,
+        per_page: 10
+      }
     }
   }),
   getters: {
@@ -275,6 +288,34 @@ export const useDepartmentPositionStore = defineStore('departmentPositionStore',
         .finally(() => {
           this.preview.loading = false
         })
+    },
+    // --- Oklad o'zgarish tarixi (lavozim darajasi) ---
+    openSalaryHistory(id) {
+      this.salaryHistory.dpId = id
+      this.salaryHistory.params.page = 1
+      this.salaryHistory.list = []
+      this.salaryHistory.total = 0
+      this.salaryHistory.visible = true
+      this._salaryHistory()
+    },
+    _salaryHistory() {
+      const id = this.salaryHistory.dpId
+      if (!id) return
+      this.salaryHistory.loading = true
+      $ApiService.departmentPositionService
+        ._salaryHistory({ id, params: { ...this.salaryHistory.params } })
+        .then((res) => {
+          this.salaryHistory.list = res.data.data.data
+          this.salaryHistory.total = res.data.data.total
+        })
+        .finally(() => {
+          this.salaryHistory.loading = false
+        })
+    },
+    onSalaryHistoryPage(v) {
+      this.salaryHistory.params.page = v.page
+      this.salaryHistory.params.per_page = v.per_page
+      this._salaryHistory()
     },
     onChangeStructure(v) {
       const store = useComponentStore()

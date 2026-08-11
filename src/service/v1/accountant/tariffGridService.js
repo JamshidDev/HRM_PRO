@@ -25,6 +25,12 @@ const _setScope = async (payload) => axios.put(`/v1/tariff-grids/${payload.id}/s
 const _forPosition = async (payload) => axios.get(`/v1/tariff-grids/for-position`, { params: payload?.params })
 const _amount = async (payload) => axios.get(`/v1/tariff-grids/${payload.id}/amount`, { params: payload?.params })
 
+// Setkani lavozimlarga qo'llash: ta'sir preview + qo'llash (sabab + hujjat) + qo'llash tarixi.
+const _affectedPositions = async (payload) => axios.get(`/v1/tariff-grids/${payload.id}/affected-positions`)
+const _applyToPositions = async (payload) => axios.post(`/v1/tariff-grids/${payload.id}/apply-to-positions`, payload.data)
+const _applyLogs = async (payload) =>
+  axios.get(`/v1/tariff-grids/${payload.id}/apply-logs`, { params: payload?.params })
+
 export default {
   _index,
   _show,
@@ -41,5 +47,8 @@ export default {
   _scope,
   _setScope,
   _forPosition,
-  _amount
+  _amount,
+  _affectedPositions,
+  _applyToPositions,
+  _applyLogs
 }
