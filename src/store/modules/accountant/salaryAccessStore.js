@@ -84,6 +84,10 @@ export const useSalaryAccessStore = defineStore('salaryAccessStore', {
         this.intent = 'auto'
         this.visible = false
         this._flushQueue()
+      } catch (e) {
+        // Xato (masalan noto'g'ri parol, 422) — interceptor toast ko'rsatadi.
+        // Modal ochiq qoladi, foydalanuvchi qayta urinadi. Bu yerda yutamiz
+        // (aks holda unhandled rejection console'ni ifloslaydi).
       } finally {
         this.loading = false
       }

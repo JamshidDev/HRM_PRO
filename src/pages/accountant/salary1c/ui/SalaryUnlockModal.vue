@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, computed, watch } from 'vue'
+  import { ref, computed, watch, onUnmounted } from 'vue'
   import { UIModal } from '@/components/index.js'
   import { useSalaryAccessStore } from '@/store/modules/accountant/salaryAccessStore.js'
   import {
@@ -18,10 +18,16 @@
   const confirmPassword = ref('')
   const password = ref('')
 
-  // Modal ochilganda maydonlarni tozalaymiz.
+  // Modal ochilganda maydonlarni tozalaymiz + orqa fonni blur qilamiz (maxfiy
+  // oylik ma'lumoti modal ortidan o'qilmasin). body klassi n-modal maskasiga
+  // backdrop-filter beradi (pastdagi global style). Modal body'ga teleport bo'lgani
+  // uchun modal kartasi blur bo'lmaydi.
   watch(
     () => store.visible,
     (v) => {
+      if (typeof document !== 'undefined') {
+        document.body.classList.toggle('salary-stepup-open', v)
+      }
       if (v) {
         loginPassword.value = ''
         oldPassword.value = ''
@@ -31,6 +37,12 @@
       }
     }
   )
+
+  onUnmounted(() => {
+    if (typeof document !== 'undefined') {
+      document.body.classList.remove('salary-stepup-open')
+    }
+  })
 
   // Rejim: 'change' (eski→yangi), 'set' (birinchi marta), 'unlock' (kirish).
   const mode = computed(() => {
@@ -196,3 +208,14 @@
     </template>
   </UIModal>
 </template>
+
+<!-- Global (scoped EMAS): step-up modal ochiq bo'lganda orqa fonni blur qiladi —
+     maxfiy oylik ma'lumoti modal ortidan o'qilmasin. Modal body'ga teleport bo'lgani
+     uchun uning o'zi (mask ustida) blur bo'lmaydi. -->
+<style>
+body.salary-stepup-open .n-modal-mask {
+  background-color: rgba(15, 23, 42, 0.55) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+}
+</style>

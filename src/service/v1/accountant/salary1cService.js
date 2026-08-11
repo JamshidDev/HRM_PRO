@@ -31,9 +31,9 @@ const _setOrgCode = async (payload) => axios.put(`/v1/economist/salary-1c/org-co
 // Oylik step-up ("oylik paroli") — ikki bosqichli auth.
 const _salaryAccessStatus = async () => axios.get(`/v1/economist/salary-access/status`)
 const _salaryAccessSetPassword = async (payload) =>
-  axios.post(`/v1/economist/salary-access/set-password`, payload.data, { silentError: true })
+  axios.post(`/v1/economist/salary-access/set-password`, payload.data)
 const _salaryAccessUnlock = async (payload) =>
-  axios.post(`/v1/economist/salary-access/unlock`, payload.data, { silentError: true })
+  axios.post(`/v1/economist/salary-access/unlock`, payload.data)
 const _salaryAccessLock = async () => axios.post(`/v1/economist/salary-access/lock`)
 
 // Xodim self-view
