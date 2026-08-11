@@ -5,7 +5,24 @@
 // ko'rinishida (tashqi `.organization-layout` bilan) kompilyatsiya bo'ladi — shu ustuvorlik
 // darajasini yengish uchun bu yerda ham xuddi shu `.organization-layout` prefiksi ishlatiladi,
 // aks holda `[data-theme='dark']` (6 daraja) bizning qoidamizdan (5 daraja) ustun chiqib qolardi.
-@mixin sidebar-color-theme($rail-from, $rail-to, $panel-from, $panel-to, $accent) {
+//
+// Matn/karta ranglari parametr sifatida beriladi va default qiymatlari to'q fonli temalar uchun
+// (oq matn) mo'ljallangan — "mint" kabi OCH panelli tema esa bu qiymatlarni o'zi uzatadi.
+@mixin sidebar-color-theme(
+  $rail-from,
+  $rail-to,
+  $panel-from,
+  $panel-to,
+  $accent,
+  $panel-text: #fff,
+  $panel-icon: #fff,
+  $item-bg: rgba(255, 255, 255, 0.08),
+  $item-border: rgba(255, 255, 255, 0.2),
+  $hover-bg: rgba(255, 255, 255, 0.08),
+  $active-text: #fff,
+  // Sarlavha ostidagi ajratuvchi chiziq — och temada karta borderi (oq) ko'rinmasligi uchun alohida
+  $divider: $item-border
+) {
   .organization-layout .sidebar-content {
     .mini-content {
       background: linear-gradient($rail-from, $rail-to) !important;
@@ -22,57 +39,57 @@
       .sidebar-themed-sticky {
         background: $panel-from !important;
         span {
-          color: #fff !important;
+          color: $panel-text !important;
         }
         .border-b {
-          border-color: rgba(255, 255, 255, 0.2) !important;
+          border-color: $divider !important;
         }
       }
 
       .panel-item-single {
         .item-icon i {
-          color: #fff !important;
+          color: $panel-icon !important;
         }
         .item-title {
-          color: #fff !important;
+          color: $panel-text !important;
         }
         &:hover:not(.active-panel-item-single) {
-          background-color: rgba(255, 255, 255, 0.08) !important;
+          background-color: $hover-bg !important;
         }
       }
 
       .active-panel-item-single {
         background-color: $accent !important;
         .item-title {
-          color: #fff !important;
+          color: $active-text !important;
         }
         .item-icon i {
-          color: #fff !important;
+          color: $active-text !important;
         }
       }
 
       .panel-header {
-        background-color: rgba(255, 255, 255, 0.08) !important;
-        border-color: rgba(255, 255, 255, 0.2) !important;
+        background-color: $item-bg !important;
+        border-color: $item-border !important;
         .item-icon i {
-          color: #fff !important;
+          color: $panel-icon !important;
         }
         .item-title {
-          color: #fff !important;
+          color: $panel-text !important;
           .n-icon {
-            color: #fff !important;
+            color: $panel-text !important;
           }
         }
       }
 
       .panel-body .panel-item {
-        background-color: rgba(255, 255, 255, 0.08) !important;
-        border-color: rgba(255, 255, 255, 0.2) !important;
+        background-color: $item-bg !important;
+        border-color: $item-border !important;
         .item-icon i {
-          color: #fff !important;
+          color: $panel-icon !important;
         }
         .item-title {
-          color: #fff !important;
+          color: $panel-text !important;
         }
       }
     }
@@ -104,4 +121,28 @@
 
 [data-sidebar-theme='green'] {
   @include sidebar-color-theme(#008838, #00220e, #005222, #006c2d, #00a652);
+}
+
+// Yagona OCH panelli tema: rail qora, panel mint→lavanda, matnlar to'q.
+[data-sidebar-theme='mint'] {
+  @include sidebar-color-theme(
+    #1f1f1f,
+    #0d0d0d,
+    #c9f5e7,
+    #dfddfb,
+    #ffffff,
+    #101828,
+    #344054,
+    rgba(255, 255, 255, 0.55),
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0.5),
+    #0e7490,
+    rgba(16, 24, 40, 0.1)
+  );
+
+  // Mixin vertikal gradient beradi; bu yerda diagonal qilinadi. Yuqori-chap burchak
+  // hamon `$panel-from` (#c9f5e7) — sticky sarlavha foni bilan mos keladi.
+  .organization-layout .sidebar-content .sidebar-card {
+    background: linear-gradient(135deg, #c9f5e7, #dfddfb) !important;
+  }
 }

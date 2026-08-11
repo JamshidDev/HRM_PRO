@@ -42,6 +42,17 @@
       to: '#05602A',
       bgFrom: '#66B888',
       bgTo: '#69A07F'
+    },
+    {
+      // Yagona och tema — shuning uchun `darkLabel` (tanlangandagi oq matn o'qilmaydi).
+      // Swatch aylanasi rail'ning qorasi emas, temani ajratib turadigan panel gradienti.
+      key: 'mint',
+      labelKey: 'content.sidebarThemeMint',
+      from: '#C9F5E7',
+      to: '#DFDDFB',
+      bgFrom: '#C9F5E7',
+      bgTo: '#DFDDFB',
+      darkLabel: true
     }
   ]
 
@@ -127,7 +138,13 @@
                 ></div>
                 <span
                   class="text-xs"
-                  :class="store.sidebarTheme === item.key ? 'text-white' : 'text-textColor3'"
+                  :class="
+                    store.sidebarTheme === item.key
+                      ? item.darkLabel
+                        ? 'text-textColor0'
+                        : 'text-white'
+                      : 'text-textColor3'
+                  "
                 >{{ t(item.labelKey) }}</span>
               </div>
             </div>
