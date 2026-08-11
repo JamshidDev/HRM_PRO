@@ -71,7 +71,7 @@ export const MEANINGFUL = new Set([
   'hr', 'hr-business-trip', 'hr-business-trip-read', 'hr-business-trip-write', 'hr-check-worker', 'hr-commands',
   'hr-commands-blank', 'hr-commands-delete', 'hr-commands-read', 'hr-commands-write', 'hr-confirmations', 'hr-confirmations-delete',
   'hr-confirmations-read', 'hr-confirmations-write', 'hr-contract-additional', 'hr-contract-additional-delete', 'hr-contract-additional-read', 'hr-contract-additional-write',
-  'hr-kpi-read', 'hr-certificates-read', 'hr-contracts', 'hr-contracts-delete', 'hr-contracts-read', 'hr-contracts-write', 'hr-dashboard', 'hr-dashboard-audit', 'hr-dashboard-read',
+  'hr-kpi', 'hr-kpi-read', 'hr-certificates-read', 'hr-contracts', 'hr-contracts-delete', 'hr-contracts-read', 'hr-contracts-write', 'hr-dashboard', 'hr-dashboard-audit', 'hr-dashboard-read',
   'hr-departments', 'hr-departments-delete', 'hr-departments-read', 'hr-departments-write', 'hr-discips', 'hr-discips-read',
   'hr-documents', 'hr-documents-delete', 'hr-documents-read', 'hr-documents-write', 'hr-edu-plans-read', 'hr-edu-plans-write',
   'hr-export', 'hr-incentives', 'hr-incentives-read', 'hr-incentives-write', 'hr-tasks', 'hr-tasks-read', 'hr-tasks-write', 'hr-tasks-delete', 'hr-jobs', 'hr-jobs-read',
