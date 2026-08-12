@@ -146,7 +146,7 @@
         :model="store.exportParams"
       >
         <div class="col-span-12">
-          <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
+          <label class="mt-3 text-xs text-textColor3 mb-1 font-medium">{{
             $t('actionLog.table.structure')
           }}</label>
           <UISelect
@@ -162,7 +162,7 @@
           />
         </div>
         <div v-if="![3, 4].includes(store.exportType)" class="col-span-12">
-          <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{
+          <label class="text-xs mt-3 text-textColor3 mb-1 font-medium">{{
             $t('content.year')
           }}</label>
           <UIYearMonth
@@ -172,7 +172,7 @@
           />
         </div>
         <div v-else class="col-span-12">
-          <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{
+          <label class="text-xs mt-3 text-textColor3 mb-1 font-medium">{{
             $t('content.year')
           }}</label>
           <n-select
@@ -245,7 +245,7 @@
           </div>
         </template>
         <div v-if="store.exportType === 3" class="col-span-12">
-          <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.position') }}</label>
+          <label class="mt-3 text-xs text-textColor3">{{ $t('workerPage.filter.position') }}</label>
           <UINSelect
             :disabled="store.exportParams.organizations.length === 0"
             multiple
