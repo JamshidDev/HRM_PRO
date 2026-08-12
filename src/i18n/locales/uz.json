@@ -2038,8 +2038,8 @@
       }
     },
     "audit": {
-      "tabGeneral": "Umumiy dashboard",
-      "tabAudit": "Ma'lumotlar bo'yicha audit",
+      "tabGeneral": "Dashboard",
+      "tabAudit": "Audit",
       "relativesShortage": "Qarindoshlar to'liqsiz",
       "relativesWithoutJshshir": "Qarindosh PNFL yo'q",
       "nameErrors": "Ism-familiya xatosi",

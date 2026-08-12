@@ -2024,8 +2024,8 @@
       }
     },
     "audit": {
-      "tabGeneral": "Общий дашборд",
-      "tabAudit": "Аудит данных",
+      "tabGeneral": "Dashboard",
+      "tabAudit": "Аудит",
       "relativesShortage": "Родственники неполные",
       "relativesWithoutJshshir": "Нет ПИНФЛ родственника",
       "nameErrors": "Ошибка в имени/фамилии",

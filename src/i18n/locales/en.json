@@ -2016,8 +2016,8 @@
       }
     },
     "audit": {
-      "tabGeneral": "General dashboard",
-      "tabAudit": "Data audit",
+      "tabGeneral": "Dashboard",
+      "tabAudit": "Audit",
       "relativesShortage": "Relatives incomplete",
       "relativesWithoutJshshir": "No relative's PINFL",
       "nameErrors": "Name/surname error",

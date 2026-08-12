@@ -1815,8 +1815,8 @@
       }
     },
     "audit": {
-      "tabGeneral": "Умумий dashboard",
-      "tabAudit": "Маълумотлар бўйича аудит",
+      "tabGeneral": "Dashboard",
+      "tabAudit": "Аудит",
       "relativesShortage": "Қариндошлар тўлиқсиз",
       "relativesWithoutJshshir": "Қариндош ПНФЛ йўқ",
       "nameErrors": "Исм-фамилия хатоси",
