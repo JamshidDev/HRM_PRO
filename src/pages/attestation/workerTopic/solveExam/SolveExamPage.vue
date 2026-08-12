@@ -21,6 +21,10 @@
   import { AppPaths, useAppSetting } from '@/utils/index.js'
   import { onBeforeRouteLeave } from 'vue-router'
   import i18n from '@/i18n/index.js'
+  import tickIconUrl from '@/assets/images/content/tick.png'
+  import xIconUrl from '@/assets/images/content/x.png'
+
+  const PASSING_SCORE = 56
 
   const t = i18n.global.t
   const store = useExamAttemptStore()
@@ -64,6 +68,11 @@
     if (v >= 56) return '#FDC700'
     return '#E7000A'
   })
+  const isPassed = computed(() => resultPercent.value >= PASSING_SCORE)
+  const statusColor = computed(() => (isPassed.value ? '#008838' : '#CA1F29'))
+  const gradeLabel = computed(() =>
+    resultPercent.value >= 86 ? t('examPage.gradeExcellent') : t('examPage.gradeGood')
+  )
 
   const endWarningVisible = ref(false)
   const infoVisible = ref(false)
@@ -124,6 +133,7 @@
       v-model:visible="endWarningVisible"
       @update:visible="onChangeVisible"
       :persistent="true"
+      card-class="!rounded-2xl !max-w-[calc(100vw-2rem)]"
     >
       <template #header><span></span></template>
 
@@ -158,51 +168,52 @@
         </div>
 
         <!-- Natija -->
-        <div v-else class="flex flex-col items-center gap-3 px-2 pb-1">
-          <p class="text-lg font-semibold text-textColor0 text-center">
-            {{ Utils.combineFullName(store.worker_detail?.user?.worker) }}
+        <div v-else class="flex flex-col items-center gap-3 px-2 pb-1 text-center">
+          <img
+            :src="isPassed ? tickIconUrl : xIconUrl"
+            alt=""
+            class="w-[120px] h-[120px]"
+            :class="
+              isPassed
+                ? 'drop-shadow-[0_10px_18px_rgba(45,203,115,0.4)]'
+                : 'drop-shadow-[0_10px_18px_rgba(231,0,10,0.4)]'
+            "
+          />
+          <p class="text-2xl font-semibold text-textColor0">
+            {{ isPassed ? $t('examPage.passedTitle') : $t('examPage.finished') }}
           </p>
-          <n-progress
-            type="circle"
-            :percentage="resultPercent"
-            :stroke-width="9"
-            :color="scoreColor"
-            style="width: 150px"
-          >
-            <div class="flex flex-col items-center">
-              <span class="text-4xl font-bold leading-none" :style="{ color: scoreColor }">
-                {{ store.result?.result || 0 }}
-              </span>
-              <span class="text-xs text-textColor3 mt-1">{{ $t('examPage.result') }}</span>
-            </div>
-          </n-progress>
-          <p class="font-medium text-textColor1 text-center">
+          <p class="text-sm text-textColor1">
+            {{ isPassed ? $t('examPage.passedDesc') : $t('examPage.failedDesc') }}
+          </p>
+          <p class="leading-none">
+            <span class="text-4xl font-bold" :style="{ color: statusColor }">{{
+              resultPercent
+            }}</span
+            ><span class="text-2xl font-bold" style="color: #667085">/100</span>
+          </p>
+          <p class="text-sm text-textColor1">
             {{
               $t('examPage.correctOfTotal', {
                 correct: store.result?.result || 0,
                 total: store.questions.length
               })
             }}
+            -
+            {{
+              isPassed
+                ? $t('examPage.gradeLabel', { grade: gradeLabel })
+                : $t('examPage.passingScoreLabel', { score: PASSING_SCORE })
+            }}
           </p>
-          <div class="w-full rounded-lg bg-surface-ground px-3 py-2.5">
-            <p class="text-xs font-medium text-textColor3 text-center mb-2">
-              {{ $t('examPage.gradingScale') }}
-            </p>
-            <div
-              class="flex items-center justify-center gap-x-4 gap-y-1.5 flex-wrap text-xs text-textColor2"
-            >
-              <span class="flex items-center gap-1.5">
-                <span class="w-2.5 h-2.5 rounded-full bg-danger"></span>0–55%
-              </span>
-              <span class="flex items-center gap-1.5">
-                <span class="w-2.5 h-2.5 rounded-full bg-warning"></span>56–85%
-              </span>
-              <span class="flex items-center gap-1.5">
-                <span class="w-2.5 h-2.5 rounded-full bg-success"></span>86–100%
-              </span>
-            </div>
-          </div>
-          <p class="text-danger text-center text-sm">{{ $t('examPage.endHead') }}</p>
+          <n-progress
+            type="line"
+            :percentage="resultPercent"
+            :height="8"
+            :border-radius="4"
+            :show-indicator="false"
+            :color="scoreColor"
+            class="w-full"
+          />
           <n-button @click="backToList" class="w-full! h-11! mt-1" size="large" type="primary">
             {{ $t('content.backToList') }}
           </n-button>

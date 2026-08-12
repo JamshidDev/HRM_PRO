@@ -84,12 +84,16 @@
       componentStore._structures()
     }
   })
+
+  // Tugmalar modal `#footer` da turadi (MedPage.vue) — saqlashni tashqaridan
+  // chaqirish uchun yagona yo'l.
+  defineExpose({ submit: onSubmit })
 </script>
 
 <template>
   <n-form ref="formRef" :rules="validationRules.medFrom" :model="store.payload">
     <n-spin class="w-full" :show="store.showLoading">
-      <div style="min-height: calc(100vh - 120px)">
+      <div>
         <n-tabs v-model:value="store.activeTab" type="segment" animated>
           <template v-for="(item, index) in store.tabs">
             <n-tab-pane :name="item.id" :tab="$t(item.name)">
@@ -188,15 +192,6 @@
         </n-form-item>
       </div>
     </n-spin>
-
-    <div class="grid grid-cols-2 gap-2">
-      <n-button @click="store.openVisible(false)" type="error" ghost>
-        {{ $t('content.cancel') }}
-      </n-button>
-      <n-button @click="onSubmit" :loading="store.saveLoading" type="primary">
-        {{ $t('content.save') }}
-      </n-button>
-    </div>
   </n-form>
 </template>
 

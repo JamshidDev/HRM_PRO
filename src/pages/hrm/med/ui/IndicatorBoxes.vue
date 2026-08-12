@@ -3,8 +3,6 @@
   import {
     Apps28Regular,
     BuildingHome16Filled,
-    CaretRight12Filled,
-    CheckmarkCircle24Filled,
     ClockAlarm24Regular,
     PeopleCommunityAdd20Filled
   } from '@vicons/fluent'
@@ -32,82 +30,33 @@
       icon: Apps28Regular
     }
   ]
-
-  const onSelectEv = (id) => {
-    store.panelId = id
-  }
 </script>
 
 <template>
   <div class="flex-1 flex flex-col @container">
-    <div class="grid grid-cols-2 gap-2 @lg:gap-3 @4xl:grid-cols-12 @4xl:gap-x-2">
-      <template v-for="item in panels" :key="item.id">
-        <div
-          @click="onSelectEv(item.id)"
-          class="cursor-pointer @4xl:col-span-3 flex bg-surface-section py-2 px-1.5 @lg:py-3 @lg:px-2 rounded-xl @lg:rounded-2xl border relative transition-all duration-200 overflow-hidden"
-          :class="[item.id === store.panelId ? 'border-primary' : 'border-surface-line']"
-        >
-          <div
-            class="w-[34px] @lg:w-[50px] shrink-0 flex items-center justify-center border-r-2 border-surface-line"
-          >
-            <n-icon
-              class="text-2xl @lg:text-[32px]"
-              :class="[item.id === store.panelId ? 'text-primary' : 'text-surface/50']"
-            >
-              <component :is="item.icon"></component>
-            </n-icon>
-          </div>
-          <div class="flex flex-col min-w-0 flex-1 z-2 pl-1.5 @lg:pl-2">
-            <p class="text-center font-semibold text-textColor2 text-xs @lg:text-sm truncate">
-              {{ $t(item.name) }}
-            </p>
-            <div
-              class="flex flex-col @lg:flex-row justify-between @lg:items-center mt-1 @lg:mt-2 gap-1"
-            >
-              <div>
-                <span v-if="store.dashboardInfo" class="text-textColor3 text-[10px] @lg:text-xs">
-                  <span class="font-semibold text-base @lg:text-xl text-textColor2">{{
-                    store.dashboardInfo?.[item.id]
-                  }}</span>
-                  ta
-                </span>
-                <n-skeleton v-else :width="60" round size="small" />
-              </div>
-
-              <div class="flex items-center cursor-pointer text-textColor2 text-[10px] @lg:text-xs">
-                <template v-if="item.id === store.panelId">
-                  <div class="text-primary flex items-center gap-1">
-                    <n-icon size="14" class="shrink-0">
-                      <CheckmarkCircle24Filled />
-                    </n-icon>
-                    <span class="truncate">{{ $t('medPage.panel.selected') }}</span>
-                  </div>
-                </template>
-                <template v-else>
-                  <span class="truncate">{{ $t('content.view') }}</span>
-                  <n-icon size="20" class="shrink-0">
-                    <CaretRight12Filled />
-                  </n-icon>
-                </template>
-              </div>
-            </div>
-          </div>
-          <span
-            class="z-1 opacity-30 absolute top-0 right-0 w-[100px] @lg:w-[160px] h-full bg-no-repeat bg-[url(/effect/primary-card.svg)]"
-          ></span>
-        </div>
-      </template>
-    </div>
-
     <n-tabs
       animated
       v-model:value="store.panelId"
-      class="hidden-tab-header flex-1 flex flex-col"
+      class="med-panel-tabs ui-pill-tabs flex-1 flex flex-col"
       pane-wrapper-class="flex-1 flex flex-col"
-      type="segment"
+      type="line"
     >
       <template v-for="item in panels" :key="item.id">
         <n-tab-pane :name="item.id" class="flex-1 flex flex-col gap-4">
+          <template #tab>
+            <span class="flex items-center gap-1.5">
+              <n-icon size="18" class="shrink-0">
+                <component :is="item.icon"></component>
+              </n-icon>
+              <span>{{ $t(item.name) }}</span>
+              <!-- Dashboard hali kelmaganda skeleton o'sha joyni egallaydi —
+                   son paydo bo'lganda tab'lar yon tomonga sakramaydi. -->
+              <span v-if="store.dashboardInfo" class="med-panel-count">
+                {{ store.dashboardInfo?.[item.id] }}
+              </span>
+              <n-skeleton v-else :width="22" :height="18" round />
+            </span>
+          </template>
           <slot :name="`panel-${item.id}`"></slot>
         </n-tab-pane>
       </template>
@@ -115,4 +64,25 @@
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+  /* Pill rail uslubi umumiy `.ui-pill-tabs` da (assets/scss/component.scss).
+     Bu yerda faqat tab nomi yonidagi son bandi. */
+  .med-panel-count {
+    display: inline-block;
+    min-width: 18px;
+    padding: 0 5px;
+    font-size: 11px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 9px;
+    background: var(--surface-line);
+    color: var(--textColor1);
+  }
+
+  /* Faol pill oq bo'lgani uchun undagi son bandi primary rangga o'tadi —
+     nofaol tablardagi kulrang bandlardan ajralib turadi. */
+  .med-panel-tabs :deep(> .n-tabs-nav .n-tabs-tab--active .med-panel-count) {
+    background: var(--primary-color, #2080f0);
+    color: #fff;
+  }
+</style>

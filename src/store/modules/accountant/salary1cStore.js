@@ -59,6 +59,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     pullSelectOrgs: [], // tanlash ro'yxati: [{ organization_id, name, ones_org_code, selected }]
     pullSelectLoading: false,
     pullJob: null, // serverdan: { id, status, total, processed, items:[{organization_id,name,status,added,changed,unchanged,error}] }
+    pullCancelling: false,
     _pullTimer: null,
 
     // Tortish tarixi (pull-log) modal
@@ -273,11 +274,29 @@ export const useSalary1cStore = defineStore('salary1cStore', {
           return
         }
         this.pullJob = job
-        if (job.status === 'finished') {
+        // 'finished' yoki 'cancelled' — ikkalasida ham to'xtaymiz.
+        if (job.status !== 'running') {
+          this.pullCancelling = false
           this._stopPolling()
           this._onJobFinished()
         }
       })
+    },
+    // Batch tortishni bekor qilish — in-flight 1C so'rovlari darhol uziladi.
+    _cancelJob() {
+      const id = this.pullJob?.id
+      if (!id || this.pullCancelling) return
+      this.pullCancelling = true
+      $ApiService.salary1cService
+        ._cancelBatch(id)
+        .then((res) => {
+          if (res.data?.data) this.pullJob = res.data.data
+          // Poll davom etadi — job 'cancelled' bo'lgach o'zi to'xtaydi.
+        })
+        .catch((e) => {
+          this.pullCancelling = false
+          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+        })
     },
     _onJobFinished() {
       // Tugagach joriy ko'rinishni yangilaymiz.
@@ -535,8 +554,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
 
     // --- Ved drill-down: bir ved summasi qaysi xodimlardan (modal) ---
     openVedWorkers(row) {
-      const org = (this.selectedOrgs || [])[0]
-      if (!org?.id) {
+      if (!this._orgCsv()) {
         $Toast.warning(t('salary1c.reconcile.selectOneOrg'))
         return
       }
@@ -547,16 +565,16 @@ export const useSalary1cStore = defineStore('salary1cStore', {
       this._vedWorkers()
     },
     _vedWorkers() {
-      const org = (this.selectedOrgs || [])[0]
+      const orgs = this._orgCsv()
       const row = this.vedWorkersRow
-      if (!org?.id || !row) return
+      if (!orgs || !row) return
       this.vedWorkersLoading = true
       $ApiService.salary1cService
         ._vedWorkers({
           params: {
             year: this.params.year,
             month: this.params.month,
-            organization_id: org.id,
+            organizations: orgs,
             type: row.type,
             code: row.code || undefined,
             name: row.code ? undefined : row.name || undefined,
@@ -582,10 +600,10 @@ export const useSalary1cStore = defineStore('salary1cStore', {
       this._vedWorkers()
     },
 
-    // --- Solishtirish (1C bilan) — bitta korxona ---
+    // --- Solishtirish (1C bilan) — tanlangan barcha korxonalar (jamlab) ---
     _reconcile() {
-      const org = (this.selectedOrgs || [])[0]
-      if (!org?.id) {
+      const orgs = this._orgCsv()
+      if (!orgs) {
         $Toast.warning(t('salary1c.reconcile.selectOneOrg'))
         return
       }
@@ -595,7 +613,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
           params: {
             year: this.params.year,
             month: this.params.month,
-            organization_id: org.id
+            organizations: orgs
           }
         })
         .then((res) => {

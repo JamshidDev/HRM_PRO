@@ -1,7 +1,8 @@
 <script setup>
-  import { CloudArrowDown24Regular, Eye16Regular, History24Regular, Search24Regular, ArrowDownload24Regular, Calculator24Regular } from '@vicons/fluent'
+  import { CloudArrowDown24Regular, Eye16Regular, History24Regular, Search24Regular, ArrowDownload24Regular, Calculator24Regular, LockClosed24Regular } from '@vicons/fluent'
   import { NoDataPicture, UIBadge, UIModal, UIPageContent, UIPagination, UIYearMonth, UISelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useSalary1cStore } from '@/store/modules/index.js'
+  import { useSalaryAccessStore } from '@/store/modules/accountant/salaryAccessStore.js'
   import { useDebounceFn } from '@vueuse/core'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
@@ -10,6 +11,7 @@
   const store = useSalary1cStore()
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
+  const salaryAccess = useSalaryAccessStore()
 
   const activeTab = ref('workers') // 'workers' | 'orgs'
 
@@ -77,6 +79,8 @@
   // Batch pull (background job) progress
   const pullRunning = computed(() => store.pullJob?.status === 'running')
   const pullFinished = computed(() => store.pullJob?.status === 'finished')
+  const pullCancelled = computed(() => store.pullJob?.status === 'cancelled')
+  const pullEnded = computed(() => pullFinished.value || pullCancelled.value)
   const pullItems = computed(() => store.pullJob?.items ?? [])
   const pullProcessed = computed(() => store.pullJob?.processed ?? 0)
   const pullTotal = computed(() => store.pullJob?.total ?? 0)
@@ -194,10 +198,16 @@
         <n-tab-pane name="veds" :tab="$t('salary1c.veds.tab')" />
         <n-tab-pane name="reconcile" :tab="$t('salary1c.reconcile.tab')" />
       </n-tabs>
-      <n-button size="small" tertiary @click="store._openPullLog()">
-        <template #icon><n-icon><History24Regular /></n-icon></template>
-        {{ $t('salary1c.pullLog') }}
-      </n-button>
+      <div class="flex items-center gap-2">
+        <n-button size="small" tertiary @click="salaryAccess.openChange()">
+          <template #icon><n-icon><LockClosed24Regular /></n-icon></template>
+          {{ $t('salaryAccess.changeBtn') }}
+        </n-button>
+        <n-button size="small" tertiary @click="store._openPullLog()">
+          <template #icon><n-icon><History24Regular /></n-icon></template>
+          {{ $t('salary1c.pullLog') }}
+        </n-button>
+      </div>
     </div>
 
     <!-- Xodimlar -->
@@ -891,6 +901,10 @@
                     <template #trigger><span class="text-xs text-error cursor-help">✕ {{ $t('salary1c.pullErr') }}</span></template>
                     {{ it.error }}
                   </n-tooltip>
+                  <n-tooltip v-else-if="it.status === 'cancelled'" trigger="hover">
+                    <template #trigger><span class="text-xs text-textColor3 cursor-help">⊘ {{ $t('salary1c.pullCancelled') }}</span></template>
+                    {{ it.error }}
+                  </n-tooltip>
                   <span v-else class="text-xs text-textColor3">{{ $t('salary1c.pullPending') }}</span>
                 </div>
               </div>
@@ -930,15 +944,18 @@
             :class="pullErrCount ? 'text-warning' : 'text-success'">
             {{ $t('salary1c.pullFinished') }}
           </span>
+          <span v-else-if="pullCancelled" class="text-sm font-medium text-textColor3">
+            {{ $t('salary1c.pullCancelledMsg') }}
+          </span>
           <span v-else></span>
           <div class="flex gap-2">
             <n-button @click="store.pullModalVisible = false">{{ $t('content.close') }}</n-button>
-            <n-button v-if="pullFinished && pullErrCount" :loading="store.pullLogExporting"
+            <n-button v-if="pullEnded && pullErrCount" :loading="store.pullLogExporting"
               @click="store._exportPullLog(store.pullJob?.year, store.pullJob?.month, 'error')">
               <template #icon><n-icon><ArrowDownload24Regular /></n-icon></template>
               {{ $t('salary1c.export') }}
             </n-button>
-            <n-button v-if="pullFinished" type="primary" @click="store._resetPullJob()">
+            <n-button v-if="pullEnded" type="primary" @click="store._resetPullJob()">
               {{ $t('salary1c.pullAgain') }}
             </n-button>
             <n-button v-else-if="!store.pullJob" type="primary" :disabled="!pullSelectedCount"
@@ -946,7 +963,10 @@
               <template #icon><n-icon><CloudArrowDown24Regular /></n-icon></template>
               {{ $t('salary1c.pull') }}
             </n-button>
-            <n-button v-else type="primary" loading disabled>{{ $t('salary1c.pullRunning') }}</n-button>
+            <n-button v-else type="error" ghost :loading="store.pullCancelling"
+              @click="store._cancelJob()">
+              {{ $t('salary1c.pullCancel') }}
+            </n-button>
           </div>
         </div>
       </template>

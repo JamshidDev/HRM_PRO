@@ -236,6 +236,7 @@
     "sidebarThemeIndigo": "Indigo",
     "sidebarThemeBlue": "Blue",
     "sidebarThemeGreen": "Green",
+    "sidebarThemeNavy": "Navy",
     "customColor": "Maxsus rang",
     "customColorDesc": "Sayt ranglarini o'zgartiring",
     "appearanceMode": "Ko'rinish",
@@ -1815,6 +1816,19 @@
     "endSub": "Siz to'plagan ball",
     "correctOfTotal": "{total} ta savoldan {correct} ta to'g'ri",
     "gradingScale": "Baholash mezoni",
+    "passedTitle": "Tabriklaymiz, imtihondan o'tdingiz!",
+    "passedDesc": "Natijangiz saqlandi. Sertifikatni yuklab olishingiz mumkin.",
+    "failedDesc": "Bu safar o'tish balliga yetmadingiz. Xatolarni ko'rib chiqib, qayta urinishingiz mumkin.",
+    "gradeLabel": "Baho: {grade}",
+    "gradeExcellent": "a'lo",
+    "gradeGood": "yaxshi",
+    "passingScoreLabel": "O'tish balli {score}",
+    "attemptAnalysis": "Urinish tahlili",
+    "attemptOrdinal": "{n}-urinish",
+    "correctCount": "To'g'ri",
+    "incorrectCount": "Noto'g'ri",
+    "unmarkedCount": "Belgilanmagan",
+    "ballCount": "Ball",
     "ip": "IP manzil",
     "wrongAnswer": "Javob noto'g'ri",
     "notChosen": "Javob belgilanmagan",
@@ -2376,12 +2390,12 @@
       "evening": "Xayrli kech, {n}"
     },
     "suggestions": {
-      "leaveBalance": "Ta'til qancha qoldi?",
-      "lastSalary": "Oxirgi oylik hisobim",
-      "getReference": "Ma'lumotnoma olish",
-      "workedDays": "Bu oy necha kun ishladim?",
-      "workedDaysShort": "Necha kun ishladim?",
-      "workSchedule": "Ish grafigim qanday?"
+      "leaveBalance": "Yillik ta'til necha kun?",
+      "lastSalary": "Ortiqcha ish vaqti qanday to'lanadi?",
+      "getReference": "Mehnat shartnomasi qanday tuziladi?",
+      "workedDays": "Haftalik ish vaqti normasi?",
+      "workedDaysShort": "Sinov muddati necha oy?",
+      "workSchedule": "Ishdan bo'shatish tartibi?"
     },
     "disclaimer": {
       "cardOne": "### 🧪 Test rejimi\n\nUshbu sun’iy intellekt yordamchisi hozirda **test rejimida** ishlamoqda.  \nJavoblari hali to‘liq shakllanmagan va _noto‘g‘ri bo‘lishi mumkin_.",
@@ -2982,7 +2996,7 @@
       "hasDiff": "Farq bor",
       "match": "Mos",
       "hint": "Yuqoridan bitta korxona va davrni tanlab «Solishtirish»ni bosing — 1C rasmiy jami (AccruedByType) bizning hisob bilan ved kesimida solishtiriladi",
-      "selectOneOrg": "Solishtirish uchun bitta korxona tanlang"
+      "selectOneOrg": "Solishtirish uchun kamida bitta korxona tanlang"
     },
     "veds": {
       "tab": "Ved kesimida",
@@ -3060,6 +3074,9 @@
     "pullBg": "Fonda ishlamoqda — modalni yopsangiz ham davom etadi",
     "pullPending": "Kutmoqda",
     "pullRunning": "Jarayonda…",
+    "pullCancel": "Bekor qilish",
+    "pullCancelled": "Bekor qilindi",
+    "pullCancelledMsg": "Tortish bekor qilindi",
     "errors": "Xatoliklar",
     "errorMsg": "Xatolik xabari",
     "errDate": "Sana",
@@ -3907,7 +3924,12 @@
       "addSlide": "Slayd qo'shish",
       "editFields": "Ma'lumotlarni tahrirlash",
       "noSlides": "Hali slayd yo'q — yuqoridagi tugma orqali qo'shing",
-      "detailsButton": "Batafsil"
+      "detailsButton": "Batafsil",
+      "fileTooLarge": "Fayl hajmi juda katta — maksimal 4 MB",
+      "preview": "Ko'rinishi",
+      "replaceSlide": "Almashtirish",
+      "slidesPanel": "Slaydlar",
+      "addSlideHint": "Rasm yoki video qo'shish"
     },
     "deleteConfirm": "Ushbu story o'chirilsinmi?",
     "slideDeleteConfirm": "Ushbu slayd o'chirilsinmi?",
@@ -4145,6 +4167,25 @@
       "copyAll": "Hammasini nusxalash",
       "copyHint": "Ekranda yashirin — \"Hammasini nusxalash\"da ochiq holatda keladi."
     }
+  },
+  "salaryAccess": {
+    "title": "Oylik bo'limi — parol",
+    "setTitle": "Oylik parolini o'rnatish",
+    "description": "Bu bo'lim maxfiy. Davom etish uchun oylik parolini kiriting.",
+    "setDescription": "Birinchi marta: login parolingiz bilan tasdiqlab, oylik parolini o'rnating.",
+    "loginPassword": "Login parolingiz",
+    "newPassword": "Yangi oylik paroli",
+    "confirmPassword": "Oylik parolini takrorlang",
+    "password": "Oylik paroli",
+    "passwordPlaceholder": "Oylik parolini kiriting",
+    "submit": "Ochish",
+    "setSubmit": "O'rnatish va ochish",
+    "changeBtn": "Oylik parolini o'zgartirish",
+    "changeTitle": "Oylik parolini o'zgartirish",
+    "changeDescription": "Amaldagi oylik parolingizni tasdiqlab, yangi parol o'rnating.",
+    "oldPassword": "Amaldagi oylik paroli",
+    "changeSubmit": "O'zgartirish",
+    "cancelled": "Bekor qilindi"
   },
   "changePassword": {
     "title": "Parolni yangilash",

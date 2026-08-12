@@ -6,6 +6,7 @@
   import Disclaimer from './Disclaimer.vue'
   import Panel from './Panel.vue'
   import SuggestionChips from './SuggestionChips.vue'
+  import TypingIndicator from './TypingIndicator.vue'
   import aiAssistantIcon from '@/assets/images/content/ai-assistant.svg?url'
   import aiConversationBg from '@/assets/images/svg/AIconBG.svg?raw'
 
@@ -33,6 +34,12 @@
     router.back()
   }
   const chatContainer = ref(null)
+
+  const showTyping = computed(() => {
+    if (!store.loading) return false
+    const lastMessage = store.messages[store.messages.length - 1]
+    return !lastMessage || !lastMessage.bot || !lastMessage.text?.trim()
+  })
 
   watch(
     () => store.messages,
@@ -137,6 +144,7 @@
             <template v-for="message in store.messages" :key="message.key">
               <Message :data="message" />
             </template>
+            <TypingIndicator v-if="showTyping" />
             <span class="block w-full h-[40px]"></span>
           </n-spin>
         </div>

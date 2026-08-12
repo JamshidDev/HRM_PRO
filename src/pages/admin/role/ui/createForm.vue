@@ -229,25 +229,29 @@
 <template>
   <n-form ref="formRef" :rules="validationRules.userRole" :model="store.payload">
     <div>
-      <n-form-item :label="$t(`userRole.form.name`)" path="name">
-        <n-input
-          type="text"
-          v-model:value="store.payload.name"
-          style="width: 320px; flex: none"
-        />
-      </n-form-item>
+      <div class="flex flex-wrap items-start gap-x-6">
+        <n-form-item :label="$t(`userRole.form.name`)" path="name">
+          <n-input
+            type="text"
+            v-model:value="store.payload.name"
+            style="width: 320px; flex: none"
+          />
+        </n-form-item>
 
-      <!-- Rol turi (guard) — faqat yaratishda tanlanadi, keyin o'zgarmaydi -->
-      <n-form-item :label="$t('userRole.form.type')">
-        <n-radio-group
-          v-model:value="store.payload.guard_name"
-          :disabled="!store.visibleType"
-          @update:value="onGuardChange"
-        >
-          <n-radio value="sanctum">{{ $t('userRole.form.typeSanctum') }}</n-radio>
-          <n-radio value="integration">{{ $t('userRole.form.typeIntegration') }}</n-radio>
-        </n-radio-group>
-      </n-form-item>
+        <!-- Rol turi (guard) — faqat yaratishda tanlanadi, keyin o'zgarmaydi -->
+        <n-form-item :label="$t('userRole.form.type')">
+          <div class="flex items-center h-[34px]">
+            <n-radio-group
+              v-model:value="store.payload.guard_name"
+              :disabled="!store.visibleType"
+              @update:value="onGuardChange"
+            >
+              <n-radio value="sanctum">{{ $t('userRole.form.typeSanctum') }}</n-radio>
+              <n-radio value="integration">{{ $t('userRole.form.typeIntegration') }}</n-radio>
+            </n-radio-group>
+          </div>
+        </n-form-item>
+      </div>
 
       <n-form-item :label="$t(`userRole.form.permissions`)" path="permissions">
         <div class="w-full">
@@ -344,6 +348,39 @@
     transition:
       background-color 0.2s ease,
       color 0.2s ease;
+  }
+  /* Modul tablari modal scroll'ida yopishib turadi — pastda uzun switch ro'yxatini
+     ko'rib turib ham boshqa modulga o'tish mumkin bo'lsin. */
+  .perm-tabs {
+    /* Rail ustidagi bo'sh joy — pastdagi `::before` bandi shu joyni egallaydi,
+       shunda band tinch holatda hech qanday kontentni bosmaydi. */
+    margin-top: 20px;
+  }
+  .perm-tabs :deep(> .n-tabs-nav) {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+  }
+  /* Rail'ning usti va osti (uning `margin-bottom: 12px`i) modal foni bilan
+     to'ldiriladi: aks holda yopishgan rail atrofidagi tirqishdan ostidan
+     o'tayotgan kontent ko'rinib qoladi. Bandlar konteyner chegarasidan
+     TASHQARIGA chiqmaydi — chiqsa modalda gorizontal scroll paydo bo'ladi. */
+  .perm-tabs :deep(> .n-tabs-nav::before),
+  .perm-tabs :deep(> .n-tabs-nav::after) {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: var(--surface-section);
+  }
+  .perm-tabs :deep(> .n-tabs-nav::before) {
+    top: -20px;
+    height: 20px;
+  }
+  .perm-tabs :deep(> .n-tabs-nav::after) {
+    bottom: -12px;
+    height: 12px;
   }
   .perm-tabs :deep(.n-tabs-tab--active .perm-count) {
     background: var(--primary-color, #2080f0);

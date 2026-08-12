@@ -25,11 +25,15 @@
       componentStore._enums()
     }
   })
+
+  // Tugmalar modal `#footer` da turadi (ConfirmationPage.vue) — saqlashni
+  // tashqaridan chaqirish uchun yagona yo'l.
+  defineExpose({ submit: onSubmit })
 </script>
 
 <template>
   <n-form ref="formRef" :rules="validationRules.confirmation" :model="store.payload">
-    <div style="min-height: calc(100vh - 120px)">
+    <div>
       <UIAutoComplete v-model:pin="store.payload.pin" :search-type="'position'" />
       <n-form-item :label="$t(`confirmationPage.table.level`)" path="level">
         <n-select
@@ -45,15 +49,6 @@
       <n-form-item :label="$t(`confirmationPage.table.position`)" path="position">
         <n-input type="text" v-model:value="store.payload.position" />
       </n-form-item>
-    </div>
-
-    <div class="grid grid-cols-2 gap-2">
-      <n-button @click="store.openVisible(false)" type="error" ghost>
-        {{ $t('content.cancel') }}
-      </n-button>
-      <n-button @click="onSubmit" :loading="store.saveLoading" type="primary">
-        {{ $t('content.save') }}
-      </n-button>
     </div>
   </n-form>
 </template>

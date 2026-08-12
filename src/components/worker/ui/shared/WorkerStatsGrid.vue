@@ -3,7 +3,7 @@
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import CertificateIcon from '@/assets/icons/certificateIcon.svg'
-  import PositionCertificateIcon from '@/assets/icons/certificats.svg'
+  import CertificateIcon2 from '@/assets/icons/certificate2Icon.svg'
   import JshirIcon from '@/assets/icons/jshirIcon.svg'
   import PhoneIcon from '@/assets/icons/phoneIcon.svg'
   import CopyIcon from '@/assets/icons/copyIcon.svg'
@@ -37,7 +37,7 @@
     <div class="min-w-0 lg:flex-1 lg:pr-4">
       <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
         <n-icon size="14">
-          <PositionCertificateIcon />
+          <CertificateIcon />
         </n-icon>
         {{ $t('workerView.header.positionCertificateId') }}
       </div>
@@ -57,7 +57,7 @@
     <div class="min-w-0 lg:flex-1 lg:px-4">
       <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">
         <n-icon size="14">
-          <CertificateIcon />
+          <CertificateIcon2 />
         </n-icon>
         {{ $t('workerView.header.employeeId') }}
       </div>

@@ -35,18 +35,8 @@
     callback: {
       type: Function,
       default: null
-    },
-    heightFull: {
-      type: Boolean,
-      default: true
     }
   })
-
-  const emits = defineEmits(['onCancelEv'])
-  const onCancelEv = () => {
-    console.log('event')
-    emits('onCancelEv')
-  }
 
   // Tahrirlanayotgan bo'limning O'ZI ota-bo'lim ro'yxatida ko'rinmasin.
   // `componentStore.departmentList` `GET /hr/get-departments` dan to'ladi va
@@ -74,11 +64,15 @@
       }
     })
   }
+
+  // Tugmalar modal `#footer` da turadi (DepartmentPage.vue, report/ui/DepartmentModal.vue) —
+  // saqlashni tashqaridan chaqirish uchun yagona yo'l.
+  defineExpose({ submit: onSubmit })
 </script>
 
 <template>
   <n-form ref="formRef" :rules="validationRules.common" :model="store.payload">
-    <div :class="[heightFull ? 'h-[calc(100vh-120px)]' : '']">
+    <div>
       <div
         v-if="store.parentElement"
         class="w-full text-sm px-2 py-2 border rounded-xl border-surface-line mb-4 flex flex-col cursor-pointer"
@@ -192,15 +186,6 @@
           :loading="store.districtLoading"
         />
       </n-form-item>
-    </div>
-
-    <div class="grid grid-cols-2 gap-2">
-      <n-button @click="onCancelEv" type="error" ghost>
-        {{ $t('content.cancel') }}
-      </n-button>
-      <n-button @click="onSubmit" :loading="store.saveLoading" type="primary">
-        {{ $t('content.save') }}
-      </n-button>
     </div>
   </n-form>
 </template>
