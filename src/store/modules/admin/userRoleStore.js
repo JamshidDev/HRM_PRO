@@ -18,6 +18,9 @@ export const useUserRoleStore = defineStore('userRole', {
       // Rol turi: 'sanctum' (foydalanuvchi roli) yoki 'integration' (client roli).
       // Guard rolning permission olamini belgilaydi (ikkovidan bittasi).
       guard_name: 'sanctum',
+      // Org-scope (0080): rol egasi qaysi korxonaларни ko'radi.
+      // null = permission-fallback (hozirgidek); 'single'/'subtree'.
+      scope_type: null,
       permissions: []
     },
     params: {
@@ -120,6 +123,7 @@ export const useUserRoleStore = defineStore('userRole', {
       this.elementId = null
       this.payload.name = null
       this.payload.guard_name = 'sanctum'
+      this.payload.scope_type = null
       this.payload.permissions = []
       this.query = null
     }

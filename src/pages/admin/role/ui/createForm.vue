@@ -251,6 +251,20 @@
             </n-radio-group>
           </div>
         </n-form-item>
+
+        <!-- Org-scope: korxona ko'lami (0080) — faqat foydalanuvchi (sanctum) rollari -->
+        <n-form-item
+          v-if="store.payload.guard_name === 'sanctum'"
+          :label="$t('userRole.form.scopeType')"
+        >
+          <n-radio-group v-model:value="store.payload.scope_type">
+            <n-space>
+              <n-radio :value="null">{{ $t('userRole.form.scopeDefault') }}</n-radio>
+              <n-radio value="single">{{ $t('userRole.form.scopeSingle') }}</n-radio>
+              <n-radio value="subtree">{{ $t('userRole.form.scopeSubtree') }}</n-radio>
+            </n-space>
+          </n-radio-group>
+        </n-form-item>
       </div>
 
       <n-form-item :label="$t(`userRole.form.permissions`)" path="permissions">

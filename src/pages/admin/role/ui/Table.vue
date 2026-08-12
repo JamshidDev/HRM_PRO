@@ -17,6 +17,8 @@
     store.payload.name = row.name
     // Rol guard'i — permission olamini belgilaydi; shu guard bo'yicha ro'yxat qayta yuklanadi.
     store.payload.guard_name = row.guard_name || 'sanctum'
+    // Org-scope (0080) — mavjud rolning ko'lamini to'ldirish.
+    store.payload.scope_type = row.scope_type ?? null
     store.payload.permissions = row.permissions.map((x) => x.id)
     store.query = null
     store._getAllPermission()
