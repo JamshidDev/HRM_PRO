@@ -5,6 +5,7 @@
     useTurnstileDashboardStore
   } from '@/store/modules/index.js'
   import { UINSelect, UISelect } from '@/components/index.js'
+  import { Building20Regular, Organization20Regular } from '@vicons/fluent'
   import { generateUUIDKey, useAppSetting, useDebounce } from '@/utils/index.js'
 
   const dashboardStore = useTurnstileDashboardStore()
@@ -78,7 +79,7 @@
 </script>
 
 <template>
-  <div class="flex flex-wrap items-end gap-3">
+  <div class="flex flex-wrap items-center gap-3">
     <div class="mr-auto">
       <h3 class="text-2xl font-bold leading-[1.2] text-textColor0 mb-0">
         {{ $t('turnStileDashboard.name') }}
@@ -87,11 +88,12 @@
         {{ $t('turnStileDashboard.description') }}
       </div>
     </div>
-    <div class="md:w-[200px] w-full">
-      <label class="block text-[11px] text-textColor3 mb-1 font-semibold">{{
-        $t('actionLog.table.structure')
-      }}</label>
+    <div class="md:w-[220px] w-full filter-field">
+      <n-icon size="18" class="filter-field__icon">
+        <Building20Regular />
+      </n-icon>
       <UISelect
+        :placeholder="$t('turnStileDashboard.filter.organizationPlaceholder')"
         :options="componentStore.structureList"
         :model-v="dashboardStore.dashboardParams.organizations"
         :checked-val="dashboardStore.structureCheck2"
@@ -104,13 +106,14 @@
         @onSubmit="filterEvent"
       />
     </div>
-    <div class="md:w-[200px] w-full">
-      <label class="block text-[11px] text-textColor3 mb-1 font-semibold">{{
-        $t('content.department')
-      }}</label>
+    <div class="md:w-[220px] w-full filter-field">
+      <n-icon size="18" class="filter-field__icon">
+        <Organization20Regular />
+      </n-icon>
       <UINSelect
         multiple
         clearable
+        :placeholder="$t('turnStileDashboard.filter.departmentPlaceholder')"
         :loading="departmentState.loading"
         :options="departmentState.list"
         :query="dashboardStore.filterDepParams.search"
@@ -121,10 +124,7 @@
         @onSearch="onSearchDepartment"
       />
     </div>
-    <div class="md:w-[160px] w-full">
-      <label class="block text-[11px] text-textColor3 mb-1 font-semibold">{{
-        $t('content.date')
-      }}</label>
+    <div class="md:w-[180px] w-full">
       <n-date-picker
         v-model:value="dashboardStore.dashboardParams.date"
         @update:value="onChangeDate"
@@ -136,3 +136,34 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+  /* Maketdagidek maydon ichida ikonka: input matnini o'ngga suramiz. */
+  .filter-field {
+    position: relative;
+  }
+
+  .filter-field__icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    pointer-events: none;
+    color: var(--textColor3);
+  }
+
+  /* Matnni ikonkadan keyin boshlash uchun naive-ui'ning o'z padding
+     o'zgaruvchilarini qayta yozamiz — shunda placeholder, tanlangan qiymat
+     va teglar bir xil siljiydi. */
+  /* `!important` shart: naive bu o'zgaruvchilarni element `style` atributiga
+     inline yozadi. */
+  .filter-field :deep(.n-input) {
+    --n-padding-left: 36px !important;
+  }
+
+  .filter-field :deep(.n-base-selection) {
+    --n-padding-single-left: 36px !important;
+    --n-padding-multiple-left: 32px !important;
+  }
+</style>

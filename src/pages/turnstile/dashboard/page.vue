@@ -6,11 +6,10 @@
     PreviewList,
     WorkTimeCard,
     InfoGraph,
-    RowChart,
+    WorkerAnalyticPanel,
     DeviceCard,
     MonthlyCard,
-    FaceCard,
-    CardDecor
+    FaceCard
   } from './ui/index.js'
 
   const dashboardStore = useTurnstileDashboardStore()
@@ -18,7 +17,6 @@
   import { computed, onMounted } from 'vue'
   import SimpleCard from '@/pages/turnstile/dashboard/ui/SimpleCard.vue'
   import SimpleCardSketlon from '@/pages/turnstile/dashboard/ui/SimpleCardSketlon.vue'
-  import DailyEventChart from '@/pages/turnstile/dashboard/ui/DailyEventChart.vue'
 
   const typeTitle = computed(() => {
     const type = dashboardStore.previewParams.type
@@ -63,8 +61,13 @@
             :badge-text="item.badgeText"
             :count="item.count"
             :icon="item.icon"
+            :chip-color="item.chipColor"
             :list="item.list"
             :list-more="item.listMore"
+            :delta="dashboardStore.deltas[item.deltaKey]"
+            :invert="item.invert"
+            :decor="item.decor"
+            :delta-loading="dashboardStore.compareLoading"
             @click="onPreview(item.previewType)"
           />
         </template>
@@ -81,37 +84,25 @@
             :badge-text="item.badgeText"
             :count="item.count"
             :icon="item.icon"
+            :chip-color="item.chipColor"
             :list="item.list"
             :list-more="item.listMore"
+            :delta="dashboardStore.deltas[item.deltaKey]"
+            :invert="item.invert"
+            :decor="item.decor"
+            :delta-loading="dashboardStore.compareLoading"
             @click="onPreview(item.previewType)"
           />
         </template>
 
-        <div
-          class="xl:col-span-8 lg:col-span-12 col-span-12 p-4 grid grid-cols-12 gap-4 border border-surface-line rounded-2xl bg-surface-section/75 relative overflow-hidden"
-        >
-          <CardDecor variant="circles" class="top-0 right-0 text-primary" />
-          <div class="xl:col-span-5 lg:col-span-5 col-span-12">
-            <RowChart @onPreview="onPreview" />
-          </div>
-          <div class="xl:col-span-7 lg:col-span-7 col-span-12 overflow-hidden">
-            <DailyEventChart />
-          </div>
-        </div>
-
-        <InfoGraph
-          @onPreview="onPreview"
-          class="xl:col-span-4 lg:col-span-6 md:col-span-6 col-span-12"
-        />
+        <WorkerAnalyticPanel @onPreview="onPreview" class="col-span-12" />
 
         <WorkTimeCard @onPreview="onPreview" class="xl:col-span-8 col-span-12" />
+        <MonthlyCard @onPreview="onPreview" class="xl:col-span-4 col-span-12" />
 
-        <DeviceCard
-          @onPreview="onPreview"
-          class="xl:col-span-4 lg:col-span-6 md:col-span-6 col-span-12"
-        />
-        <MonthlyCard @onPreview="onPreview" class="lg:col-span-6 col-span-12" />
-        <FaceCard @onPreview="onPreview" class="lg:col-span-6 col-span-12" />
+        <InfoGraph @onPreview="onPreview" class="xl:col-span-6 col-span-12" />
+        <DeviceCard @onPreview="onPreview" class="xl:col-span-3 md:col-span-6 col-span-12" />
+        <FaceCard @onPreview="onPreview" class="xl:col-span-3 md:col-span-6 col-span-12" />
       </div>
     </div>
 
@@ -128,3 +119,19 @@
     </UIModal>
   </UIPageContent>
 </template>
+
+<style lang="scss">
+  // `hover-effect-card` global uslubi hozircha faqat HRM dashboard sahifasida
+  // e'lon qilingan — bu sahifa mustaqil ochilganda ham ishlashi uchun takrorlanadi.
+  .hover-effect-card {
+    cursor: pointer;
+    transform: scale(1);
+    transition: 0.2s ease;
+
+    &:hover {
+      transform: scale(1.01);
+      z-index: 10;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+  }
+</style>

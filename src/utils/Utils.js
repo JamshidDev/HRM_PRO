@@ -147,6 +147,24 @@ const formatNumberToMoney = (num) => {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
 }
 
+/**
+ * Ikki davr ko'rsatkichini solishtiradi.
+ * @returns {{diff: number, percent: number|null, dir: 'up'|'down'|'flat'}|null}
+ *   `null` — solishtirish uchun ma'lumot yetarli emas.
+ */
+const compareDelta = (cur, prev) => {
+  if (cur === null || cur === undefined || prev === null || prev === undefined) return null
+  const current = Number(cur)
+  const previous = Number(prev)
+  if (Number.isNaN(current) || Number.isNaN(previous)) return null
+  const diff = current - previous
+  return {
+    diff,
+    percent: previous ? (diff / previous) * 100 : null,
+    dir: diff > 0 ? 'up' : diff < 0 ? 'down' : 'flat'
+  }
+}
+
 const sumFormat = (v) => {
   // if(isNaN(v)) return v
   return numeral(v).format('0 0.00')
@@ -310,7 +328,9 @@ const getMonthNameByKey = (key) => {
 }
 
 const dayMonthYearLabel = (time) => {
-  return time ? `${dayjs(time).format('DD')}-${getMonthNameById(dayjs(time).month() + 1)} ${dayjs(time).format('YYYY')}` : null
+  return time
+    ? `${dayjs(time).format('DD')}-${getMonthNameById(dayjs(time).month() + 1)} ${dayjs(time).format('YYYY')}`
+    : null
 }
 
 const maskText = (text, start, end, sign = '*') => {
@@ -361,7 +381,7 @@ const downloadFileByUrl = (url, target) => {
   const link = document.createElement('a')
   link.href = url
   link.setAttribute('download', 'file')
-  if(target){
+  if (target) {
     link.target = target
   }
   document.body.appendChild(link)
@@ -579,6 +599,7 @@ export default {
   methodTypes,
   routeTimesheetPathMaker,
   formatNumberToMoney,
+  compareDelta,
   debouncedFn,
   colorTypes,
   blobFileDownload,
