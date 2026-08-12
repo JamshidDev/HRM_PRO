@@ -33,9 +33,9 @@
 </script>
 
 <template>
-  <div class="mx-2 mt-4 mb-4 rounded flex flex-col gap-3" style="height: calc(100vh - 100px)">
+  <div class="ui-page-content mx-2 mt-4 mb-4 rounded flex flex-col gap-3">
     <div
-      class="xl:flex grid grid-cols-12 flex-1 min-h-0"
+      class="xl:flex grid grid-cols-12 grid-rows-[minmax(0,1fr)] flex-1 min-h-0"
       :style="{ gap: store?.selectedLesson ? '12px' : 0 }"
     >
       <div
