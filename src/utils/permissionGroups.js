@@ -40,11 +40,18 @@ export const ENFORCED = new Set([
   'quotes-write', 'regions-delete', 'regions-write', 'roles-delete', 'roles-read', 'roles-write',
   'schedules-delete', 'schedules-write', 'specialities-delete', 'specialities-write', 'telegram-read', 'telegram-write',
   'turnstile-absent-workers-export', 'turnstile-approve-delete', 'turnstile-approve-read', 'turnstile-approve-write', 'turnstile-building-delete', 'turnstile-building-read',
-  'turnstile-devices-export', 'turnstile-devices-stat-export', 'turnstile-sheets-timesheet-export', 'turnstile-schedule', 'turnstile-schedule-read', 'turnstile-hik-central-sync', 'turnstile-hik-central-sync-read', 'turnstile-building-write', 'turnstile-devices-delete', 'turnstile-devices-read', 'turnstile-devices-write', 'turnstile-hik-central-tg-user-delete', 'turnstile-hik-central-tg-user-read',
+  'turnstile-devices-export', 'turnstile-devices-stat-export', 'turnstile-sheets-timesheet-export', 'turnstile-schedule', 'turnstile-schedule-read', 'turnstile-schedule-write', 'turnstile-dashboard-export', 'turnstile-hik-central-events-read', 'turnstile-hik-central-job-write', 'turnstile-hik-central-sync', 'turnstile-hik-central-sync-read', 'turnstile-building-write', 'turnstile-devices-delete', 'turnstile-devices-read', 'turnstile-devices-write', 'turnstile-hik-central-tg-user-delete', 'turnstile-hik-central-tg-user-read',
   'turnstile-hik-central-tg-user-write', 'turnstile-hik-central-workers-delete', 'turnstile-hik-central-workers-read', 'turnstile-hik-central-workers-write', 'turnstile-sheets-delete', 'turnstile-sheets-groups-delete',
   'turnstile-sheets-groups-read', 'turnstile-sheets-groups-write', 'turnstile-sheets-read', 'turnstile-sheets-workers-delete', 'turnstile-sheets-workers-read', 'turnstile-sheets-workers-write',
   'turnstile-sheets-write', 'turnstile-terminal-delete', 'turnstile-terminal-read', 'turnstile-terminal-write', 'universities-delete', 'universities-write',
   'users-delete', 'users-read', 'users-write', 'vacancy-approve-delete', 'work-day-delete', 'work-day-write',
+  // Audit 2026-08-12 — frontend gate qiladigan, lekin rol formasida yashirin qolgan
+  // write toggle'lar (oddiy kartada ENFORCED'da bo'lmagani uchun ko'rinmasdi):
+  'turnstile-worker-image-write', 'hr-vacations-write', 'hr-business-trip-write',
+  'hr-report-write', 'lms-worker-write', 'hospital-pensioner-write', 'document-examples-write',
+  // Audit 2026-08-12 — granular sahifa amallari (alohida toggle):
+  'turnstile-access-levels-sync', 'turnstile-sheets-copy', 'turnstile-sheets-turnstile',
+  'turnstile-sheets-replace', 'turnstile-sheets-groups-finish', 'turnstile-schedule-check',
 ])
 
 // AVTO-GENERATSIYA: backend @Permission (enforce qilinadigan) + frontend AppPermissions
@@ -103,7 +110,7 @@ export const MEANINGFUL = new Set([
   'specialities-write', 'telegram', 'telegram-read', 'telegram-write', 'turnstile', 'turnstile-absent-workers-export',
   'turnstile-access-levels', 'turnstile-access-levels-read', 'turnstile-access-levels-write', 'turnstile-approve', 'turnstile-approve-delete', 'turnstile-approve-read',
   'turnstile-approve-write', 'turnstile-building', 'turnstile-building-delete', 'turnstile-building-read', 'turnstile-building-write', 'turnstile-dashboard',
-  'turnstile-devices-export', 'turnstile-devices-stat-export', 'turnstile-sheets-timesheet-export', 'turnstile-schedule', 'turnstile-schedule-read', 'turnstile-hik-central-sync', 'turnstile-hik-central-sync-read', 'turnstile-dashboard-read', 'turnstile-devices', 'turnstile-devices-delete', 'turnstile-devices-read', 'turnstile-devices-write', 'turnstile-hc-invalid-user',
+  'turnstile-devices-export', 'turnstile-devices-stat-export', 'turnstile-sheets-timesheet-export', 'turnstile-schedule', 'turnstile-schedule-read', 'turnstile-schedule-write', 'turnstile-dashboard-export', 'turnstile-hik-central-sync', 'turnstile-hik-central-sync-read', 'turnstile-dashboard-read', 'turnstile-devices', 'turnstile-devices-delete', 'turnstile-devices-read', 'turnstile-devices-write', 'turnstile-hc-invalid-user',
   'turnstile-hc-user-image-logs', 'turnstile-hcp-duration', 'turnstile-hcp-duration-read', 'turnstile-hik-central-events', 'turnstile-hik-central-events-read', 'turnstile-hik-central-job',
   'turnstile-hik-central-job-read', 'turnstile-hik-central-job-write', 'turnstile-hik-central-sync', 'turnstile-hik-central-sync-read', 'turnstile-hik-central-sync-write', 'turnstile-hik-central-tg-user',
   'turnstile-hik-central-tg-user-delete', 'turnstile-hik-central-tg-user-read', 'turnstile-hik-central-tg-user-write', 'turnstile-hik-central-workers', 'turnstile-hik-central-workers-delete', 'turnstile-hik-central-workers-read',
@@ -195,15 +202,52 @@ export const PERMISSION_GROUPS = [
     module: 'turnstile',
     label: 'navigation.turnstile',
     groups: [
+      // Kartalar sidebar menyu tartibida (audit 2026-08-12). Har karta = bitta
+      // faol menyu; ilgari o'chirilgan menyularning orphan kartalari olib tashlandi,
+      // sub-amallar (sync/yuklash, HC server/Telegram) parent menyu ostiga guruhlandi.
       { prefix: 'turnstile', label: 'userRole.form.moduleAccess' },
-      { prefix: 'turnstile-dashboard', label: 'turnStileDashboard.name' },
-      { prefix: 'turnstile-access-levels', label: 'turnstile.accessLevelPage.name' },
-      { prefix: 'turnstile-organization-access-levels', label: 'turnstile.orgAccessLevelsPage.name' },
+      {
+        prefix: 'turnstile-dashboard',
+        label: 'turnStileDashboard.name',
+        actions: [
+          { slug: 'turnstile-dashboard-read', label: "Ko'rish" },
+          { slug: 'turnstile-dashboard-export', label: 'Yuklash' }
+        ]
+      },
+      {
+        prefix: 'turnstile-access-levels',
+        label: 'turnstile.accessLevelPage.name',
+        actions: [
+          { slug: 'turnstile-access-levels-read', label: "Ko'rish" },
+          { slug: 'turnstile-access-levels-sync', label: 'Sinxronlash' },
+          { slug: 'turnstile-access-levels-write', label: 'Tahrirlash' }
+        ]
+      },
+      {
+        prefix: 'turnstile-organization-access-levels',
+        label: 'turnstile.orgAccessLevelsPage.name',
+        actions: [
+          { slug: 'turnstile-organization-access-levels-read', label: "Ko'rish" },
+          { slug: 'turnstile-organization-access-levels-write', label: 'Biriktirish / Tahrirlash' }
+        ]
+      },
       { prefix: 'turnstile-hik-central-workers', label: 'turnstile.hcWorkersPage.name' },
-      { prefix: 'turnstile-hik-central-events', label: 'hcEvent.name' },
-      { prefix: 'turnstile-hik-central-sync', label: 'hcEvent.syncTitle' },
-      { prefix: 'turnstile-absent-workers-export', label: 'hcEvent.tabDownload' },
-      { prefix: 'turnstile-worker-image', label: 'workerImage.name' },
+      {
+        prefix: 'turnstile-hik-central-events',
+        label: 'hcEvent.name',
+        actions: [
+          { slug: 'turnstile-hik-central-events-read', label: "Ko'rish" },
+          { slug: 'turnstile-absent-workers-export', label: 'Yuklab olish' }
+        ]
+      },
+      {
+        prefix: 'turnstile-worker-image',
+        label: 'workerImage.name',
+        actions: [
+          { slug: 'turnstile-worker-image-read', label: "Ko'rish" },
+          { slug: 'turnstile-worker-image-write', label: 'Tasdiqlash / Rad etish' }
+        ]
+      },
       {
         prefix: 'turnstile-devices',
         label: 'devices.name',
@@ -215,31 +259,46 @@ export const PERMISSION_GROUPS = [
           { slug: 'turnstile-devices-stat-export', label: 'Hisobot yuklash' }
         ]
       },
-      { prefix: 'turnstile-schedule', label: 'turnstileSchedule.name' },
+      // «Qo'shimcha» menyusi — tab-konteyner. Menyu-kirish + har tab alohida karta
+      // (o'z sahifa ruxsatlari bilan): Sinxronizatsiya loglari, HC server, Telegram.
       { prefix: 'turnstile-others', label: 'additionalPage.name' },
+      { prefix: 'turnstile-hik-central-sync', label: 'hcEvent.syncTitle' },
+      { prefix: 'turnstile-hik-central-job', label: 'hcServer.name' },
+      { prefix: 'turnstile-hik-central-tg-user', label: 'notification.name' },
       {
         prefix: 'turnstile-sheets',
         label: 'schedule.name',
         actions: [
           { slug: 'turnstile-sheets-read', label: "Ko'rish" },
           { slug: 'turnstile-sheets-write', label: 'Yaratish / Tahrirlash' },
+          { slug: 'turnstile-sheets-copy', label: 'Nusxalash' },
+          { slug: 'turnstile-sheets-turnstile', label: 'Turniket boshqaruvi' },
+          { slug: 'turnstile-sheets-replace', label: 'Xodim almashtirish' },
           { slug: 'turnstile-sheets-delete', label: "O'chirish" },
           { slug: 'turnstile-sheets-timesheet-export', label: 'Tabel yuklash' }
         ]
       },
       { prefix: 'turnstile-sheets-workers', label: 'shiftType.name' },
-      { prefix: 'turnstile-sheets-groups', label: 'shiftType.groupName' },
+      {
+        prefix: 'turnstile-sheets-groups',
+        label: 'shiftType.groupName',
+        actions: [
+          { slug: 'turnstile-sheets-groups-read', label: "Ko'rish" },
+          { slug: 'turnstile-sheets-groups-write', label: 'Yaratish / Tahrirlash' },
+          { slug: 'turnstile-sheets-groups-finish', label: 'Yakunlash' },
+          { slug: 'turnstile-sheets-groups-delete', label: "O'chirish" }
+        ]
+      },
+      {
+        prefix: 'turnstile-schedule',
+        label: 'turnstileSchedule.name',
+        actions: [
+          { slug: 'turnstile-schedule-read', label: "Ko'rish" },
+          { slug: 'turnstile-schedule-write', label: 'Qurilma biriktirish' },
+          { slug: 'turnstile-schedule-check', label: 'Fakt tekshirish' }
+        ]
+      },
       { prefix: 'turnstile-approve', label: 'approve.name' },
-      // Navigatsiyada bandi izohga olingan, lekin route'lari tirik va backend
-      // ularni enforce qiladi — shuning uchun admin ularni bera olishi kerak.
-      { prefix: 'turnstile-building', label: 'turnstile.buildingPage.title' },
-      { prefix: 'turnstile-terminal', label: 'turnstile.terminalPage.title' },
-      { prefix: 'turnstile-organization', label: 'turnstile.organization.title' },
-      { prefix: 'turnstile-workers', label: 'turnstile.terminalUser.title' },
-      { prefix: 'turnstile-work-duration', label: 'turnstile.workDurationPage.name' },
-      { prefix: 'turnstile-hik-central-job', label: 'hcServer.name' },
-      { prefix: 'turnstile-hcp-duration', label: 'hcWorkDuration.name' },
-      { prefix: 'turnstile-hik-central-tg-user', label: 'notification.name' },
     ],
   },
   {

@@ -11,6 +11,7 @@
   const accStore = useAccountStore()
 
   const onOpenDownloadModal = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileAbsentWorkersExport)) return
     if (!storeV2.download.payload.from) {
       const today = new Date()
       const tomorrow = new Date(today)
@@ -114,6 +115,7 @@
   }
 
   const onSync = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileHikCentralSync)) return
     if (!checkLastClick()) return
     store.syncPayload.from_date = null
     store.syncPayload.to_date = null
@@ -220,10 +222,10 @@
     </template>
     <template #filterAction>
       <!-- `checkAction` yon ta'sirli (toast chiqaradi) — template'da chaqirilsa
-           har render'da ogohlantirish otilardi. Ko'rinish/holat uchun sof
-           `checkPermission` ishlatiladi; tugma yashirilmay, kulrang bo'ladi. -->
+           har render'da ogohlantirish otilardi. Ko'rinish uchun sof
+           `checkPermission` ishlatiladi; ruxsat yo'q bo'lsa tugma yashiriladi. -->
       <n-button
-        :disabled="!accStore.checkPermission(accStore.pn.turnstileHikCentralSync)"
+        v-if="accStore.checkPermission(accStore.pn.turnstileHikCentralSync)"
         :loading="store.jobLoading"
         @click="onSync"
         type="primary"
@@ -234,7 +236,7 @@
         </template>
       </n-button>
       <n-button
-        :disabled="!accStore.checkPermission(accStore.pn.turnstileAbsentWorkersExport)"
+        v-if="accStore.checkPermission(accStore.pn.turnstileAbsentWorkersExport)"
         @click="onOpenDownloadModal"
         :loading="storeV2.download.loading"
         type="success"

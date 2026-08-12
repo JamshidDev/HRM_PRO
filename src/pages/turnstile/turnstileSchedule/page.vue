@@ -5,11 +5,13 @@
   import LoaderBox from './ui/LoaderBox.vue'
   import GrandModal from './ui/GrandModal.vue'
 
-  import { useTurnstileScheduleStore } from '@/store/modules/index.js'
+  import { useAccountStore, useTurnstileScheduleStore } from '@/store/modules/index.js'
 
   const store = useTurnstileScheduleStore()
+  const accStore = useAccountStore()
 
   onMounted(() => {
+    if (!accStore.checkAction(accStore.pn.turnstileScheduleRead)) return
     store._initialData()
   })
 </script>

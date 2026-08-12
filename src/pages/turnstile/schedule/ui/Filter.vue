@@ -18,6 +18,11 @@
     store._allWorkers()
   }
 
+  const _save = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsWrite)) return
+    store._save()
+  }
+
   const workerFilterOption = [
     {
       name: t('content.all'),
@@ -133,9 +138,10 @@
     </template>
     <template #filterAction>
       <n-button
+        v-if="accStore.checkPermission(accStore.pn.turnstileSheetsWrite)"
         class="h-[32px]!"
         type="primary"
-        @click="store._save()"
+        @click="_save"
         :loading="store.savingLoading"
       >
         <template #icon>

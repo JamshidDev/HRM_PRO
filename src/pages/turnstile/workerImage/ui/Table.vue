@@ -1,13 +1,14 @@
 <script setup>
   import { UIBadge, UITable, UIUser } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
-  import { useWorkerImageStore } from '@/store/modules/index.js'
+  import { useAccountStore, useWorkerImageStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import { CheckmarkCircle32Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
   const store = useWorkerImageStore()
+  const accStore = useAccountStore()
 
   const changePage = (v) => {
     store.params.page = v.page
@@ -16,6 +17,7 @@
   }
 
   const onConfirm = (row) => {
+    if (!accStore.checkAction(accStore.pn.turnstileWorkerImageWrite)) return
     store.elementId = row.id
     store.payload.worker_id = row.worker?.id
     store.payload.photo = row.photo
@@ -87,7 +89,8 @@
       label: t('content.confirm'),
       key: Utils.ActionTypes.confirm,
       icon: UIHelper.renderIcon(CheckmarkCircle32Regular),
-      action: onConfirm
+      action: onConfirm,
+      visible: () => accStore.checkPermission(accStore.pn.turnstileWorkerImageWrite)
     }
   ])
 </script>

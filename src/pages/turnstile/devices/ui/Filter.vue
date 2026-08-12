@@ -45,6 +45,11 @@
     filterEvent()
   }
 
+  const onRefreshDevice = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileDevicesWrite)) return
+    store._refreshDevice()
+  }
+
   const beforeShow = () => {
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
@@ -190,9 +195,10 @@
           </template>
         </n-button>
         <n-button
+          v-if="accStore.checkPermission(accStore.pn.turnstileDevicesWrite)"
           class="h-[32px]!"
           type="primary"
-          @click="store._refreshDevice()"
+          @click="onRefreshDevice"
           :loading="store.loading"
         >
           {{ $t('content.refresh') }}
