@@ -2366,12 +2366,12 @@
       "evening": "Good evening, {n}"
     },
     "suggestions": {
-      "leaveBalance": "How much leave do I have left?",
-      "lastSalary": "My last salary calculation",
-      "getReference": "Get a reference letter",
-      "workedDays": "How many days have I worked this month?",
-      "workedDaysShort": "How many days have I worked?",
-      "workSchedule": "What is my work schedule?"
+      "leaveBalance": "How many days is annual leave?",
+      "lastSalary": "How is overtime work paid?",
+      "getReference": "How is an employment contract made?",
+      "workedDays": "What is the weekly work-hour norm?",
+      "workedDaysShort": "How long is the probation period?",
+      "workSchedule": "Dismissal procedure?"
     },
     "disclaimer": {
       "cardOne": "### 🧪 Test mode\n\nThis AI assistant is currently in **test mode**.  \nAnswers may be incomplete or _incorrect_.",
@@ -4125,22 +4125,19 @@
     }
   },
   "salaryAccess": {
-    "title": "Salary section — password",
-    "setTitle": "Set salary password",
-    "description": "This section is confidential. Enter the salary password to continue.",
-    "setDescription": "First time: confirm with your login password and set a salary password.",
-    "loginPassword": "Your login password",
-    "newPassword": "New salary password",
-    "confirmPassword": "Repeat salary password",
-    "password": "Salary password",
-    "passwordPlaceholder": "Enter salary password",
-    "submit": "Unlock",
-    "setSubmit": "Set and unlock",
-    "changeBtn": "Change salary password",
-    "changeTitle": "Change salary password",
-    "changeDescription": "Confirm your current salary password and set a new one.",
-    "oldPassword": "Current salary password",
-    "changeSubmit": "Change",
+    "title": "Salary section — confirmation",
+    "sent": "A confirmation code was sent to your Telegram.",
+    "sending": "Sending the code...",
+    "codeLabel": "Confirmation code",
+    "codePlaceholder": "Enter the code",
+    "verify": "Confirm",
+    "resend": "Resend",
+    "resendIn": "Resend ({sec}s)",
+    "expiresIn": "Code expires in {sec}s",
+    "expired": "The code has expired. Resend it.",
+    "notLinked": "Telegram is not linked",
+    "notLinkedHelp": "Open the bot, press \"Start\" and share your phone number.",
+    "openBot": "Open in Telegram",
     "cancelled": "Cancelled"
   },
   "changePassword": {

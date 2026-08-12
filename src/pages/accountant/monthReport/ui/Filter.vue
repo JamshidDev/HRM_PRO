@@ -80,7 +80,7 @@ const onChangeInput = useDebounce(filterEvent, 600)
     @onClear="resetFilter"
   >
     <template #filterContent>
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
+      <label class="mt-3 text-xs text-textColor3 mb-1 font-medium">{{
         $t('actionLog.table.structure')
       }}</label>
       <UISelect
@@ -95,7 +95,7 @@ const onChangeInput = useDebounce(filterEvent, 600)
         @onSearch="componentStore._structures"
         @onSubmit="filterEvent"
       />
-      <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{
+      <label class="text-xs mt-3 text-textColor3 mb-1 font-medium">{{
         $t('monthReport.form.code')
       }}</label>
       <n-select
@@ -109,7 +109,7 @@ const onChangeInput = useDebounce(filterEvent, 600)
         :render-tag="UIHelper.selectRender.value"
         @update:value="filterEvent"
       />
-      <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{ $t('workerPage.filter.sex') }}</label>
+      <label class="text-xs mt-3 text-textColor3 mb-1 font-medium">{{ $t('workerPage.filter.sex') }}</label>
       <n-select
         class="w-full"
         clearable
@@ -119,12 +119,12 @@ const onChangeInput = useDebounce(filterEvent, 600)
         value-field="id"
         @update:value="filterEvent"
       />
-      <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{ $t('monthReport.form.start_hours') }}</label>
+      <label class="text-xs mt-3 text-textColor3 mb-1 font-medium">{{ $t('monthReport.form.start_hours') }}</label>
       <n-input-number
         @update:value="onChangeInput" :min="1" :nax="100" v-model:value="store.params.start_hours"
         clearable
       />
-      <label class="text-xs mt-3 text-gray-500 mb-1 font-medium">{{ $t('monthReport.form.end_hours') }}</label>
+      <label class="text-xs mt-3 text-textColor3 mb-1 font-medium">{{ $t('monthReport.form.end_hours') }}</label>
       <n-input-number @update:value="onChangeInput" :min="1" :nax="100" v-model:value="store.params.end_hours" clearable />
     </template>
     <template #filterAction>

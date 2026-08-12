@@ -2390,12 +2390,12 @@
       "evening": "Xayrli kech, {n}"
     },
     "suggestions": {
-      "leaveBalance": "Ta'til qancha qoldi?",
-      "lastSalary": "Oxirgi oylik hisobim",
-      "getReference": "Ma'lumotnoma olish",
-      "workedDays": "Bu oy necha kun ishladim?",
-      "workedDaysShort": "Necha kun ishladim?",
-      "workSchedule": "Ish grafigim qanday?"
+      "leaveBalance": "Yillik ta'til necha kun?",
+      "lastSalary": "Ortiqcha ish vaqti qanday to'lanadi?",
+      "getReference": "Mehnat shartnomasi qanday tuziladi?",
+      "workedDays": "Haftalik ish vaqti normasi?",
+      "workedDaysShort": "Sinov muddati necha oy?",
+      "workSchedule": "Ishdan bo'shatish tartibi?"
     },
     "disclaimer": {
       "cardOne": "### 🧪 Test rejimi\n\nUshbu sun’iy intellekt yordamchisi hozirda **test rejimida** ishlamoqda.  \nJavoblari hali to‘liq shakllanmagan va _noto‘g‘ri bo‘lishi mumkin_.",
@@ -4169,22 +4169,19 @@
     }
   },
   "salaryAccess": {
-    "title": "Oylik bo'limi — parol",
-    "setTitle": "Oylik parolini o'rnatish",
-    "description": "Bu bo'lim maxfiy. Davom etish uchun oylik parolini kiriting.",
-    "setDescription": "Birinchi marta: login parolingiz bilan tasdiqlab, oylik parolini o'rnating.",
-    "loginPassword": "Login parolingiz",
-    "newPassword": "Yangi oylik paroli",
-    "confirmPassword": "Oylik parolini takrorlang",
-    "password": "Oylik paroli",
-    "passwordPlaceholder": "Oylik parolini kiriting",
-    "submit": "Ochish",
-    "setSubmit": "O'rnatish va ochish",
-    "changeBtn": "Oylik parolini o'zgartirish",
-    "changeTitle": "Oylik parolini o'zgartirish",
-    "changeDescription": "Amaldagi oylik parolingizni tasdiqlab, yangi parol o'rnating.",
-    "oldPassword": "Amaldagi oylik paroli",
-    "changeSubmit": "O'zgartirish",
+    "title": "Oylik bo'limi — tasdiqlash",
+    "sent": "Tasdiqlash kodi Telegram'ingizga yuborildi.",
+    "sending": "Kod yuborilmoqda...",
+    "codeLabel": "Tasdiqlash kodi",
+    "codePlaceholder": "Kodni kiriting",
+    "verify": "Tasdiqlash",
+    "resend": "Qayta yuborish",
+    "resendIn": "Qayta yuborish ({sec}s)",
+    "expiresIn": "Kod {sec}s dan keyin tugaydi",
+    "expired": "Kod muddati tugadi. Qayta yuboring.",
+    "notLinked": "Telegram ulanmagan",
+    "notLinkedHelp": "Botni oching, «Start» bosing va telefon raqamingizni ulashing.",
+    "openBot": "Telegramda ochish",
     "cancelled": "Bekor qilindi"
   },
   "changePassword": {
