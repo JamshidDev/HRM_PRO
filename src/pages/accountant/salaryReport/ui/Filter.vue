@@ -78,7 +78,7 @@
       />
     </template>
     <template #filterContent>
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
+      <label class="mt-3 text-xs text-textColor3 mb-1 font-medium">{{
         $t('actionLog.table.structure')
       }}</label>
       <UISelect

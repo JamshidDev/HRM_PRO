@@ -61,7 +61,7 @@
       <div class="flex items-center gap-2 flex-1 min-w-0" @click.stop>
         <div
           class="w-4 h-4 flex items-center justify-center cursor-pointer rounded transition-all"
-          :class="isAllSelected ? 'bg-primary' : 'bg-white border border-surface-line hover:border-primary'"
+          :class="isAllSelected ? 'bg-primary' : 'bg-surface-section border border-surface-line hover:border-primary'"
           @click="onDepartmentCheck"
         >
           <n-icon v-if="isAllSelected" size="14" class="text-white">

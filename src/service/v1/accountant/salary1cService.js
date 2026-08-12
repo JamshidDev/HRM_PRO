@@ -28,12 +28,12 @@ const _pullHistoryExport = async (payload) =>
 const _getOrgCode = async (payload) => axios.get(`/v1/economist/salary-1c/org-code`, { params: payload?.params })
 const _setOrgCode = async (payload) => axios.put(`/v1/economist/salary-1c/org-code`, payload.data)
 
-// Oylik step-up ("oylik paroli") — ikki bosqichli auth.
+// Oylik step-up — Telegram OTP (2FA). Kod foydalanuvchining Telegram'iga yuboriladi.
 const _salaryAccessStatus = async () => axios.get(`/v1/economist/salary-access/status`)
-const _salaryAccessSetPassword = async (payload) =>
-  axios.post(`/v1/economist/salary-access/set-password`, payload.data)
-const _salaryAccessUnlock = async (payload) =>
-  axios.post(`/v1/economist/salary-access/unlock`, payload.data)
+const _salaryAccessRequestCode = async () =>
+  axios.post(`/v1/economist/salary-access/request-code`)
+const _salaryAccessVerifyCode = async (payload) =>
+  axios.post(`/v1/economist/salary-access/verify-code`, payload.data)
 const _salaryAccessLock = async () => axios.post(`/v1/economist/salary-access/lock`)
 
 // Xodim self-view
@@ -63,8 +63,8 @@ export default {
   _getOrgCode,
   _setOrgCode,
   _salaryAccessStatus,
-  _salaryAccessSetPassword,
-  _salaryAccessUnlock,
+  _salaryAccessRequestCode,
+  _salaryAccessVerifyCode,
   _salaryAccessLock,
   _mySalary,
   _myMonths,
