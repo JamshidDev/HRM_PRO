@@ -2390,12 +2390,12 @@
       "evening": "Xayrli kech, {n}"
     },
     "suggestions": {
-      "leaveBalance": "Ta'til qancha qoldi?",
-      "lastSalary": "Oxirgi oylik hisobim",
-      "getReference": "Ma'lumotnoma olish",
-      "workedDays": "Bu oy necha kun ishladim?",
-      "workedDaysShort": "Necha kun ishladim?",
-      "workSchedule": "Ish grafigim qanday?"
+      "leaveBalance": "Yillik ta'til necha kun?",
+      "lastSalary": "Ortiqcha ish vaqti qanday to'lanadi?",
+      "getReference": "Mehnat shartnomasi qanday tuziladi?",
+      "workedDays": "Haftalik ish vaqti normasi?",
+      "workedDaysShort": "Sinov muddati necha oy?",
+      "workSchedule": "Ishdan bo'shatish tartibi?"
     },
     "disclaimer": {
       "cardOne": "### 🧪 Test rejimi\n\nUshbu sun’iy intellekt yordamchisi hozirda **test rejimida** ishlamoqda.  \nJavoblari hali to‘liq shakllanmagan va _noto‘g‘ri bo‘lishi mumkin_.",
