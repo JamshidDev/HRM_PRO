@@ -3699,6 +3699,17 @@
       "status": "Ish soati bo'yicha",
       "max": "Eng ko'p",
       "min": "Eng kam"
+    },
+    "compare": {
+      "vsYesterday": "o'tgan kunga nisbatan",
+      "totalDevices": "Jami qurilmalar",
+      "withoutSchedule": "Grafik tuzilmagan xodimlar",
+      "faceIdTitle": "Face ID tahlili",
+      "faceIdSubtitle": "Face ID bo‘yicha kunlik qaydnoma"
+    },
+    "filter": {
+      "organizationPlaceholder": "Korxonani tanlang",
+      "departmentPlaceholder": "Bo‘limni tanlang"
     }
   },
   "hcWorkDuration": {

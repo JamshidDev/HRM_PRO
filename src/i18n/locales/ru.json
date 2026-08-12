@@ -3679,6 +3679,17 @@
       "status": "По рабочим часам",
       "max": "Больше всего",
       "min": "Меньше всего"
+    },
+    "compare": {
+      "vsYesterday": "по сравнению с прошлым днём",
+      "totalDevices": "Всего устройств",
+      "withoutSchedule": "Сотрудники без графика",
+      "faceIdTitle": "Анализ Face ID",
+      "faceIdSubtitle": "Ежедневная сводка по Face ID"
+    },
+    "filter": {
+      "organizationPlaceholder": "Выберите предприятие",
+      "departmentPlaceholder": "Выберите отдел"
     }
   },
   "hcWorkDuration": {

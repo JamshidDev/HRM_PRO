@@ -89,7 +89,8 @@
       splitLine: {
         show: true,
         lineStyle: {
-          color: 'rgba(158,158,158,0.1)' // xira rang
+          type: 'dashed',
+          color: 'rgba(158,158,158,0.12)'
         }
       }
     },
@@ -98,23 +99,23 @@
         name: t('turnStileDashboard.cards.lateCome'),
         type: 'bar',
         barWidth: '30%',
-        barMaxWidth: 12,
+        barMaxWidth: 10,
         barGap: '30%',
         data: [],
         itemStyle: {
           color: tokenColor('--danger-color'),
-          borderRadius: [4, 4, 2, 2]
+          borderRadius: [3, 3, 0, 0]
         }
       },
       {
         name: t('turnStileDashboard.cards.earlyGo'),
         type: 'bar',
         barWidth: '30%',
-        barMaxWidth: 12,
+        barMaxWidth: 10,
         data: [],
         itemStyle: {
-          color: tokenColor('--warning-color'),
-          borderRadius: [4, 4, 2, 2]
+          color: tokenColor('--success-color'),
+          borderRadius: [3, 3, 0, 0]
         }
       }
     ]
@@ -173,7 +174,7 @@
 
 <template>
   <div class="w-full relative h-full">
-    <div class="w-full h-[240px] relative z-2">
+    <div class="w-full h-[260px] relative z-2">
       <v-chart autoresize class="w-full" :option="option" ref="chartRef" />
     </div>
   </div>

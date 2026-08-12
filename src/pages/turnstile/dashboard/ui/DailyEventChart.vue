@@ -2,13 +2,13 @@
   import VChart from 'vue-echarts'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
-  import { use } from 'echarts/core'
-  import { BarChart } from 'echarts/charts'
+  import { use, graphic } from 'echarts/core'
+  import { LineChart } from 'echarts/charts'
   import { TooltipComponent, GridComponent } from 'echarts/components'
   import { CanvasRenderer } from 'echarts/renderers'
   import { onMounted, nextTick } from 'vue'
 
-  use([TooltipComponent, GridComponent, BarChart, CanvasRenderer])
+  use([TooltipComponent, GridComponent, LineChart, CanvasRenderer])
 
   const store = useTurnstileDashboardStore()
 
@@ -37,27 +37,25 @@
     const startHour = hourNum - 1
     const startTime = `${startHour.toString().padStart(2, '0')}:00`
 
-    // Calculate end_time (next hour)
-    const endHour = hourNum + 1
-    const endTime = `${endHour.toString().padStart(2, '0')}:00`
-
     return {
       start_time: startTime,
       end_time: hour
     }
   }
 
-  // Bar click handler
-  const onBarClick = (params) => {
+  const onPointClick = (params) => {
     const timeRange = getTimeRange(params.name)
     emit('barClick', timeRange)
   }
+
+  const successColor = tokenColor('--success-color')
 
   const option = ref({
     tooltip: {
       trigger: 'axis',
       axisPointer: {
-        type: 'shadow'
+        type: 'line',
+        lineStyle: { color: 'rgba(158,158,158,0.35)' }
       },
       backgroundColor: tokenColor('--surface-section'),
       borderColor: tokenColor('--surface-line'),
@@ -67,27 +65,34 @@
     },
     grid: {
       left: '1%',
-      top: '10%',
+      top: '8%',
       right: '1%',
       bottom: '3%',
       containLabel: true
     },
     xAxis: {
       type: 'category',
+      boundaryGap: false,
       data: [],
       axisLabel: {
         show: true,
         fontSize: 10,
-        color: 'rgba(158,158,158,0.9)',
-        formatter: (value) => `${value}`.split(':')[0]
+        color: 'rgba(158,158,158,0.9)'
       },
       axisTick: {
         show: false
       },
       axisLine: {
         lineStyle: {
-          color: 'rgba(158,158,158,0.1)', // xira rang
+          color: 'rgba(158,158,158,0.1)',
           width: 1
+        }
+      },
+      splitLine: {
+        show: true,
+        lineStyle: {
+          type: 'dashed',
+          color: 'rgba(158,158,158,0.12)'
         }
       }
     },
@@ -100,19 +105,34 @@
       splitLine: {
         show: true,
         lineStyle: {
-          color: 'rgba(158,158,158,0.1)' // xira rang
+          type: 'dashed',
+          color: 'rgba(158,158,158,0.12)'
         }
       }
     },
     series: [
       {
         name: t('turnStileDashboard.form.workerCount'),
-        type: 'bar',
-        barWidth: '70%',
-        barMaxWidth: 20,
+        type: 'line',
+        smooth: true,
+        symbol: 'circle',
+        symbolSize: 6,
+        showSymbol: false,
+        // Chiziqning o'zi bosilganda ham `click` hodisasi chiqishi uchun.
+        triggerLineEvent: true,
         data: [],
+        lineStyle: {
+          width: 3,
+          color: successColor
+        },
         itemStyle: {
-          borderRadius: [6, 6, 2, 2]
+          color: successColor
+        },
+        areaStyle: {
+          color: new graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: hexToRgba(successColor, 0.22) },
+            { offset: 1, color: hexToRgba(successColor, 0) }
+          ])
         }
       }
     ]
@@ -123,20 +143,8 @@
     (newValue) => {
       if (!newValue || !Array.isArray(newValue)) return
 
-      option.value.xAxis.data = newValue.map((v) => {
-        return v.hour
-      })
-
-      const primary = tokenColor('--primary-color')
-      const max = Math.max(...newValue.map((v) => v.count), 1)
-      option.value.series[0].data = newValue.map((v) => {
-        return {
-          value: v.count,
-          itemStyle: {
-            color: hexToRgba(primary, Math.max(0.3, v.count / max))
-          }
-        }
-      })
+      option.value.xAxis.data = newValue.map((v) => v.hour)
+      option.value.series[0].data = newValue.map((v) => v.count)
 
       // Add click listener after data is updated
       nextTick(() => {
@@ -145,7 +153,7 @@
             const chartInstance = chartRef.value.chart
             if (chartInstance) {
               chartInstance.off('click') // Remove existing listener
-              chartInstance.on('click', onBarClick) // Add new listener
+              chartInstance.on('click', onPointClick) // Add new listener
             }
           }, 100)
         }
@@ -164,7 +172,7 @@
         setTimeout(() => {
           const chartInstance = chartRef.value.chart
           if (chartInstance) {
-            chartInstance.on('click', onBarClick)
+            chartInstance.on('click', onPointClick)
           }
         }, 100)
       }
@@ -173,8 +181,8 @@
 </script>
 
 <template>
-  <div class="w-full relative h-full flex flex-col">
-    <n-spin :show="store.dailyAttendanceLoading" class="w-full h-[240px] relative z-2 mt-auto">
+  <div class="w-full relative">
+    <n-spin :show="store.dailyAttendanceLoading" class="w-full h-[260px] relative z-2">
       <v-chart autoresize class="w-full" :option="option" ref="chartRef" />
     </n-spin>
   </div>

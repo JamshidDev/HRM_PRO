@@ -3475,6 +3475,17 @@
       "status": "Иш соати бўйича",
       "max": "Энг кўп",
       "min": "Энг кам"
+    },
+    "compare": {
+      "vsYesterday": "ўтган кунга нисбатан",
+      "totalDevices": "Жами қурилмалар",
+      "withoutSchedule": "График тузилмаган ходимлар",
+      "faceIdTitle": "Face ID таҳлили",
+      "faceIdSubtitle": "Face ID бўйича кунлик қайднома"
+    },
+    "filter": {
+      "organizationPlaceholder": "Корхонани танланг",
+      "departmentPlaceholder": "Бўлимни танланг"
     }
   },
   "hcWorkDuration": {

@@ -3668,6 +3668,17 @@
       "status": "By work hours",
       "max": "Most",
       "min": "Least"
+    },
+    "compare": {
+      "vsYesterday": "compared to previous day",
+      "totalDevices": "Total devices",
+      "withoutSchedule": "Employees without schedule",
+      "faceIdTitle": "Face ID analysis",
+      "faceIdSubtitle": "Daily Face ID summary"
+    },
+    "filter": {
+      "organizationPlaceholder": "Select organization",
+      "departmentPlaceholder": "Select department"
     }
   },
   "hcWorkDuration": {
