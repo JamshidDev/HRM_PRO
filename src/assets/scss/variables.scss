@@ -9,6 +9,12 @@
   --table-header: #F2F4F7;
   --surface-ground-soft: #F9FAFB;
 
+  // Yumshoq tint fonlar (style.css @theme shularga ishora qiladi) — dark variant [data-theme='dark']da.
+  --brand-surface: #eff8ff;
+  --green-surface: #f0fdf4;
+  --indigo-surface: #f2f2ff;
+  --amber-surface: #fffaeb;
+
   --schedule-weekend-bg: #ffe5e2;
   --schedule-weekday-bg: #fff9e2;
   --schedule-weekend-bg-alt: #FAD8D6;
@@ -83,6 +89,12 @@
   --surface-ground-soft: #101828;
 
   --surface-line: #344054;
+
+  // Yumshoq tint fonlar — dark-aware low-alpha (och rangли fon qorong'ida "yopishib" qolmaydi).
+  --brand-surface: rgba(18, 121, 240, 0.14);
+  --green-surface: rgba(45, 203, 115, 0.14);
+  --indigo-surface: rgba(99, 102, 241, 0.18);
+  --amber-surface: rgba(253, 199, 0, 0.14);
 
   --schedule-weekend-bg: rgba(231, 0, 10, 0.24);
   --schedule-weekday-bg: rgba(253, 199, 0, 0.24);

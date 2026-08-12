@@ -1,8 +1,7 @@
 <script setup>
-  import { CloudArrowDown24Regular, Eye16Regular, History24Regular, Search24Regular, ArrowDownload24Regular, Calculator24Regular, LockClosed24Regular } from '@vicons/fluent'
+  import { CloudArrowDown24Regular, Eye16Regular, History24Regular, Search24Regular, ArrowDownload24Regular, Calculator24Regular } from '@vicons/fluent'
   import { NoDataPicture, UIBadge, UIModal, UIPageContent, UIPagination, UIYearMonth, UISelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useSalary1cStore } from '@/store/modules/index.js'
-  import { useSalaryAccessStore } from '@/store/modules/accountant/salaryAccessStore.js'
   import { useDebounceFn } from '@vueuse/core'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
@@ -11,7 +10,6 @@
   const store = useSalary1cStore()
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
-  const salaryAccess = useSalaryAccessStore()
 
   const activeTab = ref('workers') // 'workers' | 'orgs'
 
@@ -29,7 +27,7 @@
   const fieldLabel = (k) => (fieldLabels[k] ? t(fieldLabels[k]) : k)
   const isNum = (v) => typeof v === 'number'
   const signed = (n) => (n > 0 ? '+' : '') + Number(n).toLocaleString('ru-RU')
-  const diffClass = (n) => (n == null || n === 0 ? '' : n > 0 ? 'text-green-600' : 'text-red-500')
+  const diffClass = (n) => (n == null || n === 0 ? '' : n > 0 ? 'text-success' : 'text-error')
   const cmpStatusType = (s) => (s === 'added' ? 'success' : s === 'removed' ? 'error' : 'warning')
   const cmpStatusLabel = (s) =>
     s === 'added' ? t('salary1c.added') : s === 'removed' ? t('salary1c.removed') : t('salary1c.changed')
@@ -199,10 +197,6 @@
         <n-tab-pane name="reconcile" :tab="$t('salary1c.reconcile.tab')" />
       </n-tabs>
       <div class="flex items-center gap-2">
-        <n-button size="small" tertiary @click="salaryAccess.openChange()">
-          <template #icon><n-icon><LockClosed24Regular /></n-icon></template>
-          {{ $t('salaryAccess.changeBtn') }}
-        </n-button>
         <n-button size="small" tertiary @click="store._openPullLog()">
           <template #icon><n-icon><History24Regular /></n-icon></template>
           {{ $t('salary1c.pullLog') }}
@@ -565,7 +559,7 @@
                       <span v-else>{{ fmt(r.ours) }}</span>
                     </td>
                     <td class="text-right! tnum">{{ fmt(r.ones) }}</td>
-                    <td class="text-right! tnum" :class="r.diff > 0 ? 'text-green-600' : r.diff < 0 ? 'text-red-600' : 'text-textColor3'">
+                    <td class="text-right! tnum" :class="r.diff > 0 ? 'text-success' : r.diff < 0 ? 'text-error' : 'text-textColor3'">
                       {{ r.diff === 0 ? '0' : signed(r.diff) }}
                     </td>
                   </tr>
@@ -1070,14 +1064,14 @@
     background: var(--surface-section, #ffffff);
   }
   .s1-stat--net { background: var(--color-brand-surface, #eff8ff); border-color: transparent; }
-  .s1-stat--warn { cursor: pointer; background: #fff4f4; border-color: #fecaca; transition: box-shadow .15s; }
-  .s1-stat--warn .s1-stat-val { color: #dc2626; }
-  .s1-stat--warn:hover { box-shadow: 0 0 0 2px #fecaca inset; }
-  .s1-stat--active { box-shadow: 0 0 0 2px #dc2626 inset; }
+  .s1-stat--warn { cursor: pointer; background: rgba(231, 0, 10, 0.10); border-color: rgba(231, 0, 10, 0.30); transition: box-shadow .15s; }
+  .s1-stat--warn .s1-stat-val { color: var(--danger-color, #dc2626); }
+  .s1-stat--warn:hover { box-shadow: 0 0 0 2px rgba(231, 0, 10, 0.30) inset; }
+  .s1-stat--active { box-shadow: 0 0 0 2px var(--danger-color, #dc2626) inset; }
   .s1-stat-lbl { font-size: 11px; color: var(--textColor3, #98a2b3); }
   .s1-stat-val { font-size: 16px; font-weight: 700; color: var(--textColor1, #101828); font-variant-numeric: tabular-nums; }
   /* Tizimda yo'q xodim qatori */
-  :deep(.s1-row-out > td) { background: #fff7f7; }
+  :deep(.s1-row-out > td) { background: rgba(231, 0, 10, 0.08); }
 
   /* Daraxtda «1C kodi bor» belgisi */
   .s1-1c-dot {
@@ -1090,8 +1084,8 @@
   .s1-pull-list { max-height: 360px; overflow-y: auto; border: 1px solid var(--surface-line, #e5e7eb); border-radius: 10px; }
   .s1-pull-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-bottom: 1px solid var(--surface-line, #eef0f3); }
   .s1-pull-row:last-child { border-bottom: none; }
-  .s1-pull-row--done { background: #f6fef9; }
-  .s1-pull-row--err { background: #fff7f7; }
+  .s1-pull-row--done { background: rgba(45, 203, 115, 0.12); }
+  .s1-pull-row--err { background: rgba(231, 0, 10, 0.10); }
   .s1-pull-status { min-width: 130px; text-align: right; }
 
   /* Jadval maydoni scroll bo'lib, pagination pastda qotib turadi */
@@ -1160,7 +1154,7 @@
 
   /* Solishtirish */
   .s1-rec-info { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 14px; font-weight: 600; color: var(--textColor1, #101828); }
-  .s1-rec-diff > :deep(td) { background: #fff7ed; }
+  .s1-rec-diff > :deep(td) { background: rgba(253, 199, 0, 0.14); }
   /* «Bizniki» drill-down — bosiladigan summa */
   .s1-drill { color: var(--primary-color, #1279f0); cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px; }
   .s1-drill:hover { text-decoration: underline; }

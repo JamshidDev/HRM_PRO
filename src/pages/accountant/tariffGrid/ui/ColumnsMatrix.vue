@@ -288,7 +288,7 @@
   .cm-in { width: 96px; }
   .cm-in :deep(.n-input__input-el) { text-align: center; }
   .cm-amt { font-size: 10.5px; color: var(--textColor3, #98a2b3); font-variant-numeric: tabular-nums; }
-  .cm-below { color: #b45309; font-weight: 600; }
+  .cm-below { color: var(--warning-color, #b45309); font-weight: 600; }
   .cm-pad { border: none; background: transparent; min-width: 8px; }
   .cm tbody tr:hover td:not(.cm-pad) { background: var(--surface-ground); }
 </style>

@@ -1,98 +1,61 @@
 <script setup>
-  import { ref, computed, watch } from 'vue'
+  import { ref, computed, watch, onUnmounted } from 'vue'
   import { UIModal } from '@/components/index.js'
   import { useSalaryAccessStore } from '@/store/modules/accountant/salaryAccessStore.js'
-  import {
-    Checkmark16Regular,
-    Dismiss16Regular,
-    LockClosed20Regular
-  } from '@vicons/fluent'
-  import i18n from '@/i18n/index.js'
+  import { LockClosed20Regular, Send20Regular } from '@vicons/fluent'
 
-  const { t } = i18n.global
   const store = useSalaryAccessStore()
 
-  const loginPassword = ref('')
-  const oldPassword = ref('')
-  const newPassword = ref('')
-  const confirmPassword = ref('')
-  const password = ref('')
+  const code = ref('')
 
-  // Modal ochilganda maydonlarni tozalaymiz.
+  // Bot havolasi: avval backend status.bot_url (TELEGRAM_BOT_USERNAME env), bo'lmasa
+  // "parolni unutdingizmi" oqimidagi (ResetForm) HRM bot havolasiga tushamiz.
+  const HRM_BOT_LINK =
+    import.meta.env.MODE === 'production'
+      ? 'https://t.me/hrmpro_robot'
+      : 'https://t.me/developer_jr_bot'
+  const botLink = computed(() => store.botUrl || HRM_BOT_LINK)
+
+  // Modal ochilganda maydonni tozalaymiz + orqa fonni blur qilamiz (maxfiy oylik
+  // ma'lumoti modal ortidan o'qilmasin). body klassi n-modal maskasiga backdrop-filter
+  // beradi (pastdagi global style). Modal body'ga teleport bo'lgani uchun modal kartasi blur bo'lmaydi.
   watch(
     () => store.visible,
     (v) => {
-      if (v) {
-        loginPassword.value = ''
-        oldPassword.value = ''
-        newPassword.value = ''
-        confirmPassword.value = ''
-        password.value = ''
+      if (typeof document !== 'undefined') {
+        document.body.classList.toggle('salary-stepup-open', v)
       }
+      if (v) code.value = ''
     }
   )
 
-  // Rejim: 'change' (eski→yangi), 'set' (birinchi marta), 'unlock' (kirish).
-  const mode = computed(() => {
-    if (store.intent === 'change' && store.hasPassword) return 'change'
-    return store.hasPassword ? 'unlock' : 'set'
-  })
-  const withNewPassword = computed(() => mode.value === 'set' || mode.value === 'change')
-
-  const rules = computed(() => [
-    { key: 'minLength', label: t('changePassword.rules.minLength'), valid: newPassword.value.length >= 8 },
-    { key: 'uppercase', label: t('changePassword.rules.uppercase'), valid: /[A-Z]/.test(newPassword.value) },
-    { key: 'lowercase', label: t('changePassword.rules.lowercase'), valid: /[a-z]/.test(newPassword.value) },
-    { key: 'number', label: t('changePassword.rules.number'), valid: /[0-9]/.test(newPassword.value) },
-    { key: 'special', label: t('changePassword.rules.special'), valid: /[@!#$%^&*()_+\-=[\]{}|;':",.<>?/`~\\]/.test(newPassword.value) },
-    { key: 'match', label: t('changePassword.rules.match'), valid: newPassword.value.length > 0 && newPassword.value === confirmPassword.value }
-  ])
-  const rulesValid = computed(() => rules.value.every((r) => r.valid))
-
-  const canSubmit = computed(() => {
-    if (mode.value === 'set') return rulesValid.value && loginPassword.value.length > 0
-    if (mode.value === 'change') return rulesValid.value && oldPassword.value.length > 0
-    return password.value.length > 0
+  onUnmounted(() => {
+    if (typeof document !== 'undefined') {
+      document.body.classList.remove('salary-stepup-open')
+    }
   })
 
-  const title = computed(() =>
-    mode.value === 'change'
-      ? t('salaryAccess.changeTitle')
-      : mode.value === 'set'
-        ? t('salaryAccess.setTitle')
-        : t('salaryAccess.title')
+  const codeExpired = computed(() => store.otpSent && store.otpExpiresIn <= 0)
+  const canSubmit = computed(
+    () => store.otpSent && !codeExpired.value && code.value.trim().length >= 4
   )
-  const description = computed(() =>
-    mode.value === 'change'
-      ? t('salaryAccess.changeDescription')
-      : mode.value === 'set'
-        ? t('salaryAccess.setDescription')
-        : t('salaryAccess.description')
-  )
-  const submitLabel = computed(() =>
-    mode.value === 'change'
-      ? t('salaryAccess.changeSubmit')
-      : mode.value === 'set'
-        ? t('salaryAccess.setSubmit')
-        : t('salaryAccess.submit')
-  )
+  const canResend = computed(() => !store.loading && store.resendIn <= 0)
 
   const onSubmit = () => {
     if (!canSubmit.value || store.loading) return
-    if (mode.value === 'set') {
-      store.submit({ new_password: newPassword.value, login_password: loginPassword.value })
-    } else if (mode.value === 'change') {
-      store.submit({ new_password: newPassword.value, old_password: oldPassword.value })
-    } else {
-      store.submit({ password: password.value })
-    }
+    store.verify(code.value.trim())
+  }
+  const onResend = () => {
+    if (!canResend.value) return
+    code.value = ''
+    store.requestCode()
   }
 </script>
 
 <template>
   <UIModal
     v-model:visible="store.visible"
-    :title="title"
+    :title="$t('salaryAccess.title')"
     :persistent="true"
     width="440"
     @click:close="store.close()"
@@ -107,81 +70,72 @@
         </div>
       </div>
 
-      <p class="text-sm text-textColor2 text-center -mt-1">{{ description }}</p>
+      <!-- Telegram ulanmagan (fail-closed) -->
+      <template v-if="store.telegramMissing">
+        <p class="text-sm font-medium text-center">{{ $t('salaryAccess.notLinked') }}</p>
+        <p class="text-sm text-textColor2 text-center -mt-1">
+          {{ $t('salaryAccess.notLinkedHelp') }}
+        </p>
+        <a
+          v-if="botLink"
+          :href="botLink"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block"
+        >
+          <n-button type="primary" block>
+            <template #icon><n-icon><Send20Regular /></n-icon></template>
+            {{ $t('salaryAccess.openBot') }}
+          </n-button>
+        </a>
+      </template>
 
-      <!-- SET: login parol tasdig'i -->
-      <div v-if="mode === 'set'">
-        <label class="text-xs text-textColor3 mb-1 block">{{ $t('salaryAccess.loginPassword') }}</label>
-        <n-input
-          v-model:value="loginPassword"
-          type="password"
-          show-password-on="click"
-          :placeholder="$t('salaryAccess.loginPassword')"
-          @keydown.enter="onSubmit"
-        />
+      <!-- Kod yuborilmoqda (hali javob kelmagan) -->
+      <div
+        v-else-if="!store.otpSent"
+        class="flex flex-col items-center gap-2 py-5 text-textColor3 text-sm"
+      >
+        <n-spin size="small" />
+        <span>{{ $t('salaryAccess.sending') }}</span>
       </div>
 
-      <!-- CHANGE: amaldagi oylik paroli -->
-      <div v-if="mode === 'change'">
-        <label class="text-xs text-textColor3 mb-1 block">{{ $t('salaryAccess.oldPassword') }}</label>
-        <n-input
-          v-model:value="oldPassword"
-          type="password"
-          show-password-on="click"
-          :placeholder="$t('salaryAccess.oldPassword')"
-          @keydown.enter="onSubmit"
-        />
-      </div>
+      <!-- OTP kiritish -->
+      <template v-else>
+        <p class="text-sm text-textColor2 text-center -mt-1">{{ $t('salaryAccess.sent') }}</p>
 
-      <!-- SET / CHANGE: yangi oylik parol + takror + qoidalar -->
-      <template v-if="withNewPassword">
         <div>
-          <label class="text-xs text-textColor3 mb-1 block">{{ $t('salaryAccess.newPassword') }}</label>
+          <label class="text-xs text-textColor3 mb-1 block">{{ $t('salaryAccess.codeLabel') }}</label>
           <n-input
-            v-model:value="newPassword"
-            type="password"
-            show-password-on="click"
-            :placeholder="$t('salaryAccess.newPassword')"
-          />
-        </div>
-        <div>
-          <label class="text-xs text-textColor3 mb-1 block">{{ $t('salaryAccess.confirmPassword') }}</label>
-          <n-input
-            v-model:value="confirmPassword"
-            type="password"
-            show-password-on="click"
-            :placeholder="$t('salaryAccess.confirmPassword')"
+            v-model:value="code"
+            :placeholder="$t('salaryAccess.codePlaceholder')"
+            :maxlength="8"
+            :allow-input="(v) => /^\d*$/.test(v)"
+            autofocus
             @keydown.enter="onSubmit"
           />
-        </div>
-        <div class="flex flex-col gap-1.5 border border-surface-line rounded-lg px-3 py-2.5">
-          <div
-            v-for="rule in rules"
-            :key="rule.key"
-            class="flex items-center gap-2 text-xs transition-colors"
-            :class="rule.valid ? 'text-success' : 'text-textColor3'"
-          >
-            <n-icon size="14" class="shrink-0">
-              <Checkmark16Regular v-if="rule.valid" />
-              <Dismiss16Regular v-else />
-            </n-icon>
-            <span>{{ rule.label }}</span>
+          <div class="flex items-center justify-between mt-2 text-xs">
+            <span class="text-textColor3">
+              <template v-if="codeExpired">{{ $t('salaryAccess.expired') }}</template>
+              <template v-else-if="store.otpExpiresIn > 0">
+                {{ $t('salaryAccess.expiresIn', { sec: store.otpExpiresIn }) }}
+              </template>
+            </span>
+            <n-button
+              text
+              type="primary"
+              size="tiny"
+              :disabled="!canResend"
+              @click="onResend"
+            >
+              <template #icon><n-icon><Send20Regular /></n-icon></template>
+              <template v-if="store.resendIn > 0">
+                {{ $t('salaryAccess.resendIn', { sec: store.resendIn }) }}
+              </template>
+              <template v-else>{{ $t('salaryAccess.resend') }}</template>
+            </n-button>
           </div>
         </div>
       </template>
-
-      <!-- UNLOCK: yagona oylik parol maydoni -->
-      <div v-if="mode === 'unlock'">
-        <label class="text-xs text-textColor3 mb-1 block">{{ $t('salaryAccess.password') }}</label>
-        <n-input
-          v-model:value="password"
-          type="password"
-          show-password-on="click"
-          :placeholder="$t('salaryAccess.passwordPlaceholder')"
-          autofocus
-          @keydown.enter="onSubmit"
-        />
-      </div>
     </div>
 
     <template #footer>
@@ -189,10 +143,27 @@
         <n-button type="error" ghost :disabled="store.loading" @click="store.close()">
           {{ $t('content.cancel') }}
         </n-button>
-        <n-button type="primary" :loading="store.loading" :disabled="!canSubmit" @click="onSubmit">
-          {{ submitLabel }}
+        <n-button
+          v-if="!store.telegramMissing"
+          type="primary"
+          :loading="store.loading"
+          :disabled="!canSubmit"
+          @click="onSubmit"
+        >
+          {{ $t('salaryAccess.verify') }}
         </n-button>
       </div>
     </template>
   </UIModal>
 </template>
+
+<!-- Global (scoped EMAS): step-up modal ochiq bo'lganda orqa fonni blur qiladi —
+     maxfiy oylik ma'lumoti modal ortidan o'qilmasin. Modal body'ga teleport bo'lgani
+     uchun uning o'zi (mask ustida) blur bo'lmaydi. -->
+<style>
+body.salary-stepup-open .n-modal-mask {
+  background-color: rgba(15, 23, 42, 0.55) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+}
+</style>

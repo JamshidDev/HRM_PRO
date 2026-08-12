@@ -765,14 +765,14 @@ export const navigations = [
         path: Utils.routeAccountantPathMaker(AppPaths.TariffGrid),
         icon: Grid20Filled,
         color: 'bg-dark',
-        permission: appPermissions.economist
+        permission: appPermissions.tariffGridAccess
       },
       {
         label: 'salary1c.name', // Oylik hisobot (1C)
         path: Utils.routeAccountantPathMaker(AppPaths.Salary1c),
         icon: Calculator24Regular,
         color: 'bg-primary',
-        permission: appPermissions.economist
+        permission: appPermissions.salary1cAccess
       },
       {
         label: 'report.name', // Plan va Fakt
