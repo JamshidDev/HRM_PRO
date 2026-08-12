@@ -34,7 +34,6 @@
         maxRows: 1
       }"
       size="small"
-      :loading="store.loading"
       :placeholder="$t(showPanel ? 'aiConversation.form.askQuestionOrMic' : 'aiConversation.form.askQuestion')"
     />
     <button

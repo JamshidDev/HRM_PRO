@@ -15,9 +15,9 @@
 
   const modalSuggestions = [
     'aiConversation.suggestions.leaveBalance',
-    'aiConversation.suggestions.lastSalary',
-    'aiConversation.suggestions.getReference',
-    'aiConversation.suggestions.workedDays'
+    'aiConversation.suggestions.workedDaysShort',
+    'aiConversation.suggestions.workedDays',
+    'aiConversation.suggestions.workSchedule'
   ]
 
   const pageSuggestions = [

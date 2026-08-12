@@ -22,7 +22,7 @@ export const useAppSetting = {
   mustChangeKey: 'must-change-password',
   soundEnabledKey: 'app-sound-enabled',
   sidebarThemeKey: 'app-sidebar-theme',
-  defaultSidebarTheme: 'default',
+  defaultSidebarTheme: 'mint',
   screenFilterKey: 'app-screen-filter',
   defaultScreenFilter: 'none',
   fontScaleKey: 'app-font-scale',
