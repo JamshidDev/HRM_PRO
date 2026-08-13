@@ -272,6 +272,11 @@ export const PERMISSION_GROUPS = [
         label: 'turnstile.workDurationPage.name',
         actions: [{ slug: 'turnstile-work-duration-read', label: "Ko'rish" }]
       },
+      // Bino + Terminal — menyu o'chirilgan, lekin backend controllerlari TIRIK va
+      // CRUD `turnstile-building-*` / `turnstile-terminal-*` bilan gate qilingan
+      // (2026-08-13 audit) — grantable bo'lishi uchun guruh (slug'lar ENFORCED'da bor).
+      { prefix: 'turnstile-building', label: 'turnstile.buildingPage.title' },
+      { prefix: 'turnstile-terminal', label: 'turnstile.terminalPage.title' },
       // «Qo'shimcha» menyusi — tab-konteyner. Menyu-kirish + har tab alohida karta
       // (o'z sahifa ruxsatlari bilan): Sinxronizatsiya loglari, HC server, Telegram.
       { prefix: 'turnstile-others', label: 'additionalPage.name' },
