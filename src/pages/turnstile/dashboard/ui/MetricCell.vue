@@ -9,10 +9,10 @@
       type: [Number, String],
       default: 0
     },
-    // token nomi: primary | success | warning | danger | dark | secondary
-    color: {
+    // Maketdagi legenda nuqtasi rangi (CSS o'zgaruvchi nomi)
+    dotColor: {
       type: String,
-      default: 'primary'
+      default: '--fig-icon-indigo'
     },
     delta: {
       type: Object,
@@ -24,36 +24,16 @@
       default: 'turnStileDashboard.compare.vsYesterday'
     },
     deltaLoading: Boolean,
-    clickable: Boolean,
-    size: {
-      type: String,
-      default: 'md' // md | lg
-    }
+    clickable: Boolean
   })
-
-  const dotClass = computed(
-    () =>
-      ({
-        primary: 'bg-primary',
-        success: 'bg-success',
-        warning: 'bg-warning',
-        danger: 'bg-danger',
-        dark: 'bg-dark',
-        secondary: 'bg-secondary'
-      })[props.color] || 'bg-primary'
-  )
-
-  const countClass = computed(() =>
-    props.size === 'lg' ? 'text-[28px] leading-[1.1]' : 'text-[22px] leading-[1.15]'
-  )
 
   const formatted = computed(() => Utils.formatNumberToMoney(props.count) || '0')
 </script>
 
 <template>
   <div
-    class="relative group p-2 rounded-xl transition-all duration-300"
-    :class="clickable ? 'cursor-pointer hover:bg-primary/6' : ''"
+    class="relative group flex-1 min-w-0 flex flex-col justify-center gap-1 px-4 transition-all duration-300"
+    :class="clickable ? 'cursor-pointer' : ''"
   >
     <div
       v-if="clickable"
@@ -65,17 +45,22 @@
     </div>
 
     <div class="transition-all duration-300" :class="clickable ? 'group-hover:opacity-[0.2]' : ''">
-      <div class="flex items-center gap-2">
-        <span class="w-2 h-2 rounded-full shrink-0" :class="dotClass"></span>
-        <span class="text-xs font-medium text-secondary leading-[1.2] line-clamp-1">
+      <div class="flex items-center gap-2.5">
+        <span
+          class="w-2.5 h-2.5 rounded-full shrink-0"
+          :style="{ backgroundColor: `var(${dotColor})` }"
+        ></span>
+        <span class="text-[14px] leading-[20px] text-fig-text-muted truncate">
           {{ label }}
         </span>
       </div>
-      <div class="font-grotesk font-bold text-textColor0 mt-2" :class="countClass">
+      <p
+        class="font-grotesk font-semibold text-[20px] leading-[24px] text-fig-text-primary whitespace-nowrap mt-1"
+      >
         {{ formatted }}
-      </div>
+      </p>
       <DeltaBadge
-        class="mt-2"
+        class="mt-1"
         :delta="delta"
         :invert="invert"
         :label="deltaLabel"

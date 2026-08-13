@@ -207,8 +207,11 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
     deltas(state) {
       const p = state.prevStats
       const d = (cur, prev) => Utils.compareDelta(cur, prev)
-      const lateCount = (v) => v?.late_and_early?.late?.[0]?.count
-      const earlyCount = (v) => v?.late_and_early?.early?.[0]?.count
+      // Indeks emas, eng oxirgi sana bo'yicha — backend tartibiga bog'liq bo'lmasin.
+      const lateCount = (v) =>
+        v?.late_and_early?.late ? Utils.latestByDate(v.late_and_early.late) : null
+      const earlyCount = (v) =>
+        v?.late_and_early?.early ? Utils.latestByDate(v.late_and_early.early) : null
 
       return {
         totalWorkers: d(state.totalWorkerCount, p?.one?.totalWorkers),
@@ -348,7 +351,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                   badgeText: t('content.now'),
                   count: data?.attended_workers_today || 0,
                   icon: markRaw(TurnstileIcon1),
-                  chipColor: '#00A652',
+                  tint: 'green',
                   previewType: 'come',
                   deltaKey: 'come',
                   decor: 1
@@ -359,7 +362,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                   badgeText: t('content.now'),
                   count: data?.absent_workers_today || 0,
                   icon: markRaw(TurnstileIcon2),
-                  chipColor: '#F26B1F',
+                  tint: 'orange',
                   previewType: 'not_come',
                   deltaKey: 'notCome',
                   invert: true,
@@ -393,7 +396,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                   badgeText: t('content.now'),
                   count: data?.worker_stats?.current_in || 0,
                   icon: markRaw(TurnstileIcon3),
-                  chipColor: '#DBA800',
+                  tint: 'yellow',
                   listMore: data?.worker_stats?.current_in,
                   list: data?.worker_stats.top_in_workers?.map((v) => ({
                     ...v,
@@ -409,7 +412,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                   badgeText: t('content.now'),
                   count: data?.worker_stats?.current_out || 0,
                   icon: markRaw(TurnstileIcon4),
-                  chipColor: '#E5383B',
+                  tint: 'red',
                   listMore: data?.worker_stats?.current_out,
                   list: data?.worker_stats?.top_out_workers?.map((v) => ({
                     ...v,
@@ -418,7 +421,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
                   previewType: 'current_out',
                   deltaKey: 'currentOut',
                   invert: true,
-                  decor: 3
+                  decor: 4
                 }
               ]
             }
