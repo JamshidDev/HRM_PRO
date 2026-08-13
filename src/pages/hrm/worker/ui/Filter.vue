@@ -6,12 +6,17 @@
     useAccountStore
   } from '@/store/modules/index.js'
   import { UINSelect, UIPageFilter, UISelect } from '@/components/index.js'
-  import { ArrowSync16Regular, ChevronDown20Regular, ChevronUp20Regular } from '@vicons/fluent'
+  import {
+    ArrowSync16Regular,
+    ChevronDown20Regular,
+    ChevronUp20Regular,
+    Dismiss16Regular
+  } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { appPermissions, useDebounce } from '@/utils/index.js'
-  import ReportPanel from './ReportPanel.vue'
   import contractIcon from '@/assets/icons/contract.svg?url'
   import reportIcon from '@/assets/icons/reportIcon.svg?url'
+  import exportIcon from '@/assets/icons/export.svg?url'
   import { onBeforeRouteLeave } from 'vue-router'
 
   const store = useWorkerStore()
@@ -231,17 +236,7 @@
     next()
   })
 
-  // Qarindoshlar eksporti — tanlangan qatorlar bo'lsa faqat o'shalar.
-  const onRelativesExport = () => {
-    store._downloadRelative(exportStore.resumePayload.worker_ids)
-  }
-
-  const onSubmitResumeExport = () => {
-    exportStore.resumeModalVisible = true
-  }
-
   const canWrite = computed(() => accStore.checkAction(appPermissions.hrExport))
-  const canZip = computed(() => accStore.checkAction(appPermissions.exportWorkersZip))
 
   // Nechta xodim yuklanishini ko'rsatadi (tanlangan soni EMAS):
   //  · qator(lar) belgilangan bo'lsa — o'shalar soni,
@@ -294,30 +289,44 @@
           {{ $t('workerPage.filter.contract') }}
         </n-button>
 
+        <!-- Belgilash rejimi YOQILMAGAN — bitta tugma. Yoqilgach xuddi shu tugma
+             ikkiga bo'linadi (button-group): «Yuklash» + yopish. Pastda alohida
+             panel chizilmaydi. -->
         <button
+          v-if="!exportStore.isExportingResume"
           type="button"
           class="worker-report-trigger"
-          :disabled="exportStore.isExportingResume"
           @click="openReportPanel"
         >
           <img :src="reportIcon" alt="" />
           {{ $t('workerPage.filter.generateReport') }}
         </button>
-      </div>
-    </template>
 
-    <template #fullFilterContent>
-      <ReportPanel
-        v-if="exportStore.isExportingResume"
-        :selected-count="selectedCount"
-        :can-write="canWrite"
-        :can-zip="canZip"
-        :loading="store.loading"
-        @relatives="onRelativesExport"
-        @export="onExport"
-        @reference="onSubmitResumeExport"
-        @close="closeReportPanel"
-      />
+        <n-button-group v-else class="worker-report-group">
+          <n-button
+            type="success"
+            class="worker-report-group__main"
+            :disabled="!canWrite || store.loading"
+            @click="onExport"
+          >
+            <template #icon>
+              <img class="worker-action-icon" :src="exportIcon" alt="" />
+            </template>
+            {{ $t('content.download') }}
+            <span class="worker-report-badge">{{ selectedCount }}</span>
+          </n-button>
+          <n-button
+            type="success"
+            class="worker-report-group__close"
+            :title="$t('content.cancel')"
+            @click="closeReportPanel"
+          >
+            <template #icon>
+              <n-icon size="16"><Dismiss16Regular /></n-icon>
+            </template>
+          </n-button>
+        </n-button-group>
+      </div>
     </template>
 
     <template #filterContent>
@@ -658,6 +667,41 @@
     width: 16px;
     height: 16px;
     filter: brightness(0) invert(1);
+  }
+
+  /* «Hisobot olish» yoqilgach paydo bo'ladigan guruh: chapda «Yuklash»,
+     o'ngda yopish. Yopish qismi ajralib tursin — to'qroq yashil + oq chiziq.
+     Balandlik AYNAN «Hisobot olish» tugmasiniki (34px) — almashganda qator
+     sakramasin va yonidagi tugmalar bilan bir tekisda tursin. */
+  .worker-report-group :deep(.n-button) {
+    --n-height: 34px !important;
+  }
+
+  .worker-report-group__main :deep(.n-button__content) {
+    gap: 8px;
+  }
+
+  .worker-report-group__close {
+    --n-color: color-mix(in srgb, var(--success-color) 78%, #000) !important;
+    --n-color-hover: color-mix(in srgb, var(--success-color) 66%, #000) !important;
+    --n-color-pressed: color-mix(in srgb, var(--success-color) 60%, #000) !important;
+    --n-color-focus: color-mix(in srgb, var(--success-color) 66%, #000) !important;
+    --n-padding: 0 12px !important;
+    box-shadow: inset 1px 0 0 rgb(255 255 255 / 35%);
+  }
+
+  .worker-report-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--white-color);
+    color: var(--success-color);
+    font-size: 12px;
+    font-weight: 700;
   }
 
   .worker-report-trigger {
