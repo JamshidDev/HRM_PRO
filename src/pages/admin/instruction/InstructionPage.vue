@@ -10,7 +10,6 @@
   const store = usePageInstructionStore()
 
   const onSearch = (v) => {
-    if (!accStore.checkAction(accStore.pn.instructionsWrite)) return
     store.params.page = 1
     store._index()
   }

@@ -97,6 +97,10 @@
     return [prefix].filter((n) => has(n) && grantable(n))
   }
 
+  // Guruh sarlavhasi ostida ko'rsatiladigan slug — menyu/page KO'RINISHI shu READ
+  // permission orqali (sidebarda menu bo'lib chiqadi). `-read` bo'lmasa bare (modul-kirish).
+  const groupReadSlug = (g) => (has(`${g.prefix}-read`) ? `${g.prefix}-read` : g.prefix)
+
   /**
    * Guruh switchlari. Har switch — `{ key, names: string[], label }`.
    * write/delete FAQAT backend enforce qilsa chiqadi (o'lik switch bo'lmasin).
@@ -328,7 +332,7 @@
                   <div class="flex items-center justify-between mb-1.5 pb-1.5 border-b border-surface-line">
                     <div class="flex flex-col min-w-0">
                       <span class="font-semibold text-sm">{{ $t(g.label) }}</span>
-                      <span class="perm-slug">{{ g.prefix }}</span>
+                      <span class="perm-slug">{{ groupReadSlug(g) }}</span>
                     </div>
                     <n-switch
                       size="small"

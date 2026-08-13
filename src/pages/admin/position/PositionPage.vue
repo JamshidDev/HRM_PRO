@@ -11,7 +11,6 @@
   const store = usePositionStore()
 
   const onSearch = (v) => {
-    if (!accStore.checkAction(accStore.pn.positionsRead)) return
     store.params.page = 1
     store._index()
   }

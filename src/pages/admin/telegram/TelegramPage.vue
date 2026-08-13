@@ -16,7 +16,6 @@
   })
 
   const onSearch = () => {
-    if (!accStore.checkAction(accStore.pn.telegramRead)) return
     store.params.page = 1
     store._index()
   }

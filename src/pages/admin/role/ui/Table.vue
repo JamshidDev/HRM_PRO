@@ -26,7 +26,7 @@
   }
 
   const onDelete = (row) => {
-    if (!accStore.checkAction(accStore.pn.rolesWrite)) return
+    if (!accStore.checkAction(accStore.pn.rolesDelete)) return
     store.elementId = row.id
     store._delete()
   }
