@@ -37,7 +37,7 @@ export const useNewsStore = defineStore('newsStore', {
       $ApiService.newsService
         ._index({ params: this.params })
         .then((res) => {
-          this.list = res.data.data.data
+          this.list = res.data.data.data.slice().sort((a, b) => Number(b.is_pinned) - Number(a.is_pinned))
           this.totalItems = res.data.data.total
         })
         .finally(() => {

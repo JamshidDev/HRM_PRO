@@ -3,6 +3,10 @@
     data: {
       type: Object,
       required: true
+    },
+    showPanel: {
+      type: Boolean,
+      default: true
     }
   })
 
@@ -11,14 +15,17 @@
 
 <template>
   <div class="flex w-full mb-6" :class="[isBot ? 'justify-start' : 'justify-end']">
-    <div class="flex items-end">
+    <div class="flex items-end" :class="[showPanel ? 'max-w-full' : 'max-w-[92%]']">
       <div
-        :class="[isBot ? 'bg-info/5 rounded-bl-none' : 'bg-primary! text-white! rounded-br-none']"
-        class="inline-block p-4 border border-surface-line rounded-2xl"
+        :class="[
+          isBot ? 'bot-bubble rounded-bl-none' : 'bg-primary! text-white! rounded-br-none',
+          showPanel ? 'p-4' : 'p-3'
+        ]"
+        class="inline-block border border-surface-line rounded-2xl"
       >
         <div
-          :class="[isBot ? 'text-surface!' : 'text-white!']"
-          class="prose w-auto text-base"
+          :class="[isBot ? 'text-surface!' : 'text-white!', showPanel ? 'text-base' : 'text-sm']"
+          class="prose w-auto"
           v-html="data?.text"
         ></div>
 
@@ -27,7 +34,10 @@
           class="flex justify-start border-t mt-2 pt-2"
           :class="[isBot ? 'border-surface-line' : 'border-white/25']"
         >
-          <p class="leading-none text-base" :class="[isBot ? 'text-secondary' : 'text-white/80']">
+          <p
+            class="leading-none"
+            :class="[isBot ? 'text-secondary' : 'text-white/80', showPanel ? 'text-base' : 'text-sm']"
+          >
             {{ data.time }}
           </p>
         </div>
@@ -57,6 +67,15 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+  .bot-bubble {
+    background: #eff8ff;
+  }
+  [data-theme='dark'] .bot-bubble {
+    background: #102644;
+  }
+</style>
 
 <style>
   .prose {
