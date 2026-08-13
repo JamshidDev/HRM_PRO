@@ -228,7 +228,7 @@
   .tg-below .tg-amt,
   .tg-amt-sm.tg-below,
   .tg-below.tg-amt-sm {
-    color: #b45309;
+    color: var(--warning-color, #b45309);
   }
   .tg-cell-view.tg-below {
     background: rgba(251, 191, 36, 0.14);

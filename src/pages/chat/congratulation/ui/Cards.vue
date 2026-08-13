@@ -1,49 +1,67 @@
 <script setup>
   import { useCongratulationStore } from '@stores'
-  import {
-    HomeAdd24Regular,
-    ContactCard16Regular,
-    WeatherSunnyLow24Filled,
-    Balloon12Regular,
-    PersonChat16Regular
-  } from '@vicons/fluent'
+  import { Utils } from '@utils'
   import i18n from '@/i18n/index.js'
+
+  import GiftIcon from '@/assets/icons/congratulation/gift.svg'
+  import GiftDecor from '@/assets/icons/congratulation/gift-decor.svg'
+  import SunIcon from '@/assets/icons/congratulation/sun.svg'
+  import SunDecor from '@/assets/icons/congratulation/sun-decor.svg'
+  import MedIcon from '@/assets/icons/congratulation/med.svg'
+  import MedDecor from '@/assets/icons/congratulation/med-decor.svg'
+  import PassportIcon from '@/assets/icons/congratulation/passport.svg'
+  import PassportDecor from '@/assets/icons/congratulation/passport-decor.svg'
+  import MobileIcon from '@/assets/icons/congratulation/mobile.svg'
+  import MobileDecor from '@/assets/icons/congratulation/mobile-decor.svg'
+  import TurnstileIcon from '@/assets/icons/congratulation/turnstile.svg'
+  import TurnstileDecor from '@/assets/icons/congratulation/turnstile-decor.svg'
 
   const t = i18n.global.t
   const store = useCongratulationStore()
 
-  const cardColors = {
+  // Tur id'si → maketdagi tint, ikonka va dekor. `rotate` faqat Turniket uchun —
+  // maketda arrow-down-arrow-up 90° burilgan holda turadi.
+  const cardTypes = {
     1: {
-      iconColor: 'text-primary',
-      box: 'bg-primary/10',
-      icon: markRaw(Balloon12Regular),
+      box: 'bg-fig-blue-100',
+      icon: GiftIcon,
+      decor: GiftDecor,
       description: t('congratulation.description.birthday')
     },
     2: {
-      iconColor: 'text-warning',
-      box: 'bg-warning/10',
-      icon: markRaw(WeatherSunnyLow24Filled),
+      box: 'bg-fig-amber-100',
+      icon: SunIcon,
+      decor: SunDecor,
       description: t('congratulation.description.vacation')
     },
     3: {
-      iconColor: 'text-success',
-      box: 'bg-success/10',
-      icon: markRaw(HomeAdd24Regular),
+      box: 'bg-fig-green-100',
+      icon: MedIcon,
+      decor: MedDecor,
       description: t('congratulation.description.med')
     },
     4: {
-      iconColor: 'text-danger',
-      box: 'bg-danger/10',
-      icon: markRaw(ContactCard16Regular),
+      box: 'bg-fig-indigo-100',
+      icon: PassportIcon,
+      decor: PassportDecor,
       description: t('congratulation.description.passport')
     },
     5: {
-      iconColor: 'text-danger',
-      box: 'bg-danger/10',
-      icon: markRaw(PersonChat16Regular),
+      box: 'bg-fig-pink-100',
+      icon: MobileIcon,
+      decor: MobileDecor,
       description: t('congratulation.description.mobile')
+    },
+    6: {
+      box: 'bg-fig-lime-100',
+      icon: TurnstileIcon,
+      decor: TurnstileDecor,
+      rotate: true,
+      description: t('congratulation.description.turnstile')
     }
   }
+
+  const skeletonCount = 6
 
   onMounted(() => {
     store._dashboard()
@@ -51,37 +69,71 @@
 </script>
 
 <template>
-  <div class="grid grid-cols-12 gap-4">
-    <template v-for="item in store.dashboard.cards" :key="item.id">
+  <!-- Kartalar hali kelmagan bo'lsa umuman chizilmaydi — aks holda `UIPageContent`
+       ning `gap-4` i bo'sh konteyner ustidan ortiqcha bo'shliq qoldiradi. -->
+  <div v-if="store.dashboard.loading || store.dashboard.cards.length" class="flex flex-wrap gap-4">
+    <template v-if="store.dashboard.loading && !store.dashboard.cards.length">
       <div
-        class="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 bg-surface-section p-4 rounded-xl border border-surface-line"
+        v-for="i in skeletonCount"
+        :key="`sk-${i}`"
+        class="flex-1 min-w-[160px] rounded-2xl bg-surface-section pt-1.5 px-3 pb-3"
       >
-        <div class="flex justify-between items-start">
-          <div class="w-[calc(100%-40px)]">
-            <div class="text-secondary text-xs font-bold line-clamp-1 pr-2">{{ item.type }}</div>
-            <n-tooltip placement="bottom" trigger="hover">
-              <template #trigger>
-                <p class="text-2xl font-bold cursor-pointer">{{ item?.count }}</p>
-              </template>
-              <span>{{ cardColors[item.id]?.description }}</span>
-            </n-tooltip>
-          </div>
-          <div
-            :class="[cardColors[item.id]?.box]"
-            class="flex justify-center items-center p-1 rounded-md"
+        <n-skeleton height="20px" width="70%" round />
+        <n-skeleton class="mt-2" height="24px" width="45%" round />
+      </div>
+    </template>
+
+    <template v-else>
+      <div
+        v-for="item in store.dashboard.cards"
+        :key="item.id"
+        class="relative flex-1 min-w-[160px] overflow-hidden rounded-2xl bg-surface-section pt-1.5 px-1 pb-1"
+      >
+        <!-- maketdagi yuqori-o'ng burchakdagi 64px so'nuvchi dekor (karta chetidan qirqiladi) -->
+        <span
+          v-if="cardTypes[item.id]?.decor"
+          aria-hidden="true"
+          class="absolute top-3 right-0.5 size-16 flex items-center justify-center pointer-events-none select-none"
+          :class="cardTypes[item.id]?.rotate && 'rotate-90'"
+        >
+          <component :is="cardTypes[item.id]?.decor" />
+        </span>
+
+        <div class="relative flex items-center gap-2 px-2">
+          <span
+            v-if="cardTypes[item.id]?.icon"
+            class="shrink-0 rounded-full p-1"
+            :class="cardTypes[item.id]?.box"
           >
-            <n-icon
-              v-if="cardColors[item.id]?.icon"
-              :class="[cardColors[item.id]?.iconColor]"
-              size="32"
+            <span
+              class="size-5 flex items-center justify-center"
+              :class="cardTypes[item.id]?.rotate && 'rotate-90'"
             >
-              <component :is="cardColors[item.id]?.icon" />
-            </n-icon>
-          </div>
+              <component :is="cardTypes[item.id]?.icon" />
+            </span>
+          </span>
+          <n-tooltip v-if="cardTypes[item.id]?.description" placement="bottom" trigger="hover">
+            <template #trigger>
+              <p
+                class="text-[14px] leading-[18px] font-medium text-fig-text-tertiary truncate cursor-default"
+              >
+                {{ item.type }}
+              </p>
+            </template>
+            <span>{{ cardTypes[item.id]?.description }}</span>
+          </n-tooltip>
+          <p v-else class="text-[14px] leading-[18px] font-medium text-fig-text-tertiary truncate">
+            {{ item.type }}
+          </p>
         </div>
-        <p class="text-xs text-secondary !mt-2 leading-[1.2]">
-          {{ cardColors[item.id]?.description }}
-        </p>
+
+        <div class="relative px-2 mt-2">
+          <p
+            class="font-grotesk font-semibold text-[20px] leading-[24px] text-fig-text-primary whitespace-nowrap"
+          >
+            {{ Utils.formatNumberToMoney(item.count) || '0' }}
+          </p>
+        </div>
       </div>
     </template>
   </div>

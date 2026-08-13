@@ -52,7 +52,7 @@
       backgroundColor: tokenColor('--surface-section'),
       borderColor: tokenColor('--surface-line'),
       textStyle: {
-        color: tokenColor('--textColor0')
+        color: tokenColor('--fig-text-primary')
       }
     },
     grid: {
@@ -68,15 +68,23 @@
       axisLabel: {
         show: true,
         fontSize: 10,
-        color: 'rgba(158,158,158,0.9)'
+        lineHeight: 15,
+        color: tokenColor('--fig-text-secondary')
       },
       axisTick: {
         show: false
       },
       axisLine: {
         lineStyle: {
-          color: 'rgba(158,158,158,0.1)', // xira rang
+          color: tokenColor('--fig-br-disable'),
           width: 1
+        }
+      },
+      splitLine: {
+        show: true,
+        lineStyle: {
+          type: [3, 3],
+          color: tokenColor('--fig-br-secondary')
         }
       }
     },
@@ -84,37 +92,40 @@
       type: 'value',
       axisLabel: {
         fontSize: 10,
-        color: 'rgba(158,158,158,0.9)'
+        color: tokenColor('--fig-text-primary')
       },
       splitLine: {
         show: true,
         lineStyle: {
-          color: 'rgba(158,158,158,0.1)' // xira rang
+          type: [3, 3],
+          color: tokenColor('--fig-br-secondary')
         }
       }
     },
+    // Maketda har bir sana ustida chapda yashil (erta ketgan), o'ngda
+    // to'q sariq (kech kelgan) ustun turadi — seriya tartibi shunga mos.
     series: [
-      {
-        name: t('turnStileDashboard.cards.lateCome'),
-        type: 'bar',
-        barWidth: '30%',
-        barMaxWidth: 12,
-        barGap: '30%',
-        data: [],
-        itemStyle: {
-          color: tokenColor('--danger-color'),
-          borderRadius: [4, 4, 2, 2]
-        }
-      },
       {
         name: t('turnStileDashboard.cards.earlyGo'),
         type: 'bar',
         barWidth: '30%',
-        barMaxWidth: 12,
+        barMaxWidth: 10,
+        barGap: '30%',
         data: [],
         itemStyle: {
-          color: tokenColor('--warning-color'),
-          borderRadius: [4, 4, 2, 2]
+          color: tokenColor('--fig-green-400'),
+          borderRadius: [3, 3, 0, 0]
+        }
+      },
+      {
+        name: t('turnStileDashboard.cards.lateCome'),
+        type: 'bar',
+        barWidth: '30%',
+        barMaxWidth: 10,
+        data: [],
+        itemStyle: {
+          color: tokenColor('--fig-orange-300'),
+          borderRadius: [3, 3, 0, 0]
         }
       }
     ]
@@ -125,17 +136,25 @@
     (newValue) => {
       if (!newValue) return
 
-      option.value.xAxis.data = newValue.late_and_early.late.map((v) => {
-        return v.date.slice(-5)
-      })
+      // Backend sanalarni teskari tartibda (yangidan eskiga) qaytaradi va ikki
+      // massivdagi sanalar to'plami har doim ham bir xil bo'lmaydi. Shuning uchun
+      // sanalarni birlashtirib o'sish bo'yicha saralaymiz — eng oxirgi kun o'ngda.
+      const early = newValue.late_and_early?.early || []
+      const late = newValue.late_and_early?.late || []
 
-      option.value.series[0].data = newValue.late_and_early.late.map((v) => {
-        return v.count
-      })
+      const countByDate = (list) =>
+        list.reduce((acc, v) => {
+          acc[v.date] = v.count
+          return acc
+        }, {})
+      const earlyMap = countByDate(early)
+      const lateMap = countByDate(late)
 
-      option.value.series[1].data = newValue.late_and_early.early.map((v) => {
-        return v.count
-      })
+      const dates = [...new Set([...Object.keys(earlyMap), ...Object.keys(lateMap)])].sort()
+
+      option.value.xAxis.data = dates.map((d) => d.slice(-5))
+      option.value.series[0].data = dates.map((d) => earlyMap[d] ?? 0)
+      option.value.series[1].data = dates.map((d) => lateMap[d] ?? 0)
 
       // Add click listener after data is updated
       nextTick(() => {
@@ -172,9 +191,9 @@
 </script>
 
 <template>
-  <div class="w-full relative h-full">
-    <div class="w-full h-[240px] relative z-2">
-      <v-chart autoresize class="w-full" :option="option" ref="chartRef" />
+  <div class="w-full h-full relative">
+    <div class="w-full h-full relative z-2">
+      <v-chart autoresize class="w-full h-full" :option="option" ref="chartRef" />
     </div>
   </div>
 </template>
