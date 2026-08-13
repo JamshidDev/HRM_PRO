@@ -45,6 +45,8 @@ export const ENFORCED = new Set([
   'turnstile-sheets-groups-read', 'turnstile-sheets-groups-write', 'turnstile-sheets-read', 'turnstile-sheets-workers-delete', 'turnstile-sheets-workers-read', 'turnstile-sheets-workers-write',
   'turnstile-sheets-write', 'turnstile-terminal-delete', 'turnstile-terminal-read', 'turnstile-terminal-write', 'universities-delete', 'universities-write',
   'users-delete', 'users-read', 'users-write', 'vacancy-approve-delete', 'work-day-delete', 'work-day-write',
+  // Audit 2026-08-13 — admin sahifalarini `admin`dan aniq read/write ruxsatga ko'chirish:
+  'vacancy-approve-read', 'vacancy-approve-write', 'worker-reports-read',
   // Audit 2026-08-12 — frontend gate qiladigan, lekin rol formasida yashirin qolgan
   // write toggle'lar (oddiy kartada ENFORCED'da bo'lmagani uchun ko'rinmasdi):
   'turnstile-worker-image-write', 'hr-vacations-write', 'hr-business-trip-write',
@@ -122,6 +124,9 @@ export const MEANINGFUL = new Set([
   'universities', 'universities-delete', 'universities-read', 'universities-write', 'useful', 'users',
   'users-delete', 'users-read', 'users-write', 'vacancy-approve-delete', 'work-day', 'work-day-delete',
   'work-day-read', 'work-day-write',
+  // Audit 2026-08-13 — Tasdiqlash + Xodim hisobotlari aniq ruxsatlari:
+  'vacancy-approve', 'vacancy-approve-read', 'vacancy-approve-write',
+  'worker-reports', 'worker-reports-read',
 ])
 
 export const PERMISSION_GROUPS = [
@@ -408,6 +413,8 @@ export const PERMISSION_GROUPS = [
       { prefix: 'mobile-users', label: 'mobileUserPage.name' },
       { prefix: 'integration-clients', label: 'integrationClients.name' },
       { prefix: 'holiday-greetings', label: 'holidayGreetingPage.name' },
+      { prefix: 'vacancy-approve', label: 'vacancyApprovePage.menuName' },
+      { prefix: 'worker-reports', label: 'workerReport.name' },
     ],
   },
   {

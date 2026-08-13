@@ -1044,7 +1044,7 @@ export const navigations = [
         path: Utils.routePathMaker(AppPaths.VacancyApprove),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.vacancyApproveRead
       },
       {
         label: 'integrationClients.name', // Integratsiya clientlari
@@ -1058,7 +1058,7 @@ export const navigations = [
         path: Utils.routePathMaker(AppPaths.WorkerReport),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.workerReportsRead
       },
       {
         label: 'holidayGreetingPage.name', // Bayramlar

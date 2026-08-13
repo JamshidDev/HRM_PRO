@@ -68,6 +68,8 @@ export const appPermissions = {
   vacancyApprove: 'vacancy-approve',
   vacancyApproveWrite: 'vacancy-approve-write',
   vacancyApproveRead: 'vacancy-approve-read',
+  workerReports: 'worker-reports',
+  workerReportsRead: 'worker-reports-read',
   learningCenters: 'learning-centers',
   learningCentersWrite: 'learning-centers-write',
   learningCentersRead: 'learning-centers-read',
