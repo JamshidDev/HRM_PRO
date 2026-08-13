@@ -4,13 +4,15 @@
     useAccountStore,
     useAppStore,
     useLoginNewStore,
-    useSignatureStore
+    useSignatureStore,
+    useEtspStore
   } from '@/store/modules/index.js'
   import validationRules from '@/utils/validationRules.js'
   import { Call24Regular, Eye24Regular, EyeOff24Regular, LockClosed24Regular } from '@vicons/fluent'
   import { AppPaths, useAppSetting } from '@/utils/index.js'
   import ReCaptcha from '@/components/general/ReCaptcha.vue'
   import StoreLinks from './StoreLinks.vue'
+  import EtspKeyModal from './EtspKeyModal.vue'
 
   const emit = defineEmits(['forgot'])
 
@@ -18,8 +20,15 @@
   const accountStore = useAccountStore()
   const appStore = useAppStore()
   const signatureStore = useSignatureStore()
+  const etspStore = useEtspStore()
   const router = useRouter()
   const route = useRoute()
+
+  // ETSP (ichki E-IMZO) kalit bilan kirish — build-time flag bilan yoqiladi.
+  const etspEnabled = import.meta.env.VITE_ETSP_ENABLED === 'true'
+  const onEtspLogin = async () => {
+    await etspStore._initialSignature(onSuccess)
+  }
 
   const formRef = ref(null)
   const captchaRef = ref(null)
@@ -223,8 +232,30 @@
             <StoreLinks />
           </div>
         </template>
+
+        <!-- ETSP (korxona ichki E-IMZO) kalit bilan kirish — build-time flag bilan -->
+        <template v-if="etspEnabled">
+          <n-divider
+            v-if="!appStore.appConfig.signatureLogin"
+            class="my-2! lg:my-3!"
+            title-placement="center"
+          >
+            {{ $t('content.or') }}
+          </n-divider>
+
+          <n-button
+            @click="onEtspLogin"
+            size="large"
+            :loading="etspStore.loading"
+            class="h-[48px]! lg:h-[52px]! rounded-[10px]! font-semibold! dark-border-button login-new__signature-btn mt-2!"
+          >
+            🔑 {{ $t('content.etspLogin') }}
+          </n-button>
+        </template>
       </div>
     </n-form>
+
+    <EtspKeyModal v-if="etspEnabled" />
   </div>
 </template>
 

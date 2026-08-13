@@ -252,6 +252,7 @@
     "choose": "Choose",
     "chooseFile": "Choose file",
     "signatureLogin": "Login with e-signature",
+    "etspLogin": "Login with ETSP key",
     "signatureDocument": "Sign and save",
     "closeSignatureModal": "Close signature window",
     "clear": "Clear",

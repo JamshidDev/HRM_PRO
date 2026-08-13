@@ -256,6 +256,7 @@
     "choose": "Выбрать",
     "chooseFile": "Выбрать файл",
     "signatureLogin": "Вход через ЭЦП",
+    "etspLogin": "Вход по ключу ETSP",
     "signatureDocument": "Подписать и сохранить",
     "closeSignatureModal": "Закрыть окно подписи",
     "clear": "Очистить",

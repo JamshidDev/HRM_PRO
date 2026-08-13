@@ -259,6 +259,7 @@
     "choose": "Tanlang",
     "chooseFile": "Fayl tanlang",
     "signatureLogin": "E-imzo orqali kirish",
+    "etspLogin": "ETSP kalit bilan kirish",
     "signatureDocument": "Imzolash va saqlash",
     "closeSignatureModal": "Imzolash oynasini yopish",
     "clear": "Tozalash",
