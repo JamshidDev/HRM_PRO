@@ -3907,8 +3907,10 @@
       "vacation": "Ta’til haqida ogohlantirilgan xodimlar soni",
       "med": "Tibbiy ko‘rik haqida ogohlantirilgan xodimlar soni",
       "passport": "Pasport muddati haqida ogohlantirilgan xodimlar soni",
-      "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni"
-    }
+      "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni",
+      "turnstile": "Turniket orqali xabar yuborilgan xodimlar soni"
+    },
+    "table": { "sentAt": "Yuborilgan vaqti" }
   },
   "mobileStoryPage": {
     "name": "Story e'lonlari",

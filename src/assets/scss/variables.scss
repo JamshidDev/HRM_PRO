@@ -63,6 +63,22 @@
   --fig-indigo-100: #ebf1ff;
   --fig-lime-100: #f0f9c5;
   --fig-teal-100: #cdf2e9;
+  --fig-amber-100: #fcf1dc;
+  --fig-pink-100: #fce3ee;
+
+  // Figma "Status" chip juftliklari (fon + matn) — tabriknoma turlari uchun.
+  --fig-chip-brand-bg: #eff8ff;
+  --fig-chip-brand-text: #1570ef;
+  --fig-chip-amber-bg: #fefaf1;
+  --fig-chip-amber-text: #ab7d00;
+  --fig-chip-green-bg: #f5fdf6;
+  --fig-chip-green-text: #008838;
+  --fig-chip-indigo-bg: #f1f4ff;
+  --fig-chip-indigo-text: #4340be;
+  --fig-chip-pink-bg: #fef2f7;
+  --fig-chip-pink-text: #c22463;
+  --fig-chip-lime-bg: #f9fde7;
+  --fig-chip-lime-text: #7f9920;
 
   //fonts
   --public-sans: 'Public Sans', sans-serif;
@@ -168,6 +184,23 @@
   --fig-indigo-100: rgba(85, 80, 229, 0.2);
   --fig-lime-100: rgba(127, 153, 32, 0.22);
   --fig-teal-100: rgba(0, 136, 113, 0.22);
+  --fig-amber-100: rgba(215, 160, 0, 0.18);
+  --fig-pink-100: rgba(224, 65, 127, 0.2);
+
+  // Chip fonlari past alfa bilan, matnlar esa yorug'lashtiriladi — maketdagi
+  // deyarli oq tint qorong'i kartada ko'rinmay qoladi.
+  --fig-chip-brand-bg: rgba(21, 112, 239, 0.18);
+  --fig-chip-brand-text: #6cb0f8;
+  --fig-chip-amber-bg: rgba(215, 160, 0, 0.18);
+  --fig-chip-amber-text: #e5b747;
+  --fig-chip-green-bg: rgba(0, 136, 56, 0.2);
+  --fig-chip-green-text: #34d399;
+  --fig-chip-indigo-bg: rgba(85, 80, 229, 0.2);
+  --fig-chip-indigo-text: #7a68f0;
+  --fig-chip-pink-bg: rgba(224, 65, 127, 0.18);
+  --fig-chip-pink-text: #f07aa8;
+  --fig-chip-lime-bg: rgba(127, 153, 32, 0.22);
+  --fig-chip-lime-text: #c3dc5a;
 
   --sidebar-color: #1e293b;
 

@@ -3864,8 +3864,10 @@
       "vacation": "Number of employees notified about vacation",
       "med": "Number of employees notified about medical examination",
       "passport": "Number of employees notified about passport expiry",
-      "mobile": "Number of employees notified via mobile app"
-    }
+      "mobile": "Number of employees notified via mobile app",
+      "turnstile": "Number of employees notified via turnstile"
+    },
+    "table": { "sentAt": "Sent at" }
   },
   "mobileStoryPage": {
     "name": "Story announcements",

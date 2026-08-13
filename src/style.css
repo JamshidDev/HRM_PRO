@@ -61,6 +61,20 @@
   --color-fig-indigo-100: var(--fig-indigo-100);
   --color-fig-lime-100: var(--fig-lime-100);
   --color-fig-teal-100: var(--fig-teal-100);
+  --color-fig-amber-100: var(--fig-amber-100);
+  --color-fig-pink-100: var(--fig-pink-100);
+  --color-fig-chip-brand: var(--fig-chip-brand-bg);
+  --color-fig-chip-brand-text: var(--fig-chip-brand-text);
+  --color-fig-chip-amber: var(--fig-chip-amber-bg);
+  --color-fig-chip-amber-text: var(--fig-chip-amber-text);
+  --color-fig-chip-green: var(--fig-chip-green-bg);
+  --color-fig-chip-green-text: var(--fig-chip-green-text);
+  --color-fig-chip-indigo: var(--fig-chip-indigo-bg);
+  --color-fig-chip-indigo-text: var(--fig-chip-indigo-text);
+  --color-fig-chip-pink: var(--fig-chip-pink-bg);
+  --color-fig-chip-pink-text: var(--fig-chip-pink-text);
+  --color-fig-chip-lime: var(--fig-chip-lime-bg);
+  --color-fig-chip-lime-text: var(--fig-chip-lime-text);
 
   --color-login-page: var(--login-page-bg);
   --color-login-form: var(--login-form-bg);
