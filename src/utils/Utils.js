@@ -165,6 +165,17 @@ const compareDelta = (cur, prev) => {
   }
 }
 
+/**
+ * `[{date, count}]` ro'yxatidan eng oxirgi sanadagi `count` ni qaytaradi.
+ * Massiv tartibiga bog'liq emas — backend yangidan eskiga yoki aksincha
+ * qaytarishidan qat'i nazar bir xil natija beradi.
+ */
+const latestByDate = (list) => {
+  if (!Array.isArray(list) || list.length === 0) return 0
+  const latest = list.reduce((acc, v) => (!acc || v.date > acc.date ? v : acc), null)
+  return latest?.count || 0
+}
+
 const sumFormat = (v) => {
   // if(isNaN(v)) return v
   return numeral(v).format('0 0.00')
@@ -600,6 +611,7 @@ export default {
   routeTimesheetPathMaker,
   formatNumberToMoney,
   compareDelta,
+  latestByDate,
   debouncedFn,
   colorTypes,
   blobFileDownload,

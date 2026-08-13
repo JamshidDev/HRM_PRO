@@ -2,26 +2,18 @@
   import VChart from 'vue-echarts'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
-  import { use, graphic } from 'echarts/core'
+  import { use } from 'echarts/core'
   import { LineChart } from 'echarts/charts'
-  import { TooltipComponent, GridComponent } from 'echarts/components'
+  import { TooltipComponent, GridComponent, MarkLineComponent } from 'echarts/components'
   import { CanvasRenderer } from 'echarts/renderers'
   import { onMounted, nextTick } from 'vue'
 
-  use([TooltipComponent, GridComponent, LineChart, CanvasRenderer])
+  use([TooltipComponent, GridComponent, MarkLineComponent, LineChart, CanvasRenderer])
 
   const store = useTurnstileDashboardStore()
 
   const tokenColor = (name) =>
     getComputedStyle(document.documentElement).getPropertyValue(name).trim()
-
-  const hexToRgba = (hex, alpha) => {
-    const v = hex.replace('#', '')
-    const r = parseInt(v.substring(0, 2), 16)
-    const g = parseInt(v.substring(2, 4), 16)
-    const b = parseInt(v.substring(4, 6), 16)
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`
-  }
 
   const emit = defineEmits(['barClick'])
   const dashboardStore = useTurnstileDashboardStore()
@@ -48,19 +40,17 @@
     emit('barClick', timeRange)
   }
 
-  const successColor = tokenColor('--success-color')
-
   const option = ref({
     tooltip: {
       trigger: 'axis',
       axisPointer: {
         type: 'line',
-        lineStyle: { color: 'rgba(158,158,158,0.35)' }
+        lineStyle: { color: tokenColor('--fig-br-secondary') }
       },
       backgroundColor: tokenColor('--surface-section'),
       borderColor: tokenColor('--surface-line'),
       textStyle: {
-        color: tokenColor('--textColor0')
+        color: tokenColor('--fig-text-primary')
       }
     },
     grid: {
@@ -77,22 +67,24 @@
       axisLabel: {
         show: true,
         fontSize: 10,
-        color: 'rgba(158,158,158,0.9)'
+        lineHeight: 15,
+        color: tokenColor('--fig-text-secondary'),
+        // Maketda x o'qi yorliqlari 0.2px harf oralig'i bilan
+        rich: {},
+        padding: [0, 0, 0, 0]
       },
-      axisTick: {
-        show: false
-      },
+      axisTick: { show: false },
       axisLine: {
         lineStyle: {
-          color: 'rgba(158,158,158,0.1)',
+          color: tokenColor('--fig-br-disable'),
           width: 1
         }
       },
       splitLine: {
         show: true,
         lineStyle: {
-          type: 'dashed',
-          color: 'rgba(158,158,158,0.12)'
+          type: [3, 3],
+          color: tokenColor('--fig-br-secondary')
         }
       }
     },
@@ -100,13 +92,13 @@
       type: 'value',
       axisLabel: {
         fontSize: 10,
-        color: 'rgba(158,158,158,0.9)'
+        color: tokenColor('--fig-text-primary')
       },
       splitLine: {
         show: true,
         lineStyle: {
-          type: 'dashed',
-          color: 'rgba(158,158,158,0.12)'
+          type: [3, 3],
+          color: tokenColor('--fig-br-secondary')
         }
       }
     },
@@ -122,17 +114,23 @@
         triggerLineEvent: true,
         data: [],
         lineStyle: {
-          width: 3,
-          color: successColor
+          width: 2,
+          color: tokenColor('--fig-icon-green')
         },
         itemStyle: {
-          color: successColor
+          color: tokenColor('--fig-icon-green')
         },
-        areaStyle: {
-          color: new graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: hexToRgba(successColor, 0.22) },
-            { offset: 1, color: hexToRgba(successColor, 0) }
-          ])
+        // Maketdagi ko'k punktir mos'yor chizig'i
+        markLine: {
+          silent: true,
+          symbol: 'none',
+          label: { show: false },
+          lineStyle: {
+            color: '#1570ef',
+            width: 1,
+            type: [3, 3]
+          },
+          data: [{ type: 'average' }]
         }
       }
     ]
@@ -181,11 +179,16 @@
 </script>
 
 <template>
-  <div class="w-full relative">
-    <n-spin :show="store.dailyAttendanceLoading" class="w-full h-[260px] relative z-2">
-      <v-chart autoresize class="w-full" :option="option" ref="chartRef" />
+  <div class="w-full h-full relative">
+    <n-spin :show="store.dailyAttendanceLoading" class="w-full h-full relative z-2">
+      <v-chart autoresize class="w-full h-full" :option="option" ref="chartRef" />
     </n-spin>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+  :deep(.n-spin-container),
+  :deep(.n-spin-content) {
+    height: 100%;
+  }
+</style>

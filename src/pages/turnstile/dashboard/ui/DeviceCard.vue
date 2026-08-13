@@ -1,9 +1,10 @@
 <script setup>
-  import { Eye20Filled, Desktop20Filled } from '@vicons/fluent'
   import { Utils } from '@/utils/index.js'
   import CardHeader from './CardHeader.vue'
   import DeltaBadge from './DeltaBadge.vue'
+  import DetailsLine from './DetailsLine.vue'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
+  import HeadDesktopIcon from '@/assets/icons/dashboard/head-desktop.svg'
 
   const store = useTurnstileDashboardStore()
   const emits = defineEmits(['onPreview'])
@@ -19,95 +20,88 @@
       previewType: 'online_devices',
       label: 'turnStileDashboard.cards.onlineDevices',
       count: store.deviceData?.online || 0,
-      bar: 'bg-success',
+      color: '--fig-icon-green',
       delta: store.deltas.devicesOnline
     },
     {
       previewType: 'offline_devices',
       label: 'turnStileDashboard.cards.offlineDevices',
       count: store.deviceData?.offline || 0,
-      bar: 'bg-primary',
+      color: '--fig-icon-brand',
       delta: store.deltas.devicesOffline,
       invert: true
     }
   ])
 
-  const formatCount = (v) => Utils.formatNumberToMoney(v) || '0'
+  const formattedAll = computed(() => Utils.formatNumberToMoney(store.deviceData?.all) || '0')
 </script>
 
 <template>
   <div
-    class="stretch-card p-4 bg-surface-section/75 border border-surface-line rounded-2xl relative overflow-hidden flex flex-col"
+    class="stretch-card bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col"
   >
     <n-spin :show="store.devicesLoading" class="flex-1 flex flex-col">
       <CardHeader
-        :icon="Desktop20Filled"
-        type="primary"
+        :icon="HeadDesktopIcon"
+        tint="indigo"
+        small-subtitle
         :title="$t('turnStileDashboard.cards.deviceAnalytic')"
         :subtitle="$t('turnStileDashboard.cards.deviceAnalyticDescription')"
       />
 
-      <div class="text-center mt-auto pt-6">
-        <div class="flex items-center justify-center gap-2 flex-wrap">
-          <span class="font-grotesk font-bold text-textColor0 text-[30px] leading-[1.1]">
-            {{ formatCount(store.deviceData?.all) }}
-          </span>
-          <DeltaBadge hide-label :delta="store.deltas.devicesAll" :loading="store.compareLoading" />
-        </div>
-        <div class="text-xs text-secondary leading-[1.3] mt-1">
-          {{ $t('turnStileDashboard.compare.totalDevices') }}
-        </div>
-      </div>
-
-      <!-- onlayn ulushi -->
-      <div class="mt-6 h-[56px] w-full rounded-2xl bg-surface-line/70 relative overflow-hidden">
-        <div
-          class="h-full rounded-2xl bg-success flex items-center justify-end pr-3 transition-all duration-500"
-          :style="{ width: Math.max(percent, 12) + '%' }"
-        >
-          <span
-            class="text-[11px] font-bold text-success bg-surface-section rounded-full px-2 py-0.5"
-          >
-            {{ percent }}%
-          </span>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2 mt-4">
-        <div
-          v-for="(cell, idx) in cells"
-          :key="idx"
-          @click="emits('onPreview', cell.previewType)"
-          class="relative group cursor-pointer border border-surface-line rounded-xl p-3 hover:bg-primary/6 transition-all duration-300"
-        >
-          <div
-            class="z-10 transition-all duration-500 scale-0 absolute left-1/2 top-1/2 -translate-1/2 text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100"
-          >
-            <n-icon size="26">
-              <Eye20Filled />
-            </n-icon>
+      <div class="flex-1 flex flex-col justify-center gap-2.5 p-2">
+        <div class="h-14 flex flex-col items-center justify-center">
+          <div class="flex items-center justify-center gap-2.5 flex-wrap">
+            <span
+              class="font-grotesk font-semibold text-[20px] leading-[30px] text-fig-text-primary"
+            >
+              {{ formattedAll }}
+            </span>
+            <DeltaBadge
+              hide-label
+              :delta="store.deltas.devicesAll"
+              :loading="store.compareLoading"
+            />
           </div>
+          <p class="text-[10px] leading-[12px] text-fig-text-tertiary text-center">
+            {{ $t('turnStileDashboard.compare.totalDevices') }}
+          </p>
+        </div>
 
-          <div class="flex gap-2 transition-all duration-300 group-hover:opacity-[0.2]">
-            <span class="w-[3px] rounded-full shrink-0" :class="cell.bar"></span>
-            <div class="min-w-0">
-              <div class="text-xs text-secondary leading-[1.3] line-clamp-1">
-                {{ $t(cell.label) }}
-              </div>
-              <div class="flex items-center gap-2 flex-wrap mt-1">
-                <span class="font-grotesk font-bold text-textColor0 text-[18px] leading-[1.1]">
-                  {{ formatCount(cell.count) }}
-                </span>
-                <DeltaBadge
-                  hide-label
-                  :delta="cell.delta"
-                  :invert="cell.invert"
-                  :loading="store.compareLoading"
-                />
-              </div>
+        <!-- onlayn ulushi -->
+        <div class="py-3">
+          <div class="h-14 w-full rounded-2xl bg-fig-neutral-300 overflow-hidden relative">
+            <div
+              class="h-full rounded-2xl relative overflow-hidden transition-all duration-500"
+              :style="{
+                width: Math.max(percent, 14) + '%',
+                background: 'linear-gradient(to left, var(--fig-icon-green), var(--fig-green-400))'
+              }"
+            >
+              <span
+                class="absolute right-0 top-1/2 -translate-y-1/2 bg-surface-section rounded-l-full px-1.5 py-0.5 text-[12px] leading-[16px] font-semibold text-fig-text-green"
+              >
+                {{ percent }}%
+              </span>
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="bg-surface-ground-soft rounded-xl p-3 flex items-start gap-1">
+        <DetailsLine
+          v-for="(cell, idx) in cells"
+          :key="idx"
+          clickable
+          class="flex-1"
+          :label="$t(cell.label)"
+          :count="cell.count"
+          :bar-color="cell.color"
+          :delta="cell.delta"
+          :invert="cell.invert"
+          :delta-loading="store.compareLoading"
+          @click="emits('onPreview', cell.previewType)"
+        />
       </div>
     </n-spin>
   </div>

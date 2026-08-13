@@ -1,9 +1,11 @@
 <script setup>
-  import { Eye20Filled, Board20Filled } from '@vicons/fluent'
+  import { Eye20Filled } from '@vicons/fluent'
   import { Utils } from '@/utils/index.js'
   import CardHeader from './CardHeader.vue'
   import DeltaBadge from './DeltaBadge.vue'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
+  import HeadTableRowsIcon from '@/assets/icons/dashboard/head-table-rows.svg'
+  import GraphWatermark from '@/assets/icons/dashboard/graph-watermark.svg'
 
   const store = useTurnstileDashboardStore()
   const emits = defineEmits(['onPreview'])
@@ -13,60 +15,61 @@
 
 <template>
   <div
-    class="stretch-card p-4 bg-surface-section/75 border border-surface-line rounded-2xl relative overflow-hidden flex flex-col"
+    class="stretch-card bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col"
   >
     <n-spin :show="store.monthlyLoading" class="flex-1 flex flex-col">
       <CardHeader
-        :icon="Board20Filled"
-        type="warning"
+        :icon="HeadTableRowsIcon"
+        tint="lime"
         :title="$t('turnStileDashboard.cards.graphAnalytic')"
         :subtitle="$t('turnStileDashboard.cards.graphAnalyticDescription')"
       />
 
-      <!-- markazdagi xira illyustratsiya: orqada yumshoq dog', ustida qiyshaytirilgan ikonka -->
-      <div class="flex-1 flex justify-center items-center py-6 min-h-[160px] relative">
-        <span
+      <!-- markazdagi qiyshaytirilgan dekor + pastdan oq gradient niqob -->
+      <div class="flex-1 min-h-[160px] relative overflow-hidden p-2">
+        <div
           aria-hidden="true"
-          class="absolute w-[190px] h-[170px] rounded-[60px] bg-danger/6 blur-xl -rotate-[20deg]"
-        ></span>
-        <svg
-          viewBox="0 0 120 120"
-          class="relative w-[140px] h-[140px] text-danger/20 -rotate-[20deg]"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="9"
-          stroke-linecap="round"
+          class="absolute left-[30px] top-[11px] rotate-[17.7deg] rounded-[48.286px] bg-fig-red-100 opacity-60 p-[24.143px] flex items-center"
         >
-          <rect x="14" y="14" width="92" height="92" rx="26" />
-          <path d="M46 18 V102" />
-          <path d="M50 46 H102" />
-          <path d="M50 74 H102" />
-        </svg>
+          <span class="w-[120.714px] h-[120.714px] flex items-center justify-center">
+            <GraphWatermark />
+          </span>
+        </div>
+        <div
+          aria-hidden="true"
+          class="absolute left-0 bottom-0 w-full h-[125px] bg-gradient-to-b from-transparent to-surface-section"
+        ></div>
       </div>
 
       <div
         @click="emits('onPreview', 'notIncludedSchedule')"
-        class="bg-danger/5 hover:bg-danger/10 transition-all duration-300 cursor-pointer rounded-xl p-3 relative group"
+        class="bg-fig-red-50 rounded-xl px-3 py-1.5 min-h-[78px] flex flex-col justify-center gap-2 cursor-pointer relative group"
       >
         <div
-          class="z-10 transition-all duration-500 scale-0 absolute left-1/2 top-1/2 -translate-1/2 text-danger opacity-0 group-hover:opacity-100 group-hover:scale-100"
+          class="z-10 transition-all duration-500 scale-0 absolute left-1/2 top-1/2 -translate-1/2 text-fig-red opacity-0 group-hover:opacity-100 group-hover:scale-100"
         >
           <n-icon size="28">
             <Eye20Filled />
           </n-icon>
         </div>
 
-        <div class="transition-all duration-300 group-hover:opacity-[0.2]">
-          <div class="flex items-center justify-between gap-2">
-            <span class="text-xs text-secondary leading-[1.3]">
+        <div class="transition-all duration-300 group-hover:opacity-[0.2] pl-1">
+          <div class="flex items-center gap-1 flex-wrap">
+            <span class="text-[12px] leading-[16px] text-fig-text-secondary">
               {{ $t('turnStileDashboard.compare.withoutSchedule') }}
             </span>
-            <span class="font-grotesk font-bold text-textColor0 text-[24px] leading-[1.1]">
+            <span
+              class="font-grotesk font-semibold text-[20px] leading-[30px] text-fig-text-primary"
+            >
               {{ formatted }}
             </span>
           </div>
-          <div class="border-t border-surface-line mt-3 pt-3">
+          <div class="flex items-center justify-between gap-2 mt-1">
+            <span class="text-[12px] leading-[16px] text-fig-text-muted">
+              {{ $t('turnStileDashboard.compare.vsYesterday') }}
+            </span>
             <DeltaBadge
+              hide-label
               :delta="store.deltas.withoutSchedule"
               invert
               :loading="store.compareLoading"

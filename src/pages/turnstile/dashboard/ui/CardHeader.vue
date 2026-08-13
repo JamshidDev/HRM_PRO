@@ -3,41 +3,50 @@
     icon: Object,
     title: String,
     subtitle: String,
-    type: {
+    // Chip foni: maketdagi tint tokenlari
+    tint: {
       type: String,
-      default: 'primary'
-    }
+      default: 'indigo'
+    },
+    // Qurilmalar kartasida tavsif 10px (maketda shunday)
+    smallSubtitle: Boolean
   })
 
-  const typeClass = computed(() => {
-    const classes = {
-      primary: 'text-primary bg-primary/10',
-      warning: 'text-warning bg-warning/10',
-      dark: 'text-dark bg-dark/10',
-      danger: 'text-danger bg-danger/10',
-      success: 'text-success bg-success/10',
-      secondary: 'text-secondary bg-secondary/10'
-    }
-    return classes[props.type] || classes.primary
-  })
+  const tintClass = computed(
+    () =>
+      ({
+        green: 'bg-fig-green-100',
+        orange: 'bg-fig-orange-100',
+        yellow: 'bg-fig-yellow-100',
+        red: 'bg-fig-red-100',
+        blue: 'bg-fig-blue-100',
+        indigo: 'bg-fig-indigo-100',
+        lime: 'bg-fig-lime-100',
+        teal: 'bg-fig-teal-100'
+      })[props.tint] || 'bg-fig-indigo-100'
+  )
 </script>
 
 <template>
-  <div class="flex items-start gap-3">
-    <div
-      v-if="icon"
-      :class="typeClass"
-      class="w-[32px] h-[32px] shrink-0 rounded-[10px] flex justify-center items-center"
-    >
-      <n-icon size="18">
+  <div class="flex items-center gap-1 pl-2 pr-1 py-3 w-full">
+    <!-- Maketda: 28px chip = 4px padding + 20px ikonka ramkasi. Ikonka SVG'si
+         o'zining tabiiy o'lchamida (glyph) ramka markazida turadi — cho'zilmaydi. -->
+    <div v-if="icon" class="shrink-0 rounded-lg p-1" :class="tintClass">
+      <span class="w-5 h-5 flex items-center justify-center">
         <component :is="icon" />
-      </n-icon>
+      </span>
     </div>
-    <div class="min-w-0">
-      <h3 class="font-bold text-[15px] leading-[1.2] text-textColor0">{{ title }}</h3>
-      <small v-if="subtitle" class="block text-xs text-secondary leading-[1.3] mt-0.5">
+    <div class="flex-1 min-w-0 flex flex-col justify-center">
+      <p class="text-[14px] leading-[18px] font-medium text-fig-text-primary truncate">
+        {{ title }}
+      </p>
+      <p
+        v-if="subtitle"
+        class="text-[#74788d] truncate"
+        :class="smallSubtitle ? 'text-[10px] leading-[12px]' : 'text-[12px] leading-[14.4px]'"
+      >
         {{ subtitle }}
-      </small>
+      </p>
     </div>
   </div>
 </template>
