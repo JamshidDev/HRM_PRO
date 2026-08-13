@@ -283,6 +283,7 @@ export const appPermissions = {
   turnstileDevicesStatExport: 'turnstile-devices-stat-export',
   turnstileDevicesRead: 'turnstile-devices-read',
   turnstileDevicesWrite: 'turnstile-devices-write',
+  turnstileDevicesSync: 'turnstile-devices-sync',
   turnstileOthers: 'turnstile-others',
   turnstileApprove: 'turnstile-approve',
   turnstileApproveRead: 'turnstile-approve-read',

@@ -47,6 +47,8 @@ export const ENFORCED = new Set([
   'users-delete', 'users-read', 'users-write', 'vacancy-approve-delete', 'work-day-delete', 'work-day-write',
   // Audit 2026-08-13 — admin sahifalarini `admin`dan aniq read/write ruxsatga ko'chirish:
   'vacancy-approve-read', 'vacancy-approve-write', 'worker-reports-read',
+  // Audit 2026-08-13 — qurilma sinxronlash alohida ruxsat:
+  'turnstile-devices-sync',
   // Audit 2026-08-12 — frontend gate qiladigan, lekin rol formasida yashirin qolgan
   // write toggle'lar (oddiy kartada ENFORCED'da bo'lmagani uchun ko'rinmasdi):
   'turnstile-worker-image-write', 'hr-vacations-write', 'hr-business-trip-write',
@@ -127,6 +129,8 @@ export const MEANINGFUL = new Set([
   // Audit 2026-08-13 — Tasdiqlash + Xodim hisobotlari aniq ruxsatlari:
   'vacancy-approve', 'vacancy-approve-read', 'vacancy-approve-write',
   'worker-reports', 'worker-reports-read',
+  // Audit 2026-08-13 — qurilma sinxronlash alohida ruxsat:
+  'turnstile-devices-sync',
 ])
 
 export const PERMISSION_GROUPS = [
@@ -260,6 +264,7 @@ export const PERMISSION_GROUPS = [
           { slug: 'turnstile-devices-read', label: "Ko'rish" },
           { slug: 'turnstile-devices-write', label: 'Yaratish / Tahrirlash' },
           { slug: 'turnstile-devices-delete', label: "O'chirish" },
+          { slug: 'turnstile-devices-sync', label: 'Sinxronlash' },
           { slug: 'turnstile-devices-export', label: 'Yuklash' },
           { slug: 'turnstile-devices-stat-export', label: 'Hisobot yuklash' }
         ]

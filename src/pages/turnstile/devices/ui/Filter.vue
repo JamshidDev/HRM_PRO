@@ -46,7 +46,7 @@
   }
 
   const onRefreshDevice = () => {
-    if (!accStore.checkAction(accStore.pn.turnstileDevicesWrite)) return
+    if (!accStore.checkAction(accStore.pn.turnstileDevicesSync)) return
     store._refreshDevice()
   }
 
