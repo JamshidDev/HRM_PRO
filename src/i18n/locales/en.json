@@ -2954,6 +2954,8 @@
     "month": "Month",
     "period": "Period (month)",
     "pull": "Pull from 1C",
+    "repull": "Re-pull from 1C",
+    "repullDone": "Employee data refreshed from 1C",
     "pulled": "Pulled",
     "workers": "Employees",
     "byOrg": "By organization",

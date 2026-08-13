@@ -1,5 +1,5 @@
 <script setup>
-  import { CloudArrowDown24Regular, Eye16Regular, History24Regular, Search24Regular, ArrowDownload24Regular, Calculator24Regular } from '@vicons/fluent'
+  import { CloudArrowDown24Regular, Eye16Regular, History24Regular, Search24Regular, ArrowDownload24Regular, Calculator24Regular, ArrowSync24Regular } from '@vicons/fluent'
   import { NoDataPicture, UIBadge, UIModal, UIPageContent, UIPagination, UIYearMonth, UISelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useSalary1cStore } from '@/store/modules/index.js'
   import { useDebounceFn } from '@vueuse/core'
@@ -281,6 +281,10 @@
                     </n-button>
                     <n-button size="tiny" quaternary @click="store._history(r)" :title="$t('salary1c.history')">
                       <template #icon><n-icon><History24Regular /></n-icon></template>
+                    </n-button>
+                    <n-button size="tiny" quaternary @click="store._pullOne(r)" :title="$t('salary1c.repull')"
+                      :loading="store.repullPinfl === r.pinfl" :disabled="!!store.repullPinfl">
+                      <template #icon><n-icon><ArrowSync24Regular /></n-icon></template>
                     </n-button>
                   </td>
                 </tr>
@@ -639,10 +643,19 @@
       :title="$t('salary1c.payslip')">
       <n-spin :show="store.payslipLoading">
         <div v-if="store.payslip" class="min-h-[100px]">
-          <p class="font-semibold text-base">{{ store.payslip.fio }}</p>
-          <p class="text-xs text-textColor3 mb-3">
-            {{ store.payslip.position }} · PINFL {{ store.payslip.pinfl }} · {{ $t('salary1c.tabNo') }} {{ store.payslip.tab_nomer }} · {{ store.payslip.year }}/{{ store.payslip.month }}
-          </p>
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <p class="font-semibold text-base">{{ store.payslip.fio }}</p>
+              <p class="text-xs text-textColor3 mb-3">
+                {{ store.payslip.position }} · PINFL {{ store.payslip.pinfl }} · {{ $t('salary1c.tabNo') }} {{ store.payslip.tab_nomer }} · {{ store.payslip.year }}/{{ store.payslip.month }}
+              </p>
+            </div>
+            <n-button size="small" secondary @click="store._pullOne(store.payslip)"
+              :loading="store.repullPinfl === store.payslip.pinfl" :disabled="!!store.repullPinfl">
+              <template #icon><n-icon><ArrowSync24Regular /></n-icon></template>
+              {{ $t('salary1c.repull') }}
+            </n-button>
+          </div>
 
           <div class="s1-pinfo">
             <div><span class="s1-pinfo-lbl">{{ $t('salary1c.oklad') }}</span><b class="tnum">{{ fmt(store.payslip.oklad) }}</b></div>

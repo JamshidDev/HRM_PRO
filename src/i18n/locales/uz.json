@@ -2984,6 +2984,8 @@
     "month": "Oy",
     "period": "Davr (oy)",
     "pull": "1C dan tortish",
+    "repull": "1C dan qayta tortish",
+    "repullDone": "Xodim ma'lumoti 1C dan yangilandi",
     "pulled": "Tortildi",
     "workers": "Xodimlar",
     "byOrg": "Korxonalar kesimida",
