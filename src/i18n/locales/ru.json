@@ -124,6 +124,7 @@
     "edit": "Редактировать",
     "work_date": "Дата выхода на работу",
     "delete": "Удалить",
+    "replace": "Заменить",
     "deleteAll": "Удалить все",
     "checked": "Проверено",
     "view": "Просмотр",
@@ -3936,8 +3937,11 @@
     "shortDescriptionPlaceholder": "Краткое описание новости...",
     "content": "Контент",
     "contentPlaceholder": "Напишите контент новости здесь...",
+    "badge": "Новость",
     "attachments": "Вложения",
-    "attachmentsHint": "Загрузите документы, PDF или другие файлы",
+    "attachmentsHint": "JPG/PNG, до 5MB",
+    "saveDraft": "Сохранить как черновик",
+    "publish": "Опубликовать",
     "statusDraft": "Черновик",
     "statusPublished": "Опубликовано",
     "statusArchived": "В архиве",
@@ -3955,7 +3959,8 @@
     "pinned": "Закреплено",
     "video": "Видео",
     "image": "Изображение",
-    "noMedia": "Медиа нет"
+    "noMedia": "Медиа нет",
+    "statistics": "Статистика"
   },
   "newsCategoryPage": {
     "name": "Категории новостей",

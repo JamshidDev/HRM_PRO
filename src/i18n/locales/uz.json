@@ -124,6 +124,7 @@
     "edit": "Tahrirlash",
     "work_date": "Ishga chiqish sanasi",
     "delete": "O'chirish",
+    "replace": "Almashtirish",
     "deleteAll": "Barchasini o'chirish",
     "checked": "Tekshirilgan",
     "view": "Ko'rish",
@@ -3968,8 +3969,11 @@
     "shortDescriptionPlaceholder": "Yangilik haqida qisqacha...",
     "content": "Kontent",
     "contentPlaceholder": "Yangilik kontentini shu yerga yozing...",
+    "badge": "Yangilik",
     "attachments": "Biriktirmalar",
-    "attachmentsHint": "Hujjatlar, PDF yoki boshqa fayllarni yuklang",
+    "attachmentsHint": "JPG/PNG, 5MB gacha",
+    "saveDraft": "Qoralama qilish",
+    "publish": "Chop etish",
     "statusDraft": "Qoralama",
     "statusPublished": "Nashr etilgan",
     "statusArchived": "Arxivlangan",
@@ -3987,7 +3991,8 @@
     "pinned": "Mahkamlangan",
     "video": "Video",
     "image": "Rasm",
-    "noMedia": "Media yo'q"
+    "noMedia": "Media yo'q",
+    "statistics": "Statistika"
   },
   "newsCategoryPage": {
     "name": "Yangilik kategoriyalari",

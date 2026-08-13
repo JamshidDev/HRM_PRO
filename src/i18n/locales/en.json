@@ -120,6 +120,7 @@
     "edit": "Edit",
     "work_date": "Start date",
     "delete": "Delete",
+    "replace": "Replace",
     "deleteAll": "Delete all",
     "checked": "Checked",
     "view": "View",
@@ -3925,8 +3926,11 @@
     "shortDescriptionPlaceholder": "Brief about the news...",
     "content": "Content",
     "contentPlaceholder": "Write news content here...",
+    "badge": "News",
     "attachments": "Attachments",
-    "attachmentsHint": "Upload documents, PDF or other files",
+    "attachmentsHint": "JPG/PNG, up to 5MB",
+    "saveDraft": "Save as draft",
+    "publish": "Publish",
     "statusDraft": "Draft",
     "statusPublished": "Published",
     "statusArchived": "Archived",
@@ -3944,7 +3948,8 @@
     "pinned": "Pinned",
     "video": "Video",
     "image": "Image",
-    "noMedia": "No media"
+    "noMedia": "No media",
+    "statistics": "Statistics"
   },
   "newsCategoryPage": {
     "name": "News Categories",

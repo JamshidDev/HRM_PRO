@@ -142,9 +142,9 @@
           <Disclaimer :show-panel="showPanel" />
           <n-spin :show="store.questionLoading" class="w-full">
             <template v-for="message in store.messages" :key="message.key">
-              <Message :data="message" />
+              <Message :data="message" :show-panel="showPanel" />
             </template>
-            <TypingIndicator v-if="showTyping" />
+            <TypingIndicator v-if="showTyping" :show-panel="showPanel" />
             <span class="block w-full h-[40px]"></span>
           </n-spin>
         </div>

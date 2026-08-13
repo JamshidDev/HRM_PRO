@@ -49,6 +49,7 @@
     "edit": "Таҳрирлаш",
     "work_date": "Ишга чиқиш санаси",
     "delete": "Ўчириш",
+    "replace": "Алмаштириш",
     "deleteAll": "Барчасини ўчириш",
     "checked": "Текширилган",
     "view": "Кўриш",
@@ -3708,8 +3709,11 @@
     "shortDescriptionPlaceholder": "Янгилик ҳақида қисқача...",
     "content": "Контент",
     "contentPlaceholder": "Янгилик контентини шу ерга ёзинг...",
+    "badge": "Янгилик",
     "attachments": "Бириктирмалар",
-    "attachmentsHint": "Ҳужжатлар, PDF ёки бошқа файлларни юкланг",
+    "attachmentsHint": "JPG/PNG, 5MB гача",
+    "saveDraft": "Қоралама қилиш",
+    "publish": "Чоп этиш",
     "statusDraft": "Қоралама",
     "statusPublished": "Нашр этилган",
     "statusArchived": "Архивланган",
@@ -3727,7 +3731,8 @@
     "pinned": "Маҳкамланган",
     "video": "Видео",
     "image": "Расм",
-    "noMedia": "Медиа йўқ"
+    "noMedia": "Медиа йўқ",
+    "statistics": "Статистика"
   },
   "newsCategoryPage": {
     "name": "Янгилик категориялари",

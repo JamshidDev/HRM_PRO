@@ -1,28 +1,24 @@
 <script setup>
   import {
-    CalendarClock16Regular,
     Document24Regular,
-    ArrowLeft24Regular,
     Image24Regular,
     Video24Regular,
     ArrowDownload24Regular,
-    Eye24Regular,
     Tag24Regular,
     Play24Regular,
-    DocumentEdit24Regular,
-    Globe24Regular,
-    Archive24Regular,
-    Pin24Filled,
-    ThumbLike16Regular,
-    ThumbDislike16Regular,
-    Chat24Regular
+    Pin24Filled
   } from '@vicons/fluent'
   import { useRoute, useRouter } from 'vue-router'
   import { useNewsStore } from '@/store/modules/index.js'
   import { AppPaths } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
-  import dayjs from 'dayjs'
+  import { UIBackButton } from '@/components/index.js'
+  import CalendarAltIcon from '@/assets/icons/calendarAlt.svg'
+  import EyeIcon from '@/assets/icons/eye.svg'
+  import LikeIcon from '@/assets/icons/Like.svg'
+  import DisLikeIcon from '@/assets/icons/disLike.svg'
+  import CommentIcon from '@/assets/icons/comment.svg'
 
   const { t } = i18n.global
 
@@ -41,6 +37,13 @@
   })
 
   const news = computed(() => store.instance)
+
+  const reactions = computed(() => [
+    { icon: EyeIcon, count: news.value?.views_count ?? 0 },
+    { icon: LikeIcon, count: news.value?.likes_count ?? 0 },
+    { icon: DisLikeIcon, count: news.value?.dislikes_count ?? 0 },
+    { icon: CommentIcon, count: news.value?.comments_count ?? 0 }
+  ])
 
   const translation = computed(() => {
     const tr = news.value?.translations ?? []
@@ -73,19 +76,17 @@
     if (DOC_EXTS.includes(ext)) return '#1279F0'
     return '#74788d'
   }
+  const hexToRgba = (hex, alpha) => {
+    const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16))
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`
+  }
+  const activeMediaColor = computed(() => mediaColor(activeMedia.value ?? {}))
   const mediaLabel = (item) => {
     const ext = getExt(item)
     if (item.type === 'video') return t('newsPage.video')
     if (DOC_EXTS.includes(ext)) return ext.toUpperCase()
     return t('newsPage.image')
   }
-
-  const statusMeta = {
-    0: { icon: DocumentEdit24Regular, color: '#FDC700', labelKey: 'newsPage.statusDraft' },
-    1: { icon: Globe24Regular, color: '#2dcb73', labelKey: 'newsPage.statusPublished' },
-    2: { icon: Archive24Regular, color: '#74788d', labelKey: 'newsPage.statusArchived' }
-  }
-  const currentStatus = computed(() => statusMeta[news.value?.status] ?? statusMeta[0])
 
   const downloadAll = async () => {
     for (let i = 0; i < sortedMedia.value.length; i++) {
@@ -95,26 +96,67 @@
 </script>
 
 <template>
-  <div class="min-h-screen bg-surface-ground">
+  <UIPageContent>
     <!-- Back Button -->
-    <div class="max-w-6xl mx-auto px-6 pt-6">
-      <button
-        class="cursor-pointer inline-flex items-center gap-2 text-sm text-textColor3 hover:text-primary transition-colors group"
-        @click="goBack"
-      >
-        <n-icon size="18" class="group-hover:-translate-x-1 transition-transform">
-          <ArrowLeft24Regular />
-        </n-icon>
-        {{ $t('newsPage.backToNews') }}
-      </button>
+    <div class="max-w-6xl mx-auto px-6 pt-4 w-full">
+      <UIBackButton @click="goBack" />
     </div>
 
     <n-spin :show="store.loading">
+      <!-- ── Title + Meta ─────────────────────────────────────────────────────── -->
+      <div class="max-w-6xl mx-auto px-6 mt-4">
+        <!-- Title -->
+        <h1 class="text-3xl font-bold text-textColor0 leading-tight mb-4">
+          {{ translation.title }}
+        </h1>
+
+        <!-- Meta row: date · status · pin · reactions · categories -->
+        <div
+          class="flex flex-wrap items-center gap-3 mb-6 pb-6 border-b border-surface-line"
+          style="color: #344054"
+        >
+          <!-- Date -->
+          <div class="flex items-center gap-1.5 text-sm">
+            <n-icon size="15"><CalendarAltIcon /></n-icon>
+            {{ news?.published_at ? Utils.timeOnlyDate(news.published_at) : '' }}
+          </div>
+
+          <!-- Pin badge -->
+          <div
+            v-if="news?.is_pinned"
+            class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-section border border-surface-line"
+          >
+            <n-icon size="12" color="#FDC700"><Pin24Filled /></n-icon>
+            <span class="text-xs font-semibold text-[#FDC700]">{{ $t('newsPage.pinned') }}</span>
+          </div>
+
+          <!-- Reactions -->
+          <div class="flex items-center gap-6">
+            <span v-for="(r, idx) in reactions" :key="idx" class="flex items-center gap-1 text-sm">
+              <n-icon size="15"><component :is="r.icon" /></n-icon>
+              {{ r.count }}
+            </span>
+          </div>
+
+          <!-- Categories -->
+          <template v-if="news?.categories?.length">
+            <span
+              v-for="cat in news.categories"
+              :key="cat.id"
+              class="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full"
+            >
+              <n-icon size="11"><Tag24Regular /></n-icon>
+              {{ getCategoryName(cat) }}
+            </span>
+          </template>
+        </div>
+      </div>
+
       <!-- ── Hero Media ───────────────────────────────────────────────────────── -->
-      <div v-if="sliderMedia.length" class="max-w-6xl mx-auto px-6 mt-4">
-        <div class="relative rounded-2xl overflow-hidden shadow-xl">
+      <div v-if="sliderMedia.length" class="max-w-6xl mx-auto px-6">
+        <div class="relative rounded-2xl overflow-hidden shadow-xl group">
           <!-- Main display -->
-          <div class="relative h-[480px] bg-surface-section overflow-hidden">
+          <div class="relative h-[580px] bg-surface-section overflow-hidden">
             <img
               v-if="activeMedia.type === 'image'"
               :src="activeMedia.path"
@@ -137,58 +179,66 @@
             />
 
             <!-- Counter -->
-            <div
+            <!-- <div
               class="absolute top-4 right-4 px-3 py-1.5 bg-dark/60 backdrop-blur-sm rounded-full text-white text-xs font-medium flex items-center gap-1.5"
             >
-              <n-icon size="13">
+              <n-icon size="16">
                 <component :is="mediaIcon(activeMedia.type)" />
               </n-icon>
               {{ activeMediaIndex + 1 }} / {{ sliderMedia.length }}
-            </div>
+            </div> -->
 
             <!-- Gallery button -->
-            <button
+            <!-- <button
               @click="showGallery = true"
               class="absolute top-4 left-4 px-3 py-1.5 bg-dark/60 backdrop-blur-sm rounded-full text-white text-xs font-medium flex items-center gap-1.5 hover:bg-dark/80 transition-colors"
             >
-              <n-icon size="13"><Eye24Regular /></n-icon>
+              <n-icon size="13"><EyeIcon /></n-icon>
               {{ $t('newsPage.viewAll') }}
-            </button>
+            </button> -->
           </div>
 
-          <!-- Thumbnail strip -->
+          <!-- Thumbnail strip (shown on hover of the main display) -->
           <div
             v-if="sliderMedia.length > 1"
-            class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"
+            class="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           >
-            <button
-              v-for="(item, idx) in sliderMedia"
-              :key="item.id"
-              @click="activeMediaIndex = idx"
-              class="h-14 w-20 rounded-lg overflow-hidden border-2 transition-all duration-200 shrink-0 relative"
-              :class="
-                activeMediaIndex === idx
-                  ? 'border-primary scale-105 shadow-lg'
-                  : 'border-white/40 opacity-60 hover:opacity-100'
-              "
+            <div
+              class="flex gap-4 border backdrop-blur-sm rounded-2xl p-4 shadow-lg"
+              :style="{
+                backgroundColor: hexToRgba(activeMediaColor, 0.15),
+                borderColor: hexToRgba(activeMediaColor, 0.6)
+              }"
             >
-              <img
-                v-if="item.type === 'image'"
-                :src="item.path"
-                class="w-full h-full object-cover"
-              />
-              <template v-else>
-                <video
+              <button
+                v-for="(item, idx) in sliderMedia"
+                :key="item.id"
+                @click="activeMediaIndex = idx"
+                class="h-20 w-36 rounded-xl overflow-hidden border-[1px] transition-all duration-200 shrink-0 relative"
+                :class="
+                  activeMediaIndex === idx
+                    ? 'border-primary scale-105 shadow-lg'
+                    : 'border-transparent opacity-60 hover:opacity-100'
+                "
+              >
+                <img
+                  v-if="item.type === 'image'"
                   :src="item.path"
-                  class="w-full h-full object-cover"
-                  preload="metadata"
-                  muted
+                  class="w-full h-full object-cover cursor-pointer"
                 />
-                <div class="absolute inset-0 flex items-center justify-center bg-dark/40">
-                  <n-icon size="18" color="#ffffff"><Play24Regular /></n-icon>
-                </div>
-              </template>
-            </button>
+                <template v-else>
+                  <video
+                    :src="item.path"
+                    class="w-full h-full object-cover cursor-pointer"
+                    preload="metadata"
+                    muted
+                  />
+                  <div class="absolute inset-0 flex items-center justify-center bg-dark/40">
+                    <n-icon size="18" color="#ffffff"><Play24Regular /></n-icon>
+                  </div>
+                </template>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -198,90 +248,17 @@
         <div class="flex gap-8 items-start">
           <!-- ── Article ───────────────────────────────────────────────────── -->
           <article class="flex-1 min-w-0">
-            <!-- Categories -->
-            <div v-if="news?.categories?.length" class="flex flex-wrap gap-2 mb-4">
-              <span
-                v-for="cat in news.categories"
-                :key="cat.id"
-                class="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full"
-              >
-                <n-icon size="11"><Tag24Regular /></n-icon>
-                {{ getCategoryName(cat) }}
-              </span>
-            </div>
-
-            <!-- Title -->
-            <h1 class="text-3xl font-bold text-textColor0 leading-tight mb-5">
-              {{ translation.title }}
-            </h1>
-
-            <!-- Meta row: date · status · pin · reactions -->
-            <div class="flex flex-wrap items-center gap-3 mb-8 pb-8 border-b border-surface-line">
-              <!-- Date -->
-              <div class="flex items-center gap-1.5 text-sm text-textColor3">
-                <n-icon size="15"><CalendarClock16Regular /></n-icon>
-                {{
-                  news?.published_at ? dayjs(news.published_at).format('MMMM D, YYYY HH:mm') : ''
-                }}
-              </div>
-
-              <!-- Status badge -->
-              <div
-                v-if="currentStatus"
-                class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-section border border-surface-line"
-              >
-                <n-icon size="12" :color="currentStatus.color">
-                  <component :is="currentStatus.icon" />
-                </n-icon>
-                <span class="text-xs font-semibold" :style="{ color: currentStatus.color }">
-                  {{ $t(currentStatus.labelKey) }}
-                </span>
-              </div>
-
-              <!-- Pin badge -->
-              <div
-                v-if="news?.is_pinned"
-                class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-section border border-surface-line"
-              >
-                <n-icon size="12" color="#FDC700"><Pin24Filled /></n-icon>
-                <span class="text-xs font-semibold text-[#FDC700]">{{
-                  $t('newsPage.pinned')
-                }}</span>
-              </div>
-
-              <!-- Reactions -->
-              <div class="flex items-center gap-4 ml-auto">
-                <span class="flex items-center gap-1 text-sm text-textColor3">
-                  <n-icon size="15"><Eye24Regular /></n-icon>
-                  {{ news?.views_count ?? 0 }}
-                </span>
-                <span class="flex items-center gap-1 text-sm" style="color: #2dcb73">
-                  <n-icon size="15" color="#2dcb73"><ThumbLike16Regular /></n-icon>
-                  {{ news?.likes_count ?? 0 }}
-                </span>
-                <span class="flex items-center gap-1 text-sm" style="color: #e7000a">
-                  <n-icon size="15" color="#E7000A"><ThumbDislike16Regular /></n-icon>
-                  {{ news?.dislikes_count ?? 0 }}
-                </span>
-                <span class="flex items-center gap-1 text-sm text-textColor3">
-                  <n-icon size="15"><Chat24Regular /></n-icon>
-                  {{ news?.comments_count ?? 0 }}
-                </span>
-              </div>
-            </div>
-
             <!-- HTML content -->
             <div class="news-content text-textColor0">
               <span v-html="translation.content" />
             </div>
           </article>
 
-          <!-- ── Media Sidebar ──────────────────────────────────────────────── -->
+          <!-- ── Media Sidebar (disabled for now — see ViewPage.vue script) ────
           <aside v-if="sortedMedia.length" class="w-72 shrink-0 sticky top-6">
             <div
               class="bg-surface-section border border-surface-line rounded-xl overflow-hidden shadow-sm"
             >
-              <!-- Header -->
               <div
                 class="px-4 py-3.5 border-b border-surface-line bg-surface-ground/60 flex items-center gap-2"
               >
@@ -294,7 +271,6 @@
                 </span>
               </div>
 
-              <!-- Media list -->
               <ul class="divide-y divide-surface-line">
                 <li
                   v-for="(item, idx) in sortedMedia"
@@ -321,7 +297,6 @@
                 </li>
               </ul>
 
-              <!-- Download all -->
               <div class="px-4 py-3 border-t border-surface-line">
                 <n-button type="primary" ghost size="small" class="w-full" @click="downloadAll">
                   <template #icon><ArrowDownload24Regular /></template>
@@ -330,6 +305,7 @@
               </div>
             </div>
           </aside>
+          ─────────────────────────────────────────────────────────────────── -->
         </div>
       </div>
     </n-spin>
@@ -361,7 +337,7 @@
         </div>
       </div>
     </n-modal>
-  </div>
+  </UIPageContent>
 </template>
 
 <style scoped>

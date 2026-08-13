@@ -19,6 +19,10 @@
     large: {
       type: Boolean,
       default: false
+    },
+    plainFooter: {
+      type: Boolean,
+      default: false
     }
   })
 </script>
@@ -39,7 +43,7 @@
           <span
             class="font-semibold text-primary truncate"
             :class="large ? 'text-lg' : 'text-sm'"
-            >{{ title }}
+          >{{ title }}
           </span>
           <slot name="title-suffix" />
         </div>
@@ -60,7 +64,8 @@
     </div>
     <div
       v-if="$slots.footer"
-      class="section-header-bar  flex items-center justify-end gap-2 rounded-b-3xl border-surface-line px-4 py-2 shrink-0"
+      class="flex items-center justify-end gap-2 rounded-b-3xl border-surface-line px-4 py-2 shrink-0"
+      :class="!plainFooter && 'section-header-bar'"
     >
       <slot name="footer" />
     </div>

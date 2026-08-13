@@ -1,8 +1,18 @@
-<script setup></script>
+<script setup>
+  defineProps({
+    showPanel: {
+      type: Boolean,
+      default: true
+    }
+  })
+</script>
 
 <template>
   <div class="flex w-full mb-6 justify-start">
-    <div class="inline-flex items-center gap-1.5 bg-info/5 border border-surface-line rounded-2xl rounded-bl-none p-4">
+    <div
+      :class="showPanel ? 'p-4' : 'p-3'"
+      class="inline-flex items-center gap-1.5 bot-bubble border border-surface-line rounded-2xl rounded-bl-none"
+    >
       <span class="typing-dot"></span>
       <span class="typing-dot"></span>
       <span class="typing-dot"></span>
@@ -11,6 +21,13 @@
 </template>
 
 <style scoped>
+  .bot-bubble {
+    background: #eff8ff;
+  }
+  [data-theme='dark'] .bot-bubble {
+    background: #102644;
+  }
+
   .typing-dot {
     width: 8px;
     height: 8px;
