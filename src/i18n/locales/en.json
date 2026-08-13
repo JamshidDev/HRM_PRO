@@ -2016,8 +2016,8 @@
       }
     },
     "audit": {
-      "tabGeneral": "General dashboard",
-      "tabAudit": "Data audit",
+      "tabGeneral": "Dashboard",
+      "tabAudit": "Audit",
       "relativesShortage": "Relatives incomplete",
       "relativesWithoutJshshir": "No relative's PINFL",
       "nameErrors": "Name/surname error",
@@ -3670,6 +3670,17 @@
       "status": "By work hours",
       "max": "Most",
       "min": "Least"
+    },
+    "compare": {
+      "vsYesterday": "compared to previous day",
+      "totalDevices": "Total devices",
+      "withoutSchedule": "Employees without schedule",
+      "faceIdTitle": "Face ID analysis",
+      "faceIdSubtitle": "Daily Face ID summary"
+    },
+    "filter": {
+      "organizationPlaceholder": "Select organization",
+      "departmentPlaceholder": "Select department"
     }
   },
   "hcWorkDuration": {
@@ -3855,8 +3866,10 @@
       "vacation": "Number of employees notified about vacation",
       "med": "Number of employees notified about medical examination",
       "passport": "Number of employees notified about passport expiry",
-      "mobile": "Number of employees notified via mobile app"
-    }
+      "mobile": "Number of employees notified via mobile app",
+      "turnstile": "Number of employees notified via turnstile"
+    },
+    "table": { "sentAt": "Sent at" }
   },
   "mobileStoryPage": {
     "name": "Story announcements",

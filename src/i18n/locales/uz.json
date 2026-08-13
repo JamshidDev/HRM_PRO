@@ -2038,8 +2038,8 @@
       }
     },
     "audit": {
-      "tabGeneral": "Umumiy dashboard",
-      "tabAudit": "Ma'lumotlar bo'yicha audit",
+      "tabGeneral": "Dashboard",
+      "tabAudit": "Audit",
       "relativesShortage": "Qarindoshlar to'liqsiz",
       "relativesWithoutJshshir": "Qarindosh PNFL yo'q",
       "nameErrors": "Ism-familiya xatosi",
@@ -3701,6 +3701,17 @@
       "status": "Ish soati bo'yicha",
       "max": "Eng ko'p",
       "min": "Eng kam"
+    },
+    "compare": {
+      "vsYesterday": "o'tgan kunga nisbatan",
+      "totalDevices": "Jami qurilmalar",
+      "withoutSchedule": "Grafik tuzilmagan xodimlar",
+      "faceIdTitle": "Face ID tahlili",
+      "faceIdSubtitle": "Face ID bo‘yicha kunlik qaydnoma"
+    },
+    "filter": {
+      "organizationPlaceholder": "Korxonani tanlang",
+      "departmentPlaceholder": "Bo‘limni tanlang"
     }
   },
   "hcWorkDuration": {
@@ -3898,8 +3909,10 @@
       "vacation": "Ta’til haqida ogohlantirilgan xodimlar soni",
       "med": "Tibbiy ko‘rik haqida ogohlantirilgan xodimlar soni",
       "passport": "Pasport muddati haqida ogohlantirilgan xodimlar soni",
-      "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni"
-    }
+      "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni",
+      "turnstile": "Turniket orqali xabar yuborilgan xodimlar soni"
+    },
+    "table": { "sentAt": "Yuborilgan vaqti" }
   },
   "mobileStoryPage": {
     "name": "Story e'lonlari",

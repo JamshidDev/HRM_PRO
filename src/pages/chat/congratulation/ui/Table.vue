@@ -1,8 +1,9 @@
 <script setup>
-  import { UIBadge, UITable, UIUser } from '@/components/index.js'
+  import { UITable, UITablePagination, UIUser } from '@/components/index.js'
   import { useCongratulationStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
+  import TypeBadge from './TypeBadge.vue'
 
   const { t } = i18n.global
   const store = useCongratulationStore()
@@ -21,28 +22,28 @@
   const columns = computed(() => [
     {
       key: 'worker',
-      title: t('confirmationPage.table.worker'),
-      width: 300
+      title: t('content.worker'),
+      width: 200
     },
     {
       key: 'message',
       title: t('content.messageContent'),
-      minWidth: 500
+      minWidth: 350
     },
     {
       key: 'type',
       title: t('content.type'),
-      width: 130
+      width: 150
     },
     {
       key: 'status',
       title: t('content.status'),
-      width: 120
+      width: 130
     },
     {
       key: 'created_at',
-      title: t('content.date'),
-      width: 200
+      title: t('congratulation.table.sentAt'),
+      width: 155
     }
   ])
 </script>
@@ -60,13 +61,11 @@
   >
     <template #cell-worker="{ row }">
       <UIUser
-        :short="false"
         :data="{
           photo: row?.user?.worker.photo,
           firstName: row?.user?.worker.first_name,
           middleName: row?.user?.worker.middle_name,
-          lastName: row?.user?.worker.last_name,
-          position: row?.worker_position?.post_short_name
+          lastName: row?.user?.worker.last_name
         }"
       />
     </template>
@@ -80,20 +79,23 @@
     </template>
 
     <template #cell-type="{ row }">
-      <UIBadge :show-icon="false" :label="row?.type?.name" :type="Utils.colorTypes.dark" />
+      <TypeBadge :type="row?.type" />
     </template>
 
     <template #cell-status="{ row }">
-      <n-button :type="Boolean(row.status) ? 'success' : 'error'" size="tiny" secondary>
-        {{ $t(row.status === 1 ? 'content.sent' : 'content.unSend') }}
-      </n-button>
+      {{ $t(row.status === 1 ? 'content.sent' : 'content.unSend') }}
     </template>
 
     <template #cell-created_at="{ row }">
-      <UIBadge
-        :type="Utils.colorTypes.dark"
-        :show-icon="false"
-        :label="Utils.timeWithMonth(row.created_at)"
+      {{ Utils.timeWithMonth(row.created_at) }}
+    </template>
+
+    <template #footer>
+      <UITablePagination
+        :page="store.params.page"
+        :per-page="store.params.per_page"
+        :total="store.totalItems"
+        @change-page="changePage"
       />
     </template>
   </UITable>

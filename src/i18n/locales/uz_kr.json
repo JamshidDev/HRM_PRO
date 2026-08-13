@@ -1815,8 +1815,8 @@
       }
     },
     "audit": {
-      "tabGeneral": "Умумий dashboard",
-      "tabAudit": "Маълумотлар бўйича аудит",
+      "tabGeneral": "Dashboard",
+      "tabAudit": "Аудит",
       "relativesShortage": "Қариндошлар тўлиқсиз",
       "relativesWithoutJshshir": "Қариндош ПНФЛ йўқ",
       "nameErrors": "Исм-фамилия хатоси",
@@ -3477,6 +3477,17 @@
       "status": "Иш соати бўйича",
       "max": "Энг кўп",
       "min": "Энг кам"
+    },
+    "compare": {
+      "vsYesterday": "ўтган кунга нисбатан",
+      "totalDevices": "Жами қурилмалар",
+      "withoutSchedule": "График тузилмаган ходимлар",
+      "faceIdTitle": "Face ID таҳлили",
+      "faceIdSubtitle": "Face ID бўйича кунлик қайднома"
+    },
+    "filter": {
+      "organizationPlaceholder": "Корхонани танланг",
+      "departmentPlaceholder": "Бўлимни танланг"
     }
   },
   "hcWorkDuration": {
@@ -3674,8 +3685,10 @@
       "vacation": "Таътил ҳақида огоҳлантирилган ходимлар сони",
       "med": "Тиббий кўрик ҳақида огоҳлантирилган ходимлар сони",
       "passport": "Паспорт муддати ҳақида огоҳлантирилган ходимлар сони",
-      "mobile": "Мобил илова орқали хабар юборилган ходимлар сони"
-    }
+      "mobile": "Мобил илова орқали хабар юборилган ходимлар сони",
+      "turnstile": "Турникет орқали хабар юборилган ходимлар сони"
+    },
+    "table": { "sentAt": "Юборилган вақти" }
   },
   "newsPage": {
     "name": "Янгиликлар",
