@@ -264,6 +264,14 @@ export const PERMISSION_GROUPS = [
           { slug: 'turnstile-devices-stat-export', label: 'Hisobot yuklash' }
         ]
       },
+      // Ish davomiyligi — menyu o'chirilgan, lekin ma'lumot dashboard (WorkAnalyticCard)
+      // + standalone sahifada ishlatiladi; backend GET'lari `turnstile-work-duration-read`
+      // bilan gate qilinadi (2026-08-13 audit) — grantable bo'lishi uchun guruh.
+      {
+        prefix: 'turnstile-work-duration',
+        label: 'turnstile.workDurationPage.name',
+        actions: [{ slug: 'turnstile-work-duration-read', label: "Ko'rish" }]
+      },
       // «Qo'shimcha» menyusi — tab-konteyner. Menyu-kirish + har tab alohida karta
       // (o'z sahifa ruxsatlari bilan): Sinxronizatsiya loglari, HC server, Telegram.
       { prefix: 'turnstile-others', label: 'additionalPage.name' },
