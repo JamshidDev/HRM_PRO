@@ -537,9 +537,8 @@
       "typeIntegration": "Integration",
       "orphanWarning": "This role has {n} permission(s) not shown in the list (the permission list may not be fully loaded). They will be kept unchanged on save.",
       "scopeType": "Organization scope",
-      "scopeDefault": "Default (by permissions)",
-      "scopeSingle": "Own organization only",
-      "scopeSubtree": "Organization + subtree"
+      "scopeLocal": "Local (own organization)",
+      "scopeGlobal": "Global (organization + subtree)"
     }
   },
   "userPage": {

@@ -553,9 +553,8 @@
       "typeIntegration": "Integration",
       "orphanWarning": "Ushbu rolda ro'yxatda ko'rinmaydigan {n} ta ruxsat bor (ruxsatlar ro'yxati to'liq yuklanmagan bo'lishi mumkin). Ular saqlashda o'zgarishsiz qoladi.",
       "scopeType": "Korxona ko'lami",
-      "scopeDefault": "Standart (ruxsatga qarab)",
-      "scopeSingle": "Faqat shu korxona",
-      "scopeSubtree": "Korxona + tarkibi"
+      "scopeLocal": "Local (faqat shu korxona)",
+      "scopeGlobal": "Global (korxona + tarkibi)"
     }
   },
   "userPage": {

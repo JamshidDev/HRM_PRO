@@ -1,6 +1,6 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
-  import { computed, ref } from 'vue'
+  import { computed, ref, watch } from 'vue'
   import i18n from '@/i18n/index.js'
   import { useUserRoleStore } from '@/store/modules/index.js'
   import {
@@ -9,6 +9,35 @@
     MEANINGFUL,
     ENFORCED,
   } from '@/utils/permissionGroups.js'
+  // Modul tab iconlari — sidebardagi (navigations.js) bilan bir xil SVG'lar.
+  import { Apps24Filled, Search24Regular } from '@vicons/fluent'
+  import HrModIcon from '@assets/icons/HrManagement.svg'
+  import DocFlowModIcon from '@assets/icons/DocumentFlow.svg'
+  import AttestationModIcon from '@assets/icons/Attestation.svg'
+  import TurnstileModIcon from '@assets/icons/TurnstileMenu.svg'
+  import GeneralModIcon from '@assets/icons/General.svg'
+  import LmsModIcon from '@assets/icons/LmsManagement.svg'
+  import EconomistModIcon from '@assets/icons/Economist.svg'
+  import HospitalModIcon from '@assets/icons/Hospital.svg'
+  import ChatModIcon from '@assets/icons/Chat.svg'
+  import ExtraModIcon from '@assets/icons/Extra.svg'
+  import AdminModIcon from '@assets/icons/Admin.svg'
+
+  // PERMISSION_GROUPS.module → sidebar iconi.
+  const MODULE_ICONS = {
+    hr: HrModIcon,
+    confirmation: DocFlowModIcon,
+    exam: AttestationModIcon,
+    turnstile: TurnstileModIcon,
+    useful: GeneralModIcon,
+    lms: LmsModIcon,
+    economist: EconomistModIcon,
+    hospital: HospitalModIcon,
+    chat: ChatModIcon,
+    extra: ExtraModIcon,
+    admin: AdminModIcon,
+  }
+  const moduleIcon = (mod) => MODULE_ICONS[mod.module] || Apps24Filled
 
   const formRef = ref(null)
   const store = useUserRoleStore()
@@ -59,8 +88,14 @@
    * O'CHIRIB BO'LMAYDIGAN grantga aylanardi: admin "Ko'rish"ni o'chirsa ham menyu
    * bandi joyida qolaverardi. Endi switch ikkalasini birga yoqadi/o'chiradi.
    */
-  const readNames = (prefix) =>
-    [prefix, `${prefix}-read`].filter((n) => has(n) && grantable(n))
+  // Ko'rish uchun BITTA permission yetadi: `<prefix>-read` mavjud bo'lsa faqat SHU
+  // ishlatiladi (bare `<prefix>` — eski, ortiqcha; menyu/route ham endi `-read` tekshiradi).
+  // `-read` bo'lmasa (masalan modul-kirish slug'i `hr`) bare qoladi.
+  const readNames = (prefix) => {
+    const read = `${prefix}-read`
+    if (has(read) && grantable(read)) return [read]
+    return [prefix].filter((n) => has(n) && grantable(n))
+  }
 
   /**
    * Guruh switchlari. Har switch — `{ key, names: string[], label }`.
@@ -77,10 +112,15 @@
         const names = a.slug === `${g.prefix}-read` ? readNames(g.prefix) : [a.slug]
         out.push({ key: a.slug, names, label })
       }
-      // Guruhda alohida `-read` amali bo'lmasa, lekin bare slug mavjud bo'lsa —
-      // uni yo'qotib qo'ymaslik uchun alohida "Ko'rish" switch'i sifatida chiqaramiz.
+      // Bare slug'ni alohida "Ko'rish" switch qilib faqat `-read` YO'Q bo'lganda
+      // chiqaramiz (aks holda bare ortiqcha — `-read` yetadi).
       const covered = new Set(out.flatMap((s) => s.names))
-      if (has(g.prefix) && grantable(g.prefix) && !covered.has(g.prefix)) {
+      if (
+        has(g.prefix) &&
+        grantable(g.prefix) &&
+        !has(`${g.prefix}-read`) &&
+        !covered.has(g.prefix)
+      ) {
         out.unshift({ key: g.prefix, names: [g.prefix], label: ACTION_LABELS.read })
       }
       return out
@@ -159,6 +199,25 @@
     )
   )
 
+  // Faol tab (icon-only tab'lar uchun label o'ng tomonda ko'rsatiladi).
+  const activeTab = ref(null)
+  const activeTabLabel = computed(() => {
+    if (activeTab.value === '__other') return 'Boshqa'
+    const m = visibleModules.value.find((x) => x.label === activeTab.value)
+    return m ? t(m.label) : ''
+  })
+  // Guard almashsa yoki forma ochilsa — faol tabni birinchi modulga tiklaymiz.
+  watch(
+    visibleModules,
+    (mods) => {
+      const stillThere = mods.some((m) => m.label === activeTab.value)
+      if (!stillThere && activeTab.value !== '__other') {
+        activeTab.value = mods[0]?.label ?? null
+      }
+    },
+    { immediate: true }
+  )
+
   /**
    * HAQIQATAN chizilgan switch nomlari.
    *
@@ -181,12 +240,6 @@
   // tanlangan permissionlarni tozalaymiz (boshqa guard permissioni yaramaydi).
   // `query` ham tozalanadi — aks holda eski qidiruv yangi guard tablarini bo'sh
   // ko'rsatib qo'yadi.
-  const onGuardChange = () => {
-    store.payload.permissions = []
-    store.query = null
-    store._getAllPermission()
-  }
-
   const otherPerms = computed(() => {
     const q = (store.query || '').trim().toLowerCase()
     return (store.originAllPermissionList || []).filter(
@@ -229,84 +282,70 @@
 <template>
   <n-form ref="formRef" :rules="validationRules.userRole" :model="store.payload">
     <div>
-      <div class="flex flex-wrap items-start gap-x-6">
-        <n-form-item :label="$t(`userRole.form.name`)" path="name">
-          <n-input
-            type="text"
-            v-model:value="store.payload.name"
-            style="width: 320px; flex: none"
-          />
-        </n-form-item>
-
-        <!-- Rol turi (guard) — faqat yaratishda tanlanadi, keyin o'zgarmaydi -->
-        <n-form-item :label="$t('userRole.form.type')">
-          <div class="flex items-center h-[34px]">
-            <n-radio-group
-              v-model:value="store.payload.guard_name"
-              :disabled="!store.visibleType"
-              @update:value="onGuardChange"
-            >
-              <n-radio value="sanctum">{{ $t('userRole.form.typeSanctum') }}</n-radio>
-              <n-radio value="integration">{{ $t('userRole.form.typeIntegration') }}</n-radio>
-            </n-radio-group>
-          </div>
-        </n-form-item>
-
-        <!-- Org-scope: korxona ko'lami (0080) — faqat foydalanuvchi (sanctum) rollari -->
-        <n-form-item
-          v-if="store.payload.guard_name === 'sanctum'"
-          :label="$t('userRole.form.scopeType')"
-        >
-          <n-radio-group v-model:value="store.payload.scope_type">
-            <n-space>
-              <n-radio :value="null">{{ $t('userRole.form.scopeDefault') }}</n-radio>
-              <n-radio value="single">{{ $t('userRole.form.scopeSingle') }}</n-radio>
-              <n-radio value="subtree">{{ $t('userRole.form.scopeSubtree') }}</n-radio>
-            </n-space>
-          </n-radio-group>
-        </n-form-item>
-      </div>
-
-      <n-form-item :label="$t(`userRole.form.permissions`)" path="permissions">
+      <!-- Role nomi / Guard / Scope endi modal HEADER'ida (RolePage.vue) -->
+      <n-form-item :show-label="false" path="permissions">
         <div class="w-full">
           <!-- Ro'yxatga tushmagan ("ko'rinmas") grantlar haqida ochiq ogohlantirish -->
           <n-alert v-if="orphanCount" type="warning" class="mb-3" :bordered="false">
             {{ $t('userRole.form.orphanWarning', { n: orphanCount }) }}
           </n-alert>
-          <n-tabs type="line" animated class="perm-tabs ui-pill-tabs">
+          <n-tabs
+            v-model:value="activeTab"
+            type="line"
+            animated
+            class="perm-tabs ui-pill-tabs"
+          >
+            <!-- Tanlangan modul nomi tab qatorining o'ng tomonida -->
+            <template #suffix>
+              <span class="perm-active-label">{{ activeTabLabel }}</span>
+            </template>
             <n-tab-pane
               v-for="mod in visibleModules"
               :key="mod.label"
               :name="mod.label"
             >
               <template #tab>
-                <span>{{ $t(mod.label) }}</span>
-                <span class="perm-count">{{ moduleCount(mod) }}</span>
+                <span
+                  class="perm-tab-ico"
+                  :class="{ 'has-perms': moduleCount(mod) > 0 }"
+                  :title="$t(mod.label)"
+                >
+                  <n-icon :component="moduleIcon(mod)" :size="26" />
+                  <span v-if="moduleCount(mod) > 0" class="perm-count">{{
+                    moduleCount(mod)
+                  }}</span>
+                </span>
               </template>
 
               <div
-                class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pt-2 pr-1"
+                class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 pt-1 pr-1"
               >
                 <div
                   v-for="g in visibleGroups(mod)"
                   :key="g.prefix"
-                  class="border border-surface-line rounded-xl p-3"
+                  class="border border-surface-line rounded-lg p-2"
                 >
-                  <div class="flex items-center justify-between mb-2 pb-2 border-b border-surface-line">
-                    <span class="font-semibold text-sm">{{ $t(g.label) }}</span>
+                  <div class="flex items-center justify-between mb-1.5 pb-1.5 border-b border-surface-line">
+                    <div class="flex flex-col min-w-0">
+                      <span class="font-semibold text-sm">{{ $t(g.label) }}</span>
+                      <span class="perm-slug">{{ g.prefix }}</span>
+                    </div>
                     <n-switch
                       size="small"
                       :value="groupAllOn(g)"
                       @update:value="(v) => toggleGroup(g, v)"
                     />
                   </div>
-                  <div class="flex flex-col gap-2">
+                  <div class="flex flex-col gap-1">
                     <div
                       v-for="sw in groupSwitches(g)"
                       :key="sw.key"
-                      class="flex items-center justify-between"
+                      class="flex items-center justify-between gap-2"
                     >
-                      <span class="text-sm text-secondary">{{ sw.label }}</span>
+                      <div class="flex flex-col min-w-0">
+                        <span class="text-sm text-secondary">{{ sw.label }}</span>
+                        <span class="perm-slug">{{ sw.names.join(', ') }}</span>
+                      </div>
                       <n-switch
                         size="small"
                         :value="switchOn(sw)"
@@ -320,8 +359,14 @@
 
             <n-tab-pane v-if="otherPerms.length" name="__other">
               <template #tab>
-                <span>Boshqa</span>
-                <span class="perm-count">{{ otherCount }}</span>
+                <span
+                  class="perm-tab-ico"
+                  :class="{ 'has-perms': otherCount > 0 }"
+                  title="Boshqa"
+                >
+                  <n-icon :component="Apps24Filled" :size="26" />
+                  <span v-if="otherCount > 0" class="perm-count">{{ otherCount }}</span>
+                </span>
               </template>
               <div class="pt-2 pr-1">
                 <n-checkbox-group v-model:value="store.payload.permissions">
@@ -343,6 +388,18 @@
       </n-form-item>
     </div>
   </n-form>
+
+  <!-- Qidiruv — modalga (card-class="relative") nisbatan absolute: scroll'dan tashqarida,
+       doim pastki-markazda, kontent kam bo'lsa ham surilmaydi. -->
+  <div class="perm-search-fixed">
+    <div class="perm-search-box">
+      <n-input v-model:value="store.query" clearable round :placeholder="$t('content.search')">
+        <template #prefix>
+          <n-icon :component="Search24Regular" />
+        </template>
+      </n-input>
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -375,6 +432,9 @@
     top: 0;
     z-index: 10;
     width: 100%;
+    background: var(--surface-ground);
+    padding: 8px 10px;
+    border-radius: 12px;
   }
   /* Rail'ning usti va osti (uning `margin-bottom: 12px`i) modal foni bilan
      to'ldiriladi: aks holda yopishgan rail atrofidagi tirqishdan ostidan
@@ -387,6 +447,7 @@
     left: 0;
     right: 0;
     background: var(--surface-section);
+    z-index: -1;
   }
   .perm-tabs :deep(> .n-tabs-nav::before) {
     top: -20px;
@@ -399,5 +460,92 @@
   .perm-tabs :deep(.n-tabs-tab--active .perm-count) {
     background: var(--primary-color, #2080f0);
     color: #fff;
+  }
+  /* Icon-only tab: icon + son badge. */
+  .perm-tab-ico {
+    display: inline-flex;
+    align-items: center;
+    color: var(--textColor1);
+  }
+  .perm-tabs :deep(.n-tabs-tab--active) .perm-tab-ico {
+    color: var(--primary-color, #2080f0);
+  }
+  /* Tanlangan modul nomi — tab qatorining eng o'ng chekkasida. */
+  .perm-tabs :deep(.n-tabs-nav__suffix) {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+  }
+  /* Tanlangan modul nomi — DOIMIY (statik) kenglik, kontent o'zgarsa ham surilmaydi. */
+  .perm-active-label {
+    display: inline-block;
+    width: 170px;
+    text-align: right;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--textColor0);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 4px;
+  }
+  /* Har tab — alohida OQ border-box (icon large); kulrang strip'da ajralib turadi. */
+  .perm-tabs :deep(.n-tabs-tab) {
+    border: 1px solid var(--surface-line);
+    border-radius: 12px;
+    padding: 8px 14px;
+    margin-right: 8px;
+    background: var(--surface-section);
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  /* Ruxsatli tab ichidagi son-badge ko'k (box foni o'zgarmaydi — oq qoladi). */
+  .perm-tabs :deep(.n-tabs-tab:has(.has-perms) .perm-count) {
+    background: color-mix(in srgb, var(--primary-color, #2080f0) 22%, transparent);
+    color: var(--primary-color, #2080f0);
+  }
+  .perm-tabs :deep(.n-tabs-tab--active) {
+    border-color: var(--primary-color, #2080f0);
+    box-shadow: 0 0 0 1px var(--primary-color, #2080f0);
+  }
+  /* Border-box uslubida ostki chiziq (bar) kerak emas. */
+  .perm-tabs :deep(.n-tabs-bar) {
+    display: none;
+  }
+  /* Label ostidagi permission slug (key) — kichik, mono, xira. */
+  .perm-slug {
+    font-size: 10px;
+    line-height: 1.25;
+    color: var(--textColor1);
+    opacity: 0.55;
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    word-break: break-all;
+  }
+  /* Qidiruv — modalga (card-class="relative") nisbatan absolute, pastki-markazda fixed.
+     Scroll'dan tashqarida turadi, kontent kam bo'lsa ham surilmaydi. */
+  .perm-search-fixed {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+  }
+  .perm-search-box {
+    width: 360px;
+    max-width: 90%;
+    border-radius: 999px;
+    background: var(--surface-section);
+    border: 2px solid var(--primary-color, #2080f0);
+    box-shadow: 0 8px 24px rgba(32, 128, 240, 0.3);
+  }
+  /* Ichki n-input chegarasini o'chiramiz — faqat ko'k wrapper border ko'rinsin. */
+  .perm-search-box :deep(.n-input) {
+    background: transparent;
+    --n-border: none;
+    --n-border-hover: none;
+    --n-border-focus: none;
+    --n-box-shadow-focus: none;
   }
 </style>
