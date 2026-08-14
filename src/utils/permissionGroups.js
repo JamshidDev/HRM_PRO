@@ -29,7 +29,7 @@ export const ENFORCED = new Set([
   'hr-report-export-delete', 'hr-table-delete', 'hr-table-read', 'hr-table-write', 'hr-users-active-role', 'hr-users-attach-role',
   'hr-users-detach-role', 'hr-users-password', 'hr-users-read', 'hr-users-update', 'hr-vacation-schedule-delete', 'hr-vacation-schedule-read',
   'hr-vacation-schedule-write', 'hr-vacations-read', 'hr-worker-applications-read', 'hr-worker-applications-write', 'hr-workers-delete', 'hr-workers-read',
-  'hr-workers-write', 'hr-zoom-read', 'instructions', 'instructions-delete', 'instructions-write', 'integration',
+  'hr-workers-write', 'hr-workers-password', 'hr-zoom-read', 'instructions', 'instructions-delete', 'instructions-write', 'integration',
   'integration-clients-delete', 'integration-clients-read', 'integration-clients-write', 'languages-delete', 'languages-write', 'learning-centers-delete',
   'learning-centers-write', 'lms-certificate-delete', 'lms-certificate-read', 'lms-certificate-write', 'lms-direction-delete', 'lms-direction-read',
   'lms-direction-write', 'lms-edu-plan-delete', 'lms-edu-plan-read', 'lms-edu-plan-write', 'lms-lessons-delete', 'lms-lessons-read',
@@ -96,7 +96,7 @@ export const MEANINGFUL = new Set([
   'hr-table-workers-write', 'hr-table-write', 'hr-users', 'hr-users-active-role', 'hr-users-attach-role', 'hr-users-detach-role',
   'hr-users-password', 'hr-users-read', 'hr-users-update', 'hr-vacation-schedule-delete', 'hr-vacation-schedule-read', 'hr-vacation-schedule-write',
   'hr-vacations', 'hr-vacations-read', 'hr-vacations-write', 'hr-worker-applications', 'hr-worker-applications-read', 'hr-worker-applications-write',
-  'hr-workers', 'hr-workers-delete', 'hr-workers-read', 'hr-workers-write', 'hr-zoom-read', 'instructions',
+  'hr-workers', 'hr-workers-delete', 'hr-workers-read', 'hr-workers-write', 'hr-workers-password', 'hr-zoom-read', 'instructions',
   'instructions-delete', 'instructions-read', 'instructions-write', 'integration', 'integration-clients-delete', 'integration-clients-read',
   'integration-clients-write', 'languages-delete', 'languages-read', 'languages-write', 'learning-centers', 'learning-centers-delete',
   'learning-centers-read', 'learning-centers-write', 'lms', 'lms-certificate', 'lms-certificate-delete', 'lms-certificate-read',
@@ -147,7 +147,16 @@ export const PERMISSION_GROUPS = [
           { slug: 'hr-dashboard-audit', label: 'Audit' },
         ],
       },
-      { prefix: 'hr-workers', label: 'workerPage.name' },
+      {
+        prefix: 'hr-workers',
+        label: 'workerPage.name',
+        actions: [
+          { slug: 'hr-workers-read', label: "Ko'rish" },
+          { slug: 'hr-workers-write', label: 'Tahrirlash' },
+          { slug: 'hr-workers-delete', label: "O'chirish" },
+          { slug: 'hr-workers-password', label: 'Parolni yangilash' }
+        ]
+      },
       { prefix: 'hr-certificates', label: 'workerCertificatePage.name' },
       { prefix: 'hr-kpi', label: 'kpiPage.name' },
       { prefix: 'hr-departments', label: 'departmentPage.name' },

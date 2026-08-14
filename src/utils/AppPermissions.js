@@ -100,6 +100,7 @@ export const appPermissions = {
 
   hrWorkers: 'hr-workers',
   hrWorkersWrite: 'hr-workers-write',
+  hrWorkersPassword: 'hr-workers-password',
   hrWorkersRead: 'hr-workers-read',
 
   // Guvohnomalar ro'yxati sahifasi — xodimlar ruxsatidan AJRALGAN.

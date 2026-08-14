@@ -2518,6 +2518,7 @@
     },
     "attachRole": "Rol biriktirish",
     "deleteRole": "Rolni o'chirish",
+    "detachRole": "Rolni olib tashlash",
     "selectRoleToDelete": "O'chirmoqchi bo'lgan rolni tanlang",
     "updatePassword": "Parolni yangilash",
     "newPassword": "Yangi parol",

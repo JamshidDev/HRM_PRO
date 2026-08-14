@@ -1,16 +1,13 @@
 <script setup>
-  import { UIBadge, UIModal, UITable, UIUser } from '@components'
+  import { PasswordUpdateModal, UIBadge, UIModal, UITable, UIUser } from '@components'
   import { useAccountStore, useWorkerProfileStore } from '@stores'
   import Utils from '@utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
   import RoleForm from '@pages/hrm/workerProfile/ui/RoleForm.vue'
   import {
     AddCircle28Regular,
-    ArrowClockwise20Regular,
-    Checkmark16Regular,
     Delete20Regular,
     Delete28Regular,
-    Dismiss16Regular,
     LockClosed16Filled,
     Phone24Regular,
     RibbonStar24Filled
@@ -26,66 +23,9 @@
   const selectedItem = ref(null)
   const selectedRoleId = ref(null)
 
-  // Password form
-  const confirmPass = ref('')
-  const passwordRules = computed(() => [
-    {
-      key: 'minLength',
-      label: t('passwordForm.rules.minLength'),
-      valid: (store.passwordPayload.password || '').length >= 8
-    },
-    {
-      key: 'uppercase',
-      label: t('passwordForm.rules.uppercase'),
-      valid: /[A-Z]/.test(store.passwordPayload.password || '')
-    },
-    {
-      key: 'lowercase',
-      label: t('passwordForm.rules.lowercase'),
-      valid: /[a-z]/.test(store.passwordPayload.password || '')
-    },
-    {
-      key: 'number',
-      label: t('passwordForm.rules.number'),
-      valid: /[0-9]/.test(store.passwordPayload.password || '')
-    },
-    {
-      key: 'special',
-      label: t('passwordForm.rules.special'),
-      valid: /[@!#$%^&*()_+\-=[\]{}|;':",.<>?/`~\\]/.test(store.passwordPayload.password || '')
-    },
-    {
-      key: 'match',
-      label: t('passwordForm.rules.match'),
-      valid:
-        (store.passwordPayload.password || '').length > 0 &&
-        store.passwordPayload.password === confirmPass.value
-    }
-  ])
-  const passwordAllValid = computed(() => passwordRules.value.every((r) => r.valid))
-
-  const generatePassword = () => {
-    const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    const lower = 'abcdefghijklmnopqrstuvwxyz'
-    const digits = '0123456789'
-    const special = '@!#$%^&*'
-    const all = upper + lower + digits + special
-    const chars = [
-      upper[Math.floor(Math.random() * upper.length)],
-      lower[Math.floor(Math.random() * lower.length)],
-      digits[Math.floor(Math.random() * digits.length)],
-      special[Math.floor(Math.random() * special.length)]
-    ]
-    for (let i = 4; i < 8; i++) {
-      chars.push(all[Math.floor(Math.random() * all.length)])
-    }
-    for (let i = chars.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-      ;[chars[i], chars[j]] = [chars[j], chars[i]]
-    }
-    const generated = chars.join('')
-    store.passwordPayload.password = generated
-    confirmPass.value = generated
+  const onPasswordSubmit = (password) => {
+    store.passwordPayload.password = password
+    store._updateUserPassword()
   }
 
   // Phone modal
@@ -149,7 +89,6 @@
   const onUpdatePasswordClick = (row) => {
     store.passwordPayload.uuid = row.uuid
     store.passwordPayload.password = null
-    confirmPass.value = ''
     store.passwordVisible = true
   }
 
@@ -375,82 +314,12 @@
     <RoleForm />
   </UIModal>
 
-  <!-- Parolni yangilash modal -->
-  <UIModal
-    :width="420"
-    :visible="store.passwordVisible"
-    @update:visible="(v) => (store.passwordVisible = v)"
-    :title="$t('workerRole.updatePassword')"
-  >
-    <div class="flex flex-col gap-3 pb-4">
-      <!-- Yangi parol -->
-      <div>
-        <div class="flex items-center justify-between mb-1">
-          <label class="text-xs text-textColor3">{{ $t('passwordForm.newPassword') }}</label>
-          <n-button size="tiny" type="primary" text @click="generatePassword">
-            <template #icon>
-              <n-icon size="14"><ArrowClockwise20Regular /></n-icon>
-            </template>
-            {{ $t('passwordForm.generatePassword') }}
-          </n-button>
-        </div>
-        <n-input
-          v-model:value="store.passwordPayload.password"
-          type="password"
-          show-password-on="click"
-          :placeholder="$t('passwordForm.newPasswordPlaceholder')"
-        />
-      </div>
-
-      <!-- Tasdiqlash -->
-      <div>
-        <label class="text-xs text-textColor3 mb-1 block">{{
-          $t('passwordForm.confirmPassword')
-        }}</label>
-        <n-input
-          v-model:value="confirmPass"
-          type="password"
-          show-password-on="click"
-          :placeholder="$t('passwordForm.confirmPasswordPlaceholder')"
-        />
-      </div>
-
-      <!-- Talablar -->
-      <div class="border border-surface-line rounded-xl px-4 py-3 bg-surface-ground">
-        <p class="text-xs font-semibold text-textColor2 mb-2">
-          {{ $t('passwordForm.requirements') }}
-        </p>
-        <div class="flex flex-col gap-2">
-          <div
-            v-for="rule in passwordRules"
-            :key="rule.key"
-            class="flex items-center gap-2 text-xs transition-colors duration-200"
-            :class="rule.valid ? 'text-success' : 'text-textColor3'"
-          >
-            <n-icon size="14" class="shrink-0">
-              <Checkmark16Regular v-if="rule.valid" />
-              <Dismiss16Regular v-else />
-            </n-icon>
-            <span>{{ rule.label }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-2 gap-2">
-      <n-button @click="store.passwordVisible = false" type="error" ghost>
-        {{ $t('content.cancel') }}
-      </n-button>
-      <n-button
-        @click="store._updateUserPassword()"
-        :loading="store.passwordLoading"
-        :disabled="!passwordAllValid"
-        type="primary"
-      >
-        {{ $t('content.save') }}
-      </n-button>
-    </div>
-  </UIModal>
+  <!-- Parolni yangilash modal — HR «Xodimlar» menyusi bilan bitta komponent -->
+  <PasswordUpdateModal
+    v-model:visible="store.passwordVisible"
+    :loading="store.passwordLoading"
+    @submit="onPasswordSubmit"
+  />
 
   <!-- Rol o'chirish modal -->
   <UIModal

@@ -2494,6 +2494,7 @@
     },
     "attachRole": "Attach role",
     "deleteRole": "Delete role",
+    "detachRole": "Remove role",
     "selectRoleToDelete": "Select role to delete",
     "updatePassword": "Update password",
     "newPassword": "New password",

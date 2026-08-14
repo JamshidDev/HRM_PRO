@@ -2,7 +2,7 @@
   import { h } from 'vue'
   import validationRules from '@/utils/validationRules.js'
   const formRef = ref(null)
-  import { useDepartmentPositionStore, useComponentStore } from '@/store/modules/index.js'
+  import { useDepartmentPositionStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
   import Utils, { generateUUIDKey } from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
   import { UINSelect, UISelect } from '@/components/index.js'
@@ -10,6 +10,12 @@
 
   const store = useDepartmentPositionStore()
   const componentStore = useComponentStore()
+  const accStore = useAccountStore()
+
+  // Tarif-setka bo'limi — oylik (salary) feature; faqat `tariff-grid-access` (yoki -read)
+  // ruxsatli userlarga. HR va boshqalarda yashiriladi + grid so'rovlari (for-position/_show,
+  // step-up bilan himoyalangan) YUBORILMAYDI → 403 chiqmaydi. (2026-08-14 salary-scope)
+  const hasGridAccess = computed(() => accStore.canView(accStore.pn.tariffGridAccess))
 
   const props = defineProps({
     callback: {
@@ -94,7 +100,7 @@
     () => {
       store.payload.tariff_grid_id = null
       store.gridColumns = []
-      store._fetchGrids()
+      if (hasGridAccess.value) store._fetchGrids()
     }
   )
   // Guruh/razryad o'zgarsa va setka tanlangan bo'lsa — asosiy oklad qayta hisoblanadi.
@@ -129,7 +135,7 @@
     } else {
       // Tahrir: mavjud koeffitsientlar + biriktirilgan setkalar.
       if (store.elementId) store._loadCoefficients(store.elementId)
-      store._fetchGrids()
+      if (hasGridAccess.value) store._fetchGrids()
     }
   })
 
@@ -215,6 +221,7 @@
           </div>
         </n-form-item>
         <n-form-item
+          v-if="hasGridAccess"
           class="col-span-12"
           :class="store.gridColumns.length > 1 ? 'md:col-span-8' : 'md:col-span-12'"
           :label="$t(`departmentPositionPage.form.tariff_grid`)"
@@ -238,7 +245,7 @@
           </div>
         </n-form-item>
         <n-form-item
-          v-if="store.gridColumns.length > 1"
+          v-if="hasGridAccess && store.gridColumns.length > 1"
           class="col-span-12 md:col-span-4"
           :label="$t(`departmentPositionPage.form.tariff_grid_column`)"
         >
