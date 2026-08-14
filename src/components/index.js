@@ -69,6 +69,7 @@ export { default as UIProfileButton } from './ui/UIProfileButton.vue'
 export { default as UIProfileSection } from './ui/UIProfileSection.vue'
 export { default as UIProfileEmpty } from './ui/UIProfileEmpty.vue'
 export { default as UIFileDownload } from './ui/UIFileDownload.vue'
+export { default as UISegmentTabs } from './ui/UISegmentTabs.vue'
 
 export * from './layoutTab'
 export * from './editor'

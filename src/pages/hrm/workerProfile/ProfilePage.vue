@@ -1,7 +1,7 @@
 <script setup>
   import { useRoute, useRouter } from 'vue-router'
   import Tabs from './ui/Tabs.vue'
-  import ProfileTabs from './ui/ProfileTabs.vue'
+  import { UISegmentTabs } from '@/components/index.js'
   import { useWorkerProfileStore, useComponentStore } from '@/store/modules/index.js'
   import icons from '@/assets/icons'
   import i18n from '@/i18n/index.js'
@@ -59,7 +59,7 @@
         {{ $t('content.back') }}
       </button>
 
-      <ProfileTabs :tabs="tabList" v-model="store.activeTab" />
+      <UISegmentTabs :tabs="tabList" v-model="store.activeTab" />
     </div>
 
     <Tabs />
