@@ -2504,6 +2504,7 @@
     },
     "attachRole": "Rol biriktirish",
     "deleteRole": "Rolni o'chirish",
+    "detachRole": "Rolni olib tashlash",
     "selectRoleToDelete": "O'chirmoqchi bo'lgan rolni tanlang",
     "updatePassword": "Parolni yangilash",
     "newPassword": "Yangi parol",
@@ -3941,7 +3942,9 @@
       "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni",
       "turnstile": "Turniket orqali xabar yuborilgan xodimlar soni"
     },
-    "table": { "sentAt": "Yuborilgan vaqti" }
+    "table": {
+      "sentAt": "Yuborilgan vaqti"
+    }
   },
   "mobileStoryPage": {
     "name": "Story e'lonlari",

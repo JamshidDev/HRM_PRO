@@ -2480,6 +2480,7 @@
     },
     "attachRole": "Attach role",
     "deleteRole": "Delete role",
+    "detachRole": "Remove role",
     "selectRoleToDelete": "Select role to delete",
     "updatePassword": "Update password",
     "newPassword": "New password",
@@ -3898,7 +3899,9 @@
       "mobile": "Number of employees notified via mobile app",
       "turnstile": "Number of employees notified via turnstile"
     },
-    "table": { "sentAt": "Sent at" }
+    "table": {
+      "sentAt": "Sent at"
+    }
   },
   "mobileStoryPage": {
     "name": "Story announcements",

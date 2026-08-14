@@ -98,9 +98,10 @@
       </div>
     </div>
 
-    <!-- Joriy rollar -->
-    <n-spin :show="store.rolesLoading">
-      <div class="flex flex-col gap-2 py-4 min-h-[120px]">
+    <!-- Joriy rollar — balandlik QAT'IY, ro'yxat ichida scroll.
+         Aks holda rol ko'paygan sari modal cho'zilib ketardi. -->
+    <n-spin :show="store.rolesLoading" class="w-full">
+      <div class="flex flex-col gap-2 my-4 h-[280px] overflow-y-auto pr-1">
         <div
           v-if="!store.rolesList.length && !store.rolesLoading"
           class="text-center text-sm text-textColor3 py-6"
@@ -124,17 +125,25 @@
           </n-tag>
           <n-popconfirm @positive-click="store._detachWorkerRole(row)">
             <template #trigger>
-              <n-button
-                size="small"
-                type="error"
-                ghost
-                :disabled="!canDetach"
-                :loading="store.rolesSaving"
-              >
-                <template #icon>
-                  <n-icon><Delete20Regular /></n-icon>
+              <!-- Tooltip popconfirm trigger'i ICHIDA: aks holda popconfirm
+                   ochilishi bilan tooltip ustidan tushib qolardi. -->
+              <n-tooltip trigger="hover">
+                <template #trigger>
+                  <n-button
+                    size="small"
+                    type="error"
+                    ghost
+                    :disabled="!canDetach"
+                    :loading="store.rolesSaving"
+                    :aria-label="$t('workerRole.detachRole')"
+                  >
+                    <template #icon>
+                      <n-icon><Delete20Regular /></n-icon>
+                    </template>
+                  </n-button>
                 </template>
-              </n-button>
+                {{ $t('workerRole.detachRole') }}
+              </n-tooltip>
             </template>
             {{ $t('content.confirmDelete') }}
           </n-popconfirm>
