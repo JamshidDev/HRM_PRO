@@ -1,60 +1,40 @@
 <script setup>
-  import { watch } from 'vue'
-  import PersonalForm from '../tabs/PersonalForm.vue'
-  import DisabilityList from './DisabilityList.vue'
-  import RelativesPage from '@/pages/hrm/relative/RelativesPage.vue'
-  import LanguagePage from '@/pages/hrm/language/LanguagePage.vue'
-  import LanguageCertificatePage from '@/pages/hrm/languageCertificate/LanguageCertificatePage.vue'
-  import UniversityPage from '@/pages/hrm/university/UniversityPage.vue'
-  import PartyPage from '@/pages/hrm/party/PartyPage.vue'
-  import OldCareerPage from '@/pages/hrm/oldCareer/OldCareerPage.vue'
-  import MilitaryPage from '@/pages/hrm/military/MilitaryPage.vue'
-  import AcademicTitlePage from '@/pages/hrm/academicTitle/AcademicTitlePage.vue'
-  import AcademicDegreePage from '@/pages/hrm/academicDegree/AcademicDegreePage.vue'
-  import WorkerPositionCertificatePage from '@/pages/hrm/workerPositionCertificate/WorkerPositionCertificatePage.vue'
+  import PersonalTab from '../tabs/PersonalTab.vue'
+  import CareerTab from '../tabs/CareerTab.vue'
+  import EducationTab from '../tabs/EducationTab.vue'
+  import RelativeTab from '../tabs/RelativeTab.vue'
+  import OtherTab from '../tabs/OtherTab.vue'
   import { useWorkerProfileStore } from '@/store/modules/index.js'
 
   const store = useWorkerProfileStore()
 
-  onMounted(() => {
-    if (store.data?.uuid) {
-      store._indexWorkerDisability()
-    }
-  })
-
-  watch(
-    () => store.data?.uuid,
-    (val) => {
-      if (val) {
-        store._indexWorkerDisability()
-      }
-    }
-  )
+  // Tartib store'dagi `tabs` bilan bir xil (Figma "Status Toggle")
+  const panes = {
+    1: PersonalTab,
+    2: CareerTab,
+    3: EducationTab,
+    4: RelativeTab,
+    5: OtherTab
+  }
 </script>
 
 <template>
-  <n-tabs animated v-model:value="store.activeTab" class="hidden-tab-header" type="segment">
-    <n-tab-pane :name="1">
-      <PersonalForm />
-      <DisabilityList />
-    </n-tab-pane>
-    <n-tab-pane :name="2">
-      <LanguagePage />
-      <LanguageCertificatePage />
-      <UniversityPage />
-    </n-tab-pane>
-    <n-tab-pane :name="3">
-      <OldCareerPage />
-    </n-tab-pane>
-    <n-tab-pane :name="4">
-      <RelativesPage />
-    </n-tab-pane>
-    <n-tab-pane :name="5">
-      <PartyPage />
-      <MilitaryPage />
-      <AcademicTitlePage />
-      <AcademicDegreePage />
-      <WorkerPositionCertificatePage />
-    </n-tab-pane>
-  </n-tabs>
+  <Transition name="profile-tab" mode="out-in">
+    <component :is="panes[store.activeTab]" :key="store.activeTab" />
+  </Transition>
 </template>
+
+<style lang="scss" scoped>
+  .profile-tab-enter-active,
+  .profile-tab-leave-active {
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s ease;
+  }
+
+  .profile-tab-enter-from,
+  .profile-tab-leave-to {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+</style>

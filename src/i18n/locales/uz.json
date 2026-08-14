@@ -800,10 +800,10 @@
   "workerProfile": {
     "tabs": {
       "personal": "Shaxsiy",
-      "education": "Ma'lumoti",
-      "career": "Faoliyati",
-      "relative": "Qarindoshlari",
-      "others": "Boshqalar"
+      "education": "Ma'lumot va malaka",
+      "career": "Ish faoliyati",
+      "relative": "Qarindoshlar",
+      "others": "Qo'shimcha"
     },
     "personal": {
       "additionalContract": "Qo'shimcha kelishuv tuzish",
@@ -814,7 +814,11 @@
       "addPassport": "Passport nusxasini qo'shish",
       "no-passport": "Passport ma'lumotlar yuklanmagan!",
       "addForeignPassport": "Xorij pasporti nusxasini qo'shish",
-      "no-foreign-passport": "Xorij pasporti ma'lumotlari yuklanmagan!"
+      "no-foreign-passport": "Xorij pasporti ma'lumotlari yuklanmagan!",
+      "infoTitle": "Shaxsiy ma'lumotlar",
+      "usedAsLogin": "Login sifatida ishlatiladi",
+      "photoTitle": "Kandidat rasmi",
+      "phoneTitle": "Telefon raqam"
     },
     "position": {
       "contractType": "Shartnoma turi",
@@ -914,7 +918,10 @@
     "name": "Xodim ma'lumotlarini qo'shish",
     "ui": {
       "image": "Kandidat uchun 3 ta rasm qo'shish tavsiya qilinadi. Rasmlar oxirgi 3 oy davomida suratga olingan bo'lishi shart.",
-      "phone": "Kandidatning asosiy raqamini belgilang va bu raqam kandidatning xodim sifatida tizimga kirish uchun login vazifasini bajaradi."
+      "phone": "Kandidatning asosiy raqamini belgilang va bu raqam kandidatning xodim sifatida tizimga kirish uchun login vazifasini bajaradi.",
+      "mainImage": "Asosiy rasm",
+      "needPhotos": "{n} ta surat kerak",
+      "addPhoto": "Surat qo'shish"
     },
     "form": {
       "lastName": "Familiya",
@@ -942,9 +949,13 @@
       "address": "Yashash manzili",
       "experience_date": "Uzliksiz ish staji",
       "passportTitle": "Pasport ma'lumotlari",
-      "foreignPassportTitle": "Xorijga chiqish pasporti ma'lumotlari",
+      "foreignPassportTitle": "Xorijga chiqish pasporti",
       "education": "Ma'lumoti",
-      "work_experience": "Umumiy staj (oylarda ko'rsating)"
+      "work_experience": "Umumiy staj (oylarda ko'rsating)",
+      "birthPlace": "Tug'ilgan joy",
+      "livingPlace": "Yashash joy",
+      "citizenship": "Fuqarolik",
+      "given_place": "Berilgan joyi"
     },
     "step": {
       "personal": "Kandidatning shaxsiy ma'lumotlari",
@@ -1550,7 +1561,10 @@
     "systemTitle": "Tizimdagi mehnat faoliyati ma'lumotlari",
     "no-data": "Mehnat faoliyati qo'shilmagan!",
     "sortOldestFirst": "Boshidan oxirigacha",
-    "sortNewestFirst": "Oxiridan boshigacha"
+    "sortNewestFirst": "Oxiridan boshigacha",
+    "experienceMonth": "Staj (oy)",
+    "continuousExperience": "Uzluksiz ish staji",
+    "period": "Qachondan-qachongacha"
   },
   "workerPositionCertificatePage": {
     "title": "Lavozim guvohnomalari",
@@ -1571,7 +1585,7 @@
     }
   },
   "languageCertificatePage": {
-    "title": "Til sertifikatlari",
+    "title": "Til sertifikat ma'lumot",
     "no-data": "Til sertifikati ma'lumotlari yo'q!",
     "createTitle": "Sertifikat qo'shish",
     "updateTitle": "Sertifikatni tahrirlash",
@@ -3941,7 +3955,9 @@
       "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni",
       "turnstile": "Turniket orqali xabar yuborilgan xodimlar soni"
     },
-    "table": { "sentAt": "Yuborilgan vaqti" }
+    "table": {
+      "sentAt": "Yuborilgan vaqti"
+    }
   },
   "mobileStoryPage": {
     "name": "Story e'lonlari",

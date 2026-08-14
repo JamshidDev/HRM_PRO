@@ -1,5 +1,6 @@
 <script setup>
-  import { UIPageContent } from '@/components/index.js'
+  import { UIPageContent, UISegmentTabs } from '@/components/index.js'
+  import i18n from '@/i18n/index.js'
   import { useAccountStore, useDashboardStore } from '@/store/modules/index.js'
   import HeaderCard from '@/pages/hrm/dashboard/ui/HeaderCard.vue'
   import DetailFilters from './ui/Detail/Filter.vue'
@@ -10,11 +11,25 @@
 
   import { cards } from './constants.js'
 
+  const { t } = i18n.global
   const store = useDashboardStore()
   const accStore = useAccountStore()
 
   const canViewAudit = computed(() => accStore.checkPermission(accStore.pn.hrDashboardAudit))
   const isAudit = computed(() => store.activeTab === 'audit' && canViewAudit.value)
+
+  // Audit — alohida ko'rish ruxsati; bo'lmasa tab umuman chizilmaydi.
+  const tabList = computed(() =>
+    [
+      { id: 'general', name: t('dashboardPage.audit.tabGeneral') },
+      canViewAudit.value ? { id: 'audit', name: t('dashboardPage.audit.tabAudit') } : null
+    ].filter(Boolean)
+  )
+
+  const onTabSelect = (tab) => {
+    store.activeTab = tab
+    onTabChange(tab)
+  }
 
   onBeforeMount(() => {
     // `canView`: bare `hr-dashboard` yoki `hr-dashboard-read` — ikkalasi ham yaraydi.
@@ -51,19 +66,14 @@
 
 <template>
   <div>
-    <!-- Tab qatori va filtr bitta satrda: `n-tab` (panelsiz) ishlatilgani uchun
-         kontent tablardan tashqarida, to'liq kenglikda chiziladi. -->
+    <!-- Tab qatori va filtr bitta satrda: boblar faqat tanlovni boshqaradi,
+         kontent ulardan tashqarida, to'liq kenglikda chiziladi. -->
     <div class="flex items-center justify-between gap-3 flex-wrap pl-4 pr-7 py-3">
-      <n-tabs
-        v-model:value="store.activeTab"
-        @update:value="onTabChange"
-        type="line"
-        class="ui-pill-tabs ui-pill-tabs--inline"
-      >
-        <n-tab name="general">{{ $t('dashboardPage.audit.tabGeneral') }}</n-tab>
-        <!-- Audit — alohida ko'rish ruxsati; bo'lmasa tab umuman chizilmaydi. -->
-        <n-tab v-if="canViewAudit" name="audit">{{ $t('dashboardPage.audit.tabAudit') }}</n-tab>
-      </n-tabs>
+      <UISegmentTabs
+        :tabs="tabList"
+        :model-value="store.activeTab"
+        @update:model-value="onTabSelect"
+      />
 
       <!-- Barcha boshqaruvlar shu qatorda: audit qidiruvi faqat audit tabida chiqadi. -->
       <div class="flex items-center gap-3 flex-wrap">
