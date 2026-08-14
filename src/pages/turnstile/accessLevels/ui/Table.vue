@@ -17,7 +17,7 @@
   }
 
   const onEdit = (row) => {
-    if (!accStore.checkAction(accStore.pn.turnstileBuildingWrite)) return
+    if (!accStore.checkAction(accStore.pn.turnstileAccessLevelsWrite)) return
     store.elementId = row.id
     store.depPayload.hik_central_department_id = row?.department?.id
     store.depPayload.devices = row?.devices?.map((v) => v.id)

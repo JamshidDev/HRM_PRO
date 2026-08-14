@@ -1,13 +1,15 @@
 <script setup>
   import { Eye16Filled } from '@vicons/fluent'
-  import { useShiftTypeStore } from '@/store/modules/index.js'
+  import { useAccountStore, useShiftTypeStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import { NoDataPicture, UIPagination } from '@/components/index.js'
 
   const t = i18n.global.t
   const store = useShiftTypeStore()
+  const accStore = useAccountStore()
 
   const onOpenModal = (v) => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsWorkersWrite)) return
     if (v?.type?.id === 5) {
       $Toast.warning(t('shiftType.form.notAllowedThisAction'))
       return
@@ -69,7 +71,11 @@
               </n-button>
             </div>
             <div class="flex md:w-[300px]! !w-full md:justify-end">
-              <n-button @click="onOpenModal(item)" type="primary">
+              <n-button
+                v-if="accStore.checkPermission(accStore.pn.turnstileSheetsWorkersWrite)"
+                @click="onOpenModal(item)"
+                type="primary"
+              >
                 {{ $t('shiftType.form.createGroup') }}
               </n-button>
             </div>

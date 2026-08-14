@@ -1,6 +1,12 @@
 <script setup>
   import { UIModal, UIPageContent, UIDrawer } from '@/components/index.js'
-  import { Dismiss24Regular } from '@vicons/fluent'
+  import {
+    ArrowLeft24Regular,
+    ArrowRight24Regular,
+    Dismiss24Regular,
+    DocumentTable24Filled,
+    PeopleTeam24Regular
+  } from '@vicons/fluent'
   import contractForm from '@/pages/docFlow/document/contract/contractForm.vue'
   import Table from './ui/Table.vue'
   import ExportForm from './ui/ExportForm.vue'
@@ -27,14 +33,14 @@
     router.push({ name: `${AppPaths.Contract.substring(1)}` })
   }
 
-  const submitExportResume = (v) => {
-    exportStore.resumePayload.passport = v
-    exportStore._export_resume(store._params())
-  }
+  // Nechta xodim yuklanadi: belgilangan qatorlar, tanlov bo'lmasa — filtrlangan
+  // ro'yxat totali (`Filter.vue` dagi `selectedCount` bilan bir xil qoida).
+  const exportWorkerCount = computed(
+    () => exportStore.resumePayload.worker_ids.length || store.totalItems
+  )
 
-  const onExportSubmit = () => {
-    exportStore._export_workers(store._params())
-  }
+  // Faqat Excel tabining 2-bosqichida «Orqaga» ko'rinadi.
+  const isOrderStep = computed(() => exportStore.tab === 'excel' && exportStore.step === 2)
 
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.hrWorkersRead)) return
@@ -65,50 +71,29 @@
         <contractForm :call-back="onSuccessEv" />
       </template>
     </UIModal>
+    <!-- Balandlik QOTIRILGAN (`calc(100vh - 50px)`): bosqich almashganda
+         (Excel ↔ Tartib) modal sakrab o'lchamini o'zgartirmasin.
+         Ichki qism o'zi skroll bo'ladi. -->
     <UIModal
-      :width="500"
-      card-class="passport-modal-card"
-      v-model:visible="exportStore.resumeModalVisible"
+      :width="1040"
+      height="calc(100vh - 50px)"
+      card-class="export-modal-card"
+      v-model:visible="exportStore.visible"
     >
       <template #header>
-        <div class="passport-modal-header">
-          <h3 class="passport-modal-title">{{ $t('exportPage.addPassport') }}</h3>
-          <div class="passport-modal-close" @click="exportStore.resumeModalVisible = false">
-            <n-icon size="16"><Dismiss24Regular /></n-icon>
-          </div>
-        </div>
-      </template>
-      <template #default>
-        <n-spin :show="exportStore.exportResumeLoading">
-          <div class="passport-modal-actions">
-            <n-button
-              v-fly-upload
-              size="large"
-              type="primary"
-              @click="submitExportResume(true)"
-            >
-              {{ $t('exportPage.passportYes') }}
-            </n-button>
-            <n-button size="large" secondary @click="submitExportResume(false)">
-              {{ $t('exportPage.passportNo') }}
-            </n-button>
-          </div>
-        </n-spin>
-      </template>
-    </UIModal>
-    <UIModal :width="1040" card-class="export-modal-card" v-model:visible="exportStore.visible">
-      <template #header>
         <div class="export-modal-header">
-          <h3 class="export-modal-title">{{ $t('exportPage.excelSettings') }}</h3>
-          <div class="export-modal-header-actions">
-            <n-button
-              v-fly-upload
-              type="success"
-              :loading="exportStore.saveLoading"
-              @click="onExportSubmit"
-            >
-              {{ $t('exportPage.exportAction') }}
-            </n-button>
+          <div class="export-modal-heading">
+            <span class="export-modal-mark">
+              <n-icon size="20"><DocumentTable24Filled /></n-icon>
+            </span>
+            <h3 class="export-modal-title">{{ $t('exportPage.modalTitle') }}</h3>
+          </div>
+          <div class="export-modal-head-right">
+            <!-- Nechta xodim yuklanishi — bitta joyda, tab'larda takrorlanmaydi. -->
+            <span class="export-modal-count" :title="$t('exportPage.workerCountHint')">
+              <n-icon size="16"><PeopleTeam24Regular /></n-icon>
+              {{ exportWorkerCount }}
+            </span>
             <div class="export-modal-close" @click="exportStore.visible = false">
               <n-icon size="16"><Dismiss24Regular /></n-icon>
             </div>
@@ -117,6 +102,33 @@
       </template>
       <template #default>
         <ExportForm />
+      </template>
+      <template #footer>
+        <!-- Faqat Excel tabining navigatsiyasi. Asosiy «Yuklashni boshlash»
+             tugmasi kontent MARKAZIDA (`ExportForm`), footerda emas.
+             «Bekor qilish» ham yo'q: yopish uchun header'dagi × yetarli. -->
+        <div v-if="exportStore.tab === 'excel'" class="export-modal-footer">
+          <n-button v-if="isOrderStep" quaternary @click="exportStore.step = 1">
+            <template #icon>
+              <n-icon><ArrowLeft24Regular /></n-icon>
+            </template>
+            {{ $t('content.back') }}
+          </n-button>
+
+          <!-- «Davom etish» — strelka matndan KEYIN (oldinga harakat). -->
+          <n-button
+            v-if="exportStore.step === 1"
+            type="primary"
+            icon-placement="right"
+            :disabled="!exportStore.payload.columns.length"
+            @click="exportStore.step = 2"
+          >
+            <template #icon>
+              <n-icon><ArrowRight24Regular /></n-icon>
+            </template>
+            {{ $t('content.continue') }}
+          </n-button>
+        </div>
       </template>
     </UIModal>
     <!--    <UIModal :title="$t('workerRole.name')" :width="1200" v-model:visible="store.userRoleVisible">-->
@@ -128,97 +140,93 @@
 </template>
 
 <style scoped>
-  :global(.passport-modal-card) {
-    overflow: hidden;
-    border-radius: 20px !important;
-  }
-
-  .passport-modal-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 20px;
-    margin: -8px -8px 0;
-    background: var(--surface-ground);
-  }
-
-  .passport-modal-title {
-    margin: 0;
-    color: var(--textColor0);
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.35;
-  }
-
-  .passport-modal-close {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 999px;
-    background: var(--surface-section);
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: background-color 0.2s ease;
-  }
-
-  .passport-modal-close:hover {
-    background: var(--surface-line);
-  }
-
-  .passport-modal-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    padding-top: 20px;
-  }
-
-  .passport-modal-actions :deep(.n-button) {
-    --n-height: 48px !important;
-    --n-border-radius: 24px !important;
-    font-weight: 600;
-  }
-
   :global(.export-modal-card) {
     overflow: hidden;
     max-width: calc(100vw - 32px);
+    max-height: calc(100vh - 50px);
     border-radius: 20px !important;
   }
 
+  /* Header ataylab past: modal balandligi qotirilgan (720px), shu bois har bir
+     ortiqcha piksel ustunlar ro'yxatidan olinadi. */
   .export-modal-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    padding: 20px 24px;
+    padding: 10px 16px;
     margin: -8px -8px 0;
-    background: var(--surface-ground);
+    border-bottom: 1px solid var(--surface-line);
+  }
+
+  .export-modal-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  /* Sarlavha oldidagi belgi — quti ichida jadval (Excel) ikonkasi. */
+  .export-modal-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--success-color) 16%, var(--surface-section));
+    color: var(--success-color);
+    flex-shrink: 0;
   }
 
   .export-modal-title {
     margin: 0;
     color: var(--textColor0);
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 700;
+    white-space: nowrap;
   }
 
-  .export-modal-header-actions {
+  .export-modal-footer {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 12px;
+    padding: 10px 16px;
+    margin: 0 -8px -8px;
+    border-top: 1px solid var(--surface-line);
+  }
+
+  .export-modal-head-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     flex-shrink: 0;
+  }
+
+  /* Yuklanadigan xodimlar soni — ikonkali badge. */
+  .export-modal-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--primary-color) 12%, var(--surface-section));
+    color: var(--primary-color);
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
   }
 
   .export-modal-close {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: 999px;
-    background: var(--surface-section);
+    background: var(--surface-ground);
     cursor: pointer;
     flex-shrink: 0;
     transition: background-color 0.2s ease;

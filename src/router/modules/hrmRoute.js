@@ -51,7 +51,7 @@ export const hrmRoutes = [
     name: AppPaths.WorkerProfile.substring(1),
     component: () => import('@/pages/hrm/workerProfile/ProfilePage.vue'),
     // Xodim kartochkasi — Xodimlar ro'yxatining detal ko'rinishi.
-    meta: { layout: AppLayouts.main, permission: appPermissions.hrWorkers }
+    meta: { layout: AppLayouts.main, permission: appPermissions.hrWorkersRead }
   },
   {
     path: Utils.routeHrmPathMaker(AppPaths.Application),
@@ -113,7 +113,7 @@ export const hrmRoutes = [
     component: () => import('@/pages/hrm/slice/SlicePage.vue'),
     // Navigatsiyada bandi izohga olingan, lekin route tirik — sahifaning o'z
     // tekshiruvi (`hrJobsRead`) bilan bir xil slug'ga bog'lanadi.
-    meta: { layout: AppLayouts.main, permission: appPermissions.hrJobs }
+    meta: { layout: AppLayouts.main, permission: appPermissions.hrJobsRead }
   },
   {
     path: Utils.routeHrmPathMaker(AppPaths.OrganizationLeader),

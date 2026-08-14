@@ -1,13 +1,15 @@
 <script setup>
   import { UIModal } from '@/components/index.js'
-  import { useTurnstileScheduleStore } from '@/store/modules/index.js'
+  import { useAccountStore, useTurnstileScheduleStore } from '@/store/modules/index.js'
   import validationRules from '@/utils/validationRules.js'
   import Utils from '@/utils/Utils.js'
 
   const formRef = ref(null)
   const store = useTurnstileScheduleStore()
+  const accStore = useAccountStore()
 
   const onSubmit = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileScheduleWrite)) return
     formRef.value?.validate((error) => {
       if (!error) {
         let data = null

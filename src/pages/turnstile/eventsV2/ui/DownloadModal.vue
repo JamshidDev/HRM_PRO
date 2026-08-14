@@ -1,6 +1,6 @@
 <script setup>
   import { useEventV2Store, useComponentStore, useAccountStore } from '@stores'
-  import { UIModal, UISelect } from '@components'
+  import { UIModal, UISelect, SuperSelect } from '@components'
   import { useAppSetting, validationRules } from '@utils'
   import { LockClosed20Regular } from '@vicons/fluent'
 
@@ -10,25 +10,45 @@
 
   const canAbsent = computed(() => accStore.checkAction(accStore.pn.turnstileAbsentWorkersExport))
 
-  const onOpenAbsent = () => {
+  // Modal ochilganda korxona daraxti va xodim ro'yxati bir marta tortiladi.
+  watch(() => store.download.visible, (v) => {
+    if (!v) return
     if (!componentStore.structureList.length) componentStore._structures()
-  }
-
-  watch(() => store.download.activeTab, (v) => {
-    if (v === 'absent') onOpenAbsent()
+    if (!store.download.worker.list.length) store._downloadWorkers()
   })
 
-  // --- Yuklash tab ---
-  const downloadFormRef = ref(null)
+  // --- Umumiy filtrlar (ikkala tab uchun) ---
   const { proxy } = getCurrentInstance()
   const submitBtnRef = ref(null)
+  const downloadFormRef = ref(null)
+
+  const departmentAction = {
+    onSearch: () => {
+      store.download.department.params.page = 1
+      store._downloadDepartments()
+    },
+    onScroll: () => {
+      store.download.department.params.page++
+      store._downloadDepartments(true)
+    }
+  }
+
+  const workerAction = {
+    onSearch: () => {
+      store.download.worker.params.page = 1
+      store._downloadWorkers()
+    },
+    onScroll: () => {
+      store.download.worker.params.page++
+      store._downloadWorkers(true)
+    }
+  }
 
   const onDownloadSubmit = () => {
     downloadFormRef.value?.validate((error) => {
       if (!error) {
         const btnEl = submitBtnRef.value?.$el || submitBtnRef.value
-        proxy.$flyUpload(btnEl)
-        store._download()
+        store._download(() => proxy.$flyUpload(btnEl))
       }
     })
   }
@@ -63,7 +83,56 @@
       </n-tab>
     </n-tabs>
 
-    <!-- Yuklash tab -->
+    <!-- Umumiy filtrlar — ikkala tab ham AYNAN shu korxona/bo'lim/xodim
+         tanlovi bilan yuklaydi (backend'da ikkala endpoint bir xil qabul qiladi). -->
+    <div class="grid grid-cols-12 gap-x-4">
+      <n-form-item class="col-span-12" :label="$t('content.organization')">
+        <UISelect
+          :options="componentStore.structureList"
+          :model-v="store.download.payload.organizations"
+          :checked-val="store.download.structureCheck"
+          :loading="componentStore.structureLoading"
+          v-model:search="componentStore.structureParams.search"
+          @updateModel="store._onDownloadOrganizations"
+          @updateCheck="(v) => (store.download.structureCheck = v)"
+          @defaultValue="store._onDownloadOrganizations"
+          @onSearch="componentStore._structures"
+        />
+      </n-form-item>
+      <n-form-item class="col-span-12" :label="$t('content.department')">
+        <SuperSelect
+          :disabled="store.download.payload.organizations.length === 0"
+          v-model:value="store.download.payload.departments"
+          v-model:search="store.download.department.params.search"
+          :options="store.download.department.list"
+          :per-page="store.download.department.params.per_page"
+          :total-count="store.download.department.totalItems"
+          :loading="store.download.department.loading"
+          @update:value="store._onDownloadDepartments"
+          @onScrollEv="departmentAction.onScroll"
+          @onSearch="departmentAction.onSearch"
+          multiple
+          clearable
+        />
+      </n-form-item>
+      <n-form-item class="col-span-12" :label="$t('content.workers')">
+        <SuperSelect
+          v-model:value="store.download.payload.workers"
+          v-model:search="store.download.worker.params.search"
+          :options="store.download.worker.list"
+          :per-page="store.download.worker.params.per_page"
+          :total-count="store.download.worker.totalItems"
+          :loading="store.download.worker.loading"
+          @onScrollEv="workerAction.onScroll"
+          @onSearch="workerAction.onSearch"
+          :max-tag-count="2"
+          multiple
+          clearable
+        />
+      </n-form-item>
+    </div>
+
+    <!-- Yuklash tab — sanalar -->
     <n-form
       v-if="store.download.activeTab === 'download'"
       ref="downloadFormRef"
@@ -114,7 +183,7 @@
       </div>
     </n-form>
 
-    <!-- Kelmaganlar tab -->
+    <!-- Kelmaganlar tab — sanalar (filtrlar yuqoridagi umumiy blokdan) -->
     <n-form
       v-else-if="store.download.activeTab === 'absent'"
       ref="absentFormRef"
@@ -122,19 +191,6 @@
       :rules="validationRules.common"
       class="grid grid-cols-12 gap-x-4"
     >
-      <n-form-item class="col-span-12" :label="$t('content.organization')">
-        <UISelect
-          :options="componentStore.structureList"
-          :model-v="store.absent.payload.organizations"
-          :checked-val="store.absent.structureCheck"
-          :loading="componentStore.structureLoading"
-          v-model:search="componentStore.structureParams.search"
-          @updateModel="(v) => (store.absent.payload.organizations = v)"
-          @updateCheck="(v) => (store.absent.structureCheck = v)"
-          @defaultValue="(v) => (store.absent.payload.organizations = v)"
-          @onSearch="componentStore._structures"
-        />
-      </n-form-item>
       <n-form-item
         class="col-span-12"
         :label="$t('content.from')"

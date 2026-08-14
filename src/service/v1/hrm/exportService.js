@@ -4,6 +4,10 @@ const _columns = async () => {
   return await axios.get(`/v1/hr/export/workers/columns`)
 }
 
+const _relative_columns = async () => {
+  return await axios.get(`/v1/hr/export/relatives/columns`)
+}
+
 const _tasks = async (payload) => {
   return await axios.get(`/v1/hr/export/tasks`, { params: payload.params })
 }
@@ -25,6 +29,7 @@ const _export_resume = async (payload) => {
 
 export default {
   _columns,
+  _relative_columns,
   _tasks,
   _export_workers,
   _export_resume,

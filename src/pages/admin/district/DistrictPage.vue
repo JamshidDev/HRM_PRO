@@ -10,7 +10,6 @@
   const store = useDistrictStore()
 
   const onSearch = (v) => {
-    if (!accStore.checkAction(accStore.pn.citiesRead)) return
     store.params.page = 1
     store._index()
   }

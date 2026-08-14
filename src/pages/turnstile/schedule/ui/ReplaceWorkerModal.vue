@@ -1,14 +1,16 @@
 <script setup>
-  import { useScheduleTableStore } from '@stores'
+  import { useAccountStore, useScheduleTableStore } from '@stores'
   import { UIModal } from '@components'
   import validationRules from '@/utils/validationRules.js'
   import Utils from '@/utils/Utils.js'
   import { SuperSelect } from '@components'
 
   const store = useScheduleTableStore()
+  const accStore = useAccountStore()
   const formRef = ref(null)
 
   const onSubmit = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsReplace)) return
     formRef.value?.validate((error) => {
       if (!error) {
         const newWorker = store.worker.list.find((v) => v.id === store.replace.payload.positonId)

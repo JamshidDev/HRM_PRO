@@ -13,7 +13,6 @@
   const accStore = useAccountStore()
 
   const onSearch = () => {
-    if (!accStore.checkAction(accStore.pn.organizationsRead)) return
     store.params.page = 1
     store._index()
   }

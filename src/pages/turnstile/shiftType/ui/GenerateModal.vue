@@ -1,14 +1,16 @@
 <script setup>
-  import { useShiftTypeStore } from '@/store/modules/index.js'
+  import { useAccountStore, useShiftTypeStore } from '@/store/modules/index.js'
   import { UIModal } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
 
   const store = useShiftTypeStore()
+  const accStore = useAccountStore()
   const formRef = ref(null)
 
   const onSubmit = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsWorkersWrite)) return
     formRef.value?.validate((error) => {
       if (!error) {
         const data = {

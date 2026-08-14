@@ -1,6 +1,4 @@
 import { defineStore } from 'pinia'
-import i18n from '@/i18n/index.js'
-const { t } = i18n.global
 export const useUserRoleStore = defineStore('userRole', {
   state: () => ({
     list: [],
@@ -18,6 +16,9 @@ export const useUserRoleStore = defineStore('userRole', {
       // Rol turi: 'sanctum' (foydalanuvchi roli) yoki 'integration' (client roli).
       // Guard rolning permission olamini belgilaydi (ikkovidan bittasi).
       guard_name: 'sanctum',
+      // Org-scope: rol egasi qaysi korxonaларни ko'radi.
+      // 'local' = faqat shu korxona; 'global' = korxona + tarkibi. Integration'da null.
+      scope_type: 'local',
       permissions: []
     },
     params: {
@@ -44,10 +45,10 @@ export const useUserRoleStore = defineStore('userRole', {
       this.saveLoading = true
       $ApiService.userRoleService
         ._create({ data: this.payload })
-        .then((res) => {
+        .then(() => {
           this.visible = false
           this._index()
-          $Toast.success(t('categoryPage.toast.successUpdate'))
+          // Toast interceptor'da (backend'ning tarjimali message'i) — bu yerda takrorlanmaydi.
         })
         .finally(() => {
           this.saveLoading = false
@@ -57,10 +58,10 @@ export const useUserRoleStore = defineStore('userRole', {
       this.saveLoading = true
       $ApiService.userRoleService
         ._update({ data: this.payload, id: this.elementId })
-        .then((res) => {
+        .then(() => {
           this.visible = false
           this._index()
-          $Toast.success(t('categoryPage.toast.successUpdate'))
+          // Toast interceptor'da (backend'ning tarjimali message'i) — bu yerda takrorlanmaydi.
         })
         .finally(() => {
           this.saveLoading = false
@@ -116,10 +117,20 @@ export const useUserRoleStore = defineStore('userRole', {
     openVisible(data) {
       this.visible = data
     },
+    // Guard almashganda: permissionlar tozalanadi, scope moslanadi, ro'yxat qayta yuklanadi.
+    onGuardChange() {
+      this.payload.permissions = []
+      this.query = null
+      // Integration scope ishlatmaydi → null; sanctum uchun aniq holat → default local.
+      this.payload.scope_type =
+        this.payload.guard_name === 'integration' ? null : this.payload.scope_type || 'local'
+      this._getAllPermission()
+    },
     resetForm() {
       this.elementId = null
       this.payload.name = null
       this.payload.guard_name = 'sanctum'
+      this.payload.scope_type = 'local'
       this.payload.permissions = []
       this.query = null
     }

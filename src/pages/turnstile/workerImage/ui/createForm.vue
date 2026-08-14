@@ -1,5 +1,5 @@
 <script setup>
-  import { useWorkerImageStore } from '@/store/modules/index.js'
+  import { useAccountStore, useWorkerImageStore } from '@/store/modules/index.js'
   import { UINSelect } from '@/components/index.js'
 
   import validationRules from '@/utils/validationRules.js'
@@ -9,8 +9,10 @@
 
   const formRef = ref(null)
   const store = useWorkerImageStore()
+  const accStore = useAccountStore()
 
   const onSubmit = (status) => {
+    if (!accStore.checkAction(accStore.pn.turnstileWorkerImageWrite)) return
     formRef.value?.validate((error) => {
       if ((!error && status === 2) || status === 3) {
         const data = {
@@ -100,6 +102,7 @@
 
   <div class="grid grid-cols-2 gap-2">
     <n-button
+      v-if="accStore.checkPermission(accStore.pn.turnstileWorkerImageWrite)"
       :loading="store.confirmLoading"
       @click="store.showCommentArea = !store.showCommentArea"
       type="error"
@@ -107,7 +110,7 @@
       {{ $t(store.showCommentArea ? 'content.back' : 'content.reject') }}
     </n-button>
     <n-button
-      v-if="!store.showCommentArea"
+      v-if="!store.showCommentArea && accStore.checkPermission(accStore.pn.turnstileWorkerImageWrite)"
       :loading="store.confirmLoading"
       type="primary"
       @click="onSubmit(2)"
@@ -115,7 +118,7 @@
       {{ $t('content.confirm') }}
     </n-button>
     <n-button
-      v-if="store.showCommentArea"
+      v-if="store.showCommentArea && accStore.checkPermission(accStore.pn.turnstileWorkerImageWrite)"
       :loading="store.confirmLoading"
       type="primary"
       @click="onSubmit(3)"

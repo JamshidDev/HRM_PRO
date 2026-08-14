@@ -10,7 +10,6 @@
   const accStore = useAccountStore()
 
   const onSearch = (v) => {
-    if (!accStore.checkAction(accStore.pn.countriesRead)) return
     store.params.page = 1
     store._index()
   }

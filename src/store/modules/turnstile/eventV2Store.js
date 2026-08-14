@@ -176,29 +176,50 @@ export const useEventV2Store = defineStore('eventV2Store', {
       loading: false,
       visible: false,
       activeTab: 'download',
-      payload: {
-        from: null,
-        to: null
-      }
-    },
-    absent: {
-      loading: false,
       structureCheck: [],
       payload: {
+        from: null,
+        to: null,
+        organizations: [], // UISelect (daraxt) — {id, name} obyektlari
+        departments: [], // SuperSelect — id'lar
+        workers: [] // SuperSelect — workers.id
+      },
+      // Bo'lim/xodim dropdownlari modalning O'Z ro'yxatlari: sahifa filtri
+      // o'zgarsa yuklash oynasidagi tanlov buzilmasin.
+      department: {
+        list: [],
+        loading: false,
+        totalItems: 0,
+        params: { page: 1, per_page: 100, search: null }
+      },
+      worker: {
+        list: [],
+        loading: false,
+        totalItems: 0,
+        params: { page: 1, per_page: 50, search: null }
+      }
+    },
+    // Kelmaganlar tabi — korxona/bo'lim/xodim filtrlari `download.payload` dan
+    // olinadi (modal oynada bitta umumiy blok), bu yerda faqat o'z sanalari.
+    absent: {
+      loading: false,
+      payload: {
         from_date: null,
-        to_date: null,
-        organizations: []
+        to_date: null
       }
     }
   }),
   actions: {
+    // «Kelmaganlar» eksporti — «Yuklash» bilan AYNAN bir xil filtrlar
+    // (korxona/bo'lim/xodim), faqat endpoint va sana kalitlari boshqa
+    // (`from_date`/`to_date`). Backend ikkalasida ham filtrlarni org-scope
+    // USTIGA AND qiladi.
     _downloadAbsent(onSuccess) {
       this.absent.loading = true
-      const orgs = this.absent.payload.organizations.map((v) => v.id)
       const params = {
         from_date: Utils.timeToZone(this.absent.payload.from_date),
         to_date: Utils.timeToZone(this.absent.payload.to_date),
-        ...(orgs.length ? { organizations: orgs.toString() } : {})
+        ...this._downloadFilterParams()
       }
       $ApiService.eventV2Service
         ._absentScheduledWorkers({ params })
@@ -211,18 +232,134 @@ export const useEventV2Store = defineStore('eventV2Store', {
           this.absent.loading = false
         })
     },
-    _download() {
+    // Yuklash oynasining o'z filtrlari (korxona/bo'lim/xodim) bilan eksport.
+    // Backend `workers`ni org-scope USTIGA AND qilib qo'shadi — tanlov faqat
+    // toraytiradi, ruxsatni kengaytirmaydi.
+    // Ikkala eksport uchun umumiy filtr parametrlari (korxona/bo'lim/xodim).
+    _downloadFilterParams() {
+      const { organizations, departments, workers } = this.download.payload
+      const orgs = organizations.map((v) => v.id)
+      return {
+        ...(orgs.length ? { organizations: orgs.toString() } : {}),
+        ...(departments.length ? { departments: departments.toString() } : {}),
+        ...(workers.length ? { workers: workers.toString() } : {})
+      }
+    },
+    _download(onSuccess) {
       this.download.loading = true
       const params = {
-        ...this._params(),
         download: true,
         from: Utils.timeToZone(this.download.payload.from),
-        to: Utils.timeToZone(this.download.payload.to)
+        to: Utils.timeToZone(this.download.payload.to),
+        ...this._downloadFilterParams()
       }
-      $ApiService.eventV2Service._index({ params }).finally(() => {
-        this.download.loading = false
-        this.download.visible = false
-      })
+      $ApiService.eventV2Service
+        ._index({ params })
+        .then((res) => {
+          onSuccess?.()
+          window.$message?.success(res.data?.message)
+          this.download.visible = false
+        })
+        .finally(() => {
+          this.download.loading = false
+        })
+    },
+    // Yuklash oynasidagi bo'lim ro'yxati — tanlangan korxonalar bo'yicha.
+    _downloadDepartments(infinity = false) {
+      this.download.department.loading = true
+      const orgs = this.download.payload.organizations.map((v) => v.id)
+      const params = {
+        ...this.download.department.params,
+        ...(orgs.length ? { organizations: orgs.toString() } : {})
+      }
+      $ApiService.componentService
+        ._departmentByOrganizations({ params })
+        .then((res) => {
+          this.download.department.totalItems = res.data.data.total
+          const data = res.data.data.data.map((v) => ({
+            ...v,
+            position: v?.organization?.name
+          }))
+          this.download.department.list = infinity
+            ? [...this.download.department.list, ...data]
+            : data
+        })
+        .finally(() => {
+          this.download.department.loading = false
+        })
+    },
+    // Yuklash oynasidagi xodim ro'yxati — SHU sahifaning `events-new` endpointi.
+    // Sabab: u allaqachon rol/org-scope ichida ishlaydi, sahifani ko'rish
+    // ruxsatiga bog'langan va to'g'ridan-to'g'ri `workers.id` qaytaradi
+    // (`/hr/search-workers` da org-scope YO'Q — ishlatilmaydi).
+    // ⚠️ `event` yuborilMAYDI: aks holda faqat o'sha kuni hodisasi bor xodimlar chiqadi.
+    _downloadWorkers(infinity = false) {
+      this.download.worker.loading = true
+      const orgs = this.download.payload.organizations.map((v) => v.id)
+      const departments = this.download.payload.departments
+      const params = {
+        ...this.download.worker.params,
+        ...(orgs.length ? { organizations: orgs.toString() } : {}),
+        ...(departments.length ? { departments: departments.toString() } : {})
+      }
+      $ApiService.eventV2Service
+        ._index({ params })
+        .then((res) => {
+          this.download.worker.totalItems = res.data.data.total
+          const data = res.data.data.data.map((v) => ({
+            id: v.id,
+            name: Utils.combineFullName(v),
+            photo: v.photo
+          }))
+          this.download.worker.list = infinity
+            ? [...this.download.worker.list, ...data]
+            : data
+        })
+        .finally(() => {
+          this.download.worker.loading = false
+        })
+    },
+    // Korxona tanlovi o'zgarganda quyi tanlovlar (bo'lim/xodim) qayta yuklanadi.
+    _onDownloadOrganizations(v) {
+      this.download.payload.organizations = v
+      this.download.payload.departments = []
+      this.download.payload.workers = []
+      this.download.department.list = []
+      this.download.department.params.page = 1
+      this.download.department.params.search = null
+      this.download.worker.params.page = 1
+      this.download.worker.params.search = null
+      this._downloadWorkers()
+      if (v.length) this._downloadDepartments()
+    },
+    // Yuklash oynasini ochish: sana defaultlari + sahifa filtrini bir marta
+    // oldindan to'ldirish. Ilgari eksport sahifa filtrini o'zi olardi — o'sha
+    // xulq saqlanadi, lekin endi foydalanuvchi uni modalda o'zgartira oladi.
+    _openDownload({ organizations = [], departments = [] } = {}) {
+      if (!this.download.payload.from) {
+        const today = new Date()
+        const tomorrow = new Date(today)
+        tomorrow.setDate(today.getDate() + 1)
+        this.download.payload.from = today.getTime()
+        this.download.payload.to = tomorrow.getTime()
+      }
+      const isFirstOpen =
+        this.download.payload.organizations.length === 0 &&
+        this.download.payload.workers.length === 0
+      if (isFirstOpen && organizations.length) {
+        this.download.payload.organizations = [...organizations]
+        this.download.payload.departments = [...departments]
+        this.download.department.list = []
+        this.download.department.params.page = 1
+        this._downloadDepartments()
+      }
+      this.download.visible = true
+    },
+    _onDownloadDepartments() {
+      this.download.payload.workers = []
+      this.download.worker.params.page = 1
+      this.download.worker.params.search = null
+      this._downloadWorkers()
     },
     _showEventsInDay(date, id) {
       this.calendarLoading = true

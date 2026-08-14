@@ -8,9 +8,10 @@
   } from '@vicons/fluent'
   import { UIMenuButton } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
-  import { useScheduleTableStore } from '@/store/modules/index.js'
+  import { useAccountStore, useScheduleTableStore } from '@/store/modules/index.js'
 
   const store = useScheduleTableStore()
+  const accStore = useAccountStore()
 
   const props = defineProps({
     worker: {
@@ -24,6 +25,7 @@
     const data = v.data
 
     if (v.key === Utils.ActionTypes.attachment) {
+      if (!accStore.checkAction(accStore.pn.turnstileSheetsTurnstile)) return
       store._resetGrandpaPayload()
       store.grandPayload.is_turnstile = data.canRecognize || false
       store.grandPayload.grandToReport = !data.canRecognize || false
@@ -33,12 +35,14 @@
       }
       store.grandVisible = true
     } else if (v.key === Utils.ActionTypes.verifier) {
+      if (!accStore.checkAction(accStore.pn.turnstileSheetsCopy)) return
       store.selectedDays = v.data.days
       store.selectedWorkerId = v.data.id
       store.attachWorkerParams.page = 1
       store._attachWorkers()
       store.multipleAttachVisible = true
     } else if (v.key === Utils.ActionTypes.edit) {
+      if (!accStore.checkAction(accStore.pn.turnstileSheetsReplace)) return
       const { fullName, position, id, workerId } = v.data
       store.replace.selectedWorker = {
         fullName,
@@ -89,19 +93,19 @@
           label: $t('shiftType.form.addFacility'),
           key: Utils.ActionTypes.attachment,
           icon: Timer12Regular,
-          visible: true
+          visible: accStore.checkPermission(accStore.pn.turnstileSheetsTurnstile)
         },
         {
           label: $t('content.copy'),
           key: Utils.ActionTypes.verifier,
           icon: Copy16Regular,
-          visible: true
+          visible: accStore.checkPermission(accStore.pn.turnstileSheetsCopy)
         },
         {
           label: $t('schedule.form.replaceWorker'),
           key: Utils.ActionTypes.edit,
           icon: ArrowSync16Filled,
-          visible: true
+          visible: accStore.checkPermission(accStore.pn.turnstileSheetsReplace)
         }
       ]"
     />

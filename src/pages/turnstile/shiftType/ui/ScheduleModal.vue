@@ -1,15 +1,17 @@
 <script setup>
-  import { useShiftTypeStore } from '@/store/modules/index.js'
+  import { useAccountStore, useShiftTypeStore } from '@/store/modules/index.js'
   import { UIModal, UINSelect } from '@/components/index.js'
   import SearchElement from '@/pages/turnstile/schedule/ui/SearchElement.vue'
   import MonthTab from '@/pages/turnstile/scheduleWorker/ui/MonthTab.vue'
   import { Utils } from '@utils'
 
   const store = useShiftTypeStore()
+  const accStore = useAccountStore()
 
   const currentScheduleList = ref([])
 
   const onSubmit = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsWorkersWrite)) return
     const data = {
       start_date: Utils.timeToZone(store.generatePayload.start_date),
       end_date: Utils.timeToZone(store.generatePayload.end_date),

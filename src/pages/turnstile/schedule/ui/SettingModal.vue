@@ -1,12 +1,14 @@
 <script setup>
   import { UIModal } from '@/components/index.js'
-  import { useScheduleTableStore } from '@/store/modules/index.js'
+  import { useAccountStore, useScheduleTableStore } from '@/store/modules/index.js'
   import validationRules from '@/utils/validationRules.js'
 
   const formRef = ref(null)
   const store = useScheduleTableStore()
+  const accStore = useAccountStore()
 
   const onSubmit = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsWrite)) return
     formRef.value?.validate((error) => {
       if (!error) {
         const { dayTime, eveningTime } = store._calculateTimeIntervals(
