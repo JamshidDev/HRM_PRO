@@ -3,6 +3,8 @@
   import { useAppStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import { UIDrawer } from '@components'
+  import { audioOutputAvailable, audioOutputFailureReason } from '@/composables/useAudioOutput.js'
+  import { useNotificationSound } from '@/composables/useNotificationSound.js'
   import ColorlessIcon from '@/assets/icons/colorlessIcon.svg'
   import HalfBrightnessIcon from '@/assets/icons/halfBrightnessIcon.svg'
   import FullBrightnessIcon from '@/assets/icons/fullBrightnessIcon.svg'
@@ -78,10 +80,22 @@
     }
   })
 
+  const notificationSound = useNotificationSound()
+
+  // Apparat yo'qligi tasdiqlangan bo'lsa switch bloklanadi, lekin `soundEnabled` (va localStorage)
+  // o'zgarmaydi — apparat qaytsa foydalanuvchining avvalgi tanlovi saqlanib qoladi
+  const soundUnavailable = computed(() => audioOutputAvailable.value === false)
+  const soundWarningText = computed(() =>
+    audioOutputFailureReason.value === 'playback-failed'
+      ? t('content.soundPlaybackFailed')
+      : t('content.soundDeviceMissing')
+  )
+
   const onToggleSound = (value) => {
     store.setSoundEnabled(value)
     if (value) {
-      new Audio('/sounds/notification.mp3').play().catch(() => {})
+      // Composable orqali — unlock gate va apparat aniqlash mantiqidan o'tsin
+      notificationSound.play('success')
     }
   }
 </script>
@@ -110,14 +124,18 @@
         </div>
 
         <div class="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-6">
-          <div class="flex items-center justify-between">
-            <span class="text-sm text-textColor0 font-medium">{{ t('content.soundNotification') }}</span>
-            <n-switch
-              class="ios-switch"
-              size="large"
-              :value="store.soundEnabled"
-              @update:value="onToggleSound"
-            />
+          <div class="flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-textColor0 font-medium">{{ t('content.soundNotification') }}</span>
+              <n-switch
+                class="ios-switch"
+                size="large"
+                :value="store.soundEnabled"
+                :disabled="soundUnavailable"
+                @update:value="onToggleSound"
+              />
+            </div>
+            <span v-if="soundUnavailable" class="text-xs text-warning">{{ soundWarningText }}</span>
           </div>
 
           <n-divider class="!my-0" />
