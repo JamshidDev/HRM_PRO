@@ -4,7 +4,8 @@
     ArrowSync24Regular,
     ChevronLeft24Filled,
     ChevronRight24Filled,
-    Eye24Regular
+    Eye24Regular,
+    ImageAdd24Regular
   } from '@vicons/fluent'
 
   const store = useMobileStoryStore()
@@ -69,6 +70,12 @@
           controls
         />
         <img v-else-if="activeSlide" :src="activeSlide.url" class="story-media" alt="" />
+
+        <!-- Slayd tanlanmagan holat (panel formani ochgan zahoti ko'rinadi) -->
+        <div v-else class="story-empty">
+          <n-icon :component="ImageAdd24Regular" :size="30" />
+          <span>{{ $t('mobileStoryPage.form.noSlides') }}</span>
+        </div>
 
         <!-- Progress segmentlari -->
         <div class="story-bars">
@@ -163,6 +170,19 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+  .story-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 100%;
+    padding: 0 28px;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 12px;
+    text-align: center;
   }
   .story-bars {
     position: absolute;

@@ -35,7 +35,11 @@
 <template>
   <UIPageContent>
     <n-spin :show="store.loading">
-      <div class="flex items-center gap-3 mb-4">
+      <!-- Manfiy margin UIPageContent paddingini qoplaydi, shunda yopishgan panel
+           ostidan skroll qilinayotgan kontentning chetlari ko'rinib qolmaydi. -->
+      <div
+        class="news-form-header sticky top-0 z-30 flex items-center gap-3 mb-4 -mx-1 md:-mx-4 px-1 md:px-4 py-3 border-b border-surface-line"
+      >
         <UIBackButton @click="goBack" />
         <h1 class="text-xl font-bold text-textColor0">
           {{ isEditing ? $t('newsPage.edit') : $t('newsPage.create') }}
@@ -46,6 +50,7 @@
           v-model:lang-index="langIndex"
           class="flex-1 min-w-0"
           @preview="showPreviewModal = true"
+          @cancel="goBack"
           @done="
             () => {
               goBack()
@@ -53,7 +58,10 @@
           "
         />
 
-        <NewsMobilePreview :lang-index="langIndex" class="hidden xl:block shrink-0 sticky top-4" />
+        <NewsMobilePreview
+          :lang-index="langIndex"
+          class="hidden xl:block shrink-0 sticky top-[68px]"
+        />
       </div>
     </n-spin>
 
@@ -69,3 +77,10 @@
     </n-modal>
   </UIPageContent>
 </template>
+
+<style lang="scss" scoped>
+  // Yopishgan sarlavha ostidan kontent ko'rinmasligi uchun to'liq shaffofmas fon.
+  .news-form-header {
+    background: var(--surface-ground);
+  }
+</style>

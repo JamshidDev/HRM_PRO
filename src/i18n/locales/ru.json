@@ -3960,7 +3960,8 @@
       "preview": "Предпросмотр",
       "replaceSlide": "Заменить",
       "slidesPanel": "Слайды",
-      "addSlideHint": "Добавить фото или видео"
+      "addSlideHint": "Добавить фото или видео",
+      "previewHint": "Так это выглядит на телефоне"
     },
     "deleteConfirm": "Удалить эту story?",
     "slideDeleteConfirm": "Удалить этот слайд?",

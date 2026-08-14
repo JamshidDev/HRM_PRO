@@ -3949,7 +3949,8 @@
       "preview": "Preview",
       "replaceSlide": "Replace",
       "slidesPanel": "Slides",
-      "addSlideHint": "Add photo or video"
+      "addSlideHint": "Add photo or video",
+      "previewHint": "This is how it looks on a phone"
     },
     "deleteConfirm": "Delete this story?",
     "slideDeleteConfirm": "Delete this slide?",

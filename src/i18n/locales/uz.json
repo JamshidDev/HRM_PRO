@@ -3992,7 +3992,8 @@
       "preview": "Ko'rinishi",
       "replaceSlide": "Almashtirish",
       "slidesPanel": "Slaydlar",
-      "addSlideHint": "Rasm yoki video qo'shish"
+      "addSlideHint": "Rasm yoki video qo'shish",
+      "previewHint": "Telefonda shunday ko'rinadi"
     },
     "deleteConfirm": "Ushbu story o'chirilsinmi?",
     "slideDeleteConfirm": "Ushbu slayd o'chirilsinmi?",

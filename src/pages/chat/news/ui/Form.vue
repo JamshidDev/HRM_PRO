@@ -19,7 +19,7 @@
   const { t } = i18n.global
   const store = useNewsStore()
 
-  const emits = defineEmits(['done', 'preview'])
+  const emits = defineEmits(['done', 'preview', 'cancel'])
 
   const formRef = ref(null)
   const selectedLangIndex = defineModel('langIndex', { type: Number, default: 0 })
@@ -104,10 +104,10 @@
     :disabled="store.saveLoading"
     size="large"
   >
-    <SectionHeader :icon="PenSquareIcon" :title="$t('newsPage.badge')" plain-footer class="mb-6">
+    <SectionHeader :icon="PenSquareIcon" :title="$t('newsPage.badge')" class="mb-4">
       <div class="grid grid-cols-2 gap-4">
         <div class="md:col-span-2 pb-5 mb-1 border-b border-surface-line">
-          <NewsImageUpload v-model:files="store.payload.media"   />
+          <NewsImageUpload v-model:files="store.payload.media" />
         </div>
 
         <n-form-item
@@ -225,28 +225,41 @@
           :path="`translations[${selectedLangIndex}].content`"
         />
       </div>
-
-      <template #footer>
-        <n-button ghost class="xl:hidden" @click="emits('preview')">
-          <template #icon>
-            <n-icon><EyeIcon /></n-icon>
-          </template>
-          {{ $t('newsPage.preview') }}
-        </n-button>
-        <template v-if="isArchived">
-          <n-button type="primary" :loading="store.saveLoading" @click="onSaveCurrent">
-            {{ $t('content.save') }}
-          </n-button>
-        </template>
-        <template v-else>
-          <n-button ghost :loading="store.saveLoading" @click="onSaveDraft">
-            {{ $t('newsPage.saveDraft') }}
-          </n-button>
-          <n-button type="primary" :loading="store.saveLoading" @click="onPublish">
-            {{ $t('newsPage.publish') }}
-          </n-button>
-        </template>
-      </template>
     </SectionHeader>
+
+    <!-- Amal tugmalari skroll paytida ham ko'rinib turishi uchun pastga yopishadi. -->
+    <div
+      class="news-form-actions sticky bottom-0 z-20 flex items-center justify-end gap-2 rounded-2xl border border-surface-line px-4 py-3"
+    >
+      <n-button ghost class="xl:hidden" @click="emits('preview')">
+        <template #icon>
+          <n-icon><EyeIcon /></n-icon>
+        </template>
+        {{ $t('newsPage.preview') }}
+      </n-button>
+      <n-button quaternary :disabled="store.saveLoading" @click="emits('cancel')">
+        {{ $t('content.cancel') }}
+      </n-button>
+      <template v-if="isArchived">
+        <n-button type="primary" :loading="store.saveLoading" @click="onSaveCurrent">
+          {{ $t('content.save') }}
+        </n-button>
+      </template>
+      <template v-else>
+        <n-button ghost :loading="store.saveLoading" @click="onSaveDraft">
+          {{ $t('newsPage.saveDraft') }}
+        </n-button>
+        <n-button type="primary" :loading="store.saveLoading" @click="onPublish">
+          {{ $t('newsPage.publish') }}
+        </n-button>
+      </template>
+    </div>
   </n-form>
 </template>
+
+<style lang="scss" scoped>
+  // Yopishgan panel ostidan forma kontenti ko'rinmasligi uchun shaffofmas fon.
+  .news-form-actions {
+    background: var(--surface-section);
+  }
+</style>
