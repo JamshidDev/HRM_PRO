@@ -10,6 +10,7 @@
   import { isEditorContentEmpty } from '@/utils/EditorValidator.js'
   import i18n from '@/i18n/index.js'
   import CalendarAltIcon from '@/assets/icons/calendarAlt.svg'
+  import EyeIcon from '@/assets/icons/eye.svg'
   import PenSquareIcon from '@/assets/icons/penSquare.svg'
   import folderIcon from '@/assets/icons/folder.svg'
   import finishIcon from '@/assets/icons/finish.svg'
@@ -18,10 +19,10 @@
   const { t } = i18n.global
   const store = useNewsStore()
 
-  const emits = defineEmits(['done'])
+  const emits = defineEmits(['done', 'preview'])
 
   const formRef = ref(null)
-  const selectedLangIndex = ref(0)
+  const selectedLangIndex = defineModel('langIndex', { type: Number, default: 0 })
 
   const activeLocale = computed(() => store.payload.translations[selectedLangIndex.value])
   const isLocaleFilled = (lang) =>
@@ -226,6 +227,12 @@
       </div>
 
       <template #footer>
+        <n-button ghost class="xl:hidden" @click="emits('preview')">
+          <template #icon>
+            <n-icon><EyeIcon /></n-icon>
+          </template>
+          {{ $t('newsPage.preview') }}
+        </n-button>
         <template v-if="isArchived">
           <n-button type="primary" :loading="store.saveLoading" @click="onSaveCurrent">
             {{ $t('content.save') }}

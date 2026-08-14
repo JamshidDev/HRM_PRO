@@ -3762,7 +3762,7 @@
     "contentPlaceholder": "Янгилик контентини шу ерга ёзинг...",
     "badge": "Янгилик",
     "attachments": "Бириктирмалар",
-    "attachmentsHint": "JPG/PNG, 5MB гача",
+    "attachmentsHint": "Расм сиқилади · макс. 4 МБ",
     "saveDraft": "Қоралама қилиш",
     "publish": "Чоп этиш",
     "statusDraft": "Қоралама",
@@ -3783,7 +3783,12 @@
     "video": "Видео",
     "image": "Расм",
     "noMedia": "Медиа йўқ",
-    "statistics": "Статистика"
+    "statistics": "Статистика",
+    "preview": "Кўриниш",
+    "previewHint": "Телефонда шундай кўринади",
+    "previewEmptyTitle": "Сарлавҳа киритилмаган",
+    "previewEmptyContent": "Контент киритилмаган",
+    "fileTooLarge": "\"{name}\" файл ҳажми жуда катта — максимал 4 МБ"
   },
   "newsCategoryPage": {
     "name": "Янгилик категориялари",

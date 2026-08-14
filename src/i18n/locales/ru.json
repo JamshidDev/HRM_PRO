@@ -3988,7 +3988,7 @@
     "contentPlaceholder": "Напишите контент новости здесь...",
     "badge": "Новость",
     "attachments": "Вложения",
-    "attachmentsHint": "JPG/PNG, до 5MB",
+    "attachmentsHint": "Изображение сжимается · макс. 4 МБ",
     "saveDraft": "Сохранить как черновик",
     "publish": "Опубликовать",
     "statusDraft": "Черновик",
@@ -4009,7 +4009,12 @@
     "video": "Видео",
     "image": "Изображение",
     "noMedia": "Медиа нет",
-    "statistics": "Статистика"
+    "statistics": "Статистика",
+    "preview": "Предпросмотр",
+    "previewHint": "Так это выглядит на телефоне",
+    "previewEmptyTitle": "Заголовок не заполнен",
+    "previewEmptyContent": "Контент не заполнен",
+    "fileTooLarge": "Файл «{name}» слишком большой — максимум 4 МБ"
   },
   "newsCategoryPage": {
     "name": "Категории новостей",

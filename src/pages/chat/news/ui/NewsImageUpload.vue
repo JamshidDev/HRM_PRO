@@ -10,6 +10,11 @@
   import 'vue-advanced-cropper/dist/style.css'
   import { Cropper } from 'vue-advanced-cropper'
   import ImagePlusIcon from '@/assets/icons/imagePlus.svg'
+  import { compressImageFile, MAX_UPLOAD_SIZE } from '@/utils/index.js'
+  import i18n from '@/i18n/index.js'
+  import { isImageFile, isVideoFile, useObjectUrls } from './useMediaPreview.js'
+
+  const { t } = i18n.global
 
   defineProps({
     accept: {
@@ -29,37 +34,32 @@
   const files = defineModel('files', { default: () => [] })
 
   const inputFileRef = ref(null)
-  const previewUrls = new Map()
 
-  const isImageFile = (item) => {
-    if (item.file) return item.file.type.startsWith('image/')
-    if (item.type) return item.type === 'image'
-    return /\.(png|jpe?g|gif|webp)$/i.test(item.path ?? item.name ?? '')
-  }
+  const { previewSrc, revokePreview } = useObjectUrls()
 
-  const isVideoFile = (item) => {
-    if (item.file) return item.file.type.startsWith('video/')
-    if (item.type) return item.type === 'video'
-    return /\.(mp4|mpeg|avi|mov)$/i.test(item.path ?? item.name ?? '')
-  }
+  // ── Hajm nazorati ────────────────────────────────────────────────────────────
+  const rejectTooLarge = (name) =>
+    window.$Toast?.error(t('newsPage.fileTooLarge', { name: name ?? '' }))
 
-  const previewSrc = (item) => {
-    if (item.path) return item.path
-    if (!previewUrls.has(item.id)) previewUrls.set(item.id, URL.createObjectURL(item.file))
-    return previewUrls.get(item.id)
-  }
-
-  const revokePreview = (id) => {
-    if (previewUrls.has(id)) {
-      URL.revokeObjectURL(previewUrls.get(id))
-      previewUrls.delete(id)
+  // Rasm yuborishdan oldin siqiladi; siqilgandan keyin ham limitdan katta
+  // bo'lsa qo'shilmaydi (backend uni baribir rad etadi).
+  const prepareImage = async (file) => {
+    const prepared = await compressImageFile(file)
+    if (prepared.size > MAX_UPLOAD_SIZE) {
+      rejectTooLarge(file.name)
+      return null
     }
+    return prepared
   }
 
-  onBeforeUnmount(() => {
-    previewUrls.forEach((url) => URL.revokeObjectURL(url))
-    previewUrls.clear()
-  })
+  // Video/hujjatni brauzerda siqib bo'lmaydi — darhol tekshiramiz.
+  const acceptRawFile = (file) => {
+    if (file.size > MAX_UPLOAD_SIZE) {
+      rejectTooLarge(file.name)
+      return false
+    }
+    return true
+  }
 
   // ── Crop ─────────────────────────────────────────────────────────────────────
   const cropperRef = ref(null)
@@ -75,24 +75,38 @@
     showCropper.value = true
   }
 
-  const onCropSave = () => {
+  const compressing = ref(false)
+
+  const canvasToFile = (canvas, name, type) =>
+    new Promise((resolve) =>
+      canvas.toBlob((blob) => resolve(new File([blob], name, { type })), type)
+    )
+
+  const onCropSave = async () => {
     const { type, name } = currentCropImage.value
-    cropperRef.value.getResult().canvas.toBlob((blob) => {
-      const file = new File([blob], name, { type })
-      if (replaceTargetId.value) {
-        replaceFile(replaceTargetId.value, file, name)
-        replaceTargetId.value = null
-      } else {
-        files.value.push({ id: uuidv4(), name, file })
+    compressing.value = true
+    try {
+      const cropped = await canvasToFile(cropperRef.value.getResult().canvas, name, type)
+      const prepared = await prepareImage(cropped)
+      if (prepared) {
+        if (replaceTargetId.value) {
+          replaceFile(replaceTargetId.value, prepared, prepared.name)
+        } else {
+          files.value.push({ id: uuidv4(), name: prepared.name, file: prepared })
+        }
       }
-      cropQueue.value.shift()
-      if (cropQueue.value.length) {
-        processQueue()
-      } else {
-        showCropper.value = false
-        URL.revokeObjectURL(currentCropImage.value.src)
-      }
-    }, type)
+      replaceTargetId.value = null
+    } finally {
+      compressing.value = false
+    }
+
+    cropQueue.value.shift()
+    if (cropQueue.value.length) {
+      processQueue()
+    } else {
+      showCropper.value = false
+      URL.revokeObjectURL(currentCropImage.value.src)
+    }
   }
 
   const onCropCancel = () => {
@@ -118,7 +132,7 @@
     for (const file of Array.from(list)) {
       if (file.type.startsWith('image/')) {
         cropQueue.value.push(file)
-      } else {
+      } else if (acceptRawFile(file)) {
         files.value.push({ id: uuidv4(), name: file.name, file })
       }
     }
@@ -167,7 +181,7 @@
       cropQueue.value.push(file)
       processQueue()
     } else {
-      replaceFile(replaceTargetId.value, file, file.name)
+      if (acceptRawFile(file)) replaceFile(replaceTargetId.value, file, file.name)
       replaceTargetId.value = null
     }
   }
@@ -303,8 +317,12 @@
         />
         <template #footer>
           <div class="grid grid-cols-2 gap-x-2">
-            <n-button ghost type="error" @click="onCropCancel">{{ $t('content.cancel') }}</n-button>
-            <n-button type="primary" @click="onCropSave">{{ $t('content.save') }}</n-button>
+            <n-button ghost type="error" :disabled="compressing" @click="onCropCancel">
+              {{ $t('content.cancel') }}
+            </n-button>
+            <n-button type="primary" :loading="compressing" @click="onCropSave">
+              {{ $t('content.save') }}
+            </n-button>
           </div>
         </template>
       </n-card>
