@@ -40,25 +40,32 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       per_page: 15,
       search: null
     },
+    // Tartib Figma "Status Toggle" (node 2584:199893) bo'yicha:
+    // Shaxsiy → Ish faoliyati → Ma'lumot va malaka → Qarindoshlar → Qo'shimcha
     tabs: [
       {
         name: 'workerProfile.tabs.personal',
+        key: 'personal',
         id: 1
       },
       {
-        name: 'workerProfile.tabs.education',
+        name: 'workerProfile.tabs.career',
+        key: 'career',
         id: 2
       },
       {
-        name: 'workerProfile.tabs.career',
+        name: 'workerProfile.tabs.education',
+        key: 'education',
         id: 3
       },
       {
         name: 'workerProfile.tabs.relative',
+        key: 'relative',
         id: 4
       },
       {
         name: 'workerProfile.tabs.others',
+        key: 'others',
         id: 5
       }
     ],

@@ -783,10 +783,10 @@
   "workerProfile": {
     "tabs": {
       "personal": "Personal",
-      "education": "Education",
-      "career": "Career",
+      "education": "Education and skills",
+      "career": "Work history",
       "relative": "Relatives",
-      "others": "Others"
+      "others": "Additional"
     },
     "personal": {
       "additionalContract": "Create additional agreement",
@@ -797,7 +797,11 @@
       "addPassport": "Add passport copy",
       "no-passport": "Passport data not uploaded!",
       "addForeignPassport": "Add foreign passport copy",
-      "no-foreign-passport": "Foreign passport data not uploaded!"
+      "no-foreign-passport": "Foreign passport data not uploaded!",
+      "infoTitle": "Personal information",
+      "usedAsLogin": "Used as login",
+      "photoTitle": "Candidate photo",
+      "phoneTitle": "Phone number"
     },
     "position": {
       "contractType": "Contract type",
@@ -897,7 +901,10 @@
     "name": "Add employee data",
     "ui": {
       "image": "Recommended to add 3 photos taken within last 3 months.",
-      "phone": "Mark primary phone number (used as login)."
+      "phone": "Mark primary phone number (used as login).",
+      "mainImage": "Main photo",
+      "needPhotos": "{n} photos required",
+      "addPhoto": "Add photo"
     },
     "form": {
       "lastName": "Last name",
@@ -925,9 +932,13 @@
       "address": "Residential address",
       "experience_date": "Continuous service",
       "passportTitle": "Passport details",
-      "foreignPassportTitle": "Foreign travel passport details",
+      "foreignPassportTitle": "Foreign passport",
       "education": "Education",
-      "work_experience": "Total experience (in months)"
+      "work_experience": "Total experience (in months)",
+      "birthPlace": "Place of birth",
+      "livingPlace": "Place of residence",
+      "citizenship": "Citizenship",
+      "given_place": "Place of issue"
     },
     "step": {
       "personal": "Personal data",
@@ -1525,7 +1536,10 @@
     "systemTitle": "System employment records",
     "no-data": "No previous employment added!",
     "sortOldestFirst": "Oldest to newest",
-    "sortNewestFirst": "Newest to oldest"
+    "sortNewestFirst": "Newest to oldest",
+    "experienceMonth": "Experience (mo.)",
+    "continuousExperience": "Continuous experience",
+    "period": "From - to"
   },
   "workerPositionCertificatePage": {
     "title": "Position certificates",
@@ -2480,6 +2494,7 @@
     },
     "attachRole": "Attach role",
     "deleteRole": "Delete role",
+    "detachRole": "Remove role",
     "selectRoleToDelete": "Select role to delete",
     "updatePassword": "Update password",
     "newPassword": "New password",
@@ -3898,7 +3913,9 @@
       "mobile": "Number of employees notified via mobile app",
       "turnstile": "Number of employees notified via turnstile"
     },
-    "table": { "sentAt": "Sent at" }
+    "table": {
+      "sentAt": "Sent at"
+    }
   },
   "mobileStoryPage": {
     "name": "Story announcements",

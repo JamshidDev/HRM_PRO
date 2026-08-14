@@ -24,6 +24,17 @@ const _create = async (payload) => {
 const _update = async (payload) => {
   return await axios.put(`/v1/hr/workers/${payload.id}`, payload.data)
 }
+// «Xodimlar» menyusidagi «Rollar» modali — xodim rollari ro'yxati (yassi).
+const _workerRoles = async (payload) => {
+  return await axios.get(`/v1/hr/worker-positions/${payload.uuid}/roles`)
+}
+
+// «Xodimlar» menyusidagi «Parolni yangilash». {uuid} — WORKER uuid.
+// password bo'lmasa backend tasodifiy kuchli parol qo'yadi.
+const _updateWorkerPassword = async (payload) => {
+  return await axios.post(`/v1/hr/worker-positions/${payload.uuid}/update-password`, payload.data)
+}
+
 const _resume = async (payload) => {
   return await axios.get(
     `/v1/hr/worker-positions/${payload.id}/resume-download`,
@@ -90,6 +101,8 @@ export default {
   _show,
   _create,
   _update,
+  _updateWorkerPassword,
+  _workerRoles,
   _preview,
   _search,
   _resume,

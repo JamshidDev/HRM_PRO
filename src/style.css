@@ -63,6 +63,17 @@
   --color-fig-teal-100: var(--fig-teal-100);
   --color-fig-amber-100: var(--fig-amber-100);
   --color-fig-pink-100: var(--fig-pink-100);
+  /* Figma "Xodim profili" — blok/maydon/tugma qatlamlari */
+  --color-fig-text-brand: var(--fig-text-brand);
+  --color-fig-bg-brand: var(--fig-bg-brand-fill);
+  --color-fig-bg-brand-surface: var(--fig-bg-brand-surface);
+  --color-fig-bg-secondary: var(--fig-bg-secondary);
+  --color-fig-bg-tertiary: var(--fig-bg-tertiary);
+  --color-fig-bg-disable: var(--fig-bg-disable);
+  --color-fig-text-red: var(--fig-text-red);
+  --color-fig-br-error: var(--fig-br-error);
+  --color-fig-block: var(--fig-block-bg);
+
   --color-fig-chip-brand: var(--fig-chip-brand-bg);
   --color-fig-chip-brand-text: var(--fig-chip-brand-text);
   --color-fig-chip-amber: var(--fig-chip-amber-bg);

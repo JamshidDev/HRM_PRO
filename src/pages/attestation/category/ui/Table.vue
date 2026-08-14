@@ -9,14 +9,12 @@
   import { AppPaths } from '@/utils/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import {
-    BookQuestionMark20Filled,
-    CloudLink20Regular,
-    Cut24Filled,
-    Delete20Regular,
-    Edit32Regular
-  } from '@vicons/fluent'
   import { useRouter } from 'vue-router'
+  import editRefreshIcon from '@/assets/icons/editRefreshIcon.svg'
+  import trash from '@/assets/icons/trash.svg'
+  import question from '@/assets/icons/question.svg'
+  import fileQuestionAlt from '@/assets/icons/fileQuestionAlt.svg'
+  import wandMagicSparkles from '@/assets/icons/wandMagicSparkles.svg'
 
   const { t } = i18n.global
 
@@ -91,31 +89,31 @@
     {
       label: t('content.edit'),
       key: Utils.ActionTypes.edit,
-      icon: UIHelper.renderIcon(Edit32Regular),
+      icon: UIHelper.renderIcon(editRefreshIcon),
       action: onEdit
     },
     {
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
-      icon: UIHelper.renderIcon(Delete20Regular),
+      icon: UIHelper.renderIcon(trash),
       action: onDelete
     },
     {
       label: t('questionPage.title'),
       key: Utils.ActionTypes.view,
-      icon: UIHelper.renderIcon(BookQuestionMark20Filled),
+      icon: UIHelper.renderIcon(question),
       action: onViewQuestions
     },
     {
       label: t('categoryPage.upload'),
       key: Utils.ActionTypes.attachment,
-      icon: UIHelper.renderIcon(CloudLink20Regular),
+      icon: UIHelper.renderIcon(fileQuestionAlt),
       action: onAttachment
     },
     {
       label: t('content.clear'),
       key: Utils.ActionTypes.close,
-      icon: UIHelper.renderIcon(Cut24Filled),
+      icon: UIHelper.renderIcon(wandMagicSparkles),
       action: onClear
     }
   ])

@@ -1,8 +1,10 @@
 <script setup>
-  import { UIMenuButton, UIBadge } from '@/components/index.js'
+  import { Edit32Regular, Delete20Regular } from '@vicons/fluent'
+  import { UITable, UIProfileSection, UIProfileEmpty } from '@/components/index.js'
   import { useRelativeStore } from '@/store/modules/index.js'
-  import { AddCircle28Regular } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import icons from '@/assets/icons'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -15,6 +17,9 @@
   }
 
   const getLevelLabel = (level) => levelLabels[level] || level
+
+  const fullNameOf = (row) =>
+    [row.last_name, row.first_name, row.middle_name].filter(Boolean).join(' ')
 
   const onAdd = () => {
     store.visibleType = true
@@ -35,16 +40,7 @@
     store.payload.address = v.address
     store.payload.post_name = v.post_name
     store.payload.sort = v.sort
-
     store.visible = true
-  }
-
-  const onSelectEv = (v) => {
-    if (v.key === Utils.ActionTypes.edit) {
-      onEdit(v.data)
-    } else if (v.key === Utils.ActionTypes.delete) {
-      onDelete(v.data)
-    }
   }
 
   const onDelete = (v) => {
@@ -72,86 +68,100 @@
     store.disabilityVisibleType = false
     store.disabilityVisible = true
   }
+
+  // Ustunlar Figma "Yaqin qarindosh ma'lumotlari" jadvalidan (node 2672:255073)
+  const columns = computed(() => [
+    { key: 'relative.name', title: t('relativePage.form.relative'), width: 140 },
+    { key: 'fullName', title: t('content.fullName'), minWidth: 160 },
+    { key: 'pin', title: t('createWorkerPage.form.pin'), width: 160 },
+    { key: 'post_name', title: t('relativePage.form.post_name'), minWidth: 160 },
+    { key: 'birthday', title: t('relativePage.form.birthday'), width: 130 },
+    { key: 'birth_place', title: t('relativePage.form.birthdayPlace'), minWidth: 160 },
+    { key: 'disabilities', title: t('relativePage.form.disability'), width: 160 }
+  ])
+
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading">
-    <div
-      class="w-full flex justify-between items-end border-surface-line border-dashed pb-2"
-      :class="store.list.length === 0 && 'border-b'"
+  <UIProfileSection :title="$t('relativePage.title')" @add="onAdd">
+    <UITable
+      auto-height
+      :columns="columns"
+      :actions="actions"
+      :data="store.list"
+      :loading="store.loading"
     >
-      <span class="text-lg font-medium" v-if="store.list.length > 0">{{
-        $t('relativePage.title')
-      }}</span>
-      <span v-else class="text-sm text-gray-300">{{ $t('relativePage.no-data') }}</span>
+      <template #empty><UIProfileEmpty /></template>
 
-      <n-button round @click="onAdd">
-        <template #icon>
-          <AddCircle28Regular />
-        </template>
-        {{ $t(`content.add`) }}
-      </n-button>
-    </div>
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="w-[100px]">{{ $t('relativePage.form.relative') }}</th>
-            <th class="min-w-[100px]">{{ $t('content.fullName') }}</th>
-            <th class="min-w-[140px] w-[160px]">{{ $t('createWorkerPage.form.pin') }}</th>
-            <th class="min-w-[100px] w-[200px]">{{ $t('relativePage.form.post_name') }}</th>
-            <th class="min-w-[120px] w-[120px]">{{ $t('relativePage.form.birthday') }}</th>
-            <th class="min-w-[150px] w-[200px]">{{ $t('relativePage.form.birthdayPlace') }}</th>
-            <th class="min-w-[150px] w-[300px]">{{ $t('createWorkerPage.form.address') }}</th>
-            <th class="min-w-[120px] w-[150px]">{{ $t('relativePage.form.disability') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center text-[12px] text-gray-600 block">{{
-                (store.params.page - 1) * store.params.per_page + idx + 1
-              }}</span>
-            </td>
-            <td>
-              <span class="text-sm">{{ item.relative.name }}</span>
-            </td>
-            <td>{{ [item.last_name, item.first_name, item.middle_name].filter(Boolean).join(' ') }}</td>
-            <td>{{ Utils.formatPin(item.pin) }}</td>
-            <td>{{ item.post_name }}</td>
-            <td>{{ Utils.timeOnlyDate(item.birthday) }}</td>
-            <td>{{ item.birth_place }}</td>
-            <td>{{ item.address }}</td>
-            <td>
-              <div class="flex flex-wrap gap-1 items-center justify-center">
-                <UIBadge
-                  v-for="disability in item.disabilities"
-                  :key="disability.id"
-                  :label="getLevelLabel(disability.level)"
-                  :type="Utils.colorTypes.error"
-                  :show-icon="false"
-                  class="cursor-pointer"
-                  @click="onEditDisability(item, disability)"
-                />
-                <n-button
-                  size="tiny"
-                  type="default"
-                  @click="onAddDisability(item)"
-                >
-                  {{ $t('content.add') }}
-                </n-button>
-              </div>
-            </td>
-            <td>
-              <UIMenuButton :data="item" :show-edit="true" @selectEv="onSelectEv" />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-    </div>
-  </n-spin>
+      <template #cell-fullName="{ row }">{{ fullNameOf(row) }}</template>
+      <template #cell-pin="{ row }">{{ Utils.formatPin(row.pin) }}</template>
+      <template #cell-birthday="{ row }">{{ Utils.timeOnlyDate(row.birthday) }}</template>
+
+      <!-- Maketda nogironlik katagida mavjud toifalar va "Qo'shish" havolasi turadi -->
+      <template #cell-disabilities="{ row }">
+        <div class="flex flex-wrap items-center gap-1">
+          <span
+            v-for="disability in row.disabilities"
+            :key="disability.id"
+            class="relative-disability"
+            @click.stop="onEditDisability(row, disability)"
+          >
+            {{ getLevelLabel(disability.level) }}
+          </span>
+          <button type="button" class="relative-add" @click.stop="onAddDisability(row)">
+            <n-icon :size="16">
+              <component :is="icons.figPlus" />
+            </n-icon>
+            {{ $t('content.add') }}
+          </button>
+        </div>
+      </template>
+    </UITable>
+  </UIProfileSection>
 </template>
 
-<style scoped></style>
+<style lang="scss" scoped>
+  .relative-disability {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border-radius: 6px;
+    background: var(--fig-blue-100);
+    color: var(--fig-text-brand);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 20px;
+    cursor: pointer;
+  }
+
+  .relative-add {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--fig-text-brand);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+</style>
