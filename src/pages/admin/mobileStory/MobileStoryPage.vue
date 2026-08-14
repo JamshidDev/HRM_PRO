@@ -52,8 +52,8 @@
     <UIModal
       v-model:visible="store.visible"
       :title="store.visibleType ? $t('mobileStoryPage.createTitle') : $t('mobileStoryPage.updateTitle')"
-      width="min(900px, calc(100vw - 32px))"
-      height="min(88vh, 760px)"
+      width="min(1240px, calc(100vw - 32px))"
+      height="min(94vh, 940px)"
     >
       <StoryForm ref="formRef" @save="onSave" />
 

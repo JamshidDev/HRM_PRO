@@ -3960,7 +3960,8 @@
       "preview": "Предпросмотр",
       "replaceSlide": "Заменить",
       "slidesPanel": "Слайды",
-      "addSlideHint": "Добавить фото или видео"
+      "addSlideHint": "Добавить фото или видео",
+      "previewHint": "Так это выглядит на телефоне"
     },
     "deleteConfirm": "Удалить эту story?",
     "slideDeleteConfirm": "Удалить этот слайд?",
@@ -3988,7 +3989,7 @@
     "contentPlaceholder": "Напишите контент новости здесь...",
     "badge": "Новость",
     "attachments": "Вложения",
-    "attachmentsHint": "JPG/PNG, до 5MB",
+    "attachmentsHint": "Изображение сжимается · макс. 4 МБ",
     "saveDraft": "Сохранить как черновик",
     "publish": "Опубликовать",
     "statusDraft": "Черновик",
@@ -4009,7 +4010,12 @@
     "video": "Видео",
     "image": "Изображение",
     "noMedia": "Медиа нет",
-    "statistics": "Статистика"
+    "statistics": "Статистика",
+    "preview": "Предпросмотр",
+    "previewHint": "Так это выглядит на телефоне",
+    "previewEmptyTitle": "Заголовок не заполнен",
+    "previewEmptyContent": "Контент не заполнен",
+    "fileTooLarge": "Файл «{name}» слишком большой — максимум 4 МБ"
   },
   "newsCategoryPage": {
     "name": "Категории новостей",
