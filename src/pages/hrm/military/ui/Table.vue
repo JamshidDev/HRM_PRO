@@ -1,6 +1,6 @@
 <script setup>
-  import { UITable } from '@/components/index.js'
-  import { AddCircle28Regular, Edit32Regular, Delete20Regular } from '@vicons/fluent'
+  import { UITable, UIProfileSection, UIProfileEmpty } from '@/components/index.js'
+  import { Edit32Regular, Delete20Regular } from '@vicons/fluent'
   import { useMilitaryStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -31,12 +31,6 @@
   const onDelete = (v) => {
     store.elementId = v.id
     store._delete()
-  }
-
-  const changePage = (v) => {
-    store.params.page = v.page
-    store.params.per_page = v.per_page
-    store._index()
   }
 
   const columns = computed(() => [
@@ -84,34 +78,34 @@
 </script>
 
 <template>
-  <div
-    class="w-full flex justify-between items-end border-surface-line border-dashed pb-2 mt-16"
-    :class="store.list.length === 0 && 'border-b'"
-  >
-    <span class="text-lg font-medium" v-if="store.list.length > 0">{{
-      $t('militaryPage.title')
-    }}</span>
-    <span v-else class="text-sm text-gray-300">{{ $t('militaryPage.no-data') }}</span>
+  <UIProfileSection :title="$t('militaryPage.title')" @add="onAdd">
+    <UITable
+      auto-height
+      :columns="columns"
+      :actions="actions"
+      :data="store.list"
+      :loading="store.loading"
+    >
+      <template #empty><UIProfileEmpty /></template>
 
-    <n-button round @click="onAdd">
-      <template #icon>
-        <AddCircle28Regular />
+      <!-- Maketda harbiy guvohnoma holati yashil chip bilan ko'rsatiladi -->
+      <template #cell-status.name="{ value }">
+        <span v-if="value" class="military-status">{{ value }}</span>
       </template>
-      {{ $t(`content.add`) }}
-    </n-button>
-  </div>
-
-  <UITable
-    class="mt-4"
-    :columns="columns"
-    :actions="actions"
-    :data="store.list"
-    :loading="store.loading"
-    :page="store.params.page"
-    :per-page="store.params.per_page"
-    :total="store.totalItems"
-    @change-page="changePage"
-  />
+    </UITable>
+  </UIProfileSection>
 </template>
 
-<style scoped></style>
+<style lang="scss" scoped>
+  .military-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border-radius: 6px;
+    background: var(--fig-green-100);
+    color: var(--fig-text-green);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 20px;
+  }
+</style>

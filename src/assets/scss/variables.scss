@@ -66,6 +66,18 @@
   --fig-amber-100: #fcf1dc;
   --fig-pink-100: #fce3ee;
 
+  // Figma "Xodim profili" (node 2584:199394) — blok/maydon/tugma qatlamlari.
+  --fig-text-brand: #1570ef;
+  --fig-bg-brand-fill: #1570ef;
+  --fig-bg-brand-surface: #eff8ff;
+  --fig-bg-secondary: #f9fafb;
+  --fig-bg-tertiary: #eaecf0;
+  --fig-bg-disable: #f2f4f7;
+  --fig-text-red: #ca1f29;
+  --fig-br-error: #ffa39a;
+  --fig-block-bg: #ffffff;
+  --fig-block-header-bg: linear-gradient(178.26deg, #f9fafb 0%, #f5faff 50%, #eff8ff 100%);
+
   // Figma "Status" chip juftliklari (fon + matn) — tabriknoma turlari uchun.
   --fig-chip-brand-bg: #eff8ff;
   --fig-chip-brand-text: #1570ef;
@@ -186,6 +198,19 @@
   --fig-teal-100: rgba(0, 136, 113, 0.22);
   --fig-amber-100: rgba(215, 160, 0, 0.18);
   --fig-pink-100: rgba(224, 65, 127, 0.2);
+
+  // Xodim profili qatlamlari — qorong'i rejada karta/maydon fonlari almashadi,
+  // brend to'ldirish esa o'zgarmaydi (oq matn ikkalasida ham yetarli kontrast beradi).
+  --fig-text-brand: #6cb0f8;
+  --fig-bg-brand-fill: #1570ef;
+  --fig-bg-brand-surface: rgba(21, 112, 239, 0.18);
+  --fig-bg-secondary: #101828;
+  --fig-bg-tertiary: #344054;
+  --fig-bg-disable: #344054;
+  --fig-text-red: #ff6066;
+  --fig-br-error: rgba(229, 56, 59, 0.5);
+  --fig-block-bg: #1d2939;
+  --fig-block-header-bg: linear-gradient(178.26deg, #1d2939 0%, #22303f 50%, #26384c 100%);
 
   // Chip fonlari past alfa bilan, matnlar esa yorug'lashtiriladi — maketdagi
   // deyarli oq tint qorong'i kartada ko'rinmay qoladi.

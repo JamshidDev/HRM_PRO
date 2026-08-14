@@ -50,7 +50,10 @@
     rowClassName: { type: Function, default: null }, // (row, index) => string
     sortBy: { type: String, default: null }, // current sort field, paired with a column's { sortable: true }
     sortOrder: { type: Number, default: 1 }, // 1 | -1
-    deleteWarning: { type: [String, Function], default: null } // custom confirm message for the delete action; static or (row) => string
+    deleteWarning: { type: [String, Function], default: null }, // custom confirm message for the delete action; static or (row) => string
+    // Bir sahifada bir nechta jadval ustma-ust turganda (masalan xodim profili):
+    // jadval qolgan bo'sh joyni egallamaydi, balki qatorlari bo'yicha o'sadi.
+    autoHeight: { type: Boolean, default: false }
   })
 
   const emit = defineEmits([
@@ -333,10 +336,15 @@
   <!-- Skeleton chizilayotganda spinner qo'shilmaydi (ikki xil yuklanish belgisi
        bo'lib ketmasligi uchun); mavjud ma'lumot ustidan qayta so'rov ketsa esa
        avvalgidek spinner ko'rinadi. -->
-  <n-spin :show="loading && !empty" class="ui-table__spin h-full overflow-auto">
+  <n-spin
+    :show="loading && !empty"
+    class="ui-table__spin"
+    :class="!autoHeight && 'h-full overflow-auto'"
+  >
     <div
       v-if="showSkeleton"
-      class="ui-table__wrapper h-full min-h-[clamp(200px,calc(100vh-100%),600px)] flex flex-col p-1 bg-surface-section rounded-[20px]"
+      class="ui-table__wrapper flex flex-col p-1 bg-surface-section rounded-[20px]"
+      :class="!autoHeight && 'h-full min-h-[clamp(200px,calc(100vh-100%),600px)]'"
     >
       <div class="flex-1 overflow-hidden rounded-t-2xl">
         <div
@@ -368,17 +376,21 @@
       </div>
     </div>
 
-    <div v-else-if="empty" class="h-full grid place-items-center">
-      <NoDataPicture />
+    <div v-else-if="empty" class="grid place-items-center" :class="!autoHeight && 'h-full'">
+      <slot name="empty">
+        <NoDataPicture />
+      </slot>
     </div>
 
     <div
       v-else
       ref="tableWrapperRef"
-      class="ui-table__wrapper h-full min-h-[clamp(200px,calc(100vh-100%),600px)] flex flex-col p-1 bg-surface-section rounded-[20px]"
+      class="ui-table__wrapper flex flex-col p-1 bg-surface-section rounded-[20px]"
+      :class="!autoHeight && 'h-full min-h-[clamp(200px,calc(100vh-100%),600px)]'"
     >
       <n-data-table
         class="ui-table__table flex-1"
+        :flex-height="!autoHeight"
         :columns="ndtColumns"
         :data="data"
         :size="size"
@@ -392,7 +404,6 @@
         :row-class-name="rowClassName"
         :on-load="onLoad"
         :children-key="childrenKey"
-        flex-height
         @unstable-column-resize="onUnstableColumnResize"
       />
 
