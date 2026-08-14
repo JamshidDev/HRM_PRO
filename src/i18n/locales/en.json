@@ -225,6 +225,8 @@
     "asAdmin": "Super admin",
     "setting": "Settings",
     "soundNotification": "Notification sound",
+    "soundDeviceMissing": "No audio output device found — notification sounds will not be heard",
+    "soundPlaybackFailed": "Could not play the notification sound — check your device audio",
     "sidebarColor": "Sidebar color",
     "sidebarThemeDefault": "Default",
     "sidebarThemeIndigo": "Indigo",

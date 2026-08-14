@@ -232,6 +232,8 @@
     "asAdmin": "Super admin",
     "setting": "Sozlamalar",
     "soundNotification": "Ovozli bildirishnoma",
+    "soundDeviceMissing": "Qurilmada ovoz chiqaruvchi apparat topilmadi — bildirishnoma ovozi eshitilmaydi",
+    "soundPlaybackFailed": "Bildirishnoma ovozini chiqarib bo'lmadi — qurilma ovozini tekshiring",
     "sidebarColor": "Sidebar rangi",
     "sidebarThemeDefault": "Odatiy",
     "sidebarThemeIndigo": "Indigo",

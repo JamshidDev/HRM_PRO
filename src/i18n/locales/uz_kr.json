@@ -152,6 +152,8 @@
     "asAdmin": "Супер админ",
     "setting": "Созламалар",
     "soundNotification": "Овозли билдиришнома",
+    "soundDeviceMissing": "Қурилмада овоз чиқарувчи аппарат топилмади — билдиришнома овози эшитилмайди",
+    "soundPlaybackFailed": "Билдиришнома овозини чиқариб бўлмади — қурилма овозини текширинг",
     "sidebarColor": "Сидебар ранги",
     "sidebarThemeDefault": "Одатий",
     "sidebarThemeIndigo": "Индиго",

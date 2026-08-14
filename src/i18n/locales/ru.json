@@ -229,6 +229,8 @@
     "asAdmin": "Супер админ",
     "setting": "Настройки",
     "soundNotification": "Звук уведомлений",
+    "soundDeviceMissing": "Устройство вывода звука не найдено — звук уведомлений не будет слышен",
+    "soundPlaybackFailed": "Не удалось воспроизвести звук уведомления — проверьте звук устройства",
     "sidebarColor": "Цвет боковой панели",
     "sidebarThemeDefault": "Обычный",
     "sidebarThemeIndigo": "Индиго",
