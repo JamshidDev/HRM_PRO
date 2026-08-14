@@ -24,23 +24,22 @@ export const useEtspStore = defineStore('etspStore', {
           return
         }
         const keys = await ETSP.listKeys()
-        this.allKeys = (keys || [])
-          // FAQAT ETSP'ning o'zi bergan kalitlar: sertifikatli (.cer) — serial + PINFL bor.
-          // Boshqa (sertifikatsiz / begona) .pfx fayllar ro'yxatда ko'rsatilmaydi.
-          .filter((k) => k.serial && k.pinfl)
-          .map((k) => ({
-            file: k.file,
-            fio: k.fio || k.file,
-            pinfl: k.pinfl,
-            stir: k.stir,
-            serial: k.serial,
-            notAfter: k.notAfter,
-            expired: !!k.expired,
-            type: k.type
-          }))
+        // ETSP o'z frontendидek — HAMMA kalitни ko'rsatamiz (filtrlab yashirmaymiz).
+        // Noto'g'ri/begona kalit tanlansa, backend imzo tekshiruvида rad etiladi (aniq xabar bilan).
+        this.allKeys = (keys || []).map((k) => ({
+          file: k.file,
+          fio: k.fio || k.file,
+          pinfl: k.pinfl || '',
+          stir: k.stir || '',
+          serial: k.serial || '',
+          notAfter: k.notAfter || '',
+          expired: !!k.expired,
+          hasCert: !!k.serial,
+          type: k.type
+        }))
         if (!this.allKeys.length) {
           window.$Toast?.warning(
-            "ETSP kaliti topilmadi. ETSP tomonidan berilgan kalitni DSKEYS papkasiga joylang."
+            "Kalit topilmadi. Kalitni DSKEYS papkasiga joylang (agar ETSP kaliti bo'lsa .pfx + .cer birga)."
           )
           return
         }
