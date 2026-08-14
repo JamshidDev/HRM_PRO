@@ -5,9 +5,9 @@
   --surface-line: #e2e8f0;
   --surface-text: #4b5675;
 
-  --sidebar-color:#1e293b;
-  --table-header: #F2F4F7;
-  --surface-ground-soft: #F9FAFB;
+  --sidebar-color: #1e293b;
+  --table-header: #f2f4f7;
+  --surface-ground-soft: #f9fafb;
 
   // Yumshoq tint fonlar (style.css @theme shularga ishora qiladi) — dark variant [data-theme='dark']da.
   --brand-surface: #eff8ff;
@@ -17,22 +17,68 @@
 
   --schedule-weekend-bg: #ffe5e2;
   --schedule-weekday-bg: #fff9e2;
-  --schedule-weekend-bg-alt: #FAD8D6;
-  --schedule-weekday-bg-alt: #ECEFF3;
+  --schedule-weekend-bg-alt: #fad8d6;
+  --schedule-weekday-bg-alt: #eceff3;
 
-  --exam-badge-orange-bg: #FFF4ED;
-  --exam-badge-orange-text: #D2530F;
-  --exam-badge-green-bg: #E4F9E8;
+  --exam-badge-orange-bg: #fff4ed;
+  --exam-badge-orange-text: #d2530f;
+  --exam-badge-green-bg: #e4f9e8;
   --exam-badge-green-text: #008838;
-  --exam-badge-yellow-text: #CA8A04;
-  --exam-pagination-bg: #F2F4F7;
-  --exam-result-btn-bg: #EAECF0;
+  --exam-badge-yellow-text: #ca8a04;
+  --exam-pagination-bg: #f2f4f7;
+  --exam-result-btn-bg: #eaecf0;
   --exam-result-btn-text: #000000;
 
   --textColor0: #434349;
   --textColor1: #74788d;
   --textColor2: #434349;
   --textColor3: #9a9cae;
+
+  // Figma "HRM RailWay" turniket dashboard palitrasi (node 2543:8225).
+  // Light qiymatlar maketdagi hexlar bilan aynan bir xil.
+  --fig-text-primary: #101828;
+  --fig-text-secondary: #344054;
+  --fig-text-tertiary: #667085;
+  --fig-text-muted: #535862;
+  --fig-text-green: #008838;
+  --fig-br-disable: #eaecf0;
+  --fig-br-secondary: #d0d5dd;
+  --fig-neutral-300: #d0d5dd;
+  --fig-success: #12b76a;
+  --fig-icon-green: #00a652;
+  --fig-icon-orange: #f26b1f;
+  --fig-icon-yellow: #dba800;
+  --fig-icon-amber: #d7a000;
+  --fig-icon-red: #e5383b;
+  --fig-icon-brand: #2e90fa;
+  --fig-icon-indigo: #5550e5;
+  --fig-green-100: #e4f9e8;
+  --fig-green-400: #50c576;
+  --fig-orange-100: #ffe6d5;
+  --fig-orange-300: #fda36b;
+  --fig-yellow-100: #fef7c3;
+  --fig-red-50: #fff7f5;
+  --fig-red-100: #ffe9e6;
+  --fig-blue-100: #d1e9ff;
+  --fig-indigo-100: #ebf1ff;
+  --fig-lime-100: #f0f9c5;
+  --fig-teal-100: #cdf2e9;
+  --fig-amber-100: #fcf1dc;
+  --fig-pink-100: #fce3ee;
+
+  // Figma "Status" chip juftliklari (fon + matn) — tabriknoma turlari uchun.
+  --fig-chip-brand-bg: #eff8ff;
+  --fig-chip-brand-text: #1570ef;
+  --fig-chip-amber-bg: #fefaf1;
+  --fig-chip-amber-text: #ab7d00;
+  --fig-chip-green-bg: #f5fdf6;
+  --fig-chip-green-text: #008838;
+  --fig-chip-indigo-bg: #f1f4ff;
+  --fig-chip-indigo-text: #4340be;
+  --fig-chip-pink-bg: #fef2f7;
+  --fig-chip-pink-text: #c22463;
+  --fig-chip-lime-bg: #f9fde7;
+  --fig-chip-lime-text: #7f9920;
 
   //fonts
   --public-sans: 'Public Sans', sans-serif;
@@ -96,10 +142,10 @@
   --schedule-weekday-bg-alt: #38445e;
 
   --exam-badge-orange-bg: rgba(210, 83, 15, 0.18);
-  --exam-badge-orange-text: #FF8A4C;
+  --exam-badge-orange-text: #ff8a4c;
   --exam-badge-green-bg: rgba(0, 136, 56, 0.2);
-  --exam-badge-green-text: #34D399;
-  --exam-badge-yellow-text: #FACC15;
+  --exam-badge-green-text: #34d399;
+  --exam-badge-yellow-text: #facc15;
   --exam-pagination-bg: var(--table-header);
   --exam-result-btn-bg: var(--table-header);
   --exam-result-btn-text: #ffffff;
@@ -108,6 +154,53 @@
   --textColor1: #fcfcfd;
   --textColor2: #d0d5dd;
   --textColor3: #98a2b3;
+
+  // Figma dashboard palitrasi — dark rejada o'qilishi uchun moslashtirilgan.
+  // Tint fonlar (100/50) past alfa bilan: och rang qorong'i kartada "yopishib" qoladi.
+  --fig-text-primary: #fcfcfd;
+  --fig-text-secondary: #d0d5dd;
+  --fig-text-tertiary: #98a2b3;
+  --fig-text-muted: #98a2b3;
+  --fig-text-green: #34d399;
+  --fig-br-disable: #344054;
+  --fig-br-secondary: #475467;
+  --fig-neutral-300: #475467;
+  --fig-success: #34d399;
+  --fig-icon-green: #34d399;
+  --fig-icon-orange: #ff8a4c;
+  --fig-icon-yellow: #facc15;
+  --fig-icon-amber: #e5b747;
+  --fig-icon-red: #ff6066;
+  --fig-icon-brand: #6cb0f8;
+  --fig-icon-indigo: #7a68f0;
+  --fig-green-100: rgba(0, 166, 82, 0.18);
+  --fig-green-400: #50c576;
+  --fig-orange-100: rgba(242, 107, 31, 0.18);
+  --fig-orange-300: #fda36b;
+  --fig-yellow-100: rgba(219, 168, 0, 0.18);
+  --fig-red-50: rgba(229, 56, 59, 0.1);
+  --fig-red-100: rgba(229, 56, 59, 0.18);
+  --fig-blue-100: rgba(46, 144, 250, 0.18);
+  --fig-indigo-100: rgba(85, 80, 229, 0.2);
+  --fig-lime-100: rgba(127, 153, 32, 0.22);
+  --fig-teal-100: rgba(0, 136, 113, 0.22);
+  --fig-amber-100: rgba(215, 160, 0, 0.18);
+  --fig-pink-100: rgba(224, 65, 127, 0.2);
+
+  // Chip fonlari past alfa bilan, matnlar esa yorug'lashtiriladi — maketdagi
+  // deyarli oq tint qorong'i kartada ko'rinmay qoladi.
+  --fig-chip-brand-bg: rgba(21, 112, 239, 0.18);
+  --fig-chip-brand-text: #6cb0f8;
+  --fig-chip-amber-bg: rgba(215, 160, 0, 0.18);
+  --fig-chip-amber-text: #e5b747;
+  --fig-chip-green-bg: rgba(0, 136, 56, 0.2);
+  --fig-chip-green-text: #34d399;
+  --fig-chip-indigo-bg: rgba(85, 80, 229, 0.2);
+  --fig-chip-indigo-text: #7a68f0;
+  --fig-chip-pink-bg: rgba(224, 65, 127, 0.18);
+  --fig-chip-pink-text: #f07aa8;
+  --fig-chip-lime-bg: rgba(127, 153, 32, 0.22);
+  --fig-chip-lime-text: #c3dc5a;
 
   --sidebar-color: #1e293b;
 

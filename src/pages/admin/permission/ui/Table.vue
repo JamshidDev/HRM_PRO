@@ -19,7 +19,7 @@
   }
 
   const onDelete = (row) => {
-    if (!accStore.checkAction(accStore.pn.permissionsWrite)) return
+    if (!accStore.checkAction(accStore.pn.permissionsDelete)) return
     store.elementId = row.id
     store._delete()
   }

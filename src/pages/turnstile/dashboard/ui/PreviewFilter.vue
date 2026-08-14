@@ -1,5 +1,5 @@
 <script setup>
-  import { useTurnstileDashboardStore } from '@/store/modules/index.js'
+  import { useAccountStore, useTurnstileDashboardStore } from '@/store/modules/index.js'
   import { ArrowCircleDown48Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
   import { useAppSetting } from '@/utils/index.js'
@@ -8,6 +8,12 @@
 
   const { t } = i18n.global
   const dashboardStore = useTurnstileDashboardStore()
+  const accStore = useAccountStore()
+
+  const onDownload = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileDashboardExport)) return
+    dashboardStore._download()
+  }
 
   const statusOptions = [
     {
@@ -181,8 +187,9 @@
     </div>
     <div class="col-span-2">
       <n-button
+        v-if="accStore.checkPermission(accStore.pn.turnstileDashboardExport)"
         v-fly-upload
-        @click="dashboardStore._download()"
+        @click="onDownload"
         :loading="dashboardStore.previewLoading"
         type="default"
         class="!mt-5 !w-full"

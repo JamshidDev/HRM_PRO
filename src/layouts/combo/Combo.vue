@@ -50,6 +50,6 @@
     <PageContent @on-open="openSidebar" />
     <HelperLayout />
     <ReactionScreen />
-    <AIFloatingButton />
+    <AIFloatingButton v-if="store.checkPermission(store.pn.ai)" />
   </div>
 </template>

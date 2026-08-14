@@ -4,7 +4,7 @@
     "title": "Muntazam kech qoluvchilar hisoboti",
     "subtitle": "Tanlangan korxonalar bo'yicha davr ichida ish boshlanish vaqtidan kech kelgan xodimlar (Excel)",
     "createButton": "Hisobot yaratish",
-    "modalTitle": "Kech qoluvchilar — Excel",
+    "modalTitle": "Hisobot tayyorlash",
     "organizations": "Korxonalar",
     "from": "Boshlanish sanasi",
     "to": "Tugash sanasi",
@@ -24,7 +24,7 @@
     "title": "Kech qoluvchilar yarim yillik hisoboti",
     "subtitle": "Korxona × oy kesimida kech qolgan xodimlar soni — tanlangan access level qurilmalari bo'yicha (Excel, fon rejimida)",
     "createButton": "Hisobot yaratish",
-    "modalTitle": "Kech qoluvchilar (korxona × oy) — Excel",
+    "modalTitle": "Hisobot tayyorlash",
     "organizations": "Korxonalar",
     "accessLevels": "Access levellar",
     "from": "Boshlanish oyi",
@@ -124,6 +124,7 @@
     "edit": "Tahrirlash",
     "work_date": "Ishga chiqish sanasi",
     "delete": "O'chirish",
+    "replace": "Almashtirish",
     "deleteAll": "Barchasini o'chirish",
     "checked": "Tekshirilgan",
     "view": "Ko'rish",
@@ -551,7 +552,10 @@
       "type": "Rol turi",
       "typeSanctum": "Foydalanuvchi",
       "typeIntegration": "Integration",
-      "orphanWarning": "Ushbu rolda ro'yxatda ko'rinmaydigan {n} ta ruxsat bor (ruxsatlar ro'yxati to'liq yuklanmagan bo'lishi mumkin). Ular saqlashda o'zgarishsiz qoladi."
+      "orphanWarning": "Ushbu rolda ro'yxatda ko'rinmaydigan {n} ta ruxsat bor (ruxsatlar ro'yxati to'liq yuklanmagan bo'lishi mumkin). Ular saqlashda o'zgarishsiz qoladi.",
+      "scopeType": "Korxona ko'lami",
+      "scopeLocal": "Local (faqat shu korxona)",
+      "scopeGlobal": "Global (korxona + tarkibi)"
     }
   },
   "userPage": {
@@ -722,8 +726,8 @@
       "age": "Yoshi",
       "quickActions": "Tezkor amallar",
       "downloadRelative": "Qarindoshlarni yuklash",
-      "generateReport": "Hisobot yaratish",
-      "generateReportDesc": "Hisobot yaratish uchun xodimlarni belgilang",
+      "generateReport": "Hisobot olish",
+      "generateReportDesc": "Hisobot olish uchun xodimlarni belgilang",
       "relativesReport": "Qarindoshlar bo'yicha",
       "excelFile": "Excel fayl",
       "downloadInfo": "Ma'lumotni yuklash"
@@ -767,7 +771,25 @@
     "chooseExport": "Maydonlarni tanlash",
     "excelSettings": "Excel jadvalini sozlash",
     "selectColumns": "Jadval ustunlarini belgilang",
-    "columnOrder": "Jadval ustunlar joylashuvini sozlang"
+    "columnOrder": "Jadval ustunlar joylashuvini sozlang",
+    "modalTitle": "Hisobot tayyorlash",
+    "modalSubtitle": "Tegni bosib qo'shing yoki olib tashlang. Tartibni keyingi bosqichda sozlaysiz.",
+    "tabColumns": "Ustunlar",
+    "tabOrder": "Tartib",
+    "selectedShort": "tanlangan",
+    "orderHint": "Sarlavhalarni sudrab tartibni o'zgartiring",
+    "filePreview": "FAYLNING KO'RINISHI",
+    "columnCount": "{count} ustun",
+    "noColumns": "Hali birorta ustun tanlanmagan",
+    "startDownload": "Yuklashni boshlash",
+    "workerCountHint": "Yuklanadigan xodimlar soni",
+    "tabRelatives": "Yaqin qarindosh",
+    "tabReference": "Ma'lumotnoma",
+    "relativesHint": "Tanlangan xodimlarning yaqin qarindoshlari ro'yxati alohida Excel fayl bo'lib yuklanadi.",
+    "referenceHint": "Har bir xodim uchun ma'lumotnoma (.docx) tayyorlanadi va ular bitta ZIP arxivga to'planadi.",
+    "optPassport": "Passport ma'lumotlarini yuklash",
+    "optForeignPassport": "Xorij passporti ma'lumotlarini yuklash",
+    "optionsHint": "Pasport nusxalari arxivga qo'shilishi uchun quyidagilardan kerakligini belgilang"
   },
   "contactPage": {
     "name": "Kontaktlar"
@@ -2038,8 +2060,8 @@
       }
     },
     "audit": {
-      "tabGeneral": "Umumiy dashboard",
-      "tabAudit": "Ma'lumotlar bo'yicha audit",
+      "tabGeneral": "Dashboard",
+      "tabAudit": "Audit",
       "relativesShortage": "Qarindoshlar to'liqsiz",
       "relativesWithoutJshshir": "Qarindosh PNFL yo'q",
       "nameErrors": "Ism-familiya xatosi",
@@ -2915,7 +2937,7 @@
     "phdNotRequired": "PhD talab etilmaydi",
     "minExp": "Kamida {n} yil staj",
     "exam": {
-      "modalTitle": "Imtixon",
+      "modalTitle": "Hisobot tayyorlash",
       "onlineBadge": "Onlayn test",
       "onlineTab": "Onlayn",
       "offlineTab": "Offline",
@@ -3092,8 +3114,13 @@
   },
   "tariffBase": {
     "title": "Bazaviy summa",
-    "tab": { "grids": "Setkalar", "bases": "Baza miqdorlari" },
-    "action": { "newValue": "Yangi qiymat (versiya)" },
+    "tab": {
+      "grids": "Setkalar",
+      "bases": "Baza miqdorlari"
+    },
+    "action": {
+      "newValue": "Yangi qiymat (versiya)"
+    },
     "form": {
       "metaTitle": "Baza ma'lumotlari",
       "name": "Baza nomi",
@@ -3133,7 +3160,11 @@
       "group": "Guruh",
       "rank": "Razryad",
       "noChanges": "O'zgarish yo'q",
-      "status": { "added": "Qo'shildi", "removed": "O'chirildi", "changed": "O'zgardi" }
+      "status": {
+        "added": "Qo'shildi",
+        "removed": "O'chirildi",
+        "changed": "O'zgardi"
+      }
     },
     "formula": {
       "title": "Formula bilan koeffitsient tahriri (Excel kabi)",
@@ -3699,6 +3730,17 @@
       "status": "Ish soati bo'yicha",
       "max": "Eng ko'p",
       "min": "Eng kam"
+    },
+    "compare": {
+      "vsYesterday": "o'tgan kunga nisbatan",
+      "totalDevices": "Jami qurilmalar",
+      "withoutSchedule": "Grafik tuzilmagan xodimlar",
+      "faceIdTitle": "Face ID tahlili",
+      "faceIdSubtitle": "Face ID bo‘yicha kunlik qaydnoma"
+    },
+    "filter": {
+      "organizationPlaceholder": "Korxonani tanlang",
+      "departmentPlaceholder": "Bo‘limni tanlang"
     }
   },
   "hcWorkDuration": {
@@ -3896,8 +3938,10 @@
       "vacation": "Ta’til haqida ogohlantirilgan xodimlar soni",
       "med": "Tibbiy ko‘rik haqida ogohlantirilgan xodimlar soni",
       "passport": "Pasport muddati haqida ogohlantirilgan xodimlar soni",
-      "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni"
-    }
+      "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni",
+      "turnstile": "Turniket orqali xabar yuborilgan xodimlar soni"
+    },
+    "table": { "sentAt": "Yuborilgan vaqti" }
   },
   "mobileStoryPage": {
     "name": "Story e'lonlari",
@@ -3955,8 +3999,11 @@
     "shortDescriptionPlaceholder": "Yangilik haqida qisqacha...",
     "content": "Kontent",
     "contentPlaceholder": "Yangilik kontentini shu yerga yozing...",
+    "badge": "Yangilik",
     "attachments": "Biriktirmalar",
-    "attachmentsHint": "Hujjatlar, PDF yoki boshqa fayllarni yuklang",
+    "attachmentsHint": "JPG/PNG, 5MB gacha",
+    "saveDraft": "Qoralama qilish",
+    "publish": "Chop etish",
     "statusDraft": "Qoralama",
     "statusPublished": "Nashr etilgan",
     "statusArchived": "Arxivlangan",
@@ -3974,7 +4021,8 @@
     "pinned": "Mahkamlangan",
     "video": "Video",
     "image": "Rasm",
-    "noMedia": "Media yo'q"
+    "noMedia": "Media yo'q",
+    "statistics": "Statistika"
   },
   "newsCategoryPage": {
     "name": "Yangilik kategoriyalari",

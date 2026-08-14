@@ -34,6 +34,12 @@
       store.payload.detachTerminals.push(v)
     }
   }
+
+  // Terminal(lar)ni ajratish — destructiv amal; delete bilan bir xil ruxsat bilan gate.
+  const onDetach = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileWorkersWrite)) return
+    store._detach()
+  }
 </script>
 
 <template>
@@ -100,7 +106,7 @@
                     :loading="store.saveLoading && store.elementId === item.worker.id"
                     :disabled="!store.payload.detachTerminals.length"
                     type="primary"
-                    @click="store._detach()"
+                    @click="onDetach"
                   >
                     {{ $t('content.save') }}
                   </n-button>

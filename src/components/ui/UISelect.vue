@@ -18,7 +18,9 @@
     // sahifadagi mavjud ko'rinish saqlanadi.
     placement: { type: String, default: 'bottom' },
     // true bo'lsa katta (trigger) input ham qidiruv sifatida yoziladi.
-    searchableInput: { type: Boolean, default: false }
+    searchableInput: { type: Boolean, default: false },
+    // Berilmasa avvalgi default matn ishlatiladi (content.search / content.choose).
+    placeholder: { type: String, default: null }
   })
 
   const inputFocused = ref(false)
@@ -207,7 +209,9 @@
     <template #trigger>
       <n-badge class="w-full block" :value="modelV.length" type="info" :offset="[-10, -4]">
         <n-input
-          :placeholder="searchableInput ? $t('content.search') : $t('content.choose')"
+          :placeholder="
+            placeholder || (searchableInput ? $t('content.search') : $t('content.choose'))
+          "
           :loading="loading"
           class="ui__structure-input w-full"
           type="text"

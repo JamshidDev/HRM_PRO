@@ -11,7 +11,6 @@
   const store = useLearningCenterStore()
 
   const onSearch = (v) => {
-    if (!accStore.checkAction(accStore.pn.learningCentersRead)) return
     store.params.page = 1
     store._index()
   }

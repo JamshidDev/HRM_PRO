@@ -1,6 +1,6 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
-  import { useEventStore } from '@/store/modules/index.js'
+  import { useAccountStore, useEventStore } from '@/store/modules/index.js'
   import { useAppSetting } from '@/utils/index.js'
   import UINSelect from '@/components/ui/UINSelect.vue'
   import { useMessage } from 'naive-ui'
@@ -11,6 +11,7 @@
   const message = useMessage()
 
   const store = useEventStore()
+  const accStore = useAccountStore()
 
   const MAX_DAYS = 30
 
@@ -39,6 +40,7 @@
   }
 
   const onSubmit = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileHikCentralSync)) return
     formRef.value?.validate((error) => {
       if (!error) {
         if (!validateDateRange()) return

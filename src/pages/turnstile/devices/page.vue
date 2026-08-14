@@ -3,11 +3,13 @@
   import Filter from './ui/Filter.vue'
   import Table from './ui/Table.vue'
   import createForm from './ui/createForm.vue'
-  import { useDevicesStore } from '@/store/modules/index.js'
+  import { useAccountStore, useDevicesStore } from '@/store/modules/index.js'
 
   const store = useDevicesStore()
+  const accStore = useAccountStore()
 
   onMounted(() => {
+    if (!accStore.checkAction(accStore.pn.turnstileDevicesRead)) return
     store._index()
   })
 </script>

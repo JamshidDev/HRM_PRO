@@ -7,9 +7,10 @@
   } from '@vicons/fluent'
   import { UIMenuButton } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
-  import { useTurnstileScheduleStore } from '@/store/modules/index.js'
+  import { useAccountStore, useTurnstileScheduleStore } from '@/store/modules/index.js'
 
   const store = useTurnstileScheduleStore()
+  const accStore = useAccountStore()
 
   const props = defineProps({
     worker: {
@@ -23,6 +24,7 @@
     const data = v.data
 
     if (v.key === Utils.ActionTypes.attachment) {
+      if (!accStore.checkAction(accStore.pn.turnstileScheduleWrite)) return
       store._resetGrandpaPayload()
       store.grandPayload.is_turnstile = data.canRecognize || false
       store.grandPayload.grandToReport = !data.canRecognize || false
@@ -33,6 +35,7 @@
 
       store.grandVisible = true
     } else if (v.key === Utils.ActionTypes.edit) {
+      if (!accStore.checkAction(accStore.pn.turnstileScheduleCheck)) return
       store._checkFactOfWorker(v.data.id)
     }
   }
@@ -74,13 +77,13 @@
           label: $t('shiftType.form.addFacility'),
           key: Utils.ActionTypes.attachment,
           icon: Timer12Regular,
-          visible: true
+          visible: accStore.checkPermission(accStore.pn.turnstileScheduleWrite)
         },
         {
           label: $t('shiftType.form.checkFactOfWorkTime'),
           key: Utils.ActionTypes.edit,
           icon: ArrowSync12Filled,
-          visible: true
+          visible: accStore.checkPermission(accStore.pn.turnstileScheduleCheck)
         }
       ]"
     />
