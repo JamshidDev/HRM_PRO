@@ -4,7 +4,8 @@
   import { useAccountStore, useTopicStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
+  import editRefreshIcon from '@/assets/icons/editRefreshIcon.svg'
+  import trash from '@/assets/icons/trash.svg'
 
   const { t } = i18n.global
 
@@ -60,13 +61,13 @@
     {
       label: t('content.edit'),
       key: Utils.ActionTypes.edit,
-      icon: UIHelper.renderIcon(Edit32Regular),
+      icon: UIHelper.renderIcon(editRefreshIcon),
       action: onEdit
     },
     {
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
-      icon: UIHelper.renderIcon(Delete20Regular),
+      icon: UIHelper.renderIcon(trash),
       action: onDelete
     }
   ])

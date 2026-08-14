@@ -4,7 +4,9 @@
   import { useExamAttemptStore, useTopicExamResultStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import { ClockArrowDownload20Regular, Delete20Regular, Eye16Regular } from '@vicons/fluent'
+  import eye from '@/assets/icons/eye.svg'
+  import trash from '@/assets/icons/trash.svg'
+  import downloadIcon from '@/assets/icons/downloadIcon.svg'
 
   const { t } = i18n.global
 
@@ -85,19 +87,19 @@
     {
       label: t('content.view'),
       key: Utils.ActionTypes.view,
-      icon: UIHelper.renderIcon(Eye16Regular),
+      icon: UIHelper.renderIcon(eye),
       action: onView
     },
     {
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
-      icon: UIHelper.renderIcon(Delete20Regular),
+      icon: UIHelper.renderIcon(trash),
       action: onDelete
     },
     {
       label: t('content.download'),
       key: Utils.ActionTypes.download,
-      icon: UIHelper.renderIcon(ClockArrowDownload20Regular),
+      icon: UIHelper.renderIcon(downloadIcon),
       action: onDownload
     }
   ])
