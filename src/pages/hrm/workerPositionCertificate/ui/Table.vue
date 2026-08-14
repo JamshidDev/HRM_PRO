@@ -1,9 +1,12 @@
 <script setup>
-  import { UIMenuButton } from '@/components/index.js'
-  import { ArrowCircleDown24Regular, AddCircle28Regular } from '@vicons/fluent'
+  import { Edit32Regular, Delete20Regular } from '@vicons/fluent'
+  import { UITable, UIProfileSection, UIProfileEmpty, UIFileDownload } from '@/components/index.js'
   import { useWorkerPositionCertificateStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import i18n from '@/i18n/index.js'
 
+  const { t } = i18n.global
   const store = useWorkerPositionCertificateStore()
 
   const onAdd = () => {
@@ -31,118 +34,82 @@
     store._delete()
   }
 
-  const onSelect = (v) => {
-    if (v.key === Utils.ActionTypes.edit) {
-      onEdit(v.data)
-    } else if (v.key === Utils.ActionTypes.delete) {
-      onDelete(v.data)
-    }
-  }
+  const columns = computed(() => [
+    { key: 'post_name', title: t('workerPositionCertificatePage.form.postName'), minWidth: 220 },
+    { key: 'number', title: t('workerPositionCertificatePage.form.number'), width: 120 },
+    { key: 'issue_date', title: t('workerPositionCertificatePage.form.issueDate'), width: 130 },
+    { key: 'expiry_date', title: t('workerPositionCertificatePage.form.expiryDate'), width: 130 },
+    {
+      key: 'extended_date',
+      title: t('workerPositionCertificatePage.form.extendedDate'),
+      width: 140
+    },
+    {
+      key: 'verify',
+      title: t('workerPositionCertificatePage.form.verify'),
+      width: 100,
+      align: 'center'
+    },
+    {
+      key: 'returned',
+      title: t('workerPositionCertificatePage.form.returned'),
+      width: 110,
+      align: 'center'
+    },
+    { key: 'file', title: t('content.file'), width: 90 }
+  ])
 
-  const onDownload = (v) => {
-    window.open(v.file, '_blank')
-  }
+  // Faqat o'z korxonasi guvohnomasi tahrirlanadi (backend `editable`)
+  const actions = computed(() => [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      visible: (row) => Boolean(row.editable),
+      action: onEdit
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      visible: (row) => Boolean(row.editable),
+      action: onDelete
+    }
+  ])
 </script>
 
 <template>
-  <n-spin :show="store.loading">
-    <div
-      class="w-full flex justify-between items-end border-surface-line border-dashed pb-2 mt-16"
-      :class="store.list.length === 0 && 'border-b'"
+  <UIProfileSection :title="$t('workerPositionCertificatePage.title')" @add="onAdd">
+    <UITable
+      auto-height
+      :columns="columns"
+      :actions="actions"
+      :data="store.list"
+      :loading="store.loading"
     >
-      <span class="text-lg font-medium" v-if="store.list.length > 0">
-        {{ $t('workerPositionCertificatePage.title') }}
-      </span>
-      <span v-else class="text-sm text-gray-300">
-        {{ $t('workerPositionCertificatePage.no-data') }}
-      </span>
+      <template #empty><UIProfileEmpty /></template>
 
-      <n-button round @click="onAdd">
-        <template #icon>
-          <AddCircle28Regular />
-        </template>
-        {{ $t(`content.add`) }}
-      </n-button>
-    </div>
+      <template #cell-issue_date="{ value }">{{ Utils.timeOnlyDate(value) }}</template>
+      <template #cell-expiry_date="{ value }">{{ Utils.timeOnlyDate(value) }}</template>
+      <template #cell-extended_date="{ value }">
+        {{ value ? Utils.timeOnlyDate(value) : '—' }}
+      </template>
 
-    <div class="w-full overflow-x-auto" v-if="store.list.length > 0">
-      <n-table class="mt-4" :single-line="false" size="small">
-        <thead>
-          <tr>
-            <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-            <th class="min-w-[220px]">{{ $t('workerPositionCertificatePage.form.postName') }}</th>
-            <th class="min-w-[110px]">{{ $t('workerPositionCertificatePage.form.number') }}</th>
-            <th class="min-w-[110px]">{{ $t('workerPositionCertificatePage.form.issueDate') }}</th>
-            <th class="min-w-[110px]">{{ $t('workerPositionCertificatePage.form.expiryDate') }}</th>
-            <th class="min-w-[110px]">
-              {{ $t('workerPositionCertificatePage.form.extendedDate') }}
-            </th>
-            <th class="min-w-[90px] w-[90px] text-center!">
-              {{ $t('workerPositionCertificatePage.form.verify') }}
-            </th>
-            <th class="min-w-[90px] w-[90px] text-center!">
-              {{ $t('workerPositionCertificatePage.form.returned') }}
-            </th>
-            <th class="min-w-[80px] w-[80px]">{{ $t('content.file') }}</th>
-            <th class="min-w-[40px] w-[40px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, idx) in store.list" :key="idx">
-            <td>
-              <span class="text-center text-[12px] text-gray-600 block">{{ idx + 1 }}</span>
-            </td>
-            <td>
-              <span class="text-sm">{{ item.post_name }}</span>
-            </td>
-            <td>
-              <span class="text-sm">{{ item.number }}</span>
-            </td>
-            <td>
-              <span class="text-sm">{{ Utils.timeOnlyDate(item.issue_date) }}</span>
-            </td>
-            <td>
-              <span class="text-sm">{{ Utils.timeOnlyDate(item.expiry_date) }}</span>
-            </td>
-            <td>
-              <span v-if="item.extended_date" class="text-sm">
-                {{ Utils.timeOnlyDate(item.extended_date) }}
-              </span>
-              <span v-else class="text-xs text-gray-400">—</span>
-            </td>
-            <td class="text-center">
-              <n-tag :type="item.verify ? 'success' : 'default'" size="small" round>
-                {{ item.verify ? $t('content.yes') : $t('content.no') }}
-              </n-tag>
-            </td>
-            <td class="text-center">
-              <n-tag :type="item.returned ? 'warning' : 'default'" size="small" round>
-                {{ item.returned ? $t('content.yes') : $t('content.no') }}
-              </n-tag>
-            </td>
-            <td>
-              <n-button v-if="item.file" @click="onDownload(item)">
-                <template #icon>
-                  <ArrowCircleDown24Regular />
-                </template>
-                {{ $t('content.download') }}
-              </n-button>
-            </td>
-            <td>
-              <!-- Faqat o'z korxonasi guvohnomasi tahrirlanadi (backend `editable`).
-                   Boshqa korxonaniki — read-only (tugma yashiriladi). -->
-              <UIMenuButton
-                v-if="item.editable"
-                :data="item"
-                :show-edit="true"
-                @selectEv="onSelect"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-    </div>
-  </n-spin>
+      <template #cell-verify="{ value }">
+        <n-tag :type="value ? 'success' : 'default'" size="small" round>
+          {{ value ? $t('content.yes') : $t('content.no') }}
+        </n-tag>
+      </template>
+
+      <template #cell-returned="{ value }">
+        <n-tag :type="value ? 'warning' : 'default'" size="small" round>
+          {{ value ? $t('content.yes') : $t('content.no') }}
+        </n-tag>
+      </template>
+
+      <template #cell-file="{ row }">
+        <UIFileDownload :file="row.file" />
+      </template>
+    </UITable>
+  </UIProfileSection>
 </template>
-
-<style scoped></style>
