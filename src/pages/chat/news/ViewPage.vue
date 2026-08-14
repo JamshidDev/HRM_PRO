@@ -98,21 +98,21 @@
 <template>
   <UIPageContent>
     <!-- Back Button -->
-    <div class="max-w-6xl mx-auto px-6 pt-4 w-full">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-4 w-full">
       <UIBackButton @click="goBack" />
     </div>
 
     <n-spin :show="store.loading">
       <!-- ── Title + Meta ─────────────────────────────────────────────────────── -->
-      <div class="max-w-6xl mx-auto px-6 mt-4">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 mt-4">
         <!-- Title -->
-        <h1 class="text-3xl font-bold text-textColor0 leading-tight mb-4">
+        <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-textColor0 leading-tight mb-4">
           {{ translation.title }}
         </h1>
 
         <!-- Meta row: date · status · pin · reactions · categories -->
         <div
-          class="flex flex-wrap items-center gap-3 mb-6 pb-6 border-b border-surface-line"
+          class="flex flex-wrap items-center gap-x-4 gap-y-2 sm:gap-3 mb-6 pb-6 border-b border-surface-line"
           style="color: #344054"
         >
           <!-- Date -->
@@ -131,7 +131,7 @@
           </div>
 
           <!-- Reactions -->
-          <div class="flex items-center gap-6">
+          <div class="flex flex-wrap items-center gap-3 sm:gap-6">
             <span v-for="(r, idx) in reactions" :key="idx" class="flex items-center gap-1 text-sm">
               <n-icon size="15"><component :is="r.icon" /></n-icon>
               {{ r.count }}
@@ -153,10 +153,10 @@
       </div>
 
       <!-- ── Hero Media ───────────────────────────────────────────────────────── -->
-      <div v-if="sliderMedia.length" class="max-w-6xl mx-auto px-6">
+      <div v-if="sliderMedia.length" class="max-w-6xl mx-auto px-4 sm:px-6">
         <div class="relative rounded-2xl overflow-hidden shadow-xl group">
           <!-- Main display -->
-          <div class="relative h-[580px] bg-surface-section overflow-hidden">
+          <div class="relative h-[220px] sm:h-[340px] md:h-[460px] lg:h-[580px] bg-surface-section overflow-hidden">
             <img
               v-if="activeMedia.type === 'image'"
               :src="activeMedia.path"
@@ -201,10 +201,10 @@
           <!-- Thumbnail strip (shown on hover of the main display) -->
           <div
             v-if="sliderMedia.length > 1"
-            class="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            class="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 w-full sm:w-auto px-2 sm:px-0 max-w-full opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300"
           >
             <div
-              class="flex gap-4 border backdrop-blur-sm rounded-2xl p-4 shadow-lg"
+              class="flex gap-2 sm:gap-4 border backdrop-blur-sm rounded-2xl p-2 sm:p-4 shadow-lg overflow-x-auto"
               :style="{
                 backgroundColor: hexToRgba(activeMediaColor, 0.15),
                 borderColor: hexToRgba(activeMediaColor, 0.6)
@@ -214,7 +214,7 @@
                 v-for="(item, idx) in sliderMedia"
                 :key="item.id"
                 @click="activeMediaIndex = idx"
-                class="h-20 w-36 rounded-xl overflow-hidden border-[1px] transition-all duration-200 shrink-0 relative"
+                class="h-14 w-24 sm:h-20 sm:w-36 rounded-xl overflow-hidden border-[1px] transition-all duration-200 shrink-0 relative"
                 :class="
                   activeMediaIndex === idx
                     ? 'border-primary scale-105 shadow-lg'
@@ -244,8 +244,8 @@
       </div>
 
       <!-- ── Content Area ────────────────────────────────────────────────────── -->
-      <div class="max-w-6xl mx-auto px-6 py-8">
-        <div class="flex gap-8 items-start">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <div class="flex flex-col sm:flex-row gap-8 items-start">
           <!-- ── Article ───────────────────────────────────────────────────── -->
           <article class="flex-1 min-w-0">
             <!-- HTML content -->

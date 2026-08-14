@@ -1,46 +1,114 @@
 <script setup>
-  import { ChevronRight12Regular, ChevronDown28Filled } from '@vicons/fluent'
+  import { useRoute, useRouter } from 'vue-router'
   import Tabs from './ui/Tabs.vue'
-  import { useWorkerProfileStore } from '@/store/modules/index.js'
-  const store = useWorkerProfileStore()
+  import { UISegmentTabs } from '@/components/index.js'
+  import { useWorkerProfileStore, useComponentStore } from '@/store/modules/index.js'
+  import icons from '@/assets/icons'
+  import i18n from '@/i18n/index.js'
 
-  const onChange = (v) => {
-    store.activeTab = v
+  const { t } = i18n.global
+  const route = useRoute()
+  const router = useRouter()
+  const store = useWorkerProfileStore()
+  const componentStore = useComponentStore()
+
+  // Figma "Status Toggle" (node 2584:199893) — har bobning o'z ikonkasi bor
+  const tabIcons = {
+    personal: icons.figUserAlt,
+    career: icons.figBriefcase,
+    education: icons.figGraduationHat,
+    relative: icons.figUsers,
+    others: icons.figDotsHorizontal
   }
 
+  const tabList = computed(() =>
+    store.tabs.map((item) => ({
+      id: item.id,
+      name: t(item.name),
+      icon: tabIcons[item.key]
+    }))
+  )
+
+  const goBack = () => router.back()
+
+  // Boblar lazy mount bo'lgani uchun xodim ma'lumoti sahifa darajasida yuklanadi —
+  // aks holda 1-bobga kirmasdan 2-bobga o'tilganda lavozim ro'yxati bo'sh qolardi.
   onMounted(() => {
     store.anotherProfile = null
     store.isExistAccount = false
     store.photos = []
+    store.activeTab = 1
+
+    store.elementId = route.query.id
+    store._index()
+    store._indexPassport()
+    store._indexForeignPassport()
+    componentStore._enums()
+    componentStore._nationality()
   })
 </script>
 
 <template>
-  <div class="w-full flex bg-surface-section rounded-sm border-surface-line p-2 pt-8">
-    <div class="flex flex-col" style="width: calc(100% - 0px)">
-      <div
-        class="mx-auto mb-16 md:sticky top-[10px] z-50 bg-surface-section rounded-2xl overflow-auto w-full md:w-auto"
-      >
-        <n-button-group>
-          <n-button
-            class="no-scale"
-            v-for="(item, idx) in store.tabs"
-            :key="idx"
-            type="primary"
-            :secondary="item.id === store.activeTab ? undefined : true"
-            @click="onChange(item.id)"
-            round
-          >
-            <template #icon>
-              <ChevronDown28Filled v-if="item.id === store.activeTab" />
-              <ChevronRight12Regular v-else />
-            </template>
-            {{ $t(item.name) }}
-          </n-button>
-        </n-button-group>
-      </div>
+  <div class="profile-page flex flex-col gap-5">
+    <!-- Orqaga va boblar bitta qatorda; skroll paytida tepada yopishib turadi -->
+    <div class="profile-header">
+      <button type="button" class="profile-back" @click="goBack">
+        <n-icon :size="18" class="shrink-0">
+          <component :is="icons.figArrowLeft" />
+        </n-icon>
+        {{ $t('content.back') }}
+      </button>
 
-      <Tabs class="mx-auto w-full max-w-[1400px] mb-10" />
+      <UISegmentTabs :tabs="tabList" v-model="store.activeTab" />
     </div>
+
+    <Tabs />
   </div>
 </template>
+
+<style lang="scss" scoped>
+  // Maketda tana 16px chetdan turadi va sahifa foni kartalardan ochroq.
+  // Tepa padding sarlavha panelining o'zida — u chetdan chetgacha yopishib turadi.
+  .profile-page {
+    width: 100%;
+    padding: 0 16px 16px;
+    background: var(--surface-ground);
+  }
+
+  // Manfiy margin sahifa gorizontal paddingini qoplaydi, shunda yopishgan panel
+  // ostidan skroll qilinayotgan kartalarning chetlari ko'rinib qolmaydi.
+  .profile-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    margin: 0 -16px;
+    padding: 16px;
+    background: var(--surface-ground);
+  }
+
+  .profile-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 36px;
+    padding: 10px 16px 10px 12px;
+    border: none;
+    border-radius: 8px;
+    background: var(--fig-bg-tertiary);
+    color: var(--fig-text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+</style>

@@ -1,6 +1,6 @@
 <script setup>
-  import { UITable } from '@/components/index.js'
-  import { ArrowCircleDown24Regular, AddCircle28Regular, Edit32Regular, Delete20Regular } from '@vicons/fluent'
+  import { UITable, UIProfileSection, UIProfileEmpty, UIFileDownload } from '@/components/index.js'
+  import { Edit32Regular, Delete20Regular } from '@vicons/fluent'
   import { useLanguageStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -36,12 +36,6 @@
     window.open(v.file, '_blank')
   }
 
-  const changePage = (v) => {
-    store.params.page = v.page
-    store.params.per_page = v.per_page
-    store._index()
-  }
-
   const columns = computed(() => [
     {
       key: 'language.name',
@@ -72,43 +66,21 @@
 </script>
 
 <template>
-  <div
-    class="w-full flex justify-between items-end border-surface-line border-dashed pb-2 mt-16"
-    :class="store.list.length === 0 && 'border-b'"
-  >
-    <span class="text-lg font-medium" v-if="store.list.length > 0">{{
-      $t('languagePage.title')
-    }}</span>
-    <span v-else class="text-sm text-gray-300">{{ $t('languagePage.no-language') }}</span>
+  <UIProfileSection :title="$t('languagePage.title')" @add="onAdd">
+    <UITable
+      auto-height
+      :columns="columns"
+      :actions="actions"
+      :data="store.list"
+      :loading="store.loading"
+    >
+      <template #empty><UIProfileEmpty /></template>
 
-    <n-button round @click="onAdd">
-      <template #icon>
-        <AddCircle28Regular />
+      <template #cell-file="{ row }">
+        <UIFileDownload :file="row.file" />
       </template>
-      {{ $t(`content.add`) }}
-    </n-button>
-  </div>
-
-  <UITable
-    class="mt-4"
-    :columns="columns"
-    :actions="actions"
-    :data="store.list"
-    :loading="store.loading"
-    :page="store.params.page"
-    :per-page="store.params.per_page"
-    :total="store.totalItems"
-    @change-page="changePage"
-  >
-    <template #cell-file="{ value }">
-      <n-button v-if="value" @click="onDownload({ file: value })">
-        <template #icon>
-          <ArrowCircleDown24Regular />
-        </template>
-        {{ $t('content.download') }}
-      </n-button>
-    </template>
-  </UITable>
+    </UITable>
+  </UIProfileSection>
 </template>
 
 <style scoped></style>

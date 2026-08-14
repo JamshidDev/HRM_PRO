@@ -3,6 +3,7 @@
   import { UIMenuButton, NoDataPicture } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
   import { useAccountStore } from '@/store/modules/index.js'
+  import trash from '@/assets/icons/trash.svg'
   const accStore = useAccountStore()
 
   defineProps({
@@ -65,6 +66,7 @@
             <UIMenuButton
               show-view
               :data="file"
+              :delete-icon="trash"
               @select-ev="onSelectEv"
               :loading="store.elementId === file.id && store.deleteLoading"
             />
