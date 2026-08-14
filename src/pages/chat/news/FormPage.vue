@@ -58,9 +58,11 @@
           "
         />
 
+        <!-- Past bo'yli ekranlarda telefon ramkasi viewport'ga sig'masligi mumkin —
+             shunda panelning o'zi ichkaridan skroll bo'ladi. -->
         <NewsMobilePreview
           :lang-index="langIndex"
-          class="hidden xl:block shrink-0 sticky top-[68px]"
+          class="hidden xl:block shrink-0 sticky top-[68px] max-h-[calc(100dvh-84px)] overflow-y-auto"
         />
       </div>
     </n-spin>
@@ -71,7 +73,7 @@
       :mask-closable="true"
       style="background: transparent; box-shadow: none; padding: 0"
     >
-      <div class="bg-surface-section rounded-3xl p-4" @click.stop>
+      <div class="bg-surface-section rounded-3xl p-4 max-h-[94vh] overflow-y-auto" @click.stop>
         <NewsMobilePreview :lang-index="langIndex" />
       </div>
     </n-modal>

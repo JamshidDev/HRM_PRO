@@ -32,7 +32,12 @@
 
       <!-- Live preview — yozilgan matn va tanlangan slaydlar darhol aks etadi.
            Tor ekranda panel yashiriladi, o'rniga slaydga bosib modal preview ochiladi. -->
-      <div class="hidden xl:block shrink-0 sticky top-0">
+      <!-- `max-h` modal balandligidan (min(94vh, 940px)) kelib chiqadi: past bo'yli
+           ekranda telefon ramkasi panel ichida skroll bo'ladi, aks holda yopishgan
+           panelning pastki qismiga yetib bo'lmaydi. -->
+      <div
+        class="hidden xl:block shrink-0 sticky top-0 max-h-[calc(94vh-160px)] overflow-y-auto"
+      >
         <div class="flex items-center gap-2 mb-2">
           <h3 class="text-sm font-semibold text-textColor0">
             {{ $t('mobileStoryPage.form.preview') }}

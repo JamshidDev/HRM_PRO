@@ -3,6 +3,7 @@
   import DOMPurify from 'dompurify'
   import { Pin24Filled, ArrowLeft24Filled, Image24Regular, Play24Filled } from '@vicons/fluent'
   import { useNewsStore, useNewsCategoryStore } from '@/store/modules/index.js'
+  import { UIPhoneFrame } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import { isEditorContentEmpty } from '@/utils/EditorValidator.js'
@@ -109,186 +110,159 @@
     </div>
 
     <!-- ── Telefon ramkasi ──────────────────────────────────────────────────── -->
-    <div class="w-[340px] p-[10px] rounded-[2.5rem] bg-[#1a1a1a] shadow-2xl">
-      <div class="relative w-full h-[680px] rounded-[2rem] overflow-hidden bg-white">
-        <!-- Dynamic island -->
+    <UIPhoneFrame screen-class="overflow-y-auto bg-white">
+      <!-- ── Hero media ────────────────────────────────────────────────── -->
+      <div class="relative">
         <div
-          class="absolute top-2 left-1/2 -translate-x-1/2 z-30 w-[92px] h-[26px] rounded-full bg-black"
-        />
-
-        <div class="h-full overflow-y-auto news-preview-scroll">
-          <!-- Status bar -->
+          v-if="media.length"
+          class="flex overflow-x-auto snap-x snap-mandatory news-preview-scroll"
+          @scroll="onSlideScroll"
+        >
           <div
-            class="sticky top-0 z-20 flex items-center justify-between px-6 pt-3 pb-2 text-[11px] font-semibold text-white mix-blend-difference"
+            v-for="item in media"
+            :key="item.id"
+            class="w-full shrink-0 snap-center h-[220px] bg-[#101828]"
           >
-            <span>9:41</span>
-            <div class="flex items-center gap-1">
-              <span class="inline-flex items-end gap-[2px] h-[9px]">
-                <i class="w-[2px] h-[3px] bg-white rounded-[1px]" />
-                <i class="w-[2px] h-[5px] bg-white rounded-[1px]" />
-                <i class="w-[2px] h-[7px] bg-white rounded-[1px]" />
-                <i class="w-[2px] h-[9px] bg-white rounded-[1px]" />
-              </span>
-              <span class="w-[16px] h-[9px] border border-white rounded-[2px] relative">
-                <i class="absolute inset-[1.5px] right-[5px] bg-white rounded-[1px]" />
-              </span>
-            </div>
-          </div>
-
-          <!-- ── Hero media ────────────────────────────────────────────────── -->
-          <div class="relative -mt-[34px]">
-            <div
-              v-if="media.length"
-              class="flex overflow-x-auto snap-x snap-mandatory news-preview-scroll"
-              @scroll="onSlideScroll"
-            >
-              <div
-                v-for="item in media"
-                :key="item.id"
-                class="w-full shrink-0 snap-center h-[220px] bg-[#101828]"
-              >
-                <img
-                  v-if="isImageFile(item)"
-                  :src="previewSrc(item)"
-                  class="w-full h-full object-cover"
-                  alt=""
-                />
-                <div v-else-if="isVideoFile(item)" class="relative w-full h-full">
-                  <video
-                    :src="previewSrc(item)"
-                    class="w-full h-full object-cover"
-                    preload="metadata"
-                    muted
-                  />
-                  <div class="absolute inset-0 flex items-center justify-center bg-black/30">
-                    <span
-                      class="w-11 h-11 rounded-full bg-white/85 flex items-center justify-center"
-                    >
-                      <n-icon size="20" color="#101828"><Play24Filled /></n-icon>
-                    </span>
-                  </div>
-                </div>
-                <div
-                  v-else
-                  class="w-full h-full flex flex-col items-center justify-center gap-1 bg-[#F2F4F7]"
+            <img
+              v-if="isImageFile(item)"
+              :src="previewSrc(item)"
+              class="w-full h-full object-cover"
+              alt=""
+            />
+            <div v-else-if="isVideoFile(item)" class="relative w-full h-full">
+              <video
+                :src="previewSrc(item)"
+                class="w-full h-full object-cover"
+                preload="metadata"
+                muted
+              />
+              <div class="absolute inset-0 flex items-center justify-center bg-black/30">
+                <span
+                  class="w-11 h-11 rounded-full bg-white/85 flex items-center justify-center"
                 >
-                  <n-icon size="26" color="#98A2B3"><Image24Regular /></n-icon>
-                  <span class="text-[11px] text-[#98A2B3] px-3 text-center line-clamp-2">
-                    {{ item.name }}
-                  </span>
-                </div>
+                  <n-icon size="20" color="#101828"><Play24Filled /></n-icon>
+                </span>
               </div>
             </div>
-
             <div
               v-else
-              class="h-[220px] flex flex-col items-center justify-center gap-1.5 bg-[#F2F4F7]"
+              class="w-full h-full flex flex-col items-center justify-center gap-1 bg-[#F2F4F7]"
             >
-              <n-icon size="30" color="#98A2B3"><Image24Regular /></n-icon>
-              <span class="text-[11px] text-[#98A2B3]">{{ $t('newsPage.noMedia') }}</span>
-            </div>
-
-            <!-- Media ustidagi gradient -->
-            <div
-              class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/45 to-transparent pointer-events-none"
-            />
-
-            <!-- Back tugmasi -->
-            <div
-              class="absolute top-[42px] left-4 w-8 h-8 rounded-full bg-black/35 backdrop-blur-sm flex items-center justify-center"
-            >
-              <n-icon size="17" color="#ffffff"><ArrowLeft24Filled /></n-icon>
-            </div>
-
-            <!-- Pin badge -->
-            <div
-              v-if="store.payload.is_pinned"
-              class="absolute top-[42px] right-4 flex items-center gap-1 px-2 py-1 rounded-full bg-black/35 backdrop-blur-sm"
-            >
-              <n-icon size="11" color="#FDC700"><Pin24Filled /></n-icon>
-              <span class="text-[10px] font-semibold text-white">{{ $t('newsPage.pinned') }}</span>
-            </div>
-
-            <!-- Slayder nuqtachalari -->
-            <div
-              v-if="media.length > 1"
-              class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5"
-            >
-              <i
-                v-for="(item, idx) in media"
-                :key="item.id"
-                class="rounded-full transition-all duration-200"
-                :class="
-                  activeSlide === idx ? 'w-4 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/50'
-                "
-              />
-            </div>
-          </div>
-
-          <!-- ── Kontent varag'i ───────────────────────────────────────────── -->
-          <div class="relative z-10 -mt-4 rounded-t-2xl bg-white px-4 pt-4 pb-5">
-            <!-- Teglar -->
-            <div v-if="categoryNames.length" class="flex flex-wrap gap-1.5 mb-2.5">
-              <span
-                v-for="name in categoryNames"
-                :key="name"
-                class="px-2 py-[3px] rounded-full bg-primary/10 text-primary text-[10px] font-semibold"
-              >
-                {{ name }}
+              <n-icon size="26" color="#98A2B3"><Image24Regular /></n-icon>
+              <span class="text-[11px] text-[#98A2B3] px-3 text-center line-clamp-2">
+                {{ item.name }}
               </span>
             </div>
-
-            <!-- Sarlavha -->
-            <h1
-              class="text-[19px] font-bold leading-snug mb-2"
-              :class="translation.title ? 'text-[#101828]' : 'text-[#98A2B3] italic font-medium'"
-            >
-              {{ translation.title || $t('newsPage.previewEmptyTitle') }}
-            </h1>
-
-            <!-- Sana + statistika -->
-            <div class="flex items-center gap-3 text-[11px] text-[#667085] mb-3">
-              <span class="flex items-center gap-1">
-                <n-icon size="12"><CalendarAltIcon /></n-icon>
-                {{ publishedAt }}
-              </span>
-              <span class="flex items-center gap-1">
-                <n-icon size="12"><EyeIcon /></n-icon>
-                0
-              </span>
-            </div>
-
-            <!-- Qisqa tavsif -->
-            <p
-              v-if="translation.short_description"
-              class="border-l-[3px] border-primary/60 pl-3 mb-4 text-[13px] leading-relaxed text-[#475467]"
-            >
-              {{ translation.short_description }}
-            </p>
-
-            <!-- Kontent -->
-            <div v-if="hasContent" class="mobile-news-content" v-html="sanitizedContent" />
-            <p v-else class="text-[13px] italic text-[#98A2B3]">
-              {{ $t('newsPage.previewEmptyContent') }}
-            </p>
-          </div>
-
-          <!-- ── Reaksiya bari ─────────────────────────────────────────────── -->
-          <div
-            class="sticky bottom-0 z-20 flex items-center gap-5 px-4 py-3 bg-white/95 backdrop-blur border-t border-[#EAECF0]"
-          >
-            <span
-              v-for="(r, idx) in reactions"
-              :key="idx"
-              class="flex items-center gap-1 text-[12px] text-[#667085]"
-            >
-              <n-icon size="15"><component :is="r.icon" /></n-icon>
-              {{ r.count }}
-            </span>
           </div>
         </div>
+
+        <div
+          v-else
+          class="h-[220px] flex flex-col items-center justify-center gap-1.5 bg-[#F2F4F7]"
+        >
+          <n-icon size="30" color="#98A2B3"><Image24Regular /></n-icon>
+          <span class="text-[11px] text-[#98A2B3]">{{ $t('newsPage.noMedia') }}</span>
+        </div>
+
+        <!-- Media ustidagi gradient -->
+        <div
+          class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/25 to-transparent pointer-events-none"
+        />
+
+        <!-- Back tugmasi -->
+        <div
+          class="absolute top-[42px] left-4 w-8 h-8 rounded-full bg-black/35 backdrop-blur-sm flex items-center justify-center"
+        >
+          <n-icon size="17" color="#ffffff"><ArrowLeft24Filled /></n-icon>
+        </div>
+
+        <!-- Pin badge -->
+        <div
+          v-if="store.payload.is_pinned"
+          class="absolute top-[42px] right-4 flex items-center gap-1 px-2 py-1 rounded-full bg-black/35 backdrop-blur-sm"
+        >
+          <n-icon size="11" color="#FDC700"><Pin24Filled /></n-icon>
+          <span class="text-[10px] font-semibold text-white">{{ $t('newsPage.pinned') }}</span>
+        </div>
+
+        <!-- Slayder nuqtachalari -->
+        <div
+          v-if="media.length > 1"
+          class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5"
+        >
+          <i
+            v-for="(item, idx) in media"
+            :key="item.id"
+            class="rounded-full transition-all duration-200"
+            :class="
+              activeSlide === idx ? 'w-4 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/50'
+            "
+          />
+        </div>
       </div>
-    </div>
+
+      <!-- ── Kontent varag'i ───────────────────────────────────────────── -->
+      <div class="relative z-10 -mt-4 rounded-t-2xl bg-white px-4 pt-4 pb-5">
+        <!-- Teglar -->
+        <div v-if="categoryNames.length" class="flex flex-wrap gap-1.5 mb-2.5">
+          <span
+            v-for="name in categoryNames"
+            :key="name"
+            class="px-2 py-[3px] rounded-full bg-primary/10 text-primary text-[10px] font-semibold"
+          >
+            {{ name }}
+          </span>
+        </div>
+
+        <!-- Sarlavha -->
+        <h1
+          class="text-[19px] font-bold leading-snug mb-2"
+          :class="translation.title ? 'text-[#101828]' : 'text-[#98A2B3] italic font-medium'"
+        >
+          {{ translation.title || $t('newsPage.previewEmptyTitle') }}
+        </h1>
+
+        <!-- Sana + statistika -->
+        <div class="flex items-center gap-3 text-[11px] text-[#667085] mb-3">
+          <span class="flex items-center gap-1">
+            <n-icon size="12"><CalendarAltIcon /></n-icon>
+            {{ publishedAt }}
+          </span>
+          <span class="flex items-center gap-1">
+            <n-icon size="12"><EyeIcon /></n-icon>
+            0
+          </span>
+        </div>
+
+        <!-- Qisqa tavsif -->
+        <p
+          v-if="translation.short_description"
+          class="border-l-[3px] border-primary/60 pl-3 mb-4 text-[13px] leading-relaxed text-[#475467]"
+        >
+          {{ translation.short_description }}
+        </p>
+
+        <!-- Kontent -->
+        <div v-if="hasContent" class="mobile-news-content" v-html="sanitizedContent" />
+        <p v-else class="text-[13px] italic text-[#98A2B3]">
+          {{ $t('newsPage.previewEmptyContent') }}
+        </p>
+      </div>
+
+      <!-- ── Reaksiya bari ─────────────────────────────────────────────── -->
+      <div
+        class="sticky bottom-0 z-20 flex items-center gap-5 px-4 py-3 bg-white/95 backdrop-blur border-t border-[#EAECF0]"
+      >
+        <span
+          v-for="(r, idx) in reactions"
+          :key="idx"
+          class="flex items-center gap-1 text-[12px] text-[#667085]"
+        >
+          <n-icon size="15"><component :is="r.icon" /></n-icon>
+          {{ r.count }}
+        </span>
+      </div>
+    </UIPhoneFrame>
   </div>
 </template>
 

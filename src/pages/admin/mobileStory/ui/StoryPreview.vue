@@ -1,5 +1,6 @@
 <script setup>
   import { useMobileStoryStore } from '@/store/modules/index.js'
+  import { UIPhoneFrame } from '@/components/index.js'
   import {
     ArrowSync24Regular,
     ChevronLeft24Filled,
@@ -58,8 +59,10 @@
     />
 
     <!-- Telefon ramkasi -->
-    <div class="phone group">
-      <div class="phone-screen">
+    <!-- `.story-overlay` yuqorisida allaqachon qoraytiruvchi gradient bor,
+         shuning uchun ramkaning o'z scrim'i o'chirilgan. -->
+    <UIPhoneFrame class="group" :status-bar-scrim="false">
+      <div class="story-screen">
         <video
           v-if="activeSlide?.media_type === 'video'"
           :key="activeSlide.id"
@@ -139,7 +142,7 @@
           </button>
         </template>
       </div>
-    </div>
+    </UIPhoneFrame>
 
     <p v-if="slides.length > 1" class="text-xs text-textColor3">
       {{ activeIndex + 1 }} / {{ slides.length }}
@@ -148,23 +151,10 @@
 </template>
 
 <style scoped>
-  .phone {
+  .story-screen {
     position: relative;
-    width: 316px;
-    padding: 8px;
-    border-radius: 40px;
-    background: #101014;
-    box-shadow:
-      0 18px 40px -18px rgba(16, 24, 40, 0.45),
-      0 0 0 1px rgba(255, 255, 255, 0.06) inset;
-  }
-  .phone-screen {
-    position: relative;
-    width: 300px;
-    height: 533px;
-    border-radius: 32px;
-    overflow: hidden;
-    background: #000;
+    width: 100%;
+    height: 100%;
   }
   .story-media {
     width: 100%;
@@ -184,9 +174,10 @@
     font-size: 12px;
     text-align: center;
   }
+  /* Yuqoridagi elementlar status bar va dynamic island ostidan boshlanadi. */
   .story-bars {
     position: absolute;
-    top: 12px;
+    top: 42px;
     left: 12px;
     right: 12px;
     z-index: 6;
@@ -202,7 +193,7 @@
   }
   .story-head {
     position: absolute;
-    top: 24px;
+    top: 54px;
     left: 12px;
     z-index: 6;
   }
@@ -253,7 +244,7 @@
   }
   .story-replace {
     position: absolute;
-    top: 22px;
+    top: 52px;
     right: 12px;
     z-index: 6;
   }
