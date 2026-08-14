@@ -12,14 +12,10 @@
 
   const onOpenDownloadModal = () => {
     if (!accStore.checkAction(accStore.pn.turnstileAbsentWorkersExport)) return
-    if (!storeV2.download.payload.from) {
-      const today = new Date()
-      const tomorrow = new Date(today)
-      tomorrow.setDate(today.getDate() + 1)
-      storeV2.download.payload.from = today.getTime()
-      storeV2.download.payload.to = tomorrow.getTime()
-    }
-    storeV2.download.visible = true
+    storeV2._openDownload({
+      organizations: store.params.organizations,
+      departments: store.params.departments
+    })
   }
 
   const filterEvent = () => {
