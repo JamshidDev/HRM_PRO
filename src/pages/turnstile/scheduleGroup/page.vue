@@ -1,5 +1,5 @@
 <script setup>
-  import { useShiftTypeStore } from '@/store/modules/index.js'
+  import { useAccountStore, useShiftTypeStore } from '@/store/modules/index.js'
   import { UIPageContent } from '@/components/index.js'
   import Table from './ui/Table.vue'
   import Filter from './ui/Filter.vue'
@@ -9,8 +9,10 @@
   const route = useRoute()
 
   const store = useShiftTypeStore()
+  const accStore = useAccountStore()
 
   onMounted(() => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsRead)) return
     if (route.path === '/turnstile/shift-type-group') {
       store.groupParams.schedule_type = null
       store.activeTab = 2

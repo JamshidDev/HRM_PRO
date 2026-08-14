@@ -8,8 +8,9 @@
     DismissCircle16Filled
   } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
-  import { useTurnstileHikCentralWorkerStore } from '@/store/modules/index.js'
+  import { useAccountStore, useTurnstileHikCentralWorkerStore } from '@/store/modules/index.js'
   const store = useTurnstileHikCentralWorkerStore()
+  const accStore = useAccountStore()
 
   const { t } = i18n.global
 
@@ -41,6 +42,7 @@
   })
 
   const onRefresh = (level) => {
+    if (!accStore.checkAction(accStore.pn.turnstileHikCentralWorkersWrite)) return
     emit('refresh', level)
   }
 
@@ -121,6 +123,7 @@
                     {{ level.name }}</span
                   >
                   <n-button
+                    v-if="accStore.checkPermission(accStore.pn.turnstileHikCentralWorkersWrite)"
                     @click="onRefresh(level)"
                     size="tiny"
                     ghost

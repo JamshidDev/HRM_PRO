@@ -1,5 +1,5 @@
 <script setup>
-  import { useScheduleGroupWorkerStore } from '@/store/modules/index.js'
+  import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
   import SearchElement from '@/pages/turnstile/schedule/ui/SearchElement.vue'
   import Utils from '@/utils/Utils.js'
   import { getMonthOfRage } from '@utils'
@@ -8,6 +8,7 @@
   import { UIPagination } from '@components'
 
   const store = useScheduleGroupWorkerStore()
+  const accStore = useAccountStore()
 
   const currentScheduleList = ref([])
 
@@ -61,6 +62,7 @@
   }
 
   const onReplace = (v) => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
     store.selectedWorker = v
     store._workers()
     store.replacePayload.positonId = null
@@ -135,6 +137,7 @@
               </div>
 
               <div
+                v-if="accStore.checkPermission(accStore.pn.turnstileSheetsGroupsWrite)"
                 @click="onReplace(worker)"
                 class="w-[28px] h-[28px] border border-surface-line rounded-lg flex justify-center items-center text-secondary cursor-pointer"
               >

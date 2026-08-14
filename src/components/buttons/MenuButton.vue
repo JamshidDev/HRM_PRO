@@ -181,7 +181,9 @@
       size="small"
       :options="[
         ...options,
-        ...extraOptions.map((i) => ({ ...i, icon: UIHelper.renderIcon(i.icon) }))
+        ...extraOptions
+          .filter((i) => i.visible !== false)
+          .map((i) => ({ ...i, icon: UIHelper.renderIcon(i.icon) }))
       ]"
       trigger="click"
       @select="onSelect"

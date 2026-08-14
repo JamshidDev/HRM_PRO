@@ -1,6 +1,10 @@
 <script setup>
   import { UIBadge, UITable } from '@/components/index.js'
-  import { useScheduleGroupWorkerStore, useShiftTypeStore } from '@/store/modules/index.js'
+  import {
+    useAccountStore,
+    useScheduleGroupWorkerStore,
+    useShiftTypeStore
+  } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
@@ -14,6 +18,7 @@
   const { t } = i18n.global
   const store = useShiftTypeStore()
   const scheduleGroupworkerStore = useScheduleGroupWorkerStore()
+  const accStore = useAccountStore()
 
   const changePage = (v) => {
     store.groupParams.page = v.page
@@ -31,6 +36,7 @@
   }
 
   const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsFinish)) return
     store.elementId = row.id
     store.groupId = row.id
     store.generatePayload.name = row.name
@@ -42,12 +48,14 @@
   }
 
   const onDelete = (row) => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsDelete)) return
     store.elementId = row.id
     store.groupId = row.id
     store._deleteGroup()
   }
 
   const onAttachWorker = (row) => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
     store.groupId = row.id
     store.elementId = row.schedule_type?.id
     store.notScheduleParams.start_date = row.start_date
@@ -105,13 +113,15 @@
       label: t('content.finish'),
       key: Utils.ActionTypes.edit,
       icon: UIHelper.renderIcon(CheckmarkCircle32Regular),
-      action: onEdit
+      action: onEdit,
+      visible: () => accStore.checkPermission(accStore.pn.turnstileSheetsGroupsFinish)
     }
   ])
 </script>
 
 <template>
   <UITable
+    permission-prefix="turnstile-sheets-groups"
     :columns="columns"
     :actions="actions"
     :data="store.groupList"

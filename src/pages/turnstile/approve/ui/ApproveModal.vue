@@ -1,10 +1,12 @@
 <script setup>
   import { UIModal, UIUser } from '@components'
-  import { useApproveStore } from '@stores'
+  import { useAccountStore, useApproveStore } from '@stores'
 
   const store = useApproveStore()
+  const accStore = useAccountStore()
 
   const onSubmit = (status) => {
+    if (!accStore.checkAction(accStore.pn.turnstileApproveWrite)) return
     store._approve(status)
   }
 </script>
@@ -60,6 +62,7 @@
     </n-spin>
     <div class="grid grid-cols-12 gap-4 mt-4">
       <n-button
+        v-if="accStore.checkPermission(accStore.pn.turnstileApproveWrite)"
         @click="onSubmit('rejected')"
         :loading="store.saveLoading"
         class="col-span-6"
@@ -67,6 +70,7 @@
         >{{ $t('content.reject') }}</n-button
       >
       <n-button
+        v-if="accStore.checkPermission(accStore.pn.turnstileApproveWrite)"
         @click="onSubmit('approved')"
         :loading="store.saveLoading"
         class="col-span-6"

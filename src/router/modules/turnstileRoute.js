@@ -11,7 +11,7 @@ export const turnstileRoutes = [
     component: () => import('@turnstile/building/page.vue'),
     meta: {
       layout: AppLayouts.main,
-      permission: appPermissions.turnstileBuilding
+      permission: appPermissions.turnstileBuildingRead
     }
   },
   {
@@ -19,7 +19,7 @@ export const turnstileRoutes = [
     component: () => import('@turnstile/terminal/page.vue'),
     meta: {
       layout: AppLayouts.main,
-      permission: appPermissions.turnstileTerminal
+      permission: appPermissions.turnstileTerminalRead
     }
   },
   {
@@ -27,7 +27,7 @@ export const turnstileRoutes = [
     component: () => import('@turnstile/organizationTerminal/page.vue'),
     meta: {
       layout: AppLayouts.main,
-      permission: appPermissions.turnstileOrganization
+      permission: appPermissions.turnstileOrganizationRead
     }
   },
   {
@@ -35,7 +35,7 @@ export const turnstileRoutes = [
     component: () => import('@turnstile/terminalUser/page.vue'),
     meta: {
       layout: AppLayouts.main,
-      permission: appPermissions.turnstileWorkers
+      permission: appPermissions.turnstileWorkersRead
     }
   },
   {
@@ -43,7 +43,7 @@ export const turnstileRoutes = [
     component: () => import('@turnstile/workDuration/page.vue'),
     meta: {
       layout: AppLayouts.main,
-      permission: appPermissions.turnstileWorkDuration
+      permission: appPermissions.turnstileWorkDurationRead
     }
   },
   {
@@ -72,7 +72,7 @@ export const turnstileRoutes = [
     component: () => import('@turnstile/hcServer/page.vue'),
     meta: {
       layout: AppLayouts.main,
-      permission: appPermissions.turnstileHikCentralJob
+      permission: appPermissions.turnstileHikCentralJobRead
     }
   },
   {
@@ -87,7 +87,7 @@ export const turnstileRoutes = [
     component: () => import('@turnstile/eventsV2/page.vue'),
     meta: {
       layout: AppLayouts.main,
-      permission: appPermissions.turnstileHikCentralEvents
+      permission: appPermissions.turnstileHikCentralEventsRead
     }
   },
   {
@@ -117,7 +117,7 @@ export const turnstileRoutes = [
     component: () => import('@turnstile/HKWorkDuration/page.vue'),
     meta: {
       layout: AppLayouts.main,
-      permission: appPermissions.turnstileHcpDuration
+      permission: appPermissions.turnstileHcpDurationRead
     }
   },
   {

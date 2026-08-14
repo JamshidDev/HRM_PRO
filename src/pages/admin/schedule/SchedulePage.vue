@@ -16,7 +16,6 @@
   }
 
   const onSearch = (v) => {
-    if (!accStore.checkAction(accStore.pn.schedulesRead)) return
     store.params.page = 1
     store._index()
   }

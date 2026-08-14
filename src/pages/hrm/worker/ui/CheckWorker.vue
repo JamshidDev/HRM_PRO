@@ -182,7 +182,7 @@
                             }"
                           >
                             <template #position>
-                              <div @click="onCopyToClipboard(`+998${hr.phone}`)" class="flex gap-2 items-center text-xs font-medium bg-surface-ground border border-surface-line rounded-lg w-fit px-1 "> +998{{hr.phone}} <n-icon size="16"><Copy20Regular/></n-icon></div>
+                              <div @click="onCopyToClipboard(`+998${hr.phone}`)" class="flex gap-2 items-center text-xs font-medium bg-surface-ground border border-surface-line rounded-lg w-fit px-1 "> +998{{ hr.phone }} <n-icon size="16"><Copy20Regular /></n-icon></div>
                             </template>
                           </UIUser>
                         </template>

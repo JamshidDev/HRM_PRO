@@ -39,7 +39,6 @@
   }
 
   const onSearch = () => {
-    if (!accStore.checkAction(accStore.pn.documentExamplesRead)) return
     store.params.page = 1
     store._index()
   }

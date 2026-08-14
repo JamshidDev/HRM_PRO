@@ -1,14 +1,16 @@
 <script setup>
   import { Checkmark20Filled, DismissCircle24Regular } from '@vicons/fluent'
-  import { useScheduleTableStore } from '@stores'
+  import { useAccountStore, useScheduleTableStore } from '@stores'
   import { UIModal, UIPagination, UIUser } from '@components'
   import i18n from '@/i18n'
   import { useDebounce } from '@utils'
 
   const store = useScheduleTableStore()
+  const accStore = useAccountStore()
   const t = i18n.global.t
 
   const onSubmit = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsCopy)) return
     if (store.selectedWorkers.length === 0) {
       $Toast.warning(t('content.miniOneWorker'))
       return
