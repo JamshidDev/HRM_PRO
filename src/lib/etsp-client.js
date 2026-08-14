@@ -5,11 +5,21 @@ export const ETSP_AGENT_URL =
   import.meta.env.VITE_ETSP_AGENT_URL || 'https://127.0.0.1:27443'
 
 async function agent(path, body) {
-  const res = await fetch(ETSP_AGENT_URL + path, {
-    method: body ? 'POST' : 'GET',
-    headers: body ? { 'Content-Type': 'application/json' } : undefined,
-    body: body ? JSON.stringify(body) : undefined
-  })
+  let res
+  try {
+    res = await fetch(ETSP_AGENT_URL + path, {
+      method: body ? 'POST' : 'GET',
+      headers: body ? { 'Content-Type': 'application/json' } : undefined,
+      body: body ? JSON.stringify(body) : undefined
+    })
+  } catch (e) {
+    // "Failed to fetch" — agent ishlamayapti, eski versiya yoki sertifikati ishonchsiz.
+    throw new Error(
+      "ETSP Agent bilan aloqa yo'q. Agent o'rnatilgan va ishlayotganini tekshiring: " +
+        ETSP_AGENT_URL +
+        '/ping ni brauzerda oching. Ishlamasa — agentni qayta o\'rnating/yangilang.'
+    )
+  }
   const data = await res.json().catch(() => ({}))
   if (!res.ok) throw new Error(data.error || 'ETSP agent xatosi: ' + res.status)
   return data
