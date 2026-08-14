@@ -2504,6 +2504,7 @@
     },
     "attachRole": "Прикрепить роль",
     "deleteRole": "Удалить роль",
+    "detachRole": "Убрать роль",
     "selectRoleToDelete": "Выберите роль для удаления",
     "updatePassword": "Обновить пароль",
     "newPassword": "Новый пароль",

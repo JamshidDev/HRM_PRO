@@ -2299,6 +2299,7 @@
     },
     "attachRole": "Рол бириктириш",
     "deleteRole": "Ролни ўчириш",
+    "detachRole": "Ролни олиб ташлаш",
     "selectRoleToDelete": "Ўчирмоқчи бўлган ролни танланг",
     "updatePassword": "Паролни янгилаш",
     "newPassword": "Янги парол",

@@ -1,5 +1,12 @@
 <script setup>
-  import { UIGender, UIPhoneNumber, UITable, UIUser, UIWorkerView } from '@/components/index.js'
+  import {
+    PasswordUpdateModal,
+    UIGender,
+    UIPhoneNumber,
+    UITable,
+    UIUser,
+    UIWorkerView
+  } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import {
     useAccountStore,
@@ -11,8 +18,15 @@
   import { AppPaths } from '@/utils/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import { Edit32Regular, Eye16Regular, Table24Regular } from '@vicons/fluent'
+  import {
+    Edit32Regular,
+    Eye16Regular,
+    LockClosed16Filled,
+    RibbonStar24Filled,
+    Table24Regular
+  } from '@vicons/fluent'
   import { useRouter } from 'vue-router'
+  import WorkerRolesModal from '@pages/hrm/worker/ui/WorkerRolesModal.vue'
 
   const { t } = i18n.global
 
@@ -42,6 +56,24 @@
       path: `${AppPaths.Hrm}${AppPaths.WorkerProfile}`,
       query: { id: row.worker.uuid }
     })
+  }
+
+  // «Rollar» — biriktirish va olib tashlash BITTA modalda (talab bo'yicha).
+  // Ruxsat `hr-users-attach-role` — modal `/extra/users/*` endpointlarini
+  // chaqiradi («Qo'shimchalar» sahifasi bilan bir xil), backend ham shu slugni
+  // tekshiradi. `hr-workers-write` bilan gate qilinsa 403 chiqardi.
+  const onWorkerRoles = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrUsersAttachRole)) return
+    store.rolesWorkerUuid = row.worker?.uuid
+    store.rolesVisible = true
+  }
+
+  // «Parolni yangilash» — «Qo'shimchalar → Foydalanuvchilar» dagi bilan bir xil
+  // modal (`PasswordUpdateModal`). Backend `hr-workers-password` bilan gate qiladi.
+  const onUpdatePassword = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrWorkersPassword)) return
+    store.passwordWorkerUuid = row.worker?.uuid
+    store.passwordVisible = true
   }
 
   const onAssignTimesheet = (row) => {
@@ -235,12 +267,34 @@
       key: Utils.ActionTypes.timesheet,
       icon: UIHelper.renderIcon(Table24Regular),
       action: onAssignTimesheet
+    },
+    {
+      label: t('workerRole.attachRole'),
+      key: 'worker_roles',
+      icon: UIHelper.renderIcon(RibbonStar24Filled),
+      action: onWorkerRoles,
+      disabled: !accStore.checkPermission(accStore.pn.hrUsersAttachRole)
+    },
+    {
+      label: t('workerRole.updatePassword'),
+      key: 'update_password',
+      icon: UIHelper.renderIcon(LockClosed16Filled),
+      action: onUpdatePassword,
+      disabled: !accStore.checkPermission(accStore.pn.hrWorkersPassword)
     }
   ])
 </script>
 
 <template>
   <UIWorkerView ref="previewRef" />
+
+  <WorkerRolesModal />
+
+  <PasswordUpdateModal
+    v-model:visible="store.passwordVisible"
+    :loading="store.passwordLoading"
+    @submit="store._updateWorkerPassword"
+  />
 
   <UITable
     permission-prefix="hr-workers"
