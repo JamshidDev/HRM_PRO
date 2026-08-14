@@ -225,6 +225,8 @@
     "asAdmin": "Super admin",
     "setting": "Settings",
     "soundNotification": "Notification sound",
+    "soundDeviceMissing": "No audio output device found — notification sounds will not be heard",
+    "soundPlaybackFailed": "Could not play the notification sound — check your device audio",
     "sidebarColor": "Sidebar color",
     "sidebarThemeDefault": "Default",
     "sidebarThemeIndigo": "Indigo",
@@ -3947,7 +3949,8 @@
       "preview": "Preview",
       "replaceSlide": "Replace",
       "slidesPanel": "Slides",
-      "addSlideHint": "Add photo or video"
+      "addSlideHint": "Add photo or video",
+      "previewHint": "This is how it looks on a phone"
     },
     "deleteConfirm": "Delete this story?",
     "slideDeleteConfirm": "Delete this slide?",
@@ -3975,7 +3978,7 @@
     "contentPlaceholder": "Write news content here...",
     "badge": "News",
     "attachments": "Attachments",
-    "attachmentsHint": "JPG/PNG, up to 5MB",
+    "attachmentsHint": "Images are compressed · max 4 MB",
     "saveDraft": "Save as draft",
     "publish": "Publish",
     "statusDraft": "Draft",
@@ -3996,7 +3999,12 @@
     "video": "Video",
     "image": "Image",
     "noMedia": "No media",
-    "statistics": "Statistics"
+    "statistics": "Statistics",
+    "preview": "Preview",
+    "previewHint": "This is how it looks on a phone",
+    "previewEmptyTitle": "No title yet",
+    "previewEmptyContent": "No content yet",
+    "fileTooLarge": "File \"{name}\" is too large — 4 MB maximum"
   },
   "newsCategoryPage": {
     "name": "News Categories",
