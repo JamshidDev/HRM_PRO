@@ -65,6 +65,7 @@ export { default as UITableBadgeCell } from './ui/UITableBadgeCell.vue'
 export { default as UIDeleteConfirm } from './ui/UIDeleteConfirm.vue'
 export { default as UISortButton } from './ui/UISortButton.vue'
 export { default as UIToggleTag } from './ui/UIToggleTag.vue'
+export { default as UIBackButton } from './ui/UIBackButton.vue'
 
 export * from './layoutTab'
 export * from './editor'

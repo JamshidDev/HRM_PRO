@@ -49,6 +49,7 @@
     "edit": "Таҳрирлаш",
     "work_date": "Ишга чиқиш санаси",
     "delete": "Ўчириш",
+    "replace": "Алмаштириш",
     "deleteAll": "Барчасини ўчириш",
     "checked": "Текширилган",
     "view": "Кўриш",
@@ -1836,8 +1837,8 @@
       }
     },
     "audit": {
-      "tabGeneral": "Умумий dashboard",
-      "tabAudit": "Маълумотлар бўйича аудит",
+      "tabGeneral": "Dashboard",
+      "tabAudit": "Аудит",
       "relativesShortage": "Қариндошлар тўлиқсиз",
       "relativesWithoutJshshir": "Қариндош ПНФЛ йўқ",
       "nameErrors": "Исм-фамилия хатоси",
@@ -3505,6 +3506,17 @@
       "status": "Иш соати бўйича",
       "max": "Энг кўп",
       "min": "Энг кам"
+    },
+    "compare": {
+      "vsYesterday": "ўтган кунга нисбатан",
+      "totalDevices": "Жами қурилмалар",
+      "withoutSchedule": "График тузилмаган ходимлар",
+      "faceIdTitle": "Face ID таҳлили",
+      "faceIdSubtitle": "Face ID бўйича кунлик қайднома"
+    },
+    "filter": {
+      "organizationPlaceholder": "Корхонани танланг",
+      "departmentPlaceholder": "Бўлимни танланг"
     }
   },
   "hcWorkDuration": {
@@ -3702,8 +3714,10 @@
       "vacation": "Таътил ҳақида огоҳлантирилган ходимлар сони",
       "med": "Тиббий кўрик ҳақида огоҳлантирилган ходимлар сони",
       "passport": "Паспорт муддати ҳақида огоҳлантирилган ходимлар сони",
-      "mobile": "Мобил илова орқали хабар юборилган ходимлар сони"
-    }
+      "mobile": "Мобил илова орқали хабар юборилган ходимлар сони",
+      "turnstile": "Турникет орқали хабар юборилган ходимлар сони"
+    },
+    "table": { "sentAt": "Юборилган вақти" }
   },
   "newsPage": {
     "name": "Янгиликлар",
@@ -3725,8 +3739,11 @@
     "shortDescriptionPlaceholder": "Янгилик ҳақида қисқача...",
     "content": "Контент",
     "contentPlaceholder": "Янгилик контентини шу ерга ёзинг...",
+    "badge": "Янгилик",
     "attachments": "Бириктирмалар",
-    "attachmentsHint": "Ҳужжатлар, PDF ёки бошқа файлларни юкланг",
+    "attachmentsHint": "JPG/PNG, 5MB гача",
+    "saveDraft": "Қоралама қилиш",
+    "publish": "Чоп этиш",
     "statusDraft": "Қоралама",
     "statusPublished": "Нашр этилган",
     "statusArchived": "Архивланган",
@@ -3744,7 +3761,8 @@
     "pinned": "Маҳкамланган",
     "video": "Видео",
     "image": "Расм",
-    "noMedia": "Медиа йўқ"
+    "noMedia": "Медиа йўқ",
+    "statistics": "Статистика"
   },
   "newsCategoryPage": {
     "name": "Янгилик категориялари",
@@ -3939,22 +3957,19 @@
     }
   },
   "salaryAccess": {
-    "title": "Ойлик бўлими — парол",
-    "setTitle": "Ойлик паролини ўрнатиш",
-    "description": "Бу бўлим махфий. Давом этиш учун ойлик паролини киритинг.",
-    "setDescription": "Биринчи марта: логин паролингиз билан тасдиқлаб, ойлик паролини ўрнатинг.",
-    "loginPassword": "Логин паролингиз",
-    "newPassword": "Янги ойлик пароли",
-    "confirmPassword": "Ойлик паролини такрорланг",
-    "password": "Ойлик пароли",
-    "passwordPlaceholder": "Ойлик паролини киритинг",
-    "submit": "Очиш",
-    "setSubmit": "Ўрнатиш ва очиш",
-    "changeBtn": "Ойлик паролини ўзгартириш",
-    "changeTitle": "Ойлик паролини ўзгартириш",
-    "changeDescription": "Амалдаги ойлик паролингизни тасдиқлаб, янги парол ўрнатинг.",
-    "oldPassword": "Амалдаги ойлик пароли",
-    "changeSubmit": "Ўзгартириш",
+    "title": "Ойлик бўлими — тасдиқлаш",
+    "sent": "Тасдиқлаш коди Telegram'ингизга юборилди.",
+    "sending": "Код юборилмоқда...",
+    "codeLabel": "Тасдиқлаш коди",
+    "codePlaceholder": "Кодни киритинг",
+    "verify": "Тасдиқлаш",
+    "resend": "Қайта юбориш",
+    "resendIn": "Қайта юбориш ({sec}s)",
+    "expiresIn": "Код {sec}s дан кейин тугайди",
+    "expired": "Код муддати тугади. Қайта юборинг.",
+    "notLinked": "Telegram уланмаган",
+    "notLinkedHelp": "Ботни очинг, «Start» босинг ва телефон рақамингизни улашинг.",
+    "openBot": "Telegramда очиш",
     "cancelled": "Бекор қилинди"
   },
   "changePassword": {

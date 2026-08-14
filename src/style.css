@@ -26,12 +26,55 @@
   --color-textColor2: var(--textColor2);
   --color-textColor3: var(--textColor3);
   --color-surface-text: var(--textColor3);
-  --color-brand-surface: #eff8ff;
-  --color-green-surface: #f0fdf4;
-  --color-indigo-surface: #f2f2ff;
-  --color-amber-surface: #fffaeb;
+  --color-brand-surface: var(--brand-surface);
+  --color-green-surface: var(--green-surface);
+  --color-indigo-surface: var(--indigo-surface);
+  --color-amber-surface: var(--amber-surface);
 
   --color-surface: var(--surface);
+
+  /* Figma "HRM RailWay" turniket dashboard palitrasi — variables.scss da light/dark */
+  --color-fig-text-primary: var(--fig-text-primary);
+  --color-fig-text-secondary: var(--fig-text-secondary);
+  --color-fig-text-tertiary: var(--fig-text-tertiary);
+  --color-fig-text-muted: var(--fig-text-muted);
+  --color-fig-text-green: var(--fig-text-green);
+  --color-fig-br-disable: var(--fig-br-disable);
+  --color-fig-br-secondary: var(--fig-br-secondary);
+  --color-fig-neutral-300: var(--fig-neutral-300);
+  --color-fig-success: var(--fig-success);
+  --color-fig-green: var(--fig-icon-green);
+  --color-fig-orange: var(--fig-icon-orange);
+  --color-fig-yellow: var(--fig-icon-yellow);
+  --color-fig-amber: var(--fig-icon-amber);
+  --color-fig-red: var(--fig-icon-red);
+  --color-fig-brand: var(--fig-icon-brand);
+  --color-fig-indigo: var(--fig-icon-indigo);
+  --color-fig-green-100: var(--fig-green-100);
+  --color-fig-green-400: var(--fig-green-400);
+  --color-fig-orange-100: var(--fig-orange-100);
+  --color-fig-orange-300: var(--fig-orange-300);
+  --color-fig-yellow-100: var(--fig-yellow-100);
+  --color-fig-red-50: var(--fig-red-50);
+  --color-fig-red-100: var(--fig-red-100);
+  --color-fig-blue-100: var(--fig-blue-100);
+  --color-fig-indigo-100: var(--fig-indigo-100);
+  --color-fig-lime-100: var(--fig-lime-100);
+  --color-fig-teal-100: var(--fig-teal-100);
+  --color-fig-amber-100: var(--fig-amber-100);
+  --color-fig-pink-100: var(--fig-pink-100);
+  --color-fig-chip-brand: var(--fig-chip-brand-bg);
+  --color-fig-chip-brand-text: var(--fig-chip-brand-text);
+  --color-fig-chip-amber: var(--fig-chip-amber-bg);
+  --color-fig-chip-amber-text: var(--fig-chip-amber-text);
+  --color-fig-chip-green: var(--fig-chip-green-bg);
+  --color-fig-chip-green-text: var(--fig-chip-green-text);
+  --color-fig-chip-indigo: var(--fig-chip-indigo-bg);
+  --color-fig-chip-indigo-text: var(--fig-chip-indigo-text);
+  --color-fig-chip-pink: var(--fig-chip-pink-bg);
+  --color-fig-chip-pink-text: var(--fig-chip-pink-text);
+  --color-fig-chip-lime: var(--fig-chip-lime-bg);
+  --color-fig-chip-lime-text: var(--fig-chip-lime-text);
 
   --color-login-page: var(--login-page-bg);
   --color-login-form: var(--login-form-bg);
@@ -85,5 +128,5 @@ body {
 }
 
 .bg-gray-soft {
-  background-color: #98A2B3;
+  background-color: #98a2b3;
 }

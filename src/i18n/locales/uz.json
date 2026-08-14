@@ -124,6 +124,7 @@
     "edit": "Tahrirlash",
     "work_date": "Ishga chiqish sanasi",
     "delete": "O'chirish",
+    "replace": "Almashtirish",
     "deleteAll": "Barchasini o'chirish",
     "checked": "Tekshirilgan",
     "view": "Ko'rish",
@@ -2059,8 +2060,8 @@
       }
     },
     "audit": {
-      "tabGeneral": "Umumiy dashboard",
-      "tabAudit": "Ma'lumotlar bo'yicha audit",
+      "tabGeneral": "Dashboard",
+      "tabAudit": "Audit",
       "relativesShortage": "Qarindoshlar to'liqsiz",
       "relativesWithoutJshshir": "Qarindosh PNFL yo'q",
       "nameErrors": "Ism-familiya xatosi",
@@ -3729,6 +3730,17 @@
       "status": "Ish soati bo'yicha",
       "max": "Eng ko'p",
       "min": "Eng kam"
+    },
+    "compare": {
+      "vsYesterday": "o'tgan kunga nisbatan",
+      "totalDevices": "Jami qurilmalar",
+      "withoutSchedule": "Grafik tuzilmagan xodimlar",
+      "faceIdTitle": "Face ID tahlili",
+      "faceIdSubtitle": "Face ID bo‘yicha kunlik qaydnoma"
+    },
+    "filter": {
+      "organizationPlaceholder": "Korxonani tanlang",
+      "departmentPlaceholder": "Bo‘limni tanlang"
     }
   },
   "hcWorkDuration": {
@@ -3926,8 +3938,10 @@
       "vacation": "Ta’til haqida ogohlantirilgan xodimlar soni",
       "med": "Tibbiy ko‘rik haqida ogohlantirilgan xodimlar soni",
       "passport": "Pasport muddati haqida ogohlantirilgan xodimlar soni",
-      "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni"
-    }
+      "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni",
+      "turnstile": "Turniket orqali xabar yuborilgan xodimlar soni"
+    },
+    "table": { "sentAt": "Yuborilgan vaqti" }
   },
   "mobileStoryPage": {
     "name": "Story e'lonlari",
@@ -3985,8 +3999,11 @@
     "shortDescriptionPlaceholder": "Yangilik haqida qisqacha...",
     "content": "Kontent",
     "contentPlaceholder": "Yangilik kontentini shu yerga yozing...",
+    "badge": "Yangilik",
     "attachments": "Biriktirmalar",
-    "attachmentsHint": "Hujjatlar, PDF yoki boshqa fayllarni yuklang",
+    "attachmentsHint": "JPG/PNG, 5MB gacha",
+    "saveDraft": "Qoralama qilish",
+    "publish": "Chop etish",
     "statusDraft": "Qoralama",
     "statusPublished": "Nashr etilgan",
     "statusArchived": "Arxivlangan",
@@ -4004,7 +4021,8 @@
     "pinned": "Mahkamlangan",
     "video": "Video",
     "image": "Rasm",
-    "noMedia": "Media yo'q"
+    "noMedia": "Media yo'q",
+    "statistics": "Statistika"
   },
   "newsCategoryPage": {
     "name": "Yangilik kategoriyalari",
@@ -4199,22 +4217,19 @@
     }
   },
   "salaryAccess": {
-    "title": "Oylik bo'limi — parol",
-    "setTitle": "Oylik parolini o'rnatish",
-    "description": "Bu bo'lim maxfiy. Davom etish uchun oylik parolini kiriting.",
-    "setDescription": "Birinchi marta: login parolingiz bilan tasdiqlab, oylik parolini o'rnating.",
-    "loginPassword": "Login parolingiz",
-    "newPassword": "Yangi oylik paroli",
-    "confirmPassword": "Oylik parolini takrorlang",
-    "password": "Oylik paroli",
-    "passwordPlaceholder": "Oylik parolini kiriting",
-    "submit": "Ochish",
-    "setSubmit": "O'rnatish va ochish",
-    "changeBtn": "Oylik parolini o'zgartirish",
-    "changeTitle": "Oylik parolini o'zgartirish",
-    "changeDescription": "Amaldagi oylik parolingizni tasdiqlab, yangi parol o'rnating.",
-    "oldPassword": "Amaldagi oylik paroli",
-    "changeSubmit": "O'zgartirish",
+    "title": "Oylik bo'limi — tasdiqlash",
+    "sent": "Tasdiqlash kodi Telegram'ingizga yuborildi.",
+    "sending": "Kod yuborilmoqda...",
+    "codeLabel": "Tasdiqlash kodi",
+    "codePlaceholder": "Kodni kiriting",
+    "verify": "Tasdiqlash",
+    "resend": "Qayta yuborish",
+    "resendIn": "Qayta yuborish ({sec}s)",
+    "expiresIn": "Kod {sec}s dan keyin tugaydi",
+    "expired": "Kod muddati tugadi. Qayta yuboring.",
+    "notLinked": "Telegram ulanmagan",
+    "notLinkedHelp": "Botni oching, «Start» bosing va telefon raqamingizni ulashing.",
+    "openBot": "Telegramda ochish",
     "cancelled": "Bekor qilindi"
   },
   "changePassword": {

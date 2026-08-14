@@ -1,106 +1,79 @@
 <script setup>
-  import CircleChart from './CircleChart.vue'
-  import CardDecor from './CardDecor.vue'
+  import CardHeader from './CardHeader.vue'
+  import DetailsLine from './DetailsLine.vue'
+  import PrivilegeDonut from './PrivilegeDonut.vue'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
-  import { Eye20Filled } from '@vicons/fluent'
+  import HeadPieChartIcon from '@/assets/icons/dashboard/head-pie-chart.svg'
 
   const store = useTurnstileDashboardStore()
-
-  const grandPercent = ref(0)
-  const notPassedPercent = ref(0)
-  const vacationPercent = ref(0)
-  const casualPercent = ref(0)
-
-  watchEffect(() => {
-    if (store.grandWorkerData && store.totalWorkerCount) {
-      grandPercent.value = Number(
-        (store.grandWorkerData.privilege_turnstile_workers_count / store.totalWorkerCount) * 100
-      ).toFixed(1)
-      notPassedPercent.value = Number(
-        (store.grandWorkerData.not_passed_turnstile_workers_count / store.totalWorkerCount) * 100
-      ).toFixed(1)
-      vacationPercent.value = Number(
-        (store.grandWorkerData.vacation_workers?.total / store.totalWorkerCount) * 100
-      ).toFixed(1)
-      casualPercent.value = Number(
-        (store.grandWorkerData.casual_workers / store.totalWorkerCount) * 100
-      ).toFixed(1)
-    }
-  })
+  const emits = defineEmits(['onPreview'])
 
   const cells = computed(() => [
     {
       previewType: 'privilege_turnstile_workers',
-      percent: grandPercent.value,
-      type: 'success',
+      label: 'turnStileDashboard.cards.privilege',
       count: store.grandWorkerData?.privilege_turnstile_workers_count || 0,
-      label: 'turnStileDashboard.cards.privilege'
+      color: '--fig-icon-green',
+      delta: store.deltas.privilege
     },
     {
       previewType: 'not_passed_turnstile_workers',
-      percent: notPassedPercent.value,
-      type: 'warning',
+      label: 'turnStileDashboard.cards.dontPassFace',
       count: store.grandWorkerData?.not_passed_turnstile_workers_count || 0,
-      label: 'turnStileDashboard.cards.dontPassFace'
+      color: '--fig-icon-brand',
+      delta: store.deltas.notPassed,
+      invert: true
     },
     {
       previewType: 'vacations',
-      percent: vacationPercent.value,
-      type: 'secondary',
+      label: 'turnStileDashboard.cards.onVacation',
       count: store.grandWorkerData?.vacation_workers?.total || 0,
-      label: 'turnStileDashboard.cards.onVacation'
+      color: '--fig-icon-indigo',
+      delta: store.deltas.vacation
     },
     {
       previewType: 'casual_workers',
-      percent: casualPercent.value,
-      type: 'primary',
+      label: 'turnStileDashboard.cards.onHoliday',
       count: store.grandWorkerData?.casual_workers || 0,
-      label: 'turnStileDashboard.cards.onHoliday'
+      color: '--fig-icon-amber',
+      delta: store.deltas.casual
     }
   ])
 
-  const emits = defineEmits(['onPreview'])
+  const donutData = computed(() =>
+    cells.value.map((v) => ({ value: v.count, name: v.label, color: v.color }))
+  )
 </script>
 
 <template>
-  <div
-    class="p-4 bg-surface-section/75 border border-surface-line rounded-2xl relative overflow-hidden"
-  >
-    <CardDecor variant="dots" class="top-4 right-4 text-secondary" />
+  <div class="bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden">
     <n-spin :show="store.grandLoading">
-      <div>
-        <h3 class="font-bold text-[17px] leading-[1.2] text-textColor0">
-          {{ $t('turnStileDashboard.cards.privilege_turnstile_workers') }}
-        </h3>
-        <small class="text-xs text-secondary leading-[1.2]">{{
-          $t('turnStileDashboard.cards.privilegeSubtitle')
-        }}</small>
-      </div>
-      <div class="grid grid-cols-2 gap-3 mt-5">
-        <div
-          v-for="(cell, idx) in cells"
-          :key="idx"
-          @click="emits('onPreview', cell.previewType)"
-          class="z-10 flex items-center gap-3 min-w-0 bg-transparent hover:bg-primary/6 transition-all duration-300 cursor-pointer p-2 rounded-xl relative group"
-        >
-          <div
-            class="z-10 transition-all duration-500 scale-0 absolute left-1/2 top-1/2 -translate-1/2 text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100"
-          >
-            <n-icon size="30"><Eye20Filled /></n-icon>
-          </div>
-          <CircleChart
-            :percent="cell.percent"
-            :type="cell.type"
-            class="shrink-0 opacity-100 group-hover:opacity-[0.2] transition-all duration-300"
-          />
-          <div class="min-w-0 opacity-100 group-hover:opacity-[0.2] transition-all duration-300">
-            <div class="font-grotesk text-[19px] font-bold text-textColor0 leading-[1.2]">
-              {{ cell.count }}
-            </div>
-            <div class="text-[11px] text-secondary leading-[1.3] line-clamp-2">
-              {{ $t(cell.label) }}
-            </div>
-          </div>
+      <CardHeader
+        :icon="HeadPieChartIcon"
+        tint="blue"
+        :title="$t('turnStileDashboard.cards.privilege_turnstile_workers')"
+        :subtitle="$t('turnStileDashboard.cards.privilegeSubtitle')"
+      />
+
+      <div class="flex flex-wrap items-center gap-4">
+        <div class="p-2 shrink-0 mx-auto">
+          <PrivilegeDonut :data="donutData" width="228px" height="228px" />
+        </div>
+
+        <div class="flex-1 min-w-[220px] bg-surface-ground-soft rounded-xl px-3 py-1.5">
+          <template v-for="(cell, idx) in cells" :key="idx">
+            <DetailsLine
+              clickable
+              :label="$t(cell.label)"
+              :count="cell.count"
+              :bar-color="cell.color"
+              :delta="cell.delta"
+              :invert="cell.invert"
+              :delta-loading="store.compareLoading"
+              @click="emits('onPreview', cell.previewType)"
+            />
+            <div v-if="idx < 2" class="h-px w-full bg-fig-br-disable"></div>
+          </template>
         </div>
       </div>
     </n-spin>

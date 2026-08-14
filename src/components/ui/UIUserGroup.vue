@@ -17,6 +17,11 @@
     hideMore: {
       type: Boolean,
       default: false
+    },
+    // Avatar diametri (px). Default 40 — mavjud chaqiruvlar o'zgarmaydi.
+    size: {
+      type: Number,
+      default: 40
     }
   })
   const onOpen = (photo) => {
@@ -26,13 +31,13 @@
 
 <template>
   <div class="relative z-3" v-bind="$attrs">
-    <n-avatar-group :options="data" :size="40" :max="max">
+    <n-avatar-group :options="data" :size="size" :max="max">
       <template #avatar="{ option: { photo, fullName } }">
         <n-tooltip>
           <template #trigger>
             <n-avatar
               round
-              size="large"
+              :size="size"
               class="ui__user-group z-0"
               :src="photo || useAppSetting.noAvailableImage"
               :fallback-src="useAppSetting.noAvailableImage"
@@ -43,7 +48,7 @@
         </n-tooltip>
       </template>
       <template #rest="{ options: restOptions, rest }">
-        <n-avatar v-if="!hideMore" class="has-more-avatar">+{{ hasMore }}</n-avatar>
+        <n-avatar v-if="!hideMore" :size="size" class="has-more-avatar">+{{ hasMore }}</n-avatar>
       </template>
     </n-avatar-group>
   </div>
