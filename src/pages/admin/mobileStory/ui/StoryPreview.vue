@@ -61,7 +61,11 @@
     <!-- Telefon ramkasi -->
     <!-- `.story-overlay` yuqorisida allaqachon qoraytiruvchi gradient bor,
          shuning uchun ramkaning o'z scrim'i o'chirilgan. -->
-    <UIPhoneFrame class="group" :status-bar-scrim="false">
+    <UIPhoneFrame
+      class="group"
+      :status-bar-scrim="false"
+      fluid-height="min(695px, calc(94vh - 250px))"
+    >
       <div class="story-screen">
         <video
           v-if="activeSlide?.media_type === 'video'"
