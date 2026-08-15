@@ -2,6 +2,7 @@
   import WorkTimeChart from '@/pages/turnstile/dashboard/ui/WorkTimeChart.vue'
   import CardHeader from './CardHeader.vue'
   import MetricCell from './MetricCell.vue'
+  import { WorkTimeCardSkeleton } from './skeleton/index.js'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
   import { Utils } from '@/utils/index.js'
   import HeadChartUserIcon from '@/assets/icons/dashboard/head-chart-user.svg'
@@ -37,7 +38,9 @@
 
 <template>
   <div class="bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col">
-    <n-spin :show="store.workTimeLoading" class="stretch-spin">
+    <WorkTimeCardSkeleton v-if="store.workTimeLoading" />
+
+    <template v-else>
       <CardHeader
         :icon="HeadChartUserIcon"
         tint="indigo"
@@ -63,19 +66,6 @@
       <div class="bg-surface-ground-soft rounded-xl px-3 py-1.5 mt-auto h-[178px]">
         <WorkTimeChart />
       </div>
-    </n-spin>
+    </template>
   </div>
 </template>
-
-<style scoped>
-  /* n-spin ichki `.n-spin-content` ni ham cho'zamiz — grafik paneli kartaning
-     pastiga yopishishi uchun. */
-  .stretch-spin,
-  .stretch-spin :deep(.n-spin-container),
-  .stretch-spin :deep(.n-spin-content) {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
-  }
-</style>

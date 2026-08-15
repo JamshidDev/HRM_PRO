@@ -232,6 +232,8 @@
     "asAdmin": "Super admin",
     "setting": "Sozlamalar",
     "soundNotification": "Ovozli bildirishnoma",
+    "soundDeviceMissing": "Qurilmada ovoz chiqaruvchi apparat topilmadi — bildirishnoma ovozi eshitilmaydi",
+    "soundPlaybackFailed": "Bildirishnoma ovozini chiqarib bo'lmadi — qurilma ovozini tekshiring",
     "sidebarColor": "Sidebar rangi",
     "sidebarThemeDefault": "Odatiy",
     "sidebarThemeIndigo": "Indigo",
@@ -4009,7 +4011,8 @@
       "preview": "Ko'rinishi",
       "replaceSlide": "Almashtirish",
       "slidesPanel": "Slaydlar",
-      "addSlideHint": "Rasm yoki video qo'shish"
+      "addSlideHint": "Rasm yoki video qo'shish",
+      "previewHint": "Telefonda shunday ko'rinadi"
     },
     "deleteConfirm": "Ushbu story o'chirilsinmi?",
     "slideDeleteConfirm": "Ushbu slayd o'chirilsinmi?",
@@ -4037,7 +4040,7 @@
     "contentPlaceholder": "Yangilik kontentini shu yerga yozing...",
     "badge": "Yangilik",
     "attachments": "Biriktirmalar",
-    "attachmentsHint": "JPG/PNG, 5MB gacha",
+    "attachmentsHint": "Rasm siqiladi · maks. 4 MB",
     "saveDraft": "Qoralama qilish",
     "publish": "Chop etish",
     "statusDraft": "Qoralama",
@@ -4058,7 +4061,12 @@
     "video": "Video",
     "image": "Rasm",
     "noMedia": "Media yo'q",
-    "statistics": "Statistika"
+    "statistics": "Statistika",
+    "preview": "Ko'rinish",
+    "previewHint": "Telefonda shunday ko'rinadi",
+    "previewEmptyTitle": "Sarlavha kiritilmagan",
+    "previewEmptyContent": "Kontent kiritilmagan",
+    "fileTooLarge": "\"{name}\" fayl hajmi juda katta — maksimal 4 MB"
   },
   "newsCategoryPage": {
     "name": "Yangilik kategoriyalari",

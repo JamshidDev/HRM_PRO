@@ -3,6 +3,7 @@
   import CardHeader from './CardHeader.vue'
   import DeltaBadge from './DeltaBadge.vue'
   import DetailsLine from './DetailsLine.vue'
+  import { DeviceCardSkeleton } from './skeleton/index.js'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
   import HeadDesktopIcon from '@/assets/icons/dashboard/head-desktop.svg'
 
@@ -37,10 +38,10 @@
 </script>
 
 <template>
-  <div
-    class="stretch-card bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col"
-  >
-    <n-spin :show="store.devicesLoading" class="flex-1 flex flex-col">
+  <div class="bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col">
+    <DeviceCardSkeleton v-if="store.devicesLoading" />
+
+    <template v-else>
       <CardHeader
         :icon="HeadDesktopIcon"
         tint="indigo"
@@ -103,18 +104,6 @@
           @click="emits('onPreview', cell.previewType)"
         />
       </div>
-    </n-spin>
+    </template>
   </div>
 </template>
-
-<style scoped>
-  /* n-spin ichki `.n-spin-content` ni ham cho'zamiz — aks holda karta qo'shni
-     baland karta bo'yiga tenglashganda kontent tepada qolib, pastda bo'sh joy qoladi. */
-  .stretch-card :deep(.n-spin-container),
-  .stretch-card :deep(.n-spin-content) {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
-  }
-</style>
