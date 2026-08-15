@@ -4105,5 +4105,30 @@
   },
   "languageCertificatePage": {
     "title": "Тил сертификат маълумот"
+  },
+  "dbBackup": {
+    "name": "База захиралари",
+    "lastSuccess": "Охирги муваффақиятли захира",
+    "lastAttempt": "Охирги уриниш",
+    "stored": "Дискда сақланмоқда",
+    "table": {
+      "date": "Сана",
+      "file": "Файл",
+      "size": "Ҳажми",
+      "duration": "Давомийлиги",
+      "trigger": "Тури",
+      "status": "Ҳолати"
+    },
+    "trigger": {
+      "cron": "Автоматик",
+      "manual": "Сервердан",
+      "api": "Панелдан"
+    },
+    "status": {
+      "running": "Жараёнда",
+      "done": "Тайёр",
+      "deleted": "Ўчирилган",
+      "error": "Хато"
+    }
   }
 }

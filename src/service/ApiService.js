@@ -33,6 +33,7 @@ import mobileUserService from '@/service/v1/admin/mobileUserService.js'
 import mobileStoryService from '@/service/v1/admin/mobileStoryService.js'
 import vacancyApproveService from '@/service/v1/admin/vacancyApproveService.js'
 import integrationClientsService from '@/service/v1/admin/integrationClientsService.js'
+import dbBackupService from '@/service/v1/admin/dbBackupService.js'
 import lateWorkersReportService from '@/service/v1/admin/lateWorkersReportService.js'
 import lateWorkersHalfYearReportService from '@/service/v1/admin/lateWorkersHalfYearReportService.js'
 import relativesShortageReportService from '@/service/v1/admin/relativesShortageReportService.js'
@@ -320,6 +321,7 @@ export default {
   confirmationReportService,
   departmentLocationService,
   integrationClientsService,
+  dbBackupService,
   lateWorkersReportService,
   lateWorkersHalfYearReportService,
   relativesShortageReportService,

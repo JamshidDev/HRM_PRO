@@ -40,6 +40,7 @@ export * from './admin/learningCenterStore.js'
 export * from './admin/mobileUserStore.js'
 export * from './admin/vacancyApproveStore.js'
 export * from './admin/integrationClientsStore.js'
+export * from './admin/dbBackupStore.js'
 
 export * from './hrm/departmentStore.js'
 export * from './hrm/departmentPositionStore.js'

@@ -4333,5 +4333,30 @@
     "modal": {
       "notVerified": "Not verified"
     }
+  },
+  "dbBackup": {
+    "name": "DB backups",
+    "lastSuccess": "Last successful backup",
+    "lastAttempt": "Last attempt",
+    "stored": "Stored on disk",
+    "table": {
+      "date": "Date",
+      "file": "File",
+      "size": "Size",
+      "duration": "Duration",
+      "trigger": "Type",
+      "status": "Status"
+    },
+    "trigger": {
+      "cron": "Automatic",
+      "manual": "From server",
+      "api": "From panel"
+    },
+    "status": {
+      "running": "Running",
+      "done": "Done",
+      "deleted": "Deleted",
+      "error": "Error"
+    }
   }
 }

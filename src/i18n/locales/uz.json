@@ -4377,5 +4377,30 @@
     "modal": {
       "notVerified": "Tasdiqlanmagan"
     }
+  },
+  "dbBackup": {
+    "name": "Baza zaxiralari",
+    "lastSuccess": "Oxirgi muvaffaqiyatli zaxira",
+    "lastAttempt": "Oxirgi urinish",
+    "stored": "Diskda saqlanmoqda",
+    "table": {
+      "date": "Sana",
+      "file": "Fayl",
+      "size": "Hajmi",
+      "duration": "Davomiyligi",
+      "trigger": "Turi",
+      "status": "Holati"
+    },
+    "trigger": {
+      "cron": "Avtomatik",
+      "manual": "Serverdan",
+      "api": "Paneldan"
+    },
+    "status": {
+      "running": "Jarayonda",
+      "done": "Tayyor",
+      "deleted": "O'chirilgan",
+      "error": "Xato"
+    }
   }
 }

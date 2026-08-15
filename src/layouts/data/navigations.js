@@ -1047,6 +1047,13 @@ export const navigations = [
         permission: appPermissions.vacancyApproveRead
       },
       {
+        label: 'dbBackup.name', // Baza zaxira nusxalari
+        path: Utils.routePathMaker(AppPaths.DbBackups),
+        icon: AdminFolderIcon,
+        color: 'bg-dark',
+        permission: appPermissions.dbBackupRead
+      },
+      {
         label: 'integrationClients.name', // Integratsiya clientlari
         path: Utils.routePathMaker(AppPaths.IntegrationClients),
         icon: AdminFolderIcon,
