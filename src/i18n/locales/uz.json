@@ -510,6 +510,25 @@
       "verify": "Tasdiqlash",
       "submit": "Parolni yangilash",
       "success": "Parol muvaffaqiyatli yangilandi. Endi yangi parol bilan kiring."
+    },
+    "tabs": {
+      "password": "Login",
+      "eri": "ERI",
+      "qr": "QR-kod"
+    },
+    "eri": {
+      "moduleRequired": "Tizimni to‘g‘ri ishlashi uchun E-IMZO modulini yoki E-IMZO brauzerini ishga tushirishingiz kerak.",
+      "instructionsText": "E-IMZO modulini o‘rnatish bo‘yicha ko‘rsatmalarni __LINK__ o‘qishingiz mumkin",
+      "instructionsLink": "bu yerda",
+      "hostText": "E-IMZO moduli ishga tushgan bo‘lsa, brauzerda __LINK__ga ulanishini tekshiring.",
+      "hostLink": "E-IMZO host"
+    },
+    "qr": {
+      "description": "QR kodni HR Rail mobil ilovasidagi skaner yordamida skanerlang. Hisobingizga ushbu qurilmada avtomatik ravishda kirasiz.",
+      "expired": "Kod muddati tugadi",
+      "refresh": "Yangilash",
+      "connectionError": "Ulanishda xatolik",
+      "signingIn": "Tizimga kirilmoqda…"
     }
   },
   "registerPage": {

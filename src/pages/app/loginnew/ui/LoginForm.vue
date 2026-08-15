@@ -1,24 +1,15 @@
 <script setup>
-  import { useRoute, useRouter } from 'vue-router'
-  import {
-    useAccountStore,
-    useAppStore,
-    useLoginNewStore,
-    useSignatureStore
-  } from '@/store/modules/index.js'
+  import { useRoute } from 'vue-router'
+  import { useAppStore, useLoginNewStore } from '@/store/modules/index.js'
   import validationRules from '@/utils/validationRules.js'
   import { Call24Regular, Eye24Regular, EyeOff24Regular, LockClosed24Regular } from '@vicons/fluent'
-  import { AppPaths, useAppSetting } from '@/utils/index.js'
   import ReCaptcha from '@/components/general/ReCaptcha.vue'
   import StoreLinks from './StoreLinks.vue'
 
   const emit = defineEmits(['forgot'])
 
   const store = useLoginNewStore()
-  const accountStore = useAccountStore()
   const appStore = useAppStore()
-  const signatureStore = useSignatureStore()
-  const router = useRouter()
   const route = useRoute()
 
   const formRef = ref(null)
@@ -65,27 +56,6 @@
     emit('forgot', store.phone)
   }
 
-  const onSignatureLogin = async () => {
-    await signatureStore._initialSignature(signatureStore.signatureTypes.auth, onSuccess)
-  }
-  const onSuccess = (data) => {
-    new Promise((resolve, reject) => {
-      try {
-        localStorage.setItem(useAppSetting.tokenKey, data?.access_token)
-        accountStore._index(() => {
-          router.push(AppPaths.Home)
-        })
-        resolve(true)
-      } catch {
-        reject(false)
-      }
-    }).then((data) => {
-      if (data) {
-        signatureStore.visible = false
-      }
-    })
-  }
-
   onMounted(() => {
     const { client_id, state, scope } = route.query
     if (client_id && state && scope) {
@@ -113,12 +83,6 @@
 
 <template>
   <div class="w-full">
-    <div class="mb-4 lg:mb-7">
-      <h3 class="font-grotesk text-2xl lg:text-[30px] font-bold leading-tight text-login-ink">
-        {{ $t(`loginPage.title`) }}
-      </h3>
-    </div>
-
     <n-form
       ref="formRef"
       :rules="validationRules.login"
@@ -199,30 +163,15 @@
           {{ $t(`loginPage.login`) }}
         </n-button>
 
-        <template v-if="appStore.appConfig.signatureLogin">
-          <n-divider class="my-2! lg:my-3!" title-placement="center">
-            {{
-              $t('content.or')
-            }}
-          </n-divider>
+        <!-- E-IMZO tugmasi "ERI" tabiga ko'chirildi (EriForm.vue) -->
 
-          <n-button
-            @click="onSignatureLogin"
-            size="large"
-            class="h-[48px]! lg:h-[52px]! rounded-[10px]! font-semibold! dark-border-button login-new__signature-btn"
-          >
-            <img src="/logo-e-imzo.png" alt="E-IMZO" class="h-6 w-auto object-contain mr-2.5" />
-            {{ $t(`content.signatureLogin`) }}
-          </n-button>
-
-          <!-- Mobil ilovani yuklab olish — faqat mobile'da (desktop'da hero panelda ko'rsatiladi) -->
-          <div class="mt-3 lg:hidden">
-            <p class="text-login-body text-sm font-medium text-center mb-2">
-              {{ $t('content.downloadApp') }}
-            </p>
-            <StoreLinks />
-          </div>
-        </template>
+        <!-- Mobil ilovani yuklab olish — faqat mobile'da (desktop'da hero panelda ko'rsatiladi) -->
+        <div v-if="appStore.appConfig.signatureLogin" class="mt-3 lg:hidden">
+          <p class="text-login-body text-sm font-medium text-center mb-2">
+            {{ $t('content.downloadApp') }}
+          </p>
+          <StoreLinks />
+        </div>
       </div>
     </n-form>
   </div>
