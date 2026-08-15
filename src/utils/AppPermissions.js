@@ -8,6 +8,7 @@ export const appPermissions = {
   mobileUsersRead: 'mobile-users-read',
   integrationClients: 'integration-clients',
   integrationClientsRead: 'integration-clients-read',
+  dbBackupRead: 'db-backup-read',
   integrationClientsWrite: 'integration-clients-write',
   holidayGreetings: 'holiday-greetings',
   holidayGreetingsRead: 'holiday-greetings-read',
