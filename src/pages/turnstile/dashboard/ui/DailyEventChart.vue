@@ -1,5 +1,6 @@
 <script setup>
   import VChart from 'vue-echarts'
+  import ChartSkeleton from './skeleton/ChartSkeleton.vue'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import { use } from 'echarts/core'
@@ -38,6 +39,21 @@
   const onPointClick = (params) => {
     const timeRange = getTimeRange(params.name)
     emit('barClick', timeRange)
+  }
+
+  // Grafik endi skeleton o'rniga kech (yuklanish tugagach) mount bo'ladi — shuning
+  // uchun click ulanishini bitta joyga yig'amiz va har mount'dan keyin qayta chaqiramiz.
+  const bindChartClick = () => {
+    nextTick(() => {
+      if (!chartRef.value) return
+      // Grafik to'liq chizilishini kutamiz
+      setTimeout(() => {
+        const chartInstance = chartRef.value?.chart
+        if (!chartInstance) return
+        chartInstance.off('click')
+        chartInstance.on('click', onPointClick)
+      }, 100)
+    })
   }
 
   const option = ref({
@@ -144,51 +160,27 @@
       option.value.xAxis.data = newValue.map((v) => v.hour)
       option.value.series[0].data = newValue.map((v) => v.count)
 
-      // Add click listener after data is updated
-      nextTick(() => {
-        if (chartRef.value) {
-          setTimeout(() => {
-            const chartInstance = chartRef.value.chart
-            if (chartInstance) {
-              chartInstance.off('click') // Remove existing listener
-              chartInstance.on('click', onPointClick) // Add new listener
-            }
-          }, 100)
-        }
-      })
+      bindChartClick()
     },
     {
       immediate: true
     }
   )
 
-  // Add click event listener when chart is ready
-  onMounted(() => {
-    nextTick(() => {
-      if (chartRef.value) {
-        // Wait a bit more for chart to be fully rendered
-        setTimeout(() => {
-          const chartInstance = chartRef.value.chart
-          if (chartInstance) {
-            chartInstance.on('click', onPointClick)
-          }
-        }, 100)
-      }
-    })
-  })
+  // Skeleton olib tashlangach grafik yangidan mount bo'ladi — click qayta ulanadi.
+  watch(
+    () => store.dailyAttendanceLoading,
+    (loading) => {
+      if (!loading) bindChartClick()
+    }
+  )
+
+  onMounted(bindChartClick)
 </script>
 
 <template>
   <div class="w-full h-full relative">
-    <n-spin :show="store.dailyAttendanceLoading" class="w-full h-full relative z-2">
-      <v-chart autoresize class="w-full h-full" :option="option" ref="chartRef" />
-    </n-spin>
+    <ChartSkeleton v-if="store.dailyAttendanceLoading" />
+    <v-chart v-else autoresize class="w-full h-full" :option="option" ref="chartRef" />
   </div>
 </template>
-
-<style scoped>
-  :deep(.n-spin-container),
-  :deep(.n-spin-content) {
-    height: 100%;
-  }
-</style>

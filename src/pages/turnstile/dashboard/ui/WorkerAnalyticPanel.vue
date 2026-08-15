@@ -3,6 +3,7 @@
   import CardHeader from './CardHeader.vue'
   import MetricCell from './MetricCell.vue'
   import DailyEventChart from './DailyEventChart.vue'
+  import { WorkerAnalyticPanelSkeleton } from './skeleton/index.js'
   import HeadUsersIcon from '@/assets/icons/dashboard/head-users.svg'
 
   const store = useTurnstileDashboardStore()
@@ -43,7 +44,9 @@
 
 <template>
   <div class="bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden">
-    <n-spin :show="store.mainChartLoading">
+    <WorkerAnalyticPanelSkeleton v-if="store.mainChartLoading" />
+
+    <template v-else>
       <CardHeader
         :icon="HeadUsersIcon"
         tint="indigo"
@@ -69,6 +72,6 @@
       <div class="bg-surface-ground-soft rounded-xl px-3 py-1.5 h-[178px]">
         <DailyEventChart />
       </div>
-    </n-spin>
+    </template>
   </div>
 </template>

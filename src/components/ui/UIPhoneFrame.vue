@@ -6,7 +6,7 @@
    * Ekran mazmuni default slot orqali beriladi va u to'liq ekranni egallaydi
    * (status bar hamda island uning ustida suzadi — haqiqiy qurilmadagidek).
    */
-  defineProps({
+  const props = defineProps({
     // Ekran (bezel ichidagi qism) o'lchamlari.
     // Standart qiymat — iPhone 17 Pro Max mantiqiy ekrani (440 × 956 pt),
     // 0.727 koeffitsient bilan kichraytirilgan: 320 × 695. Nisbat saqlanadi
@@ -14,6 +14,10 @@
     // cho'ziq bo'lib ko'rinadi.
     width: { type: Number, default: 320 },
     height: { type: Number, default: 695 },
+    // Berilsa (CSS uzunlik, mas. `min(695px, calc(94vh - 250px))`), ekran
+    // balandligi shundan olinadi, kengligi esa qurilma nisbatidan hisoblanadi.
+    // Balandligi cheklangan konteynerlarda (modal) scroll chiqmasligi uchun.
+    fluidHeight: { type: String, default: null },
     // Kontent uchun qo'shimcha class (mas. `overflow-y-auto bg-white`)
     screenClass: { type: [String, Array, Object], default: null },
     // Status bar gliflari rangi: to'q kontent ustida 'light', och kontent ustida 'dark'.
@@ -21,11 +25,21 @@
     // Gliflar ostidagi yumshoq qorayish — och/rangli kontent ustida ham o'qilsin.
     statusBarScrim: { type: Boolean, default: true }
   })
+
+  const frameStyle = computed(() =>
+    props.fluidHeight ? { width: 'fit-content' } : { width: `${props.width + 20}px` }
+  )
+
+  const screenStyle = computed(() =>
+    props.fluidHeight
+      ? { height: props.fluidHeight, aspectRatio: '440 / 956' }
+      : { width: `${props.width}px`, height: `${props.height}px` }
+  )
 </script>
 
 <template>
-  <div class="phone-frame" :style="{ width: `${width + 20}px` }">
-    <div class="phone-screen" :style="{ width: `${width}px`, height: `${height}px` }">
+  <div class="phone-frame" :style="frameStyle">
+    <div class="phone-screen" :style="screenStyle">
       <div class="phone-content" :class="screenClass">
         <slot />
       </div>
