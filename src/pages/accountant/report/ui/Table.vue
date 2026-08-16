@@ -52,8 +52,19 @@
           <div class="col-span-1 bg-surface-section p-2 rounded-xl border border-surface-line">
             <div class="grid grid-cols-2">
               <div class="border-l-2 border-secondary pl-2">
-                <h1 class="font-semibold text-xs">
+                <h1 class="font-semibold text-xs flex items-center gap-1">
                   {{ Utils.getMonthNameById(item.month) }} - {{ item.year }}
+                  <!-- Manba belgisi: 1C (source=2) yoki Excel (default) -->
+                  <span
+                    class="px-1.5 py-0.5 rounded text-[10px] font-medium"
+                    :class="
+                      item.source === 2
+                        ? 'bg-primary/10 text-primary'
+                        : 'bg-secondary/10 text-secondary'
+                    "
+                  >
+                    {{ item.source === 2 ? $t('uploadReport.source.ones') : $t('uploadReport.source.excel') }}
+                  </span>
                 </h1>
                 <div class="text-secondary text-xs">
                   {{ Utils.timeOnlyDate(item.created_at) }}

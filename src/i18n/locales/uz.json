@@ -2641,6 +2641,12 @@
   "uploadReport": {
     "name": "Hisobot yuklash",
     "createTitle": "Hisobot yuklash",
+    "source": {
+      "label": "Manba",
+      "excel": "Excel",
+      "ones": "1C dan",
+      "onesHint": "1C dan yuklaganda fayl kerak emas — salary-1c da tortilgan ma'lumot ishlatiladi."
+    },
     "form": {
       "type": "Hisobot turi",
       "month": "Oy",

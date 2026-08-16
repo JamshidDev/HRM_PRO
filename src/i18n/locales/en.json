@@ -2614,6 +2614,12 @@
   "uploadReport": {
     "name": "Upload report",
     "createTitle": "Upload report",
+    "source": {
+      "label": "Source",
+      "excel": "Excel",
+      "ones": "From 1C",
+      "onesHint": "No file needed for 1C — uses the data already pulled in salary-1c."
+    },
     "form": {
       "type": "Report type",
       "month": "Month",

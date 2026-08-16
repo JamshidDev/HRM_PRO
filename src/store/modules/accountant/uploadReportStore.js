@@ -18,7 +18,9 @@ export const useUploadReportStore = defineStore('uploadReport', {
       file: [],
       type: null,
       year: null,
-      month: null
+      month: null,
+      // Oylik hisobot (type=1) manbasi: 1 = Excel, 2 = 1C dan.
+      source: 1
     },
     params: {
       page: 1,
@@ -120,6 +122,24 @@ export const useUploadReportStore = defineStore('uploadReport', {
           this.saveLoading = false
         })
     },
+    // Oylik hisobotni 1C dan yuklash (fayl yo'q — backend salary-1c ma'lumotidan quradi).
+    _createFromOnes() {
+      this.saveLoading = true
+      const data = {
+        organization_id: this.params.organization_id,
+        year: this.payload.year,
+        month: this.payload.month
+      }
+      $ApiService.accountantService
+        ._createFromOnes({ data })
+        .then(() => {
+          this.visible = false
+          this._cards()
+        })
+        .finally(() => {
+          this.saveLoading = false
+        })
+    },
     _delete() {
       this.deleteLoading = true
       $ApiService.countryService
@@ -141,6 +161,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
       this.payload.type = null
       this.payload.year = oneMonthAgo.year
       this.payload.month = oneMonthAgo.month
+      this.payload.source = 1
     },
     onChangeStructure(v) {
       this.resetCards()
