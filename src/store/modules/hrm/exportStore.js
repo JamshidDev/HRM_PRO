@@ -14,6 +14,8 @@ export const useExportStore = defineStore('exportStore', {
     resumePayload: {
       organizations: null,
       passport: false,
+      // Xorijga chiqish pasporti nusxalari (backend: `foreign_passport`).
+      foreign_passport: false,
       all: false,
       worker_ids: []
     },
@@ -28,7 +30,16 @@ export const useExportStore = defineStore('exportStore', {
       columns: [],
       allChecked: false
     },
+    // Modal tab'i: 'excel' | 'relatives' | 'reference'. Footer tugmalari
+    // WorkerPage'da bo'lgani uchun bu ham store'da.
+    tab: 'excel',
+    // «Excel» tabi 2 bosqichli: 1 — ustunlarni tanlash, 2 — tartib va fayl
+    // ko'rinishi. Pastdagi tugmalar modal footer'ida (WorkerPage) bo'lgani uchun
+    // bosqich store'da turadi — forma bilan footer bitta manbadan o'qiydi.
+    step: 1,
     columns: [],
+    // Qarindoshlar eksporti ustunlari (faqat "fayl ko'rinishi" uchun).
+    relativeColumns: [],
     tasks: [],
     saveLoading: false
   }),
@@ -43,6 +54,12 @@ export const useExportStore = defineStore('exportStore', {
         .finally(() => {
           this.loading = false
         })
+    },
+    _relative_columns() {
+      if (this.relativeColumns.length) return
+      $ApiService.exportService._relative_columns().then((res) => {
+        this.relativeColumns = res.data.data
+      })
     },
     _tasks() {
       this.loading = true
@@ -121,11 +138,13 @@ export const useExportStore = defineStore('exportStore', {
     resetPayload() {
       this.payload.columns = []
       this.allChecked = false
+      this.step = 1
     },
     resetResumePayload() {
       this.resumePayload = {
         organizations: null,
         passport: false,
+        foreign_passport: false,
         all: false,
         worker_ids: []
       }

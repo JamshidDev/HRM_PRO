@@ -122,28 +122,28 @@ export const navigations = [
         path: Utils.routeHrmPathMaker(AppPaths.Dashboard),
         icon: menuIcon,
         color: 'bg-dark',
-        permission: appPermissions.hrDashboard
+        permission: appPermissions.hrDashboardRead
       },
       {
         label: 'workerPage.name', // Xodimlar
         path: Utils.routeHrmPathMaker(AppPaths.Worker),
         icon: usersIcon,
         color: 'bg-primary',
-        permission: appPermissions.hrWorkers
+        permission: appPermissions.hrWorkersRead
       },
       {
         label: 'departmentPage.name', // Bo'linmalar
         path: Utils.routeHrmPathMaker(AppPaths.Department),
         icon: department2Icon,
         color: 'bg-warning',
-        permission: appPermissions.hrDepartments
+        permission: appPermissions.hrDepartmentsRead
       },
       {
         label: 'departmentPositionPage.name', // Lavozimlar
         path: Utils.routeHrmPathMaker(AppPaths.DepartmentPosition),
         icon: positionIcon,
         color: 'bg-secondary',
-        permission: appPermissions.hrPositions
+        permission: appPermissions.hrPositionsRead
       },
       {
         label: 'workerCertificatePage.name', // Guvohnomalar
@@ -157,14 +157,14 @@ export const navigations = [
         path: Utils.routeHrmPathMaker(AppPaths.Kpi),
         icon: reportIcon,
         color: 'bg-warning',
-        permission: appPermissions.hrKpi
+        permission: appPermissions.hrKpiRead
       },
       {
         label: 'confirmation.name', // Shartnomalar
         path: Utils.routeHrmPathMaker(AppPaths.Contract),
         icon: contractIcon,
         color: 'bg-success',
-        permission: appPermissions.hrContracts,
+        permission: appPermissions.hrContractsRead,
         name: 'contracts'
       },
       {
@@ -172,7 +172,7 @@ export const navigations = [
         path: Utils.routeHrmPathMaker(AppPaths.Command),
         icon: commandIcon,
         color: 'bg-secondary',
-        permission: appPermissions.hrCommands,
+        permission: appPermissions.hrCommandsRead,
         name: 'commands'
       },
       {
@@ -180,7 +180,7 @@ export const navigations = [
         path: Utils.routeHrmPathMaker(AppPaths.AdContract),
         icon: additionalAgreementIcon,
         color: 'bg-warning',
-        permission: appPermissions.hrContractAdditional,
+        permission: appPermissions.hrContractAdditionalRead,
         name: 'contract-additional'
       },
       {
@@ -188,7 +188,7 @@ export const navigations = [
         path: Utils.routeHrmPathMaker(AppPaths.Application),
         icon: applicationsIcon,
         color: 'bg-success',
-        permission: appPermissions.hrWorkerApplications,
+        permission: appPermissions.hrWorkerApplicationsRead,
         name: 'worker-applications'
       },
       {
@@ -196,49 +196,49 @@ export const navigations = [
         path: Utils.routeHrmPathMaker(AppPaths.Confirmation),
         icon: negotiatorsIcon,
         color: 'bg-dark',
-        permission: appPermissions.hrConfirmations
+        permission: appPermissions.hrConfirmationsRead
       },
       {
         label: 'vacationPage.name', // Ta'tildagi xodimlar
         path: Utils.routeHrmPathMaker(AppPaths.Vacation),
         icon: vacationIcon,
         color: 'bg-primary',
-        permission: appPermissions.hrVacations
+        permission: appPermissions.hrVacationsRead
       },
       {
         label: 'timesheetWorkerPage.name', // Tabelchilar
         path: Utils.routeHrmPathMaker(AppPaths.TimesheetDepartment),
         icon: signersIcon,
         color: 'bg-warning',
-        permission: appPermissions.hrTableWorkers
+        permission: appPermissions.hrTableWorkersRead
       },
       {
         label: 'timesheetPage.name', // Tabellar
         path: Utils.routeHrmPathMaker(AppPaths.TimeSheet),
         icon: tableIcon,
         color: 'bg-secondary',
-        permission: appPermissions.hrTable
+        permission: appPermissions.hrTableRead
       },
       {
         label: 'medPage.name', // Tibbiy ko'rik
         path: Utils.routeHrmPathMaker(AppPaths.Med),
         icon: medicalExaminationIcon,
         color: 'bg-success',
-        permission: appPermissions.hrMed
+        permission: appPermissions.hrMedRead
       },
       {
         label: 'organizationLeaderPage.name', // Rahbariyat
         path: Utils.routeHrmPathMaker(AppPaths.OrganizationLeader),
         icon: crownIcon,
         color: 'bg-info',
-        permission: appPermissions.hrLeaders
+        permission: appPermissions.hrLeadersRead
       },
       // {
       //     label: 'reportPage.name',
       //     path: Utils.routeHrmPathMaker(AppPaths.Slice),
       //     icon: PreviewLink16Filled,
       //     color: 'bg-info',
-      //     permission: appPermissions.hrJobs,
+      //     permission: appPermissions.hrJobsRead,
       // },
       // {
       //     label: 'exportPage.name',
@@ -252,28 +252,28 @@ export const navigations = [
         path: Utils.routeHrmPathMaker(AppPaths.BusinessTrip),
         icon: businessTripIcon,
         color: 'bg-info',
-        permission: appPermissions.hrBusinessTrip
+        permission: appPermissions.hrBusinessTripRead
       },
       {
         label: 'documentArchive.name', // Hujjatlar bazasi
         path: Utils.routeHrmPathMaker(AppPaths.DocumentArchive),
         icon: documentsIcon,
         color: 'bg-success',
-        permission: appPermissions.hrDocuments
+        permission: appPermissions.hrDocumentsRead
       },
       {
         label: 'vacationSchedule.name', // Ta'tillar grafigi
         path: Utils.routeHrmPathMaker(AppPaths.VacationSchedule),
         icon: BookDatabase24Regular,
         color: 'bg-info',
-        permission: appPermissions.hrVacationSchedule
+        permission: appPermissions.hrVacationScheduleRead
       },
       {
         label: 'vacancy.name', // Ochiq vakansiyalar
         path: Utils.routeHrmPathMaker(AppPaths.PublicVacancy),
         icon: openVacanciesIcon,
         color: 'bg-info',
-        permission: appPermissions.hrPublicVacancy,
+        permission: appPermissions.hrPublicVacancyRead,
         disable: false
       },
       {
@@ -281,42 +281,42 @@ export const navigations = [
         path: Utils.routeHrmPathMaker(AppPaths.Punishment),
         icon: punishmentIcon,
         color: 'bg-warning',
-        permission: appPermissions.hrPunishment
+        permission: appPermissions.hrPunishmentRead
       },
       {
         label: 'incentive.name', // Rag'batlantirishlar
         path: Utils.routeHrmPathMaker(AppPaths.Incentive),
         icon: RibbonStar24Filled,
         color: 'bg-success',
-        permission: appPermissions.hrIncentives
+        permission: appPermissions.hrIncentivesRead
       },
       {
         label: 'task.name', // Topshiriqlar
         path: Utils.routeHrmPathMaker(AppPaths.Task),
         icon: ClipboardTaskListLtr24Filled,
         color: 'bg-primary',
-        permission: appPermissions.hrTasks
+        permission: appPermissions.hrTasksRead
       },
       {
         label: 'report.name', // Plan va Fakt
         path: Utils.routeHrmPathMaker(AppPaths.Report),
         icon: planAndFactIcon,
         color: 'bg-info',
-        permission: appPermissions.hrReport
+        permission: appPermissions.hrReportRead
       },
       {
         label: 'pensioner.name', // Pensionerlar
         path: Utils.routeHrmPathMaker(AppPaths.Pensioner),
         icon: pensionaryIcon,
         color: 'bg-info',
-        permission: appPermissions.hrReport
+        permission: appPermissions.hrReportRead
       },
       {
         label: 'lmsWorkerPage.name', // Malaka oshirish
         path: Utils.routeHrmPathMaker(AppPaths.LmsWorker),
         icon: qualificationIcon,
         color: 'bg-success',
-        permission: appPermissions.lmsWorker
+        permission: appPermissions.lmsWorkerRead
       },
       {
         label: 'specialReport.name', // Hisobotlar
@@ -385,14 +385,14 @@ export const navigations = [
         path: Utils.routeDocFlowPathMaker(AppPaths.VacationSchedule),
         icon: DocFlowVacationScheduleIcon,
         color: 'bg-info',
-        permission: appPermissions.hrVacationSchedule
+        permission: appPermissions.hrVacationScheduleRead
       },
       {
         label: 'lmsCertificate.name', // Sertifikatlar
         path: Utils.routeDocFlowPathMaker(AppPaths.Certificate),
         icon: DocFlowCertificateIcon,
         color: 'bg-info',
-        permission: appPermissions.confirmationLmsCertificate,
+        permission: appPermissions.confirmationLmsCertificateRead,
         name: 'lms-certificate'
       },
       {
@@ -424,28 +424,28 @@ export const navigations = [
         path: Utils.routeAttestationPathMaker(AppPaths.Topic),
         icon: AttestationTopicIcon,
         color: 'bg-warning',
-        permission: appPermissions.examTopics
+        permission: appPermissions.examTopicsRead
       },
       {
         label: 'categoryPage.name', // Kategoriyalar
         path: Utils.routeAttestationPathMaker(AppPaths.Category),
         icon: AttestationCategoryIcon,
         color: 'bg-info',
-        permission: appPermissions.examCategories
+        permission: appPermissions.examCategoriesRead
       },
       {
         label: t('examPage.name'), // Imtihonlar
         path: Utils.routeAttestationPathMaker(AppPaths.Exam),
         icon: AttestationExamIcon,
         color: 'bg-secondary',
-        permission: appPermissions.examExams
+        permission: appPermissions.examExamsRead
       },
       {
         label: t('examPage.result'), // Natijalar
         path: Utils.routeAttestationPathMaker(AppPaths.Result),
         icon: AttestationResultIcon,
         color: 'bg-dark',
-        permission: appPermissions.examResults
+        permission: appPermissions.examResultsRead
       }
     ]
   },
@@ -460,84 +460,84 @@ export const navigations = [
         path: Utils.routeTurnstilePathMaker(AppPaths.Dashboard),
         icon: TurnstileDashboardIcon,
         color: 'bg-dark',
-        permission: appPermissions.turnstileDashboard
+        permission: appPermissions.turnstileDashboardRead
       },
       // {
       //     label: 'turnstile.buildingPage.title',
       //     path: Utils.routeTurnstilePathMaker(AppPaths.Building),
       //     icon: BuildingMultiple24Filled,
       //     color: 'bg-dark',
-      //     permission: appPermissions.turnstileBuilding,
+      //     permission: appPermissions.turnstileBuildingRead,
       // },
       // {
       //     label: 'turnstile.terminalPage.title',
       //     path: Utils.routeTurnstilePathMaker(AppPaths.Terminal),
       //     icon: ScanObject24Filled,
       //     color: 'bg-secondary',
-      //     permission: appPermissions.turnstileTerminal,
+      //     permission: appPermissions.turnstileTerminalRead,
       // },
       // {
       //     label: 'turnstile.organization.title',
       //     path: Utils.routeTurnstilePathMaker(AppPaths.Organizations),
       //     icon: Organization12Filled,
       //     color: 'bg-info',
-      //     permission: appPermissions.turnstileOrganization,
+      //     permission: appPermissions.turnstileOrganizationRead,
       // },
       // {
       //     label: 'turnstile.terminalUser.title',
       //     path: Utils.routeTurnstilePathMaker(AppPaths.User),
       //     icon: PeopleToolbox20Filled,
       //     color: 'bg-warning',
-      //     permission: appPermissions.turnstileWorkers,
+      //     permission: appPermissions.turnstileWorkersRead,
       // },
       // {
       //     label: 'turnstile.workDurationPage.name',
       //     path: Utils.routeTurnstilePathMaker(AppPaths.WorkDuration),
       //     icon: ClockToolbox20Filled,
       //     color: 'bg-success',
-      //     permission: appPermissions.turnstileWorkDuration,
+      //     permission: appPermissions.turnstileWorkDurationRead,
       // },
       {
         label: 'turnstile.accessLevelPage.name', // Guruhlar
         path: Utils.routeTurnstilePathMaker(AppPaths.AccessLevels),
         icon: TurnstileAccessLevelsIcon,
         color: 'bg-info',
-        permission: appPermissions.turnstileAccessLevels
+        permission: appPermissions.turnstileAccessLevelsRead
       },
       {
         label: 'turnstile.orgAccessLevelsPage.name', // Tashkilot va guruhlar
         path: Utils.routeTurnstilePathMaker(AppPaths.OrgAccessLevels),
         icon: TurnstileOrgAccessLevelsIcon,
         color: 'bg-secondary',
-        permission: appPermissions.turnstileOrganizationAccessLevels
+        permission: appPermissions.turnstileOrganizationAccessLevelsRead
       },
       {
         label: 'turnstile.hcWorkersPage.name', // Xodimlar
         path: Utils.routeTurnstilePathMaker(AppPaths.HcWorkers),
         icon: TurnstileHcWorkersIcon,
         color: 'bg-warning',
-        permission: appPermissions.turnstileHikCentralWorkers
+        permission: appPermissions.turnstileHikCentralWorkersRead
       },
       // {
       //     label: 'hcServer.name',
       //     path: Utils.routeTurnstilePathMaker(AppPaths.HcServer),
       //     icon: CellularData124Filled,
       //     color: 'bg-info',
-      //     permission: appPermissions.turnstileHikCentralJob,
+      //     permission: appPermissions.turnstileHikCentralJobRead,
       // },
       {
         label: 'hcEvent.name', // Hodisalar
         path: Utils.routeTurnstilePathMaker(AppPaths.HcEvents),
         icon: TurnstileHcEventsIcon,
         color: 'bg-info',
-        permission: appPermissions.turnstileHikCentralEvents
+        permission: appPermissions.turnstileHikCentralEventsRead
       },
       // {
       //     label: 'hcEvent.nameV2',
       //     path: Utils.routeTurnstilePathMaker(AppPaths.HcEventsV2),
       //     icon: ContactCard16Filled,
       //     color: 'bg-info',
-      //     permission: appPermissions.turnstileHikCentralEvents,
+      //     permission: appPermissions.turnstileHikCentralEventsRead,
       // },
       // {
       //     label: 'syncLog.name',
@@ -551,21 +551,21 @@ export const navigations = [
         path: Utils.routeTurnstilePathMaker(AppPaths.WorkerImage),
         icon: TurnstileWorkerImageIcon,
         color: 'bg-primary',
-        permission: appPermissions.turnstileWorkerImage
+        permission: appPermissions.turnstileWorkerImageRead
       },
       // {
       //     label: 'hcWorkDuration.name',
       //     path: Utils.routeTurnstilePathMaker(AppPaths.HCWorkDuration),
       //     icon: Clock24Filled,
       //     color: 'bg-success',
-      //     permission: appPermissions.turnstileHcpDuration,
+      //     permission: appPermissions.turnstileHcpDurationRead,
       // },
       {
         label: 'devices.name', // Qurilmalar
         path: Utils.routeTurnstilePathMaker(AppPaths.Devices),
         icon: TurnstileDevicesIcon,
         color: 'bg-info',
-        permission: appPermissions.turnstileDevices
+        permission: appPermissions.turnstileDevicesRead
       },
       {
         label: 'additionalPage.name', // Qo'shimcha
@@ -579,21 +579,21 @@ export const navigations = [
         path: Utils.routeTurnstilePathMaker(AppPaths.Schedule),
         icon: TurnstileDutyScheduleIcon,
         color: 'bg-dark',
-        permission: appPermissions.turnstileSheets
+        permission: appPermissions.turnstileSheetsRead
       },
       {
         label: 'shiftType.name', // Smenalar
         path: Utils.routeTurnstilePathMaker(AppPaths.ShiftType),
         icon: TurnstileShiftTypeIcon,
         color: 'bg-dark',
-        permission: appPermissions.turnstileSheetsWorkers
+        permission: appPermissions.turnstileSheetsWorkersRead
       },
       {
         label: 'shiftType.groupName', // Smena guruhlari
         path: Utils.routeTurnstilePathMaker(AppPaths.ShiftTypeGroup),
         icon: TurnstileShiftTypeGroupIcon,
         color: 'bg-dark',
-        permission: appPermissions.turnstileSheetsGroups
+        permission: appPermissions.turnstileSheetsGroupsRead
       },
       {
         label: 'turnstileSchedule.name', // Turniket grafiki
@@ -602,14 +602,14 @@ export const navigations = [
         color: 'bg-dark',
         // Ilgari «Navbatchilik grafigi» bilan BITTA slugda edi (`turnstile-sheets`) —
         // birini berib ikkinchisini yopib bo'lmasdi. Endi o'z slugi.
-        permission: appPermissions.turnstileSchedule
+        permission: appPermissions.turnstileScheduleRead
       },
       {
         label: 'approve.name', // Yuborilgan xodimlar
         path: Utils.routeTurnstilePathMaker(AppPaths.Approve),
         icon: TurnstileApproveIcon,
         color: 'bg-success',
-        permission: appPermissions.turnstileApprove
+        permission: appPermissions.turnstileApproveRead
       }
     ]
   },
@@ -631,49 +631,49 @@ export const navigations = [
         path: Utils.routeLmsPathMaker(AppPaths.Direction),
         icon: LmsDirectionIcon,
         color: 'bg-dark',
-        permission: appPermissions.lmsDirection
+        permission: appPermissions.lmsDirectionRead
       },
       {
         label: 'specializationPage.name', // Ixtisosliklar
         path: Utils.routeLmsPathMaker(AppPaths.Specialization),
         icon: LmsSpecializationIcon,
         color: 'bg-secondary',
-        permission: appPermissions.lmsSpecialization
+        permission: appPermissions.lmsSpecializationRead
       },
       {
         label: 'subjectPage.name', // Fanlar (modullar)
         path: Utils.routeLmsPathMaker(AppPaths.Subject),
         icon: LmsSubjectIcon,
         color: 'bg-primary',
-        permission: appPermissions.lmsSubjects
+        permission: appPermissions.lmsSubjectsRead
       },
       {
         label: 'eduPlanPage.name', // O'quv rejasi
         path: Utils.routeLmsPathMaker(AppPaths.EduPlan),
         icon: LmsEduPlanIcon,
         color: 'bg-warning',
-        permission: appPermissions.lmsEduPlan
+        permission: appPermissions.lmsEduPlanRead
       },
       {
         label: 'teacherPage.name', // Pedagoglar
         path: Utils.routeLmsPathMaker(AppPaths.Teacher),
         icon: LmsTeacherIcon,
         color: 'bg-info',
-        permission: appPermissions.lmsTeachers
+        permission: appPermissions.lmsTeachersRead
       },
       {
         label: 'lessonPage.name', // Mashg'ulotlar
         path: Utils.routeLmsPathMaker(AppPaths.Lesson),
         icon: LmsLessonIcon,
         color: 'bg-info',
-        permission: appPermissions.lmsLessons
+        permission: appPermissions.lmsLessonsRead
       },
       {
         label: 'teacherLesson.name', // Darslar
         path: Utils.routeLmsPathMaker(AppPaths.TeacherLesson),
         icon: LmsTeacherLessonIcon,
         color: 'bg-info',
-        permission: appPermissions.lmsLessons
+        permission: appPermissions.lmsLessonsRead
       },
       {
         label: 'listener.name', // Tinglovchilar
@@ -694,7 +694,7 @@ export const navigations = [
         path: Utils.routeLmsPathMaker(AppPaths.Certificate),
         icon: LmsCertificateIcon,
         color: 'bg-info',
-        permission: appPermissions.lmsCertificate
+        permission: appPermissions.lmsCertificateRead
       }
     ]
   },
@@ -716,21 +716,21 @@ export const navigations = [
         path: Utils.routeAccountantPathMaker(AppPaths.SalaryCategory),
         icon: EconomistPayrollFundIcon,
         color: 'bg-dark',
-        permission: appPermissions.economistWorkerCategories
+        permission: appPermissions.economistWorkerCategoriesRead
       },
       {
         label: 'uploadReport.name', // Hisobot yuklash
         path: Utils.routeAccountantPathMaker(AppPaths.UploadReport),
         icon: EconomistUploadReportIcon,
         color: 'bg-success',
-        permission: appPermissions.economistUploads
+        permission: appPermissions.economistUploadsRead
       },
       {
         label: 'monthReport.name', // Oylik hisobot
         path: Utils.routeAccountantPathMaker(AppPaths.MonthReport),
         icon: EconomistMonthReportIcon,
         color: 'bg-warning',
-        permission: appPermissions.economistStatements
+        permission: appPermissions.economistStatementsRead
       },
       {
         label: 'salaryReport.name', // Oylik hisobot (shifr)
@@ -744,21 +744,21 @@ export const navigations = [
         path: Utils.routeAccountantPathMaker(AppPaths.TaxFour),
         icon: EconomistTaxFourIcon,
         color: 'bg-success',
-        permission: appPermissions.economistTaxFour
+        permission: appPermissions.economistTaxFourRead
       },
       {
         label: 'taxFive.name', // JSHDS 5-ilova
         path: Utils.routeAccountantPathMaker(AppPaths.TaxFive),
         icon: EconomistTaxFiveIcon,
         color: 'bg-info',
-        permission: appPermissions.economistTaxFive
+        permission: appPermissions.economistTaxFiveRead
       },
       {
         label: 'pensionPayment.name', // SHJPH (INPS) to'lov
         path: Utils.routeAccountantPathMaker(AppPaths.PensionPayment),
         icon: EconomistPensionPaymentIcon,
         color: 'bg-success',
-        permission: appPermissions.economistPensionPayments
+        permission: appPermissions.economistPensionPaymentsRead
       },
       {
         label: 'tariffGrid.name', // Tarif setkasi
@@ -779,14 +779,14 @@ export const navigations = [
         path: Utils.routeAccountantPathMaker(AppPaths.Report),
         icon: EconomistReportIcon,
         color: 'bg-info',
-        permission: appPermissions.hrReport
+        permission: appPermissions.hrReportRead
       },
       {
         label: 'staffingApproval.name', // Shtatlar
         path: Utils.routeAccountantPathMaker(AppPaths.Approval),
         icon: EconomistStaffingApprovalIcon,
         color: 'bg-info',
-        permission: appPermissions.economistStaffingApprove
+        permission: appPermissions.economistStaffingApproveRead
       }
     ]
   },
@@ -801,28 +801,28 @@ export const navigations = [
         path: Utils.routeHospitalPathMaker(AppPaths.ExpiredHealth),
         icon: HospitalExpiredHealthIcon,
         color: 'bg-warning',
-        permission: appPermissions.hospitalExpired
+        permission: appPermissions.hospitalExpiredRead
       },
       {
         label: 'ticket.name', // Yo'llanmalar
         path: Utils.routeHospitalPathMaker(AppPaths.Ticket),
         icon: HospitalTicketIcon,
         color: 'bg-success',
-        permission: appPermissions.hospitalTicket
+        permission: appPermissions.hospitalTicketRead
       },
       {
         label: 'medWorker.name', // Barcha xodimlar
         path: Utils.routeHospitalPathMaker(AppPaths.MedWorker),
         icon: HospitalMedWorkerIcon,
         color: 'bg-info',
-        permission: appPermissions.hospitalTicket
+        permission: appPermissions.hospitalTicketRead
       },
       {
         label: 'pensioner.name', // Pensionerlar
         path: Utils.routeHospitalPathMaker(AppPaths.Pensioner),
         icon: HospitalPensionerIcon,
         color: 'bg-info',
-        permission: appPermissions.hospitalPensioner
+        permission: appPermissions.hospitalPensionerRead
       }
     ]
   },
@@ -837,7 +837,7 @@ export const navigations = [
         path: Utils.routeChatPathMaker(AppPaths.Notification),
         icon: ChatNotificationIcon,
         color: 'bg-dark',
-        permission: appPermissions.instructions
+        permission: appPermissions.instructionsRead
       },
       {
         label: 'newsPage.name', // Yangiliklar
@@ -882,7 +882,7 @@ export const navigations = [
         color: 'bg-primary',
         // Backend real ruxsat = hr-users (route /extra/users, @Permission('hr-users-*')).
         // extra-worker-user o'lik slug edi — canView(hr-users) endi -read bilan tekshiradi.
-        permission: appPermissions.hrUsers
+        permission: appPermissions.hrUsersRead
       },
       {
         label: 'educationDirectory.name', // Ta'lim katalogi
@@ -896,7 +896,7 @@ export const navigations = [
         path: Utils.routeExtraPathMaker(AppPaths.DepartmentLocation),
         icon: ExtraDepartmentLocationIcon,
         color: 'bg-info',
-        permission: appPermissions.departmentLocation
+        permission: appPermissions.departmentLocationRead
       }
     ]
   },
@@ -911,161 +911,168 @@ export const navigations = [
         path: Utils.routePathMaker(AppPaths.User),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.users
+        permission: appPermissions.usersRead
       },
       {
         label: 'userRole.name', // Rollar
         path: Utils.routePathMaker(AppPaths.UserRole),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.roles
+        permission: appPermissions.rolesRead
       },
       {
         label: 'userPermission.name', // Huquqlar
         path: Utils.routePathMaker(AppPaths.UserPermission),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.permissions
+        permission: appPermissions.permissionsRead
       },
       {
         label: 'countryPage.name', // Davlatlar
         path: Utils.routePathMaker(AppPaths.Country),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.countries
+        permission: appPermissions.countriesRead
       },
       {
         label: 'regionPage.name', // Viloyatlar
         path: Utils.routePathMaker(AppPaths.Region),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.regions
+        permission: appPermissions.regionsRead
       },
       {
         label: 'districtPage.name', // Tumanlar
         path: Utils.routePathMaker(AppPaths.District),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.cities
+        permission: appPermissions.citiesRead
       },
       {
         label: 'nationalityPage.name', // Millatlar
         path: Utils.routePathMaker(AppPaths.Nationality),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.nationalities
+        permission: appPermissions.nationalitiesRead
       },
       {
         label: 'positionPage.name', // Lavozimlar
         path: Utils.routePathMaker(AppPaths.Position),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.positions
+        permission: appPermissions.positionsRead
       },
       {
         label: 'schedulePage.name', // Ish jadvali
         path: Utils.routePathMaker(AppPaths.Schedule),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.schedules
+        permission: appPermissions.schedulesRead
       },
       {
         label: 'workdayPage.name', // Ish kunlari
         path: Utils.routePathMaker(AppPaths.Workday),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.workDay
+        permission: appPermissions.workDayRead
       },
       {
         label: 'organizationPage.name', // Tashkilotlar
         path: Utils.routePathMaker(AppPaths.Organizations),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.organizations
+        permission: appPermissions.organizationsRead
       },
       {
         label: 'actionLog.name', // Amallar tarixi
         path: Utils.routePathMaker(AppPaths.ActionLog),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.activityLogs
+        permission: appPermissions.activityLogsRead
       },
       {
         label: 'documentSetting.name', // Hujjat sozlamalari
         path: Utils.routePathMaker(AppPaths.DocumentSetting),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.documentExamples
+        permission: appPermissions.documentExamplesRead
       },
       {
         label: 'holidayPage.name', // Bayram kunlari
         path: Utils.routePathMaker(AppPaths.Holiday),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.holidays
+        permission: appPermissions.holidaysRead
       },
       {
         label: 'othersPage.name', // Boshqalar
         path: Utils.routePathMaker(AppPaths.AdminOther),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.universities
+        permission: appPermissions.universitiesRead
       },
       {
         label: 'telegramPage.name', // Telegram
         path: Utils.routePathMaker(AppPaths.Telegram),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.telegram
+        permission: appPermissions.telegramRead
       },
       {
         label: 'learningCenterPage.name', // O'quv markazlari
         path: Utils.routePathMaker(AppPaths.LearningCenter),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.learningCenters
+        permission: appPermissions.learningCentersRead
       },
       {
         label: 'instructionPage.name', // Instruksiya
         path: Utils.routePathMaker(AppPaths.Instruction),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.instructions
+        permission: appPermissions.instructionsRead
       },
       {
         label: 'mobileUserPage.name', // Mobil foydalanuvchilar
         path: Utils.routePathMaker(AppPaths.MobileUsers),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.mobileUsers
+        permission: appPermissions.mobileUsersRead
       },
       {
         label: 'vacancyApprovePage.menuName', // Tasdiqlash
         path: Utils.routePathMaker(AppPaths.VacancyApprove),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.vacancyApproveRead
+      },
+      {
+        label: 'dbBackup.name', // Baza zaxira nusxalari
+        path: Utils.routePathMaker(AppPaths.DbBackups),
+        icon: AdminFolderIcon,
+        color: 'bg-dark',
+        permission: appPermissions.dbBackupRead
       },
       {
         label: 'integrationClients.name', // Integratsiya clientlari
         path: Utils.routePathMaker(AppPaths.IntegrationClients),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.integrationClients
+        permission: appPermissions.integrationClientsRead
       },
       {
         label: 'workerReport.name', // Xodim hisobotlari
         path: Utils.routePathMaker(AppPaths.WorkerReport),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.admin
+        permission: appPermissions.workerReportsRead
       },
       {
         label: 'holidayGreetingPage.name', // Bayramlar
         path: Utils.routePathMaker(AppPaths.HolidayGreeting),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.holidayGreetings
+        permission: appPermissions.holidayGreetingsRead
       }
     ]
   }

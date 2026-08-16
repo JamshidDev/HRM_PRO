@@ -8,6 +8,7 @@ export const appPermissions = {
   mobileUsersRead: 'mobile-users-read',
   integrationClients: 'integration-clients',
   integrationClientsRead: 'integration-clients-read',
+  dbBackupRead: 'db-backup-read',
   integrationClientsWrite: 'integration-clients-write',
   holidayGreetings: 'holiday-greetings',
   holidayGreetingsRead: 'holiday-greetings-read',
@@ -68,6 +69,8 @@ export const appPermissions = {
   vacancyApprove: 'vacancy-approve',
   vacancyApproveWrite: 'vacancy-approve-write',
   vacancyApproveRead: 'vacancy-approve-read',
+  workerReports: 'worker-reports',
+  workerReportsRead: 'worker-reports-read',
   learningCenters: 'learning-centers',
   learningCentersWrite: 'learning-centers-write',
   learningCentersRead: 'learning-centers-read',
@@ -98,6 +101,7 @@ export const appPermissions = {
 
   hrWorkers: 'hr-workers',
   hrWorkersWrite: 'hr-workers-write',
+  hrWorkersPassword: 'hr-workers-password',
   hrWorkersRead: 'hr-workers-read',
 
   // Guvohnomalar ro'yxati sahifasi — xodimlar ruxsatidan AJRALGAN.
@@ -249,6 +253,8 @@ export const appPermissions = {
   turnstileAccessLevels: 'turnstile-access-levels',
   turnstileAccessLevelsRead: 'turnstile-access-levels-read',
   turnstileAccessLevelsWrite: 'turnstile-access-levels-write',
+  // «Sinxronlash» — Tahrirlashdan ajratilgan (audit 2026-08-12).
+  turnstileAccessLevelsSync: 'turnstile-access-levels-sync',
   turnstileOrganizationAccessLevels: 'turnstile-organization-access-levels',
   turnstileOrganizationAccessLevelsRead: 'turnstile-organization-access-levels-read',
   turnstileOrganizationAccessLevelsWrite: 'turnstile-organization-access-levels-write',
@@ -279,6 +285,7 @@ export const appPermissions = {
   turnstileDevicesStatExport: 'turnstile-devices-stat-export',
   turnstileDevicesRead: 'turnstile-devices-read',
   turnstileDevicesWrite: 'turnstile-devices-write',
+  turnstileDevicesSync: 'turnstile-devices-sync',
   turnstileOthers: 'turnstile-others',
   turnstileApprove: 'turnstile-approve',
   turnstileApproveRead: 'turnstile-approve-read',
@@ -299,6 +306,8 @@ export const appPermissions = {
   turnstileDashboard: 'turnstile-dashboard',
   turnstileDashboardRead: 'turnstile-dashboard-read',
   turnstileDashboardWrite: 'turnstile-dashboard-write',
+  // Dashboard preview Excel yuklash — ko'rishdan ajratilgan (audit 2026-08-12).
+  turnstileDashboardExport: 'turnstile-dashboard-export',
 
   turnstileHcpDuration: 'turnstile-hcp-duration',
   turnstileHcpDurationShow: 'turnstile-hcp-duration-show',
@@ -308,14 +317,24 @@ export const appPermissions = {
   turnstileSheetsGroupsWrite: 'turnstile-sheets-groups-write',
   turnstileSheetsGroupsRead: 'turnstile-sheets-groups-read',
   turnstileSheetsGroups: 'turnstile-sheets-groups',
+  // «Smena guruhlari» → «Yakunlash» — alohida (audit 2026-08-12).
+  turnstileSheetsGroupsFinish: 'turnstile-sheets-groups-finish',
   turnstileSheetsWrite: 'turnstile-sheets-write',
   turnstileSheetsRead: 'turnstile-sheets-read',
   turnstileSheets: 'turnstile-sheets',
   // «Navbatchilik grafigi» dagi «Tabel yuklash» — tahrirlashdan ajratilgan.
   turnstileSheetsTimesheetExport: 'turnstile-sheets-timesheet-export',
+  // «Navbatchilik grafigi» row amallari — alohida (audit 2026-08-12).
+  turnstileSheetsCopy: 'turnstile-sheets-copy',
+  turnstileSheetsTurnstile: 'turnstile-sheets-turnstile',
+  turnstileSheetsReplace: 'turnstile-sheets-replace',
   // «Turniket grafiki» — alohida sahifa (ilgari `turnstile-sheets` bilan bir edi).
   turnstileSchedule: 'turnstile-schedule',
   turnstileScheduleRead: 'turnstile-schedule-read',
+  // «Turniket grafiki» — sahifada «Tahrirlash» yo'q; ikki amal bor:
+  // «Qurilma biriktirish» (write) va «Ish vaqti faktini tekshirish» (check).
+  turnstileScheduleWrite: 'turnstile-schedule-write',
+  turnstileScheduleCheck: 'turnstile-schedule-check',
   turnstileSheetsWorkersWrite: 'turnstile-sheets-workers-write',
   turnstileSheetsWorkersRead: 'turnstile-sheets-workers-read',
   turnstileSheetsWorkers: 'turnstile-sheets-workers',

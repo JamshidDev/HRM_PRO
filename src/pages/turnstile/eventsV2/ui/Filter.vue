@@ -107,14 +107,10 @@
   ]
 
   const onOpenDownloadModal = () => {
-    if (!store.download.payload.from) {
-      const today = new Date()
-      const tomorrow = new Date(today)
-      tomorrow.setDate(today.getDate() + 1)
-      store.download.payload.from = today.getTime()
-      store.download.payload.to = tomorrow.getTime()
-    }
-    store.download.visible = true
+    store._openDownload({
+      organizations: store.params.organizations,
+      departments: store.params.departments
+    })
   }
 
   const checkLastClick = () => {

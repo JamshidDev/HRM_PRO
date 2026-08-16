@@ -3,11 +3,13 @@
   import Filter from './ui/Filter.vue'
   import Table from './ui/Table.vue'
   import createForm from './ui/createForm.vue'
-  import { useWorkerImageStore } from '@/store/modules/index.js'
+  import { useAccountStore, useWorkerImageStore } from '@/store/modules/index.js'
 
   const store = useWorkerImageStore()
+  const accStore = useAccountStore()
 
   onMounted(() => {
+    if (!accStore.checkAction(accStore.pn.turnstileWorkerImageRead)) return
     store._index()
   })
 </script>

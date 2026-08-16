@@ -162,6 +162,14 @@ export const adminRoutes = [
     }
   },
   {
+    path: Utils.routePathMaker(AppPaths.DbBackups),
+    name: AppPaths.DbBackups.substring(1),
+    component: () => import('@pages/admin/dbBackup/page.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
     path: Utils.routePathMaker(AppPaths.IntegrationClients),
     name: AppPaths.IntegrationClients.substring(1),
     component: () => import('@pages/admin/integrationClients/page.vue'),

@@ -15,7 +15,7 @@
   }
 
   const onSync = () => {
-    if (!accStore.checkAction(accStore.pn.turnstileAccessLevelsWrite)) return
+    if (!accStore.checkAction(accStore.pn.turnstileAccessLevelsSync)) return
     store._sync()
   }
 
@@ -34,7 +34,12 @@
       @onSearch="onSearch"
     >
       <template #filterAction>
-        <n-button :loading="store.accessLevelsLoading" @click="onSync" type="primary">
+        <n-button
+          v-if="accStore.checkPermission(accStore.pn.turnstileAccessLevelsSync)"
+          :loading="store.accessLevelsLoading"
+          @click="onSync"
+          type="primary"
+        >
           <template #icon>
             <ArrowSync24Filled />
           </template>

@@ -29,7 +29,6 @@
 
   const onSearch = () => {
     if (store.activeTab === 3) {
-      if (!accStore.checkAction(accStore.pn.languagesRead)) return
       store.params.search = universityStore.params.search
       store.params.page = 1
       store._index()

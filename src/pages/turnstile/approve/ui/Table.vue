@@ -17,14 +17,14 @@
   }
 
   const onShow = (row) => {
-    if (!accStore.checkAction(accStore.pn.turnstileDevicesWrite)) return
+    if (!accStore.checkAction(accStore.pn.turnstileApproveWrite)) return
     store.elementId = row.id
     store.approve.visible = true
     store._show()
   }
 
   const onEdit = (row) => {
-    if (!accStore.checkAction(accStore.pn.turnstileDevicesWrite)) return
+    if (!accStore.checkAction(accStore.pn.turnstileApproveWrite)) return
     store.elementId = row.id
     store.visible = true
     store.visibleType = false
@@ -48,7 +48,7 @@
   }
 
   const onDelete = (row) => {
-    if (!accStore.checkAction(accStore.pn.turnstileDevicesWrite)) return
+    if (!accStore.checkAction(accStore.pn.turnstileApproveDelete)) return
     store.elementId = row.id
     store._delete()
   }
@@ -125,7 +125,10 @@
       key: Utils.ActionTypes.confirm,
       icon: UIHelper.renderIcon(CheckmarkCircle32Regular),
       action: onShow,
-      visible: (row) => row.status === 'received' && row.approved === 1
+      visible: (row) =>
+        accStore.checkPermission(accStore.pn.turnstileApproveWrite) &&
+        row.status === 'received' &&
+        row.approved === 1
     },
     {
       label: t('content.delete'),

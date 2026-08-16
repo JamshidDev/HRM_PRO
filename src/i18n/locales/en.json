@@ -4,7 +4,7 @@
     "title": "Regular late-comers report",
     "subtitle": "Employees who arrived after the work start time within a period, by selected organizations (Excel)",
     "createButton": "Generate report",
-    "modalTitle": "Late-comers — Excel",
+    "modalTitle": "Prepare report",
     "organizations": "Organizations",
     "from": "Start date",
     "to": "End date",
@@ -24,7 +24,7 @@
     "title": "Half-year late workers report",
     "subtitle": "Number of late workers per organization × month — by selected access level devices (Excel, background)",
     "createButton": "Create report",
-    "modalTitle": "Late workers (organization × month) — Excel",
+    "modalTitle": "Prepare report",
     "organizations": "Organizations",
     "accessLevels": "Access levels",
     "from": "Start month",
@@ -120,6 +120,7 @@
     "edit": "Edit",
     "work_date": "Start date",
     "delete": "Delete",
+    "replace": "Replace",
     "deleteAll": "Delete all",
     "checked": "Checked",
     "view": "View",
@@ -224,6 +225,8 @@
     "asAdmin": "Super admin",
     "setting": "Settings",
     "soundNotification": "Notification sound",
+    "soundDeviceMissing": "No audio output device found — notification sounds will not be heard",
+    "soundPlaybackFailed": "Could not play the notification sound — check your device audio",
     "sidebarColor": "Sidebar color",
     "sidebarThemeDefault": "Default",
     "sidebarThemeIndigo": "Indigo",
@@ -493,6 +496,25 @@
       "verify": "Verify",
       "submit": "Update password",
       "success": "Password updated successfully. Log in with your new password."
+    },
+    "tabs": {
+      "password": "Login",
+      "eri": "E-Signature",
+      "qr": "QR code"
+    },
+    "eri": {
+      "moduleRequired": "For the correct operation of the system, it is necessary to run the E-IMZO module or E-IMZO Browser.",
+      "instructionsText": "You can read the instructions for installing the E-IMZO module __LINK__",
+      "instructionsLink": "here",
+      "hostText": "If the E-IMZO module is running, check the connection to __LINK__ in the browser.",
+      "hostLink": "E-IMZO host"
+    },
+    "qr": {
+      "description": "Scan the QR code using the scanner in the HR Rail mobile app. You will be signed in to your account on this device automatically.",
+      "expired": "The code has expired",
+      "refresh": "Refresh",
+      "connectionError": "Connection error",
+      "signingIn": "Signing in…"
     }
   },
   "registerPage": {
@@ -535,7 +557,10 @@
       "type": "Role type",
       "typeSanctum": "User",
       "typeIntegration": "Integration",
-      "orphanWarning": "This role has {n} permission(s) not shown in the list (the permission list may not be fully loaded). They will be kept unchanged on save."
+      "orphanWarning": "This role has {n} permission(s) not shown in the list (the permission list may not be fully loaded). They will be kept unchanged on save.",
+      "scopeType": "Organization scope",
+      "scopeLocal": "Local (own organization)",
+      "scopeGlobal": "Global (organization + subtree)"
     }
   },
   "userPage": {
@@ -706,8 +731,8 @@
       "age": "Age",
       "quickActions": "Quick actions",
       "downloadRelative": "Download relatives",
-      "generateReport": "Generate report",
-      "generateReportDesc": "Select employees to generate a report",
+      "generateReport": "Get report",
+      "generateReportDesc": "Select employees to get a report",
       "relativesReport": "By relatives",
       "excelFile": "Excel file",
       "downloadInfo": "Download info"
@@ -750,7 +775,25 @@
     "chooseExport": "Select fields",
     "excelSettings": "Set up Excel table",
     "selectColumns": "Select table columns",
-    "columnOrder": "Arrange column order"
+    "columnOrder": "Arrange column order",
+    "modalTitle": "Prepare report",
+    "modalSubtitle": "Click a tag to add or remove it. You will set the order on the next step.",
+    "tabColumns": "Columns",
+    "tabOrder": "Order",
+    "selectedShort": "selected",
+    "orderHint": "Drag the headers to change the order",
+    "filePreview": "FILE PREVIEW",
+    "columnCount": "{count} columns",
+    "noColumns": "No columns selected yet",
+    "startDownload": "Start download",
+    "workerCountHint": "Number of employees being exported",
+    "tabRelatives": "Close relatives",
+    "tabReference": "Reference",
+    "relativesHint": "The list of close relatives of the selected employees is exported as a separate Excel file.",
+    "referenceHint": "A reference (.docx) is generated for each employee and all files are collected into one ZIP archive.",
+    "optPassport": "Include passport data",
+    "optForeignPassport": "Include foreign passport data",
+    "optionsHint": "Tick what you need below so passport copies are included in the archive"
   },
   "contactPage": {
     "name": "Contacts"
@@ -761,10 +804,10 @@
   "workerProfile": {
     "tabs": {
       "personal": "Personal",
-      "education": "Education",
-      "career": "Career",
+      "education": "Education and skills",
+      "career": "Work history",
       "relative": "Relatives",
-      "others": "Others"
+      "others": "Additional"
     },
     "personal": {
       "additionalContract": "Create additional agreement",
@@ -775,7 +818,11 @@
       "addPassport": "Add passport copy",
       "no-passport": "Passport data not uploaded!",
       "addForeignPassport": "Add foreign passport copy",
-      "no-foreign-passport": "Foreign passport data not uploaded!"
+      "no-foreign-passport": "Foreign passport data not uploaded!",
+      "infoTitle": "Personal information",
+      "usedAsLogin": "Used as login",
+      "photoTitle": "Candidate photo",
+      "phoneTitle": "Phone number"
     },
     "position": {
       "contractType": "Contract type",
@@ -875,7 +922,10 @@
     "name": "Add employee data",
     "ui": {
       "image": "Recommended to add 3 photos taken within last 3 months.",
-      "phone": "Mark primary phone number (used as login)."
+      "phone": "Mark primary phone number (used as login).",
+      "mainImage": "Main photo",
+      "needPhotos": "{n} photos required",
+      "addPhoto": "Add photo"
     },
     "form": {
       "lastName": "Last name",
@@ -903,9 +953,13 @@
       "address": "Residential address",
       "experience_date": "Continuous service",
       "passportTitle": "Passport details",
-      "foreignPassportTitle": "Foreign travel passport details",
+      "foreignPassportTitle": "Foreign passport",
       "education": "Education",
-      "work_experience": "Total experience (in months)"
+      "work_experience": "Total experience (in months)",
+      "birthPlace": "Place of birth",
+      "livingPlace": "Place of residence",
+      "citizenship": "Citizenship",
+      "given_place": "Place of issue"
     },
     "step": {
       "personal": "Personal data",
@@ -1503,7 +1557,10 @@
     "systemTitle": "System employment records",
     "no-data": "No previous employment added!",
     "sortOldestFirst": "Oldest to newest",
-    "sortNewestFirst": "Newest to oldest"
+    "sortNewestFirst": "Newest to oldest",
+    "experienceMonth": "Experience (mo.)",
+    "continuousExperience": "Continuous experience",
+    "period": "From - to"
   },
   "workerPositionCertificatePage": {
     "title": "Position certificates",
@@ -2458,6 +2515,7 @@
     },
     "attachRole": "Attach role",
     "deleteRole": "Delete role",
+    "detachRole": "Remove role",
     "selectRoleToDelete": "Select role to delete",
     "updatePassword": "Update password",
     "newPassword": "New password",
@@ -2891,7 +2949,7 @@
     "phdNotRequired": "PhD not required",
     "minExp": "Min. {n} year(s) experience",
     "exam": {
-      "modalTitle": "Exam",
+      "modalTitle": "Prepare report",
       "onlineBadge": "Online test",
       "onlineTab": "Online",
       "offlineTab": "Offline",
@@ -3070,8 +3128,13 @@
   },
   "tariffBase": {
     "title": "Base amount",
-    "tab": { "grids": "Grids", "bases": "Base amounts" },
-    "action": { "newValue": "New value (version)" },
+    "tab": {
+      "grids": "Grids",
+      "bases": "Base amounts"
+    },
+    "action": {
+      "newValue": "New value (version)"
+    },
     "form": {
       "metaTitle": "Base details",
       "name": "Base name",
@@ -3111,7 +3174,11 @@
       "group": "Group",
       "rank": "Rank",
       "noChanges": "No changes",
-      "status": { "added": "Added", "removed": "Removed", "changed": "Changed" }
+      "status": {
+        "added": "Added",
+        "removed": "Removed",
+        "changed": "Changed"
+      }
     },
     "formula": {
       "title": "Edit coefficients with a formula (like Excel)",
@@ -3875,7 +3942,9 @@
       "mobile": "Number of employees notified via mobile app",
       "turnstile": "Number of employees notified via turnstile"
     },
-    "table": { "sentAt": "Sent at" }
+    "table": {
+      "sentAt": "Sent at"
+    }
   },
   "mobileStoryPage": {
     "name": "Story announcements",
@@ -3907,7 +3976,8 @@
       "preview": "Preview",
       "replaceSlide": "Replace",
       "slidesPanel": "Slides",
-      "addSlideHint": "Add photo or video"
+      "addSlideHint": "Add photo or video",
+      "previewHint": "This is how it looks on a phone"
     },
     "deleteConfirm": "Delete this story?",
     "slideDeleteConfirm": "Delete this slide?",
@@ -3933,8 +4003,11 @@
     "shortDescriptionPlaceholder": "Brief about the news...",
     "content": "Content",
     "contentPlaceholder": "Write news content here...",
+    "badge": "News",
     "attachments": "Attachments",
-    "attachmentsHint": "Upload documents, PDF or other files",
+    "attachmentsHint": "Images are compressed · max 4 MB",
+    "saveDraft": "Save as draft",
+    "publish": "Publish",
     "statusDraft": "Draft",
     "statusPublished": "Published",
     "statusArchived": "Archived",
@@ -3952,7 +4025,13 @@
     "pinned": "Pinned",
     "video": "Video",
     "image": "Image",
-    "noMedia": "No media"
+    "noMedia": "No media",
+    "statistics": "Statistics",
+    "preview": "Preview",
+    "previewHint": "This is how it looks on a phone",
+    "previewEmptyTitle": "No title yet",
+    "previewEmptyContent": "No content yet",
+    "fileTooLarge": "File \"{name}\" is too large — 4 MB maximum"
   },
   "newsCategoryPage": {
     "name": "News Categories",
@@ -4289,6 +4368,21 @@
     "modal": {
       "notVerified": "Not verified"
     }
+  },
+  "dbBackup": {
+    "name": "DB backups",
+    "table": {
+      "date": "Date",
+      "file": "File",
+      "sizeOriginal": "Original size",
+      "sizeArchived": "Archived size",
+      "duration": "Duration",
+      "status": "Status"
+    },
+    "status": {
+      "running": "Running",
+      "done": "Done",
+      "error": "Error"
+    }
   }
 }
-

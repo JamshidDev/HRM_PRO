@@ -56,7 +56,7 @@
   }
 
   const onDelete = (row) => {
-    if (!accStore.checkAction(accStore.pn.turnstileHikCentralWorkersWrite)) return
+    if (!accStore.checkAction(accStore.pn.turnstileHikCentralWorkersDelete)) return
     store.elementId = row.id
     store._delete()
   }
@@ -83,6 +83,7 @@
   }
 
   const onRefresh = (v) => {
+    if (!accStore.checkAction(accStore.pn.turnstileHikCentralWorkersWrite)) return
     store._onRefreshAcessLeves(v.id)
   }
 
@@ -189,6 +190,7 @@
             <div class="flex flex-col px-4 relative group overflow-hidden min-w-[100px]">
               <span class="font-semibold"> {{ level.name }}</span>
               <span
+                v-if="accStore.checkPermission(accStore.pn.turnstileHikCentralWorkersWrite)"
                 @click.stop="onRefresh(level)"
                 class="px-1 bottom-0 absolute w-full h-full text-success flex justify-center items-center gap-2 top-0 right-[-200px] group-hover:right-[4px] transition-all duration-300 z-[999] bg-surface-ground"
               >

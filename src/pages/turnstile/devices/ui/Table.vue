@@ -41,7 +41,7 @@
   }
 
   const onDelete = (row) => {
-    if (!accStore.checkAction(accStore.pn.turnstileDevicesWrite)) return
+    if (!accStore.checkAction(accStore.pn.turnstileDevicesDelete)) return
     store.elementId = row.id
     store._delete()
   }

@@ -8,6 +8,12 @@
 
   const store = useNotificationStore()
   const onClickClose = (item) => {
+    // Tizim ogohlantirishlari (masalan ovoz apparati yo'qligi) `meta` siz keladi — ular
+    // bildirishnomalar ro'yxatiga tushmaydi, shunchaki yopiladi
+    if (!item.meta) {
+      remove(item.id)
+      return
+    }
     store.userUnreadNotificationsCount++
     store.userUnreadNotifications.unshift({
       id: item.meta.id,
@@ -22,6 +28,10 @@
   }
 
   const onClickNotification = (item) => {
+    if (!item.meta) {
+      remove(item.id)
+      return
+    }
     store.setViewingNotification({
       id: item.meta.id,
       created_at: dayjs().format('YYYY-MM-DD HH:mm:ss'),

@@ -149,6 +149,7 @@ export const AppPaths = {
   ConfReport: '/conf-report',
   DepartmentLocation: '/department-location',
   IntegrationClients: '/integration-clients',
+  DbBackups: '/db-backups',
   WorkerReport: '/worker-report',
   HolidayGreeting: '/holiday-greetings'
 }

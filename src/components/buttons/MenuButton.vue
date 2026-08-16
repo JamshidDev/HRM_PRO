@@ -79,6 +79,10 @@
     loading: {
       type: Boolean,
       default: false
+    },
+    deleteIcon: {
+      type: [Object, Function],
+      default: null
     }
   })
 
@@ -146,7 +150,7 @@
       {
         label: props.deleteOptionText || t('content.delete'),
         key: Utils.ActionTypes.delete,
-        icon: UIHelper.renderIcon(Delete20Regular),
+        icon: UIHelper.renderIcon(props.deleteIcon || Delete20Regular),
         visible: props.showDelete
       }
     ]
@@ -181,7 +185,9 @@
       size="small"
       :options="[
         ...options,
-        ...extraOptions.map((i) => ({ ...i, icon: UIHelper.renderIcon(i.icon) }))
+        ...extraOptions
+          .filter((i) => i.visible !== false)
+          .map((i) => ({ ...i, icon: UIHelper.renderIcon(i.icon) }))
       ]"
       trigger="click"
       @select="onSelect"

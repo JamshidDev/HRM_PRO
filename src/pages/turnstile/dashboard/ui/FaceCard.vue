@@ -3,6 +3,7 @@
   import { Utils } from '@/utils/index.js'
   import CardHeader from './CardHeader.vue'
   import DeltaBadge from './DeltaBadge.vue'
+  import { FaceCardSkeleton } from './skeleton/index.js'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
   import HeadAiScanIcon from '@/assets/icons/dashboard/head-ai-scan.svg'
   import FaceTurnstileIcon from '@/assets/icons/dashboard/face-turnstile.svg'
@@ -36,10 +37,10 @@
 </script>
 
 <template>
-  <div
-    class="stretch-card bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col"
-  >
-    <n-spin :show="store.dailyAttendanceLoading" class="flex-1 flex flex-col">
+  <div class="bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col">
+    <FaceCardSkeleton v-if="store.dailyAttendanceLoading" />
+
+    <template v-else>
       <CardHeader
         :icon="HeadAiScanIcon"
         tint="teal"
@@ -102,18 +103,6 @@
           </div>
         </div>
       </div>
-    </n-spin>
+    </template>
   </div>
 </template>
-
-<style scoped>
-  /* n-spin ichki `.n-spin-content` ni ham cho'zamiz — aks holda karta qo'shni
-     baland karta bo'yiga tenglashganda kontent tepada qolib, pastda bo'sh joy qoladi. */
-  .stretch-card :deep(.n-spin-container),
-  .stretch-card :deep(.n-spin-content) {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
-  }
-</style>

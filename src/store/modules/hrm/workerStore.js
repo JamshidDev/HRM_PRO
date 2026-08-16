@@ -12,6 +12,19 @@ export const useWorkerStore = defineStore('workerStore', {
     elementId: null,
     totalItems: 0,
     allPermissionList: [],
+    // Parolni yangilash modali (Qo'shimchalar → Foydalanuvchilar bilan bir xil).
+    passwordVisible: false,
+    passwordLoading: false,
+    passwordWorkerUuid: null,
+    // Rollar modali: biriktirish (header) + joriy rollar ro'yxati (delete bilan).
+    rolesVisible: false,
+    rolesLoading: false,
+    rolesSaving: false,
+    rolesWorkerUuid: null,
+    rolesUserUuid: null,
+    rolesList: [],
+    rolePayload: { role: null, organization_id: [] },
+    roleStructureCheck: [],
     payload: {
       pin: null,
       position: null
@@ -73,6 +86,82 @@ export const useWorkerStore = defineStore('workerStore', {
     filterDepartmentTotal: 0
   }),
   actions: {
+    _workerRoles() {
+      this.rolesLoading = true
+      $ApiService.workerService
+        ._workerRoles({ uuid: this.rolesWorkerUuid })
+        .then((res) => {
+          const data = res.data.data || {}
+          this.rolesUserUuid = data.user_uuid || null
+          this.rolesList = data.roles || []
+        })
+        .finally(() => {
+          this.rolesLoading = false
+        })
+    },
+    // Rol biriktirish — «Qo'shimchalar → Foydalanuvchilar» dagi AYNAN o'sha
+    // endpoint (`/extra/users/attach-role`, USER uuid bilan): u rollarni JAMLAB
+    // boradi. `worker-positions/edit/attach-role` esa boshqa semantikada —
+    // korxonadagi mavjud rolni almashtiradi, shu sabab ro'yxat o'smasdi.
+    // ⚠️ `componentStore.roles` da `id` — rolning NOMI ('Finance'), `name` —
+    // tarjima ('Buxgalter'); shuning uchun `role` (nom) yuboriladi.
+    _attachWorkerRole() {
+      this.rolesSaving = true
+      const data = {
+        uuid: this.rolesUserUuid,
+        role: this.rolePayload.role,
+        organization_id: Number(this.rolePayload.organization_id?.[0]?.id)
+      }
+      $ApiService.workerService
+        ._attachUserRole({ data })
+        .then(() => {
+          this.rolePayload.role = null
+          this._workerRoles()
+          this._index()
+        })
+        .finally(() => {
+          this.rolesSaving = false
+        })
+    },
+    // Rolni olib tashlash — `edit/detach-role`, (rol + korxona) juftligi bo'yicha.
+    _detachWorkerRole(row) {
+      this.rolesSaving = true
+      // Attach bilan bir juft: `/extra/users/detach-role` (USER uuid).
+      // `row.name` — rolning XOM nomi (`roles.name`), backend shu bo'yicha topadi.
+      const data = {
+        uuid: this.rolesUserUuid,
+        role: row.name,
+        organization_id: row.organization?.id
+      }
+      $ApiService.workerService
+        ._detachUserRole({ data })
+        .then(() => {
+          this._workerRoles()
+          this._index()
+        })
+        .finally(() => {
+          this.rolesSaving = false
+        })
+    },
+    // «Parolni yangilash» — modal `PasswordUpdateModal` dan tayyor parol beradi.
+    // Backend `hr-workers-password` bilan gate qiladi va parol talablarini
+    // qayta tekshiradi (frontend tekshiruvi faqat qulaylik uchun).
+    _updateWorkerPassword(password) {
+      this.passwordLoading = true
+      $ApiService.workerService
+        ._updateWorkerPassword({
+          uuid: this.passwordWorkerUuid,
+          data: { password }
+        })
+        .then((res) => {
+          window.$message?.success(res.data?.message)
+          this.passwordVisible = false
+          this.passwordWorkerUuid = null
+        })
+        .finally(() => {
+          this.passwordLoading = false
+        })
+    },
     _getFilterDepartments() {
       const params = {
         ...this.filterDepParams,

@@ -14,6 +14,12 @@
       )
     }
   }
+
+  // Qurilma sinxronlash — alohida ruxsat (devices sahifasidagi bilan bir xil).
+  const onRefreshDevice = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileDevicesSync)) return
+    store._refreshDevice()
+  }
 </script>
 
 <template>
@@ -46,8 +52,9 @@
             </template>
           </n-button>
           <n-button
+            v-if="accStore.checkPermission(accStore.pn.turnstileDevicesSync)"
             type="primary"
-            @click="store._refreshDevice()"
+            @click="onRefreshDevice"
             :loading="store.onlineDeviceLoading"
           >
             {{ $t('content.refresh') }}

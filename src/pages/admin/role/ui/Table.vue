@@ -17,6 +17,8 @@
     store.payload.name = row.name
     // Rol guard'i — permission olamini belgilaydi; shu guard bo'yicha ro'yxat qayta yuklanadi.
     store.payload.guard_name = row.guard_name || 'sanctum'
+    // Org-scope (0080) — mavjud rolning ko'lamini to'ldirish.
+    store.payload.scope_type = row.scope_type ?? null
     store.payload.permissions = row.permissions.map((x) => x.id)
     store.query = null
     store._getAllPermission()
@@ -24,7 +26,7 @@
   }
 
   const onDelete = (row) => {
-    if (!accStore.checkAction(accStore.pn.rolesWrite)) return
+    if (!accStore.checkAction(accStore.pn.rolesDelete)) return
     store.elementId = row.id
     store._delete()
   }
@@ -43,11 +45,22 @@
     },
     {
       key: 'guard_name',
-      title: t('userRole.form.type'),
+      title: 'Guard',
       minWidth: 120,
       width: 140
+    },
+    {
+      key: 'scope_type',
+      title: 'Scope',
+      minWidth: 140,
+      width: 160
     }
   ])
+
+  // Org-scope yorlig'i: local=faqat shu korxona, global=korxona+tarkibi (tree).
+  const scopeLabel = (v) => (v === 'local' ? 'Local' : v === 'global' ? 'Global' : '—')
+  // Global keng ko'lam — error (qizil) badge; local — info (ko'k).
+  const scopeTagType = (v) => (v === 'global' ? 'error' : v === 'local' ? 'info' : 'default')
 
   const actions = computed(() => [
     {
@@ -98,6 +111,19 @@
             : t('userRole.form.typeSanctum')
         }}
       </n-tag>
+    </template>
+
+    <!-- Org-scope: local/global rollarda badge; integration (null) → "—". -->
+    <template #cell-scope_type="{ row }">
+      <n-tag
+        v-if="row.scope_type === 'local' || row.scope_type === 'global'"
+        size="small"
+        round
+        :type="scopeTagType(row.scope_type)"
+      >
+        {{ scopeLabel(row.scope_type) }}
+      </n-tag>
+      <span v-else class="text-gray-400">—</span>
     </template>
   </UITable>
 </template>

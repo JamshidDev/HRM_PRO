@@ -4,7 +4,7 @@
     "title": "Muntazam kech qoluvchilar hisoboti",
     "subtitle": "Tanlangan korxonalar bo'yicha davr ichida ish boshlanish vaqtidan kech kelgan xodimlar (Excel)",
     "createButton": "Hisobot yaratish",
-    "modalTitle": "Kech qoluvchilar — Excel",
+    "modalTitle": "Hisobot tayyorlash",
     "organizations": "Korxonalar",
     "from": "Boshlanish sanasi",
     "to": "Tugash sanasi",
@@ -24,7 +24,7 @@
     "title": "Kech qoluvchilar yarim yillik hisoboti",
     "subtitle": "Korxona × oy kesimida kech qolgan xodimlar soni — tanlangan access level qurilmalari bo'yicha (Excel, fon rejimida)",
     "createButton": "Hisobot yaratish",
-    "modalTitle": "Kech qoluvchilar (korxona × oy) — Excel",
+    "modalTitle": "Hisobot tayyorlash",
     "organizations": "Korxonalar",
     "accessLevels": "Access levellar",
     "from": "Boshlanish oyi",
@@ -124,6 +124,7 @@
     "edit": "Tahrirlash",
     "work_date": "Ishga chiqish sanasi",
     "delete": "O'chirish",
+    "replace": "Almashtirish",
     "deleteAll": "Barchasini o'chirish",
     "checked": "Tekshirilgan",
     "view": "Ko'rish",
@@ -231,6 +232,8 @@
     "asAdmin": "Super admin",
     "setting": "Sozlamalar",
     "soundNotification": "Ovozli bildirishnoma",
+    "soundDeviceMissing": "Qurilmada ovoz chiqaruvchi apparat topilmadi — bildirishnoma ovozi eshitilmaydi",
+    "soundPlaybackFailed": "Bildirishnoma ovozini chiqarib bo'lmadi — qurilma ovozini tekshiring",
     "sidebarColor": "Sidebar rangi",
     "sidebarThemeDefault": "Odatiy",
     "sidebarThemeIndigo": "Indigo",
@@ -509,6 +512,25 @@
       "verify": "Tasdiqlash",
       "submit": "Parolni yangilash",
       "success": "Parol muvaffaqiyatli yangilandi. Endi yangi parol bilan kiring."
+    },
+    "tabs": {
+      "password": "Login",
+      "eri": "ERI",
+      "qr": "QR-kod"
+    },
+    "eri": {
+      "moduleRequired": "Tizimni to‘g‘ri ishlashi uchun E-IMZO modulini yoki E-IMZO brauzerini ishga tushirishingiz kerak.",
+      "instructionsText": "E-IMZO modulini o‘rnatish bo‘yicha ko‘rsatmalarni __LINK__ o‘qishingiz mumkin",
+      "instructionsLink": "bu yerda",
+      "hostText": "E-IMZO moduli ishga tushgan bo‘lsa, brauzerda __LINK__ga ulanishini tekshiring.",
+      "hostLink": "E-IMZO host"
+    },
+    "qr": {
+      "description": "QR kodni HR Rail mobil ilovasidagi skaner yordamida skanerlang. Hisobingizga ushbu qurilmada avtomatik ravishda kirasiz.",
+      "expired": "Kod muddati tugadi",
+      "refresh": "Yangilash",
+      "connectionError": "Ulanishda xatolik",
+      "signingIn": "Tizimga kirilmoqda…"
     }
   },
   "registerPage": {
@@ -551,7 +573,10 @@
       "type": "Rol turi",
       "typeSanctum": "Foydalanuvchi",
       "typeIntegration": "Integration",
-      "orphanWarning": "Ushbu rolda ro'yxatda ko'rinmaydigan {n} ta ruxsat bor (ruxsatlar ro'yxati to'liq yuklanmagan bo'lishi mumkin). Ular saqlashda o'zgarishsiz qoladi."
+      "orphanWarning": "Ushbu rolda ro'yxatda ko'rinmaydigan {n} ta ruxsat bor (ruxsatlar ro'yxati to'liq yuklanmagan bo'lishi mumkin). Ular saqlashda o'zgarishsiz qoladi.",
+      "scopeType": "Korxona ko'lami",
+      "scopeLocal": "Local (faqat shu korxona)",
+      "scopeGlobal": "Global (korxona + tarkibi)"
     }
   },
   "userPage": {
@@ -722,8 +747,8 @@
       "age": "Yoshi",
       "quickActions": "Tezkor amallar",
       "downloadRelative": "Qarindoshlarni yuklash",
-      "generateReport": "Hisobot yaratish",
-      "generateReportDesc": "Hisobot yaratish uchun xodimlarni belgilang",
+      "generateReport": "Hisobot olish",
+      "generateReportDesc": "Hisobot olish uchun xodimlarni belgilang",
       "relativesReport": "Qarindoshlar bo'yicha",
       "excelFile": "Excel fayl",
       "downloadInfo": "Ma'lumotni yuklash"
@@ -767,7 +792,25 @@
     "chooseExport": "Maydonlarni tanlash",
     "excelSettings": "Excel jadvalini sozlash",
     "selectColumns": "Jadval ustunlarini belgilang",
-    "columnOrder": "Jadval ustunlar joylashuvini sozlang"
+    "columnOrder": "Jadval ustunlar joylashuvini sozlang",
+    "modalTitle": "Hisobot tayyorlash",
+    "modalSubtitle": "Tegni bosib qo'shing yoki olib tashlang. Tartibni keyingi bosqichda sozlaysiz.",
+    "tabColumns": "Ustunlar",
+    "tabOrder": "Tartib",
+    "selectedShort": "tanlangan",
+    "orderHint": "Sarlavhalarni sudrab tartibni o'zgartiring",
+    "filePreview": "FAYLNING KO'RINISHI",
+    "columnCount": "{count} ustun",
+    "noColumns": "Hali birorta ustun tanlanmagan",
+    "startDownload": "Yuklashni boshlash",
+    "workerCountHint": "Yuklanadigan xodimlar soni",
+    "tabRelatives": "Yaqin qarindosh",
+    "tabReference": "Ma'lumotnoma",
+    "relativesHint": "Tanlangan xodimlarning yaqin qarindoshlari ro'yxati alohida Excel fayl bo'lib yuklanadi.",
+    "referenceHint": "Har bir xodim uchun ma'lumotnoma (.docx) tayyorlanadi va ular bitta ZIP arxivga to'planadi.",
+    "optPassport": "Passport ma'lumotlarini yuklash",
+    "optForeignPassport": "Xorij passporti ma'lumotlarini yuklash",
+    "optionsHint": "Pasport nusxalari arxivga qo'shilishi uchun quyidagilardan kerakligini belgilang"
   },
   "contactPage": {
     "name": "Kontaktlar"
@@ -778,10 +821,10 @@
   "workerProfile": {
     "tabs": {
       "personal": "Shaxsiy",
-      "education": "Ma'lumoti",
-      "career": "Faoliyati",
-      "relative": "Qarindoshlari",
-      "others": "Boshqalar"
+      "education": "Ma'lumot va malaka",
+      "career": "Ish faoliyati",
+      "relative": "Qarindoshlar",
+      "others": "Qo'shimcha"
     },
     "personal": {
       "additionalContract": "Qo'shimcha kelishuv tuzish",
@@ -792,7 +835,11 @@
       "addPassport": "Passport nusxasini qo'shish",
       "no-passport": "Passport ma'lumotlar yuklanmagan!",
       "addForeignPassport": "Xorij pasporti nusxasini qo'shish",
-      "no-foreign-passport": "Xorij pasporti ma'lumotlari yuklanmagan!"
+      "no-foreign-passport": "Xorij pasporti ma'lumotlari yuklanmagan!",
+      "infoTitle": "Shaxsiy ma'lumotlar",
+      "usedAsLogin": "Login sifatida ishlatiladi",
+      "photoTitle": "Kandidat rasmi",
+      "phoneTitle": "Telefon raqam"
     },
     "position": {
       "contractType": "Shartnoma turi",
@@ -892,7 +939,10 @@
     "name": "Xodim ma'lumotlarini qo'shish",
     "ui": {
       "image": "Kandidat uchun 3 ta rasm qo'shish tavsiya qilinadi. Rasmlar oxirgi 3 oy davomida suratga olingan bo'lishi shart.",
-      "phone": "Kandidatning asosiy raqamini belgilang va bu raqam kandidatning xodim sifatida tizimga kirish uchun login vazifasini bajaradi."
+      "phone": "Kandidatning asosiy raqamini belgilang va bu raqam kandidatning xodim sifatida tizimga kirish uchun login vazifasini bajaradi.",
+      "mainImage": "Asosiy rasm",
+      "needPhotos": "{n} ta surat kerak",
+      "addPhoto": "Surat qo'shish"
     },
     "form": {
       "lastName": "Familiya",
@@ -920,9 +970,13 @@
       "address": "Yashash manzili",
       "experience_date": "Uzliksiz ish staji",
       "passportTitle": "Pasport ma'lumotlari",
-      "foreignPassportTitle": "Xorijga chiqish pasporti ma'lumotlari",
+      "foreignPassportTitle": "Xorijga chiqish pasporti",
       "education": "Ma'lumoti",
-      "work_experience": "Umumiy staj (oylarda ko'rsating)"
+      "work_experience": "Umumiy staj (oylarda ko'rsating)",
+      "birthPlace": "Tug'ilgan joy",
+      "livingPlace": "Yashash joy",
+      "citizenship": "Fuqarolik",
+      "given_place": "Berilgan joyi"
     },
     "step": {
       "personal": "Kandidatning shaxsiy ma'lumotlari",
@@ -1528,7 +1582,10 @@
     "systemTitle": "Tizimdagi mehnat faoliyati ma'lumotlari",
     "no-data": "Mehnat faoliyati qo'shilmagan!",
     "sortOldestFirst": "Boshidan oxirigacha",
-    "sortNewestFirst": "Oxiridan boshigacha"
+    "sortNewestFirst": "Oxiridan boshigacha",
+    "experienceMonth": "Staj (oy)",
+    "continuousExperience": "Uzluksiz ish staji",
+    "period": "Qachondan-qachongacha"
   },
   "workerPositionCertificatePage": {
     "title": "Lavozim guvohnomalari",
@@ -1549,7 +1606,7 @@
     }
   },
   "languageCertificatePage": {
-    "title": "Til sertifikatlari",
+    "title": "Til sertifikat ma'lumot",
     "no-data": "Til sertifikati ma'lumotlari yo'q!",
     "createTitle": "Sertifikat qo'shish",
     "updateTitle": "Sertifikatni tahrirlash",
@@ -2482,6 +2539,7 @@
     },
     "attachRole": "Rol biriktirish",
     "deleteRole": "Rolni o'chirish",
+    "detachRole": "Rolni olib tashlash",
     "selectRoleToDelete": "O'chirmoqchi bo'lgan rolni tanlang",
     "updatePassword": "Parolni yangilash",
     "newPassword": "Yangi parol",
@@ -2921,7 +2979,7 @@
     "phdNotRequired": "PhD talab etilmaydi",
     "minExp": "Kamida {n} yil staj",
     "exam": {
-      "modalTitle": "Imtixon",
+      "modalTitle": "Hisobot tayyorlash",
       "onlineBadge": "Onlayn test",
       "onlineTab": "Onlayn",
       "offlineTab": "Offline",
@@ -3100,8 +3158,13 @@
   },
   "tariffBase": {
     "title": "Bazaviy summa",
-    "tab": { "grids": "Setkalar", "bases": "Baza miqdorlari" },
-    "action": { "newValue": "Yangi qiymat (versiya)" },
+    "tab": {
+      "grids": "Setkalar",
+      "bases": "Baza miqdorlari"
+    },
+    "action": {
+      "newValue": "Yangi qiymat (versiya)"
+    },
     "form": {
       "metaTitle": "Baza ma'lumotlari",
       "name": "Baza nomi",
@@ -3141,7 +3204,11 @@
       "group": "Guruh",
       "rank": "Razryad",
       "noChanges": "O'zgarish yo'q",
-      "status": { "added": "Qo'shildi", "removed": "O'chirildi", "changed": "O'zgardi" }
+      "status": {
+        "added": "Qo'shildi",
+        "removed": "O'chirildi",
+        "changed": "O'zgardi"
+      }
     },
     "formula": {
       "title": "Formula bilan koeffitsient tahriri (Excel kabi)",
@@ -3918,7 +3985,9 @@
       "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni",
       "turnstile": "Turniket orqali xabar yuborilgan xodimlar soni"
     },
-    "table": { "sentAt": "Yuborilgan vaqti" }
+    "table": {
+      "sentAt": "Yuborilgan vaqti"
+    }
   },
   "mobileStoryPage": {
     "name": "Story e'lonlari",
@@ -3950,7 +4019,8 @@
       "preview": "Ko'rinishi",
       "replaceSlide": "Almashtirish",
       "slidesPanel": "Slaydlar",
-      "addSlideHint": "Rasm yoki video qo'shish"
+      "addSlideHint": "Rasm yoki video qo'shish",
+      "previewHint": "Telefonda shunday ko'rinadi"
     },
     "deleteConfirm": "Ushbu story o'chirilsinmi?",
     "slideDeleteConfirm": "Ushbu slayd o'chirilsinmi?",
@@ -3976,8 +4046,11 @@
     "shortDescriptionPlaceholder": "Yangilik haqida qisqacha...",
     "content": "Kontent",
     "contentPlaceholder": "Yangilik kontentini shu yerga yozing...",
+    "badge": "Yangilik",
     "attachments": "Biriktirmalar",
-    "attachmentsHint": "Hujjatlar, PDF yoki boshqa fayllarni yuklang",
+    "attachmentsHint": "Rasm siqiladi · maks. 4 MB",
+    "saveDraft": "Qoralama qilish",
+    "publish": "Chop etish",
     "statusDraft": "Qoralama",
     "statusPublished": "Nashr etilgan",
     "statusArchived": "Arxivlangan",
@@ -3995,7 +4068,13 @@
     "pinned": "Mahkamlangan",
     "video": "Video",
     "image": "Rasm",
-    "noMedia": "Media yo'q"
+    "noMedia": "Media yo'q",
+    "statistics": "Statistika",
+    "preview": "Ko'rinish",
+    "previewHint": "Telefonda shunday ko'rinadi",
+    "previewEmptyTitle": "Sarlavha kiritilmagan",
+    "previewEmptyContent": "Kontent kiritilmagan",
+    "fileTooLarge": "\"{name}\" fayl hajmi juda katta — maksimal 4 MB"
   },
   "newsCategoryPage": {
     "name": "Yangilik kategoriyalari",
@@ -4332,6 +4411,22 @@
     },
     "modal": {
       "notVerified": "Tasdiqlanmagan"
+    }
+  },
+  "dbBackup": {
+    "name": "Baza zaxiralari",
+    "table": {
+      "date": "Sana",
+      "file": "Fayl",
+      "sizeOriginal": "Original hajmi",
+      "sizeArchived": "Arxiv hajmi",
+      "duration": "Davomiyligi",
+      "status": "Holati"
+    },
+    "status": {
+      "running": "Jarayonda",
+      "done": "Bajarilgan",
+      "error": "Xatolik"
     }
   }
 }

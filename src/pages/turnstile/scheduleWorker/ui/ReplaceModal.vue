@@ -1,14 +1,16 @@
 <script setup>
-  import { useScheduleGroupWorkerStore } from '@/store/modules/index.js'
+  import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
   import { UIModal, UINSelect } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
 
   const store = useScheduleGroupWorkerStore()
+  const accStore = useAccountStore()
   const formRef = ref(null)
 
   const onSubmit = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
     formRef.value?.validate((error) => {
       if (!error) {
         const newWorker = store.workerList.find(

@@ -1,11 +1,12 @@
 <script setup>
   import { DismissCircle24Filled } from '@vicons/fluent'
-  import { useShiftTypeStore } from '@stores'
+  import { useAccountStore, useShiftTypeStore } from '@stores'
   import { UIModal, UIUser, UIPagination } from '@components'
   import DailyScheduleFilter from './DailyScheduleFilter.vue'
   import i18n from '@/i18n/index.js'
 
   const store = useShiftTypeStore()
+  const accStore = useAccountStore()
   const t = i18n.global.t
 
   const changePage = (v) => {
@@ -15,6 +16,7 @@
   }
 
   const onSave = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsWorkersWrite)) return
     if (store.selectedWorkers.length === 0) {
       $Toast.warning(t('content.empty'))
       return

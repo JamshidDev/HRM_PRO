@@ -79,6 +79,7 @@
       v-model:visible="previewVisible"
       :title="$t('mobileStoryPage.form.preview')"
       :width="380"
+      height="min(94vh, 900px)"
       :persistent="false"
     >
       <StoryPreview :key="previewIndex" :start-index="previewIndex" />

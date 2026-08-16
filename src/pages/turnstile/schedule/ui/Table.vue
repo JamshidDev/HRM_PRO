@@ -1,11 +1,12 @@
 <script setup>
-  import { useScheduleTableStore } from '@/store/modules/index.js'
+  import { useAccountStore, useScheduleTableStore } from '@/store/modules/index.js'
   import { UIPagination } from '@/components/index.js'
   import SearchElement from './SearchElement.vue'
   import DragSelectorV2 from './DragSelectorV2.vue'
   import WorkerColumn from './WorkerColumn.vue'
   import ScheduleBox from './ScheduleBox.vue'
   const store = useScheduleTableStore()
+  const accStore = useAccountStore()
 
   const showDropdown = ref(false)
   const dropdownX = ref(0)
@@ -32,6 +33,7 @@
   }
 
   const handleSelect = (key) => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsWrite)) return
     store.selectedOption = store.contextOptions.find((v) => v.key === key)
 
     let dayOption = {
@@ -90,6 +92,7 @@
   const currentDay = new Date().getDate()
 
   const handleDragSelect = (v) => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsWrite)) return
     if (!store.isSelectedContext) return
     console.log(store.savedOption)
     let dayOption = store.savedOption || {
