@@ -2698,12 +2698,31 @@
   },
   "uploadReport": {
     "name": "Hisobot yuklash",
+    "latest": "Oxirgi",
+    "olderUploads": "Oldingi yuklamalar",
     "createTitle": "Hisobot yuklash",
     "source": {
       "label": "Manba",
       "excel": "Excel",
       "ones": "1C dan",
       "onesHint": "1C dan yuklaganda fayl kerak emas — salary-1c da tortilgan ma'lumot ishlatiladi."
+    },
+    "bulkOnes": {
+      "button": "1C dan ommaviy yuklash",
+      "title": "1C dan ommaviy yuklash — Oylik hisobot",
+      "hint": "Tanlangan korxonalar uchun salary-1c da tortilgan ma'lumotdan Oylik hisobot quriladi.",
+      "period": "Davr (yil / oy)",
+      "search": "Korxona qidirish",
+      "selectAll": "Barchasini tanlash",
+      "selected": "tanlandi",
+      "employees": "xodim",
+      "upload": "Yuklash",
+      "uploading": "Yuklanmoqda",
+      "done": "Tayyor",
+      "failed": "Xato",
+      "noData": "Bu davr uchun 1C ma'lumoti topilmadi. Avval salary-1c da torting.",
+      "progress": "{done} / {total} yuklandi",
+      "summary": "Muvaffaqiyatli: {ok}, Xato: {fail}"
     },
     "form": {
       "type": "Hisobot turi",
@@ -2767,7 +2786,8 @@
     },
     "view": {
       "main_salary": "Oklad",
-      "work_time": "Ishlagan vaqti"
+      "work_time": "Ishlagan vaqti",
+      "net_salary": "Qulga tegadigan summa"
     },
     "in": {
       "code": "To'lov shifri",
@@ -3048,6 +3068,7 @@
     "month": "Oy",
     "period": "Davr (oy)",
     "pull": "1C dan tortish",
+    "uploadToReport": "Oylik hisobotga yuklash",
     "repull": "1C dan qayta tortish",
     "repullDone": "Xodim ma'lumoti 1C dan yangilandi",
     "pulled": "Tortildi",

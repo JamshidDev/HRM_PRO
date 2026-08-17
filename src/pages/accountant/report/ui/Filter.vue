@@ -1,6 +1,11 @@
 <script setup>
   import { UIPageFilter, UIYearMonth } from '@/components/index.js'
-  import { DocumentArrowUp20Regular, LockClosed24Filled, LockOpen16Filled } from '@vicons/fluent'
+  import {
+    DocumentArrowUp20Regular,
+    LockClosed24Filled,
+    LockOpen16Filled,
+    CloudArrowUp24Regular
+  } from '@vicons/fluent'
   import { useAccountStore, useUploadReportStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
 
@@ -24,6 +29,12 @@
     store.resetForm()
     store.visibleType = true
     store.visible = true
+  }
+
+  // 1C dan ommaviy yuklash (Oylik hisobot) — korxona tanlash shart emas (davr bo'yicha).
+  const onBulkOnes = () => {
+    if (!accStore.checkAction(accStore.pn.economistUploadsWrite)) return
+    store.openBulk()
   }
 </script>
 
@@ -53,6 +64,18 @@
         <template #icon>
           <LockClosed24Filled v-if="store.orgStatus" />
           <LockOpen16Filled v-else />
+        </template>
+      </n-button>
+
+      <n-button
+        v-if="accStore.checkPermission(accStore.pn.economistUploadsWrite)"
+        @click="onBulkOnes"
+        type="info"
+        class="w-full! md:w-auto!"
+      >
+        {{ $t('uploadReport.bulkOnes.button') }}
+        <template #icon>
+          <CloudArrowUp24Regular />
         </template>
       </n-button>
 
