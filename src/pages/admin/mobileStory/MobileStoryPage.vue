@@ -68,12 +68,18 @@
 
       <template #footer>
         <div class="flex justify-end gap-2 px-4 pb-2">
-          <n-button ghost class="xl:hidden" @click="showPreviewModal = true">
-            <template #icon>
-              <n-icon :component="Eye24Regular" />
-            </template>
-            {{ $t('mobileStoryPage.form.preview') }}
-          </n-button>
+          <!-- Faqat yon paneldagi preview yashiringan (xl dan tor) ekranda ko'rinadi.
+               `xl:hidden` to'g'ridan-to'g'ri n-button'ga berilsa ishlamaydi: naive-ui
+               runtime'da inject qiladigan `.n-button { display: inline-flex }` bir xil
+               specificity bilan keyin keladi. Shu sabab o'ram div'ga qo'yilgan. -->
+          <div class="xl:hidden">
+            <n-button ghost @click="showPreviewModal = true">
+              <template #icon>
+                <n-icon :component="Eye24Regular" />
+              </template>
+              {{ $t('mobileStoryPage.form.preview') }}
+            </n-button>
+          </div>
           <n-button type="error" ghost class="w-[130px]" @click="store.openVisible(false)">
             {{ $t('content.cancel') }}
           </n-button>

@@ -250,8 +250,12 @@
       </div>
 
       <!-- ── Reaksiya bari ─────────────────────────────────────────────── -->
+      <!-- `backdrop-blur` ishlatilmaydi: backdrop-filter'li element o'z kompozit
+           qatlamini yaratadi va ramkaning `border-radius` + `overflow:hidden`
+           kesishidan chetga chiqib ketadi (pastki burchaklarda oq bar ramkadan
+           tashqariga chiqadi). Shu sabab to'liq shaffofmas oq fon. -->
       <div
-        class="sticky bottom-0 z-20 flex items-center gap-5 px-4 py-3 bg-white/95 backdrop-blur border-t border-[#EAECF0]"
+        class="sticky bottom-0 z-20 flex items-center gap-5 px-4 py-3 bg-white border-t border-[#EAECF0]"
       >
         <span
           v-for="(r, idx) in reactions"
