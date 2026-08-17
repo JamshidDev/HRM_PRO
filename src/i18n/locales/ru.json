@@ -4320,7 +4320,9 @@
     "mobileFaceCheckWorker": "Mobile face: проверка сотрудника",
     "mobileFaceSchedules": "Mobile face: графики",
     "otpVerify": "Проверка OTP",
-    "holidayGreetings": "Праздничные поздравления"
+    "holidayGreetings": "Праздничные поздравления",
+    "workerSchedules": "График дежурства",
+    "workerScheduleSwap": "Замена графика"
   },
   "kpiPage": {
     "name": "Показатели KPI",

@@ -4352,7 +4352,9 @@
     "mobileFaceCheckWorker": "Mobil face: xodim tekshirish",
     "mobileFaceSchedules": "Mobil face: jadvallar",
     "otpVerify": "OTP tekshirish",
-    "holidayGreetings": "Bayram tabriklari"
+    "holidayGreetings": "Bayram tabriklari",
+    "workerSchedules": "Navbatchilik grafigi",
+    "workerScheduleSwap": "Grafik almashtirish"
   },
   "kpiPage": {
     "name": "KPI ko'rsatgichlar",

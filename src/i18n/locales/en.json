@@ -4308,7 +4308,9 @@
     "mobileFaceCheckWorker": "Mobile face: check worker",
     "mobileFaceSchedules": "Mobile face: schedules",
     "otpVerify": "OTP verify",
-    "holidayGreetings": "Holiday greetings"
+    "holidayGreetings": "Holiday greetings",
+    "workerSchedules": "Duty schedule",
+    "workerScheduleSwap": "Schedule swap"
   },
   "kpiPage": {
     "name": "KPI indicators",
