@@ -122,7 +122,16 @@
             { class: 'text-xs font-medium text-textColor2 !text-wrap' },
             option.name || ''
           ),
-          h('div', { class: 'text-xs text-textColor3 !text-wrap' }, option.position || '')
+          // FXSH xodimida lavozim yo'q (position_id NULL) — o'sha o'ringa shartnoma turi.
+          h(
+            'div',
+            {
+              class: option.position
+                ? 'text-xs text-textColor3 !text-wrap'
+                : 'text-xs text-primary !text-wrap'
+            },
+            option.position || option.contractType || ''
+          )
         ])
       ])
     ]
