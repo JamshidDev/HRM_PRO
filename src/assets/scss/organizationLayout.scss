@@ -284,7 +284,8 @@ $mobile_device_screen_size: 900px;
   .page-content {
     width: calc(100% - $sidebar-max-width);
     margin-left: $sidebar-max-width;
-    min-height: 100vh;
+    // `100vh` emas: mobil brauzerlarda manzil paneli hisobga olinsin.
+    min-height: 100dvh;
     background: var(--surface-ground);
     transition: all 0.3s;
 
@@ -297,9 +298,23 @@ $mobile_device_screen_size: 900px;
     .main-content {
       overflow-x: hidden;
       overflow-y: auto;
+      // Flex item o'z kontentidan kichrayа olsin — busiz `overflow-y: auto` ishlamaydi.
+      min-height: 0;
 
       .ui-page-content {
-        height: 100dvh;
+        // Ilgari `100dvh` edi. `.main-content` — balandligi `100dvh` bo'lgan ustun
+        // ichidagi flex item bo'lib, header allaqachon 44px olgan; ya'ni uning o'z
+        // qutisi `100dvh - 44px`. Bolasiga to'liq `100dvh` majburlash doimiy 44px
+        // overflow berardi (ikkilamchi skroll, jadval `h-full` i noto'g'ri).
+        // Yondagi `.main-content-with-tabs` da `100%` allaqachon shunday ishlaydi.
+        height: 100%;
+
+        // Mobilda sahifa o'z bo'yicha o'ssin, skrollni `.main-content` boshqarsin —
+        // kartalar ro'yxati qat'iy balandlikka qamalib qolmasin.
+        @media screen and (max-width: 767.98px) {
+          height: auto;
+          min-height: 100%;
+        }
       }
     }
 

@@ -898,10 +898,60 @@
     flex-shrink: 0;
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 767.98px) {
     .export-group {
       grid-template-columns: minmax(0, 1fr);
       gap: 10px;
+    }
+
+    /* 300px qat'iy karta 375px ekranda modal padding'i bilan sig'maydi. */
+    .export-options {
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .export-option {
+      width: 100%;
+      max-width: 320px;
+    }
+
+    /* 96px — telefon ekranining ~1/4 qismi, bekorga ketardi. */
+    .export-info {
+      padding-top: 28px;
+    }
+
+    .export-info__text {
+      font-size: 12px;
+    }
+
+    /* Ustunlar ko'p bo'lganda preview jadvali skroll bo'ladi — 120px o'rniga
+       96px bilan bir ekranga ko'proq ustun sig'adi. */
+    .export-preview {
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .export-preview__table td,
+    .export-preview__table th {
+      min-width: 96px;
+    }
+
+    /* Asosiy amal — barmoq uchun to'liq kenglikda, lekin pill shaklini saqlaydi. */
+    .export-start :deep(.n-button) {
+      --n-height: 44px !important;
+      --n-padding: 0 22px !important;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    /* Pill tab'lar sig'masa gorizontal skroll bo'lsin (component.scss:54). */
+    .export-head {
+      gap: 10px;
+    }
+
+    .export-head :deep(.n-tabs) {
+      min-width: 0;
+      max-width: 100%;
     }
   }
 </style>

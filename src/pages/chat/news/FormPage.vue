@@ -4,7 +4,7 @@
   import { useNewsStore } from '@/store/modules/index.js'
   import { AppPaths } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
-  import { UIPageContent, UIBackButton } from '@/components/index.js'
+  import { UIPageContent, UIBackButton, UIModal } from '@/components/index.js'
   import Form from './ui/Form.vue'
   import NewsMobilePreview from './ui/NewsMobilePreview.vue'
 
@@ -68,15 +68,17 @@
     </n-spin>
 
     <!-- Tor ekranlarda preview modal ichida ochiladi -->
-    <n-modal
-      v-model:show="showPreviewModal"
-      :mask-closable="true"
-      style="background: transparent; box-shadow: none; padding: 0"
+    <UIModal
+      v-model:visible="showPreviewModal"
+      :title="$t('newsPage.preview')"
+      :width="400"
+      height="min(94vh, 900px)"
+      :persistent="false"
     >
-      <div class="bg-surface-section rounded-3xl p-4 max-h-[94vh] overflow-y-auto" @click.stop>
+      <div class="flex justify-center">
         <NewsMobilePreview :lang-index="langIndex" />
       </div>
-    </n-modal>
+    </UIModal>
   </UIPageContent>
 </template>
 

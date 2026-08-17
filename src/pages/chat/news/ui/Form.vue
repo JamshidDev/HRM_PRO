@@ -231,12 +231,18 @@
     <div
       class="news-form-actions sticky bottom-0 z-20 flex items-center justify-end gap-2 rounded-2xl border border-surface-line px-4 py-3"
     >
-      <n-button ghost class="xl:hidden" @click="emits('preview')">
-        <template #icon>
-          <n-icon><EyeIcon /></n-icon>
-        </template>
-        {{ $t('newsPage.preview') }}
-      </n-button>
+      <!-- Faqat yon paneldagi preview yashiringan (xl dan tor) ekranda ko'rinadi.
+           `xl:hidden` to'g'ridan-to'g'ri n-button'ga berilsa ishlamaydi: naive-ui
+           runtime'da inject qiladigan `.n-button { display: inline-flex }` bir xil
+           specificity bilan keyin keladi. Shu sabab o'ram div'ga qo'yilgan. -->
+      <div class="xl:hidden">
+        <n-button ghost @click="emits('preview')">
+          <template #icon>
+            <n-icon><EyeIcon /></n-icon>
+          </template>
+          {{ $t('newsPage.preview') }}
+        </n-button>
+      </div>
       <n-button quaternary :disabled="store.saveLoading" @click="emits('cancel')">
         {{ $t('content.cancel') }}
       </n-button>

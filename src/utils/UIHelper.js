@@ -35,9 +35,14 @@ const scheduleValue = ({ option }) => {
   )
 }
 
-export const renderIcon = (icon) => {
+/**
+ * `color` — ikonka `currentColor` ishlatganda uni aniq rangga qadash uchun
+ * (masalan jadval menyusidagi kulrang ikonkalar oilasi: #667085). Berilmasa
+ * ikonka odatdagidek atrofdagi matn rangini oladi.
+ */
+export const renderIcon = (icon, color) => {
   return () => {
-    return h(NIcon, null, {
+    return h(NIcon, color ? { color } : null, {
       default: () => h(icon)
     })
   }

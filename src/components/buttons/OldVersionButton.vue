@@ -10,8 +10,13 @@
     :style="positionStyle"
     @click="onClick"
   >
-    <span class="text-white text-sm font-medium whitespace-nowrap">{{ $t(labelKey) }}</span>
-    <RevertIcon class="text-white w-4 h-4" :class="{ '[transform:rotateY(180deg)]': mode === 'old' }" />
+    <span class="old-version-btn__label text-white text-sm font-medium whitespace-nowrap">
+      {{ $t(labelKey) }}
+    </span>
+    <RevertIcon
+      class="old-version-btn__icon text-white w-4 h-4"
+      :class="{ '[transform:rotateY(180deg)]': mode === 'old' }"
+    />
   </a>
 </template>
 
@@ -176,5 +181,29 @@
 
   .old-version-btn:active {
     cursor: grabbing;
+  }
+
+  /* Mobilda ixchamroq: 36px balandlik va 16px padding bilan tugma sahifa
+     tepasining yarmini egallardi. Sudrash chegaralari `offsetWidth`/`offsetHeight`
+     bilan o'lchanadi, ya'ni yangi o'lchamga o'zi moslashadi.
+     Klasslar Tailwind utility'laridan yuqori spesifiklikda (scoped `[data-v]`
+     atributi qo'shiladi), shu bois `h-9`/`px-4`/`text-sm`/`w-4` bosib o'tiladi. */
+  @media (max-width: 767.98px) {
+    .old-version-btn {
+      height: 30px;
+      padding-left: 10px;
+      padding-right: 10px;
+      gap: 4px;
+    }
+
+    .old-version-btn__label {
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .old-version-btn__icon {
+      width: 14px;
+      height: 14px;
+    }
   }
 </style>

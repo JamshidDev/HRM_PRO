@@ -71,12 +71,11 @@
 <template>
   <n-modal v-model:show="store.checkUserVisible">
     <n-card
-      style="width: 600px"
       :bordered="false"
       size="huge"
       role="dialog"
       aria-modal="true"
-      class="grid grid-cols-1 card-p-none"
+      class="w-[600px] max-w-[calc(100vw-24px)] grid grid-cols-1 card-p-none"
     >
       <div
         class="pb-6 relative before:content-[' '] before:bg-[url('/search-user-icon.png')] before:w-full before:h-full before:absolute before:top-0 before:left-0 before:bg-no-repeat before:bg-center before:bg-contain before:opacity-[0.05]"
@@ -106,11 +105,13 @@
               <template #icon>
                 <n-icon :component="Search24Regular" />
               </template>
-              {{ $t('content.search') }}
+              <!-- PIN maskasi (`####-####-####-##`) ~180px oladi — telefonda
+                   tugma faqat ikonka bo'lib, o'sha joyni maydonga qaytaradi. -->
+              <span class="hidden sm:inline">{{ $t('content.search') }}</span>
             </n-button>
           </n-input-group>
         </div>
-        <div class="flex min-h-[380px] py-4">
+        <div class="flex min-h-[260px] sm:min-h-[380px] py-4 px-4">
           <n-spin :show="store.pinLoading" class="flex justify-center items-center w-full">
             <template v-if="!Boolean(store.pin)">
               <n-gradient-text
@@ -124,7 +125,7 @@
             </template>
 
             <template v-if="store.worker && Boolean(store.pin)">
-              <div class="w-[400px] cursor-pointer flex flex-col gap-y-4">
+              <div class="w-full max-w-[400px] cursor-pointer flex flex-col gap-y-4">
                 <UIUser :hide-tooltip="true" :short="false" :data="store.worker" />
 
                 <div
@@ -158,7 +159,7 @@
                     <n-popover
                       placement="bottom"
                       trigger="click"
-                      class="!w-[360px] border border-surface-line"
+                      class="!w-[min(360px,calc(100vw-32px))] border border-surface-line"
                     >
                       <template #trigger>
                         <n-button @click="onShowHrContacts(item)" class="!mb-6 !mt-1" size="tiny" dashed type="info">
@@ -209,7 +210,7 @@
             </template>
             <template v-if="!Boolean(store.worker) && Boolean(store.pin) && !store.pinLoading">
               <div
-                class="w-[400px] flex flex-col bg-surface-section border py-2 px-4 rounded-xl border-surface-line"
+                class="w-full max-w-[400px] flex flex-col bg-surface-section border py-2 px-4 rounded-xl border-surface-line"
               >
                 <n-icon size="46" class="text-warning mx-auto">
                   <Warning24Filled />
