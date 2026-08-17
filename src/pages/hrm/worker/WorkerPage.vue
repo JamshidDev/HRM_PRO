@@ -12,7 +12,6 @@
   import ExportForm from './ui/ExportForm.vue'
   import Filter from './ui/Filter.vue'
   import CheckWorker from './ui/CheckWorker.vue'
-  import UserRolePage from './ui/UserRolePage.vue'
   import {
     useTimesheetDepartmentStore,
     useWorkerStore,
@@ -65,6 +64,7 @@
     <UIModal
       :title="store.visibleType ? $t('documentPage.createTitle') : $t('documentPage.updateTitle')"
       :width="1200"
+      fullscreen-on-mobile
       v-model:visible="store.visible"
     >
       <template #default>
@@ -76,8 +76,9 @@
          Ichki qism o'zi skroll bo'ladi. -->
     <UIModal
       :width="1040"
-      height="calc(100vh - 50px)"
+      height="calc(100dvh - 50px)"
       card-class="export-modal-card"
+      fullscreen-on-mobile
       v-model:visible="exportStore.visible"
     >
       <template #header>
@@ -143,8 +144,18 @@
   :global(.export-modal-card) {
     overflow: hidden;
     max-width: calc(100vw - 32px);
-    max-height: calc(100vh - 50px);
+    max-height: calc(100dvh - 50px);
     border-radius: 20px !important;
+  }
+
+  /* Telefonda modal fullscreen: `UIModal` inline style bilan `100vw`/`100dvh`
+     va `border-radius: 0` beradi, bu yerdagi clamp'lar unga xalaqit bermasin. */
+  @media (max-width: 767.98px) {
+    :global(.export-modal-card) {
+      max-width: 100vw;
+      max-height: 100dvh;
+      border-radius: 0 !important;
+    }
   }
 
   /* Header ataylab past: modal balandligi qotirilgan (720px), shu bois har bir
@@ -185,6 +196,23 @@
     font-size: 16px;
     font-weight: 700;
     white-space: nowrap;
+    /* Telefonda sarlavha yonidagi hisoblagich va × ni siqib chiqarmasin. */
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 767.98px) {
+    .export-modal-header {
+      padding: 10px 12px;
+    }
+
+    .export-modal-title {
+      font-size: 15px;
+    }
+
+    .export-modal-footer {
+      padding: 10px 12px;
+    }
   }
 
   .export-modal-footer {

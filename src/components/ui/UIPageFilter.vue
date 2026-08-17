@@ -166,7 +166,10 @@
         </n-input>
         <slot name="filterSearch"></slot>
       </div>
-      <div class="flex flex-wrap items-center w-full md:w-[calc(100%-264px)] justify-end gap-4">
+      <!-- `md:w-[calc(100%-264px)]` emas: u 264px qidiruv ustunini aks ettirar,
+           lekin oradagi `gap-4` ni hisobga olmas edi, ya'ni aynan `md` chegarasida
+           qator 16px oshib ketardi. Flexbox kenglikni o'zi to'g'ri hisoblaydi. -->
+      <div class="flex flex-wrap items-center w-full md:flex-1 md:min-w-0 justify-end gap-4">
         <slot name="filterAction"></slot>
         <n-button
           class="ui-page-action-button w-full! md:w-auto!"

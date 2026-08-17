@@ -1,5 +1,6 @@
 <script setup>
   import { Dismiss24Regular } from '@vicons/fluent'
+  import { useAppBreakpoints } from '@/composables/index.js'
 
   const visible = defineModel('visible', { type: Boolean, default: false })
   const emit = defineEmits(['click:close'])
@@ -12,6 +13,26 @@
       type: [Number, String],
       default: null
     },
+    /**
+     * `width` HAR DOIM shu qiymatga qisiladi. Ilgari clamp umuman yo'q edi, ya'ni
+     * `:width="1200"` tom ma'noda `width: 1200px` bo'lib, telefon/planshetda
+     * ekrandan chiqib ketardi. Clamp faqat `viewport < width + 32` bo'lganda
+     * ishga tushadi — ya'ni allaqachon buzuq bo'lgan holatlarda.
+     */
+    maxWidth: {
+      type: String,
+      default: 'calc(100vw - 32px)'
+    },
+    /**
+     * Telefonda (`< md`) modal butun ekranni egallaydi — burchaksiz, chetsiz.
+     * Faqat KENG modallar uchun (~700px+): tor dialoglar markazlashgan karta
+     * bo'lib qolgani ma'qul, aks holda ular navigatsiyaga o'xshab qoladi.
+     * Shu sababli opt-in.
+     */
+    fullscreenOnMobile: {
+      type: Boolean,
+      default: false
+    },
     title: {
       type: String,
       default: 'no-title'
@@ -23,6 +44,40 @@
     cardClass: {
       type: [String, Array, Object],
       default: null
+    }
+  })
+
+  const { isMobile } = useAppBreakpoints()
+  const isFullscreen = computed(() => props.fullscreenOnMobile && isMobile.value)
+
+  // Fullscreen ham `height` kabi ichki skroll konteyner talab qiladi.
+  const isFlexBody = computed(() => Boolean(props.height) || isFullscreen.value)
+
+  const cardStyle = computed(() => {
+    if (isFullscreen.value) {
+      return {
+        width: '100vw',
+        maxWidth: '100vw',
+        height: '100dvh',
+        maxHeight: '100dvh',
+        borderRadius: '0',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden'
+      }
+    }
+
+    return {
+      width: isNaN(props.width) ? props.width : props.width + 'px',
+      maxWidth: props.maxWidth,
+      ...(props.height
+        ? {
+            height: isNaN(props.height) ? props.height : props.height + 'px',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden'
+          }
+        : {})
     }
   })
 
@@ -46,20 +101,12 @@
       size="huge"
       role="dialog"
       aria-modal="true"
-      :style="{
-        width: isNaN(width) ? width : width + 'px',
-        ...(height ? {
-          height: isNaN(height) ? height : height + 'px',
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-        } : {})
-      }"
-      :content-style="height ? 'flex:1;min-height:0;overflow:hidden;padding:0;display:flex;flex-direction:column;' : 'padding:0;'"
+      :style="cardStyle"
+      :content-style="isFlexBody ? 'flex:1;min-height:0;overflow:hidden;padding:0;display:flex;flex-direction:column;' : 'padding:0;'"
       closable
     >
       <template #default>
-        <div class="flex flex-col p-2" :class="[height && 'h-full']">
+        <div class="flex flex-col p-2" :class="[isFlexBody && 'h-full']">
           <div class="w-full shrink-0">
             <slot name="header">
               <!-- `-mx-2 -mt-2` tashqi `p-2` ni bekor qiladi, shunda ajratuvchi chiziq
@@ -83,7 +130,7 @@
               </div>
             </slot>
           </div>
-          <div class="px-4 pt-4 pb-4" :class="[height && 'flex-1 min-h-0 overflow-y-auto']">
+          <div class="px-4 pt-4 pb-4" :class="[isFlexBody && 'flex-1 min-h-0 overflow-y-auto']">
             <slot name="default"> </slot>
           </div>
           <div class="shrink-0" v-if="$slots.footer">

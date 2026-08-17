@@ -57,7 +57,7 @@
   >
     <!-- Header: rol + korxona tanlab biriktirish -->
     <div class="grid grid-cols-12 gap-3 items-end pb-4 border-b border-surface-line">
-      <div class="col-span-5">
+      <div class="col-span-12 md:col-span-5">
         <label class="text-xs text-textColor3 mb-1 block">{{ $t('workerRole.from.role') }}</label>
         <n-select
           v-model:value="store.rolePayload.role"
@@ -69,7 +69,7 @@
           :placeholder="$t('content.choose')"
         />
       </div>
-      <div class="col-span-5">
+      <div class="col-span-12 md:col-span-5">
         <label class="text-xs text-textColor3 mb-1 block">{{
           $t('documentPage.form.organization')
         }}</label>
@@ -85,7 +85,7 @@
           @onSearch="componentStore._structures"
         />
       </div>
-      <div class="col-span-2">
+      <div class="col-span-12 md:col-span-2">
         <n-button
           class="w-full"
           type="primary"
@@ -98,10 +98,11 @@
       </div>
     </div>
 
-    <!-- Joriy rollar — balandlik QAT'IY, ro'yxat ichida scroll.
-         Aks holda rol ko'paygan sari modal cho'zilib ketardi. -->
+    <!-- Joriy rollar — balandlik CHEKLANGAN, ro'yxat ichida scroll. Aks holda rol
+         ko'paygan sari modal cho'zilib ketardi. `h-` emas `max-h-`: bitta rol
+         bo'lganda telefon ekranining yarmi behuda ketmasin. -->
     <n-spin :show="store.rolesLoading" class="w-full">
-      <div class="flex flex-col gap-2 my-4 h-[280px] overflow-y-auto pr-1">
+      <div class="flex flex-col gap-2 my-4 max-h-[280px] min-h-[120px] overflow-y-auto pr-1">
         <div
           v-if="!store.rolesList.length && !store.rolesLoading"
           class="text-center text-sm text-textColor3 py-6"

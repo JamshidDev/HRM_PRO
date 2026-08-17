@@ -6,6 +6,7 @@
     useAccountStore
   } from '@/store/modules/index.js'
   import { UINSelect, UIPageFilter, UISelect } from '@/components/index.js'
+  import { useAppBreakpoints } from '@/composables/index.js'
   import {
     ArrowSync16Regular,
     ChevronDown20Regular,
@@ -23,6 +24,9 @@
   const accStore = useAccountStore()
   const exportStore = useExportStore()
   const componentStore = useComponentStore()
+
+  // Popover kengligi uchun: `lg` (976px) dan pastda 712px viewport'ga sig'maydi.
+  const { isDesktop } = useAppBreakpoints()
 
   const debounceIndexEv = useDebounce(store._index, 1000)
 
@@ -267,8 +271,8 @@
     :show-add-button="false"
     filter-placement="bottom-end"
     :popover-style="{
-      width: '712px',
-      maxWidth: 'calc(100vw - 32px)',
+      width: isDesktop ? '712px' : 'min(712px, calc(100vw - 24px))',
+      maxWidth: 'calc(100vw - 24px)',
       padding: '0',
       borderRadius: '20px'
     }"
@@ -332,7 +336,7 @@
     <template #filterContent>
       <div class="worker-filter-panel">
         <div class="grid grid-cols-12 gap-6">
-          <div class="col-span-12 md:col-span-4">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ $t('workerPage.filter.organization') }}</label>
             <UISelect
               multiple
@@ -350,7 +354,7 @@
             />
           </div>
 
-          <div class="col-span-12 md:col-span-4">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ $t('workerPage.filter.department') }}</label>
             <UINSelect
               multiple
@@ -366,7 +370,7 @@
             />
           </div>
 
-          <div class="col-span-12 md:col-span-4">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ $t('createWorkerPage.form.education') }}</label>
             <n-select
               v-model:value="store.params.educations"
@@ -381,7 +385,7 @@
             />
           </div>
 
-          <div class="col-span-12 md:col-span-4">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ $t('workerPage.filter.position') }}</label>
             <UINSelect
               multiple
@@ -397,7 +401,7 @@
             />
           </div>
 
-          <div class="col-span-12 md:col-span-4">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ $t('workerPage.filter.position_type') }}</label>
             <n-select
               v-model:value="store.params.position_type"
@@ -412,7 +416,7 @@
           </div>
 
           <!-- Hisoblash kesimi: lavozim (har lavozim qator) yoki xodim (har xodim 1 qator) -->
-          <div class="col-span-12 md:col-span-4">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ $t('workerPage.filter.countBy') }}</label>
             <n-select
               v-model:value="store.params.count_by"
@@ -424,7 +428,7 @@
             />
           </div>
 
-          <div class="col-span-12 md:col-span-4">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ $t('workerPage.filter.contract_type') }}</label>
             <n-select
               v-model:value="store.params.contract_type"
@@ -440,7 +444,7 @@
             />
           </div>
 
-          <div class="col-span-12 md:col-span-6">
+          <div class="col-span-12 sm:col-span-6">
             <label class="invisible">-</label>
             <div class="worker-filter-check">
               <n-checkbox @change="filterEvent" v-model:checked="store.params.multiple_position">
@@ -449,7 +453,7 @@
             </div>
           </div>
 
-          <div class="col-span-12 md:col-span-6">
+          <div class="col-span-12 sm:col-span-6">
             <label class="invisible">-</label>
             <div class="worker-filter-check">
               <n-checkbox @change="filterEvent" v-model:checked="store.params.pension_age">
@@ -462,7 +466,7 @@
         <n-divider class="worker-filter-divider" />
 
         <div class="grid grid-cols-12 gap-6">
-          <div class="col-span-12 md:col-span-4">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ $t('workerPage.filter.age') }}</label>
             <n-radio-group
               v-model:value="ageMode"
@@ -474,7 +478,7 @@
             </n-radio-group>
           </div>
 
-          <div class="col-span-12 md:col-span-4">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ ageMode === 'range' ? $t('content.from') : $t('content.ageExact') }}</label>
             <n-input-number
               v-if="ageMode === 'range'"
@@ -500,7 +504,7 @@
             />
           </div>
 
-          <div v-if="ageMode === 'range'" class="col-span-12 md:col-span-4">
+          <div v-if="ageMode === 'range'" class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ $t('content.to') }}</label>
             <n-input-number
               v-model:value="ageTo"
@@ -528,7 +532,7 @@
 
         <n-collapse-transition :show="showAllFilters">
           <div class="grid grid-cols-12 gap-6 mt-6">
-            <div class="col-span-12 md:col-span-4">
+            <div class="col-span-12 sm:col-span-6 lg:col-span-4">
               <label>{{ $t('workerPage.filter.birthday') }}</label>
               <n-select
                 v-model:value="store.params.birthday"
@@ -541,7 +545,7 @@
               />
             </div>
 
-            <div class="col-span-12 md:col-span-4">
+            <div class="col-span-12 sm:col-span-6 lg:col-span-4">
               <label>{{ $t('workerPage.filter.sex') }}</label>
               <n-select
                 v-model:value="store.params.sex"
@@ -554,7 +558,7 @@
               />
             </div>
 
-            <div class="col-span-12 md:col-span-4">
+            <div class="col-span-12 sm:col-span-6 lg:col-span-4">
               <label>{{ $t('createWorkerPage.form.marital_status') }}</label>
               <n-select
                 v-model:value="store.params.marital_status"
@@ -568,7 +572,7 @@
               />
             </div>
 
-            <div class="col-span-12 md:col-span-4">
+            <div class="col-span-12 sm:col-span-6 lg:col-span-4">
               <label>{{ $t('createWorkerPage.form.nationality_id') }}</label>
               <n-select
                 v-model:value="store.params.nationalities"
@@ -583,7 +587,7 @@
               />
             </div>
 
-            <div class="col-span-12 md:col-span-4">
+            <div class="col-span-12 sm:col-span-6 lg:col-span-4">
               <label>{{ $t('createWorkerPage.form.country') }}</label>
               <n-select
                 v-model:value="store.params.country_id"
@@ -597,7 +601,7 @@
               />
             </div>
 
-            <div class="col-span-12 md:col-span-4">
+            <div class="col-span-12 sm:col-span-6 lg:col-span-4">
               <label>{{ $t('createWorkerPage.form.region') }}</label>
               <n-select
                 v-model:value="store.params.region_id"
@@ -611,7 +615,7 @@
               />
             </div>
 
-            <div class="col-span-12 md:col-span-4">
+            <div class="col-span-12 sm:col-span-6 lg:col-span-4">
               <label>{{ $t('createWorkerPage.form.city') }}</label>
               <n-select
                 v-model:value="store.params.city_id"
@@ -626,7 +630,7 @@
               />
             </div>
 
-            <div class="col-span-12 md:col-span-4">
+            <div class="col-span-12 sm:col-span-6 lg:col-span-4">
               <label>{{ $t('createWorkerPage.form.currentRegion') }}</label>
               <n-select
                 v-model:value="store.params.current_region_id"
@@ -640,7 +644,7 @@
               />
             </div>
 
-            <div class="col-span-12 md:col-span-4">
+            <div class="col-span-12 sm:col-span-6 lg:col-span-4">
               <label>{{ $t('createWorkerPage.form.currentCity') }}</label>
               <n-select
                 v-model:value="store.params.current_city_id"
@@ -739,21 +743,48 @@
     cursor: not-allowed;
   }
 
-  /* Mobil: ikkala tugma bitta qatorda teng kenglikda, "Filterlar" esa alohida qatorda */
-  @media (max-width: 767px) {
+  /* Mobil: ikkilamchi amallar juft-juft, asosiy amal («Hisobot olish» / «Yuklash»)
+     esa alohida to'liq qatorda. Ilgari `flex-wrap: nowrap` uchala tugmani 375px da
+     ~110px ga qisar, natijada har bir yorliq ellipsisga aylanib o'qilmas edi. */
+  @media (max-width: 767.98px) {
     .worker-action-group {
-      flex-wrap: nowrap;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
       width: 100%;
     }
 
-    .worker-action-group > * {
-      flex: 1 1 0;
-      min-width: 0;
+    .worker-action-group > :deep(.n-button) {
+      width: 100%;
+      /* Barmoq uchun minimal balandlik. */
+      --n-height: 38px !important;
+    }
+
+    .worker-report-trigger,
+    .worker-report-group {
+      grid-column: 1 / -1;
+      width: 100%;
     }
 
     .worker-report-trigger {
       justify-content: center;
-      width: 100%;
+      height: 38px;
+    }
+
+    .worker-report-group {
+      display: flex;
+    }
+
+    .worker-report-group__main {
+      flex: 1 1 auto;
+    }
+
+    .worker-report-group__close {
+      flex: 0 0 auto;
+    }
+
+    .worker-report-group :deep(.n-button) {
+      --n-height: 38px !important;
     }
 
     .worker-action-group :deep(.n-button__content) {
@@ -881,8 +912,10 @@
     color: #f2f4f7;
   }
 
+  /* Teleport qilingan dropdown — qat'iy 320px 375px ekranda anchor inset bo'lgach
+     overflow berardi. */
   :global(.worker-contract-type-menu) {
     width: auto !important;
-    min-width: 320px;
+    min-width: min(320px, calc(100vw - 24px));
   }
 </style>

@@ -309,6 +309,9 @@
     :selected-keys="exportStore.resumePayload.worker_ids"
     :all-selected="exportStore.resumePayload.all"
     storage-key="hrm-worker"
+    mobile-cards
+    mobile-primary-key="worker"
+    :mobile-collapse-after="3"
     @change-page="changePage"
     @toggle-row="exportStore.toggleResumeWorker"
     @toggle-all="exportStore.toggleAll"

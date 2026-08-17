@@ -9,7 +9,7 @@
     UITableSelectAll,
     UITableSelectRow
   } from '@/components/index.js'
-  import { useTableColumnFit, useTableColumns } from '@/composables/index.js'
+  import { useAppBreakpoints, useTableColumnFit, useTableColumns } from '@/composables/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import { NEllipsis } from 'naive-ui'
@@ -53,7 +53,18 @@
     deleteWarning: { type: [String, Function], default: null }, // custom confirm message for the delete action; static or (row) => string
     // Bir sahifada bir nechta jadval ustma-ust turganda (masalan xodim profili):
     // jadval qolgan bo'sh joyni egallamaydi, balki qatorlari bo'yicha o'sadi.
-    autoHeight: { type: Boolean, default: false }
+    autoHeight: { type: Boolean, default: false },
+
+    // ===== Mobil karta rejimi (opt-in) =====
+    // `mobileBreakpoint` dan pastda `n-data-table` o'rniga stacked karta ro'yxati
+    // chiziladi. Default O'CHIQ — bu propni bermaydigan sahifalar hech qanday
+    // o'zgarish sezmaydi (yangi shox umuman ishga tushmaydi).
+    mobileCards: { type: Boolean, default: false },
+    // Karta sarlavhasi bo'ladigan ustun (default: birinchi ko'rinadigan ustun).
+    mobilePrimaryKey: { type: String, default: null },
+    // Shundan keyingi qatorlar «Batafsil» ostiga yashiriladi (0 = hammasi ochiq).
+    mobileCollapseAfter: { type: Number, default: 4 },
+    mobileBreakpoint: { type: String, default: 'md' }
   })
 
   const emit = defineEmits([
@@ -288,6 +299,36 @@
     return getCellValue(row, col.key)
   }
 
+  // ===== Mobil karta rejimi =====
+  const { breakpoints } = useAppBreakpoints()
+  const belowMobile = breakpoints.smaller(props.mobileBreakpoint)
+  const useCards = computed(() => props.mobileCards && belowMobile.value)
+
+  // Kartadagi ustunlar — desktop jadvali iste'mol qiladigan AYNAN o'sha to'plam
+  // (`useTableColumns` natijasi). Ustun boshqaruvchisida ustun yoqilsa/o'chirilsa
+  // karta ham darrov moslashadi; ikkita alohida ro'yxatni sinxron ushlash shart emas.
+  const dataCols = computed(() => (tableColumns ? tableColumns.columns.value : props.columns))
+  const primaryCol = computed(
+    () => dataCols.value.find((c) => c.key === props.mobilePrimaryKey) ?? dataCols.value[0]
+  )
+  const cardCols = computed(() => dataCols.value.filter((c) => c.key !== primaryCol.value?.key))
+
+  // `renderCell` ni (va u orqali `#cell-<key>` slotlarini) kartada QAYTA ISHLATISH
+  // uchun barqaror funksional komponent. Identifikatori bir marta yaratiladi —
+  // aks holda har render'da qayta mount bo'lib, ichidagi tooltip/dropdown holati
+  // yo'qolardi.
+  const MobileCell = (p) => renderCell(p.col, p.row, p.index)
+  MobileCell.props = ['col', 'row', 'index']
+
+  const expandedCards = reactive(new Set())
+  const toggleCard = (key) =>
+    expandedCards.has(key) ? expandedCards.delete(key) : expandedCards.add(key)
+
+  const visibleCardCols = (rowKeyVal) =>
+    props.mobileCollapseAfter > 0 && !expandedCards.has(rowKeyVal)
+      ? cardCols.value.slice(0, props.mobileCollapseAfter)
+      : cardCols.value
+
   const rowProps = (row, index) => ({
     onClick: () => emit('row-click', row, index),
     onContextmenu: (e) => onRowContextmenu(e, row, index),
@@ -339,10 +380,16 @@
   <n-spin
     :show="loading && !empty"
     class="ui-table__spin"
-    :class="!autoHeight && 'h-full overflow-auto'"
+    :class="!autoHeight && !useCards && 'h-full overflow-auto'"
   >
+    <!-- Karta rejimidagi skeleton: ustun shaklidagi flex qatorlar bu yerda ma'nosiz
+         (jadval yo'q), shu bois karta shaklidagi bloklar chiziladi. -->
+    <div v-if="showSkeleton && useCards" class="flex flex-col gap-3">
+      <n-skeleton v-for="i in 3" :key="`skc-${i}`" height="120px" class="rounded-2xl!" />
+    </div>
+
     <div
-      v-if="showSkeleton"
+      v-else-if="showSkeleton"
       class="ui-table__wrapper flex flex-col p-1 bg-surface-section rounded-[20px]"
       :class="!autoHeight && 'h-full min-h-[clamp(200px,calc(100vh-100%),600px)]'"
     >
@@ -380,6 +427,114 @@
       <slot name="empty">
         <NoDataPicture />
       </slot>
+    </div>
+
+    <!-- ===== Mobil karta ro'yxati =====
+         Jadval ~1280px talab qiladi, telefonda esa bu 3.4x gorizontal skroll.
+         Kataklar `renderCell` orqali chiziladi, ya'ni `#cell-<key>` slotlari,
+         `UIUser`/`UIGender` kabi komponentlar va amallar menyusi desktop bilan
+         AYNAN bir xil ishlaydi — takror kod yo'q. -->
+    <div v-else-if="useCards" class="ui-table__cards flex flex-col gap-3">
+      <!-- Desktopda «barchasini tanlash» va ustun boshqaruvchisi `__index` /
+           `__actions` sarlavhalarida turadi; mobilda bu ustunlar yo'q, shu bois
+           ular alohida panelga chiqariladi. -->
+      <div v-if="selectable || tableColumns" class="flex items-center gap-2 px-1">
+        <template v-if="selectable">
+          <UITableSelectRow :checked="allSelected" @toggle="emit('toggle-all')" />
+          <span class="text-sm text-textColor2">{{ t('exportPage.checkAll') }}</span>
+        </template>
+        <UITableColumns
+          v-if="tableColumns"
+          class="ml-auto"
+          :columns="tableColumns.allColumns.value"
+          @update:columns="(v) => tableColumns.setAllColumns(v)"
+          @reset="
+            () => {
+              resetColumnFit()
+              tableColumns.reset()
+            }
+          "
+        />
+      </div>
+
+      <div
+        v-for="(row, index) in data"
+        :key="row[rowKey]"
+        class="flex flex-col gap-3 rounded-2xl border border-surface-line bg-surface-section p-3"
+        :class="rowClassName?.(row, index)"
+        @click="emit('row-click', row, index)"
+      >
+        <slot name="mobile-card" :row="row" :index="index">
+          <div class="flex items-start gap-2">
+            <UITableSelectRow
+              v-if="selectable"
+              class="mt-1 shrink-0"
+              :checked="selectedKeys.includes(row[rowKey]) || allSelected"
+              :disabled="allSelected"
+              @toggle="emit('toggle-row', row)"
+            />
+            <span v-else class="mt-1 shrink-0 text-xs text-textColor3 tabular-nums">
+              {{ indexOffset + index + 1 }}
+            </span>
+
+            <div class="min-w-0 flex-1">
+              <MobileCell v-if="primaryCol" :col="primaryCol" :row="row" :index="index" />
+            </div>
+
+            <UITableActionsMenu
+              v-if="rowActionsFor(row).length"
+              class="shrink-0"
+              :options="rowActionsFor(row)"
+              :delete-warning="resolveDeleteWarning(row)"
+              @select="(key, option) => onActionSelect(key, option, row)"
+            />
+          </div>
+
+          <dl
+            v-if="cardCols.length"
+            class="grid grid-cols-[minmax(0,7.5rem)_minmax(0,1fr)] gap-x-3 gap-y-1.5"
+          >
+            <template v-for="col in visibleCardCols(row[rowKey])" :key="col.key">
+              <dt class="truncate text-xs text-textColor3">{{ col.fullTitle || col.title }}</dt>
+              <dd class="min-w-0 text-sm text-textColor1">
+                <MobileCell :col="col" :row="row" :index="index" />
+              </dd>
+            </template>
+          </dl>
+
+          <n-button
+            v-if="mobileCollapseAfter > 0 && cardCols.length > mobileCollapseAfter"
+            text
+            size="tiny"
+            class="self-start"
+            @click.stop="toggleCard(row[rowKey])"
+          >
+            {{
+              expandedCards.has(row[rowKey])
+                ? t('content.hideAdditionalFilters')
+                : t('content.showAdditionalFilters')
+            }}
+          </n-button>
+
+          <slot name="mobile-card-extra" :row="row" :index="index" />
+        </slot>
+      </div>
+
+      <div
+        v-if="total !== null || slots.footer"
+        class="rounded-2xl px-3"
+        style="background: var(--table-header)"
+      >
+        <slot name="footer">
+          <UIPagination
+            short
+            :page="page"
+            :per_page="perPage"
+            :total="total"
+            @change-page="(v) => emit('change-page', v)"
+          />
+        </slot>
+      </div>
     </div>
 
     <div
