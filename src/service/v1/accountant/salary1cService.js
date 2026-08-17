@@ -3,6 +3,8 @@ import axios from '@/service/index.js'
 // 1C oylik hisobot. Backend: /api/v1/economist/salary-1c
 
 const _pull = async (payload) => axios.post(`/v1/economist/salary-1c/pull`, payload.data)
+// Bitta xodimni (pinfl) 1C dan qayta tortish — yangilangan payslip qaytadi.
+const _pullOne = async (payload) => axios.post(`/v1/economist/salary-1c/pull-one`, payload.data)
 const _ingestFixture = async (payload) => axios.post(`/v1/economist/salary-1c/ingest-fixture`, payload.data)
 const _index = async (payload) => axios.get(`/v1/economist/salary-1c`, { params: payload?.params })
 const _payslip = async (payload) => axios.get(`/v1/economist/salary-1c/${payload.id}`)
@@ -43,6 +45,7 @@ const _myHistory = async (payload) => axios.get(`/v1/me/salary/history`, { param
 
 export default {
   _pull,
+  _pullOne,
   _ingestFixture,
   _index,
   _payslip,
