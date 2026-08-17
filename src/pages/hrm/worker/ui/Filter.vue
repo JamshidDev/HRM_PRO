@@ -817,10 +817,19 @@
     display: flex;
     align-items: center;
     box-sizing: border-box;
-    height: 40px;
-    padding: 0 14px;
+    /* `height` EMAS: tor ekranda yorliq ikki qatorga bo'linadi va qat'iy 40px
+       matnni ramkadan chiqarib yuborardi. */
+    min-height: 40px;
+    padding: 8px 14px;
     border: 1px solid var(--surface-line);
     border-radius: 16px;
+  }
+
+  /* naive-ui `.n-checkbox` ga o'zi `align-items: flex-start` beradi, shu bois
+     yorliq ikki qatorga bo'linganda kvadratcha birinchi qatorga qadalib qolardi.
+     Bir qatorli yorliqda bu qoida hech narsani o'zgartirmaydi. */
+  .worker-filter-check :deep(.n-checkbox) {
+    align-items: center;
   }
 
   .worker-filter-check :deep(.n-checkbox__label) {
