@@ -5,6 +5,9 @@ import Utils from '@/utils/Utils.js'
 import { useAppSetting } from '@/utils/index.js'
 import utils from '@/utils/Utils.js'
 
+// ContractTypeEnum: 2 = fuqarolik-huquqiy shartnoma (FXSH).
+const CONTRACT_TYPE_CIVIL = 2
+
 export const useComponentStore = defineStore('componentStore', {
   state: () => ({
     structureShort: false,
@@ -781,6 +784,12 @@ export const useComponentStore = defineStore('componentStore', {
             position: v.position?.name || v?.post_name,
             id: v.id,
             typeId: v.contract?.type?.id,
+            // FXSH (shartnoma turi 2) xodimlarida `position` DOIM null: fuqarolik-huquqiy
+            // shartnoma shtat lavozimini band qilmaydi (position_id/department_id NULL) —
+            // select'da lavozim qatori bo'sh chiqardi. Ular uchun LAVOZIM O'RNIGA
+            // shartnoma turi ko'rsatiladi. Boshqa turlarda `null` — ularda lavozim bor,
+            // qo'shimcha qator kerak emas.
+            contractType: v.contract?.type?.id === CONTRACT_TYPE_CIVIL ? v.contract?.type?.name : null,
             photo: v.worker?.photo
           }))
           this.totalWorker = res.data.data.total

@@ -476,6 +476,7 @@ export const PERMISSION_GROUPS = [
       { prefix: 'integration-worker-check', label: 'integrationPerm.workerCheck' },
       { prefix: 'integration-worker-events-month', label: 'integrationPerm.workerEventsMonth' },
       { prefix: 'integration-worker-events-day', label: 'integrationPerm.workerEventsDay' },
+      { prefix: 'integration-worker-business-trip', label: 'integrationPerm.workerBusinessTrip' },
       { prefix: 'integration-turnstile-events', label: 'integrationPerm.turnstileEvents' },
       { prefix: 'integration-station-workers', label: 'integrationPerm.stationWorkers' },
       { prefix: 'integration-station-worker', label: 'integrationPerm.stationWorker' },

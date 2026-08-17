@@ -43,6 +43,10 @@ export const renderIcon = (icon) => {
   }
 }
 
+// `contractType` — FAQAT FXSH xodimlari uchun (store'lar shu holatdagina to'ldiradi).
+// FXSH da `position` DOIM null: fuqarolik-huquqiy shartnoma shtat lavozimini band
+// qilmaydi (position_id/department_id NULL), shuning uchun bu qator bo'sh chiqardi.
+// Endi o'sha o'ringa shartnoma turi yoziladi — qo'shimcha qator QO'SHILMAYDI.
 const selectLabel = (option) => {
   return [
     h(
@@ -53,7 +57,11 @@ const selectLabel = (option) => {
       [
         h('div', { class: 'flex flex-col' }, [
           h('div', { class: 'text-xs font-medium text-textColor2 !text-wrap' }, `${option.name}`),
-          h('div', { class: 'text-xs text-textColor3 !text-wrap' }, option.position),
+          h(
+            'div',
+            { class: option.position ? 'text-xs text-textColor3 !text-wrap' : 'text-xs text-primary !text-wrap' },
+            option.position || option.contractType
+          ),
           option.subPosition
             ? h('div', { class: 'text-xs text-textColor3 !text-wrap' }, option.subPosition)
             : null

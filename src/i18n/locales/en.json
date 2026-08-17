@@ -4323,6 +4323,7 @@
     "workerCheck": "Worker check",
     "workerEventsMonth": "Worker turnstile (month)",
     "workerEventsDay": "Worker turnstile (day)",
+    "workerBusinessTrip": "Worker business trip",
     "turnstileEvents": "Turnstile events",
     "stationWorkers": "Station workers",
     "stationWorker": "Station worker",
