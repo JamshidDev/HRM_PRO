@@ -2,6 +2,7 @@
   import CardHeader from './CardHeader.vue'
   import DetailsLine from './DetailsLine.vue'
   import PrivilegeDonut from './PrivilegeDonut.vue'
+  import { InfoGraphSkeleton } from './skeleton/index.js'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
   import HeadPieChartIcon from '@/assets/icons/dashboard/head-pie-chart.svg'
 
@@ -47,7 +48,9 @@
 
 <template>
   <div class="bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden">
-    <n-spin :show="store.grandLoading">
+    <InfoGraphSkeleton v-if="store.grandLoading" />
+
+    <template v-else>
       <CardHeader
         :icon="HeadPieChartIcon"
         tint="blue"
@@ -76,6 +79,6 @@
           </template>
         </div>
       </div>
-    </n-spin>
+    </template>
   </div>
 </template>
