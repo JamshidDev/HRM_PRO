@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia'
 import Utils from '@/utils/Utils.js'
 
+// ContractTypeEnum: 2 = fuqarolik-huquqiy shartnoma (FXSH).
+const CONTRACT_TYPE_CIVIL = 2
+
 const today = new Date().getTime()
 
 const addDayToDate = (date, days) => {
@@ -328,6 +331,10 @@ export const useCommandStore = defineStore('commandStore', {
             position: v.position?.name || v?.post_name,
             id: v.id,
             typeId: v.contract?.type?.id,
+            // FXSH xodimida `position` null (shtat lavozimi band qilinmaydi) —
+            // lavozim O'RNIGA shartnoma turi ko'rsatiladi. Boshqa turlarda null.
+            contractType:
+              v.contract?.type?.id === CONTRACT_TYPE_CIVIL ? v.contract?.type?.name : null,
             photo: v.worker?.photo
           }))
           this.totalWorker = res.data.data.total
