@@ -3932,8 +3932,41 @@
     }
   },
   "notificationPage": {
+    "send": "Отправить push",
+    "logs": "Логи",
+    "schedule": "Запланировать",
+    "sendTime": "Запланировано",
+    "sendTimePlaceholder": "Пусто = сразу",
+    "sender": "Отправитель",
+    "channel": "Канал",
+    "recipients": "Получатели",
+    "push": "Push (отпр/ошиб)",
+    "sentAt": "Отправлено",
+    "status": {
+      "scheduled": "Запланировано",
+      "sending": "Отправляется",
+      "sent": "Отправлено",
+      "skipped": "Пропущено",
+      "error": "Ошибка",
+      "cancelled": "Отменено"
+    },
+    "mode": "Режим отправки",
+    "byTopic": "По теме",
+    "byUser": "Выбрать пользователей",
+    "topic": "Тема",
+    "topics": {
+      "all": "Всем",
+      "hr": "Кадрам",
+      "economist": "Экономистам"
+    },
     "name": "Уведомления",
-    "create": "Создать уведомление"
+    "create": "Создать уведомление",
+    "st": {
+      "pending": "Ожидает",
+      "sent": "Отправлено",
+      "error": "Ошибка",
+      "cancelled": "Отменено"
+    }
   },
   "congratulation": {
     "name": "Telegram-сообщения",

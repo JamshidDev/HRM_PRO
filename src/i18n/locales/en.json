@@ -3921,8 +3921,41 @@
     }
   },
   "notificationPage": {
+    "send": "Send push",
+    "logs": "Logs",
+    "schedule": "Schedule",
+    "sendTime": "Scheduled",
+    "sendTimePlaceholder": "Empty = now",
+    "sender": "Sender",
+    "channel": "Channel",
+    "recipients": "Recipients",
+    "push": "Push (sent/fail)",
+    "sentAt": "Sent at",
+    "status": {
+      "scheduled": "Scheduled",
+      "sending": "Sending",
+      "sent": "Sent",
+      "skipped": "Skipped",
+      "error": "Error",
+      "cancelled": "Cancelled"
+    },
+    "mode": "Send mode",
+    "byTopic": "By topic",
+    "byUser": "Select users",
+    "topic": "Topic",
+    "topics": {
+      "all": "Everyone",
+      "hr": "HR",
+      "economist": "Economists"
+    },
     "name": "Notifications",
-    "create": "Create notification"
+    "create": "Create notification",
+    "st": {
+      "pending": "Pending",
+      "sent": "Sent",
+      "error": "Error",
+      "cancelled": "Cancelled"
+    }
   },
   "congratulation": {
     "name": "Telegram messages",
