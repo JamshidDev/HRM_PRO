@@ -496,6 +496,25 @@
       "verify": "Verify",
       "submit": "Update password",
       "success": "Password updated successfully. Log in with your new password."
+    },
+    "tabs": {
+      "password": "Login",
+      "eri": "E-Signature",
+      "qr": "QR code"
+    },
+    "eri": {
+      "moduleRequired": "For the correct operation of the system, it is necessary to run the E-IMZO module or E-IMZO Browser.",
+      "instructionsText": "You can read the instructions for installing the E-IMZO module __LINK__",
+      "instructionsLink": "here",
+      "hostText": "If the E-IMZO module is running, check the connection to __LINK__ in the browser.",
+      "hostLink": "E-IMZO host"
+    },
+    "qr": {
+      "description": "Scan the QR code using the scanner in the HR Rail mobile app. You will be signed in to your account on this device automatically.",
+      "expired": "The code has expired",
+      "refresh": "Refresh",
+      "connectionError": "Connection error",
+      "signingIn": "Signing in…"
     }
   },
   "registerPage": {
@@ -4340,6 +4359,22 @@
     },
     "modal": {
       "notVerified": "Not verified"
+    }
+  },
+  "dbBackup": {
+    "name": "DB backups",
+    "table": {
+      "date": "Date",
+      "file": "File",
+      "sizeOriginal": "Original size",
+      "sizeArchived": "Archived size",
+      "duration": "Duration",
+      "status": "Status"
+    },
+    "status": {
+      "running": "Running",
+      "done": "Done",
+      "error": "Error"
     }
   }
 }

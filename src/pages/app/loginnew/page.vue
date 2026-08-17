@@ -2,9 +2,16 @@
 import LangDropdown from '@/components/general/LangDropdown.vue'
 import { UIThemeSwitch } from '@/components/index.js'
 import { useAppSetting } from '@/utils/index.js'
-import { useAppStore, useLoginNewStore, useResetPasswordStore } from '@/store/modules/index.js'
+import {
+  useAppStore,
+  useLoginNewStore,
+  useQrLoginStore,
+  useResetPasswordStore
+} from '@/store/modules/index.js'
 import i18n from '@/i18n/index.js'
 import LoginForm from './ui/LoginForm.vue'
+import EriForm from './ui/EriForm.vue'
+import QrForm from './ui/QrForm.vue'
 import TwoFactorForm from './ui/TwoFactorForm.vue'
 import ResetForm from './ui/ResetForm.vue'
 import StoreLinks from './ui/StoreLinks.vue'
@@ -18,9 +25,77 @@ import banner from '@/assets/images/content/banner.png?url'
 const appStore = useAppStore()
 const loginStore = useLoginNewStore()
 const resetStore = useResetPasswordStore()
+const qrStore = useQrLoginStore()
 
 const steps = { login: 'login', twofa: 'twofa', reset: 'reset' }
 const step = ref(steps.login)
+
+// Kirish usullari — login qadamida tab sifatida ko'rsatiladi.
+// ERI faqat `signatureLogin` yoqilgan bo'lsa chiqadi (E-IMZO plagini kerak).
+const tabs = { password: 'password', eri: 'eri', qr: 'qr' }
+const tab = ref(tabs.password)
+const tabList = computed(() =>
+  [
+    { key: tabs.password, label: i18n.global.t('loginPage.tabs.password') },
+    appStore.appConfig.signatureLogin
+      ? { key: tabs.eri, label: i18n.global.t('loginPage.tabs.eri') }
+      : null,
+    { key: tabs.qr, label: i18n.global.t('loginPage.tabs.qr') }
+  ].filter(Boolean)
+)
+
+// QR sessiyasi = socket ulanishi: tab ochilganda ulanadi, chiqilganda uziladi
+// (server ham sessiyani bekor qiladi), qaytib kelinganda yangi kod so'raladi.
+//
+// ⚠️ Sessiya egasi FAQAT shu yer — `QrForm`ning mount/unmount hooklari EMAS.
+// Sabab: tab animatsiyasi (`out-in`) chiqayotgan komponentni ~180ms ushlab turadi;
+// agar unmount'da `close()` chaqirilsa, tez ketma-ket bosishda u ALLAQACHON
+// ochilgan yangi sessiyani yopib yuborardi (race).
+watch(tab, (value) => {
+  if (value === tabs.qr) qrStore.open()
+  else qrStore.close()
+})
+
+watch(step, (value) => {
+  if (value !== steps.login) qrStore.close()
+})
+
+// --- Karta balandligini qotirish (barcha ekran o'lchamlarida) ---
+// O'lchov ASOSIY (Login) tabdan olinadi va `viewport`ga `min-height` bo'lib
+// qo'llanadi — shunda ERI/QR/2FA/parol tiklash ekranlarida karta sakramaydi.
+// Qattiq raqam (masalan `420px`) YARAMAYDI: mobil va desktopda login formasi
+// turli balandlikda (mobil'da qo'shimcha "Ilovani yuklab oling" bloki bor),
+// shuning uchun jonli o'lchanadi.
+const paneRef = ref(null)
+const baseHeight = ref(0)
+
+const measureBase = async () => {
+  if (tab.value !== tabs.password || step.value !== steps.login) return
+  await nextTick()
+  const h = paneRef.value?.offsetHeight ?? 0
+  if (h) baseHeight.value = h
+}
+
+let resizeTimer = null
+const onResize = () => {
+  clearTimeout(resizeTimer)
+  resizeTimer = setTimeout(measureBase, 150)
+}
+
+onMounted(() => {
+  void measureBase()
+  // Captcha rasmi/shriftlar kech yuklansa balandlik o'zgaradi — qayta o'lchaymiz.
+  setTimeout(measureBase, 600)
+  window.addEventListener('resize', onResize)
+})
+
+watch([tab, step], measureBase)
+
+onBeforeUnmount(() => {
+  clearTimeout(resizeTimer)
+  window.removeEventListener('resize', onResize)
+  qrStore.close()
+})
 
 // o'tish yo'nalishi: oldinga (slide-next) yoki orqaga (slide-prev)
 const transitionName = ref('slide-next')
@@ -44,6 +119,13 @@ const onForgot = (phone) => {
 const toLogin = () => {
   transitionName.value = 'slide-prev'
   step.value = steps.login
+}
+
+// Tab bosildi. 2FA yoki parol tiklash qadamida bo'lsak — "Orqaga" bilan bir xil
+// xatti-harakat: avval login qadamiga qaytamiz, so'ng tanlangan tab ochiladi.
+const selectTab = (key) => {
+  if (step.value !== steps.login) toLogin()
+  tab.value = key
 }
 
 // Parol yangilangach login qadamiga qaytamiz
@@ -118,12 +200,55 @@ const onDone = () => {
         </div>
 
         <div class="relative z-10 w-full login-new__fade-in login-new__fade-in-delay-1">
-          <!-- qadamlar yo'nalishli slide bilan almashadi -->
-          <div class="login-new__viewport overflow-hidden -mx-2 px-2">
+          <!-- Kirish usuli: Login / ERI / QR-kod.
+               ⚠️ Tab qatori BARCHA qadamlarda ko'rinadi (2FA / parol tiklashda ham):
+               yashirilsa yo joyi yo'qolib karta ~100px sakrardi, yo `invisible`
+               qilinganda tepada bo'sh oraliq qolardi. Ko'rinib turgani ham qulay —
+               parol tiklashdan tab bosib chiqib ketish mumkin. -->
+          <div
+            class="login-new__tabs mb-5 lg:mt-9 grid gap-1 p-1 rounded-xl"
+            :style="{ gridTemplateColumns: `repeat(${tabList.length}, minmax(0, 1fr))` }"
+          >
+            <button
+              v-for="t in tabList"
+              :key="t.key"
+              type="button"
+              class="login-new__tab h-9 rounded-lg text-[13px] font-semibold transition-colors"
+              :class="tab === t.key ? 'login-new__tab--active' : ''"
+              @click="selectTab(t.key)"
+            >
+              {{ t.label }}
+            </button>
+          </div>
+
+          <!-- qadamlar yo'nalishli slide bilan almashadi.
+               ⚠️ Transition FAQAT qadam (login/twofa/reset) almashuvini kuzatadi —
+               tab'lar uning ICHIDA almashadi. Aks holda `mode="out-in"` tez ketma-ket
+               bosishda leave fazasida "qotib" qolib, yangi komponentni MOUNT QILMAYDI
+               (natijada QrForm'ning `onMounted`i ishlamay, QR yuklanmay qolardi). -->
+          <div
+            class="login-new__viewport overflow-hidden -mx-2 px-2"
+            :style="baseHeight ? { minHeight: `${baseHeight}px` } : null"
+          >
             <Transition :name="transitionName" mode="out-in">
-              <LoginForm v-if="step === steps.login" @forgot="onForgot" />
-              <TwoFactorForm v-else-if="step === steps.twofa" @back="toLogin" />
-              <ResetForm v-else @back="toLogin" @done="onDone" />
+              <TwoFactorForm v-if="step === steps.twofa" key="twofa" @back="toLogin" />
+              <ResetForm v-else-if="step === steps.reset" key="reset" @back="toLogin" @done="onDone" />
+              <!-- Balandlik tab'lar bo'ylab QOTIB turadi — o'lchov asosiy (Login) tabdan -->
+              <div v-else key="login" ref="paneRef" class="w-full login-new__tab-pane">
+                <!-- Tab almashuvi animatsiyasi — loyihadagi `tab-fade` patterni
+                     (`pages/app/profile/ui/Tabs.vue`) asosida, kalitlangan o'rovchi.
+                     ⚠️ `mode="out-in"` ATAYLAB YO'Q: tez ketma-ket bosishda leave
+                     fazasi uzilib qolib, kirayotgan komponent MOUNT BO'LMAY qolardi
+                     (QR yuklanmasdi). Bir vaqtda (default) rejimda chiquvchi element
+                     `position: absolute` bilan ustma-ust so'nadi — sakrash yo'q. -->
+                <Transition name="tab-fade">
+                  <div :key="tab">
+                    <EriForm v-if="tab === tabs.eri" />
+                    <QrForm v-else-if="tab === tabs.qr" />
+                    <LoginForm v-else @forgot="onForgot" />
+                  </div>
+                </Transition>
+              </div>
             </Transition>
           </div>
         </div>
@@ -225,6 +350,62 @@ const onDone = () => {
 
 [data-theme='dark'] .login-new__card-pattern {
   opacity: 1;
+}
+
+/* Karta balandligi SAKRAMASIN. Chegara `viewport`ga INLINE `min-height` bo'lib
+   beriladi (`baseHeight`, script'da o'lchanadi) — u BARCHA ekranlarni (Login/ERI/
+   QR tab'lari + 2FA + parol tiklash bosqichlari) o'rab turadi.
+   `flow-root` — ichkaridagi `mt-*` margin'i konteynerdan "chiqib ketmasin"
+   (margin collapse), aks holda ERI/QR tab'lari 24px balandroq bo'lib qolardi.
+   `position` — `.tab-fade-leave-active` absolute bo'lgani uchun tayanch nuqta. */
+.login-new__viewport,
+.login-new__tab-pane {
+  display: flow-root;
+  position: relative;
+}
+
+/* Tab almashuvi animatsiyasi — loyihadagi `tab-fade` bilan bir xil
+   (`pages/app/profile/ui/Tabs.vue`, `components/worker/UIWorkerView.vue`) */
+.tab-fade-enter-active,
+.tab-fade-leave-active {
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.tab-fade-enter-from,
+.tab-fade-leave-to {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+/* Chiquvchi tab oqimdan chiqariladi — kiruvchisi bilan yonma-yon turmaydi */
+.tab-fade-leave-active {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Kirish usuli tab'lari (Login / ERI / QR-kod) — segmentli boshqaruv */
+.login-new__tabs {
+  background-color: color-mix(in srgb, var(--login-body) 10%, transparent);
+  border: 1px solid var(--login-form-border);
+}
+
+.login-new__tab {
+  color: var(--login-body);
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.login-new__tab:hover {
+  color: var(--login-ink);
+}
+
+.login-new__tab--active {
+  background-color: var(--login-form-bg);
+  color: var(--login-ink);
+  box-shadow: var(--shadow-sm);
 }
 
 .login-new__card {
