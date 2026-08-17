@@ -7,12 +7,7 @@
   } from '@/store/modules/index.js'
   import { UINSelect, UIPageFilter, UISelect } from '@/components/index.js'
   import { useAppBreakpoints } from '@/composables/index.js'
-  import {
-    ArrowSync16Regular,
-    ChevronDown20Regular,
-    ChevronUp20Regular,
-    Dismiss16Regular
-  } from '@vicons/fluent'
+  import { ChevronDown20Regular, ChevronUp20Regular, Dismiss16Regular } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { appPermissions, useDebounce } from '@/utils/index.js'
   import contractIcon from '@/assets/icons/contract.svg?url'
@@ -279,13 +274,6 @@
   >
     <template #filterAction>
       <div class="worker-action-group flex flex-wrap items-center gap-3 w-full md:w-auto">
-        <n-button type="primary" tertiary @click="store._index()" :loading="store.loading">
-          {{ $t('content.refresh') }}
-          <template #icon>
-            <n-icon><ArrowSync16Regular /></n-icon>
-          </template>
-        </n-button>
-
         <n-button v-if="canWrite" type="primary" @click="onAdd">
           <template #icon>
             <img class="worker-action-icon" :src="contractIcon" alt="" />
@@ -743,32 +731,37 @@
     cursor: not-allowed;
   }
 
-  /* Mobil: ikkilamchi amallar juft-juft, asosiy amal («Hisobot olish» / «Yuklash»)
-     esa alohida to'liq qatorda. Ilgari `flex-wrap: nowrap` uchala tugmani 375px da
-     ~110px ga qisar, natijada har bir yorliq ellipsisga aylanib o'qilmas edi. */
+  /* Mobil amal paneli. Ilgari `flex-wrap: nowrap` uchala tugmani 375px da ~110px ga
+     qisar, natijada har bir yorliq ellipsisga aylanib o'qilmas edi. */
   @media (max-width: 767.98px) {
+    /* Grid EMAS, wrap qiladigan flex: amal soni `canWrite` ga qarab 1 yoki 2 bo'ladi,
+       flex esa qat'iy ustunlardan farqli ravishda yolg'iz qolgan tugmani ham to'liq
+       kenglikda ko'rsatadi (2 ustunli gridda yarim bo'sh qator qolib ketardi). */
     .worker-action-group {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      display: flex;
+      flex-wrap: wrap;
       gap: 8px;
       width: 100%;
     }
 
-    .worker-action-group > :deep(.n-button) {
-      width: 100%;
-      /* Barmoq uchun minimal balandlik. */
-      --n-height: 38px !important;
+    /* Ikkala amal BITTA qatorda, teng bo'lib. `flex-basis: 0` — `100%` bo'lsa
+       wrap majburlanardi. Tugma yolg'iz qolsa (`canWrite` yo'q) o'zi to'liq egallaydi. */
+    .worker-action-group > * {
+      flex: 1 1 0;
+      min-width: 0;
     }
 
-    .worker-report-trigger,
-    .worker-report-group {
-      grid-column: 1 / -1;
-      width: 100%;
+    .worker-action-group > :deep(.n-button) {
+      /* Barmoq uchun minimal balandlik. */
+      --n-height: 38px !important;
+      /* Tor ekranda yorliqqa ko'proq joy qolsin (standart 0 16px). */
+      --n-padding: 0 10px !important;
     }
 
     .worker-report-trigger {
       justify-content: center;
       height: 38px;
+      padding: 0 10px;
     }
 
     .worker-report-group {
