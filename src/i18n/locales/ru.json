@@ -2725,7 +2725,9 @@
       "confirmed": "Подтверждено",
       "openFromBlock": "Разблокировать",
       "closeToBlock": "Заблокировать"
-    }
+    },
+    "confirmQuestion": "Подтвердить?",
+    "cancelConfirmQuestion": "Отменить подтверждение? Загрузка снова станет доступной."
   },
   "instructionPage": {
     "name": "Инструкции",

@@ -2520,7 +2520,9 @@
       "confirmed": "Тасдиқланган",
       "openFromBlock": "Ёпиш",
       "closeToBlock": "Очиш"
-    }
+    },
+    "confirmQuestion": "Тасдиқлайсизми?",
+    "cancelConfirmQuestion": "Тасдиқни бекор қиласизми? Қайта юклаш имкони очилади."
   },
   "instructionPage": {
     "name": "Инструксия",

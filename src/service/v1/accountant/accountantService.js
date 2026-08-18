@@ -40,6 +40,10 @@ const _confirm = async (payload) => {
   return await axios.post(`/v1/economist/upload-histories/confirm`, payload.data)
 }
 
+const _cancelConfirm = async (payload) => {
+  return await axios.post(`/v1/economist/upload-histories/cancel-confirm`, payload.data)
+}
+
 const _updateStatus = async (payload) => {
   return await axios.post(`/v1/economist/upload-statuses`, payload.data)
 }
@@ -54,5 +58,6 @@ export default {
   _enum,
   _structure,
   _confirm,
+  _cancelConfirm,
   _updateStatus
 }
