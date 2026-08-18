@@ -355,6 +355,10 @@
     "noSpam": "Убрать из спама",
     "noImage": "Изображение отсутствует",
     "waitResponse": "Пожалуйста, ждите ответа!",
+    "loadingWorkspace": "Подготовка рабочего пространства",
+    "loadingWorkspaceHint": "Загрузка профиля и прав доступа",
+    "loggingOut": "Выход из системы",
+    "loggingOutHint": "Сессия безопасно завершается",
     "untilNow": "до сих пор",
     "warningImageSave": "Выбрано новое основное изображение. Нажмите «Сохранить» для применения изменений.",
     "selectAll": "Выбрать все",
@@ -2892,6 +2896,42 @@
     "tax_five": {
       "reported_income": "Доходы за отчётный период",
       "reported_tax": "Налог за отчётный период"
+    },
+    "card": {
+      "salary_fund": "Фонд оплаты труда",
+      "tax_four": "Налог — Приложение 4",
+      "tax_five": "Налог — Приложение 5",
+      "pension": "Взносы ИНПС",
+      "prev_month": "К прошлому месяцу"
+    },
+    "short": {
+      "total_three": "Не входит в фонд",
+      "reported_income": "Доход за период",
+      "reported_tax": "Налог за период",
+      "reported_salary_income": "Доход за период",
+      "income_tax_paid": "Налогооблагаемый доход",
+      "total_contributions": "Всего взносов"
+    },
+    "trend": {
+      "fund": "Фонд оплаты труда",
+      "taxes": "Налоги НДФЛ",
+      "inps": "Взносы ИНПС"
+    },
+    "panel": {
+      "dynamics": "Финансовая динамика",
+      "attention": "Центр внимания",
+      "fund": "Состав фонда",
+      "fund_subtitle": "Виды выплат — донат",
+      "details": "Подробнее",
+      "total_suffix": "всего",
+      "alert_count": "{count} предупреждений",
+      "no_alerts": "Предупреждений нет"
+    },
+    "alert": {
+      "sharpDrop": "{name} резко снизился на {percent}%",
+      "decline": "{name} снизился на {percent}%",
+      "growth": "{name} вырос на {percent}%",
+      "mismatch": "Итог фонда оплаты труда не сходится с суммой видов выплат"
     }
   },
   "vacancy": {

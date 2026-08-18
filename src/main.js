@@ -13,10 +13,16 @@ import inputFormatter from '@/plugins/inputFormatter.js'
 import dateMaskPlugin from '@/plugins/dateMaskPlugin.js'
 import FlyUploadPlugin from '@/plugins/flyUploadPlugin.js'
 import { useAccountStore } from '@/store/modules/index.js'
+import { initErrorReporter } from '@/utils/errorReporter.js'
 import { RecycleScroller } from 'vue3-virtual-scroller'
 import 'vue3-virtual-scroller/dist/vue3-virtual-scroller.css'
 
 const app = createApp(App)
+
+// Prod xatolarini Telegram log guruhiga yuborish (window + Vue error handlerlari).
+// Iloji boricha erta — mount'gacha yuz bergan xatolar ham tushsin.
+initErrorReporter(app)
+
 const meta = document.createElement('meta')
 meta.name = 'naive-ui-style'
 document.head.appendChild(meta)

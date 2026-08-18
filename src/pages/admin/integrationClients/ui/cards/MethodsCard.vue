@@ -15,6 +15,9 @@
 
   const methodOption = computed(() => ({
     tooltip: {
+      // `body` ga ko'chiriladi: aks holda `.main-content` dagi
+      // `overflow-x: hidden` tooltipni kontent chegarasida kesadi.
+      appendTo: 'body',
       trigger: 'item',
       formatter: (p) => `${p.name}: ${p.value.toLocaleString()} (${p.percent}%)`
     },

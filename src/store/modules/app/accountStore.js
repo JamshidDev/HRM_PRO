@@ -33,6 +33,10 @@ export const useAccountStore = defineStore('accountStore', {
     account: null,
     saveLoading: false,
     loading: false,
+    // Loader ekranida nima bo'layotganini ko'rsatish uchun: 'boot' (hisob va
+    // ruxsatlar yuklanishi) yoki 'logout'. Ilgari loader matnsiz edi va
+    // foydalanuvchi nima kutayotganini bilmasdi.
+    loadingKind: 'boot',
     activeTab: 1,
     tabs: [1, 2, 3, 4, 5],
     payload: {
@@ -150,6 +154,7 @@ export const useAccountStore = defineStore('accountStore', {
     },
 
     _logOut(callback) {
+      this.loadingKind = 'logout'
       this.loading = true
       $ApiService.accountService
         ._logOut()
@@ -225,6 +230,7 @@ export const useAccountStore = defineStore('accountStore', {
     },
     _index(callback) {
       const startDate = Date.now()
+      this.loadingKind = 'boot'
       this.loading = true
       return $ApiService.accountService
         ._index({ data: this.payload })
@@ -253,11 +259,15 @@ export const useAccountStore = defineStore('accountStore', {
           callback?.(this.account)
         })
         .finally(() => {
-          const duration = Date.now() - startDate
-          if (duration < 500) {
+          // Loader kamida 500ms ko'rinadi — tez javobda ekran chaqnab o'tmasin.
+          // Ilgari shartdan keyin `this.loading = false` SHARTSIZ turardi, ya'ni
+          // u darhol ishlab, kechiktirish mantiqini butunlay bekor qilardi.
+          const remaining = 500 - (Date.now() - startDate)
+          if (remaining > 0) {
             setTimeout(() => {
               this.loading = false
-            }, 500)
+            }, remaining)
+            return
           }
           this.loading = false
         })

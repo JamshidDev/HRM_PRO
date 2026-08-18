@@ -35,6 +35,9 @@
       containLabel: true
     },
     tooltip: {
+      // `body` ga ko'chiriladi: aks holda `.main-content` dagi
+      // `overflow-x: hidden` tooltipni kontent chegarasida kesadi.
+      appendTo: 'body',
       trigger: 'axis',
       axisPointer: { type: 'shadow' },
       formatter: (p) => `${p[0].name}: <b>${p[0].value}</b>`
