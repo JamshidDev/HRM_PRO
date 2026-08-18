@@ -1307,7 +1307,20 @@
     "deviceInfo": "Қурилма ҳақида",
     "sessions": "Сессиялар",
     "noPhotos": "Расмлар йўқ",
-    "noSessions": "Сессиялар йўқ"
+    "noSessions": "Сессиялар йўқ",
+    "tabFaceId": "Face ID",
+    "tabDevices": "Қурилмалар",
+    "active": "Фаол",
+    "inactive": "Нофаол",
+    "currentDevice": "Жорий қурилма",
+    "deviceId": "ID",
+    "deviceUuid": "Қурилма UUID",
+    "fcmToken": "FCM токен",
+    "notifications": "Билдиришномалар",
+    "lastUsedAt": "Охирги фаоллик",
+    "noFcmToken": "FCM токен йўқ",
+    "noDevices": "Қурилмалар йўқ",
+    "copied": "Нусхаланди"
   },
   "vacancyApprovePage": {
     "menuName": "Тасдиқлаш",
@@ -2520,7 +2533,9 @@
       "confirmed": "Тасдиқланган",
       "openFromBlock": "Ёпиш",
       "closeToBlock": "Очиш"
-    }
+    },
+    "confirmQuestion": "Тасдиқлайсизми?",
+    "cancelConfirmQuestion": "Тасдиқни бекор қиласизми? Қайта юклаш имкони очилади."
   },
   "instructionPage": {
     "name": "Инструксия",

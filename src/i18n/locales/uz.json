@@ -1461,7 +1461,20 @@
     "deviceInfo": "Qurilma haqida",
     "sessions": "Sessiyalar",
     "noPhotos": "Rasmlar yo'q",
-    "noSessions": "Sessiyalar yo'q"
+    "noSessions": "Sessiyalar yo'q",
+    "tabFaceId": "Face ID",
+    "tabDevices": "Qurilmalar",
+    "active": "Faol",
+    "inactive": "Nofaol",
+    "currentDevice": "Joriy qurilma",
+    "deviceId": "ID",
+    "deviceUuid": "Qurilma UUID",
+    "fcmToken": "FCM token",
+    "notifications": "Bildirishnomalar",
+    "lastUsedAt": "Oxirgi faollik",
+    "noFcmToken": "FCM token yo'q",
+    "noDevices": "Qurilmalar yo'q",
+    "copied": "Nusxalandi"
   },
   "vacancyApprovePage": {
     "menuName": "Tasdiqlash",
@@ -2741,7 +2754,9 @@
       "confirmed": "Tasdiqlangan",
       "openFromBlock": "Yopish",
       "closeToBlock": "Ochish"
-    }
+    },
+    "confirmQuestion": "Tasdiqlaysizmi?",
+    "cancelConfirmQuestion": "Tasdiqni bekor qilasizmi? Qayta yuklash imkoni ochiladi."
   },
   "instructionPage": {
     "name": "Instruksiya",

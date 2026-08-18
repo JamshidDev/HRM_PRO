@@ -1443,7 +1443,20 @@
     "deviceInfo": "Device Info",
     "sessions": "Sessions",
     "noPhotos": "No photos",
-    "noSessions": "No sessions"
+    "noSessions": "No sessions",
+    "tabFaceId": "Face ID",
+    "tabDevices": "Devices",
+    "active": "Active",
+    "inactive": "Inactive",
+    "currentDevice": "Current device",
+    "deviceId": "ID",
+    "deviceUuid": "Device UUID",
+    "fcmToken": "FCM token",
+    "notifications": "Notifications",
+    "lastUsedAt": "Last activity",
+    "noFcmToken": "No FCM token",
+    "noDevices": "No devices",
+    "copied": "Copied"
   },
   "actionLog": {
     "name": "Action history",
@@ -2714,7 +2727,9 @@
       "confirmed": "Confirmed",
       "openFromBlock": "Unblock",
       "closeToBlock": "Block"
-    }
+    },
+    "confirmQuestion": "Confirm?",
+    "cancelConfirmQuestion": "Cancel confirmation? Re-upload will be enabled."
   },
   "instructionPage": {
     "name": "Instructions",

@@ -71,7 +71,28 @@ export const useUploadReportStore = defineStore('uploadReport', {
       }
       $ApiService.accountantService
         ._confirm({ data })
-        .then((res) => {
+        .then(() => {
+          this._structures()
+          this._cards()
+        })
+        .finally(() => {
+          this.confirmLoading = false
+        })
+    },
+    // Tasdiqni bekor qilish — SUCCESS → PROCESS, qayta yuklash ochiladi.
+    _cancelConfirm(v) {
+      if (!v.status) return
+      this.confirmLoading = true
+      const data = {
+        ...this.params,
+        type: v.id,
+        search: undefined,
+        page: undefined,
+        per_page: undefined
+      }
+      $ApiService.accountantService
+        ._cancelConfirm({ data })
+        .then(() => {
           this._structures()
           this._cards()
         })
