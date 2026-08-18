@@ -10,6 +10,7 @@
     UITableSelectRow
   } from '@/components/index.js'
   import { useTableColumnFit, useTableColumns } from '@/composables/index.js'
+  import { useElementSize } from '@vueuse/core'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import { NEllipsis } from 'naive-ui'
@@ -72,7 +73,24 @@
   // Birinchi yuklanishda (ma'lumot hali yo'q) "Ma'lumot topilmadi" o'rniga skeleton
   // ko'rsatiladi — aks holda so'rov ketayotganda bo'sh holat chaqnab o'tadi.
   const showSkeleton = computed(() => props.loading && empty.value)
-  const skeletonRows = computed(() => Math.min(props.perPage, 8))
+  // Skeleton qator soni QAT'IY berilmaydi: haqiqiy qator balandligi jadvalga qarab
+  // farq qiladi (`UIUser` avatarli qator ~64px, oddiy matnli ~48px), shu bois har
+  // qanday qat'iy son ba'zi jadvallarda konteynerni to'ldirmay, pastini bo'sh
+  // qoldirardi. Buning o'rniga konteynerni O'LCHAB, unga sig'adigan sonni
+  // hisoblaymiz — ortiqchasi `overflow-hidden` bilan kesiladi, ya'ni bo'sh joy
+  // qolmaydi. `flex-1 min-h-0` tufayli konteyner balandligi kontentga bog'liq
+  // emas, shu sababli o'lchash tsiklga tushmaydi.
+  const SKELETON_ROW_H = 48
+  const skeletonBodyRef = ref(null)
+  const { height: skeletonBodyHeight } = useElementSize(skeletonBodyRef)
+  const skeletonRows = computed(() => {
+    // Sarlavha qatori (42px) o'lchanadigan blok ichida — uni ayiramiz.
+    const usable = skeletonBodyHeight.value - 42
+    const fits = Math.ceil(usable / SKELETON_ROW_H)
+    // O'lchov hali kelmagan birinchi render'da `perPage` ga tayanamiz.
+    if (!Number.isFinite(fits) || fits < 1) return Math.min(props.perPage, 25)
+    return Math.min(fits, 40)
+  })
 
   // avoids naive-ui misreading a row's own domain `children` field as tree-row nesting when we never asked for tree mode
   const isTreeTable = computed(() => Boolean(props.onLoad) || props.columns.some((c) => c.tree))
@@ -346,7 +364,9 @@
       class="ui-table__wrapper flex flex-col p-1 bg-surface-section rounded-[20px]"
       :class="!autoHeight && 'h-full min-h-[clamp(200px,calc(100vh-100%),600px)]'"
     >
-      <div class="flex-1 overflow-hidden rounded-t-2xl">
+      <!-- `min-h-0`: busiz `min-height: auto` flex elementni kontent balandligidan
+           pastga qisqartirmaydi va qatorlar footerni pastga surib yuborardi. -->
+      <div ref="skeletonBodyRef" class="flex-1 min-h-0 overflow-hidden rounded-t-2xl">
         <div
           class="flex items-center gap-4 px-4 h-[42px] rounded-t-2xl"
           style="background: var(--table-header)"
