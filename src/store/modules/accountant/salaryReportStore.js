@@ -85,8 +85,12 @@ export const useSalaryReportStore = defineStore('salaryReportStore', {
         .then((res) => {
           const { type_name, type_code, total_year, ...organizations } = res.data.data[0]
           this.organizationList = organizations
+          // Korxona kesimi javobida BITTA sarlavha qatori bor (0 — korxona kodlari),
+          // oylik javobida esa IKKITA (0 — yil, 1 — oy nomlari). Shuning uchun bu yerda
+          // `index > 1` (oylikdagi `index > 2` EMAS) — aks holda 2-indeksdagi birinchi
+          // to'lov kodi (001) kesilib, jadvalda ko'rinmay qolardi.
           this.organizationData = res.data.data
-            .filter((_, index) => index > 2)
+            .filter((_, index) => index > 1)
             .map((v, index) => ({ id: index + 1, ...v }))
         })
         .finally(() => {
