@@ -2840,6 +2840,42 @@
     "tax_five": {
       "reported_income": "Reported income",
       "reported_tax": "Reported tax"
+    },
+    "card": {
+      "salary_fund": "Payroll fund",
+      "tax_four": "Tax — Appendix 4",
+      "tax_five": "Tax — Appendix 5",
+      "pension": "INPS contributions",
+      "prev_month": "vs previous month"
+    },
+    "short": {
+      "total_three": "Excluded from fund",
+      "reported_income": "Reported income",
+      "reported_tax": "Reported tax",
+      "reported_salary_income": "Reported income",
+      "income_tax_paid": "Taxable income",
+      "total_contributions": "Total contributions"
+    },
+    "trend": {
+      "fund": "Payroll fund",
+      "taxes": "Income taxes",
+      "inps": "INPS contributions"
+    },
+    "panel": {
+      "dynamics": "Financial dynamics",
+      "attention": "Attention center",
+      "fund": "Fund breakdown",
+      "fund_subtitle": "Payment types — donut",
+      "details": "Details",
+      "total_suffix": "total",
+      "alert_count": "{count} alerts",
+      "no_alerts": "No alerts"
+    },
+    "alert": {
+      "sharpDrop": "{name} dropped sharply by {percent}%",
+      "decline": "{name} declined by {percent}%",
+      "growth": "{name} grew by {percent}%",
+      "mismatch": "Payroll fund total does not match the sum of payment types"
     }
   },
   "vacancy": {

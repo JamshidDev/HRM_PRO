@@ -1,31 +1,11 @@
 <script setup>
   import { UIPageContent } from '@/components/index.js'
-  import Filter from './ui/Filter.vue'
-  import PremiumCard from './ui/PremiumCard.vue'
-  import StatementChart from './ui/StatementChart.vue'
-  import CircleChart from './ui/CircleChart.vue'
-  import SemiCircleChart from './ui/SemiCircleChart.vue'
-  import Circle2Chart from './ui/Circle2Chart.vue'
+  import { Filter, KpiCard, DynamicChart, AlertPanel, FundDonut } from './ui/index.js'
   import { useAccDashboardStore, useAccountStore } from '@/store/modules/index.js'
   import { getOneMonthAgoYearMonth } from '@utils'
 
   const store = useAccDashboardStore()
   const accStore = useAccountStore()
-
-  const template = [
-    {
-      name: 'statements',
-      type: 'card_three'
-    },
-    {
-      name: 'tax_four',
-      type: 'card_one'
-    },
-    {
-      name: 'tax_five',
-      type: 'card_two'
-    }
-  ]
 
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.economistDashboard)) return
@@ -39,37 +19,26 @@
 <template>
   <UIPageContent>
     <Filter />
+
     <n-spin :show="store.loading" class="min-h-[400px]">
-      <div v-if="store.cards.length > 0" class="grid grid-cols-12 mt-4 gap-2">
-        <div v-for="(data, index) in store.cards" class="lg:col-span-3 md:col-span-6 col-span-12">
-          <PremiumCard :index="index + 1" :data="data" />
+      <div v-if="store.dashboardData" class="flex flex-col gap-4">
+        <!-- to'rtta KPI karta -->
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <KpiCard v-for="card in store.kpiCards" :key="card.variant" :data="card" />
         </div>
 
-        <template v-for="(item, idx) in template" :key="idx">
-          <div
-            class="lg:col-span-4 mg:col-span-6 col-span-12 bg-surface-section pt-4 rounded-2xl border border-surface-line"
-          >
-            <h1 class="px-4 font-semibold uppercase text-textColor0 line-clamp-1">
-              {{ $t(`accDashboard.chart.${item.name}`) }}
-              <small class="text-textColor3 font-normal lowercase"
-                >({{ $t('content.mln') }} {{ $t('content.sum') }})</small
-              >
-            </h1>
-            <div class="h-[200px]">
-              <StatementChart :chart-type="item.type" />
-            </div>
+        <!-- moliyaviy dinamika + e'tibor markazi -->
+        <div class="flex flex-col items-stretch gap-4 lg:flex-row">
+          <div class="min-w-0 flex-1">
+            <DynamicChart />
           </div>
-        </template>
+          <div class="w-full shrink-0 lg:w-[264px]">
+            <AlertPanel />
+          </div>
+        </div>
 
-        <div class="2xl:col-span-4 lg:col-span-6 col-span-12">
-          <CircleChart />
-        </div>
-        <div class="2xl:col-span-4 lg:col-span-6 col-span-12">
-          <SemiCircleChart />
-        </div>
-        <div class="2xl:col-span-4 lg:col-span-6 col-span-12">
-          <Circle2Chart />
-        </div>
+        <!-- fond tarkibi -->
+        <FundDonut />
       </div>
     </n-spin>
   </UIPageContent>

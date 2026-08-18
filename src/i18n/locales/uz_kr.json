@@ -2649,6 +2649,42 @@
     "tax_five": {
       "reported_income": "Ҳисобот давридаги даромадлар",
       "reported_tax": "Ҳисобот давридаги солиқ суммаси"
+    },
+    "card": {
+      "salary_fund": "Иш ҳақи фонди",
+      "tax_four": "Солиқ — 4-илова",
+      "tax_five": "Солиқ — 5-илова",
+      "pension": "ИНПС бадаллари",
+      "prev_month": "Ўтган ойга"
+    },
+    "short": {
+      "total_three": "Фондга кирмайдиган",
+      "reported_income": "Давр даромади",
+      "reported_tax": "Давр солиғи",
+      "reported_salary_income": "Давр даромади",
+      "income_tax_paid": "Солиқли даромад",
+      "total_contributions": "Жами бадаллар"
+    },
+    "trend": {
+      "fund": "Иш ҳақи фонди",
+      "taxes": "ЖШДС солиқлар",
+      "inps": "ИНПС бадаллари"
+    },
+    "panel": {
+      "dynamics": "Молиявий динамика",
+      "attention": "Эътибор маркази",
+      "fund": "Фонд таркиби",
+      "fund_subtitle": "Тўлов турлари — донут",
+      "details": "Батафсил",
+      "total_suffix": "жами",
+      "alert_count": "{count} та огоҳлантириш",
+      "no_alerts": "Огоҳлантиришлар йўқ"
+    },
+    "alert": {
+      "sharpDrop": "{name} {percent}% кескин пасайди",
+      "decline": "{name} {percent}% камайди",
+      "growth": "{name} {percent}% ошди",
+      "mismatch": "Иш ҳақи фонди жамиси тўлов турлари йиғиндисига мос эмас"
     }
   },
   "vacancy": {
