@@ -24,7 +24,9 @@
       { id: DashboardTab.GENERAL, name: t('dashboardPage.tabs.general') },
       { id: DashboardTab.MOVEMENT, name: t('dashboardPage.tabs.movement') },
       { id: DashboardTab.ATTENDANCE, name: t('dashboardPage.tabs.attendance') },
-      canViewAudit.value ? { id: DashboardTab.AUDIT, name: t('dashboardPage.audit.tabAudit') } : null
+      canViewAudit.value
+        ? { id: DashboardTab.AUDIT, name: t('dashboardPage.audit.tabAudit') }
+        : null
     ].filter(Boolean)
   )
 
@@ -134,60 +136,62 @@
       style="overflow-y: auto; scrollbar-gutter: stable"
       :style="contentHeight ? { height: contentHeight } : null"
     >
-      <template v-if="store.activeTab !== DashboardTab.AUDIT">
-        <n-tabs
-          class="h-full"
-          :value="store.activeDetail ? 1 : 0"
-          animated
-          :tab-style="{ display: 'none' }"
-          :pane-wrapper-style="{ 'overflow-y': 'auto', 'scrollbar-gutter': 'stable' }"
-        >
-          <n-tab-pane :name="0" class="!p-0">
-            <UIPageContent class="!pt-0 !px-0 !m-0">
-              <n-spin :show="store.loading" class="min-h-[200px]">
-                <!-- Sof `canView`: `checkAction` yon ta'sirli (toast) va bu yerda
-                     har render'da ogohlantirish otilardi. Ko'rish ruxsati yo'q
-                     bo'lsa kartalar butunlay ko'rsatilmaydi. -->
-                <n-grid
-                  x-gap="8 m:12 l:16"
-                  y-gap="8 m:12 l:16"
-                  cols="12"
-                  v-if="accStore.canView(accStore.pn.hrDashboard) && !store.loading"
-                  responsive="screen"
-                >
-                  <n-grid-item v-for="card in kpiCards" :key="card.variant" :span="kpiSpan">
-                    <FigKpiCard :card="card" :variant="card.variant" />
-                  </n-grid-item>
-
-                  <n-grid-item v-for="(item, idx) in cards" :key="idx" :span="item.span">
-                    <component
-                      :is="item.component"
-                      v-bind="item.props"
-                      @detail="(key) => onDetailEv(item, key)"
-                    />
-                  </n-grid-item>
-                </n-grid>
-              </n-spin>
-            </UIPageContent>
-          </n-tab-pane>
-          <n-tab-pane :name="1" class="!p-0">
-            <UIPageContent class="!pt-2 !px-0 !m-0">
-              <DetailFilters />
-              <component v-if="store.activeDetail?.detail" :is="store.activeDetail?.detail" />
-            </UIPageContent>
-          </n-tab-pane>
-        </n-tabs>
-      </template>
-
-      <template v-else-if="canViewAudit">
+      <!-- Audit bobi — o'z jadvali va pagination'i bilan, o'lchangan konteyner
+           balandligini to'liq egallaydi. -->
+      <template v-if="store.activeTab === DashboardTab.AUDIT">
         <!-- `!h-full` global `.ui-page-content { height: 100dvh }` ni bosib o'tadi:
              jadval o'lchangan konteyner balandligini to'liq egallaydi va uning
              pagination footeri eng pastda turadi — sahifa scroll qilinmaydi. -->
-        <UIPageContent class="!pt-0 !px-0 !m-0 !h-full">
+        <UIPageContent v-if="canViewAudit" class="!pt-0 !px-0 !m-0 !h-full">
           <AuditTab class="shrink-0" />
           <div class="flex-1 min-h-0">
             <AuditDetail />
           </div>
+        </UIPageContent>
+      </template>
+
+      <!-- Karta drill-down'i. Jadval `h-full` ni hisoblay olishi uchun balandlik
+           zanjiri uzilmasligi kerak: `contentRef` (o'lchangan) → `UIPageContent`
+           (`!h-full`) → `flex-1 min-h-0`. Shu sababli bu yerda oraliq n-tabs
+           ishlatilmaydi — uning pane o'ramida aniq balandlik bo'lmagani uchun
+           jadval `min-height` clamp'iga tushib, sahifa oxirigacha yetmasdi. -->
+      <template v-else-if="store.activeDetail?.detail">
+        <UIPageContent class="!pt-2 !px-0 !m-0 !h-full">
+          <DetailFilters class="shrink-0" />
+          <div class="flex-1 min-h-0">
+            <component :is="store.activeDetail.detail" />
+          </div>
+        </UIPageContent>
+      </template>
+
+      <!-- Bob kartalari. Bu yerda balandlik `auto`: kartalar ro'yxati o'z bo'yicha
+           o'sadi, skrollni `contentRef` boshqaradi. -->
+      <template v-else>
+        <UIPageContent class="!pt-0 !px-0 !m-0 !h-auto">
+          <n-spin :show="store.loading" class="min-h-[200px]">
+            <!-- Sof `canView`: `checkAction` yon ta'sirli (toast) va bu yerda
+                 har render'da ogohlantirish otilardi. Ko'rish ruxsati yo'q
+                 bo'lsa kartalar butunlay ko'rsatilmaydi. -->
+            <n-grid
+              x-gap="8 m:12 l:16"
+              y-gap="8 m:12 l:16"
+              cols="12"
+              v-if="accStore.canView(accStore.pn.hrDashboard) && !store.loading"
+              responsive="screen"
+            >
+              <n-grid-item v-for="card in kpiCards" :key="card.variant" :span="kpiSpan">
+                <FigKpiCard :card="card" :variant="card.variant" />
+              </n-grid-item>
+
+              <n-grid-item v-for="(item, idx) in cards" :key="idx" :span="item.span">
+                <component
+                  :is="item.component"
+                  v-bind="item.props"
+                  @detail="(key) => onDetailEv(item, key)"
+                />
+              </n-grid-item>
+            </n-grid>
+          </n-spin>
         </UIPageContent>
       </template>
     </div>

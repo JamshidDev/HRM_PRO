@@ -73,7 +73,10 @@
 </script>
 
 <template>
-  <div>
+  <!-- `h-full`: jadval balandlik zanjirini uzmasligi uchun (ota-element
+       `flex-1 min-h-0` bo'lib aniq balandlik beradi). Modal teleport qilinadi,
+       shu sababli joylashuvga ta'sir qilmaydi. -->
+  <div class="h-full">
     <UITable
       :columns="columns"
       :actions="actions"
