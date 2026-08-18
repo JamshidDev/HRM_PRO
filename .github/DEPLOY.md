@@ -29,6 +29,18 @@ production → yopiq, development/local → ochiq (`src/main.js`).
 
 Har bir serverdagi `.env` ichida `VITE_*` (build) + `DEPLOY_PATH` (rsync target) bo'ladi.
 
+Frontend xatolarini Telegram'ga yuborish uchun server `.env` iga qo'shimcha kalitlar
+kerak (bo'sh bo'lsa log yuborilmaydi, ilova normal ishlayveradi):
+
+```
+VITE_TG_LOG_BOT_TOKEN=...   # @vath_hrm_logger_bot
+VITE_TG_LOG_CHAT_ID=...     # log guruhi
+VITE_TG_LOG_TOPIC_ID=...    # "website" topic
+```
+
+id larni topish: `npm run telegram:info -- --token=<BOT_TOKEN>`.
+Batafsil: `src/utils/errorReporter.js`.
+
 ---
 
 ## Har bir serverda (DEV va PROD) bir marta
