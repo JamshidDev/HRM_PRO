@@ -35,6 +35,9 @@
     return {
       grid: { top: 16, left: 8, right: 12, bottom: 4, containLabel: true },
       tooltip: {
+        // `body` ga ko'chiriladi: aks holda `.main-content` dagi
+        // `overflow-x: hidden` tooltipni kontent chegarasida kesadi.
+        appendTo: 'body',
         trigger: 'axis',
         backgroundColor: tokenColor('--surface-section'),
         borderColor: tokenColor('--surface-line'),

@@ -39,6 +39,9 @@
 
     return {
       tooltip: {
+        // `body` ga ko'chiriladi: aks holda `.main-content` dagi
+        // `overflow-x: hidden` tooltipni kontent chegarasida kesadi.
+        appendTo: 'body',
         trigger: 'item',
         backgroundColor: tokenColor('--surface-section'),
         borderColor: tokenColor('--surface-line'),
