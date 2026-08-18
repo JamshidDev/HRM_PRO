@@ -201,10 +201,15 @@
 </script>
 
 <template>
+  <!-- Mobil kenglik viewport'ga bog'langan. Ilgari `max-w-(--top-activator-width)`
+       edi, ya'ni bu dropdown o'z o'lchamini `UIPageFilter` ning FILTR TUGMASI
+       kengligidan olardi — tugma icon-only 40px bo'lgach daraxt ham 40px ga
+       qisilib qolgan edi. Ichma-ich popover begona ajdodning trigger kengligiga
+       bog'lanmasligi kerak. -->
   <n-popover
     :placement="placement"
     trigger="click"
-    class="h-[400px] md:max-w-auto py-0! px-0! max-w-(--top-activator-width) md:max-w-none! md:w-[400px]"
+    class="h-[400px] md:max-w-auto py-0! px-0! max-w-[calc(100vw-32px)] md:max-w-none! md:w-[400px]"
   >
     <template #trigger>
       <n-badge class="w-full block" :value="modelV.length" type="info" :offset="[-10, -4]">

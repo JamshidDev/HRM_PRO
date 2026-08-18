@@ -92,11 +92,12 @@
       action: onView
     },
     {
+      // O'chirish — UITable `permission-prefix="lms-certificate"` orqali
+      // `lms-certificate-delete` ruxsatisiz avtomatik disabled bo'ladi.
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete20Regular),
-      action: onDelete,
-      visible: store.canShowFilter
+      action: onDelete
     }
   ])
 </script>

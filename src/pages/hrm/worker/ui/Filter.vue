@@ -6,12 +6,8 @@
     useAccountStore
   } from '@/store/modules/index.js'
   import { UINSelect, UIPageFilter, UISelect } from '@/components/index.js'
-  import {
-    ArrowSync16Regular,
-    ChevronDown20Regular,
-    ChevronUp20Regular,
-    Dismiss16Regular
-  } from '@vicons/fluent'
+  import { useAppBreakpoints } from '@/composables/index.js'
+  import { ChevronDown20Regular, ChevronUp20Regular, Dismiss16Regular } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { appPermissions, useDebounce } from '@/utils/index.js'
   import contractIcon from '@/assets/icons/contract.svg?url'
@@ -23,6 +19,9 @@
   const accStore = useAccountStore()
   const exportStore = useExportStore()
   const componentStore = useComponentStore()
+
+  // Popover kengligi uchun: `lg` (976px) dan pastda 712px viewport'ga sig'maydi.
+  const { isDesktop } = useAppBreakpoints()
 
   const debounceIndexEv = useDebounce(store._index, 1000)
 
@@ -267,21 +266,14 @@
     :show-add-button="false"
     filter-placement="bottom-end"
     :popover-style="{
-      width: '712px',
-      maxWidth: 'calc(100vw - 32px)',
+      width: isDesktop ? '712px' : 'min(712px, calc(100vw - 24px))',
+      maxWidth: 'calc(100vw - 24px)',
       padding: '0',
       borderRadius: '20px'
     }"
   >
     <template #filterAction>
       <div class="worker-action-group flex flex-wrap items-center gap-3 w-full md:w-auto">
-        <n-button type="primary" tertiary @click="store._index()" :loading="store.loading">
-          {{ $t('content.refresh') }}
-          <template #icon>
-            <n-icon><ArrowSync16Regular /></n-icon>
-          </template>
-        </n-button>
-
         <n-button v-if="canWrite" type="primary" @click="onAdd">
           <template #icon>
             <img class="worker-action-icon" :src="contractIcon" alt="" />
@@ -332,7 +324,7 @@
     <template #filterContent>
       <div class="worker-filter-panel">
         <div class="grid grid-cols-12 gap-6">
-          <div class="col-span-12 md:col-span-4">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ $t('workerPage.filter.organization') }}</label>
             <UISelect
               multiple
@@ -350,7 +342,7 @@
             />
           </div>
 
-          <div class="col-span-12 md:col-span-4">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ $t('workerPage.filter.department') }}</label>
             <UINSelect
               multiple
@@ -366,7 +358,7 @@
             />
           </div>
 
-          <div class="col-span-12 md:col-span-4">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ $t('createWorkerPage.form.education') }}</label>
             <n-select
               v-model:value="store.params.educations"
@@ -381,7 +373,7 @@
             />
           </div>
 
-          <div class="col-span-12 md:col-span-4">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ $t('workerPage.filter.position') }}</label>
             <UINSelect
               multiple
@@ -397,7 +389,7 @@
             />
           </div>
 
-          <div class="col-span-12 md:col-span-4">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ $t('workerPage.filter.position_type') }}</label>
             <n-select
               v-model:value="store.params.position_type"
@@ -412,7 +404,7 @@
           </div>
 
           <!-- Hisoblash kesimi: lavozim (har lavozim qator) yoki xodim (har xodim 1 qator) -->
-          <div class="col-span-12 md:col-span-4">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ $t('workerPage.filter.countBy') }}</label>
             <n-select
               v-model:value="store.params.count_by"
@@ -424,7 +416,7 @@
             />
           </div>
 
-          <div class="col-span-12 md:col-span-4">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ $t('workerPage.filter.contract_type') }}</label>
             <n-select
               v-model:value="store.params.contract_type"
@@ -440,7 +432,7 @@
             />
           </div>
 
-          <div class="col-span-12 md:col-span-6">
+          <div class="col-span-12 sm:col-span-6">
             <label class="invisible">-</label>
             <div class="worker-filter-check">
               <n-checkbox @change="filterEvent" v-model:checked="store.params.multiple_position">
@@ -449,7 +441,7 @@
             </div>
           </div>
 
-          <div class="col-span-12 md:col-span-6">
+          <div class="col-span-12 sm:col-span-6">
             <label class="invisible">-</label>
             <div class="worker-filter-check">
               <n-checkbox @change="filterEvent" v-model:checked="store.params.pension_age">
@@ -462,7 +454,7 @@
         <n-divider class="worker-filter-divider" />
 
         <div class="grid grid-cols-12 gap-6">
-          <div class="col-span-12 md:col-span-4">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ $t('workerPage.filter.age') }}</label>
             <n-radio-group
               v-model:value="ageMode"
@@ -474,7 +466,7 @@
             </n-radio-group>
           </div>
 
-          <div class="col-span-12 md:col-span-4">
+          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ ageMode === 'range' ? $t('content.from') : $t('content.ageExact') }}</label>
             <n-input-number
               v-if="ageMode === 'range'"
@@ -500,7 +492,7 @@
             />
           </div>
 
-          <div v-if="ageMode === 'range'" class="col-span-12 md:col-span-4">
+          <div v-if="ageMode === 'range'" class="col-span-12 sm:col-span-6 lg:col-span-4">
             <label>{{ $t('content.to') }}</label>
             <n-input-number
               v-model:value="ageTo"
@@ -528,7 +520,7 @@
 
         <n-collapse-transition :show="showAllFilters">
           <div class="grid grid-cols-12 gap-6 mt-6">
-            <div class="col-span-12 md:col-span-4">
+            <div class="col-span-12 sm:col-span-6 lg:col-span-4">
               <label>{{ $t('workerPage.filter.birthday') }}</label>
               <n-select
                 v-model:value="store.params.birthday"
@@ -541,7 +533,7 @@
               />
             </div>
 
-            <div class="col-span-12 md:col-span-4">
+            <div class="col-span-12 sm:col-span-6 lg:col-span-4">
               <label>{{ $t('workerPage.filter.sex') }}</label>
               <n-select
                 v-model:value="store.params.sex"
@@ -554,7 +546,7 @@
               />
             </div>
 
-            <div class="col-span-12 md:col-span-4">
+            <div class="col-span-12 sm:col-span-6 lg:col-span-4">
               <label>{{ $t('createWorkerPage.form.marital_status') }}</label>
               <n-select
                 v-model:value="store.params.marital_status"
@@ -568,7 +560,7 @@
               />
             </div>
 
-            <div class="col-span-12 md:col-span-4">
+            <div class="col-span-12 sm:col-span-6 lg:col-span-4">
               <label>{{ $t('createWorkerPage.form.nationality_id') }}</label>
               <n-select
                 v-model:value="store.params.nationalities"
@@ -583,7 +575,7 @@
               />
             </div>
 
-            <div class="col-span-12 md:col-span-4">
+            <div class="col-span-12 sm:col-span-6 lg:col-span-4">
               <label>{{ $t('createWorkerPage.form.country') }}</label>
               <n-select
                 v-model:value="store.params.country_id"
@@ -597,7 +589,7 @@
               />
             </div>
 
-            <div class="col-span-12 md:col-span-4">
+            <div class="col-span-12 sm:col-span-6 lg:col-span-4">
               <label>{{ $t('createWorkerPage.form.region') }}</label>
               <n-select
                 v-model:value="store.params.region_id"
@@ -611,7 +603,7 @@
               />
             </div>
 
-            <div class="col-span-12 md:col-span-4">
+            <div class="col-span-12 sm:col-span-6 lg:col-span-4">
               <label>{{ $t('createWorkerPage.form.city') }}</label>
               <n-select
                 v-model:value="store.params.city_id"
@@ -626,7 +618,7 @@
               />
             </div>
 
-            <div class="col-span-12 md:col-span-4">
+            <div class="col-span-12 sm:col-span-6 lg:col-span-4">
               <label>{{ $t('createWorkerPage.form.currentRegion') }}</label>
               <n-select
                 v-model:value="store.params.current_region_id"
@@ -640,7 +632,7 @@
               />
             </div>
 
-            <div class="col-span-12 md:col-span-4">
+            <div class="col-span-12 sm:col-span-6 lg:col-span-4">
               <label>{{ $t('createWorkerPage.form.currentCity') }}</label>
               <n-select
                 v-model:value="store.params.current_city_id"
@@ -739,21 +731,53 @@
     cursor: not-allowed;
   }
 
-  /* Mobil: ikkala tugma bitta qatorda teng kenglikda, "Filterlar" esa alohida qatorda */
-  @media (max-width: 767px) {
+  /* Mobil amal paneli. Ilgari `flex-wrap: nowrap` uchala tugmani 375px da ~110px ga
+     qisar, natijada har bir yorliq ellipsisga aylanib o'qilmas edi. */
+  @media (max-width: 767.98px) {
+    /* Grid EMAS, wrap qiladigan flex: amal soni `canWrite` ga qarab 1 yoki 2 bo'ladi,
+       flex esa qat'iy ustunlardan farqli ravishda yolg'iz qolgan tugmani ham to'liq
+       kenglikda ko'rsatadi (2 ustunli gridda yarim bo'sh qator qolib ketardi). */
     .worker-action-group {
-      flex-wrap: nowrap;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
       width: 100%;
     }
 
+    /* Ikkala amal BITTA qatorda, teng bo'lib. `flex-basis: 0` — `100%` bo'lsa
+       wrap majburlanardi. Tugma yolg'iz qolsa (`canWrite` yo'q) o'zi to'liq egallaydi. */
     .worker-action-group > * {
       flex: 1 1 0;
       min-width: 0;
     }
 
+    .worker-action-group > :deep(.n-button) {
+      /* Barmoq uchun minimal balandlik. */
+      --n-height: 38px !important;
+      /* Tor ekranda yorliqqa ko'proq joy qolsin (standart 0 16px). */
+      --n-padding: 0 10px !important;
+    }
+
     .worker-report-trigger {
       justify-content: center;
-      width: 100%;
+      height: 38px;
+      padding: 0 10px;
+    }
+
+    .worker-report-group {
+      display: flex;
+    }
+
+    .worker-report-group__main {
+      flex: 1 1 auto;
+    }
+
+    .worker-report-group__close {
+      flex: 0 0 auto;
+    }
+
+    .worker-report-group :deep(.n-button) {
+      --n-height: 38px !important;
     }
 
     .worker-action-group :deep(.n-button__content) {
@@ -793,10 +817,19 @@
     display: flex;
     align-items: center;
     box-sizing: border-box;
-    height: 40px;
-    padding: 0 14px;
+    /* `height` EMAS: tor ekranda yorliq ikki qatorga bo'linadi va qat'iy 40px
+       matnni ramkadan chiqarib yuborardi. */
+    min-height: 40px;
+    padding: 8px 14px;
     border: 1px solid var(--surface-line);
     border-radius: 16px;
+  }
+
+  /* naive-ui `.n-checkbox` ga o'zi `align-items: flex-start` beradi, shu bois
+     yorliq ikki qatorga bo'linganda kvadratcha birinchi qatorga qadalib qolardi.
+     Bir qatorli yorliqda bu qoida hech narsani o'zgartirmaydi. */
+  .worker-filter-check :deep(.n-checkbox) {
+    align-items: center;
   }
 
   .worker-filter-check :deep(.n-checkbox__label) {
@@ -881,8 +914,10 @@
     color: #f2f4f7;
   }
 
+  /* Teleport qilingan dropdown — qat'iy 320px 375px ekranda anchor inset bo'lgach
+     overflow berardi. */
   :global(.worker-contract-type-menu) {
     width: auto !important;
-    min-width: 320px;
+    min-width: min(320px, calc(100vw - 24px));
   }
 </style>

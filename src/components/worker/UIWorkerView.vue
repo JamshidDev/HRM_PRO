@@ -199,7 +199,9 @@
     }
   }
 
-  @media only screen and (max-width: 769px) {
+  /* Tailwind `md` (768px) bilan bir xil chegara — ilgari 769px edi va 768px'da
+     TopBar'dagi `md:hidden!` tugmasi yo'qolib, panel esa hamon off-canvas qolardi. */
+  @media only screen and (max-width: 767.98px) {
     .ui-preview-window {
       .preview-content {
         overflow-y: auto;

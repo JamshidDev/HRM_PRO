@@ -1,4 +1,5 @@
 export * from './useAppInit.js'
+export * from './useBreakpoint.js'
 export * from './useLocaleProvider.js'
 export * from './useQrCode.js'
 export * from './useTableColumnFit.js'

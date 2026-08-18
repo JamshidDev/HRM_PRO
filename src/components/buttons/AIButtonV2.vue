@@ -70,6 +70,17 @@
     z-index: 20;
   }
 
+  /* Mobilda 64px suzuvchi tugma ekranning katta qismini bosib turadi.
+     48px — barmoq uchun qulay minimumdan (44px) yuqori. Sudrash chegaralari
+     `AIFloatingButton` da `offsetWidth`/`offsetHeight` bilan o'lchanadi, ya'ni
+     yangi o'lchamga o'zi moslashadi. */
+  @media (max-width: 767.98px) {
+    .ai-button {
+      width: 48px;
+      height: 48px;
+    }
+  }
+
   /* Clips the click ripple to a circle matching the icon's own silhouette.
      Without the radius here, the ripple's overlay blend mode gets cut off
      at this layer's hard square edge - invisible on a light page background,

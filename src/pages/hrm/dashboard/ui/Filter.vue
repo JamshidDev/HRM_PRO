@@ -1,7 +1,6 @@
 <script setup>
   import { UISelect } from '@/components/index.js'
   import { useComponentStore, useDashboardStore } from '@/store/modules/index.js'
-  import { ArrowSync16Regular } from '@vicons/fluent'
 
   const componentStore = useComponentStore()
   const store = useDashboardStore()
@@ -21,19 +20,6 @@
     store._dashboard()
   }
 
-  const refresh = () => {
-    if (store.activeTab === 'audit') {
-      store._getAuditCounts()
-      store._getAuditPreview()
-      return
-    }
-    if (store?.activeDetail) {
-      store._index_detail()
-      return
-    }
-    store._dashboard(true)
-  }
-
   onMounted(() => {
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
@@ -43,17 +29,6 @@
 
 <template>
   <div class="flex gap-3">
-    <n-button
-      type="primary"
-      tertiary
-      @click="refresh"
-      :disabled="store.loading || store.detailLoading"
-    >
-      {{ $t('content.refresh') }}
-      <template #icon>
-        <ArrowSync16Regular />
-      </template>
-    </n-button>
     <div class="w-[400px]">
       <UISelect
         :options="componentStore.structureList"

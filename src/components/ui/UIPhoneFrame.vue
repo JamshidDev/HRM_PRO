@@ -121,6 +121,9 @@
   .phone-content {
     width: 100%;
     height: 100%;
+    /* Ekran burchaklari bo'ylab kesish: sticky/kompozit qatlamli kontent
+       (mas. pastdagi reaksiya bari) ramkadan tashqariga chiqib ketmasin. */
+    border-radius: inherit;
     /* Ekran ichida brauzer scrollbar'i ko'rinmasin — qurilmada u yo'q. */
     scrollbar-width: none;
     -ms-overflow-style: none;

@@ -99,7 +99,9 @@
     {
       label: t('content.download'),
       key: Utils.ActionTypes.download,
-      icon: UIHelper.renderIcon(downloadIcon),
+      // Yonidagi `eye`/`trash` bilan bir xil kulrang: ular hamon `#667085` bilan
+      // qotirilgan, `downloadIcon` esa `currentColor` ga o'tkazilgan.
+      icon: UIHelper.renderIcon(downloadIcon, '#667085'),
       action: onDownload
     }
   ])

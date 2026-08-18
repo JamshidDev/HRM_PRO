@@ -2671,7 +2671,32 @@
   },
   "uploadReport": {
     "name": "Upload report",
+    "latest": "Latest",
+    "olderUploads": "Previous uploads",
     "createTitle": "Upload report",
+    "source": {
+      "label": "Source",
+      "excel": "Excel",
+      "ones": "From 1C",
+      "onesHint": "No file needed for 1C — uses the data already pulled in salary-1c."
+    },
+    "bulkOnes": {
+      "button": "Bulk upload from 1C",
+      "title": "Bulk upload from 1C — Monthly report",
+      "hint": "For the selected organizations the Monthly report is built from data already pulled in salary-1c.",
+      "period": "Period (year / month)",
+      "search": "Search organization",
+      "selectAll": "Select all",
+      "selected": "selected",
+      "employees": "emp.",
+      "upload": "Upload",
+      "uploading": "Uploading",
+      "done": "Done",
+      "failed": "Failed",
+      "noData": "No 1C data found for this period. Pull it in salary-1c first.",
+      "progress": "{done} / {total} uploaded",
+      "summary": "Success: {ok}, Failed: {fail}"
+    },
     "form": {
       "type": "Report type",
       "month": "Month",
@@ -2731,7 +2756,8 @@
     },
     "view": {
       "main_salary": "Base salary",
-      "work_time": "Worked time"
+      "work_time": "Worked time",
+      "net_salary": "Take-home amount"
     },
     "in": {
       "code": "Payment code",
@@ -3012,6 +3038,9 @@
     "month": "Month",
     "period": "Period (month)",
     "pull": "Pull from 1C",
+    "uploadToReport": "Upload to Monthly report",
+    "repull": "Re-pull from 1C",
+    "repullDone": "Employee data refreshed from 1C",
     "pulled": "Pulled",
     "workers": "Employees",
     "byOrg": "By organization",
@@ -3921,8 +3950,41 @@
     }
   },
   "notificationPage": {
+    "send": "Send push",
+    "logs": "Logs",
+    "schedule": "Schedule",
+    "sendTime": "Scheduled",
+    "sendTimePlaceholder": "Empty = now",
+    "sender": "Sender",
+    "channel": "Channel",
+    "recipients": "Recipients",
+    "push": "Push (sent/fail)",
+    "sentAt": "Sent at",
+    "status": {
+      "scheduled": "Scheduled",
+      "sending": "Sending",
+      "sent": "Sent",
+      "skipped": "Skipped",
+      "error": "Error",
+      "cancelled": "Cancelled"
+    },
+    "mode": "Send mode",
+    "byTopic": "By topic",
+    "byUser": "Select users",
+    "topic": "Topic",
+    "topics": {
+      "all": "Everyone",
+      "hr": "HR",
+      "economist": "Economists"
+    },
     "name": "Notifications",
-    "create": "Create notification"
+    "create": "Create notification",
+    "st": {
+      "pending": "Pending",
+      "sent": "Sent",
+      "error": "Error",
+      "cancelled": "Cancelled"
+    }
   },
   "congratulation": {
     "name": "Telegram messages",
@@ -4308,7 +4370,9 @@
     "mobileFaceCheckWorker": "Mobile face: check worker",
     "mobileFaceSchedules": "Mobile face: schedules",
     "otpVerify": "OTP verify",
-    "holidayGreetings": "Holiday greetings"
+    "holidayGreetings": "Holiday greetings",
+    "workerSchedules": "Duty schedule",
+    "workerScheduleSwap": "Schedule swap"
   },
   "kpiPage": {
     "name": "KPI indicators",

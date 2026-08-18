@@ -122,8 +122,30 @@
     store.payload.salary = worker?.salary?.toString()
   }
 
+  // 🔴 Tur 14 (FXSH shartnomasini muddatidan avval bekor qilish) — buyruq YO'Q.
+  // Sabab: bu turda xodimni ishdan bo'shatish kelishuvning O'Z tasdig'ida
+  // bajariladi (`AD_TYPE_FINISH = [12,13,14]`). Buyruq belgilansa esa
+  // `command_status = 2` bo'ladi va backend yon ta'sirni O'TKAZIB YUBORADI
+  // (`applyContractAdditionalConfirmation` boshidagi NOT_MANDATORY sharti) —
+  // bo'shatish buyruqqa qolardi, buyruq ro'yxati esa 14 uchun filtrlanmagan
+  // (32 ta variant: ta'til, xizmat safari...). Ta'til buyrug'i tanlansa hujjat
+  // yaratilar, lekin xodim ishlayotgan bo'lib qolaverardi.
+  // FXSH uchun alohida buyruq turi va shabloni ham mavjud emas.
+  const AD_TYPE_CIVIL_CANCEL = 14
+  const commandAllowed = computed(() => store.payload.type !== AD_TYPE_CIVIL_CANCEL)
+
+  watch(
+    () => store.payload.type,
+    (type) => {
+      if (type === AD_TYPE_CIVIL_CANCEL) {
+        store.payload.command_status = false
+        store.payload.command_type = null
+      }
+    }
+  )
+
   watchEffect(() => {
-    if (store.payload.type) {
+    if (store.payload.type && commandAllowed.value) {
       store.payload.command_type = null
       const data = {
         status: 'contract-additional',
@@ -518,7 +540,11 @@
             />
           </n-form-item>
         </div>
-        <div class="col-span-12 pt-4 flex justify-center gap-2 items-center relative">
+        <!-- Tur 14 da buyruq YO'Q — bo'shatish kelishuvning o'z tasdig'ida bajariladi -->
+        <div
+          v-if="commandAllowed"
+          class="col-span-12 pt-4 flex justify-center gap-2 items-center relative"
+        >
           <n-divider dashed title-placement="left" class="w-full mt-1!">
             <div class="flex items-center gap-3">
               <n-switch v-model:value="store.payload.command_status" />
@@ -529,7 +555,7 @@
           </n-divider>
         </div>
         <div
-          v-if="store.payload.command_status"
+          v-if="commandAllowed && store.payload.command_status"
           class="col-span-12 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground mt-4"
         >
           <div class="grid grid-cols-12 gap-x-4">
