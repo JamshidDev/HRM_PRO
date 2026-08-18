@@ -2716,7 +2716,9 @@
       "confirmed": "Tasdiqlangan",
       "openFromBlock": "Yopish",
       "closeToBlock": "Ochish"
-    }
+    },
+    "confirmQuestion": "Tasdiqlaysizmi?",
+    "cancelConfirmQuestion": "Tasdiqni bekor qilasizmi? Qayta yuklash imkoni ochiladi."
   },
   "instructionPage": {
     "name": "Instruksiya",

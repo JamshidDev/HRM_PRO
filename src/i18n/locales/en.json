@@ -2689,7 +2689,9 @@
       "confirmed": "Confirmed",
       "openFromBlock": "Unblock",
       "closeToBlock": "Block"
-    }
+    },
+    "confirmQuestion": "Confirm?",
+    "cancelConfirmQuestion": "Cancel confirmation? Re-upload will be enabled."
   },
   "instructionPage": {
     "name": "Instructions",
