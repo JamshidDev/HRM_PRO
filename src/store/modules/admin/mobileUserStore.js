@@ -1,5 +1,11 @@
 import { defineStore } from 'pinia'
 
+// Detal modalidagi tab kalitlari — page.vue va store bitta manbadan oladi.
+const DETAIL_TABS = {
+  face: 'face',
+  devices: 'devices'
+}
+
 export const useMobileUserStore = defineStore('mobileUser', {
   state: () => ({
     list: [],
@@ -8,6 +14,8 @@ export const useMobileUserStore = defineStore('mobileUser', {
     totalItems: 0,
     detailVisible: false,
     detail: null,
+    detailTabs: DETAIL_TABS,
+    detailTab: DETAIL_TABS.face,
     params: {
       page: 1,
       per_page: 15,
@@ -30,6 +38,9 @@ export const useMobileUserStore = defineStore('mobileUser', {
     _show(id) {
       this.detailLoading = true
       this.detailVisible = true
+      // Har ochilishda Face ID tabidan boshlanadi.
+      this.detailTab = DETAIL_TABS.face
+      this.detail = null
       $ApiService.mobileUserService
         ._show({ id })
         .then((res) => {
