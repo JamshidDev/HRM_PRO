@@ -158,6 +158,8 @@ export const useComponentStore = defineStore('componentStore', {
 
     workerList: [],
     workerLoading: false,
+    // Xodim so'rovlari navbat raqami (poyga himoyasi — `_workers`ga qarang).
+    workerReqId: 0,
     workerParams: {
       page: 1,
       per_page: 50,
@@ -775,9 +777,17 @@ export const useComponentStore = defineStore('componentStore', {
       let params = {
         ...this.workerParams
       }
+      // 🔴 POYGA HIMOYASI. Bitta select uchta manbadan so'rov yuboradi:
+      // `onSearchWorker` (har harfda), `onOpenWorkerEv` (ochilganda, search=null)
+      // va `onScrollWorker`. Ular ketma-ket ketadi, javoblar esa istalgan
+      // tartibda qaytadi — kechroq kelgan FILTRSIZ javob qidiruv natijasini
+      // bosib ketardi va qidirilgan xodim ro'yxatda ko'rinmay qolardi.
+      // Har so'rovga navbat raqami beriladi; faqat ENG OXIRGISI ro'yxatni yozadi.
+      const reqId = ++this.workerReqId
       $ApiService.workerService
         ._search({ params })
         .then((res) => {
+          if (reqId !== this.workerReqId) return
           let data = res.data.data.data.map((v) => ({
             ...v,
             name: v.worker.last_name + ' ' + v.worker.first_name + ' ' + v.worker.middle_name,
@@ -800,7 +810,8 @@ export const useComponentStore = defineStore('componentStore', {
           }
         })
         .finally(() => {
-          this.workerLoading = false
+          // Eskirgan so'rov `loading`ni o'chirmasin — eng oxirgisi hali ketmoqda.
+          if (reqId === this.workerReqId) this.workerLoading = false
         })
     },
     onSearchWorker(v) {

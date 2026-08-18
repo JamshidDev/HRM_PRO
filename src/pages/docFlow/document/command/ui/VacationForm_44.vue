@@ -15,6 +15,10 @@
       if (!error) {
         data = {
           ...mainData,
+          // Qaysi ta'til yopilishi ANIQ yuboriladi — backend "eng oxirgi
+          // ta'til"ga tayanmasin (uzoq muddatli ta'til eng oxirgi bo'lmasligi
+          // mumkin va noto'g'ri qator yopilardi).
+          vacation_id: store.form_44.vacation_id,
           new_date: Utils.timeToZone(store.form_44.new_date),
           rest_day: Number(store.form_44.rest_day),
           reason: store.form_44.reason
@@ -31,6 +35,27 @@
 
   const validateForm = async () => {
     await formRef.value?.validate()
+  }
+
+  // Ta'til ro'yxati — buyruq 50 bilan bir xil manba (`_getWorkerVacation`).
+  watch(
+    () => store.payload.worker,
+    (v) => {
+      store.form_44.vacation_id = null
+      if (!v) return
+      store._getWorkerVacation()
+    },
+    { immediate: true }
+  )
+
+  // Ta'til tanlanganda "ishga chiqish sanasi" ta'til tugashidan keyingi kunga
+  // taklif qilinadi (form 50 dagi xulq).
+  const onSelectVacation = (v) => {
+    const item = store.workerVacations.find((w) => w.id === v)
+    if (!item) return
+    const next = new Date(item.to)
+    next.setDate(next.getDate() + 1)
+    store.form_44.new_date = next.getTime()
   }
 
   const vacation = ref(null)
@@ -117,6 +142,20 @@
         </template>
         {{ $t('documentPage.command.lastVacation') }}</n-button
       >
+    </div>
+    <div class="col-span-12 md:col-span-6">
+      <n-form-item :label="$t(`commandPage.form_50.vacation_id`)" path="vacation_id">
+        <n-select
+          v-model:value="store.form_44.vacation_id"
+          filterable
+          clearable
+          :options="store.workerVacations"
+          label-field="name"
+          value-field="id"
+          :loading="store.workerVacationLoading"
+          @update:value="onSelectVacation"
+        />
+      </n-form-item>
     </div>
     <div class="col-span-12 md:col-span-6 lg:col-span-3">
       <n-form-item :label="$t(`commandPage.form_44.new_date`)" path="new_date">

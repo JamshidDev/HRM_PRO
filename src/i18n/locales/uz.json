@@ -3962,8 +3962,41 @@
     "name": "Turniket grafiki"
   },
   "notificationPage": {
+    "send": "Push yuborish",
+    "logs": "Loglar",
+    "schedule": "Rejalashtirish",
+    "sendTime": "Rejalashtirilgan",
+    "sendTimePlaceholder": "Bo'sh = darhol",
+    "sender": "Yuboruvchi",
+    "channel": "Kanal",
+    "recipients": "Qabul qiluvchilar",
+    "push": "Push (yub/xato)",
+    "sentAt": "Yuborilgan vaqt",
+    "status": {
+      "scheduled": "Rejalashtirilgan",
+      "sending": "Yuborilmoqda",
+      "sent": "Yuborildi",
+      "skipped": "O'tkazib yuborildi",
+      "error": "Xatolik",
+      "cancelled": "Bekor qilingan"
+    },
+    "mode": "Yuborish rejimi",
+    "byTopic": "Topic bo'yicha",
+    "byUser": "Foydalanuvchini tanlab",
+    "topic": "Topic",
+    "topics": {
+      "all": "Barchaga",
+      "hr": "Kadrlarga",
+      "economist": "Economistlarga"
+    },
     "name": "Bildirishnomalar",
-    "create": "Bildirishnoma yaratish"
+    "create": "Bildirishnoma yaratish",
+    "st": {
+      "pending": "Kutilmoqda",
+      "sent": "Yuborilgan",
+      "error": "Xatolik",
+      "cancelled": "Bekor qilingan"
+    }
   },
   "approve": {
     "name": "Yuborilgan xodimlar",
@@ -4381,7 +4414,9 @@
     "mobileFaceCheckWorker": "Mobil face: xodim tekshirish",
     "mobileFaceSchedules": "Mobil face: jadvallar",
     "otpVerify": "OTP tekshirish",
-    "holidayGreetings": "Bayram tabriklari"
+    "holidayGreetings": "Bayram tabriklari",
+    "workerSchedules": "Navbatchilik grafigi",
+    "workerScheduleSwap": "Grafik almashtirish"
   },
   "kpiPage": {
     "name": "KPI ko'rsatgichlar",
