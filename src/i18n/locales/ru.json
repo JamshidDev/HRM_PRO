@@ -1439,13 +1439,27 @@
   "mobileUserPage": {
     "name": "Мобильные пользователи",
     "deviceModel": "Модель устройства",
+    "devicesCount": "Кол-во устройств",
     "platform": "Платформа",
     "verificationTime": "Время верификации",
     "detailTitle": "Информация об устройстве",
     "deviceInfo": "Об устройстве",
     "sessions": "Сессии",
     "noPhotos": "Нет фотографий",
-    "noSessions": "Нет сессий"
+    "noSessions": "Нет сессий",
+    "tabFaceId": "Face ID",
+    "tabDevices": "Устройства",
+    "active": "Активно",
+    "inactive": "Неактивно",
+    "currentDevice": "Текущее устройство",
+    "deviceId": "ID",
+    "deviceUuid": "UUID устройства",
+    "fcmToken": "FCM токен",
+    "notifications": "Уведомления",
+    "lastUsedAt": "Последняя активность",
+    "noFcmToken": "Нет FCM токена",
+    "noDevices": "Нет устройств",
+    "copied": "Скопировано"
   },
   "vacancyApprovePage": {
     "menuName": "Подтверждение",
