@@ -2015,7 +2015,8 @@
       "title": "Xodimlarning yoshi bo'yicha",
       "age31": "30 yoshgacha",
       "age32_45": "31 dan 45 yoshgacha",
-      "age46": "46 yoshdan kattalar"
+      "age46": "46 yoshdan kattalar",
+      "structureTitle": "Yosh bo'yicha tuzilma"
     },
     "edu": {
       "title": "Xodimlarning ma'lumoti bo'yicha",
@@ -2116,6 +2117,14 @@
       "empty": "Ma'lumot topilmadi",
       "lastChecked": "Oxirgi tekshiruv",
       "worker": "Xodim"
+    },
+    "tabs": {
+      "general": "Umumiy",
+      "movement": "Kadrlar harakati",
+      "attendance": "Davomat va ta'til"
+    },
+    "vacation": {
+      "statusTitle": "Ta'til holati — turlari kesimida"
     }
   },
   "applicationPage": {

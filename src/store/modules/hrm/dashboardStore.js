@@ -52,6 +52,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
     dashboard: {
       contractTypes: [],
       mainCard: [],
+      genders: null,
       ageCard: [],
       eduCard: [],
       passwordCard: null,
@@ -176,8 +177,11 @@ export const useDashboardStore = defineStore('dashboardStore', {
 
       const v = res.data.data
       this.dashboard.contractTypes = v.contract_types
+      this.dashboard.genders = { man: v.mans_count, woman: v.woman_count }
+      // `variant` — Figma v3 KPI kartasidagi chip/suv belgisi to'plamini tanlaydi.
       this.dashboard.mainCard = [
         {
+          variant: 'users',
           total: {
             title: 'dashboardPage.mainCard.totalWorker',
             count: v.workers_count
@@ -192,6 +196,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
           }
         },
         {
+          variant: 'pension',
           total: {
             title: 'dashboardPage.pension.title',
             count: v.retired_men_count + v.retired_women_count
@@ -206,6 +211,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
           }
         },
         {
+          variant: 'positions',
           total: {
             title: 'dashboardPage.position.title',
             count: v.positions_rate
@@ -220,6 +226,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
           }
         },
         {
+          variant: 'fxsh',
           total: {
             title: 'dashboardPage.mainCard.fxsh',
             count: v.fxsh_count
@@ -290,57 +297,20 @@ export const useDashboardStore = defineStore('dashboardStore', {
       }
       this.dashboard.contracts = v.contracts
       this.dashboard.vacations = v.vacation_types
-      if (v.birthdays.result.length > 0) {
-        this.dashboard.birthdays = {
-          title: 'dashboardPage.birthday.title',
-          data: [
-            {
-              title: t('dashboardPage.birthday.today'),
-              workers:
-                v.birthdays.result[0]?.count > 3
-                  ? [...v.birthdays.result[0].workers, ...v.birthdays.result[0].workers]
-                  : v.birthdays.result[0].workers,
-              total: v.birthdays.result[0].count,
-              has_more: v.birthdays.result[0].has_more
-            },
-            {
-              title: t('dashboardPage.birthday.tomorrow'),
-              workers:
-                v.birthdays.result[1].count > 3
-                  ? [...v.birthdays.result[1].workers, ...v.birthdays.result[1].workers]
-                  : v.birthdays.result[1].workers,
-              total: v.birthdays.result[1].count,
-              has_more: v.birthdays.result[1].has_more
-            },
-            {
-              title: formatMonth(v.birthdays.result[2].day),
-              workers:
-                v.birthdays.result[2].count > 3
-                  ? [...v.birthdays.result[2].workers, ...v.birthdays.result[2].workers]
-                  : v.birthdays.result[2].workers,
-              total: v.birthdays.result[2].count,
-              has_more: v.birthdays.result[2].has_more
-            },
-            {
-              title: formatMonth(v.birthdays.result[3].day),
-              workers:
-                v.birthdays.result[3].count > 3
-                  ? [...v.birthdays.result[3].workers, ...v.birthdays.result[3].workers]
-                  : v.birthdays.result[3].workers,
-              total: v.birthdays.result[3].count,
-              has_more: v.birthdays.result[3].has_more
-            },
-            {
-              title: formatMonth(v.birthdays.result[4]?.day),
-              workers:
-                v.birthdays.result[4].count > 3
-                  ? [...v.birthdays.result[4].workers, ...v.birthdays.result[4].workers]
-                  : v.birthdays.result[4].workers,
-              total: v.birthdays.result[4].count,
-              has_more: v.birthdays.result[4].has_more
-            }
-          ]
-        }
+      // Maketda (node 2966:68947) har bir qator "sana + izoh + soni + avatarlar"
+      // ko'rinishida: birinchi ikkitasida izoh bor, qolganlarida faqat sana.
+      const labels = [t('dashboardPage.birthday.today'), t('dashboardPage.birthday.tomorrow')]
+      this.dashboard.birthdays = {
+        title: 'dashboardPage.birthday.title',
+        data: (v.birthdays?.result || []).map((item, idx) => ({
+          day: formatMonth(item.day),
+          label: labels[idx] || null,
+          total: item.count,
+          // `UIUserGroup` "+N" ni faqat ro'yxat `max` dan uzun bo'lsagina chizadi,
+          // shuning uchun qoldiq bor paytda ro'yxat sun'iy uzaytiriladi.
+          workers: item.count > 3 ? [...item.workers, ...item.workers] : item.workers,
+          has_more: item.has_more
+        }))
       }
     },
     _responseTwoAttach(res) {

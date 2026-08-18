@@ -1,23 +1,26 @@
-import DisabilityCard from '@/pages/hrm/dashboard/ui/DisabilityCard.vue'
+import AgeStructureCard from '@/pages/hrm/dashboard/ui/cards/AgeStructureCard.vue'
+import BirthdayListCard from '@/pages/hrm/dashboard/ui/cards/BirthdayListCard.vue'
+import EducationCard from '@/pages/hrm/dashboard/ui/cards/EducationCard.vue'
+import DocumentStatusCard from '@/pages/hrm/dashboard/ui/cards/DocumentStatusCard.vue'
+import ContractTypesCard from '@/pages/hrm/dashboard/ui/cards/ContractTypesCard.vue'
+import HiringDynamicsCard from '@/pages/hrm/dashboard/ui/cards/HiringDynamicsCard.vue'
+import DisabilityDonutCard from '@/pages/hrm/dashboard/ui/cards/DisabilityDonutCard.vue'
+import VacationStatusCard from '@/pages/hrm/dashboard/ui/cards/VacationStatusCard.vue'
+import SickLeaveCard from '@/pages/hrm/dashboard/ui/cards/SickLeaveCard.vue'
+import IncentiveRadialCard from '@/pages/hrm/dashboard/ui/cards/IncentiveRadialCard.vue'
+import PunishmentColumnCard from '@/pages/hrm/dashboard/ui/cards/PunishmentColumnCard.vue'
+
+import AgeDetail from '@/pages/hrm/dashboard/ui/Detail/AgeDetail.vue'
+import BirthdayDetail from '@/pages/hrm/dashboard/ui/Detail/BirthdayDetail.vue'
+import EducationDetail from '@/pages/hrm/dashboard/ui/Detail/EducationDetail.vue'
+import PassportDetail from '@/pages/hrm/dashboard/ui/Detail/PassportDetail.vue'
+import MedDetail from '@/pages/hrm/dashboard/ui/Detail/MedDetail.vue'
+import PensionDetail from '@/pages/hrm/dashboard/ui/Detail/PensionDetail.vue'
+import ContractDetail from '@/pages/hrm/dashboard/ui/Detail/ContractDetail.vue'
 import WorkerDisabilityDetail from '@/pages/hrm/dashboard/ui/Detail/WorkerDisabilityDetail.vue'
 import RelativeDisabilityDetail from '@/pages/hrm/dashboard/ui/Detail/RelativeDisabilityDetail.vue'
-import AgeChart from '@/pages/hrm/dashboard/ui/AgeChart.vue'
-import AgeDetail from '@/pages/hrm/dashboard/ui/Detail/AgeDetail.vue'
-import EduChart from '@/pages/hrm/dashboard/ui/EduChart.vue'
-import EducationDetail from '@/pages/hrm/dashboard/ui/Detail/EducationDetail.vue'
-import IncentiveChart from '@/pages/hrm/dashboard/ui/IncentiveChart.vue'
-import YearlyChart from '@/pages/hrm/dashboard/ui/YearlyChart.vue'
-import BirthdayCard from '@/pages/hrm/dashboard/ui/BirthdayCard.vue'
-import BirthdayDetail from '@/pages/hrm/dashboard/ui/Detail/BirthdayDetail.vue'
-import VacationChart from '@/pages/hrm/dashboard/ui/VacationChart.vue'
-import ContractChart from '@/pages/hrm/dashboard/ui/ContractChart.vue'
-import InfoCard from '@/pages/hrm/dashboard/ui/InfoCard.vue'
-import PassportDetail from '@/pages/hrm/dashboard/ui/Detail/PassportDetail.vue'
-import PensionDetail from '@/pages/hrm/dashboard/ui/Detail/PensionDetail.vue'
-import MedDetail from '@/pages/hrm/dashboard/ui/Detail/MedDetail.vue'
 import IncentiveDetail from '@/pages/hrm/dashboard/ui/Detail/IncentiveDetail.vue'
 import DisciplinaryDetail from '@/pages/hrm/dashboard/ui/Detail/DisciplinaryDetail.vue'
-import ContractDetail from '@/pages/hrm/dashboard/ui/Detail/ContractDetail.vue'
 
 import ApiService from '@/service/ApiService.js'
 
@@ -29,128 +32,151 @@ export const InfoCardEnum = {
   INCENTIVE: 'incentive'
 }
 
-export const cards = [
-  {
-    component: markRaw(AgeChart),
-    span: '12 l:6 xl:4',
-    title: 'dashboardPage.age.title',
-    detail: markRaw(AgeDetail),
-    filters: ['sex', 'ages'],
-    filterCallback: ApiService.dashboardService._ageDetail
-  },
-  {
-    component: markRaw(EduChart),
-    span: '12 l:6 xl:4',
-    title: 'dashboardPage.edu.title',
-    detail: markRaw(EducationDetail),
-    filters: ['type'],
-    filterCallback: ApiService.dashboardService._educationDetail
-  },
-  {
-    component: markRaw(IncentiveChart),
-    span: '12 l:6 xl:4',
-    detailFactory(v) {
-      switch (v) {
-        case InfoCardEnum.DISCIPLINARY:
-          return {
-            title: 'dashboardPage.disciplinary.title',
-            detail: markRaw(DisciplinaryDetail),
-            filters: ['year', 'disc_type'],
-            filterCallback: ApiService.dashboardService._disciplinaryDetail
-          }
-        case InfoCardEnum.INCENTIVE:
-          return {
-            title: 'dashboardPage.incentive.title',
-            detail: markRaw(IncentiveDetail),
-            filters: ['year', 'inc_type'],
-            filterCallback: ApiService.dashboardService._incentiveDetail
-          }
+/**
+ * Figma "HRM Dashboard — chart variantlari (v3)" (node 2959:58213) boblari.
+ * `audit` — eski holida qoladi, shu sababli bu ro'yxatda yo'q.
+ */
+export const DashboardTab = {
+  GENERAL: 'general',
+  MOVEMENT: 'movement',
+  ATTENDANCE: 'attendance',
+  AUDIT: 'audit'
+}
+
+/**
+ * Har bir bob uchun KPI qatorida chiziladigan kartalar (`dashboard.mainCard`
+ * dagi `variant` bo'yicha tanlanadi). Maketda Kadrlar harakati bobida to'rtta
+ * karta bor, ammo "vakansiya yopilish muddati" va "o'rtacha staj" uchun
+ * backend ma'lumot bermaydi — shu sababli faqat ikkitasi qoladi.
+ */
+export const tabKpiVariants = {
+  [DashboardTab.GENERAL]: ['users', 'pension', 'positions', 'fxsh'],
+  [DashboardTab.MOVEMENT]: ['positions', 'pension'],
+  [DashboardTab.ATTENDANCE]: []
+}
+
+/**
+ * Boblar kontenti. Har bir yozuv `n-grid-item` span'i va (agar mavjud bo'lsa)
+ * drill-down konfiguratsiyasini beradi — `page.vue` shu ma'lumot bilan
+ * `store.activeDetail` ni to'ldiradi.
+ */
+export const tabCards = {
+  [DashboardTab.GENERAL]: [
+    {
+      component: markRaw(AgeStructureCard),
+      span: '12 l:6',
+      title: 'dashboardPage.age.structureTitle',
+      detail: markRaw(AgeDetail),
+      filters: ['sex', 'ages'],
+      filterCallback: ApiService.dashboardService._ageDetail
+    },
+    {
+      component: markRaw(BirthdayListCard),
+      span: '12 l:6',
+      title: 'dashboardPage.birthday.title',
+      detail: markRaw(BirthdayDetail),
+      filters: ['birth_month', 'birth_day'],
+      filterCallback: ApiService.dashboardService._birthdayDetail
+    },
+    {
+      component: markRaw(EducationCard),
+      span: '12',
+      title: 'dashboardPage.edu.title',
+      detail: markRaw(EducationDetail),
+      filters: ['type'],
+      filterCallback: ApiService.dashboardService._educationDetail
+    },
+    {
+      component: markRaw(DocumentStatusCard),
+      span: '12 md:6 l:4',
+      props: { type: 'passport' },
+      title: 'dashboardPage.password.title',
+      detail: markRaw(PassportDetail),
+      filters: ['filter'],
+      filterCallback: ApiService.dashboardService._passportDetail
+    },
+    {
+      component: markRaw(DocumentStatusCard),
+      span: '12 md:6 l:4',
+      props: { type: 'med' },
+      title: 'dashboardPage.medical.title',
+      detail: markRaw(MedDetail),
+      filters: ['med_type'],
+      filterCallback: ApiService.dashboardService._medDetail
+    },
+    {
+      component: markRaw(DocumentStatusCard),
+      span: '12 md:6 l:4',
+      props: { type: 'pension' },
+      title: 'dashboardPage.pension.title',
+      detail: markRaw(PensionDetail),
+      filters: ['sex'],
+      filterCallback: ApiService.dashboardService._pensionDetail
+    }
+  ],
+
+  [DashboardTab.MOVEMENT]: [
+    {
+      component: markRaw(ContractTypesCard),
+      span: '12'
+    },
+    {
+      component: markRaw(HiringDynamicsCard),
+      span: '12',
+      title: 'dashboardPage.yearly.title',
+      detail: markRaw(ContractDetail),
+      filters: ['contract_type', 'year', 'month'],
+      filterCallback: ApiService.dashboardService._contractDetail,
+      defaultValues: {
+        type: 'ended',
+        year: new Date().getFullYear(),
+        month: new Date().getMonth() || 12
       }
+    },
+    {
+      component: markRaw(DisabilityDonutCard),
+      span: '12 l:6',
+      props: { type: 'worker' },
+      title: 'dashboardPage.disability.workerTitle',
+      detail: markRaw(WorkerDisabilityDetail),
+      filters: [],
+      filterCallback: ApiService.dashboardService._workerDisabilityDetail
+    },
+    {
+      component: markRaw(DisabilityDonutCard),
+      span: '12 l:6',
+      props: { type: 'relative' },
+      title: 'dashboardPage.disability.relativeTitle',
+      detail: markRaw(RelativeDisabilityDetail),
+      filters: [],
+      filterCallback: ApiService.dashboardService._relativeDisabilityDetail
     }
-  },
-  {
-    component: markRaw(YearlyChart),
-    span: '12 l:6 xl:8',
-    title: 'dashboardPage.yearly.title',
-    detail: markRaw(ContractDetail),
-    filters: ['contract_type', 'year', 'month'],
-    filterCallback: ApiService.dashboardService._contractDetail,
-    defaultValues: {
-      type: 'ended',
-      year: new Date().getFullYear(),
-      month: new Date().getMonth() || 12
+  ],
+
+  [DashboardTab.ATTENDANCE]: [
+    {
+      component: markRaw(VacationStatusCard),
+      span: '12 l:8'
+    },
+    {
+      component: markRaw(SickLeaveCard),
+      span: '12 l:4'
+    },
+    {
+      component: markRaw(IncentiveRadialCard),
+      span: '12 l:6',
+      title: 'dashboardPage.incentive.title',
+      detail: markRaw(IncentiveDetail),
+      filters: ['year', 'inc_type'],
+      filterCallback: ApiService.dashboardService._incentiveDetail
+    },
+    {
+      component: markRaw(PunishmentColumnCard),
+      span: '12 l:6',
+      title: 'dashboardPage.disciplinary.title',
+      detail: markRaw(DisciplinaryDetail),
+      filters: ['year', 'disc_type'],
+      filterCallback: ApiService.dashboardService._disciplinaryDetail
     }
-  },
-  {
-    component: markRaw(BirthdayCard),
-    span: '12 l:6 xl:4',
-    title: 'dashboardPage.birthday.title',
-    detail: markRaw(BirthdayDetail),
-    filters: ['birth_month', 'birth_day'],
-    filterCallback: ApiService.dashboardService._birthdayDetail
-  },
-  {
-    component: markRaw(VacationChart),
-    span: '12 l:6 xl:4'
-  },
-  {
-    component: markRaw(ContractChart),
-    span: '12 l:6 xl:4'
-  },
-  {
-    component: markRaw(InfoCard),
-    span: '12 l:6 xl:4',
-    /**
-     * That method is being written since the card in question has three different childs with respective details
-     * Thus we needed a dynamic method to identify small card in question
-     */
-    detailFactory(v) {
-      switch (v) {
-        case InfoCardEnum.PASSPORT:
-          return {
-            title: 'dashboardPage.password.title',
-            detail: markRaw(PassportDetail),
-            filters: ['filter'],
-            filterCallback: ApiService.dashboardService._passportDetail
-          }
-        case InfoCardEnum.MED:
-          return {
-            title: 'dashboardPage.medical.title',
-            detail: markRaw(MedDetail),
-            filters: ['med_type'],
-            filterCallback: ApiService.dashboardService._medDetail
-          }
-        case InfoCardEnum.PENSION:
-          return {
-            title: 'dashboardPage.pension.title',
-            detail: markRaw(PensionDetail),
-            filters: ['sex'],
-            filterCallback: ApiService.dashboardService._pensionDetail
-          }
-      }
-    }
-  },
-  {
-    component: markRaw(DisabilityCard),
-    span: '12 l:4 xl:4',
-    props: { type: 'worker' },
-    title: 'dashboardPage.disability.workerTitle',
-    detail: markRaw(WorkerDisabilityDetail),
-    filters: [],
-    filterCallback: ApiService.dashboardService._workerDisabilityDetail
-  },
-  {
-    component: markRaw(DisabilityCard),
-    span: '12 l:4 xl:4',
-    props: { type: 'relative' },
-    title: 'dashboardPage.disability.relativeTitle',
-    detail: markRaw(RelativeDisabilityDetail),
-    filters: [],
-    filterCallback: ApiService.dashboardService._relativeDisabilityDetail
-  },
-  {
-    component: markRaw(DisabilityCard),
-    span: '12 l:4 xl:4',
-    props: { type: 'sickLeave' }
-  }
-]
+  ]
+}

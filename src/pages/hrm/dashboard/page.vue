@@ -2,29 +2,41 @@
   import { UIPageContent, UISegmentTabs } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useDashboardStore } from '@/store/modules/index.js'
-  import HeaderCard from '@/pages/hrm/dashboard/ui/HeaderCard.vue'
+  import FigKpiCard from './ui/fig/FigKpiCard.vue'
   import DetailFilters from './ui/Detail/Filter.vue'
   import Filter from './ui/Filter.vue'
   import AuditTab from './ui/audit/AuditTab.vue'
   import AuditDetail from './ui/audit/AuditDetail.vue'
   import AuditDetailFilter from './ui/audit/AuditDetailFilter.vue'
 
-  import { cards } from './constants.js'
+  import { DashboardTab, tabCards, tabKpiVariants } from './constants.js'
 
   const { t } = i18n.global
   const store = useDashboardStore()
   const accStore = useAccountStore()
 
   const canViewAudit = computed(() => accStore.checkPermission(accStore.pn.hrDashboardAudit))
-  const isAudit = computed(() => store.activeTab === 'audit' && canViewAudit.value)
+  const isAudit = computed(() => store.activeTab === DashboardTab.AUDIT && canViewAudit.value)
 
   // Audit — alohida ko'rish ruxsati; bo'lmasa tab umuman chizilmaydi.
   const tabList = computed(() =>
     [
-      { id: 'general', name: t('dashboardPage.audit.tabGeneral') },
-      canViewAudit.value ? { id: 'audit', name: t('dashboardPage.audit.tabAudit') } : null
+      { id: DashboardTab.GENERAL, name: t('dashboardPage.tabs.general') },
+      { id: DashboardTab.MOVEMENT, name: t('dashboardPage.tabs.movement') },
+      { id: DashboardTab.ATTENDANCE, name: t('dashboardPage.tabs.attendance') },
+      canViewAudit.value ? { id: DashboardTab.AUDIT, name: t('dashboardPage.audit.tabAudit') } : null
     ].filter(Boolean)
   )
+
+  // Faol bobning KPI kartalari va kontent kartalari.
+  const kpiCards = computed(() => {
+    const variants = tabKpiVariants[store.activeTab] || []
+    return store.dashboard.mainCard.filter((card) => variants.includes(card.variant))
+  })
+  // Maketda Umumiy bobida to'rtta karta bir qatorda, Kadrlar harakatida esa
+  // ikkitasi butun kenglikni bo'lishadi.
+  const kpiSpan = computed(() => (kpiCards.value.length > 2 ? '12 l:6 xl:3' : '12 l:6'))
+  const cards = computed(() => tabCards[store.activeTab] || [])
 
   const onTabSelect = (tab) => {
     store.activeTab = tab
@@ -32,7 +44,7 @@
   }
 
   // ── Kontent balandligi ──────────────────────────────────────────────────────
-  // Ikkala tab ham qolgan bo'sh joyni to'liq egallashi kerak: dashboard kartalari
+  // Barcha boblar qolgan bo'sh joyni to'liq egallashi kerak: dashboard kartalari
   // sahifa oxirigacha borsin, audit jadvalining pagination footeri esa eng pastda
   // tursin. Yuqoridagi tab/filtr qatorining balandligi o'zgaruvchan (tor ekranda
   // wrap bo'ladi), shuning uchun offset qattiq raqam emas, DOM'dan o'lchanadi.
@@ -94,7 +106,7 @@
     // Ko'rsatilayotgan ma'lumot tozalangan filtrga mos bo'lishi uchun qayta yuklanadi.
     // Audit tabida `AuditTab` qayta mount bo'lib `_getAuditCounts()` ni o'zi chaqiradi
     // (kontent `v-if` bilan almashadi, ya'ni har safar yangidan mount bo'ladi).
-    if (tab === 'general') store._dashboard()
+    if (tab !== DashboardTab.AUDIT) store._dashboard()
   }
 </script>
 
@@ -122,7 +134,7 @@
       style="overflow-y: auto; scrollbar-gutter: stable"
       :style="contentHeight ? { height: contentHeight } : null"
     >
-      <template v-if="store.activeTab === 'general'">
+      <template v-if="store.activeTab !== DashboardTab.AUDIT">
         <n-tabs
           class="h-full"
           :value="store.activeDetail ? 1 : 0"
@@ -137,17 +149,16 @@
                      har render'da ogohlantirish otilardi. Ko'rish ruxsati yo'q
                      bo'lsa kartalar butunlay ko'rsatilmaydi. -->
                 <n-grid
-                  x-gap="4 m:8 l:12"
-                  y-gap="4 m:8 l:12"
+                  x-gap="8 m:12 l:16"
+                  y-gap="8 m:12 l:16"
                   cols="12"
                   v-if="accStore.canView(accStore.pn.hrDashboard) && !store.loading"
                   responsive="screen"
                 >
-                  <template v-for="(card, idx) in store.dashboard.mainCard" :key="idx">
-                    <n-grid-item span="12 l:6 xl:3">
-                      <HeaderCard :card="card" />
-                    </n-grid-item>
-                  </template>
+                  <n-grid-item v-for="card in kpiCards" :key="card.variant" :span="kpiSpan">
+                    <FigKpiCard :card="card" :variant="card.variant" />
+                  </n-grid-item>
+
                   <n-grid-item v-for="(item, idx) in cards" :key="idx" :span="item.span">
                     <component
                       :is="item.component"
@@ -168,7 +179,7 @@
         </n-tabs>
       </template>
 
-      <template v-else-if="store.activeTab === 'audit' && canViewAudit">
+      <template v-else-if="canViewAudit">
         <!-- `!h-full` global `.ui-page-content { height: 100dvh }` ni bosib o'tadi:
              jadval o'lchangan konteyner balandligini to'liq egallaydi va uning
              pagination footeri eng pastda turadi — sahifa scroll qilinmaydi. -->
@@ -184,6 +195,9 @@
 </template>
 
 <style lang="scss">
+  /* Figma v3 kartalarida hover effekti yo'q, ammo bu global uslub boshqa
+     sahifalarda (admin/integrationClients, turnstile/events) ishlatiladi —
+     shu sababli shu yerda qoldirilgan. */
   .hover-effect-card {
     cursor: pointer;
     transform: scale(1);
