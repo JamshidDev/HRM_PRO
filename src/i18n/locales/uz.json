@@ -362,6 +362,10 @@
     "noSpam": "Spamdan chiqarish",
     "noImage": "Rasm mavjud emas",
     "waitResponse": "Iltimos javobni kuting!",
+    "loadingWorkspace": "Ish maydoni tayyorlanmoqda",
+    "loadingWorkspaceHint": "Hisob va ruxsatlar yuklanmoqda",
+    "loggingOut": "Tizimdan chiqilmoqda",
+    "loggingOutHint": "Sessiya xavfsiz yopilmoqda",
     "untilNow": "hozirgacha",
     "warningImageSave": "Asosiy rasm uchun yangi rasm tanlandi. O‘zgarishni saqlash uchun 'Saqlash' tugmasini bosing.",
     "selectAll": "Barchasini tanlash",
@@ -2712,7 +2716,32 @@
   },
   "uploadReport": {
     "name": "Hisobot yuklash",
+    "latest": "Oxirgi",
+    "olderUploads": "Oldingi yuklamalar",
     "createTitle": "Hisobot yuklash",
+    "source": {
+      "label": "Manba",
+      "excel": "Excel",
+      "ones": "1C dan",
+      "onesHint": "1C dan yuklaganda fayl kerak emas — salary-1c da tortilgan ma'lumot ishlatiladi."
+    },
+    "bulkOnes": {
+      "button": "1C dan ommaviy yuklash",
+      "title": "1C dan ommaviy yuklash — Oylik hisobot",
+      "hint": "Tanlangan korxonalar uchun salary-1c da tortilgan ma'lumotdan Oylik hisobot quriladi.",
+      "period": "Davr (yil / oy)",
+      "search": "Korxona qidirish",
+      "selectAll": "Barchasini tanlash",
+      "selected": "tanlandi",
+      "employees": "xodim",
+      "upload": "Yuklash",
+      "uploading": "Yuklanmoqda",
+      "done": "Tayyor",
+      "failed": "Xato",
+      "noData": "Bu davr uchun 1C ma'lumoti topilmadi. Avval salary-1c da torting.",
+      "progress": "{done} / {total} yuklandi",
+      "summary": "Muvaffaqiyatli: {ok}, Xato: {fail}"
+    },
     "form": {
       "type": "Hisobot turi",
       "month": "Oy",
@@ -2777,7 +2806,8 @@
     },
     "view": {
       "main_salary": "Oklad",
-      "work_time": "Ishlagan vaqti"
+      "work_time": "Ishlagan vaqti",
+      "net_salary": "Qulga tegadigan summa"
     },
     "in": {
       "code": "To'lov shifri",
@@ -2886,6 +2916,42 @@
     "tax_five": {
       "reported_income": "Hisobot davridagi daromadlar",
       "reported_tax": "Hisobot davridagi soliq summasi"
+    },
+    "card": {
+      "salary_fund": "Ish haqi fondi",
+      "tax_four": "Soliq — 4-ilova",
+      "tax_five": "Soliq — 5-ilova",
+      "pension": "INPS badallari",
+      "prev_month": "O'tgan oyga"
+    },
+    "short": {
+      "total_three": "Fondga kirmaydigan",
+      "reported_income": "Davr daromadi",
+      "reported_tax": "Davr solig'i",
+      "reported_salary_income": "Davr daromadi",
+      "income_tax_paid": "Soliqli daromad",
+      "total_contributions": "Jami badallar"
+    },
+    "trend": {
+      "fund": "Ish haqi fondi",
+      "taxes": "JSHDS soliqlar",
+      "inps": "INPS badallari"
+    },
+    "panel": {
+      "dynamics": "Moliyaviy dinamika",
+      "attention": "E'tibor markazi",
+      "fund": "Fond tarkibi",
+      "fund_subtitle": "To'lov turlari — donut",
+      "details": "Batafsil",
+      "total_suffix": "jami",
+      "alert_count": "{count} ta ogohlantirish",
+      "no_alerts": "Ogohlantirishlar yo'q"
+    },
+    "alert": {
+      "sharpDrop": "{name} {percent}% keskin pasaydi",
+      "decline": "{name} {percent}% kamaydi",
+      "growth": "{name} {percent}% oshdi",
+      "mismatch": "Ish haqi fondi jamisi to'lov turlari yig'indisiga mos emas"
     }
   },
   "vacancy": {
@@ -3058,6 +3124,9 @@
     "month": "Oy",
     "period": "Davr (oy)",
     "pull": "1C dan tortish",
+    "uploadToReport": "Oylik hisobotga yuklash",
+    "repull": "1C dan qayta tortish",
+    "repullDone": "Xodim ma'lumoti 1C dan yangilandi",
     "pulled": "Tortildi",
     "workers": "Xodimlar",
     "byOrg": "Korxonalar kesimida",

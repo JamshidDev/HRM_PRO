@@ -1,7 +1,8 @@
 <script setup>
-  import { CloudArrowDown24Regular, Eye16Regular, History24Regular, Search24Regular, ArrowDownload24Regular, Calculator24Regular } from '@vicons/fluent'
+  import { CloudArrowDown24Regular, CloudArrowUp24Regular, Eye16Regular, History24Regular, Search24Regular, ArrowDownload24Regular, Calculator24Regular, ArrowSync24Regular } from '@vicons/fluent'
   import { NoDataPicture, UIBadge, UIModal, UIPageContent, UIPagination, UIYearMonth, UISelect } from '@/components/index.js'
-  import { useAccountStore, useComponentStore, useSalary1cStore } from '@/store/modules/index.js'
+  import { useAccountStore, useComponentStore, useSalary1cStore, useUploadReportStore } from '@/store/modules/index.js'
+  import BulkOnesModal from '@/pages/accountant/report/ui/BulkOnesModal.vue'
   import { useDebounceFn } from '@vueuse/core'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
@@ -10,6 +11,14 @@
   const store = useSalary1cStore()
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
+  const uploadStore = useUploadReportStore()
+
+  // Shu davr uchun tortilgan korxonalarni "Oylik hisobot" (upload-report) ga
+  // ommaviy yuklash — xuddi upload-report'dagi modal, salary-1c davri bilan.
+  const onBulkToReport = () => {
+    if (!accStore.checkAction(accStore.pn.economistUploadsWrite)) return
+    uploadStore.openBulk(store.params.year, store.params.month)
+  }
 
   const activeTab = ref('workers') // 'workers' | 'orgs'
 
@@ -197,6 +206,15 @@
         <n-tab-pane name="reconcile" :tab="$t('salary1c.reconcile.tab')" />
       </n-tabs>
       <div class="flex items-center gap-2">
+        <n-button
+          v-if="accStore.checkPermission(accStore.pn.economistUploadsWrite)"
+          size="small"
+          type="info"
+          @click="onBulkToReport"
+        >
+          <template #icon><n-icon><CloudArrowUp24Regular /></n-icon></template>
+          {{ $t('salary1c.uploadToReport') }}
+        </n-button>
         <n-button size="small" tertiary @click="store._openPullLog()">
           <template #icon><n-icon><History24Regular /></n-icon></template>
           {{ $t('salary1c.pullLog') }}
@@ -281,6 +299,10 @@
                     </n-button>
                     <n-button size="tiny" quaternary @click="store._history(r)" :title="$t('salary1c.history')">
                       <template #icon><n-icon><History24Regular /></n-icon></template>
+                    </n-button>
+                    <n-button size="tiny" quaternary @click="store._pullOne(r)" :title="$t('salary1c.repull')"
+                      :loading="store.repullPinfl === r.pinfl" :disabled="!!store.repullPinfl">
+                      <template #icon><n-icon><ArrowSync24Regular /></n-icon></template>
                     </n-button>
                   </td>
                 </tr>
@@ -639,10 +661,19 @@
       :title="$t('salary1c.payslip')">
       <n-spin :show="store.payslipLoading">
         <div v-if="store.payslip" class="min-h-[100px]">
-          <p class="font-semibold text-base">{{ store.payslip.fio }}</p>
-          <p class="text-xs text-textColor3 mb-3">
-            {{ store.payslip.position }} · PINFL {{ store.payslip.pinfl }} · {{ $t('salary1c.tabNo') }} {{ store.payslip.tab_nomer }} · {{ store.payslip.year }}/{{ store.payslip.month }}
-          </p>
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <p class="font-semibold text-base">{{ store.payslip.fio }}</p>
+              <p class="text-xs text-textColor3 mb-3">
+                {{ store.payslip.position }} · PINFL {{ store.payslip.pinfl }} · {{ $t('salary1c.tabNo') }} {{ store.payslip.tab_nomer }} · {{ store.payslip.year }}/{{ store.payslip.month }}
+              </p>
+            </div>
+            <n-button size="small" secondary @click="store._pullOne(store.payslip)"
+              :loading="store.repullPinfl === store.payslip.pinfl" :disabled="!!store.repullPinfl">
+              <template #icon><n-icon><ArrowSync24Regular /></n-icon></template>
+              {{ $t('salary1c.repull') }}
+            </n-button>
+          </div>
 
           <div class="s1-pinfo">
             <div><span class="s1-pinfo-lbl">{{ $t('salary1c.oklad') }}</span><b class="tnum">{{ fmt(store.payslip.oklad) }}</b></div>
@@ -1032,6 +1063,9 @@
         </div>
       </n-spin>
     </UIModal>
+
+    <!-- 1C dan ommaviy "Oylik hisobot" yuklash (upload-report bilan bir xil modal) -->
+    <BulkOnesModal />
   </UIPageContent>
 </template>
 

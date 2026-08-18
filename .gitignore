@@ -29,3 +29,6 @@ dist.zip
 CLAUDE.md
 AGENTS.md
 .claude
+
+.github/worktrees
+.github

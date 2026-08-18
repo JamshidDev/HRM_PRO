@@ -93,7 +93,9 @@
 <template>
   <div class="grid grid-cols-12 gap-x-4">
     <div class="col-span-12 flex justify-center">
-      <div class="w-[600px]">
+      <!-- `w-[600px]` qat'iy edi: modal telefonda fullscreen bo'lgach ichkarida
+           gorizontal skroll berardi. -->
+      <div class="w-full max-w-[600px]">
         <template v-if="componentStore.isSelectedWorker">
           <div class="w-full rounded-xl border-surface-line border mb-4 p-1">
             <UIUser :data="componentStore.worker" :short="false" />

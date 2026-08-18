@@ -18,7 +18,9 @@ export const useUploadReportStore = defineStore('uploadReport', {
       file: [],
       type: null,
       year: null,
-      month: null
+      month: null,
+      // Oylik hisobot (type=1) manbasi: 1 = Excel, 2 = 1C dan.
+      source: 1
     },
     params: {
       page: 1,
@@ -42,7 +44,19 @@ export const useUploadReportStore = defineStore('uploadReport', {
     expandSet: new Set(),
     flattenData: [],
     isBlocked: false,
-    orgStatus: true
+    orgStatus: true,
+    // 1C dan ommaviy yuklash (Oylik hisobot) — modal holati.
+    // bulkPeriod — modal davri: upload-report yoki salary-1c sahifasidan uzatiladi.
+    bulkPeriod: { year: null, month: null },
+    bulkVisible: false,
+    bulkLoading: false, // korxonalar ro'yxatini yuklash
+    bulkOrgs: [], // org-totals: { organization_id, organization, employee_count, net_total }
+    bulkSelected: [], // tanlangan organization_id lar
+    bulkSearch: '',
+    bulkRunning: false, // yuklash jarayoni ketyaptimi
+    bulkProgress: { done: 0, total: 0 },
+    // organization_id -> { status: 'uploading'|'done'|'failed', message? }
+    bulkResults: {}
   }),
   actions: {
     _confirm(v) {
@@ -141,6 +155,116 @@ export const useUploadReportStore = defineStore('uploadReport', {
           this.saveLoading = false
         })
     },
+    // Oylik hisobotni 1C dan yuklash (fayl yo'q — backend salary-1c ma'lumotidan quradi).
+    _createFromOnes() {
+      this.saveLoading = true
+      const data = {
+        organization_id: this.params.organization_id,
+        year: this.payload.year,
+        month: this.payload.month
+      }
+      $ApiService.accountantService
+        ._createFromOnes({ data })
+        .then(() => {
+          this.visible = false
+          this._cards()
+        })
+        .finally(() => {
+          this.saveLoading = false
+        })
+    },
+    // 1C dan ommaviy yuklash modalini ochish + korxonalar ro'yxatini olish.
+    // year/month berilmasa — upload-report filtridagi davr olinadi (salary-1c dan
+    // chaqirilganda o'sha sahifaning davri uzatiladi).
+    openBulk(year, month) {
+      this.bulkPeriod = {
+        year: year ?? this.params.year,
+        month: month ?? this.params.month
+      }
+      this.bulkVisible = true
+      this.bulkOrgs = []
+      this.bulkSelected = []
+      this.bulkSearch = ''
+      this.bulkResults = {}
+      this.bulkProgress = { done: 0, total: 0 }
+      this.bulkRunning = false
+      this._loadBulkOrgs()
+    },
+    // Shu davr (bulkPeriod) uchun 1C da tortilgan korxonalar.
+    // Javob: { message, error, data: { total, data: [...] } } → massiv = res.data.data.data
+    _loadBulkOrgs() {
+      this.bulkLoading = true
+      const params = {
+        year: this.bulkPeriod.year,
+        month: this.bulkPeriod.month
+      }
+      $ApiService.accountantService
+        ._onesOrgs({ params })
+        .then((res) => {
+          this.bulkOrgs = res.data.data?.data ?? []
+        })
+        .finally(() => {
+          this.bulkLoading = false
+        })
+    },
+    // Modal ichida davr (yil/oy) o'zgarganda — tanlovni tozalab, ro'yxatni qayta yuklaymiz.
+    _changeBulkPeriod() {
+      this.bulkSelected = []
+      this.bulkResults = {}
+      this.bulkProgress = { done: 0, total: 0 }
+      this._loadBulkOrgs()
+    },
+    // Tanlangan korxonalar uchun Oylik hisobotni 1C dan ommaviy quradi (concurrency = 3).
+    async _bulkUploadFromOnes() {
+      const ids = [...this.bulkSelected]
+      if (ids.length === 0) return
+      this.bulkRunning = true
+      this.bulkResults = {}
+      this.bulkProgress = { done: 0, total: ids.length }
+      const CONC = 6
+      let idx = 0
+      const worker = async () => {
+        while (idx < ids.length) {
+          const orgId = ids[idx++]
+          this.bulkResults = { ...this.bulkResults, [orgId]: { status: 'uploading' } }
+          try {
+            const res = await $ApiService.accountantService._createFromOnes({
+              data: {
+                organization_id: orgId,
+                year: this.bulkPeriod.year,
+                month: this.bulkPeriod.month
+              },
+              config: { silentError: true }
+            })
+            const failed = res?.data?.error === true
+            this.bulkResults = {
+              ...this.bulkResults,
+              [orgId]: failed
+                ? { status: 'failed', message: res?.data?.message }
+                : { status: 'done' }
+            }
+          } catch (e) {
+            this.bulkResults = {
+              ...this.bulkResults,
+              [orgId]: {
+                status: 'failed',
+                message: e?.response?.data?.message ?? e?.message
+              }
+            }
+          } finally {
+            this.bulkProgress = { ...this.bulkProgress, done: this.bulkProgress.done + 1 }
+          }
+        }
+      }
+      await Promise.all(Array.from({ length: Math.min(CONC, ids.length) }, () => worker()))
+      this.bulkRunning = false
+      // Faqat upload-report konteksti (davr tanlangan) bo'lsa daraxt/kartalarni
+      // yangilaymiz — salary-1c dan chaqirilganda bu holat bo'lmaydi.
+      if (this.params.year && this.params.month) {
+        this._structures()
+        if (this.params.organization_id) this._cards()
+      }
+    },
     _delete() {
       this.deleteLoading = true
       $ApiService.countryService
@@ -162,6 +286,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
       this.payload.type = null
       this.payload.year = oneMonthAgo.year
       this.payload.month = oneMonthAgo.month
+      this.payload.source = 1
     },
     onChangeStructure(v) {
       this.resetCards()

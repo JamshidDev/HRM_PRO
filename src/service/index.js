@@ -3,6 +3,7 @@ import { AppPaths, useAppSetting } from '@/utils/index.js'
 import router from '../router/index'
 import Utils from '@/utils/Utils.js'
 import i18n from '@/i18n/index.js'
+import { reportApiError } from '@/utils/errorReporter.js'
 const apiUrl = import.meta.env.VITE_API_URL
 console.log(apiUrl)
 const { t } = i18n.global
@@ -69,20 +70,6 @@ instance.interceptors.response.use(
       isLoggingOut = true
       localStorage.removeItem(useAppSetting.tokenKey)
       await router.push(AppPaths.Login)
-    } else if (
-      error.response?.status === 403 &&
-      error.response?.data?.code === 'salary_step_up_required'
-    ) {
-      // Oylik (salary) step-up: "oylik paroli" so'raladi. So'rovni navbatga qo'yamiz,
-      // modal ochilgach parol bilan qayta yuboriladi. Toast chiqarmaymiz (modal o'zi ko'rsatadi).
-      const { useSalaryAccessStore } = await import(
-        '@/store/modules/accountant/salaryAccessStore.js'
-      )
-      const store = useSalaryAccessStore()
-      return new Promise((resolve, reject) => {
-        store.enqueue({ config: error.config, resolve, reject })
-        store.open()
-      })
     } else if (error.response?.data?.message) {
       if (!error.config?.silentError) {
         $Toast.error(error.response?.data?.message)
@@ -90,6 +77,10 @@ instance.interceptors.response.use(
     } else if (error?.message) {
       $Toast.warning(error.message)
     }
+
+    // Telegram log guruhi: 5xx, network/timeout va kutilmagan 4xx lar.
+    // O'zi filtrlaydi va hech qachon throw qilmaydi.
+    reportApiError(error)
 
     return Promise.reject(error)
   }
