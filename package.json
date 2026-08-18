@@ -7,6 +7,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "check:permissions": "node scripts/check-permissions.mjs",
+    "telegram:info": "node scripts/telegram-chat-info.mjs",
     "local": "vite --mode localhost --host",
     "dev": "vite --mode development --host",
     "prod": "vite --mode production --host",

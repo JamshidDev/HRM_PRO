@@ -55,6 +55,9 @@
       show: false
     },
     tooltip: {
+      // `body` ga ko'chiriladi: aks holda `.main-content` dagi
+      // `overflow-x: hidden` tooltipni kontent chegarasida kesadi.
+      appendTo: 'body',
       trigger: 'item', // Trigger tooltip on each item (segment)
       formatter: (params) =>
         `${params.name} - ${store?.statisticData?.[params.dataIndex]?.applications}` // Customize the tooltip content

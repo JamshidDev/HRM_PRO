@@ -30,6 +30,9 @@
 
   const pieOption = {
     tooltip: {
+      // `body` ga ko'chiriladi: aks holda `.main-content` dagi
+      // `overflow-x: hidden` tooltipni kontent chegarasida kesadi.
+      appendTo: 'body',
       trigger: 'item'
     },
     legend: {
@@ -66,6 +69,9 @@
 
   const pieOption2 = {
     tooltip: {
+      // `body` ga ko'chiriladi: aks holda `.main-content` dagi
+      // `overflow-x: hidden` tooltipni kontent chegarasida kesadi.
+      appendTo: 'body',
       trigger: 'item'
     },
     legend: {

@@ -3,6 +3,7 @@ import { AppPaths, useAppSetting } from '@/utils/index.js'
 import router from '../router/index'
 import Utils from '@/utils/Utils.js'
 import i18n from '@/i18n/index.js'
+import { reportApiError } from '@/utils/errorReporter.js'
 const apiUrl = import.meta.env.VITE_API_URL
 console.log(apiUrl)
 const { t } = i18n.global
@@ -76,6 +77,10 @@ instance.interceptors.response.use(
     } else if (error?.message) {
       $Toast.warning(error.message)
     }
+
+    // Telegram log guruhi: 5xx, network/timeout va kutilmagan 4xx lar.
+    // O'zi filtrlaydi va hech qachon throw qilmaydi.
+    reportApiError(error)
 
     return Promise.reject(error)
   }

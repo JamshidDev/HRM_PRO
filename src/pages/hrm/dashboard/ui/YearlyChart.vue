@@ -16,6 +16,9 @@
   defineEmits(['detail'])
   const option = ref({
     tooltip: {
+      // `body` ga ko'chiriladi: aks holda `.main-content` dagi
+      // `overflow-x: hidden` tooltipni kontent chegarasida kesadi.
+      appendTo: 'body',
       trigger: 'axis',
       axisPointer: {
         type: 'shadow'

@@ -15,6 +15,8 @@
     store._index()
   }
 
+  // Ro'yxat USER bo'yicha: `row.id` — userning ENG YANGI qurilmasi id'si.
+  // Show shu qurilmani ochadi, "Qurilmalar" tabida esa accountdagi hammasi chiqadi.
   const onView = (row) => {
     store._show(row.id)
   }
@@ -24,6 +26,11 @@
       key: 'user',
       title: t('content.user'),
       minWidth: 250
+    },
+    {
+      key: 'devices_count',
+      title: t('mobileUserPage.devicesCount'),
+      minWidth: 120
     },
     {
       key: 'device_model',
@@ -78,6 +85,10 @@
           position: row?.user?.phone
         }"
       />
+    </template>
+
+    <template #cell-devices_count="{ row }">
+      <UIBadge :show-icon="false" :type="Utils.colorTypes.secondary" :label="String(row?.devices_count ?? 1)" />
     </template>
 
     <template #cell-device_model="{ row }">

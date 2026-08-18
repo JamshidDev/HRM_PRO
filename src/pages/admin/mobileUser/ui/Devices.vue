@@ -10,7 +10,7 @@
   const store = useMobileUserStore()
   const message = useMessage()
 
-  // Backend `is_active` desc + `last_used_at` desc bilan qaytaradi —
+  // Backend `created_at` desc bilan qaytaradi (eng yangi qurilma birinchi) —
   // shu tartib buzilmasin uchun ro'yxat qayta saralanmaydi.
   const devices = computed(() => store.detail?.devices ?? [])
 
@@ -30,108 +30,103 @@
 
 <template>
   <n-spin :show="store.detailLoading">
-    <div v-if="devices.length" class="grid grid-cols-2 gap-3">
+    <!-- Ixcham kartalar: bitta accountda 20 tagacha qurilma bo'ladi,
+         shuning uchun 3 ustunli mayda grid. -->
+    <div v-if="devices.length" class="grid grid-cols-3 gap-2">
       <div
         v-for="device in devices"
         :key="device.id"
-        class="border rounded-lg p-3 flex flex-col gap-3 transition-colors"
+        class="border rounded-lg p-2 flex flex-col gap-1.5 transition-colors"
         :class="device.is_active ? 'border-green-400/60 bg-green-50/40' : 'border-surface-line'"
       >
-        <!-- Sarlavha: model + holat -->
-        <div class="flex items-start justify-between gap-2">
-          <div class="flex items-center gap-2 min-w-0">
-            <div class="w-9 h-9 rounded-lg bg-surface-ground flex items-center justify-center shrink-0">
-              <n-icon size="18" class="text-textColor1">
-                <Phone20Regular />
-              </n-icon>
-            </div>
-            <div class="min-w-0">
-              <p class="text-sm font-semibold text-textColor0 truncate">
-                {{ device.device_model || '-' }}
-              </p>
-              <span class="text-[11px] text-gray-500">{{ t('mobileUserPage.deviceId') }}: {{ device.id }}</span>
-            </div>
+        <!-- Sarlavha: model + ID/platforma + holat nuqtasi -->
+        <div class="flex items-center gap-1.5 min-w-0">
+          <div class="w-6 h-6 rounded-md bg-surface-ground flex items-center justify-center shrink-0">
+            <n-icon size="13" class="text-textColor1">
+              <Phone20Regular />
+            </n-icon>
           </div>
-          <div class="flex flex-col items-end gap-1 shrink-0">
-            <UIBadge
-              :show-icon="false"
-              :type="device.is_active ? Utils.colorTypes.success : Utils.colorTypes.secondary"
-              :label="device.is_active ? t('mobileUserPage.active') : t('mobileUserPage.inactive')"
-            />
-            <UIBadge
-              v-if="device.is_current"
-              :show-icon="false"
-              :type="Utils.colorTypes.warning"
-              :label="t('mobileUserPage.currentDevice')"
-            />
-          </div>
-        </div>
-
-        <!-- Qurilma ma'lumotlari -->
-        <div class="grid grid-cols-2 gap-2">
-          <div class="border border-surface-line rounded p-2">
-            <span class="text-[11px] text-gray-500">{{ t('mobileUserPage.platform') }}</span>
-            <div class="mt-1">
-              <UIBadge :show-icon="false" :type="platformType(device.platform)" :label="device.platform || '-'" />
-            </div>
-          </div>
-          <div class="border border-surface-line rounded p-2">
-            <span class="text-[11px] text-gray-500">{{ t('mobileUserPage.notifications') }}</span>
-            <div class="mt-1 flex items-center gap-1">
-              <n-icon size="14" :class="device.notifications ? 'text-green-600' : 'text-gray-400'">
-                <Alert16Regular v-if="device.notifications" />
-                <AlertOff16Regular v-else />
-              </n-icon>
-              <span class="text-xs font-medium">
-                {{ device.notifications ? t('content.yes') : t('content.no') }}
-              </span>
-            </div>
-          </div>
-          <div class="border border-surface-line rounded p-2">
-            <span class="text-[11px] text-gray-500">{{ t('mobileUserPage.lastUsedAt') }}</span>
-            <p class="text-xs font-medium mt-0.5">{{ Utils.timeWithMonth(device.last_used_at) || '-' }}</p>
-          </div>
-          <div class="border border-surface-line rounded p-2">
-            <span class="text-[11px] text-gray-500">{{ t('content.date') }}</span>
-            <p class="text-xs font-medium mt-0.5">{{ Utils.timeWithMonth(device.created_at) || '-' }}</p>
-          </div>
-          <div class="border border-surface-line rounded p-2 col-span-2">
-            <span class="text-[11px] text-gray-500">{{ t('mobileUserPage.verificationTime') }}</span>
-            <p class="text-xs font-medium mt-0.5">{{ Utils.timeWithMonth(device.face) || '-' }}</p>
-          </div>
-        </div>
-
-        <!-- UUID + FCM -->
-        <div class="space-y-2">
-          <div class="border border-surface-line rounded p-2">
-            <div class="flex items-center justify-between gap-2">
-              <span class="text-[11px] text-gray-500">{{ t('mobileUserPage.deviceUuid') }}</span>
-              <n-icon
-                size="14"
-                class="text-textColor1 cursor-pointer hover:opacity-60 transition-opacity"
-                @click="onCopy(device.device_uuid)"
-              >
-                <Copy16Regular />
-              </n-icon>
-            </div>
-            <p class="text-xs font-mono mt-0.5 break-all">{{ device.device_uuid || '-' }}</p>
-          </div>
-          <div class="border border-surface-line rounded p-2">
-            <div class="flex items-center justify-between gap-2">
-              <span class="text-[11px] text-gray-500">{{ t('mobileUserPage.fcmToken') }}</span>
-              <n-icon
-                v-if="device.fcm_token"
-                size="14"
-                class="text-textColor1 cursor-pointer hover:opacity-60 transition-opacity"
-                @click="onCopy(device.fcm_token)"
-              >
-                <Copy16Regular />
-              </n-icon>
-            </div>
-            <p v-if="device.fcm_token" class="text-xs font-mono mt-0.5 break-all line-clamp-2">
-              {{ device.fcm_token }}
+          <div class="min-w-0 flex-1">
+            <p class="text-xs font-semibold text-textColor0 truncate leading-tight" :title="device.device_model || '-'">
+              {{ device.device_model || '-' }}
             </p>
-            <p v-else class="text-[11px] text-gray-400 italic mt-0.5">{{ t('mobileUserPage.noFcmToken') }}</p>
+            <span class="text-[10px] text-gray-500 leading-none"> #{{ device.id }} </span>
+          </div>
+          <UIBadge
+            :show-icon="false"
+            padding-y="py-0"
+            :type="platformType(device.platform)"
+            :label="device.platform || '-'"
+          />
+          <span
+            class="w-2 h-2 rounded-full shrink-0"
+            :class="device.is_active ? 'bg-green-500' : 'bg-gray-300'"
+            :title="device.is_active ? t('mobileUserPage.active') : t('mobileUserPage.inactive')"
+          />
+        </div>
+
+        <span
+          v-if="device.is_current"
+          class="self-start text-[10px] font-semibold leading-none px-1.5 py-0.5 rounded-full bg-orange-100 text-orange-600"
+        >
+          {{ t('mobileUserPage.currentDevice') }}
+        </span>
+
+        <!-- Ma'lumot qatorlari -->
+        <div class="text-[10px] leading-tight space-y-1">
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-gray-500 shrink-0">{{ t('mobileUserPage.lastUsedAt') }}</span>
+            <span class="font-medium truncate">{{ Utils.timeWithMonth(device.last_used_at) || '-' }}</span>
+          </div>
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-gray-500 shrink-0">{{ t('content.date') }}</span>
+            <span class="font-medium truncate">{{ Utils.timeWithMonth(device.created_at) || '-' }}</span>
+          </div>
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-gray-500 shrink-0">{{ t('mobileUserPage.verificationTime') }}</span>
+            <span class="font-medium truncate">{{ Utils.timeWithMonth(device.face) || '-' }}</span>
+          </div>
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-gray-500 shrink-0">{{ t('mobileUserPage.notifications') }}</span>
+            <n-icon size="13" :class="device.notifications ? 'text-green-600' : 'text-gray-400'">
+              <Alert16Regular v-if="device.notifications" />
+              <AlertOff16Regular v-else />
+            </n-icon>
+          </div>
+        </div>
+
+        <!-- UUID + FCM: bitta qatordan, nusxalash ikonkasi bilan -->
+        <div class="border-t border-surface-line pt-1.5 space-y-1">
+          <div class="flex items-center gap-1">
+            <span class="text-[10px] text-gray-500 shrink-0">{{ t('mobileUserPage.deviceUuid') }}</span>
+            <span class="text-[10px] font-mono truncate flex-1 text-right" :title="device.device_uuid">
+              {{ device.device_uuid || '-' }}
+            </span>
+            <n-icon
+              size="12"
+              class="text-textColor1 cursor-pointer hover:opacity-60 transition-opacity shrink-0"
+              @click="onCopy(device.device_uuid)"
+            >
+              <Copy16Regular />
+            </n-icon>
+          </div>
+          <div class="flex items-center gap-1">
+            <span class="text-[10px] text-gray-500 shrink-0">{{ t('mobileUserPage.fcmToken') }}</span>
+            <span
+              class="text-[10px] font-mono truncate flex-1 text-right"
+              :class="{ 'text-gray-400 italic': !device.fcm_token }"
+              :title="device.fcm_token"
+            >
+              {{ device.fcm_token || t('mobileUserPage.noFcmToken') }}
+            </span>
+            <n-icon
+              v-if="device.fcm_token"
+              size="12"
+              class="text-textColor1 cursor-pointer hover:opacity-60 transition-opacity shrink-0"
+              @click="onCopy(device.fcm_token)"
+            >
+              <Copy16Regular />
+            </n-icon>
           </div>
         </div>
       </div>
