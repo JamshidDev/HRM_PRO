@@ -1441,6 +1441,7 @@
   "mobileUserPage": {
     "name": "Mobile Users",
     "deviceModel": "Device Model",
+    "devicesCount": "Devices",
     "platform": "Platform",
     "verificationTime": "Verification Time",
     "detailTitle": "Device Details",

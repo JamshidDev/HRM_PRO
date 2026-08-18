@@ -1443,6 +1443,7 @@
   "mobileUserPage": {
     "name": "Мобильные пользователи",
     "deviceModel": "Модель устройства",
+    "devicesCount": "Кол-во устройств",
     "platform": "Платформа",
     "verificationTime": "Время верификации",
     "detailTitle": "Информация об устройстве",

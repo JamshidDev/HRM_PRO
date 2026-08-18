@@ -1459,6 +1459,7 @@
   "mobileUserPage": {
     "name": "Mobil foydalanuvchilar",
     "deviceModel": "Qurilma modeli",
+    "devicesCount": "Qurilmalar soni",
     "platform": "Platforma",
     "verificationTime": "Tasdiqlash vaqti",
     "detailTitle": "Qurilma ma'lumotlari",

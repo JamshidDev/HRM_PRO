@@ -1305,6 +1305,7 @@
   "mobileUserPage": {
     "name": "Мобил фойдаланувчилар",
     "deviceModel": "Қурилма модели",
+    "devicesCount": "Қурилмалар сони",
     "platform": "Платформа",
     "verificationTime": "Тасдиқлаш вақти",
     "detailTitle": "Қурилма маълумотлари",
