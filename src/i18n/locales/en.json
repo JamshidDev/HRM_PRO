@@ -2003,7 +2003,8 @@
       "title": "Employee age distribution",
       "age31": "Under 30",
       "age32_45": "31-45",
-      "age46": "Over 46"
+      "age46": "Over 46",
+      "structureTitle": "Age structure"
     },
     "edu": {
       "title": "Employee education",
@@ -2104,6 +2105,14 @@
       "empty": "No data found",
       "lastChecked": "Last check",
       "worker": "Employee"
+    },
+    "tabs": {
+      "general": "Overview",
+      "movement": "Staff movement",
+      "attendance": "Attendance & leave"
+    },
+    "vacation": {
+      "statusTitle": "Leave status — by type"
     }
   },
   "applicationPage": {

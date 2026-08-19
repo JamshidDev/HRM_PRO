@@ -1,21 +1,28 @@
 <script setup>
-  import { cards } from '@/pages/hrm/dashboard/constants.js'
+  import { useDashboardStore } from '@/store/modules/index.js'
+  import { tabCards, tabKpiVariants } from '@/pages/hrm/dashboard/constants.js'
 
   // Skeleton'ning maqsadi — yuklanish tugagach kontent "sakramasligi". Shu bois
   // grid sozlamalari (`cols`, gap'lar, `responsive`) va kartalarning `span` lari
   // `page.vue` dagi haqiqiy grid bilan bir xil bo'lishi shart.
   //
-  // Chart kartalari ro'yxati `constants.js` dan olinadi: yangi karta qo'shilsa
-  // yoki `span` o'zgarsa, skeleton o'zi moslashadi va qo'lda yangilash kerak
-  // bo'lmaydi. Yuqoridagi 4 ta karta esa store'da qat'iy belgilangan
-  // (`dashboardStore._dashboard()` → `dashboard.mainCard`), ya'ni soni doim 4 ta.
-  const MAIN_CARD_COUNT = 4
+  // Kartalar ro'yxati faol bob bo'yicha `constants.js` dan olinadi: yangi karta
+  // qo'shilsa yoki `span` o'zgarsa, skeleton o'zi moslashadi va qo'lda yangilash
+  // kerak bo'lmaydi.
+  const store = useDashboardStore()
+
+  // KPI kartalari `dashboard.mainCard` dan variant bo'yicha filtrlanadi, ammo
+  // yuklanish paytida u hali bo'sh — kutilayotgan sonni konfiguratsiya beradi.
+  const kpiCount = computed(() => (tabKpiVariants[store.activeTab] || []).length)
+  // `page.vue` dagi `kpiSpan` bilan bir xil qoida.
+  const kpiSpan = computed(() => (kpiCount.value > 2 ? '12 l:6 xl:3' : '12 l:6'))
+  const cards = computed(() => tabCards[store.activeTab] || [])
 </script>
 
 <template>
-  <n-grid x-gap="4 m:8 l:12" y-gap="4 m:8 l:12" cols="12" responsive="screen" aria-hidden="true">
-    <!-- Yuqoridagi statistika kartalari: sarlavha + katta raqam + ikkita kichik qiymat. -->
-    <n-grid-item v-for="i in MAIN_CARD_COUNT" :key="`main-${i}`" span="12 l:6 xl:3">
+  <n-grid x-gap="8 m:12 l:16" y-gap="8 m:12 l:16" cols="12" responsive="screen" aria-hidden="true">
+    <!-- KPI kartalari: sarlavha + katta raqam + ikkita kichik qiymat. -->
+    <n-grid-item v-for="i in kpiCount" :key="`kpi-${i}`" :span="kpiSpan">
       <div class="w-full border border-surface-line p-4 rounded-lg bg-surface-section">
         <n-skeleton height="14px" width="55%" round />
         <div class="mt-2">
