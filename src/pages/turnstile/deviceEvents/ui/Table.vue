@@ -4,7 +4,7 @@
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
-  import { Copy16Regular, Delete16Regular, DismissCircle16Regular } from '@vicons/fluent'
+  import { Copy16Regular, Delete16Regular } from '@vicons/fluent'
   import { useMessage } from 'naive-ui'
 
   const { t } = i18n.global
@@ -35,13 +35,8 @@
     { key: 'event_time', title: t('content.date'), width: 160 }
   ])
 
-  // `fixed` — qurilmadan o'chirilib HRM orqali qayta qo'shilgan;
-  // `ignored` — e'tiborsiz (mehmon, pudratchi). Ikkalasi ham qatorni ro'yxatdan
-  // chiqaradi, chunki sukut bo'yicha faqat hal qilinmaganlar ko'rsatiladi.
-  const canResolve = computed(() =>
-    accStore.checkPermission(accStore.pn.turnstileHikCentralEventsRead)
-  )
   // Qurilmadan o'chirish — yozuv amali, sinxron ruxsati bilan bir xil.
+  // O'chirilgan shaxsning hodisalari `fixed` bo'lib ro'yxatdan tushadi.
   const canRemove = computed(() =>
     accStore.checkPermission(accStore.pn.turnstileHikCentralSync)
   )
@@ -56,14 +51,6 @@
       visible: canRemove.value,
       disabled: (row) => Boolean(row?.resolution),
       action: (row) => store._removePerson(row.id)
-    },
-    {
-      label: t('deviceEvent.markIgnored'),
-      key: Utils.ActionTypes.close,
-      icon: UIHelper.renderIcon(DismissCircle16Regular),
-      visible: canResolve.value,
-      disabled: (row) => Boolean(row?.resolution),
-      action: (row) => store._resolve(row.id, 'ignored')
     }
   ])
 </script>
