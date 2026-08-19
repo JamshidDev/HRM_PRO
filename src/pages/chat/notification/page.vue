@@ -1,34 +1,46 @@
 <script setup>
-  import { UIPageContent } from '@components'
+  import { UIPageContent, UIModal } from '@components'
   import { useAccountStore, useNotificationStore } from '@stores'
   import { createFrom, LogTable } from './ui'
+  import { Add24Filled } from '@vicons/fluent'
 
   const store = useNotificationStore()
   const accStore = useAccountStore()
 
-  // Push yuborish `instructionsWrite` bilan gated (forma faqat huquq bo'lsa).
+  // Push yuborish `instructionsWrite` bilan gated (tugma faqat huquq bo'lsa).
   const canSend = computed(() => accStore.checkAction(accStore.pn.instructionsWrite))
-  const activeTab = ref('send')
 
   onMounted(() => {
     // Bildirishnomalar `instructions` slug'i bilan qo'riqlanadi.
     if (!accStore.checkAction(accStore.pn.instructions)) return
-    if (!canSend.value) activeTab.value = 'logs'
-    store.resetForm()
     store._push_logs()
   })
 </script>
 
 <template>
   <UIPageContent>
-    <!-- Button-style (segment) tablar: Push yuborish + Loglar -->
-    <n-tabs v-model:value="activeTab" type="segment" animated>
-      <n-tab-pane v-if="canSend" name="send" :tab="$t('notificationPage.send')">
-        <createFrom />
-      </n-tab-pane>
-      <n-tab-pane name="logs" :tab="$t('notificationPage.logs')">
-        <LogTable />
-      </n-tab-pane>
-    </n-tabs>
+    <!-- Header: sarlavha + "Xabar" (qo'shish) tugmasi -->
+    <div class="mb-4 flex items-center justify-between">
+      <div class="text-lg font-semibold">{{ $t('notificationPage.name') }}</div>
+      <n-button v-if="canSend" type="primary" @click="store.openForm()">
+        <template #icon>
+          <n-icon><Add24Filled /></n-icon>
+        </template>
+        Xabar
+      </n-button>
+    </div>
+
+    <!-- History (full-width table) -->
+    <LogTable />
+
+    <!-- Xabar formasi — modal -->
+    <UIModal
+      :visible="store.formVisible"
+      @update:visible="(v) => (store.formVisible = v)"
+      :title="$t('notificationPage.create')"
+      :width="760"
+    >
+      <createFrom />
+    </UIModal>
   </UIPageContent>
 </template>

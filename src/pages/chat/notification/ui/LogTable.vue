@@ -38,21 +38,6 @@
     store._push_logs()
   }
 
-  // Holat filtri — 4 soddalashtirilgan holat.
-  const statusFilterOptions = computed(() => [
-    { label: t('content.all'), value: null },
-    { label: t('notificationPage.st.pending'), value: 'scheduled' },
-    { label: t('notificationPage.st.sent'), value: 'sent' },
-    { label: t('notificationPage.st.error'), value: 'error' },
-    { label: t('notificationPage.st.cancelled'), value: 'cancelled' }
-  ])
-
-  const onStatusFilter = (v) => {
-    store.pushLogsParams.status = v
-    store.pushLogsParams.page = 1
-    store._push_logs()
-  }
-
   // Backend 6 holatni 4 ta ko'rinadigan holatga (badge) xaritalash.
   const STATUS_MAP = {
     scheduled: { key: 'pending', type: 'info' },
@@ -74,28 +59,45 @@
     return t('content.user')
   }
 
+  // FCM xom xatosini tushunarli (foydalanuvchiga qulay) matnga aylantirish.
+  const friendlyError = (err) => {
+    if (!err) return ''
+    const e = String(err).toLowerCase()
+    if (
+      e.includes('not a valid fcm') ||
+      e.includes('not-registered') ||
+      e.includes('unregistered') ||
+      e.includes('requested entity was not found') ||
+      e.includes('not found')
+    )
+      return "Qurilma tokeni yaroqsiz yoki ro'yxatdan chiqarilgan"
+    if (e.includes('mismatchsenderid') || e.includes('sender'))
+      return 'Token boshqa Firebase loyihasiga tegishli'
+    if (e.includes('not_configured'))
+      return 'FCM serverda sozlanmagan'
+    if (e.includes('no_access_token') || e.includes('unauthenticated') || e.includes('auth'))
+      return 'FCM autentifikatsiya xatosi (server kaliti)'
+    if (e.includes('quota') || e.includes('rate') || e.includes('unavailable'))
+      return "Limit oshdi yoki xizmat vaqtincha ishlamayapti, keyinroq urinib ko'ring"
+    if (e.includes('invalid') || e.includes('bad request'))
+      return "Xabar formati noto'g'ri"
+    return err // noma'lum — asl matnni ko'rsatamiz
+  }
+
+  // Ustunlar kontentga sig'adigan qilib qisqartirildi (jami ~900px, cho'zilmaydi):
+  // sarlavha+xabar bitta ustunда, rejalashtirilgan/yuborilgan vaqt bitta "Vaqt"да.
   const columns = computed(() => [
-    { key: 'sender', title: t('notificationPage.sender'), minWidth: 200 },
-    { key: 'channel', title: t('notificationPage.channel'), width: 150 },
-    { key: 'title', title: t('content.title'), minWidth: 180 },
-    { key: 'status', title: t('content.status'), width: 140 },
-    { key: 'recipients', title: t('notificationPage.recipients'), width: 110 },
-    { key: 'scheduled_at', title: t('notificationPage.sendTime'), width: 160 },
-    { key: 'sent_at', title: t('notificationPage.sentAt'), width: 160 },
-    { key: 'actions', title: '', width: 120 }
+    { key: 'title', title: t('content.title'), minWidth: 220, ellipsis: false },
+    { key: 'channel', title: t('notificationPage.channel'), width: 130 },
+    { key: 'recipients', title: t('notificationPage.recipients'), width: 120, align: 'center' },
+    { key: 'status', title: t('content.status'), width: 120, align: 'center' },
+    { key: 'time', title: t('notificationPage.sentAt'), width: 150 },
+    { key: 'sender', title: t('notificationPage.sender'), minWidth: 160 },
+    { key: 'actions', title: '', width: 56, align: 'center' }
   ])
 </script>
 
 <template>
-  <div class="mb-3 flex justify-end">
-    <n-select
-      class="w-52"
-      :value="store.pushLogsParams.status"
-      :options="statusFilterOptions"
-      @update:value="onStatusFilter"
-    />
-  </div>
-
   <UITable
     :columns="columns"
     :data="store.pushLogs"
@@ -118,22 +120,48 @@
       <span v-else>—</span>
     </template>
 
+    <!-- Sarlavha + xabar (ikki qatorli, joy tejaydi) -->
+    <template #cell-title="{ row }">
+      <div class="min-w-0 max-w-[320px]">
+        <div class="truncate font-medium">{{ row.title || '—' }}</div>
+        <div v-if="row.message" class="truncate text-xs text-gray-400">{{ row.message }}</div>
+      </div>
+    </template>
+
     <template #cell-channel="{ row }">
       {{ channelLabel(row) }}
     </template>
 
     <template #cell-status="{ row }">
-      <n-tag :type="statusView(row.status).type" size="small" round>
+      <!-- Xato bo'lsa — badge ustиga hover qilganда error message tooltipда. -->
+      <n-tooltip
+        v-if="statusView(row.status).type === 'error' && row.error"
+        trigger="hover"
+        placement="top"
+      >
+        <template #trigger>
+          <n-tag type="error" size="small" round class="cursor-help">
+            {{ statusView(row.status).label }}
+          </n-tag>
+        </template>
+        <span class="max-w-xs break-words">{{ friendlyError(row.error) }}</span>
+      </n-tooltip>
+      <n-tag v-else :type="statusView(row.status).type" size="small" round>
         {{ statusView(row.status).label }}
       </n-tag>
     </template>
 
-    <template #cell-scheduled_at="{ row }">
-      {{ row.scheduled_at ? Utils.timeHHMMWithMonth(row.scheduled_at) : '—' }}
-    </template>
-
-    <template #cell-sent_at="{ row }">
-      {{ row.sent_at ? Utils.timeHHMMWithMonth(row.sent_at) : '—' }}
+    <!-- Vaqt: rejalashtirilgan (kutilmoqda) bo'lsa scheduled_at, aks holda sent_at -->
+    <template #cell-time="{ row }">
+      <span
+        v-if="row.status === 'scheduled' || row.status === 'sending'"
+        class="whitespace-nowrap text-info"
+      >
+        {{ row.scheduled_at ? Utils.timeHHMMWithMonth(row.scheduled_at) : '—' }}
+      </span>
+      <span v-else class="whitespace-nowrap">
+        {{ row.sent_at ? Utils.timeHHMMWithMonth(row.sent_at) : '—' }}
+      </span>
     </template>
 
     <template #cell-actions="{ row }">
@@ -190,7 +218,7 @@
       </div>
       <div v-if="viewRow.error" class="flex justify-between border-b pb-1">
         <span class="text-gray-500">{{ $t('content.error') || 'Error' }}</span>
-        <span class="text-error text-right">{{ viewRow.error }}</span>
+        <span class="text-error text-right">{{ friendlyError(viewRow.error) }}</span>
       </div>
       <div class="flex justify-between border-b pb-1">
         <span class="text-gray-500">{{ $t('notificationPage.sendTime') }}</span>
