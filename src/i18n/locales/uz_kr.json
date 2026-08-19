@@ -3459,6 +3459,33 @@
       "cardFour": "Таътилдаги ходимлар"
     }
   },
+  "deviceEvent": {
+    "tab": "Қурилма",
+    "time": "Вақти",
+    "door": "Эшик / Рухсат даражаси",
+    "person": "Қурилмадаги шахс",
+    "matched": "HRM ходими (карта бўйича)",
+    "notMatched": "Топилмади",
+    "card": "Карта",
+    "photo": "Сурат",
+    "reasonLabel": "Сабаб",
+    "statusLabel": "Ҳолати",
+    "markFixed": "Тузатилди",
+    "markIgnored": "Эътиборсиз",
+    "sync": "Синхронлаш",
+    "reason": {
+      "noCode": "Код йўқ (қурилмадан қўшилган)",
+      "foreignCode": "Бегона код"
+    },
+    "resolved": {
+      "yes": "Ҳал қилинган",
+      "no": "Ҳал қилинмаган"
+    },
+    "resolution": {
+      "fixed": "Тузатилди",
+      "ignored": "Эътиборсиз"
+    }
+  },
   "pensioner": {
     "name": "Пенсионерлар",
     "createTitle": "Қўшиш",
