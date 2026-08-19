@@ -1,14 +1,26 @@
 <script setup>
-  import { UIBadge, UITable } from '@/components/index.js'
+  import { UITable, UIUser } from '@/components/index.js'
   import { useAccountStore, useDeviceEventStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
-  import { CheckmarkCircle16Regular, DismissCircle16Regular, Image16Regular } from '@vicons/fluent'
+  import { Copy16Regular, Delete16Regular } from '@vicons/fluent'
+  import { useMessage } from 'naive-ui'
 
   const { t } = i18n.global
   const store = useDeviceEventStore()
   const accStore = useAccountStore()
+  const message = useMessage()
+
+  const onCopy = async (value) => {
+    if (value == null) return
+    try {
+      await navigator.clipboard.writeText(String(value))
+      message.success(t('content.copied'))
+    } catch {
+      message.error(t('content.error'))
+    }
+  }
 
   const changePage = (v) => {
     store.params.page = v.page
@@ -17,38 +29,28 @@
   }
 
   const columns = computed(() => [
-    { key: 'event_time', title: t('deviceEvent.time'), width: 160 },
     { key: 'door', title: t('deviceEvent.door'), minWidth: 200 },
-    { key: 'person', title: t('deviceEvent.person'), minWidth: 220 },
-    { key: 'matched', title: t('deviceEvent.matched'), minWidth: 240 },
-    { key: 'reason', title: t('deviceEvent.reasonLabel'), width: 180 },
-    { key: 'photo', title: t('deviceEvent.photo'), width: 80 },
-    { key: 'status', title: t('deviceEvent.statusLabel'), width: 140 }
+    { key: 'person', title: t('deviceEvent.person'), minWidth: 260 },
+    { key: 'person_id', title: t('deviceEvent.personId'), width: 150 },
+    { key: 'event_time', title: t('content.date'), width: 160 }
   ])
 
-  // `fixed` — qurilmadan o'chirilib HRM orqali qayta qo'shilgan;
-  // `ignored` — e'tiborsiz (mehmon, pudratchi). Ikkalasi ham qatorni ro'yxatdan
-  // chiqaradi, chunki sukut bo'yicha faqat hal qilinmaganlar ko'rsatiladi.
-  const canResolve = computed(() =>
-    accStore.checkPermission(accStore.pn.turnstileHikCentralEventsRead)
+  // Qurilmadan o'chirish — yozuv amali, sinxron ruxsati bilan bir xil.
+  // O'chirilgan shaxsning hodisalari `fixed` bo'lib ro'yxatdan tushadi.
+  const canRemove = computed(() =>
+    accStore.checkPermission(accStore.pn.turnstileHikCentralSync)
   )
 
   const actions = computed(() => [
     {
-      label: t('deviceEvent.markFixed'),
-      key: Utils.ActionTypes.confirm,
-      icon: UIHelper.renderIcon(CheckmarkCircle16Regular),
-      visible: canResolve.value,
+      // `ActionTypes.delete` — UITableActionsMenu shu kalitda tasdiq oynasini
+      // o'zi chiqaradi (amal qaytarib bo'lmaydi: HCP kartochkasi o'chadi).
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete16Regular),
+      visible: canRemove.value,
       disabled: (row) => Boolean(row?.resolution),
-      action: (row) => store._resolve(row.id, 'fixed', row?.matched_worker?.id ?? null)
-    },
-    {
-      label: t('deviceEvent.markIgnored'),
-      key: Utils.ActionTypes.close,
-      icon: UIHelper.renderIcon(DismissCircle16Regular),
-      visible: canResolve.value,
-      disabled: (row) => Boolean(row?.resolution),
-      action: (row) => store._resolve(row.id, 'ignored')
+      action: (row) => store._removePerson(row.id)
     }
   ])
 </script>
@@ -57,77 +59,59 @@
   <UITable
     :columns="columns"
     :actions="actions"
+    :delete-warning="$t('deviceEvent.deleteWarning')"
     :data="store.list"
     :loading="store.loading"
     :page="store.params.page"
     :per-page="store.params.per_page"
     :total="store.totalItems"
-    storage-key="turnstile-device-events"
+    storage-key="turnstile-device-events-v5"
     @change-page="changePage"
   >
-    <template #cell-event_time="{ row }">
-      <span class="text-xs font-medium">{{ Utils.timeHHMMWithMonth(row?.event_time) }}</span>
-    </template>
-
     <template #cell-door="{ row }">
       <div class="leading-tight">
-        <p class="text-xs font-medium">{{ row?.door_name || '-' }}</p>
+        <p class="text-xs font-bold">{{ row?.door_name || '-' }}</p>
         <span class="text-[11px] text-secondary">{{ row?.access_level?.name || '-' }}</span>
       </div>
     </template>
 
-    <!-- HCP'dagi shaxs: ism + karta + personCode -->
+    <!-- HCP'dagi shaxs. Rasm — karta bo'yicha topilgan HRM xodimining surati
+         (MinIO havolasi); topilmasa UIUser o'zining fallback avatarini beradi. -->
     <template #cell-person="{ row }">
-      <div class="leading-tight">
-        <p class="text-xs font-medium">{{ row?.person_name || '-' }}</p>
-        <span class="text-[11px] text-secondary">
-          {{ $t('deviceEvent.card') }}: {{ row?.card_no || '-' }}
-          <template v-if="row?.person_code"> · {{ row.person_code }}</template>
-        </span>
-      </div>
-    </template>
-
-    <!-- Karta raqami bo'yicha topilgan HRM xodimi — ma'sul xodimga taklif -->
-    <template #cell-matched="{ row }">
-      <div v-if="row?.matched_worker" class="leading-tight">
-        <p class="text-xs font-medium">{{ row.matched_worker.full_name }}</p>
-        <span class="text-[11px] text-secondary">ID: {{ row.matched_worker.id }}</span>
-      </div>
-      <span v-else class="text-[11px] text-secondary italic">
-        {{ $t('deviceEvent.notMatched') }}
-      </span>
-    </template>
-
-    <template #cell-reason="{ row }">
-      <UIBadge
-        :show-icon="false"
-        :type="row?.reason === 1 ? Utils.colorTypes.warning : Utils.colorTypes.error"
-        :label="row?.reason_name || '-'"
-      />
-    </template>
-
-    <template #cell-photo="{ row }">
-      <n-button v-if="row?.has_photo" size="tiny" secondary circle @click="store._photo(row.id)">
-        <template #icon>
-          <n-icon><Image16Regular /></n-icon>
+      <UIUser :short="false" :data="{ photo: row?.matched_worker?.photo }">
+        <template #name>
+          <n-ellipsis class="w-full text-sm text-textColor2 leading-[1.2]">
+            {{ row?.person_name || '-' }}
+          </n-ellipsis>
         </template>
-      </n-button>
-      <span v-else class="text-[11px] text-secondary">-</span>
+        <template #position>
+          <span class="text-xs text-textColor3">
+            {{ $t('deviceEvent.card') }}: {{ row?.card_no || '-' }}
+          </span>
+        </template>
+      </UIUser>
     </template>
 
-    <template #cell-status="{ row }">
-      <UIBadge
-        v-if="row?.resolution"
-        :show-icon="false"
-        :type="row.resolution === 'fixed' ? Utils.colorTypes.success : Utils.colorTypes.secondary"
-        :label="$t(`deviceEvent.resolution.${row.resolution}`)"
-      />
-      <UIBadge
-        v-else
-        :show-icon="false"
-        :type="Utils.colorTypes.info"
-        :label="$t('deviceEvent.resolved.no')"
-      />
+    <!-- HCP generatsiya qilgan personId — qurilmada xodim aynan shu bo'yicha topiladi,
+         shuning uchun nusxalash tugmasi bilan. -->
+    <template #cell-person_id="{ row }">
+      <div class="flex items-center gap-1">
+        <span class="font-mono text-xs font-bold text-primary">
+          {{ row?.hik_central_person_id ?? '-' }}
+        </span>
+        <n-icon
+          v-if="row?.hik_central_person_id != null"
+          size="14"
+          class="cursor-pointer text-textColor1 transition-opacity hover:opacity-60"
+          @click.stop="onCopy(row.hik_central_person_id)"
+        >
+          <Copy16Regular />
+        </n-icon>
+      </div>
+    </template>
+
+    <template #cell-event_time="{ row }">
+      <span class="text-xs font-medium">{{ Utils.timeHHMMWithMonth(row?.event_time) }}</span>
     </template>
   </UITable>
 </template>

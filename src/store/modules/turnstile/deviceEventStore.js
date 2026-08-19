@@ -8,6 +8,7 @@ export const useDeviceEventStore = defineStore('deviceEventStore', {
     loading: false,
     syncLoading: false,
     resolveLoading: false,
+    removeLoading: false,
     totalItems: 0,
     // Rasm ko'rish modali (objectURL — yopilganda revoke qilinadi)
     photoVisible: false,
@@ -61,6 +62,20 @@ export const useDeviceEventStore = defineStore('deviceEventStore', {
         })
         .finally(() => {
           this.resolveLoading = false
+        })
+    },
+    // Qurilmadan o'chirish — HCP shaxs kartochkasi o'chadi; muvaffaqiyatli
+    // bo'lsa shu shaxsning barcha hodisalari `fixed` bo'ladi, ya'ni ro'yxatdan
+    // tushadi (sukut filtri — hal qilinmaganlar).
+    _removePerson(id) {
+      this.removeLoading = true
+      $ApiService.deviceEventService
+        ._removePerson({ id })
+        .then(() => {
+          this._index()
+        })
+        .finally(() => {
+          this.removeLoading = false
         })
     },
     _sync() {

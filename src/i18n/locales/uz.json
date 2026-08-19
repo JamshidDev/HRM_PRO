@@ -383,7 +383,8 @@
     "themeDark": "Qorong'i",
     "themeSystem": "Tizim",
     "oldVersionButton": "Eski talqinga qaytish",
-    "newVersionButton": "Yangi talqinga o'tish"
+    "newVersionButton": "Yangi talqinga o'tish",
+    "copied": "Nusxalandi"
   },
   "date": {
     "day": "Kun",
@@ -3683,8 +3684,9 @@
   "deviceEvent": {
     "tab": "Qurilma",
     "time": "Vaqti",
-    "door": "Eshik / Ruxsat darajasi",
-    "person": "Qurilmadagi shaxs",
+    "door": "Qurilma",
+    "person": "F.I.O",
+    "personId": "PersonId",
     "matched": "HRM xodimi (karta bo'yicha)",
     "notMatched": "Topilmadi",
     "card": "Karta",
@@ -3705,7 +3707,8 @@
     "resolution": {
       "fixed": "Tuzatildi",
       "ignored": "E'tiborsiz"
-    }
+    },
+    "deleteWarning": "Bu shaxs HikCentral'dan butunlay o'chiriladi va BARCHA qurilmalardan tushadi. Amalni qaytarib bo'lmaydi."
   },
   "pensioner": {
     "name": "Pensionerlar",

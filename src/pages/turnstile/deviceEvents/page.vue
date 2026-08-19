@@ -11,7 +11,7 @@
 
   onMounted(() => {
     // Ro'yxat faqat shu tab ochilganda yuklanadi (boshqa tabga kirganda so'rov ketmasin).
-    if (eventStore.activeTab !== eventStore.tabs[2]) return
+    if (eventStore.activeTab !== eventStore.tabs[1]) return
     if (!accStore.checkPermission(accStore.pn.turnstileHikCentralEventsRead)) return
     store._index()
   })
@@ -19,7 +19,7 @@
   watch(
     () => eventStore.activeTab,
     (v) => {
-      if (v !== eventStore.tabs[2] || store.list.length) return
+      if (v !== eventStore.tabs[1] || store.list.length) return
       if (!accStore.checkPermission(accStore.pn.turnstileHikCentralEventsRead)) return
       store._index()
     }
