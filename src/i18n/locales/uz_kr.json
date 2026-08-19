@@ -303,7 +303,8 @@
     "themeDark": "Қоронғи",
     "themeSystem": "Тизим",
     "oldVersionButton": "Эски талқинга қайтиш",
-    "newVersionButton": "Янги талқинга ўтиш"
+    "newVersionButton": "Янги талқинга ўтиш",
+    "copied": "Нусхаланди"
   },
   "date": {
     "day": "Кун",
@@ -3462,8 +3463,9 @@
   "deviceEvent": {
     "tab": "Қурилма",
     "time": "Вақти",
-    "door": "Эшик / Рухсат даражаси",
-    "person": "Қурилмадаги шахс",
+    "door": "Қурилма",
+    "person": "Ф.И.О",
+    "personId": "PersonId",
     "matched": "HRM ходими (карта бўйича)",
     "notMatched": "Топилмади",
     "card": "Карта",
@@ -3484,7 +3486,8 @@
     "resolution": {
       "fixed": "Тузатилди",
       "ignored": "Эътиборсиз"
-    }
+    },
+    "deleteWarning": "Бу шахс HikCentral'дан бутунлай ўчирилади ва БАРЧА қурилмалардан тушади. Амални қайтариб бўлмайди."
   },
   "pensioner": {
     "name": "Пенсионерлар",

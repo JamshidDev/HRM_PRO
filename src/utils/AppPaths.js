@@ -128,7 +128,6 @@ export const AppPaths = {
   Salary1c: '/salary-1c',
   HcServer: '/hc-server',
   HcEvents: '/hc-events',
-  HcEventsV2: '/hc-events-v2',
   Pensioner: '/pensioner',
   Notification: '/notification',
   Congratulation: '/congratulation',

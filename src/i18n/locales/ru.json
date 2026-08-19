@@ -371,7 +371,8 @@
     "themeDark": "Тёмная",
     "themeSystem": "Системная",
     "oldVersionButton": "Вернуться к старой версии",
-    "newVersionButton": "Перейти на новую версию"
+    "newVersionButton": "Перейти на новую версию",
+    "copied": "Скопировано"
   },
   "date": {
     "day": "День",
@@ -3664,8 +3665,9 @@
   "deviceEvent": {
     "tab": "Устройство",
     "time": "Время",
-    "door": "Дверь / Уровень доступа",
-    "person": "Человек на устройстве",
+    "door": "Устройство",
+    "person": "Ф.И.О",
+    "personId": "PersonId",
     "matched": "Сотрудник HRM (по карте)",
     "notMatched": "Не найден",
     "card": "Карта",
@@ -3686,7 +3688,8 @@
     "resolution": {
       "fixed": "Исправлено",
       "ignored": "Игнорировано"
-    }
+    },
+    "deleteWarning": "Этот человек будет полностью удалён из HikCentral и снят со ВСЕХ устройств. Действие необратимо."
   },
   "pensioner": {
     "name": "Пенсионеры",
