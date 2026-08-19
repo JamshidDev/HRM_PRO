@@ -1497,7 +1497,8 @@
       "birthdayPlace": "Birth place",
       "birthday": "Date of birth",
       "relative": "Relationship",
-      "disability": "Disability"
+      "disability": "Disability",
+      "died": "Deceased"
     },
     "title": "Close relatives",
     "no-data": "No relatives added!",

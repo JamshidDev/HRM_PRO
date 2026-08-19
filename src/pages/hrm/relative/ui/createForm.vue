@@ -21,7 +21,29 @@
     })
   }
 
-  const rules = validationRules.relativePage
+  // `birthday` odatda MAJBURIY, lekin «Vafot etgan» belgilanganda u bloklanadi
+  // va tozalanadi — qoida qolsa forma umuman saqlanmasdi. Shu sabab qoidalar
+  // computed: died bo'lsa `birthday` talabi olib tashlanadi.
+  const rules = computed(() => {
+    if (!store.payload.died) return validationRules.relativePage
+    const { birthday, ...rest } = validationRules.relativePage
+    return rest
+  })
+
+  // «Vafot etgan» — tirik odamga tegishli maydonlar tozalanib bloklanadi.
+  // Backend ham ularni majburan `null` qiladi, bu yerda faqat ko'rinish
+  // (aks holda foydalanuvchi bloklangan maydonda eski qiymatni ko'rib turardi).
+  watch(
+    () => store.payload.died,
+    (died) => {
+      if (!died) return
+      store.payload.pin = null
+      store.payload.birthday = null
+      store.payload.post_name = null
+      store.payload.birth_place = null
+      store.payload.address = null
+    }
+  )
 
   onMounted(() => {
     if (componentStore.maritalList.length === 0) {
@@ -43,11 +65,17 @@
           :loading="componentStore.enumLoading"
         />
       </n-form-item>
+      <n-form-item :show-label="false" path="died">
+        <n-checkbox v-model:checked="store.payload.died">
+          {{ $t('relativePage.form.died') }}
+        </n-checkbox>
+      </n-form-item>
       <n-form-item :label="$t(`createWorkerPage.form.pin`)" path="pin">
         <n-input
           v-mask="`####-####-####-##`"
           v-model:value="store.payload.pin"
           placeholder="####-####-####-##"
+          :disabled="store.payload.died"
         />
       </n-form-item>
       <n-form-item :label="$t(`createWorkerPage.form.lastName`)" path="last_name">
@@ -65,16 +93,17 @@
           v-model:value="store.payload.birthday"
           type="date"
           :format="useAppSetting.datePicketFormat"
+          :disabled="store.payload.died"
         />
       </n-form-item>
       <n-form-item :label="$t(`relativePage.form.post_name`)" path="post_name">
-        <n-input type="text" v-model:value="store.payload.post_name" />
+        <n-input type="text" v-model:value="store.payload.post_name" :disabled="store.payload.died" />
       </n-form-item>
       <n-form-item :label="$t(`relativePage.form.birth_place`)" path="birth_place">
-        <n-input type="text" v-model:value="store.payload.birth_place" />
+        <n-input type="text" v-model:value="store.payload.birth_place" :disabled="store.payload.died" />
       </n-form-item>
       <n-form-item :label="$t(`createWorkerPage.form.address`)" path="address">
-        <n-input type="text" v-model:value="store.payload.address" />
+        <n-input type="text" v-model:value="store.payload.address" :disabled="store.payload.died" />
       </n-form-item>
     </n-form>
   </div>
