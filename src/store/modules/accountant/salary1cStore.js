@@ -38,6 +38,9 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     payslip: null,
     payslipLoading: false,
 
+    // Bitta xodimni 1C dan qayta tortish — qaysi pinfl hozir tortilyapti (tugma spinner/disable).
+    repullPinfl: null,
+
     // Tarix modal
     historyVisible: false,
     history: [],
@@ -383,6 +386,36 @@ export const useSalary1cStore = defineStore('salary1cStore', {
         })
         .finally(() => {
           this.payslipLoading = false
+        })
+    },
+    // Bitta xodimni (pinfl) 1C dan qayta tortish. `row` — ro'yxat qatori yoki payslip
+    // (ikkalasida ham organization_id, pinfl bor). Payslip modal ochiq bo'lsa uni yangilaydi.
+    _pullOne(row) {
+      const pinfl = row?.pinfl
+      const organization_id = row?.organization_id ?? this.params.organization_id
+      if (!pinfl || !organization_id) {
+        $Toast.warning(t('salary1c.selectOrg'))
+        return
+      }
+      this.repullPinfl = pinfl
+      $ApiService.salary1cService
+        ._pullOne({
+          data: { organization_id, year: this.params.year, month: this.params.month, pinfl }
+        })
+        .then((res) => {
+          const p = res.data.data
+          // Payslip modal ochiq va shu xodim bo'lsa — yangilangan kareshotni ko'rsatamiz.
+          if (p && this.payslipVisible && this.payslip?.pinfl === pinfl) {
+            this.payslip = p
+          }
+          $Toast.success(t('salary1c.repullDone'))
+          this._index()
+        })
+        .catch((e) => {
+          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+        })
+        .finally(() => {
+          this.repullPinfl = null
         })
     },
     _history(row) {

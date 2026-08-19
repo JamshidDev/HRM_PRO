@@ -187,7 +187,7 @@
                 </tr>
               </tbody>
             </n-table>
-            <n-table class="mt-4 mb-10" :single-line="false" size="small">
+            <n-table class="mt-4" :single-line="false" size="small">
               <tbody>
                 <tr>
                   <td class="w-[120px] font-semibold py-0!">{{ $t('monthReport.in.code') }}</td>
@@ -209,6 +209,14 @@
                 </tr>
               </tbody>
             </n-table>
+            <!-- Qulga tegadigan summa (plastik kartaga o'tkazish, kod 885) -->
+            <div
+              v-if="currentItem.in_card"
+              class="flex items-center justify-between px-3 py-2 mt-4 mb-10 rounded-lg bg-primary/5 border border-primary/20"
+            >
+              <span class="font-semibold">{{ $t('monthReport.view.net_salary') }}</span>
+              <b class="text-primary text-lg tnum">{{ currentItem.in_card.amount }}</b>
+            </div>
           </div>
           <template v-if="store.showList.length === 0 && !store.showLoading">
             <p class="text-center pt-10 text-surface/20 text-lg">{{ $t('content.no-data') }}</p>

@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia'
 import Utils from '@/utils/Utils.js'
 
+// ContractTypeEnum: 2 = fuqarolik-huquqiy shartnoma (FXSH).
+const CONTRACT_TYPE_CIVIL = 2
+
 const today = new Date().getTime()
 
 const addDayToDate = (date, days) => {
@@ -127,6 +130,11 @@ export const useCommandStore = defineStore('commandStore', {
       reason: null
     },
     form_44: {
+      // Qaysi ta'tildan qaytarilyapti — buyruq 50 dagi kabi ANIQ tanlanadi.
+      // Ilgari bu maydon yo'q edi va backend "eng oxirgi ta'til"ga tayanardi;
+      // uzoq muddatli ta'til (masalan bola parvarishi) ochiq turganda esa u
+      // eng oxirgi bo'lmasligi mumkin — natijada noto'g'ri qator yopilardi.
+      vacation_id: null,
       new_date: null,
       rest_day: null,
       reason: null
@@ -233,6 +241,8 @@ export const useCommandStore = defineStore('commandStore', {
     viewLoading: false,
 
     workerLoading: false,
+    // Xodim/pensioner so'rovlari navbat raqami (poyga himoyasi).
+    workerReqId: 0,
     workerList: [],
     workerParams: {
       organization_id: null,
@@ -287,6 +297,8 @@ export const useCommandStore = defineStore('commandStore', {
     // avatarni (`Utils.noAvailableImage`) o'zi ko'rsatadi.
     _pensioners(infinity = false) {
       this.workerLoading = true
+      // Poyga himoyasi — `_workers`dagi bilan bir xil navbat raqami (select bitta).
+      const reqId = ++this.workerReqId
       const params = {
         organization_id: this.workerParams.organization_id,
         page: this.workerParams.page,
@@ -296,6 +308,7 @@ export const useCommandStore = defineStore('commandStore', {
       $ApiService.pensionerService
         ._index({ params })
         .then((res) => {
+          if (reqId !== this.workerReqId) return
           const data = res.data.data.data.map((v) => ({
             ...v,
             name: [v.last_name, v.first_name, v.middle_name].filter(Boolean).join(' '),
@@ -309,7 +322,8 @@ export const useCommandStore = defineStore('commandStore', {
             : Array.from(new Map([...data].map((v) => [v.id, v])).values())
         })
         .finally(() => {
-          this.workerLoading = false
+          // Eskirgan so'rov `loading`ni o'chirmasin.
+          if (reqId === this.workerReqId) this.workerLoading = false
         })
     },
     _workers(infinity = false) {
@@ -319,15 +333,24 @@ export const useCommandStore = defineStore('commandStore', {
       let params = {
         ...this.workerParams
       }
+      // 🔴 POYGA HIMOYASI: qidiruv (har harfda), ochilish (search=null) va scroll
+      // so'rovlari ketma-ket ketadi, javoblar istalgan tartibda qaytadi —
+      // kechroq kelgan FILTRSIZ javob qidiruv natijasini bosib ketardi.
+      const reqId = ++this.workerReqId
       $ApiService.workerService
         ._search({ params })
         .then((res) => {
+          if (reqId !== this.workerReqId) return
           const data = res.data.data.data.map((v) => ({
             ...v,
             name: v.worker.last_name + ' ' + v.worker.first_name + ' ' + v.worker.middle_name,
             position: v.position?.name || v?.post_name,
             id: v.id,
             typeId: v.contract?.type?.id,
+            // FXSH xodimida `position` null (shtat lavozimi band qilinmaydi) —
+            // lavozim O'RNIGA shartnoma turi ko'rsatiladi. Boshqa turlarda null.
+            contractType:
+              v.contract?.type?.id === CONTRACT_TYPE_CIVIL ? v.contract?.type?.name : null,
             photo: v.worker?.photo
           }))
           this.totalWorker = res.data.data.total
@@ -336,7 +359,8 @@ export const useCommandStore = defineStore('commandStore', {
             : Array.from(new Map([...data].map((v) => [v.id, v])).values())
         })
         .finally(() => {
-          this.workerLoading = false
+          // Eskirgan so'rov `loading`ni o'chirmasin.
+          if (reqId === this.workerReqId) this.workerLoading = false
         })
     },
     _index() {
@@ -438,6 +462,7 @@ export const useCommandStore = defineStore('commandStore', {
 
       this.vacations = []
 
+      this.form_44.vacation_id = null
       this.form_44.new_date = null
       this.form_44.rest_day = null
       this.form_44.reason = null

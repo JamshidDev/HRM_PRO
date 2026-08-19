@@ -3,15 +3,6 @@
   import { useAppSetting } from '@/utils/index.js'
 
   const store = useAccountStore()
-
-  // Loader ikki holatda chiqadi (`accountStore.loadingKind`): ilova ishga
-  // tushayotganda va tizimdan chiqayotganda. Ilgari ikkalasida ham faqat
-  // aylanuvchi spinner ko'rinardi — foydalanuvchi nima kutayotganini bilmasdi.
-  const copy = computed(() =>
-    store.loadingKind === 'logout'
-      ? { title: 'content.loggingOut', hint: 'content.loggingOutHint' }
-      : { title: 'content.loadingWorkspace', hint: 'content.loadingWorkspaceHint' }
-  )
 </script>
 
 <template>
@@ -26,11 +17,6 @@
           alt=""
           draggable="false"
         />
-
-        <div class="main-loading__text">
-          <p class="main-loading__title">{{ $t(copy.title) }}</p>
-          <p class="main-loading__hint">{{ $t(copy.hint) }}</p>
-        </div>
 
         <!-- Indeterminate bar: qancha qolganini bilmaymiz, shu bois foizli
              progress emas. Spinnerdan farqli, u "ish ketmoqda"ni yo'nalish bilan
@@ -78,9 +64,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 22px;
+    /* Matnsiz kompozitsiyada logo va chiziq bitta guruh bo'lib ko'rinishi uchun
+       oraliq oldingi 22px'dan qisqartirildi. */
+    gap: 18px;
     padding: 0 24px;
-    text-align: center;
   }
 
   .main-loading__logo {
@@ -89,31 +76,11 @@
     animation: main-loading-breathe 2.4s ease-in-out infinite;
   }
 
-  .main-loading__text {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .main-loading__title {
-    margin: 0;
-    color: var(--textColor0);
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 1.3;
-  }
-
-  .main-loading__hint {
-    margin: 0;
-    color: var(--textColor2);
-    font-size: 13px;
-    line-height: 1.4;
-  }
-
   .main-loading__track {
     position: relative;
-    width: 220px;
-    max-width: 70vw;
+    /* Logodan kengroq bo'lib ketmasligi uchun 220px'dan toraytirildi. */
+    width: 168px;
+    max-width: 60vw;
     height: 4px;
     overflow: hidden;
     border-radius: 999px;

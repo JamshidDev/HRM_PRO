@@ -13,7 +13,7 @@ export const ENFORCED = new Set([
   'department-location-write', 'deploy-read', 'deploy-write', 'document-view-exam-results', 'economist', 'economist-dashboard-read',
   'economist-pension-payments-delete', 'economist-pension-payments-read', 'economist-pension-payments-write', 'economist-staffing-approve-delete', 'economist-staffing-approve-read', 'economist-staffing-approve-write',
   'economist-statements-delete', 'economist-statements-read', 'economist-statements-write', 'economist-tax-five-delete', 'economist-tax-five-read', 'economist-tax-five-write',
-  'economist-tax-four-delete', 'economist-tax-four-read', 'economist-tax-four-write', 'economist-uploads-read', 'economist-uploads-write', 'economist-worker-categories-delete',
+  'economist-tax-four-delete', 'economist-tax-four-read', 'economist-tax-four-write', 'economist-uploads-read', 'economist-uploads-write', 'economist-uploads-confirm', 'economist-worker-categories-delete',
   'economist-worker-categories-read', 'economist-worker-categories-write', 'exam-categories-delete', 'exam-categories-read', 'exam-categories-write', 'exam-exams-delete',
   'exam-exams-read', 'exam-exams-write', 'exam-topics-delete', 'exam-topics-read', 'exam-topics-write', 'filter-search-workers',
   'holiday-greetings-delete', 'holiday-greetings-read', 'holiday-greetings-write', 'holidays-delete', 'holidays-write', 'hr',
@@ -359,7 +359,17 @@ export const PERMISSION_GROUPS = [
       { prefix: 'economist', label: 'userRole.form.moduleAccess' },
       { prefix: 'economist-dashboard', label: 'accDashboard.name' },
       { prefix: 'economist-worker-categories', label: 'salaryCategory.name' },
-      { prefix: 'economist-uploads', label: 'uploadReport.name' },
+      {
+        prefix: 'economist-uploads',
+        label: 'uploadReport.name',
+        // Standart read/write + alohida "Tasdiqlash" (economist-uploads-confirm) —
+        // hisobotni tasdiqlash/bekor qilish shu ruxsat bilan (upload-histories/confirm).
+        actions: [
+          { slug: 'economist-uploads-read', label: "Ko'rish" },
+          { slug: 'economist-uploads-write', label: 'Yaratish / Tahrirlash' },
+          { slug: 'economist-uploads-confirm', label: 'Tasdiqlash' }
+        ]
+      },
       { prefix: 'economist-statements', label: 'monthReport.name' },
       { prefix: 'economist-statements-code', label: 'salaryReport.name' },
       { prefix: 'economist-tax-four', label: 'taxFour.name' },
@@ -476,6 +486,9 @@ export const PERMISSION_GROUPS = [
       { prefix: 'integration-worker-check', label: 'integrationPerm.workerCheck' },
       { prefix: 'integration-worker-events-month', label: 'integrationPerm.workerEventsMonth' },
       { prefix: 'integration-worker-events-day', label: 'integrationPerm.workerEventsDay' },
+      { prefix: 'integration-worker-business-trip', label: 'integrationPerm.workerBusinessTrip' },
+      { prefix: 'integration-worker-schedules', label: 'integrationPerm.workerSchedules' },
+      { prefix: 'integration-worker-schedule-swap', label: 'integrationPerm.workerScheduleSwap' },
       { prefix: 'integration-turnstile-events', label: 'integrationPerm.turnstileEvents' },
       { prefix: 'integration-station-workers', label: 'integrationPerm.stationWorkers' },
       { prefix: 'integration-station-worker', label: 'integrationPerm.stationWorker' },

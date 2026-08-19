@@ -5,6 +5,9 @@ import Utils from '@/utils/Utils.js'
 import { useAppSetting } from '@/utils/index.js'
 import utils from '@/utils/Utils.js'
 
+// ContractTypeEnum: 2 = fuqarolik-huquqiy shartnoma (FXSH).
+const CONTRACT_TYPE_CIVIL = 2
+
 export const useComponentStore = defineStore('componentStore', {
   state: () => ({
     structureShort: false,
@@ -155,6 +158,8 @@ export const useComponentStore = defineStore('componentStore', {
 
     workerList: [],
     workerLoading: false,
+    // Xodim so'rovlari navbat raqami (poyga himoyasi — `_workers`ga qarang).
+    workerReqId: 0,
     workerParams: {
       page: 1,
       per_page: 50,
@@ -772,15 +777,29 @@ export const useComponentStore = defineStore('componentStore', {
       let params = {
         ...this.workerParams
       }
+      // 🔴 POYGA HIMOYASI. Bitta select uchta manbadan so'rov yuboradi:
+      // `onSearchWorker` (har harfda), `onOpenWorkerEv` (ochilganda, search=null)
+      // va `onScrollWorker`. Ular ketma-ket ketadi, javoblar esa istalgan
+      // tartibda qaytadi — kechroq kelgan FILTRSIZ javob qidiruv natijasini
+      // bosib ketardi va qidirilgan xodim ro'yxatda ko'rinmay qolardi.
+      // Har so'rovga navbat raqami beriladi; faqat ENG OXIRGISI ro'yxatni yozadi.
+      const reqId = ++this.workerReqId
       $ApiService.workerService
         ._search({ params })
         .then((res) => {
+          if (reqId !== this.workerReqId) return
           let data = res.data.data.data.map((v) => ({
             ...v,
             name: v.worker.last_name + ' ' + v.worker.first_name + ' ' + v.worker.middle_name,
             position: v.position?.name || v?.post_name,
             id: v.id,
             typeId: v.contract?.type?.id,
+            // FXSH (shartnoma turi 2) xodimlarida `position` DOIM null: fuqarolik-huquqiy
+            // shartnoma shtat lavozimini band qilmaydi (position_id/department_id NULL) —
+            // select'da lavozim qatori bo'sh chiqardi. Ular uchun LAVOZIM O'RNIGA
+            // shartnoma turi ko'rsatiladi. Boshqa turlarda `null` — ularda lavozim bor,
+            // qo'shimcha qator kerak emas.
+            contractType: v.contract?.type?.id === CONTRACT_TYPE_CIVIL ? v.contract?.type?.name : null,
             photo: v.worker?.photo
           }))
           this.totalWorker = res.data.data.total
@@ -791,7 +810,8 @@ export const useComponentStore = defineStore('componentStore', {
           }
         })
         .finally(() => {
-          this.workerLoading = false
+          // Eskirgan so'rov `loading`ni o'chirmasin — eng oxirgisi hali ketmoqda.
+          if (reqId === this.workerReqId) this.workerLoading = false
         })
     },
     onSearchWorker(v) {

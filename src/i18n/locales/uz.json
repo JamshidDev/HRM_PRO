@@ -362,10 +362,6 @@
     "noSpam": "Spamdan chiqarish",
     "noImage": "Rasm mavjud emas",
     "waitResponse": "Iltimos javobni kuting!",
-    "loadingWorkspace": "Ish maydoni tayyorlanmoqda",
-    "loadingWorkspaceHint": "Hisob va ruxsatlar yuklanmoqda",
-    "loggingOut": "Tizimdan chiqilmoqda",
-    "loggingOutHint": "Sessiya xavfsiz yopilmoqda",
     "untilNow": "hozirgacha",
     "warningImageSave": "Asosiy rasm uchun yangi rasm tanlandi. O‘zgarishni saqlash uchun 'Saqlash' tugmasini bosing.",
     "selectAll": "Barchasini tanlash",
@@ -1459,13 +1455,27 @@
   "mobileUserPage": {
     "name": "Mobil foydalanuvchilar",
     "deviceModel": "Qurilma modeli",
+    "devicesCount": "Qurilmalar soni",
     "platform": "Platforma",
     "verificationTime": "Tasdiqlash vaqti",
     "detailTitle": "Qurilma ma'lumotlari",
     "deviceInfo": "Qurilma haqida",
     "sessions": "Sessiyalar",
     "noPhotos": "Rasmlar yo'q",
-    "noSessions": "Sessiyalar yo'q"
+    "noSessions": "Sessiyalar yo'q",
+    "tabFaceId": "Face ID",
+    "tabDevices": "Qurilmalar",
+    "active": "Faol",
+    "inactive": "Nofaol",
+    "currentDevice": "Joriy qurilma",
+    "deviceId": "ID",
+    "deviceUuid": "Qurilma UUID",
+    "fcmToken": "FCM token",
+    "notifications": "Bildirishnomalar",
+    "lastUsedAt": "Oxirgi faollik",
+    "noFcmToken": "FCM token yo'q",
+    "noDevices": "Qurilmalar yo'q",
+    "copied": "Nusxalandi"
   },
   "vacancyApprovePage": {
     "menuName": "Tasdiqlash",
@@ -2711,7 +2721,32 @@
   },
   "uploadReport": {
     "name": "Hisobot yuklash",
+    "latest": "Oxirgi",
+    "olderUploads": "Oldingi yuklamalar",
     "createTitle": "Hisobot yuklash",
+    "source": {
+      "label": "Manba",
+      "excel": "Excel",
+      "ones": "1C dan",
+      "onesHint": "1C dan yuklaganda fayl kerak emas — salary-1c da tortilgan ma'lumot ishlatiladi."
+    },
+    "bulkOnes": {
+      "button": "1C dan ommaviy yuklash",
+      "title": "1C dan ommaviy yuklash — Oylik hisobot",
+      "hint": "Tanlangan korxonalar uchun salary-1c da tortilgan ma'lumotdan Oylik hisobot quriladi.",
+      "period": "Davr (yil / oy)",
+      "search": "Korxona qidirish",
+      "selectAll": "Barchasini tanlash",
+      "selected": "tanlandi",
+      "employees": "xodim",
+      "upload": "Yuklash",
+      "uploading": "Yuklanmoqda",
+      "done": "Tayyor",
+      "failed": "Xato",
+      "noData": "Bu davr uchun 1C ma'lumoti topilmadi. Avval salary-1c da torting.",
+      "progress": "{done} / {total} yuklandi",
+      "summary": "Muvaffaqiyatli: {ok}, Xato: {fail}"
+    },
     "form": {
       "type": "Hisobot turi",
       "month": "Oy",
@@ -2729,7 +2764,9 @@
       "confirmed": "Tasdiqlangan",
       "openFromBlock": "Yopish",
       "closeToBlock": "Ochish"
-    }
+    },
+    "confirmQuestion": "Tasdiqlaysizmi?",
+    "cancelConfirmQuestion": "Tasdiqni bekor qilasizmi? Qayta yuklash imkoni ochiladi."
   },
   "instructionPage": {
     "name": "Instruksiya",
@@ -2774,7 +2811,8 @@
     },
     "view": {
       "main_salary": "Oklad",
-      "work_time": "Ishlagan vaqti"
+      "work_time": "Ishlagan vaqti",
+      "net_salary": "Qulga tegadigan summa"
     },
     "in": {
       "code": "To'lov shifri",
@@ -3091,6 +3129,9 @@
     "month": "Oy",
     "period": "Davr (oy)",
     "pull": "1C dan tortish",
+    "uploadToReport": "Oylik hisobotga yuklash",
+    "repull": "1C dan qayta tortish",
+    "repullDone": "Xodim ma'lumoti 1C dan yangilandi",
     "pulled": "Tortildi",
     "workers": "Xodimlar",
     "byOrg": "Korxonalar kesimida",
@@ -3982,8 +4023,41 @@
     "name": "Turniket grafiki"
   },
   "notificationPage": {
+    "send": "Push yuborish",
+    "logs": "Loglar",
+    "schedule": "Rejalashtirish",
+    "sendTime": "Rejalashtirilgan",
+    "sendTimePlaceholder": "Bo'sh = darhol",
+    "sender": "Yuboruvchi",
+    "channel": "Kanal",
+    "recipients": "Qabul qiluvchilar",
+    "push": "Push (yub/xato)",
+    "sentAt": "Yuborilgan vaqt",
+    "status": {
+      "scheduled": "Rejalashtirilgan",
+      "sending": "Yuborilmoqda",
+      "sent": "Yuborildi",
+      "skipped": "O'tkazib yuborildi",
+      "error": "Xatolik",
+      "cancelled": "Bekor qilingan"
+    },
+    "mode": "Yuborish rejimi",
+    "byTopic": "Topic bo'yicha",
+    "byUser": "Foydalanuvchini tanlab",
+    "topic": "Topic",
+    "topics": {
+      "all": "Barchaga",
+      "hr": "Kadrlarga",
+      "economist": "Economistlarga"
+    },
     "name": "Bildirishnomalar",
-    "create": "Bildirishnoma yaratish"
+    "create": "Bildirishnoma yaratish",
+    "st": {
+      "pending": "Kutilmoqda",
+      "sent": "Yuborilgan",
+      "error": "Xatolik",
+      "cancelled": "Bekor qilingan"
+    }
   },
   "approve": {
     "name": "Yuborilgan xodimlar",
@@ -4387,6 +4461,7 @@
     "workerCheck": "Xodim tekshiruvi",
     "workerEventsMonth": "Xodim turniket (oy)",
     "workerEventsDay": "Xodim turniket (kun)",
+    "workerBusinessTrip": "Xodim safari",
     "turnstileEvents": "Turniket eventlari",
     "stationWorkers": "Stansiya xodimlari",
     "stationWorker": "Stansiya xodimi",
@@ -4400,7 +4475,9 @@
     "mobileFaceCheckWorker": "Mobil face: xodim tekshirish",
     "mobileFaceSchedules": "Mobil face: jadvallar",
     "otpVerify": "OTP tekshirish",
-    "holidayGreetings": "Bayram tabriklari"
+    "holidayGreetings": "Bayram tabriklari",
+    "workerSchedules": "Navbatchilik grafigi",
+    "workerScheduleSwap": "Grafik almashtirish"
   },
   "kpiPage": {
     "name": "KPI ko'rsatgichlar",

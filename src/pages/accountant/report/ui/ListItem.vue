@@ -31,22 +31,33 @@
           >
             <div class="flex justify-between">
               <span class="text-textColor2 font-semibold uppercase">{{ item.name }}</span>
-              <n-button
+              <n-popconfirm
                 v-if="accStore.checkPermission(accStore.pn.economistUploadsConfirm)"
-                :loading="store.confirmLoading"
-                @click="store._confirm(item)"
-                :text="item.status"
-                :type="item.status ? 'success' : 'primary'"
-                size="tiny"
+                @positive-click="item.status ? store._cancelConfirm(item) : store._confirm(item)"
+                :positive-text="$t('content.yes')"
+                :negative-text="$t('content.no')"
               >
-                {{ $t(item.status ? 'uploadReport.form.confirmed' : 'content.confirm') }}
-                <template #icon>
-                  <n-icon size="18">
-                    <CheckmarkCircle16Regular v-if="item.status" />
-                    <CheckmarkCircle20Filled v-else />
-                  </n-icon>
+                <template #trigger>
+                  <n-button
+                    :loading="store.confirmLoading"
+                    :type="item.status ? 'success' : 'primary'"
+                    size="tiny"
+                  >
+                    {{ $t(item.status ? 'uploadReport.form.confirmed' : 'content.confirm') }}
+                    <template #icon>
+                      <n-icon size="18">
+                        <CheckmarkCircle16Regular v-if="item.status" />
+                        <CheckmarkCircle20Filled v-else />
+                      </n-icon>
+                    </template>
+                  </n-button>
                 </template>
-              </n-button>
+                {{
+                  item.status
+                    ? $t('uploadReport.cancelConfirmQuestion')
+                    : $t('uploadReport.confirmQuestion')
+                }}
+              </n-popconfirm>
             </div>
             <div
               :class="[

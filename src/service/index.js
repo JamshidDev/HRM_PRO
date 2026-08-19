@@ -70,20 +70,6 @@ instance.interceptors.response.use(
       isLoggingOut = true
       localStorage.removeItem(useAppSetting.tokenKey)
       await router.push(AppPaths.Login)
-    } else if (
-      error.response?.status === 403 &&
-      error.response?.data?.code === 'salary_step_up_required'
-    ) {
-      // Oylik (salary) step-up: "oylik paroli" so'raladi. So'rovni navbatga qo'yamiz,
-      // modal ochilgach parol bilan qayta yuboriladi. Toast chiqarmaymiz (modal o'zi ko'rsatadi).
-      const { useSalaryAccessStore } = await import(
-        '@/store/modules/accountant/salaryAccessStore.js'
-      )
-      const store = useSalaryAccessStore()
-      return new Promise((resolve, reject) => {
-        store.enqueue({ config: error.config, resolve, reject })
-        store.open()
-      })
     } else if (error.response?.data?.message) {
       if (!error.config?.silentError) {
         $Toast.error(error.response?.data?.message)

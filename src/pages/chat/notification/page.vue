@@ -1,33 +1,34 @@
 <script setup>
-  import { UIModal, UIPageContent } from '@components'
+  import { UIPageContent } from '@components'
   import { useAccountStore, useNotificationStore } from '@stores'
-  import { createFrom, Table, Filter } from './ui'
+  import { createFrom, LogTable } from './ui'
 
   const store = useNotificationStore()
   const accStore = useAccountStore()
 
+  // Push yuborish `instructionsWrite` bilan gated (forma faqat huquq bo'lsa).
+  const canSend = computed(() => accStore.checkAction(accStore.pn.instructionsWrite))
+  const activeTab = ref('send')
+
   onMounted(() => {
-    // Bildirishnomalar `instructions` slug'i bilan qo'riqlanadi — navigations.js,
-    // rol formasidagi "Bildirishnomalar" guruhi va backend ENFORCED ro'yxati
-    // shunga tayanadi. Bu yerda `chat-notification` tekshirilardi: admin
-    // "Bildirishnomalar"ni bersa menyu chiqar, lekin sahifa bo'sh qolib
-    // "Ruxsat etilmadi" toasti chiqardi.
+    // Bildirishnomalar `instructions` slug'i bilan qo'riqlanadi.
     if (!accStore.checkAction(accStore.pn.instructions)) return
-    store._index()
+    if (!canSend.value) activeTab.value = 'logs'
+    store.resetForm()
+    store._push_logs()
   })
 </script>
 
 <template>
   <UIPageContent>
-    <Filter />
-    <Table />
-    <UIModal
-      :width="800"
-      :visible="store.visible"
-      @update:visible="(v) => (store.visible = v)"
-      :title="$t('notificationPage.create')"
-    >
-      <createFrom />
-    </UIModal>
+    <!-- Button-style (segment) tablar: Push yuborish + Loglar -->
+    <n-tabs v-model:value="activeTab" type="segment" animated>
+      <n-tab-pane v-if="canSend" name="send" :tab="$t('notificationPage.send')">
+        <createFrom />
+      </n-tab-pane>
+      <n-tab-pane name="logs" :tab="$t('notificationPage.logs')">
+        <LogTable />
+      </n-tab-pane>
+    </n-tabs>
   </UIPageContent>
 </template>

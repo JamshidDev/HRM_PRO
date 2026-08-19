@@ -355,10 +355,6 @@
     "noSpam": "Убрать из спама",
     "noImage": "Изображение отсутствует",
     "waitResponse": "Пожалуйста, ждите ответа!",
-    "loadingWorkspace": "Подготовка рабочего пространства",
-    "loadingWorkspaceHint": "Загрузка профиля и прав доступа",
-    "loggingOut": "Выход из системы",
-    "loggingOutHint": "Сессия безопасно завершается",
     "untilNow": "до сих пор",
     "warningImageSave": "Выбрано новое основное изображение. Нажмите «Сохранить» для применения изменений.",
     "selectAll": "Выбрать все",
@@ -1443,13 +1439,27 @@
   "mobileUserPage": {
     "name": "Мобильные пользователи",
     "deviceModel": "Модель устройства",
+    "devicesCount": "Кол-во устройств",
     "platform": "Платформа",
     "verificationTime": "Время верификации",
     "detailTitle": "Информация об устройстве",
     "deviceInfo": "Об устройстве",
     "sessions": "Сессии",
     "noPhotos": "Нет фотографий",
-    "noSessions": "Нет сессий"
+    "noSessions": "Нет сессий",
+    "tabFaceId": "Face ID",
+    "tabDevices": "Устройства",
+    "active": "Активно",
+    "inactive": "Неактивно",
+    "currentDevice": "Текущее устройство",
+    "deviceId": "ID",
+    "deviceUuid": "UUID устройства",
+    "fcmToken": "FCM токен",
+    "notifications": "Уведомления",
+    "lastUsedAt": "Последняя активность",
+    "noFcmToken": "Нет FCM токена",
+    "noDevices": "Нет устройств",
+    "copied": "Скопировано"
   },
   "vacancyApprovePage": {
     "menuName": "Подтверждение",
@@ -2695,7 +2705,32 @@
   },
   "uploadReport": {
     "name": "Загрузить отчёт",
+    "latest": "Последняя",
+    "olderUploads": "Предыдущие загрузки",
     "createTitle": "Загрузить отчёт",
+    "source": {
+      "label": "Источник",
+      "excel": "Excel",
+      "ones": "Из 1C",
+      "onesHint": "При загрузке из 1C файл не нужен — используются данные, загруженные в salary-1c."
+    },
+    "bulkOnes": {
+      "button": "Массовая загрузка из 1C",
+      "title": "Массовая загрузка из 1C — Ежемесячный отчёт",
+      "hint": "Для выбранных организаций Ежемесячный отчёт формируется из данных, загруженных в salary-1c.",
+      "period": "Период (год / месяц)",
+      "search": "Поиск организации",
+      "selectAll": "Выбрать все",
+      "selected": "выбрано",
+      "employees": "сотр.",
+      "upload": "Загрузить",
+      "uploading": "Загрузка",
+      "done": "Готово",
+      "failed": "Ошибка",
+      "noData": "Данные 1C за этот период не найдены. Сначала загрузите в salary-1c.",
+      "progress": "{done} / {total} загружено",
+      "summary": "Успешно: {ok}, Ошибок: {fail}"
+    },
     "form": {
       "type": "Тип отчёта",
       "month": "Месяц",
@@ -2713,7 +2748,9 @@
       "confirmed": "Подтверждено",
       "openFromBlock": "Разблокировать",
       "closeToBlock": "Заблокировать"
-    }
+    },
+    "confirmQuestion": "Подтвердить?",
+    "cancelConfirmQuestion": "Отменить подтверждение? Загрузка снова станет доступной."
   },
   "instructionPage": {
     "name": "Инструкции",
@@ -2755,7 +2792,8 @@
     },
     "view": {
       "main_salary": "Оклад",
-      "work_time": "Отработанное время"
+      "work_time": "Отработанное время",
+      "net_salary": "Сумма на руки"
     },
     "in": {
       "code": "Код платежа",
@@ -3072,6 +3110,9 @@
     "month": "Месяц",
     "period": "Период (месяц)",
     "pull": "Загрузить из 1C",
+    "uploadToReport": "Загрузить в Ежемесячный отчёт",
+    "repull": "Обновить из 1C",
+    "repullDone": "Данные сотрудника обновлены из 1C",
     "pulled": "Загружено",
     "workers": "Сотрудники",
     "byOrg": "По организациям",
@@ -3981,8 +4022,41 @@
     }
   },
   "notificationPage": {
+    "send": "Отправить push",
+    "logs": "Логи",
+    "schedule": "Запланировать",
+    "sendTime": "Запланировано",
+    "sendTimePlaceholder": "Пусто = сразу",
+    "sender": "Отправитель",
+    "channel": "Канал",
+    "recipients": "Получатели",
+    "push": "Push (отпр/ошиб)",
+    "sentAt": "Отправлено",
+    "status": {
+      "scheduled": "Запланировано",
+      "sending": "Отправляется",
+      "sent": "Отправлено",
+      "skipped": "Пропущено",
+      "error": "Ошибка",
+      "cancelled": "Отменено"
+    },
+    "mode": "Режим отправки",
+    "byTopic": "По теме",
+    "byUser": "Выбрать пользователей",
+    "topic": "Тема",
+    "topics": {
+      "all": "Всем",
+      "hr": "Кадрам",
+      "economist": "Экономистам"
+    },
     "name": "Уведомления",
-    "create": "Создать уведомление"
+    "create": "Создать уведомление",
+    "st": {
+      "pending": "Ожидает",
+      "sent": "Отправлено",
+      "error": "Ошибка",
+      "cancelled": "Отменено"
+    }
   },
   "congratulation": {
     "name": "Telegram-сообщения",
@@ -4355,6 +4429,7 @@
     "workerCheck": "Проверка сотрудника",
     "workerEventsMonth": "Турникет сотрудника (месяц)",
     "workerEventsDay": "Турникет сотрудника (день)",
+    "workerBusinessTrip": "Командировка сотрудника",
     "turnstileEvents": "События турникета",
     "stationWorkers": "Сотрудники станции",
     "stationWorker": "Сотрудник станции",
@@ -4368,7 +4443,9 @@
     "mobileFaceCheckWorker": "Mobile face: проверка сотрудника",
     "mobileFaceSchedules": "Mobile face: графики",
     "otpVerify": "Проверка OTP",
-    "holidayGreetings": "Праздничные поздравления"
+    "holidayGreetings": "Праздничные поздравления",
+    "workerSchedules": "График дежурства",
+    "workerScheduleSwap": "Замена графика"
   },
   "kpiPage": {
     "name": "Показатели KPI",

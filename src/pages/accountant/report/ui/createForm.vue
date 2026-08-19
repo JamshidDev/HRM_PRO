@@ -15,9 +15,23 @@
   const store = useUploadReportStore()
   const componentStore = useComponentStore()
 
+  // Oylik hisobot (type=1) tanlanganda 1C manbasi ko'rsatiladi.
+  const isStatement = computed(() => Number(store.payload.type) === 1)
+  const isOnes = computed(() => isStatement.value && Number(store.payload.source) === 2)
+
+  const sourceOptions = [
+    { label: t('uploadReport.source.excel'), value: 1 },
+    { label: t('uploadReport.source.ones'), value: 2 }
+  ]
+
   const onSubmit = () => {
     formRef.value?.validate((error) => {
       if (!error) {
+        // 1C manba — fayl shart emas, backend salary-1c ma'lumotidan quradi.
+        if (isOnes.value) {
+          store._createFromOnes()
+          return
+        }
         if (store.payload.file.length === 0) {
           $Toast.warning(t('rules.requiredFileField'))
           return
@@ -75,8 +89,23 @@
           :clearable="false"
         />
       </n-form-item>
-      <UIUpload class="col-span-12 mb-[40px]" v-model:files="store.payload.file" :multiple="false">
+      <!-- Oylik hisobot (type=1) uchun manba: Excel yoki 1C dan -->
+      <n-form-item v-if="isStatement" class="col-span-12" :label="$t('uploadReport.source.label')">
+        <n-radio-group v-model:value="store.payload.source" name="source">
+          <n-radio-button v-for="o in sourceOptions" :key="o.value" :value="o.value" :label="o.label" />
+        </n-radio-group>
+      </n-form-item>
+      <!-- 1C manbada fayl kerak emas -->
+      <UIUpload
+        v-if="!isOnes"
+        class="col-span-12 mb-[40px]"
+        v-model:files="store.payload.file"
+        :multiple="false"
+      >
       </UIUpload>
+      <p v-else class="col-span-12 mb-[40px] text-xs text-secondary px-2">
+        {{ $t('uploadReport.source.onesHint') }}
+      </p>
     </div>
 
     <div class="grid grid-cols-2 gap-2">

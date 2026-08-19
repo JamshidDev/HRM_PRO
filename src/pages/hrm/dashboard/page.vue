@@ -8,6 +8,7 @@
   import AuditTab from './ui/audit/AuditTab.vue'
   import AuditDetail from './ui/audit/AuditDetail.vue'
   import AuditDetailFilter from './ui/audit/AuditDetailFilter.vue'
+  import DashboardSkeleton from './ui/DashboardSkeleton.vue'
 
   import { DashboardTab, tabCards, tabKpiVariants } from './constants.js'
 
@@ -15,6 +16,10 @@
   const store = useDashboardStore()
   const accStore = useAccountStore()
 
+  // `canView`: bare `hr-dashboard` yoki `hr-dashboard-read`. Skeleton ham shu
+  // shart ostida chiziladi — ruxsatsiz foydalanuvchiga hech qachon kelmaydigan
+  // kontentning konturi ko'rsatilmasin.
+  const canViewDashboard = computed(() => accStore.canView(accStore.pn.hrDashboard))
   const canViewAudit = computed(() => accStore.checkPermission(accStore.pn.hrDashboardAudit))
   const isAudit = computed(() => store.activeTab === DashboardTab.AUDIT && canViewAudit.value)
 
@@ -80,8 +85,7 @@
   })
 
   onBeforeMount(() => {
-    // `canView`: bare `hr-dashboard` yoki `hr-dashboard-read` — ikkalasi ham yaraydi.
-    if (!accStore.canView(accStore.pn.hrDashboard)) return
+    if (!canViewDashboard.value) return
     store.activeDetail = null
     store.resetAuditDetail()
     store._dashboard()
@@ -168,17 +172,17 @@
            o'sadi, skrollni `contentRef` boshqaradi. -->
       <template v-else>
         <UIPageContent class="!pt-0 !px-0 !m-0 !h-auto">
-          <n-spin :show="store.loading" class="min-h-[200px]">
-            <!-- Sof `canView`: `checkAction` yon ta'sirli (toast) va bu yerda
-                 har render'da ogohlantirish otilardi. Ko'rish ruxsati yo'q
-                 bo'lsa kartalar butunlay ko'rsatilmaydi. -->
-            <n-grid
-              x-gap="8 m:12 l:16"
-              y-gap="8 m:12 l:16"
-              cols="12"
-              v-if="accStore.canView(accStore.pn.hrDashboard) && !store.loading"
-              responsive="screen"
-            >
+          <!-- Sof `canView`: `checkAction` yon ta'sirli (toast) va bu yerda
+               har render'da ogohlantirish otilardi. Ko'rish ruxsati yo'q
+               bo'lsa kartalar butunlay ko'rsatilmaydi. -->
+          <template v-if="canViewDashboard">
+            <!-- Yuklanishda spinner emas, skeleton: ilgari grid `v-if` bilan
+                 butunlay olib tashlanar va ortda bo'sh ekran markazida yolg'iz
+                 spinner qolardi. Skeleton ustiga spinner qo'yilmaydi — bitta
+                 yuklanish belgisi yetarli. -->
+            <DashboardSkeleton v-if="store.loading" />
+
+            <n-grid v-else x-gap="8 m:12 l:16" y-gap="8 m:12 l:16" cols="12" responsive="screen">
               <n-grid-item v-for="card in kpiCards" :key="card.variant" :span="kpiSpan">
                 <FigKpiCard :card="card" :variant="card.variant" />
               </n-grid-item>
@@ -191,7 +195,7 @@
                 />
               </n-grid-item>
             </n-grid>
-          </n-spin>
+          </template>
         </UIPageContent>
       </template>
     </div>
