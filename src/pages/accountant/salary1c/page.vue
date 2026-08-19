@@ -1,10 +1,11 @@
 <script setup>
   import { CloudArrowDown24Regular, CloudArrowUp24Regular, Eye16Regular, History24Regular, Search24Regular, ArrowDownload24Regular, Calculator24Regular, ArrowSync24Regular } from '@vicons/fluent'
-  import { NoDataPicture, UIBadge, UIModal, UIPageContent, UIPagination, UIYearMonth, UISelect } from '@/components/index.js'
+  import { NoDataPicture, UIBadge, UIModal, UIPageContent, UIPageFilter, UIPagination, UITable, UIYearMonth, UISelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useSalary1cStore, useUploadReportStore } from '@/store/modules/index.js'
   import BulkOnesModal from '@/pages/accountant/report/ui/BulkOnesModal.vue'
   import { useDebounceFn } from '@vueuse/core'
   import Utils from '@/utils/Utils.js'
+  import UIHelper from '@/utils/UIHelper.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -63,8 +64,101 @@
     if (!accStore.checkAction(accStore.pn.economist)) return
     if (componentStore.structureList.length === 0) componentStore._structures()
     store._loadPullCodes()
+    store._loadEnum() // «Kod» filtri ro'yxati (month-report bilan bir xil manba)
     store._checkActiveJob() // fon jobiga qayta ulanish (navigatsiya/qayta ochishda)
+    store._index() // sahifa ochilishida BARCHA korxona xodimlari (Xodimlar tabi default)
   })
+
+  // Statistika kartalari — default YASHIRIN (ma'lumot ko'rinishida joy egallamasin);
+  // foydalanuvchi xohlasa ochadi, tanlovi localStorage'da saqlanadi.
+  const showStats = ref(localStorage.getItem('s1-show-stats') === '1')
+  const toggleStats = () => {
+    showStats.value = !showStats.value
+    localStorage.setItem('s1-show-stats', showStats.value ? '1' : '0')
+  }
+
+  // Kod/Jins/Ish soati filtrlari faqat «Xodimlar» tabiga tegishli (org — hamma tabga).
+  const mrFilterActive = computed(() => activeTab.value === 'workers')
+  // «Filterlar» tugmasidagi faol filtr soni — korxona + Kod + Jins + Ish soati.
+  const filterCount = computed(
+    () =>
+      Number((store.selectedOrgs?.length ?? 0) > 0) +
+      Number(store.params.code != null) +
+      Number(store.params.sex != null) +
+      Number(store.params.start_hours != null) +
+      Number(store.params.end_hours != null)
+  )
+  // Soat inputlari uchun debounce (yozayotganda har bosishda so'rov ketmasin).
+  // onApply quyiroqda e'lon qilingan — TDZ oldini olish uchun arrow ichida chaqiramiz.
+  const applyHours = useDebounceFn(() => onApply(), 500)
+
+  // «Filterlar» paneli ochilganda ro'yxatlarni lazy yuklaymiz (onMounted ham yuklaydi — idempotent).
+  const beforeFilterShow = (v) => {
+    if (!v) return
+    if (componentStore.structureList.length === 0) componentStore._structures()
+    store._loadEnum()
+  }
+  // Panel «Tozalash» — korxona + Kod + Jins + Ish soati + matched hammasi tozalanadi.
+  const onClearFilters = () => {
+    store.selectedOrgs = []
+    store.structureCheck = []
+    store.params.code = null
+    store.params.sex = null
+    store.params.start_hours = null
+    store.params.end_hours = null
+    store.params.matched = null
+    onApply()
+  }
+
+  // «Xodimlar» jadvali (UITable) — ustunlar (ko'rinish/tartib sozlanadi + saralanadi).
+  const workerColumns = computed(() => [
+    { key: 'fio', title: t('salary1c.fio'), minWidth: 220, sortable: true },
+    { key: 'pinfl', title: 'PINFL', minWidth: 130, sortable: true },
+    { key: 'tab_nomer', title: t('salary1c.tabNo'), minWidth: 110, sortable: true },
+    { key: 'position', title: t('salary1c.position'), minWidth: 180 },
+    {
+      key: 'department_name',
+      title: t('salary1c.department'),
+      minWidth: 170,
+      render: (row) => row.department_name || '—'
+    },
+    {
+      key: 'organization_name',
+      title: t('salary1c.organization'),
+      minWidth: 200,
+      render: (row) => row.organization_name || '—'
+    },
+    { key: 'oklad', title: t('salary1c.oklad'), width: 130, align: 'right', sortable: true },
+    { key: 'accrual_total', title: t('salary1c.accrual'), width: 130, align: 'right', sortable: true },
+    { key: 'deduction_total', title: t('salary1c.deduction'), width: 130, align: 'right', sortable: true },
+    { key: 'net_total', title: t('salary1c.net'), width: 130, align: 'right', sortable: true }
+  ])
+
+  // Qator amallari — «…» menyu (payslip / tarix / qayta tortish).
+  const workerActions = computed(() => [
+    {
+      key: 'payslip',
+      label: t('salary1c.payslip'),
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: (row) => store._payslip(row.id)
+    },
+    {
+      key: 'history',
+      label: t('salary1c.history'),
+      icon: UIHelper.renderIcon(History24Regular),
+      action: (row) => store._history(row)
+    },
+    {
+      key: 'repull',
+      label: t('salary1c.repull'),
+      icon: UIHelper.renderIcon(ArrowSync24Regular),
+      action: (row) => store._pullOne(row),
+      disabled: () => !!store.repullPinfl
+    }
+  ])
+
+  // Tizimda yo'q xodim qatorini ajratib ko'rsatish (eski `s1-row-out`).
+  const workerRowClass = (row) => (row.in_system ? '' : 's1-row-out')
 
   const onApply = () => {
     store.params.page = 1
@@ -136,67 +230,108 @@
     const m = Math.floor(s / 60)
     return `${m}m ${String(Math.round(s % 60)).padStart(2, '0')}s`
   }
-
-  // Qidiruvda yozish/tozalashda avto qidiruv (debounce) — Enter shart emas.
-  const autoSearch = useDebounceFn(onApply, 350)
-  watch(() => store.params.search, () => {
-    if (activeTab.value === 'workers') autoSearch()
-  })
 </script>
 
 <template>
   <UIPageContent>
-    <!-- Filter -->
-    <div class="s1-filter">
-      <div class="grid grid-cols-12 gap-3 items-end">
-        <div class="col-span-12 md:col-span-3">
-          <label class="s1-lbl">{{ $t('salary1c.organization') }}</label>
-          <UISelect
-            :searchable-input="true"
-            :options="componentStore.structureList"
-            :model-v="store.selectedOrgs"
-            @updateModel="store.onChangeStructure"
-            :checked-val="store.structureCheck"
-            @updateCheck="(v) => (store.structureCheck = v)"
-            :loading="componentStore.structureLoading"
-            v-model:search="componentStore.structureParams.search"
-            @onSearch="componentStore._structures"
-            @onSubmit="onApply"
-          >
-            <template #label="{ data }">
-              <span class="text-xs ml-2">{{ componentStore.structureShort ? data.code : data.name }}</span>
-              <span v-if="pullCodeSet.has(data.id)" class="s1-1c-dot" :title="$t('salary1c.pullableHint')"></span>
-            </template>
-          </UISelect>
-        </div>
-        <div class="col-span-12 md:col-span-2">
-          <label class="s1-lbl">{{ $t('salary1c.period') }}</label>
+    <!-- Filter — month-report kabi: header'da qidiruv + davr + Pull + «Filterlar» slide-out -->
+    <UIPageFilter
+      v-model:search="store.params.search"
+      :search-loading="store.loading"
+      :show-add-button="false"
+      :filter-count="filterCount"
+      :placeholder="$t('salary1c.searchPh')"
+      @onSearch="onApply"
+      @onClear="onClearFilters"
+      @show="beforeFilterShow"
+    >
+      <template #filterAction>
+        <div class="max-w-[180px]">
           <UIYearMonth v-model:year="store.params.year" v-model:month="store.params.month"
             :clearable="false" :placeholder="$t('salary1c.selectMonth')" @change="onApply" />
         </div>
-        <div class="col-span-12 md:col-span-5">
-          <label class="s1-lbl">{{ $t('content.search') }}</label>
-          <n-input v-model:value="store.params.search" :placeholder="$t('salary1c.searchPh')" clearable
-            :disabled="activeTab !== 'workers'" />
-        </div>
-        <div class="col-span-12 md:col-span-2">
-          <n-button block type="primary" @click="store._openPullModal()">
-            <template #icon>
-              <n-icon v-if="!pullRunning"><CloudArrowDown24Regular /></n-icon>
-              <svg v-else class="s1-dl-svg" viewBox="0 0 24 24" width="18" height="18" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M7 18a4 4 0 0 1-.5-7.97 5.5 5.5 0 0 1 10.6-1.02A3.5 3.5 0 0 1 17.5 18" />
-                <g class="s1-dl-arrow">
-                  <line x1="12" y1="9" x2="12" y2="14.5" />
-                  <polyline points="9.7 12.2 12 14.5 14.3 12.2" />
-                </g>
-              </svg>
-            </template>
-            {{ pullRunning ? `${pullProcessed}/${pullTotal}` : $t('salary1c.pull') }}
-          </n-button>
-        </div>
-      </div>
-    </div>
+        <n-button type="primary" @click="store._openPullModal()">
+          <template #icon>
+            <n-icon v-if="!pullRunning"><CloudArrowDown24Regular /></n-icon>
+            <svg v-else class="s1-dl-svg" viewBox="0 0 24 24" width="18" height="18" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 18a4 4 0 0 1-.5-7.97 5.5 5.5 0 0 1 10.6-1.02A3.5 3.5 0 0 1 17.5 18" />
+              <g class="s1-dl-arrow">
+                <line x1="12" y1="9" x2="12" y2="14.5" />
+                <polyline points="9.7 12.2 12 14.5 14.3 12.2" />
+              </g>
+            </svg>
+          </template>
+          {{ pullRunning ? `${pullProcessed}/${pullTotal}` : $t('salary1c.pull') }}
+        </n-button>
+      </template>
+
+      <template #filterContent>
+        <label>{{ $t('salary1c.organization') }}</label>
+        <UISelect
+          :searchable-input="true"
+          :options="componentStore.structureList"
+          :model-v="store.selectedOrgs"
+          @updateModel="store.onChangeStructure"
+          :checked-val="store.structureCheck"
+          @updateCheck="(v) => (store.structureCheck = v)"
+          :loading="componentStore.structureLoading"
+          v-model:search="componentStore.structureParams.search"
+          @onSearch="componentStore._structures"
+          @onSubmit="onApply"
+        >
+          <template #label="{ data }">
+            <span class="text-xs ml-2">{{ componentStore.structureShort ? data.code : data.name }}</span>
+            <span v-if="pullCodeSet.has(data.id)" class="s1-1c-dot" :title="$t('salary1c.pullableHint')"></span>
+          </template>
+        </UISelect>
+
+        <label class="mt-3">{{ $t('salary1c.code') }}</label>
+        <n-select
+          v-model:value="store.params.code"
+          :options="store.codeList"
+          :loading="store.enumLoading"
+          label-field="name"
+          value-field="id"
+          filterable
+          clearable
+          :disabled="!mrFilterActive"
+          :placeholder="$t('salary1c.code')"
+          :render-label="UIHelper.selectRender.label"
+          :render-tag="UIHelper.selectRender.value"
+          @update:value="onApply"
+        />
+
+        <label class="mt-3">{{ $t('workerPage.filter.sex') }}</label>
+        <n-select
+          v-model:value="store.params.sex"
+          :options="componentStore.genderList"
+          label-field="name"
+          value-field="id"
+          clearable
+          :disabled="!mrFilterActive"
+          @update:value="onApply"
+        />
+
+        <label class="mt-3">{{ $t('salary1c.startHours') }}</label>
+        <n-input-number
+          v-model:value="store.params.start_hours"
+          :min="0"
+          clearable
+          :disabled="!mrFilterActive"
+          @update:value="applyHours"
+        />
+
+        <label class="mt-3">{{ $t('salary1c.endHours') }}</label>
+        <n-input-number
+          v-model:value="store.params.end_hours"
+          :min="0"
+          clearable
+          :disabled="!mrFilterActive"
+          @update:value="applyHours"
+        />
+      </template>
+    </UIPageFilter>
 
     <div class="flex items-center justify-between flex-wrap gap-2">
       <n-tabs type="segment" v-model:value="activeTab" size="small" class="s1-seg">
@@ -224,99 +359,80 @@
 
     <!-- Xodimlar -->
     <template v-if="activeTab === 'workers'">
-      <div v-if="store.report" class="s1-stats">
-        <div class="s1-stat">
-          <span class="s1-stat-lbl">{{ $t('salary1c.employees') }}</span>
-          <span class="s1-stat-val">{{ store.report.employee_count }}</span>
-        </div>
-        <div class="s1-stat">
-          <span class="s1-stat-lbl">{{ $t('salary1c.accrual') }}</span>
-          <span class="s1-stat-val">{{ fmt(store.report.accrual_total) }}</span>
-        </div>
-        <div class="s1-stat">
-          <span class="s1-stat-lbl">{{ $t('salary1c.deduction') }}</span>
-          <span class="s1-stat-val">{{ fmt(store.report.deduction_total) }}</span>
-        </div>
-        <div class="s1-stat s1-stat--net">
-          <span class="s1-stat-lbl">{{ $t('salary1c.net') }}</span>
-          <span class="s1-stat-val text-primary">{{ fmt(store.report.net_total) }}</span>
-        </div>
-        <div v-if="store.report.unmatched_count" class="s1-stat s1-stat--warn"
-          :class="{ 's1-stat--active': store.params.matched === 'out' }"
-          role="button" @click="store.toggleUnmatched()">
-          <span class="s1-stat-lbl">{{ $t('salary1c.notInSystem') }}</span>
-          <span class="s1-stat-val">{{ store.report.unmatched_count }}</span>
-        </div>
-      </div>
-
-      <div class="s1-scroll">
-        <n-spin :show="store.loading" style="min-height: 200px">
-          <div class="w-full overflow-x-auto" v-if="store.list.length">
-            <n-table :single-line="false" size="small">
-              <thead>
-                <tr>
-                  <th class="text-center! w-[56px]">{{ $t('salary1c.rowNo') }}</th>
-                  <th class="min-w-[220px]">{{ $t('salary1c.fio') }}</th>
-                  <th class="min-w-[130px]">PINFL</th>
-                  <th class="min-w-[100px]">{{ $t('salary1c.tabNo') }}</th>
-                  <th class="min-w-[180px]">{{ $t('salary1c.position') }}</th>
-                  <th class="min-w-[170px]">{{ $t('salary1c.department') }}</th>
-                  <th class="min-w-[200px]">{{ $t('salary1c.organization') }}</th>
-                  <th class="text-right! min-w-[120px]">{{ $t('salary1c.oklad') }}</th>
-                  <th class="text-right! min-w-[120px]">{{ $t('salary1c.accrual') }}</th>
-                  <th class="text-right! min-w-[120px]">{{ $t('salary1c.deduction') }}</th>
-                  <th class="text-right! min-w-[120px]">{{ $t('salary1c.net') }}</th>
-                  <th class="w-[80px]"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(r, i) in store.list" :key="r.id" :class="{ 's1-row-out': !r.in_system }">
-                  <td class="text-center! text-textColor3">
-                    {{ (store.params.page - 1) * store.params.per_page + i + 1 }}
-                  </td>
-                  <td>
-                    <div class="flex items-center gap-2">
-                      <span>{{ r.fio }}</span>
-                      <UIBadge v-if="!r.in_system" :label="$t('salary1c.notInSystem')"
-                        :type="Utils.colorTypes.error" :show-icon="false" paddingY="py-0.5" />
-                    </div>
-                    <div v-if="r.in_system && r.worker_name" class="text-xs text-textColor3">
-                      {{ r.worker_name }}
-                    </div>
-                  </td>
-                  <td>{{ r.pinfl }}</td>
-                  <td>{{ r.tab_nomer }}</td>
-                  <td>{{ r.position }}</td>
-                  <td class="text-textColor2">{{ r.department_name || '—' }}</td>
-                  <td class="text-textColor2">{{ r.organization_name || '—' }}</td>
-                  <td class="text-right! tnum">{{ fmt(r.oklad) }}</td>
-                  <td class="text-right! tnum">{{ fmt(r.accrual_total) }}</td>
-                  <td class="text-right! tnum">{{ fmt(r.deduction_total) }}</td>
-                  <td class="text-right! tnum font-semibold">{{ fmt(r.net_total) }}</td>
-                  <td class="text-center!">
-                    <n-button size="tiny" quaternary @click="store._payslip(r.id)" :title="$t('salary1c.payslip')">
-                      <template #icon><n-icon><Eye16Regular /></n-icon></template>
-                    </n-button>
-                    <n-button size="tiny" quaternary @click="store._history(r)" :title="$t('salary1c.history')">
-                      <template #icon><n-icon><History24Regular /></n-icon></template>
-                    </n-button>
-                    <n-button size="tiny" quaternary @click="store._pullOne(r)" :title="$t('salary1c.repull')"
-                      :loading="store.repullPinfl === r.pinfl" :disabled="!!store.repullPinfl">
-                      <template #icon><n-icon><ArrowSync24Regular /></n-icon></template>
-                    </n-button>
-                  </td>
-                </tr>
-              </tbody>
-            </n-table>
+      <div v-if="store.report" class="s1-stats-wrap">
+        <button type="button" class="s1-stats-toggle" @click="toggleStats">
+          <svg class="s1-chev" :class="{ 's1-chev--open': showStats }" width="14" height="14"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+            stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+          {{ $t('salary1c.statistics') }}
+          <span v-if="!showStats" class="s1-stats-hint">
+            · {{ store.report.employee_count }} · {{ fmt(store.report.net_total) }}
+          </span>
+        </button>
+        <div v-show="showStats" class="s1-stats">
+          <div class="s1-stat">
+            <span class="s1-stat-lbl">{{ $t('salary1c.employees') }}</span>
+            <span class="s1-stat-val">{{ store.report.employee_count }}</span>
           </div>
-          <NoDataPicture v-if="!store.loading && !store.list.length" />
-        </n-spin>
+          <div class="s1-stat">
+            <span class="s1-stat-lbl">{{ $t('salary1c.accrual') }}</span>
+            <span class="s1-stat-val">{{ fmt(store.report.accrual_total) }}</span>
+          </div>
+          <div class="s1-stat">
+            <span class="s1-stat-lbl">{{ $t('salary1c.deduction') }}</span>
+            <span class="s1-stat-val">{{ fmt(store.report.deduction_total) }}</span>
+          </div>
+          <div class="s1-stat s1-stat--net">
+            <span class="s1-stat-lbl">{{ $t('salary1c.net') }}</span>
+            <span class="s1-stat-val text-primary">{{ fmt(store.report.net_total) }}</span>
+          </div>
+          <div v-if="store.report.unmatched_count" class="s1-stat s1-stat--warn"
+            :class="{ 's1-stat--active': store.params.matched === 'out' }"
+            role="button" @click="store.toggleUnmatched()">
+            <span class="s1-stat-lbl">{{ $t('salary1c.notInSystem') }}</span>
+            <span class="s1-stat-val">{{ store.report.unmatched_count }}</span>
+          </div>
+        </div>
       </div>
 
-      <div v-if="store.total" class="s1-pager">
-        <UIPagination :total="store.total" :page="store.params.page" :per_page="store.params.per_page"
-          @changePage="store.onChangePage" />
-      </div>
+      <UITable
+        :columns="workerColumns"
+        :data="store.list"
+        :loading="store.loading"
+        :page="store.params.page"
+        :per-page="store.params.per_page"
+        :total="store.total"
+        :actions="workerActions"
+        :sort-by="store.params.sort_by"
+        :sort-order="store.params.sort_order"
+        :row-class-name="workerRowClass"
+        storage-key="accountant-salary1c-workers"
+        @change-page="store.onChangePage"
+        @sort="store._filterCol"
+      >
+        <template #cell-fio="{ row }">
+          <div class="flex items-center gap-2">
+            <span>{{ row.fio }}</span>
+            <UIBadge v-if="!row.in_system" :label="$t('salary1c.notInSystem')"
+              :type="Utils.colorTypes.error" :show-icon="false" paddingY="py-0.5" />
+          </div>
+          <div v-if="row.in_system && row.worker_name" class="text-xs text-textColor3">
+            {{ row.worker_name }}
+          </div>
+        </template>
+        <template #cell-oklad="{ row }">
+          <span class="tnum">{{ fmt(row.oklad) }}</span>
+        </template>
+        <template #cell-accrual_total="{ row }">
+          <span class="tnum">{{ fmt(row.accrual_total) }}</span>
+        </template>
+        <template #cell-deduction_total="{ row }">
+          <span class="tnum">{{ fmt(row.deduction_total) }}</span>
+        </template>
+        <template #cell-net_total="{ row }">
+          <span class="tnum font-semibold">{{ fmt(row.net_total) }}</span>
+        </template>
+      </UITable>
     </template>
 
     <!-- Korxonalar kesimida -->
@@ -1091,6 +1207,19 @@
   }
 
   /* Summary — statistik kartalar */
+  .s1-stats-wrap { display: flex; flex-direction: column; gap: 10px; }
+  .s1-stats-toggle {
+    align-self: flex-start;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border: 0; border-radius: 8px;
+    background: transparent; color: var(--textColor2);
+    font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .s1-stats-toggle:hover { background: var(--primary-color-fade, rgba(43,110,243,0.08)); color: var(--primary-color); }
+  .s1-chev { transition: transform 0.2s ease; flex-shrink: 0; }
+  .s1-chev--open { transform: rotate(180deg); }
+  .s1-stats-hint { color: var(--textColor3); font-weight: 500; }
   .s1-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
   .s1-stat {
     display: flex; flex-direction: column; gap: 4px; padding: 12px 14px;
