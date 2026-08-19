@@ -21,7 +21,14 @@
     })
   }
 
-  const rules = validationRules.relativePage
+  // `birthday` odatda MAJBURIY, lekin «Vafot etgan» belgilanganda u bloklanadi
+  // va tozalanadi — qoida qolsa forma umuman saqlanmasdi. Shu sabab qoidalar
+  // computed: died bo'lsa `birthday` talabi olib tashlanadi.
+  const rules = computed(() => {
+    if (!store.payload.died) return validationRules.relativePage
+    const { birthday, ...rest } = validationRules.relativePage
+    return rest
+  })
 
   // «Vafot etgan» — tirik odamga tegishli maydonlar tozalanib bloklanadi.
   // Backend ham ularni majburan `null` qiladi, bu yerda faqat ko'rinish
@@ -31,6 +38,7 @@
     (died) => {
       if (!died) return
       store.payload.pin = null
+      store.payload.birthday = null
       store.payload.post_name = null
       store.payload.birth_place = null
       store.payload.address = null
@@ -85,6 +93,7 @@
           v-model:value="store.payload.birthday"
           type="date"
           :format="useAppSetting.datePicketFormat"
+          :disabled="store.payload.died"
         />
       </n-form-item>
       <n-form-item :label="$t(`relativePage.form.post_name`)" path="post_name">
