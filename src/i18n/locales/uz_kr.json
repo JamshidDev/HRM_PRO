@@ -2527,6 +2527,17 @@
       "progress": "{done} / {total} юкланди",
       "summary": "Муваффақиятли: {ok}, Хато: {fail}"
     },
+    "reportStatus": {
+      "button": "Ҳисобот ҳолати",
+      "title": "Ҳисобот юклаш ҳолати",
+      "export": "Excelга юклаб олиш",
+      "organization": "Ташкилот",
+      "uploaded": "Юклаган",
+      "notUploaded": "Юкламаган",
+      "confirmed": "Тасдиқлаган",
+      "overall": "Умумий",
+      "search": "Корхона қидириш"
+    },
     "form": {
       "type": "Ҳисобот тури",
       "month": "Ой",
@@ -2674,6 +2685,13 @@
   },
   "accDashboard": {
     "name": "Дашбоард",
+    "reportStatus": {
+      "title": "Ҳисобот юклаш ҳолати",
+      "uploaded": "Юклаган",
+      "notUploaded": "Юкламаган",
+      "confirmed": "Тасдиқлаган",
+      "ofTotal": "/"
+    },
     "form": {
       "total_income": "Жами ҳисобланган даромадлар",
       "reported_income": "Ҳисобот даврида ҳисобланган даромадлар",

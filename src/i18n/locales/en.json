@@ -2721,6 +2721,17 @@
       "progress": "{done} / {total} uploaded",
       "summary": "Success: {ok}, Failed: {fail}"
     },
+    "reportStatus": {
+      "button": "Report status",
+      "title": "Report upload status",
+      "export": "Download Excel",
+      "organization": "Organization",
+      "uploaded": "Uploaded",
+      "notUploaded": "Not uploaded",
+      "confirmed": "Confirmed",
+      "overall": "Overall",
+      "search": "Search organization"
+    },
     "form": {
       "type": "Report type",
       "month": "Month",
@@ -2865,6 +2876,13 @@
   },
   "accDashboard": {
     "name": "Dashboard",
+    "reportStatus": {
+      "title": "Report upload status",
+      "uploaded": "Uploaded",
+      "notUploaded": "Not uploaded",
+      "confirmed": "Confirmed",
+      "ofTotal": "/"
+    },
     "form": {
       "total_income": "Total calculated income",
       "reported_income": "Reported income",

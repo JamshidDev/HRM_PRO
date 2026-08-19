@@ -4,7 +4,8 @@
     DocumentArrowUp20Regular,
     LockClosed24Filled,
     LockOpen16Filled,
-    CloudArrowUp24Regular
+    CloudArrowUp24Regular,
+    ClipboardTaskListLtr20Regular
   } from '@vicons/fluent'
   import { useAccountStore, useUploadReportStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
@@ -36,6 +37,12 @@
     if (!accStore.checkAction(accStore.pn.economistUploadsWrite)) return
     store.openBulk()
   }
+
+  // Hisobot holati (kim yuklagan/yuklamagan) — tanlangan oy uchun modal.
+  const onReportStatus = () => {
+    if (!accStore.checkAction(accStore.pn.economistUploadsRead)) return
+    store.openReportStatus()
+  }
 </script>
 
 <template>
@@ -64,6 +71,18 @@
         <template #icon>
           <LockClosed24Filled v-if="store.orgStatus" />
           <LockOpen16Filled v-else />
+        </template>
+      </n-button>
+
+      <n-button
+        v-if="accStore.checkPermission(accStore.pn.economistUploadsRead)"
+        @click="onReportStatus"
+        type="default"
+        class="w-full! md:w-auto!"
+      >
+        {{ $t('uploadReport.reportStatus.button') }}
+        <template #icon>
+          <ClipboardTaskListLtr20Regular />
         </template>
       </n-button>
 
