@@ -3661,6 +3661,33 @@
       "cardFour": "Сотрудники в отпуске"
     }
   },
+  "deviceEvent": {
+    "tab": "Устройство",
+    "time": "Время",
+    "door": "Дверь / Уровень доступа",
+    "person": "Человек на устройстве",
+    "matched": "Сотрудник HRM (по карте)",
+    "notMatched": "Не найден",
+    "card": "Карта",
+    "photo": "Фото",
+    "reasonLabel": "Причина",
+    "statusLabel": "Статус",
+    "markFixed": "Исправлено",
+    "markIgnored": "Игнорировать",
+    "sync": "Синхронизация",
+    "reason": {
+      "noCode": "Нет кода (добавлен с устройства)",
+      "foreignCode": "Чужой код"
+    },
+    "resolved": {
+      "yes": "Решено",
+      "no": "Не решено"
+    },
+    "resolution": {
+      "fixed": "Исправлено",
+      "ignored": "Игнорировано"
+    }
+  },
   "pensioner": {
     "name": "Пенсионеры",
     "createTitle": "Добавить",

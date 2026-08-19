@@ -3650,6 +3650,33 @@
       "cardFour": "Employees on vacation"
     }
   },
+  "deviceEvent": {
+    "tab": "Device",
+    "time": "Time",
+    "door": "Door / Access level",
+    "person": "Person on device",
+    "matched": "HRM worker (by card)",
+    "notMatched": "Not found",
+    "card": "Card",
+    "photo": "Photo",
+    "reasonLabel": "Reason",
+    "statusLabel": "Status",
+    "markFixed": "Fixed",
+    "markIgnored": "Ignore",
+    "sync": "Sync",
+    "reason": {
+      "noCode": "No code (added on device)",
+      "foreignCode": "Foreign code"
+    },
+    "resolved": {
+      "yes": "Resolved",
+      "no": "Unresolved"
+    },
+    "resolution": {
+      "fixed": "Fixed",
+      "ignored": "Ignored"
+    }
+  },
   "pensioner": {
     "name": "Pensioners",
     "createTitle": "Add",
