@@ -2003,7 +2003,8 @@
       "title": "Employee age distribution",
       "age31": "Under 30",
       "age32_45": "31-45",
-      "age46": "Over 46"
+      "age46": "Over 46",
+      "structureTitle": "Age structure"
     },
     "edu": {
       "title": "Employee education",
@@ -2104,6 +2105,14 @@
       "empty": "No data found",
       "lastChecked": "Last check",
       "worker": "Employee"
+    },
+    "tabs": {
+      "general": "Overview",
+      "movement": "Staff movement",
+      "attendance": "Attendance & leave"
+    },
+    "vacation": {
+      "statusTitle": "Leave status — by type"
     }
   },
   "applicationPage": {
@@ -3145,6 +3154,9 @@
     "amount": "Amount",
     "mySalary": "My salary",
     "selectMonth": "Select month",
+    "startHours": "Hours (from)",
+    "endHours": "Hours (to)",
+    "statistics": "Statistics",
     "orgCode": "1C code",
     "orgCodePh": "1C org code (e.g. АППАРАТ)",
     "orgCodeHint": "1C code not set — enter it before pulling",
@@ -3636,6 +3648,33 @@
       "cardTwo": "Absent employees",
       "cardThree": "Early leavers",
       "cardFour": "Employees on vacation"
+    }
+  },
+  "deviceEvent": {
+    "tab": "Device",
+    "time": "Time",
+    "door": "Door / Access level",
+    "person": "Person on device",
+    "matched": "HRM worker (by card)",
+    "notMatched": "Not found",
+    "card": "Card",
+    "photo": "Photo",
+    "reasonLabel": "Reason",
+    "statusLabel": "Status",
+    "markFixed": "Fixed",
+    "markIgnored": "Ignore",
+    "sync": "Sync",
+    "reason": {
+      "noCode": "No code (added on device)",
+      "foreignCode": "Foreign code"
+    },
+    "resolved": {
+      "yes": "Resolved",
+      "no": "Unresolved"
+    },
+    "resolution": {
+      "fixed": "Fixed",
+      "ignored": "Ignored"
     }
   },
   "pensioner": {

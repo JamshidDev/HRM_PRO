@@ -50,6 +50,9 @@
   --color-fig-red: var(--fig-icon-red);
   --color-fig-brand: var(--fig-icon-brand);
   --color-fig-indigo: var(--fig-icon-indigo);
+  --color-fig-purple: var(--fig-icon-purple);
+  --color-fig-pink: var(--fig-icon-pink);
+  --color-fig-text-disable: var(--fig-text-disable);
   --color-fig-green-100: var(--fig-green-100);
   --color-fig-green-400: var(--fig-green-400);
   --color-fig-orange-100: var(--fig-orange-100);

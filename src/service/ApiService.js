@@ -148,6 +148,7 @@ import {
   userImageLogsService,
   invalidUserService,
   eventV2Service,
+  deviceEventService,
   shiftTypeService,
   scheduleService as workerScheduleService,
   approveService
@@ -303,6 +304,7 @@ export default {
   userImageLogsService,
   invalidUserService,
   eventV2Service,
+  deviceEventService,
   workerScheduleService,
   notificationService,
   confVacationScheduleService,

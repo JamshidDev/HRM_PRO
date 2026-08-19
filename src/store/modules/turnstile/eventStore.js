@@ -158,7 +158,7 @@ export const useEventStore = defineStore('eventStore', {
     workerStatuses: [],
     deviceStatusList: [],
     workDuration: null,
-    tabs: [1, 2],
+    tabs: [1, 2, 3],
     activeTab: 1
   }),
   actions: {
