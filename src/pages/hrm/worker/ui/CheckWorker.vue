@@ -75,7 +75,8 @@
       size="huge"
       role="dialog"
       aria-modal="true"
-      class="w-[600px] max-w-[calc(100vw-24px)] grid grid-cols-1 card-p-none"
+      class="grid grid-cols-1 card-p-none"
+      style="width: 600px; max-width: calc(100vw - 24px)"
     >
       <div
         class="pb-6 relative before:content-[' '] before:bg-[url('/search-user-icon.png')] before:w-full before:h-full before:absolute before:top-0 before:left-0 before:bg-no-repeat before:bg-center before:bg-contain before:opacity-[0.05]"
