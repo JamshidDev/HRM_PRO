@@ -78,7 +78,10 @@ export const useAccDashboardStore = defineStore('accDashboardStore', {
     },
     structureCheck2: [],
     dashboardData: null,
-    dashboardLoading: false
+    dashboardLoading: false,
+    // Hisobot yuklash holati widgeti (upload-report-status summary) — dashboard filtri bilan.
+    reportStatus: null,
+    reportStatusLoading: false
   }),
 
   getters: {
@@ -244,6 +247,30 @@ export const useAccDashboardStore = defineStore('accDashboardStore', {
         })
         .finally(() => {
           this.loading = false
+        })
+      // Hisobot yuklash holati — dashboard bilan bir xil filtr/davr (mustaqil yuklanadi).
+      this._loadReportStatus()
+    },
+
+    // upload-report-status summary'ni dashboard filtri (yil/oy + tashkilotlar) bo'yicha oladi.
+    // `economist` ruxsati bo'lmasa 403 — jimgina bo'sh qoldiramiz (widget ko'rinmaydi).
+    _loadReportStatus() {
+      const params = {
+        year: this.params.year,
+        month: this.params.month,
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined
+      }
+      this.reportStatusLoading = true
+      $ApiService.accountantService
+        ._reportStatus({ params })
+        .then((res) => {
+          this.reportStatus = res.data.data
+        })
+        .catch(() => {
+          this.reportStatus = null
+        })
+        .finally(() => {
+          this.reportStatusLoading = false
         })
     },
 

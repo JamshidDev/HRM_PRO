@@ -2,6 +2,9 @@ import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 const { t } = i18n.global
 import { getOneMonthAgoYearMonth } from '@utils'
+import Utils from '@/utils/Utils.js'
+
+const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 
 export const useUploadReportStore = defineStore('uploadReport', {
   state: () => ({
@@ -56,7 +59,17 @@ export const useUploadReportStore = defineStore('uploadReport', {
     bulkRunning: false, // yuklash jarayoni ketyaptimi
     bulkProgress: { done: 0, total: 0 },
     // organization_id -> { status: 'uploading'|'done'|'failed', message? }
-    bulkResults: {}
+    bulkResults: {},
+    // Hisobot holati modali (tanlangan oy uchun korxonalar kesimida yuklagan/yuklamagan).
+    reportStatusVisible: false,
+    reportStatusLoading: false,
+    reportStatusExporting: false,
+    reportStatusRows: [],
+    reportStatusSummary: [],
+    reportStatusTotalOrgs: 0,
+    reportStatusSearch: '',
+    // Modal ichidagi davr — sahifa filtridan mustaqil (modalni yopmasdan almashtirish).
+    reportStatusPeriod: { year: null, month: null }
   }),
   actions: {
     _confirm(v) {
@@ -318,6 +331,61 @@ export const useUploadReportStore = defineStore('uploadReport', {
         this.params.organization_id = null
         this._structures()
       })
+    },
+    // Hisobot holati modalini ochish + tanlangan oy uchun ma'lumotni yuklash.
+    // Davr argumentsiz — upload-report sahifa filtridan; berilsa (masalan dashboarddan)
+    // o'sha yil/oy bilan ochiladi. Modal ichida keyin o'zgartirilishi mumkin.
+    openReportStatus(year = this.params.year, month = this.params.month) {
+      this.reportStatusVisible = true
+      this.reportStatusSearch = ''
+      this.reportStatusRows = []
+      this.reportStatusSummary = []
+      this.reportStatusTotalOrgs = 0
+      this.reportStatusPeriod = { year, month }
+      this._loadReportStatus()
+    },
+    // Modal ichida davr o'zgarganda — qidiruvni tozalab, ma'lumotni qayta yuklaymiz.
+    _changeReportPeriod() {
+      this.reportStatusSearch = ''
+      this._loadReportStatus()
+    },
+    // Modal davri (reportStatusPeriod) uchun korxonalar kesimida yuklash holati.
+    _loadReportStatus() {
+      this.reportStatusLoading = true
+      const params = {
+        year: this.reportStatusPeriod.year,
+        month: this.reportStatusPeriod.month
+      }
+      $ApiService.accountantService
+        ._reportStatus({ params })
+        .then((res) => {
+          const data = res.data.data ?? {}
+          this.reportStatusRows = data.rows ?? []
+          this.reportStatusSummary = data.summary ?? []
+          this.reportStatusTotalOrgs = data.total_orgs ?? 0
+        })
+        .finally(() => {
+          this.reportStatusLoading = false
+        })
+    },
+    // Hisobot holatini Excel'ga yuklab olish (modal davri).
+    _exportReportStatus() {
+      this.reportStatusExporting = true
+      const y = this.reportStatusPeriod.year
+      const m = this.reportStatusPeriod.month
+      const params = { year: y || undefined, month: m || undefined }
+      const name = y && m ? `hisobot-holati-${y}-${m}.xlsx` : 'hisobot-holati.xlsx'
+      $ApiService.accountantService
+        ._reportStatusExport({ params })
+        .then((res) => {
+          Utils.blobFileDownload(res.data, XLSX_MIME, name)
+        })
+        .catch(() => {
+          $Toast.error(t('content.error'))
+        })
+        .finally(() => {
+          this.reportStatusExporting = false
+        })
     }
   }
 })
