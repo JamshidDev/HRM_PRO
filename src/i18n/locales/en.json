@@ -369,7 +369,8 @@
     "themeDark": "Dark",
     "themeSystem": "System",
     "oldVersionButton": "Return to old version",
-    "newVersionButton": "Switch to new version"
+    "newVersionButton": "Switch to new version",
+    "copied": "Copied"
   },
   "date": {
     "day": "Day",
@@ -3667,6 +3668,35 @@
       "cardThree": "Early leavers",
       "cardFour": "Employees on vacation"
     }
+  },
+  "deviceEvent": {
+    "tab": "Device",
+    "time": "Time",
+    "door": "Device",
+    "person": "Full name",
+    "personId": "PersonId",
+    "matched": "HRM worker (by card)",
+    "notMatched": "Not found",
+    "card": "Card",
+    "photo": "Photo",
+    "reasonLabel": "Reason",
+    "statusLabel": "Status",
+    "markFixed": "Fixed",
+    "markIgnored": "Ignore",
+    "sync": "Sync",
+    "reason": {
+      "noCode": "No code (added on device)",
+      "foreignCode": "Foreign code"
+    },
+    "resolved": {
+      "yes": "Resolved",
+      "no": "Unresolved"
+    },
+    "resolution": {
+      "fixed": "Fixed",
+      "ignored": "Ignored"
+    },
+    "deleteWarning": "This person will be permanently deleted from HikCentral and removed from ALL devices. This cannot be undone."
   },
   "pensioner": {
     "name": "Pensioners",

@@ -158,6 +158,7 @@ export const useEventStore = defineStore('eventStore', {
     workerStatuses: [],
     deviceStatusList: [],
     workDuration: null,
+    // 1 — Hodisalar, 2 — Qurilma (HRM`siz qo`shilganlar)
     tabs: [1, 2],
     activeTab: 1
   }),

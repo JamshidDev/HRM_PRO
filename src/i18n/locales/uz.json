@@ -383,7 +383,8 @@
     "themeDark": "Qorong'i",
     "themeSystem": "Tizim",
     "oldVersionButton": "Eski talqinga qaytish",
-    "newVersionButton": "Yangi talqinga o'tish"
+    "newVersionButton": "Yangi talqinga o'tish",
+    "copied": "Nusxalandi"
   },
   "date": {
     "day": "Kun",
@@ -3697,6 +3698,35 @@
       "cardThree": "Erta ketgan xodimlar",
       "cardFour": "Ta'tildagi xodimlar"
     }
+  },
+  "deviceEvent": {
+    "tab": "Qurilma",
+    "time": "Vaqti",
+    "door": "Qurilma",
+    "person": "F.I.O",
+    "personId": "PersonId",
+    "matched": "HRM xodimi (karta bo'yicha)",
+    "notMatched": "Topilmadi",
+    "card": "Karta",
+    "photo": "Surat",
+    "reasonLabel": "Sabab",
+    "statusLabel": "Holati",
+    "markFixed": "Tuzatildi",
+    "markIgnored": "E'tiborsiz",
+    "sync": "Sinxronlash",
+    "reason": {
+      "noCode": "Kod yo'q (qurilmadan qo'shilgan)",
+      "foreignCode": "Begona kod"
+    },
+    "resolved": {
+      "yes": "Hal qilingan",
+      "no": "Hal qilinmagan"
+    },
+    "resolution": {
+      "fixed": "Tuzatildi",
+      "ignored": "E'tiborsiz"
+    },
+    "deleteWarning": "Bu shaxs HikCentral'dan butunlay o'chiriladi va BARCHA qurilmalardan tushadi. Amalni qaytarib bo'lmaydi."
   },
   "pensioner": {
     "name": "Pensionerlar",

@@ -31,14 +31,23 @@
 </script>
 
 <template>
-  <n-tabs animated v-model:value="store.activeTab" class="hidden-tab-header" type="segment">
-    <n-tab-pane :name="1" class="!pt-0">
+  <!-- `flex-1 flex flex-col` zanjiri (tabs -> pane-wrapper -> pane): busiz n-tabs
+       balandligi kontent bo'yicha aniqlanib, ichidagi `.ui-page-content` ning
+       `height: 100%` i `auto` ga aylanardi va jadval sahifa tubiga yetmasdi. -->
+  <n-tabs
+    animated
+    v-model:value="store.activeTab"
+    class="hidden-tab-header flex-1 flex flex-col"
+    pane-wrapper-class="flex-1 flex flex-col"
+    type="segment"
+  >
+    <n-tab-pane :name="1" class="!pt-0 flex-1 flex flex-col">
       <ShiftTypePage />
     </n-tab-pane>
-    <n-tab-pane :name="2" class="!pt-0">
+    <n-tab-pane :name="2" class="!pt-0 flex-1 flex flex-col">
       <ScheduleGroupPage />
     </n-tab-pane>
-    <n-tab-pane :name="3" class="!pt-0">
+    <n-tab-pane :name="3" class="!pt-0 flex-1 flex flex-col">
       <ScheduleGroupWorkerPage />
     </n-tab-pane>
   </n-tabs>

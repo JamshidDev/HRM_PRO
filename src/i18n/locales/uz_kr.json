@@ -303,7 +303,8 @@
     "themeDark": "Қоронғи",
     "themeSystem": "Тизим",
     "oldVersionButton": "Эски талқинга қайтиш",
-    "newVersionButton": "Янги талқинга ўтиш"
+    "newVersionButton": "Янги талқинга ўтиш",
+    "copied": "Нусхаланди"
   },
   "date": {
     "day": "Кун",
@@ -3476,6 +3477,35 @@
       "cardThree": "Эрта кетган ходимлар",
       "cardFour": "Таътилдаги ходимлар"
     }
+  },
+  "deviceEvent": {
+    "tab": "Қурилма",
+    "time": "Вақти",
+    "door": "Қурилма",
+    "person": "Ф.И.О",
+    "personId": "PersonId",
+    "matched": "HRM ходими (карта бўйича)",
+    "notMatched": "Топилмади",
+    "card": "Карта",
+    "photo": "Сурат",
+    "reasonLabel": "Сабаб",
+    "statusLabel": "Ҳолати",
+    "markFixed": "Тузатилди",
+    "markIgnored": "Эътиборсиз",
+    "sync": "Синхронлаш",
+    "reason": {
+      "noCode": "Код йўқ (қурилмадан қўшилган)",
+      "foreignCode": "Бегона код"
+    },
+    "resolved": {
+      "yes": "Ҳал қилинган",
+      "no": "Ҳал қилинмаган"
+    },
+    "resolution": {
+      "fixed": "Тузатилди",
+      "ignored": "Эътиборсиз"
+    },
+    "deleteWarning": "Бу шахс HikCentral'дан бутунлай ўчирилади ва БАРЧА қурилмалардан тушади. Амални қайтариб бўлмайди."
   },
   "pensioner": {
     "name": "Пенсионерлар",
