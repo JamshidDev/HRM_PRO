@@ -1522,7 +1522,8 @@
       "birthdayPlace": "Tug'ilgan joyi",
       "birthday": "Tug'ilgan sanasi",
       "relative": "Qarindoshligi",
-      "disability": "Nogironligi"
+      "disability": "Nogironligi",
+      "died": "Vafot etgan"
     },
     "title": "Yaqin qarindosh ma'lumotlari",
     "no-data": "Yaqin qarindoshlar qo'shilmagan!",

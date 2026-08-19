@@ -39,6 +39,7 @@
     store.payload.birth_place = v.birth_place
     store.payload.address = v.address
     store.payload.post_name = v.post_name
+    store.payload.died = v.died ?? false
     store.payload.sort = v.sort
     store.visible = true
   }
