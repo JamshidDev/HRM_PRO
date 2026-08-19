@@ -2731,6 +2731,17 @@
       "progress": "{done} / {total} загружено",
       "summary": "Успешно: {ok}, Ошибок: {fail}"
     },
+    "reportStatus": {
+      "button": "Статус отчётов",
+      "title": "Статус загрузки отчётов",
+      "export": "Скачать в Excel",
+      "organization": "Организация",
+      "uploaded": "Загрузили",
+      "notUploaded": "Не загрузили",
+      "confirmed": "Подтвердили",
+      "overall": "Итого",
+      "search": "Поиск организации"
+    },
     "form": {
       "type": "Тип отчёта",
       "month": "Месяц",
@@ -2875,6 +2886,13 @@
   },
   "accDashboard": {
     "name": "Дашборд",
+    "reportStatus": {
+      "title": "Статус загрузки отчётов",
+      "uploaded": "Загрузили",
+      "notUploaded": "Не загрузили",
+      "confirmed": "Подтвердили",
+      "ofTotal": "/"
+    },
     "form": {
       "total_income": "Всего начисленных доходов",
       "reported_income": "Начисленные доходы за отчётный период",

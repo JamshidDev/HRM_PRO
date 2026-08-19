@@ -2747,6 +2747,17 @@
       "progress": "{done} / {total} yuklandi",
       "summary": "Muvaffaqiyatli: {ok}, Xato: {fail}"
     },
+    "reportStatus": {
+      "button": "Hisobot holati",
+      "title": "Hisobot yuklash holati",
+      "export": "Excelga yuklab olish",
+      "organization": "Tashkilot",
+      "uploaded": "Yuklagan",
+      "notUploaded": "Yuklamagan",
+      "confirmed": "Tasdiqlagan",
+      "overall": "Umumiy",
+      "search": "Korxona qidirish"
+    },
     "form": {
       "type": "Hisobot turi",
       "month": "Oy",
@@ -2894,6 +2905,13 @@
   },
   "accDashboard": {
     "name": "Dashboard",
+    "reportStatus": {
+      "title": "Hisobot yuklash holati",
+      "uploaded": "Yuklagan",
+      "notUploaded": "Yuklamagan",
+      "confirmed": "Tasdiqlagan",
+      "ofTotal": "/"
+    },
     "form": {
       "total_income": "Jami hisoblangan daromadlar",
       "reported_income": "Hisobot davrida hisoblangan daromadlar",

@@ -1,6 +1,14 @@
 <script setup>
   import { UIPageContent } from '@/components/index.js'
-  import { Filter, KpiCard, DynamicChart, AlertPanel, FundDonut } from './ui/index.js'
+  import {
+    Filter,
+    KpiCard,
+    DynamicChart,
+    AlertPanel,
+    FundDonut,
+    ReportStatusCards
+  } from './ui/index.js'
+  import ReportStatusModal from '@/pages/accountant/report/ui/ReportStatusModal.vue'
   import { useAccDashboardStore, useAccountStore } from '@/store/modules/index.js'
   import { getOneMonthAgoYearMonth } from '@utils'
 
@@ -27,6 +35,9 @@
           <KpiCard v-for="card in store.kpiCards" :key="card.variant" :data="card" />
         </div>
 
+        <!-- hisobot yuklash holati (upload-report-status summary) -->
+        <ReportStatusCards v-if="accStore.checkPermission(accStore.pn.economist)" />
+
         <!-- moliyaviy dinamika + e'tibor markazi -->
         <div class="flex flex-col items-stretch gap-4 lg:flex-row">
           <div class="min-w-0 flex-1">
@@ -41,5 +52,8 @@
         <FundDonut />
       </div>
     </n-spin>
+
+    <!-- hisobot holati batafsil modali (uploadReportStore global holatiga bog'langan) -->
+    <ReportStatusModal />
   </UIPageContent>
 </template>
