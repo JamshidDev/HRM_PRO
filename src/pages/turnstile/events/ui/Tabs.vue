@@ -1,14 +1,15 @@
 <script setup>
   import { useEventStore } from '@/store/modules/index.js'
   import HcEventPage from '@/pages/turnstile/events/page.vue'
-  import HcEventV2Page from '@/pages/turnstile/eventsV2/page.vue'
   import HcDeviceEventPage from '@/pages/turnstile/deviceEvents/page.vue'
 
   const store = useEventStore()
 
   onBeforeMount(() => {
-    const cashedTab = localStorage.getItem('eventPageView') || null
-    store.activeTab = cashedTab ? Number(cashedTab) : 1
+    // Saqlangan qiymat mavjud tablar orasida bo'lmasa (masalan olib tashlangan
+    // "Ish vaqti" tabi) — birinchisiga tushamiz.
+    const cashedTab = Number(localStorage.getItem('eventPageView'))
+    store.activeTab = store.tabs.includes(cashedTab) ? cashedTab : store.tabs[0]
   })
 </script>
 
@@ -27,9 +28,6 @@
       <HcEventPage />
     </n-tab-pane>
     <n-tab-pane :name="store.tabs[1]" class="!pt-0 flex-1 flex flex-col">
-      <HcEventV2Page />
-    </n-tab-pane>
-    <n-tab-pane :name="store.tabs[2]" class="!pt-0 flex-1 flex flex-col">
       <HcDeviceEventPage />
     </n-tab-pane>
   </n-tabs>

@@ -23,8 +23,16 @@ const _resolve = async (payload) => {
   )
 }
 
+// Shaxsni HCP'dan o'chirish — u BARCHA qurilmalardan tushadi.
+const _removePerson = async (payload) => {
+  return await axios.post(
+    `/v1/turnstile/hik-central/device-events/${payload.id}/remove-person`,
+    {}
+  )
+}
+
 const _sync = async (payload) => {
   return await axios.post(`/v1/turnstile/hik-central/device-events/sync`, payload?.data ?? {})
 }
 
-export default { _index, _photo, _resolve, _sync }
+export default { _index, _photo, _resolve, _removePerson, _sync }

@@ -129,8 +129,7 @@
           size="small"
         >
           <n-tab-pane :name="eventStore.tabs[0]" :tab="$t('hcEvent.oldView')" />
-          <n-tab-pane :name="eventStore.tabs[1]" :tab="$t('hcEvent.newView')" />
-          <n-tab-pane :name="eventStore.tabs[2]" :tab="$t('deviceEvent.tab')" />
+          <n-tab-pane :name="eventStore.tabs[1]" :tab="$t('deviceEvent.tab')" />
         </n-tabs>
       </div>
     </template>
@@ -161,7 +160,7 @@
   }
 
   .tab-switcher {
-    width: 280px;
+    width: 200px;
     height: 100%;
   }
 

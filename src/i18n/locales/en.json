@@ -369,7 +369,8 @@
     "themeDark": "Dark",
     "themeSystem": "System",
     "oldVersionButton": "Return to old version",
-    "newVersionButton": "Switch to new version"
+    "newVersionButton": "Switch to new version",
+    "copied": "Copied"
   },
   "date": {
     "day": "Day",
@@ -3653,8 +3654,9 @@
   "deviceEvent": {
     "tab": "Device",
     "time": "Time",
-    "door": "Door / Access level",
-    "person": "Person on device",
+    "door": "Device",
+    "person": "Full name",
+    "personId": "PersonId",
     "matched": "HRM worker (by card)",
     "notMatched": "Not found",
     "card": "Card",
@@ -3675,7 +3677,8 @@
     "resolution": {
       "fixed": "Fixed",
       "ignored": "Ignored"
-    }
+    },
+    "deleteWarning": "This person will be permanently deleted from HikCentral and removed from ALL devices. This cannot be undone."
   },
   "pensioner": {
     "name": "Pensioners",
