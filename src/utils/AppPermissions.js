@@ -356,8 +356,8 @@ export const appPermissions = {
   // Oylik (salary-1c) bo'limi — faqat admin belgilagan xodimlar (tor ruxsat, migr 0077).
   salary1cAccess: 'salary-1c-access',
   // Tarif setkasi (tariff-grid) — faqat admin belgilagan xodimlar (tor ruxsat, migr 0080).
-  tariffGridAccess: 'tariff-grid-access',
-  economistDashboard: 'economist-dashboard',
+  tariffGridAccess: 'tariff-grid-access-read',
+  economistDashboard: 'economist-dashboard-read',
   economistWorkerCategories: 'economist-worker-categories',
   economistWorkerCategoriesRead: 'economist-worker-categories-read',
   economistWorkerCategoriesWrite: 'economist-worker-categories-write',
