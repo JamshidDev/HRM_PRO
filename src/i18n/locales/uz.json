@@ -362,10 +362,6 @@
     "noSpam": "Spamdan chiqarish",
     "noImage": "Rasm mavjud emas",
     "waitResponse": "Iltimos javobni kuting!",
-    "loadingWorkspace": "Ish maydoni tayyorlanmoqda",
-    "loadingWorkspaceHint": "Hisob va ruxsatlar yuklanmoqda",
-    "loggingOut": "Tizimdan chiqilmoqda",
-    "loggingOutHint": "Sessiya xavfsiz yopilmoqda",
     "untilNow": "hozirgacha",
     "warningImageSave": "Asosiy rasm uchun yangi rasm tanlandi. O‘zgarishni saqlash uchun 'Saqlash' tugmasini bosing.",
     "selectAll": "Barchasini tanlash",
@@ -387,7 +383,8 @@
     "themeDark": "Qorong'i",
     "themeSystem": "Tizim",
     "oldVersionButton": "Eski talqinga qaytish",
-    "newVersionButton": "Yangi talqinga o'tish"
+    "newVersionButton": "Yangi talqinga o'tish",
+    "copied": "Nusxalandi"
   },
   "date": {
     "day": "Kun",
@@ -1535,7 +1532,8 @@
       "birthdayPlace": "Tug'ilgan joyi",
       "birthday": "Tug'ilgan sanasi",
       "relative": "Qarindoshligi",
-      "disability": "Nogironligi"
+      "disability": "Nogironligi",
+      "died": "Vafot etgan"
     },
     "title": "Yaqin qarindosh ma'lumotlari",
     "no-data": "Yaqin qarindoshlar qo'shilmagan!",
@@ -2039,7 +2037,8 @@
       "title": "Xodimlarning yoshi bo'yicha",
       "age31": "30 yoshgacha",
       "age32_45": "31 dan 45 yoshgacha",
-      "age46": "46 yoshdan kattalar"
+      "age46": "46 yoshdan kattalar",
+      "structureTitle": "Yosh bo'yicha tuzilma"
     },
     "edu": {
       "title": "Xodimlarning ma'lumoti bo'yicha",
@@ -2140,6 +2139,14 @@
       "empty": "Ma'lumot topilmadi",
       "lastChecked": "Oxirgi tekshiruv",
       "worker": "Xodim"
+    },
+    "tabs": {
+      "general": "Umumiy",
+      "movement": "Kadrlar harakati",
+      "attendance": "Davomat va ta'til"
+    },
+    "vacation": {
+      "statusTitle": "Ta'til holati — turlari kesimida"
     }
   },
   "applicationPage": {
@@ -2752,6 +2759,17 @@
       "progress": "{done} / {total} yuklandi",
       "summary": "Muvaffaqiyatli: {ok}, Xato: {fail}"
     },
+    "reportStatus": {
+      "button": "Hisobot holati",
+      "title": "Hisobot yuklash holati",
+      "export": "Excelga yuklab olish",
+      "organization": "Tashkilot",
+      "uploaded": "Yuklagan",
+      "notUploaded": "Yuklamagan",
+      "confirmed": "Tasdiqlagan",
+      "overall": "Umumiy",
+      "search": "Korxona qidirish"
+    },
     "form": {
       "type": "Hisobot turi",
       "month": "Oy",
@@ -2899,6 +2917,13 @@
   },
   "accDashboard": {
     "name": "Dashboard",
+    "reportStatus": {
+      "title": "Hisobot yuklash holati",
+      "uploaded": "Yuklagan",
+      "notUploaded": "Yuklamagan",
+      "confirmed": "Tasdiqlagan",
+      "ofTotal": "/"
+    },
     "form": {
       "total_income": "Jami hisoblangan daromadlar",
       "reported_income": "Hisobot davrida hisoblangan daromadlar",
@@ -3189,6 +3214,9 @@
     "amount": "Summa",
     "mySalary": "Mening oyligim",
     "selectMonth": "Oy tanlang",
+    "startHours": "Ish soati (dan)",
+    "endHours": "Ish soati (gacha)",
+    "statistics": "Statistika",
     "orgCode": "1C kodi",
     "orgCodePh": "1C org kodi (masalan: АППАРАТ)",
     "orgCodeHint": "1C kodi kiritilmagan — tortishdan oldin kiriting",
@@ -3681,6 +3709,35 @@
       "cardThree": "Erta ketgan xodimlar",
       "cardFour": "Ta'tildagi xodimlar"
     }
+  },
+  "deviceEvent": {
+    "tab": "Qurilma",
+    "time": "Vaqti",
+    "door": "Qurilma",
+    "person": "F.I.O",
+    "personId": "PersonId",
+    "matched": "HRM xodimi (karta bo'yicha)",
+    "notMatched": "Topilmadi",
+    "card": "Karta",
+    "photo": "Surat",
+    "reasonLabel": "Sabab",
+    "statusLabel": "Holati",
+    "markFixed": "Tuzatildi",
+    "markIgnored": "E'tiborsiz",
+    "sync": "Sinxronlash",
+    "reason": {
+      "noCode": "Kod yo'q (qurilmadan qo'shilgan)",
+      "foreignCode": "Begona kod"
+    },
+    "resolved": {
+      "yes": "Hal qilingan",
+      "no": "Hal qilinmagan"
+    },
+    "resolution": {
+      "fixed": "Tuzatildi",
+      "ignored": "E'tiborsiz"
+    },
+    "deleteWarning": "Bu shaxs HikCentral'dan butunlay o'chiriladi va BARCHA qurilmalardan tushadi. Amalni qaytarib bo'lmaydi."
   },
   "pensioner": {
     "name": "Pensionerlar",

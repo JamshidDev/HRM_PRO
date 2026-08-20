@@ -83,14 +83,6 @@ export const turnstileRoutes = [
     }
   },
   {
-    path: Utils.routeTurnstilePathMaker(AppPaths.HcEventsV2),
-    component: () => import('@turnstile/eventsV2/page.vue'),
-    meta: {
-      layout: AppLayouts.main,
-      permission: appPermissions.turnstileHikCentralEventsRead
-    }
-  },
-  {
     path: Utils.routeTurnstilePathMaker(AppPaths.WorkerImage),
     component: () => import('@turnstile/workerImage/page.vue'),
     meta: {

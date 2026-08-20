@@ -351,10 +351,6 @@
     "noSpam": "Remove from spam",
     "noImage": "No image",
     "waitResponse": "Please wait for response!",
-    "loadingWorkspace": "Preparing your workspace",
-    "loadingWorkspaceHint": "Loading your profile and permissions",
-    "loggingOut": "Signing out",
-    "loggingOutHint": "Closing your session securely",
     "untilNow": "so far",
     "warningImageSave": "New image selected as main. Click 'Save' to apply changes.",
     "selectAll": "Select all",
@@ -373,7 +369,8 @@
     "themeDark": "Dark",
     "themeSystem": "System",
     "oldVersionButton": "Return to old version",
-    "newVersionButton": "Switch to new version"
+    "newVersionButton": "Switch to new version",
+    "copied": "Copied"
   },
   "date": {
     "day": "Day",
@@ -1510,7 +1507,8 @@
       "birthdayPlace": "Birth place",
       "birthday": "Date of birth",
       "relative": "Relationship",
-      "disability": "Disability"
+      "disability": "Disability",
+      "died": "Deceased"
     },
     "title": "Close relatives",
     "no-data": "No relatives added!",
@@ -2017,7 +2015,8 @@
       "title": "Employee age distribution",
       "age31": "Under 30",
       "age32_45": "31-45",
-      "age46": "Over 46"
+      "age46": "Over 46",
+      "structureTitle": "Age structure"
     },
     "edu": {
       "title": "Employee education",
@@ -2118,6 +2117,14 @@
       "empty": "No data found",
       "lastChecked": "Last check",
       "worker": "Employee"
+    },
+    "tabs": {
+      "general": "Overview",
+      "movement": "Staff movement",
+      "attendance": "Attendance & leave"
+    },
+    "vacation": {
+      "statusTitle": "Leave status — by type"
     }
   },
   "applicationPage": {
@@ -2725,6 +2732,17 @@
       "progress": "{done} / {total} uploaded",
       "summary": "Success: {ok}, Failed: {fail}"
     },
+    "reportStatus": {
+      "button": "Report status",
+      "title": "Report upload status",
+      "export": "Download Excel",
+      "organization": "Organization",
+      "uploaded": "Uploaded",
+      "notUploaded": "Not uploaded",
+      "confirmed": "Confirmed",
+      "overall": "Overall",
+      "search": "Search organization"
+    },
     "form": {
       "type": "Report type",
       "month": "Month",
@@ -2869,6 +2887,13 @@
   },
   "accDashboard": {
     "name": "Dashboard",
+    "reportStatus": {
+      "title": "Report upload status",
+      "uploaded": "Uploaded",
+      "notUploaded": "Not uploaded",
+      "confirmed": "Confirmed",
+      "ofTotal": "/"
+    },
     "form": {
       "total_income": "Total calculated income",
       "reported_income": "Reported income",
@@ -3159,6 +3184,9 @@
     "amount": "Amount",
     "mySalary": "My salary",
     "selectMonth": "Select month",
+    "startHours": "Hours (from)",
+    "endHours": "Hours (to)",
+    "statistics": "Statistics",
     "orgCode": "1C code",
     "orgCodePh": "1C org code (e.g. АППАРАТ)",
     "orgCodeHint": "1C code not set — enter it before pulling",
@@ -3651,6 +3679,35 @@
       "cardThree": "Early leavers",
       "cardFour": "Employees on vacation"
     }
+  },
+  "deviceEvent": {
+    "tab": "Device",
+    "time": "Time",
+    "door": "Device",
+    "person": "Full name",
+    "personId": "PersonId",
+    "matched": "HRM worker (by card)",
+    "notMatched": "Not found",
+    "card": "Card",
+    "photo": "Photo",
+    "reasonLabel": "Reason",
+    "statusLabel": "Status",
+    "markFixed": "Fixed",
+    "markIgnored": "Ignore",
+    "sync": "Sync",
+    "reason": {
+      "noCode": "No code (added on device)",
+      "foreignCode": "Foreign code"
+    },
+    "resolved": {
+      "yes": "Resolved",
+      "no": "Unresolved"
+    },
+    "resolution": {
+      "fixed": "Fixed",
+      "ignored": "Ignored"
+    },
+    "deleteWarning": "This person will be permanently deleted from HikCentral and removed from ALL devices. This cannot be undone."
   },
   "pensioner": {
     "name": "Pensioners",

@@ -7,6 +7,7 @@
   import Filter from './ui/Filter.vue'
   import CommentModal from './ui/CommentModal.vue'
   import BulkOnesModal from './ui/BulkOnesModal.vue'
+  import ReportStatusModal from './ui/ReportStatusModal.vue'
   import { useAccountStore, useUploadReportStore } from '@/store/modules/index.js'
   import { getOneMonthAgoYearMonth } from '@utils'
 
@@ -48,6 +49,7 @@
           <createForm />
         </UIModal>
         <BulkOnesModal />
+        <ReportStatusModal />
         <CommentModal />
       </div>
     </div>

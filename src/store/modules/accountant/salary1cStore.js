@@ -16,8 +16,20 @@ export const useSalary1cStore = defineStore('salary1cStore', {
       page: 1,
       per_page: 20,
       search: null,
-      matched: null // null=barchasi | 'out'=faqat tizimda yo'q | 'in'=faqat tizimda bor
+      matched: null, // null=barchasi | 'out'=faqat tizimda yo'q | 'in'=faqat tizimda bor
+      // Oylik hisobot (month-report) filtri bilan parity — qo'shimcha maydonlar.
+      code: null, // 1C to'lov kodi (paying_code)
+      sex: null, // 1=erkak | 0=ayol
+      start_hours: null, // ishlagan soat (dan)
+      end_hours: null, // ishlagan soat (gacha)
+      // Saralash — ustun kaliti + yo'nalish (1=asc, -1=desc). null = default (fio asc).
+      sort_by: null,
+      sort_order: 1
     },
+
+    // «Kod» filtri uchun 1C to'lov kodlari (economist/enums — month-report bilan bir xil).
+    codeList: [],
+    enumLoading: false,
 
     // Joriy tab (page bilan sinxron) — org filtri o'zgarganда to'g'ri ro'yxatni yangilash uchun
     activeTab: 'workers', // 'workers' | 'orgs' | 'veds'
@@ -135,17 +147,27 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     },
     _index() {
       const ids = (this.selectedOrgs || []).map((o) => o.id)
-      if (!ids.length) {
-        this.list = []
-        this.total = 0
-        this.report = null
-        return
-      }
       this.loading = true
-      // organizations = CSV; matched bo'sh bo'lsa yubormaymiz (IsIn(['in','out'])).
-      const params = { ...this.params, organizations: ids.join(',') }
+      // Korxona tanlangan bo'lsa CSV; TANLANMAGAN bo'lsa yubormaymiz → backend
+      // BARCHA korxona xodimlarini qaytaradi (sahifa ochilishida default).
+      const params = { ...this.params }
+      if (ids.length) params.organizations = ids.join(',')
+      else delete params.organizations
       delete params.organization_id
       if (!params.matched) delete params.matched
+      // month-report parity filtrlari — bo'sh bo'lsa yubormaymiz.
+      // sex=0 (ayol) ham to'g'ri qiymat → faqat null/undefined bo'lsa olib tashlaymiz.
+      if (params.code == null || params.code === '') delete params.code
+      if (params.sex == null) delete params.sex
+      if (params.start_hours == null) delete params.start_hours
+      if (params.end_hours == null) delete params.end_hours
+      // Saralash — faqat ustun tanlangan bo'lsa yuboramiz; order 1→asc, -1→desc.
+      if (params.sort_by) {
+        params.sort_order = params.sort_order === 1 ? 'asc' : 'desc'
+      } else {
+        delete params.sort_by
+        delete params.sort_order
+      }
       $ApiService.salary1cService
         ._index({ params })
         .then((res) => {
@@ -154,8 +176,34 @@ export const useSalary1cStore = defineStore('salary1cStore', {
           this.total = d.total
           this.report = d.report
         })
+        .catch((err) => {
+          // Ilgari .catch yo'q edi — so'rov 400 (validatsiya) qaytarsa ro'yxat JIMGINA
+          // eski holatda qolardi (sort/filtr «ishlamayapti» ko'rinardi). Endi xato ko'rinadi.
+          console.error('[salary1c._index] error:', err?.response?.data ?? err?.message, params)
+          $Toast.error(err?.response?.data?.message ?? t('content.error'))
+        })
         .finally(() => {
           this.loading = false
+        })
+    },
+    // «Kod» filtri ro'yxati — economist/enums (month-report bilan bir xil manba).
+    _loadEnum() {
+      if (this.codeList.length) return
+      this.enumLoading = true
+      $ApiService.accountantService
+        ._enum()
+        .then((res) => {
+          // Backend `codes` — [code, name] juftliklari MASSIVI (obyekt emas —
+          // JS obyekt '001' leading-zero kalitlarni qayta saralaydi). Kod bo'yicha
+          // raqamli tartiblaymiz (dropdown uchun barqaror ko'rinish).
+          const codes = res.data.data.codes ?? []
+          const pairs = Array.isArray(codes) ? codes : Object.entries(codes)
+          this.codeList = pairs
+            .map(([code, name]) => ({ id: code, name, position: Number(code) }))
+            .sort((a, b) => a.position - b.position)
+        })
+        .finally(() => {
+          this.enumLoading = false
         })
     },
     _pull() {
@@ -662,6 +710,13 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     onChangePage(v) {
       this.params.page = v.page
       this.params.per_page = v.per_page
+      this._index()
+    },
+    // Ustun sarlavhasi bosilganda saralash (month-report `_filterCol` bilan bir xil).
+    _filterCol(key) {
+      this.params.sort_by = key
+      this.params.sort_order *= -1
+      this.params.page = 1
       this._index()
     },
     // «Tizimda yo'q» filtrini yoqish/o'chirish.

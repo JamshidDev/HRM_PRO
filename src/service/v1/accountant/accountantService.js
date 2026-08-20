@@ -48,6 +48,18 @@ const _updateStatus = async (payload) => {
   return await axios.post(`/v1/economist/upload-statuses`, payload.data)
 }
 
+// Hisobot yuklash holati — tanlangan oy uchun korxonalar kesimida (yuklagan/yuklamagan).
+const _reportStatus = async (payload) => {
+  return await axios.get(`/v1/economist/upload-report-status`, { params: payload?.params })
+}
+// Hisobot yuklash holati — Excel eksport (blob).
+const _reportStatusExport = async (payload) => {
+  return await axios.get(`/v1/economist/upload-report-status/export`, {
+    params: payload?.params,
+    responseType: 'blob'
+  })
+}
+
 export default {
   _index,
   _create,
@@ -59,5 +71,7 @@ export default {
   _structure,
   _confirm,
   _cancelConfirm,
-  _updateStatus
+  _updateStatus,
+  _reportStatus,
+  _reportStatusExport
 }

@@ -26,6 +26,9 @@ export const useRelativeStore = defineStore('relativeStore', {
       birth_place: null,
       post_name: null,
       address: null,
+      // Vafot etgan — belgilansa pin/address/post_name/birth_place tozalanadi
+      // va bloklanadi (backend ham ularni majburan null qiladi).
+      died: false,
       worker_id: null
     },
     params: {
@@ -137,6 +140,7 @@ export const useRelativeStore = defineStore('relativeStore', {
       this.payload.post_name = null
       this.payload.address = null
       this.payload.marital_status = null
+      this.payload.died = false
     },
 
     resetDisabilityForm() {

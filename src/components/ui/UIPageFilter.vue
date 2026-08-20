@@ -148,7 +148,7 @@
     <div class="ui-filter-bar flex flex-col items-center md:flex-row gap-4">
       <div
         :class="[slots.filterSearch || slots.filterBefore ? 'md:max-w-full' : 'md:max-w-[264px]!']"
-        class="ui-filter-bar__search w-full flex items-center gap-2"
+        class="ui-filter-bar__search w-full md:min-w-0 flex items-center gap-2"
       >
         <slot name="filterBefore"></slot>
         <n-input
@@ -179,8 +179,12 @@
         </n-input>
         <slot name="filterSearch"></slot>
       </div>
+      <!-- `md:min-w-fit`: qidiruv bloki `w-full` (flex-basis 100%) bo'lgani uchun
+           bo'sh joy manfiy chiqadi — `min-w-0` da bu blok nolgacha siqilib,
+           tugmalar ikkinchi qatorga tushib ketardi. Fit-content pol qo'yilsa
+           tugmalar o'z o'lchamida bir qatorda qoladi, siqilish qidiruvga o'tadi. -->
       <div
-        class="ui-filter-bar__actions flex flex-wrap items-center w-full md:flex-1 md:min-w-0 justify-end gap-4"
+        class="ui-filter-bar__actions flex flex-wrap items-center w-full md:flex-1 md:min-w-fit md:flex-nowrap justify-end gap-4"
       >
         <slot name="filterAction"></slot>
         <n-button
