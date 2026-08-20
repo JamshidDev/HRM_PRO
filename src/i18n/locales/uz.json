@@ -4647,5 +4647,74 @@
       "done": "Bajarilgan",
       "error": "Xatolik"
     }
+  },
+  "docxEditor": {
+    "title": "Tahrirlash v2",
+    "save": "Saqlash",
+    "sign": "Imzolash",
+    "saved": "Hujjat saqlandi",
+    "unsaved": "Saqlanmagan o'zgarish",
+    "confirmations": "Kelishuvchilar",
+    "saving": "Saqlanmoqda…",
+    "tabs": {
+      "document": "Asosiy hujjat",
+      "confirmations": "Kelishuvchilar",
+      "attachments": "Ilovalar"
+    }
+  },
+  "audit": {
+    "name": "O'zgarishlar tarixi",
+    "filter": {
+      "page": "Sahifa",
+      "status": "O'zgarish turi",
+      "user": "Kim o'zgartirdi",
+      "period": "Davr",
+      "from": "Dan",
+      "to": "Gacha",
+      "allStatuses": "Barchasi",
+      "allUsers": "Barchasi"
+    },
+    "table": {
+      "user": "Xodim",
+      "status": "Holat",
+      "impersonatedBy": "{name} nomidan kirilgan",
+      "view": "Ko'rish",
+      "time": "Vaqt",
+      "page": "Sahifa"
+    },
+    "status": {
+      "create": "Yaratildi",
+      "update": "O'zgartirildi",
+      "delete": "O'chirildi",
+      "restore": "Tiklandi"
+    },
+    "channel": {
+      "web": "Veb",
+      "mobile": "Mobil",
+      "qr": "QR",
+      "sudo": "Admin nomidan",
+      "integration": "Integratsiya",
+      "system": "Tizim",
+      "console": "Konsol"
+    },
+    "detail": {
+      "title": "O'zgarish tafsiloti",
+      "before": "Oldin",
+      "after": "Keyin",
+      "noBefore": "Yangi yozuv — oldingi ma'lumot yo'q",
+      "noAfter": "Yozuv o'chirildi",
+      "system": "Tizim",
+      "impersonated": "{admin} (admin) {user} nomidan kirib bu o'zgarishni qilgan",
+      "performer": "Bajaruvchi",
+      "organization": "Korxona",
+      "channel": "Kirish kanali",
+      "ip": "IP manzil",
+      "userAgent": "Qurilma / brauzer",
+      "empty": "Bu yozuv bo'yicha o'zgarish topilmadi",
+      "moreInfo": "Qo'shimcha ma'lumot",
+      "expandAll": "Kartochkalarni ochish",
+      "collapseAll": "Kartochkalarni yig'ish"
+    },
+    "historyBtn": "Tarix"
   }
 }

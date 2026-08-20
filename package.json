@@ -21,6 +21,9 @@
   },
   "dependencies": {
     "@chenfengyuan/vue-countdown": "^2.1.2",
+    "@docx-editor.dev/core": "^2.4.1",
+    "@docx-editor.dev/fonts": "^2.4.1",
+    "@docx-editor.dev/react": "^2.4.1",
     "@onlyoffice/document-editor-vue": "^1.4.0",
     "@panzoom/panzoom": "^4.6.0",
     "@tailwindcss/typography": "^0.5.16",
@@ -54,6 +57,8 @@
     "pinia": "^2.2.2",
     "player.style": "^0.1.4",
     "qrcode": "^1.5.4",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "socket.io-client": "^4.8.1",
     "splitpanes": "^4.0.3",
     "tailwind-merge": "^3.4.0",

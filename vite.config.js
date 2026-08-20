@@ -45,6 +45,20 @@ export default defineConfig({
     }),
     svgLoader({ svgo: false })
   ],
+  build: {
+    // `es2022` — tahrirlash v2 (docx-editor.dev) matn shaping uchun `harfbuzzjs`
+    // ishlatadi, u esa **top-level await** bilan yozilgan. Vite'ning standart
+    // baseline'i (chrome87/safari14) TLA'ni qo'llab-quvvatlamaydi → build yiqiladi.
+    // Talab qilinadigan minimal brauzerlar: Chrome 89+, Safari 15+, Firefox 89+.
+    target: 'es2022'
+  },
+  optimizeDeps: {
+    // ⚠️ `build.target` FAQAT production build'ga tegishli. Dev serverda paketlar
+    // esbuild bilan alohida pre-bundle qilinadi va u o'z (standart) target'ini
+    // oladi → `harfbuzzjs` TLA'si tufayli dev'da muharrir moduli yuklanmaydi.
+    // Shuning uchun target bu yerda ham qo'yiladi.
+    esbuildOptions: { target: 'es2022' }
+  },
   server: {
     port: 8000,
     host: '0.0.0.0',
