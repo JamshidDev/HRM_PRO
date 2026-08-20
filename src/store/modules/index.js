@@ -1,3 +1,4 @@
+export * from './auditStore.js'
 export * from './app/appStore.js'
 export * from './app/onlyOfficeStore.js'
 export * from './app/accountStore.js'

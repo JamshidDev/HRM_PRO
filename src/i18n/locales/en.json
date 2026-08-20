@@ -4497,5 +4497,59 @@
       "done": "Done",
       "error": "Error"
     }
+  },
+  "audit": {
+    "name": "Change history",
+    "filter": {
+      "page": "Page",
+      "status": "Change type",
+      "user": "Changed by",
+      "period": "Period",
+      "from": "From",
+      "to": "To",
+      "allStatuses": "All",
+      "allUsers": "All"
+    },
+    "table": {
+      "user": "Employee",
+      "status": "Status",
+      "impersonatedBy": "Signed in as {name}",
+      "view": "View",
+      "time": "Time",
+      "page": "Page"
+    },
+    "status": {
+      "create": "Created",
+      "update": "Updated",
+      "delete": "Deleted",
+      "restore": "Restored"
+    },
+    "channel": {
+      "web": "Web",
+      "mobile": "Mobile",
+      "qr": "QR",
+      "sudo": "On behalf of admin",
+      "integration": "Integration",
+      "system": "System",
+      "console": "Console"
+    },
+    "detail": {
+      "title": "Change details",
+      "before": "Before",
+      "after": "After",
+      "noBefore": "New record — no previous data",
+      "noAfter": "Record deleted",
+      "system": "System",
+      "impersonated": "{admin} (admin) signed in as {user} and made this change",
+      "performer": "Performed by",
+      "organization": "Organization",
+      "channel": "Sign-in channel",
+      "ip": "IP address",
+      "userAgent": "Device / browser",
+      "loadMore": "Load more",
+      "empty": "No changes found for this record",
+      "moreInfo": "More info"
+    },
+    "historyBtn": "History"
   }
 }
