@@ -69,7 +69,11 @@ export const useUploadReportStore = defineStore('uploadReport', {
     reportStatusTotalOrgs: 0,
     reportStatusSearch: '',
     // Modal ichidagi davr — sahifa filtridan mustaqil (modalni yopmasdan almashtirish).
-    reportStatusPeriod: { year: null, month: null }
+    reportStatusPeriod: { year: null, month: null },
+    // Ko'p korxonani birdan tasdiqlash/bekor qilish (checkbox multi-select).
+    confirmSelected: [], // belgilangan organization_id lar
+    bulkConfirmType: 1, // tanlangan tur (1=Oylik,2=INPS4,3=INPS5,4=to'lovlar)
+    bulkConfirmLoading: false
   }),
   actions: {
     _confirm(v) {
@@ -111,6 +115,47 @@ export const useUploadReportStore = defineStore('uploadReport', {
         })
         .finally(() => {
           this.confirmLoading = false
+        })
+    },
+    // --- Ko'p korxonani birdan tasdiqlash/bekor qilish ---
+    toggleConfirmSelect(id) {
+      const i = this.confirmSelected.indexOf(id)
+      if (i >= 0) this.confirmSelected.splice(i, 1)
+      else this.confirmSelected.push(id)
+    },
+    setConfirmSelected(ids) {
+      this.confirmSelected = [...ids]
+    },
+    clearConfirmSelected() {
+      this.confirmSelected = []
+    },
+    // cancel=false → tasdiqlash, true → tasdiqni bekor qilish. Bitta so'rov
+    // (organization_ids). Javobdagi skipped bo'yicha ogohlantirish beramiz.
+    _confirmMany(cancel = false) {
+      if (!this.confirmSelected.length || !this.params.year || !this.params.month) return
+      this.bulkConfirmLoading = true
+      const data = {
+        organization_ids: [...this.confirmSelected],
+        type: this.bulkConfirmType,
+        year: this.params.year,
+        month: this.params.month
+      }
+      const req = cancel
+        ? $ApiService.accountantService._cancelConfirm({ data })
+        : $ApiService.accountantService._confirm({ data })
+      req
+        .then((res) => {
+          const skipped = res?.data?.data?.skipped ?? []
+          if (skipped.length) {
+            $Toast.warning(t('uploadReport.bulkSkipped', { n: skipped.length }))
+          }
+          this.clearConfirmSelected()
+          this._structures()
+          this._cards()
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.bulkConfirmLoading = false
         })
     },
     _structures() {
@@ -163,6 +208,10 @@ export const useUploadReportStore = defineStore('uploadReport', {
         .then((res) => {
           this.visible = false
           this._cards()
+        })
+        .catch(() => {
+          // Xato (masalan 422 — fayl shablonga mos emas) interceptor'da toast
+          // qilinadi; modal OCHIQ qoladi (foydalanuvchi tuzatib qayta yuklashi uchun).
         })
         .finally(() => {
           this.saveLoading = false

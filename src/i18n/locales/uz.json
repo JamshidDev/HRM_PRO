@@ -2789,7 +2789,10 @@
       "closeToBlock": "Ochish"
     },
     "confirmQuestion": "Tasdiqlaysizmi?",
-    "cancelConfirmQuestion": "Tasdiqni bekor qilasizmi? Qayta yuklash imkoni ochiladi."
+    "cancelConfirmQuestion": "Tasdiqni bekor qilasizmi? Qayta yuklash imkoni ochiladi.",
+    "cancelConfirm": "Tasdiqni bekor qilish",
+    "bulkSelected": "{n} ta korxona tanlandi",
+    "bulkSkipped": "{n} ta korxona o'tkazib yuborildi (xato yoki ma'lumot yo'q)"
   },
   "instructionPage": {
     "name": "Instruksiya",
@@ -2806,10 +2809,46 @@
     }
   },
   "monthReport": {
+    "threshold": {
+      "title": "Chegara tahlili (ved oralig'i)",
+      "fromCode": "Boshlanish kodi",
+      "toCode": "Oxirgi kod",
+      "excludeCodes": "Istisno kodlar",
+      "excludePh": "Kod tanlang yoki raqam bo'yicha qidiring",
+      "excludeHint": "Oraliqdan chiqariladigan ved kodlari (masalan: 270, 321)",
+      "amounts": "Chegara summalar (1-5 ta)",
+      "amountPh": "Masalan: 10000000",
+      "addAmount": "Summa qo'shish",
+      "atLeastOneAmount": "Kamida bitta chegara summa kiriting",
+      "compute": "Hisoblash",
+      "selectedCodes": "Tanlangan vedlar",
+      "totalWorkers": "Oydagi jami xodim",
+      "amount": "Summa (dan yuqori)",
+      "count": "Xodimlar soni",
+      "export": "Excelga yuklash"
+    },
+    "vedReport": {
+      "tab": "Ved kesimida",
+      "tabWorkers": "Xodimlar",
+      "fromMonth": "Boshlanish oyi",
+      "toMonth": "Oxirgi oy",
+      "codes": "Vedlar",
+      "selectCodes": "Vedlarni tanlang",
+      "organization": "Korxona",
+      "department": "Bo'lim",
+      "position": "Lavozim",
+      "monthsCount": "Oylar soni",
+      "times": "Marta",
+      "amount": "Summa",
+      "export": "Excelga yuklash",
+      "fio": "F.I.O.",
+      "noData": "Ma'lumot yo'q"
+    },
     "name": "Oylik hisobot",
     "createTitle": "To'liq ma'lumot",
     "exportTitle": "Eksport paneli",
     "refreshDescription": "JSHSHIRlarni qayta tekshirish",
+    "exportFiltered": "Excelga yuklash (filtr bo'yicha)",
     "tab": {
       "multipleSalary": "Birdan ortiq joydan oylik olayotgan xodimlarni ro'yxatini yuklash",
       "exportWithCode": "To'lov kodi bo'yicha yuklash",
