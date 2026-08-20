@@ -4,6 +4,7 @@
   import MediaViewer from '@/components/mediaViewer/MediaViewer.vue'
   import AppLayout from '@/layouts/AppLayout.vue'
   import { UIMainLoading } from '@/components/index.js'
+  import AppWatermark from '@/components/watermark/AppWatermark.vue'
   import SignatureInstance from '@/pages/app/e-imzo/SignatureInstance.vue'
   import AIConversationModal from '@/pages/app/ai/AIConversationModal.vue'
   import { naiveBreakpoints } from '@/assets/theme/theme.js'
@@ -34,4 +35,5 @@
     </n-notification-provider>
   </n-config-provider>
   <UIMainLoading />
+  <AppWatermark />
 </template>

@@ -7,12 +7,13 @@
     ChevronLeft12Regular,
     ChevronRight12Regular
   } from '@vicons/fluent'
-  import { useComponentStore } from '@/store/modules/index.js'
+  import { useComponentStore, useAccountStore } from '@/store/modules/index.js'
   import SectionHeader from './shared/SectionHeader.vue'
   import TurnstileIcon from '@/assets/icons/turniket.svg'
   import Utils from '@/utils/Utils.js'
 
   const store = useComponentStore()
+  const accStore = useAccountStore()
 
   const activeTab = ref(1)
   const calendarLoading = ref(false)
@@ -32,7 +33,12 @@
       workerId.value = worker.id
       return
     }
-    if (worker.pin) {
+    // Zaxira yo'l: preview'da `id` bo'lmasa, JSHSHIR orqali topamiz. Lekin
+    // `/hr/check-worker` — org-scope'siz GLOBAL qidiruv va alohida ruxsat talab
+    // qiladi; ruxsatsiz rol (masalan Economist) uchun bu 403 + xato toast'i
+    // berardi, holbuki kerak bo'lgani atigi ochilgan xodimning `id` si.
+    // Ruxsat bo'lmasa — jimgina o'tkazib yuboramiz, turniket bloki bo'sh qoladi.
+    if (worker.pin && accStore.checkPermission(accStore.pn.hrCheckWorker)) {
       $ApiService.workerService._checkWorker({ params: { pin: worker.pin } }).then((res) => {
         if (!res.data.error) workerId.value = res.data.data.id
       })

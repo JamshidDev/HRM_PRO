@@ -629,6 +629,13 @@
     }
   },
   "profilePage": {
+    "copy": "Copy",
+    "copied": "Copied",
+    "roles": {
+      "title": "Roles and organizations",
+      "current": "Current",
+      "empty": "No roles assigned"
+    },
     "account": {
       "title": "Account information",
       "warningText": "For account security, regularly update your account details. This helps protect against unauthorized access."
@@ -639,6 +646,7 @@
     "tabs": {
       "profileInfo": "Account info",
       "notification": "Notifications",
+      "command": "Order details",
       "secure": "Security",
       "actionHistory": "Action history",
       "social": {
@@ -663,6 +671,8 @@
       "lastName": "Last name",
       "firstName": "First name",
       "middleName": "Middle name",
+      "phone": "Phone number",
+      "pin": "PIN",
       "password": "Password",
       "confirmPassword": "Confirm password"
     }

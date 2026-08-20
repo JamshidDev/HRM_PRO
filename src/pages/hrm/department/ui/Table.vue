@@ -20,7 +20,10 @@ import { Delete20Regular, Edit32Regular, Eye16Regular, OpenFolder24Filled } from
 
   const onLoad = (row) => store._loadChildren(row)
 
+  // Bo'linma ichidagi XODIMLAR ro'yxati — shuning uchun bo'linma emas, xodim
+  // ko'rish ruxsati talab qilinadi. Ilgari bu amal umuman qo'riqlanmagan edi.
   const onPreview = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrWorkersRead)) return
     store.previewVisible = true
     store.elementId = row.id
     store.previewParams.page = 1
@@ -143,7 +146,10 @@ import { Delete20Regular, Edit32Regular, Eye16Regular, OpenFolder24Filled } from
       label: t('content.worker'),
       key: Utils.ActionTypes.view,
       icon: UIHelper.renderIcon(Eye16Regular),
-      action: onPreview
+      action: onPreview,
+      // `permission-prefix` faqat edit/delete'ni avtomatik qo'riqlaydi; `view`
+      // nostandart bo'lgani uchun o'z slug'i qo'lda bog'lanadi.
+      disabled: !accStore.checkPermission(accStore.pn.hrWorkersRead)
     }
   ])
 </script>

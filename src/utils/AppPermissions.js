@@ -103,6 +103,11 @@ export const appPermissions = {
   hrWorkersWrite: 'hr-workers-write',
   hrWorkersPassword: 'hr-workers-password',
   hrWorkersRead: 'hr-workers-read',
+  // JSHSHIR bo'yicha xodimni tekshirish (`GET /hr/check-worker`) — xodim qo'shishda
+  // va turniket kartochkasida ishlatiladi. Backend @Permission bilan enforce qiladi.
+  hrCheckWorker: 'hr-check-worker',
+  // Kengaytirilgan xodim qidiruvi (`GET /hr/search-workers`).
+  filterSearchWorkers: 'filter-search-workers',
 
   // Guvohnomalar ro'yxati sahifasi — xodimlar ruxsatidan AJRALGAN.
   hrCertificatesRead: 'hr-certificates-read',
