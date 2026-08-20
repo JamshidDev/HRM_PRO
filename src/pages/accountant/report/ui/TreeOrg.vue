@@ -38,6 +38,24 @@
       store.expandSet.add(id)
     }
   }
+
+  // Ko'rinib turgan (flatten) barcha korxonalarni belgilash/bekor qilish.
+  const visibleIds = computed(() => flattenData.value.map((i) => i.id))
+  const allVisibleSelected = computed(
+    () =>
+      visibleIds.value.length > 0 &&
+      visibleIds.value.every((id) => store.confirmSelected.includes(id))
+  )
+  const toggleAllVisible = () => {
+    if (allVisibleSelected.value) {
+      store.setConfirmSelected(
+        store.confirmSelected.filter((id) => !visibleIds.value.includes(id))
+      )
+    } else {
+      const merged = new Set([...store.confirmSelected, ...visibleIds.value])
+      store.setConfirmSelected([...merged])
+    }
+  }
 </script>
 
 <template>
@@ -46,7 +64,12 @@
       <n-table class="!border-t-0 sticky-table-header" :single-line="false" size="small">
         <thead>
           <tr>
-            <th class="min-w-[40px] w-[40px] !text-center"></th>
+            <th class="min-w-[40px] w-[40px] !text-center">
+              <n-checkbox
+                :checked="allVisibleSelected"
+                @update:checked="toggleAllVisible"
+              />
+            </th>
             <th class="min-w-[400px] !text-center">{{ $t('content.organization') }}</th>
             <th class="min-w-[80px] w-[80px] !text-center text-xs">
               {{ $t('uploadReport.form.monthReport') }}
@@ -69,11 +92,13 @@
               class="hover-row"
               :class="[item.id === store.params.organization_id && 'selectedRow']"
             >
-              <td @click="store.onChangeStructure(item)">
-                <n-checkbox :checked="item.id === store.params.organization_id"></n-checkbox>
+              <td @click.stop="store.toggleConfirmSelect(item.id)">
+                <n-checkbox
+                  :checked="store.confirmSelected.includes(item.id)"
+                ></n-checkbox>
               </td>
               <td
-                @dblclick="store.onChangeStructure(item)"
+                @click="store.onChangeStructure(item)"
                 class="!text-left select-none cursor-pointer relative !pr-[20px]"
               >
                 <div :style="{ paddingLeft: item.level * 15 + 'px' }" class="flex items-start">
@@ -100,8 +125,7 @@
                   </div>
                   <span
                     class="ml-2 leading-[1.2] inline-block !text-wrap text-sm w-[calc(100%-40px)]"
-                    >{{ ' ' + item.name }}</span
-                  >
+                  >{{ ' ' + item.name }}</span>
                 </div>
                 <span v-if="!item.uploadStatus" class="absolute right-[4px] top-[4px]">
                   <n-icon size="18" class="text-warning">
