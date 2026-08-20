@@ -1,6 +1,7 @@
 export * from './auditStore.js'
 export * from './app/appStore.js'
 export * from './app/onlyOfficeStore.js'
+export * from './app/docxEditorStore.js'
 export * from './app/accountStore.js'
 export * from './app/componentStore.js'
 export * from './app/signatureStore.js'

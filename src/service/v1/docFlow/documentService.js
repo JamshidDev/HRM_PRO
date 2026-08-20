@@ -37,6 +37,27 @@ const _confirmationTimesheet = async (payload) => {
   return await axios.get(`/v1/confirmation/timesheet`, { params: payload.params })
 }
 
+/**
+ * Tahrirlash v2 (docx-editor) — xom DOCX baytlari.
+ * `silentError`: xato javobi ham arraybuffer bo'lib keladi, interceptor undan
+ * xabarni o'qiy olmaydi — matnni store'ning o'zi dekod qilib ko'rsatadi.
+ * Versiya tokeni javob header'ida: `x-document-version`.
+ */
+const _editorContent = async (payload) => {
+  return await axios.get(`/v1/document/editor/content`, {
+    params: payload.params,
+    responseType: 'arraybuffer',
+    silentError: true
+  })
+}
+
+// Tahrirlash v2 — muharrir bergan DOCX'ni saqlash (multipart: file, model, document_id, version).
+const _editorSave = async (payload) => {
+  return await axios.post(`/v1/document/editor/save`, payload.data, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  })
+}
+
 export default {
   _confirmationDocument,
   _documentBase64,
@@ -48,5 +69,7 @@ export default {
   _confirmationAdContract,
   _generateLink,
   _signature,
-  _confirmationTimesheet
+  _confirmationTimesheet,
+  _editorContent,
+  _editorSave
 }
