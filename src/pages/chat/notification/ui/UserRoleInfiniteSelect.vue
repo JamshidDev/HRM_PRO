@@ -30,7 +30,7 @@
         userRoleOptions.value.push(
           ...res.data.data.data.map((i) => {
             return {
-              fullName: [i.worker.last_name, i.worker.first_name, i.worker.last_name]
+              fullName: [i.worker.last_name, i.worker.first_name, i.worker.middle_name]
                 .filter(Boolean)
                 .join(' '),
               photo: i.worker.photo,

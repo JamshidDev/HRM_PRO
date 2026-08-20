@@ -12,7 +12,8 @@
     CheckmarkCircle32Regular,
     Delete20Regular,
     Edit32Regular,
-    Eye16Regular
+    Eye16Regular,
+    DocumentEdit20Regular
   } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -24,10 +25,19 @@
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
 
-  const emits = defineEmits(['openOffice'])
+  const emits = defineEmits(['openOffice', 'openEditorV2'])
 
   const onOpenFile = (v) => {
     emits('openOffice', v)
+  }
+
+  // Tahrirlash v2 — docx-editor.dev muharriri. Tasdiqlangan (SUCCESS) hujjat
+  // tahrirlanmaydi; backend ham imzo qo'yilgan bo'lsa rad etadi.
+  const isApproved = (row) => row?.confirmation?.id === 3
+
+  const onEditV2 = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrCommandsWrite)) return
+    emits('openEditorV2', row.id)
   }
 
   const onView = (row) => {
@@ -104,6 +114,14 @@
       label: t('content.edit'),
       key: Utils.ActionTypes.edit,
       icon: UIHelper.renderIcon(Edit32Regular)
+    },
+    {
+      label: t('docxEditor.title'),
+      key: Utils.ActionTypes.editV2,
+      icon: UIHelper.renderIcon(DocumentEdit20Regular),
+      disabled: (row) =>
+        isApproved(row) || !accStore.checkPermission(accStore.pn.hrCommandsWrite),
+      action: onEditV2
     },
     {
       label: t('content.delete'),

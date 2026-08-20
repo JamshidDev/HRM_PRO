@@ -5,7 +5,7 @@
 
   const formRef = ref(null)
   import { useComponentStore, useNotificationStore } from '@/store/modules/index.js'
-  import { UIEditor, UISelect } from '@components'
+  import { UIEditor } from '@components'
   import { notificationTypes } from '@utils'
   import NotificationBadge from './NotificationBadge.vue'
   import UserRoleInfiniteSelect from '@pages/chat/notification/ui/UserRoleInfiniteSelect.vue'
@@ -56,17 +56,29 @@
     { label: t('notificationPage.byUser'), value: 'manual' }
   ])
 
-  const showNotificationAlertSelectMenu = ref(false)
+  // Sarlavha / tavsif uchun til bo'yicha example (placeholder).
+  const titleExamples = {
+    uz: 'Masalan: Tizimda yangilanmoqda..',
+    ru: 'Например: Идёт обновление системы..',
+    en: 'e.g. System is updating..'
+  }
+  const messageExamples = {
+    uz: "Masalan: Iltimos, biroz kuting, tizim tez orada tayyor bo'ladi.",
+    ru: 'Например: Пожалуйста, подождите, система скоро будет готова.',
+    en: 'e.g. Please wait, the system will be ready soon.'
+  }
 
-  const renderNotificationBadge = ({ option, selected }) => {
+  const showTypeMenu = ref(false)
+
+  const renderTypeOption = ({ option, selected }) => {
     return h(
       'div',
       {
         class:
           'p-1 cursor-pointer transition-all hover:bg-info/10 flex items-center rounded-md justify-between',
         onClick: () => {
-          store.payload.alert = option.value
-          showNotificationAlertSelectMenu.value = false
+          store.payload.action.type = option.value
+          showTypeMenu.value = false
         }
       },
       [
@@ -76,16 +88,13 @@
     )
   }
 
-  const renderNotificationLabel = ({ option }) => {
+  const renderTypeTag = ({ option }) => {
     return h('div', { class: 'flex items-center' }, h(NotificationBadge, { alert: option.value }))
   }
 
   onMounted(() => {
     if (componentStore.roles.length === 0) {
       componentStore._enums()
-    }
-    if (componentStore.structureList.length === 0) {
-      componentStore._structures()
     }
   })
 </script>
@@ -99,45 +108,58 @@
       :model="store.payload"
       size="large"
     >
-      <div class="grid grid-cols-2 gap-x-4">
-        <!-- Yuborish rejimi — select -->
-        <n-form-item class="col-span-2" :label="$t('notificationPage.mode')">
+      <!-- Elementlar widthga qarab 2-ustunli grid'ga taqsimlangan.
+           col-span-2 = keng (full row), aks holda = yarim (1/2). -->
+      <div class="grid grid-cols-2 gap-x-3">
+        <!-- Row 1: Yuborish rejimi | Xabar turi -->
+        <n-form-item :label="$t('notificationPage.mode')">
           <n-select v-model:value="store.mode" :options="modeOptions" />
         </n-form-item>
+        <n-form-item :label="$t('content.type')">
+          <n-select
+            v-model:show="showTypeMenu"
+            v-model:value="store.payload.action.type"
+            :menu-props="{ class: 'p-2' }"
+            :options="Object.values(notificationTypes)"
+            :render-option="renderTypeOption"
+            :render-tag="renderTypeTag"
+            :placeholder="$t('content.type')"
+          />
+        </n-form-item>
 
-        <!-- Til tab (title/description uz/ru/en) -->
-        <div class="col-span-2">
-          <n-tabs v-model:value="activeLang" type="segment" size="small">
+        <!-- Row 2: Til tab — kichik, o'ngда -->
+        <div class="col-span-2 mb-1 flex justify-end">
+          <n-tabs v-model:value="activeLang" type="segment" size="small" class="w-[200px]">
             <n-tab v-for="l in langs" :key="l.key" :name="l.key">
               <span class="flex items-center gap-1">
                 {{ l.label }}
                 <span
                   v-if="langFilled(l.key)"
-                  class="inline-block w-1.5 h-1.5 rounded-full bg-success"
+                  class="inline-block h-1.5 w-1.5 rounded-full bg-success"
                 />
               </span>
             </n-tab>
           </n-tabs>
         </div>
 
-        <!-- Sarlavha va tavsif — ketma-ket, full row -->
+        <!-- Row 3: Sarlavha (full) -->
         <n-form-item
           class="col-span-2"
-          :label="$t(`content.title`)"
+          :label="$t('content.title')"
           path="title"
           :rule="[
             {
               trigger: ['input', 'blur'],
               validator() {
-                return store.payload.title?.uz?.trim()
-                  ? true
-                  : new Error(t(`rules.requiredField`))
+                return store.payload.title?.uz?.trim() ? true : new Error(t('rules.requiredField'))
               }
             }
           ]"
         >
-          <n-input v-model:value="store.payload.title[activeLang]" />
+          <n-input v-model:value="store.payload.title[activeLang]" :placeholder="titleExamples[activeLang]" />
         </n-form-item>
+
+        <!-- Row 4: Matn — editor (full) -->
         <n-form-item
           class="col-span-2"
           :label="$t('content.description')"
@@ -146,9 +168,7 @@
             {
               trigger: ['input', 'blur'],
               validator() {
-                return store.payload.message?.uz?.trim()
-                  ? true
-                  : new Error(t(`rules.requiredField`))
+                return store.payload.message?.uz?.trim() ? true : new Error(t('rules.requiredField'))
               }
             }
           ]"
@@ -157,70 +177,34 @@
             class="w-full"
             container-class="rounded-[10px] overflow-hidden"
             :tool-bar-exclude-keys="['group-image']"
+            :placeholder="messageExamples[activeLang]"
             v-model:text="store.payload.message[activeLang]"
             show-toolbar
           />
         </n-form-item>
 
-        <!-- TOPIC rejimi — topic va tur bitta rowda -->
+        <!-- ── Kimga + qolgan sozlamalar ──────────────────────────── -->
+        <!-- TOPIC rejimi: Topic | Ekran  +  Vaqt (full) -->
         <template v-if="store.mode === 'topic'">
           <n-form-item :label="$t('notificationPage.topic')">
             <n-select v-model:value="store.payload.topic" :options="topicOptions" />
           </n-form-item>
-          <n-form-item :label="$t('content.type')" path="alert" rule-path="requiredStringField">
-            <n-select
-              v-model:show="showNotificationAlertSelectMenu"
-              v-model:value="store.payload.alert"
-              :menu-props="{ class: 'p-2' }"
-              :options="Object.values(notificationTypes)"
-              :render-option="renderNotificationBadge"
-              :render-tag="renderNotificationLabel"
+          <n-form-item :label="$t('notificationPage.sendTime')">
+            <n-date-picker
+              class="w-full"
+              type="datetime"
+              clearable
+              :actions="['clear', 'confirm']"
+              format="yyyy-MM-dd HH:mm"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              v-model:formatted-value="store.payload.scheduled_at"
+              :placeholder="$t('notificationPage.sendTimePlaceholder')"
             />
           </n-form-item>
         </template>
 
-        <!-- QO'LDA rejim — tur col-2, so'ng korxona/rol/userlar -->
-        <template v-if="store.mode === 'manual'">
-          <n-form-item
-            class="col-span-2"
-            :label="$t('content.type')"
-            path="alert"
-            rule-path="requiredStringField"
-          >
-            <n-select
-              v-model:show="showNotificationAlertSelectMenu"
-              v-model:value="store.payload.alert"
-              :menu-props="{ class: 'p-2' }"
-              :options="Object.values(notificationTypes)"
-              :render-option="renderNotificationBadge"
-              :render-tag="renderNotificationLabel"
-            />
-          </n-form-item>
-          <n-form-item :label="$t('organizationPage.name')">
-            <UISelect
-              :options="componentStore.structureList"
-              :model-v="store.payload.filter.organizations"
-              @update-model="(v) => (store.payload.filter.organizations = v)"
-              @defaultValue="(v) => (store.payload.filter.organizations = v)"
-              :checked-val="store.structureCheck"
-              @updateCheck="(v) => (store.structureCheck = v)"
-              v-model:search="componentStore.structureParams.search"
-              @onSearch="componentStore._structures"
-              :loading="componentStore.structureLoading"
-            />
-          </n-form-item>
-          <n-form-item :label="$t(`content.role`)">
-            <n-select
-              multiple
-              v-model:value="store.payload.filter.roles"
-              filterable
-              :options="componentStore.roles"
-              :loading="componentStore.enumLoading"
-              label-field="name"
-              value-field="id"
-              :max-tag-count="1"
-            />
-          </n-form-item>
+        <!-- QO'LDA rejim: Foydalanuvchi qidiruv (full)  +  Ekran | Vaqt -->
+        <template v-else>
           <n-form-item
             class="col-span-2"
             :label="$t('content.users')"
@@ -230,7 +214,7 @@
                 trigger: ['input', 'blur-sm'],
                 validator() {
                   return !store.payload.all && !store.payload.userIds.length
-                    ? new Error(t(`rules.requiredField`))
+                    ? new Error(t('rules.requiredField'))
                     : true
                 }
               }
@@ -238,32 +222,29 @@
           >
             <UserRoleInfiniteSelect />
           </n-form-item>
+          <n-form-item class="col-span-2" :label="$t('notificationPage.sendTime')">
+            <n-date-picker
+              class="w-full"
+              type="datetime"
+              clearable
+              :actions="['clear', 'confirm']"
+              format="yyyy-MM-dd HH:mm"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              v-model:formatted-value="store.payload.scheduled_at"
+              :placeholder="$t('notificationPage.sendTimePlaceholder')"
+            />
+          </n-form-item>
         </template>
-
-        <!-- Rejalashtirilgan yuborish vaqti (bo'sh = darhol) -->
-        <n-form-item class="col-span-2" :label="$t('notificationPage.sendTime')">
-          <n-date-picker
-            class="w-full"
-            type="datetime"
-            clearable
-            :actions="['clear', 'confirm']"
-            format="yyyy-MM-dd HH:mm"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            v-model:formatted-value="store.payload.scheduled_at"
-            :placeholder="$t('notificationPage.sendTimePlaceholder')"
-          />
-        </n-form-item>
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
+      <!-- Row (oxirgi): tugmalar -->
+      <div class="mt-2 grid grid-cols-2 gap-3">
         <n-button @click="store.resetForm()" type="error" ghost>
           {{ $t('content.cancel') }}
         </n-button>
         <n-button @click="onSubmit" :loading="store.saveLoading" type="primary">
           {{
-            store.payload.scheduled_at
-              ? $t('notificationPage.schedule')
-              : $t('notificationPage.send')
+            store.payload.scheduled_at ? $t('notificationPage.schedule') : $t('notificationPage.send')
           }}
         </n-button>
       </div>
@@ -271,4 +252,9 @@
   </n-spin>
 </template>
 
-<style scoped></style>
+<style scoped>
+  /* Tavsif editor balandligini kamaytirish (default 300px → 150px). */
+  :deep(.editor) {
+    height: 150px !important;
+  }
+</style>

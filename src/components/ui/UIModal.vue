@@ -119,13 +119,18 @@
                     {{ title }} 
                   </slot>
                 </h3>
-                <div
-                  @click="onClickClose"
-                  class="w-9 h-9 rounded-full bg-surface-ground hover:bg-surface-line flex items-center justify-center cursor-pointer shrink-0 transition-colors"
-                >
-                  <n-icon size="18" class="text-textColor1">
-                    <Dismiss24Regular />
-                  </n-icon>
+                <!-- Qo'shimcha amallar — YOPISH tugmasidan oldin. Slot bo'sh bo'lsa
+                     hech narsa render qilinmaydi, mavjud modallar o'zgarmaydi. -->
+                <div class="flex items-center gap-2 shrink-0">
+                  <slot name="header-actions"></slot>
+                  <div
+                    @click="onClickClose"
+                    class="w-9 h-9 rounded-full bg-surface-ground hover:bg-surface-line flex items-center justify-center cursor-pointer shrink-0 transition-colors"
+                  >
+                    <n-icon size="18" class="text-textColor1">
+                      <Dismiss24Regular />
+                    </n-icon>
+                  </div>
                 </div>
               </div>
             </slot>

@@ -229,6 +229,8 @@ const ActionTypes = {
   attachment: 'attachment',
   view: 'view',
   edit: 'edit',
+  // Tahrirlash v2 — docx-editor.dev (brauzer ichida DOCX tahriri).
+  editV2: 'editV2',
   download: 'download',
   delete: 'delete',
   timesheet: 'timesheet',

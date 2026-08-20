@@ -1,5 +1,7 @@
 <script setup>
+  import { ArrowCounterclockwise20Regular } from '@vicons/fluent'
   import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { AppPaths } from '@/utils/index.js'
   import { useAccountStore, useComponentStore, useDepartmentStore } from '@/store/modules/index.js'
 
   const componentStore = useComponentStore()
@@ -54,6 +56,15 @@
     }
   }
 
+  // [↺ Tarix] — global audit sahifasiga o'tadi. `trigger_name` shu page'ning
+  // kaliti: audit sahifasida page filtri SHU qiymatga qulflanadi, qolgan
+  // filtrlar (tur / foydalanuvchi / sana) ochiq qoladi. Boshqa page ma'lumotini
+  // ko'rish backendda ham bloklangan (har so'rovda page permission tekshiriladi).
+  const router = useRouter()
+  const onHistory = () => {
+    router.push({ path: AppPaths.Audit, query: { trigger_name: 'hr.departments' } })
+  }
+
   const onShow = () => {
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
@@ -80,6 +91,21 @@
       borderRadius: '20px'
     }"
   >
+    <template #filterEnd>
+      <n-button
+        v-if="accStore.checkPermission(accStore.pn.hrDepartmentsRead)"
+        class="ui-page-action-button w-full! md:w-auto!"
+        secondary
+        icon-placement="right"
+        @click="onHistory"
+      >
+        <template #icon>
+          <n-icon><ArrowCounterclockwise20Regular /></n-icon>
+        </template>
+        {{ $t('audit.historyBtn') }}
+      </n-button>
+    </template>
+
     <template #filterContent>
       <div class="department-filter-panel grid grid-cols-12 gap-x-5 gap-y-4">
         <div class="col-span-12 md:col-span-6">
