@@ -645,6 +645,13 @@
     }
   },
   "profilePage": {
+    "copy": "Nusxalash",
+    "copied": "Nusxalandi",
+    "roles": {
+      "title": "Rollar va korxonalar",
+      "current": "Joriy",
+      "empty": "Rol biriktirilmagan"
+    },
     "account": {
       "title": "Hisob ma'lumotlari",
       "warningText": "Hisobingiz xavfsizligini ta'minlash maqsadida akkaunt ma'lumotlaringizni muntazam ravishda yangilab turishingiz tavsiya etiladi. Bu choralar hisobingizni ruxsatsiz kirishlardan himoya qilishga yordam beradi."
@@ -655,6 +662,7 @@
     "tabs": {
       "profileInfo": "Hisob ma'lumotlar",
       "notification": "Bildirishnomalar",
+      "command": "Buyruq ma'lumotlari",
       "secure": "Xavfsizlik",
       "actionHistory": "Amallar tarixi",
       "social": {
@@ -679,6 +687,8 @@
       "lastName": "Familiya",
       "firstName": "Ism",
       "middleName": "Sharif",
+      "phone": "Telefon raqami",
+      "pin": "JSHSHIR",
       "password": "Parol",
       "confirmPassword": "Parolni takrorlang"
     }
