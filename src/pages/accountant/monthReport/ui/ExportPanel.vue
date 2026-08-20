@@ -88,6 +88,25 @@
     store.activeTab = 2
   }
 
+  // Yuklab olinadigan hisobotlar shu panelda jamlangan — mos ko'rinishga o'tkazadi.
+  const openVedReport = () => {
+    store.exportVisible = false
+    store.mainView = 'ved'
+  }
+  const openThreshold = () => {
+    store.exportVisible = false
+    store.thresholdResult = null
+    store.thresholdVisible = true
+  }
+
+  // Joriy filtr bo'yicha statements ro'yxatini Excel'ga fonda yuklash (Filter'dagi
+  // tugma bilan bir xil manba — `store.params`); shu panelda ham jamlangan.
+  const filteredExportBtn = ref()
+  const onExportFiltered = () => {
+    const ok = store._exportFiltered()
+    if (ok) filteredExportBtn.value?.$el?._triggerFly?.()
+  }
+
   onMounted(() => {
     store.exportParams.year = store.params.year
     store.exportParams.month = store.params.month
@@ -129,6 +148,33 @@
             <ArrowCircleDown48Regular />
           </template>
           {{ $t('monthReport.tab.exportWithPosition') }}
+        </n-button>
+        <n-button @click="openVedReport" size="large" secondary type="warning" class="w-full!">
+          <template #icon>
+            <ArrowCircleDown48Regular />
+          </template>
+          {{ $t('monthReport.vedReport.tab') }}
+        </n-button>
+        <n-button @click="openThreshold" size="large" secondary type="warning" class="w-full!">
+          <template #icon>
+            <ArrowCircleDown48Regular />
+          </template>
+          {{ $t('monthReport.threshold.title') }}
+        </n-button>
+        <n-button
+          ref="filteredExportBtn"
+          v-fly-upload.manual
+          @click="onExportFiltered"
+          :loading="store.filteredExporting"
+          size="large"
+          secondary
+          type="info"
+          class="w-full!"
+        >
+          <template #icon>
+            <ArrowCircleDown48Regular />
+          </template>
+          {{ $t('monthReport.exportFiltered') }}
         </n-button>
       </div>
     </n-tab-pane>

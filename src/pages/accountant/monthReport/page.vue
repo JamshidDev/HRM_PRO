@@ -3,6 +3,8 @@
   import Filter from './ui/Filter.vue'
   import Table from './ui/Table.vue'
   import ExportPanel from './ui/ExportPanel.vue'
+  import ThresholdPanel from './ui/ThresholdPanel.vue'
+  import VedReport from './ui/VedReport.vue'
   import ViewSalary from './ui/ViewSalary.vue'
   import { useAccountStore, useMonthReportStore } from '@/store/modules/index.js'
   import { getOneMonthAgoYearMonth } from '@utils'
@@ -25,8 +27,15 @@
 
 <template>
   <UIPageContent>
-    <Filter />
-    <Table />
+    <n-tabs v-model:value="store.mainView" type="line" animated class="mb-2">
+      <n-tab-pane name="workers" :tab="$t('monthReport.vedReport.tabWorkers')" />
+      <n-tab-pane name="ved" :tab="$t('monthReport.vedReport.tab')" />
+    </n-tabs>
+    <template v-if="store.mainView === 'workers'">
+      <Filter />
+      <Table />
+    </template>
+    <VedReport v-else />
     <UIModal
       :width="1000"
       :visible="store.visible"
@@ -42,6 +51,14 @@
       :title="$t('monthReport.exportTitle')"
     >
       <ExportPanel />
+    </UIModal>
+    <UIModal
+      :width="560"
+      :visible="store.thresholdVisible"
+      @update:visible="(v) => (store.thresholdVisible = v)"
+      :title="$t('monthReport.threshold.title')"
+    >
+      <ThresholdPanel />
     </UIModal>
   </UIPageContent>
 </template>
