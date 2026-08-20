@@ -3,11 +3,13 @@
   import SectionHeader from '@/components/worker/ui/shared/SectionHeader.vue'
   import i18n from '@/i18n/index.js'
   import UserIcon from '@/assets/icons/user.svg'
+  import OrdersIcon from '@/assets/icons/Orders.svg'
   import TelegramIcon from '@/assets/icons/telegram.svg'
   import RingIcon from '@/assets/icons/ring.svg'
   import FileEditIcon from '@/assets/icons/fileEdit.svg'
   import LockIcon from '@/assets/icons/lock.svg'
 
+  import AccountInfo from './AccountInfo.vue'
   import OrgForm from './OrgForm.vue'
   import SocialLink from './SocialLink.vue'
   import PasswordForm from './PasswordForm.vue'
@@ -17,12 +19,23 @@
   const { t } = i18n.global
   const store = useAccountStore()
 
-  const tabList = computed(() => [
-    { id: store.tabs[0], name: t('profilePage.tabs.profileInfo'), icon: UserIcon },
-    { id: store.tabs[4], name: t('profilePage.tabs.social.title'), icon: TelegramIcon },
-    { id: store.tabs[1], name: t('profilePage.tabs.notification'), icon: RingIcon },
-    { id: store.tabs[3], name: t('salary1c.mySalary'), icon: FileEditIcon }
-  ])
+  // Buyruq blankasi ma'lumotlari alohida tab — u faqat tegishli ruxsat bo'lganda
+  // ko'rinadi (ilgari "Hisob ma'lumotlar" tabining ichida shu shart bilan turardi).
+  const canEditCommandBlank = computed(() =>
+    store.checkPermission(store.pn.hrCommandsBlank)
+  )
+
+  const tabList = computed(() =>
+    [
+      { id: store.tabs[0], name: t('profilePage.tabs.profileInfo'), icon: UserIcon },
+      canEditCommandBlank.value
+        ? { id: store.tabs[2], name: t('profilePage.tabs.command'), icon: OrdersIcon }
+        : null,
+      { id: store.tabs[4], name: t('profilePage.tabs.social.title'), icon: TelegramIcon },
+      { id: store.tabs[1], name: t('profilePage.tabs.notification'), icon: RingIcon },
+      { id: store.tabs[3], name: t('salary1c.mySalary'), icon: FileEditIcon }
+    ].filter(Boolean)
+  )
 </script>
 
 <template>
@@ -58,15 +71,7 @@
       <Transition name="tab-fade" mode="out-in">
         <div :key="store.activeTab">
           <div v-if="store.activeTab === store.tabs[0]">
-            <SectionHeader
-              v-if="store.checkPermission(store.pn.hrCommandsBlank)"
-              :title="$t('profilePage.org.title')"
-              :icon="FileEditIcon"
-              large
-              class="mb-4"
-            >
-              <OrgForm />
-            </SectionHeader>
+            <AccountInfo class="mb-4" />
 
             <SectionHeader
               :title="
@@ -83,6 +88,15 @@
               <PasswordForm />
             </SectionHeader>
           </div>
+
+          <SectionHeader
+            v-else-if="store.activeTab === store.tabs[2] && canEditCommandBlank"
+            :title="$t('profilePage.org.title')"
+            :icon="FileEditIcon"
+            large
+          >
+            <OrgForm />
+          </SectionHeader>
 
           <SocialLink v-else-if="store.activeTab === store.tabs[4]" />
 

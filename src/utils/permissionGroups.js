@@ -154,7 +154,12 @@ export const PERMISSION_GROUPS = [
           { slug: 'hr-workers-read', label: "Ko'rish" },
           { slug: 'hr-workers-write', label: 'Tahrirlash' },
           { slug: 'hr-workers-delete', label: "O'chirish" },
-          { slug: 'hr-workers-password', label: 'Parolni yangilash' }
+          { slug: 'hr-workers-password', label: 'Parolni yangilash' },
+          // Backend enforce qiladi, lekin ilgari hech bir guruhga kirmagani uchun
+          // faqat "Boshqa" tabida xom slug bo'lib turardi — admin bu ruxsat
+          // Xodimlar sahifasiga tegishli ekanini bilmasdi.
+          { slug: 'hr-check-worker', label: "JSHSHIR bo'yicha tekshirish" },
+          { slug: 'filter-search-workers', label: 'Kengaytirilgan qidiruv' }
         ]
       },
       { prefix: 'hr-certificates', label: 'workerCertificatePage.name' },
