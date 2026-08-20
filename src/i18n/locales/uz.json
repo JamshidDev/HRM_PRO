@@ -4590,9 +4590,10 @@
       "channel": "Kirish kanali",
       "ip": "IP manzil",
       "userAgent": "Qurilma / brauzer",
-      "loadMore": "Yana yuklash",
       "empty": "Bu yozuv bo'yicha o'zgarish topilmadi",
-      "moreInfo": "Qo'shimcha ma'lumot"
+      "moreInfo": "Qo'shimcha ma'lumot",
+      "expandAll": "Kartochkalarni ochish",
+      "collapseAll": "Kartochkalarni yig'ish"
     },
     "historyBtn": "Tarix"
   }

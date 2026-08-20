@@ -4546,9 +4546,10 @@
       "channel": "Sign-in channel",
       "ip": "IP address",
       "userAgent": "Device / browser",
-      "loadMore": "Load more",
       "empty": "No changes found for this record",
-      "moreInfo": "More info"
+      "moreInfo": "More info",
+      "expandAll": "Expand cards",
+      "collapseAll": "Collapse cards"
     },
     "historyBtn": "History"
   }

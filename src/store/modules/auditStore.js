@@ -31,13 +31,17 @@ export const useAuditStore = defineStore('auditStore', {
     detailVisible: false,
     detailLoading: false,
     detailEvent: null, // bosilgan qator — sarlavha uchun
+    // Ro'yxatdan BOSILGAN hodisa. Modal ochilganda shu hodisa ajratib
+    // ko'rsatiladi va unga scroll qilinadi — tarix uzun bo'lsa foydalanuvchi
+    // qayerdan kelganini yo'qotmasin.
+    detailFocusId: null,
     detailList: [],
     detailTotal: 0,
     detailParams: {
       trigger_name: null,
       trigger_id: null,
       page: 1,
-      per_page: 20
+      per_page: 30
     },
 
     params: {
@@ -133,6 +137,7 @@ export const useAuditStore = defineStore('auditStore', {
 
     openDetail(event) {
       this.detailEvent = event
+      this.detailFocusId = event?.request_id ?? null
       this.detailList = []
       this.detailTotal = 0
       this.detailParams = {
@@ -142,13 +147,13 @@ export const useAuditStore = defineStore('auditStore', {
         // birinchisidan olish yetarli.
         trigger_id: event?.changes?.[0]?.trigger_id ?? null,
         page: 1,
-        per_page: 20
+        per_page: 30
       }
       this.detailVisible = true
       this._detail()
     },
 
-    // `append=true` — "yana yuklash" tugmasi (scroll davomida qo'shib boriladi).
+    // `append=true` — cheksiz scroll (ro'yxat oxiriga qo'shib boriladi).
     _detail(append = false) {
       const { trigger_name, trigger_id } = this.detailParams
       if (!trigger_name) return
@@ -175,6 +180,10 @@ export const useAuditStore = defineStore('auditStore', {
     },
 
     loadMoreDetail() {
+      // Qo'sh chaqiriqdan himoya: IntersectionObserver bir necha marta ishga
+      // tushishi mumkin, so'rov esa hali tugamagan bo'ladi.
+      if (this.detailLoading) return
+      if (this.detailList.length >= this.detailTotal) return
       this.detailParams.page += 1
       this._detail(true)
     },

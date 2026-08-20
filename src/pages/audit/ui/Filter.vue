@@ -107,23 +107,13 @@
          o'chirilgani uchun bu joy bo'sh turardi. Alohida qator ochilmaydi. -->
     <template #filterBefore>
       <div class="flex items-center gap-2 whitespace-nowrap">
-        <!-- Orqaga — sarlavhadan OLDIN, kompakt ikonka tugma. -->
-        <n-tooltip trigger="hover">
-          <template #trigger>
-            <n-button
-              quaternary
-              circle
-              size="small"
-              :aria-label="$t('content.back')"
-              @click="onBack"
-            >
-              <template #icon>
-                <n-icon><ArrowLeft20Regular /></n-icon>
-              </template>
-            </n-button>
+        <!-- Orqaga — sarlavhadan OLDIN, yozuvi bilan. -->
+        <n-button secondary size="small" @click="onBack">
+          <template #icon>
+            <n-icon><ArrowLeft20Regular /></n-icon>
           </template>
           {{ $t('content.back') }}
-        </n-tooltip>
+        </n-button>
 
         <span class="text-lg font-semibold">{{ $t('audit.name') }}</span>
         <n-tag v-if="store.pageTitle" size="small" round :bordered="false">

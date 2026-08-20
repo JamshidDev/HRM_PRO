@@ -1,5 +1,7 @@
 <script setup>
   import {
+    ArrowExpand20Regular,
+    ArrowMinimize20Regular,
     CheckmarkCircle20Filled,
     ChevronDown20Regular,
     DismissCircle20Filled,
@@ -35,6 +37,36 @@
 
   const hasMore = computed(() => store.detailList.length < store.detailTotal)
 
+  // ── Cheksiz scroll ───────────────────────────────────────────────────────
+  // Sentinel ro'yxat oxirida DOIM turadi (shart bilan render qilinsa u yo'qolib,
+  // observer uzilgan tugunni kuzatib qolardi). Ko'rinishga kirganda keyingi
+  // sahifa so'raladi; qo'sh chaqiriqdan store'dagi `detailLoading` himoya qiladi.
+  const sentinel = ref(null)
+  let observer = null
+
+  const teardownObserver = () => {
+    observer?.disconnect()
+    observer = null
+  }
+
+  const setupObserver = () => {
+    teardownObserver()
+    if (!sentinel.value) return
+    // `root` — modal tanasi (UIModal.vue: `overflow-y-auto`). Topilmasa viewport.
+    const root = sentinel.value.closest('.overflow-y-auto') || null
+    observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) return
+        if (!hasMore.value || store.detailLoading) return
+        store.loadMoreDetail()
+      },
+      { root, rootMargin: '300px' }
+    )
+    observer.observe(sentinel.value)
+  }
+
+  onBeforeUnmount(teardownObserver)
+
   // Kontekst (korxona / kanal / IP / qurilma) har hodisada YIG'ILGAN turadi —
   // odatda kerak emas, kerak bo'lganda ochiladi. Kalit sifatida ro'yxatdagi
   // indeks: `request_id` takrorlanishi mumkin emas, lekin indeks barqarorroq
@@ -47,11 +79,54 @@
     expanded.value = next
   }
 
-  // Modal har ochilganda yig'ilgan holatga qaytadi.
+  // "Oldin/Keyin" kartochkalari — BARCHASI birdan ochiladi/yopiladi. Boshqaruv
+  // modal sarlavhasida (yopish tugmasi yonida), chunki u butun modalga tegishli.
+  const cardsOpen = ref(true)
+
+  // ── Bosilgan hodisaga scroll ────────────────────────────────────────────
+  // Har bir hodisa bloki `request_id` bo'yicha eslab qolinadi; ro'yxat birinchi
+  // marta yuklangach o'sha blokka olib boriladi. "Yana yuklash" da TAKRORLANMAYDI
+  // (`focusDone`) — aks holda foydalanuvchi scroll qilgan joyidan sakrab ketardi.
+  const eventEls = new Map()
+  const focusDone = ref(false)
+
+  const setEventRef = (el, requestId) => {
+    if (el) eventEls.set(requestId, el)
+    else eventEls.delete(requestId)
+  }
+
+  watch(
+    () => store.detailList.length,
+    async (len) => {
+      await nextTick()
+
+      // Kuzatuvchini QAYTA ulaymiz: IntersectionObserver faqat holat
+      // O'ZGARGANDA ishlaydi. Birinchi sahifa ekranni to'ldirmasa sentinel
+      // allaqachon ko'rinib turadi va yangi callback kelmasdi — qayta observe
+      // darhol joriy holat bilan callback beradi.
+      setupObserver()
+
+      if (!len || focusDone.value || !store.detailFocusId) return
+      const el = eventEls.get(store.detailFocusId)
+      focusDone.value = true
+      // Topilmasa (bosilgan hodisa keyingi sahifada) — hech narsa qilinmaydi.
+      if (el) el.scrollIntoView({ block: 'start' })
+    }
+  )
+
+  // Modal har ochilganda: kontekstlar yig'ilgan, kartochkalar ochiq.
   watch(
     () => store.detailVisible,
     (v) => {
-      if (v) expanded.value = new Set()
+      if (v) {
+        expanded.value = new Set()
+        cardsOpen.value = true
+        focusDone.value = false
+        eventEls.clear()
+        nextTick(setupObserver)
+      } else {
+        teardownObserver()
+      }
     }
   )
 
@@ -90,8 +165,35 @@
     width="min(1040px, calc(100vw - 32px))"
     height="min(85vh, 820px)"
   >
+    <template #header-actions>
+      <n-button
+        quaternary
+        circle
+        :aria-label="cardsOpen ? $t('audit.detail.collapseAll') : $t('audit.detail.expandAll')"
+        @click="cardsOpen = !cardsOpen"
+      >
+        <template #icon>
+          <n-icon>
+            <ArrowMinimize20Regular v-if="cardsOpen" />
+            <ArrowExpand20Regular v-else />
+          </n-icon>
+        </template>
+      </n-button>
+    </template>
+
     <div class="audit-detail">
-        <div v-if="!store.detailList.length && !store.detailLoading" class="audit-empty">
+        <!--
+          Loader ro'yxatning YONIDA turadi, uni O'RAMAYDI: `n-spin` o'ram
+          bo'lganda sticky sarlavha uchun ortiqcha ajdod hosil bo'lardi.
+          Faqat BIRINCHI yuklashda; "yana yuklash" o'z tugmasida ko'rsatiladi.
+        -->
+        <div v-if="store.detailLoading && !store.detailList.length" class="audit-loading">
+          <n-skeleton height="64px" :sharp="false" />
+          <n-skeleton height="132px" :sharp="false" />
+          <n-skeleton height="132px" :sharp="false" />
+        </div>
+
+        <div v-else-if="!store.detailList.length" class="audit-empty">
           {{ $t('audit.detail.empty') }}
         </div>
 
@@ -99,7 +201,13 @@
           Yozuvning BUTUN tarixi — eng yangisidan eskisiga. Har hodisa alohida
           blok: yuqorida bajaruvchi, pastida "Oldin / Keyin" kartochkalari.
         -->
-        <section v-for="(ev, i) in store.detailList" :key="ev.request_id + i" class="audit-event">
+        <section
+          v-for="(ev, i) in store.detailList"
+          :key="ev.request_id + i"
+          :ref="(el) => setEventRef(el, ev.request_id)"
+          class="audit-event"
+          :class="{ 'audit-event--focused': ev.request_id === store.detailFocusId }"
+        >
           <!--
             STICKY sarlavha: shu hodisaning kartochkalarini scroll qilib
             ko'rayotganda "kim va qachon" ko'z oldida turadi. Keyingi hodisa
@@ -173,13 +281,13 @@
           </n-alert>
 
           <div v-for="(ch, ci) in ev.changes" :key="ci" class="audit-change">
+            <!-- Sahifa nomi bu yerda TAKRORLANMAYDI: u modal sarlavhasida
+                 allaqachon bor. Holat belgisi yetarli. -->
             <div class="audit-change__head">
               <UIStatus :status="statusOf(ch.status)" pill />
-              <!-- Xom jadval nomi (`departments`) emas, foydalanuvchi ko'radigan
-                   SAHIFA nomi (trigger_name tarjimasi: "Bo'limlar"). -->
-              <span class="text-sm opacity-55">{{ ev.page?.title || ch.entity }}</span>
             </div>
 
+            <n-collapse-transition :show="cardsOpen">
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
               <!-- OLDIN — create'da yozuv bo'lmagan -->
               <div v-if="ch.has_old" class="audit-card audit-card--before">
@@ -233,22 +341,42 @@
                 {{ $t('audit.detail.noAfter') }}
               </div>
             </div>
+            </n-collapse-transition>
           </div>
         </section>
 
-        <div v-if="hasMore" class="mt-4 flex justify-center">
-          <n-button secondary :loading="store.detailLoading" @click="store.loadMoreDetail">
-            {{ $t('audit.detail.loadMore') }}
-            <span class="ml-1 opacity-60">
-              ({{ store.detailList.length }}/{{ store.detailTotal }})
-            </span>
-          </n-button>
+        <!-- Cheksiz scroll nishoni + keyingi sahifa indikatori -->
+        <div ref="sentinel" class="audit-sentinel">
+          <n-spin v-if="store.detailLoading && store.detailList.length" :size="18" />
+          <span v-else-if="store.detailList.length && !hasMore" class="audit-sentinel__end">
+            {{ store.detailList.length }} / {{ store.detailTotal }}
+          </span>
         </div>
     </div>
   </UIModal>
 </template>
 
 <style scoped>
+  .audit-sentinel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    margin-top: 12px;
+  }
+
+  .audit-sentinel__end {
+    font-size: 12px;
+    opacity: 0.4;
+  }
+
+  .audit-loading {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 4px;
+  }
+
   .audit-empty {
     padding: 48px 0;
     text-align: center;
@@ -292,6 +420,12 @@
     border-radius: 14px;
     background: var(--color-surface-section, #ffffff);
     border: 1px solid var(--color-surface-line, #e2e8f0);
+  }
+
+  /* Ro'yxatdan bosilgan hodisa — brend ramkasi bilan ajratiladi. */
+  .audit-event--focused .audit-event__head {
+    border-color: var(--color-fig-chip-brand-text, #1570ef);
+    box-shadow: 0 0 0 2px var(--color-fig-bg-brand-surface, #eff8ff);
   }
 
   .audit-event__row {
