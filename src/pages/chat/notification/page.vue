@@ -12,7 +12,7 @@
 
   onMounted(() => {
     // Bildirishnomalar `instructions` slug'i bilan qo'riqlanadi.
-    if (!accStore.checkAction(accStore.pn.instructions)) return
+    if (!accStore.checkAction(accStore.pn.instructionsRead)) return
     store._push_logs()
   })
 </script>
