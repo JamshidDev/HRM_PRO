@@ -4,7 +4,11 @@
     Eye16Filled,
     CheckmarkCircle24Filled,
     Circle20Filled,
-    ErrorCircle12Filled
+    ErrorCircle12Filled,
+    AddCircle24Filled,
+    Edit24Filled,
+    Delete24Filled,
+    ArrowUndo24Filled
   } from '@vicons/fluent'
   const props = defineProps({
     status: Object,
@@ -72,6 +76,33 @@
       name: 'Primary',
       type: 'primary',
       icon: ErrorCircle12Filled
+    },
+    // ── Audit (o'zgarishlar tarixi) holatlari ────────────────────────────────
+    // Yangi ID'lar QO'SHILDI, mavjudlari (1..9) o'zgarmadi — boshqa sahifalarga
+    // ta'sir yo'q. `audit_logs.status` qiymatlariga mos ikonalar.
+    {
+      id: 10,
+      name: 'AuditCreate',
+      type: 'success',
+      icon: AddCircle24Filled
+    },
+    {
+      id: 11,
+      name: 'AuditUpdate',
+      type: 'warning',
+      icon: Edit24Filled
+    },
+    {
+      id: 12,
+      name: 'AuditDelete',
+      type: 'error',
+      icon: Delete24Filled
+    },
+    {
+      id: 13,
+      name: 'AuditRestore',
+      type: 'info',
+      icon: ArrowUndo24Filled
     }
   ]
 

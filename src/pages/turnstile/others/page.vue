@@ -65,7 +65,7 @@
         icon: markRaw(AlertUrgent16Filled),
         component: markRaw(TelegramUserPage),
         key: store.tabs[2],
-        visible: accStore.checkPermission(accStore.pn.turnstileHikCentralTgUser),
+        visible: accStore.checkPermission(accStore.pn.turnstileHikCentralTgUserRead),
         color: 'warning'
       }
     ]

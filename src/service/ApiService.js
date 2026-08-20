@@ -44,6 +44,7 @@ import stationCodeReportService from '@/service/v1/admin/stationCodeReportServic
 import organizationPositionsReportService from '@/service/v1/admin/organizationPositionsReportService.js'
 
 import confirmationService from '@/service/v1/hrm/confirmationService.js'
+import auditService from '@/service/v1/auditService.js'
 import departmentService from '@/service/v1/hrm/departmentService.js'
 import departmentPositionService from '@/service/v1/hrm/departmentPositionService.js'
 import workerService from '@/service/v1/hrm/workerService.js'
@@ -187,6 +188,7 @@ export default {
   positionService,
   organizationService,
   componentService,
+  auditService,
   departmentService,
   departmentPositionService,
   workerService,

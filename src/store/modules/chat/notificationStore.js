@@ -36,6 +36,8 @@ export const useNotificationStore = defineStore('notificationStore', {
       per_page: 15,
       status: null
     },
+    // Xabar yuborish formasi modali (Xabar tugmasi ochadi).
+    formVisible: false,
     // Yuborish rejimi: 'topic' (FCM topic: all/hr/economist) yoki 'manual' (userlarni tanlab).
     mode: 'topic',
     payload: {
@@ -45,12 +47,21 @@ export const useNotificationStore = defineStore('notificationStore', {
       },
       all: false,
       unCheck: [],
-      // Ko'p tilli — {uz, ru, en}
-      title: { uz: '', ru: '', en: '' },
-      message: { uz: '', ru: '', en: '' },
+      // Ko'p tilli — {uz, ru, en}. Mock (example) data bilan to'ldirilgan.
+      title: {
+        uz: 'Tizimda yangilanish',
+        ru: 'Обновление системы',
+        en: 'System update'
+      },
+      message: {
+        uz: "Iltimos, biroz kuting — tizim tez orada tayyor bo'ladi.",
+        ru: 'Пожалуйста, подождите — система скоро будет готова.',
+        en: 'Please wait — the system will be ready soon.'
+      },
       organizations: [],
       userIds: [],
-      alert: null,
+      // action — hozircha faqat {type (xabar turi)}; page/params keyin. Default 'info'.
+      action: { type: 'info' },
       // Topic rejimi uchun tanlangan topic kodi.
       topic: 'all',
       // Rejalashtirilgan yuborish vaqti (null = darhol).
@@ -141,7 +152,9 @@ export const useNotificationStore = defineStore('notificationStore', {
         message: this.payload.message,
         userId: undefined,
         filter: undefined,
-        alert: this.payload.alert,
+        // action — {type, page, params}. alert = action.type (backend backward-compat).
+        alert: this.payload.action.type,
+        action: this.payload.action,
         scheduled_at: this.payload.scheduled_at || undefined
       }
       if (this.payload.userIds.length > 1) {
@@ -181,7 +194,8 @@ export const useNotificationStore = defineStore('notificationStore', {
         type: 'notification',
         title: this.payload.title,
         message: this.payload.message,
-        alert: this.payload.alert,
+        alert: this.payload.action.type,
+        action: this.payload.action,
         scheduled_at: this.payload.scheduled_at || undefined
       }
       $ApiService.notificationService
@@ -227,17 +241,31 @@ export const useNotificationStore = defineStore('notificationStore', {
         })
       }
     },
+    // Xabar formasi modalini ochadi (avval formani tozalab).
+    openForm() {
+      this.resetForm()
+      this.formVisible = true
+    },
     resetForm() {
+      this.formVisible = false
       this.mode = 'topic'
       this.payload.filter.organizations = []
       this.payload.filter.roles = []
       this.payload.all = false
       this.payload.unCheck = []
-      this.payload.title = { uz: '', ru: '', en: '' }
-      this.payload.message = { uz: '', ru: '', en: '' }
+      this.payload.title = {
+        uz: 'Tizimda yangilanish',
+        ru: 'Обновление системы',
+        en: 'System update'
+      }
+      this.payload.message = {
+        uz: "Iltimos, biroz kuting — tizim tez orada tayyor bo'ladi.",
+        ru: 'Пожалуйста, подождите — система скоро будет готова.',
+        en: 'Please wait — the system will be ready soon.'
+      }
       this.payload.organizations = []
       this.payload.userIds = []
-      this.payload.alert = null
+      this.payload.action = { type: 'info' }
       this.payload.topic = 'all'
       this.payload.scheduled_at = null
     }
