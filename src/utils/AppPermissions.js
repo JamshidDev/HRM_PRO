@@ -441,10 +441,6 @@ export const appPermissions = {
   hrPensionersRead: 'hr-pensioners-read',
   hrPensionersWrite: 'hr-pensioners-write',
 
-  hrPolyclinics: 'hr-polyclinics',
-  hrPolyclinicsRead: 'hr-polyclinics-read',
-  hrPolyclinicsWrite: 'hr-polyclinics-write',
-
   hrLanguageCertificates: 'hr-language-certificates',
   hrLanguageCertificatesRead: 'hr-language-certificates-read',
   hrLanguageCertificatesWrite: 'hr-language-certificates-write',
@@ -487,7 +483,6 @@ export const appPermissions = {
   hrMonthlyReportDelete: 'hr-monthly-report-delete',
   hrOrganizationPhonesDelete: 'hr-organization-phones-delete',
   hrPensionersDelete: 'hr-pensioners-delete',
-  hrPolyclinicsDelete: 'hr-polyclinics-delete',
   hrPositionsDelete: 'hr-positions-delete',
   hrPublicVacancyDelete: 'hr-public-vacancy-delete',
   hrReportDelete: 'hr-report-delete',

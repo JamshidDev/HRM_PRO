@@ -24,7 +24,7 @@ export const ENFORCED = new Set([
   'hr-edu-plans-write', 'hr-incentives-read', 'hr-incentives-write', 'hr-tasks-read', 'hr-tasks-write', 'hr-tasks-delete', 'hr-language-certificates-delete', 'hr-language-certificates-read', 'hr-language-certificates-write',
   'hr-leaders-delete', 'hr-leaders-read', 'hr-leaders-write', 'hr-med-delete', 'hr-med-read', 'hr-med-write',
   'hr-monthly-report-delete', 'hr-organization-phones-delete', 'hr-organization-phones-read', 'hr-organization-phones-write', 'hr-pensioners-delete', 'hr-pensioners-read',
-  'hr-pensioners-write', 'hr-polyclinics-delete', 'hr-polyclinics-read', 'hr-polyclinics-write', 'hr-positions-delete', 'hr-positions-read',
+  'hr-pensioners-write', 'hr-positions-delete', 'hr-positions-read',
   'hr-positions-write', 'hr-public-vacancy-delete', 'hr-public-vacancy-read', 'hr-public-vacancy-write', 'hr-report', 'hr-report-delete',
   'hr-report-export-delete', 'hr-table-delete', 'hr-table-read', 'hr-table-write', 'hr-users-active-role', 'hr-users-attach-role',
   'hr-users-detach-role', 'hr-users-password', 'hr-users-read', 'hr-users-update', 'hr-vacation-schedule-delete', 'hr-vacation-schedule-read',
@@ -89,7 +89,7 @@ export const MEANINGFUL = new Set([
   'hr-language-certificates-delete', 'hr-language-certificates-read', 'hr-language-certificates-write', 'hr-leaders', 'hr-leaders-delete', 'hr-leaders-read',
   'hr-leaders-write', 'hr-med', 'hr-med-delete', 'hr-med-read', 'hr-med-write', 'hr-monthly-report',
   'hr-monthly-report-delete', 'hr-organization-phones-delete', 'hr-organization-phones-read', 'hr-organization-phones-write', 'hr-pensioners-delete', 'hr-pensioners-read',
-  'hr-pensioners-write', 'hr-polyclinics-delete', 'hr-polyclinics-read', 'hr-polyclinics-write', 'hr-positions', 'hr-positions-delete',
+  'hr-pensioners-write', 'hr-positions', 'hr-positions-delete',
   'hr-positions-read', 'hr-positions-write', 'hr-public-vacancy', 'hr-public-vacancy-delete', 'hr-public-vacancy-read', 'hr-public-vacancy-write',
   'hr-report', 'hr-report-delete', 'hr-report-export', 'hr-report-export-delete', 'hr-report-management-write', 'hr-report-read',
   'hr-report-write', 'hr-table', 'hr-table-delete', 'hr-table-read', 'hr-table-workers', 'hr-table-workers-read',
@@ -190,7 +190,6 @@ export const PERMISSION_GROUPS = [
       // Backend enforce qiladigan, lekin guruhi bo'lmagani uchun faqat "Boshqa"
       // ro'yxatida xom slug ko'rinishida turgan sohalar.
       { prefix: 'hr-pensioners', label: 'pensioner.name' },
-      { prefix: 'hr-polyclinics', label: 'polyclinic.name' },
       { prefix: 'hr-language-certificates', label: 'languageCertificatePage.title' },
       { prefix: 'hr-organization-phones', label: 'content.phone' },
     ],
