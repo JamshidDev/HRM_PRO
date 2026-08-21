@@ -38,7 +38,11 @@ export const useAccountStore = defineStore('accountStore', {
     // foydalanuvchi nima kutayotganini bilmasdi.
     loadingKind: 'boot',
     activeTab: 1,
-    tabs: [1, 2, 3, 4, 5],
+    tabs: [1, 2, 3, 4, 5, 6],
+    // Profil > Xavfsizlik: web kirish usullari (`/user/profile` javobidan).
+    // Har element {enabled, editable}; hozircha faqat `password` tahrirlanadi.
+    loginMethods: null,
+    loginMethodLoading: null,
     payload: {
       password: null
     },
@@ -250,6 +254,7 @@ export const useAccountStore = defineStore('accountStore', {
           // true → parol muddati o'tgan. Ilgari bu MAJBURIY modal ochardi (login'dan
           // keyin yopib bo'lmasdi) — modal OLIB TASHLANDI; bayroq faqat profil
           // sahifasidagi "Parol" tabini belgilash uchun qoladi (`profile/ui/Tabs.vue`).
+          this.loginMethods = res.data.data.login_methods ?? null
           this.mustChangePassword = res.data.data.must_change === true
           if (this.mustChangePassword) {
             localStorage.setItem(useAppSetting.mustChangeKey, '1')
@@ -308,6 +313,23 @@ export const useAccountStore = defineStore('accountStore', {
         })
         .finally(() => {
           this.changePasswordLoading = false
+        })
+    },
+    /**
+     * Kirish usulini yoqish/o'chirish. Joriy parol MAJBURIY — yoqishda ham,
+     * o'chirishda ham (sessiyasi o'g'irlangan bo'lsa hujumchi o'zgartira olmasin).
+     * Backend javobida usullarning yangi holati keladi.
+     */
+    _updateLoginMethod({ method, enabled, current_password }) {
+      this.loginMethodLoading = method
+      return $ApiService.accountService
+        ._updateLoginMethod({ data: { method, enabled, current_password } })
+        .then((res) => {
+          this.loginMethods = res.data.data
+          return res.data.data
+        })
+        .finally(() => {
+          this.loginMethodLoading = null
         })
     },
     _updateAvatar() {
