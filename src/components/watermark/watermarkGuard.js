@@ -18,10 +18,11 @@ export const WATERMARK_TILES_CLASS = 'app-watermark__tiles'
 // Tekshiruv qadami (ms). MutationObserver darhol ushlaydi; interval esa observer
 // yetib bormaydigan holatlar uchun (masalan stylesheet qoidasi o'chirilgani).
 const CHECK_INTERVAL = 700
-// Shu oyna ichida (ms) MAX_STRIKES'dan ko'p buzilish bo'lsa — lockdown. Ya'ni
-// birinchi 2 urinish tiklanadi, 3-chisida ekran oq bo'lib qoladi.
-const STRIKE_WINDOW = 60_000
-const MAX_STRIKES = 2
+// Shu oyna ichida (ms) MAX_STRIKES'dan ko'p buzilish bo'lsa — lockdown: birinchi 3
+// urinish jimgina tiklanadi, 4-chisida ekran oq bo'lib qoladi. Oyna qisqa (20s), chunki
+// qo'lda buzish ketma-ket va tez bo'ladi — tasodifiy nosozliklar esa yig'ilib qolmasin.
+const STRIKE_WINDOW = 20_000
+const MAX_STRIKES = 3
 // Plitkalar shundan xiraroq bo'lsa — "o'chirilgan" deb hisoblanadi.
 const MIN_TILE_OPACITY = 0.04
 const Z_INDEX = '99999'
@@ -81,7 +82,9 @@ export const applyWatermarkStyles = (root, tilesStyle) => {
 // Buzilgan bo'lsa — sababni (string) qaytaradi, joyida bo'lsa — null.
 const inspect = (root) => {
   if (!root) return 'root:missing'
-  if (!root.isConnected || root.parentNode !== document.body) return 'root:detached'
+  // Tugun `#app` ichida render bo'ladi — ota elementi qaysiligi muhim emas, faqat
+  // hujjatga ulanib turgani muhim.
+  if (!root.isConnected) return 'root:detached'
   if (!root.classList.contains(WATERMARK_ROOT_CLASS)) return 'root:class'
 
   const cs = getComputedStyle(root)
@@ -92,13 +95,18 @@ const inspect = (root) => {
   if (parseFloat(cs.opacity) < 0.99) return 'root:opacity'
   if (!(parseInt(cs.zIndex, 10) >= 1000)) return 'root:zIndex'
 
-  // Fon tabida brauzer layout'ni to'xtatib turishi mumkin — o'lchamni faqat sahifa
-  // ko'rinib turganda tekshiramiz, aks holda bekordan-bekorga lockdown bo'ladi.
+  // Inset'ni computed qiymat bo'yicha tekshiramiz, viewport bilan solishtirmaymiz:
+  // `fixed` element `transform`/`filter`li ota element ichida bo'lsa uning containing
+  // block'i viewport bo'lmaydi va o'lcham solishtiruvi soxta buzilish berardi.
+  for (const side of ['top', 'right', 'bottom', 'left']) {
+    if (cs[side] !== '0px') return `root:${side}`
+  }
+
+  // Qo'shimcha aql-idrok tekshiruvi: qatlam kichraytirib yuborilmaganmi. Fon tabida
+  // brauzer layout'ni to'xtatib turishi mumkin — shuning uchun faqat ko'rinib turganda.
   if (document.visibilityState === 'visible') {
     const rect = root.getBoundingClientRect()
-    if (rect.width < window.innerWidth * 0.9 || rect.height < window.innerHeight * 0.9) {
-      return 'root:size'
-    }
+    if (rect.width < 200 || rect.height < 200) return 'root:size'
   }
 
   const tiles = root.firstElementChild
@@ -204,21 +212,28 @@ const strictMode = () => {
 // `getRoot` — watermark ildiz tuguni, `isActive` — watermark ko'rinishi kerakmi,
 // `getTilesStyle` — plitkalarning dinamik stillari (rasm/burilish/xiralik).
 export const useWatermarkGuard = ({ getRoot, isActive, getTilesStyle }) => {
-  let bodyObserver = null
   let rootObserver = null
+  let parentObserver = null
   let observedRoot = null
+  let observedParent = null
   let timer = null
   let strikes = []
   let queued = false
   let healQueued = false
+  let lastWarnAt = -Infinity
 
   // Tugundagi `class`/`style` o'zgarishini kuzatish: faqat watermark daraxti ustida —
   // butun sahifani attribute bilan kuzatish qimmatga tushadi.
   const watchRoot = () => {
     const root = getRoot()
-    if (root === observedRoot) return
+    const parent = root?.parentNode || null
+    if (root === observedRoot && parent === observedParent) return
     rootObserver?.disconnect()
+    parentObserver?.disconnect()
+    rootObserver = null
+    parentObserver = null
     observedRoot = root
+    observedParent = parent
     if (!root) return
     rootObserver = new MutationObserver(scheduleCheck)
     rootObserver.observe(root, {
@@ -227,6 +242,11 @@ export const useWatermarkGuard = ({ getRoot, isActive, getTilesStyle }) => {
       childList: true,
       subtree: true
     })
+    // Tugunning o'chirilishi ota elementda ko'rinadi (odatda `#app`).
+    if (parent) {
+      parentObserver = new MutationObserver(scheduleCheck)
+      parentObserver.observe(parent, { childList: true })
+    }
   }
 
   const reactAfterHeal = (reason) => {
@@ -245,7 +265,7 @@ export const useWatermarkGuard = ({ getRoot, isActive, getTilesStyle }) => {
   const heal = (root, reason) => {
     // Tugun butunlay o'chirilgan bo'lsa Vue uni qayta yaratmaydi — o'zimiz qaytaramiz.
     if (root) {
-      if (!document.body.contains(root)) document.body.appendChild(root)
+      if (!root.isConnected) document.body.appendChild(root)
       root.classList.add(WATERMARK_ROOT_CLASS)
       root.removeAttribute('hidden')
       if (!root.firstElementChild) {
@@ -274,7 +294,10 @@ export const useWatermarkGuard = ({ getRoot, isActive, getTilesStyle }) => {
     strikes = strikes.filter((at) => now - at < STRIKE_WINDOW)
     strikes.push(now)
 
-    if (import.meta.env.DEV) console.warn('[watermark] tampering:', reason)
+    if (import.meta.env.DEV && now - lastWarnAt > 5000) {
+      lastWarnAt = now
+      console.warn('[watermark] tampering:', reason)
+    }
 
     // Qayta-qayta buzilsa — tiklashni kutmasdan lockdown (aks holda har o'chirishda
     // kontent bir lahza watermarksiz ko'rinib qolardi).
@@ -299,10 +322,6 @@ export const useWatermarkGuard = ({ getRoot, isActive, getTilesStyle }) => {
     applyWatermarkStyles(getRoot(), getTilesStyle?.())
     watchRoot()
 
-    // Ildiz tugun `body`ning bevosita farzandi — subtree kuzatish shart emas.
-    bodyObserver = new MutationObserver(scheduleCheck)
-    bodyObserver.observe(document.body, { childList: true })
-
     // Interval — observer yetib bormaydigan holatlar uchun: stylesheet qoidasi
     // o'chirilishi, ota elementdagi `transform`/`filter` o'zgarishi va h.k.
     timer = setInterval(check, CHECK_INTERVAL)
@@ -323,11 +342,12 @@ export const useWatermarkGuard = ({ getRoot, isActive, getTilesStyle }) => {
   )
 
   onBeforeUnmount(() => {
-    bodyObserver?.disconnect()
     rootObserver?.disconnect()
-    bodyObserver = null
+    parentObserver?.disconnect()
     rootObserver = null
+    parentObserver = null
     observedRoot = null
+    observedParent = null
     if (timer) clearInterval(timer)
     timer = null
     window.removeEventListener('resize', scheduleCheck)
