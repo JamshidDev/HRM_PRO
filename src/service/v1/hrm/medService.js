@@ -22,15 +22,10 @@ const _delete = async (payload) => {
   return await axios.delete(`/v1/hr/worker-meds/${payload.id}`)
 }
 
-const _dashboard = async (payload) => {
-  return await axios.get(`/v1/med/dashboard`, { params: payload?.params })
-}
-
 export default {
   _index,
   _create,
   _update,
   _delete,
-  _show,
-  _dashboard
+  _show
 }

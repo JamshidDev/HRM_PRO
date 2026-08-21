@@ -37,28 +37,9 @@ export const useMedStore = defineStore('medStore', {
         name: 'medPage.tab.candidate'
       }
     ],
-    activeTab: 1,
-    panelId: 1,
-    dashboardLoading: false,
-    dashboardInfo: null
+    activeTab: 1
   }),
   actions: {
-    _dashboard() {
-      this.dashboardLoading = true
-      $ApiService.medService
-        ._dashboard()
-        .then((res) => {
-          this.dashboardInfo = {
-            1: res.data.data.medCount,
-            2: res.data.data.polyclinics,
-            3: res.data.data.sendedWorkers,
-            4: res.data.data.sendedWorkersByYear
-          }
-        })
-        .finally(() => {
-          this.dashboardLoading = false
-        })
-    },
     _index() {
       this.loading = true
       const params = {
