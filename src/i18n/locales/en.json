@@ -629,6 +629,13 @@
     }
   },
   "profilePage": {
+    "copy": "Copy",
+    "copied": "Copied",
+    "roles": {
+      "title": "Roles and organizations",
+      "current": "Current",
+      "empty": "No roles assigned"
+    },
     "account": {
       "title": "Account information",
       "warningText": "For account security, regularly update your account details. This helps protect against unauthorized access."
@@ -639,6 +646,7 @@
     "tabs": {
       "profileInfo": "Account info",
       "notification": "Notifications",
+      "command": "Order details",
       "secure": "Security",
       "actionHistory": "Action history",
       "social": {
@@ -663,6 +671,8 @@
       "lastName": "Last name",
       "firstName": "First name",
       "middleName": "Middle name",
+      "phone": "Phone number",
+      "pin": "PIN",
       "password": "Password",
       "confirmPassword": "Confirm password"
     }
@@ -2758,7 +2768,10 @@
       "closeToBlock": "Block"
     },
     "confirmQuestion": "Confirm?",
-    "cancelConfirmQuestion": "Cancel confirmation? Re-upload will be enabled."
+    "cancelConfirmQuestion": "Cancel confirmation? Re-upload will be enabled.",
+    "cancelConfirm": "Cancel confirmation",
+    "bulkSelected": "{n} organizations selected",
+    "bulkSkipped": "{n} organizations skipped (error or no data)"
   },
   "instructionPage": {
     "name": "Instructions",
@@ -2775,10 +2788,46 @@
     }
   },
   "monthReport": {
+    "threshold": {
+      "title": "Threshold analysis (ved range)",
+      "fromCode": "From code",
+      "toCode": "To code",
+      "excludeCodes": "Excluded codes",
+      "excludePh": "Select a code or search by number",
+      "excludeHint": "Ved codes excluded from the range (e.g. 270, 321)",
+      "amounts": "Threshold amounts (1-5)",
+      "amountPh": "e.g. 10000000",
+      "addAmount": "Add amount",
+      "atLeastOneAmount": "Enter at least one threshold amount",
+      "compute": "Calculate",
+      "selectedCodes": "Selected veds",
+      "totalWorkers": "Total workers in month",
+      "amount": "Amount (above)",
+      "count": "Workers count",
+      "export": "Export to Excel"
+    },
+    "vedReport": {
+      "tab": "By veds",
+      "tabWorkers": "Workers",
+      "fromMonth": "From month",
+      "toMonth": "To month",
+      "codes": "Veds",
+      "selectCodes": "Select veds",
+      "organization": "Organization",
+      "department": "Department",
+      "position": "Position",
+      "monthsCount": "Months count",
+      "times": "Times",
+      "amount": "Amount",
+      "export": "Export to Excel",
+      "fio": "Full name",
+      "noData": "No data"
+    },
     "name": "Monthly report",
     "createTitle": "Full details",
     "exportTitle": "Export panel",
     "refreshDescription": "Re-check PINs",
+    "exportFiltered": "Export to Excel (filtered)",
     "tab": {
       "multipleSalary": "Upload employees with multiple salaries",
       "exportWithCode": "Export by payment code",
@@ -4560,5 +4609,74 @@
       "done": "Done",
       "error": "Error"
     }
+  },
+  "docxEditor": {
+    "title": "Edit v2",
+    "save": "Save",
+    "sign": "Sign",
+    "saved": "Document saved",
+    "unsaved": "Unsaved changes",
+    "confirmations": "Approvers",
+    "saving": "Saving…",
+    "tabs": {
+      "document": "Main document",
+      "confirmations": "Approvers",
+      "attachments": "Attachments"
+    }
+  },
+  "audit": {
+    "name": "Change history",
+    "filter": {
+      "page": "Page",
+      "status": "Change type",
+      "user": "Changed by",
+      "period": "Period",
+      "from": "From",
+      "to": "To",
+      "allStatuses": "All",
+      "allUsers": "All"
+    },
+    "table": {
+      "user": "Employee",
+      "status": "Status",
+      "impersonatedBy": "Signed in as {name}",
+      "view": "View",
+      "time": "Time",
+      "page": "Page"
+    },
+    "status": {
+      "create": "Created",
+      "update": "Updated",
+      "delete": "Deleted",
+      "restore": "Restored"
+    },
+    "channel": {
+      "web": "Web",
+      "mobile": "Mobile",
+      "qr": "QR",
+      "sudo": "On behalf of admin",
+      "integration": "Integration",
+      "system": "System",
+      "console": "Console"
+    },
+    "detail": {
+      "title": "Change details",
+      "before": "Before",
+      "after": "After",
+      "noBefore": "New record — no previous data",
+      "noAfter": "Record deleted",
+      "system": "System",
+      "impersonated": "{admin} (admin) signed in as {user} and made this change",
+      "performer": "Performed by",
+      "organization": "Organization",
+      "channel": "Sign-in channel",
+      "ip": "IP address",
+      "userAgent": "Device / browser",
+      "empty": "No changes found for this record",
+      "moreInfo": "More info",
+      "expandAll": "Expand cards",
+      "collapseAll": "Collapse cards"
+    },
+    "historyBtn": "History"
   }
 }

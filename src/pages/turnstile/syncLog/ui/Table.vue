@@ -23,14 +23,14 @@
   }
 
   const onView = (row) => {
-    if (!accStore.checkAction(accStore.pn.turnstileHikCentralSyncWrite)) return
+    if (!accStore.checkAction(accStore.pn.turnstileHikCentralSyncRead)) return
     store.elementId = row.id
     store._show()
     store.visible = true
   }
 
   const onOfflineDevices = (row) => {
-    if (!accStore.checkAction(accStore.pn.turnstileHikCentralSyncWrite)) return
+    if (!accStore.checkAction(accStore.pn.turnstileHikCentralSyncRead)) return
     store.elementId = row.id
     store._offlineDeviceList()
     store.offlineDeviceVisible = true

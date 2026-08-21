@@ -103,6 +103,11 @@ export const appPermissions = {
   hrWorkersWrite: 'hr-workers-write',
   hrWorkersPassword: 'hr-workers-password',
   hrWorkersRead: 'hr-workers-read',
+  // JSHSHIR bo'yicha xodimni tekshirish (`GET /hr/check-worker`) — xodim qo'shishda
+  // va turniket kartochkasida ishlatiladi. Backend @Permission bilan enforce qiladi.
+  hrCheckWorker: 'hr-check-worker',
+  // Kengaytirilgan xodim qidiruvi (`GET /hr/search-workers`).
+  filterSearchWorkers: 'filter-search-workers',
 
   // Guvohnomalar ro'yxati sahifasi — xodimlar ruxsatidan AJRALGAN.
   hrCertificatesRead: 'hr-certificates-read',
@@ -356,8 +361,8 @@ export const appPermissions = {
   // Oylik (salary-1c) bo'limi — faqat admin belgilagan xodimlar (tor ruxsat, migr 0077).
   salary1cAccess: 'salary-1c-access',
   // Tarif setkasi (tariff-grid) — faqat admin belgilagan xodimlar (tor ruxsat, migr 0080).
-  tariffGridAccess: 'tariff-grid-access',
-  economistDashboard: 'economist-dashboard',
+  tariffGridAccess: 'tariff-grid-access-read',
+  economistDashboard: 'economist-dashboard-read',
   economistWorkerCategories: 'economist-worker-categories',
   economistWorkerCategoriesRead: 'economist-worker-categories-read',
   economistWorkerCategoriesWrite: 'economist-worker-categories-write',

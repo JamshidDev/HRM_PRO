@@ -330,6 +330,14 @@
           </div>
         </n-popover>
       </div>
+
+      <!-- Qatordagi ENG O'NG element. `filterAction` dan farqi: u qo'shish
+           tugmasi va filtr tugmasidan OLDIN chiqadi, bu esa hammasidan keyin.
+           Slot bo'sh bo'lsa hech narsa render qilinmaydi — mavjud sahifalar
+           ko'rinishi o'zgarmaydi. -->
+      <div class="ui-filter-bar__end" v-if="slots.filterEnd">
+        <slot name="filterEnd"></slot>
+      </div>
     </div>
     <div v-if="hasFullFilterSlot" class="w-full">
       <slot name="fullFilterContent"></slot>

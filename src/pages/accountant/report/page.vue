@@ -5,6 +5,7 @@
   import ListItem from './ui/ListItem.vue'
   import createForm from './ui/createForm.vue'
   import Filter from './ui/Filter.vue'
+  import BulkConfirmBar from './ui/BulkConfirmBar.vue'
   import CommentModal from './ui/CommentModal.vue'
   import BulkOnesModal from './ui/BulkOnesModal.vue'
   import ReportStatusModal from './ui/ReportStatusModal.vue'
@@ -30,6 +31,9 @@
     <div class="w-full grid grid-cols-12">
       <div class="col-span-12 mb-4">
         <Filter />
+      </div>
+      <div class="col-span-12">
+        <BulkConfirmBar />
       </div>
       <div class="col-span-12 lg:col-span-6">
         <TreeOrg />

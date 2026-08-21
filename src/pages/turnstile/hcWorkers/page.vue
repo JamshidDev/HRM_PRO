@@ -17,7 +17,7 @@
   const accStore = useAccountStore()
 
   onMounted(() => {
-    if (!accStore.checkAction(accStore.pn.turnstileHikCentralWorkers)) return
+    if (!accStore.checkAction(accStore.pn.turnstileHikCentralWorkersRead)) return
     store.params.page = 1
     store.params.per_page = 10
     store.params.search = null

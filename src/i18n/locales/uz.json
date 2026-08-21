@@ -645,6 +645,13 @@
     }
   },
   "profilePage": {
+    "copy": "Nusxalash",
+    "copied": "Nusxalandi",
+    "roles": {
+      "title": "Rollar va korxonalar",
+      "current": "Joriy",
+      "empty": "Rol biriktirilmagan"
+    },
     "account": {
       "title": "Hisob ma'lumotlari",
       "warningText": "Hisobingiz xavfsizligini ta'minlash maqsadida akkaunt ma'lumotlaringizni muntazam ravishda yangilab turishingiz tavsiya etiladi. Bu choralar hisobingizni ruxsatsiz kirishlardan himoya qilishga yordam beradi."
@@ -655,6 +662,7 @@
     "tabs": {
       "profileInfo": "Hisob ma'lumotlar",
       "notification": "Bildirishnomalar",
+      "command": "Buyruq ma'lumotlari",
       "secure": "Xavfsizlik",
       "actionHistory": "Amallar tarixi",
       "social": {
@@ -679,6 +687,8 @@
       "lastName": "Familiya",
       "firstName": "Ism",
       "middleName": "Sharif",
+      "phone": "Telefon raqami",
+      "pin": "JSHSHIR",
       "password": "Parol",
       "confirmPassword": "Parolni takrorlang"
     }
@@ -2785,7 +2795,10 @@
       "closeToBlock": "Ochish"
     },
     "confirmQuestion": "Tasdiqlaysizmi?",
-    "cancelConfirmQuestion": "Tasdiqni bekor qilasizmi? Qayta yuklash imkoni ochiladi."
+    "cancelConfirmQuestion": "Tasdiqni bekor qilasizmi? Qayta yuklash imkoni ochiladi.",
+    "cancelConfirm": "Tasdiqni bekor qilish",
+    "bulkSelected": "{n} ta korxona tanlandi",
+    "bulkSkipped": "{n} ta korxona o'tkazib yuborildi (xato yoki ma'lumot yo'q)"
   },
   "instructionPage": {
     "name": "Instruksiya",
@@ -2802,10 +2815,46 @@
     }
   },
   "monthReport": {
+    "threshold": {
+      "title": "Chegara tahlili (ved oralig'i)",
+      "fromCode": "Boshlanish kodi",
+      "toCode": "Oxirgi kod",
+      "excludeCodes": "Istisno kodlar",
+      "excludePh": "Kod tanlang yoki raqam bo'yicha qidiring",
+      "excludeHint": "Oraliqdan chiqariladigan ved kodlari (masalan: 270, 321)",
+      "amounts": "Chegara summalar (1-5 ta)",
+      "amountPh": "Masalan: 10000000",
+      "addAmount": "Summa qo'shish",
+      "atLeastOneAmount": "Kamida bitta chegara summa kiriting",
+      "compute": "Hisoblash",
+      "selectedCodes": "Tanlangan vedlar",
+      "totalWorkers": "Oydagi jami xodim",
+      "amount": "Summa (dan yuqori)",
+      "count": "Xodimlar soni",
+      "export": "Excelga yuklash"
+    },
+    "vedReport": {
+      "tab": "Ved kesimida",
+      "tabWorkers": "Xodimlar",
+      "fromMonth": "Boshlanish oyi",
+      "toMonth": "Oxirgi oy",
+      "codes": "Vedlar",
+      "selectCodes": "Vedlarni tanlang",
+      "organization": "Korxona",
+      "department": "Bo'lim",
+      "position": "Lavozim",
+      "monthsCount": "Oylar soni",
+      "times": "Marta",
+      "amount": "Summa",
+      "export": "Excelga yuklash",
+      "fio": "F.I.O.",
+      "noData": "Ma'lumot yo'q"
+    },
     "name": "Oylik hisobot",
     "createTitle": "To'liq ma'lumot",
     "exportTitle": "Eksport paneli",
     "refreshDescription": "JSHSHIRlarni qayta tekshirish",
+    "exportFiltered": "Excelga yuklash (filtr bo'yicha)",
     "tab": {
       "multipleSalary": "Birdan ortiq joydan oylik olayotgan xodimlarni ro'yxatini yuklash",
       "exportWithCode": "To'lov kodi bo'yicha yuklash",
@@ -4604,5 +4653,74 @@
       "done": "Bajarilgan",
       "error": "Xatolik"
     }
+  },
+  "docxEditor": {
+    "title": "Tahrirlash v2",
+    "save": "Saqlash",
+    "sign": "Imzolash",
+    "saved": "Hujjat saqlandi",
+    "unsaved": "Saqlanmagan o'zgarish",
+    "confirmations": "Kelishuvchilar",
+    "saving": "Saqlanmoqda…",
+    "tabs": {
+      "document": "Asosiy hujjat",
+      "confirmations": "Kelishuvchilar",
+      "attachments": "Ilovalar"
+    }
+  },
+  "audit": {
+    "name": "O'zgarishlar tarixi",
+    "filter": {
+      "page": "Sahifa",
+      "status": "O'zgarish turi",
+      "user": "Kim o'zgartirdi",
+      "period": "Davr",
+      "from": "Dan",
+      "to": "Gacha",
+      "allStatuses": "Barchasi",
+      "allUsers": "Barchasi"
+    },
+    "table": {
+      "user": "Xodim",
+      "status": "Holat",
+      "impersonatedBy": "{name} nomidan kirilgan",
+      "view": "Ko'rish",
+      "time": "Vaqt",
+      "page": "Sahifa"
+    },
+    "status": {
+      "create": "Yaratildi",
+      "update": "O'zgartirildi",
+      "delete": "O'chirildi",
+      "restore": "Tiklandi"
+    },
+    "channel": {
+      "web": "Veb",
+      "mobile": "Mobil",
+      "qr": "QR",
+      "sudo": "Admin nomidan",
+      "integration": "Integratsiya",
+      "system": "Tizim",
+      "console": "Konsol"
+    },
+    "detail": {
+      "title": "O'zgarish tafsiloti",
+      "before": "Oldin",
+      "after": "Keyin",
+      "noBefore": "Yangi yozuv — oldingi ma'lumot yo'q",
+      "noAfter": "Yozuv o'chirildi",
+      "system": "Tizim",
+      "impersonated": "{admin} (admin) {user} nomidan kirib bu o'zgarishni qilgan",
+      "performer": "Bajaruvchi",
+      "organization": "Korxona",
+      "channel": "Kirish kanali",
+      "ip": "IP manzil",
+      "userAgent": "Qurilma / brauzer",
+      "empty": "Bu yozuv bo'yicha o'zgarish topilmadi",
+      "moreInfo": "Qo'shimcha ma'lumot",
+      "expandAll": "Kartochkalarni ochish",
+      "collapseAll": "Kartochkalarni yig'ish"
+    },
+    "historyBtn": "Tarix"
   }
 }

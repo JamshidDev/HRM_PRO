@@ -39,6 +39,7 @@ export const AppPaths = {
   Camera: '/camera',
   Result: '/result',
   Certificate: '/certificate',
+  Audit: '/audit',
   Department: '/department',
   TimeSheet: '/timesheet',
   TimesheetDepartment: '/timesheet-department',
