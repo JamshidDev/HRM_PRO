@@ -2751,7 +2751,10 @@
       "closeToBlock": "Block"
     },
     "confirmQuestion": "Confirm?",
-    "cancelConfirmQuestion": "Cancel confirmation? Re-upload will be enabled."
+    "cancelConfirmQuestion": "Cancel confirmation? Re-upload will be enabled.",
+    "cancelConfirm": "Cancel confirmation",
+    "bulkSelected": "{n} organizations selected",
+    "bulkSkipped": "{n} organizations skipped (error or no data)"
   },
   "instructionPage": {
     "name": "Instructions",
@@ -2768,10 +2771,46 @@
     }
   },
   "monthReport": {
+    "threshold": {
+      "title": "Threshold analysis (ved range)",
+      "fromCode": "From code",
+      "toCode": "To code",
+      "excludeCodes": "Excluded codes",
+      "excludePh": "Select a code or search by number",
+      "excludeHint": "Ved codes excluded from the range (e.g. 270, 321)",
+      "amounts": "Threshold amounts (1-5)",
+      "amountPh": "e.g. 10000000",
+      "addAmount": "Add amount",
+      "atLeastOneAmount": "Enter at least one threshold amount",
+      "compute": "Calculate",
+      "selectedCodes": "Selected veds",
+      "totalWorkers": "Total workers in month",
+      "amount": "Amount (above)",
+      "count": "Workers count",
+      "export": "Export to Excel"
+    },
+    "vedReport": {
+      "tab": "By veds",
+      "tabWorkers": "Workers",
+      "fromMonth": "From month",
+      "toMonth": "To month",
+      "codes": "Veds",
+      "selectCodes": "Select veds",
+      "organization": "Organization",
+      "department": "Department",
+      "position": "Position",
+      "monthsCount": "Months count",
+      "times": "Times",
+      "amount": "Amount",
+      "export": "Export to Excel",
+      "fio": "Full name",
+      "noData": "No data"
+    },
     "name": "Monthly report",
     "createTitle": "Full details",
     "exportTitle": "Export panel",
     "refreshDescription": "Re-check PINs",
+    "exportFiltered": "Export to Excel (filtered)",
     "tab": {
       "multipleSalary": "Upload employees with multiple salaries",
       "exportWithCode": "Export by payment code",

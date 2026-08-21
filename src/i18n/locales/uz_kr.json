@@ -2557,7 +2557,10 @@
       "closeToBlock": "Очиш"
     },
     "confirmQuestion": "Тасдиқлайсизми?",
-    "cancelConfirmQuestion": "Тасдиқни бекор қиласизми? Қайта юклаш имкони очилади."
+    "cancelConfirmQuestion": "Тасдиқни бекор қиласизми? Қайта юклаш имкони очилади.",
+    "cancelConfirm": "Тасдиқни бекор қилиш",
+    "bulkSelected": "{n} та корхона танланди",
+    "bulkSkipped": "{n} та корхона ўтказиб юборилди (хато ёки маълумот йўқ)"
   },
   "instructionPage": {
     "name": "Инструксия",
@@ -2574,10 +2577,46 @@
     }
   },
   "monthReport": {
+    "threshold": {
+      "title": "Чегара таҳлили (вед оралиғи)",
+      "fromCode": "Бошланиш коди",
+      "toCode": "Охирги код",
+      "excludeCodes": "Истисно кодлар",
+      "excludePh": "Код танланг ёки рақам бўйича қидиринг",
+      "excludeHint": "Оралиқдан чиқариладиган вед кодлари (масалан: 270, 321)",
+      "amounts": "Чегара суммалар (1-5 та)",
+      "amountPh": "Масалан: 10000000",
+      "addAmount": "Сумма қўшиш",
+      "atLeastOneAmount": "Камида битта чегара сумма киритинг",
+      "compute": "Ҳисоблаш",
+      "selectedCodes": "Танланган ведлар",
+      "totalWorkers": "Ойдаги жами ходим",
+      "amount": "Сумма (дан юқори)",
+      "count": "Ходимлар сони",
+      "export": "Excelга юклаш"
+    },
+    "vedReport": {
+      "tab": "Вед кесимида",
+      "tabWorkers": "Ходимлар",
+      "fromMonth": "Бошланиш ойи",
+      "toMonth": "Охирги ой",
+      "codes": "Ведлар",
+      "selectCodes": "Ведларни танланг",
+      "organization": "Корхона",
+      "department": "Бўлим",
+      "position": "Лавозим",
+      "monthsCount": "Ойлар сони",
+      "times": "Марта",
+      "amount": "Сумма",
+      "export": "Excelга юклаш",
+      "fio": "Ф.И.Ш.",
+      "noData": "Маълумот йўқ"
+    },
     "name": "Ойлик ҳисобот",
     "createTitle": "Тўлиқ маълумот",
     "exportTitle": "Экспорт панели",
     "refreshDescription": "ЖШШИРларни қайта текшириш",
+    "exportFiltered": "Excelга юклаш (филтр бўйича)",
     "tab": {
       "multipleSalary": "Бирдан ортиқ жойдан ойлик олаётган ходимларни рўйхатини юклаш",
       "exportWithCode": "Тўлов коди бўйича юклаш",
