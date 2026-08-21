@@ -72,7 +72,9 @@
   // Odatda `router.back()` yetarli, lekin sahifa to'g'ridan-to'g'ri havola bilan
   // ochilgan bo'lsa (brauzer tarixi bo'sh) shu xarita bo'yicha qaytamiz.
   const PAGE_ROUTES = {
-    'hr.departments': Utils.routeHrmPathMaker(AppPaths.Department)
+    'hr.departments': Utils.routeHrmPathMaker(AppPaths.Department),
+    'structure.positions': Utils.routePathMaker(AppPaths.Position),
+    'hr.department-positions': Utils.routeHrmPathMaker(AppPaths.DepartmentPosition)
   }
 
   const router = useRouter()
