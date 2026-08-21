@@ -2325,21 +2325,10 @@
       "organization": "Korxona",
       "onVacation": "gacha ta'tilda",
       "file": "Fayllar"
-    },
-    "panel": {
-      "panel_one": "Tibbiy ko'rik",
-      "panel_two": "Poliklinikalar",
-      "panel_three": "Ko'rikdagi xodimlar",
-      "panel_four": "Joriy yilda",
-      "selected": "Tanlangan"
     }
   },
   "medInspection": {
-    "name": "Tekshiruvga yuborish",
-    "createTitle": "Tibbiy ko'rikga xodimni yuborish",
-    "updateTitle": "Ma'lumotlarni tahrirlash",
     "form": {
-      "hospital": "Poliklinika",
       "status": "Doktor xulosasi",
       "start_date": "Borish sanasi"
     }
@@ -2882,14 +2871,6 @@
       "amount": "Summa",
       "total": "Jami hisoblandi",
       "out_total": "Jami ushlanma"
-    }
-  },
-  "polyclinic": {
-    "name": "Poliklinikalar",
-    "createTitle": "Poliklinika qo'shish",
-    "updateTitle": "Tahrirlash",
-    "form": {
-      "choosePolyclinic": "Poliklinika tanlang"
     }
   },
   "expiredHealth": {

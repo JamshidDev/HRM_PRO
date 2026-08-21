@@ -24,7 +24,7 @@ export const ENFORCED = new Set([
   'hr-edu-plans-write', 'hr-incentives-read', 'hr-incentives-write', 'hr-tasks-read', 'hr-tasks-write', 'hr-tasks-delete', 'hr-language-certificates-delete', 'hr-language-certificates-read', 'hr-language-certificates-write',
   'hr-leaders-delete', 'hr-leaders-read', 'hr-leaders-write', 'hr-med-delete', 'hr-med-read', 'hr-med-write',
   'hr-monthly-report-delete', 'hr-organization-phones-delete', 'hr-organization-phones-read', 'hr-organization-phones-write', 'hr-pensioners-delete', 'hr-pensioners-read',
-  'hr-pensioners-write', 'hr-polyclinics-delete', 'hr-polyclinics-read', 'hr-polyclinics-write', 'hr-positions-delete', 'hr-positions-read',
+  'hr-pensioners-write', 'hr-positions-delete', 'hr-positions-read',
   'hr-positions-write', 'hr-public-vacancy-delete', 'hr-public-vacancy-read', 'hr-public-vacancy-write', 'hr-report', 'hr-report-delete',
   'hr-report-export-delete', 'hr-table-delete', 'hr-table-read', 'hr-table-write', 'hr-users-active-role', 'hr-users-attach-role',
   'hr-users-detach-role', 'hr-users-password', 'hr-users-read', 'hr-users-update', 'hr-vacation-schedule-delete', 'hr-vacation-schedule-read',
@@ -56,6 +56,10 @@ export const ENFORCED = new Set([
   // Audit 2026-08-12 — granular sahifa amallari (alohida toggle):
   'turnstile-access-levels-sync', 'turnstile-sheets-copy', 'turnstile-sheets-turnstile',
   'turnstile-sheets-replace', 'turnstile-sheets-groups-finish', 'turnstile-schedule-check',
+  // 2026-08-21 — Oylik (1C) + Tarif setkasi tor ruxsatlari (migr 0077/0080/0081).
+  // Rol formasidan (Iqtisodchi tab) grantable bo'lishi uchun. salary-1c-access — yagona
+  // "Ruxsat" toggle; tariff-grid-access-read/write/delete — read/write/delete.
+  'salary-1c-access', 'tariff-grid-access-read', 'tariff-grid-access-write', 'tariff-grid-access-delete',
 ])
 
 // AVTO-GENERATSIYA: backend @Permission (enforce qilinadigan) + frontend AppPermissions
@@ -89,7 +93,7 @@ export const MEANINGFUL = new Set([
   'hr-language-certificates-delete', 'hr-language-certificates-read', 'hr-language-certificates-write', 'hr-leaders', 'hr-leaders-delete', 'hr-leaders-read',
   'hr-leaders-write', 'hr-med', 'hr-med-delete', 'hr-med-read', 'hr-med-write', 'hr-monthly-report',
   'hr-monthly-report-delete', 'hr-organization-phones-delete', 'hr-organization-phones-read', 'hr-organization-phones-write', 'hr-pensioners-delete', 'hr-pensioners-read',
-  'hr-pensioners-write', 'hr-polyclinics-delete', 'hr-polyclinics-read', 'hr-polyclinics-write', 'hr-positions', 'hr-positions-delete',
+  'hr-pensioners-write', 'hr-positions', 'hr-positions-delete',
   'hr-positions-read', 'hr-positions-write', 'hr-public-vacancy', 'hr-public-vacancy-delete', 'hr-public-vacancy-read', 'hr-public-vacancy-write',
   'hr-report', 'hr-report-delete', 'hr-report-export', 'hr-report-export-delete', 'hr-report-management-write', 'hr-report-read',
   'hr-report-write', 'hr-table', 'hr-table-delete', 'hr-table-read', 'hr-table-workers', 'hr-table-workers-read',
@@ -131,6 +135,8 @@ export const MEANINGFUL = new Set([
   'worker-reports', 'worker-reports-read',
   // Audit 2026-08-13 — qurilma sinxronlash alohida ruxsat:
   'turnstile-devices-sync',
+  // 2026-08-21 — Oylik (1C) + Tarif setkasi tor ruxsatlari (migr 0077/0080/0081).
+  'salary-1c-access', 'tariff-grid-access-read', 'tariff-grid-access-write', 'tariff-grid-access-delete',
 ])
 
 export const PERMISSION_GROUPS = [
@@ -190,7 +196,6 @@ export const PERMISSION_GROUPS = [
       // Backend enforce qiladigan, lekin guruhi bo'lmagani uchun faqat "Boshqa"
       // ro'yxatida xom slug ko'rinishida turgan sohalar.
       { prefix: 'hr-pensioners', label: 'pensioner.name' },
-      { prefix: 'hr-polyclinics', label: 'polyclinic.name' },
       { prefix: 'hr-language-certificates', label: 'languageCertificatePage.title' },
       { prefix: 'hr-organization-phones', label: 'content.phone' },
     ],
@@ -380,6 +385,16 @@ export const PERMISSION_GROUPS = [
       { prefix: 'economist-tax-four', label: 'taxFour.name' },
       { prefix: 'economist-tax-five', label: 'taxFive.name' },
       { prefix: 'economist-pension-payments', label: 'pensionPayment.name' },
+      // Tarif setkasi — TOR ruxsat (migr 0080/0081). Read/write/delete; bazaviy
+      // `tariff-grid-access` (menyu) o'rniga frontend/route `-read` tekshiradi.
+      { prefix: 'tariff-grid-access', label: 'tariffGrid.name' },
+      // Oylik hisobot (1C) — TOR ruxsat (migr 0077). Yagona "Ruxsat" toggle
+      // (read/write/delete emas — kirish = to'liq: ko'rish + tortish).
+      {
+        prefix: 'salary-1c-access',
+        label: 'salary1c.name',
+        actions: [{ slug: 'salary-1c-access', label: 'Ruxsat' }],
+      },
       { prefix: 'hr-report', label: 'report.name' },
       { prefix: 'economist-staffing-approve', label: 'staffingApproval.name' },
     ],

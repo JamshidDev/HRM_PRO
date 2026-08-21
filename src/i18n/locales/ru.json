@@ -2311,21 +2311,10 @@
       "organization": "Организация",
       "onVacation": "в отпуске до",
       "file": "Файлы"
-    },
-    "panel": {
-      "panel_one": "Медосмотр",
-      "panel_two": "Поликлиники",
-      "panel_three": "Сотрудники на осмотре",
-      "panel_four": "Текущий год",
-      "selected": "Выбрано"
     }
   },
   "medInspection": {
-    "name": "Направить на осмотр",
-    "createTitle": "Направить сотрудника на медосмотр",
-    "updateTitle": "Редактировать данные",
     "form": {
-      "hospital": "Поликлиника",
       "status": "Заключение врача",
       "start_date": "Дата посещения"
     }
@@ -2863,14 +2852,6 @@
       "amount": "Сумма",
       "total": "Всего начислено",
       "out_total": "Всего удержано"
-    }
-  },
-  "polyclinic": {
-    "name": "Поликлиники",
-    "createTitle": "Добавить поликлинику",
-    "updateTitle": "Редактировать",
-    "form": {
-      "choosePolyclinic": "Выберите поликлинику"
     }
   },
   "expiredHealth": {

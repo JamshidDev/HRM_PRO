@@ -2104,21 +2104,10 @@
       "organization": "Корхона",
       "onVacation": "гача таътилда",
       "file": "Файллар"
-    },
-    "panel": {
-      "panel_one": "Тиббий кўрик",
-      "panel_two": "Поликлиникалар",
-      "panel_three": "Кўрикдаги ходимлар",
-      "panel_four": "Жорий йилда",
-      "selected": "Танланган"
     }
   },
   "medInspection": {
-    "name": "Текширувга юбориш",
-    "createTitle": "Тиббий кўрикга ходимни юбориш",
-    "updateTitle": "Маълумотларни таҳрирлаш",
     "form": {
-      "hospital": "Поликлиника",
       "status": "Доктор хулосаси",
       "start_date": "Бориш санаси"
     }
@@ -2661,14 +2650,6 @@
       "amount": "Сумма",
       "total": "Жами ҳисобланди",
       "out_total": "Жами ушланма"
-    }
-  },
-  "polyclinic": {
-    "name": "Поликлиникалар",
-    "createTitle": "Поликлиника қўшиш",
-    "updateTitle": "Таҳрирлаш",
-    "form": {
-      "choosePolyclinic": "Поликлиника танланг"
     }
   },
   "expiredHealth": {
