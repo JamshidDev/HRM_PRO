@@ -4673,6 +4673,8 @@
       "expandAll": "Expand cards",
       "collapseAll": "Collapse cards"
     },
-    "historyBtn": "History"
+    "historyBtn": "History",
+    "showMasked": "Reveal masked",
+    "hideMasked": "Hide masked"
   }
 }

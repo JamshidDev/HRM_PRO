@@ -7,13 +7,18 @@
   } from '@/store/modules/index.js'
   import { UINSelect, UIPageFilter, UISelect } from '@/components/index.js'
   import { useAppBreakpoints } from '@/composables/index.js'
-  import { ChevronDown20Regular, ChevronUp20Regular, Dismiss16Regular } from '@vicons/fluent'
+  import {
+    ArrowCounterclockwise20Regular,
+    ChevronDown20Regular,
+    ChevronUp20Regular,
+    Dismiss16Regular
+  } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
-  import { appPermissions, useDebounce } from '@/utils/index.js'
+  import { AppPaths, appPermissions, useDebounce } from '@/utils/index.js'
   import contractIcon from '@/assets/icons/contract.svg?url'
   import reportIcon from '@/assets/icons/reportIcon.svg?url'
   import exportIcon from '@/assets/icons/export.svg?url'
-  import { onBeforeRouteLeave } from 'vue-router'
+  import { onBeforeRouteLeave, useRouter } from 'vue-router'
 
   const store = useWorkerStore()
   const accStore = useAccountStore()
@@ -35,6 +40,14 @@
   const onSearchDepartmentEv = (v) => {
     store.filterDepParams.search = v
     store._getFilterDepartments()
+  }
+
+  // [↺ Tarix] — barcha xodimlar bo'yicha o'zgarishlar tarixi. Bitta xodimniki
+  // kartochkadagi tugmadan ochiladi (`trigger_id` bilan). Ruxsat tekshirilmaydi:
+  // tarix sahifasi ochiq, xodim sahifasining o'zi `hr-workers-read` bilan gate.
+  const router = useRouter()
+  const onHistory = () => {
+    router.push({ path: AppPaths.Audit, query: { trigger_name: 'hr.workers' } })
   }
 
   const onAdd = () => {
@@ -279,6 +292,13 @@
             <img class="worker-action-icon" :src="contractIcon" alt="" />
           </template>
           {{ $t('workerPage.filter.contract') }}
+        </n-button>
+
+        <n-button secondary @click="onHistory">
+          <template #icon>
+            <n-icon><ArrowCounterclockwise20Regular /></n-icon>
+          </template>
+          {{ $t('audit.historyBtn') }}
         </n-button>
 
         <!-- Belgilash rejimi YOQILMAGAN — bitta tugma. Yoqilgach xuddi shu tugma

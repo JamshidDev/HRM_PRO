@@ -4441,6 +4441,8 @@
       "expandAll": "Карточкаларни очиш",
       "collapseAll": "Карточкаларни йиғиш"
     },
-    "historyBtn": "Тарих"
+    "historyBtn": "Тарих",
+    "showMasked": "Маскани очиш",
+    "hideMasked": "Маскани ёпиш"
   }
 }

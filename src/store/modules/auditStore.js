@@ -45,6 +45,9 @@ export const useAuditStore = defineStore('auditStore', {
     },
 
     params: {
+      // Maskalangan qiymatlarni to'liq ko'rsatish (`audit-unmask` ruxsati bilan).
+      // Ruxsat bo'lmasa backend bayroqni jim e'tiborsiz qoldiradi.
+      unmask: null,
       trigger_name: null,
       trigger_id: null,
       statuses: null,
@@ -78,8 +81,17 @@ export const useAuditStore = defineStore('auditStore', {
       this.params.date_from = null
       this.params.date_to = null
       this.params.page = 1
+      this.params.unmask = null
       this.list = []
       this.totalItems = 0
+    },
+
+    // JSHSHIR/pasport kabi maydonlar odatda `31**********45` ko'rinishida keladi.
+    // Admin (`audit-unmask`) shu tugma bilan to'liq qiymatni oladi.
+    toggleUnmask() {
+      this.params.unmask = this.params.unmask ? null : 1
+      this.params.page = 1
+      this._index()
     },
 
     _index() {
