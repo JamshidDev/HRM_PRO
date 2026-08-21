@@ -26,11 +26,8 @@ export const auditCards = [
     title: 'dashboardPage.audit.relativesShortage',
     countKey: 'relatives_shortage'
   },
-  {
-    type: AuditType.RELATIVES_WITHOUT_JSHSHIR,
-    title: 'dashboardPage.audit.relativesWithoutJshshir',
-    countKey: 'relatives_without_jshshir'
-  },
+  // «Yaqin qarindoshlari PINFL bo'yicha» audit OLIB TASHLANDI — qarindoshlarda
+  // endi PINFL kiritilmaydi (input/jadval olib tashlangan), audit ma'nosini yo'qotdi.
   {
     type: AuditType.POSITION_CERTIFICATE_MISSING,
     title: 'dashboardPage.audit.positionCertificateMissing',
