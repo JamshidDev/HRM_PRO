@@ -1,23 +1,26 @@
 <script setup>
   /**
-   * Figma v3 · Tab 2 "Ishga qabul va ishdan bo'shatish" — oylik dinamika.
+   * Figma v3 · Tab 3 "Rag'batlantirish va intizomiy jazo — oyma-oy"
+   * (node 2959:59787).
    *
-   * Maketdagi grafik konteyneri (`bg-secondary`, 12px radius) va o'q uslublari
-   * bilan bir xil: uzuq chiziqli setka, `--fig-text-tertiary` o'q yozuvlari,
-   * mavzu almashganda ranglar tokenlardan qayta o'qiladi.
+   * Tepada ikkita ko'rsatkich bloki (yashil rag'batlantirish, qizil jazo) —
+   * yillik jami va o'tgan yilga nisbatan o'zgarish; ostida 12 oy bo'yicha
+   * ikki seriyali guruhli ustunlar.
    */
   import VChart from 'vue-echarts'
   import { use } from 'echarts/core'
   import { BarChart } from 'echarts/charts'
-  import { TooltipComponent, GridComponent, LegendComponent } from 'echarts/components'
+  import { TooltipComponent, GridComponent } from 'echarts/components'
   import { CanvasRenderer } from 'echarts/renderers'
   import HeadMortarboard from '@/assets/icons/hrmDashboard/head-mortarboard.svg'
   import FigPanel from '../fig/FigPanel.vue'
+  import FigTrend from '../fig/FigTrend.vue'
   import { useDashboardStore, useAppStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import Utils from '@/utils/Utils.js'
+  import { toCount } from '../../format.js'
 
-  use([TooltipComponent, GridComponent, LegendComponent, BarChart, CanvasRenderer])
+  use([TooltipComponent, GridComponent, BarChart, CanvasRenderer])
 
   defineEmits(['detail'])
 
@@ -28,25 +31,22 @@
   const tokenColor = (name) =>
     getComputedStyle(document.documentElement).getPropertyValue(name).trim()
 
-  /** Kontraktga kirmagan legacy maydon: oylik yangi/tugagan shartnomalar. */
-  const contracts = computed(() => store.legacy.contracts || [])
+  const card = computed(() => store.attendance.incentive_vs_discipline_monthly || {})
+  const isMock = computed(() => store.isMock('attendance', 'incentive_vs_discipline_monthly'))
 
-  const months = computed(() =>
-    contracts.value.map((item) => Utils.getMonthNameByKey(item.month.split('-')[1]))
-  )
+  const series = computed(() => card.value.series || [])
 
-  const series = computed(() => [
+  /** Tepadagi ikki blok: nomi, rangi, jami va trend. */
+  const totals = computed(() => [
     {
-      key: 'incoming',
+      key: 'incentives',
       token: '--fig-icon-green',
-      value: contracts.value.reduce((sum, item) => sum + Number(item.new_contracts || 0), 0),
-      data: contracts.value.map((item) => Number(item.new_contracts || 0))
+      metric: card.value.incentives?.total
     },
     {
-      key: 'outgoing',
+      key: 'disciplinary',
       token: '--fig-icon-red',
-      value: contracts.value.reduce((sum, item) => sum + Number(item.ended_contracts || 0), 0),
-      data: contracts.value.map((item) => Number(item.ended_contracts || 0))
+      metric: card.value.disciplinary?.total
     }
   ])
 
@@ -70,7 +70,7 @@
       },
       xAxis: {
         type: 'category',
-        data: months.value,
+        data: series.value.map((item) => Utils.getMonthNameByKey(String(item.month).padStart(2, '0'))),
         axisLine: { show: false },
         axisTick: { show: false },
         axisLabel: { color: axis, fontSize: 11 }
@@ -80,11 +80,11 @@
         axisLabel: { color: axis, fontSize: 11 },
         splitLine: { lineStyle: { color: split, type: 'dashed' } }
       },
-      series: series.value.map((item) => ({
-        name: t(`dashboardPage.yearly.${item.key}`),
+      series: totals.value.map((item) => ({
+        name: t(`dashboardPage.monthly.${item.key}`),
         type: 'bar',
-        barMaxWidth: 18,
-        data: item.data,
+        barMaxWidth: 14,
+        data: series.value.map((row) => Number(row[item.key] || 0)),
         itemStyle: { color: tokenColor(item.token), borderRadius: [6, 6, 0, 0] }
       }))
     }
@@ -95,17 +95,18 @@
   <FigPanel
     tint="indigo"
     :icon="HeadMortarboard"
-    :title="$t('dashboardPage.yearly.title')"
+    :title="$t('dashboardPage.monthly.title')"
     :action-text="$t('content.detail')"
+    :mock="isMock"
     :inner="false"
     @action="$emit('detail')"
   >
-    <!-- ikkita ko'rsatkich legendasi: nuqta + nom + yillik jami -->
+    <!-- ikkita ko'rsatkich bloki: nuqta + nom + yillik jami + trend -->
     <div class="flex flex-wrap gap-1 px-2 pb-2">
       <div
-        v-for="item in series"
+        v-for="item in totals"
         :key="item.key"
-        class="flex min-w-[160px] flex-1 flex-col justify-center gap-1 px-3"
+        class="flex min-w-[200px] flex-1 flex-col justify-center gap-1 px-3"
       >
         <div class="flex items-center gap-2.5">
           <span
@@ -113,17 +114,18 @@
             :style="{ backgroundColor: `var(${item.token})` }"
           ></span>
           <p class="min-w-0 flex-1 truncate text-[14px] leading-5 text-fig-text-muted">
-            {{ $t(`dashboardPage.yearly.${item.key}`) }}
+            {{ $t(`dashboardPage.monthly.${item.key}`) }}
           </p>
         </div>
         <p class="text-[20px] leading-6 font-semibold whitespace-nowrap text-fig-text-primary">
-          {{ Utils.formatNumberToMoney(item.value) || 0 }}
+          {{ toCount(item.metric?.value) }}
         </p>
+        <FigTrend :metric="item.metric" unit="count" />
       </div>
     </div>
 
     <div class="min-h-[200px] flex-1 rounded-xl bg-fig-bg-secondary p-1">
-      <v-chart autoresize :option="option" class="h-full min-h-[240px] w-full" />
+      <v-chart autoresize :option="option" class="h-full min-h-[220px] w-full" />
     </div>
   </FigPanel>
 </template>

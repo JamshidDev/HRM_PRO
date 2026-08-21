@@ -41,7 +41,11 @@
     innerClass: {
       type: String,
       default: 'px-4 pt-2 pb-1'
-    }
+    },
+    // Ma'lumot `mock.js` dan olinganini bildiruvchi chip. Backend tegishli
+    // maydonni bergan zahoti `store.isMock(...)` `false` qaytaradi va chip
+    // o'zi yo'qoladi — qo'lda olib tashlash kerak emas.
+    mock: Boolean
   })
 
   defineEmits(['action'])
@@ -77,6 +81,13 @@
       >
         {{ title }}
       </p>
+
+      <span
+        v-if="mock"
+        class="shrink-0 rounded bg-fig-bg-tertiary px-1.5 py-0.5 text-[10px] leading-3 font-medium tracking-wide uppercase text-fig-text-disable"
+      >
+        mock
+      </span>
 
       <button
         v-if="actionText"

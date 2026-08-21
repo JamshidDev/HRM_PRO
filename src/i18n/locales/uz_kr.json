@@ -1816,7 +1816,8 @@
     "mainCard": {
       "totalWorker": "Ходимлар сони",
       "man": "Эркаклар сони",
-      "woman": "Аёллар сони"
+      "woman": "Аёллар сони",
+      "fxsh": "ФХШ ходимлари"
     },
     "age": {
       "title": "Ходимларнинг ёши бўйича",
@@ -1855,10 +1856,20 @@
       "expired": "Муддати ўтган"
     },
     "incentive": {
-      "title": "Рағбатлантиришлар"
+      "title": "Рағбатлантиришлар",
+      "types": {
+        "money": "Пул мукофоти",
+        "honorary_certificate": "Фахрий ёрлиқ",
+        "gratitude": "Миннатдорчилик"
+      }
     },
     "disciplinary": {
-      "title": "Интизомий жазолар"
+      "title": "Интизомий жазолар",
+      "types": {
+        "reprimand": "Ҳайфсан",
+        "warning": "Огоҳлантириш",
+        "other": "Бошқа"
+      }
     },
     "position": {
       "title": "Штат бирликлари",
@@ -1932,6 +1943,161 @@
     },
     "vacation": {
       "statusTitle": "Таътил ҳолати — турлари кесимида"
+    },
+    "trend": {
+      "vsLastYear": "ўтган йилга",
+      "days": "кун",
+      "years": "йил",
+      "pp": "п.п."
+    },
+    "headcount": {
+      "title": "Ходимлар сони тренди — 24 ой",
+      "hiredAt": "Қабул санаси"
+    },
+    "today": {
+      "title": "Бугунги ҳолат",
+      "atWorkTitle": "Бугун ишда",
+      "onVacationTitle": "Таътилда",
+      "chronicLateTitle": "Сурункали кечикиш",
+      "share": "Улуш",
+      "onVacation": "Таътилда",
+      "planned": "Режада",
+      "threePlus": "3+ марта",
+      "status": "Ҳолат",
+      "statuses": {
+        "working": "Ишда",
+        "vacation": "Таътилда",
+        "sick_leave": "Касаллик варақаси",
+        "absent": "Сабабсиз"
+      }
+    },
+    "eduLevel": {
+      "vocational_college": "Касб-ҳунар коллежи",
+      "bachelor": "Бакалавр",
+      "general_secondary": "Умумий ўрта",
+      "academic_lyceum": "Академик лицей",
+      "master": "Магистр",
+      "not_specified": "Киритилмаган"
+    },
+    "eduGroup": {
+      "higher": "Олий маълумотли",
+      "general_secondary": "Умумий ўрта",
+      "secondary_special": "Ўрта махсус"
+    },
+    "nationality": {
+      "title": "Ходимларнинг миллати",
+      "column": "Миллати",
+      "items": {
+        "uzbek": "Ўзбек",
+        "tajik": "Тожик",
+        "karakalpak": "Қорақалпоқ",
+        "kazakh": "Қозоқ",
+        "russian": "Рус",
+        "kyrgyz": "Қирғиз",
+        "turkmen": "Туркман",
+        "other": "Бошқа"
+      }
+    },
+    "timeToFill": {
+      "title": "Вакансия ёпилиш муддати",
+      "target": "Мақсад",
+      "longest": "Энг узун"
+    },
+    "tenure": {
+      "title": "Ўртача стаж",
+      "median": "Медиан",
+      "overTen": "10+ йил"
+    },
+    "hiring": {
+      "title": "Ишга қабул — шартнома турлари",
+      "column": "Шартнома тури",
+      "hiredAt": "Қабул санаси",
+      "types": {
+        "permanent": "Муддатсиз",
+        "fixed_term": "Муддатли",
+        "fxsh": "ФХШ",
+        "secondary": "Ўриндош",
+        "temporary": "Вақтинчалик"
+      }
+    },
+    "dismissal": {
+      "title": "Ишдан бўшатиш — асослари",
+      "column": "Бўшатиш асоси",
+      "firedAt": "Бўшатилган сана",
+      "reasons": {
+        "own_will": "Ўз хоҳишига кўра",
+        "contract_ended": "Шартнома тугади",
+        "mutual_agreement": "Тарафлар келишуви",
+        "retirement": "Пенсияга чиқиш",
+        "disciplinary": "Интизомий жазо"
+      }
+    },
+    "staffFact": {
+      "title": "Штат ва факт — бўлинма кесимида",
+      "hint": "Рангли бар — факт, тўқ чизиқ — штат режа",
+      "plan": "Штат режа",
+      "actual": "Факт",
+      "vacant": "Вакант"
+    },
+    "vacancy": {
+      "openTitle": "Очиқ вакансиялар — лавозимлар",
+      "ageTitle": "Вакансия ёши",
+      "others": "Қолган {count} лавозим",
+      "count": "Вакансия",
+      "openedAt": "Очилган сана",
+      "days": "Кун",
+      "state": "Ҳолат",
+      "states": {
+        "active": "Фаол",
+        "finished": "Тугаган"
+      },
+      "buckets": {
+        "lt_10": "10 кундан кам",
+        "10_90": "10–90 кун",
+        "gt_90": "90 кундан ортиқ"
+      }
+    },
+    "events": {
+      "title": "Яқинлашаётган ҳодисалар",
+      "column": "Ҳодиса",
+      "date": "Сана",
+      "days": "{count} кун",
+      "daysLeft": "Қолган кун",
+      "workers": "{count} ходим",
+      "footer": "Бугундан бошлаб кунлар бўйича · жами {count} ҳодиса",
+      "types": {
+        "probation_end": "Синов муддати тугайди",
+        "contract_end": "Шартнома тугайди",
+        "pension_age": "Пенсия ёшига етади",
+        "attestation": "Аттестация муддати"
+      }
+    },
+    "retention": {
+      "title": "Коҳорта — қабул йилига кўра сақланиб қолиш",
+      "cohort": "Қабул йили",
+      "month": "{count} ой",
+      "people": "{count} киши",
+      "hiredAt": "Қабул санаси",
+      "status": "Ҳолат",
+      "statuses": {
+        "active": "Ишлаяпти",
+        "left": "Бўшаган"
+      }
+    },
+    "vacationState": {
+      "used": "Чиққан",
+      "planned": "Режада",
+      "accrued": "Йиғилиб қолган"
+    },
+    "monthly": {
+      "title": "Рағбатлантириш ва интизомий жазо — ойма-ой",
+      "incentives": "Рағбатлантириш",
+      "disciplinary": "Интизомий жазолар",
+      "column": "Тури",
+      "types": {
+        "incentive": "Рағбатлантириш",
+        "disciplinary": "Интизомий жазо"
+      }
     }
   },
   "applicationPage": {

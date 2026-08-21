@@ -10,7 +10,8 @@
   import AuditDetailFilter from './ui/audit/AuditDetailFilter.vue'
   import DashboardSkeleton from './ui/DashboardSkeleton.vue'
 
-  import { DashboardTab, tabCards, tabKpiVariants } from './constants.js'
+  import { DashboardTab, tabCards } from './constants.js'
+  import { buildKpiCards } from './kpi.js'
 
   const { t } = i18n.global
   const store = useDashboardStore()
@@ -36,13 +37,12 @@
   )
 
   // Faol bobning KPI kartalari va kontent kartalari.
-  const kpiCards = computed(() => {
-    const variants = tabKpiVariants[store.activeTab] || []
-    return store.dashboard.mainCard.filter((card) => variants.includes(card.variant))
-  })
-  // Maketda Umumiy bobida to'rtta karta bir qatorda, Kadrlar harakatida esa
-  // ikkitasi butun kenglikni bo'lishadi.
-  const kpiSpan = computed(() => (kpiCards.value.length > 2 ? '12 l:6 xl:3' : '12 l:6'))
+  const kpiCards = computed(() => buildKpiCards(store.activeTab, store.tabData(store.activeTab)))
+  // Maketda Umumiy va Kadrlar harakati boblarida to'rtta karta bir qatorda,
+  // Davomat bobida esa uchtasi kenglikni teng bo'lishadi.
+  const kpiSpan = computed(() =>
+    kpiCards.value.length === 3 ? '12 m:4' : kpiCards.value.length > 2 ? '12 m:6 xl:3' : '12 m:6'
+  )
   const cards = computed(() => tabCards[store.activeTab] || [])
 
   const onTabSelect = (tab) => {
@@ -184,7 +184,11 @@
 
             <n-grid v-else x-gap="8 m:12 l:16" y-gap="8 m:12 l:16" cols="12" responsive="screen">
               <n-grid-item v-for="card in kpiCards" :key="card.variant" :span="kpiSpan">
-                <FigKpiCard :card="card" :variant="card.variant" />
+                <FigKpiCard
+                  :card="card"
+                  :variant="card.variant"
+                  :mock="store.isMock(store.activeTab, card.mockPath)"
+                />
               </n-grid-item>
 
               <n-grid-item v-for="(item, idx) in cards" :key="idx" :span="item.span">
