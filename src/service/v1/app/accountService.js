@@ -32,6 +32,12 @@ const _acceptOffer = async (payload) => {
   return await axios.post(`/v1/user/accept-offer`, {}, config)
 }
 
+// Profil > Xavfsizlik: kirish usulini yoqish/o'chirish (joriy parol bilan tasdiqlanadi).
+// FAQAT web — mobil ilova bu sozlamani o'zgartira olmaydi.
+const _updateLoginMethod = async (payload) => {
+  return await axios.put(`/v1/user/security/login-methods`, payload.data)
+}
+
 export default {
   _index,
   _update,
@@ -40,5 +46,6 @@ export default {
   _changeRole,
   _orgInfo,
   _updateOrgInfo,
-  _acceptOffer
+  _acceptOffer,
+  _updateLoginMethod
 }

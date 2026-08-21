@@ -74,7 +74,6 @@
   const columns = computed(() => [
     { key: 'relative.name', title: t('relativePage.form.relative'), width: 140 },
     { key: 'fullName', title: t('content.fullName'), minWidth: 160 },
-    { key: 'pin', title: t('createWorkerPage.form.pin'), width: 160 },
     { key: 'post_name', title: t('relativePage.form.post_name'), minWidth: 160 },
     { key: 'birthday', title: t('relativePage.form.birthday'), width: 130 },
     { key: 'birth_place', title: t('relativePage.form.birthdayPlace'), minWidth: 160 },
@@ -109,7 +108,6 @@
       <template #empty><UIProfileEmpty /></template>
 
       <template #cell-fullName="{ row }">{{ fullNameOf(row) }}</template>
-      <template #cell-pin="{ row }">{{ Utils.formatPin(row.pin) }}</template>
       <template #cell-birthday="{ row }">{{ Utils.timeOnlyDate(row.birthday) }}</template>
 
       <!-- Maketda nogironlik katagida mavjud toifalar va "Qo'shish" havolasi turadi -->

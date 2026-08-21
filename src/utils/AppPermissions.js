@@ -106,6 +106,10 @@ export const appPermissions = {
   // JSHSHIR bo'yicha xodimni tekshirish (`GET /hr/check-worker`) — xodim qo'shishda
   // va turniket kartochkasida ishlatiladi. Backend @Permission bilan enforce qiladi.
   hrCheckWorker: 'hr-check-worker',
+
+  // O'zgarishlar tarixida maskalangan qiymatni (JSHSHIR, pasport seriyasi)
+  // to'liq ko'rish. Migratsiya 0106 da yaratiladi va faqat Admin roliga beriladi.
+  auditUnmask: 'audit-unmask',
   // Kengaytirilgan xodim qidiruvi (`GET /hr/search-workers`).
   filterSearchWorkers: 'filter-search-workers',
 
