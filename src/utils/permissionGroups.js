@@ -56,6 +56,10 @@ export const ENFORCED = new Set([
   // Audit 2026-08-12 — granular sahifa amallari (alohida toggle):
   'turnstile-access-levels-sync', 'turnstile-sheets-copy', 'turnstile-sheets-turnstile',
   'turnstile-sheets-replace', 'turnstile-sheets-groups-finish', 'turnstile-schedule-check',
+  // 2026-08-21 — Oylik (1C) + Tarif setkasi tor ruxsatlari (migr 0077/0080/0081).
+  // Rol formasidan (Iqtisodchi tab) grantable bo'lishi uchun. salary-1c-access — yagona
+  // "Ruxsat" toggle; tariff-grid-access-read/write/delete — read/write/delete.
+  'salary-1c-access', 'tariff-grid-access-read', 'tariff-grid-access-write', 'tariff-grid-access-delete',
 ])
 
 // AVTO-GENERATSIYA: backend @Permission (enforce qilinadigan) + frontend AppPermissions
@@ -131,6 +135,8 @@ export const MEANINGFUL = new Set([
   'worker-reports', 'worker-reports-read',
   // Audit 2026-08-13 — qurilma sinxronlash alohida ruxsat:
   'turnstile-devices-sync',
+  // 2026-08-21 — Oylik (1C) + Tarif setkasi tor ruxsatlari (migr 0077/0080/0081).
+  'salary-1c-access', 'tariff-grid-access-read', 'tariff-grid-access-write', 'tariff-grid-access-delete',
 ])
 
 export const PERMISSION_GROUPS = [
@@ -380,6 +386,16 @@ export const PERMISSION_GROUPS = [
       { prefix: 'economist-tax-four', label: 'taxFour.name' },
       { prefix: 'economist-tax-five', label: 'taxFive.name' },
       { prefix: 'economist-pension-payments', label: 'pensionPayment.name' },
+      // Tarif setkasi — TOR ruxsat (migr 0080/0081). Read/write/delete; bazaviy
+      // `tariff-grid-access` (menyu) o'rniga frontend/route `-read` tekshiradi.
+      { prefix: 'tariff-grid-access', label: 'tariffGrid.name' },
+      // Oylik hisobot (1C) — TOR ruxsat (migr 0077). Yagona "Ruxsat" toggle
+      // (read/write/delete emas — kirish = to'liq: ko'rish + tortish).
+      {
+        prefix: 'salary-1c-access',
+        label: 'salary1c.name',
+        actions: [{ slug: 'salary-1c-access', label: 'Ruxsat' }],
+      },
       { prefix: 'hr-report', label: 'report.name' },
       { prefix: 'economist-staffing-approve', label: 'staffingApproval.name' },
     ],
