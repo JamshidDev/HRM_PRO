@@ -968,6 +968,12 @@
       "pasport": "Passport data",
       "phone": "Phone numbers"
     },
+    "stepShort": {
+      "personal": "Personal",
+      "pasport": "Passport",
+      "photo": "Candidate photo",
+      "phone": "Phone number"
+    },
     "toast": {
       "warning": {
         "title": "Existing employee",

@@ -985,6 +985,12 @@
       "pasport": "Kandidatning passport ma'lumotlari",
       "phone": "Kandidatning telefon raqam ma'lumotlari"
     },
+    "stepShort": {
+      "personal": "Shaxsiy",
+      "pasport": "Pasport",
+      "photo": "Kandidat rasmi",
+      "phone": "Telefon raqam"
+    },
     "toast": {
       "warning": {
         "title": "Tizimda mavjud xodim",

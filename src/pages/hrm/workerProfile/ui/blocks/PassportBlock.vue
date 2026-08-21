@@ -3,9 +3,7 @@
   import { useAppSetting } from '@/utils/index.js'
   import icons from '@/assets/icons'
   import i18n from '@/i18n/index.js'
-  import { UIDeleteConfirm, UIProfileButton } from '@/components/index.js'
-  import ProfileBlock from '../ProfileBlock.vue'
-  import ProfileField from '../ProfileField.vue'
+  import { UIDeleteConfirm, UIProfileButton, UIFigBlock, UIFigField } from '@/components/index.js'
   import { useWorkerProfileStore } from '@/store/modules/index.js'
 
   /**
@@ -92,7 +90,7 @@
 </script>
 
 <template>
-  <ProfileBlock
+  <UIFigBlock
     :title="
       foreign
         ? $t('createWorkerPage.form.foreignPassportTitle')
@@ -101,24 +99,24 @@
     :icon="icons.figIdCard"
   >
     <div class="profile-grid">
-      <ProfileField
+      <UIFigField
         :label="$t('createWorkerPage.form.serial_number')"
         :value="row.serial_number"
         :editing="editing"
       >
         <n-input v-model:value="row.serial_number" v-mask="`AA #######`" class="w-full" />
-      </ProfileField>
+      </UIFigField>
 
-      <ProfileField
+      <UIFigField
         v-if="foreign"
         :label="$t('createWorkerPage.form.given_place')"
         :value="row.given_place"
         :editing="editing"
       >
         <n-input v-model:value="row.given_place" class="w-full" />
-      </ProfileField>
+      </UIFigField>
 
-      <ProfileField
+      <UIFigField
         :label="$t('createWorkerPage.form.from_date')"
         :value="Utils.timeOnlyDate(row.from_date)"
         :editing="editing"
@@ -129,9 +127,9 @@
           type="date"
           :format="useAppSetting.datePicketFormat"
         />
-      </ProfileField>
+      </UIFigField>
 
-      <ProfileField
+      <UIFigField
         :label="$t('createWorkerPage.form.to_date')"
         :value="Utils.timeOnlyDate(row.to_date)"
         :editing="editing"
@@ -142,16 +140,16 @@
           type="date"
           :format="useAppSetting.datePicketFormat"
         />
-      </ProfileField>
+      </UIFigField>
 
-      <ProfileField
+      <UIFigField
         v-if="!foreign"
         :label="$t('createWorkerPage.form.citizenship')"
         :value="row.address"
         :editing="editing"
       >
         <n-input v-model:value="row.address" class="w-full" />
-      </ProfileField>
+      </UIFigField>
 
       <!-- Maketda oxirgi katak — punktir chegarali fayl qutisi -->
       <div class="flex items-end">
@@ -194,7 +192,7 @@
         <UIProfileButton @click="editing = true">{{ $t('content.edit') }}</UIProfileButton>
       </template>
     </template>
-  </ProfileBlock>
+  </UIFigBlock>
 
   <UIDeleteConfirm v-model:visible="deleteVisible" @confirm="onDelete" />
 </template>

@@ -3,9 +3,7 @@
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
   import icons from '@/assets/icons'
-  import { UIProfileButton } from '@/components/index.js'
-  import ProfileBlock from '../ProfileBlock.vue'
-  import ProfileField from '../ProfileField.vue'
+  import { UIProfileButton, UIFigBlock, UIFigField } from '@/components/index.js'
 
   /** Figma "Shaxsiy ma'lumotlar" bloki (node 2586:200189) */
   const store = useWorkerProfileStore()
@@ -42,34 +40,34 @@
 </script>
 
 <template>
-  <ProfileBlock :title="$t('workerProfile.personal.infoTitle')" :icon="icons.figUserAlt">
+  <UIFigBlock :title="$t('workerProfile.personal.infoTitle')" :icon="icons.figUserAlt">
     <div class="flex flex-col gap-5 w-full">
       <div class="profile-grid">
-        <ProfileField
+        <UIFigField
           :label="$t('createWorkerPage.form.lastName')"
           :value="store.payload.last_name"
           :editing="editing"
         >
           <n-input v-model:value="store.payload.last_name" class="w-full" />
-        </ProfileField>
+        </UIFigField>
 
-        <ProfileField
+        <UIFigField
           :label="$t('createWorkerPage.form.firstName')"
           :value="store.payload.first_name"
           :editing="editing"
         >
           <n-input v-model:value="store.payload.first_name" class="w-full" />
-        </ProfileField>
+        </UIFigField>
 
-        <ProfileField
+        <UIFigField
           :label="$t('createWorkerPage.form.middleName')"
           :value="store.payload.middle_name"
           :editing="editing"
         >
           <n-input v-model:value="store.payload.middle_name" class="w-full" />
-        </ProfileField>
+        </UIFigField>
 
-        <ProfileField
+        <UIFigField
           :label="$t('createWorkerPage.form.birthday')"
           :value="Utils.timeOnlyDate(store.payload.birthday)"
           :editing="editing"
@@ -80,9 +78,9 @@
             type="date"
             :format="useAppSetting.datePicketFormat"
           />
-        </ProfileField>
+        </UIFigField>
 
-        <ProfileField
+        <UIFigField
           :label="$t('createWorkerPage.form.nationality_id')"
           :value="nameOf(componentStore.nationalityList, store.payload.nationality_id)"
           :editing="editing"
@@ -95,9 +93,9 @@
             value-field="id"
             :loading="componentStore.nationalityLoading"
           />
-        </ProfileField>
+        </UIFigField>
 
-        <ProfileField
+        <UIFigField
           :label="$t('createWorkerPage.form.sex')"
           :value="nameOf(componentStore.genderList, store.payload.sex)"
           :editing="editing"
@@ -109,9 +107,9 @@
             label-field="name"
             value-field="id"
           />
-        </ProfileField>
+        </UIFigField>
 
-        <ProfileField
+        <UIFigField
           :label="$t('createWorkerPage.form.marital_status')"
           :value="nameOf(componentStore.maritalList, store.payload.marital_status)"
           :editing="editing"
@@ -124,18 +122,18 @@
             value-field="id"
             :loading="componentStore.enumLoading"
           />
-        </ProfileField>
+        </UIFigField>
 
-        <ProfileField
+        <UIFigField
           :label="$t('createWorkerPage.form.pin')"
           :value="store.payload.pin"
           :editing="editing"
         >
           <n-input v-model:value="store.payload.pin" class="w-full" v-mask="`####-####-####-##`" />
-        </ProfileField>
+        </UIFigField>
 
         <!-- Maketda yo'q, lekin mavjud maydonlar — tahrirlash imkoni yo'qolmasligi uchun saqlab qolindi -->
-        <ProfileField
+        <UIFigField
           :label="$t('createWorkerPage.form.work_experience')"
           :value="store.payload.work_experience"
           :editing="editing"
@@ -145,9 +143,9 @@
             class="w-full"
             :allow-input="Utils.onlyAllowNumber"
           />
-        </ProfileField>
+        </UIFigField>
 
-        <ProfileField
+        <UIFigField
           :label="$t('createWorkerPage.form.experience_date')"
           :value="Utils.timeOnlyDate(store.payload.experience_date)"
           :editing="editing"
@@ -158,7 +156,7 @@
             type="date"
             :format="useAppSetting.datePicketFormat"
           />
-        </ProfileField>
+        </UIFigField>
       </div>
 
       <div class="profile-separator"></div>
@@ -166,7 +164,7 @@
       <div class="flex flex-col gap-4">
         <span class="profile-group-title">{{ $t('createWorkerPage.form.birthPlace') }}</span>
         <div class="profile-grid">
-          <ProfileField
+          <UIFigField
             :label="$t('createWorkerPage.form.country')"
             :value="nameOf(componentStore.countryList, store.payload.country_id)"
             :editing="editing"
@@ -180,9 +178,9 @@
               :loading="componentStore.countryLoading"
               @focus="onCountry"
             />
-          </ProfileField>
+          </UIFigField>
 
-          <ProfileField
+          <UIFigField
             :label="$t('createWorkerPage.form.region')"
             :value="nameOf(componentStore.regionList, store.payload.region_id)"
             :editing="editing"
@@ -197,9 +195,9 @@
               @focus="onRegion"
               @update:value="changeDistrict"
             />
-          </ProfileField>
+          </UIFigField>
 
-          <ProfileField
+          <UIFigField
             :label="$t('createWorkerPage.form.city')"
             :value="nameOf(store.districts, store.payload.city_id)"
             :editing="editing"
@@ -213,7 +211,7 @@
               :loading="store.districtLoading"
               @focus="onDistrict"
             />
-          </ProfileField>
+          </UIFigField>
         </div>
       </div>
 
@@ -222,7 +220,7 @@
       <div class="flex flex-col gap-4">
         <span class="profile-group-title">{{ $t('createWorkerPage.form.livingPlace') }}</span>
         <div class="profile-grid">
-          <ProfileField
+          <UIFigField
             :label="$t('createWorkerPage.form.currentRegion')"
             :value="nameOf(componentStore.regionList, store.payload.current_region_id)"
             :editing="editing"
@@ -237,9 +235,9 @@
               @focus="onRegion"
               @update:value="changeCurrentDistrict"
             />
-          </ProfileField>
+          </UIFigField>
 
-          <ProfileField
+          <UIFigField
             :label="$t('createWorkerPage.form.currentCity')"
             :value="nameOf(store.currentDistricts, store.payload.current_city_id)"
             :editing="editing"
@@ -253,15 +251,15 @@
               :loading="store.currentDistrictLoading"
               @focus="onCurrentDistrict"
             />
-          </ProfileField>
+          </UIFigField>
 
-          <ProfileField
+          <UIFigField
             :label="$t('createWorkerPage.form.address')"
             :value="store.payload.address"
             :editing="editing"
           >
             <n-input v-model:value="store.payload.address" class="w-full" />
-          </ProfileField>
+          </UIFigField>
         </div>
       </div>
     </div>
@@ -277,7 +275,7 @@
       </template>
       <UIProfileButton v-else @click="editing = true">{{ $t('content.edit') }}</UIProfileButton>
     </template>
-  </ProfileBlock>
+  </UIFigBlock>
 </template>
 
 <style lang="scss" scoped>
