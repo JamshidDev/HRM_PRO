@@ -4479,6 +4479,27 @@
       "match": "Passwords match"
     }
   },
+  "loginMethods": {
+    "title": "Login methods",
+    "description": "Manage which methods can be used to sign in. This setting applies to the web version only — it does not affect the mobile app.",
+    "comingSoon": "Coming soon",
+    "saved": "Login method updated",
+    "confirmTitle": "Confirm with password",
+    "confirmHint": "For security, enter your current password.",
+    "currentPassword": "Current password",
+    "password": {
+      "title": "Login and password",
+      "hint": "Sign in with phone number and password"
+    },
+    "eimzo": {
+      "title": "E-signature (ERI)",
+      "hint": "Sign in with an electronic digital signature key"
+    },
+    "qr": {
+      "title": "QR code",
+      "hint": "Sign in by scanning the QR code in the mobile app"
+    }
+  },
   "integrationPerm": {
     "enums": "References",
     "dashboard": "Dashboard",
