@@ -2022,6 +2022,7 @@
     }
   },
   "dashboardPage": {
+    "comingSoon": "Tez orada",
     "name": "Dashboard",
     "card": {
       "type": "Ta'til turi",

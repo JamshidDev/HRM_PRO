@@ -153,16 +153,25 @@ export const useDashboardStore = defineStore('dashboardStore', {
       }
       params = this.appendParams(params)
 
-      const [responseOne, responseTwo, responseThree] = await Promise.all([
-        $ApiService.dashboardService._index({ params }),
-        $ApiService.dashboardService._indexTwo({ params }),
-        $ApiService.dashboardService._indexThree({ params })
-      ])
+      const [responseOne, responseTwo, responseThree, overviewRes] =
+        await Promise.all([
+          $ApiService.dashboardService._index({ params }),
+          $ApiService.dashboardService._indexTwo({ params }),
+          $ApiService.dashboardService._indexThree({ params }),
+          // Yangi /overview endpoint. Eski backendда bo'lmasa (404) — legacy
+          // adapter overview'iga qaytamiz (butun dashboard buzilmasin).
+          $ApiService.dashboardService._overview({ params }).catch(() => null)
+        ])
       this.api = combine(
         fromLegacyOne(responseOne),
         fromLegacyTwo(responseTwo),
         fromLegacyThree(responseThree)
       )
+      // /overview to'liq doc-shakl (nationality, age×gender, ma'lumot darajalari) —
+      // legacy adapterdan boyroq, shuning uchun overview bobini bosib o'tadi.
+      if (overviewRes?.data?.data) {
+        this.api.overview = overviewRes.data.data
+      }
       this.loading = false
     },
     // Audit tab — data-quality counts (5 cards). Org filter (top Filter) reused.

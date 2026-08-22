@@ -2008,6 +2008,7 @@
     }
   },
   "dashboardPage": {
+    "comingSoon": "Скоро",
     "name": "Дашборд",
     "card": {
       "type": "Тип отпуска",
