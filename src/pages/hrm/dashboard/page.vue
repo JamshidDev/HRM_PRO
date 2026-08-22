@@ -192,11 +192,29 @@
               </n-grid-item>
 
               <n-grid-item v-for="(item, idx) in cards" :key="idx" :span="item.span">
-                <component
-                  :is="item.component"
-                  v-bind="item.props"
-                  @detail="(key) => onDetailEv(item, key)"
-                />
+                <div
+                  class="dash-card-wrap"
+                  :class="{
+                    'is-coming-soon':
+                      item.mockKey && store.isMock(store.activeTab, item.mockKey)
+                  }"
+                >
+                  <component
+                    :is="item.component"
+                    v-bind="item.props"
+                    @detail="(key) => onDetailEv(item, key)"
+                  />
+                  <!-- Backend hali tayyor emas: mock ma'lumot blur + «Tez orada».
+                       Faqat mockKey bор va API qiymat bermаган kartalarда. -->
+                  <div
+                    v-if="item.mockKey && store.isMock(store.activeTab, item.mockKey)"
+                    class="coming-soon-overlay"
+                  >
+                    <span class="coming-soon-badge">
+                      {{ $t('dashboardPage.comingSoon') }}
+                    </span>
+                  </div>
+                </div>
               </n-grid-item>
             </n-grid>
           </template>
@@ -220,5 +238,41 @@
       z-index: 10;
       box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     }
+  }
+
+  /* Mock (backend hali tayyor emas) kartalar: kontent blur + «Tez orada» */
+  .dash-card-wrap {
+    position: relative;
+    height: 100%;
+
+    &.is-coming-soon > :first-child {
+      filter: blur(5px);
+      pointer-events: none;
+      user-select: none;
+      opacity: 0.85;
+    }
+  }
+
+  .coming-soon-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 6;
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--surface-section, #fff) 30%, transparent);
+  }
+
+  .coming-soon-badge {
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--textColor1, #4b5563);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    white-space: nowrap;
   }
 </style>

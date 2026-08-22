@@ -4,6 +4,11 @@ const _index = async (payload) => {
   return await axios.get(`/v1/hr/dashboard`, { params: payload.params })
 }
 
+// «Umumiy» tab — yangi tuzilma (dashboard-api.md §3). To'liq doc-shakl javob.
+const _overview = async (payload) => {
+  return await axios.get(`/v1/hr/dashboard/overview`, { params: payload?.params })
+}
+
 const _indexTwo = async (payload) => {
   return await axios.get(`/v1/hr/dashboard-two`, { params: payload?.params })
 }
@@ -65,6 +70,7 @@ const _auditPreview = async (payload) => {
 }
 
 export default {
+  _overview,
   _auditCounts,
   _auditPreview,
   _disciplinaryDetail,
