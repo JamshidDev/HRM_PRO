@@ -978,6 +978,12 @@
       "pasport": "Passport data",
       "phone": "Phone numbers"
     },
+    "stepShort": {
+      "personal": "Personal",
+      "pasport": "Passport",
+      "photo": "Candidate photo",
+      "phone": "Phone number"
+    },
     "toast": {
       "warning": {
         "title": "Existing employee",
@@ -2048,10 +2054,20 @@
       "expired": "Expired"
     },
     "incentive": {
-      "title": "Incentives"
+      "title": "Incentives",
+      "types": {
+        "money": "Cash bonus",
+        "honorary_certificate": "Certificate of honour",
+        "gratitude": "Letter of thanks"
+      }
     },
     "disciplinary": {
-      "title": "Disciplinary actions"
+      "title": "Disciplinary actions",
+      "types": {
+        "reprimand": "Reprimand",
+        "warning": "Warning",
+        "other": "Other"
+      }
     },
     "position": {
       "title": "Staff units",
@@ -2125,6 +2141,161 @@
     },
     "vacation": {
       "statusTitle": "Leave status — by type"
+    },
+    "trend": {
+      "vsLastYear": "vs last year",
+      "days": "days",
+      "years": "yrs",
+      "pp": "p.p."
+    },
+    "headcount": {
+      "title": "Headcount trend — 24 months",
+      "hiredAt": "Hire date"
+    },
+    "today": {
+      "title": "Today's status",
+      "atWorkTitle": "At work today",
+      "onVacationTitle": "On vacation",
+      "chronicLateTitle": "Chronic lateness",
+      "share": "Share",
+      "onVacation": "On vacation",
+      "planned": "Planned",
+      "threePlus": "3+ times",
+      "status": "Status",
+      "statuses": {
+        "working": "At work",
+        "vacation": "On vacation",
+        "sick_leave": "Sick leave",
+        "absent": "Unexcused"
+      }
+    },
+    "eduLevel": {
+      "vocational_college": "Vocational college",
+      "bachelor": "Bachelor",
+      "general_secondary": "General secondary",
+      "academic_lyceum": "Academic lyceum",
+      "master": "Master",
+      "not_specified": "Not specified"
+    },
+    "eduGroup": {
+      "higher": "Higher education",
+      "general_secondary": "General secondary",
+      "secondary_special": "Secondary special"
+    },
+    "nationality": {
+      "title": "Employee nationality",
+      "column": "Nationality",
+      "items": {
+        "uzbek": "Uzbek",
+        "tajik": "Tajik",
+        "karakalpak": "Karakalpak",
+        "kazakh": "Kazakh",
+        "russian": "Russian",
+        "kyrgyz": "Kyrgyz",
+        "turkmen": "Turkmen",
+        "other": "Other"
+      }
+    },
+    "timeToFill": {
+      "title": "Time to fill a vacancy",
+      "target": "Target",
+      "longest": "Longest"
+    },
+    "tenure": {
+      "title": "Average tenure",
+      "median": "Median",
+      "overTen": "10+ years"
+    },
+    "hiring": {
+      "title": "Hiring — contract types",
+      "column": "Contract type",
+      "hiredAt": "Hire date",
+      "types": {
+        "permanent": "Permanent",
+        "fixed_term": "Fixed term",
+        "fxsh": "Service contract",
+        "secondary": "Secondary job",
+        "temporary": "Temporary"
+      }
+    },
+    "dismissal": {
+      "title": "Dismissals — reasons",
+      "column": "Dismissal reason",
+      "firedAt": "Dismissal date",
+      "reasons": {
+        "own_will": "Own request",
+        "contract_ended": "Contract ended",
+        "mutual_agreement": "Mutual agreement",
+        "retirement": "Retirement",
+        "disciplinary": "Disciplinary"
+      }
+    },
+    "staffFact": {
+      "title": "Plan vs actual — by unit",
+      "hint": "Colored bar — actual, dark line — staffing plan",
+      "plan": "Staffing plan",
+      "actual": "Actual",
+      "vacant": "Vacant"
+    },
+    "vacancy": {
+      "openTitle": "Open vacancies — positions",
+      "ageTitle": "Vacancy age",
+      "others": "Other {count} positions",
+      "count": "Vacancies",
+      "openedAt": "Opened on",
+      "days": "Days",
+      "state": "Status",
+      "states": {
+        "active": "Active",
+        "finished": "Finished"
+      },
+      "buckets": {
+        "lt_10": "Under 10 days",
+        "10_90": "10–90 days",
+        "gt_90": "Over 90 days"
+      }
+    },
+    "events": {
+      "title": "Upcoming events",
+      "column": "Event",
+      "date": "Date",
+      "days": "{count} days",
+      "daysLeft": "Days left",
+      "workers": "{count} employees",
+      "footer": "By day from today · {count} events in total",
+      "types": {
+        "probation_end": "Probation ends",
+        "contract_end": "Contract ends",
+        "pension_age": "Reaches pension age",
+        "attestation": "Attestation due"
+      }
+    },
+    "retention": {
+      "title": "Cohorts — retention by hire year",
+      "cohort": "Hire year",
+      "month": "{count} mo",
+      "people": "{count} people",
+      "hiredAt": "Hire date",
+      "status": "Status",
+      "statuses": {
+        "active": "Active",
+        "left": "Left"
+      }
+    },
+    "vacationState": {
+      "used": "Used",
+      "planned": "Planned",
+      "accrued": "Accrued"
+    },
+    "monthly": {
+      "title": "Incentives and penalties — monthly",
+      "incentives": "Incentives",
+      "disciplinary": "Disciplinary actions",
+      "column": "Type",
+      "types": {
+        "incentive": "Incentive",
+        "disciplinary": "Disciplinary"
+      }
     }
   },
   "applicationPage": {

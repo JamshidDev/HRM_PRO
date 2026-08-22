@@ -28,28 +28,25 @@
   const tokenColor = (name) =>
     getComputedStyle(document.documentElement).getPropertyValue(name).trim()
 
+  /** Kontraktga kirmagan legacy maydon: oylik yangi/tugagan shartnomalar. */
+  const contracts = computed(() => store.legacy.contracts || [])
+
   const months = computed(() =>
-    (store.dashboard.contracts || []).map((item) => Utils.getMonthNameByKey(item.month.split('-')[1]))
+    contracts.value.map((item) => Utils.getMonthNameByKey(item.month.split('-')[1]))
   )
 
   const series = computed(() => [
     {
       key: 'incoming',
       token: '--fig-icon-green',
-      value: (store.dashboard.contracts || []).reduce(
-        (sum, item) => sum + Number(item.new_contracts || 0),
-        0
-      ),
-      data: (store.dashboard.contracts || []).map((item) => Number(item.new_contracts || 0))
+      value: contracts.value.reduce((sum, item) => sum + Number(item.new_contracts || 0), 0),
+      data: contracts.value.map((item) => Number(item.new_contracts || 0))
     },
     {
       key: 'outgoing',
       token: '--fig-icon-red',
-      value: (store.dashboard.contracts || []).reduce(
-        (sum, item) => sum + Number(item.ended_contracts || 0),
-        0
-      ),
-      data: (store.dashboard.contracts || []).map((item) => Number(item.ended_contracts || 0))
+      value: contracts.value.reduce((sum, item) => sum + Number(item.ended_contracts || 0), 0),
+      data: contracts.value.map((item) => Number(item.ended_contracts || 0))
     }
   ])
 

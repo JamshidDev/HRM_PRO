@@ -1,39 +1,49 @@
 <script setup>
   /**
-   * Figma v3 · Tab 3 "Ta'til holati" (node 2959:59756).
+   * Figma v3 · Tab 3 "Ta'til holati — bo'lim kesimida" (node 2959:59756).
    *
-   * Maketda ustunlar bo'lim kesimida va uch qatlamli (chiqqan / rejada /
-   * yig'ilib qolgan). Backend `vacation_types` faqat ta'til turi bo'yicha faol
-   * ta'tillar sonini beradi, shuning uchun ustunlar tur kesimida va bitta
-   * qatlamli chiziladi; pastda esa turlar legendasi turadi.
+   * Har bir bo'linma uchun uch qatlamli ustun: chiqqan (yashil), rejada (ko'k)
+   * va yig'ilib qolgan (amber) ta'til kunlari. Pastda uch qatlam legendasi —
+   * jami kun, ulush va yig'ilib qolgan kunlar o'zgarishi.
+   *
+   * Backend hozir ta'tilni faqat tur kesimida beradi (`vacation_types[]`),
+   * bo'linma kesimi va kunlar taqsimoti yo'q — shu sababli karta mock
+   * ma'lumot bilan chiziladi (`adapter.js` dagi izohga qarang).
    */
   import HeadMortarboard from '@/assets/icons/hrmDashboard/head-mortarboard.svg'
   import FigPanel from '../fig/FigPanel.vue'
   import FigColumns from '../fig/FigColumns.vue'
+  import FigTrend from '../fig/FigTrend.vue'
   import { useDashboardStore } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
+  import { toCount, toRoundPercent } from '../../format.js'
+
+  defineEmits(['detail'])
 
   const store = useDashboardStore()
 
-  const TOKENS = [
-    '--fig-icon-green',
-    '--fig-icon-brand',
-    '--fig-icon-amber',
-    '--fig-icon-indigo',
-    '--fig-icon-purple',
-    '--fig-icon-orange',
-    '--fig-icon-red'
+  // Maketdagi qatlam tartibi: ustun tepasida yig'ilib qolgan, pastda chiqqan
+  const LAYERS = [
+    { key: 'accrued', token: '--fig-icon-amber' },
+    { key: 'planned', token: '--fig-icon-brand' },
+    { key: 'used', token: '--fig-icon-green' }
   ]
 
+  const card = computed(() => store.attendance.vacation_by_department || {})
+  const isMock = computed(() => store.isMock('attendance', 'vacation_by_department'))
+
   const items = computed(() =>
-    (store.dashboard.vacations || []).map((item, idx) => ({
+    (card.value.items || []).map((item) => ({
       name: item.name,
-      value: item.active_vacations ?? 0,
-      token: TOKENS[idx % TOKENS.length]
+      segments: LAYERS.map((layer) => ({ value: item[layer.key] ?? 0, token: layer.token }))
     }))
   )
 
-  const total = computed(() => items.value.reduce((sum, item) => sum + item.value, 0))
+  const legend = computed(() =>
+    LAYERS.map((layer) => ({
+      ...layer,
+      ...(card.value.legend?.[layer.key] || {})
+    })).reverse()
+  )
 </script>
 
 <template>
@@ -41,11 +51,25 @@
     tint="indigo"
     :icon="HeadMortarboard"
     :title="$t('dashboardPage.vacation.statusTitle')"
+    :action-text="$t('content.detail')"
+    :mock="isMock"
     inner-class="px-4 pt-2 pb-3 gap-2.5"
+    @action="$emit('detail')"
   >
-    <p class="text-[20px] leading-6 font-semibold whitespace-nowrap text-fig-text-primary">
-      {{ Utils.formatNumberToMoney(total) || 0 }}
-    </p>
-    <FigColumns :items="items" :height="120" />
+    <FigColumns :items="items" :height="120" :show-percent="false" />
+
+    <div class="mt-auto flex flex-wrap items-center gap-x-5 gap-y-1 pt-1">
+      <div v-for="layer in legend" :key="layer.key" class="flex items-center gap-1.5">
+        <span
+          class="h-2.5 w-2.5 shrink-0 rounded-full"
+          :style="{ backgroundColor: `var(${layer.token})` }"
+        ></span>
+        <p class="text-[12px] leading-4 whitespace-nowrap text-fig-text-secondary">
+          {{ $t(`dashboardPage.vacationState.${layer.key}`) }} · {{ toCount(layer.value) }} ·
+          {{ toRoundPercent(layer.percent) }}
+        </p>
+        <FigTrend :metric="layer" unit="percent" :label-key="null" />
+      </div>
+    </div>
   </FigPanel>
 </template>

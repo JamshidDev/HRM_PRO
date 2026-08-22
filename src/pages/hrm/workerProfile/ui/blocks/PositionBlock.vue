@@ -1,10 +1,8 @@
 <script setup>
   import Utils from '@/utils/Utils.js'
   import icons from '@/assets/icons'
-  import { UIProfileButton } from '@/components/index.js'
+  import { UIProfileButton, UIFigBlock, UIFigField } from '@/components/index.js'
   import { useComponentStore, useWorkerProfileStore } from '@/store/modules/index.js'
-  import ProfileBlock from '../ProfileBlock.vue'
-  import ProfileField from '../ProfileField.vue'
 
   /** Figma "Lavozim ma'lumotlari" bloki (node 2789:71773) */
   const props = defineProps({
@@ -56,7 +54,7 @@
 </script>
 
 <template>
-  <ProfileBlock :title="$t('workerProfile.position.title')" :icon="icons.figBriefcase">
+  <UIFigBlock :title="$t('workerProfile.position.title')" :icon="icons.figBriefcase">
     <div class="flex flex-col gap-4 w-full">
       <div class="flex flex-col gap-1">
         <span class="text-sm font-semibold leading-[18px] text-fig-text-primary">
@@ -70,7 +68,7 @@
       <div class="position-separator"></div>
 
       <div class="position-grid">
-        <ProfileField
+        <UIFigField
           v-for="field in fields"
           :key="field.label"
           variant="plain"
@@ -83,7 +81,7 @@
     <template #actions>
       <UIProfileButton @click="onEdit">{{ $t('content.edit') }}</UIProfileButton>
     </template>
-  </ProfileBlock>
+  </UIFigBlock>
 </template>
 
 <style lang="scss" scoped>

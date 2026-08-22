@@ -1,6 +1,6 @@
 <script setup>
   import { useDashboardStore } from '@/store/modules/index.js'
-  import { tabCards, tabKpiVariants } from '@/pages/hrm/dashboard/constants.js'
+  import { tabCards, tabKpiCount } from '@/pages/hrm/dashboard/constants.js'
 
   // Skeleton'ning maqsadi — yuklanish tugagach kontent "sakramasligi". Shu bois
   // grid sozlamalari (`cols`, gap'lar, `responsive`) va kartalarning `span` lari
@@ -11,11 +11,13 @@
   // kerak bo'lmaydi.
   const store = useDashboardStore()
 
-  // KPI kartalari `dashboard.mainCard` dan variant bo'yicha filtrlanadi, ammo
-  // yuklanish paytida u hali bo'sh — kutilayotgan sonni konfiguratsiya beradi.
-  const kpiCount = computed(() => (tabKpiVariants[store.activeTab] || []).length)
+  // KPI kartalari soni bobga bog'liq (`constants.js`), yuklanish paytida
+  // ma'lumot hali bo'lmaydi — kutilayotgan sonni konfiguratsiya beradi.
+  const kpiCount = computed(() => tabKpiCount[store.activeTab] || 0)
   // `page.vue` dagi `kpiSpan` bilan bir xil qoida.
-  const kpiSpan = computed(() => (kpiCount.value > 2 ? '12 l:6 xl:3' : '12 l:6'))
+  const kpiSpan = computed(() =>
+    kpiCount.value === 3 ? '12 m:4' : kpiCount.value > 2 ? '12 m:6 xl:3' : '12 m:6'
+  )
   const cards = computed(() => tabCards[store.activeTab] || [])
 </script>
 

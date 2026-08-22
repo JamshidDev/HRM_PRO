@@ -1,10 +1,11 @@
 <script setup>
   import Utils from '@/utils/Utils.js'
-  import { UIAutoComplete, UIUser, UISelect } from '@/components/index.js'
+  import { UIAutoComplete, UIUser, UISelect, UIFigBlock, UIFigField } from '@/components/index.js'
   import { useComponentStore, useContractStore } from '@/store/modules/index.js'
   import { NAvatar } from 'naive-ui'
   import UIHelper from '@/utils/UIHelper.js'
   import { useAppSetting } from '@/utils/index.js'
+  import icons from '@/assets/icons'
 
   const store = useContractStore()
   const componentStore = useComponentStore()
@@ -91,126 +92,132 @@
 </script>
 
 <template>
-  <div class="grid grid-cols-12 gap-x-4">
-    <div class="col-span-12 flex justify-center">
-      <!-- `w-[600px]` qat'iy edi: modal telefonda fullscreen bo'lgach ichkarida
-           gorizontal skroll berardi. -->
-      <div class="w-full max-w-[600px]">
-        <template v-if="componentStore.isSelectedWorker">
-          <div class="w-full rounded-xl border-surface-line border mb-4 p-1">
-            <UIUser :data="componentStore.worker" :short="false" />
-          </div>
-        </template>
-        <template v-else>
-          <UIAutoComplete v-model:pin="store.payload.pin" />
-        </template>
+  <div class="flex flex-col gap-4 w-full">
+    <UIFigBlock :title="$t('documentPage.form.candidate')" :icon="icons.figUserAlt">
+      <div class="w-full flex justify-center">
+        <!-- `w-[600px]` qat'iy edi: modal telefonda fullscreen bo'lgach ichkarida
+             gorizontal skroll berardi. -->
+        <div class="w-full max-w-[600px]">
+          <UIUser
+            v-if="componentStore.isSelectedWorker"
+            :data="componentStore.worker"
+            :short="false"
+          />
+          <UIAutoComplete v-else v-model:pin="store.payload.pin" />
+        </div>
       </div>
-    </div>
+    </UIFigBlock>
 
-    <div
-      class="col-span-12 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground"
-    >
-      <div class="grid grid-cols-12 gap-x-4">
-        <div class="col-span-12 md:col-span-6 lg:col-span-2">
-          <n-form-item :label="$t(`documentPage.form.contractNumber`)" path="number">
-            <n-input class="w-full" type="text" v-model:value="store.payload.number" />
-          </n-form-item>
-        </div>
-        <div class="col-span-12 md:col-span-6 lg:col-span-7">
-          <n-form-item :label="$t(`documentPage.form.type`)" path="type">
-            <n-select
-              v-model:value="store.payload.type"
-              filterable
-              :options="componentStore.contractTypeList"
-              label-field="name"
-              value-field="id"
-              :loading="componentStore.enumLoading"
-              @update:value="onChangeType"
-            />
-          </n-form-item>
-        </div>
-        <div class="col-span-12 md:col-span-6 lg:col-span-3">
-          <n-form-item :label="$t(`documentPage.form.contractDate`)" path="contract_date">
-            <n-date-picker
-              class="w-full"
-              v-model:value="store.payload.contract_date"
-              type="date"
-              :format="useAppSetting.datePicketFormat"
-            />
-          </n-form-item>
-        </div>
-        <div class="col-span-12 md:col-span-6 lg:col-span-3" v-if="store.payload.type !== 1">
-          <n-form-item :label="$t(`documentPage.form.contract_to_date`)" path="contract_to_date">
-            <n-date-picker
-              class="w-full"
-              v-model:value="store.payload.contract_to_date"
-              type="date"
-              :format="useAppSetting.datePicketFormat"
-            />
-          </n-form-item>
-        </div>
-        <div class="col-span-12 md:col-span-6 lg:col-span-3">
-          <n-form-item :label="$t(`documentPage.form.position_date`)" path="position_date">
-            <n-date-picker
-              class="w-full"
-              v-model:value="store.payload.position_date"
-              type="date"
-              :format="useAppSetting.datePicketFormat"
-            />
-          </n-form-item>
-        </div>
-        <!-- FXSH (turi 2): tashkilot shu top-box ichida, "Ishga chiqish sanasi"dan
-             keyin (2-qadamdan ko'chirildi). Boshqa turlarda ko'rinmaydi. -->
-        <div class="col-span-12 md:col-span-6" v-if="store.payload.type === 2">
-          <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
-            <UISelect
-              :multiple="false"
-              :auto-select="true"
-              :checkedVal="store.structureCheck"
-              :loading="componentStore.structureLoading"
-              :options="componentStore.structureList"
-              :modelV="store.payload.organization_id"
-              @updateModel="onChangeStructure"
-              @updateCheck="(v) => (store.structureCheck = v)"
-              @onSearch="componentStore._structures"
-              v-model:search="componentStore.structureParams.search"
-            />
-          </n-form-item>
-        </div>
+    <UIFigBlock :title="$t('contractPage.step.stepOne')" :icon="icons.figFileArrowDown">
+      <div class="fig-grid">
+        <UIFigField editing :label="$t('documentPage.form.contractNumber')" path="number">
+          <n-input class="w-full" type="text" v-model:value="store.payload.number" />
+        </UIFigField>
+
+        <UIFigField
+          editing
+          class="fig-grid__wide"
+          :label="$t('documentPage.form.type')"
+          path="type"
+        >
+          <n-select
+            v-model:value="store.payload.type"
+            filterable
+            :options="componentStore.contractTypeList"
+            label-field="name"
+            value-field="id"
+            :loading="componentStore.enumLoading"
+            @update:value="onChangeType"
+          />
+        </UIFigField>
+
+        <UIFigField editing :label="$t('documentPage.form.contractDate')" path="contract_date">
+          <n-date-picker
+            class="w-full"
+            v-model:value="store.payload.contract_date"
+            type="date"
+            :format="useAppSetting.datePicketFormat"
+          />
+        </UIFigField>
+
+        <UIFigField
+          v-if="store.payload.type !== 1"
+          editing
+          :label="$t('documentPage.form.contract_to_date')"
+          path="contract_to_date"
+        >
+          <n-date-picker
+            class="w-full"
+            v-model:value="store.payload.contract_to_date"
+            type="date"
+            :format="useAppSetting.datePicketFormat"
+          />
+        </UIFigField>
+
+        <UIFigField editing :label="$t('documentPage.form.position_date')" path="position_date">
+          <n-date-picker
+            class="w-full"
+            v-model:value="store.payload.position_date"
+            type="date"
+            :format="useAppSetting.datePicketFormat"
+          />
+        </UIFigField>
+
+        <!-- FXSH (turi 2): tashkilot shu blok ichida, "Ishga chiqish sanasi"dan
+             keyin (2-qadamdan ko'chirilgan). Boshqa turlarda ko'rinmaydi. -->
+        <UIFigField
+          v-if="store.payload.type === 2"
+          editing
+          class="fig-grid__wide"
+          :label="$t('documentPage.form.organization')"
+          path="organization_id"
+        >
+          <UISelect
+            :multiple="false"
+            :auto-select="true"
+            :checked-val="store.structureCheck"
+            :loading="componentStore.structureLoading"
+            :options="componentStore.structureList"
+            :model-v="store.payload.organization_id"
+            @updateModel="onChangeStructure"
+            @updateCheck="(v) => (store.structureCheck = v)"
+            @onSearch="componentStore._structures"
+            v-model:search="componentStore.structureParams.search"
+          />
+        </UIFigField>
+
         <template v-if="showVacationDay">
-          <div class="col-span-12 md:col-span-6 lg:col-span-3">
-            <n-form-item
-              :label="$t(`documentPage.form.vacation_main_day`)"
-              path="vacation_main_day"
-            >
-              <n-input
-                class="w-full"
-                type="text"
-                v-model:value="store.payload.vacation_main_day"
-                :allow-input="Utils.onlyAllowNumber"
-              />
-            </n-form-item>
-          </div>
-          <div class="col-span-12 md:col-span-6 lg:col-span-3">
-            <n-form-item
-              :label="$t(`documentPage.form.additional_vacation_day`)"
-              path="additional_vacation_day"
-            >
-              <n-input
-                class="w-full"
-                type="text"
-                v-model:value="store.payload.additional_vacation_day"
-                :allow-input="Utils.onlyAllowNumber"
-              />
-            </n-form-item>
-          </div>
+          <UIFigField
+            editing
+            :label="$t('documentPage.form.vacation_main_day')"
+            path="vacation_main_day"
+          >
+            <n-input
+              class="w-full"
+              type="text"
+              v-model:value="store.payload.vacation_main_day"
+              :allow-input="Utils.onlyAllowNumber"
+            />
+          </UIFigField>
+
+          <UIFigField
+            editing
+            :label="$t('documentPage.form.additional_vacation_day')"
+            path="additional_vacation_day"
+          >
+            <n-input
+              class="w-full"
+              type="text"
+              v-model:value="store.payload.additional_vacation_day"
+              :allow-input="Utils.onlyAllowNumber"
+            />
+          </UIFigField>
         </template>
 
         <!-- Sinov muddati + ish jadvali — mehnat shartnomasiga xos; FXSH (turi 2)
              uchun so'ralmaydi (fuqarolik-huquqiy shartnomada ular yo'q). -->
         <template v-if="store.payload.type !== 2">
-        <div class="col-span-12 md:col-span-6 lg:col-span-3">
-          <n-form-item :label="$t(`documentPage.form.probation`)" path="probation">
+          <UIFigField editing :label="$t('documentPage.form.probation')" path="probation">
             <n-select
               v-model:value="store.payload.probation"
               filterable
@@ -220,10 +227,9 @@
               :loading="componentStore.enumLoading"
               clearable
             />
-          </n-form-item>
-        </div>
-        <div class="col-span-12 md:col-span-6 lg:col-span-3">
-          <n-form-item :label="$t(`documentPage.form.schedule_id`)" path="schedule_id">
+          </UIFigField>
+
+          <UIFigField editing :label="$t('documentPage.form.schedule_id')" path="schedule_id">
             <n-select
               v-model:value="store.payload.schedule_id"
               filterable
@@ -234,25 +240,25 @@
               :render-tag="UIHelper.scheduleRender.value"
               clearable
             />
-          </n-form-item>
-        </div>
+          </UIFigField>
         </template>
       </div>
-    </div>
+    </UIFigBlock>
 
-    <div class="col-span-12 mt-10">
-      <n-form-item :label="$t(`documentPage.form.director`)" path="director_id">
-        <n-select
-          size="large"
-          v-model:value="store.payload.director_id"
-          :options="componentStore.confirmationList"
-          :loading="componentStore.confirmationLoading"
-          :render-label="renderLabel"
-          :render-tag="renderValue"
-          label-field="last_name"
-          value-field="id"
-        />
-      </n-form-item>
-    </div>
+    <UIFigBlock :title="$t('documentPage.form.director')" :icon="icons.figUsers">
+      <div class="fig-grid">
+        <UIFigField editing class="fig-grid__full" path="director_id">
+          <n-select
+            v-model:value="store.payload.director_id"
+            :options="componentStore.confirmationList"
+            :loading="componentStore.confirmationLoading"
+            :render-label="renderLabel"
+            :render-tag="renderValue"
+            label-field="last_name"
+            value-field="id"
+          />
+        </UIFigField>
+      </div>
+    </UIFigBlock>
   </div>
 </template>

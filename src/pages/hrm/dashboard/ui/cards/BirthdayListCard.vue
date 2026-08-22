@@ -10,12 +10,36 @@
   import HeadPartyHorn from '@/assets/icons/hrmDashboard/head-party-horn.svg'
   import FigPanel from '../fig/FigPanel.vue'
   import { useDashboardStore } from '@/store/modules/index.js'
+  import i18n from '@/i18n/index.js'
+  import Utils from '@/utils/Utils.js'
 
   defineEmits(['detail'])
 
   const store = useDashboardStore()
+  const { t } = i18n.global
 
-  const items = computed(() => store.dashboard.birthdays?.data || [])
+  const isMock = computed(() => store.isMock('overview', 'birthdays'))
+
+  /** Backend `MM-DD` beradi — maketda "03 - Avgust" ko'rinishida chiziladi. */
+  const formatDay = (value) => {
+    const [month, day] = String(value || '').split('-')
+    return `${day} - ${Utils.getMonthNameByKey(month)}`
+  }
+
+  const items = computed(() => {
+    // Maketda birinchi ikki qatorda "Bugungi / Ertangi tug'ilgan kunlar" izohi
+    // bor, qolganlarida faqat sana turadi.
+    const labels = [t('dashboardPage.birthday.today'), t('dashboardPage.birthday.tomorrow')]
+    return (store.overview.birthdays?.result || []).map((item, idx) => ({
+      day: formatDay(item.day),
+      label: labels[idx] || null,
+      total: item.count,
+      // `UIUserGroup` "+N" ni faqat ro'yxat `max` dan uzun bo'lsagina chizadi,
+      // shuning uchun qoldiq bor paytda ro'yxat sun'iy uzaytiriladi.
+      workers: item.count > 3 ? [...(item.workers || []), ...(item.workers || [])] : item.workers,
+      has_more: item.has_more
+    }))
+  })
 
   const head = computed(() => items.value[0] || null)
   const tail = computed(() => items.value.slice(1))
@@ -37,6 +61,7 @@
     :icon="HeadPartyHorn"
     :title="$t('dashboardPage.birthday.title')"
     :action-text="$t('content.detail')"
+    :mock="isMock"
     :inner="false"
     @action="$emit('detail')"
   >

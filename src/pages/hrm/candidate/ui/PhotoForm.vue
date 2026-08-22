@@ -1,10 +1,11 @@
 <script setup>
-  import { CameraAdd48Filled, DismissCircle48Regular } from '@vicons/fluent'
-  import { UICropper } from '@/components/index.js'
+  import { UICropper, UIFigBlock } from '@/components/index.js'
   import { v4 as uuidv4 } from 'uuid'
   import validationRules from '@/utils/validationRules.js'
   import Utils from '@/utils/Utils.js'
+  import icons from '@/assets/icons'
 
+  /** Figma "Kandidat rasmi" bloki (node 3132:61857) */
   const images = defineModel('images', {
     required: true,
     default: [],
@@ -15,113 +16,185 @@
     default: null
   })
 
-  const cropper_ref = ref(null)
-
   const emits = defineEmits(['onDelete', 'onChangeMain'])
 
-  const onOpenFile = () => {
-    cropper_ref.value.openFile()
-  }
+  const MIN_PHOTOS = 3
+  const MAX_PHOTOS = 8
+
+  const cropperRef = ref(null)
+  // Yashirin n-form-item shu qiymat orqali `photos` qoidasini tekshiradi
+  const fakeV = ref(null)
+
+  const missingCount = computed(() => Math.max(0, MIN_PHOTOS - images.value.length))
+
+  const onOpenFile = () => cropperRef.value?.openFile()
 
   const onResult = (v) => {
-    let id = uuidv4()
+    const id = uuidv4()
     mainImageId.value = mainImageId.value || id
-    images.value.push({
-      id,
-      blob: v.blob,
-      base64: v.imgUrl,
-      url: null
-    })
-  }
-
-  const deleteEv = (v) => {
-    emits('onDelete', v)
-  }
-
-  const onchangeMain = (id) => {
-    mainImageId.value = id
-    onChange(id)
+    images.value.push({ id, blob: v.blob, base64: v.imgUrl, url: null })
   }
 
   const onChange = (id) => {
     const savedMainImageId = images.value.filter((v) => v.current)?.[0]?.id
-    let result = savedMainImageId === id
-    emits('onChangeMain', !result)
+    emits('onChangeMain', savedMainImageId !== id)
   }
 
-  const fakeV = ref(null)
-  watch(
-    () => images,
-    (v) => {
-      onChange(mainImageId.value)
-    },
-    { deep: true }
-  )
+  const onChangeMain = (id) => {
+    mainImageId.value = id
+    onChange(id)
+  }
+
+  const onRemove = (img) => {
+    emits('onDelete', img)
+  }
+
+  watch(images, () => onChange(mainImageId.value), { deep: true })
 
   watchEffect(() => {
-    fakeV.value = images?.[0]?.id
+    fakeV.value = images.value?.[0]?.id
   })
 </script>
 
 <template>
-  <div>
-    <div class="flex gap-4 flex-wrap w-full py-4">
-      <template v-for="(img, idx) in images" :key="idx">
+  <UIFigBlock :title="$t('workerProfile.personal.photoTitle')" :icon="icons.figImageSquare">
+    <div class="flex flex-col gap-3 w-full">
+      <div class="flex flex-wrap items-start gap-4 w-full">
         <div
-          @click="onchangeMain(img.id)"
-          class="w-[120px] h-[160px] overflow-hidden rounded-sm cursor-pointer transition-all relative show__delete-image"
-          :class="[
-            img.id === mainImageId ? 'border-4 border-primary' : 'border border-surface-line'
-          ]"
+          v-for="img in images"
+          :key="img.id"
+          class="photo-tile"
+          :class="img.id === mainImageId && 'photo-tile--main'"
+          @click="onChangeMain(img.id)"
         >
-          <span
-            v-if="img.id === mainImageId"
-            class="text-xs bg-primary text-white px-1 absolute z-[100] top-[4px] right-[2px] rounded"
-            >Asosiy rasm</span
-          >
           <img
-            class="w-full h-full object-cover"
+            class="w-full h-full object-cover rounded-2xl"
             :src="img.base64 || Utils.noAvailableImage"
             @error="Utils.onImgError"
             alt=""
           />
-          <div
+          <span v-if="img.id === mainImageId" class="photo-tile__main">
+            {{ $t('createWorkerPage.ui.mainImage') }}
+          </span>
+          <button
             v-if="images.length > 1"
-            class="photo__delete-btn w-[30px] h-[30px] rounded-full bg-danger flex justify-center items-center absolute bottom-[-30px] transition-all z-10 left-1/2 translate-x-[-50%]"
+            type="button"
+            class="photo-tile__remove"
+            @click.stop="onRemove(img)"
           >
-            <n-icon @click.stop="deleteEv(img)" size="26" class="text-white">
-              <DismissCircle48Regular />
+            <n-icon :size="16">
+              <component :is="icons.figXmark" />
             </n-icon>
-          </div>
+          </button>
         </div>
-      </template>
-      <div
-        v-if="images.length < 8"
-        @click="onOpenFile"
-        class="w-[120px] h-[160px] border border-dashed border-surface-line flex justify-center items-center cursor-pointer rounded-sm"
-      >
-        <n-icon size="80" class="text-secondary">
-          <CameraAdd48Filled />
-        </n-icon>
+
+        <button
+          v-if="images.length < MAX_PHOTOS"
+          type="button"
+          class="photo-add"
+          @click="onOpenFile"
+        >
+          <n-icon :size="44" class="text-fig-text-tertiary">
+            <component :is="icons.figImagePlus" />
+          </n-icon>
+          <span class="text-xs leading-4 text-fig-text-tertiary text-center">
+            {{
+              missingCount > 0
+                ? $t('createWorkerPage.ui.needPhotos', { n: missingCount })
+                : $t('createWorkerPage.ui.addPhoto')
+            }}
+          </span>
+        </button>
+
+        <UICropper ref="cropperRef" @on-result="onResult" />
       </div>
-      <UICropper ref="cropper_ref" @on-result="onResult" />
-    </div>
-    <n-form-item
-      class="!block hidden-form-item"
-      path="photos"
-      :show-feedback="true"
-      :rule-path="validationRules.rulesNames.requiredPhotoField"
-    >
-      <n-select
-        v-show="false"
-        multiple
-        v-model:value="fakeV"
-        filterable
-        label-field="id"
-        value-field="id"
-        :options="images"
+
+      <span class="text-xs leading-4 text-fig-text-tertiary">
+        {{ $t('createWorkerPage.ui.image') }}
+      </span>
+
+      <n-form-item
+        class="!block hidden-form-item"
+        path="photos"
+        :show-label="false"
+        :show-feedback="true"
+        :rule-path="validationRules.rulesNames.requiredPhotoField"
       >
-      </n-select>
-    </n-form-item>
-  </div>
+        <n-select
+          v-show="false"
+          multiple
+          v-model:value="fakeV"
+          filterable
+          label-field="id"
+          value-field="id"
+          :options="images"
+        />
+      </n-form-item>
+    </div>
+  </UIFigBlock>
 </template>
+
+<style lang="scss" scoped>
+  .photo-tile {
+    position: relative;
+    width: 120px;
+    height: 160px;
+    flex-shrink: 0;
+    border-radius: 16px;
+    cursor: pointer;
+  }
+
+  .photo-tile--main img {
+    outline: 2px solid var(--fig-bg-brand-fill);
+    outline-offset: 2px;
+  }
+
+  .photo-tile__main {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    background: var(--fig-bg-brand-fill);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  // Maketdagi ✕ tugmasi: yarim shaffof qora doira, orqa fon xiralashadi
+  .photo-tile__remove {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    border: none;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  .photo-add {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 120px;
+    height: 160px;
+    flex-shrink: 0;
+    padding: 29px 8px;
+    border: 1px dashed var(--fig-br-disable);
+    border-radius: 16px;
+    background: var(--fig-bg-disable);
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+
+    &:hover {
+      border-color: var(--fig-neutral-300);
+    }
+  }
+</style>

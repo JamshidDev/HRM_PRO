@@ -2,8 +2,7 @@
   import { v4 as uuidv4 } from 'uuid'
   import Utils from '@/utils/Utils.js'
   import icons from '@/assets/icons'
-  import { UIProfileButton } from '@/components/index.js'
-  import ProfileBlock from '../ProfileBlock.vue'
+  import { UIProfileButton, UIFigBlock } from '@/components/index.js'
   import { useWorkerProfileStore } from '@/store/modules/index.js'
 
   /** Figma "Telefon raqam" bloki (node 2596:206982) */
@@ -40,7 +39,7 @@
 </script>
 
 <template>
-  <ProfileBlock :title="$t('workerProfile.personal.phoneTitle')" :icon="icons.figPhoneCall">
+  <UIFigBlock :title="$t('workerProfile.personal.phoneTitle')" :icon="icons.figPhoneCall">
     <template #trailing>
       <span class="phone-chip">
         <n-icon :size="16">
@@ -126,7 +125,7 @@
       </template>
       <UIProfileButton v-else @click="editing = true">{{ $t('content.edit') }}</UIProfileButton>
     </template>
-  </ProfileBlock>
+  </UIFigBlock>
 </template>
 
 <style lang="scss" scoped>

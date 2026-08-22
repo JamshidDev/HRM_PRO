@@ -1,10 +1,10 @@
 <script setup>
   /**
-   * Figma v3 · Tab 2 "Nogironlik bo'yicha" (node 2959:59253).
+   * Figma v3 · Tab 2 "Nogironlik bo'yicha" (node 2959:59253 va 2959:59288).
    *
-   * Chapda umumiy son va guruhlar ro'yxati (2px rangli chiziqli "Details Line"),
-   * o'ngda 200px donut. `type` bo'yicha uchta variant: ishchi nogironligi,
-   * qarindosh nogironligi va kasallik varaqalari.
+   * Chapda umumiy son, o'tgan yilga nisbatan o'zgarish va guruhlar ro'yxati
+   * (2px rangli chiziqli "Details Line"), o'ngda 180px donut.
+   * `type` bo'yicha ikki variant: ishchi va qarindosh nogironligi.
    */
   import VChart from 'vue-echarts'
   import { use } from 'echarts/core'
@@ -12,19 +12,19 @@
   import { TooltipComponent } from 'echarts/components'
   import { CanvasRenderer } from 'echarts/renderers'
   import HeadDisability from '@/assets/icons/hrmDashboard/head-disability.svg'
-  import HeadMedicalFile from '@/assets/icons/hrmDashboard/head-medical-file.svg'
   import FigPanel from '../fig/FigPanel.vue'
   import FigDetailLine from '../fig/FigDetailLine.vue'
+  import FigTrend from '../fig/FigTrend.vue'
   import { useDashboardStore, useAppStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
-  import Utils from '@/utils/Utils.js'
+  import { toCount } from '../../format.js'
 
   use([TooltipComponent, PieChart, CanvasRenderer])
 
   const props = defineProps({
     type: {
       type: String,
-      required: true // 'worker' | 'relative' | 'sickLeave'
+      required: true // 'worker' | 'relative'
     }
   })
 
@@ -36,57 +36,36 @@
 
   const TOKENS = ['--fig-icon-green', '--fig-icon-brand', '--fig-icon-amber']
 
+  const CONFIG = {
+    worker: {
+      titleKey: 'dashboardPage.disability.workerTitle',
+      path: 'worker_disabilities'
+    },
+    relative: {
+      titleKey: 'dashboardPage.disability.relativeTitle',
+      path: 'worker_relative_disabilities'
+    }
+  }
+
   const tokenColor = (name) =>
     getComputedStyle(document.documentElement).getPropertyValue(name).trim()
 
-  // Backend guruhlarni to'liq qaytarmasligi mumkin — uchtasi ham doim chiziladi.
-  const normalizeLevels = (levels = []) =>
-    [1, 2, 3].map((lvl) => ({
-      label: `${lvl}-${t('dashboardPage.disability.group')}`,
-      count: levels.find((l) => l.level === lvl)?.count ?? 0
-    }))
+  const config = computed(() => CONFIG[props.type] || CONFIG.worker)
+  const card = computed(() => store.movement[config.value.path] || {})
+  const isMock = computed(() => store.isMock('movement', config.value.path))
 
-  const config = computed(() => {
-    const d = store.dashboard?.disabilityCard
-    if (!d) return null
-    switch (props.type) {
-      case 'worker':
-        return {
-          titleKey: 'dashboardPage.disability.workerTitle',
-          icon: HeadDisability,
-          tint: 'blue',
-          hasDetail: true,
-          total: d.workerDisability?.total_count ?? 0,
-          rows: normalizeLevels(d.workerDisability?.levels)
-        }
-      case 'relative':
-        return {
-          titleKey: 'dashboardPage.disability.relativeTitle',
-          icon: HeadDisability,
-          tint: 'blue',
-          hasDetail: true,
-          total: d.relativeDisability?.total_count ?? 0,
-          rows: normalizeLevels(d.relativeDisability?.levels)
-        }
-      default:
-        return {
-          titleKey: 'dashboardPage.disability.sickLeaveTitle',
-          icon: HeadMedicalFile,
-          tint: 'red',
-          hasDetail: false,
-          total: d.sickLeave?.total_count ?? 0,
-          rows: [
-            { label: t('dashboardPage.disability.active'), count: d.sickLeave?.active_count ?? 0 },
-            { label: t('dashboardPage.disability.finished'), count: d.sickLeave?.finished_count ?? 0 }
-          ]
-        }
-    }
+  // Backend guruhlarni to'liq qaytarmasligi mumkin — uchtasi ham doim chiziladi.
+  const rows = computed(() => {
+    const levels = card.value.levels || []
+    return [1, 2, 3].map((level) => ({
+      label: `${level}-${t('dashboardPage.disability.group')}`,
+      count: levels.find((item) => item.level === level)?.count ?? 0
+    }))
   })
 
   const option = computed(() => {
     // `isDark` ga bog'lanamiz — mavzu almashganda segment ranglari yangilanadi.
     appStore.isDark
-    if (!config.value) return {}
 
     return {
       tooltip: {
@@ -111,7 +90,7 @@
             borderColor: tokenColor('--fig-block-bg'),
             borderWidth: 2
           },
-          data: config.value.rows.map((row, idx) => ({
+          data: rows.value.map((row, idx) => ({
             value: row.count,
             name: row.label,
             itemStyle: { color: tokenColor(TOKENS[idx % TOKENS.length]) }
@@ -120,29 +99,30 @@
       ]
     }
   })
-
-  const format = (value) => Utils.formatNumberToMoney(value) || String(value ?? 0)
 </script>
 
 <template>
   <FigPanel
-    v-if="config"
     muted
-    :tint="config.tint"
-    :icon="config.icon"
+    tint="blue"
+    :icon="HeadDisability"
     :title="$t(config.titleKey)"
-    :action-text="config.hasDetail ? $t('content.detail') : null"
+    :action-text="$t('content.detail')"
+    :mock="isMock"
     :inner="false"
     @action="emit('detail')"
   >
     <div class="flex flex-wrap items-center gap-5 pr-2 pb-2 pl-2">
-      <div class="flex min-w-[200px] flex-1 flex-col gap-4 py-1.5">
-        <p class="text-[20px] leading-[30px] font-semibold whitespace-nowrap text-fig-text-primary">
-          {{ format(config.total) }}
-        </p>
+      <div class="flex min-w-[200px] flex-1 flex-col gap-3 py-1.5">
+        <div class="flex flex-col gap-1">
+          <p class="text-[20px] leading-[30px] font-semibold whitespace-nowrap text-fig-text-primary">
+            {{ toCount(card.total?.value) }}
+          </p>
+          <FigTrend :metric="card.total" unit="count" />
+        </div>
         <div class="flex flex-col gap-1">
           <FigDetailLine
-            v-for="(row, idx) in config.rows"
+            v-for="(row, idx) in rows"
             :key="idx"
             :label="row.label"
             :value="row.count"
