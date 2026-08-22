@@ -33,28 +33,45 @@
       // uchun maketdagi 20px ramkaga aniq o'lcham berib qo'yiladi.
       icon: FigIdCard,
       iconClass: 'text-fig-brand [&>svg]:h-5 [&>svg]:w-5',
-      source: () => store.dashboard.passwordCard,
+      titleKey: 'dashboardPage.password.title',
+      source: () => [
+        { title: 'dashboardPage.password.deadline', count: store.legacy.passports_count },
+        { title: 'dashboardPage.password.expired', count: store.legacy.passports_more_count }
+      ],
       key: InfoCardEnum.PASSPORT
     },
     med: {
       tint: 'red',
       icon: HeadMedicalFile,
       iconClass: '',
-      source: () => store.dashboard.medicalCard,
+      titleKey: 'dashboardPage.medical.title',
+      source: () => [
+        { title: 'dashboardPage.medical.deadline', count: store.legacy.meds_approaching },
+        { title: 'dashboardPage.medical.expired', count: store.legacy.meds_finished }
+      ],
       key: InfoCardEnum.MED
     },
     pension: {
       tint: 'amber',
       icon: ChipUserAlt,
       iconClass: '',
-      source: () => store.dashboard.pensionCard,
+      titleKey: 'dashboardPage.pension.title',
+      source: () => [
+        {
+          title: 'dashboardPage.pension.men',
+          count: store.overview.kpi?.pension_age?.male
+        },
+        {
+          title: 'dashboardPage.pension.women',
+          count: store.overview.kpi?.pension_age?.female
+        }
+      ],
       key: InfoCardEnum.PENSION
     }
   }
 
   const variant = computed(() => VARIANTS[props.type])
-  const card = computed(() => variant.value.source())
-  const rows = computed(() => card.value?.data || [])
+  const rows = computed(() => variant.value.source().filter((row) => row.count !== undefined))
   const total = computed(() => rows.value.reduce((sum, row) => sum + (row.count ?? 0), 0))
 
   const format = (value) => Utils.formatNumberToMoney(value) || String(value ?? 0)
@@ -62,11 +79,10 @@
 
 <template>
   <FigPanel
-    v-if="card"
     muted
     :tint="variant.tint"
     :icon="variant.icon"
-    :title="$t(card.title)"
+    :title="$t(variant.titleKey)"
     :action-text="$t('content.detail')"
     :inner="false"
     :icon-class="variant.iconClass"

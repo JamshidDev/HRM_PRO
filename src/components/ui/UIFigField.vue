@@ -1,12 +1,15 @@
 <script setup>
   /**
-   * Figma "Input and dropdown" (node 2609:73400) — profil maydoni.
+   * Figma "Input and dropdown" (node 1346:19896 / 2609:73400) — yorliq + qiymat qutisi.
    *
    * `boxed` (asosiy ko'rinish): tepada yorliq, ostida to'ldirilgan quti ichida qiymat.
    * `plain`: yorliq mayda kulrang, qiymati qalin — "Lavozim ma'lumotlari" bloki uchun.
    *
    * `editing` bo'lsa quti o'rniga default slot chiziladi, ya'ni o'sha joyga
    * naive-ui nazorat elementi (n-input, n-select, ...) qo'yiladi.
+   *
+   * `path` berilsa slot `n-form-item` ichiga o'raladi — yorliq maydonning o'zida
+   * turgani uchun `show-label` o'chirilgan holda. `path`siz xulq o'zgarmaydi.
    */
   defineProps({
     label: {
@@ -28,30 +31,46 @@
     editing: {
       type: Boolean,
       default: false
+    },
+    path: {
+      type: String,
+      default: null
+    },
+    rulePath: {
+      type: String,
+      default: null
     }
   })
 </script>
 
 <template>
-  <div
-    class="profile-field"
-    :class="[`profile-field--${variant}`, editing && 'profile-field--edit']"
-  >
-    <span v-if="label" class="profile-field__label">{{ label }}</span>
+  <div class="fig-field" :class="[`fig-field--${variant}`, editing && 'fig-field--edit']">
+    <span v-if="label" class="fig-field__label">{{ label }}</span>
 
-    <slot v-if="editing" />
+    <template v-if="editing">
+      <n-form-item
+        v-if="path"
+        class="fig-field__form-item"
+        :show-label="false"
+        :path="path"
+        :rule-path="rulePath || undefined"
+      >
+        <slot />
+      </n-form-item>
+      <slot v-else />
+    </template>
 
     <template v-else-if="variant === 'plain'">
-      <span class="profile-field__plain-value">
+      <span class="fig-field__plain-value">
         <slot name="value">{{ value ?? '—' }}</slot>
       </span>
     </template>
 
-    <div v-else class="profile-field__box">
+    <div v-else class="fig-field__box">
       <n-icon v-if="icon" :size="20" class="text-fig-text-tertiary shrink-0">
         <component :is="icon" />
       </n-icon>
-      <span class="profile-field__value">
+      <span class="fig-field__value">
         <slot name="value">{{ value ?? '—' }}</slot>
       </span>
     </div>
@@ -59,16 +78,16 @@
 </template>
 
 <style lang="scss" scoped>
-  .profile-field {
+  .fig-field {
     display: flex;
     flex-direction: column;
     min-width: 0;
   }
 
-  .profile-field--boxed {
+  .fig-field--boxed {
     gap: 8px;
 
-    .profile-field__label {
+    .fig-field__label {
       padding-left: 4px;
       font-size: 14px;
       font-weight: 400;
@@ -77,10 +96,10 @@
     }
   }
 
-  .profile-field--plain {
+  .fig-field--plain {
     gap: 8px;
 
-    .profile-field__label {
+    .fig-field__label {
       font-size: 12px;
       font-weight: 500;
       line-height: 16px;
@@ -88,7 +107,7 @@
     }
   }
 
-  .profile-field__plain-value {
+  .fig-field__plain-value {
     font-size: 14px;
     font-weight: 500;
     line-height: 18px;
@@ -96,7 +115,7 @@
     word-break: break-word;
   }
 
-  .profile-field__box {
+  .fig-field__box {
     display: flex;
     align-items: center;
     gap: 24px;
@@ -107,7 +126,7 @@
     background: var(--fig-bg-secondary);
   }
 
-  .profile-field__value {
+  .fig-field__value {
     flex: 1 0 0;
     min-width: 0;
     font-size: 14px;
@@ -119,9 +138,19 @@
 
   // Tahrirlash rejimida naive-ui nazorat elementi maketdagi quti bilan bir xil
   // balandlik va radiusga keltiriladi.
-  .profile-field--edit.profile-field--boxed :deep(.n-input),
-  .profile-field--edit.profile-field--boxed :deep(.n-base-selection) {
+  .fig-field--edit.fig-field--boxed :deep(.n-input),
+  .fig-field--edit.fig-field--boxed :deep(.n-base-selection) {
     --n-border-radius: 8px;
     --n-height: 36px;
+  }
+
+  // Xato matni maydon ostida o'z joyiga ega bo'lsin — aks holda to'r qatorlari
+  // validatsiya paytida sakrab ketadi.
+  .fig-field__form-item {
+    :deep(.n-form-item-feedback-wrapper) {
+      min-height: 18px;
+      font-size: 12px;
+      line-height: 16px;
+    }
   }
 </style>

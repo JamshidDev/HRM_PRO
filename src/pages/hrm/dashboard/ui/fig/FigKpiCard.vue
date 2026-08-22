@@ -3,11 +3,11 @@
    * Figma v3 dashboard KPI kartasi (node 2959:58231).
    *
    * Tuzilishi: tint chip + 20px ikonka, 20px qiymat, o'ng yuqorida 64px xira
-   * suv belgisi va pastda 12px radiusli `bg-secondary` blokda "label — qiymat"
-   * qatorlari (orasida 1px ajratgich).
+   * suv belgisi va pastda 12px radiusli `bg-secondary` blokda uch qator —
+   * ikkita "nom — qiymat" va eng pastda "o'tgan yilga" trendi.
    *
-   * Maketdagi "o'tgan yilga" trend qatori bu yerda yo'q: backend dashboard
-   * javobida o'tgan yil ko'rsatkichi qaytmaydi, shuning uchun qator chizilmaydi.
+   * Karta konfiguratsiyasi `pages/hrm/dashboard/kpi.js` da yasaladi: bu yerda
+   * hisob-kitob yo'q, faqat matn va i18n kalitlari chiziladi.
    */
   import ChipUsers from '@/assets/icons/hrmDashboard/chip-users.svg'
   import ChipUserAlt from '@/assets/icons/hrmDashboard/chip-user-alt.svg'
@@ -18,10 +18,13 @@
   import MarkUserAlt from '@/assets/icons/hrmDashboard/wm-user-alt.svg'
   import MarkHierarchy from '@/assets/icons/hrmDashboard/wm-hierarchy.svg'
   import MarkAgreement from '@/assets/icons/hrmDashboard/wm-agreement.svg'
-  import Utils from '@/utils/Utils.js'
+  import FigTrend from './FigTrend.vue'
 
   const props = defineProps({
-    // `{ total: {title, count}, data1: {title, count}, data2: {title, count} }`
+    /**
+     * `kpi.js` qaytaradigan obyekt:
+     * `{ titleKey, value, unitKey?, rows: [{titleKey, value, unitKey}], trend: {metric, unit} }`
+     */
     card: {
       type: Object,
       required: true
@@ -29,26 +32,40 @@
     variant: {
       type: String,
       default: 'users'
-    }
+    },
+    mock: Boolean
   })
 
-  // Maketdagi to'rtta karta: chip foni, 20px ikonka va 64px suv belgisi.
+  // Maketdagi kartalar: chip foni, 20px ikonka va 64px suv belgisi.
   const VARIANTS = {
     users: { tint: 'bg-fig-blue-100', icon: ChipUsers, mark: MarkUsers },
     pension: { tint: 'bg-fig-amber-100', icon: ChipUserAlt, mark: MarkUserAlt },
     positions: { tint: 'bg-fig-indigo-100', icon: ChipHierarchy, mark: MarkHierarchy },
     fxsh: { tint: 'bg-fig-indigo-100', icon: ChipAgreement, mark: MarkAgreement },
-    // Davomat tabidagi kartalar maketda ham shu shakl bilan chiziladi
+    // Kadrlar harakati bobi
+    timeToFill: { tint: 'bg-fig-blue-100', icon: ChipHierarchy, mark: MarkHierarchy },
+    tenure: { tint: 'bg-fig-amber-100', icon: ChipUserAlt, mark: MarkUserAlt },
+    // Davomat bobi
+    atWork: { tint: 'bg-fig-blue-100', icon: ChipUsers, mark: MarkUsers },
     vacation: { tint: 'bg-fig-amber-100', icon: ChipUserAlt, mark: MarkUserAlt },
+    chronicLate: { tint: 'bg-fig-red-100', icon: ChipMedicalFile, mark: null },
     sickLeave: { tint: 'bg-fig-red-100', icon: ChipMedicalFile, mark: null }
   }
 
   const variant = computed(() => VARIANTS[props.variant] || VARIANTS.users)
+  const rows = computed(() => props.card.rows || [])
 
-  const rows = computed(() => [props.card.data1, props.card.data2].filter(Boolean))
-
-  const format = (value) =>
-    value === null || value === undefined ? '—' : Utils.formatNumberToMoney(value) || String(value)
+  /**
+   * Trend qatori (va uning ustidagi ajratgich) faqat taqqoslash ma'lumoti
+   * bo'lganda chiziladi — backend o'tgan yil ko'rsatkichini bermaganda
+   * `FigTrend` bo'sh qolib, tepasida yolg'iz chiziq qolmasin.
+   */
+  const hasTrend = computed(() => {
+    const trend = props.card.trend
+    if (!trend?.metric) return false
+    const value = trend.unit === 'pp' ? trend.metric.delta_pp : trend.metric.delta
+    return value !== null && value !== undefined
+  })
 </script>
 
 <template>
@@ -70,31 +87,42 @@
           <component :is="variant.icon" />
         </span>
       </span>
-      <p class="truncate text-[14px] leading-[18px] font-medium text-fig-text-tertiary">
-        {{ $t(card.total.title) }}
+      <p class="min-w-0 flex-1 truncate text-[14px] leading-[18px] font-medium text-fig-text-tertiary">
+        {{ $t(card.titleKey) }}
       </p>
+      <span
+        v-if="mock"
+        class="shrink-0 rounded bg-fig-bg-tertiary px-1.5 py-0.5 text-[10px] leading-3 font-medium tracking-wide uppercase text-fig-text-disable"
+      >
+        mock
+      </span>
     </div>
 
     <p
       class="relative px-2 text-[20px] leading-6 font-semibold whitespace-nowrap text-fig-text-primary"
     >
-      {{ format(card.total.count) }}
+      {{ card.value }}<template v-if="card.unitKey"> {{ $t(card.unitKey) }}</template>
     </p>
 
     <!-- `mt-auto` — qo'shni karta balandroq bo'lsa ham panel pastda qoladi -->
-    <div v-if="rows.length" class="mt-auto flex flex-col gap-1.5 rounded-xl bg-fig-bg-secondary px-3 py-1.5">
+    <div class="mt-auto flex flex-col gap-1.5 rounded-xl bg-fig-bg-secondary px-3 py-1.5">
       <template v-for="(row, idx) in rows" :key="idx">
         <span v-if="idx" class="h-px w-full rounded-full bg-fig-br-disable"></span>
         <div class="flex items-start justify-between gap-2">
           <p class="min-w-0 flex-1 text-[12px] leading-4 text-fig-text-tertiary">
-            {{ $t(row.title) }}
+            {{ $t(row.titleKey) }}
           </p>
           <p
             class="shrink-0 text-right text-[12px] leading-4 font-semibold whitespace-nowrap text-fig-text-primary"
           >
-            {{ format(row.count) }}
+            {{ row.value }}<template v-if="row.unitKey"> {{ $t(row.unitKey) }}</template>
           </p>
         </div>
+      </template>
+
+      <template v-if="hasTrend">
+        <span v-if="rows.length" class="h-px w-full rounded-full bg-fig-br-disable"></span>
+        <FigTrend :metric="card.trend.metric" :unit="card.trend.unit" />
       </template>
     </div>
   </div>

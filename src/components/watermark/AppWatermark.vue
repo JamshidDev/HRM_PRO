@@ -1,5 +1,10 @@
 <script setup>
   import { useAccountStore } from '@/store/modules/index.js'
+  import {
+    useWatermarkGuard,
+    WATERMARK_ROOT_CLASS,
+    WATERMARK_TILES_CLASS
+  } from './watermarkGuard.js'
 
   // Bitta "plitka" o'lchami (px) — matn shu qadam bilan takrorlanadi. Kattaroq qiymat =
   // siyrakroq watermark.
@@ -58,28 +63,20 @@
     opacity: OPACITY
   }))
 
-  // To'siq emas, to'sqinlik: devtools orqali tugun o'chirilsa qaytarib qo'yamiz.
-  // Brauzerda ishlaydigan har qanday watermarkni tajribali foydalanuvchi baribir
-  // olib tashlay oladi — bu faqat tasodifiy/oson chetlab o'tishni qiyinlashtiradi.
-  let observer = null
-
-  onMounted(() => {
-    observer = new MutationObserver(() => {
-      const node = rootRef.value
-      if (node && !document.body.contains(node)) document.body.appendChild(node)
-    })
-    observer.observe(document.body, { childList: true, subtree: true })
-  })
-
-  onBeforeUnmount(() => {
-    observer?.disconnect()
-    observer = null
+  // Himoya (integrity guard): tugun o'chirilsa, `class`i olib tashlansa, yashirilsa
+  // yoki CSS qoidalari o'chirilsa — avval o'zini tiklaydi, tiklash ish bermasa yoki
+  // buzish takrorlansa ilova DOM'dan olib tashlanadi va oq ekran qoladi.
+  // Batafsil: `watermarkGuard.js`.
+  useWatermarkGuard({
+    getRoot: () => rootRef.value,
+    isActive: () => isVisible.value,
+    getTilesStyle: () => tilesStyle.value
   })
 </script>
 
 <template>
-  <div v-if="isVisible" ref="rootRef" class="app-watermark" aria-hidden="true">
-    <div class="app-watermark__tiles" :style="tilesStyle" />
+  <div v-if="isVisible" ref="rootRef" :class="WATERMARK_ROOT_CLASS" aria-hidden="true">
+    <div :class="WATERMARK_TILES_CLASS" :style="tilesStyle" />
   </div>
 </template>
 

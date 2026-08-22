@@ -1,6 +1,6 @@
 <script setup>
   import { useWorkerProfileStore, useComponentStore } from '@/store/modules/index.js'
-  import ProfileField from '../ui/ProfileField.vue'
+  import { UIFigField } from '@/components/index.js'
   import LanguagePage from '@/pages/hrm/language/LanguagePage.vue'
   import LanguageCertificatePage from '@/pages/hrm/languageCertificate/LanguageCertificatePage.vue'
   import UniversityPage from '@/pages/hrm/university/UniversityPage.vue'
@@ -22,7 +22,7 @@
 <template>
   <div class="flex flex-col gap-5 w-full">
     <div class="education-head">
-      <ProfileField :label="$t('createWorkerPage.form.education')" editing>
+      <UIFigField :label="$t('createWorkerPage.form.education')" editing>
         <n-select
           v-model:value="store.payload.education"
           filterable
@@ -32,7 +32,7 @@
           :loading="componentStore.enumLoading"
           @update:value="onEducationChange"
         />
-      </ProfileField>
+      </UIFigField>
     </div>
 
     <LanguagePage />

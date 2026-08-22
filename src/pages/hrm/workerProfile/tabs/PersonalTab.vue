@@ -1,9 +1,8 @@
 <script setup>
   import { v4 as uuidv4 } from 'uuid'
   import icons from '@/assets/icons'
-  import { UIProfileButton, UIProfileEmpty } from '@/components/index.js'
+  import { UIProfileButton, UIProfileEmpty, UIFigBlock } from '@/components/index.js'
   import { useWorkerProfileStore } from '@/store/modules/index.js'
-  import ProfileBlock from '../ui/ProfileBlock.vue'
   import PhotoBlock from '../ui/blocks/PhotoBlock.vue'
   import PersonalInfoBlock from '../ui/blocks/PersonalInfoBlock.vue'
   import PhoneBlock from '../ui/blocks/PhoneBlock.vue'
@@ -69,7 +68,7 @@
         </template>
 
         <!-- Ro'yxat bo'sh: karta sarlavhasi joyida qoladi, ichida bo'sh holat ko'rinadi -->
-        <ProfileBlock
+        <UIFigBlock
           v-else
           :title="$t('createWorkerPage.form.passportTitle')"
           :icon="icons.figIdCard"
@@ -80,7 +79,7 @@
               {{ $t('content.add') }}
             </UIProfileButton>
           </template>
-        </ProfileBlock>
+        </UIFigBlock>
       </div>
     </n-spin>
 
@@ -100,7 +99,7 @@
           </div>
         </template>
 
-        <ProfileBlock
+        <UIFigBlock
           v-else
           :title="$t('createWorkerPage.form.foreignPassportTitle')"
           :icon="icons.figIdCard"
@@ -111,7 +110,7 @@
               {{ $t('content.add') }}
             </UIProfileButton>
           </template>
-        </ProfileBlock>
+        </UIFigBlock>
       </div>
     </n-spin>
   </div>

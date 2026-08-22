@@ -1,13 +1,15 @@
 <script setup>
-  import { ArrowCircleLeft20Regular, ArrowCircleRight32Regular } from '@vicons/fluent'
   import validationRules from '@/utils/validationRules.js'
   import { useContractStore, useComponentStore } from '@/store/modules/index.js'
-  import { CheckmarkCircle12Filled, DocumentBulletList24Regular } from '@vicons/fluent'
+  import { UIFigSteps, UIProfileButton } from '@/components/index.js'
+  import icons from '@/assets/icons'
+  import i18n from '@/i18n/index.js'
   import ContractForm_1 from '@/pages/docFlow/document/contract/ui/ContractForm_1.vue'
   import ContractForm_2 from '@/pages/docFlow/document/contract/ui/ContractForm_2.vue'
   import ContractForm_3 from '@/pages/docFlow/document/contract/ui/ContractForm_3.vue'
   import ContractForm_4 from '@/pages/docFlow/document/contract/ui/ContractForm_4.vue'
 
+  const { t } = i18n.global
   const store = useContractStore()
   const componentStore = useComponentStore()
   const formRef = ref(null)
@@ -18,6 +20,18 @@
       default: null
     }
   })
+
+  const steps = computed(() => [
+    { key: 'one', label: t('contractPage.step.stepOne') },
+    { key: 'two', label: t('contractPage.step.stepTwo') },
+    { key: 'three', label: t('contractPage.step.stepThree') },
+    { key: 'four', label: t('contractPage.step.stepFour') }
+  ])
+
+  // Sehrgar ketma-ket yuriladi — joriy qadamgacha bo'lganlari bajarilgan hisoblanadi
+  const completedSteps = computed(() =>
+    Array.from({ length: Math.max(0, store.stepNumber - 1) }, (_, i) => i + 1)
+  )
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {
@@ -58,27 +72,19 @@
 </script>
 
 <template>
-  <n-form ref="formRef" :rules="validationRules.contractFrom" :model="store.payload">
-    <n-space vertical class="w-full mb-4 hidden! md:inline-block!">
-      <n-steps :status="store.st" :current="store.stepNumber">
-        <template #finish-icon>
-          <n-icon>
-            <CheckmarkCircle12Filled />
-          </n-icon>
-        </template>
-        <template #error-icon>
-          <n-icon>
-            <DocumentBulletList24Regular />
-          </n-icon>
-        </template>
-        <n-step :title="$t('contractPage.step.stepOne')" />
-        <n-step :title="$t('contractPage.step.stepTwo')" />
-        <n-step :title="$t('contractPage.step.stepThree')" />
-        <n-step :title="$t('contractPage.step.stepFour')" />
-      </n-steps>
-    </n-space>
+  <n-form
+    class="contract-form"
+    ref="formRef"
+    :rules="validationRules.contractFrom"
+    :model="store.payload"
+  >
+    <div class="hidden! md:block!">
+      <UIFigSteps :steps="steps" :current="store.stepNumber" :completed="completedSteps" />
+    </div>
 
-    <div style="height: calc(100vh - 160px)" class="overflow-y-auto overflow-x-hidden pb-12">
+    <!-- `height` emas `max-height`: 4-qadam (muvaffaqiyat kartasi) past bo'lgani uchun
+         qat'iy balandlik ostida katta bo'sh joy qolardi. -->
+    <div style="max-height: calc(100vh - 220px)" class="overflow-y-auto overflow-x-hidden pr-1">
       <n-tabs animated v-model:value="store.activeTab" class="hidden-tab-header" type="segment">
         <n-tab-pane :name="store.tabList[0].id">
           <ContractForm_1 />
@@ -96,33 +102,42 @@
     </div>
 
     <div
-      class="grid gap-2"
+      class="grid gap-3"
       :class="[store.activeTab === 1 || store.activeTab === 4 ? 'grid-cols-1' : 'grid-cols-2']"
     >
-      <n-button
+      <UIProfileButton
         v-if="store.activeTab !== 1 && store.activeTab !== 4"
+        class="w-full"
+        variant="danger"
+        :icon="icons.figArrowLeft"
+        :loading="store.saveLoading"
         @click="goBack()"
-        type="error"
-        :loading="store.saveLoading"
-        ghost
       >
-        <template #icon>
-          <ArrowCircleLeft20Regular />
-        </template>
         {{ $t('content.back') }}
-      </n-button>
-      <n-button
+      </UIProfileButton>
+      <UIProfileButton
         v-if="store.activeTab !== 4"
-        @click="onSubmit"
+        class="w-full"
         :loading="store.saveLoading"
-        type="primary"
+        @click="onSubmit"
       >
-        <template #icon>
-          <ArrowCircleRight32Regular />
-        </template>
-
         {{ $t('content.next') }}
-      </n-button>
+      </UIProfileButton>
     </div>
   </n-form>
 </template>
+
+<style lang="scss" scoped>
+  // Maketda bloklar orasi 16, qadamlar paneli bilan orasi 20
+  .contract-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  // Tab konteynerlari blok kartalarini qisib qo'ymasin
+  .contract-form :deep(.n-tab-pane) {
+    padding: 0;
+  }
+</style>

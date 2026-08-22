@@ -1,36 +1,42 @@
 <script setup>
   /**
-   * Figma v3 · Tab 3 "Intizomiy jazo — ustun" (node 2959:59898).
+   * Figma v3 · Tab 3 "Intizomiy jazo turlari" (node 2959:59930).
    *
-   * Maketdagi uch ustun o'rniga backend ikkita turni beradi (hayfsan va boshqa
-   * jazolar) — ustunlar shu ikkitasi bo'yicha chiziladi.
+   * Yuqorida jami son va o'tgan yilga nisbatan o'zgarish, ostida har bir tur
+   * uchun ustun: tepada soni, pastda nomi va `41 % · ▲ 18 %` izohi.
+   *
+   * Turlar soni backenddan kelgani bo'yicha chiziladi.
    */
   import HeadMortarboard from '@/assets/icons/hrmDashboard/head-mortarboard.svg'
   import FigPanel from '../fig/FigPanel.vue'
   import FigColumns from '../fig/FigColumns.vue'
+  import FigTrend from '../fig/FigTrend.vue'
   import { useDashboardStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
-  import Utils from '@/utils/Utils.js'
+  import { toCount, share, sumBy } from '../../format.js'
 
-  const emit = defineEmits(['detail'])
+  defineEmits(['detail'])
 
   const store = useDashboardStore()
   const { t } = i18n.global
 
-  const items = computed(() => [
-    {
-      name: t('dashboardPage.rewardCard.punishment.typeOne'),
-      value: store.dashboard.disciplinaryFineCount ?? 0,
-      token: '--fig-icon-red'
-    },
-    {
-      name: t('dashboardPage.rewardCard.punishment.typeTwo'),
-      value: store.dashboard.disciplinaryCount ?? 0,
-      token: '--fig-icon-orange'
-    }
-  ])
+  // Maketdagi ustun ranglari tartibi
+  const TOKENS = ['--fig-icon-red', '--fig-icon-orange', '--fig-icon-amber', '--fig-icon-purple']
 
-  const total = computed(() => items.value.reduce((sum, item) => sum + item.value, 0))
+  const card = computed(() => store.attendance.disciplinary_types || {})
+  const isMock = computed(() => store.isMock('attendance', 'disciplinary_types'))
+
+  const sum = computed(() => sumBy(card.value.items, 'count'))
+
+  const items = computed(() =>
+    (card.value.items || []).map((item, idx) => ({
+      name: item.label ?? t(`dashboardPage.disciplinary.types.${item.key}`),
+      value: item.count ?? 0,
+      percent: item.percent ?? share(item.count, sum.value),
+      metric: item,
+      token: TOKENS[idx % TOKENS.length]
+    }))
+  )
 </script>
 
 <template>
@@ -39,12 +45,16 @@
     :icon="HeadMortarboard"
     :title="$t('dashboardPage.rewardCard.punishment.title')"
     :action-text="$t('content.detail')"
+    :mock="isMock"
     inner-class="px-4 pt-2 pb-3 gap-2.5"
-    @action="emit('detail')"
+    @action="$emit('detail')"
   >
-    <p class="text-[20px] leading-6 font-semibold whitespace-nowrap text-fig-text-primary">
-      {{ Utils.formatNumberToMoney(total) || 0 }}
-    </p>
-    <FigColumns :items="items" :height="120" />
+    <div class="flex flex-col gap-1">
+      <p class="text-[20px] leading-6 font-semibold whitespace-nowrap text-fig-text-primary">
+        {{ toCount(card.total?.value) }}
+      </p>
+      <FigTrend :metric="card.total" unit="count" />
+    </div>
+    <FigColumns :items="items" :height="120" trend-unit="percent" />
   </FigPanel>
 </template>

@@ -1,8 +1,26 @@
 import { defineStore } from 'pinia'
-import i18n from '@/i18n/index.js'
-import Utils from '@/utils/Utils.js'
+import { dashboardMock, detailMock } from '@/pages/hrm/dashboard/mock.js'
+import { mergeMock, hasApiValue } from '@/pages/hrm/dashboard/merge.js'
+import {
+  combine,
+  fromLegacyOne,
+  fromLegacyTwo,
+  fromLegacyThree
+} from '@/pages/hrm/dashboard/adapter.js'
 
-const { t } = i18n.global
+/**
+ * Bob (tab) nomlari va kontrakt bo'limlari nomlari bir xil emas: Umumiy bobning
+ * id'si `general`, `dashboard-api.md` dagi bo'lim esa `overview`. `tabData` va
+ * `isMock` ikkalasini ham qabul qilishi uchun kalit shu jadval orqali o'giriladi.
+ */
+const DATA_KEY = {
+  general: 'overview',
+  movement: 'movement',
+  attendance: 'attendance'
+}
+
+const dataKey = (tab) => DATA_KEY[tab] || tab
+
 export const useDashboardStore = defineStore('dashboardStore', {
   state: () => ({
     structureModel: [],
@@ -49,19 +67,19 @@ export const useDashboardStore = defineStore('dashboardStore', {
     detailData: null,
     detailDataTotal: 0,
     detailLoading: false,
-    dashboard: {
-      contractTypes: [],
-      mainCard: [],
-      genders: null,
-      ageCard: [],
-      eduCard: [],
-      passwordCard: null,
-      pensionCard: null,
-      medicalCard: null,
-      contracts: [],
-      birthdays: null,
-      vacations: [],
-      disabilityCard: null
+    /**
+     * Backenddan kelgan ma'lumot `dashboard-api.md` kontrakt shaklida
+     * (`adapter.js` o'giradi). Kartalar bunga to'g'ridan-to'g'ri emas,
+     * `overview` / `movement` / `attendance` getterlari orqali murojaat
+     * qiladi — ular mock ustiga real qiymatlarni yozib beradi.
+     */
+    api: {
+      overview: null,
+      movement: null,
+      attendance: null,
+      // Kontraktga kirmagan, ammo hozircha kartalarga kerak bo'lgan maydonlar
+      // (pasport/tibbiy ko'rik muddatlari, oylik shartnoma dinamikasi).
+      legacy: null
     },
     skipReset: true,
     passportPayload: {
@@ -93,6 +111,27 @@ export const useDashboardStore = defineStore('dashboardStore', {
       }
     }
   }),
+  getters: {
+    // Mock ustiga API qiymatlari yozilgan, kontrakt shaklidagi bob ma'lumoti.
+    overview: (state) => mergeMock(dashboardMock.overview, state.api.overview),
+    movement: (state) => mergeMock(dashboardMock.movement, state.api.movement),
+    attendance: (state) => mergeMock(dashboardMock.attendance, state.api.attendance),
+
+    // Kontraktga kirmagan legacy maydonlar (pasport/tibbiy ko'rik, oylik dinamika).
+    legacy: (state) => state.api.legacy || {},
+
+    /** Bob nomi bo'yicha birlashtirilgan ma'lumot (`general` ham, `overview` ham). */
+    tabData() {
+      return (tab) => this[dataKey(tab)] || {}
+    },
+
+    /**
+     * Vidjet ma'lumoti mock'dan olinganmi? Kartadagi "mock" chipini shu
+     * boshqaradi: backend maydonni bergan zahoti chip o'zi yo'qoladi.
+     * `path` — kartaning haqiqatan o'qiydigan yo'li, masalan `education.levels`.
+     */
+    isMock: (state) => (tab, path) => !hasApiValue(state.api[dataKey(tab)], path)
+  },
   actions: {
     _updatePassport(data) {
       this.loadingPassport = true
@@ -119,9 +158,11 @@ export const useDashboardStore = defineStore('dashboardStore', {
         $ApiService.dashboardService._indexTwo({ params }),
         $ApiService.dashboardService._indexThree({ params })
       ])
-      this._responseOneAttach(responseOne)
-      this._responseTwoAttach(responseTwo)
-      this._responseThreeAttach(responseThree)
+      this.api = combine(
+        fromLegacyOne(responseOne),
+        fromLegacyTwo(responseTwo),
+        fromLegacyThree(responseThree)
+      )
       this.loading = false
     },
     // Audit tab — data-quality counts (5 cards). Org filter (top Filter) reused.
@@ -168,183 +209,36 @@ export const useDashboardStore = defineStore('dashboardStore', {
       this.audit.detail.total = 0
       this.audit.detail.page = 1
     },
-    _responseOneAttach(res) {
-      const formatMonth = (date) => {
-        let day = date.split('-')[1]
-        let month = Utils.getMonthNameByKey(date.split('-')[0])
-        return `${day} - ${month}`
-      }
+    /**
+     * Backend endpointi hali yo'q kartalar `mockKey` bilan ro'yxatga olinadi —
+     * ularning "Batafsil" jadvali `mock.js` dagi qatorlardan mijoz tomonida
+     * sahifalanadi. Endpoint paydo bo'lgach `constants.js` da `mockKey` o'rniga
+     * `filterCallback` beriladi va bu tarmoq ishlamay qoladi.
+     */
+    _mockDetail() {
+      const source = detailMock[this.activeDetail.mockKey]
+      const rows = source?.rows || []
+      const page = this.params.page || 1
+      const perPage = this.params.per_page || 15
+      const search = (this.params.search || '').trim().toLowerCase()
 
-      const v = res.data.data
-      this.dashboard.contractTypes = v.contract_types
-      this.dashboard.genders = { man: v.mans_count, woman: v.woman_count }
-      // `variant` — Figma v3 KPI kartasidagi chip/suv belgisi to'plamini tanlaydi.
-      this.dashboard.mainCard = [
-        {
-          variant: 'users',
-          total: {
-            title: 'dashboardPage.mainCard.totalWorker',
-            count: v.workers_count
-          },
-          data1: {
-            title: 'dashboardPage.mainCard.man',
-            count: v.mans_count
-          },
-          data2: {
-            title: 'dashboardPage.mainCard.woman',
-            count: v.woman_count
-          }
-        },
-        {
-          variant: 'pension',
-          total: {
-            title: 'dashboardPage.pension.title',
-            count: v.retired_men_count + v.retired_women_count
-          },
-          data1: {
-            title: 'dashboardPage.pension.men',
-            count: v.retired_men_count
-          },
-          data2: {
-            title: 'dashboardPage.pension.women',
-            count: v.retired_women_count
-          }
-        },
-        {
-          variant: 'positions',
-          total: {
-            title: 'dashboardPage.position.title',
-            count: v.positions_rate
-          },
-          data1: {
-            title: 'dashboardPage.position.vakant',
-            count: parseFloat(Math.max(v.positions_rate - v.worker_positions_rate, 0).toFixed(2))
-          },
-          data2: {
-            title: 'dashboardPage.position.sverx',
-            count: parseFloat(Math.max(v.worker_positions_rate - v.positions_rate, 0).toFixed(2))
-          }
-        },
-        {
-          variant: 'fxsh',
-          total: {
-            title: 'dashboardPage.mainCard.fxsh',
-            count: v.fxsh_count
-          },
-          data1: {
-            title: 'dashboardPage.mainCard.man',
-            count: v.fxsh_mans_count
-          },
-          data2: {
-            title: 'dashboardPage.mainCard.woman',
-            count: v.fxsh_woman_count
-          }
-        }
-      ]
-      this.dashboard.ageCard = [
-        {
-          title: 'dashboardPage.age.age31',
-          count: v.age_30_and_younger
-        },
-        {
-          title: 'dashboardPage.age.age32_45',
-          count: v.age_31_to_45
-        },
-        {
-          title: 'dashboardPage.age.age46',
-          count: v.age_46_and_older
-        }
-      ]
-      this.dashboard.eduCard = [
-        {
-          title: 'dashboardPage.edu.higher',
-          count: v.higher_edu_count
-        },
-        {
-          title: 'dashboardPage.edu.middle',
-          count: v.middle_edu_count
-        },
-        {
-          title: 'dashboardPage.edu.special',
-          count: v.special_edu_count
-        }
-      ]
-      this.dashboard.passwordCard = {
-        title: 'dashboardPage.password.title',
-        data: [
-          {
-            title: 'dashboardPage.password.deadline',
-            count: v.passports_count
-          },
-          {
-            title: 'dashboardPage.password.expired',
-            count: v.passports_more_count
-          }
-        ]
-      }
-      this.dashboard.pensionCard = {
-        title: 'dashboardPage.pension.title',
-        data: [
-          {
-            title: 'dashboardPage.pension.men',
-            count: v.retired_men_count
-          },
-          {
-            title: 'dashboardPage.pension.women',
-            count: v.retired_women_count
-          }
-        ]
-      }
-      this.dashboard.contracts = v.contracts
-      this.dashboard.vacations = v.vacation_types
-      // Maketda (node 2966:68947) har bir qator "sana + izoh + soni + avatarlar"
-      // ko'rinishida: birinchi ikkitasida izoh bor, qolganlarida faqat sana.
-      const labels = [t('dashboardPage.birthday.today'), t('dashboardPage.birthday.tomorrow')]
-      this.dashboard.birthdays = {
-        title: 'dashboardPage.birthday.title',
-        data: (v.birthdays?.result || []).map((item, idx) => ({
-          day: formatMonth(item.day),
-          label: labels[idx] || null,
-          total: item.count,
-          // `UIUserGroup` "+N" ni faqat ro'yxat `max` dan uzun bo'lsagina chizadi,
-          // shuning uchun qoldiq bor paytda ro'yxat sun'iy uzaytiriladi.
-          workers: item.count > 3 ? [...item.workers, ...item.workers] : item.workers,
-          has_more: item.has_more
-        }))
-      }
-    },
-    _responseTwoAttach(res) {
-      const v = res.data.data
-      this.dashboard.incentivesCount = v.incentives
-      this.dashboard.incentivesGiftCount = v.incentive_actions_gift_type
-      this.dashboard.disciplinaryCount = v.disciplinary_actions
-      this.dashboard.disciplinaryFineCount = v.disciplinary_actions_fine_type
-      this.dashboard.medFinishedCound = v.meds_finished
-      this.dashboard.medApproachCount = v.meds_approaching
+      const filtered = search
+        ? rows.filter((row) =>
+            `${row.worker?.last_name || ''} ${row.worker?.first_name || ''} ${row.organization?.name || ''}`
+              .toLowerCase()
+              .includes(search)
+          )
+        : rows
 
-      this.dashboard.medicalCard = {
-        title: 'dashboardPage.medical.title',
-        data: [
-          {
-            title: 'dashboardPage.medical.deadline',
-            count: v.meds_approaching || 0
-          },
-          {
-            title: 'dashboardPage.medical.expired',
-            count: v.meds_finished || 0
-          }
-        ]
-      }
-    },
-    _responseThreeAttach(res) {
-      const v = res.data.data
-      this.dashboard.disabilityCard = {
-        workerDisability: v.worker_disabilities,
-        relativeDisability: v.worker_relative_disabilities,
-        sickLeave: v.worker_sick_leaves
-      }
+      this.detailData = filtered.slice((page - 1) * perPage, page * perPage)
+      this.detailDataTotal = filtered.length
+      this.detailLoading = false
     },
     _index_detail() {
+      if (this.activeDetail?.mockKey) {
+        this._mockDetail()
+        return
+      }
       if (!this.activeDetail?.filterCallback) throw new Error('No detail filter callback set')
       this.detailLoading = true
       let params = {

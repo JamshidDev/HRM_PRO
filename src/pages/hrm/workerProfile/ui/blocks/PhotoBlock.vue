@@ -1,9 +1,8 @@
 <script setup>
-  import { UICropper, UIProfileButton } from '@/components/index.js'
+  import { UICropper, UIProfileButton, UIFigBlock } from '@/components/index.js'
   import { v4 as uuidv4 } from 'uuid'
   import Utils from '@/utils/Utils.js'
   import icons from '@/assets/icons'
-  import ProfileBlock from '../ProfileBlock.vue'
   import { useWorkerProfileStore } from '@/store/modules/index.js'
 
   /** Figma "Kandidat rasmi" bloki (node 2609:74328) */
@@ -46,7 +45,7 @@
 </script>
 
 <template>
-  <ProfileBlock :title="$t('workerProfile.personal.photoTitle')" :icon="icons.figImageSquare">
+  <UIFigBlock :title="$t('workerProfile.personal.photoTitle')" :icon="icons.figImageSquare">
     <div class="flex flex-wrap items-start gap-4 w-full">
       <div
         v-for="img in store.photos"
@@ -109,7 +108,7 @@
       </template>
       <UIProfileButton v-else @click="editing = true">{{ $t('content.edit') }}</UIProfileButton>
     </template>
-  </ProfileBlock>
+  </UIFigBlock>
 </template>
 
 <style lang="scss" scoped>

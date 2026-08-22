@@ -980,6 +980,12 @@
       "pasport": "Паспортные данные кандидата",
       "phone": "Телефонные номера кандидата"
     },
+    "stepShort": {
+      "personal": "Личные",
+      "pasport": "Паспорт",
+      "photo": "Фото кандидата",
+      "phone": "Номер телефона"
+    },
     "toast": {
       "warning": {
         "title": "Существующий сотрудник",
@@ -2056,10 +2062,20 @@
       "expired": "Истёк"
     },
     "incentive": {
-      "title": "Поощрения"
+      "title": "Поощрения",
+      "types": {
+        "money": "Денежная премия",
+        "honorary_certificate": "Почётная грамота",
+        "gratitude": "Благодарность"
+      }
     },
     "disciplinary": {
-      "title": "Дисциплинарные взыскания"
+      "title": "Дисциплинарные взыскания",
+      "types": {
+        "reprimand": "Выговор",
+        "warning": "Предупреждение",
+        "other": "Другое"
+      }
     },
     "position": {
       "title": "Штатные единицы",
@@ -2133,6 +2149,161 @@
     },
     "vacation": {
       "statusTitle": "Состояние отпусков — по видам"
+    },
+    "trend": {
+      "vsLastYear": "к прошлому году",
+      "days": "дн.",
+      "years": "лет",
+      "pp": "п.п."
+    },
+    "headcount": {
+      "title": "Тренд численности — 24 месяца",
+      "hiredAt": "Дата приёма"
+    },
+    "today": {
+      "title": "Состояние на сегодня",
+      "atWorkTitle": "Сегодня на работе",
+      "onVacationTitle": "В отпуске",
+      "chronicLateTitle": "Хронические опоздания",
+      "share": "Доля",
+      "onVacation": "В отпуске",
+      "planned": "По плану",
+      "threePlus": "3+ раза",
+      "status": "Статус",
+      "statuses": {
+        "working": "На работе",
+        "vacation": "В отпуске",
+        "sick_leave": "Больничный",
+        "absent": "Без причины"
+      }
+    },
+    "eduLevel": {
+      "vocational_college": "Профессиональный колледж",
+      "bachelor": "Бакалавр",
+      "general_secondary": "Общее среднее",
+      "academic_lyceum": "Академический лицей",
+      "master": "Магистр",
+      "not_specified": "Не указано"
+    },
+    "eduGroup": {
+      "higher": "С высшим образованием",
+      "general_secondary": "Общее среднее",
+      "secondary_special": "Среднее специальное"
+    },
+    "nationality": {
+      "title": "Национальность сотрудников",
+      "column": "Национальность",
+      "items": {
+        "uzbek": "Узбек",
+        "tajik": "Таджик",
+        "karakalpak": "Каракалпак",
+        "kazakh": "Казах",
+        "russian": "Русский",
+        "kyrgyz": "Киргиз",
+        "turkmen": "Туркмен",
+        "other": "Другие"
+      }
+    },
+    "timeToFill": {
+      "title": "Срок закрытия вакансии",
+      "target": "Цель",
+      "longest": "Самый долгий"
+    },
+    "tenure": {
+      "title": "Средний стаж",
+      "median": "Медиана",
+      "overTen": "10+ лет"
+    },
+    "hiring": {
+      "title": "Приём на работу — типы договоров",
+      "column": "Тип договора",
+      "hiredAt": "Дата приёма",
+      "types": {
+        "permanent": "Бессрочный",
+        "fixed_term": "Срочный",
+        "fxsh": "ГПХ",
+        "secondary": "Совместитель",
+        "temporary": "Временный"
+      }
+    },
+    "dismissal": {
+      "title": "Увольнения — основания",
+      "column": "Основание увольнения",
+      "firedAt": "Дата увольнения",
+      "reasons": {
+        "own_will": "По собственному желанию",
+        "contract_ended": "Истёк срок договора",
+        "mutual_agreement": "По соглашению сторон",
+        "retirement": "Выход на пенсию",
+        "disciplinary": "Дисциплинарное взыскание"
+      }
+    },
+    "staffFact": {
+      "title": "Штат и факт — по подразделениям",
+      "hint": "Цветной бар — факт, тёмная линия — план штата",
+      "plan": "План штата",
+      "actual": "Факт",
+      "vacant": "Вакантно"
+    },
+    "vacancy": {
+      "openTitle": "Открытые вакансии — должности",
+      "ageTitle": "Возраст вакансии",
+      "others": "Остальные {count} должностей",
+      "count": "Вакансии",
+      "openedAt": "Дата открытия",
+      "days": "Дней",
+      "state": "Статус",
+      "states": {
+        "active": "Активен",
+        "finished": "Завершён"
+      },
+      "buckets": {
+        "lt_10": "Менее 10 дней",
+        "10_90": "10–90 дней",
+        "gt_90": "Более 90 дней"
+      }
+    },
+    "events": {
+      "title": "Предстоящие события",
+      "column": "Событие",
+      "date": "Дата",
+      "days": "{count} дн.",
+      "daysLeft": "Осталось дней",
+      "workers": "{count} сотр.",
+      "footer": "По дням начиная с сегодня · всего {count} событий",
+      "types": {
+        "probation_end": "Истекает испытательный срок",
+        "contract_end": "Истекает договор",
+        "pension_age": "Достигает пенсионного возраста",
+        "attestation": "Срок аттестации"
+      }
+    },
+    "retention": {
+      "title": "Когорты — удержание по году приёма",
+      "cohort": "Год приёма",
+      "month": "{count} мес.",
+      "people": "{count} чел.",
+      "hiredAt": "Дата приёма",
+      "status": "Статус",
+      "statuses": {
+        "active": "Работает",
+        "left": "Уволен"
+      }
+    },
+    "vacationState": {
+      "used": "Использовано",
+      "planned": "По плану",
+      "accrued": "Накоплено"
+    },
+    "monthly": {
+      "title": "Поощрения и взыскания — по месяцам",
+      "incentives": "Поощрения",
+      "disciplinary": "Дисциплинарные взыскания",
+      "column": "Тип",
+      "types": {
+        "incentive": "Поощрение",
+        "disciplinary": "Взыскание"
+      }
     }
   },
   "applicationPage": {

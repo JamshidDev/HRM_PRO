@@ -995,6 +995,12 @@
       "pasport": "Kandidatning passport ma'lumotlari",
       "phone": "Kandidatning telefon raqam ma'lumotlari"
     },
+    "stepShort": {
+      "personal": "Shaxsiy",
+      "pasport": "Pasport",
+      "photo": "Kandidat rasmi",
+      "phone": "Telefon raqam"
+    },
     "toast": {
       "warning": {
         "title": "Tizimda mavjud xodim",
@@ -2070,10 +2076,20 @@
       "expired": "Muddati o'tgan"
     },
     "incentive": {
-      "title": "Rag'batlantirishlar"
+      "title": "Rag'batlantirishlar",
+      "types": {
+        "money": "Pul mukofoti",
+        "honorary_certificate": "Faxriy yorliq",
+        "gratitude": "Minnatdorchilik"
+      }
     },
     "disciplinary": {
-      "title": "Intizomiy jazolar"
+      "title": "Intizomiy jazolar",
+      "types": {
+        "reprimand": "Hayfsan",
+        "warning": "Ogohlantirish",
+        "other": "Boshqa"
+      }
     },
     "position": {
       "title": "Shtat birliklari",
@@ -2147,6 +2163,161 @@
     },
     "vacation": {
       "statusTitle": "Ta'til holati — turlari kesimida"
+    },
+    "trend": {
+      "vsLastYear": "o'tgan yilga",
+      "days": "kun",
+      "years": "yil",
+      "pp": "p.p."
+    },
+    "headcount": {
+      "title": "Xodimlar soni trendi — 24 oy",
+      "hiredAt": "Qabul sanasi"
+    },
+    "today": {
+      "title": "Bugungi holat",
+      "atWorkTitle": "Bugun ishda",
+      "onVacationTitle": "Ta'tilda",
+      "chronicLateTitle": "Surunkali kechikish",
+      "share": "Ulush",
+      "onVacation": "Ta'tilda",
+      "planned": "Rejada",
+      "threePlus": "3+ marta",
+      "status": "Holat",
+      "statuses": {
+        "working": "Ishda",
+        "vacation": "Ta'tilda",
+        "sick_leave": "Kasallik varaqasi",
+        "absent": "Sababsiz"
+      }
+    },
+    "eduLevel": {
+      "vocational_college": "Kasb-hunar kolleji",
+      "bachelor": "Bakalavr",
+      "general_secondary": "Umumiy o'rta",
+      "academic_lyceum": "Akademik litsey",
+      "master": "Magistr",
+      "not_specified": "Kiritilmagan"
+    },
+    "eduGroup": {
+      "higher": "Oliy ma'lumotli",
+      "general_secondary": "Umumiy o'rta",
+      "secondary_special": "O'rta maxsus"
+    },
+    "nationality": {
+      "title": "Xodimlarning millati",
+      "column": "Millati",
+      "items": {
+        "uzbek": "O'zbek",
+        "tajik": "Tojik",
+        "karakalpak": "Qoraqalpoq",
+        "kazakh": "Qozoq",
+        "russian": "Rus",
+        "kyrgyz": "Qirg'iz",
+        "turkmen": "Turkman",
+        "other": "Boshqa"
+      }
+    },
+    "timeToFill": {
+      "title": "Vakansiya yopilish muddati",
+      "target": "Maqsad",
+      "longest": "Eng uzun"
+    },
+    "tenure": {
+      "title": "O'rtacha staj",
+      "median": "Median",
+      "overTen": "10+ yil"
+    },
+    "hiring": {
+      "title": "Ishga qabul — shartnoma turlari",
+      "column": "Shartnoma turi",
+      "hiredAt": "Qabul sanasi",
+      "types": {
+        "permanent": "Muddatsiz",
+        "fixed_term": "Muddatli",
+        "fxsh": "FXSH",
+        "secondary": "O'rindosh",
+        "temporary": "Vaqtinchalik"
+      }
+    },
+    "dismissal": {
+      "title": "Ishdan bo'shatish — asoslari",
+      "column": "Bo'shatish asosi",
+      "firedAt": "Bo'shatilgan sana",
+      "reasons": {
+        "own_will": "O'z xohishiga ko'ra",
+        "contract_ended": "Shartnoma tugadi",
+        "mutual_agreement": "Taraflar kelishuvi",
+        "retirement": "Pensiyaga chiqish",
+        "disciplinary": "Intizomiy jazo"
+      }
+    },
+    "staffFact": {
+      "title": "Shtat va fakt — bo'linma kesimida",
+      "hint": "Rangli bar — fakt, to'q chiziq — shtat reja",
+      "plan": "Shtat reja",
+      "actual": "Fakt",
+      "vacant": "Vakant"
+    },
+    "vacancy": {
+      "openTitle": "Ochiq vakansiyalar — lavozimlar",
+      "ageTitle": "Vakansiya yoshi",
+      "others": "Qolgan {count} lavozim",
+      "count": "Vakansiya",
+      "openedAt": "Ochilgan sana",
+      "days": "Kun",
+      "state": "Holat",
+      "states": {
+        "active": "Faol",
+        "finished": "Tugagan"
+      },
+      "buckets": {
+        "lt_10": "10 kundan kam",
+        "10_90": "10–90 kun",
+        "gt_90": "90 kundan ortiq"
+      }
+    },
+    "events": {
+      "title": "Yaqinlashayotgan hodisalar",
+      "column": "Hodisa",
+      "date": "Sana",
+      "days": "{count} kun",
+      "daysLeft": "Qolgan kun",
+      "workers": "{count} xodim",
+      "footer": "Bugundan boshlab kunlar bo'yicha · jami {count} hodisa",
+      "types": {
+        "probation_end": "Sinov muddati tugaydi",
+        "contract_end": "Shartnoma tugaydi",
+        "pension_age": "Pensiya yoshiga yetadi",
+        "attestation": "Attestatsiya muddati"
+      }
+    },
+    "retention": {
+      "title": "Kohorta — qabul yiliga ko'ra saqlanib qolish",
+      "cohort": "Qabul yili",
+      "month": "{count} oy",
+      "people": "{count} kishi",
+      "hiredAt": "Qabul sanasi",
+      "status": "Holat",
+      "statuses": {
+        "active": "Ishlayapti",
+        "left": "Bo'shagan"
+      }
+    },
+    "vacationState": {
+      "used": "Chiqqan",
+      "planned": "Rejada",
+      "accrued": "Yig'ilib qolgan"
+    },
+    "monthly": {
+      "title": "Rag'batlantirish va intizomiy jazo — oyma-oy",
+      "incentives": "Rag'batlantirish",
+      "disciplinary": "Intizomiy jazolar",
+      "column": "Turi",
+      "types": {
+        "incentive": "Rag'batlantirish",
+        "disciplinary": "Intizomiy jazo"
+      }
     }
   },
   "applicationPage": {
