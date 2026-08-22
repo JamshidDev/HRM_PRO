@@ -7,7 +7,6 @@
   import CalendarIcon from '@/assets/icons/calendarIcon.svg'
   import LocationIcon from '@/assets/icons/locationIcon.svg'
   import PositionIcon from '@/assets/icons/positionIcon.svg'
-  import JshirIcon from '@/assets/icons/jshirIcon.svg'
   import Utils from '../../../utils/Utils.js'
 
   const store = useComponentStore()
@@ -50,12 +49,6 @@
                   {{ $t('relativePage.form.post_name') }}
                 </span>
               </th>
-              <th class="text-left font-semibold text-textColor0 whitespace-nowrap px-2 py-3">
-                <span class="flex items-center gap-1.5">
-                  <n-icon size="14"><JshirIcon /></n-icon>
-                  {{ $t('workerView.general.passportJSHSHIR') }}
-                </span>
-              </th>
             </tr>
           </thead>
           <tbody>
@@ -71,9 +64,6 @@
               </td>
               <td class="align-top text-textColor2 px-2 py-4">{{ item?.birth_place || '—' }}</td>
               <td class="align-top text-textColor2 px-2 py-4">{{ item?.post_name || '—' }}</td>
-              <td class="align-top text-textColor2 whitespace-nowrap px-2 py-4">
-                {{ item?.pin ? Utils.formatPin(item.pin) : '*'.repeat(14) }}
-              </td>
             </tr>
           </tbody>
         </table>
