@@ -2794,6 +2794,9 @@
     }
   },
   "report": {
+    "staffingExport": "Скачать штатное расписание",
+    "staffingExportPermission": "Выгрузка штатного расписания",
+    "staffingExportQueued": "Штатное расписание добавлено в очередь выгрузки",
     "name": "План и Факт",
     "addDepartment": "Добавить подразделение",
     "addPosition": "Добавить должность",
