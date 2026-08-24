@@ -128,7 +128,7 @@
       />
 
       <!-- Barcha boshqaruvlar shu qatorda: audit qidiruvi faqat audit tabida chiqadi. -->
-      <div class="flex items-center gap-3 flex-wrap">
+      <div class="flex items-center gap-3 flex-wrap w-full sm:w-auto">
         <AuditDetailFilter v-if="isAudit" />
         <Filter />
       </div>
