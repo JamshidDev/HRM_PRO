@@ -16,12 +16,14 @@
 </script>
 
 <template>
-  <!-- Kenglik inline style bilan: naive-ui `.n-input` ning o'z `width: 100%` i
-       aks holda flex elementni butun qatorga cho'zib yuboradi. -->
-  <UISearchInput
-    v-model:value="store.params.search"
-    style="width: 264px; flex: none"
-    :loading="store.audit.detail.loading"
-    @update:value="onSearch"
-  />
+  <!-- Kenglikni o'ram belgilaydi: naive-ui `.n-input` ning o'z `width: 100%` i
+       inputni o'ram ichida to'ldiradi, flex elementni cho'zib yubormaydi.
+       Tor ekranda (sm dan past) qidiruv butun qatorni oladi. -->
+  <div class="w-full sm:w-[264px] shrink-0">
+    <UISearchInput
+      v-model:value="store.params.search"
+      :loading="store.audit.detail.loading"
+      @update:value="onSearch"
+    />
+  </div>
 </template>

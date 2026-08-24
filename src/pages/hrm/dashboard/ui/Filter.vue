@@ -28,8 +28,11 @@
 </script>
 
 <template>
-  <div class="flex gap-3">
-    <div class="w-[400px]">
+  <!-- Tor ekranda 400px qat'iy kenglik qatordan chiqib ketardi: trigger input
+       kesilib, uning markaziga tiralgan popover ham viewport'dan tashqarida
+       qolardi. `sm` (480px) dan pastda filtr butun qatorni oladi. -->
+  <div class="flex gap-3 w-full sm:w-auto">
+    <div class="w-full sm:w-[400px]">
       <UISelect
         :options="componentStore.structureList"
         :modelV="store.params.organizations"

@@ -1,7 +1,6 @@
 <script setup>
   import { useAccountStore, useDeviceEventStore, useEventStore } from '@/store/modules/index.js'
   import { UIPageFilter } from '@/components/index.js'
-  import { ArrowSync24Filled } from '@vicons/fluent'
   import { useAppSetting } from '@utils'
   import i18n from '@/i18n/index.js'
 
@@ -41,11 +40,6 @@
       // `no` — sukutdagi qiymat, filtr deb sanalmaydi.
       Number(store.params.resolved !== 'no')
   )
-
-  const onSync = () => {
-    if (!accStore.checkAction(accStore.pn.turnstileHikCentralSync)) return
-    store._sync()
-  }
 </script>
 
 <template>
@@ -132,19 +126,6 @@
           <n-tab-pane :name="eventStore.tabs[1]" :tab="$t('deviceEvent.tab')" />
         </n-tabs>
       </div>
-    </template>
-    <template #filterAction>
-      <n-button
-        v-if="accStore.checkPermission(accStore.pn.turnstileHikCentralSync)"
-        :loading="store.syncLoading"
-        @click="onSync"
-        type="primary"
-      >
-        {{ $t('turnstile.accessLevelPage.sync') }}
-        <template #icon>
-          <ArrowSync24Filled />
-        </template>
-      </n-button>
     </template>
   </UIPageFilter>
 </template>
