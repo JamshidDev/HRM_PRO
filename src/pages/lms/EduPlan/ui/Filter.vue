@@ -11,7 +11,7 @@
   const exportBtnRef = ref(null)
 
   const onExport = () => {
-    if (!accStore.checkAction(accStore.pn.lmsEduPlanRead)) return
+    if (!accStore.checkAction(accStore.pn.lmsEduPlanExport)) return
     const btnEl = exportBtnRef.value?.$el || exportBtnRef.value
     store._export(() => proxy.$flyUpload(btnEl))
   }
@@ -84,7 +84,14 @@
     @show="onShow"
   >
     <template #filterAction>
-      <n-button ref="exportBtnRef" :loading="store.exportLoading" @click="onExport" type="primary" ghost>
+      <n-button
+        v-if="accStore.checkPermission(accStore.pn.lmsEduPlanExport)"
+        ref="exportBtnRef"
+        :loading="store.exportLoading"
+        @click="onExport"
+        type="primary"
+        ghost
+      >
         {{ $t('content.download') }}
         <template #icon>
           <n-icon><ArrowDownload24Regular /></n-icon>
