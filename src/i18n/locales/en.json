@@ -2786,6 +2786,9 @@
     }
   },
   "report": {
+    "staffingExport": "Download staffing schedule",
+    "staffingExportPermission": "Export staffing schedule",
+    "staffingExportQueued": "Staffing schedule was queued for export",
     "name": "Plan vs Actual",
     "addDepartment": "Add department",
     "addPosition": "Add position",
