@@ -27,6 +27,7 @@ export const useReport2Store = defineStore('report2Store', {
     workerList: [],
     totalWorker: 0,
     optimizationLoading: false,
+    staffingExportLoading: false,
 
     visible: false,
     showLoading: false,
@@ -93,6 +94,17 @@ export const useReport2Store = defineStore('report2Store', {
     isDpDelete: true
   }),
   actions: {
+    _exportStaffing(organizationId) {
+      this.staffingExportLoading = true
+      return $ApiService.reportService
+        ._staffingExport({ params: { organization_id: organizationId } })
+        .then(() => {
+          window.$message?.success(t('report.staffingExportQueued'))
+        })
+        .finally(() => {
+          this.staffingExportLoading = false
+        })
+    },
     _positionOrderable(order) {
       const data = {
         type: 'position',

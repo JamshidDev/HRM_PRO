@@ -7,6 +7,7 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
   state: () => ({
     list: [],
     loading: false,
+    exportLoading: false,
     saveLoading: false,
     deleteLoading: false,
     showLoading: false,
@@ -111,6 +112,26 @@ export const useEduPlanStore = defineStore('eduPlanStore', {
         })
         .finally(() => {
           this.loading = false
+        })
+    },
+    // Excelga eksport (async job) — list bilan bir xil filtrlar (page/per_page yo'q).
+    _export(onSuccess) {
+      this.exportLoading = true
+      const params = {
+        ...this.params,
+        page: undefined,
+        per_page: undefined,
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
+        start_date: Utils.timeToZone(this.params.start_date) || undefined
+      }
+      $ApiService.eduPlanService
+        ._export({ params })
+        .then((res) => {
+          onSuccess?.()
+          window.$message?.success(res.data?.message)
+        })
+        .finally(() => {
+          this.exportLoading = false
         })
     },
     _create() {

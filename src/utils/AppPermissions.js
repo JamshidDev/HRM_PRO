@@ -201,6 +201,7 @@ export const appPermissions = {
   hrReportWrite: 'hr-report-write',
   hrReportRead: 'hr-report-read',
   hrReportManagementWrite: 'hr-report-management-write',
+  hrReportStaffingExport: 'hr-report-staffing-export',
 
   hrReportExport: 'hr-report-export',
   hrReportExportWrite: 'hr-report-export-write',
@@ -405,6 +406,7 @@ export const appPermissions = {
   lmsEduPlan: 'lms-edu-plan',
   lmsEduPlanRead: 'lms-edu-plan-read',
   lmsEduPlanWrite: 'lms-edu-plan-write',
+  lmsEduPlanExport: 'lms-edu-plan-export',
   lmsTeachers: 'lms-teachers',
   lmsTeachersRead: 'lms-teachers-read',
   lmsTeachersWrite: 'lms-teachers-write',
@@ -421,12 +423,12 @@ export const appPermissions = {
   lmsCertificateRead: 'lms-certificate-read',
   lmsCertificateWrite: 'lms-certificate-write',
 
-  chat:'chat',
-  chatTelegramMessages:'chat-telegram-messages',
-  chatNotification:'chat-notification',
+  chat: 'chat',
+  chatTelegramMessages: 'chat-telegram-messages',
+  chatNotification: 'chat-notification',
 
-  extra:'extra',
-  extraWorkerUser:'extra-worker-user',
+  extra: 'extra',
+  extraWorkerUser: 'extra-worker-user',
   educationsStructureMenu: 'educations-structure-menu',
 
   departmentLocation: 'department-location',
@@ -527,5 +529,5 @@ export const appPermissions = {
   universitiesDelete: 'universities-delete',
   usersDelete: 'users-delete',
   vacancyApproveDelete: 'vacancy-approve-delete',
-  workDayDelete: 'work-day-delete',
+  workDayDelete: 'work-day-delete'
 }

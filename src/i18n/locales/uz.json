@@ -2811,6 +2811,9 @@
   },
   "report": {
     "name": "Plan va Fakt",
+    "staffingExport": "Shtatkani yuklash",
+    "staffingExportPermission": "Shtat jadvalini yuklash",
+    "staffingExportQueued": "Shtat jadvali yuklash navbatiga qo‘shildi",
     "addDepartment": "Bo'linma qo'shish",
     "addPosition": "Lavozim qo'shish",
     "tooltip": {

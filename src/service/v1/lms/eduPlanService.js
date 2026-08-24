@@ -3,6 +3,9 @@ import axios from '@/service/index.js'
 const _index = async (payload) => {
   return await axios.get(`/v1/lms/edu-plan`, { params: payload?.params })
 }
+const _export = async (payload) => {
+  return await axios.get(`/v1/lms/edu-plan/export`, { params: payload?.params })
+}
 const _enum = async (payload) => {
   return await axios.get(`/v1/lms/enums`, { params: payload?.params })
 }
@@ -33,6 +36,7 @@ const _detachWorkers = async (payload) => {
 
 export default {
   _index,
+  _export,
   _create,
   _update,
   _delete,
