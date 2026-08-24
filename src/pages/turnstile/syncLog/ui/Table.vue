@@ -136,7 +136,7 @@
     <template #cell-type="{ row }">
       <div
         v-if="row?.type?.id === 1"
-        class="flex items-center gap-x-2 bg-surface-ground/60 rounded-lg px-2 w-[200px] mx-auto"
+        class="flex items-center gap-x-2 bg-surface-ground/60 rounded-lg px-2 w-[200px]"
       >
         <div
           class="w-8 h-8 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center shrink-0"
@@ -156,7 +156,7 @@
       </div>
       <template v-else>
         <UIUser
-          class="mx-auto bg-surface-ground/60 rounded-lg px-2 small-avatar"
+          class="bg-surface-ground/60 rounded-lg px-2 small-avatar"
           :data="{
             photo: row?.user?.worker.photo,
             firstName: row?.user?.worker.first_name,
