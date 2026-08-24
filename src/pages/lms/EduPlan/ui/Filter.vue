@@ -1,11 +1,20 @@
 <script setup>
   import { useAccountStore, useComponentStore, useEduPlanStore } from '@/store/modules/index.js'
   import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { ArrowDownload24Regular } from '@vicons/fluent'
   import Utils from '@utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
   const store = useEduPlanStore()
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
+  const { proxy } = getCurrentInstance()
+  const exportBtnRef = ref(null)
+
+  const onExport = () => {
+    if (!accStore.checkAction(accStore.pn.lmsEduPlanRead)) return
+    const btnEl = exportBtnRef.value?.$el || exportBtnRef.value
+    store._export(() => proxy.$flyUpload(btnEl))
+  }
 
   const filterEvent = () => {
     if (!accStore.checkAction(accStore.pn.lmsEduPlanRead)) return
@@ -74,6 +83,14 @@
     @onAdd="onAdd"
     @show="onShow"
   >
+    <template #filterAction>
+      <n-button ref="exportBtnRef" :loading="store.exportLoading" @click="onExport" type="primary" ghost>
+        {{ $t('content.download') }}
+        <template #icon>
+          <n-icon><ArrowDownload24Regular /></n-icon>
+        </template>
+      </n-button>
+    </template>
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
         $t('actionLog.table.structure')
