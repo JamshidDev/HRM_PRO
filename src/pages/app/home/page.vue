@@ -59,18 +59,18 @@
 </script>
 
 <template>
-  <!--
-    `m-4` — maketdagi kabi to'rt tomondan bir xil 16px masofa (Boddy ichida
-    Empty State har chetdan 16px ichkarida).
-
-    Balandlik QAT'IY: `calc(100% - 2rem)` — ya'ni konteyner balandligidan
-    marjalar ayrilgani. `!` kerak, chunki global `.main-content .ui-page-content`
-    qoidasi `height: 100%` (mobilda `auto`) beradi va aniqligi yuqoriroq.
-    Shu tufayli gradient karta ekranga sig'ib turadi, kontent esa ichkarida
-    skroll qilinadi — sahifaning o'zi (`.main-content`) skroll qilinmaydi va
-    marjalar har doim ko'rinib turadi.
-  -->
   <UIPageContent class="home-page !h-[calc(100%-2rem)] m-4 !p-3 md:!p-4">
+    <!--
+      `m-4` — maketdagi kabi to'rt tomondan bir xil 16px masofa (Boddy ichida
+      Empty State har chetdan 16px ichkarida).
+
+      Balandlik QAT'IY: `calc(100% - 2rem)` — ya'ni konteyner balandligidan
+      marjalar ayrilgani. `!` kerak, chunki global `.main-content .ui-page-content`
+      qoidasi `height: 100%` (mobilda `auto`) beradi va aniqligi yuqoriroq.
+      Shu tufayli gradient karta ekranga sig'ib turadi, kontent esa ichkarida
+      skroll qilinadi — sahifaning o'zi (`.main-content`) skroll qilinmaydi va
+      marjalar har doim ko'rinib turadi.
+    -->
     <!-- Maketdagi bezak (node 3257:112461): sahifaning pastki chap burchagida,
          -41.63° burilgan, 4% shaffoflik SVG ning o'zida. Skrollda qimirlamaydi. -->
     <div class="home-page__ornament" aria-hidden="true">

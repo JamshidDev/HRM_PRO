@@ -103,7 +103,7 @@
     "contact": "Aloqa",
     "logout": "Chiqish",
     "news": "Yangiliklar",
-    "onlineWorkers": "Online hodimlar",
+    "onlineWorkers": "Online xodimlar",
     "more": "Batafsil",
     "count": "{count} ta",
     "actions": {
@@ -889,7 +889,7 @@
     "workHoursValue": "Dushanba–Juma 09:00 – 18:00",
     "social": "Ijtimoiy tarmoqlar:",
     "responsible": {
-      "title": "TIZIM BO'YICHA MAS'UL XODIMLAR"
+      "title": "Kim bilan bog'lanish"
     }
   },
   "documentHistoryPage": {

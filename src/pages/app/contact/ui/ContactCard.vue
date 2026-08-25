@@ -5,6 +5,7 @@
    * (+ ixtiyoriy belgi), ajratuvchi chiziq, so'ng kontent.
    */
   import ornamentUrl from '@/assets/icons/home/ornament.svg?url'
+  import SoonBadge from './SoonBadge.vue'
 
   defineProps({
     icon: {
@@ -41,12 +42,7 @@
         {{ title }}
       </p>
 
-      <span
-        v-if="badge"
-        class="shrink-0 rounded-full bg-fig-chip-indigo px-2 py-1 text-[11px] leading-normal font-medium tracking-[0.22px] text-fig-chip-indigo-text"
-      >
-        {{ badge }}
-      </span>
+      <SoonBadge v-if="badge" :text="badge" />
     </div>
 
     <div class="relative h-px w-full shrink-0 rounded-full bg-fig-bg-tertiary"></div>

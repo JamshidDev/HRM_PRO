@@ -10,6 +10,7 @@
   import { AppPaths } from '@/utils/index.js'
   import ContactCard from './ui/ContactCard.vue'
   import ResponsibleModal from './ui/ResponsibleModal.vue'
+  import SoonBadge from './ui/SoonBadge.vue'
   import HouseIcon from '@/assets/icons/contact/house.svg'
   import MailIcon from '@/assets/icons/contact/mail.svg'
   import HeadphonesIcon from '@/assets/icons/contact/headphones.svg'
@@ -132,12 +133,8 @@
               </p>
             </div>
 
-            <!-- Sahifasi hali yo'q — maketdagi "Tez kunda" belgisi bilan -->
-            <span
-              class="w-fit rounded-full bg-fig-chip-indigo px-2 py-1 text-[11px] leading-normal font-medium tracking-[0.22px] text-fig-chip-indigo-text"
-            >
-              {{ $t('contactPage.comingSoon') }}
-            </span>
+            <!-- Sahifasi hali yo'q — "Tez kunda" belgisi bilan -->
+            <SoonBadge class="w-fit" :text="$t('contactPage.comingSoon')" />
           </div>
 
           <img :src="faqArt" alt="" aria-hidden="true" class="contact-art contact-art--faq" />
