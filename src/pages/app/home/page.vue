@@ -60,46 +60,51 @@
 
 <template>
   <!--
-    `!h-auto` global `.ui-page-content { height: 100% }` ni bosib o'tadi:
-    sahifa kontenti bo'yicha o'sadi, skrollni `.main-content` boshqaradi.
-
     `m-4` — maketdagi kabi to'rt tomondan bir xil 16px masofa (Boddy ichida
-    Empty State har chetdan 16px ichkarida). `!min-h-*` esa mobil uchun global
-    `min-height: 100%` ni almashtiradi: marja qo'shilgach 100% konteynerdan
-    32px oshib ketib, ortiqcha skroll paydo bo'lardi.
+    Empty State har chetdan 16px ichkarida).
+
+    Balandlik QAT'IY: `calc(100% - 2rem)` — ya'ni konteyner balandligidan
+    marjalar ayrilgani. `!` kerak, chunki global `.main-content .ui-page-content`
+    qoidasi `height: 100%` (mobilda `auto`) beradi va aniqligi yuqoriroq.
+    Shu tufayli gradient karta ekranga sig'ib turadi, kontent esa ichkarida
+    skroll qilinadi — sahifaning o'zi (`.main-content`) skroll qilinmaydi va
+    marjalar har doim ko'rinib turadi.
   -->
-  <UIPageContent class="home-page !h-auto m-4 !min-h-[calc(100%-2rem)]">
+  <UIPageContent class="home-page !h-[calc(100%-2rem)] m-4 !p-3 md:!p-4">
     <!-- Maketdagi bezak (node 3257:112461): sahifaning pastki chap burchagida,
-         -41.63° burilgan, 4% shaffoflik SVG ning o'zida. -->
+         -41.63° burilgan, 4% shaffoflik SVG ning o'zida. Skrollda qimirlamaydi. -->
     <div class="home-page__ornament" aria-hidden="true">
       <img :src="ornamentUrl" alt="" />
     </div>
 
     <HomeHeader />
 
-    <n-grid cols="12" responsive="screen" x-gap="8 m:12 l:16" y-gap="8 m:12 l:16">
-      <n-grid-item span="12 l:8">
-        <WelcomeCard />
-      </n-grid-item>
-      <n-grid-item span="12 l:4">
-        <QuoteCard />
-      </n-grid-item>
+    <!-- Skroll shu yerda: sarlavha tepada qotib turadi. -->
+    <div class="home-page__scroll">
+      <n-grid cols="12" responsive="screen" x-gap="8 m:12 l:16" y-gap="8 m:12 l:16">
+        <n-grid-item span="12 l:8">
+          <WelcomeCard />
+        </n-grid-item>
+        <n-grid-item span="12 l:4">
+          <QuoteCard />
+        </n-grid-item>
 
-      <n-grid-item span="12">
-        <BannerRow />
-      </n-grid-item>
+        <n-grid-item span="12">
+          <BannerRow />
+        </n-grid-item>
 
-      <n-grid-item span="12">
-        <QuickActions />
-      </n-grid-item>
+        <n-grid-item span="12">
+          <QuickActions />
+        </n-grid-item>
 
-      <n-grid-item span="12 l:7">
-        <NewsCard />
-      </n-grid-item>
-      <n-grid-item span="12 l:5">
-        <OnlineUsersCard />
-      </n-grid-item>
-    </n-grid>
+        <n-grid-item span="12 l:7">
+          <NewsCard />
+        </n-grid-item>
+        <n-grid-item span="12 l:5">
+          <OnlineUsersCard />
+        </n-grid-item>
+      </n-grid>
+    </div>
 
     <StoryViewer />
     <NewsModal />
@@ -151,5 +156,16 @@
   .home-page > :not(.home-page__ornament) {
     position: relative;
     z-index: 1;
+  }
+
+  /* Kontent ichki skroll konteyneri. `min-height: 0` bo'lmasa flex bola
+     o'z kontentidan kichrayolmaydi va `overflow-y` umuman ishlamaydi. */
+  .home-page__scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    /* Skrollbar paydo bo'lganda kontent siljib ketmasin */
+    scrollbar-gutter: stable;
   }
 </style>

@@ -27,7 +27,12 @@
 </script>
 
 <template>
-  <div v-if="store.stories.length" class="flex flex-wrap items-center gap-5">
+  <!-- Maketda story'lar bitta qatorda. Tor ekranda ular ikkinchi qatorga
+       sinib ketmasligi uchun qator gorizontal skroll qilinadi. -->
+  <div
+    v-if="store.stories.length"
+    class="-mx-1 flex items-center gap-4 overflow-x-auto px-1 pb-1 sm:gap-5"
+  >
     <div
       v-for="(story, index) in store.stories"
       :key="story.id"

@@ -76,10 +76,12 @@
         v-for="item in store.news"
         :key="item.id"
         role="button"
-        class="flex cursor-pointer items-start gap-4 overflow-hidden rounded-2xl bg-fig-bg-secondary transition-opacity hover:opacity-80"
+        class="flex cursor-pointer items-start gap-3 overflow-hidden rounded-2xl bg-fig-bg-secondary transition-opacity hover:opacity-80 sm:gap-4"
         @click="store.openNews(item)"
       >
-        <div class="relative h-[67px] w-[120px] shrink-0 overflow-hidden rounded-lg">
+        <div
+          class="relative h-[54px] w-[96px] shrink-0 overflow-hidden rounded-lg sm:h-[67px] sm:w-[120px]"
+        >
           <img
             :src="coverOf(item)"
             alt=""

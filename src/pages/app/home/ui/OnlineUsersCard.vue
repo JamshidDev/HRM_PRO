@@ -55,20 +55,19 @@
       {{ $t('homePage.count', { count: displayUsers.length }) }}
     </p>
 
-    <!-- Avatarlar har doim kartaning pastida (maket: node 3257:112547) -->
-    <div class="mt-auto flex items-end pt-6">
+    <!-- Avatarlar har doim kartaning pastida (maket: node 3257:112547).
+         O'lchamlar CSS o'zgaruvchilarida — mobilda ular kichrayadi, aks holda
+         6 ta 84px avatar (399px) telefon ekraniga sig'maydi. -->
+    <div class="online-users mt-auto flex items-end pt-6">
       <transition-group name="online-list" tag="div" class="flex items-center">
         <div
           v-for="(user, index) in visibleUsers"
           :key="user.id"
-          class="group relative"
-          :style="{ marginLeft: index === 0 ? '0' : '-21px', zIndex: 50 - index }"
+          class="online-users__item group relative"
+          :style="{ zIndex: 50 - index }"
           :title="user.short_name"
         >
-          <div
-            class="relative h-[84px] w-[84px] cursor-pointer transition-transform hover:scale-105"
-            @click="store.userVisible = true"
-          >
+          <div class="online-users__avatar group-hover:scale-105" @click="store.userVisible = true">
             <img
               :src="user?.photo || useAppSetting.noAvailableImage"
               alt=""
@@ -76,12 +75,11 @@
               @error="Utils.onImgError"
             />
             <!--
-              Qurilma belgisi (maket 3286:3247): 21px brend rangli doira,
-              ichida 12px oq ikonka — mobil uchun `mobile-alt`, veb uchun
-              `laptop-alt`. Ilgari bu yerda "M"/"W" harflari chiqardi.
+              Qurilma belgisi (maket 3286:3247): brend rangli doira, ichida oq
+              ikonka — mobil uchun `mobile-alt`, veb uchun `laptop-alt`.
             -->
             <span
-              class="absolute right-0.5 bottom-0.5 flex h-[21px] w-[21px] items-center justify-center rounded-full bg-fig-brand text-white"
+              class="online-users__badge"
               :title="
                 user.type === 'mobile' ? $t('homePage.deviceMobile') : $t('homePage.deviceWeb')
               "
@@ -92,7 +90,7 @@
           </div>
 
           <div
-            class="pointer-events-none absolute bottom-[70px] left-1/2 z-[300] -translate-x-1/2 opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100"
+            class="online-users__reaction pointer-events-none opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100"
           >
             <ReactionButton @onReaction="onReactionEv($event, user)" />
           </div>
@@ -111,6 +109,68 @@
 </template>
 
 <style scoped>
+  /*
+    Maketdagi o'lchamlar (node 3257:112547, 0.9 masshtabdan qaytarilgan):
+    avatar 84px, ustma-ust 21px, belgi 21px + 12px ikonka.
+    Mobilda 6 ta avatar 399px joy egallaydi — telefon ekraniga sig'maydi,
+    shuning uchun bir xil nisbatda kichraytiriladi.
+  */
+  .online-users {
+    --avatar-size: 84px;
+    --avatar-overlap: 21px;
+    --badge-size: 21px;
+    --badge-icon: 12px;
+  }
+
+  @media (max-width: 767.98px) {
+    .online-users {
+      --avatar-size: 56px;
+      --avatar-overlap: 14px;
+      --badge-size: 16px;
+      --badge-icon: 9px;
+    }
+  }
+
+  /* Ustma-ust siljish: birinchi avatar joyida qoladi */
+  .online-users__item + .online-users__item {
+    margin-left: calc(var(--avatar-overlap) * -1);
+  }
+
+  .online-users__avatar {
+    position: relative;
+    width: var(--avatar-size);
+    height: var(--avatar-size);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .online-users__badge {
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    display: flex;
+    width: var(--badge-size);
+    height: var(--badge-size);
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    color: #fff;
+    background: var(--fig-icon-brand);
+  }
+
+  .online-users__badge :deep(svg) {
+    width: var(--badge-icon);
+    height: var(--badge-icon);
+  }
+
+  .online-users__reaction {
+    position: absolute;
+    bottom: calc(var(--avatar-size) - 14px);
+    left: 50%;
+    z-index: 300;
+    transform: translateX(-50%);
+  }
+
   .online-list-enter-active,
   .online-list-leave-active,
   .online-list-move {
