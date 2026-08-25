@@ -1,17 +1,10 @@
 <script setup>
-  import { BuildingMultiple24Filled } from '@vicons/fluent'
   import { UIPageFilter, UISelect } from '@/components/index.js'
-  import {
-    useAccountStore,
-    useMedInspectionStore,
-    useComponentStore,
-    useMedStore
-  } from '@/store/modules/index.js'
+  import { useAccountStore, useComponentStore, useMedStore } from '@/store/modules/index.js'
 
   const store = useMedStore()
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
-  const inspectionStore = useMedInspectionStore()
 
   const onSearch = () => {
     if (!accStore.checkAction(accStore.pn.hrTableRead)) return
@@ -56,12 +49,6 @@
     store.params.status = null
     filterEvent()
   }
-
-  const openInspectionEv = () => {
-    inspectionStore.resetForm()
-    componentStore._structures()
-    inspectionStore.visible = true
-  }
 </script>
 
 <template>
@@ -77,19 +64,6 @@
     filter-placement="bottom-end"
     :popover-style="{ width: '560px', maxWidth: 'calc(100vw - 32px)', padding: '0', borderRadius: '20px' }"
   >
-    <template #filterAction>
-      <n-button
-        class="med-inspection-button w-full! md:w-auto!"
-        @click="openInspectionEv"
-        secondary
-        type="error"
-      >
-        {{ $t('medInspection.name') }}
-        <template #icon>
-          <BuildingMultiple24Filled />
-        </template>
-      </n-button>
-    </template>
     <template #filterContent>
       <div class="ui-filter-grid grid grid-cols-12 gap-x-5 gap-y-4">
         <div class="col-span-12 md:col-span-6">
@@ -124,8 +98,4 @@
   </UIPageFilter>
 </template>
 
-<style scoped>
-  .med-inspection-button {
-    --n-height: 32px !important;
-  }
-</style>
+<style scoped></style>

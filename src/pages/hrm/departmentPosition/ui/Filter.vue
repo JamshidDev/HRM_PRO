@@ -1,11 +1,12 @@
 <script setup>
+  import { ArrowCounterclockwise20Regular } from '@vicons/fluent'
   import {
     useDepartmentPositionStore,
     useComponentStore,
     useAccountStore
   } from '@/store/modules/index.js'
   import { UINSelect, UIPageFilter, UISelect } from '@/components/index.js'
-  import { useDebounce, generateUUIDKey } from '@/utils/index.js'
+  import { AppPaths, useDebounce, generateUUIDKey } from '@/utils/index.js'
   const accStore = useAccountStore()
   const store = useDepartmentPositionStore()
   const componentStore = useComponentStore()
@@ -89,6 +90,14 @@
     componentStore._structures()
   }
 
+  // [↺ Tarix] — global audit sahifasiga o'tadi. `trigger_name` shu page'ning
+  // kaliti (backend `audit_pages.key`). Tugma permission bilan yashirilmaydi:
+  // tarix backendda ochiq, sahifaning o'zi `hr-positions-read` bilan gate.
+  const router = useRouter()
+  const onHistory = () => {
+    router.push({ path: AppPaths.Audit, query: { trigger_name: 'hr.department-positions' } })
+  }
+
   onUnmounted(() => {
     debounceIndexEv?.cancel()
     fetchDepartment?.cancel()
@@ -114,6 +123,20 @@
       borderRadius: '20px'
     }"
   >
+    <template #filterEnd>
+      <n-button
+        class="ui-page-action-button w-full! md:w-auto!"
+        secondary
+        icon-placement="right"
+        @click="onHistory"
+      >
+        <template #icon>
+          <n-icon><ArrowCounterclockwise20Regular /></n-icon>
+        </template>
+        {{ $t('audit.historyBtn') }}
+      </n-button>
+    </template>
+
     <template #filterContent>
       <div class="department-position-filter-panel grid grid-cols-12 gap-x-5 gap-y-4">
         <div class="col-span-12 md:col-span-6">

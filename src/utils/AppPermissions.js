@@ -106,6 +106,10 @@ export const appPermissions = {
   // JSHSHIR bo'yicha xodimni tekshirish (`GET /hr/check-worker`) — xodim qo'shishda
   // va turniket kartochkasida ishlatiladi. Backend @Permission bilan enforce qiladi.
   hrCheckWorker: 'hr-check-worker',
+
+  // O'zgarishlar tarixida maskalangan qiymatni (JSHSHIR, pasport seriyasi)
+  // to'liq ko'rish. Migratsiya 0106 da yaratiladi va faqat Admin roliga beriladi.
+  auditUnmask: 'audit-unmask',
   // Kengaytirilgan xodim qidiruvi (`GET /hr/search-workers`).
   filterSearchWorkers: 'filter-search-workers',
 
@@ -197,6 +201,7 @@ export const appPermissions = {
   hrReportWrite: 'hr-report-write',
   hrReportRead: 'hr-report-read',
   hrReportManagementWrite: 'hr-report-management-write',
+  hrReportStaffingExport: 'hr-report-staffing-export',
 
   hrReportExport: 'hr-report-export',
   hrReportExportWrite: 'hr-report-export-write',
@@ -401,6 +406,7 @@ export const appPermissions = {
   lmsEduPlan: 'lms-edu-plan',
   lmsEduPlanRead: 'lms-edu-plan-read',
   lmsEduPlanWrite: 'lms-edu-plan-write',
+  lmsEduPlanExport: 'lms-edu-plan-export',
   lmsTeachers: 'lms-teachers',
   lmsTeachersRead: 'lms-teachers-read',
   lmsTeachersWrite: 'lms-teachers-write',
@@ -417,12 +423,12 @@ export const appPermissions = {
   lmsCertificateRead: 'lms-certificate-read',
   lmsCertificateWrite: 'lms-certificate-write',
 
-  chat:'chat',
-  chatTelegramMessages:'chat-telegram-messages',
-  chatNotification:'chat-notification',
+  chat: 'chat',
+  chatTelegramMessages: 'chat-telegram-messages',
+  chatNotification: 'chat-notification',
 
-  extra:'extra',
-  extraWorkerUser:'extra-worker-user',
+  extra: 'extra',
+  extraWorkerUser: 'extra-worker-user',
   educationsStructureMenu: 'educations-structure-menu',
 
   departmentLocation: 'department-location',
@@ -440,10 +446,6 @@ export const appPermissions = {
   hrPensioners: 'hr-pensioners',
   hrPensionersRead: 'hr-pensioners-read',
   hrPensionersWrite: 'hr-pensioners-write',
-
-  hrPolyclinics: 'hr-polyclinics',
-  hrPolyclinicsRead: 'hr-polyclinics-read',
-  hrPolyclinicsWrite: 'hr-polyclinics-write',
 
   hrLanguageCertificates: 'hr-language-certificates',
   hrLanguageCertificatesRead: 'hr-language-certificates-read',
@@ -487,7 +489,6 @@ export const appPermissions = {
   hrMonthlyReportDelete: 'hr-monthly-report-delete',
   hrOrganizationPhonesDelete: 'hr-organization-phones-delete',
   hrPensionersDelete: 'hr-pensioners-delete',
-  hrPolyclinicsDelete: 'hr-polyclinics-delete',
   hrPositionsDelete: 'hr-positions-delete',
   hrPublicVacancyDelete: 'hr-public-vacancy-delete',
   hrReportDelete: 'hr-report-delete',
@@ -528,5 +529,5 @@ export const appPermissions = {
   universitiesDelete: 'universities-delete',
   usersDelete: 'users-delete',
   vacancyApproveDelete: 'vacancy-approve-delete',
-  workDayDelete: 'work-day-delete',
+  workDayDelete: 'work-day-delete'
 }

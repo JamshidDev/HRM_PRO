@@ -1,13 +1,19 @@
 <script setup>
-  import { ArrowLeft20Regular, LockClosed20Regular } from '@vicons/fluent'
+  import {
+    ArrowLeft20Regular,
+    Eye20Regular,
+    EyeOff20Regular,
+    LockClosed20Regular
+  } from '@vicons/fluent'
   import { UIPageFilter } from '@/components/index.js'
   import { AppPaths } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
-  import { useAuditStore } from '@/store/modules/index.js'
+  import { useAccountStore, useAuditStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
   const store = useAuditStore()
+  const accStore = useAccountStore()
 
   // Sana oralig'i — n-date-picker `daterange` [ms, ms] qaytaradi, backend esa
   // `YYYY-MM-DD` kutadi. IKKALA CHEKKA HAM INKLYUZIV (backend `date_to` ga
@@ -72,7 +78,10 @@
   // Odatda `router.back()` yetarli, lekin sahifa to'g'ridan-to'g'ri havola bilan
   // ochilgan bo'lsa (brauzer tarixi bo'sh) shu xarita bo'yicha qaytamiz.
   const PAGE_ROUTES = {
-    'hr.departments': Utils.routeHrmPathMaker(AppPaths.Department)
+    'hr.departments': Utils.routeHrmPathMaker(AppPaths.Department),
+    'structure.positions': Utils.routePathMaker(AppPaths.Position),
+    'hr.department-positions': Utils.routeHrmPathMaker(AppPaths.DepartmentPosition),
+    'hr.workers': Utils.routeHrmPathMaker(AppPaths.Worker)
   }
 
   const router = useRouter()
@@ -116,6 +125,23 @@
         </n-button>
 
         <span class="text-lg font-semibold">{{ $t('audit.name') }}</span>
+
+        <!-- Maskalangan qiymatlarni ochish — faqat `audit-unmask` egasida
+             ko'rinadi (backend baribir ruxsatni qayta tekshiradi). -->
+        <n-button
+          v-if="accStore.checkPermission(accStore.pn.auditUnmask)"
+          secondary
+          size="small"
+          :type="store.params.unmask ? 'primary' : 'default'"
+          @click="store.toggleUnmask"
+        >
+          <template #icon>
+            <n-icon>
+              <component :is="store.params.unmask ? EyeOff20Regular : Eye20Regular" />
+            </n-icon>
+          </template>
+          {{ store.params.unmask ? $t('audit.hideMasked') : $t('audit.showMasked') }}
+        </n-button>
         <n-tag v-if="store.pageTitle" size="small" round :bordered="false">
           {{ store.pageTitle }}
         </n-tag>

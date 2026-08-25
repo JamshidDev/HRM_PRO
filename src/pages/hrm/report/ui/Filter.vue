@@ -3,7 +3,10 @@
   import { useComponentStore, useDepartmentStore, useReport2Store } from '@/store/modules/index.js'
   import { useAccountStore } from '@/store/modules/index.js'
   import { useDebounce } from '@utils'
+  import { ArrowDownload24Regular } from '@vicons/fluent'
   const accStore = useAccountStore()
+  const { proxy } = getCurrentInstance()
+  const staffingButtonRef = ref(null)
 
   const componentStore = useComponentStore()
   const store = useReport2Store()
@@ -38,6 +41,15 @@
     dpStore._level()
     componentStore._departments()
     dpStore.resetForm()
+  }
+
+  const exportStaffing = () => {
+    if (!accStore.checkAction(accStore.pn.hrReportStaffingExport)) return
+    const organizationId = selectedOrg.value?.id
+    if (!organizationId) return
+    const element = staffingButtonRef.value?.$el || staffingButtonRef.value
+    if (element) proxy.$flyUpload(element)
+    store._exportStaffing(organizationId)
   }
 
   onMounted(() => {
@@ -97,6 +109,19 @@
         </n-button>
         <n-button @click="addDepartment" type="primary">
           {{ $t('report.addDepartment') }}
+        </n-button>
+        <n-button
+          v-if="accStore.checkPermission(accStore.pn.hrReportStaffingExport)"
+          ref="staffingButtonRef"
+          :loading="store.staffingExportLoading"
+          @click="exportStaffing"
+          type="success"
+          secondary
+        >
+          <template #icon
+            ><n-icon><ArrowDownload24Regular /></n-icon
+          ></template>
+          {{ $t('report.staffingExport') }}
         </n-button>
       </template>
     </div>

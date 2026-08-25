@@ -52,7 +52,6 @@ export const STORE_PERMISSIONS = {
   documentArchiveStore: 'hr-documents',
   organizationLeaderStore: 'hr-leaders',
   medStore: 'hr-med',
-  medInspectionStore: 'hr-med',
   pensionerStore: 'hr-pensioners',
   vacancyStore: 'hr-public-vacancy',
   report2Store: 'hr-report',

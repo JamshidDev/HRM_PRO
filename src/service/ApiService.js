@@ -79,8 +79,6 @@ import businessTrip from '@/service/v1/hrm/businessTrip.js'
 import incentiveService from '@/service/v1/hrm/incentiveService.js'
 import taskService from '@/service/v1/hrm/taskService.js'
 import punishmentService from '@/service/v1/hrm/punishmentService.js'
-import medInspectionService from '@/service/v1/hrm/medInspectionService.js'
-import polyclinicService from '@/service/v1/hrm/polyclinicService.js'
 import vacancyService from '@/service/v1/hrm/vacancyService.js'
 import pensionerService from '@/service/v1/hrm/pensionerService.js'
 import specialReportService from './v1/hrm/specialReportService'
@@ -247,8 +245,6 @@ export default {
   quoteService,
   telegramService,
   instructionService,
-  medInspectionService,
-  polyclinicService,
   pensionerService,
   specialReportService,
   reportService,

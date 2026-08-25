@@ -2022,6 +2022,7 @@
     }
   },
   "dashboardPage": {
+    "comingSoon": "Tez orada",
     "name": "Dashboard",
     "card": {
       "type": "Ta'til turi",
@@ -2496,21 +2497,10 @@
       "organization": "Korxona",
       "onVacation": "gacha ta'tilda",
       "file": "Fayllar"
-    },
-    "panel": {
-      "panel_one": "Tibbiy ko'rik",
-      "panel_two": "Poliklinikalar",
-      "panel_three": "Ko'rikdagi xodimlar",
-      "panel_four": "Joriy yilda",
-      "selected": "Tanlangan"
     }
   },
   "medInspection": {
-    "name": "Tekshiruvga yuborish",
-    "createTitle": "Tibbiy ko'rikga xodimni yuborish",
-    "updateTitle": "Ma'lumotlarni tahrirlash",
     "form": {
-      "hospital": "Poliklinika",
       "status": "Doktor xulosasi",
       "start_date": "Borish sanasi"
     }
@@ -2821,6 +2811,9 @@
   },
   "report": {
     "name": "Plan va Fakt",
+    "staffingExport": "Shtatkani yuklash",
+    "staffingExportPermission": "Shtat jadvalini yuklash",
+    "staffingExportQueued": "Shtat jadvali yuklash navbatiga qo‘shildi",
     "addDepartment": "Bo'linma qo'shish",
     "addPosition": "Lavozim qo'shish",
     "tooltip": {
@@ -3053,14 +3046,6 @@
       "amount": "Summa",
       "total": "Jami hisoblandi",
       "out_total": "Jami ushlanma"
-    }
-  },
-  "polyclinic": {
-    "name": "Poliklinikalar",
-    "createTitle": "Poliklinika qo'shish",
-    "updateTitle": "Tahrirlash",
-    "form": {
-      "choosePolyclinic": "Poliklinika tanlang"
     }
   },
   "expiredHealth": {
@@ -4713,6 +4698,27 @@
       "match": "Parollar mos keladi"
     }
   },
+  "loginMethods": {
+    "title": "Kirish usullari",
+    "description": "Tizimga qaysi usullar bilan kira olishingizni shu yerdan boshqarasiz. Bu sozlama faqat web versiyaga tegishli — mobil ilovaga ta'sir qilmaydi.",
+    "comingSoon": "Tez orada",
+    "saved": "Kirish usuli yangilandi",
+    "confirmTitle": "Parol orqali tasdiqlash",
+    "confirmHint": "Xavfsizlik uchun joriy parolingizni kiriting.",
+    "currentPassword": "Joriy parol",
+    "password": {
+      "title": "Login va parol",
+      "hint": "Telefon raqam va parol bilan kirish"
+    },
+    "eimzo": {
+      "title": "E-imzo (ERI)",
+      "hint": "Elektron raqamli imzo kaliti bilan kirish"
+    },
+    "qr": {
+      "title": "QR kod",
+      "hint": "Mobil ilovadagi QR kodni skanerlab kirish"
+    }
+  },
   "integrationPerm": {
     "enums": "Ma'lumotnomalar",
     "dashboard": "Dashboard",
@@ -4886,6 +4892,8 @@
       "expandAll": "Kartochkalarni ochish",
       "collapseAll": "Kartochkalarni yig'ish"
     },
-    "historyBtn": "Tarix"
+    "historyBtn": "Tarix",
+    "showMasked": "Maskani ochish",
+    "hideMasked": "Maskani yopish"
   }
 }

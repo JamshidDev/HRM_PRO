@@ -162,11 +162,6 @@ export const hrmRoutes = [
     meta: { layout: AppLayouts.main }
   },
   {
-    path: Utils.routeHrmPathMaker(AppPaths.Polyclinic),
-    component: () => import('@/pages/hrm/polyclinic/page.vue'),
-    meta: { layout: AppLayouts.main }
-  },
-  {
     path: Utils.routeHrmPathMaker(AppPaths.PublicVacancy),
     component: () => import('@/pages/hrm/vacancy/page.vue'),
     meta: { layout: AppLayouts.main }

@@ -2000,6 +2000,7 @@
     }
   },
   "dashboardPage": {
+    "comingSoon": "Coming soon",
     "name": "Dashboard",
     "card": {
       "type": "Vacation type",
@@ -2474,21 +2475,10 @@
       "organization": "Organization",
       "onVacation": "on vacation until",
       "file": "Files"
-    },
-    "panel": {
-      "panel_one": "Medical examination",
-      "panel_two": "Clinics",
-      "panel_three": "Employees under examination",
-      "panel_four": "Current year",
-      "selected": "Selected"
     }
   },
   "medInspection": {
-    "name": "Send for examination",
-    "createTitle": "Send employee for medical examination",
-    "updateTitle": "Edit details",
     "form": {
-      "hospital": "Clinic",
       "status": "Doctor conclusion",
       "start_date": "Visit date"
     }
@@ -2796,6 +2786,9 @@
     }
   },
   "report": {
+    "staffingExport": "Download staffing schedule",
+    "staffingExportPermission": "Export staffing schedule",
+    "staffingExportQueued": "Staffing schedule was queued for export",
     "name": "Plan vs Actual",
     "addDepartment": "Add department",
     "addPosition": "Add position",
@@ -3023,14 +3016,6 @@
       "amount": "Amount",
       "total": "Total calculated",
       "out_total": "Total deductions"
-    }
-  },
-  "polyclinic": {
-    "name": "Clinics",
-    "createTitle": "Add clinic",
-    "updateTitle": "Edit",
-    "form": {
-      "choosePolyclinic": "Select clinic"
     }
   },
   "expiredHealth": {
@@ -4669,6 +4654,27 @@
       "match": "Passwords match"
     }
   },
+  "loginMethods": {
+    "title": "Login methods",
+    "description": "Manage which methods can be used to sign in. This setting applies to the web version only — it does not affect the mobile app.",
+    "comingSoon": "Coming soon",
+    "saved": "Login method updated",
+    "confirmTitle": "Confirm with password",
+    "confirmHint": "For security, enter your current password.",
+    "currentPassword": "Current password",
+    "password": {
+      "title": "Login and password",
+      "hint": "Sign in with phone number and password"
+    },
+    "eimzo": {
+      "title": "E-signature (ERI)",
+      "hint": "Sign in with an electronic digital signature key"
+    },
+    "qr": {
+      "title": "QR code",
+      "hint": "Sign in by scanning the QR code in the mobile app"
+    }
+  },
   "integrationPerm": {
     "enums": "References",
     "dashboard": "Dashboard",
@@ -4842,6 +4848,8 @@
       "expandAll": "Expand cards",
       "collapseAll": "Collapse cards"
     },
-    "historyBtn": "History"
+    "historyBtn": "History",
+    "showMasked": "Reveal masked",
+    "hideMasked": "Hide masked"
   }
 }

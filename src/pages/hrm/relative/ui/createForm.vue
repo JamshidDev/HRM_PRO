@@ -70,14 +70,6 @@
           {{ $t('relativePage.form.died') }}
         </n-checkbox>
       </n-form-item>
-      <n-form-item :label="$t(`createWorkerPage.form.pin`)" path="pin">
-        <n-input
-          v-mask="`####-####-####-##`"
-          v-model:value="store.payload.pin"
-          placeholder="####-####-####-##"
-          :disabled="store.payload.died"
-        />
-      </n-form-item>
       <n-form-item :label="$t(`createWorkerPage.form.lastName`)" path="last_name">
         <n-input type="text" v-model:value="store.payload.last_name" />
       </n-form-item>

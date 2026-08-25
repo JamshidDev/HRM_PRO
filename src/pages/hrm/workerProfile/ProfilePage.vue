@@ -4,6 +4,8 @@
   import { UISegmentTabs } from '@/components/index.js'
   import { useWorkerProfileStore, useComponentStore } from '@/store/modules/index.js'
   import icons from '@/assets/icons'
+  import { ArrowCounterclockwise20Regular } from '@vicons/fluent'
+  import { AppPaths } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -30,6 +32,19 @@
   )
 
   const goBack = () => router.back()
+
+  // [↺ Tarix] — AYNAN shu xodim bo'yicha o'zgarishlar tarixi: shaxsiy ma'lumot,
+  // pasport, telefon, rasm, qarindoshlar, parol va rollar — hammasi bitta
+  // lentada (backendda barcha jadvallarda `trigger_id` = xodim id).
+  // `store.workerId` profil yuklangach to'ladi, shu sababli tugma shu paytgacha
+  // o'chirilgan turadi.
+  const onHistory = () => {
+    if (!store.workerId) return
+    router.push({
+      path: AppPaths.Audit,
+      query: { trigger_name: 'hr.workers', trigger_id: store.workerId }
+    })
+  }
 
   // Boblar lazy mount bo'lgani uchun xodim ma'lumoti sahifa darajasida yuklanadi —
   // aks holda 1-bobga kirmasdan 2-bobga o'tilganda lavozim ro'yxati bo'sh qolardi.
@@ -60,6 +75,18 @@
       </button>
 
       <UISegmentTabs :tabs="tabList" v-model="store.activeTab" />
+
+      <n-button
+        secondary
+        class="profile-history"
+        :disabled="!store.workerId"
+        @click="onHistory"
+      >
+        <template #icon>
+          <n-icon><ArrowCounterclockwise20Regular /></n-icon>
+        </template>
+        {{ $t('audit.historyBtn') }}
+      </n-button>
     </div>
 
     <Tabs />
@@ -88,6 +115,11 @@
     margin: 0 -16px;
     padding: 16px;
     background: var(--surface-ground);
+  }
+
+  // Tarix tugmasi qator oxirida (boblardan keyin) turadi.
+  .profile-history {
+    margin-left: auto;
   }
 
   .profile-back {
