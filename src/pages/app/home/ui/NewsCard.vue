@@ -2,9 +2,16 @@
   /**
    * Figma "Welcome" (node 3257:112508) — "Yangiliklar" kartasi.
    *
-   * Ma'lumot mavjud `GET /v1/chat/news` dan (`status=1` — chop etilganlar).
-   * Muqova, sarlavha, ko'rishlar soni va sana mantiqi `pages/chat/news`
-   * sahifasi bilan bir xil bo'lishi uchun o'sha yerdan ko'chirildi.
+   * Manba: `GET /v1/news` — yangiliklarning ochiq (foydalanuvchi) ro'yxati.
+   * CMS ro'yxatidan (`/v1/chat/news`) farqli o'laroq qoralamalarni bermaydi
+   * va admin ruxsatini talab qilmaydi.
+   *
+   * Elementga bosilganda katta ko'rinish ochiladi (`NewsModal.vue`).
+   *
+   * Javob sxemasi Swagger'da hujjatlashtirilmagan, shuning uchun maydonlar
+   * moslashuvchan o'qiladi: `Accept-Language` bo'yicha tayyor `title` kelsa
+   * o'sha olinadi, aks holda CMS ko'rinishidagi `translations[]` dan
+   * tanlanadi. Muqova ham shunday: `media[].url|path`, bo'lmasa `image`.
    */
   import { useAccountStore, useHomeStore } from '@/store/modules/index.js'
   import HomePanel from './HomePanel.vue'
@@ -19,16 +26,20 @@
 
   // Hujjatlar (pdf/doc) muqova bo'la olmaydi — `chat/news/ui/Table.vue` dagidek.
   const DOC_EXTS = ['pdf', 'doc', 'docx']
-  const coverOf = (row) => {
-    const media = [...(row.media ?? [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-    const item = media.find(
-      (m) => !DOC_EXTS.includes(m.path?.split('.').pop()?.toLowerCase() ?? '')
-    )
-    return item?.path || useAppSetting.noAvailableImage
+  const isViewable = (item) => {
+    const src = item.url || item.path || ''
+    return !DOC_EXTS.includes(src.split('?')[0].split('.').pop()?.toLowerCase() ?? '')
   }
 
-  // `chat/news/ViewPage.vue` dagi tarjima tanlash tartibi.
+  const coverOf = (row) => {
+    const media = [...(row.media ?? [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+    const item = media.find(isViewable)
+    return item?.url || item?.path || row.image || row.cover || useAppSetting.noAvailableImage
+  }
+
   const titleOf = (row) => {
+    if (typeof row.title === 'string' && row.title) return row.title
+    // CMS ko'rinishi — `chat/news/ViewPage.vue` dagi tarjima tanlash tartibi.
     const tr = row.translations ?? []
     const found = tr.find((t) => t.locale === i18n.global.locale) || tr.find((t) => t.title) || {}
     return found.title || ''
@@ -59,7 +70,13 @@
     @action="onDetail"
   >
     <div v-if="store.news.length" class="flex flex-col gap-3">
-      <div v-for="item in store.news" :key="item.id" class="flex items-start gap-4">
+      <div
+        v-for="item in store.news"
+        :key="item.id"
+        role="button"
+        class="flex cursor-pointer items-start gap-4 rounded-lg transition-opacity hover:opacity-80"
+        @click="store.openNews(item)"
+      >
         <div class="relative h-[67px] w-[120px] shrink-0 overflow-hidden rounded-lg">
           <img
             :src="coverOf(item)"

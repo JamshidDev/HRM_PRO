@@ -1,11 +1,18 @@
 import axios from '@/service/index.js'
 
 const _index = async (payload) => {
-  return await axios.get(`/v1/chat/news`, {
-    params: payload.params,
-    // Bosh sahifada ro'yxat ruxsatsiz bo'lsa toast chiqmasligi kerak —
-    // blok jimgina yashiriladi (`src/service/index.js` interceptori tekshiradi).
-    silentError: payload.silentError
+  return await axios.get(`/v1/chat/news`, { params: payload.params })
+}
+
+// Yangiliklarning FOYDALANUVCHI tomoni (mobil API): server faqat chop
+// etilganlarini qaytaradi va matnni `Accept-Language` bo'yicha tanlaydi —
+// `_index` esa CMS ro'yxati (qoralamalar bilan, admin ruxsati talab qilinadi).
+const _publicIndex = async (payload) => {
+  return await axios.get(`/v1/news`, {
+    params: payload?.params,
+    // Bosh sahifada xato bo'lsa toast chiqmasligi kerak — blok jimgina
+    // yashiriladi (`src/service/index.js` interceptori tekshiradi).
+    silentError: payload?.silentError
   })
 }
 
@@ -39,6 +46,7 @@ const _create_media = async (payload) => {
 
 export default {
   _index,
+  _publicIndex,
   _show,
   _create,
   _update_translation,

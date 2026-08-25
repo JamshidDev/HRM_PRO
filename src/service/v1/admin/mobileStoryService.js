@@ -3,10 +3,7 @@ import axios from '@/service/index.js'
 // Mobil "story" e'lonlari — admin CRUD.
 // Backend: /v1/admin/mobile-stories (+ /:id/slides slayd yuklash).
 const _index = async (payload) => {
-  return await axios.get(`/v1/admin/mobile-stories`, {
-    params: payload?.params,
-    silentError: payload?.silentError
-  })
+  return await axios.get(`/v1/admin/mobile-stories`, { params: payload?.params })
 }
 const _show = async (payload) => {
   return await axios.get(`/v1/admin/mobile-stories/${payload.id}`)

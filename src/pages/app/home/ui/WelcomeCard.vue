@@ -53,8 +53,10 @@
             </span>
           </div>
 
+          <!-- Teskari geokodlash shahar nomini bermasa chip chizilmaydi,
+               harorat esa qolaveradi. -->
           <div
-            v-if="homeStore.weather"
+            v-if="homeStore.weather?.city"
             class="flex items-center gap-1.5 rounded-full bg-fig-bg-tertiary px-3 py-2"
           >
             <span class="flex h-[18px] w-[18px] shrink-0 items-center justify-center">

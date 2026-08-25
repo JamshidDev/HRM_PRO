@@ -2,6 +2,7 @@ import authService from '@/service/v1/app/authService.js'
 import publicService from '@/service/v1/app/publicService.js'
 import accountService from '@/service/v1/app/accountService.js'
 import usefulService from '@/service/v1/app/usefulService.js'
+import storyService from '@/service/v1/app/storyService.js'
 import userService from '@/service/v1/app/userService.js'
 import userPermissionService from '@/service/v1/app/userPermissionService.js'
 import userRoleService from '@/service/v1/app/userRoleService.js'
@@ -177,6 +178,7 @@ export default {
   accountService,
   userService,
   usefulService,
+  storyService,
   userPermissionService,
   userRoleService,
   countryService,

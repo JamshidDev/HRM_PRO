@@ -13,6 +13,8 @@
   import QuickActions from './ui/QuickActions.vue'
   import NewsCard from './ui/NewsCard.vue'
   import OnlineUsersCard from './ui/OnlineUsersCard.vue'
+  import StoryViewer from './ui/StoryViewer.vue'
+  import NewsModal from './ui/NewsModal.vue'
   import UsersModal from './ui/UsersModal.vue'
   import { useAppSetting } from '@/utils/index.js'
   import { useHomeStore, useQuoteStore } from '@/store/modules/index.js'
@@ -85,6 +87,8 @@
       </n-grid-item>
     </n-grid>
 
+    <StoryViewer />
+    <NewsModal />
     <UsersModal />
   </UIPageContent>
 </template>

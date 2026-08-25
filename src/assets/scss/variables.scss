@@ -285,6 +285,11 @@
   --dark-color: #0f1114;
   --secondary-color: #74788d;
   --white-color: #ffffff;
+  // Mavzudan qat'i nazar sof qora — rasm ustidagi yarim shaffof qatlamlar
+  // (`bg-black/60`) uchun. Ilgari `@theme` da `--color-black` yo'q edi va
+  // Tailwind'ning `--color-*: initial` reseti tufayli BARCHA `bg-black/*`
+  // klasslari jimgina ishlamay turardi.
+  --black-color: #000000;
 }
 
 $primary-color: var(--primary-color);
