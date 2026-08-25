@@ -39,13 +39,13 @@ export const useArchiveStore = defineStore('archiveStore', {
           this.loading = false
         })
     },
-    // Rezyume DOCX — arxiv lavozimi uuid'si bo'yicha (backend status filtrlamaydi).
+    // Rezyume DOCX — arxivning alohida endpointi (`hr-archive-resume`).
     _resume(row) {
       this.resumeLoading = row.uuid
       const lang = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
       const fileName = Utils.combineFullName(row.worker) || 'resume'
-      $ApiService.workerService
-        ._resume({ id: row.uuid, params: { lang } })
+      $ApiService.archiveService
+        ._resume({ uuid: row.uuid, params: { lang } })
         .then((res) => {
           Utils.blobFileDownload(res.data, res.headers['content-type'], fileName)
         })

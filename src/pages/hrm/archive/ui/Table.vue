@@ -1,6 +1,6 @@
 <script setup>
   import { UITable, UIUser } from '@/components/index.js'
-  import { useArchiveStore } from '@/store/modules/index.js'
+  import { useAccountStore, useArchiveStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
@@ -8,6 +8,7 @@
 
   const { t } = i18n.global
   const store = useArchiveStore()
+  const accStore = useAccountStore()
 
   const changePage = (v) => {
     store.params.page = v.page
@@ -24,14 +25,19 @@
     { key: 'dismissed_at', title: t('archive.table.dismissedAt'), width: 140 }
   ])
 
-  const actions = computed(() => [
+  // Rezyume alohida ruxsat bilan (`hr-archive-resume`) — bo'lmasa amal ko'rinmaydi.
+  const actions = computed(() =>
+    accStore.checkPermission(accStore.pn.hrArchiveResume)
+      ? [
     {
       label: t('archive.table.resume'),
       key: Utils.ActionTypes.download,
       icon: UIHelper.renderIcon(DocumentArrowDown20Regular),
       action: (row) => store._resume(row)
     }
-  ])
+        ]
+      : []
+  )
 </script>
 
 <template>

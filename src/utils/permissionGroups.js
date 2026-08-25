@@ -70,6 +70,7 @@ export const ENFORCED = new Set([
   'hr',
   'hr-business-trip-read',
   'hr-archive-read',
+  'hr-archive-resume',
   'hr-check-worker',
   'hr-commands-delete',
   'hr-commands-read',
@@ -401,6 +402,7 @@ export const MEANINGFUL = new Set([
   'hospital-ticket',
   'hr',
   'hr-archive-read',
+  'hr-archive-resume',
   'hr-business-trip',
   'hr-business-trip-read',
   'hr-business-trip-write',
@@ -751,7 +753,14 @@ export const PERMISSION_GROUPS = [
         ]
       },
       // Arxiv — bo'shab ketgan xodimlar (faqat ko'rish; write/delete slug yo'q).
-      { prefix: 'hr-archive', label: 'archive.name' },
+      {
+        prefix: 'hr-archive',
+        label: 'archive.name',
+        actions: [
+          { slug: 'hr-archive-read', label: "Ko'rish" },
+          { slug: 'hr-archive-resume', label: 'Rezyume yuklash' }
+        ]
+      },
       { prefix: 'hr-certificates', label: 'workerCertificatePage.name' },
       { prefix: 'hr-kpi', label: 'kpiPage.name' },
       { prefix: 'hr-departments', label: 'departmentPage.name' },
