@@ -82,7 +82,9 @@
       </button>
     </div>
 
-    <div class="relative flex min-h-px flex-1 flex-col">
+    <!-- Maketda (node 3257:112545) kontent ustuni `justify-between`:
+         yuqorida matn, pastda rasmlar. -->
+    <div class="relative flex min-h-px flex-1 flex-col justify-between">
       <slot />
     </div>
   </div>

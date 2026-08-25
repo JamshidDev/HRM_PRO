@@ -59,9 +59,16 @@
 </script>
 
 <template>
-  <!-- `!h-auto` global `.ui-page-content { height: 100% }` ni bosib o'tadi:
-       sahifa kontenti bo'yicha o'sadi, skrollni `.main-content` boshqaradi. -->
-  <UIPageContent class="home-page !h-auto">
+  <!--
+    `!h-auto` global `.ui-page-content { height: 100% }` ni bosib o'tadi:
+    sahifa kontenti bo'yicha o'sadi, skrollni `.main-content` boshqaradi.
+
+    `m-4` — maketdagi kabi to'rt tomondan bir xil 16px masofa (Boddy ichida
+    Empty State har chetdan 16px ichkarida). `!min-h-*` esa mobil uchun global
+    `min-height: 100%` ni almashtiradi: marja qo'shilgach 100% konteynerdan
+    32px oshib ketib, ortiqcha skroll paydo bo'lardi.
+  -->
+  <UIPageContent class="home-page !h-auto m-4 !min-h-[calc(100%-2rem)]">
     <!-- Maketdagi bezak (node 3257:112461): sahifaning pastki chap burchagida,
          -41.63° burilgan, 4% shaffoflik SVG ning o'zida. -->
     <div class="home-page__ornament" aria-hidden="true">

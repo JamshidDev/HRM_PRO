@@ -68,6 +68,7 @@
     :title="$t('homePage.news')"
     :action-text="canOpenList ? $t('homePage.more') : null"
     decorated
+    class="min-h-[230px]"
     @action="onDetail"
   >
     <div v-if="store.news.length" class="flex flex-col gap-3">

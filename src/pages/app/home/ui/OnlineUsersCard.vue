@@ -48,12 +48,14 @@
     :title="$t('homePage.onlineWorkers')"
     :action-text="$t('homePage.more')"
     gap-class="gap-6"
+    class="min-h-[230px]"
     @action="store.userVisible = true"
   >
     <p class="text-[16px] leading-5 font-semibold text-fig-text-primary">
       {{ $t('homePage.count', { count: displayUsers.length }) }}
     </p>
 
+    <!-- Avatarlar har doim kartaning pastida (maket: node 3257:112547) -->
     <div class="mt-auto flex items-end pt-6">
       <transition-group name="online-list" tag="div" class="flex items-center">
         <div
