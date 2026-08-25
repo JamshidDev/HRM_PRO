@@ -41,10 +41,13 @@
 </script>
 
 <template>
+  <!-- Maketda (node 3257:112538) bu kartada naqsh yo'q va sarlavha bilan
+       kontent orasi 24px (yangiliklar kartasida 20px). -->
   <HomePanel
     :icon="UsersIcon"
     :title="$t('homePage.onlineWorkers')"
     :action-text="$t('homePage.more')"
+    gap-class="gap-6"
     @action="store.userVisible = true"
   >
     <p class="text-[16px] leading-5 font-semibold text-fig-text-primary">

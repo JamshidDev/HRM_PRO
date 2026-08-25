@@ -57,20 +57,20 @@
     <div class="flex shrink-0 items-center gap-4">
       <button
         type="button"
-        class="flex h-9 cursor-pointer items-center gap-2 rounded-lg bg-fig-bg-brand px-3 text-[14px] leading-[18px] font-semibold text-white transition-opacity hover:opacity-90"
+        class="flex h-9 cursor-pointer items-center gap-2 rounded-lg bg-fig-bg-brand px-4 text-[14px] leading-[18px] font-medium text-white transition-opacity hover:opacity-90"
         @click="onContact"
       >
-        <n-icon :size="20"><Headphones20Filled /></n-icon>
+        <n-icon :size="18"><Headphones20Filled /></n-icon>
         {{ $t('homePage.contact') }}
       </button>
 
       <button
         type="button"
         :disabled="loggingOut"
-        class="flex h-9 cursor-pointer items-center gap-2 rounded-lg bg-fig-bg-red px-3 text-[14px] leading-[18px] font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+        class="flex h-9 cursor-pointer items-center gap-2 rounded-lg bg-fig-bg-red px-4 text-[14px] leading-[18px] font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
         @click="onLogout"
       >
-        <span class="flex h-5 w-5 shrink-0 items-center justify-center text-white">
+        <span class="flex h-[18px] w-[18px] shrink-0 items-center justify-center text-white">
           <LogoutIcon />
         </span>
         {{ $t('homePage.logout') }}

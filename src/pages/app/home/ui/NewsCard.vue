@@ -67,6 +67,7 @@
     :icon="NewsIcon"
     :title="$t('homePage.news')"
     :action-text="canOpenList ? $t('homePage.more') : null"
+    decorated
     @action="onDetail"
   >
     <div v-if="store.news.length" class="flex flex-col gap-3">
@@ -74,7 +75,7 @@
         v-for="item in store.news"
         :key="item.id"
         role="button"
-        class="flex cursor-pointer items-start gap-4 rounded-lg transition-opacity hover:opacity-80"
+        class="flex cursor-pointer items-start gap-4 overflow-hidden rounded-2xl bg-fig-bg-secondary transition-opacity hover:opacity-80"
         @click="store.openNews(item)"
       >
         <div class="relative h-[67px] w-[120px] shrink-0 overflow-hidden rounded-lg">
@@ -84,9 +85,7 @@
             class="h-full w-full object-cover"
             @error="Utils.onImgError"
           />
-          <span
-            class="absolute top-1 right-1 flex items-center gap-0.5 rounded bg-black/45 px-1 py-0.5 text-[10px] leading-3 font-medium text-white"
-          >
+          <span class="news-card__views">
             <n-icon :size="10"><Eye16Filled /></n-icon>
             {{ formatCount(item.views_count) }}
           </span>
@@ -96,7 +95,7 @@
           <p class="line-clamp-2 text-[16px] leading-5 font-semibold text-fig-text-primary">
             {{ titleOf(item) }}
           </p>
-          <p class="text-[12px] leading-4 text-fig-text-tertiary">
+          <p class="text-[12px] leading-4 font-medium text-fig-text-tertiary">
             {{ Utils.timeOnlyDate(item.published_at) }}
           </p>
         </div>
@@ -108,3 +107,30 @@
     </p>
   </HomePanel>
 </template>
+
+<style scoped>
+  /*
+    Maket (node 3257:112522): `rgba(0,0,0,0.44)` + `backdrop-blur(4px)`,
+    to'liq yumaloq, `px-2px py-1px`, 8px yarim qalin oq matn.
+    Rang Tailwind palitrasi orqali emas — loyihada `--color-*: initial`
+    reseti bor va palitraga qo'shilmagan ranglar jimgina yo'qoladi.
+  */
+  .news-card__views {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 1px 2px;
+    border-radius: 9999px;
+    font-size: 8px;
+    line-height: 1.5;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.44);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+</style>

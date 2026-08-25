@@ -10,6 +10,7 @@
   import SunIcon from '@/assets/icons/home/sun.svg'
   import LocationPinIcon from '@/assets/icons/home/location-pin.svg'
   import patternUrl from '@/assets/icons/home/welcome-pattern.png'
+  import ornamentUrl from '@/assets/icons/home/ornament.svg?url'
 
   const accountStore = useAccountStore()
   const homeStore = useHomeStore()
@@ -17,13 +18,10 @@
 
 <template>
   <div class="relative h-full overflow-hidden rounded-2xl bg-fig-block p-4">
-    <!-- Maketdagi naqsh: kartaning markazida, 4% shaffoflik bilan -->
-    <img
-      :src="patternUrl"
-      alt=""
-      aria-hidden="true"
-      class="pointer-events-none absolute top-1/2 left-0 h-[269px] w-[1104px] max-w-none -translate-y-1/2 object-cover opacity-[0.04]"
-    />
+    <!-- Maketdagi bezaklar (node 3257:112472 va 3257:112473): naqsh kartaning
+         vertikal markazida (4% shaffof), bezak esa yuqori markazda, 90° burilgan. -->
+    <img :src="patternUrl" alt="" aria-hidden="true" class="welcome-card__pattern" />
+    <img :src="ornamentUrl" alt="" aria-hidden="true" class="welcome-card__ornament" />
 
     <div class="relative flex h-full flex-col gap-5">
       <div class="flex flex-wrap items-center justify-between gap-3">
@@ -75,3 +73,31 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+  .welcome-card__pattern {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 1104px;
+    height: 269px;
+    max-width: none;
+    transform: translateY(-50%);
+    object-fit: cover;
+    opacity: 0.04;
+    pointer-events: none;
+  }
+
+  /* 300x157 quti yuqori markazda; ichidagi 157x300 rasm 90° burilgan.
+     Shaffoflik (4%) SVG ning o'zida. */
+  .welcome-card__ornament {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 157px;
+    height: 300px;
+    max-width: none;
+    transform: translate(-50%, -71.5px) rotate(90deg);
+    pointer-events: none;
+  }
+</style>

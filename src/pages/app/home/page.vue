@@ -17,6 +17,7 @@
   import NewsModal from './ui/NewsModal.vue'
   import UsersModal from './ui/UsersModal.vue'
   import { useAppSetting } from '@/utils/index.js'
+  import ornamentUrl from '@/assets/icons/home/ornament.svg?url'
   import { useHomeStore, useQuoteStore } from '@/store/modules/index.js'
 
   const homeStore = useHomeStore()
@@ -60,7 +61,13 @@
 <template>
   <!-- `!h-auto` global `.ui-page-content { height: 100% }` ni bosib o'tadi:
        sahifa kontenti bo'yicha o'sadi, skrollni `.main-content` boshqaradi. -->
-  <UIPageContent class="home-page !h-auto !rounded-2xl">
+  <UIPageContent class="home-page !h-auto">
+    <!-- Maketdagi bezak (node 3257:112461): sahifaning pastki chap burchagida,
+         -41.63° burilgan, 4% shaffoflik SVG ning o'zida. -->
+    <div class="home-page__ornament" aria-hidden="true">
+      <img :src="ornamentUrl" alt="" />
+    </div>
+
     <HomeHeader />
 
     <n-grid cols="12" responsive="screen" x-gap="8 m:12 l:16" y-gap="8 m:12 l:16">
@@ -94,14 +101,48 @@
 </template>
 
 <style scoped>
-  /* Maketdagi diagonal fon: yuqori chapda moviy, markazda yashil, pastda
-     yana moviy. Kartalar oq bo'lgani uchun fon faqat ular orasida ko'rinadi. */
+  /*
+    Maketdagi fon (node 3257:112460): burchak va to'xtash nuqtalari Figma'dan
+    aynan olingan — ilgari taxminiy `160deg` va teskari tartibdagi ranglar edi.
+    Radius ham 24px (kartalardagi 16px emas).
+  */
   .home-page {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
     background-image: linear-gradient(
-      160deg,
-      var(--fig-blue-100) 0%,
-      var(--fig-green-100) 45%,
-      var(--fig-blue-300) 100%
+      -9.063deg,
+      var(--fig-blue-300) 4.44%,
+      var(--fig-green-100) 32.67%,
+      var(--fig-blue-100) 100.24%
     );
+  }
+
+  /* Maketda bezak quti 720.83x747.88, markazi konteynerning 4.17% + 28.41px
+     nuqtasida, pastdan -265.88px chiqib turadi; ichidagi rasm -41.63° burilgan. */
+  .home-page__ornament {
+    position: absolute;
+    bottom: -265.88px;
+    left: calc(4.17% + 28.41px);
+    display: flex;
+    width: 720.83px;
+    height: 747.88px;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .home-page__ornament img {
+    width: 357.53px;
+    height: 682.8px;
+    max-width: none;
+    transform: rotate(-41.63deg);
+  }
+
+  /* Bezak fonda qolsin — kartalar `UIPageContent` ning oddiy oqimida. */
+  .home-page > :not(.home-page__ornament) {
+    position: relative;
+    z-index: 1;
   }
 </style>
