@@ -61,6 +61,7 @@
   --color-fig-red-50: var(--fig-red-50);
   --color-fig-red-100: var(--fig-red-100);
   --color-fig-blue-100: var(--fig-blue-100);
+  --color-fig-blue-300: var(--fig-blue-300);
   --color-fig-indigo-100: var(--fig-indigo-100);
   --color-fig-lime-100: var(--fig-lime-100);
   --color-fig-teal-100: var(--fig-teal-100);
@@ -69,6 +70,7 @@
   /* Figma "Xodim profili" — blok/maydon/tugma qatlamlari */
   --color-fig-text-brand: var(--fig-text-brand);
   --color-fig-bg-brand: var(--fig-bg-brand-fill);
+  --color-fig-bg-red: var(--fig-bg-red-fill);
   --color-fig-bg-brand-surface: var(--fig-bg-brand-surface);
   --color-fig-bg-secondary: var(--fig-bg-secondary);
   --color-fig-bg-tertiary: var(--fig-bg-tertiary);

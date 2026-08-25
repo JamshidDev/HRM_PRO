@@ -75,7 +75,11 @@ instance.interceptors.response.use(
         $Toast.error(error.response?.data?.message)
       }
     } else if (error?.message) {
-      $Toast.warning(error.message)
+      // `silentError` bu yerda ham hisobga olinadi: backend `message` bermagan
+      // 403 larda oldin xom "Request failed with status code 403" chiqib ketardi.
+      if (!error.config?.silentError) {
+        $Toast.warning(error.message)
+      }
     }
 
     // Telegram log guruhi: 5xx, network/timeout va kutilmagan 4xx lar.

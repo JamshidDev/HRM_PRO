@@ -1,13 +1,27 @@
 <script setup>
+  /**
+   * Bosh sahifa — Figma "Asosiy" (fayl kB7JzDpdhDB8kan1gt3mxF, node 3257:112457).
+   *
+   * Bloklar mustaqil: har biri o'z manbasidan yuklanadi va ma'lumot bo'lmasa
+   * (yoki ruxsat yetmasa) jimgina yashiriladi — `homeStore` ga qarang.
+   */
   import { UIPageContent } from '@/components/index.js'
-  import Quotes from './ui/Quotes.vue'
-  import OnlineUsers from './ui/OnlineUsers.vue'
+  import HomeHeader from './ui/HomeHeader.vue'
+  import WelcomeCard from './ui/WelcomeCard.vue'
+  import QuoteCard from './ui/QuoteCard.vue'
+  import BannerRow from './ui/BannerRow.vue'
+  import QuickActions from './ui/QuickActions.vue'
+  import NewsCard from './ui/NewsCard.vue'
+  import OnlineUsersCard from './ui/OnlineUsersCard.vue'
   import UsersModal from './ui/UsersModal.vue'
   import { useAppSetting } from '@/utils/index.js'
-  import { useAppStore } from '@/store/modules/index.js'
-  import { DocumentTableArrowRight20Regular } from '@vicons/fluent'
+  import { useHomeStore, useQuoteStore } from '@/store/modules/index.js'
 
-  const appStore = useAppStore()
+  const homeStore = useHomeStore()
+  const quoteStore = useQuoteStore()
+
+  // Iqtibos har daqiqada yangilanadi (avvalgi `Quotes.vue` xulqi saqlandi).
+  let quoteInterval = null
 
   const handleKeyDown = (e) => {
     if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p') {
@@ -27,31 +41,63 @@
 
   onMounted(() => {
     window.addEventListener('keydown', handleKeyDown)
+
+    homeStore._init()
+    quoteStore._randomText()
+    quoteInterval = setInterval(() => {
+      quoteStore._randomText()
+    }, 60000)
   })
 
   onUnmounted(() => {
     window.removeEventListener('keydown', handleKeyDown)
+    clearInterval(quoteInterval)
   })
 </script>
 
 <template>
-  <UIPageContent>
-    <!-- <div class="flex justify-end w-full">
-      <n-button
-        type="primary"
-        :loading="appStore.wrongPinsLoading"
-        @click="appStore._downloadWrongWorkerPins"
-      >
-        <template #icon>
-          <n-icon><DocumentTableArrowRight20Regular /></n-icon>
-        </template>
-        {{ $t('homePage.wrongWorkerPins') }}
-      </n-button>
-    </div> -->
-    <div class="flex items-center justify-center w-full h-[60vh]">
-      <Quotes />
-    </div>
-    <OnlineUsers />
+  <!-- `!h-auto` global `.ui-page-content { height: 100% }` ni bosib o'tadi:
+       sahifa kontenti bo'yicha o'sadi, skrollni `.main-content` boshqaradi. -->
+  <UIPageContent class="home-page !h-auto !rounded-2xl">
+    <HomeHeader />
+
+    <n-grid cols="12" responsive="screen" x-gap="8 m:12 l:16" y-gap="8 m:12 l:16">
+      <n-grid-item span="12 l:8">
+        <WelcomeCard />
+      </n-grid-item>
+      <n-grid-item span="12 l:4">
+        <QuoteCard />
+      </n-grid-item>
+
+      <n-grid-item span="12">
+        <BannerRow />
+      </n-grid-item>
+
+      <n-grid-item span="12">
+        <QuickActions />
+      </n-grid-item>
+
+      <n-grid-item span="12 l:7">
+        <NewsCard />
+      </n-grid-item>
+      <n-grid-item span="12 l:5">
+        <OnlineUsersCard />
+      </n-grid-item>
+    </n-grid>
+
     <UsersModal />
   </UIPageContent>
 </template>
+
+<style scoped>
+  /* Maketdagi diagonal fon: yuqori chapda moviy, markazda yashil, pastda
+     yana moviy. Kartalar oq bo'lgani uchun fon faqat ular orasida ko'rinadi. */
+  .home-page {
+    background-image: linear-gradient(
+      160deg,
+      var(--fig-blue-100) 0%,
+      var(--fig-green-100) 45%,
+      var(--fig-blue-300) 100%
+    );
+  }
+</style>

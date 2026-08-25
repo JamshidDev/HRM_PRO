@@ -97,7 +97,37 @@
   "homePage": {
     "wrongWorkerPins": "Noto'g'ri xodim PIN-kodlari",
     "downloaded": "Fayl muvaffaqiyatli yuklab olindi",
-    "downloadFailed": "Faylni yuklab olishda xatolik"
+    "downloadFailed": "Faylni yuklab olishda xatolik",
+    "appName": "HRM Rail",
+    "welcome": "Xush kelibsiz!",
+    "contact": "Aloqa",
+    "logout": "Chiqish",
+    "news": "Yangiliklar",
+    "onlineWorkers": "Online hodimlar",
+    "more": "Batafsil",
+    "count": "{count} ta",
+    "actions": {
+      "vacation": {
+        "title": "Ta'til",
+        "subtitle": "Ta'til uchun ariza berish"
+      },
+      "reference": {
+        "title": "Ma'lumotnoma",
+        "subtitle": "Ma'lumotnoma so'rash"
+      },
+      "report": {
+        "title": "Hisobot",
+        "subtitle": "Hisobot yuklash"
+      },
+      "income": {
+        "title": "Daromad",
+        "subtitle": "Ish haqi va to'lovlar"
+      },
+      "turnstile": {
+        "title": "Turniket",
+        "subtitle": "Kirish-chiqish tarixi"
+      }
+    }
   },
   "content": {
     "user": "Foydalanuvchi",

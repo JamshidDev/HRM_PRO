@@ -97,7 +97,37 @@
   "homePage": {
     "wrongWorkerPins": "Неверные ПИН-коды сотрудников",
     "downloaded": "Файл успешно загружен",
-    "downloadFailed": "Не удалось загрузить файл"
+    "downloadFailed": "Не удалось загрузить файл",
+    "appName": "HRM Rail",
+    "welcome": "Добро пожаловать!",
+    "contact": "Связь",
+    "logout": "Выход",
+    "news": "Новости",
+    "onlineWorkers": "Сотрудники онлайн",
+    "more": "Подробнее",
+    "count": "{count} чел.",
+    "actions": {
+      "vacation": {
+        "title": "Отпуск",
+        "subtitle": "Подать заявление на отпуск"
+      },
+      "reference": {
+        "title": "Справка",
+        "subtitle": "Запросить справку"
+      },
+      "report": {
+        "title": "Отчёт",
+        "subtitle": "Скачать отчёт"
+      },
+      "income": {
+        "title": "Доход",
+        "subtitle": "Зарплата и выплаты"
+      },
+      "turnstile": {
+        "title": "Турникет",
+        "subtitle": "История входов и выходов"
+      }
+    }
   },
   "content": {
     "user": "Пользователь",

@@ -22,7 +22,37 @@
   "homePage": {
     "wrongWorkerPins": "Нотўғри ходим ПИН-кодлари",
     "downloaded": "Файл муваффақиятли юклаб олинди",
-    "downloadFailed": "Файлни юклаб олишда хатолик"
+    "downloadFailed": "Файлни юклаб олишда хатолик",
+    "appName": "HRM Rail",
+    "welcome": "Хуш келибсиз!",
+    "contact": "Алоқа",
+    "logout": "Чиқиш",
+    "news": "Янгиликлар",
+    "onlineWorkers": "Онлайн ходимлар",
+    "more": "Батафсил",
+    "count": "{count} та",
+    "actions": {
+      "vacation": {
+        "title": "Таътил",
+        "subtitle": "Таътил учун ариза бериш"
+      },
+      "reference": {
+        "title": "Маълумотнома",
+        "subtitle": "Маълумотнома сўраш"
+      },
+      "report": {
+        "title": "Ҳисобот",
+        "subtitle": "Ҳисобот юклаш"
+      },
+      "income": {
+        "title": "Даромад",
+        "subtitle": "Иш ҳақи ва тўловлар"
+      },
+      "turnstile": {
+        "title": "Турникет",
+        "subtitle": "Кириш-чиқиш тарихи"
+      }
+    }
   },
   "content": {
     "user": "Фойдаланувчи",

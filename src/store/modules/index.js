@@ -15,6 +15,7 @@ export * from './app/usefulStore.js'
 export * from './app/pageInstructionStore.js'
 export * from './app/publicStore.js'
 export * from './app/socketStore.js'
+export * from './app/homeStore.js'
 
 export * from './admin/userPermissonStore.js'
 export * from './admin/userStore.js'

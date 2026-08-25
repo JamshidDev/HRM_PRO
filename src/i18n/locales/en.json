@@ -93,7 +93,37 @@
   "homePage": {
     "wrongWorkerPins": "Wrong worker PINs",
     "downloaded": "File downloaded successfully",
-    "downloadFailed": "Failed to download file"
+    "downloadFailed": "Failed to download file",
+    "appName": "HRM Rail",
+    "welcome": "Welcome!",
+    "contact": "Support",
+    "logout": "Log out",
+    "news": "News",
+    "onlineWorkers": "Employees online",
+    "more": "Details",
+    "count": "{count} people",
+    "actions": {
+      "vacation": {
+        "title": "Vacation",
+        "subtitle": "Submit a vacation request"
+      },
+      "reference": {
+        "title": "Reference",
+        "subtitle": "Request a reference"
+      },
+      "report": {
+        "title": "Report",
+        "subtitle": "Download a report"
+      },
+      "income": {
+        "title": "Income",
+        "subtitle": "Salary and payments"
+      },
+      "turnstile": {
+        "title": "Turnstile",
+        "subtitle": "Entry and exit history"
+      }
+    }
   },
   "content": {
     "user": "User",
