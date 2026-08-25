@@ -178,9 +178,12 @@
 
   // modulda yoqilgan switchlar soni — tab badge
   const moduleCount = (mod) => {
-    let c = 0
-    for (const g of mod.groups) for (const sw of groupSwitches(g)) if (switchOn(sw)) c++
-    return c
+    // `sw.key` bo'yicha unique: bitta slug ikki kartada ko'rsatilsa (masalan
+    // `hr-contracts-write` — «Xodimlar» va «Shartnomalar») badge ikki marta sanamasin.
+    const on = new Set()
+    for (const g of mod.groups)
+      for (const sw of groupSwitches(g)) if (switchOn(sw)) on.add(sw.key)
+    return on.size
   }
 
   // qidiruv bo'yicha ko'rinadigan sub-guruhlar (label bo'yicha) + mavjud slug bo'lganlar
