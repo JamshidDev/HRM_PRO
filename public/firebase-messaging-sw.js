@@ -5,6 +5,10 @@
 importScripts('https://www.gstatic.com/firebasejs/12.18.0/firebase-app-compat.js')
 importScripts('https://www.gstatic.com/firebasejs/12.18.0/firebase-messaging-compat.js')
 
+// Yangi versiya darhol faollashsin (aks holda barcha tablar yopilguncha kutadi).
+self.addEventListener('install', () => self.skipWaiting())
+self.addEventListener('activate', (e) => e.waitUntil(self.clients.claim()))
+
 firebase.initializeApp({
   apiKey: 'AIzaSyD_mcEVAq-Y66Z7m1dS9ssv6OVO1ZTTVEg',
   authDomain: 'das-uty-e3958.firebaseapp.com',
@@ -34,8 +38,16 @@ firebase.messaging().onBackgroundMessage(async ({ notification, data }) => {
   await self.registration.showNotification(pickLang(data?.title, notification?.title), {
     body: pickLang(data?.content, notification?.body),
     image: data?.image_url || undefined,
-    icon: '/favicon.ico',
-    tag: 'hrm-notification',
+    // macOS native bildirishnomada `image` ko'rinmaydi — rasm `icon` sifatida
+    // banner o'ng tomonida kichik kvadrat bo'lib chiqadi.
+    icon: data?.image_url || '/favicon.ico',
+    // Har xabar alohida teg — aks holda macOS eskisini JIMGINA almashtiradi
+    // va ovoz chiqmaydi (native markaz `renotify` ni e'tiborsiz qoldiradi).
+    tag: data?.id ? `hrm-${data.id}` : `hrm-${Date.now()}`,
+    renotify: true,
+    silent: false,
+    // Yopmaguncha ekranda tursin (macOS'da Chrome alert style'iga bog'liq).
+    requireInteraction: true,
     data: { id: data?.id || '' }
   })
 })
