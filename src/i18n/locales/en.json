@@ -839,7 +839,41 @@
     "optionsHint": "Tick what you need below so passport copies are included in the archive"
   },
   "contactPage": {
-    "name": "Contacts"
+    "name": "Contacts",
+    "title": "Contact",
+    "home": "Home",
+    "comingSoon": "Coming soon",
+    "telegram": {
+      "title": "Write on Telegram",
+      "subtitle": "Quick contact for questions and suggestions"
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "subtitle": "Information on frequently asked questions"
+    },
+    "email": {
+      "title": "Email",
+      "replyTime": "Response time:",
+      "replyTimeValue": "within 5 business days"
+    },
+    "callback": {
+      "title": "Who to contact?",
+      "text": "Call the relevant department employee directly about your question",
+      "action": "Open the list"
+    },
+    "ai": {
+      "title": "AI chatbot",
+      "text": "MuxlisaAI, built on artificial intelligence, answers your questions instantly",
+      "action": "Chat with the AI chatbot"
+    },
+    "address": "Address:",
+    "addressValue": "Uzbekistan, Tashkent, Taras Shevchenko 7",
+    "workHours": "Working hours:",
+    "workHoursValue": "Monday–Friday 09:00 – 18:00",
+    "social": "Social networks:",
+    "responsible": {
+      "title": "Staff responsible for the system"
+    }
   },
   "documentHistoryPage": {
     "name": "Document history"

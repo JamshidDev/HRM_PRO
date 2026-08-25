@@ -26,6 +26,16 @@ export const appRoutes = [
     }
   },
   {
+    // Figma "Aloqa" (node 2042:173778) — bosh sahifadagi "Aloqa" tugmasi shu yerga
+    // olib keladi. `AppPaths.Contact` ilgari e'lon qilingan-u, marshruti yo'q edi.
+    path: AppPaths.Contact,
+    name: AppPaths.Contact.substring(1),
+    component: () => import('@/pages/app/contact/page.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
     path: AppPaths.AIConversation,
     name: AppPaths.AIConversation.substring(1),
     component: () => import('@/pages/app/ai/AIConversationPage.vue'),

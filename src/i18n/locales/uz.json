@@ -856,7 +856,41 @@
     "optionsHint": "Pasport nusxalari arxivga qo'shilishi uchun quyidagilardan kerakligini belgilang"
   },
   "contactPage": {
-    "name": "Kontaktlar"
+    "name": "Kontaktlar",
+    "title": "Bog'lanish",
+    "home": "Bosh sahifa",
+    "comingSoon": "Tez kunda",
+    "telegram": {
+      "title": "Telegram orqali yozish",
+      "subtitle": "Savol va takliflar uchun tezkor aloqa"
+    },
+    "faq": {
+      "title": "Ko'p beriladigan savollar",
+      "subtitle": "Tez-tez beriladigan savollar bo'yicha ma'lumot"
+    },
+    "email": {
+      "title": "Elektron pochta",
+      "replyTime": "Murojaatni ko'rib chiqish muddati:",
+      "replyTimeValue": "5 ish kuni ichida"
+    },
+    "callback": {
+      "title": "Kim bilan bog'lanish?",
+      "text": "Savolingiz bo'yicha kerakli bo'lim xodimiga to'g'ridan-to'g'ri qo'ng'iroq qiling",
+      "action": "Ro'yxatni ochish"
+    },
+    "ai": {
+      "title": "AI chatbot",
+      "text": "Savollaringizga sun'iy intellekt asosida yaratilgan MuxlisaAI tezkor javob beradi",
+      "action": "AI chatbot bilan suhbatlashish"
+    },
+    "address": "Manzil:",
+    "addressValue": "Uzbekistan, Tashkent, Taras Shevchenko 7",
+    "workHours": "Ish vaqti:",
+    "workHoursValue": "Dushanba–Juma 09:00 – 18:00",
+    "social": "Ijtimoiy tarmoqlar:",
+    "responsible": {
+      "title": "TIZIM BO'YICHA MAS'UL XODIMLAR"
+    }
   },
   "documentHistoryPage": {
     "name": "Hujjatlar tarixi"
