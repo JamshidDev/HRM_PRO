@@ -7,6 +7,7 @@ import userPermissionService from '@/service/v1/app/userPermissionService.js'
 import userRoleService from '@/service/v1/app/userRoleService.js'
 import componentService from '@/service/v1/app/componentService.js'
 import aiConversationService from '@/service/v1/app/aiConversationService.js'
+import pushService from '@/service/v1/app/pushService.js'
 
 import countryService from '@/service/v1/admin/countryService.js'
 import regionService from '@/service/v1/admin/regionService.js'
@@ -330,4 +331,5 @@ export default {
   staffingReportService,
   stationCodeReportService,
   organizationPositionsReportService,
+  pushService,
 }

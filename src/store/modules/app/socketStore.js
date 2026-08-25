@@ -5,6 +5,7 @@ const socketSecret = import.meta.env.VITE_SOCKET_SECRET
 import { useNotify } from '@/composables/useNotify'
 import { useNotificationSound } from '@/composables/useNotificationSound.js'
 import { eventBus, Events } from '@/utils/index.js'
+import { pickI18nText } from '@/utils/i18nText.js'
 import { useAppStore } from '@/store/modules/app/appStore.js'
 
 const allowedEvents = [
@@ -82,15 +83,27 @@ export const useSocketStore = defineStore('useSocketStore', {
       })
 
       this.socket.on('notification', (data) => {
-        if (allowedAlertTypes.includes(data?.alert)) {
+        // Xabar turi: yangi payload'da `type` (= action.type), eskisida `alert`.
+        const alertType = allowedAlertTypes.includes(data?.type)
+          ? data.type
+          : allowedAlertTypes.includes(data?.alert)
+            ? data.alert
+            : null
+
+        if (alertType) {
           if (appStore.soundEnabled) {
             const soundByAlert = { error: 'error', warning: 'notice', info: 'notice' }
-            notificationSound.play(soundByAlert[data?.alert] || 'success')
+            notificationSound.play(soundByAlert[alertType] || 'success')
           }
 
-          // eslint-disable-next-line no-constant-binary-expression
-          useNotify().notify(data.title || '', 'success' ?? data.alert, {
-            meta: data,
+          // title/message — {uz,ru,en} obyekt; toast joriy tilda ko'rsatiladi.
+          useNotify().notify(pickI18nText(data.title), alertType, {
+            meta: {
+              ...data,
+              title: pickI18nText(data.title),
+              message: pickI18nText(data.message),
+              alert: alertType
+            },
             duration: data.duration || undefined,
             persistent: false
           })

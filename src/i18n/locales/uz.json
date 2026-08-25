@@ -384,7 +384,14 @@
     "themeSystem": "Tizim",
     "oldVersionButton": "Eski talqinga qaytish",
     "newVersionButton": "Yangi talqinga o'tish",
-    "copied": "Nusxalandi"
+    "copied": "Nusxalandi",
+    "pushEnableTitle": "Bildirishnomalarni yoqing",
+    "pushEnableText": "Brauzer yopiq bo'lsa ham yangi xabarlardan xabardor bo'lish uchun ruxsat bering.",
+    "pushEnableBtn": "Yoqish",
+    "pushBlockedTitle": "Bildirishnomalar bloklangan",
+    "pushBlockedText": "Brauzer bu sayt uchun bildirishnomani rad etgan. Manzil satridagi qulf belgisini bosing → «Bildirishnomalar» → «Ruxsat berish», so'ng sahifani yangilang.",
+    "pushBlockedBtn": "Qanday yoqiladi?",
+    "pushEnabled": "Bildirishnomalar yoqildi"
   },
   "date": {
     "day": "Kun",

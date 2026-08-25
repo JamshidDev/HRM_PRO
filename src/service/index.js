@@ -4,6 +4,7 @@ import router from '../router/index'
 import Utils from '@/utils/Utils.js'
 import i18n from '@/i18n/index.js'
 import { reportApiError } from '@/utils/errorReporter.js'
+import { getDeviceUuid } from '@/utils/webPush.js'
 const apiUrl = import.meta.env.VITE_API_URL
 console.log(apiUrl)
 const { t } = i18n.global
@@ -26,6 +27,9 @@ instance.interceptors.request.use(function (config) {
   if (config.url !== '/auth/login') {
     config.headers['X-Auth-Type'] = 'sanctum'
   }
+
+  // Qurilma id — logout shu header orqali push tokenini o'chiradi.
+  config.headers['X-Device-UUID'] = getDeviceUuid()
 
   return config
 })
