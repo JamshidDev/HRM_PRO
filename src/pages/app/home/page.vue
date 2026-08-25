@@ -6,6 +6,8 @@
   import { useAppSetting } from '@/utils/index.js'
   import { useAppStore } from '@/store/modules/index.js'
   import { DocumentTableArrowRight20Regular } from '@vicons/fluent'
+  import { syncPushOnHome } from '@/utils/webPush.js'
+  import PushPermissionAlert from './ui/PushPermissionAlert.vue'
 
   const appStore = useAppStore()
 
@@ -27,6 +29,8 @@
 
   onMounted(() => {
     window.addEventListener('keydown', handleKeyDown)
+    // Bildirishnoma ruxsati login ekranida emas, tizim ichida so'raladi.
+    syncPushOnHome()
   })
 
   onUnmounted(() => {
@@ -36,6 +40,7 @@
 
 <template>
   <UIPageContent>
+    <PushPermissionAlert />
     <!-- <div class="flex justify-end w-full">
       <n-button
         type="primary"

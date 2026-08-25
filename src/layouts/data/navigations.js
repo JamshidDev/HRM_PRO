@@ -132,6 +132,13 @@ export const navigations = [
         permission: appPermissions.hrWorkersRead
       },
       {
+        label: 'archive.name', // Arxiv — bo'shab ketgan xodimlar
+        path: Utils.routeHrmPathMaker(AppPaths.Archive),
+        icon: usersIcon,
+        color: 'bg-dark',
+        permission: appPermissions.hrArchiveRead
+      },
+      {
         label: 'departmentPage.name', // Bo'linmalar
         path: Utils.routeHrmPathMaker(AppPaths.Department),
         icon: department2Icon,

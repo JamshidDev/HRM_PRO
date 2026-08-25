@@ -31,25 +31,35 @@ const getAudio = (type) => {
   return audioCache[src]
 }
 
-const unlock = () => {
+// Autoplay qulfi: faqat click emas — klaviatura/skroll/teginish ham gesture sanaladi,
+// aks holda sahifa yangilangach birinchi bosishgacha bildirishnoma ovozsiz qoladi.
+const GESTURES = ['pointerdown', 'click', 'keydown', 'touchstart']
+const removeGestureListeners = () => {
+  GESTURES.forEach((ev) => window.removeEventListener(ev, unlock))
+}
+
+function unlock() {
   const audio = getAudio('success')
+  audio.muted = true
   audio
     .play()
     .then(() => {
       audio.pause()
       audio.currentTime = 0
+      audio.muted = false
       playAudioUnlocked = true
-      window.removeEventListener('click', unlock)
+      removeGestureListeners()
     })
     .catch((err) => {
-      // NotAllowedError — click hali yaroqli gesture sanalmadi; listener qoladi va keyingi click'da qayta urinadi
+      audio.muted = false
+      // NotAllowedError — bu gesture yaroqli sanalmadi; listener qoladi va keyingisida qayta urinadi
       if (err?.name === 'NotAllowedError') return
-      window.removeEventListener('click', unlock)
+      removeGestureListeners()
       onPlaybackError(err)
     })
 }
 
-window.addEventListener('click', unlock)
+GESTURES.forEach((ev) => window.addEventListener(ev, unlock))
 
 export const useNotificationSound = () => {
   const play = (type = 'success') => {

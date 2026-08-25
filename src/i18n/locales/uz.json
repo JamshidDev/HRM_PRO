@@ -1,4 +1,18 @@
 {
+  "archive": {
+    "name": "Arxiv",
+    "filter": {
+      "contractType": "Shartnoma turi",
+      "dismissedPeriod": "Bo‘shagan sana"
+    },
+    "table": {
+      "previousOrg": "Oldingi korxona",
+      "contractType": "Shartnoma turi",
+      "startDate": "Shartnoma tuzilgan sana",
+      "dismissedAt": "Bo‘shagan sana",
+      "resume": "Rezyume"
+    }
+  },
   "lateWorkersReport": {
     "name": "Kech qoluvchilar hisoboti",
     "title": "Muntazam kech qoluvchilar hisoboti",
@@ -384,7 +398,14 @@
     "themeSystem": "Tizim",
     "oldVersionButton": "Eski talqinga qaytish",
     "newVersionButton": "Yangi talqinga o'tish",
-    "copied": "Nusxalandi"
+    "copied": "Nusxalandi",
+    "pushEnableTitle": "Bildirishnomalarni yoqing",
+    "pushEnableText": "Brauzer yopiq bo'lsa ham yangi xabarlardan xabardor bo'lish uchun ruxsat bering.",
+    "pushEnableBtn": "Yoqish",
+    "pushBlockedTitle": "Bildirishnomalar bloklangan",
+    "pushBlockedText": "Brauzer bu sayt uchun bildirishnomani rad etgan. Manzil satridagi qulf belgisini bosing → «Bildirishnomalar» → «Ruxsat berish», so'ng sahifani yangilang.",
+    "pushBlockedBtn": "Qanday yoqiladi?",
+    "pushEnabled": "Bildirishnomalar yoqildi"
   },
   "date": {
     "day": "Kun",
@@ -4314,7 +4335,9 @@
       "sent": "Yuborilgan",
       "error": "Xatolik",
       "cancelled": "Bekor qilingan"
-    }
+    },
+    "platformMobile": "Mobil",
+    "platformWeb": "Web"
   },
   "approve": {
     "name": "Yuborilgan xodimlar",

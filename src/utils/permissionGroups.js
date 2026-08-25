@@ -69,6 +69,8 @@ export const ENFORCED = new Set([
   'holidays-write',
   'hr',
   'hr-business-trip-read',
+  'hr-archive-read',
+  'hr-archive-resume',
   'hr-check-worker',
   'hr-commands-delete',
   'hr-commands-read',
@@ -399,6 +401,8 @@ export const MEANINGFUL = new Set([
   'hospital-pensioner-write',
   'hospital-ticket',
   'hr',
+  'hr-archive-read',
+  'hr-archive-resume',
   'hr-business-trip',
   'hr-business-trip-read',
   'hr-business-trip-write',
@@ -746,6 +750,15 @@ export const PERMISSION_GROUPS = [
           // bilan tugaydi → slug «Shartnomalar» kartasi bilan AYNAN BIR XIL
           // (ikkala switch bitta ruxsatni boshqaradi, holati sinxron).
           { slug: 'hr-contracts-write', label: 'Shartnoma tuzish' }
+        ]
+      },
+      // Arxiv — bo'shab ketgan xodimlar (faqat ko'rish; write/delete slug yo'q).
+      {
+        prefix: 'hr-archive',
+        label: 'archive.name',
+        actions: [
+          { slug: 'hr-archive-read', label: "Ko'rish" },
+          { slug: 'hr-archive-resume', label: 'Rezyume yuklash' }
         ]
       },
       { prefix: 'hr-certificates', label: 'workerCertificatePage.name' },
