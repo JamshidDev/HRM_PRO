@@ -69,6 +69,7 @@ export const ENFORCED = new Set([
   'holidays-write',
   'hr',
   'hr-business-trip-read',
+  'hr-archive-read',
   'hr-check-worker',
   'hr-commands-delete',
   'hr-commands-read',
@@ -399,6 +400,7 @@ export const MEANINGFUL = new Set([
   'hospital-pensioner-write',
   'hospital-ticket',
   'hr',
+  'hr-archive-read',
   'hr-business-trip',
   'hr-business-trip-read',
   'hr-business-trip-write',
@@ -748,6 +750,8 @@ export const PERMISSION_GROUPS = [
           { slug: 'hr-contracts-write', label: 'Shartnoma tuzish' }
         ]
       },
+      // Arxiv — bo'shab ketgan xodimlar (faqat ko'rish; write/delete slug yo'q).
+      { prefix: 'hr-archive', label: 'archive.name' },
       { prefix: 'hr-certificates', label: 'workerCertificatePage.name' },
       { prefix: 'hr-kpi', label: 'kpiPage.name' },
       { prefix: 'hr-departments', label: 'departmentPage.name' },

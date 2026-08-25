@@ -1,4 +1,18 @@
 {
+  "archive": {
+    "name": "Архив",
+    "filter": {
+      "contractType": "Шартнома тури",
+      "dismissedPeriod": "Бўшаган сана"
+    },
+    "table": {
+      "previousOrg": "Олдинги корхона",
+      "contractType": "Шартнома тури",
+      "startDate": "Шартнома тузилган сана",
+      "dismissedAt": "Бўшаган сана",
+      "resume": "Резюме"
+    }
+  },
   "lateWorkersReport": {
     "name": "Кеч қолувчилар ҳисоботи",
     "title": "Мунтазам кеч қолувчилар ҳисоботи",

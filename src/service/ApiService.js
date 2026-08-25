@@ -121,6 +121,7 @@ import lmsGroupService from '@/service/v1/lms/groupService.js'
 import lmsLessonService from '@/service/v1/lms/lessonService.js'
 import lmsExamService from '@/service/v1/lms/examService.js'
 import teacherLessonService from '@/service/v1/lms/teacherLessonService.js'
+import archiveService from '@/service/v1/hrm/archiveService.js'
 import listenerService from '@/service/v1/lms/listenerService.js'
 import certificateService from '@/service/v1/lms/certificateService.js'
 
@@ -296,6 +297,7 @@ export default {
   lmsLessonService,
   syncLogService,
   teacherLessonService,
+  archiveService,
   listenerService,
   lmsExamService,
   examVideoService,

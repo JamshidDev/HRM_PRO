@@ -1,4 +1,18 @@
 {
+  "archive": {
+    "name": "Архив",
+    "filter": {
+      "contractType": "Тип договора",
+      "dismissedPeriod": "Дата увольнения"
+    },
+    "table": {
+      "previousOrg": "Предыдущая организация",
+      "contractType": "Тип договора",
+      "startDate": "Дата заключения договора",
+      "dismissedAt": "Дата увольнения",
+      "resume": "Резюме"
+    }
+  },
   "lateWorkersReport": {
     "name": "Отчёт по опоздавшим",
     "title": "Отчёт по регулярно опаздывающим",

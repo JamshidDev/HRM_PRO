@@ -1,4 +1,18 @@
 {
+  "archive": {
+    "name": "Arxiv",
+    "filter": {
+      "contractType": "Shartnoma turi",
+      "dismissedPeriod": "Bo‘shagan sana"
+    },
+    "table": {
+      "previousOrg": "Oldingi korxona",
+      "contractType": "Shartnoma turi",
+      "startDate": "Shartnoma tuzilgan sana",
+      "dismissedAt": "Bo‘shagan sana",
+      "resume": "Rezyume"
+    }
+  },
   "lateWorkersReport": {
     "name": "Kech qoluvchilar hisoboti",
     "title": "Muntazam kech qoluvchilar hisoboti",

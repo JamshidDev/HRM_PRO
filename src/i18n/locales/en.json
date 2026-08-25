@@ -1,4 +1,18 @@
 {
+  "archive": {
+    "name": "Archive",
+    "filter": {
+      "contractType": "Contract type",
+      "dismissedPeriod": "Dismissal date"
+    },
+    "table": {
+      "previousOrg": "Previous organization",
+      "contractType": "Contract type",
+      "startDate": "Contract date",
+      "dismissedAt": "Dismissal date",
+      "resume": "Resume"
+    }
+  },
   "lateWorkersReport": {
     "name": "Late-comers report",
     "title": "Regular late-comers report",

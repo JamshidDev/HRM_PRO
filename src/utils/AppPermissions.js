@@ -99,6 +99,7 @@ export const appPermissions = {
   hrDashboardRead: 'hr-dashboard-read',
   hrDashboardAudit: 'hr-dashboard-audit',
 
+  hrArchiveRead: 'hr-archive-read',
   hrWorkers: 'hr-workers',
   hrWorkersWrite: 'hr-workers-write',
   hrWorkersPassword: 'hr-workers-password',

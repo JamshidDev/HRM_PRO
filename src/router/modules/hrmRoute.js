@@ -9,6 +9,12 @@ export const hrmRoutes = [
     meta: { layout: AppLayouts.main }
   },
   {
+    path: Utils.routeHrmPathMaker(AppPaths.Archive),
+    name: AppPaths.Archive.substring(1),
+    component: () => import('@/pages/hrm/archive/page.vue'),
+    meta: { layout: AppLayouts.main }
+  },
+  {
     path: Utils.routeHrmPathMaker(AppPaths.Department),
     name: AppPaths.Department.substring(1),
     component: () => import('@/pages/hrm/department/DepartmentPage.vue'),
