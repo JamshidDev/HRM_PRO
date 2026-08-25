@@ -4,9 +4,20 @@
   import { Dismiss20Filled } from '@vicons/fluent'
   import { useNotificationStore } from '@stores'
   import dayjs from 'dayjs'
+  import { usePushDetail } from '@/composables/usePushDetail.js'
   const { notifications, remove } = useNotify()
 
   const store = useNotificationStore()
+  const pushDetail = usePushDetail()
+  // Toast meta'sidan modal uchun ma'lumot (rasm va tur ham uzatiladi).
+  const toViewData = (item) => ({
+    alert: item.meta.alert || item.meta.type,
+    type: item.meta.type,
+    title: item.meta.title,
+    message: item.meta.message,
+    image_url: item.meta.image_url || null
+  })
+
   const onClickClose = (item) => {
     // Tizim ogohlantirishlari (masalan ovoz apparati yo'qligi) `meta` siz keladi — ular
     // bildirishnomalar ro'yxatiga tushmaydi, shunchaki yopiladi
@@ -18,11 +29,7 @@
     store.userUnreadNotifications.unshift({
       id: item.meta.id,
       created_at: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-      data: {
-        alert: item.meta.alert,
-        title: item.meta.title,
-        message: item.meta.message
-      }
+      data: toViewData(item)
     })
     remove(item.id)
   }
@@ -32,26 +39,33 @@
       remove(item.id)
       return
     }
-    store.setViewingNotification({
+    const data = toViewData(item)
+    pushDetail.open({
       id: item.meta.id,
       created_at: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-      data: {
-        alert: item.meta.alert,
-        title: item.meta.title,
-        message: item.meta.message
-      }
+      type: data.type || data.alert,
+      title: data.title,
+      message: data.message,
+      image_url: data.image_url
+    })
+    // O'qilmaganlar ro'yxatiga ham qo'shamiz (qo'ng'iroq badge'i uchun).
+    store.userUnreadNotificationsCount++
+    store.userUnreadNotifications.unshift({
+      id: item.meta.id,
+      created_at: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+      data
     })
     remove(item.id)
   }
 </script>
 
 <template>
-  <div class="fixed top-[50px] right-2 z-[9999] flex flex-col gap-2 w-[280px]">
+  <div class="fixed top-[50px] right-2 z-[9999] flex flex-col gap-2 w-[320px]">
     <TransitionGroup name="notify">
       <div
         v-for="item in notifications"
         :key="item.id"
-        class="rounded-lg cursor-pointer w-full notification-blurry-bg px-2 py-2 flex items-center gap-1 relative group"
+        class="rounded-lg cursor-pointer w-full notification-blurry-bg px-2 py-2 flex items-start gap-2 relative group"
         @click="() => onClickNotification(item)"
       >
         <div
@@ -85,7 +99,22 @@
             "
           ></div>
         </div>
-        <span class="line-clamp-1 font-medium text-textColor0">{{ item.content }}</span>
+        <div class="flex-1 min-w-0">
+          <span class="line-clamp-1 font-medium text-textColor0">{{ item.content }}</span>
+          <!-- Push xabari matni — sarlavha ostida, ikki qatorgacha. -->
+          <span
+            v-if="item.meta?.message"
+            class="line-clamp-2 text-xs text-textColor2 mt-0.5 block"
+          >
+            {{ item.meta.message }}
+          </span>
+        </div>
+        <img
+          v-if="item.meta?.image_url"
+          :src="item.meta.image_url"
+          alt=""
+          class="size-9 rounded-md object-cover shrink-0"
+        />
       </div>
     </TransitionGroup>
   </div>

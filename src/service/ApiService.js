@@ -7,6 +7,7 @@ import userPermissionService from '@/service/v1/app/userPermissionService.js'
 import userRoleService from '@/service/v1/app/userRoleService.js'
 import componentService from '@/service/v1/app/componentService.js'
 import aiConversationService from '@/service/v1/app/aiConversationService.js'
+import pushService from '@/service/v1/app/pushService.js'
 
 import countryService from '@/service/v1/admin/countryService.js'
 import regionService from '@/service/v1/admin/regionService.js'
@@ -120,6 +121,7 @@ import lmsGroupService from '@/service/v1/lms/groupService.js'
 import lmsLessonService from '@/service/v1/lms/lessonService.js'
 import lmsExamService from '@/service/v1/lms/examService.js'
 import teacherLessonService from '@/service/v1/lms/teacherLessonService.js'
+import archiveService from '@/service/v1/hrm/archiveService.js'
 import listenerService from '@/service/v1/lms/listenerService.js'
 import certificateService from '@/service/v1/lms/certificateService.js'
 
@@ -295,6 +297,7 @@ export default {
   lmsLessonService,
   syncLogService,
   teacherLessonService,
+  archiveService,
   listenerService,
   lmsExamService,
   examVideoService,
@@ -330,4 +333,5 @@ export default {
   staffingReportService,
   stationCodeReportService,
   organizationPositionsReportService,
+  pushService,
 }

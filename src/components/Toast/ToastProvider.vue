@@ -1,6 +1,7 @@
 <script setup>
   import { useMessage } from 'naive-ui'
   import GlobalNotification from '@/components/notify/GlobalNotification.vue'
+  import PushDetailModal from '@/components/notify/PushDetailModal.vue'
   import { useAppStore } from '@stores'
   import { useNotificationSound } from '@/composables/useNotificationSound.js'
 
@@ -30,4 +31,5 @@
 <template>
   <span></span>
   <GlobalNotification />
+  <PushDetailModal />
 </template>

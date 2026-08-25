@@ -3,6 +3,7 @@ import router from '@/router/index.js'
 import { AppPaths, useAppSetting } from '@/utils/index.js'
 import { useAccountStore, useSocketStore } from '@/store/modules/index.js'
 import { getActivePinia } from 'pinia'
+import { getLoginDeviceData } from '@/utils/webPush.js'
 
 const otpExpireTime = import.meta.env.VITE_OTP_EXPIRE_TIME
 
@@ -38,14 +39,17 @@ export const useLoginNewStore = defineStore('loginNewStore', {
     rawPhone: (state) => state.phone?.slice(4).replace('(', '').replace(')', '') || ''
   },
   actions: {
-    _auth(onError) {
+    async _auth(onError) {
       this.loading = true
 
+      // Qurilma id + brauzer push tokeni login bilan birga ketadi (alohida API yo'q).
+      const device = await getLoginDeviceData()
       let data = {
         phone: this.rawPhone,
         password: this.password,
         captcha_key: this.captchaKey,
-        captcha_answer: this.captchaAnswer
+        captcha_answer: this.captchaAnswer,
+        ...device
       }
       $ApiService.authService
         ._login({ data })

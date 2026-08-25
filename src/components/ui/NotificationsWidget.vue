@@ -4,6 +4,7 @@
   import { Alert16Filled, CommentMultipleCheckmark24Filled } from '@vicons/fluent'
   import { NoDataPicture, UIEditorViewer, UIModal } from '@components'
   import dayjs from 'dayjs'
+  import { pickI18nText } from '@/utils/i18nText.js'
   import NotificationBadge from '@pages/chat/notification/ui/NotificationBadge.vue'
 
   const store = useNotificationStore()
@@ -89,6 +90,13 @@
       store._userUnreadNotifications()
     }
   }
+
+  // Yangi payload'da xabar turi `type` (action.type), eskisida `alert`.
+  const alertOf = (item) => item?.data?.alert || item?.data?.type || 'info'
+  // title/message — {uz,ru,en} obyekt yoki oddiy satr.
+  const titleOf = (item) => pickI18nText(item?.data?.title)
+  const messageOf = (item) => pickI18nText(item?.data?.message)
+  const imageOf = (item) => item?.data?.image_url || null
 
   const showViewModal = ref(false)
 
@@ -190,25 +198,25 @@
                           :class="
                             cn(
                               'size-5 p-0.5 rounded-full inline-block shrink-0',
-                              item.data.alert === notificationTypes.info.value &&
+                              alertOf(item) === notificationTypes.info.value &&
                                 'bg-info/20 text-info',
-                              item.data.alert === notificationTypes.success.value &&
+                              alertOf(item) === notificationTypes.success.value &&
                                 'bg-success/20 text-success',
-                              item.data.alert === notificationTypes.warning.value &&
+                              alertOf(item) === notificationTypes.warning.value &&
                                 'bg-warning/20 text-warning',
-                              item.data.alert === notificationTypes.error.value &&
+                              alertOf(item) === notificationTypes.error.value &&
                                 'bg-danger/20 text-danger'
                             )
                           "
-                          :is="notificationTypes?.[item.data.alert]?.icon"
+                          :is="notificationTypes?.[alertOf(item)]?.icon"
                         />
                       </div>
                     </template>
-                    <span>{{ notificationTypes[item.data.alert].label }}</span>
+                    <span>{{ notificationTypes?.[alertOf(item)]?.label }}</span>
                   </n-tooltip>
                   <div>
                     <span class="text-sm line-clamp-2">
-                      {{ item?.data?.title }}
+                      {{ titleOf(item) }}
                     </span>
                     <span class="text-xs text-textColor3">{{
                       dayjs(item.created_at).format('MMM DD, HH:mm')
@@ -232,7 +240,7 @@
   </n-popover>
   <UIModal v-model:visible="showViewModal" :width="700">
     <template #header-title>
-      <p>{{ store.viewingNotification?.data?.title }}</p>
+      <p>{{ titleOf(store.viewingNotification) }}</p>
       <span class="text-sm text-textColor3">{{
         dayjs(store.viewingNotification.created_at).format('MMM DD, HH:mm')
       }}</span>
@@ -241,30 +249,36 @@
       class="grid grid-rows-[1fr_auto] h-[500px] relative"
       v-if="store.viewingNotification?.data?.message"
     >
-      <UIEditorViewer :html="store.viewingNotification?.data?.message" />
+      <div class="overflow-y-auto pr-1">
+        <!-- Push rasmi — to'liq kenglikda, modal ichida. -->
+        <img
+          v-if="imageOf(store.viewingNotification)"
+          :src="imageOf(store.viewingNotification)"
+          alt=""
+          class="w-full max-h-[260px] object-cover rounded-xl mb-3"
+        />
+        <UIEditorViewer :html="messageOf(store.viewingNotification)" />
+      </div>
 
       <component
-        :is="notificationTypes[store.viewingNotification?.data?.alert]?.icon"
+        :is="notificationTypes?.[alertOf(store.viewingNotification)]?.icon"
         class="size-20 absolute right-0 bottom-10 text-textColor3/60"
       />
       <component
-        :is="notificationTypes[store.viewingNotification?.data?.alert]?.icon"
+        :is="notificationTypes?.[alertOf(store.viewingNotification)]?.icon"
         class="size-10 absolute right-0 bottom-30 text-textColor3/60"
       />
       <component
-        :is="notificationTypes[store.viewingNotification?.data?.alert]?.icon"
+        :is="notificationTypes?.[alertOf(store.viewingNotification)]?.icon"
         class="size-8 absolute right-20 bottom-12 text-textColor3/60"
       />
       <component
-        :is="notificationTypes[store.viewingNotification?.data?.alert]?.icon"
+        :is="notificationTypes?.[alertOf(store.viewingNotification)]?.icon"
         class="size-6 absolute right-18 bottom-28 text-textColor3/60"
       />
 
       <div class="flex items-center justify-between">
-        <NotificationBadge
-          v-if="store.viewingNotification.data.alert"
-          :alert="store.viewingNotification.data.alert"
-        />
+        <NotificationBadge :alert="alertOf(store.viewingNotification)" />
         <p class="text-sm text-textColor3">
           {{ $t('content.read') }}:
           <b>{{

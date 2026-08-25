@@ -64,6 +64,8 @@ export const useNotificationStore = defineStore('notificationStore', {
       action: { type: 'info' },
       // Topic rejimi uchun tanlangan topic kodi.
       topic: 'all',
+      // Qurilma turi — faqat qo'lda yuborishda; ikkalasi ham standart yoqiq.
+      platforms: ['mobile', 'web'],
       // Rejalashtirilgan yuborish vaqti (null = darhol).
       scheduled_at: null
     },
@@ -155,6 +157,7 @@ export const useNotificationStore = defineStore('notificationStore', {
         // action — {type, page, params}. alert = action.type (backend backward-compat).
         alert: this.payload.action.type,
         action: this.payload.action,
+        platforms: this.payload.platforms,
         scheduled_at: this.payload.scheduled_at || undefined
       }
       if (this.payload.userIds.length > 1) {
@@ -267,6 +270,7 @@ export const useNotificationStore = defineStore('notificationStore', {
       this.payload.userIds = []
       this.payload.action = { type: 'info' }
       this.payload.topic = 'all'
+      this.payload.platforms = ['mobile', 'web']
       this.payload.scheduled_at = null
     }
   }
