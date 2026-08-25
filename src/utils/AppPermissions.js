@@ -416,6 +416,8 @@ export const appPermissions = {
   lmsLessons: 'lms-lessons',
   lmsLessonsRead: 'lms-lessons-read',
   lmsLessonsWrite: 'lms-lessons-write',
+  lmsListenerRead: 'lms-listener-read',
+  lmsResultRead: 'lms-result-read',
   lmsWorker: 'lms-worker',
   lmsWorkerRead: 'lms-worker-read',
   lmsWorkerWrite: 'lms-worker-write',
