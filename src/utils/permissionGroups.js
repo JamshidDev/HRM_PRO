@@ -96,6 +96,7 @@ export const ENFORCED = new Set([
   'hr-documents-write',
   'hr-edu-plans-read',
   'hr-edu-plans-write',
+  'hr-export',
   'hr-incentives-read',
   'hr-incentives-write',
   'hr-tasks-read',
@@ -168,9 +169,14 @@ export const ENFORCED = new Set([
   'lms-edu-plan-export',
   'lms-edu-plan-read',
   'lms-edu-plan-write',
+  'lms',
+  'lms-groups-read',
+  'lms-groups-write',
   'lms-lessons-delete',
   'lms-lessons-read',
   'lms-lessons-write',
+  'lms-listener-read',
+  'lms-result-read',
   'lms-specialization-delete',
   'lms-specialization-read',
   'lms-specialization-write',
@@ -542,6 +548,8 @@ export const MEANINGFUL = new Set([
   'lms-lessons-delete',
   'lms-lessons-read',
   'lms-lessons-write',
+  'lms-listener-read',
+  'lms-result-read',
   'lms-specialization',
   'lms-specialization-delete',
   'lms-specialization-read',
@@ -729,7 +737,15 @@ export const PERMISSION_GROUPS = [
           // faqat "Boshqa" tabida xom slug bo'lib turardi — admin bu ruxsat
           // Xodimlar sahifasiga tegishli ekanini bilmasdi.
           { slug: 'hr-check-worker', label: "JSHSHIR bo'yicha tekshirish" },
-          { slug: 'filter-search-workers', label: 'Kengaytirilgan qidiruv' }
+          { slug: 'filter-search-workers', label: 'Kengaytirilgan qidiruv' },
+          // 2026-08-25 — «Yuklash» (eksport) tugmasi shu slug bilan gate qilinadi
+          // va backend ham tekshiradi, lekin karta yo'qligi uchun faqat "Boshqa"
+          // tabida xom slug bo'lib turardi.
+          { slug: 'hr-export', label: "Ma'lumotlarni yuklash (eksport)" },
+          // «Shartnoma tuzish» tugmasi shu sahifada, lekin oqim POST /hr/contracts
+          // bilan tugaydi → slug «Shartnomalar» kartasi bilan AYNAN BIR XIL
+          // (ikkala switch bitta ruxsatni boshqaradi, holati sinxron).
+          { slug: 'hr-contracts-write', label: 'Shartnoma tuzish' }
         ]
       },
       { prefix: 'hr-certificates', label: 'workerCertificatePage.name' },
@@ -930,8 +946,14 @@ export const PERMISSION_GROUPS = [
       { prefix: 'lms-specialization', label: 'specializationPage.name' },
       { prefix: 'lms-subjects', label: 'subjectPage.name' },
       { prefix: 'lms-edu-plan', label: 'eduPlanPage.name' },
+      // 2026-08-25 — guruh endpointlari endi enforce qilinadi (migr 0112).
+      { prefix: 'lms-groups', label: 'groupPage.name' },
       { prefix: 'lms-teachers', label: 'teacherPage.name' },
       { prefix: 'lms-lessons', label: 'lessonPage.name' },
+      // 2026-08-25 — «Tinglovchilar»/«Natijalar» ilgari faqat modul slug'i `lms` bilan
+      // gate qilinardi; endi alohida read slug (migr 0111, backend @Permission).
+      { prefix: 'lms-listener', label: 'listener.name' },
+      { prefix: 'lms-result', label: 'resultPage.name' },
       { prefix: 'lms-certificate', label: 'lmsCertificate.name' }
     ]
   },

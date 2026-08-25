@@ -50,8 +50,10 @@
     router.push({ path: AppPaths.Audit, query: { trigger_name: 'hr.workers' } })
   }
 
+  // «Shartnoma tuzish» oqimi POST /hr/contracts bilan tugaydi — backend shu yerda
+  // `hr-contracts-write` talab qiladi, shuning uchun tugma ham shu slug bilan.
   const onAdd = () => {
-    if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
+    if (!accStore.checkAction(accStore.pn.hrContractsWrite)) return
     componentStore.checkUserVisible = true
   }
 
@@ -248,7 +250,12 @@
     next()
   })
 
-  const canWrite = computed(() => accStore.checkAction(appPermissions.hrExport))
+  // `checkAction` Toast chiqaradi — computed ichida u har render'da otilardi;
+  // sof `checkPermission` bilan almashtirildi (xulq bir xil, ogohlantirishsiz).
+  const canExport = computed(() => accStore.checkPermission(appPermissions.hrExport))
+  const canCreateContract = computed(() =>
+    accStore.checkPermission(appPermissions.hrContractsWrite)
+  )
 
   // Nechta xodim yuklanishini ko'rsatadi (tanlangan soni EMAS):
   //  · qator(lar) belgilangan bo'lsa — o'shalar soni,
@@ -287,7 +294,7 @@
   >
     <template #filterAction>
       <div class="worker-action-group flex flex-wrap items-center gap-3 w-full md:w-auto">
-        <n-button v-if="canWrite" type="primary" @click="onAdd">
+        <n-button v-if="canCreateContract" type="primary" @click="onAdd">
           <template #icon>
             <img class="worker-action-icon" :src="contractIcon" alt="" />
           </template>
@@ -305,7 +312,7 @@
              ikkiga bo'linadi (button-group): «Yuklash» + yopish. Pastda alohida
              panel chizilmaydi. -->
         <button
-          v-if="!exportStore.isExportingResume"
+          v-if="canExport && !exportStore.isExportingResume"
           type="button"
           class="worker-report-trigger"
           @click="openReportPanel"
@@ -314,11 +321,11 @@
           {{ $t('workerPage.filter.generateReport') }}
         </button>
 
-        <n-button-group v-else class="worker-report-group">
+        <n-button-group v-else-if="canExport" class="worker-report-group">
           <n-button
             type="success"
             class="worker-report-group__main"
-            :disabled="!canWrite || store.loading"
+            :disabled="!canExport || store.loading"
             @click="onExport"
           >
             <template #icon>
@@ -754,7 +761,7 @@
   /* Mobil amal paneli. Ilgari `flex-wrap: nowrap` uchala tugmani 375px da ~110px ga
      qisar, natijada har bir yorliq ellipsisga aylanib o'qilmas edi. */
   @media (max-width: 767.98px) {
-    /* Grid EMAS, wrap qiladigan flex: amal soni `canWrite` ga qarab 1 yoki 2 bo'ladi,
+    /* Grid EMAS, wrap qiladigan flex: amal soni `canExport` ga qarab 1 yoki 2 bo'ladi,
        flex esa qat'iy ustunlardan farqli ravishda yolg'iz qolgan tugmani ham to'liq
        kenglikda ko'rsatadi (2 ustunli gridda yarim bo'sh qator qolib ketardi). */
     .worker-action-group {
@@ -765,7 +772,7 @@
     }
 
     /* Ikkala amal BITTA qatorda, teng bo'lib. `flex-basis: 0` — `100%` bo'lsa
-       wrap majburlanardi. Tugma yolg'iz qolsa (`canWrite` yo'q) o'zi to'liq egallaydi. */
+       wrap majburlanardi. Tugma yolg'iz qolsa (`canExport` yo'q) o'zi to'liq egallaydi. */
     .worker-action-group > * {
       flex: 1 1 0;
       min-width: 0;

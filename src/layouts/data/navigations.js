@@ -680,14 +680,14 @@ export const navigations = [
         path: Utils.routeLmsPathMaker(AppPaths.Listener),
         icon: LmsListenerIcon,
         color: 'bg-dark',
-        permission: appPermissions.lms
+        permission: appPermissions.lmsListenerRead
       },
       {
         label: 'resultPage.name', // Natijalar
         path: Utils.routeLmsPathMaker(AppPaths.Result),
         icon: LmsResultIcon,
         color: 'bg-info',
-        permission: appPermissions.lms
+        permission: appPermissions.lmsResultRead
       },
       {
         label: 'lmsCertificate.name', // Sertifikatlar
