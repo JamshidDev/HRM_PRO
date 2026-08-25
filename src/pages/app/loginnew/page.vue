@@ -194,9 +194,10 @@ const onDone = () => {
           </span>
         </div>
 
-        <div class="absolute top-6 right-6 z-20 flex items-center gap-2">
+        <!-- Maketda (node 2646:184433) boshqaruvlar orasi 12px -->
+        <div class="absolute top-6 right-6 z-20 flex items-center gap-3">
           <UIThemeSwitch />
-          <LangDropdown />
+          <LangDropdown pill />
         </div>
 
         <div class="relative z-10 w-full login-new__fade-in login-new__fade-in-delay-1">

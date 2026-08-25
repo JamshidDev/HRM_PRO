@@ -12,6 +12,8 @@
   import ReactionButton from './ReactionButton.vue'
   import { useAppSetting, useDebounce, Utils } from '@/utils/index.js'
   import UsersIcon from '@/assets/icons/figUsers.svg'
+  import LaptopIcon from '@/assets/icons/home/laptop.svg'
+  import MobileIcon from '@/assets/icons/home/mobile.svg'
 
   const store = useSocketStore()
 
@@ -68,16 +70,19 @@
               class="h-full w-full rounded-full border-[3px] border-fig-bg-brand object-cover object-top"
               @error="Utils.onImgError"
             />
-            <!-- Qurilma belgisi: M — mobil, W — veb -->
+            <!--
+              Qurilma belgisi (maket 3286:3247): 21px brend rangli doira,
+              ichida 12px oq ikonka — mobil uchun `mobile-alt`, veb uchun
+              `laptop-alt`. Ilgari bu yerda "M"/"W" harflari chiqardi.
+            -->
             <span
-              class="absolute right-0.5 bottom-0.5 flex h-[21px] w-[21px] items-center justify-center rounded-full border-2 text-[10px] leading-3 font-semibold text-white"
-              :class="
-                user.type === 'mobile'
-                  ? 'bg-success border-[#2ca361]'
-                  : 'bg-fig-bg-brand border-white'
+              class="absolute right-0.5 bottom-0.5 flex h-[21px] w-[21px] items-center justify-center rounded-full bg-fig-brand text-white"
+              :title="
+                user.type === 'mobile' ? $t('homePage.deviceMobile') : $t('homePage.deviceWeb')
               "
             >
-              {{ user.type === 'mobile' ? 'M' : 'W' }}
+              <MobileIcon v-if="user.type === 'mobile'" />
+              <LaptopIcon v-else />
             </span>
           </div>
 

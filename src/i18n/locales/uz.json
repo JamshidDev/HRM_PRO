@@ -127,7 +127,9 @@
         "title": "Turniket",
         "subtitle": "Kirish-chiqish tarixi"
       }
-    }
+    },
+    "deviceWeb": "Veb",
+    "deviceMobile": "Mobil"
   },
   "content": {
     "user": "Foydalanuvchi",

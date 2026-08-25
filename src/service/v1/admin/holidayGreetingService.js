@@ -1,10 +1,7 @@
 import axios from '@/service/index.js'
 
 const _index = async (payload) => {
-  return await axios.get(`/v1/admin/holiday-greetings`, {
-    params: payload.params,
-    silentError: payload.silentError
-  })
+  return await axios.get(`/v1/admin/holiday-greetings`, { params: payload.params })
 }
 
 const _show = async (payload) => {

@@ -123,7 +123,9 @@
         "title": "Turnstile",
         "subtitle": "Entry and exit history"
       }
-    }
+    },
+    "deviceWeb": "Web",
+    "deviceMobile": "Mobile"
   },
   "content": {
     "user": "User",

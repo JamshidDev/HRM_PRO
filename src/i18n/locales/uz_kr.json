@@ -52,7 +52,9 @@
         "title": "Турникет",
         "subtitle": "Кириш-чиқиш тарихи"
       }
-    }
+    },
+    "deviceWeb": "Веб",
+    "deviceMobile": "Мобил"
   },
   "content": {
     "user": "Фойдаланувчи",

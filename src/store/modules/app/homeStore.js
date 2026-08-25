@@ -5,14 +5,12 @@ import i18n from '@/i18n/index.js'
 /**
  * Bosh sahifa (Figma "Asosiy", node 3257:112457) ma'lumot manbalari.
  *
- * Sahifadagi har bir blok MUSTAQIL yuklanadi va xatoni yutadi: story/banner
- * uchun faqat admin endpoint'lari mavjud, oddiy xodimda ularga ruxsat
- * bo'lmasligi mumkin. Shuning uchun chaqiruvlar `silentError` bilan ketadi
- * (toast chiqmaydi) va rad javobida ro'yxat bo'sh qoladi — blok o'zi
- * `v-if` bilan yashiriladi, sahifa esa buzilmaydi.
+ * Sahifadagi har bir blok MUSTAQIL yuklanadi va xatoni yutadi: chaqiruvlar
+ * `silentError` bilan ketadi (toast chiqmaydi), rad javobida ro'yxat bo'sh
+ * qoladi va blok o'zi `v-if` bilan yashiriladi — sahifa buzilmaydi.
  *
- * Backend keyinchalik consumer endpoint bersa (masalan `/v1/me/stories`),
- * faqat shu yerdagi servis chaqiruvi almashadi — komponentlar tegilmaydi.
+ * Bannerlar bu yerda yo'q: ular uchun API hali yo'q, `BannerRow.vue` da
+ * maketdan olingan statik rasmlar ishlatiladi.
  */
 
 // Mobil API javob qobig'i bir xil emas: story'lar `data` da to'g'ridan-to'g'ri
@@ -133,10 +131,6 @@ const resolveOrganizationCity = async (language) => {
 
 export const useHomeStore = defineStore('homeStore', {
   state: () => ({
-    // ── Bannerlar (bayram tabriknomalari) ──
-    banners: [],
-    bannersLoading: false,
-
     // ── Story'lar (mobil e'lonlar) ──
     stories: [],
     storiesLoading: false,
@@ -206,25 +200,7 @@ export const useHomeStore = defineStore('homeStore', {
 
     /** Barcha bloklarni parallel yuklaydi; biri yiqilsa qolganlari to'xtamaydi. */
     _init() {
-      return Promise.allSettled([this._banners(), this._stories(), this._news(), this._weather()])
-    },
-
-    _banners() {
-      this.bannersLoading = true
-      return $ApiService.holidayGreetingService
-        ._index({ params: { page: 1, per_page: 20 }, silentError: true })
-        .then((res) => {
-          // `is_active` so'rov parametri backendda kafolatlanmagan (admin
-          // jadvalida filtr sifatida ishlatilmaydi), shuning uchun mijoz
-          // tomonida filtrlaymiz. Rasm maydoni ro'yxatda `banner_url`.
-          this.banners = (res.data.data.data ?? []).filter((v) => v.is_active && v.banner_url)
-        })
-        .catch(() => {
-          this.banners = []
-        })
-        .finally(() => {
-          this.bannersLoading = false
-        })
+      return Promise.allSettled([this._stories(), this._news(), this._weather()])
     },
 
     /**
