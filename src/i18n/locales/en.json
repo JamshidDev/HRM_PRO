@@ -4323,7 +4323,9 @@
       "sent": "Sent",
       "error": "Error",
       "cancelled": "Cancelled"
-    }
+    },
+    "platformMobile": "Mobile",
+    "platformWeb": "Web"
   },
   "congratulation": {
     "name": "Telegram messages",

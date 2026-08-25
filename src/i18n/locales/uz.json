@@ -4335,7 +4335,9 @@
       "sent": "Yuborilgan",
       "error": "Xatolik",
       "cancelled": "Bekor qilingan"
-    }
+    },
+    "platformMobile": "Mobil",
+    "platformWeb": "Web"
   },
   "approve": {
     "name": "Yuborilgan xodimlar",

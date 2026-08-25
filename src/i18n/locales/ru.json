@@ -4334,7 +4334,9 @@
       "sent": "Отправлено",
       "error": "Ошибка",
       "cancelled": "Отменено"
-    }
+    },
+    "platformMobile": "Мобильный",
+    "platformWeb": "Веб"
   },
   "congratulation": {
     "name": "Telegram-сообщения",

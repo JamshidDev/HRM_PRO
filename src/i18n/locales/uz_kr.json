@@ -4111,7 +4111,9 @@
       "sent": "Юборилган",
       "error": "Хатолик",
       "cancelled": "Бекор қилинган"
-    }
+    },
+    "platformMobile": "Мобил",
+    "platformWeb": "Веб"
   },
   "approve": {
     "name": "Юборилган ходимлар",
