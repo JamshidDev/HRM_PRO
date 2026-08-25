@@ -26,19 +26,37 @@
     return `${day} - ${Utils.getMonthNameByKey(month)}`
   }
 
+  // `n-avatar-group` `max` katakning oxirgisini "+N" ga beradi, ya'ni ko'rinadigan
+  // avatarlar soni `AVATAR_MAX - 1` ta bo'ladi.
+  const AVATAR_MAX = 3
+  const AVATAR_SHOWN = AVATAR_MAX - 1
+
   const items = computed(() => {
     // Maketda birinchi ikki qatorda "Bugungi / Ertangi tug'ilgan kunlar" izohi
     // bor, qolganlarida faqat sana turadi.
     const labels = [t('dashboardPage.birthday.today'), t('dashboardPage.birthday.tomorrow')]
-    return (store.overview.birthdays?.result || []).map((item, idx) => ({
-      day: formatDay(item.day),
-      label: labels[idx] || null,
-      total: item.count,
-      // `UIUserGroup` "+N" ni faqat ro'yxat `max` dan uzun bo'lsagina chizadi,
-      // shuning uchun qoldiq bor paytda ro'yxat sun'iy uzaytiriladi.
-      workers: item.count > 3 ? [...(item.workers || []), ...(item.workers || [])] : item.workers,
-      has_more: item.has_more
-    }))
+    return (store.overview.birthdays?.result || []).map((item, idx) => {
+      const total = Number(item.count) || 0
+      // Backend preview ro'yxatini qaytaradi — undan faqat sig'adigani chiziladi.
+      const shown = (item.workers || []).slice(0, AVATAR_SHOWN)
+      const rest = Math.max(total - shown.length, 0)
+
+      return {
+        day: formatDay(item.day),
+        label: labels[idx] || null,
+        total,
+        has_more: item.has_more,
+        rest,
+        // `UIUserGroup` "+N" ni faqat ro'yxat `max` dan uzun bo'lsagina chizadi.
+        // Ortiqcha kataklar chizilmaydi, shuning uchun bo'sh joy-egallovchi
+        // bilan to'ldiriladi — avval bu yerda ro'yxat ikki karra qilinib,
+        // bitta odam rasmi ikki marta ustma-ust tushib qolayotgan edi.
+        workers:
+          rest > 0
+            ? [...shown, ...Array.from({ length: AVATAR_MAX + 1 - shown.length }, () => ({}))]
+            : shown
+      }
+    })
   })
 
   const head = computed(() => items.value[0] || null)
@@ -50,7 +68,7 @@
   const avatars = (item) =>
     (item.workers || []).map((w) => ({
       photo: w.photo,
-      fullName: `${w.last_name} ${w.first_name}`
+      fullName: [w.last_name, w.first_name].filter(Boolean).join(' ')
     }))
 </script>
 
@@ -76,9 +94,10 @@
         </p>
         <UIUserGroup
           v-if="head.workers?.length"
+          class="birthday-avatars"
           :size="28"
-          :max="3"
-          :has-more="head.has_more"
+          :max="AVATAR_MAX"
+          :has-more="head.rest"
           :data="avatars(head)"
         />
       </div>
@@ -104,9 +123,10 @@
             </p>
             <UIUserGroup
               v-if="item.workers?.length"
+              class="birthday-avatars"
               :size="28"
-              :max="3"
-              :has-more="item.has_more"
+              :max="AVATAR_MAX"
+              :has-more="item.rest"
               :data="avatars(item)"
             />
             <!-- maketda bo'sh kunda ham uchta kulrang doira turadi -->
@@ -123,3 +143,23 @@
     </div>
   </FigPanel>
 </template>
+
+<style scoped>
+  /* Maketda avatarlar 28×28, oq halqali va 8px ustma-ust tushadi. Global
+     `.ui__user-group` rasmni 36×42 qilib beradi — bu yerda kvadratga qaytariladi,
+     aks holda qo'shni avatar ostiga chiqib ketadi. */
+  .birthday-avatars :deep(.ui__user-group > img) {
+    width: 28px !important;
+    height: 28px !important;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+
+  .birthday-avatars :deep(.n-avatar-group) {
+    --n-gap: -8px !important;
+  }
+
+  .birthday-avatars :deep(.n-avatar) {
+    border: 1px solid #ffffff;
+  }
+</style>

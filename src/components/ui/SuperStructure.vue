@@ -113,7 +113,15 @@
 </script>
 
 <template>
-  <n-popover placement="bottom" trigger="click" width="500px" class="h-[460px] py-0! px-1">
+  <!-- `width="500px"` popover'ga inline style bo'lib tushadi, shuning uchun
+       clamp `!important` bilan (aks holda inline qiymat yengardi): tor ekranda
+       daraxt viewport'dan chiqib ketmasin. -->
+  <n-popover
+    placement="bottom"
+    trigger="click"
+    width="500px"
+    class="h-[460px] py-0! px-1 max-w-[calc(100vw-32px)]!"
+  >
     <template #trigger>
       <n-badge
         :show="!disabled"

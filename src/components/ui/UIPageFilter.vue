@@ -69,6 +69,17 @@
     addPermission: {
       type: String,
       default: null
+    },
+    /**
+     * Mobilda `filterAction` slotidagi tugmalar «Qo'shish» bilan BIR QATORDA,
+     * qatorni teng bo'lishib turadi. Default `false`: 40 ta sahifa bu slotni
+     * turli kontent bilan (sana tanlagich, select, 3-4 tugma) ishlatadi va
+     * ularni majburan bir qatorga siqish ko'rinishni buzardi — shu bois har
+     * sahifa o'zi yoqadi.
+     */
+    inlineActions: {
+      type: Boolean,
+      default: false
     }
   })
 
@@ -159,7 +170,6 @@
           type="text"
           :placeholder="placeholder || $t('content.search')"
           :on-keyup="searchEvent"
-          
           @paste="searchEvent"
         >
           <template #prefix>
@@ -185,6 +195,7 @@
            tugmalar o'z o'lchamida bir qatorda qoladi, siqilish qidiruvga o'tadi. -->
       <div
         class="ui-filter-bar__actions flex flex-wrap items-center w-full md:flex-1 md:min-w-fit md:flex-nowrap justify-end gap-4"
+        :class="{ 'ui-filter-bar__actions--inline': inlineActions }"
       >
         <slot name="filterAction"></slot>
         <n-button
@@ -614,26 +625,42 @@
      amal blokidan KEYIN turgani holda 1-qatorga joylashadi va desktopdagi flex
      tartibi buzilmaydi. */
   @media (max-width: 767.98px) {
+    /* Uch ustun: 1-qatorda qidiruv 1–2 ni, kvadrat filtr tugmasi 3-ni oladi
+       (auto = 40px, ya'ni qidiruv kengligi ikki ustunli variantdagidek qoladi).
+       2-qator esa amal tugmalari bilan `filterEnd` orasida bo'linadi — ular
+       endi bir-birining ostiga tushmaydi. */
     .ui-filter-bar {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
       /* qator oralig'i / ustun oralig'i */
       gap: 12px 8px;
       align-items: center;
     }
 
     .ui-filter-bar__search {
-      grid-area: 1 / 1;
+      grid-area: 1 / 1 / 2 / 3;
     }
 
     .ui-filter-bar__filter {
-      grid-area: 1 / 2;
+      grid-area: 1 / 3;
       /* Badge shu o'ramga nisbatan joylashadi (tugmaga emas — u kesib qo'yadi). */
       position: relative;
     }
 
-    /* Amal tugmalari (+ «Qo'shish») pastda, to'liq kenglikda. */
+    /* Amal tugmalari (+ «Qo'shish») pastdagi qatorning chap yarmida. */
     .ui-filter-bar__actions {
+      grid-area: 2 / 1 / 3 / 2;
+    }
+
+    /* `filterEnd` (masalan [↺ Tarix]) shu qatorning o'ng qismida. */
+    .ui-filter-bar__end {
+      grid-area: 2 / 2 / 3 / -1;
+    }
+
+    /* Ikkinchi qatorda yolg'iz qolgan blok butun kenglikni oladi: aks holda
+       yonida bo'sh ustun qolib, tugma yarim qatorga qisilardi. */
+    .ui-filter-bar:not(:has(.ui-filter-bar__end)) .ui-filter-bar__actions,
+    .ui-filter-bar:has(.ui-filter-bar__actions:empty) .ui-filter-bar__end {
       grid-area: 2 / 1 / 3 / -1;
     }
 
@@ -641,6 +668,15 @@
        joy egallamasin. */
     .ui-filter-bar__actions:empty {
       display: none;
+    }
+
+    /* `inlineActions`: `flex-basis: 0` ATAYLAB — tugmalarda `w-full!`
+       (`width: 100% !important`) bor va `flex-basis: auto` da har biri butun
+       qatorni talab qilib, o'ralib ketardi. Nol bazis bilan `width` asosiy
+       o'lchamga ta'sir qilmaydi va qator teng bo'linadi. */
+    .ui-filter-bar__actions--inline > * {
+      flex: 1 1 0;
+      min-width: 0;
     }
 
     /* Qidiruv va filtr tugmasi bir tekisda turishi uchun ikkalasi ham 40px. */
