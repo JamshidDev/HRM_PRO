@@ -132,6 +132,13 @@ export const navigations = [
         permission: appPermissions.hrWorkersRead
       },
       {
+        label: 'archive.name', // Arxiv — bo'shab ketgan xodimlar
+        path: Utils.routeHrmPathMaker(AppPaths.Archive),
+        icon: usersIcon,
+        color: 'bg-dark',
+        permission: appPermissions.hrArchiveRead
+      },
+      {
         label: 'departmentPage.name', // Bo'linmalar
         path: Utils.routeHrmPathMaker(AppPaths.Department),
         icon: department2Icon,
@@ -680,14 +687,14 @@ export const navigations = [
         path: Utils.routeLmsPathMaker(AppPaths.Listener),
         icon: LmsListenerIcon,
         color: 'bg-dark',
-        permission: appPermissions.lms
+        permission: appPermissions.lmsListenerRead
       },
       {
         label: 'resultPage.name', // Natijalar
         path: Utils.routeLmsPathMaker(AppPaths.Result),
         icon: LmsResultIcon,
         color: 'bg-info',
-        permission: appPermissions.lms
+        permission: appPermissions.lmsResultRead
       },
       {
         label: 'lmsCertificate.name', // Sertifikatlar

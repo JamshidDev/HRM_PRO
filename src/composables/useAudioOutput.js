@@ -18,12 +18,13 @@ const AudioContextCtor = () => window.AudioContext || window.webkitAudioContext
 // start" ogohlantirishini yozadi. Shuning uchun context probe'i birinchi click'dan keyin ishlaydi —
 // baribir ovoz ham faqat shundan keyin chiqadi (useNotificationSound'dagi unlock).
 let hasUserGesture = false
+const GESTURES = ['pointerdown', 'click', 'keydown', 'touchstart']
 const onFirstGesture = () => {
   hasUserGesture = true
-  window.removeEventListener('click', onFirstGesture)
+  GESTURES.forEach((ev) => window.removeEventListener(ev, onFirstGesture))
   checkAudioOutput()
 }
-window.addEventListener('click', onFirstGesture)
+GESTURES.forEach((ev) => window.addEventListener(ev, onFirstGesture))
 
 /**
  * Chromium'da output qurilmasi bo'lmasa `destination.maxChannelCount` 0 bo'ladi — eng ishonchli signal.

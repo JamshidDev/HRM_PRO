@@ -1,11 +1,10 @@
 <script setup>
-  import { Checkmark12Regular } from '@vicons/fluent'
+  import { Checkmark12Regular, Desktop20Regular, Phone20Regular } from '@vicons/fluent'
 
   import validationRules from '@/utils/validationRules.js'
 
   const formRef = ref(null)
   import { useComponentStore, useNotificationStore } from '@/store/modules/index.js'
-  import { UIEditor } from '@components'
   import { notificationTypes } from '@utils'
   import NotificationBadge from './NotificationBadge.vue'
   import UserRoleInfiniteSelect from '@pages/chat/notification/ui/UserRoleInfiniteSelect.vue'
@@ -68,6 +67,28 @@
     en: 'e.g. Please wait, the system will be ready soon.'
   }
 
+  // Qurilma turi — faqat qo'lda yuborishda tanlanadi; topic rejimida ikkalasi ham qat'iy.
+  const isTopicMode = computed(() => store.mode === 'topic')
+  const platformOptions = computed(() => [
+    { value: 'mobile', label: t('notificationPage.platformMobile'), icon: Phone20Regular },
+    { value: 'web', label: t('notificationPage.platformWeb'), icon: Desktop20Regular }
+  ])
+
+  const isPlatformOn = (value) =>
+    isTopicMode.value || store.payload.platforms.includes(value)
+
+  const togglePlatform = (value) => {
+    if (isTopicMode.value) return
+    const list = store.payload.platforms
+    if (list.includes(value)) {
+      // Kamida bittasi qolishi shart
+      if (list.length === 1) return
+      store.payload.platforms = list.filter((i) => i !== value)
+    } else {
+      store.payload.platforms = [...list, value]
+    }
+  }
+
   const showTypeMenu = ref(false)
 
   const renderTypeOption = ({ option, selected }) => {
@@ -127,9 +148,15 @@
           />
         </n-form-item>
 
-        <!-- Row 2: Til tab — kichik, o'ngда -->
-        <div class="col-span-2 mb-1 flex justify-end">
-          <n-tabs v-model:value="activeLang" type="segment" size="small" class="w-[200px]">
+        <!-- Row 2: bitta qatorda — o'ngда platforma tanlovi va til tab -->
+        <div class="col-span-2 mb-1 flex items-center justify-between gap-3">
+          <n-tabs
+            v-model:value="activeLang"
+            type="segment"
+            size="small"
+            class="shrink-0"
+            style="width: 190px"
+          >
             <n-tab v-for="l in langs" :key="l.key" :name="l.key">
               <span class="flex items-center gap-1">
                 {{ l.label }}
@@ -140,6 +167,25 @@
               </span>
             </n-tab>
           </n-tabs>
+
+          <!-- Topic rejimida platforma qat'iy: ikkalasi ham oladi, o'zgartirilmaydi -->
+          <div class="flex items-center gap-1.5 shrink-0">
+            <span
+              v-for="p in platformOptions"
+              :key="p.value"
+              @click="togglePlatform(p.value)"
+              :class="[
+                'flex items-center gap-1 px-2.5 py-1 rounded-full text-xs border transition-colors select-none whitespace-nowrap',
+                isTopicMode ? 'cursor-default opacity-70' : 'cursor-pointer',
+                isPlatformOn(p.value)
+                  ? 'bg-primary/10 border-primary/40 text-primary'
+                  : 'bg-surface-ground border-surface-line text-textColor3'
+              ]"
+            >
+              <component :is="p.icon" class="size-3.5" />
+              {{ p.label }}
+            </span>
+          </div>
         </div>
 
         <!-- Row 3: Sarlavha (full) -->
@@ -159,7 +205,7 @@
           <n-input v-model:value="store.payload.title[activeLang]" :placeholder="titleExamples[activeLang]" />
         </n-form-item>
 
-        <!-- Row 4: Matn — editor (full) -->
+        <!-- Row 4: Matn — oddiy textarea (full) -->
         <n-form-item
           class="col-span-2"
           :label="$t('content.description')"
@@ -173,13 +219,11 @@
             }
           ]"
         >
-          <UIEditor
-            class="w-full"
-            container-class="rounded-[10px] overflow-hidden"
-            :tool-bar-exclude-keys="['group-image']"
+          <n-input
+            v-model:value="store.payload.message[activeLang]"
+            type="textarea"
+            :rows="4"
             :placeholder="messageExamples[activeLang]"
-            v-model:text="store.payload.message[activeLang]"
-            show-toolbar
           />
         </n-form-item>
 
@@ -203,37 +247,39 @@
           </n-form-item>
         </template>
 
-        <!-- QO'LDA rejim: Foydalanuvchi qidiruv (full)  +  Ekran | Vaqt -->
+        <!-- QO'LDA rejim: Foydalanuvchi (9/12) va Rejalashtirish (3/12) bitta qatorda -->
         <template v-else>
-          <n-form-item
-            class="col-span-2"
-            :label="$t('content.users')"
-            path="userIds"
-            :rule="[
-              {
-                trigger: ['input', 'blur-sm'],
-                validator() {
-                  return !store.payload.all && !store.payload.userIds.length
-                    ? new Error(t('rules.requiredField'))
-                    : true
+          <div class="col-span-2 grid grid-cols-12 gap-x-3">
+            <n-form-item
+              class="col-span-9"
+              :label="$t('content.users')"
+              path="userIds"
+              :rule="[
+                {
+                  trigger: ['input', 'blur-sm'],
+                  validator() {
+                    return !store.payload.all && !store.payload.userIds.length
+                      ? new Error(t('rules.requiredField'))
+                      : true
+                  }
                 }
-              }
-            ]"
-          >
-            <UserRoleInfiniteSelect />
-          </n-form-item>
-          <n-form-item class="col-span-2" :label="$t('notificationPage.sendTime')">
-            <n-date-picker
-              class="w-full"
-              type="datetime"
-              clearable
-              :actions="['clear', 'confirm']"
-              format="yyyy-MM-dd HH:mm"
-              value-format="yyyy-MM-dd HH:mm:ss"
-              v-model:formatted-value="store.payload.scheduled_at"
-              :placeholder="$t('notificationPage.sendTimePlaceholder')"
-            />
-          </n-form-item>
+              ]"
+            >
+              <UserRoleInfiniteSelect />
+            </n-form-item>
+            <n-form-item class="col-span-3" :label="$t('notificationPage.sendTime')">
+              <n-date-picker
+                class="w-full"
+                type="datetime"
+                clearable
+                :actions="['clear', 'confirm']"
+                format="yyyy-MM-dd HH:mm"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                v-model:formatted-value="store.payload.scheduled_at"
+                :placeholder="$t('notificationPage.sendTimePlaceholder')"
+              />
+            </n-form-item>
+          </div>
         </template>
       </div>
 
@@ -252,9 +298,3 @@
   </n-spin>
 </template>
 
-<style scoped>
-  /* Tavsif editor balandligini kamaytirish (default 300px → 150px). */
-  :deep(.editor) {
-    height: 150px !important;
-  }
-</style>

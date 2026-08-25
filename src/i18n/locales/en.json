@@ -1,4 +1,18 @@
 {
+  "archive": {
+    "name": "Archive",
+    "filter": {
+      "contractType": "Contract type",
+      "dismissedPeriod": "Dismissal date"
+    },
+    "table": {
+      "previousOrg": "Previous organization",
+      "contractType": "Contract type",
+      "startDate": "Contract date",
+      "dismissedAt": "Dismissal date",
+      "resume": "Resume"
+    }
+  },
   "lateWorkersReport": {
     "name": "Late-comers report",
     "title": "Regular late-comers report",
@@ -402,7 +416,14 @@
     "themeSystem": "System",
     "oldVersionButton": "Return to old version",
     "newVersionButton": "Switch to new version",
-    "copied": "Copied"
+    "copied": "Copied",
+    "pushEnableTitle": "Enable notifications",
+    "pushEnableText": "Allow notifications to stay informed even when the browser is closed.",
+    "pushEnableBtn": "Enable",
+    "pushBlockedTitle": "Notifications are blocked",
+    "pushBlockedText": "The browser blocked notifications for this site. Click the lock icon in the address bar → “Notifications” → “Allow”, then reload the page.",
+    "pushBlockedBtn": "How to enable?",
+    "pushEnabled": "Notifications enabled"
   },
   "date": {
     "day": "Day",
@@ -4368,7 +4389,9 @@
       "sent": "Sent",
       "error": "Error",
       "cancelled": "Cancelled"
-    }
+    },
+    "platformMobile": "Mobile",
+    "platformWeb": "Web"
   },
   "congratulation": {
     "name": "Telegram messages",

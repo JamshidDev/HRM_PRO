@@ -99,6 +99,8 @@ export const appPermissions = {
   hrDashboardRead: 'hr-dashboard-read',
   hrDashboardAudit: 'hr-dashboard-audit',
 
+  hrArchiveRead: 'hr-archive-read',
+  hrArchiveResume: 'hr-archive-resume',
   hrWorkers: 'hr-workers',
   hrWorkersWrite: 'hr-workers-write',
   hrWorkersPassword: 'hr-workers-password',
@@ -416,6 +418,8 @@ export const appPermissions = {
   lmsLessons: 'lms-lessons',
   lmsLessonsRead: 'lms-lessons-read',
   lmsLessonsWrite: 'lms-lessons-write',
+  lmsListenerRead: 'lms-listener-read',
+  lmsResultRead: 'lms-result-read',
   lmsWorker: 'lms-worker',
   lmsWorkerRead: 'lms-worker-read',
   lmsWorkerWrite: 'lms-worker-write',

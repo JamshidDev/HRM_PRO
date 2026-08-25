@@ -11,7 +11,12 @@
     Call20Filled,
     Copy20Regular,
   } from '@vicons/fluent'
-  import { useComponentStore, useContractStore, useWorkerStore } from '@/store/modules/index.js'
+  import {
+    useAccountStore,
+    useComponentStore,
+    useContractStore,
+    useWorkerStore
+  } from '@/store/modules/index.js'
   import { UIUser } from '@/components/index.js'
   import { useDebounceFn } from '@vueuse/core'
   import { useRouter } from 'vue-router'
@@ -22,6 +27,7 @@
   const store = useComponentStore()
   const workerStore = useWorkerStore()
   const contractStore = useContractStore()
+  const accStore = useAccountStore()
   const hrContacts = ref([])
   const t = i18n.global.t
 
@@ -35,6 +41,7 @@
   }, 300)
 
   const onAddCandidate = () => {
+    if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
     store.checkUserVisible = false
     router.push({ name: `${AppPaths.Worker.substring(1)}-${AppPaths.Create.substring(1)}` })
   }
@@ -222,7 +229,12 @@
                 <span class="text-xs text-gray-400 leading-3 py-2 text-center mb-6">{{
                   $t('workerPage.checkWorker.add-worker')
                 }}</span>
-                <n-button @click="onAddCandidate()" type="primary" icon-placement="right">
+                <n-button
+                  v-if="accStore.checkPermission(accStore.pn.hrWorkersWrite)"
+                  @click="onAddCandidate()"
+                  type="primary"
+                  icon-placement="right"
+                >
                   {{ $t('workerPage.checkWorker.addCandidate') }}
                   <template #icon>
                     <PersonAdd20Regular />

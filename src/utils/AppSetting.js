@@ -21,6 +21,11 @@ export const useAppSetting = {
   temporaryToken: 'temporarySecretKey',
   mustChangeKey: 'must-change-password',
   soundEnabledKey: 'app-sound-enabled',
+  // Brauzer qurilma id — push shu qatorga bog'lanadi (login + logout header'i).
+  deviceUuidKey: 'app-device-uuid',
+  // Ruxsat bir marta so'raladi; token o'zgarmasa qayta yuborilmaydi.
+  pushAskedKey: 'app-push-asked',
+  pushTokenKey: 'app-push-token',
   sidebarThemeKey: 'app-sidebar-theme',
   defaultSidebarTheme: 'mint',
   screenFilterKey: 'app-screen-filter',
