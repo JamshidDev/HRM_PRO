@@ -186,16 +186,21 @@ const onDone = () => {
           :style="{ '--login-hero-pattern': `url(${loginPatternBottomUrl})` }" aria-hidden="true"
         ></div>
 
-        <!-- Mobile logo — lang-select bilan bir qatorda (faqat mobile) -->
-        <div class="absolute top-6 left-6 z-20 flex lg:hidden items-center gap-3">
+        <!-- Mobile logo — lang-select bilan bir qatorda (faqat mobile).
+             Gorizontal chetlash kartaning `px-6 sm:px-9` padding'i bilan bir xil
+             bo'lishi shart, aks holda absolyut joylashgan elementlar tab qatori
+             va forma chegarasidan chiqib ketadi. -->
+        <div class="absolute top-6 left-6 sm:left-9 z-20 flex lg:hidden items-center gap-3">
           <img :src="useAppSetting.appLogoUrl" alt=" " class="h-10 object-center" />
           <span class="form-title text-xl font-bold uppercase">
             {{ $t('loginPage.description.title') }}
           </span>
         </div>
 
-        <!-- Maketda (node 2646:184433) boshqaruvlar orasi 12px -->
-        <div class="absolute top-6 right-6 z-20 flex items-center gap-3">
+        <!-- Maketda (node 2646:184433) boshqaruvlar orasi 12px.
+             `right-*` kartaning `px-6 sm:px-9` padding'ini takrorlaydi —
+             shunda o'ng cheti tab qatori va forma bilan bir tekisda turadi. -->
+        <div class="absolute top-6 right-6 sm:right-9 z-20 flex items-center gap-3">
           <UIThemeSwitch />
           <LangDropdown pill />
         </div>
