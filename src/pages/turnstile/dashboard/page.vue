@@ -44,7 +44,13 @@
 </script>
 
 <template>
-  <UIPageContent>
+  <!-- `.main-content .ui-page-content` ga global `height: 100%` berilgan.
+       Kartalar ro'yxati o'sha qat'iy balandlikdan oshib ketgani uchun
+       konteynerning `padding-bottom` i skroll uzunligiga qo'shilmasdi va
+       eng pastki karta ekran chetiga yopishib qolardi. `h-auto` +
+       `min-h-full`: sahifa kontenti bo'yicha o'sadi, skrollni `.main-content`
+       boshqaradi, pastdagi padding esa o'z joyida ko'rinadi. -->
+  <UIPageContent class="!h-auto !min-h-full pb-4 md:pb-6">
     <div>
       <Filter />
 
@@ -110,6 +116,13 @@
           />
           <FaceCard @onPreview="onPreview" class="flex-1 xl:flex-none xl:w-[280px] min-w-[260px]" />
         </div>
+
+        <!-- Pastdagi bo'shliq kontent oqimining o'zida: skroll konteynerining
+             `padding-bottom` i overflow bo'lganda skroll uzunligiga qo'shilmay
+             qolishi mumkin, haqiqiy element esa hamisha hisobga olinadi.
+             Yuqoridagi `gap-4` ustiga qo'shilib, oxirgi qator bilan ekran
+             chegarasi orasida ko'rinadigan havo qoldiradi. -->
+        <div class="h-4 md:h-8 shrink-0" aria-hidden="true"></div>
       </div>
     </div>
 
