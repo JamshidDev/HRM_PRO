@@ -117,51 +117,67 @@ import { ArrowDownload24Regular, ArrowSync20Filled, LockClosed20Regular } from '
         />
       </template>
       <template #filterAction>
-        <div class="max-w-[160px]">
-          <UIYearMonth
-            v-model:year="store.params.year"
-            v-model:month="store.params.month"
-            :clearable="false"
-            @change="onFilter"
-          />
-        </div>
-        <n-tooltip :delay="1500" placement="bottom" trigger="hover">
-          <template #trigger>
-            <n-button
-              class="h-[32px]!"
-              @click="store.statModalVisible = true"
-              type="info"
-            >
-              <span class="inline-flex items-center gap-1.5">
-                {{ $t('structureReport.organizations') }}
-                <span v-if="notExistsCount > 0" class="text-[11px] font-medium bg-white/20 rounded-full px-1.5 py-0.5">
-                  {{ notExistsCount }}
-                </span>
-              </span>
-            </n-button>
-          </template>
-          <span>{{ $t('structureReport.statTooltip') }}</span>
-        </n-tooltip>
-
-        <n-button v-if="accStore.checkPermission(accStore.pn.hrReportManagementWrite)" @click="store.openManagementModal()" type="error">
-          <template #icon>
-            <n-icon><LockClosed20Regular /></n-icon>
-          </template>
-          {{ $t('structureReport.management') }}
-        </n-button>
-
-        <n-button
-          class="h-[32px]!"
-          @click="store.generalExcelModalVisible = true"
-          type="success"
+        <!-- Mobilda to'rt boshqaruv 2×2 gridda, kataklarni to'liq to'ldirib
+             turadi (grid farzandlari blokifikatsiya qilinadi, shu bois
+             `inline-flex` n-button ham katakni egallaydi). Ilgari ular ota
+             konteynerning `justify-end` i bo'yicha o'ng chetga tizilib,
+             tabiiy kengliklari bilan tartibsiz qatorlar hosil qilardi.
+             `md` dan yuqorida o'ram oddiy flex qatoriga qaytadi va gap ota
+             konteynerdagi `gap-4` bilan bir xil — desktop ko'rinishi
+             o'zgarmaydi. -->
+        <div
+          class="grid grid-cols-2 gap-2 w-full md:flex md:w-auto md:flex-nowrap md:items-center md:gap-4"
         >
-          <template #icon>
-            <n-icon>
-              <ArrowDownload24Regular />
-            </n-icon>
-          </template>
-          {{ $t('structureReport.download') }}
-        </n-button>
+          <div class="w-full md:max-w-[160px]">
+            <UIYearMonth
+              v-model:year="store.params.year"
+              v-model:month="store.params.month"
+              :clearable="false"
+              @change="onFilter"
+            />
+          </div>
+          <n-tooltip :delay="1500" placement="bottom" trigger="hover">
+            <template #trigger>
+              <n-button class="h-[32px]!" @click="store.statModalVisible = true" type="info">
+                <span class="inline-flex items-center gap-1.5">
+                  {{ $t('structureReport.organizations') }}
+                  <span
+                    v-if="notExistsCount > 0"
+                    class="text-[11px] font-medium bg-white/20 rounded-full px-1.5 py-0.5"
+                  >
+                    {{ notExistsCount }}
+                  </span>
+                </span>
+              </n-button>
+            </template>
+            <span>{{ $t('structureReport.statTooltip') }}</span>
+          </n-tooltip>
+
+          <n-button
+            v-if="accStore.checkPermission(accStore.pn.hrReportManagementWrite)"
+            class="h-[32px]!"
+            @click="store.openManagementModal()"
+            type="error"
+          >
+            <template #icon>
+              <n-icon><LockClosed20Regular /></n-icon>
+            </template>
+            {{ $t('structureReport.management') }}
+          </n-button>
+
+          <n-button
+            class="h-[32px]!"
+            @click="store.generalExcelModalVisible = true"
+            type="success"
+          >
+            <template #icon>
+              <n-icon>
+                <ArrowDownload24Regular />
+              </n-icon>
+            </template>
+            {{ $t('structureReport.download') }}
+          </n-button>
+        </div>
       </template>
     </UIPageFilter>
 

@@ -131,50 +131,70 @@
       </div>
     </template>
     <template #filterAction>
-      <template v-if="accessFinishBtn">
-        <n-tooltip trigger="hover">
-          <template #trigger>
-            <n-button type="error" :loading="store.loading" @click="store._finishExam()">
-              <template #icon>
-                <n-icon size="24">
-                  <TimePicker24Filled />
-                </n-icon>
-              </template>
-              {{ $t('examPage.finishedProcess') }}
-            </n-button>
-          </template>
-          {{ $t('examPage.finishedDescription') }}
-        </n-tooltip>
-      </template>
+      <!-- Mobilda 2 ustunli grid: tugmalar kataklarni to'liq to'ldiradi (grid
+           farzandlari blokifikatsiya qilinadi, shu bois `inline-flex` n-button
+           ham cho'ziladi). Ilgari ular ota konteynerdagi `justify-end` bo'yicha
+           o'ng chetga tabiiy kengliklarida tizilib, qatorlar tartibsiz edi.
+           Eng uzun yorliq («Qatnashmaganlarni yuklash») ikki ustunni oladi —
+           yarim kenglikda matni kesilardi. `md` dan yuqorida o'ram oddiy flex
+           qatoriga qaytadi, `gap` ota konteynerdagi `gap-4` bilan bir xil, ya'ni
+           desktop ko'rinishi o'zgarmaydi. -->
+      <div
+        class="grid grid-cols-2 gap-2 w-full md:flex md:w-auto md:flex-nowrap md:items-center md:gap-4"
+      >
+        <template v-if="accessFinishBtn">
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <n-button
+                class="h-[32px]!"
+                type="error"
+                :loading="store.loading"
+                @click="store._finishExam()"
+              >
+                <template #icon>
+                  <n-icon size="24">
+                    <TimePicker24Filled />
+                  </n-icon>
+                </template>
+                {{ $t('examPage.finishedProcess') }}
+              </n-button>
+            </template>
+            {{ $t('examPage.finishedDescription') }}
+          </n-tooltip>
+        </template>
 
-      <n-button
-        v-fly-upload
-        class="h-[32px]!"
-        type="success"
-        :loading="store.downloadLoading || store.loading"
-        @click="store._downloadExam()"
-      >
-        <template #icon>
-          <n-icon size="24">
-            <ArrowCircleDown24Regular />
-          </n-icon>
-        </template>
-        {{ $t('examPage.downloadResult') }}
-      </n-button>
-      <n-button
-        v-fly-upload
-        class="h-[32px]!"
-        type="warning"
-        :loading="store.downloadLoading || store.loading"
-        @click="store._downloadNotPassedExam()"
-      >
-        <template #icon>
-          <n-icon size="24">
-            <ArrowCircleDown24Regular />
-          </n-icon>
-        </template>
-        {{ $t('examPage.downloadNotPassed') }}
-      </n-button>
+        <!-- «Tugatish» ruxsati bo'lmaganda bu tugma yolg'iz qolib, yonida bo'sh
+             katak turardi — o'shanda u ham butun qatorni oladi. -->
+        <n-button
+          v-fly-upload
+          class="h-[32px]!"
+          :class="{ 'col-span-2': !accessFinishBtn }"
+          type="success"
+          :loading="store.downloadLoading || store.loading"
+          @click="store._downloadExam()"
+        >
+          <template #icon>
+            <n-icon size="24">
+              <ArrowCircleDown24Regular />
+            </n-icon>
+          </template>
+          {{ $t('examPage.downloadResult') }}
+        </n-button>
+        <n-button
+          v-fly-upload
+          class="col-span-2 h-[32px]!"
+          type="warning"
+          :loading="store.downloadLoading || store.loading"
+          @click="store._downloadNotPassedExam()"
+        >
+          <template #icon>
+            <n-icon size="24">
+              <ArrowCircleDown24Regular />
+            </n-icon>
+          </template>
+          {{ $t('examPage.downloadNotPassed') }}
+        </n-button>
+      </div>
     </template>
   </UIPageFilter>
 </template>

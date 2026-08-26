@@ -59,7 +59,9 @@
 
 <template>
   <div class="w-full grid grid-cols-12 gap-2">
-    <div class="col-span-3">
+    <!-- Mobilda 12 ustun: `col-span-3` da tashkilot select'i ekranning chorak
+         kengligiga qisilib, tanlangan nom ham ko'rinmasdi. -->
+    <div class="col-span-12 md:col-span-3">
       <label class="text-textColor1 text-sm pl-2">{{ $t('content.organization') }}</label>
       <SuperStructure
         :options="store.structure.list"
@@ -94,7 +96,7 @@
         </template>
       </SuperStructure>
     </div>
-    <div class="col-span-9 flex justify-end mt-5 gap-2">
+    <div class="col-span-12 md:col-span-9 flex flex-wrap justify-end md:mt-5 gap-2">
       <template v-if="selectedOrg">
         <n-button
           secondary

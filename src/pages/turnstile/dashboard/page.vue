@@ -44,13 +44,13 @@
 </script>
 
 <template>
-  <!-- `.main-content .ui-page-content` ga global `height: 100%` berilgan.
-       Kartalar ro'yxati o'sha qat'iy balandlikdan oshib ketgani uchun
-       konteynerning `padding-bottom` i skroll uzunligiga qo'shilmasdi va
-       eng pastki karta ekran chetiga yopishib qolardi. `h-auto` +
-       `min-h-full`: sahifa kontenti bo'yicha o'sadi, skrollni `.main-content`
-       boshqaradi, pastdagi padding esa o'z joyida ko'rinadi. -->
   <UIPageContent class="!h-auto !min-h-full pb-4 md:pb-6">
+    <!-- `.main-content .ui-page-content` ga global `height: 100%` berilgan.
+         Kartalar ro'yxati o'sha qat'iy balandlikdan oshib ketgani uchun
+         konteynerning `padding-bottom` i skroll uzunligiga qo'shilmasdi va
+         eng pastki karta ekran chetiga yopishib qolardi. `h-auto` +
+         `min-h-full`: sahifa kontenti bo'yicha o'sadi, skrollni `.main-content`
+         boshqaradi, pastdagi padding esa o'z joyida ko'rinadi. -->
     <div>
       <Filter />
 

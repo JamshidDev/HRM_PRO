@@ -63,6 +63,7 @@
   --fig-red-50: #fff7f5;
   --fig-red-100: #ffe9e6;
   --fig-blue-100: #d1e9ff;
+  --fig-blue-300: #84caff;
   --fig-indigo-100: #ebf1ff;
   --fig-lime-100: #f0f9c5;
   --fig-teal-100: #cdf2e9;
@@ -72,6 +73,8 @@
   // Figma "Xodim profili" (node 2584:199394) — blok/maydon/tugma qatlamlari.
   --fig-text-brand: #1570ef;
   --fig-bg-brand-fill: #1570ef;
+  // Figma "Asosiy" (node 3257:112457) — bosh sahifa sarlavhasidagi "Chiqish" tugmasi.
+  --fig-bg-red-fill: #e5383b;
   --fig-bg-brand-surface: #eff8ff;
   --fig-bg-secondary: #f9fafb;
   --fig-bg-tertiary: #eaecf0;
@@ -199,6 +202,7 @@
   --fig-red-50: rgba(229, 56, 59, 0.1);
   --fig-red-100: rgba(229, 56, 59, 0.18);
   --fig-blue-100: rgba(46, 144, 250, 0.18);
+  --fig-blue-300: rgba(46, 144, 250, 0.32);
   --fig-indigo-100: rgba(85, 80, 229, 0.2);
   --fig-lime-100: rgba(127, 153, 32, 0.22);
   --fig-teal-100: rgba(0, 136, 113, 0.22);
@@ -209,6 +213,9 @@
   // brend to'ldirish esa o'zgarmaydi (oq matn ikkalasida ham yetarli kontrast beradi).
   --fig-text-brand: #6cb0f8;
   --fig-bg-brand-fill: #1570ef;
+  // Qizil to'ldirish ham brend to'ldirish kabi o'zgarmaydi — oq matn ikkala
+  // mavzuda ham yetarli kontrast beradi.
+  --fig-bg-red-fill: #e5383b;
   --fig-bg-brand-surface: rgba(21, 112, 239, 0.18);
   --fig-bg-secondary: #101828;
   --fig-bg-tertiary: #344054;
@@ -278,6 +285,11 @@
   --dark-color: #0f1114;
   --secondary-color: #74788d;
   --white-color: #ffffff;
+  // Mavzudan qat'i nazar sof qora — rasm ustidagi yarim shaffof qatlamlar
+  // (`bg-black/60`) uchun. Ilgari `@theme` da `--color-black` yo'q edi va
+  // Tailwind'ning `--color-*: initial` reseti tufayli BARCHA `bg-black/*`
+  // klasslari jimgina ishlamay turardi.
+  --black-color: #000000;
 }
 
 $primary-color: var(--primary-color);

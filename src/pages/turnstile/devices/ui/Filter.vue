@@ -169,10 +169,18 @@
     </template>
 
     <template #filterAction>
-      <div class="col-span-12 md:col-span-6 flex justify-end gap-2">
+      <!-- Mobilda tugmalar sonini oldindan bilmaymiz (har biri alohida ruxsatga
+           bog'langan), shu bois qat'iy grid emas — o'raladigan flex:
+           `basis: calc(50% - 4px)` bilan qatorga ikkitasi sig'adi, `grow` esa
+           qatorda yolg'iz qolgan tugmani butun kenglikka cho'zadi. Ya'ni 1, 2, 3
+           yoki 4 tugmada ham chetlar tekis chiqadi. `md` dan yuqorida avvalgi
+           `justify-end` li qator (tabiiy kengliklar) qaytadi.
+           `col-span-*` klasslari olib tashlandi: ota element (`.ui-filter-bar__actions`)
+           grid emas, flex — ular hech qachon ishlamagan. -->
+      <div class="flex flex-wrap justify-end gap-2 w-full md:w-auto md:flex-nowrap">
         <n-button
           v-if="accStore.checkPermission(accStore.pn.turnstileDevicesStatExport)"
-          class="h-[32px]!"
+          class="h-[32px]! grow basis-[calc(50%-4px)] md:grow-0 md:basis-auto"
           type="success"
           @click="store._downloadReport()"
           :loading="store.downloading"
@@ -184,7 +192,7 @@
         </n-button>
         <n-button
           v-if="accStore.checkPermission(accStore.pn.turnstileDevicesExport)"
-          class="h-[32px]!"
+          class="h-[32px]! grow basis-[calc(50%-4px)] md:grow-0 md:basis-auto"
           type="success"
           @click="store._downloadDevices()"
           :loading="store.downloading"
@@ -196,7 +204,7 @@
         </n-button>
         <n-button
           v-if="accStore.checkPermission(accStore.pn.turnstileDevicesWrite)"
-          class="h-[32px]!"
+          class="h-[32px]! grow basis-[calc(50%-4px)] md:grow-0 md:basis-auto"
           type="primary"
           @click="onRefreshDevice"
           :loading="store.loading"
