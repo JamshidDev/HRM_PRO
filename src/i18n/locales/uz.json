@@ -440,7 +440,9 @@
     "pushBlockedTitle": "Bildirishnomalar bloklangan",
     "pushBlockedText": "Brauzer bu sayt uchun bildirishnomani rad etgan. Manzil satridagi qulf belgisini bosing → «Bildirishnomalar» → «Ruxsat berish», so'ng sahifani yangilang.",
     "pushBlockedBtn": "Qanday yoqiladi?",
-    "pushEnabled": "Bildirishnomalar yoqildi"
+    "pushEnabled": "Bildirishnomalar yoqildi",
+    "pushCopyPath": "Manzilni nusxalash",
+    "pushPathCopied": "Manzil nusxalandi — brauzerning manzil satriga qo'ying"
   },
   "date": {
     "day": "Kun",

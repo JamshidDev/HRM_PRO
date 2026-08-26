@@ -426,7 +426,9 @@
     "pushBlockedTitle": "Notifications are blocked",
     "pushBlockedText": "The browser blocked notifications for this site. Click the lock icon in the address bar → “Notifications” → “Allow”, then reload the page.",
     "pushBlockedBtn": "How to enable?",
-    "pushEnabled": "Notifications enabled"
+    "pushEnabled": "Notifications enabled",
+    "pushCopyPath": "Copy address",
+    "pushPathCopied": "Address copied — paste it into the browser address bar"
   },
   "date": {
     "day": "Day",
