@@ -10,7 +10,9 @@
       "contractType": "Contract type",
       "startDate": "Contract date",
       "dismissedAt": "Dismissal date",
-      "resume": "Resume"
+      "resume": "Download resume",
+      "currentOrg": "Current workplace",
+      "notEmployed": "Not in the network"
     }
   },
   "lateWorkersReport": {

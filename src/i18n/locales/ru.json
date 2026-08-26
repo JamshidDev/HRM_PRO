@@ -10,7 +10,9 @@
       "contractType": "Тип договора",
       "startDate": "Дата заключения договора",
       "dismissedAt": "Дата увольнения",
-      "resume": "Резюме"
+      "resume": "Скачать резюме",
+      "currentOrg": "Текущее место работы",
+      "notEmployed": "Вне сети"
     }
   },
   "lateWorkersReport": {

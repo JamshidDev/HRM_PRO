@@ -10,7 +10,9 @@
       "contractType": "Шартнома тури",
       "startDate": "Шартнома тузилган сана",
       "dismissedAt": "Бўшаган сана",
-      "resume": "Резюме"
+      "resume": "Резюме юклаш",
+      "currentOrg": "Ҳозирги иш жойи",
+      "notEmployed": "Тармоқда эмас"
     }
   },
   "lateWorkersReport": {

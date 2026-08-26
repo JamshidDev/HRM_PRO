@@ -10,7 +10,9 @@
       "contractType": "Shartnoma turi",
       "startDate": "Shartnoma tuzilgan sana",
       "dismissedAt": "Bo‘shagan sana",
-      "resume": "Rezyume"
+      "resume": "Rezyume yuklash",
+      "currentOrg": "Hozirgi ish joyi",
+      "notEmployed": "Tarmoqda emas"
     }
   },
   "lateWorkersReport": {
