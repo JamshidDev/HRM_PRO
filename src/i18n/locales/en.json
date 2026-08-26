@@ -4874,5 +4874,11 @@
     "historyBtn": "History",
     "showMasked": "Reveal masked",
     "hideMasked": "Hide masked"
+  },
+  "eimzoGate": {
+    "title": "Security verification",
+    "description": "To access economist data, confirm your identity with an e-signature (E-IMZO) key.",
+    "confirmBtn": "Verify with E-IMZO",
+    "verified": "Verified"
   }
 }
