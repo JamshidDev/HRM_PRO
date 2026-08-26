@@ -1130,7 +1130,13 @@
     "pinfl": "JSHSHIR",
     "sealKeyLabel": "muhrli kalit",
     "noKeysTitle": "Kalitlar topilmadi",
-    "noKeysDesc": "USB token yoki ID karta ulanganini tekshiring."
+    "noKeysDesc": "USB token yoki ID karta ulanganini tekshiring.",
+    "authKeySelectTitle": "ERI kalitini tanlang",
+    "authKeySelectDesc": "Kalitni tanlang va E-IMZO parolini kiriting — parol to'g'ri bo'lsa tizimga avtomatik kiritilasiz.",
+    "organization": "Tashkilot",
+    "position": "Lavozim",
+    "storagePfx": "Fayl kaliti",
+    "storageToken": "USB token"
   },
   "documentPage": {
     "name": "Hujjatlar",

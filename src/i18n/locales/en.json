@@ -1112,7 +1112,14 @@
     "pinfl": "PIN",
     "sealKeyLabel": "seal key",
     "noKeysTitle": "No keys found",
-    "noKeysDesc": "Check that your USB token or ID card is connected."
+    "noKeysDesc": "Check that your USB token or ID card is connected.",
+    "authKeySelectTitle": "Select an e-signature key",
+    "authKeySelectDesc": "Pick a key and enter your E-IMZO password — you will be signed in automatically.",
+    "organization": "Organization",
+    "position": "Position",
+    "storagePfx": "File key",
+    "storageToken": "USB token",
+    "notValidDate": "Expired"
   },
   "documentPage": {
     "name": "Documents",

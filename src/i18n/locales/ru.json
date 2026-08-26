@@ -1114,7 +1114,14 @@
     "pinfl": "ПИНФЛ",
     "sealKeyLabel": "печать",
     "noKeysTitle": "Ключи не найдены",
-    "noKeysDesc": "Проверьте, что USB-токен или ID-карта подключены."
+    "noKeysDesc": "Проверьте, что USB-токен или ID-карта подключены.",
+    "authKeySelectTitle": "Выберите ключ ЭЦП",
+    "authKeySelectDesc": "Выберите ключ и введите пароль E-IMZO — при верном пароле вход выполнится автоматически.",
+    "organization": "Организация",
+    "position": "Должность",
+    "storagePfx": "Файловый ключ",
+    "storageToken": "USB-токен",
+    "notValidDate": "Срок истёк"
   },
   "documentPage": {
     "name": "Документы",

@@ -1024,7 +1024,13 @@
     "pinfl": "ЖШШИР",
     "sealKeyLabel": "муҳрли калит",
     "noKeysTitle": "Калитлар топилмади",
-    "noKeysDesc": "USB токен ёки ID карта уланганини текширинг."
+    "noKeysDesc": "USB токен ёки ID карта уланганини текширинг.",
+    "authKeySelectTitle": "ЭРИ калитини танланг",
+    "authKeySelectDesc": "Калитни танланг ва E-IMZO паролини киритинг — парол тўғри бўлса тизимга автоматик киритиласиз.",
+    "organization": "Ташкилот",
+    "position": "Лавозим",
+    "storagePfx": "Файл калити",
+    "storageToken": "USB токен"
   },
   "documentPage": {
     "name": "Ҳужжатлар",
