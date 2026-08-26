@@ -34,32 +34,70 @@
       alt: "Temiryo'lchilar kuni muborak"
     }
   ]
+
+  /**
+   * Bannerga bosilganda umumiy rasm ko'ruvchisi (`UIImageViewer`, `HelperLayout`
+   * da global mount qilingan) ochiladi — kichik matnlarni kattalashtirib o'qish
+   * mumkin. Ro'yxatga BARCHA bannerlar beriladi, shuning uchun modal ichida
+   * o'q tugmalari bilan ular orasida yurish mumkin.
+   */
+  const openBanner = (index) => {
+    window.$openViewer?.(
+      BANNERS.map((v) => v.image),
+      index
+    )
+  }
 </script>
 
 <template>
   <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-    <div
-      v-for="banner in BANNERS"
+    <button
+      v-for="(banner, index) in BANNERS"
       :key="banner.key"
+      type="button"
       class="banner"
       :class="{ 'banner--gradient': banner.gradient }"
+      :aria-label="banner.alt"
+      @click="openBanner(index)"
     >
       <img
         :src="banner.image"
         :alt="banner.alt"
         :class="banner.gradient ? 'banner__art' : 'banner__cover'"
       />
-    </div>
+    </button>
   </div>
 </template>
 
 <style scoped>
   .banner {
     position: relative;
+    display: block;
+    width: 100%;
     height: 140px;
+    padding: 0;
     overflow: hidden;
+    border: 0;
     /* Maketda banner radiusi 24px — kartalardagi 16px dan farq qiladi */
     border-radius: 24px;
+    background-color: transparent;
+    cursor: pointer;
+    /* Bosish mumkinligi sezilib turishi uchun juda yengil ko'tarilish */
+    transition: transform 0.2s ease;
+  }
+
+  .banner:hover {
+    transform: translateY(-2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .banner {
+      transition: none;
+    }
+
+    .banner:hover {
+      transform: none;
+    }
   }
 
   /*
