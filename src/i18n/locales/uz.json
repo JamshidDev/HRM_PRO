@@ -4984,5 +4984,11 @@
     "historyBtn": "Tarix",
     "showMasked": "Maskani ochish",
     "hideMasked": "Maskani yopish"
+  },
+  "eimzoGate": {
+    "title": "Xavfsizlik uchun tekshiruv",
+    "description": "Iqtisod bo'limi ma'lumotlariga kirish uchun shaxsingizni ERI (E-IMZO) kaliti bilan tasdiqlang.",
+    "confirmBtn": "E-IMZO bilan tasdiqlash",
+    "verified": "Tasdiqlandi"
   }
 }
