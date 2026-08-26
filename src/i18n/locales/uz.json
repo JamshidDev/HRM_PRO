@@ -120,6 +120,7 @@
     "onlineWorkers": "Online xodimlar",
     "more": "Batafsil",
     "count": "{count} ta",
+    "countSuffix": "ta",
     "actions": {
       "vacation": {
         "title": "Ta'til",

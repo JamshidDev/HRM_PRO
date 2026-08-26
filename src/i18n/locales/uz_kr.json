@@ -45,6 +45,7 @@
     "onlineWorkers": "Онлайн ходимлар",
     "more": "Батафсил",
     "count": "{count} та",
+    "countSuffix": "та",
     "actions": {
       "vacation": {
         "title": "Таътил",

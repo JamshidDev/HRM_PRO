@@ -116,6 +116,7 @@
     "onlineWorkers": "Employees online",
     "more": "Details",
     "count": "{count} people",
+    "countSuffix": "people",
     "actions": {
       "vacation": {
         "title": "Vacation",

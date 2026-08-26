@@ -120,6 +120,7 @@
     "onlineWorkers": "Сотрудники онлайн",
     "more": "Подробнее",
     "count": "{count} чел.",
+    "countSuffix": "чел.",
     "actions": {
       "vacation": {
         "title": "Отпуск",

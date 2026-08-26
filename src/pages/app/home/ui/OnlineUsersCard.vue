@@ -10,6 +10,7 @@
   import { useSocketStore } from '@/store/modules/index.js'
   import HomePanel from './HomePanel.vue'
   import ReactionButton from './ReactionButton.vue'
+  import RollingNumber from './RollingNumber.vue'
   import { useAppSetting, useDebounce, Utils } from '@/utils/index.js'
   import UsersIcon from '@/assets/icons/figUsers.svg'
   import LaptopIcon from '@/assets/icons/home/laptop.svg'
@@ -51,8 +52,13 @@
     class="min-h-[230px]"
     @action="store.userVisible = true"
   >
-    <p class="text-[16px] leading-5 font-semibold text-fig-text-primary">
-      {{ $t('homePage.count', { count: displayUsers.length }) }}
+    <!-- Son maketdagidan kattaroq va socket'dan yangi qiymat kelganda
+         "odometr" bo'lib aylanadi (`RollingNumber.vue`). -->
+    <p
+      class="flex items-center gap-1.5 text-[20px] leading-[26px] font-semibold text-fig-text-primary"
+    >
+      <RollingNumber :value="displayUsers.length" />
+      <span>{{ $t('homePage.countSuffix') }}</span>
     </p>
 
     <!-- Avatarlar har doim kartaning pastida (maket: node 3257:112547).
