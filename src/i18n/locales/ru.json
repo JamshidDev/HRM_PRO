@@ -10,7 +10,9 @@
       "contractType": "Тип договора",
       "startDate": "Дата заключения договора",
       "dismissedAt": "Дата увольнения",
-      "resume": "Резюме"
+      "resume": "Скачать резюме",
+      "currentOrg": "Текущее место работы",
+      "notEmployed": "Вне сети"
     }
   },
   "lateWorkersReport": {
@@ -120,6 +122,7 @@
     "onlineWorkers": "Сотрудники онлайн",
     "more": "Подробнее",
     "count": "{count} чел.",
+    "countSuffix": "чел.",
     "actions": {
       "vacation": {
         "title": "Отпуск",
@@ -1111,7 +1114,14 @@
     "pinfl": "ПИНФЛ",
     "sealKeyLabel": "печать",
     "noKeysTitle": "Ключи не найдены",
-    "noKeysDesc": "Проверьте, что USB-токен или ID-карта подключены."
+    "noKeysDesc": "Проверьте, что USB-токен или ID-карта подключены.",
+    "authKeySelectTitle": "Выберите ключ ЭЦП",
+    "authKeySelectDesc": "Выберите ключ и введите пароль E-IMZO — при верном пароле вход выполнится автоматически.",
+    "organization": "Организация",
+    "position": "Должность",
+    "storagePfx": "Файловый ключ",
+    "storageToken": "USB-токен",
+    "notValidDate": "Срок истёк"
   },
   "documentPage": {
     "name": "Документы",
@@ -1482,7 +1492,18 @@
     }
   },
   "educationDirectory": {
-    "name": "Справочник образования"
+    "name": "Справочник образования",
+    "tabs": {
+      "university": "Учебные заведения",
+      "speciality": "Специальности",
+      "language": "Языки"
+    },
+    "table": {
+      "name": "Название учреждения",
+      "region": "Регион",
+      "education": "Уровень образования",
+      "type": "Тип учреждения"
+    }
   },
   "othersPage": {
     "name": "Другое",

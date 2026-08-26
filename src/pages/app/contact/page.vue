@@ -22,6 +22,7 @@
   import YoutubeIcon from '@/assets/icons/contact/youtube.svg'
   import FacebookIcon from '@/assets/icons/contact/facebook.svg'
   import InstagramIcon from '@/assets/icons/contact/instagram.svg'
+  import ornamentUrl from '@/assets/icons/home/ornament.svg?url'
   import telegramArt from '@/assets/images/contact/telegram-art.png'
   import faqArt from '@/assets/images/contact/faq-art.png'
 
@@ -58,7 +59,22 @@
 </script>
 
 <template>
-  <UIPageContent class="!h-auto !gap-6">
+  <UIPageContent
+    class="contact-page bg-fig-page-gradient m-4 !h-auto !min-h-[calc(100%-2rem)] rounded-3xl !gap-6 !p-3 md:!p-4"
+  >
+    <!-- DIQQAT: bu izoh ildiz elementning ICHIDA turishi shart. `<template>` dan
+         keyin, ildizdan oldin qo'yilsa komponent fragment ildizga aylanadi va
+         `PageContent.vue` dagi `<transition mode="out-in">` qotib qoladi
+         (sahifa almashganda kontent umuman render qilinmaydi).
+
+         Fon bosh sahifadagi bilan bir xil: `bg-fig-page-gradient` gradienti,
+         24px radius va chetlardan 16px masofa. -->
+    <!-- Bosh sahifadagi kabi bezak (`home/page.vue`): pastki chap burchakda,
+         -41.63° burilgan. Fon ostida qoladi, bosishga to'sqinlik qilmaydi. -->
+    <div class="contact-page__ornament" aria-hidden="true">
+      <img :src="ornamentUrl" alt="" />
+    </div>
+
     <!-- Sarlavha -->
     <div class="flex w-full shrink-0 flex-wrap items-center justify-between gap-4">
       <h1 class="text-[24px] leading-[30px] font-semibold text-fig-text-primary">
@@ -257,6 +273,44 @@
 </template>
 
 <style scoped>
+  /*
+    Fon bosh sahifadagi bilan bir xil: `bg-fig-page-gradient` gradienti va 24px
+    radius (`rounded-3xl`). `overflow: hidden` bezakni shu radius bo'yicha qirqadi.
+  */
+  .contact-page {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+  }
+
+  /* Maketda bezak quti 720.83x747.88, markazi konteynerning 4.17% + 28.41px
+     nuqtasida, pastdan -265.88px chiqib turadi; ichidagi rasm -41.63° burilgan. */
+  .contact-page__ornament {
+    position: absolute;
+    bottom: -265.88px;
+    left: calc(4.17% + 28.41px);
+    display: flex;
+    width: 720.83px;
+    height: 747.88px;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .contact-page__ornament img {
+    width: 357.53px;
+    height: 682.8px;
+    max-width: none;
+    transform: rotate(-41.63deg);
+  }
+
+  /* Bezak fonda qolsin — qolgan kontent uning ustida. */
+  .contact-page > :not(.contact-page__ornament) {
+    position: relative;
+    z-index: 1;
+  }
+
   /* Maketdagi 20px o'ng strelka — klass sifatida: uzun Tailwind ro'yxati
      inline `<span>` ichida prettier va eslint qoidalarini to'qnashtiradi. */
   .contact-arrow {

@@ -10,7 +10,9 @@
       "contractType": "Contract type",
       "startDate": "Contract date",
       "dismissedAt": "Dismissal date",
-      "resume": "Resume"
+      "resume": "Download resume",
+      "currentOrg": "Current workplace",
+      "notEmployed": "Not in the network"
     }
   },
   "lateWorkersReport": {
@@ -116,6 +118,7 @@
     "onlineWorkers": "Employees online",
     "more": "Details",
     "count": "{count} people",
+    "countSuffix": "people",
     "actions": {
       "vacation": {
         "title": "Vacation",
@@ -1109,7 +1112,14 @@
     "pinfl": "PIN",
     "sealKeyLabel": "seal key",
     "noKeysTitle": "No keys found",
-    "noKeysDesc": "Check that your USB token or ID card is connected."
+    "noKeysDesc": "Check that your USB token or ID card is connected.",
+    "authKeySelectTitle": "Select an e-signature key",
+    "authKeySelectDesc": "Pick a key and enter your E-IMZO password — you will be signed in automatically.",
+    "organization": "Organization",
+    "position": "Position",
+    "storagePfx": "File key",
+    "storageToken": "USB token",
+    "notValidDate": "Expired"
   },
   "documentPage": {
     "name": "Documents",
@@ -1480,7 +1490,18 @@
     }
   },
   "educationDirectory": {
-    "name": "Education Directory"
+    "name": "Education Directory",
+    "tabs": {
+      "university": "Educational institutions",
+      "speciality": "Specialties",
+      "language": "Languages"
+    },
+    "table": {
+      "name": "Institution name",
+      "region": "Region",
+      "education": "Education level",
+      "type": "Institution type"
+    }
   },
   "othersPage": {
     "name": "Others",

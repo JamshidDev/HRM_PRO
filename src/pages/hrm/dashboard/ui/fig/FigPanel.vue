@@ -63,51 +63,62 @@
 </script>
 
 <template>
-  <div class="flex h-full flex-col rounded-2xl bg-fig-block px-1 pb-1">
-    <div class="flex w-full items-center gap-1 py-3 pr-1 pl-2">
-      <span
-        v-if="icon"
-        class="shrink-0 rounded-lg"
-        :class="[tintClass[tint], tint !== 'none' && 'p-1']"
-      >
-        <span class="flex h-5 w-5 items-center justify-center" :class="iconClass">
-          <component :is="icon" />
+  <!-- `mock` — backend bu kesimni hali bermayapti. Karta blur qilinadi va ustiga
+       «Tez orada» yozuvi chiqadi: foydalanuvchi soxta raqamlarni o'qiy olmaydi,
+       lekin kartaning o'zi (o'lchami, o'rni) maketdagidek turaveradi. Backend
+       maydonni bergan zahoti `store.isMock(...)` `false` qaytaradi va blur ham,
+       yozuv ham o'zi yo'qoladi. -->
+  <div class="fig-soon" :class="mock && 'fig-soon--on'">
+    <div class="fig-soon__card flex flex-col rounded-2xl bg-fig-block px-1 pb-1">
+      <div class="flex w-full items-center gap-1 py-3 pr-1 pl-2">
+        <span
+          v-if="icon"
+          class="shrink-0 rounded-lg"
+          :class="[tintClass[tint], tint !== 'none' && 'p-1']"
+        >
+          <span class="flex h-5 w-5 items-center justify-center" :class="iconClass">
+            <component :is="icon" />
+          </span>
         </span>
-      </span>
 
-      <p
-        class="min-w-0 flex-1 truncate text-[14px] leading-[18px] font-medium"
-        :class="muted ? 'text-fig-text-tertiary' : 'text-fig-text-secondary'"
-      >
-        {{ title }}
-      </p>
+        <p
+          class="min-w-0 flex-1 truncate text-[14px] leading-[18px] font-medium"
+          :class="muted ? 'text-fig-text-tertiary' : 'text-fig-text-secondary'"
+        >
+          {{ title }}
+        </p>
 
-      <span
-        v-if="mock"
-        class="shrink-0 rounded bg-fig-bg-tertiary px-1.5 py-0.5 text-[10px] leading-3 font-medium tracking-wide uppercase text-fig-text-disable"
-      >
-        mock
-      </span>
+        <span
+          v-if="mock"
+          class="shrink-0 rounded bg-fig-bg-tertiary px-1.5 py-0.5 text-[10px] leading-3 font-medium tracking-wide uppercase text-fig-text-disable"
+        >
+          mock
+        </span>
 
-      <button
-        v-if="actionText"
-        type="button"
-        class="shrink-0 cursor-pointer pr-1 pl-2 text-[12px] leading-4 whitespace-nowrap text-fig-text-brand transition-opacity hover:opacity-80"
-        @click="$emit('action')"
+        <button
+          v-if="actionText"
+          type="button"
+          class="shrink-0 cursor-pointer pr-1 pl-2 text-[12px] leading-4 whitespace-nowrap text-fig-text-brand transition-opacity hover:opacity-80"
+          @click="$emit('action')"
+        >
+          {{ actionText }} ↗
+        </button>
+      </div>
+
+      <div
+        v-if="inner"
+        class="flex min-h-px flex-1 flex-col rounded-xl bg-fig-bg-secondary"
+        :class="innerClass"
       >
-        {{ actionText }} ↗
-      </button>
+        <slot />
+      </div>
+      <template v-else>
+        <slot />
+      </template>
     </div>
 
-    <div
-      v-if="inner"
-      class="flex min-h-px flex-1 flex-col rounded-xl bg-fig-bg-secondary"
-      :class="innerClass"
-    >
-      <slot />
+    <div v-if="mock" class="fig-soon__veil">
+      <span class="fig-soon__badge">{{ $t('dashboardPage.comingSoon') }}</span>
     </div>
-    <template v-else>
-      <slot />
-    </template>
   </div>
 </template>

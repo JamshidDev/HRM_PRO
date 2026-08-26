@@ -10,7 +10,9 @@
       "contractType": "Шартнома тури",
       "startDate": "Шартнома тузилган сана",
       "dismissedAt": "Бўшаган сана",
-      "resume": "Резюме"
+      "resume": "Резюме юклаш",
+      "currentOrg": "Ҳозирги иш жойи",
+      "notEmployed": "Тармоқда эмас"
     }
   },
   "lateWorkersReport": {
@@ -45,6 +47,7 @@
     "onlineWorkers": "Онлайн ходимлар",
     "more": "Батафсил",
     "count": "{count} та",
+    "countSuffix": "та",
     "actions": {
       "vacation": {
         "title": "Таътил",
@@ -1021,7 +1024,13 @@
     "pinfl": "ЖШШИР",
     "sealKeyLabel": "муҳрли калит",
     "noKeysTitle": "Калитлар топилмади",
-    "noKeysDesc": "USB токен ёки ID карта уланганини текширинг."
+    "noKeysDesc": "USB токен ёки ID карта уланганини текширинг.",
+    "authKeySelectTitle": "ЭРИ калитини танланг",
+    "authKeySelectDesc": "Калитни танланг ва E-IMZO паролини киритинг — парол тўғри бўлса тизимга автоматик киритиласиз.",
+    "organization": "Ташкилот",
+    "position": "Лавозим",
+    "storagePfx": "Файл калити",
+    "storageToken": "USB токен"
   },
   "documentPage": {
     "name": "Ҳужжатлар",
@@ -1344,7 +1353,18 @@
     }
   },
   "educationDirectory": {
-    "name": "Таълим каталоги"
+    "name": "Таълим каталоги",
+    "tabs": {
+      "university": "Ўқув юртлари",
+      "speciality": "Мутахассисликлар",
+      "language": "Тиллар"
+    },
+    "table": {
+      "name": "Муассаса номи",
+      "region": "Вилоят",
+      "education": "Таълим даражаси",
+      "type": "Муассаса тури"
+    }
   },
   "othersPage": {
     "name": "Бошқалар",

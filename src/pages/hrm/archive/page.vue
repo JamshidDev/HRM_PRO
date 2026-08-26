@@ -12,7 +12,13 @@
 </script>
 
 <template>
-  <UIPageContent>
+  <UIPageContent class="!gap-6">
+    <!-- Izoh ildiz elementning ICHIDA: ildizdan oldin qo'yilsa sahifa fragment
+         ildizga aylanadi va marshrut almashganda `<transition mode="out-in">`
+         qotib qoladi.
+
+         Maketda (node 3332:65659) sahifa cheti 16px, qidiruv qatori bilan
+         jadval orasi esa 24px (`UIPageContent` ning standart oralig'i 16px). -->
     <Filter />
     <Table />
   </UIPageContent>

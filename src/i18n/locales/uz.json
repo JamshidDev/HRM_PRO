@@ -10,7 +10,9 @@
       "contractType": "Shartnoma turi",
       "startDate": "Shartnoma tuzilgan sana",
       "dismissedAt": "Bo‘shagan sana",
-      "resume": "Rezyume"
+      "resume": "Rezyume yuklash",
+      "currentOrg": "Hozirgi ish joyi",
+      "notEmployed": "Tarmoqda emas"
     }
   },
   "lateWorkersReport": {
@@ -120,6 +122,7 @@
     "onlineWorkers": "Online xodimlar",
     "more": "Batafsil",
     "count": "{count} ta",
+    "countSuffix": "ta",
     "actions": {
       "vacation": {
         "title": "Ta'til",
@@ -1127,7 +1130,13 @@
     "pinfl": "JSHSHIR",
     "sealKeyLabel": "muhrli kalit",
     "noKeysTitle": "Kalitlar topilmadi",
-    "noKeysDesc": "USB token yoki ID karta ulanganini tekshiring."
+    "noKeysDesc": "USB token yoki ID karta ulanganini tekshiring.",
+    "authKeySelectTitle": "ERI kalitini tanlang",
+    "authKeySelectDesc": "Kalitni tanlang va E-IMZO parolini kiriting — parol to'g'ri bo'lsa tizimga avtomatik kiritilasiz.",
+    "organization": "Tashkilot",
+    "position": "Lavozim",
+    "storagePfx": "Fayl kaliti",
+    "storageToken": "USB token"
   },
   "documentPage": {
     "name": "Hujjatlar",
@@ -1498,7 +1507,18 @@
     }
   },
   "educationDirectory": {
-    "name": "Ta'lim katalogi"
+    "name": "Ta'lim katalogi",
+    "tabs": {
+      "university": "O'quv yurtlari",
+      "speciality": "Mutaxassisliklar",
+      "language": "Tillar"
+    },
+    "table": {
+      "name": "Muassasa nomi",
+      "region": "Viloyat",
+      "education": "Ta'lim darajasi",
+      "type": "Muassasa turi"
+    }
   },
   "othersPage": {
     "name": "Boshqalar",

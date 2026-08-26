@@ -69,61 +69,73 @@
 </script>
 
 <template>
-  <div
-    class="relative flex h-full flex-col gap-2 overflow-hidden rounded-2xl bg-fig-block px-1 pt-1.5 pb-1"
-  >
-    <!-- o'ng yuqoridagi xira suv belgisi: 64px ramka, ikonka o'z o'lchamida markazda -->
-    <span
-      v-if="variant.mark"
-      aria-hidden="true"
-      class="pointer-events-none absolute top-3 right-3 flex h-16 w-16 items-center justify-center select-none"
+  <!-- `mock` — ko'rsatkich hali `mock.js` dan olinmoqda: plita blur qilinadi va
+       ustiga «Tez orada» yozuvi chiqadi (grafik kartalaridagi bilan bir xil
+       qatlam, uslubi `assets/scss/component.scss` da). Backend qiymatni bergan
+       zahoti `store.isMock(...)` `false` qaytaradi va qatlam o'zi yo'qoladi. -->
+  <div class="fig-soon" :class="mock && 'fig-soon--on'">
+    <div
+      class="fig-soon__card relative flex flex-col gap-2 overflow-hidden rounded-2xl bg-fig-block px-1 pt-1.5 pb-1"
     >
-      <component :is="variant.mark" />
-    </span>
-
-    <div class="relative flex items-center gap-1 px-2">
-      <span class="shrink-0 rounded-lg p-1" :class="variant.tint">
-        <span class="flex h-5 w-5 items-center justify-center">
-          <component :is="variant.icon" />
-        </span>
-      </span>
-      <p class="min-w-0 flex-1 truncate text-[14px] leading-[18px] font-medium text-fig-text-tertiary">
-        {{ $t(card.titleKey) }}
-      </p>
+      <!-- o'ng yuqoridagi xira suv belgisi: 64px ramka, ikonka o'z o'lchamida markazda -->
       <span
-        v-if="mock"
-        class="shrink-0 rounded bg-fig-bg-tertiary px-1.5 py-0.5 text-[10px] leading-3 font-medium tracking-wide uppercase text-fig-text-disable"
+        v-if="variant.mark"
+        aria-hidden="true"
+        class="pointer-events-none absolute top-3 right-3 flex h-16 w-16 items-center justify-center select-none"
       >
-        mock
+        <component :is="variant.mark" />
       </span>
+
+      <div class="relative flex items-center gap-1 px-2">
+        <span class="shrink-0 rounded-lg p-1" :class="variant.tint">
+          <span class="flex h-5 w-5 items-center justify-center">
+            <component :is="variant.icon" />
+          </span>
+        </span>
+        <p
+          class="min-w-0 flex-1 truncate text-[14px] leading-[18px] font-medium text-fig-text-tertiary"
+        >
+          {{ $t(card.titleKey) }}
+        </p>
+        <span
+          v-if="mock"
+          class="shrink-0 rounded bg-fig-bg-tertiary px-1.5 py-0.5 text-[10px] leading-3 font-medium tracking-wide uppercase text-fig-text-disable"
+        >
+          mock
+        </span>
+      </div>
+
+      <p
+        class="relative px-2 text-[20px] leading-6 font-semibold whitespace-nowrap text-fig-text-primary"
+      >
+        {{ card.value }}<template v-if="card.unitKey"> {{ $t(card.unitKey) }}</template>
+      </p>
+
+      <!-- `mt-auto` — qo'shni karta balandroq bo'lsa ham panel pastda qoladi -->
+      <div class="mt-auto flex flex-col gap-1.5 rounded-xl bg-fig-bg-secondary px-3 py-1.5">
+        <template v-for="(row, idx) in rows" :key="idx">
+          <span v-if="idx" class="h-px w-full rounded-full bg-fig-br-disable"></span>
+          <div class="flex items-start justify-between gap-2">
+            <p class="min-w-0 flex-1 text-[12px] leading-4 text-fig-text-tertiary">
+              {{ $t(row.titleKey) }}
+            </p>
+            <p
+              class="shrink-0 text-right text-[12px] leading-4 font-semibold whitespace-nowrap text-fig-text-primary"
+            >
+              {{ row.value }}<template v-if="row.unitKey"> {{ $t(row.unitKey) }}</template>
+            </p>
+          </div>
+        </template>
+
+        <template v-if="hasTrend">
+          <span v-if="rows.length" class="h-px w-full rounded-full bg-fig-br-disable"></span>
+          <FigTrend :metric="card.trend.metric" :unit="card.trend.unit" />
+        </template>
+      </div>
     </div>
 
-    <p
-      class="relative px-2 text-[20px] leading-6 font-semibold whitespace-nowrap text-fig-text-primary"
-    >
-      {{ card.value }}<template v-if="card.unitKey"> {{ $t(card.unitKey) }}</template>
-    </p>
-
-    <!-- `mt-auto` — qo'shni karta balandroq bo'lsa ham panel pastda qoladi -->
-    <div class="mt-auto flex flex-col gap-1.5 rounded-xl bg-fig-bg-secondary px-3 py-1.5">
-      <template v-for="(row, idx) in rows" :key="idx">
-        <span v-if="idx" class="h-px w-full rounded-full bg-fig-br-disable"></span>
-        <div class="flex items-start justify-between gap-2">
-          <p class="min-w-0 flex-1 text-[12px] leading-4 text-fig-text-tertiary">
-            {{ $t(row.titleKey) }}
-          </p>
-          <p
-            class="shrink-0 text-right text-[12px] leading-4 font-semibold whitespace-nowrap text-fig-text-primary"
-          >
-            {{ row.value }}<template v-if="row.unitKey"> {{ $t(row.unitKey) }}</template>
-          </p>
-        </div>
-      </template>
-
-      <template v-if="hasTrend">
-        <span v-if="rows.length" class="h-px w-full rounded-full bg-fig-br-disable"></span>
-        <FigTrend :metric="card.trend.metric" :unit="card.trend.unit" />
-      </template>
+    <div v-if="mock" class="fig-soon__veil">
+      <span class="fig-soon__badge">{{ $t('dashboardPage.comingSoon') }}</span>
     </div>
   </div>
 </template>

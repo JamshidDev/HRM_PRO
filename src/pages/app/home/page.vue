@@ -64,7 +64,7 @@
 </script>
 
 <template>
-  <UIPageContent class="home-page !h-[calc(100%-2rem)] m-4 !p-3 md:!p-4">
+  <UIPageContent class="home-page bg-fig-page-gradient !h-[calc(100%-2rem)] m-4 !p-3 md:!p-4">
     <!--
       `m-4` — maketdagi kabi to'rt tomondan bir xil 16px masofa (Boddy ichida
       Empty State har chetdan 16px ichkarida).
@@ -121,20 +121,14 @@
 
 <style scoped>
   /*
-    Maketdagi fon (node 3257:112460): burchak va to'xtash nuqtalari Figma'dan
-    aynan olingan — ilgari taxminiy `160deg` va teskari tartibdagi ranglar edi.
-    Radius ham 24px (kartalardagi 16px emas).
+    Maketdagi fon `bg-fig-page-gradient` utility klassida (style.css) — aynan shu
+    gradient "Bog'lanish" sahifasida ham ishlatiladi.
+    Radius 24px (kartalardagi 16px emas).
   */
   .home-page {
     position: relative;
     overflow: hidden;
     border-radius: 24px;
-    background-image: linear-gradient(
-      -9.063deg,
-      var(--fig-blue-300) 4.44%,
-      var(--fig-green-100) 32.67%,
-      var(--fig-blue-100) 100.24%
-    );
   }
 
   /* Maketda bezak quti 720.83x747.88, markazi konteynerning 4.17% + 28.41px
