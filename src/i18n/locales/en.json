@@ -1483,7 +1483,18 @@
     }
   },
   "educationDirectory": {
-    "name": "Education Directory"
+    "name": "Education Directory",
+    "tabs": {
+      "university": "Educational institutions",
+      "speciality": "Specialties",
+      "language": "Languages"
+    },
+    "table": {
+      "name": "Institution name",
+      "region": "Region",
+      "education": "Education level",
+      "type": "Institution type"
+    }
   },
   "othersPage": {
     "name": "Others",

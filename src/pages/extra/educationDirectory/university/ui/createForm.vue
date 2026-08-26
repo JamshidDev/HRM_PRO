@@ -45,6 +45,8 @@
     }, 1000)
   }
 
+  defineExpose({ submit: onSubmit })
+
   onMounted(() => {
     store.existUniversities = []
     if (compStore.universityTypes.length === 0) {
@@ -55,13 +57,20 @@
 
 <template>
   <n-form ref="formRef" :rules="validationRules.common" :model="store.payload">
-    <div style="height: calc(100vh - 120px)" class="overflow-y-auto">
+    <!-- Balandlik CHEKLOVI, qat'iy balandlik emas: modal kontent bo'yi bilan
+         o'sadi, ekran yetmasa shu blokning o'zi skroll bo'ladi. -->
+    <div class="max-h-[calc(100vh-260px)] overflow-y-auto pr-1">
       <n-collapse-transition :show="store.existUniversities.length > 0">
         <n-alert type="warning">
           {{ $t('othersPage.university.existName') }}
         </n-alert>
       </n-collapse-transition>
-      <n-form-item class="mt-4" :label="$t(`othersPage.university.form.name`)" path="name" :rule-path="validationRules.rulesNames.requiredStringField">
+      <n-form-item
+        class="mt-4"
+        :label="$t(`othersPage.university.form.name`)"
+        path="name"
+        :rule-path="validationRules.rulesNames.requiredStringField"
+      >
         <UIMultipleLangItems>
           <template #uz-content>
             <n-input
@@ -73,7 +82,12 @@
             />
           </template>
           <template #ru-content>
-            <n-input class="skip-format" type="textarea" v-model:value="store.payload.name_ru" :rows="2" />
+            <n-input
+              class="skip-format"
+              type="textarea"
+              v-model:value="store.payload.name_ru"
+              :rows="2"
+            />
           </template>
           <template #en-content>
             <n-input type="textarea" v-model:value="store.payload.name_en" :rows="2" />
@@ -123,19 +137,6 @@
           :loading="compStore.enumAdminLoading"
         />
       </n-form-item>
-    </div>
-
-    <div class="grid grid-cols-2 gap-2">
-      <n-button @click="store.openVisible(false)" type="error" ghost>
-        {{ $t('content.cancel') }}
-      </n-button>
-      <n-button
-        @click="onSubmit"
-        :loading="store.saveLoading || store.checkLoading"
-        type="primary"
-      >
-        {{ $t('content.save') }}
-      </n-button>
     </div>
   </n-form>
 </template>

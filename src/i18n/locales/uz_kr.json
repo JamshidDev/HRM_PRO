@@ -1347,7 +1347,18 @@
     }
   },
   "educationDirectory": {
-    "name": "Таълим каталоги"
+    "name": "Таълим каталоги",
+    "tabs": {
+      "university": "Ўқув юртлари",
+      "speciality": "Мутахассисликлар",
+      "language": "Тиллар"
+    },
+    "table": {
+      "name": "Муассаса номи",
+      "region": "Вилоят",
+      "education": "Таълим даражаси",
+      "type": "Муассаса тури"
+    }
   },
   "othersPage": {
     "name": "Бошқалар",

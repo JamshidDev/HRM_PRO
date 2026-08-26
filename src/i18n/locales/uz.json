@@ -1501,7 +1501,18 @@
     }
   },
   "educationDirectory": {
-    "name": "Ta'lim katalogi"
+    "name": "Ta'lim katalogi",
+    "tabs": {
+      "university": "O'quv yurtlari",
+      "speciality": "Mutaxassisliklar",
+      "language": "Tillar"
+    },
+    "table": {
+      "name": "Muassasa nomi",
+      "region": "Viloyat",
+      "education": "Ta'lim darajasi",
+      "type": "Muassasa turi"
+    }
   },
   "othersPage": {
     "name": "Boshqalar",
