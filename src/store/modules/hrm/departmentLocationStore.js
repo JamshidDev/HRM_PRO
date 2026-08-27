@@ -149,10 +149,12 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.selectedDepartment = department
       this._locationIndex()
     },
-    openLocationModal(department) {
+    // `department` null bo'lishi mumkin — jadval sarlavhasidagi "+" orqali
+    // ochilganda bo'lim formaning o'zida tanlanadi.
+    openLocationModal(department = null) {
       this.resetForm()
       this.selectedDepartment = department
-      this.payload.department_id = department.id
+      this.payload.department_id = department?.id ?? null
       this.visibleType = true
       this.visible = true
     },

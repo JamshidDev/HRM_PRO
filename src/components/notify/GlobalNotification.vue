@@ -1,14 +1,22 @@
 <script setup>
+  // Sahifa OCHIQ bo'lganda chiqadigan o'z toast'imiz (brauzer bildirishnomasi emas —
+  // uni `public/firebase-messaging-sw.js` faqat tab ko'rinmaganda chizadi).
   import { useNotify } from '@/composables/useNotify'
-  import { cn, notificationTypes } from '@utils'
+  import { notificationTypes } from '@utils'
   import { Dismiss20Filled } from '@vicons/fluent'
   import { useNotificationStore } from '@stores'
   import dayjs from 'dayjs'
   import { usePushDetail } from '@/composables/usePushDetail.js'
-  const { notifications, remove } = useNotify()
+
+  const { notifications, remove, pause, resume } = useNotify()
 
   const store = useNotificationStore()
   const pushDetail = usePushDetail()
+
+  // `type` allaqachon useNotify'da normallashtirilgan, lekin eski meta'lardan
+  // notanish qiymat kelsa ham komponent yiqilmasin.
+  const typeOf = (item) => notificationTypes[item.type] || notificationTypes.info
+
   // Toast meta'sidan modal uchun ma'lumot (rasm va tur ham uzatiladi).
   const toViewData = (item) => ({
     alert: item.meta.alert || item.meta.type,
@@ -18,6 +26,16 @@
     image_url: item.meta.image_url || null
   })
 
+  // Qo'ng'iroq badge'i uchun o'qilmaganlar ro'yxatiga qo'shadi.
+  const pushToUnread = (item, data) => {
+    store.userUnreadNotificationsCount++
+    store.userUnreadNotifications.unshift({
+      id: item.meta.id,
+      created_at: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+      data
+    })
+  }
+
   const onClickClose = (item) => {
     // Tizim ogohlantirishlari (masalan ovoz apparati yo'qligi) `meta` siz keladi — ular
     // bildirishnomalar ro'yxatiga tushmaydi, shunchaki yopiladi
@@ -25,12 +43,7 @@
       remove(item.id)
       return
     }
-    store.userUnreadNotificationsCount++
-    store.userUnreadNotifications.unshift({
-      id: item.meta.id,
-      created_at: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-      data: toViewData(item)
-    })
+    pushToUnread(item, toViewData(item))
     remove(item.id)
   }
 
@@ -48,130 +61,276 @@
       message: data.message,
       image_url: data.image_url
     })
-    // O'qilmaganlar ro'yxatiga ham qo'shamiz (qo'ng'iroq badge'i uchun).
-    store.userUnreadNotificationsCount++
-    store.userUnreadNotifications.unshift({
-      id: item.meta.id,
-      created_at: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-      data
-    })
+    pushToUnread(item, data)
     remove(item.id)
   }
 </script>
 
 <template>
-  <div class="fixed top-[50px] right-2 z-[9999] flex flex-col gap-2 w-[320px]">
-    <TransitionGroup name="notify">
-      <div
-        v-for="item in notifications"
-        :key="item.id"
-        class="rounded-lg cursor-pointer w-full notification-blurry-bg px-2 py-2 flex items-start gap-2 relative group"
-        @click="() => onClickNotification(item)"
-      >
-        <div
-          @click.stop="() => onClickClose(item)"
-          class="hidden group-hover:block absolute top-0 left-0 -translate-1/2 p-0.5 rounded-full border border-surface/10 bg-danger/30 cursor-pointer hover:bg-danger/20 dark:bg-surface-ground transition-all"
+  <!-- `Teleport`: stack `position: fixed` — ota-elementdagi `transform`/`filter`
+       uni o'ziga bog'lab qo'ymasligi uchun to'g'ridan-to'g'ri `body` ga chiqaramiz. -->
+  <Teleport to="body">
+    <div class="toast-stack">
+      <TransitionGroup name="toast">
+        <article
+          v-for="item in notifications"
+          :key="item.id"
+          :class="['toast', `toast--${item.type}`]"
+          @click="onClickNotification(item)"
+          @mouseenter="pause(item.id)"
+          @mouseleave="resume(item.id)"
         >
-          <Dismiss20Filled class="size-3 text-danger" />
-        </div>
-        <div class="relative">
-          <component
-            :class="
-              cn(
-                'size-7 p-0.5 rounded-full inline-block shrink-0',
-                item.type === notificationTypes.info.value && 'bg-info/20 text-info',
-                item.type === notificationTypes.success.value && 'bg-success/20 text-success',
-                item.type === notificationTypes.warning.value && 'bg-warning/20 text-warning',
-                item.type === notificationTypes.error.value && 'bg-danger/20 text-danger'
-              )
-            "
-            :is="notificationTypes[item.type].icon"
-          />
-          <div
-            :class="
-              cn(
-                'absolute size-7 rounded-full top-1/2 left-1/2 -translate-1/2 custom-animate-pulse opacity-0',
-                item.type === notificationTypes.info.value && 'bg-info/10',
-                item.type === notificationTypes.success.value && 'bg-success/10',
-                item.type === notificationTypes.warning.value && 'bg-warning/10',
-                item.type === notificationTypes.error.value && 'bg-danger/10'
-              )
-            "
-          ></div>
-        </div>
-        <div class="flex-1 min-w-0">
-          <span class="line-clamp-1 font-medium text-textColor0">{{ item.content }}</span>
-          <!-- Push xabari matni — sarlavha ostida, ikki qatorgacha. -->
-          <span
-            v-if="item.meta?.message"
-            class="line-clamp-2 text-xs text-textColor2 mt-0.5 block"
-          >
-            {{ item.meta.message }}
+          <!-- Turni bir qarashda bildiradigan chap chiziq. -->
+          <span class="toast__accent" />
+
+          <span class="toast__icon">
+            <component :is="typeOf(item).icon" class="size-[18px]" />
           </span>
-        </div>
-        <img
-          v-if="item.meta?.image_url"
-          :src="item.meta.image_url"
-          alt=""
-          class="size-9 rounded-md object-cover shrink-0"
-        />
-      </div>
-    </TransitionGroup>
-  </div>
+
+          <div class="toast__body">
+            <p class="toast__title">{{ item.content }}</p>
+            <p v-if="item.meta?.message" class="toast__text">{{ item.meta.message }}</p>
+          </div>
+
+          <img v-if="item.meta?.image_url" :src="item.meta.image_url" alt="" class="toast__thumb" />
+
+          <button
+            type="button"
+            class="toast__close"
+            aria-label="close"
+            @click.stop="onClickClose(item)"
+          >
+            <Dismiss20Filled class="size-3.5" />
+          </button>
+
+          <!-- Qancha vaqt qolganini ko'rsatadi; sichqoncha ustida to'xtaydi. -->
+          <span
+            v-if="item.duration > 0"
+            class="toast__progress"
+            :style="{
+              animationDuration: `${item.duration}ms`,
+              animationPlayState: item.paused ? 'paused' : 'running'
+            }"
+          />
+        </article>
+      </TransitionGroup>
+    </div>
+  </Teleport>
 </template>
 
-<style>
-  .notify-move,
-  .notify-enter-active,
-  .notify-leave-active {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+<style scoped>
+  .toast-stack {
+    position: fixed;
+    top: 56px;
+    right: 16px;
+    z-index: 9999;
+    display: flex;
+    width: 360px;
+    flex-direction: column;
+    gap: 10px;
+    /* Konteyner bosishlarni yutmasin — faqat toast'ning o'zi bosiladi. */
+    pointer-events: none;
   }
 
-  .notify-enter-from {
+  /* Telefonda qat'iy kenglik sig'maydi — chetlardan 12px qoldirib cho'ziladi. */
+  @media (max-width: 479.98px) {
+    .toast-stack {
+      right: 12px;
+      left: 12px;
+      width: auto;
+    }
+  }
+
+  .toast {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    overflow: hidden;
+    padding: 12px 12px 12px 16px;
+    border: 1px solid var(--surface-line);
+    border-radius: 14px;
+    /* Oldin qat'iy `rgba(255,255,255,.59)` edi — dark temada oqarib ketardi.
+       Endi fon tema o'zgaruvchisidan, blur esa ustidan qo'shimcha qatlam. */
+    background: color-mix(in srgb, var(--surface-section) 88%, transparent);
+    box-shadow: 0 10px 30px rgb(16 24 40 / 12%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    cursor: pointer;
+    pointer-events: auto;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .toast:hover {
+    transform: translateX(-2px);
+    box-shadow: 0 14px 36px rgb(16 24 40 / 18%);
+  }
+
+  /* Turga qarab rang — bitta joyda, qolgani shu o'zgaruvchidan oziqlanadi. */
+  .toast--info {
+    --toast-color: var(--info-color);
+  }
+
+  .toast--success {
+    --toast-color: var(--success-color);
+  }
+
+  .toast--warning {
+    --toast-color: var(--warning-color);
+  }
+
+  .toast--error {
+    --toast-color: var(--danger-color);
+  }
+
+  .toast__accent {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4px;
+    background: var(--toast-color);
+  }
+
+  .toast__icon {
+    display: flex;
+    height: 30px;
+    width: 30px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--toast-color) 14%, transparent);
+    color: var(--toast-color);
+  }
+
+  .toast__body {
+    min-width: 0;
+    flex: 1;
+    /* Yopish tugmasi ostiga kirib ketmasin. */
+    padding-right: 18px;
+  }
+
+  .toast__title {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--textColor0);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 18px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .toast__text {
+    display: -webkit-box;
+    overflow: hidden;
+    margin-top: 2px;
+    color: var(--textColor2);
+    font-size: 12px;
+    line-height: 16px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .toast__thumb {
+    height: 40px;
+    width: 40px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  /* Oldin faqat hover'da ko'rinardi va kartochkadan tashqariga chiqib turardi —
+     teginish qurilmalarida umuman bosib bo'lmasdi. Endi doim joyida. */
+  .toast__close {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    display: flex;
+    height: 20px;
+    width: 20px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    color: var(--textColor3);
+    cursor: pointer;
+    opacity: 0.65;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      opacity 0.2s ease;
+  }
+
+  .toast:hover .toast__close {
+    opacity: 1;
+  }
+
+  .toast__close:hover {
+    background: var(--surface-line);
+    color: var(--textColor0);
+  }
+
+  .toast__progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background: var(--toast-color);
+    opacity: 0.55;
+    transform-origin: left center;
+    animation: toast-progress linear forwards;
+  }
+
+  @keyframes toast-progress {
+    from {
+      transform: scaleX(1);
+    }
+
+    to {
+      transform: scaleX(0);
+    }
+  }
+
+  /* Kirish/chiqish — o'ngdan suzib kiradi, `PushPermissionAlert` bilan bir ohangda. */
+  .toast-enter-active,
+  .toast-leave-active,
+  .toast-move {
+    transition:
+      opacity 0.25s ease,
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .toast-enter-from {
     opacity: 0;
-    transform: translateY(-30px) scale(0.8);
+    transform: translateX(24px) scale(0.96);
   }
 
-  .notify-leave-to {
+  .toast-leave-to {
     opacity: 0;
-    transform: translateY(-100px) scale(0.8);
+    transform: translateX(24px) scale(0.96);
   }
 
-  .notify-leave-active {
+  /* Chiqayotgani oqimdan chiqsin — qolganlari silliq suriladi. */
+  .toast-leave-active {
     position: absolute;
     right: 0;
-  }
-  .notification-blurry-bg {
-    /* From https://css.glass */
-    background: rgba(255, 255, 255, 0.59);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(8.3px);
-    -webkit-backdrop-filter: blur(8.3px);
-    border: 1px solid rgba(255, 255, 255, 0.56);
+    left: 0;
   }
 
-  [data-theme='dark'] .notification-blurry-bg {
-    /* From https://css.glass */
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
+  @media (prefers-reduced-motion: reduce) {
+    .toast,
+    .toast-enter-active,
+    .toast-leave-active,
+    .toast-move {
+      transition: none;
+    }
 
-  .custom-animate-pulse {
-    animation: pulse-fade 2s ease-out 5;
-  }
-
-  @keyframes pulse-fade {
-    70% {
-      opacity: 1;
-    }
-    85% {
-      opacity: 0.5;
-    }
-    90% {
-      opacity: 0;
-    }
-    100% {
-      transform: scale(2);
+    .toast__progress {
+      animation: none;
     }
   }
 </style>

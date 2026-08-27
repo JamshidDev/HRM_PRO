@@ -440,7 +440,9 @@
     "pushBlockedTitle": "Bildirishnomalar bloklangan",
     "pushBlockedText": "Brauzer bu sayt uchun bildirishnomani rad etgan. Manzil satridagi qulf belgisini bosing → «Bildirishnomalar» → «Ruxsat berish», so'ng sahifani yangilang.",
     "pushBlockedBtn": "Qanday yoqiladi?",
-    "pushEnabled": "Bildirishnomalar yoqildi"
+    "pushEnabled": "Bildirishnomalar yoqildi",
+    "pushCopyPath": "Manzilni nusxalash",
+    "pushPathCopied": "Manzil nusxalandi — brauzerning manzil satriga qo'ying"
   },
   "date": {
     "day": "Kun",
@@ -4576,6 +4578,8 @@
     "addLocation": "Joylashuv qo'shish",
     "locationExists": "Bor",
     "locationNotExists": "Yo'q",
+    "locationCount": "{n} ta joylashuv",
+    "noLocation": "Joylashuv yo'q",
     "tabs": {
       "departments": "Bo'limlar",
       "locations": "Joylashuvlar"
