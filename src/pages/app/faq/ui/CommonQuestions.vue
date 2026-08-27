@@ -15,12 +15,14 @@
   import ScanIcon from '@/assets/icons/contact/scan.svg'
   import ChevronDownIcon from '@/assets/icons/chevronDownBold.svg'
   import SupportIcon from '@/assets/icons/contact/support.svg'
-  import HouseIcon from '@/assets/icons/contact/house.svg'
-  import { AppPaths } from '@/utils/index.js'
+  import ArrowRightIcon from '@/assets/icons/contact/arrow-right.svg'
+  import ResponsibleModal from '@/pages/app/contact/ui/ResponsibleModal.vue'
   import i18n from '@/i18n/index.js'
   import questions from './questions.json'
 
-  const router = useRouter()
+  // "Bog'lanish" sahifasidagi "Kim bilan bog'lanish?" kartasi bilan bir xil
+  // modal — shu yerda ham o'sha ro'yxat ochiladi, alohida sahifaga o'tilmaydi.
+  const responsibleVisible = ref(false)
 
   // `staff`/`salary` ikonalari sidebar'dagi "Kadrlar boshqaruvi" (HrManagement.svg)
   // va "Iqtisodchi" (Economist.svg) belgilarining nusxasi — asl fayllar boshqa
@@ -59,8 +61,6 @@
     next.has(id) ? next.delete(id) : next.add(id)
     openIds.value = next
   }
-
-  const goContact = () => router.push(AppPaths.Contact)
 </script>
 
 <template>
@@ -136,14 +136,16 @@
       <button
         type="button"
         class="flex h-9 shrink-0 cursor-pointer items-center gap-2 rounded-lg bg-fig-bg-brand px-4 text-[14px] leading-[18px] font-medium text-white transition-opacity hover:opacity-90"
-        @click="goContact"
+        @click="responsibleVisible = true"
       >
-        <span class="flex h-[18px] w-[18px] shrink-0 items-center justify-center text-white">
-          <HouseIcon />
-        </span>
         {{ $t('faqPage.footer.action') }}
+        <span class="flex h-[18px] w-[18px] shrink-0 items-center justify-center text-white">
+          <ArrowRightIcon />
+        </span>
       </button>
     </div>
+
+    <ResponsibleModal v-model:visible="responsibleVisible" />
   </div>
 </template>
 
