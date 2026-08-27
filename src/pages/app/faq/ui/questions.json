@@ -1,0 +1,50 @@
+[
+  {
+    "id": "captcha",
+    "category": "technical",
+    "question": "Captcha (rasmdagi belgilar) doim xato chiqadi / rasm yuklanmayapti, nima qilish mumkin?",
+    "answer": "Har xato urinishdan keyin rasmdagi belgilar avtomatik yangilanadi; agar rasm umuman ko'rinmasa, tarmoqda muammo bo'lishi mumkin — yangilash tugmasini bosib qayta urinib ko'ring."
+  },
+  {
+    "id": "forgot-password",
+    "category": "technical",
+    "question": "Parolni unutib qo'ydim, qanday tiklasam bo'ladi?",
+    "answer": "\"Parolni unutdingizmi?\" tugmasini bosing va Telegram @hrmpro_robot ga login uchun foydalanayotgan raqamingizni yuboring, so'ngra ro'yxatdan o'ting. Parol Telegram botga keladi, uni kiriting, so'ngra yangi parolni kiriting."
+  },
+  {
+    "id": "login-restricted",
+    "category": "technical",
+    "question": "Tizimga foydalanuvchi nomi va parol orqali kira olmayapman, matnda \"Bu kirish usuli foydalanuvchi tomonidan cheklangan\" deb chiqyapti, bu nima uchun sodir bo'lishi mumkin?",
+    "answer": "Bu holatda siz tizimdagi shaxsiy kabinet sahifasidagi xavfsizlik bo'limidan login va parol orqali kirishni cheklab qo'ygan bo'lasiz (xavfsizlikni kuchaytirish maqsadida)."
+  },
+  {
+    "id": "qr-login",
+    "category": "technical",
+    "question": "QR-kod orqali tizimga qanday kirsam bo'ladi?",
+    "answer": "QR-kod orqali kirish uchun mobil ilovada profil qismiga o'ting, tepada joylashgan skaner belgisini bosing va kompyuter ekranidagi QR-kodni skanerlang."
+  },
+  {
+    "id": "test1",
+    "category": "staff",
+    "question": "testtesttesttesttesttesttesttesttesttesttesttesttesttesttest?",
+    "answer": "QR-kod orqali kirish uchun mobil ilovada profil qismiga o'ting, tepada joylashgan skaner belgisini bosing va kompyuter ekranidagi QR-kodni skanerlang."
+  },
+  {
+    "id": "test2",
+    "category": "salary",
+    "question": "testtesttesttesttesttesttesttesttesttesttesttesttesttesttest?",
+    "answer": "QR-kod orqali kirish uchun mobil ilovada profil qismiga o'ting, tepada joylashgan skaner belgisini bosing va kompyuter ekranidagi QR-kodni skanerlang."
+  },
+  {
+    "id": "test3",
+    "category": "vacation",
+    "question": "testtesttesttesttesttesttesttesttesttesttesttesttesttesttest?",
+    "answer": "QR-kod orqali kirish uchun mobil ilovada profil qismiga o'ting, tepada joylashgan skaner belgisini bosing va kompyuter ekranidagi QR-kodni skanerlang."
+  },
+  {
+    "id": "test4",
+    "category": "turnstile",
+    "question": "testtesttesttesttesttesttesttesttesttesttesttesttesttesttest?",
+    "answer": "QR-kod orqali kirish uchun mobil ilovada profil qismiga o'ting, tepada joylashgan skaner belgisini bosing va kompyuter ekranidagi QR-kodni skanerlang."
+  }
+]
