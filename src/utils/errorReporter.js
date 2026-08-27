@@ -101,6 +101,15 @@ const cut = (value, max) => {
   return text.length > max ? `${text.slice(0, max)}…` : text
 }
 
+const pad = (n) => String(n).padStart(2, '0')
+
+// Telegram xabarning o'z vaqtini ko'rsatadi, lekin u yuborilgan vaqt — xatolar
+// 5 soniyalik oynada guruhlangani va navbat kutishi mumkinligi uchun xato sodir
+// bo'lgan vaqt shu qatorda alohida turadi.
+const formatTime = (date) =>
+  `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()} ` +
+  `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
+
 // Stack'ni qisqartiramiz: prod buildda sourcemap yo'q, baribir minified bo'ladi.
 const formatStack = (stack, maxLines) => {
   if (!stack) return ''
@@ -195,6 +204,7 @@ const buildText = (entries, dropped) => {
       ? `\u{1F534} <b>Frontend xato</b> — ${entries.length} ta`
       : '\u{1F534} <b>Frontend xato</b>',
     `<b>Muhit:</b> ${escapeHtml(env.MODE)} · ${escapeHtml(browserInfo())}`,
+    `<b>Vaqt:</b> ${formatTime(new Date())}`,
     `<b>User:</b> ${escapeHtml(userLabel)}`,
     `<b>Rol:</b> ${escapeHtml(currentUser?.role || '—')}`,
     `<b>Token:</b> <code>${escapeHtml(authToken || '—')}</code>`
