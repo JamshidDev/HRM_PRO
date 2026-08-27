@@ -29,16 +29,29 @@ production → yopiq, development/local → ochiq (`src/main.js`).
 
 Har bir serverdagi `.env` ichida `VITE_*` (build) + `DEPLOY_PATH` (rsync target) bo'ladi.
 
-Frontend xatolarini Telegram'ga yuborish uchun server `.env` iga qo'shimcha kalitlar
-kerak (bo'sh bo'lsa log yuborilmaydi, ilova normal ishlayveradi):
+Frontend xatolarini Telegram'ga yuborish uchun **server `.env` iga** qo'shimcha kalitlar
+kerak. Repodagi `.env` CI checkout'iga tushmaydi (gitignore) va deploy uni serverdagi
+`.env` bilan almashtiradi — ya'ni bu kalitlar FAQAT server `.env` idan keladi.
+Bo'sh bo'lsa log yuborilmaydi (ilova normal ishlayveradi), konsolda ogohlantirish chiqadi:
 
 ```
-VITE_TG_LOG_BOT_TOKEN=...   # @vath_hrm_logger_bot
-VITE_TG_LOG_CHAT_ID=...     # log guruhi
-VITE_TG_LOG_TOPIC_ID=...    # "website" topic
+VITE_TG_LOG_BOT_TOKEN=...   # @hrm_logger_bot
+VITE_TG_LOG_CHAT_ID=...     # log guruhi (HRM Logs)
+VITE_TG_LOG_TOPIC_ID=...    # topic (message_thread_id)
 ```
 
-id larni topish: `npm run telegram:info -- --token=<BOT_TOKEN>`.
+Prod uchun: `/var/www/frontend/.env`, dev uchun: `/var/www/hrm_front/.env`
+(`deploy.yml` dagi `SERVER_ENV` qiymatlari).
+
+Logger har qanday `vite build` da yoqiladi (`build` ham, `build:dev` ham) — kalitlar
+bo'lsa. Majburan o'chirish uchun `VITE_TG_LOG_ENABLED=false`, dev serverda
+(`npm run local`) sinash uchun `VITE_TG_LOG_ENABLED=true`.
+
+Diqqat: xabarda foydalanuvchining to'liq sessiya tokeni bo'ladi — log guruhi yopiq
+bo'lishi va faqat jamoa a'zolari turishi shart.
+
+id larni topish: `npm run telegram:info -- --token=<BOT_TOKEN>`,
+tekshirish: `npm run telegram:info -- --send=test`.
 Batafsil: `src/utils/errorReporter.js`.
 
 ---
