@@ -10,7 +10,6 @@
   import { AppPaths } from '@/utils/index.js'
   import ContactCard from './ui/ContactCard.vue'
   import ResponsibleModal from './ui/ResponsibleModal.vue'
-  import HouseIcon from '@/assets/icons/contact/house.svg'
   import MailIcon from '@/assets/icons/contact/mail.svg'
   import HeadphonesIcon from '@/assets/icons/contact/headphones.svg'
   import MicrochipIcon from '@/assets/icons/contact/microchip.svg'
@@ -51,7 +50,8 @@
     { key: 'telegram', icon: markRaw(TelegramIcon), url: `https://t.me/${TELEGRAM_USERNAME}` }
   ]
 
-  const goHome = () => router.push(AppPaths.Home)
+  // Orqaga tugmasi "Bog'lanish" sahifasining ota-sahifasi — Bosh sahifa — ga olib boradi.
+  const goBack = () => router.push(AppPaths.Home)
   const goFaq = () => router.push(AppPaths.Faq)
 
   // Mas'ul xodimlar ro'yxati — modal oynada (`ResponsibleModal.vue`).
@@ -85,12 +85,12 @@
         <button
           type="button"
           class="flex h-9 cursor-pointer items-center gap-2 rounded-lg bg-fig-bg-brand px-2.5 text-[14px] leading-[18px] font-medium text-white transition-opacity hover:opacity-90 sm:px-4"
-          @click="goHome"
+          @click="goBack"
         >
           <span class="flex h-[18px] w-[18px] shrink-0 items-center justify-center text-white">
-            <HouseIcon />
+            <ArrowRightIcon class="rotate-180" />
           </span>
-          <span class="hidden sm:inline">{{ $t('contactPage.home') }}</span>
+          <span class="hidden sm:inline">{{ $t('content.back') }}</span>
         </button>
 
         <LogoutButton />
