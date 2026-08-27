@@ -411,6 +411,7 @@
     "ru": "RU",
     "en": "EN",
     "create": "Create",
+    "successCopied": "Copied successfully",
     "allSelected": "All selected",
     "sendToSign": "Send to sign",
     "rejectByMistake": "Return due to error",

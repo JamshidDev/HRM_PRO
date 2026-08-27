@@ -12,69 +12,65 @@
    * atamalar va faqat o'zbekcha berilgan — tarjimani o'ylab topib qo'yishdan
    * ko'ra asl matnni saqlagan ma'qul.
    */
+  import { Copy16Regular } from '@vicons/fluent'
   import { UIModal } from '@/components/index.js'
+  import { CATEGORY_ICONS } from '@/pages/app/categoryIcons.js'
   import XmarkIcon from '@/assets/icons/figXmark.svg'
   import ClockIcon from '@/assets/icons/contact/clock.svg'
-  import UsersIcon from '@/assets/icons/contact/users.svg'
-  import CalculatorIcon from '@/assets/icons/contact/calculator.svg'
-  import WalletIcon from '@/assets/icons/contact/wallet-alt.svg'
-  import ScanIcon from '@/assets/icons/contact/scan.svg'
-  import HeadphonesIcon from '@/assets/icons/contact/headphones-alt-2.svg'
+  import Utils from '@/utils/Utils.js'
+  import i18n from '@/i18n/index.js'
 
   const visible = defineModel('visible', { type: Boolean, default: false })
 
-  /**
-   * Maketda har bir qatorning ikonkasi va tint foni bor (node 3291:79373).
-   * Ikonka <-> xodim juftligi mantiqiy emas (masalan "turniket" uchun uchta
-   * xil ikonka) — shuning uchun har bir xodimga maketdagi juftlik biriktiriladi.
-   * SVG'lar `currentColor` bilan chiziladi, ya'ni rang matn klassidan olinadi
-   * va dark rejada `--fig-icon-*` qiymatlariga o'zi moslashadi.
-   */
-  const USERS = { icon: markRaw(UsersIcon), tint: 'bg-fig-bg-brand-surface text-fig-brand' }
-  const CALCULATOR = { icon: markRaw(CalculatorIcon), tint: 'bg-fig-green-100 text-fig-green' }
-  const WALLET = { icon: markRaw(WalletIcon), tint: 'bg-fig-indigo-100 text-fig-indigo' }
-  const SCAN = { icon: markRaw(ScanIcon), tint: 'bg-fig-amber-100 text-fig-amber' }
-  const HEADPHONES = { icon: markRaw(HeadphonesIcon), tint: 'bg-fig-red-100 text-fig-red' }
+  // "Ko'p beriladigan savollar" bo'limlari bilan bir xil ikonka — xodim qaysi
+  // bo'lim bo'yicha mas'ul bo'lsa, o'sha bo'limning ikonkasi ko'rsatiladi.
+  const CATEGORY_TINTS = {
+    staff: 'bg-fig-bg-brand-surface text-fig-brand',
+    salary: 'bg-fig-indigo-100 text-fig-indigo',
+    vacation: 'bg-fig-green-100 text-fig-green',
+    turnstile: 'bg-fig-amber-100 text-fig-amber',
+    technical: 'bg-fig-red-100 text-fig-red'
+  }
 
   const PEOPLE = [
     {
-      ...USERS,
+      category: 'technical',
       name: 'Raximov Jamshid',
       phone: '+998 99 501 60 04',
       role: "Tizim bo'yicha taklif va muammolar"
     },
     {
-      ...CALCULATOR,
+      category: 'staff',
       name: 'Ibragimov Shuhrat Shoyizoqovich',
       phone: '+998 99 974 85 96',
       role: "Kadrlar bo'yicha mas'ul xodim"
     },
     {
-      ...CALCULATOR,
+      category: 'staff',
       name: "Ergashov Sherzod Bahodir o'g'li",
       phone: '+998 93 320 45 01',
       role: "O'qish va sertifikatlar bo'yicha mas'ul xodim"
     },
     {
-      ...WALLET,
+      category: 'turnstile',
       name: "Azamjonov Azamshox Kozimjon o'g'li",
       phone: '+998 90 963 26 56',
       role: "Turniket bo'yicha mas'ul xodim"
     },
     {
-      ...SCAN,
+      category: 'turnstile',
       name: "Xakimov Javlonbek Oybek o'g'li",
       phone: '+998 33 285 20 00',
       role: "Turniket bo'yicha mas'ul xodim"
     },
     {
-      ...HEADPHONES,
+      category: 'turnstile',
       name: 'Safarov Samandar Abdiqodirovich',
       phone: '+998 90 912 04 09',
       role: "Turniket bo'yicha mas'ul xodim"
     },
     {
-      ...HEADPHONES,
+      category: 'salary',
       name: "Eshboyev Ulug'bek Farxodovich",
       phone: '+998 97 700 01 53',
       role: "Ekonomist bo'yicha mas'ul xodim"
@@ -83,6 +79,10 @@
 
   // `tel:` sxemasi bo'shliqlarni qabul qilmaydi
   const telHref = (phone) => `tel:${phone.replace(/\s/g, '')}`
+
+  const copyPhone = (phone) => {
+    Utils.copyToClipboard(phone, () => $Toast.success(i18n.global.t('content.successCopied')))
+  }
 </script>
 
 <template>
@@ -134,8 +134,13 @@
           class="flex items-center gap-2.5 rounded-2xl bg-fig-bg-secondary p-3"
         >
           <!-- 36px tint doira + 20px ikonka (node 3291:79420) -->
-          <span class="flex shrink-0 items-center rounded-full p-2" :class="person.tint">
-            <span class="responsible-modal__icon"><component :is="person.icon" /></span>
+          <span
+            class="flex shrink-0 items-center rounded-full p-2"
+            :class="CATEGORY_TINTS[person.category]"
+          >
+            <span class="responsible-modal__icon">
+              <component :is="CATEGORY_ICONS[person.category]" />
+            </span>
           </span>
 
           <div class="flex min-w-0 flex-1 flex-col gap-0.5">
@@ -155,6 +160,15 @@
           >
             {{ person.phone }}
           </a>
+
+          <button
+            type="button"
+            :aria-label="$t('content.copy')"
+            class="flex shrink-0 cursor-pointer items-center rounded-lg p-1.5 text-fig-text-tertiary transition-colors hover:bg-fig-bg-tertiary hover:text-fig-text-brand"
+            @click="copyPhone(person.phone)"
+          >
+            <n-icon size="16"><Copy16Regular /></n-icon>
+          </button>
         </li>
       </ul>
 
@@ -180,6 +194,11 @@
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
+  }
+
+  .responsible-modal__icon :deep(svg) {
+    width: 100%;
+    height: 100%;
   }
 
   .responsible-modal__clock {
