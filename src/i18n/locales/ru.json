@@ -4547,6 +4547,8 @@
     "addLocation": "Добавить местоположение",
     "locationExists": "Есть",
     "locationNotExists": "Нет",
+    "locationCount": "{n} местоположение(ий)",
+    "noLocation": "Нет местоположения",
     "tabs": {
       "departments": "Отделы",
       "locations": "Местоположения"
@@ -4559,7 +4561,7 @@
       "lng": "Долгота",
       "radius": "Радиус",
       "accuracy": "Точность",
-      "hasLocation": "Местоположение",
+      "hasLocation": "Местоположения",
       "location": "Местоположение"
     },
     "form": {

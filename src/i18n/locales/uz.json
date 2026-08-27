@@ -4578,6 +4578,8 @@
     "addLocation": "Joylashuv qo'shish",
     "locationExists": "Bor",
     "locationNotExists": "Yo'q",
+    "locationCount": "{n} ta joylashuv",
+    "noLocation": "Joylashuv yo'q",
     "tabs": {
       "departments": "Bo'limlar",
       "locations": "Joylashuvlar"

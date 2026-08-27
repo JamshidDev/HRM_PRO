@@ -4535,6 +4535,8 @@
     "addLocation": "Add Location",
     "locationExists": "Yes",
     "locationNotExists": "No",
+    "locationCount": "{n} location(s)",
+    "noLocation": "No location",
     "tabs": {
       "departments": "Departments",
       "locations": "Locations"
@@ -4547,7 +4549,7 @@
       "lng": "Longitude",
       "radius": "Radius",
       "accuracy": "Accuracy",
-      "hasLocation": "Location",
+      "hasLocation": "Locations",
       "location": "Location"
     },
     "form": {

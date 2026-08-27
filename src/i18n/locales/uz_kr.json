@@ -4317,6 +4317,8 @@
     "addLocation": "Жойлашув қўшиш",
     "locationExists": "Бор",
     "locationNotExists": "Йўқ",
+    "locationCount": "{n} та жойлашув",
+    "noLocation": "Жойлашув йўқ",
     "tabs": {
       "departments": "Бўлимлар",
       "locations": "Жойлашувлар"
