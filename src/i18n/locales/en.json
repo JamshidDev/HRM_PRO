@@ -10,7 +10,9 @@
       "contractType": "Contract type",
       "startDate": "Contract date",
       "dismissedAt": "Dismissal date",
-      "resume": "Resume"
+      "resume": "Download resume",
+      "currentOrg": "Current workplace",
+      "notEmployed": "Not in the network"
     }
   },
   "lateWorkersReport": {
@@ -116,6 +118,7 @@
     "onlineWorkers": "Employees online",
     "more": "Details",
     "count": "{count} people",
+    "countSuffix": "people",
     "actions": {
       "vacation": {
         "title": "Vacation",
@@ -423,7 +426,9 @@
     "pushBlockedTitle": "Notifications are blocked",
     "pushBlockedText": "The browser blocked notifications for this site. Click the lock icon in the address bar → “Notifications” → “Allow”, then reload the page.",
     "pushBlockedBtn": "How to enable?",
-    "pushEnabled": "Notifications enabled"
+    "pushEnabled": "Notifications enabled",
+    "pushCopyPath": "Copy address",
+    "pushPathCopied": "Address copied — paste it into the browser address bar"
   },
   "date": {
     "day": "Day",
@@ -1127,7 +1132,14 @@
     "pinfl": "PIN",
     "sealKeyLabel": "seal key",
     "noKeysTitle": "No keys found",
-    "noKeysDesc": "Check that your USB token or ID card is connected."
+    "noKeysDesc": "Check that your USB token or ID card is connected.",
+    "authKeySelectTitle": "Select an e-signature key",
+    "authKeySelectDesc": "Pick a key and enter your E-IMZO password — you will be signed in automatically.",
+    "organization": "Organization",
+    "position": "Position",
+    "storagePfx": "File key",
+    "storageToken": "USB token",
+    "notValidDate": "Expired"
   },
   "documentPage": {
     "name": "Documents",
@@ -1498,7 +1510,18 @@
     }
   },
   "educationDirectory": {
-    "name": "Education Directory"
+    "name": "Education Directory",
+    "tabs": {
+      "university": "Educational institutions",
+      "speciality": "Specialties",
+      "language": "Languages"
+    },
+    "table": {
+      "name": "Institution name",
+      "region": "Region",
+      "education": "Education level",
+      "type": "Institution type"
+    }
   },
   "othersPage": {
     "name": "Others",
@@ -4530,6 +4553,8 @@
     "addLocation": "Add Location",
     "locationExists": "Yes",
     "locationNotExists": "No",
+    "locationCount": "{n} location(s)",
+    "noLocation": "No location",
     "tabs": {
       "departments": "Departments",
       "locations": "Locations"
@@ -4542,7 +4567,7 @@
       "lng": "Longitude",
       "radius": "Radius",
       "accuracy": "Accuracy",
-      "hasLocation": "Location",
+      "hasLocation": "Locations",
       "location": "Location"
     },
     "form": {
@@ -4958,5 +4983,11 @@
     "historyBtn": "History",
     "showMasked": "Reveal masked",
     "hideMasked": "Hide masked"
+  },
+  "eimzoGate": {
+    "title": "Security verification",
+    "description": "To access economist data, confirm your identity with an e-signature (E-IMZO) key.",
+    "confirmBtn": "Verify with E-IMZO",
+    "verified": "Verified"
   }
 }

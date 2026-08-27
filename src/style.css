@@ -137,6 +137,17 @@
   .bg-surface-ground-soft {
     background-color: var(--surface-ground-soft);
   }
+
+  /* Bosh sahifa va "Bog'lanish" sahifasining bir xil gradient foni
+     (Figma node 3257:112460): burchak va to'xtash nuqtalari maketdan aynan. */
+  .bg-fig-page-gradient {
+    background-image: linear-gradient(
+      -9.063deg,
+      var(--fig-blue-300) 4.44%,
+      var(--fig-green-100) 32.67%,
+      var(--fig-blue-100) 100.24%
+    );
+  }
 }
 
 html,

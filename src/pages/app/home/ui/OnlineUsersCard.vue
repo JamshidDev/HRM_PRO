@@ -10,6 +10,7 @@
   import { useSocketStore } from '@/store/modules/index.js'
   import HomePanel from './HomePanel.vue'
   import ReactionButton from './ReactionButton.vue'
+  import RollingNumber from './RollingNumber.vue'
   import { useAppSetting, useDebounce, Utils } from '@/utils/index.js'
   import UsersIcon from '@/assets/icons/figUsers.svg'
   import LaptopIcon from '@/assets/icons/home/laptop.svg'
@@ -38,6 +39,32 @@
   const onReactionEv = (emoji, user) => {
     store.sendNotification({ emoji, toUserId: user.id })
   }
+
+  /**
+   * Chiqib ketayotgan avatar oqimdan olinadi (`position: absolute` — pastdagi
+   * `.online-list-leave-active`), shunda qolgan avatarlar `-move` animatsiyasi
+   * bilan silliq siljiydi va element o'chgan payt joyi "sakrab" yopilmaydi.
+   *
+   * Absolute element o'z o'rnida turishi uchun koordinatalari qo'lda beriladi —
+   * aks holda u konteynerning chap chetiga otilib ketardi.
+   *
+   * MUHIM: o'lchash `@leave` da emas, `@before-leave` da. Vue `leave-active`
+   * klassini (ya'ni `position: absolute`) foydalanuvchi `@leave` hook'idan
+   * OLDIN qo'yadi — u paytda element allaqachon oqimdan chiqqan bo'lib,
+   * o'lchov o'z o'rnini emas, absolute holatdagi joyini bergan bo'lardi.
+   */
+  const onBeforeLeave = (el) => {
+    const parent = el.parentElement
+    if (!parent) return
+
+    const rect = el.getBoundingClientRect()
+    const parentRect = parent.getBoundingClientRect()
+
+    // Absolute element `left/top` ni ota-elementning padding qutisidan hisoblaydi,
+    // chegara yo'q — shu bois rect'lar ayirmasi yetarli.
+    el.style.left = `${rect.left - parentRect.left}px`
+    el.style.top = `${rect.top - parentRect.top}px`
+  }
 </script>
 
 <template>
@@ -51,15 +78,27 @@
     class="min-h-[230px]"
     @action="store.userVisible = true"
   >
-    <p class="text-[16px] leading-5 font-semibold text-fig-text-primary">
-      {{ $t('homePage.count', { count: displayUsers.length }) }}
+    <!-- Son maketdagidan kattaroq va socket'dan yangi qiymat kelganda
+         "odometr" bo'lib aylanadi (`RollingNumber.vue`). -->
+    <p
+      class="flex items-center gap-1.5 text-[20px] leading-[26px] font-semibold text-fig-text-primary"
+    >
+      <RollingNumber :value="displayUsers.length" />
+      <span>{{ $t('homePage.countSuffix') }}</span>
     </p>
 
     <!-- Avatarlar har doim kartaning pastida (maket: node 3257:112547).
          O'lchamlar CSS o'zgaruvchilarida — mobilda ular kichrayadi, aks holda
          6 ta 84px avatar (399px) telefon ekraniga sig'maydi. -->
     <div class="online-users mt-auto flex items-end pt-6">
-      <transition-group name="online-list" tag="div" class="flex items-center">
+      <!-- `relative`: chiqib ketayotgan avatar `absolute` bo'ladi va uning
+           koordinatalari shu konteynerga nisbatan hisoblanadi (`onBeforeLeave`). -->
+      <transition-group
+        name="online-list"
+        tag="div"
+        class="online-users__list relative flex items-center"
+        @before-leave="onBeforeLeave"
+      >
         <div
           v-for="(user, index) in visibleUsers"
           :key="user.id"
@@ -131,8 +170,21 @@
     }
   }
 
-  /* Ustma-ust siljish: birinchi avatar joyida qoladi */
-  .online-users__item + .online-users__item {
+  /*
+    Ustma-ust siljish HAR BIR avatarga beriladi, birinchisining manfiy margin'ini
+    esa konteynerning padding'i qoplaydi (qatorning umumiy kengligi o'zgarmaydi).
+
+    Ilgari `item + item` selektori ishlatilardi. Chapdagi avatar ro'yxatdan
+    chiqqanda (animatsiya tugab, element DOM'dan o'chganda) qo'shnisi birinchi
+    farzandga aylanib manfiy margin'ini YO'QOTARDI — natijada butun qator
+    animatsiyadan keyin 21px o'ngga sakrab qolardi. Margin endi qo'shnilarga
+    bog'liq emas.
+  */
+  .online-users__list {
+    padding-left: var(--avatar-overlap);
+  }
+
+  .online-users__item {
     margin-left: calc(var(--avatar-overlap) * -1);
   }
 
@@ -141,7 +193,9 @@
     width: var(--avatar-size);
     height: var(--avatar-size);
     cursor: pointer;
-    transition: transform 0.2s ease;
+    /* Ro'yxat animatsiyasi bilan bir xil egri chiziq — kursor ustiga kelganda
+       kattalashish ham shu ohangda bo'ladi. */
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .online-users__badge {
@@ -171,19 +225,57 @@
     transform: translateX(-50%);
   }
 
+  /*
+    Ro'yxat animatsiyasi. Yangi xodim oxiriga qo'shiladi va oyna `slice(-6)`
+    bo'lgani uchun eng eskisi chapdan chiqib ketadi — shu bois yangisi O'NGDAN
+    kirib keladi, ketayotgani CHAPGA suriladi: animatsiya yo'nalishi
+    avatarlarning haqiqiy siljish yo'nalishi bilan bir xil bo'ladi.
+  */
   .online-list-enter-active,
   .online-list-leave-active,
   .online-list-move {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    /*
+      `all` ATAYLAB emas: ustma-ust siljishni beruvchi manfiy `margin-left` ham
+      animatsiyaga tushib, avatarlar bir-biridan uzilib, keyin qayta yopishardi.
+      Faqat `opacity` va `transform` — ikkalasi ham kompozitor xususiyatlari,
+      ya'ni layout qayta hisoblanmaydi.
+    */
+    transition:
+      opacity 0.3s ease,
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
+  /* Masshtab 0.3 emas, 0.85: avatar "sakrab" kattalashmaydi, faqat yumshoq
+     suzib chiqadi. */
   .online-list-enter-from {
     opacity: 0;
-    transform: scale(0.3) translateX(-40px);
+    transform: translateX(18px) scale(0.85);
   }
 
   .online-list-leave-to {
     opacity: 0;
-    transform: scale(0.3) translateX(40px);
+    transform: translateX(-18px) scale(0.85);
+  }
+
+  /*
+    Ketayotgan avatar oqimdan chiqadi — busiz u joyini band qilib turib, faqat
+    o'chgan paytda bo'shatardi va qolgan avatarlar bir kadrda sakrab qolardi.
+    Manfiy margin ham bekor qilinadi: absolute element uchun aniq koordinata
+    `onBeforeLeave` da berilgan, margin esa uni yana 21px chapga surib yuborardi.
+    Kursorni ham ushlamaydi — reaksiya oynasi endi ochilmaydi.
+  */
+  .online-users__item.online-list-leave-active {
+    position: absolute;
+    margin-left: 0;
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .online-list-enter-active,
+    .online-list-leave-active,
+    .online-list-move,
+    .online-users__avatar {
+      transition: none;
+    }
   }
 </style>

@@ -10,7 +10,9 @@
       "contractType": "Shartnoma turi",
       "startDate": "Shartnoma tuzilgan sana",
       "dismissedAt": "Bo‘shagan sana",
-      "resume": "Rezyume"
+      "resume": "Rezyume yuklash",
+      "currentOrg": "Hozirgi ish joyi",
+      "notEmployed": "Tarmoqda emas"
     }
   },
   "lateWorkersReport": {
@@ -120,6 +122,7 @@
     "onlineWorkers": "Online xodimlar",
     "more": "Batafsil",
     "count": "{count} ta",
+    "countSuffix": "ta",
     "actions": {
       "vacation": {
         "title": "Ta'til",
@@ -437,7 +440,9 @@
     "pushBlockedTitle": "Bildirishnomalar bloklangan",
     "pushBlockedText": "Brauzer bu sayt uchun bildirishnomani rad etgan. Manzil satridagi qulf belgisini bosing → «Bildirishnomalar» → «Ruxsat berish», so'ng sahifani yangilang.",
     "pushBlockedBtn": "Qanday yoqiladi?",
-    "pushEnabled": "Bildirishnomalar yoqildi"
+    "pushEnabled": "Bildirishnomalar yoqildi",
+    "pushCopyPath": "Manzilni nusxalash",
+    "pushPathCopied": "Manzil nusxalandi — brauzerning manzil satriga qo'ying"
   },
   "date": {
     "day": "Kun",
@@ -1145,7 +1150,13 @@
     "pinfl": "JSHSHIR",
     "sealKeyLabel": "muhrli kalit",
     "noKeysTitle": "Kalitlar topilmadi",
-    "noKeysDesc": "USB token yoki ID karta ulanganini tekshiring."
+    "noKeysDesc": "USB token yoki ID karta ulanganini tekshiring.",
+    "authKeySelectTitle": "ERI kalitini tanlang",
+    "authKeySelectDesc": "Kalitni tanlang va E-IMZO parolini kiriting — parol to'g'ri bo'lsa tizimga avtomatik kiritilasiz.",
+    "organization": "Tashkilot",
+    "position": "Lavozim",
+    "storagePfx": "Fayl kaliti",
+    "storageToken": "USB token"
   },
   "documentPage": {
     "name": "Hujjatlar",
@@ -1516,7 +1527,18 @@
     }
   },
   "educationDirectory": {
-    "name": "Ta'lim katalogi"
+    "name": "Ta'lim katalogi",
+    "tabs": {
+      "university": "O'quv yurtlari",
+      "speciality": "Mutaxassisliklar",
+      "language": "Tillar"
+    },
+    "table": {
+      "name": "Muassasa nomi",
+      "region": "Viloyat",
+      "education": "Ta'lim darajasi",
+      "type": "Muassasa turi"
+    }
   },
   "othersPage": {
     "name": "Boshqalar",
@@ -4574,6 +4596,8 @@
     "addLocation": "Joylashuv qo'shish",
     "locationExists": "Bor",
     "locationNotExists": "Yo'q",
+    "locationCount": "{n} ta joylashuv",
+    "noLocation": "Joylashuv yo'q",
     "tabs": {
       "departments": "Bo'limlar",
       "locations": "Joylashuvlar"
@@ -5002,5 +5026,11 @@
     "historyBtn": "Tarix",
     "showMasked": "Maskani ochish",
     "hideMasked": "Maskani yopish"
+  },
+  "eimzoGate": {
+    "title": "Xavfsizlik uchun tekshiruv",
+    "description": "Iqtisod bo'limi ma'lumotlariga kirish uchun shaxsingizni ERI (E-IMZO) kaliti bilan tasdiqlang.",
+    "confirmBtn": "E-IMZO bilan tasdiqlash",
+    "verified": "Tasdiqlandi"
   }
 }

@@ -1,12 +1,5 @@
 <script setup>
-  import {
-    UIStatus,
-    UITable,
-    UITableBadgeCell,
-    UITableNameCell,
-    UIUser,
-    UIUserGroup
-  } from '@/components/index.js'
+  import { UIStatus, UITable, UIUser, UIUserGroup } from '@/components/index.js'
   import { useAccountStore, useCommandStore, useComponentStore } from '@/store/modules/index.js'
   import {
     CheckmarkCircle32Regular,
@@ -58,23 +51,36 @@
     componentStore.fileVisible = true
   }
 
+  /**
+   * Maketdagi ism ko'rinishi: familiya + ism/otasining ismi bosh harflari
+   * ("Boboqulov J.X"). To'liq ism tooltipda qoladi.
+   */
+  const shortName = (worker) => {
+    const initials = [worker?.first_name, worker?.middle_name]
+      .filter(Boolean)
+      .map((part) => part[0].toUpperCase())
+      .join('.')
+
+    return [worker?.last_name, initials].filter(Boolean).join(' ') || '—'
+  }
+
   const changePage = (v) => {
     store.params.page = v.page
     store.params.per_page = v.per_page
     store._index()
   }
 
+  /**
+   * Ustunlar tartibi va kengliklari maketdan (node 2511:18100): № 40,
+   * Turi / Xodim / Korxona / Holati / Hujjat — qolgan joyni teng bo'lishadi
+   * (~163px), Raqami 90, Sana 100, amallar 50. "Xodim" maketda "Raqami" dan
+   * OLDIN turadi.
+   */
   const columns = computed(() => [
     {
       key: 'type',
       title: t('content.type'),
-      minWidth: 200
-    },
-    {
-      key: 'command_number',
-      title: t('confirmation.contract.form.number'),
-      width: 120,
-      align: 'center'
+      minWidth: 160
     },
     {
       key: 'workers',
@@ -82,24 +88,29 @@
       minWidth: 160
     },
     {
+      key: 'command_number',
+      title: t('confirmation.contract.form.number'),
+      width: 90
+    },
+    {
       key: 'organization.name',
       title: t('confirmation.contract.form.organization'),
-      minWidth: 200
+      minWidth: 160
     },
     {
       key: 'confirmation',
       title: t('content.status'),
-      width: 140
+      minWidth: 160
     },
     {
       key: 'generate',
       title: t('content.document'),
-      width: 120
+      minWidth: 160
     },
     {
       key: 'command_date',
       title: t('content.date'),
-      width: 120
+      width: 100
     }
   ])
 
@@ -119,8 +130,7 @@
       label: t('docxEditor.title'),
       key: Utils.ActionTypes.editV2,
       icon: UIHelper.renderIcon(DocumentEdit20Regular),
-      disabled: (row) =>
-        isApproved(row) || !accStore.checkPermission(accStore.pn.hrCommandsWrite),
+      disabled: (row) => isApproved(row) || !accStore.checkPermission(accStore.pn.hrCommandsWrite),
       action: onEditV2
     },
     {
@@ -148,33 +158,45 @@
     :page="store.params.page"
     :per-page="store.params.per_page"
     :total="store.totalItems"
-    storage-key="hrm-command"
+    storage-key="hrm-command-v2"
     @change-page="changePage"
   >
+    <!-- Maketda (node 2511:18119) bu katak — bitta qatorli oddiy matn: yaratilgan
+         vaqti uchun ikkinchi qator YO'Q. Hujjatni ochish uchun bosilishi saqlanadi,
+         ammo chizig'i faqat hover'da chiqadi — tinch holatda maketdek ko'rinadi. -->
     <template #cell-type="{ row }">
-      <UITableNameCell
-        :name="row?.type?.name"
-        :created-at="row.created_at"
+      <span
+        class="line-clamp-2 cursor-pointer text-sm leading-5 text-fig-text-secondary hover:text-primary hover:underline"
         @click="onOpenFile(row.id)"
-      />
+      >
+        {{ row?.type?.name }}
+      </span>
     </template>
 
+    <!-- Maketda raqam chip'siz, oddiy matn ko'rinishida va chapga tekislangan. -->
     <template #cell-command_number="{ row }">
-      <UITableBadgeCell :number="row?.command_number" type="primary" />
+      <span class="text-sm leading-5 text-fig-text-secondary">
+        {{ row?.command_number || '—' }}
+      </span>
     </template>
 
     <template #cell-workers="{ row }">
-      <UIUser
-        v-if="row.workers.length === 1"
-        :short="true"
-        :data="{
-          photo: row.workers[0].worker?.photo,
-          lastName: row.workers[0].worker.last_name,
-          firstName: row.workers[0].worker.first_name,
-          middleName: row.workers[0].worker.middle_name,
-          position: ''
-        }"
-      />
+      <!-- Maketda ism qisqartmasi "Boboqulov J.X" ko'rinishida va ism ostida
+           ikkinchi qator yo'q. `UIUser` ning o'z qisqartmasi bo'sh maydonlarda
+           "undefined" chiqargani uchun matn `shortName()` da yig'iladi. -->
+      <UIUser v-if="row.workers.length === 1" :data="{ photo: row.workers[0].worker?.photo }">
+        <template #name>
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <span class="w-full truncate text-sm leading-5 text-fig-text-primary">
+                {{ shortName(row.workers[0].worker) }}
+              </span>
+            </template>
+            <span>{{ Utils.combineFullName(row.workers[0].worker) }}</span>
+          </n-tooltip>
+        </template>
+        <template #position><span></span></template>
+      </UIUser>
       <UIUserGroup
         v-else
         class="relative"
@@ -189,15 +211,24 @@
     </template>
 
     <template #cell-confirmation="{ row }">
-      <UIStatus :status="row?.confirmation" />
+      <UIStatus :status="row?.confirmation" fig />
     </template>
 
+    <!-- Maketda tayyor hujjat BREND (ko'k) chipda, semantik yashilda emas —
+         "Hujjat" ustuni holat emas, hujjat mavjudligini bildiradi. Qolgan
+         holatlar (jarayonda / xato / yaratilmagan) semantik rangda qoladi. -->
     <template #cell-generate="{ row }">
-      <UIStatus :status="Utils.documentStatus[row?.generate]" />
+      <UIStatus
+        :status="Utils.documentStatus[row?.generate]"
+        :tone="row?.generate === 3 ? 'brand' : null"
+        fig
+      />
     </template>
 
     <template #cell-command_date="{ row }">
-      {{ Utils.timeOnlyDate(row?.command_date) }}
+      <span class="text-sm leading-5 text-fig-text-secondary">
+        {{ Utils.timeOnlyDate(row?.command_date) }}
+      </span>
     </template>
   </UITable>
 </template>

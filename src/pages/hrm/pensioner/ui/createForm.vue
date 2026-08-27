@@ -13,7 +13,6 @@
   const onSubmit = () => {
     formRef.value?.validate((error) => {
       if (!error) {
-        x
         const data = {
           ...store.payload,
           phone: store.payload.phone.replace(/-/g, ''),

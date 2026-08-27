@@ -10,7 +10,9 @@
       "contractType": "Шартнома тури",
       "startDate": "Шартнома тузилган сана",
       "dismissedAt": "Бўшаган сана",
-      "resume": "Резюме"
+      "resume": "Резюме юклаш",
+      "currentOrg": "Ҳозирги иш жойи",
+      "notEmployed": "Тармоқда эмас"
     }
   },
   "lateWorkersReport": {
@@ -45,6 +47,7 @@
     "onlineWorkers": "Онлайн ходимлар",
     "more": "Батафсил",
     "count": "{count} та",
+    "countSuffix": "та",
     "actions": {
       "vacation": {
         "title": "Таътил",
@@ -357,7 +360,9 @@
     "pushBlockedTitle": "Билдиришномалар блокланган",
     "pushBlockedText": "Браузер бу сайт учун билдиришномани рад этган. Манзил сатридаги қулф белгисини босинг → «Билдиришномалар» → «Рухсат бериш», сўнг саҳифани янгиланг.",
     "pushBlockedBtn": "Қандай ёқилади?",
-    "pushEnabled": "Билдиришномалар ёқилди"
+    "pushEnabled": "Билдиришномалар ёқилди",
+    "pushCopyPath": "Манзилни нусхалаш",
+    "pushPathCopied": "Манзил нусхаланди — браузернинг манзил сатрига қўйинг"
   },
   "date": {
     "day": "Кун",
@@ -1039,7 +1044,13 @@
     "pinfl": "ЖШШИР",
     "sealKeyLabel": "муҳрли калит",
     "noKeysTitle": "Калитлар топилмади",
-    "noKeysDesc": "USB токен ёки ID карта уланганини текширинг."
+    "noKeysDesc": "USB токен ёки ID карта уланганини текширинг.",
+    "authKeySelectTitle": "ЭРИ калитини танланг",
+    "authKeySelectDesc": "Калитни танланг ва E-IMZO паролини киритинг — парол тўғри бўлса тизимга автоматик киритиласиз.",
+    "organization": "Ташкилот",
+    "position": "Лавозим",
+    "storagePfx": "Файл калити",
+    "storageToken": "USB токен"
   },
   "documentPage": {
     "name": "Ҳужжатлар",
@@ -1362,7 +1373,18 @@
     }
   },
   "educationDirectory": {
-    "name": "Таълим каталоги"
+    "name": "Таълим каталоги",
+    "tabs": {
+      "university": "Ўқув юртлари",
+      "speciality": "Мутахассисликлар",
+      "language": "Тиллар"
+    },
+    "table": {
+      "name": "Муассаса номи",
+      "region": "Вилоят",
+      "education": "Таълим даражаси",
+      "type": "Муассаса тури"
+    }
   },
   "othersPage": {
     "name": "Бошқалар",
@@ -4313,6 +4335,8 @@
     "addLocation": "Жойлашув қўшиш",
     "locationExists": "Бор",
     "locationNotExists": "Йўқ",
+    "locationCount": "{n} та жойлашув",
+    "noLocation": "Жойлашув йўқ",
     "tabs": {
       "departments": "Бўлимлар",
       "locations": "Жойлашувлар"
@@ -4724,5 +4748,11 @@
     "historyBtn": "Тарих",
     "showMasked": "Маскани очиш",
     "hideMasked": "Маскани ёпиш"
+  },
+  "eimzoGate": {
+    "title": "Хавфсизлик учун текшируv",
+    "description": "Иқтисод бўлими маълумотларига кириш учун шахсингизни ЭРИ (E-IMZO) калити билан тасдиқланг.",
+    "confirmBtn": "E-IMZO билан тасдиқлаш",
+    "verified": "Тасдиқланди"
   }
 }

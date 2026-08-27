@@ -10,7 +10,9 @@
       "contractType": "Тип договора",
       "startDate": "Дата заключения договора",
       "dismissedAt": "Дата увольнения",
-      "resume": "Резюме"
+      "resume": "Скачать резюме",
+      "currentOrg": "Текущее место работы",
+      "notEmployed": "Вне сети"
     }
   },
   "lateWorkersReport": {
@@ -120,6 +122,7 @@
     "onlineWorkers": "Сотрудники онлайн",
     "more": "Подробнее",
     "count": "{count} чел.",
+    "countSuffix": "чел.",
     "actions": {
       "vacation": {
         "title": "Отпуск",
@@ -425,7 +428,9 @@
     "pushBlockedTitle": "Уведомления заблокированы",
     "pushBlockedText": "Браузер заблокировал уведомления для этого сайта. Нажмите значок замка в адресной строке → «Уведомления» → «Разрешить», затем обновите страницу.",
     "pushBlockedBtn": "Как включить?",
-    "pushEnabled": "Уведомления включены"
+    "pushEnabled": "Уведомления включены",
+    "pushCopyPath": "Скопировать адрес",
+    "pushPathCopied": "Адрес скопирован — вставьте его в адресную строку браузера"
   },
   "date": {
     "day": "День",
@@ -1129,7 +1134,14 @@
     "pinfl": "ПИНФЛ",
     "sealKeyLabel": "печать",
     "noKeysTitle": "Ключи не найдены",
-    "noKeysDesc": "Проверьте, что USB-токен или ID-карта подключены."
+    "noKeysDesc": "Проверьте, что USB-токен или ID-карта подключены.",
+    "authKeySelectTitle": "Выберите ключ ЭЦП",
+    "authKeySelectDesc": "Выберите ключ и введите пароль E-IMZO — при верном пароле вход выполнится автоматически.",
+    "organization": "Организация",
+    "position": "Должность",
+    "storagePfx": "Файловый ключ",
+    "storageToken": "USB-токен",
+    "notValidDate": "Срок истёк"
   },
   "documentPage": {
     "name": "Документы",
@@ -1500,7 +1512,18 @@
     }
   },
   "educationDirectory": {
-    "name": "Справочник образования"
+    "name": "Справочник образования",
+    "tabs": {
+      "university": "Учебные заведения",
+      "speciality": "Специальности",
+      "language": "Языки"
+    },
+    "table": {
+      "name": "Название учреждения",
+      "region": "Регион",
+      "education": "Уровень образования",
+      "type": "Тип учреждения"
+    }
   },
   "othersPage": {
     "name": "Другое",
@@ -4542,6 +4565,8 @@
     "addLocation": "Добавить местоположение",
     "locationExists": "Есть",
     "locationNotExists": "Нет",
+    "locationCount": "{n} местоположение(ий)",
+    "noLocation": "Нет местоположения",
     "tabs": {
       "departments": "Отделы",
       "locations": "Местоположения"
@@ -4554,7 +4579,7 @@
       "lng": "Долгота",
       "radius": "Радиус",
       "accuracy": "Точность",
-      "hasLocation": "Местоположение",
+      "hasLocation": "Местоположения",
       "location": "Местоположение"
     },
     "form": {
@@ -4970,5 +4995,11 @@
     "historyBtn": "История",
     "showMasked": "Показать полностью",
     "hideMasked": "Скрыть значения"
+  },
+  "eimzoGate": {
+    "title": "Проверка безопасности",
+    "description": "Для доступа к данным экономического отдела подтвердите личность ключом ЭЦП (E-IMZO).",
+    "confirmBtn": "Подтвердить через E-IMZO",
+    "verified": "Подтверждено"
   }
 }

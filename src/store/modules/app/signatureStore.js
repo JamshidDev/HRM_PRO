@@ -124,6 +124,13 @@ export const useSignatureStore = defineStore('signatureStore', {
           certificate: key.vo.name,
           inn: key.vo.TIN,
           vo: key.vo,
+          // Sertifikat ichidagi qo'shimcha ma'lumotlar — modalda kalitni
+          // tanlashdan oldin foydalanuvchi kimligini aniq ko'rsatish uchun.
+          organization: key.vo.O,
+          position: key.vo.T,
+          serialNumber: key.vo.serialNumber,
+          validFrom: key.vo.validFrom,
+          storageType: key.vo.type,
           isValid: new Date(key.validDate).getTime() > Date.now()
         })
       }
@@ -162,8 +169,12 @@ export const useSignatureStore = defineStore('signatureStore', {
             (id) => {
               callback(id, challenge)
             },
-            () => {
-              return uiHandleError
+            (e, r) => {
+              // Parol oynasi bekor qilinsa ham shu yerga tushadi — loading'ni
+              // ochib qo'ymaslik kerak, aks holda modal muzlab qoladi.
+              this.loading = false
+              if (e) uiShowMessage(errorCAPIWS + ' : ' + e)
+              else if (r) uiShowMessage(r)
             }
           )
         }
@@ -222,9 +233,10 @@ export const useSignatureStore = defineStore('signatureStore', {
             '&code=' + encodeURIComponent(pkcs7)
           )
         },
-        () => {
+        (e, r) => {
           this.loading = false
-          return uiHandleError
+          if (e) uiShowMessage(errorCAPIWS + ' : ' + e)
+          else if (r) uiShowMessage(r)
         },
         false
       )

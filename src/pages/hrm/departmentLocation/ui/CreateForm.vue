@@ -1,17 +1,38 @@
 <script setup>
-  import { ref, computed, getCurrentInstance } from 'vue'
+  import { ref, computed, watch, getCurrentInstance } from 'vue'
   import { UIModal } from '@/components/index.js'
-  import { useDepartmentLocationStore } from '@/store/modules/index.js'
+  import { useComponentStore, useDepartmentLocationStore } from '@/store/modules/index.js'
   import LocationMap from './LocationMap.vue'
   import { Map20Filled, Dismiss16Regular, Location20Filled } from '@vicons/fluent'
 
   const { proxy } = getCurrentInstance()
   const store = useDepartmentLocationStore()
+  const componentStore = useComponentStore()
+
+  // Bo'lim jadval qatoridan emas, jadval sarlavhasidagi "+" orqali ochilganda
+  // oldindan tanlanmagan bo'ladi — shunda uni shu formaning o'zida tanlaymiz.
+  const needDepartment = computed(() => store.visibleType && !store.selectedDepartment)
+
+  watch(
+    () => store.visible,
+    (v) => {
+      if (v && needDepartment.value && componentStore.departmentList.length === 0) {
+        componentStore._departments()
+      }
+    }
+  )
 
   const mapRef = ref(null)
   const formRef = ref(null)
 
   const rules = computed(() => ({
+    department_id: {
+      required: true,
+      // `type: 'number'` emas: backend id'ni satr sifatida ham qaytarishi mumkin.
+      validator: (_rule, value) => value !== null && value !== undefined && value !== '',
+      message: proxy.$t('departmentLocationPage.validation.departmentRequired'),
+      trigger: ['blur', 'change']
+    },
     lat: {
       required: true,
       type: 'number',
@@ -88,7 +109,11 @@
 <template>
   <UIModal
     v-model:visible="store.visible"
-    :title="$t('departmentLocationPage.attachTitle')"
+    :title="
+      store.visibleType
+        ? $t('departmentLocationPage.createTitle')
+        : $t('departmentLocationPage.updateTitle')
+    "
     width="95%"
     height="90vh"
   >
@@ -119,6 +144,29 @@
             size="medium"
             require-mark-placement="right-hanging"
           >
+            <!-- Bo'lim tanlash (faqat bo'lim oldindan berilmaganda) -->
+            <n-form-item
+              v-if="needDepartment"
+              :label="$t('departmentLocationPage.form.department')"
+              path="department_id"
+            >
+              <n-select
+                v-model:value="store.payload.department_id"
+                :options="componentStore.departmentList"
+                :loading="componentStore.departmentLoading"
+                :placeholder="$t('departmentLocationPage.form.department')"
+                label-field="name"
+                value-field="id"
+                filterable
+                remote
+                clearable
+                size="large"
+                @search="componentStore._onSearchDepartment"
+                @scroll="componentStore._onScrollDepartment"
+                @update:show="componentStore.onOpenDepartmentEv"
+              />
+            </n-form-item>
+
             <!-- Geo Type Card -->
             <div class="geo-type-card">
               <div class="flex items-center justify-between">
