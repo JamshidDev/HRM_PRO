@@ -101,12 +101,6 @@ const cut = (value, max) => {
   return text.length > max ? `${text.slice(0, max)}…` : text
 }
 
-const pad = (n) => String(n).padStart(2, '0')
-
-const formatTime = (date) =>
-  `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()} ` +
-  `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
-
 // Stack'ni qisqartiramiz: prod buildda sourcemap yo'q, baribir minified bo'ladi.
 const formatStack = (stack, maxLines) => {
   if (!stack) return ''
@@ -141,6 +135,25 @@ const browserInfo = () => {
   return `${browser.replace('/', ' ')} · ${os}`
 }
 
+// Ism-familiya va rol pinia store'da (`accountStore.account`), lekin uni bu yerda
+// import qilib bo'lmaydi: accountStore → service → errorReporter aylanma bog'liqlik
+// hosil qiladi. Shu sabab store profilni yuklaganda o'zi shu setterni chaqiradi
+// (`_index()`), chiqishda esa tozalaydi (`clearPermissions()`).
+let currentUser = null
+
+/**
+ * @param {{ id?: number|string, fullName?: string, role?: string } | null} user
+ */
+export const setErrorReporterUser = (user) => {
+  currentUser = user
+    ? {
+        id: user.id ?? '',
+        fullName: String(user.fullName || '').trim(),
+        role: String(user.role || '').trim()
+      }
+    : null
+}
+
 const fromStorage = (key) => {
   try {
     return localStorage.getItem(key) || ''
@@ -171,15 +184,19 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 // turishi shart: token bilan o'sha foydalanuvchi nomidan API'ga kirish mumkin.
 const buildText = (entries, dropped) => {
   const authToken = fromStorage(useAppSetting.tokenKey)
-  const userId = fromStorage(useAppSetting.accountUserId)
+  // id storage'da login paytidan bor; ism-familiya esa profil yuklangandan keyin
+  // paydo bo'ladi — boot vaqtidagi xatolarda faqat id ko'rinadi.
+  const userId = currentUser?.id || fromStorage(useAppSetting.accountUserId)
+  const userLabel =
+    [currentUser?.fullName, userId ? `id=${userId}` : ''].filter(Boolean).join(' · ') || 'mehmon'
 
   const head = [
     entries.length > 1
       ? `\u{1F534} <b>Frontend xato</b> — ${entries.length} ta`
       : '\u{1F534} <b>Frontend xato</b>',
     `<b>Muhit:</b> ${escapeHtml(env.MODE)} · ${escapeHtml(browserInfo())}`,
-    `<b>Vaqt:</b> ${formatTime(new Date())}`,
-    `<b>User:</b> ${escapeHtml(userId ? `id=${userId}` : 'mehmon')}`,
+    `<b>User:</b> ${escapeHtml(userLabel)}`,
+    `<b>Rol:</b> ${escapeHtml(currentUser?.role || '—')}`,
     `<b>Token:</b> <code>${escapeHtml(authToken || '—')}</code>`
   ]
 
