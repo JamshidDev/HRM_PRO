@@ -155,20 +155,21 @@
 
     <template #cell-experience="{ row }"> {{ row.experience }} {{ $t('content.year') }} </template>
 
+    <!-- NestJS boolean qaytaradi (Laravel 1/0 berardi) — truthy tekshiruv. -->
     <template #cell-invalid="{ row }">
-      {{ row.invalid === 1 ? $t('content.yes') : $t('content.no') }}
+      {{ row.invalid ? $t('content.yes') : $t('content.no') }}
     </template>
 
     <template #cell-railway_title="{ row }">
-      {{ row.railway_title === 1 ? $t('content.yes') : $t('content.no') }}
+      {{ row.railway_title ? $t('content.yes') : $t('content.no') }}
     </template>
 
     <template #cell-afghan="{ row }">
-      {{ row.afghan === 1 ? $t('content.yes') : $t('content.no') }}
+      {{ row.afghan ? $t('content.yes') : $t('content.no') }}
     </template>
 
     <template #cell-chernobyl="{ row }">
-      {{ row.chernobyl === 1 ? $t('content.yes') : $t('content.no') }}
+      {{ row.chernobyl ? $t('content.yes') : $t('content.no') }}
     </template>
   </UITable>
 </template>
