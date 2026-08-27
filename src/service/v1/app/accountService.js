@@ -17,7 +17,11 @@ const _changeRole = async (payload) => {
   return await axios.put(`/v1/user/change-organization`, payload?.data)
 }
 const _orgInfo = async (payload) => {
-  return await axios.get(`/v1/user/organization-info`)
+  // `silentError` — bosh sahifada ob-havo uchun shahar aniqlanayotganda
+  // xato toast chiqarmasin (`src/service/index.js` interceptori tekshiradi).
+  return await axios.get(`/v1/user/organization-info`, {
+    silentError: payload?.silentError
+  })
 }
 
 const _updateOrgInfo = async (payload) => {

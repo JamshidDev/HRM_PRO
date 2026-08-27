@@ -2,7 +2,9 @@
 import {useSocketStore} from '@/store/modules/index.js'
 import {UIDrawer, UIUser} from '@/components/index.js'
 import ReactionButton from './ReactionButton.vue'
-import {CheckmarkStarburst16Regular, Search48Filled} from '@vicons/fluent'
+import {CheckmarkStarburst16Regular, Laptop20Regular, Phone20Regular, Search48Filled} from '@vicons/fluent'
+import MobileIcon from '@/assets/icons/home/mobile.svg'
+import LaptopIcon from '@/assets/icons/home/laptop.svg'
 
 const store = useSocketStore()
 
@@ -62,12 +64,31 @@ const filteredUsers = computed(()=>{
             <n-icon :component="Search48Filled" />
           </template>
         </n-input>
+        <!-- Filtr tugmalari: "W"/"M" harflari o'rniga qurilma ikonkalari
+             (veb — laptop, mobil — telefon). Tanlanganda yonida topilganlar
+             soni chiqadi. -->
         <n-button-group>
-          <n-button :type="loginType === 'w' ? 'primary' : 'default'" round @click="onSelectType('w')">
-            {{ loginType === 'w'? filteredUsers.length : ' W' }}
+          <n-button
+            :type="loginType === 'w' ? 'primary' : 'default'"
+            round
+            :title="$t('homePage.deviceWeb')"
+            @click="onSelectType('w')"
+          >
+            <template #icon>
+              <n-icon :component="Laptop20Regular" />
+            </template>
+            <span v-if="loginType === 'w'">{{ filteredUsers.length }}</span>
           </n-button>
-          <n-button :type="loginType === 'm' ? 'success' : 'default'" round @click="onSelectType('m')">
-            {{ loginType === 'm'? filteredUsers.length : ' M' }}
+          <n-button
+            :type="loginType === 'm' ? 'success' : 'default'"
+            round
+            :title="$t('homePage.deviceMobile')"
+            @click="onSelectType('m')"
+          >
+            <template #icon>
+              <n-icon :component="Phone20Regular" />
+            </template>
+            <span v-if="loginType === 'm'">{{ filteredUsers.length }}</span>
           </n-button>
         </n-button-group>
       </div>
@@ -101,18 +122,17 @@ const filteredUsers = computed(()=>{
                 </template>
               </UIUser>
 
-              <!-- Device badge -->
+              <!-- Qurilma belgisi — bosh sahifadagi karta (`OnlineUsersCard.vue`)
+                   bilan bir xil ikonkalar: mobil uchun `mobile-alt`, veb uchun
+                   `laptop-alt`. SVG'lar oq rangda chizilgan, belgi foni esa
+                   qurilma turiga qarab yashil/ko'k. -->
               <div
-                class="p-1 absolute bottom-0 left-[28px] w-5 h-5 rounded-full border-2  flex items-center justify-center"
+                class="users-modal__badge absolute bottom-0 left-[28px] w-5 h-5 rounded-full border-2 flex items-center justify-center"
                 :class="user.type === 'mobile' ? 'bg-success border-[#2ca361]' : 'bg-primary border-[#6f99ff]'"
+                :title="user.type === 'mobile' ? $t('homePage.deviceMobile') : $t('homePage.deviceWeb')"
               >
-                <div v-if="user.type === 'mobile'" class="text-white text-[10px]">M</div>
-                <div v-else class="text-white text-[10px]">W</div>
-
-                <!--                <n-icon size="8" class="text-white">-->
-                <!--                  <Phone24Regular v-if="user.type === 'mobile'" />-->
-                <!--                  <Globe24Regular v-else />-->
-                <!--                </n-icon>-->
+                <MobileIcon v-if="user.type === 'mobile'" />
+                <LaptopIcon v-else />
               </div>
             </div>
             <div
@@ -127,3 +147,12 @@ const filteredUsers = computed(()=>{
     </template>
   </UIDrawer>
 </template>
+
+<style scoped>
+  /* SVG'larda o'lcham atributi 12px — 20px belgi ichida (2px hoshiya bilan)
+     u kattalik qiladi, shuning uchun kartadagi nisbatga moslab kichraytiriladi. */
+  .users-modal__badge :deep(svg) {
+    width: 11px;
+    height: 11px;
+  }
+</style>

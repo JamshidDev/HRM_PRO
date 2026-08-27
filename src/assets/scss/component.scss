@@ -123,3 +123,56 @@
 .sidebar-panel {
   // background:var(--sidebar-panel) !important;
 }
+
+/* «Tez orada» qatlami — backend hali bermayotgan (mock) dashboard kartalari.
+   Ikki komponent ishlatadi: `FigPanel` (grafik kartalari) va `FigKpiCard`
+   (yuqoridagi ko'rsatkich plitalari), shu sababli uslub global — scoped
+   bo'lsa ikkalasida takrorlanishi kerak bo'lardi.
+
+   Blur o'ramga emas, ICHKI `__card` qatlamiga beriladi: aks holda ustidagi
+   yozuv ham xiralashib ketardi. `filter` yangi stacking context yaratadi,
+   shu bois `__veil` aka-uka element sifatida ustida chiziladi. */
+.fig-soon {
+  position: relative;
+  height: 100%;
+}
+
+.fig-soon__card {
+  height: 100%;
+}
+
+.fig-soon--on > .fig-soon__card {
+  filter: blur(5px);
+  opacity: 0.85;
+  pointer-events: none;
+  user-select: none;
+}
+
+.fig-soon__veil {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface-section, #fff) 30%, transparent);
+}
+
+.fig-soon__badge {
+  padding: 4px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 999px;
+  color: var(--textColor1, #4b5563);
+  background: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+[data-theme='dark'] .fig-soon__badge {
+  border-color: #344054;
+  color: #f2f4f7;
+  background: #1d2939;
+}

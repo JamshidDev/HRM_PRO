@@ -65,18 +65,18 @@
     },
     {
       key: 'city.region.name',
-      title: t('othersPage.university.form.region_id'),
-      width: 300
+      title: t('educationDirectory.table.region'),
+      width: 200
     },
     {
       key: 'education.name',
-      title: t('othersPage.university.form.education'),
-      width: 300
+      title: t('educationDirectory.table.education'),
+      width: 270
     },
     {
       key: 'type.name',
-      title: t('othersPage.university.form.type'),
-      width: 300
+      title: t('educationDirectory.table.type'),
+      width: 200
     }
   ])
 

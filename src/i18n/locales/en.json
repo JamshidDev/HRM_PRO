@@ -10,7 +10,9 @@
       "contractType": "Contract type",
       "startDate": "Contract date",
       "dismissedAt": "Dismissal date",
-      "resume": "Resume"
+      "resume": "Download resume",
+      "currentOrg": "Current workplace",
+      "notEmployed": "Not in the network"
     }
   },
   "lateWorkersReport": {
@@ -107,7 +109,40 @@
   "homePage": {
     "wrongWorkerPins": "Wrong worker PINs",
     "downloaded": "File downloaded successfully",
-    "downloadFailed": "Failed to download file"
+    "downloadFailed": "Failed to download file",
+    "appName": "HRM Rail",
+    "welcome": "Welcome!",
+    "contact": "Support",
+    "logout": "Log out",
+    "news": "News",
+    "onlineWorkers": "Employees online",
+    "more": "Details",
+    "count": "{count} people",
+    "countSuffix": "people",
+    "actions": {
+      "vacation": {
+        "title": "Vacation",
+        "subtitle": "Submit a vacation request"
+      },
+      "reference": {
+        "title": "Reference",
+        "subtitle": "Request a reference"
+      },
+      "report": {
+        "title": "Report",
+        "subtitle": "Download a report"
+      },
+      "income": {
+        "title": "Income",
+        "subtitle": "Salary and payments"
+      },
+      "turnstile": {
+        "title": "Turnstile",
+        "subtitle": "Entry and exit history"
+      }
+    },
+    "deviceWeb": "Web",
+    "deviceMobile": "Mobile"
   },
   "content": {
     "user": "User",
@@ -828,7 +863,41 @@
     "optionsHint": "Tick what you need below so passport copies are included in the archive"
   },
   "contactPage": {
-    "name": "Contacts"
+    "name": "Contacts",
+    "title": "Contact",
+    "home": "Home",
+    "comingSoon": "Coming soon",
+    "telegram": {
+      "title": "Write on Telegram",
+      "subtitle": "Quick contact for questions and suggestions"
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "subtitle": "Information on frequently asked questions"
+    },
+    "email": {
+      "title": "Email",
+      "replyTime": "Response time:",
+      "replyTimeValue": "within 5 business days"
+    },
+    "callback": {
+      "title": "Who to contact?",
+      "text": "Call the relevant department employee directly about your question",
+      "action": "Open the list"
+    },
+    "ai": {
+      "title": "AI chatbot",
+      "text": "MuxlisaAI, built on artificial intelligence, answers your questions instantly",
+      "action": "Chat with the AI chatbot"
+    },
+    "address": "Address:",
+    "addressValue": "Uzbekistan, Tashkent, Taras Shevchenko 7",
+    "workHours": "Working hours:",
+    "workHoursValue": "Monday–Friday 09:00 – 18:00",
+    "social": "Social networks:",
+    "responsible": {
+      "title": "Who to contact"
+    }
   },
   "documentHistoryPage": {
     "name": "Document history"
@@ -1043,7 +1112,14 @@
     "pinfl": "PIN",
     "sealKeyLabel": "seal key",
     "noKeysTitle": "No keys found",
-    "noKeysDesc": "Check that your USB token or ID card is connected."
+    "noKeysDesc": "Check that your USB token or ID card is connected.",
+    "authKeySelectTitle": "Select an e-signature key",
+    "authKeySelectDesc": "Pick a key and enter your E-IMZO password — you will be signed in automatically.",
+    "organization": "Organization",
+    "position": "Position",
+    "storagePfx": "File key",
+    "storageToken": "USB token",
+    "notValidDate": "Expired"
   },
   "documentPage": {
     "name": "Documents",
@@ -1414,7 +1490,18 @@
     }
   },
   "educationDirectory": {
-    "name": "Education Directory"
+    "name": "Education Directory",
+    "tabs": {
+      "university": "Educational institutions",
+      "speciality": "Specialties",
+      "language": "Languages"
+    },
+    "table": {
+      "name": "Institution name",
+      "region": "Region",
+      "education": "Education level",
+      "type": "Institution type"
+    }
   },
   "othersPage": {
     "name": "Others",
@@ -4874,5 +4961,11 @@
     "historyBtn": "History",
     "showMasked": "Reveal masked",
     "hideMasked": "Hide masked"
+  },
+  "eimzoGate": {
+    "title": "Security verification",
+    "description": "To access economist data, confirm your identity with an e-signature (E-IMZO) key.",
+    "confirmBtn": "Verify with E-IMZO",
+    "verified": "Verified"
   }
 }

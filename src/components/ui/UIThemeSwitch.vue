@@ -1,56 +1,60 @@
 <script setup>
+  /**
+   * Figma "Header Container" (node 2646:184433 / AppSidebarItem 3288:73103) —
+   * mavzu almashtirgich.
+   *
+   * Maketda: 36px doira, `bg-tertiary` foni, ichida 20px ikonka. Maketda
+   * kunduzgi sahifada QUYOSH ko'rsatilgan, ya'ni ikonka JORIY mavzuni
+   * bildiradi (tungi rejimda oy). Ilgari bu teskari edi — bosilganda
+   * o'tiladigan mavzu ikonkasi turardi.
+   */
   import { useAppStore } from '@/store/modules/index.js'
-  import { WeatherMoon28Filled, WeatherSunny32Filled } from '@vicons/fluent'
+  import { WeatherMoon28Filled } from '@vicons/fluent'
+  import SunIcon from '@/assets/icons/figSun.svg'
 
   const store = useAppStore()
+
+  const toggle = () => store.setThemeMode(store.isDark ? 'light' : 'dark')
 </script>
 
 <template>
-  <n-button
-    @click="() => store.setThemeMode(store.isDark ? 'light' : 'dark')"
-    circle
-    quaternary
-    size="large"
-    class="relative"
+  <button
+    type="button"
+    class="relative flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-fig-bg-tertiary text-fig-amber transition-opacity hover:opacity-80"
+    :aria-label="$t('content.theme')"
+    @click="toggle"
   >
-    <template #icon>
-      <n-icon
-        class="text-warning mode-button !absolute !rotate-[120deg]"
-        :class="{ 'mode-button-active': !store.isDark }"
-      >
-        <WeatherMoon28Filled />
-      </n-icon>
-      <n-icon
-        class="text-warning mode-button !absolute"
-        :class="{ 'mode-button-active': store.isDark }"
-      >
-        <WeatherSunny32Filled />
-      </n-icon>
-    </template>
-  </n-button>
-  <!--  <n-switch v-model:value="store.themeSwitch" size="large" @update:value="store.changeTheme">-->
-  <!--    <template #checked-icon>-->
-  <!--      <n-icon class="text-primary">-->
-  <!--        <WeatherMoon28Filled/>-->
-  <!--      </n-icon>-->
-  <!--    </template>-->
-  <!--    <template #unchecked-icon>-->
-  <!--      <n-icon class="text-warning">-->
-  <!--        <WeatherSunny32Filled/>-->
-  <!--      </n-icon>-->
-  <!--    </template>-->
-  <!--  </n-switch>-->
+    <span class="mode-icon" :class="{ 'mode-icon--active': !store.isDark }">
+      <SunIcon />
+    </span>
+    <span class="mode-icon mode-icon--moon" :class="{ 'mode-icon--active': store.isDark }">
+      <n-icon :size="20"><WeatherMoon28Filled /></n-icon>
+    </span>
+  </button>
 </template>
 
-<style scoped lang="scss">
-  .mode-button {
+<style scoped>
+  /* Ikkala ikonka ustma-ust turadi va almashganda aylanib "o'sadi" */
+  .mode-icon {
+    position: absolute;
+    display: flex;
+    height: 20px;
+    width: 20px;
+    align-items: center;
+    justify-content: center;
     transform: scale(0);
-    transition: all 0.3s ease;
     opacity: 0;
+    transition: all 0.3s ease;
+  }
 
-    &-active {
-      transform: scale(1);
-      opacity: 1;
-    }
+  /* Aylanish Tailwind klassi bilan emas, shu yerda: `transform` bitta
+     xossada bo'lgani uchun `scale` bilan to'qnashmasin. */
+  .mode-icon--moon {
+    transform: scale(0) rotate(120deg);
+  }
+
+  .mode-icon--active {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
   }
 </style>

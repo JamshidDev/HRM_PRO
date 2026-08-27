@@ -41,6 +41,7 @@
 
 <template>
   <UIPageFilter
+    inline-actions
     :add-permission="accStore.pn.hrPensionersWrite"
     v-model:search="store.params.search"
     :search-loading="store.loading"

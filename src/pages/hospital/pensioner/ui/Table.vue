@@ -12,7 +12,8 @@
     store._index()
   }
 
-  const yesNo = (v) => (v === 1 ? t('content.yes') : t('content.no'))
+  // NestJS boolean qaytaradi (Laravel 1/0 berardi) — shuning uchun truthy tekshiruv.
+  const yesNo = (v) => (v ? t('content.yes') : t('content.no'))
 
   const columns = computed(() => [
     {

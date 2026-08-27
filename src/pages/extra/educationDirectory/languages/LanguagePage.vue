@@ -1,5 +1,5 @@
 <script setup>
-  import { UIDrawer } from '@/components/index.js'
+  import { UIModal } from '@/components/index.js'
   import Table from './ui/Table.vue'
   import createForm from './ui/createFrom.vue'
   import { useLanguageAdminStore } from '@/store/modules/admin/languageAdminStore.js'
@@ -7,6 +7,7 @@
   const accStore = useAccountStore()
 
   const store = useLanguageAdminStore()
+  const createFormRef = ref(null)
 
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.languagesRead)) return
@@ -17,18 +18,31 @@
 <template>
   <div class="h-full">
     <Table />
-    <UIDrawer
-      :visible="store.visible"
-      @update:visible="(v) => (store.visible = v)"
+    <UIModal
+      v-model:visible="store.visible"
       :title="
         store.visibleType
           ? $t('othersPage.language.createTitle')
           : $t('othersPage.language.updateTitle')
       "
+      width="min(560px, calc(100vw - 32px))"
     >
-      <template #content>
-        <createForm />
+      <createForm ref="createFormRef" />
+      <template #footer>
+        <div class="flex justify-end gap-2 px-4 pb-2">
+          <n-button type="error" ghost class="w-[130px]" @click="store.openVisible(false)">
+            {{ $t('content.cancel') }}
+          </n-button>
+          <n-button
+            type="primary"
+            class="w-[130px]"
+            :loading="store.saveLoading"
+            @click="createFormRef?.submit()"
+          >
+            {{ $t('content.save') }}
+          </n-button>
+        </div>
       </template>
-    </UIDrawer>
+    </UIModal>
   </div>
 </template>

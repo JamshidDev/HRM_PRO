@@ -10,7 +10,9 @@
       "contractType": "Тип договора",
       "startDate": "Дата заключения договора",
       "dismissedAt": "Дата увольнения",
-      "resume": "Резюме"
+      "resume": "Скачать резюме",
+      "currentOrg": "Текущее место работы",
+      "notEmployed": "Вне сети"
     }
   },
   "lateWorkersReport": {
@@ -111,7 +113,40 @@
   "homePage": {
     "wrongWorkerPins": "Неверные ПИН-коды сотрудников",
     "downloaded": "Файл успешно загружен",
-    "downloadFailed": "Не удалось загрузить файл"
+    "downloadFailed": "Не удалось загрузить файл",
+    "appName": "HRM Rail",
+    "welcome": "Добро пожаловать!",
+    "contact": "Связь",
+    "logout": "Выход",
+    "news": "Новости",
+    "onlineWorkers": "Сотрудники онлайн",
+    "more": "Подробнее",
+    "count": "{count} чел.",
+    "countSuffix": "чел.",
+    "actions": {
+      "vacation": {
+        "title": "Отпуск",
+        "subtitle": "Подать заявление на отпуск"
+      },
+      "reference": {
+        "title": "Справка",
+        "subtitle": "Запросить справку"
+      },
+      "report": {
+        "title": "Отчёт",
+        "subtitle": "Скачать отчёт"
+      },
+      "income": {
+        "title": "Доход",
+        "subtitle": "Зарплата и выплаты"
+      },
+      "turnstile": {
+        "title": "Турникет",
+        "subtitle": "История входов и выходов"
+      }
+    },
+    "deviceWeb": "Веб",
+    "deviceMobile": "Мобильный"
   },
   "content": {
     "user": "Пользователь",
@@ -830,7 +865,41 @@
     "optionsHint": "Отметьте нужное ниже, чтобы копии паспортов попали в архив"
   },
   "contactPage": {
-    "name": "Контакты"
+    "name": "Контакты",
+    "title": "Связь",
+    "home": "Главная",
+    "comingSoon": "Скоро",
+    "telegram": {
+      "title": "Написать в Telegram",
+      "subtitle": "Быстрая связь для вопросов и предложений"
+    },
+    "faq": {
+      "title": "Часто задаваемые вопросы",
+      "subtitle": "Информация по часто задаваемым вопросам"
+    },
+    "email": {
+      "title": "Электронная почта",
+      "replyTime": "Срок рассмотрения обращения:",
+      "replyTimeValue": "в течение 5 рабочих дней"
+    },
+    "callback": {
+      "title": "С кем связаться?",
+      "text": "Позвоните напрямую сотруднику нужного отдела по вашему вопросу",
+      "action": "Открыть список"
+    },
+    "ai": {
+      "title": "AI chatbot",
+      "text": "На ваши вопросы быстро ответит MuxlisaAI на основе искусственного интеллекта",
+      "action": "Пообщаться с AI chatbot"
+    },
+    "address": "Адрес:",
+    "addressValue": "Узбекистан, Ташкент, Тараса Шевченко 7",
+    "workHours": "Время работы:",
+    "workHoursValue": "Понедельник–Пятница 09:00 – 18:00",
+    "social": "Социальные сети:",
+    "responsible": {
+      "title": "С кем связаться"
+    }
   },
   "documentHistoryPage": {
     "name": "История документов"
@@ -1045,7 +1114,14 @@
     "pinfl": "ПИНФЛ",
     "sealKeyLabel": "печать",
     "noKeysTitle": "Ключи не найдены",
-    "noKeysDesc": "Проверьте, что USB-токен или ID-карта подключены."
+    "noKeysDesc": "Проверьте, что USB-токен или ID-карта подключены.",
+    "authKeySelectTitle": "Выберите ключ ЭЦП",
+    "authKeySelectDesc": "Выберите ключ и введите пароль E-IMZO — при верном пароле вход выполнится автоматически.",
+    "organization": "Организация",
+    "position": "Должность",
+    "storagePfx": "Файловый ключ",
+    "storageToken": "USB-токен",
+    "notValidDate": "Срок истёк"
   },
   "documentPage": {
     "name": "Документы",
@@ -1416,7 +1492,18 @@
     }
   },
   "educationDirectory": {
-    "name": "Справочник образования"
+    "name": "Справочник образования",
+    "tabs": {
+      "university": "Учебные заведения",
+      "speciality": "Специальности",
+      "language": "Языки"
+    },
+    "table": {
+      "name": "Название учреждения",
+      "region": "Регион",
+      "education": "Уровень образования",
+      "type": "Тип учреждения"
+    }
   },
   "othersPage": {
     "name": "Другое",
@@ -4886,5 +4973,11 @@
     "historyBtn": "История",
     "showMasked": "Показать полностью",
     "hideMasked": "Скрыть значения"
+  },
+  "eimzoGate": {
+    "title": "Проверка безопасности",
+    "description": "Для доступа к данным экономического отдела подтвердите личность ключом ЭЦП (E-IMZO).",
+    "confirmBtn": "Подтвердить через E-IMZO",
+    "verified": "Подтверждено"
   }
 }

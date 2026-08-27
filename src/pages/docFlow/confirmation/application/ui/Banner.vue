@@ -170,7 +170,14 @@
         }}</n-button>
       </div>
     </div>
-    <div class="col-span-12 md:col-span-4">
+    <!-- Mobilda YASHIRIN. `vue-echarts` `document.head` ga QATLAMSIZ global
+         uslub qo'yadi (`x-vue-echarts { height: 100% }`), Tailwind v4 esa
+         utility'larni `@layer utilities` da chiqaradi — kaskadda qatlamsiz
+         qoida spesifiklikdan qat'i nazar ustun, ya'ni `h-[200px]` hech qachon
+         ishlamaydi. Desktopda balandlikni yonidagi banner o'lchamidagi grid
+         qatori beradi (`h-full`), mobilda esa qator `auto` bo'lib grafik nolga
+         yopiladi va faqat bo'sh oq quti qolardi. -->
+    <div class="col-span-12 md:col-span-4 hidden md:block">
       <div class="w-full h-full border border-surface-line bg-surface-section p-2 rounded-lg">
         <v-chart class="h-[200px]" autoresize :option="contractOption" />
       </div>

@@ -10,7 +10,9 @@
       "contractType": "Шартнома тури",
       "startDate": "Шартнома тузилган сана",
       "dismissedAt": "Бўшаган сана",
-      "resume": "Резюме"
+      "resume": "Резюме юклаш",
+      "currentOrg": "Ҳозирги иш жойи",
+      "notEmployed": "Тармоқда эмас"
     }
   },
   "lateWorkersReport": {
@@ -36,7 +38,40 @@
   "homePage": {
     "wrongWorkerPins": "Нотўғри ходим ПИН-кодлари",
     "downloaded": "Файл муваффақиятли юклаб олинди",
-    "downloadFailed": "Файлни юклаб олишда хатолик"
+    "downloadFailed": "Файлни юклаб олишда хатолик",
+    "appName": "HRM Rail",
+    "welcome": "Хуш келибсиз!",
+    "contact": "Алоқа",
+    "logout": "Чиқиш",
+    "news": "Янгиликлар",
+    "onlineWorkers": "Онлайн ходимлар",
+    "more": "Батафсил",
+    "count": "{count} та",
+    "countSuffix": "та",
+    "actions": {
+      "vacation": {
+        "title": "Таътил",
+        "subtitle": "Таътил учун ариза бериш"
+      },
+      "reference": {
+        "title": "Маълумотнома",
+        "subtitle": "Маълумотнома сўраш"
+      },
+      "report": {
+        "title": "Ҳисобот",
+        "subtitle": "Ҳисобот юклаш"
+      },
+      "income": {
+        "title": "Даромад",
+        "subtitle": "Иш ҳақи ва тўловлар"
+      },
+      "turnstile": {
+        "title": "Турникет",
+        "subtitle": "Кириш-чиқиш тарихи"
+      }
+    },
+    "deviceWeb": "Веб",
+    "deviceMobile": "Мобил"
   },
   "content": {
     "user": "Фойдаланувчи",
@@ -742,7 +777,41 @@
     "optionsHint": "Паспорт нусхалари архивга қўшилиши учун қуйидагилардан кераклигини белгиланг"
   },
   "contactPage": {
-    "name": "Контактлар"
+    "name": "Контактлар",
+    "title": "Боғланиш",
+    "home": "Бош саҳифа",
+    "comingSoon": "Тез кунда",
+    "telegram": {
+      "title": "Telegram орқали ёзиш",
+      "subtitle": "Савол ва таклифлар учун тезкор алоқа"
+    },
+    "faq": {
+      "title": "Кўп бериладиган саволлар",
+      "subtitle": "Тез-тез бериладиган саволлар бўйича маълумот"
+    },
+    "email": {
+      "title": "Электрон почта",
+      "replyTime": "Мурожаатни кўриб чиқиш муддати:",
+      "replyTimeValue": "5 иш куни ичида"
+    },
+    "callback": {
+      "title": "Ким билан боғланиш?",
+      "text": "Саволингиз бўйича керакли бўлим ходимига тўғридан-тўғри қўнғироқ қилинг",
+      "action": "Рўйхатни очиш"
+    },
+    "ai": {
+      "title": "AI chatbot",
+      "text": "Саволларингизга сунъий интеллект асосида яратилган MuxlisaAI тезкор жавоб беради",
+      "action": "AI chatbot билан суҳбатлашиш"
+    },
+    "address": "Манзил:",
+    "addressValue": "Uzbekistan, Tashkent, Taras Shevchenko 7",
+    "workHours": "Иш вақти:",
+    "workHoursValue": "Душанба–Жума 09:00 – 18:00",
+    "social": "Ижтимоий тармоқлар:",
+    "responsible": {
+      "title": "Ким билан боғланиш"
+    }
   },
   "documentHistoryPage": {
     "name": "Ҳужжатлар тарихи"
@@ -955,7 +1024,13 @@
     "pinfl": "ЖШШИР",
     "sealKeyLabel": "муҳрли калит",
     "noKeysTitle": "Калитлар топилмади",
-    "noKeysDesc": "USB токен ёки ID карта уланганини текширинг."
+    "noKeysDesc": "USB токен ёки ID карта уланганини текширинг.",
+    "authKeySelectTitle": "ЭРИ калитини танланг",
+    "authKeySelectDesc": "Калитни танланг ва E-IMZO паролини киритинг — парол тўғри бўлса тизимга автоматик киритиласиз.",
+    "organization": "Ташкилот",
+    "position": "Лавозим",
+    "storagePfx": "Файл калити",
+    "storageToken": "USB токен"
   },
   "documentPage": {
     "name": "Ҳужжатлар",
@@ -1278,7 +1353,18 @@
     }
   },
   "educationDirectory": {
-    "name": "Таълим каталоги"
+    "name": "Таълим каталоги",
+    "tabs": {
+      "university": "Ўқув юртлари",
+      "speciality": "Мутахассисликлар",
+      "language": "Тиллар"
+    },
+    "table": {
+      "name": "Муассаса номи",
+      "region": "Вилоят",
+      "education": "Таълим даражаси",
+      "type": "Муассаса тури"
+    }
   },
   "othersPage": {
     "name": "Бошқалар",
@@ -4640,5 +4726,11 @@
     "historyBtn": "Тарих",
     "showMasked": "Маскани очиш",
     "hideMasked": "Маскани ёпиш"
+  },
+  "eimzoGate": {
+    "title": "Хавфсизлик учун текшируv",
+    "description": "Иқтисод бўлими маълумотларига кириш учун шахсингизни ЭРИ (E-IMZO) калити билан тасдиқланг.",
+    "confirmBtn": "E-IMZO билан тасдиқлаш",
+    "verified": "Тасдиқланди"
   }
 }

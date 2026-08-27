@@ -18,34 +18,29 @@
       }
     })
   }
+
+  defineExpose({ submit: onSubmit })
 </script>
 
 <template>
   <n-form ref="formRef" :rules="validationRules.common" :model="store.payload">
-    <div style="min-height: calc(100vh - 120px)">
-      <n-form-item :label="$t(`othersPage.language.form.nameUz`)" path="name" :rule-path="validationRules.rulesNames.requiredStringField">
-        <UIMultipleLangItems>
-          <template #uz-content>
-            <n-input type="text" v-model:value="store.payload.name" />
-          </template>
-          <template #ru-content>
-            <n-input class="skip-format" type="text" v-model:value="store.payload.name_ru" />
-          </template>
-          <template #en-content>
-            <n-input type="text" v-model:value="store.payload.name_en" />
-          </template>
-        </UIMultipleLangItems>
-      </n-form-item>
-    </div>
-
-    <div class="grid grid-cols-2 gap-2">
-      <n-button @click="store.openVisible(false)" type="error" ghost>
-        {{ $t('content.cancel') }}
-      </n-button>
-      <n-button @click="onSubmit" :loading="store.saveLoading" type="primary">
-        {{ $t('content.save') }}
-      </n-button>
-    </div>
+    <n-form-item
+      :label="$t(`othersPage.language.form.nameUz`)"
+      path="name"
+      :rule-path="validationRules.rulesNames.requiredStringField"
+    >
+      <UIMultipleLangItems>
+        <template #uz-content>
+          <n-input type="text" v-model:value="store.payload.name" />
+        </template>
+        <template #ru-content>
+          <n-input class="skip-format" type="text" v-model:value="store.payload.name_ru" />
+        </template>
+        <template #en-content>
+          <n-input type="text" v-model:value="store.payload.name_en" />
+        </template>
+      </UIMultipleLangItems>
+    </n-form-item>
   </n-form>
 </template>
 

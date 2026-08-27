@@ -15,6 +15,16 @@
     modelValue: {
       type: [Number, String],
       default: null
+    },
+    /**
+     * `brand` (default) — faol bo'lim ko'k pill (node 2584:199893).
+     * `surface` — faol bo'lim OQ pill, matn to'q rangda qoladi: Ta'lim katalogi
+     * maketidagi variant (node 3335:91267). Faqat pill rangi va yo'lak
+     * o'lchamlari farq qiladi, xatti-harakat bir xil.
+     */
+    variant: {
+      type: String,
+      default: 'brand' // brand | surface
     }
   })
 
@@ -97,7 +107,7 @@
 </script>
 
 <template>
-  <div ref="trackRef" class="seg-tabs">
+  <div ref="trackRef" class="seg-tabs" :class="variant === 'surface' && 'seg-tabs--surface'">
     <div ref="innerRef" class="seg-tabs__inner">
       <span
         class="seg-tabs__indicator"
@@ -249,6 +259,38 @@
   .seg-tabs__item--active .seg-tabs__badge {
     background: rgba(255, 255, 255, 0.24);
     color: #ffffff;
+  }
+
+  /**
+   * `surface` varianti — Ta'lim katalogi maketi: 36px yo'lak, 2px ichki bo'shliq
+   * va OQ pill. Matn ikkala holatda ham to'q rangda qoladi, faol bo'lim faqat
+   * fon va shrift qalinligi bilan ajralib turadi.
+   *
+   * Qorong'i mavzuda pill `--fig-block-bg` (kartochka foni) bo'ladi: oq pill
+   * to'q yo'lakda ko'zni qamashtirardi.
+   */
+  .seg-tabs--surface {
+    height: 36px;
+    padding: 2px;
+
+    .seg-tabs__indicator {
+      background: var(--fig-block-bg);
+    }
+
+    .seg-tabs__item {
+      color: var(--fig-text-primary);
+    }
+
+    .seg-tabs__item--active {
+      color: var(--fig-text-primary);
+    }
+
+    // Oq pill ustidagi son: shaffof oq fon ko'rinmaydi, shu bois kulrang chip
+    // asl holida qoladi.
+    .seg-tabs__item--active .seg-tabs__badge {
+      background: var(--fig-bg-tertiary);
+      color: var(--fig-text-secondary);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

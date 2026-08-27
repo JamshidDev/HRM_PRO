@@ -5,11 +5,16 @@
   import enFlag from '@/assets/images/content/en.png'
   import i18n from '@/i18n/index.js'
   import { ChevronDown24Filled } from '@vicons/fluent'
+  import ChevronDownIcon from '@/assets/icons/figChevronDown.svg'
   import { useAppSetting } from '@/utils/index.js'
   const { t } = i18n.global
 
   defineProps({
-    compact: { type: Boolean, default: false }
+    compact: { type: Boolean, default: false },
+    // Figma "Header Container" (node 2646:184433) ko'rinishi: `bg-tertiary`
+    // to'liq yumaloq tabletka, 24px bayroq + qisqa nom + 16px shevron.
+    // Opsional — mavjud chaqiruvlar (public/ToolBar, documentSignature) o'zgarmaydi.
+    pill: { type: Boolean, default: false }
   })
 
   const currentLang = ref('uz')
@@ -157,9 +162,22 @@
 <template>
   <n-dropdown trigger="click" :options="options">
     <div
-      v-if="compact"
-      class="flex items-center justify-center cursor-pointer"
+      v-if="pill"
+      class="flex cursor-pointer items-center gap-1 rounded-full bg-fig-bg-tertiary py-1.5 pr-1.5 pl-1"
     >
+      <div class="flex items-center gap-2">
+        <n-avatar class="h-[24px]! w-[24px]!" round size="small" :src="dropdown.icon" />
+        <span
+          class="text-[14px] leading-[18px] font-medium whitespace-nowrap text-fig-text-primary"
+        >
+          {{ $t(dropdown.text) }}
+        </span>
+      </div>
+      <span class="flex h-4 w-4 shrink-0 items-center justify-center text-fig-text-tertiary">
+        <ChevronDownIcon />
+      </span>
+    </div>
+    <div v-else-if="compact" class="flex items-center justify-center cursor-pointer">
       <n-avatar class="w-[26px]! h-[26px]!" round size="small" :src="dropdown.icon" />
     </div>
     <div

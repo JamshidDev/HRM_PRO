@@ -93,11 +93,15 @@ function uiUpdateApp() {
 }
 
 function uiNotLoaded(e) {
-    // show message "E-IMZO not installed"
-    uiShowMessage(errorCAPIWS + " : " + wsErroCodeDesc(e));
+    // Ilova bu holat uchun o'z xabarini ko'rsatadi (signature.connectionError),
+    // shuning uchun bu yerda takroriy toast chiqarilmaydi.
+    console.warn("E-IMZO not loaded:", wsErroCodeDesc(e) || e);
 }
 
 function wsErroCodeDesc(code) {
+    // WebSocket xatosi Event obyekti bo'lib kelishi mumkin — u holda "[object Event]"
+    // yozuvini ko'rsatmaymiz, faqat tushunarli xabar qoladi.
+    if (typeof code !== "number") return "";
     let reason;
     if (code == 1000)
         reason = code + " - " + "Normal closure, meaning that the purpose for which the connection was established has been fulfilled.";
@@ -131,8 +135,9 @@ function wsErroCodeDesc(code) {
 };
 
 function wsError(e) {
+    // Takroriy xabar bermaymiz — ilova o'z toastini ko'rsatadi.
     if (e) {
-        uiShowMessage(errorCAPIWS + " : " + wsErroCodeDesc(e));
+        console.warn("E-IMZO ws error:", wsErroCodeDesc(e) || e);
     } else {
         uiShowMessage(errorBrowserWS);
     }

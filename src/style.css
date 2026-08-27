@@ -17,6 +17,7 @@
   --color-danger: var(--danger-color);
   --color-secondary: var(--secondary-color);
   --color-white: var(--white-color);
+  --color-black: var(--black-color);
   --color-dark: var(--dark-color);
   --color-surface-ground: var(--surface-ground);
   --color-surface-section: var(--surface-section);
@@ -61,6 +62,7 @@
   --color-fig-red-50: var(--fig-red-50);
   --color-fig-red-100: var(--fig-red-100);
   --color-fig-blue-100: var(--fig-blue-100);
+  --color-fig-blue-300: var(--fig-blue-300);
   --color-fig-indigo-100: var(--fig-indigo-100);
   --color-fig-lime-100: var(--fig-lime-100);
   --color-fig-teal-100: var(--fig-teal-100);
@@ -69,6 +71,7 @@
   /* Figma "Xodim profili" — blok/maydon/tugma qatlamlari */
   --color-fig-text-brand: var(--fig-text-brand);
   --color-fig-bg-brand: var(--fig-bg-brand-fill);
+  --color-fig-bg-red: var(--fig-bg-red-fill);
   --color-fig-bg-brand-surface: var(--fig-bg-brand-surface);
   --color-fig-bg-secondary: var(--fig-bg-secondary);
   --color-fig-bg-tertiary: var(--fig-bg-tertiary);
@@ -133,6 +136,17 @@
 @layer utilities {
   .bg-surface-ground-soft {
     background-color: var(--surface-ground-soft);
+  }
+
+  /* Bosh sahifa va "Bog'lanish" sahifasining bir xil gradient foni
+     (Figma node 3257:112460): burchak va to'xtash nuqtalari maketdan aynan. */
+  .bg-fig-page-gradient {
+    background-image: linear-gradient(
+      -9.063deg,
+      var(--fig-blue-300) 4.44%,
+      var(--fig-green-100) 32.67%,
+      var(--fig-blue-100) 100.24%
+    );
   }
 }
 

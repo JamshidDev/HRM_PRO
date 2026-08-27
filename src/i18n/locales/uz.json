@@ -10,7 +10,9 @@
       "contractType": "Shartnoma turi",
       "startDate": "Shartnoma tuzilgan sana",
       "dismissedAt": "Bo‘shagan sana",
-      "resume": "Rezyume"
+      "resume": "Rezyume yuklash",
+      "currentOrg": "Hozirgi ish joyi",
+      "notEmployed": "Tarmoqda emas"
     }
   },
   "lateWorkersReport": {
@@ -111,7 +113,40 @@
   "homePage": {
     "wrongWorkerPins": "Noto'g'ri xodim PIN-kodlari",
     "downloaded": "Fayl muvaffaqiyatli yuklab olindi",
-    "downloadFailed": "Faylni yuklab olishda xatolik"
+    "downloadFailed": "Faylni yuklab olishda xatolik",
+    "appName": "HRM Rail",
+    "welcome": "Xush kelibsiz!",
+    "contact": "Aloqa",
+    "logout": "Chiqish",
+    "news": "Yangiliklar",
+    "onlineWorkers": "Online xodimlar",
+    "more": "Batafsil",
+    "count": "{count} ta",
+    "countSuffix": "ta",
+    "actions": {
+      "vacation": {
+        "title": "Ta'til",
+        "subtitle": "Ta'til uchun ariza berish"
+      },
+      "reference": {
+        "title": "Ma'lumotnoma",
+        "subtitle": "Ma'lumotnoma so'rash"
+      },
+      "report": {
+        "title": "Hisobot",
+        "subtitle": "Hisobot yuklash"
+      },
+      "income": {
+        "title": "Daromad",
+        "subtitle": "Ish haqi va to'lovlar"
+      },
+      "turnstile": {
+        "title": "Turniket",
+        "subtitle": "Kirish-chiqish tarixi"
+      }
+    },
+    "deviceWeb": "Veb",
+    "deviceMobile": "Mobil"
   },
   "content": {
     "user": "Foydalanuvchi",
@@ -845,7 +880,41 @@
     "optionsHint": "Pasport nusxalari arxivga qo'shilishi uchun quyidagilardan kerakligini belgilang"
   },
   "contactPage": {
-    "name": "Kontaktlar"
+    "name": "Kontaktlar",
+    "title": "Bog'lanish",
+    "home": "Bosh sahifa",
+    "comingSoon": "Tez kunda",
+    "telegram": {
+      "title": "Telegram orqali yozish",
+      "subtitle": "Savol va takliflar uchun tezkor aloqa"
+    },
+    "faq": {
+      "title": "Ko'p beriladigan savollar",
+      "subtitle": "Tez-tez beriladigan savollar bo'yicha ma'lumot"
+    },
+    "email": {
+      "title": "Elektron pochta",
+      "replyTime": "Murojaatni ko'rib chiqish muddati:",
+      "replyTimeValue": "5 ish kuni ichida"
+    },
+    "callback": {
+      "title": "Kim bilan bog'lanish?",
+      "text": "Savolingiz bo'yicha kerakli bo'lim xodimiga to'g'ridan-to'g'ri qo'ng'iroq qiling",
+      "action": "Ro'yxatni ochish"
+    },
+    "ai": {
+      "title": "AI chatbot",
+      "text": "Savollaringizga sun'iy intellekt asosida yaratilgan MuxlisaAI tezkor javob beradi",
+      "action": "AI chatbot bilan suhbatlashish"
+    },
+    "address": "Manzil:",
+    "addressValue": "Uzbekistan, Tashkent, Taras Shevchenko 7",
+    "workHours": "Ish vaqti:",
+    "workHoursValue": "Dushanba–Juma 09:00 – 18:00",
+    "social": "Ijtimoiy tarmoqlar:",
+    "responsible": {
+      "title": "Kim bilan bog'lanish"
+    }
   },
   "documentHistoryPage": {
     "name": "Hujjatlar tarixi"
@@ -1061,7 +1130,13 @@
     "pinfl": "JSHSHIR",
     "sealKeyLabel": "muhrli kalit",
     "noKeysTitle": "Kalitlar topilmadi",
-    "noKeysDesc": "USB token yoki ID karta ulanganini tekshiring."
+    "noKeysDesc": "USB token yoki ID karta ulanganini tekshiring.",
+    "authKeySelectTitle": "ERI kalitini tanlang",
+    "authKeySelectDesc": "Kalitni tanlang va E-IMZO parolini kiriting — parol to'g'ri bo'lsa tizimga avtomatik kiritilasiz.",
+    "organization": "Tashkilot",
+    "position": "Lavozim",
+    "storagePfx": "Fayl kaliti",
+    "storageToken": "USB token"
   },
   "documentPage": {
     "name": "Hujjatlar",
@@ -1432,7 +1507,18 @@
     }
   },
   "educationDirectory": {
-    "name": "Ta'lim katalogi"
+    "name": "Ta'lim katalogi",
+    "tabs": {
+      "university": "O'quv yurtlari",
+      "speciality": "Mutaxassisliklar",
+      "language": "Tillar"
+    },
+    "table": {
+      "name": "Muassasa nomi",
+      "region": "Viloyat",
+      "education": "Ta'lim darajasi",
+      "type": "Muassasa turi"
+    }
   },
   "othersPage": {
     "name": "Boshqalar",
@@ -4918,5 +5004,11 @@
     "historyBtn": "Tarix",
     "showMasked": "Maskani ochish",
     "hideMasked": "Maskani yopish"
+  },
+  "eimzoGate": {
+    "title": "Xavfsizlik uchun tekshiruv",
+    "description": "Iqtisod bo'limi ma'lumotlariga kirish uchun shaxsingizni ERI (E-IMZO) kaliti bilan tasdiqlang.",
+    "confirmBtn": "E-IMZO bilan tasdiqlash",
+    "verified": "Tasdiqlandi"
   }
 }
