@@ -485,7 +485,7 @@
   "sidebar": {
     "hrm": "HR Menu",
     "admin": "Admin Menu",
-    "chat": "Chat Menu",
+    "chat": "Messages & Announcements Menu",
     "docflow": "Documents Menu",
     "attestation": "Certification Menu",
     "timesheet": "Timesheet",
@@ -870,7 +870,8 @@
     },
     "faq": {
       "title": "Frequently asked questions",
-      "subtitle": "Information on frequently asked questions"
+      "subtitle": "Information on frequently asked questions",
+      "action": "View questions"
     },
     "email": {
       "title": "Email",
@@ -894,6 +895,23 @@
     "social": "Social networks:",
     "responsible": {
       "title": "Who to contact"
+    }
+  },
+  "faqPage": {
+    "title": "Frequently asked questions",
+    "empty": "No questions found in this section",
+    "tabs": {
+      "all": "All",
+      "staff": "Staff",
+      "salary": "Salary",
+      "vacation": "Vacation",
+      "turnstile": "Turnstile",
+      "technical": "Technical"
+    },
+    "footer": {
+      "title": "Couldn't find an answer?",
+      "subtitle": "Contact the relevant department employee directly",
+      "action": "Contact"
     }
   },
   "documentHistoryPage": {
@@ -4043,7 +4061,7 @@
     "economist": "Economist",
     "hospital": "Hospital",
     "admin": "Admin",
-    "chat": "Chat"
+    "chat": "Messages & Announcements"
   },
   "resultPage": {
     "name": "Results",
