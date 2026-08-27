@@ -10,7 +10,6 @@
   import { AppPaths } from '@/utils/index.js'
   import ContactCard from './ui/ContactCard.vue'
   import ResponsibleModal from './ui/ResponsibleModal.vue'
-  import SoonBadge from './ui/SoonBadge.vue'
   import HouseIcon from '@/assets/icons/contact/house.svg'
   import MailIcon from '@/assets/icons/contact/mail.svg'
   import HeadphonesIcon from '@/assets/icons/contact/headphones.svg'
@@ -53,6 +52,7 @@
   ]
 
   const goHome = () => router.push(AppPaths.Home)
+  const goFaq = () => router.push(AppPaths.Faq)
 
   // Mas'ul xodimlar ro'yxati — modal oynada (`ResponsibleModal.vue`).
   const responsibleVisible = ref(false)
@@ -136,8 +136,10 @@
           />
         </div>
 
-        <div
-          class="relative flex min-h-[118px] items-center overflow-hidden rounded-2xl bg-fig-block p-4"
+        <button
+          type="button"
+          class="relative flex min-h-[118px] cursor-pointer items-center overflow-hidden rounded-2xl bg-fig-block p-4 text-left transition-opacity hover:opacity-90"
+          @click="goFaq"
         >
           <div class="relative flex flex-1 flex-col justify-between gap-5">
             <div class="flex flex-col gap-1">
@@ -149,12 +151,16 @@
               </p>
             </div>
 
-            <!-- Sahifasi hali yo'q — "Tez kunda" belgisi bilan -->
-            <SoonBadge class="w-fit" :text="$t('contactPage.comingSoon')" />
+            <span
+              class="flex w-fit items-center gap-2 text-[12px] leading-4 font-medium text-fig-text-brand"
+            >
+              {{ $t('contactPage.faq.action') }}
+              <span class="contact-arrow"><ArrowRightIcon /></span>
+            </span>
           </div>
 
           <img :src="faqArt" alt="" aria-hidden="true" class="contact-art contact-art--faq" />
-        </div>
+        </button>
       </div>
 
       <!-- 2-qator: e-pochta / bo'lim xodimi / AI chatbot -->

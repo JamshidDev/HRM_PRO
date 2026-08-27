@@ -506,7 +506,7 @@
   "sidebar": {
     "hrm": "Xodimlar menyusi",
     "admin": "Admin menyusi",
-    "chat": "Chat menyusi",
+    "chat": "Xabar va e'lonlar menyusi",
     "docflow": "Hujjatlar menyusi",
     "attestation": "Attestatsiya menyusi",
     "timesheet": "Tabel",
@@ -892,7 +892,8 @@
     },
     "faq": {
       "title": "Ko'p beriladigan savollar",
-      "subtitle": "Tez-tez beriladigan savollar bo'yicha ma'lumot"
+      "subtitle": "Tez-tez beriladigan savollar bo'yicha ma'lumot",
+      "action": "Savollarni ko'rish"
     },
     "email": {
       "title": "Elektron pochta",
@@ -916,6 +917,23 @@
     "social": "Ijtimoiy tarmoqlar:",
     "responsible": {
       "title": "Kim bilan bog'lanish"
+    }
+  },
+  "faqPage": {
+    "title": "Ko'p beriladigan savollar",
+    "empty": "Bu bo'limda savollar topilmadi",
+    "tabs": {
+      "all": "Hammasi",
+      "staff": "Kadrlar",
+      "salary": "Oylik",
+      "vacation": "Ta'til",
+      "turnstile": "Turniket",
+      "technical": "Texnik"
+    },
+    "footer": {
+      "title": "Javob topolmadingizmi?",
+      "subtitle": "Kerakli bo'lim xodimiga to'g'ridan-to'g'ri bog'laning",
+      "action": "Bog'lanish"
     }
   },
   "documentHistoryPage": {
@@ -4096,7 +4114,7 @@
     "hospital": "Kasalxona",
     "admin": "Admin",
     "extra": "Qo'shimchalar",
-    "chat": "Chat"
+    "chat": "Xabar va e'lonlar"
   },
   "resultPage": {
     "name": "Natijalar",

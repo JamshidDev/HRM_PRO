@@ -33,6 +33,7 @@ export const AppPaths = {
   Lesson: '/lesson',
   TeacherLesson: '/teacher-lesson',
   Contact: '/contact',
+  Faq: '/faq',
   Listener: '/listener',
   ChatWindow: '/chat-window',
   DocumentHistory: '/document-history',
