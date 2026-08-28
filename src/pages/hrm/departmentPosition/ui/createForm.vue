@@ -311,9 +311,11 @@
           path="rate"
           :rule-path="validationRules.rulesNames.requiredNumberField"
         >
+          <!-- Kontingent: 0.1..100, qadam 0.1; chorak stavka (0.25/0.75) ham mumkin,
+               shu sabab `precision` qo'yilmaydi. Backend ham shu qoidani tekshiradi. -->
           <n-input-number
-            :max="300"
-            :min="0"
+            :max="100"
+            :min="0.1"
             :step="0.1"
             :show-button="false"
             class="w-full"
