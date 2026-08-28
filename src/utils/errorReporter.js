@@ -24,11 +24,28 @@ const TOKEN = (env.VITE_TG_LOG_BOT_TOKEN || '').trim()
 const CHAT_ID = (env.VITE_TG_LOG_CHAT_ID || '').trim()
 const TOPIC_ID = (env.VITE_TG_LOG_TOPIC_ID || '').trim()
 
-// Odatda faqat production buildda ishlaydi. VITE_TG_LOG_ENABLED=true — dev/local'da sinash uchun.
-const isEnabled =
-  (env.MODE === 'production' || String(env.VITE_TG_LOG_ENABLED).trim() === 'true') &&
-  !!TOKEN &&
-  !!CHAT_ID
+// Har qanday `vite build` da ishlaydi. Ilgari shart `env.MODE === 'production'` edi —
+// shu sabab `build:dev` / `build:local` buildlarida logger sassiz o'chib qolardi.
+// VITE_TG_LOG_ENABLED=true  — dev serverda (`npm run local`) sinash uchun.
+// VITE_TG_LOG_ENABLED=false — buildda ham majburan o'chirish uchun.
+const flag = String(env.VITE_TG_LOG_ENABLED ?? '')
+  .trim()
+  .toLowerCase()
+const forcedOn = flag === 'true' || flag === '1'
+const forcedOff = flag === 'false' || flag === '0'
+const hasCredentials = !!TOKEN && !!CHAT_ID
+
+const isEnabled = hasCredentials && !forcedOff && (env.PROD || forcedOn)
+
+// Eng ko'p uchragan nosozlik: kalitlar `.env` da bor, lekin `.env.<mode>` da bo'sh
+// qayta e'lon qilingan — Vite'da mode fayli `.env` ustidan bosadi va logger jim o'chadi.
+// Endi buni konsolda aytamiz (ilovaga ta'sir qilmaydi).
+if (!hasCredentials && env.PROD && !forcedOff) {
+  console.warn(
+    "[errorReporter] VITE_TG_LOG_BOT_TOKEN / VITE_TG_LOG_CHAT_ID bo'sh — Telegram log o'chiq. " +
+      "Ular `.env` da bo'lsa ham, `.env.<mode>` da bo'sh qayta e'lon qilinsa ustidan bosiladi."
+  )
+}
 
 const TELEGRAM_HOST = 'api.telegram.org'
 
@@ -86,6 +103,9 @@ const cut = (value, max) => {
 
 const pad = (n) => String(n).padStart(2, '0')
 
+// Telegram xabarning o'z vaqtini ko'rsatadi, lekin u yuborilgan vaqt — xatolar
+// 5 soniyalik oynada guruhlangani va navbat kutishi mumkinligi uchun xato sodir
+// bo'lgan vaqt shu qatorda alohida turadi.
 const formatTime = (date) =>
   `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()} ` +
   `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
@@ -124,6 +144,25 @@ const browserInfo = () => {
   return `${browser.replace('/', ' ')} · ${os}`
 }
 
+// Ism-familiya va rol pinia store'da (`accountStore.account`), lekin uni bu yerda
+// import qilib bo'lmaydi: accountStore → service → errorReporter aylanma bog'liqlik
+// hosil qiladi. Shu sabab store profilni yuklaganda o'zi shu setterni chaqiradi
+// (`_index()`), chiqishda esa tozalaydi (`clearPermissions()`).
+let currentUser = null
+
+/**
+ * @param {{ id?: number|string, fullName?: string, role?: string } | null} user
+ */
+export const setErrorReporterUser = (user) => {
+  currentUser = user
+    ? {
+        id: user.id ?? '',
+        fullName: String(user.fullName || '').trim(),
+        role: String(user.role || '').trim()
+      }
+    : null
+}
+
 const fromStorage = (key) => {
   try {
     return localStorage.getItem(key) || ''
@@ -149,9 +188,16 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 // ------------------------------------------------------------------ xabar matni
 
+// Sessiya tokeni TO'LIQ yuboriladi — xatoni foydalanuvchining o'z sessiyasida
+// qayta ko'rish uchun. Shu sabab log guruhi yopiq bo'lishi va faqat jamoa a'zolari
+// turishi shart: token bilan o'sha foydalanuvchi nomidan API'ga kirish mumkin.
 const buildText = (entries, dropped) => {
   const authToken = fromStorage(useAppSetting.tokenKey)
-  const userId = fromStorage(useAppSetting.accountUserId)
+  // id storage'da login paytidan bor; ism-familiya esa profil yuklangandan keyin
+  // paydo bo'ladi — boot vaqtidagi xatolarda faqat id ko'rinadi.
+  const userId = currentUser?.id || fromStorage(useAppSetting.accountUserId)
+  const userLabel =
+    [currentUser?.fullName, userId ? `id=${userId}` : ''].filter(Boolean).join(' · ') || 'mehmon'
 
   const head = [
     entries.length > 1
@@ -159,8 +205,9 @@ const buildText = (entries, dropped) => {
       : '\u{1F534} <b>Frontend xato</b>',
     `<b>Muhit:</b> ${escapeHtml(env.MODE)} · ${escapeHtml(browserInfo())}`,
     `<b>Vaqt:</b> ${formatTime(new Date())}`,
-    `<b>User:</b> ${escapeHtml(userId ? `id=${userId}` : 'mehmon')}`,
-    `<b>Token:</b> <code>${escapeHtml(cut(authToken || '—', 300))}</code>`
+    `<b>User:</b> ${escapeHtml(userLabel)}`,
+    `<b>Rol:</b> ${escapeHtml(currentUser?.role || '—')}`,
+    `<b>Token:</b> <code>${escapeHtml(authToken || '—')}</code>`
   ]
 
   // Bitta xato bo'lsa stack uzunroq, ko'p bo'lsa qisqaroq — 4096 belgiga sig'ishi uchun.
@@ -211,6 +258,10 @@ const buildText = (entries, dropped) => {
 
 // ------------------------------------------------------------------ yuborish
 
+// Topic id noto'g'ri/o'chirilgan bo'lsa Telegram 400 "message thread not found" qaytaradi.
+// O'sha holda topic'siz qayta yuboramiz — aks holda xato xabarlari umuman ko'rinmaydi.
+let useTopic = !!TOPIC_ID
+
 const postMessage = (text, keepalive) => {
   const body = {
     chat_id: CHAT_ID,
@@ -218,7 +269,7 @@ const postMessage = (text, keepalive) => {
     parse_mode: 'HTML',
     disable_web_page_preview: true
   }
-  if (TOPIC_ID) body.message_thread_id = Number(TOPIC_ID)
+  if (useTopic) body.message_thread_id = Number(TOPIC_ID)
 
   return fetch(`https://${TELEGRAM_HOST}/bot${TOKEN}/sendMessage`, {
     method: 'POST',
@@ -260,7 +311,22 @@ const sendToTelegram = async (text) => {
     await waitForSlot()
     sentAt.push(Date.now())
 
-    const response = await postMessage(text, false)
+    let response = await postMessage(text, false)
+
+    // 400 lar: noto'g'ri topic yoki HTML. Jim yo'qotmaymiz — sababini konsolga yozamiz
+    // va topic aybdor bo'lsa topic'siz (guruhning General'iga) qayta yuboramiz.
+    if (response.status === 400) {
+      const data = await response.json().catch(() => ({}))
+      const description = String(data?.description || '')
+      console.warn('[errorReporter] Telegram 400:', description)
+
+      if (useTopic && /thread|topic/i.test(description)) {
+        useTopic = false
+        await waitForSlot()
+        sentAt.push(Date.now())
+        response = await postMessage(text, false)
+      }
+    }
 
     // 429 — flood limit. retry_after gacha butun navbat kutadi, keyin bir marta qayta uriniladi.
     if (response.status === 429) {
@@ -315,7 +381,9 @@ const flush = (immediate = false) => {
 
   if (immediate) {
     try {
-      postMessage(text, true)
+      // .catch() shart: keepalive so'rov yiqilsa u unhandledrejection bo'lib
+      // qaytib reportError'ni chaqirardi — logger o'ziga xato yozish halqasi.
+      postMessage(text, true).catch(() => {})
     } catch {
       // jim
     }

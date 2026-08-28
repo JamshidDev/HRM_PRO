@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import router from '@/router/index.js'
-import { AppPaths, useAppSetting, appPermissions } from '@/utils/index.js'
+import { AppPaths, useAppSetting, appPermissions, setErrorReporterUser } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
 
 const { t } = i18n.global
@@ -154,6 +154,8 @@ export const useAccountStore = defineStore('accountStore', {
       this.permissions = []
       this.permissionsLoaded = false
       this.account = null
+      // Telegram log xabarlarida oldingi foydalanuvchi ko'rinib qolmasin.
+      setErrorReporterUser(null)
       sessionStorage.removeItem(useAppSetting.appPermission)
     },
 
@@ -241,6 +243,17 @@ export const useAccountStore = defineStore('accountStore', {
         .then((res) => {
           this.payload = { ...res.data.data.worker, password: null }
           this.account = { ...res.data.data }
+          // Telegram log xabariga ism-familiya va rol qo'shiladi (errorReporter store'ni
+          // import qila olmaydi — aylanma bog'liqlik, shuning uchun bu yerdan beriladi).
+          // `filter(Boolean)`: `middle_name` bo'sh bo'lsa "undefined" yozilib qolmasin.
+          const logWorker = res.data.data.worker
+          setErrorReporterUser({
+            id: res.data.data.id ?? logWorker?.id,
+            fullName: [logWorker?.last_name, logWorker?.first_name, logWorker?.middle_name]
+              .filter(Boolean)
+              .join(' '),
+            role: res.data.data.role?.name
+          })
           // `?? []` MAJBURIY: rol biriktirilmagan foydalanuvchida `role` null bo'lib,
           // ilgari storage'ga `"undefined"` satri yozilar va keyingi parse yiqilardi.
           const rolePermissions = res.data.data.role?.permissions

@@ -7,12 +7,7 @@
    * belgisi (`question`) standart bo'lib qoladi.
    */
   import { UISegmentTabs } from '@/components/index.js'
-  import QuestionIcon from '@/assets/icons/contact/question.svg'
-  import LockIcon from '@/assets/icons/lock.svg'
-  import UsersIcon from '@/assets/icons/contact/users.svg'
-  import WalletIcon from '@/assets/icons/contact/wallet-alt.svg'
-  import PlaneIcon from '@/assets/icons/contact/Plane-departure.svg'
-  import ScanIcon from '@/assets/icons/contact/scan.svg'
+  import { CATEGORY_IDS, CATEGORY_ICONS, QuestionIcon } from '@/pages/app/categoryIcons.js'
   import ChevronDownIcon from '@/assets/icons/chevronDownBold.svg'
   import SupportIcon from '@/assets/icons/contact/support.svg'
   import ArrowRightIcon from '@/assets/icons/contact/arrow-right.svg'
@@ -23,19 +18,6 @@
   // "Bog'lanish" sahifasidagi "Kim bilan bog'lanish?" kartasi bilan bir xil
   // modal — shu yerda ham o'sha ro'yxat ochiladi, alohida sahifaga o'tilmaydi.
   const responsibleVisible = ref(false)
-
-  // `staff`/`salary` ikonalari sidebar'dagi "Kadrlar boshqaruvi" (HrManagement.svg)
-  // va "Iqtisodchi" (Economist.svg) belgilarining nusxasi — asl fayllar boshqa
-  // joyda ishlatilgani uchun ularga tegmasdan, shu yerda alohida nusxa saqlanadi.
-  const CATEGORY_ICONS = {
-    staff: UsersIcon,
-    salary: WalletIcon,
-    vacation: PlaneIcon,
-    turnstile: ScanIcon,
-    technical: LockIcon
-  }
-
-  const CATEGORY_IDS = ['staff', 'salary', 'vacation', 'turnstile', 'technical']
 
   const activeTab = ref('all')
 
