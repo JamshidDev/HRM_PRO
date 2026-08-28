@@ -92,9 +92,6 @@ const _updateUserPassword = async (payload) => {
   return await axios.post(`/v1/extra/users/update-password`, payload.data)
 }
 
-const _updateUserPhones = async (payload) => {
-  return await axios.put(`/v1/extra/users/update`, payload.data)
-}
 
 const _updatePosition = async (payload) => {
   return await axios.put(`/v1/hr/worker-positions/${payload.id}/update`, payload.data)
@@ -121,6 +118,5 @@ export default {
   _createUser,
   _detachUserRole,
   _updateUserPassword,
-  _updateUserPhones,
   _downloadRelative
 }

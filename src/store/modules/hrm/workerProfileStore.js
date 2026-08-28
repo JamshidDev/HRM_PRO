@@ -487,15 +487,6 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
           this.foreignPassportLoading = false
         })
     },
-    _deletePhone(id) {
-      this.loading = true
-      $ApiService.phoneService
-        ._delete({ id })
-        .then(() => {
-          this._index()
-        })
-        .finally(() => {})
-    },
     openVisible(data) {
       this.visible = data
     },
