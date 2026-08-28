@@ -22,29 +22,5 @@
     "category": "technical",
     "question": "QR-kod orqali tizimga qanday kirsam bo'ladi?",
     "answer": "QR-kod orqali kirish uchun mobil ilovada profil qismiga o'ting, tepada joylashgan skaner belgisini bosing va kompyuter ekranidagi QR-kodni skanerlang."
-  },
-  {
-    "id": "test1",
-    "category": "staff",
-    "question": "testtesttesttesttesttesttesttesttesttesttesttesttesttesttest?",
-    "answer": "QR-kod orqali kirish uchun mobil ilovada profil qismiga o'ting, tepada joylashgan skaner belgisini bosing va kompyuter ekranidagi QR-kodni skanerlang."
-  },
-  {
-    "id": "test2",
-    "category": "salary",
-    "question": "testtesttesttesttesttesttesttesttesttesttesttesttesttesttest?",
-    "answer": "QR-kod orqali kirish uchun mobil ilovada profil qismiga o'ting, tepada joylashgan skaner belgisini bosing va kompyuter ekranidagi QR-kodni skanerlang."
-  },
-  {
-    "id": "test3",
-    "category": "vacation",
-    "question": "testtesttesttesttesttesttesttesttesttesttesttesttesttesttest?",
-    "answer": "QR-kod orqali kirish uchun mobil ilovada profil qismiga o'ting, tepada joylashgan skaner belgisini bosing va kompyuter ekranidagi QR-kodni skanerlang."
-  },
-  {
-    "id": "test4",
-    "category": "turnstile",
-    "question": "testtesttesttesttesttesttesttesttesttesttesttesttesttesttest?",
-    "answer": "QR-kod orqali kirish uchun mobil ilovada profil qismiga o'ting, tepada joylashgan skaner belgisini bosing va kompyuter ekranidagi QR-kodni skanerlang."
   }
 ]
