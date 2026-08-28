@@ -75,6 +75,11 @@ const _userRole = async (payload) => {
   return await axios.get(`/v1/extra/users`, { params: payload.params })
 }
 
+// Hisobi yo'q ishlayotgan xodimga tizim hisobi (backend: POST /extra/users).
+const _createUser = async (payload) => {
+  return await axios.post(`/v1/extra/users`, payload.data)
+}
+
 const _detachUserRole = async (payload) => {
   return await axios.post(`/v1/extra/users/detach-role`, payload.data)
 }
@@ -113,6 +118,7 @@ export default {
   _userRole,
   _updatePosition,
   _attachUserRole,
+  _createUser,
   _detachUserRole,
   _updateUserPassword,
   _updateUserPhones,

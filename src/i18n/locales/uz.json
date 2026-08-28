@@ -2875,7 +2875,14 @@
       "emptyPhone": "Telefon raqam bo'sh bo'lishi mumkin emas",
       "invalidFormat": "Telefon raqamni to'g'riligini tekshiring",
       "duplicate": "Bir xil telefon raqam kiritilgan"
-    }
+    },
+    "createAccount": "Hisob yaratish",
+    "noAccount": "Hisobi yo'q",
+    "accountStatus": "Hisob holati",
+    "accountWith": "Hisobi bor",
+    "accountWithout": "Hisobi yo'q",
+    "createAccountInfo": "Xodimning shaxsiy telefon raqami tizimga kirish uchun login bo'ladi. Parol berilmasa, tasodifiy kuchli parol o'rnatiladi.",
+    "loginPhone": "Login raqami"
   },
   "telegramPopup": {
     "header": "Telegram botimizga ulaning va quyidagi qulayliklardan bahramand bo‘ling:",

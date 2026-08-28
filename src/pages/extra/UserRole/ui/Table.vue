@@ -10,6 +10,7 @@
     Delete28Regular,
     LockClosed16Filled,
     Phone24Regular,
+    PersonAdd24Regular,
     RibbonStar24Filled
   } from '@vicons/fluent'
   import { v4 as uuidv4 } from 'uuid'
@@ -20,6 +21,7 @@
   const accStore = useAccountStore()
 
   const deleteRoleVisible = ref(false)
+  const createAccountError = ref(null)
   const selectedItem = ref(null)
   const selectedRoleId = ref(null)
 
@@ -41,35 +43,68 @@
   const actions = computed(() =>
     [
       {
+        // Faqat hisobi YO'Q qatorlarda — qolgan amallar user uuid talab qiladi.
+        label: t('workerRole.createAccount'),
+        key: 'create_account',
+        icon: UIHelper.renderIcon(PersonAdd24Regular),
+        action: onCreateAccount,
+        perm: accStore.pn.hrUsersCreate,
+        visible: (row) => !row.has_account
+      },
+      {
         label: t('workerRole.attachRole'),
         key: 'attach_role',
         icon: UIHelper.renderIcon(RibbonStar24Filled),
         action: onAttachRole,
-        perm: accStore.pn.hrUsersAttachRole
+        perm: accStore.pn.hrUsersAttachRole,
+        visible: (row) => row.has_account
       },
       {
         label: t('workerRole.deleteRole'),
         key: 'delete_role',
         icon: UIHelper.renderIcon(Delete20Regular),
         action: onDeleteRoleClick,
-        perm: accStore.pn.hrUsersDetachRole
+        perm: accStore.pn.hrUsersDetachRole,
+        visible: (row) => row.has_account
       },
       {
         label: t('workerRole.updatePassword'),
         key: 'update_password',
         icon: UIHelper.renderIcon(LockClosed16Filled),
         action: onUpdatePasswordClick,
-        perm: accStore.pn.hrUsersPassword
+        perm: accStore.pn.hrUsersPassword,
+        visible: (row) => row.has_account
       },
       {
         label: t('workerRole.phoneNumber'),
         key: 'phone_number',
         icon: UIHelper.renderIcon(Phone24Regular),
         action: onPhoneNumberClick,
-        perm: accStore.pn.hrUsersUpdate
+        perm: accStore.pn.hrUsersUpdate,
+        visible: (row) => row.has_account
       }
     ].map((o) => ({ ...o, disabled: !accStore.checkPermission(o.perm) }))
   )
+
+  const onCreateAccount = (row) => {
+    store.createUserPayload.worker_uuid = row?.worker?.uuid
+    // Xodim kartochkasidagi birinchi raqam taklif qilinadi (band bo'lsa backend 422 beradi).
+    store.createUserPayload.phone = row?.phones?.length ? '+998' + String(row.phones[0]).slice(-9) : '+998'
+    store.createUserPayload.password = null
+    store.createUserWorker = row?.worker ?? null
+    createAccountError.value = null
+    store.createUserVisible = true
+  }
+
+  const onCreateAccountSubmit = () => {
+    const phone = formatPhone(store.createUserPayload.phone || '')
+    if (phone.length !== 9) {
+      createAccountError.value = t('workerRole.validation.invalidFormat')
+      return
+    }
+    store.createUserPayload.phone = phone
+    store._createUser()
+  }
 
   const onAttachRole = (row) => {
     store.roleWorkerPositionId = row.uuid
@@ -291,6 +326,11 @@
 
     <template #cell-roles="{ row }">
       <div class="flex flex-wrap gap-1 role-badges-cell">
+        <UIBadge
+          v-if="!row.has_account"
+          :label="$t('workerRole.noAccount')"
+          :type="Utils.colorTypes.error"
+        />
         <template v-for="(role, rIdx) in row.roles" :key="rIdx">
           <UIBadge v-if="role.name" :label="role.name" :type="Utils.colorTypes.dark">
             <template #icon>
@@ -312,6 +352,59 @@
     :title="$t('content.attachment')"
   >
     <RoleForm />
+  </UIModal>
+
+  <!-- Hisob yaratish modal — faqat `has_account: false` qatorlar uchun -->
+  <UIModal
+    :width="450"
+    :visible="store.createUserVisible"
+    @update:visible="(v) => (store.createUserVisible = v)"
+    :title="$t('workerRole.createAccount')"
+  >
+    <div class="pb-6">
+      <div class="mb-4 text-primary text-xs bg-primary/10 p-2 rounded-lg">
+        {{ $t('workerRole.createAccountInfo') }}
+      </div>
+
+      <div v-if="store.createUserWorker" class="mb-4 text-sm font-medium">
+        {{ store.createUserWorker.last_name }} {{ store.createUserWorker.first_name }}
+        {{ store.createUserWorker.middle_name }}
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <div>
+          <div class="text-xs text-textColor2 mb-1">{{ $t('workerRole.loginPhone') }}</div>
+          <n-input
+            v-model:value="store.createUserPayload.phone"
+            v-mask="'+998##-###-##-##'"
+            :status="createAccountError ? 'error' : undefined"
+            @update:value="createAccountError = null"
+          />
+          <div v-if="createAccountError" class="text-danger text-xs mt-1">
+            {{ createAccountError }}
+          </div>
+        </div>
+
+        <div>
+          <div class="text-xs text-textColor2 mb-1">{{ $t('workerRole.newPassword') }}</div>
+          <n-input
+            v-model:value="store.createUserPayload.password"
+            type="password"
+            show-password-on="click"
+            :placeholder="$t('workerRole.enterPassword')"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-2">
+      <n-button @click="store.createUserVisible = false" ghost>
+        {{ $t('content.cancel') }}
+      </n-button>
+      <n-button @click="onCreateAccountSubmit" :loading="store.createUserLoading" type="primary">
+        {{ $t('content.save') }}
+      </n-button>
+    </div>
   </UIModal>
 
   <!-- Parolni yangilash modal — HR «Xodimlar» menyusi bilan bitta komponent -->

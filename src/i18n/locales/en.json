@@ -2852,7 +2852,14 @@
       "emptyPhone": "Phone number cannot be empty",
       "invalidFormat": "Please check the phone number is correct",
       "duplicate": "Duplicate phone number entered"
-    }
+    },
+    "createAccount": "Create account",
+    "noAccount": "No account",
+    "accountStatus": "Account status",
+    "accountWith": "With account",
+    "accountWithout": "Without account",
+    "createAccountInfo": "The employee's personal phone number becomes the login. If no password is given, a random strong one is set.",
+    "loginPhone": "Login phone"
   },
   "telegramPopup": {
     "header": "Join our Telegram bot and enjoy these benefits:",

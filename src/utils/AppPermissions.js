@@ -189,6 +189,7 @@ export const appPermissions = {
   hrUsersWrite: 'hr-users-write',
   hrUsersRead: 'hr-users-read',
   // Foydalanuvchilar menyusi — per-option (har amal alohida ruxsat)
+  hrUsersCreate: 'hr-users-create',
   hrUsersAttachRole: 'hr-users-attach-role',
   hrUsersDetachRole: 'hr-users-detach-role',
   hrUsersActiveRole: 'hr-users-active-role',

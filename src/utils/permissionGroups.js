@@ -134,6 +134,7 @@ export const ENFORCED = new Set([
   'hr-table-write',
   'hr-users-active-role',
   'hr-users-attach-role',
+  'hr-users-create',
   'hr-users-detach-role',
   'hr-users-password',
   'hr-users-read',
@@ -497,6 +498,7 @@ export const MEANINGFUL = new Set([
   'hr-users',
   'hr-users-active-role',
   'hr-users-attach-role',
+  'hr-users-create',
   'hr-users-detach-role',
   'hr-users-password',
   'hr-users-read',
@@ -1037,6 +1039,7 @@ export const PERMISSION_GROUPS = [
         label: 'workerRole.name',
         actions: [
           { slug: 'hr-users-read', label: "Ko'rish" },
+          { slug: 'hr-users-create', labelKey: 'workerRole.createAccount' },
           { slug: 'hr-users-attach-role', labelKey: 'workerRole.attachRole' },
           { slug: 'hr-users-detach-role', labelKey: 'workerRole.deleteRole' },
           { slug: 'hr-users-active-role', label: 'Faol rol' },
