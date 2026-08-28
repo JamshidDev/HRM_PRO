@@ -18,15 +18,13 @@
   import { AppPaths } from '@/utils/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import {
-    Edit32Regular,
-    Eye16Regular,
-    LockClosed16Filled,
-    RibbonStar24Filled,
-    Table24Regular
-  } from '@vicons/fluent'
   import { useRouter } from 'vue-router'
   import WorkerRolesModal from '@pages/hrm/worker/ui/WorkerRolesModal.vue'
+  import EyeIcon from '@/assets/icons/eyeAlt.svg'
+  import PenSquareIcon from '@/assets/icons/penSquareAlt.svg'
+  import TableListIcon from '@/assets/icons/tableListAlt.svg'
+  import AwardIcon from '@/assets/icons/awardIcon.svg'
+  import LockAltIcon from '@/assets/icons/lockAlt.svg'
 
   const { t } = i18n.global
 
@@ -253,32 +251,32 @@
     {
       label: t('content.view'),
       key: Utils.ActionTypes.view,
-      icon: UIHelper.renderIcon(Eye16Regular),
+      icon: UIHelper.renderIcon(EyeIcon),
       action: onPreview
     },
     {
       label: t('content.edit'),
       key: Utils.ActionTypes.edit,
-      icon: UIHelper.renderIcon(Edit32Regular),
+      icon: UIHelper.renderIcon(PenSquareIcon),
       action: onEdit
     },
     {
       label: t('timesheet.assignUser'),
       key: Utils.ActionTypes.timesheet,
-      icon: UIHelper.renderIcon(Table24Regular),
+      icon: UIHelper.renderIcon(TableListIcon),
       action: onAssignTimesheet
     },
     {
       label: t('workerRole.attachRole'),
       key: 'worker_roles',
-      icon: UIHelper.renderIcon(RibbonStar24Filled),
+      icon: UIHelper.renderIcon(AwardIcon),
       action: onWorkerRoles,
       disabled: !accStore.checkPermission(accStore.pn.hrUsersAttachRole)
     },
     {
       label: t('workerRole.updatePassword'),
       key: 'update_password',
-      icon: UIHelper.renderIcon(LockClosed16Filled),
+      icon: UIHelper.renderIcon(LockAltIcon),
       action: onUpdatePassword,
       disabled: !accStore.checkPermission(accStore.pn.hrWorkersPassword)
     }
