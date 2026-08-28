@@ -351,6 +351,12 @@ $mobile_device_screen_size: 900px;
 }
 
 @media screen and (max-width: calc($mobile_device_screen_size - 0.5px)) {
+  // Sidebar tugmasi shu kenglikdan pastda paydo bo'ladi. Sarlavha satrida hech
+  // qanday padding yo'q edi — tugma ekranning aynan burchagiga yopishib qolardi.
+  .app-header-bar {
+    padding: 10px 12px 2px;
+  }
+
   .mobile-control-btn {
     display: flex !important;
   }
