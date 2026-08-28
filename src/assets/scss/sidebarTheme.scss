@@ -36,6 +36,9 @@
       // `.sticky` (panel sarlavhasi) `position: sticky` — skroll paytida ostidagi menyu
       // elementlarini yashirishi kerak, shuning uchun `transparent` emas, tema paneli
       // gradientining boshlang'ich (tepadagi) rangi bilan **solid** (shaffof emas) fon beriladi.
+      // Shu sababli `.sidebar-card` gradienti FAQAT vertikal bo'lishi shart: diagonalda
+      // rang gorizontal bo'ylab ham o'zgaradi, panel esa rail kengligicha o'ngga surilgan —
+      // natijada bu solid fon atrofidan ajralib, "yamoq" bo'lib ko'rinadi.
       .sidebar-themed-sticky {
         background: $panel-from !important;
         span {
@@ -139,10 +142,4 @@
     #0e7490,
     rgba(16, 24, 40, 0.1)
   );
-
-  // Mixin vertikal gradient beradi; bu yerda diagonal qilinadi. Yuqori-chap burchak
-  // hamon `$panel-from` (#c9f5e7) — sticky sarlavha foni bilan mos keladi.
-  .organization-layout .sidebar-content .sidebar-card {
-    background: linear-gradient(135deg, #c9f5e7, #dfddfb) !important;
-  }
 }
