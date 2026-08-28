@@ -1045,7 +1045,8 @@
       "phone": "Mark primary phone number (used as login).",
       "mainImage": "Main photo",
       "needPhotos": "{n} photos required",
-      "addPhoto": "Add photo"
+      "addPhoto": "Add photo",
+      "phoneSingle": "This number becomes the employee's login. Additional numbers can be added later in the employee's personal data."
     },
     "form": {
       "lastName": "Last name",

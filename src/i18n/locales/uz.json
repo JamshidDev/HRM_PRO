@@ -1062,7 +1062,8 @@
       "phone": "Kandidatning asosiy raqamini belgilang va bu raqam kandidatning xodim sifatida tizimga kirish uchun login vazifasini bajaradi.",
       "mainImage": "Asosiy rasm",
       "needPhotos": "{n} ta surat kerak",
-      "addPhoto": "Surat qo'shish"
+      "addPhoto": "Surat qo'shish",
+      "phoneSingle": "Bu raqam xodimning tizimga kirish logini bo'ladi. Qo'shimcha raqamlarni keyinroq xodim kartochkasidagi shaxsiy ma'lumotlardan qo'shasiz."
     },
     "form": {
       "lastName": "Familiya",

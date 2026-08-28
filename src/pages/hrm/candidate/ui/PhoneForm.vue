@@ -7,13 +7,20 @@
   /** Figma "Telefon raqam" bloki (node 3132:61872) */
   const emits = defineEmits(['onDelete'])
 
+  // `max = 1` — bitta raqamli rejim (xodim yaratish): qo'shish/o'chirish tugmalari
+  // va "asosiy" belgisi ko'rsatilmaydi. Qo'shimcha raqamlar keyin xodimning
+  // shaxsiy ma'lumotlaridan tahrirlanadi.
+  const props = defineProps({
+    max: { type: Number, default: 3 }
+  })
+  const single = computed(() => props.max === 1)
+
   const phones = defineModel('phones', {
     type: Array,
     required: true,
     default: []
   })
 
-  const MAX_PHONES = 3
 
   const onAdd = () => {
     phones.value.push({ id: uuidv4(), phone: '+998', main: false, exist: false })
@@ -50,6 +57,7 @@
     <div class="flex flex-col gap-3 w-full">
       <div v-for="(item, idx) in phones" :key="item.id" class="flex items-start gap-4">
         <button
+          v-if="!single"
           type="button"
           class="phone-check"
           :class="item.main && 'phone-check--on'"
@@ -100,7 +108,7 @@
         </div>
 
         <button
-          v-if="idx + 1 === phones.length && phones.length < MAX_PHONES"
+          v-if="!single && idx + 1 === phones.length && phones.length < props.max"
           type="button"
           class="phone-round"
           @click="onAdd"
@@ -110,7 +118,12 @@
           </n-icon>
         </button>
 
-        <button v-if="idx > 0" type="button" class="phone-round" @click="onRemove(item)">
+        <button
+          v-if="!single && idx > 0"
+          type="button"
+          class="phone-round"
+          @click="onRemove(item)"
+        >
           <n-icon :size="18" class="text-fig-text-red">
             <component :is="icons.figTrash" />
           </n-icon>
@@ -118,7 +131,7 @@
       </div>
 
       <span class="text-xs leading-4 text-fig-text-tertiary">
-        {{ $t('createWorkerPage.ui.phone') }}
+        {{ single ? $t('createWorkerPage.ui.phoneSingle') : $t('createWorkerPage.ui.phone') }}
       </span>
     </div>
   </UIFigBlock>
