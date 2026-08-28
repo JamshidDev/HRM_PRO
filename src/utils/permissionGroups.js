@@ -31,6 +31,7 @@ export const ENFORCED = new Set([
   'document-view-exam-results',
   'economist',
   'economist-dashboard-read',
+  'economist-eimzo-skip',
   'economist-pension-payments-delete',
   'economist-pension-payments-read',
   'economist-pension-payments-write',
@@ -340,6 +341,7 @@ export const MEANINGFUL = new Set([
   'economist',
   'economist-dashboard',
   'economist-dashboard-read',
+  'economist-eimzo-skip',
   'economist-pension-payments',
   'economist-pension-payments-delete',
   'economist-pension-payments-read',
@@ -980,6 +982,12 @@ export const PERMISSION_GROUPS = [
     label: 'navigation.economist',
     groups: [
       { prefix: 'economist', label: 'userRole.form.moduleAccess' },
+      {
+        // E-IMZO tasdiqlash oynasidan ozod qilish — bitta switch (read/write yo'q).
+        prefix: 'economist-eimzo-skip',
+        label: 'userRole.form.eimzoSkip',
+        actions: [{ slug: 'economist-eimzo-skip', label: 'So‘ralmasin' }]
+      },
       { prefix: 'economist-dashboard', label: 'accDashboard.name' },
       { prefix: 'economist-worker-categories', label: 'salaryCategory.name' },
       {

@@ -368,6 +368,8 @@ export const appPermissions = {
   useful: 'useful',
   ai: 'ai',
   economist: 'economist',
+  // E-IMZO «shaxsni tasdiqlash» oynasidan ozod qiladi (iqtisod sahifalari).
+  economistEimzoSkip: 'economist-eimzo-skip',
   // Oylik (salary-1c) bo'limi — faqat admin belgilagan xodimlar (tor ruxsat, migr 0077).
   salary1cAccess: 'salary-1c-access',
   // Tarif setkasi (tariff-grid) — faqat admin belgilagan xodimlar (tor ruxsat, migr 0080).
