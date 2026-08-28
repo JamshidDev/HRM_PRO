@@ -359,6 +359,8 @@ export const appPermissions = {
   hospitalTicket: 'hospital-ticket',
   hospitalTicketWrite: 'hospital-ticket-write',
   hospitalTicketRead: 'hospital-ticket-read',
+  hospitalMedWorker: 'hospital-med-worker',
+  hospitalMedWorkerRead: 'hospital-med-worker-read',
   hospitalPensioner: 'hospital-pensioner',
   hospitalPensionerRead: 'hospital-pensioner-read',
   hospitalPensionerWrite: 'hospital-pensioner-write',

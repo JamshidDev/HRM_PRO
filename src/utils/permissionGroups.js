@@ -275,6 +275,7 @@ export const ENFORCED = new Set([
   'hr-business-trip-write',
   'hr-report-write',
   'lms-worker-write',
+  'hospital-med-worker-read',
   'hospital-pensioner-write',
   'document-examples-write',
   'hr-report-staffing-export',
@@ -397,6 +398,8 @@ export const MEANINGFUL = new Set([
   'holidays-write',
   'hospital',
   'hospital-expired',
+  'hospital-med-worker',
+  'hospital-med-worker-read',
   'hospital-pensioner',
   'hospital-pensioner-read',
   'hospital-pensioner-write',
@@ -1016,6 +1019,7 @@ export const PERMISSION_GROUPS = [
       { prefix: 'hospital', label: 'userRole.form.moduleAccess' },
       { prefix: 'hospital-expired', label: 'expiredHealth.name' },
       { prefix: 'hospital-ticket', label: 'ticket.name' },
+      { prefix: 'hospital-med-worker', label: 'medWorker.name' },
       { prefix: 'hospital-pensioner', label: 'pensioner.name' }
     ]
   },
