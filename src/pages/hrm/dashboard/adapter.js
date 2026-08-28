@@ -60,8 +60,11 @@ export const fromLegacyOne = (res) => {
     },
     staff_units: {
       total: bare(v.positions_rate),
-      // Maketda "Vakant" va "Sverx" — shtat va fakt orasidagi farqning
-      // musbat/manfiy tomoni (`FigKpiCard` ilgari ham shunday hisoblardi).
+      // ⚠️ ZAXIRA yo'l (faqat `/hr/dashboard/overview` javob bermasa). Legacy
+      // endpoint ikkita UMUMIY yig'indi beradi, shuning uchun bu yerda bir
+      // bo'limdagi bo'sh o'rin boshqasidagi sverxni kompensatsiya qiladi va
+      // sverx deyarli doim 0 chiqadi. To'g'ri hisob — backend `staffUnits()`
+      // (har shtat birligi bo'yicha alohida), u `/overview` javobida keladi.
       vacant: Number(Math.max(positions - filled, 0).toFixed(2)),
       over: Number(Math.max(filled - positions, 0).toFixed(2))
     },
