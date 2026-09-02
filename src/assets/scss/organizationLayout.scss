@@ -154,6 +154,96 @@ $mobile_device_screen_size: 900px;
         }
       }
 
+      /* --- Pin qilish va drag-and-drop --- */
+
+      .panel-item-single {
+        /*
+         * Pin tugmasi uchun joy. `.item-title` dagi `width: calc(100% + 24px)` ni
+         * flex taqsimotiga almashtiramiz, aks holda sarlavha tugmani panel tashqarisiga
+         * siqib chiqarardi.
+         */
+        .item-title {
+          flex: 1 1 auto;
+          min-width: 0;
+          width: auto;
+        }
+
+        /*
+         * Tugma joyi HAR DOIM band: hoverda paydo bo'lganda sarlavha "sakramasin"
+         * uchun faqat `opacity` o'zgaradi.
+         */
+        .panel-item-pin {
+          flex-shrink: 0;
+          background: none;
+          border: none;
+          padding: 0;
+          cursor: pointer;
+          width: 20px;
+          height: 20px;
+          margin-right: 2px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 6px;
+          color: var(--textColor3);
+          opacity: 0;
+          transition: opacity 0.15s ease;
+          &:hover {
+            background-color: rgba(46, 144, 250, 0.16);
+          }
+        }
+        &:hover .panel-item-pin {
+          opacity: 1;
+        }
+        /* Pinlangan element pin holatini doim ko'rsatadi. */
+        .panel-item-pin-on {
+          opacity: 1;
+          color: #2e90fa;
+        }
+      }
+
+      .menu-drop-zone {
+        display: flex;
+        flex-direction: column;
+      }
+      /* Bo'sh pin guruhi: DOM'da qoladi, lekin joy egallamaydi. */
+      .menu-drop-zone-empty {
+        min-height: 4px;
+      }
+      /* Sudrash paytida bo'sh pin guruhi ko'rinadigan drop maydoniga aylanadi. */
+      .menu-drop-zone-active {
+        min-height: 38px;
+        margin-bottom: 6px;
+        border: 1px dashed var(--surface-line);
+        border-radius: 10px;
+      }
+      .menu-drop-hint {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        color: var(--textColor3);
+        pointer-events: none;
+      }
+
+      .menu-reset-btn {
+        color: var(--textColor3);
+        cursor: pointer;
+        transition: color 0.15s ease;
+        &:hover {
+          color: var(--primary-color);
+        }
+      }
+
+      .sortable-ghost {
+        opacity: 0.35;
+      }
+      .sortable-drag .panel-item-pin {
+        opacity: 0 !important;
+      }
+
       .panel-item-multiple {
         width: 100%;
         display: flex;

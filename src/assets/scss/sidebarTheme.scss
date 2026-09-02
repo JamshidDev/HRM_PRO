@@ -59,6 +59,24 @@
         &:hover:not(.active-panel-item-single) {
           background-color: $hover-bg !important;
         }
+        .panel-item-pin {
+          color: $panel-icon !important;
+          &:hover {
+            background-color: $hover-bg !important;
+          }
+        }
+      }
+
+      .menu-reset-btn {
+        color: $panel-text !important;
+      }
+
+      .menu-drop-zone-active {
+        border-color: $item-border !important;
+      }
+
+      .menu-drop-hint {
+        color: $panel-text !important;
       }
 
       .active-panel-item-single {
