@@ -27,6 +27,9 @@ export const useAppSetting = {
   pushAskedKey: 'app-push-asked',
   pushTokenKey: 'app-push-token',
   sidebarThemeKey: 'app-sidebar-theme',
+  // Sidebar menyusidagi pin/tartib sozlamalari. Foydalanuvchi id'si bilan
+  // qo'shilib to'liq kalit yasaladi: `app-sidebar-menu:<userId>`.
+  sidebarMenuPrefsKey: 'app-sidebar-menu',
   defaultSidebarTheme: 'mint',
   screenFilterKey: 'app-screen-filter',
   defaultScreenFilter: 'none',

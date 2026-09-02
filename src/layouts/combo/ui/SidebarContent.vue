@@ -1,10 +1,16 @@
 <script setup>
   import { navigations } from '../../data/navigations.js'
-  import { ChevronDown12Regular, ChevronDoubleLeft16Filled } from '@vicons/fluent'
-  import { useAccountStore, useAppStore } from '@/store/modules/index.js'
+  import { VueDraggable } from 'vue-draggable-plus'
+  import {
+    ArrowReset20Regular,
+    ChevronDown12Regular,
+    ChevronDoubleLeft16Filled
+  } from '@vicons/fluent'
+  import { useAccountStore, useAppStore, useSidebarMenuStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import { AppPaths, useAppSetting } from '@/utils/index.js'
-  import { MiniMenuBadge, MenuItemBadge, UIProfile, DownloadTask } from '@components'
+  import { MiniMenuBadge, UIProfile, DownloadTask } from '@components'
+  import SidebarPanelItem from './SidebarPanelItem.vue'
 
   const { t } = i18n.global
   const route = useRoute()
@@ -12,6 +18,7 @@
 
   const store = useAccountStore()
   const appStore = useAppStore()
+  const menuStore = useSidebarMenuStore()
   const emits = defineEmits(['onChange', 'onOpen', 'onClose'])
 
   const sidebarThemeTooltipColors = {
@@ -136,6 +143,124 @@
       .filter((v) => v.allowed)
   })
 
+  /* ------------------------------------------------------------------------
+   * Menyuni pin qilish va drag-and-drop bilan tartiblash
+   *
+   * Sozlamalar `sidebarMenuStore` da (localStorage, foydalanuvchi bo'yicha) faqat
+   * PATH ko'rinishida saqlanadi. Manba ro'yxat esa har doim `panelMenu` — u
+   * allaqachon permissionlar bo'yicha filtrlangan, ya'ni ruxsati olib qo'yilgan
+   * sahifa pinlangan bo'lsa ham menyuda chiqmaydi va saqlangan tartib uni
+   * qaytarib keltirmaydi.
+   * --------------------------------------------------------------------- */
+
+  const dragging = ref(false)
+
+  /** Pin faqat oddiy element uchun — `panel-item-multiple` guruhlari pinlanmaydi. */
+  const isPinnable = (item) => Boolean(item?.path) && !item?.children?.length
+
+  const toPaths = (items) => items.map((v) => v.path).filter(Boolean)
+
+  /**
+   * Saqlangan tartibga solish. Ro'yxatda yo'q element (navigations.js ga keyin
+   * qo'shilgan sahifa) eng katta rank oladi — ya'ni o'z tabiiy tartibini saqlab
+   * ro'yxat oxirida turadi (`Array.sort` barqaror).
+   */
+  const sortByStoredOrder = (items, storedOrder) => {
+    const rank = new Map(storedOrder.map((path, index) => [path, index]))
+    const rankOf = (item) => (rank.has(item.path) ? rank.get(item.path) : Number.MAX_SAFE_INTEGER)
+    return [...items].sort((a, b) => rankOf(a) - rankOf(b))
+  }
+
+  const arrangedMenu = computed(() => {
+    const modulePath = effectiveMenuPath.value
+    const items = panelMenu.value
+    if (!modulePath || !items.length) return { pinned: [], rest: [...items] }
+
+    const pinnedPaths = menuStore.modulePinned(modulePath)
+    const pinnedSet = new Set(pinnedPaths)
+    const isPinnedItem = (item) => isPinnable(item) && pinnedSet.has(item.path)
+
+    return {
+      pinned: sortByStoredOrder(items.filter(isPinnedItem), pinnedPaths),
+      rest: sortByStoredOrder(
+        items.filter((v) => !isPinnedItem(v)),
+        menuStore.moduleOrder(modulePath)
+      )
+    }
+  })
+
+  /**
+   * VueDraggable model massivini o'zi mutatsiya qiladi, shuning uchun computed'ni
+   * to'g'ridan-to'g'ri berib bo'lmaydi — lokal nusxa saqlanadi va modul/ruxsat/
+   * sozlama o'zgarganda qayta sinxronlanadi.
+   */
+  const pinnedItems = ref([])
+  const restItems = ref([])
+
+  watch(
+    arrangedMenu,
+    ({ pinned, rest }) => {
+      pinnedItems.value = pinned
+      restItems.value = rest
+    },
+    { immediate: true }
+  )
+
+  const persistArrangement = () => {
+    const modulePath = effectiveMenuPath.value
+    // Ro'yxat bo'sh bo'lsa (masalan ruxsatlar hali yuklanmagan) saqlamaymiz —
+    // aks holda foydalanuvchining tartibi o'chib ketardi.
+    if (!modulePath || !panelMenu.value.length) return
+    menuStore.setModulePrefs(
+      modulePath,
+      toPaths(pinnedItems.value.filter(isPinnable)),
+      toPaths(restItems.value)
+    )
+  }
+
+  // Sortable'ning `end` hodisasi model yangilanishidan oldin ham chiqishi mumkin.
+  const onDragEnd = () => {
+    dragging.value = false
+    nextTick(persistArrangement)
+  }
+
+  const togglePin = (item) => {
+    const modulePath = effectiveMenuPath.value
+    if (!modulePath || !isPinnable(item)) return
+
+    const pinnedPaths = toPaths(pinnedItems.value)
+    const restPaths = toPaths(restItems.value)
+
+    if (!pinnedPaths.includes(item.path)) {
+      menuStore.setModulePrefs(
+        modulePath,
+        [...pinnedPaths, item.path],
+        restPaths.filter((path) => path !== item.path)
+      )
+      return
+    }
+
+    // Pindan chiqarilgan element navigations.js dagi tabiiy qo'shnisi yoniga
+    // qaytadi — ro'yxat oxiriga tashlanib ketmaydi.
+    const naturalIndex = new Map(panelMenu.value.map((v, index) => [v.path, index]))
+    const own = naturalIndex.get(item.path) ?? -1
+    const at = restPaths.findIndex((path) => (naturalIndex.get(path) ?? -1) > own)
+    const nextRest = restPaths.filter((path) => path !== item.path)
+    nextRest.splice(at === -1 ? nextRest.length : at, 0, item.path)
+
+    menuStore.setModulePrefs(
+      modulePath,
+      pinnedPaths.filter((path) => path !== item.path),
+      nextRest
+    )
+  }
+
+  const isArranged = computed(() => menuStore.hasCustomization(effectiveMenuPath.value))
+
+  const resetArrangement = () => {
+    if (effectiveMenuPath.value) menuStore.resetModule(effectiveMenuPath.value)
+  }
+
   const menuName = computed(() => {
     if (effectiveMenuPath.value === '/hrm') return t('sidebar.hrm')
     else if (effectiveMenuPath.value === '/attestation') return t('sidebar.attestation')
@@ -173,6 +298,9 @@
   }
 
   onMounted(() => {
+    // Sidebar har login'dan keyin qaytadan mount bo'ladi — sozlamalar shu yerda
+    // joriy foydalanuvchi kaliti bilan o'qiladi.
+    menuStore.load()
     checkPage(route.path)
     const activeNav = navigations.find(
       (nav) => route.path.startsWith(nav.path) && nav.children?.length
@@ -233,14 +361,78 @@
               class="sticky top-0 z-10 bg-surface-section pt-[10px] -mt-[10px]"
               :class="{ 'sidebar-themed-sticky': appStore.sidebarTheme !== 'default' }"
             >
-              <span class="text-sm block text-textColor2 truncate font-semibold pl-4 mb-3">
-                {{ menuName }}
-              </span>
+              <div class="flex items-center gap-1 pl-4 pr-1 mb-3">
+                <span class="text-sm text-textColor2 truncate font-semibold flex-1 min-w-0">
+                  {{ menuName }}
+                </span>
+                <n-icon
+                  v-if="isArranged"
+                  size="16"
+                  class="menu-reset-btn shrink-0"
+                  :title="$t('sidebar.resetOrder')"
+                  @click="resetArrangement"
+                >
+                  <ArrowReset20Regular />
+                </n-icon>
+              </div>
               <div class="border-b border-surface-line -mx-[10px] mb-5"></div>
             </div>
-            <template v-for="item in panelMenu" :key="item">
-              <template v-if="item?.children && item.children.length > 0">
-                <div class="panel-item-multiple">
+
+            <!--
+              Pinlangan elementlar. Guruh bo'sh bo'lganda ham DOM'da QOLADI (balandligi
+              4px ga tushadi): `v-if` bilan olib tashlansa, oxirgi pinlangan elementni
+              sudrab chiqarish paytida Sortable boshqarayotgan konteyner yo'q bo'lib,
+              drag yarim yo'lda uzilardi. Sudrash boshlanganda zona ko'rinadigan
+              "tashlab pin qilish" maydoniga aylanadi.
+            -->
+            <div class="relative" :class="pinnedItems.length && 'mb-1'">
+              <VueDraggable
+                v-model="pinnedItems"
+                group="sidebar-panel-menu"
+                :animation="150"
+                :delay="250"
+                :delay-on-touch-only="true"
+                class="menu-drop-zone"
+                :class="{
+                  'menu-drop-zone-empty': !pinnedItems.length,
+                  'menu-drop-zone-active': !pinnedItems.length && dragging
+                }"
+                @start="dragging = true"
+                @end="onDragEnd"
+              >
+                <SidebarPanelItem
+                  v-for="item in pinnedItems"
+                  :key="item.path"
+                  :item="item"
+                  :category="currentCategory"
+                  :active="isCurrentPath(item.path)"
+                  pinned
+                  @select="onChangePath"
+                  @toggle-pin="togglePin"
+                />
+              </VueDraggable>
+              <span v-if="!pinnedItems.length && dragging" class="menu-drop-hint">
+                {{ $t('sidebar.dropToPin') }}
+              </span>
+            </div>
+
+            <div
+              v-if="pinnedItems.length"
+              class="border-b border-dashed border-surface-line -mx-[10px] mb-3"
+            ></div>
+
+            <VueDraggable
+              v-model="restItems"
+              group="sidebar-panel-menu"
+              :animation="150"
+              :delay="250"
+              :delay-on-touch-only="true"
+              class="menu-drop-zone"
+              @start="dragging = true"
+              @end="onDragEnd"
+            >
+              <template v-for="item in restItems" :key="item.path ?? item.label">
+                <div v-if="item?.children && item.children.length > 0" class="panel-item-multiple">
                   <div class="panel-header" @click="controlCollapse">
                     <div class="item-icon">
                       <i :class="item.icon"></i>
@@ -264,29 +456,17 @@
                     </div>
                   </div>
                 </div>
-              </template>
 
-              <template v-else>
-                <div
-                  @click="onChangePath(item)"
-                  class="panel-item-single relative"
-                  :class="[
-                    isCurrentPath(item.path) && 'active-panel-item-single',
-                    item?.disable && 'opacity-30'
-                  ]"
-                >
-                  <MenuItemBadge :category="currentCategory" :field="item?.name" />
-                  <div class="item-icon rounded-[10px]">
-                    <n-icon size="20">
-                      <component :is="item.icon" />
-                    </n-icon>
-                  </div>
-                  <div class="item-title truncate pl-2">
-                    <span>{{ $t(item.label) }} </span>
-                  </div>
-                </div>
+                <SidebarPanelItem
+                  v-else
+                  :item="item"
+                  :category="currentCategory"
+                  :active="isCurrentPath(item.path)"
+                  @select="onChangePath"
+                  @toggle-pin="togglePin"
+                />
               </template>
-            </template>
+            </VueDraggable>
           </div>
         </transition>
       </div>

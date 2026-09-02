@@ -512,7 +512,11 @@
     "timesheet": "Tabel",
     "accountant": "Hisobchi menyusi",
     "hospital": "Tibbiy ko'rik menyusi",
-    "lms": "LMS"
+    "lms": "LMS",
+    "pin": "Pin qilish",
+    "unpin": "Pinni olib tashlash",
+    "dropToPin": "Pin qilish uchun shu yerga tashlang",
+    "resetOrder": "Tartibni tiklash"
   },
   "offerModal": {
     "title": "Ommaviy oferta",
@@ -1134,6 +1138,8 @@
     "naturalPerson": "Jismoniy shaxs",
     "connectionError": "E-imzo o'rnatilmagan yoki to'g'ri sozlanmagan!",
     "confirmError": "Hujjatni tasdiqlashda xatolik yuz berdi. Birozdan so'ng qayta urinib ko'ring.",
+    "certCheckError": "E-IMZO sertifikat holatini tekshirish xizmati vaqtincha ishlamayapti. Birozdan so'ng qayta urinib ko'ring.",
+    "serverError": "Serverda xatolik yuz berdi. Birozdan so'ng qayta urinib ko'ring.",
     "copyLink": "Havolani nusxalash",
     "copied": "Havola nusxalandi",
     "goSignature": "Imzolash",
