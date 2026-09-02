@@ -27,8 +27,13 @@ export const useAppSetting = {
   pushAskedKey: 'app-push-asked',
   pushTokenKey: 'app-push-token',
   sidebarThemeKey: 'app-sidebar-theme',
-  // Sidebar menyusidagi pin/tartib sozlamalari. Foydalanuvchi id'si bilan
-  // qo'shilib to'liq kalit yasaladi: `app-sidebar-menu:<userId>`.
+  // Joriy (rol + tashkilot) juftligi — `accountStore._index()` yozadi, chiqishda
+  // o'chiriladi. Sidebar sozlamalari shu bo'yicha ajratiladi: bitta foydalanuvchi
+  // ikki rol bilan ishlaganda menyu tartibi aralashib ketmasin.
+  accountRoleScopeKey: 'account-role-scope',
+  // Sidebar menyusidagi pin/tartib sozlamalari. Foydalanuvchi id'si va rol
+  // scope'i bilan qo'shilib to'liq kalit yasaladi:
+  // `app-sidebar-menu:<userId>:<roleId>-<orgId>`.
   sidebarMenuPrefsKey: 'app-sidebar-menu',
   defaultSidebarTheme: 'mint',
   screenFilterKey: 'app-screen-filter',

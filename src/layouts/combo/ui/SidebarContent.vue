@@ -155,6 +155,16 @@
 
   const dragging = ref(false)
 
+  /**
+   * Rol almashganda (`accountStore._changeRole` → `_index`) sidebar qayta mount
+   * BO'LMAYDI, faqat `Home` ga o'tiladi. Shuning uchun scope o'zgarishini shu
+   * yerda kuzatamiz — aks holda yangi rol eski rolning pin/tartibini ko'rardi.
+   */
+  watch(
+    () => [store.account?.role?.id, store.account?.organization?.id].join('-'),
+    () => menuStore.syncScope()
+  )
+
   /** Pin faqat oddiy element uchun — `panel-item-multiple` guruhlari pinlanmaydi. */
   const isPinnable = (item) => Boolean(item?.path) && !item?.children?.length
 
