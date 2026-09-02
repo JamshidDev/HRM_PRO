@@ -8,11 +8,7 @@
   } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
-  // eimzoGate ulanishi (olib tashlashda shu ikki qator ham o'chadi).
-  import { useEimzoGateStore } from '@/features/eimzoGate/eimzoGateStore.js'
-  import { GATE_SIGNATURE_TYPE } from '@/features/eimzoGate/config.js'
   const store = useSignatureStore()
-  const gateStore = useEimzoGateStore()
 
   const hasKeys = computed(() => store.usbVisible || store.allKeys.length > 0)
 
@@ -38,8 +34,6 @@
   const activeCallback = computed(() => {
     if (store.signatureType === store.signatureTypes.auth) return store._auth
     if (store.signatureType === store.signatureTypes.contract) return store._contract
-    // eimzoGate: olib tashlashda shu qator va yuqoridagi import o'chiriladi.
-    if (store.signatureType === GATE_SIGNATURE_TYPE) return gateStore._sign
   })
 
   const canContinue = computed(() => {

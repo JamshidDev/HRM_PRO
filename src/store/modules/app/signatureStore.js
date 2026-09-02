@@ -180,34 +180,46 @@ export const useSignatureStore = defineStore('signatureStore', {
         }
       })
     },
+    // Backend texnik xatolarni ingliz tilida qaytaradi ("failed to check certificate
+    // state: ConnectionException: UNAVAILABLE: ssl exception") — foydalanuvchiga
+    // bunday matn hech narsa demaydi, shuning uchun tarjima qilingan xabarga
+    // almashtiramiz. Asl matn diagnostika uchun konsolda qoladi.
+    _signatureErrorMessage(raw) {
+      const text = String(raw ?? '').trim()
+      if (!text) return t('signature.serverError')
+      if (/certificate state|UNAVAILABLE|ConnectionException|ssl/i.test(text)) {
+        return t('signature.certCheckError')
+      }
+      return text
+    },
     getChallenge(callback) {
       this.loading = true
       microAjax(
         `${apiUrl}/api/v1/signature/challenge?_uc=` + (Date.now() + '_' + Math.random()),
-        (data, s) => {
-          data = JSON.parse(data)
-          let status = s.status
-          data = data.data
-
-          if (status === 500) {
-            uiShowMessage(data)
-            return
+        (raw, s) => {
+          // Har qanday muvaffaqiyatsiz yo'lda loading o'chirilishi shart — aks holda
+          // tugma va modal abadiy "loading" holatida qotib qoladi.
+          const fail = (message) => {
+            this.loading = false
+            console.warn('signature/challenge:', s.status, raw)
+            uiShowMessage(this._signatureErrorMessage(message))
           }
 
-          if (status !== 200) {
-            uiShowMessage(s.statusText)
-
-            return
-          }
+          // 5xx da server JSON o'rniga HTML (yoki bo'sh javob) qaytarishi mumkin —
+          // JSON.parse qo'riqlanmasa, xato shu callback ichida ko'tarilib ketadi va
+          // loading hech qachon o'chmaydi.
+          let body
           try {
-            if (data.status !== 1) {
-              uiShowMessage(data.message)
-              return
-            }
-            callback(data.challenge)
-          } catch (e) {
-            uiShowMessage(s.statusText + ': ' + e)
+            body = JSON.parse(raw)
+          } catch {
+            return fail(s.status ? s.statusText : '')
           }
+
+          const data = body?.data
+          if (s.status !== 200) return fail(body?.message || s.statusText)
+          if (data?.status !== 1) return fail(data?.message)
+
+          callback(data.challenge)
         }
       )
     },
@@ -221,14 +233,26 @@ export const useSignatureStore = defineStore('signatureStore', {
         (pkcs7) => {
           microAjax(
             `${apiUrl}/api/v1/signature/auth`,
-            (response, s) => {
-              response = JSON.parse(response)
-              if (s.status === 200) {
+            (raw, s) => {
+              this.loading = false
+
+              let response
+              try {
+                response = JSON.parse(raw)
+              } catch {
+                console.warn('signature/auth: JSON emas javob', s.status, raw)
+                uiShowMessage(t('signature.serverError'))
+                return
+              }
+
+              // Backend 200 bilan ham `error: true` qaytarishi mumkin — faqat
+              // status'ga ishonib qolsak, token'siz javob muvaffaqiyat sanaladi.
+              if (s.status === 200 && !response?.error) {
                 callback(response)
               } else {
-                uiShowMessage(response.message)
+                console.warn('signature/auth xatosi:', s.status, response?.message)
+                uiShowMessage(this._signatureErrorMessage(response?.message))
               }
-              this.loading = false
             },
             '&code=' + encodeURIComponent(pkcs7)
           )
