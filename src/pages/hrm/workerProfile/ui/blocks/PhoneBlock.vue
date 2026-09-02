@@ -16,8 +16,11 @@
     store.payload.phones.push({ id: uuidv4(), phone: '+998', main: false, exist: false })
   }
 
+  // Raqam faqat ro'yxatdan olinadi — o'chirish saqlashda bajariladi
+  // (`PUT /hr/workers/:id` telefonlarni FARQ bo'yicha sinxronlaydi).
+  // Alohida DELETE chaqiruvi olib tashlandi: u tekshiruvsiz ishlar va
+  // login raqamini ham o'chirib yuborishi mumkin edi.
   const onRemove = (item) => {
-    if (item.exist) store._deletePhone(item.id)
     store.payload.phones = store.payload.phones.filter((x) => x.id !== item.id)
   }
 
@@ -106,8 +109,8 @@
           {{
             store.anotherProfile
               ? $t('createWorkerPage.otherProfile', {
-                  n: `${Utils.combineFullName(store.anotherProfile?.worker)}`
-                })
+                n: `${Utils.combineFullName(store.anotherProfile?.worker)}`
+              })
               : $t('createWorkerPage.no-account')
           }}
         </n-alert>

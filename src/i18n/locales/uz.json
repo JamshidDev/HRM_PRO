@@ -635,7 +635,8 @@
       "orphanWarning": "Ushbu rolda ro'yxatda ko'rinmaydigan {n} ta ruxsat bor (ruxsatlar ro'yxati to'liq yuklanmagan bo'lishi mumkin). Ular saqlashda o'zgarishsiz qoladi.",
       "scopeType": "Korxona ko'lami",
       "scopeLocal": "Local (faqat shu korxona)",
-      "scopeGlobal": "Global (korxona + tarkibi)"
+      "scopeGlobal": "Global (korxona + tarkibi)",
+      "eimzoSkip": "E-IMZO tasdig'i"
     }
   },
   "userPage": {
@@ -1062,7 +1063,8 @@
       "phone": "Kandidatning asosiy raqamini belgilang va bu raqam kandidatning xodim sifatida tizimga kirish uchun login vazifasini bajaradi.",
       "mainImage": "Asosiy rasm",
       "needPhotos": "{n} ta surat kerak",
-      "addPhoto": "Surat qo'shish"
+      "addPhoto": "Surat qo'shish",
+      "phoneSingle": "Bu raqam xodimning tizimga kirish logini bo'ladi. Qo'shimcha raqamlarni keyinroq xodim kartochkasidagi shaxsiy ma'lumotlardan qo'shasiz."
     },
     "form": {
       "lastName": "Familiya",
@@ -2875,7 +2877,14 @@
       "emptyPhone": "Telefon raqam bo'sh bo'lishi mumkin emas",
       "invalidFormat": "Telefon raqamni to'g'riligini tekshiring",
       "duplicate": "Bir xil telefon raqam kiritilgan"
-    }
+    },
+    "createAccount": "Hisob yaratish",
+    "noAccount": "Hisobi yo'q",
+    "accountStatus": "Hisob holati",
+    "accountWith": "Hisobi bor",
+    "accountWithout": "Hisobi yo'q",
+    "createAccountInfo": "Xodimning shaxsiy telefon raqami tizimga kirish uchun login bo'ladi. Parol berilmasa, tasodifiy kuchli parol o'rnatiladi.",
+    "loginPhone": "Login raqami"
   },
   "telegramPopup": {
     "header": "Telegram botimizga ulaning va quyidagi qulayliklardan bahramand bo‘ling:",

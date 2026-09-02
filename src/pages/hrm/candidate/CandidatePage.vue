@@ -147,7 +147,8 @@
         v-model:main-image-id="store.mainImageId"
         @onDelete="onDelete"
       />
-      <PhoneForm v-model:phones="store.payload.phones" />
+      <!-- Yaratishda BITTA raqam — qolganlari xodim kartochkasidan qo'shiladi. -->
+      <PhoneForm v-model:phones="store.payload.phones" :max="1" />
     </n-form>
 
     <div class="flex justify-end">

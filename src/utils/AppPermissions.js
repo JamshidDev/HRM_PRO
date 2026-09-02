@@ -189,6 +189,7 @@ export const appPermissions = {
   hrUsersWrite: 'hr-users-write',
   hrUsersRead: 'hr-users-read',
   // Foydalanuvchilar menyusi — per-option (har amal alohida ruxsat)
+  hrUsersCreate: 'hr-users-create',
   hrUsersAttachRole: 'hr-users-attach-role',
   hrUsersDetachRole: 'hr-users-detach-role',
   hrUsersActiveRole: 'hr-users-active-role',
@@ -358,6 +359,8 @@ export const appPermissions = {
   hospitalTicket: 'hospital-ticket',
   hospitalTicketWrite: 'hospital-ticket-write',
   hospitalTicketRead: 'hospital-ticket-read',
+  hospitalMedWorker: 'hospital-med-worker',
+  hospitalMedWorkerRead: 'hospital-med-worker-read',
   hospitalPensioner: 'hospital-pensioner',
   hospitalPensionerRead: 'hospital-pensioner-read',
   hospitalPensionerWrite: 'hospital-pensioner-write',
@@ -365,6 +368,8 @@ export const appPermissions = {
   useful: 'useful',
   ai: 'ai',
   economist: 'economist',
+  // E-IMZO «shaxsni tasdiqlash» oynasidan ozod qiladi (iqtisod sahifalari).
+  economistEimzoSkip: 'economist-eimzo-skip',
   // Oylik (salary-1c) bo'limi — faqat admin belgilagan xodimlar (tor ruxsat, migr 0077).
   salary1cAccess: 'salary-1c-access',
   // Tarif setkasi (tariff-grid) — faqat admin belgilagan xodimlar (tor ruxsat, migr 0080).

@@ -171,6 +171,16 @@ export const useDashboardStore = defineStore('dashboardStore', {
       // legacy adapterdan boyroq, shuning uchun overview bobini bosib o'tadi.
       if (overviewRes?.data?.data) {
         this.api.overview = overviewRes.data.data
+        // «Harakat» tabidagi shtat/pensiya kartalari ham SHU manbadan olinadi:
+        // legacy adapter ikki umumiy agregatni ayiradi va sverxni doim 0 chiqaradi.
+        this.api.movement = {
+          ...(this.api.movement || {}),
+          kpi: {
+            ...(this.api.movement?.kpi || {}),
+            pension_age: overviewRes.data.data.kpi?.pension_age,
+            staff_units: overviewRes.data.data.kpi?.staff_units
+          }
+        }
       }
       this.loading = false
     },
