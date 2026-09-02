@@ -14,10 +14,10 @@
 
   // ?start= parametri Telegram deep-link: bot ochilganda "START" darhol yuboriladi
   const isProdMode = import.meta.env.MODE === 'production'
-  const resetBotHandle = isProdMode ? '@hrmpro_robot' : '@developer_jr_bot'
+  const resetBotHandle = isProdMode ? '@hrmpro_robot' : '@dev_hrm_pro_robot'
   const resetBotUrl = isProdMode
     ? 'https://t.me/hrmpro_robot?start=reset'
-    : 'https://t.me/developer_jr_bot?start=reset'
+    : 'https://t.me/dev_hrm_pro_robot?start=reset'
 
   const emit = defineEmits(['back', 'done'])
 

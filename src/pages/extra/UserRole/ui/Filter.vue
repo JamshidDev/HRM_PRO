@@ -5,6 +5,9 @@
     useWorkerProfileStore
   } from '@stores'
 
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
   const store = useWorkerProfileStore()
   const componentStore = useComponentStore()
 
@@ -21,8 +24,21 @@
     let count = 0
     if (store.userRoleParams.organizations.length) count++
     if (store.userRoleParams.role) count++
+    if (store.userRoleParams.account) count++
     return count
   })
+
+  // Hisob holati — backend `?account=with|without`.
+  const accountOptions = computed(() => [
+    { id: 'with', name: t('workerRole.accountWith') },
+    { id: 'without', name: t('workerRole.accountWithout') }
+  ])
+
+  const onChangeAccount = (v) => {
+    store.userRoleParams.account = v
+    store.userRoleParams.page = 1
+    filterEvent()
+  }
 
   const beforeShow = () => {
     if (componentStore.structureList.length === 0) {
@@ -47,6 +63,7 @@
   const resetFilter = () => {
     store.userRoleParams.organizations = []
     store.userRoleParams.role = null
+    store.userRoleParams.account = null
     filterEvent()
   }
 </script>
@@ -72,6 +89,17 @@
             @update:value="onChangeRole"
             :options="componentStore.roles"
             :loading="componentStore.enumLoading"
+            label-field="name"
+            value-field="id"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('workerRole.accountStatus') }}</label>
+          <n-select
+            v-model:value="store.userRoleParams.account"
+            clearable
+            @update:value="onChangeAccount"
+            :options="accountOptions"
             label-field="name"
             value-field="id"
           />

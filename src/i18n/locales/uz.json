@@ -440,7 +440,9 @@
     "pushBlockedTitle": "Bildirishnomalar bloklangan",
     "pushBlockedText": "Brauzer bu sayt uchun bildirishnomani rad etgan. Manzil satridagi qulf belgisini bosing → «Bildirishnomalar» → «Ruxsat berish», so'ng sahifani yangilang.",
     "pushBlockedBtn": "Qanday yoqiladi?",
-    "pushEnabled": "Bildirishnomalar yoqildi"
+    "pushEnabled": "Bildirishnomalar yoqildi",
+    "pushCopyPath": "Manzilni nusxalash",
+    "pushPathCopied": "Manzil nusxalandi — brauzerning manzil satriga qo'ying"
   },
   "date": {
     "day": "Kun",
@@ -504,7 +506,7 @@
   "sidebar": {
     "hrm": "Xodimlar menyusi",
     "admin": "Admin menyusi",
-    "chat": "Chat menyusi",
+    "chat": "Xabar va e'lonlar menyusi",
     "docflow": "Hujjatlar menyusi",
     "attestation": "Attestatsiya menyusi",
     "timesheet": "Tabel",
@@ -633,7 +635,8 @@
       "orphanWarning": "Ushbu rolda ro'yxatda ko'rinmaydigan {n} ta ruxsat bor (ruxsatlar ro'yxati to'liq yuklanmagan bo'lishi mumkin). Ular saqlashda o'zgarishsiz qoladi.",
       "scopeType": "Korxona ko'lami",
       "scopeLocal": "Local (faqat shu korxona)",
-      "scopeGlobal": "Global (korxona + tarkibi)"
+      "scopeGlobal": "Global (korxona + tarkibi)",
+      "eimzoSkip": "E-IMZO tasdig'i"
     }
   },
   "userPage": {
@@ -882,7 +885,6 @@
   "contactPage": {
     "name": "Kontaktlar",
     "title": "Bog'lanish",
-    "home": "Bosh sahifa",
     "comingSoon": "Tez kunda",
     "telegram": {
       "title": "Telegram orqali yozish",
@@ -890,7 +892,8 @@
     },
     "faq": {
       "title": "Ko'p beriladigan savollar",
-      "subtitle": "Tez-tez beriladigan savollar bo'yicha ma'lumot"
+      "subtitle": "Tez-tez beriladigan savollar bo'yicha ma'lumot",
+      "action": "Savollarni ko'rish"
     },
     "email": {
       "title": "Elektron pochta",
@@ -914,6 +917,23 @@
     "social": "Ijtimoiy tarmoqlar:",
     "responsible": {
       "title": "Kim bilan bog'lanish"
+    }
+  },
+  "faqPage": {
+    "title": "Ko'p beriladigan savollar",
+    "empty": "Bu bo'limda savollar topilmadi",
+    "tabs": {
+      "all": "Hammasi",
+      "staff": "Kadrlar",
+      "salary": "Oylik",
+      "vacation": "Ta'til",
+      "turnstile": "Turniket",
+      "technical": "Texnik"
+    },
+    "footer": {
+      "title": "Javob topolmadingizmi?",
+      "subtitle": "Kerakli bo'lim xodimiga to'g'ridan-to'g'ri bog'laning",
+      "action": "Bog'lanish"
     }
   },
   "documentHistoryPage": {
@@ -1043,7 +1063,8 @@
       "phone": "Kandidatning asosiy raqamini belgilang va bu raqam kandidatning xodim sifatida tizimga kirish uchun login vazifasini bajaradi.",
       "mainImage": "Asosiy rasm",
       "needPhotos": "{n} ta surat kerak",
-      "addPhoto": "Surat qo'shish"
+      "addPhoto": "Surat qo'shish",
+      "phoneSingle": "Bu raqam xodimning tizimga kirish logini bo'ladi. Qo'shimcha raqamlarni keyinroq xodim kartochkasidagi shaxsiy ma'lumotlardan qo'shasiz."
     },
     "form": {
       "lastName": "Familiya",
@@ -2856,7 +2877,14 @@
       "emptyPhone": "Telefon raqam bo'sh bo'lishi mumkin emas",
       "invalidFormat": "Telefon raqamni to'g'riligini tekshiring",
       "duplicate": "Bir xil telefon raqam kiritilgan"
-    }
+    },
+    "createAccount": "Hisob yaratish",
+    "noAccount": "Hisobi yo'q",
+    "accountStatus": "Hisob holati",
+    "accountWith": "Hisobi bor",
+    "accountWithout": "Hisobi yo'q",
+    "createAccountInfo": "Xodimning shaxsiy telefon raqami tizimga kirish uchun login bo'ladi. Parol berilmasa, tasodifiy kuchli parol o'rnatiladi.",
+    "loginPhone": "Login raqami"
   },
   "telegramPopup": {
     "header": "Telegram botimizga ulaning va quyidagi qulayliklardan bahramand bo‘ling:",
@@ -4094,7 +4122,7 @@
     "hospital": "Kasalxona",
     "admin": "Admin",
     "extra": "Qo'shimchalar",
-    "chat": "Chat"
+    "chat": "Xabar va e'lonlar"
   },
   "resultPage": {
     "name": "Natijalar",
@@ -4576,6 +4604,8 @@
     "addLocation": "Joylashuv qo'shish",
     "locationExists": "Bor",
     "locationNotExists": "Yo'q",
+    "locationCount": "{n} ta joylashuv",
+    "noLocation": "Joylashuv yo'q",
     "tabs": {
       "departments": "Bo'limlar",
       "locations": "Joylashuvlar"

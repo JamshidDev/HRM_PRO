@@ -31,6 +31,7 @@ export const ENFORCED = new Set([
   'document-view-exam-results',
   'economist',
   'economist-dashboard-read',
+  'economist-eimzo-skip',
   'economist-pension-payments-delete',
   'economist-pension-payments-read',
   'economist-pension-payments-write',
@@ -134,6 +135,7 @@ export const ENFORCED = new Set([
   'hr-table-write',
   'hr-users-active-role',
   'hr-users-attach-role',
+  'hr-users-create',
   'hr-users-detach-role',
   'hr-users-password',
   'hr-users-read',
@@ -274,6 +276,7 @@ export const ENFORCED = new Set([
   'hr-business-trip-write',
   'hr-report-write',
   'lms-worker-write',
+  'hospital-med-worker-read',
   'hospital-pensioner-write',
   'document-examples-write',
   'hr-report-staffing-export',
@@ -338,6 +341,7 @@ export const MEANINGFUL = new Set([
   'economist',
   'economist-dashboard',
   'economist-dashboard-read',
+  'economist-eimzo-skip',
   'economist-pension-payments',
   'economist-pension-payments-delete',
   'economist-pension-payments-read',
@@ -396,6 +400,8 @@ export const MEANINGFUL = new Set([
   'holidays-write',
   'hospital',
   'hospital-expired',
+  'hospital-med-worker',
+  'hospital-med-worker-read',
   'hospital-pensioner',
   'hospital-pensioner-read',
   'hospital-pensioner-write',
@@ -497,6 +503,7 @@ export const MEANINGFUL = new Set([
   'hr-users',
   'hr-users-active-role',
   'hr-users-attach-role',
+  'hr-users-create',
   'hr-users-detach-role',
   'hr-users-password',
   'hr-users-read',
@@ -975,6 +982,12 @@ export const PERMISSION_GROUPS = [
     label: 'navigation.economist',
     groups: [
       { prefix: 'economist', label: 'userRole.form.moduleAccess' },
+      {
+        // E-IMZO tasdiqlash oynasidan ozod qilish — bitta switch (read/write yo'q).
+        prefix: 'economist-eimzo-skip',
+        label: 'userRole.form.eimzoSkip',
+        actions: [{ slug: 'economist-eimzo-skip', label: 'So‘ralmasin' }]
+      },
       { prefix: 'economist-dashboard', label: 'accDashboard.name' },
       { prefix: 'economist-worker-categories', label: 'salaryCategory.name' },
       {
@@ -1014,6 +1027,7 @@ export const PERMISSION_GROUPS = [
       { prefix: 'hospital', label: 'userRole.form.moduleAccess' },
       { prefix: 'hospital-expired', label: 'expiredHealth.name' },
       { prefix: 'hospital-ticket', label: 'ticket.name' },
+      { prefix: 'hospital-med-worker', label: 'medWorker.name' },
       { prefix: 'hospital-pensioner', label: 'pensioner.name' }
     ]
   },
@@ -1037,6 +1051,7 @@ export const PERMISSION_GROUPS = [
         label: 'workerRole.name',
         actions: [
           { slug: 'hr-users-read', label: "Ko'rish" },
+          { slug: 'hr-users-create', labelKey: 'workerRole.createAccount' },
           { slug: 'hr-users-attach-role', labelKey: 'workerRole.attachRole' },
           { slug: 'hr-users-detach-role', labelKey: 'workerRole.deleteRole' },
           { slug: 'hr-users-active-role', label: 'Faol rol' },

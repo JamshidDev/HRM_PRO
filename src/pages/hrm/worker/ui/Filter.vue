@@ -26,7 +26,7 @@
   const componentStore = useComponentStore()
 
   // Popover kengligi uchun: `lg` (976px) dan pastda 712px viewport'ga sig'maydi.
-  const { isDesktop } = useAppBreakpoints()
+  const { isDesktop, isMobile } = useAppBreakpoints()
 
   const debounceIndexEv = useDebounce(store._index, 1000)
 
@@ -301,7 +301,7 @@
           {{ $t('workerPage.filter.contract') }}
         </n-button>
 
-        <n-button secondary @click="onHistory">
+        <n-button v-if="!isMobile" secondary @click="onHistory">
           <template #icon>
             <n-icon><ArrowCounterclockwise20Regular /></n-icon>
           </template>
@@ -683,6 +683,7 @@
 <style scoped>
 
   .worker-action-icon {
+    flex: 0 0 auto;
     width: 16px;
     height: 16px;
     filter: brightness(0) invert(1);
@@ -771,14 +772,20 @@
       width: 100%;
     }
 
-    /* Ikkala amal BITTA qatorda, teng bo'lib. `flex-basis: 0` — `100%` bo'lsa
-       wrap majburlanardi. Tugma yolg'iz qolsa (`canExport` yo'q) o'zi to'liq egallaydi. */
+    /* Ikkala amal BITTA qatorda. `flex-basis: auto` — teng yarmga bo'lish EMAS:
+       «Hisobot olish / Yuklash 63551» «Shartnoma tuzish» dan uzunroq, teng
+       bo'lishda unga joy yetmay qolardi. Endi har biri o'z kontenti bo'yicha
+       o'lchanadi, ortiqcha joy esa baravar taqsimlanadi. Tugma yolg'iz qolsa
+       (`canExport` yo'q) `flex-grow: 1` uni to'liq kenglikka yoyadi. */
     .worker-action-group > * {
-      flex: 1 1 0;
+      flex: 1 1 auto;
       min-width: 0;
     }
 
+    /* Joy yetmasa avval «Shartnoma tuzish» qisilsin (uch barobar tez), hisobot
+       amali esa to'liq o'qiladigan bo'lib qolsin. */
     .worker-action-group > :deep(.n-button) {
+      flex-shrink: 3;
       /* Barmoq uchun minimal balandlik. */
       --n-height: 38px !important;
       /* Tor ekranda yorliqqa ko'proq joy qolsin (standart 0 16px). */
@@ -791,15 +798,30 @@
       padding: 0 10px;
     }
 
+    /* `min-width: 0` shart: usiz «Yuklash + 63551» kontenti guruhni o'z
+       tabiiy kengligida ushlab turadi va yopish (×) qismi ekrandan chiqib
+       ketadi. Endi matn qisiladi, × esa doim ko'rinadi. */
     .worker-report-group {
       display: flex;
+      min-width: 0;
     }
 
     .worker-report-group__main {
-      flex: 1 1 auto;
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    .worker-report-group__main :deep(.n-button__content) {
+      min-width: 0;
+      gap: 6px;
     }
 
     .worker-report-group__close {
+      flex: 0 0 auto;
+      --n-padding: 0 10px !important;
+    }
+
+    .worker-report-badge {
       flex: 0 0 auto;
     }
 
@@ -925,6 +947,37 @@
     margin-top: 18px;
     font-size: 13px;
     font-weight: 600;
+  }
+
+  /* Mobil: barcha maydon bitta ustunga tushadi, shu bois `gap-6` (24px) desktopdagi
+     ustunlararo masofa emas, balki QATORLAR orasidagi bo'sh joyga aylanadi va panel
+     keraksiz uzayib ketadi. Vertikal oraliqlar qisqartirildi. */
+  @media (max-width: 767.98px) {
+    .worker-filter-panel .grid {
+      gap: 14px;
+    }
+
+    .worker-filter-panel .grid.mt-6 {
+      margin-top: 14px;
+    }
+
+    .worker-filter-panel label {
+      margin-bottom: 4px;
+    }
+
+    /* Checkbox kartochkalari ustidagi `invisible` yorliq — bir ustunli tartibda
+       u faqat bo'sh qator hosil qiladi (desktopda ikki ustunni tekislash uchun). */
+    .worker-filter-panel label.invisible {
+      display: none;
+    }
+
+    .worker-filter-divider {
+      margin: 14px 0 !important;
+    }
+
+    .worker-additional-toggle {
+      margin-top: 12px;
+    }
   }
 
   :global([data-theme='dark'] .age-mode-group) {

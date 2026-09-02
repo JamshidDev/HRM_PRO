@@ -105,8 +105,19 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       per_page: 15,
       search: null,
       organizations: [],
-      role: null
+      role: null,
+      // null = hammasi; 'with' | 'without' — hisob holati bo'yicha filtr.
+      account: null
     },
+    createUserVisible: false,
+    createUserLoading: false,
+    // Hisobi yo'q xodimga hisob ochish — `worker_uuid` ro'yxatdagi worker.uuid.
+    createUserPayload: {
+      worker_uuid: null,
+      phone: null,
+      password: null
+    },
+    createUserWorker: null,
     userRoleList: [],
     userRoleLoading: false,
     userRoleTotal: 0,
@@ -476,15 +487,6 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
           this.foreignPassportLoading = false
         })
     },
-    _deletePhone(id) {
-      this.loading = true
-      $ApiService.phoneService
-        ._delete({ id })
-        .then(() => {
-          this._index()
-        })
-        .finally(() => {})
-    },
     openVisible(data) {
       this.visible = data
     },
@@ -545,6 +547,27 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
           this.roleLoading = false
         })
     },
+    // Hisob yaratish — muvaffaqiyatда ro'yxat yangilanadi (qator `has_account: true` bo'ladi).
+    _createUser() {
+      this.createUserLoading = true
+      $ApiService.workerService
+        ._createUser({
+          data: {
+            worker_uuid: this.createUserPayload.worker_uuid,
+            phone: this.createUserPayload.phone,
+            password: this.createUserPayload.password || undefined
+          }
+        })
+        .then(() => {
+          this.createUserVisible = false
+          this.createUserPayload = { worker_uuid: null, phone: null, password: null }
+          this.createUserWorker = null
+          this._userRole()
+        })
+        .finally(() => {
+          this.createUserLoading = false
+        })
+    },
     _updateUserPassword() {
       this.passwordLoading = true
       $ApiService.workerService
@@ -591,7 +614,8 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       const params = {
         ...this.userRoleParams,
         organizations: this.userRoleParams.organizations.map((v) => v.id).toString() || undefined,
-        role: this.userRoleParams.role || undefined
+        role: this.userRoleParams.role || undefined,
+        account: this.userRoleParams.account || undefined
       }
       $ApiService.workerService
         ._userRole({ params })

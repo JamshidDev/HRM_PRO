@@ -411,6 +411,7 @@
     "ru": "RU",
     "en": "EN",
     "create": "Create",
+    "successCopied": "Copied successfully",
     "allSelected": "All selected",
     "sendToSign": "Send to sign",
     "rejectByMistake": "Return due to error",
@@ -426,7 +427,9 @@
     "pushBlockedTitle": "Notifications are blocked",
     "pushBlockedText": "The browser blocked notifications for this site. Click the lock icon in the address bar → “Notifications” → “Allow”, then reload the page.",
     "pushBlockedBtn": "How to enable?",
-    "pushEnabled": "Notifications enabled"
+    "pushEnabled": "Notifications enabled",
+    "pushCopyPath": "Copy address",
+    "pushPathCopied": "Address copied — paste it into the browser address bar"
   },
   "date": {
     "day": "Day",
@@ -488,7 +491,7 @@
   "sidebar": {
     "hrm": "HR Menu",
     "admin": "Admin Menu",
-    "chat": "Chat Menu",
+    "chat": "Messages & Announcements Menu",
     "docflow": "Documents Menu",
     "attestation": "Certification Menu",
     "timesheet": "Timesheet",
@@ -617,7 +620,8 @@
       "orphanWarning": "This role has {n} permission(s) not shown in the list (the permission list may not be fully loaded). They will be kept unchanged on save.",
       "scopeType": "Organization scope",
       "scopeLocal": "Local (own organization)",
-      "scopeGlobal": "Global (organization + subtree)"
+      "scopeGlobal": "Global (organization + subtree)",
+      "eimzoSkip": "E-IMZO confirmation"
     }
   },
   "userPage": {
@@ -865,7 +869,6 @@
   "contactPage": {
     "name": "Contacts",
     "title": "Contact",
-    "home": "Home",
     "comingSoon": "Coming soon",
     "telegram": {
       "title": "Write on Telegram",
@@ -873,7 +876,8 @@
     },
     "faq": {
       "title": "Frequently asked questions",
-      "subtitle": "Information on frequently asked questions"
+      "subtitle": "Information on frequently asked questions",
+      "action": "View questions"
     },
     "email": {
       "title": "Email",
@@ -897,6 +901,23 @@
     "social": "Social networks:",
     "responsible": {
       "title": "Who to contact"
+    }
+  },
+  "faqPage": {
+    "title": "Frequently asked questions",
+    "empty": "No questions found in this section",
+    "tabs": {
+      "all": "All",
+      "staff": "Staff",
+      "salary": "Salary",
+      "vacation": "Vacation",
+      "turnstile": "Turnstile",
+      "technical": "Technical"
+    },
+    "footer": {
+      "title": "Couldn't find an answer?",
+      "subtitle": "Contact the relevant department employee directly",
+      "action": "Contact"
     }
   },
   "documentHistoryPage": {
@@ -1026,7 +1047,8 @@
       "phone": "Mark primary phone number (used as login).",
       "mainImage": "Main photo",
       "needPhotos": "{n} photos required",
-      "addPhoto": "Add photo"
+      "addPhoto": "Add photo",
+      "phoneSingle": "This number becomes the employee's login. Additional numbers can be added later in the employee's personal data."
     },
     "form": {
       "lastName": "Last name",
@@ -2833,7 +2855,14 @@
       "emptyPhone": "Phone number cannot be empty",
       "invalidFormat": "Please check the phone number is correct",
       "duplicate": "Duplicate phone number entered"
-    }
+    },
+    "createAccount": "Create account",
+    "noAccount": "No account",
+    "accountStatus": "Account status",
+    "accountWith": "With account",
+    "accountWithout": "Without account",
+    "createAccountInfo": "The employee's personal phone number becomes the login. If no password is given, a random strong one is set.",
+    "loginPhone": "Login phone"
   },
   "telegramPopup": {
     "header": "Join our Telegram bot and enjoy these benefits:",
@@ -4064,7 +4093,7 @@
     "economist": "Economist",
     "hospital": "Hospital",
     "admin": "Admin",
-    "chat": "Chat"
+    "chat": "Messages & Announcements"
   },
   "resultPage": {
     "name": "Results",
@@ -4533,6 +4562,8 @@
     "addLocation": "Add Location",
     "locationExists": "Yes",
     "locationNotExists": "No",
+    "locationCount": "{n} location(s)",
+    "noLocation": "No location",
     "tabs": {
       "departments": "Departments",
       "locations": "Locations"
@@ -4545,7 +4576,7 @@
       "lng": "Longitude",
       "radius": "Radius",
       "accuracy": "Accuracy",
-      "hasLocation": "Location",
+      "hasLocation": "Locations",
       "location": "Location"
     },
     "form": {

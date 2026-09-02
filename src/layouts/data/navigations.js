@@ -822,7 +822,8 @@ export const navigations = [
         path: Utils.routeHospitalPathMaker(AppPaths.MedWorker),
         icon: HospitalMedWorkerIcon,
         color: 'bg-info',
-        permission: appPermissions.hospitalTicketRead
+        // Ilgari `hospital-ticket-read` ni qarzga olardi — endi o'z ruxsati.
+        permission: appPermissions.hospitalMedWorkerRead
       },
       {
         label: 'pensioner.name', // Pensionerlar
