@@ -1,8 +1,6 @@
 <script setup>
   import AppHeader from './AppHeader.vue'
   import { useAppStore } from '@/store/modules/index.js'
-  // eimzoGate ulanishi (olib tashlashda o'chadi).
-  import EimzoGate from '@/features/eimzoGate/EimzoGate.vue'
 
   const appStore = useAppStore()
   const emits = defineEmits(['onOpen'])
@@ -27,8 +25,6 @@
           <component :is="Component" :key="route.path" />
         </transition>
       </router-view>
-      <!-- eimzoGate: olib tashlashda shu teg va yuqoridagi import o'chiriladi. -->
-      <EimzoGate />
     </div>
   </div>
 </template>
