@@ -4,7 +4,9 @@
   import {
     ArrowReset20Regular,
     ChevronDown12Regular,
-    ChevronDoubleLeft16Filled
+    ChevronDoubleLeft16Filled,
+    Dismiss16Regular,
+    Search20Regular
   } from '@vicons/fluent'
   import { useAccountStore, useAppStore, useSidebarMenuStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
@@ -80,6 +82,8 @@
   const onChangePath = (item) => {
     if (item?.disable) return
     router.push(item.path)
+    // Sahifa tanlangach qidiruv yopiladi — qaytib kelganda to'liq menyu ko'rinadi
+    closeSearch()
     // Mobilda sahifaga o'tgach sidebar yopilsin (desktop holati saqlanmasin)
     if (isMobileWidth()) emits('onClose', false)
   }
@@ -216,6 +220,74 @@
     { immediate: true }
   )
 
+  /* ------------------------------------------------------------------------
+   * Menyu bo'yicha qidiruv
+   *
+   * Ro'yxat qisqa emas (HRM modulida 25+ element), shuning uchun sarlavhadagi
+   * lupa tugmasi qidiruv maydonini ochadi. Qidiruv FAQAT ko'rinishni filtrlaydi:
+   * saqlangan pin/tartib tegilmaydi, shuning uchun qidiruv ochiq paytda
+   * sudrash o'chiriladi (filtrlangan ro'yxatni sudrash to'liq tartibni
+   * buzib yozib yuborardi).
+   * --------------------------------------------------------------------- */
+
+  const searchOpen = ref(false)
+  const searchQuery = ref('')
+  const searchInputRef = ref(null)
+
+  const isSearching = computed(() => Boolean(searchQuery.value.trim()))
+
+  const openSearch = async () => {
+    searchOpen.value = true
+    await nextTick()
+    searchInputRef.value?.focus()
+  }
+
+  const closeSearch = () => {
+    searchOpen.value = false
+    searchQuery.value = ''
+  }
+
+  const labelOf = (item) => t(item?.label ?? '').toLowerCase()
+
+  /** Guruh elementi ichki sahifasi nomi bo'yicha ham topiladi. */
+  const matchesQuery = (item, needle) => {
+    if (labelOf(item).includes(needle)) return true
+    return Boolean(item.children?.some((child) => labelOf(child).includes(needle)))
+  }
+
+  const filterItems = (items) => {
+    if (!isSearching.value) return items
+    const needle = searchQuery.value.trim().toLowerCase()
+    return items.filter((item) => matchesQuery(item, needle))
+  }
+
+  /**
+   * VueDraggable yoziladigan model talab qiladi. Qidiruvsiz holatda bu asl
+   * massivning o'zi (sudrash avvalgidek ishlaydi); qidiruv paytida esa sudrash
+   * `:disabled` bilan to'xtatilgani uchun setter umuman chaqirilmaydi.
+   */
+  const visiblePinned = computed({
+    get: () => filterItems(pinnedItems.value),
+    set: (value) => {
+      if (!isSearching.value) pinnedItems.value = value
+    }
+  })
+
+  const visibleRest = computed({
+    get: () => filterItems(restItems.value),
+    set: (value) => {
+      if (!isSearching.value) restItems.value = value
+    }
+  })
+
+  const searchEmpty = computed(
+    () => isSearching.value && !visiblePinned.value.length && !visibleRest.value.length
+  )
+
+  // Modul almashsa qidiruv o'z-o'zidan yopiladi — yangi menyuda eski so'rov
+  // bo'yicha bo'sh ro'yxat ko'rinib qolmasin.
+  watch(effectiveMenuPath, closeSearch)
+
   const persistArrangement = () => {
     const modulePath = effectiveMenuPath.value
     // Ro'yxat bo'sh bo'lsa (masalan ruxsatlar hali yuklanmagan) saqlamaymiz —
@@ -271,18 +343,32 @@
     if (effectiveMenuPath.value) menuStore.resetModule(effectiveMenuPath.value)
   }
 
+  /**
+   * Panel sarlavhasi uchun MAXSUS nomlar: mini-menyudagi qisqa nom ("Xodimlar")
+   * o'rniga to'liq shakli ("Xodimlar menyusi") ko'rsatiladi.
+   */
+  const panelTitleKeys = {
+    '/hrm': 'sidebar.hrm',
+    '/attestation': 'sidebar.attestation',
+    '/admin': 'sidebar.admin',
+    '/chat': 'sidebar.chat',
+    '/docflow': 'sidebar.docflow',
+    '/timesheet': 'sidebar.timesheet',
+    '/turnstile': 'turnstile.title',
+    '/lms': 'sidebar.lms',
+    [AppPaths.Hospital]: 'sidebar.hospital',
+    [AppPaths.Accountant]: 'sidebar.accountant'
+  }
+
   const menuName = computed(() => {
-    if (effectiveMenuPath.value === '/hrm') return t('sidebar.hrm')
-    else if (effectiveMenuPath.value === '/attestation') return t('sidebar.attestation')
-    else if (effectiveMenuPath.value === '/admin') return t('sidebar.admin')
-    else if (effectiveMenuPath.value === '/chat') return t('sidebar.chat')
-    else if (effectiveMenuPath.value === '/docflow') return t('sidebar.docflow')
-    else if (effectiveMenuPath.value === '/timesheet') return t('sidebar.timesheet')
-    else if (effectiveMenuPath.value === '/turnstile') return t('turnstile.title')
-    else if (effectiveMenuPath.value === '/lms') return t('sidebar.lms')
-    else if (effectiveMenuPath.value === AppPaths.Hospital) return t('sidebar.hospital')
-    else if (effectiveMenuPath.value === AppPaths.Accountant) return t('sidebar.accountant')
-    else return ''
+    const path = effectiveMenuPath.value
+    if (!path) return ''
+    const titleKey = panelTitleKeys[path]
+    if (titleKey) return t(titleKey)
+    // Maxsus nomi yo'q modul (`/extra` — "Qo'shimchalar") sarlavhasiz qolmasin:
+    // mini-menyudagi o'z nomi ishlatiladi.
+    const navLabel = navigations.find((v) => v.path === path)?.label
+    return navLabel ? t(navLabel) : ''
   })
 
   const onClick = () => {
@@ -368,24 +454,78 @@
         <transition name="slide-right" mode="out-in">
           <div v-if="showPanel && panelMenu?.length">
             <div
-              class="sticky top-0 z-10 bg-surface-section pt-[10px] -mt-[10px]"
+              class="sticky top-0 z-10 bg-surface-section pt-2 -mt-2"
               :class="{ 'sidebar-themed-sticky': appStore.sidebarTheme !== 'default' }"
             >
-              <div class="flex items-center gap-1 pl-4 pr-1 mb-3">
-                <span class="text-sm text-textColor2 truncate font-semibold flex-1 min-w-0">
-                  {{ menuName }}
-                </span>
-                <n-icon
-                  v-if="isArranged"
-                  size="16"
-                  class="menu-reset-btn shrink-0"
-                  :title="$t('sidebar.resetOrder')"
-                  @click="resetArrangement"
-                >
-                  <ArrowReset20Regular />
-                </n-icon>
+              <!--
+                `h-7` — qat'iy balandlik: sarlavha (20px) va qidiruv maydoni (28px)
+                bir xil joyni egallashi uchun. Aks holda maydon ochilganda butun
+                menyu pastga siljib ketardi.
+
+                `pl-1` — lupa qo'shilgach sarlavhaga joy qolmay, uzun nomlar
+                ("Xabar va e'lonlar menyusi") kesilib qolardi; qator chapga surildi.
+              -->
+              <div class="flex items-center gap-1 pl-2 pr-1 mb-3 h-7">
+                <!--
+                  Qidiruv ochilganda sarlavha o'rnini maydon egallaydi: panel tor
+                  (240px), ikkalasi yonma-yon sig'maydi.
+                -->
+                <template v-if="searchOpen">
+                  <n-icon size="16" class="menu-head-btn shrink-0 cursor-default">
+                    <Search20Regular />
+                  </n-icon>
+                  <input
+                    ref="searchInputRef"
+                    v-model="searchQuery"
+                    type="text"
+                    class="menu-search-input flex-1 min-w-0"
+                    :placeholder="$t('sidebar.searchPlaceholder')"
+                    @keydown.esc="closeSearch"
+                  />
+                  <n-icon
+                    size="16"
+                    class="menu-head-btn shrink-0"
+                    :title="$t('content.cancel')"
+                    @click="closeSearch"
+                  >
+                    <Dismiss16Regular />
+                  </n-icon>
+                </template>
+
+                <template v-else>
+                  <n-icon
+                    size="16"
+                    class="menu-head-btn shrink-0"
+                    :title="$t('sidebar.searchMenu')"
+                    @click="openSearch"
+                  >
+                    <Search20Regular />
+                  </n-icon>
+                  <span class="text-sm text-textColor2 truncate font-semibold flex-1 min-w-0">
+                    {{ menuName }}
+                  </span>
+                  <!-- Tiklash qaytarib bo'lmaydi — tasdiqsiz bajarilmaydi -->
+                  <n-popconfirm
+                    v-if="isArranged"
+                    placement="bottom-end"
+                    :positive-text="$t('content.yes')"
+                    :negative-text="$t('content.no')"
+                    @positive-click="resetArrangement"
+                  >
+                    <template #trigger>
+                      <n-icon
+                        size="16"
+                        class="menu-reset-btn shrink-0"
+                        :title="$t('sidebar.resetOrder')"
+                      >
+                        <ArrowReset20Regular />
+                      </n-icon>
+                    </template>
+                    {{ $t('sidebar.resetOrderConfirm') }}
+                  </n-popconfirm>
+                </template>
               </div>
-              <div class="border-b border-surface-line -mx-[10px] mb-5"></div>
+              <div class="border-b border-surface-line -mx-1 mb-5"></div>
             </div>
 
             <!--
@@ -397,11 +537,12 @@
             -->
             <div class="relative" :class="pinnedItems.length && 'mb-1'">
               <VueDraggable
-                v-model="pinnedItems"
+                v-model="visiblePinned"
                 group="sidebar-panel-menu"
                 :animation="150"
                 :delay="250"
                 :delay-on-touch-only="true"
+                :disabled="isSearching"
                 class="menu-drop-zone"
                 :class="{
                   'menu-drop-zone-empty': !pinnedItems.length,
@@ -411,7 +552,7 @@
                 @end="onDragEnd"
               >
                 <SidebarPanelItem
-                  v-for="item in pinnedItems"
+                  v-for="item in visiblePinned"
                   :key="item.path"
                   :item="item"
                   :category="currentCategory"
@@ -428,20 +569,21 @@
 
             <div
               v-if="pinnedItems.length"
-              class="border-b border-dashed border-surface-line -mx-[10px] mb-3"
+              class="border-b border-dashed border-surface-line -mx-1 mb-3"
             ></div>
 
             <VueDraggable
-              v-model="restItems"
+              v-model="visibleRest"
               group="sidebar-panel-menu"
               :animation="150"
               :delay="250"
               :delay-on-touch-only="true"
+              :disabled="isSearching"
               class="menu-drop-zone"
               @start="dragging = true"
               @end="onDragEnd"
             >
-              <template v-for="item in restItems" :key="item.path ?? item.label">
+              <template v-for="item in visibleRest" :key="item.path ?? item.label">
                 <div v-if="item?.children && item.children.length > 0" class="panel-item-multiple">
                   <div class="panel-header" @click="controlCollapse">
                     <div class="item-icon">
@@ -477,6 +619,10 @@
                 />
               </template>
             </VueDraggable>
+
+            <div v-if="searchEmpty" class="menu-search-empty">
+              {{ $t('sidebar.searchEmpty') }}
+            </div>
           </div>
         </transition>
       </div>

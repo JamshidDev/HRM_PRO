@@ -41,11 +41,22 @@ const FALLBACK_LOCATION = { name: 'Toshkent', latitude: 41.2995, longitude: 69.2
 const LOCATION_CACHE_KEY = 'home-weather-location'
 const LOCATION_CACHE_TTL = 60 * 60 * 1000 // 1 soat
 
-const readCachedLocation = () => {
+/**
+ * Ob-havo keshi — joylashuv keshi bilan bir xil muddat.
+ *
+ * Nega: Open-Meteo free tarifi kunlik 10 000 chaqiriq bilan cheklangan va limit
+ * IP bo'yicha hisoblanadi — bitta ofis NAT ortidagi xodimlar bitta kvotani
+ * bo'lishadi. Ilgari har Home ochilishida yangi so'rov ketardi; sutkalik min/max
+ * esa soatiga bir marta yangilansa yetarli.
+ */
+const WEATHER_CACHE_KEY = 'home-weather-data'
+const WEATHER_CACHE_TTL = 60 * 60 * 1000 // 1 soat
+
+/** TTL bilan localStorage keshi. Buzilgan qiymat/bloklangan storage — `null`. */
+const readCache = (key, ttl) => {
   try {
-    const parsed = JSON.parse(localStorage.getItem(LOCATION_CACHE_KEY))
-    if (!parsed || Date.now() - (parsed.ts ?? 0) > LOCATION_CACHE_TTL) return null
-    if (typeof parsed.latitude !== 'number' || typeof parsed.longitude !== 'number') return null
+    const parsed = JSON.parse(localStorage.getItem(key))
+    if (!parsed || Date.now() - (parsed.ts ?? 0) > ttl) return null
     return parsed
   } catch {
     // Buzilgan JSON yoki localStorage bloklangan — kesh yo'q deb hisoblanadi
@@ -53,12 +64,41 @@ const readCachedLocation = () => {
   }
 }
 
-const writeCachedLocation = (location) => {
+const writeCache = (key, value) => {
   try {
-    localStorage.setItem(LOCATION_CACHE_KEY, JSON.stringify({ ...location, ts: Date.now() }))
+    localStorage.setItem(key, JSON.stringify({ ...value, ts: Date.now() }))
   } catch {
     // Kvota to'lgan yoki yozish taqiqlangan — kesh shunchaki ishlamaydi
   }
+}
+
+const readCachedLocation = () => {
+  const parsed = readCache(LOCATION_CACHE_KEY, LOCATION_CACHE_TTL)
+  if (!parsed) return null
+  if (typeof parsed.latitude !== 'number' || typeof parsed.longitude !== 'number') return null
+  return parsed
+}
+
+const writeCachedLocation = (location) => {
+  writeCache(LOCATION_CACHE_KEY, location)
+}
+
+/**
+ * Kesh joylashuvga bog'lanadi: joylashuv keshi tugab boshqa shahar aniqlansa,
+ * eski shaharning harorati ko'rsatilib qolmaydi.
+ */
+const weatherCacheId = (location) =>
+  `${location.latitude.toFixed(2)},${location.longitude.toFixed(2)}`
+
+const readCachedWeather = (id) => {
+  const parsed = readCache(WEATHER_CACHE_KEY, WEATHER_CACHE_TTL)
+  if (!parsed || parsed.id !== id) return null
+  if (typeof parsed.min !== 'number' || typeof parsed.max !== 'number') return null
+  return { min: parsed.min, max: parsed.max, city: parsed.city ?? null }
+}
+
+const writeCachedWeather = (id, weather) => {
+  writeCache(WEATHER_CACHE_KEY, { ...weather, id })
 }
 
 /** Brauzer geolokatsiyasi. Rad etilsa yoki qo'llab-quvvatlanmasa — `null`. */
@@ -280,7 +320,7 @@ export const useHomeStore = defineStore('homeStore', {
     },
 
     /**
-     * Ob-havo — Open-Meteo (kalit talab qilmaydi).
+     * Ob-havo — Open-Meteo (kalit talab qilmaydi), natijasi 1 soat keshlanadi.
      *
      * Loyihaning `axios` instansi `baseURL` va `Authorization` header qo'shadi,
      * shuning uchun tashqi API xom `axios` bilan chaqiriladi.
@@ -291,6 +331,14 @@ export const useHomeStore = defineStore('homeStore', {
       this.weatherLoading = true
       try {
         const location = await this._resolveLocation()
+
+        const cacheId = weatherCacheId(location)
+        const cached = readCachedWeather(cacheId)
+        if (cached) {
+          this.weather = cached
+          return
+        }
+
         const res = await rawAxios.get('https://api.open-meteo.com/v1/forecast', {
           params: {
             latitude: location.latitude,
@@ -316,6 +364,9 @@ export const useHomeStore = defineStore('homeStore', {
           max: Math.round(max),
           city: location.name || null
         }
+        // Faqat to'liq javob keshlanadi: bo'sh yoki xato javobda kesh yozilmaydi
+        // va keyingi ochilishda qayta urinib ko'riladi.
+        writeCachedWeather(cacheId, this.weather)
       } catch {
         this.weather = null
       } finally {

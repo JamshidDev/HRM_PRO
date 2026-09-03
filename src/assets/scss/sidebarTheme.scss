@@ -67,8 +67,23 @@
         }
       }
 
-      .menu-reset-btn {
+      .menu-reset-btn,
+      .menu-head-btn {
         color: $panel-text !important;
+      }
+
+      .menu-search-input {
+        color: $panel-text !important;
+        border-color: $item-border !important;
+        &::placeholder {
+          color: $panel-text !important;
+          opacity: 0.6;
+        }
+      }
+
+      .menu-search-empty {
+        color: $panel-text !important;
+        opacity: 0.7;
       }
 
       .menu-drop-zone-active {

@@ -503,7 +503,11 @@
     "pin": "Закрепить",
     "unpin": "Открепить",
     "dropToPin": "Перетащите сюда, чтобы закрепить",
-    "resetOrder": "Сбросить порядок"
+    "resetOrder": "Сбросить порядок",
+    "searchMenu": "Поиск по меню",
+    "searchPlaceholder": "Поиск…",
+    "searchEmpty": "Ничего не найдено",
+    "resetOrderConfirm": "Сбросить закрепления и порядок этого меню?"
   },
   "offerModal": {
     "title": "Публичная оферта",

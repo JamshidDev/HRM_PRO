@@ -501,7 +501,11 @@
     "pin": "Pin",
     "unpin": "Unpin",
     "dropToPin": "Drop here to pin",
-    "resetOrder": "Reset order"
+    "resetOrder": "Reset order",
+    "searchMenu": "Search the menu",
+    "searchPlaceholder": "Search…",
+    "searchEmpty": "Nothing found",
+    "resetOrderConfirm": "Reset pins and order for this menu?"
   },
   "offerModal": {
     "title": "Public offer",

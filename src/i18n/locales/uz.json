@@ -516,7 +516,11 @@
     "pin": "Pin qilish",
     "unpin": "Pinni olib tashlash",
     "dropToPin": "Pin qilish uchun shu yerga tashlang",
-    "resetOrder": "Tartibni tiklash"
+    "resetOrder": "Tartibni tiklash",
+    "searchMenu": "Menyudan qidirish",
+    "searchPlaceholder": "Qidirish…",
+    "searchEmpty": "Hech narsa topilmadi",
+    "resetOrderConfirm": "Shu menyudagi pin va tartib tiklansinmi?"
   },
   "offerModal": {
     "title": "Ommaviy oferta",
