@@ -1081,6 +1081,13 @@ export const navigations = [
         icon: AdminFolderIcon,
         color: 'bg-dark',
         permission: appPermissions.holidayGreetingsRead
+      },
+      {
+        label: 'documentTemplate.name', // Shablon
+        path: Utils.routePathMaker(AppPaths.DocumentTemplate),
+        icon: AdminFolderIcon,
+        color: 'bg-dark',
+        permission: appPermissions.documentTemplatesRead
       }
     ]
   }

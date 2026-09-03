@@ -40,6 +40,9 @@ export const appPermissions = {
   organizationsRead: 'organizations-read',
   organizationsWrite: 'organizations-write',
 
+  documentTemplates: 'document-templates',
+  documentTemplatesRead: 'document-templates-read',
+  documentTemplatesWrite: 'document-templates-write',
   documentExamples: 'document-examples',
   documentExamplesRead: 'document-examples-read',
   documentExamplesWrite: 'document-examples-write',

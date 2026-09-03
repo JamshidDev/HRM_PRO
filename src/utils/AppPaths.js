@@ -152,7 +152,8 @@ export const AppPaths = {
   IntegrationClients: '/integration-clients',
   DbBackups: '/db-backups',
   WorkerReport: '/worker-report',
-  HolidayGreeting: '/holiday-greetings'
+  HolidayGreeting: '/holiday-greetings',
+  DocumentTemplate: '/document-templates'
 }
 
 export const AppLayouts = {
