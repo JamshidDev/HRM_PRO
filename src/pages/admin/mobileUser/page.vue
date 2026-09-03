@@ -5,6 +5,7 @@
   import Table from './ui/Table.vue'
   import Detail from './ui/Detail.vue'
   import Devices from './ui/Devices.vue'
+  import VersionCard from './ui/VersionCard.vue'
 
   const store = useMobileUserStore()
   const accStore = useAccountStore()
@@ -27,6 +28,7 @@
 
 <template>
   <UIPageContent>
+    <VersionCard />
     <UIPageFilter :show-add-button="false" :show-filter-button="false" @on-search="onSearch" />
     <Table />
     <UIModal v-model:visible="store.detailVisible" :width="1100" height="85vh">
