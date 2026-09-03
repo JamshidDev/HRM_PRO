@@ -7,6 +7,21 @@ import Utils from '@/utils/Utils.js'
 const { t } = i18n.global
 
 /**
+ * Joriy (rol + tashkilot) scope kaliti. Bitta foydalanuvchi bir nechta rol bilan
+ * ishlashi mumkin (`_changeRole`), shuning uchun rolga bog'liq lokal sozlamalar
+ * (sidebar pin/tartibi) shu qiymat bo'yicha ajratiladi.
+ *
+ * `role_id` yetarli emas: bir xil rol turli tashkilotda boshqa menyu demakdir,
+ * shuning uchun `roleList` dagi kabi kompozit kalit ishlatiladi.
+ */
+const roleScopeOf = (data) => {
+  const roleId = data?.role?.id
+  const orgId = data?.organization?.id
+  if (roleId == null && orgId == null) return 'norole'
+  return `${roleId ?? 'none'}-${orgId ?? 'none'}`
+}
+
+/**
  * sessionStorage'dagi ruxsat ro'yxatini XAVFSIZ o'qiydi.
  *
  * Nega kerak: ilgari `_index()` `role?.permissions?.map(...)` natijasini to'g'ridan-to'g'ri
@@ -157,6 +172,9 @@ export const useAccountStore = defineStore('accountStore', {
       // Telegram log xabarlarida oldingi foydalanuvchi ko'rinib qolmasin.
       setErrorReporterUser(null)
       sessionStorage.removeItem(useAppSetting.appPermission)
+      // Keyingi foydalanuvchi/rol o'z scope'i aniqlanmaguncha eski kalitni
+      // ishlatib yubormasin.
+      localStorage.removeItem(useAppSetting.accountRoleScopeKey)
     },
 
     _logOut(callback) {
@@ -254,6 +272,9 @@ export const useAccountStore = defineStore('accountStore', {
               .join(' '),
             role: res.data.data.role?.name
           })
+          // Rolga bog'liq lokal sozlamalar kaliti — rol almashsa (`_changeRole`)
+          // shu yerda yangilanadi va sidebar o'z sozlamalarini qayta o'qiydi.
+          localStorage.setItem(useAppSetting.accountRoleScopeKey, roleScopeOf(res.data.data))
           // `?? []` MAJBURIY: rol biriktirilmagan foydalanuvchida `role` null bo'lib,
           // ilgari storage'ga `"undefined"` satri yozilar va keyingi parse yiqilardi.
           const rolePermissions = res.data.data.role?.permissions

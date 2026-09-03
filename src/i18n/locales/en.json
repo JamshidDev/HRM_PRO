@@ -497,7 +497,15 @@
     "timesheet": "Timesheet",
     "accountant": "Accountant Menu",
     "hospital": "Medical Examination Menu",
-    "lms": "LMS"
+    "lms": "LMS",
+    "pin": "Pin",
+    "unpin": "Unpin",
+    "dropToPin": "Drop here to pin",
+    "resetOrder": "Reset order",
+    "searchMenu": "Search the menu",
+    "searchPlaceholder": "Search…",
+    "searchEmpty": "Nothing found",
+    "resetOrderConfirm": "Reset pins and order for this menu?"
   },
   "offerModal": {
     "title": "Public offer",
@@ -1119,6 +1127,8 @@
     "naturalPerson": "Individual",
     "connectionError": "E-signature not installed or misconfigured!",
     "confirmError": "An error occurred while confirming the document. Please try again shortly.",
+    "certCheckError": "The E-IMZO certificate status service is temporarily unavailable. Please try again shortly.",
+    "serverError": "A server error occurred. Please try again shortly.",
     "copyLink": "Copy link",
     "copied": "Link copied",
     "goSignature": "Sign",

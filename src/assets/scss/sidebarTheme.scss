@@ -59,6 +59,39 @@
         &:hover:not(.active-panel-item-single) {
           background-color: $hover-bg !important;
         }
+        .panel-item-pin {
+          color: $panel-icon !important;
+          &:hover {
+            background-color: $hover-bg !important;
+          }
+        }
+      }
+
+      .menu-reset-btn,
+      .menu-head-btn {
+        color: $panel-text !important;
+      }
+
+      .menu-search-input {
+        color: $panel-text !important;
+        border-color: $item-border !important;
+        &::placeholder {
+          color: $panel-text !important;
+          opacity: 0.6;
+        }
+      }
+
+      .menu-search-empty {
+        color: $panel-text !important;
+        opacity: 0.7;
+      }
+
+      .menu-drop-zone-active {
+        border-color: $item-border !important;
+      }
+
+      .menu-drop-hint {
+        color: $panel-text !important;
       }
 
       .active-panel-item-single {
