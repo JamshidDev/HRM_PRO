@@ -21,7 +21,11 @@
   <div
     @click="emit('select', item)"
     class="panel-item-single relative"
-    :class="[active && 'active-panel-item-single', item?.disable && 'opacity-30']"
+    :class="[
+      active && 'active-panel-item-single',
+      item?.disable && 'opacity-30',
+      pinned && 'panel-item-pinned'
+    ]"
   >
     <MenuItemBadge :category="category" :field="item?.name" />
     <div class="item-icon rounded-[10px]">
@@ -35,8 +39,9 @@
 
     <!--
       Pin tugmasi: pinlangan elementda doim, qolganida faqat hoverda ko'rinadi.
-      Joyi HAR DOIM band (`.panel-item-pin` kengligi o'zgarmaydi) — aks holda hover
-      paytida sarlavha qisqarib "sakrab" turardi.
+      Qator oqimidan tashqarida (`position: absolute`) — busiz uning 22px joyi
+      doim band bo'lib, uzun nomlar doimo kesilib ko'rinardi. Pinlangan qatorda
+      esa tugma doim ko'ringani uchun `panel-item-pinned` unga joy ajratadi.
       `click.stop` — busiz bosish ustidagi qatorning navigatsiyasini ham chaqiradi.
     -->
     <button

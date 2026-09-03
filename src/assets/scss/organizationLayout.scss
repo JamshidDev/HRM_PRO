@@ -91,21 +91,32 @@ $mobile_device_screen_size: 900px;
       }
     }
     .panel-content {
-      width: calc(100% - $sidebar-mini-width);
+      /*
+       * Kenglik `.mini-content` ning HAQIQIY kengligiga bog'landi
+       * ($sidebar-mini-width - 16px). Ilgari to'liq $sidebar-mini-width ayirilar
+       * va kartaning o'ng chetida 16px bo'sh joy behuda qolib, menyu qatorlari
+       * (hover foni) shuncha tor bo'lardi.
+       */
+      width: calc(100% - #{$sidebar-mini-width - 16px});
       overflow: hidden;
-      padding: 0 0 0 10px;
+      /* Simmetrik otstup — qator foni ikkala chetda ham bir xil nafas oladi */
+      padding: 0 4px;
       transition: all 0.3s linear;
       .panel-item-single {
-        padding: 2px;
+        /*
+         * Hover/aktiv foni panelning to'liq kengligini egallaydi (chetlarda
+         * faqat `.panel-content` ning 4px otstupi qoladi). Vertikal padding ham
+         * kattaroq — fon matn atrofida siqilib qolmaydi.
+         */
+        padding: 5px 4px 5px 8px;
         width: 100%;
         display: flex;
         align-items: center;
         border-radius: 10px;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
         cursor: pointer;
         transition: background-color 0.15s ease;
         &:hover:not(.active-panel-item-single) {
-
           background-color: var(--surface-ground);
         }
         .item-icon {
@@ -130,7 +141,6 @@ $mobile_device_screen_size: 900px;
       }
       .active-panel-item-single {
         background-color: #eff8ff;
-        padding: 2px;
         .item-title {
           color: #2e90fa !important;
           font-weight: 700;
@@ -158,9 +168,9 @@ $mobile_device_screen_size: 900px;
 
       .panel-item-single {
         /*
-         * Pin tugmasi uchun joy. `.item-title` dagi `width: calc(100% + 24px)` ni
-         * flex taqsimotiga almashtiramiz, aks holda sarlavha tugmani panel tashqarisiga
-         * siqib chiqarardi.
+         * `.item-title` dagi `width: calc(100% + 24px)` ni flex taqsimotiga
+         * almashtiramiz, aks holda sarlavha tugmani panel tashqarisiga siqib
+         * chiqarardi.
          */
         .item-title {
           flex: 1 1 auto;
@@ -169,18 +179,24 @@ $mobile_device_screen_size: 900px;
         }
 
         /*
-         * Tugma joyi HAR DOIM band: hoverda paydo bo'lganda sarlavha "sakramasin"
-         * uchun faqat `opacity` o'zgaradi.
+         * Pin tugmasi qator OQIMIDAN chiqarilgan. Ilgari uning joyi doim band
+         * turardi va panel tor bo'lgani uchun uzun nomlar ("KPI ko'rsatgichlari")
+         * HAR DOIM kesilib ko'rinardi. Endi hoversiz holatda nomga qatorning
+         * to'liq kengligi tegadi, joy esa faqat tugma ko'ringanda ochiladi
+         * (pastdagi `.item-title` padding qoidasi).
          */
         .panel-item-pin {
-          flex-shrink: 0;
+          position: absolute;
+          right: 2px;
+          top: 50%;
+          transform: translateY(-50%);
           background: none;
           border: none;
           padding: 0;
           cursor: pointer;
-          width: 20px;
-          height: 20px;
-          margin-right: 2px;
+          /* Kengroq maydon: bosish qulay va matn tagidan "chiqib" turmaydi */
+          width: 26px;
+          height: 26px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -188,6 +204,12 @@ $mobile_device_screen_size: 900px;
           color: var(--textColor3);
           opacity: 0;
           transition: opacity 0.15s ease;
+          /*
+           * `inherit` — qatorning O'Z foni (hover, aktiv holat va sidebar
+           * temalarida ham to'g'ri). Zaxira sifatida: nom sig'may qolgan chekka
+           * holatda ham tugma toza fonda turadi, matn ustida "yamoq" bo'lmaydi.
+           */
+          background-color: inherit;
           &:hover {
             background-color: rgba(46, 144, 250, 0.16);
           }
@@ -199,6 +221,17 @@ $mobile_device_screen_size: 900px;
         .panel-item-pin-on {
           opacity: 1;
           color: #2e90fa;
+        }
+
+        /*
+         * Tugma ko'ringan paytda (hover yoki pinlangan qator) sarlavhaga joy
+         * ochiladi: uzun nom "…" bilan tugaydi va harflar tugma ostida yarim
+         * ko'rinib qolmaydi. Matn chapga bog'langani uchun siljimaydi —
+         * faqat oxiri qisqaradi. Hoversiz holatda esa nom TO'LIQ ko'rinadi.
+         */
+        &:hover .item-title,
+        &.panel-item-pinned .item-title {
+          padding-right: 28px;
         }
       }
 
@@ -212,7 +245,7 @@ $mobile_device_screen_size: 900px;
       }
       /* Sudrash paytida bo'sh pin guruhi ko'rinadigan drop maydoniga aylanadi. */
       .menu-drop-zone-active {
-        min-height: 38px;
+        min-height: 40px;
         margin-bottom: 6px;
         border: 1px dashed var(--surface-line);
         border-radius: 10px;
@@ -228,13 +261,41 @@ $mobile_device_screen_size: 900px;
         pointer-events: none;
       }
 
-      .menu-reset-btn {
+      /* Panel sarlavhasidagi tugmalar: qidiruv, yopish, tartibni tiklash */
+      .menu-reset-btn,
+      .menu-head-btn {
         color: var(--textColor3);
         cursor: pointer;
         transition: color 0.15s ease;
         &:hover {
           color: var(--primary-color);
         }
+      }
+
+      .menu-search-input {
+        /* Sarlavha qatorini to'liq egallaydi — qator balandligi o'zgarmaydi */
+        height: 100%;
+        padding: 0 8px;
+        font-size: 13px;
+        color: var(--textColor2);
+        background: transparent;
+        border: 1px solid var(--surface-line);
+        border-radius: 8px;
+        outline: none;
+        transition: border-color 0.15s ease;
+        &:focus {
+          border-color: var(--primary-color);
+        }
+        &::placeholder {
+          color: var(--textColor3);
+        }
+      }
+
+      .menu-search-empty {
+        padding: 12px 4px;
+        text-align: center;
+        font-size: 12px;
+        color: var(--textColor3);
       }
 
       .sortable-ghost {
