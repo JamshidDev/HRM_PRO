@@ -5040,5 +5040,28 @@
     "description": "Iqtisod bo'limi ma'lumotlariga kirish uchun shaxsingizni ERI (E-IMZO) kaliti bilan tasdiqlang.",
     "confirmBtn": "E-IMZO bilan tasdiqlash",
     "verified": "Tasdiqlandi"
+  },
+  "documentTemplate": {
+    "name": "Shablon",
+    "subtitle": "Hujjat shablonini tanlang, matnini tahrirlang va yangi hujjatlar uchun saqlang.",
+    "selectPlaceholder": "Hujjat shablonini tanlang",
+    "empty": "Tahrirlash uchun yuqoridan shablon tanlang",
+    "variables": "O‘zgaruvchilar",
+    "variablesHint": "Ustiga bosib nusxalang. Nomini o‘zgartirmang.",
+    "searchVariables": "O‘zgaruvchini qidiring",
+    "noVariables": "O‘zgaruvchi topilmadi",
+    "copied": "O‘zgaruvchi nusxalandi",
+    "globalNotice": "Saqlangan tahrir barcha korxonalarning keyingi hujjatlariga qo‘llanadi.",
+    "unsaved": "Saqlanmagan o‘zgarishlar",
+    "sourceDefault": "Standart shablon",
+    "sourceGlobal": "Tahrirlangan (global)",
+    "reset": "Standartga qaytarish",
+    "saved": "Shablon saqlandi — yangi hujjatlar shu shablon bo‘yicha tuziladi",
+    "resetDone": "Standart shablonga qaytarildi",
+    "saveConfirmTitle": "Shablonni global saqlash",
+    "saveConfirmText": "Bu shablon barcha korxonalarning keyingi hujjatlariga qo‘llanadi. Avvalgi nusxa saqlanadi. O‘zgarishlarni saqlaysizmi?",
+    "resetConfirmTitle": "Standart shablonga qaytarish",
+    "resetConfirmText": "Tahrirlangan shablon o‘chiriladi va standart nusxa tiklanadi. Davom etasizmi?",
+    "fileLabel": "Fayl"
   }
 }
