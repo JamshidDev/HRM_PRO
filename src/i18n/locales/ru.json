@@ -1616,7 +1616,12 @@
     "lastUsedAt": "Последняя активность",
     "noFcmToken": "Нет FCM токена",
     "noDevices": "Нет устройств",
-    "copied": "Скопировано"
+    "copied": "Скопировано",
+    "versionSaved": "Версия обновлена",
+    "upgrade": "Обновить",
+    "form": {
+      "latestVersion": "Последняя версия"
+    }
   },
   "vacancyApprovePage": {
     "menuName": "Подтверждение",

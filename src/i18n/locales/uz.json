@@ -1630,7 +1630,12 @@
     "lastUsedAt": "Oxirgi faollik",
     "noFcmToken": "FCM token yo'q",
     "noDevices": "Qurilmalar yo'q",
-    "copied": "Nusxalandi"
+    "copied": "Nusxalandi",
+    "versionSaved": "Versiya yangilandi",
+    "upgrade": "Yangilash",
+    "form": {
+      "latestVersion": "So'nggi versiya"
+    }
   },
   "vacancyApprovePage": {
     "menuName": "Tasdiqlash",

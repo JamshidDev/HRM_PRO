@@ -6,6 +6,7 @@ export const appPermissions = {
   // uchun butun Admin moduli ochilishi kerak edi (juda qo'pol).
   mobileUsers: 'mobile-users',
   mobileUsersRead: 'mobile-users-read',
+  mobileUsersWrite: 'mobile-users-write',
   integrationClients: 'integration-clients',
   integrationClientsRead: 'integration-clients-read',
   dbBackupRead: 'db-backup-read',

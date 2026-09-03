@@ -1476,7 +1476,12 @@
     "lastUsedAt": "Охирги фаоллик",
     "noFcmToken": "FCM токен йўқ",
     "noDevices": "Қурилмалар йўқ",
-    "copied": "Нусхаланди"
+    "copied": "Нусхаланди",
+    "versionSaved": "Версия янгиланди",
+    "upgrade": "Янгилаш",
+    "form": {
+      "latestVersion": "Сўнгги версия"
+    }
   },
   "vacancyApprovePage": {
     "menuName": "Тасдиқлаш",
