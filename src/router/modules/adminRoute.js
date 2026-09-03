@@ -192,5 +192,13 @@ export const adminRoutes = [
     meta: {
       layout: AppLayouts.main
     }
+  },
+  {
+    path: Utils.routePathMaker(AppPaths.DocumentTemplate),
+    name: AppPaths.DocumentTemplate.substring(1),
+    component: () => import('@/pages/admin/documentTemplate/DocumentTemplatePage.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
   }
 ]

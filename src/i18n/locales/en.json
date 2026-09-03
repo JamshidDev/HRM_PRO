@@ -5008,5 +5008,28 @@
     "description": "To access economist data, confirm your identity with an e-signature (E-IMZO) key.",
     "confirmBtn": "Verify with E-IMZO",
     "verified": "Verified"
+  },
+  "documentTemplate": {
+    "name": "Template",
+    "subtitle": "Select a template, edit its content, and save it for new documents.",
+    "selectPlaceholder": "Select a document template",
+    "empty": "Pick a template above to start editing",
+    "variables": "Variables",
+    "variablesHint": "Click to copy. Do not rename variables.",
+    "searchVariables": "Search variables",
+    "noVariables": "No variables found",
+    "copied": "Variable copied",
+    "globalNotice": "Saved changes will apply to new documents for all organizations.",
+    "unsaved": "Unsaved changes",
+    "sourceDefault": "Default template",
+    "sourceGlobal": "Edited (global)",
+    "reset": "Restore default",
+    "saved": "Template saved — new documents will use it",
+    "resetDone": "Default template restored",
+    "saveConfirmTitle": "Save template globally",
+    "saveConfirmText": "This template will apply to new documents for all organizations. The previous version will be kept. Save changes?",
+    "resetConfirmTitle": "Restore default template",
+    "resetConfirmText": "The edited template will be removed and the default version restored. Continue?",
+    "fileLabel": "File"
   }
 }

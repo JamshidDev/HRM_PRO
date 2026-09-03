@@ -279,6 +279,8 @@ export const ENFORCED = new Set([
   'hospital-med-worker-read',
   'hospital-pensioner-write',
   'document-examples-write',
+  'document-templates-read',
+  'document-templates-write',
   'hr-report-staffing-export',
   // Audit 2026-08-12 — granular sahifa amallari (alohida toggle):
   'turnstile-access-levels-sync',
@@ -336,6 +338,8 @@ export const MEANINGFUL = new Set([
   'deploy-write',
   'document-examples',
   'document-examples-read',
+  'document-templates-read',
+  'document-templates-write',
   'document-examples-write',
   'document-view-exam-results',
   'economist',
@@ -1081,6 +1085,7 @@ export const PERMISSION_GROUPS = [
       { prefix: 'organizations', label: 'organizationPage.name' },
       { prefix: 'activity-logs', label: 'actionLog.name' },
       { prefix: 'document-examples', label: 'documentSetting.name' },
+      { prefix: 'document-templates', label: 'documentTemplate.name' },
       { prefix: 'holidays', label: 'holidayPage.name' },
       // "Boshqalar" sahifasi uch tabdan iborat va har biri o'z slug oilasiga ega —
       // ilgari faqat `universities` guruhi bor edi, qolgan ikkitasi "Boshqa"da qolardi.
