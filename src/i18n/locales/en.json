@@ -1614,7 +1614,12 @@
     "lastUsedAt": "Last activity",
     "noFcmToken": "No FCM token",
     "noDevices": "No devices",
-    "copied": "Copied"
+    "copied": "Copied",
+    "versionSaved": "Version updated",
+    "upgrade": "Upgrade",
+    "form": {
+      "latestVersion": "Latest version"
+    }
   },
   "actionLog": {
     "name": "Action history",
