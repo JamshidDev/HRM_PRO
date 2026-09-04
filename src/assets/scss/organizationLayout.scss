@@ -205,11 +205,11 @@ $mobile_device_screen_size: 900px;
           opacity: 0;
           transition: opacity 0.15s ease;
           /*
-           * `inherit` — qatorning O'Z foni (hover, aktiv holat va sidebar
-           * temalarida ham to'g'ri). Zaxira sifatida: nom sig'may qolgan chekka
-           * holatda ham tugma toza fonda turadi, matn ustida "yamoq" bo'lmaydi.
+           * Fon SHAFFOF: matnni yopish uchun quyidagi `mask-image` javob beradi.
+           * Ilgari `inherit` edi — qator foni shaffof bo'lgan holatlarda (pinlangan,
+           * hoversiz qator) u hech narsani yopmay, matn ikona ostidan ko'rinardi.
            */
-          background-color: inherit;
+          background-color: transparent;
           &:hover {
             background-color: rgba(46, 144, 250, 0.16);
           }
@@ -224,14 +224,25 @@ $mobile_device_screen_size: 900px;
         }
 
         /*
-         * Tugma ko'ringan paytda (hover yoki pinlangan qator) sarlavhaga joy
-         * ochiladi: uzun nom "…" bilan tugaydi va harflar tugma ostida yarim
-         * ko'rinib qolmaydi. Matn chapga bog'langani uchun siljimaydi —
-         * faqat oxiri qisqaradi. Hoversiz holatda esa nom TO'LIQ ko'rinadi.
+         * Tugma ko'ringan paytda nomga `padding-right` BERILMAYDI: padding
+         * `.item-title` ning kontent qutisini qisqartirib, uzun nomni qo'shimcha
+         * kesar va qator qayta oqib "qimirlab" ketardi. Buning o'rniga faqat
+         * `mask-image` — u layoutga TEGMAYDI, shuning uchun matn joyidan
+         * siljimaydi va uzunligi o'zgarmaydi; tugma ostiga tushadigan oxiri esa
+         * keskin kesilmasdan shaffoflashib yo'qoladi.
          */
         &:hover .item-title,
         &.panel-item-pinned .item-title {
-          padding-right: 28px;
+          -webkit-mask-image: linear-gradient(
+            to right,
+            #000 calc(100% - 32px),
+            transparent calc(100% - 8px)
+          );
+          mask-image: linear-gradient(
+            to right,
+            #000 calc(100% - 32px),
+            transparent calc(100% - 8px)
+          );
         }
       }
 
@@ -401,6 +412,12 @@ $mobile_device_screen_size: 900px;
       position: absolute;
       top: 30px;
       right: -6px;
+      /*
+       * Panel ichidagi sticky sarlavha `z-index: 10` bilan pozitsiyalangan va
+       * to'q foni bor. `z-index` bo'lmasa (auto) shu tugma sarlavhadan PASTDA
+       * bo'yalib, kartaga tegib turgan chap yarmi kesilgandek ko'rinadi.
+       */
+      z-index: 20;
       background: var(--surface-section);
       cursor: pointer;
       display: flex;
