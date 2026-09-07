@@ -128,6 +128,12 @@ $mobile_device_screen_size: 900px;
           i {
             color: var(--textColor3);
             font-size: 18px;
+            /*
+             * Matn/ikona rangi FON BILAN BIR VAQTDA o'zgarishi shart. Busiz fon
+             * 150 ms davomida to'yingan rangga oqib o'tar, matn esa darhol
+             * almashardi — oraliqda matn fonga qo'shilib, o'qilmay qolardi.
+             */
+            transition: color 0.15s ease;
           }
         }
         .item-title {
@@ -137,30 +143,41 @@ $mobile_device_screen_size: 900px;
           overflow: hidden;
           color: var(--textColor0);
           font-weight: 500;
+          transition: color 0.15s ease;
         }
       }
+      /*
+       * JORIY sahifa. Fon TO'YINGAN ko'k bilan to'ldiriladi — ilgari juda och
+       * tint (#eff8ff) edi va oq paneldan deyarli ajralmasdi. Rangli temalarda
+       * (sidebarTheme.scss) tanlangan element allaqachon shunday — solid `$accent`
+       * bilan to'ldirilgan, ya'ni odatiy tema endi ular bilan bir xil ko'rinadi.
+       */
       .active-panel-item-single {
-        background-color: #eff8ff;
+        background-color: #1570ef;
         .item-title {
-          color: #2e90fa !important;
+          color: #ffffff !important;
           font-weight: 700;
         }
         .item-icon {
           i {
-            color: #2e90fa !important;
+            color: #ffffff !important;
           }
         }
 
+        /*
+         * Pin tugmasi ham oq: `--textColor3` (kulrang) va `#2e90fa` (pinlangan
+         * holat) to'yingan ko'k fonda o'qilmay qolardi.
+         */
+        .panel-item-pin,
+        .panel-item-pin-on {
+          color: #ffffff !important;
+        }
+        .panel-item-pin:hover {
+          background-color: rgba(255, 255, 255, 0.22);
+        }
+
         [data-theme='dark'] & {
-          background-color: #344054;
-          .item-title {
-            color: #53b1fd !important;
-          }
-          .item-icon {
-            i {
-              color: #53b1fd !important;
-            }
-          }
+          background-color: #1570ef;
         }
       }
 
@@ -203,7 +220,9 @@ $mobile_device_screen_size: 900px;
           border-radius: 6px;
           color: var(--textColor3);
           opacity: 0;
-          transition: opacity 0.15s ease;
+          transition:
+            opacity 0.15s ease,
+            color 0.15s ease;
           /*
            * Fon SHAFFOF: matnni yopish uchun quyidagi `mask-image` javob beradi.
            * Ilgari `inherit` edi — qator foni shaffof bo'lgan holatlarda (pinlangan,
@@ -400,7 +419,12 @@ $mobile_device_screen_size: 900px;
           margin-bottom: 4px;
           padding-top: 4px;
           padding-bottom: 4px;
-          border-radius: 10px;
+          /*
+           * Tepa burchaklar TO'G'RI: blok guruh sarlavhasiga tegib turadi va
+           * ikkisi bitta yaxlit fon bo'lib ko'rinishi kerak. Faqat pastki
+           * burchaklar yumaloq.
+           */
+          border-radius: 0 0 10px 10px;
           background-color: var(--surface-ground);
 
           /*
@@ -421,6 +445,9 @@ $mobile_device_screen_size: 900px;
         /* Ochiq guruh sarlavhasi tanadan uzilib qolmasin */
         &.is-open .panel-header {
           background-color: var(--surface-ground);
+          /* Bolalar bloki bilan tutashadigan pastki chekka — burchaksiz. */
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
         }
       }
 

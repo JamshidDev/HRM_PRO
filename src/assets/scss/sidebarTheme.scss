@@ -94,6 +94,10 @@
         color: $panel-text !important;
       }
 
+      // MUHIM: bu blok `.panel-item-single` dan KEYIN turishi shart — ikkalasining
+      // ham ustuvorligi bir xil (5 ta klass), ya'ni g'olibni manbadagi tartib
+      // hal qiladi. Aks holda pin ikonasi yuqoridagi `$panel-icon` (mint temada
+      // to'q kulrang) bilan qolib, to'yingan fonda ko'rinmay ketardi.
       .active-panel-item-single {
         background-color: $accent !important;
         .item-title {
@@ -101,6 +105,13 @@
         }
         .item-icon i {
           color: $active-text !important;
+        }
+        .panel-item-pin,
+        .panel-item-pin-on {
+          color: $active-text !important;
+        }
+        .panel-item-pin:hover {
+          background-color: rgba(255, 255, 255, 0.22) !important;
         }
       }
 
@@ -156,19 +167,23 @@
 }
 
 // Yagona OCH panelli tema: rail qora, panel mint→lavanda, matnlar to'q.
+// Tanlangan element ($accent) ilgari OQ edi — och mint panelda u guruh bloki
+// va hover foni (ikkalasi ham oq-shaffof) bilan chalkashib, "tanlangan"ligi
+// bilinmasdi. Endi to'q teal to'ldirish + oq matn: panel palitrasiga mos,
+// lekin aniq ajralib turadi.
 [data-sidebar-theme='mint'] {
   @include sidebar-color-theme(
     #1f1f1f,
     #0d0d0d,
     #c9f5e7,
     #dfddfb,
-    #ffffff,
+    #0e7490,
     #101828,
     #344054,
     rgba(255, 255, 255, 0.55),
     rgba(255, 255, 255, 0.8),
     rgba(255, 255, 255, 0.5),
-    #0e7490,
+    #ffffff,
     rgba(16, 24, 40, 0.1)
   );
 }
