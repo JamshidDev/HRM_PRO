@@ -66,6 +66,13 @@
           <slot name="content"></slot>
         </div>
       </template>
+      <!-- Ixtiyoriy footer (saqlash/bekor qilish) — naive-ui uni pastga qadab qo'yadi.
+           Slot berilmasa footer umuman render qilinmaydi, mavjud sahifalar o'zgarmaydi. -->
+      <template v-if="$slots.footer" #footer>
+        <div class="w-full">
+          <slot name="footer"></slot>
+        </div>
+      </template>
     </n-drawer-content>
   </n-drawer>
 </template>

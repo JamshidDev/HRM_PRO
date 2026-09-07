@@ -788,6 +788,14 @@
     "nHours": "{n} hours"
   },
   "timesheetWorkerPage": {
+    "worker_role_info": "Only employees with the «TimesheetHR» role are listed. The role is granted in the Employees section.",
+    "departments_info": "Only departments not assigned to another timekeeper are listed. One department belongs to exactly one timekeeper; unassigned departments are filled in by HR.",
+    "attach_department": "Attach department",
+    "detach_all": "Detach all departments",
+    "detach_confirm": "Detach the department from this timekeeper?",
+    "detach_all_confirm": "All departments will be detached from this timekeeper. Continue?",
+    "department_count": "Departments",
+    "free_departments_empty": "No free departments left in this organization",
     "name": "Timesheet keepers",
     "work_place": "Organization/Department"
   },
@@ -2519,6 +2527,8 @@
     "Sun": "Sun"
   },
   "timesheetPage": {
+    "work_days": "Work days",
+    "work_hours": "Work hours",
     "name": "Timesheets",
     "create": "Create timesheet",
     "update": "Edit timesheet",

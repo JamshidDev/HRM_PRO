@@ -10,6 +10,12 @@
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
 
+  // «Qo'shish» — tabelchi + korxona + bo'limlar formasi (drawer).
+  const onAdd = () => {
+    if (!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
+    store.openCreate()
+  }
+
   const onSearch = (v) => {
     if (!accStore.checkAction(accStore.pn.hrTableRead)) return
     store.params.page = 1
@@ -47,7 +53,8 @@
     @onClear="resetFilter"
     :filter-count="filterCount"
     :search-loading="store.loading"
-    :show-add-button="false"
+    :add-permission="accStore.pn.hrTableWorkersWrite"
+    @onAdd="onAdd"
   >
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
