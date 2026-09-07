@@ -250,6 +250,15 @@ $mobile_device_screen_size: 900px;
         display: flex;
         flex-direction: column;
       }
+      /*
+       * Sudraladigan qatorning o'ram elementi (SidebarContent.vue dagi izohga qara).
+       * `flex-direction: column` — busiz ichki qatorning `margin-bottom` i o'ramdan
+       * "chiqib" (margin collapsing) ketib, qatorlar orasidagi masofa o'zgarardi.
+       */
+      .menu-drop-row {
+        display: flex;
+        flex-direction: column;
+      }
       /* Bo'sh pin guruhi: DOM'da qoladi, lekin joy egallamaydi. */
       .menu-drop-zone-empty {
         min-height: 4px;

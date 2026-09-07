@@ -300,6 +300,15 @@
     )
   }
 
+  /**
+   * vue-draggable-plus ro'yxatlar orasida ko'chirilgan elementni sukut bo'yicha
+   * `JSON.parse(JSON.stringify(item))` bilan nusxalaydi. Menyu elementidagi `icon`
+   * — Vue komponenti (SVG), JSON esa funksiyalarni tashlab yuboradi: pinlangandan
+   * keyingi bir renderda ikona yo'q vnode bilan chiqardi. Element bir massivdan
+   * ikkinchisiga o'tadi, nusxa kerak emas — asl obyektning O'ZI beriladi.
+   */
+  const keepItem = (item) => item
+
   // Sortable'ning `end` hodisasi model yangilanishidan oldin ham chiqishi mumkin.
   const onDragEnd = () => {
     dragging.value = false
@@ -543,6 +552,7 @@
                 :delay="250"
                 :delay-on-touch-only="true"
                 :disabled="isSearching"
+                :clone="keepItem"
                 class="menu-drop-zone"
                 :class="{
                   'menu-drop-zone-empty': !pinnedItems.length,
@@ -551,16 +561,16 @@
                 @start="dragging = true"
                 @end="onDragEnd"
               >
-                <SidebarPanelItem
-                  v-for="item in visiblePinned"
-                  :key="item.path"
-                  :item="item"
-                  :category="currentCategory"
-                  :active="isCurrentPath(item.path)"
-                  pinned
-                  @select="onChangePath"
-                  @toggle-pin="togglePin"
-                />
+                <div v-for="item in visiblePinned" :key="item.path" class="menu-drop-row">
+                  <SidebarPanelItem
+                    :item="item"
+                    :category="currentCategory"
+                    :active="isCurrentPath(item.path)"
+                    pinned
+                    @select="onChangePath"
+                    @toggle-pin="togglePin"
+                  />
+                </div>
               </VueDraggable>
               <span v-if="!pinnedItems.length && dragging" class="menu-drop-hint">
                 {{ $t('sidebar.dropToPin') }}
@@ -579,11 +589,23 @@
               :delay="250"
               :delay-on-touch-only="true"
               :disabled="isSearching"
+              :clone="keepItem"
               class="menu-drop-zone"
               @start="dragging = true"
               @end="onDragEnd"
             >
-              <template v-for="item in visibleRest" :key="item.path ?? item.label">
+              <!--
+                HAR BIR QATOR — YAKKA HAQIQIY ELEMENT (`<template v-for>` EMAS).
+                Sortable sudralgan node'ni konteynerlar orasida JISMONAN ko'chiradi,
+                keyin vue-draggable-plus uni `insertBefore` bilan manba konteynerga
+                qaytaradi. `<template v-for>` da har element Vue Fragment'i bo'lib,
+                o'chirilishi ikki matnli "anchor" ORASIDAGI node'larni olib tashlaydi
+                — node esa endi o'sha anchor'lar orasida emas. Natijada element DOM'da
+                qolib ketardi: pinlangan qator pastda ham ko'rinardi va DOM indekslari
+                massiv indekslaridan siljib, keyingi sudrashda BOSHQA element pinlanardi.
+                Yakka ildiz elementda Vue node'ni `el` bo'yicha o'chiradi — joyi muhim emas.
+              -->
+              <div v-for="item in visibleRest" :key="item.path ?? item.label" class="menu-drop-row">
                 <div v-if="item?.children && item.children.length > 0" class="panel-item-multiple">
                   <div class="panel-header" @click="controlCollapse">
                     <div class="item-icon">
@@ -617,7 +639,7 @@
                   @select="onChangePath"
                   @toggle-pin="togglePin"
                 />
-              </template>
+              </div>
             </VueDraggable>
 
             <div v-if="searchEmpty" class="menu-search-empty">
