@@ -4433,6 +4433,7 @@
   "notificationPage": {
     "send": "Отправить push",
     "logs": "Логи",
+    "sentList": "Отправленные уведомления",
     "schedule": "Запланировать",
     "sendTime": "Запланировано",
     "sendTimePlaceholder": "Пусто = сразу",

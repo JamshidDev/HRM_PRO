@@ -36,8 +36,6 @@ export const useNotificationStore = defineStore('notificationStore', {
       per_page: 15,
       status: null
     },
-    // Xabar yuborish formasi modali (Xabar tugmasi ochadi).
-    formVisible: false,
     // Yuborish rejimi: 'topic' (FCM topic: all/hr/economist) yoki 'manual' (userlarni tanlab).
     mode: 'topic',
     payload: {
@@ -244,13 +242,7 @@ export const useNotificationStore = defineStore('notificationStore', {
         })
       }
     },
-    // Xabar formasi modalini ochadi (avval formani tozalab).
-    openForm() {
-      this.resetForm()
-      this.formVisible = true
-    },
     resetForm() {
-      this.formVisible = false
       this.mode = 'topic'
       this.payload.filter.organizations = []
       this.payload.filter.roles = []

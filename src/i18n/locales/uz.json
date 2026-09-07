@@ -4432,6 +4432,7 @@
   "notificationPage": {
     "send": "Push yuborish",
     "logs": "Loglar",
+    "sentList": "Yuborilgan bildirishnomalar",
     "schedule": "Rejalashtirish",
     "sendTime": "Rejalashtirilgan",
     "sendTimePlaceholder": "Bo'sh = darhol",
