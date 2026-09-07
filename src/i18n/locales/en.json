@@ -1405,6 +1405,11 @@
       "act_date": "Act date",
       "responsible": "Responsible employee"
     },
+    "form_75": {
+      "cancel_command_id": "Command being cancelled",
+      "cancel_reason": "Cancellation reason",
+      "base_reason": "Basis"
+    },
     "form_50": {
       "to": "Vacation end date",
       "from": "Vacation start date",

@@ -15,6 +15,11 @@ const _create = async (payload) => {
 const _viewFile = async (payload) => {
   return await axios.post(`/v1/hr/commands`, payload.data, { responseType: 'blob' })
 }
+// Bekor qilish buyrug'i (75) formasi uchun — tasdiqlangan buyruqlar select'i.
+const _selectable = async (payload) => {
+  return await axios.get(`/v1/hr/commands/selectable`, { params: payload.params })
+}
+
 const _delete = async (payload) => {
   return await axios.delete(`/v1/hr/commands/${payload.id}`)
 }
@@ -24,5 +29,6 @@ export default {
   _create,
   _delete,
   _viewFile,
-  _additionalData
+  _additionalData,
+  _selectable
 }

@@ -113,7 +113,9 @@ export const useCommandStore = defineStore('commandStore', {
       command_type: null,
       confirmations: [],
       director_id: null,
-      finance_id: null
+      finance_id: null,
+      // 75 — bekor qilinayotgan buyruq; Korxona bilan bir qatorda, tashqi forma validatsiyasida.
+      cancel_command_id: null
     },
     form_32: initialPayload32(),
     form_34: initialPayload34(),
@@ -209,6 +211,11 @@ export const useCommandStore = defineStore('commandStore', {
       act_date: null,
       responsible: null
     },
+    // 75 — Buyruqni bekor qilish (faqat tasdiqlangan buyruq bekor qilinadi).
+    form_75: {
+      cancel_reason: null,
+      base_reason: null
+    },
     // F.I.Sh o'zgartirish (74)
     form_74: {
       new_last_name: null,
@@ -257,6 +264,20 @@ export const useCommandStore = defineStore('commandStore', {
     // workerParams, totalWorker) IKKALASI uchun umumiy — shu sabab qidiruv,
     // scroll va loading ikkala rejimda ham bir xil ishlaydi.
     recipientType: 'worker',
+
+    // Buyruq 75 select'i — bekor qilinadigan (tasdiqlangan) buyruqlar.
+    cancelCommandLoading: false,
+    cancelCommandReqId: 0,
+    cancelCommandList: [],
+    cancelCommandParams: {
+      // Tanlangan korxona — buyruqlar ro'yxati shu korxona bo'yicha filtrlanadi
+      // (backend uni role/org-scope bilan BIRGA qo'llaydi).
+      organization_id: null,
+      page: 1,
+      per_page: 20,
+      search: null
+    },
+    totalCancelCommand: 0,
 
     isSingleSelect: false,
     sortableConfirmations: [],
@@ -324,6 +345,24 @@ export const useCommandStore = defineStore('commandStore', {
         .finally(() => {
           // Eskirgan so'rov `loading`ni o'chirmasin.
           if (reqId === this.workerReqId) this.workerLoading = false
+        })
+    },
+    // Buyruq 75 select'i: tasdiqlangan, bekor qilinmagan buyruqlar (qidiruv + scroll).
+    _cancelCommands(infinity = false) {
+      this.cancelCommandLoading = true
+      const reqId = ++this.cancelCommandReqId
+      $ApiService.commandService
+        ._selectable({ params: { ...this.cancelCommandParams } })
+        .then((res) => {
+          if (reqId !== this.cancelCommandReqId) return
+          const data = res.data.data.data
+          this.totalCancelCommand = res.data.data.total
+          this.cancelCommandList = infinity
+            ? Array.from(new Map([...this.cancelCommandList, ...data].map((v) => [v.id, v])).values())
+            : data
+        })
+        .finally(() => {
+          if (reqId === this.cancelCommandReqId) this.cancelCommandLoading = false
         })
     },
     _workers(infinity = false) {
@@ -519,6 +558,15 @@ export const useCommandStore = defineStore('commandStore', {
         responsible: null
       }
 
+      this.form_75 = {
+        cancel_reason: null,
+        base_reason: null
+      }
+      this.cancelCommandList = []
+      this.cancelCommandParams.organization_id = null
+      this.cancelCommandParams.page = 1
+      this.cancelCommandParams.search = null
+
       // Moddiy yordam (73) qabul qiluvchi turi — har doim xodimdan boshlanadi,
       // aks holda oldingi buyruqdan "pensioner" rejimi qolib ketardi.
       this.recipientType = 'worker'
@@ -526,6 +574,7 @@ export const useCommandStore = defineStore('commandStore', {
     resetPayload() {
       this.payload.workers = []
       this.payload.worker = null
+      this.payload.cancel_command_id = null
       this.payload.organization_id = []
       this.payload.command_number = null
       this.payload.command_type = null
