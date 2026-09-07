@@ -8,6 +8,8 @@ const state = reactive({
   visible: false,
   loading: false,
   worker: null,
+  // Arxiv sahifasidan chaqirilganda — u yerdagi xodimning aktiv lavozimi yo'q.
+  archive: false,
   payload: {
     from: null,
     to: null
@@ -15,8 +17,9 @@ const state = reactive({
 })
 
 export const useTurnstileDownload = () => {
-  const open = (worker) => {
+  const open = (worker, { archive = false } = {}) => {
     state.worker = worker
+    state.archive = archive
     state.payload.from = null
     state.payload.to = null
     state.visible = true
@@ -29,7 +32,8 @@ export const useTurnstileDownload = () => {
       download: true,
       from: Utils.timeToZone(state.payload.from),
       to: Utils.timeToZone(state.payload.to),
-      workers: state.worker?.id
+      workers: state.worker?.id,
+      ...(state.archive ? { archive: true } : {})
     }
     ApiService.eventV2Service
       ._index({ params })

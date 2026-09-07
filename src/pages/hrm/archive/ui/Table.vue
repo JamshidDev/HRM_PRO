@@ -47,7 +47,8 @@
   // Turniket eksporti — backend `turnstile-hik-central-events-read` talab qiladi.
   const onTurnstileDownload = (row) => {
     if (!accStore.checkAction(accStore.pn.turnstileHikCentralEventsRead)) return
-    openTurnstileDownload(row?.worker)
+    // Arxivdagi xodim bo'shagan — backend lavozim statusini shunga qarab kengaytiradi.
+    openTurnstileDownload(row?.worker, { archive: true })
   }
 
   // Har bir amal o'z ruxsatiga bog'liq — biri yo'q bo'lsa ikkinchisi baribir ko'rinadi.
