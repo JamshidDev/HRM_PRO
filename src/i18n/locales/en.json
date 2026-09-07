@@ -1405,6 +1405,11 @@
       "act_date": "Act date",
       "responsible": "Responsible employee"
     },
+    "form_75": {
+      "cancel_command_id": "Command being cancelled",
+      "cancel_reason": "Cancellation reason",
+      "base_reason": "Basis"
+    },
     "form_50": {
       "to": "Vacation end date",
       "from": "Vacation start date",
@@ -5037,5 +5042,20 @@
     "resetConfirmTitle": "Restore default template",
     "resetConfirmText": "The edited template will be removed and the default version restored. Continue?",
     "fileLabel": "File"
+  },
+  "turnstileDownload": {
+    "title": "Download events"
+  },
+  "responsible": {
+    "name": "Responsible employees"
+  },
+  "vacationDiscipline": {
+    "name": "Vacation and discipline"
+  },
+  "reports": {
+    "name": "Reports",
+    "tabs": {
+      "special": "Special report"
+    }
   }
 }

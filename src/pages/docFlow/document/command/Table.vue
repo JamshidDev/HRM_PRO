@@ -1,5 +1,11 @@
 <script setup>
-  import { UIStatus, UITable, UIUser, UIUserGroup } from '@/components/index.js'
+  import {
+    UIStatus,
+    UITable,
+    UITableNameCell,
+    UIUser,
+    UIUserGroup
+  } from '@/components/index.js'
   import { useAccountStore, useCommandStore, useComponentStore } from '@/store/modules/index.js'
   import {
     CheckmarkCircle32Regular,
@@ -26,7 +32,8 @@
 
   // Tahrirlash v2 — docx-editor.dev muharriri. Tasdiqlangan (SUCCESS) hujjat
   // tahrirlanmaydi; backend ham imzo qo'yilgan bo'lsa rad etadi.
-  const isApproved = (row) => row?.confirmation?.id === 3
+  // Bekor qilingan buyruq DB'da hamon SUCCESS — `is_cancelled` ham tahrirni yopadi.
+  const isApproved = (row) => row?.confirmation?.id === 3 || row?.is_cancelled
 
   const onEditV2 = (row) => {
     if (!accStore.checkAction(accStore.pn.hrCommandsWrite)) return
@@ -161,16 +168,13 @@
     storage-key="hrm-command-v2"
     @change-page="changePage"
   >
-    <!-- Maketda (node 2511:18119) bu katak — bitta qatorli oddiy matn: yaratilgan
-         vaqti uchun ikkinchi qator YO'Q. Hujjatni ochish uchun bosilishi saqlanadi,
-         ammo chizig'i faqat hover'da chiqadi — tinch holatda maketdek ko'rinadi. -->
+    <!-- Tur nomi ostida yaratilgan sana — shartnoma/qo'sh.kelishuv/ariza jadvallari bilan bir xil. -->
     <template #cell-type="{ row }">
-      <span
-        class="line-clamp-2 cursor-pointer text-sm leading-5 text-fig-text-secondary hover:text-primary hover:underline"
+      <UITableNameCell
+        :name="row?.type?.name"
+        :created-at="row.created_at"
         @click="onOpenFile(row.id)"
-      >
-        {{ row?.type?.name }}
-      </span>
+      />
     </template>
 
     <!-- Maketda raqam chip'siz, oddiy matn ko'rinishida va chapga tekislangan. -->
@@ -211,7 +215,9 @@
     </template>
 
     <template #cell-confirmation="{ row }">
-      <UIStatus :status="row?.confirmation" fig />
+      <!-- UIStatus'ning umumiy ro'yxatida id 6 = «Active» (yashil) — bekor qilingan
+           buyruq yashil chiqmasligi uchun rang majburlanadi. -->
+      <UIStatus :status="row?.confirmation" fig :tone="row?.is_cancelled ? 'red' : null" />
     </template>
 
     <!-- Maketda tayyor hujjat BREND (ko'k) chipda, semantik yashilda emas —

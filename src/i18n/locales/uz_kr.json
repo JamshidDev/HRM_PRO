@@ -4801,5 +4801,20 @@
     "resetConfirmTitle": "Стандарт шаблонга қайтариш",
     "resetConfirmText": "Таҳрирланган шаблон ўчирилади ва стандарт нусха тикланади. Давом этасизми?",
     "fileLabel": "Файл"
+  },
+  "turnstileDownload": {
+    "title": "Ҳодисаларни юклаш"
+  },
+  "responsible": {
+    "name": "Масъул ходимлар"
+  },
+  "vacationDiscipline": {
+    "name": "Таътил ва интизом"
+  },
+  "reports": {
+    "name": "Ҳисоботлар",
+    "tabs": {
+      "special": "Махсус ҳисобот"
+    }
   }
 }

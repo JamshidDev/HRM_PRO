@@ -12,6 +12,11 @@ const _reasonTypes = async (payload) => {
   return await axios.get(`/v1/hr/enums/reason-types`, { params: payload.params })
 }
 
+// Hujjatning «Asos:» qatori uchun select (buyruq 75).
+const _baseTypes = async (payload) => {
+  return await axios.get(`/v1/hr/enums/base-types`, { params: payload.params })
+}
+
 const _lastOne = async (payload) => {
   return await axios.post(`/v1/hr/vacations/create`, payload.data)
 }
@@ -19,6 +24,7 @@ const _lastOne = async (payload) => {
 export default {
   _vacationCalculate,
   _reasonTypes,
+  _baseTypes,
   _index,
   _lastOne
 }

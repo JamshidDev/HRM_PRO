@@ -1,5 +1,11 @@
 <script setup>
-  import { UIModal, UIOfficeApp, UIPageContent, UIPageFilter } from '@/components/index.js'
+  import {
+    TurnstileDownloadModal,
+    UIModal,
+    UIOfficeApp,
+    UIPageContent,
+    UIPageFilter
+  } from '@/components/index.js'
   import createForm from './ui/createForm.vue'
   import Table from './ui/Table.vue'
   import Filter from './ui/Filter.vue'
@@ -40,6 +46,7 @@
       </template>
     </UIModal>
     <Table @openOffice="openApplication" />
+    <TurnstileDownloadModal />
     <UIOfficeApp ref="officeAppRef" />
   </UIPageContent>
 </template>

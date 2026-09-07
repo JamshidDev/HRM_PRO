@@ -325,79 +325,68 @@ $mobile_device_screen_size: 900px;
         opacity: 0 !important;
       }
 
+      /*
+       * Ochiladigan guruh («Hujjatlar»). Ko'rinishi `.panel-item-single` bilan
+       * bir xil — ilgari bu yerda eski dizayn (ramka + blur) qolib ketgan edi.
+       */
       .panel-item-multiple {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        cursor: pointer;
+        margin-bottom: 4px;
+
         .panel-header {
+          position: relative;
+          padding: 5px 4px 5px 8px;
           width: 100%;
           display: flex;
           align-items: center;
-          position: relative;
-          border-radius: 6px;
-          border: 1px solid var(--surface-line);
-          backdrop-filter: blur(12px);
-          background-color: var(--surface-section);
-          margin-bottom: 6px;
-          .item-icon {
-            width: 30px;
-            height: 30px;
+          border-radius: 10px;
+          cursor: pointer;
+          transition: background-color 0.15s ease;
+
+          &:hover {
+            background-color: var(--surface-ground);
+          }
+
+          .item-title {
+            flex: 1 1 auto;
+            min-width: 0;
             display: flex;
-            justify-content: center;
             align-items: center;
-            i {
-              color: var(--primary-color);
-              font-size: 20px;
+            justify-content: space-between;
+            gap: 4px;
+            font-size: 14px;
+            color: var(--textColor0);
+            font-weight: 500;
+
+            span {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
             }
           }
-          .item-title {
-            width: calc(100% - 30px);
-            font-size: 14px;
-            text-wrap: nowrap;
-            overflow: hidden;
-            color: var(--textColor0);
 
-            .n-icon {
-              position: absolute;
-              right: 6px;
-              top: 6px;
-              color: var(--primary-color);
-            }
+          /* Ochilganda strelka teskari — guruh holati bir qarashda bilinadi */
+          .group-chevron {
+            flex: 0 0 auto;
+            color: var(--textColor3);
+            transition: transform 0.25s ease;
+          }
+
+          &.is-open .group-chevron {
+            transform: rotate(180deg);
           }
         }
+
+        /*
+         * Balandlik KONTENTdan olinadi (grid 0fr→1fr) — qat'iy `bolalar × 38px`
+         * hisobida oxirgi qator kesilib qolardi.
+         */
+        /*
+         * Ochilish `v-show` bilan — balandlik hisobiga asoslangan animatsiya
+         * (grid 0fr→1fr, max-height) bu joydagi eski uslublar bilan to'qnashib,
+         * guruh ochilmay qolardi.
+         */
         .panel-body {
-          display: flex;
-          flex-direction: column;
           overflow: hidden;
-          transition: all 0.225s ease;
-          .panel-item {
-            display: flex;
-            align-items: center;
-            border-radius: 6px;
-            border: 1px solid var(--surface-line);
-            backdrop-filter: blur(12px);
-            background-color: var(--surface-section);
-            margin-bottom: 6px;
-            .item-icon {
-              width: 30px;
-              height: 30px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              i {
-                color: var(--primary-color);
-                font-size: 20px;
-              }
-            }
-            .item-title {
-              width: calc(100%);
-              font-size: 14px;
-              text-wrap: nowrap;
-              overflow: hidden;
-              color: var(--textColor0);
-            }
-          }
         }
       }
 

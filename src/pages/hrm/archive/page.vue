@@ -1,5 +1,5 @@
 <script setup>
-  import { UIPageContent } from '@/components/index.js'
+  import { TurnstileDownloadModal, UIPageContent } from '@/components/index.js'
   import { useArchiveStore } from '@/store/modules/index.js'
   import Filter from './ui/Filter.vue'
   import Table from './ui/Table.vue'
@@ -21,5 +21,6 @@
          jadval orasi esa 24px (`UIPageContent` ning standart oralig'i 16px). -->
     <Filter />
     <Table />
+    <TurnstileDownloadModal />
   </UIPageContent>
 </template>
