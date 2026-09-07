@@ -4209,6 +4209,7 @@
   "notificationPage": {
     "send": "Push юбориш",
     "logs": "Логлар",
+    "sentList": "Юборилган билдиришномалар",
     "schedule": "Режалаштириш",
     "sendTime": "Режалаштирилган",
     "sendTimePlaceholder": "Бўш = дарҳол",

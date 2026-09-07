@@ -4428,6 +4428,7 @@
   "notificationPage": {
     "send": "Send push",
     "logs": "Logs",
+    "sentList": "Sent notifications",
     "schedule": "Schedule",
     "sendTime": "Scheduled",
     "sendTimePlaceholder": "Empty = now",
