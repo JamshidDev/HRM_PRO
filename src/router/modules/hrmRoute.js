@@ -53,6 +53,73 @@ export const hrmRoutes = [
     meta: { layout: AppLayouts.main }
   },
   {
+    // «Hisobotlar» — Plan va Fakt/Pensionerlar/Maxsus hisobot/Hisobot aylanmasi/Arxiv
+    // boblari. Ruxsat massiv: kamida bitta bob ochiq bo'lsa sahifa ham ochiladi.
+    path: Utils.routeHrmPathMaker(AppPaths.Reports),
+    name: AppPaths.Reports.substring(1),
+    component: () => import('@/pages/hrm/reports/page.vue'),
+    meta: {
+      layout: AppLayouts.main,
+      permission: [
+        appPermissions.hrReportRead,
+        appPermissions.hrReportExport,
+        appPermissions.hrMonthlyReport,
+        appPermissions.hrArchiveRead,
+        appPermissions.hrCertificatesRead,
+        appPermissions.hrDocumentsRead
+      ]
+    }
+  },
+  {
+    // «Ta'til va intizom» — Ta'til/Grafik/Jazolar/Rag'batlar boblari. Ruxsat massiv:
+    // kamida bitta bob ochiq bo'lsa sahifa ham ochiladi.
+    path: Utils.routeHrmPathMaker(AppPaths.VacationDiscipline),
+    name: AppPaths.VacationDiscipline.substring(1),
+    component: () => import('@/pages/hrm/vacationDiscipline/page.vue'),
+    meta: {
+      layout: AppLayouts.main,
+      permission: [
+        appPermissions.hrVacationsRead,
+        appPermissions.hrVacationScheduleRead,
+        appPermissions.hrPunishmentRead,
+        appPermissions.hrIncentivesRead,
+        appPermissions.hrBusinessTripRead
+      ]
+    }
+  },
+  {
+    // «Hujjatlar» — Shartnoma/Buyruq/Qo'sh. kelishuv/Ariza tablari. Ruxsat massiv:
+    // kamida bitta bob ochiq bo'lsa sahifa ham ochiladi.
+    path: Utils.routeHrmPathMaker(AppPaths.Documents),
+    name: AppPaths.Documents.substring(1),
+    component: () => import('@/pages/docFlow/document/DocumentsPage.vue'),
+    meta: {
+      layout: AppLayouts.main,
+      permission: [
+        appPermissions.hrContractsRead,
+        appPermissions.hrCommandsRead,
+        appPermissions.hrContractAdditionalRead,
+        appPermissions.hrWorkerApplicationsRead,
+        appPermissions.hrTableRead
+      ]
+    }
+  },
+  {
+    // «Mas'ul xodimlar» — uchta reestr tab bo'lib turadi. Ruxsat massiv:
+    // kamida bitta tab ochiq bo'lsa sahifa ham ochiladi.
+    path: Utils.routeHrmPathMaker(AppPaths.Responsible),
+    name: AppPaths.Responsible.substring(1),
+    component: () => import('@/pages/hrm/responsible/page.vue'),
+    meta: {
+      layout: AppLayouts.main,
+      permission: [
+        appPermissions.hrConfirmationsRead,
+        appPermissions.hrLeadersRead,
+        appPermissions.hrTableWorkersRead
+      ]
+    }
+  },
+  {
     path: Utils.routeHrmPathMaker(AppPaths.WorkerProfile),
     name: AppPaths.WorkerProfile.substring(1),
     component: () => import('@/pages/hrm/workerProfile/ProfilePage.vue'),

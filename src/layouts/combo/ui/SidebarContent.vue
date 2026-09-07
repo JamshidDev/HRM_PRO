@@ -13,6 +13,7 @@
   import { AppPaths, useAppSetting } from '@/utils/index.js'
   import { MiniMenuBadge, UIProfile, DownloadTask } from '@components'
   import SidebarPanelItem from './SidebarPanelItem.vue'
+  import { MenuItemBadge } from '@components'
 
   const { t } = i18n.global
   const route = useRoute()
@@ -52,10 +53,18 @@
 
   const showPanel = ref(true)
   const menuPath = ref(null)
-  const collapse = ref(false)
+  /**
+   * Ochiladigan guruhlar (masalan «Hujjatlar») — har biri alohida holatda.
+   * Ilgari bitta umumiy `collapse` bor edi: ikkita guruh birga ochilib ketardi.
+   */
+  const openGroups = ref(new Set())
 
-  const controlCollapse = () => {
-    collapse.value = !collapse.value
+  const isGroupOpen = (item) => openGroups.value.has(item.label)
+
+  const toggleGroup = (item) => {
+    const next = new Set(openGroups.value)
+    next.has(item.label) ? next.delete(item.label) : next.add(item.label)
+    openGroups.value = next
   }
 
   const nextPanel = (path) => {
@@ -142,9 +151,12 @@
       .find((v) => v.path === effectiveMenuPath.value)
       .children.map((v) => ({
         ...v,
+        // Guruh bolalari ham o'z ruxsati bilan filtrlanadi.
+        ...(v.children ? { children: v.children.filter((c) => canView(c.permission)) } : null),
         allowed: canView(v.permission)
       }))
-      .filter((v) => v.allowed)
+      // Bolalari qolmagan guruh menyuda ko'rinmaydi.
+      .filter((v) => v.allowed && (!v.children || v.children.length > 0))
   })
 
   /* ------------------------------------------------------------------------
@@ -393,6 +405,21 @@
     return route.path === path
   }
 
+  // Joriy sahifa guruh ichida bo'lsa guruh ochiq turadi (to'g'ridan-to'g'ri
+  // havola bilan kirilganda ham foydalanuvchi qayerdaligini ko'radi).
+  watch(
+    [() => route.path, panelMenu],
+    () => {
+      const group = panelMenu.value.find((item) =>
+        item.children?.some((child) => child.path === route.path)
+      )
+      if (group && !openGroups.value.has(group.label)) {
+        openGroups.value = new Set(openGroups.value).add(group.label)
+      }
+    },
+    { immediate: true }
+  )
+
   onMounted(() => {
     // Sidebar har login'dan keyin qaytadan mount bo'ladi — sozlamalar shu yerda
     // joriy foydalanuvchi kaliti bilan o'qiladi.
@@ -585,26 +612,35 @@
             >
               <template v-for="item in visibleRest" :key="item.path ?? item.label">
                 <div v-if="item?.children && item.children.length > 0" class="panel-item-multiple">
-                  <div class="panel-header" @click="controlCollapse">
-                    <div class="item-icon">
-                      <i :class="item.icon"></i>
+                  <div
+                    class="panel-header"
+                    :class="isGroupOpen(item) && 'is-open'"
+                    @click="toggleGroup(item)"
+                  >
+                    <MenuItemBadge :category="currentCategory" :field="item?.name" />
+                    <div class="item-icon rounded-[10px]">
+                      <n-icon size="20">
+                        <component :is="item.icon" />
+                      </n-icon>
                     </div>
-                    <div class="item-title">
+                    <div class="item-title truncate pl-2">
                       <span>{{ $t(item.label) }}</span>
-                      <n-icon size="18">
+                      <n-icon size="16" class="group-chevron">
                         <ChevronDown12Regular />
                       </n-icon>
                     </div>
                   </div>
-                  <div
-                    class="panel-body pl-2"
-                    :style="{ height: collapse ? item.children.length * 38 + 'px' : '0px' }"
-                  >
-                    <div v-for="subMenu in item.children" :key="subMenu.path" class="panel-item">
-                      <div class="item-icon">
-                        <i :class="subMenu.icon"></i>
-                      </div>
-                      <div class="item-title">{{ $t(subMenu.label) }}</div>
+                  <div v-show="isGroupOpen(item)" class="panel-body">
+                    <div class="panel-body-inner pl-2">
+                      <SidebarPanelItem
+                        v-for="subMenu in item.children"
+                        :key="subMenu.path"
+                        :item="subMenu"
+                        :category="currentCategory"
+                        :active="isCurrentPath(subMenu.path)"
+                        @select="onChangePath"
+                        @toggle-pin="togglePin"
+                      />
                     </div>
                   </div>
                 </div>

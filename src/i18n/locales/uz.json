@@ -1421,6 +1421,11 @@
       "act_date": "Dalolatnoma sanasi",
       "responsible": "Mas'ul xodim"
     },
+    "form_75": {
+      "cancel_command_id": "Bekor qilinayotgan buyruq",
+      "cancel_reason": "Bekor qilish sababi",
+      "base_reason": "Asos"
+    },
     "form_50": {
       "to": "Ta'til tugash sanasi",
       "from": "Ta'tilga chiqish sanasi",
@@ -5078,5 +5083,20 @@
     "resetConfirmTitle": "Standart shablonga qaytarish",
     "resetConfirmText": "Tahrirlangan shablon o‘chiriladi va standart nusxa tiklanadi. Davom etasizmi?",
     "fileLabel": "Fayl"
+  },
+  "turnstileDownload": {
+    "title": "Hodisalarni yuklash"
+  },
+  "responsible": {
+    "name": "Mas’ul xodimlar"
+  },
+  "vacationDiscipline": {
+    "name": "Ta’til va intizom"
+  },
+  "reports": {
+    "name": "Hisobotlar",
+    "tabs": {
+      "special": "Maxsus hisobot"
+    }
   }
 }

@@ -189,6 +189,10 @@ export const useComponentStore = defineStore('componentStore', {
     deleteCommandEnum: [],
     reasonTypeLoading: false,
 
+    // Buyruq 75 — hujjatning «Asos:» qatori select'i.
+    baseTypes: [],
+    baseTypeLoading: false,
+
     workerApplicationTypes: [],
     educationTypes: [],
     workerApplicationLoading: false,
@@ -938,6 +942,17 @@ export const useComponentStore = defineStore('componentStore', {
         })
         .finally(() => {
           this.reasonTypeLoading = false
+        })
+    },
+    _baseTypes(id) {
+      this.baseTypeLoading = true
+      $ApiService.vacationService
+        ._baseTypes({ params: { type: id } })
+        .then((res) => {
+          this.baseTypes = res.data.data
+        })
+        .finally(() => {
+          this.baseTypeLoading = false
         })
     },
     _workerApplicationEnums() {

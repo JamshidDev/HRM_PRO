@@ -35,11 +35,15 @@
   import CommandForm_56 from './ui/CommandForm_56.vue'
   import CommandForm_57 from './ui/CommandForm_57.vue'
   import CommandForm_58 from './ui/CommandForm_58.vue'
+  import CommandForm_75 from './ui/CommandForm_75.vue'
   import { useAppSetting } from '@/utils/index.js'
   import { VueDraggable } from 'vue-draggable-plus'
 
   const store = useCommandStore()
   const componentStore = useComponentStore()
+
+  // Buyruqni bekor qilish — xodim EMAS, bekor qilinadigan buyruq tanlanadi.
+  const CANCEL_COMMAND_TYPE = 75
 
   // command ids of only a single select
   const commandIdList = [32, 33, 34, 35, 36, 37, 38, 39]
@@ -47,6 +51,27 @@
     32, 33, 34, 35, 36, 37, 38, 39, 44, 43, 45, 46, 47, 49, 48, 50, 51, 52, 53, 54, 74, 56,
     57, 58
   ]
+
+  // 75 da xodim select'i ko'rsatilmaydi — xodim bekor qilinayotgan buyruqdan olinadi.
+  const isCancelCommand = computed(() => store.payload.command_type === CANCEL_COMMAND_TYPE)
+
+  // 75 select'i: «123 NOK - 12.04.2026» + ostida buyruq turi.
+  const renderCancelCommandLabel = (option) => [
+    h('div', { class: 'flex flex-col my-1 px-2' }, [
+      h('div', { class: 'text-xs font-medium text-gray-500 leading-[1.2]' }, option.name),
+      h('div', { class: 'text-xs text-primary leading-[1.2] !text-wrap' }, option.type?.name)
+    ])
+  ]
+  const renderCancelCommandTag = ({ option }) => option?.name ?? ''
+  const onSearchCancelCommand = (v) => {
+    store.cancelCommandParams.search = v || null
+    store.cancelCommandParams.page = 1
+    store._cancelCommands()
+  }
+  const onScrollCancelCommand = () => {
+    store.cancelCommandParams.page += 1
+    store._cancelCommands(true)
+  }
 
   const formRef = ref(null)
   const confirmationList = ref([])
@@ -73,6 +98,7 @@
   const commandForm_56 = ref(null)
   const commandForm_57 = ref(null)
   const commandForm_58 = ref(null)
+  const commandForm_75 = ref(null)
 
   const renderLabel = (option) => {
     return [
@@ -243,6 +269,8 @@
           validate = await commandForm_57.value?.onSubmit(mainData)
         } else if (store.payload.command_type === 58) {
           validate = await commandForm_58.value?.onSubmit(mainData)
+        } else if (store.payload.command_type === CANCEL_COMMAND_TYPE) {
+          validate = await commandForm_75.value?.onSubmit(mainData)
         }
 
         if (validate?.isValid) {
@@ -285,6 +313,8 @@
       commandForm_57.value?.validateForm()
     } else if (store.payload.command_type === 58) {
       commandForm_58.value?.validateForm()
+    } else if (store.payload.command_type === CANCEL_COMMAND_TYPE) {
+      commandForm_75.value?.validateForm()
     }
   }
 
@@ -303,6 +333,16 @@
 
       store.workerParams.organization_id = v[0].id
       store._workers()
+    }
+
+    // 75 — buyruq select'i tanlangan korxonaga bog'liq: eski tanlov bekor qilinadi.
+    if (isCancelCommand.value) {
+      store.payload.cancel_command_id = null
+      store.cancelCommandList = []
+      store.cancelCommandParams.organization_id = v?.[0]?.id ?? null
+      store.cancelCommandParams.page = 1
+      store.cancelCommandParams.search = null
+      if (v.length > 0) store._cancelCommands()
     }
   }
   const onChangeCommandType = () => {
@@ -336,9 +376,22 @@
       generationData(true)
     }
 
-    if ([44, 43, 48, 58].includes(store.payload.command_type)) {
+    if ([44, 43, 48, 58, CANCEL_COMMAND_TYPE].includes(store.payload.command_type)) {
       componentStore.reasonTypes = []
       componentStore._reasonTypes(store.payload.command_type)
+    }
+
+    // Buyruq 75 — asos select'i + bekor qilinadigan buyruqlar ro'yxati.
+    if (store.payload.command_type === CANCEL_COMMAND_TYPE) {
+      componentStore.baseTypes = []
+      componentStore._baseTypes(CANCEL_COMMAND_TYPE)
+      store.payload.cancel_command_id = null
+      store.cancelCommandList = []
+      store.cancelCommandParams.organization_id =
+        store.payload.organization_id?.[0]?.id ?? null
+      store.cancelCommandParams.page = 1
+      store.cancelCommandParams.search = null
+      if (store.payload.organization_id?.length) store._cancelCommands()
     }
   }
 
@@ -737,7 +790,29 @@
                 />
               </n-form-item>
             </div>
-            <div class="col-span-12 md:col-span-6 flex">
+            <div class="col-span-12 md:col-span-6 flex" v-if="isCancelCommand">
+              <n-form-item
+                class="w-full"
+                :label="$t(`commandPage.form_75.cancel_command_id`)"
+                path="cancel_command_id"
+              >
+                <SuperSelect
+                  :disabled="store.payload.organization_id.length === 0"
+                  :options="store.cancelCommandList"
+                  :loading="store.cancelCommandLoading"
+                  :total-count="store.totalCancelCommand"
+                  :per-page="store.cancelCommandParams.per_page"
+                  v-model:value="store.payload.cancel_command_id"
+                  v-model:search="store.cancelCommandParams.search"
+                  value-field="id"
+                  :render-label="renderCancelCommandLabel"
+                  :render-tag="renderCancelCommandTag"
+                  @onSearch="onSearchCancelCommand"
+                  @onScrollEv="onScrollCancelCommand"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-12 md:col-span-6 flex" v-else>
               <template v-if="store.isSingleSelect">
                 <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker">
                   <SuperSelect
@@ -857,6 +932,9 @@
           </template>
           <template v-else-if="store.payload.command_type === 58">
             <CommandForm_58 ref="commandForm_58" />
+          </template>
+          <template v-else-if="isCancelCommand">
+            <CommandForm_75 ref="commandForm_75" />
           </template>
 
           <template v-else>
