@@ -56,7 +56,7 @@
     (v) => {
       store.form_50.vacation_id = null
       if (!v) return
-      store._getWorkerVacation()
+      store._getWorkerVacation(3)
     },
     { immediate: true }
   )

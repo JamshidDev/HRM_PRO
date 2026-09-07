@@ -286,11 +286,15 @@ export const useCommandStore = defineStore('commandStore', {
     workerVacationLoading: false
   }),
   actions: {
-    _getWorkerVacation() {
+    // `vacationType` — VacationTypeEnum (3 = bola parvarish ta'tili, 45/49).
+    // Buyruq 50 faqat shu turdagi faol ta'tilni yakunlaydi, shuning uchun
+    // selectda ham boshqa ta'tillar ko'rsatilmaydi (xato tanlash imkonsiz).
+    _getWorkerVacation(vacationType = null) {
       const params = {
         page: 1,
         per_page: 100,
-        worker_position_id: this.payload.worker
+        worker_position_id: this.payload.worker,
+        vacation_type: vacationType || undefined
       }
       this.workerVacationLoading = true
       $ApiService.vacationService
