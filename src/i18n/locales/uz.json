@@ -5078,5 +5078,8 @@
     "resetConfirmTitle": "Standart shablonga qaytarish",
     "resetConfirmText": "Tahrirlangan shablon o‘chiriladi va standart nusxa tiklanadi. Davom etasizmi?",
     "fileLabel": "Fayl"
+  },
+  "turnstileDownload": {
+    "title": "Hodisalarni yuklash"
   }
 }

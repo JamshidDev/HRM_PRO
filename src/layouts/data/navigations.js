@@ -103,12 +103,21 @@ const {
   reportRefreshIcon,
 } = icons
 
+import { markRaw } from 'vue'
 import i18n from '@/i18n/index.js'
 import { appPermissions } from '@/utils/index.js'
 
 const { t } = i18n.global
 
-export const navigations = [
+// Ikonka komponentlarini markRaw qiladi — busiz reaktiv menyu ularni proxy'lab Vue warn beradi.
+const withRawIcons = (items) =>
+  items.map((item) => ({
+    ...item,
+    ...(item.icon && typeof item.icon === 'object' ? { icon: markRaw(item.icon) } : null),
+    ...(item.children ? { children: withRawIcons(item.children) } : null)
+  }))
+
+export const navigations = withRawIcons([
   {
     label: 'navigation.hrm', // Kadrlar boshqaruvi
     path: AppPaths.Hrm,
@@ -1091,7 +1100,7 @@ export const navigations = [
       }
     ]
   }
-]
+])
 
 export const otherNavigations = [
   {

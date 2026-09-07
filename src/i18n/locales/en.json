@@ -5036,5 +5036,8 @@
     "resetConfirmTitle": "Restore default template",
     "resetConfirmText": "The edited template will be removed and the default version restored. Continue?",
     "fileLabel": "File"
+  },
+  "turnstileDownload": {
+    "title": "Download events"
   }
 }

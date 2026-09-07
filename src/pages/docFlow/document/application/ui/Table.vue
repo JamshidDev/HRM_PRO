@@ -7,15 +7,22 @@
     UIUser
   } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
+  import { useTurnstileDownload } from '@/composables/useTurnstileDownload.js'
   import { useAccountStore, useApplicationStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import { Delete20Regular, Edit32Regular, Eye16Regular } from '@vicons/fluent'
+  import {
+    ArrowDownload20Regular,
+    Delete20Regular,
+    Edit32Regular,
+    Eye16Regular
+  } from '@vicons/fluent'
 
   const { t } = i18n.global
 
   const store = useApplicationStore()
   const accStore = useAccountStore()
+  const { open: openTurnstileDownload } = useTurnstileDownload()
 
   const emits = defineEmits(['openOffice'])
 
@@ -54,6 +61,12 @@
     if (!accStore.checkAction(accStore.pn.hrWorkerApplicationsWrite)) return
     store.elementId = row.id
     store._delete()
+  }
+
+  // Turniket eksporti — backend `turnstile-hik-central-events-read` talab qiladi.
+  const onTurnstileDownload = (row) => {
+    if (!accStore.checkAction(accStore.pn.turnstileHikCentralEventsRead)) return
+    openTurnstileDownload(row?.worker)
   }
 
   const changePage = (v) => {
@@ -112,6 +125,14 @@
       label: t('content.edit'),
       key: Utils.ActionTypes.edit,
       icon: UIHelper.renderIcon(Edit32Regular)
+    },
+    {
+      label: t('turnstileDownload.title'),
+      key: 'turnstileDownload',
+      icon: UIHelper.renderIcon(ArrowDownload20Regular),
+      visible: (row) =>
+        !!row?.worker?.id && accStore.checkPermission(accStore.pn.turnstileHikCentralEventsRead),
+      action: onTurnstileDownload
     },
     {
       label: t('content.delete'),
