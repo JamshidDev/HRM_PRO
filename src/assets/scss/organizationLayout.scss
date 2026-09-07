@@ -154,11 +154,11 @@ $mobile_device_screen_size: 900px;
         [data-theme='dark'] & {
           background-color: #344054;
           .item-title {
-            color: #53B1FD !important;
+            color: #53b1fd !important;
           }
           .item-icon {
             i {
-              color: #53B1FD !important;
+              color: #53b1fd !important;
             }
           }
         }
@@ -231,7 +231,8 @@ $mobile_device_screen_size: 900px;
          * siljimaydi va uzunligi o'zgarmaydi; tugma ostiga tushadigan oxiri esa
          * keskin kesilmasdan shaffoflashib yo'qoladi.
          */
-        &:hover .item-title,
+        /* Pin tugmasi yo'q qatorda yopadigan narsa ham yo'q — mask kerak emas. */
+        &:hover:not(.panel-item-no-pin) .item-title,
         &.panel-item-pinned .item-title {
           -webkit-mask-image: linear-gradient(
             to right,
@@ -377,16 +378,49 @@ $mobile_device_screen_size: 900px;
         }
 
         /*
-         * Balandlik KONTENTdan olinadi (grid 0fr→1fr) — qat'iy `bolalar × 38px`
-         * hisobida oxirgi qator kesilib qolardi.
-         */
-        /*
-         * Ochilish `v-show` bilan — balandlik hisobiga asoslangan animatsiya
-         * (grid 0fr→1fr, max-height) bu joydagi eski uslublar bilan to'qnashib,
-         * guruh ochilmay qolardi.
+         * Ochilish/yopilish animatsiyasi — SidebarContent.vue dagi
+         * `group-collapse` transition'i (balandlik JS'da `scrollHeight` bo'yicha).
+         * Bu yerda faqat `overflow` kerak: animatsiya paytida kontent kesiladi.
          */
         .panel-body {
           overflow: hidden;
+        }
+
+        /*
+         * Ochilgan guruh bolalari alohida fonli blokda — qaysi elementlar
+         * guruhga tegishli ekani bir qarashda ko'rinadi.
+         */
+        .panel-body-inner {
+          /*
+           * Gorizontal otstup YO'Q: blok guruh sarlavhasi bilan chap va o'ng
+           * chetdan AYNAN bir xil joyni egallaydi. Bolalar qatorlarining o'z
+           * (hover/aktiv) foni ham shu chegaraga tekis tushadi — busiz chapda
+           * ko'zga tashlanadigan bo'shliq qolardi.
+           */
+          margin-bottom: 4px;
+          padding-top: 4px;
+          padding-bottom: 4px;
+          border-radius: 10px;
+          background-color: var(--surface-ground);
+
+          /*
+           * Guruh ichida hover foni TESKARI bo'ladi: blokning o'zi allaqachon
+           * `--surface-ground` rangida, oddiy hover ko'rinmay qolardi.
+           */
+          .panel-item-single {
+            margin-bottom: 2px;
+            &:last-child {
+              margin-bottom: 0;
+            }
+            &:hover:not(.active-panel-item-single) {
+              background-color: var(--surface-section);
+            }
+          }
+        }
+
+        /* Ochiq guruh sarlavhasi tanadan uzilib qolmasin */
+        &.is-open .panel-header {
+          background-color: var(--surface-ground);
         }
       }
 
@@ -436,13 +470,13 @@ $mobile_device_screen_size: 900px;
       // border: 1px solid #455470 !important;
       border-radius: 16px;
       i {
-        color: #1570EF !important;
+        color: #1570ef !important;
       }
 
       [data-theme='dark'] & {
         background-color: #344054;
         i {
-          color: #53B1FD !important;
+          color: #53b1fd !important;
         }
       }
     }

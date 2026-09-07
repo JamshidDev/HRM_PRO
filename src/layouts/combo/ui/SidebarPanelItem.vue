@@ -9,7 +9,13 @@
     item: { type: Object, required: true },
     category: { type: String, default: null },
     active: { type: Boolean, default: false },
-    pinned: { type: Boolean, default: false }
+    pinned: { type: Boolean, default: false },
+    /**
+     * Guruh ICHIDAGI sahifa pinlanmaydi: pinlangan ro'yxat faqat yuqori
+     * darajadagi elementlardan yig'iladi (`SidebarContent.arrangedMenu`), ya'ni
+     * bola pinlansa u hech qayerda ko'rinmas, lekin sozlamaga yozilib qolardi.
+     */
+    pinnable: { type: Boolean, default: true }
   })
 
   const emit = defineEmits(['select', 'togglePin'])
@@ -24,7 +30,8 @@
     :class="[
       active && 'active-panel-item-single',
       item?.disable && 'opacity-30',
-      pinned && 'panel-item-pinned'
+      pinned && 'panel-item-pinned',
+      !pinnable && 'panel-item-no-pin'
     ]"
   >
     <MenuItemBadge :category="category" :field="item?.name" />
@@ -45,6 +52,7 @@
       `click.stop` — busiz bosish ustidagi qatorning navigatsiyasini ham chaqiradi.
     -->
     <button
+      v-if="pinnable"
       type="button"
       class="panel-item-pin"
       :class="pinned && 'panel-item-pin-on'"

@@ -118,15 +118,11 @@
         }
       }
 
-      .panel-body .panel-item {
+      // Ochilgan guruh bolalari uchun ajratuvchi fon — odatiy temadagi
+      // `--surface-ground` rangli blokning tema varianti. (Guruh sarlavhasiga
+      // `$item-bg` yuqoridagi `.panel-header` qoidasida allaqachon berilgan.)
+      .panel-body-inner {
         background-color: $item-bg !important;
-        border-color: $item-border !important;
-        .item-icon i {
-          color: $panel-icon !important;
-        }
-        .item-title {
-          color: $panel-text !important;
-        }
       }
     }
 
