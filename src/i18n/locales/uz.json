@@ -803,6 +803,14 @@
     "nHours": "{n} soat"
   },
   "timesheetWorkerPage": {
+    "worker_role_info": "Ro'yxatda faqat «TimesheetHR» (tabelchi) roli berilgan xodimlar ko'rinadi. Rol Xodimlar bo'limidan beriladi.",
+    "departments_info": "Faqat boshqa tabelchiga biriktirilmagan bo'limlar ko'rsatiladi. Bitta bo'lim faqat bitta tabelchiga biriktiriladi; biriktirilmagan bo'limlarni HR o'zi to'ldiradi.",
+    "attach_department": "Bo'lim biriktirish",
+    "detach_all": "Barcha bo'limlarni uzish",
+    "detach_confirm": "Bo'limni tabelchidan uzasizmi?",
+    "detach_all_confirm": "Bu tabelchidan barcha bo'limlar uziladi. Davom etasizmi?",
+    "department_count": "Bo'limlar soni",
+    "free_departments_empty": "Bu korxonada bo'sh bo'lim qolmagan",
     "name": "Tabelchilar",
     "work_place": "Tashkilot/Bo'lim"
   },
@@ -2539,6 +2547,8 @@
     "Sun": "Ya"
   },
   "timesheetPage": {
+    "work_days": "Ish kuni",
+    "work_hours": "Ish soati",
     "name": "Tabellar",
     "create": "Tabel yaratish",
     "update": "Tabelni tahrirlash",
