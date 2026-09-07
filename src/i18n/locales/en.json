@@ -5044,5 +5044,17 @@
   },
   "turnstileDownload": {
     "title": "Download events"
+  },
+  "responsible": {
+    "name": "Responsible employees"
+  },
+  "vacationDiscipline": {
+    "name": "Vacation and discipline"
+  },
+  "reports": {
+    "name": "Reports",
+    "tabs": {
+      "special": "Special report"
+    }
   }
 }

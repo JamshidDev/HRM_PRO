@@ -71,11 +71,9 @@ import ExtraEducationDirectoryIcon from '@assets/icons/EducationDirectory.svg'
 import ExtraDepartmentLocationIcon from '@assets/icons/DepartmentLocation.svg'
 import AdminFolderIcon from '@assets/icons/adminFolder.svg'
 import {
-  BookDatabase24Regular,
   Calculator24Regular,
   ClipboardTaskListLtr24Filled,
-  Grid20Filled,
-  RibbonStar24Filled
+  Grid20Filled
 } from '@vicons/fluent'
 const {
   usersIcon,
@@ -86,21 +84,13 @@ const {
   commandIcon,
   additionalAgreementIcon,
   applicationsIcon,
+  tableIcon,
   negotiatorsIcon,
   vacationIcon,
-  signersIcon,
-  tableIcon,
   medicalExaminationIcon,
-  crownIcon,
-  businessTripIcon,
-  documentsIcon,
   openVacanciesIcon,
-  punishmentIcon,
-  planAndFactIcon,
-  pensionaryIcon,
   qualificationIcon,
   reportIcon,
-  reportRefreshIcon,
 } = icons
 
 import { markRaw } from 'vue'
@@ -141,13 +131,6 @@ export const navigations = withRawIcons([
         permission: appPermissions.hrWorkersRead
       },
       {
-        label: 'archive.name', // Arxiv — bo'shab ketgan xodimlar
-        path: Utils.routeHrmPathMaker(AppPaths.Archive),
-        icon: usersIcon,
-        color: 'bg-dark',
-        permission: appPermissions.hrArchiveRead
-      },
-      {
         label: 'departmentPage.name', // Bo'linmalar
         path: Utils.routeHrmPathMaker(AppPaths.Department),
         icon: department2Icon,
@@ -162,13 +145,6 @@ export const navigations = withRawIcons([
         permission: appPermissions.hrPositionsRead
       },
       {
-        label: 'workerCertificatePage.name', // Guvohnomalar
-        path: Utils.routeHrmPathMaker(AppPaths.WorkerCertificate),
-        icon: usersIcon,
-        color: 'bg-primary',
-        permission: appPermissions.hrCertificatesRead
-      },
-      {
         label: 'kpiPage.name', // KPI ko'rsatgichlar
         path: Utils.routeHrmPathMaker(AppPaths.Kpi),
         icon: reportIcon,
@@ -176,64 +152,84 @@ export const navigations = withRawIcons([
         permission: appPermissions.hrKpiRead
       },
       {
-        label: 'confirmation.name', // Shartnomalar
-        path: Utils.routeHrmPathMaker(AppPaths.Contract),
+        // Ochiladigan guruh — bosilganda ichki sahifalar ro'yxati chiqadi.
+        label: 'documentPage.name', // Hujjatlar
         icon: contractIcon,
         color: 'bg-success',
-        permission: appPermissions.hrContractsRead,
-        name: 'contracts'
+        permission: [
+          appPermissions.hrContractsRead,
+          appPermissions.hrCommandsRead,
+          appPermissions.hrContractAdditionalRead,
+          appPermissions.hrWorkerApplicationsRead,
+          appPermissions.hrTableRead
+        ],
+        // Badge — bolalarning imzolanmagan hujjatlari yig'indisi.
+        name: ['contracts', 'commands', 'contract-additional', 'worker-applications'],
+        children: [
+          {
+            label: 'confirmation.name', // Shartnomalar
+            path: Utils.routeHrmPathMaker(AppPaths.Contract),
+            icon: contractIcon,
+            color: 'bg-success',
+            permission: appPermissions.hrContractsRead,
+            name: 'contracts'
+          },
+          {
+            label: 'documentPage.tabs.command', // Buyruqlar
+            path: Utils.routeHrmPathMaker(AppPaths.Command),
+            icon: commandIcon,
+            color: 'bg-secondary',
+            permission: appPermissions.hrCommandsRead,
+            name: 'commands'
+          },
+          {
+            label: 'documentPage.tabs.adContract', // Qo'sh. kelishuv
+            path: Utils.routeHrmPathMaker(AppPaths.AdContract),
+            icon: additionalAgreementIcon,
+            color: 'bg-warning',
+            permission: appPermissions.hrContractAdditionalRead,
+            name: 'contract-additional'
+          },
+          {
+            label: 'applicationPage.name', // Arizalar
+            path: Utils.routeHrmPathMaker(AppPaths.Application),
+            icon: applicationsIcon,
+            color: 'bg-success',
+            permission: appPermissions.hrWorkerApplicationsRead,
+            name: 'worker-applications'
+          },
+          {
+            label: 'timesheetPage.name', // Tabellar
+            path: Utils.routeHrmPathMaker(AppPaths.TimeSheet),
+            icon: tableIcon,
+            color: 'bg-secondary',
+            permission: appPermissions.hrTableRead
+          }
+        ]
       },
       {
-        label: 'documentPage.tabs.command', // Buyruqlar
-        path: Utils.routeHrmPathMaker(AppPaths.Command),
-        icon: commandIcon,
-        color: 'bg-secondary',
-        permission: appPermissions.hrCommandsRead,
-        name: 'commands'
-      },
-      {
-        label: 'documentPage.tabs.adContract', // Qo'sh. kelishuv
-        path: Utils.routeHrmPathMaker(AppPaths.AdContract),
-        icon: additionalAgreementIcon,
-        color: 'bg-warning',
-        permission: appPermissions.hrContractAdditionalRead,
-        name: 'contract-additional'
-      },
-      {
-        label: 'applicationPage.name', // Arizalar
-        path: Utils.routeHrmPathMaker(AppPaths.Application),
-        icon: applicationsIcon,
-        color: 'bg-success',
-        permission: appPermissions.hrWorkerApplicationsRead,
-        name: 'worker-applications'
-      },
-      {
-        label: 'confirmationPage.name', // Kelishuvchilar
-        path: Utils.routeHrmPathMaker(AppPaths.Confirmation),
+        label: 'responsible.name', // Mas'ul xodimlar — Kelishuvchilar/Rahbariyat/Tabelchilar
+        path: Utils.routeHrmPathMaker(AppPaths.Responsible),
         icon: negotiatorsIcon,
         color: 'bg-dark',
-        permission: appPermissions.hrConfirmationsRead
+        permission: [
+          appPermissions.hrConfirmationsRead,
+          appPermissions.hrLeadersRead,
+          appPermissions.hrTableWorkersRead
+        ]
       },
       {
-        label: 'vacationPage.name', // Ta'tildagi xodimlar
-        path: Utils.routeHrmPathMaker(AppPaths.Vacation),
+        label: 'vacationDiscipline.name', // Ta'til va intizom — 4 bob
+        path: Utils.routeHrmPathMaker(AppPaths.VacationDiscipline),
         icon: vacationIcon,
         color: 'bg-primary',
-        permission: appPermissions.hrVacationsRead
-      },
-      {
-        label: 'timesheetWorkerPage.name', // Tabelchilar
-        path: Utils.routeHrmPathMaker(AppPaths.TimesheetDepartment),
-        icon: signersIcon,
-        color: 'bg-warning',
-        permission: appPermissions.hrTableWorkersRead
-      },
-      {
-        label: 'timesheetPage.name', // Tabellar
-        path: Utils.routeHrmPathMaker(AppPaths.TimeSheet),
-        icon: tableIcon,
-        color: 'bg-secondary',
-        permission: appPermissions.hrTableRead
+        permission: [
+          appPermissions.hrVacationsRead,
+          appPermissions.hrVacationScheduleRead,
+          appPermissions.hrPunishmentRead,
+          appPermissions.hrIncentivesRead,
+          appPermissions.hrBusinessTripRead
+        ]
       },
       {
         label: 'medPage.name', // Tibbiy ko'rik
@@ -241,13 +237,6 @@ export const navigations = withRawIcons([
         icon: medicalExaminationIcon,
         color: 'bg-success',
         permission: appPermissions.hrMedRead
-      },
-      {
-        label: 'organizationLeaderPage.name', // Rahbariyat
-        path: Utils.routeHrmPathMaker(AppPaths.OrganizationLeader),
-        icon: crownIcon,
-        color: 'bg-info',
-        permission: appPermissions.hrLeadersRead
       },
       // {
       //     label: 'reportPage.name',
@@ -264,47 +253,12 @@ export const navigations = withRawIcons([
       //     permission: appPermissions.hrExport,
       // },
       {
-        label: 'businessTrip.name', // Xizmat safari
-        path: Utils.routeHrmPathMaker(AppPaths.BusinessTrip),
-        icon: businessTripIcon,
-        color: 'bg-info',
-        permission: appPermissions.hrBusinessTripRead
-      },
-      {
-        label: 'documentArchive.name', // Hujjatlar bazasi
-        path: Utils.routeHrmPathMaker(AppPaths.DocumentArchive),
-        icon: documentsIcon,
-        color: 'bg-success',
-        permission: appPermissions.hrDocumentsRead
-      },
-      {
-        label: 'vacationSchedule.name', // Ta'tillar grafigi
-        path: Utils.routeHrmPathMaker(AppPaths.VacationSchedule),
-        icon: BookDatabase24Regular,
-        color: 'bg-info',
-        permission: appPermissions.hrVacationScheduleRead
-      },
-      {
         label: 'vacancy.name', // Ochiq vakansiyalar
         path: Utils.routeHrmPathMaker(AppPaths.PublicVacancy),
         icon: openVacanciesIcon,
         color: 'bg-info',
         permission: appPermissions.hrPublicVacancyRead,
         disable: false
-      },
-      {
-        label: 'punishment.name', // Intizomiy jazolar
-        path: Utils.routeHrmPathMaker(AppPaths.Punishment),
-        icon: punishmentIcon,
-        color: 'bg-warning',
-        permission: appPermissions.hrPunishmentRead
-      },
-      {
-        label: 'incentive.name', // Rag'batlantirishlar
-        path: Utils.routeHrmPathMaker(AppPaths.Incentive),
-        icon: RibbonStar24Filled,
-        color: 'bg-success',
-        permission: appPermissions.hrIncentivesRead
       },
       {
         label: 'task.name', // Topshiriqlar
@@ -314,18 +268,18 @@ export const navigations = withRawIcons([
         permission: appPermissions.hrTasksRead
       },
       {
-        label: 'report.name', // Plan va Fakt
-        path: Utils.routeHrmPathMaker(AppPaths.Report),
-        icon: planAndFactIcon,
-        color: 'bg-info',
-        permission: appPermissions.hrReportRead
-      },
-      {
-        label: 'pensioner.name', // Pensionerlar
-        path: Utils.routeHrmPathMaker(AppPaths.Pensioner),
-        icon: pensionaryIcon,
-        color: 'bg-info',
-        permission: appPermissions.hrReportRead
+        label: 'reports.name', // Hisobotlar — Plan va Fakt/Pensionerlar/Maxsus/Aylanma/Arxiv
+        path: Utils.routeHrmPathMaker(AppPaths.Reports),
+        icon: reportIcon,
+        color: 'bg-warning',
+        permission: [
+          appPermissions.hrReportRead,
+          appPermissions.hrReportExport,
+          appPermissions.hrMonthlyReport,
+          appPermissions.hrArchiveRead,
+          appPermissions.hrCertificatesRead,
+          appPermissions.hrDocumentsRead
+        ]
       },
       {
         label: 'lmsWorkerPage.name', // Malaka oshirish
@@ -334,20 +288,6 @@ export const navigations = withRawIcons([
         color: 'bg-success',
         permission: appPermissions.lmsWorkerRead
       },
-      {
-        label: 'specialReport.name', // Hisobotlar
-        path: Utils.routeHrmPathMaker(AppPaths.SpecialReport),
-        icon: reportIcon,
-        color: 'bg-info',
-        permission: appPermissions.hrReportExport
-      },
-      {
-        label: 'structureReport.name', // Hisobot aylanmasi
-        path: Utils.routeHrmPathMaker(AppPaths.StructureReport),
-        icon: reportRefreshIcon,
-        color: 'bg-warning',
-        permission: appPermissions.hrMonthlyReport
-      }
     ]
   },
   {

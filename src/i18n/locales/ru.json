@@ -5056,5 +5056,17 @@
   },
   "turnstileDownload": {
     "title": "Выгрузить события"
+  },
+  "responsible": {
+    "name": "Ответственные сотрудники"
+  },
+  "vacationDiscipline": {
+    "name": "Отпуск и дисциплина"
+  },
+  "reports": {
+    "name": "Отчёты",
+    "tabs": {
+      "special": "Специальный отчёт"
+    }
   }
 }

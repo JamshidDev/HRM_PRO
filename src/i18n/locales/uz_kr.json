@@ -4803,5 +4803,17 @@
   },
   "turnstileDownload": {
     "title": "Ҳодисаларни юклаш"
+  },
+  "responsible": {
+    "name": "Масъул ходимлар"
+  },
+  "vacationDiscipline": {
+    "name": "Таътил ва интизом"
+  },
+  "reports": {
+    "name": "Ҳисоботлар",
+    "tabs": {
+      "special": "Махсус ҳисобот"
+    }
   }
 }

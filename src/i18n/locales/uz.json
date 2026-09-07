@@ -5086,5 +5086,17 @@
   },
   "turnstileDownload": {
     "title": "Hodisalarni yuklash"
+  },
+  "responsible": {
+    "name": "Mas’ul xodimlar"
+  },
+  "vacationDiscipline": {
+    "name": "Ta’til va intizom"
+  },
+  "reports": {
+    "name": "Hisobotlar",
+    "tabs": {
+      "special": "Maxsus hisobot"
+    }
   }
 }
