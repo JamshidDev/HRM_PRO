@@ -153,10 +153,9 @@ $mobile_device_screen_size: 900px;
        * bilan to'ldirilgan, ya'ni odatiy tema endi ular bilan bir xil ko'rinadi.
        */
       .active-panel-item-single {
-        background-color: #1570ef;
+        background-color: #1c1c1c;
         .item-title {
           color: #ffffff !important;
-          font-weight: 700;
         }
         .item-icon {
           i {
@@ -177,7 +176,7 @@ $mobile_device_screen_size: 900px;
         }
 
         [data-theme='dark'] & {
-          background-color: #1570ef;
+          background-color: #1c1c1c;
         }
       }
 
