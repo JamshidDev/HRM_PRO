@@ -3172,7 +3172,8 @@
       "multipleSalary": "Birdan ortiq joydan oylik olayotgan xodimlarni ro'yxatini yuklash",
       "exportWithCode": "To'lov kodi bo'yicha yuklash",
       "exportWithCodeByMonth": "To'lov kodi bo'yicha yuklash oylar kesimida",
-      "exportWithPosition": "Lavozimlar kesimida yuklash"
+      "exportWithPosition": "Lavozimlar kesimida yuklash",
+      "exportByOrganizations": "Excelga yuklash (korxona tanlab)"
     },
     "form": {
       "pin": "Pin",

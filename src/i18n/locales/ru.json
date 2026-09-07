@@ -3158,7 +3158,8 @@
       "multipleSalary": "Загрузить сотрудников с несколькими зарплатами",
       "exportWithCode": "Экспорт по коду платежа",
       "exportWithCodeByMonth": "Экспорт по коду платежа по месяцам",
-      "exportWithPosition": "Экспорт по должностям"
+      "exportWithPosition": "Экспорт по должностям",
+      "exportByOrganizations": "Выгрузить в Excel (по организациям)"
     },
     "form": {
       "pin": "ПИН",

@@ -3147,7 +3147,8 @@
       "multipleSalary": "Upload employees with multiple salaries",
       "exportWithCode": "Export by payment code",
       "exportWithCodeByMonth": "Export by payment code by months",
-      "exportWithPosition": "Export by position"
+      "exportWithPosition": "Export by position",
+      "exportByOrganizations": "Export to Excel (by organizations)"
     },
     "form": {
       "pin": "PIN",
