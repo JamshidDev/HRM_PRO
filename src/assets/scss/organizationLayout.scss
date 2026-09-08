@@ -9,7 +9,7 @@ $mobile_device_screen_size: 900px;
   height: 100vh;
   display: flex;
   position: relative;
-  background: var(--surface-ground);
+  background: var(--app-bg);
   .sidebar-content {
     /* Gradient ta'riflari — faqat `defs`, hech narsa chizmaydi. */
     .sidebar-icon-gradients {
@@ -28,7 +28,7 @@ $mobile_device_screen_size: 900px;
     left: 0;
     bottom: 0;
     transition: all 0.3s ease;
-    background: var(--surface-ground);
+    background: var(--app-bg);
     .sidebar-card {
       width: calc(100% - 16px);
       height: calc(100% - 16px);
@@ -207,8 +207,15 @@ $mobile_device_screen_size: 900px;
           pointer-events: none;
         }
 
+        /*
+         * Yakka qator hoveri — KO'K tint, kulrang emas. Kulrang (`--surface-ground`)
+         * guruh oilasiga tegishli: ochiq guruh sarlavhasi ham, bolalar bloki ham
+         * o'sha rangda. Natijada element hoveri guruh sarlavhasining ODDIY holati
+         * bilan bir xil ko'rinardi. Endi rang oilasi holatni aytib turadi:
+         * kulrang = guruh konteyneri, ko'k = hover.
+         */
         &:hover:not(.active-panel-item-single) {
-          background-color: var(--surface-ground);
+          background-color: color-mix(in srgb, var(--primary-color) 22%, transparent);
         }
         .item-icon {
           width: 26px;
@@ -477,8 +484,19 @@ $mobile_device_screen_size: 900px;
           cursor: pointer;
           transition: background-color 0.15s ease;
 
+          /*
+           * Guruh sarlavhasining hoveri UCH narsadan farq qilishi kerak:
+           *   1) o'zining OCHIQ holatidagi foni (`--surface-ground`),
+           *   2) oddiy (guruhga kirmaydigan) element hoveri — u ham
+           *      `--surface-ground`,
+           *   3) hoversiz holati (fonsiz).
+           * Neytral qoplama (`color-mix`) ikkalasi bilan ham deyarli bir xil
+           * pale kulrang berardi, shuning uchun bir pog'ona TO'QROQ qadam:
+           * `--surface-line` (light #d0d5dd, dark #344054). Guruh — konteyner,
+           * shu sababli uning hoveri yakka qatorникidan og'irroq bo'lgani mantiqiy.
+           */
           &:hover {
-            background-color: var(--surface-ground);
+            background-color: var(--surface-line);
           }
 
           .item-title {
@@ -543,8 +561,9 @@ $mobile_device_screen_size: 900px;
           background-color: var(--surface-ground);
 
           /*
-           * Guruh ichida hover foni TESKARI bo'ladi: blokning o'zi allaqachon
-           * `--surface-ground` rangida, oddiy hover ko'rinmay qolardi.
+           * Guruh ichidagi bolalar ham tashqaridagi yakka qatorlar bilan BIR XIL
+           * hover tintini oladi — "hover = ko'k" qoidasi butun menyuda yagona.
+           * Kulrang blok ustida ko'k tint bemalol ko'rinadi.
            */
           .panel-item-single {
             margin-bottom: 2px;
@@ -552,12 +571,17 @@ $mobile_device_screen_size: 900px;
               margin-bottom: 0;
             }
             &:hover:not(.active-panel-item-single) {
-              background-color: var(--surface-section);
+              background-color: color-mix(in srgb, var(--primary-color) 22%, transparent);
             }
           }
         }
 
-        /* Ochiq guruh sarlavhasi tanadan uzilib qolmasin */
+        /*
+         * Ochiq guruh sarlavhasi tanadan uzilib qolmasin — bolalar bloki bilan
+         * bir xil fon. Hover holati yuqoridagi `--surface-line` bo'lib qolaveradi:
+         * `.panel-item-multiple .panel-header:hover` (0,4,0) shu qoidadan (0,3,0)
+         * ustun, ya'ni ochiq guruhni hover qilganda ham fon o'zgaradi.
+         */
         &.is-open .panel-header {
           background-color: var(--surface-ground);
         }
@@ -636,7 +660,7 @@ $mobile_device_screen_size: 900px;
     margin-left: $sidebar-max-width;
     // `100vh` emas: mobil brauzerlarda manzil paneli hisobga olinsin.
     min-height: 100dvh;
-    background: var(--surface-ground);
+    background: var(--app-bg);
     transition: all 0.3s;
 
     .app_header {

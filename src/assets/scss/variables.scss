@@ -1,5 +1,13 @@
 :root {
   color-scheme: light;
+  /*
+   * SAHIFA KANVASI (butun sayt foni: body, layout, `.page-content`).
+   * `--surface-ground` dan ALOHIDA: u tint/hover roli o'ynaydi (modal ichidagi
+   * bloklar, sidebar hover, segment rail — ~175 joyda `bg-surface-ground`),
+   * shu sababli oq sirtda sezilarli kulrang bo'lib qolishi kerak. Kanvasni esa
+   * mustaqil ravishda ochroq qilish mumkin.
+   */
+  --app-bg: #f8fafc;
   --surface-ground: #e8edf3;
   --surface-section: #ffffff;
   // Chegaralar #e2e8f0 da oq fonda 1.23:1 edi — karta va katakcha qirralari
@@ -19,6 +27,10 @@
   // qatorining O'ZI deyarli ko'rinmaydi, jadval tuzilishini `--surface-line`
   // (#d0d5dd) chegaralari ushlab turadi. Matn kontrasti yaxshi (9.39:1).
   --table-header: #f8fafc;
+  // Jadval katakchalari chegarasi — `--surface-line` dan ALOHIDA: jadvalda
+  // chiziqlar juda ko'p, shu sababli u yerda ochroq kulrang kerak, boshqa
+  // joylardagi (karta, input, ajratuvchi) qirralar esa o'z rangida qoladi.
+  --table-border: #e8e8e8;
   --surface-ground-soft: #f9fafb;
 
   // Yumshoq tint fonlar (style.css @theme shularga ishora qiladi) — dark variant [data-theme='dark']da.
@@ -160,9 +172,13 @@
 
 [data-theme='dark'] {
   color-scheme: dark;
+  // Qorong'i temada kanvas va tint bir xil — o'zgarish yo'q.
+  --app-bg: #101828;
   --surface-ground: #101828;
   --surface-section: #1d2939;
   --table-header: #344054;
+  // Qorong'i temada och kulrang mos kelmaydi — chegara `--surface-line` bilan bir xil.
+  --table-border: #344054;
   --surface-ground-soft: #101828;
 
   --surface-line: #344054;

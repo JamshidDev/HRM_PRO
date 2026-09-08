@@ -102,6 +102,16 @@ const {
   certificateIcon,
   adminFolder: archiveFolderIcon,
   MonthlyReport: documentBaseIcon,
+  /*
+   * Ochiladigan GURUH sarlavhalari uchun alohida ikonalar. Ilgari guruh o'z
+   * birinchi bolasining ikonasini olardi (Hujjatlar=Shartnomalar,
+   * Mas'ul xodimlar=Kelishuvchilar, Ta'til va intizom=Ta'tillar) — ochilganda
+   * bir xil ikona ustma-ust ikki qatorda turib, qaysi biri guruh, qaysi biri
+   * sahifa ekani bilinmasdi.
+   */
+  documentsIcon: documentsGroupIcon,
+  signersIcon: responsibleGroupIcon,
+  calendarAlt: vacationGroupIcon,
 } = icons
 
 import { markRaw } from 'vue'
@@ -165,7 +175,7 @@ export const navigations = withRawIcons([
       {
         // Ochiladigan guruh — bosilganda ichki sahifalar ro'yxati chiqadi.
         label: 'documentPage.name', // Hujjatlar
-        icon: contractIcon,
+        icon: documentsGroupIcon,
         color: 'bg-success',
         permission: [
           appPermissions.hrContractsRead,
@@ -225,7 +235,7 @@ export const navigations = withRawIcons([
          * allaqachon mavjud edi).
          */
         label: 'responsible.name', // Mas'ul xodimlar
-        icon: negotiatorsIcon,
+        icon: responsibleGroupIcon,
         color: 'bg-dark',
         permission: [
           appPermissions.hrConfirmationsRead,
@@ -266,7 +276,7 @@ export const navigations = withRawIcons([
          * `SidebarContent.panelMenu` da bolalardan hisoblanadi.
          */
         label: 'vacationDiscipline.name', // Ta'til va intizom
-        icon: vacationIcon,
+        icon: vacationGroupIcon,
         color: 'bg-primary',
         permission: [
           appPermissions.hrVacationsRead,

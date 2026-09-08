@@ -22,6 +22,8 @@
   --color-surface-ground: var(--surface-ground);
   --color-surface-section: var(--surface-section);
   --color-surface-line: var(--surface-line);
+  --color-table-border: var(--table-border);
+  --color-app-bg: var(--app-bg);
   --color-textColor0: var(--textColor0);
   --color-textColor1: var(--textColor1);
   --color-textColor2: var(--textColor2);
@@ -152,7 +154,7 @@
 
 html,
 body {
-  background-color: var(--surface-ground);
+  background-color: var(--app-bg);
 }
 
 .bg-gray-soft {

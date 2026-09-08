@@ -379,7 +379,7 @@
         <div
           v-for="row in skeletonRows"
           :key="`sr-${row}`"
-          class="flex items-center gap-4 px-4 h-[48px] border-b border-surface-line"
+          class="flex items-center gap-4 px-4 h-[48px] border-b border-table-border"
         >
           <div v-for="col in allCols" :key="`sc-${row}-${col.key}`" :style="skeletonColStyle(col)">
             <n-skeleton height="14px" round />
