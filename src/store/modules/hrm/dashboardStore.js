@@ -7,6 +7,7 @@ import {
   fromLegacyTwo,
   fromLegacyThree
 } from '@/pages/hrm/dashboard/adapter.js'
+import { buildLegacyDashboard, emptyLegacyDashboard } from '@/pages/hrm/dashboard/legacyShape.js'
 
 /**
  * Bob (tab) nomlari va kontrakt bo'limlari nomlari bir xil emas: Umumiy bobning
@@ -73,6 +74,13 @@ export const useDashboardStore = defineStore('dashboardStore', {
      * `overview` / `movement` / `attendance` getterlari orqali murojaat
      * qiladi — ular mock ustiga real qiymatlarni yozib beradi.
      */
+    /*
+     * «Eski» bobi (`ui/legacy/`) uchun ESKI shakl. Yangi kartalar `api` +
+     * getterlardan o'qiydi, eski kartalar esa 757bf8f6 dan oldingi
+     * `dashboard.{mainCard,ageCard,...}` shaklini kutadi. Ikkalasi AYNAN bir
+     * xil uch javobdan quriladi — qo'shimcha so'rov yo'q.
+     */
+    dashboard: emptyLegacyDashboard(),
     api: {
       overview: null,
       movement: null,
@@ -153,20 +161,20 @@ export const useDashboardStore = defineStore('dashboardStore', {
       }
       params = this.appendParams(params)
 
-      const [responseOne, responseTwo, responseThree, overviewRes] =
-        await Promise.all([
-          $ApiService.dashboardService._index({ params }),
-          $ApiService.dashboardService._indexTwo({ params }),
-          $ApiService.dashboardService._indexThree({ params }),
-          // Yangi /overview endpoint. Eski backendда bo'lmasa (404) — legacy
-          // adapter overview'iga qaytamiz (butun dashboard buzilmasin).
-          $ApiService.dashboardService._overview({ params }).catch(() => null)
-        ])
+      const [responseOne, responseTwo, responseThree, overviewRes] = await Promise.all([
+        $ApiService.dashboardService._index({ params }),
+        $ApiService.dashboardService._indexTwo({ params }),
+        $ApiService.dashboardService._indexThree({ params }),
+        // Yangi /overview endpoint. Eski backendда bo'lmasa (404) — legacy
+        // adapter overview'iga qaytamiz (butun dashboard buzilmasin).
+        $ApiService.dashboardService._overview({ params }).catch(() => null)
+      ])
       this.api = combine(
         fromLegacyOne(responseOne),
         fromLegacyTwo(responseTwo),
         fromLegacyThree(responseThree)
       )
+      this.dashboard = buildLegacyDashboard(responseOne, responseTwo, responseThree)
       // /overview to'liq doc-shakl (nationality, age×gender, ma'lumot darajalari) —
       // legacy adapterdan boyroq, shuning uchun overview bobini bosib o'tadi.
       if (overviewRes?.data?.data) {

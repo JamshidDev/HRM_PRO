@@ -48,6 +48,8 @@ export const InfoCardEnum = {
  * `audit` — eski holida qoladi, shu sababli `tabCards` ro'yxatida yo'q.
  */
 export const DashboardTab = {
+  // «Eski» — 6d400d69 dan oldingi dashboard, `ui/legacy/` da to'liq saqlangan.
+  LEGACY: 'legacy',
   GENERAL: 'general',
   MOVEMENT: 'movement',
   ATTENDANCE: 'attendance',
