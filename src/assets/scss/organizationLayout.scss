@@ -65,6 +65,28 @@ $mobile_device_screen_size: 900px;
       }
 
       .main-menu-item {
+        /* `.active-mini-content::before` (shisha aksi) shu qutiga bog'lanadi. */
+        position: relative;
+        transition:
+          background-color 0.25s ease,
+          box-shadow 0.25s ease;
+
+        /* Panel qatoridagi kabi: oldindan mavjud, opacity bilan silliq ochiladi. */
+        &::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: 16px;
+          background: linear-gradient(
+            152deg,
+            rgba(255, 255, 255, 0.24) 0%,
+            rgba(255, 255, 255, 0.06) 45%,
+            rgba(255, 255, 255, 0) 70%
+          );
+          opacity: 0;
+          transition: opacity 0.25s ease;
+          pointer-events: none;
+        }
         display: flex;
         justify-content: center;
         align-items: center;
@@ -115,7 +137,32 @@ $mobile_device_screen_size: 900px;
         border-radius: 10px;
         margin-bottom: 4px;
         cursor: pointer;
-        transition: background-color 0.15s ease;
+        transition:
+          background-color 0.25s ease,
+          box-shadow 0.25s ease;
+
+        /*
+         * Shisha "aks"i HAR DOIM mavjud, faqat ko'rinmas. Ilgari u
+         * `.active-panel-item-single::before` da edi: psevdo-element klass
+         * qo'shilgan LAHZADA yaratilar, o'tishning boshlang'ich holati esa
+         * bo'lmagani uchun oq gradient birdan "yonib" ketardi.
+         */
+        &::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          background: linear-gradient(
+            152deg,
+            rgba(255, 255, 255, 0.18) 0%,
+            rgba(255, 255, 255, 0.05) 42%,
+            rgba(255, 255, 255, 0) 68%
+          );
+          opacity: 0;
+          transition: opacity 0.25s ease;
+          pointer-events: none;
+        }
+
         &:hover:not(.active-panel-item-single) {
           background-color: var(--surface-ground);
         }
@@ -133,7 +180,7 @@ $mobile_device_screen_size: 900px;
              * 150 ms davomida to'yingan rangga oqib o'tar, matn esa darhol
              * almashardi — oraliqda matn fonga qo'shilib, o'qilmay qolardi.
              */
-            transition: color 0.15s ease;
+            transition: color 0.25s ease;
           }
         }
         .item-title {
@@ -143,7 +190,7 @@ $mobile_device_screen_size: 900px;
           overflow: hidden;
           color: var(--textColor0);
           font-weight: 500;
-          transition: color 0.15s ease;
+          transition: color 0.25s ease;
         }
       }
       /*
@@ -152,8 +199,26 @@ $mobile_device_screen_size: 900px;
        * (sidebarTheme.scss) tanlangan element allaqachon shunday — solid `$accent`
        * bilan to'ldirilgan, ya'ni odatiy tema endi ular bilan bir xil ko'rinadi.
        */
+      /*
+       * Tanlangan sahifa — "liquid glass": shaffof qatlam, orqa fonni blur qilish,
+       * tepadagi yorug'lik qirrasi va yuqori-chapdan tushgan aks.
+       *
+       * 0.68 shaffofmaslik TASODIFIY EMAS: pastroq qiymatda oq matn kontrasti
+       * 4.5:1 dan tushib ketadi (oq panelda 0.55 da atigi 4.17:1). 0.68 da esa
+       * hamma fonda 6.5:1 dan yuqori bo'lib, shisha effekti ham saqlanadi.
+       */
       .active-panel-item-single {
-        background-color: #1c1c1c;
+        background-color: rgba(17, 17, 17, 0.88);
+        backdrop-filter: blur(14px) saturate(180%);
+        -webkit-backdrop-filter: blur(14px) saturate(180%);
+        /* Chetdagi ramkasiz: faqat tepadagi yorug'lik chizig'i va yumshoq soya. */
+        /* Tashqi soyasiz — faqat tepadagi yorug'lik qirrasi. */
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24);
+
+        &::before {
+          opacity: 1;
+        }
+
         .item-title {
           color: #ffffff !important;
         }
@@ -175,8 +240,14 @@ $mobile_device_screen_size: 900px;
           background-color: rgba(255, 255, 255, 0.22);
         }
 
+        /*
+         * Qorong'i temada TO'Q shisha ishlamaydi: 68% #111 panelning o'zi
+         * (#1d2939) bilan deyarli bir xil chiqib, tanlangan qator yo'qolardi.
+         * Shuning uchun oq tint — panel ustida ochroq shisha bo'lib turadi.
+         */
         [data-theme='dark'] & {
-          background-color: #1c1c1c;
+          background-color: rgba(255, 255, 255, 0.16);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
         }
       }
 
@@ -305,7 +376,7 @@ $mobile_device_screen_size: 900px;
       .menu-head-btn {
         color: var(--textColor3);
         cursor: pointer;
-        transition: color 0.15s ease;
+        transition: color 0.25s ease;
         &:hover {
           color: var(--primary-color);
         }
@@ -491,19 +562,25 @@ $mobile_device_screen_size: 900px;
       }
     }
 
+    /*
+     * Tanlangan modul — panel qatoridagi kabi "liquid glass". Rail foni har
+     * doim TO'Q gradient, shuning uchun bu yerda shisha OQ tintli: och pill
+     * (#eff8ff) o'rniga shaffof qatlam, ikonasi ham oq.
+     */
     .active-mini-content {
-      background-color: #eff8ff;
-      // border: 1px solid #455470 !important;
+      position: relative;
+      background-color: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(12px) saturate(160%);
+      -webkit-backdrop-filter: blur(12px) saturate(160%);
       border-radius: 16px;
-      i {
-        color: #1570ef !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.34);
+
+      &::before {
+        opacity: 1;
       }
 
-      [data-theme='dark'] & {
-        background-color: #344054;
-        i {
-          color: #53b1fd !important;
-        }
+      i {
+        color: #ffffff !important;
       }
     }
   }

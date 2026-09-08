@@ -64,7 +64,7 @@
             </div>
             <span
               v-else-if="item.type?.name"
-              class="text-[#AB7D00] bg-[#FEFAF1] rounded-full px-2 py-0.5 text-xs font-medium"
+              class="text-[#8A6500] bg-[#FEFAF1] rounded-full px-2 py-0.5 text-xs font-medium"
             >
               {{ item.type?.name }}
             </span>

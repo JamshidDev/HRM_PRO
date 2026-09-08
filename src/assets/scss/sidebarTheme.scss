@@ -99,7 +99,19 @@
       // hal qiladi. Aks holda pin ikonasi yuqoridagi `$panel-icon` (mint temada
       // to'q kulrang) bilan qolib, to'yingan fonda ko'rinmay ketardi.
       .active-panel-item-single {
-        background-color: $accent !important;
+        /*
+         * "Liquid glass" — organizationLayout.scss dagi bilan bir xil retsept,
+         * faqat rang temaning `$accent` idan olinadi. 0.68 shaffofmaslik oq
+         * matn kontrastini har temada 6.5:1 dan yuqorida ushlab turadi.
+         */
+        background-color: rgba($accent, 0.88) !important;
+        backdrop-filter: blur(14px) saturate(180%);
+        -webkit-backdrop-filter: blur(14px) saturate(180%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24) !important;
+        // `::before` (shisha aksi) va uning `opacity` o'tishi
+        // organizationLayout.scss dagi bazaviy qoidadan keladi — bu yerda
+        // takrorlansa, u yana "birdan yonadigan" holatga qaytardi.
+
         .item-title {
           color: $active-text !important;
         }
@@ -139,6 +151,9 @@
 
     .active-mini-content {
       background-color: rgba(255, 255, 255, 0.2) !important;
+      backdrop-filter: blur(12px) saturate(160%);
+      -webkit-backdrop-filter: blur(12px) saturate(160%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.34) !important;
       i {
         color: #fff !important;
       }
@@ -173,11 +188,12 @@
 // lekin aniq ajralib turadi.
 [data-sidebar-theme='mint'] {
   @include sidebar-color-theme(
-    #1f1f1f,
-    #0d0d0d,
+    // Rail — tekis #111111 (ilgari #1f1f1f → #0d0d0d gradienti edi).
+    #111111,
+    #111111,
     #c9f5e7,
     #dfddfb,
-    #1c1c1c,
+    #111111,
     #101828,
     #344054,
     rgba(255, 255, 255, 0.55),

@@ -29,7 +29,7 @@
     blue: '#0C4089',
     green: '#00220E',
     // Mint temada tooltip qora rail yonida chiqadi — shuning uchun to'q fon + oq matn
-    mint: '#1F1F1F'
+    mint: '#111111'
   }
   const tooltipThemeOverrides = computed(() => {
     const color = sidebarThemeTooltipColors[appStore.sidebarTheme]

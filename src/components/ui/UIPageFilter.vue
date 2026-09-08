@@ -395,11 +395,12 @@
   }
 
   .ui-page-search :deep(.n-input__placeholder) {
-    color: #98a2b3;
+    /* Edi #98a2b3 — oq maydonda 2.58:1, o'qib bo'lmasdi. */
+    color: var(--textColor3);
   }
 
   .ui-page-search :deep(.n-input__input-el::placeholder) {
-    color: #98a2b3;
+    color: var(--textColor3);
     opacity: 1;
   }
 
