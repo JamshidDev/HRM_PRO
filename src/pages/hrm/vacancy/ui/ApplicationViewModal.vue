@@ -212,7 +212,8 @@
 
 .info-label {
   font-size: 12px;
-  color: #94a3b8;
+  /* Edi #94a3b8 — oq fonda 2.56:1, o'qib bo'lmasdi. */
+  color: var(--textColor3);
 }
 
 .info-value {
@@ -310,7 +311,8 @@
 
 .item-label {
   font-size: 11px;
-  color: #94a3b8;
+  /* Edi #94a3b8 — oq fonda 2.56:1, o'qib bo'lmasdi. */
+  color: var(--textColor3);
   line-height: 1.2;
 }
 

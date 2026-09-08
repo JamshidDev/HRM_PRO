@@ -29,7 +29,7 @@
     blue: '#0C4089',
     green: '#00220E',
     // Mint temada tooltip qora rail yonida chiqadi — shuning uchun to'q fon + oq matn
-    mint: '#1F1F1F'
+    mint: '#111111'
   }
   const tooltipThemeOverrides = computed(() => {
     const color = sidebarThemeTooltipColors[appStore.sidebarTheme]
@@ -179,14 +179,27 @@
     return (
       navigations
         .find((v) => v.path === effectiveMenuPath.value)
-        .children.map((v) => ({
-          ...v,
-          // Guruh bolalari ham o'z ruxsati bilan filtrlanadi.
-          ...(v.children ? { children: v.children.filter((c) => canView(c.permission)) } : null),
-          allowed: canView(v.permission)
-        }))
-        // Bolalari qolmagan guruh menyuda ko'rinmaydi.
-        .filter((v) => v.allowed && (!v.children || v.children.length > 0))
+        .children.map((v) => {
+          // Guruh bolalari HAR DOIM o'z ruxsati bilan filtrlanadi.
+          const children = v.children ? v.children.filter((c) => canView(c.permission)) : null
+          return {
+            ...v,
+            ...(children ? { children } : null),
+            /*
+             * GURUH ko'rinishi BOLALARIDAN kelib chiqadi: kamida bitta bola
+             * ko'rinsa — guruh ham ko'rinadi, aks holda yo'q. Guruhning O'Z
+             * `permission` massivi bu qarorda umuman qatnashmaydi.
+             *
+             * Ilgari `canView(v.permission)` ishlatilardi, ya'ni guruh massivi
+             * bolalarnikiga QO'LDA moslab turilishi kerak edi. Yangi bola
+             * qo'shilib, uning ruxsati massivga kiritilmasa, o'sha ruxsatga ega
+             * (va boshqasiga ega bo'lmagan) foydalanuvchi butun guruhni ko'rmay
+             * qolardi — bola esa filtrdan o'tgan bo'lardi.
+             */
+            allowed: children ? children.length > 0 : canView(v.permission)
+          }
+        })
+        .filter((v) => v.allowed)
     )
   })
 
@@ -560,6 +573,28 @@
 
 <template>
   <div class="sidebar-content">
+    <!--
+      Menyu ikonalari uchun gradient ta'riflari. Ikonalar inline SVG (vite-svg-loader),
+      shuning uchun CSS'dagi `fill: url(#id)` ularning `fill="currentColor"` ATRIBUTINI
+      bosib o'tadi — presentation atributi CSS'dan past turadi.
+      `gradientUnits` sukut bo'yicha `objectBoundingBox`: har ikona gradientni o'z
+      chegarasiga moslab oladi, ya'ni o'lchamdan qat'i nazar bir xil ko'rinadi.
+    -->
+    <svg class="sidebar-icon-gradients" aria-hidden="true" focusable="false">
+      <defs>
+        <!-- Och sirt uchun (oq/mint panel) — to'q ko'kdan binafshaga -->
+        <linearGradient id="sidebarIconDeep" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#1570ef" />
+          <stop offset="100%" stop-color="#7f56d9" />
+        </linearGradient>
+        <!-- To'q sirt uchun (rail, tanlangan qator, qorong'i temalar) -->
+        <linearGradient id="sidebarIconBright" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#84caff" />
+          <stop offset="100%" stop-color="#c3b5fd" />
+        </linearGradient>
+      </defs>
+    </svg>
+
     <div class="sidebar-card m-2 rounded-3xl overflow-hidden flex">
       <div class="mini-content">
         <div class="mini-top-group">

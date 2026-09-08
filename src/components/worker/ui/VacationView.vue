@@ -46,7 +46,7 @@
               :label="$t('workerView.vacation.duration')"
             >
               <template #value>
-                <span class="text-[#AB7D00]">{{ item.all_day }} {{ $t('workerView.vacation.daysLabel') }}</span>
+                <span class="text-[#8A6500]">{{ item.all_day }} {{ $t('workerView.vacation.daysLabel') }}</span>
               </template>
             </InfoBox>
             <InfoBox

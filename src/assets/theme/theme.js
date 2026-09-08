@@ -58,7 +58,10 @@ export const customTheme = () => {
       popoverColor: getValueOfCssVariable('--surface-section'), // Qalqib chiquvchi oynalar uchun fon rangi
       tableColor: getValueOfCssVariable('--surface-section'), // Jadvallar uchun fon rangi
       tableColorHover: getValueOfCssVariable('--surface-ground'), // Jadval qatori hover fon rangi
-      tableColorStriped: getValueOfCssVariable('--surface-ground-soft'), // Juft qatorlar fon rangi
+      // Juft qatorlar — jadval sarlavhasi bilan BIR XIL sirt (#f8fafc).
+      // Ilgari `--surface-ground-soft` (#f9fafb, neytral kulrang) edi va
+      // jadval ichida ikkita boshqa-boshqa och tus aralashib turardi.
+      tableColorStriped: getValueOfCssVariable('--table-header'), // Juft qatorlar fon rangi
 
       // Joylashtiruvchi va kiritish ranglari
       placeholderColor: getValueOfCssVariable('--textColor3'), // Kiritish maydonlaridagi joylashtiruvchi matn rangi

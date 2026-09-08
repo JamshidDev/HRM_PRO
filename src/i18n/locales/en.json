@@ -2294,6 +2294,7 @@
       "worker": "Employee"
     },
     "tabs": {
+      "legacy": "Legacy",
       "general": "Overview",
       "movement": "Staff movement",
       "attendance": "Attendance & leave"
@@ -2545,7 +2546,16 @@
     "closeWarning": {
       "title": "Sure you want to close timesheet?",
       "desc": "This action cannot be undone."
-    }
+    },
+    "legend": {
+      "work": "Work day",
+      "rest": "Day off",
+      "vacation": "Vacation",
+      "sick": "Sick leave",
+      "absent": "Absent",
+      "holiday": "Holiday"
+    },
+    "workTimeType": "Work time type"
   },
   "turnstile": {
     "title": "Turnstile",

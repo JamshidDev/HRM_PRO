@@ -2314,6 +2314,7 @@
       "worker": "Xodim"
     },
     "tabs": {
+      "legacy": "Eski",
       "general": "Umumiy",
       "movement": "Kadrlar harakati",
       "attendance": "Davomat va ta'til"
@@ -2565,7 +2566,16 @@
     "closeWarning": {
       "title": "Tabelni yakunlashga ishonchingiz komilmi?",
       "desc": "Bu amalni ortga qaytarib bo'lmaydi."
-    }
+    },
+    "legend": {
+      "work": "Ish kuni",
+      "rest": "Dam olish",
+      "vacation": "Ta'til",
+      "sick": "Kasallik",
+      "absent": "Kelmagan",
+      "holiday": "Bayram"
+    },
+    "workTimeType": "Ish vaqti turi"
   },
   "turnstile": {
     "title": "Turniket",
