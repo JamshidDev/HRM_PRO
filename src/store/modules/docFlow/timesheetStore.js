@@ -11,6 +11,9 @@ export const useConfTimesheetStore = defineStore('confTimesheetStore', {
     visibleType: true,
     elementId: null,
     totalItems: 0,
+    rejectVisible: false,
+    confirmVisible: false,
+    comment: null,
     params: {
       page: 1,
       per_page: 15,
@@ -18,6 +21,21 @@ export const useConfTimesheetStore = defineStore('confTimesheetStore', {
     }
   }),
   actions: {
+    // Imzosiz qaror: 3 = tasdiqlash, 4 = izoh bilan rad etish.
+    _decide(status) {
+      this.saveLoading = true
+      $ApiService.timesheetService
+        ._decide({ id: this.elementId, data: { status, comment: this.comment || undefined } })
+        .then(() => {
+          this.confirmVisible = false
+          this.rejectVisible = false
+          this.comment = null
+          this._index()
+        })
+        .finally(() => {
+          this.saveLoading = false
+        })
+    },
     _index() {
       this.loading = true
       $ApiService.documentService

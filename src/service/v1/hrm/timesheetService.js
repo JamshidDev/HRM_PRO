@@ -20,6 +20,18 @@ const _update = async (payload) => {
   return await axios.put(`/v1/timesheet/${payload.id}`, payload.data)
 }
 
+const _delete = async (payload) => {
+  return await axios.delete(`/v1/timesheet/${payload.id}`)
+}
+
+const _send = async (payload) => {
+  return await axios.post(`/v1/timesheet/${payload.id}/send`)
+}
+
+const _decide = async (payload) => {
+  return await axios.post(`/v1/timesheet/${payload.id}/confirmation`, payload.data)
+}
+
 const _accept = async (payload) => {
   return await axios.post(`/v1/timesheet/${payload.id}/accept`, payload.data)
 }
@@ -33,6 +45,9 @@ export default {
   _show,
   _create,
   _update,
+  _delete,
+  _send,
+  _decide,
   _index_departments,
   _enumTimesheet,
   _accept

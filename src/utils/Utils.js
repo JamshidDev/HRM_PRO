@@ -238,6 +238,7 @@ const ActionTypes = {
   close: 'close',
   confirm: 'confirm',
   finish: 'finish',
+  send: 'send',
   applications: 'applications'
 }
 const combineFullName = (user) => {

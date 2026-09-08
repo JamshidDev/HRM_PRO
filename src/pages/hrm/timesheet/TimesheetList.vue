@@ -1,5 +1,5 @@
 <script setup>
-  import { UIPageContent, UIPageFilter, UIDrawer, UIDConfirm } from '@/components/index.js'
+  import { UIPageContent, UIPageFilter, UIModal, UIDrawer, UIDConfirm } from '@/components/index.js'
   import Table from './ui/Table.vue'
   import Form from './ui/Form.vue'
   import Timesheet from './ui/Timesheet.vue'
@@ -30,16 +30,13 @@
   <UIPageContent>
     <Filter />
     <Table />
-    <UIDrawer
-      :width="300"
-      :visible="store.visible"
-      @update:visible="(v) => (store.visible = v)"
+    <UIModal
+      :width="420"
+      v-model:visible="store.visible"
       :title="store.visibleType ? $t('timesheetPage.create') : $t('timesheetPage.update')"
     >
-      <template #content>
-        <Form />
-      </template>
-    </UIDrawer>
+      <Form />
+    </UIModal>
     <UIDrawer
       :width="400"
       v-model:visible="confirmationStore.visible"
@@ -49,6 +46,27 @@
         <ConfirmationForm />
       </template>
     </UIDrawer>
+    <UIDConfirm v-model:visible="store.sendVisible">
+      <template #icon> <span></span></template>
+      <div class="text-center pt-4">
+        <p class="text-xl text-warning">
+          {{ $t('timesheetPage.sendWarning.title') }}
+        </p>
+        <p class="text-sm text-secondary">
+          {{ $t('timesheetPage.sendWarning.desc') }}
+        </p>
+      </div>
+      <template #action>
+        <div class="grid grid-cols-2 gap-2 select-none">
+          <n-button @click="store.sendVisible = false" secondary type="error">
+            {{ $t('content.cancel') }}
+          </n-button>
+          <n-button :loading="store.saveLoading" @click="store._send" secondary type="primary">
+            {{ $t('timesheetPage.send') }}
+          </n-button>
+        </div>
+      </template>
+    </UIDConfirm>
     <UIDConfirm v-model:visible="store.warningVisible">
       <template #icon> <span></span></template>
       <div class="text-center pt-4">
