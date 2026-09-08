@@ -14,7 +14,14 @@ import { useAppSetting } from '@/utils/index.js'
  * Kalit: `app-sidebar-menu:<userId>:<roleId>-<orgId>`
  *
  * Saqlanadigan shakl:
- *   { "<modulePath>": { pinned: [itemPath, ...], order: [itemPath, ...] } }
+ *   { "<modulePath>": {
+ *       pinned: [itemPath, ...],
+ *       order:  [itemPath, ...],
+ *       // Ochiladigan guruh («Hujjatlar») ICHIDAGI tartib — guruh yorlig'i (i18n
+ *       // kaliti) bo'yicha. Alohida saqlanadi: bolalar hech qachon guruhdan
+ *       // chiqmaydi, ya'ni ularning tartibi yuqori darajadagi `order` ga aralashmaydi.
+ *       groups: { "<groupLabel>": [childPath, ...] }
+ *     } }
  *
  * MUHIM: faqat PATH saqlanadi, elementning o'zi emas. Ko'rinish har render'da
  * permissionlar bo'yicha qayta filtrlanadi (`SidebarContent.panelMenu`) — ya'ni
@@ -38,6 +45,16 @@ const storageKey = (scope) => `${useAppSetting.sidebarMenuPrefsKey}:${scope}`
 const sanitizePaths = (value) =>
   Array.isArray(value) ? value.filter((v) => typeof v === 'string' && v.length) : []
 
+/** Guruhlar xaritasi: bo'sh yoki buzilgan yozuvlar tashlab yuboriladi. */
+const sanitizeGroups = (value) => {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {}
+  return Object.entries(value).reduce((acc, [groupKey, order]) => {
+    const paths = sanitizePaths(order)
+    if (paths.length) acc[groupKey] = paths
+    return acc
+  }, {})
+}
+
 const readPrefs = (scope) => {
   try {
     const raw = localStorage.getItem(storageKey(scope))
@@ -47,7 +64,8 @@ const readPrefs = (scope) => {
     return Object.entries(parsed).reduce((acc, [modulePath, prefs]) => {
       acc[modulePath] = {
         pinned: sanitizePaths(prefs?.pinned),
-        order: sanitizePaths(prefs?.order)
+        order: sanitizePaths(prefs?.order),
+        groups: sanitizeGroups(prefs?.groups)
       }
       return acc
     }, {})
@@ -73,9 +91,13 @@ export const useSidebarMenuStore = defineStore('sidebarMenuStore', {
   getters: {
     modulePinned: (state) => (modulePath) => state.prefs[modulePath]?.pinned ?? [],
     moduleOrder: (state) => (modulePath) => state.prefs[modulePath]?.order ?? [],
+    moduleGroupOrder: (state) => (modulePath, groupKey) =>
+      state.prefs[modulePath]?.groups?.[groupKey] ?? [],
     hasCustomization: (state) => (modulePath) => {
       const prefs = state.prefs[modulePath]
-      return Boolean(prefs?.pinned?.length || prefs?.order?.length)
+      return Boolean(
+        prefs?.pinned?.length || prefs?.order?.length || Object.keys(prefs?.groups ?? {}).length
+      )
     }
   },
 
@@ -107,7 +129,29 @@ export const useSidebarMenuStore = defineStore('sidebarMenuStore', {
       this.syncScope()
       this.prefs = {
         ...this.prefs,
-        [modulePath]: { pinned: sanitizePaths(pinned), order: sanitizePaths(order) }
+        [modulePath]: {
+          pinned: sanitizePaths(pinned),
+          order: sanitizePaths(order),
+          // Guruh ichidagi tartib bu yerda tegilmaydi — pin/yuqori daraja
+          // tartibi o'zgarganda u o'chib ketmasligi kerak.
+          groups: this.prefs[modulePath]?.groups ?? {}
+        }
+      }
+      this._write()
+    },
+
+    /** Bitta guruh («Hujjatlar») ichidagi bolalar tartibi. */
+    setGroupOrder(modulePath, groupKey, order) {
+      if (!modulePath || !groupKey) return
+      this.syncScope()
+      const prev = this.prefs[modulePath]
+      this.prefs = {
+        ...this.prefs,
+        [modulePath]: {
+          pinned: sanitizePaths(prev?.pinned),
+          order: sanitizePaths(prev?.order),
+          groups: { ...(prev?.groups ?? {}), [groupKey]: sanitizePaths(order) }
+        }
       }
       this._write()
     },

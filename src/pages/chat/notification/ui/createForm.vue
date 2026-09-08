@@ -149,7 +149,7 @@
         </n-form-item>
 
         <!-- Row 2: bitta qatorda — o'ngда platforma tanlovi va til tab -->
-        <div class="col-span-2 mb-1 flex items-center justify-between gap-3">
+        <div class="col-span-2 mb-1 flex flex-wrap items-center justify-between gap-2">
           <n-tabs
             v-model:value="activeLang"
             type="segment"
@@ -247,39 +247,38 @@
           </n-form-item>
         </template>
 
-        <!-- QO'LDA rejim: Foydalanuvchi (9/12) va Rejalashtirish (3/12) bitta qatorda -->
+        <!-- QO'LDA rejim: forma tor ustunda turadi — foydalanuvchi tanlash va
+             rejalashtirish har biri to'liq qatorda (9/3 bo'linish sig'mas edi). -->
         <template v-else>
-          <div class="col-span-2 grid grid-cols-12 gap-x-3">
-            <n-form-item
-              class="col-span-9"
-              :label="$t('content.users')"
-              path="userIds"
-              :rule="[
-                {
-                  trigger: ['input', 'blur-sm'],
-                  validator() {
-                    return !store.payload.all && !store.payload.userIds.length
-                      ? new Error(t('rules.requiredField'))
-                      : true
-                  }
+          <n-form-item
+            class="col-span-2"
+            :label="$t('content.users')"
+            path="userIds"
+            :rule="[
+              {
+                trigger: ['input', 'blur-sm'],
+                validator() {
+                  return !store.payload.all && !store.payload.userIds.length
+                    ? new Error(t('rules.requiredField'))
+                    : true
                 }
-              ]"
-            >
-              <UserRoleInfiniteSelect />
-            </n-form-item>
-            <n-form-item class="col-span-3" :label="$t('notificationPage.sendTime')">
-              <n-date-picker
-                class="w-full"
-                type="datetime"
-                clearable
-                :actions="['clear', 'confirm']"
-                format="yyyy-MM-dd HH:mm"
-                value-format="yyyy-MM-dd HH:mm:ss"
-                v-model:formatted-value="store.payload.scheduled_at"
-                :placeholder="$t('notificationPage.sendTimePlaceholder')"
-              />
-            </n-form-item>
-          </div>
+              }
+            ]"
+          >
+            <UserRoleInfiniteSelect />
+          </n-form-item>
+          <n-form-item class="col-span-2" :label="$t('notificationPage.sendTime')">
+            <n-date-picker
+              class="w-full"
+              type="datetime"
+              clearable
+              :actions="['clear', 'confirm']"
+              format="yyyy-MM-dd HH:mm"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              v-model:formatted-value="store.payload.scheduled_at"
+              :placeholder="$t('notificationPage.sendTimePlaceholder')"
+            />
+          </n-form-item>
         </template>
       </div>
 

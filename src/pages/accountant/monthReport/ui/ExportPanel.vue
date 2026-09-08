@@ -72,6 +72,14 @@
       }
       store._exportMultiple(params)
       uploadBtn.value?.$el?._triggerFly?.()
+    } else if (store.exportType === 5) {
+      const params = {
+        year: store.exportParams.year,
+        month: store.exportParams.month,
+        organizations: store.exportParams.organizations.map((v) => v.id).toString() || undefined
+      }
+      store._exportSummaryByOrg(params)
+      uploadBtn.value?.$el?._triggerFly?.()
     } else {
       const params = {
         year: store.exportParams.year,
@@ -175,6 +183,12 @@
             <ArrowCircleDown48Regular />
           </template>
           {{ $t('monthReport.exportFiltered') }}
+        </n-button>
+        <n-button @click="onSelect(5)" size="large" secondary type="success" class="w-full!">
+          <template #icon>
+            <ArrowCircleDown48Regular />
+          </template>
+          {{ $t('monthReport.tab.exportByOrganizations') }}
         </n-button>
       </div>
     </n-tab-pane>

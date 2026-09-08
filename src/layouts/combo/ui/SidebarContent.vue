@@ -67,6 +67,35 @@
     openGroups.value = next
   }
 
+  /*
+   * Guruh ochilish/yopilish animatsiyasi — balandlik JS'da o'lchanadi.
+   * Sof CSS variantlari (grid `0fr→1fr`, qat'iy `max-height`) bu yerda ishlamaydi:
+   * birinchisi eski uslublar bilan to'qnashadi, ikkinchisi bolalar soni oldindan
+   * noma'lum bo'lgani uchun yo qadamli sakraydi, yo oxirgi qatorni kesib qo'yadi.
+   * `scrollHeight` esa har safar haqiqiy kontent balandligini beradi.
+   */
+  const onGroupEnter = (el) => {
+    el.style.height = '0px'
+    // Reflow: brauzer boshlang'ich holatni "ko'rmasa" o'tish umuman chizilmaydi.
+    void el.offsetHeight
+    el.style.height = `${el.scrollHeight}px`
+  }
+
+  const onGroupBeforeLeave = (el) => {
+    el.style.height = `${el.scrollHeight}px`
+    void el.offsetHeight
+  }
+
+  const onGroupLeave = (el) => {
+    el.style.height = '0px'
+  }
+
+  // Ochilib bo'lgach qat'iy balandlik olib tashlanadi — ro'yxat keyinchalik
+  // o'zgarsa (qidiruv, ruxsat) guruh kontentga moslashib qolaveradi.
+  const onGroupAfterTransition = (el) => {
+    el.style.height = ''
+  }
+
   const nextPanel = (path) => {
     menuPath.value = path
     let index = navigations.findIndex((v) => v.path === path)
@@ -147,16 +176,18 @@
      * or falls back to the first accessible module
      * if you think about the user typing from the router you have to implement navigation guard for routes
      */
-    return navigations
-      .find((v) => v.path === effectiveMenuPath.value)
-      .children.map((v) => ({
-        ...v,
-        // Guruh bolalari ham o'z ruxsati bilan filtrlanadi.
-        ...(v.children ? { children: v.children.filter((c) => canView(c.permission)) } : null),
-        allowed: canView(v.permission)
-      }))
-      // Bolalari qolmagan guruh menyuda ko'rinmaydi.
-      .filter((v) => v.allowed && (!v.children || v.children.length > 0))
+    return (
+      navigations
+        .find((v) => v.path === effectiveMenuPath.value)
+        .children.map((v) => ({
+          ...v,
+          // Guruh bolalari ham o'z ruxsati bilan filtrlanadi.
+          ...(v.children ? { children: v.children.filter((c) => canView(c.permission)) } : null),
+          allowed: canView(v.permission)
+        }))
+        // Bolalari qolmagan guruh menyuda ko'rinmaydi.
+        .filter((v) => v.allowed && (!v.children || v.children.length > 0))
+    )
   })
 
   /* ------------------------------------------------------------------------
@@ -187,14 +218,45 @@
   const toPaths = (items) => items.map((v) => v.path).filter(Boolean)
 
   /**
-   * Saqlangan tartibga solish. Ro'yxatda yo'q element (navigations.js ga keyin
-   * qo'shilgan sahifa) eng katta rank oladi — ya'ni o'z tabiiy tartibini saqlab
-   * ro'yxat oxirida turadi (`Array.sort` barqaror).
+   * Tartib kaliti. Ochiladigan guruhning (masalan «Hujjatlar») `path` i YO'Q,
+   * shuning uchun faqat `path` saqlansa guruh ro'yxatdan butunlay tushib qolar,
+   * keyingi o'qishda esa "notanish element" bo'lib eng oxirga surilib ketardi.
+   */
+  const orderKey = (item) => item?.path ?? item?.label ?? ''
+
+  const toOrderKeys = (items) => items.map(orderKey).filter(Boolean)
+
+  /**
+   * Saqlangan tartibga solish.
+   *
+   * Ro'yxatda YO'Q element (navigations.js ga keyin qo'shilgan sahifa yoki
+   * guruh yozilmagan eski sozlama) o'z TABIIY qo'shnisi yonida qoladi: unga
+   * oldingi elementdan keyingi kasr rank beriladi. Ilgari bunday element eng
+   * katta rank olib, ro'yxat OXIRIGA tushib ketardi.
    */
   const sortByStoredOrder = (items, storedOrder) => {
-    const rank = new Map(storedOrder.map((path, index) => [path, index]))
-    const rankOf = (item) => (rank.has(item.path) ? rank.get(item.path) : Number.MAX_SAFE_INTEGER)
-    return [...items].sort((a, b) => rankOf(a) - rankOf(b))
+    const rank = new Map(storedOrder.map((key, index) => [key, index]))
+    const effective = new Map()
+    // Kasr qadam 1 dan kichik — notanish element hech qachon keyingi
+    // tanish elementdan oshib ketmaydi.
+    const step = 1 / (items.length + 1)
+    let previous = -1
+    let gap = 0
+
+    items.forEach((item) => {
+      const key = orderKey(item)
+      const stored = rank.get(key)
+      if (stored === undefined) {
+        gap += 1
+        effective.set(key, previous + gap * step)
+        return
+      }
+      previous = stored
+      gap = 0
+      effective.set(key, stored)
+    })
+
+    return [...items].sort((a, b) => effective.get(orderKey(a)) - effective.get(orderKey(b)))
   }
 
   const arrangedMenu = computed(() => {
@@ -216,18 +278,44 @@
   })
 
   /**
+   * Ochiladigan guruhlar ichidagi tartib — guruh yorlig'i bo'yicha xarita.
+   * Bolalar guruhdan CHIQMAYDI, shuning uchun ular yuqori darajadagi `order` ga
+   * emas, alohida `groups` sozlamasiga yoziladi.
+   */
+  const arrangedGroupChildren = computed(() => {
+    const modulePath = effectiveMenuPath.value
+    return panelMenu.value.reduce((acc, item) => {
+      if (!item.children?.length) return acc
+      acc[item.label] = sortByStoredOrder(
+        item.children,
+        modulePath ? menuStore.moduleGroupOrder(modulePath, item.label) : []
+      )
+      return acc
+    }, {})
+  })
+
+  /**
    * VueDraggable model massivini o'zi mutatsiya qiladi, shuning uchun computed'ni
    * to'g'ridan-to'g'ri berib bo'lmaydi — lokal nusxa saqlanadi va modul/ruxsat/
    * sozlama o'zgarganda qayta sinxronlanadi.
    */
   const pinnedItems = ref([])
   const restItems = ref([])
+  const groupChildren = ref({})
 
   watch(
     arrangedMenu,
     ({ pinned, rest }) => {
       pinnedItems.value = pinned
       restItems.value = rest
+    },
+    { immediate: true }
+  )
+
+  watch(
+    arrangedGroupChildren,
+    (value) => {
+      groupChildren.value = value
     },
     { immediate: true }
   )
@@ -292,6 +380,14 @@
     }
   })
 
+  /**
+   * Guruh ichidagi ko'rinadigan bolalar. Qidiruvsiz holatda bu AYNAN model
+   * massivning o'zi — Sortable DOM indeksini massiv indeksiga moslay oladi;
+   * qidiruv paytida esa sudrash `:disabled` bilan to'xtatilgani uchun filtrlangan
+   * ro'yxat model bilan farq qilishi xavfsiz.
+   */
+  const visibleGroupChildren = (item) => filterItems(groupChildren.value[item.label] ?? [])
+
   const searchEmpty = computed(
     () => isSearching.value && !visiblePinned.value.length && !visibleRest.value.length
   )
@@ -308,9 +404,18 @@
     menuStore.setModulePrefs(
       modulePath,
       toPaths(pinnedItems.value.filter(isPinnable)),
-      toPaths(restItems.value)
+      toOrderKeys(restItems.value)
     )
   }
+
+  /**
+   * vue-draggable-plus ro'yxatlar orasida ko'chirilgan elementni sukut bo'yicha
+   * `JSON.parse(JSON.stringify(item))` bilan nusxalaydi. Menyu elementidagi `icon`
+   * — Vue komponenti (SVG), JSON esa funksiyalarni tashlab yuboradi: pinlangandan
+   * keyingi bir renderda ikona yo'q vnode bilan chiqardi. Element bir massivdan
+   * ikkinchisiga o'tadi, nusxa kerak emas — asl obyektning O'ZI beriladi.
+   */
+  const keepItem = (item) => item
 
   // Sortable'ning `end` hodisasi model yangilanishidan oldin ham chiqishi mumkin.
   const onDragEnd = () => {
@@ -318,28 +423,44 @@
     nextTick(persistArrangement)
   }
 
+  /*
+   * Guruh ichidagi sudrash `dragging` ni KO'TARMAYDI: u faqat yuqori darajadagi
+   * ro'yxat uchun — bo'sh pin zonasini "tashlab pin qilish" maydoniga aylantiradi,
+   * guruh ichida esa bunday tashlash mumkin emas.
+   */
+  const onGroupDragEnd = (item) => {
+    nextTick(() => {
+      const modulePath = effectiveMenuPath.value
+      const items = groupChildren.value[item.label]
+      if (!modulePath || !items?.length) return
+      menuStore.setGroupOrder(modulePath, item.label, toPaths(items))
+    })
+  }
+
   const togglePin = (item) => {
     const modulePath = effectiveMenuPath.value
     if (!modulePath || !isPinnable(item)) return
 
     const pinnedPaths = toPaths(pinnedItems.value)
-    const restPaths = toPaths(restItems.value)
+    // `path` siz guruhlar ham kalit oladi — busiz ular saqlangan tartibdan
+    // tushib qolib, har pin bosilganda ro'yxat oxiriga sirg'alib ketardi.
+    const restKeys = toOrderKeys(restItems.value)
 
     if (!pinnedPaths.includes(item.path)) {
       menuStore.setModulePrefs(
         modulePath,
         [...pinnedPaths, item.path],
-        restPaths.filter((path) => path !== item.path)
+        restKeys.filter((key) => key !== item.path)
       )
       return
     }
 
     // Pindan chiqarilgan element navigations.js dagi tabiiy qo'shnisi yoniga
     // qaytadi — ro'yxat oxiriga tashlanib ketmaydi.
-    const naturalIndex = new Map(panelMenu.value.map((v, index) => [v.path, index]))
+    const naturalIndex = new Map(panelMenu.value.map((v, index) => [orderKey(v), index]))
     const own = naturalIndex.get(item.path) ?? -1
-    const at = restPaths.findIndex((path) => (naturalIndex.get(path) ?? -1) > own)
-    const nextRest = restPaths.filter((path) => path !== item.path)
+    const at = restKeys.findIndex((key) => (naturalIndex.get(key) ?? -1) > own)
+    const nextRest = restKeys.filter((key) => key !== item.path)
     nextRest.splice(at === -1 ? nextRest.length : at, 0, item.path)
 
     menuStore.setModulePrefs(
@@ -406,7 +527,9 @@
   }
 
   // Joriy sahifa guruh ichida bo'lsa guruh ochiq turadi (to'g'ridan-to'g'ri
-  // havola bilan kirilganda ham foydalanuvchi qayerdaligini ko'radi).
+  // havola bilan kirilganda ham foydalanuvchi qayerdaligini ko'radi). Guruhdan
+  // tashqaridagi sahifaga o'tilganda esa OCHIQ QOLADI — yopish faqat foydalanuvchi
+  // sarlavhani bosgandagina bo'ladi.
   watch(
     [() => route.path, panelMenu],
     () => {
@@ -570,6 +693,7 @@
                 :delay="250"
                 :delay-on-touch-only="true"
                 :disabled="isSearching"
+                :clone="keepItem"
                 class="menu-drop-zone"
                 :class="{
                   'menu-drop-zone-empty': !pinnedItems.length,
@@ -578,16 +702,16 @@
                 @start="dragging = true"
                 @end="onDragEnd"
               >
-                <SidebarPanelItem
-                  v-for="item in visiblePinned"
-                  :key="item.path"
-                  :item="item"
-                  :category="currentCategory"
-                  :active="isCurrentPath(item.path)"
-                  pinned
-                  @select="onChangePath"
-                  @toggle-pin="togglePin"
-                />
+                <div v-for="item in visiblePinned" :key="item.path" class="menu-drop-row">
+                  <SidebarPanelItem
+                    :item="item"
+                    :category="currentCategory"
+                    :active="isCurrentPath(item.path)"
+                    pinned
+                    @select="onChangePath"
+                    @toggle-pin="togglePin"
+                  />
+                </div>
               </VueDraggable>
               <span v-if="!pinnedItems.length && dragging" class="menu-drop-hint">
                 {{ $t('sidebar.dropToPin') }}
@@ -606,12 +730,28 @@
               :delay="250"
               :delay-on-touch-only="true"
               :disabled="isSearching"
+              :clone="keepItem"
               class="menu-drop-zone"
               @start="dragging = true"
               @end="onDragEnd"
             >
-              <template v-for="item in visibleRest" :key="item.path ?? item.label">
-                <div v-if="item?.children && item.children.length > 0" class="panel-item-multiple">
+              <!--
+                HAR BIR QATOR — YAKKA HAQIQIY ELEMENT (`<template v-for>` EMAS).
+                Sortable sudralgan node'ni konteynerlar orasida JISMONAN ko'chiradi,
+                keyin vue-draggable-plus uni `insertBefore` bilan manba konteynerga
+                qaytaradi. `<template v-for>` da har element Vue Fragment'i bo'lib,
+                o'chirilishi ikki matnli "anchor" ORASIDAGI node'larni olib tashlaydi
+                — node esa endi o'sha anchor'lar orasida emas. Natijada element DOM'da
+                qolib ketardi: pinlangan qator pastda ham ko'rinardi va DOM indekslari
+                massiv indekslaridan siljib, keyingi sudrashda BOSHQA element pinlanardi.
+                Yakka ildiz elementda Vue node'ni `el` bo'yicha o'chiradi — joyi muhim emas.
+              -->
+              <div v-for="item in visibleRest" :key="item.path ?? item.label" class="menu-drop-row">
+                <div
+                  v-if="item?.children && item.children.length > 0"
+                  class="panel-item-multiple"
+                  :class="isGroupOpen(item) && 'is-open'"
+                >
                   <div
                     class="panel-header"
                     :class="isGroupOpen(item) && 'is-open'"
@@ -630,19 +770,42 @@
                       </n-icon>
                     </div>
                   </div>
-                  <div v-show="isGroupOpen(item)" class="panel-body">
-                    <div class="panel-body-inner pl-2">
-                      <SidebarPanelItem
-                        v-for="subMenu in item.children"
-                        :key="subMenu.path"
-                        :item="subMenu"
-                        :category="currentCategory"
-                        :active="isCurrentPath(subMenu.path)"
-                        @select="onChangePath"
-                        @toggle-pin="togglePin"
-                      />
+                  <transition
+                    name="group-collapse"
+                    @enter="onGroupEnter"
+                    @after-enter="onGroupAfterTransition"
+                    @before-leave="onGroupBeforeLeave"
+                    @leave="onGroupLeave"
+                    @after-leave="onGroupAfterTransition"
+                  >
+                    <div v-if="isGroupOpen(item)" class="panel-body">
+                      <!--
+                        `group` nomi HAR GURUH uchun O'ZGACHA — shu tufayli bolani
+                        yuqori darajadagi ro'yxatga ham, boshqa guruhga ham
+                        sudrab bo'lmaydi: tartib faqat o'z oilasi ichida o'zgaradi.
+                      -->
+                      <VueDraggable
+                        v-model="groupChildren[item.label]"
+                        :group="`sidebar-group:${item.label}`"
+                        :animation="150"
+                        :delay="250"
+                        :delay-on-touch-only="true"
+                        :disabled="isSearching"
+                        class="panel-body-inner"
+                        @end="onGroupDragEnd(item)"
+                      >
+                        <SidebarPanelItem
+                          v-for="subMenu in visibleGroupChildren(item)"
+                          :key="subMenu.path"
+                          :item="subMenu"
+                          :category="currentCategory"
+                          :active="isCurrentPath(subMenu.path)"
+                          :pinnable="false"
+                          @select="onChangePath"
+                        />
+                      </VueDraggable>
                     </div>
-                  </div>
+                  </transition>
                 </div>
 
                 <SidebarPanelItem
@@ -653,7 +816,7 @@
                   @select="onChangePath"
                   @toggle-pin="togglePin"
                 />
-              </template>
+              </div>
             </VueDraggable>
 
             <div v-if="searchEmpty" class="menu-search-empty">
@@ -700,6 +863,30 @@
   .slide-right-leave-to {
     transform: translateX(20px);
     opacity: 0;
+  }
+
+  /*
+   * Ochiladigan guruh. Balandlik JS hooklarida (`onGroupEnter` va h.k.) piksel
+   * qiymati bilan beriladi, bu yerda faqat o'tishning o'zi tasvirlangan.
+   */
+  .group-collapse-enter-active,
+  .group-collapse-leave-active {
+    overflow: hidden;
+    transition:
+      height 0.25s ease,
+      opacity 0.2s ease;
+  }
+
+  .group-collapse-enter-from,
+  .group-collapse-leave-to {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .group-collapse-enter-active,
+    .group-collapse-leave-active {
+      transition-duration: 0.01ms;
+    }
   }
 
   .sidebar-card {

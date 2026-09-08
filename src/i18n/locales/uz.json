@@ -3182,7 +3182,8 @@
       "multipleSalary": "Birdan ortiq joydan oylik olayotgan xodimlarni ro'yxatini yuklash",
       "exportWithCode": "To'lov kodi bo'yicha yuklash",
       "exportWithCodeByMonth": "To'lov kodi bo'yicha yuklash oylar kesimida",
-      "exportWithPosition": "Lavozimlar kesimida yuklash"
+      "exportWithPosition": "Lavozimlar kesimida yuklash",
+      "exportByOrganizations": "Excelga yuklash (korxona tanlab)"
     },
     "form": {
       "pin": "Pin",
@@ -4447,6 +4448,7 @@
   "notificationPage": {
     "send": "Push yuborish",
     "logs": "Loglar",
+    "sentList": "Yuborilgan bildirishnomalar",
     "schedule": "Rejalashtirish",
     "sendTime": "Rejalashtirilgan",
     "sendTimePlaceholder": "Bo'sh = darhol",

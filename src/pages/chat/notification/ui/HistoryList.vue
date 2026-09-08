@@ -10,7 +10,6 @@
 
   // Holat filtri.
   const statusFilterOptions = computed(() => [
-    { label: t('content.all'), value: null },
     { label: t('notificationPage.st.pending'), value: 'scheduled' },
     { label: t('notificationPage.st.sent'), value: 'sent' },
     { label: t('notificationPage.st.error'), value: 'error' },
@@ -18,7 +17,7 @@
   ])
 
   const onStatusFilter = (v) => {
-    store.pushLogsParams.status = v
+    store.pushLogsParams.status = v ?? null
     store.pushLogsParams.page = 1
     store._push_logs()
   }
@@ -58,6 +57,29 @@
     return t('content.user')
   }
 
+  // FCM xom xatosini tushunarli (foydalanuvchiga qulay) matnga aylantirish.
+  const friendlyError = (err) => {
+    if (!err) return ''
+    const e = String(err).toLowerCase()
+    if (
+      e.includes('not a valid fcm') ||
+      e.includes('not-registered') ||
+      e.includes('unregistered') ||
+      e.includes('requested entity was not found') ||
+      e.includes('not found')
+    )
+      return "Qurilma tokeni yaroqsiz yoki ro'yxatdan chiqarilgan"
+    if (e.includes('mismatchsenderid') || e.includes('sender'))
+      return 'Token boshqa Firebase loyihasiga tegishli'
+    if (e.includes('not_configured')) return 'FCM serverda sozlanmagan'
+    if (e.includes('no_access_token') || e.includes('unauthenticated') || e.includes('auth'))
+      return 'FCM autentifikatsiya xatosi (server kaliti)'
+    if (e.includes('quota') || e.includes('rate') || e.includes('unavailable'))
+      return "Limit oshdi yoki xizmat vaqtincha ishlamayapti, keyinroq urinib ko'ring"
+    if (e.includes('invalid') || e.includes('bad request')) return "Xabar formati noto'g'ri"
+    return err // noma'lum — asl matnni ko'rsatamiz
+  }
+
   const rowTime = (row) =>
     row.status === 'scheduled' || row.status === 'sending'
       ? row.scheduled_at
@@ -84,28 +106,29 @@
 <template>
   <div class="flex h-full flex-col">
     <!-- Filtr -->
-    <div class="mb-3 flex items-center justify-between">
-      <span class="text-sm font-semibold text-gray-500">{{ $t('notificationPage.logs') }}</span>
-      <n-select
-        class="w-44"
-        size="small"
-        :value="store.pushLogsParams.status"
-        :options="statusFilterOptions"
-        @update:value="onStatusFilter"
-      />
+    <div class="mb-3 flex shrink-0 items-center justify-between gap-3">
+      <span class="truncate text-sm font-semibold text-gray-500">
+        {{ $t('notificationPage.sentList') }}
+      </span>
+      <div class="w-44 shrink-0">
+        <n-select
+          size="small"
+          clearable
+          :value="store.pushLogsParams.status"
+          :options="statusFilterOptions"
+          :placeholder="$t('content.all')"
+          @update:value="onStatusFilter"
+        />
+      </div>
     </div>
 
-    <!-- Ro'yxat -->
-    <n-spin :show="store.pushLogsLoading" class="flex-1">
-      <div
-        v-if="store.pushLogs.length"
-        class="flex flex-col overflow-y-auto pr-1"
-        style="max-height: calc(100vh - 320px)"
-      >
+    <!-- Ro'yxat — panel qolgan balandligini oladi va ichida skroll bo'ladi -->
+    <n-spin :show="store.pushLogsLoading" class="history-list__spin min-h-0 flex-1">
+      <div v-if="store.pushLogs.length" class="flex h-full flex-col overflow-y-auto pr-1">
         <div
           v-for="row in store.pushLogs"
           :key="row.id"
-          class="group border-b border-surface-line px-1 py-3 transition-colors last:border-0 hover:bg-info/5"
+          class="group shrink-0 border-b border-surface-line px-1 py-3 transition-colors last:border-0 hover:bg-info/5"
         >
           <div class="flex items-start gap-2">
             <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full" :class="dotClass(row.status)" />
@@ -128,7 +151,20 @@
 
               <!-- meta -->
               <div class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-400">
-                <n-tag :type="statusView(row.status).type" size="tiny" round>
+                <!-- Xato bo'lsa — badge ustiga hover qilganda error message tooltipda. -->
+                <n-tooltip
+                  v-if="statusView(row.status).type === 'error' && row.error"
+                  trigger="hover"
+                  placement="top"
+                >
+                  <template #trigger>
+                    <n-tag type="error" size="tiny" round class="cursor-help">
+                      {{ statusView(row.status).label }}
+                    </n-tag>
+                  </template>
+                  <span class="max-w-xs break-words">{{ friendlyError(row.error) }}</span>
+                </n-tooltip>
+                <n-tag v-else :type="statusView(row.status).type" size="tiny" round>
                   {{ statusView(row.status).label }}
                 </n-tag>
                 <span>{{ channelLabel(row) }}</span>
@@ -146,7 +182,10 @@
     </n-spin>
 
     <!-- Paginatsiya -->
-    <div v-if="store.pushLogsTotal > store.pushLogsParams.per_page" class="mt-3 flex justify-end">
+    <div
+      v-if="store.pushLogsTotal > store.pushLogsParams.per_page"
+      class="mt-3 flex shrink-0 justify-end"
+    >
       <n-pagination
         :page="store.pushLogsParams.page"
         :page-size="store.pushLogsParams.per_page"
@@ -194,7 +233,7 @@
         </div>
         <div v-if="viewRow.error" class="flex justify-between border-b pb-1">
           <span class="text-gray-500">{{ $t('content.error') || 'Error' }}</span>
-          <span class="text-error text-right">{{ viewRow.error }}</span>
+          <span class="text-error text-right">{{ friendlyError(viewRow.error) }}</span>
         </div>
         <div class="flex justify-between border-b pb-1">
           <span class="text-gray-500">{{ $t('notificationPage.sendTime') }}</span>
@@ -220,3 +259,11 @@
     </UIModal>
   </div>
 </template>
+
+<style scoped>
+  /* `n-spin` ichida balandligi yo'q wrapper div yaratadi — ichki `h-full`
+     skroller ishlashi uchun unga balandlik berish kerak (UITable dagi kabi). */
+  .history-list__spin :deep(.n-spin-content) {
+    height: 100%;
+  }
+</style>

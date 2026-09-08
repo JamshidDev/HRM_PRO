@@ -2944,7 +2944,8 @@
       "multipleSalary": "Бирдан ортиқ жойдан ойлик олаётган ходимларни рўйхатини юклаш",
       "exportWithCode": "Тўлов коди бўйича юклаш",
       "exportWithCodeByMonth": "Тўлов коди бўйича юклаш ойлар кесимида",
-      "exportWithPosition": "Лавозимлар кесимида юклаш"
+      "exportWithPosition": "Лавозимлар кесимида юклаш",
+      "exportByOrganizations": "Excelга юклаш (корхона танлаб)"
     },
     "form": {
       "pin": "Пин",
@@ -4208,6 +4209,7 @@
   "notificationPage": {
     "send": "Push юбориш",
     "logs": "Логлар",
+    "sentList": "Юборилган билдиришномалар",
     "schedule": "Режалаштириш",
     "sendTime": "Режалаштирилган",
     "sendTimePlaceholder": "Бўш = дарҳол",
