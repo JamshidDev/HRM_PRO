@@ -4,25 +4,32 @@
   import { useAccountStore, useTimesheetDepartmentStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import { AppsList24Regular, Delete20Regular } from '@vicons/fluent'
+  import { Delete20Regular, Edit20Regular } from '@vicons/fluent'
+  import { useDialog } from 'naive-ui'
 
   const { t } = i18n.global
 
   const accStore = useAccountStore()
   const store = useTimesheetDepartmentStore()
 
+  const dialog = useDialog()
+
+  // O'chirish — tabelchining BARCHA biriktirilgan bo'limlari uziladi.
   const onDelete = (row) => {
-    if (!accStore.checkAction(accStore.pn.hrTableWrite)) return
-    const data = {
-      worker_position_id: row.id
-    }
-    store._delete(data)
+    if (!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
+    dialog.warning({
+      title: t('content.delete'),
+      content: t('timesheetWorkerPage.detach_all_confirm'),
+      positiveText: t('content.yes'),
+      negativeText: t('content.no'),
+      onPositiveClick: () => store._delete({ worker_position_id: row.id })
+    })
   }
 
-  const onViewDepartments = (row) => {
-    console.log(row.departments)
-    store.previewList = row.departments
-    store.listVisible = true
+  // Tahrirlash — bo'limlar ro'yxati + yuqorida qo'shish select'i (bitta modal).
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrTableWorkersWrite)) return
+    store.openEdit(row)
   }
 
   const changePage = (v) => {
@@ -46,16 +53,16 @@
 
   const actions = computed(() => [
     {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit20Regular),
+      action: onEdit
+    },
+    {
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete20Regular),
       action: onDelete
-    },
-    {
-      label: t('content.departments'),
-      key: Utils.ActionTypes.view,
-      icon: UIHelper.renderIcon(AppsList24Regular),
-      action: onViewDepartments
     }
   ])
 </script>
@@ -64,7 +71,7 @@
   <UIWorkerView ref="previewRef" />
 
   <UITable
-    permission-prefix="hr-table"
+    permission-prefix="hr-table-workers"
     :columns="columns"
     :actions="actions"
     :data="store.list"
@@ -97,7 +104,7 @@
         size="small"
         secondary
         type="primary"
-        @click="onViewDepartments(row)"
+        @click="onEdit(row)"
       >
         +{{ row.departments.length - 1 }}
       </n-button>

@@ -29,9 +29,15 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     },
     params: {
       page: 1,
-      per_page: 15,
-      search: null
-    }
+      per_page: 50,
+      search: null,
+      department_id: null
+    },
+    // Modal ichidagi bo'lim filtri uchun (tabel korxonasi bo'yicha).
+    organizationId: null,
+    organization: null,
+    departmentOptions: [],
+    departmentLoading: false
   }),
   actions: {
     _index() {
@@ -76,6 +82,14 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
           this.month = res.data.data.month - 1
           this.year = res.data.data.year
           this.department = res.data.data.department
+          this.organization = res.data.data.organization ?? null
+          if (
+            res.data.data.organization_id &&
+            this.organizationId !== res.data.data.organization_id
+          ) {
+            this.organizationId = res.data.data.organization_id
+            this._departments()
+          }
         })
       )
       Promise.all(promises).then(() => {
@@ -120,6 +134,26 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         .finally(() => {
           this.loading = false
         })
+    },
+    // Bo'lim filtri select'i — tabel korxonasining bo'limlari.
+    _departments() {
+      if (!this.organizationId) return
+      this.departmentLoading = true
+      $ApiService.componentService
+        ._departmentByOrganizations({
+          params: { page: 1, per_page: 200, organizations: String(this.organizationId) }
+        })
+        .then((res) => {
+          this.departmentOptions = res.data.data.data.map((v) => ({ id: v.id, name: v.name }))
+        })
+        .finally(() => {
+          this.departmentLoading = false
+        })
+    },
+    // Filtr o'zgarganda ro'yxat birinchi sahifadan qayta yuklanadi.
+    applyFilters() {
+      this.params.page = 1
+      this._index_workers()
     },
     _create() {
       if (!this.payload.start || !this.payload.end) return

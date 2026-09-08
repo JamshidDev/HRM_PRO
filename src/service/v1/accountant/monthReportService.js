@@ -36,6 +36,10 @@ const _exportFiltered = async (payload) => {
   return await axios.get(`/v1/economist/statements-export-filtered`, { params: payload?.params })
 }
 
+const _exportSummary = async (payload) => {
+  return await axios.get(`/v1/economist/statements-export-summary`, { params: payload?.params })
+}
+
 const _vedReport = async (payload) => {
   return await axios.get(`/v1/economist/statements-ved-report`, { params: payload?.params })
 }
@@ -64,6 +68,7 @@ export default {
   _exportWithCodeByYear,
   _vedCodes,
   _exportFiltered,
+  _exportSummary,
   _vedReport,
   _vedReportExport,
   _vedThreshold,
