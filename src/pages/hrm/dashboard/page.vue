@@ -87,6 +87,9 @@
   })
 
   onBeforeMount(() => {
+    // Sahifaga HAR kirganda «Eski» bobi ochiladi — store pinia'da saqlanib
+    // qolgani uchun bunsiz oxirgi tanlangan bob qaytib kelardi.
+    store.activeTab = DashboardTab.LEGACY
     if (!canViewDashboard.value) return
     store.activeDetail = null
     store.resetAuditDetail()

@@ -105,7 +105,12 @@ export const useDashboardStore = defineStore('dashboardStore', {
     loadingPassport: false,
     typeNames: ['med_type', 'disc_type', 'inc_type', 'contract_type'],
     // HR audit tab — data-quality counts + tur bo'yicha sahifa ichidagi detal ko'rinishi.
-    activeTab: 'general',
+    /*
+     * Boshlang'ich bob — «Eski» (`DashboardTab.LEGACY`). Literal yozilgan:
+     * `constants.js` karta komponentlarini import qiladi, ular esa shu store'ni
+     * import qiladi — enum'ni bu yerga tortsak, aylanma import hosil bo'lardi.
+     */
+    activeTab: 'legacy',
     audit: {
       counts: null,
       loading: false,
