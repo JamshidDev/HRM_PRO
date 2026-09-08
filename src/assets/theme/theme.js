@@ -79,14 +79,14 @@ export const customTheme = () => {
     Table: {
       thColor: getValueOfCssVariable('--table-header'),
       tdColor: getValueOfCssVariable('--surface-section'),
-      borderColor: getValueOfCssVariable('--surface-line'),
+      borderColor: getValueOfCssVariable('--table-border'),
       thTextColor: getValueOfCssVariable('--textColor2'),
       tdTextColor: getValueOfCssVariable('--textColor2')
     },
     DataTable: {
       thColor: getValueOfCssVariable('--table-header'),
       tdColor: getValueOfCssVariable('--surface-section'),
-      borderColor: getValueOfCssVariable('--surface-line'),
+      borderColor: getValueOfCssVariable('--table-border'),
       thTextColor: getValueOfCssVariable('--textColor2'),
       tdTextColor: getValueOfCssVariable('--textColor2')
     },

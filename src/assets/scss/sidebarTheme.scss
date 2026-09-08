@@ -18,10 +18,16 @@
   $panel-icon: #fff,
   $item-bg: rgba(255, 255, 255, 0.08),
   $item-border: rgba(255, 255, 255, 0.2),
-  $hover-bg: rgba(255, 255, 255, 0.08),
+  // Yakka element hoveri. `$item-bg` (guruh sarlavhasining ODDIY foni) ham
+  // 0.08 edi — ikkalasi ajralmasdi, shu sababli sezilarli darajada kuchliroq.
+  $hover-bg: rgba(255, 255, 255, 0.26),
   $active-text: #fff,
   // Sarlavha ostidagi ajratuvchi chiziq — och temada karta borderi (oq) ko'rinmasligi uchun alohida
-  $divider: $item-border
+  $divider: $item-border,
+  // Ochiladigan guruh sarlavhasining HOVER foni. `$hover-bg` dan alohida, chunki
+  // sarlavhaning o'z foni allaqachon `$item-bg` — ko'p temada bu ikkalasi bir xil
+  // qiymat, ya'ni oddiy hover umuman sezilmasdi.
+  $group-hover-bg: rgba(255, 255, 255, 0.42)
 ) {
   .organization-layout .sidebar-content {
     .mini-content {
@@ -130,6 +136,13 @@
       .panel-header {
         background-color: $item-bg !important;
         border-color: $item-border !important;
+        transition: background-color 0.15s ease;
+
+        // Guruh sarlavhasi bosiladigan element — hover foni o'z fonidan farq qilishi shart.
+        &:hover {
+          background-color: $group-hover-bg !important;
+        }
+
         .item-icon i {
           color: $panel-icon !important;
         }
@@ -214,8 +227,14 @@
     #344054,
     rgba(255, 255, 255, 0.55),
     rgba(255, 255, 255, 0.8),
-    rgba(255, 255, 255, 0.5),
+    // OCH panelda hover oq bilan berilmaydi: guruh sarlavhalari va bolalar bloki
+    // allaqachon oq-shaffof (`$item-bg` 0.55) — oq hover ular bilan qo'shilib
+    // ketardi (skrinshotdagi «Ochiq vakansiyalar» aynan shunday ko'rinardi).
+    // Buning o'rniga yengil TO'Q yuvindi: oq pill'lardan aniq ajraladi.
+    rgba(16, 24, 40, 0.14),
     #ffffff,
-    rgba(16, 24, 40, 0.1)
+    rgba(16, 24, 40, 0.1),
+    // Guruh sarlavhasi hoveri esa aksincha — o'z oq foni kuchayadi.
+    rgba(255, 255, 255, 0.95)
   );
 }
