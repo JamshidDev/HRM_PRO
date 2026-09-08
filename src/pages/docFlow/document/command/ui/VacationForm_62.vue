@@ -5,11 +5,13 @@
   import i18n from '@/i18n/index.js'
   import { UISelect } from '@/components/index.js'
   import { useAppSetting } from '@/utils/index.js'
+  import validationRules from '@/utils/validationRules.js'
 
   const store = useCommandStore()
   const componentStore = useComponentStore()
   const { t } = i18n.global
   const clipboardStore = ref(null)
+  const formRefs = ref([])
 
   const onRemoveWorker = (id) => {
     store.vacations62 = store.vacations62.filter((v) => v.id !== id)
@@ -32,10 +34,18 @@
     $Toast.info(t('content.successPaste'))
   }
 
-  const onSubmit = (mainData) => {
-    const checkForm = store.vacations62.every((v) => {
-      return Boolean(v.from) && Boolean(v.to) && v.reason
-    })
+  const onSubmit = async (mainData) => {
+    // o'chirilgan qator kaliti orqasida qolgan `null` ref'larni chetlab o'tish.
+    const refs = formRefs.value.filter(Boolean)
+    const results = await Promise.all(
+      refs.map((f) =>
+        f
+          .validate()
+          .then(() => true)
+          .catch(() => false)
+      )
+    )
+    const checkForm = refs.length === store.vacations62.length && results.every(Boolean)
     if (checkForm) {
       const data = store.vacations62.map((v) => ({
         id: v.id,
@@ -58,7 +68,7 @@
         isValid: true
       }
     } else {
-      $Toast.warning(t('documentPage.command.form.isNotCalculate'))
+      $Toast.warning(t('message.warning-data'))
       return {
         data: null,
         isValid: false
@@ -113,9 +123,12 @@
 </script>
 
 <template>
-  <div
+  <n-form
     v-for="(item, idx) in store.vacations62"
     :key="idx"
+    :ref="(el) => (formRefs[idx] = el)"
+    :model="item"
+    :rules="validationRules.form_62"
     class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line p-2 rounded-md bg-surface-ground"
   >
     <div class="col-span-12">
@@ -196,7 +209,7 @@
       </div>
     </div>
     <div class="col-span-12 md:col-span-6 lg:col-span-2">
-      <n-form-item :show-feedback="false" :label="$t(`commandPage.form_62.from`)" path="from">
+      <n-form-item :label="$t(`commandPage.form_62.from`)" path="from">
         <n-date-picker
           class="w-full"
           v-model:value="item.from"
@@ -206,7 +219,7 @@
       </n-form-item>
     </div>
     <div class="col-span-12 md:col-span-6 lg:col-span-2">
-      <n-form-item :show-feedback="false" :label="$t(`commandPage.form_62.to`)" path="to">
+      <n-form-item :label="$t(`commandPage.form_62.to`)" path="to">
         <n-date-picker
           class="w-full"
           v-model:value="item.to"
@@ -216,7 +229,7 @@
       </n-form-item>
     </div>
     <div class="col-span-12 md:col-span-6 lg:col-span-5">
-      <n-form-item :show-feedback="false" :label="$t(`commandPage.form_62.reason`)" path="reason">
+      <n-form-item :label="$t(`commandPage.form_62.reason`)" path="reason">
         <n-input class="w-full" type="text" v-model:value="item.reason" />
       </n-form-item>
     </div>
@@ -284,5 +297,5 @@
         </n-form-item>
       </div>
     </template>
-  </div>
+  </n-form>
 </template>
