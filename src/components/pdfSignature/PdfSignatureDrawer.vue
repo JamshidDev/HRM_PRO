@@ -114,7 +114,7 @@
   })
 
   const showEditButton = computed(() => {
-    const rejects = ['/hrm/structure-report']
+    const rejects = ['/docflow/conf-report']
     return !rejects.includes(route.path)
   })
 
