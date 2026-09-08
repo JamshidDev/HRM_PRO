@@ -8,6 +8,12 @@
   --surface-text: #4b5675;
 
   --sidebar-color: #1e293b;
+  // Sidebar menyu ikonalarining gradienti (ta'riflar SidebarContent.vue da).
+  // Och panelda to'q gradient; qorong'i sirtlar `url(#sidebarIconBright)` ga almashtiradi.
+  --sidebar-icon-gradient: url(#sidebarIconDeep);
+  // Tanlangan qatorning foni to'q — o'sha gradient shu filtr bilan yorug'lashadi
+  // (aktiv fonda 5.9:1 / 5.6:1). `filter` animatsiyalanadi, `fill: url()` esa yo'q.
+  --sidebar-icon-active-filter: brightness(1.6) saturate(1.1);
   // Jadval sarlavhasi va shu turdagi och sirtlar.
   // DIQQAT: oq katakchadan atigi 1.05:1 bilan farq qiladi — ya'ni sarlavha
   // qatorining O'ZI deyarli ko'rinmaydi, jadval tuzilishini `--surface-line`
@@ -160,6 +166,10 @@
   --surface-ground-soft: #101828;
 
   --surface-line: #344054;
+  // Qorong'i panelda to'q gradient ko'rinmaydi.
+  --sidebar-icon-gradient: url(#sidebarIconBright);
+  // Gradient allaqachon yorug' — qo'shimcha yorug'lashtirish ortiqcha.
+  --sidebar-icon-active-filter: none;
 
   // Yumshoq tint fonlar — dark-aware low-alpha (och rangли fon qorong'ida "yopishib" qolmaydi).
   --brand-surface: rgba(18, 121, 240, 0.14);

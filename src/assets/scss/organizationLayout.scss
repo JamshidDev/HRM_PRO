@@ -11,6 +11,14 @@ $mobile_device_screen_size: 900px;
   position: relative;
   background: var(--surface-ground);
   .sidebar-content {
+    /* Gradient ta'riflari — faqat `defs`, hech narsa chizmaydi. */
+    .sidebar-icon-gradients {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
     width: $sidebar-max-width;
     height: 100vh;
     display: flex;
@@ -67,6 +75,18 @@ $mobile_device_screen_size: 900px;
       .main-menu-item {
         /* `.active-mini-content::before` (shisha aksi) shu qutiga bog'lanadi. */
         position: relative;
+
+        /*
+         * Gradient ikona. Rail foni har doim to'q, shuning uchun bu yerda
+         * yorug' gradient. `:is(...)` — ikonalarning ba'zilari `circle`/`rect`
+         * dan iborat, faqat `path` ni nishonga olsak ular rangsiz qolardi.
+         */
+        .n-icon svg :is(path, circle, rect, polygon, ellipse) {
+          fill: url(#sidebarIconBright);
+        }
+        .n-icon svg {
+          transition: filter 0.25s ease;
+        }
         transition:
           background-color 0.25s ease,
           box-shadow 0.25s ease;
@@ -114,6 +134,29 @@ $mobile_device_screen_size: 900px;
     }
     .panel-content {
       /*
+       * Menyu ikonalari gradient bilan. Qaysi gradient — panel sirtiga bog'liq,
+       * shuning uchun `--sidebar-icon-gradient` o'zgaruvchisi orqali: och panelda
+       * to'q gradient, qorong'i panelda (dark tema, indigo/blue/green) yorug'i.
+       * Tanlangan qatorning foni esa HAR DOIM to'q — u alohida qayta yoziladi.
+       */
+      .item-icon .n-icon svg :is(path, circle, rect, polygon, ellipse) {
+        fill: var(--sidebar-icon-gradient);
+      }
+      /*
+       * Tanlanganda ikona YORUG'LASHADI, lekin gradient ALMASHMAYDI: CSS
+       * `fill: url(#a)` dan `url(#b)` ga o'ta olmaydi — paint qiymatlari
+       * interpolatsiya qilinmaydi va rang sakrab o'zgarardi. `filter` esa
+       * to'liq animatsiyalanadi, shuning uchun o'sha bitta gradient shu yerda
+       * yorug'lashtiriladi (to'q ko'k→binafsha, ochroq ko'k→binafshaga).
+       */
+      .item-icon .n-icon svg {
+        transition: filter 0.25s ease;
+      }
+      .active-panel-item-single .item-icon .n-icon svg {
+        filter: var(--sidebar-icon-active-filter);
+      }
+
+      /*
        * Kenglik `.mini-content` ning HAQIQIY kengligiga bog'landi
        * ($sidebar-mini-width - 16px). Ilgari to'liq $sidebar-mini-width ayirilar
        * va kartaning o'ng chetida 16px bo'sh joy behuda qolib, menyu qatorlari
@@ -130,12 +173,13 @@ $mobile_device_screen_size: 900px;
          * faqat `.panel-content` ning 4px otstupi qoladi). Vertikal padding ham
          * kattaroq — fon matn atrofida siqilib qolmaydi.
          */
-        padding: 5px 4px 5px 8px;
+        /* 3+26+3 = 32px qator (edi 5+30+5 = 40px). */
+        padding: 3px 4px 3px 8px;
         width: 100%;
         display: flex;
         align-items: center;
         border-radius: 10px;
-        margin-bottom: 4px;
+        margin-bottom: 3px;
         cursor: pointer;
         transition:
           background-color 0.25s ease,
@@ -167,8 +211,8 @@ $mobile_device_screen_size: 900px;
           background-color: var(--surface-ground);
         }
         .item-icon {
-          width: 30px;
-          height: 30px;
+          width: 26px;
+          height: 26px;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -424,7 +468,8 @@ $mobile_device_screen_size: 900px;
 
         .panel-header {
           position: relative;
-          padding: 5px 4px 5px 8px;
+          /* `.panel-item-single` bilan bir xil balandlik. */
+          padding: 3px 4px 3px 8px;
           width: 100%;
           display: flex;
           align-items: center;
@@ -480,21 +525,21 @@ $mobile_device_screen_size: 900px;
          * guruhga tegishli ekani bir qarashda ko'rinadi.
          */
         .panel-body-inner {
-          /*
-           * Gorizontal otstup YO'Q: blok guruh sarlavhasi bilan chap va o'ng
-           * chetdan AYNAN bir xil joyni egallaydi. Bolalar qatorlarining o'z
-           * (hover/aktiv) foni ham shu chegaraga tekis tushadi — busiz chapda
-           * ko'zga tashlanadigan bo'shliq qolardi.
-           */
+          /* Sarlavha bilan orasida nafas — ilgari ular tegib turardi. */
+          margin-top: 4px;
           margin-bottom: 4px;
-          padding-top: 4px;
-          padding-bottom: 4px;
           /*
-           * Tepa burchaklar TO'G'RI: blok guruh sarlavhasiga tegib turadi va
-           * ikkisi bitta yaxlit fon bo'lib ko'rinishi kerak. Faqat pastki
-           * burchaklar yumaloq.
+           * Har tomondan bir xil 4px otstup: bola qatorining foni (hover va
+           * ayniqsa TANLANGAN holatdagi to'q pill) o'ram chetiga tegib
+           * turmasin. Chap va o'ng qiymatlar teng — blok o'zi guruh sarlavhasi
+           * bilan bir xil chegarada qolaveradi.
            */
-          border-radius: 0 0 10px 10px;
+          padding: 4px;
+          /*
+           * Endi to'liq yumaloq: burchaklar sarlavha bilan TEGIB TURGANDA
+           * olib tashlangan edi, oraga bo'shliq tushgach ular yana kerak.
+           */
+          border-radius: 10px;
           background-color: var(--surface-ground);
 
           /*
@@ -515,9 +560,6 @@ $mobile_device_screen_size: 900px;
         /* Ochiq guruh sarlavhasi tanadan uzilib qolmasin */
         &.is-open .panel-header {
           background-color: var(--surface-ground);
-          /* Bolalar bloki bilan tutashadigan pastki chekka — burchaksiz. */
-          border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0;
         }
       }
 
@@ -569,6 +611,11 @@ $mobile_device_screen_size: 900px;
      */
     .active-mini-content {
       position: relative;
+
+      /* Rail ikonasi allaqachon yorug' — tanlanganda faqat biroz kuchayadi. */
+      .n-icon svg {
+        filter: brightness(1.15);
+      }
       background-color: rgba(255, 255, 255, 0.16);
       backdrop-filter: blur(12px) saturate(160%);
       -webkit-backdrop-filter: blur(12px) saturate(160%);

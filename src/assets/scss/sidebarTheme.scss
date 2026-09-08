@@ -169,6 +169,22 @@
   }
 }
 
+/*
+ * Ikona gradienti tema paneli sirtiga qarab tanlanadi: indigo/blue/green
+ * panellari TO'Q (yorug' gradient kerak), «mint» esa OCH (to'q gradient).
+ */
+[data-sidebar-theme='indigo'],
+[data-sidebar-theme='blue'],
+[data-sidebar-theme='green'] {
+  --sidebar-icon-gradient: url(#sidebarIconBright);
+  --sidebar-icon-active-filter: none;
+}
+
+[data-sidebar-theme='mint'] {
+  --sidebar-icon-gradient: url(#sidebarIconDeep);
+  --sidebar-icon-active-filter: brightness(1.6) saturate(1.1);
+}
+
 [data-sidebar-theme='indigo'] {
   @include sidebar-color-theme(#5550e5, #2f2c7f, #4545b6, #1e1e50, #5550e5);
 }
