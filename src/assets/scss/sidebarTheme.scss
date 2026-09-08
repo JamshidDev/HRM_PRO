@@ -62,9 +62,10 @@
         .item-title {
           color: $panel-text !important;
         }
-        &:hover:not(.active-panel-item-single) {
-          background-color: $hover-bg !important;
-        }
+        // SINOV: sidebar hover fonlari vaqtincha o'chirilgan — rangli temada yakka qator.
+        // &:hover:not(.active-panel-item-single) {
+        //   background-color: $hover-bg !important;
+        // }
         .panel-item-pin {
           color: $panel-icon !important;
           &:hover {
@@ -134,14 +135,17 @@
       }
 
       .panel-header {
-        background-color: $item-bg !important;
+        // YOPIQ guruh sarlavhasi oddiy qatorlardan farq qilmaydi — foni yo'q.
+        // Ilgari bu yerda `$item-bg` turardi va yopiq guruhlar oq "pill" bo'lib
+        // menyudan ajralib ko'rinardi.
+        background-color: transparent !important;
         border-color: $item-border !important;
         transition: background-color 0.15s ease;
 
-        // Guruh sarlavhasi bosiladigan element — hover foni o'z fonidan farq qilishi shart.
-        &:hover {
-          background-color: $group-hover-bg !important;
-        }
+        // SINOV: sidebar hover fonlari vaqtincha o'chirilgan — rangli temada guruh sarlavhasi.
+        // &:hover {
+        //   background-color: $group-hover-bg !important;
+        // }
 
         .item-icon i {
           color: $panel-icon !important;
@@ -154,9 +158,15 @@
         }
       }
 
+      // Faqat OCHIQ guruh sarlavhasi fon oladi — pastdagi bolalar bloki bilan
+      // bir butun bo'lib ko'rinishi uchun (odatiy temadagi `--surface-ground`
+      // bilan bir xil mantiq).
+      .panel-item-multiple.is-open .panel-header {
+        background-color: $item-bg !important;
+      }
+
       // Ochilgan guruh bolalari uchun ajratuvchi fon — odatiy temadagi
-      // `--surface-ground` rangli blokning tema varianti. (Guruh sarlavhasiga
-      // `$item-bg` yuqoridagi `.panel-header` qoidasida allaqachon berilgan.)
+      // `--surface-ground` rangli blokning tema varianti.
       .panel-body-inner {
         background-color: $item-bg !important;
       }
