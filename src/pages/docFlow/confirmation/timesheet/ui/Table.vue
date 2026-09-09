@@ -4,7 +4,7 @@
   import { useConfTimesheetStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import { Eye16Regular } from '@vicons/fluent'
+  import { CheckmarkCircle24Filled, DismissCircle24Filled, Eye16Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
 
@@ -18,6 +18,20 @@
 
   const onPreview = (row) => {
     onOpenFile(row?.timesheet.id, row.id)
+  }
+
+  // Qaror faqat kutilayotgan (status=1|2) qatorda ko'rinadi.
+  const isPending = (row) => row?.status?.id === 1 || row?.status?.id === 2
+
+  const onConfirm = (row) => {
+    store.elementId = row?.timesheet?.id
+    store.confirmVisible = true
+  }
+
+  const onReject = (row) => {
+    store.elementId = row?.timesheet?.id
+    store.comment = null
+    store.rejectVisible = true
   }
 
   const changePage = (v) => {
@@ -60,6 +74,20 @@
       key: Utils.ActionTypes.view,
       icon: UIHelper.renderIcon(Eye16Regular),
       action: onPreview
+    },
+    {
+      label: t('content.confirm'),
+      key: Utils.ActionTypes.confirm,
+      icon: UIHelper.renderIcon(CheckmarkCircle24Filled),
+      visible: isPending,
+      action: onConfirm
+    },
+    {
+      label: t('content.reject'),
+      key: Utils.ActionTypes.close,
+      icon: UIHelper.renderIcon(DismissCircle24Filled),
+      visible: isPending,
+      action: onReject
     }
   ])
 </script>

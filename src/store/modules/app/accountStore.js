@@ -108,9 +108,14 @@ export const useAccountStore = defineStore('accountStore', {
      * `navigations.js` tarixan bare slug saqlaydi (`hr-workers`), fine-grained
      * migratsiyadan keyin esa rollar `hr-workers-read` oladi. Ikkovini ham qamraymiz.
      * Bu qoida SIDEBAR va ROUTER uchun yagona manba — ilgari u ikki joyda takrorlanardi.
+     *
+     * Massiv berilsa — "kamida bittasi" qoidasi: tabli sahifa (masalan «Mas'ul
+     * xodimlar») bitta tabga ruxsat bo'lsa ham ochiladi va menyuda ko'rinadi.
      */
-    canView: (state) => (prefix) =>
-      state.checkPermission(prefix) || state.checkPermission(`${prefix}-read`),
+    canView: (state) => (prefix) => {
+      const one = (p) => state.checkPermission(p) || state.checkPermission(`${p}-read`)
+      return Array.isArray(prefix) ? prefix.some(one) : one(prefix)
+    },
 
     /** `canDo('hr-workers', 'write')` — slug'ni qo'lda yig'ish o'rniga. */
     canDo: (state) => (prefix, action) => state.checkPermission(`${prefix}-${action}`),

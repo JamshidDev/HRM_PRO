@@ -156,13 +156,25 @@ const routes = [
   }
 ]
 
+/*
+ * Navigatsiya daraxtini TO'LIQ aylanib chiqadi.
+ *
+ * Ilgari faqat BIR daraja yurardi (`v.children`), shuning uchun ochiladigan
+ * guruh («Hujjatlar») ichidagi sahifalar ro'yxatga umuman tushmasdi:
+ * `findPermissionByPath` ular uchun `null` qaytarar, route esa pastdagi
+ * fail-safe qoidasi bo'yicha OTA modulning ruxsatini meros olardi. Natijada
+ * `hr` moduliga kirish huquqi bo'lgan, lekin masalan `hr-contracts-read`
+ * ruxsati BO'LMAGAN foydalanuvchi /hrm/contract ni URL orqali ocha olardi —
+ * menyuda u sahifa ko'rinmasa ham.
+ *
+ * `path` i yo'q tugun (guruhning o'zi) ro'yxatga qo'shilmaydi: u sahifa emas.
+ */
 const calculatePermission = ()=> {
-  let permissions = []
-  navigations.forEach(v => {
-    const list = [...v.children.map(x => ({path: x.path, permission: x.permission}))]
-    permissions = [...permissions, ...list]
-  })
-  return [...permissions, ...navigations.map(x=>({path: x.path, permission: x.permission}))]
+  const walk = (items)=> items.flatMap(item => [
+    ...(item.path ? [{path: item.path, permission: item.permission}] : []),
+    ...(item.children?.length ? walk(item.children) : [])
+  ])
+  return walk(navigations)
 }
 const allPermission =calculatePermission()
 const findPermissionByPath = (path)=> {

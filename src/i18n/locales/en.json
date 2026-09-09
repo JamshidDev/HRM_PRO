@@ -788,6 +788,14 @@
     "nHours": "{n} hours"
   },
   "timesheetWorkerPage": {
+    "worker_role_info": "Only employees with the «TimesheetHR» role are listed. The role is granted in the Employees section.",
+    "departments_info": "Only departments not assigned to another timekeeper are listed. One department belongs to exactly one timekeeper; unassigned departments are filled in by HR.",
+    "attach_department": "Attach department",
+    "detach_all": "Detach all departments",
+    "detach_confirm": "Detach the department from this timekeeper?",
+    "detach_all_confirm": "All departments will be detached from this timekeeper. Continue?",
+    "department_count": "Departments",
+    "free_departments_empty": "No free departments left in this organization",
     "name": "Timesheet keepers",
     "work_place": "Organization/Department"
   },
@@ -1404,6 +1412,11 @@
       "to": "Suspension end (to)",
       "act_date": "Act date",
       "responsible": "Responsible employee"
+    },
+    "form_75": {
+      "cancel_command_id": "Command being cancelled",
+      "cancel_reason": "Cancellation reason",
+      "base_reason": "Basis"
     },
     "form_50": {
       "to": "Vacation end date",
@@ -2281,6 +2294,7 @@
       "worker": "Employee"
     },
     "tabs": {
+      "legacy": "Legacy",
       "general": "Overview",
       "movement": "Staff movement",
       "attendance": "Attendance & leave"
@@ -2514,6 +2528,8 @@
     "Sun": "Sun"
   },
   "timesheetPage": {
+    "work_days": "Work days",
+    "work_hours": "Work hours",
     "name": "Timesheets",
     "create": "Create timesheet",
     "update": "Edit timesheet",
@@ -2530,7 +2546,37 @@
     "closeWarning": {
       "title": "Sure you want to close timesheet?",
       "desc": "This action cannot be undone."
-    }
+    },
+    "deleteWarning": {
+      "filled": "The {month} timesheet will be deleted. All data filled in for that month ({count} employees) will be permanently lost. Continue?",
+      "empty": "The timesheet will be deleted. All data filled in for that month will be lost. Continue?"
+    },
+    "send": "Send for confirmation",
+    "selectedCells": "{count} cells selected",
+    "pickTypeFirst": "select the type and hours first",
+    "totalWorkDays": "Total work days",
+    "totalWorkHours": "Total work hours",
+    "sendWarning": {
+      "title": "Send the timesheet for confirmation?",
+      "desc": "Once sent, the timesheet is locked for editing. If rejected, it opens again."
+    },
+    "confirmWarning": {
+      "title": "Confirm the timesheet?",
+      "desc": "After confirmation the timesheet can no longer be changed."
+    },
+    "rejectWarning": {
+      "title": "Reject the timesheet?",
+      "desc": "State the reason — the timesheet goes back to HR for editing."
+    },
+    "legend": {
+      "work": "Work day",
+      "rest": "Day off",
+      "vacation": "Vacation",
+      "sick": "Sick leave",
+      "absent": "Absent",
+      "holiday": "Holiday"
+    },
+    "workTimeType": "Work time type"
   },
   "turnstile": {
     "title": "Turnstile",
@@ -3142,7 +3188,8 @@
       "multipleSalary": "Upload employees with multiple salaries",
       "exportWithCode": "Export by payment code",
       "exportWithCodeByMonth": "Export by payment code by months",
-      "exportWithPosition": "Export by position"
+      "exportWithPosition": "Export by position",
+      "exportByOrganizations": "Export to Excel (by organizations)"
     },
     "form": {
       "pin": "PIN",
@@ -4422,6 +4469,7 @@
   "notificationPage": {
     "send": "Send push",
     "logs": "Logs",
+    "sentList": "Sent notifications",
     "schedule": "Schedule",
     "sendTime": "Scheduled",
     "sendTimePlaceholder": "Empty = now",
@@ -5036,5 +5084,20 @@
     "resetConfirmTitle": "Restore default template",
     "resetConfirmText": "The edited template will be removed and the default version restored. Continue?",
     "fileLabel": "File"
+  },
+  "turnstileDownload": {
+    "title": "Download events"
+  },
+  "responsible": {
+    "name": "Responsible employees"
+  },
+  "vacationDiscipline": {
+    "name": "Vacation and discipline"
+  },
+  "reports": {
+    "name": "Reports",
+    "tabs": {
+      "special": "Special report"
+    }
   }
 }

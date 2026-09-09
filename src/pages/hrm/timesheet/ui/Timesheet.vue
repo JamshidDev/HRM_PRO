@@ -1,37 +1,18 @@
 <script setup>
   import { onMounted, ref } from 'vue'
-  import { VueDraggable } from 'vue-draggable-plus'
-  import {
-    AddCircle28Regular,
-    Broom16Filled,
-    Delete20Filled,
-    Dismiss12Regular,
-    Info16Filled,
-    LineHorizontal320Filled,
-    ArrowMoveInward20Filled
-  } from '@vicons/fluent'
+  import { Dismiss20Regular } from '@vicons/fluent'
   import { useComponentStore, useTimesheetWorkerStore } from '@/store/modules/index.js'
-  import { UIPagination } from '@/components/index.js'
-  import { vScroll } from '@vueuse/components'
+  import { UIDragSelector, UIPagination } from '@/components/index.js'
   import dayjs from 'dayjs'
-  import { NAvatar, NTooltip } from 'naive-ui'
-  import { useDebounceFn } from '@vueuse/core'
   import Utils from '@/utils/Utils.js'
-  import MiniTimesheetInfoTable from './MiniTimesheetInfoTable.vue'
+  import { colorOfDetail } from './timesheetGrid.js'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   const store = useTimesheetWorkerStore()
   const compStore = useComponentStore()
-  const isDragging = ref(false)
   const form = ref(null)
-  const isAddUserVisible = ref(false)
-  const addUserSelect = ref(null)
-
-  const onAdd = () => {
-    isAddUserVisible.value = true
-    setTimeout(() => {
-      addUserSelect.value?.focus()
-    }, 200)
-  }
 
   onMounted(() => {
     if (compStore.timesheetTypes.length === 0) {
@@ -40,14 +21,42 @@
     store.resetAll()
   })
 
-  const isCellSelected = (row, col) => {
-    if (!store.payload.start || !store.payload.end) return false
-    const rowStart = Math.min(store.payload.start.row, store.payload.end.row)
-    const rowEnd = Math.max(store.payload.start.row, store.payload.end.row)
-    const colStart = Math.min(store.payload.start.col, store.payload.end.col)
-    const colEnd = Math.max(store.payload.start.col, store.payload.end.col)
-    return row >= rowStart && row <= rowEnd && col >= colStart && col <= colEnd
+  /* ------------------------------------------------------------------------
+   * Katakcha ko'rinishi — Figma «HRM Railway» (node 3368:103614).
+   *
+   * Maketda uch xil holat ATAYLAB farqlanadi:
+   *   • yozuvi bor kun    — holat harfiga mos rangli fon (`timesheetGrid.js`)
+   *   • dam olish kuni    — bo'sh, kulrang fon
+   *   • yozuvsiz ish kuni — oq fon, o'rtada tire
+   * --------------------------------------------------------------------- */
+  // Hafta kunining qisqa nomi — `shortWeek` i18n kalitlaridan (grafik sahifasi kabi).
+  const shortWeek = {
+    0: t('shortWeek.Sun'),
+    1: t('shortWeek.Mon'),
+    2: t('shortWeek.Tue'),
+    3: t('shortWeek.Wed'),
+    4: t('shortWeek.Thu'),
+    5: t('shortWeek.Fri'),
+    6: t('shortWeek.Sat')
   }
+
+  // Dam olish VA bayram kuni — ikkalasi ham qizil ko'rsatiladi.
+  const isWeekend = (day) => day.weekDay === 0 || day.weekDay === 6 || Boolean(day.is_holiday)
+
+  const dayDetails = (item, day) => item.days[day.day]
+
+  /**
+   * Bir kunda bir nechta yozuv bo'lishi mumkin — har biri O'Z rangida chiziladi,
+   * qiymatlar `/` bilan ajratiladi.
+   */
+  const partsOf = (details, field) =>
+    (details ?? [])
+      .filter((d) => d?.[field] !== null && d?.[field] !== undefined)
+      .map((d) => ({ value: d[field], color: colorOfDetail(d) }))
+
+  // Saqlanmagan (kutilayotgan) katakchalar: key `row-col` → {row, col, wasOccupied}.
+  // Tanlangan katak DARHOL qiymat bilan to'ladi, serverga «Saqlash» da ketadi.
+  const pendingCells = ref(new Map())
 
   const canSelectRange = () => {
     if (!store.payload.isClearing && store.payload.status == null) {
@@ -71,36 +80,37 @@
     return true
   }
 
-  const handleMouseDown = (e) => {
-    if (canSelectRange()) {
-      isDragging.value = true
-      const { col, row } = e.currentTarget.dataset
-      const cell = { row: Number(row), col: Number(col) }
-
-      store.resetSelection()
-      store.payload.start = cell
-      store.payload.end = cell
+  // Drag tugagach tanlangan katakchalar TANLANGAN QIYMAT bilan to'ldiriladi
+  // (tozalash rejimida bo'shatiladi). So'rov «Saqlash» bosilganda ketadi.
+  const onSelectionChange = (items) => {
+    if (!canSelectRange()) return
+    for (const item of items) {
+      const row = Number(item.row)
+      const col = Number(item.col)
+      const key = `${row}-${col}`
+      if (!pendingCells.value.has(key)) {
+        pendingCells.value.set(key, {
+          row,
+          col,
+          wasOccupied: Boolean(store.list[row]?.days?.[col + 1]?.length)
+        })
+      }
+      store.applyLocalCell(row, col, store.payload.isClearing ? [] : previewDetails.value)
     }
   }
 
-  const handleMouseMove = (e) => {
-    if (!isDragging.value) return
-    const { col, row } = e.currentTarget.dataset
-    store.payload.end = { row: Number(row), col: Number(col) }
+  const toggleClearing = () => {
+    store.payload.isClearing = !store.payload.isClearing
+    if (store.payload.isClearing) store.resetStatuses()
   }
 
-  const handleMouseUp = () => {
-    isDragging.value = false
+  const onSave = () => {
+    if (!pendingCells.value.size) return
+    const cells = [...pendingCells.value.values()]
+    pendingCells.value = new Map()
     form.value?.validate((error) => {
-      if (!error) {
-        store._create()
-      }
+      if (!error) store._save(cells)
     })
-  }
-
-  const handleMouseLeave = () => {
-    isDragging.value = false
-    store.resetSelection()
   }
 
   const changePage = (v) => {
@@ -110,422 +120,712 @@
     store._index()
   }
 
-  const renderOption = ({ node, option }) => {
-    return [
-      h(
-        NTooltip,
-        {
-          delay: 300
-        },
-        {
-          trigger: () => node,
-          default: () => `${option.name} (${option.key})`
-        }
-      )
-    ]
-  }
-
   const renderLabel = (option) => {
-    return [h('div', { class: 'font-medium text-gray-500' }, `${option.name} (${option.key})`)]
-  }
-
-  const renderWorkerLabel = (option) => {
     return [
-      h(
-        'div',
-        {
-          class: 'flex gap-2 my-1 items-center',
-          onClick: () => {
-            if (option.disabled) return
-            isAddUserVisible.value = false
-            store._prepend_workers(option)
-          }
-        },
-        [
-          h(NAvatar, {
-            class: '',
-            src: option.worker.photo || Utils.noAvailableImage,
-            'fallback-src': Utils.noAvailableImage
-          }),
-          h('div', { class: 'flex flex-col' }, [
-            h(
-              'div',
-              { class: 'text-xs font-medium text-gray-500' },
-              `${option.worker.last_name}.${option.worker.first_name[0]}.${option.worker.middle_name[0]}`
-            ),
-            h('div', { class: 'text-xs text-gray-400' }, option.post_name)
-          ])
-        ]
-      )
+      h('div', { class: 'font-medium text-gray-500 whitespace-nowrap' }, `${option.name} (${option.key})`)
     ]
   }
-  const searchPin = ref('')
 
-  const checkWorker = useDebounceFn(() => {
-    if (searchPin.value.split('-').join('').length === 14) {
-      store._check_pin(searchPin.value.split('-').join(''))
-    }
-  }, 300)
+  // Pastki paneldagi «namuna» katakcha — tanlov katakchaga nima yozilishini
+  // aynan panjaradagi ko'rinishda ko'rsatadi.
+  const typeByIdOrNull = (id) =>
+    id == null ? null : (compStore.timesheetTypes?.find((v) => v.id === id) ?? null)
+
+  const previewDetails = computed(() => {
+    if (store.payload.isClearing) return []
+    return [
+      { type: typeByIdOrNull(store.payload.status), hours: store.payload.hours },
+      { type: typeByIdOrNull(store.payload.status2), hours: store.payload.hours2 }
+    ]
+      .filter((v) => v.type)
+      .map((v) => ({
+        status: v.type.key,
+        status_id: v.type.id,
+        hours: v.type.hours ? v.hours : null
+      }))
+  })
+
+  const orgOptions = computed(() =>
+    store.organization ? [{ id: store.organization.id, name: store.organization.name }] : []
+  )
+  const yearOptions = computed(() => {
+    const y = store.year || dayjs().year()
+    return [y - 1, y, y + 1].map((v) => ({ label: String(v), value: v }))
+  })
+  const monthOptions = computed(() =>
+    Utils.monthList.map((m) => ({ label: m.name, value: m.id - 1 }))
+  )
 </script>
 
 <template>
-  <div class="h-full flex flex-col p-8">
-    <div class="flex my-2 justify-between items-center shrink-0 gap-2">
-      <div class="flex gap-2">
-        <n-button v-if="store?.month && store?.year" tertiary>
-          {{ dayjs().month(store.month).year(store.year).format('YYYY MMMM') }}
-        </n-button>
-        <n-button v-if="store?.department" dashed>
-          {{ store.department }}
-        </n-button>
+  <div class="ts-root">
+    <!-- ── Filtrlar: maketda yorliq maydon USTIDA ─────────────────────────── -->
+    <div class="ts-filters">
+      <div class="ts-field">
+        <n-select
+          :options="orgOptions"
+          :placeholder="$t('content.workplace')"
+          :value="store.organizationId"
+          disabled
+          label-field="name"
+          value-field="id"
+        />
       </div>
-      <div class="flex gap-2">
-        <n-button type="primary" @click="onAdd">
-          <template #icon>
-            <AddCircle28Regular />
-          </template>
-          {{ $t(`timesheetPage.addNewWorker`) }}
-        </n-button>
+      <div class="ts-field">
+        <n-select
+          v-model:value="store.params.department_id"
+          :loading="store.departmentLoading"
+          :options="store.departmentOptions"
+          :placeholder="$t('documentPage.form.department')"
+          clearable
+          filterable
+          label-field="name"
+          value-field="id"
+          @update:value="store.applyFilters"
+        />
+      </div>
+      <div class="ts-field">
+        <n-select
+          :options="yearOptions"
+          :placeholder="$t('content.year')"
+          :value="store.year"
+          disabled
+        />
+      </div>
+      <div class="ts-field">
+        <n-select
+          :options="monthOptions"
+          :placeholder="$t('content.month')"
+          :value="store.month"
+          disabled
+        />
+      </div>
+
+      <div class="ts-filters-actions">
         <n-button
-          :type="store.payload.isClearing ? 'primary' : 'tertiary'"
-          @click="
-            () => {
-              store.payload.isClearing = !store.payload.isClearing
-              store.resetStatuses()
-            }
-          "
+          :type="store.payload.isClearing ? 'warning' : 'tertiary'"
+          secondary
+          @click="toggleClearing"
         >
           {{ $t('content.clear') }}
-          <template #icon>
-            <n-icon :component="Broom16Filled" />
-          </template>
         </n-button>
-        <n-button type="error" @click="store.visible = false">
-          {{ $t('content.close') }}
+        <n-button :loading="store.saveLoading" type="primary" @click="onSave">
+          {{ $t('content.save') }}
+        </n-button>
+        <n-button secondary type="error" @click="store.visible = false">
           <template #icon>
-            <n-icon :component="Dismiss12Regular" />
+            <n-icon :component="Dismiss20Regular" />
           </template>
+          {{ $t('content.close') }}
         </n-button>
       </div>
     </div>
-    <n-spin :show="store.loading || store.saveLoading" class="grow">
-      <div class="rounded-lg overflow-hidden">
-        <div class="overflow-x-auto">
-          <VueDraggable
-            v-model="store.list"
-            :animation="150"
-            :onStart="store.resetSelection"
-            handle=".handle"
-            target=".sort-target"
-          >
-            <table
-              class="relative bg-surface-section border-separate border-spacing-0 shadow-sm select-none w-full"
-              @mouseleave="handleMouseLeave"
-            >
-              <thead class="bg-surface-ground">
-                <tr>
-                  <th rowspan="3"></th>
-                  <th class="max-w-[200px] w-[200px]" rowspan="3">{{ $t('content.worker') }}</th>
-                  <th class="px-3" rowspan="3">{{ $t('timesheet.name') }}</th>
-                  <th v-if="store.days.length" :colspan="store.days.length" rowspan="1">
-                    {{ $t('timesheetPage.tableTitle') }}
-                  </th>
-                  <th class="sticky right-0" rowspan="3"></th>
-                </tr>
-                <tr>
-                  <th
-                    v-for="day in store.days"
-                    :key="day.day"
-                    :class="{ weekend: day.weekDay === 0 || day.weekDay === 6 }"
-                    rowspan="2"
-                  >
-                    <div class="flex flex-col">
-                      <p>{{ day.day }}</p>
-                      <span class="text-xs">
-                        {{ dayjs().day(day.weekDay).format('ddd').substring(0, 2) }}
-                      </span>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="sort-target">
-                <!-- Fake placeholder row -->
-                <tr v-if="isAddUserVisible">
-                  <td class="cursor-move w-[35px] min-w-[35px]">
-                    <div class="h-full w-full justify-center items-center flex">
-                      <n-tooltip trigger="hover">
-                        {{ $t('content.delete') }}
-                        <template #trigger>
-                          <n-button
-                            circle
-                            quaternary
-                            size="small"
-                            type="error"
-                            @click="isAddUserVisible = false"
-                          >
-                            <template #icon>
-                              <n-icon :component="Delete20Filled" />
-                            </template>
-                          </n-button>
-                        </template>
-                      </n-tooltip>
-                    </div>
-                  </td>
-                  <td>
-                    <n-popselect :options="store.pinWorkers" :render-label="renderWorkerLabel">
-                      <n-input
-                        v-mask="`####-####-####-##`"
-                        v-model:value="searchPin"
-                        :loading="store.pinLoading"
-                        class="w-full"
-                        type="text"
-                        @update:value="checkWorker"
-                      />
-                    </n-popselect>
-                  </td>
-                  <td></td>
-                  <td
-                    v-for="(day, col) in store.days"
-                    :key="col"
-                    class="h-[40px] w-[45px] max-h-[40px] min-w-[45px]"
-                  >
-                    <div class="flex flex-col">
-                      <div class="grow border-b border-surface-line shrink-0"></div>
-                      <div class="grow shrink-0"></div>
-                    </div>
-                  </td>
-                  <td class="min-w-[50px] sticky right-0 bg-surface-section"></td>
-                </tr>
 
-                <!--     Workers row       -->
-                <tr v-for="(item, row) in store.list" :key="row" class="timesheet_row">
-                  <!--      Row handle        -->
-                  <td class="cursor-move w-[35px] min-w-[35px]">
-                    <div class="h-full w-full justify-center items-center flex">
-                      <n-button circle quaternary size="small">
-                        <template #icon>
-                          <n-icon :component="ArrowMoveInward20Filled" class="handle" />
-                        </template>
-                      </n-button>
-                    </div>
-                  </td>
+    <n-spin
+      :show="store.loading || store.saveLoading"
+      class="ts-body"
+      content-class="ts-body-content"
+    >
+      <!-- ── Panjara kartasi: maketda 20px radius + 4px ichki otstup ──────── -->
+      <div class="ts-card">
+        <UIDragSelector
+          class="ts-scroll"
+          :live-selection="false"
+          :scroll-zone-left="300"
+          :scroll-zone-right="88"
+          :scroll-zone-top="44"
+          @selection-change="onSelectionChange"
+        >
+          <div class="ts-grid">
+            <!-- Sarlavha qatori — skrollda tepada yopishib qoladi. -->
+            <div class="ts-hrow no-selectable-item">
+              <div class="ts-head ts-c-num">№</div>
+              <div class="ts-head ts-c-worker">{{ $t('content.worker') }}</div>
+              <div class="ts-head ts-c-table">{{ $t('timesheet.name') }}</div>
+              <div
+                v-for="day in store.days"
+                :key="`h-${day.day}`"
+                :class="{ 'is-weekend': isWeekend(day) }"
+                class="ts-head ts-c-day ts-day-head"
+              >
+                <span class="ts-day-num">{{ day.day }}</span>
+                <span class="ts-day-week">{{ shortWeek[day.weekDay] }}</span>
+              </div>
+              <div class="ts-head ts-c-total ts-c-days ts-head-sm">
+                {{ $t('timesheetPage.totalWorkDays') }}
+              </div>
+              <div class="ts-head ts-c-total ts-c-hours ts-head-sm">
+                {{ $t('timesheetPage.totalWorkHours') }}
+              </div>
+            </div>
 
-                  <!--      Worker        -->
-                  <td class="max-w-[200px] w-[200px]">
-                    <div class="flex gap-1 items-center w-full">
-                      <n-avatar
-                        :fallback-src="Utils.noAvailableImage"
-                        :src="item?.photo || Utils.noAvailableImage"
-                        circle
-                        size="large"
-                      />
-                      <div class="flex flex-col text-start" style="width: calc(100% - 50px)">
-                        <span class="leading-2 text-sm text-textColor2 truncate w-full">{{
-                          item.name
-                        }}</span>
-                        <n-tooltip :disabled="!item?.position" animated trigger="hover">
-                          {{ item?.position }}
-                          <template #trigger>
-                            <span class="leading-1 text-xs text-textColor1 truncate w-full">{{
-                              item?.position || ''
-                            }}</span>
-                          </template>
-                        </n-tooltip>
-                      </div>
-                    </div>
-                  </td>
+            <div v-for="(item, row) in store.list" :key="row" class="ts-brow">
+              <div class="ts-c-num no-selectable-item">
+                {{ (store.params.page - 1) * store.params.per_page + row + 1 }}
+              </div>
+              <div class="ts-c-worker no-selectable-item">
+                <div class="ts-worker">
+                  <n-avatar
+                    :fallback-src="Utils.noAvailableImage"
+                    :size="32"
+                    :src="item?.photo || Utils.noAvailableImage"
+                    circle
+                  />
+                  <div class="ts-worker-text">
+                    <span class="ts-worker-name">{{ item.name }}</span>
+                    <span class="ts-worker-post">
+                      {{ item?.position || $t('content.noAvailable') }}
+                    </span>
+                  </div>
+                </div>
+              </div>
 
-                  <td>{{ item.table }}</td>
-                  <!--   Days section  -->
-                  <td
-                    v-for="(day, col) in store.days"
-                    :key="col"
-                    :class="{
-                      'timesheet_day-selected': isCellSelected(row, col),
-                      'timesheet_day-ignore':
-                        isCellSelected(row, col) && !store.payload.isClearing && item.days[day.day]
-                    }"
-                    :data-col="col"
-                    :data-row="row"
-                    class="h-[40px] w-[45px] max-h-[40px] min-w-[45px] text-center timesheet_day"
-                    @mousedown="handleMouseDown"
-                    @mousemove="handleMouseMove"
-                    @mouseup="handleMouseUp"
-                  >
-                    <div class="flex flex-col">
-                      <div class="grow border-b border-surface-line shrink-0">
-                        <p v-if="item.days[day.day]?.length">
-                          {{
-                            item.days[day.day]?.length > 1
-                              ? item.days[day.day].map((i) => i.status).join('/')
-                              : item.days[day.day][0].status
-                          }}
-                        </p>
-                      </div>
-                      <div class="grow shrink-0">
-                        <p v-if="item.days[day.day]?.length" class="font-bold">
-                          {{
-                            item.days[day.day]?.filter((i) => i?.hours).length > 1
-                              ? item.days[day.day].map((i) => i?.hours).join('/')
-                              : item.days[day.day][0].hours || '&nbsp;'
-                          }}
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="w-[50px] min-w-[50px] h-full sticky right-0 bg-surface-section group">
-                    <div
-                      :class="{ 'border-b': row != 0 }"
-                      class="drop-shadow-none bg-surface-section right-0 top-0 bottom-0 left-0 absolute rounded-l-none group-hover:shadow-sm group-hover:rounded-l-full group-hover:-left-[180px] transition-all border-x border-surface-line overflow-hidden"
+              <div class="ts-c-table no-selectable-item">
+                <span class="ts-table-no">{{ item.table }}</span>
+              </div>
+
+              <div
+                v-for="(day, col) in store.days"
+                :key="col"
+                :class="{
+                  'is-rest': !dayDetails(item, day)?.length && isWeekend(day),
+                  'is-empty': !dayDetails(item, day)?.length && !isWeekend(day)
+                }"
+                :data-col="col"
+                :data-row="row"
+                class="ts-cell"
+                data-selectable
+              >
+                <template v-if="dayDetails(item, day)?.length">
+                  <span class="ts-cell-status">
+                    <template
+                      v-for="(part, i) in partsOf(dayDetails(item, day), 'status')"
+                      :key="`s-${i}`"
                     >
-                      <MiniTimesheetInfoTable
-                        :halfDays="item.halfMonth.days"
-                        :halfHours="item.halfMonth.hours"
-                        :allDays="item.allMonth.days"
-                        :allHours="item.allMonth.hours"
-                      />
-                    </div>
-                    <div
-                      :class="{ 'border-b': row != 0 }"
-                      class="absolute top-0 left-0 right-0 bottom-0 transition-all z-10 group-hover:opacity-0 bg-surface-section border-surface-line flex items-center justify-center"
+                      <span v-if="i" class="ts-sep">/</span><span :style="{ color: part.color }">{{ part.value }}</span>
+                    </template>
+                  </span>
+                  <span class="ts-cell-hours">
+                    <template
+                      v-for="(part, i) in partsOf(dayDetails(item, day), 'hours')"
+                      :key="`h-${i}`"
                     >
-                      <n-button circle dashed type="primary">
-                        <template #icon>
-                          <n-icon :component="Info16Filled" />
-                        </template>
-                      </n-button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </VueDraggable>
-        </div>
+                      <span v-if="i" class="ts-sep">/</span><span :style="{ color: part.color }">{{ part.value }}</span>
+                    </template>
+                  </span>
+                </template>
+              </div>
+
+              <div class="ts-c-total ts-c-days no-selectable-item">{{ item.allMonth.days || 0 }}</div>
+              <div class="ts-c-total ts-c-hours no-selectable-item">
+                {{ item.allMonth.hours || 0 }}
+              </div>
+            </div>
+          </div>
+        </UIDragSelector>
       </div>
+    </n-spin>
 
-      <n-form ref="form" class="flex gap-2 fixed bottom-8 right-8 left-8">
-        <n-grid :cols="8" :x-gap="10">
-          <n-form-item-gi :show-feedback="false" :show-label="false" :span="3">
-            <n-select
-              v-model:value="store.payload.status"
-              :disabled="store.payload.isClearing"
-              :loading="compStore.timesheetEnumsLoading"
-              :options="compStore.timesheetTypes"
-              :render-label="renderLabel"
-              :render-option="renderOption"
-              label-field="name"
-              value-field="id"
-              @update-value="
-                (_, v) => {
-                  if (!v?.hours) store.payload.hours = null
-                }
-              "
-            />
-          </n-form-item-gi>
-          <n-form-item-gi :show-feedback="false" :show-label="false" :span="1">
-            <n-input-number
-              v-model:value="store.payload.hours"
-              :disabled="
-                !(store.payload.status && compStore.timesheetTypes[store.payload.status - 1]?.hours)
-              "
-              :min="0"
-            />
-          </n-form-item-gi>
-          <n-divider />
-          <n-form-item-gi :show-feedback="false" :show-label="false" :span="3">
-            <n-select
-              v-model:value="store.payload.status2"
-              :disabled="store.payload.isClearing || !store.payload.status"
-              :loading="compStore.timesheetEnumsLoading"
-              :options="compStore.timesheetTypes"
-              :render-label="renderLabel"
-              :render-option="renderOption"
-              clearable
-              label-field="name"
-              value-field="id"
-              @update-value="
-                (_, v) => {
-                  if (!v?.hours) store.payload.hours2 = null
-                }
-              "
-            />
-          </n-form-item-gi>
-          <n-form-item-gi :show-feedback="false" :show-label="false" :span="1">
-            <n-input-number
-              v-model:value="store.payload.hours2"
-              :disabled="
-                !(
-                  store.payload.status2 &&
-                  compStore.timesheetTypes[store.payload.status2 - 1]?.hours
-                )
-              "
-              :min="0"
-            />
-          </n-form-item-gi>
-        </n-grid>
-      </n-form>
-
+    <!--
+      Pastki panel — maketdagi yorliqli to'rt maydon. Semantikasi o'zgarmadi:
+      tanlangan katakchalarga yoziladigan ikkita (tur + soat) juftlik.
+    -->
+    <!--
+      Sahifalash — ildizning eng pastida, `flex-shrink: 0`. Ilgari u `n-spin`
+      ichida, jadval kartasidan keyin turardi va uzun ro'yxatda kontent bilan
+      birga surilib, ko'rinmay qolardi.
+    -->
+    <div class="ts-pagination">
       <UIPagination
-        v-if="store.totalItems > store.params.per_page"
         :page="store.params.page"
         :per_page="store.params.per_page"
+        :show-size-picker="false"
         :total="store.totalItems"
         @change-page="changePage"
       />
-    </n-spin>
+    </div>
+    <div class="ts-bottom">
+      <n-form ref="form" class="ts-bottom-row">
+        <div class="ts-field ts-field-type">
+          <label class="ts-field-label">{{ $t('timesheetPage.workTimeType') }}</label>
+          <n-select
+            v-model:value="store.payload.status"
+            :consistent-menu-width="false"
+            :disabled="store.payload.isClearing"
+            :loading="compStore.timesheetEnumsLoading"
+            :options="compStore.timesheetTypes"
+            :render-label="renderLabel"
+            label-field="name"
+            value-field="id"
+            @update-value="
+              (_, v) => {
+                if (!v?.hours) store.payload.hours = null
+              }
+            "
+          />
+        </div>
+        <div class="ts-field ts-field-hours">
+          <label class="ts-field-label">{{ $t('timesheetPage.hours') }}</label>
+          <n-input-number
+            v-model:value="store.payload.hours"
+            :disabled="
+              !(store.payload.status && compStore.timesheetTypes[store.payload.status - 1]?.hours)
+            "
+            :min="0"
+          />
+        </div>
+        <div class="ts-field ts-field-type">
+          <label class="ts-field-label">{{ $t('timesheetPage.workTimeType') }} 2</label>
+          <n-select
+            v-model:value="store.payload.status2"
+            :consistent-menu-width="false"
+            :disabled="store.payload.isClearing || !store.payload.status"
+            :loading="compStore.timesheetEnumsLoading"
+            :options="compStore.timesheetTypes"
+            :render-label="renderLabel"
+            clearable
+            label-field="name"
+            value-field="id"
+            @update-value="
+              (_, v) => {
+                if (!v?.hours) store.payload.hours2 = null
+              }
+            "
+          />
+        </div>
+        <div class="ts-field ts-field-hours">
+          <label class="ts-field-label">{{ $t('timesheetPage.hours') }} 2</label>
+          <n-input-number
+            v-model:value="store.payload.hours2"
+            :disabled="
+              !(store.payload.status2 && compStore.timesheetTypes[store.payload.status2 - 1]?.hours)
+            "
+            :min="0"
+          />
+        </div>
+
+        <!-- Natija namunasi — shu qatorning davomi. -->
+        <div class="ts-field ts-field-preview">
+          <label class="ts-field-label">
+            {{ $t('content.result') }}
+            <template v-if="!canSelectRange()">
+              · <span class="ts-hint">{{ $t('timesheetPage.pickTypeFirst') }}</span>
+            </template>
+            <template v-else-if="pendingCells.size">
+              · {{ $t('timesheetPage.selectedCells', { count: pendingCells.size }) }}
+            </template>
+          </label>
+          <div class="ts-cell ts-preview-cell">
+            <template v-if="previewDetails.length">
+              <span class="ts-cell-status">
+                <template v-for="(part, i) in partsOf(previewDetails, 'status')" :key="`ps-${i}`">
+                  <span v-if="i" class="ts-sep">/</span><span :style="{ color: part.color }">{{ part.value }}</span>
+                </template>
+              </span>
+              <span class="ts-cell-hours">
+                <template v-for="(part, i) in partsOf(previewDetails, 'hours')" :key="`ph-${i}`">
+                  <span v-if="i" class="ts-sep">/</span><span :style="{ color: part.color }">{{ part.value }}</span>
+                </template>
+              </span>
+            </template>
+          </div>
+        </div>
+      </n-form>
+    </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
-  thead {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+  /* O'lchamlar Figma «HRM Railway» maketidan (node 3368:103614):
+     katakcha 44px, yon ustunlar 150px, karta radiusi 20px, otstuplar 16px. */
+  /* O'lchamlar navbatchilik grafigi panjarasi bilan bir xil:
+     kun katakchasi 60×50, № 60, o'ng jamlar 80, qator balandligi 50. */
+  $cell: 60px; // kun ustuni kengligi
+  $row: 50px; // qator balandligi
+  $side: 200px; // «Xodim» va «Tabel» ustunlari
+  $total: 80px; // «Kun» va «Soat»
+  $num: 60px; // tartib raqami
+
+  .ts-root {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    background: var(--surface-ground);
     overflow: hidden;
   }
-  tr {
-    &:first-child {
-      th {
-        border-top: 1px solid var(--surface-line);
-        &:first-child {
-          border-top-left-radius: 10px;
-        }
-        &:last-child {
-          border-top-right-radius: 10px;
-          border-right: 1px solid var(--surface-line);
-          background-color: var(--surface-ground);
-        }
-      }
-    }
-    &:first-child,
-    &:nth-child(2) {
-      th {
-        border-left: 1px solid var(--surface-line);
-        border-bottom: 1px solid var(--surface-line);
-      }
-    }
+
+
+
+  /* ── Yorliqli maydon (filtrlar va pastki panel uchun umumiy) ──────────── */
+  .ts-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
   }
-  tr {
-    td {
-      border: 1px solid var(--surface-line);
-    }
+  .ts-field-label {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--fig-text-tertiary);
   }
-  .timesheet_day {
-    &-selected {
-      border: 1px solid var(--primary-color);
-    }
-    &-ignore {
-      border: 1px solid var(--secondary-color);
+  .ts-filters {
+    display: flex;
+    gap: 16px;
+    flex-shrink: 0;
+    .ts-field {
+      width: 180px;
     }
   }
 
-  th,
-  td {
+  /* ── Panjara kartasi ──────────────────────────────────────────────────── */
+  .ts-body {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  :deep(.ts-body-content) {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+  }
+  .ts-card {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    background: var(--fig-block-bg);
+    border-radius: 20px;
+    padding: 4px;
+  }
+  .ts-scroll {
+    /*
+     * Skroll AYNAN shu qutida bo'lishi shart — tashqariga ko'chsa
+     * `position: sticky` tayanch yo'qotadi: sarlavha ham, yon ustunlar ham
+     * oddiy qatorlar bilan birga surilib ketadi.
+     */
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+
+    /* Skroll chizig'i ingichka — grafik sahifasidagi panjara bilan bir xil. */
+    scrollbar-width: thin;
+    scrollbar-color: var(--surface-line) transparent;
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: var(--surface-line);
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+  }
+
+  .ts-grid {
+    width: max-content;
+    min-width: 100%;
+    user-select: none;
+  }
+  /* Qatorlar flex — `position: sticky` ustunlar uchun jadval emas, oqim kerak
+     (grafik sahifasidagi panjara bilan bir xil yondashuv). */
+  .ts-hrow,
+  .ts-brow {
+    display: flex;
+    width: max-content;
+    min-width: 100%;
+  }
+  .ts-hrow {
+    position: sticky;
+    top: 0;
+    z-index: 6;
+  }
+
+  /* ── Sarlavha qatori ──────────────────────────────────────────────────── */
+  .ts-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: $row;
+    /* Ranglar navbatchilik grafigi bilan bir xil tokenlardan. */
+    background: var(--surface-section);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    color: var(--textColor1);
+    white-space: nowrap;
+    border: 1px solid var(--surface-line);
+    margin-left: -1px;
+    flex-shrink: 0;
+  }
+  .ts-hrow .ts-c-worker,
+  .ts-hrow .ts-c-table {
+    align-items: flex-start;
+  }
+  .ts-hrow .ts-c-num {
+    border-top-left-radius: 16px;
+  }
+  .ts-hrow .ts-c-hours {
+    border-top-right-radius: 16px;
+  }
+  /* Uzun sarlavha (jami ustunlari) — kichik shrift, ikki qatorga o'raladi. */
+  .ts-head-sm {
+    padding: 0 4px;
+    font-size: 10px;
+    line-height: 1.15;
+    text-align: center;
+    white-space: normal;
+  }
+  .ts-day-head {
+    text-align: center;
+    background: var(--schedule-weekday-bg);
+    &.is-weekend {
+      background: var(--schedule-weekend-bg);
+    }
+    .ts-day-num {
+      display: block;
+      font-size: 14px;
+      line-height: 16px;
+    }
+    .ts-day-week {
+      display: block;
+      font-size: 11px;
+      line-height: 12px;
+      color: var(--fig-text-tertiary);
+    }
+    /* Maketda dam olish kunida FAQAT matn qizil — fon o'zgarmaydi. */
+    &.is-weekend .ts-day-num,
+    &.is-weekend .ts-day-week {
+      color: var(--fig-text-red);
+    }
+  }
+
+  /* ── Yopishtirilgan ustunlar ──────────────────────────────────────────── */
+  .ts-c-num,
+  .ts-c-worker,
+  .ts-c-table,
+  .ts-c-total {
+    position: sticky;
+    z-index: 3;
+    background: var(--surface-section);
+  }
+  .ts-hrow .ts-c-num,
+  .ts-hrow .ts-c-worker,
+  .ts-hrow .ts-c-table,
+  .ts-hrow .ts-c-total {
+    z-index: 7;
+    background: var(--surface-section);
+  }
+  /* Tartib raqami — eng chapdagi yopishtirilgan ustun. */
+  .ts-c-num {
+    left: 0;
+    width: $num;
+    min-width: $num;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--fig-text-secondary);
+  }
+  .ts-brow .ts-c-num {
+    justify-content: center;
+  }
+  .ts-c-worker {
+    left: $num;
+    flex: 1 0 $side;
+    width: $side;
+    min-width: $side;
+    padding-left: 12px;
+    text-align: left;
+  }
+  .ts-c-table {
+    left: $num + $side;
+    width: $side;
+    min-width: $side;
+    padding-left: 12px;
+    text-align: left;
+    /* Kun ustunlari ostiga surilganda chegara ko'rinib tursin. */
+    box-shadow: inset -1px 0 0 var(--surface-line);
+  }
+  .ts-c-day {
+    width: $cell;
+    min-width: $cell;
+  }
+  .ts-c-total {
+    width: $total;
+    min-width: $total;
+    text-align: center;
     font-size: 14px;
+    font-weight: 500;
+    color: var(--fig-text-primary);
+  }
+  .ts-c-hours {
+    right: 0;
+  }
+  .ts-c-days {
+    right: $total;
+    box-shadow: inset 1px 0 0 var(--surface-line);
+  }
+
+  /* ── Qatorlar ─────────────────────────────────────────────────────────── */
+  .ts-brow > div {
+    display: flex;
+    align-items: center;
+    height: $row;
+    background: var(--surface-section);
+    border: 1px solid var(--table-border);
+    margin-left: -1px;
+    margin-top: -1px;
+    flex-shrink: 0;
+  }
+  .ts-brow .ts-c-total {
+    justify-content: center;
+  }
+  .ts-worker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+  .ts-worker-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .ts-worker-name {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    color: var(--fig-text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .ts-worker-post {
+    font-size: 10px;
+    line-height: 15px;
+    letter-spacing: 0.2px;
+    color: var(--fig-text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ts-table-no {
+    font-size: 12px;
+    color: var(--fig-text-secondary);
+  }
 
-  .weekend {
-    background: rgba(var(--danger-color), 0.2);
-    font-weight: bold;
-    color: var(--danger-color);
+  /* ── Kun katakchalari ───────────────────────────────────────────────────
+   * Fon/matn juftliklari maketdan olinib, loyihaning mavjud `--fig-*`
+   * tokenlariga xaritalandi. Harf → sinf mosligi `timesheetGrid.js` da.
+   */
+  .ts-cell {
+    width: $cell;
+    min-width: $cell;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.15;
+    cursor: pointer;
+    /* Rangsiz (ish kuni) katakchada matn TO'Q qora bo'ladi. */
+    color: var(--textColor0);
+    /* Fon neytral: rang MA'NOSI matnda (`TimesheetTypeColor`). */
+    /* Bo'sh dam olish / bayram kuni — XIRA qizil (to'ldirilgani to'q qoladi). */
+    &.is-rest {
+      background: rgba(229, 56, 59, 0.05);
+    }
+    &.is-empty {
+      color: var(--fig-text-disable);
+    }
+    /* Saqlanmagan katakcha ALOHIDA belgilanmaydi — rangsiz tur to'q qora
+       bo'lib qolishi kerak. Nechta katak kutayotgani pastki paneldagi
+       «Natija · N ta katak tanlandi» yozuvida ko'rinadi. */
+  }
+  /* Katakcha ichi bir xil standart: harf qatori + soat qatori. O'lcham va
+     joylashuv kontentga qarab o'zgarmaydi — soat bo'lmasa qatori bo'sh turadi. */
+  .ts-cell-status {
+    display: block;
+    height: 16px;
+    line-height: 16px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .ts-cell-hours {
+    display: block;
+    height: 12px;
+    line-height: 12px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  /* Ajratuvchi `/` — harf va soat qatorlarida BIR XIL neytral rangda. */
+  .ts-sep {
+    color: var(--fig-text-tertiary);
+    padding: 0 1px;
+  }
+
+  /* ── Legenda ──────────────────────────────────────────────────────────── */
+  .ts-pagination {
+    flex-shrink: 0;
+    margin: -8px 0;
+  }
+
+  /* ── Pastki panel ─────────────────────────────────────────────────────── */
+  .ts-bottom {
+    flex-shrink: 0;
+    background: var(--fig-block-bg);
+    border-radius: 16px;
+    padding: 6px 12px 8px;
+  }
+
+  .ts-filters-actions {
+    display: flex;
+    align-self: flex-end;
+    gap: 8px;
+    margin-left: auto;
+  }
+  /* Panjaradagi katakcha bilan AYNAN bir xil o'lcham va ko'rinish. */
+  .ts-preview-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: $cell;
+    min-width: $cell;
+    height: $row;
+    border: 1px solid var(--table-border);
+    background: var(--surface-section);
+  }
+
+  /* Pastki panel — hamma element BITTA qatorda, kengliklar taqsimlangan. */
+  .ts-bottom-row {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .ts-field-type {
+    flex: 0 0 240px;
+  }
+  .ts-field-hours {
+    flex: 0 0 110px;
+  }
+  .ts-hint {
+    color: var(--fig-text-red);
+  }
+  .ts-field-preview {
+    flex: 0 0 auto;
+    margin-right: auto;
+  }
+
+  @media (max-width: 900px) {
+    .ts-filters {
+      flex-wrap: wrap;
+    }
   }
 </style>

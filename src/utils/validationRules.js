@@ -1259,6 +1259,12 @@ export default {
       message: t(`rules.requiredField`),
       trigger: triggerEvents
     },
+    cancel_command_id: {
+      type: 'number',
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: [...triggerEvents, 'change']
+    },
     worker: {
       type: 'number',
       required: true,
@@ -1477,6 +1483,12 @@ export default {
       trigger: triggerEvents
     }
   },
+  // 62 — Xizmat safari.
+  form_62: {
+    from: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    to: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    reason: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
+  },
   // 56 — Ishlanmaydigan kunlarda ishga jalb etish.
   form_56: {
     work_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
@@ -1500,6 +1512,21 @@ export default {
     to: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     act_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     responsible: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
+  },
+  // 75 — Buyruqni bekor qilish.
+  form_75: {
+    cancel_reason: {
+      type: 'number',
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: [...triggerEvents, 'change']
+    },
+    base_reason: {
+      type: 'number',
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: [...triggerEvents, 'change']
+    }
   },
   // F.I.Sh o'zgartirish (74) — barcha maydon majburiy.
   form_74: {

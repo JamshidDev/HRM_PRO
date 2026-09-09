@@ -1,12 +1,36 @@
 :root {
   color-scheme: light;
-  --surface-ground: #eff3f7;
+  /*
+   * SAHIFA KANVASI (butun sayt foni: body, layout, `.page-content`).
+   * `--surface-ground` dan ALOHIDA: u tint/hover roli o'ynaydi (modal ichidagi
+   * bloklar, sidebar hover, segment rail — ~175 joyda `bg-surface-ground`),
+   * shu sababli oq sirtda sezilarli kulrang bo'lib qolishi kerak. Kanvasni esa
+   * mustaqil ravishda ochroq qilish mumkin.
+   */
+  --app-bg: #f8fafc;
+  --surface-ground: #e8edf3;
   --surface-section: #ffffff;
-  --surface-line: #e2e8f0;
+  // Chegaralar #e2e8f0 da oq fonda 1.23:1 edi — karta va katakcha qirralari
+  // deyarli ko'rinmasdi. #d0d5dd → 1.47:1, qirra bilinadi, lekin og'ir emas.
+  --surface-line: #d0d5dd;
   --surface-text: #4b5675;
 
   --sidebar-color: #1e293b;
-  --table-header: #f2f4f7;
+  // Sidebar menyu ikonalarining gradienti (ta'riflar SidebarContent.vue da).
+  // Och panelda to'q gradient; qorong'i sirtlar `url(#sidebarIconBright)` ga almashtiradi.
+  --sidebar-icon-gradient: url(#sidebarIconDeep);
+  // Tanlangan qatorning foni to'q — o'sha gradient shu filtr bilan yorug'lashadi
+  // (aktiv fonda 5.9:1 / 5.6:1). `filter` animatsiyalanadi, `fill: url()` esa yo'q.
+  --sidebar-icon-active-filter: brightness(1.6) saturate(1.1);
+  // Jadval sarlavhasi va shu turdagi och sirtlar.
+  // DIQQAT: oq katakchadan atigi 1.05:1 bilan farq qiladi — ya'ni sarlavha
+  // qatorining O'ZI deyarli ko'rinmaydi, jadval tuzilishini `--surface-line`
+  // (#d0d5dd) chegaralari ushlab turadi. Matn kontrasti yaxshi (9.39:1).
+  --table-header: #f8fafc;
+  // Jadval katakchalari chegarasi — `--surface-line` dan ALOHIDA: jadvalda
+  // chiziqlar juda ko'p, shu sababli u yerda ochroq kulrang kerak, boshqa
+  // joylardagi (karta, input, ajratuvchi) qirralar esa o'z rangida qoladi.
+  --table-border: #e8e8e8;
   --surface-ground-soft: #f9fafb;
 
   // Yumshoq tint fonlar (style.css @theme shularga ishora qiladi) — dark variant [data-theme='dark']da.
@@ -21,26 +45,33 @@
   --schedule-weekday-bg-alt: #eceff3;
 
   --exam-badge-orange-bg: #fff4ed;
-  --exam-badge-orange-text: #d2530f;
+  --exam-badge-orange-text: #b0440c; // 5.28:1 o'z fonida (edi 3.90:1)
   --exam-badge-green-bg: #e4f9e8;
-  --exam-badge-green-text: #008838;
-  --exam-badge-yellow-text: #ca8a04;
+  --exam-badge-green-text: #00722f; // 5.51:1 o'z fonida (edi 4.15:1)
+  --exam-badge-yellow-text: #8a5f00; // 5.65:1 oq fonda (edi 2.94:1)
   --exam-pagination-bg: #f2f4f7;
   --exam-result-btn-bg: #eaecf0;
   --exam-result-btn-text: #000000;
 
-  --textColor0: #434349;
-  --textColor1: #74788d;
-  --textColor2: #434349;
-  --textColor3: #9a9cae;
+  /*
+   * Uch pog'ona ham WCAG AAA (7:1) dan o'tadi — jadval katakchalaridagi
+   * yordamchi matnlar ham bemalol o'qiladi. Ilgari `textColor3` oq fonda
+   * atigi 2.71:1 edi (kulrang matnlar "yo'qolib" ketardi), `textColor1` esa
+   * 4.36:1 bilan AA chegarasidan pastda turardi.
+   * Nisbatlar oq katakcha (#ffffff) foniga nisbatan o'lchangan.
+   */
+  --textColor0: #434349; // 9.82:1 — asosiy
+  --textColor1: #454b57; // 8.76:1 — ikkilamchi (edi #74788d, 4.36:1)
+  --textColor2: #434349; // 9.82:1 — asosiy
+  --textColor3: #4b5565; // 7.54:1 — uchlamchi (edi #9a9cae, atigi 2.71:1)
 
   // Figma "HRM RailWay" turniket dashboard palitrasi (node 2543:8225).
   // Light qiymatlar maketdagi hexlar bilan aynan bir xil.
   --fig-text-primary: #101828;
   --fig-text-secondary: #344054;
-  --fig-text-tertiary: #667085;
+  --fig-text-tertiary: #4b5565; // 7.54:1 — `--textColor3` bilan bir xil
   --fig-text-muted: #535862;
-  --fig-text-green: #008838;
+  --fig-text-green: #00722f; // 6.09:1 (edi 4.59:1)
   --fig-br-disable: #eaecf0;
   --fig-br-secondary: #d0d5dd;
   --fig-neutral-300: #d0d5dd;
@@ -54,7 +85,7 @@
   --fig-icon-indigo: #5550e5;
   --fig-icon-purple: #b832d6;
   --fig-icon-pink: #e0417f;
-  --fig-text-disable: #98a2b3;
+  --fig-text-disable: #6b7688; // 4.59:1 (edi 2.58:1) — eng och token, lekin o'qiladi
   --fig-green-100: #e4f9e8;
   --fig-green-400: #50c576;
   --fig-orange-100: #ffe6d5;
@@ -71,7 +102,7 @@
   --fig-pink-100: #fce3ee;
 
   // Figma "Xodim profili" (node 2584:199394) — blok/maydon/tugma qatlamlari.
-  --fig-text-brand: #1570ef;
+  --fig-text-brand: #175cd3; // 5.99:1 (edi 4.57:1)
   --fig-bg-brand-fill: #1570ef;
   // Figma "Asosiy" (node 3257:112457) — bosh sahifa sarlavhasidagi "Chiqish" tugmasi.
   --fig-bg-red-fill: #e5383b;
@@ -86,17 +117,17 @@
 
   // Figma "Status" chip juftliklari (fon + matn) — tabriknoma turlari uchun.
   --fig-chip-brand-bg: #eff8ff;
-  --fig-chip-brand-text: #1570ef;
+  --fig-chip-brand-text: #175cd3; // 5.57:1 chip fonida (edi 4.25:1)
   --fig-chip-amber-bg: #fefaf1;
-  --fig-chip-amber-text: #ab7d00;
+  --fig-chip-amber-text: #8a6500; // 5.11:1 chip fonida (edi 3.56:1)
   --fig-chip-green-bg: #f5fdf6;
-  --fig-chip-green-text: #008838;
+  --fig-chip-green-text: #00722f; // 5.88:1 chip fonida (edi 4.43:1)
   --fig-chip-indigo-bg: #f1f4ff;
   --fig-chip-indigo-text: #4340be;
   --fig-chip-pink-bg: #fef2f7;
   --fig-chip-pink-text: #c22463;
   --fig-chip-lime-bg: #f9fde7;
-  --fig-chip-lime-text: #7f9920;
+  --fig-chip-lime-text: #5f7318; // 5.12:1 chip fonida (edi 3.12:1)
 
   //fonts
   --public-sans: 'Public Sans', sans-serif;
@@ -141,12 +172,20 @@
 
 [data-theme='dark'] {
   color-scheme: dark;
+  // Qorong'i temada kanvas va tint bir xil — o'zgarish yo'q.
+  --app-bg: #101828;
   --surface-ground: #101828;
   --surface-section: #1d2939;
   --table-header: #344054;
+  // Qorong'i temada och kulrang mos kelmaydi — chegara `--surface-line` bilan bir xil.
+  --table-border: #344054;
   --surface-ground-soft: #101828;
 
   --surface-line: #344054;
+  // Qorong'i panelda to'q gradient ko'rinmaydi.
+  --sidebar-icon-gradient: url(#sidebarIconBright);
+  // Gradient allaqachon yorug' — qo'shimcha yorug'lashtirish ortiqcha.
+  --sidebar-icon-active-filter: none;
 
   // Yumshoq tint fonlar — dark-aware low-alpha (och rangли fon qorong'ida "yopishib" qolmaydi).
   --brand-surface: rgba(18, 121, 240, 0.14);
@@ -193,7 +232,7 @@
   --fig-icon-indigo: #7a68f0;
   --fig-icon-purple: #d071e8;
   --fig-icon-pink: #f07aa8;
-  --fig-text-disable: #667085;
+  --fig-text-disable: #8892a3; // 4.68:1 qorong'i kartada (edi 2.96:1)
   --fig-green-100: rgba(0, 166, 82, 0.18);
   --fig-green-400: #50c576;
   --fig-orange-100: rgba(242, 107, 31, 0.18);
@@ -234,7 +273,7 @@
   --fig-chip-green-bg: rgba(0, 136, 56, 0.2);
   --fig-chip-green-text: #34d399;
   --fig-chip-indigo-bg: rgba(85, 80, 229, 0.2);
-  --fig-chip-indigo-text: #7a68f0;
+  --fig-chip-indigo-text: #a99bff; // 5.25:1 chip fonida (edi 3.01:1)
   --fig-chip-pink-bg: rgba(224, 65, 127, 0.18);
   --fig-chip-pink-text: #f07aa8;
   --fig-chip-lime-bg: rgba(127, 153, 32, 0.22);

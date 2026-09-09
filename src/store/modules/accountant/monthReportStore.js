@@ -289,6 +289,24 @@ export const useMonthReportStore = defineStore('monthReportStore', {
         })
       return true
     },
+    // Korxona tanlab (forma orqali) QISQARTIRILGAN oylik hisobot (6 ustun: FISH,
+    // JSHSHIR, Lavozim, Oklad, ishlagan vaqti, kiruvchi to'lovlar) Excel'ga fonda
+    // yuklash. Boshqa forma-eksportlari kabi Export sahifasiga o'tadi.
+    _exportSummaryByOrg(params) {
+      this.showLoading = true
+      $ApiService.monthReportService
+        ._exportSummary({ params })
+        .then(() => {
+          this.exportVisible = false
+          router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+        })
+        .catch((e) => {
+          $Toast.error(e?.response?.data?.message ?? i18n.global.t('content.error'))
+        })
+        .finally(() => {
+          this.showLoading = false
+        })
+    },
     _index() {
       this.loading = true
       const params = {

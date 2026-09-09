@@ -9,13 +9,16 @@
     category: {
       type: [String, null]
     },
+    // Bitta maydon yoki bir nechta (tabli sahifada — tablar yig'indisi).
     field: {
-      type: String
+      type: [String, Array]
     }
   })
 
   const value = computed(() => {
-    return props.field ? store.getCount(props.category, props.field) : 0
+    if (!props.field) return 0
+    const fields = Array.isArray(props.field) ? props.field : [props.field]
+    return fields.reduce((sum, name) => sum + store.getCount(props.category, name), 0)
   })
 
   watch(value, (newVal, oldVal) => {

@@ -5,10 +5,13 @@
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import icons from '@/assets/icons'
+  import { useTurnstileDownload } from '@/composables/useTurnstileDownload.js'
+  import { ArrowDownload20Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
   const store = useArchiveStore()
   const accStore = useAccountStore()
+  const { open: openTurnstileDownload } = useTurnstileDownload()
 
   const changePage = (v) => {
     store.params.page = v.page
@@ -41,20 +44,32 @@
     return [worker?.last_name, initials].filter(Boolean).join(' ') || '—'
   }
 
-  // Rezyume alohida ruxsat bilan (`hr-archive-resume`) — bo'lmasa amal ko'rinmaydi.
-  const actions = computed(() =>
-    accStore.checkPermission(accStore.pn.hrArchiveResume)
-      ? [
-          {
-            label: t('archive.table.resume'),
-            key: Utils.ActionTypes.download,
-            // Maketdagi ikonka (node 3332:65719) — `file-arrow-down`
-            icon: UIHelper.renderIcon(icons.figFileArrowDown),
-            action: (row) => store._resume(row)
-          }
-        ]
-      : []
-  )
+  // Turniket eksporti — backend `turnstile-hik-central-events-read` talab qiladi.
+  const onTurnstileDownload = (row) => {
+    if (!accStore.checkAction(accStore.pn.turnstileHikCentralEventsRead)) return
+    // Arxivdagi xodim bo'shagan — backend lavozim statusini shunga qarab kengaytiradi.
+    openTurnstileDownload(row?.worker, { archive: true })
+  }
+
+  // Har bir amal o'z ruxsatiga bog'liq — biri yo'q bo'lsa ikkinchisi baribir ko'rinadi.
+  const actions = computed(() => [
+    {
+      label: t('archive.table.resume'),
+      key: Utils.ActionTypes.download,
+      // Maketdagi ikonka (node 3332:65719) — `file-arrow-down`
+      icon: UIHelper.renderIcon(icons.figFileArrowDown),
+      visible: () => accStore.checkPermission(accStore.pn.hrArchiveResume),
+      action: (row) => store._resume(row)
+    },
+    {
+      label: t('turnstileDownload.title'),
+      key: 'turnstileDownload',
+      icon: UIHelper.renderIcon(ArrowDownload20Regular),
+      visible: (row) =>
+        !!row?.worker?.id && accStore.checkPermission(accStore.pn.turnstileHikCentralEventsRead),
+      action: onTurnstileDownload
+    }
+  ])
 </script>
 
 <template>

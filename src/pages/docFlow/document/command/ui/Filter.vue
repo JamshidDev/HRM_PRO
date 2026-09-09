@@ -47,6 +47,11 @@
     filterEvent()
   }
 
+  // Filtr optionlari (holat/tur) uzun — kesilmasin, keyingi qatorga tushsin
+  // (`virtual-scroll` o'chirilmasa naive-ui option balandligini qotirib qo'yadi).
+  const renderWrapLabel = (option) =>
+    h('div', { class: 'whitespace-normal break-words leading-snug py-1' }, option.name)
+
   const beforeShow = (v) => {
     if (v && componentStore.confirmationStatusList.length === 0) {
       componentStore._enumsAdmin()
@@ -99,6 +104,8 @@
           <n-select
             v-model:value="store.params.confirmation"
             :options="componentStore.confirmationStatusList"
+            :render-label="renderWrapLabel"
+            :virtual-scroll="false"
             label-field="name"
             value-field="id"
             clearable
@@ -111,6 +118,8 @@
           <n-select
             v-model:value="store.params.type"
             :options="componentStore.commandTypes"
+            :render-label="renderWrapLabel"
+            :virtual-scroll="false"
             label-field="name"
             value-field="id"
             clearable

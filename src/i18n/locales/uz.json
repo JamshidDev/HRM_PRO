@@ -803,6 +803,14 @@
     "nHours": "{n} soat"
   },
   "timesheetWorkerPage": {
+    "worker_role_info": "Ro'yxatda faqat «TimesheetHR» (tabelchi) roli berilgan xodimlar ko'rinadi. Rol Xodimlar bo'limidan beriladi.",
+    "departments_info": "Faqat boshqa tabelchiga biriktirilmagan bo'limlar ko'rsatiladi. Bitta bo'lim faqat bitta tabelchiga biriktiriladi; biriktirilmagan bo'limlarni HR o'zi to'ldiradi.",
+    "attach_department": "Bo'lim biriktirish",
+    "detach_all": "Barcha bo'limlarni uzish",
+    "detach_confirm": "Bo'limni tabelchidan uzasizmi?",
+    "detach_all_confirm": "Bu tabelchidan barcha bo'limlar uziladi. Davom etasizmi?",
+    "department_count": "Bo'limlar soni",
+    "free_departments_empty": "Bu korxonada bo'sh bo'lim qolmagan",
     "name": "Tabelchilar",
     "work_place": "Tashkilot/Bo'lim"
   },
@@ -1420,6 +1428,11 @@
       "to": "Chetlashtirish tugashi (gacha)",
       "act_date": "Dalolatnoma sanasi",
       "responsible": "Mas'ul xodim"
+    },
+    "form_75": {
+      "cancel_command_id": "Bekor qilinayotgan buyruq",
+      "cancel_reason": "Bekor qilish sababi",
+      "base_reason": "Asos"
     },
     "form_50": {
       "to": "Ta'til tugash sanasi",
@@ -2301,6 +2314,7 @@
       "worker": "Xodim"
     },
     "tabs": {
+      "legacy": "Eski",
       "general": "Umumiy",
       "movement": "Kadrlar harakati",
       "attendance": "Davomat va ta'til"
@@ -2534,6 +2548,8 @@
     "Sun": "Ya"
   },
   "timesheetPage": {
+    "work_days": "Ish kuni",
+    "work_hours": "Ish soati",
     "name": "Tabellar",
     "create": "Tabel yaratish",
     "update": "Tabelni tahrirlash",
@@ -2550,7 +2566,37 @@
     "closeWarning": {
       "title": "Tabelni yakunlashga ishonchingiz komilmi?",
       "desc": "Bu amalni ortga qaytarib bo'lmaydi."
-    }
+    },
+    "deleteWarning": {
+      "filled": "{month} tabeli o'chiriladi. Shu oy uchun to'ldirilgan ma'lumotlar ({count} ta xodim) ham butunlay o'chib ketadi. Davom etasizmi?",
+      "empty": "Tabel o'chiriladi. Shu oy uchun to'ldirilgan ma'lumotlar ham o'chib ketadi. Davom etasizmi?"
+    },
+    "send": "Tasdiqlashga yuborish",
+    "selectedCells": "{count} ta katak tanlandi",
+    "pickTypeFirst": "avval turni va soatni tanlang",
+    "totalWorkDays": "Umumiy ish kuni",
+    "totalWorkHours": "Umumiy ish soati",
+    "sendWarning": {
+      "title": "Tabelni tasdiqlashga yuborasizmi?",
+      "desc": "Yuborilgandan keyin tabel to'ldirish uchun yopiladi. Rad etilsa yana ochiladi."
+    },
+    "confirmWarning": {
+      "title": "Tabelni tasdiqlaysizmi?",
+      "desc": "Tasdiqlangandan keyin tabelni o'zgartirib bo'lmaydi."
+    },
+    "rejectWarning": {
+      "title": "Tabelni rad etasizmi?",
+      "desc": "Sabab yozing — tabel HR'ga tahrirlash uchun qaytadi."
+    },
+    "legend": {
+      "work": "Ish kuni",
+      "rest": "Dam olish",
+      "vacation": "Ta'til",
+      "sick": "Kasallik",
+      "absent": "Kelmagan",
+      "holiday": "Bayram"
+    },
+    "workTimeType": "Ish vaqti turi"
   },
   "turnstile": {
     "title": "Turniket",
@@ -3167,7 +3213,8 @@
       "multipleSalary": "Birdan ortiq joydan oylik olayotgan xodimlarni ro'yxatini yuklash",
       "exportWithCode": "To'lov kodi bo'yicha yuklash",
       "exportWithCodeByMonth": "To'lov kodi bo'yicha yuklash oylar kesimida",
-      "exportWithPosition": "Lavozimlar kesimida yuklash"
+      "exportWithPosition": "Lavozimlar kesimida yuklash",
+      "exportByOrganizations": "Excelga yuklash (korxona tanlab)"
     },
     "form": {
       "pin": "Pin",
@@ -4432,6 +4479,7 @@
   "notificationPage": {
     "send": "Push yuborish",
     "logs": "Loglar",
+    "sentList": "Yuborilgan bildirishnomalar",
     "schedule": "Rejalashtirish",
     "sendTime": "Rejalashtirilgan",
     "sendTimePlaceholder": "Bo'sh = darhol",
@@ -5078,5 +5126,20 @@
     "resetConfirmTitle": "Standart shablonga qaytarish",
     "resetConfirmText": "Tahrirlangan shablon o‘chiriladi va standart nusxa tiklanadi. Davom etasizmi?",
     "fileLabel": "Fayl"
+  },
+  "turnstileDownload": {
+    "title": "Hodisalarni yuklash"
+  },
+  "responsible": {
+    "name": "Mas’ul xodimlar"
+  },
+  "vacationDiscipline": {
+    "name": "Ta’til va intizom"
+  },
+  "reports": {
+    "name": "Hisobotlar",
+    "tabs": {
+      "special": "Maxsus hisobot"
+    }
   }
 }

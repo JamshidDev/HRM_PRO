@@ -9,8 +9,16 @@ $mobile_device_screen_size: 900px;
   height: 100vh;
   display: flex;
   position: relative;
-  background: var(--surface-ground);
+  background: var(--app-bg);
   .sidebar-content {
+    /* Gradient ta'riflari — faqat `defs`, hech narsa chizmaydi. */
+    .sidebar-icon-gradients {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
     width: $sidebar-max-width;
     height: 100vh;
     display: flex;
@@ -20,7 +28,7 @@ $mobile_device_screen_size: 900px;
     left: 0;
     bottom: 0;
     transition: all 0.3s ease;
-    background: var(--surface-ground);
+    background: var(--app-bg);
     .sidebar-card {
       width: calc(100% - 16px);
       height: calc(100% - 16px);
@@ -65,6 +73,40 @@ $mobile_device_screen_size: 900px;
       }
 
       .main-menu-item {
+        /* `.active-mini-content::before` (shisha aksi) shu qutiga bog'lanadi. */
+        position: relative;
+
+        /*
+         * Gradient ikona. Rail foni har doim to'q, shuning uchun bu yerda
+         * yorug' gradient. `:is(...)` — ikonalarning ba'zilari `circle`/`rect`
+         * dan iborat, faqat `path` ni nishonga olsak ular rangsiz qolardi.
+         */
+        .n-icon svg :is(path, circle, rect, polygon, ellipse) {
+          fill: url(#sidebarIconBright);
+        }
+        .n-icon svg {
+          transition: filter 0.25s ease;
+        }
+        transition:
+          background-color 0.25s ease,
+          box-shadow 0.25s ease;
+
+        /* Panel qatoridagi kabi: oldindan mavjud, opacity bilan silliq ochiladi. */
+        &::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: 16px;
+          background: linear-gradient(
+            152deg,
+            rgba(255, 255, 255, 0.24) 0%,
+            rgba(255, 255, 255, 0.06) 45%,
+            rgba(255, 255, 255, 0) 70%
+          );
+          opacity: 0;
+          transition: opacity 0.25s ease;
+          pointer-events: none;
+        }
         display: flex;
         justify-content: center;
         align-items: center;
@@ -92,6 +134,29 @@ $mobile_device_screen_size: 900px;
     }
     .panel-content {
       /*
+       * Menyu ikonalari gradient bilan. Qaysi gradient — panel sirtiga bog'liq,
+       * shuning uchun `--sidebar-icon-gradient` o'zgaruvchisi orqali: och panelda
+       * to'q gradient, qorong'i panelda (dark tema, indigo/blue/green) yorug'i.
+       * Tanlangan qatorning foni esa HAR DOIM to'q — u alohida qayta yoziladi.
+       */
+      .item-icon .n-icon svg :is(path, circle, rect, polygon, ellipse) {
+        fill: var(--sidebar-icon-gradient);
+      }
+      /*
+       * Tanlanganda ikona YORUG'LASHADI, lekin gradient ALMASHMAYDI: CSS
+       * `fill: url(#a)` dan `url(#b)` ga o'ta olmaydi — paint qiymatlari
+       * interpolatsiya qilinmaydi va rang sakrab o'zgarardi. `filter` esa
+       * to'liq animatsiyalanadi, shuning uchun o'sha bitta gradient shu yerda
+       * yorug'lashtiriladi (to'q ko'k→binafsha, ochroq ko'k→binafshaga).
+       */
+      .item-icon .n-icon svg {
+        transition: filter 0.25s ease;
+      }
+      .active-panel-item-single .item-icon .n-icon svg {
+        filter: var(--sidebar-icon-active-filter);
+      }
+
+      /*
        * Kenglik `.mini-content` ning HAQIQIY kengligiga bog'landi
        * ($sidebar-mini-width - 16px). Ilgari to'liq $sidebar-mini-width ayirilar
        * va kartaning o'ng chetida 16px bo'sh joy behuda qolib, menyu qatorlari
@@ -108,26 +173,60 @@ $mobile_device_screen_size: 900px;
          * faqat `.panel-content` ning 4px otstupi qoladi). Vertikal padding ham
          * kattaroq — fon matn atrofida siqilib qolmaydi.
          */
-        padding: 5px 4px 5px 8px;
+        /* 3+26+3 = 32px qator (edi 5+30+5 = 40px). */
+        padding: 3px 4px 3px 8px;
         width: 100%;
         display: flex;
         align-items: center;
         border-radius: 10px;
-        margin-bottom: 4px;
+        margin-bottom: 3px;
         cursor: pointer;
-        transition: background-color 0.15s ease;
-        &:hover:not(.active-panel-item-single) {
-          background-color: var(--surface-ground);
+        transition:
+          background-color 0.25s ease,
+          box-shadow 0.25s ease;
+
+        /*
+         * Shisha "aks"i HAR DOIM mavjud, faqat ko'rinmas. Ilgari u
+         * `.active-panel-item-single::before` da edi: psevdo-element klass
+         * qo'shilgan LAHZADA yaratilar, o'tishning boshlang'ich holati esa
+         * bo'lmagani uchun oq gradient birdan "yonib" ketardi.
+         */
+        &::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          background: linear-gradient(
+            152deg,
+            rgba(255, 255, 255, 0.18) 0%,
+            rgba(255, 255, 255, 0.05) 42%,
+            rgba(255, 255, 255, 0) 68%
+          );
+          opacity: 0;
+          transition: opacity 0.25s ease;
+          pointer-events: none;
         }
+
+        /* SINOV: sidebar hover fonlari vaqtincha o'chirilgan — yakka qator.
+         * &:hover:not(.active-panel-item-single) {
+         *   background-color: color-mix(in srgb, var(--primary-color) 22%, transparent);
+         * }
+         */
         .item-icon {
-          width: 30px;
-          height: 30px;
+          width: 26px;
+          height: 26px;
           display: flex;
           justify-content: center;
           align-items: center;
           i {
             color: var(--textColor3);
             font-size: 18px;
+            /*
+             * Matn/ikona rangi FON BILAN BIR VAQTDA o'zgarishi shart. Busiz fon
+             * 150 ms davomida to'yingan rangga oqib o'tar, matn esa darhol
+             * almashardi — oraliqda matn fonga qo'shilib, o'qilmay qolardi.
+             */
+            transition: color 0.25s ease;
           }
         }
         .item-title {
@@ -137,30 +236,64 @@ $mobile_device_screen_size: 900px;
           overflow: hidden;
           color: var(--textColor0);
           font-weight: 500;
+          transition: color 0.25s ease;
         }
       }
+      /*
+       * JORIY sahifa. Fon TO'YINGAN ko'k bilan to'ldiriladi — ilgari juda och
+       * tint (#eff8ff) edi va oq paneldan deyarli ajralmasdi. Rangli temalarda
+       * (sidebarTheme.scss) tanlangan element allaqachon shunday — solid `$accent`
+       * bilan to'ldirilgan, ya'ni odatiy tema endi ular bilan bir xil ko'rinadi.
+       */
+      /*
+       * Tanlangan sahifa — "liquid glass": shaffof qatlam, orqa fonni blur qilish,
+       * tepadagi yorug'lik qirrasi va yuqori-chapdan tushgan aks.
+       *
+       * 0.68 shaffofmaslik TASODIFIY EMAS: pastroq qiymatda oq matn kontrasti
+       * 4.5:1 dan tushib ketadi (oq panelda 0.55 da atigi 4.17:1). 0.68 da esa
+       * hamma fonda 6.5:1 dan yuqori bo'lib, shisha effekti ham saqlanadi.
+       */
       .active-panel-item-single {
-        background-color: #eff8ff;
+        background-color: rgba(17, 17, 17, 0.88);
+        backdrop-filter: blur(14px) saturate(180%);
+        -webkit-backdrop-filter: blur(14px) saturate(180%);
+        /* Chetdagi ramkasiz: faqat tepadagi yorug'lik chizig'i va yumshoq soya. */
+        /* Tashqi soyasiz — faqat tepadagi yorug'lik qirrasi. */
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24);
+
+        &::before {
+          opacity: 1;
+        }
+
         .item-title {
-          color: #2e90fa !important;
-          font-weight: 700;
+          color: #ffffff !important;
         }
         .item-icon {
           i {
-            color: #2e90fa !important;
+            color: #ffffff !important;
           }
         }
 
+        /*
+         * Pin tugmasi ham oq: `--textColor3` (kulrang) va `#2e90fa` (pinlangan
+         * holat) to'yingan ko'k fonda o'qilmay qolardi.
+         */
+        .panel-item-pin,
+        .panel-item-pin-on {
+          color: #ffffff !important;
+        }
+        .panel-item-pin:hover {
+          background-color: rgba(255, 255, 255, 0.22);
+        }
+
+        /*
+         * Qorong'i temada TO'Q shisha ishlamaydi: 68% #111 panelning o'zi
+         * (#1d2939) bilan deyarli bir xil chiqib, tanlangan qator yo'qolardi.
+         * Shuning uchun oq tint — panel ustida ochroq shisha bo'lib turadi.
+         */
         [data-theme='dark'] & {
-          background-color: #344054;
-          .item-title {
-            color: #53B1FD !important;
-          }
-          .item-icon {
-            i {
-              color: #53B1FD !important;
-            }
-          }
+          background-color: rgba(255, 255, 255, 0.16);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
         }
       }
 
@@ -203,13 +336,15 @@ $mobile_device_screen_size: 900px;
           border-radius: 6px;
           color: var(--textColor3);
           opacity: 0;
-          transition: opacity 0.15s ease;
+          transition:
+            opacity 0.15s ease,
+            color 0.15s ease;
           /*
-           * `inherit` — qatorning O'Z foni (hover, aktiv holat va sidebar
-           * temalarida ham to'g'ri). Zaxira sifatida: nom sig'may qolgan chekka
-           * holatda ham tugma toza fonda turadi, matn ustida "yamoq" bo'lmaydi.
+           * Fon SHAFFOF: matnni yopish uchun quyidagi `mask-image` javob beradi.
+           * Ilgari `inherit` edi — qator foni shaffof bo'lgan holatlarda (pinlangan,
+           * hoversiz qator) u hech narsani yopmay, matn ikona ostidan ko'rinardi.
            */
-          background-color: inherit;
+          background-color: transparent;
           &:hover {
             background-color: rgba(46, 144, 250, 0.16);
           }
@@ -224,18 +359,39 @@ $mobile_device_screen_size: 900px;
         }
 
         /*
-         * Tugma ko'ringan paytda (hover yoki pinlangan qator) sarlavhaga joy
-         * ochiladi: uzun nom "…" bilan tugaydi va harflar tugma ostida yarim
-         * ko'rinib qolmaydi. Matn chapga bog'langani uchun siljimaydi —
-         * faqat oxiri qisqaradi. Hoversiz holatda esa nom TO'LIQ ko'rinadi.
+         * Tugma ko'ringan paytda nomga `padding-right` BERILMAYDI: padding
+         * `.item-title` ning kontent qutisini qisqartirib, uzun nomni qo'shimcha
+         * kesar va qator qayta oqib "qimirlab" ketardi. Buning o'rniga faqat
+         * `mask-image` — u layoutga TEGMAYDI, shuning uchun matn joyidan
+         * siljimaydi va uzunligi o'zgarmaydi; tugma ostiga tushadigan oxiri esa
+         * keskin kesilmasdan shaffoflashib yo'qoladi.
          */
-        &:hover .item-title,
+        /* Pin tugmasi yo'q qatorda yopadigan narsa ham yo'q — mask kerak emas. */
+        &:hover:not(.panel-item-no-pin) .item-title,
         &.panel-item-pinned .item-title {
-          padding-right: 28px;
+          -webkit-mask-image: linear-gradient(
+            to right,
+            #000 calc(100% - 32px),
+            transparent calc(100% - 8px)
+          );
+          mask-image: linear-gradient(
+            to right,
+            #000 calc(100% - 32px),
+            transparent calc(100% - 8px)
+          );
         }
       }
 
       .menu-drop-zone {
+        display: flex;
+        flex-direction: column;
+      }
+      /*
+       * Sudraladigan qatorning o'ram elementi (SidebarContent.vue dagi izohga qara).
+       * `flex-direction: column` — busiz ichki qatorning `margin-bottom` i o'ramdan
+       * "chiqib" (margin collapsing) ketib, qatorlar orasidagi masofa o'zgarardi.
+       */
+      .menu-drop-row {
         display: flex;
         flex-direction: column;
       }
@@ -266,7 +422,7 @@ $mobile_device_screen_size: 900px;
       .menu-head-btn {
         color: var(--textColor3);
         cursor: pointer;
-        transition: color 0.15s ease;
+        transition: color 0.25s ease;
         &:hover {
           color: var(--primary-color);
         }
@@ -305,79 +461,112 @@ $mobile_device_screen_size: 900px;
         opacity: 0 !important;
       }
 
+      /*
+       * Ochiladigan guruh («Hujjatlar»). Ko'rinishi `.panel-item-single` bilan
+       * bir xil — ilgari bu yerda eski dizayn (ramka + blur) qolib ketgan edi.
+       */
       .panel-item-multiple {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        cursor: pointer;
+        margin-bottom: 4px;
+
         .panel-header {
+          position: relative;
+          /* `.panel-item-single` bilan bir xil balandlik. */
+          padding: 3px 4px 3px 8px;
           width: 100%;
           display: flex;
           align-items: center;
-          position: relative;
-          border-radius: 6px;
-          border: 1px solid var(--surface-line);
-          backdrop-filter: blur(12px);
-          background-color: var(--surface-section);
-          margin-bottom: 6px;
-          .item-icon {
-            width: 30px;
-            height: 30px;
+          border-radius: 10px;
+          cursor: pointer;
+          transition: background-color 0.15s ease;
+
+          /* SINOV: sidebar hover fonlari vaqtincha o'chirilgan — guruh sarlavhasi.
+           * &:hover {
+           *   background-color: var(--surface-line);
+           * }
+           */
+
+          .item-title {
+            flex: 1 1 auto;
+            min-width: 0;
             display: flex;
-            justify-content: center;
             align-items: center;
-            i {
-              color: var(--primary-color);
-              font-size: 20px;
+            justify-content: space-between;
+            gap: 4px;
+            font-size: 14px;
+            color: var(--textColor0);
+            font-weight: 500;
+
+            span {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
             }
           }
-          .item-title {
-            width: calc(100% - 30px);
-            font-size: 14px;
-            text-wrap: nowrap;
-            overflow: hidden;
-            color: var(--textColor0);
 
-            .n-icon {
-              position: absolute;
-              right: 6px;
-              top: 6px;
-              color: var(--primary-color);
-            }
+          /* Ochilganda strelka teskari — guruh holati bir qarashda bilinadi */
+          .group-chevron {
+            flex: 0 0 auto;
+            color: var(--textColor3);
+            transition: transform 0.25s ease;
+          }
+
+          &.is-open .group-chevron {
+            transform: rotate(180deg);
           }
         }
+
+        /*
+         * Ochilish/yopilish animatsiyasi — SidebarContent.vue dagi
+         * `group-collapse` transition'i (balandlik JS'da `scrollHeight` bo'yicha).
+         * Bu yerda faqat `overflow` kerak: animatsiya paytida kontent kesiladi.
+         */
         .panel-body {
-          display: flex;
-          flex-direction: column;
           overflow: hidden;
-          transition: all 0.225s ease;
-          .panel-item {
-            display: flex;
-            align-items: center;
-            border-radius: 6px;
-            border: 1px solid var(--surface-line);
-            backdrop-filter: blur(12px);
-            background-color: var(--surface-section);
-            margin-bottom: 6px;
-            .item-icon {
-              width: 30px;
-              height: 30px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              i {
-                color: var(--primary-color);
-                font-size: 20px;
-              }
+        }
+
+        /*
+         * Ochilgan guruh bolalari alohida fonli blokda — qaysi elementlar
+         * guruhga tegishli ekani bir qarashda ko'rinadi.
+         */
+        .panel-body-inner {
+          /* Sarlavha bilan orasida nafas — ilgari ular tegib turardi. */
+          margin-top: 4px;
+          margin-bottom: 4px;
+          /*
+           * Har tomondan bir xil 4px otstup: bola qatorining foni (hover va
+           * ayniqsa TANLANGAN holatdagi to'q pill) o'ram chetiga tegib
+           * turmasin. Chap va o'ng qiymatlar teng — blok o'zi guruh sarlavhasi
+           * bilan bir xil chegarada qolaveradi.
+           */
+          padding: 4px;
+          /*
+           * Endi to'liq yumaloq: burchaklar sarlavha bilan TEGIB TURGANDA
+           * olib tashlangan edi, oraga bo'shliq tushgach ular yana kerak.
+           */
+          border-radius: 10px;
+          background-color: var(--surface-ground);
+
+          .panel-item-single {
+            margin-bottom: 2px;
+            &:last-child {
+              margin-bottom: 0;
             }
-            .item-title {
-              width: calc(100%);
-              font-size: 14px;
-              text-wrap: nowrap;
-              overflow: hidden;
-              color: var(--textColor0);
-            }
+            /* SINOV: sidebar hover fonlari vaqtincha o'chirilgan — guruh ichidagi bola.
+             * &:hover:not(.active-panel-item-single) {
+             *   background-color: color-mix(in srgb, var(--primary-color) 22%, transparent);
+             * }
+             */
           }
+        }
+
+        /*
+         * Ochiq guruh sarlavhasi tanadan uzilib qolmasin — bolalar bloki bilan
+         * bir xil fon. Hover holati yuqoridagi `--surface-line` bo'lib qolaveradi:
+         * `.panel-item-multiple .panel-header:hover` (0,4,0) shu qoidadan (0,3,0)
+         * ustun, ya'ni ochiq guruhni hover qilganda ham fon o'zgaradi.
+         */
+        &.is-open .panel-header {
+          background-color: var(--surface-ground);
         }
       }
 
@@ -401,6 +590,12 @@ $mobile_device_screen_size: 900px;
       position: absolute;
       top: 30px;
       right: -6px;
+      /*
+       * Panel ichidagi sticky sarlavha `z-index: 10` bilan pozitsiyalangan va
+       * to'q foni bor. `z-index` bo'lmasa (auto) shu tugma sarlavhadan PASTDA
+       * bo'yalib, kartaga tegib turgan chap yarmi kesilgandek ko'rinadi.
+       */
+      z-index: 20;
       background: var(--surface-section);
       cursor: pointer;
       display: flex;
@@ -416,19 +611,30 @@ $mobile_device_screen_size: 900px;
       }
     }
 
+    /*
+     * Tanlangan modul — panel qatoridagi kabi "liquid glass". Rail foni har
+     * doim TO'Q gradient, shuning uchun bu yerda shisha OQ tintli: och pill
+     * (#eff8ff) o'rniga shaffof qatlam, ikonasi ham oq.
+     */
     .active-mini-content {
-      background-color: #eff8ff;
-      // border: 1px solid #455470 !important;
+      position: relative;
+
+      /* Rail ikonasi allaqachon yorug' — tanlanganda faqat biroz kuchayadi. */
+      .n-icon svg {
+        filter: brightness(1.15);
+      }
+      background-color: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(12px) saturate(160%);
+      -webkit-backdrop-filter: blur(12px) saturate(160%);
       border-radius: 16px;
-      i {
-        color: #1570EF !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.34);
+
+      &::before {
+        opacity: 1;
       }
 
-      [data-theme='dark'] & {
-        background-color: #344054;
-        i {
-          color: #53B1FD !important;
-        }
+      i {
+        color: #ffffff !important;
       }
     }
   }
@@ -437,7 +643,7 @@ $mobile_device_screen_size: 900px;
     margin-left: $sidebar-max-width;
     // `100vh` emas: mobil brauzerlarda manzil paneli hisobga olinsin.
     min-height: 100dvh;
-    background: var(--surface-ground);
+    background: var(--app-bg);
     transition: all 0.3s;
 
     .app_header {

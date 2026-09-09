@@ -18,10 +18,16 @@
   $panel-icon: #fff,
   $item-bg: rgba(255, 255, 255, 0.08),
   $item-border: rgba(255, 255, 255, 0.2),
-  $hover-bg: rgba(255, 255, 255, 0.08),
+  // Yakka element hoveri. `$item-bg` (guruh sarlavhasining ODDIY foni) ham
+  // 0.08 edi — ikkalasi ajralmasdi, shu sababli sezilarli darajada kuchliroq.
+  $hover-bg: rgba(255, 255, 255, 0.26),
   $active-text: #fff,
   // Sarlavha ostidagi ajratuvchi chiziq — och temada karta borderi (oq) ko'rinmasligi uchun alohida
-  $divider: $item-border
+  $divider: $item-border,
+  // Ochiladigan guruh sarlavhasining HOVER foni. `$hover-bg` dan alohida, chunki
+  // sarlavhaning o'z foni allaqachon `$item-bg` — ko'p temada bu ikkalasi bir xil
+  // qiymat, ya'ni oddiy hover umuman sezilmasdi.
+  $group-hover-bg: rgba(255, 255, 255, 0.42)
 ) {
   .organization-layout .sidebar-content {
     .mini-content {
@@ -56,9 +62,10 @@
         .item-title {
           color: $panel-text !important;
         }
-        &:hover:not(.active-panel-item-single) {
-          background-color: $hover-bg !important;
-        }
+        // SINOV: sidebar hover fonlari vaqtincha o'chirilgan — rangli temada yakka qator.
+        // &:hover:not(.active-panel-item-single) {
+        //   background-color: $hover-bg !important;
+        // }
         .panel-item-pin {
           color: $panel-icon !important;
           &:hover {
@@ -94,19 +101,52 @@
         color: $panel-text !important;
       }
 
+      // MUHIM: bu blok `.panel-item-single` dan KEYIN turishi shart — ikkalasining
+      // ham ustuvorligi bir xil (5 ta klass), ya'ni g'olibni manbadagi tartib
+      // hal qiladi. Aks holda pin ikonasi yuqoridagi `$panel-icon` (mint temada
+      // to'q kulrang) bilan qolib, to'yingan fonda ko'rinmay ketardi.
       .active-panel-item-single {
-        background-color: $accent !important;
+        /*
+         * "Liquid glass" — organizationLayout.scss dagi bilan bir xil retsept,
+         * faqat rang temaning `$accent` idan olinadi. 0.68 shaffofmaslik oq
+         * matn kontrastini har temada 6.5:1 dan yuqorida ushlab turadi.
+         */
+        background-color: rgba($accent, 0.88) !important;
+        backdrop-filter: blur(14px) saturate(180%);
+        -webkit-backdrop-filter: blur(14px) saturate(180%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24) !important;
+        // `::before` (shisha aksi) va uning `opacity` o'tishi
+        // organizationLayout.scss dagi bazaviy qoidadan keladi — bu yerda
+        // takrorlansa, u yana "birdan yonadigan" holatga qaytardi.
+
         .item-title {
           color: $active-text !important;
         }
         .item-icon i {
           color: $active-text !important;
         }
+        .panel-item-pin,
+        .panel-item-pin-on {
+          color: $active-text !important;
+        }
+        .panel-item-pin:hover {
+          background-color: rgba(255, 255, 255, 0.22) !important;
+        }
       }
 
       .panel-header {
-        background-color: $item-bg !important;
+        // YOPIQ guruh sarlavhasi oddiy qatorlardan farq qilmaydi — foni yo'q.
+        // Ilgari bu yerda `$item-bg` turardi va yopiq guruhlar oq "pill" bo'lib
+        // menyudan ajralib ko'rinardi.
+        background-color: transparent !important;
         border-color: $item-border !important;
+        transition: background-color 0.15s ease;
+
+        // SINOV: sidebar hover fonlari vaqtincha o'chirilgan — rangli temada guruh sarlavhasi.
+        // &:hover {
+        //   background-color: $group-hover-bg !important;
+        // }
+
         .item-icon i {
           color: $panel-icon !important;
         }
@@ -118,20 +158,25 @@
         }
       }
 
-      .panel-body .panel-item {
+      // Faqat OCHIQ guruh sarlavhasi fon oladi — pastdagi bolalar bloki bilan
+      // bir butun bo'lib ko'rinishi uchun (odatiy temadagi `--surface-ground`
+      // bilan bir xil mantiq).
+      .panel-item-multiple.is-open .panel-header {
         background-color: $item-bg !important;
-        border-color: $item-border !important;
-        .item-icon i {
-          color: $panel-icon !important;
-        }
-        .item-title {
-          color: $panel-text !important;
-        }
+      }
+
+      // Ochilgan guruh bolalari uchun ajratuvchi fon — odatiy temadagi
+      // `--surface-ground` rangli blokning tema varianti.
+      .panel-body-inner {
+        background-color: $item-bg !important;
       }
     }
 
     .active-mini-content {
       background-color: rgba(255, 255, 255, 0.2) !important;
+      backdrop-filter: blur(12px) saturate(160%);
+      -webkit-backdrop-filter: blur(12px) saturate(160%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.34) !important;
       i {
         color: #fff !important;
       }
@@ -147,6 +192,22 @@
   }
 }
 
+/*
+ * Ikona gradienti tema paneli sirtiga qarab tanlanadi: indigo/blue/green
+ * panellari TO'Q (yorug' gradient kerak), «mint» esa OCH (to'q gradient).
+ */
+[data-sidebar-theme='indigo'],
+[data-sidebar-theme='blue'],
+[data-sidebar-theme='green'] {
+  --sidebar-icon-gradient: url(#sidebarIconBright);
+  --sidebar-icon-active-filter: none;
+}
+
+[data-sidebar-theme='mint'] {
+  --sidebar-icon-gradient: url(#sidebarIconDeep);
+  --sidebar-icon-active-filter: brightness(1.6) saturate(1.1);
+}
+
 [data-sidebar-theme='indigo'] {
   @include sidebar-color-theme(#5550e5, #2f2c7f, #4545b6, #1e1e50, #5550e5);
 }
@@ -160,19 +221,30 @@
 }
 
 // Yagona OCH panelli tema: rail qora, panel mint→lavanda, matnlar to'q.
+// Tanlangan element ($accent) ilgari OQ edi — och mint panelda u guruh bloki
+// va hover foni (ikkalasi ham oq-shaffof) bilan chalkashib, "tanlangan"ligi
+// bilinmasdi. Endi to'q teal to'ldirish + oq matn: panel palitrasiga mos,
+// lekin aniq ajralib turadi.
 [data-sidebar-theme='mint'] {
   @include sidebar-color-theme(
-    #1f1f1f,
-    #0d0d0d,
+    // Rail — tekis #111111 (ilgari #1f1f1f → #0d0d0d gradienti edi).
+    #111111,
+    #111111,
     #c9f5e7,
     #dfddfb,
-    #ffffff,
+    #111111,
     #101828,
     #344054,
     rgba(255, 255, 255, 0.55),
     rgba(255, 255, 255, 0.8),
-    rgba(255, 255, 255, 0.5),
-    #0e7490,
-    rgba(16, 24, 40, 0.1)
+    // OCH panelda hover oq bilan berilmaydi: guruh sarlavhalari va bolalar bloki
+    // allaqachon oq-shaffof (`$item-bg` 0.55) — oq hover ular bilan qo'shilib
+    // ketardi (skrinshotdagi «Ochiq vakansiyalar» aynan shunday ko'rinardi).
+    // Buning o'rniga yengil TO'Q yuvindi: oq pill'lardan aniq ajraladi.
+    rgba(16, 24, 40, 0.14),
+    #ffffff,
+    rgba(16, 24, 40, 0.1),
+    // Guruh sarlavhasi hoveri esa aksincha — o'z oq foni kuchayadi.
+    rgba(255, 255, 255, 0.95)
   );
 }
