@@ -1,5 +1,7 @@
 <script setup>
+  import { UISelect } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
+  import Utils from '@/utils/Utils.js'
   const formRef = ref(null)
   import { useComponentStore, useTimesheetStore } from '@/store/modules/index.js'
 
@@ -19,75 +21,55 @@
   }
 
   onMounted(() => {
-    if (!componentStore.timesheetWorkplace) {
-      componentStore._timesheetDepartment()
+    if (componentStore.structureList.length === 0) {
+      componentStore._structures()
     }
   })
 </script>
 
 <template>
-  <n-form
-    ref="formRef"
-    :rules="validationRules.common"
-    :model="store.payload"
-    class="h-full flex flex-col"
-  >
-    <n-tabs
-      v-model:value="store.payload.active_tab"
-      type="segment"
-      @update-value="store.resetForm()"
+  <!-- Tabel hujjati korxona-oy: bo'lim tanlanmaydi, u tabel ichida filtr.
+       Korxona ro'yxati — struktura API'si (rol doirasi), buyruq formasidagi kabi. -->
+  <n-form ref="formRef" :rules="validationRules.common" :model="store.payload">
+    <n-form-item
+      :label="$t('timesheet.type.organization')"
+      path="work_place_id"
+      rule-path="requiredNumberField"
     >
-      <n-tab-pane name="organization" :tab="$t('timesheet.type.organization')">
-        <n-form-item :show-label="false" path="work_place_id" rule-path="requiredNumberField">
-          <n-select
-            v-model:value="store.payload.work_place_id"
-            filterable
-            :options="componentStore.timesheetWorkplace?.organizations"
-            label-field="name"
-            value-field="id"
-            :loading="componentStore.timesheetWorkplaceLoading"
-          />
-        </n-form-item>
-        <n-form-item :label="$t(`content.month`)" path="timestamp" rule-path="requiredNumberField">
-          <n-date-picker
-            class="w-full"
-            v-model:value="store.payload.timestamp"
-            type="month"
-            format="y MMMM"
-            month-format="MMMM"
-            clearable
-            :actions="null"
-            update-value-on-close
-          />
-        </n-form-item>
-      </n-tab-pane>
-      <n-tab-pane name="department" :tab="$t('timesheet.type.department')">
-        <n-form-item :show-label="false" path="department_id" rule-path="requiredNumberField">
-          <n-select
-            v-model:value="store.payload.department_id"
-            filterable
-            :options="componentStore.timesheetWorkplace?.departments"
-            label-field="name"
-            value-field="id"
-            :loading="componentStore.timesheetWorkplaceLoading"
-          />
-        </n-form-item>
-        <n-form-item :label="$t(`content.month`)" path="timestamp" rule-path="requiredNumberField">
-          <n-date-picker
-            class="w-full"
-            v-model:value="store.payload.timestamp"
-            type="month"
-            format="y MMMM"
-            month-format="MMMM"
-            clearable
-            :actions="null"
-            update-value-on-close
-          />
-        </n-form-item>
-      </n-tab-pane>
-    </n-tabs>
+      <UISelect
+        :options="componentStore.structureList"
+        :model-v="store.selectedOrganizations"
+        @updateModel="store.setOrganization"
+        @defaultValue="store.setOrganization"
+        :checked-val="store.structureCheck"
+        @updateCheck="(v) => (store.structureCheck = v)"
+        v-model:search="componentStore.structureParams.search"
+        @onSearch="componentStore._structures"
+        :loading="componentStore.structureLoading"
+        :multiple="false"
+      />
+    </n-form-item>
 
-    <div class="mt-auto">
+    <div class="grid grid-cols-2 gap-3">
+      <n-form-item :label="$t('content.year')" path="year" rule-path="requiredNumberField">
+        <n-select
+          v-model:value="store.payload.year"
+          :options="Utils.yearList"
+          label-field="name"
+          value-field="id"
+        />
+      </n-form-item>
+      <n-form-item :label="$t('content.month')" path="month" rule-path="requiredNumberField">
+        <n-select
+          v-model:value="store.payload.month"
+          :options="Utils.monthList"
+          label-field="name"
+          value-field="id"
+        />
+      </n-form-item>
+    </div>
+
+    <div class="pt-2">
       <n-button block @click="onSubmit" :loading="store.saveLoading" type="primary">
         {{ $t('content.save') }}
       </n-button>

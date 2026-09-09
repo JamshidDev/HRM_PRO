@@ -15,15 +15,17 @@ export const useTimesheetStore = defineStore('timesheetStore', {
     elementId: null,
     visibleLoading: false,
     warningVisible: false,
+    sendVisible: false,
     totalItems: 0,
     allPermissionList: [],
     structureCheck: [],
     detail: null,
+    // Korxona `UISelect` (struktura daraxti) bilan tanlanadi — buyruq formasidagi kabi.
+    selectedOrganizations: [],
     payload: {
-      department_id: undefined,
       work_place_id: undefined,
-      timestamp: null,
-      active_tab: 'organization'
+      year: dayjs().year(),
+      month: dayjs().month() + 1
     },
     params: {
       page: 1,
@@ -52,14 +54,8 @@ export const useTimesheetStore = defineStore('timesheetStore', {
     },
     _create() {
       this.saveLoading = true
-      const date = dayjs(this.payload.timestamp)
-      let data = {
-        ...this.payload,
-        month: date.month() + 1,
-        year: date.year()
-      }
       $ApiService.timesheetService
-        ._create({ data })
+        ._create({ data: { ...this.payload } })
         .then((res) => {
           this.visible = false
           this._index()
@@ -71,14 +67,8 @@ export const useTimesheetStore = defineStore('timesheetStore', {
     },
     _update() {
       this.saveLoading = true
-      const date = dayjs(this.payload.timestamp)
-      let data = {
-        ...this.payload,
-        month: date.month() + 1,
-        year: date.year()
-      }
       $ApiService.timesheetService
-        ._update({ data, id: this.elementId })
+        ._update({ data: { ...this.payload }, id: this.elementId })
         .then((res) => {
           this.visible = false
           this._index()
@@ -86,6 +76,31 @@ export const useTimesheetStore = defineStore('timesheetStore', {
         })
         .finally(() => {
           this.saveLoading = false
+        })
+    },
+    // Tasdiqlashga yuborish: shundan keyin tabel to'ldirish uchun yopiladi.
+    _send() {
+      this.saveLoading = true
+      $ApiService.timesheetService
+        ._send({ id: this.elementId })
+        .then(() => {
+          this.sendVisible = false
+          this._index()
+        })
+        .finally(() => {
+          this.saveLoading = false
+        })
+    },
+    // Tabel o'chirilsa oyning to'ldirilgan kunlari ham o'chadi (backend cascade).
+    _delete() {
+      this.deleteLoading = true
+      $ApiService.timesheetService
+        ._delete({ id: this.elementId })
+        .then(() => {
+          this._index()
+        })
+        .finally(() => {
+          this.deleteLoading = false
         })
     },
     _closeTimesheet() {
@@ -103,10 +118,18 @@ export const useTimesheetStore = defineStore('timesheetStore', {
     openVisible(data) {
       this.visible = data
     },
+    setOrganization(list) {
+      this.selectedOrganizations = list ?? []
+      this.payload.work_place_id = list?.[0]?.id
+      this.structureCheck = list?.[0]?.id ? [list[0].id] : []
+    },
+    // Yangi tabel odatda joriy oyga ochiladi — default shu.
     resetForm() {
-      this.payload.timestamp = null
-      this.payload.department_id = undefined
+      this.selectedOrganizations = []
+      this.structureCheck = []
       this.payload.work_place_id = undefined
+      this.payload.year = dayjs().year()
+      this.payload.month = dayjs().month() + 1
     }
   }
 })

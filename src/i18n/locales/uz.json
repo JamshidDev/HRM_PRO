@@ -2567,6 +2567,27 @@
       "title": "Tabelni yakunlashga ishonchingiz komilmi?",
       "desc": "Bu amalni ortga qaytarib bo'lmaydi."
     },
+    "deleteWarning": {
+      "filled": "{month} tabeli o'chiriladi. Shu oy uchun to'ldirilgan ma'lumotlar ({count} ta xodim) ham butunlay o'chib ketadi. Davom etasizmi?",
+      "empty": "Tabel o'chiriladi. Shu oy uchun to'ldirilgan ma'lumotlar ham o'chib ketadi. Davom etasizmi?"
+    },
+    "send": "Tasdiqlashga yuborish",
+    "selectedCells": "{count} ta katak tanlandi",
+    "pickTypeFirst": "avval turni va soatni tanlang",
+    "totalWorkDays": "Umumiy ish kuni",
+    "totalWorkHours": "Umumiy ish soati",
+    "sendWarning": {
+      "title": "Tabelni tasdiqlashga yuborasizmi?",
+      "desc": "Yuborilgandan keyin tabel to'ldirish uchun yopiladi. Rad etilsa yana ochiladi."
+    },
+    "confirmWarning": {
+      "title": "Tabelni tasdiqlaysizmi?",
+      "desc": "Tasdiqlangandan keyin tabelni o'zgartirib bo'lmaydi."
+    },
+    "rejectWarning": {
+      "title": "Tabelni rad etasizmi?",
+      "desc": "Sabab yozing — tabel HR'ga tahrirlash uchun qaytadi."
+    },
     "legend": {
       "work": "Ish kuni",
       "rest": "Dam olish",

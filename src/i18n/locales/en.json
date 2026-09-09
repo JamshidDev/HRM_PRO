@@ -2547,6 +2547,27 @@
       "title": "Sure you want to close timesheet?",
       "desc": "This action cannot be undone."
     },
+    "deleteWarning": {
+      "filled": "The {month} timesheet will be deleted. All data filled in for that month ({count} employees) will be permanently lost. Continue?",
+      "empty": "The timesheet will be deleted. All data filled in for that month will be lost. Continue?"
+    },
+    "send": "Send for confirmation",
+    "selectedCells": "{count} cells selected",
+    "pickTypeFirst": "select the type and hours first",
+    "totalWorkDays": "Total work days",
+    "totalWorkHours": "Total work hours",
+    "sendWarning": {
+      "title": "Send the timesheet for confirmation?",
+      "desc": "Once sent, the timesheet is locked for editing. If rejected, it opens again."
+    },
+    "confirmWarning": {
+      "title": "Confirm the timesheet?",
+      "desc": "After confirmation the timesheet can no longer be changed."
+    },
+    "rejectWarning": {
+      "title": "Reject the timesheet?",
+      "desc": "State the reason — the timesheet goes back to HR for editing."
+    },
     "legend": {
       "work": "Work day",
       "rest": "Day off",
