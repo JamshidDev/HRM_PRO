@@ -441,9 +441,22 @@ export const reportError = (entry) => {
   }
 }
 
+// Bu statuslar ilovada "normal biznes holati" sifatida ishlatiladi (kod bo'yicha
+// tasdiqlangan), shu sabab Telegram'ga yuborilmaydi:
+//   401 — sessiya tugagan / autentifikatsiya yo'q
+//   403 — ruxsat yo'q
+//   404 — "topilmadi" qidiruv natijasi (masalan hali joylanmagan backend endpoint)
+//   409 — optimistic-lock / konflikt (masalan shablon boshqa admin tomonidan
+//         o'zgartirilgan, hujjat allaqachon imzolangan — documentTemplateStore,
+//         docxEditorStore)
+//   422 — validatsiya xatolari, shu jumladan domenga xos "hali ulanmagan" kabi
+//         holatlar (masalan salaryAccessStore'dagi telegram_not_linked)
+//   429 — rate limit / cooldown (masalan kodni qayta yuborish kutish vaqti)
+const EXPECTED_STATUSES = [401, 403, 404, 409, 422, 429]
+
 /**
  * Axios interceptor'idan chaqiriladi (src/service/index.js).
- * 401/403/422 — normal biznes holatlari, yuborilmaydi.
+ * EXPECTED_STATUSES — normal biznes holatlari, yuborilmaydi.
  */
 export const reportApiError = (error) => {
   try {
@@ -464,7 +477,7 @@ export const reportApiError = (error) => {
       type = error.code === 'ECONNABORTED' ? 'API timeout' : 'API network'
     } else if (status >= 500) {
       type = 'API server xatosi'
-    } else if (status >= 400 && ![401, 403, 422].includes(status)) {
+    } else if (status >= 400 && !EXPECTED_STATUSES.includes(status)) {
       type = 'API xatosi'
     } else {
       return
