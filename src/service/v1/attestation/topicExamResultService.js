@@ -4,10 +4,6 @@ const _index = async (payload) => {
   return await axios.get(`/v1/exam/results`, { params: payload.params })
 }
 
-const _finishedExam = async (payload) => {
-  return await axios.get(`/v1/exam/check-ended-results`, { params: payload?.params })
-}
-
 const _downloadExam = async (payload) => {
   return await axios.get(`/v1/exam/results/export`, { params: payload?.params })
 }
@@ -41,7 +37,6 @@ export default {
   // _update,
   _delete,
   _downloadNoPassedWorker,
-  _finishedExam,
   _downloadExam,
   _exams,
   _topics
