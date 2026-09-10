@@ -2361,7 +2361,8 @@
       "absent": "Келмаган",
       "holiday": "Байрам"
     },
-    "workTimeType": "Иш вақти тури"
+    "workTimeType": "Иш вақти тури",
+    "fill": "Тўлдириш"
   },
   "turnstile": {
     "title": "Турникет",

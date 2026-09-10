@@ -2596,7 +2596,8 @@
       "absent": "Kelmagan",
       "holiday": "Bayram"
     },
-    "workTimeType": "Ish vaqti turi"
+    "workTimeType": "Ish vaqti turi",
+    "fill": "To'ldirish"
   },
   "turnstile": {
     "title": "Turniket",

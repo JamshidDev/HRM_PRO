@@ -1,35 +1,53 @@
 <script setup>
-  import { UIStatus, UITable, UIUser } from '@/components/index.js'
+  import { UIStatus, UITable } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
-  import { useConfTimesheetStore } from '@/store/modules/index.js'
+  import { useConfTimesheetStore, useTimesheetWorkerStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import { CheckmarkCircle24Filled, DismissCircle24Filled, Eye16Regular } from '@vicons/fluent'
+  import {
+    CalendarClock24Regular,
+    CheckmarkCircle24Filled,
+    DismissCircle24Filled,
+    Eye16Regular
+  } from '@vicons/fluent'
+  import dayjs from 'dayjs'
 
   const { t } = i18n.global
 
   const store = useConfTimesheetStore()
+  const timesheetWorkerStore = useTimesheetWorkerStore()
 
   const emits = defineEmits(['openOffice'])
 
-  const onOpenFile = (documentId, signatureId) => {
-    emits('openOffice', { documentId, signatureId })
-  }
+  // Imzo qatori faqat men uchun keladi (`my_confirmation`), qaror kutilayotganda ko'rinadi.
+  const isPending = (row) => row?.my_confirmation?.status === 1 || row?.my_confirmation?.status === 2
+  const hasConfirmation = (row) => Boolean(row?.my_confirmation)
 
   const onPreview = (row) => {
-    onOpenFile(row?.timesheet.id, row.id)
+    emits('openOffice', { documentId: row.id, signatureId: row?.my_confirmation?.id })
   }
 
-  // Qaror faqat kutilayotgan (status=1|2) qatorda ko'rinadi.
-  const isPending = (row) => row?.status?.id === 1 || row?.status?.id === 2
+  // To'ldirish oynasi — HR sahifasidagi ish maydonining AYNAN o'zi.
+  // `organizationId` tozalanadi: aks holda HR sahifasidan qolgan (korxonaning
+  // hamma bo'limi) filtr ro'yxati qayta yuklanmasdan qolib ketardi.
+  const onFill = (row) => {
+    timesheetWorkerStore.timekeeperMode = true
+    timesheetWorkerStore.organizationId = null
+    timesheetWorkerStore.params.page = 1
+    timesheetWorkerStore.params.department_id = null
+    timesheetWorkerStore.params.search = null
+    timesheetWorkerStore.elementId = row.id
+    timesheetWorkerStore.visible = true
+    timesheetWorkerStore._index()
+  }
 
   const onConfirm = (row) => {
-    store.elementId = row?.timesheet?.id
+    store.elementId = row.id
     store.confirmVisible = true
   }
 
   const onReject = (row) => {
-    store.elementId = row?.timesheet?.id
+    store.elementId = row.id
     store.comment = null
     store.rejectVisible = true
   }
@@ -42,37 +60,43 @@
 
   const columns = computed(() => [
     {
-      key: 'timesheet.user',
-      title: t('content.worker'),
-      minWidth: 280
-    },
-    {
-      key: 'timesheet.work_place',
+      key: 'work_place',
       title: t('timesheetWorkerPage.work_place'),
-      minWidth: 200
+      minWidth: 400
     },
     {
-      key: 'timesheet.month',
+      key: 'month',
       title: t('content.month'),
-      width: 120
-    },
-    {
-      key: 'timesheet.year',
-      title: t('content.year'),
-      width: 120
+      width: 160,
+      align: 'center'
     },
     {
       key: 'status',
+      title: t('timesheet.status'),
+      width: 140,
+      align: 'center'
+    },
+    {
+      key: 'confirmation',
       title: t('content.status'),
-      width: 140
+      width: 140,
+      align: 'center'
     }
   ])
 
   const actions = computed(() => [
     {
+      label: t('timesheetPage.fill'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(CalendarClock24Regular),
+      visible: (row) => Boolean(row?.can_fill),
+      action: onFill
+    },
+    {
       label: t('content.view'),
       key: Utils.ActionTypes.view,
       icon: UIHelper.renderIcon(Eye16Regular),
+      visible: hasConfirmation,
       action: onPreview
     },
     {
@@ -104,34 +128,34 @@
     storage-key="docflow-confirmation-timesheet"
     @change-page="changePage"
   >
-    <template #[`cell-timesheet.user`]="{ row }">
-      <UIUser
-        :data="{
-          photo: row?.timesheet.user?.worker.photo,
-          firstName: row?.timesheet.user?.worker.first_name,
-          middleName: row?.timesheet.user?.worker.middle_name,
-          lastName: row?.timesheet.user?.worker.last_name,
-          position: row?.timesheet.user?.position || ' '
-        }"
-      />
-    </template>
-
-    <template #[`cell-timesheet.work_place`]="{ row }">
+    <template #cell-work_place="{ row }">
       <div class="font-medium">
-        {{ row?.timesheet?.work_place?.name || row?.timesheet?.department?.name }}
+        {{ row?.work_place?.name || row?.department?.name }}
       </div>
     </template>
 
-    <template #[`cell-timesheet.month`]="{ row }">
-      <div class="font-medium">{{ Utils.getMonthNameById(row?.timesheet?.month) }}</div>
-    </template>
-
-    <template #[`cell-timesheet.year`]="{ row }">
-      <div class="font-medium">{{ row?.timesheet?.year }}</div>
+    <template #cell-month="{ row }">
+      <div class="font-medium">
+        {{
+          dayjs()
+            .year(row.year)
+            .month(row.month - 1)
+            .format('YYYY MMMM')
+        }}
+      </div>
     </template>
 
     <template #cell-status="{ row }">
-      <UIStatus :status="row?.status" />
+      <n-button v-if="!!row?.status" type="primary" size="tiny" dashed>
+        <template #icon>
+          <n-icon :component="CheckmarkCircle24Filled" />
+        </template>
+        {{ $t('timesheet.finished') }}
+      </n-button>
+    </template>
+
+    <template #cell-confirmation="{ row }">
+      <UIStatus :status="row?.confirmation" />
     </template>
   </UITable>
 </template>

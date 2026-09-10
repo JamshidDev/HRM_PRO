@@ -4,6 +4,11 @@ const _index = async (payload) => {
   return await axios.get(`/v1/timesheet`, { params: payload.params })
 }
 
+// Hujjat aylanishidagi «Tabellar»: men tabelchi bo'lgan yoki menda imzo bor tabellar.
+const _assigned = async (payload) => {
+  return await axios.get(`/v1/timesheet/assigned`, { params: payload?.params })
+}
+
 const _index_departments = async () => {
   return await axios.get(`/v1/timesheet/departments`)
 }
@@ -42,6 +47,7 @@ const _enumTimesheet = async () => {
 
 export default {
   _index,
+  _assigned,
   _show,
   _create,
   _update,

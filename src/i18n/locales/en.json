@@ -2576,7 +2576,8 @@
       "absent": "Absent",
       "holiday": "Holiday"
     },
-    "workTimeType": "Work time type"
+    "workTimeType": "Work time type",
+    "fill": "Fill"
   },
   "turnstile": {
     "title": "Turnstile",
