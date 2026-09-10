@@ -51,17 +51,6 @@ export const useTopicExamResultStore = defineStore('topicExamResult', {
           this.downloadLoading = false
         })
     },
-    _finishExam() {
-      this.loading = true
-      $ApiService.topicExamResultService
-        ._finishedExam()
-        .then((res) => {
-          this._index()
-        })
-        .finally(() => {
-          this.loading = false
-        })
-    },
     _delete() {
       this.loading = true
       $ApiService.topicExamResultService
@@ -112,7 +101,9 @@ export const useTopicExamResultStore = defineStore('topicExamResult', {
       return {
         ...this.params,
         organizations: this.params.organizations?.map((v) => v.id).toString() || undefined,
-        deleted_at: this.params.deleted_at ? undefined : true,
+        // Checkbox belgilansa — FAQAT o'chirilganlar. Ilgari mantiq teskari edi
+        // (belgilansa parametr YUBORILMAS edi) — Laravel'dan qolgan chalkashlik.
+        deleted_at: this.params.deleted_at ? true : undefined,
         exams: this.params.exams?.toString() || undefined,
         topics: this.params.topics?.toString() || undefined
       }
