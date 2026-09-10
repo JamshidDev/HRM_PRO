@@ -5,6 +5,7 @@
     Checkmark16Regular,
     Dismiss16Regular,
     Add20Filled,
+    ArrowDownload20Regular,
     Key20Regular,
     Copy20Regular,
     Edit32Regular,
@@ -290,7 +291,14 @@
 </script>
 
 <template>
-  <div class="flex items-center justify-end">
+  <div class="flex items-center justify-end gap-2">
+    <!-- Yuklash: jadval ustunlari + izoh (description), joriy qidiruv bo'yicha. -->
+    <n-button secondary type="primary" :loading="store.exportLoading" @click="store._export()">
+      <template #icon>
+        <n-icon><ArrowDownload20Regular /></n-icon>
+      </template>
+      {{ $t('content.download') }}
+    </n-button>
     <n-button type="primary" @click="openCreate">
       <template #icon>
         <n-icon><Add20Filled /></n-icon>

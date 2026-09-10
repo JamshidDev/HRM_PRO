@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import Utils from '@/utils/Utils.js'
 
 // Keyed integration client — dashboard statistikasi + client CRUD.
 // $ApiService global (import kerak emas). Envelope: list = res.data.data,
@@ -25,6 +26,7 @@ export const useIntegrationClientsStore = defineStore('integrationClients', {
     clientsLoading: false,
     clientsTotalItems: 0,
     clientsParams: { page: 1, per_page: 15, search: null },
+    exportLoading: false,
     saveLoading: false,
     meta: { roles: [], scope_modes: ['all', 'subtree', 'exact'] },
 
@@ -84,6 +86,28 @@ export const useIntegrationClientsStore = defineStore('integrationClients', {
         })
         .finally(() => {
           this.clientsLoading = false
+        })
+    },
+    // Excel yuklab olish — joriy qidiruv bo'yicha BARCHA qatorlar (paginatsiyasiz).
+    // Fayl nomi backend'ning `Content-Disposition` sarlavhasidan olinadi.
+    _export() {
+      this.exportLoading = true
+      $ApiService.integrationClientsService
+        ._export({ search: this.clientsParams.search || undefined })
+        .then((res) => {
+          const name =
+            /filename="?([^"]+)"?/.exec(res.headers?.['content-disposition'] ?? '')?.[1] ??
+            'integration-clients.xlsx'
+          Utils.blobFileDownload(
+            res.data,
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            name
+          )
+        })
+        // Xatoni axios interceptor'i o'zi toast qiladi — bu yerda takrorlamaymiz.
+        .catch(() => {})
+        .finally(() => {
+          this.exportLoading = false
         })
     },
     _meta() {
