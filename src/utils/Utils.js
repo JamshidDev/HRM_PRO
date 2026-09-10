@@ -57,7 +57,12 @@ const getMyLocation = () => {
 }
 
 const timeToZone = (time) => {
-  return time === null || time === undefined ? null : dayjs(time).format('YYYY-MM-DD')
+  if (time === null || time === undefined) return null
+  // `dayjs('')` yoki yaroqsiz qiymat `.format()` da tom ma'noda "Invalid Date"
+  // satrini qaytaradi — u payload'ga tushib, backend `date` ustuniga yozganda
+  // Postgres yiqiladi. Yaroqsiz sana = qiymat yo'q.
+  const d = dayjs(time)
+  return d.isValid() ? d.format('YYYY-MM-DD') : null
 }
 
 const timeWithMonth = (time) => {

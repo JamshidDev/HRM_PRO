@@ -1,15 +1,10 @@
 <script setup>
-  import { TimePicker24Filled, ArrowCircleDown24Regular } from '@vicons/fluent'
-  import {
-    useAccountStore,
-    useComponentStore,
-    useTopicExamResultStore
-  } from '@/store/modules/index.js'
+  import { ArrowCircleDown24Regular } from '@vicons/fluent'
+  import { useComponentStore, useTopicExamResultStore } from '@/store/modules/index.js'
   import { UIPageFilter, UISelect } from '@/components/index.js'
   import UIHelper from '@/utils/UIHelper.js'
 
   const store = useTopicExamResultStore()
-  const accStore = useAccountStore()
 
   const filterEvent = () => {
     store.params.page = 1
@@ -61,7 +56,6 @@
       Number(Boolean(store.params.deleted_at))
   )
 
-  const accessFinishBtn = computed(() => accStore.checkPermission(accStore.pn.admin))
 </script>
 
 <template>
@@ -142,33 +136,12 @@
       <div
         class="grid grid-cols-2 gap-2 w-full md:flex md:w-auto md:flex-nowrap md:items-center md:gap-4"
       >
-        <template v-if="accessFinishBtn">
-          <n-tooltip trigger="hover">
-            <template #trigger>
-              <n-button
-                class="h-[32px]!"
-                type="error"
-                :loading="store.loading"
-                @click="store._finishExam()"
-              >
-                <template #icon>
-                  <n-icon size="24">
-                    <TimePicker24Filled />
-                  </n-icon>
-                </template>
-                {{ $t('examPage.finishedProcess') }}
-              </n-button>
-            </template>
-            {{ $t('examPage.finishedDescription') }}
-          </n-tooltip>
-        </template>
-
-        <!-- «Tugatish» ruxsati bo'lmaganda bu tugma yolg'iz qolib, yonida bo'sh
-             katak turardi — o'shanda u ham butun qatorni oladi. -->
+        <!-- «Yakunlash vaqtidan o'tgan imtihonlarni yakunlash» tugmasi OLIB
+             TASHLANDI — endi buni `ResultScheduler` croni (har 10 daqiqada)
+             o'zi bajaradi, qo'lda bosish kerak emas. -->
         <n-button
           v-fly-upload
-          class="h-[32px]!"
-          :class="{ 'col-span-2': !accessFinishBtn }"
+          class="col-span-2 h-[32px]!"
           type="success"
           :loading="store.downloadLoading || store.loading"
           @click="store._downloadExam()"
