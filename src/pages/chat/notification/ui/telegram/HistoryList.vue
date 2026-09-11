@@ -5,6 +5,8 @@
   import { Utils } from '@utils'
   import i18n from '@/i18n/index.js'
   import { MoreHorizontal24Regular } from '@vicons/fluent'
+  import DOMPurify from 'dompurify'
+  import { telegramHtmlToPreview } from '@/utils/telegramHtml.js'
 
   const { t } = i18n.global
   const store = useTelegramBroadcastStore()
@@ -35,6 +37,14 @@
     })[statusType(s)]
 
   const audienceLabel = (row) => t(`telegramBroadcast.audience.${row.audience}`)
+
+  // Matn Telegram HTML'ida saqlanadi — modalda formatlab ko'rsatamiz.
+  // Mazmun o'z API'mizdan kelsa ham `DOMPurify` bilan teglar cheklanadi.
+  const renderMessage = (html) =>
+    DOMPurify.sanitize(telegramHtmlToPreview(html || ''), {
+      ALLOWED_TAGS: ['b', 'i', 'u', 's', 'a', 'code', 'pre', 'blockquote', 'span', 'br'],
+      ALLOWED_ATTR: ['href', 'class']
+    })
 
   const rowTime = (row) =>
     row.status === 'scheduled' ? row.scheduled_at : row.finished_at || row.started_at
@@ -215,14 +225,18 @@
             </span>
           </div>
           <div class="border-b pb-1">
-            <div class="mb-1 text-gray-500">{{ $t('content.description') }}</div>
-            <div class="whitespace-pre-wrap">{{ store.viewRow.message?.uz }}</div>
-            <div v-if="store.viewRow.message?.ru" class="mt-1 whitespace-pre-wrap text-gray-500">
-              {{ store.viewRow.message.ru }}
-            </div>
-            <div v-if="store.viewRow.message?.en" class="mt-1 whitespace-pre-wrap text-gray-500">
-              {{ store.viewRow.message.en }}
-            </div>
+            <div class="mb-1 text-gray-500">{{ $t('telegramBroadcast.messageText') }}</div>
+            <div class="tg-message" v-html="renderMessage(store.viewRow.message?.uz)" />
+            <div
+              v-if="store.viewRow.message?.ru"
+              class="tg-message mt-1 text-gray-500"
+              v-html="renderMessage(store.viewRow.message.ru)"
+            />
+            <div
+              v-if="store.viewRow.message?.en"
+              class="tg-message mt-1 text-gray-500"
+              v-html="renderMessage(store.viewRow.message.en)"
+            />
           </div>
           <div class="flex justify-between border-b pb-1">
             <span class="text-gray-500">{{ $t('notificationPage.sendTime') }}</span>
@@ -268,5 +282,20 @@
 <style scoped>
   .tg-history__spin :deep(.n-spin-content) {
     height: 100%;
+  }
+  .tg-message :deep(code) {
+    background: rgb(0 0 0 / 6%);
+    border-radius: 4px;
+    padding: 0 4px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .tg-message :deep(blockquote) {
+    border-left: 3px solid var(--color-info, #3b82f6);
+    margin: 4px 0;
+    padding-left: 8px;
+  }
+  .tg-message :deep(.tg-spoiler) {
+    background: rgb(0 0 0 / 18%);
+    border-radius: 3px;
   }
 </style>

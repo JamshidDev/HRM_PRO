@@ -5116,15 +5116,12 @@
   "telegramBroadcast": {
     "tab": "Telegram",
     "pushTab": "Push",
-    "create": "Создать Telegram-рассылку",
     "sentList": "Отправленные рассылки",
     "audienceLabel": "Кому",
     "audience": {
-      "all_staff": "Всем штатным сотрудникам",
-      "selected": "Выбранным сотрудникам"
+      "all_staff": "Всем",
+      "selected": "Выбранным"
     },
-    "uzFallback": "Если Ru/En пустые — будет отправлен узбекский текст",
-    "slowHint": "Из-за лимитов Telegram массовая рассылка занимает несколько часов. Отправка продолжится, даже если закрыть страницу.",
     "sentOf": "отправлено",
     "blocked": "заблокировали",
     "failed": "ошибок",
@@ -5141,6 +5138,13 @@
       "failed": "Ошибка"
     },
     "send": "Отправить сообщение",
-    "schedule": "Запланировать"
+    "schedule": "Запланировать",
+    "messageText": "Текст сообщения",
+    "templatePlaceholder": "Готовый текст",
+    "templates": {
+      "maintenance_start": "Профилактика в системе",
+      "maintenance_done": "Технические работы завершены",
+      "new_version": "Обновление мобильного приложения"
+    }
   }
 }

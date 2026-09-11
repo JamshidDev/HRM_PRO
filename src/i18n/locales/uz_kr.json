@@ -4853,15 +4853,12 @@
   "telegramBroadcast": {
     "tab": "Telegram",
     "pushTab": "Push",
-    "create": "Telegram хабар яратиш",
     "sentList": "Юборилган хабарлар",
     "audienceLabel": "Кимга",
     "audience": {
-      "all_staff": "Барча штатдаги ходимларга",
-      "selected": "Танланган ходимларга"
+      "all_staff": "Барчага",
+      "selected": "Танланганларга"
     },
-    "uzFallback": "Ru/En бўш бўлса — ўзбекча матн юборилади",
-    "slowHint": "Telegram лимити сабабли оммавий юбориш бир неча соат давом этади. Саҳифани ёпсангиз ҳам юбориш давом этади.",
     "sentOf": "юборилди",
     "blocked": "блоклаган",
     "failed": "хато",
@@ -4878,6 +4875,13 @@
       "failed": "Хатолик"
     },
     "send": "Хабар юбориш",
-    "schedule": "Режалаштириш"
+    "schedule": "Режалаштириш",
+    "messageText": "Хабар матни",
+    "templatePlaceholder": "Тайёр хабар",
+    "templates": {
+      "maintenance_start": "Тизимда профилактика",
+      "maintenance_done": "Техник ишлар якунланди",
+      "new_version": "Мобил илова янгиланди"
+    }
   }
 }

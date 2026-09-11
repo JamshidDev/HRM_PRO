@@ -5104,15 +5104,12 @@
   "telegramBroadcast": {
     "tab": "Telegram",
     "pushTab": "Push",
-    "create": "Create Telegram broadcast",
     "sentList": "Sent broadcasts",
     "audienceLabel": "Audience",
     "audience": {
-      "all_staff": "All staff employees",
-      "selected": "Selected employees"
+      "all_staff": "Everyone",
+      "selected": "Selected"
     },
-    "uzFallback": "If Ru/En are empty, the Uzbek text is sent",
-    "slowHint": "Due to Telegram limits a mass broadcast takes several hours. Sending continues even if you close the page.",
     "sentOf": "sent",
     "blocked": "blocked",
     "failed": "failed",
@@ -5129,6 +5126,13 @@
       "failed": "Failed"
     },
     "send": "Send message",
-    "schedule": "Schedule"
+    "schedule": "Schedule",
+    "messageText": "Message text",
+    "templatePlaceholder": "Template",
+    "templates": {
+      "maintenance_start": "Scheduled maintenance",
+      "maintenance_done": "Maintenance completed",
+      "new_version": "Mobile app update"
+    }
   }
 }

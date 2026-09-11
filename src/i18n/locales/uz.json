@@ -5146,15 +5146,12 @@
   "telegramBroadcast": {
     "tab": "Telegram",
     "pushTab": "Push",
-    "create": "Telegram xabar yaratish",
     "sentList": "Yuborilgan xabarlar",
     "audienceLabel": "Kimga",
     "audience": {
-      "all_staff": "Barcha shtatdagi xodimlarga",
-      "selected": "Tanlangan xodimlarga"
+      "all_staff": "Barchaga",
+      "selected": "Tanlanganlarga"
     },
-    "uzFallback": "Ru/En bo'sh bo'lsa — o'zbekcha matn yuboriladi",
-    "slowHint": "Telegram limiti sababli ommaviy yuborish bir necha soat davom etadi. Sahifani yopsangiz ham yuborish davom etadi.",
     "sentOf": "yuborildi",
     "blocked": "bloklagan",
     "failed": "xato",
@@ -5171,6 +5168,13 @@
       "failed": "Xatolik"
     },
     "send": "Xabar yuborish",
-    "schedule": "Rejalashtirish"
+    "schedule": "Rejalashtirish",
+    "messageText": "Xabar matni",
+    "templatePlaceholder": "Tayyor xabar",
+    "templates": {
+      "maintenance_start": "Tizimda profilaktika",
+      "maintenance_done": "Texnik ishlar yakunlandi",
+      "new_version": "Mobil ilova yangilandi"
+    }
   }
 }

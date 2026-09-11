@@ -30,9 +30,6 @@
 
 <template>
   <UIPageContent>
-    <!-- Tab o'z qatorida: sarlavha bilan bir qatorda bo'lsa ilova shellidagi
-         suzuvchi banner (yuqori-markaz) uning chap yarmini yopib qo'yadi. -->
-    <div class="shrink-0 text-lg font-semibold">{{ $t('notificationPage.name') }}</div>
     <div class="w-full max-w-[320px] shrink-0">
       <n-tabs v-model:value="activeTab" type="segment" size="small">
         <n-tab name="push">{{ $t('telegramBroadcast.pushTab') }}</n-tab>
@@ -50,8 +47,9 @@
         v-if="canSend"
         class="col-span-12 flex flex-col rounded-[20px] bg-surface-section p-4 md:col-span-5 md:min-h-0"
       >
-        <div class="mb-3 shrink-0 text-sm font-semibold text-gray-500">
-          {{ activeTab === 'push' ? $t('notificationPage.create') : $t('telegramBroadcast.create') }}
+        <!-- Sarlavha faqat Push tabida — Telegram formasida ortiqcha. -->
+        <div v-if="activeTab === 'push'" class="mb-3 shrink-0 text-sm font-semibold text-gray-500">
+          {{ $t('notificationPage.create') }}
         </div>
         <div class="md:min-h-0 md:flex-1 md:overflow-y-auto md:pr-1">
           <createFrom v-if="activeTab === 'push'" />
