@@ -2,7 +2,7 @@
   import { ref, watch, onMounted, onUnmounted } from 'vue'
   import L from 'leaflet'
   import 'leaflet/dist/leaflet.css'
-  import { Location24Regular, Checkmark24Regular, ArrowUndo24Regular } from '@vicons/fluent'
+  import { Location24Regular, Checkmark24Regular, ArrowUndo24Regular, Map20Filled } from '@vicons/fluent'
 
   const props = defineProps({
     lat: {
@@ -542,31 +542,51 @@
         <!-- POLYGON MODE CONTROLS (geoType = true) -->
         <template v-else>
           <div v-if="!isDrawingPolygon" class="flex items-center gap-2">
-            <n-button size="small" type="primary" @click="startPolygonDrawing">
+            <n-button size="small" type="primary" round @click="startPolygonDrawing">
+              <template #icon>
+                <n-icon><Map20Filled /></n-icon>
+              </template>
               {{ $t('departmentLocationPage.map.addPolygon') }}
             </n-button>
           </div>
+          <!-- Bir xil `flex items-center gap-2` o'ram — "Polygon qo'shish" holati
+               bilan bir xil balandlikda (n-button size="small" = 28px), shuning
+               uchun rejim almashganda sarlavha balandligi o'zgarmaydi. -->
           <div v-else class="flex items-center gap-2">
-            <span class="points-badge">
-              <b>{{ polygonPoints.length }}</b>
+            <span class="map-points-badge">
+              <span class="map-points-badge__dot" />
+              {{ polygonPoints.length }} {{ $t('departmentLocationPage.map.points') }}
             </span>
             <n-tooltip trigger="hover">
               <template #trigger>
-                <n-button size="small" type="warning" :disabled="polygonPoints.length === 0" @click="undoLastPoint">
+                <n-button
+                  size="small"
+                  quaternary
+                  circle
+                  :disabled="polygonPoints.length === 0"
+                  class="map-undo-btn"
+                  @click="undoLastPoint"
+                >
                   <template #icon>
-                    <n-icon><ArrowUndo24Regular /></n-icon>
+                    <n-icon size="16"><ArrowUndo24Regular /></n-icon>
                   </template>
                 </n-button>
               </template>
               {{ $t('departmentLocationPage.map.undo') }}
             </n-tooltip>
-            <n-button size="small" type="success" :disabled="polygonPoints.length < 3" @click="finishPolygon">
+            <n-button
+              size="small"
+              type="success"
+              round
+              :disabled="polygonPoints.length < 3"
+              @click="finishPolygon"
+            >
               <template #icon>
                 <n-icon><Checkmark24Regular /></n-icon>
               </template>
               {{ $t('departmentLocationPage.map.save') }}
             </n-button>
-            <n-button size="small" type="error" secondary @click="cancelPolygonDrawing">
+            <n-button size="small" type="error" round ghost @click="cancelPolygonDrawing">
               {{ $t('content.cancel') }}
             </n-button>
           </div>
@@ -605,13 +625,38 @@
   min-height: 300px;
 }
 
-.points-badge {
+/* Nuqta soni — oddiy pill-belgi (button emas), shuning uchun tashqi o'rovchi
+   qo'shilmadi: qatorning balandligi "Polygon qo'shish" holatidagi kabi faqat
+   `n-button size="small"` (28px) bilan belgilanadi — badge undan pastroq
+   bo'lgani uchun rejim almashganda sarlavha balandligi o'zgarmaydi. */
+.map-points-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 13px;
-  color: #374151;
-  background: #f3f4f6;
-  border: 1px solid #e5e7eb;
+  border-radius: 9999px;
+  background: var(--surface-ground);
+  border: 1px solid var(--surface-line);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--textColor1);
+  white-space: nowrap;
+}
+
+.map-points-badge__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.map-undo-btn {
+  color: var(--textColor2);
+}
+
+.map-undo-btn:hover:not(.n-button--disabled) {
+  color: var(--warning-color, #f0a020);
 }
 
 [data-theme='dark'] {
@@ -623,12 +668,6 @@
   .map-header {
     background: var(--surface-section);
     border-bottom-color: var(--surface-line);
-  }
-
-  .points-badge {
-    color: var(--textColor0);
-    background: var(--table-header);
-    border-color: var(--surface-line);
   }
 }
 </style>
