@@ -244,6 +244,9 @@
               v-model:formatted-value="store.payload.scheduled_at"
               :placeholder="$t('notificationPage.sendTimePlaceholder')"
             />
+            <template #feedback>
+              <span class="text-xs text-textColor3">{{ $t('notificationPage.sendTimeHint') }}</span>
+            </template>
           </n-form-item>
         </template>
 
@@ -278,6 +281,9 @@
               v-model:formatted-value="store.payload.scheduled_at"
               :placeholder="$t('notificationPage.sendTimePlaceholder')"
             />
+            <template #feedback>
+              <span class="text-xs text-textColor3">{{ $t('notificationPage.sendTimeHint') }}</span>
+            </template>
           </n-form-item>
         </template>
       </div>
