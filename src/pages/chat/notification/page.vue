@@ -19,8 +19,6 @@
 
 <template>
   <UIPageContent>
-    <div class="shrink-0 text-lg font-semibold">{{ $t('notificationPage.name') }}</div>
-
     <!-- Ekran ikkiga bo'linadi: chapda forma (doimiy ochiq), o'ngda yuborilganlar.
          Balandlik `.ui-page-content { height: 100% }` zanjiridan keladi — desktopda
          sahifa skroll bo'lmaydi, har panel o'zi skroll qiladi. Mobilda (< md)
