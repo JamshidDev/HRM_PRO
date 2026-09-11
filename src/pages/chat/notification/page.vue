@@ -30,6 +30,8 @@
 
 <template>
   <UIPageContent>
+    <!-- Tab qatori: sahifa sarlavhasi `origin/dev` da olib tashlangan, uning
+         o'rnida Push / Telegram almashtirgichi turadi. -->
     <div class="w-full max-w-[320px] shrink-0">
       <n-tabs v-model:value="activeTab" type="segment" size="small">
         <n-tab name="push">{{ $t('telegramBroadcast.pushTab') }}</n-tab>
