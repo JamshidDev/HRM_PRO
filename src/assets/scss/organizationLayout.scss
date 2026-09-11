@@ -207,16 +207,11 @@ $mobile_device_screen_size: 900px;
           pointer-events: none;
         }
 
-        /*
-         * Yakka qator hoveri — KO'K tint, kulrang emas. Kulrang (`--surface-ground`)
-         * guruh oilasiga tegishli: ochiq guruh sarlavhasi ham, bolalar bloki ham
-         * o'sha rangda. Natijada element hoveri guruh sarlavhasining ODDIY holati
-         * bilan bir xil ko'rinardi. Endi rang oilasi holatni aytib turadi:
-         * kulrang = guruh konteyneri, ko'k = hover.
+        /* SINOV: sidebar hover fonlari vaqtincha o'chirilgan — yakka qator.
+         * &:hover:not(.active-panel-item-single) {
+         *   background-color: color-mix(in srgb, var(--primary-color) 22%, transparent);
+         * }
          */
-        &:hover:not(.active-panel-item-single) {
-          background-color: color-mix(in srgb, var(--primary-color) 22%, transparent);
-        }
         .item-icon {
           width: 26px;
           height: 26px;
@@ -484,20 +479,11 @@ $mobile_device_screen_size: 900px;
           cursor: pointer;
           transition: background-color 0.15s ease;
 
-          /*
-           * Guruh sarlavhasining hoveri UCH narsadan farq qilishi kerak:
-           *   1) o'zining OCHIQ holatidagi foni (`--surface-ground`),
-           *   2) oddiy (guruhga kirmaydigan) element hoveri — u ham
-           *      `--surface-ground`,
-           *   3) hoversiz holati (fonsiz).
-           * Neytral qoplama (`color-mix`) ikkalasi bilan ham deyarli bir xil
-           * pale kulrang berardi, shuning uchun bir pog'ona TO'QROQ qadam:
-           * `--surface-line` (light #d0d5dd, dark #344054). Guruh — konteyner,
-           * shu sababli uning hoveri yakka qatorникidan og'irroq bo'lgani mantiqiy.
+          /* SINOV: sidebar hover fonlari vaqtincha o'chirilgan — guruh sarlavhasi.
+           * &:hover {
+           *   background-color: var(--surface-line);
+           * }
            */
-          &:hover {
-            background-color: var(--surface-line);
-          }
 
           .item-title {
             flex: 1 1 auto;
@@ -560,19 +546,16 @@ $mobile_device_screen_size: 900px;
           border-radius: 10px;
           background-color: var(--surface-ground);
 
-          /*
-           * Guruh ichidagi bolalar ham tashqaridagi yakka qatorlar bilan BIR XIL
-           * hover tintini oladi — "hover = ko'k" qoidasi butun menyuda yagona.
-           * Kulrang blok ustida ko'k tint bemalol ko'rinadi.
-           */
           .panel-item-single {
             margin-bottom: 2px;
             &:last-child {
               margin-bottom: 0;
             }
-            &:hover:not(.active-panel-item-single) {
-              background-color: color-mix(in srgb, var(--primary-color) 22%, transparent);
-            }
+            /* SINOV: sidebar hover fonlari vaqtincha o'chirilgan — guruh ichidagi bola.
+             * &:hover:not(.active-panel-item-single) {
+             *   background-color: color-mix(in srgb, var(--primary-color) 22%, transparent);
+             * }
+             */
           }
         }
 
