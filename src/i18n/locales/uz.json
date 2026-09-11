@@ -661,7 +661,10 @@
     },
     "no-roles": "Biriktirilgan rollar yo'q!",
     "passwordChangedAt": "Parol yangilangan",
-    "daysAgo": "kun oldin"
+    "daysAgo": "kun oldin",
+    "pinTitle": "JSHSHIR tahriri",
+    "pin": "JSHSHIR",
+    "editPin": "JSHSHIR tahrirlash"
   },
   "confirmation": {
     "name": "Shartnomalar",

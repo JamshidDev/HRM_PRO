@@ -6,6 +6,7 @@
   import createForm from './ui/createForm.vue'
   import Filter from './ui/Filter.vue'
   import PermissionForm from './ui/permissionForm.vue'
+  import EditPinForm from './ui/editPinForm.vue'
 
   const store = useUserStore()
   const accStore = useAccountStore()
@@ -27,6 +28,13 @@
       :title="$t('userPage.permissions')"
     >
       <PermissionForm />
+    </UIModal>
+    <UIModal
+      v-model:visible="store.pinVisible"
+      :width="460"
+      :title="$t('userPage.pinTitle')"
+    >
+      <EditPinForm v-if="store.pinVisible" />
     </UIModal>
     <UIDrawer
       :visible="store.visible"

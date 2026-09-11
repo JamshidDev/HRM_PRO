@@ -646,7 +646,10 @@
     },
     "no-roles": "No roles assigned!",
     "passwordChangedAt": "Password changed",
-    "daysAgo": "days ago"
+    "daysAgo": "days ago",
+    "pinTitle": "Edit PINFL",
+    "pin": "PINFL",
+    "editPin": "Edit PINFL"
   },
   "confirmation": {
     "name": "Contracts",
