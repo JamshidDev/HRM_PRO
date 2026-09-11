@@ -8,7 +8,8 @@
     LockOpen16Filled,
     Add20Regular,
     OpenFolder24Filled,
-    Delete20Regular
+    Delete20Regular,
+    Edit20Regular
   } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -28,6 +29,12 @@
     store._myRoles()
     store.visibleType = true
     store.visible = true
+  }
+
+  // JSHSHIR tahriri — modal ochiladi, maydon joriy qiymat bilan to'ladi.
+  const onEditPin = (row) => {
+    if (!accStore.checkAction(accStore.pn.usersWrite)) return
+    store.openPinEdit(row)
   }
 
   const onDelete = (row) => {
@@ -110,7 +117,7 @@
     {
       key: 'phone',
       title: t('content.phone'),
-      width: 120
+      width: 150
     },
     {
       key: 'passwordChangedAt',
@@ -125,6 +132,12 @@
       key: Utils.ActionTypes.attachment,
       icon: UIHelper.renderIcon(OpenFolder24Filled),
       action: onAttachment
+    },
+    {
+      label: t('userPage.editPin'),
+      key: 'edit-pin',
+      icon: UIHelper.renderIcon(Edit20Regular),
+      action: onEditPin
     },
     {
       label: t('content.delete'),
@@ -229,6 +242,16 @@
             </n-icon>
           </template>
         </n-button>
+      </div>
+    </template>
+
+    <!-- Telefon + ostida JSHSHIR (bo'lmasa — chiziqcha). -->
+    <template #cell-phone="{ row }">
+      <div class="leading-tight">
+        <div class="text-textColor0">{{ row?.phone || '—' }}</div>
+        <div class="text-[11px] tabular-nums text-textColor3">
+          {{ row?.worker?.pin || '—' }}
+        </div>
       </div>
     </template>
 

@@ -661,7 +661,10 @@
     },
     "no-roles": "Biriktirilgan rollar yo'q!",
     "passwordChangedAt": "Parol yangilangan",
-    "daysAgo": "kun oldin"
+    "daysAgo": "kun oldin",
+    "pinTitle": "JSHSHIR tahriri",
+    "pin": "JSHSHIR",
+    "editPin": "JSHSHIR tahrirlash"
   },
   "confirmation": {
     "name": "Shartnomalar",
@@ -4463,7 +4466,9 @@
       "exitExam": "Chiqish/I"
     },
     "warning": {
-      "invalidResult": "Noto'g'ri ma'lumot kiritildi"
+      "invalidResult": "Noto'g'ri ma'lumot kiritildi",
+      "noExamWorkers": "Bu xodim(lar)da kirish yoki chiqish imtihoni natijasi yo'q, ular sertifikat ro'yxatiga kiritilmadi: {workers}",
+      "noValidWorkers": "Sertifikat berish uchun birorta ham xodimda kirish va chiqish imtihoni natijasi to'ldirilmagan."
     }
   },
   "publicPage": {
@@ -5148,22 +5153,23 @@
     "tab": "Telegram",
     "pushTab": "Push",
     "sentList": "Yuborilgan xabarlar",
-    "audienceLabel": "Kimga",
+    "audienceLabel": "Kimga yuboriladi",
     "audience": {
-      "all_staff": "Barchaga",
-      "selected": "Tanlanganlarga"
+      "all_staff": "Barcha xodimlarga",
+      "selected": "Tanlangan xodimlarga",
+      "med_reminder": "Tibbiy ko'rik eslatmasi"
     },
     "sentOf": "yuborildi",
     "blocked": "bloklagan",
     "failed": "xato",
-    "result": "Natija",
+    "result": "Yuborilgan",
     "coverage": "Qamrov (bot ulanganlar)",
     "startedAt": "Boshlandi",
     "finishedAt": "Tugadi",
     "lastErrors": "Oxirgi xatolar",
     "st": {
       "scheduled": "Rejalashtirilgan",
-      "sending": "Xabar yuborilmoqda",
+      "sending": "Yuborilmoqda",
       "done": "Bajarildi",
       "cancelled": "Bekor qilingan",
       "failed": "Xatolik"
@@ -5176,6 +5182,11 @@
       "maintenance_start": "Tizimda profilaktika",
       "maintenance_done": "Texnik ishlar yakunlandi",
       "new_version": "Mobil ilova yangilandi"
-    }
+    },
+    "blockedColumn": "Bloklagan",
+    "resultHint": "{total} ta qabul qiluvchidan {sent} tasiga yuborildi",
+    "recipientsShort": "Qabul qiluvchi",
+    "sendTimeLabel": "Yuborilish vaqtini sozlash",
+    "sendTimeFuture": "Vaqt hozirgidan keyin bo'lishi kerak"
   }
 }

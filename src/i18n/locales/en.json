@@ -646,7 +646,10 @@
     },
     "no-roles": "No roles assigned!",
     "passwordChangedAt": "Password changed",
-    "daysAgo": "days ago"
+    "daysAgo": "days ago",
+    "pinTitle": "Edit PINFL",
+    "pin": "PINFL",
+    "editPin": "Edit PINFL"
   },
   "confirmation": {
     "name": "Contracts",
@@ -4455,7 +4458,9 @@
       "exitExam": "Exit/I"
     },
     "warning": {
-      "invalidResult": "Invalid data entered"
+      "invalidResult": "Invalid data entered",
+      "noExamWorkers": "These workers have no entry or final exam result and were not included: {workers}",
+      "noValidWorkers": "No worker has both entry and final exam results filled in."
     }
   },
   "staffingApproval": {
@@ -5106,15 +5111,16 @@
     "tab": "Telegram",
     "pushTab": "Push",
     "sentList": "Sent broadcasts",
-    "audienceLabel": "Audience",
+    "audienceLabel": "Send to",
     "audience": {
-      "all_staff": "Everyone",
-      "selected": "Selected"
+      "all_staff": "All employees",
+      "selected": "Selected employees",
+      "med_reminder": "Medical exam reminder"
     },
     "sentOf": "sent",
     "blocked": "blocked",
     "failed": "failed",
-    "result": "Result",
+    "result": "Sent",
     "coverage": "Coverage (bot linked)",
     "startedAt": "Started",
     "finishedAt": "Finished",
@@ -5134,6 +5140,11 @@
       "maintenance_start": "Scheduled maintenance",
       "maintenance_done": "Maintenance completed",
       "new_version": "Mobile app update"
-    }
+    },
+    "blockedColumn": "Blocked",
+    "resultHint": "Sent to {sent} of {total} recipients",
+    "recipientsShort": "Recipients",
+    "sendTimeLabel": "Schedule send time",
+    "sendTimeFuture": "The time must be in the future"
   }
 }

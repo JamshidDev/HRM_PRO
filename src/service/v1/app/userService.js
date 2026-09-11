@@ -28,6 +28,10 @@ const _accessForAdmin = async (payload) => {
   return await axios.post(`/v1/user/access-for-admin`, payload?.data)
 }
 
+const _updatePin = async (payload) => {
+  return await axios.put(`/v1/admin/users/${payload?.id}/pin`, payload.data)
+}
+
 const _onSpam = async (payload) => {
   return await axios.post(`/v1/admin/users/${payload.id}/block`, payload?.data)
 }
@@ -58,6 +62,7 @@ export default {
   _temporaryToken,
   _accessForAdmin,
   _onSpam,
+  _updatePin,
   _userPermissions,
   _attachPermissions,
   _detachPermissions,

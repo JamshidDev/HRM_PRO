@@ -36,7 +36,12 @@ export const useUserStore = defineStore('user', {
     confirmVisible: false,
     isSpam: false,
     isPermissionsVisible: false,
-    userPermissionsLoading: false
+    userPermissionsLoading: false,
+    // JSHSHIR tahriri (modal).
+    pinVisible: false,
+    pinSaveLoading: false,
+    pinRow: null,
+    pinValue: null
   }),
   actions: {
     _onSpam() {
@@ -48,6 +53,24 @@ export const useUserStore = defineStore('user', {
         .finally(() => {
           this.loading = false
           this._index()
+        })
+    },
+    openPinEdit(row) {
+      this.pinRow = row
+      this.pinValue = row?.worker?.pin ?? null
+      this.pinVisible = true
+    },
+    _updatePin(callback) {
+      this.pinSaveLoading = true
+      $ApiService.userService
+        ._updatePin({ id: this.pinRow?.uuid, data: { pin: String(this.pinValue ?? '') } })
+        .then(() => {
+          this.pinVisible = false
+          this._index()
+          callback?.()
+        })
+        .finally(() => {
+          this.pinSaveLoading = false
         })
     },
     _index() {
