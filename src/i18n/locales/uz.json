@@ -5150,22 +5150,22 @@
     "tab": "Telegram",
     "pushTab": "Push",
     "sentList": "Yuborilgan xabarlar",
-    "audienceLabel": "Kimga",
+    "audienceLabel": "Kimga yuboriladi",
     "audience": {
-      "all_staff": "Barchaga",
-      "selected": "Tanlanganlarga"
+      "all_staff": "Barcha xodimlarga",
+      "selected": "Tanlangan xodimlarga"
     },
     "sentOf": "yuborildi",
     "blocked": "bloklagan",
     "failed": "xato",
-    "result": "Natija",
+    "result": "Yuborilgan",
     "coverage": "Qamrov (bot ulanganlar)",
     "startedAt": "Boshlandi",
     "finishedAt": "Tugadi",
     "lastErrors": "Oxirgi xatolar",
     "st": {
       "scheduled": "Rejalashtirilgan",
-      "sending": "Xabar yuborilmoqda",
+      "sending": "Yuborilmoqda",
       "done": "Bajarildi",
       "cancelled": "Bekor qilingan",
       "failed": "Xatolik"
@@ -5178,6 +5178,11 @@
       "maintenance_start": "Tizimda profilaktika",
       "maintenance_done": "Texnik ishlar yakunlandi",
       "new_version": "Mobil ilova yangilandi"
-    }
+    },
+    "blockedColumn": "Bloklagan",
+    "resultHint": "{total} ta qabul qiluvchidan {sent} tasiga yuborildi",
+    "recipientsShort": "Qabul qiluvchi",
+    "sendTimeLabel": "Yuborilish vaqtini sozlash",
+    "sendTimeFuture": "Vaqt hozirgidan keyin bo'lishi kerak"
   }
 }

@@ -32,7 +32,7 @@
   <UIPageContent>
     <!-- Tab qatori: sahifa sarlavhasi `origin/dev` da olib tashlangan, uning
          o'rnida Push / Telegram almashtirgichi turadi. -->
-    <div class="w-full max-w-[320px] shrink-0">
+    <div class="w-full max-w-[200px] shrink-0">
       <n-tabs v-model:value="activeTab" type="segment" size="small">
         <n-tab name="push">{{ $t('telegramBroadcast.pushTab') }}</n-tab>
         <n-tab name="telegram">{{ $t('telegramBroadcast.tab') }}</n-tab>
@@ -47,7 +47,7 @@
       <!-- Chap: xabar yuborish formasi -->
       <div
         v-if="canSend"
-        class="col-span-12 flex flex-col rounded-[20px] bg-surface-section p-4 md:col-span-5 md:min-h-0"
+        class="col-span-12 flex flex-col rounded-[20px] border border-surface-line/50 bg-surface-section p-4 md:col-span-5 md:min-h-0"
       >
         <!-- Sarlavha faqat Push tabida — Telegram formasida ortiqcha. -->
         <div v-if="activeTab === 'push'" class="mb-3 shrink-0 text-sm font-semibold text-gray-500">
@@ -61,7 +61,7 @@
 
       <!-- O'ng: yuborilgan xabarlar tarixi -->
       <div
-        class="col-span-12 flex flex-col rounded-[20px] bg-surface-section p-4 md:min-h-0"
+        class="col-span-12 flex flex-col rounded-[20px] border border-surface-line/50 bg-surface-section p-4 md:min-h-0"
         :class="canSend ? 'md:col-span-7' : 'md:col-span-12'"
       >
         <HistoryList v-if="activeTab === 'push'" />

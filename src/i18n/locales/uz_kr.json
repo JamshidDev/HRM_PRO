@@ -4857,22 +4857,22 @@
     "tab": "Telegram",
     "pushTab": "Push",
     "sentList": "Юборилган хабарлар",
-    "audienceLabel": "Кимга",
+    "audienceLabel": "Кимга юборилади",
     "audience": {
-      "all_staff": "Барчага",
-      "selected": "Танланганларга"
+      "all_staff": "Барча ходимларга",
+      "selected": "Танланган ходимларга"
     },
     "sentOf": "юборилди",
     "blocked": "блоклаган",
     "failed": "хато",
-    "result": "Натижа",
+    "result": "Юборилган",
     "coverage": "Қамров (бот уланганлар)",
     "startedAt": "Бошланди",
     "finishedAt": "Тугади",
     "lastErrors": "Охирги хатолар",
     "st": {
       "scheduled": "Режалаштирилган",
-      "sending": "Хабар юборилмоқда",
+      "sending": "Юборилмоқда",
       "done": "Бажарилди",
       "cancelled": "Бекор қилинган",
       "failed": "Хатолик"
@@ -4885,6 +4885,11 @@
       "maintenance_start": "Тизимда профилактика",
       "maintenance_done": "Техник ишлар якунланди",
       "new_version": "Мобил илова янгиланди"
-    }
+    },
+    "blockedColumn": "Блоклаган",
+    "resultHint": "{total} та қабул қилувчидан {sent} тасига юборилди",
+    "recipientsShort": "Қабул қилувчи",
+    "sendTimeLabel": "Юборилиш вақтини созлаш",
+    "sendTimeFuture": "Вақт ҳозиргидан кейин бўлиши керак"
   }
 }

@@ -5120,22 +5120,22 @@
     "tab": "Telegram",
     "pushTab": "Push",
     "sentList": "Отправленные рассылки",
-    "audienceLabel": "Кому",
+    "audienceLabel": "Кому отправляется",
     "audience": {
-      "all_staff": "Всем",
-      "selected": "Выбранным"
+      "all_staff": "Всем сотрудникам",
+      "selected": "Выбранным сотрудникам"
     },
     "sentOf": "отправлено",
     "blocked": "заблокировали",
     "failed": "ошибок",
-    "result": "Результат",
+    "result": "Отправлено",
     "coverage": "Охват (подключены к боту)",
     "startedAt": "Начало",
     "finishedAt": "Завершено",
     "lastErrors": "Последние ошибки",
     "st": {
       "scheduled": "Запланировано",
-      "sending": "Идёт отправка",
+      "sending": "Отправляется",
       "done": "Выполнено",
       "cancelled": "Отменено",
       "failed": "Ошибка"
@@ -5148,6 +5148,11 @@
       "maintenance_start": "Профилактика в системе",
       "maintenance_done": "Технические работы завершены",
       "new_version": "Обновление мобильного приложения"
-    }
+    },
+    "blockedColumn": "Заблокировали",
+    "resultHint": "Отправлено {sent} из {total} получателей",
+    "recipientsShort": "Получатели",
+    "sendTimeLabel": "Настроить время отправки",
+    "sendTimeFuture": "Время должно быть позже текущего"
   }
 }

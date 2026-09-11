@@ -5108,15 +5108,15 @@
     "tab": "Telegram",
     "pushTab": "Push",
     "sentList": "Sent broadcasts",
-    "audienceLabel": "Audience",
+    "audienceLabel": "Send to",
     "audience": {
-      "all_staff": "Everyone",
-      "selected": "Selected"
+      "all_staff": "All employees",
+      "selected": "Selected employees"
     },
     "sentOf": "sent",
     "blocked": "blocked",
     "failed": "failed",
-    "result": "Result",
+    "result": "Sent",
     "coverage": "Coverage (bot linked)",
     "startedAt": "Started",
     "finishedAt": "Finished",
@@ -5136,6 +5136,11 @@
       "maintenance_start": "Scheduled maintenance",
       "maintenance_done": "Maintenance completed",
       "new_version": "Mobile app update"
-    }
+    },
+    "blockedColumn": "Blocked",
+    "resultHint": "Sent to {sent} of {total} recipients",
+    "recipientsShort": "Recipients",
+    "sendTimeLabel": "Schedule send time",
+    "sendTimeFuture": "The time must be in the future"
   }
 }
