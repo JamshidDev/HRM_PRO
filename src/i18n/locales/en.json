@@ -4455,7 +4455,9 @@
       "exitExam": "Exit/I"
     },
     "warning": {
-      "invalidResult": "Invalid data entered"
+      "invalidResult": "Invalid data entered",
+      "noExamWorkers": "These workers have no entry or final exam result and were not included: {workers}",
+      "noValidWorkers": "No worker has both entry and final exam results filled in."
     }
   },
   "staffingApproval": {

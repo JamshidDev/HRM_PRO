@@ -4463,7 +4463,9 @@
       "exitExam": "Chiqish/I"
     },
     "warning": {
-      "invalidResult": "Noto'g'ri ma'lumot kiritildi"
+      "invalidResult": "Noto'g'ri ma'lumot kiritildi",
+      "noExamWorkers": "Bu xodim(lar)da kirish yoki chiqish imtihoni natijasi yo'q, ular sertifikat ro'yxatiga kiritilmadi: {workers}",
+      "noValidWorkers": "Sertifikat berish uchun birorta ham xodimda kirish va chiqish imtihoni natijasi to'ldirilmagan."
     }
   },
   "publicPage": {
