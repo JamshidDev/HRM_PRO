@@ -2,7 +2,7 @@
   import { UITable } from '@/components/index.js'
   import { useDepartmentLocationStore } from '@/store/modules/index.js'
   import { useAccountStore } from '@/store/modules/app/accountStore.js'
-  import { AddCircle24Regular, Add16Filled, Eye16Regular, Delete20Regular } from '@vicons/fluent'
+  import { Add16Filled, Eye16Regular, Delete20Regular } from '@vicons/fluent'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
@@ -33,12 +33,6 @@
 
   const onAddLocation = (row) => {
     store.openLocationModal(row)
-  }
-
-  // Jadval sarlavhasidagi "+" — bo'lim oldindan tanlanmagan holda joylashuv qo'shish
-  // (bo'lim formaning o'zida tanlanadi).
-  const onCreate = () => {
-    store.openLocationModal(null)
   }
 
   const onDelete = (row) => {
@@ -109,26 +103,6 @@
     permission-prefix="department-location"
     @change-page="changePage"
   >
-    <!-- Amallar ustuni sarlavhasidagi "circle-plus" — dizayndagi qo'shish tugmasi. -->
-    <template #header-__actions>
-      <n-tooltip>
-        <template #trigger>
-          <n-button
-            text
-            class="dl-header-add"
-            :disabled="!canWrite"
-            :aria-label="$t('departmentLocationPage.addLocation')"
-            @click="onCreate"
-          >
-            <n-icon :size="24">
-              <AddCircle24Regular />
-            </n-icon>
-          </n-button>
-        </template>
-        {{ $t('departmentLocationPage.addLocation') }}
-      </n-tooltip>
-    </template>
-
     <template #cell-locations="{ row }">
       <button
         v-if="locationCount(row) > 0"
@@ -146,14 +120,6 @@
 </template>
 
 <style scoped>
-  .dl-header-add {
-    color: var(--primary-color);
-  }
-
-  .dl-header-add:hover:not(.n-button--disabled) {
-    opacity: 0.8;
-  }
-
   .dl-locations-link {
     color: var(--primary-color);
     font-size: 14px;

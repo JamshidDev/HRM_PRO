@@ -13,8 +13,22 @@
   // `checkPermission` — yon ta'sirsiz; `checkAction` render vaqtida toast chiqaradi.
   const canSend = computed(() => accStore.checkPermission(accStore.pn.instructionsWrite))
 
+  // 🔴 Telegram ommaviy xabari BARCHA shtat xodimlariga ketadi — shuning uchun
+  // `instructions` emas, o'z ruxsatlari bilan yopiladi (backendda ham shunday).
+  const canSeeTelegram = computed(() =>
+    accStore.checkPermission(accStore.pn.chatTelegramBroadcastRead)
+  )
+  const canSendTelegram = computed(() =>
+    accStore.checkPermission(accStore.pn.chatTelegramBroadcastWrite)
+  )
+
   // Tab: 'push' (FCM) yoki 'telegram' («HRM PRO» boti orqali ommaviy xabar).
   const activeTab = ref('push')
+
+  // Joriy tabda forma ko'rsatiladimi (Push — instructions, Telegram — o'z slug'i).
+  const canSendActive = computed(() =>
+    activeTab.value === 'telegram' ? canSendTelegram.value : canSend.value
+  )
 
   onMounted(() => {
     // Bildirishnomalar `instructions` slug'i bilan qo'riqlanadi.
@@ -32,10 +46,10 @@
   <UIPageContent>
     <!-- Tab qatori: sahifa sarlavhasi `origin/dev` da olib tashlangan, uning
          o'rnida Push / Telegram almashtirgichi turadi. -->
-    <div class="w-full max-w-[320px] shrink-0">
+    <div class="w-full max-w-[200px] shrink-0">
       <n-tabs v-model:value="activeTab" type="segment" size="small">
         <n-tab name="push">{{ $t('telegramBroadcast.pushTab') }}</n-tab>
-        <n-tab name="telegram">{{ $t('telegramBroadcast.tab') }}</n-tab>
+        <n-tab v-if="canSeeTelegram" name="telegram">{{ $t('telegramBroadcast.tab') }}</n-tab>
       </n-tabs>
     </div>
 
@@ -46,8 +60,8 @@
     <div class="grid grid-cols-12 gap-4 md:min-h-0 md:flex-1">
       <!-- Chap: xabar yuborish formasi -->
       <div
-        v-if="canSend"
-        class="col-span-12 flex flex-col rounded-[20px] bg-surface-section p-4 md:col-span-5 md:min-h-0"
+        v-if="canSendActive"
+        class="col-span-12 flex flex-col rounded-[20px] border border-surface-line/50 bg-surface-section p-4 md:col-span-5 md:min-h-0"
       >
         <!-- Sarlavha faqat Push tabida — Telegram formasida ortiqcha. -->
         <div v-if="activeTab === 'push'" class="mb-3 shrink-0 text-sm font-semibold text-gray-500">
@@ -61,8 +75,8 @@
 
       <!-- O'ng: yuborilgan xabarlar tarixi -->
       <div
-        class="col-span-12 flex flex-col rounded-[20px] bg-surface-section p-4 md:min-h-0"
-        :class="canSend ? 'md:col-span-7' : 'md:col-span-12'"
+        class="col-span-12 flex flex-col rounded-[20px] border border-surface-line/50 bg-surface-section p-4 md:min-h-0"
+        :class="canSendActive ? 'md:col-span-7' : 'md:col-span-12'"
       >
         <HistoryList v-if="activeTab === 'push'" />
         <TelegramHistoryList v-else />

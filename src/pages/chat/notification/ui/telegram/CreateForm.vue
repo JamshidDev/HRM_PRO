@@ -4,6 +4,8 @@
   import i18n from '@/i18n/index.js'
   import UserSelect from './UserSelect.vue'
   import MessageEditor from './MessageEditor.vue'
+  import { Notepad20Regular } from '@vicons/fluent'
+  import dayjs from 'dayjs'
   import { telegramTextLength } from '@/utils/telegramHtml.js'
   import { messageTemplates } from './templates.js'
 
@@ -54,9 +56,17 @@
     editorKey.value += 1
   }
 
+  // Faqat kelajak: o'tgan kun tanlanmaydi, o'tgan soat esa submitda ushlanadi.
+  const disablePastDate = (ts) => ts < dayjs().startOf('day').valueOf()
+  const isPastTime = computed(() => {
+    const v = store.payload.scheduled_at
+    return !!v && dayjs(v, 'YYYY-MM-DD HH:mm:ss').valueOf() <= Date.now()
+  })
+
   const onSubmit = () => {
     // uz bo'sh bo'lsa — uz tabiga qaytaramiz, xato o'sha yerda ko'rinadi.
     if (!store.payload.message?.uz?.trim()) activeLang.value = 'uz'
+    if (isPastTime.value) return
     formRef.value?.validate((error) => {
       if (!error) store._store()
     })
@@ -72,7 +82,11 @@
         <n-select v-model:value="store.payload.audience" :options="audienceOptions" />
       </n-form-item>
 
-      <n-form-item :label="$t('notificationPage.sendTime')">
+      <n-form-item
+        :label="$t('telegramBroadcast.sendTimeLabel')"
+        :validation-status="isPastTime ? 'error' : undefined"
+        :feedback="isPastTime ? $t('telegramBroadcast.sendTimeFuture') : undefined"
+      >
         <n-date-picker
           class="w-full"
           type="datetime"
@@ -80,6 +94,7 @@
           :actions="['clear', 'confirm']"
           format="yyyy-MM-dd HH:mm"
           value-format="yyyy-MM-dd HH:mm:ss"
+          :is-date-disabled="disablePastDate"
           v-model:formatted-value="store.payload.scheduled_at"
           placeholder=""
         />
@@ -102,19 +117,21 @@
         <UserSelect v-model="store.payload.user_ids" />
       </n-form-item>
 
-      <!-- Til switch (ixcham) + tayyor xabar tanlash + belgilar hisoblagichi -->
+      <!-- Til almashtirgich (segment) + tayyor xabar + belgilar hisoblagichi -->
       <div class="col-span-2 mb-2 flex items-center gap-2">
-        <n-radio-group v-model:value="activeLang" size="small" class="shrink-0">
-          <n-radio-button v-for="l in langs" :key="l.key" :value="l.key">
-            <span class="flex items-center gap-1">
-              {{ l.label }}
-              <span
-                v-if="langFilled(l.key)"
-                class="inline-block h-1.5 w-1.5 rounded-full bg-success"
-              />
-            </span>
-          </n-radio-button>
-        </n-radio-group>
+        <div class="tg-lang shrink-0">
+          <button
+            v-for="l in langs"
+            :key="l.key"
+            type="button"
+            class="tg-lang__btn"
+            :class="{ 'tg-lang__btn--active': activeLang === l.key }"
+            @click="activeLang = l.key"
+          >
+            {{ l.label }}
+            <span v-if="langFilled(l.key)" class="tg-lang__dot" />
+          </button>
+        </div>
 
         <n-select
           v-model:value="selectedTemplate"
@@ -124,9 +141,11 @@
           :options="templateOptions"
           :placeholder="$t('telegramBroadcast.templatePlaceholder')"
           @update:value="applyTemplate"
-        />
-
-        <span class="shrink-0 text-xs text-gray-400">{{ currentLength }} / {{ MAX_LENGTH }}</span>
+        >
+          <template #prefix>
+            <n-icon size="15" class="text-textColor3"><Notepad20Regular /></n-icon>
+          </template>
+        </n-select>
       </div>
 
       <n-form-item
@@ -143,18 +162,32 @@
         ]"
       >
         <!-- `key` — til almashganda muharrir yangi matn bilan qayta quriladi. -->
-        <MessageEditor
-          :key="`${activeLang}-${editorKey}`"
-          v-model="store.payload.message[activeLang]"
-          :placeholder="placeholders[activeLang]"
-          :disabled="store.saveLoading"
-        />
+        <div class="w-full">
+          <MessageEditor
+            :key="`${activeLang}-${editorKey}`"
+            v-model="store.payload.message[activeLang]"
+            :placeholder="placeholders[activeLang]"
+            :disabled="store.saveLoading"
+          />
+          <!-- Belgilar hisoblagichi — maydon ostida, o'ngda. -->
+          <div
+            class="mt-1 text-right text-xs tabular-nums"
+            :class="currentLength > MAX_LENGTH * 0.9 ? 'text-warning' : 'text-textColor3'"
+          >
+            {{ currentLength }} / {{ MAX_LENGTH }}
+          </div>
+        </div>
       </n-form-item>
     </div>
 
     <div class="grid grid-cols-2 gap-3">
       <n-button ghost type="error" @click="store.resetForm()">{{ $t('content.cancel') }}</n-button>
-      <n-button type="primary" :loading="store.saveLoading" @click="onSubmit">
+      <n-button
+        type="primary"
+        :loading="store.saveLoading"
+        :disabled="isPastTime"
+        @click="onSubmit"
+      >
         {{
           store.payload.scheduled_at
             ? $t('telegramBroadcast.schedule')
@@ -164,3 +197,51 @@
     </div>
   </n-form>
 </template>
+
+<style scoped>
+  /* Til almashtirgich — segment ko'rinishidagi ixcham «pill»lar. */
+  .tg-lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px;
+    border-radius: 999px;
+    background: var(--surface-ground, rgb(0 0 0 / 4%));
+  }
+
+  .tg-lang__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--textColor2);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+    cursor: pointer;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .tg-lang__btn:hover {
+    color: var(--textColor0);
+  }
+
+  .tg-lang__btn--active {
+    background: var(--surface-section, #fff);
+    color: var(--color-primary);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 8%);
+  }
+
+  /* To'ldirilgan til — yashil nuqta. */
+  .tg-lang__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--color-success);
+  }
+</style>

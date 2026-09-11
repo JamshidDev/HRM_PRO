@@ -120,10 +120,12 @@
 
 <template>
   <div
-    class="tg-editor w-full rounded-lg border border-surface-line bg-surface-ground transition-colors focus-within:border-primary"
+    class="tg-editor w-full overflow-hidden rounded-lg border border-surface-line bg-surface-section transition-colors focus-within:border-primary"
     :class="{ 'opacity-60': disabled }"
   >
-    <div class="flex flex-wrap items-center gap-0.5 border-b border-surface-line px-1 py-1">
+    <div
+      class="flex flex-wrap items-center gap-0.5 border-b border-surface-line bg-surface-section px-1 py-1"
+    >
       <NTooltip v-for="t in tools" :key="t.key" trigger="hover" placement="top">
         <template #trigger>
           <button

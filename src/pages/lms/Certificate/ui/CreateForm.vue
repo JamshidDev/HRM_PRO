@@ -14,6 +14,17 @@
   const onSubmit = () => {
     formRef.value?.validate((error) => {
       if (!error) {
+        // 🔴 Ilgari to'liqsiz xodimlar JIMGINA tashlab ketilardi — operator
+        // kimdir ro'yxatga tushmaganini bilmasdi. Endi ular nomi bilan ogohlantiriladi.
+        const skipped = store.payload.workers.filter((v) => !filterCallback(v))
+        if (skipped.length) {
+          const names = skipped
+            .map((v) => [v.data?.lastName, v.data?.firstName].filter(Boolean).join(' '))
+            .filter(Boolean)
+            .join(', ')
+          $Toast.warning(t('lmsCertificate.warning.noExamWorkers', { workers: names }))
+        }
+
         const workerData = store.payload.workers.filter(filterCallback).map((v) => ({
           id: v.id,
           worker_id: v.workerId,
@@ -26,7 +37,10 @@
           end_exam_result: v.showEndInput ? v.end_exam_result : undefined
         }))
 
-        if (!workerData?.length) return
+        if (!workerData?.length) {
+          $Toast.warning(t('lmsCertificate.warning.noValidWorkers'))
+          return
+        }
 
         const data = {
           group_id: store.payload.group_id,
