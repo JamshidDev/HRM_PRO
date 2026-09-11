@@ -2584,7 +2584,8 @@
       "absent": "Неявка",
       "holiday": "Праздник"
     },
-    "workTimeType": "Тип рабочего времени"
+    "workTimeType": "Тип рабочего времени",
+    "fill": "Заполнить"
   },
   "turnstile": {
     "title": "Турникет",
@@ -4483,7 +4484,8 @@
     "sentList": "Отправленные уведомления",
     "schedule": "Запланировать",
     "sendTime": "Запланировано",
-    "sendTimePlaceholder": "Пусто = сразу",
+    "sendTimePlaceholder": "Выберите дату и время",
+    "sendTimeHint": "Если не выбрано, сообщение будет отправлено сразу",
     "sender": "Отправитель",
     "channel": "Канал",
     "recipients": "Получатели",
@@ -5110,6 +5112,40 @@
     "name": "Отчёты",
     "tabs": {
       "special": "Специальный отчёт"
+    }
+  },
+  "telegramBroadcast": {
+    "tab": "Telegram",
+    "pushTab": "Push",
+    "sentList": "Отправленные рассылки",
+    "audienceLabel": "Кому",
+    "audience": {
+      "all_staff": "Всем",
+      "selected": "Выбранным"
+    },
+    "sentOf": "отправлено",
+    "blocked": "заблокировали",
+    "failed": "ошибок",
+    "result": "Результат",
+    "coverage": "Охват (подключены к боту)",
+    "startedAt": "Начало",
+    "finishedAt": "Завершено",
+    "lastErrors": "Последние ошибки",
+    "st": {
+      "scheduled": "Запланировано",
+      "sending": "Идёт отправка",
+      "done": "Выполнено",
+      "cancelled": "Отменено",
+      "failed": "Ошибка"
+    },
+    "send": "Отправить сообщение",
+    "schedule": "Запланировать",
+    "messageText": "Текст сообщения",
+    "templatePlaceholder": "Готовый текст",
+    "templates": {
+      "maintenance_start": "Профилактика в системе",
+      "maintenance_done": "Технические работы завершены",
+      "new_version": "Обновление мобильного приложения"
     }
   }
 }

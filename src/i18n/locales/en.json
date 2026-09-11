@@ -2576,7 +2576,8 @@
       "absent": "Absent",
       "holiday": "Holiday"
     },
-    "workTimeType": "Work time type"
+    "workTimeType": "Work time type",
+    "fill": "Fill"
   },
   "turnstile": {
     "title": "Turnstile",
@@ -4472,7 +4473,8 @@
     "sentList": "Sent notifications",
     "schedule": "Schedule",
     "sendTime": "Scheduled",
-    "sendTimePlaceholder": "Empty = now",
+    "sendTimePlaceholder": "Select date and time",
+    "sendTimeHint": "If left empty, the message is sent immediately",
     "sender": "Sender",
     "channel": "Channel",
     "recipients": "Recipients",
@@ -5098,6 +5100,40 @@
     "name": "Reports",
     "tabs": {
       "special": "Special report"
+    }
+  },
+  "telegramBroadcast": {
+    "tab": "Telegram",
+    "pushTab": "Push",
+    "sentList": "Sent broadcasts",
+    "audienceLabel": "Audience",
+    "audience": {
+      "all_staff": "Everyone",
+      "selected": "Selected"
+    },
+    "sentOf": "sent",
+    "blocked": "blocked",
+    "failed": "failed",
+    "result": "Result",
+    "coverage": "Coverage (bot linked)",
+    "startedAt": "Started",
+    "finishedAt": "Finished",
+    "lastErrors": "Last errors",
+    "st": {
+      "scheduled": "Scheduled",
+      "sending": "Sending",
+      "done": "Completed",
+      "cancelled": "Cancelled",
+      "failed": "Failed"
+    },
+    "send": "Send message",
+    "schedule": "Schedule",
+    "messageText": "Message text",
+    "templatePlaceholder": "Template",
+    "templates": {
+      "maintenance_start": "Scheduled maintenance",
+      "maintenance_done": "Maintenance completed",
+      "new_version": "Mobile app update"
     }
   }
 }

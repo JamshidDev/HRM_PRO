@@ -2596,7 +2596,8 @@
       "absent": "Kelmagan",
       "holiday": "Bayram"
     },
-    "workTimeType": "Ish vaqti turi"
+    "workTimeType": "Ish vaqti turi",
+    "fill": "To'ldirish"
   },
   "turnstile": {
     "title": "Turniket",
@@ -4482,7 +4483,8 @@
     "sentList": "Yuborilgan bildirishnomalar",
     "schedule": "Rejalashtirish",
     "sendTime": "Rejalashtirilgan",
-    "sendTimePlaceholder": "Bo'sh = darhol",
+    "sendTimePlaceholder": "Sana va vaqtni tanlang",
+    "sendTimeHint": "Tanlanmasa, xabar darhol yuboriladi",
     "sender": "Yuboruvchi",
     "channel": "Kanal",
     "recipients": "Qabul qiluvchilar",
@@ -5140,6 +5142,40 @@
     "name": "Hisobotlar",
     "tabs": {
       "special": "Maxsus hisobot"
+    }
+  },
+  "telegramBroadcast": {
+    "tab": "Telegram",
+    "pushTab": "Push",
+    "sentList": "Yuborilgan xabarlar",
+    "audienceLabel": "Kimga",
+    "audience": {
+      "all_staff": "Barchaga",
+      "selected": "Tanlanganlarga"
+    },
+    "sentOf": "yuborildi",
+    "blocked": "bloklagan",
+    "failed": "xato",
+    "result": "Natija",
+    "coverage": "Qamrov (bot ulanganlar)",
+    "startedAt": "Boshlandi",
+    "finishedAt": "Tugadi",
+    "lastErrors": "Oxirgi xatolar",
+    "st": {
+      "scheduled": "Rejalashtirilgan",
+      "sending": "Xabar yuborilmoqda",
+      "done": "Bajarildi",
+      "cancelled": "Bekor qilingan",
+      "failed": "Xatolik"
+    },
+    "send": "Xabar yuborish",
+    "schedule": "Rejalashtirish",
+    "messageText": "Xabar matni",
+    "templatePlaceholder": "Tayyor xabar",
+    "templates": {
+      "maintenance_start": "Tizimda profilaktika",
+      "maintenance_done": "Texnik ishlar yakunlandi",
+      "new_version": "Mobil ilova yangilandi"
     }
   }
 }
