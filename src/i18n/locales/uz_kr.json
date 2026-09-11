@@ -2361,7 +2361,8 @@
       "absent": "Келмаган",
       "holiday": "Байрам"
     },
-    "workTimeType": "Иш вақти тури"
+    "workTimeType": "Иш вақти тури",
+    "fill": "Тўлдириш"
   },
   "turnstile": {
     "title": "Турникет",
@@ -4848,6 +4849,40 @@
     "name": "Ҳисоботлар",
     "tabs": {
       "special": "Махсус ҳисобот"
+    }
+  },
+  "telegramBroadcast": {
+    "tab": "Telegram",
+    "pushTab": "Push",
+    "sentList": "Юборилган хабарлар",
+    "audienceLabel": "Кимга",
+    "audience": {
+      "all_staff": "Барчага",
+      "selected": "Танланганларга"
+    },
+    "sentOf": "юборилди",
+    "blocked": "блоклаган",
+    "failed": "хато",
+    "result": "Натижа",
+    "coverage": "Қамров (бот уланганлар)",
+    "startedAt": "Бошланди",
+    "finishedAt": "Тугади",
+    "lastErrors": "Охирги хатолар",
+    "st": {
+      "scheduled": "Режалаштирилган",
+      "sending": "Хабар юборилмоқда",
+      "done": "Бажарилди",
+      "cancelled": "Бекор қилинган",
+      "failed": "Хатолик"
+    },
+    "send": "Хабар юбориш",
+    "schedule": "Режалаштириш",
+    "messageText": "Хабар матни",
+    "templatePlaceholder": "Тайёр хабар",
+    "templates": {
+      "maintenance_start": "Тизимда профилактика",
+      "maintenance_done": "Техник ишлар якунланди",
+      "new_version": "Мобил илова янгиланди"
     }
   }
 }

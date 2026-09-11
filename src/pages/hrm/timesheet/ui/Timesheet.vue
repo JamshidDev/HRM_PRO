@@ -748,20 +748,22 @@
        «Natija · N ta katak tanlandi» yozuvida ko'rinadi. */
   }
   /* Katakcha ichi bir xil standart: harf qatori + soat qatori. O'lcham va
-     joylashuv kontentga qarab o'zgarmaydi — soat bo'lmasa qatori bo'sh turadi. */
+     joylashuv kontentga qarab o'zgarmaydi — soat bo'lmasa qatori bo'sh turadi.
+     Urg'u SOATDA: tabelchi avval necha soat yozilganini o'qiydi, harf esa
+     turni aniqlashtiradi. */
   .ts-cell-status {
-    display: block;
-    height: 16px;
-    line-height: 16px;
-    font-size: 13px;
-    font-weight: 700;
-  }
-  .ts-cell-hours {
     display: block;
     height: 12px;
     line-height: 12px;
     font-size: 10px;
     font-weight: 600;
+  }
+  .ts-cell-hours {
+    display: block;
+    height: 16px;
+    line-height: 16px;
+    font-size: 13px;
+    font-weight: 700;
   }
   /* Ajratuvchi `/` — harf va soat qatorlarida BIR XIL neytral rangda. */
   .ts-sep {
