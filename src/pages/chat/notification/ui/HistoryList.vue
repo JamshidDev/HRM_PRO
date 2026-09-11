@@ -1,9 +1,17 @@
 <script setup>
-  import { UIUser, UIModal } from '@components'
+  import { UIUser, UIModal, UITable } from '@components'
   import { useNotificationStore } from '@stores'
   import { Utils } from '@utils'
+  import UIHelper from '@/utils/UIHelper.js'
   import i18n from '@/i18n/index.js'
-  import { MoreHorizontal24Regular } from '@vicons/fluent'
+  import {
+    Eye24Regular,
+    Dismiss24Regular,
+    Globe20Regular,
+    Person20Regular,
+    CalendarLtr20Regular,
+    DocumentCheckmark20Regular
+  } from '@vicons/fluent'
 
   const { t } = i18n.global
   const store = useNotificationStore()
@@ -22,8 +30,9 @@
     store._push_logs()
   }
 
-  const changePage = (page) => {
-    store.pushLogsParams.page = page
+  const changePage = (v) => {
+    store.pushLogsParams.page = v.page
+    store.pushLogsParams.per_page = v.per_page
     store._push_logs()
   }
 
@@ -85,22 +94,36 @@
       ? row.scheduled_at
       : row.sent_at || row.scheduled_at
 
-  const rowOptions = (row) => {
-    const opts = [{ label: t('content.view'), key: 'view' }]
-    if (row.status === 'scheduled') opts.push({ label: t('content.cancel'), key: 'cancel' })
-    return opts
-  }
-
   const viewRow = ref(null)
   const viewVisible = ref(false)
-  const onAction = (key, row) => {
-    if (key === 'view') {
-      viewRow.value = row
-      viewVisible.value = true
-    } else if (key === 'cancel') {
-      store._cancel_push(row.id)
-    }
+  const openView = (row) => {
+    viewRow.value = row
+    viewVisible.value = true
   }
+
+  const rowActions = computed(() => [
+    {
+      label: t('content.view'),
+      key: 'view',
+      icon: UIHelper.renderIcon(Eye24Regular),
+      action: openView
+    },
+    {
+      label: t('content.cancel'),
+      key: 'cancel',
+      icon: UIHelper.renderIcon(Dismiss24Regular),
+      visible: (row) => row.status === 'scheduled',
+      action: (row) => store._cancel_push(row.id)
+    }
+  ])
+
+  const columns = computed(() => [
+    { key: 'status', title: t('content.status'), width: 130 },
+    { key: 'title', title: t('content.title'), minWidth: 200 },
+    { key: 'channel', title: t('notificationPage.channel'), width: 170 },
+    { key: 'recipients', title: t('notificationPage.recipients'), width: 140, align: 'center' },
+    { key: 'time', title: t('content.time'), width: 170 }
+  ])
 </script>
 
 <template>
@@ -122,138 +145,151 @@
       </div>
     </div>
 
-    <!-- Ro'yxat — panel qolgan balandligini oladi va ichida skroll bo'ladi -->
-    <n-spin :show="store.pushLogsLoading" class="history-list__spin min-h-0 flex-1">
-      <div v-if="store.pushLogs.length" class="flex h-full flex-col overflow-y-auto pr-1">
-        <div
-          v-for="row in store.pushLogs"
-          :key="row.id"
-          class="group shrink-0 border-b border-surface-line px-1 py-3 transition-colors last:border-0 hover:bg-info/5"
-        >
-          <div class="flex items-start gap-2">
-            <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full" :class="dotClass(row.status)" />
-            <div class="min-w-0 flex-1">
-              <div class="flex items-start justify-between gap-2">
-                <div class="truncate font-medium">{{ row.title || '—' }}</div>
-                <n-dropdown
-                  trigger="click"
-                  :options="rowOptions(row)"
-                  @select="(key) => onAction(key, row)"
-                >
-                  <n-button quaternary circle size="tiny">
-                    <template #icon>
-                      <n-icon><MoreHorizontal24Regular /></n-icon>
-                    </template>
-                  </n-button>
-                </n-dropdown>
-              </div>
-              <div v-if="row.message" class="truncate text-xs text-gray-400">{{ row.message }}</div>
-
-              <!-- meta -->
-              <div class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-400">
-                <!-- Xato bo'lsa — badge ustiga hover qilganda error message tooltipda. -->
-                <n-tooltip
-                  v-if="statusView(row.status).type === 'error' && row.error"
-                  trigger="hover"
-                  placement="top"
-                >
-                  <template #trigger>
-                    <n-tag type="error" size="tiny" round class="cursor-help">
-                      {{ statusView(row.status).label }}
-                    </n-tag>
-                  </template>
-                  <span class="max-w-xs break-words">{{ friendlyError(row.error) }}</span>
-                </n-tooltip>
-                <n-tag v-else :type="statusView(row.status).type" size="tiny" round>
-                  {{ statusView(row.status).label }}
-                </n-tag>
-                <span>{{ channelLabel(row) }}</span>
-                <span>· {{ row.recipients }} {{ $t('notificationPage.recipients') }}</span>
-                <span v-if="rowTime(row)" class="ml-auto whitespace-nowrap">
-                  {{ Utils.timeHHMMWithMonth(rowTime(row)) }}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <n-empty v-else class="py-10" />
-    </n-spin>
-
-    <!-- Paginatsiya -->
-    <div
-      v-if="store.pushLogsTotal > store.pushLogsParams.per_page"
-      class="mt-3 flex shrink-0 justify-end"
-    >
-      <n-pagination
+    <!-- Ro'yxat — panel qolgan balandligini oladi, ichida jadval skroll bo'ladi.
+         `UITable` `inheritAttrs: false` bo'lgani uchun tashqi `class` unga
+         o'tmaydi — balandlikni shu o'rovchi `div` orqali beramiz. -->
+    <div class="min-h-0 flex-1">
+      <UITable
+        :columns="columns"
+        :actions="rowActions"
+        :data="store.pushLogs"
+        :loading="store.pushLogsLoading"
         :page="store.pushLogsParams.page"
-        :page-size="store.pushLogsParams.per_page"
-        :item-count="store.pushLogsTotal"
-        @update:page="changePage"
-      />
+        :per-page="store.pushLogsParams.per_page"
+        :total="store.pushLogsTotal"
+        :show-index="false"
+        storage-key="chat-notification-history"
+        @change-page="changePage"
+        @row-click="openView"
+      >
+        <template #cell-status="{ row }">
+          <n-tooltip
+            v-if="statusView(row.status).type === 'error' && row.error"
+            trigger="hover"
+            placement="top"
+          >
+            <template #trigger>
+              <n-tag type="error" size="small" round class="cursor-help" @click.stop>
+                {{ statusView(row.status).label }}
+              </n-tag>
+            </template>
+            <span class="max-w-xs break-words">{{ friendlyError(row.error) }}</span>
+          </n-tooltip>
+          <n-tag v-else :type="statusView(row.status).type" size="small" round>
+            {{ statusView(row.status).label }}
+          </n-tag>
+        </template>
+
+        <template #cell-title="{ row }">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="h-2 w-2 shrink-0 rounded-full" :class="dotClass(row.status)" />
+            <span class="truncate font-medium text-textColor0">{{ row.title || '—' }}</span>
+          </div>
+        </template>
+
+        <template #cell-channel="{ row }">
+          <span class="text-textColor2">{{ channelLabel(row) }}</span>
+        </template>
+
+        <template #cell-recipients="{ row }">
+          {{ row.recipients }}
+        </template>
+
+        <template #cell-time="{ row }">
+          <span v-if="rowTime(row)" class="whitespace-nowrap text-textColor2">
+            {{ Utils.timeHHMMWithMonth(rowTime(row)) }}
+          </span>
+          <span v-else>—</span>
+        </template>
+      </UITable>
     </div>
 
     <!-- Ko'rish modali -->
     <UIModal
-      :width="560"
+      :width="520"
       :visible="viewVisible"
       @update:visible="(v) => (viewVisible = v)"
       :title="$t('content.view')"
     >
-      <div v-if="viewRow" class="grid grid-cols-1 gap-2 text-sm">
-        <div class="flex justify-between border-b pb-1">
-          <span class="text-gray-500">{{ $t('content.title') }}</span>
-          <span class="font-medium">{{ viewRow.title }}</span>
-        </div>
-        <div class="flex justify-between border-b pb-1">
-          <span class="text-gray-500">{{ $t('content.description') }}</span>
-          <span class="text-right">{{ viewRow.message }}</span>
-        </div>
-        <div class="flex justify-between border-b pb-1">
-          <span class="text-gray-500">{{ $t('notificationPage.channel') }}</span>
-          <span>{{ channelLabel(viewRow) }}</span>
-        </div>
-        <div class="flex justify-between border-b pb-1">
-          <span class="text-gray-500">{{ $t('content.status') }}</span>
-          <n-tag :type="statusView(viewRow.status).type" size="small" round>
+      <div v-if="viewRow" class="flex flex-col gap-4 text-sm">
+        <!-- Sarlavha + tavsif + holat -->
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <h4 class="truncate text-base font-semibold text-textColor0">
+              {{ viewRow.title || '—' }}
+            </h4>
+            <p v-if="viewRow.message" class="mt-1 whitespace-pre-line text-sm text-textColor2">
+              {{ viewRow.message }}
+            </p>
+          </div>
+          <n-tag :type="statusView(viewRow.status).type" size="small" round class="shrink-0">
             {{ statusView(viewRow.status).label }}
           </n-tag>
         </div>
-        <div class="flex justify-between border-b pb-1">
-          <span class="text-gray-500">{{ $t('notificationPage.recipients') }}</span>
-          <span>{{ viewRow.recipients }}</span>
+
+        <!-- Xato bo'lsa — tushunarli xabar banneri -->
+        <div v-if="viewRow.error" class="rounded-lg bg-error/10 px-3 py-2 text-xs text-error">
+          {{ friendlyError(viewRow.error) }}
         </div>
-        <div class="flex justify-between border-b pb-1">
-          <span class="text-gray-500">{{ $t('notificationPage.push') }}</span>
-          <span>
-            <span class="text-success">{{ viewRow.fcm_sent }}</span>
-            <span v-if="viewRow.fcm_failed" class="text-error"> / {{ viewRow.fcm_failed }}</span>
-          </span>
-        </div>
-        <div v-if="viewRow.error" class="flex justify-between border-b pb-1">
-          <span class="text-gray-500">{{ $t('content.error') || 'Error' }}</span>
-          <span class="text-error text-right">{{ friendlyError(viewRow.error) }}</span>
-        </div>
-        <div class="flex justify-between border-b pb-1">
-          <span class="text-gray-500">{{ $t('notificationPage.sendTime') }}</span>
-          <span>{{ viewRow.scheduled_at || '—' }}</span>
-        </div>
-        <div class="flex justify-between border-b pb-1">
-          <span class="text-gray-500">{{ $t('notificationPage.sentAt') }}</span>
-          <span>{{ viewRow.sent_at || '—' }}</span>
-        </div>
-        <div class="flex justify-between">
-          <span class="text-gray-500">{{ $t('notificationPage.sender') }}</span>
-          <UIUser
-            v-if="viewRow.sender"
-            :data="{
-              lastName: viewRow.sender.last_name,
-              firstName: viewRow.sender.first_name,
-              middleName: viewRow.sender.middle_name
-            }"
-          />
-          <span v-else>—</span>
+
+        <div class="kv-card">
+          <div class="kv-row">
+            <span class="kv-label">
+              <n-icon size="13"><Globe20Regular /></n-icon>
+              {{ $t('notificationPage.channel') }}
+            </span>
+            <span class="kv-val">{{ channelLabel(viewRow) }}</span>
+          </div>
+          <div class="kv-row">
+            <span class="kv-label">
+              <n-icon size="13"><Person20Regular /></n-icon>
+              {{ $t('notificationPage.recipients') }}
+            </span>
+            <span class="kv-val">{{ viewRow.recipients }}</span>
+          </div>
+          <div class="kv-row">
+            <span class="kv-label">
+              <n-icon size="13"><DocumentCheckmark20Regular /></n-icon>
+              {{ $t('notificationPage.push') }}
+            </span>
+            <span class="kv-val">
+              <span class="font-semibold text-success">{{ viewRow.fcm_sent }}</span>
+              <span v-if="viewRow.fcm_failed" class="text-error">
+                &nbsp;/ {{ viewRow.fcm_failed }}
+              </span>
+            </span>
+          </div>
+          <div class="kv-row">
+            <span class="kv-label">
+              <n-icon size="13"><CalendarLtr20Regular /></n-icon>
+              {{ $t('notificationPage.sendTime') }}
+            </span>
+            <span class="kv-val">{{ viewRow.scheduled_at || '—' }}</span>
+          </div>
+          <div class="kv-row">
+            <span class="kv-label">
+              <n-icon size="13"><CalendarLtr20Regular /></n-icon>
+              {{ $t('notificationPage.sentAt') }}
+            </span>
+            <span class="kv-val">{{ viewRow.sent_at || '—' }}</span>
+          </div>
+          <div class="kv-row">
+            <span class="kv-label">
+              <n-icon size="13"><Person20Regular /></n-icon>
+              {{ $t('notificationPage.sender') }}
+            </span>
+            <span class="kv-val">
+              <UIUser
+                v-if="viewRow.sender"
+                :data="{
+                  lastName: viewRow.sender.last_name,
+                  firstName: viewRow.sender.first_name,
+                  middleName: viewRow.sender.middle_name
+                }"
+              />
+              <span v-else>—</span>
+            </span>
+          </div>
         </div>
       </div>
     </UIModal>
@@ -261,9 +297,44 @@
 </template>
 
 <style scoped>
-  /* `n-spin` ichida balandligi yo'q wrapper div yaratadi — ichki `h-full`
-     skroller ishlashi uchun unga balandlik berish kerak (UITable dagi kabi). */
-  .history-list__spin :deep(.n-spin-content) {
-    height: 100%;
+  .kv-card {
+    border: 1px solid var(--surface-line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .kv-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--surface-section);
+    border-bottom: 1px solid var(--surface-line);
+  }
+
+  .kv-row:last-child {
+    border-bottom: none;
+  }
+
+  .kv-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    font-size: 12px;
+    color: var(--textColor2);
+  }
+
+  .kv-val {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    min-width: 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--textColor0);
+    text-align: right;
   }
 </style>
