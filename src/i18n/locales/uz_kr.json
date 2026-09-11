@@ -4849,5 +4849,35 @@
     "tabs": {
       "special": "Махсус ҳисобот"
     }
+  },
+  "telegramBroadcast": {
+    "tab": "Telegram",
+    "pushTab": "Push",
+    "create": "Telegram хабар яратиш",
+    "sentList": "Юборилган хабарлар",
+    "audienceLabel": "Кимга",
+    "audience": {
+      "all_staff": "Барча штатдаги ходимларга",
+      "selected": "Танланган ходимларга"
+    },
+    "uzFallback": "Ru/En бўш бўлса — ўзбекча матн юборилади",
+    "slowHint": "Telegram лимити сабабли оммавий юбориш бир неча соат давом этади. Саҳифани ёпсангиз ҳам юбориш давом этади.",
+    "sentOf": "юборилди",
+    "blocked": "блоклаган",
+    "failed": "хато",
+    "result": "Натижа",
+    "coverage": "Қамров (бот уланганлар)",
+    "startedAt": "Бошланди",
+    "finishedAt": "Тугади",
+    "lastErrors": "Охирги хатолар",
+    "st": {
+      "scheduled": "Режалаштирилган",
+      "sending": "Хабар юборилмоқда",
+      "done": "Бажарилди",
+      "cancelled": "Бекор қилинган",
+      "failed": "Хатолик"
+    },
+    "send": "Хабар юбориш",
+    "schedule": "Режалаштириш"
   }
 }

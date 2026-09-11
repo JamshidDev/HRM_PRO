@@ -5142,5 +5142,35 @@
     "tabs": {
       "special": "Maxsus hisobot"
     }
+  },
+  "telegramBroadcast": {
+    "tab": "Telegram",
+    "pushTab": "Push",
+    "create": "Telegram xabar yaratish",
+    "sentList": "Yuborilgan xabarlar",
+    "audienceLabel": "Kimga",
+    "audience": {
+      "all_staff": "Barcha shtatdagi xodimlarga",
+      "selected": "Tanlangan xodimlarga"
+    },
+    "uzFallback": "Ru/En bo'sh bo'lsa — o'zbekcha matn yuboriladi",
+    "slowHint": "Telegram limiti sababli ommaviy yuborish bir necha soat davom etadi. Sahifani yopsangiz ham yuborish davom etadi.",
+    "sentOf": "yuborildi",
+    "blocked": "bloklagan",
+    "failed": "xato",
+    "result": "Natija",
+    "coverage": "Qamrov (bot ulanganlar)",
+    "startedAt": "Boshlandi",
+    "finishedAt": "Tugadi",
+    "lastErrors": "Oxirgi xatolar",
+    "st": {
+      "scheduled": "Rejalashtirilgan",
+      "sending": "Xabar yuborilmoqda",
+      "done": "Bajarildi",
+      "cancelled": "Bekor qilingan",
+      "failed": "Xatolik"
+    },
+    "send": "Xabar yuborish",
+    "schedule": "Rejalashtirish"
   }
 }
