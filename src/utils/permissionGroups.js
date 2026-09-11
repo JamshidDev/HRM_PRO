@@ -17,6 +17,8 @@ export const ENFORCED = new Set([
   'authentication-logs-read',
   'chat',
   'chat-news-delete',
+  'chat-telegram-broadcast-read',
+  'chat-telegram-broadcast-write',
   'cities-delete',
   'cities-write',
   'confirmation-documents-delete',
@@ -311,6 +313,8 @@ export const MEANINGFUL = new Set([
   'chat-news-delete',
   'chat',
   'chat-notification',
+  'chat-telegram-broadcast-read',
+  'chat-telegram-broadcast-write',
   'chat-telegram-messages',
   'cities',
   'cities-delete',
@@ -1043,6 +1047,7 @@ export const PERMISSION_GROUPS = [
     groups: [
       { prefix: 'chat', label: 'userRole.form.moduleAccess' },
       { prefix: 'instructions', label: 'notificationPage.name' },
+      { prefix: 'chat-telegram-broadcast', label: 'telegramBroadcast.tab' },
       { prefix: 'chat-telegram-messages', label: 'congratulation.name' }
     ]
   },
