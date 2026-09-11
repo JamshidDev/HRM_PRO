@@ -5156,7 +5156,8 @@
     "audienceLabel": "Kimga yuboriladi",
     "audience": {
       "all_staff": "Barcha xodimlarga",
-      "selected": "Tanlangan xodimlarga"
+      "selected": "Tanlangan xodimlarga",
+      "med_reminder": "Tibbiy ko'rik eslatmasi"
     },
     "sentOf": "yuborildi",
     "blocked": "bloklagan",

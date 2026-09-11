@@ -5114,7 +5114,8 @@
     "audienceLabel": "Send to",
     "audience": {
       "all_staff": "All employees",
-      "selected": "Selected employees"
+      "selected": "Selected employees",
+      "med_reminder": "Medical exam reminder"
     },
     "sentOf": "sent",
     "blocked": "blocked",
