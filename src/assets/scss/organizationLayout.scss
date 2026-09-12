@@ -6,11 +6,12 @@ $mobile_device_screen_size: 900px;
 
 .organization-layout {
   width: 100%;
-  // `100vh` emas: mobil brauzerlarda manzil/pastki panel ko'rinib turganda
-  // haqiqiy ko'rinadigan balandlikdan katta bo'lib, `.sidebar-content`ning
-  // pastki qismini (fixed bo'lgani uchun) brauzer paneli orqasida qoldirib,
-  // menyuning oxirgi bandlariga yetib bo'lmay qolardi.
-  height: 100dvh;
+  // `100vh`/`100dvh` emas: mobilda `dvh` brauzer panellari ko'rsatilgan/
+  // yashiringan orasida "kechikib" o'zgaradi, shu payt `.sidebar-content`
+  // (fixed) pastki qismi panel orqasida qolib ketardi. `100svh` — panellar
+  // HAR DOIM ko'rinib turgan holatdagi ENG KICHIK balandlik, shu bilan
+  // sidebar hech qachon brauzer paneli orqasiga sig'ib ketmaydi.
+  height: 100svh;
   display: flex;
   position: relative;
   background: var(--app-bg);
@@ -24,7 +25,7 @@ $mobile_device_screen_size: 900px;
     }
 
     width: $sidebar-max-width;
-    height: 100dvh;
+    height: 100svh;
     display: flex;
     position: fixed;
     z-index: 100;
@@ -69,6 +70,7 @@ $mobile_device_screen_size: 900px;
         overscroll-behavior: contain;
         flex: 1 1 auto;
         min-height: 0;
+        padding-bottom: env(safe-area-inset-bottom);
         scrollbar-width: none;
         &::-webkit-scrollbar {
           display: none;
@@ -175,6 +177,11 @@ $mobile_device_screen_size: 900px;
       overscroll-behavior: contain;
       /* Simmetrik otstup — qator foni ikkala chetda ham bir xil nafas oladi */
       padding: 0 4px;
+      /*
+       * Oxirgi qator home-indicator/xavfsiz zonaga yopishib qolmasin — ba'zi
+       * qurilmalarda `100svh` ham shu zonani to'liq hisobga olmaydi.
+       */
+      padding-bottom: calc(12px + env(safe-area-inset-bottom));
       transition: all 0.3s linear;
       .panel-item-single {
         /*
