@@ -6,7 +6,11 @@ $mobile_device_screen_size: 900px;
 
 .organization-layout {
   width: 100%;
-  height: 100vh;
+  // `100vh` emas: mobil brauzerlarda manzil/pastki panel ko'rinib turganda
+  // haqiqiy ko'rinadigan balandlikdan katta bo'lib, `.sidebar-content`ning
+  // pastki qismini (fixed bo'lgani uchun) brauzer paneli orqasida qoldirib,
+  // menyuning oxirgi bandlariga yetib bo'lmay qolardi.
+  height: 100dvh;
   display: flex;
   position: relative;
   background: var(--app-bg);
@@ -20,7 +24,7 @@ $mobile_device_screen_size: 900px;
     }
 
     width: $sidebar-max-width;
-    height: 100vh;
+    height: 100dvh;
     display: flex;
     position: fixed;
     z-index: 100;
@@ -61,6 +65,8 @@ $mobile_device_screen_size: 900px;
         width: 100%;
         overflow-y: auto;
         overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
         flex: 1 1 auto;
         min-height: 0;
         scrollbar-width: none;
@@ -164,6 +170,9 @@ $mobile_device_screen_size: 900px;
        */
       width: calc(100% - #{$sidebar-mini-width - 16px});
       overflow: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
       /* Simmetrik otstup — qator foni ikkala chetda ham bir xil nafas oladi */
       padding: 0 4px;
       transition: all 0.3s linear;
