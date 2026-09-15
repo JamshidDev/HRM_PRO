@@ -5,7 +5,8 @@
     LockClosed24Filled,
     LockOpen16Filled,
     CloudArrowUp24Regular,
-    ClipboardTaskListLtr20Regular
+    ClipboardTaskListLtr20Regular,
+    History24Regular
   } from '@vicons/fluent'
   import { useAccountStore, useUploadReportStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
@@ -43,6 +44,12 @@
     if (!accStore.checkAction(accStore.pn.economistUploadsRead)) return
     store.openReportStatus()
   }
+
+  // Tortish tarixi (pull-log) — barcha davrlar bo'yicha yuklamalar modali.
+  const onPullHistory = () => {
+    if (!accStore.checkAction(accStore.pn.economistUploadsRead)) return
+    store.openPullHistory()
+  }
 </script>
 
 <template>
@@ -59,7 +66,7 @@
       <n-button
         v-if="
           store.params.organization_id &&
-          accStore.checkPermission(accStore.pn.economistUploadsStatus)
+            accStore.checkPermission(accStore.pn.economistUploadsStatus)
         "
         :type="store.orgStatus ? 'error' : 'success'"
         @click="store._uploadStatus"
@@ -83,6 +90,18 @@
         {{ $t('uploadReport.reportStatus.button') }}
         <template #icon>
           <ClipboardTaskListLtr20Regular />
+        </template>
+      </n-button>
+
+      <n-button
+        v-if="accStore.checkPermission(accStore.pn.economistUploadsRead)"
+        @click="onPullHistory"
+        type="default"
+        class="w-full! md:w-auto!"
+      >
+        {{ $t('uploadReport.pullHistory.button') }}
+        <template #icon>
+          <History24Regular />
         </template>
       </n-button>
 

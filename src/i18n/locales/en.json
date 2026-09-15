@@ -3081,12 +3081,18 @@
     "name": "Upload report",
     "latest": "Latest",
     "olderUploads": "Previous uploads",
+    "changes": {
+      "added": "Added",
+      "changed": "Changed",
+      "removed": "Removed",
+      "unchanged": "Unchanged"
+    },
     "createTitle": "Upload report",
     "source": {
       "label": "Source",
       "excel": "Excel",
       "ones": "From 1C",
-      "onesHint": "No file needed for 1C — uses the data already pulled in salary-1c."
+      "onesHint": "No file needed for 1C — the data is fetched directly from 1C."
     },
     "bulkOnes": {
       "button": "Bulk upload from 1C",
@@ -3103,7 +3109,32 @@
       "failed": "Failed",
       "noData": "No 1C data found for this period. Pull it in salary-1c first.",
       "progress": "{done} / {total} uploaded",
-      "summary": "Success: {ok}, Failed: {fail}"
+      "summary": "Success: {ok}, Failed: {fail}",
+      "stop": "Stop",
+      "close": "Close",
+      "background": "The upload continues in the background even if you close the window.",
+      "stopped": "Upload stopped."
+    },
+    "pullHistory": {
+      "button": "Pull history",
+      "title": "Pull history — all uploads",
+      "form": "Form",
+      "allTypes": "All forms",
+      "search": "Search by organization or comment",
+      "total": "Total",
+      "columns": {
+        "date": "Date",
+        "organization": "Organization",
+        "form": "Form",
+        "period": "Period",
+        "source": "Source",
+        "status": "Status",
+        "changes": "Changes",
+        "download": "Download",
+        "comment": "Comment"
+      },
+      "source": { "excel": "Excel", "ones": "1C" },
+      "status": { "process": "Processing", "done": "Done", "error": "Error" }
     },
     "reportStatus": {
       "button": "Report status",
