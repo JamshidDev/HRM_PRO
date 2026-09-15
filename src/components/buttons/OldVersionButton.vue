@@ -26,10 +26,16 @@
 
   const OLD_SITE_URL = 'https://hrm.railway.uz/old/'
 
-  const STORAGE_KEY = 'oldVersionButtonPositionRatio'
-  // 0 — tugma sudralmagan holatda ekran yuqori qirrasiga tegib turadi, ya'ni
-  // avvalgi `top-0` ko'rinishi saqlanadi.
+  // `_v2` — avvalgi saqlangan pozitsiyalar (ratio.y kichik noldan katta) ba'zi
+  // oyna balandliklarida tugmani 44px header ostidagi sahifa toolbar'i (masalan
+  // «Hisobot yuklash» sana maydoni) ustiga tushirardi. Kalit versiyasi oshirilib,
+  // barcha eski pozitsiyalar tashlanadi va tugma toza top-default'ga qaytadi.
+  const STORAGE_KEY = 'oldVersionButtonPositionRatio_v2'
+  // Vertikal siljish 8px'gacha cheklanadi: tugma yuqori header tasmasida qoladi
+  // va pastdagi sahifa kontentini (sana/toolbar) hech qachon bosib qolmaydi.
+  // Gorizontal siljish erkin (foydalanuvchi tugmani chapga/o'ngga sura oladi).
   const MARGIN = 0
+  const MAX_TOP = 8
   // Shu masofadan kam siljish "sudrash" emas, oddiy bosish deb hisoblanadi —
   // aks holda barmoq/sichqoncha bir piksel tebransa havola ochilmay qolardi.
   const DRAG_THRESHOLD = 4
@@ -66,9 +72,12 @@
 
   const getBounds = () => {
     const { offsetWidth = 0, offsetHeight = 0 } = el.value || {}
+    const fullMaxY = Math.max(MARGIN, windowHeight.value - offsetHeight - MARGIN)
     return {
       maxX: Math.max(MARGIN, windowWidth.value - offsetWidth - MARGIN),
-      maxY: Math.max(MARGIN, windowHeight.value - offsetHeight - MARGIN)
+      // Vertikal harakat yuqori tasmaga (≤ MAX_TOP) cheklanadi — tugma header
+      // zonasida qoladi va sahifa toolbar'ini bosib qolmaydi.
+      maxY: Math.min(MAX_TOP, fullMaxY)
     }
   }
 
