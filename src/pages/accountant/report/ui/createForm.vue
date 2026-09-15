@@ -15,9 +15,9 @@
   const store = useUploadReportStore()
   const componentStore = useComponentStore()
 
-  // Oylik hisobot (type=1) tanlanganda 1C manbasi ko'rsatiladi.
-  const isStatement = computed(() => Number(store.payload.type) === 1)
-  const isOnes = computed(() => isStatement.value && Number(store.payload.source) === 2)
+  // Barcha hisobot turlari (Oylik + INPS 4/5/to'lovlar) 1C manbasini qo'llaydi.
+  const hasSource = computed(() => [1, 2, 3, 4].includes(Number(store.payload.type)))
+  const isOnes = computed(() => hasSource.value && Number(store.payload.source) === 2)
 
   const sourceOptions = [
     { label: t('uploadReport.source.excel'), value: 1 },
@@ -89,8 +89,8 @@
           :clearable="false"
         />
       </n-form-item>
-      <!-- Oylik hisobot (type=1) uchun manba: Excel yoki 1C dan -->
-      <n-form-item v-if="isStatement" class="col-span-12" :label="$t('uploadReport.source.label')">
+      <!-- Barcha hisobot turlari uchun manba: Excel yoki 1C dan -->
+      <n-form-item v-if="hasSource" class="col-span-12" :label="$t('uploadReport.source.label')">
         <n-radio-group v-model:value="store.payload.source" name="source">
           <n-radio-button v-for="o in sourceOptions" :key="o.value" :value="o.value" :label="o.label" />
         </n-radio-group>
