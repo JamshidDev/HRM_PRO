@@ -501,6 +501,20 @@ $mobile_device_screen_size: 900px;
            * }
            */
 
+          /*
+           * Ikona qutisi `.panel-item-single` dagi bilan BIR XIL 26px bo'lishi
+           * SHART: o'lcham berilmasa quti ikonaning o'z eniga (20px) qisqaradi
+           * va guruh sarlavhasining ham ikonasi, ham nomi yakka qatorlarga
+           * nisbatan chapga siljib, chap chegara tekis chiqmay qolardi.
+           */
+          .item-icon {
+            width: 26px;
+            height: 26px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+
           .item-title {
             flex: 1 1 auto;
             min-width: 0;

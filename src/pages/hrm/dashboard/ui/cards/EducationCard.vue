@@ -3,8 +3,7 @@
    * Figma v3 · Tab 1 "Xodimlarning ma'lumoti bo'yicha" (node 2959:58481).
    *
    * 34px balandlikdagi 100 % stacked bar (oltita ta'lim darajasi), ostida
-   * uch ustunli legend — nom, son, ulush va o'zgarish. Eng pastda esa
-   * agregat guruhlar qatori (oliy ma'lumotli / o'rta maxsus).
+   * uch ustunli legend — nom va qalin son (ulush faqat bar ichida ko'rinadi).
    *
    * Backend hozir faqat agregat guruhlarni beradi (`education.groups`),
    * darajalar kesimi (`levels`) mock'dan olinadi — shu sababli stacked bar
@@ -16,7 +15,7 @@
   import FigTrend from '../fig/FigTrend.vue'
   import { useDashboardStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
-  import { toCount, toPercent, share, sumBy } from '../../format.js'
+  import { toCount, share, sumBy } from '../../format.js'
 
   defineEmits(['detail'])
 
@@ -39,13 +38,6 @@
   /** Segment ulushlari uchun bazis — darajalar yig'indisi. */
   const total = computed(() => sumBy(card.value.levels, 'count'))
 
-  /**
-   * Agregat guruhlar ulushi butun xodimlar soniga nisbatan hisoblanadi:
-   * guruhlar backenddan kelayotgan bo'lsa (darajalar esa hali mock), ularni
-   * mock yig'indisiga bo'lish noto'g'ri foiz berardi.
-   */
-  const groupBase = computed(() => store.overview.kpi?.workers?.total?.value || total.value)
-
   const levels = computed(() =>
     (card.value.levels || []).map((item, idx) => ({
       ...item,
@@ -56,13 +48,6 @@
     }))
   )
 
-  const groups = computed(() =>
-    (card.value.groups || []).map((item) => ({
-      ...item,
-      label: item.label ?? t(`dashboardPage.eduGroup.${item.key}`),
-      percent: item.percent ?? share(item.count, groupBase.value)
-    }))
-  )
 </script>
 
 <template>
@@ -86,27 +71,14 @@
         <div class="flex min-w-0 flex-1 flex-col gap-0.5">
           <p class="truncate text-[12px] leading-4 text-fig-text-secondary">{{ item.label }}</p>
           <div class="flex items-baseline gap-2">
-            <p class="text-[12px] leading-4 font-semibold whitespace-nowrap text-fig-text-primary">
+            <p class="text-[13px] leading-4 font-bold whitespace-nowrap text-fig-text-primary">
               {{ toCount(item.count) }}
-            </p>
-            <p class="text-[12px] leading-4 whitespace-nowrap text-fig-text-tertiary">
-              {{ toPercent(item.percent) }}
             </p>
             <div class="min-w-0 flex-1">
               <FigTrend :metric="item" unit="count" :label-key="null" small />
             </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <!-- agregat guruhlar: maketda eng pastdagi bitta qator -->
-    <div v-if="groups.length" class="mt-auto flex flex-wrap items-center gap-x-6 gap-y-1 pb-1">
-      <div v-for="group in groups" :key="group.key" class="flex items-center gap-1.5">
-        <p class="text-[12px] leading-4 whitespace-nowrap text-fig-text-tertiary">
-          {{ group.label }} — {{ toCount(group.count) }} · {{ toPercent(group.percent) }}
-        </p>
-        <FigTrend :metric="group" unit="pp" :label-key="null" small />
       </div>
     </div>
   </FigPanel>

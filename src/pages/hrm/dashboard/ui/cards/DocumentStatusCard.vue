@@ -36,7 +36,8 @@
       titleKey: 'dashboardPage.password.title',
       source: () => [
         { title: 'dashboardPage.password.deadline', count: store.legacy.passports_count },
-        { title: 'dashboardPage.password.expired', count: store.legacy.passports_more_count }
+        { title: 'dashboardPage.password.expired', count: store.legacy.passports_more_count },
+        { title: 'dashboardPage.password.missing', count: store.overview.documents?.passport_missing }
       ],
       key: InfoCardEnum.PASSPORT
     },
@@ -47,7 +48,8 @@
       titleKey: 'dashboardPage.medical.title',
       source: () => [
         { title: 'dashboardPage.medical.deadline', count: store.legacy.meds_approaching },
-        { title: 'dashboardPage.medical.expired', count: store.legacy.meds_finished }
+        { title: 'dashboardPage.medical.expired', count: store.legacy.meds_finished },
+        { title: 'dashboardPage.medical.missing', count: store.overview.documents?.med_missing }
       ],
       key: InfoCardEnum.MED
     },

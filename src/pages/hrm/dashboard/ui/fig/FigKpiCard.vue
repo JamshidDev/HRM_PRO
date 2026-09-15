@@ -75,7 +75,7 @@
        zahoti `store.isMock(...)` `false` qaytaradi va qatlam o'zi yo'qoladi. -->
   <div class="fig-soon" :class="mock && 'fig-soon--on'">
     <div
-      class="fig-soon__card relative flex flex-col gap-2 overflow-hidden rounded-2xl bg-fig-block px-1 pt-1.5 pb-1"
+      class="fig-soon__card relative flex flex-col gap-2 overflow-hidden rounded-2xl border border-fig-blue-300 bg-fig-block px-1 pt-1.5 pb-1"
     >
       <!-- o'ng yuqoridagi xira suv belgisi: 64px ramka, ikonka o'z o'lchamida markazda -->
       <span

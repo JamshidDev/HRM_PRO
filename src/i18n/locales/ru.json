@@ -2192,7 +2192,8 @@
       "age31": "До 30 лет",
       "age32_45": "31-45 лет",
       "age46": "Старше 46 лет",
-      "structureTitle": "Возрастная структура"
+      "structureTitle": "Возрастная структура",
+      "yearsOld": "лет"
     },
     "edu": {
       "title": "Образование сотрудников",
@@ -2208,7 +2209,8 @@
       "number": "Номер паспорта",
       "approaching": "Приближается срок",
       "not_included": "Отсутствует",
-      "filter": "Статус паспорта"
+      "filter": "Статус паспорта",
+      "missing": "Не загружен"
     },
     "pension": {
       "title": "Сотрудники пенсионного возраста",
@@ -2221,7 +2223,8 @@
       "deadline": "Скоро истекает",
       "approaching": "Приближается",
       "finished": "Истёк",
-      "expired": "Истёк"
+      "expired": "Истёк",
+      "missing": "Не внесён"
     },
     "incentive": {
       "title": "Поощрения",
@@ -2252,6 +2255,8 @@
     "birthday": {
       "title": "Дни рождения",
       "today": "Сегодняшние дни рождения",
+      "todayShort": "Сегодня",
+      "tomorrowShort": "Завтра",
       "tomorrow": "Завтрашние дни рождения"
     },
     "disability": {
@@ -2324,7 +2329,7 @@
       "hiredAt": "Дата приёма"
     },
     "today": {
-      "title": "Состояние на сегодня",
+      "title": "Сотрудники в отпуске сейчас",
       "atWorkTitle": "Сегодня на работе",
       "onVacationTitle": "В отпуске",
       "chronicLateTitle": "Хронические опоздания",
@@ -2337,8 +2342,10 @@
         "working": "На работе",
         "vacation": "В отпуске",
         "sick_leave": "Больничный",
-        "absent": "Без причины"
-      }
+        "absent": "Без причины",
+        "business_trip": "Командировка"
+      },
+      "awayTitle": "Не на работе"
     },
     "eduLevel": {
       "vocational_college": "Профессиональный колледж",
@@ -4965,7 +4972,8 @@
     "otpVerify": "Проверка OTP",
     "holidayGreetings": "Праздничные поздравления",
     "workerSchedules": "График дежурства",
-    "workerScheduleSwap": "Замена графика"
+    "workerScheduleSwap": "Замена графика",
+    "dailyAttendance": "Ежедневная посещаемость"
   },
   "kpiPage": {
     "name": "Показатели KPI",
