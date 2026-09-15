@@ -4929,7 +4929,8 @@
     "otpVerify": "OTP verify",
     "holidayGreetings": "Holiday greetings",
     "workerSchedules": "Duty schedule",
-    "workerScheduleSwap": "Schedule swap"
+    "workerScheduleSwap": "Schedule swap",
+    "dailyAttendance": "Daily attendance"
   },
   "kpiPage": {
     "name": "KPI indicators",
