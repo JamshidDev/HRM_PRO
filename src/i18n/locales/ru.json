@@ -4941,7 +4941,8 @@
     "otpVerify": "Проверка OTP",
     "holidayGreetings": "Праздничные поздравления",
     "workerSchedules": "График дежурства",
-    "workerScheduleSwap": "Замена графика"
+    "workerScheduleSwap": "Замена графика",
+    "dailyAttendance": "Ежедневная посещаемость"
   },
   "kpiPage": {
     "name": "Показатели KPI",

@@ -4971,7 +4971,8 @@
     "otpVerify": "OTP tekshirish",
     "holidayGreetings": "Bayram tabriklari",
     "workerSchedules": "Navbatchilik grafigi",
-    "workerScheduleSwap": "Grafik almashtirish"
+    "workerScheduleSwap": "Grafik almashtirish",
+    "dailyAttendance": "Kunlik davomat"
   },
   "kpiPage": {
     "name": "KPI ko'rsatgichlar",
