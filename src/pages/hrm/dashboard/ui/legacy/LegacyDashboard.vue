@@ -17,6 +17,27 @@
   const store = useDashboardStore()
   const accStore = useAccountStore()
 
+  // `n-tabs` animatsiyasi uchun `.n-tabs-pane-wrapper` da `overflow: hidden`
+  // turadi. Eski kartalardagi `hover-effect-card` esa hover'da `scale(1.01)`
+  // + soya beradi, ya'ni karta o'z katakchasidan bir necha piksel tashqariga
+  // chiqadi — chap chekkadagi kartalarning cheti va soyasi shu yerda kesilib
+  // qolardi. Yon tomonlarga bo'sh joy beriladi, teskari margin esa panjara
+  // joylashuvini o'zgarishsiz qoldiradi (tashqi scroll konteynerida `px-4`,
+  // ya'ni 16px bo'sh joy bor, -12px bemalol sig'adi).
+  //
+  // `flex: 1 1 0` + `min-height: 0`: `n-tabs` — flex ustun, wrapper esa uning
+  // elementi. Busiz wrapper balandligi `auto` bo'lib, detal jadvalidagi
+  // `h-full` zanjiri uzilardi va pagination konteyner tubiga emas, qatorlardan
+  // keyin osilib qolardi. Endi skrollni shu wrapper boshqaradi.
+  const paneWrapperStyle = {
+    flex: '1 1 0',
+    'min-height': '0',
+    'overflow-y': 'auto',
+    'scrollbar-gutter': 'stable',
+    'padding-inline': '12px',
+    'margin-inline': '-12px'
+  }
+
   const onDetailEv = (detailComponent, key) => {
     store.resetDetailData()
     if (detailComponent?.detailFactory && key) {
@@ -33,7 +54,7 @@
     :value="store.activeDetail ? 1 : 0"
     animated
     :tab-style="{ display: 'none' }"
-    :pane-wrapper-style="{ 'overflow-y': 'auto', 'scrollbar-gutter': 'stable' }"
+    :pane-wrapper-style="paneWrapperStyle"
   >
     <n-tab-pane :name="0" class="!p-0">
       <UIPageContent class="!pt-0 !px-0 !m-0">
@@ -66,10 +87,18 @@
       </UIPageContent>
     </n-tab-pane>
 
-    <n-tab-pane :name="1" class="!p-0">
-      <UIPageContent class="!pt-2 !px-0 !m-0">
-        <DetailFilters />
-        <component v-if="store.activeDetail?.detail" :is="store.activeDetail?.detail" />
+    <!-- Detal paneli o'lchangan balandlikni to'liq egallaydi: jadval `h-full` ni
+         hisoblay olishi va pagination eng pastda turishi uchun balandlik zanjiri
+         uzilmasligi kerak — pane wrapper (`flex: 1`) → `n-tab-pane` (`!h-full`)
+         → `UIPageContent` (`!h-full`) → `flex-1 min-h-0`. Kartalar paneliga
+         (`:name="0"`) `!h-full` BERILMAYDI: u kontenti bo'yicha o'sib,
+         wrapper ichida skroll bo'ladi. -->
+    <n-tab-pane :name="1" class="!p-0 !h-full">
+      <UIPageContent class="!pt-2 !px-0 !m-0 !h-full">
+        <DetailFilters class="shrink-0" />
+        <div class="flex-1 min-h-0">
+          <component v-if="store.activeDetail?.detail" :is="store.activeDetail?.detail" />
+        </div>
       </UIPageContent>
     </n-tab-pane>
   </n-tabs>

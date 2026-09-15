@@ -120,7 +120,8 @@ export const useDashboardStore = defineStore('dashboardStore', {
         total: 0,
         page: 1,
         per_page: 15,
-        loading: false
+        loading: false,
+        exportLoading: false
       }
     }
   }),
@@ -223,6 +224,25 @@ export const useDashboardStore = defineStore('dashboardStore', {
         d.total = res.data.data.total
       } finally {
         d.loading = false
+      }
+    },
+    /**
+     * Audit jadvalini Excel'ga (fon topshirig'i). `columns` — ekranda ko'rinib
+     * turgan ustunlar, backend faylni aynan shu tartibda quradi.
+     */
+    async _exportAudit(columns) {
+      const d = this.audit.detail
+      if (!d.type || d.exportLoading) return
+      d.exportLoading = true
+      try {
+        const data = this.appendParams({
+          type: d.type,
+          search: this.params.search,
+          columns
+        })
+        await $ApiService.dashboardService._auditExport({ data })
+      } finally {
+        d.exportLoading = false
       }
     },
     // Audit tab qatorida tur almashganda chaqiriladi.

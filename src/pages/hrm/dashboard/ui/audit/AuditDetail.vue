@@ -1,5 +1,6 @@
 <script setup>
-  import { UIUser, UITable } from '@/components/index.js'
+  import { ArrowDownload24Regular } from '@vicons/fluent'
+  import { UIUser, UITable, UIPagination } from '@/components/index.js'
   import { useDashboardStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import { AuditType } from './constants.js'
@@ -46,6 +47,11 @@
     store.audit.detail.per_page = v.per_page
     store._getAuditPreview()
   }
+
+  // Faylga ekranda KO'RINIB turgan ustunlar, aynan shu tartibda yoziladi.
+  const onExport = () => {
+    store._exportAudit(columns.value.map(({ key, title }) => ({ key, title })))
+  }
 </script>
 
 <template>
@@ -58,6 +64,37 @@
     :total="store.audit.detail.total"
     @change-page="changePage"
   >
+    <template #footer>
+      <div class="flex items-center gap-3">
+        <div class="min-w-0 flex-1">
+          <UIPagination
+            :page="store.audit.detail.page"
+            :per_page="store.audit.detail.per_page"
+            :total="store.audit.detail.total"
+            @change-page="changePage"
+          />
+        </div>
+        <n-tooltip>
+          <template #trigger>
+            <n-button
+              v-fly-upload="{ icon: 'download', colors: ['#1279f0', '#1279f0'] }"
+              type="primary"
+              size="small"
+              class="!h-7 !w-7 !rounded-lg !p-0"
+              :loading="store.audit.detail.exportLoading"
+              :disabled="!store.audit.detail.total"
+              @click="onExport"
+            >
+              <template #icon>
+                <n-icon :component="ArrowDownload24Regular" />
+              </template>
+            </n-button>
+          </template>
+          {{ $t('content.download') }}
+        </n-tooltip>
+      </div>
+    </template>
+
     <template #cell-worker="{ row }">
       <UIUser
         :short="false"
@@ -97,3 +134,4 @@
     </template>
   </UITable>
 </template>
+

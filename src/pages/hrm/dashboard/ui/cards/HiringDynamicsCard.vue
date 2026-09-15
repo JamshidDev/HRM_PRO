@@ -7,7 +7,7 @@
    * mavzu almashganda ranglar tokenlardan qayta o'qiladi.
    */
   import VChart from 'vue-echarts'
-  import { use } from 'echarts/core'
+  import { use, graphic } from 'echarts/core'
   import { BarChart } from 'echarts/charts'
   import { TooltipComponent, GridComponent, LegendComponent } from 'echarts/components'
   import { CanvasRenderer } from 'echarts/renderers'
@@ -27,6 +27,13 @@
 
   const tokenColor = (name) =>
     getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+
+  /** Ustun to'ldirmasi — tepasi to'q, pasti shaffofroq. `#rrggbb` kutiladi. */
+  const barFill = (color) =>
+    new graphic.LinearGradient(0, 0, 0, 1, [
+      { offset: 0, color },
+      { offset: 1, color: /^#[0-9a-f]{6}$/i.test(color) ? `${color}40` : color }
+    ])
 
   /** Kontraktga kirmagan legacy maydon: oylik yangi/tugagan shartnomalar. */
   const contracts = computed(() => store.legacy.contracts || [])
@@ -57,7 +64,7 @@
     const split = tokenColor('--fig-br-disable')
 
     return {
-      grid: { top: 16, left: 8, right: 12, bottom: 4, containLabel: true },
+      grid: { top: 12, left: 4, right: 8, bottom: 0, containLabel: true },
       tooltip: {
         // `body` ga ko'chiriladi: aks holda `.main-content` dagi
         // `overflow-x: hidden` tooltipni kontent chegarasida kesadi.
@@ -73,7 +80,7 @@
         data: months.value,
         axisLine: { show: false },
         axisTick: { show: false },
-        axisLabel: { color: axis, fontSize: 11 }
+        axisLabel: { color: axis, fontSize: 11, margin: 12 }
       },
       yAxis: {
         type: 'value',
@@ -83,9 +90,16 @@
       series: series.value.map((item) => ({
         name: t(`dashboardPage.yearly.${item.key}`),
         type: 'bar',
-        barMaxWidth: 18,
+        barMaxWidth: 22,
+        // Juftlik zich, oylar orasi keng — ustunlar oy bo'yicha guruhlanib ko'rinadi.
+        barGap: '15%',
+        barCategoryGap: '42%',
         data: item.data,
-        itemStyle: { color: tokenColor(item.token), borderRadius: [6, 6, 0, 0] }
+        itemStyle: {
+          color: barFill(tokenColor(item.token)),
+          borderRadius: [8, 8, 0, 0]
+        },
+        emphasis: { focus: 'series', itemStyle: { color: tokenColor(item.token) } }
       }))
     }
   })
@@ -100,29 +114,25 @@
     :inner="false"
     @action="$emit('detail')"
   >
-    <!-- ikkita ko'rsatkich legendasi: nuqta + nom + yillik jami -->
-    <div class="flex flex-wrap gap-1 px-2 pb-2">
-      <div
-        v-for="item in series"
-        :key="item.key"
-        class="flex min-w-[160px] flex-1 flex-col justify-center gap-1 px-3"
-      >
-        <div class="flex items-center gap-2.5">
-          <span
-            class="h-2.5 w-2.5 shrink-0 rounded-full"
-            :style="{ backgroundColor: `var(${item.token})` }"
-          ></span>
-          <p class="min-w-0 flex-1 truncate text-[14px] leading-5 text-fig-text-muted">
-            {{ $t(`dashboardPage.yearly.${item.key}`) }}
-          </p>
-        </div>
-        <p class="text-[20px] leading-6 font-semibold whitespace-nowrap text-fig-text-primary">
+    <!-- ikkita ko'rsatkich legendasi: bitta qatorda nuqta + nom + yillik jami -->
+    <div class="flex flex-wrap gap-x-6 gap-y-1 px-2 pb-2">
+      <div v-for="item in series" :key="item.key" class="flex items-center gap-2 px-3">
+        <span
+          class="h-2.5 w-2.5 shrink-0 rounded-full"
+          :style="{ backgroundColor: `var(${item.token})` }"
+        ></span>
+        <p class="text-[14px] leading-5 whitespace-nowrap text-fig-text-muted">
+          {{ $t(`dashboardPage.yearly.${item.key}`) }}
+        </p>
+        <p class="text-[18px] leading-6 font-bold whitespace-nowrap text-fig-text-primary">
           {{ Utils.formatNumberToMoney(item.value) || 0 }}
         </p>
       </div>
     </div>
 
-    <div class="min-h-[200px] flex-1 rounded-xl bg-fig-bg-secondary p-1">
+    <div
+      class="mx-2 mb-2 min-h-[200px] flex-1 rounded-xl border border-fig-br-disable p-2"
+    >
       <v-chart autoresize :option="option" class="h-full min-h-[240px] w-full" />
     </div>
   </FigPanel>
