@@ -1145,6 +1145,7 @@ export const PERMISSION_GROUPS = [
       { prefix: 'integration-worker-schedules', label: 'integrationPerm.workerSchedules' },
       { prefix: 'integration-worker-schedule-swap', label: 'integrationPerm.workerScheduleSwap' },
       { prefix: 'integration-turnstile-events', label: 'integrationPerm.turnstileEvents' },
+      { prefix: 'integration-daily-attendance', label: 'integrationPerm.dailyAttendance' },
       { prefix: 'integration-station-workers', label: 'integrationPerm.stationWorkers' },
       { prefix: 'integration-station-worker', label: 'integrationPerm.stationWorker' },
       { prefix: 'integration-station-resume', label: 'integrationPerm.stationResume' },
