@@ -2204,7 +2204,8 @@
       "age31": "30 yoshgacha",
       "age32_45": "31 dan 45 yoshgacha",
       "age46": "46 yoshdan kattalar",
-      "structureTitle": "Yosh bo'yicha tuzilma"
+      "structureTitle": "Yosh bo'yicha tuzilma",
+      "yearsOld": "yoshdagilar"
     },
     "edu": {
       "title": "Xodimlarning ma'lumoti bo'yicha",
@@ -2220,7 +2221,8 @@
       "number": "Passport raqami",
       "approaching": "Muddati yaqinlashayotgan",
       "not_included": "Mavjud bo'lmagan",
-      "filter": "Passport holati"
+      "filter": "Passport holati",
+      "missing": "Yuklanmagan"
     },
     "pension": {
       "title": "Pensiya yoshidagi xodimlar",
@@ -2233,7 +2235,8 @@
       "deadline": "Muddati yaqinlashgan",
       "approaching": "Muddati yaqinlashgan",
       "finished": "Muddati o'tgan",
-      "expired": "Muddati o'tgan"
+      "expired": "Muddati o'tgan",
+      "missing": "Kiritilmagan"
     },
     "incentive": {
       "title": "Rag'batlantirishlar",
@@ -2264,6 +2267,8 @@
     "birthday": {
       "title": "Tug'ilgan kunlar",
       "today": "Bugungi tug'ilgan kunlar",
+      "todayShort": "Bugun",
+      "tomorrowShort": "Ertaga",
       "tomorrow": "Ertangi tug'ilgan kunlar"
     },
     "disability": {
@@ -2336,7 +2341,7 @@
       "hiredAt": "Qabul sanasi"
     },
     "today": {
-      "title": "Bugungi holat",
+      "title": "Hozirda ta'tildagi xodimlar",
       "atWorkTitle": "Bugun ishda",
       "onVacationTitle": "Ta'tilda",
       "chronicLateTitle": "Surunkali kechikish",
@@ -2349,8 +2354,10 @@
         "working": "Ishda",
         "vacation": "Ta'tilda",
         "sick_leave": "Kasallik varaqasi",
-        "absent": "Sababsiz"
-      }
+        "absent": "Sababsiz",
+        "business_trip": "Xizmat safari"
+      },
+      "awayTitle": "Ishda emas"
     },
     "eduLevel": {
       "vocational_college": "Kasb-hunar kolleji",

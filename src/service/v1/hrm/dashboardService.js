@@ -69,10 +69,18 @@ const _auditPreview = async (payload) => {
   return await axios.get(`/v1/hr/dashboard-audit-preview`, { params: payload?.params })
 }
 
+// Audit jadvalini Excel'ga eksport — ASYNC job. Javob darhol qaytadi, fayl
+// «Topshiriqlar» ro'yxatidan olinadi. `columns` — ekranda ko'rinib turgan
+// ustunlar (kalit + sarlavha), fayl xuddi shu tartibda quriladi.
+const _auditExport = async (payload) => {
+  return await axios.post(`/v1/hr/dashboard-audit-export`, payload?.data)
+}
+
 export default {
   _overview,
   _auditCounts,
   _auditPreview,
+  _auditExport,
   _disciplinaryDetail,
   _incentiveDetail,
   _contractDetail,

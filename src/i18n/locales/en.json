@@ -2184,7 +2184,8 @@
       "age31": "Under 30",
       "age32_45": "31-45",
       "age46": "Over 46",
-      "structureTitle": "Age structure"
+      "structureTitle": "Age structure",
+      "yearsOld": "years old"
     },
     "edu": {
       "title": "Employee education",
@@ -2200,7 +2201,8 @@
       "number": "Passport number",
       "approaching": "Approaching expiry",
       "not_included": "Not available",
-      "filter": "Passport status"
+      "filter": "Passport status",
+      "missing": "Not uploaded"
     },
     "pension": {
       "title": "Pension-age employees",
@@ -2213,7 +2215,8 @@
       "deadline": "Expiring soon",
       "approaching": "Approaching",
       "finished": "Expired",
-      "expired": "Expired"
+      "expired": "Expired",
+      "missing": "Not recorded"
     },
     "incentive": {
       "title": "Incentives",
@@ -2244,6 +2247,8 @@
     "birthday": {
       "title": "Birthdays",
       "today": "Today's birthdays",
+      "todayShort": "Today",
+      "tomorrowShort": "Tomorrow",
       "tomorrow": "Tomorrow's birthdays"
     },
     "disability": {
@@ -2316,7 +2321,7 @@
       "hiredAt": "Hire date"
     },
     "today": {
-      "title": "Today's status",
+      "title": "Employees currently on leave",
       "atWorkTitle": "At work today",
       "onVacationTitle": "On vacation",
       "chronicLateTitle": "Chronic lateness",
@@ -2329,8 +2334,10 @@
         "working": "At work",
         "vacation": "On vacation",
         "sick_leave": "Sick leave",
-        "absent": "Unexcused"
-      }
+        "absent": "Unexcused",
+        "business_trip": "Business trip"
+      },
+      "awayTitle": "Away"
     },
     "eduLevel": {
       "vocational_college": "Vocational college",
