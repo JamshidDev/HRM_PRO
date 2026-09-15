@@ -3106,12 +3106,18 @@
     "name": "Hisobot yuklash",
     "latest": "Oxirgi",
     "olderUploads": "Oldingi yuklamalar",
+    "changes": {
+      "added": "Yangi",
+      "changed": "O'zgargan",
+      "removed": "O'chgan",
+      "unchanged": "O'zgarmagan"
+    },
     "createTitle": "Hisobot yuklash",
     "source": {
       "label": "Manba",
       "excel": "Excel",
       "ones": "1C dan",
-      "onesHint": "1C dan yuklaganda fayl kerak emas — salary-1c da tortilgan ma'lumot ishlatiladi."
+      "onesHint": "1C dan yuklaganda fayl kerak emas — ma'lumot to'g'ridan-to'g'ri 1C dan olinadi."
     },
     "bulkOnes": {
       "button": "1C dan ommaviy yuklash",
@@ -3128,7 +3134,32 @@
       "failed": "Xato",
       "noData": "Bu davr uchun 1C ma'lumoti topilmadi. Avval salary-1c da torting.",
       "progress": "{done} / {total} yuklandi",
-      "summary": "Muvaffaqiyatli: {ok}, Xato: {fail}"
+      "summary": "Muvaffaqiyatli: {ok}, Xato: {fail}",
+      "stop": "To'xtatish",
+      "close": "Yopish",
+      "background": "Modal yopilsa ham yuklash fonda davom etadi.",
+      "stopped": "Yuklash to'xtatildi."
+    },
+    "pullHistory": {
+      "button": "Tortish tarixi",
+      "title": "Tortish tarixi — barcha yuklamalar",
+      "form": "Shakl",
+      "allTypes": "Barcha shakllar",
+      "search": "Korxona yoki izoh bo'yicha qidirish",
+      "total": "Jami",
+      "columns": {
+        "date": "Sana",
+        "organization": "Korxona",
+        "form": "Shakl",
+        "period": "Davr",
+        "source": "Manba",
+        "status": "Holat",
+        "changes": "O'zgarish",
+        "download": "Yuklab olish",
+        "comment": "Izoh"
+      },
+      "source": { "excel": "Excel", "ones": "1C" },
+      "status": { "process": "Jarayonda", "done": "Bajarildi", "error": "Xato" }
     },
     "reportStatus": {
       "button": "Hisobot holati",

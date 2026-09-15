@@ -51,15 +51,20 @@ export const useUploadReportStore = defineStore('uploadReport', {
     // 1C dan ommaviy yuklash (Oylik hisobot) — modal holati.
     // bulkPeriod — modal davri: upload-report yoki salary-1c sahifasidan uzatiladi.
     bulkPeriod: { year: null, month: null },
+    // bulkType — qaysi hisobot ommaviy tortiladi (1=Oylik, 2=INPS4, 3=INPS5, 4=to'lovlar).
+    // Oylik → org ro'yxati salary_reports'dan; INPS → 1C kodli barcha korxonalar.
+    bulkType: 1,
     bulkVisible: false,
     bulkLoading: false, // korxonalar ro'yxatini yuklash
-    bulkOrgs: [], // org-totals: { organization_id, organization, employee_count, net_total }
+    bulkOrgs: [], // { organization_id, organization, employee_count?, net_total?, ones_org_code? }
     bulkSelected: [], // tanlangan organization_id lar
     bulkSearch: '',
     bulkRunning: false, // yuklash jarayoni ketyaptimi
     bulkProgress: { done: 0, total: 0 },
     // organization_id -> { status: 'uploading'|'done'|'failed', message? }
     bulkResults: {},
+    // To'xtatish so'ralganda true — worker'lar yangi korxona OLMAYDI.
+    bulkCancelRequested: false,
     // Hisobot holati modali (tanlangan oy uchun korxonalar kesimida yuklagan/yuklamagan).
     reportStatusVisible: false,
     reportStatusLoading: false,
@@ -73,7 +78,23 @@ export const useUploadReportStore = defineStore('uploadReport', {
     // Ko'p korxonani birdan tasdiqlash/bekor qilish (checkbox multi-select).
     confirmSelected: [], // belgilangan organization_id lar
     bulkConfirmType: 1, // tanlangan tur (1=Oylik,2=INPS4,3=INPS5,4=to'lovlar)
-    bulkConfirmLoading: false
+    bulkConfirmLoading: false,
+    // Tortish tarixi (pull-log) modal — barcha davrlar bo'yicha yuklamalar (server paginatsiyasi).
+    pullHistoryVisible: false,
+    pullHistoryLoading: false,
+    pullHistoryRows: [],
+    pullHistoryTotal: 0,
+    pullHistoryParams: {
+      type: null, // shakl (1..4); null = hammasi
+      year: null,
+      month: null,
+      organization_id: null,
+      source: null, // 1=Excel, 2=1C
+      done: null, // 1=xato, 2=jarayonda, 3=bajarildi
+      search: null,
+      page: 1,
+      per_page: 20
+    }
   }),
   actions: {
     _confirm(v) {
@@ -180,6 +201,19 @@ export const useUploadReportStore = defineStore('uploadReport', {
           this.structuresLoading = false
         })
     },
+    // Yuklama backendda `done=2` (jarayonda) bo'lib qaytadi, so'ng fonda `done=3`
+    // (muvaffaqiyat) bo'ladi. Polling o'rniga bir marta kechiktirilgan qayta
+    // yuklash — kartochka/tree yakuniy holatni «Yangilash»siz ko'rsatadi.
+    _refreshSoon() {
+      // Fonда 1C tortish 6-30s davom etadi — bir necha marta yangilaymiz, done=2→3
+      // «Yangilash»siz ko'rinadi (Excel/Oylik uchun ham zararsiz — arzon so'rov).
+      ;[4000, 12000, 25000].forEach((ms) =>
+        setTimeout(() => {
+          this._cards()
+          this._structures()
+        }, ms)
+      )
+    },
     _cards() {
       this.cardLoading = true
       const params = {
@@ -208,6 +242,8 @@ export const useUploadReportStore = defineStore('uploadReport', {
         .then((res) => {
           this.visible = false
           this._cards()
+          this._structures()
+          this._refreshSoon()
         })
         .catch(() => {
           // Xato (masalan 422 — fayl shablonga mos emas) interceptor'da toast
@@ -217,19 +253,27 @@ export const useUploadReportStore = defineStore('uploadReport', {
           this.saveLoading = false
         })
     },
-    // Oylik hisobotni 1C dan yuklash (fayl yo'q — backend salary-1c ma'lumotidan quradi).
+    // Hisobotni 1C dan yuklash (fayl yo'q). type=1 (Oylik) salary-1c dan,
+    // type=2/3/4 (INPS 4/5/to'lovlar) 1c-zup (NDFL4/NDFL5/INPS) dan quriladi.
     _createFromOnes() {
       this.saveLoading = true
       const data = {
         organization_id: this.params.organization_id,
+        type: this.payload.type,
         year: this.payload.year,
-        month: this.payload.month
+        month: this.payload.month,
+        // INPS 4/5-ilova va to'lovlar (2/3/4) — 1C sekin (6-30s) → FONДА: so'rov
+        // darhol qaytadi, yuklama done=2→3 fonda yangilanadi (tree pollingi bilan).
+        // Oylik (1) tez (lokal salary) — background ta'sir qilmaydi.
+        background: [2, 3, 4].includes(Number(this.payload.type))
       }
       $ApiService.accountantService
         ._createFromOnes({ data })
         .then(() => {
           this.visible = false
           this._cards()
+          this._structures()
+          this._refreshSoon()
         })
         .finally(() => {
           this.saveLoading = false
@@ -238,11 +282,18 @@ export const useUploadReportStore = defineStore('uploadReport', {
     // 1C dan ommaviy yuklash modalini ochish + korxonalar ro'yxatini olish.
     // year/month berilmasa — upload-report filtridagi davr olinadi (salary-1c dan
     // chaqirilganda o'sha sahifaning davri uzatiladi).
-    openBulk(year, month) {
+    openBulk(year, month, type = 1) {
+      // Yuklash allaqachon ketayotgan bo'lsa — holatni RESET qilmasdan modalni
+      // qayta ochamiz (fonda ketayotgan jonli progressni ko'rsatish uchun).
+      if (this.bulkRunning) {
+        this.bulkVisible = true
+        return
+      }
       this.bulkPeriod = {
         year: year ?? this.params.year,
         month: month ?? this.params.month
       }
+      this.bulkType = type
       this.bulkVisible = true
       this.bulkOrgs = []
       this.bulkSelected = []
@@ -250,18 +301,28 @@ export const useUploadReportStore = defineStore('uploadReport', {
       this.bulkResults = {}
       this.bulkProgress = { done: 0, total: 0 }
       this.bulkRunning = false
+      this.bulkCancelRequested = false
       this._loadBulkOrgs()
     },
-    // Shu davr (bulkPeriod) uchun 1C da tortilgan korxonalar.
-    // Javob: { message, error, data: { total, data: [...] } } → massiv = res.data.data.data
+    // Ketayotgan ommaviy yuklashni to'xtatish — worker'lar yangi korxona OLMAYDI
+    // (jarayondagi ≤6 so'rov tugaydi). Progress qolgan joyida to'xtaydi.
+    stopBulk() {
+      if (!this.bulkRunning) return
+      this.bulkCancelRequested = true
+    },
+    // Korxonalar ro'yxati. Oylik (type=1) → shu davrda 1C da tortilgan korxonalar
+    // (salary_reports). INPS (2/3/4) → 1C kodi bor barcha korxonalar (1c-zup to'g'ridan).
+    // Javob: { data: { total, data: [...] } } → massiv = res.data.data.data.
     _loadBulkOrgs() {
       this.bulkLoading = true
-      const params = {
-        year: this.bulkPeriod.year,
-        month: this.bulkPeriod.month
-      }
-      $ApiService.accountantService
-        ._onesOrgs({ params })
+      const svc = $ApiService.accountantService
+      const req =
+        Number(this.bulkType) === 1
+          ? svc._onesOrgs({
+              params: { year: this.bulkPeriod.year, month: this.bulkPeriod.month }
+            })
+          : svc._reportOrgs()
+      req
         .then((res) => {
           this.bulkOrgs = res.data.data?.data ?? []
         })
@@ -269,7 +330,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
           this.bulkLoading = false
         })
     },
-    // Modal ichida davr (yil/oy) o'zgarganda — tanlovni tozalab, ro'yxatni qayta yuklaymiz.
+    // Modal ichida davr yoki hisobot turi o'zgarganda — tanlovni tozalab, ro'yxatni qayta yuklaymiz.
     _changeBulkPeriod() {
       this.bulkSelected = []
       this.bulkResults = {}
@@ -281,18 +342,22 @@ export const useUploadReportStore = defineStore('uploadReport', {
       const ids = [...this.bulkSelected]
       if (ids.length === 0) return
       this.bulkRunning = true
+      this.bulkCancelRequested = false
       this.bulkResults = {}
       this.bulkProgress = { done: 0, total: ids.length }
       const CONC = 6
       let idx = 0
       const worker = async () => {
         while (idx < ids.length) {
+          // To'xtatish so'ralgan bo'lsa — yangi korxona OLINMAYDI (jarayondagi tugaydi).
+          if (this.bulkCancelRequested) break
           const orgId = ids[idx++]
           this.bulkResults = { ...this.bulkResults, [orgId]: { status: 'uploading' } }
           try {
             const res = await $ApiService.accountantService._createFromOnes({
               data: {
                 organization_id: orgId,
+                type: this.bulkType,
                 year: this.bulkPeriod.year,
                 month: this.bulkPeriod.month
               },
@@ -320,8 +385,11 @@ export const useUploadReportStore = defineStore('uploadReport', {
       }
       await Promise.all(Array.from({ length: Math.min(CONC, ids.length) }, () => worker()))
       this.bulkRunning = false
-      // Faqat upload-report konteksti (davr tanlangan) bo'lsa daraxt/kartalarni
-      // yangilaymiz — salary-1c dan chaqirilganda bu holat bo'lmaydi.
+      const wasCancelled = this.bulkCancelRequested
+      this.bulkCancelRequested = false
+      if (wasCancelled) $Toast.info(t('uploadReport.bulkOnes.stopped'))
+      // Qisman yuklangan bo'lsa ham (to'xtatilgan ham) daraxt/kartalarni yangilaymiz —
+      // faqat upload-report konteksti (davr tanlangan) bo'lsa; salary-1c dan chaqirilganda bu holat yo'q.
       if (this.params.year && this.params.month) {
         this._structures()
         if (this.params.organization_id) this._cards()
@@ -342,12 +410,14 @@ export const useUploadReportStore = defineStore('uploadReport', {
       this.visible = data
     },
     resetForm() {
-      const oneMonthAgo = getOneMonthAgoYearMonth()
+      // Modal davri = asosiy filtr davri (params) — «bir oy oldin» EMAS. Aks holda
+      // asosiy filtrda Iyul turса ham modalda Avgust chiqib, nomuvofiqlik bo'lardi.
+      const fallback = getOneMonthAgoYearMonth()
       this.elementId = null
       this.payload.file = []
       this.payload.type = null
-      this.payload.year = oneMonthAgo.year
-      this.payload.month = oneMonthAgo.month
+      this.payload.year = this.params.year ?? fallback.year
+      this.payload.month = this.params.month ?? fallback.month
       this.payload.source = 1
     },
     onChangeStructure(v) {
@@ -435,6 +505,58 @@ export const useUploadReportStore = defineStore('uploadReport', {
         .finally(() => {
           this.reportStatusExporting = false
         })
+    },
+    // --- Tortish tarixi (pull-log) ---
+    openPullHistory() {
+      this.pullHistoryVisible = true
+      this.pullHistoryParams = {
+        type: null,
+        year: null,
+        month: null,
+        organization_id: null,
+        source: null,
+        done: null,
+        search: null,
+        page: 1,
+        per_page: 20
+      }
+      this._loadPullHistory()
+    },
+    _loadPullHistory() {
+      this.pullHistoryLoading = true
+      const p = this.pullHistoryParams
+      const params = {
+        type: p.type || undefined,
+        year: p.year || undefined,
+        month: p.month || undefined,
+        organization_id: p.organization_id || undefined,
+        source: p.source || undefined,
+        done: p.done || undefined,
+        search: p.search?.trim() || undefined,
+        page: p.page,
+        per_page: p.per_page
+      }
+      $ApiService.accountantService
+        ._pullHistory({ params })
+        .then((res) => {
+          const d = res.data.data ?? {}
+          this.pullHistoryRows = d.data ?? []
+          this.pullHistoryTotal = d.total ?? 0
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.pullHistoryLoading = false
+        })
+    },
+    // Sahifa o'zgarganda — o'sha sahifani yuklaymiz.
+    _onPullHistoryPage(page) {
+      this.pullHistoryParams.page = page
+      this._loadPullHistory()
+    },
+    // Filtr o'zgarganda — 1-sahifadan qayta yuklaymiz.
+    _changePullFilter() {
+      this.pullHistoryParams.page = 1
+      this._loadPullHistory()
     }
   }
 })

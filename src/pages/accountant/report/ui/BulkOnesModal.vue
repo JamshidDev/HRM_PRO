@@ -1,10 +1,21 @@
 <script setup>
   import { UIModal, UIYearMonth } from '@/components/index.js'
-  import { useUploadReportStore } from '@/store/modules/index.js'
+  import { useUploadReportStore, useComponentStore } from '@/store/modules/index.js'
   import { Search24Regular } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
 
   const store = useUploadReportStore()
+  const componentStore = useComponentStore()
+
+  // Oylik (type=1) → korxona ostида xodim soni + summa; INPS (2/3/4) → 1C kodi.
+  const isStatement = computed(() => Number(store.bulkType) === 1)
+
+  // Hisobot turi o'zgarsa — tanlovni tozalab, mos org ro'yxatini qayta yuklaymiz.
+  const onTypeChange = () => store._changeBulkPeriod()
+
+  onMounted(() => {
+    if (!componentStore.uploadTypes?.length) componentStore._enumAccountant()
+  })
 
   // Qidiruv bo'yicha filtrlangan korxonalar (nomi bo'yicha).
   const filtered = computed(() => {
@@ -66,6 +77,22 @@
   <UIModal :width="680" v-model:visible="store.bulkVisible" :title="$t('uploadReport.bulkOnes.title')">
     <div class="flex flex-col gap-2">
       <p class="text-xs text-secondary px-1">{{ $t('uploadReport.bulkOnes.hint') }}</p>
+
+      <!-- Hisobot turi — qaysi hisobot ommaviy tortiladi -->
+      <div>
+        <label class="text-xs text-secondary mb-1 block px-1">
+          {{ $t('uploadReport.form.type') }}
+        </label>
+        <n-select
+          v-model:value="store.bulkType"
+          :options="componentStore.uploadTypes"
+          label-field="name"
+          value-field="id"
+          :loading="componentStore.accountantEnumLoading"
+          :disabled="store.bulkRunning"
+          @update:value="onTypeChange"
+        />
+      </div>
 
       <!-- Davr — qaysi oy uchun yuklanadi (o'zgarsa ro'yxat qayta yuklanadi) -->
       <div>
@@ -131,8 +158,11 @@
               <div class="flex-1 min-w-0">
                 <div class="text-sm truncate">{{ o.organization }}</div>
                 <div class="text-xs text-secondary">
-                  {{ o.employee_count }} {{ $t('uploadReport.bulkOnes.employees') }} ·
-                  {{ Utils.formatNumberToMoney(o.net_total) }}
+                  <template v-if="isStatement">
+                    {{ o.employee_count }} {{ $t('uploadReport.bulkOnes.employees') }} ·
+                    {{ Utils.formatNumberToMoney(o.net_total) }}
+                  </template>
+                  <template v-else>{{ o.ones_org_code }}</template>
                 </div>
               </div>
               <div class="shrink-0">
@@ -188,9 +218,18 @@
       </div>
     </div>
 
+    <!-- Yuklash ketayotganda: modalni yopsa ham fonda davom etadi -->
+    <p v-if="store.bulkRunning" class="text-xs text-secondary mt-3 px-1">
+      {{ $t('uploadReport.bulkOnes.background') }}
+    </p>
+
     <div class="grid grid-cols-2 gap-2 mt-4">
-      <n-button @click="store.bulkVisible = false" type="error" ghost :disabled="store.bulkRunning">
-        {{ $t('content.cancel') }}
+      <!-- Yugurish paytida — To'xtatish (yangi korxonalar olinmaydi); aks holda — Yopish -->
+      <n-button v-if="store.bulkRunning" @click="store.stopBulk()" type="error">
+        {{ $t('uploadReport.bulkOnes.stop') }}
+      </n-button>
+      <n-button v-else @click="store.bulkVisible = false" type="error" ghost>
+        {{ $t('uploadReport.bulkOnes.close') }}
       </n-button>
       <n-button
         @click="onUpload"

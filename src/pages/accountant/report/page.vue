@@ -9,6 +9,7 @@
   import CommentModal from './ui/CommentModal.vue'
   import BulkOnesModal from './ui/BulkOnesModal.vue'
   import ReportStatusModal from './ui/ReportStatusModal.vue'
+  import ReportPullHistoryModal from './ui/ReportPullHistoryModal.vue'
   import { useAccountStore, useUploadReportStore } from '@/store/modules/index.js'
   import { getOneMonthAgoYearMonth } from '@utils'
 
@@ -54,6 +55,7 @@
         </UIModal>
         <BulkOnesModal />
         <ReportStatusModal />
+        <ReportPullHistoryModal />
         <CommentModal />
       </div>
     </div>
