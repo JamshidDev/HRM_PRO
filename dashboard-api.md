@@ -243,11 +243,9 @@ Eski 3 ta endpoint migratsiya davrida saqlanib turishi mumkin, keyin o'chiriladi
 
     "age_gender": {
       "buckets": [
-        { "key": "18_25",   "label": "18–25", "count": 412,  "percent": 12.0, "male": 300,  "female": 112, "delta": 34, "delta_percent": 9.0 },
-        { "key": "26_35",   "label": "26–35", "count": 1058, "percent": 31.0, "male": 800,  "female": 258, "delta": 60, "delta_percent": 6.0 },
-        { "key": "36_45",   "label": "36–45", "count": 956,  "percent": 28.0, "male": 730,  "female": 226, "delta": 9,  "delta_percent": 1.0 },
-        { "key": "46_55",   "label": "46–55", "count": 682,  "percent": 20.0, "male": 520,  "female": 162, "delta": 45, "delta_percent": 7.0 },
-        { "key": "56_plus", "label": "56+",   "count": 304,  "percent": 9.0,  "male": 254,  "female": 50,  "delta": 30, "delta_percent": 11.0 }
+        { "key": "upto_30", "label": "18–30", "count": 1150, "percent": 33.7, "male": 870, "female": 280, "delta": 94, "delta_percent": 8.9 },
+        { "key": "31_45",   "label": "31–45", "count": 1276, "percent": 37.4, "male": 980, "female": 296, "delta": 34, "delta_percent": 2.7 },
+        { "key": "46_plus", "label": "46+",   "count": 986,  "percent": 28.9, "male": 754, "female": 232, "delta": 75, "delta_percent": 8.2 }
       ],
       "gender_total": {
         "male":   { "count": 2604, "percent": 76.0 },
@@ -696,7 +694,7 @@ status, reason, date
 | Endpoint | Qo'shilishi kerak |
 |---|---|
 | `GET /v1/hr/dashboard/educations` | `type` param **6 ta yangi `key`ni** qabul qilishi: `vocational_college`, `bachelor`, `general_secondary`, `academic_lyceum`, `master`, `not_specified` |
-| `GET /v1/hr/dashboard/age` | `bucket` param: `18_25`, `26_35`, `36_45`, `46_55`, `56_plus` (hozirgi `age_start`/`age_end` bilan birga) + `sex` filtri |
+| `GET /v1/hr/dashboard/age` | `bucket` param: `upto_30`, `31_45`, `46_plus` (hozirgi `age_start`/`age_end` bilan birga) + `sex` filtri |
 | `GET /v1/hr/dashboard/incentive-actions` | `type` param barcha rag'batlantirish turlari `key`i bo'yicha |
 | `GET /v1/hr/dashboard/disciplinary-actions` | `type` param barcha jazo turlari `key`i bo'yicha |
 | `GET /v1/hr/dashboard/contracts` | `contract_type` param (`permanent`, `fixed_term`, `fxsh`, `secondary`, `temporary`) |

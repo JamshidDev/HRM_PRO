@@ -32,9 +32,11 @@
   const AVATAR_SHOWN = AVATAR_MAX - 1
 
   const items = computed(() => {
-    // Maketda birinchi ikki qatorda "Bugungi / Ertangi tug'ilgan kunlar" izohi
-    // bor, qolganlarida faqat sana turadi.
-    const labels = [t('dashboardPage.birthday.today'), t('dashboardPage.birthday.tomorrow')]
+    // Birinchi ikki qatorda «Bugun / Ertaga» asosiy matn, sana esa ostida kichik.
+    const labels = [
+      t('dashboardPage.birthday.todayShort'),
+      t('dashboardPage.birthday.tomorrowShort')
+    ]
     return (store.overview.birthdays?.result || []).map((item, idx) => {
       const total = Number(item.count) || 0
       // Backend preview ro'yxatini qaytaradi — undan faqat sig'adigani chiziladi.
@@ -83,13 +85,19 @@
     :inner="false"
     @action="$emit('detail')"
   >
-    <div class="flex min-h-px flex-1 flex-col gap-2">
-      <div v-if="head" class="flex items-center gap-2 rounded-xl bg-fig-brand px-3 py-3.5">
-        <div class="flex min-w-0 flex-1 flex-col justify-center gap-1 text-[12px] leading-4 text-white">
-          <p class="truncate font-semibold">{{ head.day }}</p>
-          <p v-if="head.label" class="truncate font-normal">{{ head.label }}</p>
+    <div class="flex min-h-px flex-1 flex-col gap-1.5">
+      <div v-if="head" class="birthday-today flex items-center gap-2 rounded-xl px-3 py-2">
+        <div class="flex min-w-0 flex-1 flex-col justify-center gap-0.5 text-[12px] leading-4">
+          <p class="truncate font-semibold text-fig-text-primary">
+            {{ head.label || head.day }}
+          </p>
+          <p v-if="head.label" class="truncate text-[11px] leading-4 text-fig-text-tertiary">
+            {{ head.day }}
+          </p>
         </div>
-        <p class="shrink-0 text-right text-[12px] leading-4 font-semibold whitespace-nowrap text-white">
+        <p
+          class="shrink-0 text-right text-[13px] leading-[18px] font-bold whitespace-nowrap text-fig-text-primary"
+        >
           {{ countLabel(head) }}
         </p>
         <UIUserGroup
@@ -102,22 +110,24 @@
         />
       </div>
 
-      <div class="flex min-h-px flex-1 flex-col rounded-xl bg-fig-bg-secondary py-1.5">
+      <div class="flex min-h-px flex-1 flex-col rounded-xl bg-fig-bg-secondary py-1">
         <template v-for="(item, idx) in tail" :key="idx">
           <span v-if="idx" class="mr-[86px] ml-3 h-px bg-fig-br-disable"></span>
           <div
-            class="flex min-h-px flex-1 items-center gap-2 px-3 py-2"
+            class="flex min-h-px flex-1 items-center gap-2 px-3 py-1"
             :class="!item.total && 'bg-fig-bg-disable'"
           >
-            <div class="flex min-w-0 flex-1 flex-col justify-center gap-1">
-              <p class="truncate text-[12px] leading-4 text-fig-text-primary">{{ item.day }}</p>
-              <p v-if="item.label" class="truncate text-[12px] leading-4 text-fig-text-primary">
-                {{ item.label }}
+            <div class="flex min-w-0 flex-1 flex-col justify-center gap-0.5">
+              <p class="truncate text-[12px] leading-4 font-semibold text-fig-text-primary">
+                {{ item.label || item.day }}
+              </p>
+              <p v-if="item.label" class="truncate text-[11px] leading-4 text-fig-text-tertiary">
+                {{ item.day }}
               </p>
             </div>
             <p
-              class="shrink-0 text-right text-[12px] leading-4 font-semibold whitespace-nowrap"
-              :class="item.total ? 'text-fig-text-green' : 'text-fig-text-disable'"
+              class="shrink-0 text-right text-[13px] leading-[18px] font-bold whitespace-nowrap"
+              :class="item.total ? 'text-fig-text-primary' : 'text-fig-text-disable'"
             >
               {{ countLabel(item) }}
             </p>
@@ -145,6 +155,51 @@
 </template>
 
 <style scoped>
+  /* Bugungi kun qatori — och bayramona gradient, sekin siljib turadi.
+     Gradient ::before qatlamida: opacity faqat fonni oqartiradi, matnga tegmaydi. */
+  .birthday-today {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .birthday-today > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .birthday-today::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      110deg,
+      var(--fig-icon-brand) 0%,
+      var(--fig-icon-indigo) 32%,
+      var(--fig-icon-purple) 64%,
+      var(--fig-icon-pink) 100%
+    );
+    background-size: 220% 220%;
+    opacity: 0.16;
+    animation: birthday-shift 8s ease-in-out infinite;
+  }
+
+  @keyframes birthday-shift {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  /* Harakatni kamaytirish so'ralganda gradient qoladi, animatsiya to'xtaydi. */
+  @media (prefers-reduced-motion: reduce) {
+    .birthday-today::before {
+      animation: none;
+    }
+  }
+
   /* Maketda avatarlar 28×28, oq halqali va 8px ustma-ust tushadi. Global
      `.ui__user-group` rasmni 36×42 qilib beradi — bu yerda kvadratga qaytariladi,
      aks holda qo'shni avatar ostiga chiqib ketadi. */
