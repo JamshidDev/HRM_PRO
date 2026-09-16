@@ -1854,7 +1854,8 @@
     "dashboard": {
       "title": "Статистика"
     },
-    "materials": "Материаллар"
+    "materials": "Материаллар",
+    "downloadTitle": "Ҳисоботни юклаш"
   },
   "solveExamPage": {
     "alreadyStarted": "Сиз бу имтиҳонни олдин бошлагансиз. Давом этишни хоҳлайсизми?",

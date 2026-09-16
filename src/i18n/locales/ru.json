@@ -2075,7 +2075,8 @@
     "dashboard": {
       "title": "Статистика"
     },
-    "materials": "Материалы"
+    "materials": "Материалы",
+    "downloadTitle": "Скачать отчёт"
   },
   "solveExamPage": {
     "alreadyStarted": "Вы уже начинали этот экзамен. Продолжить?",

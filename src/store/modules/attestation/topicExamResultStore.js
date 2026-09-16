@@ -24,32 +24,72 @@ export const useTopicExamResultStore = defineStore('topicExamResult', {
     topicLoading: false,
     examList: [],
     examLoading: false,
-    downloadLoading: false
+    downloadLoading: false,
+    downloadVisible: false,
+    downloadStructureCheck: [],
+    downloadExamList: [],
+    downloadExamLoading: false,
+    // Yuklash modali o'z filtriga ega — sahifa filtridan mustaqil.
+    downloadParams: {
+      type: 'results',
+      organizations: [],
+      topics: [],
+      exams: []
+    }
   }),
   actions: {
-    _downloadNotPassedExam() {
-      this.downloadLoading = true
-      const params = this._paramToQuery()
+    _openDownload() {
+      // Modal sahifa filtri bilan to'ldiriladi, keyin foydalanuvchi o'zgartiradi.
+      this.downloadParams = {
+        type: 'results',
+        organizations: [...(this.params.organizations || [])],
+        topics: [...this.params.topics],
+        exams: [...this.params.exams]
+      }
+      this.downloadStructureCheck = [...this.structureCheck2]
+      this.downloadExamList = []
+      if (this.downloadParams.topics.length > 0) {
+        this._downloadExamOptions(this.downloadParams.topics.toString())
+      }
+      this.downloadVisible = true
+    },
+    _downloadExamOptions(topics) {
+      this.downloadExamLoading = true
       $ApiService.topicExamResultService
-        ._downloadNoPassedWorker({ params })
+        ._exams({ params: { page: 1, per_page: 1000, topics } })
+        .then((res) => {
+          this.downloadExamList = res.data.data.data.map((v) => ({
+            ...v,
+            position: `${v.topic?.name}`
+          }))
+        })
+        .finally(() => {
+          this.downloadExamLoading = false
+        })
+    },
+    _downloadSubmit() {
+      this.downloadLoading = true
+      const params = this._downloadParamToQuery()
+      const service = $ApiService.topicExamResultService
+      const request =
+        this.downloadParams.type === 'notPassed'
+          ? service._downloadNoPassedWorker({ params })
+          : service._downloadExam({ params })
+
+      request
         .then(() => {
-          // router.push(Utils.routeHrmPathMaker(AppPaths.Export))
+          this.downloadVisible = false
         })
         .finally(() => {
           this.downloadLoading = false
         })
     },
-    _downloadExam() {
-      this.downloadLoading = true
-      const params = this._paramToQuery()
-      $ApiService.topicExamResultService
-        ._downloadExam({ params })
-        .then(() => {
-          // router.push(Utils.routeHrmPathMaker(AppPaths.Export))
-        })
-        .finally(() => {
-          this.downloadLoading = false
-        })
+    _downloadParamToQuery() {
+      return {
+        organizations: this.downloadParams.organizations?.map((v) => v.id).toString() || undefined,
+        topics: this.downloadParams.topics?.toString() || undefined,
+        exams: this.downloadParams.exams?.toString() || undefined
+      }
     },
     _delete() {
       this.loading = true
