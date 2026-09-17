@@ -643,7 +643,7 @@
         <UISegmentTabs v-model="detailTab" :tabs="detailTabs" class="mb-4" />
 
         <template v-if="detailTab === 'schedule'">
-          <div>
+          <div class="ts-detail-scroll">
             <template v-if="detail?.schedule">
               <n-descriptions :column="1" bordered label-placement="left" size="small">
                 <n-descriptions-item :label="$t('timesheetPage.workStatus')">
@@ -694,7 +694,7 @@
         </template>
 
         <template v-else>
-          <div>
+          <div class="ts-detail-scroll">
             <n-alert :bordered="false" class="mb-3" type="info">
               {{ $t('timesheetPage.turnstileNotUsed') }}
             </n-alert>
@@ -1207,6 +1207,13 @@
   }
 
   /* ── Tafsilot va qoidalar modallari ───────────────────────────────────── */
+  /* Balandlik QAT'IY — hodisalar ro'yxati uzun bo'lsa modal cho'zilmasin,
+     ichkarisi skrollansin (tablar joyida qoladi). */
+  .ts-detail-scroll {
+    height: 46vh;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
   .ts-detail-result {
     display: flex;
     align-items: center;
