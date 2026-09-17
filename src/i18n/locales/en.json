@@ -2590,7 +2590,13 @@
       "holiday": "Holiday"
     },
     "workTimeType": "Work time type",
-    "fill": "Fill"
+    "fill": "Fill",
+    "clearMonth": "Clear month",
+    "openProfile": "Worker profile",
+    "monthCleared": "Worker's month cleared",
+    "autoCalc": "Auto calculate",
+    "autoCalcSoon": "Auto calculation is in development",
+    "autoCalcShort": "Auto"
   },
   "turnstile": {
     "title": "Turnstile",

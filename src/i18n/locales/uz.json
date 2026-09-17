@@ -2610,7 +2610,13 @@
       "holiday": "Bayram"
     },
     "workTimeType": "Ish vaqti turi",
-    "fill": "To'ldirish"
+    "fill": "To'ldirish",
+    "clearMonth": "Oyni tozalash",
+    "openProfile": "Xodim kartochkasi",
+    "monthCleared": "Xodimning oyi tozalandi",
+    "autoCalc": "Auto hisoblash",
+    "autoCalcSoon": "Auto hisoblash ishlab chiqilmoqda",
+    "autoCalcShort": "Auto"
   },
   "turnstile": {
     "title": "Turniket",

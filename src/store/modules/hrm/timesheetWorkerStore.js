@@ -262,6 +262,32 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         this.saveLoading = false
       }
     },
+    // Qator menyusi: xodimning shu oydagi BARCHA to'ldirilgan kunlarini
+    // o'chiradi (katakma-katak tanlashsiz).
+    async clearWorkerMonth(item) {
+      const row = this.list.find((w) => w.id === item?.id)
+      const days = Object.keys(row?.days || {})
+      if (!row || !days.length) return false
+      const workers = days.map((day) => ({
+        id: row.id,
+        day: dayjs()
+          .year(this.year)
+          .month(this.month)
+          .date(Number(day))
+          .format('YYYY-MM-DD')
+      }))
+      this.saveLoading = true
+      try {
+        await $ApiService.timesheetWorkerService._create({
+          data: { status: 0, hours: 0, workers },
+          id: this.elementId
+        })
+        this._index_workers()
+        return true
+      } finally {
+        this.saveLoading = false
+      }
+    },
     _check_pin(v) {
       this.pinLoading = true
       $ApiService.timesheetWorkerService

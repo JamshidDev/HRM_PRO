@@ -2598,7 +2598,13 @@
       "holiday": "Праздник"
     },
     "workTimeType": "Тип рабочего времени",
-    "fill": "Заполнить"
+    "fill": "Заполнить",
+    "clearMonth": "Очистить месяц",
+    "openProfile": "Карточка сотрудника",
+    "monthCleared": "Месяц сотрудника очищен",
+    "autoCalc": "Авторасчёт",
+    "autoCalcSoon": "Авторасчёт в разработке",
+    "autoCalcShort": "Авто"
   },
   "turnstile": {
     "title": "Турникет",

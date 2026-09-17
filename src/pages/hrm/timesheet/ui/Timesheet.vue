@@ -1,6 +1,12 @@
 <script setup>
   import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
-  import { Dismiss20Regular, Search20Regular } from '@vicons/fluent'
+  import { useMessage } from 'naive-ui'
+  import {
+    Dismiss20Regular,
+    MoreVertical20Filled,
+    Search20Regular,
+    Wand20Filled
+  } from '@vicons/fluent'
   import { useComponentStore, useTimesheetWorkerStore } from '@/store/modules/index.js'
   import { UIDragSelector, UIPagination } from '@/components/index.js'
   import dayjs from 'dayjs'
@@ -10,6 +16,7 @@
 
   const { t } = i18n.global
 
+  const message = useMessage()
   const store = useTimesheetWorkerStore()
   const compStore = useComponentStore()
   const form = ref(null)
@@ -33,6 +40,16 @@
   const searchInput = ref(null)
   let searchTimer = null
 
+  // Qidiruvda butun panjara `n-spin` ostida yo'qolib ketmasin — indikator
+  // faqat inputda aylanadi, jadval joyida qoladi.
+  const searching = ref(false)
+  watch(
+    () => store.loading,
+    (v) => {
+      if (!v) searching.value = false
+    }
+  )
+
   const toggleSearch = async () => {
     searchOpen.value = !searchOpen.value
     if (searchOpen.value) {
@@ -42,6 +59,7 @@
       // Yopilganda qidiruv bekor qilinadi va ro'yxat tiklanadi.
       store.params.search = null
       store.params.page = 1
+      searching.value = true
       store._index()
     }
   }
@@ -51,11 +69,36 @@
     clearTimeout(searchTimer)
     searchTimer = setTimeout(() => {
       store.params.page = 1
+      searching.value = true
       store._index()
     }, 400)
   }
 
   onBeforeUnmount(() => clearTimeout(searchTimer))
+
+  /* ------------------------------------------------------------------------
+   * Qator amallari (3 nuqta) va «Auto hisoblash».
+   * ---------------------------------------------------------------------- */
+  const rowMenuOptions = computed(() => [
+    { key: 'clear', label: t('timesheetPage.clearMonth') },
+    { key: 'profile', label: t('timesheetPage.openProfile'), disabled: false }
+  ])
+
+  const onRowMenu = async (key, item) => {
+    if (key === 'profile') {
+      if (!item?.worker_uuid) return
+      window.open(`/hrm/worker-profile?id=${item.worker_uuid}`, '_blank')
+      return
+    }
+    if (key === 'clear') {
+      const cleared = await store.clearWorkerMonth(item)
+      if (cleared) message.success(t('timesheetPage.monthCleared'))
+    }
+  }
+
+  // Turniket hodisalaridan kun bo'yicha ish soatini aniqlash — mantiq hali
+  // kelishilmagan, tugma o'rni band qilib qo'yildi.
+  const onAutoCalc = () => message.info(t('timesheetPage.autoCalcSoon'))
 
   /* ------------------------------------------------------------------------
    * Katakcha ko'rinishi — Figma «HRM Railway» (node 3368:103614).
@@ -253,6 +296,12 @@
         >
           {{ $t('content.clear') }}
         </n-button>
+        <n-button secondary type="info" @click="onAutoCalc">
+          <template #icon>
+            <n-icon :component="Wand20Filled" />
+          </template>
+          {{ $t('timesheetPage.autoCalcShort') }}
+        </n-button>
         <n-button :loading="store.saveLoading" type="primary" @click="onSave">
           {{ $t('content.save') }}
         </n-button>
@@ -266,7 +315,7 @@
     </div>
 
     <n-spin
-      :show="store.loading || store.saveLoading"
+      :show="(store.loading && !searching) || store.saveLoading"
       class="ts-body"
       content-class="ts-body-content"
     >
@@ -288,26 +337,27 @@
                 <template v-if="searchOpen">
                   <n-input
                     ref="searchInput"
+                    :loading="searching"
                     :placeholder="$t('timesheet.searchWorkerHint')"
                     :value="store.params.search"
                     class="ts-search-field"
                     clearable
-                    size="small"
+                    size="medium"
                     @update:value="onSearchInput"
                   >
                     <template #prefix>
-                      <n-icon :component="Search20Regular" size="14" />
+                      <n-icon :component="Search20Regular" size="18" />
                     </template>
                   </n-input>
                   <n-button
                     circle
                     class="ts-search-btn"
                     quaternary
-                    size="tiny"
+                    size="medium"
                     @click="toggleSearch"
                   >
                     <template #icon>
-                      <n-icon :component="Dismiss20Regular" size="14" />
+                      <n-icon :component="Dismiss20Regular" size="18" />
                     </template>
                   </n-button>
                 </template>
@@ -317,11 +367,11 @@
                     circle
                     class="ts-search-btn"
                     quaternary
-                    size="tiny"
+                    size="medium"
                     @click="toggleSearch"
                   >
                     <template #icon>
-                      <n-icon :component="Search20Regular" size="14" />
+                      <n-icon :component="Search20Regular" size="18" />
                     </template>
                   </n-button>
                 </template>
@@ -369,6 +419,18 @@
                     </span>
                   </div>
                 </div>
+                <n-dropdown
+                  :options="rowMenuOptions"
+                  placement="bottom-start"
+                  trigger="click"
+                  @select="(key) => onRowMenu(key, item)"
+                >
+                  <n-button circle class="ts-row-menu-btn" quaternary size="small">
+                    <template #icon>
+                      <n-icon :component="MoreVertical20Filled" size="18" />
+                    </template>
+                  </n-button>
+                </n-dropdown>
               </div>
 
               <div class="ts-c-table no-selectable-item">
@@ -530,7 +592,8 @@
      kun katakchasi 60×50, № 60, o'ng jamlar 80, qator balandligi 50. */
   $cell: 60px; // kun ustuni kengligi
   $row: 50px; // qator balandligi
-  $side: 200px; // «Xodim» va «Tabel» ustunlari
+  $worker: 320px; // «Xodim» ustuni
+  $side: 200px; // «Tabel» ustuni
   $total: 80px; // «Kun» va «Soat»
   $num: 60px; // tartib raqami
 
@@ -729,14 +792,14 @@
   }
   .ts-c-worker {
     left: $num;
-    flex: 1 0 $side;
-    width: $side;
-    min-width: $side;
+    flex: 1 0 $worker;
+    width: $worker;
+    min-width: $worker;
     padding-left: 12px;
     text-align: left;
   }
   .ts-c-table {
-    left: $num + $side;
+    left: $num + $worker;
     width: $side;
     min-width: $side;
     padding-left: 12px;
@@ -762,6 +825,22 @@
   .ts-c-days {
     right: $total;
     box-shadow: inset 1px 0 0 var(--surface-line);
+  }
+  /* Qator amallari — «Xodim» katagi ichida, o'ng chetda. */
+  .ts-row-menu-btn {
+    flex-shrink: 0;
+    margin-left: auto;
+    margin-right: 4px;
+    color: var(--fig-text-secondary);
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .ts-brow:hover .ts-row-menu-btn,
+  .ts-row-menu-btn:focus-within {
+    opacity: 1;
+  }
+  .ts-row-menu-btn:hover {
+    color: var(--primaryColor);
   }
 
   /* ── Qatorlar ─────────────────────────────────────────────────────────── */
@@ -827,15 +906,20 @@
   }
 
   /* «Xodim» sarlavhasi — matn/input va qidiruv tugmasi bir qatorda. */
-  .ts-head-search {
+  /* Yopiq holatda matn + ikonka BIRGA markazda; qidiruv ochilganda
+     input butun kenglikni oladi (`.ts-search-field { flex: 1 }`). */
+  .ts-hrow .ts-c-worker.ts-head-search {
     flex-direction: row;
     align-items: center;
-    gap: 6px;
-    padding: 0 8px;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 10px;
   }
   .ts-head-title {
-    flex: 1;
+    flex: 0 1 auto;
     min-width: 0;
+    font-size: 13px;
+    font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -856,13 +940,16 @@
     color: var(--fig-text-secondary);
   }
   .ts-search-field :deep(.n-input__input-el) {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 400;
   }
   /* Ikonka tugma — sarlavha matni bilan bir tekis, hover'da ajralib turadi. */
   .ts-search-btn {
     flex-shrink: 0;
     color: var(--fig-text-secondary);
+  }
+  .ts-search-btn :deep(.n-icon) {
+    font-size: 18px;
   }
   .ts-search-btn:hover {
     color: var(--primaryColor);
