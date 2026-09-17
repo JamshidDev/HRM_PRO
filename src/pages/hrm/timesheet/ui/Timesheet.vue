@@ -220,14 +220,65 @@
 
   // Ish intervallari — qavs: kirishdan chiqadi, pastga tushadi, chiqishga
   // qaytib kiradi. Faqat YOPILGAN juftlar (chiqishi qayd etilganlari).
+  // Grafik oynasi va tushlik — hisob qoidasi UI'da ham shu chegaralardan.
+  const workWindow = computed(() => {
+    const sch = detail.value?.schedule
+    if (!sch?.start_time) return null
+    const a = hhmmToMin(sch.start_time)
+    let b = hhmmToMin(sch.end_time, true) ?? 1440
+    if (b <= a) b = 1440
+    return [a, b]
+  })
+  const lunchWindow = computed(() => {
+    const br = detail.value?.planned_break
+    if (!br) return null
+    const a = hhmmToMin(br.start_time)
+    const b = hhmmToMin(br.end_time, true)
+    return a != null && b != null && b > a ? [a, b] : null
+  })
+
+  // Ish intervali. Butun oraliq xira qavs bo'lib chiziladi, HISOBGA OLINGAN
+  // qismlari esa ustidan to'q yashil bilan bo'yaladi — soat qayerdan
+  // to'plangani ko'rinib tursin (grafikdan tashqarisi va tushlik kirmaydi).
   const workIntervals = computed(() =>
     (detail.value?.segments ?? [])
       .filter((sg) => sg.type === 'work' && sg.to)
       .map((sg) => {
         const a = minOfDay(sg.from)
         const b = minOfDay(sg.to)
+        const win = workWindow.value
+        const lunch = lunchWindow.value
+        const parts = []
+        let counted = 0
+        if (win) {
+          const c = Math.max(a, win[0])
+          const d = Math.min(b, win[1])
+          if (d > c) {
+            const ranges =
+              lunch && lunch[0] < d && lunch[1] > c
+                ? [
+                    [c, Math.min(lunch[0], d)],
+                    [Math.max(lunch[1], c), d]
+                  ]
+                : [[c, d]]
+            // ⚠️ Foizlar INTERVAL ichida hisoblanadi: `.ts-tl-iv-counted`
+            // intervalning o'zi ichida joylashadi, o'qqa nisbatan emas.
+            const span = b - a || 1
+            for (const [x, y] of ranges) {
+              if (y <= x) continue
+              counted += y - x
+              parts.push({
+                top: `${((x - a) / span) * 100}%`,
+                height: `${((y - x) / span) * 100}%`
+              })
+            }
+          }
+        }
         return {
           dur: minutesToHm(sg.minutes),
+          counted: minutesToHm(counted),
+          partial: counted < sg.minutes,
+          parts,
           style: { top: `${pct(a)}%`, height: `${Math.max(1.2, pct(b) - pct(a))}%` }
         }
       })
@@ -872,7 +923,17 @@
                   :style="iv.style"
                   class="ts-tl-iv"
                 >
-                  <span class="ts-tl-iv-dur">{{ iv.dur }}</span>
+                  <!-- Hisobga OLINGAN qismlar — to'q yashil -->
+                  <span
+                    v-for="(pt, j) in iv.parts"
+                    :key="`p-${j}`"
+                    :style="pt"
+                    class="ts-tl-iv-counted"
+                  ></span>
+                  <span class="ts-tl-iv-dur">
+                    {{ iv.counted }}
+                    <i v-if="iv.partial">/ {{ iv.dur }}</i>
+                  </span>
                 </span>
 
                 <!-- Turniket hodisalari — o'qdan gorizontal, aniq vaqt bilan -->
@@ -890,6 +951,14 @@
                   </span>
                   <span class="ts-tl-ev-dev">{{ e.device || '—' }}</span>
                 </span>
+              </div>
+
+              <div class="ts-tl-legend">
+                <span><i class="ts-lg is-counted"></i>{{ $t('timesheetPage.lgCounted') }}</span>
+                <span><i class="ts-lg is-raw"></i>{{ $t('timesheetPage.lgRaw') }}</span>
+                <span><i class="ts-lg is-plan"></i>{{ $t('timesheetPage.lgPlan') }}</span>
+                <span><i class="ts-lg is-lunch"></i>{{ $t('timesheetPage.lgLunch') }}</span>
+                <span><i class="ts-lg is-dim"></i>{{ $t('timesheetPage.lgOutside') }}</span>
               </div>
 
               <p v-if="!detail?.segments?.length" class="ts-tl-empty">
@@ -1485,7 +1554,7 @@
   /* Grafikdan tashqaridagi vaqt — xira, orqa fonda. */
   .ts-tl-dim {
     position: absolute;
-    left: -$tlAxis;
+    left: 0;
     right: 0;
     background: var(--fig-block-bg);
     opacity: 0.55;
@@ -1557,8 +1626,16 @@
     border: 2px solid var(--fig-icon-green);
     border-left: none;
     border-radius: 0 8px 8px 0;
-    /* Ichi yashil, xira — interval yaqqol ko'rinsin. */
-    background: color-mix(in srgb, var(--fig-icon-green) 14%, transparent);
+    /* Butun oraliq — xira yashil (xom vaqt). */
+    background: color-mix(in srgb, var(--fig-icon-green) 10%, transparent);
+  }
+  /* Hisobga olingan qism — to'q yashil. */
+  .ts-tl-iv-counted {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: color-mix(in srgb, var(--fig-icon-green) 45%, transparent);
+    border-radius: 3px;
   }
   .ts-tl-iv-dur {
     position: absolute;
@@ -1570,6 +1647,53 @@
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
     color: var(--fig-icon-green);
+  }
+  /* Xom vaqt — hisobga olingandan farq qilsa, yonida xira ko'rsatiladi. */
+  .ts-tl-iv-dur i {
+    font-style: normal;
+    font-weight: 400;
+    color: var(--fig-text-tertiary);
+  }
+  /* Izoh qatori. */
+  .ts-tl-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 12px;
+    font-size: 11px;
+    color: var(--fig-text-secondary);
+  }
+  .ts-tl-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ts-lg {
+    width: 14px;
+    height: 10px;
+    border-radius: 3px;
+  }
+  .ts-lg.is-counted {
+    background: color-mix(in srgb, var(--fig-icon-green) 45%, transparent);
+    border: 1px solid var(--fig-icon-green);
+  }
+  .ts-lg.is-raw {
+    background: color-mix(in srgb, var(--fig-icon-green) 10%, transparent);
+    border: 1px solid var(--fig-icon-green);
+  }
+  .ts-lg.is-plan {
+    height: 0;
+    border-top: 2px dashed var(--fig-chip-indigo-text, var(--fig-text-brand));
+    border-radius: 0;
+  }
+  .ts-lg.is-lunch {
+    height: 0;
+    border-top: 2px dashed var(--fig-chip-amber-text);
+    border-radius: 0;
+  }
+  .ts-lg.is-dim {
+    background: var(--fig-block-bg);
+    border: 1px solid var(--surface-line);
   }
   /* Hodisa — o'qdagi nuqta va yonida aniq vaqt. */
   .ts-tl-ev {

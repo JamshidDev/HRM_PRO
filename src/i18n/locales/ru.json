@@ -2637,7 +2637,12 @@
     "workEnd": "Конец работы",
     "lunchStart": "Начало обеда",
     "lunchEnd": "Конец обеда",
-    "counted": "Зачтено"
+    "counted": "Зачтено",
+    "lgCounted": "Зачтено",
+    "lgRaw": "Внутри (не зачтено)",
+    "lgPlan": "График работы",
+    "lgLunch": "Обед",
+    "lgOutside": "Вне графика"
   },
   "turnstile": {
     "title": "Турникет",

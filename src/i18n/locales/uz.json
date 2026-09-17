@@ -2649,7 +2649,12 @@
     "workEnd": "Ish tugashi",
     "lunchStart": "Tushlik boshlanishi",
     "lunchEnd": "Tushlik tugashi",
-    "counted": "Hisobga olindi"
+    "counted": "Hisobga olindi",
+    "lgCounted": "Hisobga olindi",
+    "lgRaw": "Ichkarida (hisobsiz)",
+    "lgPlan": "Ish grafigi",
+    "lgLunch": "Tushlik",
+    "lgOutside": "Grafikdan tashqarida"
   },
   "turnstile": {
     "title": "Turniket",

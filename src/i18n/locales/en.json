@@ -2629,7 +2629,12 @@
     "workEnd": "Work end",
     "lunchStart": "Lunch start",
     "lunchEnd": "Lunch end",
-    "counted": "Counted"
+    "counted": "Counted",
+    "lgCounted": "Counted",
+    "lgRaw": "Inside (not counted)",
+    "lgPlan": "Work schedule",
+    "lgLunch": "Lunch",
+    "lgOutside": "Outside schedule"
   },
   "turnstile": {
     "title": "Turnstile",
