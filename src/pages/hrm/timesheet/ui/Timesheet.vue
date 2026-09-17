@@ -3,6 +3,7 @@
   import { useMessage } from 'naive-ui'
   import {
     Dismiss20Regular,
+    Info20Filled,
     MoreVertical20Filled,
     Search20Regular,
     Wand20Filled
@@ -11,6 +12,7 @@
   import { UIDragSelector, UIPagination } from '@/components/index.js'
   import dayjs from 'dayjs'
   import Utils from '@/utils/Utils.js'
+  import { UISegmentTabs } from '@/components/index.js'
   import { colorOfDetail } from './timesheetGrid.js'
   import i18n from '@/i18n/index.js'
 
@@ -79,18 +81,61 @@
   /* ------------------------------------------------------------------------
    * Qator amallari (3 nuqta) va «Auto hisoblash».
    * ---------------------------------------------------------------------- */
-  const rowMenuOptions = computed(() => [
-    { key: 'recalc', label: t('timesheetPage.recalc') }
-  ])
+  const rowMenuOptions = computed(() => [{ key: 'recalc', label: t('timesheetPage.recalc') }])
 
   // «Auto» tugmasi bilan bir mantiq — faqat bitta xodim uchun.
   const onRowMenu = (key) => {
     if (key === 'recalc') message.info(t('timesheetPage.autoCalcSoon'))
   }
 
-  // Turniket hodisalaridan kun bo'yicha ish soatini aniqlash — mantiq hali
-  // kelishilmagan, tugma o'rni band qilib qo'yildi.
-  const onAutoCalc = () => message.info(t('timesheetPage.autoCalcSoon'))
+  /* ------------------------------------------------------------------------
+   * Auto hisoblash.
+   *
+   * Manba — ISH VAQTI grafigi (`turnstile_worker_schedules`) va tasdiqlangan
+   * ta'til buyruqlari. Natija LOKAL qo'yiladi, bazaga «Saqlash» bosilganda
+   * ketadi. Turniket hodisalari bo'yicha hisoblash keyingi bosqichda.
+   * ---------------------------------------------------------------------- */
+  const onAutoCalc = async () => {
+    const res = await store.autoCalc()
+    if (!res) return
+    message.success(t('timesheetPage.autoCalcDone', { count: res.cells }))
+  }
+
+  // Qoidalar modali — hisoblash qanday ishlashini ko'rsatadi.
+  const rulesOpen = ref(false)
+  const rules = ref(null)
+  const openRules = async () => {
+    rulesOpen.value = true
+    if (!rules.value) rules.value = await store.autoCalcRules()
+  }
+
+  // Kun tafsiloti modali — katakcha burchagidagi tugma ochadi.
+  const detailOpen = ref(false)
+  const detailLoading = ref(false)
+  const detailTab = ref('schedule')
+  const detailTabs = computed(() => [
+    { id: 'schedule', name: t('timesheetPage.tabWorkTime') },
+    { id: 'turnstile', name: t('timesheetPage.tabTurnstile') }
+  ])
+  const detail = ref(null)
+  const detailTitle = ref('')
+
+  const openDayDetail = async (item, day) => {
+    const date = dayjs().year(store.year).month(store.month).date(day.day).format('YYYY-MM-DD')
+    detailTitle.value = `${item.name} · ${date}`
+    detailOpen.value = true
+    detailLoading.value = true
+    detail.value = null
+    try {
+      detail.value = await store.dayDetail(item.id, date)
+    } finally {
+      detailLoading.value = false
+    }
+  }
+
+  const hm = (v) => (v ? String(v).slice(11, 16) : '—')
+  const minutesToHm = (m) =>
+    m == null ? '—' : `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`
 
   /* ------------------------------------------------------------------------
    * Katakcha ko'rinishi — Figma «HRM Railway» (node 3368:103614).
@@ -288,11 +333,16 @@
         >
           {{ $t('content.clear') }}
         </n-button>
-        <n-button secondary type="info" @click="onAutoCalc">
+        <n-button :loading="store.autoLoading" secondary type="info" @click="onAutoCalc">
           <template #icon>
             <n-icon :component="Wand20Filled" />
           </template>
           {{ $t('timesheetPage.autoCalcShort') }}
+        </n-button>
+        <n-button :title="$t('timesheetPage.autoRulesTitle')" circle quaternary @click="openRules">
+          <template #icon>
+            <n-icon :component="Info20Filled" />
+          </template>
         </n-button>
         <n-button :loading="store.saveLoading" type="primary" @click="onSave">
           {{ $t('content.save') }}
@@ -441,6 +491,11 @@
                 class="ts-cell"
                 data-selectable
               >
+                <!-- Burchakdagi tugma: shu kun uchun grafik/ta'til/turniket
+                     tafsiloti. `.stop` — drag-select ishga tushmasin. -->
+                <span class="ts-cell-info" @click.stop="openDayDetail(item, day)" @mousedown.stop>
+                  <n-icon :component="Info20Filled" size="12" />
+                </span>
                 <template v-if="dayDetails(item, day)?.length">
                   <span class="ts-cell-status">
                     <template
@@ -574,6 +629,172 @@
         </div>
       </n-form>
     </div>
+
+    <!-- Kun tafsiloti — o'rta o'lchamli, tabli. -->
+    <n-modal
+      v-model:show="detailOpen"
+      :title="detailTitle"
+      class="ts-detail-modal"
+      preset="card"
+      size="small"
+      style="width: 640px; max-width: 94vw"
+    >
+      <n-spin :show="detailLoading">
+        <UISegmentTabs v-model="detailTab" :tabs="detailTabs" class="mb-4" />
+
+        <template v-if="detailTab === 'schedule'">
+          <div>
+            <template v-if="detail?.schedule">
+              <n-descriptions :column="1" bordered label-placement="left" size="small">
+                <n-descriptions-item :label="$t('timesheetPage.workStatus')">
+                  {{
+                    detail.schedule.work_status === 1
+                      ? $t('timesheetPage.workDay')
+                      : $t('timesheetPage.restDay')
+                  }}
+                </n-descriptions-item>
+                <n-descriptions-item :label="$t('timesheetPage.planTime')">
+                  {{ (detail.schedule.start_time || '—').slice(0, 5) }} –
+                  {{ (detail.schedule.end_time || '—').slice(0, 5) }}
+                </n-descriptions-item>
+                <n-descriptions-item :label="$t('timesheetPage.planMinutes')">
+                  {{ minutesToHm(detail.schedule.daily_minutes) }}
+                </n-descriptions-item>
+                <n-descriptions-item :label="$t('timesheetPage.daytimeEvening')">
+                  {{ minutesToHm(detail.schedule.daytime) }} /
+                  {{ minutesToHm(detail.schedule.evening_time) }}
+                </n-descriptions-item>
+              </n-descriptions>
+            </template>
+            <n-empty v-else :description="$t('timesheetPage.noSchedule')" class="py-6" />
+
+            <div class="ts-detail-result">
+              <span class="ts-detail-result-label">{{ $t('timesheetPage.computed') }}</span>
+              <template v-if="detail?.computed">
+                <n-tag
+                  :color="{ textColor: colorOfDetail({ status_id: detail.computed.status }) }"
+                  round
+                  size="small"
+                >
+                  {{ detail.computed.key }}
+                </n-tag>
+                <span class="ts-detail-hours"
+                  >{{ detail.computed.hours }} {{ $t('timesheetPage.hours') }}</span
+                >
+              </template>
+              <span v-else class="ts-detail-empty">{{ $t('timesheetPage.restDay') }}</span>
+              <n-tag v-if="detail?.vacation_type" round size="small" type="warning">
+                {{ $t('timesheetPage.byVacation') }}
+              </n-tag>
+              <n-tag v-else-if="detail?.is_holiday" round size="small" type="error">
+                {{ detail.holiday_name }}
+              </n-tag>
+            </div>
+          </div>
+        </template>
+
+        <template v-else>
+          <div>
+            <n-alert :bordered="false" class="mb-3" type="info">
+              {{ $t('timesheetPage.turnstileNotUsed') }}
+            </n-alert>
+            <n-table v-if="detail?.events?.length" :bordered="false" size="small" striped>
+              <thead>
+                <tr>
+                  <th>{{ $t('content.time') }}</th>
+                  <th>{{ $t('timesheetPage.direction') }}</th>
+                  <th>{{ $t('timesheetPage.device') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(e, i) in detail.events" :key="i">
+                  <td>{{ hm(e.at) }}</td>
+                  <td>
+                    <n-tag :type="e.direction ? 'success' : 'default'" round size="small">
+                      {{ e.direction ? $t('timesheetPage.enter') : $t('timesheetPage.exit') }}
+                    </n-tag>
+                  </td>
+                  <td>{{ e.device_name || '—' }}</td>
+                </tr>
+              </tbody>
+            </n-table>
+            <n-empty v-else :description="$t('timesheetPage.noEvents')" class="py-6" />
+
+            <div v-if="detail?.turnstile?.pairs?.length" class="ts-detail-result">
+              <span class="ts-detail-result-label">{{ $t('timesheetPage.insideTotal') }}</span>
+              <span class="ts-detail-hours">
+                {{ minutesToHm(detail.turnstile.total_minutes) }}
+              </span>
+              <span class="ts-detail-empty">
+                {{ hm(detail.turnstile.first_in) }} – {{ hm(detail.turnstile.last_out) }}
+              </span>
+            </div>
+          </div>
+        </template>
+      </n-spin>
+    </n-modal>
+
+    <!-- Hisoblash qoidalari. -->
+    <n-modal
+      v-model:show="rulesOpen"
+      :title="$t('timesheetPage.autoRulesTitle')"
+      preset="card"
+      size="small"
+      style="width: 720px; max-width: 94vw"
+    >
+      <p class="ts-rules-note">{{ $t('timesheetPage.autoRulesNote') }}</p>
+
+      <h4 class="ts-rules-head">{{ $t('timesheetPage.tabWorkTime') }}</h4>
+      <n-table :bordered="false" size="small" striped>
+        <thead>
+          <tr>
+            <th>{{ $t('timesheetPage.condition') }}</th>
+            <th style="width: 140px">{{ $t('timesheetPage.workTimeType') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(r, i) in rules?.schedule_rules ?? []" :key="`s-${i}`">
+            <td>{{ r.condition }}</td>
+            <td>
+              <n-tag
+                v-if="r.timesheet_key"
+                :color="{ textColor: colorOfDetail({ status_id: r.timesheet_type }) }"
+                round
+                size="small"
+              >
+                {{ r.timesheet_key }}
+              </n-tag>
+              <span v-else>—</span>
+            </td>
+          </tr>
+        </tbody>
+      </n-table>
+
+      <h4 class="ts-rules-head">{{ $t('timesheetPage.vacationRules') }}</h4>
+      <n-table :bordered="false" size="small" striped>
+        <thead>
+          <tr>
+            <th>{{ $t('timesheetPage.commandType') }}</th>
+            <th style="width: 200px">{{ $t('timesheetPage.workTimeType') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="r in rules?.vacation_rules ?? []" :key="r.command_type">
+            <td>{{ r.command_label }}</td>
+            <td>
+              <n-tag
+                :color="{ textColor: colorOfDetail({ status_id: r.timesheet_type }) }"
+                round
+                size="small"
+              >
+                {{ r.timesheet_key }}
+              </n-tag>
+              <span class="ts-rules-label">{{ r.timesheet_label }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </n-table>
+    </n-modal>
   </div>
 </template>
 
@@ -947,6 +1168,78 @@
     color: var(--primaryColor);
   }
   .ts-table-no {
+    font-size: 12px;
+    color: var(--fig-text-secondary);
+  }
+
+  /* Katakcha burchagidagi tafsilot tugmasi — faqat hover'da, panjara
+     zichligini buzmasligi uchun kichkina. */
+  .ts-cell {
+    position: relative;
+  }
+  .ts-cell-info {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    color: var(--fig-text-tertiary);
+    opacity: 0;
+    cursor: pointer;
+    transition:
+      opacity 0.15s,
+      color 0.15s;
+  }
+  .ts-cell:hover .ts-cell-info {
+    opacity: 1;
+  }
+  .ts-cell-info:hover {
+    color: var(--primaryColor);
+  }
+
+  /* ── Tafsilot va qoidalar modallari ───────────────────────────────────── */
+  .ts-detail-result {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    padding: 10px 12px;
+    background: var(--fig-block-bg);
+    border-radius: 10px;
+  }
+  .ts-detail-result-label {
+    font-size: 12px;
+    color: var(--fig-text-tertiary);
+  }
+  .ts-detail-hours {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--fig-text-primary);
+  }
+  .ts-detail-empty {
+    font-size: 12px;
+    color: var(--fig-text-secondary);
+  }
+  .ts-rules-note {
+    margin: 0 0 12px;
+    font-size: 12px;
+    color: var(--fig-text-secondary);
+  }
+  .ts-rules-head {
+    margin: 18px 0 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fig-text-primary);
+  }
+  .ts-rules-head:first-of-type {
+    margin-top: 0;
+  }
+  .ts-rules-label {
+    margin-left: 8px;
     font-size: 12px;
     color: var(--fig-text-secondary);
   }

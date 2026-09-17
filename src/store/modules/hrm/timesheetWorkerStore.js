@@ -1,6 +1,15 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import dayjs from 'dayjs'
+// Tabel turi id → harf. Backenddagi TIMESHEET_TYPE_KEY bilan bir xil.
+const TIMESHEET_KEY_BY_ID = {
+  1: 'K', 2: 'T', 3: 'РП', 5: 'С', 10: 'К', 14: 'MT', 15: 'ОД', 16: 'У',
+  17: 'УВ', 18: 'УД', 19: 'Р', 20: 'ОЧ', 21: 'ОЖ', 22: 'ДО', 24: 'ОЗ',
+  25: 'Б', 26: 'Т', 27: 'ЛЧ', 28: 'ВП', 29: 'Г', 31: 'ПР', 32: 'НС',
+  33: 'D', 34: 'ЗБ', 35: 'НН'
+}
+// Soat yuritiladigan turlar (backend TIMESHEET_TYPE_HOURS).
+const TIMESHEET_TYPES_WITH_HOURS = new Set([1, 2, 3, 5, 17, 27, 32])
 const { t } = i18n.global
 export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
   state: () => ({
@@ -40,7 +49,9 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     departmentLoading: false,
     // Tabelchi rejimi — hujjat aylanishidagi «Tabellar» sahifasidan ochilganda.
     // Bo'lim filtri korxonaning HAMMA bo'limi emas, faqat biriktirilganlari.
-    timekeeperMode: false
+    timekeeperMode: false,
+    autoLoading: false,
+    autoRules: null
   }),
   actions: {
     _index() {
@@ -262,6 +273,54 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         this.saveLoading = false
       }
     },
+    // Auto hisoblash — JORIY SAHIFADAGI xodimlar uchun. Natija lokal
+    // qo'yiladi (katakchalar to'ladi), bazaga «Saqlash» bosilganda ketadi.
+    async autoCalc() {
+      const ids = this.list.map((w) => w.id).filter(Boolean)
+      if (!ids.length) return null
+      this.autoLoading = true
+      try {
+        const res = await $ApiService.timesheetWorkerService._auto_calc({
+          id: this.elementId,
+          data: { worker_position_ids: ids }
+        })
+        const items = res.data.data ?? []
+        let filled = 0
+        for (const item of items) {
+          const row = this.list.findIndex((w) => w.id === item.id)
+          if (row < 0) continue
+          for (const d of item.days ?? []) {
+            this.applyLocalCell(row, d.day - 1, [
+              {
+                status: TIMESHEET_KEY_BY_ID[d.status] ?? null,
+                status_id: d.status,
+                hours: TIMESHEET_TYPES_WITH_HOURS.has(d.status) ? (d.hours ?? 0) : null
+              }
+            ])
+            filled++
+          }
+        }
+        return { workers: items.length, cells: filled }
+      } finally {
+        this.autoLoading = false
+      }
+    },
+
+    async dayDetail(workerPositionId, date) {
+      const res = await $ApiService.timesheetWorkerService._day_detail({
+        id: this.elementId,
+        params: { worker_position_id: workerPositionId, date }
+      })
+      return res.data.data
+    },
+
+    async autoCalcRules() {
+      if (this.autoRules) return this.autoRules
+      const res = await $ApiService.timesheetWorkerService._auto_calc_rules()
+      this.autoRules = res.data.data
+      return this.autoRules
+    },
+
     _check_pin(v) {
       this.pinLoading = true
       $ApiService.timesheetWorkerService
