@@ -46,7 +46,7 @@
       <template v-else-if="store.diagData">
         <!-- Yakuniy javob eng tepada — qolganini o'qimasdan ham tushunarli. -->
         <div v-if="store.diagData.summary" :class="`is-${store.diagData.summary.status}`" class="dg-sum">
-          <n-icon :component="ICONS[store.diagData.summary.status]" class="dg-sum-icon" size="22" />
+          <n-icon :component="ICONS[store.diagData.summary.status]" class="dg-sum-icon" size="18" />
           <div class="dg-sum-body">
             <span class="dg-sum-title">{{ store.diagData.summary.title }}</span>
             <span class="dg-sum-detail">{{ store.diagData.summary.detail }}</span>
@@ -68,7 +68,7 @@
             class="dg-card"
           >
             <div class="dg-head">
-              <n-icon :component="ICONS[c.status]" class="dg-icon" size="18" />
+              <n-icon :component="ICONS[c.status]" class="dg-icon" size="16" />
               <span class="dg-title">{{ c.title }}</span>
               <span class="dg-badge">{{ $t(`turnstile.diagnose.status_${c.status}`) }}</span>
 
@@ -148,9 +148,9 @@
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    padding: 12px 14px;
-    border-radius: 10px;
-    margin-bottom: 12px;
+    padding: 9px 11px;
+    border-radius: 8px;
+    margin-bottom: 10px;
   }
   .dg-sum.is-ok {
     background: var(--fig-chip-green-bg);
@@ -174,24 +174,24 @@
     gap: 3px;
   }
   .dg-sum-title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     color: var(--fig-text-primary);
   }
   .dg-sum-detail {
-    font-size: 12px;
-    line-height: 18px;
+    font-size: 11px;
+    line-height: 16px;
     color: var(--fig-text-secondary);
   }
 
   .dg-worker {
-    margin: 0 0 10px;
-    font-size: 13px;
+    margin: 0 0 8px;
+    font-size: 12px;
     font-weight: 600;
     color: var(--fig-text-primary);
   }
   .dg-person {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 400;
     color: var(--fig-text-tertiary);
   }
@@ -200,13 +200,13 @@
   .dg-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
   }
   .dg-card {
-    padding: 10px 12px;
+    padding: 7px 10px;
     border: 1px solid var(--surface-line);
     border-left-width: 3px;
-    border-radius: 10px;
+    border-radius: 8px;
   }
   /* Chap chekka rangi holatni bir qarashda ko'rsatadi. */
   .dg-card.is-ok {
@@ -225,7 +225,7 @@
   .dg-head {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
   }
   .dg-icon {
     flex-shrink: 0;
@@ -243,15 +243,16 @@
     color: var(--fig-text-tertiary);
   }
   .dg-title {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     color: var(--fig-text-primary);
   }
   /* Holat so'z bilan ham yoziladi — rang yolg'iz yetarli emas. */
   .dg-badge {
-    padding: 1px 8px;
+    padding: 0 6px;
     border-radius: 999px;
-    font-size: 11px;
+    font-size: 10px;
+    line-height: 16px;
     font-weight: 600;
     white-space: nowrap;
   }
@@ -277,9 +278,9 @@
   }
 
   .dg-detail {
-    margin: 4px 0 0 26px;
-    font-size: 12px;
-    line-height: 18px;
+    margin: 3px 0 0 22px;
+    font-size: 11px;
+    line-height: 16px;
     color: var(--fig-text-secondary);
   }
 
@@ -287,26 +288,28 @@
   .dg-facts {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    margin: 8px 0 0 26px;
+    gap: 4px;
+    margin: 6px 0 0 22px;
   }
   .dg-fact {
     display: flex;
     flex-direction: column;
     gap: 1px;
-    min-width: 110px;
-    padding: 5px 9px;
-    border-radius: 8px;
+    min-width: 88px;
+    padding: 3px 7px;
+    border-radius: 6px;
     background: var(--surface-ground-soft);
   }
   .dg-fact-label {
-    font-size: 10px;
+    font-size: 9px;
     text-transform: uppercase;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.2px;
+    line-height: 13px;
     color: var(--fig-text-tertiary);
   }
   .dg-fact-value {
-    font-size: 12px;
+    font-size: 11px;
+    line-height: 15px;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     color: var(--fig-text-primary);
@@ -323,20 +326,20 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 5px;
-    margin: 8px 0 0 26px;
+    gap: 4px;
+    margin: 6px 0 0 22px;
   }
   .dg-chips-caption {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
     color: var(--fig-text-tertiary);
   }
   .dg-chip {
-    padding: 2px 8px;
-    border-radius: 6px;
-    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 5px;
+    font-size: 10px;
     font-weight: 600;
-    line-height: 16px;
+    line-height: 15px;
   }
   .dg-chip.c-bad {
     background: color-mix(in srgb, var(--fig-text-red) 12%, transparent);
