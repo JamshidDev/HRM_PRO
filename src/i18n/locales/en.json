@@ -2624,7 +2624,11 @@
     "segOpen": "No exit recorded",
     "factMinutes": "By turnstile",
     "breakTotal": "Outside total",
-    "segLunch": "Lunch"
+    "segLunch": "Lunch",
+    "workStart": "Work start",
+    "workEnd": "Work end",
+    "lunchStart": "Lunch start",
+    "lunchEnd": "Lunch end"
   },
   "turnstile": {
     "title": "Turnstile",

@@ -2632,7 +2632,11 @@
     "segOpen": "Выход не зафиксирован",
     "factMinutes": "По турникету",
     "breakTotal": "Снаружи всего",
-    "segLunch": "Обед"
+    "segLunch": "Обед",
+    "workStart": "Начало работы",
+    "workEnd": "Конец работы",
+    "lunchStart": "Начало обеда",
+    "lunchEnd": "Конец обеда"
   },
   "turnstile": {
     "title": "Турникет",

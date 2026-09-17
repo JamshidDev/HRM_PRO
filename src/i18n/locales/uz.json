@@ -2644,7 +2644,11 @@
     "segOpen": "Chiqish qayd etilmagan",
     "factMinutes": "Turniket bo'yicha",
     "breakTotal": "Tashqarida jami",
-    "segLunch": "Tushlik"
+    "segLunch": "Tushlik",
+    "workStart": "Ish boshlanishi",
+    "workEnd": "Ish tugashi",
+    "lunchStart": "Tushlik boshlanishi",
+    "lunchEnd": "Tushlik tugashi"
   },
   "turnstile": {
     "title": "Turniket",
