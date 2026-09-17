@@ -9,6 +9,7 @@
   import Table from './ui/Table.vue'
   import Filter from './ui/Filter.vue'
   import ViewAttemptModal from './ui/ViewResultModal.vue'
+  import DownloadModal from './ui/DownloadModal.vue'
   import Tabs from '@/pages/attestation/workerTopic/solveExam/ui/Tabs.vue'
   import VideoTab from '@/pages/attestation/workerTopic/solveExam/ui/VideoTab.vue'
 
@@ -25,6 +26,7 @@
   <UIPageContent>
     <Filter />
     <Table />
+    <DownloadModal />
     <UIModal
       v-model:visible="examStore.visible"
       :width="1000"
