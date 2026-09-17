@@ -5,6 +5,15 @@ import { compressImage } from '@/utils/index.js'
 
 const { t } = i18n.global
 
+// Muddat MAJBURIY va doim yuboriladi: bo'sh qolsa HCP o'zi «bugun+2 yil» qo'yib,
+// bizning baza bilan jimgina ajralib ketadi. Shuning uchun formaga ham shu
+// qiymat oldindan qo'yiladi.
+const defaultDeadline = () => {
+  const d = new Date()
+  d.setFullYear(d.getFullYear() + 2)
+  return d.getTime()
+}
+
 export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentralWorkerStore', {
   state: () => ({
     list: [],
@@ -40,7 +49,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
       photo_index: null,
       access_level_ids: [],
       photo: null,
-      end_time: null,
+      end_time: defaultDeadline(),
       isWorker: 1,
       blob: null
     },
@@ -305,7 +314,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
       this.payload.photo_index = null
       this.payload.access_level_ids = []
       this.payload.photo = null
-      this.payload.end_time = null
+      this.payload.end_time = defaultDeadline()
       this.photos = []
     },
     resetEditPayload() {
