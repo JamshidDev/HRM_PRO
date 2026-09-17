@@ -69,6 +69,7 @@
     </UIModal>
     <UIModal
       :width="1200"
+      fullscreen-on-mobile
       :visible="store.workerVisible"
       @update:visible="(v) => (store.workerVisible = v)"
       :title="$t('eduPlanPage.workers')"
