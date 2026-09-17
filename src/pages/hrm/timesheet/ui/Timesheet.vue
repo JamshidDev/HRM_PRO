@@ -189,8 +189,20 @@
       push('bs', 'break', t('timesheetPage.lunchStart'), br.start_time)
       push('be', 'break', t('timesheetPage.lunchEnd'), br.end_time, true)
     }
+    // Yorliqlar o'zaro ustma-ust tushmasin: vaqt bo'yicha tartiblab,
+    // orasida minimal masofa majburlanadi (chiziq o'z joyida qoladi).
+    out.sort((a, b) => a.top - b.top)
+    let last = -99
+    for (const mk of out) {
+      mk.labelTop = Math.max(mk.top, last + MIN_GAP_PCT)
+      last = mk.labelTop
+    }
     return out
   })
+
+  // Yorliqlar orasidagi minimal masofa (o'q balandligining %): 460px da
+  // ~19px — 12px shrift uchun yetarli, aks holda yaqin vaqtlar qoplanadi.
+  const MIN_GAP_PCT = 4.2
 
   // Ish grafigidan TASHQARIDAGI vaqt xiralashtiriladi — ish vaqti qismi
   // ko'zga yaqqol tashlansin. Grafik yo'q bo'lsa hech narsa xiralashmaydi.
@@ -224,7 +236,6 @@
   // Vaqt o'qidagi nuqtalar SEGMENT chegaralaridan olinadi — backend ketma-ket
   // bir xil hodisalarda oxirgisini tanlagan, ya'ni qoida avtomatik qo'llanadi.
   // (Xom ro'yxat «Turniket» tabida to'liq ko'rinadi.)
-  const MIN_GAP_PCT = 3.4
   const eventRows = computed(() => {
     const raw = []
     for (const sg of detail.value?.segments ?? []) {
@@ -251,12 +262,18 @@
 
   // Y o'qi — har 2 soatda bo'linma (24 soat / 2 = 13 ta yozuv).
   const tlTicks = computed(() => {
+    // Soat yozuvi va grafik yorlig'i IKKALASI ham chap gutterda — bir joyga
+    // tushsa soat yozuvi yashiriladi (chiziqcha qoladi, faqat matn ketadi).
+    const taken = planMarks.value.map((mk) => mk.labelTop)
     const out = []
     for (let m = 0; m <= 1440; m += 120) {
+      const top = pct(m)
       out.push({
         m,
-        top: pct(m),
-        label: `${String(Math.floor(m / 60) % 24).padStart(2, '0')}:00`
+        top,
+        label: taken.some((v) => Math.abs(v - top) < MIN_GAP_PCT)
+          ? null
+          : `${String(Math.floor(m / 60) % 24).padStart(2, '0')}:00`
       })
     }
     return out
@@ -831,7 +848,7 @@
                   :style="{ top: `${tick.top}%` }"
                   class="ts-tl-tick"
                 >
-                  <span class="ts-tl-tick-label">{{ tick.label }}</span>
+                  <span v-if="tick.label" class="ts-tl-tick-label">{{ tick.label }}</span>
                 </span>
 
                 <!-- Grafik vaqtlari — chiziq, yorlig'i CHAPDA -->
@@ -842,7 +859,7 @@
                   :style="{ top: `${mark.top}%` }"
                   class="ts-tl-mark"
                 >
-                  <span class="ts-tl-mark-label"
+                  <span :style="{ top: `${mark.labelTop - mark.top}%` }" class="ts-tl-mark-label"
                     >{{ mark.label }} <b>{{ mark.time }}</b></span
                   >
                   <span class="ts-tl-mark-line"></span>
@@ -887,6 +904,10 @@
                 <span
                   >{{ $t('timesheetPage.factMinutes') }}:
                   <b>{{ minutesToHm(detail.fact_minutes) }}</b></span
+                >
+                <span
+                  >{{ $t('timesheetPage.counted') }}:
+                  <b>{{ minutesToHm(detail.counted_minutes) }}</b></span
                 >
                 <span
                   >{{ $t('timesheetPage.breakTotal') }}:
@@ -1497,26 +1518,28 @@
   /* Grafik vaqti — chiziq, yorlig'i CHAPDA. */
   .ts-tl-mark {
     position: absolute;
-    left: -$tlAxis;
-    right: 0;
+    left: 0;
     height: 0;
-    display: flex;
-    align-items: center;
-    gap: 6px;
   }
   .ts-tl-mark-label {
-    flex-shrink: 0;
-    width: #{$tlAxis - 10};
+    position: absolute;
+    right: 52px;
+    width: #{$tlAxis - 58};
+    margin-top: -7px;
     text-align: right;
     font-size: 11px;
+    line-height: 14px;
     white-space: nowrap;
     color: currentColor;
   }
   .ts-tl-mark-label b {
     font-variant-numeric: tabular-nums;
   }
+  /* Chiziq YORLIQ tomonida: yorliqdan o'qqacha, o'ngga o'tmaydi. */
   .ts-tl-mark-line {
-    flex: 1;
+    position: absolute;
+    right: 100%;
+    width: 46px;
     height: 0;
     border-top: 1px dashed currentColor;
   }
@@ -1534,6 +1557,8 @@
     border: 2px solid var(--fig-icon-green);
     border-left: none;
     border-radius: 0 8px 8px 0;
+    /* Ichi yashil, xira — interval yaqqol ko'rinsin. */
+    background: color-mix(in srgb, var(--fig-icon-green) 14%, transparent);
   }
   .ts-tl-iv-dur {
     position: absolute;

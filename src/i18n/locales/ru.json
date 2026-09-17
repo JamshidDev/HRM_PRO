@@ -2636,7 +2636,8 @@
     "workStart": "Начало работы",
     "workEnd": "Конец работы",
     "lunchStart": "Начало обеда",
-    "lunchEnd": "Конец обеда"
+    "lunchEnd": "Конец обеда",
+    "counted": "Зачтено"
   },
   "turnstile": {
     "title": "Турникет",

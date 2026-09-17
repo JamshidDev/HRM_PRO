@@ -2648,7 +2648,8 @@
     "workStart": "Ish boshlanishi",
     "workEnd": "Ish tugashi",
     "lunchStart": "Tushlik boshlanishi",
-    "lunchEnd": "Tushlik tugashi"
+    "lunchEnd": "Tushlik tugashi",
+    "counted": "Hisobga olindi"
   },
   "turnstile": {
     "title": "Turniket",

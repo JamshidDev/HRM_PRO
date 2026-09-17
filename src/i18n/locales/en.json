@@ -2628,7 +2628,8 @@
     "workStart": "Work start",
     "workEnd": "Work end",
     "lunchStart": "Lunch start",
-    "lunchEnd": "Lunch end"
+    "lunchEnd": "Lunch end",
+    "counted": "Counted"
   },
   "turnstile": {
     "title": "Turnstile",
