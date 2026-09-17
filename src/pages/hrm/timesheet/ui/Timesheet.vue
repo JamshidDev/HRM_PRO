@@ -80,20 +80,12 @@
    * Qator amallari (3 nuqta) va «Auto hisoblash».
    * ---------------------------------------------------------------------- */
   const rowMenuOptions = computed(() => [
-    { key: 'clear', label: t('timesheetPage.clearMonth') },
-    { key: 'profile', label: t('timesheetPage.openProfile'), disabled: false }
+    { key: 'recalc', label: t('timesheetPage.recalc') }
   ])
 
-  const onRowMenu = async (key, item) => {
-    if (key === 'profile') {
-      if (!item?.worker_uuid) return
-      window.open(`/hrm/worker-profile?id=${item.worker_uuid}`, '_blank')
-      return
-    }
-    if (key === 'clear') {
-      const cleared = await store.clearWorkerMonth(item)
-      if (cleared) message.success(t('timesheetPage.monthCleared'))
-    }
+  // «Auto» tugmasi bilan bir mantiq — faqat bitta xodim uchun.
+  const onRowMenu = (key) => {
+    if (key === 'recalc') message.info(t('timesheetPage.autoCalcSoon'))
   }
 
   // Turniket hodisalaridan kun bo'yicha ish soatini aniqlash — mantiq hali
@@ -423,7 +415,7 @@
                   :options="rowMenuOptions"
                   placement="bottom-start"
                   trigger="click"
-                  @select="(key) => onRowMenu(key, item)"
+                  @select="onRowMenu"
                 >
                   <n-button circle class="ts-row-menu-btn" quaternary size="small">
                     <template #icon>
@@ -826,21 +818,21 @@
     right: $total;
     box-shadow: inset 1px 0 0 var(--surface-line);
   }
-  /* Qator amallari — «Xodim» katagi ichida, o'ng chetda. */
+  /* Qator amallari — «Xodim» katagi ichida, o'ng chetda.
+     DOIM ko'rinadi: yuzasi va chegarasi bor, aks holda tugma sezilmasdi. */
   .ts-row-menu-btn {
     flex-shrink: 0;
     margin-left: auto;
     margin-right: 4px;
     color: var(--fig-text-secondary);
-    opacity: 0;
-    transition: opacity 0.15s;
-  }
-  .ts-brow:hover .ts-row-menu-btn,
-  .ts-row-menu-btn:focus-within {
-    opacity: 1;
+    background: var(--fig-block-bg);
+    transition:
+      color 0.15s,
+      background 0.15s;
   }
   .ts-row-menu-btn:hover {
     color: var(--primaryColor);
+    background: var(--surface-line);
   }
 
   /* ── Qatorlar ─────────────────────────────────────────────────────────── */

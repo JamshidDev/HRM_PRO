@@ -2611,12 +2611,9 @@
     },
     "workTimeType": "Ish vaqti turi",
     "fill": "To'ldirish",
-    "clearMonth": "Oyni tozalash",
-    "openProfile": "Xodim kartochkasi",
-    "monthCleared": "Xodimning oyi tozalandi",
-    "autoCalc": "Auto hisoblash",
     "autoCalcSoon": "Auto hisoblash ishlab chiqilmoqda",
-    "autoCalcShort": "Auto"
+    "autoCalcShort": "Auto",
+    "recalc": "Qayta hisoblash"
   },
   "turnstile": {
     "title": "Turniket",

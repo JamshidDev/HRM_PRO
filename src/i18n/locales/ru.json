@@ -2599,12 +2599,9 @@
     },
     "workTimeType": "Тип рабочего времени",
     "fill": "Заполнить",
-    "clearMonth": "Очистить месяц",
-    "openProfile": "Карточка сотрудника",
-    "monthCleared": "Месяц сотрудника очищен",
-    "autoCalc": "Авторасчёт",
     "autoCalcSoon": "Авторасчёт в разработке",
-    "autoCalcShort": "Авто"
+    "autoCalcShort": "Авто",
+    "recalc": "Пересчитать"
   },
   "turnstile": {
     "title": "Турникет",
