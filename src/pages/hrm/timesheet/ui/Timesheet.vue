@@ -734,66 +734,71 @@
       </n-spin>
     </n-modal>
 
-    <!-- Hisoblash qoidalari. -->
+    <!-- Hisoblash qoidalari. Balandligi QAT'IY — ichki qism skrollanadi,
+         aks holda ta'til jadvali 13 qator bo'lib modalni cho'zib yuborardi. -->
     <n-modal
       v-model:show="rulesOpen"
       :title="$t('timesheetPage.autoRulesTitle')"
+      class="ts-rules-modal"
       preset="card"
-      size="small"
-      style="width: 720px; max-width: 94vw"
+      size="medium"
+      style="width: 900px; max-width: 94vw"
     >
-      <p class="ts-rules-note">{{ $t('timesheetPage.autoRulesNote') }}</p>
+      <div class="ts-rules-scroll">
+        <h4 class="ts-rules-head">{{ $t('timesheetPage.tabWorkTime') }}</h4>
+        <div class="ts-rules-table-wrap">
+          <table class="ts-rules-table">
+            <thead>
+              <tr>
+                <th>{{ $t('timesheetPage.condition') }}</th>
+                <th style="width: 160px">{{ $t('timesheetPage.workTimeType') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(r, i) in rules?.schedule_rules ?? []" :key="`s-${i}`">
+                <td>{{ r.condition }}</td>
+                <td>
+                  <span
+                    v-if="r.timesheet_key"
+                    :style="{ color: colorOfDetail({ status_id: r.timesheet_type }) }"
+                    class="ts-rules-key"
+                  >
+                    {{ r.timesheet_key }}
+                  </span>
+                  <span v-else class="ts-rules-dash">—</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-      <h4 class="ts-rules-head">{{ $t('timesheetPage.tabWorkTime') }}</h4>
-      <n-table :bordered="false" size="small" striped>
-        <thead>
-          <tr>
-            <th>{{ $t('timesheetPage.condition') }}</th>
-            <th style="width: 140px">{{ $t('timesheetPage.workTimeType') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(r, i) in rules?.schedule_rules ?? []" :key="`s-${i}`">
-            <td>{{ r.condition }}</td>
-            <td>
-              <n-tag
-                v-if="r.timesheet_key"
-                :color="{ textColor: colorOfDetail({ status_id: r.timesheet_type }) }"
-                round
-                size="small"
-              >
-                {{ r.timesheet_key }}
-              </n-tag>
-              <span v-else>—</span>
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
-
-      <h4 class="ts-rules-head">{{ $t('timesheetPage.vacationRules') }}</h4>
-      <n-table :bordered="false" size="small" striped>
-        <thead>
-          <tr>
-            <th>{{ $t('timesheetPage.commandType') }}</th>
-            <th style="width: 200px">{{ $t('timesheetPage.workTimeType') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="r in rules?.vacation_rules ?? []" :key="r.command_type">
-            <td>{{ r.command_label }}</td>
-            <td>
-              <n-tag
-                :color="{ textColor: colorOfDetail({ status_id: r.timesheet_type }) }"
-                round
-                size="small"
-              >
-                {{ r.timesheet_key }}
-              </n-tag>
-              <span class="ts-rules-label">{{ r.timesheet_label }}</span>
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
+        <h4 class="ts-rules-head">{{ $t('timesheetPage.vacationRules') }}</h4>
+        <div class="ts-rules-table-wrap">
+          <table class="ts-rules-table">
+            <thead>
+              <tr>
+                <th>{{ $t('timesheetPage.commandType') }}</th>
+                <th style="width: 100px">{{ $t('timesheetPage.workTimeType') }}</th>
+                <th style="width: 260px">{{ $t('content.name') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="r in rules?.vacation_rules ?? []" :key="r.command_type">
+                <td>{{ r.command_label }}</td>
+                <td>
+                  <span
+                    :style="{ color: colorOfDetail({ status_id: r.timesheet_type }) }"
+                    class="ts-rules-key"
+                  >
+                    {{ r.timesheet_key }}
+                  </span>
+                </td>
+                <td class="ts-rules-label">{{ r.timesheet_label }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </n-modal>
   </div>
 </template>
@@ -1224,22 +1229,66 @@
     font-size: 12px;
     color: var(--fig-text-secondary);
   }
-  .ts-rules-note {
-    margin: 0 0 12px;
-    font-size: 12px;
-    color: var(--fig-text-secondary);
+  /* Qat'iy balandlik — modal kontent uzunligiga qarab sakramaydi. */
+  .ts-rules-scroll {
+    height: 62vh;
+    overflow-y: auto;
+    padding-right: 4px;
   }
   .ts-rules-head {
-    margin: 18px 0 8px;
+    margin: 20px 0 10px;
     font-size: 13px;
     font-weight: 600;
     color: var(--fig-text-primary);
   }
-  .ts-rules-head:first-of-type {
+  .ts-rules-head:first-child {
     margin-top: 0;
   }
+  /* Tashqi ramka ALOHIDA konteynerda: `border-collapse: collapse` bilan
+     jadvalning o'z chegarasi katak chiziqlariga yopishib, burchak radiusi
+     va ramkaning bir qismi yo'qolardi. */
+  .ts-rules-table-wrap {
+    border: 1px solid var(--surface-line);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .ts-rules-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .ts-rules-table th {
+    padding: 9px 12px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--fig-text-tertiary);
+    background: var(--fig-block-bg);
+    border-bottom: 1px solid var(--surface-line);
+  }
+  .ts-rules-table td {
+    padding: 9px 12px;
+    color: var(--fig-text-primary);
+    border-bottom: 1px solid var(--surface-line);
+  }
+  .ts-rules-table th + th,
+  .ts-rules-table td + td {
+    border-left: 1px solid var(--surface-line);
+  }
+  .ts-rules-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  .ts-rules-table tbody tr:hover td {
+    background: var(--fig-block-bg);
+  }
+  .ts-rules-key {
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .ts-rules-dash {
+    color: var(--fig-text-tertiary);
+  }
   .ts-rules-label {
-    margin-left: 8px;
     font-size: 12px;
     color: var(--fig-text-secondary);
   }
