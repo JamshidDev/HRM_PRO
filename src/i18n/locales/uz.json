@@ -803,7 +803,8 @@
       "department": "Bo'lim"
     },
     "nDays": "{n} kun",
-    "nHours": "{n} soat"
+    "nHours": "{n} soat",
+    "searchWorkerHint": "FISH / tabel №"
   },
   "timesheetWorkerPage": {
     "worker_role_info": "Ro'yxatda faqat «TimesheetHR» (tabelchi) roli berilgan xodimlar ko'rinadi. Rol Xodimlar bo'limidan beriladi.",
@@ -1110,6 +1111,7 @@
       "marital_status": "Oilaviy holati",
       "address": "Yashash manzili",
       "experience_date": "Uzliksiz ish staji",
+      "table_number": "Tabel raqami",
       "passportTitle": "Pasport ma'lumotlari",
       "foreignPassportTitle": "Xorijga chiqish pasporti",
       "education": "Ma'lumoti",

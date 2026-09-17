@@ -790,7 +790,8 @@
       "department": "Отдел"
     },
     "nDays": "{n} дней",
-    "nHours": "{n} часов"
+    "nHours": "{n} часов",
+    "searchWorkerHint": "ФИО / табель №"
   },
   "timesheetWorkerPage": {
     "worker_role_info": "В списке отображаются только сотрудники с ролью «TimesheetHR» (табельщик). Роль назначается в разделе Сотрудники.",
@@ -1096,6 +1097,7 @@
       "marital_status": "Семейное положение",
       "address": "Адрес проживания",
       "experience_date": "Непрерывный стаж",
+      "table_number": "Табельный номер",
       "passportTitle": "Паспортные данные",
       "foreignPassportTitle": "Загранпаспорт",
       "education": "Образование",

@@ -1,6 +1,6 @@
 <script setup>
-  import { onMounted, ref } from 'vue'
-  import { Dismiss20Regular } from '@vicons/fluent'
+  import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+  import { Dismiss20Regular, Search20Regular } from '@vicons/fluent'
   import { useComponentStore, useTimesheetWorkerStore } from '@/store/modules/index.js'
   import { UIDragSelector, UIPagination } from '@/components/index.js'
   import dayjs from 'dayjs'
@@ -20,6 +20,42 @@
     }
     store.resetAll()
   })
+
+  /* ------------------------------------------------------------------------
+   * «Xodim» ustuni sarlavhasidagi qidiruv.
+   *
+   * Ikonka bosilganda input ochiladi (sarlavha matni o'rniga), yozilganda
+   * 400 ms debounce bilan serverga so'rov ketadi. Backend `search` ni
+   * F.I.Sh. (bo'sh joy bilan ajratilgan har bir bo'lak) VA tabel raqami
+   * (`workers.card`) bo'yicha qidiradi — `buildWorkerSearchCond`.
+   * ---------------------------------------------------------------------- */
+  const searchOpen = ref(false)
+  const searchInput = ref(null)
+  let searchTimer = null
+
+  const toggleSearch = async () => {
+    searchOpen.value = !searchOpen.value
+    if (searchOpen.value) {
+      await nextTick()
+      searchInput.value?.focus?.()
+    } else if (store.params.search) {
+      // Yopilganda qidiruv bekor qilinadi va ro'yxat tiklanadi.
+      store.params.search = null
+      store.params.page = 1
+      store._index()
+    }
+  }
+
+  const onSearchInput = (v) => {
+    store.params.search = v || null
+    clearTimeout(searchTimer)
+    searchTimer = setTimeout(() => {
+      store.params.page = 1
+      store._index()
+    }, 400)
+  }
+
+  onBeforeUnmount(() => clearTimeout(searchTimer))
 
   /* ------------------------------------------------------------------------
    * Katakcha ko'rinishi — Figma «HRM Railway» (node 3368:103614).
@@ -122,7 +158,11 @@
 
   const renderLabel = (option) => {
     return [
-      h('div', { class: 'font-medium text-gray-500 whitespace-nowrap' }, `${option.name} (${option.key})`)
+      h(
+        'div',
+        { class: 'font-medium text-gray-500 whitespace-nowrap' },
+        `${option.name} (${option.key})`
+      )
     ]
   }
 
@@ -166,6 +206,7 @@
           :options="orgOptions"
           :placeholder="$t('content.workplace')"
           :value="store.organizationId"
+          class="ts-org-select"
           disabled
           label-field="name"
           value-field="id"
@@ -175,8 +216,11 @@
         <n-select
           v-model:value="store.params.department_id"
           :loading="store.departmentLoading"
+          :menu-props="{ class: 'ts-dep-menu' }"
           :options="store.departmentOptions"
           :placeholder="$t('documentPage.form.department')"
+          :virtual-scroll="false"
+          class="ts-department-select"
           clearable
           filterable
           label-field="name"
@@ -240,7 +284,48 @@
             <!-- Sarlavha qatori — skrollda tepada yopishib qoladi. -->
             <div class="ts-hrow no-selectable-item">
               <div class="ts-head ts-c-num">№</div>
-              <div class="ts-head ts-c-worker">{{ $t('content.worker') }}</div>
+              <div class="ts-head ts-c-worker ts-head-search">
+                <template v-if="searchOpen">
+                  <n-input
+                    ref="searchInput"
+                    :placeholder="$t('timesheet.searchWorkerHint')"
+                    :value="store.params.search"
+                    class="ts-search-field"
+                    clearable
+                    size="small"
+                    @update:value="onSearchInput"
+                  >
+                    <template #prefix>
+                      <n-icon :component="Search20Regular" size="14" />
+                    </template>
+                  </n-input>
+                  <n-button
+                    circle
+                    class="ts-search-btn"
+                    quaternary
+                    size="tiny"
+                    @click="toggleSearch"
+                  >
+                    <template #icon>
+                      <n-icon :component="Dismiss20Regular" size="14" />
+                    </template>
+                  </n-button>
+                </template>
+                <template v-else>
+                  <span class="ts-head-title">{{ $t('content.worker') }}</span>
+                  <n-button
+                    circle
+                    class="ts-search-btn"
+                    quaternary
+                    size="tiny"
+                    @click="toggleSearch"
+                  >
+                    <template #icon>
+                      <n-icon :component="Search20Regular" size="14" />
+                    </template>
+                  </n-button>
+                </template>
+              </div>
               <div class="ts-head ts-c-table">{{ $t('timesheet.name') }}</div>
               <div
                 v-for="day in store.days"
@@ -273,8 +358,14 @@
                   />
                   <div class="ts-worker-text">
                     <span class="ts-worker-name">{{ item.name }}</span>
-                    <span class="ts-worker-post">
-                      {{ item?.position || $t('content.noAvailable') }}
+                    <span class="ts-worker-sub">
+                      <!-- Tabel raqami (workers.card) — lavozim oldida. -->
+                      <span v-if="item?.table" class="ts-worker-badge">
+                        {{ item.table }}
+                      </span>
+                      <span class="ts-worker-post">
+                        {{ item?.position || $t('content.noAvailable') }}
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -302,7 +393,8 @@
                       v-for="(part, i) in partsOf(dayDetails(item, day), 'status')"
                       :key="`s-${i}`"
                     >
-                      <span v-if="i" class="ts-sep">/</span><span :style="{ color: part.color }">{{ part.value }}</span>
+                      <span v-if="i" class="ts-sep">/</span
+                      ><span :style="{ color: part.color }">{{ part.value }}</span>
                     </template>
                   </span>
                   <span class="ts-cell-hours">
@@ -310,13 +402,16 @@
                       v-for="(part, i) in partsOf(dayDetails(item, day), 'hours')"
                       :key="`h-${i}`"
                     >
-                      <span v-if="i" class="ts-sep">/</span><span :style="{ color: part.color }">{{ part.value }}</span>
+                      <span v-if="i" class="ts-sep">/</span
+                      ><span :style="{ color: part.color }">{{ part.value }}</span>
                     </template>
                   </span>
                 </template>
               </div>
 
-              <div class="ts-c-total ts-c-days no-selectable-item">{{ item.allMonth.days || 0 }}</div>
+              <div class="ts-c-total ts-c-days no-selectable-item">
+                {{ item.allMonth.days || 0 }}
+              </div>
               <div class="ts-c-total ts-c-hours no-selectable-item">
                 {{ item.allMonth.hours || 0 }}
               </div>
@@ -375,7 +470,7 @@
           />
         </div>
         <div class="ts-field ts-field-type">
-          <label class="ts-field-label">{{ $t('timesheetPage.workTimeType') }} 2</label>
+          <label class="ts-field-label">{{ $t('timesheetPage.workTimeType') }}</label>
           <n-select
             v-model:value="store.payload.status2"
             :consistent-menu-width="false"
@@ -394,7 +489,7 @@
           />
         </div>
         <div class="ts-field ts-field-hours">
-          <label class="ts-field-label">{{ $t('timesheetPage.hours') }} 2</label>
+          <label class="ts-field-label">{{ $t('timesheetPage.hours') }}</label>
           <n-input-number
             v-model:value="store.payload.hours2"
             :disabled="
@@ -406,25 +501,18 @@
 
         <!-- Natija namunasi — shu qatorning davomi. -->
         <div class="ts-field ts-field-preview">
-          <label class="ts-field-label">
-            {{ $t('content.result') }}
-            <template v-if="!canSelectRange()">
-              · <span class="ts-hint">{{ $t('timesheetPage.pickTypeFirst') }}</span>
-            </template>
-            <template v-else-if="pendingCells.size">
-              · {{ $t('timesheetPage.selectedCells', { count: pendingCells.size }) }}
-            </template>
-          </label>
           <div class="ts-cell ts-preview-cell">
             <template v-if="previewDetails.length">
               <span class="ts-cell-status">
                 <template v-for="(part, i) in partsOf(previewDetails, 'status')" :key="`ps-${i}`">
-                  <span v-if="i" class="ts-sep">/</span><span :style="{ color: part.color }">{{ part.value }}</span>
+                  <span v-if="i" class="ts-sep">/</span
+                  ><span :style="{ color: part.color }">{{ part.value }}</span>
                 </template>
               </span>
               <span class="ts-cell-hours">
                 <template v-for="(part, i) in partsOf(previewDetails, 'hours')" :key="`ph-${i}`">
-                  <span v-if="i" class="ts-sep">/</span><span :style="{ color: part.color }">{{ part.value }}</span>
+                  <span v-if="i" class="ts-sep">/</span
+                  ><span :style="{ color: part.color }">{{ part.value }}</span>
                 </template>
               </span>
             </template>
@@ -457,8 +545,6 @@
     overflow: hidden;
   }
 
-
-
   /* ── Yorliqli maydon (filtrlar va pastki panel uchun umumiy) ──────────── */
   .ts-field {
     display: flex;
@@ -477,6 +563,11 @@
     flex-shrink: 0;
     .ts-field {
       width: 180px;
+    }
+    /* Korxona va bo'lim nomlari uzun — kengroq maydon. */
+    .ts-field:has(.ts-org-select),
+    .ts-field:has(.ts-department-select) {
+      width: 300px;
     }
   }
 
@@ -707,6 +798,24 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  /* Ism ostidagi qator: tabel raqami badge'i + lavozim. */
+  .ts-worker-sub {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+  }
+  .ts-worker-badge {
+    flex-shrink: 0;
+    padding: 0 4px;
+    border-radius: 4px;
+    font-size: 10px;
+    line-height: 14px;
+    font-weight: 500;
+    color: var(--primaryColor);
+    background: var(--primaryColorHover, rgba(51, 102, 255, 0.1));
+    user-select: all;
+  }
   .ts-worker-post {
     font-size: 10px;
     line-height: 15px;
@@ -715,6 +824,48 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  /* «Xodim» sarlavhasi — matn/input va qidiruv tugmasi bir qatorda. */
+  .ts-head-search {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    padding: 0 8px;
+  }
+  .ts-head-title {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ts-search-field {
+    flex: 1;
+    min-width: 0;
+  }
+  .ts-search-field :deep(.n-input__border),
+  .ts-search-field :deep(.n-input__state-border) {
+    border-radius: 8px;
+  }
+  .ts-search-field :deep(.n-input-wrapper) {
+    padding-inline: 8px;
+  }
+  .ts-search-field :deep(.n-input__prefix) {
+    margin-right: 6px;
+    color: var(--fig-text-secondary);
+  }
+  .ts-search-field :deep(.n-input__input-el) {
+    font-size: 12px;
+    font-weight: 400;
+  }
+  /* Ikonka tugma — sarlavha matni bilan bir tekis, hover'da ajralib turadi. */
+  .ts-search-btn {
+    flex-shrink: 0;
+    color: var(--fig-text-secondary);
+  }
+  .ts-search-btn:hover {
+    color: var(--primaryColor);
   }
   .ts-table-no {
     font-size: 12px;
@@ -812,7 +963,7 @@
     gap: 16px;
   }
   .ts-field-type {
-    flex: 0 0 240px;
+    flex: 0 0 360px;
   }
   .ts-field-hours {
     flex: 0 0 110px;
@@ -829,5 +980,22 @@
     .ts-filters {
       flex-wrap: wrap;
     }
+  }
+</style>
+
+<style lang="scss">
+  /* Bo'lim ro'yxati — uzun nomlar kesilmasin, keyingi qatorga tushsin.
+     Menyu `body` ga teleport bo'ladi, shuning uchun global (scoped emas). */
+  .ts-dep-menu.n-base-select-menu .n-base-select-option {
+    height: auto;
+    min-height: 34px;
+    padding-block: 6px;
+  }
+  .ts-dep-menu.n-base-select-menu .n-base-select-option .n-base-select-option__content {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    line-height: 18px;
+    word-break: break-word;
   }
 </style>
