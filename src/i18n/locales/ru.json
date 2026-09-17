@@ -2602,7 +2602,7 @@
     "autoCalcSoon": "Авторасчёт в разработке",
     "autoCalcShort": "Авто",
     "recalc": "Пересчитать",
-    "autoCalcDone": "Рассчитано: {count} ячеек. Нажмите «Сохранить»",
+    "autoCalcDone": "Успешно выполнено",
     "autoRulesTitle": "Информация по табелю",
     "tabWorkTime": "Рабочее время",
     "tabTurnstile": "Турникет",

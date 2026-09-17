@@ -98,7 +98,7 @@
   const onAutoCalc = async () => {
     const res = await store.autoCalc()
     if (!res) return
-    message.success(t('timesheetPage.autoCalcDone', { count: res.cells }))
+    message.success(t('timesheetPage.autoCalcDone'))
   }
 
   // Qoidalar modali — hisoblash qanday ishlashini ko'rsatadi.

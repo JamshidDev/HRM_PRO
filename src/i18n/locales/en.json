@@ -2594,7 +2594,7 @@
     "autoCalcSoon": "Auto calculation is in development",
     "autoCalcShort": "Auto",
     "recalc": "Recalculate",
-    "autoCalcDone": "Calculated: {count} cells. Press Save to persist",
+    "autoCalcDone": "Completed successfully",
     "autoRulesTitle": "About the timesheet",
     "tabWorkTime": "Work time",
     "tabTurnstile": "Turnstile",
