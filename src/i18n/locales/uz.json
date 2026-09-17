@@ -2654,7 +2654,9 @@
     "lgRaw": "Ichkarida (hisobsiz)",
     "lgPlan": "Ish grafigi",
     "lgLunch": "Tushlik",
-    "lgOutside": "Grafikdan tashqarida"
+    "lgOutside": "Grafikdan tashqarida",
+    "dayDetail": "Kun tafsiloti",
+    "scheduleHead": "Ish grafigi"
   },
   "turnstile": {
     "title": "Turniket",
