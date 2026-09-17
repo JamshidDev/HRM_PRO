@@ -2067,7 +2067,8 @@
     "dashboard": {
       "title": "Statistics"
     },
-    "materials": "Materials"
+    "materials": "Materials",
+    "downloadTitle": "Download report"
   },
   "solveExamPage": {
     "alreadyStarted": "You started this exam before. Continue?",

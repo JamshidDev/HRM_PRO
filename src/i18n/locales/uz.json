@@ -2087,7 +2087,8 @@
     "dashboard": {
       "title": "Statistika"
     },
-    "materials": "Materiallar"
+    "materials": "Materiallar",
+    "downloadTitle": "Hisobotni yuklash"
   },
   "solveExamPage": {
     "alreadyStarted": "Siz bu imtihonni oldin boshlagansiz. Davom etishni xohlaysizmi?",

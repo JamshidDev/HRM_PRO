@@ -48,6 +48,17 @@
     store._exam(v?.toString())
   }
 
+  // Modal ochilishidan oldin select ro'yxatlari tayyorlanadi.
+  const openDownload = () => {
+    if (componentStore.structureList.length === 0) {
+      componentStore._structures()
+    }
+    if (store.topicList.length === 0) {
+      store._topic()
+    }
+    store._openDownload()
+  }
+
   const filterCount = computed(
     () =>
       Number(Boolean(store.params.organizations?.length)) +
@@ -136,36 +147,20 @@
       <div
         class="grid grid-cols-2 gap-2 w-full md:flex md:w-auto md:flex-nowrap md:items-center md:gap-4"
       >
-        <!-- «Yakunlash vaqtidan o'tgan imtihonlarni yakunlash» tugmasi OLIB
-             TASHLANDI — endi buni `ResultScheduler` croni (har 10 daqiqada)
-             o'zi bajaradi, qo'lda bosish kerak emas. -->
+        <!-- Ikkita yuklash tugmasi bitta tugmaga birlashtirildi — tur va filtr
+             modal ichida tanlanadi (`DownloadModal.vue`). -->
         <n-button
-          v-fly-upload
           class="col-span-2 h-[32px]!"
           type="success"
           :loading="store.downloadLoading || store.loading"
-          @click="store._downloadExam()"
+          @click="openDownload"
         >
           <template #icon>
             <n-icon size="24">
               <ArrowCircleDown24Regular />
             </n-icon>
           </template>
-          {{ $t('examPage.downloadResult') }}
-        </n-button>
-        <n-button
-          v-fly-upload
-          class="col-span-2 h-[32px]!"
-          type="warning"
-          :loading="store.downloadLoading || store.loading"
-          @click="store._downloadNotPassedExam()"
-        >
-          <template #icon>
-            <n-icon size="24">
-              <ArrowCircleDown24Regular />
-            </n-icon>
-          </template>
-          {{ $t('examPage.downloadNotPassed') }}
+          {{ $t('content.download') }}
         </n-button>
       </div>
     </template>
