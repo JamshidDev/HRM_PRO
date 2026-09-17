@@ -33,7 +33,8 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       marital_status: null,
       work_experience: null,
       experience_date: null,
-      education: null
+      education: null,
+      table_number: null
     },
     params: {
       page: 1,
@@ -198,6 +199,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
             this.payload.pin = this.data.pin?.toString()
             // this.payload.inn = this.data.inn?.toString()
             this.payload.marital_status = this.data.marital_status?.id
+            this.payload.table_number = this.data.table_number?.toString() ?? null
 
             this.positionList = this.data.positions
             this.districts = [this.data.city]
@@ -262,6 +264,8 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
         pin: this.payload.pin.split('-').join(''),
         birthday: Utils.timeToZone(this.payload.birthday),
         experience_date: Utils.timeToZone(this.payload.experience_date),
+        // Tabel raqami ixtiyoriy — bo'sh qoldirilsa null ketadi.
+        table_number: this.payload.table_number ? Number(this.payload.table_number) : null,
         user_phone: this.payload.phones
           .filter((v) => v.main)[0]
           .phone.split('-')
