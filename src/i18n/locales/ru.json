@@ -2624,7 +2624,15 @@
     "insideTotal": "Внутри",
     "condition": "Условие",
     "vacationRules": "По типу приказа об отпуске",
-    "commandType": "Тип приказа"
+    "commandType": "Тип приказа",
+    "timeline": "Хронология дня",
+    "planShort": "План",
+    "segWork": "На работе",
+    "segBreak": "Снаружи",
+    "segOpen": "Выход не зафиксирован",
+    "factMinutes": "По турникету",
+    "breakTotal": "Снаружи всего",
+    "segLunch": "Обед"
   },
   "turnstile": {
     "title": "Турникет",

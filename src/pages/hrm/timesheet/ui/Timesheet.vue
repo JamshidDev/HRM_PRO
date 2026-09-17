@@ -134,6 +134,83 @@
   }
 
   const hm = (v) => (v ? String(v).slice(11, 16) : '—')
+  const minOfDay = (v) => {
+    if (!v) return null
+    const t = String(v).slice(11, 16).split(':')
+    return Number(t[0]) * 60 + Number(t[1])
+  }
+
+  // O'q — QAT'IY 24 soat (00:00–24:00). Moslashuvchan oraliqdan voz kechildi:
+  // kunlar bir-biri bilan taqqoslanadigan bo'lishi kerak, aks holda 4 soatlik
+  // smena 12 soatlik smena bilan bir xil balandlikda chiqardi.
+  const TL_FROM = 0
+  const TL_TO = 1440
+
+  const pct = (m) => ((m - TL_FROM) / (TL_TO - TL_FROM)) * 100
+
+  const hhmmToMin = (v, endOfDay = false) => {
+    if (!v) return null
+    const h = Number(String(v).slice(0, 2))
+    const mi = Number(String(v).slice(3, 5))
+    const m = h * 60 + mi
+    return endOfDay && m === 0 ? 1440 : m
+  }
+
+  const bandStyle = (fromMin, toMin) => {
+    if (fromMin == null || toMin == null) return { display: 'none' }
+    const a = Math.max(TL_FROM, fromMin)
+    const b = Math.min(TL_TO, toMin)
+    if (b <= a) return { display: 'none' }
+    return { top: `${pct(a)}%`, height: `${Math.max(1.2, pct(b) - pct(a))}%` }
+  }
+
+  const segStyle = (seg) => {
+    const a = minOfDay(seg.from)
+    const b = minOfDay(seg.to) ?? a + 10
+    return bandStyle(a, b)
+  }
+
+  // Grafik bo'yicha ish bandi. Yarim tundan o'tsa (20:00–00:00) 24:00 gacha.
+  const planBarStyle = computed(() => {
+    const sch = detail.value?.schedule
+    if (!sch?.start_time) return { display: 'none' }
+    const a = hhmmToMin(sch.start_time)
+    const b = hhmmToMin(sch.end_time, true) ?? 1440
+    return bandStyle(a, b > a ? b : 1440)
+  })
+
+  // Tushlik — grafik turi shablonidan.
+  const breakBarStyle = computed(() => {
+    const br = detail.value?.planned_break
+    if (!br) return { display: 'none' }
+    return bandStyle(hhmmToMin(br.start_time), hhmmToMin(br.end_time, true))
+  })
+
+  // Y o'qi — har 2 soatda bo'linma (24 soat / 2 = 13 ta yozuv).
+  const tlTicks = computed(() => {
+    const out = []
+    for (let m = 0; m <= 1440; m += 120) {
+      out.push({
+        m,
+        top: pct(m),
+        label: `${String(Math.floor(m / 60) % 24).padStart(2, '0')}:00`
+      })
+    }
+    return out
+  })
+
+  const segLabel = (seg) =>
+    seg.type === 'work'
+      ? t('timesheetPage.segWork')
+      : seg.type === 'break'
+        ? t('timesheetPage.segBreak')
+        : t('timesheetPage.segOpen')
+
+  const breakMinutes = computed(() =>
+    (detail.value?.segments ?? [])
+      .filter((x) => x.type === 'break')
+      .reduce((a, x) => a + (x.minutes ?? 0), 0)
+  )
   const minutesToHm = (m) =>
     m == null ? '—' : `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`
 
@@ -668,6 +745,79 @@
             </template>
             <n-empty v-else :description="$t('timesheetPage.noSchedule')" class="py-6" />
 
+            <!-- Vertikal vaqt o'qi: grafik (reja) va turniket segmentlari.
+                 Har segment yonida uning davomiyligi — soat qanday
+                 to'planganini ko'rsatadi. -->
+            <!-- Hodisa bo'lmasa ham ko'rsatiladi: grafik va tushlik bandi
+                 o'zi ma'lumot beradi («nima bo'lishi kerak edi»). -->
+            <template v-if="detail?.schedule || detail?.segments?.length">
+              <h4 class="ts-tl-head">{{ $t('timesheetPage.timeline') }}</h4>
+              <div class="ts-tl">
+                <!-- Y o'qi — 24 soat, har 2 soatda bo'linma -->
+                <div
+                  v-for="tick in tlTicks"
+                  :key="`t-${tick.m}`"
+                  :style="{ top: `${tick.top}%` }"
+                  class="ts-tl-tick"
+                >
+                  <span class="ts-tl-tick-label">{{ tick.label }}</span>
+                </div>
+
+                <!-- 1-yo'lak: grafik bo'yicha ish vaqti va tushlik -->
+                <div class="ts-tl-lane is-plan">
+                  <span :style="planBarStyle" class="ts-tl-band is-work">
+                    <span class="ts-tl-band-text">
+                      {{ (detail?.schedule?.start_time || '').slice(0, 5) }}–{{
+                        (detail?.schedule?.end_time || '').slice(0, 5)
+                      }}
+                    </span>
+                  </span>
+                  <span :style="breakBarStyle" class="ts-tl-band is-break">
+                    <span class="ts-tl-band-text">{{ $t('timesheetPage.segLunch') }}</span>
+                  </span>
+                </div>
+
+                <!-- 2-yo'lak: turniket hodisalari (strelkali segmentlar) -->
+                <div class="ts-tl-lane is-fact">
+                  <span
+                    v-for="(seg, i) in detail.segments ?? []"
+                    :key="`seg-${i}`"
+                    :class="`is-${seg.type}`"
+                    :style="segStyle(seg)"
+                    class="ts-tl-seg"
+                  >
+                    <span class="ts-tl-arrow"></span>
+                    <span class="ts-tl-body">
+                      <span class="ts-tl-name">{{ segLabel(seg) }}</span>
+                      <span class="ts-tl-dur">{{ minutesToHm(seg.minutes) }}</span>
+                      <span class="ts-tl-span">
+                        {{ hm(seg.from) }} – {{ seg.to ? hm(seg.to) : '?' }}
+                      </span>
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <p v-if="!detail?.segments?.length" class="ts-tl-empty">
+                {{ $t('timesheetPage.noEvents') }}
+              </p>
+
+              <div class="ts-tl-sum">
+                <span
+                  >{{ $t('timesheetPage.planMinutes') }}:
+                  <b>{{ minutesToHm(detail.plan_minutes) }}</b></span
+                >
+                <span
+                  >{{ $t('timesheetPage.factMinutes') }}:
+                  <b>{{ minutesToHm(detail.fact_minutes) }}</b></span
+                >
+                <span
+                  >{{ $t('timesheetPage.breakTotal') }}:
+                  <b>{{ minutesToHm(breakMinutes) }}</b></span
+                >
+              </div>
+            </template>
+
             <div class="ts-detail-result">
               <span class="ts-detail-result-label">{{ $t('timesheetPage.computed') }}</span>
               <template v-if="detail?.computed">
@@ -1192,7 +1342,7 @@
     width: 14px;
     height: 14px;
     border-radius: 4px;
-    color: var(--fig-text-tertiary);
+    color: var(--fig-icon-green);
     opacity: 0;
     cursor: pointer;
     transition:
@@ -1203,7 +1353,7 @@
     opacity: 1;
   }
   .ts-cell-info:hover {
-    color: var(--primaryColor);
+    color: var(--fig-chip-green-text, var(--fig-icon-green));
   }
 
   /* ── Tafsilot va qoidalar modallari ───────────────────────────────────── */
@@ -1214,6 +1364,166 @@
     overflow-y: auto;
     padding-right: 4px;
   }
+  /* ── Vertikal vaqt o'qi (24 soat) ──────────────────────────────────────
+   * Chapda Y o'qi soat bo'linmalari bilan. Birinchi yo'lakda GRAFIK —
+   * ish vaqti bandi va tushlik; ikkinchi yo'lakda TURNIKET segmentlari
+   * (ikki uchi strelkali chiziq). O'q qat'iy 00:00–24:00, shuning uchun
+   * turli smenalar bir-biri bilan taqqoslanadi. */
+  .ts-tl-head {
+    margin: 16px 0 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fig-text-primary);
+  }
+  .ts-tl {
+    position: relative;
+    height: 420px;
+    margin: 6px 0 6px 46px;
+  }
+  .ts-tl-tick {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 0;
+    border-top: 1px dashed var(--surface-line);
+  }
+  .ts-tl-tick-label {
+    position: absolute;
+    left: -46px;
+    top: -7px;
+    width: 38px;
+    text-align: right;
+    font-size: 10px;
+    font-variant-numeric: tabular-nums;
+    color: var(--fig-text-tertiary);
+  }
+  .ts-tl-lane {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+  }
+  .ts-tl-lane.is-plan {
+    left: 0;
+    width: 86px;
+  }
+  .ts-tl-lane.is-fact {
+    left: 100px;
+    right: 0;
+  }
+  /* Grafik bandlari — to'ldirilgan polosa. */
+  .ts-tl-band {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+  }
+  .ts-tl-band.is-work {
+    background: var(--fig-chip-indigo-bg, var(--fig-block-bg));
+    border: 1px solid var(--fig-chip-indigo-text, var(--surface-line));
+  }
+  .ts-tl-band.is-break {
+    left: 14px;
+    right: 14px;
+    background: var(--fig-chip-amber-bg);
+    border: 1px solid var(--fig-chip-amber-text);
+  }
+  .ts-tl-band-text {
+    font-size: 10px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    color: var(--fig-text-secondary);
+  }
+  .ts-tl-band.is-break .ts-tl-band-text {
+    color: var(--fig-chip-amber-text);
+  }
+  /* Turniket segmenti — ikki uchi strelkali vertikal chiziq. */
+  .ts-tl-seg {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .ts-tl-arrow {
+    position: relative;
+    flex-shrink: 0;
+    width: 2px;
+    height: 100%;
+    min-height: 12px;
+    background: currentColor;
+  }
+  .ts-tl-arrow::before,
+  .ts-tl-arrow::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+  }
+  .ts-tl-arrow::before {
+    top: -4px;
+    border-bottom: 5px solid currentColor;
+  }
+  .ts-tl-arrow::after {
+    bottom: -4px;
+    border-top: 5px solid currentColor;
+  }
+  .ts-tl-seg.is-work {
+    color: var(--fig-icon-green);
+  }
+  .ts-tl-seg.is-break {
+    color: var(--fig-chip-amber-text);
+  }
+  .ts-tl-seg.is-open {
+    color: var(--fig-text-red);
+  }
+  .ts-tl-body {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    min-width: 0;
+    white-space: nowrap;
+  }
+  .ts-tl-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--fig-text-primary);
+  }
+  .ts-tl-dur {
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: currentColor;
+  }
+  .ts-tl-span {
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    color: var(--fig-text-tertiary);
+  }
+  .ts-tl-empty {
+    margin: 10px 0 0;
+    font-size: 12px;
+    color: var(--fig-text-tertiary);
+  }
+  .ts-tl-sum {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--fig-text-secondary);
+  }
+  .ts-tl-sum b {
+    color: var(--fig-text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
   .ts-detail-result {
     display: flex;
     align-items: center;

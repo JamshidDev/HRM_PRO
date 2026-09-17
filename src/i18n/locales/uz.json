@@ -2636,7 +2636,15 @@
     "insideTotal": "Ichkarida",
     "condition": "Shart",
     "vacationRules": "Ta'til buyrug'i turi bo'yicha",
-    "commandType": "Buyruq turi"
+    "commandType": "Buyruq turi",
+    "timeline": "Kun bo'yicha vaqt o'qi",
+    "planShort": "Reja",
+    "segWork": "Ishda",
+    "segBreak": "Tashqarida",
+    "segOpen": "Chiqish qayd etilmagan",
+    "factMinutes": "Turniket bo'yicha",
+    "breakTotal": "Tashqarida jami",
+    "segLunch": "Tushlik"
   },
   "turnstile": {
     "title": "Turniket",

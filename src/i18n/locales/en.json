@@ -2616,7 +2616,15 @@
     "insideTotal": "Inside",
     "condition": "Condition",
     "vacationRules": "By leave order type",
-    "commandType": "Order type"
+    "commandType": "Order type",
+    "timeline": "Day timeline",
+    "planShort": "Plan",
+    "segWork": "Inside",
+    "segBreak": "Outside",
+    "segOpen": "No exit recorded",
+    "factMinutes": "By turnstile",
+    "breakTotal": "Outside total",
+    "segLunch": "Lunch"
   },
   "turnstile": {
     "title": "Turnstile",
