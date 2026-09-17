@@ -113,7 +113,14 @@
   --fig-text-red: #ca1f29;
   --fig-br-error: #ffa39a;
   --fig-block-bg: #ffffff;
-  --fig-block-header-bg: linear-gradient(178.26deg, #f9fafb 0%, #f5faff 50%, #eff8ff 100%);
+  // Maketdagi gradient (#f9fafb → #f5faff → #eff8ff) oq karta ustida atigi 1.03:1
+  // edi — panelning YUQORI qismi deyarli oq bo'lib, sarlavha "havoda" osilib
+  // turardi. Endi boshlanish nuqtasi loyihadagi standart karta-sarlavha tinti
+  // `#eff8ff` (`--brand-surface`, `SectionHeader` va `UIWorkerView` da ham shu),
+  // tugashi esa palitradagi `--fig-blue-100` (#d1e9ff). Panel kartadan 1.26:1
+  // farq qiladi, sarlavha matni (`--fig-text-brand`) esa panel fonida 4.79:1 —
+  // AA dan o'tadi. Rang oilasi (brend ko'k) o'zgarmadi.
+  --fig-block-header-bg: linear-gradient(178.26deg, #eff8ff 0%, #e2f0ff 50%, #d1e9ff 100%);
 
   // Figma "Status" chip juftliklari (fon + matn) — tabriknoma turlari uchun.
   --fig-chip-brand-bg: #eff8ff;
