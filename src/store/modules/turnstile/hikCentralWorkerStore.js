@@ -62,6 +62,12 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
       worker_id: null,
       blob: null
     },
+    // Diagnostika modali.
+    diagVisible: false,
+    diagLoading: false,
+    diagFixing: null,
+    diagData: null,
+    diagWorkerId: null,
     editVisible: false,
     editLoading: false,
     levelLoading: false,
@@ -305,6 +311,36 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
           this.loading = false
         })
     },
+    async _diagnose(id) {
+      this.diagWorkerId = id
+      this.diagVisible = true
+      this.diagLoading = true
+      this.diagData = null
+      try {
+        const res = await $ApiService.turnstileHikCentralWorkerService._diagnose({ id })
+        this.diagData = res.data.data
+      } finally {
+        this.diagLoading = false
+      }
+    },
+
+    // Bitta kartani tuzatib, so'ng butun diagnostikani qayta yuklaydi —
+    // tuzatish boshqa kartalarga ham ta'sir qilishi mumkin (masalan person
+    // tiklansa, guruh a'zoligi ham o'zgaradi).
+    async _diagnoseFix(key) {
+      this.diagFixing = key
+      try {
+        await $ApiService.turnstileHikCentralWorkerService._diagnose_fix({
+          id: this.diagWorkerId,
+          data: { key }
+        })
+        await this._diagnose(this.diagWorkerId)
+        this._index()
+      } finally {
+        this.diagFixing = null
+      }
+    },
+
     resetForm() {
       this.payload.level_org_id = []
       this.payload.worker_org_id = []

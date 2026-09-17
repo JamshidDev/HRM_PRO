@@ -2706,6 +2706,16 @@
       "latecomers": "Late employees",
       "startTime": "Work start time",
       "lateTitle": "Late employees list"
+    },
+    "diagnose": {
+      "title": "Diagnostics",
+      "action": "Diagnostics",
+      "ours": "Ours",
+      "theirs": "In HikCentral",
+      "fix": "Fix",
+      "not_added": "Worker is not added to HikCentral",
+      "checking": "Checking…",
+      "checking_hint": "Checking the person in HikCentral, access groups and device status. This may take a few seconds."
     }
   },
   "medPage": {
