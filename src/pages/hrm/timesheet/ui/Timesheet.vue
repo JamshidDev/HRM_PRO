@@ -1270,6 +1270,7 @@
   .ts-rules-table td {
     padding: 4px 10px;
     line-height: 17px;
+    font-weight: 600;
     color: var(--fig-text-primary);
     border-bottom: 1px solid var(--surface-line);
   }
@@ -1292,6 +1293,7 @@
   }
   .ts-rules-label {
     font-size: 11px;
+    font-weight: 600;
     color: var(--fig-text-secondary);
   }
 
