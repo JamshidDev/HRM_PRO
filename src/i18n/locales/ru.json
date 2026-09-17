@@ -2642,7 +2642,11 @@
     "lgRaw": "Внутри (не зачтено)",
     "lgPlan": "График работы",
     "lgLunch": "Обед",
-    "lgOutside": "Вне графика"
+    "lgOutside": "Вне графика",
+    "dayDetail": "Детали дня",
+    "scheduleHead": "График работы",
+    "laneFact": "Факт",
+    "eventsShort": "События"
   },
   "turnstile": {
     "title": "Турникет",

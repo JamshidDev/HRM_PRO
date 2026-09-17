@@ -3,6 +3,7 @@
   import { useMessage } from 'naive-ui'
   import {
     Dismiss20Regular,
+    Eye16Filled,
     Info20Filled,
     MoreVertical20Filled,
     Search20Regular,
@@ -12,7 +13,6 @@
   import { UIDragSelector, UIPagination } from '@/components/index.js'
   import dayjs from 'dayjs'
   import Utils from '@/utils/Utils.js'
-  import { UISegmentTabs } from '@/components/index.js'
   import { colorOfDetail } from './timesheetGrid.js'
   import i18n from '@/i18n/index.js'
 
@@ -112,17 +112,18 @@
   // Kun tafsiloti modali — katakcha burchagidagi tugma ochadi.
   const detailOpen = ref(false)
   const detailLoading = ref(false)
-  const detailTab = ref('schedule')
-  const detailTabs = computed(() => [
-    { id: 'schedule', name: t('timesheetPage.tabWorkTime') },
-    { id: 'turnstile', name: t('timesheetPage.tabTurnstile') }
-  ])
   const detail = ref(null)
-  const detailTitle = ref('')
+  // Modal sarlavhasi uchun — xodim va kun konteksti saqlanadi (matn emas,
+  // OBYEKT: sarlavhada rasm, lavozim va kun holati ham ko'rsatiladi).
+  const detailWorker = ref(null)
+  const detailDay = ref(null)
+  const detailDate = ref('')
 
   const openDayDetail = async (item, day) => {
     const date = dayjs().year(store.year).month(store.month).date(day.day).format('YYYY-MM-DD')
-    detailTitle.value = `${item.name} · ${date}`
+    detailWorker.value = item
+    detailDay.value = day
+    detailDate.value = date
     detailOpen.value = true
     detailLoading.value = true
     detail.value = null
@@ -132,6 +133,36 @@
       detailLoading.value = false
     }
   }
+
+  // «12.05.2026 · Se» — hafta kuni sarlavhada ham ko'rinsin.
+  const detailDateLabel = computed(() => {
+    if (!detailDate.value) return ''
+    const d = dayjs(detailDate.value)
+    return `${d.format('DD.MM.YYYY')} · ${shortWeek[d.day()]}`
+  })
+  const detailIsRest = computed(() => Boolean(detailDay.value) && isWeekend(detailDay.value))
+
+  // Yuqoridagi ko'rsatkich plitalari — javobning O'ZI (reja / fakt / hisob)
+  // birinchi ekranda tursin, o'q va jadval esa tushuntirish bo'lib qolsin.
+  const detailStats = computed(() => [
+    {
+      key: 'plan',
+      label: t('timesheetPage.planMinutes'),
+      value: minutesToHm(detail.value?.plan_minutes)
+    },
+    {
+      key: 'fact',
+      label: t('timesheetPage.factMinutes'),
+      value: minutesToHm(detail.value?.fact_minutes)
+    },
+    {
+      key: 'counted',
+      label: t('timesheetPage.counted'),
+      value: minutesToHm(detail.value?.counted_minutes),
+      accent: true
+    },
+    { key: 'break', label: t('timesheetPage.breakTotal'), value: minutesToHm(breakMinutes.value) }
+  ])
 
   const hm = (v) => (v ? String(v).slice(11, 16) : '—')
   // Hodisa vaqti ANIQ — soniyagacha.
@@ -158,64 +189,48 @@
     return endOfDay && m === 0 ? 1440 : m
   }
 
-  const bandStyle = (fromMin, toMin) => {
-    if (fromMin == null || toMin == null) return { display: 'none' }
-    const a = Math.max(TL_FROM, fromMin)
-    const b = Math.min(TL_TO, toMin)
-    if (b <= a) return { display: 'none' }
-    return { top: `${pct(a)}%`, height: `${Math.max(1.2, pct(b) - pct(a))}%` }
-  }
+  // Yorliqlar orasidagi minimal masofa (o'q balandligining %): 440px da
+  // ~18px — 12px shrift uchun yetarli, aks holda yaqin vaqtlar qoplanadi.
+  const MIN_GAP_PCT = 4.4
 
-  const segStyle = (seg) => {
-    const a = minOfDay(seg.from)
-    const b = minOfDay(seg.to) ?? a + 10
-    return bandStyle(a, b)
-  }
+  const fmtMin = (m) =>
+    m == null
+      ? '—'
+      : `${String(Math.floor(m / 60) % 24).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`
 
-  // Grafik chiziqlari: ish boshlanishi/tugashi va tushlik chegaralari.
-  // Maydon (band) emas, CHIZIQ — faqat shu vaqtlar ajralib tursin.
-  const planMarks = computed(() => {
-    const out = []
-    const sch = detail.value?.schedule
-    const push = (key, kind, label, hhmm, endOfDay = false) => {
-      const m = hhmmToMin(hhmm, endOfDay)
-      if (m == null) return
-      out.push({ key, kind, label, time: String(hhmm).slice(0, 5), top: pct(m) })
+  /* ------------------------------------------------------------------------
+   * «Reja» yo'lakchasi.
+   *
+   * Avval grafik vaqtlari o'q chetiga yozilgan CHIZIQLAR edi — ular faqat
+   * «qachon» ni aytardi, «qancha» ni emas, va fakt bilan yonma-yon
+   * taqqoslab bo'lmasdi. Endi reja ham fakt kabi ZOLAK: ish oynasi bitta
+   * ustun, ichidan tushlik kesib olinadi. Ikkala ustun yonma-yon turgani
+   * uchun «kech keldi / erta ketdi» bir qarashda ko'rinadi.
+   * ---------------------------------------------------------------------- */
+  const planBand = computed(() => {
+    const w = workWindow.value
+    if (!w) return null
+    return {
+      style: { top: `${pct(w[0])}%`, height: `${pct(w[1]) - pct(w[0])}%` },
+      from: fmtMin(w[0]),
+      to: fmtMin(w[1])
     }
-    if (sch?.start_time) push('ws', 'work', t('timesheetPage.workStart'), sch.start_time)
-    if (sch?.end_time) push('we', 'work', t('timesheetPage.workEnd'), sch.end_time, true)
-    const br = detail.value?.planned_break
-    if (br) {
-      push('bs', 'break', t('timesheetPage.lunchStart'), br.start_time)
-      push('be', 'break', t('timesheetPage.lunchEnd'), br.end_time, true)
-    }
-    // Yorliqlar o'zaro ustma-ust tushmasin: vaqt bo'yicha tartiblab,
-    // orasida minimal masofa majburlanadi (chiziq o'z joyida qoladi).
-    out.sort((a, b) => a.top - b.top)
-    let last = -99
-    for (const mk of out) {
-      mk.labelTop = Math.max(mk.top, last + MIN_GAP_PCT)
-      last = mk.labelTop
-    }
-    return out
   })
 
-  // Yorliqlar orasidagi minimal masofa (o'q balandligining %): 460px da
-  // ~19px — 12px shrift uchun yetarli, aks holda yaqin vaqtlar qoplanadi.
-  const MIN_GAP_PCT = 4.2
-
-  // Ish grafigidan TASHQARIDAGI vaqt xiralashtiriladi — ish vaqti qismi
-  // ko'zga yaqqol tashlansin. Grafik yo'q bo'lsa hech narsa xiralashmaydi.
-  const dimZones = computed(() => {
-    const sch = detail.value?.schedule
-    if (!sch?.start_time) return []
-    const a = hhmmToMin(sch.start_time)
-    let b = hhmmToMin(sch.end_time, true) ?? 1440
-    if (b <= a) b = 1440
-    const zones = []
-    if (a > 0) zones.push({ top: '0%', height: `${pct(a)}%` })
-    if (b < 1440) zones.push({ top: `${pct(b)}%`, height: `${100 - pct(b)}%` })
-    return zones
+  // Tushlik reja zolagi ICHIDA chiziladi — shuning uchun foizlar oynaga
+  // emas, zolakning o'ziga nisbatan hisoblanadi.
+  const lunchBand = computed(() => {
+    const w = workWindow.value
+    const l = lunchWindow.value
+    if (!w || !l) return null
+    const a = Math.max(l[0], w[0])
+    const b = Math.min(l[1], w[1])
+    if (b <= a) return null
+    const span = w[1] - w[0] || 1
+    return {
+      style: { top: `${((a - w[0]) / span) * 100}%`, height: `${((b - a) / span) * 100}%` },
+      label: `${fmtMin(a)}–${fmtMin(b)}`
+    }
   })
 
   // Ish intervallari — qavs: kirishdan chiqadi, pastga tushadi, chiqishga
@@ -295,14 +310,21 @@
       if (sg.to) raw.push({ at: sg.to, direction: false })
     }
     const byTime = new Map((detail.value?.events ?? []).map((e) => [String(e.at), e.device_name]))
-    // Yaqin vaqtlar bir nuqtaga tushib yozuvlari qoplanib qolmasin.
+    // Yaqin vaqtlar bir nuqtaga tushib yozuvlari qoplanib qolmasin — yozuv
+    // PASTGA suriladi. `trueTop` esa hodisaning HAQIQIY vaqti: zolakdan
+    // yozuvgacha tortiladigan bog'lovchi chiziq aynan shundan boshlanadi,
+    // aks holda «bu vaqt chizmaning qayeri?» degan savol javobsiz qolardi.
     const out = []
     let last = -99
     for (const e of raw) {
-      const top = Math.max(pct(minOfDay(e.at)), last + MIN_GAP_PCT)
+      const trueTop = pct(minOfDay(e.at))
+      const top = Math.max(trueTop, last + MIN_GAP_PCT)
       last = top
       out.push({
         top,
+        // Bog'lovchi chiziq qutisi: yuqori cheti — HAQIQIY vaqt (zolak
+        // chetiga to'g'ri keladi), pastki cheti — surilgan yozuv markazi.
+        linkStyle: { top: `${trueTop}%`, height: `${top - trueTop}%` },
         time: exact(e.at),
         direction: e.direction,
         device: byTime.get(String(e.at)) ?? null
@@ -311,31 +333,20 @@
     return out
   })
 
-  // Y o'qi — har 2 soatda bo'linma (24 soat / 2 = 13 ta yozuv).
+  // Y o'qi — har 2 soatda to'liq kenglikdagi yordamchi chiziq (24 soat /
+  // 2 = 13 ta yozuv). Chiziq butun maydonni kesib o'tadi: zolak qaysi
+  // soatga to'g'ri kelishini ko'z bilan o'qish uchun.
   const tlTicks = computed(() => {
-    // Soat yozuvi va grafik yorlig'i IKKALASI ham chap gutterda — bir joyga
-    // tushsa soat yozuvi yashiriladi (chiziqcha qoladi, faqat matn ketadi).
-    const taken = planMarks.value.map((mk) => mk.labelTop)
     const out = []
     for (let m = 0; m <= 1440; m += 120) {
-      const top = pct(m)
       out.push({
         m,
-        top,
-        label: taken.some((v) => Math.abs(v - top) < MIN_GAP_PCT)
-          ? null
-          : `${String(Math.floor(m / 60) % 24).padStart(2, '0')}:00`
+        top: pct(m),
+        label: `${String(Math.floor(m / 60) % 24).padStart(2, '0')}:00`
       })
     }
     return out
   })
-
-  const segLabel = (seg) =>
-    seg.type === 'work'
-      ? t('timesheetPage.segWork')
-      : seg.type === 'break'
-        ? t('timesheetPage.segBreak')
-        : t('timesheetPage.segOpen')
 
   const breakMinutes = computed(() =>
     (detail.value?.segments ?? [])
@@ -700,10 +711,18 @@
                 data-selectable
               >
                 <!-- Burchakdagi tugma: shu kun uchun grafik/ta'til/turniket
-                     tafsiloti. `.stop` — drag-select ishga tushmasin. -->
-                <span class="ts-cell-info" @click.stop="openDayDetail(item, day)" @mousedown.stop>
-                  <n-icon :component="Info20Filled" size="12" />
-                </span>
+                     tafsiloti. `.stop` — drag-select ishga tushmasin.
+                     ATAYLAB tugma ko'rinishida (fon + chegara + ko'z ikonkasi):
+                     oldingi kichkina nuqta bosiladigan narsaga o'xshamasdi. -->
+                <button
+                  :title="$t('timesheetPage.dayDetail')"
+                  class="ts-cell-info"
+                  type="button"
+                  @click.stop="openDayDetail(item, day)"
+                  @mousedown.stop
+                >
+                  <n-icon :component="Eye16Filled" size="12" />
+                </button>
                 <template v-if="dayDetails(item, day)?.length">
                   <span class="ts-cell-status">
                     <template
@@ -838,216 +857,301 @@
       </n-form>
     </div>
 
-    <!-- Kun tafsiloti — o'rta o'lchamli, tabli. -->
+    <!-- Kun tafsiloti.
+         Tuzilishi ATAYLAB «javobdan tushuntirishga» qarab boradi:
+         sarlavha (kim/qachon) → natija → ko'rsatkichlar → grafik → vaqt o'qi. -->
     <n-modal
       v-model:show="detailOpen"
-      :title="detailTitle"
       class="ts-detail-modal"
       preset="card"
       size="small"
-      style="width: 640px; max-width: 94vw"
+      style="width: 1180px; max-width: 96vw"
     >
+      <template #header>
+        <div class="ts-dm-head">
+          <n-avatar
+            :fallback-src="Utils.noAvailableImage"
+            :size="40"
+            :src="detailWorker?.photo || Utils.noAvailableImage"
+            circle
+          />
+          <div class="ts-dm-head-text">
+            <span class="ts-dm-name">{{ detailWorker?.name }}</span>
+            <span class="ts-dm-sub">
+              <span v-if="detailWorker?.table" class="ts-dm-badge">{{ detailWorker.table }}</span>
+              <span>{{ detailWorker?.position || $t('content.noAvailable') }}</span>
+            </span>
+          </div>
+          <span :class="{ 'is-rest': detailIsRest }" class="ts-dm-date">{{ detailDateLabel }}</span>
+        </div>
+      </template>
+
       <n-spin :show="detailLoading">
-        <UISegmentTabs v-model="detailTab" :tabs="detailTabs" class="mb-4" />
-
-        <template v-if="detailTab === 'schedule'">
-          <div class="ts-detail-scroll">
-            <template v-if="detail?.schedule">
-              <n-descriptions :column="1" bordered label-placement="left" size="small">
-                <n-descriptions-item :label="$t('timesheetPage.workStatus')">
-                  {{
-                    detail.schedule.work_status === 1
-                      ? $t('timesheetPage.workDay')
-                      : $t('timesheetPage.restDay')
-                  }}
-                </n-descriptions-item>
-                <n-descriptions-item :label="$t('timesheetPage.planTime')">
-                  {{ (detail.schedule.start_time || '—').slice(0, 5) }} –
-                  {{ (detail.schedule.end_time || '—').slice(0, 5) }}
-                </n-descriptions-item>
-                <n-descriptions-item :label="$t('timesheetPage.planMinutes')">
-                  {{ minutesToHm(detail.schedule.daily_minutes) }}
-                </n-descriptions-item>
-                <n-descriptions-item :label="$t('timesheetPage.daytimeEvening')">
-                  {{ minutesToHm(detail.schedule.daytime) }} /
-                  {{ minutesToHm(detail.schedule.evening_time) }}
-                </n-descriptions-item>
-              </n-descriptions>
-            </template>
-            <n-empty v-else :description="$t('timesheetPage.noSchedule')" class="py-6" />
-
-            <!-- Vertikal vaqt o'qi: grafik (reja) va turniket segmentlari.
-                 Har segment yonida uning davomiyligi — soat qanday
-                 to'planganini ko'rsatadi. -->
-            <!-- Hodisa bo'lmasa ham ko'rsatiladi: grafik va tushlik bandi
-                 o'zi ma'lumot beradi («nima bo'lishi kerak edi»). -->
-            <template v-if="detail?.schedule || detail?.segments?.length">
-              <h4 class="ts-tl-head">{{ $t('timesheetPage.timeline') }}</h4>
-              <div class="ts-tl">
-                <!-- Grafikdan tashqaridagi vaqt — xira fon -->
-                <span
-                  v-for="(z, i) in dimZones"
-                  :key="`d-${i}`"
-                  :style="z"
-                  class="ts-tl-dim"
-                ></span>
-
-                <!-- Soat bo'linmalari -->
-                <span
-                  v-for="tick in tlTicks"
-                  :key="`t-${tick.m}`"
-                  :style="{ top: `${tick.top}%` }"
-                  class="ts-tl-tick"
-                >
-                  <span v-if="tick.label" class="ts-tl-tick-label">{{ tick.label }}</span>
-                </span>
-
-                <!-- Grafik vaqtlari — chiziq, yorlig'i CHAPDA -->
-                <span
-                  v-for="mark in planMarks"
-                  :key="`m-${mark.key}`"
-                  :class="`is-${mark.kind}`"
-                  :style="{ top: `${mark.top}%` }"
-                  class="ts-tl-mark"
-                >
-                  <span :style="{ top: `${mark.labelTop - mark.top}%` }" class="ts-tl-mark-label"
-                    >{{ mark.label }} <b>{{ mark.time }}</b></span
-                  >
-                  <span class="ts-tl-mark-line"></span>
-                </span>
-
-                <!-- Ish intervali — qavs: kirishdan chiqib, chiqishga qaytadi -->
-                <span
-                  v-for="(iv, i) in workIntervals"
-                  :key="`iv-${i}`"
-                  :style="iv.style"
-                  class="ts-tl-iv"
-                >
-                  <!-- Hisobga OLINGAN qismlar — to'q yashil -->
+        <div class="ts-dm-body">
+          <!-- Tablar olib tashlandi: ish vaqti va turniket ro'yxati bir-birini
+               TO'LDIRADI (o'q qoida qo'llangandan keyingi holatni, jadval esa
+               xom hodisalarni ko'rsatadi), shuning uchun ular yonma-yon. -->
+          <div class="ts-dm-cols">
+            <div class="ts-dm-col-main">
+              <!-- ① Natija — tabelga nima yozilishi. Eng yuqorida, chunki
+                 foydalanuvchi modalni aynan shu savol bilan ochadi. -->
+              <div class="ts-dm-result">
+                <span class="ts-dm-result-label">{{ $t('timesheetPage.computed') }}</span>
+                <template v-if="detail?.computed">
                   <span
-                    v-for="(pt, j) in iv.parts"
-                    :key="`p-${j}`"
-                    :style="pt"
-                    class="ts-tl-iv-counted"
-                  ></span>
-                  <span class="ts-tl-iv-dur">
-                    {{ iv.counted }}
-                    <i v-if="iv.partial">/ {{ iv.dur }}</i>
+                    :style="{ color: colorOfDetail({ status_id: detail.computed.status }) }"
+                    class="ts-dm-result-key"
+                  >
+                    {{ detail.computed.key }}
                   </span>
-                </span>
-
-                <!-- Turniket hodisalari — o'qdan gorizontal, aniq vaqt bilan -->
-                <span
-                  v-for="(e, i) in eventRows"
-                  :key="`e-${i}`"
-                  :class="e.direction ? 'is-in' : 'is-out'"
-                  :style="{ top: `${e.top}%` }"
-                  class="ts-tl-ev"
-                >
-                  <span class="ts-tl-ev-dot"></span>
-                  <span class="ts-tl-ev-time">{{ e.time }}</span>
-                  <span class="ts-tl-ev-dir">
-                    {{ e.direction ? $t('timesheetPage.enter') : $t('timesheetPage.exit') }}
+                  <span class="ts-dm-result-hours">
+                    {{ detail.computed.hours }} {{ $t('timesheetPage.hours') }}
                   </span>
-                  <span class="ts-tl-ev-dev">{{ e.device || '—' }}</span>
-                </span>
-              </div>
-
-              <div class="ts-tl-legend">
-                <span><i class="ts-lg is-counted"></i>{{ $t('timesheetPage.lgCounted') }}</span>
-                <span><i class="ts-lg is-raw"></i>{{ $t('timesheetPage.lgRaw') }}</span>
-                <span><i class="ts-lg is-plan"></i>{{ $t('timesheetPage.lgPlan') }}</span>
-                <span><i class="ts-lg is-lunch"></i>{{ $t('timesheetPage.lgLunch') }}</span>
-                <span><i class="ts-lg is-dim"></i>{{ $t('timesheetPage.lgOutside') }}</span>
-              </div>
-
-              <p v-if="!detail?.segments?.length" class="ts-tl-empty">
-                {{ $t('timesheetPage.noEvents') }}
-              </p>
-
-              <div class="ts-tl-sum">
-                <span
-                  >{{ $t('timesheetPage.planMinutes') }}:
-                  <b>{{ minutesToHm(detail.plan_minutes) }}</b></span
-                >
-                <span
-                  >{{ $t('timesheetPage.factMinutes') }}:
-                  <b>{{ minutesToHm(detail.fact_minutes) }}</b></span
-                >
-                <span
-                  >{{ $t('timesheetPage.counted') }}:
-                  <b>{{ minutesToHm(detail.counted_minutes) }}</b></span
-                >
-                <span
-                  >{{ $t('timesheetPage.breakTotal') }}:
-                  <b>{{ minutesToHm(breakMinutes) }}</b></span
-                >
-              </div>
-            </template>
-
-            <div class="ts-detail-result">
-              <span class="ts-detail-result-label">{{ $t('timesheetPage.computed') }}</span>
-              <template v-if="detail?.computed">
-                <n-tag
-                  :color="{ textColor: colorOfDetail({ status_id: detail.computed.status }) }"
-                  round
-                  size="small"
-                >
-                  {{ detail.computed.key }}
+                </template>
+                <span v-else class="ts-dm-result-none">{{ $t('timesheetPage.restDay') }}</span>
+                <span class="ts-dm-result-spacer"></span>
+                <n-tag v-if="detail?.vacation_type" round size="small" type="warning">
+                  {{ $t('timesheetPage.byVacation') }}
                 </n-tag>
-                <span class="ts-detail-hours"
-                  >{{ detail.computed.hours }} {{ $t('timesheetPage.hours') }}</span
+                <n-tag v-else-if="detail?.is_holiday" round size="small" type="error">
+                  {{ detail.holiday_name }}
+                </n-tag>
+              </div>
+
+              <!-- ② Ko'rsatkichlar — reja / fakt / hisob / tashqarida. -->
+              <div class="ts-dm-stats">
+                <div
+                  v-for="st in detailStats"
+                  :key="st.key"
+                  :class="{ 'is-accent': st.accent }"
+                  class="ts-dm-stat"
                 >
-              </template>
-              <span v-else class="ts-detail-empty">{{ $t('timesheetPage.restDay') }}</span>
-              <n-tag v-if="detail?.vacation_type" round size="small" type="warning">
-                {{ $t('timesheetPage.byVacation') }}
-              </n-tag>
-              <n-tag v-else-if="detail?.is_holiday" round size="small" type="error">
-                {{ detail.holiday_name }}
-              </n-tag>
-            </div>
-          </div>
-        </template>
+                  <span class="ts-dm-stat-label">{{ st.label }}</span>
+                  <span class="ts-dm-stat-value">{{ st.value }}</span>
+                </div>
+              </div>
 
-        <template v-else>
-          <div class="ts-detail-scroll">
-            <n-alert :bordered="false" class="mb-3" type="info">
-              {{ $t('timesheetPage.turnstileNotUsed') }}
-            </n-alert>
-            <n-table v-if="detail?.events?.length" :bordered="false" size="small" striped>
-              <thead>
-                <tr>
-                  <th>{{ $t('content.time') }}</th>
-                  <th>{{ $t('timesheetPage.direction') }}</th>
-                  <th>{{ $t('timesheetPage.device') }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(e, i) in detail.events" :key="i">
-                  <td>{{ hm(e.at) }}</td>
-                  <td>
-                    <n-tag :type="e.direction ? 'success' : 'default'" round size="small">
+              <!-- ③ Ish grafigi — jadval emas, ixcham yorliq/qiymat panjarasi. -->
+              <section class="ts-dm-card">
+                <h4 class="ts-dm-card-head">{{ $t('timesheetPage.scheduleHead') }}</h4>
+                <div v-if="detail?.schedule" class="ts-dm-grid">
+                  <div class="ts-dm-gi">
+                    <span class="ts-dm-gi-label">{{ $t('timesheetPage.workStatus') }}</span>
+                    <span class="ts-dm-gi-value">
+                      {{
+                        detail.schedule.work_status === 1
+                          ? $t('timesheetPage.workDay')
+                          : $t('timesheetPage.restDay')
+                      }}
+                    </span>
+                  </div>
+                  <div class="ts-dm-gi">
+                    <span class="ts-dm-gi-label">{{ $t('timesheetPage.planTime') }}</span>
+                    <span class="ts-dm-gi-value is-num">
+                      {{ (detail.schedule.start_time || '—').slice(0, 5) }} –
+                      {{ (detail.schedule.end_time || '—').slice(0, 5) }}
+                    </span>
+                  </div>
+                  <div class="ts-dm-gi">
+                    <span class="ts-dm-gi-label">{{ $t('timesheetPage.planMinutes') }}</span>
+                    <span class="ts-dm-gi-value is-num">
+                      {{ minutesToHm(detail.schedule.daily_minutes) }}
+                    </span>
+                  </div>
+                  <div class="ts-dm-gi">
+                    <span class="ts-dm-gi-label">{{ $t('timesheetPage.daytimeEvening') }}</span>
+                    <span class="ts-dm-gi-value is-num">
+                      {{ minutesToHm(detail.schedule.daytime) }} /
+                      {{ minutesToHm(detail.schedule.evening_time) }}
+                    </span>
+                  </div>
+                </div>
+                <n-empty
+                  v-else
+                  :description="$t('timesheetPage.noSchedule')"
+                  class="py-4"
+                  size="small"
+                />
+              </section>
+
+              <!-- ④ Vaqt o'qi — REJA va FAKT yonma-yon ikki ustun.
+                 Avval reja faqat chap chetdagi uzuq chiziqlar edi; endi u
+                 ham zolak, shuning uchun «kech keldi / erta ketdi» ustunlar
+                 farqidan bir qarashda ko'rinadi. -->
+              <!-- Hodisa bo'lmasa ham ko'rsatiladi: grafik va tushlik bandi
+                 o'zi ma'lumot beradi («nima bo'lishi kerak edi»). -->
+              <section v-if="detail?.schedule || detail?.segments?.length" class="ts-dm-card">
+                <h4 class="ts-dm-card-head">{{ $t('timesheetPage.timeline') }}</h4>
+
+                <div class="ts-tl-legend">
+                  <span><i class="ts-lg is-plan"></i>{{ $t('timesheetPage.lgPlan') }}</span>
+                  <span><i class="ts-lg is-lunch"></i>{{ $t('timesheetPage.lgLunch') }}</span>
+                  <span><i class="ts-lg is-counted"></i>{{ $t('timesheetPage.lgCounted') }}</span>
+                  <span><i class="ts-lg is-raw"></i>{{ $t('timesheetPage.lgRaw') }}</span>
+                </div>
+
+                <!-- Ustun sarlavhalari — qaysi zolak nima ekani yozib qo'yiladi. -->
+                <div class="ts-tl-cols">
+                  <span class="ts-tl-col is-plan">{{ $t('timesheetPage.planShort') }}</span>
+                  <span class="ts-tl-col is-fact">{{ $t('timesheetPage.laneFact') }}</span>
+                  <span class="ts-tl-col is-ev">{{ $t('timesheetPage.eventsShort') }}</span>
+                </div>
+
+                <div class="ts-tl">
+                  <!-- Soat to'ri — butun maydonni kesib o'tadi -->
+                  <span
+                    v-for="tick in tlTicks"
+                    :key="`t-${tick.m}`"
+                    :style="{ top: `${tick.top}%` }"
+                    class="ts-tl-tick"
+                  >
+                    <span class="ts-tl-tick-label">{{ tick.label }}</span>
+                  </span>
+
+                  <!-- REJA ustuni: ish oynasi, ichidan tushlik kesilgan -->
+                  <span v-if="planBand" :style="planBand.style" class="ts-tl-plan">
+                    <span class="ts-tl-plan-time is-from">{{ planBand.from }}</span>
+                    <span
+                      v-if="lunchBand"
+                      :style="lunchBand.style"
+                      :title="`${$t('timesheetPage.segLunch')} ${lunchBand.label}`"
+                      class="ts-tl-plan-lunch"
+                    ></span>
+                    <span class="ts-tl-plan-time is-to">{{ planBand.to }}</span>
+                  </span>
+                  <span v-else class="ts-tl-plan is-none">
+                    <span class="ts-tl-plan-none">{{ $t('timesheetPage.noSchedule') }}</span>
+                  </span>
+
+                  <!-- FAKT ustuni: turniket intervallari -->
+                  <span
+                    v-for="(iv, i) in workIntervals"
+                    :key="`iv-${i}`"
+                    :style="iv.style"
+                    class="ts-tl-iv"
+                  >
+                    <!-- Hisobga OLINGAN qismlar — to'q yashil -->
+                    <span
+                      v-for="(pt, j) in iv.parts"
+                      :key="`p-${j}`"
+                      :style="pt"
+                      class="ts-tl-iv-counted"
+                    ></span>
+                    <span class="ts-tl-iv-dur">
+                      {{ iv.counted }}
+                      <i v-if="iv.partial">/ {{ iv.dur }}</i>
+                    </span>
+                  </span>
+
+                  <!-- Bog'lovchi chiziq: FAKT zolagining chetidagi haqiqiy
+                     vaqtdan yozuvgacha. Yozuv o'qilishi uchun pastga
+                     surilgan bo'lishi mumkin — chiziq shu farqni silliq
+                     bosib o'tadi.
+                     TO'G'RI chiziq — burchakli «tirsak» har qanday holda ham
+                     tutashish joyida notekis ko'rinardi (shtrix fazasi va
+                     yarim piksel farqi). `non-scaling-stroke` esa quti
+                     cho'zilganda ham shtrixni bir tekis saqlaydi. -->
+                  <svg
+                    v-for="(e, i) in eventRows"
+                    :key="`lk-${i}`"
+                    :class="e.direction ? 'is-in' : 'is-out'"
+                    :style="e.linkStyle"
+                    class="ts-tl-link"
+                    preserveAspectRatio="none"
+                    viewBox="0 0 100 100"
+                  >
+                    <line
+                      stroke="currentColor"
+                      stroke-dasharray="4 4"
+                      stroke-width="1"
+                      vector-effect="non-scaling-stroke"
+                      x1="0"
+                      x2="100"
+                      y1="0"
+                      y2="100"
+                    />
+                  </svg>
+
+                  <!-- Turniket hodisalari — o'ngda, aniq vaqt bilan -->
+                  <span
+                    v-for="(e, i) in eventRows"
+                    :key="`e-${i}`"
+                    :class="e.direction ? 'is-in' : 'is-out'"
+                    :style="{ top: `${e.top}%` }"
+                    class="ts-tl-ev"
+                  >
+                    <span class="ts-tl-ev-dot"></span>
+                    <span class="ts-tl-ev-time">{{ e.time }}</span>
+                    <span class="ts-tl-ev-dir">
                       {{ e.direction ? $t('timesheetPage.enter') : $t('timesheetPage.exit') }}
-                    </n-tag>
-                  </td>
-                  <td>{{ e.device_name || '—' }}</td>
-                </tr>
-              </tbody>
-            </n-table>
-            <n-empty v-else :description="$t('timesheetPage.noEvents')" class="py-6" />
+                    </span>
+                    <span class="ts-tl-ev-dev">{{ e.device || '—' }}</span>
+                  </span>
+                </div>
 
-            <div v-if="detail?.turnstile?.pairs?.length" class="ts-detail-result">
-              <span class="ts-detail-result-label">{{ $t('timesheetPage.insideTotal') }}</span>
-              <span class="ts-detail-hours">
-                {{ minutesToHm(detail.turnstile.total_minutes) }}
-              </span>
-              <span class="ts-detail-empty">
-                {{ hm(detail.turnstile.first_in) }} – {{ hm(detail.turnstile.last_out) }}
-              </span>
+                <p v-if="!detail?.segments?.length" class="ts-tl-empty">
+                  {{ $t('timesheetPage.noEvents') }}
+                </p>
+              </section>
             </div>
+
+            <!-- O'ng ustun: turniketning XOM ro'yxati. Chapdagi o'q qoida
+                 qo'llangandan keyingi natijani ko'rsatadi, bu yerda esa
+                 qurilmadan kelgan hamma hodisa bor — farqi shunda. -->
+            <aside class="ts-dm-col-side">
+              <section class="ts-dm-card is-full">
+                <h4 class="ts-dm-card-head">{{ $t('timesheetPage.tabTurnstile') }}</h4>
+
+                <div v-if="detail?.turnstile?.pairs?.length" class="ts-dm-inside">
+                  <span class="ts-dm-inside-label">{{ $t('timesheetPage.insideTotal') }}</span>
+                  <span class="ts-dm-inside-value">
+                    {{ minutesToHm(detail.turnstile.total_minutes) }}
+                  </span>
+                  <span class="ts-dm-inside-range">
+                    {{ hm(detail.turnstile.first_in) }} – {{ hm(detail.turnstile.last_out) }}
+                  </span>
+                </div>
+
+                <p class="ts-dm-note">{{ $t('timesheetPage.turnstileNotUsed') }}</p>
+
+                <div v-if="detail?.events?.length" class="ts-dm-events">
+                  <n-table
+                    :bordered="false"
+                    :single-line="false"
+                    class="ts-dm-table"
+                    size="small"
+                    striped
+                  >
+                    <thead>
+                      <tr>
+                        <th>{{ $t('content.time') }}</th>
+                        <th>{{ $t('timesheetPage.direction') }}</th>
+                        <th>{{ $t('timesheetPage.device') }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(e, i) in detail.events" :key="i">
+                        <td>{{ hm(e.at) }}</td>
+                        <td>
+                          <n-tag :type="e.direction ? 'success' : 'default'" round size="small">
+                            {{ e.direction ? $t('timesheetPage.enter') : $t('timesheetPage.exit') }}
+                          </n-tag>
+                        </td>
+                        <td>{{ e.device_name || '—' }}</td>
+                      </tr>
+                    </tbody>
+                  </n-table>
+                </div>
+                <n-empty
+                  v-else
+                  :description="$t('timesheetPage.noEvents')"
+                  class="py-6"
+                  size="small"
+                />
+              </section>
+            </aside>
           </div>
-        </template>
+        </div>
       </n-spin>
     </n-modal>
 
@@ -1494,140 +1598,517 @@
     color: var(--fig-text-secondary);
   }
 
-  /* Katakcha burchagidagi tafsilot tugmasi — faqat hover'da, panjara
-     zichligini buzmasligi uchun kichkina. */
+  /* Katakcha burchagidagi tafsilot tugmasi.
+     Avval bu 12px ikonka edi va hover'da shunchaki YASHIL NUQTA bo'lib
+     ko'rinardi — bosiladigan narsaga o'xshamasdi. Endi u haqiqiy tugma:
+     o'z foni, chegarasi va ko'z ikonkasi bor, hover'da to'ladi. */
   .ts-cell {
     position: relative;
   }
+  /* Katakcha ustida turganda butun katak ham belgilanadi — tugma qaysi
+     kunga tegishli ekani shubhasiz bo'lsin. */
+  .ts-cell:hover {
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--fig-icon-green) 55%, transparent);
+  }
   .ts-cell-info {
     position: absolute;
-    top: 1px;
-    right: 1px;
+    top: 2px;
+    right: 2px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 14px;
-    height: 14px;
-    border-radius: 4px;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: 1px solid var(--fig-icon-green);
+    border-radius: 6px;
+    background: var(--surface-section);
+    box-shadow: 0 1px 3px rgb(16 24 40 / 18%);
     color: var(--fig-icon-green);
     opacity: 0;
+    transform: scale(0.6);
+    pointer-events: none;
     cursor: pointer;
     transition:
-      opacity 0.15s,
-      color 0.15s;
+      opacity 0.12s ease,
+      transform 0.12s ease,
+      background 0.12s ease,
+      color 0.12s ease;
   }
-  .ts-cell:hover .ts-cell-info {
+  .ts-cell:hover .ts-cell-info,
+  .ts-cell-info:focus-visible {
     opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
   }
   .ts-cell-info:hover {
-    color: var(--fig-chip-green-text, var(--fig-icon-green));
+    background: var(--fig-icon-green);
+    color: #fff;
+  }
+  .ts-cell-info:focus-visible {
+    outline: 2px solid var(--fig-text-brand);
+    outline-offset: 1px;
   }
 
   /* ── Tafsilot va qoidalar modallari ───────────────────────────────────── */
-  /* Balandlik QAT'IY — hodisalar ro'yxati uzun bo'lsa modal cho'zilmasin,
-     ichkarisi skrollansin (tablar joyida qoladi). */
-  .ts-detail-scroll {
-    height: 46vh;
-    overflow-y: auto;
-    padding-right: 4px;
+  /* Modal tanasi — balandligi qat'iy, o'zi skrollanmaydi: skroll HAR BIR
+     ustunda alohida. Aks holda o'ngdagi qisqa ro'yxat chapdagi uzun o'q
+     bilan birga sudralib, ostida katta bo'sh joy qolardi. */
+  .ts-dm-body {
+    height: 66vh;
   }
-  /* ── Vaqt o'qi (24 soat) ───────────────────────────────────────────────
-   * Chapda soat bo'linmalari va GRAFIK yorliqlari, ular yonida vertikal o'q.
-   * Ish intervali — qavs: kirish nuqtasidan chiqib, pastga tushib, chiqish
-   * nuqtasiga qaytib kiradi; o'rtasida ishlagan soat. Hodisalar o'qdan
-   * o'ngga chiqadi, vaqti soniyagacha aniq. */
-  $tlAxis: 168px; // o'qning chap chetdan masofasi (grafik yorliqlari uchun)
+  /* Ikki ustun: chapda hisob-kitob, o'ngda turniketning xom ro'yxati. */
+  .ts-dm-cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 14px;
+    height: 100%;
+    align-items: stretch;
+  }
+  .ts-dm-col-main,
+  .ts-dm-col-side {
+    min-width: 0;
+    height: 100%;
+  }
+  .ts-dm-col-main {
+    overflow-y: auto;
+    padding-right: 6px;
+  }
+  /* Skroll chizig'i ingichka — kontent kengligini yemasin. */
+  .ts-dm-col-main::-webkit-scrollbar,
+  .ts-dm-events::-webkit-scrollbar,
+  .ts-rules-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+  .ts-dm-col-main::-webkit-scrollbar-thumb,
+  .ts-dm-events::-webkit-scrollbar-thumb,
+  .ts-rules-scroll::-webkit-scrollbar-thumb {
+    background: var(--surface-line);
+    border-radius: 3px;
+  }
+  /* Tor ekranda ustunlar bir-birining ostiga tushadi — u holda skroll
+     yana bitta, tashqi. */
+  @media (max-width: 1080px) {
+    .ts-dm-body {
+      overflow-y: auto;
+    }
+    .ts-dm-cols {
+      grid-template-columns: minmax(0, 1fr);
+      height: auto;
+    }
+    .ts-dm-col-main,
+    .ts-dm-col-side {
+      height: auto;
+      overflow: visible;
+    }
+    .ts-dm-card.is-full {
+      height: auto;
+    }
+    .ts-dm-events {
+      max-height: 360px;
+    }
+  }
 
-  .ts-tl-head {
-    margin: 16px 0 10px;
+  /* Sarlavha: xodim + kun. Modal ochilishi bilan «kim, qaysi kun» ko'rinsin. */
+  .ts-dm-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .ts-dm-head-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .ts-dm-name {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--fig-text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ts-dm-sub {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--fig-text-tertiary);
+  }
+  /* Uzun lavozim sarlavhani buzmasin — qisqartiriladi. */
+  .ts-dm-sub > span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ts-dm-badge {
+    flex-shrink: 0;
+  }
+  .ts-dm-badge {
+    padding: 0 6px;
+    border-radius: 5px;
+    background: var(--fig-chip-brand-bg);
+    color: var(--fig-chip-brand-text);
+    font-size: 11px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .ts-dm-date {
+    margin-left: auto;
+    padding: 5px 10px;
+    border-radius: 8px;
+    background: var(--fig-chip-brand-bg);
+    color: var(--fig-chip-brand-text);
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  /* Dam olish/bayram kuni sarlavhada ham qizil — panjaradagi kabi. */
+  .ts-dm-date.is-rest {
+    background: var(--fig-chip-pink-bg);
+    color: var(--fig-chip-pink-text);
+  }
+
+  /* Natija paneli — tabelga nima yoziladi. */
+  .ts-dm-result {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    border: 1px solid var(--surface-line);
+    border-radius: 12px;
+    background: var(--surface-ground-soft);
+  }
+  .ts-dm-result-label {
+    font-size: 12px;
+    color: var(--fig-text-tertiary);
+  }
+  .ts-dm-result-key {
+    padding: 2px 10px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 18px;
+  }
+  .ts-dm-result-hours {
+    font-size: 16px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--fig-text-primary);
+  }
+  .ts-dm-result-none {
+    font-size: 13px;
+    color: var(--fig-text-secondary);
+  }
+  .ts-dm-result-spacer {
+    flex: 1;
+  }
+
+  /* Ko'rsatkich plitalari — 4 ta ustun, tor ekranda 2 ta. */
+  .ts-dm-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .ts-dm-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 12px;
+    border: 1px solid var(--surface-line);
+    border-radius: 10px;
+    background: var(--surface-section);
+  }
+  /* Asosiy raqam — «hisobga olindi» — yashil bilan ajratiladi. */
+  .ts-dm-stat.is-accent {
+    border-color: var(--fig-icon-green);
+    background: var(--fig-chip-green-bg);
+  }
+  .ts-dm-stat-label {
+    font-size: 11px;
+    line-height: 14px;
+    color: var(--fig-text-tertiary);
+  }
+  .ts-dm-stat-value {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 22px;
+    font-variant-numeric: tabular-nums;
+    color: var(--fig-text-primary);
+  }
+  .ts-dm-stat.is-accent .ts-dm-stat-value {
+    color: var(--fig-chip-green-text);
+  }
+
+  /* Bo'limlar kartochkasi. */
+  .ts-dm-card {
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    border: 1px solid var(--surface-line);
+    border-radius: 12px;
+    background: var(--surface-section);
+  }
+  .ts-dm-card-head {
+    margin: 0 0 10px;
     font-size: 13px;
     font-weight: 600;
     color: var(--fig-text-primary);
   }
+  .ts-dm-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 16px;
+  }
+  .ts-dm-gi {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    background: var(--surface-ground-soft);
+  }
+  .ts-dm-gi-label {
+    font-size: 12px;
+    color: var(--fig-text-tertiary);
+  }
+  .ts-dm-gi-value {
+    font-size: 13px;
+    font-weight: 600;
+    text-align: right;
+    color: var(--fig-text-primary);
+  }
+  .ts-dm-gi-value.is-num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* O'ng ustundagi kartochka butun ustun balandligini egallaydi, jadval
+     esa uning ichida cho'ziladi — ostida bo'sh joy qolmaydi. */
+  .ts-dm-card.is-full {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-bottom: 0;
+  }
+  /* «Ichkarida» yakuni — ixcham, jadval tepasida. */
+  .ts-dm-inside {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    background: var(--surface-ground-soft);
+  }
+  .ts-dm-inside-label {
+    font-size: 12px;
+    color: var(--fig-text-tertiary);
+  }
+  .ts-dm-inside-value {
+    font-size: 15px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--fig-text-primary);
+  }
+  .ts-dm-inside-range {
+    margin-left: auto;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    color: var(--fig-text-secondary);
+  }
+  /* Ogohlantirish — `n-alert` o'rniga bir qatorli izoh: o'ng ustun tor. */
+  .ts-dm-note {
+    margin: 0 0 8px;
+    font-size: 11px;
+    line-height: 15px;
+    color: var(--fig-text-tertiary);
+  }
+  /* Hodisalar ko'p bo'lsa jadvalning O'ZI skrollanadi — sarlavha va
+     «Ichkarida» yakuni joyida qoladi. */
+  .ts-dm-events {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+  /* Jadval ichida skroll bo'lgani uchun sarlavha qatori yopishib turadi. */
+  .ts-dm-table :deep(th) {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--surface-section);
+    font-size: 12px;
+    color: var(--fig-text-tertiary);
+  }
+  .ts-dm-table :deep(td) {
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 640px) {
+    .ts-dm-stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .ts-dm-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  /* ── Vaqt o'qi (24 soat) ───────────────────────────────────────────────
+   * Uch ustun: REJA (grafik oynasi) — FAKT (turniket intervallari) —
+   * HODISALAR ro'yxati. Reja ham fakt kabi zolak bo'lgani uchun ikkalasini
+   * yonma-yon taqqoslash mumkin: kechikish/erta ketish ustunlar chetidan
+   * ko'rinadi. O'q QAT'IY 24 soat, kunlar bir-biri bilan solishtirilsin.
+   * ───────────────────────────────────────────────────────────────────── */
+  $tlGutter: 52px; // chapda soat yozuvlari
+  $tlLane: 64px; // bitta zolak kengligi
+  $tlGap: 20px; // zolaklar orasi
+  $tlFact: $tlLane + $tlGap; // FAKT ustunining chap cheti
+  $tlFactRight: 2 * $tlLane + $tlGap; // FAKT ustunining o'ng cheti
+  $tlEv: 2 * ($tlLane + $tlGap) + 72px; // hodisalar (davomiylik yorlig'idan keyin)
+
+  /* Ustun sarlavhalari — zolaklar bilan bir vertikalda. */
+  .ts-tl-cols {
+    position: relative;
+    height: 18px;
+    margin-left: $tlGutter;
+  }
+  .ts-tl-col {
+    position: absolute;
+    top: 0;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--fig-text-tertiary);
+  }
+  .ts-tl-col.is-plan {
+    left: 0;
+    width: $tlLane;
+    text-align: center;
+  }
+  .ts-tl-col.is-fact {
+    left: $tlFact;
+    width: $tlLane;
+    text-align: center;
+  }
+  .ts-tl-col.is-ev {
+    left: $tlEv;
+  }
+
   .ts-tl {
     position: relative;
-    height: 460px;
-    margin: 6px 0;
-    border-left: 2px solid var(--surface-line);
-    margin-left: $tlAxis;
+    height: 440px;
+    margin: 0 0 6px $tlGutter;
   }
-  /* Grafikdan tashqaridagi vaqt — xira, orqa fonda. */
-  .ts-tl-dim {
+  /* Qatlamlar: to'r → bog'lovchi chiziqlar → zolaklar → hodisa yozuvlari. */
+  .ts-tl-plan,
+  .ts-tl-iv {
+    z-index: 2;
+  }
+  .ts-tl-ev {
+    z-index: 3;
+  }
+  /* Soat to'ri — butun kenglikni kesib o'tadi, shuning uchun zolakning
+     qaysi soatga tushishini chizg'ichsiz o'qish mumkin. */
+  .ts-tl-tick {
     position: absolute;
     left: 0;
     right: 0;
-    background: var(--fig-block-bg);
-    opacity: 0.55;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .ts-tl-tick,
-  .ts-tl-mark,
-  .ts-tl-iv,
-  .ts-tl-ev {
-    z-index: 1;
-  }
-  .ts-tl-tick {
-    position: absolute;
-    left: -2px;
-    width: 6px;
     height: 0;
     border-top: 1px solid var(--surface-line);
+    opacity: 0.45;
+    z-index: 0;
   }
   .ts-tl-tick-label {
     position: absolute;
-    left: -46px;
+    left: -#{$tlGutter};
     top: -7px;
-    width: 38px;
+    width: #{$tlGutter - 10};
     text-align: right;
     font-size: 10px;
     font-variant-numeric: tabular-nums;
     color: var(--fig-text-tertiary);
   }
-  /* Grafik vaqti — chiziq, yorlig'i CHAPDA. */
-  .ts-tl-mark {
+
+  /* ── REJA zolagi ─────────────────────────────────────────────────────── */
+  .ts-tl-plan {
     position: absolute;
     left: 0;
-    height: 0;
+    width: $tlLane;
+    /* Qisqa smenada vaqt yorliqlari zolakdan tashqariga chiqib ketmasin. */
+    overflow: hidden;
+    border-radius: 8px;
+    background: var(--fig-chip-indigo-bg);
+    border: 1px solid var(--fig-chip-indigo-text);
   }
-  .ts-tl-mark-label {
+  /* Grafik yo'q kun — bo'sh, uzuq chegarali ustun. */
+  .ts-tl-plan.is-none {
+    top: 0;
+    height: 100%;
+    background: transparent;
+    border-style: dashed;
+    border-color: var(--surface-line);
+  }
+  .ts-tl-plan-none {
     position: absolute;
-    right: 52px;
-    width: #{$tlAxis - 58};
-    margin-top: -7px;
-    text-align: right;
+    top: 50%;
+    left: 50%;
+    width: 120px;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 10px;
+    line-height: 13px;
+    color: var(--fig-text-tertiary);
+  }
+  /* Boshlanish/tugash vaqti zolakning O'ZIDA — chap chetdagi uzuq
+     chiziqlarga ehtiyoj qolmaydi. */
+  .ts-tl-plan-time {
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
     font-size: 11px;
-    line-height: 14px;
-    white-space: nowrap;
-    color: currentColor;
-  }
-  .ts-tl-mark-label b {
+    font-weight: 700;
     font-variant-numeric: tabular-nums;
+    color: var(--fig-chip-indigo-text);
   }
-  /* Chiziq YORLIQ tomonida: yorliqdan o'qqacha, o'ngga o'tmaydi. */
-  .ts-tl-mark-line {
+  .ts-tl-plan-time.is-from {
+    top: 3px;
+  }
+  .ts-tl-plan-time.is-to {
+    bottom: 3px;
+  }
+  /* Tushlik — reja ichidan «kesib olingan» qiya shtrixli bo'lak. */
+  .ts-tl-plan-lunch {
     position: absolute;
-    right: 100%;
-    width: 46px;
-    height: 0;
-    border-top: 1px dashed currentColor;
+    left: 0;
+    right: 0;
+    border-top: 1px dashed var(--fig-chip-amber-text);
+    border-bottom: 1px dashed var(--fig-chip-amber-text);
+    background: repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--fig-icon-amber) 34%, transparent) 0 4px,
+      transparent 4px 8px
+    );
   }
-  .ts-tl-mark.is-work {
-    color: var(--fig-chip-indigo-text, var(--fig-text-brand));
-  }
-  .ts-tl-mark.is-break {
-    color: var(--fig-chip-amber-text);
-  }
-  /* Ish intervali — YASHIL qavs. */
+
+  /* ── FAKT zolagi ─────────────────────────────────────────────────────── */
+  /* Butun oraliq — xira yashil (ichkarida bo'lgan vaqt). */
   .ts-tl-iv {
     position: absolute;
-    left: 0;
-    width: 52px;
-    border: 2px solid var(--fig-icon-green);
-    border-left: none;
-    border-radius: 0 8px 8px 0;
-    /* Butun oraliq — xira yashil (xom vaqt). */
-    background: color-mix(in srgb, var(--fig-icon-green) 10%, transparent);
+    left: $tlFact;
+    width: $tlLane;
+    border: 1px solid var(--fig-icon-green);
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--fig-icon-green) 12%, transparent);
   }
   /* Hisobga olingan qism — to'q yashil. */
   .ts-tl-iv-counted {
@@ -1637,29 +2118,39 @@
     background: color-mix(in srgb, var(--fig-icon-green) 45%, transparent);
     border-radius: 3px;
   }
+  /* Davomiylik yorlig'i bog'lovchi chiziqlar bilan kesishishi mumkin —
+     o'z foni bilan ularning ustida turadi. */
   .ts-tl-iv-dur {
     position: absolute;
     top: 50%;
     left: calc(100% + 6px);
     transform: translateY(-50%);
+    padding: 0 4px;
+    border-radius: 4px;
+    background: var(--surface-section);
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
-    color: var(--fig-icon-green);
+    color: var(--fig-chip-green-text);
   }
   /* Xom vaqt — hisobga olingandan farq qilsa, yonida xira ko'rsatiladi. */
   .ts-tl-iv-dur i {
+    font-size: 11px;
     font-style: normal;
     font-weight: 400;
     color: var(--fig-text-tertiary);
   }
-  /* Izoh qatori. */
+
+  /* Izoh qatori o'qdan OLDIN turadi — ranglarni avval o'qib olish qulay. */
   .ts-tl-legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 14px;
-    margin-top: 12px;
+    gap: 8px 14px;
+    margin-bottom: 12px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: var(--surface-ground-soft);
     font-size: 11px;
     color: var(--fig-text-secondary);
   }
@@ -1678,27 +2169,50 @@
     border: 1px solid var(--fig-icon-green);
   }
   .ts-lg.is-raw {
-    background: color-mix(in srgb, var(--fig-icon-green) 10%, transparent);
+    background: color-mix(in srgb, var(--fig-icon-green) 12%, transparent);
     border: 1px solid var(--fig-icon-green);
   }
   .ts-lg.is-plan {
-    height: 0;
-    border-top: 2px dashed var(--fig-chip-indigo-text, var(--fig-text-brand));
-    border-radius: 0;
+    background: var(--fig-chip-indigo-bg);
+    border: 1px solid var(--fig-chip-indigo-text);
   }
   .ts-lg.is-lunch {
-    height: 0;
-    border-top: 2px dashed var(--fig-chip-amber-text);
-    border-radius: 0;
+    border: 1px dashed var(--fig-chip-amber-text);
+    background: repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--fig-icon-amber) 34%, transparent) 0 4px,
+      transparent 4px 8px
+    );
   }
-  .ts-lg.is-dim {
-    background: var(--fig-block-bg);
-    border: 1px solid var(--surface-line);
+
+  /* ── Zolak ↔ hodisa bog'lovchisi ──
+   * Quti HAQIQIY vaqtdan boshlanadi, balandligi esa yozuv surilgan
+   * masofaga teng. Ichida uch bo'lak: yuqori gorizontal (zolakdan),
+   * vertikal (surilishni bosib o'tadi) va pastki gorizontal (yozuvgacha).
+   * Surilish bo'lmasa balandlik 0 — oddiy to'g'ri chiziq chiqadi. */
+  .ts-tl-link {
+    position: absolute;
+    left: $tlFactRight;
+    width: $tlEv - $tlFactRight - 3px;
+    /* Surilish bo'lmasa balandlik 0% — shunda ham chiziq ko'rinsin. */
+    min-height: 1px;
+    /* Chekka nuqtalardagi shtrix yarmi qirqilib qolmasin. */
+    overflow: visible;
+    pointer-events: none;
+    opacity: 0.6;
+    z-index: 1;
   }
-  /* Hodisa — o'qdagi nuqta va yonida aniq vaqt. */
+  .ts-tl-link.is-in {
+    color: var(--fig-icon-green);
+  }
+  .ts-tl-link.is-out {
+    color: var(--fig-icon-orange);
+  }
+
+  /* ── Hodisalar ro'yxati ──────────────────────────────────────────────── */
   .ts-tl-ev {
     position: absolute;
-    left: 118px;
+    left: $tlEv;
     right: 0;
     height: 0;
     display: flex;
@@ -1708,16 +2222,17 @@
   }
   .ts-tl-ev-dot {
     flex-shrink: 0;
-    width: 7px;
-    height: 7px;
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
     background: currentColor;
+    box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 18%, transparent);
   }
   .ts-tl-ev.is-in {
     color: var(--fig-icon-green);
   }
   .ts-tl-ev.is-out {
-    color: var(--fig-chip-amber-text);
+    color: var(--fig-icon-orange);
   }
   .ts-tl-ev-time {
     font-size: 12px;
@@ -1726,6 +2241,9 @@
     color: var(--fig-text-primary);
   }
   .ts-tl-ev-dir {
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: color-mix(in srgb, currentColor 14%, transparent);
     font-size: 11px;
     font-weight: 600;
     color: currentColor;
@@ -1742,41 +2260,7 @@
     font-size: 12px;
     color: var(--fig-text-tertiary);
   }
-  .ts-tl-sum {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-top: 14px;
-    font-size: 12px;
-    color: var(--fig-text-secondary);
-  }
-  .ts-tl-sum b {
-    color: var(--fig-text-primary);
-    font-variant-numeric: tabular-nums;
-  }
 
-  .ts-detail-result {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 16px;
-    padding: 10px 12px;
-    background: var(--fig-block-bg);
-    border-radius: 10px;
-  }
-  .ts-detail-result-label {
-    font-size: 12px;
-    color: var(--fig-text-tertiary);
-  }
-  .ts-detail-hours {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--fig-text-primary);
-  }
-  .ts-detail-empty {
-    font-size: 12px;
-    color: var(--fig-text-secondary);
-  }
   /* Qat'iy balandlik — modal kontent uzunligiga qarab sakramaydi. */
   .ts-rules-scroll {
     height: 62vh;

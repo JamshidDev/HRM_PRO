@@ -78,51 +78,44 @@
     :rules="validationRules.contractFrom"
     :model="store.payload"
   >
-    <div class="hidden! md:block!">
+    <!-- Qadamlar paneli kanvasdan TASHQARIDA: modal sarlavhasining ajratuvchi
+         chizig'iga taqalib turadi, ostida esa o'z chizig'i bor. -->
+    <div class="contract-form__steps hidden! md:block!">
       <UIFigSteps :steps="steps" :current="store.stepNumber" :completed="completedSteps" />
     </div>
 
-    <!-- `height` emas `max-height`: 4-qadam (muvaffaqiyat kartasi) past bo'lgani uchun
-         qat'iy balandlik ostida katta bo'sh joy qolardi. -->
-    <div style="max-height: calc(100vh - 220px)" class="overflow-y-auto overflow-x-hidden pr-1">
-      <n-tabs animated v-model:value="store.activeTab" class="hidden-tab-header" type="segment">
-        <n-tab-pane :name="store.tabList[0].id">
-          <ContractForm_1 />
-        </n-tab-pane>
-        <n-tab-pane :name="store.tabList[1].id">
-          <ContractForm_2 />
-        </n-tab-pane>
-        <n-tab-pane :name="store.tabList[2].id">
-          <ContractForm_3 />
-        </n-tab-pane>
-        <n-tab-pane :name="store.tabList[3].id">
-          <ContractForm_4 />
-        </n-tab-pane>
-      </n-tabs>
-    </div>
+    <div class="contract-form__canvas">
+      <div class="contract-form__body">
+        <n-tabs animated v-model:value="store.activeTab" class="hidden-tab-header" type="segment">
+          <n-tab-pane :name="store.tabList[0].id">
+            <ContractForm_1 />
+          </n-tab-pane>
+          <n-tab-pane :name="store.tabList[1].id">
+            <ContractForm_2 />
+          </n-tab-pane>
+          <n-tab-pane :name="store.tabList[2].id">
+            <ContractForm_3 />
+          </n-tab-pane>
+          <n-tab-pane :name="store.tabList[3].id">
+            <ContractForm_4 />
+          </n-tab-pane>
+        </n-tabs>
+      </div>
 
-    <div
-      class="grid gap-3"
-      :class="[store.activeTab === 1 || store.activeTab === 4 ? 'grid-cols-1' : 'grid-cols-2']"
-    >
-      <UIProfileButton
-        v-if="store.activeTab !== 1 && store.activeTab !== 4"
-        class="w-full"
-        variant="danger"
-        :icon="icons.figArrowLeft"
-        :loading="store.saveLoading"
-        @click="goBack()"
-      >
-        {{ $t('content.back') }}
-      </UIProfileButton>
-      <UIProfileButton
-        v-if="store.activeTab !== 4"
-        class="w-full"
-        :loading="store.saveLoading"
-        @click="onSubmit"
-      >
-        {{ $t('content.next') }}
-      </UIProfileButton>
+      <div v-if="store.activeTab !== 4" class="contract-form__actions">
+        <UIProfileButton
+          v-if="store.activeTab !== 1"
+          variant="danger"
+          :icon="icons.figArrowLeft"
+          :loading="store.saveLoading"
+          @click="goBack()"
+        >
+          {{ $t('content.back') }}
+        </UIProfileButton>
+        <UIProfileButton :loading="store.saveLoading" @click="onSubmit">
+          {{ $t('content.next') }}
+        </UIProfileButton>
+      </div>
     </div>
   </n-form>
 </template>
@@ -134,6 +127,65 @@
     flex-direction: column;
     gap: 16px;
     width: 100%;
+  }
+
+  // Manfiy chetlar `UIModal` tanasining chetlarini qoplaydi (tanada `px-4 pt-4`,
+  // uning tashqarisida yana `p-2`) — shunda panel sarlavha chizig'iga taqaladi
+  // va kartaning butun kengligi bo'ylab cho'ziladi.
+  .contract-form__steps {
+    margin: -16px -24px 0;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--surface-line);
+  }
+
+  // Kanvas `hrm/worker/create` (CandidatePage) bilan bir xil: oq fig-kartalar
+  // kulrang `--surface-ground` fonda turadi. Modalning oq tanasi ustida kartalar
+  // va ularning och sarlavha paneli ko'rinmay ketardi.
+  .contract-form__canvas {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    padding: 16px;
+    border-radius: 16px;
+    background: var(--surface-ground);
+  }
+
+  @media (max-width: 767.98px) {
+    .contract-form__canvas {
+      padding: 12px;
+      border-radius: 12px;
+    }
+  }
+
+  // `height` emas `max-height`: 4-qadam (muvaffaqiyat kartasi) past bo'lgani uchun
+  // qat'iy balandlik ostida katta bo'sh joy qolardi.
+  // `vh` emas `dvh`: loyihadagi qolgan o'lchamlar kabi mobil brauzer paneli
+  // hisobga olinsin (`UIModal` ning fullscreen holati ham `100dvh`).
+  // 280 = modal sarlavhasi (60) + tana chetlari (32) + kanvas chetlari (32) +
+  // qadamlar paneli (70) + amallar qatori (36) + oraliqlar/karta chetlari (50).
+  .contract-form__body {
+    max-height: calc(100dvh - 280px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    // Skroll paneli maydon soyasi/fokus halqasini qirqmasin.
+    padding-right: 4px;
+  }
+
+  // Amallar qatori — sahifalardagi umumiy qolip: o'ngda, tugmalar o'z kengligida
+  // (`UIProfileButton` md: h36 / px24), oraliq 12.
+  .contract-form__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  // Telefonda modal fullscreen bo'ladi — tugmalar qatorni to'liq egallagani qulay.
+  @media (max-width: 767.98px) {
+    .contract-form__actions > * {
+      flex: 1 1 0;
+    }
   }
 
   // Tab konteynerlari blok kartalarini qisib qo'ymasin

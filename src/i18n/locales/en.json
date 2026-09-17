@@ -2634,7 +2634,11 @@
     "lgRaw": "Inside (not counted)",
     "lgPlan": "Work schedule",
     "lgLunch": "Lunch",
-    "lgOutside": "Outside schedule"
+    "lgOutside": "Outside schedule",
+    "dayDetail": "Day details",
+    "scheduleHead": "Work schedule",
+    "laneFact": "Fact",
+    "eventsShort": "Events"
   },
   "turnstile": {
     "title": "Turnstile",

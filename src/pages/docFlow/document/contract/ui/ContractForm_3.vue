@@ -42,14 +42,14 @@
         },
         [
           h(NAvatar, {
-            class: '',
+            class: 'flex-shrink-0',
             src: option.photo || Utils.noAvailableImage,
             'fallback-src': Utils.noAvailableImage
           }),
           h('div', { class: 'flex flex-col' }, [
             h(
               'div',
-              { class: 'text-xs font-medium text-gray-500 leading-[1.2]' },
+              { class: 'text-xs font-medium text-fig-text-secondary leading-[1.2]' },
               `${option.last_name}.${option.last_name[0]}.${option.middle_name[0]}`
             ),
             h('div', { class: 'text-xs text-primary leading-[1.2]' }, option.position)
@@ -370,13 +370,15 @@
     color: var(--fig-text-brand);
   }
 
+  // Radius 16 edi — fig tizimida quti radiusi 8 (`UIFigField` ning qiymat qutisi),
+  // 9999 esa faqat "pill" elementlarga. Padding ham 8-lik shkalaga keltirildi.
   .confirm-row {
     display: flex;
     align-items: center;
     gap: 8px;
     width: 100%;
     padding: 4px 8px;
-    border-radius: 16px;
+    border-radius: 8px;
     background: var(--fig-bg-secondary);
   }
 

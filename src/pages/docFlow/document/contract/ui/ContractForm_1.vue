@@ -10,26 +10,29 @@
   const store = useContractStore()
   const componentStore = useComponentStore()
 
+  // Ro'yxat qatori `UIHelper.avatarRender` bilan bir xil qolipda: px-2 chetlar,
+  // 1.2 qator balandligi. Ranglar mavzu tokenlaridan — `text-gray-*` dark rejimda
+  // fonga singib ketardi. Shu qolip 3-qadamdagi tasdiqlovchilar bilan ham bir xil.
   const renderLabel = (option) => {
     return [
       h(
         'div',
         {
-          class: 'flex gap-2 my-1 items-center'
+          class: 'flex gap-2 my-1 items-center px-2'
         },
         [
           h(NAvatar, {
-            class: '',
+            class: 'flex-shrink-0',
             src: option.photo || Utils.noAvailableImage,
             'fallback-src': Utils.noAvailableImage
           }),
           h('div', { class: 'flex flex-col' }, [
             h(
               'div',
-              { class: 'text-xs font-medium text-gray-500' },
+              { class: 'text-xs font-medium text-fig-text-secondary leading-[1.2]' },
               `${option.last_name}.${option.first_name[0]}.${option.middle_name[0]}`
             ),
-            h('div', { class: 'text-xs text-gray-400' }, option.position)
+            h('div', { class: 'text-xs text-primary leading-[1.2]' }, option.position)
           ])
         ]
       )
@@ -94,17 +97,19 @@
 <template>
   <div class="flex flex-col gap-4 w-full">
     <UIFigBlock :title="$t('documentPage.form.candidate')" :icon="icons.figUserAlt">
-      <div class="w-full flex justify-center">
-        <!-- `w-[600px]` qat'iy edi: modal telefonda fullscreen bo'lgach ichkarida
-             gorizontal skroll berardi. -->
-        <div class="w-full max-w-[600px]">
-          <UIUser
-            v-if="componentStore.isSelectedWorker"
-            :data="componentStore.worker"
-            :short="false"
-          />
-          <UIAutoComplete v-else v-model:pin="store.payload.pin" />
-        </div>
+      <!-- Kontent chapdan boshlanadi: blok ichidagi qolgan maydonlar (`fig-grid`)
+           ham chapdan tizilgan, markazlashtirilgan qator ulardan ajralib turardi.
+           O'rovchi flex YO'Q — `fig-block__body` ning o'zi ustun flex (stretch),
+           shu bois `max-w` li blok o'z-o'zidan chapda qoladi.
+           `w-[600px]` qat'iy edi: modal telefonda fullscreen bo'lgach ichkarida
+           gorizontal skroll berardi. -->
+      <div class="w-full max-w-[600px]">
+        <UIUser
+          v-if="componentStore.isSelectedWorker"
+          :data="componentStore.worker"
+          :short="false"
+        />
+        <UIAutoComplete v-else v-model:pin="store.payload.pin" />
       </div>
     </UIFigBlock>
 
