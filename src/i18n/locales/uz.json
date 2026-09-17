@@ -2735,7 +2735,12 @@
       "fix": "Tuzatish",
       "not_added": "Xodim HikCentral'ga qo'shilmagan",
       "checking": "Tekshirilmoqda…",
-      "checking_hint": "Xodim HikCentral'da, ruxsat guruhlari va qurilmalar holati tekshirilmoqda. Bu bir necha soniya olishi mumkin."
+      "checking_hint": "Xodim HikCentral'da, ruxsat guruhlari va qurilmalar holati tekshirilmoqda. Bu bir necha soniya olishi mumkin.",
+      "status_ok": "Joyida",
+      "status_warn": "Diqqat",
+      "status_error": "Muammo",
+      "status_unknown": "Noma'lum",
+      "more": "va yana {count} ta"
     }
   },
   "medPage": {

@@ -2715,7 +2715,12 @@
       "fix": "Fix",
       "not_added": "Worker is not added to HikCentral",
       "checking": "Checking…",
-      "checking_hint": "Checking the person in HikCentral, access groups and device status. This may take a few seconds."
+      "checking_hint": "Checking the person in HikCentral, access groups and device status. This may take a few seconds.",
+      "status_ok": "OK",
+      "status_warn": "Attention",
+      "status_error": "Problem",
+      "status_unknown": "Unknown",
+      "more": "and {count} more"
     }
   },
   "medPage": {
