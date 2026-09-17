@@ -1,8 +1,7 @@
 <script setup>
   import { useAccountStore, useScheduleTableStore } from '@/store/modules/index.js'
-  import { UIPagination } from '@/components/index.js'
+  import { UIDragSelector as DragSelectorV2, UIPagination } from '@/components/index.js'
   import SearchElement from './SearchElement.vue'
-  import DragSelectorV2 from './DragSelectorV2.vue'
   import WorkerColumn from './WorkerColumn.vue'
   import ScheduleBox from './ScheduleBox.vue'
   const store = useScheduleTableStore()

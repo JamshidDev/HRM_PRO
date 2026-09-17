@@ -66,6 +66,8 @@ export { default as UIYearMonth } from './ui/UIYearMonth.vue'
 export { default as UITableNameCell } from './ui/UITableNameCell.vue'
 export { default as UITableBadgeCell } from './ui/UITableBadgeCell.vue'
 export { default as UIDeleteConfirm } from './ui/UIDeleteConfirm.vue'
+// Drag bilan katakcha tanlash — grafik va tabel panjaralari uchun umumiy.
+export { default as UIDragSelector } from './dragSelector/DragSelectorV2.vue'
 export { default as UISortButton } from './ui/UISortButton.vue'
 export { default as UIToggleTag } from './ui/UIToggleTag.vue'
 export { default as UIBackButton } from './ui/UIBackButton.vue'

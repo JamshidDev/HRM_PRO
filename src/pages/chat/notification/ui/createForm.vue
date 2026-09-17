@@ -127,7 +127,7 @@
       ref="formRef"
       :rules="validationRules.common"
       :model="store.payload"
-      size="large"
+      size="medium"
     >
       <!-- Elementlar widthga qarab 2-ustunli grid'ga taqsimlangan.
            col-span-2 = keng (full row), aks holda = yarim (1/2). -->
@@ -150,23 +150,19 @@
 
         <!-- Row 2: bitta qatorda — o'ngда platforma tanlovi va til tab -->
         <div class="col-span-2 mb-1 flex flex-wrap items-center justify-between gap-2">
-          <n-tabs
-            v-model:value="activeLang"
-            type="segment"
-            size="small"
-            class="shrink-0"
-            style="width: 190px"
-          >
-            <n-tab v-for="l in langs" :key="l.key" :name="l.key">
-              <span class="flex items-center gap-1">
-                {{ l.label }}
-                <span
-                  v-if="langFilled(l.key)"
-                  class="inline-block h-1.5 w-1.5 rounded-full bg-success"
-                />
-              </span>
-            </n-tab>
-          </n-tabs>
+          <div class="tg-lang shrink-0">
+            <button
+              v-for="l in langs"
+              :key="l.key"
+              type="button"
+              class="tg-lang__btn"
+              :class="{ 'tg-lang__btn--active': activeLang === l.key }"
+              @click="activeLang = l.key"
+            >
+              {{ l.label }}
+              <span v-if="langFilled(l.key)" class="tg-lang__dot" />
+            </button>
+          </div>
 
           <!-- Topic rejimida platforma qat'iy: ikkalasi ham oladi, o'zgartirilmaydi -->
           <div class="flex items-center gap-1.5 shrink-0">
@@ -303,3 +299,49 @@
   </n-spin>
 </template>
 
+<style scoped>
+  /* Til almashtirgich — Telegram formasi bilan bir xil segment «pill»lar. */
+  .tg-lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px;
+    border-radius: 999px;
+    background: var(--surface-ground, rgb(0 0 0 / 4%));
+  }
+
+  .tg-lang__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--textColor2);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+    cursor: pointer;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .tg-lang__btn:hover {
+    color: var(--textColor0);
+  }
+
+  .tg-lang__btn--active {
+    background: var(--surface-section, #fff);
+    color: var(--color-primary);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 8%);
+  }
+
+  .tg-lang__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--color-success);
+  }
+</style>

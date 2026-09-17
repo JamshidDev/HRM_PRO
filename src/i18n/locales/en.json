@@ -646,7 +646,10 @@
     },
     "no-roles": "No roles assigned!",
     "passwordChangedAt": "Password changed",
-    "daysAgo": "days ago"
+    "daysAgo": "days ago",
+    "pinTitle": "Edit PINFL",
+    "pin": "PINFL",
+    "editPin": "Edit PINFL"
   },
   "confirmation": {
     "name": "Contracts",
@@ -785,7 +788,8 @@
       "department": "Department"
     },
     "nDays": "{n} days",
-    "nHours": "{n} hours"
+    "nHours": "{n} hours",
+    "searchWorkerHint": "Name / table №"
   },
   "timesheetWorkerPage": {
     "worker_role_info": "Only employees with the «TimesheetHR» role are listed. The role is granted in the Employees section.",
@@ -1091,6 +1095,7 @@
       "marital_status": "Marital status",
       "address": "Residential address",
       "experience_date": "Continuous service",
+      "table_number": "Table number",
       "passportTitle": "Passport details",
       "foreignPassportTitle": "Foreign passport",
       "education": "Education",
@@ -2064,7 +2069,8 @@
     "dashboard": {
       "title": "Statistics"
     },
-    "materials": "Materials"
+    "materials": "Materials",
+    "downloadTitle": "Download report"
   },
   "solveExamPage": {
     "alreadyStarted": "You started this exam before. Continue?",
@@ -2181,7 +2187,8 @@
       "age31": "Under 30",
       "age32_45": "31-45",
       "age46": "Over 46",
-      "structureTitle": "Age structure"
+      "structureTitle": "Age structure",
+      "yearsOld": "years old"
     },
     "edu": {
       "title": "Employee education",
@@ -2197,7 +2204,8 @@
       "number": "Passport number",
       "approaching": "Approaching expiry",
       "not_included": "Not available",
-      "filter": "Passport status"
+      "filter": "Passport status",
+      "missing": "Not uploaded"
     },
     "pension": {
       "title": "Pension-age employees",
@@ -2210,7 +2218,8 @@
       "deadline": "Expiring soon",
       "approaching": "Approaching",
       "finished": "Expired",
-      "expired": "Expired"
+      "expired": "Expired",
+      "missing": "Not recorded"
     },
     "incentive": {
       "title": "Incentives",
@@ -2241,6 +2250,8 @@
     "birthday": {
       "title": "Birthdays",
       "today": "Today's birthdays",
+      "todayShort": "Today",
+      "tomorrowShort": "Tomorrow",
       "tomorrow": "Tomorrow's birthdays"
     },
     "disability": {
@@ -2313,7 +2324,7 @@
       "hiredAt": "Hire date"
     },
     "today": {
-      "title": "Today's status",
+      "title": "Employees currently on leave",
       "atWorkTitle": "At work today",
       "onVacationTitle": "On vacation",
       "chronicLateTitle": "Chronic lateness",
@@ -2326,8 +2337,10 @@
         "working": "At work",
         "vacation": "On vacation",
         "sick_leave": "Sick leave",
-        "absent": "Unexcused"
-      }
+        "absent": "Unexcused",
+        "business_trip": "Business trip"
+      },
+      "awayTitle": "Away"
     },
     "eduLevel": {
       "vocational_college": "Vocational college",
@@ -2547,6 +2560,27 @@
       "title": "Sure you want to close timesheet?",
       "desc": "This action cannot be undone."
     },
+    "deleteWarning": {
+      "filled": "The {month} timesheet will be deleted. All data filled in for that month ({count} employees) will be permanently lost. Continue?",
+      "empty": "The timesheet will be deleted. All data filled in for that month will be lost. Continue?"
+    },
+    "send": "Send for confirmation",
+    "selectedCells": "{count} cells selected",
+    "pickTypeFirst": "select the type and hours first",
+    "totalWorkDays": "Total work days",
+    "totalWorkHours": "Total work hours",
+    "sendWarning": {
+      "title": "Send the timesheet for confirmation?",
+      "desc": "Once sent, the timesheet is locked for editing. If rejected, it opens again."
+    },
+    "confirmWarning": {
+      "title": "Confirm the timesheet?",
+      "desc": "After confirmation the timesheet can no longer be changed."
+    },
+    "rejectWarning": {
+      "title": "Reject the timesheet?",
+      "desc": "State the reason — the timesheet goes back to HR for editing."
+    },
     "legend": {
       "work": "Work day",
       "rest": "Day off",
@@ -2555,7 +2589,52 @@
       "absent": "Absent",
       "holiday": "Holiday"
     },
-    "workTimeType": "Work time type"
+    "workTimeType": "Work time type",
+    "fill": "Fill",
+    "autoCalcSoon": "Auto calculation is in development",
+    "autoCalcShort": "Auto",
+    "recalc": "Recalculate",
+    "autoCalcDone": "Completed successfully",
+    "autoRulesTitle": "About the timesheet",
+    "tabWorkTime": "Work time",
+    "tabTurnstile": "Turnstile",
+    "workStatus": "Day status",
+    "workDay": "Work day",
+    "restDay": "Rest day",
+    "planTime": "Scheduled time",
+    "planMinutes": "Per schedule",
+    "daytimeEvening": "Daytime / evening",
+    "noSchedule": "No work schedule for this day",
+    "computed": "Calculated",
+    "byVacation": "From leave order",
+    "turnstileNotUsed": "Turnstile events are NOT used yet — shown for reference only.",
+    "direction": "Direction",
+    "device": "Device",
+    "enter": "Entry",
+    "exit": "Exit",
+    "noEvents": "No turnstile events for this day",
+    "insideTotal": "Inside",
+    "condition": "Condition",
+    "vacationRules": "By leave order type",
+    "commandType": "Order type",
+    "timeline": "Day timeline",
+    "planShort": "Plan",
+    "segWork": "Inside",
+    "segBreak": "Outside",
+    "segOpen": "No exit recorded",
+    "factMinutes": "By turnstile",
+    "breakTotal": "Outside total",
+    "segLunch": "Lunch",
+    "workStart": "Work start",
+    "workEnd": "Work end",
+    "lunchStart": "Lunch start",
+    "lunchEnd": "Lunch end",
+    "counted": "Counted",
+    "lgCounted": "Counted",
+    "lgRaw": "Inside (not counted)",
+    "lgPlan": "Work schedule",
+    "lgLunch": "Lunch",
+    "lgOutside": "Outside schedule"
   },
   "turnstile": {
     "title": "Turnstile",
@@ -3049,12 +3128,18 @@
     "name": "Upload report",
     "latest": "Latest",
     "olderUploads": "Previous uploads",
+    "changes": {
+      "added": "Added",
+      "changed": "Changed",
+      "removed": "Removed",
+      "unchanged": "Unchanged"
+    },
     "createTitle": "Upload report",
     "source": {
       "label": "Source",
       "excel": "Excel",
       "ones": "From 1C",
-      "onesHint": "No file needed for 1C — uses the data already pulled in salary-1c."
+      "onesHint": "No file needed for 1C — the data is fetched directly from 1C."
     },
     "bulkOnes": {
       "button": "Bulk upload from 1C",
@@ -3071,7 +3156,32 @@
       "failed": "Failed",
       "noData": "No 1C data found for this period. Pull it in salary-1c first.",
       "progress": "{done} / {total} uploaded",
-      "summary": "Success: {ok}, Failed: {fail}"
+      "summary": "Success: {ok}, Failed: {fail}",
+      "stop": "Stop",
+      "close": "Close",
+      "background": "The upload continues in the background even if you close the window.",
+      "stopped": "Upload stopped."
+    },
+    "pullHistory": {
+      "button": "Pull history",
+      "title": "Pull history — all uploads",
+      "form": "Form",
+      "allTypes": "All forms",
+      "search": "Search by organization or comment",
+      "total": "Total",
+      "columns": {
+        "date": "Date",
+        "organization": "Organization",
+        "form": "Form",
+        "period": "Period",
+        "source": "Source",
+        "status": "Status",
+        "changes": "Changes",
+        "download": "Download",
+        "comment": "Comment"
+      },
+      "source": { "excel": "Excel", "ones": "1C" },
+      "status": { "process": "Processing", "done": "Done", "error": "Error" }
     },
     "reportStatus": {
       "button": "Report status",
@@ -4433,7 +4543,9 @@
       "exitExam": "Exit/I"
     },
     "warning": {
-      "invalidResult": "Invalid data entered"
+      "invalidResult": "Invalid data entered",
+      "noExamWorkers": "These workers have no entry or final exam result and were not included: {workers}",
+      "noValidWorkers": "No worker has both entry and final exam results filled in."
     }
   },
   "staffingApproval": {
@@ -4895,7 +5007,8 @@
     "otpVerify": "OTP verify",
     "holidayGreetings": "Holiday greetings",
     "workerSchedules": "Duty schedule",
-    "workerScheduleSwap": "Schedule swap"
+    "workerScheduleSwap": "Schedule swap",
+    "dailyAttendance": "Daily attendance"
   },
   "kpiPage": {
     "name": "KPI indicators",
@@ -5079,5 +5192,45 @@
     "tabs": {
       "special": "Special report"
     }
+  },
+  "telegramBroadcast": {
+    "tab": "Telegram",
+    "pushTab": "Push",
+    "sentList": "Sent broadcasts",
+    "audienceLabel": "Send to",
+    "audience": {
+      "all_staff": "All employees",
+      "selected": "Selected employees",
+      "med_reminder": "Medical exam reminder"
+    },
+    "sentOf": "sent",
+    "blocked": "blocked",
+    "failed": "failed",
+    "result": "Sent",
+    "coverage": "Coverage (bot linked)",
+    "startedAt": "Started",
+    "finishedAt": "Finished",
+    "lastErrors": "Last errors",
+    "st": {
+      "scheduled": "Scheduled",
+      "sending": "Sending",
+      "done": "Completed",
+      "cancelled": "Cancelled",
+      "failed": "Failed"
+    },
+    "send": "Send message",
+    "schedule": "Schedule",
+    "messageText": "Message text",
+    "templatePlaceholder": "Template",
+    "templates": {
+      "maintenance_start": "Scheduled maintenance",
+      "maintenance_done": "Maintenance completed",
+      "new_version": "Mobile app update"
+    },
+    "blockedColumn": "Blocked",
+    "resultHint": "Sent to {sent} of {total} recipients",
+    "recipientsShort": "Recipients",
+    "sendTimeLabel": "Schedule send time",
+    "sendTimeFuture": "The time must be in the future"
   }
 }

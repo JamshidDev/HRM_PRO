@@ -45,7 +45,13 @@
     // Ma'lumot `mock.js` dan olinganini bildiruvchi chip. Backend tegishli
     // maydonni bergan zahoti `store.isMock(...)` `false` qaytaradi va chip
     // o'zi yo'qoladi — qo'lda olib tashlash kerak emas.
-    mock: Boolean
+    mock: Boolean,
+    // Karta atrofida 1px och ko'k chegara. Standart — yoqilgan; alohida
+    // kartada kerak bo'lmasa `:bordered="false"` bilan o'chiriladi.
+    bordered: {
+      type: Boolean,
+      default: true
+    }
   })
 
   defineEmits(['action'])
@@ -69,7 +75,10 @@
        maydonni bergan zahoti `store.isMock(...)` `false` qaytaradi va blur ham,
        yozuv ham o'zi yo'qoladi. -->
   <div class="fig-soon" :class="mock && 'fig-soon--on'">
-    <div class="fig-soon__card flex flex-col rounded-2xl bg-fig-block px-1 pb-1">
+    <div
+      class="fig-soon__card flex flex-col rounded-2xl bg-fig-block px-1 pb-1"
+      :class="bordered && 'border border-fig-blue-300'"
+    >
       <div class="flex w-full items-center gap-1 py-3 pr-1 pl-2">
         <span
           v-if="icon"

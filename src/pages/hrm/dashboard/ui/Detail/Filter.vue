@@ -92,6 +92,11 @@
     {
       name: t('dashboardPage.medical.approaching'),
       id: 'approaching'
+    },
+    // Kartochkadagi «Kiritilmagan» soni — ko'rik yozuvi umuman yo'q xodimlar.
+    {
+      name: t('dashboardPage.medical.missing'),
+      id: 'not_included'
     }
   ]
 

@@ -81,7 +81,11 @@
     'hr.departments': Utils.routeHrmPathMaker(AppPaths.Department),
     'structure.positions': Utils.routePathMaker(AppPaths.Position),
     'hr.department-positions': Utils.routeHrmPathMaker(AppPaths.DepartmentPosition),
-    'hr.workers': Utils.routeHrmPathMaker(AppPaths.Worker)
+    'hr.workers': Utils.routeHrmPathMaker(AppPaths.Worker),
+    'hr.commands': Utils.routeHrmPathMaker(AppPaths.Command),
+    'hr.contracts': Utils.routeHrmPathMaker(AppPaths.Contract),
+    'hr.contract-additional': Utils.routeHrmPathMaker(AppPaths.AdContract),
+    'hr.applications': Utils.routeHrmPathMaker(AppPaths.Application)
   }
 
   const router = useRouter()

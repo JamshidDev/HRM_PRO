@@ -1,6 +1,15 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import dayjs from 'dayjs'
+// Tabel turi id → harf. Backenddagi TIMESHEET_TYPE_KEY bilan bir xil.
+const TIMESHEET_KEY_BY_ID = {
+  1: 'K', 2: 'T', 3: 'РП', 5: 'С', 10: 'К', 14: 'MT', 15: 'ОД', 16: 'У',
+  17: 'УВ', 18: 'УД', 19: 'Р', 20: 'ОЧ', 21: 'ОЖ', 22: 'ДО', 24: 'ОЗ',
+  25: 'Б', 26: 'Т', 27: 'ЛЧ', 28: 'ВП', 29: 'Г', 31: 'ПР', 32: 'НС',
+  33: 'D', 34: 'ЗБ', 35: 'НН'
+}
+// Soat yuritiladigan turlar (backend TIMESHEET_TYPE_HOURS).
+const TIMESHEET_TYPES_WITH_HOURS = new Set([1, 2, 3, 5, 17, 27, 32])
 const { t } = i18n.global
 export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
   state: () => ({
@@ -29,7 +38,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     },
     params: {
       page: 1,
-      per_page: 50,
+      per_page: 20,
       search: null,
       department_id: null
     },
@@ -37,7 +46,12 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     organizationId: null,
     organization: null,
     departmentOptions: [],
-    departmentLoading: false
+    departmentLoading: false,
+    // Tabelchi rejimi — hujjat aylanishidagi «Tabellar» sahifasidan ochilganda.
+    // Bo'lim filtri korxonaning HAMMA bo'limi emas, faqat biriktirilganlari.
+    timekeeperMode: false,
+    autoLoading: false,
+    autoRules: null
   }),
   actions: {
     _index() {
@@ -136,7 +150,10 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         })
     },
     // Bo'lim filtri select'i — tabel korxonasining bo'limlari.
+    // Tabelchi rejimida faqat O'ZIGA biriktirilgan bo'limlar (backend doirasi
+    // bilan bir xil, aks holda tanlagan bo'limi bo'sh chiqardi).
     _departments() {
+      if (this.timekeeperMode) return this._assignedDepartments()
       if (!this.organizationId) return
       this.departmentLoading = true
       $ApiService.componentService
@@ -150,70 +167,160 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
           this.departmentLoading = false
         })
     },
+    _assignedDepartments() {
+      this.departmentLoading = true
+      return $ApiService.timesheetService
+        ._index_departments()
+        .then((res) => {
+          this.departmentOptions = (res.data.data.departments ?? []).map((v) => ({
+            id: v.id,
+            name: v.name
+          }))
+        })
+        .finally(() => {
+          this.departmentLoading = false
+        })
+    },
     // Filtr o'zgarganda ro'yxat birinchi sahifadan qayta yuklanadi.
     applyFilters() {
       this.params.page = 1
       this._index_workers()
     },
-    _create() {
-      if (!this.payload.start || !this.payload.end) return
+    // Lokal ko'rinish: tanlangan katakcha darhol qiymat bilan to'ladi (yoki
+    // tozalash rejimida bo'shaydi). Serverga esa «Saqlash» bosilganda ketadi —
+    // navbatchilik grafigidagi bilan bir xil yondashuv.
+    applyLocalCell(row, col, details) {
+      const worker = this.list[row]
+      if (!worker) return
+      const day = col + 1
+      if (!details?.length) delete worker.days[day]
+      else {
+        // `status_id` SHART — rang shu bo'yicha tanlanadi (har tur o'z rangida).
+        // Soat qo'yilmaydigan turda `null` qoladi — katakchada `0` chiqmasin
+        // («Natija» namunasidagi bilan bir xil ko'rinish).
+        worker.days[day] = details.map((d) => ({
+          status: d.status,
+          status_id: d.status_id,
+          hours: d.hours ?? null
+        }))
+      }
+      this.recalcWorker(row)
+    },
 
-      let rowStart = Math.min(this.payload.start.row, this.payload.end.row)
-      let rowEnd = Math.max(this.payload.start.row, this.payload.end.row)
-      let colStart = Math.min(this.payload.start.col, this.payload.end.col)
-      let colEnd = Math.max(this.payload.start.col, this.payload.end.col)
+    recalcWorker(row) {
+      const worker = this.list[row]
+      if (!worker) return
+      const entries = Object.entries(worker.days || {})
+      const sum = (list) =>
+        list.reduce((total, [, details]) => total + details.reduce((a, d) => a + (d.hours || 0), 0), 0)
+      const half = entries.filter(([day]) => Number(day) <= 15)
+      worker.allMonth = { days: entries.length, hours: sum(entries) }
+      worker.halfMonth = { days: half.length, hours: sum(half) }
+    },
 
-      let workers = []
-      while (rowStart <= rowEnd) {
-        let start = colStart
-        let end = colEnd
-        while (start <= end) {
-          if (!this.list[rowStart].days?.[start + 1] || this.payload.isClearing) {
-            workers.push({
-              id: this.list[rowStart].id,
-              day: dayjs()
-                .year(this.year)
-                .month(this.month)
-                .date(start + 1)
-                .format('YYYY-MM-DD')
+    // `cells` — [{ row, col, wasOccupied }]. To'ldirilgan katak ustidan yozilsa
+    // avval eski yozuv o'chiriladi (aks holda bazada ikkita yozuv qolib,
+    // katakda `РП/РП 5/5` ko'rinishida chiqardi).
+    async _save(cells) {
+      if (!cells?.length) return
+      const dayOf = (col) =>
+        dayjs()
+          .year(this.year)
+          .month(this.month)
+          .date(col + 1)
+          .format('YYYY-MM-DD')
+      const toCell = (c) => ({ id: this.list[c.row]?.id, day: dayOf(c.col) })
+
+      const all = cells.map(toCell).filter((c) => c.id)
+      const occupied = cells
+        .filter((c) => c.wasOccupied)
+        .map(toCell)
+        .filter((c) => c.id)
+      if (!all.length) return
+
+      const service = $ApiService.timesheetWorkerService
+      this.saveLoading = true
+      try {
+        const toClear = this.payload.isClearing ? all : occupied
+        if (toClear.length) {
+          await service._create({
+            data: { status: 0, hours: 0, workers: toClear },
+            id: this.elementId
+          })
+        }
+        if (!this.payload.isClearing) {
+          await service._create({
+            data: { status: this.payload.status, hours: this.payload.hours || 0, workers: all },
+            id: this.elementId
+          })
+          if (this.payload.status2) {
+            await service._create({
+              data: {
+                status: this.payload.status2,
+                hours: this.payload.hours2 || 0,
+                workers: all
+              },
+              id: this.elementId
             })
           }
-          start++
         }
-        rowStart++
+        this._index_workers()
+        // Ikkinchi tur saqlangach tozalanadi — aks holda u keyingi
+        // to'ldirishlarga ham ergashib, katakchada ikkita yozuv hosil qilardi.
+        this.payload.status2 = null
+        this.payload.hours2 = null
+      } finally {
+        this.saveLoading = false
       }
-      if (!workers.length) {
-        this.resetSelection()
-        return
-      }
-
-      this.saveLoading = true
-      let data = {
-        status: this.payload.status,
-        hours: this.payload.hours || 0,
-        workers
-      }
-      let promises = []
-      promises.push($ApiService.timesheetWorkerService._create({ data, id: this.elementId }))
-      if (this.payload.status2) {
-        let data2 = {
-          status: this.payload.status2,
-          hours: this.payload.hours2 || 0,
-          workers
-        }
-        promises.push(
-          $ApiService.timesheetWorkerService._create({ data: data2, id: this.elementId })
-        )
-      }
-      Promise.all(promises)
-        .then(() => {
-          this._index_workers()
-          this.resetSelection()
-        })
-        .finally(() => {
-          this.saveLoading = false
-        })
     },
+    // Auto hisoblash — JORIY SAHIFADAGI xodimlar uchun. Natija lokal
+    // qo'yiladi (katakchalar to'ladi), bazaga «Saqlash» bosilganda ketadi.
+    async autoCalc() {
+      const ids = this.list.map((w) => w.id).filter(Boolean)
+      if (!ids.length) return null
+      this.autoLoading = true
+      try {
+        const res = await $ApiService.timesheetWorkerService._auto_calc({
+          id: this.elementId,
+          data: { worker_position_ids: ids }
+        })
+        const items = res.data.data ?? []
+        let filled = 0
+        for (const item of items) {
+          const row = this.list.findIndex((w) => w.id === item.id)
+          if (row < 0) continue
+          for (const d of item.days ?? []) {
+            this.applyLocalCell(row, d.day - 1, [
+              {
+                status: TIMESHEET_KEY_BY_ID[d.status] ?? null,
+                status_id: d.status,
+                hours: TIMESHEET_TYPES_WITH_HOURS.has(d.status) ? (d.hours ?? 0) : null
+              }
+            ])
+            filled++
+          }
+        }
+        return { workers: items.length, cells: filled }
+      } finally {
+        this.autoLoading = false
+      }
+    },
+
+    async dayDetail(workerPositionId, date) {
+      const res = await $ApiService.timesheetWorkerService._day_detail({
+        id: this.elementId,
+        params: { worker_position_id: workerPositionId, date }
+      })
+      return res.data.data
+    },
+
+    async autoCalcRules() {
+      if (this.autoRules) return this.autoRules
+      const res = await $ApiService.timesheetWorkerService._auto_calc_rules()
+      this.autoRules = res.data.data
+      return this.autoRules
+    },
+
     _check_pin(v) {
       this.pinLoading = true
       $ApiService.timesheetWorkerService

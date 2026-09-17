@@ -15,6 +15,9 @@ const _logs = async (payload) => await axios.get('/v1/admin/integration-clients/
 // --- CRUD ---
 const _meta = async () => await axios.get('/v1/admin/integration-clients/meta')
 const _list = async (params) => await axios.get('/v1/admin/integration-clients', { params })
+// Excel eksport — jadval ustunlari + izoh (description). Filtr list bilan bir xil.
+const _export = async (params) =>
+  await axios.get('/v1/admin/integration-clients/export', { params, responseType: 'blob' })
 const _show = async (id) => await axios.get(`/v1/admin/integration-clients/${id}`)
 const _secret = async (id) => await axios.get(`/v1/admin/integration-clients/${id}/secret`)
 const _create = async (data) => await axios.post('/v1/admin/integration-clients', data)
@@ -25,5 +28,5 @@ const _delete = async (id) => await axios.delete(`/v1/admin/integration-clients/
 
 export default {
   _summary, _timeline, _topClients, _topEndpoints, _methods, _statuses, _logs,
-  _meta, _list, _show, _secret, _create, _update, _organizations, _rotate, _delete
+  _meta, _list, _export, _show, _secret, _create, _update, _organizations, _rotate, _delete
 }

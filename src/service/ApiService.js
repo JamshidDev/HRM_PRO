@@ -128,6 +128,7 @@ import listenerService from '@/service/v1/lms/listenerService.js'
 import certificateService from '@/service/v1/lms/certificateService.js'
 
 import notificationService from '@/service/v1/chat/notificationService.js'
+import telegramBroadcastService from '@/service/v1/chat/telegramBroadcastService.js'
 import congratulationService from '@/service/v1/chat/congratulationService.js'
 import newsCategoryService from '@/service/v1/chat/newsCategoryService.js'
 import newsService from '@/service/v1/chat/newsService.js'
@@ -312,6 +313,7 @@ export default {
   deviceEventService,
   workerScheduleService,
   notificationService,
+  telegramBroadcastService,
   confVacationScheduleService,
   certificateService,
   confCertificateService,

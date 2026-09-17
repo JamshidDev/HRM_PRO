@@ -2,7 +2,6 @@ import AgeStructureCard from '@/pages/hrm/dashboard/ui/cards/AgeStructureCard.vu
 import BirthdayListCard from '@/pages/hrm/dashboard/ui/cards/BirthdayListCard.vue'
 import EducationCard from '@/pages/hrm/dashboard/ui/cards/EducationCard.vue'
 import DocumentStatusCard from '@/pages/hrm/dashboard/ui/cards/DocumentStatusCard.vue'
-import HeadcountTrendCard from '@/pages/hrm/dashboard/ui/cards/HeadcountTrendCard.vue'
 import TodayStatusCard from '@/pages/hrm/dashboard/ui/cards/TodayStatusCard.vue'
 import NationalityWaffleCard from '@/pages/hrm/dashboard/ui/cards/NationalityWaffleCard.vue'
 import HiringByContractCard from '@/pages/hrm/dashboard/ui/cards/HiringByContractCard.vue'
@@ -77,21 +76,25 @@ export const tabKpiCount = {
  */
 export const tabCards = {
   [DashboardTab.GENERAL]: [
+    // Xodimlar soni trendi o'rniga — oylik qabul/bo'shatish bar grafigi
+    // (haqiqiy ma'lumot, o'z drill-down'i bilan).
     {
-      component: markRaw(HeadcountTrendCard),
+      component: markRaw(HiringDynamicsCard),
       span: '12',
-      title: 'dashboardPage.headcount.title',
-      detail: markRaw(MockDetail),
-      filters: [],
-      mockKey: 'headcount_trend'
+      title: 'dashboardPage.yearly.title',
+      detail: markRaw(ContractDetail),
+      filters: ['contract_type', 'year', 'month'],
+      filterCallback: ApiService.dashboardService._contractDetail,
+      defaultValues: {
+        type: 'ended',
+        year: new Date().getFullYear(),
+        month: new Date().getMonth() || 12
+      }
     },
     {
+      // Drill-down yo'q: karta to'liq real ma'lumotni o'zi ko'rsatadi.
       component: markRaw(TodayStatusCard),
-      span: '12 l:6',
-      title: 'dashboardPage.today.title',
-      detail: markRaw(MockDetail),
-      filters: [],
-      mockKey: 'today_status'
+      span: '12 l:6'
     },
     {
       component: markRaw(AgeStructureCard),
@@ -110,12 +113,9 @@ export const tabCards = {
       filterCallback: ApiService.dashboardService._educationDetail
     },
     {
+      // Drill-down yo'q: karta to'liq real ma'lumotni o'zi ko'rsatadi.
       component: markRaw(NationalityWaffleCard),
-      span: '12 l:6',
-      title: 'dashboardPage.nationality.title',
-      detail: markRaw(MockDetail),
-      filters: [],
-      mockKey: 'nationality'
+      span: '12 l:6'
     },
     {
       component: markRaw(BirthdayListCard),
@@ -225,6 +225,7 @@ export const tabCards = {
       filters: [],
       mockKey: 'upcoming_events'
     },
+
     {
       component: markRaw(RetentionCohortCard),
       span: '12',
@@ -232,23 +233,6 @@ export const tabCards = {
       detail: markRaw(MockDetail),
       filters: [],
       mockKey: 'retention'
-    },
-
-    // Maketning v3 versiyasida oylik qabul/bo'shatish grafigi yo'q, ammo u
-    // haqiqiy ma'lumot bilan ishlaydi va o'z drill-down'i bor — shu sababli
-    // bob oxirida qoldirildi.
-    {
-      component: markRaw(HiringDynamicsCard),
-      span: '12',
-      title: 'dashboardPage.yearly.title',
-      detail: markRaw(ContractDetail),
-      filters: ['contract_type', 'year', 'month'],
-      filterCallback: ApiService.dashboardService._contractDetail,
-      defaultValues: {
-        type: 'ended',
-        year: new Date().getFullYear(),
-        month: new Date().getMonth() || 12
-      }
     }
   ],
 

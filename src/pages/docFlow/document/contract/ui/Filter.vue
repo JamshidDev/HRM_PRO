@@ -1,7 +1,8 @@
 <script setup>
+  import { ArrowCounterclockwise20Regular } from '@vicons/fluent'
   import { UIPageFilter, UISelect } from '@/components/index.js'
   import { useContractStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
+  import { AppPaths, useAppSetting } from '@/utils/index.js'
   const accStore = useAccountStore()
   const store = useContractStore()
   const componentStore = useComponentStore()
@@ -61,6 +62,12 @@
     }
     if (componentStore.confirmationStatusList.length > 0) return
     componentStore._enumsAdmin()
+  }
+
+  // [↺ Tarix] — global audit sahifasiga o'tadi, page filtri shu hujjat turiga qulflanadi.
+  const router = useRouter()
+  const onHistory = () => {
+    router.push({ path: AppPaths.Audit, query: { trigger_name: 'hr.contracts' } })
   }
 </script>
 
@@ -147,6 +154,20 @@
           />
         </div>
       </div>
+    </template>
+    <template #filterEnd>
+      <n-button
+        v-if="accStore.checkPermission(accStore.pn.hrContractsRead)"
+        class="ui-page-action-button w-full! md:w-auto!"
+        secondary
+        icon-placement="right"
+        @click="onHistory"
+      >
+        <template #icon>
+          <n-icon><ArrowCounterclockwise20Regular /></n-icon>
+        </template>
+        {{ $t('audit.historyBtn') }}
+      </n-button>
     </template>
   </UIPageFilter>
 </template>

@@ -60,17 +60,62 @@ export const useLmsLessonStore = defineStore('lmsLessonStore', {
     resultParams: {
       page: 1,
       per_page: 15,
-      search: null
+      search: null,
+      // Korxona daraxti (UISelect) ID massivini beradi — so'rovga CSV bo'lib ketadi.
+      organizations: [],
+      topics: [],
+      exams: []
     },
+    // Korxona daraxtining belgilangan tugunlari (boshqa sahifalardagi bilan bir xil).
+    resultStructureCheck: [],
+    resultTopicList: [],
+    resultTopicLoading: false,
+    resultExamList: [],
+    resultExamLoading: false,
     totalResult: 0,
     resultLoading: false
   }),
   actions: {
+    // Massiv filtrlar backendga CSV bo'lib ketadi (`topics=1,2`).
+    _resultParamToQuery() {
+      return {
+        ...this.resultParams,
+        // Korxona daraxti (UISelect) OBYEKT massivini beradi — avval `id` ga
+        // aylantiramiz, aks holda so'rovga `[object Object]` ketardi.
+        organizations:
+          this.resultParams.organizations?.map((v) => v?.id ?? v).toString() || undefined,
+        topics: this.resultParams.topics?.toString() || undefined,
+        exams: this.resultParams.exams?.toString() || undefined
+      }
+    },
+    _resultTopics() {
+      this.resultTopicLoading = true
+      $ApiService.lmsExamService
+        ._resultTopics({ params: { page: 1, per_page: 1000 } })
+        .then((res) => {
+          this.resultTopicList = (res.data?.data?.data ?? []).map((v) => ({
+            ...v,
+            position: v.type?.name
+          }))
+        })
+        .finally(() => {
+          this.resultTopicLoading = false
+        })
+    },
+    _resultExams(topics) {
+      this.resultExamLoading = true
+      $ApiService.lmsExamService
+        ._resultExams({ params: { page: 1, per_page: 1000, topics } })
+        .then((res) => {
+          this.resultExamList = res.data?.data?.data ?? []
+        })
+        .finally(() => {
+          this.resultExamLoading = false
+        })
+    },
     _resultIndex() {
       this.resultLoading = true
-      const params = {
-        ...this.resultParams
-      }
+      const params = this._resultParamToQuery()
       $ApiService.lmsExamService
         ._result({ params })
         .then((res) => {

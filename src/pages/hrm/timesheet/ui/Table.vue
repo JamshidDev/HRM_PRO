@@ -13,7 +13,9 @@
     CalendarCheckmark28Filled,
     Checkmark16Filled,
     CheckmarkCircle24Filled,
+    Delete16Regular,
     Edit32Regular,
+    Send24Regular,
     Eye16Regular
   } from '@vicons/fluent'
   import dayjs from 'dayjs'
@@ -34,13 +36,9 @@
   const onEdit = (row) => {
     if (!accStore.checkAction(accStore.pn.hrTableWrite)) return
     store.elementId = row.id
-    store.payload.department_id = row.department?.id
-    store.payload.work_place_id = row.work_place?.id
-    store.payload.active_tab = row.department?.id ? 'department' : 'organization'
-    store.payload.timestamp = dayjs()
-      .month(row.month - 1)
-      .year(row.year)
-      .valueOf()
+    store.setOrganization(row.work_place ? [row.work_place] : [])
+    store.payload.year = row.year
+    store.payload.month = row.month
     store.visibleType = false
     store.visible = true
   }
@@ -49,6 +47,36 @@
     if (!accStore.checkAction(accStore.pn.hrTableWrite)) return
     timesheetConfirmStore.elementId = row.id
     timesheetConfirmStore.visible = true
+  }
+
+  const onDelete = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrTableDelete)) return
+    store.elementId = row.id
+    store._delete()
+  }
+
+  // Ogohlantirish aniq bo'lishi kerak: hujjat bilan birga o'sha oyning
+  // to'ldirilgan kunlari ham o'chadi.
+  const deleteWarning = (row) =>
+    row?.workers_count
+      ? t('timesheetPage.deleteWarning.filled', {
+          month: dayjs()
+            .year(row.year)
+            .month(row.month - 1)
+            .format('YYYY MMMM'),
+          count: row.workers_count
+        })
+      : t('timesheetPage.deleteWarning.empty')
+
+  // Yuborilgan (va hali rad etilmagan) tabel qayta yuborilmaydi.
+  const isSent = (row) => Boolean(row?.sent_at) && row?.confirmation?.id !== 4
+  const isConfirmed = (row) => row?.confirmation?.id === 3 || Boolean(row?.status)
+
+  const onSend = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrTableWrite)) return
+    if (isSent(row) || isConfirmed(row)) return
+    store.elementId = row.id
+    store.sendVisible = true
   }
 
   const onFinish = (row) => {
@@ -114,13 +142,28 @@
       key: Utils.ActionTypes.finish,
       icon: UIHelper.renderIcon(CalendarCheckmark28Filled),
       action: onFinish
+    },
+    {
+      label: t('timesheetPage.send'),
+      key: Utils.ActionTypes.send,
+      icon: UIHelper.renderIcon(Send24Regular),
+      visible: (row) => !isSent(row) && !isConfirmed(row),
+      action: onSend
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete16Regular),
+      visible: (row) => !isConfirmed(row),
+      action: onDelete
     }
   ])
 </script>
 
 <template>
   <UITable
-    permission-prefix="hr-table-workers"
+    permission-prefix="hr-table"
+    :delete-warning="deleteWarning"
     :columns="columns"
     :actions="actions"
     :data="store.list"

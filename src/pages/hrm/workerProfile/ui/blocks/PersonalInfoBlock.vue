@@ -157,6 +157,20 @@
             :format="useAppSetting.datePicketFormat"
           />
         </UIFigField>
+
+        <UIFigField
+          :label="$t('createWorkerPage.form.table_number')"
+          :value="store.payload.table_number"
+          :editing="editing"
+        >
+          <n-input
+            v-model:value="store.payload.table_number"
+            class="w-full"
+            clearable
+            :placeholder="$t('createWorkerPage.form.table_number')"
+            :allow-input="Utils.onlyAllowNumber"
+          />
+        </UIFigField>
       </div>
 
       <div class="profile-separator"></div>

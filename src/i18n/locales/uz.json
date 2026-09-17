@@ -661,7 +661,10 @@
     },
     "no-roles": "Biriktirilgan rollar yo'q!",
     "passwordChangedAt": "Parol yangilangan",
-    "daysAgo": "kun oldin"
+    "daysAgo": "kun oldin",
+    "pinTitle": "JSHSHIR tahriri",
+    "pin": "JSHSHIR",
+    "editPin": "JSHSHIR tahrirlash"
   },
   "confirmation": {
     "name": "Shartnomalar",
@@ -800,7 +803,8 @@
       "department": "Bo'lim"
     },
     "nDays": "{n} kun",
-    "nHours": "{n} soat"
+    "nHours": "{n} soat",
+    "searchWorkerHint": "FISH / tabel №"
   },
   "timesheetWorkerPage": {
     "worker_role_info": "Ro'yxatda faqat «TimesheetHR» (tabelchi) roli berilgan xodimlar ko'rinadi. Rol Xodimlar bo'limidan beriladi.",
@@ -1107,6 +1111,7 @@
       "marital_status": "Oilaviy holati",
       "address": "Yashash manzili",
       "experience_date": "Uzliksiz ish staji",
+      "table_number": "Tabel raqami",
       "passportTitle": "Pasport ma'lumotlari",
       "foreignPassportTitle": "Xorijga chiqish pasporti",
       "education": "Ma'lumoti",
@@ -2084,7 +2089,8 @@
     "dashboard": {
       "title": "Statistika"
     },
-    "materials": "Materiallar"
+    "materials": "Materiallar",
+    "downloadTitle": "Hisobotni yuklash"
   },
   "solveExamPage": {
     "alreadyStarted": "Siz bu imtihonni oldin boshlagansiz. Davom etishni xohlaysizmi?",
@@ -2201,7 +2207,8 @@
       "age31": "30 yoshgacha",
       "age32_45": "31 dan 45 yoshgacha",
       "age46": "46 yoshdan kattalar",
-      "structureTitle": "Yosh bo'yicha tuzilma"
+      "structureTitle": "Yosh bo'yicha tuzilma",
+      "yearsOld": "yoshdagilar"
     },
     "edu": {
       "title": "Xodimlarning ma'lumoti bo'yicha",
@@ -2217,7 +2224,8 @@
       "number": "Passport raqami",
       "approaching": "Muddati yaqinlashayotgan",
       "not_included": "Mavjud bo'lmagan",
-      "filter": "Passport holati"
+      "filter": "Passport holati",
+      "missing": "Yuklanmagan"
     },
     "pension": {
       "title": "Pensiya yoshidagi xodimlar",
@@ -2230,7 +2238,8 @@
       "deadline": "Muddati yaqinlashgan",
       "approaching": "Muddati yaqinlashgan",
       "finished": "Muddati o'tgan",
-      "expired": "Muddati o'tgan"
+      "expired": "Muddati o'tgan",
+      "missing": "Kiritilmagan"
     },
     "incentive": {
       "title": "Rag'batlantirishlar",
@@ -2261,6 +2270,8 @@
     "birthday": {
       "title": "Tug'ilgan kunlar",
       "today": "Bugungi tug'ilgan kunlar",
+      "todayShort": "Bugun",
+      "tomorrowShort": "Ertaga",
       "tomorrow": "Ertangi tug'ilgan kunlar"
     },
     "disability": {
@@ -2333,7 +2344,7 @@
       "hiredAt": "Qabul sanasi"
     },
     "today": {
-      "title": "Bugungi holat",
+      "title": "Hozirda ta'tildagi xodimlar",
       "atWorkTitle": "Bugun ishda",
       "onVacationTitle": "Ta'tilda",
       "chronicLateTitle": "Surunkali kechikish",
@@ -2346,8 +2357,10 @@
         "working": "Ishda",
         "vacation": "Ta'tilda",
         "sick_leave": "Kasallik varaqasi",
-        "absent": "Sababsiz"
-      }
+        "absent": "Sababsiz",
+        "business_trip": "Xizmat safari"
+      },
+      "awayTitle": "Ishda emas"
     },
     "eduLevel": {
       "vocational_college": "Kasb-hunar kolleji",
@@ -2567,6 +2580,27 @@
       "title": "Tabelni yakunlashga ishonchingiz komilmi?",
       "desc": "Bu amalni ortga qaytarib bo'lmaydi."
     },
+    "deleteWarning": {
+      "filled": "{month} tabeli o'chiriladi. Shu oy uchun to'ldirilgan ma'lumotlar ({count} ta xodim) ham butunlay o'chib ketadi. Davom etasizmi?",
+      "empty": "Tabel o'chiriladi. Shu oy uchun to'ldirilgan ma'lumotlar ham o'chib ketadi. Davom etasizmi?"
+    },
+    "send": "Tasdiqlashga yuborish",
+    "selectedCells": "{count} ta katak tanlandi",
+    "pickTypeFirst": "avval turni va soatni tanlang",
+    "totalWorkDays": "Umumiy ish kuni",
+    "totalWorkHours": "Umumiy ish soati",
+    "sendWarning": {
+      "title": "Tabelni tasdiqlashga yuborasizmi?",
+      "desc": "Yuborilgandan keyin tabel to'ldirish uchun yopiladi. Rad etilsa yana ochiladi."
+    },
+    "confirmWarning": {
+      "title": "Tabelni tasdiqlaysizmi?",
+      "desc": "Tasdiqlangandan keyin tabelni o'zgartirib bo'lmaydi."
+    },
+    "rejectWarning": {
+      "title": "Tabelni rad etasizmi?",
+      "desc": "Sabab yozing — tabel HR'ga tahrirlash uchun qaytadi."
+    },
     "legend": {
       "work": "Ish kuni",
       "rest": "Dam olish",
@@ -2575,7 +2609,52 @@
       "absent": "Kelmagan",
       "holiday": "Bayram"
     },
-    "workTimeType": "Ish vaqti turi"
+    "workTimeType": "Ish vaqti turi",
+    "fill": "To'ldirish",
+    "autoCalcSoon": "Auto hisoblash ishlab chiqilmoqda",
+    "autoCalcShort": "Auto",
+    "recalc": "Qayta hisoblash",
+    "autoCalcDone": "Muvaffaqiyatli bajarildi",
+    "autoRulesTitle": "Tabel bo'yicha ma'lumot",
+    "tabWorkTime": "Ish vaqti",
+    "tabTurnstile": "Turniket",
+    "workStatus": "Kun holati",
+    "workDay": "Ish kuni",
+    "restDay": "Dam olish kuni",
+    "planTime": "Grafik vaqti",
+    "planMinutes": "Grafik bo'yicha",
+    "daytimeEvening": "Kunduzgi / kechki",
+    "noSchedule": "Bu kun uchun ish grafigi yo'q",
+    "computed": "Hisoblandi",
+    "byVacation": "Ta'til buyrug'i bo'yicha",
+    "turnstileNotUsed": "Turniket hodisalari hozircha hisobga OLINMAYDI — faqat ko'rsatiladi.",
+    "direction": "Yo'nalish",
+    "device": "Qurilma",
+    "enter": "Kirish",
+    "exit": "Chiqish",
+    "noEvents": "Bu kun uchun turniket hodisasi yo'q",
+    "insideTotal": "Ichkarida",
+    "condition": "Shart",
+    "vacationRules": "Ta'til buyrug'i turi bo'yicha",
+    "commandType": "Buyruq turi",
+    "timeline": "Kun bo'yicha vaqt o'qi",
+    "planShort": "Reja",
+    "segWork": "Ishda",
+    "segBreak": "Tashqarida",
+    "segOpen": "Chiqish qayd etilmagan",
+    "factMinutes": "Turniket bo'yicha",
+    "breakTotal": "Tashqarida jami",
+    "segLunch": "Tushlik",
+    "workStart": "Ish boshlanishi",
+    "workEnd": "Ish tugashi",
+    "lunchStart": "Tushlik boshlanishi",
+    "lunchEnd": "Tushlik tugashi",
+    "counted": "Hisobga olindi",
+    "lgCounted": "Hisobga olindi",
+    "lgRaw": "Ichkarida (hisobsiz)",
+    "lgPlan": "Ish grafigi",
+    "lgLunch": "Tushlik",
+    "lgOutside": "Grafikdan tashqarida"
   },
   "turnstile": {
     "title": "Turniket",
@@ -3074,12 +3153,18 @@
     "name": "Hisobot yuklash",
     "latest": "Oxirgi",
     "olderUploads": "Oldingi yuklamalar",
+    "changes": {
+      "added": "Yangi",
+      "changed": "O'zgargan",
+      "removed": "O'chgan",
+      "unchanged": "O'zgarmagan"
+    },
     "createTitle": "Hisobot yuklash",
     "source": {
       "label": "Manba",
       "excel": "Excel",
       "ones": "1C dan",
-      "onesHint": "1C dan yuklaganda fayl kerak emas — salary-1c da tortilgan ma'lumot ishlatiladi."
+      "onesHint": "1C dan yuklaganda fayl kerak emas — ma'lumot to'g'ridan-to'g'ri 1C dan olinadi."
     },
     "bulkOnes": {
       "button": "1C dan ommaviy yuklash",
@@ -3096,7 +3181,32 @@
       "failed": "Xato",
       "noData": "Bu davr uchun 1C ma'lumoti topilmadi. Avval salary-1c da torting.",
       "progress": "{done} / {total} yuklandi",
-      "summary": "Muvaffaqiyatli: {ok}, Xato: {fail}"
+      "summary": "Muvaffaqiyatli: {ok}, Xato: {fail}",
+      "stop": "To'xtatish",
+      "close": "Yopish",
+      "background": "Modal yopilsa ham yuklash fonda davom etadi.",
+      "stopped": "Yuklash to'xtatildi."
+    },
+    "pullHistory": {
+      "button": "Tortish tarixi",
+      "title": "Tortish tarixi — barcha yuklamalar",
+      "form": "Shakl",
+      "allTypes": "Barcha shakllar",
+      "search": "Korxona yoki izoh bo'yicha qidirish",
+      "total": "Jami",
+      "columns": {
+        "date": "Sana",
+        "organization": "Korxona",
+        "form": "Shakl",
+        "period": "Davr",
+        "source": "Manba",
+        "status": "Holat",
+        "changes": "O'zgarish",
+        "download": "Yuklab olish",
+        "comment": "Izoh"
+      },
+      "source": { "excel": "Excel", "ones": "1C" },
+      "status": { "process": "Jarayonda", "done": "Bajarildi", "error": "Xato" }
     },
     "reportStatus": {
       "button": "Hisobot holati",
@@ -4441,7 +4551,9 @@
       "exitExam": "Chiqish/I"
     },
     "warning": {
-      "invalidResult": "Noto'g'ri ma'lumot kiritildi"
+      "invalidResult": "Noto'g'ri ma'lumot kiritildi",
+      "noExamWorkers": "Bu xodim(lar)da kirish yoki chiqish imtihoni natijasi yo'q, ular sertifikat ro'yxatiga kiritilmadi: {workers}",
+      "noValidWorkers": "Sertifikat berish uchun birorta ham xodimda kirish va chiqish imtihoni natijasi to'ldirilmagan."
     }
   },
   "publicPage": {
@@ -4937,7 +5049,8 @@
     "otpVerify": "OTP tekshirish",
     "holidayGreetings": "Bayram tabriklari",
     "workerSchedules": "Navbatchilik grafigi",
-    "workerScheduleSwap": "Grafik almashtirish"
+    "workerScheduleSwap": "Grafik almashtirish",
+    "dailyAttendance": "Kunlik davomat"
   },
   "kpiPage": {
     "name": "KPI ko'rsatgichlar",
@@ -5121,5 +5234,45 @@
     "tabs": {
       "special": "Maxsus hisobot"
     }
+  },
+  "telegramBroadcast": {
+    "tab": "Telegram",
+    "pushTab": "Push",
+    "sentList": "Yuborilgan xabarlar",
+    "audienceLabel": "Kimga yuboriladi",
+    "audience": {
+      "all_staff": "Barcha xodimlarga",
+      "selected": "Tanlangan xodimlarga",
+      "med_reminder": "Tibbiy ko'rik eslatmasi"
+    },
+    "sentOf": "yuborildi",
+    "blocked": "bloklagan",
+    "failed": "xato",
+    "result": "Yuborilgan",
+    "coverage": "Qamrov (bot ulanganlar)",
+    "startedAt": "Boshlandi",
+    "finishedAt": "Tugadi",
+    "lastErrors": "Oxirgi xatolar",
+    "st": {
+      "scheduled": "Rejalashtirilgan",
+      "sending": "Yuborilmoqda",
+      "done": "Bajarildi",
+      "cancelled": "Bekor qilingan",
+      "failed": "Xatolik"
+    },
+    "send": "Xabar yuborish",
+    "schedule": "Rejalashtirish",
+    "messageText": "Xabar matni",
+    "templatePlaceholder": "Tayyor xabar",
+    "templates": {
+      "maintenance_start": "Tizimda profilaktika",
+      "maintenance_done": "Texnik ishlar yakunlandi",
+      "new_version": "Mobil ilova yangilandi"
+    },
+    "blockedColumn": "Bloklagan",
+    "resultHint": "{total} ta qabul qiluvchidan {sent} tasiga yuborildi",
+    "recipientsShort": "Qabul qiluvchi",
+    "sendTimeLabel": "Yuborilish vaqtini sozlash",
+    "sendTimeFuture": "Vaqt hozirgidan keyin bo'lishi kerak"
   }
 }

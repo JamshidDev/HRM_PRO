@@ -28,6 +28,12 @@ const _onesOrgs = async (payload) => {
   return await axios.get(`/v1/economist/upload/ones-orgs`, { params: payload?.params })
 }
 
+// INPS 4/5-ilova va to'lovlar (type 2/3/4) bulk 1C tortishi uchun 1C kodi bor
+// korxonalar (davrga bog'liq emas — 1c-zup to'g'ridan-to'g'ri).
+const _reportOrgs = async () => {
+  return await axios.get(`/v1/economist/upload/report-orgs`)
+}
+
 const _update = async (payload) => {
   return await axios.put(`/v1/structure/countries/${payload.id}`, payload.data)
 }
@@ -60,11 +66,17 @@ const _reportStatusExport = async (payload) => {
   })
 }
 
+// Tortish tarixi (pull-log) — barcha davrlar bo'yicha paginatsiyalangan yuklamalar.
+const _pullHistory = async (payload) => {
+  return await axios.get(`/v1/economist/upload-report-history`, { params: payload?.params })
+}
+
 export default {
   _index,
   _create,
   _createFromOnes,
   _onesOrgs,
+  _reportOrgs,
   _update,
   _delete,
   _enum,
@@ -73,5 +85,6 @@ export default {
   _cancelConfirm,
   _updateStatus,
   _reportStatus,
-  _reportStatusExport
+  _reportStatusExport,
+  _pullHistory
 }

@@ -1,7 +1,8 @@
 <script setup>
+  import { ArrowCounterclockwise20Regular } from '@vicons/fluent'
   import { UIPageFilter, UISelect } from '@/components/index.js'
   import { useAccountStore, useApplicationStore, useComponentStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
+  import { AppPaths, useAppSetting } from '@/utils/index.js'
 
   const store = useApplicationStore()
   const accStore = useAccountStore()
@@ -50,6 +51,12 @@
     store.params.confirmation = null
     store.params.created = null
     filterEvent()
+  }
+
+  // [↺ Tarix] — global audit sahifasiga o'tadi, page filtri shu hujjat turiga qulflanadi.
+  const router = useRouter()
+  const onHistory = () => {
+    router.push({ path: AppPaths.Audit, query: { trigger_name: 'hr.applications' } })
   }
 </script>
 
@@ -106,6 +113,20 @@
           />
         </div>
       </div>
+    </template>
+    <template #filterEnd>
+      <n-button
+        v-if="accStore.checkPermission(accStore.pn.hrWorkerApplicationsRead)"
+        class="ui-page-action-button w-full! md:w-auto!"
+        secondary
+        icon-placement="right"
+        @click="onHistory"
+      >
+        <template #icon>
+          <n-icon><ArrowCounterclockwise20Regular /></n-icon>
+        </template>
+        {{ $t('audit.historyBtn') }}
+      </n-button>
     </template>
   </UIPageFilter>
 </template>
