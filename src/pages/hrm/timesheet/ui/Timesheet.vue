@@ -1236,7 +1236,7 @@
     padding-right: 4px;
   }
   .ts-rules-head {
-    margin: 20px 0 10px;
+    margin: 14px 0 6px;
     font-size: 13px;
     font-weight: 600;
     color: var(--fig-text-primary);
@@ -1255,19 +1255,21 @@
   .ts-rules-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    font-size: 12px;
   }
   .ts-rules-table th {
-    padding: 9px 12px;
+    padding: 5px 10px;
     text-align: left;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 500;
+    line-height: 16px;
     color: var(--fig-text-tertiary);
     background: var(--fig-block-bg);
     border-bottom: 1px solid var(--surface-line);
   }
   .ts-rules-table td {
-    padding: 9px 12px;
+    padding: 4px 10px;
+    line-height: 17px;
     color: var(--fig-text-primary);
     border-bottom: 1px solid var(--surface-line);
   }
@@ -1282,14 +1284,14 @@
     background: var(--fig-block-bg);
   }
   .ts-rules-key {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
   }
   .ts-rules-dash {
     color: var(--fig-text-tertiary);
   }
   .ts-rules-label {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--fig-text-secondary);
   }
 
