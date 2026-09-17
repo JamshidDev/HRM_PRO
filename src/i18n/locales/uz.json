@@ -2656,7 +2656,9 @@
     "lgLunch": "Tushlik",
     "lgOutside": "Grafikdan tashqarida",
     "dayDetail": "Kun tafsiloti",
-    "scheduleHead": "Ish grafigi"
+    "scheduleHead": "Ish grafigi",
+    "laneFact": "Fakt",
+    "eventsShort": "Hodisalar"
   },
   "turnstile": {
     "title": "Turniket",

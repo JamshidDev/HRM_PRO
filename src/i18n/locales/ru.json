@@ -2644,7 +2644,9 @@
     "lgLunch": "Обед",
     "lgOutside": "Вне графика",
     "dayDetail": "Детали дня",
-    "scheduleHead": "График работы"
+    "scheduleHead": "График работы",
+    "laneFact": "Факт",
+    "eventsShort": "События"
   },
   "turnstile": {
     "title": "Турникет",

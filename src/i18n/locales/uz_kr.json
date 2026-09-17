@@ -2375,7 +2375,9 @@
     "workTimeType": "Иш вақти тури",
     "fill": "Тўлдириш",
     "dayDetail": "Кун тафсилоти",
-    "scheduleHead": "Иш графиги"
+    "scheduleHead": "Иш графиги",
+    "laneFact": "Факт",
+    "eventsShort": "Ҳодисалар"
   },
   "turnstile": {
     "title": "Турникет",
