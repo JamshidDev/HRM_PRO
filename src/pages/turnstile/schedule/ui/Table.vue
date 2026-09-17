@@ -114,8 +114,17 @@
   <div class="h-full flex flex-col gap-4 relative z-[10]">
     <slot name="filter-section"></slot>
 
-    <n-spin :show="store.workerLoading" class="flex-1 overflow-auto rounded-lg">
+    <!-- Vertikal skroll `n-spin` da emas, `DragSelectorV2` ning o'zida bo'lishi shart:
+         u `overflow-auto` bo'lgani uchun sarlavhadagi `sticky top-0` uchun eng yaqin
+         skroll qiluvchi ota-element aynan o'sha. Balandligi cheklanmasa, u kontent
+         bo'yicha cho'zilib ketadi va pastga tushganda sana/kun qatori qotib turmaydi. -->
+    <n-spin
+      :show="store.workerLoading"
+      class="flex-1 min-h-0 overflow-hidden rounded-lg"
+      content-class="h-full flex flex-col min-h-0"
+    >
       <DragSelectorV2
+        class="flex-1 min-h-0"
         :live-selection="false"
         :scroll-zone-left="400"
         :scroll-zone-right="140"
