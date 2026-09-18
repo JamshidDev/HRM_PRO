@@ -189,9 +189,10 @@
     return endOfDay && m === 0 ? 1440 : m
   }
 
-  // Yorliqlar orasidagi minimal masofa (o'q balandligining %): 440px da
-  // ~18px — 12px shrift uchun yetarli, aks holda yaqin vaqtlar qoplanadi.
-  const MIN_GAP_PCT = 4.4
+  // Yorliqlar orasidagi minimal masofa (o'q balandligining %): 760px da
+  // ~19px — 12px shrift uchun yetarli, aks holda yaqin vaqtlar qoplanadi.
+  // ⚠️ `.ts-tl` balandligi o'zgarsa bu qiymat ham qayta hisoblanishi kerak.
+  const MIN_GAP_PCT = 2.5
 
   const fmtMin = (m) =>
     m == null
@@ -371,16 +372,19 @@
     return out
   })
 
-  // Y o'qi — har 2 soatda to'liq kenglikdagi yordamchi chiziq (24 soat /
-  // 2 = 13 ta yozuv). Chiziq butun maydonni kesib o'tadi: zolak qaysi
-  // soatga to'g'ri kelishini ko'z bilan o'qish uchun.
+  // Y o'qi. Chiziq HAR SOATDA — yaqin oraliqlarni ajratish uchun mayda
+  // to'r kerak; yozuv esa har 2 soatda, aks holda chap chet qalashib
+  // ketadi. Chiziq butun maydonni kesib o'tadi: zolak qaysi soatga to'g'ri
+  // kelishini ko'z bilan o'qish uchun.
   const tlTicks = computed(() => {
     const out = []
-    for (let m = 0; m <= 1440; m += 120) {
+    for (let m = 0; m <= 1440; m += 60) {
+      const major = (m / 60) % 2 === 0
       out.push({
         m,
+        major,
         top: pct(m),
-        label: `${String(Math.floor(m / 60) % 24).padStart(2, '0')}:00`
+        label: major ? `${String(Math.floor(m / 60) % 24).padStart(2, '0')}:00` : null
       })
     }
     return out
@@ -1034,10 +1038,11 @@
                   <span
                     v-for="tick in tlTicks"
                     :key="`t-${tick.m}`"
+                    :class="{ 'is-major': tick.major }"
                     :style="{ top: `${tick.top}%` }"
                     class="ts-tl-tick"
                   >
-                    <span class="ts-tl-tick-label">{{ tick.label }}</span>
+                    <span v-if="tick.label" class="ts-tl-tick-label">{{ tick.label }}</span>
                   </span>
 
                   <!-- CHAPDA: grafik vaqtlari (ish boshlanishi/tugashi,
@@ -2055,9 +2060,12 @@
   $tlCol: 116px; // yagona ustun kengligi
   $tlEv: $tlCol + 60px; // hodisalar ro'yxati (orasi — bog'lovchi chiziq)
 
+  /* Balandlik ATAYLAB katta: o'q qat'iy 24 soat bo'lgani uchun tushlik
+     (1 soat) 440px da atigi ~18px chiqardi va yaqin oraliqlar bir-biriga
+     qo'shilib ketardi. 760px da bir soat ~32px. */
   .ts-tl {
     position: relative;
-    height: 440px;
+    height: 760px;
     margin: 0 0 6px $tlLeft;
   }
   /* Qatlamlar: to'r → chiziqlar → reja → turniket → hodisa yozuvlari. */
@@ -2067,8 +2075,12 @@
     right: 0;
     height: 0;
     border-top: 1px solid var(--surface-line);
-    opacity: 0.45;
+    opacity: 0.22;
     z-index: 0;
+  }
+  /* Yozuvi bor (juft) soatlar biroz to'qroq — sanashda tayanch nuqta. */
+  .ts-tl-tick.is-major {
+    opacity: 0.5;
   }
   .ts-tl-tick-label {
     position: absolute;
