@@ -2569,7 +2569,10 @@
     "form": {
       "eduPlan": "Ўқув режаси",
       "certificate": "Сертификат",
-      "worker_position_ids": "Ходимлар"
+      "worker_position_ids": "Ходимлар",
+      "planLimit": "Сиғим: {limit} та ходим",
+      "planSelected": "Танланди: {n} та",
+      "planLimitExceeded": "Ўқув режаси сиғими {limit} та ходим — ҳозир {n} та танланган. Ортиқчасини олиб ташланг."
     }
   },
   "teacherPage": {

@@ -141,5 +141,16 @@ export const useLmsWorkerStore = defineStore('lmsWorkerStore', {
       this.workerList = []
       this.totalWorker = 0
     }
+  },
+  getters: {
+    selectedEduPlan: (s) => s.eduPlanList.find((v) => v.id === s.payload.edu_plan_id) ?? null,
+    // Reja sig'imi — backend `count_workers * count_groups` bilan solishtiradi.
+    eduPlanLimit() {
+      const p = this.selectedEduPlan
+      return p ? Number(p.count_workers ?? 0) * Number(p.count_groups ?? 1) : 0
+    },
+    isOverEduPlanLimit() {
+      return this.eduPlanLimit > 0 && this.payload.worker_position_ids.length > this.eduPlanLimit
+    }
   }
 })

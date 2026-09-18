@@ -2842,7 +2842,10 @@
     "updateTitle": "Edit",
     "form": {
       "eduPlan": "Training plan",
-      "worker_position_ids": "Employees"
+      "worker_position_ids": "Employees",
+      "planLimit": "Capacity: {limit} employees",
+      "planSelected": "Selected: {n}",
+      "planLimitExceeded": "The education plan capacity is {limit} employees, {n} selected. Remove the extra ones."
     }
   },
   "teacherPage": {

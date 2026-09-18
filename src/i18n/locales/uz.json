@@ -2863,7 +2863,10 @@
     "form": {
       "eduPlan": "O'quv rejasi",
       "certificate": "Sertifikat",
-      "worker_position_ids": "Xodimlar"
+      "worker_position_ids": "Xodimlar",
+      "planLimit": "Sig'im: {limit} ta xodim",
+      "planSelected": "Tanlandi: {n} ta",
+      "planLimitExceeded": "O'quv rejasi sig'imi {limit} ta xodim — hozir {n} ta tanlangan. Ortiqchasini olib tashlang."
     }
   },
   "teacherPage": {

@@ -2850,7 +2850,10 @@
     "updateTitle": "Редактировать",
     "form": {
       "eduPlan": "Учебный план",
-      "worker_position_ids": "Сотрудники"
+      "worker_position_ids": "Сотрудники",
+      "planLimit": "Вместимость: {limit} сотрудников",
+      "planSelected": "Выбрано: {n}",
+      "planLimitExceeded": "Вместимость учебного плана — {limit} сотрудников, сейчас выбрано {n}. Уберите лишних."
     }
   },
   "teacherPage": {
