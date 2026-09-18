@@ -275,8 +275,10 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     },
     // Auto hisoblash — JORIY SAHIFADAGI xodimlar uchun. Natija lokal
     // qo'yiladi (katakchalar to'ladi), bazaga «Saqlash» bosilganda ketadi.
-    async autoCalc() {
-      const ids = this.list.map((w) => w.id).filter(Boolean)
+    // `workerPositionIds` berilsa faqat o'shalar hisoblanadi (qator menyusidagi
+    // «Qayta hisoblash»); berilmasa — joriy sahifadagi hamma xodim («Auto»).
+    async autoCalc(workerPositionIds = null) {
+      const ids = (workerPositionIds ?? this.list.map((w) => w.id)).filter(Boolean)
       if (!ids.length) return null
       this.autoLoading = true
       try {

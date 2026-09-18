@@ -5,6 +5,15 @@ import { compressImage } from '@/utils/index.js'
 
 const { t } = i18n.global
 
+// Muddat MAJBURIY va doim yuboriladi: bo'sh qolsa HCP o'zi «bugun+2 yil» qo'yib,
+// bizning baza bilan jimgina ajralib ketadi. Shuning uchun formaga ham shu
+// qiymat oldindan qo'yiladi.
+const defaultDeadline = () => {
+  const d = new Date()
+  d.setFullYear(d.getFullYear() + 2)
+  return d.getTime()
+}
+
 export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentralWorkerStore', {
   state: () => ({
     list: [],
@@ -40,7 +49,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
       photo_index: null,
       access_level_ids: [],
       photo: null,
-      end_time: null,
+      end_time: defaultDeadline(),
       isWorker: 1,
       blob: null
     },
@@ -53,6 +62,12 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
       worker_id: null,
       blob: null
     },
+    // Diagnostika modali.
+    diagVisible: false,
+    diagLoading: false,
+    diagFixing: null,
+    diagData: null,
+    diagWorkerId: null,
     editVisible: false,
     editLoading: false,
     levelLoading: false,
@@ -296,6 +311,36 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
           this.loading = false
         })
     },
+    async _diagnose(id) {
+      this.diagWorkerId = id
+      this.diagVisible = true
+      this.diagLoading = true
+      this.diagData = null
+      try {
+        const res = await $ApiService.turnstileHikCentralWorkerService._diagnose({ id })
+        this.diagData = res.data.data
+      } finally {
+        this.diagLoading = false
+      }
+    },
+
+    // Bitta kartani tuzatib, so'ng butun diagnostikani qayta yuklaydi —
+    // tuzatish boshqa kartalarga ham ta'sir qilishi mumkin (masalan person
+    // tiklansa, guruh a'zoligi ham o'zgaradi).
+    async _diagnoseFix(key) {
+      this.diagFixing = key
+      try {
+        await $ApiService.turnstileHikCentralWorkerService._diagnose_fix({
+          id: this.diagWorkerId,
+          data: { key }
+        })
+        await this._diagnose(this.diagWorkerId)
+        this._index()
+      } finally {
+        this.diagFixing = null
+      }
+    },
+
     resetForm() {
       this.payload.level_org_id = []
       this.payload.worker_org_id = []
@@ -305,7 +350,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
       this.payload.photo_index = null
       this.payload.access_level_ids = []
       this.payload.photo = null
-      this.payload.end_time = null
+      this.payload.end_time = defaultDeadline()
       this.photos = []
     },
     resetEditPayload() {

@@ -10,12 +10,16 @@
     Delete20Regular,
     Edit32Regular,
     ErrorCircle24Filled,
+    Stethoscope20Regular,
     MoreHorizontal24Regular
   } from '@vicons/fluent'
+  import { useMessage } from 'naive-ui'
   import AccessLevelModal from './AccessLevelModal.vue'
+  import DiagnoseModal from './DiagnoseModal.vue'
 
   const { t } = i18n.global
 
+  const message = useMessage()
   const accStore = useAccountStore()
   const store = useTurnstileHikCentralWorkerStore()
 
@@ -132,12 +136,31 @@
       action: onEdit
     },
     {
+      label: t('turnstile.diagnose.action'),
+      key: 'diagnose',
+      icon: UIHelper.renderIcon(Stethoscope20Regular),
+      action: onDiagnose
+    },
+    {
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete20Regular),
       action: onDelete
     }
   ])
+
+  // Diagnostika faqat O'QIYDI — yozish ruxsati shart emas.
+  // ⚠️ `row.id` — XODIM id'si; diagnostika esa `worker_hik_centrals.id` ni
+  // kutadi, u `hcpPerson.id` da. HCP'ga umuman qo'shilmagan xodimda
+  // `hcpPerson` bo'lmaydi — o'shanda tekshiradigan narsa ham yo'q.
+  const onDiagnose = (row) => {
+    const hcId = row?.hcpPerson?.id
+    if (!hcId) {
+      message.warning(t('turnstile.diagnose.not_added'))
+      return
+    }
+    store._diagnose(hcId)
+  }
 </script>
 
 <template>
@@ -261,4 +284,5 @@
     @refresh="onRefreshAccessLevel"
     :worker-name="`${store.selectedWorker?.first_name} ${store.selectedWorker?.last_name}`"
   />
+  <DiagnoseModal />
 </template>

@@ -158,9 +158,10 @@
           />
         </UIFigField>
 
+        <!-- Tabel raqami yo'q bo'lsa — bo'sh qoladi (umumiy "—" o'rniga). -->
         <UIFigField
           :label="$t('createWorkerPage.form.table_number')"
-          :value="store.payload.table_number"
+          :value="store.payload.table_number ?? ''"
           :editing="editing"
         >
           <n-input
