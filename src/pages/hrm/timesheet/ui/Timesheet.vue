@@ -180,7 +180,18 @@
   const dayReason = computed(() => {
     const d = detail.value
     if (!d) return null
-    if (d.vacation_type) return { tone: 'warning', text: t('timesheetPage.byVacation') }
+    if (d.vacation_type) {
+      const c = d.vacation_command
+      const parts = [
+        c?.number ? `${t('timesheetPage.commandNo')} ${c.number}` : null,
+        c?.date ? dayjs(c.date).format('DD.MM.YYYY') : null
+      ].filter(Boolean)
+      return {
+        tone: 'warning',
+        text: t('timesheetPage.byVacation'),
+        command: parts.length ? parts.join(' · ') : null
+      }
+    }
     if (d.is_holiday && d.holiday_name) return { tone: 'error', text: d.holiday_name }
     if (d.zero_reason) return { tone: 'warning', text: t(`timesheetPage.zero_${d.zero_reason}`) }
     return null
@@ -1092,6 +1103,10 @@
                 <h4 class="ts-dm-card-head">{{ $t('timesheetPage.reasonHead') }}</h4>
                 <p :class="`is-${dayReason.tone}`" class="ts-dm-reason">
                   {{ dayReason.text }}
+                  <!-- Ta'tilda asos bo'lgan buyruq — raqami va sanasi. -->
+                  <span v-if="dayReason.command" class="ts-dm-reason-extra">
+                    {{ dayReason.command }}
+                  </span>
                 </p>
               </section>
 
@@ -2058,6 +2073,14 @@
     border-radius: 8px;
     font-size: 12px;
     line-height: 16px;
+  }
+  /* Buyruq ma'lumoti — sababning davomi, undan xiraroq. */
+  .ts-dm-reason-extra {
+    margin-left: 8px;
+    padding-left: 8px;
+    border-left: 1px solid currentColor;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.75;
   }
   .ts-dm-reason.is-warning {
     background: var(--fig-chip-amber-bg);

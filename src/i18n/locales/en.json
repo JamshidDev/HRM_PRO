@@ -2647,6 +2647,7 @@
     "zero_rest_day": "Rest day",
     "zero_no_events": "No turnstile events — 0 hours recorded",
     "zero_outside_schedule": "Events fall outside the schedule window — 0 hours",
+    "commandNo": "Order No.",
     "reasonHead": "Reason",
     "notSet": "Not set",
     "srcMobile": "Mobile",

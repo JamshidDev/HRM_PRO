@@ -2655,6 +2655,7 @@
     "zero_rest_day": "Выходной день",
     "zero_no_events": "Нет событий турникета — записывается 0 часов",
     "zero_outside_schedule": "События вне окна графика — 0 часов",
+    "commandNo": "Приказ №",
     "reasonHead": "Причина",
     "notSet": "Не задано",
     "srcMobile": "Мобильный",
