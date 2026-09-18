@@ -2657,8 +2657,8 @@
     "lgOutside": "Grafikdan tashqarida",
     "dayDetail": "Kun tafsiloti",
     "scheduleHead": "Ish grafigi",
-    "laneFact": "Fakt",
-    "eventsShort": "Hodisalar"
+    "calcHead": "Qanday hisoblandi",
+    "notCounted": "Hisobga olinmadi"
   },
   "turnstile": {
     "title": "Turniket",

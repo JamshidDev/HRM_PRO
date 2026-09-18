@@ -2637,8 +2637,8 @@
     "lgOutside": "Outside schedule",
     "dayDetail": "Day details",
     "scheduleHead": "Work schedule",
-    "laneFact": "Fact",
-    "eventsShort": "Events"
+    "calcHead": "How it was counted",
+    "notCounted": "Not counted"
   },
   "turnstile": {
     "title": "Turnstile",

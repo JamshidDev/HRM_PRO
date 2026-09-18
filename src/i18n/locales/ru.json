@@ -2645,8 +2645,8 @@
     "lgOutside": "Вне графика",
     "dayDetail": "Детали дня",
     "scheduleHead": "График работы",
-    "laneFact": "Факт",
-    "eventsShort": "События"
+    "calcHead": "Как посчитано",
+    "notCounted": "Не засчитано"
   },
   "turnstile": {
     "title": "Турникет",

@@ -189,9 +189,10 @@
     return endOfDay && m === 0 ? 1440 : m
   }
 
-  // Yorliqlar orasidagi minimal masofa (o'q balandligining %): 440px da
-  // ~18px — 12px shrift uchun yetarli, aks holda yaqin vaqtlar qoplanadi.
-  const MIN_GAP_PCT = 4.4
+  // Yorliqlar orasidagi minimal masofa (o'q balandligining %): 760px da
+  // ~19px — 12px shrift uchun yetarli, aks holda yaqin vaqtlar qoplanadi.
+  // ⚠️ `.ts-tl` balandligi o'zgarsa bu qiymat ham qayta hisoblanishi kerak.
+  const MIN_GAP_PCT = 2.5
 
   const fmtMin = (m) =>
     m == null
@@ -199,22 +200,50 @@
       : `${String(Math.floor(m / 60) % 24).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`
 
   /* ------------------------------------------------------------------------
-   * «Reja» yo'lakchasi.
+   * Vaqt o'qi — BITTA ustun.
    *
-   * Avval grafik vaqtlari o'q chetiga yozilgan CHIZIQLAR edi — ular faqat
-   * «qachon» ni aytardi, «qancha» ni emas, va fakt bilan yonma-yon
-   * taqqoslab bo'lmasdi. Endi reja ham fakt kabi ZOLAK: ish oynasi bitta
-   * ustun, ichidan tushlik kesib olinadi. Ikkala ustun yonma-yon turgani
-   * uchun «kech keldi / erta ketdi» bir qarashda ko'rinadi.
+   * Reja va fakt alohida ikki ustun edi; ular bir xil vaqt o'qida bo'lgani
+   * uchun ustma-ust qo'yilsa kesishma («hisobga olingan qism») o'z-o'zidan
+   * ko'rinadi. Endi bitta ustunda uch qatlam:
+   *   ① reja oynasi — ko'k fon, ichidan tushlik shtrixlab kesiladi;
+   *   ② turniket intervali — shaffof yashil ramka («ichkarida edi»);
+   *   ③ hisobga olingan qism — to'q yashil to'ldirish (① ∩ ② − tushlik).
+   * Grafik vaqtlari CHAPDA yorliq bo'lib turadi, turniket hodisalari O'NGDA.
    * ---------------------------------------------------------------------- */
   const planBand = computed(() => {
     const w = workWindow.value
     if (!w) return null
-    return {
-      style: { top: `${pct(w[0])}%`, height: `${pct(w[1]) - pct(w[0])}%` },
-      from: fmtMin(w[0]),
-      to: fmtMin(w[1])
+    return { style: { top: `${pct(w[0])}%`, height: `${pct(w[1]) - pct(w[0])}%` } }
+  })
+
+  // Chapdagi grafik yorliqlari: ish boshlanishi → tushlik → ish tugashi.
+  // Yozuvlar ustma-ust tushmasligi uchun pastga suriladi, `top` esa
+  // HAQIQIY vaqtda qoladi — bog'lovchi chiziq shundan tortiladi.
+  const planMarks = computed(() => {
+    const out = []
+    const sch = detail.value?.schedule
+    const push = (key, kind, label, hhmm, endOfDay = false) => {
+      const m = hhmmToMin(hhmm, endOfDay)
+      if (m == null) return
+      out.push({ key, kind, label, time: String(hhmm).slice(0, 5), top: pct(m) })
     }
+    if (sch?.start_time) push('ws', 'work', t('timesheetPage.workStart'), sch.start_time)
+    const br = detail.value?.planned_break
+    if (br) {
+      push('bs', 'break', t('timesheetPage.lunchStart'), br.start_time)
+      push('be', 'break', t('timesheetPage.lunchEnd'), br.end_time, true)
+    }
+    if (sch?.end_time) push('we', 'work', t('timesheetPage.workEnd'), sch.end_time, true)
+
+    out.sort((a, b) => a.top - b.top)
+    let last = -99
+    for (const mk of out) {
+      const labelTop = Math.max(mk.top, last + MIN_GAP_PCT)
+      last = labelTop
+      mk.labelStyle = { top: `${labelTop}%` }
+      mk.linkStyle = { top: `${mk.top}%`, height: `${labelTop - mk.top}%` }
+    }
+    return out
   })
 
   // Tushlik reja zolagi ICHIDA chiziladi — shuning uchun foizlar oynaga
@@ -252,9 +281,14 @@
     return a != null && b != null && b > a ? [a, b] : null
   })
 
-  // Ish intervali. Butun oraliq xira qavs bo'lib chiziladi, HISOBGA OLINGAN
-  // qismlari esa ustidan to'q yashil bilan bo'yaladi — soat qayerdan
-  // to'plangani ko'rinib tursin (grafikdan tashqarisi va tushlik kirmaydi).
+  /* Turniket intervali va undan HISOBGA OLINGAN qismlar.
+   *
+   * Har interval uchun: xom oraliq (kirishdan chiqishgacha) va uning ichidan
+   * grafik oynasiga tushgan, tushlikdan tashqari bo'laklar. Bo'laklar ham
+   * chizma uchun (foizli `parts`), ham o'qiladigan ro'yxat uchun (`ranges`:
+   * «09:00 → 13:00 · 4:00») qaytariladi — chizma ostidagi hisob bloki
+   * «qaysi soatdan qaysi soatgacha» degan savolga aynan shundan javob beradi.
+   */
   const workIntervals = computed(() =>
     (detail.value?.segments ?? [])
       .filter((sg) => sg.type === 'work' && sg.to)
@@ -264,12 +298,13 @@
         const win = workWindow.value
         const lunch = lunchWindow.value
         const parts = []
+        const ranges = []
         let counted = 0
         if (win) {
           const c = Math.max(a, win[0])
           const d = Math.min(b, win[1])
           if (d > c) {
-            const ranges =
+            const raw =
               lunch && lunch[0] < d && lunch[1] > c
                 ? [
                     [c, Math.min(lunch[0], d)],
@@ -279,21 +314,25 @@
             // ⚠️ Foizlar INTERVAL ichida hisoblanadi: `.ts-tl-iv-counted`
             // intervalning o'zi ichida joylashadi, o'qqa nisbatan emas.
             const span = b - a || 1
-            for (const [x, y] of ranges) {
+            for (const [x, y] of raw) {
               if (y <= x) continue
               counted += y - x
               parts.push({
                 top: `${((x - a) / span) * 100}%`,
                 height: `${((y - x) / span) * 100}%`
               })
+              ranges.push({ from: fmtMin(x), to: fmtMin(y), dur: minutesToHm(y - x) })
             }
           }
         }
         return {
+          from: fmtMin(a),
+          to: fmtMin(b),
           dur: minutesToHm(sg.minutes),
           counted: minutesToHm(counted),
           partial: counted < sg.minutes,
           parts,
+          ranges,
           style: { top: `${pct(a)}%`, height: `${Math.max(1.2, pct(b) - pct(a))}%` }
         }
       })
@@ -333,16 +372,19 @@
     return out
   })
 
-  // Y o'qi — har 2 soatda to'liq kenglikdagi yordamchi chiziq (24 soat /
-  // 2 = 13 ta yozuv). Chiziq butun maydonni kesib o'tadi: zolak qaysi
-  // soatga to'g'ri kelishini ko'z bilan o'qish uchun.
+  // Y o'qi. Chiziq HAR SOATDA — yaqin oraliqlarni ajratish uchun mayda
+  // to'r kerak; yozuv esa har 2 soatda, aks holda chap chet qalashib
+  // ketadi. Chiziq butun maydonni kesib o'tadi: zolak qaysi soatga to'g'ri
+  // kelishini ko'z bilan o'qish uchun.
   const tlTicks = computed(() => {
     const out = []
-    for (let m = 0; m <= 1440; m += 120) {
+    for (let m = 0; m <= 1440; m += 60) {
+      const major = (m / 60) % 2 === 0
       out.push({
         m,
+        major,
         top: pct(m),
-        label: `${String(Math.floor(m / 60) % 24).padStart(2, '0')}:00`
+        label: major ? `${String(Math.floor(m / 60) % 24).padStart(2, '0')}:00` : null
       })
     }
     return out
@@ -974,27 +1016,21 @@
                 />
               </section>
 
-              <!-- ④ Vaqt o'qi — REJA va FAKT yonma-yon ikki ustun.
-                 Avval reja faqat chap chetdagi uzuq chiziqlar edi; endi u
-                 ham zolak, shuning uchun «kech keldi / erta ketdi» ustunlar
-                 farqidan bir qarashda ko'rinadi. -->
+              <!-- ④ Vaqt o'qi — BITTA ustun.
+                   Reja va fakt bir xil vaqt o'qida bo'lgani uchun ustma-ust
+                   qo'yildi: kesishma (hisobga olingan qism) o'z-o'zidan
+                   ko'rinadi, ikkita ustunni ko'z bilan solishtirish shart
+                   emas. Grafik vaqtlari CHAPDA, turniket hodisalari O'NGDA. -->
               <!-- Hodisa bo'lmasa ham ko'rsatiladi: grafik va tushlik bandi
-                 o'zi ma'lumot beradi («nima bo'lishi kerak edi»). -->
+                   o'zi ma'lumot beradi («nima bo'lishi kerak edi»). -->
               <section v-if="detail?.schedule || detail?.segments?.length" class="ts-dm-card">
                 <h4 class="ts-dm-card-head">{{ $t('timesheetPage.timeline') }}</h4>
 
                 <div class="ts-tl-legend">
                   <span><i class="ts-lg is-plan"></i>{{ $t('timesheetPage.lgPlan') }}</span>
                   <span><i class="ts-lg is-lunch"></i>{{ $t('timesheetPage.lgLunch') }}</span>
-                  <span><i class="ts-lg is-counted"></i>{{ $t('timesheetPage.lgCounted') }}</span>
                   <span><i class="ts-lg is-raw"></i>{{ $t('timesheetPage.lgRaw') }}</span>
-                </div>
-
-                <!-- Ustun sarlavhalari — qaysi zolak nima ekani yozib qo'yiladi. -->
-                <div class="ts-tl-cols">
-                  <span class="ts-tl-col is-plan">{{ $t('timesheetPage.planShort') }}</span>
-                  <span class="ts-tl-col is-fact">{{ $t('timesheetPage.laneFact') }}</span>
-                  <span class="ts-tl-col is-ev">{{ $t('timesheetPage.eventsShort') }}</span>
+                  <span><i class="ts-lg is-counted"></i>{{ $t('timesheetPage.lgCounted') }}</span>
                 </div>
 
                 <div class="ts-tl">
@@ -1002,55 +1038,72 @@
                   <span
                     v-for="tick in tlTicks"
                     :key="`t-${tick.m}`"
+                    :class="{ 'is-major': tick.major }"
                     :style="{ top: `${tick.top}%` }"
                     class="ts-tl-tick"
                   >
-                    <span class="ts-tl-tick-label">{{ tick.label }}</span>
+                    <span v-if="tick.label" class="ts-tl-tick-label">{{ tick.label }}</span>
                   </span>
 
-                  <!-- REJA ustuni: ish oynasi, ichidan tushlik kesilgan -->
+                  <!-- CHAPDA: grafik vaqtlari (ish boshlanishi/tugashi,
+                       tushlik boshlanishi/tugashi) — yorliq + ustungacha
+                       tortilgan chiziq. -->
+                  <template v-for="mark in planMarks" :key="`m-${mark.key}`">
+                    <span :class="`is-${mark.kind}`" :style="mark.labelStyle" class="ts-tl-mark">
+                      {{ mark.label }} <b>{{ mark.time }}</b>
+                    </span>
+                    <svg
+                      :class="`is-${mark.kind}`"
+                      :style="mark.linkStyle"
+                      class="ts-tl-mlink"
+                      preserveAspectRatio="none"
+                      viewBox="0 0 100 100"
+                    >
+                      <line
+                        stroke="currentColor"
+                        stroke-dasharray="4 4"
+                        stroke-width="1"
+                        vector-effect="non-scaling-stroke"
+                        x1="0"
+                        x2="100"
+                        y1="100"
+                        y2="0"
+                      />
+                    </svg>
+                  </template>
+
+                  <!-- ① Reja oynasi — ustunning foni, ichida tushlik -->
                   <span v-if="planBand" :style="planBand.style" class="ts-tl-plan">
-                    <span class="ts-tl-plan-time is-from">{{ planBand.from }}</span>
                     <span
                       v-if="lunchBand"
                       :style="lunchBand.style"
                       :title="`${$t('timesheetPage.segLunch')} ${lunchBand.label}`"
                       class="ts-tl-plan-lunch"
                     ></span>
-                    <span class="ts-tl-plan-time is-to">{{ planBand.to }}</span>
                   </span>
                   <span v-else class="ts-tl-plan is-none">
                     <span class="ts-tl-plan-none">{{ $t('timesheetPage.noSchedule') }}</span>
                   </span>
 
-                  <!-- FAKT ustuni: turniket intervallari -->
+                  <!-- ② Turniket intervali — shaffof yashil ramka,
+                       ③ ichida hisobga olingan bo'laklar to'q yashil -->
                   <span
                     v-for="(iv, i) in workIntervals"
                     :key="`iv-${i}`"
                     :style="iv.style"
                     class="ts-tl-iv"
                   >
-                    <!-- Hisobga OLINGAN qismlar — to'q yashil -->
                     <span
                       v-for="(pt, j) in iv.parts"
                       :key="`p-${j}`"
                       :style="pt"
                       class="ts-tl-iv-counted"
                     ></span>
-                    <span class="ts-tl-iv-dur">
-                      {{ iv.counted }}
-                      <i v-if="iv.partial">/ {{ iv.dur }}</i>
-                    </span>
                   </span>
 
-                  <!-- Bog'lovchi chiziq: FAKT zolagining chetidagi haqiqiy
-                     vaqtdan yozuvgacha. Yozuv o'qilishi uchun pastga
-                     surilgan bo'lishi mumkin — chiziq shu farqni silliq
-                     bosib o'tadi.
-                     TO'G'RI chiziq — burchakli «tirsak» har qanday holda ham
-                     tutashish joyida notekis ko'rinardi (shtrix fazasi va
-                     yarim piksel farqi). `non-scaling-stroke` esa quti
-                     cho'zilganda ham shtrixni bir tekis saqlaydi. -->
+                  <!-- O'NGDA: har bir kirish/chiqish, ustunga to'g'ri chiziq
+                       bilan bog'langan (yozuv o'qilishi uchun surilgan
+                       bo'lsa ham qaysi vaqt ekani ko'rinib tursin). -->
                   <svg
                     v-for="(e, i) in eventRows"
                     :key="`lk-${i}`"
@@ -1072,7 +1125,6 @@
                     />
                   </svg>
 
-                  <!-- Turniket hodisalari — o'ngda, aniq vaqt bilan -->
                   <span
                     v-for="(e, i) in eventRows"
                     :key="`e-${i}`"
@@ -1087,6 +1139,37 @@
                     </span>
                     <span class="ts-tl-ev-dev">{{ e.device || '—' }}</span>
                   </span>
+                </div>
+
+                <!-- Hisob bloki: qaysi oraliq turniket bo'yicha olingan va
+                     uning qaysi bo'laklari grafik uchun hisobga olingan. -->
+                <div v-if="workIntervals.length" class="ts-tl-calc">
+                  <h5 class="ts-tl-calc-head">{{ $t('timesheetPage.calcHead') }}</h5>
+                  <div v-for="(iv, i) in workIntervals" :key="`c-${i}`" class="ts-tl-calc-block">
+                    <div class="ts-tl-calc-row is-raw">
+                      <i class="ts-lg is-raw"></i>
+                      <span class="ts-tl-calc-range">{{ iv.from }} → {{ iv.to }}</span>
+                      <span class="ts-tl-calc-dur">{{ iv.dur }}</span>
+                    </div>
+                    <div
+                      v-for="(r, j) in iv.ranges"
+                      :key="`cr-${j}`"
+                      class="ts-tl-calc-row is-counted"
+                    >
+                      <i class="ts-lg is-counted"></i>
+                      <span class="ts-tl-calc-range">{{ r.from }} → {{ r.to }}</span>
+                      <span class="ts-tl-calc-dur">{{ r.dur }}</span>
+                    </div>
+                    <div v-if="!iv.ranges.length" class="ts-tl-calc-row is-none">
+                      <i class="ts-lg is-empty"></i>
+                      <span class="ts-tl-calc-range">{{ $t('timesheetPage.notCounted') }}</span>
+                      <span class="ts-tl-calc-dur">0:00</span>
+                    </div>
+                  </div>
+                  <div class="ts-tl-calc-total">
+                    <span>{{ $t('timesheetPage.counted') }}</span>
+                    <b>{{ minutesToHm(detail?.counted_minutes) }}</b>
+                  </div>
                 </div>
 
                 <p v-if="!detail?.segments?.length" class="ts-tl-empty">
@@ -1962,92 +2045,103 @@
     }
   }
   /* ── Vaqt o'qi (24 soat) ───────────────────────────────────────────────
-   * Uch ustun: REJA (grafik oynasi) — FAKT (turniket intervallari) —
-   * HODISALAR ro'yxati. Reja ham fakt kabi zolak bo'lgani uchun ikkalasini
-   * yonma-yon taqqoslash mumkin: kechikish/erta ketish ustunlar chetidan
-   * ko'rinadi. O'q QAT'IY 24 soat, kunlar bir-biri bilan solishtirilsin.
+   * BITTA ustun, uch qatlam ustma-ust:
+   *   ① reja oynasi   — ko'k fon (ichida tushlik shtrixlab kesilgan)
+   *   ② turniket      — shaffof yashil ramka («ichkarida edi»)
+   *   ③ hisobga olindi — to'q yashil to'ldirish (① ∩ ② − tushlik)
+   * Kesishma shu tariqa o'z-o'zidan ko'rinadi. Chapda grafik vaqtlari,
+   * o'ngda turniket hodisalari — ikkalasi ham ustunga chiziq bilan ulanadi.
+   * O'q QAT'IY 24 soat, kunlar bir-biri bilan solishtirilsin.
    * ───────────────────────────────────────────────────────────────────── */
-  $tlGutter: 52px; // chapda soat yozuvlari
-  $tlLane: 64px; // bitta zolak kengligi
-  $tlGap: 20px; // zolaklar orasi
-  $tlFact: $tlLane + $tlGap; // FAKT ustunining chap cheti
-  $tlFactRight: 2 * $tlLane + $tlGap; // FAKT ustunining o'ng cheti
-  $tlEv: 2 * ($tlLane + $tlGap) + 72px; // hodisalar (davomiylik yorlig'idan keyin)
+  $tlHours: 44px; // eng chapda soat yozuvlari
+  $tlMarkLbl: 146px; // grafik yorliqlari
+  $tlLeader: 40px; // yorliqdan ustungacha chiziq
+  $tlLeft: $tlHours + $tlMarkLbl + $tlLeader;
+  $tlCol: 116px; // yagona ustun kengligi
+  $tlEv: $tlCol + 60px; // hodisalar ro'yxati (orasi — bog'lovchi chiziq)
 
-  /* Ustun sarlavhalari — zolaklar bilan bir vertikalda. */
-  .ts-tl-cols {
-    position: relative;
-    height: 18px;
-    margin-left: $tlGutter;
-  }
-  .ts-tl-col {
-    position: absolute;
-    top: 0;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-    color: var(--fig-text-tertiary);
-  }
-  .ts-tl-col.is-plan {
-    left: 0;
-    width: $tlLane;
-    text-align: center;
-  }
-  .ts-tl-col.is-fact {
-    left: $tlFact;
-    width: $tlLane;
-    text-align: center;
-  }
-  .ts-tl-col.is-ev {
-    left: $tlEv;
-  }
-
+  /* Balandlik ATAYLAB katta: o'q qat'iy 24 soat bo'lgani uchun tushlik
+     (1 soat) 440px da atigi ~18px chiqardi va yaqin oraliqlar bir-biriga
+     qo'shilib ketardi. 760px da bir soat ~32px. */
   .ts-tl {
     position: relative;
-    height: 440px;
-    margin: 0 0 6px $tlGutter;
+    height: 760px;
+    margin: 0 0 6px $tlLeft;
   }
-  /* Qatlamlar: to'r → bog'lovchi chiziqlar → zolaklar → hodisa yozuvlari. */
-  .ts-tl-plan,
-  .ts-tl-iv {
-    z-index: 2;
-  }
-  .ts-tl-ev {
-    z-index: 3;
-  }
-  /* Soat to'ri — butun kenglikni kesib o'tadi, shuning uchun zolakning
-     qaysi soatga tushishini chizg'ichsiz o'qish mumkin. */
+  /* Qatlamlar: to'r → chiziqlar → reja → turniket → hodisa yozuvlari. */
   .ts-tl-tick {
     position: absolute;
     left: 0;
     right: 0;
     height: 0;
     border-top: 1px solid var(--surface-line);
-    opacity: 0.45;
+    opacity: 0.22;
     z-index: 0;
+  }
+  /* Yozuvi bor (juft) soatlar biroz to'qroq — sanashda tayanch nuqta. */
+  .ts-tl-tick.is-major {
+    opacity: 0.5;
   }
   .ts-tl-tick-label {
     position: absolute;
-    left: -#{$tlGutter};
+    left: -#{$tlLeft};
     top: -7px;
-    width: #{$tlGutter - 10};
+    width: #{$tlHours - 8};
     text-align: right;
     font-size: 10px;
     font-variant-numeric: tabular-nums;
     color: var(--fig-text-tertiary);
   }
 
-  /* ── REJA zolagi ─────────────────────────────────────────────────────── */
+  /* ── CHAP: grafik vaqtlari ───────────────────────────────────────────── */
+  .ts-tl-mark {
+    position: absolute;
+    right: calc(100% + #{$tlLeader});
+    width: $tlMarkLbl;
+    margin-top: -8px;
+    text-align: right;
+    font-size: 11px;
+    line-height: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: currentColor;
+    z-index: 2;
+  }
+  .ts-tl-mark b {
+    font-variant-numeric: tabular-nums;
+  }
+  .ts-tl-mark.is-work,
+  .ts-tl-mlink.is-work {
+    color: var(--fig-chip-indigo-text);
+  }
+  .ts-tl-mark.is-break,
+  .ts-tl-mlink.is-break {
+    color: var(--fig-chip-amber-text);
+  }
+  /* Yorliq o'qilishi uchun pastga surilgan bo'lishi mumkin — chiziq
+     yorliqdan (pastda) ustundagi HAQIQIY vaqtga (yuqorida) tortiladi. */
+  .ts-tl-mlink {
+    position: absolute;
+    right: 100%;
+    width: $tlLeader;
+    min-height: 1px;
+    overflow: visible;
+    pointer-events: none;
+    opacity: 0.75;
+    z-index: 1;
+  }
+
+  /* ── ① Reja oynasi ───────────────────────────────────────────────────── */
   .ts-tl-plan {
     position: absolute;
     left: 0;
-    width: $tlLane;
-    /* Qisqa smenada vaqt yorliqlari zolakdan tashqariga chiqib ketmasin. */
+    width: $tlCol;
     overflow: hidden;
     border-radius: 8px;
     background: var(--fig-chip-indigo-bg);
     border: 1px solid var(--fig-chip-indigo-text);
+    z-index: 1;
   }
   /* Grafik yo'q kun — bo'sh, uzuq chegarali ustun. */
   .ts-tl-plan.is-none {
@@ -2061,30 +2155,12 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 120px;
+    width: 110px;
     transform: translate(-50%, -50%);
     text-align: center;
     font-size: 10px;
     line-height: 13px;
     color: var(--fig-text-tertiary);
-  }
-  /* Boshlanish/tugash vaqti zolakning O'ZIDA — chap chetdagi uzuq
-     chiziqlarga ehtiyoj qolmaydi. */
-  .ts-tl-plan-time {
-    position: absolute;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 11px;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    color: var(--fig-chip-indigo-text);
-  }
-  .ts-tl-plan-time.is-from {
-    top: 3px;
-  }
-  .ts-tl-plan-time.is-to {
-    bottom: 3px;
   }
   /* Tushlik — reja ichidan «kesib olingan» qiya shtrixli bo'lak. */
   .ts-tl-plan-lunch {
@@ -2100,46 +2176,26 @@
     );
   }
 
-  /* ── FAKT zolagi ─────────────────────────────────────────────────────── */
-  /* Butun oraliq — xira yashil (ichkarida bo'lgan vaqt). */
+  /* ── ② Turniket intervali ────────────────────────────────────────────── */
+  /* ATAYLAB shaffof: ostidagi reja oynasi ko'rinib tursin. Ramka ichida
+     ko'k fon bor — demak grafik vaqti; yo'q — demak grafikdan tashqarida. */
   .ts-tl-iv {
     position: absolute;
-    left: $tlFact;
-    width: $tlLane;
-    border: 1px solid var(--fig-icon-green);
+    left: 0;
+    width: $tlCol;
+    /* To'ldirish ramkaning yumaloq burchaklaridan chiqib ketmasin. */
+    overflow: hidden;
+    border: 2px solid var(--fig-icon-green);
     border-radius: 8px;
-    background: color-mix(in srgb, var(--fig-icon-green) 12%, transparent);
+    background: transparent;
+    z-index: 2;
   }
-  /* Hisobga olingan qism — to'q yashil. */
+  /* ── ③ Hisobga olingan bo'lak ────────────────────────────────────────── */
   .ts-tl-iv-counted {
     position: absolute;
     left: 0;
     right: 0;
-    background: color-mix(in srgb, var(--fig-icon-green) 45%, transparent);
-    border-radius: 3px;
-  }
-  /* Davomiylik yorlig'i bog'lovchi chiziqlar bilan kesishishi mumkin —
-     o'z foni bilan ularning ustida turadi. */
-  .ts-tl-iv-dur {
-    position: absolute;
-    top: 50%;
-    left: calc(100% + 6px);
-    transform: translateY(-50%);
-    padding: 0 4px;
-    border-radius: 4px;
-    background: var(--surface-section);
-    font-size: 12px;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-    color: var(--fig-chip-green-text);
-  }
-  /* Xom vaqt — hisobga olingandan farq qilsa, yonida xira ko'rsatiladi. */
-  .ts-tl-iv-dur i {
-    font-size: 11px;
-    font-style: normal;
-    font-weight: 400;
-    color: var(--fig-text-tertiary);
+    background: color-mix(in srgb, var(--fig-icon-green) 58%, transparent);
   }
 
   /* Izoh qatori o'qdan OLDIN turadi — ranglarni avval o'qib olish qulay. */
@@ -2160,17 +2216,18 @@
     gap: 6px;
   }
   .ts-lg {
+    flex-shrink: 0;
     width: 14px;
     height: 10px;
     border-radius: 3px;
   }
   .ts-lg.is-counted {
-    background: color-mix(in srgb, var(--fig-icon-green) 45%, transparent);
+    background: color-mix(in srgb, var(--fig-icon-green) 58%, transparent);
     border: 1px solid var(--fig-icon-green);
   }
   .ts-lg.is-raw {
-    background: color-mix(in srgb, var(--fig-icon-green) 12%, transparent);
-    border: 1px solid var(--fig-icon-green);
+    background: transparent;
+    border: 2px solid var(--fig-icon-green);
   }
   .ts-lg.is-plan {
     background: var(--fig-chip-indigo-bg);
@@ -2184,19 +2241,20 @@
       transparent 4px 8px
     );
   }
+  .ts-lg.is-empty {
+    background: transparent;
+    border: 1px dashed var(--surface-line);
+  }
 
-  /* ── Zolak ↔ hodisa bog'lovchisi ──
-   * Quti HAQIQIY vaqtdan boshlanadi, balandligi esa yozuv surilgan
-   * masofaga teng. Ichida uch bo'lak: yuqori gorizontal (zolakdan),
-   * vertikal (surilishni bosib o'tadi) va pastki gorizontal (yozuvgacha).
-   * Surilish bo'lmasa balandlik 0 — oddiy to'g'ri chiziq chiqadi. */
+  /* ── Ustun ↔ hodisa bog'lovchisi ──────────────────────────────────────
+   * Quti yuqori cheti — HAQIQIY vaqt (ustun chetiga to'g'ri keladi),
+   * pastki cheti — surilgan yozuv markazi. TO'G'RI chiziq: burchakli
+   * «tirsak» tutashish joyida har doim notekis ko'rinardi. */
   .ts-tl-link {
     position: absolute;
-    left: $tlFactRight;
-    width: $tlEv - $tlFactRight - 3px;
-    /* Surilish bo'lmasa balandlik 0% — shunda ham chiziq ko'rinsin. */
+    left: $tlCol;
+    width: $tlEv - $tlCol - 3px;
     min-height: 1px;
-    /* Chekka nuqtalardagi shtrix yarmi qirqilib qolmasin. */
     overflow: visible;
     pointer-events: none;
     opacity: 0.6;
@@ -2209,7 +2267,7 @@
     color: var(--fig-icon-orange);
   }
 
-  /* ── Hodisalar ro'yxati ──────────────────────────────────────────────── */
+  /* ── O'NG: turniket hodisalari ───────────────────────────────────────── */
   .ts-tl-ev {
     position: absolute;
     left: $tlEv;
@@ -2219,6 +2277,7 @@
     align-items: center;
     gap: 8px;
     white-space: nowrap;
+    z-index: 3;
   }
   .ts-tl-ev-dot {
     flex-shrink: 0;
@@ -2253,6 +2312,81 @@
     overflow: hidden;
     text-overflow: ellipsis;
     color: var(--fig-text-tertiary);
+  }
+
+  /* ── Hisob bloki ─────────────────────────────────────────────────────
+   * Chizma «qayerda» ni ko'rsatadi, bu blok esa «qaysi soatdan qaysi
+   * soatgacha va qancha» degan savolga raqam bilan javob beradi. */
+  .ts-tl-calc {
+    margin-top: 14px;
+    padding: 10px 12px;
+    border: 1px solid var(--surface-line);
+    border-radius: 10px;
+    background: var(--surface-ground-soft);
+  }
+  .ts-tl-calc-head {
+    margin: 0 0 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--fig-text-primary);
+  }
+  .ts-tl-calc-block + .ts-tl-calc-block {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--surface-line);
+  }
+  .ts-tl-calc-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 2px 0;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    color: var(--fig-text-secondary);
+  }
+  /* Hisobga olingan bo'laklar xom oraliqdan ICHKARIDA — chapga surilgan
+     va uzuq chiziq bilan unga bog'langan. */
+  .ts-tl-calc-row.is-counted {
+    margin-left: 14px;
+    padding-left: 10px;
+    border-left: 1px dashed var(--fig-icon-green);
+    color: var(--fig-chip-green-text);
+    font-weight: 600;
+  }
+  .ts-tl-calc-row.is-none {
+    margin-left: 14px;
+    padding-left: 10px;
+    border-left: 1px dashed var(--surface-line);
+    color: var(--fig-text-tertiary);
+  }
+  .ts-tl-calc-range {
+    flex: 1;
+  }
+  .ts-tl-calc-dur {
+    font-weight: 700;
+    color: var(--fig-text-primary);
+  }
+  .ts-tl-calc-row.is-counted .ts-tl-calc-dur {
+    color: var(--fig-chip-green-text);
+  }
+  .ts-tl-calc-row.is-none .ts-tl-calc-dur {
+    color: var(--fig-text-tertiary);
+  }
+  .ts-tl-calc-total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--surface-line);
+    font-size: 12px;
+    color: var(--fig-text-tertiary);
+  }
+  .ts-tl-calc-total b {
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+    color: var(--fig-chip-green-text);
   }
 
   .ts-tl-empty {

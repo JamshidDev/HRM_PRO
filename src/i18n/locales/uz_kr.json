@@ -2376,8 +2376,8 @@
     "fill": "Тўлдириш",
     "dayDetail": "Кун тафсилоти",
     "scheduleHead": "Иш графиги",
-    "laneFact": "Факт",
-    "eventsShort": "Ҳодисалар"
+    "calcHead": "Қандай ҳисобланди",
+    "notCounted": "Ҳисобга олинмади"
   },
   "turnstile": {
     "title": "Турникет",
