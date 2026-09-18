@@ -18,9 +18,11 @@
     Send24Regular,
     Eye16Regular
   } from '@vicons/fluent'
-  import dayjs from 'dayjs'
 
   const { t } = i18n.global
+
+  // Oy nomi interfeys tilida — dayjs locale'i global o'rnatilmagan, `format('MMMM')` inglizcha qaytaradi.
+  const monthName = (month) => Utils.monthList.find((v) => v.id === month)?.name ?? ''
 
   const store = useTimesheetStore()
   const accStore = useAccountStore()
@@ -60,10 +62,7 @@
   const deleteWarning = (row) =>
     row?.workers_count
       ? t('timesheetPage.deleteWarning.filled', {
-          month: dayjs()
-            .year(row.year)
-            .month(row.month - 1)
-            .format('YYYY MMMM'),
+          month: `${row.year} ${monthName(row.month)}`,
           count: row.workers_count
         })
       : t('timesheetPage.deleteWarning.empty')
@@ -99,10 +98,16 @@
       minWidth: 500,
     },
     {
+      key: 'year',
+      title: t('content.year'),
+      width: 100,
+      align: 'center'
+    },
+    {
       key: 'month',
       title: t('content.month'),
       width: 140,
-      align: 'center'
+      align: 'left'
     },
     {
       key: 'status',
@@ -178,13 +183,12 @@
       {{ row.department?.name || row.work_place?.name }}
     </template>
 
+    <template #cell-year="{ row }">
+      {{ row.year }}
+    </template>
+
     <template #cell-month="{ row }">
-      {{
-        dayjs()
-          .year(row.year)
-          .month(row.month - 1)
-          .format('YYYY MMMM')
-      }}
+      {{ monthName(row.month) }}
     </template>
 
     <template #cell-status="{ row }">

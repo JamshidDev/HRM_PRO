@@ -1,12 +1,15 @@
 <script setup>
-  import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+  import { h, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
   import { useMessage } from 'naive-ui'
   import {
+    ArrowDownload20Filled,
     Dismiss20Regular,
+    Eraser20Filled,
     Eye16Filled,
     Info16Regular,
     Info20Filled,
     MoreVertical20Filled,
+    Save20Filled,
     Search20Regular,
     Wand20Filled
   } from '@vicons/fluent'
@@ -99,6 +102,9 @@
    * ta'til buyruqlari. Natija LOKAL qo'yiladi, bazaga «Saqlash» bosilganda
    * ketadi. Turniket hodisalari bo'yicha hisoblash keyingi bosqichda.
    * ---------------------------------------------------------------------- */
+  // TODO: yuklash endpointi hali yo'q — backendda tabel eksporti qo'shilgach ulanadi.
+  const onDownload = () => {}
+
   const onAutoCalc = async () => {
     const res = await store.autoCalc()
     if (!res) return
@@ -486,6 +492,10 @@
       .filter((d) => d?.[field] !== null && d?.[field] !== undefined)
       .map((d) => ({ value: d[field], color: colorOfDetail(d) }))
 
+  // Drag davom etayotganda katakcha hover'i o'chadi: yashil ramka ham,
+  // «ko'rish» tugmasi ham tanlash ustidan chiqib xalaqit berardi.
+  const dragging = ref(false)
+
   // Saqlanmagan (kutilayotgan) katakchalar: key `row-col` → {row, col, wasOccupied}.
   // Tanlangan katak DARHOL qiymat bilan to'ladi, serverga «Saqlash» da ketadi.
   const pendingCells = ref(new Map())
@@ -494,18 +504,16 @@
     if (!store.payload.isClearing && store.payload.status == null) {
       return false
     }
-    if (
-      store.payload.status != null &&
-      compStore.timesheetTypes?.[store.payload.status - 1]?.hours &&
-      store.payload.hours == null
-    ) {
+    // Namuna o'chirilgan — tanlov saqlanadi, lekin katakka yozilmaydi.
+    if (!store.payload.isClearing && !previewActive.value) {
       return false
     }
-    if (
-      store.payload.status2 != null &&
-      compStore.timesheetTypes?.[store.payload.status2 - 1]?.hours &&
-      store.payload.hours2 == null
-    ) {
+    // Tur ID'lari ketma-ket EMAS (1,2,3,5,10,14…) — indeks bo'yicha
+    // olish boshqa turni qaytaradi, shuning uchun ID bo'yicha qidiriladi.
+    if (typeByIdOrNull(store.payload.status)?.hours && store.payload.hours == null) {
+      return false
+    }
+    if (typeByIdOrNull(store.payload.status2)?.hours && store.payload.hours2 == null) {
       return false
     }
 
@@ -533,7 +541,9 @@
 
   const toggleClearing = () => {
     store.payload.isClearing = !store.payload.isClearing
-    if (store.payload.isClearing) store.resetStatuses()
+    // Tozalash yoqilsa namuna o'chadi, o'chirilsa qaytadi. Tanlov TOZALANMAYDI —
+    // qiymatlar selectlarda va namunada (xira holatda) turaveradi.
+    previewActive.value = !store.payload.isClearing
   }
 
   const onSave = () => {
@@ -568,7 +578,6 @@
     id == null ? null : (compStore.timesheetTypes?.find((v) => v.id === id) ?? null)
 
   const previewDetails = computed(() => {
-    if (store.payload.isClearing) return []
     return [
       { type: typeByIdOrNull(store.payload.status), hours: store.payload.hours },
       { type: typeByIdOrNull(store.payload.status2), hours: store.payload.hours2 }
@@ -580,6 +589,16 @@
         hours: v.type.hours ? v.hours : null
       }))
   })
+
+  // Namuna katakchasining O'ZI tugma. «Namuna» va «Tozalash» — bir-birini
+  // istisno qiladigan ikki rejim: biri yoqilsa ikkinchisi o'chadi. Namuna
+  // o'chirilganda tanlov selectlarda QOLADI, faqat katakka yozilmaydi.
+  const previewActive = ref(true)
+  const togglePreview = () => {
+    if (!previewDetails.value.length && !store.payload.isClearing) return
+    previewActive.value = !previewActive.value
+    if (previewActive.value) store.payload.isClearing = false
+  }
 
   const orgOptions = computed(() =>
     store.organization ? [{ id: store.organization.id, name: store.organization.name }] : []
@@ -642,14 +661,17 @@
       </div>
 
       <div class="ts-filters-actions">
-        <n-button :loading="store.saveLoading" type="primary" @click="onSave">
-          {{ $t('content.save') }}
-        </n-button>
         <n-button secondary type="error" @click="store.visible = false">
           <template #icon>
             <n-icon :component="Dismiss20Regular" />
           </template>
           {{ $t('content.close') }}
+        </n-button>
+        <n-button :loading="store.saveLoading" type="primary" @click="onSave">
+          <template #icon>
+            <n-icon :component="Save20Filled" />
+          </template>
+          {{ $t('content.save') }}
         </n-button>
       </div>
     </div>
@@ -662,12 +684,15 @@
       <!-- ── Panjara kartasi: maketda 20px radius + 4px ichki otstup ──────── -->
       <div class="ts-card">
         <UIDragSelector
+          :class="{ 'ts-dragging': dragging }"
           class="ts-scroll"
           :live-selection="false"
           :scroll-zone-left="300"
           :scroll-zone-right="88"
           :scroll-zone-top="44"
           @selection-change="onSelectionChange"
+          @selection-end="dragging = false"
+          @selection-start="dragging = true"
         >
           <div class="ts-grid">
             <!-- Sarlavha qatori — skrollda tepada yopishib qoladi. -->
@@ -795,7 +820,7 @@
                      oldingi kichkina nuqta bosiladigan narsaga o'xshamasdi. -->
                 <button
                   :title="$t('timesheetPage.dayDetail')"
-                  class="ts-cell-info"
+                  class="ts-cell-info no-selectable-item"
                   type="button"
                   @click.stop="openDayDetail(item, day)"
                   @mousedown.stop
@@ -878,9 +903,7 @@
           <label class="ts-field-label">{{ $t('timesheetPage.hours') }}</label>
           <n-input-number
             v-model:value="store.payload.hours"
-            :disabled="
-              !(store.payload.status && compStore.timesheetTypes[store.payload.status - 1]?.hours)
-            "
+            :disabled="!typeByIdOrNull(store.payload.status)?.hours"
             :min="0"
           />
         </div>
@@ -907,16 +930,22 @@
           <label class="ts-field-label">{{ $t('timesheetPage.hours') }}</label>
           <n-input-number
             v-model:value="store.payload.hours2"
-            :disabled="
-              !(store.payload.status2 && compStore.timesheetTypes[store.payload.status2 - 1]?.hours)
-            "
+            :disabled="!typeByIdOrNull(store.payload.status2)?.hours"
             :min="0"
           />
         </div>
 
         <!-- Natija namunasi — shu qatorning davomi. -->
         <div class="ts-field ts-field-preview">
-          <div class="ts-cell ts-preview-cell">
+          <div
+            :class="{
+              'ts-preview-off': !previewActive,
+              'ts-preview-on': previewActive && previewDetails.length
+            }"
+            :title="previewActive ? $t('content.active') : $t('content.noActive')"
+            class="ts-cell ts-preview-cell"
+            @click="togglePreview"
+          >
             <template v-if="previewDetails.length">
               <span class="ts-cell-status">
                 <template v-for="(part, i) in partsOf(previewDetails, 'status')" :key="`ps-${i}`">
@@ -938,13 +967,17 @@
              ko'chirildi: uchalasi ham panjara ustida ishlaydi. -->
         <div class="ts-bottom-actions">
           <n-button
-            :type="store.payload.isClearing ? 'warning' : 'tertiary'"
-            secondary
+            :class="{ 'ts-clear-active': store.payload.isClearing }"
+            :secondary="!store.payload.isClearing"
+            type="error"
             @click="toggleClearing"
           >
+            <template #icon>
+              <n-icon :component="Eraser20Filled" />
+            </template>
             {{ $t('content.clear') }}
           </n-button>
-          <n-button :loading="store.autoLoading" secondary type="info" @click="onAutoCalc">
+          <n-button :loading="store.autoLoading" type="primary" @click="onAutoCalc">
             <template #icon>
               <n-icon :component="Wand20Filled" />
             </template>
@@ -960,6 +993,13 @@
             <template #icon>
               <n-icon :component="Info20Filled" />
             </template>
+            {{ $t('timesheetPage.infoShort') }}
+          </n-button>
+          <n-button secondary type="success" @click="onDownload">
+            <template #icon>
+              <n-icon :component="ArrowDownload20Filled" />
+            </template>
+            {{ $t('content.download') }}
           </n-button>
         </div>
       </n-form>
@@ -1824,6 +1864,15 @@
   .ts-cell-info:focus-visible {
     outline: 2px solid var(--fig-text-brand);
     outline-offset: 1px;
+  }
+  /* Drag paytida hover belgilari o'chadi — tanlash chegarasi toza ko'rinsin. */
+  .ts-dragging .ts-cell:hover {
+    box-shadow: none;
+  }
+  .ts-dragging .ts-cell:hover .ts-cell-info {
+    opacity: 0;
+    transform: scale(0.6);
+    pointer-events: none;
   }
 
   /* ── Tafsilot va qoidalar modallari ───────────────────────────────────── */
@@ -2756,7 +2805,9 @@
   /* ── Legenda ──────────────────────────────────────────────────────────── */
   .ts-pagination {
     flex-shrink: 0;
-    margin: -8px 0;
+    /* `.ts-root` 16px gap beradi — sahifalash jadval va pastki panelga
+       yaqinroq tursin uchun manfiy margin bilan 4px ga tortiladi. */
+    margin: -12px 0;
   }
 
   /* ── Pastki panel ─────────────────────────────────────────────────────── */
@@ -2784,6 +2835,55 @@
     height: $row;
     border: 1px solid var(--table-border);
     background: var(--surface-section);
+    cursor: pointer;
+    user-select: none;
+  }
+  /* Bosilgan — tanlov vaqtincha o'chirilgan (qiymat selectlarda qoladi). */
+  .ts-preview-cell.ts-preview-off {
+    border-style: dashed;
+    opacity: 0.4;
+  }
+  /* Panjara katakchasining yashil hover'i bu yerda keraksiz — namuna
+     katakcha emas, tugma. */
+  .ts-preview-cell:hover {
+    box-shadow: none;
+  }
+  /* Faol va tanlov bor — asosiy rang va sekin to'lqin, sezilib tursin. */
+  .ts-preview-cell.ts-preview-on,
+  .ts-preview-cell.ts-preview-on:hover {
+    border-color: var(--fig-icon-brand);
+    box-shadow: 0 0 0 1px var(--fig-icon-brand);
+  }
+  .ts-preview-cell.ts-preview-on::before,
+  .ts-preview-cell.ts-preview-on::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--fig-icon-brand);
+    pointer-events: none;
+    animation: ts-preview-ripple 2.4s ease-out infinite;
+  }
+  .ts-preview-cell.ts-preview-on::before {
+    animation-delay: 1.2s;
+  }
+  @keyframes ts-preview-ripple {
+    from {
+      opacity: 0.7;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(1.35);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ts-preview-cell.ts-preview-on::before {
+      display: none;
+    }
+    .ts-preview-cell.ts-preview-on::after {
+      animation: none;
+      opacity: 0.7;
+    }
   }
 
   /* Pastki panel — hamma element BITTA qatorda, kengliklar taqsimlangan. */
@@ -2812,6 +2912,45 @@
     align-items: center;
     gap: 8px;
     margin-left: auto;
+  }
+
+  /* Tozalash rejimi YOQILGANINI bildiradi — tugma atrofida sekin to'lqin.
+     Ikki halqa yarim davr farq bilan chiqadi, shunda uzilish sezilmaydi. */
+  .ts-clear-active {
+    position: relative;
+  }
+  .ts-clear-active::before,
+  .ts-clear-active::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    /* `currentColor` EMAS: faol tugmaning matni oq, halqa oq fonda ko'rinmaydi. */
+    border: 2px solid var(--fig-icon-red);
+    border-radius: inherit;
+    pointer-events: none;
+    animation: ts-clear-ripple 2.4s ease-out infinite;
+  }
+  .ts-clear-active::before {
+    animation-delay: 1.2s;
+  }
+  @keyframes ts-clear-ripple {
+    from {
+      opacity: 0.7;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(1.45);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ts-clear-active::before {
+      display: none;
+    }
+    .ts-clear-active::after {
+      animation: none;
+      opacity: 0.7;
+    }
   }
 
   @media (max-width: 900px) {
