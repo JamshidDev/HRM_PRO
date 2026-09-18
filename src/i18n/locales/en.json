@@ -2649,8 +2649,9 @@
     "zero_outside_schedule": "Events fall outside the schedule window — 0 hours",
     "reasonHead": "Reason",
     "notSet": "Not set",
-    "srcMobile": "Mobile"
-  },
+    "srcMobile": "Mobile",
+    "calcHead": "How it was counted",
+    "notCounted": "Not counted"  },
   "turnstile": {
     "title": "Turnstile",
     "terminals": "Terminals",

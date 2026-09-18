@@ -2669,8 +2669,9 @@
     "zero_outside_schedule": "Hodisalar ish grafigi oynasidan tashqarida — soat 0",
     "reasonHead": "Sabab",
     "notSet": "Belgilanmagan",
-    "srcMobile": "Mobil"
-  },
+    "srcMobile": "Mobil",
+    "calcHead": "Qanday hisoblandi",
+    "notCounted": "Hisobga olinmadi"  },
   "turnstile": {
     "title": "Turniket",
     "terminals": "Terminallar",

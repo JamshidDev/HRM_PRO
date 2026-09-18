@@ -2390,8 +2390,9 @@
     "zero_outside_schedule": "Ҳодисалар график ойнасидан ташқарида — соат 0",
     "reasonHead": "Сабаб",
     "notSet": "Белгиланмаган",
-    "srcMobile": "Мобил"
-  },
+    "srcMobile": "Мобил",
+    "calcHead": "Қандай ҳисобланди",
+    "notCounted": "Ҳисобга олинмади"  },
   "turnstile": {
     "title": "Турникет",
     "terminals": "Терминаллар",

@@ -2657,8 +2657,9 @@
     "zero_outside_schedule": "События вне окна графика — 0 часов",
     "reasonHead": "Причина",
     "notSet": "Не задано",
-    "srcMobile": "Мобильный"
-  },
+    "srcMobile": "Мобильный",
+    "calcHead": "Как посчитано",
+    "notCounted": "Не засчитано"  },
   "turnstile": {
     "title": "Турникет",
     "terminals": "Терминалы",
