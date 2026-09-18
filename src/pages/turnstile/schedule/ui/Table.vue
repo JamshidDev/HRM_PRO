@@ -113,16 +113,28 @@
   <div class="h-full flex flex-col gap-4 relative z-[10]">
     <slot name="filter-section"></slot>
 
-    <n-spin :show="store.workerLoading" class="flex-1 overflow-auto rounded-lg">
+    <!-- Vertikal skroll `n-spin` da emas, `DragSelectorV2` ning o'zida bo'lishi shart:
+         u `overflow-auto` bo'lgani uchun sarlavhadagi `sticky top-0` uchun eng yaqin
+         skroll qiluvchi ota-element aynan o'sha. Balandligi cheklanmasa, u kontent
+         bo'yicha cho'zilib ketadi va pastga tushganda sana/kun qatori qotib turmaydi. -->
+    <n-spin
+      :show="store.workerLoading"
+      class="flex-1 min-h-0 overflow-hidden rounded-lg"
+      content-class="h-full flex flex-col min-h-0"
+    >
       <DragSelectorV2
+        class="flex-1 min-h-0"
         :live-selection="false"
         :scroll-zone-left="400"
         :scroll-zone-right="140"
         :scroll-zone-top="120"
         @selection-change="handleDragSelect"
       >
+        <!-- `bg-surface-section` qatorning o'ziga kerak: dark mode'da kun kataklarining
+             `--schedule-*-bg` tusi yarim shaffof (alpha .24), qattiq fon bo'lmasa sticky
+             sarlavha ostidan skroll qilinayotgan qatorlar ko'rinib qoladi. -->
         <div
-          class="no-selectable-item schedule-header-row flex z-[202] w-fit min-w-full sticky top-0"
+          class="no-selectable-item schedule-header-row flex z-[202] w-fit min-w-full sticky top-0 bg-surface-section"
         >
           <div
             class="pt-3 text-center text-secondary rounded-tl-lg border-r border-t border-l border-b border-surface-line p-2 w-[60px] min-w-[60px] h-[50px] sticky left-0 top-0 z-[20] bg-surface-section flex-shrink-0"

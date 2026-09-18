@@ -98,6 +98,21 @@
             <div class="flex"><UIStatus :status="statusList[latest.done]"></UIStatus></div>
           </div>
         </div>
+        <!-- 1C dan qayta tortishda eski↔yangi o'zgarishlar (sonlar mavjud bo'lsa) -->
+        <div v-if="latest.added_count != null" class="flex flex-wrap gap-1 mt-2">
+          <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-success/10 text-success">
+            {{ $t('uploadReport.changes.added') }}: {{ latest.added_count }}
+          </span>
+          <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-warning/10 text-warning">
+            {{ $t('uploadReport.changes.changed') }}: {{ latest.changed_count }}
+          </span>
+          <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-error/10 text-error">
+            {{ $t('uploadReport.changes.removed') }}: {{ latest.removed_count }}
+          </span>
+          <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-secondary/10 text-secondary">
+            {{ $t('uploadReport.changes.unchanged') }}: {{ latest.unchanged_count }}
+          </span>
+        </div>
       </div>
 
       <!-- Oldingi yuklamalar (tarix) — yig'iladigan -->
@@ -146,6 +161,20 @@
                   <div class="text-xs text-secondary mb-1">{{ $t('content.process') }}</div>
                   <div class="flex"><UIStatus :status="statusList[item.done]"></UIStatus></div>
                 </div>
+              </div>
+              <div v-if="item.added_count != null" class="flex flex-wrap gap-1 mt-2">
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-success/10 text-success">
+                  {{ $t('uploadReport.changes.added') }}: {{ item.added_count }}
+                </span>
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-warning/10 text-warning">
+                  {{ $t('uploadReport.changes.changed') }}: {{ item.changed_count }}
+                </span>
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-error/10 text-error">
+                  {{ $t('uploadReport.changes.removed') }}: {{ item.removed_count }}
+                </span>
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-secondary/10 text-secondary">
+                  {{ $t('uploadReport.changes.unchanged') }}: {{ item.unchanged_count }}
+                </span>
               </div>
             </div>
           </template>
