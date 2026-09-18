@@ -190,9 +190,17 @@
   }
 
   // Yorliqlar orasidagi minimal masofa (o'q balandligining %): 760px da
-  // ~19px — 12px shrift uchun yetarli, aks holda yaqin vaqtlar qoplanadi.
+  // ~32px, ya'ni bir soatlik balandlik. Shrift sig'ishi uchun ~19px yetardi,
+  // lekin unda yaqin vaqtlarning BOG'LOVCHI CHIZIQLARI deyarli ustma-ust
+  // tushib, qaysi yozuv qaysi chiziqniki ekani bilinmay qolardi.
   // ⚠️ `.ts-tl` balandligi o'zgarsa bu qiymat ham qayta hisoblanishi kerak.
-  const MIN_GAP_PCT = 2.5
+  const MIN_GAP_PCT = 4.2
+
+  // Chap (reja) va o'ng (hodisa) yorliqlari orasidagi minimal masofa.
+  // Ular qarama-qarshi tomonlarda bo'lgani uchun to'liq masofa shart emas,
+  // lekin bir balandlikka tushsa ikkala chiziq ustundan o'tuvchi BITTA
+  // chiziqdek ko'rinadi — shuning uchun ular ham ajratiladi.
+  const CROSS_GAP_PCT = 2.6
 
   const fmtMin = (m) =>
     m == null
@@ -240,6 +248,9 @@
     for (const mk of out) {
       const labelTop = Math.max(mk.top, last + MIN_GAP_PCT)
       last = labelTop
+      // `labelTop` hodisa yorliqlariga ham kerak — ular shu balandliklardan
+      // qochadi (`eventRows`), aks holda chiziqlar bir chiziqqa qo'shiladi.
+      mk.labelTop = labelTop
       mk.labelStyle = { top: `${labelTop}%` }
       mk.linkStyle = { top: `${mk.top}%`, height: `${labelTop - mk.top}%` }
     }
@@ -353,11 +364,21 @@
     // PASTGA suriladi. `trueTop` esa hodisaning HAQIQIY vaqti: zolakdan
     // yozuvgacha tortiladigan bog'lovchi chiziq aynan shundan boshlanadi,
     // aks holda «bu vaqt chizmaning qayeri?» degan savol javobsiz qolardi.
+    //
+    // Surilishda CHAPDAGI reja yorliqlari ham hisobga olinadi: reja chizig'i
+    // bilan hodisa chizig'i bir balandlikka tushsa, ular ustundan o'tuvchi
+    // bitta uzluksiz chiziqdek ko'rinardi. Reja yorliqlari qo'zg'almaydi
+    // (ular tayanch nuqta), suriladigani — hodisa yozuvi.
+    const taken = planMarks.value.map((mk) => mk.labelTop)
     const out = []
     let last = -99
     for (const e of raw) {
       const trueTop = pct(minOfDay(e.at))
-      const top = Math.max(trueTop, last + MIN_GAP_PCT)
+      let top = Math.max(trueTop, last + MIN_GAP_PCT)
+      // `taken` o'sish tartibida — pastga surilgach keyingisi qayta tekshiriladi.
+      for (const p of taken) {
+        if (Math.abs(top - p) < CROSS_GAP_PCT) top = p + CROSS_GAP_PCT
+      }
       last = top
       out.push({
         top,
