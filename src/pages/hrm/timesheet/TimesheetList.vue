@@ -6,6 +6,8 @@
   import Filter from './ui/Filter.vue'
   import ConfirmationForm from './ui/ConfirmationForm.vue'
 
+  const confirmationFormRef = ref(null)
+
   import {
     useAccountStore,
     useTimesheetConfirmStore,
@@ -43,7 +45,21 @@
       :title="$t('timesheetPage.verifiers')"
     >
       <template #content>
-        <ConfirmationForm />
+        <ConfirmationForm ref="confirmationFormRef" />
+      </template>
+      <template #footer>
+        <div class="grid grid-cols-2 gap-2">
+          <n-button ghost type="error" @click="confirmationStore.visible = false">
+            {{ $t('content.cancel') }}
+          </n-button>
+          <n-button
+            :loading="confirmationStore.saveLoading"
+            type="primary"
+            @click="confirmationFormRef?.submit()"
+          >
+            {{ $t('content.save') }}
+          </n-button>
+        </div>
       </template>
     </UIDrawer>
     <UIDConfirm v-model:visible="store.sendVisible">
@@ -80,8 +96,8 @@
       <template #action>
         <div class="grid grid-cols-2 gap-2 select-none">
           <n-button @click="store.warningVisible = false" secondary type="error">
-            {{ $t('content.cancel') }}</n-button
-          >
+            {{ $t('content.cancel') }}
+          </n-button>
           <n-button
             :loading="store.saveLoading"
             @click="store._closeTimesheet"

@@ -30,7 +30,17 @@
   const timesheetConfirmStore = useTimesheetConfirmStore()
 
   const onView = (row) => {
+    // Har tabel toza filtr bilan ochiladi — bo'lim tanlovi oldingi korxonadan
+    // qolib ketmasin.
+    timesheetWorkerStore.resetForTimesheet()
     timesheetWorkerStore.elementId = row.id
+    // Qulf holati ro'yxatdan olinadi — «Tabelchilar» tabida ruxsat shunga qarab
+    // ko'rsatiladi (yakunlangan yoki yuborilgan tabel to'ldirilmaydi).
+    timesheetWorkerStore.lock = {
+      status: Boolean(row?.status),
+      sent_at: row?.sent_at ?? null,
+      confirmation: row?.confirmation?.id ?? null
+    }
     timesheetWorkerStore.visible = true
     timesheetWorkerStore._index()
   }

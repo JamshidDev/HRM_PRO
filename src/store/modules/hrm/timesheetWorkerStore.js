@@ -51,9 +51,113 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     // Bo'lim filtri korxonaning HAMMA bo'limi emas, faqat biriktirilganlari.
     timekeeperMode: false,
     autoLoading: false,
-    autoRules: null
+    autoRules: null,
+    // «Tabelchilar» tabi — tabel korxonasiga biriktirilgan mas'ul xodimlar.
+    timekeeperList: [],
+    timekeeperLoading: false,
+    timekeeperTotal: 0,
+    timekeeperParams: { page: 1, per_page: 20, search: null },
+    // Ruxsat qulflari: `worker_position_id` → true (qulflangan). Yo'q = OCHIQ,
+    // ya'ni default holatda hamma tabelchi shu oy tabelini o'zgartira oladi.
+    // Manba — `time_sheet_timekeeper_locks` (tabel + lavozim juftligi).
+    timekeeperLocks: {},
+    timekeeperLockSaving: false,
+    // Tasdiqlovchilar zanjiri — har birining joriy holati bilan.
+    confirmationList: [],
+    confirmationLoading: false,
+    historyList: [],
+    historyLoading: false,
+    // Ro'yxatdan kelgan qulf holati: yakunlangan / yuborilgan tabel yozilmaydi.
+    lock: { status: false, sent_at: null, confirmation: null }
   }),
   actions: {
+    _confirmations() {
+      this.confirmationLoading = true
+      $ApiService.timesheetConfirmService
+        ._index({ id: this.elementId })
+        .then((res) => {
+          this.confirmationList = res.data.data.confirmations ?? []
+        })
+        .finally(() => {
+          this.confirmationLoading = false
+        })
+    },
+    // Kelishuvchini ro'yxatdan olib tashlash. Tasdiqlaganini backend bermaydi.
+    _deleteConfirmation(confirmationId) {
+      return $ApiService.timesheetConfirmService
+        ._delete({ id: this.elementId, elementId: confirmationId })
+        .then(() => this._confirmations())
+    },
+    _confirmationHistory() {
+      this.historyLoading = true
+      $ApiService.timesheetConfirmService
+        ._history({ id: this.elementId })
+        .then((res) => {
+          this.historyList = res.data.data.history ?? []
+        })
+        .finally(() => {
+          this.historyLoading = false
+        })
+    },
+    // Tabelchilar — TABELGA bog'langan endpoint: doira tabel korxonasiga
+    // biriktirilganlar bo'yicha (xodimning lavozimi qaysi korxonada ekani emas).
+    // Qulf holati ham shu javobda keladi — alohida so'rov shart emas.
+    _timekeepers() {
+      this.timekeeperLoading = true
+      $ApiService.timesheetWorkerService
+        ._timekeepers({ id: this.elementId, params: { ...this.timekeeperParams } })
+        .then((res) => {
+          const rows = res.data.data.data
+          this.timekeeperList = rows
+          this.timekeeperTotal = res.data.data.total
+          this.timekeeperLocks = Object.fromEntries(
+            rows.filter((v) => v.locked).map((v) => [v.id, true])
+          )
+        })
+        .finally(() => {
+          this.timekeeperLoading = false
+        })
+    },
+    // Optimistik: switch darhol o'zgaradi, so'rov yiqilsa holat qaytariladi.
+    // Boshqa tabel ochilganda filtrlarni tozalaydi. Ilgari `department_id` va
+    // `departmentOptions` eski korxonanikidan qolib ketardi — natijada yangi
+    // tabel begona bo'lim bo'yicha filtrlanardi.
+    resetForTimesheet() {
+      this.params.page = 1
+      this.params.search = null
+      this.params.department_id = null
+      this.departmentOptions = []
+      this.organizationId = null
+      this.organization = null
+      this.list = []
+      this.days = []
+      this.totalItems = 0
+      this.timekeeperList = []
+      this.timekeeperLocks = {}
+      this.timekeeperTotal = 0
+      this.timekeeperParams.page = 1
+      this.confirmationList = []
+      this.historyList = []
+    },
+    setTimekeeperLock(workerPositionId, locked) {
+      const prev = Boolean(this.timekeeperLocks[workerPositionId])
+      if (locked) this.timekeeperLocks[workerPositionId] = true
+      else delete this.timekeeperLocks[workerPositionId]
+
+      this.timekeeperLockSaving = true
+      $ApiService.timesheetWorkerService
+        ._set_timekeeper_lock({
+          id: this.elementId,
+          data: { worker_position_id: workerPositionId, locked }
+        })
+        .catch(() => {
+          if (prev) this.timekeeperLocks[workerPositionId] = true
+          else delete this.timekeeperLocks[workerPositionId]
+        })
+        .finally(() => {
+          this.timekeeperLockSaving = false
+        })
+    },
     _index() {
       this.loading = true
       let promises = []
