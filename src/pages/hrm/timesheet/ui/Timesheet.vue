@@ -246,6 +246,12 @@
     () => store.lock.status || (store.lock.sent_at && store.lock.confirmation !== 4)
   )
 
+  // Yopiq tabelda «Saqlash» o'rnida sabab ko'rsatiladi — tabelchi nega
+  // yozolmayotganini tugmaning o'zidan biladi.
+  const lockedActionLabel = computed(() =>
+    store.lock.status ? t('timesheetPage.accessFinished') : t('timesheetPage.inApproval')
+  )
+
   // Ruxsat switch'i. Default — OCHIQ; qulflansa tabelchi SHU OY tabelini
   // o'zgartira olmaydi.
   const isOpen = (row) => !store.timekeeperLocks[row.id]
@@ -650,6 +656,9 @@
   const pendingCells = ref(new Map())
 
   const canSelectRange = () => {
+    // Tasdiqlashga chiqarilgan yoki yakunlangan tabel o'zgartirilmaydi —
+    // na tabelchi, na HR uchun (server ham 403 qaytaradi).
+    if (timesheetLocked.value) return false
     if (!store.payload.isClearing && store.payload.status == null) {
       return false
     }
@@ -830,7 +839,18 @@
           {{ $t('content.close') }}
         </n-button>
         <n-button
-          v-if="activeTab === 'grid'"
+          v-if="activeTab === 'grid' && timesheetLocked"
+          :type="timesheetStatus.type"
+          disabled
+          secondary
+        >
+          <template #icon>
+            <n-icon :component="LockClosed20Filled" />
+          </template>
+          {{ lockedActionLabel }}
+        </n-button>
+        <n-button
+          v-else-if="activeTab === 'grid'"
           :loading="store.saveLoading"
           type="primary"
           @click="onSave"
@@ -1257,7 +1277,7 @@
           <n-select
             v-model:value="store.payload.status"
             :consistent-menu-width="false"
-            :disabled="store.payload.isClearing"
+            :disabled="timesheetLocked || store.payload.isClearing"
             :loading="compStore.timesheetEnumsLoading"
             :options="compStore.timesheetTypes"
             :render-label="renderLabel"
@@ -1274,7 +1294,7 @@
           <label class="ts-field-label">{{ $t('timesheetPage.hours') }}</label>
           <n-input-number
             v-model:value="store.payload.hours"
-            :disabled="!typeByIdOrNull(store.payload.status)?.hours"
+            :disabled="timesheetLocked || !typeByIdOrNull(store.payload.status)?.hours"
             :min="0"
           />
         </div>
@@ -1283,7 +1303,7 @@
           <n-select
             v-model:value="store.payload.status2"
             :consistent-menu-width="false"
-            :disabled="store.payload.isClearing || !store.payload.status"
+            :disabled="timesheetLocked || store.payload.isClearing || !store.payload.status"
             :loading="compStore.timesheetEnumsLoading"
             :options="compStore.timesheetTypes"
             :render-label="renderLabel"
@@ -1301,7 +1321,7 @@
           <label class="ts-field-label">{{ $t('timesheetPage.hours') }}</label>
           <n-input-number
             v-model:value="store.payload.hours2"
-            :disabled="!typeByIdOrNull(store.payload.status2)?.hours"
+            :disabled="timesheetLocked || !typeByIdOrNull(store.payload.status2)?.hours"
             :min="0"
           />
         </div>
@@ -1337,6 +1357,7 @@
         <div class="ts-bottom-actions">
           <n-button
             :class="{ 'ts-clear-active': store.payload.isClearing }"
+            :disabled="timesheetLocked"
             :secondary="!store.payload.isClearing"
             type="error"
             @click="toggleClearing"
@@ -1346,7 +1367,12 @@
             </template>
             {{ $t('content.clear') }}
           </n-button>
-          <n-button :loading="store.autoLoading" type="primary" @click="onAutoCalc">
+          <n-button
+            :disabled="timesheetLocked"
+            :loading="store.autoLoading"
+            type="primary"
+            @click="onAutoCalc"
+          >
             <template #icon>
               <n-icon :component="Wand20Filled" />
             </template>

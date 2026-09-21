@@ -3,18 +3,14 @@
   import i18n from '@/i18n/index.js'
   import {
     useAccountStore,
-    useTimesheetConfirmStore,
     useTimesheetStore,
     useTimesheetWorkerStore
   } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import {
-    CalendarCheckmark28Filled,
-    Checkmark16Filled,
     CheckmarkCircle24Filled,
     Delete16Regular,
-    Edit32Regular,
     Send24Regular,
     Eye16Regular
   } from '@vicons/fluent'
@@ -27,7 +23,6 @@
   const store = useTimesheetStore()
   const accStore = useAccountStore()
   const timesheetWorkerStore = useTimesheetWorkerStore()
-  const timesheetConfirmStore = useTimesheetConfirmStore()
 
   const onView = (row) => {
     // Har tabel toza filtr bilan ochiladi — bo'lim tanlovi oldingi korxonadan
@@ -43,22 +38,6 @@
     }
     timesheetWorkerStore.visible = true
     timesheetWorkerStore._index()
-  }
-
-  const onEdit = (row) => {
-    if (!accStore.checkAction(accStore.pn.hrTableWrite)) return
-    store.elementId = row.id
-    store.setOrganization(row.work_place ? [row.work_place] : [])
-    store.payload.year = row.year
-    store.payload.month = row.month
-    store.visibleType = false
-    store.visible = true
-  }
-
-  const onVerifier = (row) => {
-    if (!accStore.checkAction(accStore.pn.hrTableWrite)) return
-    timesheetConfirmStore.elementId = row.id
-    timesheetConfirmStore.visible = true
   }
 
   const onDelete = (row) => {
@@ -86,13 +65,6 @@
     if (isSent(row) || isConfirmed(row)) return
     store.elementId = row.id
     store.sendVisible = true
-  }
-
-  const onFinish = (row) => {
-    if (row.status) return
-    if (!accStore.checkAction(accStore.pn.hrTableWrite)) return
-    store.warningVisible = true
-    store.elementId = row.id
   }
 
   const changePage = (v) => {
@@ -133,6 +105,8 @@
     }
   ])
 
+  // Uch amal yetarli: ko'rish, o'chirish va HR tasdig'i (tasdiqlashga yuborish).
+  // Tahrirlash `Ko'rish` oynasida, kelishuvchilar esa o'sha yerdagi kartochkada.
   const actions = computed(() => [
     {
       label: t('content.view'),
@@ -141,36 +115,20 @@
       action: onView
     },
     {
-      label: t('content.edit'),
-      key: Utils.ActionTypes.edit,
-      icon: UIHelper.renderIcon(Edit32Regular),
-      action: onEdit
-    },
-    {
-      label: t('timesheetPage.verifiers'),
-      key: Utils.ActionTypes.verifier,
-      icon: UIHelper.renderIcon(Checkmark16Filled),
-      action: onVerifier
-    },
-    {
-      label: t('content.finish'),
-      key: Utils.ActionTypes.finish,
-      icon: UIHelper.renderIcon(CalendarCheckmark28Filled),
-      action: onFinish
-    },
-    {
-      label: t('timesheetPage.send'),
-      key: Utils.ActionTypes.send,
-      icon: UIHelper.renderIcon(Send24Regular),
-      visible: (row) => !isSent(row) && !isConfirmed(row),
-      action: onSend
-    },
-    {
+      // Kelishuvga yuborilgan, lekin hali TO'LIQ tasdiqlanmagan tabel
+      // o'chirilishi mumkin — server ham shu shartni qo'yadi.
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete16Regular),
       visible: (row) => !isConfirmed(row),
       action: onDelete
+    },
+    {
+      label: t('content.confirm'),
+      key: Utils.ActionTypes.send,
+      icon: UIHelper.renderIcon(Send24Regular),
+      visible: (row) => !isSent(row) && !isConfirmed(row),
+      action: onSend
     }
   ])
 </script>

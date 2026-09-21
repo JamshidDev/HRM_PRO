@@ -2560,6 +2560,7 @@
     "accessEditable": "Can edit",
     "accessFinished": "Timesheet finished",
     "accessSent": "Sent for confirmation",
+    "inApproval": "In approval",
     "accessNone": "No access to this timesheet",
     "timekeeperDepartments": "Assigned departments",
     "work_days": "Work days",
@@ -2591,8 +2592,13 @@
     "totalWorkDays": "Total work days",
     "totalWorkHours": "Total work hours",
     "sendWarning": {
-      "title": "Send the timesheet for confirmation?",
-      "desc": "Once sent, the timesheet is locked for editing. If rejected, it opens again."
+      "title": "Send the timesheet for approval?",
+      "desc": "This moves the timesheet to the approval stage.",
+      "p1": "The timesheet goes to all approvers at once.",
+      "p2": "Editing closes — neither timekeepers nor HR can change it.",
+      "p3": "It reopens only on rejection: fix it and send again.",
+      "p4": "Once the head approves, the timesheet is frozen.",
+      "req": "Requirement: at least 2 approvers, one of them the head of the organization."
     },
     "confirmWarning": {
       "title": "Confirm the timesheet?",
