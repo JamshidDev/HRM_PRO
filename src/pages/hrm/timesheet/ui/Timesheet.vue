@@ -284,6 +284,20 @@
   const detailDay = ref(null)
   const detailDate = ref('')
 
+  // Vaqt o'qi izohi bosilganda — SHU qatlam ajratib ko'rsatiladi, qolganlari
+  // xiralashadi. Aks holda to'rtta qatlam ustma-ust tushib, qaysi rang qaysi
+  // biriga tegishli ekani faqat izohdan taxmin qilinardi.
+  const tlFocus = ref('')
+  const tlLegend = [
+    { key: 'plan', label: 'timesheetPage.lgPlan' },
+    { key: 'lunch', label: 'timesheetPage.lgLunch' },
+    { key: 'raw', label: 'timesheetPage.lgRaw' },
+    { key: 'counted', label: 'timesheetPage.lgCounted' }
+  ]
+  const toggleTlFocus = (key) => {
+    tlFocus.value = tlFocus.value === key ? '' : key
+  }
+
   const openDayDetail = async (item, day) => {
     const date = dayjs().year(store.year).month(store.month).date(day.day).format('YYYY-MM-DD')
     detailWorker.value = item
@@ -291,6 +305,7 @@
     detailDate.value = date
     detailOpen.value = true
     detailLoading.value = true
+    tlFocus.value = ''
     detail.value = null
     try {
       detail.value = await store.dayDetail(item.id, date)
@@ -1408,7 +1423,7 @@
       class="ts-detail-modal"
       preset="card"
       size="small"
-      style="width: 1180px; max-width: 96vw"
+      style="width: 1360px; max-width: 96vw"
     >
       <template #header>
         <div class="ts-dm-head">
@@ -1553,16 +1568,33 @@
               <!-- Hodisa bo'lmasa ham ko'rsatiladi: grafik va tushlik bandi
                    o'zi ma'lumot beradi («nima bo'lishi kerak edi»). -->
               <section v-if="detail?.schedule || detail?.segments?.length" class="ts-dm-card">
-                <h4 class="ts-dm-card-head">{{ $t('timesheetPage.timeline') }}</h4>
+                <!-- Sarlavha + izohlar bitta yopishqoq blok: 760px lik o'qni
+                     skroll qilganda ham qaysi rang nima ekani ko'rinib tursin
+                     (va qatlam tanlash tugmalari qo'l ostida qolsin). -->
+                <div class="ts-tl-sticky">
+                  <h4 class="ts-dm-card-head">{{ $t('timesheetPage.timeline') }}</h4>
 
-                <div class="ts-tl-legend">
-                  <span><i class="ts-lg is-plan"></i>{{ $t('timesheetPage.lgPlan') }}</span>
-                  <span><i class="ts-lg is-lunch"></i>{{ $t('timesheetPage.lgLunch') }}</span>
-                  <span><i class="ts-lg is-raw"></i>{{ $t('timesheetPage.lgRaw') }}</span>
-                  <span><i class="ts-lg is-counted"></i>{{ $t('timesheetPage.lgCounted') }}</span>
+                  <!-- Izohlar — tugma: bosilgani o'qda ajratiladi, qolgan
+                       qatlamlar xiralashadi. Yana bosilsa — hammasi qaytadi. -->
+                  <div class="ts-tl-legend">
+                    <button
+                      v-for="lg in tlLegend"
+                      :key="lg.key"
+                      :aria-pressed="tlFocus === lg.key"
+                      :class="{
+                        'is-active': tlFocus === lg.key,
+                        'is-dim': tlFocus && tlFocus !== lg.key
+                      }"
+                      class="ts-tl-lg-btn"
+                      type="button"
+                      @click="toggleTlFocus(lg.key)"
+                    >
+                      <i :class="`is-${lg.key}`" class="ts-lg"></i>{{ $t(lg.label) }}
+                    </button>
+                  </div>
                 </div>
 
-                <div class="ts-tl">
+                <div :class="tlFocus ? `is-focus is-focus-${tlFocus}` : ''" class="ts-tl">
                   <!-- Soat to'ri — butun maydonni kesib o'tadi -->
                   <span
                     v-for="tick in tlTicks"
@@ -2507,12 +2539,12 @@
      ustunda alohida. Aks holda o'ngdagi qisqa ro'yxat chapdagi uzun o'q
      bilan birga sudralib, ostida katta bo'sh joy qolardi. */
   .ts-dm-body {
-    height: 66vh;
+    height: 76vh;
   }
   /* Ikki ustun: chapda hisob-kitob, o'ngda turniketning xom ro'yxati. */
   .ts-dm-cols {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 360px;
+    grid-template-columns: minmax(0, 1fr) 400px;
     gap: 14px;
     height: 100%;
     align-items: stretch;
@@ -2666,7 +2698,9 @@
   .ts-dm-stats {
     position: sticky;
     top: 0;
-    z-index: 2;
+    /* O'q va kartochkalardan yuqorida — ular o'z konteksti ichida qolsa ham
+       zaxira sifatida ochiq farq qoldiriladi. */
+    z-index: 5;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 8px;
@@ -2983,6 +3017,10 @@
     position: relative;
     height: 760px;
     margin: 0 0 6px $tlLeft;
+    /* ALOHIDA yig'ish konteksti: ichkarisidagi qatlamlar (`z-index: 1..3`)
+       shu quti bilan birga chegaralanadi. Aks holda ular skrollda
+       tepadagi yopishqoq ko'rsatkich plitalari USTIGA chiqib ketardi. */
+    z-index: 0;
   }
   /* Qatlamlar: to'r → chiziqlar → reja → turniket → hodisa yozuvlari. */
   .ts-tl-tick {
@@ -3114,6 +3152,35 @@
     background: color-mix(in srgb, var(--fig-icon-green) 58%, transparent);
   }
 
+  /* ── Yopishqoq sarlavha + izoh ────────────────────────────────────────
+   * O'q 760px — bir ekranga sig'maydi. Skrollda «qaysi rang nima» yo'qolib
+   * ketmasin va qatlam tanlash tugmalari qo'l ostida tursin.
+   * `top` — ko'rsatkich plitalari blokining balandligi: plita 60px
+   * (10 + 14 + 2 + 22 + 10 + 2px chegara) + blokning 10px ichki pastki
+   * bo'shlig'i. Plitalar bilan ORASIDA tirqish qolsa, ostidagi o'q ko'rinib
+   * qolardi — shuning uchun raqam aniq shu yerga bog'lab qo'yilgan. */
+  $dmStatsH: 70px;
+
+  .ts-tl-sticky {
+    position: sticky;
+    top: $dmStatsH;
+    /* Plitalardan past (`5`), o'qdan yuqori (`.ts-tl` — 0). */
+    z-index: 3;
+    /* Izohning pastki chekinishi YOPISHQOQ quti ichida: tashqarida qolsa
+       skrollda shu 12px orqali o'q ko'rinib o'tardi. */
+    padding-bottom: 12px;
+    background: var(--surface-section);
+  }
+  .ts-tl-sticky .ts-tl-legend {
+    margin-bottom: 0;
+  }
+  /* Tor ekranda plitalar ikki qatorga tushadi — tayanch nuqta ham pastroq. */
+  @media (max-width: 640px) {
+    .ts-tl-sticky {
+      top: $dmStatsH + 68px;
+    }
+  }
+
   /* Izoh qatori o'qdan OLDIN turadi — ranglarni avval o'qib olish qulay. */
   .ts-tl-legend {
     display: flex;
@@ -3126,10 +3193,133 @@
     font-size: 11px;
     color: var(--fig-text-secondary);
   }
-  .ts-tl-legend span {
+  /* Izoh endi tugma — `n-` komponent emas, shuning uchun brauzer
+     standartlari qo'lda so'ndiriladi. */
+  .ts-tl-lg-btn {
     display: inline-flex;
     align-items: center;
     gap: 6px;
+    padding: 3px 8px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: transparent;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    transition:
+      opacity 0.15s ease,
+      background 0.15s ease,
+      border-color 0.15s ease;
+  }
+  .ts-tl-lg-btn:hover {
+    background: color-mix(in srgb, var(--surface-line) 35%, transparent);
+  }
+  .ts-tl-lg-btn.is-active {
+    border-color: var(--surface-line);
+    background: var(--surface-section);
+    font-weight: 600;
+    color: var(--fig-text-primary);
+  }
+  /* Tanlanmaganlari xiralashadi — ko'z darrov tanlanganini topadi. */
+  .ts-tl-lg-btn.is-dim {
+    opacity: 0.45;
+  }
+
+  /* ── Qatlamni ajratib ko'rsatish ──────────────────────────────────────
+   * Ustma-ust turgan to'rt qatlamdan bittasi tanlanadi: tanlangani
+   * kuchayadi (qalin chegara + halqa), qolganlari so'nadi.
+   * DIQQAT: tushlik reja ICHIDA, «hisobga olindi» esa interval ichida —
+   * shuning uchun ota-element `opacity` bilan emas, rang/chegara bilan
+   * so'ndiriladi, aks holda bola-element ham birga xiralashib ketardi. */
+  .ts-tl.is-focus .ts-tl-plan,
+  .ts-tl.is-focus .ts-tl-iv,
+  .ts-tl.is-focus .ts-tl-plan-lunch,
+  .ts-tl.is-focus .ts-tl-iv-counted,
+  .ts-tl.is-focus .ts-tl-mark,
+  .ts-tl.is-focus .ts-tl-mlink,
+  .ts-tl.is-focus .ts-tl-ev,
+  .ts-tl.is-focus .ts-tl-link {
+    transition:
+      opacity 0.15s ease,
+      background 0.15s ease,
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  /* Reja oynasi so'ngan holat — foni yo'q, chegarasi zo'rg'a ko'rinadi. */
+  .ts-tl.is-focus-lunch .ts-tl-plan,
+  .ts-tl.is-focus-raw .ts-tl-plan,
+  .ts-tl.is-focus-counted .ts-tl-plan {
+    background: transparent;
+    border-color: color-mix(in srgb, var(--fig-chip-indigo-text) 22%, transparent);
+  }
+  /* Interval ramkasi so'ngan holat. */
+  .ts-tl.is-focus-plan .ts-tl-iv,
+  .ts-tl.is-focus-lunch .ts-tl-iv {
+    border-color: color-mix(in srgb, var(--fig-icon-green) 20%, transparent);
+  }
+  .ts-tl.is-focus-counted .ts-tl-iv {
+    border-color: color-mix(in srgb, var(--fig-icon-green) 30%, transparent);
+  }
+  /* Ichkaridagi bo'laklar — bular bola element, opacity bemalol. */
+  .ts-tl.is-focus-plan .ts-tl-iv-counted,
+  .ts-tl.is-focus-lunch .ts-tl-iv-counted,
+  .ts-tl.is-focus-raw .ts-tl-iv-counted {
+    opacity: 0.18;
+  }
+  .ts-tl.is-focus-raw .ts-tl-plan-lunch,
+  .ts-tl.is-focus-counted .ts-tl-plan-lunch {
+    opacity: 0.15;
+  }
+  .ts-tl.is-focus-plan .ts-tl-plan-lunch {
+    opacity: 0.3;
+  }
+
+  /* Tanlangan qatlam — qalinroq chegara va tashqi halqa. */
+  .ts-tl.is-focus-plan .ts-tl-plan {
+    border-width: 2px;
+    background: color-mix(in srgb, var(--fig-chip-indigo-text) 14%, var(--fig-chip-indigo-bg));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--fig-chip-indigo-text) 22%, transparent);
+  }
+  .ts-tl.is-focus-lunch .ts-tl-plan-lunch {
+    border-top-style: solid;
+    border-bottom-style: solid;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    background: repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--fig-icon-amber) 70%, transparent) 0 4px,
+      color-mix(in srgb, var(--fig-icon-amber) 16%, transparent) 4px 8px
+    );
+  }
+  .ts-tl.is-focus-raw .ts-tl-iv {
+    border-width: 3px;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--fig-icon-green) 22%, transparent);
+  }
+  .ts-tl.is-focus-counted .ts-tl-iv-counted {
+    background: var(--fig-icon-green);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--fig-icon-green) 30%, transparent);
+  }
+
+  /* Chap yorliqlar va o'ng hodisalar ham tanlovga ergashadi: grafik
+     tanlansa — grafik vaqtlari, turniket tanlansa — kirish/chiqishlar. */
+  .ts-tl.is-focus-raw .ts-tl-mark,
+  .ts-tl.is-focus-raw .ts-tl-mlink,
+  .ts-tl.is-focus-counted .ts-tl-mark,
+  .ts-tl.is-focus-counted .ts-tl-mlink {
+    opacity: 0.3;
+  }
+  .ts-tl.is-focus-plan .ts-tl-mark.is-break,
+  .ts-tl.is-focus-plan .ts-tl-mlink.is-break,
+  .ts-tl.is-focus-lunch .ts-tl-mark.is-work,
+  .ts-tl.is-focus-lunch .ts-tl-mlink.is-work {
+    opacity: 0.3;
+  }
+  .ts-tl.is-focus-plan .ts-tl-ev,
+  .ts-tl.is-focus-plan .ts-tl-link,
+  .ts-tl.is-focus-lunch .ts-tl-ev,
+  .ts-tl.is-focus-lunch .ts-tl-link {
+    opacity: 0.35;
   }
   .ts-lg {
     flex-shrink: 0;
