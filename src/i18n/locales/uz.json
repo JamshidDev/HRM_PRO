@@ -565,6 +565,12 @@
       "verify": "Tasdiqlash",
       "reSendCode": "Kodni qayta yuborish"
     },
+    "passwordExpired": {
+      "title": "Parol muddati o'tgan",
+      "subtitle": "Parolingiz 30 kundan ortiq yangilanmagan, shuning uchun tizimga kira olmaysiz.",
+      "botPrefix": "Parolni tiklash uchun",
+      "botSuffix": "Telegram botiga kiring va kod oling."
+    },
     "resetPassword": {
       "title": "Parolni tiklash",
       "requestSubtitlePrefix": "Tasdiqlash kodini olish uchun telefon raqamingizni tasdiqlang va ",
@@ -5046,6 +5052,12 @@
     "requirements": "Parol talablari",
     "generatePassword": "Parol generatsiya qilish",
     "success": "Parol muvaffaqiyatli yangilandi",
+    "daysLeft": "Parolni almashtirishga {days} kun qoldi.",
+    "expiresTomorrow": "Parolni almashtirishga 1 kun qoldi — ertaga muddati tugaydi.",
+    "expired": "Parol muddati o'tgan.",
+    "lastChanged": "Parol oxirgi marta {days} kun oldin yangilangan.",
+    "expiredResetHint": "Parolni bu yerdan yangilab bo'lmaydi — {bot} Telegram botiga kirib, parolni tiklang.",
+    "resetViaBot": "Telegram bot orqali tiklash",
     "rules": {
       "minLength": "Kamida 8 ta belgi",
       "uppercase": "Kamida 1 ta katta harf (A-Z)",

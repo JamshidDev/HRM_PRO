@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import router from '@/router/index.js'
-import { AppPaths, useAppSetting } from '@/utils/index.js'
+import { AppPaths, useAppSetting, isPasswordExpiredError } from '@/utils/index.js'
 import { useAccountStore, useSocketStore } from '@/store/modules/index.js'
 import { getActivePinia } from 'pinia'
 import { getLoginDeviceData } from '@/utils/webPush.js'
@@ -32,7 +32,12 @@ export const useLoginNewStore = defineStore('loginNewStore', {
     // yakunlanmaydi. Token "Tanishdim" bosilgunча localStorage'ga saqlanmaydi.
     showOfferModal: false,
     pendingToken: null,
-    offerLoading: false
+    offerLoading: false,
+    // Parol muddati o'tgani uchun backend kirishga ruxsat bermadi. Bu oddiy
+    // login xatosi emas: foydalanuvchi parolni Telegram bot orqali tiklashi
+    // kerak, shuning uchun login sahifasi alohida ekranga o'tadi.
+    passwordExpired: false,
+    passwordExpiredMessage: null
   }),
   getters: {
     // +998(90)1234567 -> 901234567
@@ -67,9 +72,15 @@ export const useLoginNewStore = defineStore('loginNewStore', {
           }
           this._handleAuthSuccess(res)
         })
-        .catch(() => {
+        .catch((error) => {
           // xato bo'lsa captcha javobini tozalab, rasmni yangilaymiz
           this.captchaAnswer = null
+          if (isPasswordExpiredError(error)) {
+            // Backend bergan matn bo'lsa o'shani ko'rsatamiz (u aniqroq:
+            // masalan necha kun o'tganini aytishi mumkin), aks holda o'zimiznikini.
+            this.passwordExpiredMessage = error.response?.data?.message ?? null
+            this.passwordExpired = true
+          }
           onError?.()
         })
         .finally(() => {
@@ -119,6 +130,11 @@ export const useLoginNewStore = defineStore('loginNewStore', {
     onFinish() {
       this.showReSendButton = true
       this.otpExpireTime = otpExpireTime
+    },
+    // Parol muddati ekranidan login formaga qaytish.
+    clearPasswordExpired() {
+      this.passwordExpired = false
+      this.passwordExpiredMessage = null
     },
     // 2FA qadamidan login formaga qaytish
     cancelTwoFactor() {
