@@ -402,17 +402,63 @@
   }
 
   // Yorliqlar orasidagi minimal masofa (o'q balandligining %): 760px da
-  // ~32px, ya'ni bir soatlik balandlik. Shrift sig'ishi uchun ~19px yetardi,
-  // lekin unda yaqin vaqtlarning BOG'LOVCHI CHIZIQLARI deyarli ustma-ust
-  // tushib, qaysi yozuv qaysi chiziqniki ekani bilinmay qolardi.
+  // ~20px — yozuv qatorining balandligi. Faqat HAQIQIY ustma-ust tushishning
+  // oldini oladi: undan kattaroq qiymat yaqin vaqtlarni sun'iy ravishda
+  // uzoqlashtirib, yorliqni o'z nuqtasidan ancha pastga olib tushardi.
   // ⚠️ `.ts-tl` balandligi o'zgarsa bu qiymat ham qayta hisoblanishi kerak.
-  const MIN_GAP_PCT = 4.2
+  const MIN_GAP_PCT = 2.6
 
-  // Chap (reja) va o'ng (hodisa) yorliqlari orasidagi minimal masofa.
-  // Ular qarama-qarshi tomonlarda bo'lgani uchun to'liq masofa shart emas,
-  // lekin bir balandlikka tushsa ikkala chiziq ustundan o'tuvchi BITTA
-  // chiziqdek ko'rinadi — shuning uchun ular ham ajratiladi.
-  const CROSS_GAP_PCT = 2.6
+  /* Yorliqlarni joylashtirish: to'qnashganlari o'z nuqtalarining O'RTASIGA
+   * nisbatan ikki tomonga yoyiladi — faqat pastga surilsa, ketma-ket yaqin
+   * vaqtlar bir-birini itarib, oxirgi yozuv o'z vaqtidan juda uzoqqa tushib
+   * ketardi (bog'lovchi chiziq ham uzun qiya bo'lib qolardi).
+   * Kirish: o'sish tartibidagi haqiqiy pozitsiyalar. Chiqish: shu tartibdagi
+   * yorliq pozitsiyalari. */
+  const spreadLabels = (tops, gap) => {
+    if (!tops.length) return []
+    // Bir-biriga xalaqit beradigan yorliqlar guruhga yig'iladi. Guruh o'z
+    // a'zolarining o'rtacha pozitsiyasida markazlashadi; markazlashgach u
+    // oldingi guruhga tegib ketishi mumkin — shuning uchun tekshiruv siklda.
+    const groups = []
+    const startOf = (g) => g.sum / g.count - ((g.count - 1) * gap) / 2
+    for (const top of tops) {
+      groups.push({ count: 1, sum: top })
+      while (groups.length > 1) {
+        const b = groups[groups.length - 1]
+        const a = groups[groups.length - 2]
+        if (startOf(b) >= startOf(a) + a.count * gap) break
+        a.count += b.count
+        a.sum += b.sum
+        groups.pop()
+      }
+    }
+    const out = []
+    let last = -Infinity
+    for (const g of groups) {
+      // O'q chetidan chiqib ketmasin — yuqoridan ham, pastdan ham.
+      let start = Math.min(Math.max(0, startOf(g)), 100 - (g.count - 1) * gap)
+      // Chetga siqilgan guruh oldingisining ustiga tushmasin.
+      if (last > -Infinity) start = Math.max(start, last + gap)
+      for (let k = 0; k < g.count; k++) out.push(start + k * gap)
+      last = out[out.length - 1]
+    }
+    return out
+  }
+
+  /* Bog'lovchi chiziq qutisi. Yorliq o'z nuqtasidan yuqorida ham, pastda ham
+   * bo'lishi mumkin — shuning uchun qutining yo'nalishi ham hisoblanadi.
+   * `near` — chiziqning yorliq tomonidagi uchi (SVG da x=0 yoki x=100 —
+   * qaysi tomonda ekanini chaqiruvchi biladi), `far` — ustun tomonidagi. */
+  const linkBox = (truePos, labelPos) => {
+    const top = Math.min(truePos, labelPos)
+    const height = Math.abs(labelPos - truePos)
+    return {
+      style: { top: `${top}%`, height: `${height}%` },
+      // Yorliq pastda bo'lsa uning uchi qutining PASTIDA (y=100).
+      labelY: labelPos >= truePos ? 100 : 0,
+      colY: labelPos >= truePos ? 0 : 100
+    }
+  }
 
   const fmtMin = (m) =>
     m == null
@@ -456,16 +502,19 @@
     if (sch?.end_time) push('we', 'work', t('timesheetPage.workEnd'), sch.end_time, true)
 
     out.sort((a, b) => a.top - b.top)
-    let last = -99
-    for (const mk of out) {
-      const labelTop = Math.max(mk.top, last + MIN_GAP_PCT)
-      last = labelTop
-      // `labelTop` hodisa yorliqlariga ham kerak — ular shu balandliklardan
-      // qochadi (`eventRows`), aks holda chiziqlar bir chiziqqa qo'shiladi.
-      mk.labelTop = labelTop
-      mk.labelStyle = { top: `${labelTop}%` }
-      mk.linkStyle = { top: `${mk.top}%`, height: `${labelTop - mk.top}%` }
-    }
+    const placed = spreadLabels(
+      out.map((mk) => mk.top),
+      MIN_GAP_PCT
+    )
+    out.forEach((mk, i) => {
+      mk.labelTop = placed[i]
+      mk.labelStyle = { top: `${placed[i]}%` }
+      // Yorliq CHAPDA: SVG da x=0 — yorliq tomoni, x=100 — ustun tomoni.
+      const box = linkBox(mk.top, placed[i])
+      mk.linkStyle = box.style
+      mk.y1 = box.labelY
+      mk.y2 = box.colY
+    })
     return out
   })
 
@@ -577,32 +626,28 @@
     // yozuvgacha tortiladigan bog'lovchi chiziq aynan shundan boshlanadi,
     // aks holda «bu vaqt chizmaning qayeri?» degan savol javobsiz qolardi.
     //
-    // Surilishda CHAPDAGI reja yorliqlari ham hisobga olinadi: reja chizig'i
-    // bilan hodisa chizig'i bir balandlikka tushsa, ular ustundan o'tuvchi
-    // bitta uzluksiz chiziqdek ko'rinardi. Reja yorliqlari qo'zg'almaydi
-    // (ular tayanch nuqta), suriladigani — hodisa yozuvi.
-    const taken = planMarks.value.map((mk) => mk.labelTop)
-    const out = []
-    let last = -99
-    for (const e of raw) {
-      const trueTop = pct(minOfDay(e.at))
-      let top = Math.max(trueTop, last + MIN_GAP_PCT)
-      // `taken` o'sish tartibida — pastga surilgach keyingisi qayta tekshiriladi.
-      for (const p of taken) {
-        if (Math.abs(top - p) < CROSS_GAP_PCT) top = p + CROSS_GAP_PCT
-      }
-      last = top
-      out.push({
-        top,
-        // Bog'lovchi chiziq qutisi: yuqori cheti — HAQIQIY vaqt (zolak
-        // chetiga to'g'ri keladi), pastki cheti — surilgan yozuv markazi.
-        linkStyle: { top: `${trueTop}%`, height: `${top - trueTop}%` },
+    // CHAPDAGI reja yorliqlari hisobga OLINMAYDI: ular ustunning narigi
+    // tomonida, ya'ni yozuvlar bir-birini qoplamaydi. Ilgari ular ham
+    // qochirilardi (chiziqlar bitta uzluksiz chiziqdek ko'rinmasin deb),
+    // lekin buning evaziga hodisa yozuvi o'z vaqtidan sezilarli pastga
+    // tushib ketardi — noaniqlik chiroylilikdan qimmatroq.
+    // `spreadLabels` o'sish tartibini kutadi.
+    raw.sort((a, b) => minOfDay(a.at) - minOfDay(b.at))
+    const trueTops = raw.map((e) => pct(minOfDay(e.at)))
+    const placed = spreadLabels(trueTops, MIN_GAP_PCT)
+    return raw.map((e, i) => {
+      // Yorliq O'NGDA: SVG da x=0 — ustun tomoni, x=100 — yorliq tomoni.
+      const box = linkBox(trueTops[i], placed[i])
+      return {
+        top: placed[i],
+        linkStyle: box.style,
+        y1: box.colY,
+        y2: box.labelY,
         time: exact(e.at),
         direction: e.direction,
         device: byTime.get(String(e.at)) ?? null
-      })
-    }
-    return out
+      }
+    })
   })
 
   // Y o'qi. Chiziq HAR SOATDA — yaqin oraliqlarni ajratish uchun mayda
@@ -1621,14 +1666,14 @@
                       viewBox="0 0 100 100"
                     >
                       <line
+                        :y1="mark.y1"
+                        :y2="mark.y2"
                         stroke="currentColor"
                         stroke-dasharray="4 4"
                         stroke-width="1"
                         vector-effect="non-scaling-stroke"
                         x1="0"
                         x2="100"
-                        y1="100"
-                        y2="0"
                       />
                     </svg>
                   </template>
@@ -1675,14 +1720,14 @@
                     viewBox="0 0 100 100"
                   >
                     <line
+                      :y1="e.y1"
+                      :y2="e.y2"
                       stroke="currentColor"
                       stroke-dasharray="4 4"
                       stroke-width="1"
                       vector-effect="non-scaling-stroke"
                       x1="0"
                       x2="100"
-                      y1="0"
-                      y2="100"
                     />
                   </svg>
 

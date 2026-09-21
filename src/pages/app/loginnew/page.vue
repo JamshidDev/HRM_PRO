@@ -14,6 +14,7 @@ import EriForm from './ui/EriForm.vue'
 import QrForm from './ui/QrForm.vue'
 import TwoFactorForm from './ui/TwoFactorForm.vue'
 import ResetForm from './ui/ResetForm.vue'
+import ExpiredForm from './ui/ExpiredForm.vue'
 import StoreLinks from './ui/StoreLinks.vue'
 import SeasonEffect from './ui/SeasonEffect.vue'
 import OfferModal from '@/components/OfferModal.vue'
@@ -27,7 +28,7 @@ const loginStore = useLoginNewStore()
 const resetStore = useResetPasswordStore()
 const qrStore = useQrLoginStore()
 
-const steps = { login: 'login', twofa: 'twofa', reset: 'reset' }
+const steps = { login: 'login', twofa: 'twofa', reset: 'reset', expired: 'expired' }
 const step = ref(steps.login)
 
 // Kirish usullari — login qadamida tab sifatida ko'rsatiladi.
@@ -109,6 +110,35 @@ watch(
   }
 )
 
+// Parol muddati o'tgan — backend kirishga ruxsat bermadi. Login qadamida
+// qolib toast bilan cheklanmaymiz: nima qilish kerakligi (bot orqali tiklash)
+// alohida ekranda tushuntiriladi.
+watch(
+  () => loginStore.passwordExpired,
+  (expired) => {
+    if (expired) {
+      transitionName.value = 'slide-next'
+      step.value = steps.expired
+      return
+    }
+    // Bayroq tashqaridan tozalansa ekran osilib qolmasin. `toLogin` va
+    // `onExpiredReset` qadamni o'zi belgilaydi — shuning uchun faqat HALI
+    // muddat ekranida turgan holat qaytariladi.
+    if (step.value === steps.expired) {
+      transitionName.value = 'slide-prev'
+      step.value = steps.login
+    }
+  }
+)
+
+// Muddat ekranidagi "Parolni tiklash" — o'sha telefon bilan tiklash oqimiga.
+const onExpiredReset = () => {
+  resetStore.start(loginStore.phone)
+  loginStore.clearPasswordExpired()
+  transitionName.value = 'slide-next'
+  step.value = steps.reset
+}
+
 // LoginForm'dagi "Parolni unutdingizmi?" — telefonni olib reset qadamiga o'tamiz
 const onForgot = (phone) => {
   resetStore.start(phone)
@@ -117,6 +147,9 @@ const onForgot = (phone) => {
 }
 
 const toLogin = () => {
+  // Muddat bayrog'i tozalanmasa, `watch` qayta ishga tushmaydi-yu, lekin
+  // keyingi urinishda holat eskicha qolib ketardi.
+  loginStore.clearPasswordExpired()
   transitionName.value = 'slide-prev'
   step.value = steps.login
 }
@@ -238,6 +271,12 @@ const onDone = () => {
           >
             <Transition :name="transitionName" mode="out-in">
               <TwoFactorForm v-if="step === steps.twofa" key="twofa" @back="toLogin" />
+              <ExpiredForm
+                v-else-if="step === steps.expired"
+                key="expired"
+                @back="toLogin"
+                @reset="onExpiredReset"
+              />
               <ResetForm v-else-if="step === steps.reset" key="reset" @back="toLogin" @done="onDone" />
               <!-- Balandlik tab'lar bo'ylab QOTIB turadi — o'lchov asosiy (Login) tabdan -->
               <div v-else key="login" ref="paneRef" class="w-full login-new__tab-pane">

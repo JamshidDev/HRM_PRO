@@ -550,6 +550,12 @@
       "verify": "Verify",
       "reSendCode": "Resend code"
     },
+    "passwordExpired": {
+      "title": "Password expired",
+      "subtitle": "Your password has not been updated for over 30 days, so you cannot sign in.",
+      "botPrefix": "To reset it, open the Telegram bot",
+      "botSuffix": "and get a code."
+    },
     "resetPassword": {
       "title": "Reset password",
       "requestSubtitlePrefix": "Confirm your phone number and go to the Telegram bot ",
@@ -5004,6 +5010,12 @@
     "requirements": "Password requirements",
     "generatePassword": "Generate password",
     "success": "Password updated successfully",
+    "daysLeft": "{days} days left until you must change your password.",
+    "expiresTomorrow": "1 day left — your password expires tomorrow.",
+    "expired": "Your password has expired.",
+    "lastChanged": "Password was last changed {days} days ago.",
+    "expiredResetHint": "It can no longer be changed here — open the Telegram bot {bot} and reset it.",
+    "resetViaBot": "Reset via Telegram bot",
     "rules": {
       "minLength": "At least 8 characters",
       "uppercase": "At least 1 uppercase letter (A-Z)",
