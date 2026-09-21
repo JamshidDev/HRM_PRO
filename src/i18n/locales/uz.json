@@ -2561,6 +2561,28 @@
     "Sun": "Ya"
   },
   "timesheetPage": {
+    "tabGrid": "Tabel",
+    "tabTimekeepers": "Tabelchilar",
+    "timesheetInfo": "Tabel maʼlumotlari",
+    "verifiersEmpty": "Kelishuvchi qo'shilmagan",
+    "verifierDeleteConfirm": "Bu xodim kelishuvchilar ro'yxatidan olib tashlanadi. Davom etilsinmi?",
+    "history": "Tarix",
+    "historyEmpty": "Amallar tarixi bo‘sh",
+    "periodLabel": "Davr",
+    "workersCount": "Xodimlar",
+    "timekeepersCount": "Tabelchilar",
+    "lockedCount": "Qulflangan",
+    "holidaysCount": "Bayram kunlari",
+    "daysCount": "Oy kunlari",
+    "statusOpen": "Ochiq",
+    "accessColumn": "Ruxsat",
+    "timekeeperEmpty": "Bu korxonaga tabelchi biriktirilmagan",
+    "accessEditable": "O'zgartirishi mumkin",
+    "accessFinished": "Tabel yakunlangan",
+    "accessSent": "Tasdiqlashga yuborilgan",
+    "inApproval": "Tasdiqlashda",
+    "accessNone": "Bu tabelga ruxsati yo'q",
+    "timekeeperDepartments": "Biriktirilgan bo'limlar",
     "work_days": "Ish kuni",
     "work_hours": "Ish soati",
     "name": "Tabellar",
@@ -2591,7 +2613,12 @@
     "totalWorkHours": "Umumiy ish soati",
     "sendWarning": {
       "title": "Tabelni tasdiqlashga yuborasizmi?",
-      "desc": "Yuborilgandan keyin tabel to'ldirish uchun yopiladi. Rad etilsa yana ochiladi."
+      "desc": "Bu amal tabelni kelishuv bosqichiga o'tkazadi.",
+      "p1": "Tabel barcha kelishuvchilarga bir vaqtda boradi.",
+      "p2": "To'ldirish yopiladi — tabelchilar ham, HR ham o'zgartira olmaydi.",
+      "p3": "Faqat kimdir rad etsa qayta ochiladi: tuzatib, yana yuborasiz.",
+      "p4": "Korxona rahbari tasdiqlasa tabel butunlay muzlaydi.",
+      "req": "Shart: kamida 2 ta kelishuvchi va ular orasida korxona rahbari."
     },
     "confirmWarning": {
       "title": "Tabelni tasdiqlaysizmi?",
@@ -2612,10 +2639,11 @@
     "workTimeType": "Ish vaqti turi",
     "fill": "To'ldirish",
     "autoCalcSoon": "Auto hisoblash ishlab chiqilmoqda",
-    "autoCalcShort": "Auto",
+    "autoCalcShort": "Auto hisoblash",
     "recalc": "Qayta hisoblash",
     "autoCalcDone": "Muvaffaqiyatli bajarildi",
     "autoRulesTitle": "Tabel bo'yicha ma'lumot",
+    "infoShort": "Ma'lumot",
     "tabWorkTime": "Ish vaqti",
     "tabTurnstile": "Turniket",
     "workStatus": "Kun holati",
@@ -2862,7 +2890,10 @@
     "form": {
       "eduPlan": "O'quv rejasi",
       "certificate": "Sertifikat",
-      "worker_position_ids": "Xodimlar"
+      "worker_position_ids": "Xodimlar",
+      "planLimit": "Sig'im: {limit} ta xodim",
+      "planSelected": "Tanlandi: {n} ta",
+      "planLimitExceeded": "O'quv rejasi sig'imi {limit} ta xodim — hozir {n} ta tanlangan. Ortiqchasini olib tashlang."
     }
   },
   "teacherPage": {

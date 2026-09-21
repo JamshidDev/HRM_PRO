@@ -2541,6 +2541,28 @@
     "Sun": "Sun"
   },
   "timesheetPage": {
+    "tabGrid": "Timesheet",
+    "tabTimekeepers": "Timekeepers",
+    "timesheetInfo": "Timesheet details",
+    "verifiersEmpty": "No approvers added",
+    "verifierDeleteConfirm": "This employee will be removed from the approvers list. Continue?",
+    "history": "History",
+    "historyEmpty": "No actions yet",
+    "periodLabel": "Period",
+    "workersCount": "Employees",
+    "timekeepersCount": "Timekeepers",
+    "lockedCount": "Locked",
+    "holidaysCount": "Holidays",
+    "daysCount": "Days in month",
+    "statusOpen": "Open",
+    "accessColumn": "Access",
+    "timekeeperEmpty": "No timekeeper assigned to this organization",
+    "accessEditable": "Can edit",
+    "accessFinished": "Timesheet finished",
+    "accessSent": "Sent for confirmation",
+    "inApproval": "In approval",
+    "accessNone": "No access to this timesheet",
+    "timekeeperDepartments": "Assigned departments",
     "work_days": "Work days",
     "work_hours": "Work hours",
     "name": "Timesheets",
@@ -2570,8 +2592,13 @@
     "totalWorkDays": "Total work days",
     "totalWorkHours": "Total work hours",
     "sendWarning": {
-      "title": "Send the timesheet for confirmation?",
-      "desc": "Once sent, the timesheet is locked for editing. If rejected, it opens again."
+      "title": "Send the timesheet for approval?",
+      "desc": "This moves the timesheet to the approval stage.",
+      "p1": "The timesheet goes to all approvers at once.",
+      "p2": "Editing closes — neither timekeepers nor HR can change it.",
+      "p3": "It reopens only on rejection: fix it and send again.",
+      "p4": "Once the head approves, the timesheet is frozen.",
+      "req": "Requirement: at least 2 approvers, one of them the head of the organization."
     },
     "confirmWarning": {
       "title": "Confirm the timesheet?",
@@ -2592,10 +2619,11 @@
     "workTimeType": "Work time type",
     "fill": "Fill",
     "autoCalcSoon": "Auto calculation is in development",
-    "autoCalcShort": "Auto",
+    "autoCalcShort": "Auto calculation",
     "recalc": "Recalculate",
     "autoCalcDone": "Completed successfully",
     "autoRulesTitle": "About the timesheet",
+    "infoShort": "Information",
     "tabWorkTime": "Work time",
     "tabTurnstile": "Turnstile",
     "workStatus": "Day status",
@@ -2841,7 +2869,10 @@
     "updateTitle": "Edit",
     "form": {
       "eduPlan": "Training plan",
-      "worker_position_ids": "Employees"
+      "worker_position_ids": "Employees",
+      "planLimit": "Capacity: {limit} employees",
+      "planSelected": "Selected: {n}",
+      "planLimitExceeded": "The education plan capacity is {limit} employees, {n} selected. Remove the extra ones."
     }
   },
   "teacherPage": {

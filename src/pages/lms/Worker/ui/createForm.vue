@@ -3,6 +3,9 @@ import { UINSelect, UISelect } from '@/components/index.js'
 import validationRules from '@/utils/validationRules.js'
 import { useLmsWorkerStore, useComponentStore } from '@/store/modules/index.js'
 import UIHelper from '@/utils/UIHelper.js'
+import i18n from '@/i18n/index.js'
+
+const { t } = i18n.global
 
 const formRef = ref(null)
 const workerItemRef = ref(null)
@@ -22,6 +25,18 @@ watch(
 )
 
 const onSubmit = () => {
+  // Backend limitdan oshsa HTTP 200 + `error:false` qaytaradi va hech narsa
+  // biriktirmaydi — foydalanuvchi buni «muvaffaqiyat» deb ko'rardi. Shuning
+  // uchun so'rov yuborilishidan OLDIN to'xtatamiz.
+  if (store.isOverEduPlanLimit) {
+    $Toast.error(
+      t('lmsWorkerPage.form.planLimitExceeded', {
+        limit: store.eduPlanLimit,
+        n: store.payload.worker_position_ids.length
+      })
+    )
+    return
+  }
   formRef.value?.validate((error) => {
     if (!error) {
       store.saveLoading = true
@@ -88,10 +103,21 @@ onMounted(() => {
       </n-form-item>
       <n-form-item ref="workerItemRef" :label="$t(`lmsWorkerPage.form.worker_position_ids`)" path="worker_position_ids"
         rule-path="requiredMultiSelectField">
-        <UINSelect :disabled="!store.payload.edu_plan_id || store.payload.organizations.length === 0" :multiple="true"
-          :query="store.workerParams.search" v-model:value="store.payload.worker_position_ids" :value-field="'id'"
-          :options="store.workerList" :loading="store.workerLoading" :total-count="store.totalWorker"
-          @onSearch="onSearch" @onScrollEv="onScrollWorkers" />
+        <div class="w-full">
+          <UINSelect :disabled="!store.payload.edu_plan_id || store.payload.organizations.length === 0" :multiple="true"
+            :query="store.workerParams.search" v-model:value="store.payload.worker_position_ids" :value-field="'id'"
+            :options="store.workerList" :loading="store.workerLoading" :total-count="store.totalWorker"
+            @onSearch="onSearch" @onScrollEv="onScrollWorkers" />
+          <!-- Sig'im reja tanlangach ko'rinadi: limitdan oshsa so'rov yuborilmaydi. -->
+          <div v-if="store.eduPlanLimit" class="mt-1 text-xs flex gap-2">
+            <span class="text-secondary">
+              {{ $t('lmsWorkerPage.form.planLimit', { limit: store.eduPlanLimit }) }}
+            </span>
+            <span :class="store.isOverEduPlanLimit ? 'text-red-500 font-medium' : 'text-secondary'">
+              {{ $t('lmsWorkerPage.form.planSelected', { n: store.payload.worker_position_ids.length }) }}
+            </span>
+          </div>
+        </div>
       </n-form-item>
     </div>
 
@@ -99,7 +125,7 @@ onMounted(() => {
       <n-button @click="store.openVisible(false)" type="error" ghost>
         {{ $t('content.cancel') }}
       </n-button>
-      <n-button @click="onSubmit" :loading="store.saveLoading" type="primary">
+      <n-button @click="onSubmit" :disabled="store.isOverEduPlanLimit" :loading="store.saveLoading" type="primary">
         {{ $t('content.save') }}
       </n-button>
     </div>
