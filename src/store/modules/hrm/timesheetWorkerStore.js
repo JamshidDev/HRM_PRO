@@ -1,6 +1,15 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import dayjs from 'dayjs'
+// Tabel turi id → harf. Backenddagi TIMESHEET_TYPE_KEY bilan bir xil.
+const TIMESHEET_KEY_BY_ID = {
+  1: 'K', 2: 'T', 3: 'РП', 5: 'С', 10: 'К', 14: 'MT', 15: 'ОД', 16: 'У',
+  17: 'УВ', 18: 'УД', 19: 'Р', 20: 'ОЧ', 21: 'ОЖ', 22: 'ДО', 24: 'ОЗ',
+  25: 'Б', 26: 'Т', 27: 'ЛЧ', 28: 'ВП', 29: 'Г', 31: 'ПР', 32: 'НС',
+  33: 'D', 34: 'ЗБ', 35: 'НН'
+}
+// Soat yuritiladigan turlar (backend TIMESHEET_TYPE_HOURS).
+const TIMESHEET_TYPES_WITH_HOURS = new Set([1, 2, 3, 5, 17, 27, 32])
 const { t } = i18n.global
 export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
   state: () => ({
@@ -40,9 +49,115 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     departmentLoading: false,
     // Tabelchi rejimi — hujjat aylanishidagi «Tabellar» sahifasidan ochilganda.
     // Bo'lim filtri korxonaning HAMMA bo'limi emas, faqat biriktirilganlari.
-    timekeeperMode: false
+    timekeeperMode: false,
+    autoLoading: false,
+    autoRules: null,
+    // «Tabelchilar» tabi — tabel korxonasiga biriktirilgan mas'ul xodimlar.
+    timekeeperList: [],
+    timekeeperLoading: false,
+    timekeeperTotal: 0,
+    timekeeperParams: { page: 1, per_page: 20, search: null },
+    // Ruxsat qulflari: `worker_position_id` → true (qulflangan). Yo'q = OCHIQ,
+    // ya'ni default holatda hamma tabelchi shu oy tabelini o'zgartira oladi.
+    // Manba — `time_sheet_timekeeper_locks` (tabel + lavozim juftligi).
+    timekeeperLocks: {},
+    timekeeperLockSaving: false,
+    // Tasdiqlovchilar zanjiri — har birining joriy holati bilan.
+    confirmationList: [],
+    confirmationLoading: false,
+    historyList: [],
+    historyLoading: false,
+    // Ro'yxatdan kelgan qulf holati: yakunlangan / yuborilgan tabel yozilmaydi.
+    lock: { status: false, sent_at: null, confirmation: null }
   }),
   actions: {
+    _confirmations() {
+      this.confirmationLoading = true
+      $ApiService.timesheetConfirmService
+        ._index({ id: this.elementId })
+        .then((res) => {
+          this.confirmationList = res.data.data.confirmations ?? []
+        })
+        .finally(() => {
+          this.confirmationLoading = false
+        })
+    },
+    // Kelishuvchini ro'yxatdan olib tashlash. Tasdiqlaganini backend bermaydi.
+    _deleteConfirmation(confirmationId) {
+      return $ApiService.timesheetConfirmService
+        ._delete({ id: this.elementId, elementId: confirmationId })
+        .then(() => this._confirmations())
+    },
+    _confirmationHistory() {
+      this.historyLoading = true
+      $ApiService.timesheetConfirmService
+        ._history({ id: this.elementId })
+        .then((res) => {
+          this.historyList = res.data.data.history ?? []
+        })
+        .finally(() => {
+          this.historyLoading = false
+        })
+    },
+    // Tabelchilar — TABELGA bog'langan endpoint: doira tabel korxonasiga
+    // biriktirilganlar bo'yicha (xodimning lavozimi qaysi korxonada ekani emas).
+    // Qulf holati ham shu javobda keladi — alohida so'rov shart emas.
+    _timekeepers() {
+      this.timekeeperLoading = true
+      $ApiService.timesheetWorkerService
+        ._timekeepers({ id: this.elementId, params: { ...this.timekeeperParams } })
+        .then((res) => {
+          const rows = res.data.data.data
+          this.timekeeperList = rows
+          this.timekeeperTotal = res.data.data.total
+          this.timekeeperLocks = Object.fromEntries(
+            rows.filter((v) => v.locked).map((v) => [v.id, true])
+          )
+        })
+        .finally(() => {
+          this.timekeeperLoading = false
+        })
+    },
+    // Optimistik: switch darhol o'zgaradi, so'rov yiqilsa holat qaytariladi.
+    // Boshqa tabel ochilganda filtrlarni tozalaydi. Ilgari `department_id` va
+    // `departmentOptions` eski korxonanikidan qolib ketardi — natijada yangi
+    // tabel begona bo'lim bo'yicha filtrlanardi.
+    resetForTimesheet() {
+      this.params.page = 1
+      this.params.search = null
+      this.params.department_id = null
+      this.departmentOptions = []
+      this.organizationId = null
+      this.organization = null
+      this.list = []
+      this.days = []
+      this.totalItems = 0
+      this.timekeeperList = []
+      this.timekeeperLocks = {}
+      this.timekeeperTotal = 0
+      this.timekeeperParams.page = 1
+      this.confirmationList = []
+      this.historyList = []
+    },
+    setTimekeeperLock(workerPositionId, locked) {
+      const prev = Boolean(this.timekeeperLocks[workerPositionId])
+      if (locked) this.timekeeperLocks[workerPositionId] = true
+      else delete this.timekeeperLocks[workerPositionId]
+
+      this.timekeeperLockSaving = true
+      $ApiService.timesheetWorkerService
+        ._set_timekeeper_lock({
+          id: this.elementId,
+          data: { worker_position_id: workerPositionId, locked }
+        })
+        .catch(() => {
+          if (prev) this.timekeeperLocks[workerPositionId] = true
+          else delete this.timekeeperLocks[workerPositionId]
+        })
+        .finally(() => {
+          this.timekeeperLockSaving = false
+        })
+    },
     _index() {
       this.loading = true
       let promises = []
@@ -262,6 +377,56 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         this.saveLoading = false
       }
     },
+    // Auto hisoblash — JORIY SAHIFADAGI xodimlar uchun. Natija lokal
+    // qo'yiladi (katakchalar to'ladi), bazaga «Saqlash» bosilganda ketadi.
+    // `workerPositionIds` berilsa faqat o'shalar hisoblanadi (qator menyusidagi
+    // «Qayta hisoblash»); berilmasa — joriy sahifadagi hamma xodim («Auto»).
+    async autoCalc(workerPositionIds = null) {
+      const ids = (workerPositionIds ?? this.list.map((w) => w.id)).filter(Boolean)
+      if (!ids.length) return null
+      this.autoLoading = true
+      try {
+        const res = await $ApiService.timesheetWorkerService._auto_calc({
+          id: this.elementId,
+          data: { worker_position_ids: ids }
+        })
+        const items = res.data.data ?? []
+        let filled = 0
+        for (const item of items) {
+          const row = this.list.findIndex((w) => w.id === item.id)
+          if (row < 0) continue
+          for (const d of item.days ?? []) {
+            this.applyLocalCell(row, d.day - 1, [
+              {
+                status: TIMESHEET_KEY_BY_ID[d.status] ?? null,
+                status_id: d.status,
+                hours: TIMESHEET_TYPES_WITH_HOURS.has(d.status) ? (d.hours ?? 0) : null
+              }
+            ])
+            filled++
+          }
+        }
+        return { workers: items.length, cells: filled }
+      } finally {
+        this.autoLoading = false
+      }
+    },
+
+    async dayDetail(workerPositionId, date) {
+      const res = await $ApiService.timesheetWorkerService._day_detail({
+        id: this.elementId,
+        params: { worker_position_id: workerPositionId, date }
+      })
+      return res.data.data
+    },
+
+    async autoCalcRules() {
+      if (this.autoRules) return this.autoRules
+      const res = await $ApiService.timesheetWorkerService._auto_calc_rules()
+      this.autoRules = res.data.data
+      return this.autoRules
+    },
+
     _check_pin(v) {
       this.pinLoading = true
       $ApiService.timesheetWorkerService

@@ -225,9 +225,13 @@
             {{ $t('turnstile.terminalUser.addBtn') }}
           </p>
         </div>
+        <!-- Muddat MAJBURIY: bo'sh yuborilsa HCP o'zi «bugun+2 yil» qo'yadi va
+             bizning baza bilan jimgina ajralib ketadi. Default ham shu. -->
         <n-form-item
           :label="$t(`content.deadline`)"
           :feedback="$t('turnstile.terminalUser.deadline_feedback')"
+          :rule="validationRules.common.requiredDateTimeField"
+          path="end_time"
         >
           <n-date-picker
             class="w-full"
@@ -235,7 +239,6 @@
             type="date"
             update-value-on-close
             :actions="null"
-            clearable
             :format="useAppSetting.datePicketFormat"
           />
         </n-form-item>

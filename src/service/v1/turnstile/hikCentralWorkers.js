@@ -36,10 +36,26 @@ const _error = async (payload) => {
   return await axios.get(`/v1/turnstile/hik-central/worker-errors`, { params: payload.params })
 }
 
+// Diagnostika — xodim turniketdan o'tolmasa, zanjirning qaysi bo'g'ini
+// uzilganini aniqlaydi (faqat o'qiydi).
+const _diagnose = async (payload) => {
+  return await axios.get(`/v1/turnstile/hik-central/workers/${payload.id}/diagnose`)
+}
+
+// Bitta kartani tuzatish: {key: 'person'|'face'|'expiry'|'groups'}
+const _diagnose_fix = async (payload) => {
+  return await axios.post(
+    `/v1/turnstile/hik-central/workers/${payload.id}/diagnose/fix`,
+    payload.data
+  )
+}
+
 export default {
   _index,
   _add_worker,
   _refresh_worker,
+  _diagnose,
+  _diagnose_fix,
   _access_levels,
   _updateFace,
   _delete,

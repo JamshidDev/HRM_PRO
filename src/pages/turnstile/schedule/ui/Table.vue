@@ -130,8 +130,11 @@
         :scroll-zone-top="120"
         @selection-change="handleDragSelect"
       >
+        <!-- `bg-surface-section` qatorning o'ziga kerak: dark mode'da kun kataklarining
+             `--schedule-*-bg` tusi yarim shaffof (alpha .24), qattiq fon bo'lmasa sticky
+             sarlavha ostidan skroll qilinayotgan qatorlar ko'rinib qoladi. -->
         <div
-          class="no-selectable-item schedule-header-row flex z-[202] w-fit min-w-full sticky top-0"
+          class="no-selectable-item schedule-header-row flex z-[202] w-fit min-w-full sticky top-0 bg-surface-section"
         >
           <div
             class="pt-3 text-center text-secondary rounded-tl-lg border-r border-t border-l border-b border-surface-line p-2 w-[60px] min-w-[60px] h-[50px] sticky left-0 top-0 z-[20] bg-surface-section flex-shrink-0"

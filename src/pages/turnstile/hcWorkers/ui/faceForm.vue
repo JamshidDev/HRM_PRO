@@ -18,9 +18,9 @@
         store.editPayload.blob = store.payload.blob
         store.editPayload.photo_id = store.payload.photo_id
         store.editPayload.access_level_ids = store.payload.access_level_ids
-        store.editPayload.to = store.payload.end_time
-          ? Utils.timeToZone(store.payload.end_time)
-          : null
+        // Sana MAJBURIY (forma tekshiradi) — `null` yuborilmaydi, aks holda
+        // HCP o'zi muddat qo'yib, baza bilan ajralib ketardi.
+        store.editPayload.to = Utils.timeToZone(store.payload.end_time)
 
         store._updateFace()
       }
@@ -133,9 +133,13 @@
           </div>
         </n-form-item>
 
+        <!-- Muddat MAJBURIY: bo'sh yuborilsa HCP o'zi «bugun+2 yil» qo'yadi va
+             bizning baza bilan jimgina ajralib ketadi. Default ham shu. -->
         <n-form-item
           :label="$t(`content.deadline`)"
           :feedback="$t('turnstile.terminalUser.deadline_feedback')"
+          :rule="validationRules.common.requiredDateTimeField"
+          path="end_time"
         >
           <n-date-picker
             class="w-full"
@@ -143,7 +147,6 @@
             type="date"
             update-value-on-close
             :actions="null"
-            clearable
             :format="useAppSetting.datePicketFormat"
           />
         </n-form-item>

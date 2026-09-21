@@ -3,50 +3,41 @@
   import i18n from '@/i18n/index.js'
   import {
     useAccountStore,
-    useTimesheetConfirmStore,
     useTimesheetStore,
     useTimesheetWorkerStore
   } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import {
-    CalendarCheckmark28Filled,
-    Checkmark16Filled,
     CheckmarkCircle24Filled,
     Delete16Regular,
-    Edit32Regular,
     Send24Regular,
     Eye16Regular
   } from '@vicons/fluent'
-  import dayjs from 'dayjs'
 
   const { t } = i18n.global
+
+  // Oy nomi interfeys tilida — dayjs locale'i global o'rnatilmagan, `format('MMMM')` inglizcha qaytaradi.
+  const monthName = (month) => Utils.monthList.find((v) => v.id === month)?.name ?? ''
 
   const store = useTimesheetStore()
   const accStore = useAccountStore()
   const timesheetWorkerStore = useTimesheetWorkerStore()
-  const timesheetConfirmStore = useTimesheetConfirmStore()
 
   const onView = (row) => {
+    // Har tabel toza filtr bilan ochiladi — bo'lim tanlovi oldingi korxonadan
+    // qolib ketmasin.
+    timesheetWorkerStore.resetForTimesheet()
     timesheetWorkerStore.elementId = row.id
+    // Qulf holati ro'yxatdan olinadi — «Tabelchilar» tabida ruxsat shunga qarab
+    // ko'rsatiladi (yakunlangan yoki yuborilgan tabel to'ldirilmaydi).
+    timesheetWorkerStore.lock = {
+      status: Boolean(row?.status),
+      sent_at: row?.sent_at ?? null,
+      confirmation: row?.confirmation?.id ?? null
+    }
     timesheetWorkerStore.visible = true
     timesheetWorkerStore._index()
-  }
-
-  const onEdit = (row) => {
-    if (!accStore.checkAction(accStore.pn.hrTableWrite)) return
-    store.elementId = row.id
-    store.setOrganization(row.work_place ? [row.work_place] : [])
-    store.payload.year = row.year
-    store.payload.month = row.month
-    store.visibleType = false
-    store.visible = true
-  }
-
-  const onVerifier = (row) => {
-    if (!accStore.checkAction(accStore.pn.hrTableWrite)) return
-    timesheetConfirmStore.elementId = row.id
-    timesheetConfirmStore.visible = true
   }
 
   const onDelete = (row) => {
@@ -60,10 +51,7 @@
   const deleteWarning = (row) =>
     row?.workers_count
       ? t('timesheetPage.deleteWarning.filled', {
-          month: dayjs()
-            .year(row.year)
-            .month(row.month - 1)
-            .format('YYYY MMMM'),
+          month: `${row.year} ${monthName(row.month)}`,
           count: row.workers_count
         })
       : t('timesheetPage.deleteWarning.empty')
@@ -79,13 +67,6 @@
     store.sendVisible = true
   }
 
-  const onFinish = (row) => {
-    if (row.status) return
-    if (!accStore.checkAction(accStore.pn.hrTableWrite)) return
-    store.warningVisible = true
-    store.elementId = row.id
-  }
-
   const changePage = (v) => {
     store.params.page = v.page
     store.params.per_page = v.per_page
@@ -99,10 +80,16 @@
       minWidth: 500,
     },
     {
+      key: 'year',
+      title: t('content.year'),
+      width: 100,
+      align: 'center'
+    },
+    {
       key: 'month',
       title: t('content.month'),
       width: 140,
-      align: 'center'
+      align: 'left'
     },
     {
       key: 'status',
@@ -118,6 +105,8 @@
     }
   ])
 
+  // Uch amal yetarli: ko'rish, o'chirish va HR tasdig'i (tasdiqlashga yuborish).
+  // Tahrirlash `Ko'rish` oynasida, kelishuvchilar esa o'sha yerdagi kartochkada.
   const actions = computed(() => [
     {
       label: t('content.view'),
@@ -126,36 +115,20 @@
       action: onView
     },
     {
-      label: t('content.edit'),
-      key: Utils.ActionTypes.edit,
-      icon: UIHelper.renderIcon(Edit32Regular),
-      action: onEdit
-    },
-    {
-      label: t('timesheetPage.verifiers'),
-      key: Utils.ActionTypes.verifier,
-      icon: UIHelper.renderIcon(Checkmark16Filled),
-      action: onVerifier
-    },
-    {
-      label: t('content.finish'),
-      key: Utils.ActionTypes.finish,
-      icon: UIHelper.renderIcon(CalendarCheckmark28Filled),
-      action: onFinish
-    },
-    {
-      label: t('timesheetPage.send'),
-      key: Utils.ActionTypes.send,
-      icon: UIHelper.renderIcon(Send24Regular),
-      visible: (row) => !isSent(row) && !isConfirmed(row),
-      action: onSend
-    },
-    {
+      // Kelishuvga yuborilgan, lekin hali TO'LIQ tasdiqlanmagan tabel
+      // o'chirilishi mumkin — server ham shu shartni qo'yadi.
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete16Regular),
       visible: (row) => !isConfirmed(row),
       action: onDelete
+    },
+    {
+      label: t('content.confirm'),
+      key: Utils.ActionTypes.send,
+      icon: UIHelper.renderIcon(Send24Regular),
+      visible: (row) => !isSent(row) && !isConfirmed(row),
+      action: onSend
     }
   ])
 </script>
@@ -178,13 +151,12 @@
       {{ row.department?.name || row.work_place?.name }}
     </template>
 
+    <template #cell-year="{ row }">
+      {{ row.year }}
+    </template>
+
     <template #cell-month="{ row }">
-      {{
-        dayjs()
-          .year(row.year)
-          .month(row.month - 1)
-          .format('YYYY MMMM')
-      }}
+      {{ monthName(row.month) }}
     </template>
 
     <template #cell-status="{ row }">
