@@ -2680,7 +2680,8 @@
     "notSet": "Not set",
     "srcMobile": "Mobile",
     "calcHead": "How it was counted",
-    "notCounted": "Not counted"  },
+    "notCounted": "Not counted"
+  },
   "turnstile": {
     "title": "Turnstile",
     "terminals": "Terminals",
@@ -3243,8 +3244,15 @@
         "download": "Download",
         "comment": "Comment"
       },
-      "source": { "excel": "Excel", "ones": "1C" },
-      "status": { "process": "Processing", "done": "Done", "error": "Error" }
+      "source": {
+        "excel": "Excel",
+        "ones": "1C"
+      },
+      "status": {
+        "process": "Processing",
+        "done": "Done",
+        "error": "Error"
+      }
     },
     "reportStatus": {
       "button": "Report status",
@@ -5295,5 +5303,82 @@
     "recipientsShort": "Recipients",
     "sendTimeLabel": "Schedule send time",
     "sendTimeFuture": "The time must be in the future"
+  },
+  "sickLeave": {
+    "name": "Sick leave",
+    "createTitle": "Open a sick leave",
+    "updateTitle": "Edit sick leave",
+    "status": {
+      "open": "Open",
+      "closed": "Closed",
+      "unexcused": "No document"
+    },
+    "filter": {
+      "status": "Status",
+      "statusPlaceholder": "Select a status",
+      "organization": "Organization",
+      "fromDate": "From date",
+      "toDate": "To date"
+    },
+    "table": {
+      "worker": "Worker",
+      "status": "Status",
+      "fromDate": "Start date",
+      "toDate": "Closing date"
+    },
+    "form": {
+      "worker": "Worker",
+      "fromDate": "From",
+      "toDate": "To",
+      "number": "Sheet number",
+      "issuedDate": "Sheet date",
+      "file": "Sick leave (PDF)",
+      "selectPdf": "Select PDF",
+      "reason": "Closing reason",
+      "toDateOptional": "To (optional)"
+    },
+    "close": {
+      "title": "Finish the sheet",
+      "withDocument": "With document",
+      "unexcused": "Without document",
+      "toDateRequired": "Select the closing date",
+      "documentRequired": "Sheet number, date and a PDF file are required",
+      "reasonRequired": "Enter the closing reason",
+      "reasonPlaceholder": "Why it is closed without a document",
+      "hint": "Once closed, the sheet cannot be changed.",
+      "withDocumentHint": "Sheet number, date and a PDF file",
+      "unexcusedHint": "No document — a reason is entered"
+    },
+    "actions": {
+      "close": "Finish"
+    },
+    "delete": {
+      "title": "Delete the sheet?",
+      "desc": "This action cannot be undone."
+    },
+    "info": {
+      "fromDate": "The start date is the day the worker fell ill. It can go back at most 4 days.",
+      "toDate": "If you leave the closing date empty, the sheet stays open — close it with «Finish» when the worker returns.",
+      "maxDays": "One sheet cannot last longer than 14 days. If the illness continues, open a new sheet for the following days."
+    },
+    "view": {
+      "title": "Sick leave",
+      "worker": "Worker",
+      "organization": "Organization",
+      "status": "Status",
+      "period": "Period",
+      "days": "Duration",
+      "daysUnit": "days",
+      "openedAt": "Opened at",
+      "closedAt": "Finished at",
+      "docTitle": "Document details",
+      "number": "Sheet number",
+      "issuedDate": "Sheet date",
+      "reason": "Closing reason",
+      "file": "File",
+      "openFile": "Open PDF",
+      "noDoc": "No document provided",
+      "stillOpen": "The sheet is still open"
+    }
   }
 }

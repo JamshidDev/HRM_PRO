@@ -281,6 +281,11 @@ export const ENFORCED = new Set([
   'lms-worker-write',
   'hospital-med-worker-read',
   'hospital-pensioner-write',
+  // 2026-09-21 — Kasallik varaqasi tabi (migratsiya 0137/0138):
+  'hr-sick-leave-read',
+  'hr-sick-leave-write',
+  'hr-sick-leave-close',
+  'hr-sick-leave-delete',
   'document-examples-write',
   'document-templates-read',
   'document-templates-write',
@@ -476,6 +481,12 @@ export const MEANINGFUL = new Set([
   'hr-leaders-write',
   'hr-med',
   'hr-med-delete',
+  'hr-sick-leave',
+  'hr-sick-leave-close',
+  'hr-sick-leave-closed-delete',
+  'hr-sick-leave-delete',
+  'hr-sick-leave-read',
+  'hr-sick-leave-write',
   'hr-med-read',
   'hr-med-write',
   'hr-monthly-report',
@@ -791,6 +802,16 @@ export const PERMISSION_GROUPS = [
       { prefix: 'hr-table-workers', label: 'timesheetWorkerPage.name' },
       { prefix: 'hr-table', label: 'timesheetPage.name' },
       { prefix: 'hr-med', label: 'medPage.name' },
+      {
+        prefix: 'hr-sick-leave',
+        label: 'sickLeave.name',
+        actions: [
+          { slug: 'hr-sick-leave-read', label: "Ko'rish" },
+          { slug: 'hr-sick-leave-write', label: 'Yaratish / Tahrirlash' },
+          { slug: 'hr-sick-leave-close', label: 'Yakunlash' },
+          { slug: 'hr-sick-leave-delete', label: "O'chirish" }
+        ]
+      },
       { prefix: 'hr-leaders', label: 'organizationLeaderPage.name' },
       { prefix: 'hr-business-trip', label: 'businessTrip.name' },
       { prefix: 'hr-documents', label: 'documentArchive.name' },

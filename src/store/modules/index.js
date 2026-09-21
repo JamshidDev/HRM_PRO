@@ -168,6 +168,7 @@ export * from './accountant/salary1cStore.js'
 
 export * from './hospital/expiredhealthStore.js'
 export * from './hospital/ticketStore.js'
+export * from './hospital/sickLeaveStore.js'
 export * from './hospital/medWorkerStore.js'
 export * from './hospital/medPensionerStore.js'
 
