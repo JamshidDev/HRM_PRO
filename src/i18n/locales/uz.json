@@ -2557,6 +2557,15 @@
     "staff": "Xodimlar",
     "timeTable": "Tabellar"
   },
+  "longWeek": {
+    "Mon": "dushanba",
+    "Tue": "seshanba",
+    "Wed": "chorshanba",
+    "Thu": "payshanba",
+    "Fri": "juma",
+    "Sat": "shanba",
+    "Sun": "yakshanba"
+  },
   "shortWeek": {
     "Mon": "Du",
     "Tue": "Se",
@@ -2706,7 +2715,15 @@
     "notSet": "Belgilanmagan",
     "srcMobile": "Mobil",
     "calcHead": "Qanday hisoblandi",
-    "notCounted": "Hisobga olinmadi"  },
+    "notCounted": "Hisobga olinmadi",
+    "dayScale": "Kun bo'ylab",
+    "inTurnstile": "Turniketda",
+    "inside": "Ichkarida",
+    "interval": "Oraliq",
+    "dayInfo": "Kun ma'lumotlari",
+    "prevDay": "Oldingi kun",
+    "nextDay": "Keyingi kun"
+  },
   "turnstile": {
     "title": "Turniket",
     "terminals": "Terminallar",

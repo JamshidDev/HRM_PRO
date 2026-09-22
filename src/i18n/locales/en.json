@@ -2537,6 +2537,15 @@
     "staff": "Employees",
     "timeTable": "Timesheets"
   },
+  "longWeek": {
+    "Mon": "Monday",
+    "Tue": "Tuesday",
+    "Wed": "Wednesday",
+    "Thu": "Thursday",
+    "Fri": "Friday",
+    "Sat": "Saturday",
+    "Sun": "Sunday"
+  },
   "shortWeek": {
     "Mon": "Mon",
     "Tue": "Tue",
@@ -2686,7 +2695,15 @@
     "notSet": "Not set",
     "srcMobile": "Mobile",
     "calcHead": "How it was counted",
-    "notCounted": "Not counted"  },
+    "notCounted": "Not counted",
+    "dayScale": "Across the day",
+    "inTurnstile": "At the turnstile",
+    "inside": "Inside",
+    "interval": "Interval",
+    "dayInfo": "Day details",
+    "prevDay": "Previous day",
+    "nextDay": "Next day"
+  },
   "turnstile": {
     "title": "Turnstile",
     "terminals": "Terminals",
