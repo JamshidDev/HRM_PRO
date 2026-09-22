@@ -1,11 +1,10 @@
 <script setup>
   import Utils from '@/utils/Utils.js'
-  import { UIAutoComplete, UIUser, UISelect, UIFigBlock, UIFigField } from '@/components/index.js'
+  import { UIAutoComplete, UIUser, UISelect, UIFigField } from '@/components/index.js'
   import { useComponentStore, useContractStore } from '@/store/modules/index.js'
   import { NAvatar } from 'naive-ui'
   import UIHelper from '@/utils/UIHelper.js'
   import { useAppSetting } from '@/utils/index.js'
-  import icons from '@/assets/icons'
 
   const store = useContractStore()
   const componentStore = useComponentStore()
@@ -95,13 +94,10 @@
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 w-full">
-    <UIFigBlock :title="$t('documentPage.form.candidate')" :icon="icons.figUserAlt">
-      <!-- Kontent chapdan boshlanadi: blok ichidagi qolgan maydonlar (`fig-grid`)
-           ham chapdan tizilgan, markazlashtirilgan qator ulardan ajralib turardi.
-           O'rovchi flex YO'Q — `fig-block__body` ning o'zi ustun flex (stretch),
-           shu bois `max-w` li blok o'z-o'zidan chapda qoladi.
-           `w-[600px]` qat'iy edi: modal telefonda fullscreen bo'lgach ichkarida
+  <div class="flex flex-col gap-5 w-full">
+    <section class="form-section">
+      <span class="form-section__title">{{ $t('documentPage.form.candidate') }}</span>
+      <!-- `w-[600px]` qat'iy edi: modal telefonda fullscreen bo'lgach ichkarida
            gorizontal skroll berardi. -->
       <div class="w-full max-w-[600px]">
         <UIUser
@@ -111,9 +107,10 @@
         />
         <UIAutoComplete v-else v-model:pin="store.payload.pin" />
       </div>
-    </UIFigBlock>
+    </section>
 
-    <UIFigBlock :title="$t('contractPage.step.stepOne')" :icon="icons.figFileArrowDown">
+    <section class="form-section">
+      <span class="form-section__title">{{ $t('contractPage.step.stepOne') }}</span>
       <div class="fig-grid">
         <UIFigField editing :label="$t('documentPage.form.contractNumber')" path="number">
           <n-input class="w-full" type="text" v-model:value="store.payload.number" />
@@ -248,9 +245,10 @@
           </UIFigField>
         </template>
       </div>
-    </UIFigBlock>
+    </section>
 
-    <UIFigBlock :title="$t('documentPage.form.director')" :icon="icons.figUsers">
+    <section class="form-section">
+      <span class="form-section__title">{{ $t('documentPage.form.director') }}</span>
       <div class="fig-grid">
         <UIFigField editing class="fig-grid__full" path="director_id">
           <n-select
@@ -264,6 +262,6 @@
           />
         </UIFigField>
       </div>
-    </UIFigBlock>
+    </section>
   </div>
 </template>

@@ -5,7 +5,7 @@
   import { useAppSetting } from '@/utils/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import { DrawText24Regular } from '@vicons/fluent'
-  import { UIUser, UIFigBlock, UIFigField } from '@/components/index.js'
+  import { UIUser, UIFigField } from '@/components/index.js'
   import icons from '@/assets/icons'
   import { VueDraggable } from 'vue-draggable-plus'
 
@@ -112,10 +112,11 @@
 </script>
 
 <template>
-  <div v-if="showVacationDay" class="flex flex-col gap-4 w-full">
-    <UIFigBlock :title="$t('contractPage.step.stepThree')" :icon="icons.figFileArrowDown">
-      <!-- Buyruq yaratish tugmasi maketdagi blok sarlavhasining o'ng chetida -->
-      <template #trailing>
+  <div v-if="showVacationDay" class="flex flex-col gap-5 w-full">
+    <section class="form-section">
+      <!-- Buyruq yaratish tugmasi bo'lim sarlavhasining o'ng chetida -->
+      <div class="form-section__head">
+        <span class="form-section__title">{{ $t('contractPage.step.stepThree') }}</span>
         <div
           class="command-switch"
           @click="store.payload.command_status = !store.payload.command_status"
@@ -123,7 +124,7 @@
           <n-switch v-model:value="store.payload.command_status" size="small" @click.stop />
           <span>{{ $t('documentPage.form.command_status') }}</span>
         </div>
-      </template>
+      </div>
 
       <div v-if="store.payload.command_status" class="fig-grid">
         <UIFigField
@@ -258,13 +259,10 @@
           </UIFigField>
         </template>
       </div>
-    </UIFigBlock>
+    </section>
 
-    <UIFigBlock
-      v-if="store.payload.command_status"
-      :title="$t('documentPage.command.form.confirm')"
-      :icon="icons.figUsers"
-    >
+    <section v-if="store.payload.command_status" class="form-section">
+      <span class="form-section__title">{{ $t('documentPage.command.form.confirm') }}</span>
       <div class="fig-grid">
         <UIFigField
           editing
@@ -354,7 +352,7 @@
           </div>
         </VueDraggable>
       </template>
-    </UIFigBlock>
+    </section>
   </div>
 </template>
 

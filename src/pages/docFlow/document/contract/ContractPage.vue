@@ -1,5 +1,6 @@
 <script setup>
   import contractForm from './contractForm.vue'
+  import ContractFormSteps from './ui/ContractFormSteps.vue'
   import ContractList from './ContractList.vue'
   import { UIModal, UIPageContent, UIOfficeApp, UIConfirmByFile } from '@/components/index.js'
   import { useContractStore, useAccountStore, useComponentStore } from '@/store/modules/index.js'
@@ -50,6 +51,10 @@
       :width="1200"
       v-model:visible="store.visible"
     >
+      <!-- Qadamlar sarlavha qatorida: forma faqat maydonlardan iborat qoladi -->
+      <template #header-actions>
+        <ContractFormSteps />
+      </template>
       <contractForm />
     </UIModal>
     <UIOfficeApp ref="officeAppRef" />
