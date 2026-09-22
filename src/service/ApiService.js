@@ -174,6 +174,7 @@ import salary1cService from './v1/accountant/salary1cService.js'
 import expiredHealthService from './v1/hospital/expiredHealthService.js'
 import ticketService from './v1/hospital/ticketService.js'
 import medWorkerService from './v1/hospital/medWorkerService.js'
+import sickLeaveService from './v1/hospital/sickLeaveService.js'
 
 export default {
   publicService,
@@ -297,6 +298,7 @@ export default {
   expiredHealthService,
   ticketService,
   medWorkerService,
+  sickLeaveService,
   lmsWorkerService,
   lmsGroupService,
   lmsLessonService,

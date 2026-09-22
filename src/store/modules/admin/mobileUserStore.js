@@ -50,12 +50,13 @@ export const useMobileUserStore = defineStore('mobileUser', {
     _startVersionEdit(platform) {
       const row = this.versions.find((v) => v.platform === platform)
       this.editingPlatform = platform
-      this.editValue = row?.latest_version ? Number(row.latest_version) : null
+      // Versiya matn: `Number()` `1.9.2` ni NaN qilardi.
+      this.editValue = row?.latest_version ? String(row.latest_version) : ''
     },
 
     _cancelVersionEdit() {
       this.editingPlatform = null
-      this.editValue = null
+      this.editValue = ''
     },
 
     // Sodda qoida (mavjud tarixiy qatorlarning barchasida ham shunday):
@@ -64,9 +65,9 @@ export const useMobileUserStore = defineStore('mobileUser', {
     // store_url/download_url o'zgarmaydi — joriy qatordan ko'chiriladi
     // (yangi qator sifatida yoziladi, aks holda yo'qolib qolardi).
     async _saveVersion() {
-      if (!this.editingPlatform || this.editValue == null || this.editValue === '') return
+      const version = String(this.editValue ?? '').trim()
+      if (!this.editingPlatform || !version) return
       const current = this.versions.find((v) => v.platform === this.editingPlatform)
-      const version = String(this.editValue)
       this.versionSaving = true
       try {
         await $ApiService.mobileUserService._updateVersion({

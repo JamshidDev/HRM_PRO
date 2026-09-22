@@ -1659,7 +1659,8 @@
     "upgrade": "Yangilash",
     "form": {
       "latestVersion": "So'nggi versiya"
-    }
+    },
+    "versionInvalid": "Versiya formati noto'g'ri. Masalan: 1.9.2"
   },
   "vacancyApprovePage": {
     "menuName": "Tasdiqlash",
@@ -3307,8 +3308,15 @@
         "download": "Yuklab olish",
         "comment": "Izoh"
       },
-      "source": { "excel": "Excel", "ones": "1C" },
-      "status": { "process": "Jarayonda", "done": "Bajarildi", "error": "Xato" }
+      "source": {
+        "excel": "Excel",
+        "ones": "1C"
+      },
+      "status": {
+        "process": "Jarayonda",
+        "done": "Bajarildi",
+        "error": "Xato"
+      }
     },
     "reportStatus": {
       "button": "Hisobot holati",
@@ -4310,7 +4318,8 @@
     "sync": "Sinxronlash",
     "reason": {
       "noCode": "Kod yo'q (qurilmadan qo'shilgan)",
-      "foreignCode": "Begona kod"
+      "foreignCode": "Begona kod",
+      "removed": "HRM'dan o'chirilgan, qurilmada qolgan"
     },
     "resolved": {
       "yes": "Hal qilingan",
@@ -4320,7 +4329,11 @@
       "fixed": "Tuzatildi",
       "ignored": "E'tiborsiz"
     },
-    "deleteWarning": "Bu shaxs HikCentral'dan butunlay o'chiriladi va BARCHA qurilmalardan tushadi. Amalni qaytarib bo'lmaydi."
+    "deleteWarning": "Bu shaxs HikCentral'dan butunlay o'chiriladi va BARCHA qurilmalardan tushadi. Amalni qaytarib bo'lmaydi.",
+    "info": {
+      "title": "Diqqat!",
+      "desc": "Ushbu xodimlar turniket qurilmasiga qo‘lda kiritilgan, HRM tizimi orqali qurilmaga qo‘shilmagan. Shu sababli xodimlarni avval turniket qurilmasining o‘zidan (ISUP/HikCentral) o‘chirib tashlash, so‘ng HRM tizimi orqali qurilmaga qayta qo‘shish lozim."
+    }
   },
   "pensioner": {
     "name": "Pensionerlar",
@@ -5382,5 +5395,82 @@
     "recipientsShort": "Qabul qiluvchi",
     "sendTimeLabel": "Yuborilish vaqtini sozlash",
     "sendTimeFuture": "Vaqt hozirgidan keyin bo'lishi kerak"
+  },
+  "sickLeave": {
+    "name": "Kasallik varaqasi",
+    "createTitle": "Kasallik varaqasini ochish",
+    "updateTitle": "Kasallik varaqasini tahrirlash",
+    "status": {
+      "open": "Ochilgan",
+      "closed": "Yopilgan",
+      "unexcused": "Sababsiz"
+    },
+    "filter": {
+      "status": "Holati",
+      "statusPlaceholder": "Holatni tanlang",
+      "organization": "Korxona",
+      "fromDate": "Sanadan",
+      "toDate": "Sanagacha"
+    },
+    "table": {
+      "worker": "Xodim",
+      "status": "Holati",
+      "fromDate": "Boshlangan sana",
+      "toDate": "Yopilgan sana"
+    },
+    "form": {
+      "worker": "Xodim",
+      "fromDate": "Qachondan",
+      "toDate": "Qachongacha",
+      "number": "Varaqa raqami",
+      "issuedDate": "Varaqa sanasi",
+      "file": "Kasallik varaqasi (PDF)",
+      "selectPdf": "PDF tanlash",
+      "reason": "Yopish sababi",
+      "toDateOptional": "Qachongacha (ixtiyoriy)"
+    },
+    "close": {
+      "title": "Varaqani yakunlash",
+      "withDocument": "Hujjat bilan",
+      "unexcused": "Hujjatsiz",
+      "toDateRequired": "Yopilish sanasini tanlang",
+      "documentRequired": "Varaqa raqami, sanasi va PDF fayl kerak",
+      "reasonRequired": "Yopish sababini yozing",
+      "reasonPlaceholder": "Nima uchun hujjatsiz yopilmoqda",
+      "hint": "Yopilgandan keyin varaqa o'zgartirilmaydi.",
+      "withDocumentHint": "Varaqa raqami, sanasi va PDF fayl",
+      "unexcusedHint": "Hujjat yo'q — sabab yoziladi"
+    },
+    "actions": {
+      "close": "Yakunlash"
+    },
+    "delete": {
+      "title": "Varaqani o'chirasizmi?",
+      "desc": "Bu amalni orqaga qaytarib bo'lmaydi."
+    },
+    "info": {
+      "fromDate": "Boshlanish sanasi — xodim kasal bo'lgan kun. Uni bugundan 4 kun orqagacha tanlash mumkin.",
+      "toDate": "Yopilish sanasini hozir tanlamasangiz, varaqa ochiq qoladi — xodim ishga chiqqanda «Yakunlash» orqali yopasiz.",
+      "maxDays": "Bitta varaqa 14 kundan uzoq bo'lmaydi. Kasallik cho'zilsa, keyingi kunlarga yangi varaqa ochiladi."
+    },
+    "view": {
+      "title": "Kasallik varaqasi",
+      "worker": "Xodim",
+      "organization": "Korxona",
+      "status": "Holati",
+      "period": "Davri",
+      "days": "Davomiyligi",
+      "daysUnit": "kun",
+      "openedAt": "Varaqa ochilgan vaqt",
+      "closedAt": "Yakunlangan vaqt",
+      "docTitle": "Hujjat ma'lumotlari",
+      "number": "Varaqa raqami",
+      "issuedDate": "Varaqa sanasi",
+      "reason": "Yopish sababi",
+      "file": "Fayl",
+      "openFile": "PDF ni ochish",
+      "noDoc": "Hujjat keltirilmagan",
+      "stillOpen": "Varaqa hali ochiq"
+    }
   }
 }

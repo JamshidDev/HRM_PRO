@@ -1,12 +1,20 @@
 <script setup>
-  import { ArrowUpload20Regular, Checkmark20Regular, Dismiss20Regular, Phone20Regular } from '@vicons/fluent'
+  import {
+    Checkmark20Regular,
+    Dismiss20Regular,
+    Edit20Regular,
+    Phone20Regular
+  } from '@vicons/fluent'
   import { UIFigBlock } from '@/components/index.js'
   import { useMobileUserStore, useAccountStore } from '@/store/modules/index.js'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   const store = useMobileUserStore()
   const accStore = useAccountStore()
 
-  const canWrite = computed(() => accStore.checkPermission(accStore.pn.mobileUsersWrite))
+  const canWrite = computed(() => accStore.checkPermission(accStore.pn.mobileAppVersion))
 
   const platforms = ['android', 'ios']
   const rowByPlatform = (platform) => store.versions.find((v) => v.platform === platform) ?? null
@@ -16,8 +24,19 @@
     store._startVersionEdit(platform)
   }
 
+  // Kiritish paytida faqat raqam va nuqta o'tkaziladi.
+  const allowVersion = (v) => v === '' || /^[0-9.]*$/.test(v)
+
+  // `1`, `1.9`, `1.9.2`, `1.9.2.3` — semver uslubidagi 1-4 bo'lak.
+  const VERSION_RE = /^\d+(\.\d+){0,3}$/
+
   const onSave = () => {
-    if (store.editValue == null || store.editValue === '') return
+    const value = String(store.editValue ?? '').trim()
+    if (!value) return
+    if (!VERSION_RE.test(value)) {
+      $Toast.error(t('mobileUserPage.versionInvalid'))
+      return
+    }
     void store._saveVersion()
   }
 
@@ -44,13 +63,15 @@
 
         <template v-if="store.editingPlatform === platform">
           <div class="version-row__edit">
-            <n-input-number
+            <!-- Versiya MATN: `1.9.2` son emas, shuning uchun `n-input-number`
+                 to'g'ri kelmaydi (u `1.9` ga kesib tashlardi). -->
+            <n-input
               v-model:value="store.editValue"
               size="small"
               class="version-row__input"
-              :min="0"
-              :step="0.1"
-              :show-button="false"
+              placeholder="1.9.2"
+              :allow-input="allowVersion"
+              :maxlength="20"
               @keyup.enter="onSave"
             />
             <button
@@ -75,16 +96,22 @@
 
         <template v-else>
           <div class="version-row__view">
-            <span class="version-row__value">{{ rowByPlatform(platform)?.latest_version || '—' }}</span>
-            <button
-              v-if="canWrite"
-              type="button"
-              class="version-upgrade-btn"
-              @click="onUpgrade(platform)"
-            >
-              <n-icon :size="15"><ArrowUpload20Regular /></n-icon>
+            <span class="version-row__value">{{
+              rowByPlatform(platform)?.latest_version || '—'
+            }}</span>
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <button
+                  v-if="canWrite"
+                  type="button"
+                  class="version-icon-btn version-icon-btn--edit"
+                  @click="onUpgrade(platform)"
+                >
+                  <n-icon :size="16"><Edit20Regular /></n-icon>
+                </button>
+              </template>
               {{ $t('mobileUserPage.upgrade') }}
-            </button>
+            </n-tooltip>
           </div>
         </template>
       </div>
@@ -130,24 +157,6 @@
     color: var(--fig-text-primary, #18181b);
   }
 
-  .version-upgrade-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
-    border-radius: 8px;
-    border: 1px solid var(--fig-text-brand, #1570ef);
-    background: transparent;
-    color: var(--fig-text-brand, #1570ef);
-    font-size: 13px;
-    font-weight: 600;
-    transition: background-color 0.16s ease, color 0.16s ease;
-  }
-
-  .version-upgrade-btn:hover {
-    background: var(--fig-bg-brand-secondary, #eff6ff);
-  }
-
   .version-row__edit {
     display: flex;
     align-items: center;
@@ -169,7 +178,10 @@
     border: 1px solid var(--fig-br-disable, #e4e4e7);
     background: var(--fig-bg-surface, #fff);
     color: var(--fig-text-secondary, #71717a);
-    transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+    transition:
+      background-color 0.16s ease,
+      border-color 0.16s ease,
+      color 0.16s ease;
   }
 
   .version-icon-btn:disabled {
@@ -190,6 +202,11 @@
 
   .version-icon-btn--brand:hover {
     opacity: 0.9;
+  }
+
+  .version-icon-btn--edit:hover {
+    border-color: var(--fig-text-brand, #1570ef);
+    color: var(--fig-text-brand, #1570ef);
   }
 
   @media (max-width: 640px) {
