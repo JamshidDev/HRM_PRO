@@ -12,7 +12,12 @@
    * ------------------------------------------------------------------------ */
   import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue'
   import dayjs from 'dayjs'
-  import { Dismiss20Regular, ReOrderDotsVertical16Filled } from '@vicons/fluent'
+  import {
+    ChevronLeft16Filled,
+    ChevronRight16Filled,
+    Dismiss20Regular,
+    ReOrderDotsVertical16Filled
+  } from '@vicons/fluent'
   import { useTimesheetWorkerStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
@@ -244,9 +249,9 @@
                 style: band(y, z),
                 wide: px(z) - px(y) >= 48,
                 dur: minutesToHm(z - y),
-                durText: minutesToWords(z - y),
                 from: fmtMin(y),
-                to: fmtMin(z)
+                to: fmtMin(z),
+                tip: `${t('timesheetPage.countedShort')}: ${fmtMin(y)} → ${fmtMin(z)} · ${minutesToWords(z - y)}`
               })
               ranges.push({ from: fmtMin(y), to: fmtMin(z) })
             }
@@ -259,6 +264,7 @@
           from: fmtMin(a),
           to: fmtMin(b),
           durText: minutesToWords(sg.minutes),
+          tip: `${t('timesheetPage.inside')}: ${fmtMin(a)} → ${fmtMin(b)} · ${minutesToWords(sg.minutes)}`,
           countedText: minutesToWords(counted),
           parts,
           ranges,
@@ -335,8 +341,29 @@
   const ROWS_W = computed(() => (view.value === 'rows' ? 105 : 0))
   const POP_W = 520
 
+  const chart = ref(null)
+
+  /* Chizma ustidagi izoh. Brauzerning `title` ipuchasi kechikib chiqadi,
+   * uslubga bo'ysunmaydi va qorong'i temada begona ko'rinadi — shuning uchun
+   * o'zimizniki. */
+  const tip = reactive({ show: false, text: '', x: 0, y: 0 })
+  const showTip = (e, text) => {
+    const box = chart.value?.getBoundingClientRect()
+    if (!box) return
+    tip.show = true
+    tip.text = text
+    // Ipucha `.tsd-chart` ichida joylashadi, shuning uchun koordinatalar
+    // undan hisoblanadi; chetdan chiqib ketmasin deb qisib qo'yiladi.
+    tip.x = Math.min(Math.max(e.clientX - box.left, 8), box.width - 8)
+    tip.y = e.clientY - box.top
+  }
+  const hideTip = () => {
+    tip.show = false
+  }
+
   const openMark = ref(null)
   const scrollLeft = ref(0)
+  const maxScroll = ref(0)
   const chartW = ref(0)
 
   const closeMark = () => {
@@ -397,12 +424,14 @@
    * Ikki maket ham qoldirilgan — qaysi biri qulayroq ekani ishlatib ko'rilgach
    * hal bo'ladi. Tanlov saqlanadi.
    * --------------------------------------------------------------------- */
-  const VIEW_KEY = 'hrm.timesheet.dayDetail.chartView'
+  // `.v2` — standart ko'rinish «Qatorlar»dan «Lenta»ga o'zgardi; eski kalit
+  // saqlangan tanlov bilan yangi standartni bosib qo'yardi.
+  const VIEW_KEY = 'hrm.timesheet.dayDetail.chartView.v2'
   const views = [
-    { key: 'rows', label: 'timesheetPage.viewRows' },
-    { key: 'ribbon', label: 'timesheetPage.viewRibbon' }
+    { key: 'ribbon', label: 'timesheetPage.viewRibbon' },
+    { key: 'rows', label: 'timesheetPage.viewRows' }
   ]
-  const view = ref('rows')
+  const view = ref('ribbon')
   try {
     const saved = localStorage.getItem(VIEW_KEY)
     if (views.some((v) => v.key === saved)) view.value = saved
@@ -712,7 +741,6 @@
   /* --- Gorizontal skroll va maketdagi o'z skrollbari ---------------------- */
   const viewport = ref(null)
   const track = ref(null)
-  const chart = ref(null)
   const thumb = reactive({ left: 0, width: 0 })
 
   // Chizma kengligi oynani joylashtirish uchun kerak — modal `96vw` gacha
@@ -733,13 +761,22 @@
   const syncThumb = () => {
     const v = viewport.value
     const tr = track.value
+    // Skroll paytida ipucha kursordan ajralib qolardi.
+    hideTip()
     if (v) scrollLeft.value = v.scrollLeft
     if (!v || !tr) return
     const tw = tr.clientWidth
     thumb.width = Math.max(24, (v.clientWidth / v.scrollWidth) * tw)
-    const maxScroll = v.scrollWidth - v.clientWidth
+    maxScroll.value = Math.max(0, v.scrollWidth - v.clientWidth)
     const maxLeft = tw - thumb.width
-    thumb.left = maxScroll > 0 ? (v.scrollLeft / maxScroll) * maxLeft : 0
+    thumb.left = maxScroll.value > 0 ? (v.scrollLeft / maxScroll.value) * maxLeft : 0
+  }
+
+  // Tugmalar bir SOATGA suradi — skroll g'altagini aniq tortishdan ko'ra
+  // qulayroq va qadam har doim bir xil.
+  const scrollByHour = (dir) => {
+    hideTip()
+    viewport.value?.scrollBy({ left: dir * HOUR_W, behavior: 'smooth' })
   }
 
   // Ochilganda ish oynasi markazga keladi — sutkaning 00:00 i emas, xodimning
@@ -836,7 +873,7 @@
             type="button"
             @click="go(-1)"
           >
-            ‹
+            <n-icon :component="ChevronLeft16Filled" size="16" />
           </button>
           <span class="tsd-nav-date">{{ dateLabel }}</span>
           <button
@@ -846,7 +883,7 @@
             type="button"
             @click="go(1)"
           >
-            ›
+            <n-icon :component="ChevronRight16Filled" size="16" />
           </button>
         </div>
 
@@ -876,7 +913,6 @@
                   </template>
                   <b v-else>—</b>
                 </div>
-                <component :is="s.icon" :class="{ 'is-rot': s.rotate }" class="tsd-stat-wm" />
               </div>
             </div>
 
@@ -967,15 +1003,17 @@
                       <template v-for="(iv, i) in intervals" :key="`iv-${i}`">
                         <span
                           :style="iv.style"
-                          :title="`${iv.from} → ${iv.to} · ${iv.durText}`"
                           class="tsd-iv"
+                          @mouseleave="hideTip"
+                          @mousemove="showTip($event, iv.tip)"
                         ></span>
                         <span
                           v-for="(p, j) in iv.parts"
                           :key="`p-${i}-${j}`"
                           :style="p.style"
-                          :title="`${p.from} → ${p.to} · ${p.durText}`"
                           class="tsd-ct"
+                          @mouseleave="hideTip"
+                          @mousemove="showTip($event, p.tip)"
                         >
                           <b v-if="p.wide">{{ p.dur }}</b>
                         </span>
@@ -987,10 +1025,11 @@
                         :key="`mk-${i}`"
                         :class="[mk.tone, { 'is-cluster': mk.count > 1, 'is-open': openMark === i }]"
                         :style="{ left: mk.left }"
-                        :title="mk.title"
                         class="tsd-mark"
                         type="button"
                         @click.stop="toggleMark(i)"
+                        @mouseleave="hideTip"
+                        @mousemove="showTip($event, mk.title)"
                       >
                         <template v-if="mk.count > 1">{{ mk.count }}</template>
                       </button>
@@ -1005,8 +1044,9 @@
                         :key="`ru-${i}`"
                         :class="`is-${r.kind}`"
                         :style="r.style"
-                        :title="r.title"
                         class="tsd-rb is-up"
+                        @mouseleave="hideTip"
+                        @mousemove="showTip($event, r.title)"
                       >
                         {{ r.text }}
                       </span>
@@ -1015,14 +1055,23 @@
                         :key="`rd-${i}`"
                         :class="`is-${r.kind}`"
                         :style="r.style"
-                        :title="r.title"
                         class="tsd-rb is-down"
+                        @mouseleave="hideTip"
+                        @mousemove="showTip($event, r.title)"
                       >
                         {{ r.text }}
                       </span>
                     </template>
                   </div>
                 </div>
+
+                <span
+                  v-if="tip.show"
+                  :style="{ left: `${tip.x}px`, top: `${tip.y}px` }"
+                  class="tsd-tip"
+                >
+                  {{ tip.text }}
+                </span>
 
                 <!-- Rozetka ro'yxati: necha marta va qaysi soniyada o'tilgan,
                      har biri hisobga olinganmi yoki juftlanmaganmi. -->
@@ -1085,6 +1134,26 @@
                     class="tsd-sb-thumb"
                     @pointerdown.stop="onThumbDown"
                   ></div>
+                </div>
+                <div class="tsd-sb-nav">
+                  <button
+                    :disabled="scrollLeft <= 0"
+                    :title="$t('timesheetPage.shiftLeft')"
+                    class="tsd-sb-btn"
+                    type="button"
+                    @click="scrollByHour(-1)"
+                  >
+                    <n-icon :component="ChevronLeft16Filled" size="16" />
+                  </button>
+                  <button
+                    :disabled="scrollLeft >= maxScroll - 1"
+                    :title="$t('timesheetPage.shiftRight')"
+                    class="tsd-sb-btn"
+                    type="button"
+                    @click="scrollByHour(1)"
+                  >
+                    <n-icon :component="ChevronRight16Filled" size="16" />
+                  </button>
                 </div>
               </div>
 
@@ -1317,8 +1386,10 @@
   }
 
   .tsd-nav-btn {
-    font-size: 14px;
-    line-height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
     color: var(--fig-text-secondary);
     cursor: pointer;
     background: none;
@@ -1415,10 +1486,6 @@
   }
 
   .tsd-stat-num {
-    position: relative;
-    // Suv belgisi ustidan o'tsin: «10 soat 38 daqiqa» kartochkaning butun
-    // kengligini egallashi mumkin, aks holda u qirqilardi.
-    z-index: 1;
     display: flex;
     gap: 6px;
     align-items: baseline;
@@ -1447,34 +1514,14 @@
     align-items: baseline;
   }
 
-  /* Suv belgisi — kartochkaning o'ng chetida, o'qishga xalaqit bermaydi. */
-  .tsd-stat-wm {
-    position: absolute;
-    top: 50%;
-    right: 8px;
-    width: 44px;
-    height: 44px;
-    opacity: 0.16;
-    transform: translateY(-50%);
-    pointer-events: none;
-  }
-
   .is-rot {
     transform: rotate(90deg);
-  }
-
-  .tsd-stat-wm.is-rot {
-    transform: translateY(-50%) rotate(90deg);
   }
 
   .tsd-stat.is-lime {
     .tsd-stat-ico {
       color: var(--fig-chip-lime-text);
       background: var(--fig-lime-100);
-    }
-
-    .tsd-stat-wm {
-      color: var(--fig-chip-lime-text);
     }
   }
 
@@ -1483,10 +1530,6 @@
       color: var(--fig-icon-indigo);
       background: var(--fig-indigo-100);
     }
-
-    .tsd-stat-wm {
-      color: var(--fig-icon-indigo);
-    }
   }
 
   .tsd-stat.is-green {
@@ -1494,20 +1537,12 @@
       color: var(--fig-icon-green);
       background: var(--fig-green-100);
     }
-
-    .tsd-stat-wm {
-      color: var(--fig-icon-green);
-    }
   }
 
   .tsd-stat.is-amber {
     .tsd-stat-ico {
       color: var(--fig-icon-amber);
       background: var(--fig-amber-100);
-    }
-
-    .tsd-stat-wm {
-      color: var(--fig-icon-amber);
     }
   }
 
@@ -1987,6 +2022,24 @@
     opacity: 1;
   }
 
+  /* Chizma ipuchasi — kursordan yuqorida, chizma chetidan chiqmaydi. */
+  .tsd-tip {
+    position: absolute;
+    z-index: 15;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    color: var(--fig-text-primary);
+    white-space: nowrap;
+    pointer-events: none;
+    background: var(--fig-block-bg);
+    border: 1px solid var(--tsd-line);
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgb(16 24 40 / 16%);
+    transform: translate(-50%, calc(-100% - 12px));
+  }
+
   /* ── Rozetka ro'yxati ─────────────────────────────────────────────────── */
   .tsd-pop {
     position: absolute;
@@ -2174,8 +2227,44 @@
   /* ── Skrollbar (maketdagi shakl) ──────────────────────────────────────── */
   .tsd-sb {
     display: flex;
+    gap: 8px;
     align-items: center;
-    margin-top: -4px;
+    margin-top: 2px;
+  }
+
+  .tsd-sb-nav {
+    display: flex;
+    flex-shrink: 0;
+    gap: 4px;
+  }
+
+  .tsd-sb-btn {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    color: var(--fig-text-secondary);
+    cursor: pointer;
+    background: var(--fig-bg-tertiary);
+    border: 0;
+    border-radius: 8px;
+    transition:
+      color 0.15s,
+      background 0.15s;
+
+    &:hover:not(:disabled) {
+      color: #fff;
+      background: var(--fig-icon-brand);
+    }
+
+    &:disabled {
+      color: var(--fig-text-disable);
+      cursor: default;
+      opacity: 0.6;
+    }
   }
 
   .tsd-sb-spacer {

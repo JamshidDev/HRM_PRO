@@ -2724,6 +2724,8 @@
     "countedShort": "Засчитанное время",
     "viewRows": "Строки",
     "viewRibbon": "Лента",
+    "shiftLeft": "На час влево",
+    "shiftRight": "На час вправо",
     "notWorked": "Не отработано"
   },
   "turnstile": {

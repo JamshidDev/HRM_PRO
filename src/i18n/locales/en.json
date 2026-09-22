@@ -2716,6 +2716,8 @@
     "countedShort": "Counted time",
     "viewRows": "Rows",
     "viewRibbon": "Ribbon",
+    "shiftLeft": "One hour left",
+    "shiftRight": "One hour right",
     "notWorked": "Not worked"
   },
   "turnstile": {

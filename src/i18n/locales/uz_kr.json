@@ -2457,6 +2457,8 @@
     "countedShort": "Ҳисобга олинган вақт",
     "viewRows": "Қаторлар",
     "viewRibbon": "Лента",
+    "shiftLeft": "Бир соат чапга",
+    "shiftRight": "Бир соат ўнгга",
     "notWorked": "Ишланмаган"
   },
   "turnstile": {
