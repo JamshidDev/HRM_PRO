@@ -1,6 +1,7 @@
 <script setup>
   import { useDeviceEventStore, useEventStore, useAccountStore } from '@/store/modules/index.js'
   import { UIPageContent } from '@/components/index.js'
+  import InfoCard from './ui/InfoCard.vue'
   import Filter from './ui/Filter.vue'
   import Table from './ui/Table.vue'
   import PhotoModal from './ui/PhotoModal.vue'
@@ -28,6 +29,7 @@
 
 <template>
   <UIPageContent>
+    <InfoCard />
     <Filter />
     <Table />
     <PhotoModal />
