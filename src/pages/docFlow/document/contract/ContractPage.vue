@@ -1,5 +1,6 @@
 <script setup>
   import contractForm from './contractForm.vue'
+  import ContractFormSteps from './ui/ContractFormSteps.vue'
   import ContractList from './ContractList.vue'
   import { UIModal, UIPageContent, UIOfficeApp, UIConfirmByFile } from '@/components/index.js'
   import { useContractStore, useAccountStore, useComponentStore } from '@/store/modules/index.js'
@@ -48,8 +49,14 @@
     <UIModal
       :title="store.visibleType ? $t('documentPage.createTitle') : $t('documentPage.updateTitle')"
       :width="1200"
+      card-class="contract-modal-card"
       v-model:visible="store.visible"
+      :header-divider="false"
     >
+      <!-- Qadamlar sarlavha qatorida: forma faqat maydonlardan iborat qoladi -->
+      <template #header-actions>
+        <ContractFormSteps />
+      </template>
       <contractForm />
     </UIModal>
     <UIOfficeApp ref="officeAppRef" />

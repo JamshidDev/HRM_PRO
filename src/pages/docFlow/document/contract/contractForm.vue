@@ -1,15 +1,13 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
   import { useContractStore, useComponentStore } from '@/store/modules/index.js'
-  import { UIFigSteps, UIProfileButton } from '@/components/index.js'
+  import { UIProfileButton } from '@/components/index.js'
   import icons from '@/assets/icons'
-  import i18n from '@/i18n/index.js'
   import ContractForm_1 from '@/pages/docFlow/document/contract/ui/ContractForm_1.vue'
   import ContractForm_2 from '@/pages/docFlow/document/contract/ui/ContractForm_2.vue'
   import ContractForm_3 from '@/pages/docFlow/document/contract/ui/ContractForm_3.vue'
   import ContractForm_4 from '@/pages/docFlow/document/contract/ui/ContractForm_4.vue'
 
-  const { t } = i18n.global
   const store = useContractStore()
   const componentStore = useComponentStore()
   const formRef = ref(null)
@@ -20,18 +18,6 @@
       default: null
     }
   })
-
-  const steps = computed(() => [
-    { key: 'one', label: t('contractPage.step.stepOne') },
-    { key: 'two', label: t('contractPage.step.stepTwo') },
-    { key: 'three', label: t('contractPage.step.stepThree') },
-    { key: 'four', label: t('contractPage.step.stepFour') }
-  ])
-
-  // Sehrgar ketma-ket yuriladi — joriy qadamgacha bo'lganlari bajarilgan hisoblanadi
-  const completedSteps = computed(() =>
-    Array.from({ length: Math.max(0, store.stepNumber - 1) }, (_, i) => i + 1)
-  )
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {
@@ -72,56 +58,63 @@
 </script>
 
 <template>
+  <!-- Qadamlar paneli bu yerda EMAS: u modal sarlavhasida (`ContractFormSteps`),
+       shu bois forma faqat maydonlardan iborat. -->
   <n-form
     class="contract-form"
     ref="formRef"
     :rules="validationRules.contractFrom"
     :model="store.payload"
   >
-    <!-- Qadamlar paneli kanvasdan TASHQARIDA: modal sarlavhasining ajratuvchi
-         chizig'iga taqalib turadi, ostida esa o'z chizig'i bor. -->
-    <div class="contract-form__steps hidden! md:block!">
-      <UIFigSteps :steps="steps" :current="store.stepNumber" :completed="completedSteps" />
+    <div class="contract-form__body">
+      <n-tabs animated v-model:value="store.activeTab" class="hidden-tab-header" type="segment">
+        <n-tab-pane :name="store.tabList[0].id">
+          <ContractForm_1 />
+        </n-tab-pane>
+        <n-tab-pane :name="store.tabList[1].id">
+          <ContractForm_2 />
+        </n-tab-pane>
+        <n-tab-pane :name="store.tabList[2].id">
+          <ContractForm_3 />
+        </n-tab-pane>
+        <n-tab-pane :name="store.tabList[3].id">
+          <ContractForm_4 />
+        </n-tab-pane>
+      </n-tabs>
     </div>
 
-    <div class="contract-form__canvas">
-      <div class="contract-form__body">
-        <n-tabs animated v-model:value="store.activeTab" class="hidden-tab-header" type="segment">
-          <n-tab-pane :name="store.tabList[0].id">
-            <ContractForm_1 />
-          </n-tab-pane>
-          <n-tab-pane :name="store.tabList[1].id">
-            <ContractForm_2 />
-          </n-tab-pane>
-          <n-tab-pane :name="store.tabList[2].id">
-            <ContractForm_3 />
-          </n-tab-pane>
-          <n-tab-pane :name="store.tabList[3].id">
-            <ContractForm_4 />
-          </n-tab-pane>
-        </n-tabs>
-      </div>
-
-      <div v-if="store.activeTab !== 4" class="contract-form__actions">
-        <UIProfileButton
-          v-if="store.activeTab !== 1"
-          variant="danger"
-          :icon="icons.figArrowLeft"
-          :loading="store.saveLoading"
-          @click="goBack()"
-        >
-          {{ $t('content.back') }}
-        </UIProfileButton>
-        <UIProfileButton :loading="store.saveLoading" @click="onSubmit">
-          {{ $t('content.next') }}
-        </UIProfileButton>
-      </div>
+    <div v-if="store.activeTab !== 4" class="contract-form__actions">
+      <UIProfileButton
+        v-if="store.activeTab !== 1"
+        variant="danger"
+        :icon="icons.figArrowLeft"
+        :loading="store.saveLoading"
+        @click="goBack()"
+      >
+        {{ $t('content.back') }}
+      </UIProfileButton>
+      <UIProfileButton :loading="store.saveLoading" @click="onSubmit">
+        {{ $t('content.next') }}
+      </UIProfileButton>
     </div>
   </n-form>
 </template>
 
 <style lang="scss" scoped>
-  // Maketda bloklar orasi 16, qadamlar paneli bilan orasi 20
+  /*
+    Modal sarlavhasi — tanadan ajratuvchi CHIZIQ emas, ochroq fon bilan ajraladi.
+    Karta `n-modal` orqali `body` ga teleport qilinadi, shu bois `:global` va
+    `card-class` ("contract-modal-card") orqali maqsadga olinadi; `overflow:
+    hidden` esa fon kartaning yuqori burchak radiusidan chiqib ketmasligi uchun.
+  */
+  :global(.contract-modal-card) {
+    overflow: hidden;
+  }
+
+  :global(.contract-modal-card .ui-modal__header) {
+    background: color-mix(in srgb, var(--surface-ground) 55%, var(--surface-section));
+  }
+
   .contract-form {
     display: flex;
     flex-direction: column;
@@ -129,43 +122,10 @@
     width: 100%;
   }
 
-  // Manfiy chetlar `UIModal` tanasining chetlarini qoplaydi (tanada `px-4 pt-4`,
-  // uning tashqarisida yana `p-2`) — shunda panel sarlavha chizig'iga taqaladi
-  // va kartaning butun kengligi bo'ylab cho'ziladi.
-  .contract-form__steps {
-    margin: -16px -24px 0;
-    padding: 12px 24px;
-    border-bottom: 1px solid var(--surface-line);
-  }
-
-  // Kanvas `hrm/worker/create` (CandidatePage) bilan bir xil: oq fig-kartalar
-  // kulrang `--surface-ground` fonda turadi. Modalning oq tanasi ustida kartalar
-  // va ularning och sarlavha paneli ko'rinmay ketardi.
-  .contract-form__canvas {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    width: 100%;
-    padding: 16px;
-    border-radius: 16px;
-    background: var(--surface-ground);
-  }
-
-  @media (max-width: 767.98px) {
-    .contract-form__canvas {
-      padding: 12px;
-      border-radius: 12px;
-    }
-  }
-
-  // `height` emas `max-height`: 4-qadam (muvaffaqiyat kartasi) past bo'lgani uchun
-  // qat'iy balandlik ostida katta bo'sh joy qolardi.
-  // `vh` emas `dvh`: loyihadagi qolgan o'lchamlar kabi mobil brauzer paneli
-  // hisobga olinsin (`UIModal` ning fullscreen holati ham `100dvh`).
-  // 280 = modal sarlavhasi (60) + tana chetlari (32) + kanvas chetlari (32) +
-  // qadamlar paneli (70) + amallar qatori (36) + oraliqlar/karta chetlari (50).
+  // 220 = modal sarlavhasi (70) + tana chetlari (32) + amallar qatori (36) +
+  // oraliqlar va sahifa chetlari (82).
   .contract-form__body {
-    max-height: calc(100dvh - 280px);
+    max-height: calc(100dvh - 220px);
     overflow-x: hidden;
     overflow-y: auto;
     // Skroll paneli maydon soyasi/fokus halqasini qirqmasin.
@@ -188,8 +148,86 @@
     }
   }
 
-  // Tab konteynerlari blok kartalarini qisib qo'ymasin
+  // Tab konteynerlari bo'limlarni qisib qo'ymasin. O'ngdagi 12px esa naive'ning
+  // `n-tabs-pane-wrapper` i uchun: u `overflow: hidden` bilan animatsiya qiladi
+  // va o'ng chetdagi maydonlarning burchagidan chiqib turgan sanoqchi nishonini
+  // qirqib tashlaydi — nishon shu bo'shliqqa tushadi.
   .contract-form :deep(.n-tab-pane) {
-    padding: 0;
+    padding: 0 12px 0 0;
+  }
+
+  /*
+    Kartalar (`UIFigBlock`) olib tashlandi — oldin maydonlar to'ri va bo'lim
+    sarlavhasi qolipini karta bergan edi, endi shu yerda, forma darajasida.
+  */
+  .contract-form :deep(.form-section) {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .contract-form :deep(.form-section__title) {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+    color: var(--fig-text-secondary);
+  }
+
+  .contract-form :deep(.form-section__head) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+  }
+
+  /*
+    Sanoqchi nishoni (`n-badge`) maydonning o'ng YUQORI BURCHAGIDA turadi —
+    markazi aynan burchakda: yuqori chiziqning ham, o'ng chiziqning ham o'rtasida.
+    Naive'ning o'zi uni `left: 100%` + `bottom: calc(100% - 9px)` orqali qo'yadi,
+    `transform` ni esa `offset` propidan inline yozadi — shu bois `!important`.
+    Nishonning o'ngga chiqqan yarmi tab panelining o'ng padding'iga tushadi
+    (pastdagi `.n-tab-pane` qoidasiga qarang).
+  */
+  .contract-form :deep(.n-badge-sup) {
+    top: 0;
+    right: 0;
+    bottom: auto;
+    left: auto;
+    transform: translate(50%, -50%) !important;
+  }
+
+  .contract-form :deep(.fig-grid) {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .contract-form :deep(.fig-grid > .fig-grid__wide) {
+    grid-column: span 2;
+  }
+
+  .contract-form :deep(.fig-grid > .fig-grid__full) {
+    grid-column: 1 / -1;
+  }
+
+  @media (max-width: 976px) {
+    .contract-form :deep(.fig-grid) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 480px) {
+    .contract-form :deep(.fig-grid) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .contract-form :deep(.fig-grid > .fig-grid__wide),
+    .contract-form :deep(.fig-grid > .fig-grid__full) {
+      grid-column: span 1;
+    }
   }
 </style>

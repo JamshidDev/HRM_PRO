@@ -32,6 +32,7 @@
   import dayjs from 'dayjs'
   import Utils from '@/utils/Utils.js'
   import { colorOfDetail } from './timesheetGrid.js'
+  import DayDetailModal from './DayDetailModal.vue'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -274,7 +275,13 @@
     if (!rules.value) rules.value = await store.autoCalcRules()
   }
 
-  // Kun tafsiloti modali — katakcha burchagidagi tugma ochadi.
+  /* Kun tafsiloti oynasi — katakcha burchagidagi tugma ochadi.
+   *
+   * Figma «HRM Railway» v3 (node 3690:66416) bo'yicha YANGI oyna alohida
+   * komponentda: `DayDetailModal.vue`. Eski oyna shu faylda, pastda turibdi
+   * va o'zgarmadi — dizayn qaytarilsa flagni `false` qilish kifoya. */
+  const USE_NEW_DAY_DETAIL = true
+
   const detailOpen = ref(false)
   const detailLoading = ref(false)
   const detail = ref(null)
@@ -304,6 +311,8 @@
     detailDay.value = day
     detailDate.value = date
     detailOpen.value = true
+    // Yangi oyna `worker` va `date` bo'yicha o'zi so'rov yuboradi.
+    if (USE_NEW_DAY_DETAIL) return
     detailLoading.value = true
     tlFocus.value = ''
     detail.value = null
@@ -1463,7 +1472,15 @@
     <!-- Kun tafsiloti.
          Tuzilishi ATAYLAB «javobdan tushuntirishga» qarab boradi:
          sarlavha (kim/qachon) → natija → ko'rsatkichlar → grafik → vaqt o'qi. -->
+    <DayDetailModal
+      v-if="USE_NEW_DAY_DETAIL"
+      v-model:date="detailDate"
+      v-model:visible="detailOpen"
+      :worker="detailWorker"
+    />
+
     <n-modal
+      v-else
       v-model:show="detailOpen"
       class="ts-detail-modal"
       preset="card"

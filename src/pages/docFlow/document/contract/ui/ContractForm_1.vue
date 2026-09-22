@@ -1,11 +1,10 @@
 <script setup>
   import Utils from '@/utils/Utils.js'
-  import { UIAutoComplete, UIUser, UISelect, UIFigBlock, UIFigField } from '@/components/index.js'
+  import { UIAutoComplete, UIUser, UISelect, UIFigField } from '@/components/index.js'
   import { useComponentStore, useContractStore } from '@/store/modules/index.js'
   import { NAvatar } from 'naive-ui'
   import UIHelper from '@/utils/UIHelper.js'
   import { useAppSetting } from '@/utils/index.js'
-  import icons from '@/assets/icons'
 
   const store = useContractStore()
   const componentStore = useComponentStore()
@@ -95,25 +94,26 @@
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 w-full">
-    <UIFigBlock :title="$t('documentPage.form.candidate')" :icon="icons.figUserAlt">
-      <!-- Kontent chapdan boshlanadi: blok ichidagi qolgan maydonlar (`fig-grid`)
-           ham chapdan tizilgan, markazlashtirilgan qator ulardan ajralib turardi.
-           O'rovchi flex YO'Q — `fig-block__body` ning o'zi ustun flex (stretch),
-           shu bois `max-w` li blok o'z-o'zidan chapda qoladi.
-           `w-[600px]` qat'iy edi: modal telefonda fullscreen bo'lgach ichkarida
-           gorizontal skroll berardi. -->
-      <div class="w-full max-w-[600px]">
-        <UIUser
-          v-if="componentStore.isSelectedWorker"
-          :data="componentStore.worker"
-          :short="false"
-        />
+  <div class="flex flex-col gap-6 w-full">
+    <!-- Xodim bloki markazda: qolgan bo'limlardan farqli, u bitta qatordan iborat
+         va to'liq kenglikda chapda turganda yonida katta bo'sh joy qolardi.
+         `w-[600px]` qat'iy edi: modal telefonda fullscreen bo'lgach ichkarida
+         gorizontal skroll berardi. -->
+    <section class="form-section w-full max-w-[600px] mx-auto items-center">
+      <span class="form-section__title">{{ $t('documentPage.form.candidate') }}</span>
+      <div class="w-full">
+        <!-- Karta: `UIUser` ning ichki matn bloki `calc(100% - 50px)` kenglikda,
+             ya'ni u qatorni to'liq egallaydi va `justify-center` unga ta'sir
+             qilmaydi — shu bois markazlash kartaning o'ziga (`mx-auto`) beriladi. -->
+        <div v-if="componentStore.isSelectedWorker" class="worker-card">
+          <UIUser :data="componentStore.worker" :short="false" />
+        </div>
         <UIAutoComplete v-else v-model:pin="store.payload.pin" />
       </div>
-    </UIFigBlock>
+    </section>
 
-    <UIFigBlock :title="$t('contractPage.step.stepOne')" :icon="icons.figFileArrowDown">
+    <section class="form-section">
+      <span class="form-section__title">{{ $t('contractPage.step.stepOne') }}</span>
       <div class="fig-grid">
         <UIFigField editing :label="$t('documentPage.form.contractNumber')" path="number">
           <n-input class="w-full" type="text" v-model:value="store.payload.number" />
@@ -248,13 +248,19 @@
           </UIFigField>
         </template>
       </div>
-    </UIFigBlock>
+    </section>
 
-    <UIFigBlock :title="$t('documentPage.form.director')" :icon="icons.figUsers">
+    <section class="form-section">
+      <span class="form-section__title">{{ $t('documentPage.form.director') }}</span>
       <div class="fig-grid">
         <UIFigField editing class="fig-grid__full" path="director_id">
+          <!-- `placement="top-start"`: bu qadamdagi OXIRGI maydon — modalning
+               pastki chetiga yaqin turadi va ro'yxat pastga ochilganda ekran
+               tagida qirqilib qolardi. Tepada joy har doim yetarli (joy bo'lmasa
+               naive o'zi pastga qaytaradi). -->
           <n-select
             v-model:value="store.payload.director_id"
+            placement="top-start"
             :options="componentStore.confirmationList"
             :loading="componentStore.confirmationLoading"
             :render-label="renderLabel"
@@ -264,6 +270,25 @@
           />
         </UIFigField>
       </div>
-    </UIFigBlock>
+    </section>
   </div>
 </template>
+
+<style lang="scss" scoped>
+  // Xodim kartasi oq fondan biroz ajralib tursin — modal sarlavhasi bilan bir xil tus
+  .worker-card {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 10px 16px;
+    border: 1px solid var(--fig-br-disable);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--surface-ground) 45%, var(--surface-section));
+  }
+
+  .worker-card :deep(.ui__user-component) {
+    width: 100%;
+  }
+</style>
