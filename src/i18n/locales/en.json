@@ -4267,9 +4267,6 @@
     "info": {
       "title": "What is this list?",
       "desc": "People who passed the turnstile but are NOT managed by HRM. Every pass is a separate row; resolved ones leave the list.",
-      "noCode": "added by hand from the HCP panel or the device itself",
-      "foreignCode": "has a code, but it does not belong to our employee",
-      "removed": "removed from HRM yet still on the device — can still pass",
       "action": "What to do: remove such a person ON THE DEVICE (ISUP/HikCentral), then add them again through HRM. The removal must happen on the device, not in HRM — they are already gone there."
     }
   },

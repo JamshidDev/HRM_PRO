@@ -4295,9 +4295,6 @@
     "info": {
       "title": "Bu ro‘yxat nima?",
       "desc": "Turniketdan o‘tgan, lekin HRM boshqaruvida BO‘LMAGAN odamlar. Har o‘tish alohida qator bo‘lib tushadi; hal qilingach ro‘yxatdan chiqadi.",
-      "noCode": "HCP paneli yoki qurilmaning o‘zidan qo‘lda kiritilgan",
-      "foreignCode": "kodi bor, lekin bizning xodimimizga tegishli emas",
-      "removed": "HRM’dan o‘chirilgan, lekin qurilmada qolib ketgan — hozir ham o‘ta oladi",
       "action": "Nima qilish kerak: bunday xodimni QURILMADAN (ISUP/HikCentral) o‘chirib, so‘ng HRM orqali qaytadan qo‘shish kerak. O‘chirish HRM tomondan emas, aynan qurilmadan bajariladi — HRM’da ular allaqachon yo‘q."
     }
   },
