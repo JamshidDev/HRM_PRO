@@ -1639,7 +1639,8 @@
     "upgrade": "Обновить",
     "form": {
       "latestVersion": "Последняя версия"
-    }
+    },
+    "versionInvalid": "Неверный формат версии. Например: 1.9.2"
   },
   "vacancyApprovePage": {
     "menuName": "Подтверждение",

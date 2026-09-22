@@ -1484,7 +1484,8 @@
     "upgrade": "Янгилаш",
     "form": {
       "latestVersion": "Сўнгги версия"
-    }
+    },
+    "versionInvalid": "Версия формати нотўғри. Масалан: 1.9.2"
   },
   "vacancyApprovePage": {
     "menuName": "Тасдиқлаш",

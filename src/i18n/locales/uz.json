@@ -1653,7 +1653,8 @@
     "upgrade": "Yangilash",
     "form": {
       "latestVersion": "So'nggi versiya"
-    }
+    },
+    "versionInvalid": "Versiya formati noto'g'ri. Masalan: 1.9.2"
   },
   "vacancyApprovePage": {
     "menuName": "Tasdiqlash",

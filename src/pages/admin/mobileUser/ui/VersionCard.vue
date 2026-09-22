@@ -7,6 +7,9 @@
   } from '@vicons/fluent'
   import { UIFigBlock } from '@/components/index.js'
   import { useMobileUserStore, useAccountStore } from '@/store/modules/index.js'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   const store = useMobileUserStore()
   const accStore = useAccountStore()
@@ -21,8 +24,19 @@
     store._startVersionEdit(platform)
   }
 
+  // Kiritish paytida faqat raqam va nuqta o'tkaziladi.
+  const allowVersion = (v) => v === '' || /^[0-9.]*$/.test(v)
+
+  // `1`, `1.9`, `1.9.2`, `1.9.2.3` — semver uslubidagi 1-4 bo'lak.
+  const VERSION_RE = /^\d+(\.\d+){0,3}$/
+
   const onSave = () => {
-    if (store.editValue == null || store.editValue === '') return
+    const value = String(store.editValue ?? '').trim()
+    if (!value) return
+    if (!VERSION_RE.test(value)) {
+      $Toast.error(t('mobileUserPage.versionInvalid'))
+      return
+    }
     void store._saveVersion()
   }
 
@@ -49,13 +63,15 @@
 
         <template v-if="store.editingPlatform === platform">
           <div class="version-row__edit">
-            <n-input-number
+            <!-- Versiya MATN: `1.9.2` son emas, shuning uchun `n-input-number`
+                 to'g'ri kelmaydi (u `1.9` ga kesib tashlardi). -->
+            <n-input
               v-model:value="store.editValue"
               size="small"
               class="version-row__input"
-              :min="0"
-              :step="0.1"
-              :show-button="false"
+              placeholder="1.9.2"
+              :allow-input="allowVersion"
+              :maxlength="20"
               @keyup.enter="onSave"
             />
             <button

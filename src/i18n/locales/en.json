@@ -1637,7 +1637,8 @@
     "upgrade": "Upgrade",
     "form": {
       "latestVersion": "Latest version"
-    }
+    },
+    "versionInvalid": "Invalid version format. Example: 1.9.2"
   },
   "actionLog": {
     "name": "Action history",
