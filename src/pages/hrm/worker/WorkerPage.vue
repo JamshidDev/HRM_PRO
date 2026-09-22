@@ -65,8 +65,10 @@
     <UIModal
       :title="store.visibleType ? $t('documentPage.createTitle') : $t('documentPage.updateTitle')"
       :width="1200"
+      card-class="contract-modal-card"
       fullscreen-on-mobile
       v-model:visible="store.visible"
+      :header-divider="false"
     >
       <!-- Qadamlar sarlavha qatorida: forma faqat maydonlardan iborat qoladi -->
       <template #header-actions>

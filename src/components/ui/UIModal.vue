@@ -44,6 +44,14 @@
     cardClass: {
       type: [String, Array, Object],
       default: null
+    },
+    /**
+     * Sarlavha ostidagi ajratuvchi chiziq. Tanasi o'zi bo'limlarga bo'lingan
+     * (masalan shartnoma sehrgari) modallarda chiziq ortiqcha — o'chiriladi.
+     */
+    headerDivider: {
+      type: Boolean,
+      default: true
     }
   })
 
@@ -102,7 +110,11 @@
       role="dialog"
       aria-modal="true"
       :style="cardStyle"
-      :content-style="isFlexBody ? 'flex:1;min-height:0;overflow:hidden;padding:0;display:flex;flex-direction:column;' : 'padding:0;'"
+      :content-style="
+        isFlexBody
+          ? 'flex:1;min-height:0;overflow:hidden;padding:0;display:flex;flex-direction:column;'
+          : 'padding:0;'
+      "
       closable
     >
       <template #default>
@@ -112,11 +124,14 @@
               <!-- `-mx-2 -mt-2` tashqi `p-2` ni bekor qiladi, shunda ajratuvchi chiziq
                    kartaning butun kengligi bo'ylab cho'ziladi. -->
               <div
-                class="flex items-center justify-between gap-3 -mx-2 -mt-2 px-6 py-4 border-b border-surface-line"
+                class="ui-modal__header flex items-center justify-between gap-3 -mx-2 -mt-2 px-6 py-4"
+                :class="headerDivider && 'border-b border-surface-line'"
               >
-                <h3 class="text-xl font-bold text-textColor0 truncate">
+                <!-- `min-w-0` + `flex-1`: uzun sarlavha amallar qatorini (sana,
+                     yopish tugmasi) siqib chiqarmasin, o'zi qisqartirilsin. -->
+                <h3 class="text-xl font-bold text-textColor0 truncate min-w-0 flex-1">
                   <slot name="header-title">
-                    {{ title }} 
+                    {{ title }}
                   </slot>
                 </h3>
                 <!-- Qo'shimcha amallar — YOPISH tugmasidan oldin. Slot bo'sh bo'lsa

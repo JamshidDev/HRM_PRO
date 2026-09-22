@@ -240,10 +240,17 @@
   </n-popover>
   <UIModal v-model:visible="showViewModal" :width="700">
     <template #header-title>
-      <p>{{ titleOf(store.viewingNotification) }}</p>
-      <span class="text-sm text-textColor3">{{
-        dayjs(store.viewingNotification.created_at).format('MMM DD, HH:mm')
-      }}</span>
+      <span class="block truncate">{{ titleOf(store.viewingNotification) }}</span>
+    </template>
+    <!-- Sana sarlavha ichida edi: h3 `truncate` bo'lgani uchun u yopish tugmasi
+         ostida qolib ketardi. Endi amallar qatorida — tugmadan oldin. -->
+    <template #header-actions>
+      <span
+        v-if="store.viewingNotification?.created_at"
+        class="text-sm font-normal text-textColor3 whitespace-nowrap"
+      >
+        {{ dayjs(store.viewingNotification.created_at).format('MMM DD, HH:mm') }}
+      </span>
     </template>
     <div
       class="grid grid-rows-[1fr_auto] h-[500px] relative"

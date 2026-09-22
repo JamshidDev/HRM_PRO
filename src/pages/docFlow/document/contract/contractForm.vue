@@ -101,6 +101,20 @@
 </template>
 
 <style lang="scss" scoped>
+  /*
+    Modal sarlavhasi — tanadan ajratuvchi CHIZIQ emas, ochroq fon bilan ajraladi.
+    Karta `n-modal` orqali `body` ga teleport qilinadi, shu bois `:global` va
+    `card-class` ("contract-modal-card") orqali maqsadga olinadi; `overflow:
+    hidden` esa fon kartaning yuqori burchak radiusidan chiqib ketmasligi uchun.
+  */
+  :global(.contract-modal-card) {
+    overflow: hidden;
+  }
+
+  :global(.contract-modal-card .ui-modal__header) {
+    background: color-mix(in srgb, var(--surface-ground) 55%, var(--surface-section));
+  }
+
   .contract-form {
     display: flex;
     flex-direction: column;
@@ -151,12 +165,6 @@
     flex-direction: column;
     gap: 12px;
     width: 100%;
-  }
-
-  // Bo'limlar orasidagi nozik chiziq — kartalar o'rniga shu ajratib turadi
-  .contract-form :deep(.form-section + .form-section) {
-    padding-top: 16px;
-    border-top: 1px solid var(--surface-line);
   }
 
   .contract-form :deep(.form-section__title) {

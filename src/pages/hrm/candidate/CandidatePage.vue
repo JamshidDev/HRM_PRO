@@ -183,7 +183,13 @@
         </p>
       </div>
     </UIDConfirm>
-    <UIModal :title="$t('documentPage.createTitle')" :width="1200" v-model:visible="store.visible">
+    <UIModal
+      :title="$t('documentPage.createTitle')"
+      :width="1200"
+      card-class="contract-modal-card"
+      :header-divider="false"
+      v-model:visible="store.visible"
+    >
       <!-- Qadamlar sarlavha qatorida: forma faqat maydonlardan iborat qoladi -->
       <template #header-actions>
         <ContractFormSteps />

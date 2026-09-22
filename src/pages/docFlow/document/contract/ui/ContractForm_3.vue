@@ -112,7 +112,7 @@
 </script>
 
 <template>
-  <div v-if="showVacationDay" class="flex flex-col gap-5 w-full">
+  <div v-if="showVacationDay" class="flex flex-col gap-6 w-full">
     <section class="form-section">
       <!-- Buyruq yaratish tugmasi bo'lim sarlavhasining o'ng chetida -->
       <div class="form-section__head">
