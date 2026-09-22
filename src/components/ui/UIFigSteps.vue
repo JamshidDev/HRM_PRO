@@ -24,12 +24,20 @@
     completed: {
       type: Array,
       default: () => []
+    },
+    /**
+     * Ixcham ko'rinish — modal sarlavhasi qatoriga sig'adi: doira 20, yorliq
+     * doiraning yonida (ustida emas), ulagich chiziq kaltaroq.
+     */
+    compact: {
+      type: Boolean,
+      default: false
     }
   })
 </script>
 
 <template>
-  <div class="fig-steps">
+  <div class="fig-steps" :class="compact && 'fig-steps--compact'">
     <template v-for="(step, idx) in steps" :key="step.key">
       <!-- Ulagich chiziq: oldingi qadam bajarilgan bo'lsa ko'karadi -->
       <span
@@ -46,7 +54,7 @@
             current === idx + 1 && !completed.includes(idx + 1) && 'fig-steps__badge--active'
           ]"
         >
-          <n-icon v-if="completed.includes(idx + 1)" :size="16">
+          <n-icon v-if="completed.includes(idx + 1)" :size="compact ? 12 : 16">
             <component :is="icons.figBadgeCheck" />
           </n-icon>
           <span v-else>{{ idx + 1 }}</span>
@@ -129,6 +137,46 @@
 
   .fig-steps__line--done {
     background: var(--fig-bg-brand-fill);
+  }
+
+  /* Ixcham: modal sarlavhasi qatorida turadi — balandligi 20, yorliq yonma-yon */
+  .fig-steps--compact {
+    width: auto;
+    gap: 6px;
+    padding: 0;
+
+    .fig-steps__item {
+      flex-direction: row;
+      gap: 6px;
+    }
+
+    .fig-steps__badge {
+      width: 20px;
+      height: 20px;
+      font-size: 11px;
+      line-height: 14px;
+    }
+
+    .fig-steps__badge--active {
+      filter: none;
+    }
+
+    .fig-steps__label {
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    .fig-steps__line {
+      width: 16px;
+      height: 1px;
+    }
+  }
+
+  /* Tor ekranda ixcham ko'rinishda faqat joriy qadam yorlig'i qoladi */
+  @media (max-width: 1100px) {
+    .fig-steps--compact .fig-steps__label:not(.fig-steps__label--active) {
+      display: none;
+    }
   }
 
   // Mobilda qadamlar bir qatorda qolib, kerak bo'lsa gorizontal scroll qilinadi

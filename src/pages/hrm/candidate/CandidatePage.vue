@@ -21,6 +21,7 @@
   import router from '@/router/index.js'
   import validationRules from '@/utils/validationRules.js'
   import ContractForm from '@/pages/docFlow/document/contract/contractForm.vue'
+  import ContractFormSteps from '@/pages/docFlow/document/contract/ui/ContractFormSteps.vue'
   import { AppPaths } from '@/utils/index.js'
 
   const formRef = ref(null)
@@ -182,7 +183,17 @@
         </p>
       </div>
     </UIDConfirm>
-    <UIModal :title="$t('documentPage.createTitle')" :width="1200" v-model:visible="store.visible">
+    <UIModal
+      :title="$t('documentPage.createTitle')"
+      :width="1200"
+      card-class="contract-modal-card"
+      :header-divider="false"
+      v-model:visible="store.visible"
+    >
+      <!-- Qadamlar sarlavha qatorida: forma faqat maydonlardan iborat qoladi -->
+      <template #header-actions>
+        <ContractFormSteps />
+      </template>
       <ContractForm :call-back="onSuccessEv" />
     </UIModal>
     <UIOfficeApp ref="officeAppRef" />

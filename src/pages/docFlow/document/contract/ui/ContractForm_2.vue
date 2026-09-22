@@ -1,10 +1,9 @@
 <script setup>
   import Utils from '@/utils/Utils.js'
-  import { UISelect, UIFigBlock, UIFigField } from '@/components/index.js'
+  import { UISelect, UIFigField } from '@/components/index.js'
   import UIDepartment from '@/components/ui/UIDepartment.vue'
   import { useComponentStore, useContractStore } from '@/store/modules/index.js'
   import UIHelper from '@utils/UIHelper.js'
-  import icons from '@/assets/icons'
 
   const store = useContractStore()
   const componentStore = useComponentStore()
@@ -39,11 +38,8 @@
 <template>
   <!-- FXSH (turi 2): tashkilot ham 1-qadamga (ContractForm_1) ko'chirilgan —
        2-qadam FXSH'da bo'sh qoladi. -->
-  <UIFigBlock
-    v-if="store.payload.type !== 2"
-    :title="$t('contractPage.step.stepTwo')"
-    :icon="icons.figBriefcase"
-  >
+  <section v-if="store.payload.type !== 2" class="form-section">
+    <span class="form-section__title">{{ $t('contractPage.step.stepTwo') }}</span>
     <div class="fig-grid">
       <UIFigField
         editing
@@ -157,5 +153,5 @@
         />
       </UIFigField>
     </div>
-  </UIFigBlock>
+  </section>
 </template>

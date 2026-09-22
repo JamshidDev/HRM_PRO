@@ -2538,6 +2538,15 @@
     "staff": "Employees",
     "timeTable": "Timesheets"
   },
+  "longWeek": {
+    "Mon": "Monday",
+    "Tue": "Tuesday",
+    "Wed": "Wednesday",
+    "Thu": "Thursday",
+    "Fri": "Friday",
+    "Sat": "Saturday",
+    "Sun": "Sunday"
+  },
   "shortWeek": {
     "Mon": "Mon",
     "Tue": "Tue",
@@ -2687,7 +2696,30 @@
     "notSet": "Not set",
     "srcMobile": "Mobile",
     "calcHead": "How it was counted",
-    "notCounted": "Not counted"
+    "notCounted": "Not counted",
+    "dayScale": "Across the day",
+    "inTurnstile": "At the turnstile",
+    "inside": "Inside",
+    "interval": "Interval",
+    "dayInfo": "Day details",
+    "prevDay": "Previous day",
+    "nextDay": "Next day",
+    "clusterCount": "{n} × {dir}",
+    "withinSeconds": "within {n} s",
+    "withinMinutes": "within {n} min",
+    "inCount": "Counted",
+    "rowsMarked": "{n} rows marked in the table",
+    "escClose": "Esc — close",
+    "hourUnit": "h",
+    "minuteUnit": "min",
+    "resizePanel": "Resize · double-click to reset",
+    "countedFull": "Counted working time",
+    "countedShort": "Counted time",
+    "viewRows": "Rows",
+    "viewRibbon": "Ribbon",
+    "shiftLeft": "One hour left",
+    "shiftRight": "One hour right",
+    "notWorked": "Not worked"
   },
   "turnstile": {
     "title": "Turnstile",

@@ -1,12 +1,39 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 const { t } = i18n.global
+import { useAccountStore } from '@/store/modules/index.js'
 import Utils from '@/utils/Utils.js'
 import { useAppSetting } from '@/utils/index.js'
 import utils from '@/utils/Utils.js'
 
 // ContractTypeEnum: 2 = fuqarolik-huquqiy shartnoma (FXSH).
 const CONTRACT_TYPE_CIVIL = 2
+
+/**
+ * Lavozim dropdowni uchun option. `UIHelper.selectRender.labelColor` uni shunday
+ * chizadi: `name` (rangli) + `position` + `subPosition`.
+ *
+ * `rate` (shtat) va `worker_rate` (band) faqat gated javobda bo'ladi — o'shanda
+ * lavozim VAKANT bo'lsa yashil, to'la band bo'lsa qizil ko'rinadi va ostida bo'sh
+ * stavka soni yoziladi. Permissionsiz (flat) javobda bu maydonlar yo'q, shuning
+ * uchun option faqat nomdan iborat qoladi.
+ */
+const toDepartmentPositionOption = (v) => {
+  const base = { ...v, name: v.position?.name, id: v.id }
+  const hasRate = v?.rate !== undefined && v?.rate !== null
+  if (!hasRate) return { ...base, position: '', color: '' }
+
+  // Stavkalar kasrli bo'lishi mumkin (0.5 stavka) — suzuvchi nuqta xatosini kesamiz.
+  const free = Math.round((Number(v.rate) - Number(v.worker_rate)) * 100) / 100
+  const rates = `${t('report.form.contingent')} - ${v.rate}; ${t('report.form.worker')} - ${v.worker_rate}`
+  return {
+    ...base,
+    position: v.department?.name,
+    subPosition: free > 0 ? `${rates}; ${t('report.form.vakant')} - ${free}` : rates,
+    color: free > 0 ? 'text-success' : 'text-danger',
+    vacantRate: free
+  }
+}
 
 export const useComponentStore = defineStore('componentStore', {
   state: () => ({
@@ -249,16 +276,19 @@ export const useComponentStore = defineStore('componentStore', {
     departments: {},
     positions: {},
     chatEnumLoading: false,
-    chatEnums:[],
+    chatEnums: []
   }),
   actions: {
-    fetchChatEnums(){
+    fetchChatEnums() {
       this.chatEnumLoading = true
-      $ApiService.componentService._chatEnums().then((res)=>{
-        this.chatEnums = res.data.data.telegram_message_types
-      }).finally(()=>{
-        this.chatEnumLoading = false
-      })
+      $ApiService.componentService
+        ._chatEnums()
+        .then((res) => {
+          this.chatEnums = res.data.data.telegram_message_types
+        })
+        .finally(() => {
+          this.chatEnumLoading = false
+        })
     },
     createDepartmentFetcher(key) {
       this.departments[key] ??= { list: [], total: 0, loading: false }
@@ -673,22 +703,46 @@ export const useComponentStore = defineStore('componentStore', {
           this.allStructureLoading = false
         })
     },
+    /**
+     * Forma dropdoni uchun bo'lim lavozimlari.
+     *
+     * Vakansiya (shtat va band stavkalar) FAQAT gated `department-positions`
+     * (hr-report) javobida bor — permissionsiz filter `get-department-positions`
+     * FLAT shakl qaytaradi: { id, position:{id,name} }, `rate`/`worker_rate` yo'q.
+     * Ilgari hamma uchun filter chaqirilardi — Worker ro'yxatni ko'radigan bo'ldi,
+     * lekin qo'shimcha kelishuv tuzayotgan kadrlar xodimi qaysi lavozim VAKANT
+     * ekanini ko'rmay qoldi. Endi ruxsati borlar boy endpoint'dan oladi (vakansiya
+     * bilan), qolganlar esa avvalgidek filter'dan (ro'yxat ko'rinadi, vakansiyasiz).
+     * Gated so'rov baribir rad etilsa — filter'ga qaytiladi, ya'ni ro'yxat hech
+     * qachon bo'sh qolmaydi.
+     */
     _departmentPosition(id = undefined) {
-      const params = { department_id: id }
       this.departmentPositionLoading = true
-      // Permissionsiz filter endpoint (get-department-positions) — forma dropdowni
-      // uchun; gated `department-positions` (hr-report) o'rniga (Worker permissionsiz
-      // ishlata olsin). Filter FLAT shakl qaytaradi: { id, position:{id,name} } —
-      // rate/worker_rate/department YO'Q (dropdown'da vakansiya ko'rsatilmaydi).
-      // Javob pagination'siz massiv: res.data.data (gated'dagi .data.data.data emas).
-      $ApiService.componentService
-        ._allPosition({ params })
-        .then((res) => {
-          this.departmentPositionList = (res.data.data || []).map((v) => ({
-            ...v,
-            name: v.position?.name,
-            id: v.id
-          }))
+      const accountStore = useAccountStore()
+
+      const fetchPlain = () =>
+        $ApiService.componentService
+          ._allPosition({ params: { department_id: id } })
+          .then((res) => res.data.data || [])
+
+      const fetchWithVacancy = () =>
+        $ApiService.departmentPositionService
+          ._index({
+            params: { page: 1, per_page: 1000, department_id: id },
+            silentError: true
+          })
+          .then((res) => res.data.data.data || [])
+
+      const request = accountStore.canView('hr-report')
+        ? fetchWithVacancy().catch(() => fetchPlain())
+        : fetchPlain()
+
+      request
+        .then((list) => {
+          this.departmentPositionList = list.map(toDepartmentPositionOption)
+        })
+        .catch(() => {
+          this.departmentPositionList = []
         })
         .finally(() => {
           this.departmentPositionLoading = false
@@ -803,7 +857,8 @@ export const useComponentStore = defineStore('componentStore', {
             // select'da lavozim qatori bo'sh chiqardi. Ular uchun LAVOZIM O'RNIGA
             // shartnoma turi ko'rsatiladi. Boshqa turlarda `null` — ularda lavozim bor,
             // qo'shimcha qator kerak emas.
-            contractType: v.contract?.type?.id === CONTRACT_TYPE_CIVIL ? v.contract?.type?.name : null,
+            contractType:
+              v.contract?.type?.id === CONTRACT_TYPE_CIVIL ? v.contract?.type?.name : null,
             photo: v.worker?.photo
           }))
           this.totalWorker = res.data.data.total
