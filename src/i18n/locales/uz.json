@@ -4293,9 +4293,9 @@
     },
     "deleteWarning": "Bu shaxs HikCentral'dan butunlay o'chiriladi va BARCHA qurilmalardan tushadi. Amalni qaytarib bo'lmaydi.",
     "info": {
-      "title": "Bu ro‘yxat nima?",
-      "desc": "Turniketdan o‘tgan, lekin HRM boshqaruvida BO‘LMAGAN odamlar. Har o‘tish alohida qator bo‘lib tushadi; hal qilingach ro‘yxatdan chiqadi.",
-      "action": "Nima qilish kerak: bunday xodimni QURILMADAN (ISUP/HikCentral) o‘chirib, so‘ng HRM orqali qaytadan qo‘shish kerak. O‘chirish HRM tomondan emas, aynan qurilmadan bajariladi — HRM’da ular allaqachon yo‘q."
+      "title": "Qurilmada bor, HRM’da yo‘q.",
+      "desc": "Bu ro‘yxatdagi odamlar turniketdan o‘tyapti, lekin HRM ularni boshqarmaydi.",
+      "action": "Ularni QURILMANING O‘ZIDAN (ISUP/HikCentral) o‘chirib, so‘ng HRM orqali qayta qo‘shish kerak — HRM'dan o‘chirish yordam bermaydi, u yerda ular allaqachon yo‘q."
     }
   },
   "pensioner": {

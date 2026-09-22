@@ -29,8 +29,8 @@
 
 <template>
   <UIPageContent>
-    <InfoCard />
     <Filter />
+    <InfoCard />
     <Table />
     <PhotoModal />
   </UIPageContent>
