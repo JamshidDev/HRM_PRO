@@ -223,6 +223,7 @@
         const lunch = lunchWindow.value
         const parts = []
         const ranges = []
+        const countedRanges = []
         let counted = 0
         if (win) {
           const c = Math.max(a, win[0])
@@ -238,6 +239,7 @@
             for (const [y, z] of raw) {
               if (z <= y) continue
               counted += z - y
+              countedRanges.push([y, z])
               parts.push({
                 style: band(y, z),
                 wide: px(z) - px(y) >= 48,
@@ -251,6 +253,9 @@
           }
         }
         return {
+          a,
+          b,
+          countedRanges,
           from: fmtMin(a),
           to: fmtMin(b),
           durText: minutesToWords(sg.minutes),
@@ -326,7 +331,8 @@
   })
 
   /* --- Rozetka bosilganda ochiladigan ro'yxat ----------------------------- */
-  const ROWS_W = 105 // qator nomlari ustuni (104px) + 1px chegara
+  // Qator nomlari ustuni (104px) + 1px chegara. Lentada u ustun yo'q.
+  const ROWS_W = computed(() => (view.value === 'rows' ? 105 : 0))
   const POP_W = 520
 
   const openMark = ref(null)
@@ -347,7 +353,7 @@
     if (!mk) return null
     const w = Math.min(POP_W, Math.max(240, chartW.value))
     // Rozetkaning KO'RINADIGAN maydondagi o'rni — skroll siljishi hisobga olinadi.
-    const anchor = ROWS_W + mk.x - scrollLeft.value
+    const anchor = ROWS_W.value + mk.x - scrollLeft.value
     const cardLeft = Math.min(Math.max(0, anchor - w / 2), Math.max(0, chartW.value - w))
     const span = mk.items[mk.count - 1].s - mk.items[0].s
     const dirLabel = mk.dir ? t('timesheetPage.enter') : t('timesheetPage.exit')
@@ -356,7 +362,7 @@
       cardLeft,
       arrowLeft: Math.min(Math.max(14, anchor - cardLeft), w - 14),
       // Rozetka skrollda chetga chiqib ketsa oyna ham ko'rinmaydi.
-      visible: anchor > ROWS_W - 12 && anchor < chartW.value + 12,
+      visible: anchor > ROWS_W.value - 12 && anchor < chartW.value + 12,
       title:
         mk.count > 1 ? t('timesheetPage.clusterCount', { n: mk.count, dir: dirLabel }) : dirLabel,
       sub:
@@ -385,6 +391,122 @@
     if (!set.size) return
     await nextTick()
     evList.value?.querySelector('.is-marked')?.scrollIntoView({ block: 'nearest' })
+  })
+
+  /* --- Chizma ko'rinishi: «Qatorlar» yoki «Lenta» -------------------------
+   * Ikki maket ham qoldirilgan — qaysi biri qulayroq ekani ishlatib ko'rilgach
+   * hal bo'ladi. Tanlov saqlanadi.
+   * --------------------------------------------------------------------- */
+  const VIEW_KEY = 'hrm.timesheet.dayDetail.chartView'
+  const views = [
+    { key: 'rows', label: 'timesheetPage.viewRows' },
+    { key: 'ribbon', label: 'timesheetPage.viewRibbon' }
+  ]
+  const view = ref('rows')
+  try {
+    const saved = localStorage.getItem(VIEW_KEY)
+    if (views.some((v) => v.key === saved)) view.value = saved
+  } catch {
+    // localStorage yopiq — standart ko'rinish qoladi.
+  }
+
+  /* Oraliqlardan «teshik»larni ayirish: [09:00–18:00] dan tushlik va hisobga
+   * olingan vaqt ayrilsa — ishlanmagan bo'laklar qoladi. */
+  const subtractRanges = (ranges, holes) => {
+    let out = ranges.map((r) => [...r])
+    for (const [hs, he] of holes) {
+      const next = []
+      for (const [a, b] of out) {
+        if (he <= a || hs >= b) {
+          next.push([a, b])
+          continue
+        }
+        if (hs > a) next.push([a, hs])
+        if (he < b) next.push([he, b])
+      }
+      out = next
+    }
+    return out.filter(([a, b]) => b > a)
+  }
+
+  /* Lenta: kun BITTA yo'lakda, ikki yarimga bo'lingan.
+   *   yuqori — xodim ICHKARIDA bo'lgan vaqt (hisobga olingani to'q yashil,
+   *            grafikdan tashqarida qolgani och yashil);
+   *   quyi   — grafikda bo'lib ISHLANMAGAN vaqt (tushlik sariq, qolgani qizil).
+   * Shu bo'linish tufayli «qayerda edi» va «nega kam chiqdi» bir qarashda
+   * ko'rinadi — uchta alohida qatorni solishtirish shart emas. */
+  const ribbon = computed(() => {
+    const win = workWindow.value
+    const lunch = lunchWindow.value
+    const up = []
+    const down = []
+    const counted = []
+
+    for (const iv of intervals.value) {
+      for (const [y, z] of iv.countedRanges) {
+        counted.push([y, z])
+        up.push({ from: y, to: z, kind: 'counted', label: t('timesheetPage.countedShort') })
+      }
+      for (const [y, z] of subtractRanges([[iv.a, iv.b]], iv.countedRanges)) {
+        up.push({ from: y, to: z, kind: 'raw', label: t('timesheetPage.inside') })
+      }
+    }
+
+    if (win) {
+      let gaps = subtractRanges([[win[0], win[1]]], counted)
+      if (lunch) {
+        gaps = subtractRanges(gaps, [lunch])
+        const a = Math.max(lunch[0], win[0])
+        const b = Math.min(lunch[1], win[1])
+        if (b > a) down.push({ from: a, to: b, kind: 'lunch', label: t('timesheetPage.lgLunch') })
+      }
+      for (const [y, z] of gaps) {
+        down.push({ from: y, to: z, kind: 'absent', label: t('timesheetPage.notWorked') })
+      }
+    }
+
+    const decorate = (list) =>
+      list.map((r) => {
+        const w = px(r.to) - px(r.from)
+        return {
+          ...r,
+          style: band(r.from, r.to),
+          // Bo'lak qancha keng bo'lsa, shuncha to'liq yoziladi: so'z bilan →
+          // ixcham → umuman yozilmaydi (u holda yakun qatori javob beradi).
+          text:
+            w >= 110
+              ? minutesToWords(r.to - r.from)
+              : w >= 44
+                ? minutesToHm(r.to - r.from)
+                : '',
+          title: `${r.label}: ${fmtMin(r.from)} → ${fmtMin(r.to)} · ${minutesToWords(
+            r.to - r.from
+          )}`
+        }
+      })
+
+    return {
+      band: win ? band(win[0], win[1]) : null,
+      up: decorate(up),
+      down: decorate(down)
+    }
+  })
+
+  /* Lenta ostidagi yakun. Qisqa bo'laklarga (masalan 12 daqiqalik uzilish)
+   * yozuv sig'maydi — «qancha ishlangan, qancha yo'q» savoliga javob shu
+   * qatordan HAR DOIM topiladi. */
+  const ribbonTotals = computed(() => {
+    const r = ribbon.value
+    const sum = (list, kind) =>
+      list.filter((x) => x.kind === kind).reduce((acc, x) => acc + (x.to - x.from), 0)
+    return [
+      { key: 'counted', label: t('timesheetPage.countedShort'), m: sum(r.up, 'counted') },
+      { key: 'raw', label: t('timesheetPage.inside'), m: sum(r.up, 'raw') },
+      { key: 'lunch', label: t('timesheetPage.lgLunch'), m: sum(r.down, 'lunch') },
+      { key: 'absent', label: t('timesheetPage.notWorked'), m: sum(r.down, 'absent') }
+    ]
+      .filter((x) => x.m > 0)
+      .map((x) => ({ ...x, value: minutesToWords(x.m) }))
   })
 
   /* --- Ko'rsatkich kartochkalari ------------------------------------------ */
@@ -487,16 +609,45 @@
   })
 
   /* --- Izohlar: bosilgan qatlam ajratiladi, qolgani xiralashadi ----------- */
-  const legend = [
-    { key: 'plan', label: 'timesheetPage.lgPlan' },
-    { key: 'lunch', label: 'timesheetPage.lgLunch' },
-    { key: 'raw', label: 'timesheetPage.inside' },
-    { key: 'counted', label: 'timesheetPage.countedShort' },
-    { key: 'events', label: 'timesheetPage.eventsShort' }
-  ]
+  // Har bir ko'rinish O'ZI chizadigan qatlamlarni izohlaydi — chizilmagan
+  // narsani izohda ko'rsatish chalg'itardi.
+  const LEGENDS = {
+    rows: [
+      { key: 'plan', label: 'timesheetPage.lgPlan' },
+      { key: 'lunch', label: 'timesheetPage.lgLunch' },
+      { key: 'raw', label: 'timesheetPage.inside' },
+      { key: 'counted', label: 'timesheetPage.countedShort' },
+      { key: 'events', label: 'timesheetPage.eventsShort' }
+    ],
+    ribbon: [
+      { key: 'plan', label: 'timesheetPage.lgPlan' },
+      { key: 'counted', label: 'timesheetPage.countedShort' },
+      { key: 'raw', label: 'timesheetPage.inside' },
+      { key: 'lunch', label: 'timesheetPage.lgLunch' },
+      { key: 'absent', label: 'timesheetPage.notWorked' }
+    ]
+  }
+  const legend = computed(() => LEGENDS[view.value])
+
   const focus = ref('')
   const toggleFocus = (key) => {
     focus.value = focus.value === key ? '' : key
+  }
+
+  const setView = async (key) => {
+    if (view.value === key) return
+    view.value = key
+    // Qatlamlar to'plami boshqacha; hodisa rozetkalari esa faqat «Qatorlar»da.
+    focus.value = ''
+    closeMark()
+    try {
+      localStorage.setItem(VIEW_KEY, key)
+    } catch {
+      // saqlanmasa ham joriy seansda ishlaydi.
+    }
+    await nextTick()
+    centerOnPlan()
+    syncThumb()
   }
 
   /* --- Yon panel kengligi ------------------------------------------------
@@ -732,7 +883,23 @@
             <!-- ② Kun bo'ylab — gorizontal vaqt o'qi -->
             <section class="tsd-card">
               <div class="tsd-card-head">
-                <h4 class="tsd-card-title">{{ $t('timesheetPage.dayScale') }}</h4>
+                <div class="tsd-card-head-l">
+                  <h4 class="tsd-card-title">{{ $t('timesheetPage.dayScale') }}</h4>
+                  <!-- Ikkala maket ham qoldirilgan: qaysi biri qulayroq ekani
+                       ishlatib ko'rilgach hal bo'ladi. -->
+                  <div class="tsd-view">
+                    <button
+                      v-for="v in views"
+                      :key="v.key"
+                      :class="{ 'is-on': view === v.key }"
+                      class="tsd-view-btn"
+                      type="button"
+                      @click="setView(v.key)"
+                    >
+                      {{ $t(v.label) }}
+                    </button>
+                  </div>
+                </div>
                 <div class="tsd-legend">
                   <button
                     v-for="lg in legend"
@@ -750,7 +917,7 @@
 
               <div ref="chart" class="tsd-chart">
                 <!-- Qator nomlari skrollda joyida qoladi -->
-                <div class="tsd-rows">
+                <div v-if="view === 'rows'" class="tsd-rows">
                   <span class="tsd-row-label is-plan">{{ $t('timesheetPage.lgPlan') }}</span>
                   <span class="tsd-row-label is-turn">{{ $t('timesheetPage.tabTurnstile') }}</span>
                   <span class="tsd-row-label is-ev">{{ $t('timesheetPage.eventsShort') }}</span>
@@ -762,71 +929,105 @@
                     :style="{ width: `${PLOT_W}px` }"
                     class="tsd-plot"
                   >
+                    <span
+                      v-if="view === 'ribbon' && ribbon.band"
+                      :style="ribbon.band"
+                      class="tsd-rb-win"
+                    ></span>
+
                     <template v-for="tk in ticks" :key="tk.h">
                       <span :style="{ left: `${tk.x}px` }" class="tsd-grid"></span>
                       <span :style="{ left: `${tk.x}px` }" class="tsd-tick">{{ tk.label }}</span>
                     </template>
 
-                    <!-- Reja oynasi va uning ichidagi tushlik -->
-                    <span v-if="planBand" :style="planBand.style" class="tsd-band is-plan">
-                      <template v-if="planBand.wide">
-                        <span class="tsd-band-t is-s">
-                          <b>{{ planBand.from }}</b>
-                          <i v-if="planBand.words">{{ $t('timesheetPage.workStart') }}</i>
+                    <template v-if="view === 'rows'">
+                      <!-- Reja oynasi va uning ichidagi tushlik -->
+                      <span v-if="planBand" :style="planBand.style" class="tsd-band is-plan">
+                        <template v-if="planBand.wide">
+                          <span class="tsd-band-t is-s">
+                            <b>{{ planBand.from }}</b>
+                            <i v-if="planBand.words">{{ $t('timesheetPage.workStart') }}</i>
+                          </span>
+                          <span class="tsd-band-t is-e">
+                            <b>{{ planBand.to }}</b>
+                            <i v-if="planBand.words">{{ $t('timesheetPage.workEnd') }}</i>
+                          </span>
+                        </template>
+                      </span>
+                      <template v-if="lunchBand">
+                        <span :style="lunchBand.style" class="tsd-band is-lunch">
+                          <b v-if="lunchBand.wide">{{ $t('timesheetPage.lgLunch') }}</b>
                         </span>
-                        <span class="tsd-band-t is-e">
-                          <b>{{ planBand.to }}</b>
-                          <i v-if="planBand.words">{{ $t('timesheetPage.workEnd') }}</i>
+                        <span :style="lunchBand.capStyle" class="tsd-lunch-cap">
+                          {{ lunchBand.from }} – {{ lunchBand.to }}
                         </span>
                       </template>
-                    </span>
-                    <template v-if="lunchBand">
-                      <span :style="lunchBand.style" class="tsd-band is-lunch">
-                        <b v-if="lunchBand.wide">{{ $t('timesheetPage.lgLunch') }}</b>
-                      </span>
-                      <span :style="lunchBand.capStyle" class="tsd-lunch-cap">
-                        {{ lunchBand.from }} – {{ lunchBand.to }}
-                      </span>
-                    </template>
 
-                    <!-- Turniket: xom oraliq (ramka) va hisobga olingan qism -->
-                    <template v-for="(iv, i) in intervals" :key="`iv-${i}`">
-                      <span
-                        :style="iv.style"
-                        :title="`${iv.from} → ${iv.to} · ${iv.durText}`"
-                        class="tsd-iv"
-                      ></span>
-                      <span
-                        v-for="(p, j) in iv.parts"
-                        :key="`p-${i}-${j}`"
-                        :style="p.style"
-                        :title="`${p.from} → ${p.to} · ${p.durText}`"
-                        class="tsd-ct"
+                      <!-- Turniket: xom oraliq (ramka) va hisobga olingan qism -->
+                      <template v-for="(iv, i) in intervals" :key="`iv-${i}`">
+                        <span
+                          :style="iv.style"
+                          :title="`${iv.from} → ${iv.to} · ${iv.durText}`"
+                          class="tsd-iv"
+                        ></span>
+                        <span
+                          v-for="(p, j) in iv.parts"
+                          :key="`p-${i}-${j}`"
+                          :style="p.style"
+                          :title="`${p.from} → ${p.to} · ${p.durText}`"
+                          class="tsd-ct"
+                        >
+                          <b v-if="p.wide">{{ p.dur }}</b>
+                        </span>
+                      </template>
+
+                      <!-- Kirish/chiqish belgilari — bosilsa ro'yxat ochiladi -->
+                      <button
+                        v-for="(mk, i) in marks"
+                        :key="`mk-${i}`"
+                        :class="[mk.tone, { 'is-cluster': mk.count > 1, 'is-open': openMark === i }]"
+                        :style="{ left: mk.left }"
+                        :title="mk.title"
+                        class="tsd-mark"
+                        type="button"
+                        @click.stop="toggleMark(i)"
                       >
-                        <b v-if="p.wide">{{ p.dur }}</b>
-                      </span>
+                        <template v-if="mk.count > 1">{{ mk.count }}</template>
+                      </button>
                     </template>
 
-                    <!-- Kirish/chiqish belgilari — bosilsa ro'yxat ochiladi -->
-                    <button
-                      v-for="(mk, i) in marks"
-                      :key="`mk-${i}`"
-                      :class="[mk.tone, { 'is-cluster': mk.count > 1, 'is-open': openMark === i }]"
-                      :style="{ left: mk.left }"
-                      :title="mk.title"
-                      class="tsd-mark"
-                      type="button"
-                      @click.stop="toggleMark(i)"
-                    >
-                      <template v-if="mk.count > 1">{{ mk.count }}</template>
-                    </button>
+                    <!-- ── Lenta: kun bitta yo'lakda ──────────────────────
+                         Yuqori yarim — ichkarida bo'lgan vaqt, quyi yarim —
+                         grafikda bo'lib ishlanmagan vaqt. -->
+                    <template v-else>
+                      <span
+                        v-for="(r, i) in ribbon.up"
+                        :key="`ru-${i}`"
+                        :class="`is-${r.kind}`"
+                        :style="r.style"
+                        :title="r.title"
+                        class="tsd-rb is-up"
+                      >
+                        {{ r.text }}
+                      </span>
+                      <span
+                        v-for="(r, i) in ribbon.down"
+                        :key="`rd-${i}`"
+                        :class="`is-${r.kind}`"
+                        :style="r.style"
+                        :title="r.title"
+                        class="tsd-rb is-down"
+                      >
+                        {{ r.text }}
+                      </span>
+                    </template>
                   </div>
                 </div>
 
                 <!-- Rozetka ro'yxati: necha marta va qaysi soniyada o'tilgan,
                      har biri hisobga olinganmi yoki juftlanmaganmi. -->
                 <div
-                  v-if="popover?.visible"
+                  v-if="view === 'rows' && popover?.visible"
                   :style="{ left: `${popover.cardLeft}px`, width: `${popover.width}px` }"
                   class="tsd-pop"
                   @click.stop
@@ -877,7 +1078,7 @@
               </div>
 
               <div class="tsd-sb">
-                <span class="tsd-sb-spacer"></span>
+                <span :class="{ 'is-off': view !== 'rows' }" class="tsd-sb-spacer"></span>
                 <div ref="track" class="tsd-sb-track" @pointerdown="onTrackDown">
                   <div
                     :style="{ left: `${thumb.left}px`, width: `${thumb.width}px` }"
@@ -885,6 +1086,14 @@
                     @pointerdown.stop="onThumbDown"
                   ></div>
                 </div>
+              </div>
+
+              <div v-if="view === 'ribbon' && ribbonTotals.length" class="tsd-rb-sum">
+                <span v-for="tt in ribbonTotals" :key="tt.key" class="tsd-rb-sum-i">
+                  <i :class="`is-${tt.key}`" class="tsd-sw"></i>
+                  {{ tt.label }}
+                  <b>{{ tt.value }}</b>
+                </span>
               </div>
 
               <p v-if="!planBand" class="tsd-note">{{ $t('timesheetPage.noSchedule') }}</p>
@@ -1319,6 +1528,41 @@
     justify-content: space-between;
   }
 
+  .tsd-card-head-l {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .tsd-view {
+    display: flex;
+    flex-shrink: 0;
+    gap: 2px;
+    padding: 2px;
+    background: var(--fig-bg-tertiary);
+    border-radius: 10px;
+  }
+
+  .tsd-view-btn {
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    color: var(--fig-text-tertiary);
+    cursor: pointer;
+    background: none;
+    border: 0;
+    border-radius: 8px;
+    transition:
+      color 0.15s,
+      background 0.15s;
+
+    &.is-on {
+      color: var(--fig-text-primary);
+      background: var(--fig-block-bg);
+    }
+  }
+
   .tsd-card-title {
     font-size: 14px;
     font-weight: 600;
@@ -1391,6 +1635,10 @@
     &.is-events {
       background: var(--fig-icon-green);
       border-radius: 50%;
+    }
+
+    &.is-absent {
+      background: var(--fig-icon-red);
     }
   }
 
@@ -1630,13 +1878,97 @@
     }
   }
 
+  /* ── Lenta ko'rinishi ─────────────────────────────────────────────────
+     Ish grafigi oynasi — fon; uning ustida ikki yarimga bo'lingan yo'lak. */
+  .tsd-rb-win {
+    position: absolute;
+    top: 26px;
+    bottom: 0;
+    background: var(--fig-blue-100);
+    border-radius: 12px;
+  }
+
+  .tsd-rb {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 18px;
+    min-width: 6px;
+    overflow: hidden;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 14px;
+    color: #fff;
+    white-space: nowrap;
+    border-radius: 999px;
+    transition: opacity 0.15s;
+
+    // Yuqori yarim — ichkarida bo'lgan vaqt, quyi yarim — ishlanmagani.
+    &.is-up {
+      top: 98px;
+    }
+
+    &.is-down {
+      top: 118px;
+    }
+
+    &.is-counted {
+      background: var(--fig-icon-green);
+    }
+
+    // Ichi bo'sh bo'lak — yozuv oq emas, yashil bo'ladi.
+    &.is-raw {
+      color: var(--fig-text-green);
+      background: var(--fig-block-bg);
+      border: 1.5px solid var(--fig-icon-green);
+    }
+
+    &.is-lunch {
+      background: var(--fig-icon-amber);
+    }
+
+    &.is-absent {
+      background: var(--fig-icon-red);
+    }
+  }
+
+  .tsd-rb-sum {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    padding-top: 4px;
+  }
+
+  .tsd-rb-sum-i {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--fig-text-tertiary);
+
+    b {
+      font-weight: 600;
+      color: var(--fig-text-primary);
+    }
+
+    .tsd-sw {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+  }
+
   /* Tanlangan qatlam ajratiladi, qolgani xiralashadi. */
   .tsd-plot.is-focus {
     .tsd-band,
     .tsd-lunch-cap,
     .tsd-iv,
     .tsd-ct,
-    .tsd-mark {
+    .tsd-mark,
+    .tsd-rb,
+    .tsd-rb-win {
       opacity: 0.18;
     }
   }
@@ -1646,7 +1978,12 @@
   .tsd-plot.is-focus-lunch .tsd-lunch-cap,
   .tsd-plot.is-focus-raw .tsd-iv,
   .tsd-plot.is-focus-counted .tsd-ct,
-  .tsd-plot.is-focus-events .tsd-mark {
+  .tsd-plot.is-focus-events .tsd-mark,
+  .tsd-plot.is-focus-plan .tsd-rb-win,
+  .tsd-plot.is-focus-counted .tsd-rb.is-counted,
+  .tsd-plot.is-focus-raw .tsd-rb.is-raw,
+  .tsd-plot.is-focus-lunch .tsd-rb.is-lunch,
+  .tsd-plot.is-focus-absent .tsd-rb.is-absent {
     opacity: 1;
   }
 
@@ -1844,6 +2181,11 @@
   .tsd-sb-spacer {
     flex-shrink: 0;
     width: 104px;
+
+    // Lentada qator nomlari ustuni yo'q — skrollbar butun kenglikni egallaydi.
+    &.is-off {
+      width: 0;
+    }
   }
 
   .tsd-sb-track {

@@ -2733,7 +2733,10 @@
     "minuteUnit": "daqiqa",
     "resizePanel": "Kengligini o'zgartirish · ikki marta bosilsa standart holat",
     "countedFull": "Hisobga olingan ish vaqti",
-    "countedShort": "Hisobga olingan vaqt"
+    "countedShort": "Hisobga olingan vaqt",
+    "viewRows": "Qatorlar",
+    "viewRibbon": "Lenta",
+    "notWorked": "Ishlanmagan"
   },
   "turnstile": {
     "title": "Turniket",

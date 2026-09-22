@@ -2713,7 +2713,10 @@
     "minuteUnit": "min",
     "resizePanel": "Resize · double-click to reset",
     "countedFull": "Counted working time",
-    "countedShort": "Counted time"
+    "countedShort": "Counted time",
+    "viewRows": "Rows",
+    "viewRibbon": "Ribbon",
+    "notWorked": "Not worked"
   },
   "turnstile": {
     "title": "Turnstile",

@@ -2721,7 +2721,10 @@
     "minuteUnit": "мин",
     "resizePanel": "Изменить ширину · двойной клик — по умолчанию",
     "countedFull": "Засчитанное рабочее время",
-    "countedShort": "Засчитанное время"
+    "countedShort": "Засчитанное время",
+    "viewRows": "Строки",
+    "viewRibbon": "Лента",
+    "notWorked": "Не отработано"
   },
   "turnstile": {
     "title": "Турникет",
