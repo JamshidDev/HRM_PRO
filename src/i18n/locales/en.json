@@ -4251,7 +4251,8 @@
     "sync": "Sync",
     "reason": {
       "noCode": "No code (added on device)",
-      "foreignCode": "Foreign code"
+      "foreignCode": "Foreign code",
+      "removed": "Removed from HRM, still on device"
     },
     "resolved": {
       "yes": "Resolved",

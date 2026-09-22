@@ -4279,7 +4279,8 @@
     "sync": "Sinxronlash",
     "reason": {
       "noCode": "Kod yo'q (qurilmadan qo'shilgan)",
-      "foreignCode": "Begona kod"
+      "foreignCode": "Begona kod",
+      "removed": "HRM'dan o'chirilgan, qurilmada qolgan"
     },
     "resolved": {
       "yes": "Hal qilingan",
