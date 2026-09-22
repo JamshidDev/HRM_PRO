@@ -1659,7 +1659,8 @@
     "upgrade": "Yangilash",
     "form": {
       "latestVersion": "So'nggi versiya"
-    }
+    },
+    "versionInvalid": "Versiya formati noto'g'ri. Masalan: 1.9.2"
   },
   "vacancyApprovePage": {
     "menuName": "Tasdiqlash",
@@ -4285,7 +4286,8 @@
     "sync": "Sinxronlash",
     "reason": {
       "noCode": "Kod yo'q (qurilmadan qo'shilgan)",
-      "foreignCode": "Begona kod"
+      "foreignCode": "Begona kod",
+      "removed": "HRM'dan o'chirilgan, qurilmada qolgan"
     },
     "resolved": {
       "yes": "Hal qilingan",
@@ -4295,7 +4297,11 @@
       "fixed": "Tuzatildi",
       "ignored": "E'tiborsiz"
     },
-    "deleteWarning": "Bu shaxs HikCentral'dan butunlay o'chiriladi va BARCHA qurilmalardan tushadi. Amalni qaytarib bo'lmaydi."
+    "deleteWarning": "Bu shaxs HikCentral'dan butunlay o'chiriladi va BARCHA qurilmalardan tushadi. Amalni qaytarib bo'lmaydi.",
+    "info": {
+      "title": "Diqqat!",
+      "desc": "Ushbu xodimlar turniket qurilmasiga qo‘lda kiritilgan, HRM tizimi orqali qurilmaga qo‘shilmagan. Shu sababli xodimlarni avval turniket qurilmasining o‘zidan (ISUP/HikCentral) o‘chirib tashlash, so‘ng HRM tizimi orqali qurilmaga qayta qo‘shish lozim."
+    }
   },
   "pensioner": {
     "name": "Pensionerlar",

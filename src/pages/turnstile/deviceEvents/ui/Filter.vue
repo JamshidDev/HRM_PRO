@@ -23,7 +23,9 @@
 
   const reasonList = computed(() => [
     { id: 1, name: t('deviceEvent.reason.noCode') },
-    { id: 2, name: t('deviceEvent.reason.foreignCode') }
+    { id: 2, name: t('deviceEvent.reason.foreignCode') },
+    // 3 — HRM'dan o'chirilgan, lekin HCP guruhida qolib ketgan (eng xavflisi).
+    { id: 3, name: t('deviceEvent.reason.removed') }
   ])
 
   const resolvedList = computed(() => [

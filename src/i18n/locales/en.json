@@ -1643,7 +1643,8 @@
     "upgrade": "Upgrade",
     "form": {
       "latestVersion": "Latest version"
-    }
+    },
+    "versionInvalid": "Invalid version format. Example: 1.9.2"
   },
   "actionLog": {
     "name": "Action history",
@@ -4257,7 +4258,8 @@
     "sync": "Sync",
     "reason": {
       "noCode": "No code (added on device)",
-      "foreignCode": "Foreign code"
+      "foreignCode": "Foreign code",
+      "removed": "Removed from HRM, still on device"
     },
     "resolved": {
       "yes": "Resolved",
@@ -4267,7 +4269,11 @@
       "fixed": "Fixed",
       "ignored": "Ignored"
     },
-    "deleteWarning": "This person will be permanently deleted from HikCentral and removed from ALL devices. This cannot be undone."
+    "deleteWarning": "This person will be permanently deleted from HikCentral and removed from ALL devices. This cannot be undone.",
+    "info": {
+      "title": "Attention!",
+      "desc": "These employees were added to the turnstile device by hand, not through the HRM system. They must first be removed on the device itself (ISUP/HikCentral), and then added to the device again through HRM."
+    }
   },
   "pensioner": {
     "name": "Pensioners",
