@@ -284,6 +284,20 @@
   const detailDay = ref(null)
   const detailDate = ref('')
 
+  // Vaqt o'qi izohi bosilganda — SHU qatlam ajratib ko'rsatiladi, qolganlari
+  // xiralashadi. Aks holda to'rtta qatlam ustma-ust tushib, qaysi rang qaysi
+  // biriga tegishli ekani faqat izohdan taxmin qilinardi.
+  const tlFocus = ref('')
+  const tlLegend = [
+    { key: 'plan', label: 'timesheetPage.lgPlan' },
+    { key: 'lunch', label: 'timesheetPage.lgLunch' },
+    { key: 'raw', label: 'timesheetPage.lgRaw' },
+    { key: 'counted', label: 'timesheetPage.lgCounted' }
+  ]
+  const toggleTlFocus = (key) => {
+    tlFocus.value = tlFocus.value === key ? '' : key
+  }
+
   const openDayDetail = async (item, day) => {
     const date = dayjs().year(store.year).month(store.month).date(day.day).format('YYYY-MM-DD')
     detailWorker.value = item
@@ -291,6 +305,7 @@
     detailDate.value = date
     detailOpen.value = true
     detailLoading.value = true
+    tlFocus.value = ''
     detail.value = null
     try {
       detail.value = await store.dayDetail(item.id, date)
@@ -387,17 +402,63 @@
   }
 
   // Yorliqlar orasidagi minimal masofa (o'q balandligining %): 760px da
-  // ~32px, ya'ni bir soatlik balandlik. Shrift sig'ishi uchun ~19px yetardi,
-  // lekin unda yaqin vaqtlarning BOG'LOVCHI CHIZIQLARI deyarli ustma-ust
-  // tushib, qaysi yozuv qaysi chiziqniki ekani bilinmay qolardi.
+  // ~20px — yozuv qatorining balandligi. Faqat HAQIQIY ustma-ust tushishning
+  // oldini oladi: undan kattaroq qiymat yaqin vaqtlarni sun'iy ravishda
+  // uzoqlashtirib, yorliqni o'z nuqtasidan ancha pastga olib tushardi.
   // ⚠️ `.ts-tl` balandligi o'zgarsa bu qiymat ham qayta hisoblanishi kerak.
-  const MIN_GAP_PCT = 4.2
+  const MIN_GAP_PCT = 2.6
 
-  // Chap (reja) va o'ng (hodisa) yorliqlari orasidagi minimal masofa.
-  // Ular qarama-qarshi tomonlarda bo'lgani uchun to'liq masofa shart emas,
-  // lekin bir balandlikka tushsa ikkala chiziq ustundan o'tuvchi BITTA
-  // chiziqdek ko'rinadi — shuning uchun ular ham ajratiladi.
-  const CROSS_GAP_PCT = 2.6
+  /* Yorliqlarni joylashtirish: to'qnashganlari o'z nuqtalarining O'RTASIGA
+   * nisbatan ikki tomonga yoyiladi — faqat pastga surilsa, ketma-ket yaqin
+   * vaqtlar bir-birini itarib, oxirgi yozuv o'z vaqtidan juda uzoqqa tushib
+   * ketardi (bog'lovchi chiziq ham uzun qiya bo'lib qolardi).
+   * Kirish: o'sish tartibidagi haqiqiy pozitsiyalar. Chiqish: shu tartibdagi
+   * yorliq pozitsiyalari. */
+  const spreadLabels = (tops, gap) => {
+    if (!tops.length) return []
+    // Bir-biriga xalaqit beradigan yorliqlar guruhga yig'iladi. Guruh o'z
+    // a'zolarining o'rtacha pozitsiyasida markazlashadi; markazlashgach u
+    // oldingi guruhga tegib ketishi mumkin — shuning uchun tekshiruv siklda.
+    const groups = []
+    const startOf = (g) => g.sum / g.count - ((g.count - 1) * gap) / 2
+    for (const top of tops) {
+      groups.push({ count: 1, sum: top })
+      while (groups.length > 1) {
+        const b = groups[groups.length - 1]
+        const a = groups[groups.length - 2]
+        if (startOf(b) >= startOf(a) + a.count * gap) break
+        a.count += b.count
+        a.sum += b.sum
+        groups.pop()
+      }
+    }
+    const out = []
+    let last = -Infinity
+    for (const g of groups) {
+      // O'q chetidan chiqib ketmasin — yuqoridan ham, pastdan ham.
+      let start = Math.min(Math.max(0, startOf(g)), 100 - (g.count - 1) * gap)
+      // Chetga siqilgan guruh oldingisining ustiga tushmasin.
+      if (last > -Infinity) start = Math.max(start, last + gap)
+      for (let k = 0; k < g.count; k++) out.push(start + k * gap)
+      last = out[out.length - 1]
+    }
+    return out
+  }
+
+  /* Bog'lovchi chiziq qutisi. Yorliq o'z nuqtasidan yuqorida ham, pastda ham
+   * bo'lishi mumkin — shuning uchun qutining yo'nalishi ham hisoblanadi.
+   * `near` — chiziqning yorliq tomonidagi uchi (SVG da x=0 yoki x=100 —
+   * qaysi tomonda ekanini chaqiruvchi biladi), `far` — ustun tomonidagi. */
+  const linkBox = (truePos, labelPos) => {
+    const top = Math.min(truePos, labelPos)
+    const height = Math.abs(labelPos - truePos)
+    return {
+      style: { top: `${top}%`, height: `${height}%` },
+      // Yorliq pastda bo'lsa uning uchi qutining PASTIDA (y=100).
+      labelY: labelPos >= truePos ? 100 : 0,
+      colY: labelPos >= truePos ? 0 : 100
+    }
+  }
 
   const fmtMin = (m) =>
     m == null
@@ -441,16 +502,19 @@
     if (sch?.end_time) push('we', 'work', t('timesheetPage.workEnd'), sch.end_time, true)
 
     out.sort((a, b) => a.top - b.top)
-    let last = -99
-    for (const mk of out) {
-      const labelTop = Math.max(mk.top, last + MIN_GAP_PCT)
-      last = labelTop
-      // `labelTop` hodisa yorliqlariga ham kerak — ular shu balandliklardan
-      // qochadi (`eventRows`), aks holda chiziqlar bir chiziqqa qo'shiladi.
-      mk.labelTop = labelTop
-      mk.labelStyle = { top: `${labelTop}%` }
-      mk.linkStyle = { top: `${mk.top}%`, height: `${labelTop - mk.top}%` }
-    }
+    const placed = spreadLabels(
+      out.map((mk) => mk.top),
+      MIN_GAP_PCT
+    )
+    out.forEach((mk, i) => {
+      mk.labelTop = placed[i]
+      mk.labelStyle = { top: `${placed[i]}%` }
+      // Yorliq CHAPDA: SVG da x=0 — yorliq tomoni, x=100 — ustun tomoni.
+      const box = linkBox(mk.top, placed[i])
+      mk.linkStyle = box.style
+      mk.y1 = box.labelY
+      mk.y2 = box.colY
+    })
     return out
   })
 
@@ -562,32 +626,28 @@
     // yozuvgacha tortiladigan bog'lovchi chiziq aynan shundan boshlanadi,
     // aks holda «bu vaqt chizmaning qayeri?» degan savol javobsiz qolardi.
     //
-    // Surilishda CHAPDAGI reja yorliqlari ham hisobga olinadi: reja chizig'i
-    // bilan hodisa chizig'i bir balandlikka tushsa, ular ustundan o'tuvchi
-    // bitta uzluksiz chiziqdek ko'rinardi. Reja yorliqlari qo'zg'almaydi
-    // (ular tayanch nuqta), suriladigani — hodisa yozuvi.
-    const taken = planMarks.value.map((mk) => mk.labelTop)
-    const out = []
-    let last = -99
-    for (const e of raw) {
-      const trueTop = pct(minOfDay(e.at))
-      let top = Math.max(trueTop, last + MIN_GAP_PCT)
-      // `taken` o'sish tartibida — pastga surilgach keyingisi qayta tekshiriladi.
-      for (const p of taken) {
-        if (Math.abs(top - p) < CROSS_GAP_PCT) top = p + CROSS_GAP_PCT
-      }
-      last = top
-      out.push({
-        top,
-        // Bog'lovchi chiziq qutisi: yuqori cheti — HAQIQIY vaqt (zolak
-        // chetiga to'g'ri keladi), pastki cheti — surilgan yozuv markazi.
-        linkStyle: { top: `${trueTop}%`, height: `${top - trueTop}%` },
+    // CHAPDAGI reja yorliqlari hisobga OLINMAYDI: ular ustunning narigi
+    // tomonida, ya'ni yozuvlar bir-birini qoplamaydi. Ilgari ular ham
+    // qochirilardi (chiziqlar bitta uzluksiz chiziqdek ko'rinmasin deb),
+    // lekin buning evaziga hodisa yozuvi o'z vaqtidan sezilarli pastga
+    // tushib ketardi — noaniqlik chiroylilikdan qimmatroq.
+    // `spreadLabels` o'sish tartibini kutadi.
+    raw.sort((a, b) => minOfDay(a.at) - minOfDay(b.at))
+    const trueTops = raw.map((e) => pct(minOfDay(e.at)))
+    const placed = spreadLabels(trueTops, MIN_GAP_PCT)
+    return raw.map((e, i) => {
+      // Yorliq O'NGDA: SVG da x=0 — ustun tomoni, x=100 — yorliq tomoni.
+      const box = linkBox(trueTops[i], placed[i])
+      return {
+        top: placed[i],
+        linkStyle: box.style,
+        y1: box.colY,
+        y2: box.labelY,
         time: exact(e.at),
         direction: e.direction,
         device: byTime.get(String(e.at)) ?? null
-      })
-    }
-    return out
+      }
+    })
   })
 
   // Y o'qi. Chiziq HAR SOATDA — yaqin oraliqlarni ajratish uchun mayda
@@ -1408,7 +1468,7 @@
       class="ts-detail-modal"
       preset="card"
       size="small"
-      style="width: 1180px; max-width: 96vw"
+      style="width: 1360px; max-width: 96vw"
     >
       <template #header>
         <div class="ts-dm-head">
@@ -1553,16 +1613,33 @@
               <!-- Hodisa bo'lmasa ham ko'rsatiladi: grafik va tushlik bandi
                    o'zi ma'lumot beradi («nima bo'lishi kerak edi»). -->
               <section v-if="detail?.schedule || detail?.segments?.length" class="ts-dm-card">
-                <h4 class="ts-dm-card-head">{{ $t('timesheetPage.timeline') }}</h4>
+                <!-- Sarlavha + izohlar bitta yopishqoq blok: 760px lik o'qni
+                     skroll qilganda ham qaysi rang nima ekani ko'rinib tursin
+                     (va qatlam tanlash tugmalari qo'l ostida qolsin). -->
+                <div class="ts-tl-sticky">
+                  <h4 class="ts-dm-card-head">{{ $t('timesheetPage.timeline') }}</h4>
 
-                <div class="ts-tl-legend">
-                  <span><i class="ts-lg is-plan"></i>{{ $t('timesheetPage.lgPlan') }}</span>
-                  <span><i class="ts-lg is-lunch"></i>{{ $t('timesheetPage.lgLunch') }}</span>
-                  <span><i class="ts-lg is-raw"></i>{{ $t('timesheetPage.lgRaw') }}</span>
-                  <span><i class="ts-lg is-counted"></i>{{ $t('timesheetPage.lgCounted') }}</span>
+                  <!-- Izohlar — tugma: bosilgani o'qda ajratiladi, qolgan
+                       qatlamlar xiralashadi. Yana bosilsa — hammasi qaytadi. -->
+                  <div class="ts-tl-legend">
+                    <button
+                      v-for="lg in tlLegend"
+                      :key="lg.key"
+                      :aria-pressed="tlFocus === lg.key"
+                      :class="{
+                        'is-active': tlFocus === lg.key,
+                        'is-dim': tlFocus && tlFocus !== lg.key
+                      }"
+                      class="ts-tl-lg-btn"
+                      type="button"
+                      @click="toggleTlFocus(lg.key)"
+                    >
+                      <i :class="`is-${lg.key}`" class="ts-lg"></i>{{ $t(lg.label) }}
+                    </button>
+                  </div>
                 </div>
 
-                <div class="ts-tl">
+                <div :class="tlFocus ? `is-focus is-focus-${tlFocus}` : ''" class="ts-tl">
                   <!-- Soat to'ri — butun maydonni kesib o'tadi -->
                   <span
                     v-for="tick in tlTicks"
@@ -1589,14 +1666,14 @@
                       viewBox="0 0 100 100"
                     >
                       <line
+                        :y1="mark.y1"
+                        :y2="mark.y2"
                         stroke="currentColor"
                         stroke-dasharray="4 4"
                         stroke-width="1"
                         vector-effect="non-scaling-stroke"
                         x1="0"
                         x2="100"
-                        y1="100"
-                        y2="0"
                       />
                     </svg>
                   </template>
@@ -1643,14 +1720,14 @@
                     viewBox="0 0 100 100"
                   >
                     <line
+                      :y1="e.y1"
+                      :y2="e.y2"
                       stroke="currentColor"
                       stroke-dasharray="4 4"
                       stroke-width="1"
                       vector-effect="non-scaling-stroke"
                       x1="0"
                       x2="100"
-                      y1="0"
-                      y2="100"
                     />
                   </svg>
 
@@ -2507,12 +2584,12 @@
      ustunda alohida. Aks holda o'ngdagi qisqa ro'yxat chapdagi uzun o'q
      bilan birga sudralib, ostida katta bo'sh joy qolardi. */
   .ts-dm-body {
-    height: 66vh;
+    height: 76vh;
   }
   /* Ikki ustun: chapda hisob-kitob, o'ngda turniketning xom ro'yxati. */
   .ts-dm-cols {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 360px;
+    grid-template-columns: minmax(0, 1fr) 400px;
     gap: 14px;
     height: 100%;
     align-items: stretch;
@@ -2666,7 +2743,9 @@
   .ts-dm-stats {
     position: sticky;
     top: 0;
-    z-index: 2;
+    /* O'q va kartochkalardan yuqorida — ular o'z konteksti ichida qolsa ham
+       zaxira sifatida ochiq farq qoldiriladi. */
+    z-index: 5;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 8px;
@@ -2983,6 +3062,10 @@
     position: relative;
     height: 760px;
     margin: 0 0 6px $tlLeft;
+    /* ALOHIDA yig'ish konteksti: ichkarisidagi qatlamlar (`z-index: 1..3`)
+       shu quti bilan birga chegaralanadi. Aks holda ular skrollda
+       tepadagi yopishqoq ko'rsatkich plitalari USTIGA chiqib ketardi. */
+    z-index: 0;
   }
   /* Qatlamlar: to'r → chiziqlar → reja → turniket → hodisa yozuvlari. */
   .ts-tl-tick {
@@ -3114,6 +3197,35 @@
     background: color-mix(in srgb, var(--fig-icon-green) 58%, transparent);
   }
 
+  /* ── Yopishqoq sarlavha + izoh ────────────────────────────────────────
+   * O'q 760px — bir ekranga sig'maydi. Skrollda «qaysi rang nima» yo'qolib
+   * ketmasin va qatlam tanlash tugmalari qo'l ostida tursin.
+   * `top` — ko'rsatkich plitalari blokining balandligi: plita 60px
+   * (10 + 14 + 2 + 22 + 10 + 2px chegara) + blokning 10px ichki pastki
+   * bo'shlig'i. Plitalar bilan ORASIDA tirqish qolsa, ostidagi o'q ko'rinib
+   * qolardi — shuning uchun raqam aniq shu yerga bog'lab qo'yilgan. */
+  $dmStatsH: 70px;
+
+  .ts-tl-sticky {
+    position: sticky;
+    top: $dmStatsH;
+    /* Plitalardan past (`5`), o'qdan yuqori (`.ts-tl` — 0). */
+    z-index: 3;
+    /* Izohning pastki chekinishi YOPISHQOQ quti ichida: tashqarida qolsa
+       skrollda shu 12px orqali o'q ko'rinib o'tardi. */
+    padding-bottom: 12px;
+    background: var(--surface-section);
+  }
+  .ts-tl-sticky .ts-tl-legend {
+    margin-bottom: 0;
+  }
+  /* Tor ekranda plitalar ikki qatorga tushadi — tayanch nuqta ham pastroq. */
+  @media (max-width: 640px) {
+    .ts-tl-sticky {
+      top: $dmStatsH + 68px;
+    }
+  }
+
   /* Izoh qatori o'qdan OLDIN turadi — ranglarni avval o'qib olish qulay. */
   .ts-tl-legend {
     display: flex;
@@ -3126,10 +3238,133 @@
     font-size: 11px;
     color: var(--fig-text-secondary);
   }
-  .ts-tl-legend span {
+  /* Izoh endi tugma — `n-` komponent emas, shuning uchun brauzer
+     standartlari qo'lda so'ndiriladi. */
+  .ts-tl-lg-btn {
     display: inline-flex;
     align-items: center;
     gap: 6px;
+    padding: 3px 8px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: transparent;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    transition:
+      opacity 0.15s ease,
+      background 0.15s ease,
+      border-color 0.15s ease;
+  }
+  .ts-tl-lg-btn:hover {
+    background: color-mix(in srgb, var(--surface-line) 35%, transparent);
+  }
+  .ts-tl-lg-btn.is-active {
+    border-color: var(--surface-line);
+    background: var(--surface-section);
+    font-weight: 600;
+    color: var(--fig-text-primary);
+  }
+  /* Tanlanmaganlari xiralashadi — ko'z darrov tanlanganini topadi. */
+  .ts-tl-lg-btn.is-dim {
+    opacity: 0.45;
+  }
+
+  /* ── Qatlamni ajratib ko'rsatish ──────────────────────────────────────
+   * Ustma-ust turgan to'rt qatlamdan bittasi tanlanadi: tanlangani
+   * kuchayadi (qalin chegara + halqa), qolganlari so'nadi.
+   * DIQQAT: tushlik reja ICHIDA, «hisobga olindi» esa interval ichida —
+   * shuning uchun ota-element `opacity` bilan emas, rang/chegara bilan
+   * so'ndiriladi, aks holda bola-element ham birga xiralashib ketardi. */
+  .ts-tl.is-focus .ts-tl-plan,
+  .ts-tl.is-focus .ts-tl-iv,
+  .ts-tl.is-focus .ts-tl-plan-lunch,
+  .ts-tl.is-focus .ts-tl-iv-counted,
+  .ts-tl.is-focus .ts-tl-mark,
+  .ts-tl.is-focus .ts-tl-mlink,
+  .ts-tl.is-focus .ts-tl-ev,
+  .ts-tl.is-focus .ts-tl-link {
+    transition:
+      opacity 0.15s ease,
+      background 0.15s ease,
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  /* Reja oynasi so'ngan holat — foni yo'q, chegarasi zo'rg'a ko'rinadi. */
+  .ts-tl.is-focus-lunch .ts-tl-plan,
+  .ts-tl.is-focus-raw .ts-tl-plan,
+  .ts-tl.is-focus-counted .ts-tl-plan {
+    background: transparent;
+    border-color: color-mix(in srgb, var(--fig-chip-indigo-text) 22%, transparent);
+  }
+  /* Interval ramkasi so'ngan holat. */
+  .ts-tl.is-focus-plan .ts-tl-iv,
+  .ts-tl.is-focus-lunch .ts-tl-iv {
+    border-color: color-mix(in srgb, var(--fig-icon-green) 20%, transparent);
+  }
+  .ts-tl.is-focus-counted .ts-tl-iv {
+    border-color: color-mix(in srgb, var(--fig-icon-green) 30%, transparent);
+  }
+  /* Ichkaridagi bo'laklar — bular bola element, opacity bemalol. */
+  .ts-tl.is-focus-plan .ts-tl-iv-counted,
+  .ts-tl.is-focus-lunch .ts-tl-iv-counted,
+  .ts-tl.is-focus-raw .ts-tl-iv-counted {
+    opacity: 0.18;
+  }
+  .ts-tl.is-focus-raw .ts-tl-plan-lunch,
+  .ts-tl.is-focus-counted .ts-tl-plan-lunch {
+    opacity: 0.15;
+  }
+  .ts-tl.is-focus-plan .ts-tl-plan-lunch {
+    opacity: 0.3;
+  }
+
+  /* Tanlangan qatlam — qalinroq chegara va tashqi halqa. */
+  .ts-tl.is-focus-plan .ts-tl-plan {
+    border-width: 2px;
+    background: color-mix(in srgb, var(--fig-chip-indigo-text) 14%, var(--fig-chip-indigo-bg));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--fig-chip-indigo-text) 22%, transparent);
+  }
+  .ts-tl.is-focus-lunch .ts-tl-plan-lunch {
+    border-top-style: solid;
+    border-bottom-style: solid;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    background: repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--fig-icon-amber) 70%, transparent) 0 4px,
+      color-mix(in srgb, var(--fig-icon-amber) 16%, transparent) 4px 8px
+    );
+  }
+  .ts-tl.is-focus-raw .ts-tl-iv {
+    border-width: 3px;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--fig-icon-green) 22%, transparent);
+  }
+  .ts-tl.is-focus-counted .ts-tl-iv-counted {
+    background: var(--fig-icon-green);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--fig-icon-green) 30%, transparent);
+  }
+
+  /* Chap yorliqlar va o'ng hodisalar ham tanlovga ergashadi: grafik
+     tanlansa — grafik vaqtlari, turniket tanlansa — kirish/chiqishlar. */
+  .ts-tl.is-focus-raw .ts-tl-mark,
+  .ts-tl.is-focus-raw .ts-tl-mlink,
+  .ts-tl.is-focus-counted .ts-tl-mark,
+  .ts-tl.is-focus-counted .ts-tl-mlink {
+    opacity: 0.3;
+  }
+  .ts-tl.is-focus-plan .ts-tl-mark.is-break,
+  .ts-tl.is-focus-plan .ts-tl-mlink.is-break,
+  .ts-tl.is-focus-lunch .ts-tl-mark.is-work,
+  .ts-tl.is-focus-lunch .ts-tl-mlink.is-work {
+    opacity: 0.3;
+  }
+  .ts-tl.is-focus-plan .ts-tl-ev,
+  .ts-tl.is-focus-plan .ts-tl-link,
+  .ts-tl.is-focus-lunch .ts-tl-ev,
+  .ts-tl.is-focus-lunch .ts-tl-link {
+    opacity: 0.35;
   }
   .ts-lg {
     flex-shrink: 0;

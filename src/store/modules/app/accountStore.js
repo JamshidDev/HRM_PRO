@@ -31,6 +31,16 @@ const roleScopeOf = (data) => {
  * qiymat allaqachon tarqalgan build'lardan foydalanuvchilarda qolgan bo'lishi mumkin,
  * shuning uchun uni shu yerda tozalaymiz.
  */
+/**
+ * Parol siyosati. Ikkala raqam ham bir joyda: profildagi forma (`PasswordForm.vue`)
+ * va bosh sahifadagi ogohlantirish (`PasswordExpiryAlert.vue`) shu yerga tayanadi.
+ *   MAX  — parol amal qilish muddati (backend ham shu muddatdan keyin
+ *          `/user/profile` javobida `must_change: true` qaytaradi);
+ *   WARN — shuncha kundan oshgach bosh sahifada ogohlantirish chiqadi.
+ */
+export const PASSWORD_MAX_AGE_DAYS = 30
+export const PASSWORD_WARN_AFTER_DAYS = 25
+
 const readStoredPermissions = () => {
   try {
     const raw = sessionStorage.getItem(useAppSetting.appPermission)
@@ -132,6 +142,35 @@ export const useAccountStore = defineStore('accountStore', {
       }
       return true
     },
+    /**
+     * Parolning yoshi (kun). `/user/profile` TAYYOR son qaytaradi
+     * (`password_changed_days`) — sana emas, shuning uchun bu yerda hech narsa
+     * hisoblanmaydi. Maydon kelmasa `null`: bunday holda hisob KO'RSATILMAYDI,
+     * faqat umumiy qoida qoladi (soxta raqam chiqarmaslik uchun).
+     */
+    passwordAgeDays: (state) => {
+      const days = state.account?.password_changed_days
+      return typeof days === 'number' && days >= 0 ? days : null
+    },
+
+    /** Muddat tugashiga qolgan kun; 0 yoki manfiy — muddat o'tgan. */
+    passwordDaysLeft() {
+      return this.passwordAgeDays == null ? null : PASSWORD_MAX_AGE_DAYS - this.passwordAgeDays
+    },
+
+    /** Backend `must_change` bergan bo'lsa ham muddat o'tgan hisoblanadi. */
+    passwordExpired() {
+      return this.mustChangePassword || (this.passwordDaysLeft != null && this.passwordDaysLeft <= 0)
+    },
+
+    /** Bosh sahifadagi ogohlantirish shu bo'lganda chiqadi. */
+    passwordExpiringSoon() {
+      return (
+        this.passwordExpired ||
+        (this.passwordAgeDays != null && this.passwordAgeDays > PASSWORD_WARN_AFTER_DAYS)
+      )
+    },
+
     fullName: (state) => Utils.combineFullName(state.account?.worker),
     userPhoto: (state) => state.account?.worker?.photo,
     telegramPopupVisible: (state) => {

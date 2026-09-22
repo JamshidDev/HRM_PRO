@@ -4,11 +4,17 @@
   import createForm from './ui/createForm.vue'
   import Filter from './ui/Filter.vue'
   import Table from './ui/Table.vue'
+  import SickLeave from '@/pages/hrm/sickLeave/index.vue'
+  import { DocumentHeartPulse24Regular, DocumentBulletList24Regular } from '@vicons/fluent'
 
   const store = useMedStore()
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
   const createFormRef = ref(null)
+  const activeTab = ref('med')
+
+  // Kasallik varaqasi tabi o'z ruxsati bilan ochiladi.
+  const canSeeSickLeave = computed(() => accStore.checkPermission(accStore.pn.hrSickLeaveRead))
 
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.hrMedRead)) return
@@ -22,8 +28,38 @@
 
 <template>
   <UIPageContent>
-    <Filter />
-    <Table />
+    <!-- Tab faqat almashtirgich (salary1c sahifasidagi kabi): kontent
+         `UIPageContent` ning BEVOSITA bolasi bo'lib qoladi, shunda jadval
+         qolgan balandlikni to'liq egallaydi. -->
+    <n-tabs
+      v-model:value="activeTab"
+      type="line"
+      class="ui-pill-tabs ui-pill-tabs--inline med-tabs"
+    >
+      <n-tab-pane name="med">
+        <template #tab>
+          <span class="flex items-center gap-1.5">
+            <n-icon size="17"><DocumentHeartPulse24Regular /></n-icon>
+            {{ $t('medPage.name') }}
+          </span>
+        </template>
+      </n-tab-pane>
+      <n-tab-pane v-if="canSeeSickLeave" name="sick-leave">
+        <template #tab>
+          <span class="flex items-center gap-1.5">
+            <n-icon size="17"><DocumentBulletList24Regular /></n-icon>
+            {{ $t('sickLeave.name') }}
+          </span>
+        </template>
+      </n-tab-pane>
+    </n-tabs>
+
+    <template v-if="activeTab === 'med'">
+      <Filter />
+      <Table />
+    </template>
+    <SickLeave v-else />
+
     <UIModal
       v-model:visible="store.visible"
       :title="store.visibleType ? $t('medPage.createTitle') : $t('medPage.updateTitle')"
@@ -51,4 +87,10 @@
   </UIPageContent>
 </template>
 
-<style scoped></style>
+<style scoped>
+  /* Tab faqat almashtirgich: bo'sh panel maydoni ham, rail'ning pastki
+     bo'shlig'i ham kerak emas — masofani `UIPageContent` ning `gap-4` i beradi. */
+  .med-tabs :deep(.n-tabs-pane-wrapper) {
+    display: none;
+  }
+</style>

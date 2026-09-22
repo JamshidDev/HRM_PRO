@@ -21,6 +21,7 @@
   import { useHomeStore, useQuoteStore } from '@/store/modules/index.js'
   import { syncPushOnHome } from '@/utils/webPush.js'
   import PushPermissionAlert from './ui/PushPermissionAlert.vue'
+  import PasswordExpiryAlert from './ui/PasswordExpiryAlert.vue'
 
   const homeStore = useHomeStore()
   const quoteStore = useQuoteStore()
@@ -87,6 +88,7 @@
     <!-- Skroll shu yerda: sarlavha tepada qotib turadi. -->
     <div class="home-page__scroll">
       <PushPermissionAlert />
+      <PasswordExpiryAlert />
 
       <n-grid cols="12" responsive="screen" x-gap="8 m:12 l:16" y-gap="8 m:12 l:16">
         <n-grid-item span="12 l:8">

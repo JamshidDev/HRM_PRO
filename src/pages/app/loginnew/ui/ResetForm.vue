@@ -10,14 +10,8 @@
     ErrorCircle12Filled
   } from '@vicons/fluent'
   import { useResetPasswordStore, resetSteps } from '@/store/modules/index.js'
+  import { resetBotHandle, resetBotUrl } from '@/utils/index.js'
   import OtpBoxInput from './OtpBoxInput.vue'
-
-  // ?start= parametri Telegram deep-link: bot ochilganda "START" darhol yuboriladi
-  const isProdMode = import.meta.env.MODE === 'production'
-  const resetBotHandle = isProdMode ? '@hrmpro_robot' : '@dev_hrm_pro_robot'
-  const resetBotUrl = isProdMode
-    ? 'https://t.me/hrmpro_robot?start=reset'
-    : 'https://t.me/dev_hrm_pro_robot?start=reset'
 
   const emit = defineEmits(['back', 'done'])
 
