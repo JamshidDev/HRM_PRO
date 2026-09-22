@@ -9,7 +9,6 @@
     <p class="device-info__text">
       <b>{{ $t('deviceEvent.info.title') }}</b>
       {{ $t('deviceEvent.info.desc') }}
-      {{ $t('deviceEvent.info.action') }}
     </p>
   </div>
 </template>

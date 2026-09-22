@@ -4265,9 +4265,8 @@
     },
     "deleteWarning": "This person will be permanently deleted from HikCentral and removed from ALL devices. This cannot be undone.",
     "info": {
-      "title": "On the device, not in HRM.",
-      "desc": "These people pass the turnstile, but HRM does not manage them.",
-      "action": "Remove them ON THE DEVICE ITSELF (ISUP/HikCentral), then add them again through HRM — removing in HRM will not help, they are already gone there."
+      "title": "Attention!",
+      "desc": "These employees were added to the turnstile device by hand, not through the HRM system. They must first be removed on the device itself (ISUP/HikCentral), and then added to the device again through HRM."
     }
   },
   "pensioner": {
