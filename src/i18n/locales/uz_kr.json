@@ -2443,7 +2443,18 @@
     "interval": "Оралиқ",
     "dayInfo": "Кун маълумотлари",
     "prevDay": "Олдинги кун",
-    "nextDay": "Кейинги кун"
+    "nextDay": "Кейинги кун",
+    "clusterCount": "{n} та {dir}",
+    "withinSeconds": "{n} сония ичида",
+    "withinMinutes": "{n} дақиқа ичида",
+    "inCount": "Ҳисобда",
+    "rowsMarked": "Жадвалда {n} та қатор белгиланди",
+    "escClose": "Esc — ёпиш",
+    "hourUnit": "соат",
+    "minuteUnit": "дақиқа",
+    "resizePanel": "Кенглигини ўзгартириш · икки марта босилса стандарт ҳолат",
+    "countedFull": "Ҳисобга олинган иш вақти",
+    "countedShort": "Ҳисобга олинган вақт"
   },
   "turnstile": {
     "title": "Турникет",

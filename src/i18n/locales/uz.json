@@ -2722,7 +2722,18 @@
     "interval": "Oraliq",
     "dayInfo": "Kun ma'lumotlari",
     "prevDay": "Oldingi kun",
-    "nextDay": "Keyingi kun"
+    "nextDay": "Keyingi kun",
+    "clusterCount": "{n} ta {dir}",
+    "withinSeconds": "{n} soniya ichida",
+    "withinMinutes": "{n} daqiqa ichida",
+    "inCount": "Hisobda",
+    "rowsMarked": "Jadvalda {n} ta qator belgilandi",
+    "escClose": "Esc — yopish",
+    "hourUnit": "soat",
+    "minuteUnit": "daqiqa",
+    "resizePanel": "Kengligini o'zgartirish · ikki marta bosilsa standart holat",
+    "countedFull": "Hisobga olingan ish vaqti",
+    "countedShort": "Hisobga olingan vaqt"
   },
   "turnstile": {
     "title": "Turniket",

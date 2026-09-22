@@ -2710,7 +2710,18 @@
     "interval": "Интервал",
     "dayInfo": "Данные дня",
     "prevDay": "Предыдущий день",
-    "nextDay": "Следующий день"
+    "nextDay": "Следующий день",
+    "clusterCount": "{dir} — {n} шт.",
+    "withinSeconds": "в течение {n} сек.",
+    "withinMinutes": "в течение {n} мин.",
+    "inCount": "Учтено",
+    "rowsMarked": "В таблице отмечено строк: {n}",
+    "escClose": "Esc — закрыть",
+    "hourUnit": "ч",
+    "minuteUnit": "мин",
+    "resizePanel": "Изменить ширину · двойной клик — по умолчанию",
+    "countedFull": "Засчитанное рабочее время",
+    "countedShort": "Засчитанное время"
   },
   "turnstile": {
     "title": "Турникет",

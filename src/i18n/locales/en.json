@@ -2702,7 +2702,18 @@
     "interval": "Interval",
     "dayInfo": "Day details",
     "prevDay": "Previous day",
-    "nextDay": "Next day"
+    "nextDay": "Next day",
+    "clusterCount": "{n} × {dir}",
+    "withinSeconds": "within {n} s",
+    "withinMinutes": "within {n} min",
+    "inCount": "Counted",
+    "rowsMarked": "{n} rows marked in the table",
+    "escClose": "Esc — close",
+    "hourUnit": "h",
+    "minuteUnit": "min",
+    "resizePanel": "Resize · double-click to reset",
+    "countedFull": "Counted working time",
+    "countedShort": "Counted time"
   },
   "turnstile": {
     "title": "Turnstile",
