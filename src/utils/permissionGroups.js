@@ -195,7 +195,7 @@ export const ENFORCED = new Set([
   'log-viewer-read',
   'mobile-stories-delete',
   'mobile-users-read',
-  'mobile-users-write',
+  'mobile-app-version',
   'nationalities-delete',
   'nationalities-write',
   'organization-services-write',
@@ -599,7 +599,7 @@ export const MEANINGFUL = new Set([
   'log-viewer-read',
   'mobile-stories-delete',
   'mobile-users-read',
-  'mobile-users-write',
+  'mobile-app-version',
   'nationalities',
   'nationalities-delete',
   'nationalities-read',
@@ -1123,7 +1123,16 @@ export const PERMISSION_GROUPS = [
       { prefix: 'telegram', label: 'telegramPage.name' },
       { prefix: 'learning-centers', label: 'learningCenterPage.name' },
       { prefix: 'instructions', label: 'instructionPage.name' },
-      { prefix: 'mobile-users', label: 'mobileUserPage.name' },
+      {
+        prefix: 'mobile-users',
+        label: 'mobileUserPage.name',
+        // `-write` faqat `PUT /admin/mobile-users/versions` ni himoya qiladi —
+        // shuning uchun yorliq umumiy «Tahrirlash» emas, aniq amal nomi.
+        actions: [
+          { slug: 'mobile-users-read', label: "Ko'rish" },
+          { slug: 'mobile-app-version', label: 'Versiya boshqaruvi' }
+        ]
+      },
       { prefix: 'integration-clients', label: 'integrationClients.name' },
       // Faqat KO'RISH: `db-backup-create`/`-download` ataylab formaga chiqarilmaydi —
       // dump ~90k xodim shaxsiy ma'lumoti, yuklab olish serverda (`scp`) qoladi.

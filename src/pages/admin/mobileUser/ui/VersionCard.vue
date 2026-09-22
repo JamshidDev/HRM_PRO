@@ -1,12 +1,17 @@
 <script setup>
-  import { ArrowUpload20Regular, Checkmark20Regular, Dismiss20Regular, Phone20Regular } from '@vicons/fluent'
+  import {
+    ArrowUpload20Regular,
+    Checkmark20Regular,
+    Dismiss20Regular,
+    Phone20Regular
+  } from '@vicons/fluent'
   import { UIFigBlock } from '@/components/index.js'
   import { useMobileUserStore, useAccountStore } from '@/store/modules/index.js'
 
   const store = useMobileUserStore()
   const accStore = useAccountStore()
 
-  const canWrite = computed(() => accStore.checkPermission(accStore.pn.mobileUsersWrite))
+  const canWrite = computed(() => accStore.checkPermission(accStore.pn.mobileAppVersion))
 
   const platforms = ['android', 'ios']
   const rowByPlatform = (platform) => store.versions.find((v) => v.platform === platform) ?? null
@@ -75,7 +80,9 @@
 
         <template v-else>
           <div class="version-row__view">
-            <span class="version-row__value">{{ rowByPlatform(platform)?.latest_version || '—' }}</span>
+            <span class="version-row__value">{{
+              rowByPlatform(platform)?.latest_version || '—'
+            }}</span>
             <button
               v-if="canWrite"
               type="button"
@@ -141,7 +148,9 @@
     color: var(--fig-text-brand, #1570ef);
     font-size: 13px;
     font-weight: 600;
-    transition: background-color 0.16s ease, color 0.16s ease;
+    transition:
+      background-color 0.16s ease,
+      color 0.16s ease;
   }
 
   .version-upgrade-btn:hover {
@@ -169,7 +178,10 @@
     border: 1px solid var(--fig-br-disable, #e4e4e7);
     background: var(--fig-bg-surface, #fff);
     color: var(--fig-text-secondary, #71717a);
-    transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+    transition:
+      background-color 0.16s ease,
+      border-color 0.16s ease,
+      color 0.16s ease;
   }
 
   .version-icon-btn:disabled {

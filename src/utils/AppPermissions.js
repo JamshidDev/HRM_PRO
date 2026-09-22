@@ -6,7 +6,8 @@ export const appPermissions = {
   // uchun butun Admin moduli ochilishi kerak edi (juda qo'pol).
   mobileUsers: 'mobile-users',
   mobileUsersRead: 'mobile-users-read',
-  mobileUsersWrite: 'mobile-users-write',
+  // Ilova versiyasi (force update) — mobil foydalanuvchini tahrirlashdan alohida.
+  mobileAppVersion: 'mobile-app-version',
   integrationClients: 'integration-clients',
   integrationClientsRead: 'integration-clients-read',
   dbBackupRead: 'db-backup-read',
