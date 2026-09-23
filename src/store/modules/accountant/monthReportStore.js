@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
-import { AppPaths } from '@/utils/index.js'
+import { AppPaths, getOneMonthAgoYearMonth } from '@/utils/index.js'
 import router from '@/router/index.js'
 
 export const useMonthReportStore = defineStore('monthReportStore', {
@@ -43,6 +43,13 @@ export const useMonthReportStore = defineStore('monthReportStore', {
     downloadLoading: false,
     filteredExporting: false,
     cashedWorkerData: null,
+
+    // Ikki oyni taqqoslash — modalning "compare" rejimi. Har bir tomon o'z oyini
+    // va o'z ro'yxatini saqlaydi (bitta xodimda bir oyda bir nechta vedomost
+    // bo'lishi mumkin, shu sababli `index` ham bor).
+    compareMode: false,
+    compareLeft: { year: null, month: null, list: [], index: 0, loading: false },
+    compareRight: { year: null, month: null, list: [], index: 0, loading: false },
     exportParams: {
       year: null,
       month: null,
@@ -358,6 +365,48 @@ export const useMonthReportStore = defineStore('monthReportStore', {
         .finally(() => {
           this.showLoading = false
         })
+    },
+    // Taqqoslashning bitta tomoni — `_show` bilan bir xil endpoint, faqat oy
+    // boshqacha. `showList` ga tegmaydi, ya'ni oddiy ko'rinish saqlanib qoladi.
+    _compareShow(side) {
+      const target = side === 'left' ? this.compareLeft : this.compareRight
+      if (!this.elementId || !target.year || !target.month) return
+      target.loading = true
+      $ApiService.monthReportService
+        ._show({ params: { year: target.year, month: target.month }, id: this.elementId })
+        .then((res) => {
+          target.list = res.data.data
+          target.index = 0
+        })
+        .catch(() => {
+          target.list = []
+        })
+        .finally(() => {
+          target.loading = false
+        })
+    },
+    _onCompareMonth(side) {
+      this._compareShow(side)
+    },
+    // Default: o'ngda modalda ochilgan (eng oxirgi) oy, chapda bitta oldingisi.
+    openCompare() {
+      const year = Number(this.showPrams.year)
+      const month = Number(this.showPrams.month)
+      const prev = getOneMonthAgoYearMonth(new Date(year, month - 1, 1))
+      this.compareRight.year = year
+      this.compareRight.month = month
+      this.compareLeft.year = prev.year
+      this.compareLeft.month = prev.month
+      this.compareMode = true
+      this._compareShow('left')
+      this._compareShow('right')
+    },
+    closeCompare() {
+      this.compareMode = false
+      this.compareLeft.list = []
+      this.compareRight.list = []
+      this.compareLeft.index = 0
+      this.compareRight.index = 0
     },
     _enum() {
       this.enumLoading = true

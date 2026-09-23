@@ -3439,7 +3439,7 @@
     "view": {
       "main_salary": "Oklad",
       "work_time": "Ishlagan vaqti",
-      "net_salary": "Qulga tegadigan summa"
+      "net_salary": "Qo‘lga tegadigan summa"
     },
     "in": {
       "code": "To'lov shifri",
@@ -3447,6 +3447,17 @@
       "amount": "Summa",
       "total": "Jami hisoblandi",
       "out_total": "Jami ushlanma"
+    },
+    "compare": {
+      "title": "Oylarni taqqoslash",
+      "button": "Taqqoslash",
+      "exit": "Taqqoslashni yopish",
+      "first": "Birinchi oy",
+      "second": "Ikkinchi oy",
+      "difference": "Farq",
+      "inTable": "Hisoblangan to'lovlar",
+      "outTable": "Ushlanmalar",
+      "oneSideEmpty": "Tanlangan oylardan birida ma'lumot yo'q"
     }
   },
   "expiredHealth": {

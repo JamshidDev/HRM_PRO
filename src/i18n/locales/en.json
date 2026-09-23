@@ -3419,6 +3419,17 @@
       "amount": "Amount",
       "total": "Total calculated",
       "out_total": "Total deductions"
+    },
+    "compare": {
+      "title": "Compare months",
+      "button": "Compare",
+      "exit": "Close comparison",
+      "first": "First month",
+      "second": "Second month",
+      "difference": "Difference",
+      "inTable": "Accruals",
+      "outTable": "Deductions",
+      "oneSideEmpty": "No data for one of the selected months"
     }
   },
   "expiredHealth": {
