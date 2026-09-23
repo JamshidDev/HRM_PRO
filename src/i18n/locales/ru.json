@@ -527,7 +527,7 @@
     "phone": "Номер телефона",
     "password": "Пароль",
     "doYouHaveAccount": "Нет аккаунта?",
-    "singUp": "Регистрация",
+    "signUp": "Регистрация",
     "description": {
       "title": "HRMS",
       "subtitle": "Современная система управления персоналом\n",
