@@ -175,6 +175,12 @@
   --login-badge-bg: #0f1114;
   --login-badge-border: #0f1114;
   --login-glow: rgba(18, 121, 240, 0.14);
+
+  // Live chat xabar pufakchalari — `--primary-color` (#1279f0) juda yorqin/ko'zga
+  // botadigan bo'lgani uchun o'z xabarlar shu alohida, bosiqroq to'q ko'k rangda.
+  // Boshqa foydalanuvchi pufakchasi ham sof oqdan ozgina farqlanadi.
+  --chat-bubble-own-bg: #2c5b82;
+  --chat-bubble-in-bg: #eef1f6;
 }
 
 [data-theme='dark'] {
@@ -319,6 +325,12 @@
   --login-badge-bg: rgba(255, 255, 255, 0.08);
   --login-badge-border: rgba(255, 255, 255, 0.16);
   --login-glow: rgba(18, 121, 240, 0.25);
+
+  // Qorong'i temada o'z pufakcha — havola rangidan ko'ra to'qroq, ko'zni
+  // charchatmaydigan to'q ko'k-kulrang; boshqasiniki `--surface-section`dan
+  // biroz ochroq — fon (`--surface-ground`) bilan aralashib ketmasin.
+  --chat-bubble-own-bg: #1e2d40;
+  --chat-bubble-in-bg: #24334a;
 }
 
 :root {
