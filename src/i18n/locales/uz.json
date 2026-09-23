@@ -2739,7 +2739,11 @@
     "viewRibbon": "Lenta",
     "shiftLeft": "Bir soat chapga",
     "shiftRight": "Bir soat o'ngga",
-    "notWorked": "Ishlanmagan"
+    "notWorked": "Ishlanmagan",
+    "tipPlan": "Ish grafigida shu kunga belgilangan norma — ish boshlanishidan tugashigacha, tushlik ayrilgan holda. Xodim qancha ishlashi KERAK bo'lganini ko'rsatadi.",
+    "tipTurnstile": "Turniket kirish–chiqishlari bo‘yicha binoda o‘tkazilgan jami vaqt. Ish grafigidan tashqaridagi vaqt ham shu yerga kiradi, tushlik esa ayrilmaydi.",
+    "tipOutside": "Ish vaqti ichida binodan tashqarida o‘tkazilgan vaqt: har bir chiqishdan keyingi kirishgacha bo‘lgan oraliqlar yig‘indisi.",
+    "tipCounted": "Tabelga tushadigan vaqt. Turniketdagi vaqtdan faqat ish grafigi oynasiga tushgan qismi olinadi va undan tushlik ayriladi."
   },
   "turnstile": {
     "title": "Turniket",
@@ -5149,8 +5153,7 @@
     "expiresTomorrow": "Parolni almashtirishga 1 kun qoldi — ertaga muddati tugaydi.",
     "expired": "Parol muddati o'tgan.",
     "lastChanged": "Parol oxirgi marta {days} kun oldin yangilangan.",
-    "expiredResetHint": "Parolni bu yerdan yangilab bo'lmaydi — {bot} Telegram botiga kirib, parolni tiklang.",
-    "resetViaBot": "Telegram bot orqali tiklash",
+    "expiredChangeHint": "Tizimda turib parolni saytning o'zidan yangilashingiz mumkin — «Parolni yangilash» tugmasini bosing.",
     "rules": {
       "minLength": "Kamida 8 ta belgi",
       "uppercase": "Kamida 1 ta katta harf (A-Z)",

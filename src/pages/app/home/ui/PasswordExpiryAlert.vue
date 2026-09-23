@@ -14,7 +14,7 @@
    * fonli va kartalari 16px radiusli — standart alert bu tildan ajralib turardi.
    */
   import { useAccountStore } from '@/store/modules/index.js'
-  import { AppPaths, resetBotHandle, resetBotUrl } from '@/utils/index.js'
+  import { AppPaths } from '@/utils/index.js'
   import { LockClosed20Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
@@ -31,6 +31,14 @@
     if (daysLeft.value === 1) return t('passwordForm.expiresTomorrow')
     return t('passwordForm.daysLeft', { days: daysLeft.value })
   })
+
+  // API sana emas, kun soni beradi (`password_changed_days`) — profildagi forma
+  // bilan bir xil matn: «N kun oldin yangilangan».
+  const lastChangedText = computed(() =>
+    store.passwordAgeDays == null
+      ? null
+      : t('passwordForm.lastChanged', { days: store.passwordAgeDays })
+  )
 
   // Profildagi parol formasi birinchi tabda — sahifa oldingi tabda ochilib
   // qolmasin, shuning uchun tab ham shu yerda tanlanadi.
@@ -50,32 +58,17 @@
       <p class="pw-alert__title">{{ $t('passwordForm.policyTitle') }}</p>
       <p class="pw-alert__text">
         {{ text }}
-        <!-- Muddat o'tgach parolni ILOVADAN o'zgartirib bo'lmaydi: yagona yo'l —
-             Telegram bot orqali tiklash. Shuning uchun umumiy qoida o'rniga
-             aynan shu yo'riqnoma chiqadi. -->
-        <template v-if="expired">
-          <span class="pw-alert__rule">
-            {{ $t('passwordForm.expiredResetHint', { bot: resetBotHandle }) }}
-          </span>
-        </template>
+        <!-- Foydalanuvchi tizimda turgani uchun muddat o'tgan parolni ham shu
+             saytning o'zidan (profildagi forma orqali) yangilay oladi. -->
+        <span v-if="expired" class="pw-alert__rule">
+          {{ $t('passwordForm.expiredChangeHint') }}
+        </span>
         <span v-else class="pw-alert__rule">{{ $t('passwordForm.policyDesc') }}</span>
       </p>
+      <p v-if="lastChangedText" class="pw-alert__meta">{{ lastChangedText }}</p>
     </div>
 
-    <!-- Muddat o'tgan bo'lsa tugma profilga emas, to'g'ridan-to'g'ri botga
-         olib boradi — profildagi forma baribir ish bermaydi. -->
-    <n-button
-      v-if="expired"
-      size="small"
-      type="error"
-      tag="a"
-      :href="resetBotUrl"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {{ $t('passwordForm.resetViaBot') }}
-    </n-button>
-    <n-button v-else size="small" type="warning" @click="onOpen">
+    <n-button size="small" :type="expired ? 'error' : 'warning'" @click="onOpen">
       {{ $t('passwordForm.changeTitle') }}
     </n-button>
   </div>
@@ -120,6 +113,13 @@
     font-size: 12px;
     line-height: 16px;
     color: var(--fig-text-secondary);
+  }
+
+  .pw-alert__meta {
+    margin-top: 2px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--fig-text-tertiary);
   }
 
   /* Qoidaning o'zi — ikkinchi darajali ma'lumot: tor ekranda qatorni

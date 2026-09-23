@@ -16,6 +16,7 @@
     ChevronLeft16Filled,
     ChevronRight16Filled,
     Dismiss20Regular,
+    Info16Regular,
     ReOrderDotsVertical16Filled
   } from '@vicons/fluent'
   import { useTimesheetWorkerStore } from '@/store/modules/index.js'
@@ -251,7 +252,7 @@
                 dur: minutesToHm(z - y),
                 from: fmtMin(y),
                 to: fmtMin(z),
-                tip: `${t('timesheetPage.countedShort')}: ${fmtMin(y)} → ${fmtMin(z)} · ${minutesToWords(z - y)}`
+                tip: `${fmtMin(y)} → ${fmtMin(z)} · ${minutesToWords(z - y)}`
               })
               ranges.push({ from: fmtMin(y), to: fmtMin(z) })
             }
@@ -264,7 +265,7 @@
           from: fmtMin(a),
           to: fmtMin(b),
           durText: minutesToWords(sg.minutes),
-          tip: `${t('timesheetPage.inside')}: ${fmtMin(a)} → ${fmtMin(b)} · ${minutesToWords(sg.minutes)}`,
+          tip: `${fmtMin(a)} → ${fmtMin(b)} · ${minutesToWords(sg.minutes)}`,
           countedText: minutesToWords(counted),
           parts,
           ranges,
@@ -474,10 +475,10 @@
     for (const iv of intervals.value) {
       for (const [y, z] of iv.countedRanges) {
         counted.push([y, z])
-        up.push({ from: y, to: z, kind: 'counted', label: t('timesheetPage.countedShort') })
+        up.push({ from: y, to: z, kind: 'counted' })
       }
       for (const [y, z] of subtractRanges([[iv.a, iv.b]], iv.countedRanges)) {
-        up.push({ from: y, to: z, kind: 'raw', label: t('timesheetPage.inside') })
+        up.push({ from: y, to: z, kind: 'raw' })
       }
     }
 
@@ -487,10 +488,10 @@
         gaps = subtractRanges(gaps, [lunch])
         const a = Math.max(lunch[0], win[0])
         const b = Math.min(lunch[1], win[1])
-        if (b > a) down.push({ from: a, to: b, kind: 'lunch', label: t('timesheetPage.lgLunch') })
+        if (b > a) down.push({ from: a, to: b, kind: 'lunch' })
       }
       for (const [y, z] of gaps) {
-        down.push({ from: y, to: z, kind: 'absent', label: t('timesheetPage.notWorked') })
+        down.push({ from: y, to: z, kind: 'absent' })
       }
     }
 
@@ -508,9 +509,7 @@
               : w >= 44
                 ? minutesToHm(r.to - r.from)
                 : '',
-          title: `${r.label}: ${fmtMin(r.from)} → ${fmtMin(r.to)} · ${minutesToWords(
-            r.to - r.from
-          )}`
+          title: `${fmtMin(r.from)} → ${fmtMin(r.to)} · ${minutesToWords(r.to - r.from)}`
         }
       })
 
@@ -521,28 +520,12 @@
     }
   })
 
-  /* Lenta ostidagi yakun. Qisqa bo'laklarga (masalan 12 daqiqalik uzilish)
-   * yozuv sig'maydi — «qancha ishlangan, qancha yo'q» savoliga javob shu
-   * qatordan HAR DOIM topiladi. */
-  const ribbonTotals = computed(() => {
-    const r = ribbon.value
-    const sum = (list, kind) =>
-      list.filter((x) => x.kind === kind).reduce((acc, x) => acc + (x.to - x.from), 0)
-    return [
-      { key: 'counted', label: t('timesheetPage.countedShort'), m: sum(r.up, 'counted') },
-      { key: 'raw', label: t('timesheetPage.inside'), m: sum(r.up, 'raw') },
-      { key: 'lunch', label: t('timesheetPage.lgLunch'), m: sum(r.down, 'lunch') },
-      { key: 'absent', label: t('timesheetPage.notWorked'), m: sum(r.down, 'absent') }
-    ]
-      .filter((x) => x.m > 0)
-      .map((x) => ({ ...x, value: minutesToWords(x.m) }))
-  })
-
   /* --- Ko'rsatkich kartochkalari ------------------------------------------ */
   const stats = computed(() => [
     {
       key: 'plan',
       tone: 'lime',
+      tip: t('timesheetPage.tipPlan'),
       icon: IconPlan,
       label: t('timesheetPage.planMinutes'),
       parts: durationParts(detail.value?.plan_minutes)
@@ -550,13 +533,15 @@
     {
       key: 'turnstile',
       tone: 'indigo',
+      tip: t('timesheetPage.tipTurnstile'),
       icon: IconTurnstile,
       label: t('timesheetPage.inTurnstile'),
       parts: durationParts(detail.value?.fact_minutes)
     },
     {
       key: 'outside',
-      tone: 'green',
+      tone: 'red',
+      tip: t('timesheetPage.tipOutside'),
       icon: IconOutside,
       rotate: true,
       label: t('timesheetPage.breakTotal'),
@@ -565,6 +550,7 @@
     {
       key: 'counted',
       tone: 'amber',
+      tip: t('timesheetPage.tipCounted'),
       icon: IconCounted,
       label: t('timesheetPage.countedFull'),
       parts: durationParts(detail.value?.counted_minutes)
@@ -903,7 +889,20 @@
                   <span class="tsd-stat-ico">
                     <component :is="s.icon" :class="{ 'is-rot': s.rotate }" />
                   </span>
-                  <span :title="s.label" class="tsd-stat-label">{{ s.label }}</span>
+                  <span class="tsd-stat-label">{{ s.label }}</span>
+                  <n-popover
+                    :style="{ maxWidth: '320px' }"
+                    placement="top"
+                    to="body"
+                    trigger="hover"
+                  >
+                    <template #trigger>
+                      <button class="tsd-stat-info" type="button">
+                        <n-icon :component="Info16Regular" size="14" />
+                      </button>
+                    </template>
+                    {{ s.tip }}
+                  </n-popover>
                 </div>
                 <div class="tsd-stat-num">
                   <template v-if="s.parts">
@@ -1155,14 +1154,6 @@
                     <n-icon :component="ChevronRight16Filled" size="16" />
                   </button>
                 </div>
-              </div>
-
-              <div v-if="view === 'ribbon' && ribbonTotals.length" class="tsd-rb-sum">
-                <span v-for="tt in ribbonTotals" :key="tt.key" class="tsd-rb-sum-i">
-                  <i :class="`is-${tt.key}`" class="tsd-sw"></i>
-                  {{ tt.label }}
-                  <b>{{ tt.value }}</b>
-                </span>
               </div>
 
               <p v-if="!planBand" class="tsd-note">{{ $t('timesheetPage.noSchedule') }}</p>
@@ -1450,7 +1441,6 @@
     gap: 8px;
     min-width: 0;
     padding: 6px 4px;
-    overflow: hidden;
     background: var(--fig-bg-secondary);
     border-radius: 12px;
   }
@@ -1476,6 +1466,8 @@
   }
 
   .tsd-stat-label {
+    flex: 1 1 auto;
+    min-width: 0;
     overflow: hidden;
     font-size: 12px;
     font-weight: 500;
@@ -1483,6 +1475,27 @@
     color: var(--fig-text-tertiary);
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  /* Har bir son nimani anglatishi o'z-o'zidan ravshan emas — «Turniketda» va
+     «Hisobga olingan ish vaqti» farqini faqat izohdan bilish mumkin. */
+  .tsd-stat-info {
+    display: flex;
+    flex: 0 0 16px;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    color: var(--fig-text-disable);
+    cursor: help;
+    background: none;
+    border: 0;
+    transition: color 0.15s;
+
+    &:hover {
+      color: var(--fig-icon-brand);
+    }
   }
 
   .tsd-stat-num {
@@ -1532,10 +1545,10 @@
     }
   }
 
-  .tsd-stat.is-green {
+  .tsd-stat.is-red {
     .tsd-stat-ico {
-      color: var(--fig-icon-green);
-      background: var(--fig-green-100);
+      color: var(--fig-icon-red);
+      background: var(--fig-red-100);
     }
   }
 
@@ -1921,6 +1934,13 @@
     bottom: 0;
     background: var(--fig-blue-100);
     border-radius: 12px;
+    transition: box-shadow 0.15s;
+  }
+
+  /* Tanlanganda chekkasi chiziladi — `outline` emas, `box-shadow`: oyna
+     skroll maydonining chetidan chiqsa ham joylashuvga ta'sir qilmaydi. */
+  .tsd-plot.is-focus-plan .tsd-rb-win {
+    box-shadow: inset 0 0 0 2px var(--fig-icon-brand);
   }
 
   .tsd-rb {
@@ -1968,33 +1988,6 @@
     }
   }
 
-  .tsd-rb-sum {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 18px;
-    padding-top: 4px;
-  }
-
-  .tsd-rb-sum-i {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    font-size: 12px;
-    line-height: 16px;
-    color: var(--fig-text-tertiary);
-
-    b {
-      font-weight: 600;
-      color: var(--fig-text-primary);
-    }
-
-    .tsd-sw {
-      width: 12px;
-      height: 12px;
-      border-radius: 3px;
-    }
-  }
-
   /* Tanlangan qatlam ajratiladi, qolgani xiralashadi. */
   .tsd-plot.is-focus {
     .tsd-band,
@@ -2015,6 +2008,7 @@
   .tsd-plot.is-focus-counted .tsd-ct,
   .tsd-plot.is-focus-events .tsd-mark,
   .tsd-plot.is-focus-plan .tsd-rb-win,
+  .tsd-plot.is-focus-plan .tsd-band.is-plan,
   .tsd-plot.is-focus-counted .tsd-rb.is-counted,
   .tsd-plot.is-focus-raw .tsd-rb.is-raw,
   .tsd-plot.is-focus-lunch .tsd-rb.is-lunch,
