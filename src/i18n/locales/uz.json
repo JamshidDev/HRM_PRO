@@ -1993,6 +1993,7 @@
       "categoryMoral": "Ma'naviy rag'batlantirish"
     },
     "Edocument": {
+      "download_pdf": "PDF yuklab olish",
       "pasport": "Pasport",
       "railway_pasport": "Temiryo'l guvohnoma",
       "foreign_pasport": "Xorijiy pasport",
@@ -3446,6 +3447,17 @@
       "amount": "Summa",
       "total": "Jami hisoblandi",
       "out_total": "Jami ushlanma"
+    },
+    "compare": {
+      "title": "Oylarni taqqoslash",
+      "button": "Taqqoslash",
+      "exit": "Taqqoslashni yopish",
+      "first": "Birinchi oy",
+      "second": "Ikkinchi oy",
+      "difference": "Farq",
+      "inTable": "Hisoblangan to'lovlar",
+      "outTable": "Ushlanmalar",
+      "oneSideEmpty": "Tanlangan oylardan birida ma'lumot yo'q"
     }
   },
   "expiredHealth": {
