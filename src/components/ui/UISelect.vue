@@ -86,7 +86,7 @@
   )
 
   const onSelectAll = (v) => {
-    const idList = getChildIds(store.structureList, v.id)
+    const idList = getChildIds(props.options, v.id)
     let list = []
 
     const checkRadio = (valList = [], idList = []) => {
@@ -130,7 +130,7 @@
         collectChildIds(node)
         return true
       }
-      for (const child of node.children) {
+      for (const child of node.children || []) {
         if (findAndCollect(child)) return true
       }
       return false
@@ -138,12 +138,12 @@
 
     const collectChildIds = (node) => {
       result.push(node)
-      for (const child of node.children) {
+      for (const child of node.children || []) {
         collectChildIds(child)
       }
     }
 
-    for (const items of tree) {
+    for (const items of tree || []) {
       findAndCollect(items)
     }
 
