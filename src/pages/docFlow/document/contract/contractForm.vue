@@ -104,15 +104,15 @@
   /*
     Modal sarlavhasi — tanadan ajratuvchi CHIZIQ emas, ochroq fon bilan ajraladi.
     Karta `n-modal` orqali `body` ga teleport qilinadi, shu bois `:global` va
-    `card-class` ("contract-modal-card") orqali maqsadga olinadi; `overflow:
-    hidden` esa fon kartaning yuqori burchak radiusidan chiqib ketmasligi uchun.
+    `card-class` ("contract-modal-card") orqali maqsadga olinadi.
+    Kartaga `overflow: hidden` BERILMAYDI: naive modal ichidagi select/sana
+    ro'yxatlarini aynan shu kartaga teleport qiladi va ular karta chetida
+    qirqilib qolardi. Fon burchakdan chiqmasligi uchun radius sarlavhaning o'ziga
+    beriladi (`--n-border-radius` — `n-card` ning o'zgaruvchisi).
   */
-  :global(.contract-modal-card) {
-    overflow: hidden;
-  }
-
   :global(.contract-modal-card .ui-modal__header) {
     background: color-mix(in srgb, var(--surface-ground) 55%, var(--surface-section));
+    border-radius: var(--n-border-radius) var(--n-border-radius) 0 0;
   }
 
   .contract-form {

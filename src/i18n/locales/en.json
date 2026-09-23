@@ -2719,7 +2719,11 @@
     "viewRibbon": "Ribbon",
     "shiftLeft": "One hour left",
     "shiftRight": "One hour right",
-    "notWorked": "Not worked"
+    "notWorked": "Not worked",
+    "tipPlan": "The norm set by the work schedule for this day — from start to end of the shift, minus lunch. Shows how much the employee WAS SUPPOSED to work.",
+    "tipTurnstile": "Total time in the building based on turnstile entries and exits. Time outside the schedule is included; lunch is not deducted.",
+    "tipOutside": "Time spent outside the building during working hours: the sum of gaps from each exit to the next entry.",
+    "tipCounted": "The time that goes into the timesheet. Only the part of the turnstile time that falls inside the schedule window is taken, minus lunch."
   },
   "turnstile": {
     "title": "Turnstile",
@@ -5060,8 +5064,7 @@
     "expiresTomorrow": "1 day left — your password expires tomorrow.",
     "expired": "Your password has expired.",
     "lastChanged": "Password was last changed {days} days ago.",
-    "expiredResetHint": "It can no longer be changed here — open the Telegram bot {bot} and reset it.",
-    "resetViaBot": "Reset via Telegram bot",
+    "expiredChangeHint": "You can update your password right here on the website — click “Change Password”.",
     "rules": {
       "minLength": "At least 8 characters",
       "uppercase": "At least 1 uppercase letter (A-Z)",

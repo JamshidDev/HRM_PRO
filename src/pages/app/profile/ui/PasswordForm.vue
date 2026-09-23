@@ -1,6 +1,5 @@
 <script setup>
   import { useAccountStore } from '@/store/modules/app/accountStore.js'
-  import { resetBotHandle, resetBotUrl } from '@/utils/index.js'
   import { Checkmark16Regular, Dismiss16Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
@@ -93,19 +92,9 @@
     <n-alert :type="noticeType" :title="$t('passwordForm.policyTitle')" class="mb-5">
       <p>{{ $t('passwordForm.policyDesc') }}</p>
       <p v-if="noticeText" class="mt-1 font-semibold">{{ noticeText }}</p>
-      <!-- Muddat o'tgach quyidagi forma ish bermaydi — parol faqat Telegram
-           bot orqali tiklanadi, shuning uchun havola shu yerda beriladi. -->
-      <template v-if="store.passwordExpired">
-        <p class="mt-1">{{ $t('passwordForm.expiredResetHint', { bot: resetBotHandle }) }}</p>
-        <a
-          :href="resetBotUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="mt-1 inline-block font-semibold underline"
-        >
-          {{ $t('passwordForm.resetViaBot') }}
-        </a>
-      </template>
+      <p v-if="store.passwordExpired" class="mt-1">
+        {{ $t('passwordForm.mustChangeDescProfile') }}
+      </p>
       <p v-if="lastChangedText" class="mt-1 text-xs opacity-80">{{ lastChangedText }}</p>
     </n-alert>
 
