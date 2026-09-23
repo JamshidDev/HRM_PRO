@@ -1973,6 +1973,7 @@
       "categoryMoral": "Moral incentive"
     },
     "Edocument": {
+      "download_pdf": "Download PDF",
       "pasport": "Passport",
       "railway_pasport": "Railway ID",
       "foreign_pasport": "Foreign Passport",

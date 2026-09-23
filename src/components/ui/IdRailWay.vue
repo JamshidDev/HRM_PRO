@@ -3,6 +3,7 @@
   import { useQrCode } from '@/composables/index.js'
   import frontSide from '@/assets/images/content/IdRailwayFront.png'
   import backSide from '@/assets/images/content/IdRailwayBack.png'
+  import { downloadIdRailWayPdf } from './idRailWayPdf.js'
 
   const props = defineProps({
     data: { type: Object, required: true }
@@ -11,6 +12,7 @@
   // Hozircha QR joriy sahifaga olib boradi, keyinchalik tekshirish havolasiga almashtiriladi
   const { qrDataUrl } = useQrCode(() => props.data.qrValue)
 
+  const cardRef = ref(null)
   const isFlipped = ref(false)
   const isAnimating = ref(false)
 
@@ -54,10 +56,32 @@
       padLine(`${dateDigits(d.issueDate)}${digitsOnly(d.cardNumber)}`)
     ]
   })
+
+  async function downloadPdf() {
+    const d = props.data
+    const fileName = [d.surname, d.givenName, d.cardNumber].filter(Boolean).join('_') || 'guvohnoma'
+    await downloadIdRailWayPdf({
+      frontSrc: frontSide,
+      backSrc: backSide,
+      photoUrl: d.photoUrl,
+      qrDataUrl: qrDataUrl.value,
+      data: d,
+      fields: {
+        sex: d.sex === 'M' ? 'ERKAK / M' : 'AYOL / F',
+        issueDate: formatDate(d.issueDate),
+        expiryDate: formatDate(d.expiryDate)
+      },
+      strip: backStrip.value,
+      fontFamily: cardRef.value ? getComputedStyle(cardRef.value).fontFamily : undefined,
+      fileName: `${fileName}.pdf`
+    })
+  }
+
+  defineExpose({ downloadPdf })
 </script>
 
 <template>
-  <div class="relative">
+  <div ref="cardRef" class="relative">
     <button
       type="button"
       aria-label="Flip Card"
