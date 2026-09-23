@@ -338,8 +338,11 @@
   })
 
   /* --- Rozetka bosilganda ochiladigan ro'yxat ----------------------------- */
-  // Qator nomlari ustuni (104px) + 1px chegara. Lentada u ustun yo'q.
-  const ROWS_W = computed(() => (view.value === 'rows' ? 105 : 0))
+  // Qator nomlari ustunining HAQIQIY kengligi (CSS da ekran o'lchamiga qarab
+  // o'zgaradi). Lentada bunday ustun yo'q.
+  const rowsEl = ref(null)
+  const rowsW = ref(105)
+  const ROWS_W = computed(() => (view.value === 'rows' ? rowsW.value : 0))
   const POP_W = 520
 
   const chart = ref(null)
@@ -549,7 +552,7 @@
     },
     {
       key: 'counted',
-      tone: 'amber',
+      tone: 'brand',
       tip: t('timesheetPage.tipCounted'),
       icon: IconCounted,
       label: t('timesheetPage.countedFull'),
@@ -665,6 +668,21 @@
     syncThumb()
   }
 
+  /* Tor ekranda ustunlar ustma-ust joylashadi — ajratgich ham, saqlangan
+   * kenglik ham ma'nosini yo'qotadi. Chegara CSS dagi media so'rov bilan
+   * BIR XIL bo'lishi shart. */
+  const STACK_QUERY = '(max-width: 1024px)'
+  const isStacked = ref(false)
+  if (typeof window !== 'undefined' && window.matchMedia) {
+    const mq = window.matchMedia(STACK_QUERY)
+    isStacked.value = mq.matches
+    const onStackChange = (e) => {
+      isStacked.value = e.matches
+    }
+    mq.addEventListener('change', onStackChange)
+    onBeforeUnmount(() => mq.removeEventListener('change', onStackChange))
+  }
+
   /* --- Yon panel kengligi ------------------------------------------------
    * Standart o'lcham — maketdagidek; foydalanuvchi ajratgichni sudrab
    * o'zgartira oladi. Tanlovi saqlanadi, aks holda oyna har ochilganda
@@ -749,6 +767,7 @@
     const tr = track.value
     // Skroll paytida ipucha kursordan ajralib qolardi.
     hideTip()
+    if (rowsEl.value) rowsW.value = rowsEl.value.offsetWidth
     if (v) scrollLeft.value = v.scrollLeft
     if (!v || !tr) return
     const tw = tr.clientWidth
@@ -952,7 +971,7 @@
 
               <div ref="chart" class="tsd-chart">
                 <!-- Qator nomlari skrollda joyida qoladi -->
-                <div v-if="view === 'rows'" class="tsd-rows">
+                <div v-if="view === 'rows'" ref="rowsEl" class="tsd-rows">
                   <span class="tsd-row-label is-plan">{{ $t('timesheetPage.lgPlan') }}</span>
                   <span class="tsd-row-label is-turn">{{ $t('timesheetPage.tabTurnstile') }}</span>
                   <span class="tsd-row-label is-ev">{{ $t('timesheetPage.eventsShort') }}</span>
@@ -1038,6 +1057,11 @@
                          Yuqori yarim — ichkarida bo'lgan vaqt, quyi yarim —
                          grafikda bo'lib ishlanmagan vaqt. -->
                     <template v-else>
+                      <span
+                        v-if="ribbon.band"
+                        :style="ribbon.band"
+                        class="tsd-rb-frame"
+                      ></span>
                       <span
                         v-for="(r, i) in ribbon.up"
                         :key="`ru-${i}`"
@@ -1126,7 +1150,7 @@
               </div>
 
               <div class="tsd-sb">
-                <span :class="{ 'is-off': view !== 'rows' }" class="tsd-sb-spacer"></span>
+                <span :style="{ width: `${ROWS_W}px` }" class="tsd-sb-spacer"></span>
                 <div ref="track" class="tsd-sb-track" @pointerdown="onTrackDown">
                   <div
                     :style="{ left: `${thumb.left}px`, width: `${thumb.width}px` }"
@@ -1189,14 +1213,22 @@
                       <i class="tsd-sw is-none"></i>{{ $t('timesheetPage.notCounted') }}
                     </span>
                   </div>
-                  <span class="tsd-calc-n">{{ iv.durText }}</span>
-                  <span class="tsd-calc-n is-counted">{{ iv.countedText }}</span>
+                  <span class="tsd-calc-n">
+                    <em>{{ $t('timesheetPage.inside') }}</em>{{ iv.durText }}
+                  </span>
+                  <span class="tsd-calc-n is-counted">
+                    <em>{{ $t('timesheetPage.countedShort') }}</em>{{ iv.countedText }}
+                  </span>
                 </div>
 
                 <div v-if="intervals.length" class="tsd-calc-row is-total">
                   <span class="tsd-calc-ranges">{{ $t('content.count') }}</span>
-                  <span class="tsd-calc-n">{{ minutesToWords(detail?.fact_minutes) }}</span>
+                  <span class="tsd-calc-n">
+                    <em>{{ $t('timesheetPage.inside') }}</em>
+                    {{ minutesToWords(detail?.fact_minutes) }}
+                  </span>
                   <span class="tsd-calc-n is-counted">
+                    <em>{{ $t('timesheetPage.countedShort') }}</em>
                     {{ minutesToWords(detail?.counted_minutes) }}
                   </span>
                 </div>
@@ -1205,8 +1237,10 @@
           </div>
 
           <!-- Ajratgich: chizma bilan yon panel o'rtasidagi kenglikni
-               foydalanuvchi o'zi taqsimlaydi. -->
+               foydalanuvchi o'zi taqsimlaydi. Tor ekranda ustunlar ustma-ust
+               tushadi — u yerda sudrash uchun narsa qolmaydi. -->
           <div
+            v-if="!isStacked"
             :class="{ 'is-drag': dragging }"
             :title="$t('timesheetPage.resizePanel')"
             class="tsd-split"
@@ -1219,7 +1253,7 @@
           </div>
 
           <!-- ── O'ng ustun ──────────────────────────────────────────────── -->
-          <aside :style="{ width: `${asideW}px` }" class="tsd-aside">
+          <aside :style="isStacked ? null : { width: `${asideW}px` }" class="tsd-aside">
             <section class="tsd-aside-sec is-info">
               <h4 class="tsd-card-title">{{ $t('timesheetPage.dayInfo') }}</h4>
               <div class="tsd-info">
@@ -1448,7 +1482,7 @@
   .tsd-stat-top {
     display: flex;
     gap: 8px;
-    align-items: center;
+    align-items: flex-start;
     padding: 0 8px;
   }
 
@@ -1468,13 +1502,14 @@
   .tsd-stat-label {
     flex: 1 1 auto;
     min-width: 0;
-    overflow: hidden;
+    // Ikonka chipi 24px, yorliq qatori 16px — birinchi qator chip markaziga
+    // to'g'ri kelishi uchun 4px pastga suriladi.
+    padding-top: 4px;
     font-size: 12px;
     font-weight: 500;
     line-height: 16px;
     color: var(--fig-text-tertiary);
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    word-break: break-word;
   }
 
   /* Har bir son nimani anglatishi o'z-o'zidan ravshan emas — «Turniketda» va
@@ -1486,6 +1521,7 @@
     justify-content: center;
     width: 16px;
     height: 16px;
+    margin-top: 4px;
     padding: 0;
     color: var(--fig-text-disable);
     cursor: help;
@@ -1502,6 +1538,8 @@
     display: flex;
     gap: 6px;
     align-items: baseline;
+    // Yorliq ikki qatorga tushsa ham raqamlar bir sathda qolsin.
+    margin-top: auto;
     padding: 0 8px;
     white-space: nowrap;
 
@@ -1552,10 +1590,10 @@
     }
   }
 
-  .tsd-stat.is-amber {
+  .tsd-stat.is-brand {
     .tsd-stat-ico {
-      color: var(--fig-icon-amber);
-      background: var(--fig-amber-100);
+      color: var(--fig-icon-brand);
+      background: var(--fig-blue-100);
     }
   }
 
@@ -1571,13 +1609,15 @@
 
   .tsd-card-head {
     display: flex;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 10px 12px;
     align-items: center;
     justify-content: space-between;
   }
 
   .tsd-card-head-l {
     display: flex;
+    flex-shrink: 0;
     gap: 12px;
     align-items: center;
   }
@@ -1616,21 +1656,41 @@
     font-weight: 600;
     line-height: 18px;
     color: var(--fig-text-primary);
+    white-space: nowrap;
   }
 
   /* ── Izohlar (qatlam tanlash) ─────────────────────────────────────────── */
   .tsd-legend {
     display: flex;
-    flex-shrink: 0;
-    overflow: hidden;
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
     border-radius: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--fig-br-secondary) transparent;
+
+    &::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--fig-br-secondary);
+      border-radius: 999px;
+    }
   }
 
   .tsd-lg-btn {
     display: flex;
+    flex-shrink: 0;
     gap: 4px;
     align-items: center;
     height: 32px;
+    white-space: nowrap;
     padding: 6px 10px;
     font-size: 12px;
     font-weight: 600;
@@ -1934,12 +1994,20 @@
     bottom: 0;
     background: var(--fig-blue-100);
     border-radius: 12px;
-    transition: box-shadow 0.15s;
   }
 
-  /* Tanlanganda chekkasi chiziladi — `outline` emas, `box-shadow`: oyna
-     skroll maydonining chetidan chiqsa ham joylashuvga ta'sir qilmaydi. */
-  .tsd-plot.is-focus-plan .tsd-rb-win {
+  /* Tanlanganda oyna chekkasi. Foni yo'q — soat to'ri oyna ichida ko'rinib
+     turaveradi; `box-shadow: inset` esa joylashuvga ta'sir qilmaydi. */
+  .tsd-rb-frame {
+    position: absolute;
+    top: 26px;
+    bottom: 0;
+    border-radius: 12px;
+    transition: box-shadow 0.15s;
+    pointer-events: none;
+  }
+
+  .tsd-plot.is-focus-plan .tsd-rb-frame {
     box-shadow: inset 0 0 0 2px var(--fig-icon-brand);
   }
 
@@ -2009,6 +2077,7 @@
   .tsd-plot.is-focus-events .tsd-mark,
   .tsd-plot.is-focus-plan .tsd-rb-win,
   .tsd-plot.is-focus-plan .tsd-band.is-plan,
+  .tsd-plot.is-focus-plan .tsd-rb-frame,
   .tsd-plot.is-focus-counted .tsd-rb.is-counted,
   .tsd-plot.is-focus-raw .tsd-rb.is-raw,
   .tsd-plot.is-focus-lunch .tsd-rb.is-lunch,
@@ -2263,12 +2332,6 @@
 
   .tsd-sb-spacer {
     flex-shrink: 0;
-    width: 104px;
-
-    // Lentada qator nomlari ustuni yo'q — skrollbar butun kenglikni egallaydi.
-    &.is-off {
-      width: 0;
-    }
   }
 
   .tsd-sb-track {
@@ -2365,6 +2428,11 @@
     flex-shrink: 0;
     width: 148px;
     white-space: nowrap;
+
+    // Yorliq faqat tor ekranda — kengida u ustun sarlavhasida turadi.
+    em {
+      display: none;
+    }
     font-size: 14px;
     font-weight: 500;
     line-height: 18px;
@@ -2600,6 +2668,138 @@
       font-size: 11px;
       font-style: normal;
       color: var(--fig-text-tertiary);
+    }
+  }
+
+  /* ── Planshet: ustunlar ustma-ust ─────────────────────────────────────
+     Chegara skriptdagi `STACK_QUERY` bilan BIR XIL bo'lishi shart. */
+  @media (max-width: 1024px) {
+    .tsd {
+      width: 96vw;
+    }
+
+    .tsd-body {
+      flex-direction: column;
+      max-height: calc(92dvh - 60px);
+    }
+
+    .tsd-main,
+    .tsd-aside {
+      width: 100%;
+      min-width: 0;
+    }
+  }
+
+  /* ── Telefon ──────────────────────────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .tsd {
+      width: 100vw;
+      max-width: 100vw;
+      border-radius: 0;
+    }
+
+    .tsd-head {
+      gap: 10px;
+      padding: 8px 12px;
+    }
+
+    .tsd-id {
+      gap: 8px;
+    }
+
+    .tsd-id-ava {
+      width: 34px;
+      height: 34px;
+      font-size: 13px;
+      border-radius: 17px;
+    }
+
+    .tsd-id-name {
+      font-size: 15px;
+      line-height: 20px;
+    }
+
+    .tsd-nav {
+      gap: 4px;
+      padding: 5px 6px;
+    }
+
+    .tsd-nav-date {
+      font-size: 11px;
+    }
+
+    .tsd-body {
+      gap: 12px;
+      padding: 12px;
+    }
+
+    /* To'rtta kartochka bitta qatorga sig'maydi — 2×2 bo'lib joylashadi. */
+    .tsd-stats {
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tsd-stat {
+      flex: 1 1 calc(50% - 4px);
+      min-width: calc(50% - 4px);
+    }
+
+    .tsd-stat-num b {
+      font-size: 18px;
+      line-height: 24px;
+    }
+
+    .tsd-card,
+    .tsd-aside-sec {
+      padding: 12px;
+    }
+
+    /* Qator nomlari ustuni toraydi — chizmaga ko'proq joy qoladi.
+       `ROWS_W` uni o'lchab oladi, shuning uchun skriptga tegmaydi. */
+    .tsd-rows {
+      width: 72px;
+    }
+
+    .tsd-row-label {
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    /* «3 soat 24 daqiqa» ikkita ustunga sig'maydi — ustun sarlavhasi
+       yashiriladi, yorliq esa har bir sonning yoniga ko'chadi. */
+    .tsd-calc-cols {
+      display: none;
+    }
+
+    .tsd-calc-row {
+      flex-direction: column;
+      gap: 6px;
+      align-items: stretch;
+    }
+
+    .tsd-calc-n {
+      display: flex;
+      gap: 12px;
+      align-items: baseline;
+      justify-content: space-between;
+      width: auto;
+      font-size: 13px;
+
+      em {
+        display: block;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 500;
+        color: var(--fig-text-tertiary);
+      }
+    }
+
+    .tsd-calc-ranges {
+      font-size: 13px;
+    }
+
+    .tsd-pop-list {
+      max-height: 200px;
     }
   }
 </style>
