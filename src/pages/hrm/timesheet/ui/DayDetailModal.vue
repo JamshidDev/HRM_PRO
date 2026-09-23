@@ -1544,17 +1544,17 @@
     white-space: nowrap;
 
     b {
-      font-size: 20px;
+      font-size: 16px;
       font-weight: 600;
-      line-height: 26px;
+      line-height: 22px;
       color: var(--fig-text-primary);
     }
 
     i {
-      font-size: 12px;
+      font-size: 16px;
       font-style: normal;
       font-weight: 500;
-      line-height: 16px;
+      line-height: 22px;
       color: var(--fig-text-tertiary);
     }
   }
@@ -2744,9 +2744,10 @@
       min-width: calc(50% - 4px);
     }
 
-    .tsd-stat-num b {
-      font-size: 18px;
-      line-height: 24px;
+    .tsd-stat-num b,
+    .tsd-stat-num i {
+      font-size: 14px;
+      line-height: 20px;
     }
 
     .tsd-card,
