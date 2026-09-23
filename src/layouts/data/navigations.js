@@ -70,11 +70,7 @@ import ExtraWorkerRoleIcon from '@assets/icons/Users.svg'
 import ExtraEducationDirectoryIcon from '@assets/icons/EducationDirectory.svg'
 import ExtraDepartmentLocationIcon from '@assets/icons/DepartmentLocation.svg'
 import AdminFolderIcon from '@assets/icons/adminFolder.svg'
-import {
-  Calculator24Regular,
-  ClipboardTaskListLtr24Filled,
-  Grid20Filled
-} from '@vicons/fluent'
+import { Calculator24Regular, ClipboardTaskListLtr24Filled, Grid20Filled } from '@vicons/fluent'
 const {
   usersIcon,
   menuIcon,
@@ -111,7 +107,7 @@ const {
    */
   documentsIcon: documentsGroupIcon,
   signersIcon: responsibleGroupIcon,
-  calendarAlt: vacationGroupIcon,
+  calendarAlt: vacationGroupIcon
 } = icons
 
 import { markRaw } from 'vue'
@@ -435,7 +431,7 @@ export const navigations = withRawIcons([
         icon: qualificationIcon,
         color: 'bg-success',
         permission: appPermissions.lmsWorkerRead
-      },
+      }
     ]
   },
   {
@@ -971,6 +967,13 @@ export const navigations = withRawIcons([
         icon: ChatCongratulationIcon,
         color: 'bg-warning',
         permission: appPermissions.chatTelegramMessages
+      },
+      {
+        label: 'liveChatPage.name',
+        path: Utils.routeChatPathMaker(AppPaths.LiveChat),
+        icon: ChatSidebarIcon,
+        color: 'bg-dark',
+        permission: appPermissions.chat
       }
     ]
   },

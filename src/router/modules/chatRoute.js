@@ -60,5 +60,13 @@ export const chatRoutes = [
     meta: {
       layout: AppLayouts.main
     }
+  },
+  {
+    path: Utils.routeChatPathMaker(AppPaths.LiveChat),
+    name: AppPaths.LiveChat.substring(1),
+    component: () => import('@pages/chat/live-chat/page.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
   }
 ]

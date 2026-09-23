@@ -150,6 +150,7 @@ export const AppPaths = {
   View: '/view',
   MobileUsers: '/mobile-users',
   MobileStories: '/mobile-stories',
+  LiveChat: '/live-chat',
   StructureReport: '/structure-report',
   ConfReport: '/conf-report',
   DepartmentLocation: '/department-location',

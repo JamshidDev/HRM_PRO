@@ -11,6 +11,13 @@ export const useConfirmationAdContractStore = defineStore('confirmationAdContrac
     visibleType: true,
     elementId: null,
     totalItems: 0,
+    // API `document` ichida tur va tashkilotni faqat id bilan qaytaradi —
+    // nomlar enum/tuzilma ro'yxatlaridan id bo'yicha topiladi (bir marta yuklanadi).
+    typeNames: {},
+    organizationNames: {},
+    // Shartnoma xodimi ham `document` da yo'q (faqat `worker_id`) — u asosiy
+    // shartnomadan (`contract_id`) olinadi: { [contract_id]: { worker, position } }.
+    contractWorkers: {},
     payload: {
       parent_id: null,
       level: null,
@@ -24,16 +31,69 @@ export const useConfirmationAdContractStore = defineStore('confirmationAdContrac
   }),
   actions: {
     _index() {
+      this._lookups()
       this.loading = true
       $ApiService.documentService
         ._confirmationAdContract({ params: this.params })
         .then((res) => {
           this.list = res.data.data.data
           this.totalItems = res.data.data.total
+          this._contractWorkers()
         })
         .finally(() => {
           this.loading = false
         })
+    },
+    _lookups() {
+      if (Object.keys(this.typeNames).length === 0) {
+        // Enum shartnoma turiga qarab qisqartirib beradi: 1 (mehnat) va 2 (FXSH)
+        // birgalikda barcha qo'shimcha kelishuv turlarini qamraydi.
+        Promise.all(
+          [1, 2].map((contract_type) =>
+            $ApiService.componentService._contractAddition({ params: { contract_type } })
+          )
+        ).then((responses) => {
+          const names = {}
+          responses.forEach((res) => res.data.data?.forEach((x) => (names[x.id] = x.name)))
+          this.typeNames = names
+        })
+      }
+      if (Object.keys(this.organizationNames).length === 0) {
+        $ApiService.componentService._allStructure().then((res) => {
+          const names = {}
+          const walk = (list) =>
+            list?.forEach((x) => {
+              names[x.id] = x.name
+              walk(x.children)
+            })
+          walk(res.data.data)
+          this.organizationNames = names
+        })
+      }
+    },
+    _contractWorkers() {
+      const ids = new Set(
+        this.list
+          .filter((row) => row.document && !row.document.worker)
+          .map((row) => row.document.contract_id)
+          .filter((id) => id && !(id in this.contractWorkers))
+      )
+      ids.forEach((id) => {
+        // Qayta so'ralmasligi uchun javob kelguncha ham joy band qilinadi.
+        this.contractWorkers[id] = null
+        $ApiService.contractService
+          ._show({ id })
+          .then((res) => {
+            const contract = res.data.data
+            this.contractWorkers[id] = {
+              worker: contract?.worker,
+              position: contract?.contract_position?.position?.name
+            }
+          })
+          .catch(() => {
+            delete this.contractWorkers[id]
+          })
+      })
     },
     _level() {
       this.levelLoading = true
