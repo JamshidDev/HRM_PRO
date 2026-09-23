@@ -115,7 +115,7 @@
           class="w-[20px] justify-center items-center"
         >
           <n-radio
-            @click="onSelectRadio(item)"
+            @click.prevent="onSelectRadio(item)"
             :checked="isCheck(item.id)"
             :value="item.id"
             name="basic-demo"
