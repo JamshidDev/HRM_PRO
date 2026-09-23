@@ -525,7 +525,7 @@
     "phone": "Phone number",
     "password": "Password",
     "doYouHaveAccount": "Don't have an account?",
-    "singUp": "Sign up",
+    "signUp": "Sign up",
     "description": {
       "title": "HRMS",
       "subtitle": "Modern employee management system\n",
