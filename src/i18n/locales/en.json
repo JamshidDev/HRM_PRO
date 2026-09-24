@@ -4677,7 +4677,13 @@
       "invalidResult": "Invalid data entered",
       "noExamWorkers": "These workers have no entry or final exam result and were not included: {workers}",
       "noValidWorkers": "No worker has both entry and final exam results filled in."
-    }
+    },
+    "signAllTitle": "Confirm certificates",
+    "signAllEmpty": "No unsigned certificates match the filter.",
+    "signAllCount": "{count} unsigned certificates match the filter.",
+    "signAllNote1": "A signature QR code is stamped on each document and the status becomes “Confirmed”.",
+    "signAllNote2": "Signer statuses in the approval queue stay unchanged.",
+    "signAllNote3": "The action runs in the background — refresh the list when it finishes: the status becomes “Confirmed” and a QR code appears in the document."
   },
   "staffingApproval": {
     "name": "Staffing",

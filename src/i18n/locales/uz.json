@@ -4685,7 +4685,13 @@
       "invalidResult": "Noto'g'ri ma'lumot kiritildi",
       "noExamWorkers": "Bu xodim(lar)da kirish yoki chiqish imtihoni natijasi yo'q, ular sertifikat ro'yxatiga kiritilmadi: {workers}",
       "noValidWorkers": "Sertifikat berish uchun birorta ham xodimda kirish va chiqish imtihoni natijasi to'ldirilmagan."
-    }
+    },
+    "signAllTitle": "Sertifikatlarni tasdiqlash",
+    "signAllEmpty": "Filtrga mos imzolanmagan sertifikat topilmadi.",
+    "signAllCount": "Filtrga mos {count} ta imzolanmagan sertifikat topildi.",
+    "signAllNote1": "Har bir hujjatga imzo QR kodi bosiladi va holat «Tasdiqlangan» bo'ladi.",
+    "signAllNote2": "Imzo navbatidagi tasdiqlovchilar statusi o'zgarmaydi.",
+    "signAllNote3": "Amal fon rejimida bajariladi — tugagach ro'yxatni yangilang: holat «Tasdiqlangan» bo'ladi va hujjatda QR kod paydo bo'ladi."
   },
   "publicPage": {
     "authentication": "Imtihon savollarini ko'rish",

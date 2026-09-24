@@ -4,7 +4,12 @@
   import { SuperSelect, UIPageFilter, UISelect } from '@components'
   import Utils from '@utils/Utils.js'
   import { useRoute } from 'vue-router'
-  import { DocumentTable24Regular, ArrowDownload24Regular } from '@vicons/fluent'
+  import SignAllModal from './SignAllModal.vue'
+  import {
+    DocumentTable24Regular,
+    ArrowDownload24Regular,
+    CheckmarkCircle20Regular
+  } from '@vicons/fluent'
 
   const store = useLmsCertificateStore()
   const componentStore = useComponentStore()
@@ -228,6 +233,20 @@
         </template>
         {{ $t('content.download') }}
       </n-button>
+      <!-- Faqat modalni ochadi — «uchish» animatsiyasi job haqiqatan ketganda
+           (modaldagi tasdiq tugmasida) ishlaydi. -->
+      <n-button
+        type="warning"
+        :loading="store.signAllLoading || store.loading"
+        @click="store._openSignConfirm()"
+      >
+        <template #icon>
+          <n-icon size="24">
+            <CheckmarkCircle20Regular />
+          </n-icon>
+        </template>
+        {{ $t('content.confirm') }}
+      </n-button>
       <n-button
         v-fly-upload
         type="info"
@@ -243,4 +262,7 @@
       </n-button>
     </template>
   </UIPageFilter>
+
+  <!-- Ommaviy tasdiqlash: filtrga mos imzolanmaganlar soni + tushuntirish -->
+  <SignAllModal />
 </template>
