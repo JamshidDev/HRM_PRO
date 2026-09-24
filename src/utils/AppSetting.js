@@ -47,3 +47,19 @@ export const useAppSetting = {
     ? import.meta.env.VITE_SEASON
     : null
 }
+
+/**
+ * Parolni tiklash Telegram boti.
+ *
+ * Ikki joyda kerak: login sahifasidagi tiklash formasi (`loginnew/ui/ResetForm.vue`)
+ * va parol muddati o'tganda chiqadigan ogohlantirishlar (bosh sahifa + profil).
+ * Ilgari manzil faqat `ResetForm.vue` ichida qattiq yozilgan edi.
+ *
+ * `?start=reset` — Telegram deep-link: bot ochilganda "START" darhol yuboriladi.
+ */
+const isProdMode = import.meta.env.MODE === 'production'
+
+export const resetBotHandle = isProdMode ? '@hrmpro_robot' : '@dev_hrm_pro_robot'
+export const resetBotUrl = isProdMode
+  ? 'https://t.me/hrmpro_robot?start=reset'
+  : 'https://t.me/dev_hrm_pro_robot?start=reset'

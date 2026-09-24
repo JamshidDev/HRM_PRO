@@ -8,6 +8,7 @@
     PeopleTeam24Regular
   } from '@vicons/fluent'
   import contractForm from '@/pages/docFlow/document/contract/contractForm.vue'
+  import ContractFormSteps from '@/pages/docFlow/document/contract/ui/ContractFormSteps.vue'
   import Table from './ui/Table.vue'
   import ExportForm from './ui/ExportForm.vue'
   import Filter from './ui/Filter.vue'
@@ -64,9 +65,15 @@
     <UIModal
       :title="store.visibleType ? $t('documentPage.createTitle') : $t('documentPage.updateTitle')"
       :width="1200"
+      card-class="contract-modal-card"
       fullscreen-on-mobile
       v-model:visible="store.visible"
+      :header-divider="false"
     >
+      <!-- Qadamlar sarlavha qatorida: forma faqat maydonlardan iborat qoladi -->
+      <template #header-actions>
+        <ContractFormSteps />
+      </template>
       <template #default>
         <contractForm :call-back="onSuccessEv" />
       </template>

@@ -12,10 +12,18 @@
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
 
-  // Tarif-setka bo'limi — oylik (salary) feature; faqat `tariff-grid-access` (yoki -read)
-  // ruxsatli userlarga. HR va boshqalarda yashiriladi + grid so'rovlari (for-position/_show,
-  // step-up bilan himoyalangan) YUBORILMAYDI → 403 chiqmaydi. (2026-08-14 salary-scope)
-  const hasGridAccess = computed(() => accStore.canView(accStore.pn.tariffGridAccess))
+  // Tarif-setka bo'limi ikki toifaga ko'rinadi:
+  //   1) `tariff-grid-access` (yoki -read) — oylik (salary) feature egalari;
+  //   2) `hr-positions-write` — lavozim tahrir/yaratish ruxsati borlar (form shu ruxsat
+  //      bilan ochiladi, oklad setkadan olinadi).
+  // Backendda `for-position`, `:id` (show) va `:id/amount` `hr-positions-read` ni ham
+  // qabul qiladi, shuning uchun bu userlarda grid so'rovlari 403 bermaydi.
+  // Ruxsatsizlarda esa yashiriladi + so'rov YUBORILMAYDI. (2026-09-23 positions-write scope)
+  const hasGridAccess = computed(
+    () =>
+      accStore.canView(accStore.pn.tariffGridAccess) ||
+      accStore.checkPermission(accStore.pn.hrPositionsWrite)
+  )
 
   const props = defineProps({
     callback: {

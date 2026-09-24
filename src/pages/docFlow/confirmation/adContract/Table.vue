@@ -22,8 +22,29 @@
     emits('openOffice', { documentId, signatureId })
   }
 
+  // API qo'shimcha kelishuvni endi `document` kalitida qaytaradi (oldin
+  // `contract_additional` edi) — ikkalasi ham qo'llab-quvvatlanadi. `document`
+  // ichida tur va tashkilot faqat id — nomlari store'dagi ro'yxatlardan olinadi.
+  // Shartnoma xodimi esa faqat `worker_id` bilan keladi — u asosiy shartnomadan
+  // (`contract_id`) yuklanadi.
+  const doc = (row) => row?.document ?? row?.contract_additional
+
+  const typeName = (row) => {
+    const type = doc(row)?.type
+    return type?.name ?? store.typeNames[type]
+  }
+
+  const worker = (row) => {
+    const d = doc(row)
+    if (d?.worker) return { worker: d.worker, position: null }
+    return store.contractWorkers[d?.contract_id]
+  }
+
+  const organizationName = (row) =>
+    doc(row)?.organization?.name ?? store.organizationNames[doc(row)?.organization_id]
+
   const onPreview = (row) => {
-    onOpenFile(row?.contract_additional.id, row.id)
+    onOpenFile(doc(row)?.id, row.id)
   }
 
   const changePage = (v) => {
@@ -94,23 +115,29 @@
     @change-page="changePage"
   >
     <template #[`cell-contract_additional.type.name`]="{ row }">
-      <UITableNameCell :name="row?.contract_additional?.type.name" @click="onPreview(row)" />
+      <UITableNameCell :name="typeName(row)" @click="onPreview(row)" />
     </template>
 
     <template #[`cell-contract_additional.worker`]="{ row }">
       <UIUser
+        v-if="worker(row)?.worker"
         :data="{
-          photo: row?.contract_additional.worker.photo,
-          lastName: row?.contract_additional.worker.last_name,
-          firstName: row?.contract_additional.worker.first_name,
-          middleName: row?.contract_additional.worker.middle_name,
-          position: $t('content.no-data')
+          photo: worker(row).worker.photo,
+          lastName: worker(row).worker.last_name,
+          firstName: worker(row).worker.first_name,
+          middleName: worker(row).worker.middle_name,
+          position: worker(row).position || $t('content.no-data')
         }"
       />
+      <span v-else class="text-textColor3">—</span>
+    </template>
+
+    <template #[`cell-contract_additional.organization.name`]="{ row }">
+      {{ organizationName(row) }}
     </template>
 
     <template #[`cell-contract_additional.number`]="{ row }">
-      <UITableBadgeCell :number="row?.contract_additional?.number" type="error" />
+      <UITableBadgeCell :number="doc(row)?.number" type="error" />
     </template>
 
     <template #cell-status="{ row }">
@@ -118,11 +145,11 @@
     </template>
 
     <template #[`cell-contract_additional.contract_date`]="{ row }">
-      {{ Utils.timeOnlyDate(row?.contract_additional?.contract_date) }}
+      {{ Utils.timeOnlyDate(doc(row)?.contract_date) }}
     </template>
 
     <template #cell-generate="{ row }">
-      <UIStatus :status="Utils.documentStatus[row?.generate]" />
+      <UIStatus :status="Utils.documentStatus[row?.generate ?? doc(row)?.generate]" />
     </template>
   </UITable>
 </template>

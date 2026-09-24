@@ -1,7 +1,12 @@
 import axios from '@/service/index.js'
 
 const _index = async (payload) => {
-  return await axios.get(`/v1/hr/department-positions`, { params: payload.params })
+  // `silentError` — forma dropdowni bu endpoint'ni ruxsat bor deb chaqiradi va
+  // rad etilsa permissionsiz filter'ga qaytadi; foydalanuvchiga xato ko'rsatilmaydi.
+  return await axios.get(`/v1/hr/department-positions`, {
+    params: payload.params,
+    silentError: payload?.silentError
+  })
 }
 
 const _create = async (payload) => {
@@ -22,7 +27,10 @@ const _coefficients = async (payload) =>
 const _addCoefficient = async (payload) =>
   axios.post(`/v1/hr/department-positions/${payload.id}/coefficients`, payload.data)
 const _updateCoefficient = async (payload) =>
-  axios.put(`/v1/hr/department-positions/${payload.id}/coefficients/${payload.coefId}`, payload.data)
+  axios.put(
+    `/v1/hr/department-positions/${payload.id}/coefficients/${payload.coefId}`,
+    payload.data
+  )
 const _deleteCoefficient = async (payload) =>
   axios.delete(`/v1/hr/department-positions/${payload.id}/coefficients/${payload.coefId}`)
 

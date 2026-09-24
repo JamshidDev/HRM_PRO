@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { AppPaths, useAppSetting } from '@/utils/index.js'
+import { AppPaths, useAppSetting, isPasswordExpiredError } from '@/utils/index.js'
 import router from '../router/index'
 import Utils from '@/utils/Utils.js'
 import i18n from '@/i18n/index.js'
@@ -55,6 +55,14 @@ instance.interceptors.response.use(
   async (error) => {
     if (error.name === 'CanceledError') {
       error.message = t('content.waitResponse')
+    }
+
+    // Parol muddati o'tgani — login sahifasi buni ALOHIDA ekranda ko'rsatadi
+    // (Telegram bot orqali tiklash yo'riqnomasi bilan). Toast ham chiqsa,
+    // bir xil xabar ikki joyda takrorlanardi.
+    if (isPasswordExpiredError(error)) {
+      reportApiError(error)
+      return Promise.reject(error)
     }
 
     if (error.response?.status === 401) {

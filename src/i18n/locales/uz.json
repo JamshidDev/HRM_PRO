@@ -3,13 +3,13 @@
     "name": "Arxiv",
     "filter": {
       "contractType": "Shartnoma turi",
-      "dismissedPeriod": "Bo‘shagan sana"
+      "dismissedPeriod": "Bo'shagan sana"
     },
     "table": {
       "previousOrg": "Oldingi korxona",
       "contractType": "Shartnoma turi",
       "startDate": "Shartnoma tuzilgan sana",
-      "dismissedAt": "Bo‘shagan sana",
+      "dismissedAt": "Bo'shagan sana",
       "resume": "Rezyume yuklash",
       "currentOrg": "Hozirgi ish joyi",
       "notEmployed": "Tarmoqda emas"
@@ -218,7 +218,7 @@
     "notUpload": "Yuklanmagan",
     "enterField": "Kiriting",
     "phone": "Telefon raqam",
-    "langUz": "O’ZB",
+    "langUz": "O'ZB",
     "langRu": "RUS",
     "langEn": "ENG",
     "langUzKr": "KRIL",
@@ -273,7 +273,7 @@
     "yes": "Ha",
     "no": "Yo'q",
     "notFoundData": "Ma'lumot topilmadi!",
-    "noResultYourRequest": "Sizning so‘rovingiz bo‘yicha hech qanday ma'lumot topilmadi...",
+    "noResultYourRequest": "Sizning so'rovingiz bo'yicha hech qanday ma'lumot topilmadi...",
     "back": "Orqaga",
     "theme": "Mavzu",
     "language": "Til",
@@ -298,7 +298,7 @@
     "textSize": "Matn hajmi",
     "resetChanges": "Standartga qaytarish",
     "changeAccount": "Hisoblarim",
-    "logOutSystem": "Tizmdan chiqish",
+    "logOutSystem": "Tizimdan chiqish",
     "paginationSize": "{n} tadan ko'rsatish",
     "perPage": "Har bir sahifada",
     "confirm": "Tasdiqlash",
@@ -396,7 +396,7 @@
     "refresh": "Yangilash",
     "confirmFileText": "Hujjatni tasdiqlash uchun uning imzolangan nusxasining pdf shaklidagi faylini yuklang.",
     "department": "Bo'lim",
-    "birthday": "Tug'ulgan sanasi",
+    "birthday": "Tug'ilgan sanasi",
     "age": "Yosh",
     "pin": "Pasport JSHSHIR kiriting",
     "university": "Oliygoh",
@@ -412,7 +412,7 @@
     "noImage": "Rasm mavjud emas",
     "waitResponse": "Iltimos javobni kuting!",
     "untilNow": "hozirgacha",
-    "warningImageSave": "Asosiy rasm uchun yangi rasm tanlandi. O‘zgarishni saqlash uchun 'Saqlash' tugmasini bosing.",
+    "warningImageSave": "Asosiy rasm uchun yangi rasm tanlandi. O'zgarishni saqlash uchun 'Saqlash' tugmasini bosing.",
     "selectAll": "Barchasini tanlash",
     "selectList": "Ro'yxatni to'liq tanlash",
     "unSelectList": "Ro'yxatni to'liq tozalash",
@@ -477,7 +477,7 @@
     "unExpectedFormat": "Noto'g'ri turdagi ma'lumot!",
     "requiredJSHSHIR": "Pasport JSHSHIR kiritilishi shart!",
     "enterOverNumber": "{n}dan katta son kiriting",
-    "requiredHoursField": "Vaqt formati noto’g’ri (HH:MM)",
+    "requiredHoursField": "Vaqt formati noto'g'ri (HH:MM)",
     "captchaRequired": "Captcha javobini kiriting!",
     "passwordsNotMatch": "Parollar mos kelmadi!"
   },
@@ -540,7 +540,7 @@
     "phone": "Telefon raqam",
     "password": "Parol",
     "doYouHaveAccount": "Sizda hisob yo'qmi?",
-    "singUp": "Ro'yxatdan o'tish",
+    "signUp": "Ro'yxatdan o'tish",
     "description": {
       "title": "HRMS",
       "subtitle": "Xodimlarni boshqarishning zamonaviy tizimi\n",
@@ -557,13 +557,19 @@
     "captchaPlaceholder": "Javobni kiriting",
     "captchaWrong": "Noto'g'ri javob!",
     "forgotPassword": "Parolni unutdingizmi?",
-    "captchaRequired": "Iltimos, captcha tasdiqlashdan o'ting",
+    "captchaRequired": "Iltimos, captchani tasdiqlashdan o'ting",
     "twoFactor": {
       "title": "Ikki bosqichli tasdiqlash",
       "subtitle": "{n} raqamiga yuborilgan tasdiqlash kodini kiriting.",
       "code": "Tasdiqlash kodi",
       "verify": "Tasdiqlash",
       "reSendCode": "Kodni qayta yuborish"
+    },
+    "passwordExpired": {
+      "title": "Parol muddati o'tgan",
+      "subtitle": "Parolingiz 30 kundan ortiq yangilanmagan, shuning uchun tizimga kira olmaysiz.",
+      "botPrefix": "Parolni tiklash uchun",
+      "botSuffix": "Telegram botiga kiring va kod oling."
     },
     "resetPassword": {
       "title": "Parolni tiklash",
@@ -586,10 +592,10 @@
       "qr": "QR-kod"
     },
     "eri": {
-      "moduleRequired": "Tizimni to‘g‘ri ishlashi uchun E-IMZO modulini yoki E-IMZO brauzerini ishga tushirishingiz kerak.",
-      "instructionsText": "E-IMZO modulini o‘rnatish bo‘yicha ko‘rsatmalarni __LINK__ o‘qishingiz mumkin",
+      "moduleRequired": "Tizimni to'g'ri ishlashi uchun E-IMZO modulini yoki E-IMZO brauzerini ishga tushirishingiz kerak.",
+      "instructionsText": "E-IMZO modulini o'rnatish bo'yicha ko'rsatmalarni __LINK__ o'qishingiz mumkin",
       "instructionsLink": "bu yerda",
-      "hostText": "E-IMZO moduli ishga tushgan bo‘lsa, brauzerda __LINK__ga ulanishini tekshiring.",
+      "hostText": "E-IMZO moduli ishga tushgan bo'lsa, brauzerda __LINK__ga ulanishini tekshiring.",
       "hostLink": "E-IMZO host"
     },
     "qr": {
@@ -851,7 +857,7 @@
       "no-worker": "Tizimda xodim topilmadi!",
       "born": "Tug'ilgan sana",
       "addCandidate": "Kandidat qo'shish",
-      "hrContacts": "Korxona kadrlar bo‘limiga aloqaga chiqish",
+      "hrContacts": "Korxona kadrlar bo'limiga aloqaga chiqish",
       "add-worker": "Tizimda mavjud bo'lmagan xodimning ma'lumotlarini kandidat qo'shish tugmasi orqali qo'shing",
       "jshshir": "JSHSHIRni kiriting"
     },
@@ -876,7 +882,7 @@
     "name": "Topshiriqlar",
     "exportAction": "Eksport qilish",
     "checkAll": "Barchasini tanlash",
-    "addPassport": "Passport ma'lumotlari ham qo'shib yuklansinmi?",
+    "addPassport": "Pasport ma'lumotlari ham qo'shib yuklansinmi?",
     "passportYes": "Ha yuklansin",
     "passportNo": "Yo'q faqat ma'lumotlar yuklansin",
     "chooseExport": "Maydonlarni tanlash",
@@ -898,8 +904,8 @@
     "tabReference": "Ma'lumotnoma",
     "relativesHint": "Tanlangan xodimlarning yaqin qarindoshlari ro'yxati alohida Excel fayl bo'lib yuklanadi.",
     "referenceHint": "Har bir xodim uchun ma'lumotnoma (.docx) tayyorlanadi va ular bitta ZIP arxivga to'planadi.",
-    "optPassport": "Passport ma'lumotlarini yuklash",
-    "optForeignPassport": "Xorij passporti ma'lumotlarini yuklash",
+    "optPassport": "Pasport ma'lumotlarini yuklash",
+    "optForeignPassport": "Xorij pasporti ma'lumotlarini yuklash",
     "optionsHint": "Pasport nusxalari arxivga qo'shilishi uchun quyidagilardan kerakligini belgilang"
   },
   "contactPage": {
@@ -973,8 +979,8 @@
       "positionGroup": "Lavozim guruhi",
       "positionRank": "Lavozim razryadi",
       "positionRate": "Lavozim stavkasi",
-      "addPassport": "Passport nusxasini qo'shish",
-      "no-passport": "Passport ma'lumotlar yuklanmagan!",
+      "addPassport": "Pasport nusxasini qo'shish",
+      "no-passport": "Pasport ma'lumotlar yuklanmagan!",
       "addForeignPassport": "Xorij pasporti nusxasini qo'shish",
       "no-foreign-passport": "Xorij pasporti ma'lumotlari yuklanmagan!",
       "infoTitle": "Shaxsiy ma'lumotlar",
@@ -1073,7 +1079,7 @@
     }
   },
   "createWorkerPage": {
-    "updatePasswordWarning": "Xodimni parolini passport JSHSHIRga o'zgartirish uchun 'Parolni yangilash' tugmasini bosing",
+    "updatePasswordWarning": "Xodimni parolini pasport JSHSHIRga o'zgartirish uchun 'Parolni yangilash' tugmasini bosing",
     "updatePassword": "Parolni yangilash",
     "no-account": "Xodim uchun hisob yaratilmagan. Yaratish uchun saqlash tugmasini bosing!",
     "otherProfile": "Xodim uchun hisob yaratilmagan. Chunki xodimga biriktirilgan telefon raqam allaqachon {n}ga biriktirilgan!",
@@ -1095,7 +1101,7 @@
       "city": "Tug'ilgan tumani",
       "currentRegion": "Yashash viloyati",
       "currentCity": "Yashash tumani",
-      "birthday": "Tug'ulgan sanasi",
+      "birthday": "Tug'ilgan sanasi",
       "academicTitle": "Ilmiy unvoni",
       "academicDegree": "Ilmiy darajasi",
       "nationality_id": "Millati",
@@ -1105,7 +1111,7 @@
       "from_date": "Berilgan sanasi",
       "to_date": "Amal qilish muddati",
       "passport_address": "Berilgan joyi",
-      "passport_file": "Passport nusxasi (.pdf)",
+      "passport_file": "Pasport nusxasi (.pdf)",
       "inn": "Inn",
       "sex": "Jinsi",
       "marital_status": "Oilaviy holati",
@@ -1124,7 +1130,7 @@
     "step": {
       "personal": "Kandidatning shaxsiy ma'lumotlari",
       "photo": "Kandidatning fotosurati",
-      "pasport": "Kandidatning passport ma'lumotlari",
+      "pasport": "Kandidatning pasport ma'lumotlari",
       "phone": "Kandidatning telefon raqam ma'lumotlari"
     },
     "stepShort": {
@@ -1266,34 +1272,34 @@
         "certificate_date": "Guvohnoma berilgan sana",
         "base": "Asos",
         "warning_one": "Tashkilot tugatilganligi sababli",
-        "warning_two": "Texnologiyaning, ishlab chiqarish va mehnatni tashkil etishning o‘zgarishi, ishlar (mahsulot, xizmatlar) hajmining qisqarishi bilan bog‘liq bo‘lgan shtatining o‘zgarganligi sababli",
-        "warning_three": "Malakasi yetarli bo‘lmaganligi sababli",
-        "warning_four": "O‘z mehnat majburiyatlarini muntazam ravishda buzganligi sababli",
-        "warning_five": "O‘z mehnat majburiyatlarini bir marta qo‘pol ravishda buzganligi sababli",
-        "warning_six": "Ushbu Kodeks hamda boshqa qonun hujjatlarida nazarda tutilgan o‘zga sabablar",
+        "warning_two": "Texnologiyaning, ishlab chiqarish va mehnatni tashkil etishning o'zgarishi, ishlar (mahsulot, xizmatlar) hajmining qisqarishi bilan bog'liq bo'lgan shtatining o'zgarganligi sababli",
+        "warning_three": "Malakasi yetarli bo'lmaganligi sababli",
+        "warning_four": "O'z mehnat majburiyatlarini muntazam ravishda buzganligi sababli",
+        "warning_five": "O'z mehnat majburiyatlarini bir marta qo'pol ravishda buzganligi sababli",
+        "warning_six": "Ushbu Kodeks hamda boshqa qonun hujjatlarida nazarda tutilgan o'zga sabablar",
         "warning_seven": "Tashkilotning mulkdori almashganligi sababli",
         "warning_eight": "Tashkilot qayta tashkil etilganligi sababli",
-        "warning_nine": "Uning idoraviy taalluqliligi (bo‘ysunuvi) o‘zgarganligi sababli",
+        "warning_nine": "Uning idoraviy taalluqliligi (bo'ysunuvi) o'zgarganligi sababli",
         "warning_ten": "Harbiy xizmatga chaqirilganligi sababli",
         "warning_eleven": "Muqobil xizmatga chaqirilganligi sababli",
         "warning_twelve": "Shu ishni ilgari bajarib kelgan xodimning avvalgi ishga qaytganligi sababli",
-        "warning_thirteen": "Sudning hukmi bilan avvalgi ishini davom ettirish imkoniyati bo‘lmaganligi sababli",
+        "warning_thirteen": "Sudning hukmi bilan avvalgi ishini davom ettirish imkoniyati bo'lmaganligi sababli",
         "warning_fourteen": "Ishga qabul qilishga doir belgilangan qoidalarning buzilganligi sababli",
         "warning_fifteen": "Qonunchilikka muvofiq mehnatga oid munosabatlarni davom ettirishga monelik qiladigan holatlar yuzaga kelganligi sababli",
-        "warning_sixteen": "Tashkilot faoliyatini tugatish to‘g‘risidagi sud qarorining qonuniy kuchga kirganligi sababli",
+        "warning_sixteen": "Tashkilot faoliyatini tugatish to'g'risidagi sud qarorining qonuniy kuchga kirganligi sababli",
         "warning_seventeen": "Xodimni ishga tiklash haqidagi sud qarori bekor qilinganligi sababli",
-        "warning_eighteen": "O‘zbekiston Respublikasi Bandlik va mehnat munosabatlari vazirligi Davlat mehnat inspeksiyasining qarori bekor qilinganligi sababli",
+        "warning_eighteen": "O'zbekiston Respublikasi Bandlik va mehnat munosabatlari vazirligi Davlat mehnat inspeksiyasining qarori bekor qilinganligi sababli",
         "warning_nineteen": "Xodim vafot etganligi sababli",
-        "warning_twenty": "Sud tomonidan xodimning bedarak yo‘qolgan deb e’tirof etilganligi sababli",
-        "warning_twenty_one": "Qonunda nazarda tutilgan boshqa holatlar (qo‘lda yoziladi)",
-        "reason_one": "Birinchi marta qonuniy nikohdan o‘tishi munosabati bilan",
+        "warning_twenty": "Sud tomonidan xodimning bedarak yo'qolgan deb e'tirof etilganligi sababli",
+        "warning_twenty_one": "Qonunda nazarda tutilgan boshqa holatlar (qo'lda yoziladi)",
+        "reason_one": "Birinchi marta qonuniy nikohdan o'tishi munosabati bilan",
         "reason_two": "Nogiron farzandni tarbiyalayotganligi uchun, nogironlar kuni munosabati bilan",
-        "reason_three": "Ota, ona, turmush o‘rtog‘i, farzandlari vafot etganligi munosabati bilan",
-        "reason_four": "Quyidagi saraton, leykoz, birinchi marta sil (tuberkulyoz) kasaligi, jigar tsirrozi dekompensasiya bosqichi, jigar transplantatsiyasi, yurak qon-tomir kasalliklari, yurak klapanlarini almashtirish, yurak tomirlarini stendlash, AKSh (aorta koronar shuntlash), ablyasiya, yurak va buyrakdagi murakkab jarrohlik operatsiyalari, infarkt, insul't, o‘tkir buyrak yetishmovchiligi, dializ, buyrak transplantatsiyasi, nefroskleroz, koksartroz III darajali endoprotezlash, bir yoki ikki ko‘zning terminal bosqichidagi glaukomasi kasalligiga chalinganligi munosabati bilan",
+        "reason_three": "Ota, ona, turmush o'rtog'i, farzandlari vafot etganligi munosabati bilan",
+        "reason_four": "Quyidagi saraton, leykoz, birinchi marta sil (tuberkulyoz) kasalligi, jigar tsirrozi dekompensasiya bosqichi, jigar transplantatsiyasi, yurak qon-tomir kasalliklari, yurak klapanlarini almashtirish, yurak tomirlarini stendlash, AKSh (aorta koronar shuntlash), ablyasiya, yurak va buyrakdagi murakkab jarrohlik operatsiyalari, infarkt, insult, o'tkir buyrak yetishmovchiligi, dializ, buyrak transplantatsiyasi, nefroskleroz, koksartroz III darajali endoprotezlash, bir yoki ikki ko'zning terminal bosqichidagi glaukomasi kasalligiga chalinganligi munosabati bilan",
         "reason_five": "50, 55, 60, 70, 80, 90, 100 yillik yubiley sanasiga etganligi munosabati bilan",
-        "reason_six": "Tabiiy ofatdan zarar ko‘rganligi munosabati bilan tasdiqlangan baholash dalolatnomasi muvofiq",
-        "reason_seven": "Maishiy ko‘mir yoqilg‘isi sotib olishi munosabati bilan",
-        "reason_eight": "Qishloq xo‘jaligi mahsulotlarini sotib olish uchun"
+        "reason_six": "Tabiiy ofatdan zarar ko'rganligi munosabati bilan tasdiqlangan baholash dalolatnomasi muvofiq",
+        "reason_seven": "Maishiy ko'mir yoqilg'isi sotib olishi munosabati bilan",
+        "reason_eight": "Qishloq xo'jaligi mahsulotlarini sotib olish uchun"
       }
     },
     "form": {
@@ -1386,8 +1392,8 @@
       "work_day": "Ishga chiqish sanasi"
     },
     "form_47": {
-      "optionOne": "O‘n ikki yoshga to‘lmagan ikki yoki undan ortiq farzandi borligi sababli",
-      "optionTwo": "O‘n olti yoshga to‘lmagan nogironligi bo‘lgan farzandi borligi sababli",
+      "optionOne": "O'n ikki yoshga to'lmagan ikki yoki undan ortiq farzandi borligi sababli",
+      "optionTwo": "O'n olti yoshga to'lmagan nogironligi bo'lgan farzandi borligi sababli",
       "vacation_reason_day": "Qo'shimcha ta'til kuni"
     },
     "form_48": {
@@ -1450,10 +1456,10 @@
       "to": "Qachongacha",
       "from_time": "Soatdan",
       "to_time": "Soatgacha",
-      "range_with_time": "Kunlar bo‘yicha soat oralig‘i",
+      "range_with_time": "Kunlar bo'yicha soat oralig'i",
       "one_day": "Bir kun",
       "multiple_days": "Bir necha kun",
-      "hourly": "Soat bo‘yicha"
+      "hourly": "Soat bo'yicha"
     },
     "form_62": {
       "from": "Qachondan",
@@ -1738,7 +1744,7 @@
       "status": "Holati",
       "name": "Nomi",
       "speciality": "Harbiy hisobdagi mutaxassisligi",
-      "commissariat": "Yashash joyi bo'yicha komissariyat nomi",
+      "commissariat": "Yashash joyi bo'yicha komissariat nomi",
       "number": "Raqami"
     },
     "title": "Harbiy hisob ma'lumotlari",
@@ -1940,7 +1946,7 @@
       "punishment": "Intizomiy jazo",
       "exams": "Imtihonlar",
       "e_documents": "Raqamli-hujjatlar",
-      "turnstile": "Turniket ma’lumotlar"
+      "turnstile": "Turniket ma'lumotlar"
     },
     "header": {
       "title": "Xodim profili",
@@ -1987,9 +1993,10 @@
       "categoryMoral": "Ma'naviy rag'batlantirish"
     },
     "Edocument": {
-      "pasport": "Passport",
-      "railway_pasport": "Temiryo‘l guvohnoma",
-      "foreign_pasport": "Xorijiy passport",
+      "download_pdf": "PDF yuklab olish",
+      "pasport": "Pasport",
+      "railway_pasport": "Temiryo'l guvohnoma",
+      "foreign_pasport": "Xorijiy pasport",
       "position_certificate": "Lavozim guvohnomasi",
       "card_number": "Karta raqami",
       "issue_date": "Berilgan sana",
@@ -2129,7 +2136,7 @@
     },
     "title": "Savollar",
     "rules": {
-      "minOptions": "Kamida 3ta variant bo'lishi lozim!",
+      "minOptions": "Kamida 3 ta variant bo'lishi lozim!",
       "chooseCorrectAnswer": "To'g'ri javobni tanlang!"
     }
   },
@@ -2222,10 +2229,10 @@
       "title": "Xodimlarning pasport muddatlari",
       "deadline": "Muddati yaqinlashgan",
       "expired": "Muddati o'tgan",
-      "number": "Passport raqami",
+      "number": "Pasport raqami",
       "approaching": "Muddati yaqinlashayotgan",
       "not_included": "Mavjud bo'lmagan",
-      "filter": "Passport holati",
+      "filter": "Pasport holati",
       "missing": "Yuklanmagan"
     },
     "pension": {
@@ -2552,6 +2559,15 @@
     "staff": "Xodimlar",
     "timeTable": "Tabellar"
   },
+  "longWeek": {
+    "Mon": "dushanba",
+    "Tue": "seshanba",
+    "Wed": "chorshanba",
+    "Thu": "payshanba",
+    "Fri": "juma",
+    "Sat": "shanba",
+    "Sun": "yakshanba"
+  },
   "shortWeek": {
     "Mon": "Du",
     "Tue": "Se",
@@ -2701,7 +2717,34 @@
     "notSet": "Belgilanmagan",
     "srcMobile": "Mobil",
     "calcHead": "Qanday hisoblandi",
-    "notCounted": "Hisobga olinmadi"
+    "notCounted": "Hisobga olinmadi",
+    "dayScale": "Kun bo'ylab",
+    "inTurnstile": "Turniketda",
+    "inside": "Ichkarida",
+    "interval": "Oraliq",
+    "dayInfo": "Kun ma'lumotlari",
+    "prevDay": "Oldingi kun",
+    "nextDay": "Keyingi kun",
+    "clusterCount": "{n} ta {dir}",
+    "withinSeconds": "{n} soniya ichida",
+    "withinMinutes": "{n} daqiqa ichida",
+    "inCount": "Hisobda",
+    "rowsMarked": "Jadvalda {n} ta qator belgilandi",
+    "escClose": "Esc — yopish",
+    "hourUnit": "soat",
+    "minuteUnit": "daqiqa",
+    "resizePanel": "Kengligini o'zgartirish · ikki marta bosilsa standart holat",
+    "countedFull": "Hisobga olingan ish vaqti",
+    "countedShort": "Hisobga olingan vaqt",
+    "viewRows": "Qatorlar",
+    "viewRibbon": "Lenta",
+    "shiftLeft": "Bir soat chapga",
+    "shiftRight": "Bir soat o'ngga",
+    "notWorked": "Ishlanmagan",
+    "tipPlan": "Ish grafigida shu kunga belgilangan norma — ish boshlanishidan tugashigacha, tushlik ayrilgan holda. Xodim qancha ishlashi KERAK bo'lganini ko'rsatadi.",
+    "tipTurnstile": "Turniket kirish–chiqishlari bo‘yicha binoda o‘tkazilgan jami vaqt. Ish grafigidan tashqaridagi vaqt ham shu yerga kiradi, tushlik esa ayrilmaydi.",
+    "tipOutside": "Ish vaqti ichida binodan tashqarida o‘tkazilgan vaqt: har bir chiqishdan keyingi kirishgacha bo‘lgan oraliqlar yig‘indisi.",
+    "tipCounted": "Tabelga tushadigan vaqt. Turniketdagi vaqtdan faqat ish grafigi oynasiga tushgan qismi olinadi va undan tushlik ayriladi."
   },
   "turnstile": {
     "title": "Turniket",
@@ -2963,10 +3006,10 @@
       "workSchedule": "Ishdan bo'shatish tartibi?"
     },
     "disclaimer": {
-      "cardOne": "### 🧪 Test rejimi\n\nUshbu sun’iy intellekt yordamchisi hozirda **test rejimida** ishlamoqda.  \nJavoblari hali to‘liq shakllanmagan va _noto‘g‘ri bo‘lishi mumkin_.",
-      "cardTwo": "### 📚 Huquqiy hujjatlar yuklanmoqda\n\nBot hozircha faqat **O‘zbekiston Respublikasi Mehnat kodeksi** asosida o‘rganmoqda.  \n_Boshqa qonun hujjatlari hali to‘liq yuklanmagan yoki o‘rganilmagan._",
-      "cardThree": "### ⚖️ Faqat huquqiy savollar uchun\n\nIltimos, faqat **mehnat munosabatlariga oid** savollarni yuboring.  \n_Bot texnik yoki shaxsiy maslahatlar uchun mo‘ljallanmagan._",
-      "cardFour": "### 📌 Rasmiy maslahat emas\n\nBot javoblari **faqat ma’lumot berish maqsadida** shakllantirilgan.  \n_Ular rasmiy huquqiy maslahat o‘rnini bosa olmaydi._"
+      "cardOne": "### 🧪 Test rejimi\n\nUshbu sun'iy intellekt yordamchisi hozirda **test rejimida** ishlamoqda.  \nJavoblari hali to'liq shakllanmagan va _noto'g'ri bo'lishi mumkin_.",
+      "cardTwo": "### 📚 Huquqiy hujjatlar yuklanmoqda\n\nBot hozircha faqat **O'zbekiston Respublikasi Mehnat kodeksi** asosida o'rganmoqda.  \n_Boshqa qonun hujjatlari hali to'liq yuklanmagan yoki o'rganilmagan._",
+      "cardThree": "### ⚖️ Faqat huquqiy savollar uchun\n\nIltimos, faqat **mehnat munosabatlariga oid** savollarni yuboring.  \n_Bot texnik yoki shaxsiy maslahatlar uchun mo'ljallanmagan._",
+      "cardFour": "### 📌 Rasmiy maslahat emas\n\nBot javoblari **faqat ma'lumot berish maqsadida** shakllantirilgan.  \n_Ular rasmiy huquqiy maslahat o'rnini bosa olmaydi._"
     },
     "form": {
       "conversation": "Suhbatlar",
@@ -2986,13 +3029,13 @@
     "info": {
       "title": "Dashboard",
       "organizations": "Korxonalar",
-      "organizationsDesc": "«O'zbekiston temir yo'llari» AJ tizimidagi barcha tashkilotlar, filiallar va rahbarlar haqidagi to‘liq ma’lumotlar. Joylashuvi, bo‘ysunuv tartibi va tuzilmasi bilan tanishing.",
+      "organizationsDesc": "«O'zbekiston temir yo'llari» AJ tizimidagi barcha tashkilotlar, filiallar va rahbarlar haqidagi to'liq ma'lumotlar. Joylashuvi, bo'ysunuv tartibi va tuzilmasi bilan tanishing.",
       "positions": "Lavozimlar",
-      "positionsDesc": "«O'zbekiston temir yo'llari» AJda mavjud bo‘lgan lavozimlar ro‘yxati va ularning funksional vazifalari. Xodimlarning xizmat lavozimlari bo‘yicha strukturaviy taqsimoti keltirilgan.",
+      "positionsDesc": "«O'zbekiston temir yo'llari» AJda mavjud bo'lgan lavozimlar ro'yxati va ularning funksional vazifalari. Xodimlarning xizmat lavozimlari bo'yicha strukturaviy taqsimoti keltirilgan.",
       "laborCode": "Mehnat kodeksi",
-      "laborCodeDesc": "O‘zbekiston Respublikasi Mehnat kodeksi asosida xodimlar va ish beruvchilar o‘rtasidagi munosabatlar, huquq va majburiyatlar. Moddalar asosida tushuntirishlar va qonunchilik normalari keltiriladi.",
+      "laborCodeDesc": "O'zbekiston Respublikasi Mehnat kodeksi asosida xodimlar va ish beruvchilar o'rtasidagi munosabatlar, huquq va majburiyatlar. Moddalar asosida tushuntirishlar va qonunchilik normalari keltiriladi.",
       "empty": "Bo'sh",
-      "emptyDesc": "Hozircha bu bo‘limda ma’lumot mavjud emas. Yaqin kunlarda yangi xizmatlar yoki foydali kontent joylashtiriladi."
+      "emptyDesc": "Hozircha bu bo'limda ma'lumot mavjud emas. Yaqin kunlarda yangi xizmatlar yoki foydali kontent joylashtiriladi."
     }
   },
   "businessTrip": {
@@ -3027,7 +3070,7 @@
       "period_to": "Qachongacha (Ta'til davri)",
       "plan_date": "Ta'til sanasi",
       "to_date": "Hujjat sanasi",
-      "tradeUnion": "Kasaba uyishma raisi",
+      "tradeUnion": "Kasaba uyushma raisi",
       "all_days": "Ta'til kuni",
       "attachedWorkerCount": "Biriktirilgan xodimlar",
       "unAttachedWorkerCount": "Biriktirilmagan xodimlar",
@@ -3071,15 +3114,15 @@
     "loginPhone": "Login raqami"
   },
   "telegramPopup": {
-    "header": "Telegram botimizga ulaning va quyidagi qulayliklardan bahramand bo‘ling:",
+    "header": "Telegram botimizga ulaning va quyidagi qulayliklardan bahramand bo'ling:",
     "benefit": {
-      "1": "Hujjat holatlari – Tasdiqlash, rad etish yoki tahrirlash — barchasi haqida xabardor bo‘lasiz!",
-      "2": "Tabriklar – Tug‘ilgan kuningizda yoki ish yutuqlaringizda biz sizni eslaymiz!",
-      "3": "Muhim eslatmalar – Ta'tillar, yig‘ilish va muhim ma'lumotlar haqida o‘z vaqtida ogohlantiramiz.",
-      "4": "Real-time bildirishnomalar – Endi hech narsa e’tibordan chetda qolmaydi!",
-      "5": "Profil yangiliklari – Ma’lumotlaringizda o‘zgarish bo‘lsa, Telegram’da darhol bilib olasiz!",
-      "header": "Botga obuna bo’lish orqali",
-      "footer": "Hammasi bir joyda – faqat siz uchun va o‘z vaqtida!"
+      "1": "Hujjat holatlari – Tasdiqlash, rad etish yoki tahrirlash — barchasi haqida xabardor bo'lasiz!",
+      "2": "Tabriklar – Tug'ilgan kuningizda yoki ish yutuqlaringizda biz sizni eslaymiz!",
+      "3": "Muhim eslatmalar – Ta'tillar, yig'ilish va muhim ma'lumotlar haqida o'z vaqtida ogohlantiramiz.",
+      "4": "Real-time bildirishnomalar – Endi hech narsa e'tibordan chetda qolmaydi!",
+      "5": "Profil yangiliklari – Ma'lumotlaringizda o'zgarish bo'lsa, Telegram'da darhol bilib olasiz!",
+      "header": "Botga obuna bo'lish orqali",
+      "footer": "Hammasi bir joyda – faqat siz uchun va o'z vaqtida!"
     },
     "subscribe": "A'zo bo'lish"
   },
@@ -3095,7 +3138,7 @@
       "type": "Turi",
       "who": "Kim tomonidan",
       "reason": "Sabab",
-      "giftType": "Sana"
+      "giftType": "Sovg'a turi"
     }
   },
   "task": {
@@ -3132,7 +3175,7 @@
     "name": "Plan va Fakt",
     "staffingExport": "Shtatkani yuklash",
     "staffingExportPermission": "Shtat jadvalini yuklash",
-    "staffingExportQueued": "Shtat jadvali yuklash navbatiga qo‘shildi",
+    "staffingExportQueued": "Shtat jadvali yuklash navbatiga qo'shildi",
     "addDepartment": "Bo'linma qo'shish",
     "addPosition": "Lavozim qo'shish",
     "tooltip": {
@@ -3396,7 +3439,7 @@
     "view": {
       "main_salary": "Oklad",
       "work_time": "Ishlagan vaqti",
-      "net_salary": "Qulga tegadigan summa"
+      "net_salary": "Qo'lga tegadigan summa"
     },
     "in": {
       "code": "To'lov shifri",
@@ -3404,6 +3447,17 @@
       "amount": "Summa",
       "total": "Jami hisoblandi",
       "out_total": "Jami ushlanma"
+    },
+    "compare": {
+      "title": "Oylarni taqqoslash",
+      "button": "Taqqoslash",
+      "exit": "Taqqoslashni yopish",
+      "first": "Birinchi oy",
+      "second": "Ikkinchi oy",
+      "difference": "Farq",
+      "inTable": "Hisoblangan to'lovlar",
+      "outTable": "Ushlanmalar",
+      "oneSideEmpty": "Tanlangan oylardan birida ma'lumot yo'q"
     }
   },
   "expiredHealth": {
@@ -3487,7 +3541,7 @@
     "chart": {
       "sum": "Yig'indi",
       "total_one": "Ish haqi fondiga kiruvchi to'lov turlari",
-      "total_two": "Daromad tarkibiga kiritilmaydigan to‘lovlar",
+      "total_two": "Daromad tarkibiga kiritilmaydigan to'lovlar",
       "total_three": "Ish haqi fondiga kirmaydigan to'lov turlari",
       "total_four": "Jami ish haqi",
       "total_five": "Ish haqidan ushlamalar",
@@ -3497,9 +3551,9 @@
       "pension_payment": "INPS",
       "reported_income": "Hisobot davridagi daromadlar",
       "reported_tax": "Hisobot davridagi soliq summasi",
-      "income_tax_paid": "Daromad solig‘i to‘langan daromad miqdori",
+      "income_tax_paid": "Daromad solig'i to'langan daromad miqdori",
       "total_contributions": "Jami badallar",
-      "reported_salary_income": "Hisobot davridagi mehnatga haq to‘lash tarzidagi daromadlar"
+      "reported_salary_income": "Hisobot davridagi mehnatga haq to'lash tarzidagi daromadlar"
     },
     "tax_five": {
       "reported_income": "Hisobot davridagi daromadlar",
@@ -3604,7 +3658,7 @@
     "evaluateBtn": "Bosqichni baholash",
     "nextStepGo": "ga o'tish",
     "docsLabel": "Hujjatlar",
-    "examLabel": "Imtixon",
+    "examLabel": "Imtihon",
     "offlineBadge": "Offline",
     "removeBtn": "Olib tashlash",
     "resultLabel": "Natija",
@@ -3651,7 +3705,7 @@
       "endTime": "Tugash vaqti",
       "result": "Natija (ball)",
       "resultPlaceholder": "Masalan: 85",
-      "offlineBadge": "Offline imtixon",
+      "offlineBadge": "Offline imtihon",
       "resultTitle": "Natija kiritish",
       "attachBtn": "Imtixonga biriktirish"
     },
@@ -4078,50 +4132,50 @@
     },
     "label": {
       "external": "Tashish (ekspluatatsiya)",
-      "capital": "Kapital ta’mirlash",
+      "capital": "Kapital ta'mirlash",
       "construction": "Qurilish ishlari",
-      "other": "Boshqa ishlar (yordamchi-ko‘makchi faoliyat)",
+      "other": "Boshqa ishlar (yordamchi-ko'makchi faoliyat)",
       "fromIt": "Shundan",
       "all": "Jami",
       "area": "Maydon",
-      "mediumWorkerCount": "O‘rtacha xodimlar soni, kishi",
-      "mediumSalaryAmount": "Ish haqi fondi, ming so‘m",
+      "mediumWorkerCount": "O'rtacha xodimlar soni, kishi",
+      "mediumSalaryAmount": "Ish haqi fondi, ming so'm",
       "forOrganization": "Jamiyat korxonalari uchun",
-      "forOwn": "O‘z ehtiyoji uchun",
+      "forOwn": "O'z ehtiyoji uchun",
       "forForeign": "Chet korxona uchun",
-      "forLogistic": "Tashish bilan bog‘liq",
+      "forLogistic": "Tashish bilan bog'liq",
       "forOther": "Boshqa faoliyat turi (sanoat, pudratçilik va boshqa)",
       "fixed-term": "Muddatli mehnat shartnomasi asosida ishlovchi xodimlar",
       "contract": "Fuqarolik-huquqiy shartnoma asosida ishlovchi xodimlar",
       "Housekeeper": "Kasanachilar"
     },
     "form": {
-      "external_worker_count": "(O‘rtacha xodimlar soni, kishi)",
-      "external_salary_fund": "(Ish haqi fondi, ming so‘m)",
-      "capital_society_worker_count": "Jamiyat korxonalari uchun - (O‘rtacha xodimlar soni, kishi)",
-      "capital_society_salary_fund": "Jamiyat korxonalari uchun - (Ish haqi fondi, ming so‘m)",
-      "capital_own_use_worker_count": "O‘z ehtiyoji uchun - (O‘rtacha xodimlar soni, kishi)",
-      "capital_own_use_salary_fund": "O‘z ehtiyoji uchun - (Ish haqi fondi, ming so‘m)",
-      "capital_foreign_company_worker_count": "Chet korxona uchun - (O‘rtacha xodimlar soni, kishi)",
-      "capital_foreign_company_salary_fund": "Chet korxona uchun - (Ish haqi fondi, ming so‘m)",
-      "construction_society_worker_count": "Jamiyat korxonalari uchun - (O‘rtacha xodimlar soni, kishi)",
-      "construction_society_salary_fund": "Jamiyat korxonalari uchun - (Ish haqi fondi, ming so‘m)",
-      "construction_own_use_worker_count": "O‘z ehtiyoji uchun - (O‘rtacha xodimlar soni, kishi)",
-      "construction_own_use_salary_fund": "O‘z ehtiyoji uchun - (Ish haqi fondi, ming so‘m)",
-      "construction_foreign_company_worker_count": "Chet korxona uchun - (O‘rtacha xodimlar soni, kishi)",
-      "construction_foreign_company_salary_fund": "Chet korxona uchun - (Ish haqi fondi, ming so‘m)",
-      "other_society_worker_count": "Boshqa faoliyat turi (sanoat, pudratçilik va boshqa) - (O‘rtacha xodimlar soni, kishi)",
-      "other_society_salary_fund": "Boshqa faoliyat turi (sanoat, pudratçilik va boshqa) - (Ish haqi fondi, ming so‘m)",
-      "other_own_use_worker_count": "Tashish bilan bog‘liq - (O‘rtacha xodimlar soni, kishi)",
-      "other_own_use_salary_fund": "Tashish bilan bog‘liq - (Ish haqi fondi, ming so‘m)",
-      "other_foreign_company_worker_count": "Chet korxona uchun - (O‘rtacha xodimlar soni, kishi)",
-      "other_foreign_company_salary_fund": "Chet korxona uchun - (Ish haqi fondi, ming so‘m)",
-      "temporary_contract_worker_count": "Muddatli mehnat shartnomasi asosida ishlovchi xodimlar - (O‘rtacha xodimlar soni, kishi)",
-      "temporary_contract_salary_fund": "Muddatli mehnat shartnomasi asosida ishlovchi xodimlar - (Ish haqi fondi, ming so‘m)",
-      "civil_contract_worker_count": "Fuqarolik-huquqiy shartnoma asosida ishlovchi xodimlar - (O‘rtacha xodimlar soni, kishi)",
-      "civil_contract_salary_fund": "Fuqarolik-huquqiy shartnoma asosida ishlovchi xodimlar - (Ish haqi fondi, ming so‘m)",
-      "freelancer_worker_count": "Kasanachilar - (O‘rtacha xodimlar soni, kishi)",
-      "freelancer_salary_fund": "Kasanachilar - (Ish haqi fondi, ming so‘m)"
+      "external_worker_count": "(O'rtacha xodimlar soni, kishi)",
+      "external_salary_fund": "(Ish haqi fondi, ming so'm)",
+      "capital_society_worker_count": "Jamiyat korxonalari uchun - (O'rtacha xodimlar soni, kishi)",
+      "capital_society_salary_fund": "Jamiyat korxonalari uchun - (Ish haqi fondi, ming so'm)",
+      "capital_own_use_worker_count": "O'z ehtiyoji uchun - (O'rtacha xodimlar soni, kishi)",
+      "capital_own_use_salary_fund": "O'z ehtiyoji uchun - (Ish haqi fondi, ming so'm)",
+      "capital_foreign_company_worker_count": "Chet korxona uchun - (O'rtacha xodimlar soni, kishi)",
+      "capital_foreign_company_salary_fund": "Chet korxona uchun - (Ish haqi fondi, ming so'm)",
+      "construction_society_worker_count": "Jamiyat korxonalari uchun - (O'rtacha xodimlar soni, kishi)",
+      "construction_society_salary_fund": "Jamiyat korxonalari uchun - (Ish haqi fondi, ming so'm)",
+      "construction_own_use_worker_count": "O'z ehtiyoji uchun - (O'rtacha xodimlar soni, kishi)",
+      "construction_own_use_salary_fund": "O'z ehtiyoji uchun - (Ish haqi fondi, ming so'm)",
+      "construction_foreign_company_worker_count": "Chet korxona uchun - (O'rtacha xodimlar soni, kishi)",
+      "construction_foreign_company_salary_fund": "Chet korxona uchun - (Ish haqi fondi, ming so'm)",
+      "other_society_worker_count": "Boshqa faoliyat turi (sanoat, pudratçilik va boshqa) - (O'rtacha xodimlar soni, kishi)",
+      "other_society_salary_fund": "Boshqa faoliyat turi (sanoat, pudratçilik va boshqa) - (Ish haqi fondi, ming so'm)",
+      "other_own_use_worker_count": "Tashish bilan bog'liq - (O'rtacha xodimlar soni, kishi)",
+      "other_own_use_salary_fund": "Tashish bilan bog'liq - (Ish haqi fondi, ming so'm)",
+      "other_foreign_company_worker_count": "Chet korxona uchun - (O'rtacha xodimlar soni, kishi)",
+      "other_foreign_company_salary_fund": "Chet korxona uchun - (Ish haqi fondi, ming so'm)",
+      "temporary_contract_worker_count": "Muddatli mehnat shartnomasi asosida ishlovchi xodimlar - (O'rtacha xodimlar soni, kishi)",
+      "temporary_contract_salary_fund": "Muddatli mehnat shartnomasi asosida ishlovchi xodimlar - (Ish haqi fondi, ming so'm)",
+      "civil_contract_worker_count": "Fuqarolik-huquqiy shartnoma asosida ishlovchi xodimlar - (O'rtacha xodimlar soni, kishi)",
+      "civil_contract_salary_fund": "Fuqarolik-huquqiy shartnoma asosida ishlovchi xodimlar - (Ish haqi fondi, ming so'm)",
+      "freelancer_worker_count": "Kasanachilar - (O'rtacha xodimlar soni, kishi)",
+      "freelancer_salary_fund": "Kasanachilar - (Ish haqi fondi, ming so'm)"
     }
   },
   "salaryReport": {
@@ -4129,13 +4183,13 @@
     "createTitle": "Ish haqi hisobotini yuklash",
     "updateTitle": "Ish haqi hisobotini tahrirlash",
     "form": {
-      "title": "Mehnatga haq to‘lash fondi to‘lov turlari rasshifrovkasi",
-      "name": "To‘lov turlarining nomi",
+      "title": "Mehnatga haq to'lash fondi to'lov turlari rasshifrovkasi",
+      "name": "To'lov turlarining nomi",
       "type": "Turi",
       "fromYear": "Yil boshidan",
       "total": "Jami",
       "code": "Shifr",
-      "salaryType": "Mehnatga haq to‘lash fondi, 1-T hisobotida aks etuvchi"
+      "salaryType": "Mehnatga haq to'lash fondi, 1-T hisobotida aks etuvchi"
     }
   },
   "pensionPayment": {
@@ -4170,9 +4224,9 @@
     "createTitle": "Yuklash",
     "updateTitle": "Tahrirlash",
     "warningRecording": "Imtihon jarayoniga oid talablar",
-    "warningTextOne": "Imtihon davomida kamera va mikrofon doimiy ravishda yoqilgan bo‘lishi shart.",
-    "warningTextTwo": "Imtihon topshirayotgan shaxs kamera tasvirida to‘liq ko‘rinishi kerak.",
-    "warningTextThree": "Kamera yoki mikrofonni o‘chirib qo‘yish imtihon jarayonining bekor qilinishiga sabab bo‘lishi mumkin.",
+    "warningTextOne": "Imtihon davomida kamera va mikrofon doimiy ravishda yoqilgan bo'lishi shart.",
+    "warningTextTwo": "Imtihon topshirayotgan shaxs kamera tasvirida to'liq ko'rinishi kerak.",
+    "warningTextThree": "Kamera yoki mikrofonni o'chirib qo'yish imtihon jarayonining bekor qilinishiga sabab bo'lishi mumkin.",
     "form": {
       "name": "Nomi",
       "department": "Bo'linma",
@@ -4223,7 +4277,7 @@
     "syncTitle": "Sinxronlash",
     "tabDownload": "Yuklash",
     "tabAbsent": "Kelmaganlar",
-    "syncText": "Iltimos, sinxronlash uchun kerakli vaqtni tanlang. Tizim ushbu kunni oxirigacha bo‘lgan vaqtni avtomatik ravishda sinxronlaydi.",
+    "syncText": "Iltimos, sinxronlash uchun kerakli vaqtni tanlang. Tizim ushbu kunni oxirigacha bo'lgan vaqtni avtomatik ravishda sinxronlaydi.",
     "preview": "Ko'rish",
     "availableEvent": "Mavjud hodisalar",
     "newView": "Ish vaqti",
@@ -4312,7 +4366,7 @@
       "afghan": "Afg'on urushida qatnashganmi?",
       "pin": "JSHSHIR",
       "phone": "Telefon raqam",
-      "chernobyl": "Chernobel AES halokati oqibatlarini bartaraf etishda ishtirok etganmi?"
+      "chernobyl": "Chernobil AES halokati oqibatlarini bartaraf etishda ishtirok etganmi?"
     }
   },
   "notification": {
@@ -4326,7 +4380,7 @@
     "markAllAsRead": "Barchasi o'qilgan deb belgilash",
     "unreadPlural": "O'qilmagan bildirishnomalar",
     "status": {
-      "info": "Ma’lumot",
+      "info": "Ma'lumot",
       "success": "Muvaffaqiyat",
       "warning": "Ogohlantirish",
       "error": "Xatolik",
@@ -4358,17 +4412,17 @@
     "updateTitle": "Ish haqi hisobotini tahrirlash",
     "form": {
       "chances": "Urinishlar soni",
-      "name": "To‘lov turlarining nomi",
+      "name": "To'lov turlarining nomi",
       "type": "Turi",
       "fromYear": "Yil boshidan",
       "total": "Jami",
       "code": "Shifr",
-      "salaryType": "Mehnatga haq to‘lash fondi, 1-T hisobotida aks etuvchi"
+      "salaryType": "Mehnatga haq to'lash fondi, 1-T hisobotida aks etuvchi"
     }
   },
   "turnStileDashboard": {
     "name": "Dashboard",
-    "description": "Xodimlarning grafik jadvallari va turniket orqali olingan ma’lumotlar asosida real vaqtdagi analitika",
+    "description": "Xodimlarning grafik jadvallari va turniket orqali olingan ma'lumotlar asosida real vaqtdagi analitika",
     "form": {
       "topOfflineDevices": "Sinxronizatsiyalangan qurilmalar",
       "lastSynchronizationTime": "Oxirgi sinxronizatsiya",
@@ -4378,7 +4432,7 @@
       "left": "Chiqqan",
       "analytic": "Analitika",
       "leftWorkplace": "Ishxonadan chiqqan xodimlar",
-      "dailyEvent": "Bugungi turniket kirish-chiqish qaydnomasi (xodimlar bo‘yicha)",
+      "dailyEvent": "Bugungi turniket kirish-chiqish qaydnomasi (xodimlar bo'yicha)",
       "came_today": "Ishga kelgan xodimlar",
       "not_came_today": "Ishga kelmagan xodimlar",
       "current_in": "Ishxonadagi xodimlar",
@@ -4424,39 +4478,39 @@
       "not_come": "Ishga kelmagan xodimlar",
       "come": "Ishga kelgan xodimlar",
       "current_in": "Ishxonadagi xodimlar",
-      "current_out": "Ishxonada yo‘q xodimlar",
+      "current_out": "Ishxonada yo'q xodimlar",
       "early_leave": "Erta ketgan xodimlar",
       "daily_attendance": "Turniket qaydnomasi",
       "work_hours": "Norma soatni bajarmagan xodimlar",
       "device_status": "Barcha qurilmalar",
       "device_status_online": "Onlayn qurilmalar",
       "device_status_offline": "Oflayn qurilmalar",
-      "lesson_worked": "Ish soati ko‘rsatkichlari",
-      "not_passed_turnstile_workers": "Turniketdan o‘tmagan xodimlar",
+      "lesson_worked": "Ish soati ko'rsatkichlari",
+      "not_passed_turnstile_workers": "Turniketdan o'tmagan xodimlar",
       "privilege_turnstile_workers": "Imtiyozli xodimlar",
-      "privilegeSubtitle": "Ishga kelmaydigan va imtiyozli xodimlarning turlari bo‘yicha",
+      "privilegeSubtitle": "Ishga kelmaydigan va imtiyozli xodimlarning turlari bo'yicha",
       "privilege": "Imtiyozli",
       "dontPassFace": "O'tmaydiganlar",
-      "onVacation": "Ta’tildagi xodimlar",
+      "onVacation": "Ta'tildagi xodimlar",
       "onHoliday": "Dam olish kunida",
       "lateCome": "Kech kelgan xodimlar",
       "earlyGo": "Erta ketgan xodimlar",
       "allWorkers": "Barcha xodimlar",
       "workTimeTitle": "Ish vaqti tahlili",
-      "workTimeSubtitle": "Xodimlarning ishga kelish va ketish vaqtlari bo‘yicha qisqa tahlil",
+      "workTimeSubtitle": "Xodimlarning ishga kelish va ketish vaqtlari bo'yicha qisqa tahlil",
       "lastSevenDays": "7 kun",
       "workerAnalytic": "Xodimlar tahlili",
-      "workerAnalyticDescription": "Ishga kelish va kelmaslik bo‘yicha qisqa tahlil",
+      "workerAnalyticDescription": "Ishga kelish va kelmaslik bo'yicha qisqa tahlil",
       "allWorkerOfCompany": "Korxonaning umumiy xodimlar soni",
       "planned": "Rejalashtirilgan",
       "todayCome": "Kelganlar",
       "todayDontCome": "Kelmaganlar",
       "deviceAnalytic": "Qurilmalar tahlili",
-      "deviceAnalyticDescription": "Qurilmalar holati bo‘yicha qisqa tahlil",
+      "deviceAnalyticDescription": "Qurilmalar holati bo'yicha qisqa tahlil",
       "allDevices": "Barcha qurilmalar soni",
       "onlineDevices": "Onlayn qurilmalar soni",
       "offlineDevices": "Oflayn qurilmalar soni",
-      "graphAnalytic": "Grafik bo‘yicha tahlil",
+      "graphAnalytic": "Grafik bo'yicha tahlil",
       "mobileFace": "Mobil qurilma",
       "startTime": "Smena vaqti",
       "firstComeToWork": "Ishga kelgan vaqt",
@@ -4466,9 +4520,9 @@
       "turnstileFace": "Turniket qurilmasi",
       "allWorkerOfFace": "Umumiy xodimlar soni",
       "turnstileAnalytic": "Face ID tahlili",
-      "vacations": "Ta’tildagi xodimlar",
+      "vacations": "Ta'tildagi xodimlar",
       "casual_workers": "Dam olish kunidagi xodimlar",
-      "turnstileAnalyticDescription": "Face ID bo‘yicha kunlik qaydnoma",
+      "turnstileAnalyticDescription": "Face ID bo'yicha kunlik qaydnoma",
       "graphAnalyticDescription": "Joriy oy bo'yicha qisqa tahlil",
       "currentMonthWorkerCount": "Joriy oyda grafik tuzilmagan xodimlar soni"
     },
@@ -4482,11 +4536,11 @@
       "totalDevices": "Jami qurilmalar",
       "withoutSchedule": "Grafik tuzilmagan xodimlar",
       "faceIdTitle": "Face ID tahlili",
-      "faceIdSubtitle": "Face ID bo‘yicha kunlik qaydnoma"
+      "faceIdSubtitle": "Face ID bo'yicha kunlik qaydnoma"
     },
     "filter": {
       "organizationPlaceholder": "Korxonani tanlang",
-      "departmentPlaceholder": "Bo‘limni tanlang"
+      "departmentPlaceholder": "Bo'limni tanlang"
     }
   },
   "hcWorkDuration": {
@@ -4565,7 +4619,7 @@
       "allScheduleCount": "Barcha grafiklar soni",
       "savingProcess": "Kuting yuklanmoqda...",
       "addBreakTime": "Tanaffus vaqtini qo'shish",
-      "changedScheduleCount": "O‘zgartirilgan grafiklar soni",
+      "changedScheduleCount": "O'zgartirilgan grafiklar soni",
       "scheduleType": "Navbatchilik turi",
       "holiday": "Dam kuni",
       "exportSchedule": "Tabelni yuklash",
@@ -4725,9 +4779,9 @@
   "congratulation": {
     "name": "Telegram xabarlar",
     "description": {
-      "birthday": "Tug‘ilgan kun bilan tabriklangan xodimlar soni",
-      "vacation": "Ta’til haqida ogohlantirilgan xodimlar soni",
-      "med": "Tibbiy ko‘rik haqida ogohlantirilgan xodimlar soni",
+      "birthday": "Tug'ilgan kun bilan tabriklangan xodimlar soni",
+      "vacation": "Ta'til haqida ogohlantirilgan xodimlar soni",
+      "med": "Tibbiy ko'rik haqida ogohlantirilgan xodimlar soni",
       "passport": "Pasport muddati haqida ogohlantirilgan xodimlar soni",
       "mobile": "Mobil ilova orqali xabar yuborilgan xodimlar soni",
       "turnstile": "Turniket orqali xabar yuborilgan xodimlar soni"
@@ -4823,6 +4877,53 @@
     "previewEmptyContent": "Kontent kiritilmagan",
     "fileTooLarge": "\"{name}\" fayl hajmi juda katta — maksimal 4 MB"
   },
+  "liveChatPage": {
+    "name": "Onlayn chat",
+    "searchPlaceholder": "Foydalanuvchini qidirish",
+    "selectChatTitle": "Suhbatni tanlang",
+    "selectChatHint": "Yozishmani boshlash uchun chapdan foydalanuvchini tanlang",
+    "typePlaceholder": "Xabar yozing...",
+    "online": "Onlayn",
+    "offline": "Oflayn",
+    "lastSeen": "Oxirgi faollik: {time}",
+    "today": "Bugun",
+    "yesterday": "Kecha",
+    "noMessages": "Xabarlar yo'q",
+    "noUsers": "Hech kim topilmadi",
+    "fileTooLarge": "\"{name}\" fayl hajmi juda katta — maksimal 10 MB",
+    "recording": "Ovozli xabar yozilmoqda...",
+    "micUnavailable": "Mikrofon bu qurilmada mavjud emas",
+    "micPermissionDenied": "Mikrofonga ruxsat berilmadi",
+    "voiceTooShort": "Kamida {seconds} soniya ushlab turing",
+    "edited": "tahrirlangan",
+    "profile": "Profil",
+    "position": "Lavozim",
+    "phone": "Telefon",
+    "lastSeenLabel": "Oxirgi faollik",
+    "reply": "Javob berish",
+    "forward": "Yo'naltirish",
+    "forwardTo": "Kimga yo'naltirish",
+    "forwarded": "Yo'naltirilgan",
+    "forwardedFrom": "{name} dan yo'naltirilgan",
+    "messageForwarded": "Xabar yo'naltirildi",
+    "pin": "Qadash",
+    "unpin": "Qadashni bekor qilish",
+    "clearHistory": "Tarixni tozalash",
+    "clearHistoryConfirm": "{name} bilan yozishmalar tarixi tozalansinmi? Bu faqat sizning ro'yxatingizdan olib tashlaydi.",
+    "deleteChat": "Suhbatni o'chirish",
+    "deleteChatConfirm": "{name} bilan suhbat ro'yxatingizdan o'chirilsinmi? Bu faqat sizning ro'yxatingizdan olib tashlaydi.",
+    "message": "Xabar",
+    "mute": "Ovozsiz",
+    "call": "Qo'ng'iroq",
+    "more": "Yana",
+    "soon": "Tez orada",
+    "photos": "Rasmlar",
+    "voiceMessages": "Ovozli xabarlar",
+    "files": "Fayllar",
+    "photosCount": "{n} ta rasm",
+    "voiceMessagesCount": "{n} ta ovozli xabar",
+    "filesCount": "{n} ta fayl"
+  },
   "newsCategoryPage": {
     "name": "Yangilik kategoriyalari",
     "create": "Yangi teg yaratish",
@@ -4874,7 +4975,7 @@
       "polygonInfoFull": "Polygon rejimida xodimlar faqat belgilangan hudud ichida bo'lganda davomat belgilashi mumkin. Xaritada \"Polygon qo'shish\" tugmasini bosib, ketma-ket nuqtalarni belgilang (kamida 3, maksimal 12 ta nuqta).",
       "autoCalculated": "Avtomatik",
       "centerMarkerInfo": "Markerni surib markaziy nuqtani o'zgartirishingiz mumkin",
-      "coordinate": "Kordinata",
+      "coordinate": "Koordinata",
       "area": "Hudud"
     },
     "validation": {
@@ -5066,6 +5167,11 @@
     "requirements": "Parol talablari",
     "generatePassword": "Parol generatsiya qilish",
     "success": "Parol muvaffaqiyatli yangilandi",
+    "daysLeft": "Parolni almashtirishga {days} kun qoldi.",
+    "expiresTomorrow": "Parolni almashtirishga 1 kun qoldi — ertaga muddati tugaydi.",
+    "expired": "Parol muddati o'tgan.",
+    "lastChanged": "Parol oxirgi marta {days} kun oldin yangilangan.",
+    "expiredChangeHint": "Tizimda turib parolni saytning o'zidan yangilashingiz mumkin — «Parolni yangilash» tugmasini bosing.",
     "rules": {
       "minLength": "Kamida 8 ta belgi",
       "uppercase": "Kamida 1 ta katta harf (A-Z)",
@@ -5088,7 +5194,7 @@
       "hint": "Telefon raqam va parol bilan kirish"
     },
     "eimzo": {
-      "title": "E-imzo (ERI)",
+      "title": "E-IMZO (ERI)",
       "hint": "Elektron raqamli imzo kaliti bilan kirish"
     },
     "qr": {
@@ -5285,32 +5391,32 @@
     "subtitle": "Hujjat shablonini tanlang, matnini tahrirlang va yangi hujjatlar uchun saqlang.",
     "selectPlaceholder": "Hujjat shablonini tanlang",
     "empty": "Tahrirlash uchun yuqoridan shablon tanlang",
-    "variables": "O‘zgaruvchilar",
-    "variablesHint": "Ustiga bosib nusxalang. Nomini o‘zgartirmang.",
-    "searchVariables": "O‘zgaruvchini qidiring",
-    "noVariables": "O‘zgaruvchi topilmadi",
-    "copied": "O‘zgaruvchi nusxalandi",
-    "globalNotice": "Saqlangan tahrir barcha korxonalarning keyingi hujjatlariga qo‘llanadi.",
-    "unsaved": "Saqlanmagan o‘zgarishlar",
+    "variables": "O'zgaruvchilar",
+    "variablesHint": "Ustiga bosib nusxalang. Nomini o'zgartirmang.",
+    "searchVariables": "O'zgaruvchini qidiring",
+    "noVariables": "O'zgaruvchi topilmadi",
+    "copied": "O'zgaruvchi nusxalandi",
+    "globalNotice": "Saqlangan tahrir barcha korxonalarning keyingi hujjatlariga qo'llanadi.",
+    "unsaved": "Saqlanmagan o'zgarishlar",
     "sourceDefault": "Standart shablon",
     "sourceGlobal": "Tahrirlangan (global)",
     "reset": "Standartga qaytarish",
-    "saved": "Shablon saqlandi — yangi hujjatlar shu shablon bo‘yicha tuziladi",
+    "saved": "Shablon saqlandi — yangi hujjatlar shu shablon bo'yicha tuziladi",
     "resetDone": "Standart shablonga qaytarildi",
     "saveConfirmTitle": "Shablonni global saqlash",
-    "saveConfirmText": "Bu shablon barcha korxonalarning keyingi hujjatlariga qo‘llanadi. Avvalgi nusxa saqlanadi. O‘zgarishlarni saqlaysizmi?",
+    "saveConfirmText": "Bu shablon barcha korxonalarning keyingi hujjatlariga qo'llanadi. Avvalgi nusxa saqlanadi. O'zgarishlarni saqlaysizmi?",
     "resetConfirmTitle": "Standart shablonga qaytarish",
-    "resetConfirmText": "Tahrirlangan shablon o‘chiriladi va standart nusxa tiklanadi. Davom etasizmi?",
+    "resetConfirmText": "Tahrirlangan shablon o'chiriladi va standart nusxa tiklanadi. Davom etasizmi?",
     "fileLabel": "Fayl"
   },
   "turnstileDownload": {
     "title": "Hodisalarni yuklash"
   },
   "responsible": {
-    "name": "Mas’ul xodimlar"
+    "name": "Mas'ul xodimlar"
   },
   "vacationDiscipline": {
-    "name": "Ta’til va intizom"
+    "name": "Ta'til va intizom"
   },
   "reports": {
     "name": "Hisobotlar",
