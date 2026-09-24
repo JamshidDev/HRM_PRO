@@ -7,8 +7,9 @@
   } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   const props = defineProps({
+    // Raqam ham keladi (masalan `row.year`) — faqat matn sifatida chiqariladi.
     label: {
-      type: String,
+      type: [String, Number],
       default: ''
     },
     type: {

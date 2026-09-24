@@ -119,6 +119,7 @@
 
   const onChangePath = (item) => {
     if (item?.disable) return
+    pendingPath.value = item.path
     router.push(item.path)
     // Sahifa tanlangach qidiruv yopiladi — qaytib kelganda to'liq menyu ko'rinadi
     closeSearch()
@@ -535,8 +536,27 @@
     return effectiveMenuPath.value === path || route.path.includes(path)
   }
 
+  /**
+   * Bosilgan sahifa DARHOL aktiv ko'rinadi. `route.path` faqat navigatsiya
+   * tugagach (lazy chunk yuklanib, qo'riqchilar o'tgach) o'zgaradi — busiz
+   * qator shu oraliqda hover rangida turib, kechikib qora bo'lardi.
+   * `afterEach` muvaffaqiyatsiz/redirect navigatsiyada ham chaqiriladi.
+   */
+  const pendingPath = ref(null)
+  const removeAfterEach = router.afterEach(() => {
+    pendingPath.value = null
+  })
+  // Xato bilan tugagan navigatsiyada `afterEach` chaqirilmaydi.
+  const removeOnError = router.onError(() => {
+    pendingPath.value = null
+  })
+  onBeforeUnmount(() => {
+    removeAfterEach()
+    removeOnError()
+  })
+
   const isCurrentPath = (path) => {
-    return route.path === path
+    return (pendingPath.value ?? route.path) === path
   }
 
   // Joriy sahifa guruh ichida bo'lsa guruh ochiq turadi (to'g'ridan-to'g'ri

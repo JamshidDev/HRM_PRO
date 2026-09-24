@@ -252,4 +252,24 @@ router.beforeEach(async (to, from, next) => {
   next(fallback)
 })
 
+// 🔄 Yangi deploy'dan keyin eski tabdagi chunk nomlari (page-XXXX.js) serverda
+// qolmaydi → lazy route yuklanmaydi va navigatsiya jim to'xtaydi. Bunday holatda
+// kerakli sahifaga to'liq reload qilamiz — yangi index.html yangi chunk'larni oladi.
+// Cheksiz reload'dan saqlanish uchun bir xil manzilga faqat bir marta urinamiz.
+const CHUNK_RELOAD_KEY = 'chunk-reload-target'
+const isChunkLoadError = (error) =>
+  /Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module/i.test(
+    error?.message ?? ''
+  )
+
+router.onError((error, to) => {
+  if (!isChunkLoadError(error)) return
+  const target = to?.fullPath ?? window.location.pathname
+  if (sessionStorage.getItem(CHUNK_RELOAD_KEY) === target) return
+  sessionStorage.setItem(CHUNK_RELOAD_KEY, target)
+  window.location.assign(router.resolve(target).href)
+})
+
+router.afterEach(() => sessionStorage.removeItem(CHUNK_RELOAD_KEY))
+
 export default router
