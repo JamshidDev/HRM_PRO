@@ -4631,7 +4631,11 @@
       "invalidResult": "Noto'g'ri ma'lumot kiritildi",
       "noExamWorkers": "Bu xodim(lar)da kirish yoki chiqish imtihoni natijasi yo'q, ular sertifikat ro'yxatiga kiritilmadi: {workers}",
       "noValidWorkers": "Sertifikat berish uchun birorta ham xodimda kirish va chiqish imtihoni natijasi to'ldirilmagan."
-    }
+    },
+    "signAllTitle": "Sertifikatlarni tasdiqlash",
+    "signAllWarning": "Filtrga mos {count} ta imzolanmagan sertifikat topildi. Hammasi imzolanadimi?",
+    "signAllEmpty": "Filtrga mos imzolanmagan sertifikat topilmadi.",
+    "signAllStarted": "Imzolash navbatga qo'shildi — natija «Eksport» bo'limida xulosa fayli bo'lib chiqadi."
   },
   "publicPage": {
     "authentication": "Imtihon savollarini ko'rish",

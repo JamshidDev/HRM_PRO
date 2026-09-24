@@ -4623,7 +4623,11 @@
       "invalidResult": "Invalid data entered",
       "noExamWorkers": "These workers have no entry or final exam result and were not included: {workers}",
       "noValidWorkers": "No worker has both entry and final exam results filled in."
-    }
+    },
+    "signAllTitle": "Confirm certificates",
+    "signAllWarning": "{count} unsigned certificates match the filter. Sign all of them?",
+    "signAllEmpty": "No unsigned certificates match the filter.",
+    "signAllStarted": "Signing has been queued — the summary file will appear in the Export section."
   },
   "staffingApproval": {
     "name": "Staffing",

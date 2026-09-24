@@ -1,10 +1,14 @@
 <script setup>
   import { computed } from 'vue'
   import { useComponentStore, useLmsCertificateStore } from '@stores'
-  import { SuperSelect, UIPageFilter, UISelect } from '@components'
+  import { SuperSelect, UIDeleteConfirm, UIPageFilter, UISelect } from '@components'
   import Utils from '@utils/Utils.js'
   import { useRoute } from 'vue-router'
-  import { DocumentTable24Regular, ArrowDownload24Regular } from '@vicons/fluent'
+  import {
+    DocumentTable24Regular,
+    ArrowDownload24Regular,
+    CheckmarkCircle20Regular
+  } from '@vicons/fluent'
 
   const store = useLmsCertificateStore()
   const componentStore = useComponentStore()
@@ -230,6 +234,19 @@
       </n-button>
       <n-button
         v-fly-upload
+        type="warning"
+        :loading="store.signAllLoading || store.loading"
+        @click="store._openSignConfirm()"
+      >
+        <template #icon>
+          <n-icon size="24">
+            <CheckmarkCircle20Regular />
+          </n-icon>
+        </template>
+        {{ $t('content.confirm') }}
+      </n-button>
+      <n-button
+        v-fly-upload
         type="info"
         :loading="store.downloadLoading || store.loading"
         @click="store._downloadReport()"
@@ -243,4 +260,11 @@
       </n-button>
     </template>
   </UIPageFilter>
+
+  <!-- Ommaviy tasdiqlash: filtrga mos imzolanmaganlar soni bilan -->
+  <UIDeleteConfirm
+    v-model:visible="store.signConfirmVisible"
+    :warning="$t('lmsCertificate.signAllWarning', { count: store.unsignedCount })"
+    @confirm="store._signAllCertificates()"
+  />
 </template>

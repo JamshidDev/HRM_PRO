@@ -10,6 +10,11 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
     loading: false,
     downloadLoading: false,
     zipLoading: false,
+    signLoading: false,
+    signAllLoading: false,
+    // Ommaviy tasdiqlash modali: nechta imzolanmagan sertifikat topilgani.
+    signConfirmVisible: false,
+    unsignedCount: 0,
     saveLoading: false,
     visible: false,
     visibleType: true,
@@ -330,6 +335,56 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
         })
         .finally(() => {
           this.saveLoading = false
+        })
+    },
+    // Ommaviy tasdiqlash: avval filtrga mos imzolanmaganlar sanaladi, keyin modal.
+    _openSignConfirm() {
+      this.signAllLoading = true
+      $ApiService.certificateService
+        ._unsignedCount({ params: this._signParams() })
+        .then((res) => {
+          const total = res.data?.data?.total ?? 0
+          this.unsignedCount = total
+          if (total === 0) {
+            window.$Toast?.info(t('lmsCertificate.signAllEmpty'))
+            return
+          }
+          this.signConfirmVisible = true
+        })
+        .finally(() => {
+          this.signAllLoading = false
+        })
+    },
+    // Modal tasdiqlangach — fon jobi ishga tushadi (javob darhol qaytadi).
+    _signAllCertificates() {
+      this.signConfirmVisible = false
+      this.signAllLoading = true
+      $ApiService.certificateService
+        ._signAllCertificates({ params: this._signParams() })
+        .finally(() => {
+          this.signAllLoading = false
+        })
+    },
+    // Ro'yxat filtrlari (sahifalashsiz) — sanoq va job aynan shu to'plam bo'yicha.
+    _signParams() {
+      return {
+        ...this.params,
+        page: undefined,
+        per_page: undefined,
+        organization_id: this.params.organization_id?.[0]?.id || undefined
+      }
+    },
+    // Bitta sertifikatni imzolash (qator menyusi) — muvaffaqiyatda ro'yxat yangilanadi,
+    // ya'ni holat "Tasdiqlangan" bo'lib ko'rinadi va hujjatda QR paydo bo'ladi.
+    _signCertificate(row) {
+      this.signLoading = true
+      $ApiService.certificateService
+        ._signCertificate({ id: row.id })
+        .then(() => {
+          this._index()
+        })
+        .finally(() => {
+          this.signLoading = false
         })
     },
     _delete() {
