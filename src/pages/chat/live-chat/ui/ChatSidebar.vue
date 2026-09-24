@@ -1,37 +1,42 @@
 <script setup>
-  import { useDialog } from 'naive-ui'
   import { Search24Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
+  import { UIDeleteConfirm } from '@/components/index.js'
   import ChatUserItem from './ChatUserItem.vue'
 
   const { t } = i18n.global
-  const dialog = useDialog()
 
   const props = defineProps({
     chat: { type: Object, required: true }
   })
 
   // Tarixni tozalash/suhbatni o'chirish — butun ro'yxatga ta'sir qiladigan
-  // og'ir amallar, shuning uchun bosishdan oldin tasdiqlanadi (bitta xabarni
-  // o'chirishdan farqli, u yerda ta'sir ko'lami kichik).
+  // og'ir amallar, shuning uchun bosishdan oldin tasdiqlanadi. Ikkala amal
+  // uchun bitta umumiy tasdiq modali: qaysi amal kutilayotgani shu yerda.
+  const confirmVisible = ref(false)
+  const pendingAction = ref(null)
+
+  const askConfirm = (warning, run) => {
+    pendingAction.value = { warning, run }
+    confirmVisible.value = true
+  }
+
   const confirmClearHistory = (user) => {
-    dialog.warning({
-      title: t('liveChatPage.clearHistory'),
-      content: t('liveChatPage.clearHistoryConfirm', { name: user.fullName }),
-      positiveText: t('content.yes'),
-      negativeText: t('content.no'),
-      onPositiveClick: () => props.chat.clearHistory(user.id)
-    })
+    askConfirm(t('liveChatPage.clearHistoryConfirm', { name: user.fullName }), () =>
+      props.chat.clearHistory(user.id)
+    )
   }
 
   const confirmDeleteChat = (user) => {
-    dialog.warning({
-      title: t('liveChatPage.deleteChat'),
-      content: t('liveChatPage.deleteChatConfirm', { name: user.fullName }),
-      positiveText: t('content.yes'),
-      negativeText: t('content.no'),
-      onPositiveClick: () => props.chat.deleteChat(user.id)
-    })
+    askConfirm(t('liveChatPage.deleteChatConfirm', { name: user.fullName }), () =>
+      props.chat.deleteChat(user.id)
+    )
+  }
+
+  const onConfirm = () => {
+    confirmVisible.value = false
+    pendingAction.value?.run()
+    pendingAction.value = null
   }
 </script>
 
@@ -68,5 +73,11 @@
         {{ $t('liveChatPage.noUsers') }}
       </div>
     </div>
+
+    <UIDeleteConfirm
+      v-model:visible="confirmVisible"
+      :warning="pendingAction?.warning"
+      @confirm="onConfirm"
+    />
   </div>
 </template>

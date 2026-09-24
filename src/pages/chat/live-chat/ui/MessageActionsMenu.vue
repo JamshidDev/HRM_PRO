@@ -7,6 +7,7 @@
     Delete16Regular,
     ChevronRight20Regular
   } from '@vicons/fluent'
+  import { UIDeleteConfirm } from '@/components/index.js'
   import { QUICK_REACTIONS, EMOJI_LIST } from './emojiData.js'
 
   defineProps({
@@ -49,6 +50,19 @@
   const runAction = (name) => {
     emit(name)
     show.value = false
+  }
+
+  // O'chirish qaytarib bo'lmaydi — avval tasdiq so'raladi.
+  const deleteConfirmVisible = ref(false)
+
+  const confirmDelete = () => {
+    show.value = false
+    deleteConfirmVisible.value = true
+  }
+
+  const onConfirmDelete = () => {
+    deleteConfirmVisible.value = false
+    emit('delete')
   }
 </script>
 
@@ -144,7 +158,7 @@
           v-if="canDelete"
           type="button"
           class="flex w-full items-center gap-2.5 px-3.5 py-2 text-left text-sm text-danger hover:bg-surface-ground"
-          @click="runAction('delete')"
+          @click="confirmDelete"
         >
           <n-icon size="16"><Delete16Regular /></n-icon>
           {{ $t('content.delete') }}
@@ -152,4 +166,6 @@
       </div>
     </div>
   </n-popover>
+
+  <UIDeleteConfirm v-model:visible="deleteConfirmVisible" @confirm="onConfirmDelete" />
 </template>
