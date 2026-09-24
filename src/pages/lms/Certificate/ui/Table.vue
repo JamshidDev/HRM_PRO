@@ -4,7 +4,7 @@
   import i18n from '@/i18n/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import { Delete20Regular, Eye16Regular } from '@vicons/fluent'
+  import { Delete20Regular, Eye16Regular, CheckmarkCircle20Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
   const store = useLmsCertificateStore()
@@ -25,6 +25,13 @@
 
   const onOpen = (id) => {
     emits('openOffice', id)
+  }
+
+  // Imzolash — hujjatga QR bosadi va holatni "Tasdiqlangan" qiladi.
+  // Imzo navbatidagi tasdiqlovchilar statusiga TEGMAYDI.
+  const onSign = (row) => {
+    if (!accStore.checkAction(accStore.pn.lmsCertificateWrite)) return
+    store._signCertificate(row)
   }
 
   const onView = (row) => {
@@ -90,6 +97,14 @@
       key: Utils.ActionTypes.view,
       icon: UIHelper.renderIcon(Eye16Regular),
       action: onView
+    },
+    {
+      label: t('content.confirm'),
+      key: 'sign',
+      icon: UIHelper.renderIcon(CheckmarkCircle20Regular),
+      // Allaqachon tasdiqlangan (3) sertifikat qayta imzolanmaydi.
+      disabled: (row) => row?.confirmation?.id === 3,
+      action: onSign
     },
     {
       // O'chirish — UITable `permission-prefix="lms-certificate"` orqali
