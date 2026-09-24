@@ -46,6 +46,23 @@ const _delete = async (payload) => {
   return await axios.delete(`/v1/lms/certificates/${payload.id}`)
 }
 
+// Filtrga mos imzolanmagan sertifikatlar soni — tasdiqlash modali uchun.
+const _unsignedCount = async (payload) => {
+  return await axios.get(`/v1/lms/certificates/unsigned-count`, { params: payload?.params })
+}
+
+// Filtrdagi barcha imzolanmagan sertifikatlarni imzolash — fon jobi,
+// natijasi "Eksport" bo'limida xulosa fayli bo'lib chiqadi.
+const _signAllCertificates = async (payload) => {
+  return await axios.post(`/v1/lms/certificates/sign`, null, { params: payload?.params })
+}
+
+// Bitta sertifikatni imzolash: QR bosiladi + holat "Tasdiqlangan" bo'ladi.
+// Tasdiqlovchilar (imzo navbati) statusiga tegmaydi.
+const _signCertificate = async (payload) => {
+  return await axios.post(`/v1/lms/certificates/${payload.id}/sign`)
+}
+
 export default {
   _workerExams,
   _create,
@@ -57,5 +74,8 @@ export default {
   _eduPlan,
   _direction,
   _specializations,
-  _delete
+  _delete,
+  _signCertificate,
+  _unsignedCount,
+  _signAllCertificates
 }

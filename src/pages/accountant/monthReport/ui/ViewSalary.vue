@@ -209,7 +209,7 @@
                 </tr>
               </tbody>
             </n-table>
-            <!-- Qulga tegadigan summa (plastik kartaga o'tkazish, kod 885) -->
+            <!-- Qo‘lga tegadigan summa (plastik kartaga o'tkazish, kod 885) -->
             <div
               v-if="currentItem.in_card"
               class="flex items-center justify-between px-3 py-2 mt-4 mb-10 rounded-lg bg-primary/5 border border-primary/20"

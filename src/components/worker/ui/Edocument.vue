@@ -12,6 +12,7 @@
   import IdCardDetail from '../../ui/IdCardDetail.vue'
   import SectionHeader from './shared/SectionHeader.vue'
   import JshirIcon from '@/assets/icons/jshirIcon.svg'
+  import DownloadIcon from '@/assets/icons/downloadIcon.svg'
   import IdRailWayDetail from '../../ui/IdRailWayDetail.vue'
   import IdForeignDetail from '../../ui/IdForeignDetail.vue'
   import IdRedCertificate from '../../ui/IdRedCertificate.vue'
@@ -20,6 +21,35 @@
   const store = useComponentStore()
 
   const activeId = ref(1)
+  const idRailWayRef = ref(null)
+  const railWayPdfLoading = ref(false)
+
+  const certificateRefs = ref([])
+  const certificatePdfLoading = ref(null)
+
+  async function downloadCertificatePdf(index) {
+    if (certificatePdfLoading.value !== null) return
+    certificatePdfLoading.value = index
+    try {
+      await certificateRefs.value[index]?.downloadPdf()
+    } catch (e) {
+      console.error(e)
+    } finally {
+      certificatePdfLoading.value = null
+    }
+  }
+
+  async function downloadRailWayPdf() {
+    if (railWayPdfLoading.value) return
+    railWayPdfLoading.value = true
+    try {
+      await idRailWayRef.value?.downloadPdf()
+    } catch (e) {
+      console.error(e)
+    } finally {
+      railWayPdfLoading.value = false
+    }
+  }
 
   const tabList = computed(() => [
     { id: 1, label: t('workerView.Edocument.pasport'), icon: IdCardIcon },
@@ -152,8 +182,23 @@
 
         <template v-else-if="activeId === 2">
           <template v-if="hasCertificate">
-            <IdRailWay :data="idRailWayData" class="w-[100%] lg:w-[55%]" />
-            <IdRailWayDetail :data="idRailWayData" class="w-[100%] h-[100%] lg:w-[45%]" />
+            <IdRailWay ref="idRailWayRef" :data="idRailWayData" class="w-[100%] lg:w-[55%]" />
+            <div class="w-[100%] lg:w-[45%] flex flex-col gap-3">
+              <IdRailWayDetail :data="idRailWayData" class="w-full" />
+              <n-button
+                class="self-end !rounded-full !text-white"
+                type="primary"
+                :loading="railWayPdfLoading"
+                @click="downloadRailWayPdf"
+              >
+                <span class="flex items-center justify-center gap-2">
+                  <span>{{ $t('workerView.Edocument.download_pdf') }}</span>
+                  <n-icon size="18">
+                    <DownloadIcon />
+                  </n-icon>
+                </span>
+              </n-button>
+            </div>
           </template>
           <h4 v-else class="w-full text-center text-secondary">
             {{ $t('content.no-data') }}
@@ -179,12 +224,31 @@
 
         <template v-else-if="activeId === 4">
           <div v-if="hasPositionCertificate" class="w-full flex flex-col gap-4">
-            <IdRedCertificate
+            <div
               v-for="(certificate, index) in positionCertificatesData"
               :key="certificate.cardNumber ?? index"
-              :data="certificate"
-              class="w-full"
-            />
+              class="w-full flex flex-col gap-3"
+            >
+              <IdRedCertificate
+                :ref="(el) => (certificateRefs[index] = el)"
+                :data="certificate"
+                class="w-full"
+              />
+              <n-button
+                class="self-end !rounded-full !text-white"
+                type="primary"
+                :loading="certificatePdfLoading === index"
+                :disabled="certificatePdfLoading !== null && certificatePdfLoading !== index"
+                @click="downloadCertificatePdf(index)"
+              >
+                <span class="flex items-center justify-center gap-2">
+                  <span>{{ $t('workerView.Edocument.download_pdf') }}</span>
+                  <n-icon size="18">
+                    <DownloadIcon />
+                  </n-icon>
+                </span>
+              </n-button>
+            </div>
           </div>
           <h4 v-else class="w-full text-center text-secondary">
             {{ $t('content.no-data') }}
