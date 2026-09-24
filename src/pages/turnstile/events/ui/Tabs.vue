@@ -14,9 +14,6 @@
 </script>
 
 <template>
-  <!-- `flex-1 flex flex-col` zanjiri (tabs -> pane-wrapper -> pane): busiz n-tabs
-       balandligi kontent bo'yicha aniqlanib, ichidagi `.ui-page-content` ning
-       `height: 100%` i `auto` ga aylanardi va jadval sahifa tubiga yetmasdi. -->
   <n-tabs
     animated
     v-model:value="store.activeTab"
@@ -24,6 +21,9 @@
     pane-wrapper-class="flex-1 flex flex-col"
     type="segment"
   >
+    <!-- `flex-1 flex flex-col` zanjiri (tabs -> pane-wrapper -> pane): busiz n-tabs
+         balandligi kontent bo'yicha aniqlanib, ichidagi `.ui-page-content` ning
+         `height: 100%` i `auto` ga aylanardi va jadval sahifa tubiga yetmasdi. -->
     <n-tab-pane :name="store.tabs[0]" class="!pt-0 flex-1 flex flex-col">
       <HcEventPage />
     </n-tab-pane>

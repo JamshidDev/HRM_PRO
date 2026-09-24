@@ -111,10 +111,7 @@ const {
 } = icons
 
 import { markRaw } from 'vue'
-import i18n from '@/i18n/index.js'
 import { appPermissions } from '@/utils/index.js'
-
-const { t } = i18n.global
 
 // Ikonka komponentlarini markRaw qiladi — busiz reaktiv menyu ularni proxy'lab Vue warn beradi.
 const withRawIcons = (items) =>
@@ -534,14 +531,14 @@ export const navigations = withRawIcons([
         permission: appPermissions.examCategoriesRead
       },
       {
-        label: t('examPage.name'), // Imtihonlar
+        label: 'examPage.name', // Imtihonlar
         path: Utils.routeAttestationPathMaker(AppPaths.Exam),
         icon: AttestationExamIcon,
         color: 'bg-secondary',
         permission: appPermissions.examExamsRead
       },
       {
-        label: t('examPage.result'), // Natijalar
+        label: 'examPage.result', // Natijalar
         path: Utils.routeAttestationPathMaker(AppPaths.Result),
         icon: AttestationResultIcon,
         color: 'bg-dark',
