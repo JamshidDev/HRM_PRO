@@ -429,7 +429,15 @@
     "pushBlockedBtn": "How to enable?",
     "pushEnabled": "Notifications enabled",
     "pushCopyPath": "Copy address",
-    "pushPathCopied": "Address copied — paste it into the browser address bar"
+    "pushPathCopied": "Address copied — paste it into the browser address bar",
+    "eSignNotice": {
+      "title": "Documents are now approved with an e-signature",
+      "p2": "Documents can no longer be approved with a simple button. Documents are approved only with an {bold}.",
+      "p2Bold": "electronic digital signature (E-IMZO)",
+      "p4": "In addition, once a document is approved via E-IMZO, its content can no longer be changed.",
+      "p5": "This procedure has been introduced to {bold}.",
+      "p5Bold": "ensure the reliability, security and legal validity of documents"
+    }
   },
   "date": {
     "day": "Day",
