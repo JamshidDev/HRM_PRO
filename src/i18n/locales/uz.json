@@ -1367,6 +1367,31 @@
       "fileOpenErrorSubtitle": "Faylni ochish imkoni bo'lmadi",
       "status": {
         "Process": "Jarayonda"
+      },
+      "approval": {
+        "title": "Imzolash jarayoni",
+        "signers": "Imzolovchilar",
+        "history": "Harakatlar tarixi",
+        "progress": "{done} / {total} tasdiqlandi",
+        "step": "{n}-bosqich",
+        "you": "Siz",
+        "actions": "Harakatlar",
+        "signedWithEri": "E-imzo bilan tasdiqlangan",
+        "certificate": "Sertifikat",
+        "noHistory": "Hozircha harakatlar yo'q",
+        "mockNotice": "Namuna ma'lumot: harakatlar tarixi hali API'dan kelmayapti.",
+        "summary": {
+          "approved": "Tasdiqlagan",
+          "rejected": "Rad etgan",
+          "pending": "Kutilmoqda"
+        },
+        "events": {
+          "sent": "Hujjat yuborildi",
+          "viewed": "Hujjatni ko'rib chiqdi",
+          "approved": "Tasdiqladi",
+          "rejected": "Rad etdi",
+          "resent": "Qayta yuborildi"
+        }
       }
     },
     "attach": {
