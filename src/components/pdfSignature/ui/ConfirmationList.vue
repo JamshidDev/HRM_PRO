@@ -1,13 +1,16 @@
 <script setup>
-  import { UIUser, UIStatus, UIDConfirm } from '@/components/index.js'
+  import { UIDConfirm } from '@/components/index.js'
   import { usePdfViewerStore, useAccountStore } from '@/store/modules/index.js'
-  import { Copy20Regular, Link28Filled, Chat20Filled, ArrowLeft20Filled } from '@vicons/fluent'
+  import { Copy20Regular, ArrowLeft20Filled, People20Regular, History20Regular } from '@vicons/fluent'
   import i18 from '@/i18n/index.js'
   import Utils from '@/utils/Utils.js'
   import { useRoute } from 'vue-router'
   import { AppPaths } from '@/utils/index.js'
   import SectionHeader from '@/components/worker/ui/shared/SectionHeader.vue'
   import ChatCotent from '../chat/ChatCotent.vue'
+  import SignerCard from './SignerCard.vue'
+  import ApprovalHistory from './ApprovalHistory.vue'
+  import { buildApprovalHistory, STATUS } from '../utils/approvalHistory.js'
   const { t } = i18.global
 
   const store = usePdfViewerStore()
@@ -17,6 +20,39 @@
   const isSelf = (item) => item.worker?.id === accountStore.account?.worker?.id
 
   const chatWith = ref(null)
+  const activeTab = ref('signers')
+
+  const history = computed(() =>
+    buildApprovalHistory(store.confirmations, store.document?.document?.created)
+  )
+
+  const summary = computed(() => {
+    const list = store.confirmations || []
+    const approved = list.filter((v) => v.status?.id === STATUS.success).length
+    const rejected = list.filter((v) => v.status?.id === STATUS.rejected).length
+    const total = list.length
+    return {
+      total,
+      approved,
+      rejected,
+      pending: total - approved - rejected,
+      percent: total ? Math.round((approved / total) * 100) : 0
+    }
+  })
+
+  const summaryTone = computed(() => {
+    if (summary.value.rejected) return 'text-fig-text-red'
+    if (summary.value.total && summary.value.approved === summary.value.total)
+      return 'text-fig-chip-green-text'
+    return 'text-fig-chip-amber-text'
+  })
+
+  const segmentClass = (statusId) => {
+    if (statusId === STATUS.success) return 'bg-fig-success'
+    if (statusId === STATUS.rejected) return 'bg-fig-red'
+    if (statusId === STATUS.read) return 'bg-fig-blue-300'
+    return 'bg-surface-line'
+  }
 
   const generateLink = (v) => {
     if (v.type === 'w') {
@@ -63,66 +99,89 @@
           {{ chatWith.worker.last_name }} {{ chatWith.worker.first_name }}
         </span>
       </div>
-      <div v-else class="flex items-center gap-2 min-w-0">
-        <span class="font-semibold text-textColor0 truncate">{{ $t('documentPage.signature.viewer') }}</span>
-        <n-badge v-if="store.document?.chats" :value="store.document.chats" :max="99" />
+      <div v-else class="flex items-center justify-between gap-2 min-w-0 w-full">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="font-semibold text-textColor0 truncate">{{ $t('documentPage.signature.approval.title') }}</span>
+          <n-badge v-if="store.document?.chats" :value="store.document.chats" :max="99" />
+        </div>
+        <span class="text-xs font-semibold tabular-nums text-textColor2 shrink-0">
+          {{ summary.approved }}/{{ summary.total }}
+        </span>
       </div>
     </template>
 
     <ChatCotent v-if="chatWith" :forced-recipient-worker-id="chatWith.worker.id" />
 
     <template v-else>
-      <template v-for="(item, idx) in store.confirmations" :key="idx">
-        <div
-          class="w-full rounded-xl cursor-pointer bg-surface-section mb-2 shadow p-3 border border-surface-line"
-        >
-          <div class="min-w-0">
-            <UIUser
-              :short="false"
-              :data="{
-                photo: item.worker?.photo,
-                lastName: item.worker.last_name,
-                firstName: item.worker.first_name,
-                middleName: item.worker.middle_name,
-                position: ''
-              }"
-            >
-              <template #position>
-                <div class="w-full text-wrap leading-[1.1] text-secondary text-xs">
-                  {{ item.type === 'w' ? $t('content.worker') : item.position }}
-                </div>
-              </template>
-            </UIUser>
-            <div class="my-2 border-t border-dashed border-surface-line"></div>
-            <div class="w-full flex flex-wrap items-center gap-2">
-              <UIStatus pill size="tiny" :status="item.status" />
-              <n-button
-                :loading="store.linkLoading"
-                round
-                secondary
-                v-if="item.type === 'w' && isDocFlow && item.status.id !== 3 && !store.viewerLoading"
-                @click="generateLink(item)"
-                type="info"
-                size="tiny"
-              >
-                {{ $t('documentPage.signature.link') }}
-                <template #icon>
-                  <Link28Filled />
-                </template>
-              </n-button>
-              <div
-                v-if="!isSelf(item)"
-                @click="onOpenChat(item)"
-                class="w-8 h-8 rounded-full bg-surface-ground flex items-center justify-center shrink-0 cursor-pointer hover:bg-primary/10 ml-auto"
-              >
-                <n-icon size="16" class="text-textColor1">
-                  <Chat20Filled />
-                </n-icon>
-              </div>
-            </div>
+      <!-- Umumiy holat: segmentli progress va hisoblagichlar -->
+      <div class="rounded-xl border border-surface-line bg-surface-ground/50 p-3 mb-3">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs text-textColor2">
+            {{ $t('documentPage.signature.approval.progress', { done: summary.approved, total: summary.total }) }}
+          </span>
+          <span class="text-xs font-semibold tabular-nums" :class="summaryTone">{{ summary.percent }}%</span>
+        </div>
+        <div class="flex gap-1">
+          <div
+            v-for="(item, idx) in store.confirmations"
+            :key="idx"
+            class="h-1.5 flex-1 rounded-full"
+            :class="segmentClass(item.status?.id)"
+          ></div>
+        </div>
+        <div class="grid grid-cols-3 gap-2 mt-3">
+          <div class="rounded-lg bg-surface-section px-2 py-1.5">
+            <div class="text-sm font-semibold tabular-nums text-fig-chip-green-text">{{ summary.approved }}</div>
+            <div class="text-[10px] text-textColor3">{{ $t('documentPage.signature.approval.summary.approved') }}</div>
+          </div>
+          <div class="rounded-lg bg-surface-section px-2 py-1.5">
+            <div class="text-sm font-semibold tabular-nums text-fig-text-red">{{ summary.rejected }}</div>
+            <div class="text-[10px] text-textColor3">{{ $t('documentPage.signature.approval.summary.rejected') }}</div>
+          </div>
+          <div class="rounded-lg bg-surface-section px-2 py-1.5">
+            <div class="text-sm font-semibold tabular-nums text-fig-chip-amber-text">{{ summary.pending }}</div>
+            <div class="text-[10px] text-textColor3">{{ $t('documentPage.signature.approval.summary.pending') }}</div>
           </div>
         </div>
-      </template>
+      </div>
+
+      <n-tabs v-model:value="activeTab" type="segment" size="small" animated class="mb-3">
+        <n-tab name="signers">
+          <div class="flex items-center gap-1.5">
+            <n-icon size="16"><People20Regular /></n-icon>
+            {{ $t('documentPage.signature.approval.signers') }}
+          </div>
+        </n-tab>
+        <n-tab name="history">
+          <div class="flex items-center gap-1.5">
+            <n-icon size="16"><History20Regular /></n-icon>
+            {{ $t('documentPage.signature.approval.history') }}
+          </div>
+        </n-tab>
+      </n-tabs>
+
+      <div v-if="activeTab === 'signers'">
+        <SignerCard
+          v-for="(item, idx) in store.confirmations"
+          :key="item.id ?? idx"
+          :item="item"
+          :step="idx + 1"
+          :is-last="idx === store.confirmations.length - 1"
+          :is-self="isSelf(item)"
+          :events="history.bySigner[idx] || []"
+          :can-link="item.type === 'w' && isDocFlow && item.status?.id !== 3 && !store.viewerLoading"
+          :link-loading="store.linkLoading"
+          @link="generateLink"
+          @chat="onOpenChat"
+        />
+      </div>
+
+      <ApprovalHistory
+        v-else
+        :confirmations="store.confirmations"
+        :by-signer="history.bySigner"
+        :is-mock="history.isMock"
+      />
     </template>
 
     <UIDConfirm v-model:visible="store.linkVisible" type="warning">

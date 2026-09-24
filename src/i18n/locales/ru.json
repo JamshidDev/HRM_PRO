@@ -1353,6 +1353,31 @@
       "fileOpenErrorSubtitle": "Не удалось открыть файл",
       "status": {
         "Process": "В процессе"
+      },
+      "approval": {
+        "title": "Процесс подписания",
+        "signers": "Подписанты",
+        "history": "История действий",
+        "progress": "Подтверждено {done} из {total}",
+        "step": "Этап {n}",
+        "you": "Вы",
+        "actions": "Действия",
+        "signedWithEri": "Подтверждено ЭЦП",
+        "certificate": "Сертификат",
+        "noHistory": "Действий пока нет",
+        "mockNotice": "Демо-данные: история действий пока не приходит из API.",
+        "summary": {
+          "approved": "Подтвердили",
+          "rejected": "Отклонили",
+          "pending": "Ожидают"
+        },
+        "events": {
+          "sent": "Документ отправлен",
+          "viewed": "Просмотрел документ",
+          "approved": "Подтвердил",
+          "rejected": "Отклонил",
+          "resent": "Отправлен повторно"
+        }
       }
     },
     "attach": {
