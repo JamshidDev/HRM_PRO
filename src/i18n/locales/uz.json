@@ -4633,9 +4633,11 @@
       "noValidWorkers": "Sertifikat berish uchun birorta ham xodimda kirish va chiqish imtihoni natijasi to'ldirilmagan."
     },
     "signAllTitle": "Sertifikatlarni tasdiqlash",
-    "signAllWarning": "Filtrga mos {count} ta imzolanmagan sertifikat topildi. Hammasi imzolanadimi?",
     "signAllEmpty": "Filtrga mos imzolanmagan sertifikat topilmadi.",
-    "signAllStarted": "Imzolash navbatga qo'shildi — natija «Eksport» bo'limida xulosa fayli bo'lib chiqadi."
+    "signAllCount": "Filtrga mos {count} ta imzolanmagan sertifikat topildi.",
+    "signAllNote1": "Har bir hujjatga imzo QR kodi bosiladi va holat «Tasdiqlangan» bo'ladi.",
+    "signAllNote2": "Imzo navbatidagi tasdiqlovchilar statusi o'zgarmaydi.",
+    "signAllNote3": "Amal fon rejimida bajariladi — tugagach ro'yxatni yangilang: holat «Tasdiqlangan» bo'ladi va hujjatda QR kod paydo bo'ladi."
   },
   "publicPage": {
     "authentication": "Imtihon savollarini ko'rish",

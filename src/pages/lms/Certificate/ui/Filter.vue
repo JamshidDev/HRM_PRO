@@ -1,9 +1,10 @@
 <script setup>
   import { computed } from 'vue'
   import { useComponentStore, useLmsCertificateStore } from '@stores'
-  import { SuperSelect, UIDeleteConfirm, UIPageFilter, UISelect } from '@components'
+  import { SuperSelect, UIPageFilter, UISelect } from '@components'
   import Utils from '@utils/Utils.js'
   import { useRoute } from 'vue-router'
+  import SignAllModal from './SignAllModal.vue'
   import {
     DocumentTable24Regular,
     ArrowDownload24Regular,
@@ -232,8 +233,9 @@
         </template>
         {{ $t('content.download') }}
       </n-button>
+      <!-- Faqat modalni ochadi — «uchish» animatsiyasi job haqiqatan ketganda
+           (modaldagi tasdiq tugmasida) ishlaydi. -->
       <n-button
-        v-fly-upload
         type="warning"
         :loading="store.signAllLoading || store.loading"
         @click="store._openSignConfirm()"
@@ -261,10 +263,6 @@
     </template>
   </UIPageFilter>
 
-  <!-- Ommaviy tasdiqlash: filtrga mos imzolanmaganlar soni bilan -->
-  <UIDeleteConfirm
-    v-model:visible="store.signConfirmVisible"
-    :warning="$t('lmsCertificate.signAllWarning', { count: store.unsignedCount })"
-    @confirm="store._signAllCertificates()"
-  />
+  <!-- Ommaviy tasdiqlash: filtrga mos imzolanmaganlar soni + tushuntirish -->
+  <SignAllModal />
 </template>

@@ -4625,9 +4625,11 @@
       "noValidWorkers": "No worker has both entry and final exam results filled in."
     },
     "signAllTitle": "Confirm certificates",
-    "signAllWarning": "{count} unsigned certificates match the filter. Sign all of them?",
     "signAllEmpty": "No unsigned certificates match the filter.",
-    "signAllStarted": "Signing has been queued — the summary file will appear in the Export section."
+    "signAllCount": "{count} unsigned certificates match the filter.",
+    "signAllNote1": "A signature QR code is stamped on each document and the status becomes “Confirmed”.",
+    "signAllNote2": "Signer statuses in the approval queue stay unchanged.",
+    "signAllNote3": "The action runs in the background — refresh the list when it finishes: the status becomes “Confirmed” and a QR code appears in the document."
   },
   "staffingApproval": {
     "name": "Staffing",
