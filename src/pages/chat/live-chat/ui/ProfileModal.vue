@@ -39,19 +39,26 @@
 
   // Oxirgi qator faqat oflayn va `lastSeenAt` mavjud bo'lsa ko'rinadi —
   // onlaynda (yoki o'zimizda) "oxirgi faollik" ma'nosiz.
-  const showLastSeen = computed(() => !isOwn.value && !props.user?.online && !!props.user?.lastSeenAt)
+  const showLastSeen = computed(
+    () => !isOwn.value && !props.user?.online && !!props.user?.lastSeenAt
+  )
 
   // O'zimiz doim "onlayn" — ilovadan foydalanayotgan paytimiz shu.
   const statusLabel = computed(() => {
     if (!props.user) return ''
     if (isOwn.value || props.user.online) return t('liveChatPage.online')
-    if (props.user.lastSeenAt) return t('liveChatPage.lastSeen', { time: dayjs(props.user.lastSeenAt).format('DD.MM HH:mm') })
+    if (props.user.lastSeenAt)
+      return t('liveChatPage.lastSeen', {
+        time: dayjs(props.user.lastSeenAt).format('DD.MM HH:mm')
+      })
     return t('liveChatPage.offline')
   })
 
   const copyPhone = () => {
     if (!props.user?.phone) return
-    Utils.copyToClipboard(String(props.user.phone), () => window.$Toast?.success(t('content.copied')))
+    Utils.copyToClipboard(String(props.user.phone), () =>
+      window.$Toast?.success(t('content.copied'))
+    )
   }
 
   // ── Suhbatdosh profili: amallar qatori + media bo'limlari ──────────────────
@@ -61,6 +68,14 @@
 
   watch(show, (value) => {
     if (!value) section.value = 'info'
+  })
+
+  // Sahifa almashish animatsiyasi yo'nalishi: bo'limga kirilganda yangi sahifa
+  // o'ngdan, asosiy ko'rinishga qaytilganda esa chapdan kirib keladi.
+  const transitionName = ref('section-forward')
+
+  watch(section, (next) => {
+    transitionName.value = next === 'info' ? 'section-back' : 'section-forward'
   })
 
   const sectionTitle = computed(() => {
@@ -79,7 +94,8 @@
   const voiceMessages = computed(() => conversation.value.filter((m) => m.type === 'voice'))
   const fileMessages = computed(() => conversation.value.filter((m) => m.type === 'file'))
 
-  const senderName = (senderId) => (senderId === 'me' ? accountStore.fullName : props.user?.fullName)
+  const senderName = (senderId) =>
+    senderId === 'me' ? accountStore.fullName : props.user?.fullName
 
   const itemTimeLabel = (iso) => dayjs(iso).format('MMM D, YYYY, HH:mm')
 
@@ -150,183 +166,207 @@
       </div>
     </template>
 
-    <!-- Asosiy ko'rinish -->
-    <div v-if="section === 'info'" class="flex flex-col">
-      <div class="flex flex-col items-center gap-1 pt-1 pb-4 text-center">
-        <n-avatar
-          round
-          :size="88"
-          :src="user?.photo"
-          :color="isOwn ? 'var(--primary-color)' : getAvatarColor(user?.id)"
-          class="text-3xl"
-        >
-          {{ getInitials(user?.fullName) || 'M' }}
-        </n-avatar>
-        <div class="mt-2 text-lg font-semibold text-textColor0">{{ user?.fullName }}</div>
-        <div class="text-sm" :class="isOwn || user?.online ? 'text-success' : 'text-textColor3'">{{ statusLabel }}</div>
-      </div>
+    <div class="overflow-x-hidden">
+      <Transition :name="transitionName" mode="out-in">
+        <!-- Asosiy ko'rinish -->
+        <div v-if="section === 'info'" class="flex flex-col">
+          <div class="flex flex-col items-center gap-1 pt-1 pb-4 text-center">
+            <n-avatar
+              round
+              :size="88"
+              :src="user?.photo"
+              :color="isOwn ? 'var(--primary-color)' : getAvatarColor(user?.id)"
+              class="text-3xl"
+            >
+              {{ getInitials(user?.fullName) || 'M' }}
+            </n-avatar>
+            <div class="mt-2 text-lg font-semibold text-textColor0">{{ user?.fullName }}</div>
+            <div
+              class="text-sm"
+              :class="isOwn || user?.online ? 'text-success' : 'text-textColor3'"
+            >
+              {{ statusLabel }}
+            </div>
+          </div>
 
-      <!-- Amallar qatori — faqat suhbatdosh profilida -->
-      <div v-if="!isOwn" class="grid grid-cols-4 gap-2 pb-4">
-        <button
-          type="button"
-          class="flex flex-col items-center gap-1.5 rounded-xl bg-surface-ground py-3 text-textColor0 hover:bg-surface-line"
-          @click="onMessageClick"
-        >
-          <n-icon size="20" class="text-primary"><Chat24Regular /></n-icon>
-          <span class="text-xs">{{ $t('liveChatPage.message') }}</span>
-        </button>
-        <button
-          v-for="action in ['mute', 'call', 'more']"
-          :key="action"
-          type="button"
-          class="group relative flex flex-col items-center gap-1.5 overflow-hidden rounded-xl bg-surface-ground py-3 text-textColor0 hover:bg-surface-line  "
-        >
-          <n-icon size="20" class="text-primary">
-            <Alert24Regular v-if="action === 'mute'" />
-            <Call24Regular v-else-if="action === 'call'" />
-            <MoreHorizontal24Regular v-else />
-          </n-icon>
-          <span class="text-xs">{{ $t(`liveChatPage.${action}`) }}</span>
-          <span
-            class="pointer-events-none absolute inset-0 flex items-center justify-center bg-surface-ground/90 text-xs font-medium text-textColor0 opacity-0  transition-opacity duration-300 group-hover:opacity-100"
+          <!-- Amallar qatori — faqat suhbatdosh profilida -->
+          <div v-if="!isOwn" class="grid grid-cols-4 gap-2 pb-4">
+            <button
+              type="button"
+              class="flex flex-col items-center gap-1.5 rounded-xl bg-surface-ground py-3 text-textColor0 hover:bg-surface-line"
+              @click="onMessageClick"
+            >
+              <n-icon size="20" class="text-primary"><Chat24Regular /></n-icon>
+              <span class="text-xs">{{ $t('liveChatPage.message') }}</span>
+            </button>
+            <button
+              v-for="action in ['mute', 'call', 'more']"
+              :key="action"
+              type="button"
+              class="group relative flex flex-col items-center gap-1.5 overflow-hidden rounded-xl bg-surface-ground py-3 text-textColor0 hover:bg-surface-line"
+            >
+              <n-icon size="20" class="text-primary">
+                <Alert24Regular v-if="action === 'mute'" />
+                <Call24Regular v-else-if="action === 'call'" />
+                <MoreHorizontal24Regular v-else />
+              </n-icon>
+              <span class="text-xs">{{ $t(`liveChatPage.${action}`) }}</span>
+              <span
+                class="pointer-events-none absolute inset-0 flex items-center justify-center bg-surface-ground/90 text-xs font-medium text-textColor0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              >
+                {{ $t('liveChatPage.soon') }}
+              </span>
+            </button>
+          </div>
+
+          <!-- Telefon + lavozim — alohida qutisiz, oddiy qatorlar -->
+          <div class="flex flex-col">
+            <div class="info-row border-b border-surface-line">
+              <div class="info-label-col">
+                <n-icon size="15" class="shrink-0"><Call20Regular /></n-icon>
+                <span>{{ $t('liveChatPage.phone') }}</span>
+              </div>
+              <div class="info-value-col gap-2">
+                <UIPhoneNumber :phone="user?.phone" />
+                <n-tooltip v-if="user?.phone" trigger="hover">
+                  <template #trigger>
+                    <n-icon
+                      size="15"
+                      class="shrink-0 cursor-pointer text-textColor3 hover:text-primary"
+                      @click="copyPhone"
+                    >
+                      <Copy16Regular />
+                    </n-icon>
+                  </template>
+                  {{ $t('content.copy') }}
+                </n-tooltip>
+              </div>
+            </div>
+            <div class="info-row" :class="{ 'border-b border-surface-line': showLastSeen }">
+              <div class="info-label-col">
+                <n-icon size="15" class="shrink-0"><Briefcase20Regular /></n-icon>
+                <span>{{ $t('liveChatPage.position') }}</span>
+              </div>
+              <div class="info-value-col truncate">{{ user?.position || '—' }}</div>
+            </div>
+            <div v-if="showLastSeen" class="info-row">
+              <div class="info-label-col">
+                <n-icon size="15" class="shrink-0"><Clock20Regular /></n-icon>
+                <span>{{ $t('liveChatPage.lastSeenLabel') }}</span>
+              </div>
+              <div class="info-value-col">
+                {{ dayjs(user.lastSeenAt).format('DD.MM.YYYY HH:mm') }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Media statistikasi — faqat suhbatdosh profilida -->
+          <div v-if="!isOwn" class="mt-3 flex flex-col">
+            <button
+              v-if="photoMessages.length"
+              type="button"
+              class="stat-row border-b border-surface-line"
+              @click="section = 'photos'"
+            >
+              <n-icon size="18" class="text-primary shrink-0"><Image24Regular /></n-icon>
+              <span>{{ $t('liveChatPage.photosCount', { n: photoMessages.length }) }}</span>
+            </button>
+            <button
+              v-if="voiceMessages.length"
+              type="button"
+              class="stat-row"
+              :class="{ 'border-b border-surface-line': fileMessages.length }"
+              @click="section = 'voice'"
+            >
+              <n-icon size="18" class="text-primary shrink-0"><Mic24Regular /></n-icon>
+              <span>{{ $t('liveChatPage.voiceMessagesCount', { n: voiceMessages.length }) }}</span>
+            </button>
+            <button
+              v-if="fileMessages.length"
+              type="button"
+              class="stat-row"
+              @click="section = 'files'"
+            >
+              <n-icon size="18" class="text-primary shrink-0"><Document24Regular /></n-icon>
+              <span>{{ $t('liveChatPage.filesCount', { n: fileMessages.length }) }}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Rasmlar -->
+        <div v-else-if="section === 'photos'" class="flex flex-col gap-3">
+          <div v-for="group in photoGroups" :key="group.label">
+            <div class="mb-1.5 text-sm font-semibold text-textColor0">{{ group.label }}</div>
+            <div class="grid grid-cols-4 gap-1">
+              <button
+                v-for="item in group.items"
+                :key="item.id"
+                type="button"
+                class="aspect-square overflow-hidden rounded-md"
+                @click="openPreview(item.fileUrl)"
+              >
+                <img :src="item.fileUrl" :alt="item.fileName" class="h-full w-full object-cover" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ovozli xabarlar -->
+        <div v-else-if="section === 'voice'" class="flex flex-col gap-1">
+          <div v-for="msg in voiceMessages" :key="msg.id" class="flex items-center gap-2.5 py-1.5">
+            <button
+              type="button"
+              class="shrink-0 size-9 rounded-full flex items-center justify-center bg-primary/10 hover:bg-primary/15"
+              @click="togglePlay(msg)"
+            >
+              <n-icon size="16" color="var(--primary-color)">
+                <Pause24Filled v-if="playingId === msg.id" />
+                <Play24Filled v-else />
+              </n-icon>
+            </button>
+            <div class="min-w-0 flex-1">
+              <div class="truncate text-sm font-medium text-textColor0">
+                {{ senderName(msg.senderId) }}
+              </div>
+              <div class="text-xs text-textColor3">
+                {{ itemTimeLabel(msg.createdAt) }}, {{ formatDuration(msg.duration) }}
+              </div>
+            </div>
+            <audio
+              :ref="setAudioRef(msg.id)"
+              :src="msg.audioUrl"
+              class="hidden"
+              @play="playingId = msg.id"
+              @pause="playingId === msg.id && (playingId = null)"
+              @ended="playingId = null"
+            />
+          </div>
+        </div>
+
+        <!-- Fayllar -->
+        <div v-else-if="section === 'files'" class="flex flex-col gap-1">
+          <a
+            v-for="msg in fileMessages"
+            :key="msg.id"
+            :href="msg.fileUrl"
+            :download="msg.fileName"
+            class="flex items-center gap-2.5 py-1.5"
           >
-            {{ $t('liveChatPage.soon') }}
-          </span>
-        </button>
-      </div>
-
-      <!-- Telefon + lavozim — alohida qutisiz, oddiy qatorlar -->
-      <div class="flex flex-col">
-        <div class="info-row border-b border-surface-line">
-          <div class="info-label-col">
-            <n-icon size="15" class="shrink-0"><Call20Regular /></n-icon>
-            <span>{{ $t('liveChatPage.phone') }}</span>
-          </div>
-          <div class="info-value-col gap-2">
-            <UIPhoneNumber :phone="user?.phone" />
-            <n-tooltip v-if="user?.phone" trigger="hover">
-              <template #trigger>
-                <n-icon
-                  size="15"
-                  class="shrink-0 cursor-pointer text-textColor3 hover:text-primary"
-                  @click="copyPhone"
-                >
-                  <Copy16Regular />
-                </n-icon>
-              </template>
-              {{ $t('content.copy') }}
-            </n-tooltip>
-          </div>
+            <span
+              class="shrink-0 size-9 rounded-full flex items-center justify-center bg-primary/10"
+            >
+              <n-icon size="16" color="var(--primary-color)"><Document24Regular /></n-icon>
+            </span>
+            <div class="min-w-0 flex-1">
+              <div class="truncate text-sm font-medium text-textColor0">{{ msg.fileName }}</div>
+              <div class="text-xs text-textColor3">
+                {{ itemTimeLabel(msg.createdAt) }}, {{ formatFileSize(msg.fileSize) }}
+              </div>
+            </div>
+            <n-icon size="16" class="shrink-0 text-textColor3"><ArrowDownload20Regular /></n-icon>
+          </a>
         </div>
-        <div class="info-row" :class="{ 'border-b border-surface-line': showLastSeen }">
-          <div class="info-label-col">
-            <n-icon size="15" class="shrink-0"><Briefcase20Regular /></n-icon>
-            <span>{{ $t('liveChatPage.position') }}</span>
-          </div>
-          <div class="info-value-col truncate">{{ user?.position || '—' }}</div>
-        </div>
-        <div v-if="showLastSeen" class="info-row">
-          <div class="info-label-col">
-            <n-icon size="15" class="shrink-0"><Clock20Regular /></n-icon>
-            <span>{{ $t('liveChatPage.lastSeenLabel') }}</span>
-          </div>
-          <div class="info-value-col">{{ dayjs(user.lastSeenAt).format('DD.MM.YYYY HH:mm') }}</div>
-        </div>
-      </div>
-
-      <!-- Media statistikasi — faqat suhbatdosh profilida -->
-      <div v-if="!isOwn" class="mt-3 flex flex-col">
-        <button
-          v-if="photoMessages.length"
-          type="button"
-          class="stat-row border-b border-surface-line"
-          @click="section = 'photos'"
-        >
-          <n-icon size="18" class="text-primary shrink-0"><Image24Regular /></n-icon>
-          <span>{{ $t('liveChatPage.photosCount', { n: photoMessages.length }) }}</span>
-        </button>
-        <button
-          v-if="voiceMessages.length"
-          type="button"
-          class="stat-row"
-          :class="{ 'border-b border-surface-line': fileMessages.length }"
-          @click="section = 'voice'"
-        >
-          <n-icon size="18" class="text-primary shrink-0"><Mic24Regular /></n-icon>
-          <span>{{ $t('liveChatPage.voiceMessagesCount', { n: voiceMessages.length }) }}</span>
-        </button>
-        <button v-if="fileMessages.length" type="button" class="stat-row" @click="section = 'files'">
-          <n-icon size="18" class="text-primary shrink-0"><Document24Regular /></n-icon>
-          <span>{{ $t('liveChatPage.filesCount', { n: fileMessages.length }) }}</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Rasmlar -->
-    <div v-else-if="section === 'photos'" class="flex flex-col gap-3">
-      <div v-for="group in photoGroups" :key="group.label">
-        <div class="mb-1.5 text-sm font-semibold text-textColor0">{{ group.label }}</div>
-        <div class="grid grid-cols-4 gap-1">
-          <button
-            v-for="item in group.items"
-            :key="item.id"
-            type="button"
-            class="aspect-square overflow-hidden rounded-md"
-            @click="openPreview(item.fileUrl)"
-          >
-            <img :src="item.fileUrl" :alt="item.fileName" class="h-full w-full object-cover" />
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Ovozli xabarlar -->
-    <div v-else-if="section === 'voice'" class="flex flex-col gap-1">
-      <div v-for="msg in voiceMessages" :key="msg.id" class="flex items-center gap-2.5 py-1.5">
-        <button
-          type="button"
-          class="shrink-0 size-9 rounded-full flex items-center justify-center bg-primary/10 hover:bg-primary/15"
-          @click="togglePlay(msg)"
-        >
-          <n-icon size="16" color="var(--primary-color)">
-            <Pause24Filled v-if="playingId === msg.id" />
-            <Play24Filled v-else />
-          </n-icon>
-        </button>
-        <div class="min-w-0 flex-1">
-          <div class="truncate text-sm font-medium text-textColor0">{{ senderName(msg.senderId) }}</div>
-          <div class="text-xs text-textColor3">{{ itemTimeLabel(msg.createdAt) }}, {{ formatDuration(msg.duration) }}</div>
-        </div>
-        <audio
-          :ref="setAudioRef(msg.id)"
-          :src="msg.audioUrl"
-          class="hidden"
-          @play="playingId = msg.id"
-          @pause="playingId === msg.id && (playingId = null)"
-          @ended="playingId = null"
-        />
-      </div>
-    </div>
-
-    <!-- Fayllar -->
-    <div v-else-if="section === 'files'" class="flex flex-col gap-1">
-      <a
-        v-for="msg in fileMessages"
-        :key="msg.id"
-        :href="msg.fileUrl"
-        :download="msg.fileName"
-        class="flex items-center gap-2.5 py-1.5"
-      >
-        <span class="shrink-0 size-9 rounded-full flex items-center justify-center bg-primary/10">
-          <n-icon size="16" color="var(--primary-color)"><Document24Regular /></n-icon>
-        </span>
-        <div class="min-w-0 flex-1">
-          <div class="truncate text-sm font-medium text-textColor0">{{ msg.fileName }}</div>
-          <div class="text-xs text-textColor3">{{ itemTimeLabel(msg.createdAt) }}, {{ formatFileSize(msg.fileSize) }}</div>
-        </div>
-        <n-icon size="16" class="shrink-0 text-textColor3"><ArrowDownload20Regular /></n-icon>
-      </a>
+      </Transition>
     </div>
 
     <n-modal
@@ -334,7 +374,13 @@
       :mask-closable="true"
       style="background: transparent; box-shadow: none; padding: 0"
     >
-      <img v-if="previewUrl" :src="previewUrl" alt="" class="max-w-[92vw] max-h-[88vh] rounded-xl" @click.stop />
+      <img
+        v-if="previewUrl"
+        :src="previewUrl"
+        alt=""
+        class="max-w-[92vw] max-h-[88vh] rounded-xl"
+        @click.stop
+      />
     </n-modal>
   </UIModal>
 </template>
@@ -382,5 +428,26 @@
 
   .stat-row:hover {
     background: var(--surface-ground);
+  }
+
+  .section-forward-enter-active,
+  .section-forward-leave-active,
+  .section-back-enter-active,
+  .section-back-leave-active {
+    transition:
+      transform 0.18s ease,
+      opacity 0.18s ease;
+  }
+
+  .section-forward-enter-from,
+  .section-back-leave-to {
+    transform: translateX(32px);
+    opacity: 0;
+  }
+
+  .section-forward-leave-to,
+  .section-back-enter-from {
+    transform: translateX(-32px);
+    opacity: 0;
   }
 </style>
