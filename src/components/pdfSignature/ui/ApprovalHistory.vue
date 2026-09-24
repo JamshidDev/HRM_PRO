@@ -6,7 +6,6 @@
   const props = defineProps({
     confirmations: { type: Array, default: () => [] },
     bySigner: { type: Array, default: () => [] },
-    isMock: { type: Boolean, default: false }
   })
 
   // Barcha imzolovchilar harakatlari bitta xronologik lentaga (yangi — tepada),
@@ -29,13 +28,6 @@
 
 <template>
   <div>
-    <div
-      v-if="isMock"
-      class="mb-3 rounded-lg border border-dashed border-fig-orange-300 bg-fig-chip-amber px-3 py-2 text-[11px] text-fig-chip-amber-text"
-    >
-      {{ $t('documentPage.signature.approval.mockNotice') }}
-    </div>
-
     <div v-if="!groups.length" class="text-sm text-textColor3 text-center py-8">
       {{ $t('documentPage.signature.approval.noHistory') }}
     </div>
