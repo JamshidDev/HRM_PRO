@@ -1,14 +1,25 @@
 <script setup>
-  defineProps({
+  const props = defineProps({
     data: {
       type: Object,
-      default: {}
+      default: () => ({})
     },
     isWorker: {
       type: Boolean,
       default: false
     }
   })
+
+  // Vakant/sverx HAR shtat birligi bo'yicha API'da hisoblanadi (`vacant`/`over`).
+  // Bo'lim darajasida `rate - real_rate` olsak, bir lavozimdagi bo'sh o'rin
+  // boshqasidagi ortiqchani yeb qo'yadi va sverx ekranda yo'qoladi.
+  // Lavozim kartasida bu maydonlar yo'q — u yerda bitta shtat birligi, ayirma to'g'ri.
+  const vacant = computed(() =>
+    props.data?.vacant ?? (props.data?.rate > props.data?.real_rate ? props.data.rate - props.data.real_rate : 0)
+  )
+  const over = computed(() =>
+    props.data?.over ?? (props.data?.rate < props.data?.real_rate ? props.data.real_rate - props.data.rate : 0)
+  )
 </script>
 
 <template>
@@ -26,22 +37,22 @@
         data.real_rate
       }}</n-button>
       <n-button
-        :disabled="data.rate <= data.real_rate"
-        :type="data.rate > data.real_rate ? 'success' : undefined"
+        :disabled="vacant <= 0"
+        :type="vacant > 0 ? 'success' : undefined"
         round
         size="tiny"
         secondary
       >
-        {{ data.rate > data.real_rate ? data.rate - data.real_rate : 0 }}
+        {{ vacant }}
       </n-button>
       <n-button
-        :disabled="data.rate >= data.real_rate"
-        :type="data.rate < data.real_rate ? 'error' : undefined"
+        :disabled="over <= 0"
+        :type="over > 0 ? 'error' : undefined"
         round
         size="tiny"
         secondary
       >
-        {{ data.rate < data.real_rate ? data.real_rate - data.rate : 0 }}
+        {{ over }}
       </n-button>
     </template>
   </div>
