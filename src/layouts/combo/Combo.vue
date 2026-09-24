@@ -3,7 +3,6 @@
   import PageContent from './ui/PageContent.vue'
   import HelperLayout from './ui/HelperLayout.vue'
   import ReactionScreen from '@/pages/app/home/ui/ReactionScreen.vue'
-  import OldVersionButton from '@/components/buttons/OldVersionButton.vue'
   import AIFloatingButton from '@/components/buttons/AIFloatingButton.vue'
   import { useAccountStore } from '@/store/modules/index.js'
   const store = useAccountStore()
@@ -45,7 +44,6 @@
 
 <template>
   <div :class="layoutClass" class="organization-layout">
-    <OldVersionButton :is-sidebar-open="open" />
     <SidebarContent @on-change="controlSidebar" @on-open="openSidebar" @on-close="closeSidebar" />
     <PageContent @on-open="openSidebar" />
     <HelperLayout />
