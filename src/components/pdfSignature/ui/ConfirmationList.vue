@@ -22,9 +22,8 @@
   const chatWith = ref(null)
   const activeTab = ref('signers')
 
-  const history = computed(() =>
-    buildApprovalHistory(store.confirmations, store.document?.document?.created)
-  )
+  // Tarix FAQAT backenddan keladi (`confirmations[].histories`).
+  const history = computed(() => buildApprovalHistory(store.confirmations))
 
   const summary = computed(() => {
     const list = store.confirmations || []
@@ -180,7 +179,6 @@
         v-else
         :confirmations="store.confirmations"
         :by-signer="history.bySigner"
-        :is-mock="history.isMock"
       />
     </template>
 
