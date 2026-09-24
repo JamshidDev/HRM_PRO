@@ -4,6 +4,7 @@
   import i18n from '@/i18n/index.js'
   import frontSide from '@/assets/images/content/redCertificateFront.png'
   import backSide from '@/assets/images/content/redCertificateBack.png'
+  import { downloadIdRedCertificatePdf } from './idRedCertificatePdf.js'
 
   const { t } = i18n.global
 
@@ -85,6 +86,31 @@
     const [y, m, d] = iso.split('-')
     return y && m && d ? `${d}.${m}.${y}` : iso
   }
+
+  async function downloadPdf() {
+    const d = props.data
+    const fileName = [d.fullName, d.cardNumber].filter(Boolean).join('_').replace(/\s+/g, '_')
+    await downloadIdRedCertificatePdf({
+      frontSrc: frontSide,
+      backSrc: backSide,
+      photoUrl: d.photoUrl,
+      qrDataUrl: qrDataUrl.value,
+      data: d,
+      fields: {
+        issueDay: dayOf(d.issueDate),
+        issueMonth: monthOf(d.issueDate),
+        issueYear: fullYear(d.issueDate),
+        expiryDay: dayOf(d.expiryDate),
+        expiryMonth: monthOf(d.expiryDate),
+        expiryYear: fullYear(d.expiryDate),
+        validUntil: formatDate(validUntilDate.value),
+        managerShortName: managerShortName.value
+      },
+      fileName: `${fileName || 'guvohnoma'}.pdf`
+    })
+  }
+
+  defineExpose({ downloadPdf })
 </script>
 
 <template>

@@ -1758,6 +1758,7 @@
       "viewCalendar": "Календардан кўриш"
     },
     "Edocument": {
+      "download_pdf": "PDF юклаб олиш",
       "pasport": "Паспорт",
       "railway_pasport": "Темир йўл гувоҳнома",
       "foreign_pasport": "Хорижий паспорт",
@@ -3149,6 +3150,17 @@
       "amount": "Сумма",
       "total": "Жами ҳисобланди",
       "out_total": "Жами ушланма"
+    },
+    "compare": {
+      "title": "Ойларни таққослаш",
+      "button": "Таққослаш",
+      "exit": "Таққослашни ёпиш",
+      "first": "Биринчи ой",
+      "second": "Иккинчи ой",
+      "difference": "Фарқ",
+      "inTable": "Ҳисобланган тўловлар",
+      "outTable": "Ушланмалар",
+      "oneSideEmpty": "Танланган ойлардан бирида маълумот йўқ"
     }
   },
   "expiredHealth": {
