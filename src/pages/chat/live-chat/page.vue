@@ -7,10 +7,10 @@
 </script>
 
 <template>
-  <!-- Butun sahifada standart brauzer kontekst menyusi o'chirilgan — bu yerda
-       o'ng klik faqat xabar/suhbat amallar menyusini ochish uchun ishlatiladi
-       (bo'sh joyda esa hech narsa qilmaydi, faqat brauzer menyusini bloklaydi). -->
   <div class="!h-full" @contextmenu.prevent>
+    <!-- Butun sahifada standart brauzer kontekst menyusi o'chirilgan — bu yerda
+         o'ng klik faqat xabar/suhbat amallar menyusini ochish uchun ishlatiladi
+         (bo'sh joyda esa hech narsa qilmaydi, faqat brauzer menyusini bloklaydi). -->
     <UIPageContent class="!h-full">
       <div class="grid grid-cols-12 gap-4 md:min-h-0 md:flex-1">
         <div
