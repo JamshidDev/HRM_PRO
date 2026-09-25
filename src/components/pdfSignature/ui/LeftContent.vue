@@ -26,6 +26,7 @@
   const ALLOWED_EXT = ['pdf', 'png', 'jpg', 'jpeg']
   const MAX_FILE_MB = 10
   const MAX_FILES = 10
+  const MAX_APPLICATIONS = 10
 
   const inputRef = ref(null)
 
@@ -261,10 +262,7 @@
       </div>
 
       <!-- Bog'langan arizalar — fayllardan alohida ro'yxat -->
-      <div
-        v-if="applications.length || canEdit"
-        class="flex flex-col gap-1.5 pt-3 border-t border-surface-line"
-      >
+      <div v-if="applications.length || canEdit" class="flex flex-col gap-1.5 pt-1">
         <div class="flex items-center justify-between gap-2">
           <div
             class="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-textColor3"
@@ -278,7 +276,7 @@
             </span>
           </div>
           <n-button
-            v-if="canEdit && applications.length"
+            v-if="canEdit && applications.length && applications.length < MAX_APPLICATIONS"
             secondary
             round
             type="primary"
@@ -327,7 +325,7 @@
               <span>{{ Utils.timeOnlyDate(item.worker_application?.created_at) }}</span>
             </div>
             <!-- Asosiy — hujjat nomi to'liq, qalin -->
-            <div class="mt-0.5 text-xs font-semibold text-textColor1 leading-4">
+            <div class="mt-0.5 text-[11px] font-bold text-textColor1 leading-snug">
               {{ item.worker_application?.type?.name }}
             </div>
           </div>

@@ -1277,7 +1277,8 @@
         "application": "Ариза",
         "unlinkConfirm": "№{number} аризани ҳужжатдан узасизми?",
         "files": "Файллар",
-        "attachShort": "Бириктириш"
+        "attachShort": "Бириктириш",
+        "applicationsLimit": "Кўпи билан {max} та ариза бириктириш мумкин"
       },
       "checkDocument": "Ҳужжат ҳолатини текшириш учун босинг",
       "attachedDocuments": "Бириктирилган ҳужжатлар",

@@ -58,10 +58,17 @@
     }
   }
 
+  // Hujjatga ko'pi bilan 10 ta ariza (bog'langan + tanlangan).
+  const MAX_APPLICATIONS = 10
+  const limitReached = computed(
+    () => linkedIds.value.size + selected.value.length >= MAX_APPLICATIONS
+  )
+
   const isLinked = (a) => linkedIds.value.has(a.id)
   const isSelected = (a) => selected.value.includes(a.id)
+  const isBlocked = (a) => !isLinked(a) && !isSelected(a) && limitReached.value
   const toggle = (a) => {
-    if (isLinked(a)) return
+    if (isLinked(a) || isBlocked(a)) return
     selected.value = isSelected(a)
       ? selected.value.filter((id) => id !== a.id)
       : [...selected.value, a.id]
@@ -131,7 +138,7 @@
               :key="a.id"
               class="flex items-center gap-3 rounded-xl border px-3 py-2 transition-colors"
               :class="
-                isLinked(a)
+                isLinked(a) || isBlocked(a)
                   ? 'border-surface-line bg-surface-ground opacity-70 cursor-default'
                   : isSelected(a)
                     ? 'border-primary bg-primary/5 cursor-pointer'
@@ -141,7 +148,7 @@
             >
               <n-checkbox
                 :checked="isLinked(a) || isSelected(a)"
-                :disabled="isLinked(a)"
+                :disabled="isLinked(a) || isBlocked(a)"
                 @click.stop
                 @update:checked="() => toggle(a)"
               />
@@ -172,7 +179,11 @@
 
         <div class="shrink-0 flex items-center justify-between gap-3 pt-1">
           <span class="text-xs text-textColor3">
-            {{ $t('documentPage.signature.files.selectedCount', { count: selected.length }) }}
+            {{
+              limitReached
+                ? $t('documentPage.signature.files.applicationsLimit', { max: MAX_APPLICATIONS })
+                : $t('documentPage.signature.files.selectedCount', { count: selected.length })
+            }}
           </span>
           <div class="flex gap-2">
             <n-button :disabled="store.attachLoading" @click="store.attachVisible = false">

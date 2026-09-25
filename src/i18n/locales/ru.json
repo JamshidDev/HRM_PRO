@@ -1395,7 +1395,8 @@
         "application": "Заявление",
         "unlinkConfirm": "Открепить заявление №{number} от документа?",
         "files": "Файлы",
-        "attachShort": "Прикрепить"
+        "attachShort": "Прикрепить",
+        "applicationsLimit": "Можно прикрепить не более {max} заявлений"
       },
       "checkDocument": "Нажмите для проверки статуса документа",
       "attachedDocuments": "Прикреплённые документы",
