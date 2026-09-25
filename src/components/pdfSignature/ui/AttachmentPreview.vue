@@ -1,5 +1,12 @@
 <script setup>
-  import { ArrowLeft20Filled, CloudArrowDown16Regular, ErrorCircle24Filled } from '@vicons/fluent'
+  import {
+    ArrowLeft20Filled,
+    CloudArrowDown16Regular,
+    ErrorCircle24Filled,
+    MailAttach16Regular
+  } from '@vicons/fluent'
+  import PdfFileIcon from '@/assets/icons/pdfFileIcon.svg'
+  import ImageFileIcon from '@/assets/icons/figImageSquare.svg'
   import Utils from '@/utils/Utils.js'
   import PdfCanvasViewer from './PdfCanvasViewer.vue'
   import { usePdfViewerStore } from '@/store/modules/index.js'
@@ -22,6 +29,19 @@
   const source = computed(() => props.file?.original_name || props.file?.file || '')
   const isPdf = computed(() => /\.pdf($|\?)/i.test(source.value))
   const isImage = computed(() => /\.(png|jpe?g|gif|webp|bmp)($|\?)/i.test(source.value))
+
+  // Sarlavhadagi fayl turi ikonkasi va yorlig'i (ariza PDF'i — alohida rangda).
+  const fileMeta = computed(() => {
+    if (String(props.file?.id ?? '').startsWith('app-'))
+      return { icon: MailAttach16Regular, tone: 'bg-fig-chip-amber text-fig-chip-amber-text', label: 'PDF' }
+    if (isImage.value)
+      return {
+        icon: ImageFileIcon,
+        tone: 'bg-fig-chip-indigo text-fig-chip-indigo-text',
+        label: source.value.split('.').pop()?.split('?')[0] || ''
+      }
+    return { icon: PdfFileIcon, tone: 'bg-fig-red-50 text-fig-text-red', label: 'PDF' }
+  })
 
   watch(
     () => props.file?.id,
@@ -49,24 +69,46 @@
   <div
     class="w-full h-full flex flex-col min-h-0 bg-gradient-to-b from-surface-ground to-surface-section"
   >
-    <div class="shrink-0 w-full px-3 pt-0.5 pb-2">
+    <div class="shrink-0 w-full px-3 pb-1.5">
       <div
-        class="mx-auto max-w-full flex items-center gap-3 px-2 py-1.5 rounded-xl border border-surface-line bg-surface-section"
+        class="mx-auto max-w-full flex items-center gap-2 pl-1 pr-1.5 py-1 rounded-xl border border-surface-line bg-surface-section"
         :style="{ width: pageWidth + 'px' }"
       >
-        <n-button quaternary size="small" @click="emits('close')">
-          <template #icon>
-            <n-icon size="16"><ArrowLeft20Filled /></n-icon>
+        <!-- Orqaga — ixcham ikonka tugma, matni tooltip'da -->
+        <n-tooltip>
+          <template #trigger>
+            <n-button quaternary circle size="small" @click="emits('close')">
+              <template #icon>
+                <n-icon size="18"><ArrowLeft20Filled /></n-icon>
+              </template>
+            </n-button>
           </template>
           {{ $t('documentPage.signature.files.backToDocument') }}
-        </n-button>
+        </n-tooltip>
+
+        <div class="w-px h-6 bg-surface-line shrink-0"></div>
+
+        <!-- Fayl turi ikonkasi + nomi va meta ma'lumot -->
+        <div
+          class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+          :class="fileMeta.tone"
+        >
+          <n-icon size="18"><component :is="fileMeta.icon" /></n-icon>
+        </div>
         <div class="min-w-0 flex-1">
-          <div class="text-sm font-semibold text-textColor1 truncate">{{ file?.original_name }}</div>
-          <div v-if="file?.created_at" class="text-[11px] text-textColor3 tabular-nums">
-            {{ Utils.timeOnlyDate(file.created_at) }}
+          <n-ellipsis
+            :tooltip="{ style: { maxWidth: '360px' } }"
+            class="block text-sm font-semibold text-textColor0 leading-tight"
+          >
+            {{ file?.original_name }}
+          </n-ellipsis>
+          <div class="text-[11px] text-textColor3 tabular-nums">
+            <span class="uppercase font-medium">{{ fileMeta.label }}</span>
+            <template v-if="file?.created_at"> · {{ Utils.timeOnlyDate(file.created_at) }}</template>
           </div>
         </div>
-        <n-button tertiary size="small" @click="onDownload">
+
+        <n-button secondary type="primary" size="small" round @click="onDownload">
           <template #icon>
             <n-icon size="16"><CloudArrowDown16Regular /></n-icon>
           </template>
@@ -97,7 +139,7 @@
           @error="onPdfError"
         />
       </n-spin>
-      <div v-else-if="isImage" class="w-full flex justify-center py-3 px-3">
+      <div v-else-if="isImage" class="w-full flex justify-center pt-0.5 pb-3 px-3">
         <img
           :src="file?.file"
           :alt="file?.original_name"

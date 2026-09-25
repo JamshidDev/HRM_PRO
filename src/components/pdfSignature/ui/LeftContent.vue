@@ -191,12 +191,13 @@
         <div
           v-for="item in files"
           :key="item.id"
-          class="group flex items-center gap-2.5 rounded-lg border px-2 py-1.5 min-h-[48px] transition-colors"
+          class="group flex items-center gap-2.5 rounded-lg border px-2 py-1.5 min-h-[48px] cursor-pointer transition-colors"
           :class="
             store.previewFile?.id === item.id
               ? 'border-fig-blue-300 bg-fig-chip-brand'
               : 'border-surface-line bg-surface-section hover:bg-fig-bg-secondary'
           "
+          @click="onPreview(item)"
         >
           <div
             class="w-8 h-8 rounded-md flex items-center justify-center shrink-0"
@@ -223,6 +224,7 @@
           <div
             class="flex items-center gap-0.5 shrink-0 transition-opacity"
             :class="store.previewFile?.id === item.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'"
+            @click.stop
           >
             <n-tooltip>
               <template #trigger>

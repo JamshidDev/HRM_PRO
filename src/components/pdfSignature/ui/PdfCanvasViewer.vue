@@ -69,7 +69,7 @@
 </script>
 
 <template>
-  <div class="w-full flex flex-col items-center gap-3 py-3">
+  <div class="w-full flex flex-col items-center gap-2 pt-0.5 pb-3">
     <canvas
       v-for="idx in totalPages"
       :key="idx"
