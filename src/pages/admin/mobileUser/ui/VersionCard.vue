@@ -99,10 +99,9 @@
             <span class="version-row__value">{{
               rowByPlatform(platform)?.latest_version || '—'
             }}</span>
-            <n-tooltip trigger="hover">
+            <n-tooltip v-if="canWrite" trigger="hover">
               <template #trigger>
                 <button
-                  v-if="canWrite"
                   type="button"
                   class="version-icon-btn version-icon-btn--edit"
                   @click="onUpgrade(platform)"
