@@ -137,10 +137,11 @@
     store.previewFile = store.previewFile?.id === item.id ? null : item
   }
 
+  // Hujjat ochilganda ro'yxat doim yuklanadi (fayllar ham, bog'langan arizalar ham).
   watch(
     () => store.document,
     (doc) => {
-      if (doc?.files > 0) store._files()
+      if (doc) store._files()
     },
     { immediate: true }
   )
