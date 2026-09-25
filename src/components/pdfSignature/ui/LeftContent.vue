@@ -161,6 +161,17 @@
 
     <div class="flex flex-col gap-3">
       <div class="grid grid-cols-4 gap-1.5">
+        <!-- Qo'shish: punktir chegarali kvadrat — doim birinchi -->
+        <button
+          v-if="canAdd"
+          type="button"
+          class="aspect-square rounded-lg border-2 border-dashed border-surface-line text-textColor3 flex flex-col items-center justify-center gap-1 transition-colors hover:border-primary hover:text-primary hover:bg-primary/5"
+          :disabled="uploading"
+          @click="onPick"
+        >
+          <n-spin v-if="uploading" :size="16" />
+          <n-icon v-else size="18"><Add24Regular /></n-icon>
+        </button>
         <!-- Biriktirilgan fayllar -->
         <n-tooltip v-for="item in store.fileList" :key="item.id" placement="bottom">
           <template #trigger>
@@ -227,18 +238,6 @@
           </template>
           {{ fileName(item) }}
         </n-tooltip>
-
-        <!-- Qo'shish: punktir chegarali kvadrat -->
-        <button
-          v-if="canAdd"
-          type="button"
-          class="aspect-square rounded-lg border-2 border-dashed border-surface-line text-textColor3 flex flex-col items-center justify-center gap-1 transition-colors hover:border-primary hover:text-primary hover:bg-primary/5"
-          :disabled="uploading"
-          @click="onPick"
-        >
-          <n-spin v-if="uploading" :size="16" />
-          <n-icon v-else size="18"><Add24Regular /></n-icon>
-        </button>
       </div>
 
       <input
