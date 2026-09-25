@@ -37,35 +37,40 @@ export const eventMeta = {
   }
 }
 
+// Timeline tugunlari va chizig'i barcha holatlarda bir xil ko'k rangda;
+// holat faqat tugun ichidagi ikonka orqali farqlanadi.
+const TIMELINE_NODE = 'bg-fig-chip-brand text-fig-chip-brand-text border-fig-blue-300'
+const TIMELINE_LINE = 'bg-fig-blue-300'
+
 // Imzolovchi holati → stepper tuguni ko'rinishi.
 export const signerTone = (statusId) => {
   switch (statusId) {
     case STATUS.success:
       return {
         icon: Checkmark16Filled,
-        node: 'bg-fig-success text-white border-transparent',
-        line: 'bg-fig-success',
+        node: TIMELINE_NODE,
+        line: TIMELINE_LINE,
         card: 'border-surface-line'
       }
     case STATUS.rejected:
       return {
         icon: Dismiss16Filled,
-        node: 'bg-fig-red text-white border-transparent',
-        line: 'bg-surface-line',
+        node: TIMELINE_NODE,
+        line: TIMELINE_LINE,
         card: 'border-fig-br-error'
       }
     case STATUS.read:
       return {
         icon: Eye16Regular,
-        node: 'bg-fig-chip-brand text-fig-chip-brand-text border-fig-blue-300',
-        line: 'bg-surface-line',
+        node: TIMELINE_NODE,
+        line: TIMELINE_LINE,
         card: 'border-surface-line'
       }
     default:
       return {
         icon: Clock16Regular,
-        node: 'bg-fig-chip-amber text-fig-chip-amber-text border-fig-orange-300',
-        line: 'bg-surface-line',
+        node: TIMELINE_NODE,
+        line: TIMELINE_LINE,
         card: 'border-surface-line'
       }
   }

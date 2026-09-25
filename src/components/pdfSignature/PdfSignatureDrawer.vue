@@ -6,7 +6,7 @@
     CalendarCancel20Regular,
     Dismiss20Regular
   } from '@vicons/fluent'
-  import { UIUser, UILottieReader, UIStatus } from '@/components/index.js'
+  import { UIUser, UILottieReader } from '@/components/index.js'
   import EditRefreshIcon from '@/assets/icons/editRefreshIcon.svg'
   import PdfFileIcon from '@/assets/icons/pdfFileIcon.svg'
   import WordFileIcon from '@/assets/icons/wordFileIcon.svg'
@@ -299,18 +299,12 @@
                 <n-skeleton width="80px" height="11px" :sharp="false" class="rounded-md" />
               </div>
               <div v-else class="hidden md:inline-block">
-                <div class="flex items-center gap-2">
-                  <div class="text-lg font-semibold text-textColor1 leading-tight">
-                    {{ store.document?.document?.file_name }}
-                  </div>
-                  <UIStatus
-                    v-if="store.document?.document?.confirmation?.name"
-                    fig
-                    :status="store.document.document.confirmation"
-                  />
+                <div class="text-lg font-semibold text-textColor1 leading-tight">
+                  {{ store.document?.document?.file_name }}
                 </div>
-                <div class="text-xs text-gray-400">
+                <div class="text-xs text-gray-400 tabular-nums">
                   {{ Utils.timeOnlyDate(store?.document?.document?.created) }}
+                  {{ Utils.timeOnlyHour(store?.document?.document?.created) }}
                 </div>
               </div>
             </div>
@@ -414,28 +408,6 @@
                           <ClipboardCheckmark20Regular />
                         </n-icon>
                       </template>
-                    </n-button>
-                  </div>
-                </div>
-
-                <div
-                  v-else-if="store.permissions?.canSignature && showSignature"
-                  class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex items-center justify-between gap-4 mb-3"
-                >
-                  <div class="min-w-0">
-                    <div class="font-semibold text-textColor1 truncate">
-                      {{ $t('documentPage.signature.confirmDocument') }}
-                    </div>
-                    <div class="text-xs text-gray-400">
-                      {{ Utils.timeOnlyDate(store.document?.document?.created) }}
-                    </div>
-                  </div>
-                  <div class="flex gap-2 shrink-0">
-                    <n-button type="error" ghost @click="openRejectModal">
-                      {{ $t('content.cancel') }}
-                    </n-button>
-                    <n-button type="success" @click="onOpenConfirmSignature">
-                      {{ $t('content.confirm') }}
                     </n-button>
                   </div>
                 </div>
@@ -598,7 +570,12 @@
             </div>
 
             <div class="hidden md:flex flex-col w-[360px] h-full relative">
-              <ConfirmationList />
+              <ConfirmationList
+                :can-sign="!!store.permissions?.canSignature && !isSigned"
+                :sign-loading="signatureStore.loading"
+                @sign="onSaveSignature"
+                @reject="openRejectModal"
+              />
             </div>
           </div>
         </div>

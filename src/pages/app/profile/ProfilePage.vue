@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="px-3 py-3">
+  <div class="px-3 pt-3 pb-10">
     <!--    <Banner/>-->
     <Tabs />
   </div>
