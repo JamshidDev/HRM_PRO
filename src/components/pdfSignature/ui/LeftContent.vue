@@ -180,7 +180,7 @@
       <div class="text-[11px] font-semibold uppercase tracking-wide text-textColor3">
         {{ $t('documentPage.signature.files.files') }}
       </div>
-      <div class="grid grid-cols-4 gap-1.5">
+      <div class="grid grid-cols-5 gap-1.5">
         <!-- Qo'shish: punktir chegarali kvadrat — doim birinchi -->
         <button
           v-if="canAdd"
@@ -279,9 +279,11 @@
           </div>
           <n-button
             v-if="canEdit && applications.length"
-            text
+            secondary
+            round
             type="primary"
             size="tiny"
+            class="!px-2.5"
             @click="onOpenAttach"
           >
             <template #icon>
@@ -295,10 +297,10 @@
         <button
           v-if="!applications.length && canEdit"
           type="button"
-          class="flex items-center justify-center gap-1.5 rounded-lg border border-dashed border-surface-line px-2 py-2 text-xs text-textColor3 transition-colors hover:border-primary hover:text-primary"
+          class="flex items-center justify-center gap-2 h-11 rounded-lg border-2 border-dashed border-surface-line text-xs font-medium text-textColor3 transition-colors hover:border-primary hover:text-primary hover:bg-primary/5"
           @click="onOpenAttach"
         >
-          <n-icon size="14"><Add16Regular /></n-icon>
+          <n-icon size="16"><Add16Regular /></n-icon>
           {{ $t('documentPage.signature.files.attachApplication') }}
         </button>
 
@@ -317,13 +319,16 @@
             <PdfFileIcon />
           </n-icon>
           <div class="min-w-0 flex-1">
-            <!-- Asosiy — hujjat nomi to'liq, qalin -->
-            <div class="text-xs font-semibold text-textColor1 leading-4">
-              {{ item.worker_application?.type?.name }}
+            <!-- Tepada: raqam — chap chekkada, sana — o'ng chekkada -->
+            <div
+              class="flex items-center justify-between gap-2 text-[10px] text-textColor3 tabular-nums"
+            >
+              <span>№{{ item.worker_application?.number }}</span>
+              <span>{{ Utils.timeOnlyDate(item.worker_application?.created_at) }}</span>
             </div>
-            <div class="mt-0.5 text-[10px] text-textColor3 tabular-nums">
-              №{{ item.worker_application?.number }} ·
-              {{ Utils.timeOnlyDate(item.worker_application?.created_at) }}
+            <!-- Asosiy — hujjat nomi to'liq, qalin -->
+            <div class="mt-0.5 text-xs font-semibold text-textColor1 leading-4">
+              {{ item.worker_application?.type?.name }}
             </div>
           </div>
 
