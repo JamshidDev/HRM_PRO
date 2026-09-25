@@ -1391,7 +1391,9 @@
         "attachSubmit": "Attach",
         "applications": "Applications",
         "application": "Application",
-        "unlinkConfirm": "Detach application No. {number} from the document?"
+        "unlinkConfirm": "Detach application No. {number} from the document?",
+        "files": "Files",
+        "attachShort": "Attach"
       },
       "checkDocument": "Click to check document status",
       "attachedDocuments": "Attached documents",

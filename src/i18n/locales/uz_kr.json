@@ -1275,7 +1275,9 @@
         "attachSubmit": "Бириктириш",
         "applications": "Аризалар",
         "application": "Ариза",
-        "unlinkConfirm": "№{number} аризани ҳужжатдан узасизми?"
+        "unlinkConfirm": "№{number} аризани ҳужжатдан узасизми?",
+        "files": "Файллар",
+        "attachShort": "Бириктириш"
       },
       "checkDocument": "Ҳужжат ҳолатини текшириш учун босинг",
       "attachedDocuments": "Бириктирилган ҳужжатлар",

@@ -1393,7 +1393,9 @@
         "attachSubmit": "Прикрепить",
         "applications": "Заявления",
         "application": "Заявление",
-        "unlinkConfirm": "Открепить заявление №{number} от документа?"
+        "unlinkConfirm": "Открепить заявление №{number} от документа?",
+        "files": "Файлы",
+        "attachShort": "Прикрепить"
       },
       "checkDocument": "Нажмите для проверки статуса документа",
       "attachedDocuments": "Прикреплённые документы",

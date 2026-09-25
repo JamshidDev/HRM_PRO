@@ -1407,7 +1407,9 @@
         "attachSubmit": "Biriktirish",
         "applications": "Arizalar",
         "application": "Ariza",
-        "unlinkConfirm": "№{number} arizani hujjatdan uzasizmi?"
+        "unlinkConfirm": "№{number} arizani hujjatdan uzasizmi?",
+        "files": "Fayllar",
+        "attachShort": "Biriktirish"
       },
       "checkDocument": "Hujjat holatini tekshirish uchun bosing",
       "attachedDocuments": "Biriktirilgan hujjatlar",

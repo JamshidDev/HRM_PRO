@@ -1,12 +1,13 @@
 <script setup>
   import { usePdfViewerStore } from '@/store/modules/index.js'
   import {
+    Add16Regular,
+    DocumentText20Regular,
     Add24Regular,
     MailAttach16Regular,
     Dismiss12Filled,
     Eye16Regular,
-    ArrowDownload16Regular,
-    Link16Regular
+    ArrowDownload16Regular
   } from '@vicons/fluent'
   import { useRoute } from 'vue-router'
   import { useNotify } from '@/composables/useNotify'
@@ -15,6 +16,7 @@
   import PdfFileIcon from '@/assets/icons/pdfFileIcon.svg'
   import ImageFileIcon from '@/assets/icons/figImageSquare.svg'
   import FileContractIcon from '@/assets/icons/fileContractIcon.svg'
+  import Utils from '@/utils/Utils.js'
 
   const { t } = i18n.global
   const route = useRoute()
@@ -67,6 +69,11 @@
     store.fileList.filter((v) => !v?.file && v?.worker_application)
   )
   const fileCount = computed(() => files.value.length)
+
+  const workerShort = (w) =>
+    [w?.last_name, [w?.first_name?.[0], w?.middle_name?.[0]].filter(Boolean).join('.')]
+      .filter(Boolean)
+      .join(' ') + (w?.first_name ? '.' : '')
 
   // Ariza PDF'i ham buyruq o'rnida ochiladi (AttachmentPreview fayl shaklini kutadi).
   const appPreviewId = (item) => `app-${item.id}`
@@ -176,6 +183,9 @@
     class="w-full"
   >
     <div class="flex flex-col gap-3">
+      <div class="text-[11px] font-semibold uppercase tracking-wide text-textColor3">
+        {{ $t('documentPage.signature.files.files') }}
+      </div>
       <div class="grid grid-cols-4 gap-1.5">
         <!-- Qo'shish: punktir chegarali kvadrat — doim birinchi -->
         <button
@@ -257,76 +267,113 @@
       </div>
 
       <!-- Bog'langan arizalar — fayllardan alohida ro'yxat -->
-      <div v-if="applications.length" class="flex flex-col gap-1.5">
-        <div class="text-[11px] font-semibold uppercase tracking-wide text-textColor3">
-          {{ $t('documentPage.signature.files.applications') }}
+      <div
+        v-if="applications.length || canEdit"
+        class="flex flex-col gap-1.5 pt-3 border-t border-surface-line"
+      >
+        <div class="flex items-center justify-between gap-2">
+          <div
+            class="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-textColor3"
+          >
+            {{ $t('documentPage.signature.files.applications') }}
+            <span
+              v-if="applications.length"
+              class="rounded-full bg-surface-ground px-1.5 text-[10px] font-medium normal-case tracking-normal tabular-nums text-textColor2"
+            >
+              {{ applications.length }}
+            </span>
+          </div>
+          <n-button
+            v-if="canEdit && applications.length"
+            text
+            type="primary"
+            size="tiny"
+            @click="onOpenAttach"
+          >
+            <template #icon>
+              <n-icon size="14"><Add16Regular /></n-icon>
+            </template>
+            {{ $t('documentPage.signature.files.attachShort') }}
+          </n-button>
         </div>
+
+        <!-- Bo'sh holat -->
+        <button
+          v-if="!applications.length && canEdit"
+          type="button"
+          class="flex items-center justify-center gap-1.5 rounded-lg border border-dashed border-surface-line px-2 py-2 text-xs text-textColor3 transition-colors hover:border-primary hover:text-primary"
+          @click="onOpenAttach"
+        >
+          <n-icon size="14"><Add16Regular /></n-icon>
+          {{ $t('documentPage.signature.files.attachApplication') }}
+        </button>
+
         <div
           v-for="item in applications"
           :key="item.id"
-          class="group flex items-center gap-2 rounded-lg border px-2 py-1.5 transition-colors"
+          class="group relative flex gap-2 rounded-lg px-2 py-1.5 cursor-pointer transition-colors"
           :class="
             store.previewFile?.id === appPreviewId(item)
-              ? 'border-primary bg-primary/5'
-              : 'border-surface-line bg-surface-section hover:bg-surface-ground'
+              ? 'bg-primary/5 ring-1 ring-primary'
+              : 'hover:bg-surface-ground'
           "
+          @click="onPreviewApplication(item)"
         >
-          <div
-            class="w-7 h-7 shrink-0 rounded-md flex items-center justify-center bg-warning/10 text-warning"
-          >
-            <n-icon size="16"><MailAttach16Regular /></n-icon>
-          </div>
+          <n-icon size="18" class="shrink-0 mt-0.5 text-textColor3">
+            <DocumentText20Regular />
+          </n-icon>
           <div class="min-w-0 flex-1">
-            <div class="text-xs font-medium text-textColor1 truncate">
-              {{ $t('documentPage.signature.files.application') }} №{{
-                item.worker_application?.number
-              }}
+            <div class="flex items-baseline justify-between gap-2">
+              <span class="text-xs font-semibold text-textColor1 tabular-nums">
+                №{{ item.worker_application?.number }}
+              </span>
+              <span class="text-[10px] text-textColor3 tabular-nums shrink-0">
+                {{ Utils.timeOnlyDate(item.worker_application?.created_at) }}
+              </span>
             </div>
             <n-ellipsis
-              class="text-[10px] text-textColor3"
+              :line-clamp="2"
+              class="text-[11px] text-textColor2 leading-snug"
               :tooltip="{ style: { maxWidth: '260px' } }"
             >
               {{ item.worker_application?.type?.name }}
             </n-ellipsis>
-          </div>
-          <div class="flex items-center gap-0.5 shrink-0">
-            <n-button
-              v-if="item.worker_application?.confirmation_file"
-              quaternary
-              circle
-              size="tiny"
-              @click="onPreviewApplication(item)"
+            <div
+              v-if="item.worker_application?.worker"
+              class="text-[10px] text-textColor3 truncate"
             >
-              <template #icon>
-                <n-icon><Eye16Regular /></n-icon>
-              </template>
-            </n-button>
-            <n-popconfirm
-              v-if="canEdit"
-              :positive-text="$t('content.delete')"
-              :negative-text="$t('content.cancel')"
-              @positive-click="onDelete(item)"
-            >
-              <template #trigger>
-                <n-button
-                  quaternary
-                  circle
-                  size="tiny"
-                  type="error"
-                  :loading="store.fileDeleting === item.id"
-                >
-                  <template #icon>
-                    <n-icon><Dismiss12Filled /></n-icon>
-                  </template>
-                </n-button>
-              </template>
-              {{
-                $t('documentPage.signature.files.unlinkConfirm', {
-                  number: item.worker_application?.number
-                })
-              }}
-            </n-popconfirm>
+              {{ workerShort(item.worker_application.worker) }}
+            </div>
           </div>
+
+          <!-- Uzish — hover'da, tasdiqlanmagan hujjatda -->
+          <n-popconfirm
+            v-if="canEdit"
+            :positive-text="$t('content.delete')"
+            :negative-text="$t('content.cancel')"
+            @positive-click="onDelete(item)"
+          >
+            <template #trigger>
+              <n-button
+                quaternary
+                circle
+                size="tiny"
+                type="error"
+                class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity !bg-surface-section"
+                :loading="store.fileDeleting === item.id"
+                @click.stop
+              >
+                <template #icon>
+                  <n-icon><Dismiss12Filled /></n-icon>
+                </template>
+              </n-button>
+            </template>
+            {{
+              $t('documentPage.signature.files.unlinkConfirm', {
+                number: item.worker_application?.number
+              })
+            }}
+          </n-popconfirm>
         </div>
       </div>
 
@@ -341,21 +388,6 @@
       <div v-if="showDocumentFiles && isApproved" class="text-[11px] text-textColor3 leading-snug">
         {{ $t('documentPage.signature.files.locked') }}
       </div>
-
-      <!-- Arizani bog'lash (mavjud oqim) -->
-      <n-button
-        v-if="canEdit"
-        text
-        type="primary"
-        size="small"
-        class="self-start"
-        @click="onOpenAttach"
-      >
-        <template #icon>
-          <n-icon size="16"><Link16Regular /></n-icon>
-        </template>
-        {{ $t('documentPage.signature.files.attachApplication') }}
-      </n-button>
     </div>
   </SectionHeader>
 </template>
