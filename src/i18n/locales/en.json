@@ -1377,7 +1377,25 @@
     "signature": {
       "history": "View change history",
       "viewer": "Document reviewers",
-      "files": "Document files",
+      "files": {
+        "locked": "The document is approved — files can be viewed and downloaded, adding and removing is closed",
+        "tooMany": "No more than {max} files can be attached",
+        "tooBig": "«{name}» is larger than {max} MB",
+        "wrongType": "«{name}» — only PDF, PNG or JPG can be uploaded",
+        "deleteConfirm": "Delete the file «{name}»?",
+        "attachApplication": "Attach an application",
+        "backToDocument": "Back to document",
+        "noApplications": "No applications available to attach",
+        "linked": "attached",
+        "selectedCount": "{count} selected",
+        "attachSubmit": "Attach",
+        "applications": "Applications",
+        "application": "Application",
+        "unlinkConfirm": "Detach application No. {number} from the document?",
+        "files": "Files",
+        "attachShort": "Attach",
+        "applicationsLimit": "No more than {max} applications can be attached"
+      },
       "checkDocument": "Click to check document status",
       "attachedDocuments": "Attached documents",
       "attachDocument": "Attach document",
@@ -1434,13 +1452,35 @@
           "viewed": "Viewed the document",
           "approved": "Approved",
           "rejected": "Rejected",
-          "resent": "Resent"
+          "resent": "Resent",
+          "file_added": "File added",
+          "file_removed": "File removed"
         },
         "sign": "Sign",
         "notForYou": "This document was not sent to you for signing",
         "youSigned": "You have signed this document",
-        "youRejected": "You have rejected this document"
-      }
+        "youRejected": "You have rejected this document",
+        "roles": {
+          "w": "Employee",
+          "s": "Approver",
+          "d": "Director"
+        },
+        "groups": {
+          "sent": "Sent for signing to {count}",
+          "resent": "Resent to {count}"
+        },
+        "verbs": {
+          "sent": "— sent for signing",
+          "viewed": "viewed",
+          "approved": "approved",
+          "rejected": "rejected",
+          "resent": "— resent",
+          "file_added": "added a file",
+          "file_removed": "removed a file"
+        }
+      },
+      "rejectReasonSelect": "Select a rejection reason",
+      "optional": "optional"
     },
     "attach": {
       "title": "Attach",
@@ -1731,9 +1771,17 @@
     "versionSaved": "Version updated",
     "upgrade": "Upgrade",
     "form": {
-      "latestVersion": "Latest version"
+      "latestVersion": "Latest version",
+      "minVersion": "Minimum version"
     },
-    "versionInvalid": "Invalid version format. Example: 1.9.2"
+    "versionInvalid": "Invalid version format. Example: 1.9.2",
+    "forced": "Required",
+    "optional": "Optional",
+    "forcedHint": "Versions below {version} are blocked",
+    "optionalHint": "Versions below {min} are blocked, others are offered the update",
+    "minGreaterThanLatest": "Minimum version cannot be greater than the latest version",
+    "confirmMinRaise": "The minimum version is raised to {version} — all users on older versions will be blocked. Is {version} already released in the store?",
+    "confirmSave": "Save the version?"
   },
   "actionLog": {
     "name": "Action history",

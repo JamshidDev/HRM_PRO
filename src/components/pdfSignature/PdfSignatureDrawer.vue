@@ -11,6 +11,7 @@
   } from '@vicons/fluent'
   import { UIUser, UILottieReader, UISegmentTabs } from '@/components/index.js'
   import CommandDataTab from '@/pages/docFlow/document/command/CommandDataTab.vue'
+  import AttachmentPreview from './ui/AttachmentPreview.vue'
   import EditRefreshIcon from '@/assets/icons/editRefreshIcon.svg'
   import PdfFileIcon from '@/assets/icons/pdfFileIcon.svg'
   import WordFileIcon from '@/assets/icons/wordFileIcon.svg'
@@ -442,6 +443,13 @@
                   <CommandDataTab :command-id="store.document_id" @saved="onDataSaved" />
                 </div>
                 <div v-else key="document" class="relative h-full flex flex-col">
+                    <!-- Biriktirilgan fayl — buyruq PDF'i ustida; PDF ko'ruvchisi fonda saqlanadi -->
+                    <AttachmentPreview
+                      v-if="store.previewFile"
+                      class="absolute inset-0 z-20"
+                      :file="store.previewFile"
+                      @close="store.previewFile = null"
+                    />
                   <div
                     v-if="showConfirmButtons"
                     class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex items-center justify-between gap-4 mb-3"
@@ -703,7 +711,7 @@
       </n-drawer-content>
     </n-drawer>
     <ConformAndRejectModal />
-    <DocumentFileModal @onUpdate="emits('onUpdate')" />
+    <DocumentFileModal />
     <ConfirmSignatureModal
       v-model:visible="confirmSignatureVisible"
       @onConfirm="onConfirmSignature"
