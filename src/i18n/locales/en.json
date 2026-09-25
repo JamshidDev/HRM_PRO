@@ -1292,6 +1292,58 @@
         "reason_six": "Natural disaster damage (with confirmed assessment)",
         "reason_seven": "Household coal purchase",
         "reason_eight": "To purchase agricultural products"
+      },
+      "dataTab": {
+        "tabDocument": "Document",
+        "tabData": "Details",
+        "editableTitle": "The order can be edited",
+        "editableHint": "Change the details and save — the order will be re-issued and all approvers will sign it again.",
+        "rejectedTitle": "The order was rejected",
+        "readonlyTitle": "View only",
+        "blocks": {
+          "cancelled": "The order is cancelled and cannot be changed.",
+          "contract": "This order was created from a contract — its details are changed via the contract.",
+          "signed": "One of the approvers has already signed — editing is possible only after rejection.",
+          "no_form_state": "This order was created before the system update — details were restored from the database and are view-only. Some fields may be empty."
+        },
+        "emptyTitle": "No details available",
+        "reset": "Restore saved details",
+        "preview": "Preview",
+        "save": "Save and resend",
+        "savedNotify": "The order was updated and sent for signing again",
+        "sectionMain": "Main details",
+        "sectionWorkers": "Organization and employee(s)",
+        "sectionDetails": "Order details",
+        "sectionSigners": "Director and approvers",
+        "locked": {
+          "approved": "The document is approved",
+          "cancelled": "The order is cancelled",
+          "contract": "Changed via the contract",
+          "no_form_state": "Old order — view only"
+        },
+        "resend": {
+          "title": "Send for signing again",
+          "all": "Everyone",
+          "allHint": "Those who approved or rejected will also be «In progress» again",
+          "selected": "Selected",
+          "selectedHint": "Only checked people become «In progress», others keep their status",
+          "contentChanged": "The order text changed — earlier approvals of unselected people will refer to the old version.",
+          "required": "required",
+          "count": "Will be sent to {count}",
+          "submit": "Send",
+          "types": {
+            "w": "Employee",
+            "s": "Approver",
+            "d": "Director"
+          },
+          "status": {
+            "1": "In progress",
+            "2": "Viewed",
+            "3": "Approved",
+            "4": "Rejected",
+            "new": "New"
+          }
+        }
       }
     },
     "form": {
@@ -2350,7 +2402,6 @@
       "worker": "Employee"
     },
     "tabs": {
-      "legacy": "Legacy",
       "general": "Overview",
       "movement": "Staff movement",
       "attendance": "Attendance & leave"

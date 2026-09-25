@@ -1,5 +1,6 @@
 <script setup>
-  import { useCommandStore, useComponentStore } from '@/store/modules/index.js'
+  import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
+  import { useComponentStore } from '@/store/modules/index.js'
   import {
     PersonNote20Regular,
     DismissCircle16Regular,
@@ -9,7 +10,7 @@
   import Utils from '../../../../../utils/Utils.js'
   import i18n from '@/i18n/index.js'
 
-  const store = useCommandStore()
+  const store = useCommandFormStore()
   const componentStore = useComponentStore()
   const { t } = i18n.global
 

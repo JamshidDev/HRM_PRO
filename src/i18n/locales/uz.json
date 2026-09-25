@@ -1308,6 +1308,58 @@
         "reason_six": "Tabiiy ofatdan zarar ko'rganligi munosabati bilan tasdiqlangan baholash dalolatnomasi muvofiq",
         "reason_seven": "Maishiy ko'mir yoqilg'isi sotib olishi munosabati bilan",
         "reason_eight": "Qishloq xo'jaligi mahsulotlarini sotib olish uchun"
+      },
+      "dataTab": {
+        "tabDocument": "Hujjat",
+        "tabData": "Ma'lumotlar",
+        "editableTitle": "Buyruqni tahrirlash mumkin",
+        "editableHint": "Ma'lumotlarni o'zgartirib saqlang — buyruq qayta rasmiylashtiriladi va barcha kelishuvchilar uni qaytadan imzolaydi.",
+        "rejectedTitle": "Buyruq rad etilgan",
+        "readonlyTitle": "Faqat ko'rish",
+        "blocks": {
+          "cancelled": "Buyruq bekor qilingan — uni o'zgartirib bo'lmaydi.",
+          "contract": "Bu buyruq shartnoma asosida yaratilgan — ma'lumotlari shartnoma orqali o'zgartiriladi.",
+          "signed": "Buyruqni kelishuvchilardan biri imzolagan — tahrirlash faqat rad etilgandan keyin mumkin.",
+          "no_form_state": "Bu buyruq tizim yangilanishidan oldin yaratilgan — ma'lumotlar bazadan tiklandi va faqat ko'rish uchun. Ayrim maydonlar bo'sh bo'lishi mumkin."
+        },
+        "emptyTitle": "Ma'lumotlar mavjud emas",
+        "reset": "Asl holatiga qaytarish",
+        "preview": "Ko'rish",
+        "save": "Saqlash va qayta yuborish",
+        "savedNotify": "Buyruq yangilandi va qayta imzolashga yuborildi",
+        "sectionMain": "Asosiy ma'lumotlar",
+        "sectionWorkers": "Korxona va xodim(lar)",
+        "sectionDetails": "Buyruq tafsilotlari",
+        "sectionSigners": "Rahbar va kelishuvchilar",
+        "locked": {
+          "approved": "Hujjat tasdiqlangan",
+          "cancelled": "Buyruq bekor qilingan",
+          "contract": "Shartnoma orqali o'zgartiriladi",
+          "no_form_state": "Eski buyruq — faqat ko'rish uchun"
+        },
+        "resend": {
+          "title": "Qayta tasdiqlashga yuborish",
+          "all": "Barchaga",
+          "allHint": "Tasdiqlagan va rad etganlar ham qaytadan «Jarayonda» bo'ladi",
+          "selected": "Tanlanganlarga",
+          "selectedHint": "Faqat belgilanganlar «Jarayonda» bo'ladi, qolganlarning holati saqlanadi",
+          "contentChanged": "Buyruq matni o'zgardi — tanlanmaganlarning oldingi tasdig'i eski versiyaga tegishli bo'lib qoladi.",
+          "required": "majburiy",
+          "count": "{count} kishiga yuboriladi",
+          "submit": "Yuborish",
+          "types": {
+            "w": "Xodim",
+            "s": "Kelishuvchi",
+            "d": "Rahbar"
+          },
+          "status": {
+            "1": "Jarayonda",
+            "2": "Ko'rilgan",
+            "3": "Tasdiqlagan",
+            "4": "Rad etgan",
+            "new": "Yangi"
+          }
+        }
       }
     },
     "form": {
@@ -2370,7 +2422,6 @@
       "worker": "Xodim"
     },
     "tabs": {
-      "legacy": "Eski",
       "general": "Umumiy",
       "movement": "Kadrlar harakati",
       "attendance": "Davomat va ta'til"

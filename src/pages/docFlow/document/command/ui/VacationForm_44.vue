@@ -1,12 +1,13 @@
 <script setup>
-  import { useCommandStore, useComponentStore } from '@/store/modules/index.js'
+  import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
+  import { useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
   import { Eye24Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
   import { useAppSetting } from '@/utils/index.js'
   const { t } = i18n.global
-  const store = useCommandStore()
+  const store = useCommandFormStore()
   const componentStore = useComponentStore()
   const formRef = ref(null)
   const onSubmit = async (mainData) => {
@@ -41,7 +42,8 @@
   watch(
     () => store.payload.worker,
     (v) => {
-      store.form_44.vacation_id = null
+      // Tiklashda saqlangan tanlov qoladi, faqat ro'yxat qayta yuklanadi.
+      if (!store.restoring) store.form_44.vacation_id = null
       if (!v) return
       store._getWorkerVacation()
     },

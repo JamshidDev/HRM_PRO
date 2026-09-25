@@ -80,6 +80,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     rejectLoading: false,
 
     pdfDocument: null,
+    // `pdfDocument` qaysi URL'dan yuklangani — qayta mount'da eski hujjat chizilmasin.
+    pdfDocumentUrl: null,
     isCtrlPressed: false,
     renderTasks: {},
 
@@ -116,6 +118,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
       // const pdfUrl = "https://s3.dasuty.com/docflow/documents/timesheets/c4ca4238a0b923820dcc509a6f75849b.pdf"
       try {
         this.pdfDocument = await pdfjsLib.getDocument(pdfUrl).promise
+        this.pdfDocumentUrl = pdfUrl
         this.totalPdfPage = this.pdfDocument.numPages
         for (let pageNumber = 1; pageNumber <= this.totalPdfPage; pageNumber++) {
           await this.renderPdf(pageNumber)

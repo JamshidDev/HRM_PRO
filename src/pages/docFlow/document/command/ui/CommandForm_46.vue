@@ -1,13 +1,14 @@
 <script setup>
+  import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import { Calculator24Regular, DismissCircle20Filled, Info20Filled } from '@vicons/fluent'
-  import { useCommandStore, useComponentStore } from '@/store/modules/index.js'
+  import { useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
   import i18n from '@/i18n/index.js'
   import { useAppSetting } from '@/utils/index.js'
   import LastVacationItem from '@/pages/docFlow/document/command/ui/LastVacationItem.vue'
 
-  const store = useCommandStore()
+  const store = useCommandFormStore()
   const componentStore = useComponentStore()
   const formRef = ref(null)
   const lastVacationRef = ref(null)

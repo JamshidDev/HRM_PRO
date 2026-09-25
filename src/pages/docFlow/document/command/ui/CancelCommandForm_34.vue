@@ -1,6 +1,7 @@
 <script setup>
+  import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import { Info20Filled } from '@vicons/fluent'
-  import { useCommandStore, useComponentStore } from '@/store/modules/index.js'
+  import { useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
   import i18n from '@/i18n/index.js'
@@ -8,7 +9,7 @@
   import LastVacationItem from '@/pages/docFlow/document/command/ui/LastVacationItem.vue'
   import { Eye24Regular } from '@vicons/fluent'
 
-  const store = useCommandStore()
+  const store = useCommandFormStore()
   const componentStore = useComponentStore()
   const formRef = ref(null)
   const lastVacationRef = ref(null)
@@ -82,6 +83,7 @@
   watch(
     () => store.form_34.command_additional,
     (newValue, oldValue) => {
+      if (store.restoring) return
       if (newValue.length === 0 || newValue.length < oldValue.length) return
       const paramType = newValue.at(-1)
 
