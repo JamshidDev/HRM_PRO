@@ -70,11 +70,6 @@
   )
   const fileCount = computed(() => files.value.length)
 
-  const workerShort = (w) =>
-    [w?.last_name, [w?.first_name?.[0], w?.middle_name?.[0]].filter(Boolean).join('.')]
-      .filter(Boolean)
-      .join(' ') + (w?.first_name ? '.' : '')
-
   // Ariza PDF'i ham buyruq o'rnida ochiladi (AttachmentPreview fayl shaklini kutadi).
   const appPreviewId = (item) => `app-${item.id}`
   const onPreviewApplication = (item) => {
@@ -323,26 +318,13 @@
             <DocumentText20Regular />
           </n-icon>
           <div class="min-w-0 flex-1">
-            <div class="flex items-baseline justify-between gap-2">
-              <span class="text-xs font-semibold text-textColor1 tabular-nums">
-                №{{ item.worker_application?.number }}
-              </span>
-              <span class="text-[10px] text-textColor3 tabular-nums shrink-0">
-                {{ Utils.timeOnlyDate(item.worker_application?.created_at) }}
-              </span>
-            </div>
-            <n-ellipsis
-              :line-clamp="2"
-              class="text-[11px] text-textColor2 leading-snug"
-              :tooltip="{ style: { maxWidth: '260px' } }"
-            >
+            <!-- Asosiy — hujjat nomi to'liq, qalin -->
+            <div class="text-xs font-semibold text-textColor1 leading-snug pr-5">
               {{ item.worker_application?.type?.name }}
-            </n-ellipsis>
-            <div
-              v-if="item.worker_application?.worker"
-              class="text-[10px] text-textColor3 truncate"
-            >
-              {{ workerShort(item.worker_application.worker) }}
+            </div>
+            <div class="mt-0.5 text-[10px] text-textColor3 tabular-nums">
+              №{{ item.worker_application?.number }} ·
+              {{ Utils.timeOnlyDate(item.worker_application?.created_at) }}
             </div>
           </div>
 
