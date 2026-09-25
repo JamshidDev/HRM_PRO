@@ -6,7 +6,7 @@
     CalendarCancel20Regular,
     Dismiss20Regular
   } from '@vicons/fluent'
-  import { UIUser, UILottieReader } from '@/components/index.js'
+  import { UIUser, UILottieReader, UIStatus } from '@/components/index.js'
   import EditRefreshIcon from '@/assets/icons/editRefreshIcon.svg'
   import PdfFileIcon from '@/assets/icons/pdfFileIcon.svg'
   import WordFileIcon from '@/assets/icons/wordFileIcon.svg'
@@ -299,8 +299,15 @@
                 <n-skeleton width="80px" height="11px" :sharp="false" class="rounded-md" />
               </div>
               <div v-else class="hidden md:inline-block">
-                <div class="text-lg font-semibold text-textColor1 leading-tight">
-                  {{ store.document?.document?.file_name }}
+                <div class="flex items-center gap-2">
+                  <div class="text-lg font-semibold text-textColor1 leading-tight">
+                    {{ store.document?.document?.file_name }}
+                  </div>
+                  <UIStatus
+                    v-if="store.document?.document?.confirmation?.name"
+                    fig
+                    :status="store.document.document.confirmation"
+                  />
                 </div>
                 <div class="text-xs text-gray-400">
                   {{ Utils.timeOnlyDate(store?.document?.document?.created) }}

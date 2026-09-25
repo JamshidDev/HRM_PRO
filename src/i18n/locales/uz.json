@@ -442,7 +442,15 @@
     "pushBlockedBtn": "Qanday yoqiladi?",
     "pushEnabled": "Bildirishnomalar yoqildi",
     "pushCopyPath": "Manzilni nusxalash",
-    "pushPathCopied": "Manzil nusxalandi — brauzerning manzil satriga qo'ying"
+    "pushPathCopied": "Manzil nusxalandi — brauzerning manzil satriga qo'ying",
+    "eSignNotice": {
+      "title": "Hujjatlar endi E-imzo orqali tasdiqlanadi",
+      "p2": "Endilikda hujjatlarni oddiy tugma orqali tasdiqlash imkoniyati mavjud emas. Hujjatlarni tasdiqlash faqat {bold} orqali amalga oshiriladi.",
+      "p2Bold": "elektron raqamli imzo (E-IMZO)",
+      "p4": "Shuningdek, hujjat E-IMZO orqali tasdiqlanganidan so‘ng uning mazmuniga o‘zgartirish kiritishning oldi olinadi.",
+      "p5": "Mazkur tartib hujjatlarning {bold} maqsadida joriy etilgan.",
+      "p5Bold": "ishonchliligi, xavfsizligi va yuridik ahamiyatini ta’minlash"
+    }
   },
   "date": {
     "day": "Kun",
@@ -1367,6 +1375,31 @@
       "fileOpenErrorSubtitle": "Faylni ochish imkoni bo'lmadi",
       "status": {
         "Process": "Jarayonda"
+      },
+      "approval": {
+        "title": "Imzolash jarayoni",
+        "signers": "Imzolovchilar",
+        "history": "Harakatlar tarixi",
+        "progress": "{done} / {total} tasdiqlandi",
+        "step": "{n}-bosqich",
+        "you": "Siz",
+        "actions": "Harakatlar",
+        "signedWithEri": "E-imzo bilan tasdiqlangan",
+        "certificate": "Sertifikat",
+        "noHistory": "Hozircha harakatlar yo'q",
+        "mockNotice": "Namuna ma'lumot: harakatlar tarixi hali API'dan kelmayapti.",
+        "summary": {
+          "approved": "Tasdiqlagan",
+          "rejected": "Rad etgan",
+          "pending": "Kutilmoqda"
+        },
+        "events": {
+          "sent": "Hujjat yuborildi",
+          "viewed": "Hujjatni ko'rib chiqdi",
+          "approved": "Tasdiqladi",
+          "rejected": "Rad etdi",
+          "resent": "Qayta yuborildi"
+        }
       }
     },
     "attach": {

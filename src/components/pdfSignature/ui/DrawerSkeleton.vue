@@ -36,7 +36,7 @@
     </div>
 
     <div class="hidden md:flex flex-col w-[360px] h-full">
-      <SectionHeader full-height tight-body :title="$t('documentPage.signature.viewer')">
+      <SectionHeader full-height tight-body :title="$t('documentPage.signature.approval.title')">
         <div class="flex flex-col gap-2">
           <div
             v-for="i in 5"
