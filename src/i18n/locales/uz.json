@@ -1395,7 +1395,7 @@
       "viewer": "Hujjat bilan tanishuvchilar",
       "files": {
         "hint": "PDF, PNG yoki JPG · har biri {max} MB gacha · ko'pi bilan {count} ta",
-        "locked": "Hujjat tasdiqlangan — fayllarni o'zgartirib bo'lmaydi",
+        "locked": "Hujjat tasdiqlangan — fayllarni ko'rish va yuklab olish mumkin, qo'shish va o'chirish yopiq",
         "tooMany": "Ko'pi bilan {max} ta fayl biriktirish mumkin",
         "tooBig": "«{name}» {max} MB dan katta",
         "wrongType": "«{name}» — faqat PDF, PNG yoki JPG yuklash mumkin",
