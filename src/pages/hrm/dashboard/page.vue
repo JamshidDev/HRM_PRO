@@ -95,11 +95,10 @@
 
   const onDetailEv = (detailComponent, key) => {
     store.resetDetailData()
-    if (detailComponent?.detailFactory && key) {
-      store.activeDetail = detailComponent.detailFactory(key)
-      return
-    }
-    store.activeDetail = detailComponent
+    store.activeDetail =
+      detailComponent?.detailFactory && key ? detailComponent.detailFactory(key) : detailComponent
+    // Karta filtri (`defaultValues`) detal ochilishidan oldin params'ga yoziladi — select'da ko'rinadi.
+    Object.assign(store.params, store.activeDetail?.defaultValues || {})
   }
 
   // Tab almashganda ikkala drill-down ham yopiladi va barcha filtrlar tozalanadi.

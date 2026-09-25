@@ -134,7 +134,9 @@ export const tabCards = {
       title: 'dashboardPage.password.title',
       detail: markRaw(PassportDetail),
       filters: ['filter'],
-      filterCallback: ApiService.dashboardService._passportDetail
+      filterCallback: ApiService.dashboardService._passportDetail,
+      // «Batafsil» kartadagi birinchi qator filtri bilan ochiladi.
+      defaultValues: { filter: 'approaching' }
     },
     {
       component: markRaw(DocumentStatusCard),
@@ -143,7 +145,8 @@ export const tabCards = {
       title: 'dashboardPage.medical.title',
       detail: markRaw(MedDetail),
       filters: ['med_type'],
-      filterCallback: ApiService.dashboardService._medDetail
+      filterCallback: ApiService.dashboardService._medDetail,
+      defaultValues: { type: 'approaching' }
     },
     {
       component: markRaw(DocumentStatusCard),
@@ -152,7 +155,8 @@ export const tabCards = {
       title: 'dashboardPage.pension.title',
       detail: markRaw(PensionDetail),
       filters: ['sex'],
-      filterCallback: ApiService.dashboardService._pensionDetail
+      filterCallback: ApiService.dashboardService._pensionDetail,
+      defaultValues: { sex: 1 }
     }
   ],
 
