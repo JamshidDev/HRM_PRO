@@ -1434,7 +1434,13 @@
         "history": "Harakatlar tarixi",
         "progress": "{done} / {total} tasdiqlandi",
         "you": "Siz",
-        "actions": "Harakatlar",
+        "actions": {
+          "sent": "— imzolashga yuborildi",
+          "viewed": "ko'rib chiqdi",
+          "approved": "tasdiqladi",
+          "rejected": "rad etdi",
+          "resent": "— qayta yuborildi"
+        },
         "chat": "Yozish",
         "signedWithEri": "E-imzo bilan tasdiqlangan",
         "certificate": "Sertifikat",
@@ -1455,8 +1461,19 @@
         "sign": "Imzolash",
         "notForYou": "Bu hujjat sizga imzolashga kelmagan",
         "youSigned": "Siz imzolagansiz",
-        "youRejected": "Siz rad qilgansiz"
-      }
+        "youRejected": "Siz rad qilgansiz",
+        "roles": {
+          "w": "Xodim",
+          "s": "Kelishuvchi",
+          "d": "Rahbar"
+        },
+        "groups": {
+          "sent": "{count} kishiga imzolashga yuborildi",
+          "resent": "{count} kishiga qayta yuborildi"
+        }
+      },
+      "rejectReasonSelect": "Rad etish sababini tanlang",
+      "optional": "ixtiyoriy"
     },
     "attach": {
       "title": "Biriktirish",

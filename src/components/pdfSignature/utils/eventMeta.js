@@ -13,26 +13,36 @@ export const eventMeta = {
   [EVENT.sent]: {
     icon: Send16Regular,
     label: 'documentPage.signature.approval.events.sent',
+    action: 'documentPage.signature.approval.actions.sent',
+    text: 'text-fig-chip-brand-text',
     dot: 'bg-fig-chip-brand text-fig-chip-brand-text'
   },
   [EVENT.viewed]: {
     icon: Eye16Regular,
     label: 'documentPage.signature.approval.events.viewed',
+    action: 'documentPage.signature.approval.actions.viewed',
+    text: 'text-textColor3',
     dot: 'bg-fig-bg-disable text-fig-text-tertiary'
   },
   [EVENT.approved]: {
     icon: Checkmark16Filled,
     label: 'documentPage.signature.approval.events.approved',
+    action: 'documentPage.signature.approval.actions.approved',
+    text: 'text-fig-chip-green-text',
     dot: 'bg-fig-chip-green text-fig-chip-green-text'
   },
   [EVENT.rejected]: {
     icon: Dismiss16Filled,
     label: 'documentPage.signature.approval.events.rejected',
+    action: 'documentPage.signature.approval.actions.rejected',
+    text: 'text-fig-text-red',
     dot: 'bg-fig-red-100 text-fig-text-red'
   },
   [EVENT.resent]: {
     icon: ArrowRepeatAll16Regular,
     label: 'documentPage.signature.approval.events.resent',
+    action: 'documentPage.signature.approval.actions.resent',
+    text: 'text-fig-chip-indigo-text',
     dot: 'bg-fig-chip-indigo text-fig-chip-indigo-text'
   }
 }
