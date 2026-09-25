@@ -1765,9 +1765,17 @@
     "versionSaved": "Version updated",
     "upgrade": "Upgrade",
     "form": {
-      "latestVersion": "Latest version"
+      "latestVersion": "Latest version",
+      "minVersion": "Minimum version"
     },
-    "versionInvalid": "Invalid version format. Example: 1.9.2"
+    "versionInvalid": "Invalid version format. Example: 1.9.2",
+    "forced": "Required",
+    "optional": "Optional",
+    "forcedHint": "Versions below {version} are blocked",
+    "optionalHint": "Versions below {min} are blocked, others are offered the update",
+    "minGreaterThanLatest": "Minimum version cannot be greater than the latest version",
+    "confirmMinRaise": "The minimum version is raised to {version} — all users on older versions will be blocked. Is {version} already released in the store?",
+    "confirmSave": "Save the version?"
   },
   "actionLog": {
     "name": "Action history",

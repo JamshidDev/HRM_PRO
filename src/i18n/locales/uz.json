@@ -1781,9 +1781,17 @@
     "versionSaved": "Versiya yangilandi",
     "upgrade": "Yangilash",
     "form": {
-      "latestVersion": "So'nggi versiya"
+      "latestVersion": "So'nggi versiya",
+      "minVersion": "Minimal versiya"
     },
-    "versionInvalid": "Versiya formati noto'g'ri. Masalan: 1.9.2"
+    "versionInvalid": "Versiya formati noto'g'ri. Masalan: 1.9.2",
+    "forced": "Majburiy",
+    "optional": "Ixtiyoriy",
+    "forcedHint": "{version} dan past versiyalar bloklanadi",
+    "optionalHint": "{min} dan past versiyalar bloklanadi, qolganlarga taklif qilinadi",
+    "minGreaterThanLatest": "Minimal versiya so'nggi versiyadan katta bo'lmasligi kerak",
+    "confirmMinRaise": "Minimal versiya {version} ga ko'tariladi — bundan past versiyadagi barcha foydalanuvchilar ilovadan foydalana olmaydi. {version} store'da chiqqanmi?",
+    "confirmSave": "Versiya saqlansinmi?"
   },
   "vacancyApprovePage": {
     "menuName": "Tasdiqlash",
