@@ -442,7 +442,15 @@
     "pushBlockedBtn": "Qanday yoqiladi?",
     "pushEnabled": "Bildirishnomalar yoqildi",
     "pushCopyPath": "Manzilni nusxalash",
-    "pushPathCopied": "Manzil nusxalandi — brauzerning manzil satriga qo'ying"
+    "pushPathCopied": "Manzil nusxalandi — brauzerning manzil satriga qo'ying",
+    "eSignNotice": {
+      "title": "Hujjatlar endi E-imzo orqali tasdiqlanadi",
+      "p2": "Endilikda hujjatlarni oddiy tugma orqali tasdiqlash imkoniyati mavjud emas. Hujjatlarni tasdiqlash faqat {bold} orqali amalga oshiriladi.",
+      "p2Bold": "elektron raqamli imzo (E-IMZO)",
+      "p4": "Shuningdek, hujjat E-IMZO orqali tasdiqlanganidan so‘ng uning mazmuniga o‘zgartirish kiritishning oldi olinadi.",
+      "p5": "Mazkur tartib hujjatlarning {bold} maqsadida joriy etilgan.",
+      "p5Bold": "ishonchliligi, xavfsizligi va yuridik ahamiyatini ta’minlash"
+    }
   },
   "date": {
     "day": "Kun",
@@ -1370,12 +1378,12 @@
       },
       "approval": {
         "title": "Imzolash jarayoni",
-        "signers": "Imzolovchilar",
+        "signers": "Kelishuvchilar",
         "history": "Harakatlar tarixi",
         "progress": "{done} / {total} tasdiqlandi",
-        "step": "{n}-bosqich",
         "you": "Siz",
         "actions": "Harakatlar",
+        "chat": "Yozish",
         "signedWithEri": "E-imzo bilan tasdiqlangan",
         "certificate": "Sertifikat",
         "noHistory": "Hozircha harakatlar yo'q",
@@ -1391,7 +1399,11 @@
           "approved": "Tasdiqladi",
           "rejected": "Rad etdi",
           "resent": "Qayta yuborildi"
-        }
+        },
+        "sign": "Imzolash",
+        "notForYou": "Bu hujjat sizga imzolashga kelmagan",
+        "youSigned": "Siz imzolagansiz",
+        "youRejected": "Siz rad qilgansiz"
       }
     },
     "attach": {

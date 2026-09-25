@@ -38,6 +38,14 @@
     tone: {
       type: String,
       default: null
+    },
+    /**
+     * `fig` chipning ixcham varianti (10px matn, 12px ikonka) — tor kartalar uchun.
+     * OPT-IN, berilmasa chip o'lchami o'zgarmaydi.
+     */
+    compact: {
+      type: Boolean,
+      default: false
     }
   })
 
@@ -173,10 +181,18 @@
   <n-tooltip v-if="fig" trigger="hover" :disabled="!status?.name">
     <template #trigger>
       <span
-        class="inline-flex max-w-full items-center justify-center gap-1 rounded-full px-3 py-1 text-[12px] leading-4 font-semibold"
-        :class="figClass"
+        class="inline-flex max-w-full items-center justify-center rounded-full font-semibold"
+        :class="[
+          figClass,
+          compact ? 'gap-0.5 px-2 py-0.5 text-[10px] leading-3' : 'gap-1 px-3 py-1 text-[12px] leading-4'
+        ]"
       >
-        <component :is="figIcon" class="shrink-0" width="16" height="16" />
+        <component
+          :is="figIcon"
+          class="shrink-0"
+          :width="compact ? 12 : 16"
+          :height="compact ? 12 : 16"
+        />
         <span class="truncate">{{ status?.name }}</span>
       </span>
     </template>

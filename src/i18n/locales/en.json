@@ -429,7 +429,15 @@
     "pushBlockedBtn": "How to enable?",
     "pushEnabled": "Notifications enabled",
     "pushCopyPath": "Copy address",
-    "pushPathCopied": "Address copied — paste it into the browser address bar"
+    "pushPathCopied": "Address copied — paste it into the browser address bar",
+    "eSignNotice": {
+      "title": "Documents are now approved with an e-signature",
+      "p2": "Documents can no longer be approved with a simple button. Documents are approved only with an {bold}.",
+      "p2Bold": "electronic digital signature (E-IMZO)",
+      "p4": "In addition, once a document is approved via E-IMZO, its content can no longer be changed.",
+      "p5": "This procedure has been introduced to {bold}.",
+      "p5Bold": "ensure the reliability, security and legal validity of documents"
+    }
   },
   "date": {
     "day": "Day",
@@ -1354,12 +1362,12 @@
       },
       "approval": {
         "title": "Signing process",
-        "signers": "Signers",
+        "signers": "Approvers",
         "history": "Action history",
         "progress": "{done} of {total} approved",
-        "step": "Step {n}",
         "you": "You",
         "actions": "Actions",
+        "chat": "Message",
         "signedWithEri": "Approved with e-signature",
         "certificate": "Certificate",
         "noHistory": "No actions yet",
@@ -1375,7 +1383,11 @@
           "approved": "Approved",
           "rejected": "Rejected",
           "resent": "Resent"
-        }
+        },
+        "sign": "Sign",
+        "notForYou": "This document was not sent to you for signing",
+        "youSigned": "You have signed this document",
+        "youRejected": "You have rejected this document"
       }
     },
     "attach": {
