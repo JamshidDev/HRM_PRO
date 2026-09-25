@@ -100,6 +100,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     ],
     typeAttach: 1,
     attachFiles: [],
+    fileDeleting: null,
     attachLoading: false,
 
     documentApplications: [],
@@ -352,6 +353,29 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         .then((res) => {})
         .finally(() => {
           this.rejectLoading = false
+        })
+    },
+    _deleteFile(id, callBack) {
+      this.fileDeleting = id
+      $ApiService.documentFileService
+        ._delete({ id })
+        .then(() => callBack?.())
+        .finally(() => {
+          this.fileDeleting = null
+        })
+    },
+    // Imzolovchilar va hujjat tarixini PDF'ni qayta yuklamasdan yangilaydi.
+    _refreshMeta() {
+      if (!this.document_id) return
+      $ApiService.documentService
+        ._openDocument({ params: { model: this.model, document_id: this.document_id } })
+        .then((res) => {
+          const v = res.data.data
+          this.confirmations = v.confirmations
+          if (this.document) {
+            this.document.document_events = v.document_events
+            this.document.files = v.files
+          }
         })
     },
     _attachFile(data, callBack) {

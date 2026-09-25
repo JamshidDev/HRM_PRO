@@ -132,6 +132,7 @@
             v-else
             :confirmations="store.confirmations"
             :by-signer="history.bySigner"
+            :document-events="store.document?.document_events || []"
           />
         </div>
       </Transition>

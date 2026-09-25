@@ -1393,7 +1393,15 @@
     "signature": {
       "history": "O'zgarishlar tarixini ko'rish",
       "viewer": "Hujjat bilan tanishuvchilar",
-      "files": "Hujjat fayllari",
+      "files": {
+        "hint": "PDF, PNG yoki JPG · har biri {max} MB gacha · ko'pi bilan {count} ta",
+        "locked": "Hujjat tasdiqlangan — fayllarni o'zgartirib bo'lmaydi",
+        "tooMany": "Ko'pi bilan {max} ta fayl biriktirish mumkin",
+        "tooBig": "«{name}» {max} MB dan katta",
+        "wrongType": "«{name}» — faqat PDF, PNG yoki JPG yuklash mumkin",
+        "deleteConfirm": "«{name}» faylini o'chirasizmi?",
+        "attachApplication": "Ariza biriktirish"
+      },
       "checkDocument": "Hujjat holatini tekshirish uchun bosing",
       "attachedDocuments": "Biriktirilgan hujjatlar",
       "attachDocument": "Hujjat biriktirish",
@@ -1434,13 +1442,7 @@
         "history": "Harakatlar tarixi",
         "progress": "{done} / {total} tasdiqlandi",
         "you": "Siz",
-        "actions": {
-          "sent": "— imzolashga yuborildi",
-          "viewed": "ko'rib chiqdi",
-          "approved": "tasdiqladi",
-          "rejected": "rad etdi",
-          "resent": "— qayta yuborildi"
-        },
+        "actions": "Harakatlar",
         "chat": "Yozish",
         "signedWithEri": "E-imzo bilan tasdiqlangan",
         "certificate": "Sertifikat",
@@ -1456,7 +1458,9 @@
           "viewed": "Hujjatni ko'rib chiqdi",
           "approved": "Tasdiqladi",
           "rejected": "Rad etdi",
-          "resent": "Qayta yuborildi"
+          "resent": "Qayta yuborildi",
+          "file_added": "Fayl qo'shildi",
+          "file_removed": "Fayl o'chirildi"
         },
         "sign": "Imzolash",
         "notForYou": "Bu hujjat sizga imzolashga kelmagan",
@@ -1470,6 +1474,15 @@
         "groups": {
           "sent": "{count} kishiga imzolashga yuborildi",
           "resent": "{count} kishiga qayta yuborildi"
+        },
+        "verbs": {
+          "sent": "— imzolashga yuborildi",
+          "viewed": "ko'rib chiqdi",
+          "approved": "tasdiqladi",
+          "rejected": "rad etdi",
+          "resent": "— qayta yuborildi",
+          "file_added": "fayl qo'shdi",
+          "file_removed": "faylni o'chirdi"
         }
       },
       "rejectReasonSelect": "Rad etish sababini tanlang",

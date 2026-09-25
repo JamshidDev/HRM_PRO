@@ -1377,7 +1377,15 @@
     "signature": {
       "history": "View change history",
       "viewer": "Document reviewers",
-      "files": "Document files",
+      "files": {
+        "hint": "PDF, PNG or JPG · up to {max} MB each · at most {count}",
+        "locked": "The document is approved — files cannot be changed",
+        "tooMany": "No more than {max} files can be attached",
+        "tooBig": "«{name}» is larger than {max} MB",
+        "wrongType": "«{name}» — only PDF, PNG or JPG can be uploaded",
+        "deleteConfirm": "Delete the file «{name}»?",
+        "attachApplication": "Attach an application"
+      },
       "checkDocument": "Click to check document status",
       "attachedDocuments": "Attached documents",
       "attachDocument": "Attach document",
@@ -1418,13 +1426,7 @@
         "history": "Action history",
         "progress": "{done} of {total} approved",
         "you": "You",
-        "actions": {
-          "sent": "— sent for signing",
-          "viewed": "viewed",
-          "approved": "approved",
-          "rejected": "rejected",
-          "resent": "— resent"
-        },
+        "actions": "Actions",
         "chat": "Message",
         "signedWithEri": "Approved with e-signature",
         "certificate": "Certificate",
@@ -1440,7 +1442,9 @@
           "viewed": "Viewed the document",
           "approved": "Approved",
           "rejected": "Rejected",
-          "resent": "Resent"
+          "resent": "Resent",
+          "file_added": "File added",
+          "file_removed": "File removed"
         },
         "sign": "Sign",
         "notForYou": "This document was not sent to you for signing",
@@ -1454,6 +1458,15 @@
         "groups": {
           "sent": "Sent for signing to {count}",
           "resent": "Resent to {count}"
+        },
+        "verbs": {
+          "sent": "— sent for signing",
+          "viewed": "viewed",
+          "approved": "approved",
+          "rejected": "rejected",
+          "resent": "— resent",
+          "file_added": "added a file",
+          "file_removed": "removed a file"
         }
       },
       "rejectReasonSelect": "Select a rejection reason",

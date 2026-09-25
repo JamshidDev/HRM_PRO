@@ -3,12 +3,16 @@
   import { ShieldCheckmark16Filled, ChevronDown16Regular } from '@vicons/fluent'
   import { UIUserGroup } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
+  import PdfFileIcon from '@/assets/icons/pdfFileIcon.svg'
+  import ImageFileIcon from '@/assets/icons/figImageSquare.svg'
   import { eventMeta } from '../utils/eventMeta.js'
   import { EVENT, STATUS } from '../utils/approvalHistory.js'
 
   const props = defineProps({
     confirmations: { type: Array, default: () => [] },
-    bySigner: { type: Array, default: () => [] }
+    bySigner: { type: Array, default: () => [] },
+    // Hujjat darajasidagi hodisalar (fayl qo'shildi/o'chirildi) — `document_events`.
+    documentEvents: { type: Array, default: () => [] }
   })
 
   // Bir vaqtda (bir daqiqada) ko'pchilikka bo'lgan yuborish — bitta qator bo'lib birlashadi.
@@ -32,6 +36,15 @@
     const flat = props.bySigner.flatMap((events, idx) =>
       events.map((ev) => ({ ...ev, signer: props.confirmations[idx] }))
     )
+    // Fayl hodisalari: aktyor imzolovchi o'rnida, fayl nomi alohida.
+    for (const ev of props.documentEvents) {
+      flat.push({
+        type: ev.type,
+        date: dayjs(ev.date),
+        file: ev.name,
+        signer: { worker: ev.actor, type: null }
+      })
+    }
     flat.sort((a, b) => b.date.valueOf() - a.date.valueOf())
 
     // Qatorlar: birlashgan yuborishlar + yakka harakatlar.
@@ -68,7 +81,8 @@
   const roleLabel = (type) => `documentPage.signature.approval.roles.${type || 's'}`
 
   const expanded = ref(new Set())
-  const rowId = (row) => `${row.type}-${row.date.valueOf()}`
+  const rowId = (row) => `${row.type}-${row.date.valueOf()}-${row.file || ''}`
+  const isImage = (name) => /\.(png|jpe?g)$/i.test(name || '')
   const toggle = (id) => {
     const next = new Set(expanded.value)
     next.has(id) ? next.delete(id) : next.add(id)
@@ -167,7 +181,22 @@
                 {{ row.date.format('HH:mm') }}
               </span>
             </div>
-            <div class="flex items-center gap-1.5 mt-0.5 min-w-0">
+            <div v-if="row.file" class="mt-1 min-w-0">
+              <span
+                class="inline-flex max-w-full items-center gap-1 rounded-md border border-surface-line bg-surface-ground px-1.5 py-0.5 text-[11px] text-textColor1"
+              >
+                <n-icon
+                  size="12"
+                  :class="isImage(row.file) ? 'text-fig-chip-indigo-text' : 'text-fig-text-red'"
+                >
+                  <component :is="isImage(row.file) ? ImageFileIcon : PdfFileIcon" />
+                </n-icon>
+                <n-ellipsis class="min-w-0" :tooltip="{ style: { maxWidth: '280px' } }">
+                  {{ row.file }}
+                </n-ellipsis>
+              </span>
+            </div>
+            <div v-else class="flex items-center gap-1.5 mt-0.5 min-w-0">
               <span
                 class="shrink-0 text-[10px] font-medium rounded px-1.5 py-px bg-surface-ground text-textColor2"
               >
