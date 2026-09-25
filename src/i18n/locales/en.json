@@ -2338,7 +2338,6 @@
       "worker": "Employee"
     },
     "tabs": {
-      "legacy": "Legacy",
       "general": "Overview",
       "movement": "Staff movement",
       "attendance": "Attendance & leave"

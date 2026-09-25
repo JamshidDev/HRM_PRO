@@ -7,7 +7,6 @@ import {
   fromLegacyTwo,
   fromLegacyThree
 } from '@/pages/hrm/dashboard/adapter.js'
-import { buildLegacyDashboard, emptyLegacyDashboard } from '@/pages/hrm/dashboard/legacyShape.js'
 
 /**
  * Bob (tab) nomlari va kontrakt bo'limlari nomlari bir xil emas: Umumiy bobning
@@ -74,13 +73,6 @@ export const useDashboardStore = defineStore('dashboardStore', {
      * `overview` / `movement` / `attendance` getterlari orqali murojaat
      * qiladi — ular mock ustiga real qiymatlarni yozib beradi.
      */
-    /*
-     * «Eski» bobi (`ui/legacy/`) uchun ESKI shakl. Yangi kartalar `api` +
-     * getterlardan o'qiydi, eski kartalar esa 757bf8f6 dan oldingi
-     * `dashboard.{mainCard,ageCard,...}` shaklini kutadi. Ikkalasi AYNAN bir
-     * xil uch javobdan quriladi — qo'shimcha so'rov yo'q.
-     */
-    dashboard: emptyLegacyDashboard(),
     api: {
       overview: null,
       movement: null,
@@ -105,12 +97,8 @@ export const useDashboardStore = defineStore('dashboardStore', {
     loadingPassport: false,
     typeNames: ['med_type', 'disc_type', 'inc_type', 'contract_type'],
     // HR audit tab — data-quality counts + tur bo'yicha sahifa ichidagi detal ko'rinishi.
-    /*
-     * Boshlang'ich bob — «Eski» (`DashboardTab.LEGACY`). Literal yozilgan:
-     * `constants.js` karta komponentlarini import qiladi, ular esa shu store'ni
-     * import qiladi — enum'ni bu yerga tortsak, aylanma import hosil bo'lardi.
-     */
-    activeTab: 'legacy',
+    // Boshlang'ich bob; enum import qilinmaydi — constants.js bilan aylanma import bo'lardi.
+    activeTab: 'general',
     audit: {
       counts: null,
       loading: false,
@@ -180,7 +168,6 @@ export const useDashboardStore = defineStore('dashboardStore', {
         fromLegacyTwo(responseTwo),
         fromLegacyThree(responseThree)
       )
-      this.dashboard = buildLegacyDashboard(responseOne, responseTwo, responseThree)
       // /overview to'liq doc-shakl (nationality, age×gender, ma'lumot darajalari) —
       // legacy adapterdan boyroq, shuning uchun overview bobini bosib o'tadi.
       if (overviewRes?.data?.data) {
