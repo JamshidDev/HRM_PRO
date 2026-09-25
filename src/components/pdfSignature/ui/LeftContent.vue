@@ -2,15 +2,17 @@
   import { usePdfViewerStore } from '@/store/modules/index.js'
   import {
     Add16Regular,
+    LockClosed16Regular,
+    LockClosed20Regular,
     MailAttach16Regular,
     LinkDismiss16Regular,
-    Eye16Regular,
     Delete16Regular
   } from '@vicons/fluent'
   import { useRoute } from 'vue-router'
   import { useNotify } from '@/composables/useNotify'
   import i18n from '@/i18n/index.js'
   import SectionHeader from '@/components/worker/ui/shared/SectionHeader.vue'
+  import DangerConfirm from './DangerConfirm.vue'
   import PdfFileIcon from '@/assets/icons/pdfFileIcon.svg'
   import ImageFileIcon from '@/assets/icons/figImageSquare.svg'
   import FileContractIcon from '@/assets/icons/fileContractIcon.svg'
@@ -62,6 +64,7 @@
   // Tasdiqlangan hujjatning fayllari muzlatiladi.
   const isApproved = computed(() => store.document?.document?.confirmation?.id === 3)
   const canEdit = computed(() => showDocumentFiles.value && !isApproved.value)
+  const isLocked = computed(() => showDocumentFiles.value && isApproved.value)
   // Fayllar — plitkalarda, bog'langan arizalar — alohida ro'yxatda.
   const files = computed(() => store.fileList.filter((v) => v?.file))
   const applications = computed(() =>
@@ -71,18 +74,27 @@
 
   // Ariza PDF'i ham buyruq o'rnida ochiladi (AttachmentPreview fayl shaklini kutadi).
   const appPreviewId = (item) => `app-${item.id}`
+  // «Ma'lumotlar» tabida bosilsa — «Hujjat» tabiga o'tib, fayl ochiladi (yopilmaydi).
+  // «Hujjat» tabida ochiq faylga qayta bosilsa — yopiladi.
+  const shouldClose = (id) => store.centerTab === 'document' && store.previewFile?.id === id
+  const openInDocumentTab = (file) => {
+    store.previewFile = file
+    store.centerTab = 'document'
+  }
+
   const onPreviewApplication = (item) => {
     const wa = item.worker_application
     const id = appPreviewId(item)
-    store.previewFile =
-      store.previewFile?.id === id
-        ? null
-        : {
-            id,
-            file: wa?.confirmation_file,
-            original_name: `${t('documentPage.signature.files.application')} №${wa?.number}.pdf`,
-            created_at: wa?.created_at
-          }
+    if (shouldClose(id)) {
+      store.previewFile = null
+      return
+    }
+    openInDocumentTab({
+      id,
+      file: wa?.confirmation_file,
+      original_name: `${t('documentPage.signature.files.application')} №${wa?.number}.pdf`,
+      created_at: wa?.created_at
+    })
   }
   const canAdd = computed(() => canEdit.value && fileCount.value < MAX_FILES)
 
@@ -152,7 +164,11 @@
 
   // Fayl buyruq PDF'i o'rnida ochiladi; qayta bosilsa — yopiladi.
   const onPreview = (item) => {
-    store.previewFile = store.previewFile?.id === item.id ? null : item
+    if (shouldClose(item.id)) {
+      store.previewFile = null
+      return
+    }
+    openInDocumentTab(item)
   }
 
   // Hujjat ochilganda ro'yxat doim yuklanadi (fayllar ham, bog'langan arizalar ham).
@@ -173,8 +189,35 @@
     class="w-full"
   >
     <div class="flex flex-col gap-3">
+      <!-- Tasdiqlangan hujjat: biriktirmalar yo'q — bo'sh holat kartasi -->
+      <div
+        v-if="isLocked && !files.length && !applications.length"
+        class="flex flex-col items-center text-center gap-2 rounded-xl border border-dashed border-surface-line bg-fig-bg-secondary px-4 py-6"
+      >
+        <div
+          class="w-10 h-10 rounded-full flex items-center justify-center bg-fig-chip-green text-fig-chip-green-text"
+        >
+          <n-icon size="20"><LockClosed20Regular /></n-icon>
+        </div>
+        <div class="text-xs font-semibold text-textColor0">
+          {{ $t('documentPage.signature.files.lockedTitle') }}
+        </div>
+        <div class="text-[11px] text-textColor3 leading-snug max-w-[220px]">
+          {{ $t('documentPage.signature.files.lockedEmpty') }}
+        </div>
+      </div>
+
+      <!-- Tasdiqlangan hujjat, biriktirmalar bor — ixcham ogohlantirish -->
+      <div
+        v-else-if="isLocked"
+        class="flex items-start gap-2 rounded-lg bg-fig-chip-green px-2.5 py-2 text-[11px] leading-snug text-fig-chip-green-text"
+      >
+        <n-icon size="14" class="shrink-0 mt-px"><LockClosed16Regular /></n-icon>
+        <span>{{ $t('documentPage.signature.files.lockedShort') }}</span>
+      </div>
+
       <!-- Fayllar: sarlavha + soni -->
-      <div class="flex flex-col gap-1.5">
+      <div v-if="files.length || canEdit" class="flex flex-col gap-1.5">
         <div
           class="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-textColor3"
         >
@@ -226,27 +269,12 @@
             :class="store.previewFile?.id === item.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'"
             @click.stop
           >
-            <n-tooltip>
-              <template #trigger>
-                <n-button
-                  quaternary
-                  circle
-                  size="small"
-                  :type="store.previewFile?.id === item.id ? 'primary' : 'default'"
-                  @click="onPreview(item)"
-                >
-                  <template #icon>
-                    <n-icon size="16"><Eye16Regular /></n-icon>
-                  </template>
-                </n-button>
-              </template>
-              {{ $t('documentPage.signature.files.view') }}
-            </n-tooltip>
-            <n-popconfirm
+            <DangerConfirm
               v-if="canEdit"
-              :positive-text="$t('content.delete')"
-              :negative-text="$t('content.cancel')"
-              @positive-click="onDelete(item)"
+              :title="$t('documentPage.signature.files.deleteTitle')"
+              :description="fileName(item)"
+              :confirm-text="$t('content.delete')"
+              @confirm="onDelete(item)"
             >
               <template #trigger>
                 <n-button
@@ -261,12 +289,11 @@
                   </template>
                 </n-button>
               </template>
-              {{ $t('documentPage.signature.files.deleteConfirm', { name: fileName(item) }) }}
-            </n-popconfirm>
+            </DangerConfirm>
           </div>
         </div>
 
-        <!-- Fayl qo'shish: punktir chegarali keng tugma + ruxsat etilgan formatlar -->
+        <!-- Fayl qo'shish: punktir chegarali keng tugma -->
         <button
           v-if="canAdd"
           type="button"
@@ -277,9 +304,6 @@
           <n-spin v-if="uploading" :size="14" />
           <n-icon v-else size="16"><Add16Regular /></n-icon>
           <span>{{ $t('documentPage.signature.files.attachFile') }}</span>
-          <span class="text-[10px] font-normal opacity-80">
-            · {{ $t('documentPage.signature.files.allowedHint', { max: MAX_FILE_MB }) }}
-          </span>
         </button>
       </div>
 
@@ -362,27 +386,17 @@
             "
             @click.stop
           >
-            <n-tooltip>
-              <template #trigger>
-                <n-button
-                  quaternary
-                  circle
-                  size="small"
-                  :type="store.previewFile?.id === appPreviewId(item) ? 'primary' : 'default'"
-                  @click="onPreviewApplication(item)"
-                >
-                  <template #icon>
-                    <n-icon size="16"><Eye16Regular /></n-icon>
-                  </template>
-                </n-button>
-              </template>
-              {{ $t('documentPage.signature.files.view') }}
-            </n-tooltip>
-            <n-popconfirm
+            <DangerConfirm
               v-if="canEdit"
-              :positive-text="$t('content.delete')"
-              :negative-text="$t('content.cancel')"
-              @positive-click="onDelete(item)"
+              :icon="LinkDismiss16Regular"
+              :title="$t('documentPage.signature.files.unlinkTitle')"
+              :description="
+                $t('documentPage.signature.files.unlinkConfirm', {
+                  number: item.worker_application?.number
+                })
+              "
+              :confirm-text="$t('documentPage.signature.files.unlink')"
+              @confirm="onDelete(item)"
             >
               <template #trigger>
                 <n-button
@@ -397,12 +411,7 @@
                   </template>
                 </n-button>
               </template>
-              {{
-                $t('documentPage.signature.files.unlinkConfirm', {
-                  number: item.worker_application?.number
-                })
-              }}
-            </n-popconfirm>
+            </DangerConfirm>
           </div>
         </div>
       </div>
@@ -415,9 +424,6 @@
         accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
         @change="onFilesSelected"
       />
-      <div v-if="showDocumentFiles && isApproved" class="text-[11px] text-textColor3 leading-snug">
-        {{ $t('documentPage.signature.files.locked') }}
-      </div>
     </div>
   </SectionHeader>
 </template>

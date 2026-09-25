@@ -1396,9 +1396,14 @@
         "attachShort": "Attach",
         "applicationsLimit": "No more than {max} applications can be attached",
         "attachFile": "Attach file",
-        "allowedHint": "PDF, PNG, JPG · up to {max} MB",
         "view": "View",
-        "download": "Download"
+        "download": "Download",
+        "lockedTitle": "Document approved",
+        "lockedEmpty": "No attached files or applications. New files can't be added to an approved document.",
+        "lockedShort": "Document approved — files are view-only",
+        "deleteTitle": "Delete file",
+        "unlinkTitle": "Unlink application",
+        "unlink": "Unlink"
       },
       "checkDocument": "Click to check document status",
       "attachedDocuments": "Attached documents",
@@ -1484,7 +1489,8 @@
           "resent": "— resent",
           "file_added": "added a file",
           "file_removed": "removed a file"
-        }
+        },
+        "showAll": "Show all"
       },
       "rejectReasonSelect": "Select a rejection reason",
       "optional": "optional"

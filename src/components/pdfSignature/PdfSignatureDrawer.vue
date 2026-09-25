@@ -71,7 +71,10 @@
 
   // Buyruqda header markazida tablar: «Hujjat» (ko'rish/imzolash) va «Ma'lumotlar» (forma).
   const isCommand = computed(() => store.model === Utils.documentModels.command)
-  const activeTab = ref('document')
+  const activeTab = computed({
+    get: () => store.centerTab,
+    set: (v) => (store.centerTab = v)
+  })
   // «Ma'lumotlar»ga o'tishda chapga, «Hujjat»ga qaytishda o'ngga suriladi.
   const tabTransition = computed(() =>
     activeTab.value === 'data' ? 'tab-slide-left' : 'tab-slide-right'

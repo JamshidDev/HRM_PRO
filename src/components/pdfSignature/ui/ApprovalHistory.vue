@@ -95,26 +95,45 @@
       fullName: [s?.worker?.last_name, s?.worker?.first_name].filter(Boolean).join(' ')
     }))
 
+  // Ko'rsatkich nuqtasi va segment rangi — bir xil palitra.
   const SUMMARY_TONES = {
-    approved: 'bg-fig-chip-green text-fig-chip-green-text',
-    rejected: 'bg-fig-red-50 text-fig-text-red',
-    pending: 'bg-fig-bg-disable text-fig-text-tertiary'
+    approved: 'bg-fig-success',
+    rejected: 'bg-fig-red',
+    pending: 'bg-fig-orange-300'
+  }
+  const segmentTone = (statusId) => {
+    if (statusId === STATUS.success) return SUMMARY_TONES.approved
+    if (statusId === STATUS.rejected) return SUMMARY_TONES.rejected
+    return 'bg-surface-line'
   }
 </script>
 
 <template>
   <div>
-    <!-- Yig'ma: tasdiqlagan / rad etgan / kutilmoqda -->
-    <div v-if="confirmations.length" class="grid grid-cols-3 gap-1.5 mb-3">
-      <div
-        v-for="(tone, key) in SUMMARY_TONES"
-        :key="key"
-        class="rounded-lg px-2 py-1.5 text-center"
-        :class="tone"
-      >
-        <div class="text-sm font-semibold tabular-nums leading-tight">{{ summary[key] }}</div>
-        <div class="text-[10px] leading-tight truncate">
-          {{ $t(`documentPage.signature.approval.summary.${key}`) }}
+    <!-- Yig'ma: segmentli chiziq + uchta ko'rsatkich, bitta kartada -->
+    <div
+      v-if="confirmations.length"
+      class="mb-3 rounded-xl border border-surface-line bg-surface-section px-3 pt-2.5 pb-2"
+    >
+      <div class="flex gap-1 mb-2.5">
+        <span
+          v-for="(c, idx) in confirmations"
+          :key="idx"
+          class="h-1.5 flex-1 rounded-full"
+          :class="segmentTone(c.status?.id)"
+        ></span>
+      </div>
+      <div class="grid grid-cols-3 divide-x divide-surface-line">
+        <div v-for="(tone, key) in SUMMARY_TONES" :key="key" class="px-2 first:pl-0 min-w-0">
+          <div class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full shrink-0" :class="tone"></span>
+            <span class="text-base font-semibold tabular-nums leading-tight text-textColor0">
+              {{ summary[key] }}
+            </span>
+          </div>
+          <div class="text-[10px] leading-tight text-textColor3 truncate mt-0.5">
+            {{ $t(`documentPage.signature.approval.summary.${key}`) }}
+          </div>
         </div>
       </div>
     </div>
@@ -124,8 +143,11 @@
     </div>
 
     <div v-for="group in groups" :key="group.key" class="mb-3">
-      <div class="flex items-center gap-2 mb-1.5">
-        <span class="text-[11px] font-semibold text-textColor2 tabular-nums">
+      <!-- Kun sarlavhasi: pill + chiziq -->
+      <div class="flex items-center gap-2 mb-2">
+        <span
+          class="text-[10px] font-semibold uppercase tracking-wide tabular-nums rounded-full px-2 py-0.5 bg-surface-ground text-textColor2"
+        >
           {{
             dayLabel(group.key) ? $t(dayLabel(group.key)) : dayjs(group.key).format('DD.MM.YYYY')
           }}
@@ -134,17 +156,18 @@
       </div>
 
       <div v-for="(row, i) in group.items" :key="rowId(row)" class="relative flex gap-2.5">
-        <!-- Lenta chizig'i -->
+        <!-- Lenta chizig'i: tugundan keyingi tugungacha -->
         <div
           v-if="i < group.items.length - 1"
-          class="absolute left-[14px] top-8 bottom-0 w-px bg-surface-line"
+          class="absolute left-[13.5px] top-8 bottom-0 w-px bg-fig-blue-100"
         ></div>
 
         <!-- Bir kishi — avatar + holat belgisi; guruh — harakat belgisi -->
-        <div class="relative shrink-0 w-7 h-7 mt-0.5">
+        <div class="relative shrink-0 w-7 h-7 mt-1.5">
           <template v-if="row.signers.length === 1">
             <n-avatar
               round
+              object-fit="cover"
               :size="28"
               :src="row.signers[0]?.worker?.photo || Utils.noAvailableImage"
               :fallback-src="Utils.noAvailableImage"
@@ -165,7 +188,8 @@
           </span>
         </div>
 
-        <div class="min-w-0 flex-1 pb-3">
+        <!-- Hodisa kartasi -->
+        <div class="min-w-0 flex-1 mb-2 rounded-lg border border-surface-line bg-surface-section px-2.5 py-2">
           <!-- Bir kishi: «Familiya I.O. · Tasdiqladi» -->
           <template v-if="row.signers.length === 1">
             <div class="flex items-start justify-between gap-2">
@@ -181,9 +205,9 @@
                 {{ row.date.format('HH:mm') }}
               </span>
             </div>
-            <div v-if="row.file" class="mt-1 min-w-0">
+            <div v-if="row.file" class="mt-1.5 min-w-0">
               <span
-                class="inline-flex max-w-full items-center gap-1 rounded-md border border-surface-line bg-surface-ground px-1.5 py-0.5 text-[11px] text-textColor1"
+                class="inline-flex max-w-full items-center gap-1 rounded-md border border-surface-line bg-fig-bg-secondary px-1.5 py-0.5 text-[11px] text-textColor1"
               >
                 <n-icon
                   size="12"
@@ -196,9 +220,9 @@
                 </n-ellipsis>
               </span>
             </div>
-            <div v-else class="flex items-center gap-1.5 mt-0.5 min-w-0">
+            <div v-else class="flex items-center gap-1.5 mt-1 min-w-0">
               <span
-                class="shrink-0 text-[10px] font-medium rounded px-1.5 py-px bg-surface-ground text-textColor2"
+                class="shrink-0 text-[10px] font-medium rounded-full px-1.5 py-px bg-surface-ground text-textColor2"
               >
                 {{ $t(roleLabel(row.signers[0]?.type)) }}
               </span>
@@ -212,11 +236,11 @@
             </div>
           </template>
 
-          <!-- Guruh: «4 kishiga yuborildi» + avatarlar; bosilsa ro'yxat -->
+          <!-- Guruh: «3 kishiga yuborildi» + avatarlar; bosilsa ro'yxat ochiladi -->
           <template v-else>
             <button
               type="button"
-              class="w-full flex items-center justify-between gap-2 text-left"
+              class="w-full flex items-start justify-between gap-2 text-left"
               @click="toggle(rowId(row))"
             >
               <span class="text-xs font-semibold text-textColor0 leading-snug">
@@ -226,42 +250,68 @@
                   })
                 }}
               </span>
-              <span class="flex items-center gap-1 shrink-0">
-                <span class="text-[11px] tabular-nums text-textColor3">
-                  {{ row.date.format('HH:mm') }}
-                </span>
-                <n-icon
-                  size="14"
-                  class="text-textColor3 transition-transform"
-                  :class="expanded.has(rowId(row)) && 'rotate-180'"
-                >
-                  <ChevronDown16Regular />
-                </n-icon>
+              <span class="text-[11px] tabular-nums text-textColor3 shrink-0">
+                {{ row.date.format('HH:mm') }}
               </span>
             </button>
-            <UIUserGroup
-              v-if="!expanded.has(rowId(row))"
-              class="mt-1"
-              :data="avatars(row.signers)"
-              :size="22"
-              :max="6"
-            />
-            <div v-else class="mt-1 flex flex-col gap-1">
-              <div
-                v-for="(s, k) in row.signers"
-                :key="k"
-                class="flex items-center gap-1.5 min-w-0 text-[11px]"
+
+            <!-- Yig'iq va ochiq ko'rinish balandlik animatsiyasi bilan almashadi -->
+            <n-collapse-transition :show="!expanded.has(rowId(row))">
+              <button
+                type="button"
+                class="mt-1.5 w-full flex items-center justify-between gap-2"
+                @click="toggle(rowId(row))"
               >
-                <n-avatar
-                  round
-                  :size="18"
-                  :src="s?.worker?.photo || Utils.noAvailableImage"
-                  :fallback-src="Utils.noAvailableImage"
+                <!-- Ko'p odam bo'lsa: 5 tadan keyingisi «+N»; guruh qisqarishi mumkin,
+                     «Barchasi» esa doim o'z joyida qoladi -->
+                <UIUserGroup
+                  class="history-avatars min-w-0 flex-1 overflow-hidden flex justify-start"
+                  :data="avatars(row.signers)"
+                  :size="22"
+                  :max="5"
+                  :has-more="Math.max(row.signers.length - 4, 0)"
                 />
-                <span class="font-medium text-textColor1 truncate">{{ shortName(s?.worker) }}</span>
-                <span class="shrink-0 text-textColor3">· {{ $t(roleLabel(s?.type)) }}</span>
+                <span class="flex items-center gap-0.5 text-[11px] font-medium text-primary shrink-0">
+                  {{ $t('documentPage.signature.approval.showAll') }}
+                  <n-icon size="12"><ChevronDown16Regular /></n-icon>
+                </span>
+              </button>
+            </n-collapse-transition>
+
+            <n-collapse-transition :show="expanded.has(rowId(row))">
+              <div class="mt-1.5 flex flex-col divide-y divide-surface-line border-t border-surface-line">
+                <div
+                  v-for="(s, k) in row.signers"
+                  :key="k"
+                  class="flex items-center gap-2 min-w-0 py-1.5"
+                >
+                  <n-avatar
+                    round
+                    object-fit="cover"
+                    class="shrink-0"
+                    :size="22"
+                    :src="s?.worker?.photo || Utils.noAvailableImage"
+                    :fallback-src="Utils.noAvailableImage"
+                  />
+                  <span class="flex-1 min-w-0 text-[11px] font-medium text-textColor1 truncate">
+                    {{ shortName(s?.worker) }}
+                  </span>
+                  <span
+                    class="shrink-0 text-[10px] font-medium rounded-full px-1.5 py-px bg-surface-ground text-textColor2"
+                  >
+                    {{ $t(roleLabel(s?.type)) }}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  class="pt-1.5 flex items-center justify-center gap-0.5 text-[11px] font-medium text-primary"
+                  @click="toggle(rowId(row))"
+                >
+                  {{ $t('content.hide') }}
+                  <n-icon size="12" class="rotate-180"><ChevronDown16Regular /></n-icon>
+                </button>
               </div>
-            </div>
+            </n-collapse-transition>
           </template>
 
           <div
@@ -282,3 +332,26 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+  /* Global `.ui__user-group` rasmni 36×42 qilib beradi — 22px doirada rasm
+     cho'zilib (aspect-ratio buzilib) ko'rinardi. Bu yerda kvadratga qaytariladi. */
+  .history-avatars :deep(.ui__user-group > img) {
+    width: 22px !important;
+    height: 22px !important;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+
+  .history-avatars :deep(.n-avatar-group) {
+    --n-gap: -6px !important;
+    flex-wrap: nowrap;
+    /* Avatarlar chapdan o'ngga — guruh keng joyni egallasa ham o'rtaga surilmasin */
+    justify-content: flex-start;
+    width: max-content;
+  }
+  .history-avatars :deep(.has-more-avatar) {
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+</style>
