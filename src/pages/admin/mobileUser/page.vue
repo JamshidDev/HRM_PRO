@@ -35,8 +35,10 @@
       <!-- Header: sarlavhasiz — faqat segment tab + yopish. Modal balandligi qat'iy
            (85vh), kontent ichida scroll bo'ladi (UIModal `height` bilan). -->
       <template #header>
-        <div class="-mx-2 -mt-2 border-b border-surface-line px-6 py-3 flex items-center justify-between gap-4">
-          <div class="w-[300px] shrink-0">
+        <div
+          class="-mx-2 -mt-2 rounded-t-xl border-b border-surface-line bg-surface-ground/60 px-6 py-3.5 flex items-center justify-between gap-4"
+        >
+          <div class="w-[300px] max-w-full shrink">
             <n-tabs v-model:value="store.detailTab" type="segment" size="small" animated>
               <n-tab :name="store.detailTabs.face">
                 <div class="flex items-center gap-1.5">
@@ -60,7 +62,7 @@
           </div>
           <div
             @click="store.detailVisible = false"
-            class="w-9 h-9 rounded-full bg-surface-ground hover:bg-surface-line flex items-center justify-center cursor-pointer shrink-0 transition-colors"
+            class="w-9 h-9 rounded-full bg-surface-section border border-surface-line hover:bg-surface-line flex items-center justify-center cursor-pointer shrink-0 transition-colors"
           >
             <n-icon size="18" class="text-textColor1">
               <Dismiss24Regular />
