@@ -98,23 +98,26 @@
 <template>
   <UIModal
     :width="520"
+    :height="'min(620px, 85vh)'"
     :visible="store.attachVisible"
     @update:visible="(v) => (store.attachVisible = v)"
     :title="$t('documentPage.attach.attachApplication')"
   >
     <template #default>
-      <div class="flex flex-col gap-3">
+      <!-- Balandlik qat'iy: qidiruv va tugmalar joyida, faqat ro'yxat scroll bo'ladi -->
+      <div class="flex flex-col gap-3 h-full min-h-0">
         <n-input v-model:value="search" clearable :placeholder="$t('content.search')">
           <template #prefix>
             <n-icon><Search16Regular /></n-icon>
           </template>
         </n-input>
 
-        <n-spin :show="store.docApplicationLoading">
-          <div
-            class="flex flex-col gap-1.5 max-h-[50vh] min-h-[120px] overflow-y-auto pr-1"
-            @scroll="onScroll"
-          >
+        <n-spin
+          :show="store.docApplicationLoading"
+          class="flex-1 min-h-0"
+          content-style="height: 100%"
+        >
+          <div class="flex flex-col gap-1.5 h-full overflow-y-auto pr-1" @scroll="onScroll">
             <div
               v-if="!store.docApplicationLoading && !items.length"
               class="flex flex-col items-center justify-center text-center py-8 text-textColor3"
@@ -167,7 +170,7 @@
           </div>
         </n-spin>
 
-        <div class="flex items-center justify-between gap-3 pt-1">
+        <div class="shrink-0 flex items-center justify-between gap-3 pt-1">
           <span class="text-xs text-textColor3">
             {{ $t('documentPage.signature.files.selectedCount', { count: selected.length }) }}
           </span>
