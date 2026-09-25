@@ -1307,6 +1307,7 @@
           "no_form_state": "This order was created before the system update — details were restored from the database and are view-only. Some fields may be empty."
         },
         "emptyTitle": "No details available",
+        "loadError": "Could not load the data. Please try again shortly.",
         "reset": "Restore saved details",
         "preview": "Preview",
         "save": "Save and resend",
@@ -1319,6 +1320,7 @@
           "approved": "The document is approved",
           "cancelled": "The order is cancelled",
           "contract": "Changed via the contract",
+          "contract_additional": "Changed via the additional agreement",
           "no_form_state": "Old order — view only"
         },
         "resend": {
@@ -1342,6 +1344,44 @@
             "3": "Approved",
             "4": "Rejected",
             "new": "New"
+          }
+        },
+        "source": {
+          "titleContract": "Created from contract №{number}",
+          "titleAdditional": "Created from additional agreement №{number}",
+          "hintContract": "Order data can only be changed by editing the contract — when the contract is re-issued, the order is updated with it.",
+          "hintAdditional": "Order data can only be changed by editing the additional agreement — when it is re-issued, the order is updated with it.",
+          "openContract": "Open contract",
+          "openAdditional": "Open additional agreement",
+          "deleted": "Source document deleted",
+          "sectionCommand": "Order",
+          "sectionWorker": "Employee",
+          "sectionTerms": "Position and working conditions",
+          "sectionSigners": "Approvers",
+          "noTerms": "No data on the terms was found",
+          "noSigners": "No approvers assigned",
+          "fields": {
+            "number": "Order number",
+            "date": "Order date",
+            "type": "Order type",
+            "director": "Director",
+            "sourceType": "Document type",
+            "organization": "Organization",
+            "currentPosition": "Current position",
+            "position": "Position",
+            "salary": "Salary",
+            "rate": "Rate",
+            "group": "Group",
+            "rank": "Rank",
+            "probation": "Probation period",
+            "vacationMain": "Main vacation",
+            "vacationAdditional": "Additional vacation",
+            "positionDate": "Appointment date",
+            "contractTo": "Valid until",
+            "workDays": "Working days",
+            "workTime": "Working hours",
+            "days": "{count} days",
+            "sum": "{value} UZS"
           }
         }
       }

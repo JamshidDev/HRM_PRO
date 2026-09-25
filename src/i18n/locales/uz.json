@@ -1323,6 +1323,7 @@
           "no_form_state": "Bu buyruq tizim yangilanishidan oldin yaratilgan — ma'lumotlar bazadan tiklandi va faqat ko'rish uchun. Ayrim maydonlar bo'sh bo'lishi mumkin."
         },
         "emptyTitle": "Ma'lumotlar mavjud emas",
+        "loadError": "Ma'lumotlarni yuklab bo'lmadi. Birozdan so'ng qayta urinib ko'ring.",
         "reset": "Asl holatiga qaytarish",
         "preview": "Ko'rish",
         "save": "Saqlash va qayta yuborish",
@@ -1335,6 +1336,7 @@
           "approved": "Hujjat tasdiqlangan",
           "cancelled": "Buyruq bekor qilingan",
           "contract": "Shartnoma orqali o'zgartiriladi",
+          "contract_additional": "Qo'shimcha kelishuv orqali o'zgartiriladi",
           "no_form_state": "Eski buyruq — faqat ko'rish uchun"
         },
         "resend": {
@@ -1358,6 +1360,44 @@
             "3": "Tasdiqlagan",
             "4": "Rad etgan",
             "new": "Yangi"
+          }
+        },
+        "source": {
+          "titleContract": "№{number} shartnoma asosida yaratilgan",
+          "titleAdditional": "№{number} qo'shimcha kelishuv asosida yaratilgan",
+          "hintContract": "Buyruq ma'lumotlari faqat shartnomani tahrirlash orqali o'zgartiriladi — shartnoma qayta rasmiylashtirilganda buyruq ham yangilanadi.",
+          "hintAdditional": "Buyruq ma'lumotlari faqat qo'shimcha kelishuvni tahrirlash orqali o'zgartiriladi — kelishuv qayta rasmiylashtirilganda buyruq ham yangilanadi.",
+          "openContract": "Shartnomani ochish",
+          "openAdditional": "Qo'shimcha kelishuvni ochish",
+          "deleted": "Manba hujjat o'chirilgan",
+          "sectionCommand": "Buyruq",
+          "sectionWorker": "Xodim",
+          "sectionTerms": "Lavozim va mehnat shartlari",
+          "sectionSigners": "Kelishuvchilar",
+          "noTerms": "Shartlar bo'yicha ma'lumot topilmadi",
+          "noSigners": "Kelishuvchilar belgilanmagan",
+          "fields": {
+            "number": "Buyruq raqami",
+            "date": "Buyruq sanasi",
+            "type": "Buyruq turi",
+            "director": "Rahbar",
+            "sourceType": "Hujjat turi",
+            "organization": "Korxona",
+            "currentPosition": "Joriy lavozim",
+            "position": "Lavozim",
+            "salary": "Maosh",
+            "rate": "Stavka",
+            "group": "Guruh",
+            "rank": "Razryad",
+            "probation": "Sinov muddati",
+            "vacationMain": "Asosiy ta'til",
+            "vacationAdditional": "Qo'shimcha ta'til",
+            "positionDate": "Lavozimga tayinlash sanasi",
+            "contractTo": "Amal qilish muddati",
+            "workDays": "Ish kunlari",
+            "workTime": "Ish vaqti",
+            "days": "{count} kun",
+            "sum": "{value} so'm"
           }
         }
       }

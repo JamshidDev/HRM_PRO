@@ -8,7 +8,6 @@
   const store = useCommandFormStore()
   const componentStore = useComponentStore()
   const { t } = i18n.global
-  const base = ref(null)
 
   const onRemoveWorker = (id) => {
     store.workerData = store.workerData.filter((v) => v.id !== id)
@@ -35,7 +34,7 @@
         data: {
           ...mainData,
           worker_positions: data,
-          base: base.value || null
+          base: store.commandBase || null
         },
         isValid: true
       }
@@ -127,7 +126,7 @@
           type="textarea"
           :autosize="true"
           :rows="1"
-          v-model:value="base"
+          v-model:value="store.commandBase"
           clearable
         />
       </n-form-item>

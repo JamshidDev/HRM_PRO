@@ -460,7 +460,11 @@
                   key="data"
                   class="h-full flex flex-col"
                 >
-                  <CommandDataTab :command-id="store.document_id" @saved="onDataSaved" />
+                  <CommandDataTab
+                    :command-id="store.document_id"
+                    @saved="onDataSaved"
+                    @open-source="(v) => getDocument(v.id, v.model)"
+                  />
                 </div>
                 <div v-else key="document" class="relative h-full flex flex-col">
                     <!-- Biriktirilgan fayl — buyruq PDF'i ustida; PDF ko'ruvchisi fonda saqlanadi -->

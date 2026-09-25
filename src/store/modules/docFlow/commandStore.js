@@ -121,7 +121,8 @@ const FORM_STATE_KEYS = [
   'recipientType',
   'isSingleSelect',
   'sortableConfirmations',
-  'oneByOne'
+  'oneByOne',
+  'commandBase'
 ]
 
 const clone = (v) => JSON.parse(JSON.stringify(v ?? null))
@@ -318,6 +319,8 @@ const commandStoreOptions = {
     isSingleSelect: false,
     sortableConfirmations: [],
     oneByOne: true,
+    // 71/73 — «Asos» matni (forma holati bilan saqlanadi).
+    commandBase: null,
     workerVacations: [],
     workerVacationLoading: false
   }),
@@ -519,6 +522,10 @@ const commandStoreOptions = {
       this.workerParams.search = null
       this.cancelCommandParams.organization_id = orgId
       if (state?.legacy) this.fillLegacyForm(state.data || {})
+      // Eski saqlangan formalarda «Asos» yo'q edi — buyruq ma'lumotidan olinadi.
+      if (this.commandBase == null && [71, 73].includes(this.payload.command_type)) {
+        this.commandBase = state?.data?.base ?? state?.data?.command_additional?.base ?? null
+      }
     },
     // Eski buyruq: saqlangan `data` maydonlari turga mos `form_N` blokiga ko'chiriladi.
     fillLegacyForm(data) {
@@ -597,6 +604,7 @@ const commandStoreOptions = {
       this.resetPayload32()
 
       this.vacations = []
+      this.commandBase = null
 
       this.form_44.vacation_id = null
       this.form_44.new_date = null
