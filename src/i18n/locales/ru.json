@@ -1396,7 +1396,11 @@
         "unlinkConfirm": "Открепить заявление №{number} от документа?",
         "files": "Файлы",
         "attachShort": "Прикрепить",
-        "applicationsLimit": "Можно прикрепить не более {max} заявлений"
+        "applicationsLimit": "Можно прикрепить не более {max} заявлений",
+        "attachFile": "Прикрепить файл",
+        "allowedHint": "PDF, PNG, JPG · до {max} МБ",
+        "view": "Просмотр",
+        "download": "Скачать"
       },
       "checkDocument": "Нажмите для проверки статуса документа",
       "attachedDocuments": "Прикреплённые документы",

@@ -2,11 +2,10 @@
   import { usePdfViewerStore } from '@/store/modules/index.js'
   import {
     Add16Regular,
-    Add24Regular,
     MailAttach16Regular,
-    Dismiss12Filled,
+    LinkDismiss16Regular,
     Eye16Regular,
-    ArrowDownload16Regular
+    Delete16Regular
   } from '@vicons/fluent'
   import { useRoute } from 'vue-router'
   import { useNotify } from '@/composables/useNotify'
@@ -39,7 +38,7 @@
     return FileContractIcon
   }
   const fileTone = (item) => {
-    if (!item?.file) return 'bg-warning/10 text-warning'
+    if (!item?.file) return 'bg-fig-chip-amber text-fig-chip-amber-text'
     if (isImage(item)) return 'bg-fig-chip-indigo text-fig-chip-indigo-text'
     return 'bg-fig-red-50 text-fig-text-red'
   }
@@ -151,10 +150,6 @@
     store.attachVisible = true
   }
 
-  const onDownload = (item) => {
-    window.open(item?.file || item?.worker_application?.confirmation_file, '_blank')
-  }
-
   // Fayl buyruq PDF'i o'rnida ochiladi; qayta bosilsa — yopiladi.
   const onPreview = (item) => {
     store.previewFile = store.previewFile?.id === item.id ? null : item
@@ -178,92 +173,117 @@
     class="w-full"
   >
     <div class="flex flex-col gap-3">
-      <div class="text-[11px] font-semibold uppercase tracking-wide text-textColor3">
-        {{ $t('documentPage.signature.files.files') }}
-      </div>
-      <div class="grid grid-cols-5 gap-1.5">
-        <!-- Qo'shish: punktir chegarali kvadrat — doim birinchi -->
-        <button
-          v-if="canAdd"
-          type="button"
-          class="aspect-square rounded-lg border-2 border-dashed border-surface-line text-textColor3 flex flex-col items-center justify-center gap-1 transition-colors hover:border-primary hover:text-primary hover:bg-primary/5"
-          :disabled="uploading"
-          @click="onPick"
+      <!-- Fayllar: sarlavha + soni -->
+      <div class="flex flex-col gap-1.5">
+        <div
+          class="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-textColor3"
         >
-          <n-spin v-if="uploading" :size="16" />
-          <n-icon v-else size="18"><Add24Regular /></n-icon>
-        </button>
-        <!-- Biriktirilgan fayllar -->
-        <n-tooltip v-for="item in files" :key="item.id" placement="bottom">
-          <template #trigger>
-            <!-- Ikonka butun plitkani to'ldiradi, rang — fayl turiga qarab -->
-            <div
-              class="group relative aspect-square rounded-lg flex items-center justify-center overflow-hidden"
-              :class="[
-                fileTone(item),
-                store.previewFile?.id === item.id && 'ring-2 ring-primary ring-offset-1'
-              ]"
-            >
-              <n-icon size="30"><component :is="fileIcon(item)" /></n-icon>
+          {{ $t('documentPage.signature.files.files') }}
+          <span
+            v-if="fileCount"
+            class="rounded-full bg-surface-ground px-1.5 text-[10px] font-medium normal-case tracking-normal tabular-nums text-textColor2"
+          >
+            {{ fileCount }}/{{ MAX_FILES }}
+          </span>
+        </div>
 
-              <!-- Amallar — ustiga olib borilganda -->
-              <div
-                class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1"
-              >
+        <!-- Fayl qatori: turi ikonkasi, nomi va sana; amallar — o'ngda, hover'da -->
+        <div
+          v-for="item in files"
+          :key="item.id"
+          class="group flex items-center gap-2.5 rounded-lg border px-2 py-1.5 min-h-[48px] transition-colors"
+          :class="
+            store.previewFile?.id === item.id
+              ? 'border-fig-blue-300 bg-fig-chip-brand'
+              : 'border-surface-line bg-surface-section hover:bg-fig-bg-secondary'
+          "
+        >
+          <div
+            class="w-8 h-8 rounded-md flex items-center justify-center shrink-0"
+            :class="fileTone(item)"
+          >
+            <n-icon size="20"><component :is="fileIcon(item)" /></n-icon>
+          </div>
+          <div class="min-w-0 flex-1">
+            <n-ellipsis
+              :tooltip="{ style: { maxWidth: '260px' } }"
+              class="block text-xs font-medium text-textColor1 leading-snug"
+            >
+              {{ fileName(item) }}
+            </n-ellipsis>
+            <div class="text-[10px] text-textColor3 tabular-nums uppercase">
+              {{ extOf(item.original_name) }}
+              <template v-if="item.created_at">
+                · {{ Utils.timeOnlyDate(item.created_at) }}
+              </template>
+            </div>
+          </div>
+
+          <!-- Amallar: faol (ochiq) faylda doim, qolganlarida hover'da ko'rinadi -->
+          <div
+            class="flex items-center gap-0.5 shrink-0 transition-opacity"
+            :class="store.previewFile?.id === item.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'"
+          >
+            <n-tooltip>
+              <template #trigger>
                 <n-button
-                  v-if="item?.file"
+                  quaternary
                   circle
-                  size="tiny"
-                  secondary
-                  class="!bg-white/90"
+                  size="small"
+                  :type="store.previewFile?.id === item.id ? 'primary' : 'default'"
                   @click="onPreview(item)"
                 >
                   <template #icon>
-                    <n-icon><Eye16Regular /></n-icon>
+                    <n-icon size="16"><Eye16Regular /></n-icon>
                   </template>
                 </n-button>
+              </template>
+              {{ $t('documentPage.signature.files.view') }}
+            </n-tooltip>
+            <n-popconfirm
+              v-if="canEdit"
+              :positive-text="$t('content.delete')"
+              :negative-text="$t('content.cancel')"
+              @positive-click="onDelete(item)"
+            >
+              <template #trigger>
                 <n-button
+                  quaternary
                   circle
-                  size="tiny"
-                  secondary
-                  class="!bg-white/90"
-                  @click="onDownload(item)"
+                  size="small"
+                  type="error"
+                  :loading="store.fileDeleting === item.id"
                 >
                   <template #icon>
-                    <n-icon><ArrowDownload16Regular /></n-icon>
+                    <n-icon size="16"><Delete16Regular /></n-icon>
                   </template>
                 </n-button>
-              </div>
+              </template>
+              {{ $t('documentPage.signature.files.deleteConfirm', { name: fileName(item) }) }}
+            </n-popconfirm>
+          </div>
+        </div>
 
-              <!-- O'chirish — tasdiqlanmagan hujjatda -->
-              <n-popconfirm
-                v-if="canEdit"
-                :positive-text="$t('content.delete')"
-                :negative-text="$t('content.cancel')"
-                @positive-click="onDelete(item)"
-              >
-                <template #trigger>
-                  <button
-                    type="button"
-                    class="absolute top-0.5 right-0.5 z-[1] w-4 h-4 rounded-full bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                    :disabled="store.fileDeleting === item.id"
-                    @click.stop
-                  >
-                    <n-spin v-if="store.fileDeleting === item.id" :size="8" />
-                    <n-icon v-else size="8"><Dismiss12Filled /></n-icon>
-                  </button>
-                </template>
-                {{ $t('documentPage.signature.files.deleteConfirm', { name: fileName(item) }) }}
-              </n-popconfirm>
-            </div>
-          </template>
-          {{ fileName(item) }}
-        </n-tooltip>
+        <!-- Fayl qo'shish: punktir chegarali keng tugma + ruxsat etilgan formatlar -->
+        <button
+          v-if="canAdd"
+          type="button"
+          class="flex items-center justify-center gap-2 h-11 rounded-lg border-2 border-dashed border-surface-line text-xs font-medium text-textColor3 transition-colors hover:border-primary hover:text-primary hover:bg-fig-chip-brand disabled:cursor-wait"
+          :disabled="uploading"
+          @click="onPick"
+        >
+          <n-spin v-if="uploading" :size="14" />
+          <n-icon v-else size="16"><Add16Regular /></n-icon>
+          <span>{{ $t('documentPage.signature.files.attachFile') }}</span>
+          <span class="text-[10px] font-normal opacity-80">
+            · {{ $t('documentPage.signature.files.allowedHint', { max: MAX_FILE_MB }) }}
+          </span>
+        </button>
       </div>
 
-      <!-- Bog'langan arizalar — fayllardan alohida ro'yxat -->
+      <!-- Bog'langan arizalar — fayllar bilan bir xil qator uslubida -->
       <div v-if="applications.length || canEdit" class="flex flex-col gap-1.5 pt-1">
-        <div class="flex items-center justify-between gap-2">
+        <div class="flex items-center justify-between gap-2 min-h-[24px]">
           <div
             class="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-textColor3"
           >
@@ -272,92 +292,116 @@
               v-if="applications.length"
               class="rounded-full bg-surface-ground px-1.5 text-[10px] font-medium normal-case tracking-normal tabular-nums text-textColor2"
             >
-              {{ applications.length }}
+              {{ applications.length }}/{{ MAX_APPLICATIONS }}
             </span>
           </div>
-          <n-button
-            v-if="canEdit && applications.length && applications.length < MAX_APPLICATIONS"
-            secondary
-            round
-            type="primary"
-            size="tiny"
-            class="!px-2.5"
-            @click="onOpenAttach"
-          >
-            <template #icon>
-              <n-icon size="14"><Add16Regular /></n-icon>
+          <n-tooltip v-if="canEdit && applications.length && applications.length < MAX_APPLICATIONS">
+            <template #trigger>
+              <n-button quaternary circle size="small" type="primary" @click="onOpenAttach">
+                <template #icon>
+                  <n-icon size="16"><Add16Regular /></n-icon>
+                </template>
+              </n-button>
             </template>
-            {{ $t('documentPage.signature.files.attachShort') }}
-          </n-button>
+            {{ $t('documentPage.signature.files.attachApplication') }}
+          </n-tooltip>
         </div>
 
         <!-- Bo'sh holat -->
         <button
           v-if="!applications.length && canEdit"
           type="button"
-          class="flex items-center justify-center gap-2 h-11 rounded-lg border-2 border-dashed border-surface-line text-xs font-medium text-textColor3 transition-colors hover:border-primary hover:text-primary hover:bg-primary/5"
+          class="flex items-center justify-center gap-2 h-11 rounded-lg border-2 border-dashed border-surface-line text-xs font-medium text-textColor3 transition-colors hover:border-primary hover:text-primary hover:bg-fig-chip-brand"
           @click="onOpenAttach"
         >
           <n-icon size="16"><Add16Regular /></n-icon>
           {{ $t('documentPage.signature.files.attachApplication') }}
         </button>
 
+        <!-- Ariza qatori: ikonka, turi (sarlavha), raqam va sana; amallar — o'ngda, hover'da -->
         <div
           v-for="item in applications"
           :key="item.id"
-          class="group flex items-center gap-2.5 rounded-lg border px-2.5 py-2 min-h-[52px] cursor-pointer transition-colors"
+          class="group flex items-center gap-2.5 rounded-lg border px-2 py-1.5 min-h-[48px] cursor-pointer transition-colors"
           :class="
             store.previewFile?.id === appPreviewId(item)
-              ? 'border-primary bg-primary/5'
-              : 'border-surface-line bg-surface-section hover:bg-surface-ground'
+              ? 'border-fig-blue-300 bg-fig-chip-brand'
+              : 'border-surface-line bg-surface-section hover:bg-fig-bg-secondary'
           "
           @click="onPreviewApplication(item)"
         >
-          <n-icon size="22" class="shrink-0">
-            <PdfFileIcon />
-          </n-icon>
+          <div
+            class="w-8 h-8 rounded-md flex items-center justify-center shrink-0 bg-fig-chip-amber text-fig-chip-amber-text"
+          >
+            <n-icon size="18"><MailAttach16Regular /></n-icon>
+          </div>
           <div class="min-w-0 flex-1">
-            <!-- Tepada: raqam — chap chekkada, sana — o'ng chekkada -->
-            <div
-              class="flex items-center justify-between gap-2 text-[10px] text-textColor3 tabular-nums"
+            <n-ellipsis
+              :line-clamp="2"
+              :tooltip="{ style: { maxWidth: '260px' } }"
+              class="text-xs font-medium text-textColor1 leading-snug"
             >
-              <span>№{{ item.worker_application?.number }}</span>
-              <span>{{ Utils.timeOnlyDate(item.worker_application?.created_at) }}</span>
-            </div>
-            <!-- Asosiy — hujjat nomi to'liq, qalin -->
-            <div class="mt-0.5 text-[11px] font-bold text-textColor1 leading-snug">
               {{ item.worker_application?.type?.name }}
+            </n-ellipsis>
+            <div class="mt-0.5 text-[11px] font-medium text-textColor2 tabular-nums">
+              №{{ item.worker_application?.number }}
+              <template v-if="item.worker_application?.created_at">
+                · {{ Utils.timeOnlyDate(item.worker_application.created_at) }}
+              </template>
             </div>
           </div>
 
-          <!-- Uzish — hover'da, tasdiqlanmagan hujjatda -->
-          <n-popconfirm
-            v-if="canEdit"
-            :positive-text="$t('content.delete')"
-            :negative-text="$t('content.cancel')"
-            @positive-click="onDelete(item)"
+          <div
+            class="flex items-center gap-0.5 shrink-0 transition-opacity"
+            :class="
+              store.previewFile?.id === appPreviewId(item)
+                ? 'opacity-100'
+                : 'opacity-0 group-hover:opacity-100'
+            "
+            @click.stop
           >
-            <template #trigger>
-              <n-button
-                quaternary
-                circle
-                size="tiny"
-                type="error"
-                class="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                :loading="store.fileDeleting === item.id"
-                @click.stop
-              >
-                <template #icon>
-                  <n-icon><Dismiss12Filled /></n-icon>
-                </template>
-              </n-button>
-            </template>
-            {{
-              $t('documentPage.signature.files.unlinkConfirm', {
-                number: item.worker_application?.number
-              })
-            }}
-          </n-popconfirm>
+            <n-tooltip>
+              <template #trigger>
+                <n-button
+                  quaternary
+                  circle
+                  size="small"
+                  :type="store.previewFile?.id === appPreviewId(item) ? 'primary' : 'default'"
+                  @click="onPreviewApplication(item)"
+                >
+                  <template #icon>
+                    <n-icon size="16"><Eye16Regular /></n-icon>
+                  </template>
+                </n-button>
+              </template>
+              {{ $t('documentPage.signature.files.view') }}
+            </n-tooltip>
+            <n-popconfirm
+              v-if="canEdit"
+              :positive-text="$t('content.delete')"
+              :negative-text="$t('content.cancel')"
+              @positive-click="onDelete(item)"
+            >
+              <template #trigger>
+                <n-button
+                  quaternary
+                  circle
+                  size="small"
+                  type="error"
+                  :loading="store.fileDeleting === item.id"
+                >
+                  <template #icon>
+                    <n-icon size="16"><LinkDismiss16Regular /></n-icon>
+                  </template>
+                </n-button>
+              </template>
+              {{
+                $t('documentPage.signature.files.unlinkConfirm', {
+                  number: item.worker_application?.number
+                })
+              }}
+            </n-popconfirm>
+          </div>
         </div>
       </div>
 

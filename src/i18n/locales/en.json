@@ -1394,7 +1394,11 @@
         "unlinkConfirm": "Detach application No. {number} from the document?",
         "files": "Files",
         "attachShort": "Attach",
-        "applicationsLimit": "No more than {max} applications can be attached"
+        "applicationsLimit": "No more than {max} applications can be attached",
+        "attachFile": "Attach file",
+        "allowedHint": "PDF, PNG, JPG · up to {max} MB",
+        "view": "View",
+        "download": "Download"
       },
       "checkDocument": "Click to check document status",
       "attachedDocuments": "Attached documents",

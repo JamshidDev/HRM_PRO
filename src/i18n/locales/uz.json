@@ -1410,7 +1410,11 @@
         "unlinkConfirm": "№{number} arizani hujjatdan uzasizmi?",
         "files": "Fayllar",
         "attachShort": "Biriktirish",
-        "applicationsLimit": "Ko'pi bilan {max} ta ariza biriktirish mumkin"
+        "applicationsLimit": "Ko'pi bilan {max} ta ariza biriktirish mumkin",
+        "attachFile": "Fayl biriktirish",
+        "allowedHint": "PDF, PNG, JPG · {max} MB gacha",
+        "view": "Ko'rish",
+        "download": "Yuklab olish"
       },
       "checkDocument": "Hujjat holatini tekshirish uchun bosing",
       "attachedDocuments": "Biriktirilgan hujjatlar",

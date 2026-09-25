@@ -1278,7 +1278,11 @@
         "unlinkConfirm": "№{number} аризани ҳужжатдан узасизми?",
         "files": "Файллар",
         "attachShort": "Бириктириш",
-        "applicationsLimit": "Кўпи билан {max} та ариза бириктириш мумкин"
+        "applicationsLimit": "Кўпи билан {max} та ариза бириктириш мумкин",
+        "attachFile": "Файл бириктириш",
+        "allowedHint": "PDF, PNG, JPG · {max} MB гача",
+        "view": "Кўриш",
+        "download": "Юклаб олиш"
       },
       "checkDocument": "Ҳужжат ҳолатини текшириш учун босинг",
       "attachedDocuments": "Бириктирилган ҳужжатлар",
