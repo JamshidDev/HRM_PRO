@@ -1394,7 +1394,16 @@
         "unlinkConfirm": "Detach application No. {number} from the document?",
         "files": "Files",
         "attachShort": "Attach",
-        "applicationsLimit": "No more than {max} applications can be attached"
+        "applicationsLimit": "No more than {max} applications can be attached",
+        "attachFile": "Attach file",
+        "view": "View",
+        "download": "Download",
+        "lockedTitle": "Document approved",
+        "lockedEmpty": "No attached files or applications. New files can't be added to an approved document.",
+        "lockedShort": "Document approved — files are view-only",
+        "deleteTitle": "Delete file",
+        "unlinkTitle": "Unlink application",
+        "unlink": "Unlink"
       },
       "checkDocument": "Click to check document status",
       "attachedDocuments": "Attached documents",
@@ -1460,6 +1469,9 @@
         "notForYou": "This document was not sent to you for signing",
         "youSigned": "You have signed this document",
         "youRejected": "You have rejected this document",
+        "yourTurn": "It's your turn to sign",
+        "yourTurnSub": "The document is approved via E-IMZO",
+        "notForYouSub": "You can only view this document",
         "roles": {
           "w": "Employee",
           "s": "Approver",
@@ -1477,7 +1489,8 @@
           "resent": "— resent",
           "file_added": "added a file",
           "file_removed": "removed a file"
-        }
+        },
+        "showAll": "Show all"
       },
       "rejectReasonSelect": "Select a rejection reason",
       "optional": "optional"
