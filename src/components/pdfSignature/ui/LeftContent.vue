@@ -2,7 +2,6 @@
   import { usePdfViewerStore } from '@/store/modules/index.js'
   import {
     Add16Regular,
-    DocumentText20Regular,
     Add24Regular,
     MailAttach16Regular,
     Dismiss12Filled,
@@ -306,20 +305,20 @@
         <div
           v-for="item in applications"
           :key="item.id"
-          class="group relative flex gap-2 rounded-lg px-2 py-1.5 cursor-pointer transition-colors"
+          class="group flex items-center gap-2.5 rounded-lg border px-2.5 py-2 min-h-[52px] cursor-pointer transition-colors"
           :class="
             store.previewFile?.id === appPreviewId(item)
-              ? 'bg-primary/5 ring-1 ring-primary'
-              : 'hover:bg-surface-ground'
+              ? 'border-primary bg-primary/5'
+              : 'border-surface-line bg-surface-section hover:bg-surface-ground'
           "
           @click="onPreviewApplication(item)"
         >
-          <n-icon size="18" class="shrink-0 mt-0.5 text-textColor3">
-            <DocumentText20Regular />
+          <n-icon size="22" class="shrink-0">
+            <PdfFileIcon />
           </n-icon>
           <div class="min-w-0 flex-1">
             <!-- Asosiy — hujjat nomi to'liq, qalin -->
-            <div class="text-xs font-semibold text-textColor1 leading-snug pr-5">
+            <div class="text-xs font-semibold text-textColor1 leading-4">
               {{ item.worker_application?.type?.name }}
             </div>
             <div class="mt-0.5 text-[10px] text-textColor3 tabular-nums">
@@ -341,7 +340,7 @@
                 circle
                 size="tiny"
                 type="error"
-                class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity !bg-surface-section"
+                class="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
                 :loading="store.fileDeleting === item.id"
                 @click.stop
               >
