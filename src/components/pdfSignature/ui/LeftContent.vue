@@ -165,16 +165,13 @@
         <n-tooltip v-for="item in store.fileList" :key="item.id" placement="bottom">
           <template #trigger>
             <div
-              class="group relative aspect-square rounded-lg border border-surface-line bg-surface-section flex flex-col items-center justify-center gap-0.5 p-1 overflow-hidden"
+              class="group relative aspect-square rounded-lg border border-surface-line bg-surface-section flex items-center justify-center overflow-hidden"
             >
               <div
-                class="w-6 h-6 rounded-md flex items-center justify-center"
+                class="w-7 h-7 rounded-md flex items-center justify-center"
                 :class="fileTone(item)"
               >
-                <n-icon size="14"><component :is="fileIcon(item)" /></n-icon>
-              </div>
-              <div class="w-full text-[9px] text-center text-textColor2 truncate leading-tight">
-                {{ fileName(item) }}
+                <n-icon size="16"><component :is="fileIcon(item)" /></n-icon>
               </div>
 
               <!-- Amallar — ustiga olib borilganda -->
