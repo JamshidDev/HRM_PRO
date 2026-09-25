@@ -103,39 +103,40 @@ const saveToken = async (token) => {
 
 /**
  * Banner tugmasi uchun: ruxsat so'raydi va tokenni yozadi.
- * Qaytadi: 'granted' | 'denied' | 'unsupported'.
+ * Qaytadi: 'granted' | 'denied' | 'default' | 'unsupported'.
+ *
+ * `Notification.requestPermission()` HAMMA tekshiruvdan OLDIN, bosishning o'zida
+ * chaqiriladi: brauzer oynasi faqat foydalanuvchi harakati (click) ichida chiqadi,
+ * oldin `await import(...)` qilinsa Firefox/Safari bu "harakat"ni yo'qotib,
+ * so'rovni jimgina rad etadi.
  */
 export const requestPushPermission = async () => {
-  if (!isConfigured()) return 'unsupported'
-  if (!(await isSupportedBrowser())) return 'unsupported'
-  if (Notification.permission === 'denied') return 'denied'
+  if (!('Notification' in window)) return 'unsupported'
 
   localStorage.setItem(useAppSetting.pushAskedKey, '1')
   const permission =
-    Notification.permission === 'granted' ? 'granted' : await Notification.requestPermission()
-  if (permission !== 'granted') return 'denied'
+    Notification.permission === 'default'
+      ? await Notification.requestPermission()
+      : Notification.permission
+  if (permission !== 'granted') return permission
 
-  await saveToken(await fetchToken())
+  try {
+    await saveToken(await fetchToken())
+  } catch (e) {
+    console.warn('[push] token saqlanmadi:', e?.message || e)
+  }
   return 'granted'
 }
 
 /**
- * Home sahifada chaqiriladi: ruxsatni BIR MARTA so'raydi, token olsa backendga yozadi.
- * Token o'zgarmagan bo'lsa so'rov yubormaydi; rad etilgan bo'lsa qayta bezovta qilmaydi.
+ * Home sahifada chaqiriladi: ruxsat BERILGAN bo'lsa tokenni backendga yozadi.
+ * Ruxsatni o'zi SO'RAMAYDI — u `PushPermissionAlert` tugmasi orqali so'raladi
+ * (click'siz so'rovni brauzerlar bloklaydi yoki jim rad etadi).
+ * Token o'zgarmagan bo'lsa so'rov yubormaydi.
  */
 export const syncPushOnHome = async () => {
   try {
-    if (!isConfigured()) return
-    if (!(await isSupportedBrowser())) return
-
-    const permission = pushPermission()
-    if (permission === 'denied' || permission === 'unsupported') return
-    if (permission === 'default') {
-      if (localStorage.getItem(useAppSetting.pushAskedKey)) return
-      localStorage.setItem(useAppSetting.pushAskedKey, '1')
-      if ((await Notification.requestPermission()) !== 'granted') return
-    }
-
+    if (pushPermission() !== 'granted') return
     await saveToken(await fetchToken())
   } catch (e) {
     console.warn('[push] sinxronlash xatosi:', e?.message || e)
