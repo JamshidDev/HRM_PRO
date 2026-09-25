@@ -153,10 +153,6 @@
     :title="$t('documentPage.signature.attachedDocuments')"
     class="w-full"
   >
-    <template v-if="showDocumentFiles" #trailing>
-      <span class="text-[11px] tabular-nums text-textColor3">{{ fileCount }}/{{ MAX_FILES }}</span>
-    </template>
-
     <div class="flex flex-col gap-3">
       <div class="grid grid-cols-4 gap-1.5">
         <!-- Qo'shish: punktir chegarali kvadrat — doim birinchi -->
@@ -246,14 +242,7 @@
         accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
         @change="onFilesSelected"
       />
-
-      <div v-if="canEdit" class="text-[11px] text-textColor3 leading-snug">
-        {{ $t('documentPage.signature.files.hint', { max: MAX_FILE_MB, count: MAX_FILES }) }}
-      </div>
-      <div
-        v-else-if="showDocumentFiles && isApproved"
-        class="text-[11px] text-textColor3 leading-snug"
-      >
+      <div v-if="showDocumentFiles && isApproved" class="text-[11px] text-textColor3 leading-snug">
         {{ $t('documentPage.signature.files.locked') }}
       </div>
 

@@ -107,6 +107,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
 
     documentApplications: [],
     docApplicationLoading: false,
+    docApplicationReqId: 0,
+    documentApplicationsTotal: 0,
     workerApplications: [],
 
     viewerLoading: false,
@@ -394,12 +396,16 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
           this.attachLoading = false
         })
     },
-    _documentApplications(params) {
+    // Ariza biriktirish oynasi: qidiruv serverda, sahifalar scroll bilan qo'shiladi.
+    _documentApplications(params, append = false) {
+      const reqId = ++this.docApplicationReqId
       this.docApplicationLoading = true
       $ApiService.applicationService
         ._documentApplication({ params })
         .then((res) => {
-          this.documentApplications = res.data.data.data.map((v) => ({
+          if (reqId !== this.docApplicationReqId) return
+          const page = res.data.data
+          const items = page.data.map((v) => ({
             name: v.number + ' - ' + v.type?.name,
             id: v.id,
             number: v.number,
@@ -408,9 +414,15 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
             photo: v.worker?.photo,
             fullName: Utils.combineFullName(v.worker)
           }))
+          this.documentApplications = append
+            ? Array.from(
+                new Map([...this.documentApplications, ...items].map((v) => [v.id, v])).values()
+              )
+            : items
+          this.documentApplicationsTotal = page.total ?? items.length
         })
         .finally(() => {
-          this.docApplicationLoading = false
+          if (reqId === this.docApplicationReqId) this.docApplicationLoading = false
         })
     }
   }

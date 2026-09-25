@@ -21,16 +21,42 @@
       )
   )
 
-  const items = computed(() => {
-    const q = search.value.trim().toLowerCase()
-    return store.documentApplications.filter(
-      (a) =>
-        !q ||
-        String(a.number ?? '').includes(q) ||
-        (a.fullName || '').toLowerCase().includes(q) ||
-        (a.typeName || '').toLowerCase().includes(q)
+  // Qidiruv va sahifalar serverda (faqat tasdiqlangan arizalar).
+  const PER_PAGE = 20
+  const page = ref(1)
+  const items = computed(() => store.documentApplications)
+  const hasMore = computed(() => items.value.length < store.documentApplicationsTotal)
+
+  const load = (append = false) => {
+    store._documentApplications(
+      {
+        model: store.model,
+        document_id: store.document_id,
+        search: search.value.trim() || undefined,
+        page: page.value,
+        per_page: PER_PAGE
+      },
+      append
     )
+  }
+
+  let searchTimer = null
+  watch(search, () => {
+    clearTimeout(searchTimer)
+    searchTimer = setTimeout(() => {
+      page.value = 1
+      load()
+    }, 350)
   })
+
+  const onScroll = (e) => {
+    const el = e.target
+    if (store.docApplicationLoading || !hasMore.value) return
+    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 40) {
+      page.value += 1
+      load(true)
+    }
+  }
 
   const isLinked = (a) => linkedIds.value.has(a.id)
   const isSelected = (a) => selected.value.includes(a.id)
@@ -45,13 +71,12 @@
     () => store.attachVisible,
     (v) => {
       if (!v) return
+      clearTimeout(searchTimer)
       search.value = ''
       selected.value = []
-      store._documentApplications({
-        model: store.model,
-        document_id: store.document_id,
-        per_page: 100
-      })
+      page.value = 1
+      store.documentApplications = []
+      load()
     }
   )
 
@@ -79,10 +104,6 @@
   >
     <template #default>
       <div class="flex flex-col gap-3">
-        <p class="text-sm text-textColor3">
-          {{ $t('documentPage.signature.files.applicationsHint') }}
-        </p>
-
         <n-input v-model:value="search" clearable :placeholder="$t('content.search')">
           <template #prefix>
             <n-icon><Search16Regular /></n-icon>
@@ -90,7 +111,10 @@
         </n-input>
 
         <n-spin :show="store.docApplicationLoading">
-          <div class="flex flex-col gap-1.5 max-h-[50vh] min-h-[120px] overflow-y-auto pr-1">
+          <div
+            class="flex flex-col gap-1.5 max-h-[50vh] min-h-[120px] overflow-y-auto pr-1"
+            @scroll="onScroll"
+          >
             <div
               v-if="!store.docApplicationLoading && !items.length"
               class="flex flex-col items-center justify-center text-center py-8 text-textColor3"

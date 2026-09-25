@@ -1394,7 +1394,6 @@
       "history": "O'zgarishlar tarixini ko'rish",
       "viewer": "Hujjat bilan tanishuvchilar",
       "files": {
-        "hint": "PDF, PNG yoki JPG · har biri {max} MB gacha · ko'pi bilan {count} ta",
         "locked": "Hujjat tasdiqlangan — fayllarni ko'rish va yuklab olish mumkin, qo'shish va o'chirish yopiq",
         "tooMany": "Ko'pi bilan {max} ta fayl biriktirish mumkin",
         "tooBig": "«{name}» {max} MB dan katta",
@@ -1402,7 +1401,6 @@
         "deleteConfirm": "«{name}» faylini o'chirasizmi?",
         "attachApplication": "Ariza biriktirish",
         "backToDocument": "Hujjatga qaytish",
-        "applicationsHint": "Hujjatga tegishli arizalarni belgilang. Bog'langan arizalar chap panelda ko'rinadi.",
         "noApplications": "Bog'lash mumkin bo'lgan ariza topilmadi",
         "linked": "biriktirilgan",
         "selectedCount": "{count} ta tanlandi",

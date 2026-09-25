@@ -1378,7 +1378,6 @@
       "history": "View change history",
       "viewer": "Document reviewers",
       "files": {
-        "hint": "PDF, PNG or JPG · up to {max} MB each · at most {count}",
         "locked": "The document is approved — files can be viewed and downloaded, adding and removing is closed",
         "tooMany": "No more than {max} files can be attached",
         "tooBig": "«{name}» is larger than {max} MB",
@@ -1386,7 +1385,6 @@
         "deleteConfirm": "Delete the file «{name}»?",
         "attachApplication": "Attach an application",
         "backToDocument": "Back to document",
-        "applicationsHint": "Select applications related to the document. Attached applications appear on the left panel.",
         "noApplications": "No applications available to attach",
         "linked": "attached",
         "selectedCount": "{count} selected",
