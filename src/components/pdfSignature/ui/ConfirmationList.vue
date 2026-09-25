@@ -73,11 +73,17 @@
     return !route.fullPath.includes(AppPaths.DocFlow)
   })
 
+  // Chatga kirganda ro'yxat chapga surilib, chat o'ngdan kiradi; orqaga
+  // qaytganda — teskarisi. Yo'nalish shu nom orqali tanlanadi.
+  const slideName = ref('slide-forward')
+
   const onOpenChat = (item) => {
+    slideName.value = 'slide-forward'
     chatWith.value = item
   }
 
   const onCloseChat = () => {
+    slideName.value = 'slide-back'
     chatWith.value = null
     store.payload.recipient_id = null
   }
@@ -86,101 +92,116 @@
 <template>
   <SectionHeader full-height tight-body>
     <template #header>
-      <div v-if="chatWith" class="flex items-center gap-2 min-w-0">
-        <n-button quaternary circle size="small" @click="onCloseChat">
-          <template #icon>
-            <n-icon size="18">
-              <ArrowLeft20Filled />
-            </n-icon>
-          </template>
-        </n-button>
-        <span class="font-semibold text-textColor0 truncate">
-          {{ chatWith.worker.last_name }} {{ chatWith.worker.first_name }}
-        </span>
-      </div>
-      <div v-else class="flex items-center justify-between gap-2 min-w-0 w-full">
-        <div class="flex items-center gap-2 min-w-0">
-          <span class="font-semibold text-textColor0 truncate">{{ $t('documentPage.signature.approval.title') }}</span>
-          <n-badge v-if="store.document?.chats" :value="store.document.chats" :max="99" />
-        </div>
-        <span class="text-xs font-semibold tabular-nums text-textColor2 shrink-0">
-          {{ summary.approved }}/{{ summary.total }}
-        </span>
+      <div class="slide-stage w-full min-w-0 overflow-x-clip">
+        <Transition :name="slideName">
+          <!-- Ikkala sarlavha ham `h-6`: chatga o'tganda bar balandligi o'zgarmasin -->
+          <div v-if="chatWith" class="slide-pane flex items-center gap-1.5 min-w-0 h-6">
+            <n-button quaternary circle size="tiny" class="-ml-1" @click="onCloseChat">
+              <template #icon>
+                <n-icon size="16">
+                  <ArrowLeft20Filled />
+                </n-icon>
+              </template>
+            </n-button>
+            <span class="font-semibold text-textColor0 truncate">
+              {{ chatWith.worker.last_name }} {{ chatWith.worker.first_name }}
+            </span>
+          </div>
+          <div v-else class="slide-pane flex items-center justify-between gap-2 min-w-0 w-full h-6">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="font-semibold text-textColor0 truncate">{{ $t('documentPage.signature.approval.title') }}</span>
+              <n-badge v-if="store.document?.chats" :value="store.document.chats" :max="99" />
+            </div>
+            <span class="text-xs font-semibold tabular-nums text-textColor2 shrink-0">
+              {{ summary.approved }}/{{ summary.total }}
+            </span>
+          </div>
+        </Transition>
       </div>
     </template>
 
-    <ChatCotent v-if="chatWith" :forced-recipient-worker-id="chatWith.worker.id" />
-
-    <template v-else>
-      <!-- Umumiy holat: segmentli progress va hisoblagichlar -->
-      <div class="rounded-xl border border-surface-line bg-surface-ground/50 p-3 mb-3">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-xs text-textColor2">
-            {{ $t('documentPage.signature.approval.progress', { done: summary.approved, total: summary.total }) }}
-          </span>
-          <span class="text-xs font-semibold tabular-nums" :class="summaryTone">{{ summary.percent }}%</span>
-        </div>
-        <div class="flex gap-1">
-          <div
-            v-for="(item, idx) in store.confirmations"
-            :key="idx"
-            class="h-1.5 flex-1 rounded-full"
-            :class="segmentClass(item.status?.id)"
-          ></div>
-        </div>
-        <div class="grid grid-cols-3 gap-2 mt-3">
-          <div class="rounded-lg bg-surface-section px-2 py-1.5">
-            <div class="text-sm font-semibold tabular-nums text-fig-chip-green-text">{{ summary.approved }}</div>
-            <div class="text-[10px] text-textColor3">{{ $t('documentPage.signature.approval.summary.approved') }}</div>
-          </div>
-          <div class="rounded-lg bg-surface-section px-2 py-1.5">
-            <div class="text-sm font-semibold tabular-nums text-fig-text-red">{{ summary.rejected }}</div>
-            <div class="text-[10px] text-textColor3">{{ $t('documentPage.signature.approval.summary.rejected') }}</div>
-          </div>
-          <div class="rounded-lg bg-surface-section px-2 py-1.5">
-            <div class="text-sm font-semibold tabular-nums text-fig-chip-amber-text">{{ summary.pending }}</div>
-            <div class="text-[10px] text-textColor3">{{ $t('documentPage.signature.approval.summary.pending') }}</div>
-          </div>
-        </div>
-      </div>
-
-      <n-tabs v-model:value="activeTab" type="segment" size="small" animated class="mb-3">
-        <n-tab name="signers">
-          <div class="flex items-center gap-1.5">
-            <n-icon size="16"><People20Regular /></n-icon>
-            {{ $t('documentPage.signature.approval.signers') }}
-          </div>
-        </n-tab>
-        <n-tab name="history">
-          <div class="flex items-center gap-1.5">
-            <n-icon size="16"><History20Regular /></n-icon>
-            {{ $t('documentPage.signature.approval.history') }}
-          </div>
-        </n-tab>
-      </n-tabs>
-
-      <div v-if="activeTab === 'signers'">
-        <SignerCard
-          v-for="(item, idx) in store.confirmations"
-          :key="item.id ?? idx"
-          :item="item"
-          :step="idx + 1"
-          :is-last="idx === store.confirmations.length - 1"
-          :is-self="isSelf(item)"
-          :events="history.bySigner[idx] || []"
-          :can-link="item.type === 'w' && isDocFlow && item.status?.id !== 3 && !store.viewerLoading"
-          :link-loading="store.linkLoading"
-          @link="generateLink"
-          @chat="onOpenChat"
+    <!-- `overflow-x: clip`: surilish paytida gorizontal skroll chiqmasin
+         (`hidden` dan farqli, yangi skroll konteyner yaratmaydi). -->
+    <div class="slide-stage h-full overflow-x-clip">
+      <Transition :name="slideName">
+        <ChatCotent
+          v-if="chatWith"
+          class="slide-pane"
+          :forced-recipient-worker-id="chatWith.worker.id"
         />
-      </div>
 
-      <ApprovalHistory
-        v-else
-        :confirmations="store.confirmations"
-        :by-signer="history.bySigner"
-      />
-    </template>
+        <div v-else class="slide-pane">
+          <!-- Umumiy holat: segmentli progress va hisoblagichlar -->
+          <div class="rounded-xl border border-surface-line bg-surface-ground/50 p-3 mb-3">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs text-textColor2">
+                {{ $t('documentPage.signature.approval.progress', { done: summary.approved, total: summary.total }) }}
+              </span>
+              <span class="text-xs font-semibold tabular-nums" :class="summaryTone">{{ summary.percent }}%</span>
+            </div>
+            <div class="flex gap-1">
+              <div
+                v-for="(item, idx) in store.confirmations"
+                :key="idx"
+                class="h-1.5 flex-1 rounded-full"
+                :class="segmentClass(item.status?.id)"
+              ></div>
+            </div>
+            <div class="grid grid-cols-3 gap-2 mt-3">
+              <div class="rounded-lg bg-surface-section px-2 py-1.5">
+                <div class="text-sm font-semibold tabular-nums text-fig-chip-green-text">{{ summary.approved }}</div>
+                <div class="text-[10px] text-textColor3">{{ $t('documentPage.signature.approval.summary.approved') }}</div>
+              </div>
+              <div class="rounded-lg bg-surface-section px-2 py-1.5">
+                <div class="text-sm font-semibold tabular-nums text-fig-text-red">{{ summary.rejected }}</div>
+                <div class="text-[10px] text-textColor3">{{ $t('documentPage.signature.approval.summary.rejected') }}</div>
+              </div>
+              <div class="rounded-lg bg-surface-section px-2 py-1.5">
+                <div class="text-sm font-semibold tabular-nums text-fig-chip-amber-text">{{ summary.pending }}</div>
+                <div class="text-[10px] text-textColor3">{{ $t('documentPage.signature.approval.summary.pending') }}</div>
+              </div>
+            </div>
+          </div>
+
+          <n-tabs v-model:value="activeTab" type="segment" size="small" animated class="mb-3">
+            <n-tab name="signers">
+              <div class="flex items-center gap-1.5">
+                <n-icon size="16"><People20Regular /></n-icon>
+                {{ $t('documentPage.signature.approval.signers') }}
+              </div>
+            </n-tab>
+            <n-tab name="history">
+              <div class="flex items-center gap-1.5">
+                <n-icon size="16"><History20Regular /></n-icon>
+                {{ $t('documentPage.signature.approval.history') }}
+              </div>
+            </n-tab>
+          </n-tabs>
+
+          <div v-if="activeTab === 'signers'">
+            <SignerCard
+              v-for="(item, idx) in store.confirmations"
+              :key="item.id ?? idx"
+              :item="item"
+              :step="idx + 1"
+              :is-last="idx === store.confirmations.length - 1"
+              :is-self="isSelf(item)"
+              :events="history.bySigner[idx] || []"
+              :can-link="item.type === 'w' && isDocFlow && item.status?.id !== 3 && !store.viewerLoading"
+              :link-loading="store.linkLoading"
+              @link="generateLink"
+              @chat="onOpenChat"
+            />
+          </div>
+
+          <ApprovalHistory
+            v-else
+            :confirmations="store.confirmations"
+            :by-signer="history.bySigner"
+          />
+        </div>
+      </Transition>
+    </div>
 
     <UIDConfirm v-model:visible="store.linkVisible" type="warning">
       <template #icon> <span></span></template>
@@ -216,4 +237,48 @@
   </SectionHeader>
 </template>
 
-<style scoped></style>
+<style scoped>
+  /*
+    Ikkala ko'rinish bitta grid katagida ustma-ust turadi: eskisi chiqib
+    ketayotganda yangisi yonidan kirib keladi (`mode="out-in"` siz) — xuddi
+    telefondagi "push" navigatsiyasidek, butun panel kengligida surilish ko'rinadi.
+  */
+  /* `minmax(0, 1fr)`: ustun panel kengligidan oshmasin. Oddiy `auto` ustun
+     kontentning (uzun ism, tugmalar) kengligigacha cho'zilib, kartalarni
+     o'ngdan kesib qo'yardi. */
+  .slide-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .slide-pane {
+    grid-area: 1 / 1;
+    min-width: 0;
+  }
+
+  .slide-forward-enter-active,
+  .slide-forward-leave-active,
+  .slide-back-enter-active,
+  .slide-back-leave-active {
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .slide-forward-enter-from,
+  .slide-back-leave-to {
+    transform: translateX(100%);
+  }
+
+  .slide-forward-leave-to,
+  .slide-back-enter-from {
+    transform: translateX(-100%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide-forward-enter-active,
+    .slide-forward-leave-active,
+    .slide-back-enter-active,
+    .slide-back-leave-active {
+      transition: none;
+    }
+  }
+</style>
