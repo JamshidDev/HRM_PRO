@@ -46,6 +46,11 @@
     compact: {
       type: Boolean,
       default: false
+    },
+    // `fig` chipning status nomi tooltip'i — o'z popover'i bor joylarda o'chiriladi.
+    tooltip: {
+      type: Boolean,
+      default: true
     }
   })
 
@@ -178,7 +183,7 @@
 <template>
   <!-- Maket varianti (node 2511:18119): rounded-full, 12/4 padding, 4px gap,
        16px ikonka, 12px semibold matn. -->
-  <n-tooltip v-if="fig" trigger="hover" :disabled="!status?.name">
+  <n-tooltip v-if="fig" trigger="hover" :disabled="!tooltip || !status?.name">
     <template #trigger>
       <span
         class="inline-flex max-w-full items-center justify-center rounded-full font-semibold"
