@@ -61,7 +61,28 @@
   // Tasdiqlangan hujjatning fayllari muzlatiladi.
   const isApproved = computed(() => store.document?.document?.confirmation?.id === 3)
   const canEdit = computed(() => showDocumentFiles.value && !isApproved.value)
-  const fileCount = computed(() => store.fileList.filter((v) => v?.file).length)
+  // Fayllar — plitkalarda, bog'langan arizalar — alohida ro'yxatda.
+  const files = computed(() => store.fileList.filter((v) => v?.file))
+  const applications = computed(() =>
+    store.fileList.filter((v) => !v?.file && v?.worker_application)
+  )
+  const fileCount = computed(() => files.value.length)
+
+  // Ariza PDF'i ham buyruq o'rnida ochiladi (AttachmentPreview fayl shaklini kutadi).
+  const appPreviewId = (item) => `app-${item.id}`
+  const onPreviewApplication = (item) => {
+    const wa = item.worker_application
+    const id = appPreviewId(item)
+    store.previewFile =
+      store.previewFile?.id === id
+        ? null
+        : {
+            id,
+            file: wa?.confirmation_file,
+            original_name: `${t('documentPage.signature.files.application')} №${wa?.number}.pdf`,
+            created_at: wa?.created_at
+          }
+  }
   const canAdd = computed(() => canEdit.value && fileCount.value < MAX_FILES)
 
   const uploading = ref(false)
@@ -116,7 +137,7 @@
 
   const onDelete = (item) => {
     store._deleteFile(item.id, () => {
-      if (store.previewFile?.id === item.id) store.previewFile = null
+      if ([item.id, appPreviewId(item)].includes(store.previewFile?.id)) store.previewFile = null
       store._files()
       store._refreshMeta()
     })
@@ -168,7 +189,7 @@
           <n-icon v-else size="18"><Add24Regular /></n-icon>
         </button>
         <!-- Biriktirilgan fayllar -->
-        <n-tooltip v-for="item in store.fileList" :key="item.id" placement="bottom">
+        <n-tooltip v-for="item in files" :key="item.id" placement="bottom">
           <template #trigger>
             <!-- Ikonka butun plitkani to'ldiradi, rang — fayl turiga qarab -->
             <div
@@ -233,6 +254,80 @@
           </template>
           {{ fileName(item) }}
         </n-tooltip>
+      </div>
+
+      <!-- Bog'langan arizalar — fayllardan alohida ro'yxat -->
+      <div v-if="applications.length" class="flex flex-col gap-1.5">
+        <div class="text-[11px] font-semibold uppercase tracking-wide text-textColor3">
+          {{ $t('documentPage.signature.files.applications') }}
+        </div>
+        <div
+          v-for="item in applications"
+          :key="item.id"
+          class="group flex items-center gap-2 rounded-lg border px-2 py-1.5 transition-colors"
+          :class="
+            store.previewFile?.id === appPreviewId(item)
+              ? 'border-primary bg-primary/5'
+              : 'border-surface-line bg-surface-section hover:bg-surface-ground'
+          "
+        >
+          <div
+            class="w-7 h-7 shrink-0 rounded-md flex items-center justify-center bg-warning/10 text-warning"
+          >
+            <n-icon size="16"><MailAttach16Regular /></n-icon>
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="text-xs font-medium text-textColor1 truncate">
+              {{ $t('documentPage.signature.files.application') }} №{{
+                item.worker_application?.number
+              }}
+            </div>
+            <n-ellipsis
+              class="text-[10px] text-textColor3"
+              :tooltip="{ style: { maxWidth: '260px' } }"
+            >
+              {{ item.worker_application?.type?.name }}
+            </n-ellipsis>
+          </div>
+          <div class="flex items-center gap-0.5 shrink-0">
+            <n-button
+              v-if="item.worker_application?.confirmation_file"
+              quaternary
+              circle
+              size="tiny"
+              @click="onPreviewApplication(item)"
+            >
+              <template #icon>
+                <n-icon><Eye16Regular /></n-icon>
+              </template>
+            </n-button>
+            <n-popconfirm
+              v-if="canEdit"
+              :positive-text="$t('content.delete')"
+              :negative-text="$t('content.cancel')"
+              @positive-click="onDelete(item)"
+            >
+              <template #trigger>
+                <n-button
+                  quaternary
+                  circle
+                  size="tiny"
+                  type="error"
+                  :loading="store.fileDeleting === item.id"
+                >
+                  <template #icon>
+                    <n-icon><Dismiss12Filled /></n-icon>
+                  </template>
+                </n-button>
+              </template>
+              {{
+                $t('documentPage.signature.files.unlinkConfirm', {
+                  number: item.worker_application?.number
+                })
+              }}
+            </n-popconfirm>
+          </div>
+        </div>
       </div>
 
       <input

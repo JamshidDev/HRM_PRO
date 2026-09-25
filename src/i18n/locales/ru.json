@@ -1390,7 +1390,10 @@
         "noApplications": "Нет заявлений для прикрепления",
         "linked": "прикреплено",
         "selectedCount": "Выбрано: {count}",
-        "attachSubmit": "Прикрепить"
+        "attachSubmit": "Прикрепить",
+        "applications": "Заявления",
+        "application": "Заявление",
+        "unlinkConfirm": "Открепить заявление №{number} от документа?"
       },
       "checkDocument": "Нажмите для проверки статуса документа",
       "attachedDocuments": "Прикреплённые документы",

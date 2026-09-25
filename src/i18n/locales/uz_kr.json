@@ -1272,7 +1272,10 @@
         "noApplications": "Боғлаш мумкин бўлган ариза топилмади",
         "linked": "бириктирилган",
         "selectedCount": "{count} та танланди",
-        "attachSubmit": "Бириктириш"
+        "attachSubmit": "Бириктириш",
+        "applications": "Аризалар",
+        "application": "Ариза",
+        "unlinkConfirm": "№{number} аризани ҳужжатдан узасизми?"
       },
       "checkDocument": "Ҳужжат ҳолатини текшириш учун босинг",
       "attachedDocuments": "Бириктирилган ҳужжатлар",

@@ -1404,7 +1404,10 @@
         "noApplications": "Bog'lash mumkin bo'lgan ariza topilmadi",
         "linked": "biriktirilgan",
         "selectedCount": "{count} ta tanlandi",
-        "attachSubmit": "Biriktirish"
+        "attachSubmit": "Biriktirish",
+        "applications": "Arizalar",
+        "application": "Ariza",
+        "unlinkConfirm": "№{number} arizani hujjatdan uzasizmi?"
       },
       "checkDocument": "Hujjat holatini tekshirish uchun bosing",
       "attachedDocuments": "Biriktirilgan hujjatlar",

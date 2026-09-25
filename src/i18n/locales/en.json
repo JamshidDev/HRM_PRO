@@ -1388,7 +1388,10 @@
         "noApplications": "No applications available to attach",
         "linked": "attached",
         "selectedCount": "{count} selected",
-        "attachSubmit": "Attach"
+        "attachSubmit": "Attach",
+        "applications": "Applications",
+        "application": "Application",
+        "unlinkConfirm": "Detach application No. {number} from the document?"
       },
       "checkDocument": "Click to check document status",
       "attachedDocuments": "Attached documents",
