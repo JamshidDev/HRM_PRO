@@ -175,15 +175,12 @@
         <!-- Biriktirilgan fayllar -->
         <n-tooltip v-for="item in store.fileList" :key="item.id" placement="bottom">
           <template #trigger>
+            <!-- Ikonka butun plitkani to'ldiradi, rang — fayl turiga qarab -->
             <div
-              class="group relative aspect-square rounded-lg border border-surface-line bg-surface-section flex items-center justify-center overflow-hidden"
+              class="group relative aspect-square rounded-lg flex items-center justify-center overflow-hidden"
+              :class="fileTone(item)"
             >
-              <div
-                class="w-7 h-7 rounded-md flex items-center justify-center"
-                :class="fileTone(item)"
-              >
-                <n-icon size="16"><component :is="fileIcon(item)" /></n-icon>
-              </div>
+              <n-icon size="30"><component :is="fileIcon(item)" /></n-icon>
 
               <!-- Amallar — ustiga olib borilganda -->
               <div
