@@ -7,7 +7,7 @@
     Signature20Regular,
     CheckmarkCircle20Filled,
     DismissCircle20Filled,
-    Info20Regular
+    Eye20Regular
   } from '@vicons/fluent'
   import { UIUser, UILottieReader, UISegmentTabs } from '@/components/index.js'
   import CommandDataTab from '@/pages/docFlow/document/command/CommandDataTab.vue'
@@ -26,6 +26,7 @@
   import i18n from '@/i18n/index.js'
   const { t } = i18n.global
   import ConfirmationList from './ui/ConfirmationList.vue'
+  import { buildApprovalHistory, lastActionDate } from './utils/approvalHistory.js'
   import LeftContent from './ui/LeftContent.vue'
   import DrawerSkeleton from './ui/DrawerSkeleton.vue'
   import ConfirmSignatureModal from './ui/ConfirmSignatureModal.vue'
@@ -96,23 +97,39 @@
     if (selfConfirmation.value?.status?.id === 4) return 'rejected'
     return 'none'
   })
+  // O'z harakati vaqti (imzolagan / rad etgan) — backend tarixidan.
+  const selfActedAt = computed(() => {
+    if (!selfConfirmation.value) return null
+    const [events] = buildApprovalHistory([selfConfirmation.value]).bySigner
+    return lastActionDate(events)
+  })
+
   const signStateMeta = computed(
     () =>
       ({
         signed: {
           icon: CheckmarkCircle20Filled,
           label: 'documentPage.signature.approval.youSigned',
-          class: 'text-fig-chip-green-text'
+          sub: 'documentPage.signature.approval.signedWithEri',
+          text: 'text-fig-chip-green-text',
+          badge: 'bg-fig-chip-green text-fig-chip-green-text',
+          border: 'border-fig-green-100'
         },
         rejected: {
           icon: DismissCircle20Filled,
           label: 'documentPage.signature.approval.youRejected',
-          class: 'text-fig-text-red'
+          sub: null,
+          text: 'text-fig-text-red',
+          badge: 'bg-fig-red-100 text-fig-text-red',
+          border: 'border-fig-red-100'
         },
         none: {
-          icon: Info20Regular,
+          icon: Eye20Regular,
           label: 'documentPage.signature.approval.notForYou',
-          class: 'text-textColor3'
+          sub: 'documentPage.signature.approval.notForYouSub',
+          text: 'text-textColor0',
+          badge: 'bg-fig-chip-indigo text-fig-chip-indigo-text',
+          border: 'border-fig-indigo-100'
         }
       })[signState.value]
   )
@@ -596,7 +613,7 @@
                         class="w-full h-full flex flex-col items-center justify-center text-center px-8"
                       >
                         <div
-                          class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4"
+                          class="w-14 h-14 rounded-2xl bg-fig-chip-brand flex items-center justify-center mb-4"
                         >
                           <n-icon size="26" class="text-primary">
                             <FileContractIcon />
@@ -650,44 +667,72 @@
                   >
                     <div
                       class="pointer-events-auto floating-sign-panel"
-                      :class="signState === 'sign' && 'w-full max-w-[440px]'"
+                      :class="signState === 'sign' ? 'border-fig-blue-100' : signStateMeta.border"
                     >
-                      <div v-if="signState === 'sign'" class="flex gap-2">
-                        <n-button
-                          type="error"
-                          ghost
-                          round
-                          size="small"
-                          class="shrink-0"
-                          :disabled="signatureStore.loading"
-                          @click="openRejectModal"
+                      <!-- Imzolash navbati: chapda izoh, o'ngda amallar — holat kartochkasi bilan bir uslubda -->
+                      <div v-if="signState === 'sign'" class="flex items-center gap-3 pl-1">
+                        <div
+                          class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-fig-chip-brand text-fig-chip-brand-text"
                         >
-                          <template #icon>
-                            <n-icon><Dismiss20Regular /></n-icon>
-                          </template>
-                          {{ $t('documentPage.signature.rejectSubmit') }}
-                        </n-button>
-                        <n-button
-                          type="primary"
-                          round
-                          size="small"
-                          class="flex-1"
-                          :loading="signatureStore.loading"
-                          @click="onSaveSignature"
-                        >
-                          <template #icon>
-                            <n-icon><Signature20Regular /></n-icon>
-                          </template>
-                          {{ $t('documentPage.signature.approval.sign') }}
-                        </n-button>
+                          <n-icon size="18"><Signature20Regular /></n-icon>
+                        </div>
+                        <div class="min-w-0 leading-tight mr-2">
+                          <div class="text-[13px] font-semibold text-textColor0 whitespace-nowrap">
+                            {{ $t('documentPage.signature.approval.yourTurn') }}
+                          </div>
+                          <div class="text-[11px] text-textColor3 mt-0.5 whitespace-nowrap">
+                            {{ $t('documentPage.signature.approval.yourTurnSub') }}
+                          </div>
+                        </div>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                          <n-button
+                            type="error"
+                            secondary
+                            round
+                            class="px-3!"
+                            :disabled="signatureStore.loading"
+                            @click="openRejectModal"
+                          >
+                            <template #icon>
+                              <n-icon><Dismiss20Regular /></n-icon>
+                            </template>
+                            {{ $t('documentPage.signature.rejectSubmit') }}
+                          </n-button>
+                          <n-button
+                            type="primary"
+                            round
+                            class="px-9! font-semibold"
+                            :loading="signatureStore.loading"
+                            @click="onSaveSignature"
+                          >
+                            <template #icon>
+                              <n-icon><Signature20Regular /></n-icon>
+                            </template>
+                            {{ $t('documentPage.signature.approval.sign') }}
+                          </n-button>
+                        </div>
                       </div>
-                      <div
-                        v-else
-                        class="flex items-center justify-center gap-2 h-[28px] px-3 text-sm font-medium"
-                        :class="signStateMeta.class"
-                      >
-                        <n-icon size="18"><component :is="signStateMeta.icon" /></n-icon>
-                        {{ $t(signStateMeta.label) }}
+                      <!-- Holat kartochkasi: rangli ikonka doirasi + sarlavha va izoh (vaqt) -->
+                      <div v-else class="flex items-center gap-2.5 pl-1 pr-4 py-0.5">
+                        <div
+                          class="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+                          :class="signStateMeta.badge"
+                        >
+                          <n-icon size="18"><component :is="signStateMeta.icon" /></n-icon>
+                        </div>
+                        <div class="min-w-0 leading-tight">
+                          <div class="text-[13px] font-semibold" :class="signStateMeta.text">
+                            {{ $t(signStateMeta.label) }}
+                          </div>
+                          <div
+                            v-if="signStateMeta.sub || selfActedAt"
+                            class="text-[11px] text-textColor3 tabular-nums mt-0.5"
+                          >
+                            <template v-if="signStateMeta.sub">{{ $t(signStateMeta.sub) }}</template>
+                            <template v-if="signStateMeta.sub && selfActedAt"> · </template>
+                            <template v-if="selfActedAt">{{ selfActedAt.format('DD.MM.YYYY HH:mm') }}</template>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -718,7 +763,9 @@
   .floating-sign-panel {
     padding: 6px;
     border-radius: 9999px;
-    border: 1px solid var(--surface-line);
+    /* Rang holatga qarab Tailwind klassi bilan beriladi */
+    border-width: 1px;
+    border-style: solid;
     background-color: var(--surface-section);
     box-shadow: 0 8px 24px rgb(16 24 40 / 0.12);
   }

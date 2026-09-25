@@ -1455,7 +1455,10 @@
         "sign": "Imzolash",
         "notForYou": "Bu hujjat sizga imzolashga kelmagan",
         "youSigned": "Siz imzolagansiz",
-        "youRejected": "Siz rad qilgansiz"
+        "youRejected": "Siz rad qilgansiz",
+        "yourTurn": "Imzolash navbati sizda",
+        "yourTurnSub": "Hujjat E-IMZO orqali tasdiqlanadi",
+        "notForYouSub": "Siz hujjatni faqat ko'rib chiqishingiz mumkin"
       }
     },
     "attach": {

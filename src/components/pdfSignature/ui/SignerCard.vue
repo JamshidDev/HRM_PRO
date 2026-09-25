@@ -52,7 +52,7 @@
 
     <div
       class="flex-1 min-w-0 mb-2 rounded-xl border bg-surface-section overflow-hidden"
-      :class="[tone.card, isSelf && 'ring-1 ring-primary/40']"
+      :class="[tone.card, isSelf && 'ring-1 ring-fig-blue-300']"
     >
       <div class="px-3 pt-2.5 pb-2">
         <!-- Holat o'ng yuqori burchakda; faqat ism unga joy qoldiradi,
@@ -128,7 +128,7 @@
       </div>
 
       <div
-        class="flex items-center gap-1 px-2 py-1 border-t border-dashed border-surface-line bg-surface-ground/40"
+        class="flex items-center gap-1 px-2 py-1 border-t border-dashed border-surface-line bg-fig-bg-secondary"
       >
         <n-button quaternary size="tiny" @click="expanded = !expanded">
           <template #icon>

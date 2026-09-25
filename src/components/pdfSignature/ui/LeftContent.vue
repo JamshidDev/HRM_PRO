@@ -67,7 +67,7 @@
           <div class="flex items-center gap-2 p-2 -mx-2 rounded-lg hover:bg-surface-ground">
             <div
               class="w-8 h-8 rounded-md flex items-center justify-center shrink-0"
-              :class="item?.file ? 'bg-primary/10 text-primary' : 'bg-warning/10 text-warning'"
+              :class="item?.file ? 'bg-fig-chip-brand text-fig-chip-brand-text' : 'bg-fig-chip-amber text-fig-chip-amber-text'"
             >
               <n-icon size="16">
                 <FileContractIcon v-if="item?.file" />

@@ -34,9 +34,9 @@
       <div
         v-for="item in paragraphs"
         :key="item.key"
-        class="flex items-start gap-3 p-4 rounded-xl border border-surface-line bg-surface-ground/40"
+        class="flex items-start gap-3 p-4 rounded-xl border border-surface-line bg-fig-bg-secondary"
       >
-        <div class="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+        <div class="w-9 h-9 rounded-lg bg-fig-chip-brand text-fig-chip-brand-text flex items-center justify-center shrink-0">
           <n-icon size="20">
             <component :is="item.icon" />
           </n-icon>

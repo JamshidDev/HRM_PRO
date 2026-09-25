@@ -1439,7 +1439,10 @@
         "sign": "Sign",
         "notForYou": "This document was not sent to you for signing",
         "youSigned": "You have signed this document",
-        "youRejected": "You have rejected this document"
+        "youRejected": "You have rejected this document",
+        "yourTurn": "It's your turn to sign",
+        "yourTurnSub": "The document is approved via E-IMZO",
+        "notForYouSub": "You can only view this document"
       }
     },
     "attach": {
