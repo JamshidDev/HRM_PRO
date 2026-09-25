@@ -160,26 +160,26 @@
     </template>
 
     <div class="flex flex-col gap-3">
-      <div class="grid grid-cols-3 gap-2">
+      <div class="grid grid-cols-4 gap-1.5">
         <!-- Biriktirilgan fayllar -->
         <n-tooltip v-for="item in store.fileList" :key="item.id" placement="bottom">
           <template #trigger>
             <div
-              class="group relative aspect-square rounded-xl border border-surface-line bg-surface-section flex flex-col items-center justify-center gap-1 p-1.5 overflow-hidden"
+              class="group relative aspect-square rounded-lg border border-surface-line bg-surface-section flex flex-col items-center justify-center gap-0.5 p-1 overflow-hidden"
             >
               <div
-                class="w-9 h-9 rounded-lg flex items-center justify-center"
+                class="w-6 h-6 rounded-md flex items-center justify-center"
                 :class="fileTone(item)"
               >
-                <n-icon size="20"><component :is="fileIcon(item)" /></n-icon>
+                <n-icon size="14"><component :is="fileIcon(item)" /></n-icon>
               </div>
-              <div class="w-full text-[10px] text-center text-textColor2 truncate leading-tight">
+              <div class="w-full text-[9px] text-center text-textColor2 truncate leading-tight">
                 {{ fileName(item) }}
               </div>
 
               <!-- Amallar — ustiga olib borilganda -->
               <div
-                class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5"
+                class="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1"
               >
                 <n-button
                   v-if="item?.file"
@@ -216,12 +216,12 @@
                 <template #trigger>
                   <button
                     type="button"
-                    class="absolute top-1 right-1 z-[1] w-5 h-5 rounded-full bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    class="absolute top-0.5 right-0.5 z-[1] w-4 h-4 rounded-full bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                     :disabled="store.fileDeleting === item.id"
                     @click.stop
                   >
-                    <n-spin v-if="store.fileDeleting === item.id" :size="10" />
-                    <n-icon v-else size="10"><Dismiss12Filled /></n-icon>
+                    <n-spin v-if="store.fileDeleting === item.id" :size="8" />
+                    <n-icon v-else size="8"><Dismiss12Filled /></n-icon>
                   </button>
                 </template>
                 {{ $t('documentPage.signature.files.deleteConfirm', { name: fileName(item) }) }}
@@ -235,12 +235,12 @@
         <button
           v-if="canAdd"
           type="button"
-          class="aspect-square rounded-xl border-2 border-dashed border-surface-line text-textColor3 flex flex-col items-center justify-center gap-1 transition-colors hover:border-primary hover:text-primary hover:bg-primary/5"
+          class="aspect-square rounded-lg border-2 border-dashed border-surface-line text-textColor3 flex flex-col items-center justify-center gap-1 transition-colors hover:border-primary hover:text-primary hover:bg-primary/5"
           :disabled="uploading"
           @click="onPick"
         >
-          <n-spin v-if="uploading" :size="20" />
-          <n-icon v-else size="24"><Add24Regular /></n-icon>
+          <n-spin v-if="uploading" :size="16" />
+          <n-icon v-else size="18"><Add24Regular /></n-icon>
         </button>
       </div>
 
