@@ -103,6 +103,9 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     fileDeleting: null,
     // Markaziy qismda ko'rilayotgan biriktirilgan fayl (null — buyruq PDF'i).
     previewFile: null,
+    // Markaziy qismning faol tabi: 'document' (hujjat) | 'data' (buyruq ma'lumotlari).
+    // Store'da — chap paneldan fayl ochilganda «Hujjat» tabiga o'tkazish uchun.
+    centerTab: 'document',
     attachLoading: false,
 
     documentApplications: [],

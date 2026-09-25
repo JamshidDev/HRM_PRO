@@ -1450,7 +1450,16 @@
         "unlinkConfirm": "№{number} arizani hujjatdan uzasizmi?",
         "files": "Fayllar",
         "attachShort": "Biriktirish",
-        "applicationsLimit": "Ko'pi bilan {max} ta ariza biriktirish mumkin"
+        "applicationsLimit": "Ko'pi bilan {max} ta ariza biriktirish mumkin",
+        "attachFile": "Fayl biriktirish",
+        "view": "Ko'rish",
+        "download": "Yuklab olish",
+        "lockedTitle": "Hujjat tasdiqlangan",
+        "lockedEmpty": "Biriktirilgan fayl va arizalar yo'q. Tasdiqlangan hujjatga yangi fayl qo'shib bo'lmaydi.",
+        "lockedShort": "Hujjat tasdiqlangan — fayllarni faqat ko'rish mumkin",
+        "deleteTitle": "Faylni o'chirish",
+        "unlinkTitle": "Arizani uzish",
+        "unlink": "Uzish"
       },
       "checkDocument": "Hujjat holatini tekshirish uchun bosing",
       "attachedDocuments": "Biriktirilgan hujjatlar",
@@ -1516,6 +1525,9 @@
         "notForYou": "Bu hujjat sizga imzolashga kelmagan",
         "youSigned": "Siz imzolagansiz",
         "youRejected": "Siz rad qilgansiz",
+        "yourTurn": "Imzolash navbati sizda",
+        "yourTurnSub": "Hujjat E-IMZO orqali tasdiqlanadi",
+        "notForYouSub": "Siz hujjatni faqat ko'rib chiqishingiz mumkin",
         "roles": {
           "w": "Xodim",
           "s": "Kelishuvchi",
@@ -1533,7 +1545,8 @@
           "resent": "— qayta yuborildi",
           "file_added": "fayl qo'shdi",
           "file_removed": "faylni o'chirdi"
-        }
+        },
+        "showAll": "Barchasi"
       },
       "rejectReasonSelect": "Rad etish sababini tanlang",
       "optional": "ixtiyoriy"
