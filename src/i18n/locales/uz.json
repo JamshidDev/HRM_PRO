@@ -1323,6 +1323,7 @@
           "no_form_state": "Bu buyruq tizim yangilanishidan oldin yaratilgan — ma'lumotlar bazadan tiklandi va faqat ko'rish uchun. Ayrim maydonlar bo'sh bo'lishi mumkin."
         },
         "emptyTitle": "Ma'lumotlar mavjud emas",
+        "loadError": "Ma'lumotlarni yuklab bo'lmadi. Birozdan so'ng qayta urinib ko'ring.",
         "reset": "Asl holatiga qaytarish",
         "preview": "Ko'rish",
         "save": "Saqlash va qayta yuborish",

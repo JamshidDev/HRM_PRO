@@ -33,6 +33,7 @@
   const bodyRef = ref(null)
   const loading = ref(true)
   const loaded = ref(false)
+  const loadError = ref(false)
   const editable = ref(false)
   const editBlock = ref(null)
   const confirmation = ref(null)
@@ -74,6 +75,7 @@
   const load = async () => {
     loading.value = true
     loaded.value = false
+    loadError.value = false
     try {
       const data = await store._form(props.commandId)
       editable.value = data.editable
@@ -92,6 +94,8 @@
         initialContent.value = contentFingerprint()
       }
       loaded.value = true
+    } catch {
+      loadError.value = true
     } finally {
       loading.value = false
       await nextTick()
@@ -165,6 +169,24 @@
     >
       <div v-if="loading" class="max-w-[960px] mx-auto flex flex-col gap-3">
         <n-skeleton v-for="i in 4" :key="i" height="96px" :sharp="false" class="rounded-xl" />
+      </div>
+      <div
+        v-else-if="loadError"
+        class="h-full flex flex-col items-center justify-center text-center px-8"
+      >
+        <div class="w-14 h-14 rounded-2xl bg-fig-red-50 flex items-center justify-center mb-4">
+          <n-icon size="26" class="text-fig-text-red"><DismissCircle20Filled /></n-icon>
+        </div>
+        <h3 class="text-lg font-semibold text-textColor1 mb-2">{{ $t('content.error') }}</h3>
+        <p class="text-sm text-gray-400 max-w-[420px] text-pretty mb-5">
+          {{ $t('documentPage.command.dataTab.loadError') }}
+        </p>
+        <n-button secondary @click="load">
+          <template #icon>
+            <n-icon><ArrowCounterclockwise20Regular /></n-icon>
+          </template>
+          {{ $t('content.retry') }}
+        </n-button>
       </div>
       <div
         v-else-if="loaded && !hasForm"

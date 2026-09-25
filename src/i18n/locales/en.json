@@ -1307,6 +1307,7 @@
           "no_form_state": "This order was created before the system update — details were restored from the database and are view-only. Some fields may be empty."
         },
         "emptyTitle": "No details available",
+        "loadError": "Could not load the data. Please try again shortly.",
         "reset": "Restore saved details",
         "preview": "Preview",
         "save": "Save and resend",
