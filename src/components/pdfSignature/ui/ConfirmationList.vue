@@ -1,7 +1,7 @@
 <script setup>
   import { UIDConfirm } from '@/components/index.js'
   import { usePdfViewerStore, useAccountStore } from '@/store/modules/index.js'
-  import { Copy20Regular, ArrowLeft20Filled, People20Regular, History20Regular, Dismiss20Regular, Signature20Regular } from '@vicons/fluent'
+  import { Copy20Regular, ArrowLeft20Filled, People20Regular, History20Regular } from '@vicons/fluent'
   import i18 from '@/i18n/index.js'
   import Utils from '@/utils/Utils.js'
   import { useRoute } from 'vue-router'
@@ -12,13 +12,6 @@
   import ApprovalHistory from './ApprovalHistory.vue'
   import { buildApprovalHistory } from '../utils/approvalHistory.js'
   const { t } = i18.global
-
-  defineProps({
-    // Imzolash / rad etish paneli: joriy foydalanuvchining imzolash navbati bo'lsa true
-    canSign: { type: Boolean, default: false },
-    signLoading: { type: Boolean, default: false }
-  })
-  const emit = defineEmits(['sign', 'reject'])
 
   const store = usePdfViewerStore()
   const accountStore = useAccountStore()
@@ -69,7 +62,7 @@
 </script>
 
 <template>
-  <SectionHeader full-height tight-body plain-footer>
+  <SectionHeader full-height tight-body>
     <template #header>
       <div class="slide-stage w-full min-w-0 overflow-x-clip">
         <Transition :name="slideName">
@@ -175,39 +168,6 @@
         </div>
       </template>
     </UIDConfirm>
-    <template v-if="!chatWith" #footer>
-      <div class="w-full flex flex-col gap-2 py-1">
-        <div v-if="!canSign" class="text-[11px] text-textColor3 text-center">
-          {{ $t('documentPage.signature.approval.noSignTurn') }}
-        </div>
-        <div class="flex gap-2">
-          <n-button
-            type="error"
-            ghost
-            class="shrink-0"
-            :disabled="!canSign || signLoading"
-            @click="emit('reject')"
-          >
-            <template #icon>
-              <n-icon><Dismiss20Regular /></n-icon>
-            </template>
-            {{ $t('documentPage.signature.rejectSubmit') }}
-          </n-button>
-          <n-button
-            type="primary"
-            class="flex-1"
-            :disabled="!canSign"
-            :loading="signLoading"
-            @click="emit('sign')"
-          >
-            <template #icon>
-              <n-icon><Signature20Regular /></n-icon>
-            </template>
-            {{ $t('documentPage.signature.approval.sign') }}
-          </n-button>
-        </div>
-      </div>
-    </template>
   </SectionHeader>
 </template>
 
