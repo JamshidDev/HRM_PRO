@@ -402,7 +402,10 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
           this.documentApplications = res.data.data.data.map((v) => ({
             name: v.number + ' - ' + v.type?.name,
             id: v.id,
-            photo: v.worker.photo,
+            number: v.number,
+            typeName: v.type?.name,
+            created: v.created_at || v.created,
+            photo: v.worker?.photo,
             fullName: Utils.combineFullName(v.worker)
           }))
         })

@@ -1269,7 +1269,12 @@
         "wrongType": "«{name}» — фақат PDF, PNG ёки JPG юклаш мумкин",
         "deleteConfirm": "«{name}» файлини ўчирасизми?",
         "attachApplication": "Ариза бириктириш",
-        "backToDocument": "Ҳужжатга қайтиш"
+        "backToDocument": "Ҳужжатга қайтиш",
+        "applicationsHint": "Ҳужжатга тегишли аризаларни белгиланг. Боғланган аризалар чап панелда кўринади.",
+        "noApplications": "Боғлаш мумкин бўлган ариза топилмади",
+        "linked": "бириктирилган",
+        "selectedCount": "{count} та танланди",
+        "attachSubmit": "Бириктириш"
       },
       "checkDocument": "Ҳужжат ҳолатини текшириш учун босинг",
       "attachedDocuments": "Бириктирилган ҳужжатлар",

@@ -1385,7 +1385,12 @@
         "wrongType": "«{name}» — only PDF, PNG or JPG can be uploaded",
         "deleteConfirm": "Delete the file «{name}»?",
         "attachApplication": "Attach an application",
-        "backToDocument": "Back to document"
+        "backToDocument": "Back to document",
+        "applicationsHint": "Select applications related to the document. Attached applications appear on the left panel.",
+        "noApplications": "No applications available to attach",
+        "linked": "attached",
+        "selectedCount": "{count} selected",
+        "attachSubmit": "Attach"
       },
       "checkDocument": "Click to check document status",
       "attachedDocuments": "Attached documents",

@@ -1401,7 +1401,12 @@
         "wrongType": "«{name}» — faqat PDF, PNG yoki JPG yuklash mumkin",
         "deleteConfirm": "«{name}» faylini o'chirasizmi?",
         "attachApplication": "Ariza biriktirish",
-        "backToDocument": "Hujjatga qaytish"
+        "backToDocument": "Hujjatga qaytish",
+        "applicationsHint": "Hujjatga tegishli arizalarni belgilang. Bog'langan arizalar chap panelda ko'rinadi.",
+        "noApplications": "Bog'lash mumkin bo'lgan ariza topilmadi",
+        "linked": "biriktirilgan",
+        "selectedCount": "{count} ta tanlandi",
+        "attachSubmit": "Biriktirish"
       },
       "checkDocument": "Hujjat holatini tekshirish uchun bosing",
       "attachedDocuments": "Biriktirilgan hujjatlar",

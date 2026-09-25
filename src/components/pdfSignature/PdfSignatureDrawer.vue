@@ -711,7 +711,7 @@
       </n-drawer-content>
     </n-drawer>
     <ConformAndRejectModal />
-    <DocumentFileModal @onUpdate="emits('onUpdate')" />
+    <DocumentFileModal />
     <ConfirmSignatureModal
       v-model:visible="confirmSignatureVisible"
       @onConfirm="onConfirmSignature"

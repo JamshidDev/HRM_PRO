@@ -214,7 +214,7 @@
 
               <!-- O'chirish — tasdiqlanmagan hujjatda -->
               <n-popconfirm
-                v-if="canEdit && item?.file"
+                v-if="canEdit"
                 :positive-text="$t('content.delete')"
                 :negative-text="$t('content.cancel')"
                 @positive-click="onDelete(item)"

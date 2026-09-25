@@ -1387,7 +1387,12 @@
         "wrongType": "«{name}» — можно загружать только PDF, PNG или JPG",
         "deleteConfirm": "Удалить файл «{name}»?",
         "attachApplication": "Прикрепить заявление",
-        "backToDocument": "Вернуться к документу"
+        "backToDocument": "Вернуться к документу",
+        "applicationsHint": "Отметьте заявления, относящиеся к документу. Прикреплённые заявления видны на левой панели.",
+        "noApplications": "Нет заявлений для прикрепления",
+        "linked": "прикреплено",
+        "selectedCount": "Выбрано: {count}",
+        "attachSubmit": "Прикрепить"
       },
       "checkDocument": "Нажмите для проверки статуса документа",
       "attachedDocuments": "Прикреплённые документы",
