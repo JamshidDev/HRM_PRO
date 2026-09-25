@@ -1362,10 +1362,9 @@
       },
       "approval": {
         "title": "Signing process",
-        "signers": "Signers",
+        "signers": "Approvers",
         "history": "Action history",
         "progress": "{done} of {total} approved",
-        "step": "Step {n}",
         "you": "You",
         "actions": "Actions",
         "chat": "Message",
@@ -1384,7 +1383,9 @@
           "approved": "Approved",
           "rejected": "Rejected",
           "resent": "Resent"
-        }
+        },
+        "sign": "Sign",
+        "noSignTurn": "It is not your turn to sign this document yet"
       }
     },
     "attach": {

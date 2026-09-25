@@ -11,7 +11,6 @@
 
   const props = defineProps({
     item: { type: Object, required: true },
-    step: { type: Number, required: true },
     isLast: { type: Boolean, default: false },
     isSelf: { type: Boolean, default: false },
     events: { type: Array, default: () => [] },
@@ -47,7 +46,7 @@
     <!-- Stepper tuguni va keyingi bosqichga ulovchi chiziq -->
     <div class="flex flex-col items-center shrink-0 pt-1.5">
       <div
-        class="w-7 h-7 rounded-full border flex items-center justify-center shadow-sm"
+        class="w-7 h-7 rounded-full border flex items-center justify-center"
         :class="tone.node"
       >
         <n-icon size="14"><component :is="tone.icon" /></n-icon>
@@ -59,49 +58,60 @@
       class="flex-1 min-w-0 mb-2 rounded-xl border bg-surface-section overflow-hidden"
       :class="[tone.card, isSelf && 'ring-1 ring-primary/40']"
     >
-      <div class="px-3 py-1.5">
-        <!-- Bosqich, sana va status bitta qatorda — karta balandligi kichik bo'lsin -->
-        <div class="flex items-center justify-between gap-2 mb-1">
-          <div class="flex items-center gap-1.5 min-w-0">
-            <span class="text-[10px] font-semibold uppercase tracking-wider text-textColor3 shrink-0">
-              {{ $t('documentPage.signature.approval.step', { n: step }) }}
-            </span>
-            <span v-if="actedAt" class="text-[10px] tabular-nums text-textColor3 truncate">
-              · {{ actedAt.format('DD.MM.YYYY HH:mm') }}
-            </span>
+      <div class="px-3 pt-2.5 pb-2">
+        <!-- Holat o'ng yuqori burchakda; faqat ism unga joy qoldiradi,
+             lavozim esa kartaning o'ng chetigacha boradi -->
+        <div class="relative">
+          <div class="absolute top-0 right-0 z-[1]">
+            <UIStatus fig compact :status="item.status" />
           </div>
-          <div class="flex items-center gap-1.5 shrink-0">
-            <span
-              v-if="isSelf"
-              class="text-[10px] font-semibold rounded-full px-2 py-0.5 bg-fig-chip-brand text-fig-chip-brand-text"
+          <div class="min-w-0">
+            <UIUser
+              :short="false"
+              :data="{
+                photo: item.worker?.photo,
+                lastName: item.worker?.last_name,
+                firstName: item.worker?.first_name,
+                middleName: item.worker?.middle_name,
+                position: ''
+              }"
             >
-              {{ $t('documentPage.signature.approval.you') }}
-            </span>
-            <UIStatus fig :status="item.status" />
+              <!-- Tor kartada ism kesilmasin: kichikroq shrift, kerak bo'lsa 2 qator -->
+              <template #name="{ title }">
+                <n-ellipsis
+                  :line-clamp="2"
+                  :tooltip="{ style: { maxWidth: '300px' } }"
+                  class="w-full pr-[84px] text-xs font-medium text-textColor1 leading-[1.25]"
+                >
+                  {{ title }}
+                </n-ellipsis>
+              </template>
+              <template #position>
+                <!-- 2 qatordan oshsa kesiladi, to'liq matn hover'da tooltip'da -->
+                <n-ellipsis
+                  :line-clamp="2"
+                  :tooltip="{ style: { maxWidth: '300px' } }"
+                  class="w-full mt-0.5 leading-[1.2] text-textColor3 text-[11px]"
+                >
+                  {{ item.type === 'w' ? $t('content.worker') : item.position }}
+                </n-ellipsis>
+              </template>
+            </UIUser>
           </div>
         </div>
 
-        <UIUser
-          :short="false"
-          :data="{
-            photo: item.worker?.photo,
-            lastName: item.worker?.last_name,
-            firstName: item.worker?.first_name,
-            middleName: item.worker?.middle_name,
-            position: ''
-          }"
-        >
-          <template #position>
-            <!-- 2 qatordan oshsa kesiladi, to'liq matn hover'da tooltip'da -->
-            <n-ellipsis
-              :line-clamp="2"
-              :tooltip="{ style: { maxWidth: '300px' } }"
-              class="w-full leading-[1.1] text-textColor3 text-xs"
-            >
-              {{ item.type === 'w' ? $t('content.worker') : item.position }}
-            </n-ellipsis>
-          </template>
-        </UIUser>
+        <!-- Qo'shimcha ma'lumot: "Siz" belgisi va harakat vaqti -->
+        <div v-if="isSelf || actedAt" class="flex items-center gap-2 mt-2">
+          <span
+            v-if="isSelf"
+            class="text-[10px] font-semibold rounded-full px-2 py-0.5 bg-fig-chip-brand text-fig-chip-brand-text"
+          >
+            {{ $t('documentPage.signature.approval.you') }}
+          </span>
+          <span v-if="actedAt" class="text-[11px] tabular-nums text-textColor3">
+            {{ actedAt.format('DD.MM.YYYY HH:mm') }}
+          </span>
+        </div>
 
         <div
           v-if="isApproved"
@@ -126,7 +136,7 @@
       </div>
 
       <div
-        class="flex items-center gap-1 px-2 py-0.5 border-t border-dashed border-surface-line bg-surface-ground/40"
+        class="flex items-center gap-1 px-2 py-1 border-t border-dashed border-surface-line bg-surface-ground/40"
       >
         <n-button quaternary size="tiny" @click="expanded = !expanded">
           <template #icon>
@@ -141,23 +151,27 @@
           {{ $t('documentPage.signature.approval.actions') }} ({{ events.length }})
         </n-button>
 
-        <n-button
-          v-if="canLink"
-          :loading="linkLoading"
-          round
-          secondary
-          type="info"
-          size="tiny"
-          @click="emit('link', item)"
-        >
-          {{ $t('documentPage.signature.link') }}
-          <template #icon><Link28Filled /></template>
-        </n-button>
-
-        <!-- Wrapper'da `ml-auto`: tugma footer'ning o'ng chetiga suriladi.
-             Rangli fon va matn — tugma ko'zga tashlansin, oddiy ikonka sezilmasdi. -->
-        <div v-if="!isSelf" class="ml-auto">
-          <n-button secondary round type="primary" size="tiny" @click="emit('chat', item)">
+        <div class="ml-auto flex items-center gap-1.5">
+          <n-button
+            v-if="canLink"
+            :loading="linkLoading"
+            round
+            secondary
+            type="info"
+            size="tiny"
+            @click="emit('link', item)"
+          >
+            {{ $t('documentPage.signature.link') }}
+            <template #icon><Link28Filled /></template>
+          </n-button>
+          <n-button
+            v-if="!isSelf"
+            secondary
+            round
+            type="primary"
+            size="tiny"
+            @click="emit('chat', item)"
+          >
             <template #icon>
               <n-icon size="14"><Chat20Filled /></n-icon>
             </template>

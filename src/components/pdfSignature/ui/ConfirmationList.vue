@@ -1,7 +1,7 @@
 <script setup>
   import { UIDConfirm } from '@/components/index.js'
   import { usePdfViewerStore, useAccountStore } from '@/store/modules/index.js'
-  import { Copy20Regular, ArrowLeft20Filled, People20Regular, History20Regular } from '@vicons/fluent'
+  import { Copy20Regular, ArrowLeft20Filled, People20Regular, History20Regular, Dismiss20Regular, Signature20Regular } from '@vicons/fluent'
   import i18 from '@/i18n/index.js'
   import Utils from '@/utils/Utils.js'
   import { useRoute } from 'vue-router'
@@ -10,8 +10,15 @@
   import ChatCotent from '../chat/ChatCotent.vue'
   import SignerCard from './SignerCard.vue'
   import ApprovalHistory from './ApprovalHistory.vue'
-  import { buildApprovalHistory, STATUS } from '../utils/approvalHistory.js'
+  import { buildApprovalHistory } from '../utils/approvalHistory.js'
   const { t } = i18.global
+
+  defineProps({
+    // Imzolash / rad etish paneli: joriy foydalanuvchining imzolash navbati bo'lsa true
+    canSign: { type: Boolean, default: false },
+    signLoading: { type: Boolean, default: false }
+  })
+  const emit = defineEmits(['sign', 'reject'])
 
   const store = usePdfViewerStore()
   const accountStore = useAccountStore()
@@ -24,34 +31,6 @@
 
   // Tarix FAQAT backenddan keladi (`confirmations[].histories`).
   const history = computed(() => buildApprovalHistory(store.confirmations))
-
-  const summary = computed(() => {
-    const list = store.confirmations || []
-    const approved = list.filter((v) => v.status?.id === STATUS.success).length
-    const rejected = list.filter((v) => v.status?.id === STATUS.rejected).length
-    const total = list.length
-    return {
-      total,
-      approved,
-      rejected,
-      pending: total - approved - rejected,
-      percent: total ? Math.round((approved / total) * 100) : 0
-    }
-  })
-
-  const summaryTone = computed(() => {
-    if (summary.value.rejected) return 'text-fig-text-red'
-    if (summary.value.total && summary.value.approved === summary.value.total)
-      return 'text-fig-chip-green-text'
-    return 'text-fig-chip-amber-text'
-  })
-
-  const segmentClass = (statusId) => {
-    if (statusId === STATUS.success) return 'bg-fig-success'
-    if (statusId === STATUS.rejected) return 'bg-fig-red'
-    if (statusId === STATUS.read) return 'bg-fig-blue-300'
-    return 'bg-surface-line'
-  }
 
   const generateLink = (v) => {
     if (v.type === 'w') {
@@ -90,7 +69,7 @@
 </script>
 
 <template>
-  <SectionHeader full-height tight-body>
+  <SectionHeader full-height tight-body plain-footer>
     <template #header>
       <div class="slide-stage w-full min-w-0 overflow-x-clip">
         <Transition :name="slideName">
@@ -107,14 +86,9 @@
               {{ chatWith.worker.last_name }} {{ chatWith.worker.first_name }}
             </span>
           </div>
-          <div v-else class="slide-pane flex items-center justify-between gap-2 min-w-0 w-full h-6">
-            <div class="flex items-center gap-2 min-w-0">
-              <span class="font-semibold text-textColor0 truncate">{{ $t('documentPage.signature.approval.title') }}</span>
-              <n-badge v-if="store.document?.chats" :value="store.document.chats" :max="99" />
-            </div>
-            <span class="text-xs font-semibold tabular-nums text-textColor2 shrink-0">
-              {{ summary.approved }}/{{ summary.total }}
-            </span>
+          <div v-else class="slide-pane flex items-center gap-2 min-w-0 w-full h-6">
+            <span class="font-semibold text-textColor0 truncate">{{ $t('documentPage.signature.approval.title') }}</span>
+            <n-badge v-if="store.document?.chats" :value="store.document.chats" :max="99" />
           </div>
         </Transition>
       </div>
@@ -131,38 +105,6 @@
         />
 
         <div v-else class="slide-pane">
-          <!-- Umumiy holat: segmentli progress va hisoblagichlar -->
-          <div class="rounded-xl border border-surface-line bg-surface-ground/50 p-3 mb-3">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-xs text-textColor2">
-                {{ $t('documentPage.signature.approval.progress', { done: summary.approved, total: summary.total }) }}
-              </span>
-              <span class="text-xs font-semibold tabular-nums" :class="summaryTone">{{ summary.percent }}%</span>
-            </div>
-            <div class="flex gap-1">
-              <div
-                v-for="(item, idx) in store.confirmations"
-                :key="idx"
-                class="h-1.5 flex-1 rounded-full"
-                :class="segmentClass(item.status?.id)"
-              ></div>
-            </div>
-            <div class="grid grid-cols-3 gap-2 mt-3">
-              <div class="rounded-lg bg-surface-section px-2 py-1.5">
-                <div class="text-sm font-semibold tabular-nums text-fig-chip-green-text">{{ summary.approved }}</div>
-                <div class="text-[10px] text-textColor3">{{ $t('documentPage.signature.approval.summary.approved') }}</div>
-              </div>
-              <div class="rounded-lg bg-surface-section px-2 py-1.5">
-                <div class="text-sm font-semibold tabular-nums text-fig-text-red">{{ summary.rejected }}</div>
-                <div class="text-[10px] text-textColor3">{{ $t('documentPage.signature.approval.summary.rejected') }}</div>
-              </div>
-              <div class="rounded-lg bg-surface-section px-2 py-1.5">
-                <div class="text-sm font-semibold tabular-nums text-fig-chip-amber-text">{{ summary.pending }}</div>
-                <div class="text-[10px] text-textColor3">{{ $t('documentPage.signature.approval.summary.pending') }}</div>
-              </div>
-            </div>
-          </div>
-
           <n-tabs v-model:value="activeTab" type="segment" size="small" animated class="mb-3">
             <n-tab name="signers">
               <div class="flex items-center gap-1.5">
@@ -183,7 +125,6 @@
               v-for="(item, idx) in store.confirmations"
               :key="item.id ?? idx"
               :item="item"
-              :step="idx + 1"
               :is-last="idx === store.confirmations.length - 1"
               :is-self="isSelf(item)"
               :events="history.bySigner[idx] || []"
@@ -234,6 +175,39 @@
         </div>
       </template>
     </UIDConfirm>
+    <template v-if="!chatWith" #footer>
+      <div class="w-full flex flex-col gap-2 py-1">
+        <div v-if="!canSign" class="text-[11px] text-textColor3 text-center">
+          {{ $t('documentPage.signature.approval.noSignTurn') }}
+        </div>
+        <div class="flex gap-2">
+          <n-button
+            type="error"
+            ghost
+            class="shrink-0"
+            :disabled="!canSign || signLoading"
+            @click="emit('reject')"
+          >
+            <template #icon>
+              <n-icon><Dismiss20Regular /></n-icon>
+            </template>
+            {{ $t('documentPage.signature.rejectSubmit') }}
+          </n-button>
+          <n-button
+            type="primary"
+            class="flex-1"
+            :disabled="!canSign"
+            :loading="signLoading"
+            @click="emit('sign')"
+          >
+            <template #icon>
+              <n-icon><Signature20Regular /></n-icon>
+            </template>
+            {{ $t('documentPage.signature.approval.sign') }}
+          </n-button>
+        </div>
+      </div>
+    </template>
   </SectionHeader>
 </template>
 

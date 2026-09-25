@@ -1378,10 +1378,9 @@
       },
       "approval": {
         "title": "Imzolash jarayoni",
-        "signers": "Imzolovchilar",
+        "signers": "Kelishuvchilar",
         "history": "Harakatlar tarixi",
         "progress": "{done} / {total} tasdiqlandi",
-        "step": "{n}-bosqich",
         "you": "Siz",
         "actions": "Harakatlar",
         "chat": "Yozish",
@@ -1400,7 +1399,9 @@
           "approved": "Tasdiqladi",
           "rejected": "Rad etdi",
           "resent": "Qayta yuborildi"
-        }
+        },
+        "sign": "Imzolash",
+        "noSignTurn": "Hozircha sizda bu hujjatni imzolash navbati yo'q"
       }
     },
     "attach": {
