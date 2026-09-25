@@ -13,6 +13,7 @@
   import i18n from '@/i18n/index.js'
   import CommandFormBody from './CommandFormBody.vue'
   import ResendSignersModal from './ResendSignersModal.vue'
+  import CommandSourceView from './CommandSourceView.vue'
   import { provideCommandFormStore } from './commandFormStore.js'
 
   const { t } = i18n.global
@@ -20,7 +21,7 @@
   const props = defineProps({
     commandId: { type: Number, required: true }
   })
-  const emits = defineEmits(['saved'])
+  const emits = defineEmits(['saved', 'open-source'])
 
   // Alohida store nusxasi — yaratish modalining holatiga tegmaydi.
   const store = useCommandEditStore()
@@ -36,6 +37,10 @@
   const editBlock = ref(null)
   const confirmation = ref(null)
   const hasForm = ref(false)
+  // Shartnoma/QK asosidagi buyruq — forma o'rnida manba hujjat ma'lumotlari.
+  const source = ref(null)
+  const details = ref(null)
+  const signers = ref([])
 
   // Tahrirlab bo'lmasa suzuvchi kartada tugmalar o'rniga sabab chiqadi.
   const lockMeta = computed(() => {
@@ -46,7 +51,9 @@
         iconClass: 'text-fig-chip-green-text'
       },
       cancelled: { icon: DismissCircle20Filled, class: 'text-fig-text-red' },
-      no_form_state: { icon: Info20Regular, class: 'text-textColor3' }
+      no_form_state: { icon: Info20Regular, class: 'text-textColor3' },
+      contract: { icon: LockClosed20Regular, class: 'text-primary' },
+      contract_additional: { icon: LockClosed20Regular, class: 'text-primary' }
     }[editBlock.value] || { icon: LockClosed20Regular, class: 'text-textColor3' }
     const key = `documentPage.command.dataTab.locked.${editBlock.value}`
     const label = i18n.global.te(key) ? t(key) : t('documentPage.command.dataTab.readonlyTitle')
@@ -72,8 +79,11 @@
       editable.value = data.editable
       editBlock.value = data.edit_block
       confirmation.value = data.confirmation
-      hasForm.value = !!data.form_state
-      if (hasForm.value) {
+      source.value = data.source || null
+      details.value = data.details || null
+      signers.value = data.form_state?.sortableConfirmations || []
+      hasForm.value = !!data.form_state || !!source.value
+      if (data.form_state && !source.value) {
         store.resetForm()
         // Ichki formalar mount bo'lgunicha avto-to'ldirish watch'lari o'chiq turadi.
         store.restoring = true
@@ -169,6 +179,14 @@
         <p class="text-sm text-gray-400 max-w-[420px] text-pretty">
           {{ $t('documentPage.command.dataTab.blocks.no_form_state') }}
         </p>
+      </div>
+      <div v-else-if="loaded && source" class="max-w-[960px] mx-auto">
+        <CommandSourceView
+          :source="source"
+          :details="details"
+          :signers="signers"
+          @open-source="(v) => emits('open-source', v)"
+        />
       </div>
       <div v-else-if="loaded" class="max-w-[960px] mx-auto flex flex-col gap-3">
         <div class="rounded-2xl bg-surface-section border border-surface-line px-5 pt-2 pb-5">
