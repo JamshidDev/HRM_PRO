@@ -152,18 +152,21 @@
         </n-button>
 
         <div class="ml-auto flex items-center gap-1.5">
-          <n-button
-            v-if="canLink"
-            :loading="linkLoading"
-            round
-            secondary
-            type="info"
-            size="tiny"
-            @click="emit('link', item)"
-          >
+          <n-tooltip v-if="canLink" trigger="hover">
+            <template #trigger>
+              <n-button
+                :loading="linkLoading"
+                circle
+                secondary
+                type="info"
+                size="tiny"
+                @click="emit('link', item)"
+              >
+                <template #icon><Link28Filled /></template>
+              </n-button>
+            </template>
             {{ $t('documentPage.signature.link') }}
-            <template #icon><Link28Filled /></template>
-          </n-button>
+          </n-tooltip>
           <n-button
             v-if="!isSelf"
             secondary

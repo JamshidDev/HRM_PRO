@@ -1385,7 +1385,9 @@
           "resent": "Resent"
         },
         "sign": "Sign",
-        "noSignTurn": "It is not your turn to sign this document yet"
+        "notForYou": "This document was not sent to you for signing",
+        "youSigned": "You have signed this document",
+        "youRejected": "You have rejected this document"
       }
     },
     "attach": {
