@@ -1393,7 +1393,25 @@
     "signature": {
       "history": "O'zgarishlar tarixini ko'rish",
       "viewer": "Hujjat bilan tanishuvchilar",
-      "files": "Hujjat fayllari",
+      "files": {
+        "locked": "Hujjat tasdiqlangan — fayllarni ko'rish va yuklab olish mumkin, qo'shish va o'chirish yopiq",
+        "tooMany": "Ko'pi bilan {max} ta fayl biriktirish mumkin",
+        "tooBig": "«{name}» {max} MB dan katta",
+        "wrongType": "«{name}» — faqat PDF, PNG yoki JPG yuklash mumkin",
+        "deleteConfirm": "«{name}» faylini o'chirasizmi?",
+        "attachApplication": "Ariza biriktirish",
+        "backToDocument": "Hujjatga qaytish",
+        "noApplications": "Bog'lash mumkin bo'lgan ariza topilmadi",
+        "linked": "biriktirilgan",
+        "selectedCount": "{count} ta tanlandi",
+        "attachSubmit": "Biriktirish",
+        "applications": "Arizalar",
+        "application": "Ariza",
+        "unlinkConfirm": "№{number} arizani hujjatdan uzasizmi?",
+        "files": "Fayllar",
+        "attachShort": "Biriktirish",
+        "applicationsLimit": "Ko'pi bilan {max} ta ariza biriktirish mumkin"
+      },
       "checkDocument": "Hujjat holatini tekshirish uchun bosing",
       "attachedDocuments": "Biriktirilgan hujjatlar",
       "attachDocument": "Hujjat biriktirish",
@@ -1450,7 +1468,9 @@
           "viewed": "Hujjatni ko'rib chiqdi",
           "approved": "Tasdiqladi",
           "rejected": "Rad etdi",
-          "resent": "Qayta yuborildi"
+          "resent": "Qayta yuborildi",
+          "file_added": "Fayl qo'shildi",
+          "file_removed": "Fayl o'chirildi"
         },
         "sign": "Imzolash",
         "notForYou": "Bu hujjat sizga imzolashga kelmagan",
@@ -1458,8 +1478,28 @@
         "youRejected": "Siz rad qilgansiz",
         "yourTurn": "Imzolash navbati sizda",
         "yourTurnSub": "Hujjat E-IMZO orqali tasdiqlanadi",
-        "notForYouSub": "Siz hujjatni faqat ko'rib chiqishingiz mumkin"
-      }
+        "notForYouSub": "Siz hujjatni faqat ko'rib chiqishingiz mumkin",
+        "roles": {
+          "w": "Xodim",
+          "s": "Kelishuvchi",
+          "d": "Rahbar"
+        },
+        "groups": {
+          "sent": "{count} kishiga imzolashga yuborildi",
+          "resent": "{count} kishiga qayta yuborildi"
+        },
+        "verbs": {
+          "sent": "— imzolashga yuborildi",
+          "viewed": "ko'rib chiqdi",
+          "approved": "tasdiqladi",
+          "rejected": "rad etdi",
+          "resent": "— qayta yuborildi",
+          "file_added": "fayl qo'shdi",
+          "file_removed": "faylni o'chirdi"
+        }
+      },
+      "rejectReasonSelect": "Rad etish sababini tanlang",
+      "optional": "ixtiyoriy"
     },
     "attach": {
       "title": "Biriktirish",
@@ -1750,9 +1790,17 @@
     "versionSaved": "Versiya yangilandi",
     "upgrade": "Yangilash",
     "form": {
-      "latestVersion": "So'nggi versiya"
+      "latestVersion": "So'nggi versiya",
+      "minVersion": "Minimal versiya"
     },
-    "versionInvalid": "Versiya formati noto'g'ri. Masalan: 1.9.2"
+    "versionInvalid": "Versiya formati noto'g'ri. Masalan: 1.9.2",
+    "forced": "Majburiy",
+    "optional": "Ixtiyoriy",
+    "forcedHint": "{version} dan past versiyalar bloklanadi",
+    "optionalHint": "{min} dan past versiyalar bloklanadi, qolganlarga taklif qilinadi",
+    "minGreaterThanLatest": "Minimal versiya so'nggi versiyadan katta bo'lmasligi kerak",
+    "confirmMinRaise": "Minimal versiya {version} ga ko'tariladi — bundan past versiyadagi barcha foydalanuvchilar ilovadan foydalana olmaydi. {version} store'da chiqqanmi?",
+    "confirmSave": "Versiya saqlansinmi?"
   },
   "vacancyApprovePage": {
     "menuName": "Tasdiqlash",
