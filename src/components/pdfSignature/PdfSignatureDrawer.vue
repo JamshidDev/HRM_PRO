@@ -1,10 +1,13 @@
 <script setup>
   import {
     ArrowSyncCircle16Filled,
-    ArrowLeft20Filled,
     ClipboardCheckmark20Regular,
     CalendarCancel20Regular,
-    Dismiss20Regular
+    Dismiss20Regular,
+    Signature20Regular,
+    CheckmarkCircle20Filled,
+    DismissCircle20Filled,
+    Info20Regular
   } from '@vicons/fluent'
   import { UIUser, UILottieReader } from '@/components/index.js'
   import EditRefreshIcon from '@/assets/icons/editRefreshIcon.svg'
@@ -62,6 +65,38 @@
     )
   })
   const hasDocumentFile = computed(() => !!store.pdfUrl)
+
+  // Joriy foydalanuvchining hujjatga nisbatan holati: imzolashi mumkin / imzolagan /
+  // rad etgan / hujjat unga imzolashga kelmagan.
+  const selfConfirmation = computed(() =>
+    store.confirmations?.find((v) => v.worker?.id === accountStore.account?.worker?.id)
+  )
+  const signState = computed(() => {
+    if (store.permissions?.canSignature && !isSigned.value) return 'sign'
+    if (selfConfirmation.value?.status?.id === 3) return 'signed'
+    if (selfConfirmation.value?.status?.id === 4) return 'rejected'
+    return 'none'
+  })
+  const signStateMeta = computed(
+    () =>
+      ({
+        signed: {
+          icon: CheckmarkCircle20Filled,
+          label: 'documentPage.signature.approval.youSigned',
+          class: 'text-fig-chip-green-text'
+        },
+        rejected: {
+          icon: DismissCircle20Filled,
+          label: 'documentPage.signature.approval.youRejected',
+          class: 'text-fig-text-red'
+        },
+        none: {
+          icon: Info20Regular,
+          label: 'documentPage.signature.approval.notForYou',
+          class: 'text-textColor3'
+        }
+      })[signState.value]
+  )
 
   const onOpenConfirmSignature = () => {
     confirmSignatureVisible.value = true
@@ -275,10 +310,10 @@
     >
       <n-drawer-content class="h-screen">
         <div
-          class="w-full h-screen overflow-hidden flex flex-col relative gap-3 p-3 bg-gradient-to-b from-surface-ground to-surface-section"
+          class="w-full h-screen overflow-hidden flex flex-col relative gap-3 pb-3 bg-gradient-to-b from-surface-ground to-surface-section"
         >
           <div
-            class="w-full h-[60px] shrink-0 rounded-2xl border border-surface-line flex items-center justify-between px-4 bg-surface-section"
+            class="w-full h-[60px] shrink-0 border-b border-surface-line flex items-center justify-between px-4 bg-surface-section"
           >
             <div class="flex items-center gap-x-3">
               <n-button
@@ -290,7 +325,7 @@
               >
                 <template #icon>
                   <n-icon size="20">
-                    <ArrowLeft20Filled />
+                    <Dismiss20Regular />
                   </n-icon>
                 </template>
               </n-button>
@@ -299,7 +334,7 @@
                 <n-skeleton width="80px" height="11px" :sharp="false" class="rounded-md" />
               </div>
               <div v-else class="hidden md:inline-block">
-                <div class="text-lg font-semibold text-textColor1 leading-tight">
+                <div class="text-sm font-semibold text-textColor1 leading-tight">
                   {{ store.document?.document?.file_name }}
                 </div>
                 <div class="text-xs text-gray-400 tabular-nums">
@@ -356,8 +391,8 @@
             </div>
           </div>
 
-          <DrawerSkeleton v-if="store.loading" />
-          <div v-else class="w-full flex-1 min-h-0 flex gap-3">
+          <DrawerSkeleton v-if="store.loading" class="px-3" />
+          <div v-else class="w-full flex-1 min-h-0 flex gap-3 px-3">
             <div class="hidden md:flex flex-col w-[300px] h-full gap-3 relative">
               <div class="w-full flex-1 min-h-0">
                 <LeftContent />
@@ -566,16 +601,55 @@
                     <PdfViewer ref="pdfViewerRef" :container="false" />
                   </template>
                 </div>
+
+                <!-- Imzolash paneli: hujjat ostida, skrolldan tashqarida — doim ko'rinib turadi -->
+                <!-- Hujjat va tugmalarni ajratuvchi chiziq -->
+                <div class="w-full shrink-0 border-t border-surface-line pt-2">
+                  <div
+                    class="w-full max-w-[440px] mx-auto rounded-xl border border-surface-line bg-surface-section px-2 py-2"
+                  >
+                    <div v-if="signState === 'sign'" class="flex gap-2">
+                      <n-button
+                        type="error"
+                        ghost
+                        size="small"
+                        class="shrink-0"
+                        :disabled="signatureStore.loading"
+                        @click="openRejectModal"
+                      >
+                        <template #icon>
+                          <n-icon><Dismiss20Regular /></n-icon>
+                        </template>
+                        {{ $t('documentPage.signature.rejectSubmit') }}
+                      </n-button>
+                      <n-button
+                        type="primary"
+                        size="small"
+                        class="flex-1"
+                        :loading="signatureStore.loading"
+                        @click="onSaveSignature"
+                      >
+                        <template #icon>
+                          <n-icon><Signature20Regular /></n-icon>
+                        </template>
+                        {{ $t('documentPage.signature.approval.sign') }}
+                      </n-button>
+                    </div>
+                    <div
+                      v-else
+                      class="flex items-center justify-center gap-2 h-[28px] text-sm font-medium"
+                      :class="signStateMeta.class"
+                    >
+                      <n-icon size="18"><component :is="signStateMeta.icon" /></n-icon>
+                      {{ $t(signStateMeta.label) }}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
             <div class="hidden md:flex flex-col w-[360px] h-full relative">
-              <ConfirmationList
-                :can-sign="!!store.permissions?.canSignature && !isSigned"
-                :sign-loading="signatureStore.loading"
-                @sign="onSaveSignature"
-                @reject="openRejectModal"
-              />
+              <ConfirmationList />
             </div>
           </div>
         </div>

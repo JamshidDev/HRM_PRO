@@ -1401,7 +1401,9 @@
           "resent": "Qayta yuborildi"
         },
         "sign": "Imzolash",
-        "noSignTurn": "Hozircha sizda bu hujjatni imzolash navbati yo'q"
+        "notForYou": "Bu hujjat sizga imzolashga kelmagan",
+        "youSigned": "Siz imzolagansiz",
+        "youRejected": "Siz rad qilgansiz"
       }
     },
     "attach": {
