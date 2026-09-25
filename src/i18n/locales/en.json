@@ -1368,6 +1368,7 @@
         "step": "Step {n}",
         "you": "You",
         "actions": "Actions",
+        "chat": "Message",
         "signedWithEri": "Approved with e-signature",
         "certificate": "Certificate",
         "noHistory": "No actions yet",

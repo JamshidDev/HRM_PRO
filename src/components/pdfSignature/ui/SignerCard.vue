@@ -45,7 +45,7 @@
 <template>
   <div class="flex gap-3">
     <!-- Stepper tuguni va keyingi bosqichga ulovchi chiziq -->
-    <div class="flex flex-col items-center shrink-0 pt-3">
+    <div class="flex flex-col items-center shrink-0 pt-1.5">
       <div
         class="w-7 h-7 rounded-full border flex items-center justify-center shadow-sm"
         :class="tone.node"
@@ -56,20 +56,29 @@
     </div>
 
     <div
-      class="flex-1 min-w-0 mb-3 rounded-xl border bg-surface-section overflow-hidden"
+      class="flex-1 min-w-0 mb-2 rounded-xl border bg-surface-section overflow-hidden"
       :class="[tone.card, isSelf && 'ring-1 ring-primary/40']"
     >
-      <div class="px-3 pt-3 pb-2">
-        <div class="flex items-center justify-between gap-2 mb-2">
-          <span class="text-[10px] font-semibold uppercase tracking-wider text-textColor3">
-            {{ $t('documentPage.signature.approval.step', { n: step }) }}
-          </span>
-          <span
-            v-if="isSelf"
-            class="text-[10px] font-semibold rounded-full px-2 py-0.5 bg-fig-chip-brand text-fig-chip-brand-text"
-          >
-            {{ $t('documentPage.signature.approval.you') }}
-          </span>
+      <div class="px-3 py-1.5">
+        <!-- Bosqich, sana va status bitta qatorda — karta balandligi kichik bo'lsin -->
+        <div class="flex items-center justify-between gap-2 mb-1">
+          <div class="flex items-center gap-1.5 min-w-0">
+            <span class="text-[10px] font-semibold uppercase tracking-wider text-textColor3 shrink-0">
+              {{ $t('documentPage.signature.approval.step', { n: step }) }}
+            </span>
+            <span v-if="actedAt" class="text-[10px] tabular-nums text-textColor3 truncate">
+              · {{ actedAt.format('DD.MM.YYYY HH:mm') }}
+            </span>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <span
+              v-if="isSelf"
+              class="text-[10px] font-semibold rounded-full px-2 py-0.5 bg-fig-chip-brand text-fig-chip-brand-text"
+            >
+              {{ $t('documentPage.signature.approval.you') }}
+            </span>
+            <UIStatus fig :status="item.status" />
+          </div>
         </div>
 
         <UIUser
@@ -83,18 +92,16 @@
           }"
         >
           <template #position>
-            <div class="w-full text-wrap leading-[1.1] text-textColor3 text-xs">
+            <!-- 2 qatordan oshsa kesiladi, to'liq matn hover'da tooltip'da -->
+            <n-ellipsis
+              :line-clamp="2"
+              :tooltip="{ style: { maxWidth: '300px' } }"
+              class="w-full leading-[1.1] text-textColor3 text-xs"
+            >
               {{ item.type === 'w' ? $t('content.worker') : item.position }}
-            </div>
+            </n-ellipsis>
           </template>
         </UIUser>
-
-        <div class="flex items-center justify-between gap-2 mt-3">
-          <UIStatus fig :status="item.status" />
-          <span v-if="actedAt" class="text-[11px] tabular-nums text-textColor3 shrink-0">
-            {{ actedAt.format('DD.MM.YYYY HH:mm') }}
-          </span>
-        </div>
 
         <div
           v-if="isApproved"
@@ -119,7 +126,7 @@
       </div>
 
       <div
-        class="flex items-center gap-1 px-2 py-1.5 border-t border-dashed border-surface-line bg-surface-ground/40"
+        class="flex items-center gap-1 px-2 py-0.5 border-t border-dashed border-surface-line bg-surface-ground/40"
       >
         <n-button quaternary size="tiny" @click="expanded = !expanded">
           <template #icon>
@@ -147,18 +154,16 @@
           <template #icon><Link28Filled /></template>
         </n-button>
 
-        <n-button
-          v-if="!isSelf"
-          quaternary
-          circle
-          size="small"
-          class="ml-auto"
-          @click="emit('chat', item)"
-        >
-          <template #icon>
-            <n-icon size="16" class="text-textColor1"><Chat20Filled /></n-icon>
-          </template>
-        </n-button>
+        <!-- Wrapper'da `ml-auto`: tugma footer'ning o'ng chetiga suriladi.
+             Rangli fon va matn — tugma ko'zga tashlansin, oddiy ikonka sezilmasdi. -->
+        <div v-if="!isSelf" class="ml-auto">
+          <n-button secondary round type="primary" size="tiny" @click="emit('chat', item)">
+            <template #icon>
+              <n-icon size="14"><Chat20Filled /></n-icon>
+            </template>
+            {{ $t('documentPage.signature.approval.chat') }}
+          </n-button>
+        </div>
       </div>
 
       <n-collapse-transition :show="expanded">
