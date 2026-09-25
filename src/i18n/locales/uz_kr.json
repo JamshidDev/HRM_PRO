@@ -1268,7 +1268,8 @@
         "tooBig": "«{name}» {max} MB дан катта",
         "wrongType": "«{name}» — фақат PDF, PNG ёки JPG юклаш мумкин",
         "deleteConfirm": "«{name}» файлини ўчирасизми?",
-        "attachApplication": "Ариза бириктириш"
+        "attachApplication": "Ариза бириктириш",
+        "backToDocument": "Ҳужжатга қайтиш"
       },
       "checkDocument": "Ҳужжат ҳолатини текшириш учун босинг",
       "attachedDocuments": "Бириктирилган ҳужжатлар",

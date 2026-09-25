@@ -11,7 +11,6 @@
   import { useRoute } from 'vue-router'
   import { useNotify } from '@/composables/useNotify'
   import i18n from '@/i18n/index.js'
-  import FilePreviewModal from './FilePreviewModal.vue'
   import SectionHeader from '@/components/worker/ui/shared/SectionHeader.vue'
   import PdfFileIcon from '@/assets/icons/pdfFileIcon.svg'
   import ImageFileIcon from '@/assets/icons/figImageSquare.svg'
@@ -28,8 +27,6 @@
   const MAX_FILES = 10
 
   const inputRef = ref(null)
-  const previewVisible = ref(false)
-  const previewFile = ref(null)
 
   const extOf = (name) => (name || '').split('.').pop()?.toLowerCase() || ''
   const isImage = (item) => ['png', 'jpg', 'jpeg'].includes(extOf(item?.original_name))
@@ -119,6 +116,7 @@
 
   const onDelete = (item) => {
     store._deleteFile(item.id, () => {
+      if (store.previewFile?.id === item.id) store.previewFile = null
       store._files()
       store._refreshMeta()
     })
@@ -134,9 +132,9 @@
     window.open(item?.file || item?.worker_application?.confirmation_file, '_blank')
   }
 
+  // Fayl buyruq PDF'i o'rnida ochiladi; qayta bosilsa — yopiladi.
   const onPreview = (item) => {
-    previewFile.value = item
-    previewVisible.value = true
+    store.previewFile = store.previewFile?.id === item.id ? null : item
   }
 
   watch(
@@ -178,7 +176,10 @@
             <!-- Ikonka butun plitkani to'ldiradi, rang — fayl turiga qarab -->
             <div
               class="group relative aspect-square rounded-lg flex items-center justify-center overflow-hidden"
-              :class="fileTone(item)"
+              :class="[
+                fileTone(item),
+                store.previewFile?.id === item.id && 'ring-2 ring-primary ring-offset-1'
+              ]"
             >
               <n-icon size="30"><component :is="fileIcon(item)" /></n-icon>
 
@@ -270,8 +271,6 @@
         </template>
         {{ $t('documentPage.signature.files.attachApplication') }}
       </n-button>
-
-      <FilePreviewModal v-model:visible="previewVisible" :file="previewFile" />
     </div>
   </SectionHeader>
 </template>

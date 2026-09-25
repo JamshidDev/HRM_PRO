@@ -1386,7 +1386,8 @@
         "tooBig": "«{name}» больше {max} МБ",
         "wrongType": "«{name}» — можно загружать только PDF, PNG или JPG",
         "deleteConfirm": "Удалить файл «{name}»?",
-        "attachApplication": "Прикрепить заявление"
+        "attachApplication": "Прикрепить заявление",
+        "backToDocument": "Вернуться к документу"
       },
       "checkDocument": "Нажмите для проверки статуса документа",
       "attachedDocuments": "Прикреплённые документы",

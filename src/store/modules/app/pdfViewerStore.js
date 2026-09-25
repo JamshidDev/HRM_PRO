@@ -101,6 +101,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     typeAttach: 1,
     attachFiles: [],
     fileDeleting: null,
+    // Markaziy qismda ko'rilayotgan biriktirilgan fayl (null — buyruq PDF'i).
+    previewFile: null,
     attachLoading: false,
 
     documentApplications: [],
@@ -222,6 +224,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
       this.messagesPage = 1
       this.messagesTotal = 0
       this.fileList = []
+      this.previewFile = null
     },
     _addMessage(msg) {
       if (msg.trim().length > 0) {

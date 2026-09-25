@@ -1400,7 +1400,8 @@
         "tooBig": "«{name}» {max} MB dan katta",
         "wrongType": "«{name}» — faqat PDF, PNG yoki JPG yuklash mumkin",
         "deleteConfirm": "«{name}» faylini o'chirasizmi?",
-        "attachApplication": "Ariza biriktirish"
+        "attachApplication": "Ariza biriktirish",
+        "backToDocument": "Hujjatga qaytish"
       },
       "checkDocument": "Hujjat holatini tekshirish uchun bosing",
       "attachedDocuments": "Biriktirilgan hujjatlar",
