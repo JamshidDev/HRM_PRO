@@ -1,10 +1,10 @@
 <script setup>
-  import { useCommandStore } from '@/store/modules/index.js'
+  import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
   import { useAppSetting } from '@/utils/index.js'
 
-  const store = useCommandStore()
+  const store = useCommandFormStore()
   const formRef = ref(null)
 
   // start/end vaqtdan davomiylikni avtomatik hisoblaymiz ("N soatlik").

@@ -9,7 +9,6 @@
   import AuditDetail from './ui/audit/AuditDetail.vue'
   import AuditDetailFilter from './ui/audit/AuditDetailFilter.vue'
   import DashboardSkeleton from './ui/DashboardSkeleton.vue'
-  import LegacyDashboard from './ui/legacy/LegacyDashboard.vue'
 
   import { DashboardTab, tabCards } from './constants.js'
   import { buildKpiCards } from './kpi.js'
@@ -28,7 +27,6 @@
   // Audit — alohida ko'rish ruxsati; bo'lmasa tab umuman chizilmaydi.
   const tabList = computed(() =>
     [
-      { id: DashboardTab.LEGACY, name: t('dashboardPage.tabs.legacy') },
       { id: DashboardTab.GENERAL, name: t('dashboardPage.tabs.general') },
       { id: DashboardTab.MOVEMENT, name: t('dashboardPage.tabs.movement') },
       { id: DashboardTab.ATTENDANCE, name: t('dashboardPage.tabs.attendance') },
@@ -87,9 +85,8 @@
   })
 
   onBeforeMount(() => {
-    // Sahifaga HAR kirganda «Eski» bobi ochiladi — store pinia'da saqlanib
-    // qolgani uchun bunsiz oxirgi tanlangan bob qaytib kelardi.
-    store.activeTab = DashboardTab.LEGACY
+    // Sahifaga har kirganda «Umumiy» bobi ochiladi (pinia oxirgi bobni saqlab qoladi).
+    store.activeTab = DashboardTab.GENERAL
     if (!canViewDashboard.value) return
     store.activeDetail = null
     store.resetAuditDetail()
@@ -98,11 +95,10 @@
 
   const onDetailEv = (detailComponent, key) => {
     store.resetDetailData()
-    if (detailComponent?.detailFactory && key) {
-      store.activeDetail = detailComponent.detailFactory(key)
-      return
-    }
-    store.activeDetail = detailComponent
+    store.activeDetail =
+      detailComponent?.detailFactory && key ? detailComponent.detailFactory(key) : detailComponent
+    // Karta filtri (`defaultValues`) detal ochilishidan oldin params'ga yoziladi — select'da ko'rinadi.
+    Object.assign(store.params, store.activeDetail?.defaultValues || {})
   }
 
   // Tab almashganda ikkala drill-down ham yopiladi va barcha filtrlar tozalanadi.
@@ -145,16 +141,9 @@
       style="overflow-y: auto; scrollbar-gutter: stable"
       :style="contentHeight ? { height: contentHeight } : null"
     >
-      <!-- «Eski» bobi — o'z drill-down'i bilan yopiq: pastdagi umumiy
-           `store.activeDetail` tarmog'iga TUSHMASLIGI kerak, aks holda detal
-           eski kartalar konteksidan tashqarida, yangi maket ichida ochilardi. -->
-      <template v-if="store.activeTab === DashboardTab.LEGACY">
-        <LegacyDashboard />
-      </template>
-
       <!-- Audit bobi — o'z jadvali va pagination'i bilan, o'lchangan konteyner
            balandligini to'liq egallaydi. -->
-      <template v-else-if="store.activeTab === DashboardTab.AUDIT">
+      <template v-if="store.activeTab === DashboardTab.AUDIT">
         <!-- `!h-full` global `.ui-page-content { height: 100dvh }` ni bosib o'tadi:
              jadval o'lchangan konteyner balandligini to'liq egallaydi va uning
              pagination footeri eng pastda turadi — sahifa scroll qilinmaydi. -->

@@ -1,11 +1,12 @@
 <script setup>
-  import { useCommandStore, useComponentStore } from '@stores'
+  import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
+  import { useComponentStore } from '@stores'
   import { useAppSetting, Utils } from '@utils'
   import validationRules from '@/utils/validationRules.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
-  const store = useCommandStore()
+  const store = useCommandFormStore()
   const formRef = ref(null)
   const onSubmit = async (mainData) => {
     let data = null

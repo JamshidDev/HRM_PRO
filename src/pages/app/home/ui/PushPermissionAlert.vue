@@ -36,11 +36,19 @@
       (permission.value === 'default' || permission.value === 'denied')
   )
 
+  const onDismiss = () => {
+    dismissed.value = true
+    localStorage.setItem(DISMISS_KEY, '1')
+  }
+
+  // Foydalanuvchi brauzer oynasida qaysi javobni bermasin (ruxsat / rad / yopish),
+  // karta yopiladi va qayta chiqmaydi — tanlovini qilib bo'ldi.
   const onEnable = async () => {
     loading.value = true
     const result = await requestPushPermission()
-    permission.value = result === 'granted' ? 'granted' : pushPermission()
     loading.value = false
+    permission.value = pushPermission()
+    onDismiss()
     if (result === 'granted') $Toast.success(t('content.pushEnabled'))
   }
 
@@ -71,11 +79,6 @@
   const onCopyPath = () => {
     if (!settingsPath.value) return
     Utils.copyToClipboard(settingsPath.value, () => $Toast.success(t('content.pushPathCopied')))
-  }
-
-  const onDismiss = () => {
-    dismissed.value = true
-    localStorage.setItem(DISMISS_KEY, '1')
   }
 
   let readyTimeout = null

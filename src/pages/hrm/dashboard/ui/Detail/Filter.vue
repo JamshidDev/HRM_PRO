@@ -30,6 +30,7 @@
     return dv?.[filterName] !== undefined ? dv[filterName] : store.defaultParams[filterName]
   }
 
+  // Bo'sh holatdan farq qilgan har filtr sanaladi — karta qo'ygan standart filtr ham ko'rinadi.
   const filtersCount = computed(() => {
     if (!store.activeDetail) return 0
     if (!store.activeDetail?.filters) return 0
@@ -38,9 +39,9 @@
     for (let i of filters) {
       if (i === 'month' && filters.includes('year')) continue
       if (store.typeNames.includes(i)) {
-        a += !isdeepequal(getDefault(i), store.params.type)
+        a += !isdeepequal(store.defaultParams.type, store.params.type)
       } else {
-        a += !isdeepequal(getDefault(i), store.params[i])
+        a += !isdeepequal(store.defaultParams[i], store.params[i])
       }
     }
     return a

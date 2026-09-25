@@ -1,61 +1,50 @@
 <script setup>
   import { usePdfViewerStore } from '@/store/modules/index.js'
   import {
-    History20Regular,
-    ChevronUp48Filled,
-    DocumentArrowDown16Regular,
-    Add16Filled,
-    MailAttach16Regular
+    Add16Regular,
+    LockClosed16Regular,
+    LockClosed20Regular,
+    MailAttach16Regular,
+    LinkDismiss16Regular,
+    Delete16Regular
   } from '@vicons/fluent'
-  import Utils from '../../../utils/Utils.js'
-  import { UIUser } from '@/components/index.js'
   import { useRoute } from 'vue-router'
-  import FilePreviewModal from './FilePreviewModal.vue'
+  import { useNotify } from '@/composables/useNotify'
+  import i18n from '@/i18n/index.js'
   import SectionHeader from '@/components/worker/ui/shared/SectionHeader.vue'
+  import DangerConfirm from './DangerConfirm.vue'
+  import PdfFileIcon from '@/assets/icons/pdfFileIcon.svg'
+  import ImageFileIcon from '@/assets/icons/figImageSquare.svg'
   import FileContractIcon from '@/assets/icons/fileContractIcon.svg'
-  import CloudArrowDownIcon from '@/assets/icons/cloudArrowDownIcon.svg'
-  import EyeIcon from '@/assets/icons/eyeIcon.svg'
+  import Utils from '@/utils/Utils.js'
 
+  const { t } = i18n.global
   const route = useRoute()
   const store = usePdfViewerStore()
+  const notify = useNotify()
 
-  const previewVisible = ref(false)
-  const previewFile = ref(null)
+  // Biriktirish qoidalari backend bilan bir xil: PDF/PNG/JPG, faylga 10 MB, hujjatga 10 ta.
+  const ALLOWED_EXT = ['pdf', 'png', 'jpg', 'jpeg']
+  const MAX_FILE_MB = 10
+  const MAX_FILES = 10
+  const MAX_APPLICATIONS = 10
 
-  const getHistory = () => {
-    if (!store.show && store.document?.histories > 0) {
-      store._history()
-    } else {
-      store.show = false
-    }
+  const inputRef = ref(null)
+
+  const extOf = (name) => (name || '').split('.').pop()?.toLowerCase() || ''
+  const isImage = (item) => ['png', 'jpg', 'jpeg'].includes(extOf(item?.original_name))
+  const fileIcon = (item) => {
+    if (!item?.file) return MailAttach16Regular
+    if (isImage(item)) return ImageFileIcon
+    if (extOf(item.original_name) === 'pdf') return PdfFileIcon
+    return FileContractIcon
   }
-
-  const onOpenAttach = () => {
-    store.workerApplications = []
-    store.attachFiles = []
-    store.attachVisible = true
+  const fileTone = (item) => {
+    if (!item?.file) return 'bg-fig-chip-amber text-fig-chip-amber-text'
+    if (isImage(item)) return 'bg-fig-chip-indigo text-fig-chip-indigo-text'
+    return 'bg-fig-red-50 text-fig-text-red'
   }
-
-  const onDownload = (url) => {
-    window.open(url, '_blank')
-  }
-
-  const onPreview = (item) => {
-    previewFile.value = item
-    previewVisible.value = true
-  }
-
-  onMounted(() => {
-    store.show = false
-  })
-
-  watch(
-    () => store.document,
-    (doc) => {
-      if (doc?.files > 0) store._files()
-    },
-    { immediate: true }
-  )
+  const fileName = (item) => (item?.file ? item.original_name : item?.worker_application?.number)
 
   const showDocumentFiles = computed(() => {
     const allowedPaths = [
@@ -71,6 +60,125 @@
     ]
     return allowedPaths.includes(route.path)
   })
+
+  // Tasdiqlangan hujjatning fayllari muzlatiladi.
+  const isApproved = computed(() => store.document?.document?.confirmation?.id === 3)
+  const canEdit = computed(() => showDocumentFiles.value && !isApproved.value)
+  const isLocked = computed(() => showDocumentFiles.value && isApproved.value)
+  // Fayllar — plitkalarda, bog'langan arizalar — alohida ro'yxatda.
+  const files = computed(() => store.fileList.filter((v) => v?.file))
+  const applications = computed(() =>
+    store.fileList.filter((v) => !v?.file && v?.worker_application)
+  )
+  const fileCount = computed(() => files.value.length)
+
+  // Ariza PDF'i ham buyruq o'rnida ochiladi (AttachmentPreview fayl shaklini kutadi).
+  const appPreviewId = (item) => `app-${item.id}`
+  // «Ma'lumotlar» tabida bosilsa — «Hujjat» tabiga o'tib, fayl ochiladi (yopilmaydi).
+  // «Hujjat» tabida ochiq faylga qayta bosilsa — yopiladi.
+  const shouldClose = (id) => store.centerTab === 'document' && store.previewFile?.id === id
+  const openInDocumentTab = (file) => {
+    store.previewFile = file
+    store.centerTab = 'document'
+  }
+
+  const onPreviewApplication = (item) => {
+    const wa = item.worker_application
+    const id = appPreviewId(item)
+    if (shouldClose(id)) {
+      store.previewFile = null
+      return
+    }
+    openInDocumentTab({
+      id,
+      file: wa?.confirmation_file,
+      original_name: `${t('documentPage.signature.files.application')} №${wa?.number}.pdf`,
+      created_at: wa?.created_at
+    })
+  }
+  const canAdd = computed(() => canEdit.value && fileCount.value < MAX_FILES)
+
+  const uploading = ref(false)
+
+  const onPick = () => {
+    if (!canAdd.value || uploading.value) return
+    inputRef.value?.click()
+  }
+
+  const onFilesSelected = (e) => {
+    const picked = [...(e.target.files || [])]
+    e.target.value = ''
+    if (!picked.length) return
+
+    const wrongType = picked.find((f) => !ALLOWED_EXT.includes(extOf(f.name)))
+    if (wrongType) {
+      notify.error(t('documentPage.signature.files.wrongType', { name: wrongType.name }))
+      return
+    }
+    const tooBig = picked.find((f) => f.size > MAX_FILE_MB * 1024 * 1024)
+    if (tooBig) {
+      notify.error(
+        t('documentPage.signature.files.tooBig', { name: tooBig.name, max: MAX_FILE_MB })
+      )
+      return
+    }
+    if (fileCount.value + picked.length > MAX_FILES) {
+      notify.error(t('documentPage.signature.files.tooMany', { max: MAX_FILES }))
+      return
+    }
+
+    const formData = new FormData()
+    formData.append('document_id', store.document_id)
+    formData.append('model', store.model)
+    picked.forEach((f) => formData.append('files', f))
+    uploading.value = true
+    store._attachFile(formData, () => {
+      store._files()
+      store._refreshMeta()
+    })
+    // `_attachFile` o'z loading'ini boshqaradi — tugashini kuzatamiz.
+    const stop = watch(
+      () => store.attachLoading,
+      (v) => {
+        if (!v) {
+          uploading.value = false
+          stop()
+        }
+      }
+    )
+  }
+
+  const onDelete = (item) => {
+    store._deleteFile(item.id, () => {
+      if ([item.id, appPreviewId(item)].includes(store.previewFile?.id)) store.previewFile = null
+      store._files()
+      store._refreshMeta()
+    })
+  }
+
+  const onOpenAttach = () => {
+    store.workerApplications = []
+    store.attachFiles = []
+    store.attachVisible = true
+  }
+
+  // Fayl buyruq PDF'i o'rnida ochiladi; qayta bosilsa — yopiladi.
+  const onPreview = (item) => {
+    if (shouldClose(item.id)) {
+      store.previewFile = null
+      return
+    }
+    openInDocumentTab(item)
+  }
+
+  // Hujjat ochilganda ro'yxat doim yuklanadi (fayllar ham, bog'langan arizalar ham).
+  watch(
+    () => store.document,
+    (doc) => {
+      if (doc) store._files()
+    },
+    { immediate: true }
+  )
 </script>
 
 <template>
@@ -80,119 +188,242 @@
     :title="$t('documentPage.signature.attachedDocuments')"
     class="w-full"
   >
-    <div class="flex flex-col gap-4">
-      <div v-if="store.fileList.length" class="flex flex-col gap-2">
-        <template v-for="(item, idx) in store.fileList" :key="idx">
-          <div class="flex items-center gap-2 p-2 -mx-2 rounded-lg hover:bg-surface-ground">
-            <div
-              class="w-8 h-8 rounded-md flex items-center justify-center shrink-0"
-              :class="item?.file ? 'bg-primary/10 text-primary' : 'bg-warning/10 text-warning'"
-            >
-              <n-icon size="16">
-                <FileContractIcon v-if="item?.file" />
-                <MailAttach16Regular v-else />
-              </n-icon>
-            </div>
-            <div class="min-w-0 flex-1">
-              <div class="text-xs font-medium text-textColor1 truncate">
-                {{ item?.file ? item.original_name : item?.worker_application?.number }}
-              </div>
-              <div class="text-[10px] text-gray-400">{{ Utils.timeOnlyDate(item.created_at) }}</div>
-            </div>
-            <n-icon
-              size="16"
-              class="cursor-pointer text-textColor3 hover:text-primary shrink-0"
-              @click="onDownload(item?.file || item?.worker_application?.confirmation_file)"
-            >
-              <CloudArrowDownIcon />
-            </n-icon>
-            <n-icon
-              v-if="item?.file"
-              size="16"
-              class="cursor-pointer text-textColor3 hover:text-primary shrink-0"
-              @click="onPreview(item)"
-            >
-              <EyeIcon />
-            </n-icon>
-          </div>
-        </template>
-      </div>
-
-      <div class="flex flex-col gap-4">
-        <n-button v-if="showDocumentFiles" @click="onOpenAttach" type="primary" text>
-          <template #icon>
-            <n-icon size="16">
-              <Add16Filled />
-            </n-icon>
-          </template>
-          {{ $t('documentPage.signature.attachDocument') }}
-        </n-button>
-
-        <FilePreviewModal v-model:visible="previewVisible" :file="previewFile" />
-
-        <n-badge :value="store.show ? 0 : store.document?.histories" :offset="[-10, 8]">
-          <n-button
-            type="tertiary"
-            secondary
-            style="width: 100%"
-            @click="getHistory"
-            :loading="store.historyLoading"
-          >
-            <template #icon>
-              <n-icon size="20">
-                <ChevronUp48Filled v-if="store.show" />
-                <History20Regular v-else />
-              </n-icon>
-            </template>
-            {{ store.show ? $t('content.hide') : $t('documentPage.signature.history') }}
-          </n-button>
-        </n-badge>
-      </div>
-
-      <n-collapse-transition
-        :show="store.show"
-        class="bg-surface-ground p-2 rounded-sm overflow-hidden"
+    <div class="flex flex-col gap-3">
+      <!-- Tasdiqlangan hujjat: biriktirmalar yo'q — bo'sh holat kartasi -->
+      <div
+        v-if="isLocked && !files.length && !applications.length"
+        class="flex flex-col items-center text-center gap-2 rounded-xl border border-dashed border-surface-line bg-fig-bg-secondary px-4 py-6"
       >
-        <template v-for="(item, idx) in store.historyList" :key="idx">
-          <div
-            class="flex flex-col justify-between w-full py-1 border-b border-dashed border-surface-line"
+        <div
+          class="w-10 h-10 rounded-full flex items-center justify-center bg-fig-chip-green text-fig-chip-green-text"
+        >
+          <n-icon size="20"><LockClosed20Regular /></n-icon>
+        </div>
+        <div class="text-xs font-semibold text-textColor0">
+          {{ $t('documentPage.signature.files.lockedTitle') }}
+        </div>
+        <div class="text-[11px] text-textColor3 leading-snug max-w-[220px]">
+          {{ $t('documentPage.signature.files.lockedEmpty') }}
+        </div>
+      </div>
+
+      <!-- Tasdiqlangan hujjat, biriktirmalar bor — ixcham ogohlantirish -->
+      <div
+        v-else-if="isLocked"
+        class="flex items-start gap-2 rounded-lg bg-fig-chip-green px-2.5 py-2 text-[11px] leading-snug text-fig-chip-green-text"
+      >
+        <n-icon size="14" class="shrink-0 mt-px"><LockClosed16Regular /></n-icon>
+        <span>{{ $t('documentPage.signature.files.lockedShort') }}</span>
+      </div>
+
+      <!-- Fayllar: sarlavha + soni -->
+      <div v-if="files.length || canEdit" class="flex flex-col gap-1.5">
+        <div
+          class="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-textColor3"
+        >
+          {{ $t('documentPage.signature.files.files') }}
+          <span
+            v-if="fileCount"
+            class="rounded-full bg-surface-ground px-1.5 text-[10px] font-medium normal-case tracking-normal tabular-nums text-textColor2"
           >
-            <div class="flex">
-              <UIUser
-                :short="false"
-                :data="{
-                  photo: item.user?.worker?.photo,
-                  lastName: item.user?.worker?.last_name,
-                  firstName: item.user?.worker?.first_name,
-                  middleName: item.user?.worker?.middle_name,
-                  position: null
-                }"
-              >
-                <template #position>
-                  <span
-                    @click="onDownload(item)"
-                    class="text-[10px] text-end text-primary underline flex items-center cursor-pointer hover:text-primary"
-                  >
-                    <n-icon class="mr-1" size="16"><DocumentArrowDown16Regular /></n-icon>
-                    {{ item.status?.name }}
-                  </span>
-                </template>
-              </UIUser>
-              <!--            <n-avatar size="small" round :src="item.user.photo"/>-->
-              <!--            <div class="flex items-center">-->
-              <!--              <span class=" text-gray-600 font-medium">{{`${item.user.last_name}.${item.user.first_name[0]}`}}</span>-->
-              <!--            </div>-->
-            </div>
-            <div class="flex flex-col justify-end">
-              <span class="text-xs text-gray-400 text-end">{{
-                Utils.timeWithMonth(item.created_at)
-              }}</span>
+            {{ fileCount }}/{{ MAX_FILES }}
+          </span>
+        </div>
+
+        <!-- Fayl qatori: turi ikonkasi, nomi va sana; amallar — o'ngda, hover'da -->
+        <div
+          v-for="item in files"
+          :key="item.id"
+          class="group flex items-center gap-2.5 rounded-lg border px-2 py-1.5 min-h-[48px] cursor-pointer transition-colors"
+          :class="
+            store.previewFile?.id === item.id
+              ? 'border-fig-blue-300 bg-fig-chip-brand'
+              : 'border-surface-line bg-surface-section hover:bg-fig-bg-secondary'
+          "
+          @click="onPreview(item)"
+        >
+          <div
+            class="w-8 h-8 rounded-md flex items-center justify-center shrink-0"
+            :class="fileTone(item)"
+          >
+            <n-icon size="20"><component :is="fileIcon(item)" /></n-icon>
+          </div>
+          <div class="min-w-0 flex-1">
+            <n-ellipsis
+              :tooltip="{ style: { maxWidth: '260px' } }"
+              class="block text-xs font-medium text-textColor1 leading-snug"
+            >
+              {{ fileName(item) }}
+            </n-ellipsis>
+            <div class="text-[10px] text-textColor3 tabular-nums uppercase">
+              {{ extOf(item.original_name) }}
+              <template v-if="item.created_at">
+                · {{ Utils.timeOnlyDate(item.created_at) }}
+              </template>
             </div>
           </div>
-        </template>
-      </n-collapse-transition>
+
+          <!-- Amallar: faol (ochiq) faylda doim, qolganlarida hover'da ko'rinadi -->
+          <div
+            class="flex items-center gap-0.5 shrink-0 transition-opacity"
+            :class="store.previewFile?.id === item.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'"
+            @click.stop
+          >
+            <DangerConfirm
+              v-if="canEdit"
+              :title="$t('documentPage.signature.files.deleteTitle')"
+              :description="fileName(item)"
+              :confirm-text="$t('content.delete')"
+              @confirm="onDelete(item)"
+            >
+              <template #trigger>
+                <n-button
+                  quaternary
+                  circle
+                  size="small"
+                  type="error"
+                  :loading="store.fileDeleting === item.id"
+                >
+                  <template #icon>
+                    <n-icon size="16"><Delete16Regular /></n-icon>
+                  </template>
+                </n-button>
+              </template>
+            </DangerConfirm>
+          </div>
+        </div>
+
+        <!-- Fayl qo'shish: punktir chegarali keng tugma -->
+        <button
+          v-if="canAdd"
+          type="button"
+          class="flex items-center justify-center gap-2 h-11 rounded-lg border-2 border-dashed border-surface-line text-xs font-medium text-textColor3 transition-colors hover:border-primary hover:text-primary hover:bg-fig-chip-brand disabled:cursor-wait"
+          :disabled="uploading"
+          @click="onPick"
+        >
+          <n-spin v-if="uploading" :size="14" />
+          <n-icon v-else size="16"><Add16Regular /></n-icon>
+          <span>{{ $t('documentPage.signature.files.attachFile') }}</span>
+        </button>
+      </div>
+
+      <!-- Bog'langan arizalar — fayllar bilan bir xil qator uslubida -->
+      <div v-if="applications.length || canEdit" class="flex flex-col gap-1.5 pt-1">
+        <div class="flex items-center justify-between gap-2 min-h-[24px]">
+          <div
+            class="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-textColor3"
+          >
+            {{ $t('documentPage.signature.files.applications') }}
+            <span
+              v-if="applications.length"
+              class="rounded-full bg-surface-ground px-1.5 text-[10px] font-medium normal-case tracking-normal tabular-nums text-textColor2"
+            >
+              {{ applications.length }}/{{ MAX_APPLICATIONS }}
+            </span>
+          </div>
+          <n-tooltip v-if="canEdit && applications.length && applications.length < MAX_APPLICATIONS">
+            <template #trigger>
+              <n-button quaternary circle size="small" type="primary" @click="onOpenAttach">
+                <template #icon>
+                  <n-icon size="16"><Add16Regular /></n-icon>
+                </template>
+              </n-button>
+            </template>
+            {{ $t('documentPage.signature.files.attachApplication') }}
+          </n-tooltip>
+        </div>
+
+        <!-- Bo'sh holat -->
+        <button
+          v-if="!applications.length && canEdit"
+          type="button"
+          class="flex items-center justify-center gap-2 h-11 rounded-lg border-2 border-dashed border-surface-line text-xs font-medium text-textColor3 transition-colors hover:border-primary hover:text-primary hover:bg-fig-chip-brand"
+          @click="onOpenAttach"
+        >
+          <n-icon size="16"><Add16Regular /></n-icon>
+          {{ $t('documentPage.signature.files.attachApplication') }}
+        </button>
+
+        <!-- Ariza qatori: ikonka, turi (sarlavha), raqam va sana; amallar — o'ngda, hover'da -->
+        <div
+          v-for="item in applications"
+          :key="item.id"
+          class="group flex items-center gap-2.5 rounded-lg border px-2 py-1.5 min-h-[48px] cursor-pointer transition-colors"
+          :class="
+            store.previewFile?.id === appPreviewId(item)
+              ? 'border-fig-blue-300 bg-fig-chip-brand'
+              : 'border-surface-line bg-surface-section hover:bg-fig-bg-secondary'
+          "
+          @click="onPreviewApplication(item)"
+        >
+          <div
+            class="w-8 h-8 rounded-md flex items-center justify-center shrink-0 bg-fig-chip-amber text-fig-chip-amber-text"
+          >
+            <n-icon size="18"><MailAttach16Regular /></n-icon>
+          </div>
+          <div class="min-w-0 flex-1">
+            <n-ellipsis
+              :line-clamp="2"
+              :tooltip="{ style: { maxWidth: '260px' } }"
+              class="text-xs font-medium text-textColor1 leading-snug"
+            >
+              {{ item.worker_application?.type?.name }}
+            </n-ellipsis>
+            <div class="mt-0.5 text-[11px] font-medium text-textColor2 tabular-nums">
+              №{{ item.worker_application?.number }}
+              <template v-if="item.worker_application?.created_at">
+                · {{ Utils.timeOnlyDate(item.worker_application.created_at) }}
+              </template>
+            </div>
+          </div>
+
+          <div
+            class="flex items-center gap-0.5 shrink-0 transition-opacity"
+            :class="
+              store.previewFile?.id === appPreviewId(item)
+                ? 'opacity-100'
+                : 'opacity-0 group-hover:opacity-100'
+            "
+            @click.stop
+          >
+            <DangerConfirm
+              v-if="canEdit"
+              :icon="LinkDismiss16Regular"
+              :title="$t('documentPage.signature.files.unlinkTitle')"
+              :description="
+                $t('documentPage.signature.files.unlinkConfirm', {
+                  number: item.worker_application?.number
+                })
+              "
+              :confirm-text="$t('documentPage.signature.files.unlink')"
+              @confirm="onDelete(item)"
+            >
+              <template #trigger>
+                <n-button
+                  quaternary
+                  circle
+                  size="small"
+                  type="error"
+                  :loading="store.fileDeleting === item.id"
+                >
+                  <template #icon>
+                    <n-icon size="16"><LinkDismiss16Regular /></n-icon>
+                  </template>
+                </n-button>
+              </template>
+            </DangerConfirm>
+          </div>
+        </div>
+      </div>
+
+      <input
+        ref="inputRef"
+        type="file"
+        class="hidden"
+        multiple
+        accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
+        @change="onFilesSelected"
+      />
     </div>
   </SectionHeader>
 </template>
-
-<style scoped></style>

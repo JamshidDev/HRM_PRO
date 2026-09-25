@@ -1292,6 +1292,98 @@
         "reason_six": "Natural disaster damage (with confirmed assessment)",
         "reason_seven": "Household coal purchase",
         "reason_eight": "To purchase agricultural products"
+      },
+      "dataTab": {
+        "tabDocument": "Document",
+        "tabData": "Details",
+        "editableTitle": "The order can be edited",
+        "editableHint": "Change the details and save — the order will be re-issued and all approvers will sign it again.",
+        "rejectedTitle": "The order was rejected",
+        "readonlyTitle": "View only",
+        "blocks": {
+          "cancelled": "The order is cancelled and cannot be changed.",
+          "contract": "This order was created from a contract — its details are changed via the contract.",
+          "signed": "One of the approvers has already signed — editing is possible only after rejection.",
+          "no_form_state": "This order was created before the system update — details were restored from the database and are view-only. Some fields may be empty."
+        },
+        "emptyTitle": "No details available",
+        "loadError": "Could not load the data. Please try again shortly.",
+        "reset": "Restore saved details",
+        "preview": "Preview",
+        "save": "Save and resend",
+        "savedNotify": "The order was updated and sent for signing again",
+        "sectionMain": "Main details",
+        "sectionWorkers": "Organization and employee(s)",
+        "sectionDetails": "Order details",
+        "sectionSigners": "Director and approvers",
+        "locked": {
+          "approved": "The document is approved",
+          "cancelled": "The order is cancelled",
+          "contract": "Changed via the contract",
+          "contract_additional": "Changed via the additional agreement",
+          "no_form_state": "Old order — view only"
+        },
+        "resend": {
+          "title": "Send for signing again",
+          "all": "Everyone",
+          "allHint": "Those who approved or rejected will also be «In progress» again",
+          "selected": "Selected",
+          "selectedHint": "Only checked people become «In progress», others keep their status",
+          "contentChanged": "The order text changed — earlier approvals of unselected people will refer to the old version.",
+          "required": "required",
+          "count": "Will be sent to {count}",
+          "submit": "Send",
+          "types": {
+            "w": "Employee",
+            "s": "Approver",
+            "d": "Director"
+          },
+          "status": {
+            "1": "In progress",
+            "2": "Viewed",
+            "3": "Approved",
+            "4": "Rejected",
+            "new": "New"
+          }
+        },
+        "source": {
+          "titleContract": "Created from contract №{number}",
+          "titleAdditional": "Created from additional agreement №{number}",
+          "hintContract": "Order data can only be changed by editing the contract — when the contract is re-issued, the order is updated with it.",
+          "hintAdditional": "Order data can only be changed by editing the additional agreement — when it is re-issued, the order is updated with it.",
+          "openContract": "Open contract",
+          "openAdditional": "Open additional agreement",
+          "deleted": "Source document deleted",
+          "sectionCommand": "Order",
+          "sectionWorker": "Employee",
+          "sectionTerms": "Position and working conditions",
+          "sectionSigners": "Approvers",
+          "noTerms": "No data on the terms was found",
+          "noSigners": "No approvers assigned",
+          "fields": {
+            "number": "Order number",
+            "date": "Order date",
+            "type": "Order type",
+            "director": "Director",
+            "sourceType": "Document type",
+            "organization": "Organization",
+            "currentPosition": "Current position",
+            "position": "Position",
+            "salary": "Salary",
+            "rate": "Rate",
+            "group": "Group",
+            "rank": "Rank",
+            "probation": "Probation period",
+            "vacationMain": "Main vacation",
+            "vacationAdditional": "Additional vacation",
+            "positionDate": "Appointment date",
+            "contractTo": "Valid until",
+            "workDays": "Working days",
+            "workTime": "Working hours",
+            "days": "{count} days",
+            "sum": "{value} UZS"
+          }
+        }
       }
     },
     "form": {
@@ -1325,7 +1417,34 @@
     "signature": {
       "history": "View change history",
       "viewer": "Document reviewers",
-      "files": "Document files",
+      "files": {
+        "locked": "The document is approved — files can be viewed and downloaded, adding and removing is closed",
+        "tooMany": "No more than {max} files can be attached",
+        "tooBig": "«{name}» is larger than {max} MB",
+        "wrongType": "«{name}» — only PDF, PNG or JPG can be uploaded",
+        "deleteConfirm": "Delete the file «{name}»?",
+        "attachApplication": "Attach an application",
+        "backToDocument": "Back to document",
+        "noApplications": "No applications available to attach",
+        "linked": "attached",
+        "selectedCount": "{count} selected",
+        "attachSubmit": "Attach",
+        "applications": "Applications",
+        "application": "Application",
+        "unlinkConfirm": "Detach application No. {number} from the document?",
+        "files": "Files",
+        "attachShort": "Attach",
+        "applicationsLimit": "No more than {max} applications can be attached",
+        "attachFile": "Attach file",
+        "view": "View",
+        "download": "Download",
+        "lockedTitle": "Document approved",
+        "lockedEmpty": "No attached files or applications. New files can't be added to an approved document.",
+        "lockedShort": "Document approved — files are view-only",
+        "deleteTitle": "Delete file",
+        "unlinkTitle": "Unlink application",
+        "unlink": "Unlink"
+      },
       "checkDocument": "Click to check document status",
       "attachedDocuments": "Attached documents",
       "attachDocument": "Attach document",
@@ -1362,12 +1481,12 @@
       },
       "approval": {
         "title": "Signing process",
-        "signers": "Signers",
+        "signers": "Approvers",
         "history": "Action history",
         "progress": "{done} of {total} approved",
-        "step": "Step {n}",
         "you": "You",
         "actions": "Actions",
+        "chat": "Message",
         "signedWithEri": "Approved with e-signature",
         "certificate": "Certificate",
         "noHistory": "No actions yet",
@@ -1382,9 +1501,39 @@
           "viewed": "Viewed the document",
           "approved": "Approved",
           "rejected": "Rejected",
-          "resent": "Resent"
-        }
-      }
+          "resent": "Resent",
+          "file_added": "File added",
+          "file_removed": "File removed"
+        },
+        "sign": "Sign",
+        "notForYou": "This document was not sent to you for signing",
+        "youSigned": "You have signed this document",
+        "youRejected": "You have rejected this document",
+        "yourTurn": "It's your turn to sign",
+        "yourTurnSub": "The document is approved via E-IMZO",
+        "notForYouSub": "You can only view this document",
+        "roles": {
+          "w": "Employee",
+          "s": "Approver",
+          "d": "Director"
+        },
+        "groups": {
+          "sent": "Sent for signing to {count}",
+          "resent": "Resent to {count}"
+        },
+        "verbs": {
+          "sent": "— sent for signing",
+          "viewed": "viewed",
+          "approved": "approved",
+          "rejected": "rejected",
+          "resent": "— resent",
+          "file_added": "added a file",
+          "file_removed": "removed a file"
+        },
+        "showAll": "Show all"
+      },
+      "rejectReasonSelect": "Select a rejection reason",
+      "optional": "optional"
     },
     "attach": {
       "title": "Attach",
@@ -1675,9 +1824,17 @@
     "versionSaved": "Version updated",
     "upgrade": "Upgrade",
     "form": {
-      "latestVersion": "Latest version"
+      "latestVersion": "Latest version",
+      "minVersion": "Minimum version"
     },
-    "versionInvalid": "Invalid version format. Example: 1.9.2"
+    "versionInvalid": "Invalid version format. Example: 1.9.2",
+    "forced": "Required",
+    "optional": "Optional",
+    "forcedHint": "Versions below {version} are blocked",
+    "optionalHint": "Versions below {min} are blocked, others are offered the update",
+    "minGreaterThanLatest": "Minimum version cannot be greater than the latest version",
+    "confirmMinRaise": "The minimum version is raised to {version} — all users on older versions will be blocked. Is {version} already released in the store?",
+    "confirmSave": "Save the version?"
   },
   "actionLog": {
     "name": "Action history",
@@ -2346,7 +2503,6 @@
       "worker": "Employee"
     },
     "tabs": {
-      "legacy": "Legacy",
       "general": "Overview",
       "movement": "Staff movement",
       "attendance": "Attendance & leave"

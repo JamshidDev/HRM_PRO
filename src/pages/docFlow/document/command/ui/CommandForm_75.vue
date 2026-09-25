@@ -1,8 +1,9 @@
 <script setup>
-  import { useCommandStore, useComponentStore } from '@/store/modules/index.js'
+  import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
+  import { useComponentStore } from '@/store/modules/index.js'
   import validationRules from '@/utils/validationRules.js'
 
-  const store = useCommandStore()
+  const store = useCommandFormStore()
   const componentStore = useComponentStore()
   const formRef = ref(null)
 
