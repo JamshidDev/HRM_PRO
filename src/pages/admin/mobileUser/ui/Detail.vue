@@ -36,7 +36,7 @@ const infoItems = computed(() => [
     key: 'created',
     icon: CalendarLtr20Filled,
     labelKey: 'content.date',
-    value: Utils.timeWithMonth(device.value?.created_at)
+    value: Utils.timeOnlyDate(device.value?.created_at)
   }
 ])
 
@@ -89,7 +89,7 @@ const statusChip = (session) => STATUS_CHIP[getTimelineType(session.status, sess
             <div
               v-for="item in infoItems"
               :key="item.key"
-              class="flex items-start gap-2.5 rounded-lg bg-surface-ground p-2.5 min-w-0"
+              class="flex items-start gap-2.5 rounded-lg info-box-ground p-2.5 min-w-0"
             >
               <div class="w-10 h-10 rounded-lg bg-surface-section flex items-center justify-center shrink-0 text-primary">
                 <n-icon size="22"><component :is="item.icon" /></n-icon>
@@ -199,15 +199,22 @@ const statusChip = (session) => STATUS_CHIP[getTimelineType(session.status, sess
     gap: 8px;
     margin-bottom: 14px;
     font-size: 14px;
-    font-weight: 700;
-    color: var(--textColor0);
+    font-weight: 600;
+    color: var(--textColor1);
   }
 
   /* UIUser umumiy komponent — avatarni faqat shu modalda kattalashtiramiz. */
   .user-head :deep(.n-avatar) {
+    --n-merged-size: 56px !important;
     width: 56px;
     height: 56px;
     flex-shrink: 0;
+  }
+
+  .user-head :deep(.n-avatar img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .user-head {
