@@ -150,11 +150,11 @@
             <div class="rounded-lg info-box-ground px-2.5 py-2 text-[11px] leading-tight space-y-1.5">
               <div class="flex items-center justify-between gap-2">
                 <span class="text-textColor3 shrink-0">{{ t('mobileUserPage.lastUsedAt') }}</span>
-                <span class="font-medium text-textColor0 truncate">{{ Utils.timeWithMonth(device.last_used_at) || '-' }}</span>
+                <span class="font-medium text-textColor0 truncate">{{ Utils.timeOnlyDate(device.last_used_at) || '-' }}</span>
               </div>
               <div class="flex items-center justify-between gap-2">
                 <span class="text-textColor3 shrink-0">{{ t('content.date') }}</span>
-                <span class="font-medium text-textColor0 truncate">{{ Utils.timeWithMonth(device.created_at) || '-' }}</span>
+                <span class="font-medium text-textColor0 truncate">{{ Utils.timeOnlyDate(device.created_at) || '-' }}</span>
               </div>
               <div class="flex items-center justify-between gap-2">
                 <span class="text-textColor3 shrink-0">{{ t('mobileUserPage.verificationTime') }}</span>
