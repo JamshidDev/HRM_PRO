@@ -5,10 +5,11 @@
     Globe20Filled,
     Copy16Regular,
     Alert16Regular,
-    AlertOff16Regular
+    AlertOff16Regular,
+    ChevronDown20Filled
   } from '@vicons/fluent'
   import { useMessage } from 'naive-ui'
-  import { UIBadge } from '@/components/index.js'
+  import { UIBadge, UISegmentTabs } from '@/components/index.js'
   import { useMobileUserStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
@@ -20,6 +21,48 @@
   // Backend `created_at` desc bilan qaytaradi (eng yangi qurilma birinchi) —
   // shu tartib buzilmasin uchun ro'yxat qayta saralanmaydi.
   const devices = computed(() => store.detail?.devices ?? [])
+
+  // Platforma filtri: faqat ro'yxatda bor platformalar tugma sifatida chiqadi.
+  const PLATFORMS = [
+    { key: 'android', label: 'Android' },
+    { key: 'ios', label: 'iOS' },
+    { key: 'web', label: 'Web' }
+  ]
+  const platformFilter = ref('all')
+  const platformCounts = computed(() =>
+    devices.value.reduce((acc, d) => {
+      acc[d.platform] = (acc[d.platform] ?? 0) + 1
+      return acc
+    }, {})
+  )
+  const filterTabs = computed(() => [
+    { id: 'all', name: t('content.all'), badge: devices.value.length },
+    ...PLATFORMS.filter((p) => platformCounts.value[p.key]).map((p) => ({
+      id: p.key,
+      name: p.label,
+      badge: platformCounts.value[p.key]
+    }))
+  ])
+  const filteredDevices = computed(() =>
+    platformFilter.value === 'all'
+      ? devices.value
+      : devices.value.filter((d) => d.platform === platformFilter.value)
+  )
+
+  // Kartalar yig'iq holda: faqat sarlavha ko'rinadi, qolgani bosilganda ochiladi.
+  const expanded = ref(new Set())
+  const isExpanded = (id) => expanded.value.has(id)
+  const toggle = (id) => {
+    const next = new Set(expanded.value)
+    next.has(id) ? next.delete(id) : next.add(id)
+    expanded.value = next
+  }
+
+  // Boshqa foydalanuvchi ochilganda filtr "Hammasi"ga qaytadi.
+  watch(devices, () => {
+    platformFilter.value = 'all'
+    expanded.value = new Set()
+  })
 
   const platformType = (platform) =>
     platform === 'ios' ? Utils.colorTypes.error : platform === 'web' ? Utils.colorTypes.info : Utils.colorTypes.success
@@ -47,15 +90,17 @@
   <n-spin :show="store.detailLoading">
     <!-- Ixcham kartalar: bitta accountda 20 tagacha qurilma bo'ladi,
          shuning uchun keng ekranda 3 ustunli grid. -->
-    <div v-if="devices.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+    <UISegmentTabs v-if="devices.length" v-model="platformFilter" :tabs="filterTabs" class="mb-3" />
+
+    <div v-if="filteredDevices.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 items-start">
       <div
-        v-for="device in devices"
+        v-for="device in filteredDevices"
         :key="device.id"
         class="device-card rounded-xl border bg-surface-section p-3 flex flex-col gap-2.5"
         :class="device.is_active ? 'device-card--active border-success/50' : 'border-surface-line'"
       >
         <!-- Sarlavha: platforma ikonkasi + model + ID/platforma + holat nuqtasi -->
-        <div class="flex items-center gap-2.5 min-w-0">
+        <div class="flex items-center gap-2.5 min-w-0 cursor-pointer select-none" @click="toggle(device.id)">
           <div
             class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
             :class="platformIconCls(device.platform)"
@@ -82,6 +127,13 @@
             :class="device.is_active ? 'bg-success ring-4 ring-success/20' : 'bg-surface-line'"
             :title="device.is_active ? t('mobileUserPage.active') : t('mobileUserPage.inactive')"
           />
+          <n-icon
+            size="18"
+            class="text-textColor3 shrink-0 transition-transform duration-200"
+            :class="{ 'rotate-180': isExpanded(device.id) }"
+          >
+            <ChevronDown20Filled />
+          </n-icon>
         </div>
 
         <span
@@ -92,65 +144,69 @@
           {{ t('mobileUserPage.currentDevice') }}
         </span>
 
-        <!-- Ma'lumot qatorlari -->
-        <div class="rounded-lg bg-surface-ground px-2.5 py-2 text-[11px] leading-tight space-y-1.5">
-          <div class="flex items-center justify-between gap-2">
-            <span class="text-textColor3 shrink-0">{{ t('mobileUserPage.lastUsedAt') }}</span>
-            <span class="font-medium text-textColor0 truncate">{{ Utils.timeWithMonth(device.last_used_at) || '-' }}</span>
-          </div>
-          <div class="flex items-center justify-between gap-2">
-            <span class="text-textColor3 shrink-0">{{ t('content.date') }}</span>
-            <span class="font-medium text-textColor0 truncate">{{ Utils.timeWithMonth(device.created_at) || '-' }}</span>
-          </div>
-          <div class="flex items-center justify-between gap-2">
-            <span class="text-textColor3 shrink-0">{{ t('mobileUserPage.verificationTime') }}</span>
-            <span class="font-medium text-textColor0 truncate">{{ Utils.timeWithMonth(device.face) || '-' }}</span>
-          </div>
-          <div class="flex items-center justify-between gap-2">
-            <span class="text-textColor3 shrink-0">{{ t('mobileUserPage.notifications') }}</span>
-            <n-icon size="14" :class="device.notifications ? 'text-fig-green' : 'text-textColor3'">
-              <Alert16Regular v-if="device.notifications" />
-              <AlertOff16Regular v-else />
-            </n-icon>
-          </div>
-        </div>
+        <n-collapse-transition :show="isExpanded(device.id)">
+          <div class="flex flex-col gap-2.5">
+            <!-- Ma'lumot qatorlari -->
+            <div class="rounded-lg info-box-ground px-2.5 py-2 text-[11px] leading-tight space-y-1.5">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-textColor3 shrink-0">{{ t('mobileUserPage.lastUsedAt') }}</span>
+                <span class="font-medium text-textColor0 truncate">{{ Utils.timeWithMonth(device.last_used_at) || '-' }}</span>
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-textColor3 shrink-0">{{ t('content.date') }}</span>
+                <span class="font-medium text-textColor0 truncate">{{ Utils.timeWithMonth(device.created_at) || '-' }}</span>
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-textColor3 shrink-0">{{ t('mobileUserPage.verificationTime') }}</span>
+                <span class="font-medium text-textColor0 truncate">{{ Utils.timeWithMonth(device.face) || '-' }}</span>
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-textColor3 shrink-0">{{ t('mobileUserPage.notifications') }}</span>
+                <n-icon size="14" :class="device.notifications ? 'text-fig-green' : 'text-textColor3'">
+                  <Alert16Regular v-if="device.notifications" />
+                  <AlertOff16Regular v-else />
+                </n-icon>
+              </div>
+            </div>
 
-        <!-- UUID + FCM: monospace "pill" + nusxalash tugmasi -->
-        <div class="space-y-2">
-          <div class="flex items-center gap-2">
-            <span class="token-label">{{ t('mobileUserPage.deviceUuid') }}</span>
-            <div class="token-field" :title="device.device_uuid">
-              <span class="token-field__text">{{ device.device_uuid || '-' }}</span>
-              <button
-                v-if="device.device_uuid"
-                type="button"
-                class="copy-btn"
-                @click="onCopy(device.device_uuid)"
-              >
-                <n-icon size="14"><Copy16Regular /></n-icon>
-              </button>
+            <!-- UUID + FCM: monospace "pill" + nusxalash tugmasi -->
+            <div class="space-y-2">
+              <div class="flex items-center gap-2">
+                <span class="token-label">{{ t('mobileUserPage.deviceUuid') }}</span>
+                <div class="token-field info-box-ground" :title="device.device_uuid">
+                  <span class="token-field__text">{{ device.device_uuid || '-' }}</span>
+                  <button
+                    v-if="device.device_uuid"
+                    type="button"
+                    class="copy-btn"
+                    @click="onCopy(device.device_uuid)"
+                  >
+                    <n-icon size="14"><Copy16Regular /></n-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="token-label">{{ t('mobileUserPage.fcmToken') }}</span>
+                <div class="token-field info-box-ground" :title="device.fcm_token">
+                  <span
+                    class="token-field__text"
+                    :class="{ 'italic text-textColor3': !device.fcm_token }"
+                  >
+                    {{ device.fcm_token || t('mobileUserPage.noFcmToken') }}
+                  </span>
+                  <button
+                    v-if="device.fcm_token"
+                    type="button"
+                    class="copy-btn"
+                    @click="onCopy(device.fcm_token)"
+                  >
+                    <n-icon size="14"><Copy16Regular /></n-icon>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="flex items-center gap-2">
-            <span class="token-label">{{ t('mobileUserPage.fcmToken') }}</span>
-            <div class="token-field" :title="device.fcm_token">
-              <span
-                class="token-field__text"
-                :class="{ 'italic text-textColor3': !device.fcm_token }"
-              >
-                {{ device.fcm_token || t('mobileUserPage.noFcmToken') }}
-              </span>
-              <button
-                v-if="device.fcm_token"
-                type="button"
-                class="copy-btn"
-                @click="onCopy(device.fcm_token)"
-              >
-                <n-icon size="14"><Copy16Regular /></n-icon>
-              </button>
-            </div>
-          </div>
-        </div>
+        </n-collapse-transition>
       </div>
     </div>
 
@@ -208,9 +264,7 @@
     gap: 4px;
     height: 30px;
     padding: 0 3px 0 10px;
-    border: 1px solid var(--surface-line);
     border-radius: 8px;
-    background: var(--surface-ground);
   }
 
   .token-field__text {
