@@ -1909,6 +1909,7 @@
     },
     "Edocument": {
       "download_pdf": "PDF юклаб олиш",
+      "download_svg": "SVG юклаб олиш",
       "pasport": "Паспорт",
       "railway_pasport": "Темир йўл гувоҳнома",
       "foreign_pasport": "Хорижий паспорт",

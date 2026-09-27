@@ -87,7 +87,7 @@
     return y && m && d ? `${d}.${m}.${y}` : iso
   }
 
-  async function downloadPdf() {
+  async function download(format) {
     const d = props.data
     const fileName = [d.fullName, d.cardNumber].filter(Boolean).join('_').replace(/\s+/g, '_')
     await downloadIdRedCertificatePdf({
@@ -106,11 +106,15 @@
         validUntil: formatDate(validUntilDate.value),
         managerShortName: managerShortName.value
       },
-      fileName: `${fileName || 'guvohnoma'}.pdf`
+      fileName: fileName || 'guvohnoma',
+      format
     })
   }
 
-  defineExpose({ downloadPdf })
+  const downloadPdf = () => download('pdf')
+  const downloadSvg = () => download('svg')
+
+  defineExpose({ downloadPdf, downloadSvg })
 </script>
 
 <template>

@@ -2132,6 +2132,7 @@
     },
     "Edocument": {
       "download_pdf": "Скачать PDF",
+      "download_svg": "Скачать SVG",
       "pasport": "Паспорт",
       "railway_pasport": "Железнодорожное удостоверение",
       "foreign_pasport": "Заграничный паспорт",
