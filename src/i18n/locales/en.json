@@ -2164,6 +2164,7 @@
     },
     "Edocument": {
       "download_pdf": "Download PDF",
+      "download_svg": "Download SVG",
       "pasport": "Passport",
       "railway_pasport": "Railway ID",
       "foreign_pasport": "Foreign Passport",

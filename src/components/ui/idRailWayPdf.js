@@ -5,7 +5,7 @@ import {
   fitText,
   drawCover,
   createCardCanvas,
-  downloadCanvasesAsPdf
+  downloadCanvases
 } from './cardPdf.js'
 
 // Kartaning asl o'lchami (fon rasmlari 1011x638)
@@ -94,7 +94,7 @@ function renderBack({ background, qr, data, strip, font }) {
 }
 
 /**
- * Temir yo'l guvohnomasining oldi va orqa tomonini bitta A4 PDF sahifaga joylab yuklab beradi.
+ * Temir yo'l guvohnomasining oldi va orqa tomonini bitta A4 PDF sahifaga (yoki SVG faylga) joylab yuklab beradi.
  */
 export async function downloadIdRailWayPdf({
   frontSrc,
@@ -105,7 +105,8 @@ export async function downloadIdRailWayPdf({
   fields,
   strip,
   fontFamily,
-  fileName
+  fileName,
+  format = 'pdf'
 }) {
   await document.fonts?.ready
   const [frontBg, backBg, photo, qr] = await Promise.all([
@@ -119,5 +120,5 @@ export async function downloadIdRailWayPdf({
   const front = renderFront({ background: frontBg, photo, data, fields, font })
   const back = renderBack({ background: backBg, qr, data, strip, font })
 
-  await downloadCanvasesAsPdf([front, back], fileName)
+  await downloadCanvases([front, back], fileName, format)
 }
