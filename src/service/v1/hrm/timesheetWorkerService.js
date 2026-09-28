@@ -12,6 +12,11 @@ const _create = async (payload) => {
   return await axios.post(`/v1/timesheet/${payload.id}/workers`, payload.data)
 }
 
+// Kataklar o'z qiymati bilan, bitta tranzaksiyada (bo'sh `details` — tozalash).
+const _saveCells = async (payload) => {
+  return await axios.put(`/v1/timesheet/${payload.id}/workers/cells`, payload.data)
+}
+
 const _check_worker = async (pin) => {
   return await axios.get(`/v1/timesheet/check-worker`, { params: { pin } })
 }
@@ -52,6 +57,7 @@ export default {
   _index,
   _get_days,
   _create,
+  _saveCells,
   _check_worker,
   _auto_calc,
   _day_detail,

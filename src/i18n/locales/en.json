@@ -2913,7 +2913,12 @@
     "tipPlan": "The norm set by the work schedule for this day — from start to end of the shift, minus lunch. Shows how much the employee WAS SUPPOSED to work.",
     "tipTurnstile": "Total time in the building based on turnstile entries and exits. Time outside the schedule is included; lunch is not deducted.",
     "tipOutside": "Time spent outside the building during working hours: the sum of gaps from each exit to the next entry.",
-    "tipCounted": "The time that goes into the timesheet. Only the part of the turnstile time that falls inside the schedule window is taken, minus lunch."
+    "tipCounted": "The time that goes into the timesheet. Only the part of the turnstile time that falls inside the schedule window is taken, minus lunch.",
+    "unsaved": {
+      "title": "Unsaved changes",
+      "content": "{count} cells are not saved. Save them?",
+      "discard": "Close without saving"
+    }
   },
   "turnstile": {
     "title": "Turnstile",

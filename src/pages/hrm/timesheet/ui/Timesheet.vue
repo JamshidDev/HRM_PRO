@@ -1,6 +1,6 @@
 <script setup>
   import { h, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
-  import { useMessage } from 'naive-ui'
+  import { useDialog, useMessage } from 'naive-ui'
   import {
     Add20Filled,
     ArrowDownload20Filled,
@@ -38,6 +38,7 @@
   const { t } = i18n.global
 
   const message = useMessage()
+  const dialog = useDialog()
   const store = useTimesheetWorkerStore()
   const compStore = useComponentStore()
   const confirmStore = useTimesheetConfirmStore()
@@ -720,9 +721,8 @@
   // «ko'rish» tugmasi ham tanlash ustidan chiqib xalaqit berardi.
   const dragging = ref(false)
 
-  // Saqlanmagan (kutilayotgan) katakchalar: key `row-col` → {row, col, wasOccupied}.
-  // Tanlangan katak DARHOL qiymat bilan to'ladi, serverga «Saqlash» da ketadi.
-  const pendingCells = ref(new Map())
+  // Saqlanmagan kataklar store'da (`store.pending`) — xodim va kun bo'yicha, har biri o'z qiymati bilan.
+  const pendingCount = computed(() => Object.keys(store.pending).length)
 
   const canSelectRange = () => {
     // Tasdiqlashga chiqarilgan yoki yakunlangan tabel o'zgartirilmaydi —
@@ -752,17 +752,11 @@
   const onSelectionChange = (items) => {
     if (!canSelectRange()) return
     for (const item of items) {
-      const row = Number(item.row)
-      const col = Number(item.col)
-      const key = `${row}-${col}`
-      if (!pendingCells.value.has(key)) {
-        pendingCells.value.set(key, {
-          row,
-          col,
-          wasOccupied: Boolean(store.list[row]?.days?.[col + 1]?.length)
-        })
-      }
-      store.applyLocalCell(row, col, store.payload.isClearing ? [] : previewDetails.value)
+      store.applyLocalCell(
+        Number(item.row),
+        Number(item.col),
+        store.payload.isClearing ? [] : previewDetails.value
+      )
     }
   }
 
@@ -773,13 +767,32 @@
     previewActive.value = !store.payload.isClearing
   }
 
-  const onSave = () => {
-    if (!pendingCells.value.size) return
-    const cells = [...pendingCells.value.values()]
-    pendingCells.value = new Map()
-    form.value?.validate((error) => {
-      if (!error) store._save(cells)
+  // Saqlanmagan kataklar bo'lsa yopishdan oldin so'raladi — jimgina yo'qolmasin.
+  const onClose = () => {
+    if (!pendingCount.value) {
+      store.visible = false
+      return
+    }
+    dialog.warning({
+      title: t('timesheetPage.unsaved.title'),
+      content: t('timesheetPage.unsaved.content', { count: pendingCount.value }),
+      positiveText: t('content.save'),
+      negativeText: t('timesheetPage.unsaved.discard'),
+      onPositiveClick: async () => {
+        await store._save()
+        store.visible = false
+      },
+      onNegativeClick: () => {
+        store.pending = {}
+        store.visible = false
+      }
     })
+  }
+
+  // Xato bo'lsa kutilayotgan kataklar o'chmaydi — tuzatib qayta saqlash mumkin.
+  const onSave = async () => {
+    if (!pendingCount.value) return
+    await store._save()
   }
 
   const changePage = (v) => {
@@ -901,7 +914,7 @@
       </div>
 
       <div class="ts-filters-actions">
-        <n-button secondary type="error" @click="store.visible = false">
+        <n-button secondary type="error" @click="onClose">
           <template #icon>
             <n-icon :component="Dismiss20Regular" />
           </template>
@@ -921,13 +934,14 @@
         <n-button
           v-else-if="activeTab === 'grid'"
           :loading="store.saveLoading"
+          :disabled="!pendingCount"
           type="primary"
           @click="onSave"
         >
           <template #icon>
             <n-icon :component="Save20Filled" />
           </template>
-          {{ $t('content.save') }}
+          {{ $t('content.save') }}{{ pendingCount ? ` (${pendingCount})` : '' }}
         </n-button>
       </div>
     </div>
@@ -1365,6 +1379,8 @@
             v-model:value="store.payload.hours"
             :disabled="timesheetLocked || !typeByIdOrNull(store.payload.status)?.hours"
             :min="0"
+            :max="24"
+            :precision="0"
           />
         </div>
         <div class="ts-field ts-field-type">
@@ -1392,6 +1408,8 @@
             v-model:value="store.payload.hours2"
             :disabled="timesheetLocked || !typeByIdOrNull(store.payload.status2)?.hours"
             :min="0"
+            :max="24"
+            :precision="0"
           />
         </div>
 
