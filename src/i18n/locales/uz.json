@@ -2938,6 +2938,15 @@
       "title": "Saqlanmagan o'zgarishlar",
       "content": "{count} ta katak saqlanmagan. Saqlaysizmi?",
       "discard": "Saqlamasdan yopish"
+    },
+    "calcDiff": {
+      "system": "Tizim",
+      "entered": "Kiritilgan",
+      "diff": "Farq",
+      "more": "{n} soat ko‘p",
+      "less": "{n} soat kam",
+      "typeOnly": "soat bir xil, tur o‘zgargan",
+      "empty": "bo‘sh (0 soat)"
     }
   },
   "turnstile": {

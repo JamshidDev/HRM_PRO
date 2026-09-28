@@ -708,6 +708,28 @@
 
   const dayDetails = (item, day) => item.days[day.day]
 
+  // Tizim hisobidan farq: bo'sh katak va soatsiz tur 0 soat. Auto ishlatilmagan xodimda solishtirilmaydi.
+  const hoursOf = (details) => (details ?? []).reduce((a, d) => a + (d?.hours || 0), 0)
+  const typeOf = (details) => (details ?? []).map((d) => d?.status_id).filter(Boolean).join('/')
+  const cellDiff = (item, day) => {
+    if (!store.calcWorkers[item.id]) return null
+    const base = store.calcBase[`${item.id}|${day.day}`]
+    const baseDetails = base ? [base] : []
+    const actual = dayDetails(item, day)
+    const diff = hoursOf(actual) - hoursOf(baseDetails)
+    if (!diff && typeOf(actual) === typeOf(baseDetails)) return null
+    // Harf emas, tur nomi: «K» (lotin) va «К» (kirill) ekranda bir xil ko'rinadi.
+    const name = (d) => {
+      const type = typeByIdOrNull(d.status_id)
+      return type ? `${type.name} (${type.key})` : d.status
+    }
+    const label = (list) =>
+      list.length
+        ? list.map((d) => name(d) + (d.hours != null ? ` — ${d.hours} soat` : ' — 0 soat')).join(' / ')
+        : t('timesheetPage.calcDiff.empty')
+    return { diff, system: label(baseDetails), entered: label(actual ?? []) }
+  }
+
   /**
    * Bir kunda bir nechta yozuv bo'lishi mumkin — har biri O'Z rangida chiziladi,
    * qiymatlar `/` bilan ajratiladi.
@@ -1283,7 +1305,8 @@
                 :key="col"
                 :class="{
                   'is-rest': !dayDetails(item, day)?.length && isWeekend(day),
-                  'is-empty': !dayDetails(item, day)?.length && !isWeekend(day)
+                  'is-empty': !dayDetails(item, day)?.length && !isWeekend(day),
+                  'is-edited': cellDiff(item, day)
                 }"
                 :data-col="col"
                 :data-row="row"
@@ -1319,6 +1342,37 @@
                     >
                       <span v-if="i" class="ts-sep">/</span><span :style="{ color: part.color }">{{ part.value }}</span>
                     </template>
+                  </span>
+                </template>
+                <template v-if="cellDiff(item, day)">
+                  <span
+                    v-if="cellDiff(item, day).diff"
+                    :class="cellDiff(item, day).diff > 0 ? 'is-more' : 'is-less'"
+                    class="ts-diff-badge no-selectable-item"
+                  >
+                    {{ Math.abs(cellDiff(item, day).diff) }}
+                  </span>
+                  <span
+                    :class="{
+                      'is-start': col < 3,
+                      'is-end': col > store.days.length - 4,
+                      'is-below': row === 0
+                    }"
+                    class="ts-diff-tip no-selectable-item"
+                  >
+                    <b>{{ $t('timesheetPage.calcDiff.system') }}:</b> {{ cellDiff(item, day).system }}<br />
+                    <b>{{ $t('timesheetPage.calcDiff.entered') }}:</b> {{ cellDiff(item, day).entered }}<br />
+                    <b>{{ $t('timesheetPage.calcDiff.diff') }}:</b>
+                    {{
+                      cellDiff(item, day).diff
+                        ? $t(
+                            cellDiff(item, day).diff > 0
+                              ? 'timesheetPage.calcDiff.more'
+                              : 'timesheetPage.calcDiff.less',
+                            { n: Math.abs(cellDiff(item, day).diff) }
+                          )
+                        : $t('timesheetPage.calcDiff.typeOnly')
+                    }}
                   </span>
                 </template>
               </div>
@@ -2603,6 +2657,86 @@
   .ts-cell-info:focus-visible {
     outline: 2px solid var(--fig-text-brand);
     outline-offset: 1px;
+  }
+  /* Tizim hisobidan o'zgartirilgan katak: sariq fon, xira matn; farq va izoh faqat hover'da. */
+  .ts-cell.is-edited {
+    background: var(--fig-amber-100);
+  }
+  .ts-cell.is-edited > .ts-cell-status,
+  .ts-cell.is-edited > .ts-cell-hours {
+    opacity: 0.55;
+  }
+  .ts-diff-badge {
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    min-width: 16px;
+    height: 15px;
+    padding: 0 4px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 15px;
+    color: #fff;
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+    transition:
+      opacity 0.12s ease,
+      transform 0.12s ease;
+  }
+  .ts-diff-badge.is-more {
+    background: var(--fig-icon-green);
+  }
+  .ts-diff-badge.is-less {
+    background: var(--fig-text-red);
+  }
+  .ts-diff-tip {
+    position: absolute;
+    z-index: 30;
+    left: 50%;
+    bottom: calc(100% + 6px);
+    transform: translateX(-50%);
+    min-width: 200px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: var(--textColor0);
+    color: var(--surface-section);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.55;
+    text-align: left;
+    white-space: nowrap;
+    display: none;
+    pointer-events: none;
+  }
+  /* Chekka ustun/birinchi qatorda oyna jadvaldan chiqib kesilmasin. */
+  .ts-diff-tip.is-start {
+    left: 0;
+    transform: none;
+  }
+  .ts-diff-tip.is-end {
+    left: auto;
+    right: 0;
+    transform: none;
+  }
+  .ts-diff-tip.is-below {
+    bottom: auto;
+    top: calc(100% + 6px);
+  }
+  .ts-cell.is-edited:hover .ts-diff-badge {
+    opacity: 1;
+    transform: none;
+  }
+  .ts-cell.is-edited:hover .ts-diff-tip {
+    display: block;
+  }
+  .ts-cell.is-edited:hover > .ts-cell-status,
+  .ts-cell.is-edited:hover > .ts-cell-hours {
+    opacity: 0.85;
+  }
+  .ts-dragging .ts-cell.is-edited:hover .ts-diff-tip {
+    display: none;
   }
   /* Drag paytida hover belgilari o'chadi — tanlash chegarasi toza ko'rinsin. */
   .ts-dragging .ts-cell:hover {

@@ -28,6 +28,9 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     pending: {},
     // Bazadagi holat: `${workerPositionId}|${day}` → cellKey. Faqat undan farq qilgan katak yuboriladi.
     saved: {},
+    // PROTOTIP: tizim hisobi (auto natijasi) — `${wpId}|${day}` → { status, status_id, hours }; hozircha faqat xotirada.
+    calcBase: {},
+    calcWorkers: {},
     loading: false,
     saveLoading: false,
     pinLoading: false,
@@ -152,6 +155,8 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
       this.historyList = []
       this.pending = {}
       this.saved = {}
+      this.calcBase = {}
+      this.calcWorkers = {}
     },
     // Yuklangan qatorlarning bazadagi holati eslab qolinadi (kutilayotganlar qo'yilishidan oldin).
     rememberSaved() {
@@ -417,6 +422,16 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         for (const item of items) {
           const row = this.list.findIndex((w) => w.id === item.id)
           if (row < 0) continue
+          // Tizim hisobi eslab qolinadi: qaytmagan kunlar bo'sh (0 soat).
+          this.calcWorkers[item.id] = true
+          for (let day = 1; day <= this.days.length; day++) delete this.calcBase[`${item.id}|${day}`]
+          for (const d of item.days ?? []) {
+            this.calcBase[`${item.id}|${d.day}`] = {
+              status: TIMESHEET_KEY_BY_ID[d.status] ?? null,
+              status_id: d.status,
+              hours: TIMESHEET_TYPES_WITH_HOURS.has(d.status) ? (d.hours ?? 0) : null
+            }
+          }
           for (const d of item.days ?? []) {
             this.applyLocalCell(row, d.day - 1, [
               {

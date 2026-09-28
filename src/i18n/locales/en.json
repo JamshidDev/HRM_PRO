@@ -2918,6 +2918,15 @@
       "title": "Unsaved changes",
       "content": "{count} cells are not saved. Save them?",
       "discard": "Close without saving"
+    },
+    "calcDiff": {
+      "system": "System",
+      "entered": "Entered",
+      "diff": "Difference",
+      "more": "{n} h more",
+      "less": "{n} h less",
+      "typeOnly": "same hours, type changed",
+      "empty": "empty (0 h)"
     }
   },
   "turnstile": {
