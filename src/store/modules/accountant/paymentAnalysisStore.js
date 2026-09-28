@@ -10,6 +10,9 @@ const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.s
 // НН blanka yuklash, whitelist yuklash, qayta tahlil va Excel eksport.
 export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
   state: () => ({
+    // Sahifadagi asosiy ko'rinish tabi: 'analysis' (to'lov tahlili) | 'whitelist'
+    // (imtiyozli xodimlar ro'yxati — to'liq sahifa).
+    mainView: 'analysis',
     list: [],
     loading: false,
     totalItems: 0,
@@ -44,6 +47,16 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
       organization_id: null,
       year: null,
       month: null,
+      paying_code: null
+    },
+    // Yuklangan whitelist (imtiyozli xodimlar) ro'yxati — to'liq sahifa (tab).
+    whitelistList: [],
+    whitelistListLoading: false,
+    whitelistListTotal: 0,
+    whitelistListParams: {
+      page: 1,
+      per_page: 15,
+      search: null,
       paying_code: null
     },
     // Xodim qo'shish modali (qo'lda bitta qator).
@@ -145,6 +158,33 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
         .finally(() => {
           this.whitelistLoading = false
         })
+    },
+    // --- Yuklangan whitelist (imtiyozli xodimlar) ro'yxati ---
+    _whitelistIndex() {
+      this.whitelistListLoading = true
+      const params = {
+        ...this.whitelistListParams,
+        search: this.whitelistListParams.search?.trim() || undefined,
+        paying_code: this.whitelistListParams.paying_code || undefined,
+        organization_id: this.params.organization_id || undefined,
+        year: this.params.year || undefined,
+        month: this.params.month || undefined
+      }
+      $ApiService.accountantService
+        ._paymentWhitelistIndex({ params })
+        .then((res) => {
+          const d = res.data.data ?? {}
+          this.whitelistList = d.data ?? []
+          this.whitelistListTotal = d.total ?? 0
+        })
+        .finally(() => {
+          this.whitelistListLoading = false
+        })
+    },
+    // Whitelist filtri o'zgarganda — 1-sahifadan qayta yuklaymiz.
+    _whitelistFilter() {
+      this.whitelistListParams.page = 1
+      this._whitelistIndex()
     },
     // --- Xodimni qo'lda qo'shish (bitta qator + avtomatik tahlil) ---
     openAddRow() {

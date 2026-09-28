@@ -5171,6 +5171,10 @@
   "paymentAnalysis": {
     "name": "Асоссиз тўловларни аниқлаш",
     "title": "Тўлов турлари бўйича асоссиз тўловларни аниқлаш",
+    "tabs": {
+      "analysis": "Тўлов таҳлили",
+      "whitelist": "Имтиёзли ходимлар"
+    },
     "filter": {
       "payingCode": "Тўлов коди",
       "onlyFlagged": "Фақат асоссизлар"
@@ -5180,7 +5184,8 @@
       "whitelist": "Whitelist юклаш",
       "analyze": "Қайта таҳлил",
       "export": "Excelга юклаш",
-      "addRow": "Ходим қўшиш"
+      "addRow": "Ходим қўшиш",
+      "whitelistList": "Whitelist рўйхати"
     },
     "table": {
       "rowNo": "№",
@@ -5218,6 +5223,9 @@
       "requiredWorker": "Ходимни танланг",
       "requiredFilters": "Корхона ва даврни танланг",
       "added": "Ходим қўшилди ва таҳлил қилинди"
+    },
+    "whitelistList": {
+      "title": "Имтиёзли ходимлар рўйхати"
     }
   }
 }

@@ -86,6 +86,10 @@ const _paymentAnalysisUpload = async (payload) => {
 const _paymentWhitelistUpload = async (payload) => {
   return await axios.post(`/v1/economist/payment-whitelist`, payload.data)
 }
+// Yuklangan whitelist (imtiyozli xodimlar) ro'yxati — server paginatsiyasi.
+const _paymentWhitelistIndex = (payload) => {
+  return axios.get(`/v1/economist/payment-whitelist`, { params: payload?.params })
+}
 // Qoidalar dvigatelini qayta ishga tushirish (JSON).
 const _paymentAnalysisAnalyze = async (payload) => {
   return await axios.post(`/v1/economist/payment-analysis/analyze`, payload.data)
@@ -121,6 +125,7 @@ export default {
   _paymentAnalysisIndex,
   _paymentAnalysisUpload,
   _paymentWhitelistUpload,
+  _paymentWhitelistIndex,
   _paymentAnalysisAnalyze,
   _paymentAnalysisExport,
   _paymentAnalysisAddRow

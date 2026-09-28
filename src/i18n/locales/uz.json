@@ -5577,6 +5577,10 @@
   "paymentAnalysis": {
     "name": "Asossiz to'lovlarni aniqlash",
     "title": "To'lov turlari bo'yicha asossiz to'lovlarni aniqlash",
+    "tabs": {
+      "analysis": "To'lov tahlili",
+      "whitelist": "Imtiyozli xodimlar"
+    },
     "filter": {
       "payingCode": "To'lov kodi",
       "onlyFlagged": "Faqat asossizlar"
@@ -5586,7 +5590,8 @@
       "whitelist": "Whitelist yuklash",
       "analyze": "Qayta tahlil",
       "export": "Excelga yuklash",
-      "addRow": "Xodim qo'shish"
+      "addRow": "Xodim qo'shish",
+      "whitelistList": "Whitelist ro'yxati"
     },
     "table": {
       "rowNo": "№",
@@ -5624,6 +5629,9 @@
       "requiredWorker": "Xodimni tanlang",
       "requiredFilters": "Korxona va davrni tanlang",
       "added": "Xodim qo'shildi va tahlil qilindi"
+    },
+    "whitelistList": {
+      "title": "Imtiyozli xodimlar ro’yxati"
     }
   }
 }

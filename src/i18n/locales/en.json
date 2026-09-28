@@ -5535,6 +5535,10 @@
   "paymentAnalysis": {
     "name": "Payment anomaly detection",
     "title": "Detection of unjustified payments by payment type",
+    "tabs": {
+      "analysis": "Payment analysis",
+      "whitelist": "Privileged employees"
+    },
     "filter": {
       "payingCode": "Payment code",
       "onlyFlagged": "Only flagged"
@@ -5544,7 +5548,8 @@
       "whitelist": "Upload whitelist",
       "analyze": "Re-analyze",
       "export": "Export to Excel",
-      "addRow": "Add employee"
+      "addRow": "Add employee",
+      "whitelistList": "Whitelist"
     },
     "table": {
       "rowNo": "No.",
@@ -5582,6 +5587,9 @@
       "requiredWorker": "Select an employee",
       "requiredFilters": "Select organization and period",
       "added": "Employee added and analyzed"
+    },
+    "whitelistList": {
+      "title": "Privileged employees list"
     }
   }
 }
