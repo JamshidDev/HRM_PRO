@@ -23,6 +23,7 @@
   }
 
   const worker = computed(() => store.account?.worker ?? null)
+  const offerAcceptedAt = computed(() => store.account?.offer_accepted_at ?? null)
 
   // Rollar profil javobida yo'q (u faqat JORIY rolni qaytaradi), shuning uchun
   // barcha rol+korxona juftliklari alohida endpointdan olinadi — hisoblar
@@ -75,6 +76,20 @@
                 {{ $t('profilePage.copy') }}
               </n-tooltip>
             </span>
+          </template>
+        </InfoBox>
+        <InfoBox :label="$t('profilePage.account.offer')">
+          <template #value>
+            <span v-if="offerAcceptedAt" class="flex items-center gap-2 flex-wrap">
+              <n-icon size="18" class="text-success shrink-0">
+                <CheckmarkCircle16Filled />
+              </n-icon>
+              <span>{{ $t('profilePage.account.offerAccepted') }}</span>
+              <span class="text-sm font-normal text-textColor3">
+                {{ Utils.timeOnlyDate(offerAcceptedAt) }} {{ Utils.timeOnlyHour(offerAcceptedAt) }}
+              </span>
+            </span>
+            <span v-else class="text-textColor3">{{ $t('profilePage.account.offerNotAccepted') }}</span>
           </template>
         </InfoBox>
       </div>

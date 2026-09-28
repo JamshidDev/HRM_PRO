@@ -738,7 +738,10 @@
     },
     "account": {
       "title": "Hisob ma'lumotlari",
-      "warningText": "Hisobingiz xavfsizligini ta'minlash maqsadida akkaunt ma'lumotlaringizni muntazam ravishda yangilab turishingiz tavsiya etiladi. Bu choralar hisobingizni ruxsatsiz kirishlardan himoya qilishga yordam beradi."
+      "warningText": "Hisobingiz xavfsizligini ta'minlash maqsadida akkaunt ma'lumotlaringizni muntazam ravishda yangilab turishingiz tavsiya etiladi. Bu choralar hisobingizni ruxsatsiz kirishlardan himoya qilishga yordam beradi.",
+      "offer": "Ommaviy oferta",
+      "offerAccepted": "Qabul qilingan",
+      "offerNotAccepted": "Qabul qilinmagan"
     },
     "sidebar": {
       "title": "Profil bo'limlari"
