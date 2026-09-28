@@ -5566,6 +5566,7 @@
     "table": {
       "rowNo": "№",
       "fio": "Ф.И.О.",
+      "organization": "Организация",
       "position": "Должность",
       "pinfl": "ПИНФЛ",
       "payingCode": "Код выплаты",

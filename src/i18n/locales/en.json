@@ -5554,6 +5554,7 @@
     "table": {
       "rowNo": "No.",
       "fio": "Full name",
+      "organization": "Organization",
       "position": "Position",
       "pinfl": "PINFL",
       "payingCode": "Payment code",

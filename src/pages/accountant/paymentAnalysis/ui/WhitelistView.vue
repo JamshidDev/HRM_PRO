@@ -29,7 +29,17 @@
     {
       key: 'fio',
       title: t('paymentAnalysis.table.fio'),
-      minWidth: 240
+      minWidth: 220
+    },
+    {
+      key: 'organization',
+      title: t('paymentAnalysis.table.organization'),
+      minWidth: 180
+    },
+    {
+      key: 'position',
+      title: t('paymentAnalysis.table.position'),
+      minWidth: 180
     },
     {
       key: 'pinfl',

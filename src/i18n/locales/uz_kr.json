@@ -5190,6 +5190,7 @@
     "table": {
       "rowNo": "№",
       "fio": "Ф.И.Ш.",
+      "organization": "Корхона",
       "position": "Лавозим",
       "pinfl": "PINFL",
       "payingCode": "Тўлов коди",
