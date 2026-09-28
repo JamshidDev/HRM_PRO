@@ -5,7 +5,11 @@
     useComponentStore,
     usePaymentAnalysisStore
   } from '@/store/modules/index.js'
+  import WhitelistAddModal from './WhitelistAddModal.vue'
   import i18n from '@/i18n/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import Utils from '@/utils/Utils.js'
+  import { PersonAdd20Filled, Delete20Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
   const store = usePaymentAnalysisStore()
@@ -92,6 +96,27 @@
     store.whitelistListParams.per_page = v.per_page
     store._whitelistIndex()
   }
+
+  const onAdd = () => {
+    if (!accStore.checkAction(accStore.pn.economistPaymentAnalysisWrite)) return
+    store.openWhitelistAdd()
+  }
+
+  const onDelete = (row) => {
+    if (!accStore.checkAction(accStore.pn.economistPaymentAnalysisWrite)) return
+    store._removeWhitelistRow(row.id)
+  }
+
+  // Har qatorda o'chirish amali — UITable ichki UIDeleteConfirm bilan tasdiqlanadi.
+  const actions = computed(() => [
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular),
+      action: onDelete,
+      visible: accStore.checkPermission(accStore.pn.economistPaymentAnalysisWrite)
+    }
+  ])
 </script>
 
 <template>
@@ -115,6 +140,18 @@
             @change="reloadEvent"
           />
         </div>
+
+        <n-button
+          v-if="accStore.checkPermission(accStore.pn.economistPaymentAnalysisWrite)"
+          @click="onAdd"
+          type="primary"
+          class="w-full! md:w-auto!"
+        >
+          {{ $t('paymentAnalysis.buttons.addWhitelist') }}
+          <template #icon>
+            <PersonAdd20Filled />
+          </template>
+        </n-button>
       </template>
 
       <template #filterContent>
@@ -148,6 +185,8 @@
 
     <UITable
       :columns="columns"
+      :actions="actions"
+      :delete-warning="$t('paymentAnalysis.confirmDelete')"
       :data="store.whitelistList"
       :loading="store.whitelistListLoading"
       :page="store.whitelistListParams.page"
@@ -156,6 +195,8 @@
       storage-key="accountant-payment-whitelist-list"
       @change-page="onChange"
     />
+
+    <WhitelistAddModal />
   </div>
 </template>
 

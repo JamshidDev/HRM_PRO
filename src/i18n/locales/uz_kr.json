@@ -5185,7 +5185,8 @@
       "analyze": "Қайта таҳлил",
       "export": "Excelга юклаш",
       "addRow": "Ходим қўшиш",
-      "whitelistList": "Whitelist рўйхати"
+      "whitelistList": "Whitelist рўйхати",
+      "addWhitelist": "Ходим қўшиш"
     },
     "table": {
       "rowNo": "№",
@@ -5223,10 +5224,15 @@
       "requiredPayingCode": "Тўлов кодини танланг",
       "requiredWorker": "Ходимни танланг",
       "requiredFilters": "Корхона ва даврни танланг",
-      "added": "Ходим қўшилди ва таҳлил қилинди"
+      "added": "Ходим қўшилди ва таҳлил қилинди",
+      "deleted": "Ходим ўчирилди"
     },
     "whitelistList": {
       "title": "Имтиёзли ходимлар рўйхати"
-    }
+    },
+    "whitelistAdd": {
+      "title": "Имтиёзли ходим қўшиш"
+    },
+    "confirmDelete": "Ўчирилсинми?"
   }
 }

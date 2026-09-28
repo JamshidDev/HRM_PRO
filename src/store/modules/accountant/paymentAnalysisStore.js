@@ -66,6 +66,13 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
       worker_id: null,
       paying_code: null,
       summa: 0
+    },
+    // Imtiyozli xodimni whitelist'ga qo'lda qo'shish modali (summa yo'q).
+    whitelistAddVisible: false,
+    whitelistAddLoading: false,
+    whitelistAddPayload: {
+      worker_id: null,
+      paying_code: null
     }
   }),
   actions: {
@@ -185,6 +192,60 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
     _whitelistFilter() {
       this.whitelistListParams.page = 1
       this._whitelistIndex()
+    },
+    // --- Imtiyozli xodimni whitelist'ga qo'lda qo'shish (summa yo'q) ---
+    openWhitelistAdd() {
+      if (!this.params.organization_id || !this.params.year || !this.params.month) {
+        $Toast.warning(t('paymentAnalysis.toast.requiredFilters'))
+        return
+      }
+      this.whitelistAddPayload = {
+        worker_id: null,
+        paying_code: null
+      }
+      this.whitelistAddVisible = true
+    },
+    _addWhitelistRow() {
+      if (!this.params.organization_id || !this.params.year || !this.params.month) {
+        $Toast.warning(t('paymentAnalysis.toast.requiredFilters'))
+        return
+      }
+      if (!this.whitelistAddPayload.worker_id) {
+        $Toast.warning(t('paymentAnalysis.toast.requiredWorker'))
+        return
+      }
+      if (!this.whitelistAddPayload.paying_code) {
+        $Toast.warning(t('paymentAnalysis.toast.requiredPayingCode'))
+        return
+      }
+      this.whitelistAddLoading = true
+      const data = {
+        organization_id: this.params.organization_id,
+        year: this.params.year,
+        month: this.params.month,
+        worker_id: this.whitelistAddPayload.worker_id,
+        paying_code: this.whitelistAddPayload.paying_code
+      }
+      $ApiService.accountantService
+        ._paymentWhitelistAddRow({ data })
+        .then(() => {
+          $Toast.success(t('paymentAnalysis.toast.added'))
+          this.whitelistAddVisible = false
+          this._whitelistIndex()
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.whitelistAddLoading = false
+        })
+    },
+    _removeWhitelistRow(id) {
+      $ApiService.accountantService
+        ._paymentWhitelistRemove({ id })
+        .then(() => {
+          $Toast.success(t('paymentAnalysis.toast.deleted'))
+          this._whitelistIndex()
+        })
+        .catch(() => {})
     },
     // --- Xodimni qo'lda qo'shish (bitta qator + avtomatik tahlil) ---
     openAddRow() {

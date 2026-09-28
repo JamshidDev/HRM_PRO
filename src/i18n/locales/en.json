@@ -5549,7 +5549,8 @@
       "analyze": "Re-analyze",
       "export": "Export to Excel",
       "addRow": "Add employee",
-      "whitelistList": "Whitelist"
+      "whitelistList": "Whitelist",
+      "addWhitelist": "Add employee"
     },
     "table": {
       "rowNo": "No.",
@@ -5587,10 +5588,15 @@
       "requiredPayingCode": "Select a payment code",
       "requiredWorker": "Select an employee",
       "requiredFilters": "Select organization and period",
-      "added": "Employee added and analyzed"
+      "added": "Employee added and analyzed",
+      "deleted": "Employee deleted"
     },
     "whitelistList": {
       "title": "Privileged employees list"
-    }
+    },
+    "whitelistAdd": {
+      "title": "Add privileged employee"
+    },
+    "confirmDelete": "Delete?"
   }
 }

@@ -5591,7 +5591,8 @@
       "analyze": "Qayta tahlil",
       "export": "Excelga yuklash",
       "addRow": "Xodim qo'shish",
-      "whitelistList": "Whitelist ro'yxati"
+      "whitelistList": "Whitelist ro'yxati",
+      "addWhitelist": "Xodim qo'shish"
     },
     "table": {
       "rowNo": "№",
@@ -5629,10 +5630,15 @@
       "requiredPayingCode": "To'lov kodini tanlang",
       "requiredWorker": "Xodimni tanlang",
       "requiredFilters": "Korxona va davrni tanlang",
-      "added": "Xodim qo'shildi va tahlil qilindi"
+      "added": "Xodim qo'shildi va tahlil qilindi",
+      "deleted": "Xodim o'chirildi"
     },
     "whitelistList": {
       "title": "Imtiyozli xodimlar ro’yxati"
-    }
+    },
+    "whitelistAdd": {
+      "title": "Imtiyozli xodim qo'shish"
+    },
+    "confirmDelete": "O'chirilsinmi?"
   }
 }

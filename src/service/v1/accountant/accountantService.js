@@ -105,6 +105,14 @@ const _paymentAnalysisExport = async (payload) => {
 const _paymentAnalysisAddRow = (payload) => {
   return axios.post(`/v1/economist/payment-analysis/row`, payload.data)
 }
+// Imtiyozli xodimni whitelist'ga qo'lda qo'shish (org+davr+kod+xodim bo'yicha dedup).
+const _paymentWhitelistAddRow = (payload) => {
+  return axios.post(`/v1/economist/payment-whitelist/row`, payload.data)
+}
+// Whitelist qatorini o'chirish (soft-delete).
+const _paymentWhitelistRemove = (payload) => {
+  return axios.delete(`/v1/economist/payment-whitelist/` + payload.id)
+}
 
 export default {
   _index,
@@ -128,5 +136,7 @@ export default {
   _paymentWhitelistIndex,
   _paymentAnalysisAnalyze,
   _paymentAnalysisExport,
-  _paymentAnalysisAddRow
+  _paymentAnalysisAddRow,
+  _paymentWhitelistAddRow,
+  _paymentWhitelistRemove
 }
