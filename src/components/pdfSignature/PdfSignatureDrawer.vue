@@ -230,6 +230,10 @@
           v.document.confirmation.id !== 3 &&
           (accountRoleName === 'Admin' || accountOrgId === documentOrgId)
         store.permissions.canSignature = v.signature.signature
+        // Hujjatlar ro'yxatidan ochilganda signatureId kelmaydi — o'z confirmation'im javobdan olinadi.
+        if (!v.confirmations?.some((c) => c.id === store.signatureId)) {
+          store.signatureId = v.signature?.current_user?.id ?? null
+        }
 
         const worker = v.signature?.current_user?.worker
         store.signatureMan = {

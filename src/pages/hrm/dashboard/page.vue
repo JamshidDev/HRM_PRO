@@ -44,6 +44,9 @@
     kpiCards.value.length === 3 ? '12 m:4' : kpiCards.value.length > 2 ? '12 m:6 xl:3' : '12 m:6'
   )
   const cards = computed(() => tabCards[store.activeTab] || [])
+  // `top: true` kartalar KPI qatoridan oldin chiziladi.
+  const topCards = computed(() => cards.value.filter((c) => c.top))
+  const restCards = computed(() => cards.value.filter((c) => !c.top))
 
   const onTabSelect = (tab) => {
     store.activeTab = tab
@@ -184,6 +187,12 @@
             <DashboardSkeleton v-if="store.loading" />
 
             <n-grid v-else x-gap="8 m:12 l:16" y-gap="8 m:12 l:16" cols="12" responsive="screen">
+              <n-grid-item v-for="(item, idx) in topCards" :key="`top-${idx}`" :span="item.span">
+                <div class="dash-card-wrap">
+                  <component :is="item.component" v-bind="item.props" />
+                </div>
+              </n-grid-item>
+
               <n-grid-item v-for="card in kpiCards" :key="card.variant" :span="kpiSpan">
                 <FigKpiCard
                   :card="card"
@@ -192,7 +201,7 @@
                 />
               </n-grid-item>
 
-              <n-grid-item v-for="(item, idx) in cards" :key="idx" :span="item.span">
+              <n-grid-item v-for="(item, idx) in restCards" :key="idx" :span="item.span">
                 <!-- Blur + «Tez orada» endi `FigPanel` ichida: u kartaning o'z
                      `mock` bayrog'iga tayanadi, ya'ni sarlavhadagi "mock" chipi
                      turgan HAR BIR karta yopiladi. Bu yerdagi eski shart faqat

@@ -6,7 +6,11 @@
     UITableNameCell,
     UIUser
   } from '@/components/index.js'
-  import { useComponentStore, useConfApplicationStore } from '@/store/modules/index.js'
+  import {
+    useAccountStore,
+    useComponentStore,
+    useConfApplicationStore
+  } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
   import { Delete20Regular, Edit32Regular, Eye16Regular } from '@vicons/fluent'
@@ -14,7 +18,18 @@
 
   const store = useConfApplicationStore()
   const componentStore = useComponentStore()
+  const accountStore = useAccountStore()
   const t = i18n.global.t
+
+  // Tahrir faqat o'z arizasi, HR ko'rib chiqmagan va jarayondagi holatda (backend bilan bir xil qoida).
+  const canEdit = (row) => {
+    const app = row?.worker_application
+    return (
+      app?.worker?.id === accountStore.account?.worker?.id &&
+      app?.status === 0 &&
+      app?.confirmation?.id === 1
+    )
+  }
 
   const emits = defineEmits(['openOffice'])
 
@@ -151,6 +166,7 @@
       label: t('content.edit'),
       key: Utils.ActionTypes.edit,
       icon: UIHelper.renderIcon(Edit32Regular),
+      visible: canEdit,
       action: onEdit
     },
     {

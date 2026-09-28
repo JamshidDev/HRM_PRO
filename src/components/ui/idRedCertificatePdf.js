@@ -6,7 +6,7 @@ import {
   drawCover,
   drawContain,
   createCardCanvas,
-  downloadCanvasesAsPdf
+  downloadCanvases
 } from './cardPdf.js'
 
 // Fon rasmlarining asl o'lchami (old: 1489x467, orqa: 1489x541)
@@ -160,7 +160,7 @@ function renderFront({ background, photo, qr, data, fields }) {
 }
 
 /**
- * Lavozim guvohnomasining ochilgan (old) va yopiq (orqa) tomonini bitta A4 PDF sahifaga joylab yuklab beradi.
+ * Lavozim guvohnomasining ochilgan (old) va yopiq (orqa) tomonini bitta A4 PDF sahifaga (yoki SVG faylga) joylab yuklab beradi.
  */
 export async function downloadIdRedCertificatePdf({
   frontSrc,
@@ -169,7 +169,8 @@ export async function downloadIdRedCertificatePdf({
   qrDataUrl,
   data,
   fields,
-  fileName
+  fileName,
+  format = 'pdf'
 }) {
   await document.fonts?.load(handwrittenFont(TEXT_SIZE)).catch(() => {})
   await document.fonts?.ready
@@ -183,5 +184,5 @@ export async function downloadIdRedCertificatePdf({
   const front = renderFront({ background: frontBg, photo, qr, data, fields })
   const { canvas: back } = createCardCanvas(backBg, { width: CARD_W, height: BACK_H, radius: RADIUS })
 
-  await downloadCanvasesAsPdf([front, back], fileName)
+  await downloadCanvases([front, back], fileName, format)
 }

@@ -70,13 +70,3 @@
   </div>
 </template>
 
-<style lang="scss">
-  .info-box-ground {
-    background-color: #f9fafb;
-  }
-  [data-theme='dark'] {
-    .info-box-ground {
-      background-color: var(--surface-ground);
-    }
-  }
-</style>

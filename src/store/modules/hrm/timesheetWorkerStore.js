@@ -11,11 +11,26 @@ const TIMESHEET_KEY_BY_ID = {
 // Soat yuritiladigan turlar (backend TIMESHEET_TYPE_HOURS).
 const TIMESHEET_TYPES_WITH_HOURS = new Set([1, 2, 3, 5, 17, 27, 32])
 const { t } = i18n.global
+
+// Katak qiymatining solishtiriladigan ko'rinishi: tartib va `null`/`0` soat farqi ahamiyatsiz.
+const cellKey = (details) =>
+  (details ?? [])
+    .map((d) => `${d.status_id ?? d.status}:${d.hours || 0}`)
+    .sort()
+    .join(',')
 export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
   state: () => ({
     list: [],
     days: [],
     totalItems: 0,
+    // Saqlanmagan kataklar: `${workerPositionId}|${day}` → { id, day, details }.
+    // Qator indeksi emas — sahifa/qidiruv o'zgarsa ham to'g'ri xodimga yoziladi.
+    pending: {},
+    // Bazadagi holat: `${workerPositionId}|${day}` → cellKey. Faqat undan farq qilgan katak yuboriladi.
+    saved: {},
+    // PROTOTIP: tizim hisobi (auto natijasi) — `${wpId}|${day}` → { status, status_id, hours }; hozircha faqat xotirada.
+    calcBase: {},
+    calcWorkers: {},
     loading: false,
     saveLoading: false,
     pinLoading: false,
@@ -138,6 +153,25 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
       this.timekeeperParams.page = 1
       this.confirmationList = []
       this.historyList = []
+      this.pending = {}
+      this.saved = {}
+      this.calcBase = {}
+      this.calcWorkers = {}
+    },
+    // Yuklangan qatorlarning bazadagi holati eslab qolinadi (kutilayotganlar qo'yilishidan oldin).
+    rememberSaved() {
+      for (const w of this.list) {
+        for (let day = 1; day <= (this.days.length || 31); day++) {
+          this.saved[`${w.id}|${day}`] = cellKey(w.days?.[day])
+        }
+      }
+    },
+    // Ro'yxat qayta yuklangach saqlanmagan kataklar ustidan qayta qo'yiladi.
+    reapplyPending() {
+      for (const p of Object.values(this.pending)) {
+        const row = this.list.findIndex((w) => w.id === p.id)
+        if (row >= 0) this.applyLocalCell(row, p.day - 1, p.details, false)
+      }
     },
     setTimekeeperLock(workerPositionId, locked) {
       const prev = Boolean(this.timekeeperLocks[workerPositionId])
@@ -192,6 +226,8 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
             }
           }))
           this.totalItems = res.data.data.total
+          this.rememberSaved()
+          this.reapplyPending()
         })
       )
       promises.push(
@@ -248,6 +284,8 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
             }
           }))
           this.totalItems = res.data.data.total
+          this.rememberSaved()
+          this.reapplyPending()
         })
         .finally(() => {
           this.loading = false
@@ -293,10 +331,22 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     // Lokal ko'rinish: tanlangan katakcha darhol qiymat bilan to'ladi (yoki
     // tozalash rejimida bo'shaydi). Serverga esa «Saqlash» bosilganda ketadi —
     // navbatchilik grafigidagi bilan bir xil yondashuv.
-    applyLocalCell(row, col, details) {
+    applyLocalCell(row, col, details, track = true) {
       const worker = this.list[row]
       if (!worker) return
       const day = col + 1
+      if (track) {
+        const key = `${worker.id}|${day}`
+        // Bazadagi bilan bir xil bo'lsa kutilayotganlardan chiqadi — o'zgarmagan katak yuborilmaydi.
+        if (cellKey(details) === (this.saved[key] ?? '')) delete this.pending[key]
+        else {
+          this.pending[key] = {
+            id: worker.id,
+            day,
+            details: (details ?? []).map((d) => ({ ...d }))
+          }
+        }
+      }
       if (!details?.length) delete worker.days[day]
       else {
         // `status_id` SHART — rang shu bo'yicha tanlanadi (har tur o'z rangida).
@@ -322,57 +372,34 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
       worker.halfMonth = { days: half.length, hours: sum(half) }
     },
 
-    // `cells` — [{ row, col, wasOccupied }]. To'ldirilgan katak ustidan yozilsa
-    // avval eski yozuv o'chiriladi (aks holda bazada ikkita yozuv qolib,
-    // katakda `РП/РП 5/5` ko'rinishida chiqardi).
-    async _save(cells) {
-      if (!cells?.length) return
-      const dayOf = (col) =>
-        dayjs()
-          .year(this.year)
-          .month(this.month)
-          .date(col + 1)
-          .format('YYYY-MM-DD')
-      const toCell = (c) => ({ id: this.list[c.row]?.id, day: dayOf(c.col) })
-
-      const all = cells.map(toCell).filter((c) => c.id)
-      const occupied = cells
-        .filter((c) => c.wasOccupied)
-        .map(toCell)
-        .filter((c) => c.id)
-      if (!all.length) return
-
-      const service = $ApiService.timesheetWorkerService
+    // Har katak O'Z qiymati bilan bitta so'rovda; xato bo'lsa kutilayotganlar saqlanib qoladi.
+    async _save() {
+      const items = Object.values(this.pending)
+      if (!items.length) return false
+      const dayOf = (day) =>
+        dayjs().year(this.year).month(this.month).date(day).format('YYYY-MM-DD')
+      const cells = items.map((p) => ({
+        id: p.id,
+        day: dayOf(p.day),
+        details: p.details.map((d) => ({ status: d.status_id, hours: d.hours ?? null }))
+      }))
       this.saveLoading = true
       try {
-        const toClear = this.payload.isClearing ? all : occupied
-        if (toClear.length) {
-          await service._create({
-            data: { status: 0, hours: 0, workers: toClear },
-            id: this.elementId
-          })
+        await $ApiService.timesheetWorkerService._saveCells({
+          id: this.elementId,
+          data: { cells }
+        })
+        // Yuborilganlar endi bazadagi holat; o'rtada o'zgargan katak kutishda qoladi.
+        for (const p of items) {
+          const key = `${p.id}|${p.day}`
+          this.saved[key] = cellKey(p.details)
+          if (this.pending[key] === p) delete this.pending[key]
         }
-        if (!this.payload.isClearing) {
-          await service._create({
-            data: { status: this.payload.status, hours: this.payload.hours || 0, workers: all },
-            id: this.elementId
-          })
-          if (this.payload.status2) {
-            await service._create({
-              data: {
-                status: this.payload.status2,
-                hours: this.payload.hours2 || 0,
-                workers: all
-              },
-              id: this.elementId
-            })
-          }
-        }
-        this._index_workers()
-        // Ikkinchi tur saqlangach tozalanadi — aks holda u keyingi
-        // to'ldirishlarga ham ergashib, katakchada ikkita yozuv hosil qilardi.
+        // Ikkinchi tur saqlangach tozalanadi — keyingi to'ldirishlarga ergashmasin.
         this.payload.status2 = null
         this.payload.hours2 = null
+        this._index_workers()
+        return true
       } finally {
         this.saveLoading = false
       }
@@ -395,6 +422,16 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         for (const item of items) {
           const row = this.list.findIndex((w) => w.id === item.id)
           if (row < 0) continue
+          // Tizim hisobi eslab qolinadi: qaytmagan kunlar bo'sh (0 soat).
+          this.calcWorkers[item.id] = true
+          for (let day = 1; day <= this.days.length; day++) delete this.calcBase[`${item.id}|${day}`]
+          for (const d of item.days ?? []) {
+            this.calcBase[`${item.id}|${d.day}`] = {
+              status: TIMESHEET_KEY_BY_ID[d.status] ?? null,
+              status_id: d.status,
+              hours: TIMESHEET_TYPES_WITH_HOURS.has(d.status) ? (d.hours ?? 0) : null
+            }
+          }
           for (const d of item.days ?? []) {
             this.applyLocalCell(row, d.day - 1, [
               {
