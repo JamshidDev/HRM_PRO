@@ -2688,6 +2688,28 @@
       "lastActivity": "Last activity",
       "onlyInactive": "Inactive only",
       "editsNote": "Data edits: {n} actions, {w} employees",
+      "rankOf": "#{r} of {t}",
+      "activeChip": "active",
+      "partsTitle": "Score breakdown",
+      "docsTitle": "Documents",
+      "categoriesTitle": "Active areas",
+      "noCategories": "No data changes in this period",
+      "summary": {
+        "total": "Total",
+        "active": "Active",
+        "inactive": "Inactive",
+        "avg": "Average score"
+      },
+      "filter": {
+        "all": "All",
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "docStatus": {
+        "approved": "Approved",
+        "pending": "In progress",
+        "rejected": "Rejected"
+      },
       "parts": {
         "coverage": {
           "title": "Data coverage",

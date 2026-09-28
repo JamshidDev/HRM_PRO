@@ -2473,6 +2473,28 @@
       "lastActivity": "Охирги фаоллик",
       "onlyInactive": "Фақат фаол эмаслар",
       "editsNote": "Маълумот таҳрирлари: {n} та амал, {w} та ходим",
+      "rankOf": "{r}-ўрин / {t}",
+      "activeChip": "фаол",
+      "partsTitle": "Балл таркиби",
+      "docsTitle": "Ҳужжатлар",
+      "categoriesTitle": "Фаол йўналишлар",
+      "noCategories": "Давр ичида маълумот ўзгармаган",
+      "summary": {
+        "total": "Жами",
+        "active": "Фаол",
+        "inactive": "Фаол эмас",
+        "avg": "Ўртача балл"
+      },
+      "filter": {
+        "all": "Барчаси",
+        "active": "Фаол",
+        "inactive": "Фаол эмас"
+      },
+      "docStatus": {
+        "approved": "Тасдиқланган",
+        "pending": "Жараёнда",
+        "rejected": "Рад этилган"
+      },
       "parts": {
         "coverage": {
           "title": "Маълумотлар қамрови",

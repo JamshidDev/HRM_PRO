@@ -2696,6 +2696,28 @@
       "lastActivity": "Последняя активность",
       "onlyInactive": "Только неактивные",
       "editsNote": "Изменения данных: {n} действий, {w} сотрудников",
+      "rankOf": "{r}-е место из {t}",
+      "activeChip": "активна",
+      "partsTitle": "Состав балла",
+      "docsTitle": "Документы",
+      "categoriesTitle": "Активные направления",
+      "noCategories": "За период данные не менялись",
+      "summary": {
+        "total": "Всего",
+        "active": "Активные",
+        "inactive": "Неактивные",
+        "avg": "Средний балл"
+      },
+      "filter": {
+        "all": "Все",
+        "active": "Активные",
+        "inactive": "Неактивные"
+      },
+      "docStatus": {
+        "approved": "Утверждено",
+        "pending": "В процессе",
+        "rejected": "Отклонено"
+      },
       "parts": {
         "coverage": {
           "title": "Охват данных",

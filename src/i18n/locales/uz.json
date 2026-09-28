@@ -2708,6 +2708,28 @@
       "lastActivity": "Oxirgi faollik",
       "onlyInactive": "Faqat faol emaslar",
       "editsNote": "Ma'lumot tahrirlari: {n} ta amal, {w} ta xodim",
+      "rankOf": "{r}-o'rin / {t}",
+      "activeChip": "faol",
+      "partsTitle": "Ball tarkibi",
+      "docsTitle": "Hujjatlar",
+      "categoriesTitle": "Faol yo'nalishlar",
+      "noCategories": "Davr ichida ma'lumot o'zgarmagan",
+      "summary": {
+        "total": "Jami",
+        "active": "Faol",
+        "inactive": "Faol emas",
+        "avg": "O'rtacha ball"
+      },
+      "filter": {
+        "all": "Barchasi",
+        "active": "Faol",
+        "inactive": "Faol emas"
+      },
+      "docStatus": {
+        "approved": "Tasdiqlangan",
+        "pending": "Jarayonda",
+        "rejected": "Rad etilgan"
+      },
       "parts": {
         "coverage": {
           "title": "Ma'lumotlar qamrovi",
