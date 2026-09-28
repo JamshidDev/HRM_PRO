@@ -1,5 +1,5 @@
 <script setup>
-  import { UITable, UISelect, UIYearMonth } from '@/components/index.js'
+  import { UIPageFilter, UITable, UISelect, UIYearMonth } from '@/components/index.js'
   import {
     useAccountStore,
     useComponentStore,
@@ -49,6 +49,11 @@
     store._whitelistFilter()
   }
 
+  const beforeShow = (v) => {
+    if (!v) return
+    if (componentStore.structureList.length === 0) componentStore._structures()
+  }
+
   // Tashkilot tanlanganda (single-select) — umumiy organization_id ni yangilaymiz.
   const onChangeOrg = (list) => {
     orgModel.value = list
@@ -56,23 +61,54 @@
     reloadEvent()
   }
 
+  const resetFilter = () => {
+    orgModel.value = []
+    orgCheck.value = []
+    store.params.organization_id = null
+    store.whitelistListParams.paying_code = null
+    store.whitelistListParams.search = null
+    reloadEvent()
+  }
+
+  const filterCount = computed(() => {
+    return (
+      Number(Boolean(store.params.organization_id)) +
+      Number(Boolean(store.whitelistListParams.paying_code))
+    )
+  })
+
   const onChange = (v) => {
     store.whitelistListParams.page = v.page
     store.whitelistListParams.per_page = v.per_page
     store._whitelistIndex()
   }
-
-  onMounted(() => {
-    if (componentStore.structureList.length === 0) componentStore._structures()
-  })
 </script>
 
 <template>
   <div class="flex flex-col gap-3">
     <!-- Umumiy korxona + davr (analiz tabi bilan bir xil store.params) -->
-    <div class="grid grid-cols-12 gap-x-3 gap-y-2 items-end">
-      <div class="col-span-12 md:col-span-6">
-        <label class="text-xs text-textColor3 mb-1 font-medium block">{{
+    <UIPageFilter
+      v-model:search="store.whitelistListParams.search"
+      :search-loading="store.whitelistListLoading"
+      :show-add-button="false"
+      @onSearch="reloadEvent"
+      @show="beforeShow"
+      @onClear="resetFilter"
+      :filter-count="filterCount"
+    >
+      <template #filterAction>
+        <div class="max-w-[160px]">
+          <UIYearMonth
+            v-model:year="store.params.year"
+            v-model:month="store.params.month"
+            :clearable="false"
+            @change="reloadEvent"
+          />
+        </div>
+      </template>
+
+      <template #filterContent>
+        <label class="mt-3 text-xs text-textColor3 mb-1 font-medium">{{
           $t('content.organization')
         }}</label>
         <UISelect
@@ -87,42 +123,18 @@
           @onSearch="componentStore._structures"
           @onSubmit="reloadEvent"
         />
-      </div>
-      <div class="col-span-12 md:col-span-3">
-        <label class="text-xs text-textColor3 mb-1 font-medium block">{{
-          $t('content.month')
-        }}</label>
-        <UIYearMonth
-          v-model:year="store.params.year"
-          v-model:month="store.params.month"
-          :clearable="false"
-          @change="reloadEvent"
-        />
-      </div>
-    </div>
 
-    <div class="grid grid-cols-12 gap-x-2">
-      <div class="col-span-12 md:col-span-4 mb-2">
-        <label class="text-xs text-textColor3 mb-1 block">{{
+        <label class="mt-3 text-xs text-textColor3 mb-1 font-medium block">{{
           $t('paymentAnalysis.filter.payingCode')
         }}</label>
         <n-select
           v-model:value="store.whitelistListParams.paying_code"
           :options="payingCodeOptions"
-          @update:value="store._whitelistFilter"
+          @update:value="reloadEvent"
           clearable
         />
-      </div>
-      <div class="col-span-12 md:col-span-8 mb-2">
-        <label class="text-xs text-textColor3 mb-1 block">{{ $t('content.search') }}</label>
-        <n-input
-          v-model:value="store.whitelistListParams.search"
-          clearable
-          @keyup.enter="store._whitelistFilter"
-          @clear="store._whitelistFilter"
-        />
-      </div>
-    </div>
+      </template>
+    </UIPageFilter>
 
     <UITable
       :columns="columns"
