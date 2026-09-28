@@ -2,8 +2,6 @@
   import { usePdfViewerStore } from '@/store/modules/index.js'
   import {
     Add16Regular,
-    LockClosed16Regular,
-    LockClosed20Regular,
     MailAttach16Regular,
     LinkDismiss16Regular,
     Delete16Regular
@@ -64,7 +62,6 @@
   // Tasdiqlangan hujjatning fayllari muzlatiladi.
   const isApproved = computed(() => store.document?.document?.confirmation?.id === 3)
   const canEdit = computed(() => showDocumentFiles.value && !isApproved.value)
-  const isLocked = computed(() => showDocumentFiles.value && isApproved.value)
   // Fayllar — plitkalarda, bog'langan arizalar — alohida ro'yxatda.
   const files = computed(() => store.fileList.filter((v) => v?.file))
   const applications = computed(() =>
@@ -189,33 +186,6 @@
     class="w-full"
   >
     <div class="flex flex-col gap-3">
-      <!-- Tasdiqlangan hujjat: biriktirmalar yo'q — bo'sh holat kartasi -->
-      <div
-        v-if="isLocked && !files.length && !applications.length"
-        class="flex flex-col items-center text-center gap-2 rounded-xl border border-dashed border-surface-line bg-fig-bg-secondary px-4 py-6"
-      >
-        <div
-          class="w-10 h-10 rounded-full flex items-center justify-center bg-fig-chip-green text-fig-chip-green-text"
-        >
-          <n-icon size="20"><LockClosed20Regular /></n-icon>
-        </div>
-        <div class="text-xs font-semibold text-textColor0">
-          {{ $t('documentPage.signature.files.lockedTitle') }}
-        </div>
-        <div class="text-[11px] text-textColor3 leading-snug max-w-[220px]">
-          {{ $t('documentPage.signature.files.lockedEmpty') }}
-        </div>
-      </div>
-
-      <!-- Tasdiqlangan hujjat, biriktirmalar bor — ixcham ogohlantirish -->
-      <div
-        v-else-if="isLocked"
-        class="flex items-start gap-2 rounded-lg bg-fig-chip-green px-2.5 py-2 text-[11px] leading-snug text-fig-chip-green-text"
-      >
-        <n-icon size="14" class="shrink-0 mt-px"><LockClosed16Regular /></n-icon>
-        <span>{{ $t('documentPage.signature.files.lockedShort') }}</span>
-      </div>
-
       <!-- Fayllar: sarlavha + soni -->
       <div v-if="files.length || canEdit" class="flex flex-col gap-1.5">
         <div

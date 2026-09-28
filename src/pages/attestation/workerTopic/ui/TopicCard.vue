@@ -217,6 +217,7 @@
         </n-button>
         <n-button
           v-else-if="isCanStart(item.results, item.chances)"
+          :disabled="daysLeft(item.deadline) !== null && daysLeft(item.deadline) < 0"
           @click="goStart(item)"
           :loading="examStore.loading"
           color="#1570EF"

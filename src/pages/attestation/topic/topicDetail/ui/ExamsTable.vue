@@ -60,7 +60,8 @@
     {
       key: 'created',
       title: t('content.date'),
-      width: 120
+      width: 120,
+      render: (row) => Utils.timeOnlyDate(row.created)
     },
     {
       key: 'name',
@@ -96,10 +97,12 @@
       width: 130
     },
     {
+      // Keng jadvalda skroll ortida qolmasin — amallar yonida mahkamlangan.
       key: 'active',
       title: t('content.status'),
       width: 130,
-      align: 'center'
+      align: 'center',
+      fixed: 'right'
     }
   ])
 
