@@ -11,6 +11,13 @@ const TIMESHEET_KEY_BY_ID = {
 // Soat yuritiladigan turlar (backend TIMESHEET_TYPE_HOURS).
 const TIMESHEET_TYPES_WITH_HOURS = new Set([1, 2, 3, 5, 17, 27, 32])
 const { t } = i18n.global
+
+// Katak qiymatining solishtiriladigan ko'rinishi: tartib va `null`/`0` soat farqi ahamiyatsiz.
+const cellKey = (details) =>
+  (details ?? [])
+    .map((d) => `${d.status_id ?? d.status}:${d.hours || 0}`)
+    .sort()
+    .join(',')
 export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
   state: () => ({
     list: [],
@@ -19,6 +26,8 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     // Saqlanmagan kataklar: `${workerPositionId}|${day}` → { id, day, details }.
     // Qator indeksi emas — sahifa/qidiruv o'zgarsa ham to'g'ri xodimga yoziladi.
     pending: {},
+    // Bazadagi holat: `${workerPositionId}|${day}` → cellKey. Faqat undan farq qilgan katak yuboriladi.
+    saved: {},
     loading: false,
     saveLoading: false,
     pinLoading: false,
@@ -142,6 +151,15 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
       this.confirmationList = []
       this.historyList = []
       this.pending = {}
+      this.saved = {}
+    },
+    // Yuklangan qatorlarning bazadagi holati eslab qolinadi (kutilayotganlar qo'yilishidan oldin).
+    rememberSaved() {
+      for (const w of this.list) {
+        for (let day = 1; day <= (this.days.length || 31); day++) {
+          this.saved[`${w.id}|${day}`] = cellKey(w.days?.[day])
+        }
+      }
     },
     // Ro'yxat qayta yuklangach saqlanmagan kataklar ustidan qayta qo'yiladi.
     reapplyPending() {
@@ -203,6 +221,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
             }
           }))
           this.totalItems = res.data.data.total
+          this.rememberSaved()
           this.reapplyPending()
         })
       )
@@ -260,6 +279,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
             }
           }))
           this.totalItems = res.data.data.total
+          this.rememberSaved()
           this.reapplyPending()
         })
         .finally(() => {
@@ -311,10 +331,15 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
       if (!worker) return
       const day = col + 1
       if (track) {
-        this.pending[`${worker.id}|${day}`] = {
-          id: worker.id,
-          day,
-          details: (details ?? []).map((d) => ({ ...d }))
+        const key = `${worker.id}|${day}`
+        // Bazadagi bilan bir xil bo'lsa kutilayotganlardan chiqadi — o'zgarmagan katak yuborilmaydi.
+        if (cellKey(details) === (this.saved[key] ?? '')) delete this.pending[key]
+        else {
+          this.pending[key] = {
+            id: worker.id,
+            day,
+            details: (details ?? []).map((d) => ({ ...d }))
+          }
         }
       }
       if (!details?.length) delete worker.days[day]
@@ -359,7 +384,12 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
           id: this.elementId,
           data: { cells }
         })
-        this.pending = {}
+        // Yuborilganlar endi bazadagi holat; o'rtada o'zgargan katak kutishda qoladi.
+        for (const p of items) {
+          const key = `${p.id}|${p.day}`
+          this.saved[key] = cellKey(p.details)
+          if (this.pending[key] === p) delete this.pending[key]
+        }
         // Ikkinchi tur saqlangach tozalanadi — keyingi to'ldirishlarga ergashmasin.
         this.payload.status2 = null
         this.payload.hours2 = null
