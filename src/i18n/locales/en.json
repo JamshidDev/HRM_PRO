@@ -724,9 +724,9 @@
     "account": {
       "title": "Account information",
       "warningText": "For account security, regularly update your account details. This helps protect against unauthorized access.",
-      "offer": "Public offer",
-      "offerAccepted": "Accepted",
-      "offerNotAccepted": "Not accepted"
+      "offerAccepted": "Consent given",
+      "offerNotAccepted": "Consent not given",
+      "offerView": "View"
     },
     "sidebar": {
       "title": "Profile sections"

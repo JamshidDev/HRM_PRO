@@ -2,7 +2,7 @@
   // Foydalanuvchining o'z hisob ma'lumotlari — faqat o'qish uchun.
   // Manba: accountStore.account (GET /v1/user/profile). Tahrirlash bu yerda yo'q:
   // FIO/JSHSHIR kadrlar bo'limi tomonidan xodim kartochkasida boshqariladi.
-  import { CheckmarkCircle16Filled, Copy16Regular } from '@vicons/fluent'
+  import { CheckmarkCircle16Filled, Circle16Regular, Copy16Regular, Open16Regular } from '@vicons/fluent'
   import { useAccountStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
@@ -11,6 +11,8 @@
   import InfoBox from '@/components/worker/ui/shared/InfoBox.vue'
   import UserIcon from '@/assets/icons/user.svg'
   import BriefcaseIcon from '@/assets/icons/figBriefcase.svg'
+  import OfferIcon from '@/assets/icons/PublicOffer.svg'
+  import { useAppSetting } from '@/utils/index.js'
 
   const { t } = i18n.global
   const store = useAccountStore()
@@ -24,6 +26,16 @@
 
   const worker = computed(() => store.account?.worker ?? null)
   const offerAcceptedAt = computed(() => store.account?.offer_accepted_at ?? null)
+
+  // Oferta hujjatlari — kirishdagi OfferModal bilan bir xil PDF'lar (tanlangan tilda).
+  const offerDocs = computed(() => {
+    const lang = localStorage.getItem(useAppSetting.languageKey) || 'uz'
+    const suffix = lang === 'ru' ? 'RU' : lang === 'en' ? 'EN' : 'UZ'
+    return [
+      { key: 'terms', label: t('offerModal.terms'), url: `/terms/HRM_PRO_Terms_${suffix}.pdf` },
+      { key: 'privacy', label: t('offerModal.privacy'), url: `/terms/HRM_PRO_Privacy_${suffix}.pdf` }
+    ]
+  })
 
   // Rollar profil javobida yo'q (u faqat JORIY rolni qaytaradi), shuning uchun
   // barcha rol+korxona juftliklari alohida endpointdan olinadi — hisoblar
@@ -78,20 +90,40 @@
             </span>
           </template>
         </InfoBox>
-        <InfoBox :label="$t('profilePage.account.offer')">
-          <template #value>
-            <span v-if="offerAcceptedAt" class="flex items-center gap-2 flex-wrap">
-              <n-icon size="18" class="text-success shrink-0">
-                <CheckmarkCircle16Filled />
-              </n-icon>
-              <span>{{ $t('profilePage.account.offerAccepted') }}</span>
-              <span class="text-sm font-normal text-textColor3">
+      </div>
+    </SectionHeader>
+
+    <SectionHeader :title="$t('offerModal.title')" :icon="OfferIcon" large>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div
+          v-for="doc in offerDocs"
+          :key="doc.key"
+          class="role-row flex items-center gap-3 rounded-3xl px-4 py-3"
+        >
+          <n-icon size="22" :class="offerAcceptedAt ? 'text-success' : 'text-textColor3'" class="shrink-0">
+            <CheckmarkCircle16Filled v-if="offerAcceptedAt" />
+            <Circle16Regular v-else />
+          </n-icon>
+          <div class="flex flex-col min-w-0 flex-1">
+            <span class="font-semibold break-words">{{ doc.label }}</span>
+            <span class="text-xs text-textColor3">
+              <template v-if="offerAcceptedAt">
+                {{ $t('profilePage.account.offerAccepted') }}:
                 {{ Utils.timeOnlyDate(offerAcceptedAt) }} {{ Utils.timeOnlyHour(offerAcceptedAt) }}
-              </span>
+              </template>
+              <template v-else>{{ $t('profilePage.account.offerNotAccepted') }}</template>
             </span>
-            <span v-else class="text-textColor3">{{ $t('profilePage.account.offerNotAccepted') }}</span>
-          </template>
-        </InfoBox>
+          </div>
+          <a
+            :href="doc.url"
+            target="_blank"
+            rel="noopener"
+            class="flex items-center gap-1 text-sm font-medium text-primary hover:underline shrink-0"
+          >
+            <n-icon size="16"><Open16Regular /></n-icon>
+            {{ $t('profilePage.account.offerView') }}
+          </a>
+        </div>
       </div>
     </SectionHeader>
 
