@@ -291,6 +291,9 @@ export const useDashboardStore = defineStore('dashboardStore', {
           params.age_end = this.params.age_end
         } else if (this.typeNames.includes(i)) {
           params.type = this.params.type
+        } else if (i === 'sex' && this.params.sex === 'all') {
+          // «Barchasi» — jins filtri yuborilmaydi (ikkala jins).
+          params.sex = undefined
         } else {
           params[i] = this.params[i]
         }

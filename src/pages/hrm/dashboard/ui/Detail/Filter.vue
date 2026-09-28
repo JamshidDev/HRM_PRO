@@ -38,6 +38,8 @@
     const filters = store.activeDetail.filters
     for (let i of filters) {
       if (i === 'month' && filters.includes('year')) continue
+      // «Barchasi» jinsi — filtr emas, sanalmaydi.
+      if (i === 'sex' && store.params.sex === 'all') continue
       if (store.typeNames.includes(i)) {
         a += !isdeepequal(store.defaultParams.type, store.params.type)
       } else {
@@ -126,6 +128,9 @@
   //   store.params.page = 1
   //   filterEvent()
   // })
+
+  // Jins: «Barchasi» (ikkala jins) + erkak/ayol.
+  const sexOptions = computed(() => [{ id: 'all', name: t('content.all') }, ...componentStore.genderList])
 </script>
 <template>
   <UIPageFilter
@@ -227,7 +232,7 @@
               filterable
               @update:value="filterEvent"
               clearablewA
-              :options="componentStore.genderList"
+              :options="sexOptions"
               label-field="name"
               value-field="id"
               :ignore-composition="false"
