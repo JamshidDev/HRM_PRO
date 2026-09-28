@@ -59,14 +59,6 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
       search: null,
       paying_code: null
     },
-    // Xodim qo'shish modali (qo'lda bitta qator).
-    addRowVisible: false,
-    addRowLoading: false,
-    addRowPayload: {
-      worker_id: null,
-      paying_code: null,
-      summa: 0
-    },
     // Imtiyozli xodimni whitelist'ga qo'lda qo'shish modali (summa yo'q).
     whitelistAddVisible: false,
     whitelistAddLoading: false,
@@ -246,53 +238,6 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
           this._whitelistIndex()
         })
         .catch(() => {})
-    },
-    // --- Xodimni qo'lda qo'shish (bitta qator + avtomatik tahlil) ---
-    openAddRow() {
-      if (!this.params.organization_id || !this.params.year || !this.params.month) {
-        $Toast.warning(t('paymentAnalysis.toast.requiredFilters'))
-        return
-      }
-      this.addRowPayload = {
-        worker_id: null,
-        paying_code: null,
-        summa: 0
-      }
-      this.addRowVisible = true
-    },
-    _addRow() {
-      if (!this.params.organization_id || !this.params.year || !this.params.month) {
-        $Toast.warning(t('paymentAnalysis.toast.requiredFilters'))
-        return
-      }
-      if (!this.addRowPayload.worker_id) {
-        $Toast.warning(t('paymentAnalysis.toast.requiredWorker'))
-        return
-      }
-      if (!this.addRowPayload.paying_code) {
-        $Toast.warning(t('paymentAnalysis.toast.requiredPayingCode'))
-        return
-      }
-      this.addRowLoading = true
-      const data = {
-        organization_id: this.params.organization_id,
-        year: this.params.year,
-        month: this.params.month,
-        worker_id: this.addRowPayload.worker_id,
-        paying_code: this.addRowPayload.paying_code,
-        summa: this.addRowPayload.summa
-      }
-      $ApiService.accountantService
-        ._paymentAnalysisAddRow({ data })
-        .then(() => {
-          $Toast.success(t('paymentAnalysis.toast.added'))
-          this.addRowVisible = false
-          this._index()
-        })
-        .catch(() => {})
-        .finally(() => {
-          this.addRowLoading = false
-        })
     },
     // --- Qoidalar dvigatelini qayta ishga tushirish ---
     _analyze() {

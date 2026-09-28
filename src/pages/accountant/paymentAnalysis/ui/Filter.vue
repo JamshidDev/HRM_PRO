@@ -2,8 +2,7 @@
   import {
     DocumentArrowUp20Regular,
     ArrowSync20Filled,
-    ArrowCircleDown32Regular,
-    PersonAdd20Filled
+    ArrowCircleDown32Regular
   } from '@vicons/fluent'
   import { UIPageFilter, UISelect, UIYearMonth } from '@/components/index.js'
   import {
@@ -65,11 +64,6 @@
     store.openBlanka()
   }
 
-  const onAddRow = () => {
-    if (!accStore.checkAction(accStore.pn.economistPaymentAnalysisWrite)) return
-    store.openAddRow()
-  }
-
   const onAnalyze = () => {
     if (!accStore.checkAction(accStore.pn.economistPaymentAnalysisWrite)) return
     store._analyze()
@@ -100,18 +94,6 @@
           @change="filterEvent"
         />
       </div>
-
-      <n-button
-        v-if="accStore.checkPermission(accStore.pn.economistPaymentAnalysisWrite)"
-        @click="onAddRow"
-        type="default"
-        class="w-full! md:w-auto!"
-      >
-        {{ $t('paymentAnalysis.buttons.addRow') }}
-        <template #icon>
-          <PersonAdd20Filled />
-        </template>
-      </n-button>
 
       <n-button
         v-if="accStore.checkPermission(accStore.pn.economistPaymentAnalysisWrite)"

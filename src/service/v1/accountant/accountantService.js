@@ -101,10 +101,6 @@ const _paymentAnalysisExport = async (payload) => {
     responseType: 'blob'
   })
 }
-// Xodimni qo'lda qo'shish — bitta qator (xodim + kod + summa) yaratib avtomatik tahlil.
-const _paymentAnalysisAddRow = (payload) => {
-  return axios.post(`/v1/economist/payment-analysis/row`, payload.data)
-}
 // Imtiyozli xodimni whitelist'ga qo'lda qo'shish (org+davr+kod+xodim bo'yicha dedup).
 const _paymentWhitelistAddRow = (payload) => {
   return axios.post(`/v1/economist/payment-whitelist/row`, payload.data)
@@ -136,7 +132,6 @@ export default {
   _paymentWhitelistIndex,
   _paymentAnalysisAnalyze,
   _paymentAnalysisExport,
-  _paymentAnalysisAddRow,
   _paymentWhitelistAddRow,
   _paymentWhitelistRemove
 }
