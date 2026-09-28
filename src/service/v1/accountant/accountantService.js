@@ -97,6 +97,10 @@ const _paymentAnalysisExport = async (payload) => {
     responseType: 'blob'
   })
 }
+// Xodimni qo'lda qo'shish — bitta qator (xodim + kod + summa) yaratib avtomatik tahlil.
+const _paymentAnalysisAddRow = (payload) => {
+  return axios.post(`/v1/economist/payment-analysis/row`, payload.data)
+}
 
 export default {
   _index,
@@ -118,5 +122,6 @@ export default {
   _paymentAnalysisUpload,
   _paymentWhitelistUpload,
   _paymentAnalysisAnalyze,
-  _paymentAnalysisExport
+  _paymentAnalysisExport,
+  _paymentAnalysisAddRow
 }

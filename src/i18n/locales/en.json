@@ -5543,7 +5543,8 @@
       "blanka": "Upload blanka",
       "whitelist": "Upload whitelist",
       "analyze": "Re-analyze",
-      "export": "Export to Excel"
+      "export": "Export to Excel",
+      "addRow": "Add employee"
     },
     "table": {
       "rowNo": "No.",
@@ -5566,13 +5567,21 @@
     "whitelist": {
       "title": "Upload approved employees whitelist"
     },
+    "addRow": {
+      "title": "Add employee",
+      "worker": "Employee",
+      "payingCode": "Payment code",
+      "summa": "Amount"
+    },
     "toast": {
       "uploaded": "Blanka uploaded and analyzed",
       "whitelistUploaded": "Whitelist uploaded",
       "analyzed": "Analysis re-run",
       "requiredOrganization": "Select an organization",
       "requiredPayingCode": "Select a payment code",
-      "requiredFilters": "Select organization and period"
+      "requiredWorker": "Select an employee",
+      "requiredFilters": "Select organization and period",
+      "added": "Employee added and analyzed"
     }
   }
 }

@@ -3,9 +3,10 @@
     DocumentArrowUp20Regular,
     PeopleCheckmark20Filled,
     ArrowSync20Filled,
-    ArrowCircleDown32Regular
+    ArrowCircleDown32Regular,
+    PersonAdd20Filled
   } from '@vicons/fluent'
-  import { UIPageFilter, UIYearMonth } from '@/components/index.js'
+  import { UIPageFilter, UISelect, UIYearMonth } from '@/components/index.js'
   import {
     useAccountStore,
     useComponentStore,
@@ -15,6 +16,10 @@
   const store = usePaymentAnalysisStore()
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
+
+  // Tashkilot tree (single-select) uchun holat.
+  const orgModel = ref([])
+  const orgCheck = ref([])
 
   // To'lov kodlari — tasdiqlangan xodimlar (whitelist) kesimida ishlatiladigan kodlar.
   const payingCodeOptions = [
@@ -31,12 +36,22 @@
 
   const beforeShow = (v) => {
     if (!v) return
-    if (componentStore.organizationList.length === 0) componentStore._organizations()
+    if (componentStore.structureList.length === 0) componentStore._structures()
+  }
+
+  // Tashkilot tanlanganda (single-select) — organization_id ni yangilaymiz.
+  const onChangeOrg = (list) => {
+    orgModel.value = list
+    store.params.organization_id = list[0]?.id ?? null
+    filterEvent()
   }
 
   const resetFilter = () => {
+    orgModel.value = []
+    orgCheck.value = []
     store.params.organization_id = null
     store.params.paying_code = null
+    store.onlyFlagged = false
     filterEvent()
   }
 
@@ -49,6 +64,11 @@
   const onBlanka = () => {
     if (!accStore.checkAction(accStore.pn.economistPaymentAnalysisWrite)) return
     store.openBlanka()
+  }
+
+  const onAddRow = () => {
+    if (!accStore.checkAction(accStore.pn.economistPaymentAnalysisWrite)) return
+    store.openAddRow()
   }
 
   const onWhitelist = () => {
@@ -86,6 +106,18 @@
           @change="filterEvent"
         />
       </div>
+
+      <n-button
+        v-if="accStore.checkPermission(accStore.pn.economistPaymentAnalysisWrite)"
+        @click="onAddRow"
+        type="default"
+        class="w-full! md:w-auto!"
+      >
+        {{ $t('paymentAnalysis.buttons.addRow') }}
+        <template #icon>
+          <PersonAdd20Filled />
+        </template>
+      </n-button>
 
       <n-button
         v-if="accStore.checkPermission(accStore.pn.economistPaymentAnalysisWrite)"
@@ -142,15 +174,17 @@
       <label class="mt-3 text-xs text-textColor3 mb-1 font-medium">{{
         $t('content.organization')
       }}</label>
-      <n-select
-        v-model:value="store.params.organization_id"
-        :options="componentStore.organizationList"
-        :loading="componentStore.organizationLoading"
-        @update:value="filterEvent"
-        label-field="name"
-        value-field="id"
-        filterable
-        clearable
+      <UISelect
+        :options="componentStore.structureList"
+        :multiple="false"
+        :model-v="orgModel"
+        @updateModel="onChangeOrg"
+        :checked-val="orgCheck"
+        @updateCheck="(v) => (orgCheck = v)"
+        :loading="componentStore.structureLoading"
+        v-model:search="componentStore.structureParams.search"
+        @onSearch="componentStore._structures"
+        @onSubmit="filterEvent"
       />
 
       <label class="mt-3 text-xs text-textColor3 mb-1 font-medium block">{{
@@ -166,7 +200,7 @@
       <label class="mt-3 text-xs text-textColor3 mb-1 font-medium block">{{
         $t('paymentAnalysis.filter.onlyFlagged')
       }}</label>
-      <n-switch v-model:value="store.onlyFlagged" />
+      <n-switch v-model:value="store.onlyFlagged" @update:value="filterEvent" />
     </template>
   </UIPageFilter>
 </template>

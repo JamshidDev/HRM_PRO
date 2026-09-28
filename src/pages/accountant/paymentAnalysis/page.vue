@@ -5,6 +5,7 @@
   import Table from './ui/Table.vue'
   import BlankaModal from './ui/BlankaModal.vue'
   import WhitelistModal from './ui/WhitelistModal.vue'
+  import AddRowModal from './ui/AddRowModal.vue'
   import { getOneMonthAgoYearMonth } from '@utils'
 
   const store = usePaymentAnalysisStore()
@@ -25,5 +26,6 @@
     <Table />
     <BlankaModal />
     <WhitelistModal />
+    <AddRowModal />
   </UIPageContent>
 </template>

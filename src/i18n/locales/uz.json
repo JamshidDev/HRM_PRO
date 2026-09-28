@@ -5585,7 +5585,8 @@
       "blanka": "Blanka yuklash",
       "whitelist": "Whitelist yuklash",
       "analyze": "Qayta tahlil",
-      "export": "Excelga yuklash"
+      "export": "Excelga yuklash",
+      "addRow": "Xodim qo'shish"
     },
     "table": {
       "rowNo": "№",
@@ -5608,13 +5609,21 @@
     "whitelist": {
       "title": "Tasdiqlangan xodimlar ro'yxatini yuklash"
     },
+    "addRow": {
+      "title": "Xodim qo'shish",
+      "worker": "Xodim",
+      "payingCode": "To'lov kodi",
+      "summa": "Summa"
+    },
     "toast": {
       "uploaded": "Blanka yuklandi va tahlil qilindi",
       "whitelistUploaded": "Whitelist yuklandi",
       "analyzed": "Tahlil qayta bajarildi",
       "requiredOrganization": "Korxonani tanlang",
       "requiredPayingCode": "To'lov kodini tanlang",
-      "requiredFilters": "Korxona va davrni tanlang"
+      "requiredWorker": "Xodimni tanlang",
+      "requiredFilters": "Korxona va davrni tanlang",
+      "added": "Xodim qo'shildi va tahlil qilindi"
     }
   }
 }

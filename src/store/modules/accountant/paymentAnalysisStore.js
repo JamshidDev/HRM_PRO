@@ -45,6 +45,14 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
       year: null,
       month: null,
       paying_code: null
+    },
+    // Xodim qo'shish modali (qo'lda bitta qator).
+    addRowVisible: false,
+    addRowLoading: false,
+    addRowPayload: {
+      worker_id: null,
+      paying_code: null,
+      summa: 0
     }
   }),
   actions: {
@@ -55,7 +63,8 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
         ...this.params,
         search: this.params.search?.trim() || undefined,
         organization_id: this.params.organization_id || undefined,
-        paying_code: this.params.paying_code || undefined
+        paying_code: this.params.paying_code || undefined,
+        only_flagged: this.onlyFlagged || undefined
       }
       $ApiService.accountantService
         ._paymentAnalysisIndex({ params })
@@ -135,6 +144,53 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
         .catch(() => {})
         .finally(() => {
           this.whitelistLoading = false
+        })
+    },
+    // --- Xodimni qo'lda qo'shish (bitta qator + avtomatik tahlil) ---
+    openAddRow() {
+      if (!this.params.organization_id || !this.params.year || !this.params.month) {
+        $Toast.warning(t('paymentAnalysis.toast.requiredFilters'))
+        return
+      }
+      this.addRowPayload = {
+        worker_id: null,
+        paying_code: null,
+        summa: 0
+      }
+      this.addRowVisible = true
+    },
+    _addRow() {
+      if (!this.params.organization_id || !this.params.year || !this.params.month) {
+        $Toast.warning(t('paymentAnalysis.toast.requiredFilters'))
+        return
+      }
+      if (!this.addRowPayload.worker_id) {
+        $Toast.warning(t('paymentAnalysis.toast.requiredWorker'))
+        return
+      }
+      if (!this.addRowPayload.paying_code) {
+        $Toast.warning(t('paymentAnalysis.toast.requiredPayingCode'))
+        return
+      }
+      this.addRowLoading = true
+      const data = {
+        organization_id: this.params.organization_id,
+        year: this.params.year,
+        month: this.params.month,
+        worker_id: this.addRowPayload.worker_id,
+        paying_code: this.addRowPayload.paying_code,
+        summa: this.addRowPayload.summa
+      }
+      $ApiService.accountantService
+        ._paymentAnalysisAddRow({ data })
+        .then(() => {
+          $Toast.success(t('paymentAnalysis.toast.added'))
+          this.addRowVisible = false
+          this._index()
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.addRowLoading = false
         })
     },
     // --- Qoidalar dvigatelini qayta ishga tushirish ---

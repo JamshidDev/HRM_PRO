@@ -1,5 +1,5 @@
 <script setup>
-  import { UIModal, UIUpload, UIYearMonth } from '@/components/index.js'
+  import { UIModal, UISelect, UIUpload, UIYearMonth } from '@/components/index.js'
   import { useComponentStore, usePaymentAnalysisStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
 
@@ -15,9 +15,37 @@
     { label: '270', value: '270' }
   ]
 
-  onMounted(() => {
-    if (componentStore.organizationList.length === 0) componentStore._organizations()
+  // Tashkilot tree (single-select) + payload organization_id bilan sinxron.
+  const orgModel = ref([])
+  const orgCheck = ref([])
+  const findNode = (list, id) => {
+    for (const n of list || []) {
+      if (n.id === id) return n
+      const f = findNode(n.children, id)
+      if (f) return f
+    }
+    return null
+  }
+  const syncOrg = () => {
+    const id = store.whitelistPayload.organization_id
+    const node = id ? findNode(componentStore.structureList, id) : null
+    orgModel.value = node ? [node] : []
+  }
+  const onChangeOrg = (list) => {
+    orgModel.value = list
+    store.whitelistPayload.organization_id = list[0]?.id ?? null
+  }
+
+  onMounted(async () => {
+    if (componentStore.structureList.length === 0) await componentStore._structures()
+    syncOrg()
   })
+  watch(
+    () => store.whitelistVisible,
+    (v) => {
+      if (v) syncOrg()
+    }
+  )
 
   const onSubmit = () => {
     if (!store.whitelistPayload.organization_id) {
@@ -45,14 +73,16 @@
     <div class="grid grid-cols-12 gap-x-2">
       <div class="col-span-12 mb-2">
         <label class="text-xs text-textColor3 mb-1 block">{{ $t('content.organization') }}</label>
-        <n-select
-          v-model:value="store.whitelistPayload.organization_id"
-          :options="componentStore.organizationList"
-          :loading="componentStore.organizationLoading"
-          label-field="name"
-          value-field="id"
-          filterable
-          clearable
+        <UISelect
+          :options="componentStore.structureList"
+          :multiple="false"
+          :model-v="orgModel"
+          @updateModel="onChangeOrg"
+          :checked-val="orgCheck"
+          @updateCheck="(v) => (orgCheck = v)"
+          :loading="componentStore.structureLoading"
+          v-model:search="componentStore.structureParams.search"
+          @onSearch="componentStore._structures"
         />
       </div>
       <div class="col-span-12 mb-2">
