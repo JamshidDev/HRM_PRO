@@ -1,7 +1,6 @@
 <script setup>
   import {
     DocumentArrowUp20Regular,
-    PeopleCheckmark20Filled,
     ArrowSync20Filled,
     ArrowCircleDown32Regular,
     PersonAdd20Filled
@@ -71,11 +70,6 @@
     store.openAddRow()
   }
 
-  const onWhitelist = () => {
-    if (!accStore.checkAction(accStore.pn.economistPaymentAnalysisWrite)) return
-    store.openWhitelist()
-  }
-
   const onAnalyze = () => {
     if (!accStore.checkAction(accStore.pn.economistPaymentAnalysisWrite)) return
     store._analyze()
@@ -116,18 +110,6 @@
         {{ $t('paymentAnalysis.buttons.addRow') }}
         <template #icon>
           <PersonAdd20Filled />
-        </template>
-      </n-button>
-
-      <n-button
-        v-if="accStore.checkPermission(accStore.pn.economistPaymentAnalysisWrite)"
-        @click="onWhitelist"
-        type="default"
-        class="w-full! md:w-auto!"
-      >
-        {{ $t('paymentAnalysis.buttons.whitelist') }}
-        <template #icon>
-          <PeopleCheckmark20Filled />
         </template>
       </n-button>
 

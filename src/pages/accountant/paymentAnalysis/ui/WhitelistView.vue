@@ -6,10 +6,15 @@
     usePaymentAnalysisStore
   } from '@/store/modules/index.js'
   import WhitelistAddModal from './WhitelistAddModal.vue'
+  import WhitelistModal from './WhitelistModal.vue'
   import i18n from '@/i18n/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import { PersonAdd20Filled, Delete20Regular } from '@vicons/fluent'
+  import {
+    PersonAdd20Filled,
+    Delete20Regular,
+    DocumentArrowUp20Regular
+  } from '@vicons/fluent'
 
   const { t } = i18n.global
   const store = usePaymentAnalysisStore()
@@ -102,6 +107,12 @@
     store.openWhitelistAdd()
   }
 
+  // Excel (НН shabloni) orqali imtiyozli xodimlarni ommaviy yuklash.
+  const onWhitelistUpload = () => {
+    if (!accStore.checkAction(accStore.pn.economistPaymentAnalysisWrite)) return
+    store.openWhitelist()
+  }
+
   const onDelete = (row) => {
     if (!accStore.checkAction(accStore.pn.economistPaymentAnalysisWrite)) return
     store._removeWhitelistRow(row.id)
@@ -140,6 +151,18 @@
             @change="reloadEvent"
           />
         </div>
+
+        <n-button
+          v-if="accStore.checkPermission(accStore.pn.economistPaymentAnalysisWrite)"
+          @click="onWhitelistUpload"
+          type="default"
+          class="w-full! md:w-auto!"
+        >
+          {{ $t('paymentAnalysis.buttons.whitelist') }}
+          <template #icon>
+            <DocumentArrowUp20Regular />
+          </template>
+        </n-button>
 
         <n-button
           v-if="accStore.checkPermission(accStore.pn.economistPaymentAnalysisWrite)"
@@ -197,6 +220,7 @@
     />
 
     <WhitelistAddModal />
+    <WhitelistModal />
   </div>
 </template>
 

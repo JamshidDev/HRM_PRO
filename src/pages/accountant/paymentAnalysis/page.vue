@@ -4,7 +4,6 @@
   import Filter from './ui/Filter.vue'
   import Table from './ui/Table.vue'
   import BlankaModal from './ui/BlankaModal.vue'
-  import WhitelistModal from './ui/WhitelistModal.vue'
   import WhitelistView from './ui/WhitelistView.vue'
   import AddRowModal from './ui/AddRowModal.vue'
   import { getOneMonthAgoYearMonth } from '@utils'
@@ -43,7 +42,6 @@
       <Filter />
       <Table />
       <BlankaModal />
-      <WhitelistModal />
       <AddRowModal />
     </template>
     <WhitelistView v-else />

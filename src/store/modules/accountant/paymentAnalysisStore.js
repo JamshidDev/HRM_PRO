@@ -159,7 +159,7 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
         .then(() => {
           $Toast.success(t('paymentAnalysis.toast.whitelistUploaded'))
           this.whitelistVisible = false
-          this._index()
+          this._whitelistIndex()
         })
         .catch(() => {})
         .finally(() => {
