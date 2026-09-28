@@ -1457,9 +1457,6 @@
         "attachFile": "Fayl biriktirish",
         "view": "Ko'rish",
         "download": "Yuklab olish",
-        "lockedTitle": "Hujjat tasdiqlangan",
-        "lockedEmpty": "Biriktirilgan fayl va arizalar yo'q. Tasdiqlangan hujjatga yangi fayl qo'shib bo'lmaydi.",
-        "lockedShort": "Hujjat tasdiqlangan — fayllarni faqat ko'rish mumkin",
         "deleteTitle": "Faylni o'chirish",
         "unlinkTitle": "Arizani uzish",
         "unlink": "Uzish"

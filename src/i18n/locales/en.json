@@ -1441,9 +1441,6 @@
         "attachFile": "Attach file",
         "view": "View",
         "download": "Download",
-        "lockedTitle": "Document approved",
-        "lockedEmpty": "No attached files or applications. New files can't be added to an approved document.",
-        "lockedShort": "Document approved — files are view-only",
         "deleteTitle": "Delete file",
         "unlinkTitle": "Unlink application",
         "unlink": "Unlink"
