@@ -57,7 +57,7 @@
     ]
   })
 
-  async function downloadPdf() {
+  async function download(format) {
     const d = props.data
     const fileName = [d.surname, d.givenName, d.cardNumber].filter(Boolean).join('_') || 'guvohnoma'
     await downloadIdRailWayPdf({
@@ -73,11 +73,15 @@
       },
       strip: backStrip.value,
       fontFamily: cardRef.value ? getComputedStyle(cardRef.value).fontFamily : undefined,
-      fileName: `${fileName}.pdf`
+      fileName,
+      format
     })
   }
 
-  defineExpose({ downloadPdf })
+  const downloadPdf = () => download('pdf')
+  const downloadSvg = () => download('svg')
+
+  defineExpose({ downloadPdf, downloadSvg })
 </script>
 
 <template>

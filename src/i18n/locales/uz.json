@@ -2184,6 +2184,7 @@
     },
     "Edocument": {
       "download_pdf": "PDF yuklab olish",
+      "download_svg": "SVG yuklab olish",
       "pasport": "Pasport",
       "railway_pasport": "Temiryo'l guvohnoma",
       "foreign_pasport": "Xorijiy pasport",

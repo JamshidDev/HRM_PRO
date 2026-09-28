@@ -176,3 +176,12 @@
   color: #f2f4f7;
   background: #1d2939;
 }
+
+// Ma'lumot plitkalari foni (xodim profili InfoBox, mobil foydalanuvchi modali va h.k.)
+.info-box-ground {
+  background-color: #f9fafb;
+}
+
+[data-theme='dark'] .info-box-ground {
+  background-color: var(--surface-ground);
+}
