@@ -2704,6 +2704,14 @@
         "edit": "Edit",
         "delete": "Delete",
         "create": "Create"
+      },
+      "user": {
+        "last30": "Last 30 days",
+        "updated": "Updated: {time}",
+        "legendActions": "Actions",
+        "legendAverage": "Average",
+        "legendOff": "Weekend / holiday",
+        "recent": "Recent actions"
       }
     }
   },

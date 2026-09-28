@@ -2489,6 +2489,14 @@
         "edit": "Таҳрирлаш",
         "delete": "Ўчириш",
         "create": "Яратиш"
+      },
+      "user": {
+        "last30": "Сўнгги 30 кун",
+        "updated": "Янгиланган: {time}",
+        "legendActions": "Амаллар",
+        "legendAverage": "Ўртача",
+        "legendOff": "Дам олиш / байрам",
+        "recent": "Охирги амаллар"
       }
     }
   },

@@ -2724,6 +2724,14 @@
         "edit": "Tahrirlash",
         "delete": "O’chirish",
         "create": "Yaratish"
+      },
+      "user": {
+        "last30": "So'nggi 30 kun",
+        "updated": "Yangilangan: {time}",
+        "legendActions": "Amallar",
+        "legendAverage": "O'rtacha",
+        "legendOff": "Dam olish / bayram",
+        "recent": "Oxirgi amallar"
       }
     }
   },

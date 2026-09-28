@@ -86,10 +86,16 @@ const at = (daysAgo, time) => {
   return d.toISOString()
 }
 
+// Mock otasining ismi — ayollar familiyasi «-a» bilan tugaydi.
+const PATRONYMICS = ['Rustam', 'Akmal', 'Bahodir', 'Shavkat', 'Olim']
+const middleName = (id, lastName) =>
+  `${PATRONYMICS[id % PATRONYMICS.length]}${/a$/.test(lastName) ? 'ovna' : 'ovich'}`
+
 const user = (id, lastName, firstName, position, department, counts, lastActivity) => ({
   id,
   last_name: lastName,
   first_name: firstName,
+  middle_name: middleName(id, lastName),
   photo: avatar,
   position,
   department,
@@ -223,3 +229,77 @@ export const usersMock = [
     at(4, '16:40')
   )
 ]
+
+/**
+ * Xodim modali (Figma node 3871:63669) — so'nggi 30 kunlik faollik va oxirgi
+ * amallar. Qiymatlar maketdagi ustunlardan olingan, xodimning jami amaliga
+ * mutanosib ravishda o'lchanadi (maketdagi xodim — 612 amal).
+ */
+const WORKDAY_VALUES = [
+  38, 41, 36, 39, 39, 40, 39, 40, 37, 42, 40, 44, 42, 38, 44, 41, 58, 43, 36, 38, 40
+]
+const OFFDAY_VALUES = [4, 0, 0, 6, 0, 0, 0, 3, 0]
+// Bayram kunlari (oy-kun)
+const HOLIDAYS = ['01-01', '03-08', '03-21', '05-09', '09-01', '10-01', '12-08']
+
+const pad = (n) => String(n).padStart(2, '0')
+
+export const isOffDay = (date) => {
+  const wd = date.getDay()
+  return (
+    wd === 0 || wd === 6 || HOLIDAYS.includes(`${pad(date.getMonth() + 1)}-${pad(date.getDate())}`)
+  )
+}
+
+const LOGS = [
+  {
+    type: 'edit',
+    title: "Xodim ma'lumotlari tahrirlandi",
+    detail: 'Aliyev Sherzod · Lavozim: katta mashinist',
+    ago: [0, '16:24']
+  },
+  {
+    type: 'create',
+    title: 'Buyruq yaratildi',
+    detail: "№ 412-K · Ta'til berish",
+    ago: [0, '14:10']
+  },
+  {
+    type: 'add',
+    title: 'Hujjat yuklandi',
+    detail: 'Mehnat shartnomasi.pdf · Olimov Behruz',
+    ago: [0, '11:37']
+  },
+  {
+    type: 'add',
+    title: "Yangi xodim qo'shildi",
+    detail: 'Olimov Behruz · Toshkent MTU',
+    ago: [1, '17:52']
+  },
+  {
+    type: 'delete',
+    title: "Hujjat o'chirildi",
+    detail: "Eski ma'lumotnoma.pdf · Saidov Anvar",
+    ago: [1, '09:15']
+  }
+]
+
+export const buildUserActivity = (person, days = 30) => {
+  const factor = (person?.total || 612) / 612
+  const end = new Date()
+  end.setHours(0, 0, 0, 0)
+  let work = 0
+  let off = 0
+  const daily = []
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date(end)
+    date.setDate(end.getDate() - i)
+    const offDay = isOffDay(date)
+    const base = offDay
+      ? OFFDAY_VALUES[off++ % OFFDAY_VALUES.length]
+      : WORKDAY_VALUES[work++ % WORKDAY_VALUES.length]
+    daily.push({ date, value: Math.round(base * factor), off: offDay })
+  }
+  const logs = LOGS.map((log, idx) => ({ id: idx + 1, ...log, at: at(...log.ago) }))
+  return { daily, logs, updatedAt: at(0, '10:42') }
+}

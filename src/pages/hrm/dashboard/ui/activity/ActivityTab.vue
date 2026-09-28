@@ -20,6 +20,7 @@
   import ActivityChart from './ActivityChart.vue'
   import ActivityRoles from './ActivityRoles.vue'
   import ActivityTopUsers from './ActivityTopUsers.vue'
+  import ActivityUserModal from './ActivityUserModal.vue'
   import { buildDaily, rolesMock, totalUsersMock, usersMock } from './mock.js'
   import { dayMonth, daysInMonth, formatCount, monthName, totalOf } from './utils.js'
 
@@ -51,6 +52,14 @@
   )
   // Mock: 86 ta faol mas'ul (maketdagi qiymat)
   const activeUsers = 86
+
+  // Jadvaldagi «ko'z» tugmasi — xodim faolligi modali
+  const viewedUser = ref(null)
+  const userModal = ref(false)
+  const onViewUser = (row) => {
+    viewedUser.value = row
+    userModal.value = true
+  }
 
   const kpis = computed(() => [
     {
@@ -188,7 +197,9 @@
       <ActivityRoles :roles="roles" />
     </div>
 
-    <ActivityTopUsers :users="users" :total="totalUsersMock" />
+    <ActivityTopUsers :users="users" :total="totalUsersMock" @view="onViewUser" />
+
+    <ActivityUserModal v-model:visible="userModal" :user="viewedUser" />
   </div>
 </template>
 
