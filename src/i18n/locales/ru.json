@@ -484,7 +484,10 @@
     "clearedFields": "Поля очищены!",
     "unExpectedError": "Произошла непредвиденная ошибка!",
     "warning-data": "Недостаточно данных!",
-    "noPermission": "Доступ запрещен!"
+    "noPermission": "Доступ запрещен!",
+    "appUpdated": "Система обновлена",
+    "appUpdatedHint": "Новая версия загрузится при переходе на следующую страницу",
+    "appUpdateNow": "Обновить сейчас"
   },
   "enum": {
     "man": "Мужчина",
@@ -2674,6 +2677,52 @@
       "types": {
         "incentive": "Поощрение",
         "disciplinary": "Взыскание"
+      }
+    },
+    "activity": {
+      "title": "Активность пользователей",
+      "subtitle": "Анализ изменений в системе — по месяцам",
+      "export": "Скачать",
+      "totalActions": "Всего действий",
+      "activeUsers": "Активные ответственные",
+      "dailyAvg": "В среднем за день",
+      "mostActiveDay": "Самый активный день",
+      "monthly": "Активность за месяц",
+      "byRoles": "По ролям",
+      "topUsers": "Топ пользователей",
+      "search": "Поиск сотрудника",
+      "top10": "Топ 10",
+      "all": "Все",
+      "no": "№",
+      "worker": "Сотрудник",
+      "department": "Подразделение",
+      "actions": "Действия",
+      "distribution": "Распределение",
+      "lastActivity": "Последняя активность",
+      "shown": "Показано: {shown} / {total}",
+      "viewAll": "Смотреть все",
+      "unit": "действ.",
+      "total": "Итого",
+      "totalUnit": "{n} действ.",
+      "average": "Среднее: {n}",
+      "dayMonth": "{day} {month}",
+      "today": "Сегодня, {time}",
+      "yesterday": "Вчера, {time}",
+      "empty": "Данные не найдены",
+      "soon": "Скоро",
+      "types": {
+        "add": "Добавление",
+        "edit": "Редактирование",
+        "delete": "Удаление",
+        "create": "Создание"
+      },
+      "user": {
+        "last30": "Последние 30 дней",
+        "updated": "Обновлено: {time}",
+        "legendActions": "Действия",
+        "legendAverage": "Среднее",
+        "legendOff": "Выходной / праздник",
+        "recent": "Последние действия"
       }
     },
     "orgRating": {

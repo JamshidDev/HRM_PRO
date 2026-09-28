@@ -497,6 +497,9 @@
     "warning-data": "Ma'lumotlar yetarli emas!",
     "minimumOneItem": "Kamida bitta lavozim tanlanishi shart!",
     "noPermission": "Ruxsat etilmadi!",
+    "appUpdated": "Tizim yangilandi",
+    "appUpdatedHint": "Yangi versiya keyingi sahifaga o'tganingizda yuklanadi",
+    "appUpdateNow": "Hozir yangilash",
     "unSignedDocumentCount": "Tasdiqlanmagan hujjatlar soni"
   },
   "enum": {
@@ -2686,6 +2689,52 @@
       "types": {
         "incentive": "Rag'batlantirish",
         "disciplinary": "Intizomiy jazo"
+      }
+    },
+    "activity": {
+      "title": "Foydalanuvchilar faolligi",
+      "subtitle": "Tizimdagi o'zgarishlar tahlili — oy kesimida",
+      "export": "Yuklash",
+      "totalActions": "Jami amallar",
+      "activeUsers": "Faol ma’sullar",
+      "dailyAvg": "Kunlik o'rtacha",
+      "mostActiveDay": "Eng faol kun",
+      "monthly": "Oylik faollik",
+      "byRoles": "Rollar kesimida",
+      "topUsers": "Top foydalanuvchilar",
+      "search": "Xodimni qidiring",
+      "top10": "Top 10",
+      "all": "Barchasi",
+      "no": "№",
+      "worker": "Xodim",
+      "department": "Bo’lim",
+      "actions": "Amallar",
+      "distribution": "Taqsimot",
+      "lastActivity": "Oxirgi faollik",
+      "shown": "Ko'rsatilgan: {shown} / {total}",
+      "viewAll": "Barchasini ko'rish",
+      "unit": "amal",
+      "total": "Jami",
+      "totalUnit": "{n} amal",
+      "average": "O'rtacha: {n}",
+      "dayMonth": "{day}-{month}",
+      "today": "Bugun, {time}",
+      "yesterday": "Kecha, {time}",
+      "empty": "Ma'lumot topilmadi",
+      "soon": "Tez orada",
+      "types": {
+        "add": "Qo'shish",
+        "edit": "Tahrirlash",
+        "delete": "O’chirish",
+        "create": "Yaratish"
+      },
+      "user": {
+        "last30": "So'nggi 30 kun",
+        "updated": "Yangilangan: {time}",
+        "legendActions": "Amallar",
+        "legendAverage": "O'rtacha",
+        "legendOff": "Dam olish / bayram",
+        "recent": "Oxirgi amallar"
       }
     },
     "orgRating": {

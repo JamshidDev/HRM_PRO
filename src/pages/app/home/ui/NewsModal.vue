@@ -123,7 +123,7 @@
     </div>
 
     <template #footer>
-      <div v-if="canOpenFullPage" class="flex justify-end px-4 pb-4">
+      <div v-if="canOpenFullPage" class="flex items-center justify-end px-4 py-3">
         <n-button type="primary" @click="onOpenFullPage">
           {{ $t('homePage.more') }}
         </n-button>
