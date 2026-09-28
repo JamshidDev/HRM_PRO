@@ -404,6 +404,9 @@ export const appPermissions = {
   economistStaffingApprove: 'economist-staffing-approve',
   economistStaffingApproveRead: 'economist-staffing-approve-read',
   economistStaffingApproveWrite: 'economist-staffing-approve-write',
+  // To'lov turlari bo'yicha asossiz to'lovlarni aniqlash (payment-analysis).
+  economistPaymentAnalysisRead: 'economist-payment-analysis-read',
+  economistPaymentAnalysisWrite: 'economist-payment-analysis-write',
 
   lms: 'lms',
   lmsDirection: 'lms-direction',

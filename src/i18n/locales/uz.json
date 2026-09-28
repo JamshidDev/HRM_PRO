@@ -5573,5 +5573,48 @@
       "noDoc": "Hujjat keltirilmagan",
       "stillOpen": "Varaqa hali ochiq"
     }
+  },
+  "paymentAnalysis": {
+    "name": "Asossiz to'lovlarni aniqlash",
+    "title": "To'lov turlari bo'yicha asossiz to'lovlarni aniqlash",
+    "filter": {
+      "payingCode": "To'lov kodi",
+      "onlyFlagged": "Faqat asossizlar"
+    },
+    "buttons": {
+      "blanka": "Blanka yuklash",
+      "whitelist": "Whitelist yuklash",
+      "analyze": "Qayta tahlil",
+      "export": "Excelga yuklash"
+    },
+    "table": {
+      "rowNo": "№",
+      "fio": "F.I.SH.",
+      "position": "Lavozim",
+      "pinfl": "PINFL",
+      "payingCode": "To'lov kodi",
+      "summa": "Summa",
+      "reason": "Aniqlangan sabab",
+      "verdict": "Natija"
+    },
+    "verdict": {
+      "valid": "Asosli",
+      "invalid": "Asossiz",
+      "review": "Qo'shimcha tekshiruv"
+    },
+    "blanka": {
+      "title": "НН to'lov blankasi yuklash"
+    },
+    "whitelist": {
+      "title": "Tasdiqlangan xodimlar ro'yxatini yuklash"
+    },
+    "toast": {
+      "uploaded": "Blanka yuklandi va tahlil qilindi",
+      "whitelistUploaded": "Whitelist yuklandi",
+      "analyzed": "Tahlil qayta bajarildi",
+      "requiredOrganization": "Korxonani tanlang",
+      "requiredPayingCode": "To'lov kodini tanlang",
+      "requiredFilters": "Korxona va davrni tanlang"
+    }
   }
 }

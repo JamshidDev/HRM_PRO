@@ -5531,5 +5531,48 @@
       "noDoc": "No document provided",
       "stillOpen": "The sheet is still open"
     }
+  },
+  "paymentAnalysis": {
+    "name": "Payment anomaly detection",
+    "title": "Detection of unjustified payments by payment type",
+    "filter": {
+      "payingCode": "Payment code",
+      "onlyFlagged": "Only flagged"
+    },
+    "buttons": {
+      "blanka": "Upload blanka",
+      "whitelist": "Upload whitelist",
+      "analyze": "Re-analyze",
+      "export": "Export to Excel"
+    },
+    "table": {
+      "rowNo": "No.",
+      "fio": "Full name",
+      "position": "Position",
+      "pinfl": "PINFL",
+      "payingCode": "Payment code",
+      "summa": "Amount",
+      "reason": "Detected reason",
+      "verdict": "Result"
+    },
+    "verdict": {
+      "valid": "Justified",
+      "invalid": "Unjustified",
+      "review": "Additional review"
+    },
+    "blanka": {
+      "title": "Upload NN payment blanka"
+    },
+    "whitelist": {
+      "title": "Upload approved employees whitelist"
+    },
+    "toast": {
+      "uploaded": "Blanka uploaded and analyzed",
+      "whitelistUploaded": "Whitelist uploaded",
+      "analyzed": "Analysis re-run",
+      "requiredOrganization": "Select an organization",
+      "requiredPayingCode": "Select a payment code",
+      "requiredFilters": "Select organization and period"
+    }
   }
 }

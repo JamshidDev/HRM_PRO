@@ -71,6 +71,33 @@ const _pullHistory = async (payload) => {
   return await axios.get(`/v1/economist/upload-report-history`, { params: payload?.params })
 }
 
+// ─────────────────────────────────────────────────────────────────────────
+// To'lov turlari bo'yicha asossiz to'lovlarni aniqlash (payment-analysis).
+// ─────────────────────────────────────────────────────────────────────────
+// Tahlil natijalari ro'yxati (server paginatsiyasi).
+const _paymentAnalysisIndex = async (payload) => {
+  return await axios.get(`/v1/economist/payment-analysis`, { params: payload?.params })
+}
+// НН blanka yuklash (multipart) — parse + avtomatik tahlil.
+const _paymentAnalysisUpload = async (payload) => {
+  return await axios.post(`/v1/economist/payment-analysis`, payload.data)
+}
+// Tasdiqlangan xodimlar whitelist yuklash (multipart) — kodlar 47/50/55/270.
+const _paymentWhitelistUpload = async (payload) => {
+  return await axios.post(`/v1/economist/payment-whitelist`, payload.data)
+}
+// Qoidalar dvigatelini qayta ishga tushirish (JSON).
+const _paymentAnalysisAnalyze = async (payload) => {
+  return await axios.post(`/v1/economist/payment-analysis/analyze`, payload.data)
+}
+// Tahlil natijalarini Excel'ga yuklash (blob).
+const _paymentAnalysisExport = async (payload) => {
+  return await axios.get(`/v1/economist/payment-analysis/export`, {
+    params: payload?.params,
+    responseType: 'blob'
+  })
+}
+
 export default {
   _index,
   _create,
@@ -86,5 +113,10 @@ export default {
   _updateStatus,
   _reportStatus,
   _reportStatusExport,
-  _pullHistory
+  _pullHistory,
+  _paymentAnalysisIndex,
+  _paymentAnalysisUpload,
+  _paymentWhitelistUpload,
+  _paymentAnalysisAnalyze,
+  _paymentAnalysisExport
 }

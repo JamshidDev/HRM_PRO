@@ -5167,5 +5167,48 @@
       "noDoc": "Ҳужжат келтирилмаган",
       "stillOpen": "Варақа ҳали очиқ"
     }
+  },
+  "paymentAnalysis": {
+    "name": "Асоссиз тўловларни аниқлаш",
+    "title": "Тўлов турлари бўйича асоссиз тўловларни аниқлаш",
+    "filter": {
+      "payingCode": "Тўлов коди",
+      "onlyFlagged": "Фақат асоссизлар"
+    },
+    "buttons": {
+      "blanka": "Бланка юклаш",
+      "whitelist": "Whitelist юклаш",
+      "analyze": "Қайта таҳлил",
+      "export": "Excelга юклаш"
+    },
+    "table": {
+      "rowNo": "№",
+      "fio": "Ф.И.Ш.",
+      "position": "Лавозим",
+      "pinfl": "PINFL",
+      "payingCode": "Тўлов коди",
+      "summa": "Сумма",
+      "reason": "Аниқланган сабаб",
+      "verdict": "Натижа"
+    },
+    "verdict": {
+      "valid": "Асосли",
+      "invalid": "Асоссиз",
+      "review": "Қўшимча текшириш"
+    },
+    "blanka": {
+      "title": "НН тўлов бланкасини юклаш"
+    },
+    "whitelist": {
+      "title": "Тасдиқланган ходимлар рўйхатини юклаш"
+    },
+    "toast": {
+      "uploaded": "Бланка юкланди ва таҳлил қилинди",
+      "whitelistUploaded": "Whitelist юкланди",
+      "analyzed": "Таҳлил қайта бажарилди",
+      "requiredOrganization": "Корхонани танланг",
+      "requiredPayingCode": "Тўлов кодини танланг",
+      "requiredFilters": "Корхона ва даврни танланг"
+    }
   }
 }
