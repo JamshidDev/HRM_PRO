@@ -9,6 +9,7 @@
   import AuditDetail from './ui/audit/AuditDetail.vue'
   import AuditDetailFilter from './ui/audit/AuditDetailFilter.vue'
   import DashboardSkeleton from './ui/DashboardSkeleton.vue'
+  import ActivityTab from './ui/activity/ActivityTab.vue'
 
   import { DashboardTab, tabCards } from './constants.js'
   import { buildKpiCards } from './kpi.js'
@@ -153,6 +154,12 @@
             <AuditDetail />
           </div>
         </UIPageContent>
+      </template>
+
+      <!-- Kadrlar harakati bobi — «Foydalanuvchilar faolligi» maketi. O'z
+           sarlavhasi, KPI va jadvali bor; endpoint hali yo'q, ma'lumot mock. -->
+      <template v-else-if="store.activeTab === DashboardTab.MOVEMENT">
+        <ActivityTab v-if="canViewDashboard" />
       </template>
 
       <!-- Karta drill-down'i. Jadval `h-full` ni hisoblay olishi uchun balandlik

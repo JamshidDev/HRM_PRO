@@ -2687,6 +2687,44 @@
         "incentive": "Rag'batlantirish",
         "disciplinary": "Intizomiy jazo"
       }
+    },
+    "activity": {
+      "title": "Foydalanuvchilar faolligi",
+      "subtitle": "Tizimdagi o'zgarishlar tahlili — oy kesimida",
+      "export": "Yuklash",
+      "totalActions": "Jami amallar",
+      "activeUsers": "Faol ma’sullar",
+      "dailyAvg": "Kunlik o'rtacha",
+      "mostActiveDay": "Eng faol kun",
+      "monthly": "Oylik faollik",
+      "byRoles": "Rollar kesimida",
+      "topUsers": "Top foydalanuvchilar",
+      "search": "Xodimni qidiring",
+      "top10": "Top 10",
+      "all": "Barchasi",
+      "no": "№",
+      "worker": "Xodim",
+      "department": "Bo’lim",
+      "actions": "Amallar",
+      "distribution": "Taqsimot",
+      "lastActivity": "Oxirgi faollik",
+      "shown": "Ko'rsatilgan: {shown} / {total}",
+      "viewAll": "Barchasini ko'rish",
+      "unit": "amal",
+      "total": "Jami",
+      "totalUnit": "{n} amal",
+      "average": "O'rtacha: {n}",
+      "dayMonth": "{day}-{month}",
+      "today": "Bugun, {time}",
+      "yesterday": "Kecha, {time}",
+      "empty": "Ma'lumot topilmadi",
+      "soon": "Tez orada",
+      "types": {
+        "add": "Qo'shish",
+        "edit": "Tahrirlash",
+        "delete": "O’chirish",
+        "create": "Yaratish"
+      }
     }
   },
   "applicationPage": {

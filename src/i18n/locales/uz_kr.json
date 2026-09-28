@@ -2452,6 +2452,44 @@
         "incentive": "Рағбатлантириш",
         "disciplinary": "Интизомий жазо"
       }
+    },
+    "activity": {
+      "title": "Фойдаланувчилар фаоллиги",
+      "subtitle": "Тизимдаги ўзгаришлар таҳлили — ой кесимида",
+      "export": "Юклаш",
+      "totalActions": "Жами амаллар",
+      "activeUsers": "Фаол масъуллар",
+      "dailyAvg": "Кунлик ўртача",
+      "mostActiveDay": "Энг фаол кун",
+      "monthly": "Ойлик фаоллик",
+      "byRoles": "Роллар кесимида",
+      "topUsers": "Топ фойдаланувчилар",
+      "search": "Ходимни қидиринг",
+      "top10": "Топ 10",
+      "all": "Барчаси",
+      "no": "№",
+      "worker": "Ходим",
+      "department": "Бўлим",
+      "actions": "Амаллар",
+      "distribution": "Тақсимот",
+      "lastActivity": "Охирги фаоллик",
+      "shown": "Кўрсатилган: {shown} / {total}",
+      "viewAll": "Барчасини кўриш",
+      "unit": "амал",
+      "total": "Жами",
+      "totalUnit": "{n} амал",
+      "average": "Ўртача: {n}",
+      "dayMonth": "{day}-{month}",
+      "today": "Бугун, {time}",
+      "yesterday": "Кеча, {time}",
+      "empty": "Маълумот топилмади",
+      "soon": "Тез орада",
+      "types": {
+        "add": "Қўшиш",
+        "edit": "Таҳрирлаш",
+        "delete": "Ўчириш",
+        "create": "Яратиш"
+      }
     }
   },
   "applicationPage": {

@@ -2667,6 +2667,44 @@
         "incentive": "Incentive",
         "disciplinary": "Disciplinary"
       }
+    },
+    "activity": {
+      "title": "User activity",
+      "subtitle": "Analysis of system changes — by month",
+      "export": "Download",
+      "totalActions": "Total actions",
+      "activeUsers": "Active users",
+      "dailyAvg": "Daily average",
+      "mostActiveDay": "Most active day",
+      "monthly": "Monthly activity",
+      "byRoles": "By roles",
+      "topUsers": "Top users",
+      "search": "Search employee",
+      "top10": "Top 10",
+      "all": "All",
+      "no": "№",
+      "worker": "Employee",
+      "department": "Department",
+      "actions": "Actions",
+      "distribution": "Distribution",
+      "lastActivity": "Last activity",
+      "shown": "Shown: {shown} / {total}",
+      "viewAll": "View all",
+      "unit": "actions",
+      "total": "Total",
+      "totalUnit": "{n} actions",
+      "average": "Average: {n}",
+      "dayMonth": "{month} {day}",
+      "today": "Today, {time}",
+      "yesterday": "Yesterday, {time}",
+      "empty": "No data found",
+      "soon": "Coming soon",
+      "types": {
+        "add": "Add",
+        "edit": "Edit",
+        "delete": "Delete",
+        "create": "Create"
+      }
     }
   },
   "applicationPage": {

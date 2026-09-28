@@ -2675,6 +2675,44 @@
         "incentive": "Поощрение",
         "disciplinary": "Взыскание"
       }
+    },
+    "activity": {
+      "title": "Активность пользователей",
+      "subtitle": "Анализ изменений в системе — по месяцам",
+      "export": "Скачать",
+      "totalActions": "Всего действий",
+      "activeUsers": "Активные ответственные",
+      "dailyAvg": "В среднем за день",
+      "mostActiveDay": "Самый активный день",
+      "monthly": "Активность за месяц",
+      "byRoles": "По ролям",
+      "topUsers": "Топ пользователей",
+      "search": "Поиск сотрудника",
+      "top10": "Топ 10",
+      "all": "Все",
+      "no": "№",
+      "worker": "Сотрудник",
+      "department": "Подразделение",
+      "actions": "Действия",
+      "distribution": "Распределение",
+      "lastActivity": "Последняя активность",
+      "shown": "Показано: {shown} / {total}",
+      "viewAll": "Смотреть все",
+      "unit": "действ.",
+      "total": "Итого",
+      "totalUnit": "{n} действ.",
+      "average": "Среднее: {n}",
+      "dayMonth": "{day} {month}",
+      "today": "Сегодня, {time}",
+      "yesterday": "Вчера, {time}",
+      "empty": "Данные не найдены",
+      "soon": "Скоро",
+      "types": {
+        "add": "Добавление",
+        "edit": "Редактирование",
+        "delete": "Удаление",
+        "create": "Создание"
+      }
     }
   },
   "applicationPage": {
