@@ -2686,6 +2686,73 @@
         "incentive": "Rag'batlantirish",
         "disciplinary": "Intizomiy jazo"
       }
+    },
+    "orgRating": {
+      "title": "Korxonalarning tizimdan foydalanish reytingi",
+      "viewAll": "Barchasini ko'rish",
+      "allTitle": "Tizimdan foydalanish reytingi",
+      "period7": "7 kun",
+      "period30": "30 kun",
+      "periodAll": "Butun davr",
+      "yourOrg": "Sizning korxonangiz",
+      "small": "kichik",
+      "inactive": "faol emas",
+      "workers": "{n} xodim",
+      "coverageShort": "qamrov {n}%",
+      "docsShort": "hujjat {n} ({a} tasdiq.)",
+      "daysShort": "{n}/{t} kun",
+      "score": "Ball",
+      "rank": "O'rin",
+      "workersLabel": "Xodimlar",
+      "lastActivity": "Oxirgi faollik",
+      "onlyInactive": "Faqat faol emaslar",
+      "editsNote": "Ma'lumot tahrirlari: {n} ta amal, {w} ta xodim",
+      "parts": {
+        "coverage": {
+          "title": "Ma'lumotlar qamrovi",
+          "hint": "Ma'lumoti yangilangan xodimlar: {v} / {t}"
+        },
+        "documents": {
+          "title": "Hujjat kiritish",
+          "hint": "100 xodimga {v} ta hujjat (to'liq ball — {t} ta)"
+        },
+        "approval": {
+          "title": "Hujjat tasdiqlanishi",
+          "hint": "Tasdiqlangan: {v} / {t}"
+        },
+        "regularity": {
+          "title": "Muntazamlik",
+          "hint": "Faol kunlar: {v} / {t} ish kuni"
+        },
+        "breadth": {
+          "title": "Yo'nalishlar kengligi",
+          "hint": "O'zgarish turlari: {v} / {t}"
+        }
+      },
+      "docs": {
+        "commands": "Buyruqlar",
+        "contracts": "Shartnomalar",
+        "additionals": "Qo'sh. kelishuvlar",
+        "status": "Tasdiq. / jarayon / rad"
+      },
+      "categories": {
+        "worker": "Xodim ma'lumoti",
+        "relatives": "Qarindoshlar",
+        "passport": "Pasport",
+        "phone": "Telefon",
+        "staffing": "Shtat",
+        "documents": "Hujjatlar",
+        "sick_leave": "Kasallik varaqasi",
+        "account": "Hisob va rollar"
+      },
+      "col": {
+        "org": "Korxona",
+        "coverage": "Qamrov",
+        "docs": "Hujjat",
+        "days": "Kun",
+        "score": "Ball",
+        "logs": "Loglar"
+      }
     }
   },
   "applicationPage": {

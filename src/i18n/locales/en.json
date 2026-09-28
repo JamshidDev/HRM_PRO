@@ -2666,6 +2666,73 @@
         "incentive": "Incentive",
         "disciplinary": "Disciplinary"
       }
+    },
+    "orgRating": {
+      "title": "Organizations' system usage rating",
+      "viewAll": "View all",
+      "allTitle": "System usage rating",
+      "period7": "7 days",
+      "period30": "30 days",
+      "periodAll": "All time",
+      "yourOrg": "Your organization",
+      "small": "small",
+      "inactive": "inactive",
+      "workers": "{n} employees",
+      "coverageShort": "coverage {n}%",
+      "docsShort": "docs {n} ({a} appr.)",
+      "daysShort": "{n}/{t} days",
+      "score": "Score",
+      "rank": "Rank",
+      "workersLabel": "Employees",
+      "lastActivity": "Last activity",
+      "onlyInactive": "Inactive only",
+      "editsNote": "Data edits: {n} actions, {w} employees",
+      "parts": {
+        "coverage": {
+          "title": "Data coverage",
+          "hint": "Employees with updated data: {v} / {t}"
+        },
+        "documents": {
+          "title": "Document entry",
+          "hint": "{v} docs per 100 employees (full score — {t})"
+        },
+        "approval": {
+          "title": "Document approval",
+          "hint": "Approved: {v} / {t}"
+        },
+        "regularity": {
+          "title": "Regularity",
+          "hint": "Active days: {v} / {t} workdays"
+        },
+        "breadth": {
+          "title": "Breadth",
+          "hint": "Change types: {v} / {t}"
+        }
+      },
+      "docs": {
+        "commands": "Orders",
+        "contracts": "Contracts",
+        "additionals": "Add. agreements",
+        "status": "Appr. / pending / rej."
+      },
+      "categories": {
+        "worker": "Employee data",
+        "relatives": "Relatives",
+        "passport": "Passport",
+        "phone": "Phone",
+        "staffing": "Staffing",
+        "documents": "Documents",
+        "sick_leave": "Sick leave",
+        "account": "Account & roles"
+      },
+      "col": {
+        "org": "Organization",
+        "coverage": "Coverage",
+        "docs": "Docs",
+        "days": "Days",
+        "score": "Score",
+        "logs": "Logs"
+      }
     }
   },
   "applicationPage": {
