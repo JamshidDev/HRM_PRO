@@ -738,7 +738,10 @@
     },
     "account": {
       "title": "Hisob ma'lumotlari",
-      "warningText": "Hisobingiz xavfsizligini ta'minlash maqsadida akkaunt ma'lumotlaringizni muntazam ravishda yangilab turishingiz tavsiya etiladi. Bu choralar hisobingizni ruxsatsiz kirishlardan himoya qilishga yordam beradi."
+      "warningText": "Hisobingiz xavfsizligini ta'minlash maqsadida akkaunt ma'lumotlaringizni muntazam ravishda yangilab turishingiz tavsiya etiladi. Bu choralar hisobingizni ruxsatsiz kirishlardan himoya qilishga yordam beradi.",
+      "offerAccepted": "Rozilik bildirilgan",
+      "offerNotAccepted": "Rozilik bildirilmagan",
+      "offerView": "Ko'rish"
     },
     "sidebar": {
       "title": "Profil bo'limlari"
@@ -1454,9 +1457,6 @@
         "attachFile": "Fayl biriktirish",
         "view": "Ko'rish",
         "download": "Yuklab olish",
-        "lockedTitle": "Hujjat tasdiqlangan",
-        "lockedEmpty": "Biriktirilgan fayl va arizalar yo'q. Tasdiqlangan hujjatga yangi fayl qo'shib bo'lmaydi.",
-        "lockedShort": "Hujjat tasdiqlangan — fayllarni faqat ko'rish mumkin",
         "deleteTitle": "Faylni o'chirish",
         "unlinkTitle": "Arizani uzish",
         "unlink": "Uzish"
@@ -2687,6 +2687,73 @@
         "incentive": "Rag'batlantirish",
         "disciplinary": "Intizomiy jazo"
       }
+    },
+    "orgRating": {
+      "title": "Korxonalarning tizimdan foydalanish reytingi",
+      "viewAll": "Barchasini ko'rish",
+      "allTitle": "Tizimdan foydalanish reytingi",
+      "period7": "7 kun",
+      "period30": "30 kun",
+      "periodAll": "Butun davr",
+      "yourOrg": "Sizning korxonangiz",
+      "small": "kichik",
+      "inactive": "faol emas",
+      "workers": "{n} xodim",
+      "coverageShort": "qamrov {n}%",
+      "docsShort": "hujjat {n} ({a} tasdiq.)",
+      "daysShort": "{n}/{t} kun",
+      "score": "Ball",
+      "rank": "O'rin",
+      "workersLabel": "Xodimlar",
+      "lastActivity": "Oxirgi faollik",
+      "onlyInactive": "Faqat faol emaslar",
+      "editsNote": "Ma'lumot tahrirlari: {n} ta amal, {w} ta xodim",
+      "parts": {
+        "coverage": {
+          "title": "Ma'lumotlar qamrovi",
+          "hint": "Ma'lumoti yangilangan xodimlar: {v} / {t}"
+        },
+        "documents": {
+          "title": "Hujjat kiritish",
+          "hint": "100 xodimga {v} ta hujjat (to'liq ball — {t} ta)"
+        },
+        "approval": {
+          "title": "Hujjat tasdiqlanishi",
+          "hint": "Tasdiqlangan: {v} / {t}"
+        },
+        "regularity": {
+          "title": "Muntazamlik",
+          "hint": "Faol kunlar: {v} / {t} ish kuni"
+        },
+        "breadth": {
+          "title": "Yo'nalishlar kengligi",
+          "hint": "O'zgarish turlari: {v} / {t}"
+        }
+      },
+      "docs": {
+        "commands": "Buyruqlar",
+        "contracts": "Shartnomalar",
+        "additionals": "Qo'sh. kelishuvlar",
+        "status": "Tasdiq. / jarayon / rad"
+      },
+      "categories": {
+        "worker": "Xodim ma'lumoti",
+        "relatives": "Qarindoshlar",
+        "passport": "Pasport",
+        "phone": "Telefon",
+        "staffing": "Shtat",
+        "documents": "Hujjatlar",
+        "sick_leave": "Kasallik varaqasi",
+        "account": "Hisob va rollar"
+      },
+      "col": {
+        "org": "Korxona",
+        "coverage": "Qamrov",
+        "docs": "Hujjat",
+        "days": "Kun",
+        "score": "Ball",
+        "logs": "Loglar"
+      }
     }
   },
   "applicationPage": {
@@ -2934,7 +3001,21 @@
     "tipPlan": "Ish grafigida shu kunga belgilangan norma — ish boshlanishidan tugashigacha, tushlik ayrilgan holda. Xodim qancha ishlashi KERAK bo'lganini ko'rsatadi.",
     "tipTurnstile": "Turniket kirish–chiqishlari bo‘yicha binoda o‘tkazilgan jami vaqt. Ish grafigidan tashqaridagi vaqt ham shu yerga kiradi, tushlik esa ayrilmaydi.",
     "tipOutside": "Ish vaqti ichida binodan tashqarida o‘tkazilgan vaqt: har bir chiqishdan keyingi kirishgacha bo‘lgan oraliqlar yig‘indisi.",
-    "tipCounted": "Tabelga tushadigan vaqt. Turniketdagi vaqtdan faqat ish grafigi oynasiga tushgan qismi olinadi va undan tushlik ayriladi."
+    "tipCounted": "Tabelga tushadigan vaqt. Turniketdagi vaqtdan faqat ish grafigi oynasiga tushgan qismi olinadi va undan tushlik ayriladi.",
+    "unsaved": {
+      "title": "Saqlanmagan o'zgarishlar",
+      "content": "{count} ta katak saqlanmagan. Saqlaysizmi?",
+      "discard": "Saqlamasdan yopish"
+    },
+    "calcDiff": {
+      "system": "Tizim",
+      "entered": "Kiritilgan",
+      "diff": "Farq",
+      "more": "{n} soat ko‘p",
+      "less": "{n} soat kam",
+      "typeOnly": "soat bir xil, tur o‘zgargan",
+      "empty": "bo‘sh (0 soat)"
+    }
   },
   "turnstile": {
     "title": "Turniket",

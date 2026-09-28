@@ -18,6 +18,7 @@ import SickLeaveCard from '@/pages/hrm/dashboard/ui/cards/SickLeaveCard.vue'
 import IncentiveVsDisciplineCard from '@/pages/hrm/dashboard/ui/cards/IncentiveVsDisciplineCard.vue'
 import IncentiveRadialCard from '@/pages/hrm/dashboard/ui/cards/IncentiveRadialCard.vue'
 import PunishmentColumnCard from '@/pages/hrm/dashboard/ui/cards/PunishmentColumnCard.vue'
+import OrgRatingCard from '@/pages/hrm/dashboard/ui/orgRating/OrgRatingCard.vue'
 
 import AgeDetail from '@/pages/hrm/dashboard/ui/Detail/AgeDetail.vue'
 import BirthdayDetail from '@/pages/hrm/dashboard/ui/Detail/BirthdayDetail.vue'
@@ -161,6 +162,12 @@ export const tabCards = {
   ],
 
   [DashboardTab.MOVEMENT]: [
+    // Korxonalar faolligi reytingi — o'z ma'lumotini o'zi yuklaydi (store'siz).
+    {
+      component: markRaw(OrgRatingCard),
+      span: '12',
+      top: true
+    },
     {
       component: markRaw(HiringByContractCard),
       span: '12 l:6',

@@ -76,8 +76,14 @@ const _auditExport = async (payload) => {
   return await axios.post(`/v1/hr/dashboard-audit-export`, payload?.data)
 }
 
+// Korxonalar faolligi reytingi: period=7|30|all, all=1 — barcha korxonalar.
+const _orgRating = async (payload) => {
+  return await axios.get(`/v1/hr/dashboard/org-rating`, { params: payload?.params })
+}
+
 export default {
   _overview,
+  _orgRating,
   _auditCounts,
   _auditPreview,
   _auditExport,
