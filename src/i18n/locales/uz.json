@@ -497,6 +497,9 @@
     "warning-data": "Ma'lumotlar yetarli emas!",
     "minimumOneItem": "Kamida bitta lavozim tanlanishi shart!",
     "noPermission": "Ruxsat etilmadi!",
+    "appUpdated": "Tizim yangilandi",
+    "appUpdatedHint": "Yangi versiya keyingi sahifaga o'tganingizda yuklanadi",
+    "appUpdateNow": "Hozir yangilash",
     "unSignedDocumentCount": "Tasdiqlanmagan hujjatlar soni"
   },
   "enum": {

@@ -482,7 +482,10 @@
     "clearedFields": "Fields cleared!",
     "unExpectedError": "Unexpected error occurred!",
     "warning-data": "Insufficient data!",
-    "noPermission": "Permission denied!"
+    "noPermission": "Permission denied!",
+    "appUpdated": "The system has been updated",
+    "appUpdatedHint": "The new version will load when you open the next page",
+    "appUpdateNow": "Update now"
   },
   "enum": {
     "man": "Male",
