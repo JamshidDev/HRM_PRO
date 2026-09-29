@@ -5587,11 +5587,11 @@
     },
     "buttons": {
       "blanka": "Blanka yuklash",
-      "whitelist": "Whitelist yuklash",
+      "whitelist": "Imtiyozli ro'yxatni yuklash",
       "analyze": "Qayta tahlil",
       "export": "Excelga yuklash",
       "addRow": "Xodim qo'shish",
-      "whitelistList": "Whitelist ro'yxati",
+      "whitelistList": "Imtiyozli xodimlar ro'yxati",
       "addWhitelist": "Xodim qo'shish"
     },
     "table": {

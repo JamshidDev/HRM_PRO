@@ -5181,11 +5181,11 @@
     },
     "buttons": {
       "blanka": "Бланка юклаш",
-      "whitelist": "Whitelist юклаш",
+      "whitelist": "Имтиёзли рўйхатни юклаш",
       "analyze": "Қайта таҳлил",
       "export": "Excelга юклаш",
       "addRow": "Ходим қўшиш",
-      "whitelistList": "Whitelist рўйхати",
+      "whitelistList": "Имтиёзли ходимлар рўйхати",
       "addWhitelist": "Ходим қўшиш"
     },
     "table": {
