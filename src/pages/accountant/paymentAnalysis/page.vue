@@ -3,7 +3,6 @@
   import { useAccountStore, usePaymentAnalysisStore } from '@/store/modules/index.js'
   import Filter from './ui/Filter.vue'
   import Table from './ui/Table.vue'
-  import BlankaModal from './ui/BlankaModal.vue'
   import WhitelistView from './ui/WhitelistView.vue'
   import { getOneMonthAgoYearMonth } from '@utils'
 
@@ -40,7 +39,6 @@
     <template v-if="store.mainView === 'analysis'">
       <Filter />
       <Table />
-      <BlankaModal />
     </template>
     <WhitelistView v-else />
   </UIPageContent>

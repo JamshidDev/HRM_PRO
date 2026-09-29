@@ -78,10 +78,6 @@ const _pullHistory = async (payload) => {
 const _paymentAnalysisIndex = async (payload) => {
   return await axios.get(`/v1/economist/payment-analysis`, { params: payload?.params })
 }
-// НН blanka yuklash (multipart) — parse + avtomatik tahlil.
-const _paymentAnalysisUpload = async (payload) => {
-  return await axios.post(`/v1/economist/payment-analysis`, payload.data)
-}
 // Tasdiqlangan xodimlar whitelist yuklash (multipart) — kodlar 47/50/55/270.
 const _paymentWhitelistUpload = async (payload) => {
   return await axios.post(`/v1/economist/payment-whitelist`, payload.data)
@@ -127,7 +123,6 @@ export default {
   _reportStatusExport,
   _pullHistory,
   _paymentAnalysisIndex,
-  _paymentAnalysisUpload,
   _paymentWhitelistUpload,
   _paymentWhitelistIndex,
   _paymentAnalysisAnalyze,

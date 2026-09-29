@@ -7,7 +7,7 @@ const { t } = i18n.global
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 
 // To'lov turlari bo'yicha asossiz to'lovlarni aniqlash — natijalar ro'yxati,
-// НН blanka yuklash, whitelist yuklash, qayta tahlil va Excel eksport.
+// Tahlil (1C oylik hisobotidan), whitelist yuklash/CRUD, qayta tahlil va Excel eksport.
 export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
   state: () => ({
     // Sahifadagi asosiy ko'rinish tabi: 'analysis' (to'lov tahlili) | 'whitelist'
@@ -30,15 +30,6 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
     onlyFlagged: false,
     exportLoading: false,
     analyzeLoading: false,
-    // НН blanka yuklash modali.
-    blankaVisible: false,
-    blankaLoading: false,
-    blankaPayload: {
-      file: [],
-      organization_id: null,
-      year: null,
-      month: null
-    },
     // Whitelist yuklash modali.
     whitelistVisible: false,
     whitelistLoading: false,
@@ -93,38 +84,6 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
     _filter() {
       this.params.page = 1
       this._index()
-    },
-    // --- НН blanka yuklash ---
-    openBlanka() {
-      const fallback = getOneMonthAgoYearMonth()
-      this.blankaPayload = {
-        file: [],
-        organization_id: this.params.organization_id ?? null,
-        year: this.params.year ?? fallback.year,
-        month: this.params.month ?? fallback.month
-      }
-      this.blankaVisible = true
-    },
-    _uploadBlanka() {
-      this.blankaLoading = true
-      const data = new FormData()
-      data.append('file', this.blankaPayload.file[0].file)
-      data.append('organization_id', this.blankaPayload.organization_id)
-      data.append('year', this.blankaPayload.year)
-      data.append('month', this.blankaPayload.month)
-      $ApiService.accountantService
-        ._paymentAnalysisUpload({ data })
-        .then(() => {
-          $Toast.success(t('paymentAnalysis.toast.uploaded'))
-          this.blankaVisible = false
-          this._index()
-        })
-        .catch(() => {
-          // Xato interceptor'da toast qilinadi; modal OCHIQ qoladi.
-        })
-        .finally(() => {
-          this.blankaLoading = false
-        })
     },
     // --- Whitelist yuklash (tasdiqlangan xodimlar) ---
     openWhitelist() {

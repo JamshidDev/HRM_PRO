@@ -1,9 +1,5 @@
 <script setup>
-  import {
-    DocumentArrowUp20Regular,
-    ArrowSync20Filled,
-    ArrowCircleDown32Regular
-  } from '@vicons/fluent'
+  import { ArrowSync20Filled, ArrowCircleDown32Regular } from '@vicons/fluent'
   import { UIPageFilter, UISelect, UIYearMonth } from '@/components/index.js'
   import {
     useAccountStore,
@@ -19,12 +15,17 @@
   const orgModel = ref([])
   const orgCheck = ref([])
 
-  // To'lov kodlari — tasdiqlangan xodimlar (whitelist) kesimida ishlatiladigan kodlar.
+  // Tahlil qilinadigan barcha to'lov kodlari (hisobot jadvalidagi 9 tur).
   const payingCodeOptions = [
-    { label: '47', value: '47' },
-    { label: '50', value: '50' },
-    { label: '55', value: '55' },
-    { label: '270', value: '270' }
+    { label: '11', value: '011' },
+    { label: '12', value: '012' },
+    { label: '47', value: '047' },
+    { label: '50', value: '050' },
+    { label: '55', value: '055' },
+    { label: '250', value: '250' },
+    { label: '263', value: '263' },
+    { label: '270', value: '270' },
+    { label: '281', value: '281' }
   ]
 
   const filterEvent = () => {
@@ -58,11 +59,6 @@
       Number(Boolean(store.params.organization_id)) + Number(Boolean(store.params.paying_code))
     )
   })
-
-  const onBlanka = () => {
-    if (!accStore.checkAction(accStore.pn.economistPaymentAnalysisWrite)) return
-    store.openBlanka()
-  }
 
   const onAnalyze = () => {
     if (!accStore.checkAction(accStore.pn.economistPaymentAnalysisWrite)) return
@@ -118,18 +114,6 @@
         {{ $t('paymentAnalysis.buttons.export') }}
         <template #icon>
           <ArrowCircleDown32Regular />
-        </template>
-      </n-button>
-
-      <n-button
-        v-if="accStore.checkPermission(accStore.pn.economistPaymentAnalysisWrite)"
-        @click="onBlanka"
-        type="primary"
-        class="w-full! md:w-auto!"
-      >
-        {{ $t('paymentAnalysis.buttons.blanka') }}
-        <template #icon>
-          <DocumentArrowUp20Regular />
         </template>
       </n-button>
     </template>
