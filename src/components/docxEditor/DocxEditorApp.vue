@@ -7,14 +7,17 @@
    * **dinamik import** qilinadi — asosiy bundle'ga tushmasin, faqat tahrirlash
    * oynasi ochilganda yuklansin (core ≈ 380 KB gz).
    *
-   * Tashqariga faqat `save()` chiqariladi — u DOCX'ni ArrayBuffer qilib qaytaradi.
+   * Tashqariga: `save()` (DOCX → ArrayBuffer), `insertText()` (kursorga matn),
+   * `getParagraphTexts()` / `countMatches()` (hujjatni o'qish).
    */
   const props = defineProps({
     // Uint8Array — muharrirga beriladigan DOCX baytlari.
     bytes: { type: Object, default: null },
     mode: { type: String, default: 'edit' }
   })
-  const emits = defineEmits(['change', 'ready'])
+  // `change` — faqat foydalanuvchi tahriri; `update` — HAR qanday o'zgarish
+  // (yuklanish/joylashuv ham), hujjat matnini qayta tahlil qilish uchun.
+  const emits = defineEmits(['change', 'update', 'ready'])
 
   const hostRef = ref(null)
   const editorInstance = shallowRef(null)
@@ -62,9 +65,11 @@
           // Kompozitsiyada `ref` emas — `Editor` nusxasi shu callback bilan keladi.
           onReady: (editor) => {
             editorInstance.value = editor
+            emits('update')
           },
           onChange: () => {
             if (userTouched.value) emits('change')
+            emits('update')
           }
         },
         // Menyu qatori (File/Format/Insert/Help) chiqarilmaydi: `MenuBar`
@@ -139,7 +144,59 @@
     return await editorInstance.value.save()
   }
 
-  defineExpose({ save })
+  /**
+   * Kursor turgan joyga matn qo'yadi (belgilangan matn bo'lsa — uning o'rniga).
+   * `target` berilmasa muharrir joriy selection'ni oladi. Kursor yo'q bo'lsa
+   * `false` — chaqiruvchi zaxira yo'lni (nusxalash) tanlaydi.
+   *
+   * Tugma tashqarida bo'lgani uchun `markTouched` ishlamaydi — qo'lda belgilaymiz,
+   * aks holda bu tahrir `change` sifatida chiqmay "saqlanmagan" belgisi yonmasdi.
+   */
+  const insertText = (text) => {
+    const editor = editorInstance.value
+    if (!editor || !text) return false
+    // Foydalanuvchi hujjatga hali bosmagan bo'lsa kursor — standart joyda
+    // (hujjat boshi); o'zgaruvchi kutilmagan joyga tushmasin.
+    if (!userTouched.value || !editor.snapshot().selection) return false
+    const command = { type: 'insertText', text }
+    if (!editor.can(command).ok) return false
+    userTouched.value = true
+    return editor.exec(command).ok
+  }
+
+  // Hujjat tanasidagi paragraflar matni (tahlil uchun). Muharrir hali tayyor bo'lmasa `null`.
+  const getParagraphTexts = () => {
+    const editor = editorInstance.value
+    if (!editor) return null
+    try {
+      return editor.query({ type: 'paragraphs' }).map((p) => p.text ?? '')
+    } catch {
+      return null
+    }
+  }
+
+  // Aniq matn necha marta uchraydi (jadval kataklari ham qamraladi).
+  const countMatches = (text) => {
+    const editor = editorInstance.value
+    if (!editor) return 0
+    try {
+      return editor.findMatches(text, { matchCase: true }).length
+    } catch {
+      return 0
+    }
+  }
+
+  /*
+   * Zoom (1 = 100%). Toolbar joy yetmasa guruhlarni "⋯" ga yig'adi va kutubxonada
+   * birinchi bo'lib aynan `zoom` yig'iladi (tartibni o'zgartiradigan prop yo'q) —
+   * shuning uchun sahifa o'z boshqaruvini chizishi uchun tashqariga chiqaramiz.
+   */
+  const getZoom = () => editorInstance.value?.getZoom() ?? 1
+  const setZoom = (zoom) => Boolean(editorInstance.value?.setZoom(zoom)?.ok)
+  // Sahifa eniga moslash (yangi muharrirning standart rejimi).
+  const fitZoom = () => Boolean(editorInstance.value?.setZoomMode('auto')?.ok)
+
+  defineExpose({ save, insertText, getParagraphTexts, countMatches, getZoom, setZoom, fitZoom })
 </script>
 
 <template>
