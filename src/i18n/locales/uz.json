@@ -5660,6 +5660,27 @@
       "net": "Kartaga",
       "orgs": "Korxonalar"
     },
+    "risk": {
+      "title": "Risk {n} · {title}",
+      "riskNumbers": "Risklar: {list}",
+      "norm": "Oy me'yori: {norm} soat",
+      "finding": "Aniqlangan holat",
+      "advice": "Tavsiya",
+      "affected": "Batafsil ({count} ta xodim)",
+      "empty": "Ma'lumot topilmadi",
+      "status": {
+        "bad": "Xavf aniqlandi",
+        "chk": "Tekshirish kerak",
+        "ok": "Me'yorda",
+        "na": "Ma'lumot yetarli emas"
+      },
+      "table": {
+        "fio": "F.I.O.",
+        "position": "Lavozim",
+        "detail": "Izoh",
+        "summa": "Summa"
+      }
+    },
     "comingSoon": "Tez orada"
   }
 }

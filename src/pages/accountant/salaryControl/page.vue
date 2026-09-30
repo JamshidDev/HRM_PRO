@@ -4,6 +4,7 @@
   import { getOneMonthAgoYearMonth } from '@utils'
   import Filter from './ui/Filter.vue'
   import SummaryCards from './ui/SummaryCards.vue'
+  import RiskMap from './ui/RiskMap.vue'
 
   const store = useSalaryControlStore()
   const accStore = useAccountStore()
@@ -18,6 +19,8 @@
 
   const onTabChange = (v) => {
     store.mainView = v
+    // «Xavflar» tabi birinchi marta ochilganda 14 ta riskni yuklaymiz.
+    if (v === 'risks' && !store.risksLoaded) store._risks()
   }
 </script>
 
@@ -44,6 +47,9 @@
 
     <template v-if="store.mainView === 'summary'">
       <SummaryCards />
+    </template>
+    <template v-else-if="store.mainView === 'risks'">
+      <RiskMap />
     </template>
     <div v-else class="py-16 text-center text-textColor3">
       {{ $t('salaryControl.comingSoon') }}

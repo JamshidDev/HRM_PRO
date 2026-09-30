@@ -5618,6 +5618,27 @@
       "net": "To card",
       "orgs": "Organizations"
     },
+    "risk": {
+      "title": "Risk {n} · {title}",
+      "riskNumbers": "Risks: {list}",
+      "norm": "Monthly norm: {norm} hours",
+      "finding": "Finding",
+      "advice": "Advice",
+      "affected": "Details ({count} employees)",
+      "empty": "No data found",
+      "status": {
+        "bad": "Risk detected",
+        "chk": "Needs review",
+        "ok": "Normal",
+        "na": "Insufficient data"
+      },
+      "table": {
+        "fio": "Full name",
+        "position": "Position",
+        "detail": "Note",
+        "summa": "Amount"
+      }
+    },
     "comingSoon": "Coming soon"
   }
 }
