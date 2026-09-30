@@ -1,8 +1,8 @@
 <script setup>
   import { ref, computed } from 'vue'
   import { useQrCode } from '@/composables/index.js'
-  import frontSide from '@/assets/images/content/IdRailwayFront.png'
-  import backSide from '@/assets/images/content/IdRailwayBack.png'
+  import frontSide from '@/assets/images/content/IdRailwayFront.svg?url'
+  import backSide from '@/assets/images/content/IdRailwayBack.svg?url'
   import { downloadIdRailWayPdf } from './idRailWayPdf.js'
 
   const props = defineProps({
@@ -10,7 +10,8 @@
   })
 
   // QR ichida xodimning shaxsiy raqami (JSHSHIR) bo'ladi
-  const { qrDataUrl } = useQrCode(() => props.data.qrValue || props.data.personalNumber)
+  const qrText = computed(() => props.data.qrValue || props.data.personalNumber)
+  const { qrDataUrl } = useQrCode(qrText)
 
   const cardRef = ref(null)
   const isFlipped = ref(false)
@@ -64,7 +65,7 @@
       frontSrc: frontSide,
       backSrc: backSide,
       photoUrl: d.photoUrl,
-      qrDataUrl: qrDataUrl.value,
+      qrText: qrText.value,
       data: d,
       fields: {
         sex: d.sex === 'M' ? 'ERKAK / M' : 'AYOL / F',
