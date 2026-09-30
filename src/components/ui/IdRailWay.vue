@@ -9,8 +9,8 @@
     data: { type: Object, required: true }
   })
 
-  // Hozircha QR joriy sahifaga olib boradi, keyinchalik tekshirish havolasiga almashtiriladi
-  const { qrDataUrl } = useQrCode(() => props.data.qrValue)
+  // QR ichida xodimning shaxsiy raqami (JSHSHIR) bo'ladi
+  const { qrDataUrl } = useQrCode(() => props.data.qrValue || props.data.personalNumber)
 
   const cardRef = ref(null)
   const isFlipped = ref(false)
