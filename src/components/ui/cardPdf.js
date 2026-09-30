@@ -132,7 +132,7 @@ export function downloadCanvases(canvases, fileName, format = 'pdf') {
     : downloadCanvasesAsPdf(canvases, `${fileName}.pdf`)
 }
 
-function downloadBlob(blob, fileName) {
+export function downloadBlob(blob, fileName) {
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
