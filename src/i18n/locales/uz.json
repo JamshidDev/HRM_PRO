@@ -5665,6 +5665,7 @@
       "riskNumbers": "Risklar: {list}",
       "riskCount": "{count} ta risk",
       "norm": "Oy me'yori: {norm} soat",
+      "method": "Hisoblash usuli",
       "finding": "Aniqlangan holat",
       "advice": "Tavsiya",
       "affected": "Batafsil ({count} ta xodim)",

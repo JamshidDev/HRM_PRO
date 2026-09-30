@@ -5623,6 +5623,7 @@
       "riskNumbers": "Risks: {list}",
       "riskCount": "{count} risks",
       "norm": "Monthly norm: {norm} hours",
+      "method": "Calculation method",
       "finding": "Finding",
       "advice": "Advice",
       "affected": "Details ({count} employees)",

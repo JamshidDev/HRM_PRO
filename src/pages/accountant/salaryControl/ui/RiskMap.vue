@@ -45,6 +45,16 @@
     }
     return Array.from(map, ([block, items]) => ({ block, items }))
   })
+
+  // «Hisoblash usuli» — kartaga bosilganda ochiladi (qaysi risklar ochiq).
+  const openMethods = ref(new Set())
+  const toggleMethod = (n) => {
+    const s = new Set(openMethods.value)
+    if (s.has(n)) s.delete(n)
+    else s.add(n)
+    openMethods.value = s
+  }
+  const isMethodOpen = (n) => openMethods.value.has(n)
 </script>
 
 <template>
@@ -106,6 +116,23 @@
             {{ risk.finding }}
           </div>
           <div v-if="risk.advice" class="sc-advice">→ {{ risk.advice }}</div>
+
+          <!-- Hisoblash usuli — kartaga bosilganda ochiladi (formula + manba). -->
+          <button
+            v-if="risk.method"
+            type="button"
+            class="sc-method-toggle"
+            @click="toggleMethod(risk.n)"
+          >
+            <span
+              class="sc-method-caret"
+              :class="{ 'sc-method-caret--open': isMethodOpen(risk.n) }"
+            >›</span>
+            {{ $t('salaryControl.risk.method') }}
+          </button>
+          <div v-if="risk.method && isMethodOpen(risk.n)" class="sc-method">
+            {{ risk.method }}
+          </div>
 
           <!-- Ta'sirlangan xodimlar (status na bo'lmaganda va ro'yxat bor bo'lsa). -->
           <n-collapse
@@ -277,6 +304,39 @@
   /* Oxirgi blok viewport tubiga tiqilib qolmasligi uchun pastki bo'shliq. */
   .sc-block:last-child {
     padding-bottom: 48px;
+  }
+
+  /* «Hisoblash usuli» — bosiladigan qator + ochiladigan panel. */
+  .sc-method-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--fig-text-brand);
+  }
+  .sc-method-caret {
+    display: inline-block;
+    transition: transform 0.15s ease;
+  }
+  .sc-method-caret--open {
+    transform: rotate(90deg);
+  }
+  .sc-method {
+    margin-top: 6px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: var(--fig-bg-secondary);
+    border: 1px dashed var(--fig-blue-300);
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--fig-text-secondary);
   }
 
   .sc-block-title {
