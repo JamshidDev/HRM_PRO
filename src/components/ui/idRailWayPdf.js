@@ -1,4 +1,7 @@
 import QRCode from 'qrcode'
+import frontSide from '@/assets/images/content/IdRailwayFront.svg?url'
+import backSide from '@/assets/images/content/IdRailwayBack.svg?url'
+import defaultPhoto from '@/assets/images/content/profilePhoto.avif'
 import {
   loadImage,
   loadSafeImage,
@@ -296,4 +299,102 @@ export async function downloadIdRailWayPdf({
   const back = renderBack({ background: backBg, qr, data, strip, font })
 
   await downloadCanvasesAsPdf([front, back], `${fileName}.pdf`)
+}
+
+// ---------------- Ma'lumot tayyorlash ----------------
+
+const MRZ_LINE_LENGTH = 61 // measured from the design
+
+export function formatCardDate(iso) {
+  if (!iso) return '00.00.0000'
+  const [y, m, d] = iso.split('-')
+  return y && m && d ? `${d}.${m}.${y}` : iso
+}
+
+function digitsOnly(value) {
+  return (value || '').toString().replace(/\D/g, '')
+}
+
+function padLine(value, length = MRZ_LINE_LENGTH) {
+  const str = digitsOnly(value)
+  return str.length >= length ? str.slice(0, length) : str + '>'.repeat(length - str.length)
+}
+
+function dateDigits(iso) {
+  // YYMMDD, same convention as the national ID MRZ
+  const [y, m, d] = (iso || '').split('-')
+  return y && m && d ? `${y.slice(2)}${m}${d}` : ''
+}
+
+// TODO: this is a placeholder encoding (numeric fields, '>' padded) — swap the
+// concatenation order/fields once the backend/coworkers confirm the real spec
+export function buildIdRailWayStrip(d) {
+  const sexDigit = d.sex === 'M' ? '1' : d.sex === 'F' ? '0' : ''
+  return [
+    padLine(`${d.personalNumber || ''}${digitsOnly(d.cardNumber)}`),
+    padLine(`${dateDigits(d.birthDate)}${sexDigit}${dateDigits(d.expiryDate)}`),
+    padLine(`${dateDigits(d.issueDate)}${digitsOnly(d.cardNumber)}`)
+  ]
+}
+
+export function idRailWayQrText(d) {
+  return d.qrValue || d.personalNumber
+}
+
+export function workerPhotoUrl(worker) {
+  const photos = worker.photos || []
+  return (
+    photos.find((p) => p.current === 1 || p.current === true)?.photo ||
+    photos[0]?.photo ||
+    worker.photo ||
+    defaultPhoto
+  )
+}
+
+export function workerSex(worker) {
+  const s = worker.sex
+  if (s === true || s === 1 || s === '1') return 'M'
+  if (s === false || s === 0 || s === '0') return 'F'
+  return undefined
+}
+
+// Xodim ma'lumotidan (worker-positions/{id} → worker) guvohnoma maydonlarini yig'adi
+export function workerToIdRailWayData(worker = {}) {
+  const certificate = worker.digital_certificate || {}
+  return {
+    photoUrl: workerPhotoUrl(worker),
+    surname: worker.last_name,
+    givenName: worker.first_name,
+    patronymic: worker.middle_name,
+    sex: workerSex(worker),
+    birthDate: worker.birthday,
+    cardNumber: certificate.serial,
+    issueDate: certificate.issue_date,
+    expiryDate: certificate.expiry_date,
+    personalNumber: worker.pin,
+    issuePlace: certificate.issued_place
+  }
+}
+
+/**
+ * Guvohnoma ma'lumotidan (IdRailWay `data` prop'i bilan bir xil) PDF yoki SVG faylni yuklab beradi.
+ */
+export function downloadIdRailWay(d, { format = 'pdf', fontFamily } = {}) {
+  const fileName = [d.surname, d.givenName, d.cardNumber].filter(Boolean).join('_') || 'guvohnoma'
+  return downloadIdRailWayPdf({
+    frontSrc: frontSide,
+    backSrc: backSide,
+    photoUrl: d.photoUrl,
+    qrText: idRailWayQrText(d),
+    data: d,
+    fields: {
+      sex: d.sex === 'M' ? 'ERKAK / M' : 'AYOL / F',
+      issueDate: formatCardDate(d.issueDate),
+      expiryDate: formatCardDate(d.expiryDate)
+    },
+    strip: buildIdRailWayStrip(d),
+    fontFamily,
+    fileName,
+    format
+  })
 }
