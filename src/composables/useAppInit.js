@@ -1,6 +1,7 @@
 import { useAppStore, useSocketStore } from '@/store/modules/index.js'
 import { useAppSetting } from '@/utils/index.js'
 import { checkAudioOutput } from '@/composables/useAudioOutput.js'
+import { initAppUpdateWatcher } from '@/utils/appUpdate.js'
 
 export const useAppInit = () => {
   const appStore = useAppStore()
@@ -13,6 +14,8 @@ export const useAppInit = () => {
     socketStore.initSocket(token, userId)
     // Ovoz chiqaruvchi apparat bor-yo'qligini boshida bir marta tekshiramiz
     checkAudioOutput()
+    // Tizimda turganda production yangilansa — xabar berish
+    initAppUpdateWatcher()
   })
 
   onBeforeUnmount(() => {
