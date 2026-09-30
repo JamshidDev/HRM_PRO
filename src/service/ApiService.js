@@ -170,6 +170,7 @@ import staffApprovalService from './v1/accountant/staffApprovalService.js'
 import tariffGridService from './v1/accountant/tariffGridService.js'
 import tariffBaseService from './v1/accountant/tariffBaseService.js'
 import salary1cService from './v1/accountant/salary1cService.js'
+import salaryControlService from './v1/accountant/salaryControlService.js'
 
 import expiredHealthService from './v1/hospital/expiredHealthService.js'
 import ticketService from './v1/hospital/ticketService.js'
@@ -289,6 +290,7 @@ export default {
   tariffGridService,
   tariffBaseService,
   salary1cService,
+  salaryControlService,
   taxFourService,
   taxFiveService,
   accDashboardService,

@@ -17,6 +17,13 @@ export const accountantRoutes = [
     }
   },
   {
+    path: Utils.routeAccountantPathMaker(AppPaths.SalaryControl),
+    component: () => import('@/pages/accountant/salaryControl/page.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
     path: Utils.routeAccountantPathMaker(AppPaths.MonthReport),
     component: () => import('@/pages/accountant/monthReport/page.vue'),
     meta: {

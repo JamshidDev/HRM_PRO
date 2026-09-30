@@ -5598,5 +5598,26 @@
       "title": "Add privileged employee"
     },
     "confirmDelete": "Delete?"
+  },
+  "salaryControl": {
+    "title": "Salary control",
+    "tabs": {
+      "summary": "Summary",
+      "risks": "Risks",
+      "rules": "Criteria",
+      "who": "Top earners",
+      "vids": "Payment types",
+      "deductions": "Deductions",
+      "reports": "Reports",
+      "employees": "Employees"
+    },
+    "kpi": {
+      "employees": "Employee count",
+      "accrued": "Total accrued",
+      "deduction": "Total deductions",
+      "net": "To card",
+      "orgs": "Organizations"
+    },
+    "comingSoon": "Coming soon"
   }
 }

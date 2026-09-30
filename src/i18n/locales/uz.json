@@ -5640,5 +5640,26 @@
       "title": "Imtiyozli xodim qo'shish"
     },
     "confirmDelete": "O'chirilsinmi?"
+  },
+  "salaryControl": {
+    "title": "Oylik nazorati",
+    "tabs": {
+      "summary": "Umumiy",
+      "risks": "Xavflar",
+      "rules": "Mezonlar",
+      "who": "Kimga ko'p",
+      "vids": "To'lov turlari",
+      "deductions": "Ushlanmalar",
+      "reports": "Hisobotlar",
+      "employees": "Xodimlar"
+    },
+    "kpi": {
+      "employees": "Xodimlar soni",
+      "accrued": "Jami hisoblangan",
+      "deduction": "Jami ushlanmalar",
+      "net": "Kartaga",
+      "orgs": "Korxonalar"
+    },
+    "comingSoon": "Tez orada"
   }
 }

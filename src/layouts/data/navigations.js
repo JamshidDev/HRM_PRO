@@ -830,6 +830,13 @@ export const navigations = withRawIcons([
         permission: appPermissions.economistPaymentAnalysisRead
       },
       {
+        label: 'salaryControl.title', // Oylik nazorati
+        path: Utils.routeAccountantPathMaker(AppPaths.SalaryControl),
+        icon: Calculator24Regular,
+        color: 'bg-info',
+        permission: appPermissions.economistSalaryControlRead
+      },
+      {
         label: 'monthReport.name', // Oylik hisobot
         path: Utils.routeAccountantPathMaker(AppPaths.MonthReport),
         icon: EconomistMonthReportIcon,
