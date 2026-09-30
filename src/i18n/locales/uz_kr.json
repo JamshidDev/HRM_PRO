@@ -5257,6 +5257,7 @@
     "risk": {
       "title": "Риск {n} · {title}",
       "riskNumbers": "Рисклар: {list}",
+      "riskCount": "{count} та риск",
       "norm": "Ой меъёри: {norm} соат",
       "finding": "Аниқланган ҳолат",
       "advice": "Тавсия",

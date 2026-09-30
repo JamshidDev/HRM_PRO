@@ -5633,6 +5633,7 @@
     "risk": {
       "title": "Риск {n} · {title}",
       "riskNumbers": "Риски: {list}",
+      "riskCount": "{count} рисков",
       "norm": "Месячная норма: {norm} ч",
       "finding": "Выявленная ситуация",
       "advice": "Рекомендация",

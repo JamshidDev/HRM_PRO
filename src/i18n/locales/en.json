@@ -5621,6 +5621,7 @@
     "risk": {
       "title": "Risk {n} · {title}",
       "riskNumbers": "Risks: {list}",
+      "riskCount": "{count} risks",
       "norm": "Monthly norm: {norm} hours",
       "finding": "Finding",
       "advice": "Advice",

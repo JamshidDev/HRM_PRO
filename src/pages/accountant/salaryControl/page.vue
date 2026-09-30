@@ -22,10 +22,29 @@
     // «Xavflar» tabi birinchi marta ochilganda 14 ta riskni yuklaymiz.
     if (v === 'risks' && !store.risksLoaded) store._risks()
   }
+
+  // Sarlavha ostidagi davr yozuvi (faqat ko'rsatish uchun — filtr holatini aks
+  // ettiradi, hech qanday hisob-kitobsiz).
+  const periodLabel = computed(() => {
+    const { year, month } = store.params
+    if (!year || !month) return ''
+    return `${year} · ${String(month).padStart(2, '0')}`
+  })
 </script>
 
 <template>
   <UIPageContent>
+    <div class="mb-3 flex items-end justify-between gap-3">
+      <div>
+        <h1 class="text-[18px] leading-6 font-semibold text-textColor1">
+          {{ $t('salaryControl.title') }}
+        </h1>
+        <p v-if="periodLabel" class="mt-0.5 text-[12px] leading-4 text-textColor3">
+          {{ periodLabel }}
+        </p>
+      </div>
+    </div>
+
     <n-tabs
       :value="store.mainView"
       @update:value="onTabChange"

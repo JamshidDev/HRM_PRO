@@ -5663,6 +5663,7 @@
     "risk": {
       "title": "Risk {n} · {title}",
       "riskNumbers": "Risklar: {list}",
+      "riskCount": "{count} ta risk",
       "norm": "Oy me'yori: {norm} soat",
       "finding": "Aniqlangan holat",
       "advice": "Tavsiya",
