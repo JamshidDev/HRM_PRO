@@ -2386,9 +2386,9 @@
     },
     "age": {
       "title": "Employee age distribution",
-      "age31": "Under 30",
-      "age32_45": "31-45",
-      "age46": "Over 46",
+      "age31": "30 and under",
+      "age32_45": "31 to 45 years old",
+      "age46": "46 and over",
       "structureTitle": "Age structure",
       "yearsOld": "years old"
     },

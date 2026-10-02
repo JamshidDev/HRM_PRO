@@ -21,7 +21,8 @@
 
   const periodTabs = computed(() => [
     { id: '7', name: t('dashboardPage.orgRating.period7') },
-    { id: '30', name: t('dashboardPage.orgRating.period30') }
+    { id: '30', name: t('dashboardPage.orgRating.period30') },
+    { id: 'all', name: t('dashboardPage.orgRating.periodAll') }
   ])
 
   const load = () => {

@@ -28,8 +28,10 @@
   // Yosh guruhi ranglari — ta'lim kartasidagi segment tartibi bilan bir xil.
   const TOKENS = ['--fig-icon-brand', '--fig-icon-purple', '--fig-icon-indigo']
 
-  // Oxirgi guruh eski dashboard nomini oladi, qolgani — backend label'i + «yoshdagilar».
+  // Har guruh i18n nomini oladi; noma'lum kalit — backend label'i + «yoshdagilar».
   const LABEL_KEYS = {
+    upto_30: 'dashboardPage.age.age31',
+    '31_45': 'dashboardPage.age.age32_45',
     '46_plus': 'dashboardPage.age.age46'
   }
 
