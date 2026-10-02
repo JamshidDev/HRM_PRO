@@ -117,7 +117,8 @@
     // Ko'rsatilayotgan ma'lumot tozalangan filtrga mos bo'lishi uchun qayta yuklanadi.
     // Audit tabida `AuditTab` qayta mount bo'lib `_getAuditCounts()` ni o'zi chaqiradi
     // (kontent `v-if` bilan almashadi, ya'ni har safar yangidan mount bo'ladi).
-    if (tab !== DashboardTab.AUDIT) store._dashboard()
+    // Audit va Kadrlar harakati boblari o'z ma'lumotini o'zi yuklaydi.
+    if (tab !== DashboardTab.AUDIT && tab !== DashboardTab.MOVEMENT) store._dashboard()
   }
 </script>
 
@@ -159,8 +160,7 @@
         </UIPageContent>
       </template>
 
-      <!-- Kadrlar harakati bobi — «Foydalanuvchilar faolligi» maketi. O'z
-           sarlavhasi, KPI va jadvali bor; endpoint hali yo'q, ma'lumot mock. -->
+      <!-- Kadrlar harakati bobi — korxonalar faolligi (`/hr/dashboard/activity`), o'zi yuklaydi. -->
       <template v-else-if="store.activeTab === DashboardTab.MOVEMENT">
         <ActivityTab v-if="canViewDashboard" />
       </template>

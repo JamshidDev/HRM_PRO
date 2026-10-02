@@ -157,7 +157,7 @@ export const tabCards = {
       detail: markRaw(PensionDetail),
       filters: ['sex'],
       filterCallback: ApiService.dashboardService._pensionDetail,
-      defaultValues: { sex: 1 }
+      defaultValues: { sex: 'all' }
     }
   ],
 

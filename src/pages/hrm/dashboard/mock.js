@@ -84,7 +84,7 @@ const overview = {
   // ko'rsatilganidek `label` bilan beriladi (i18n kaliti kerak emas).
   age_gender: {
     buckets: [
-      { key: 'upto_30', label: '18–30', count: 1150, percent: 33.7, male: 870, female: 280, delta: 94, delta_percent: 8.9 },
+      { key: 'upto_30', label: '≤30', count: 1150, percent: 33.7, male: 870, female: 280, delta: 94, delta_percent: 8.9 },
       { key: '31_45', label: '31–45', count: 1276, percent: 37.4, male: 980, female: 296, delta: 34, delta_percent: 2.7 },
       { key: '46_plus', label: '46+', count: 986, percent: 28.9, male: 754, female: 232, delta: 75, delta_percent: 8.2 }
     ],

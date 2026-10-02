@@ -9,8 +9,7 @@
    */
   import HeadChartLine from '@/assets/icons/hrmDashboard/activity/head-chart-line.svg?url'
   import AvgLine from '@/assets/icons/hrmDashboard/activity/avg-line.svg?url'
-  import { actionTypes } from './mock.js'
-  import { dayMonthWeek, formatCount, isWeekend, totalOf } from './utils.js'
+  import { actionTypes, dayMonthWeek, formatCount, isWeekend, totalOf } from './utils.js'
 
   const props = defineProps({
     daily: { type: Array, default: () => [] },

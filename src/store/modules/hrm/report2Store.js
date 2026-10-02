@@ -88,10 +88,8 @@ export const useReport2Store = defineStore('report2Store', {
       selectedId: null,
       elementId: null,
       selectDepartments: [],
-      deleteVisible: false,
       visible: false
-    },
-    isDpDelete: true
+    }
   }),
   actions: {
     _exportStaffing(organizationId) {
