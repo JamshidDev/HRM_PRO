@@ -2680,8 +2680,8 @@
       }
     },
     "activity": {
-      "title": "Активность пользователей",
-      "subtitle": "Анализ изменений в системе — по месяцам",
+      "title": "Активность организаций",
+      "subtitle": "Анализ изменений в организациях — по месяцам",
       "export": "Скачать",
       "totalActions": "Всего действий",
       "activeUsers": "Активные ответственные",
@@ -2723,7 +2723,36 @@
         "legendAverage": "Среднее",
         "legendOff": "Выходной / праздник",
         "recent": "Последние действия"
-      }
+      },
+      "activeOrganizations": "Активные организации",
+      "topOrganizations": "Топ организаций",
+      "searchOrganization": "Поиск организации",
+      "organization": "Организация",
+      "workersCount": "{n} сотр.",
+      "otherPage": "Другое",
+      "roles": {
+        "HR": "HR (кадры)",
+        "HrLeader": "Руководитель HR",
+        "Admin": "Администратор",
+        "Economist": "Экономист",
+        "EconomistLeader": "Руководитель экономистов",
+        "EconomistManagement": "Экономическое управление",
+        "TimesheetHR": "Табельщик",
+        "Finance": "Финансы",
+        "Worker": "Сотрудник",
+        "OrganizationLeader": "Руководитель организации",
+        "LeaderManagement": "Руководство",
+        "Hospital": "Больница",
+        "TurnstileLeader": "Руководитель турникетов",
+        "TurnstileViewer": "Наблюдатель турникетов",
+        "LmsLearningCenter": "Учебный центр",
+        "LmsSupervisor": "Супервайзер LMS",
+        "IntegrationHrFull": "Интеграция (HR)"
+      },
+      "commandsCreated": "Приказы",
+      "approvedDocuments": "Утверждено",
+      "applications": "Заявления",
+      "score": "Балл"
     },
     "orgRating": {
       "title": "Рейтинг использования системы организациями",

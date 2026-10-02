@@ -3,6 +3,17 @@ import Utils from '@/utils/Utils.js'
 
 const { t } = i18n.global
 
+/** Amal turlari — ustun ichida pastdan yuqoriga shu tartibda chiziladi. */
+export const actionTypes = [
+  { key: 'add', label: 'dashboardPage.activity.types.add', color: 'bg-fig-green' },
+  { key: 'edit', label: 'dashboardPage.activity.types.edit', color: 'bg-fig-brand' },
+  { key: 'delete', label: 'dashboardPage.activity.types.delete', color: 'bg-fig-red' },
+  { key: 'create', label: 'dashboardPage.activity.types.create', color: 'bg-fig-purple' }
+]
+
+// Bayram kunlari (oy-kun)
+const HOLIDAYS = ['01-01', '03-08', '03-21', '05-09', '09-01', '10-01', '12-08']
+
 const MONTH_KEYS = [
   'january',
   'february',
@@ -44,10 +55,20 @@ export const totalOf = (item) =>
 
 const pad = (n) => String(n).padStart(2, '0')
 
+export const isOffDay = (date) => {
+  const wd = date.getDay()
+  return (
+    wd === 0 || wd === 6 || HOLIDAYS.includes(`${pad(date.getMonth() + 1)}-${pad(date.getDate())}`)
+  )
+}
+
+/** Backend `YYYY-MM-DD HH:mm:ss` (Toshkent) → mahalliy `Date`. */
+export const parseDbDate = (value) => (value ? new Date(String(value).replace(' ', 'T')) : null)
+
 /** «Bugun, 11:05» / «Kecha, 16:12» / «23.09.2026» */
 export const formatLastActivity = (iso) => {
   if (!iso) return '—'
-  const date = new Date(iso)
+  const date = parseDbDate(iso)
   const time = `${pad(date.getHours())}:${pad(date.getMinutes())}`
   const today = new Date()
   const startOf = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime()

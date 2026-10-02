@@ -2672,8 +2672,8 @@
       }
     },
     "activity": {
-      "title": "User activity",
-      "subtitle": "Analysis of system changes — by month",
+      "title": "Organization activity",
+      "subtitle": "Analysis of changes in organizations — by month",
       "export": "Download",
       "totalActions": "Total actions",
       "activeUsers": "Active users",
@@ -2715,7 +2715,36 @@
         "legendAverage": "Average",
         "legendOff": "Weekend / holiday",
         "recent": "Recent actions"
-      }
+      },
+      "activeOrganizations": "Active organizations",
+      "topOrganizations": "Top organizations",
+      "searchOrganization": "Search organization",
+      "organization": "Organization",
+      "workersCount": "{n} employees",
+      "otherPage": "Other",
+      "roles": {
+        "HR": "HR",
+        "HrLeader": "HR lead",
+        "Admin": "Administrator",
+        "Economist": "Economist",
+        "EconomistLeader": "Economist lead",
+        "EconomistManagement": "Economic management",
+        "TimesheetHR": "Timekeeper",
+        "Finance": "Finance",
+        "Worker": "Employee",
+        "OrganizationLeader": "Organization head",
+        "LeaderManagement": "Management",
+        "Hospital": "Hospital",
+        "TurnstileLeader": "Turnstile lead",
+        "TurnstileViewer": "Turnstile viewer",
+        "LmsLearningCenter": "Learning center",
+        "LmsSupervisor": "LMS supervisor",
+        "IntegrationHrFull": "Integration (HR)"
+      },
+      "commandsCreated": "Orders",
+      "approvedDocuments": "Approved",
+      "applications": "Applications",
+      "score": "Score"
     },
     "orgRating": {
       "title": "Organizations' system usage rating",

@@ -2457,8 +2457,8 @@
       }
     },
     "activity": {
-      "title": "Фойдаланувчилар фаоллиги",
-      "subtitle": "Тизимдаги ўзгаришлар таҳлили — ой кесимида",
+      "title": "Корхоналар фаоллиги",
+      "subtitle": "Корхоналардаги ўзгаришлар таҳлили — ой кесимида",
       "export": "Юклаш",
       "totalActions": "Жами амаллар",
       "activeUsers": "Фаол масъуллар",
@@ -2500,7 +2500,36 @@
         "legendAverage": "Ўртача",
         "legendOff": "Дам олиш / байрам",
         "recent": "Охирги амаллар"
-      }
+      },
+      "activeOrganizations": "Фаол корхоналар",
+      "topOrganizations": "Топ корхоналар",
+      "searchOrganization": "Корхонани қидиринг",
+      "organization": "Корхона",
+      "workersCount": "{n} ходим",
+      "otherPage": "Бошқа",
+      "roles": {
+        "HR": "HR (кадрлар)",
+        "HrLeader": "HR раҳбари",
+        "Admin": "Администратор",
+        "Economist": "Иқтисодчи",
+        "EconomistLeader": "Иқтисодчи раҳбари",
+        "EconomistManagement": "Иқтисод бошқаруви",
+        "TimesheetHR": "Табелчи",
+        "Finance": "Молия",
+        "Worker": "Ходим",
+        "OrganizationLeader": "Корхона раҳбари",
+        "LeaderManagement": "Раҳбарият",
+        "Hospital": "Шифохона",
+        "TurnstileLeader": "Турникет раҳбари",
+        "TurnstileViewer": "Турникет кузатувчиси",
+        "LmsLearningCenter": "Ўқув маркази",
+        "LmsSupervisor": "LMS назоратчиси",
+        "IntegrationHrFull": "Интеграция (HR)"
+      },
+      "commandsCreated": "Буйруқлар",
+      "approvedDocuments": "Тасдиқланган",
+      "applications": "Аризалар",
+      "score": "Балл"
     },
     "orgRating": {
       "title": "Корхоналарнинг тизимдан фойдаланиш рейтинги",

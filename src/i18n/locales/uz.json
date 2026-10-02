@@ -2692,8 +2692,8 @@
       }
     },
     "activity": {
-      "title": "Foydalanuvchilar faolligi",
-      "subtitle": "Tizimdagi o'zgarishlar tahlili — oy kesimida",
+      "title": "Korxonalar faolligi",
+      "subtitle": "Korxonalardagi o'zgarishlar tahlili — oy kesimida",
       "export": "Yuklash",
       "totalActions": "Jami amallar",
       "activeUsers": "Faol ma’sullar",
@@ -2735,7 +2735,36 @@
         "legendAverage": "O'rtacha",
         "legendOff": "Dam olish / bayram",
         "recent": "Oxirgi amallar"
-      }
+      },
+      "activeOrganizations": "Faol korxonalar",
+      "topOrganizations": "Top korxonalar",
+      "searchOrganization": "Korxonani qidiring",
+      "organization": "Korxona",
+      "workersCount": "{n} xodim",
+      "otherPage": "Boshqa",
+      "roles": {
+        "HR": "HR (kadrlar)",
+        "HrLeader": "HR rahbari",
+        "Admin": "Administrator",
+        "Economist": "Iqtisodchi",
+        "EconomistLeader": "Iqtisodchi rahbari",
+        "EconomistManagement": "Iqtisod boshqaruvi",
+        "TimesheetHR": "Tabelchi",
+        "Finance": "Moliya",
+        "Worker": "Xodim",
+        "OrganizationLeader": "Korxona rahbari",
+        "LeaderManagement": "Rahbariyat",
+        "Hospital": "Shifoxona",
+        "TurnstileLeader": "Turniket rahbari",
+        "TurnstileViewer": "Turniket kuzatuvchisi",
+        "LmsLearningCenter": "O‘quv markazi",
+        "LmsSupervisor": "LMS nazoratchisi",
+        "IntegrationHrFull": "Integratsiya (HR)"
+      },
+      "commandsCreated": "Buyruqlar",
+      "approvedDocuments": "Tasdiqlangan",
+      "applications": "Arizalar",
+      "score": "Ball"
     },
     "orgRating": {
       "title": "Korxonalarning tizimdan foydalanish reytingi",
