@@ -10,7 +10,24 @@ const _salaryControlRisks = (payload) => {
   return axios.get('/v1/economist/salary-control/risks', { params: payload?.params })
 }
 
+// Oylik nazorati — 9 bo'limli dashboard uchun yagona payload
+// (kpi + emps + vids + F + rc). Butun analitika shu massivlardan quriladi.
+const _salaryControlDashboard = (payload) => {
+  return axios.get('/v1/economist/salary-control/dashboard', { params: payload?.params })
+}
+
+// Oylik nazorati — reestrlarni haqiqiy .xlsx fayl qilib yuklab olish
+// (type: rules | findings | employees | all). Blob sifatida qaytadi.
+const _salaryControlExport = (payload) => {
+  return axios.get('/v1/economist/salary-control/export', {
+    params: payload?.params,
+    responseType: 'blob'
+  })
+}
+
 export default {
   _salaryControlSummary,
-  _salaryControlRisks
+  _salaryControlRisks,
+  _salaryControlDashboard,
+  _salaryControlExport
 }

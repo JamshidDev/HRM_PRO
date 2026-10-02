@@ -1,10 +1,21 @@
 <script setup>
+  import { defineAsyncComponent } from 'vue'
   import { UIPageContent } from '@/components/index.js'
   import { useAccountStore, useSalaryControlStore } from '@/store/modules/index.js'
   import { getOneMonthAgoYearMonth } from '@utils'
   import Filter from './ui/Filter.vue'
   import SummaryCards from './ui/SummaryCards.vue'
+  import Overview from './ui/Overview.vue'
   import RiskMap from './ui/RiskMap.vue'
+
+  // Boy bo'limlar — faqat ochilganda yuklanadi (lazy).
+  const RiskCharts = defineAsyncComponent(() => import('./ui/RiskCharts.vue'))
+  const Rules = defineAsyncComponent(() => import('./ui/Rules.vue'))
+  const Who = defineAsyncComponent(() => import('./ui/Who.vue'))
+  const Vids = defineAsyncComponent(() => import('./ui/Vids.vue'))
+  const Deductions = defineAsyncComponent(() => import('./ui/Deductions.vue'))
+  const Reports = defineAsyncComponent(() => import('./ui/Reports.vue'))
+  const Employees = defineAsyncComponent(() => import('./ui/Employees.vue'))
 
   const store = useSalaryControlStore()
   const accStore = useAccountStore()
@@ -15,16 +26,15 @@
     store.params.year = oneMonthAgo.year
     store.params.month = oneMonthAgo.month
     store._summary()
+    store._loadForTab(store.mainView)
   })
 
   const onTabChange = (v) => {
     store.mainView = v
-    // «Xavflar» tabi birinchi marta ochilganda 14 ta riskni yuklaymiz.
-    if (v === 'risks' && !store.risksLoaded) store._risks()
+    store._loadForTab(v)
   }
 
-  // Sarlavha ostidagi davr yozuvi (faqat ko'rsatish uchun — filtr holatini aks
-  // ettiradi, hech qanday hisob-kitobsiz).
+  // Sarlavha ostidagi davr yozuvi (faqat ko'rsatish uchun).
   const periodLabel = computed(() => {
     const { year, month } = store.params
     if (!year || !month) return ''
@@ -66,13 +76,18 @@
 
     <template v-if="store.mainView === 'summary'">
       <SummaryCards />
+      <Overview />
     </template>
     <template v-else-if="store.mainView === 'risks'">
       <RiskMap />
+      <RiskCharts />
     </template>
-    <div v-else class="py-16 text-center text-textColor3">
-      {{ $t('salaryControl.comingSoon') }}
-    </div>
+    <Rules v-else-if="store.mainView === 'rules'" />
+    <Who v-else-if="store.mainView === 'who'" />
+    <Vids v-else-if="store.mainView === 'vids'" />
+    <Deductions v-else-if="store.mainView === 'deductions'" />
+    <Reports v-else-if="store.mainView === 'reports'" />
+    <Employees v-else-if="store.mainView === 'employees'" />
   </UIPageContent>
 </template>
 

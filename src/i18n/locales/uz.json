@@ -5683,6 +5683,108 @@
         "summa": "Summa"
       }
     },
+    "common": {
+      "sum": "Summa, so'm",
+      "sumMln": "Summa, mln so'm",
+      "count": "Soni",
+      "employee": "Xodim",
+      "position": "Lavozim",
+      "total": "Jami",
+      "export": "⬇ Excel yuklab olish",
+      "search": "Xodim bo'yicha qidirish…",
+      "allTypes": "Barcha turlar",
+      "empty": "Ma'lumot topilmadi",
+      "people": "{count} ta xodim",
+      "norm": "Oy me'yori: {norm} soat"
+    },
+    "findings": {
+      "title": "Tekshirilishi kerak bo'lgan holatlar",
+      "count": "{count} ta holat · shubhali summa {sum}",
+      "all": "Barchasi",
+      "high": "Yuqori xavf",
+      "mid": "O'rta",
+      "low": "Past",
+      "byType": "Holatlar turi bo'yicha",
+      "byTypeSub": "Har bir muammo turi bo'yicha holatlar soni",
+      "bySum": "Shubhali summa — muammo turi bo'yicha",
+      "bySumSub": "Belgilangan holatlardagi summa, mln so'm"
+    },
+    "overview": {
+      "title": "Oylik to'lovlari — kritik nazorat",
+      "sub": "Ish haqi vedomosti (1C), NDFL-4, NDFL-5 va INPS hisobotlari asosida",
+      "focus": "Nimaga birinchi navbatda e'tibor berish kerak"
+    },
+    "rules": {
+      "title": "Nazorat qilinadigan 9 ta to'lov turi",
+      "sub": "Har bir tur uchun aniqlash mezoni va oy natijasi",
+      "code": "Kod",
+      "name": "To'lov nomi va mezon",
+      "result": "Natija",
+      "based": "Asosli",
+      "unbased": "Asossiz",
+      "check": "Qo'shimcha tekshirish",
+      "registry": "Natija reestri",
+      "r11Title": "011 mukofoti — lavozim toifasi bo'yicha",
+      "r11Sub": "011 vaqtbay ishchilar uchun. Mutaxassis/rahbarlarga to'langan bo'lsa tekshiriladi"
+    },
+    "who": {
+      "topAccrued": "Eng ko'p hisoblangan",
+      "topAccruedSub": "Jami hisoblangan summa, top 15",
+      "ytd": "Eng ko'p daromad — yil boshidan",
+      "ytdSub": "Yil boshidan jami hisoblangan, top 15",
+      "spike": "Keskin o'sish: oy va yillik o'rtacha",
+      "spikeSub": "Oydagi summa yillik o'rtachaga nisbatan necha barobar (top 15)",
+      "okx": "Oklad va jami hisoblangan",
+      "okxSub": "Chiziqlar: jami = 1×, 2× va 3× oklad",
+      "hist": "Oylik taqsimoti",
+      "histSub": "Jami hisoblangan summa bo'yicha xodimlar soni",
+      "grp": "Lavozim guruhlari",
+      "grpSub": "Jami hisoblangan: min–max oraliq va o'rtacha"
+    },
+    "vids": {
+      "title": "To'lov turlari (vidlar) tarkibi",
+      "sub": "Jami summa va oluvchilar soni",
+      "scatter": "Mukofot va ishlangan vaqt",
+      "scatterSub": "X: vaqtbay haq / oklad · Y: mukofot / oklad",
+      "strip": "Mukofot foizi — lavozim guruhlari bo'yicha",
+      "stripSub": "Har nuqta — bitta xodim: mukofot (011) / vaqtbay haq (004)"
+    },
+    "deductions": {
+      "wf": "Hisoblangandan kartagacha",
+      "wfSub": "Jami hisoblangan − ushlanmalar = kartaga (mln so'm)",
+      "share": "Ushlanmalar ulushi — eng yuqori 15 xodim",
+      "shareSub": "Soliqdan tashqari ushlanmalar / jami hisoblangan",
+      "accrued": "Hisoblangan",
+      "deductions": "Ushlanmalar",
+      "card": "Kartaga"
+    },
+    "reports": {
+      "title": "Vedomost va soliq/INPS hisobotlari",
+      "sub": "Farq bo'lsa — hisobotga kiritilmagan yoki ortiqcha kiritilgan summa bor",
+      "indicator": "Ko'rsatkich",
+      "vedomost": "Vedomost",
+      "report": "Hisobot",
+      "diff": "Farq",
+      "note": "Izoh",
+      "rowFot": "Mehnatga haq to'lash fondi (MHTF)",
+      "rowNon": "MHTFga kirmaydigan to'lovlar",
+      "rowTax": "Daromad solig'i + INPS",
+      "rowInps": "INPS badallari",
+      "withN4": "NDFL-4 bilan",
+      "withN5": "NDFL-5 bilan",
+      "withInps": "INPS hisoboti bilan"
+    },
+    "employees": {
+      "title": "Barcha xodimlar",
+      "sub": "Ustun nomini bosib saralang",
+      "oklad": "Oklad",
+      "hours": "Soat",
+      "b004": "Vaqtbay (004)",
+      "b011": "Mukofot (011)",
+      "other": "Boshqa",
+      "card": "Kartaga",
+      "ytd": "Yil boshidan"
+    },
     "comingSoon": "Tez orada"
   }
 }
