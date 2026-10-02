@@ -26,7 +26,7 @@
 <template>
   <div
     @click.stop
-    class="w-full rounded-xl border border-surface-line bg-surface-section overflow-hidden"
+    class="w-full rounded-xl border border-table-border bg-surface-section overflow-hidden"
   >
     <n-spin size="small" class="h-full" :show="store.workerLoading">
       <div
@@ -41,7 +41,7 @@
 
       <template v-for="(item, idx) in store.workerList" :key="idx">
         <div
-          class="flex items-center gap-3 min-h-[52px] pl-3 pr-2 border-b border-table-border last:border-b-0 cursor-pointer transition-colors hover:bg-fig-bg-secondary"
+          class="flex items-center gap-3 min-h-[52px] pl-3 pr-2 border-b border-table-border/60 last:border-b-0 cursor-pointer transition-colors hover:bg-fig-bg-secondary"
           @click="onView(item)"
         >
           <span class="w-6 shrink-0 text-xs font-semibold text-fig-text-tertiary tabular-nums">

@@ -58,7 +58,7 @@
 <template>
   <div
     @click.stop
-    class="w-full rounded-xl border border-surface-line bg-surface-section overflow-hidden"
+    class="w-full rounded-xl border border-table-border bg-surface-section overflow-hidden"
   >
     <n-spin size="small" class="h-full" :show="store.position.loading">
       <div
@@ -78,7 +78,7 @@
       >
         <template v-for="(item, idx) in store.position.list" :key="idx">
           <div
-            class="border-b border-table-border last:border-b-0"
+            class="border-b border-table-border/60 last:border-b-0"
             :class="[store.position.selectedId ? 'cursor-no-drop' : 'cursor-move']"
           >
             <div

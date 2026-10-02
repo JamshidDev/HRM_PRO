@@ -91,7 +91,7 @@
 </script>
 
 <template>
-  <div class="border-b border-table-border">
+  <div class="border-b border-table-border/60">
     <div
       @click="store.onChangeRadio(data)"
       class="flex items-center gap-3 min-h-[44px] pl-1 pr-2 rounded-lg cursor-pointer transition-colors"
