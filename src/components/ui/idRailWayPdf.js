@@ -1,3 +1,7 @@
+import QRCode from 'qrcode'
+import frontSide from '@/assets/images/content/IdRailwayFront.svg?url'
+import backSide from '@/assets/images/content/IdRailwayBack.svg?url'
+import defaultPhoto from '@/assets/images/content/profilePhoto.avif'
 import {
   loadImage,
   loadSafeImage,
@@ -5,102 +9,269 @@ import {
   fitText,
   drawCover,
   createCardCanvas,
-  downloadCanvases
+  downloadCanvasesAsPdf,
+  downloadBlob
 } from './cardPdf.js'
 
-// Kartaning asl o'lchami (fon rasmlari 1011x638)
+// Kartaning asl o'lchami (fon SVG lari 1011x638)
 const CARD_W = 1011
 const CARD_H = 638
 const RADIUS = 28
 const TEXT_SIZE = 21 // ekrandagi 12px ning karta o'lchamiga nisbati
 const MRZ_SIZE = 18
+const TEXT_COLOR = '#1c2b22'
 const MONO_FONT = 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace'
+// PDF uchun canvas o'lchami: fon vektor bo'lgani uchun istalgan masshtabda tiniq chiziladi
+const PDF_SCALE = 3
+// SVG faylda oldi va orqa tomon orasidagi masofa
+const SIDE_GAP = 40
 
-function createCanvas(background) {
-  const result = createCardCanvas(background, { width: CARD_W, height: CARD_H, radius: RADIUS })
-  result.ctx.fillStyle = '#1c2b22'
-  return result
+// Foizlar — IdRailWay.vue dagi joylashuv bilan bir xil
+const PHOTO_BOX = { left: 4.2, top: 35.1, width: 20.8, height: 41.2 }
+const QR_BOX = { left: 4.2, top: 34.2, width: 20.3, height: 32.1 }
+const QR_PAD = 0.04
+const STRIP = { left: 2, top: 85, width: 96 }
+
+function frontTexts(data, fields) {
+  return [
+    { text: data.surname, left: 29.6, top: 38.9, maxWidth: 58 },
+    { text: data.givenName, left: 29.6, top: 50.2, maxWidth: 26 },
+    { text: data.patronymic, left: 29.6, top: 61.4, maxWidth: 26 },
+    { text: fields.sex, left: 29.6, top: 72.6, maxWidth: 58 },
+    { text: data.cardNumber, left: 4.2, top: 83.9, maxWidth: 24, mono: true },
+    { text: fields.issueDate, left: 59.5, top: 50.2, maxWidth: 30 },
+    { text: fields.expiryDate, left: 59.5, top: 61.4, maxWidth: 30 }
+  ]
 }
 
-// left/top/maxWidth — IdRailWay.vue dagi foizlar bilan bir xil
-function drawText(ctx, text, { left, top, maxWidth, font, size = TEXT_SIZE }) {
-  if (!text) return
-  ctx.font = `700 ${size}px ${font}`
-  // CSS da top — qatorning yuqori cheti, line-height 1.5
-  ctx.fillText(fitText(ctx, text, pct(maxWidth, CARD_W)), pct(left, CARD_W), pct(top, CARD_H) + size * 0.75)
+function backTexts(data) {
+  return [
+    { text: data.personalNumber, left: 27.3, top: 41.7, maxWidth: 65, mono: true },
+    { text: data.issuePlace, left: 27.4, top: 52.8, maxWidth: 65 }
+  ]
+}
+
+function box({ left, top, width, height }) {
+  return { x: pct(left, CARD_W), y: pct(top, CARD_H), w: pct(width, CARD_W), h: pct(height, CARD_H) }
+}
+
+function qrSquare() {
+  const { x, y, w, h } = box(QR_BOX)
+  const size = Math.min(w, h) - w * QR_PAD * 2
+  return { x: x + (w - size) / 2, y: y + (h - size) / 2, size }
+}
+
+// Pastki raqamli qator: har bir belgi o'z katagida markazlangan, qatorlar zich joylashadi
+function stripCells(strip) {
+  const left = pct(STRIP.left, CARD_W)
+  const lineHeight = MRZ_SIZE * 1.2
+  const cells = []
+  strip.forEach((line, i) => {
+    const cell = pct(STRIP.width, CARD_W) / line.length
+    const y = pct(STRIP.top, CARD_H) + i * lineHeight + lineHeight / 2
+    line.split('').forEach((char, j) => cells.push({ char, x: left + cell * (j + 0.5), y }))
+  })
+  return cells
+}
+
+// CSS da top — qatorning yuqori cheti, line-height 1.5
+function textLine(ctx, { text, left, top, maxWidth, mono }, font) {
+  const family = mono ? MONO_FONT : font
+  ctx.font = `700 ${TEXT_SIZE}px ${family}`
+  return {
+    text: fitText(ctx, text, pct(maxWidth, CARD_W)),
+    family,
+    x: pct(left, CARD_W),
+    y: pct(top, CARD_H) + TEXT_SIZE * 0.75
+  }
+}
+
+function qrSvg(text) {
+  return QRCode.toString(String(text || window.location.href), {
+    type: 'svg',
+    margin: 0,
+    errorCorrectionLevel: 'M',
+    color: { dark: '#101828ff', light: '#ffffffff' }
+  })
+}
+
+// ---------------- PDF (canvas) ----------------
+
+function drawTexts(ctx, items, font) {
+  ctx.fillStyle = TEXT_COLOR
+  items.forEach((item) => {
+    if (!item.text) return
+    const line = textLine(ctx, item, font)
+    ctx.fillText(line.text, line.x, line.y)
+  })
 }
 
 function renderFront({ background, photo, data, fields, font }) {
-  const { canvas, ctx } = createCanvas(background)
+  const { canvas, ctx } = createCardCanvas(background, {
+    width: CARD_W,
+    height: CARD_H,
+    radius: RADIUS,
+    scale: PDF_SCALE
+  })
 
-  const px = pct(4.2, CARD_W)
-  const py = pct(35.1, CARD_H)
-  const pw = pct(20.8, CARD_W)
-  const ph = pct(41.2, CARD_H)
+  const { x, y, w, h } = box(PHOTO_BOX)
   ctx.save()
   ctx.beginPath()
-  ctx.roundRect(px, py, pw, ph, 8)
+  ctx.roundRect(x, y, w, h, 8)
   ctx.clip()
   ctx.fillStyle = '#eceadd'
-  ctx.fillRect(px, py, pw, ph)
-  if (photo) drawCover(ctx, photo, px, py, pw, ph)
+  ctx.fillRect(x, y, w, h)
+  if (photo) drawCover(ctx, photo, x, y, w, h)
   ctx.restore()
 
-  drawText(ctx, data.surname, { left: 29.6, top: 38.9, maxWidth: 58, font })
-  drawText(ctx, data.givenName, { left: 29.6, top: 50.2, maxWidth: 26, font })
-  drawText(ctx, data.patronymic, { left: 29.6, top: 61.4, maxWidth: 26, font })
-  drawText(ctx, fields.sex, { left: 29.6, top: 72.6, maxWidth: 58, font })
-  drawText(ctx, data.cardNumber, { left: 4.2, top: 83.9, maxWidth: 24, font: MONO_FONT })
-  drawText(ctx, fields.issueDate, { left: 59.5, top: 50.2, maxWidth: 30, font })
-  drawText(ctx, fields.expiryDate, { left: 59.5, top: 61.4, maxWidth: 30, font })
-
+  drawTexts(ctx, frontTexts(data, fields), font)
   return canvas
 }
 
 function renderBack({ background, qr, data, strip, font }) {
-  const { canvas, ctx } = createCanvas(background)
+  const { canvas, ctx } = createCardCanvas(background, {
+    width: CARD_W,
+    height: CARD_H,
+    radius: RADIUS,
+    scale: PDF_SCALE
+  })
 
-  const qx = pct(4.2, CARD_W)
-  const qy = pct(34.2, CARD_H)
-  const qw = pct(20.3, CARD_W)
-  const qh = pct(32.1, CARD_H)
+  const { x, y, w, h } = box(QR_BOX)
   ctx.fillStyle = '#ffffff'
-  ctx.fillRect(qx, qy, qw, qh)
+  ctx.fillRect(x, y, w, h)
   if (qr) {
-    const pad = qw * 0.04
-    const size = Math.min(qw, qh) - pad * 2
-    ctx.drawImage(qr, qx + (qw - size) / 2, qy + (qh - size) / 2, size, size)
+    const q = qrSquare()
+    ctx.drawImage(qr, q.x, q.y, q.size, q.size)
   }
-  ctx.fillStyle = '#1c2b22'
 
-  drawText(ctx, data.personalNumber, { left: 27.3, top: 41.7, maxWidth: 65, font: MONO_FONT })
-  drawText(ctx, data.issuePlace, { left: 27.4, top: 52.8, maxWidth: 65, font })
+  drawTexts(ctx, backTexts(data), font)
 
-  // Pastki raqamli qator: har bir belgi o'z katagida markazlangan
   ctx.font = `400 ${MRZ_SIZE}px ${MONO_FONT}`
   ctx.textAlign = 'center'
-  const stripLeft = pct(2, CARD_W)
-  const stripWidth = pct(96, CARD_W)
-  // Uch qator karta ichiga sig'ishi uchun zich joylashtiriladi
-  const lineHeight = MRZ_SIZE * 1.2
-  const gap = 0
-  strip.forEach((line, i) => {
-    const cell = stripWidth / line.length
-    const y = pct(85, CARD_H) + i * (lineHeight + gap) + lineHeight / 2
-    line.split('').forEach((char, j) => ctx.fillText(char, stripLeft + cell * (j + 0.5), y))
-  })
+  stripCells(strip).forEach(({ char, x: cx, y: cy }) => ctx.fillText(char, cx, cy))
 
   return canvas
 }
 
+// ---------------- SVG (vektor) ----------------
+
+function escapeXml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    // ASCII dan tashqari belgilar (ʻ, ’, kirill) raqamli havola (&#NNN;) qilinadi — fayl qanday kodirovkada
+    // ochilmasin, ism-familiya buzilmaydi
+    .replace(/[^\x20-\x7e]/gu, (char) => `&#${char.codePointAt(0)};`)
+}
+
+// Oldi va orqa fon SVG lari bir faylga tushganda id lar to'qnashmasligi uchun prefiks qo'shiladi
+async function loadSvgMarkup(src, idPrefix) {
+  const text = await (await fetch(src)).text()
+  return text
+    .replace(/<\?xml[^>]*>/, '')
+    .replace(/\bid="([^"]+)"/g, `id="${idPrefix}$1"`)
+    .replace(/url\(#([^)]+)\)/g, `url(#${idPrefix}$1)`)
+    .replace(/href="#([^"]+)"/g, `href="#${idPrefix}$1"`)
+}
+
+// Rasmni SVG ichiga joylash uchun data URL ga aylantiradi (tashqi havola faylda ishlamaydi)
+function imageToDataUrl(img) {
+  if (!img) return null
+  try {
+    const canvas = document.createElement('canvas')
+    canvas.width = img.naturalWidth || img.width
+    canvas.height = img.naturalHeight || img.height
+    canvas.getContext('2d').drawImage(img, 0, 0)
+    return canvas.toDataURL('image/jpeg', 0.92)
+  } catch {
+    return null
+  }
+}
+
+// Ichki <svg> ni berilgan joy va o'lchamga joylaydi
+function placeSvg(markup, { x, y, width, height }) {
+  return markup.replace(/<svg\b[^>]*>/, (tag) => {
+    const attrs = tag.replace(/\s(x|y|width|height)="[^"]*"/g, '')
+    return attrs.replace(/<svg\b/, `<svg x="${x}" y="${y}" width="${width}" height="${height}"`)
+  })
+}
+
+function svgTexts(ctx, items, font) {
+  return items
+    .filter((item) => item.text)
+    .map((item) => {
+      const line = textLine(ctx, item, font)
+      return `<text x="${line.x}" y="${line.y}" font-family="${escapeXml(line.family)}" font-weight="700" font-size="${TEXT_SIZE}" fill="${TEXT_COLOR}" dominant-baseline="middle">${escapeXml(line.text)}</text>`
+    })
+    .join('')
+}
+
+function svgSide(id, top, background, content) {
+  return `<g transform="translate(0 ${top})"><clipPath id="${id}-clip"><rect width="${CARD_W}" height="${CARD_H}" rx="${RADIUS}"/></clipPath><g clip-path="url(#${id}-clip)">${placeSvg(background, { x: 0, y: 0, width: CARD_W, height: CARD_H })}${content}</g></g>`
+}
+
+function buildFrontSvg(ctx, { photoDataUrl, data, fields, font }) {
+  const { x, y, w, h } = box(PHOTO_BOX)
+  const photo = photoDataUrl
+    ? `<image x="${x}" y="${y}" width="${w}" height="${h}" href="${photoDataUrl}" preserveAspectRatio="xMidYMid slice" clip-path="url(#front-photo-clip)"/>`
+    : ''
+  return (
+    `<clipPath id="front-photo-clip"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8"/></clipPath>` +
+    `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8" fill="#eceadd"/>` +
+    photo +
+    svgTexts(ctx, frontTexts(data, fields), font)
+  )
+}
+
+function buildBackSvg(ctx, { qrMarkup, data, strip, font }) {
+  const { x, y, w, h } = box(QR_BOX)
+  const q = qrSquare()
+  const cells = stripCells(strip)
+    .map(
+      ({ char, x: cx, y: cy }) =>
+        `<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle">${escapeXml(char)}</text>`
+    )
+    .join('')
+  return (
+    `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#ffffff"/>` +
+    placeSvg(qrMarkup, { x: q.x, y: q.y, width: q.size, height: q.size }) +
+    svgTexts(ctx, backTexts(data), font) +
+    `<g font-family="${escapeXml(MONO_FONT)}" font-size="${MRZ_SIZE}" fill="${TEXT_COLOR}">${cells}</g>`
+  )
+}
+
+async function downloadVectorSvg({ frontSrc, backSrc, photo, qrText, data, fields, strip, font, fileName }) {
+  const [frontBg, backBg, qrMarkup] = await Promise.all([
+    loadSvgMarkup(frontSrc, 'front-bg-'),
+    loadSvgMarkup(backSrc, 'back-bg-'),
+    qrSvg(qrText)
+  ])
+
+  // Matnni karta kengligiga sig'dirish uchun o'lchash
+  const ctx = document.createElement('canvas').getContext('2d')
+  const front = buildFrontSvg(ctx, { photoDataUrl: imageToDataUrl(photo), data, fields, font })
+  const back = buildBackSvg(ctx, { qrMarkup, data, strip, font })
+
+  const height = CARD_H * 2 + SIDE_GAP
+  const svg =
+    '<?xml version="1.0" encoding="UTF-8"?>' +
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${CARD_W}" height="${height}" viewBox="0 0 ${CARD_W} ${height}">` +
+    svgSide('front', 0, frontBg, front) +
+    svgSide('back', CARD_H + SIDE_GAP, backBg, back) +
+    '</svg>'
+  downloadBlob(new Blob([svg], { type: 'image/svg+xml;charset=utf-8' }), `${fileName}.svg`)
+}
+
 /**
- * Temir yo'l guvohnomasining oldi va orqa tomonini bitta A4 PDF sahifaga (yoki SVG faylga) joylab yuklab beradi.
+ * Temir yo'l guvohnomasining oldi va orqa tomonini bitta A4 PDF sahifaga (yoki vektor SVG faylga) joylab yuklab beradi.
  */
 export async function downloadIdRailWayPdf({
   frontSrc,
   backSrc,
   photoUrl,
-  qrDataUrl,
+  qrText,
   data,
   fields,
   strip,
@@ -109,16 +280,121 @@ export async function downloadIdRailWayPdf({
   format = 'pdf'
 }) {
   await document.fonts?.ready
-  const [frontBg, backBg, photo, qr] = await Promise.all([
+  const font = fontFamily || 'sans-serif'
+  const photo = await loadSafeImage(photoUrl)
+
+  if (format === 'svg') {
+    await downloadVectorSvg({ frontSrc, backSrc, photo, qrText, data, fields, strip, font, fileName })
+    return
+  }
+
+  const qrUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(await qrSvg(qrText))}`
+  const [frontBg, backBg, qr] = await Promise.all([
     loadImage(frontSrc),
     loadImage(backSrc),
-    loadSafeImage(photoUrl),
-    loadSafeImage(qrDataUrl)
+    loadSafeImage(qrUrl)
   ])
 
-  const font = fontFamily || 'sans-serif'
   const front = renderFront({ background: frontBg, photo, data, fields, font })
   const back = renderBack({ background: backBg, qr, data, strip, font })
 
-  await downloadCanvases([front, back], fileName, format)
+  await downloadCanvasesAsPdf([front, back], `${fileName}.pdf`)
+}
+
+// ---------------- Ma'lumot tayyorlash ----------------
+
+const MRZ_LINE_LENGTH = 61 // measured from the design
+
+export function formatCardDate(iso) {
+  if (!iso) return '00.00.0000'
+  const [y, m, d] = iso.split('-')
+  return y && m && d ? `${d}.${m}.${y}` : iso
+}
+
+function digitsOnly(value) {
+  return (value || '').toString().replace(/\D/g, '')
+}
+
+function padLine(value, length = MRZ_LINE_LENGTH) {
+  const str = digitsOnly(value)
+  return str.length >= length ? str.slice(0, length) : str + '>'.repeat(length - str.length)
+}
+
+function dateDigits(iso) {
+  // YYMMDD, same convention as the national ID MRZ
+  const [y, m, d] = (iso || '').split('-')
+  return y && m && d ? `${y.slice(2)}${m}${d}` : ''
+}
+
+// TODO: this is a placeholder encoding (numeric fields, '>' padded) — swap the
+// concatenation order/fields once the backend/coworkers confirm the real spec
+export function buildIdRailWayStrip(d) {
+  const sexDigit = d.sex === 'M' ? '1' : d.sex === 'F' ? '0' : ''
+  return [
+    padLine(`${d.personalNumber || ''}${digitsOnly(d.cardNumber)}`),
+    padLine(`${dateDigits(d.birthDate)}${sexDigit}${dateDigits(d.expiryDate)}`),
+    padLine(`${dateDigits(d.issueDate)}${digitsOnly(d.cardNumber)}`)
+  ]
+}
+
+export function idRailWayQrText(d) {
+  return d.qrValue || d.personalNumber
+}
+
+export function workerPhotoUrl(worker) {
+  const photos = worker.photos || []
+  return (
+    photos.find((p) => p.current === 1 || p.current === true)?.photo ||
+    photos[0]?.photo ||
+    worker.photo ||
+    defaultPhoto
+  )
+}
+
+export function workerSex(worker) {
+  const s = worker.sex
+  if (s === true || s === 1 || s === '1') return 'M'
+  if (s === false || s === 0 || s === '0') return 'F'
+  return undefined
+}
+
+// Xodim ma'lumotidan (worker-positions/{id} → worker) guvohnoma maydonlarini yig'adi
+export function workerToIdRailWayData(worker = {}) {
+  const certificate = worker.digital_certificate || {}
+  return {
+    photoUrl: workerPhotoUrl(worker),
+    surname: worker.last_name,
+    givenName: worker.first_name,
+    patronymic: worker.middle_name,
+    sex: workerSex(worker),
+    birthDate: worker.birthday,
+    cardNumber: certificate.serial,
+    issueDate: certificate.issue_date,
+    expiryDate: certificate.expiry_date,
+    personalNumber: worker.pin,
+    issuePlace: certificate.issued_place
+  }
+}
+
+/**
+ * Guvohnoma ma'lumotidan (IdRailWay `data` prop'i bilan bir xil) PDF yoki SVG faylni yuklab beradi.
+ */
+export function downloadIdRailWay(d, { format = 'pdf', fontFamily } = {}) {
+  const fileName = [d.surname, d.givenName, d.cardNumber].filter(Boolean).join('_') || 'guvohnoma'
+  return downloadIdRailWayPdf({
+    frontSrc: frontSide,
+    backSrc: backSide,
+    photoUrl: d.photoUrl,
+    qrText: idRailWayQrText(d),
+    data: d,
+    fields: {
+      sex: d.sex === 'M' ? 'ERKAK / M' : 'AYOL / F',
+      issueDate: formatCardDate(d.issueDate),
+      expiryDate: formatCardDate(d.expiryDate)
+    },
+    strip: buildIdRailWayStrip(d),
+    fontFamily,
+    fileName,
+    format
+  })
 }

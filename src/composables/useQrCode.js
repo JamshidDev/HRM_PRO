@@ -13,7 +13,7 @@ export function useQrCode(value, options = {}) {
   const qrDataUrl = ref('')
 
   watchEffect(() => {
-    const text = toValue(value) || window.location.href
+    const text = String(toValue(value) || window.location.href)
     QRCode.toDataURL(text, {
       margin: 0,
       width: size,

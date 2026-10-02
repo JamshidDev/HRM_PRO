@@ -43,7 +43,11 @@
 </script>
 
 <template>
-  <n-spin :show="store.cardLoading">
+  <n-spin
+    class="flex-1 min-h-0"
+    content-class="h-full flex flex-col"
+    :show="store.cardLoading"
+  >
     <UIPageTitle v-if="store.params?.organization_id" class="mt-2">
       <template #title>
         {{ $t('content.historyUpload') }}
@@ -55,7 +59,7 @@
         <n-button @click="store._cards()" type="primary">{{ $t('content.refresh') }}</n-button>
       </template>
     </UIPageTitle>
-    <div class="w-full overflow-y-auto h-[calc(100vh-520px)] mt-4">
+    <div class="w-full flex-1 min-h-[200px] overflow-y-auto mt-4">
       <!-- Oxirgi (joriy) yuklama — ajratib ko'rsatiladi -->
       <div
         v-if="latest"

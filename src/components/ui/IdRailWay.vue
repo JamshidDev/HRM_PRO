@@ -1,16 +1,22 @@
 <script setup>
   import { ref, computed } from 'vue'
   import { useQrCode } from '@/composables/index.js'
-  import frontSide from '@/assets/images/content/IdRailwayFront.png'
-  import backSide from '@/assets/images/content/IdRailwayBack.png'
-  import { downloadIdRailWayPdf } from './idRailWayPdf.js'
+  import frontSide from '@/assets/images/content/IdRailwayFront.svg?url'
+  import backSide from '@/assets/images/content/IdRailwayBack.svg?url'
+  import {
+    downloadIdRailWay,
+    buildIdRailWayStrip,
+    formatCardDate as formatDate,
+    idRailWayQrText
+  } from './idRailWayPdf.js'
 
   const props = defineProps({
     data: { type: Object, required: true }
   })
 
-  // Hozircha QR joriy sahifaga olib boradi, keyinchalik tekshirish havolasiga almashtiriladi
-  const { qrDataUrl } = useQrCode(() => props.data.qrValue)
+  // QR ichida xodimning shaxsiy raqami (JSHSHIR) bo'ladi
+  const qrText = computed(() => idRailWayQrText(props.data))
+  const { qrDataUrl } = useQrCode(qrText)
 
   const cardRef = ref(null)
   const isFlipped = ref(false)
@@ -22,59 +28,12 @@
     setTimeout(() => (isAnimating.value = false), 700)
   }
 
-  function formatDate(iso) {
-    if (!iso) return '00.00.0000'
-    const [y, m, d] = iso.split('-')
-    return y && m && d ? `${d}.${m}.${y}` : iso
-  }
+  const backStrip = computed(() => buildIdRailWayStrip(props.data))
 
-  const MRZ_LINE_LENGTH = 61 // measured from the design
-
-  function digitsOnly(value) {
-    return (value || '').toString().replace(/\D/g, '')
-  }
-
-  function padLine(value, length = MRZ_LINE_LENGTH) {
-    const str = digitsOnly(value)
-    return str.length >= length ? str.slice(0, length) : str + '>'.repeat(length - str.length)
-  }
-
-  function dateDigits(iso) {
-    // YYMMDD, same convention as the national ID MRZ
-    const [y, m, d] = (iso || '').split('-')
-    return y && m && d ? `${y.slice(2)}${m}${d}` : ''
-  }
-
-  // TODO: this is a placeholder encoding (numeric fields, '>' padded) — swap the
-  // concatenation order/fields once the backend/coworkers confirm the real spec
-  const backStrip = computed(() => {
-    const d = props.data
-    const sexDigit = d.sex === 'M' ? '1' : d.sex === 'F' ? '0' : ''
-    return [
-      padLine(`${d.personalNumber || ''}${digitsOnly(d.cardNumber)}`),
-      padLine(`${dateDigits(d.birthDate)}${sexDigit}${dateDigits(d.expiryDate)}`),
-      padLine(`${dateDigits(d.issueDate)}${digitsOnly(d.cardNumber)}`)
-    ]
-  })
-
-  async function download(format) {
-    const d = props.data
-    const fileName = [d.surname, d.givenName, d.cardNumber].filter(Boolean).join('_') || 'guvohnoma'
-    await downloadIdRailWayPdf({
-      frontSrc: frontSide,
-      backSrc: backSide,
-      photoUrl: d.photoUrl,
-      qrDataUrl: qrDataUrl.value,
-      data: d,
-      fields: {
-        sex: d.sex === 'M' ? 'ERKAK / M' : 'AYOL / F',
-        issueDate: formatDate(d.issueDate),
-        expiryDate: formatDate(d.expiryDate)
-      },
-      strip: backStrip.value,
-      fontFamily: cardRef.value ? getComputedStyle(cardRef.value).fontFamily : undefined,
-      fileName,
-      format
+  function download(format) {
+    return downloadIdRailWay(props.data, {
+      format,
+      fontFamily: cardRef.value ? getComputedStyle(cardRef.value).fontFamily : undefined
     })
   }
 

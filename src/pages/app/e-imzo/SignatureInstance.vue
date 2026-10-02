@@ -4,7 +4,9 @@
     UsbStick24Filled,
     CheckmarkCircle16Filled,
     ErrorCircle24Filled,
-    ArrowSyncCircle16Filled
+    ArrowSyncCircle16Filled,
+    Eye16Regular,
+    EyeOff16Regular
   } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
@@ -65,10 +67,25 @@
     return from ? `${from} — ${to}` : to
   }
 
+  // Hujjat imzolashda JSHSHIR, STIR va sertifikat raqami yopiq ko'rsatiladi —
+  // kartadagi "ko'z" tugmasi shu kalitning raqamlarini ochadi/yopadi.
+  const revealed = ref(new Set())
+  const isRevealed = (idx) => isAuth.value || revealed.value.has(idx)
+  const toggleReveal = (idx) => {
+    const next = new Set(revealed.value)
+    next.has(idx) ? next.delete(idx) : next.add(idx)
+    revealed.value = next
+  }
+  const maskValue = (idx, value) =>
+    isRevealed(idx) ? value : '•'.repeat(String(value ?? '').length)
+
   watch(
     () => store.visible,
     (v) => {
-      if (v) selected.value = null
+      if (v) {
+        selected.value = null
+        revealed.value = new Set()
+      }
     }
   )
 </script>
@@ -183,30 +200,46 @@
                     </div>
                   </div>
                 </div>
-                <n-button
-                  :type="key.isValid ? 'success' : 'error'"
-                  size="tiny"
-                  secondary
-                  class="shrink-0"
-                >
-                  <template #icon>
-                    <n-icon>
-                      <CheckmarkCircle16Filled v-if="key.isValid" />
-                      <ErrorCircle24Filled v-else />
-                    </n-icon>
-                  </template>
-                  {{ key.isValid ? $t('signature.validKey') : $t('signature.notValidDate') }}
-                </n-button>
+                <div class="flex items-center gap-1.5 shrink-0">
+                  <n-button
+                    v-if="!isAuth && (key.pinfl || key.inn || key.serialNumber)"
+                    size="tiny"
+                    quaternary
+                    circle
+                    @click.stop="toggleReveal(idx)"
+                  >
+                    <template #icon>
+                      <n-icon>
+                        <EyeOff16Regular v-if="isRevealed(idx)" />
+                        <Eye16Regular v-else />
+                      </n-icon>
+                    </template>
+                  </n-button>
+                  <n-button
+                    :type="key.isValid ? 'success' : 'error'"
+                    size="tiny"
+                    secondary
+                    class="shrink-0"
+                  >
+                    <template #icon>
+                      <n-icon>
+                        <CheckmarkCircle16Filled v-if="key.isValid" />
+                        <ErrorCircle24Filled v-else />
+                      </n-icon>
+                    </template>
+                    {{ key.isValid ? $t('signature.validKey') : $t('signature.notValidDate') }}
+                  </n-button>
+                </div>
               </div>
 
               <dl class="mt-2.5 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 text-[13px]">
                 <div v-if="key.pinfl" class="flex gap-1.5 min-w-0">
                   <dt class="text-textColor3 shrink-0">{{ $t('signature.pinfl') }}:</dt>
-                  <dd class="text-textColor1 truncate">{{ key.pinfl }}</dd>
+                  <dd class="text-textColor1 truncate">{{ maskValue(idx, key.pinfl) }}</dd>
                 </div>
                 <div v-if="key.inn" class="flex gap-1.5 min-w-0">
                   <dt class="text-textColor3 shrink-0">{{ $t('signature.inn') }}:</dt>
-                  <dd class="text-textColor1 truncate">{{ key.inn }}</dd>
+                  <dd class="text-textColor1 truncate">{{ maskValue(idx, key.inn) }}</dd>
                 </div>
                 <div v-if="key.organization" class="flex gap-1.5 min-w-0 sm:col-span-2">
                   <dt class="text-textColor3 shrink-0">{{ $t('signature.organization') }}:</dt>
@@ -218,7 +251,7 @@
                 </div>
                 <div v-if="key.serialNumber" class="flex gap-1.5 min-w-0">
                   <dt class="text-textColor3 shrink-0">{{ $t('signature.certificate') }}:</dt>
-                  <dd class="text-textColor1 truncate">{{ key.serialNumber }}</dd>
+                  <dd class="text-textColor1 truncate">{{ maskValue(idx, key.serialNumber) }}</dd>
                 </div>
                 <div class="flex gap-1.5 min-w-0">
                   <dt class="text-textColor3 shrink-0">{{ $t('signature.validDate') }}:</dt>

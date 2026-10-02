@@ -59,8 +59,8 @@
 </script>
 
 <template>
-  <n-spin class="min-h-[400px]" :show="store.structuresLoading">
-    <div class="h-[calc(100vh-200px)] overflow-auto">
+  <n-spin class="h-full" content-class="h-full" :show="store.structuresLoading">
+    <div class="h-full overflow-auto">
       <n-table class="!border-t-0 sticky-table-header" :single-line="false" size="small">
         <thead>
           <tr>

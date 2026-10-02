@@ -3,7 +3,6 @@
   import i18n from '@/i18n/index.js'
   import { useComponentStore } from '@/store/modules/index.js'
 
-  import defaultPhoto from '@/assets/images/content/profilePhoto.avif'
   import IdCardIcon from '@/assets/icons/jshirIcon.svg'
   import DocumentTab from './shared/DocumentTab.vue'
   // import IdCard from '../../ui/IdCard.vue'
@@ -16,6 +15,7 @@
   import IdRailWayDetail from '../../ui/IdRailWayDetail.vue'
   import IdForeignDetail from '../../ui/IdForeignDetail.vue'
   import IdRedCertificate from '../../ui/IdRedCertificate.vue'
+  import { workerPhotoUrl, workerSex, workerToIdRailWayData } from '../../ui/idRailWayPdf.js'
 
   const { t } = i18n.global
   const store = useComponentStore()
@@ -67,23 +67,9 @@
 
   const worker = computed(() => store.workerPreview?.worker || {})
 
-  const photoUrl = computed(() => {
-    const w = worker.value
-    const photos = w.photos || []
-    return (
-      photos.find((p) => p.current === 1 || p.current === true)?.photo ||
-      photos[0]?.photo ||
-      w.photo ||
-      defaultPhoto
-    )
-  })
+  const photoUrl = computed(() => workerPhotoUrl(worker.value))
 
-  const sex = computed(() => {
-    const s = worker.value.sex
-    if (s === true || s === 1 || s === '1') return 'M'
-    if (s === false || s === 0 || s === '0') return 'F'
-    return undefined
-  })
+  const sex = computed(() => workerSex(worker.value))
 
   const idCardData = computed(() => {
     const w = worker.value
@@ -108,23 +94,7 @@
 
   const hasCertificate = computed(() => Boolean(worker.value.digital_certificate))
 
-  const idRailWayData = computed(() => {
-    const w = worker.value
-    const certificate = w.digital_certificate || {}
-    return {
-      photoUrl: photoUrl.value,
-      surname: w.last_name,
-      givenName: w.first_name,
-      patronymic: w.middle_name,
-      sex: sex.value,
-      birthDate: w.birthday,
-      cardNumber: certificate.serial,
-      issueDate: certificate.issue_date,
-      expiryDate: certificate.expiry_date,
-      personalNumber: w.pin,
-      issuePlace: certificate.issued_place
-    }
-  })
+  const idRailWayData = computed(() => workerToIdRailWayData(worker.value))
 
   const hasForeignPassport = computed(() => Boolean(worker.value.foreign_passports?.length))
 
