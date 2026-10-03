@@ -3476,6 +3476,17 @@
     "name": "Plan vs Actual",
     "addDepartment": "Add department",
     "addPosition": "Add position",
+    "listView": "List",
+    "tableView": "Table",
+    "table": {
+      "position": "Position",
+      "occupancy": "Occupancy",
+      "total": "Total",
+      "all": "All",
+      "search": "Search department or position",
+      "positionsCount": "{n} positions",
+      "noPositions": "No positions added"
+    },
     "tooltip": {
       "P": "Plan",
       "G": "Group",

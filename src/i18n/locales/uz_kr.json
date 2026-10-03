@@ -3201,6 +3201,17 @@
     "name": "План ва Факт",
     "addDepartment": "Бўлинма қўшиш",
     "addPosition": "Лавозим қўшиш",
+    "listView": "Рўйхат",
+    "tableView": "Жадвал",
+    "table": {
+      "position": "Лавозим",
+      "occupancy": "Бандлик",
+      "total": "Жами",
+      "all": "Барчаси",
+      "search": "Бўлинма ёки лавозим қидириш",
+      "positionsCount": "{n} та лавозим",
+      "noPositions": "Лавозим киритилмаган"
+    },
     "tooltip": {
       "P": "План",
       "G": "Гуруҳ",

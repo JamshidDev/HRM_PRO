@@ -3498,6 +3498,17 @@
     "staffingExportQueued": "Shtat jadvali yuklash navbatiga qo'shildi",
     "addDepartment": "Bo'linma qo'shish",
     "addPosition": "Lavozim qo'shish",
+    "listView": "Ro'yxat",
+    "tableView": "Jadval",
+    "table": {
+      "position": "Lavozim",
+      "occupancy": "Bandlik",
+      "total": "Jami",
+      "all": "Barchasi",
+      "search": "Bo'linma yoki lavozim qidirish",
+      "positionsCount": "{n} ta lavozim",
+      "noPositions": "Lavozim kiritilmagan"
+    },
     "tooltip": {
       "P": "Plan",
       "G": "Guruh",
