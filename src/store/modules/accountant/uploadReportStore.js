@@ -41,6 +41,8 @@ export const useUploadReportStore = defineStore('uploadReport', {
     selectedIndex: null,
     selectedId: null,
     selectedOrgName: null,
+    // Korxonalar daraxtini nomi bo'yicha (klientda) filtrlash
+    orgSearch: '',
     commentVisible: false,
     commentContent: null,
     confirmLoading: false,

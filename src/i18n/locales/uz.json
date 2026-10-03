@@ -3640,6 +3640,16 @@
     "name": "Hisobotlar"
   },
   "uploadReport": {
+    "ui": {
+      "searchOrg": "Korxona qidirish",
+      "selectOrg": "Hisobot yuklash va tasdiqlash uchun chap tomondagi ro'yxatdan korxonani tanlang",
+      "selectType": "Yuklashlar tarixini ko'rish uchun yuqoridagi hisobot turlaridan birini tanlang",
+      "noUploads": "Bu tur bo'yicha hali hisobot yuklanmagan",
+      "notConfirmed": "Tasdiqlanmagan",
+      "uploads": "ta yuklangan",
+      "uploadOpen": "Yuklash ochiq",
+      "uploadClosed": "Yuklash yopiq"
+    },
     "name": "Hisobot yuklash",
     "latest": "Oxirgi",
     "olderUploads": "Oldingi yuklamalar",
