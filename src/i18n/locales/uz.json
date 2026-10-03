@@ -2408,7 +2408,7 @@
       "title": "Xodimlarning yoshi bo'yicha",
       "age31": "30 yoshgacha",
       "age32_45": "31 dan 45 yoshgacha",
-      "age46": "46 yoshdan kattalar",
+      "age46": "46 yosh va undan kattalar",
       "structureTitle": "Yosh bo'yicha tuzilma",
       "yearsOld": "yoshdagilar"
     },
@@ -2692,8 +2692,8 @@
       }
     },
     "activity": {
-      "title": "Foydalanuvchilar faolligi",
-      "subtitle": "Tizimdagi o'zgarishlar tahlili — oy kesimida",
+      "title": "Korxonalar faolligi",
+      "subtitle": "Korxonalardagi o'zgarishlar tahlili — oy kesimida",
       "export": "Yuklash",
       "totalActions": "Jami amallar",
       "activeUsers": "Faol ma’sullar",
@@ -2735,7 +2735,36 @@
         "legendAverage": "O'rtacha",
         "legendOff": "Dam olish / bayram",
         "recent": "Oxirgi amallar"
-      }
+      },
+      "activeOrganizations": "Faol korxonalar",
+      "topOrganizations": "Top korxonalar",
+      "searchOrganization": "Korxonani qidiring",
+      "organization": "Korxona",
+      "workersCount": "{n} xodim",
+      "otherPage": "Boshqa",
+      "roles": {
+        "HR": "HR (kadrlar)",
+        "HrLeader": "HR rahbari",
+        "Admin": "Administrator",
+        "Economist": "Iqtisodchi",
+        "EconomistLeader": "Iqtisodchi rahbari",
+        "EconomistManagement": "Iqtisod boshqaruvi",
+        "TimesheetHR": "Tabelchi",
+        "Finance": "Moliya",
+        "Worker": "Xodim",
+        "OrganizationLeader": "Korxona rahbari",
+        "LeaderManagement": "Rahbariyat",
+        "Hospital": "Shifoxona",
+        "TurnstileLeader": "Turniket rahbari",
+        "TurnstileViewer": "Turniket kuzatuvchisi",
+        "LmsLearningCenter": "O‘quv markazi",
+        "LmsSupervisor": "LMS nazoratchisi",
+        "IntegrationHrFull": "Integratsiya (HR)"
+      },
+      "commandsCreated": "Buyruqlar",
+      "approvedDocuments": "Tasdiqlangan",
+      "applications": "Arizalar",
+      "score": "Ball"
     },
     "orgRating": {
       "title": "Korxonalarning tizimdan foydalanish reytingi",
@@ -2757,6 +2786,28 @@
       "lastActivity": "Oxirgi faollik",
       "onlyInactive": "Faqat faol emaslar",
       "editsNote": "Ma'lumot tahrirlari: {n} ta amal, {w} ta xodim",
+      "rankOf": "{r}-o'rin / {t}",
+      "activeChip": "faol",
+      "partsTitle": "Ball tarkibi",
+      "docsTitle": "Hujjatlar",
+      "categoriesTitle": "Faol yo'nalishlar",
+      "noCategories": "Davr ichida ma'lumot o'zgarmagan",
+      "summary": {
+        "total": "Jami",
+        "active": "Faol",
+        "inactive": "Faol emas",
+        "avg": "O'rtacha ball"
+      },
+      "filter": {
+        "all": "Barchasi",
+        "active": "Faol",
+        "inactive": "Faol emas"
+      },
+      "docStatus": {
+        "approved": "Tasdiqlangan",
+        "pending": "Jarayonda",
+        "rejected": "Rad etilgan"
+      },
       "parts": {
         "coverage": {
           "title": "Ma'lumotlar qamrovi",

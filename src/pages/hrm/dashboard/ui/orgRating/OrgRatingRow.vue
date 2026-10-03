@@ -5,12 +5,20 @@
     highlight: Boolean,
     // Sarlavha qatori (ustun nomlari).
     header: Boolean,
+    // Yuklanish paytidagi skeleton qatori (ustunlar bir xil).
+    skeleton: Boolean,
     // «kichik» belgisi — faqat «Barchasini ko'rish» ro'yxatida.
     showSmall: Boolean
   })
   defineEmits(['select'])
 
-  const rankClass = 'bg-fig-bg-tertiary text-fig-text-secondary'
+  // Top-3 (ball > 0) — oltin / kumush / bronza, qolganlari neytral.
+  const MEDALS = { 1: 'rank-gold', 2: 'rank-silver', 3: 'rank-bronze' }
+  const rankClass = computed(() =>
+    Number(props.item?.score) > 0 && MEDALS[props.item?.rank]
+      ? MEDALS[props.item.rank]
+      : 'bg-fig-bg-tertiary text-fig-text-secondary'
+  )
 
   // Ball — neytral; 0 ball qizil (korxona umuman ishlamagan).
   const scoreClass = computed(() =>
@@ -39,6 +47,13 @@
     <span class="text-right">{{ $t('dashboardPage.orgRating.col.docs') }}</span>
     <span class="text-right">{{ $t('dashboardPage.orgRating.col.days') }}</span>
     <span class="text-right">{{ $t('dashboardPage.orgRating.col.score') }}</span>
+  </div>
+
+  <div v-else-if="skeleton" class="org-grid w-full items-center px-2.5 py-1" aria-hidden="true">
+    <n-skeleton circle :width="24" :height="24" />
+    <n-skeleton height="12px" width="70%" round />
+    <n-skeleton v-for="i in 4" :key="i" height="12px" width="32px" round class="ml-auto" />
+    <n-skeleton height="20px" width="40px" :sharp="false" class="ml-auto" />
   </div>
 
   <button
@@ -109,6 +124,22 @@
     .org-grid > :nth-child(6) {
       display: none;
     }
+  }
+
+  .rank-gold {
+    background: var(--fig-yellow-100);
+    color: var(--fig-text-primary);
+    box-shadow: inset 0 0 0 1px #f5c542;
+  }
+  .rank-silver {
+    background: var(--fig-bg-tertiary);
+    color: var(--fig-text-primary);
+    box-shadow: inset 0 0 0 1px #b8c0cc;
+  }
+  .rank-bronze {
+    background: var(--fig-orange-100);
+    color: var(--fig-text-primary);
+    box-shadow: inset 0 0 0 1px var(--fig-orange-300);
   }
 
   .org-row--mine {

@@ -2395,8 +2395,8 @@
     "age": {
       "title": "Возраст сотрудников",
       "age31": "До 30 лет",
-      "age32_45": "31-45 лет",
-      "age46": "Старше 46 лет",
+      "age32_45": "От 31 до 45 лет",
+      "age46": "46 лет и старше",
       "structureTitle": "Возрастная структура",
       "yearsOld": "лет"
     },
@@ -2680,8 +2680,8 @@
       }
     },
     "activity": {
-      "title": "Активность пользователей",
-      "subtitle": "Анализ изменений в системе — по месяцам",
+      "title": "Активность организаций",
+      "subtitle": "Анализ изменений в организациях — по месяцам",
       "export": "Скачать",
       "totalActions": "Всего действий",
       "activeUsers": "Активные ответственные",
@@ -2723,7 +2723,36 @@
         "legendAverage": "Среднее",
         "legendOff": "Выходной / праздник",
         "recent": "Последние действия"
-      }
+      },
+      "activeOrganizations": "Активные организации",
+      "topOrganizations": "Топ организаций",
+      "searchOrganization": "Поиск организации",
+      "organization": "Организация",
+      "workersCount": "{n} сотр.",
+      "otherPage": "Другое",
+      "roles": {
+        "HR": "HR (кадры)",
+        "HrLeader": "Руководитель HR",
+        "Admin": "Администратор",
+        "Economist": "Экономист",
+        "EconomistLeader": "Руководитель экономистов",
+        "EconomistManagement": "Экономическое управление",
+        "TimesheetHR": "Табельщик",
+        "Finance": "Финансы",
+        "Worker": "Сотрудник",
+        "OrganizationLeader": "Руководитель организации",
+        "LeaderManagement": "Руководство",
+        "Hospital": "Больница",
+        "TurnstileLeader": "Руководитель турникетов",
+        "TurnstileViewer": "Наблюдатель турникетов",
+        "LmsLearningCenter": "Учебный центр",
+        "LmsSupervisor": "Супервайзер LMS",
+        "IntegrationHrFull": "Интеграция (HR)"
+      },
+      "commandsCreated": "Приказы",
+      "approvedDocuments": "Утверждено",
+      "applications": "Заявления",
+      "score": "Балл"
     },
     "orgRating": {
       "title": "Рейтинг использования системы организациями",
@@ -2745,6 +2774,28 @@
       "lastActivity": "Последняя активность",
       "onlyInactive": "Только неактивные",
       "editsNote": "Изменения данных: {n} действий, {w} сотрудников",
+      "rankOf": "{r}-е место из {t}",
+      "activeChip": "активна",
+      "partsTitle": "Состав балла",
+      "docsTitle": "Документы",
+      "categoriesTitle": "Активные направления",
+      "noCategories": "За период данные не менялись",
+      "summary": {
+        "total": "Всего",
+        "active": "Активные",
+        "inactive": "Неактивные",
+        "avg": "Средний балл"
+      },
+      "filter": {
+        "all": "Все",
+        "active": "Активные",
+        "inactive": "Неактивные"
+      },
+      "docStatus": {
+        "approved": "Утверждено",
+        "pending": "В процессе",
+        "rejected": "Отклонено"
+      },
       "parts": {
         "coverage": {
           "title": "Охват данных",

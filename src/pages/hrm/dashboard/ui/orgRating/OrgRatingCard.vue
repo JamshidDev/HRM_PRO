@@ -21,7 +21,8 @@
 
   const periodTabs = computed(() => [
     { id: '7', name: t('dashboardPage.orgRating.period7') },
-    { id: '30', name: t('dashboardPage.orgRating.period30') }
+    { id: '30', name: t('dashboardPage.orgRating.period30') },
+    { id: 'all', name: t('dashboardPage.orgRating.periodAll') }
   ])
 
   const load = () => {
@@ -38,9 +39,12 @@
   const detailVisible = ref(false)
   const detailItem = ref(null)
   const detailPeriod = ref('7')
-  const openDetail = (item, p = period.value) => {
+  const detailMeta = ref(null)
+  // meta — o'rinlar soni va davr sanalari (modal sarlavhasi uchun).
+  const openDetail = (item, p = period.value, meta = null) => {
     detailItem.value = item
     detailPeriod.value = p
+    detailMeta.value = meta ?? { total: data.value?.total, from: data.value?.from, to: data.value?.to }
     detailVisible.value = true
   }
 
@@ -58,9 +62,13 @@
       <UISegmentTabs v-model="period" :tabs="periodTabs" class="org-period-tabs" />
     </template>
 
-    <n-spin :show="loading">
-      <div class="flex flex-col gap-0.5 min-h-[120px]">
-        <OrgRatingRow header />
+    <div class="flex flex-col gap-0.5 min-h-[120px]">
+      <OrgRatingRow header />
+      <!-- Yuklanishda (davr almashganda ham) — top-10 shaklidagi skeleton qatorlar. -->
+      <template v-if="loading">
+        <OrgRatingRow v-for="i in 10" :key="`sk-${i}`" skeleton />
+      </template>
+      <template v-else>
         <OrgRatingRow
           v-for="item in data?.top || []"
           :key="item.organization.id"
@@ -77,8 +85,8 @@
           </div>
           <OrgRatingRow :item="data.mine" highlight @select="openDetail" />
         </template>
-      </div>
-    </n-spin>
+      </template>
+    </div>
 
     <div class="flex justify-end">
       <button
@@ -91,7 +99,7 @@
     </div>
   </FigPanel>
 
-  <OrgRatingDetailModal v-model:visible="detailVisible" :item="detailItem" :period="detailPeriod" />
+  <OrgRatingDetailModal v-model:visible="detailVisible" :item="detailItem" :period="detailPeriod" :meta="detailMeta" />
   <OrgRatingAllModal v-model:visible="allVisible" :initial-period="period" @select="openDetail" />
 </template>
 
