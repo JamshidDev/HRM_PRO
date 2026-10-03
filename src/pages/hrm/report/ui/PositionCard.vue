@@ -8,23 +8,12 @@
   import WorkerCard from './WorkerCard.vue'
   import Indicator from './Indicator.vue'
   import IndicatorTitle from '@/pages/hrm/report/ui/IndicatorTitle.vue'
-  import { useAccountStore } from '@/store/modules/index.js'
   import { VueDraggable } from 'vue-draggable-plus'
+  import { useReportActions } from '../useReportActions.js'
 
-  const accStore = useAccountStore()
   const store = useReport2Store()
+  const { editPosition, deletePosition } = useReportActions()
   const { t } = i18n.global
-
-  const onEdit = (item) => {
-    if (!accStore.checkAction(accStore.pn.hrReportWrite)) return
-    store.onEdit(item)
-  }
-
-  const onDelete = (v) => {
-    store.position.selectedId = null
-    store.position.elementId = v.id
-    store._deletePosition()
-  }
 
   const actions = [
     {
@@ -40,8 +29,8 @@
   ]
 
   const onAction = (key, item) => {
-    if (key === Utils.ActionTypes.edit) onEdit(item)
-    else if (key === Utils.ActionTypes.delete) onDelete(item)
+    if (key === Utils.ActionTypes.edit) editPosition(item)
+    else if (key === Utils.ActionTypes.delete) deletePosition(item)
   }
 
   const onDraggleEnd = (v) => {
@@ -58,7 +47,7 @@
 <template>
   <div
     @click.stop
-    class="w-full rounded-xl border border-surface-line bg-surface-section overflow-hidden"
+    class="w-full rounded-xl border border-table-border bg-surface-section overflow-hidden"
   >
     <n-spin size="small" class="h-full" :show="store.position.loading">
       <div
@@ -78,7 +67,7 @@
       >
         <template v-for="(item, idx) in store.position.list" :key="idx">
           <div
-            class="border-b border-table-border last:border-b-0"
+            class="border-b border-table-border/60 last:border-b-0"
             :class="[store.position.selectedId ? 'cursor-no-drop' : 'cursor-move']"
           >
             <div

@@ -3549,6 +3549,17 @@
     "staffingExportQueued": "Shtat jadvali yuklash navbatiga qo'shildi",
     "addDepartment": "Bo'linma qo'shish",
     "addPosition": "Lavozim qo'shish",
+    "listView": "Ro'yxat",
+    "tableView": "Jadval",
+    "table": {
+      "position": "Lavozim",
+      "occupancy": "Bandlik",
+      "total": "Jami",
+      "all": "Barchasi",
+      "search": "Bo'linma yoki lavozim qidirish",
+      "positionsCount": "{n} ta lavozim",
+      "noPositions": "Lavozim kiritilmagan"
+    },
     "tooltip": {
       "P": "Plan",
       "G": "Guruh",
@@ -3629,6 +3640,16 @@
     "name": "Hisobotlar"
   },
   "uploadReport": {
+    "ui": {
+      "searchOrg": "Korxona qidirish",
+      "selectOrg": "Hisobot yuklash va tasdiqlash uchun chap tomondagi ro'yxatdan korxonani tanlang",
+      "selectType": "Yuklashlar tarixini ko'rish uchun yuqoridagi hisobot turlaridan birini tanlang",
+      "noUploads": "Bu tur bo'yicha hali hisobot yuklanmagan",
+      "notConfirmed": "Tasdiqlanmagan",
+      "uploads": "ta yuklangan",
+      "uploadOpen": "Yuklash ochiq",
+      "uploadClosed": "Yuklash yopiq"
+    },
     "name": "Hisobot yuklash",
     "latest": "Oxirgi",
     "olderUploads": "Oldingi yuklamalar",

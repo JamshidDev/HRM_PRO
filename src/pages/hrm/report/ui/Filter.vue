@@ -107,7 +107,7 @@
     <template v-if="selectedOrg">
       <div class="flex items-center gap-2">
         <div
-          class="flex items-center gap-2 h-[34px] px-3 rounded-md border border-surface-line bg-surface/2"
+          class="flex items-center gap-2 h-[34px] px-3 rounded-md border border-table-border bg-surface/2"
         >
           <span class="text-xs text-gray-500">{{ $t('report.tooltip.P') }}</span>
           <n-tag
@@ -120,7 +120,7 @@
           </n-tag>
         </div>
         <div
-          class="flex items-center gap-2 h-[34px] px-3 rounded-md border border-surface-line bg-surface/2"
+          class="flex items-center gap-2 h-[34px] px-3 rounded-md border border-table-border bg-surface/2"
         >
           <span class="text-xs text-gray-500">{{ $t('report.tooltip.F') }}</span>
           <n-tag

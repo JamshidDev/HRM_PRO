@@ -1,32 +1,19 @@
 <script setup>
-  import { useReport2Store, useAccountStore } from '@/store/modules/index.js'
+  import { useReport2Store } from '@/store/modules/index.js'
   import Utils from '../../../../utils/Utils.js'
   import Indicator from '@/pages/hrm/report/ui/Indicator.vue'
   import IndicatorTitle from '@/pages/hrm/report/ui/IndicatorTitle.vue'
   import { UIUser } from '@/components/index.js'
-  import { AppPaths } from '@utils'
-  import router from '@/router/index.js'
+  import { useReportActions } from '../useReportActions.js'
 
   const store = useReport2Store()
-  const accStore = useAccountStore()
-
-  const goPush = (v) => {
-    router.push({
-      path: `${AppPaths.Hrm}${AppPaths.WorkerProfile}`,
-      query: { id: v.worker.uuid }
-    })
-  }
-
-  const onView = (v) => {
-    if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
-    goPush(v)
-  }
+  const { openWorker } = useReportActions()
 </script>
 
 <template>
   <div
     @click.stop
-    class="w-full rounded-xl border border-surface-line bg-surface-section overflow-hidden"
+    class="w-full rounded-xl border border-table-border bg-surface-section overflow-hidden"
   >
     <n-spin size="small" class="h-full" :show="store.workerLoading">
       <div
@@ -41,8 +28,8 @@
 
       <template v-for="(item, idx) in store.workerList" :key="idx">
         <div
-          class="flex items-center gap-3 min-h-[52px] pl-3 pr-2 border-b border-table-border last:border-b-0 cursor-pointer transition-colors hover:bg-fig-bg-secondary"
-          @click="onView(item)"
+          class="flex items-center gap-3 min-h-[52px] pl-3 pr-2 border-b border-table-border/60 last:border-b-0 cursor-pointer transition-colors hover:bg-fig-bg-secondary"
+          @click="openWorker(item)"
         >
           <span class="w-6 shrink-0 text-xs font-semibold text-fig-text-tertiary tabular-nums">
             {{ idx + 1 }}
