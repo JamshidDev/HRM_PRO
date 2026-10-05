@@ -91,17 +91,19 @@
           class="w-full"
         />
       </n-form-item>
-      <div class="col-span-12 border-surface-line px-2 py-1 mb-6 rounded-lg">
-        <n-checkbox v-model:checked="store.replacePayload.status">
-          {{
-            $t(
-              store.replacePayload.status
-                ? 'shiftType.form.onlyThisDate'
-                : 'shiftType.form.fromThisDate'
-            )
-          }}
-        </n-checkbox>
-      </div>
+      <!-- Ilgari bitta checkbox edi va bosilganda yorlig'i almashardi — qaysi holat
+           tanlangani tushunarsiz edi. Endi ikkala variant doim ko'rinadi. -->
+      <n-radio-group
+        v-model:value="store.replacePayload.status"
+        class="col-span-12 grid! grid-cols-2 gap-2 mb-6"
+      >
+        <n-radio :value="true" class="border px-2 py-1 border-surface-line rounded-lg">
+          {{ $t('shiftType.form.onlyThisDate') }}
+        </n-radio>
+        <n-radio :value="false" class="border px-2 py-1 border-surface-line rounded-lg">
+          {{ $t('shiftType.form.fromThisDate') }}
+        </n-radio>
+      </n-radio-group>
       <div class="col-span-12 flex justify-end gap-4">
         <n-button @click="store.replaceVisible = false" type="error" secondary>
           {{ $t('content.cancel') }}
