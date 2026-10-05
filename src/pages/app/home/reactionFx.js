@@ -25,8 +25,12 @@ const add = (item, ttl) => {
 
 const rand = (min, max) => min + Math.random() * (max - min)
 
+// Yo'l: sekinlashib ko'tariladi (ease-out), butun yo'l davomida bir tomonga
+// og'adi (`drift`) va ustiga sinus to'lqinidek chayqaladi (`amp`/`period`).
+// Uch harakat alohida qatlamda — bo'g'inli keyframe'lardagi "silkinish" yo'q.
 export const spawnIncoming = ({ emoji, label }) => {
-  const duration = rand(3.6, 5)
+  const duration = rand(4.2, 5.6)
+  const period = rand(1.2, 1.8)
   add(
     {
       id: ++seq,
@@ -36,22 +40,26 @@ export const spawnIncoming = ({ emoji, label }) => {
       x: rand(8, 88),
       size: rand(2.4, 3.4),
       duration,
-      wobble: rand(-50, 50),
-      tilt: rand(-14, 14)
+      drift: rand(-140, 140),
+      amp: rand(14, 30),
+      period,
+      // Har emoji to'lqinning boshqa fazasidan boshlansin — hammasi bir xil chayqalmasin.
+      phase: -rand(0, period),
+      tilt: rand(6, 14)
     },
     duration * 1000
   )
 }
 
+// Yo'l: yelpig'ichdek yon tomonga otiladi, avval ko'tarilib keyin gravitatsiya
+// bilan pastga tushadi — gorizontal va vertikal harakat alohida, parabola silliq.
 /** `rect` — bosilgan tugmaning `getBoundingClientRect()` qiymati. */
 export const spawnBurst = (emoji, rect) => {
   const cx = rect.left + rect.width / 2
   const cy = rect.top + rect.height / 2
   for (let i = 0; i < BURST_PARTICLES; i++) {
-    // Yuqoriga yelpig'ich shaklida: -150°..-30° oralig'ida.
-    const angle = ((-150 + (120 / (BURST_PARTICLES - 1)) * i + rand(-10, 10)) * Math.PI) / 180
-    const distance = rand(60, 120)
-    const duration = rand(0.8, 1.1)
+    const spread = (i / (BURST_PARTICLES - 1)) * 2 - 1 // -1..1
+    const duration = rand(0.9, 1.2)
     add(
       {
         id: ++seq,
@@ -59,14 +67,16 @@ export const spawnBurst = (emoji, rect) => {
         emoji,
         x: cx,
         y: cy,
-        dx: Math.cos(angle) * distance,
-        dy: Math.sin(angle) * distance,
+        dx: spread * rand(50, 90) + rand(-8, 8),
+        // Markazdagilar balandroq otiladi — favvoraga o'xshaydi.
+        rise: rand(70, 110) * (1 - Math.abs(spread) * 0.35),
+        fall: rand(30, 60),
         size: rand(1.1, 1.7),
-        rotate: rand(-40, 40),
-        delay: rand(0, 60),
+        rotate: spread * rand(30, 70),
+        delay: rand(0, 70),
         duration
       },
-      duration * 1000 + 100
+      duration * 1000 + 150
     )
   }
 }
