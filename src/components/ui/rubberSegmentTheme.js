@@ -9,6 +9,8 @@ export const RUBBER_THEME = {
   activeTextColor: '#ffffff',
   radius: 10,
   inset: 3,
+  // Har bo'lim o'z matni kengligida — uzun va qisqa matnga bir xil joy berilmaydi
+  equalSlots: false,
   stretch: 100,
   squash: 3,
   speed: 1,

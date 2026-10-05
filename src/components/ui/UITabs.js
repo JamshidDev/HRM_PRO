@@ -54,7 +54,7 @@ export default defineComponent({
     value: { type: [String, Number], default: undefined },
     defaultValue: { type: [String, Number], default: undefined },
     size: { type: String, default: 'medium' },
-    equalSlots: { type: Boolean, default: true },
+    equalSlots: { type: Boolean, default: RUBBER_THEME.equalSlots },
     draggable: { type: Boolean, default: true },
     disabled: { type: Boolean, default: false },
     ariaLabel: { type: String, default: undefined }

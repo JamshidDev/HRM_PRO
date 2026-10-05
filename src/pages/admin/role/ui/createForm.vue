@@ -299,7 +299,6 @@
           <UITabs
             v-model:value="activeTab"
             size="large"
-            :equal-slots="false"
             animated
             class="perm-tabs"
           >
