@@ -73,7 +73,7 @@
 
 <template>
   <UIModal v-model:visible="store.download.visible" :title="$t('content.download')" :width="420">
-    <n-tabs v-model:value="store.download.activeTab" type="segment" size="small" class="mb-4">
+    <UITabs v-model:value="store.download.activeTab" type="segment" size="small" class="mb-4">
       <n-tab name="download">{{ $t('hcEvent.tabDownload') }}</n-tab>
       <n-tab name="absent" :disabled="!canAbsent">
         <div class="flex items-center gap-1">
@@ -81,7 +81,7 @@
           {{ $t('hcEvent.tabAbsent') }}
         </div>
       </n-tab>
-    </n-tabs>
+    </UITabs>
 
     <!-- Umumiy filtrlar — ikkala tab ham AYNAN shu korxona/bo'lim/xodim
          tanlovi bilan yuklaydi (backend'da ikkala endpoint bir xil qabul qiladi). -->

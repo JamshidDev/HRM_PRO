@@ -77,11 +77,11 @@
       <p v-if="store.detailEditing" class="text-xs text-surface-500 mb-2">{{ $t('tariffGrid.matrix.legend') }}</p>
 
       <!-- Ilovalar -->
-      <n-tabs v-if="shownAnnexes.length" type="line" animated size="small">
+      <UITabs v-if="shownAnnexes.length" type="line" animated size="small">
         <n-tab-pane v-for="a in shownAnnexes" :key="a.code" :name="a.code" :tab="a.name">
           <DocMatrix :annex="a" :base-amount="store.currentBase" :editable="store.detailEditing" :show-coef="showCoef" />
         </n-tab-pane>
-      </n-tabs>
+      </UITabs>
       <n-empty v-else :description="$t('tariffGrid.noData')" class="py-8" />
     </div>
 

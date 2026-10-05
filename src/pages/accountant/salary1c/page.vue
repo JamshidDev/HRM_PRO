@@ -334,12 +334,12 @@
     </UIPageFilter>
 
     <div class="flex items-center justify-between flex-wrap gap-2">
-      <n-tabs type="segment" v-model:value="activeTab" size="small" class="s1-seg">
+      <UITabs type="segment" v-model:value="activeTab" size="small" class="s1-seg">
         <n-tab-pane name="workers" :tab="$t('salary1c.workers')" />
         <n-tab-pane name="orgs" :tab="$t('salary1c.byOrg')" />
         <n-tab-pane name="veds" :tab="$t('salary1c.veds.tab')" />
         <n-tab-pane name="reconcile" :tab="$t('salary1c.reconcile.tab')" />
-      </n-tabs>
+      </UITabs>
       <div class="flex items-center gap-2">
         <n-button
           v-if="accStore.checkPermission(accStore.pn.economistUploadsWrite)"

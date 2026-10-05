@@ -296,11 +296,12 @@
           <n-alert v-if="orphanCount" type="warning" class="mb-3" :bordered="false">
             {{ $t('userRole.form.orphanWarning', { n: orphanCount }) }}
           </n-alert>
-          <n-tabs
+          <UITabs
             v-model:value="activeTab"
-            type="line"
+            size="large"
+            :equal-slots="false"
             animated
-            class="perm-tabs ui-pill-tabs"
+            class="perm-tabs"
           >
             <!-- Tanlangan modul nomi tab qatorining o'ng tomonida -->
             <template #suffix>
@@ -390,7 +391,7 @@
                 </n-checkbox-group>
               </div>
             </n-tab-pane>
-          </n-tabs>
+          </UITabs>
         </div>
       </n-form-item>
     </div>
@@ -410,8 +411,9 @@
 </template>
 
 <style scoped>
-  /* Pill tab uslubi umumiy `.ui-pill-tabs` klassida (assets/scss/component.scss).
-     Bu yerda faqat shu sahifaga xos badge uslubi qoladi. */
+  /* Tab sarlavhasi — umumiy RubberSegment (`UITabs`). Bu yerda faqat shu sahifaga
+     xos icon + son badge uslubi qoladi; ranglar `currentColor` dan olinadi, shunda
+     faol (ko'k thumb ichidagi) va nofaol holatda ham o'qiladi. */
   .perm-count {
     display: inline-block;
     min-width: 18px;
@@ -421,67 +423,23 @@
     line-height: 18px;
     text-align: center;
     border-radius: 9px;
-    background: var(--surface-line);
-    color: var(--textColor1);
-    transition:
-      background-color 0.2s ease,
-      color 0.2s ease;
-  }
-  /* Modul tablari modal scroll'ida yopishib turadi — pastda uzun switch ro'yxatini
-     ko'rib turib ham boshqa modulga o'tish mumkin bo'lsin. */
-  .perm-tabs {
-    /* Rail ustidagi bo'sh joy — pastdagi `::before` bandi shu joyni egallaydi,
-       shunda band tinch holatda hech qanday kontentni bosmaydi. */
-    margin-top: 20px;
-  }
-  .perm-tabs :deep(> .n-tabs-nav) {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    width: 100%;
-    background: var(--surface-ground);
-    padding: 8px 10px;
-    border-radius: 12px;
-  }
-  /* Rail'ning usti va osti (uning `margin-bottom: 12px`i) modal foni bilan
-     to'ldiriladi: aks holda yopishgan rail atrofidagi tirqishdan ostidan
-     o'tayotgan kontent ko'rinib qoladi. Bandlar konteyner chegarasidan
-     TASHQARIGA chiqmaydi — chiqsa modalda gorizontal scroll paydo bo'ladi. */
-  .perm-tabs :deep(> .n-tabs-nav::before),
-  .perm-tabs :deep(> .n-tabs-nav::after) {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    background: var(--surface-section);
-    z-index: -1;
-  }
-  .perm-tabs :deep(> .n-tabs-nav::before) {
-    top: -20px;
-    height: 20px;
-  }
-  .perm-tabs :deep(> .n-tabs-nav::after) {
-    bottom: -12px;
-    height: 12px;
-  }
-  .perm-tabs :deep(.n-tabs-tab--active .perm-count) {
-    background: var(--primary-color, #2080f0);
-    color: #fff;
+    background: color-mix(in srgb, currentColor 16%, transparent);
+    color: inherit;
   }
   /* Icon-only tab: icon + son badge. */
   .perm-tab-ico {
     display: inline-flex;
     align-items: center;
-    color: var(--textColor1);
+    color: inherit;
   }
-  .perm-tabs :deep(.n-tabs-tab--active) .perm-tab-ico {
-    color: var(--primary-color, #2080f0);
-  }
-  /* Tanlangan modul nomi — tab qatorining eng o'ng chekkasida. */
-  .perm-tabs :deep(.n-tabs-nav__suffix) {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
+  /* Modul tablari modal scroll'ida yopishib turadi — pastda uzun switch ro'yxatini
+     ko'rib turib ham boshqa modulga o'tish mumkin bo'lsin. */
+  .perm-tabs :deep(> .ui-tabs__header) {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 8px 0;
+    background: var(--surface-section);
   }
   /* Tanlangan modul nomi — DOIMIY (statik) kenglik, kontent o'zgarsa ham surilmaydi. */
   .perm-active-label {
@@ -495,31 +453,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     padding-right: 4px;
-  }
-  /* Har tab — alohida OQ border-box (icon large); kulrang strip'da ajralib turadi. */
-  .perm-tabs :deep(.n-tabs-tab) {
-    border: 1px solid var(--surface-line);
-    border-radius: 12px;
-    padding: 8px 14px;
-    margin-right: 8px;
-    background: var(--surface-section);
-    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08);
-    transition:
-      border-color 0.2s ease,
-      box-shadow 0.2s ease;
-  }
-  /* Ruxsatli tab ichidagi son-badge ko'k (box foni o'zgarmaydi — oq qoladi). */
-  .perm-tabs :deep(.n-tabs-tab:has(.has-perms) .perm-count) {
-    background: color-mix(in srgb, var(--primary-color, #2080f0) 22%, transparent);
-    color: var(--primary-color, #2080f0);
-  }
-  .perm-tabs :deep(.n-tabs-tab--active) {
-    border-color: var(--primary-color, #2080f0);
-    box-shadow: 0 0 0 1px var(--primary-color, #2080f0);
-  }
-  /* Border-box uslubida ostki chiziq (bar) kerak emas. */
-  .perm-tabs :deep(.n-tabs-bar) {
-    display: none;
   }
   /* Label ostidagi permission slug (key) — kichik, mono, xira. */
   .perm-slug {

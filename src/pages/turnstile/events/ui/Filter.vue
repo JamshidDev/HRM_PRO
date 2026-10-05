@@ -204,7 +204,7 @@
     </template>
     <template #filterSearch>
       <div class="tab-wrapper ml-2">
-        <n-tabs
+        <UITabs
           class="tab-switcher"
           :value="store.activeTab"
           @update:value="store._changeView"
@@ -213,7 +213,7 @@
         >
           <n-tab-pane :name="store.tabs[0]" :tab="$t('hcEvent.oldView')" />
           <n-tab-pane :name="store.tabs[1]" :tab="$t('deviceEvent.tab')" />
-        </n-tabs>
+        </UITabs>
       </div>
     </template>
     <template #filterAction>
@@ -261,21 +261,7 @@
   height: 100%;
 }
 
-.tab-switcher :deep(.n-tabs-pane-wrapper) {
-  display: none;
-}
 
-.tab-switcher :deep(.n-tabs-nav) {
-  height: 100%;
-}
 
-.tab-switcher :deep(.n-tabs-rail) {
-  height: 100%;
-}
 
-.tab-switcher :deep(.n-tabs-tab) {
-  height: 28px;
-  padding: 0 12px;
-  line-height: 28px;
-}
 </style>

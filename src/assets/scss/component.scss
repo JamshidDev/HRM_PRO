@@ -185,3 +185,44 @@
 [data-theme='dark'] .info-box-ground {
   background-color: var(--surface-ground);
 }
+
+/* `UITabs` — RubberSegment sarlavhali n-tabs o'rami (src/components/ui/UITabs.js). */
+.ui-tabs {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ui-tabs__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* Bo'limlar ko'p bo'lsa yo'lak sig'masa — faqat gorizontal suriladi. */
+.ui-tabs__scroller {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.ui-tabs__suffix {
+  margin-left: auto;
+  min-width: 0;
+}
+
+.ui-tabs__panes {
+  flex: 1;
+  min-height: 0;
+
+  > .n-tabs-nav {
+    display: none !important;
+  }
+}

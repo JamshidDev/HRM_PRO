@@ -31,10 +31,10 @@
     <!-- Tab faqat almashtirgich (salary1c sahifasidagi kabi): kontent
          `UIPageContent` ning BEVOSITA bolasi bo'lib qoladi, shunda jadval
          qolgan balandlikni to'liq egallaydi. -->
-    <n-tabs
+    <UITabs
       v-model:value="activeTab"
       type="line"
-      class="ui-pill-tabs ui-pill-tabs--inline med-tabs"
+      class="ui-pill-tabs ui-pill-tabs--inline"
     >
       <n-tab-pane name="med">
         <template #tab>
@@ -52,7 +52,7 @@
           </span>
         </template>
       </n-tab-pane>
-    </n-tabs>
+    </UITabs>
 
     <template v-if="activeTab === 'med'">
       <Filter />
@@ -87,10 +87,3 @@
   </UIPageContent>
 </template>
 
-<style scoped>
-  /* Tab faqat almashtirgich: bo'sh panel maydoni ham, rail'ning pastki
-     bo'shlig'i ham kerak emas — masofani `UIPageContent` ning `gap-4` i beradi. */
-  .med-tabs :deep(.n-tabs-pane-wrapper) {
-    display: none;
-  }
-</style>

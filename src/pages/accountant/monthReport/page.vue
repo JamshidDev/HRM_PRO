@@ -36,10 +36,10 @@
 
 <template>
   <UIPageContent>
-    <n-tabs v-model:value="store.mainView" type="line" animated class="mb-2">
+    <UITabs v-model:value="store.mainView" type="line" animated class="mb-2">
       <n-tab-pane name="workers" :tab="$t('monthReport.vedReport.tabWorkers')" />
       <n-tab-pane name="ved" :tab="$t('monthReport.vedReport.tab')" />
-    </n-tabs>
+    </UITabs>
     <template v-if="store.mainView === 'workers'">
       <Filter />
       <Table />

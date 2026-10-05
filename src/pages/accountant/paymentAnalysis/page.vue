@@ -26,7 +26,7 @@
 
 <template>
   <UIPageContent>
-    <n-tabs
+    <UITabs
       :value="store.mainView"
       @update:value="onTabChange"
       type="line"
@@ -35,7 +35,7 @@
     >
       <n-tab-pane name="analysis" :tab="$t('paymentAnalysis.tabs.analysis')" />
       <n-tab-pane name="whitelist" :tab="$t('paymentAnalysis.tabs.whitelist')" />
-    </n-tabs>
+    </UITabs>
     <template v-if="store.mainView === 'analysis'">
       <Filter />
       <Table />
