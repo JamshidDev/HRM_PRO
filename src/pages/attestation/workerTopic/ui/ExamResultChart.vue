@@ -22,7 +22,7 @@
       left: 'center',
       top: 12,
       textStyle: {
-        color: '#1f2937',
+        color: '#0f172a',
         fontSize: 16,
         fontWeight: 700
       }
@@ -108,7 +108,7 @@
         option.value.xAxis.splitLine.lineStyle.color = 'rgba(255,255,255,0.08)'
         option.value.series[0].backgroundStyle.color = 'rgba(255,255,255,0.06)'
       } else {
-        option.value.title.textStyle.color = '#1f2937'
+        option.value.title.textStyle.color = '#0f172a'
         option.value.yAxis.axisLabel.color = '#5b6b82'
         option.value.xAxis.axisLabel.color = '#93a0b2'
         option.value.series[0].label.color = '#5b6b82'

@@ -51,26 +51,23 @@
   --exam-badge-yellow-text: #8a5f00; // 5.65:1 oq fonda (edi 2.94:1)
   --exam-pagination-bg: #f2f4f7;
   --exam-result-btn-bg: #eaecf0;
-  --exam-result-btn-text: #000000;
+  --exam-result-btn-text: #0f172a;
 
   /*
-   * Uch pog'ona ham WCAG AAA (7:1) dan o'tadi — jadval katakchalaridagi
-   * yordamchi matnlar ham bemalol o'qiladi. Ilgari `textColor3` oq fonda
-   * atigi 2.71:1 edi (kulrang matnlar "yo'qolib" ketardi), `textColor1` esa
-   * 4.36:1 bilan AA chegarasidan pastda turardi.
-   * Nisbatlar oq katakcha (#ffffff) foniga nisbatan o'lchangan.
+   * Matn ranglari — uch pog'ona (primary / secondary / tertiary).
+   * Nisbatlar oq fonga (#ffffff) nisbatan: primary va secondary AAA (7:1) dan,
+   * tertiary AA (4.5:1) dan o'tadi.
    */
-  --textColor0: #434349; // 9.82:1 — asosiy
-  --textColor1: #454b57; // 8.76:1 — ikkilamchi (edi #74788d, 4.36:1)
-  --textColor2: #434349; // 9.82:1 — asosiy
-  --textColor3: #4b5565; // 7.54:1 — uchlamchi (edi #9a9cae, atigi 2.71:1)
+  --textColor0: #0f172a; // 17.85:1 — primary
+  --textColor1: #475569; // 7.58:1 — secondary
+  --textColor2: #0f172a; // 17.85:1 — primary
+  --textColor3: #64748b; // 4.76:1 — tertiary
 
-  // Figma "HRM RailWay" turniket dashboard palitrasi (node 2543:8225).
-  // Light qiymatlar maketdagi hexlar bilan aynan bir xil.
-  --fig-text-primary: #101828;
-  --fig-text-secondary: #344054;
-  --fig-text-tertiary: #4b5565; // 7.54:1 — `--textColor3` bilan bir xil
-  --fig-text-muted: #535862;
+  // Figma palitrasidagi matn tokenlari ham shu uch pog'onaga tenglangan.
+  --fig-text-primary: #0f172a;
+  --fig-text-secondary: #475569;
+  --fig-text-tertiary: #64748b; // `--textColor3` bilan bir xil
+  --fig-text-muted: #64748b;
   --fig-text-green: #00722f; // 6.09:1 (edi 4.59:1)
   --fig-br-disable: #eaecf0;
   --fig-br-secondary: #d0d5dd;

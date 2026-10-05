@@ -140,7 +140,7 @@
                 <span
                   class="w-11 h-11 rounded-full bg-white/85 flex items-center justify-center"
                 >
-                  <n-icon size="20" color="#101828"><Play24Filled /></n-icon>
+                  <n-icon size="20" color="#0f172a"><Play24Filled /></n-icon>
                 </span>
               </div>
             </div>
@@ -217,7 +217,7 @@
         <!-- Sarlavha -->
         <h1
           class="text-[19px] font-bold leading-snug mb-2"
-          :class="translation.title ? 'text-[#101828]' : 'text-[#98A2B3] italic font-medium'"
+          :class="translation.title ? 'text-[#0f172a]' : 'text-[#98A2B3] italic font-medium'"
         >
           {{ translation.title || $t('newsPage.previewEmptyTitle') }}
         </h1>
@@ -285,7 +285,7 @@
   .mobile-news-content {
     font-size: 13px;
     line-height: 1.75;
-    color: #344054;
+    color: #475569;
     word-break: break-word;
   }
 
@@ -293,14 +293,14 @@
   .mobile-news-content :deep(h2) {
     font-size: 15px;
     font-weight: 700;
-    color: #101828;
+    color: #0f172a;
     margin: 1.25rem 0 0.5rem;
   }
 
   .mobile-news-content :deep(h3) {
     font-size: 14px;
     font-weight: 600;
-    color: #101828;
+    color: #0f172a;
     margin: 1rem 0 0.4rem;
   }
 
@@ -335,7 +335,7 @@
 
   .mobile-news-content :deep(strong) {
     font-weight: 700;
-    color: #101828;
+    color: #0f172a;
   }
 
   .mobile-news-content :deep(a) {

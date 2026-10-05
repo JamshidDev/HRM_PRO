@@ -112,7 +112,7 @@
     padding: 10px 12px;
   }
   .tg-meta-lbl { font-size: 11px; color: var(--textColor3, #98a2b3); margin-bottom: 4px; }
-  .tg-meta-val { font-weight: 600; color: var(--textColor1, #101828); font-variant-numeric: tabular-nums; }
+  .tg-meta-val { font-weight: 600; color: var(--textColor1, #475569); font-variant-numeric: tabular-nums; }
   .tg-unit { font-size: 11px; font-weight: 400; color: var(--textColor3, #98a2b3); }
   .tg-ver {
     display: flex;
