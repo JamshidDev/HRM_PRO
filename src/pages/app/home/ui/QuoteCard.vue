@@ -23,7 +23,7 @@
 </script>
 
 <template>
-  <div class="flex h-full flex-col gap-6 rounded-2xl bg-fig-block p-4">
+  <div class="flex h-full flex-col gap-6 rounded-2xl bg-fig-block shadow-card p-4">
     <span class="flex h-8 w-8 shrink-0 items-center justify-center">
       <QuoteLeftIcon />
     </span>

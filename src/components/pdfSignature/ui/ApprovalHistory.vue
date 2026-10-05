@@ -189,7 +189,9 @@
         </div>
 
         <!-- Hodisa kartasi -->
-        <div class="min-w-0 flex-1 mb-2 rounded-lg border border-surface-line bg-surface-section px-2.5 py-2">
+        <div
+          class="min-w-0 flex-1 mb-2 rounded-xl border border-surface-line/70 bg-surface-section px-2.5 py-2 shadow-[0_1px_2px_rgb(16_24_40/0.04)]"
+        >
           <!-- Bir kishi: «Familiya I.O. · Tasdiqladi» -->
           <template v-if="row.signers.length === 1">
             <div class="flex items-start justify-between gap-2">
@@ -279,11 +281,12 @@
             </n-collapse-transition>
 
             <n-collapse-transition :show="expanded.has(rowId(row))">
-              <div class="mt-1.5 flex flex-col divide-y divide-surface-line border-t border-surface-line">
+              <!-- Chiziqlar o'rniga yumshoq fonli ichki blok: qatorlar bo'shliq bilan ajraladi -->
+              <div class="mt-2 flex flex-col gap-0.5 rounded-lg bg-surface-ground/70 p-1">
                 <div
                   v-for="(s, k) in row.signers"
                   :key="k"
-                  class="flex items-center gap-2 min-w-0 py-1.5"
+                  class="flex items-center gap-2 min-w-0 rounded-md px-1.5 py-1 transition-colors hover:bg-surface-section"
                 >
                   <n-avatar
                     round
@@ -297,20 +300,20 @@
                     {{ shortName(s?.worker) }}
                   </span>
                   <span
-                    class="shrink-0 text-[10px] font-medium rounded-full px-1.5 py-px bg-surface-ground text-textColor2"
+                    class="shrink-0 text-[10px] font-medium rounded-full px-1.5 py-px bg-surface-section text-textColor3"
                   >
                     {{ $t(roleLabel(s?.type)) }}
                   </span>
                 </div>
-                <button
-                  type="button"
-                  class="pt-1.5 flex items-center justify-center gap-0.5 text-[11px] font-medium text-primary"
-                  @click="toggle(rowId(row))"
-                >
-                  {{ $t('content.hide') }}
-                  <n-icon size="12" class="rotate-180"><ChevronDown16Regular /></n-icon>
-                </button>
               </div>
+              <button
+                type="button"
+                class="mt-1 w-full py-1 rounded-md flex items-center justify-center gap-0.5 text-[11px] font-medium text-primary transition-colors hover:bg-primary/5"
+                @click="toggle(rowId(row))"
+              >
+                {{ $t('content.hide') }}
+                <n-icon size="12" class="rotate-180"><ChevronDown16Regular /></n-icon>
+              </button>
             </n-collapse-transition>
           </template>
 

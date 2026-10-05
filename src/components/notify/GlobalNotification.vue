@@ -26,12 +26,13 @@
     image_url: item.meta.image_url || null
   })
 
-  // Qo'ng'iroq badge'i uchun o'qilmaganlar ro'yxatiga qo'shadi.
+  // Qo'ng'iroq badge'i uchun o'qilmaganlar ro'yxatiga qo'shadi (dedup — socket
+  // orqali allaqachon jonli qo'shilgan bo'lishi mumkin).
   const pushToUnread = (item, data) => {
-    store.userUnreadNotificationsCount++
-    store.userUnreadNotifications.unshift({
+    store._addUnread({
       id: item.meta.id,
       created_at: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+      read_at: null,
       data
     })
   }

@@ -15,7 +15,7 @@
 </script>
 
 <template>
-  <div class="bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col">
+  <div class="bg-surface-section shadow-card rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col">
     <MonthlyCardSkeleton v-if="store.monthlyLoading" />
 
     <template v-else>
@@ -23,7 +23,6 @@
         :icon="HeadTableRowsIcon"
         tint="lime"
         :title="$t('turnStileDashboard.cards.graphAnalytic')"
-        :subtitle="$t('turnStileDashboard.cards.graphAnalyticDescription')"
       />
 
       <!-- markazdagi qiyshaytirilgan dekor + pastdan oq gradient niqob -->
@@ -63,11 +62,6 @@
               class="font-grotesk font-semibold text-[20px] leading-[30px] text-fig-text-primary"
             >
               {{ formatted }}
-            </span>
-          </div>
-          <div class="flex items-center justify-between gap-2 mt-1">
-            <span class="text-[12px] leading-[16px] text-fig-text-muted">
-              {{ $t('turnStileDashboard.compare.vsYesterday') }}
             </span>
             <DeltaBadge
               hide-label

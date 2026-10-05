@@ -334,12 +334,12 @@
     </UIPageFilter>
 
     <div class="flex items-center justify-between flex-wrap gap-2">
-      <n-tabs type="segment" v-model:value="activeTab" size="small" class="s1-seg">
+      <UITabs type="segment" v-model:value="activeTab" size="small" class="s1-seg">
         <n-tab-pane name="workers" :tab="$t('salary1c.workers')" />
         <n-tab-pane name="orgs" :tab="$t('salary1c.byOrg')" />
         <n-tab-pane name="veds" :tab="$t('salary1c.veds.tab')" />
         <n-tab-pane name="reconcile" :tab="$t('salary1c.reconcile.tab')" />
-      </n-tabs>
+      </UITabs>
       <div class="flex items-center gap-2">
         <n-button
           v-if="accStore.checkPermission(accStore.pn.economistUploadsWrite)"
@@ -1232,7 +1232,7 @@
   .s1-stat--warn:hover { box-shadow: 0 0 0 2px rgba(231, 0, 10, 0.30) inset; }
   .s1-stat--active { box-shadow: 0 0 0 2px var(--danger-color, #dc2626) inset; }
   .s1-stat-lbl { font-size: 11px; color: var(--textColor3, #98a2b3); }
-  .s1-stat-val { font-size: 16px; font-weight: 700; color: var(--textColor1, #101828); font-variant-numeric: tabular-nums; }
+  .s1-stat-val { font-size: 16px; font-weight: 700; color: var(--textColor1, #475569); font-variant-numeric: tabular-nums; }
   /* Tizimda yo'q xodim qatori */
   :deep(.s1-row-out > td) { background: rgba(231, 0, 10, 0.08); }
 
@@ -1260,7 +1260,7 @@
   .s1-pinfo { display: flex; gap: 10px; margin-bottom: 14px; }
   .s1-pinfo > div { flex: 1; display: flex; flex-direction: column; gap: 2px; padding: 8px 12px; border: 1px solid var(--surface-line, #e5e7eb); border-radius: 10px; }
   .s1-pinfo-lbl { font-size: 11px; color: var(--textColor3, #98a2b3); }
-  .s1-pinfo b { font-size: 15px; color: var(--textColor1, #101828); }
+  .s1-pinfo b { font-size: 15px; color: var(--textColor1, #475569); }
   .s1-cmp-sec { font-size: 13px; font-weight: 600; margin: 6px 0 4px; color: var(--textColor2, #475467); }
 
   /* Ved kesimida — kartalar (tizim dizayni) */
@@ -1316,7 +1316,7 @@
   .s1-col-name { font-size: 10px; font-weight: 400; color: var(--textColor3, #98a2b3); line-height: 1.1; }
 
   /* Solishtirish */
-  .s1-rec-info { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 14px; font-weight: 600; color: var(--textColor1, #101828); }
+  .s1-rec-info { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 14px; font-weight: 600; color: var(--textColor1, #475569); }
   .s1-rec-diff > :deep(td) { background: rgba(253, 199, 0, 0.14); }
   /* «Bizniki» drill-down — bosiladigan summa */
   .s1-drill { color: var(--primary-color, #1279f0); cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px; }

@@ -9,35 +9,28 @@
   const store = useTurnstileDashboardStore()
   const emits = defineEmits(['onPreview'])
 
+  // Kelmagan bo'lsa ham sababi bor xodimlar: ta'til, grafikdagi dam olish kuni, sababli.
   const cells = computed(() => [
     {
-      previewType: 'privilege_turnstile_workers',
-      label: 'turnStileDashboard.cards.privilege',
-      count: store.grandWorkerData?.privilege_turnstile_workers_count || 0,
-      color: '--fig-icon-green',
-      delta: store.deltas.privilege
-    },
-    {
-      previewType: 'not_passed_turnstile_workers',
-      label: 'turnStileDashboard.cards.dontPassFace',
-      count: store.grandWorkerData?.not_passed_turnstile_workers_count || 0,
-      color: '--fig-icon-brand',
-      delta: store.deltas.notPassed,
-      invert: true
-    },
-    {
-      previewType: 'vacations',
-      label: 'turnStileDashboard.cards.onVacation',
-      count: store.grandWorkerData?.vacation_workers?.total || 0,
+      previewType: 'att_vacation',
+      label: 'turnStileDashboard.attendance.vacation',
+      count: store.attendance?.vacation || 0,
       color: '--fig-icon-indigo',
       delta: store.deltas.vacation
     },
     {
-      previewType: 'casual_workers',
-      label: 'turnStileDashboard.cards.onHoliday',
-      count: store.grandWorkerData?.casual_workers || 0,
+      previewType: 'att_day_off',
+      label: 'turnStileDashboard.attendance.day_off',
+      count: store.attendance?.day_off || 0,
       color: '--fig-icon-amber',
-      delta: store.deltas.casual
+      delta: store.deltas.dayOff
+    },
+    {
+      previewType: 'att_excused',
+      label: 'turnStileDashboard.attendance.excused',
+      count: store.attendance?.excused || 0,
+      color: '--fig-icon-green',
+      delta: store.deltas.excused
     }
   ])
 
@@ -47,7 +40,7 @@
 </script>
 
 <template>
-  <div class="bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden">
+  <div class="bg-surface-section shadow-card rounded-2xl px-1 pb-1 relative overflow-hidden">
     <InfoGraphSkeleton v-if="store.grandLoading" />
 
     <template v-else>
@@ -55,7 +48,6 @@
         :icon="HeadPieChartIcon"
         tint="blue"
         :title="$t('turnStileDashboard.cards.privilege_turnstile_workers')"
-        :subtitle="$t('turnStileDashboard.cards.privilegeSubtitle')"
       />
 
       <div class="flex flex-wrap items-center gap-4">
@@ -75,7 +67,7 @@
               :delta-loading="store.compareLoading"
               @click="emits('onPreview', cell.previewType)"
             />
-            <div v-if="idx < 2" class="h-px w-full bg-fig-br-disable"></div>
+            <div v-if="idx < cells.length - 1" class="h-px w-full bg-fig-br-disable"></div>
           </template>
         </div>
       </div>

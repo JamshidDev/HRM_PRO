@@ -47,7 +47,7 @@
 
 <template>
   <div
-    class="relative flex h-full flex-col overflow-hidden rounded-2xl bg-fig-block p-4"
+    class="relative flex h-full flex-col overflow-hidden rounded-2xl bg-fig-block shadow-card p-4"
     :class="gapClass"
   >
     <template v-if="decorated">

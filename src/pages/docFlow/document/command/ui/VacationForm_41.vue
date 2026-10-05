@@ -133,7 +133,7 @@
         {{ $t('documentPage.command.form.removeWorker') }}
       </n-button>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-2">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item :show-feedback="false" :label="$t(`documentPage.command.form.from`)" path="from">
         <n-date-picker
           class="w-full"
@@ -143,7 +143,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-2">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.main_day`)"
@@ -152,7 +152,7 @@
         <n-input class="w-full" type="text" v-model:value="item.main_day" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-2">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.second_day`)"
@@ -161,7 +161,7 @@
         <n-input class="w-full" type="text" v-model:value="item.second_day" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-6">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-6">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.additional`)"
@@ -195,7 +195,7 @@
         </div>
       </template>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-2 flex justify-center pt-11">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2 flex justify-center pt-11">
       <n-button
         :loading="store.calculateLoading"
         @click="onCalculate(idx)"
@@ -208,12 +208,12 @@
         {{ $t('documentPage.command.form.calculateVacation') }}
       </n-button>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-10 flex items-end">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-10 flex items-end">
       <template v-if="item.result">
         <div
           class="grid mt-2 grid-cols-12 gap-x-4 w-full border border-dashed border-surface-line bg-surface-section rounded-md p-2"
         >
-          <div class="col-span-12 md:col-span-6 lg:col-span-3 mb-2 lg:mb-0">
+          <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3 mb-2 @4xl:mb-0">
             <n-form-item
               :show-feedback="false"
               :label="$t(`documentPage.command.form.to`)"
@@ -227,7 +227,7 @@
               />
             </n-form-item>
           </div>
-          <div class="col-span-12 md:col-span-6 lg:col-span-3 mb-2 lg:mb-0">
+          <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3 mb-2 @4xl:mb-0">
             <n-form-item
               :show-feedback="false"
               :label="$t(`documentPage.command.form.work_day`)"
@@ -241,7 +241,7 @@
               />
             </n-form-item>
           </div>
-          <div class="col-span-12 md:col-span-6 lg:col-span-2 mb-2 lg:mb-0">
+          <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2 mb-2 @4xl:mb-0">
             <n-form-item
               :show-feedback="false"
               :label="$t(`documentPage.command.form.period_from`)"
@@ -255,7 +255,7 @@
               />
             </n-form-item>
           </div>
-          <div class="col-span-12 md:col-span-6 lg:col-span-2 mb-2 lg:mb-0">
+          <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2 mb-2 @4xl:mb-0">
             <n-form-item
               :show-feedback="false"
               :label="$t(`documentPage.command.form.period_to`)"
@@ -269,7 +269,7 @@
               />
             </n-form-item>
           </div>
-          <div class="col-span-12 md:col-span-6 lg:col-span-2 mb-2 lg:mb-0">
+          <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2 mb-2 @4xl:mb-0">
             <n-form-item
               :show-feedback="false"
               :label="$t(`documentPage.command.form.all_day`)"

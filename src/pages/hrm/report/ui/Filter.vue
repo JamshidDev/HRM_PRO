@@ -67,6 +67,7 @@
       </label>
       <UISelect
         placement="bottom-end"
+        clearable
         :multiple="false"
         :options="store.structure.list"
         :loading="store.structure.loading"

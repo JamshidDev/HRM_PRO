@@ -28,7 +28,7 @@
     <div
       v-for="action in actions"
       :key="action.key"
-      class="flex cursor-default flex-col gap-3 overflow-hidden rounded-2xl bg-fig-block p-4"
+      class="flex cursor-default flex-col gap-3 overflow-hidden rounded-2xl bg-fig-block shadow-card p-4"
     >
       <span class="flex h-9 w-9 shrink-0 items-center justify-center">
         <component :is="action.icon" />

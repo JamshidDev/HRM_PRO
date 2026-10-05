@@ -17,10 +17,10 @@
 <template>
   <div>
     <div v-if="store.isCamera" class="flex w-[200px]">
-      <n-tabs v-model:value="store.activeTab" type="segment" animated>
+      <UITabs v-model:value="store.activeTab" type="segment" animated>
         <n-tab-pane :name="1" :tab="$t('content.questions')"> </n-tab-pane>
         <n-tab-pane :name="2" :tab="$t('content.videos')"> </n-tab-pane>
-      </n-tabs>
+      </UITabs>
     </div>
     <div class="w-full">
       <n-tabs animated v-model:value="store.activeTab" class="hidden-tab-header" type="segment">

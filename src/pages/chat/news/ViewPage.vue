@@ -113,7 +113,7 @@
         <!-- Meta row: date · status · pin · reactions · categories -->
         <div
           class="flex flex-wrap items-center gap-x-4 gap-y-2 sm:gap-3 mb-6 pb-6 border-b border-surface-line"
-          style="color: #344054"
+          style="color: #475569"
         >
           <!-- Date -->
           <div class="flex items-center gap-1.5 text-sm">

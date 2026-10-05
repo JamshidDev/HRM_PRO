@@ -61,6 +61,7 @@
       </p>
       <DeltaBadge
         class="mt-1"
+        hide-label
         :delta="delta"
         :invert="invert"
         :label="deltaLabel"

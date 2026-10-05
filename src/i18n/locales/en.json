@@ -2837,6 +2837,10 @@
     }
   },
   "applicationPage": {
+    "draft": "Draft",
+    "draftSignTitle": "Application is a draft",
+    "draftSignBody": "After you sign it, the application is sent to HR.",
+    "approved": "Approved",
     "name": "Applications",
     "addApp": "Submit application",
     "createWorkerApplication": "Create application",
@@ -4904,6 +4908,23 @@
     "filter": {
       "organizationPlaceholder": "Select organization",
       "departmentPlaceholder": "Select department"
+    },
+    "attendance": {
+      "vacation": "On vacation",
+      "day_off": "Day off",
+      "excused": "Excused",
+      "firstEvent": "First event",
+      "lastEvent": "Last event",
+      "reasons": "Flags"
+    },
+    "attendanceReason": {
+      "sick_leave": "Sick leave",
+      "business_trip": "Business trip",
+      "no_turnstile": "No turnstile",
+      "exempt": "Exempt from tracking",
+      "vacation": "Vacation",
+      "day_off": "Day off",
+      "no_schedule": "No schedule"
     }
   },
   "hcWorkDuration": {
@@ -5955,5 +5976,72 @@
       "noDoc": "No document provided",
       "stillOpen": "The sheet is still open"
     }
+  },
+  "paymentAnalysis": {
+    "name": "Payment anomaly detection",
+    "title": "Detection of unjustified payments by payment type",
+    "tabs": {
+      "analysis": "Payment analysis",
+      "whitelist": "Privileged employees"
+    },
+    "filter": {
+      "payingCode": "Payment code",
+      "onlyFlagged": "Only flagged"
+    },
+    "buttons": {
+      "blanka": "Upload blanka",
+      "whitelist": "Upload whitelist",
+      "analyze": "Re-analyze",
+      "export": "Export to Excel",
+      "addRow": "Add employee",
+      "whitelistList": "Whitelist",
+      "addWhitelist": "Add employee"
+    },
+    "table": {
+      "rowNo": "No.",
+      "fio": "Full name",
+      "organization": "Organization",
+      "position": "Position",
+      "pinfl": "PINFL",
+      "payingCode": "Payment code",
+      "summa": "Amount",
+      "reason": "Detected reason",
+      "verdict": "Result"
+    },
+    "verdict": {
+      "valid": "Justified",
+      "invalid": "Unjustified",
+      "review": "Additional review"
+    },
+    "blanka": {
+      "title": "Upload NN payment blanka"
+    },
+    "whitelist": {
+      "title": "Upload approved employees whitelist"
+    },
+    "addRow": {
+      "title": "Add employee",
+      "worker": "Employee",
+      "payingCode": "Payment code",
+      "summa": "Amount"
+    },
+    "toast": {
+      "uploaded": "Blanka uploaded and analyzed",
+      "whitelistUploaded": "Whitelist uploaded",
+      "analyzed": "Analysis re-run",
+      "requiredOrganization": "Select an organization",
+      "requiredPayingCode": "Select a payment code",
+      "requiredWorker": "Select an employee",
+      "requiredFilters": "Select organization and period",
+      "added": "Employee added and analyzed",
+      "deleted": "Employee deleted"
+    },
+    "whitelistList": {
+      "title": "Privileged employees list"
+    },
+    "whitelistAdd": {
+      "title": "Add privileged employee"
+    },
+    "confirmDelete": "Delete?"
   }
 }

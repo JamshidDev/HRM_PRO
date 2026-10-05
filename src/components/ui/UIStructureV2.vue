@@ -1,6 +1,7 @@
 <script setup>
   import { Search48Filled } from '@vicons/fluent'
   import TreeOrg from '@/components/tree/TreeOrg.vue'
+  import { useTreePopoverKeyboard } from '@/composables/useTreePopoverKeyboard.js'
   import { useDebounceFn } from '@vueuse/core'
   import { useComponentStore } from '@/store/modules/index.js'
   const store = useComponentStore()
@@ -115,12 +116,26 @@
       store._allStructures()
     }
   }
+  // ♿ Klaviatura: ochish/yopish, qatorlar bo'ylab yurish, Tab bilan keyingi maydonga
+  // o'tish. Ochilganda pastdagi qidiruv inputiga fokus tushadi.
+  const { show, triggerRef, panelRef, searchInputRef, onTriggerKeydown, onPanelKeydown } =
+    useTreePopoverKeyboard({
+      disabled: () => props.disabled,
+      multiple: () => props.multiple
+    })
 </script>
 
 <template>
-  <n-popover placement="bottom" trigger="click" width="540px" class="h-[460px] py-0! px-1">
+  <n-popover
+    v-model:show="show"
+    placement="bottom"
+    trigger="click"
+    width="540px"
+    class="h-[460px] py-0! px-1"
+  >
     <template #trigger>
       <n-badge
+        ref="triggerRef"
         :show="!disabled"
         :offset="[-10, -4]"
         class="w-full"
@@ -128,6 +143,7 @@
         type="info"
       >
         <n-input
+          @keydown="onTriggerKeydown"
           :disabled="disabled"
           @focus="onFocusEv"
           class="ui__structure-input w-full"
@@ -136,43 +152,47 @@
         />
       </n-badge>
     </template>
-    <div class="w-full h-[10px]"></div>
-    <div class="w-full h-[404px] overflow-y-auto">
-      <n-spin :show="store.allStructureLoading" class="w-full h-full">
-        <TreeOrg
-          :data="store.allStructureList"
-          :modelV="modelV"
-          :checkedVal="checkedVal"
-          :getChildIds="getChildIds"
-          :changeCheckVal="changeCheckVal"
-          :multiple="multiple"
-          @onSelect="onSelect"
-          @onSelectAll="onSelectAll"
-        />
-      </n-spin>
-    </div>
-    <div class="w-full h-[40px] flex items-center">
-      <n-input-group>
-        <n-input
-          size="small"
-          v-model:value="searchModel"
-          round
-          :on-keyup="searchEvent"
-          :loading="store.allStructureLoading"
-        >
-          <template #prefix>
-            <n-icon :component="Search48Filled" />
-          </template>
-        </n-input>
-        <n-button
-          @click="emits('onSubmit')"
-          type="primary"
-          size="small"
-          :loading="store.allStructureLoading"
-        >
-          {{ $t('content.search') }}
-        </n-button>
-      </n-input-group>
+    <div ref="panelRef" @keydown="onPanelKeydown">
+      <div class="w-full h-[10px]"></div>
+      <div class="w-full h-[404px] overflow-y-auto">
+        <n-spin :show="store.allStructureLoading" class="w-full h-full">
+          <TreeOrg
+            :data="store.allStructureList"
+            :modelV="modelV"
+            :checkedVal="checkedVal"
+            :getChildIds="getChildIds"
+            :changeCheckVal="changeCheckVal"
+            :multiple="multiple"
+            @onSelect="onSelect"
+            @onSelectAll="onSelectAll"
+          />
+        </n-spin>
+      </div>
+      <div class="w-full h-[40px] flex items-center">
+        <n-input-group>
+          <n-input
+            ref="searchInputRef"
+            data-tree-search
+            size="small"
+            v-model:value="searchModel"
+            round
+            :on-keyup="searchEvent"
+            :loading="store.allStructureLoading"
+          >
+            <template #prefix>
+              <n-icon :component="Search48Filled" />
+            </template>
+          </n-input>
+          <n-button
+            @click="emits('onSubmit')"
+            type="primary"
+            size="small"
+            :loading="store.allStructureLoading"
+          >
+            {{ $t('content.search') }}
+          </n-button>
+        </n-input-group>
+      </div>
     </div>
   </n-popover>
 </template>

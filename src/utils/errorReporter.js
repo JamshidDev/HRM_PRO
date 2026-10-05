@@ -527,7 +527,7 @@ const onUnhandledRejection = (event) => {
   const message = reason?.message || (typeof reason === 'string' ? reason : String(reason))
   // Eski deploy belgisi: brauzer hali eski chunk nomlarini so'rayapti.
   const isChunkError =
-    /dynamically imported module|Loading chunk|Importing a module script failed/i.test(message)
+    /dynamically imported module|Loading chunk|Importing a module script failed|Unable to preload CSS/i.test(message)
 
   reportError({
     type: isChunkError ? 'Chunk yuklanmadi' : 'Promise',

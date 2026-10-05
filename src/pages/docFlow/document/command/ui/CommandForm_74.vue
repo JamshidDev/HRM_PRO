@@ -51,24 +51,24 @@
     class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
   >
     <!-- Yangi F.I.Sh -->
-    <div class="col-span-12 md:col-span-4">
+    <div class="col-span-12 @xl:col-span-4">
       <n-form-item :label="$t(`documentPage.command.form.new_last_name`)" path="new_last_name">
         <n-input class="w-full" type="text" v-model:value="store.form_74.new_last_name" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-4">
+    <div class="col-span-12 @xl:col-span-4">
       <n-form-item :label="$t(`documentPage.command.form.new_first_name`)" path="new_first_name">
         <n-input class="w-full" type="text" v-model:value="store.form_74.new_first_name" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-4">
+    <div class="col-span-12 @xl:col-span-4">
       <n-form-item :label="$t(`documentPage.command.form.new_middle_name`)" path="new_middle_name">
         <n-input class="w-full" type="text" v-model:value="store.form_74.new_middle_name" />
       </n-form-item>
     </div>
 
     <!-- Kuchga kirish sanasi -->
-    <div class="col-span-12 md:col-span-4">
+    <div class="col-span-12 @xl:col-span-4">
       <n-form-item :label="$t(`documentPage.command.form.change_date`)" path="change_date">
         <n-date-picker
           class="w-full"
@@ -80,7 +80,7 @@
     </div>
 
     <!-- Passport -->
-    <div class="col-span-12 md:col-span-4">
+    <div class="col-span-12 @xl:col-span-4">
       <n-form-item
         :label="$t(`documentPage.command.form.passport_authority`)"
         path="passport_authority"
@@ -88,12 +88,12 @@
         <n-input class="w-full" type="text" v-model:value="store.form_74.passport_authority" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-4">
+    <div class="col-span-12 @xl:col-span-4">
       <n-form-item :label="$t(`documentPage.command.form.passport_serial`)" path="passport_serial">
         <n-input class="w-full" type="text" v-model:value="store.form_74.passport_serial" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-4">
+    <div class="col-span-12 @xl:col-span-4">
       <n-form-item :label="$t(`documentPage.command.form.passport_date`)" path="passport_date">
         <n-date-picker
           class="w-full"
@@ -105,7 +105,7 @@
     </div>
 
     <!-- Guvohnoma (asos) -->
-    <div class="col-span-12 md:col-span-4">
+    <div class="col-span-12 @xl:col-span-4">
       <n-form-item
         :label="$t(`documentPage.command.form.certificate_serial`)"
         path="certificate_serial"
@@ -113,7 +113,7 @@
         <n-input class="w-full" type="text" v-model:value="store.form_74.certificate_serial" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-4">
+    <div class="col-span-12 @xl:col-span-4">
       <n-form-item
         :label="$t(`documentPage.command.form.certificate_date`)"
         path="certificate_date"

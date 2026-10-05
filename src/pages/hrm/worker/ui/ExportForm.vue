@@ -119,7 +119,7 @@
          `--inline` varianti kenglikni kontentga tenglaydi, shunda yonidagi
          «Barchasini tanlash» pastga tushmaydi. -->
     <div class="export-head">
-      <n-tabs
+      <UITabs
         v-model:value="store.tab"
         @update:value="onTabChange"
         type="line"
@@ -145,7 +145,7 @@
             {{ $t('exportPage.tabReference') }}
           </span>
         </n-tab>
-      </n-tabs>
+      </UITabs>
 
       <label
         v-if="store.tab === 'excel' && store.step === STEP_COLUMNS"

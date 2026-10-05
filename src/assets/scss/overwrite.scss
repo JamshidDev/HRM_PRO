@@ -503,3 +503,9 @@ input:-webkit-autofill {
 .n-checkbox__label {
   width: 100% !important;
 }
+
+// Barcha naive-ui kartalari — umumiy karta soyasi (`--card-shadow`, variables.scss).
+// Modal ham `n-card` — uning o'z (kuchliroq) soyasi saqlanadi.
+.n-card:not(.n-modal) {
+  box-shadow: var(--card-shadow);
+}

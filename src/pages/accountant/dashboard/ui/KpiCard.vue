@@ -40,7 +40,7 @@
 
 <template>
   <div
-    class="relative flex h-full flex-col gap-2 overflow-hidden rounded-2xl bg-fig-block px-1 pt-1.5 pb-1"
+    class="relative flex h-full flex-col gap-2 overflow-hidden rounded-2xl bg-fig-block shadow-card px-1 pt-1.5 pb-1"
   >
     <!-- o'ng yuqoridagi xira suv belgisi: 64px ramka, ikonka o'z o'lchamida markazda -->
     <span

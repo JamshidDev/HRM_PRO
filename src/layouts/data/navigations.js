@@ -818,6 +818,13 @@ export const navigations = withRawIcons([
         permission: appPermissions.economistUploadsRead
       },
       {
+        label: 'paymentAnalysis.name', // To'lov turlari bo'yicha asossiz to'lovlarni aniqlash
+        path: Utils.routeAccountantPathMaker(AppPaths.PaymentAnalysis),
+        icon: EconomistUploadReportIcon,
+        color: 'bg-error',
+        permission: appPermissions.economistPaymentAnalysisRead
+      },
+      {
         label: 'monthReport.name', // Oylik hisobot
         path: Utils.routeAccountantPathMaker(AppPaths.MonthReport),
         icon: EconomistMonthReportIcon,
