@@ -122,7 +122,7 @@
       >
     </div>
 
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_43.new_date`)" path="new_date">
         <n-date-picker
           class="w-full"
@@ -132,7 +132,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_43.work_day`)" path="work_day">
         <n-date-picker
           class="w-full"
@@ -144,7 +144,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-12 lg:col-span-6">
+    <div class="col-span-12 @xl:col-span-12 @4xl:col-span-6">
       <n-form-item :label="$t(`commandPage.form_43.reason`)" path="reason">
         <n-select
           v-model:value="store.form_43.reason"

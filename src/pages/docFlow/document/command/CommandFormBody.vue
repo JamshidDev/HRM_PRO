@@ -73,6 +73,7 @@
   }
 
   const formRef = ref(null)
+  const rootRef = ref(null)
   const confirmationList = ref([])
   const financeList = ref([])
 
@@ -202,8 +203,23 @@
     store.form_32.command_additional = []
   }
 
+  // Saqlash o'tmasa — birinchi qizil (bo'sh/xato) maydonga olib boradi.
+  const scrollToFirstError = async () => {
+    await nextTick()
+    const el = rootRef.value?.querySelector('.n-form-item-blank--error')
+    if (!el) return
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    el.querySelector('input, textarea')?.focus({ preventScroll: true })
+  }
+
+  const submit = async () => {
+    const res = await validateAll()
+    if (!res.isValid) scrollToFirstError()
+    return res
+  }
+
   // Forma + turga xos blok validatsiyasi; natija — backendga yuboriladigan data.
-  const submit = () =>
+  const validateAll = () =>
     new Promise((resolve) => {
       formRef.value?.validate(async (error) => {
         validationComponent()
@@ -649,7 +665,7 @@
 </script>
 
 <template>
-  <div class="command-form-body" :class="{ 'is-readonly': readonly }">
+  <div ref="rootRef" class="command-form-body @container" :class="{ 'is-readonly': readonly }">
     <n-form
       ref="formRef"
       :model="store.payload"
@@ -667,7 +683,7 @@
         <div
           class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
         >
-          <div class="col-span-12 md:col-span-6 lg:col-span-2">
+          <div class="col-span-6 @4xl:col-span-2">
             <n-form-item
               :label="$t(`documentPage.command.form.command_number`)"
               path="command_number"
@@ -675,7 +691,7 @@
               <n-input class="w-full" type="text" v-model:value="store.payload.command_number" />
             </n-form-item>
           </div>
-          <div class="col-span-12 md:col-span-6 lg:col-span-2">
+          <div class="col-span-6 @4xl:col-span-2">
             <n-form-item :label="$t(`documentPage.command.form.command_date`)" path="command_date">
               <n-date-picker
                 class="w-full"
@@ -685,7 +701,7 @@
               />
             </n-form-item>
           </div>
-          <div class="col-span-12 lg:col-span-8">
+          <div class="col-span-12 @4xl:col-span-8">
             <n-form-item :label="$t(`documentPage.command.form.type`)" path="command_type">
               <n-select
                 v-model:value="store.payload.command_type"
@@ -713,7 +729,7 @@
           class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
           :class="{ 'mt-6': !isEdit }"
         >
-          <div class="col-span-12 md:col-span-6 flex">
+          <div class="col-span-12 @xl:col-span-6 flex">
             <n-form-item
               class="w-full"
               :label="$t(`documentPage.form.organization`)"
@@ -733,7 +749,7 @@
               />
             </n-form-item>
           </div>
-          <div class="col-span-12 md:col-span-6 flex" v-if="isCancelCommand">
+          <div class="col-span-12 @xl:col-span-6 flex" v-if="isCancelCommand">
             <n-form-item
               class="w-full"
               :label="$t(`commandPage.form_75.cancel_command_id`)"
@@ -755,7 +771,7 @@
               />
             </n-form-item>
           </div>
-          <div class="col-span-12 md:col-span-6 flex" v-else>
+          <div class="col-span-12 @xl:col-span-6 flex" v-else>
             <template v-if="store.isSingleSelect">
               <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker">
                 <SuperSelect

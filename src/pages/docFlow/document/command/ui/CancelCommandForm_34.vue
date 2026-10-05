@@ -233,7 +233,7 @@
     :rules="validationRules.form_32"
     class="grid grid-cols-12 mb-8 gap-x-4 gap-y-2 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
   >
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.warning_number`)"
@@ -242,7 +242,7 @@
         <n-input class="!w-full" type="text" v-model:value="store.form_34.warning_number" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.warning_date`)"
@@ -256,7 +256,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-12 lg:col-span-12">
+    <div class="col-span-12 @xl:col-span-12 @4xl:col-span-12">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.reason`)"
@@ -295,7 +295,7 @@
       </n-form-item>
     </div>
 
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item
         :label="$t(`documentPage.command.form.contract_to_date`)"
         path="contract_to_date"
@@ -308,7 +308,7 @@
         />
       </n-form-item>
     </div>
-    <div v-if="store.payload.worker" class="col-span-12 md:col-span-6 lg:col-span-9">
+    <div v-if="store.payload.worker" class="col-span-12 @xl:col-span-6 @4xl:col-span-9">
       <n-form-item :show-feedback="false" :label="$t(`documentPage.command.form.additional`)">
         <n-select
           :consistent-menu-width="false"
@@ -333,7 +333,7 @@
             componentStore.deleteCommandEnum?.[0]?.name
           }}</n-button>
         </div>
-        <div class="col-span-12 md:col-span-6 lg:col-span-2">
+        <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
           <n-form-item :show-feedback="false" :label="$t(`content.year`)" path="pension_count.year">
             <n-input-number
               class="w-full"
@@ -343,7 +343,7 @@
             />
           </n-form-item>
         </div>
-        <div class="col-span-12 md:col-span-6 lg:col-span-2">
+        <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
           <n-form-item
             :show-feedback="false"
             :label="$t(`documentPage.command.form.count`)"
@@ -370,7 +370,7 @@
             componentStore.deleteCommandEnum?.[1]?.name
           }}</n-button>
         </div>
-        <div class="col-span-12 md:col-span-6 lg:col-span-2">
+        <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
           <n-form-item :show-feedback="false" :label="$t(`content.year`)" path="pension_count.year">
             <n-input-number
               class="w-full"
@@ -380,7 +380,7 @@
             />
           </n-form-item>
         </div>
-        <div class="col-span-12 md:col-span-6 lg:col-span-2">
+        <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
           <n-form-item
             :show-feedback="false"
             :label="$t(`documentPage.command.form.coefficient`)"
@@ -421,7 +421,7 @@
             {{ $t('documentPage.command.lastVacation') }}
           </n-button>
         </div>
-        <div class="col-span-12 md:col-span-6 lg:col-span-2">
+        <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
           <n-form-item
             :show-feedback="false"
             :label="$t(`content.from`)"
@@ -435,7 +435,7 @@
             />
           </n-form-item>
         </div>
-        <div class="col-span-12 md:col-span-6 lg:col-span-2">
+        <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
           <n-form-item :show-feedback="false" :label="$t(`content.to`)" path="compensation.period2">
             <n-date-picker
               class="w-full"
@@ -445,7 +445,7 @@
             />
           </n-form-item>
         </div>
-        <div class="col-span-12 md:col-span-6 lg:col-span-2">
+        <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
           <n-form-item
             :show-feedback="false"
             :label="$t(`documentPage.command.form.all_day`)"
@@ -486,7 +486,7 @@
             {{ $t('documentPage.command.lastVacation') }}
           </n-button>
         </div>
-        <div class="col-span-12 md:col-span-6 lg:col-span-2">
+        <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
           <n-form-item
             :show-feedback="false"
             :label="$t(`content.from`)"
@@ -500,7 +500,7 @@
             />
           </n-form-item>
         </div>
-        <div class="col-span-12 md:col-span-6 lg:col-span-2">
+        <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
           <n-form-item
             :show-feedback="false"
             :label="$t(`content.to`)"
@@ -514,7 +514,7 @@
             />
           </n-form-item>
         </div>
-        <div class="col-span-12 md:col-span-6 lg:col-span-2">
+        <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
           <n-form-item
             :show-feedback="false"
             :label="$t(`documentPage.command.form.all_day`)"
@@ -528,7 +528,7 @@
             />
           </n-form-item>
         </div>
-        <div class="col-span-12 md:col-span-6 lg:col-span-2">
+        <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
           <n-form-item
             :show-feedback="false"
             :label="$t(`documentPage.command.form.rest_day`)"
@@ -542,7 +542,7 @@
             />
           </n-form-item>
         </div>
-        <div class="col-span-12 md:col-span-6 lg:col-span-2">
+        <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
           <n-form-item
             :show-feedback="false"
             :label="$t(`documentPage.command.form.rest_day`)"
