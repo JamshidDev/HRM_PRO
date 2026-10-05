@@ -23,7 +23,7 @@
 
 <template>
   <div
-    class="relative flex flex-col justify-center gap-3 overflow-hidden rounded-2xl bg-fig-block p-4"
+    class="relative flex flex-col justify-center gap-3 overflow-hidden rounded-2xl bg-fig-block shadow-card p-4"
   >
     <!-- Maketdagi bezak (node 2087:61115): kartaning yuqori markazida,
          90° burilgan; shaffoflik (4%) SVG ning o'zida. -->

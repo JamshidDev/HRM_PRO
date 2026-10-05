@@ -14,7 +14,7 @@
     v-for="(item, idx) in count"
     :key="idx"
     :class="attrs.class"
-    class="flex flex-col gap-3 pt-4 px-1 pb-1 rounded-2xl bg-surface-section relative overflow-hidden"
+    class="flex flex-col gap-3 pt-4 px-1 pb-1 rounded-2xl bg-surface-section shadow-card relative overflow-hidden"
   >
     <div class="flex items-center gap-1 px-2">
       <n-skeleton width="28px" height="28px" :sharp="false" class="rounded-lg" />

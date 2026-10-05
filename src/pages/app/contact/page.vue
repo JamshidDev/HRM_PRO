@@ -101,7 +101,7 @@
       <!-- 1-qator: Telegram va FAQ (rasmli kartalar) -->
       <div class="grid gap-4 lg:grid-cols-2">
         <div
-          class="relative flex min-h-[118px] items-center overflow-hidden rounded-2xl bg-fig-block p-4"
+          class="relative flex min-h-[118px] items-center overflow-hidden rounded-2xl bg-fig-block shadow-card p-4"
         >
           <div class="relative flex flex-1 flex-col gap-5">
             <div class="flex flex-col gap-1">
@@ -138,7 +138,7 @@
 
         <button
           type="button"
-          class="relative flex min-h-[118px] cursor-pointer items-center overflow-hidden rounded-2xl bg-fig-block p-4 text-left transition-opacity hover:opacity-90"
+          class="relative flex min-h-[118px] cursor-pointer items-center overflow-hidden rounded-2xl bg-fig-block shadow-card p-4 text-left transition-opacity hover:opacity-90"
           @click="goFaq"
         >
           <div class="relative flex flex-1 flex-col justify-between gap-5">
@@ -211,7 +211,7 @@
       </div>
 
       <!-- 3-qator: manzil / ish vaqti / ijtimoiy tarmoqlar + xarita -->
-      <div class="flex flex-col gap-3 overflow-hidden rounded-2xl bg-fig-block p-4 lg:flex-row">
+      <div class="flex flex-col gap-3 overflow-hidden rounded-2xl bg-fig-block shadow-card p-4 lg:flex-row">
         <div class="flex flex-1 flex-col gap-5">
           <div class="flex flex-col gap-2">
             <div class="flex h-6 items-center gap-1.5">

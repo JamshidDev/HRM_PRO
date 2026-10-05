@@ -110,6 +110,8 @@
   --fig-text-red: #ca1f29;
   --fig-br-error: #ffa39a;
   --fig-block-bg: #ffffff;
+  // Karta soyasi (Figma «Shadow/soft» ×2): 0 2 8 #0F1729 5% + 0 8 24 #0F1729 4%.
+  --card-shadow: 0 2px 8px 0 rgb(15 23 41 / 5%), 0 8px 24px 0 rgb(15 23 41 / 4%);
   // Maketdagi gradient (#f9fafb → #f5faff → #eff8ff) oq karta ustida atigi 1.03:1
   // edi — panelning YUQORI qismi deyarli oq bo'lib, sarlavha "havoda" osilib
   // turardi. Endi boshlanish nuqtasi loyihadagi standart karta-sarlavha tinti
@@ -284,6 +286,8 @@
   --fig-text-red: #ff6066;
   --fig-br-error: rgba(229, 56, 59, 0.5);
   --fig-block-bg: #1d2939;
+  // Qorong'i fonda 4–5% ko'rinmaydi — shu shakl, lekin qoraroq.
+  --card-shadow: 0 2px 8px 0 rgb(0 0 0 / 24%), 0 8px 24px 0 rgb(0 0 0 / 20%);
   --fig-block-header-bg: linear-gradient(178.26deg, #1d2939 0%, #22303f 50%, #26384c 100%);
 
   // Chip fonlari past alfa bilan, matnlar esa yorug'lashtiriladi — maketdagi
