@@ -3527,6 +3527,17 @@
     "name": "Plan vs Actual",
     "addDepartment": "Add department",
     "addPosition": "Add position",
+    "listView": "List",
+    "tableView": "Table",
+    "table": {
+      "position": "Position",
+      "occupancy": "Occupancy",
+      "total": "Total",
+      "all": "All",
+      "search": "Search department or position",
+      "positionsCount": "{n} positions",
+      "noPositions": "No positions added"
+    },
     "tooltip": {
       "P": "Plan",
       "G": "Group",
@@ -3604,6 +3615,16 @@
     "name": "Reports"
   },
   "uploadReport": {
+    "ui": {
+      "searchOrg": "Search organization",
+      "selectOrg": "Select an organization from the list on the left to upload and confirm reports",
+      "selectType": "Select a report type above to see its upload history",
+      "noUploads": "No reports uploaded for this type yet",
+      "notConfirmed": "Not confirmed",
+      "uploads": "uploaded",
+      "uploadOpen": "Upload open",
+      "uploadClosed": "Upload closed"
+    },
     "name": "Upload report",
     "latest": "Latest",
     "olderUploads": "Previous uploads",
