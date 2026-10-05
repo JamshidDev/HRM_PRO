@@ -62,8 +62,11 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
     params: {
       page: 1,
       per_page: 15,
-      search: null
+      search: null,
+      application_confirmation: null
     },
+    // Yangi yaratilgan qoralama qatori — sahifa uni ochib imzolashni so'raydi.
+    signPromptRow: null,
     confirmParams: {
       director_id: null,
       organization_id: null,
@@ -154,13 +157,14 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
         })
     },
 
-    _index() {
+    _index(callback) {
       this.loading = true
       $ApiService.applicationService
         ._confIndex({ params: this.params })
         .then((res) => {
           this.list = res.data.data.data
           this.totalItems = res.data.data.total
+          callback?.()
         })
         .finally(() => {
           this.loading = false
@@ -213,10 +217,21 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
       }
       $ApiService.applicationService
         ._workerApplication({ data })
-        .then(() => {
-          this.activeTab = 100
-          this.stepNumber = 3
-          this._index()
+        .then((res) => {
+          const createdId = res.data?.data?.id
+          if (!createdId) {
+            this.activeTab = 100
+            this.stepNumber = 3
+            this._index()
+            return
+          }
+          // Qoralama: modal yopiladi, hujjat ochilib imzolash so'raladi.
+          this.visible = false
+          this.params.page = 1
+          this._index(() => {
+            this.signPromptRow =
+              this.list.find((v) => v.worker_application?.id === createdId) ?? null
+          })
         })
         .finally(() => {
           this.saveLoading = false

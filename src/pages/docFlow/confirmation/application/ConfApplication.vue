@@ -7,6 +7,11 @@
   import Banner from './ui/Banner.vue'
   import { useAccountStore } from '@/store/modules/index.js'
   import { Events, eventBus } from '@utils'
+  import { useNotify } from '@/composables/useNotify'
+  import i18n from '@/i18n'
+
+  const t = i18n.global.t
+  const DRAFT_CONFIRMATION = 6
 
   const accStore = useAccountStore()
 
@@ -27,6 +32,26 @@
   const openOffice = (v) => {
     officeAppRef.value.openPdf(v.documentId, Utils.documentModels.workerApplication, v.signatureId)
   }
+
+  const activeFilter = ref('all')
+  const onFilterChange = (v) => {
+    store.params.application_confirmation = v === 'draft' ? DRAFT_CONFIRMATION : null
+    store.params.page = 1
+    store._index()
+  }
+
+  // Yangi qoralama: hujjatni ochib imzolashni so'raymiz (mobil bilan bir xil).
+  watch(
+    () => store.signPromptRow,
+    (row) => {
+      if (!row) return
+      store.signPromptRow = null
+      openOffice({ documentId: row.worker_application.id, signatureId: row.id })
+      useNotify().info(t('applicationPage.draftSignTitle'), {
+        description: t('applicationPage.draftSignBody')
+      })
+    }
+  )
 
   const onUpdateItem = (v) => {
     const index = store.list.findIndex((x) => x.id === v.documentId)
@@ -70,6 +95,16 @@
         <createForm />
       </template>
     </UIModal>
+    <n-tabs
+      v-model:value="activeFilter"
+      type="line"
+      size="small"
+      class="mt-2"
+      @update:value="onFilterChange"
+    >
+      <n-tab name="all" :tab="$t('content.all')" />
+      <n-tab name="draft" :tab="$t('applicationPage.draft')" />
+    </n-tabs>
     <Table @openOffice="openOffice" />
     <UIOfficeApp ref="officeAppRef" />
   </UIPageContent>
