@@ -296,9 +296,11 @@ export const useSignatureStore = defineStore('signatureStore', {
           this.loading = false
           callback(res.data)
         })
-        .catch(() => {
+        .catch((error) => {
           this.loading = false
-          $Toast.error(t('signature.confirmError'))
+          // Backend aniq sabab qaytarsa (masalan, "Imzo mos emas: ..."), shuni ko'rsatamiz
+          const message = String(error?.response?.data?.message ?? '').trim()
+          $Toast.error(message || t('signature.confirmError'))
         })
     },
     uiCreateItem(itemKey, vo) {

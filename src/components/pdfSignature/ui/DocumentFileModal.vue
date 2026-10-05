@@ -1,187 +1,205 @@
 <script setup>
-  import { UIModal, UIUpload } from '@/components/index.js'
-  import {
-    MailAttach16Regular,
-    AttachText20Regular,
-    Save16Filled,
-    ArrowCircleLeft24Regular
-  } from '@vicons/fluent'
+  import { UIModal } from '@/components/index.js'
+  import { Search16Regular, CheckmarkCircle16Filled, MailAttach16Regular } from '@vicons/fluent'
   import { usePdfViewerStore } from '@/store/modules/index.js'
-  import { NAvatar } from 'naive-ui'
-  import { useAppSetting } from '@/utils/index.js'
+  import Utils from '@/utils/Utils.js'
 
+  // Hujjatga ariza(lar)ni bog'lash. Fayl biriktirish alohida — chap paneldagi plitkalar.
   const store = usePdfViewerStore()
 
-  const emits = defineEmits(['onUpdate'])
+  const search = ref('')
+  const selected = ref([])
 
-  const onSubmit = () => {
-    store.documentVisible = false
+  // Allaqachon bog'langan arizalar — ro'yxatda o'chiq ko'rinadi.
+  const linkedIds = computed(
+    () =>
+      new Set(
+        store.fileList
+          .filter((v) => !v?.file)
+          .map((v) => v?.worker_application?.id ?? v?.worker_application_id)
+          .filter(Boolean)
+      )
+  )
 
-    const formData = new FormData()
+  // Qidiruv va sahifalar serverda (faqat tasdiqlangan arizalar).
+  const PER_PAGE = 20
+  const page = ref(1)
+  const items = computed(() => store.documentApplications)
+  const hasMore = computed(() => items.value.length < store.documentApplicationsTotal)
 
-    formData.append('document_id', store.document_id)
-    formData.append('model', store.model)
-
-    if (store.typeAttach === 2 && store.attachFiles.length > 0) {
-      store.attachFiles.forEach((v) => {
-        formData.append('files', v.file)
-      })
-      store._attachFile(formData, () => {
-        emits('onUpdate')
-      })
-    } else if (store.typeAttach === 1 && store.workerApplications.length > 0) {
-      formData.append('status', 'application')
-      formData.append('worker_applications', store.workerApplications?.toString())
-      store._attachFile(formData, () => {
-        emits('onUpdate')
-      })
-    }
-
-    // signatureStore._rejectDocument(data, ()=>{
-    //   emits('onSuccessEv')
-    // })
-  }
-
-  const onNext = (v) => {
-    if (v === 1) {
-      const params = {
+  const load = (append = false) => {
+    store._documentApplications(
+      {
         model: store.model,
         document_id: store.document_id,
-        per_page: 100
-      }
-      store._documentApplications(params)
-    }
-    store.typeAttach = v
-    store.attachActiveTab = 2
+        search: search.value.trim() || undefined,
+        page: page.value,
+        per_page: PER_PAGE
+      },
+      append
+    )
   }
 
-  const renderLabel = (option) => {
-    return h('div', { class: 'w-full' }, [
-      h('div', { class: 'flex items-center gap-2 w-full py-[2px]' }, [
-        h(NAvatar, {
-          class: 'flex-shrink-0',
-          src: option?.photo || useAppSetting.noAvailableImage,
-          round: true,
-          size: 'small',
-          fallbackSrc: useAppSetting.noAvailableImage
-        }),
-        h('div', { class: 'text-xs font-medium flex flex-col' }, [
-          h(
-            'span',
-            { class: 'text-xs text-secondary opacity-[0.7] leading-[1.2]' },
-            option.fullName
-          ),
-          h('span', { class: 'font-semibold text-secondary leading-[1.2]' }, option.name)
-        ])
-      ])
-    ])
+  let searchTimer = null
+  watch(search, () => {
+    clearTimeout(searchTimer)
+    searchTimer = setTimeout(() => {
+      page.value = 1
+      load()
+    }, 350)
+  })
+
+  const onScroll = (e) => {
+    const el = e.target
+    if (store.docApplicationLoading || !hasMore.value) return
+    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 40) {
+      page.value += 1
+      load(true)
+    }
+  }
+
+  // Hujjatga ko'pi bilan 10 ta ariza (bog'langan + tanlangan).
+  const MAX_APPLICATIONS = 10
+  const limitReached = computed(
+    () => linkedIds.value.size + selected.value.length >= MAX_APPLICATIONS
+  )
+
+  const isLinked = (a) => linkedIds.value.has(a.id)
+  const isSelected = (a) => selected.value.includes(a.id)
+  const isBlocked = (a) => !isLinked(a) && !isSelected(a) && limitReached.value
+  const toggle = (a) => {
+    if (isLinked(a) || isBlocked(a)) return
+    selected.value = isSelected(a)
+      ? selected.value.filter((id) => id !== a.id)
+      : [...selected.value, a.id]
+  }
+
+  watch(
+    () => store.attachVisible,
+    (v) => {
+      if (!v) return
+      clearTimeout(searchTimer)
+      search.value = ''
+      selected.value = []
+      page.value = 1
+      store.documentApplications = []
+      load()
+    }
+  )
+
+  const onSubmit = () => {
+    if (!selected.value.length) return
+    const formData = new FormData()
+    formData.append('document_id', store.document_id)
+    formData.append('model', store.model)
+    formData.append('status', 'application')
+    formData.append('worker_applications', selected.value.toString())
+    store._attachFile(formData, () => {
+      store.attachVisible = false
+      store._files()
+      store._refreshMeta()
+    })
   }
 </script>
 
 <template>
   <UIModal
-    :width="500"
+    :width="520"
+    :height="'min(620px, 85vh)'"
     :visible="store.attachVisible"
     @update:visible="(v) => (store.attachVisible = v)"
-    :title="$t('documentPage.attach.title')"
+    :title="$t('documentPage.attach.attachApplication')"
   >
     <template #default>
-      <n-form ref="formRef" class="w-full">
-        <n-tabs
-          v-model:value="store.attachActiveTab"
-          class="hidden-tab-header"
-          type="segment"
+      <!-- Balandlik qat'iy: qidiruv va tugmalar joyida, faqat ro'yxat scroll bo'ladi -->
+      <div class="flex flex-col gap-3 h-full min-h-0">
+        <n-input v-model:value="search" clearable :placeholder="$t('content.search')">
+          <template #prefix>
+            <n-icon><Search16Regular /></n-icon>
+          </template>
+        </n-input>
+
+        <n-spin
+          :show="store.docApplicationLoading"
+          class="flex-1 min-h-0"
+          content-style="height: 100%"
         >
-          <n-tab-pane :name="store.attachTabs[0].id">
-            <div class="flex flex-col gap-4">
-              <div
-                @click="onNext(1)"
-                class="flex border border-surface-line p-2 rounded-lg items-center gap-4 cursor-pointer"
-              >
-                <div
-                  class="w-[30px] h-[30px] flex justify-center items-center cursor-pointer rounded-md bg-warning"
-                >
-                  <n-icon size="24" class="text-white">
-                    <MailAttach16Regular />
-                  </n-icon>
-                </div>
-                <div class="text-textColor1 font-semibold" style="width: calc(100% - 40px)">
-                  {{ $t('documentPage.attach.attachApplication') }}
-                </div>
-              </div>
-
-              <div
-                @click="onNext(2)"
-                class="flex border border-surface-line p-2 rounded-lg items-center gap-4 cursor-pointer"
-              >
-                <div
-                  class="w-[30px] h-[30px] flex justify-center items-center cursor-pointer rounded-md bg-primary"
-                >
-                  <n-icon size="24" class="text-white">
-                    <AttachText20Regular />
-                  </n-icon>
-                </div>
-                <div class="text-textColor1 font-semibold" style="width: calc(100% - 40px)">
-                  {{ $t('documentPage.attach.attachFile') }}
-                </div>
-              </div>
+          <div class="flex flex-col gap-1.5 h-full overflow-y-auto pr-1" @scroll="onScroll">
+            <div
+              v-if="!store.docApplicationLoading && !items.length"
+              class="flex flex-col items-center justify-center text-center py-8 text-textColor3"
+            >
+              <n-icon size="28" class="mb-2"><MailAttach16Regular /></n-icon>
+              <span class="text-sm">{{ $t('documentPage.signature.files.noApplications') }}</span>
             </div>
-          </n-tab-pane>
 
-          <n-tab-pane :name="store.attachTabs[1].id">
-            <template v-if="store.typeAttach === 1">
-              <n-select
-                size="large"
-                multiple
-                v-model:value="store.workerApplications"
-                filterable
-                :options="store.documentApplications"
-                label-field="name"
-                value-field="id"
-                :render-label="renderLabel"
-                :loading="store.docApplicationLoading"
+            <div
+              v-for="a in items"
+              :key="a.id"
+              class="flex items-center gap-3 rounded-xl border px-3 py-2 transition-colors"
+              :class="
+                isLinked(a) || isBlocked(a)
+                  ? 'border-surface-line bg-surface-ground opacity-70 cursor-default'
+                  : isSelected(a)
+                    ? 'border-primary bg-primary/5 cursor-pointer'
+                    : 'border-surface-line bg-surface-section hover:bg-surface-ground cursor-pointer'
+              "
+              @click="toggle(a)"
+            >
+              <n-checkbox
+                :checked="isLinked(a) || isSelected(a)"
+                :disabled="isLinked(a) || isBlocked(a)"
+                @click.stop
+                @update:checked="() => toggle(a)"
               />
-            </template>
-            <template v-else>
-              <UIUpload v-model:files="store.attachFiles" />
-            </template>
-
-            <div class="grid grid-cols-12 gap-4 mt-8">
-              <div class="col-span-6">
-                <n-button
-                  style="width: 100%"
-                  @click="store.attachActiveTab = 1"
-                  secondary
-                  type="error"
-                >
-                  <template #icon>
-                    <ArrowCircleLeft24Regular />
-                  </template>
-                  {{ $t('content.back') }}
-                </n-button>
+              <n-avatar
+                round
+                :size="32"
+                :src="a.photo || Utils.noAvailableImage"
+                :fallback-src="Utils.noAvailableImage"
+                class="shrink-0"
+              />
+              <div class="min-w-0 flex-1">
+                <div class="text-sm font-medium text-textColor1 truncate">{{ a.fullName }}</div>
+                <div class="text-xs text-textColor3 truncate">
+                  №{{ a.number }} · {{ a.typeName }}
+                  <template v-if="a.created"> · {{ Utils.timeOnlyDate(a.created) }}</template>
+                </div>
               </div>
-              <div class="col-span-6">
-                <n-button
-                  @click="onSubmit"
-                  style="width: 100%"
-                  secondary
-                  icon-placement="right"
-                  :loading="store.attachLoading"
-                  :disabled="store.attachLoading"
-                  type="primary"
-                >
-                  <template #icon>
-                    <Save16Filled />
-                  </template>
-                  {{ $t('content.save') }}
-                </n-button>
-              </div>
+              <span
+                v-if="isLinked(a)"
+                class="shrink-0 inline-flex items-center gap-1 text-[11px] text-fig-chip-green-text"
+              >
+                <n-icon size="14"><CheckmarkCircle16Filled /></n-icon>
+                {{ $t('documentPage.signature.files.linked') }}
+              </span>
             </div>
-          </n-tab-pane>
-        </n-tabs>
-      </n-form>
+          </div>
+        </n-spin>
+
+        <div class="shrink-0 flex items-center justify-between gap-3 pt-1">
+          <span class="text-xs text-textColor3">
+            {{
+              limitReached
+                ? $t('documentPage.signature.files.applicationsLimit', { max: MAX_APPLICATIONS })
+                : $t('documentPage.signature.files.selectedCount', { count: selected.length })
+            }}
+          </span>
+          <div class="flex gap-2">
+            <n-button :disabled="store.attachLoading" @click="store.attachVisible = false">
+              {{ $t('content.cancel') }}
+            </n-button>
+            <n-button
+              type="primary"
+              :loading="store.attachLoading"
+              :disabled="!selected.length"
+              @click="onSubmit"
+            >
+              {{ $t('documentPage.signature.files.attachSubmit') }}
+            </n-button>
+          </div>
+        </div>
+      </div>
     </template>
   </UIModal>
 </template>
-
-<style scoped></style>

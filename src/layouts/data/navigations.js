@@ -977,7 +977,7 @@ export const navigations = withRawIcons([
         path: Utils.routeChatPathMaker(AppPaths.LiveChat),
         icon: ChatSidebarIcon,
         color: 'bg-dark',
-        permission: appPermissions.chat
+        permission: appPermissions.chatLiveChat
       }
     ]
   },

@@ -1,5 +1,6 @@
 <script setup>
-  import { useCommandStore, useComponentStore } from '@/store/modules/index.js'
+  import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
+  import { useComponentStore } from '@/store/modules/index.js'
   import {
     DismissCircle20Filled,
     Calculator24Regular,
@@ -12,7 +13,7 @@
   import { useAppSetting } from '@/utils/index.js'
   import LastVacationItem from '@/pages/docFlow/document/command/ui/LastVacationItem.vue'
 
-  const store = useCommandStore()
+  const store = useCommandFormStore()
   const componentStore = useComponentStore()
   const { t } = i18n.global
   const lastVacationRefs = ref([])

@@ -482,7 +482,10 @@
     "clearedFields": "Fields cleared!",
     "unExpectedError": "Unexpected error occurred!",
     "warning-data": "Insufficient data!",
-    "noPermission": "Permission denied!"
+    "noPermission": "Permission denied!",
+    "appUpdated": "The system has been updated",
+    "appUpdatedHint": "The new version will load when you open the next page",
+    "appUpdateNow": "Update now"
   },
   "enum": {
     "man": "Male",
@@ -723,7 +726,10 @@
     },
     "account": {
       "title": "Account information",
-      "warningText": "For account security, regularly update your account details. This helps protect against unauthorized access."
+      "warningText": "For account security, regularly update your account details. This helps protect against unauthorized access.",
+      "offerAccepted": "Consent given",
+      "offerNotAccepted": "Consent not given",
+      "offerView": "View"
     },
     "sidebar": {
       "title": "Profile sections"
@@ -1292,6 +1298,98 @@
         "reason_six": "Natural disaster damage (with confirmed assessment)",
         "reason_seven": "Household coal purchase",
         "reason_eight": "To purchase agricultural products"
+      },
+      "dataTab": {
+        "tabDocument": "Document",
+        "tabData": "Details",
+        "editableTitle": "The order can be edited",
+        "editableHint": "Change the details and save — the order will be re-issued and all approvers will sign it again.",
+        "rejectedTitle": "The order was rejected",
+        "readonlyTitle": "View only",
+        "blocks": {
+          "cancelled": "The order is cancelled and cannot be changed.",
+          "contract": "This order was created from a contract — its details are changed via the contract.",
+          "signed": "One of the approvers has already signed — editing is possible only after rejection.",
+          "no_form_state": "This order was created before the system update — details were restored from the database and are view-only. Some fields may be empty."
+        },
+        "emptyTitle": "No details available",
+        "loadError": "Could not load the data. Please try again shortly.",
+        "reset": "Restore saved details",
+        "preview": "Preview",
+        "save": "Save and resend",
+        "savedNotify": "The order was updated and sent for signing again",
+        "sectionMain": "Main details",
+        "sectionWorkers": "Organization and employee(s)",
+        "sectionDetails": "Order details",
+        "sectionSigners": "Director and approvers",
+        "locked": {
+          "approved": "The document is approved",
+          "cancelled": "The order is cancelled",
+          "contract": "Changed via the contract",
+          "contract_additional": "Changed via the additional agreement",
+          "no_form_state": "Old order — view only"
+        },
+        "resend": {
+          "title": "Send for signing again",
+          "all": "Everyone",
+          "allHint": "Those who approved or rejected will also be «In progress» again",
+          "selected": "Selected",
+          "selectedHint": "Only checked people become «In progress», others keep their status",
+          "contentChanged": "The order text changed — earlier approvals of unselected people will refer to the old version.",
+          "required": "required",
+          "count": "Will be sent to {count}",
+          "submit": "Send",
+          "types": {
+            "w": "Employee",
+            "s": "Approver",
+            "d": "Director"
+          },
+          "status": {
+            "1": "In progress",
+            "2": "Viewed",
+            "3": "Approved",
+            "4": "Rejected",
+            "new": "New"
+          }
+        },
+        "source": {
+          "titleContract": "Created from contract №{number}",
+          "titleAdditional": "Created from additional agreement №{number}",
+          "hintContract": "Order data can only be changed by editing the contract — when the contract is re-issued, the order is updated with it.",
+          "hintAdditional": "Order data can only be changed by editing the additional agreement — when it is re-issued, the order is updated with it.",
+          "openContract": "Open contract",
+          "openAdditional": "Open additional agreement",
+          "deleted": "Source document deleted",
+          "sectionCommand": "Order",
+          "sectionWorker": "Employee",
+          "sectionTerms": "Position and working conditions",
+          "sectionSigners": "Approvers",
+          "noTerms": "No data on the terms was found",
+          "noSigners": "No approvers assigned",
+          "fields": {
+            "number": "Order number",
+            "date": "Order date",
+            "type": "Order type",
+            "director": "Director",
+            "sourceType": "Document type",
+            "organization": "Organization",
+            "currentPosition": "Current position",
+            "position": "Position",
+            "salary": "Salary",
+            "rate": "Rate",
+            "group": "Group",
+            "rank": "Rank",
+            "probation": "Probation period",
+            "vacationMain": "Main vacation",
+            "vacationAdditional": "Additional vacation",
+            "positionDate": "Appointment date",
+            "contractTo": "Valid until",
+            "workDays": "Working days",
+            "workTime": "Working hours",
+            "days": "{count} days",
+            "sum": "{value} UZS"
+          }
+        }
       }
     },
     "form": {
@@ -1325,7 +1423,31 @@
     "signature": {
       "history": "View change history",
       "viewer": "Document reviewers",
-      "files": "Document files",
+      "files": {
+        "locked": "The document is approved — files can be viewed and downloaded, adding and removing is closed",
+        "tooMany": "No more than {max} files can be attached",
+        "tooBig": "«{name}» is larger than {max} MB",
+        "wrongType": "«{name}» — only PDF, PNG or JPG can be uploaded",
+        "deleteConfirm": "Delete the file «{name}»?",
+        "attachApplication": "Attach an application",
+        "backToDocument": "Back to document",
+        "noApplications": "No applications available to attach",
+        "linked": "attached",
+        "selectedCount": "{count} selected",
+        "attachSubmit": "Attach",
+        "applications": "Applications",
+        "application": "Application",
+        "unlinkConfirm": "Detach application No. {number} from the document?",
+        "files": "Files",
+        "attachShort": "Attach",
+        "applicationsLimit": "No more than {max} applications can be attached",
+        "attachFile": "Attach file",
+        "view": "View",
+        "download": "Download",
+        "deleteTitle": "Delete file",
+        "unlinkTitle": "Unlink application",
+        "unlink": "Unlink"
+      },
       "checkDocument": "Click to check document status",
       "attachedDocuments": "Attached documents",
       "attachDocument": "Attach document",
@@ -1362,12 +1484,12 @@
       },
       "approval": {
         "title": "Signing process",
-        "signers": "Signers",
+        "signers": "Approvers",
         "history": "Action history",
         "progress": "{done} of {total} approved",
-        "step": "Step {n}",
         "you": "You",
         "actions": "Actions",
+        "chat": "Message",
         "signedWithEri": "Approved with e-signature",
         "certificate": "Certificate",
         "noHistory": "No actions yet",
@@ -1382,9 +1504,39 @@
           "viewed": "Viewed the document",
           "approved": "Approved",
           "rejected": "Rejected",
-          "resent": "Resent"
-        }
-      }
+          "resent": "Resent",
+          "file_added": "File added",
+          "file_removed": "File removed"
+        },
+        "sign": "Sign",
+        "notForYou": "This document was not sent to you for signing",
+        "youSigned": "You have signed this document",
+        "youRejected": "You have rejected this document",
+        "yourTurn": "It's your turn to sign",
+        "yourTurnSub": "The document is approved via E-IMZO",
+        "notForYouSub": "You can only view this document",
+        "roles": {
+          "w": "Employee",
+          "s": "Approver",
+          "d": "Director"
+        },
+        "groups": {
+          "sent": "Sent for signing to {count}",
+          "resent": "Resent to {count}"
+        },
+        "verbs": {
+          "sent": "— sent for signing",
+          "viewed": "viewed",
+          "approved": "approved",
+          "rejected": "rejected",
+          "resent": "— resent",
+          "file_added": "added a file",
+          "file_removed": "removed a file"
+        },
+        "showAll": "Show all"
+      },
+      "rejectReasonSelect": "Select a rejection reason",
+      "optional": "optional"
     },
     "attach": {
       "title": "Attach",
@@ -1675,9 +1827,17 @@
     "versionSaved": "Version updated",
     "upgrade": "Upgrade",
     "form": {
-      "latestVersion": "Latest version"
+      "latestVersion": "Latest version",
+      "minVersion": "Minimum version"
     },
-    "versionInvalid": "Invalid version format. Example: 1.9.2"
+    "versionInvalid": "Invalid version format. Example: 1.9.2",
+    "forced": "Required",
+    "optional": "Optional",
+    "forcedHint": "Versions below {version} are blocked",
+    "optionalHint": "Versions below {min} are blocked, others are offered the update",
+    "minGreaterThanLatest": "Minimum version cannot be greater than the latest version",
+    "confirmMinRaise": "The minimum version is raised to {version} — all users on older versions will be blocked. Is {version} already released in the store?",
+    "confirmSave": "Save the version?"
   },
   "actionLog": {
     "name": "Action history",
@@ -2007,6 +2167,7 @@
     },
     "Edocument": {
       "download_pdf": "Download PDF",
+      "download_svg": "Download SVG",
       "pasport": "Passport",
       "railway_pasport": "Railway ID",
       "foreign_pasport": "Foreign Passport",
@@ -2225,9 +2386,9 @@
     },
     "age": {
       "title": "Employee age distribution",
-      "age31": "Under 30",
-      "age32_45": "31-45",
-      "age46": "Over 46",
+      "age31": "30 and under",
+      "age32_45": "31 to 45 years old",
+      "age46": "46 and over",
       "structureTitle": "Age structure",
       "yearsOld": "years old"
     },
@@ -2346,7 +2507,6 @@
       "worker": "Employee"
     },
     "tabs": {
-      "legacy": "Legacy",
       "general": "Overview",
       "movement": "Staff movement",
       "attendance": "Attendance & leave"
@@ -2509,6 +2669,170 @@
       "types": {
         "incentive": "Incentive",
         "disciplinary": "Disciplinary"
+      }
+    },
+    "activity": {
+      "title": "Organization activity",
+      "subtitle": "Analysis of changes in organizations — by month",
+      "export": "Download",
+      "totalActions": "Total actions",
+      "activeUsers": "Active users",
+      "dailyAvg": "Daily average",
+      "mostActiveDay": "Most active day",
+      "monthly": "Monthly activity",
+      "byRoles": "By roles",
+      "topUsers": "Top users",
+      "search": "Search employee",
+      "top10": "Top 10",
+      "all": "All",
+      "no": "№",
+      "worker": "Employee",
+      "department": "Department",
+      "actions": "Actions",
+      "distribution": "Distribution",
+      "lastActivity": "Last activity",
+      "shown": "Shown: {shown} / {total}",
+      "viewAll": "View all",
+      "unit": "actions",
+      "total": "Total",
+      "totalUnit": "{n} actions",
+      "average": "Average: {n}",
+      "dayMonth": "{month} {day}",
+      "today": "Today, {time}",
+      "yesterday": "Yesterday, {time}",
+      "empty": "No data found",
+      "soon": "Coming soon",
+      "types": {
+        "add": "Add",
+        "edit": "Edit",
+        "delete": "Delete",
+        "create": "Create"
+      },
+      "user": {
+        "last30": "Last 30 days",
+        "updated": "Updated: {time}",
+        "legendActions": "Actions",
+        "legendAverage": "Average",
+        "legendOff": "Weekend / holiday",
+        "recent": "Recent actions"
+      },
+      "activeOrganizations": "Active organizations",
+      "topOrganizations": "Top organizations",
+      "searchOrganization": "Search organization",
+      "organization": "Organization",
+      "workersCount": "{n} employees",
+      "otherPage": "Other",
+      "roles": {
+        "HR": "HR",
+        "HrLeader": "HR lead",
+        "Admin": "Administrator",
+        "Economist": "Economist",
+        "EconomistLeader": "Economist lead",
+        "EconomistManagement": "Economic management",
+        "TimesheetHR": "Timekeeper",
+        "Finance": "Finance",
+        "Worker": "Employee",
+        "OrganizationLeader": "Organization head",
+        "LeaderManagement": "Management",
+        "Hospital": "Hospital",
+        "TurnstileLeader": "Turnstile lead",
+        "TurnstileViewer": "Turnstile viewer",
+        "LmsLearningCenter": "Learning center",
+        "LmsSupervisor": "LMS supervisor",
+        "IntegrationHrFull": "Integration (HR)"
+      },
+      "commandsCreated": "Orders",
+      "approvedDocuments": "Approved",
+      "applications": "Applications",
+      "score": "Score"
+    },
+    "orgRating": {
+      "title": "Organizations' system usage rating",
+      "viewAll": "View all",
+      "allTitle": "System usage rating",
+      "period7": "7 days",
+      "period30": "30 days",
+      "periodAll": "All time",
+      "yourOrg": "Your organization",
+      "small": "small",
+      "inactive": "inactive",
+      "workers": "{n} employees",
+      "coverageShort": "coverage {n}%",
+      "docsShort": "docs {n} ({a} appr.)",
+      "daysShort": "{n}/{t} days",
+      "score": "Score",
+      "rank": "Rank",
+      "workersLabel": "Employees",
+      "lastActivity": "Last activity",
+      "onlyInactive": "Inactive only",
+      "editsNote": "Data edits: {n} actions, {w} employees",
+      "rankOf": "#{r} of {t}",
+      "activeChip": "active",
+      "partsTitle": "Score breakdown",
+      "docsTitle": "Documents",
+      "categoriesTitle": "Active areas",
+      "noCategories": "No data changes in this period",
+      "summary": {
+        "total": "Total",
+        "active": "Active",
+        "inactive": "Inactive",
+        "avg": "Average score"
+      },
+      "filter": {
+        "all": "All",
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "docStatus": {
+        "approved": "Approved",
+        "pending": "In progress",
+        "rejected": "Rejected"
+      },
+      "parts": {
+        "coverage": {
+          "title": "Data coverage",
+          "hint": "Employees with updated data: {v} / {t}"
+        },
+        "documents": {
+          "title": "Document entry",
+          "hint": "{v} docs per 100 employees (full score — {t})"
+        },
+        "approval": {
+          "title": "Document approval",
+          "hint": "Approved: {v} / {t}"
+        },
+        "regularity": {
+          "title": "Regularity",
+          "hint": "Active days: {v} / {t} workdays"
+        },
+        "breadth": {
+          "title": "Breadth",
+          "hint": "Change types: {v} / {t}"
+        }
+      },
+      "docs": {
+        "commands": "Orders",
+        "contracts": "Contracts",
+        "additionals": "Add. agreements",
+        "status": "Appr. / pending / rej."
+      },
+      "categories": {
+        "worker": "Employee data",
+        "relatives": "Relatives",
+        "passport": "Passport",
+        "phone": "Phone",
+        "staffing": "Staffing",
+        "documents": "Documents",
+        "sick_leave": "Sick leave",
+        "account": "Account & roles"
+      },
+      "col": {
+        "org": "Organization",
+        "coverage": "Coverage",
+        "docs": "Docs",
+        "days": "Days",
+        "score": "Score",
+        "logs": "Logs"
       }
     }
   },
@@ -2757,7 +3081,21 @@
     "tipPlan": "The norm set by the work schedule for this day — from start to end of the shift, minus lunch. Shows how much the employee WAS SUPPOSED to work.",
     "tipTurnstile": "Total time in the building based on turnstile entries and exits. Time outside the schedule is included; lunch is not deducted.",
     "tipOutside": "Time spent outside the building during working hours: the sum of gaps from each exit to the next entry.",
-    "tipCounted": "The time that goes into the timesheet. Only the part of the turnstile time that falls inside the schedule window is taken, minus lunch."
+    "tipCounted": "The time that goes into the timesheet. Only the part of the turnstile time that falls inside the schedule window is taken, minus lunch.",
+    "unsaved": {
+      "title": "Unsaved changes",
+      "content": "{count} cells are not saved. Save them?",
+      "discard": "Close without saving"
+    },
+    "calcDiff": {
+      "system": "System",
+      "entered": "Entered",
+      "diff": "Difference",
+      "more": "{n} h more",
+      "less": "{n} h less",
+      "typeOnly": "same hours, type changed",
+      "empty": "empty (0 h)"
+    }
   },
   "turnstile": {
     "title": "Turnstile",
@@ -3189,6 +3527,17 @@
     "name": "Plan vs Actual",
     "addDepartment": "Add department",
     "addPosition": "Add position",
+    "listView": "List",
+    "tableView": "Table",
+    "table": {
+      "position": "Position",
+      "occupancy": "Occupancy",
+      "total": "Total",
+      "all": "All",
+      "search": "Search department or position",
+      "positionsCount": "{n} positions",
+      "noPositions": "No positions added"
+    },
     "tooltip": {
       "P": "Plan",
       "G": "Group",
@@ -3266,6 +3615,16 @@
     "name": "Reports"
   },
   "uploadReport": {
+    "ui": {
+      "searchOrg": "Search organization",
+      "selectOrg": "Select an organization from the list on the left to upload and confirm reports",
+      "selectType": "Select a report type above to see its upload history",
+      "noUploads": "No reports uploaded for this type yet",
+      "notConfirmed": "Not confirmed",
+      "uploads": "uploaded",
+      "uploadOpen": "Upload open",
+      "uploadClosed": "Upload closed"
+    },
     "name": "Upload report",
     "latest": "Latest",
     "olderUploads": "Previous uploads",
@@ -5395,10 +5754,68 @@
     "saved": "Template saved — new documents will use it",
     "resetDone": "Default template restored",
     "saveConfirmTitle": "Save template globally",
-    "saveConfirmText": "This template will apply to new documents for all organizations. The previous version will be kept. Save changes?",
+    "saveConfirmText": "The «{name}» template will apply to all organizations' future documents. The previous version is kept. Save the changes?",
     "resetConfirmTitle": "Restore default template",
     "resetConfirmText": "The edited template will be removed and the default version restored. Continue?",
-    "fileLabel": "File"
+    "fileLabel": "File",
+    "variablesHintInsert": "Click to insert at the cursor. Do not rename variables.",
+    "insertTitle": "Insert at cursor",
+    "insertFallback": "The cursor is not in the document — the variable was copied, paste it where needed (Ctrl+V)",
+    "updatedAt": "Modified",
+    "usedTimes": "{n} in document",
+    "notInDocument": "Not in document",
+    "unknownVariables": "Unknown variables",
+    "unknownHint": "These are not in the list and will not be filled. The name may be misspelled.",
+    "missingCount": "{n} variable(s) missing from the document",
+    "missingHint": "They may have been deleted — such a template will not be saved.",
+    "unsavedTitle": "Unsaved changes",
+    "unsavedText": "The «{name}» template has unsaved changes. What should we do with them?",
+    "discard": "Don't save",
+    "saveAnyway": "Save anyway",
+    "missingText": "Not found in the document (may have been deleted):",
+    "unknownText": "Not in the list, will not be filled:",
+    "groups": {
+      "organization": "Organization",
+      "worker": "Employee",
+      "document": "Document",
+      "terms": "Terms and pay",
+      "other": "Other"
+    },
+    "vars": {
+      "organization_name": "Organization name",
+      "city": "City",
+      "document_date": "Document date",
+      "document_number": "Document number",
+      "director_position": "Director's position",
+      "director_name": "Director's full name",
+      "worker_full_name": "Employee full name",
+      "worker_short_name": "Employee short name",
+      "worker_address": "Employee address",
+      "department_name": "Department",
+      "position_name": "Position",
+      "new_department_name": "New department",
+      "new_position_name": "New position",
+      "start_date": "Start date",
+      "change_date": "Change date",
+      "rate": "Rate",
+      "salary": "Salary",
+      "new_salary": "New salary",
+      "probation_period": "Probation period (months)",
+      "schedule_name": "Work schedule",
+      "vacation_period": "Vacation period (work year)",
+      "vacation_days": "Vacation days",
+      "vacation_from": "Vacation start",
+      "vacation_to": "Vacation end",
+      "dismissal_reason": "Dismissal reason",
+      "dismissal_date": "Dismissal date",
+      "contract_number": "Contract number",
+      "contract_date": "Contract date",
+      "additional_number": "Addendum number"
+    },
+    "editedBadge": "Edited",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "zoomFit": "Fit page width"
   },
   "turnstileDownload": {
     "title": "Download events"

@@ -19,6 +19,15 @@
     }
   )
 
+  // Tab almashganda viewer qayta mount bo'ladi — yangi bo'sh canvas'larga yuklangan hujjat qayta chiziladi.
+  onMounted(async () => {
+    if (!store.pdfDocument || store.pdfDocumentUrl !== store.pdfUrl) return
+    await nextTick()
+    for (let pageNumber = 1; pageNumber <= store.totalPdfPage; pageNumber++) {
+      await store.renderPdf(pageNumber)
+    }
+  })
+
   const loadPdf = async () => {
     await store.loadPdf()
   }

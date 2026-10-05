@@ -1,8 +1,8 @@
 <script setup>
-  import { useCommandStore } from '@/store/modules/index.js'
+  import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import i18n from '@/i18n/index.js'
 
-  const store = useCommandStore()
+  const store = useCommandFormStore()
   const { t } = i18n.global
   const lastVacations = ref(null)
 

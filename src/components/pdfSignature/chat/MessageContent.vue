@@ -81,7 +81,7 @@
           <div class="w-full flex justify-end">
             <div
               @contextmenu="handleContextMenu($event)"
-              class="max-w-[280px] text-textColor1 rounded-lg text-sm px-2 py-1 inline-block bg-primary/10"
+              class="max-w-[280px] text-textColor1 rounded-lg text-sm px-2 py-1 inline-block bg-fig-chip-brand"
             >
               <pre class="font-poppins text-wrap">{{ message }}</pre>
             </div>

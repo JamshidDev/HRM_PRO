@@ -105,7 +105,35 @@ export async function downloadCanvasesAsPdf(canvases, fileName) {
   })
 
   const bytes = await pdf.save()
-  const url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }))
+  downloadBlob(new Blob([bytes], { type: 'application/pdf' }), fileName)
+}
+
+/**
+ * Canvaslarni bitta SVG faylga ustma-ust joylab yuklab beradi (rasmlar PNG sifatida ichiga joylanadi).
+ */
+export function downloadCanvasesAsSvg(canvases, fileName) {
+  const width = Math.max(...canvases.map((c) => c.width))
+  const gap = Math.round(width * 0.04)
+  let top = 0
+  const images = canvases.map((c) => {
+    const x = (width - c.width) / 2
+    const image = `<image x="${x}" y="${top}" width="${c.width}" height="${c.height}" href="${c.toDataURL('image/png')}"/>`
+    top += c.height + gap
+    return image
+  })
+  const height = top - gap
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">${images.join('')}</svg>`
+  downloadBlob(new Blob([svg], { type: 'image/svg+xml' }), fileName)
+}
+
+export function downloadCanvases(canvases, fileName, format = 'pdf') {
+  return format === 'svg'
+    ? downloadCanvasesAsSvg(canvases, `${fileName}.svg`)
+    : downloadCanvasesAsPdf(canvases, `${fileName}.pdf`)
+}
+
+export function downloadBlob(blob, fileName) {
+  const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
   link.download = fileName

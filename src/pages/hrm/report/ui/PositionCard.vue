@@ -1,24 +1,36 @@
 <script setup>
-  import { Delete20Filled, Edit20Filled, ErrorCircle20Filled } from '@vicons/fluent'
+  import { Delete20Regular, Edit32Regular, ChevronRight20Regular } from '@vicons/fluent'
+  import { UITableActionsMenu } from '@/components/index.js'
+  import Utils from '@/utils/Utils.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import i18n from '@/i18n/index.js'
   import { useReport2Store } from '@/store/modules/index.js'
   import WorkerCard from './WorkerCard.vue'
   import Indicator from './Indicator.vue'
   import IndicatorTitle from '@/pages/hrm/report/ui/IndicatorTitle.vue'
-  import { useAccountStore } from '@/store/modules/index.js'
   import { VueDraggable } from 'vue-draggable-plus'
+  import { useReportActions } from '../useReportActions.js'
 
-  const accStore = useAccountStore()
   const store = useReport2Store()
+  const { editPosition, deletePosition } = useReportActions()
+  const { t } = i18n.global
 
-  const onEdit = (item) => {
-    if (!accStore.checkAction(accStore.pn.hrReportWrite)) return
-    store.onEdit(item)
-  }
+  const actions = [
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit32Regular)
+    },
+    {
+      label: t('content.delete'),
+      key: Utils.ActionTypes.delete,
+      icon: UIHelper.renderIcon(Delete20Regular)
+    }
+  ]
 
-  const onDelete = (v) => {
-    store.isDpDelete = false
-    store.position.elementId = v.id
-    store.department.deleteVisible = true
+  const onAction = (key, item) => {
+    if (key === Utils.ActionTypes.edit) editPosition(item)
+    else if (key === Utils.ActionTypes.delete) deletePosition(item)
   }
 
   const onDraggleEnd = (v) => {
@@ -35,12 +47,18 @@
 <template>
   <div
     @click.stop
-    class="w-full min-h-[60px] relative py-2 border-l-[3px] border-success bg-success/5"
+    class="w-full rounded-xl border border-table-border bg-surface-section overflow-hidden"
   >
     <n-spin size="small" class="h-full" :show="store.position.loading">
-      <div class="flex justify-between px-2">
-        <span class="text-success mb-2 font-semibold"> {{ $t('report.form.position') }}</span>
-        <div class="w-[200px] flex justify-end gap-2"><IndicatorTitle class="!w-[160px]" /></div>
+      <div
+        class="flex items-center gap-3 h-[40px] pl-3 pr-2"
+        style="background: var(--table-header)"
+      >
+        <span class="flex-1 text-xs font-semibold text-fig-chip-green-text">
+          {{ $t('report.form.position') }}
+        </span>
+        <IndicatorTitle />
+        <div class="w-7 shrink-0"></div>
       </div>
       <VueDraggable
         :disabled="Boolean(store.position.selectedId)"
@@ -49,61 +67,55 @@
       >
         <template v-for="(item, idx) in store.position.list" :key="idx">
           <div
-            class="bg-surface-section"
+            class="border-b border-table-border/60 last:border-b-0"
             :class="[store.position.selectedId ? 'cursor-no-drop' : 'cursor-move']"
           >
             <div
               @click.stop="store.onChangePosRadio(item)"
-              :class="[!(item?.id === store.position.selectedId) && 'hover:bg-success/10']"
-              class="flex items-center gap-4 border-b border-success border-dashed py-2 bg-success/4 pl-2"
+              class="flex items-center gap-3 min-h-[44px] pl-3 pr-2 transition-colors"
+              :class="[
+                item?.id === store.position.selectedId
+                  ? 'bg-fig-chip-green'
+                  : 'hover:bg-fig-bg-secondary'
+              ]"
             >
-              <div class="w-[calc(100%-260px)] text-wrap flex items-center">
-                <span class="inline-block font-semibold w-[30px]">{{ idx + 1 }}</span>
-                <n-radio :checked="item?.id === store.position.selectedId">
-                  <div class="flex items-center gap-2">
-                    <n-icon v-if="item?.status?.id === 1" size="18" class="text-warning">
-                      <ErrorCircle20Filled />
-                    </n-icon>
-                    {{ item?.position?.name }}
-                  </div>
-                </n-radio>
+              <span class="w-6 shrink-0 text-xs font-semibold text-fig-text-tertiary tabular-nums">
+                {{ idx + 1 }}
+              </span>
+              <div class="flex items-center gap-2 flex-1 min-w-0">
+                <n-icon
+                  size="16"
+                  class="shrink-0 transition-transform"
+                  :class="[
+                    item?.id === store.position.selectedId
+                      ? 'rotate-90 text-fig-chip-green-text'
+                      : 'text-fig-text-tertiary'
+                  ]"
+                >
+                  <ChevronRight20Regular />
+                </n-icon>
+                <span :class="[item?.id === store.position.selectedId && 'font-semibold']">
+                  {{ item?.position?.name }}
+                </span>
               </div>
-              <div class="w-[260px] justify-end flex items-center h-full gap-2 pr-2">
-                <n-tooltip placement="top" trigger="hover">
-                  <template #trigger>
-                    <n-button @click.stop="onEdit(item)" size="tiny" type="primary" ghost>
-                      <template #icon>
-                        <Edit20Filled />
-                      </template>
-                    </n-button>
-                  </template>
-                  <span>{{ $t('content.edit') }}</span>
-                </n-tooltip>
-
-                <n-tooltip placement="top" trigger="hover">
-                  <template #trigger>
-                    <n-button @click.stop="onDelete(item)" size="tiny" type="error" ghost>
-                      <template #icon>
-                        <Delete20Filled />
-                      </template>
-                    </n-button>
-                  </template>
-                  <span>{{ $t('content.delete') }}</span>
-                </n-tooltip>
-                <Indicator class="!w-[160px]" :data="item" />
+              <div class="flex items-center gap-3 shrink-0" @click.stop>
+                <Indicator :data="item" />
+                <UITableActionsMenu :options="actions" @select="(key) => onAction(key, item)" />
               </div>
             </div>
-            <div class="w-full">
-              <n-collapse-transition :show="item.id === store.position.selectedId">
-                <WorkerCard class="mt-2 !ml-1" :bg-full="true" />
-              </n-collapse-transition>
-            </div>
+            <n-collapse-transition :show="item.id === store.position.selectedId">
+              <div class="p-2">
+                <WorkerCard />
+              </div>
+            </n-collapse-transition>
           </div>
         </template>
       </VueDraggable>
 
       <template v-if="store.position.list.length === 0 && !store.position.loading">
-        <span class="w-full text-center inline-block text-danger">{{ $t('content.no-data') }}</span>
+        <span class="w-full py-4 text-center inline-block text-xs text-fig-text-tertiary">
+          {{ $t('content.no-data') }}
+        </span>
       </template>
     </n-spin>
   </div>

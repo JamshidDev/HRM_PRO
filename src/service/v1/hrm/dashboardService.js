@@ -18,11 +18,15 @@ const _indexThree = async (payload) => {
 }
 
 const _workerDisabilityDetail = async (payload) => {
-  return await axios.get(`/v1/hr/dashboard/worker-disabilities/preview`, { params: payload?.params })
+  return await axios.get(`/v1/hr/dashboard/worker-disabilities/preview`, {
+    params: payload?.params
+  })
 }
 
 const _relativeDisabilityDetail = async (payload) => {
-  return await axios.get(`/v1/hr/dashboard/worker-relative-disabilities/preview`, { params: payload?.params })
+  return await axios.get(`/v1/hr/dashboard/worker-relative-disabilities/preview`, {
+    params: payload?.params
+  })
 }
 
 const _birthdayDetail = async (payload) => {
@@ -76,8 +80,32 @@ const _auditExport = async (payload) => {
   return await axios.post(`/v1/hr/dashboard-audit-export`, payload?.data)
 }
 
+// Korxonalar faolligi reytingi: period=7|30|all, all=1 — barcha korxonalar.
+const _orgRating = async (payload) => {
+  return await axios.get(`/v1/hr/dashboard/org-rating`, { params: payload?.params })
+}
+
+// Korxonalar faolligi (oy): month=YYYY-MM + organizations.
+const _activity = async (payload) => {
+  return await axios.get(`/v1/hr/dashboard/activity`, { params: payload?.params })
+}
+
+// Top korxonalar reytingi: period=7|30|all + organizations.
+const _activityOrganizations = async (payload) => {
+  return await axios.get(`/v1/hr/dashboard/activity/organizations`, { params: payload?.params })
+}
+
+// Bitta korxona: so'nggi 30 kun va oxirgi amallar.
+const _activityOrganization = async (payload) => {
+  return await axios.get(`/v1/hr/dashboard/activity/organizations/${payload.id}`)
+}
+
 export default {
   _overview,
+  _orgRating,
+  _activity,
+  _activityOrganizations,
+  _activityOrganization,
   _auditCounts,
   _auditPreview,
   _auditExport,

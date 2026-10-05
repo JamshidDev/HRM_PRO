@@ -45,6 +45,9 @@
 
     if (isPosition.value) {
       onFocusPosition()
+    } else {
+      // 1/2 — yangi ishga kirish: mavjud lavozim yuborilmaydi (backend rad etadi).
+      store.payload.worker_position_id = null
     }
   }
 

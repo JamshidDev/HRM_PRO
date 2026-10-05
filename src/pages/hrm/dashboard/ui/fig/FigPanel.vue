@@ -104,6 +104,11 @@
           mock
         </span>
 
+        <!-- Sarlavha o'ng tomonidagi qo'shimcha boshqaruv (masalan, davr tanlovi). -->
+        <div v-if="$slots['header-extra']" class="shrink-0">
+          <slot name="header-extra" />
+        </div>
+
         <button
           v-if="actionText"
           type="button"

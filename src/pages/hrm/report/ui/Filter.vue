@@ -1,9 +1,8 @@
 <script setup>
-  import { SuperStructure } from '@/components/index.js'
+  import { UISelect } from '@/components/index.js'
   import { useComponentStore, useDepartmentStore, useReport2Store } from '@/store/modules/index.js'
   import { useAccountStore } from '@/store/modules/index.js'
-  import { useDebounce } from '@utils'
-  import { ArrowDownload24Regular } from '@vicons/fluent'
+  import { AddCircle24Regular, ArrowDownload24Regular } from '@vicons/fluent'
   const accStore = useAccountStore()
   const { proxy } = getCurrentInstance()
   const staffingButtonRef = ref(null)
@@ -12,27 +11,26 @@
   const store = useReport2Store()
   const dpStore = useDepartmentStore()
 
+  const selectedOrg = computed(() => store.department.params.organization_id?.[0] || null)
+
   const onChangeOrg = (v) => {
-    if (!accStore.checkAction(accStore.pn.hrReportRead)) return
+    store.department.params.organization_id = v
     store.department.list = []
-    if (store.department.params.organization_id.length === 0) return
+    if (!accStore.checkAction(accStore.pn.hrReportRead)) return
+    if (v.length === 0) return
     store._getDepartment()
   }
 
-  const onSearchEv = useDebounce(() => {
-    store._fetchStructure()
-  }, 600)
-
-  const selectedOrg = computed(() => store.department.params.organization_id?.[0] || null)
-
+  // Tashkilot bitta bo'lsa UISelect uni avtomatik tanlaydi. Watch har safar
+  // options o'zgarganda qayta chaqiradi — o'sha tashkilot allaqachon tanlangan
+  // bo'lsa bo'linmalar qayta yuklanmasin.
   const onDefaultEv = (list) => {
-    if (
-      list.length === 1 &&
-      (list?.[0].children === undefined || list?.[0]?.children?.length === 0)
-    ) {
-      store.department.params.organization_id = [list[0]]
-      store._getDepartment()
-    }
+    if (selectedOrg.value?.id === list?.[0]?.id) return
+    onChangeOrg([list[0]])
+  }
+
+  const onSearch = () => {
+    store._fetchStructure()
   }
 
   const addDepartment = () => {
@@ -53,25 +51,34 @@
   }
 
   onMounted(() => {
-    store._fetchStructure(onDefaultEv)
+    store._fetchStructure()
   })
 </script>
 
 <template>
-  <div class="w-full grid grid-cols-12 gap-2">
-    <!-- Mobilda 12 ustun: `col-span-3` da tashkilot select'i ekranning chorak
-         kengligiga qisilib, tanlangan nom ham ko'rinmasdi. -->
-    <div class="col-span-12 md:col-span-3">
-      <label class="text-textColor1 text-sm pl-2">{{ $t('content.organization') }}</label>
-      <SuperStructure
+  <div
+    class="w-full bg-surface-section rounded-[20px] p-3 flex flex-col md:flex-row md:items-end gap-3"
+  >
+    <!-- Tashkilot select'i o'ng chetda: desktopda `order-last` bilan oxiriga
+         o'tadi, mobilda esa birinchi bo'lib qoladi. -->
+    <div class="w-full md:w-[360px] shrink-0 md:order-last" :class="{ 'md:ml-auto': !selectedOrg }">
+      <label class="block text-xs text-gray-500 mb-1 font-medium">
+        {{ $t('content.organization') }}
+      </label>
+      <UISelect
+        placement="bottom-end"
+        :multiple="false"
         :options="store.structure.list"
         :loading="store.structure.loading"
-        :multiple="false"
-        v-model:value="store.department.params.organization_id"
+        :model-v="store.department.params.organization_id"
+        :checked-val="store.structure.cache"
+        :placeholder="$t('content.choose')"
         v-model:search="store.structure.params.search"
-        v-model:cache="store.structure.cache"
-        @update:search="onSearchEv"
-        @update:value="onChangeOrg"
+        @updateModel="onChangeOrg"
+        @defaultValue="onDefaultEv"
+        @updateCheck="(v) => (store.structure.cache = v)"
+        @onSearch="onSearch"
+        @onSubmit="onSearch"
       >
         <template #label="{ data }">
           <div class="flex items-center justify-between w-full pl-1 pt-1">
@@ -94,22 +101,40 @@
             </div>
           </div>
         </template>
-      </SuperStructure>
+      </UISelect>
     </div>
-    <div class="col-span-12 md:col-span-9 flex flex-wrap justify-end md:mt-5 gap-2">
-      <template v-if="selectedOrg">
-        <n-button
-          secondary
-          :type="selectedOrg.rate > selectedOrg.real_rate ? 'success' : 'default'"
+
+    <template v-if="selectedOrg">
+      <div class="flex items-center gap-2">
+        <div
+          class="flex items-center gap-2 h-[34px] px-3 rounded-md border border-table-border bg-surface/2"
         >
-          {{ store.department.params.organization_id?.[0].rate }}
-        </n-button>
-        <n-button secondary :type="selectedOrg.real_rate > selectedOrg.rate ? 'error' : 'default'">
-          {{ store.department.params.organization_id?.[0].real_rate }}
-        </n-button>
-        <n-button @click="addDepartment" type="primary">
-          {{ $t('report.addDepartment') }}
-        </n-button>
+          <span class="text-xs text-gray-500">{{ $t('report.tooltip.P') }}</span>
+          <n-tag
+            size="small"
+            round
+            :bordered="false"
+            :type="selectedOrg.rate > selectedOrg.real_rate ? 'success' : 'default'"
+          >
+            {{ selectedOrg.rate }}
+          </n-tag>
+        </div>
+        <div
+          class="flex items-center gap-2 h-[34px] px-3 rounded-md border border-table-border bg-surface/2"
+        >
+          <span class="text-xs text-gray-500">{{ $t('report.tooltip.F') }}</span>
+          <n-tag
+            size="small"
+            round
+            :bordered="false"
+            :type="selectedOrg.real_rate > selectedOrg.rate ? 'error' : 'default'"
+          >
+            {{ selectedOrg.real_rate }}
+          </n-tag>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-2 md:ml-auto">
         <n-button
           v-if="accStore.checkPermission(accStore.pn.hrReportStaffingExport)"
           ref="staffingButtonRef"
@@ -118,12 +143,18 @@
           type="success"
           secondary
         >
-          <template #icon
-            ><n-icon><ArrowDownload24Regular /></n-icon
-          ></template>
+          <template #icon>
+            <n-icon><ArrowDownload24Regular /></n-icon>
+          </template>
           {{ $t('report.staffingExport') }}
         </n-button>
-      </template>
-    </div>
+        <n-button @click="addDepartment" type="primary">
+          <template #icon>
+            <n-icon><AddCircle24Regular /></n-icon>
+          </template>
+          {{ $t('report.addDepartment') }}
+        </n-button>
+      </div>
+    </template>
   </div>
 </template>

@@ -1,36 +1,22 @@
 <script setup>
   import { UIPageFilter, UIYearMonth } from '@/components/index.js'
   import {
-    DocumentArrowUp20Regular,
-    LockClosed24Filled,
-    LockOpen16Filled,
     CloudArrowUp24Regular,
     ClipboardTaskListLtr20Regular,
     History24Regular
   } from '@vicons/fluent'
   import { useAccountStore, useUploadReportStore } from '@/store/modules/index.js'
-  import i18n from '@/i18n/index.js'
 
-  const { t } = i18n.global
   const store = useUploadReportStore()
   const accStore = useAccountStore()
 
+  // Bu yerda faqat davr bo'yicha umumiy amallar. Tanlangan korxonaga tegishli
+  // amallar (yopish/ochish, hisobot yuklash) OrgHeader.vue da.
   const onYearMonthChange = () => {
     if (!accStore.checkAction(accStore.pn.economistUploadsRead)) return
     store.params.organization_id = null
     store.resetCards()
     store._structures()
-  }
-
-  const onAdd = async () => {
-    if (!accStore.checkAction(accStore.pn.economistUploadsWrite)) return
-    if (!store.params.organization_id) {
-      $Toast.warning(t('uploadReport.form.requiredOrganization'))
-      return
-    }
-    store.resetForm()
-    store.visibleType = true
-    store.visible = true
   }
 
   // 1C dan ommaviy yuklash (Oylik hisobot) — korxona tanlash shart emas (davr bo'yicha).
@@ -50,12 +36,19 @@
     if (!accStore.checkAction(accStore.pn.economistUploadsRead)) return
     store.openPullHistory()
   }
+
+  const canRead = computed(() => accStore.checkPermission(accStore.pn.economistUploadsRead))
 </script>
 
 <template>
-  <UIPageFilter :show-filter-button="false" :show-add-button="false">
+  <UIPageFilter
+    v-model:search="store.orgSearch"
+    :placeholder="$t('uploadReport.ui.searchOrg')"
+    :show-filter-button="false"
+    :show-add-button="false"
+  >
     <template #filterAction>
-      <div class="max-w-[160px]">
+      <div class="w-full md:w-[160px]">
         <UIYearMonth
           v-model:year="store.params.year"
           v-model:month="store.params.month"
@@ -63,42 +56,17 @@
           @change="onYearMonthChange"
         />
       </div>
-      <n-button
-        v-if="
-          store.params.organization_id &&
-            accStore.checkPermission(accStore.pn.economistUploadsStatus)
-        "
-        :type="store.orgStatus ? 'error' : 'success'"
-        @click="store._uploadStatus"
-        :loading="store.structuresLoading"
-      >
-        {{
-          $t(store.orgStatus ? 'uploadReport.form.openFromBlock' : 'uploadReport.form.closeToBlock')
-        }}
-        <template #icon>
-          <LockClosed24Filled v-if="store.orgStatus" />
-          <LockOpen16Filled v-else />
-        </template>
-      </n-button>
 
-      <n-button
-        v-if="accStore.checkPermission(accStore.pn.economistUploadsRead)"
-        @click="onReportStatus"
-        type="default"
-        class="w-full! md:w-auto!"
-      >
+      <div v-if="canRead" class="hidden md:block w-px h-6 bg-surface-line mx-1"></div>
+
+      <n-button v-if="canRead" secondary class="w-full! md:w-auto!" @click="onReportStatus">
         {{ $t('uploadReport.reportStatus.button') }}
         <template #icon>
           <ClipboardTaskListLtr20Regular />
         </template>
       </n-button>
 
-      <n-button
-        v-if="accStore.checkPermission(accStore.pn.economistUploadsRead)"
-        @click="onPullHistory"
-        type="default"
-        class="w-full! md:w-auto!"
-      >
+      <n-button v-if="canRead" secondary class="w-full! md:w-auto!" @click="onPullHistory">
         {{ $t('uploadReport.pullHistory.button') }}
         <template #icon>
           <History24Regular />
@@ -107,20 +75,13 @@
 
       <n-button
         v-if="accStore.checkPermission(accStore.pn.economistUploadsWrite)"
-        @click="onBulkOnes"
-        type="info"
+        type="primary"
         class="w-full! md:w-auto!"
+        @click="onBulkOnes"
       >
         {{ $t('uploadReport.bulkOnes.button') }}
         <template #icon>
           <CloudArrowUp24Regular />
-        </template>
-      </n-button>
-
-      <n-button @click="onAdd" type="success" class="w-full! md:w-auto!">
-        {{ $t('uploadReport.form.uploadFile') }}
-        <template #icon>
-          <DocumentArrowUp20Regular />
         </template>
       </n-button>
     </template>

@@ -1,5 +1,5 @@
 <script setup>
-  import { useCommandStore } from '@/store/modules/index.js'
+  import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
   import { Eye24Regular } from '@vicons/fluent'
@@ -7,7 +7,7 @@
   import { useAppSetting } from '@/utils/index.js'
 
   const { t } = i18n.global
-  const store = useCommandStore()
+  const store = useCommandFormStore()
   const formRef = ref(null)
   const onSubmit = async (mainData) => {
     let data = null
