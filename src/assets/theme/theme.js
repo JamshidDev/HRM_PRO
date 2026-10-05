@@ -21,8 +21,94 @@ const getValueOfCssVariable = (variableName) => {
   return rootStyles.getPropertyValue(variableName).trim()
 }
 
+// Yangi input/select dizayni (sinov). Yoqmasa — `false` qiling, eski ko'rinish to'liq qaytadi.
+// Input, Select, DatePicker, InputNumber, TreeSelect, Cascader, form label'lari va
+// ochiladigan menyular — hammasi shu override'lar + `scss/newInputs.scss` orqali.
+// CSS qismi `html.ui-new-inputs` klassiga bog'langan, flag uni ham boshqaradi.
+const NEW_INPUT_LOOK = true
+
+const SIZES = {
+  heightSmall: '32px',
+  heightMedium: '38px',
+  heightLarge: '44px'
+}
+
+const newInputOverrides = () => {
+  const primary = getValueOfCssVariable('--primary-color')
+  const danger = getValueOfCssVariable('--danger-color')
+  const fill = getValueOfCssVariable('--input-fill')
+  const fillFocus = getValueOfCssVariable('--input-fill-focus')
+  const placeholder = getValueOfCssVariable('--fig-text-disable')
+  const border = `1px solid ${getValueOfCssVariable('--input-border')}`
+  const borderHover = `1px solid ${getValueOfCssVariable('--input-border-hover')}`
+  const borderFocus = `1px solid ${primary}`
+  const ring = `0 0 0 3px ${getValueOfCssVariable('--input-ring')}`
+  const ringError = `0 0 0 3px ${danger}29`
+  return {
+    Input: {
+      ...SIZES,
+      borderRadius: '12px',
+      paddingSmall: '0 10px',
+      paddingMedium: '0 14px',
+      paddingLarge: '0 16px',
+      color: fill,
+      colorFocus: fillFocus,
+      colorDisabled: fill,
+      colorFocusError: fillFocus,
+      placeholderColor: placeholder,
+      border,
+      borderHover,
+      borderFocus,
+      borderDisabled: border,
+      boxShadowFocus: ring,
+      boxShadowFocusError: ringError
+    },
+    InternalSelection: {
+      ...SIZES,
+      borderRadius: '12px',
+      paddingSingle: '0 34px 0 14px',
+      paddingMultiple: '4px 34px 0 6px',
+      color: fill,
+      colorActive: fillFocus,
+      colorDisabled: fill,
+      colorActiveError: fillFocus,
+      placeholderColor: placeholder,
+      border,
+      borderHover,
+      borderActive: borderFocus,
+      borderFocus,
+      boxShadowHover: 'none',
+      boxShadowActive: ring,
+      boxShadowFocus: ring,
+      boxShadowActiveError: ringError,
+      boxShadowFocusError: ringError
+    },
+    InternalSelectMenu: {
+      borderRadius: '8px',
+      paddingMedium: '6px 0',
+      optionPaddingMedium: '0 14px',
+      optionHeightMedium: '36px',
+      optionColorPending: primary + '0f',
+      optionColorActive: primary + '14',
+      optionColorActivePending: primary + '1f'
+    },
+    DatePicker: {
+      itemBorderRadius: '8px'
+    },
+    Form: {
+      labelFontSizeTopMedium: '13px',
+      labelFontWeight: '500',
+      labelPaddingVertical: '0 0 6px 2px',
+      labelTextColor: getValueOfCssVariable('--fig-text-secondary'),
+      feedbackFontSizeMedium: '12px',
+      feedbackHeightMedium: '22px'
+    }
+  }
+}
+
 /** @returns {GlobalThemeOverrides} */
 export const customTheme = () => {
+  document.documentElement.classList.toggle('ui-new-inputs', NEW_INPUT_LOOK)
   return {
     common: {
       baseColor: '#ffffff',
@@ -143,12 +229,16 @@ export const customTheme = () => {
         check: () => h(NIcon, null, { default: () => h(CheckmarkCircle24Regular) })
       }
     },
-    InternalSelection: {
-      border: `1px solid ${getValueOfCssVariable('--surface-line')}`
-    },
-    Input: {
-      border: `1px solid ${getValueOfCssVariable('--surface-line')}`
-    },
+    ...(NEW_INPUT_LOOK
+      ? newInputOverrides()
+      : {
+          InternalSelection: {
+            border: `1px solid ${getValueOfCssVariable('--surface-line')}`
+          },
+          Input: {
+            border: `1px solid ${getValueOfCssVariable('--surface-line')}`
+          }
+        }),
     Dropdown: {
       optionTextColorHover: '#2E90FA'
     },

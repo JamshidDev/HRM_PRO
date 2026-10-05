@@ -181,10 +181,22 @@
   // Boshqa foydalanuvchi pufakchasi ham sof oqdan ozgina farqlanadi.
   --chat-bubble-own-bg: #2c5b82;
   --chat-bubble-in-bg: #eef1f6;
+
+  // Input/Select "filled" ko'rinishi (theme.js → NEW_INPUT_LOOK).
+  --input-fill: #f5f7fa;
+  --input-fill-focus: #ffffff;
+  --input-border: #e4e7ec;
+  --input-border-hover: #c4cad4;
+  --input-ring: rgba(18, 121, 240, 0.16);
 }
 
 [data-theme='dark'] {
   color-scheme: dark;
+  --input-fill: #162131;
+  --input-fill-focus: #1d2939;
+  --input-border: #2b3646;
+  --input-border-hover: #475467;
+  --input-ring: rgba(108, 176, 248, 0.22);
   // Qorong'i temada kanvas va tint bir xil — o'zgarish yo'q.
   --app-bg: #101828;
   --surface-ground: #101828;
