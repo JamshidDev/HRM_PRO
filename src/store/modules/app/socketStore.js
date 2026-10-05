@@ -119,6 +119,8 @@ export const useSocketStore = defineStore('useSocketStore', {
       })
 
       this.socket.on('online_users', (data) => {
+        // Server ro'yxati — yagona manba: uzilishda o'tkazib yuborilgan offline'lar tozalanadi.
+        this.allOnlineUsers = []
         for (let key in data) {
           const user = data[key]
           this.addUserToOnlineUsers(user)
