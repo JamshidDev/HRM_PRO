@@ -66,9 +66,58 @@ const _reportStatusExport = async (payload) => {
   })
 }
 
+// Bitta korxonaning oy oralig'idagi 4 turdagi hisobotlari — ZIP (blob).
+// Mavjud eksport strukturasi (reportStatusExport): blob → blobFileDownload.
+const _reportsZip = async (payload) => {
+  return await axios.get(`/v1/economist/upload/reports-zip`, {
+    params: payload?.params,
+    responseType: 'blob'
+  })
+}
+
 // Tortish tarixi (pull-log) — barcha davrlar bo'yicha paginatsiyalangan yuklamalar.
 const _pullHistory = async (payload) => {
   return await axios.get(`/v1/economist/upload-report-history`, { params: payload?.params })
+}
+
+// ZIP yuklab olish tarixi (Tortish tarixi → ZIP yuklab olishlar tab).
+const _reportDownloads = async (payload) => {
+  return await axios.get(`/v1/economist/report-downloads`, { params: payload?.params })
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// To'lov turlari bo'yicha asossiz to'lovlarni aniqlash (payment-analysis).
+// ─────────────────────────────────────────────────────────────────────────
+// Tahlil natijalari ro'yxati (server paginatsiyasi).
+const _paymentAnalysisIndex = async (payload) => {
+  return await axios.get(`/v1/economist/payment-analysis`, { params: payload?.params })
+}
+// Tasdiqlangan xodimlar whitelist yuklash (multipart) — kodlar 47/50/55/270.
+const _paymentWhitelistUpload = async (payload) => {
+  return await axios.post(`/v1/economist/payment-whitelist`, payload.data)
+}
+// Yuklangan whitelist (imtiyozli xodimlar) ro'yxati — server paginatsiyasi.
+const _paymentWhitelistIndex = (payload) => {
+  return axios.get(`/v1/economist/payment-whitelist`, { params: payload?.params })
+}
+// Qoidalar dvigatelini qayta ishga tushirish (JSON).
+const _paymentAnalysisAnalyze = async (payload) => {
+  return await axios.post(`/v1/economist/payment-analysis/analyze`, payload.data)
+}
+// Tahlil natijalarini Excel'ga yuklash (blob).
+const _paymentAnalysisExport = async (payload) => {
+  return await axios.get(`/v1/economist/payment-analysis/export`, {
+    params: payload?.params,
+    responseType: 'blob'
+  })
+}
+// Imtiyozli xodimni whitelist'ga qo'lda qo'shish (org+davr+kod+xodim bo'yicha dedup).
+const _paymentWhitelistAddRow = (payload) => {
+  return axios.post(`/v1/economist/payment-whitelist/row`, payload.data)
+}
+// Whitelist qatorini o'chirish (soft-delete).
+const _paymentWhitelistRemove = (payload) => {
+  return axios.delete(`/v1/economist/payment-whitelist/` + payload.id)
 }
 
 export default {
@@ -86,5 +135,14 @@ export default {
   _updateStatus,
   _reportStatus,
   _reportStatusExport,
-  _pullHistory
+  _reportsZip,
+  _pullHistory,
+  _reportDownloads,
+  _paymentAnalysisIndex,
+  _paymentWhitelistUpload,
+  _paymentWhitelistIndex,
+  _paymentAnalysisAnalyze,
+  _paymentAnalysisExport,
+  _paymentWhitelistAddRow,
+  _paymentWhitelistRemove
 }

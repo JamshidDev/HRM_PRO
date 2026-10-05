@@ -154,6 +154,7 @@ export * from './lms/listenerStore.js'
 export * from './lms/lmsCertificateStore.js'
 
 export * from './accountant/uploadReportStore.js'
+export * from './accountant/paymentAnalysisStore.js'
 export * from './accountant/monthReportStore.js'
 export * from './accountant/taxFourStore.js'
 export * from './accountant/taxFiveStore.js'

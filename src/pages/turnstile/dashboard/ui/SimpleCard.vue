@@ -75,13 +75,16 @@
       </p>
     </div>
 
-    <!-- katta raqam va o'ngda avatarlar -->
-    <div class="relative flex items-center justify-between gap-3 px-2">
-      <p
-        class="font-grotesk font-semibold text-[20px] leading-[24px] text-fig-text-primary whitespace-nowrap"
-      >
-        {{ formatted }}
-      </p>
+    <!-- katta raqam + o'zgarish, o'ngda avatarlar -->
+    <div class="relative flex items-center justify-between gap-3 px-2 pb-3 min-h-[40px]">
+      <div class="flex items-center gap-2 min-w-0">
+        <p
+          class="font-grotesk font-semibold text-[20px] leading-[24px] text-fig-text-primary whitespace-nowrap"
+        >
+          {{ formatted }}
+        </p>
+        <DeltaBadge hide-label :delta="delta" :invert="invert" :loading="deltaLoading" />
+      </div>
       <span class="shrink-0 card-avatars" v-if="listMore">
         <UIUserGroup
           @click.stop
@@ -91,17 +94,6 @@
           :has-more="listMore - 3"
         />
       </span>
-    </div>
-
-    <!-- `mt-auto` — karta qo'shni baland kartaga tenglashganda ham bu panel
-         kartaning eng pastida (4px pb bilan) qoladi. -->
-    <div class="bg-surface-ground-soft rounded-xl px-3 py-1.5 mt-auto">
-      <div class="flex items-center justify-between gap-2 min-h-[16px]">
-        <span class="text-[12px] leading-[16px] text-fig-text-muted whitespace-nowrap">
-          {{ $t('turnStileDashboard.compare.vsYesterday') }}
-        </span>
-        <DeltaBadge hide-label :delta="delta" :invert="invert" :loading="deltaLoading" />
-      </div>
     </div>
   </div>
 </template>

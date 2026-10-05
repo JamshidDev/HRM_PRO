@@ -122,6 +122,7 @@ export const AppPaths = {
   Ticket: '/ticket',
   MedWorker: '/med-worker',
   UploadReport: '/upload-report',
+  PaymentAnalysis: '/payment-analysis',
   MonthReport: '/month-report',
   TaxFour: '/tax-four',
   TaxFive: '/tax-five',

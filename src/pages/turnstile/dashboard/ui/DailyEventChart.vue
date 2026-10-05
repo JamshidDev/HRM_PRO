@@ -1,6 +1,5 @@
 <script setup>
   import VChart from 'vue-echarts'
-  import ChartSkeleton from './skeleton/ChartSkeleton.vue'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import { use } from 'echarts/core'
@@ -183,7 +182,13 @@
 
 <template>
   <div class="w-full h-full relative">
-    <ChartSkeleton v-if="store.dailyAttendanceLoading" />
+    <n-skeleton
+      v-if="store.dailyAttendanceLoading"
+      width="100%"
+      height="100%"
+      :sharp="false"
+      class="rounded-lg"
+    />
     <v-chart v-else autoresize class="w-full h-full" :option="option" ref="chartRef" />
   </div>
 </template>

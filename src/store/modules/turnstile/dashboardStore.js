@@ -10,16 +10,27 @@ import { AppPaths } from '@/utils/index.js'
 
 const { t } = i18n.global
 
-// stats-five hozircha ishlatilmaydi. Tartib muhim: `_fetchStats()` javoblarni shu
-// indekslar bo'yicha `{one, two, three, four, six, seven}` ga joylaydi.
-const STATS_URLS = [
-  '/v1/turnstile/schedule/stats-one',
-  '/v1/turnstile/schedule/stats-two',
-  '/v1/turnstile/schedule/stats-three',
-  '/v1/turnstile/schedule/stats-four',
-  '/v1/turnstile/schedule/stats-six',
-  '/v1/turnstile/schedule/stats-seven'
-]
+// Davomat kartalari yangi API'dan; qolgan kartalar schedule/stats-* dan.
+const STATS_URLS = {
+  attendance: '/v1/turnstile/dashboard/attendance',
+  two: '/v1/turnstile/schedule/stats-two',
+  four: '/v1/turnstile/schedule/stats-four',
+  seven: '/v1/turnstile/schedule/stats-seven'
+}
+const ATTENDANCE_WORKERS_URL = '/v1/turnstile/dashboard/attendance/workers'
+
+// Preview turi → yangi API `status` qiymati.
+export const ATTENDANCE_PREVIEW = {
+  att_came: 'came',
+  att_absent: 'absent',
+  att_in_office: 'in_office',
+  att_left_office: 'left_office',
+  att_came_mobile: 'came_mobile',
+  att_came_turnstile: 'came_turnstile',
+  att_vacation: 'vacation',
+  att_day_off: 'day_off',
+  att_excused: 'excused'
+}
 
 export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore', {
   state: () => ({
@@ -76,6 +87,18 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
     yesterday: false,
     isOnlineDevice: null,
     cardTypes: {
+      att_came: { name: 'turnStileDashboard.cards.come', key: 'att_came' },
+      att_absent: { name: 'turnStileDashboard.cards.not_come', key: 'att_absent' },
+      att_in_office: { name: 'turnStileDashboard.form.current_in', key: 'att_in_office' },
+      att_left_office: { name: 'turnStileDashboard.form.current_out', key: 'att_left_office' },
+      att_came_mobile: { name: 'turnStileDashboard.cards.mobileFace', key: 'att_came_mobile' },
+      att_came_turnstile: {
+        name: 'turnStileDashboard.cards.turnstileFace',
+        key: 'att_came_turnstile'
+      },
+      att_vacation: { name: 'turnStileDashboard.attendance.vacation', key: 'att_vacation' },
+      att_day_off: { name: 'turnStileDashboard.attendance.day_off', key: 'att_day_off' },
+      att_excused: { name: 'turnStileDashboard.attendance.excused', key: 'att_excused' },
       late_come: {
         name: 'turnStileDashboard.cards.late_come',
         key: 'late_come'
@@ -178,7 +201,8 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
     currentWorkers: [],
     workerStatsData: null,
     mainCards: [],
-    mainChart: null,
+    attendance: null,
+    officeTop: { in_office: [], left_office: [] },
     mainChartLoading: false,
     totalWorkerCount: 0,
 
@@ -213,14 +237,18 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
       const earlyCount = (v) =>
         v?.late_and_early?.early ? Utils.latestByDate(v.late_and_early.early) : null
 
+      const a = state.attendance
+      const pa = p?.attendance
       return {
-        totalWorkers: d(state.totalWorkerCount, p?.one?.totalWorkers),
-        planned: d(state.mainChart?.scheduled_workers_today, p?.one?.scheduled_workers_today),
-        come: d(state.mainChart?.attended_workers_today, p?.one?.attended_workers_today),
-        notCome: d(state.mainChart?.absent_workers_today, p?.one?.absent_workers_today),
-
-        currentIn: d(state.workerStatsData?.current_in, p?.three?.worker_stats?.current_in),
-        currentOut: d(state.workerStatsData?.current_out, p?.three?.worker_stats?.current_out),
+        totalWorkers: d(a?.total, pa?.total),
+        planned: d(a?.scheduled, pa?.scheduled),
+        come: d(a?.came, pa?.came),
+        notCome: d(a?.absent, pa?.absent),
+        currentIn: d(a?.in_office, pa?.in_office),
+        currentOut: d(a?.left_office, pa?.left_office),
+        vacation: d(a?.vacation, pa?.vacation),
+        dayOff: d(a?.day_off, pa?.day_off),
+        excused: d(a?.excused, pa?.excused),
 
         late: d(lateCount(state.workTime), lateCount(p?.seven)),
         early: d(earlyCount(state.workTime), earlyCount(p?.seven)),
@@ -229,28 +257,9 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         devicesOnline: d(state.deviceData?.online, p?.four?.devices?.online),
         devicesOffline: d(state.deviceData?.offline, p?.four?.devices?.offline),
 
-        faceTotal: d(
-          (state.faceIdData?.other || 0) + (state.faceIdData?.mobile_face || 0),
-          p?.four?.auth_type
-            ? (p.four.auth_type.other || 0) + (p.four.auth_type.mobile_face || 0)
-            : null
-        ),
-        faceTurnstile: d(state.faceIdData?.other, p?.four?.auth_type?.other),
-        faceMobile: d(state.faceIdData?.mobile_face, p?.four?.auth_type?.mobile_face),
-
-        privilege: d(
-          state.grandWorkerData?.privilege_turnstile_workers_count,
-          p?.six?.privilege_turnstile_workers_count
-        ),
-        notPassed: d(
-          state.grandWorkerData?.not_passed_turnstile_workers_count,
-          p?.six?.not_passed_turnstile_workers_count
-        ),
-        vacation: d(
-          state.grandWorkerData?.vacation_workers?.total,
-          p?.six?.vacation_workers?.total
-        ),
-        casual: d(state.grandWorkerData?.casual_workers, p?.six?.casual_workers),
+        faceTotal: d(a?.came, pa?.came),
+        faceTurnstile: d(a?.came_turnstile, pa?.came_turnstile),
+        faceMobile: d(a?.came_mobile, pa?.came_mobile),
 
         withoutSchedule: d(state.monthlyTotalWorkerCount, p?.two?.count)
       }
@@ -271,23 +280,16 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         type: undefined
       }
 
+      const keys = Object.keys(STATS_URLS)
       const responses = await Promise.all(
-        STATS_URLS.map((url) =>
+        keys.map((key) =>
           $ApiService.eventService
-            ._allDashboard({ url, params })
+            ._allDashboard({ url: STATS_URLS[key], params })
             .then((res) => res.data.data)
             .catch(() => null)
         )
       )
-
-      return {
-        one: responses[0],
-        two: responses[1],
-        three: responses[2],
-        four: responses[3],
-        six: responses[4],
-        seven: responses[5]
-      }
+      return Object.fromEntries(keys.map((key, idx) => [key, responses[idx]]))
     },
 
     /** Oldingi kun ko'rsatkichlarini fonda yuklaydi (asosiy renderni bloklamaydi). */
@@ -315,6 +317,8 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
       this.workTimeLoading = true
       this.grandLoading = true
       this.mainChartLoading = true
+      this.prevStats = null
+
       const params = {
         ...this._previewQueryParams(),
         start_time: this.dashboardParams.start_time,
@@ -322,137 +326,55 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         date: Utils.timeToZone(this.dashboardParams.date),
         type: undefined
       }
-      const urls = STATS_URLS
+      const load = (url, extra = {}) =>
+        $ApiService.eventService
+          ._allDashboard({ url, params: { ...params, ...extra } })
+          .then((res) => res.data.data)
+          .catch(() => null)
 
-      // Oldingi kun so'rovlari asosiy kartalar bilan raqobatlashmasligi uchun
-      // `prevStats` faqat joriy kun yuklanib bo'lgach tozalanadi/qayta olinadi.
-      this.prevStats = null
-
-      const requests = urls.map(async (url) => {
-        try {
-          const res = await $ApiService.eventService._allDashboard({ url, params })
-          const data = res.data.data
-          return { url, data, error: null }
-        } catch (error) {
-          return { url, data: null, error: error?.message || 'Unknown error' }
-        }
-      })
+      // Har karta o'z javobi kelishi bilan chiziladi — sekin so'rov boshqalarini kutdirmaydi.
+      const tasks = [
+        load(STATS_URLS.attendance).then((data) => {
+          this.attendance = data
+          this._buildAttendanceCards()
+          this.mainChartLoading = false
+          this.workerStatsLoading = false
+          this.grandLoading = false
+        }),
+        ...['in_office', 'left_office'].map((status) =>
+          load(ATTENDANCE_WORKERS_URL, { status, per_page: 3, page: 1 }).then((data) => {
+            this.officeTop[status] = (data?.data || []).map((v) => ({
+              ...v,
+              fullName: Utils.combineFullName(v)
+            }))
+            this._buildAttendanceCards()
+          })
+        ),
+        load(STATS_URLS.two).then((data) => {
+          this.workerDataWithSchedule = data
+          this.monthlyList = data?.stats
+          this.monthlyTotalWorkerCount = data?.count
+          this.monthlyWorkers = (data?.workerList || []).map((v) => ({
+            ...v,
+            fullName: Utils.combineFullName(v)
+          }))
+          this.monthlyLoading = false
+        }),
+        load(STATS_URLS.four).then((data) => {
+          this.dailyEvents = data?.daily_attendance_chart || []
+          this.faceIdData = data?.auth_type || null
+          this.deviceData = data?.devices || null
+          this.dailyAttendanceLoading = false
+          this.devicesLoading = false
+        }),
+        load(STATS_URLS.seven).then((data) => {
+          this.workTime = data
+          this.workTimeLoading = false
+        })
+      ]
 
       try {
-        for await (const result of requests) {
-          const data = result.data
-          if (result.url === urls[0]) {
-            if (!result.error) {
-              this.mainChart = data
-              this.mainCards = [
-                {
-                  type: 'primary',
-                  title: t('turnStileDashboard.cards.come'),
-                  badgeText: t('content.now'),
-                  count: data?.attended_workers_today || 0,
-                  icon: markRaw(TurnstileIcon1),
-                  tint: 'green',
-                  previewType: 'come',
-                  deltaKey: 'come',
-                  decor: 1
-                },
-                {
-                  type: 'danger',
-                  title: t('turnStileDashboard.cards.not_come'),
-                  badgeText: t('content.now'),
-                  count: data?.absent_workers_today || 0,
-                  icon: markRaw(TurnstileIcon2),
-                  tint: 'orange',
-                  previewType: 'not_come',
-                  deltaKey: 'notCome',
-                  invert: true,
-                  decor: 2
-                }
-              ]
-              this.totalWorkerCount = data?.totalWorkers
-              this.mainChartLoading = false
-            }
-          } else if (result.url === urls[1]) {
-            if (!result.error) {
-              this.workerDataWithSchedule = data
-
-              this.monthlyList = data?.stats
-              this.monthlyTotalWorkerCount = data?.count
-              this.monthlyWorkers = data?.workerList.map((v) => ({
-                ...v,
-                fullName: Utils.combineFullName(v)
-              }))
-            }
-
-            this.monthlyLoading = false
-          } else if (result.url === urls[2]) {
-            // In - Out
-            if (!result.error) {
-              this.workerStatsData = data?.worker_stats || null
-              this.currentWorkers = [
-                {
-                  type: 'success',
-                  title: t('turnStileDashboard.form.current_in'),
-                  badgeText: t('content.now'),
-                  count: data?.worker_stats?.current_in || 0,
-                  icon: markRaw(TurnstileIcon3),
-                  tint: 'yellow',
-                  listMore: data?.worker_stats?.current_in,
-                  list: data?.worker_stats.top_in_workers?.map((v) => ({
-                    ...v,
-                    fullName: Utils.combineFullName(v)
-                  })),
-                  previewType: 'current_in',
-                  deltaKey: 'currentIn',
-                  decor: 3
-                },
-                {
-                  type: 'warning',
-                  title: t('turnStileDashboard.form.current_out'),
-                  badgeText: t('content.now'),
-                  count: data?.worker_stats?.current_out || 0,
-                  icon: markRaw(TurnstileIcon4),
-                  tint: 'red',
-                  listMore: data?.worker_stats?.current_out,
-                  list: data?.worker_stats?.top_out_workers?.map((v) => ({
-                    ...v,
-                    fullName: Utils.combineFullName(v)
-                  })),
-                  previewType: 'current_out',
-                  deltaKey: 'currentOut',
-                  invert: true,
-                  decor: 4
-                }
-              ]
-            }
-            this.workerStatsLoading = false
-          } else if (result.url === urls[3]) {
-            // daily chart
-            if (!result.error) {
-              this.dailyEvents = data.daily_attendance_chart
-              this.faceIdData = data.auth_type
-              this.deviceData = data.devices
-            }
-            this.dailyAttendanceLoading = false
-          }
-          // else if (result.url === urls[4]) {
-          //     if (!result.error) {
-          //         this.deviceData = data
-          //         this.devicesLoading = false
-          //     }
-          // }
-          else if (result.url === urls[4]) {
-            if (!result.error) {
-              this.grandWorkerData = data
-              this.grandLoading = false
-            }
-          } else if (result.url === urls[5]) {
-            if (!result.error) {
-              this.workTime = data
-              this.workTimeLoading = false
-            }
-          }
-        }
+        await Promise.all(tasks)
       } finally {
         this.dashboardLoading = false
         this.dailyAttendanceLoading = false
@@ -467,6 +389,58 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
       }
     },
 
+    // Yuqoridagi 4 karta — kelgan/kelmagan va ishxonada/ishxonada yo'q (kelgan = ikkalasining yig'indisi).
+    _buildAttendanceCards() {
+      const a = this.attendance
+      this.totalWorkerCount = a?.total || 0
+      this.mainCards = [
+        {
+          title: t('turnStileDashboard.cards.come'),
+          count: a?.came || 0,
+          icon: markRaw(TurnstileIcon1),
+          tint: 'green',
+          previewType: 'att_came',
+          deltaKey: 'come',
+          decor: 1
+        },
+        {
+          title: t('turnStileDashboard.cards.not_come'),
+          count: a?.absent || 0,
+          icon: markRaw(TurnstileIcon2),
+          tint: 'orange',
+          previewType: 'att_absent',
+          deltaKey: 'notCome',
+          invert: true,
+          decor: 2
+        }
+      ]
+      this.currentWorkers = [
+        {
+          title: t('turnStileDashboard.form.current_in'),
+          count: a?.in_office || 0,
+          icon: markRaw(TurnstileIcon3),
+          tint: 'yellow',
+          listMore: a?.in_office || 0,
+          list: this.officeTop.in_office,
+          previewType: 'att_in_office',
+          deltaKey: 'currentIn',
+          decor: 3
+        },
+        {
+          title: t('turnStileDashboard.form.current_out'),
+          count: a?.left_office || 0,
+          icon: markRaw(TurnstileIcon4),
+          tint: 'red',
+          listMore: a?.left_office || 0,
+          list: this.officeTop.left_office,
+          previewType: 'att_left_office',
+          deltaKey: 'currentOut',
+          invert: true,
+          decor: 4
+        }
+      ]
+    },
+
     _preview(isPagination = false) {
       if (!isPagination) {
         this.previewList = []
@@ -474,8 +448,14 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
       const params = this._previewQueryParams()
       this.previewLoading = true
 
-      $ApiService.eventService
-        ._preview({ params })
+      const status = ATTENDANCE_PREVIEW[this.previewParams.type]
+      const request = status
+        ? $ApiService.eventService._allDashboard({
+            url: ATTENDANCE_WORKERS_URL,
+            params: { ...params, type: undefined, status }
+          })
+        : $ApiService.eventService._preview({ params })
+      request
         .then((res) => {
           let rawData = res.data.data.data
           this.previewTotal = res.data.data.total
@@ -537,6 +517,16 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
           return {
             ...v,
             user: this._userContructor(v.worker, v.worker.id)
+          }
+        } else if (ATTENDANCE_PREVIEW[cardType]) {
+          return {
+            ...v,
+            user: this._userContructor(v, v.position_name),
+            reasons: (v.reasons || [])
+              .map((r) => t(`turnStileDashboard.attendanceReason.${r}`))
+              .join(', '),
+            first_event: v.first_event ? Utils.timeWithMonth(v.first_event) : null,
+            last_event: v.last_event ? Utils.timeWithMonth(v.last_event) : null
           }
         } else if (cardType === 'not_come') {
           return {
@@ -606,8 +596,14 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         download: 1
       }
 
-      $ApiService.eventService
-        ._download({ params })
+      const status = ATTENDANCE_PREVIEW[this.previewParams.type]
+      const request = status
+        ? $ApiService.eventService._allDashboard({
+            url: `${ATTENDANCE_WORKERS_URL}/export`,
+            params: { ...params, type: undefined, download: undefined, status }
+          })
+        : $ApiService.eventService._download({ params })
+      request
         .then(() => {
           this.previewVisible = false
           // You can add router navigation here if needed

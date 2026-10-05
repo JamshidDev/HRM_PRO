@@ -9,6 +9,6 @@
       <n-skeleton width="70%" height="14px" :sharp="false" />
     </div>
     <n-skeleton width="64px" height="20px" :sharp="false" class="mt-1" />
-    <n-skeleton width="96px" height="16px" round class="mt-1" />
+    <n-skeleton width="64px" height="12px" :sharp="false" class="mt-1" />
   </div>
 </template>

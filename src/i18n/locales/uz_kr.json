@@ -4635,6 +4635,23 @@
     "filter": {
       "organizationPlaceholder": "Корхонани танланг",
       "departmentPlaceholder": "Бўлимни танланг"
+    },
+    "attendance": {
+      "vacation": "Таътилда",
+      "day_off": "Дам олиш кунида",
+      "excused": "Сабабли",
+      "firstEvent": "Биринчи ҳодиса",
+      "lastEvent": "Охирги ҳодиса",
+      "reasons": "Белгилар"
+    },
+    "attendanceReason": {
+      "sick_leave": "Касаллик варақаси",
+      "business_trip": "Хизмат сафари",
+      "no_turnstile": "Турникетдан ўтмайди",
+      "exempt": "Ҳисобдан озод",
+      "vacation": "Таътил",
+      "day_off": "Дам олиш куни",
+      "no_schedule": "График йўқ"
     }
   },
   "hcWorkDuration": {
@@ -5631,5 +5648,72 @@
       "noDoc": "Ҳужжат келтирилмаган",
       "stillOpen": "Варақа ҳали очиқ"
     }
+  },
+  "paymentAnalysis": {
+    "name": "Асоссиз тўловларни аниқлаш",
+    "title": "Тўлов турлари бўйича асоссиз тўловларни аниқлаш",
+    "tabs": {
+      "analysis": "Тўлов таҳлили",
+      "whitelist": "Имтиёзли ходимлар"
+    },
+    "filter": {
+      "payingCode": "Тўлов коди",
+      "onlyFlagged": "Фақат асоссизлар"
+    },
+    "buttons": {
+      "blanka": "Бланка юклаш",
+      "whitelist": "Имтиёзли рўйхатни юклаш",
+      "analyze": "Қайта таҳлил",
+      "export": "Excelга юклаш",
+      "addRow": "Ходим қўшиш",
+      "whitelistList": "Имтиёзли ходимлар рўйхати",
+      "addWhitelist": "Ходим қўшиш"
+    },
+    "table": {
+      "rowNo": "№",
+      "fio": "Ф.И.Ш.",
+      "organization": "Корхона",
+      "position": "Лавозим",
+      "pinfl": "PINFL",
+      "payingCode": "Тўлов коди",
+      "summa": "Сумма",
+      "reason": "Аниқланган сабаб",
+      "verdict": "Натижа"
+    },
+    "verdict": {
+      "valid": "Асосли",
+      "invalid": "Асоссиз",
+      "review": "Қўшимча текшириш"
+    },
+    "blanka": {
+      "title": "НН тўлов бланкасини юклаш"
+    },
+    "whitelist": {
+      "title": "Тасдиқланган ходимлар рўйхатини юклаш"
+    },
+    "addRow": {
+      "title": "Ходим қўшиш",
+      "worker": "Ходим",
+      "payingCode": "Тўлов коди",
+      "summa": "Сумма"
+    },
+    "toast": {
+      "uploaded": "Бланка юкланди ва таҳлил қилинди",
+      "whitelistUploaded": "Whitelist юкланди",
+      "analyzed": "Таҳлил қайта бажарилди",
+      "requiredOrganization": "Корхонани танланг",
+      "requiredPayingCode": "Тўлов кодини танланг",
+      "requiredWorker": "Ходимни танланг",
+      "requiredFilters": "Корхона ва даврни танланг",
+      "added": "Ходим қўшилди ва таҳлил қилинди",
+      "deleted": "Ходим ўчирилди"
+    },
+    "whitelistList": {
+      "title": "Имтиёзли ходимлар рўйхати"
+    },
+    "whitelistAdd": {
+      "title": "Имтиёзли ходим қўшиш"
+    },
+    "confirmDelete": "Ўчирилсинми?"
   }
 }

@@ -7,6 +7,8 @@ import { useNotificationSound } from '@/composables/useNotificationSound.js'
 import { eventBus, Events } from '@/utils/index.js'
 import { pickI18nText } from '@/utils/i18nText.js'
 import { useAppStore } from '@/store/modules/app/appStore.js'
+import { useNotificationStore } from '@/store/modules/chat/notificationStore.js'
+import dayjs from 'dayjs'
 
 const allowedEvents = [
   Events.APPLICATION_GENERATED,
@@ -48,6 +50,7 @@ export const useSocketStore = defineStore('useSocketStore', {
     initSocket(token, userId) {
       const appStore = useAppStore()
       const notificationSound = useNotificationSound()
+      const notificationStore = useNotificationStore()
 
       this.currentUserId = userId
       this.socket = io(socketUrl, {
@@ -107,6 +110,17 @@ export const useSocketStore = defineStore('useSocketStore', {
             duration: data.duration || undefined,
             persistent: false
           })
+
+          // Qo'ng'iroq panelga JONLI «tushadi» (drop-animatsiya) — toast bilan birga.
+          // data.title/message {uz,ru,en} obyekt saqlanadi (widget o'zi tilga o'giradi).
+          if (data.id) {
+            notificationStore._addUnread({
+              id: data.id,
+              created_at: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+              read_at: null,
+              data: { ...data, alert: alertType }
+            })
+          }
         }
 
         if (allowedEvents.includes(data.type)) {
@@ -119,6 +133,8 @@ export const useSocketStore = defineStore('useSocketStore', {
       })
 
       this.socket.on('online_users', (data) => {
+        // Server ro'yxati — yagona manba: uzilishda o'tkazib yuborilgan offline'lar tozalanadi.
+        this.allOnlineUsers = []
         for (let key in data) {
           const user = data[key]
           this.addUserToOnlineUsers(user)
@@ -169,9 +185,10 @@ export const useSocketStore = defineStore('useSocketStore', {
       ) // 30 minutes
     },
     addUserToOnlineUsers(user) {
-      const existUser = this.allOnlineUsers.find((v) => Number(v.id) === Number(user.id))
-      if (existUser) return
-      this.allOnlineUsers.push(user)
+      // Mavjud user qayta kelsa (web↔mobil) — yozuv yangilanadi, belgi to'g'ri chiqsin.
+      const index = this.allOnlineUsers.findIndex((v) => Number(v.id) === Number(user.id))
+      if (index === -1) this.allOnlineUsers.push(user)
+      else this.allOnlineUsers.splice(index, 1, { ...this.allOnlineUsers[index], ...user })
     },
     removeUserFromOnlineUsers(user) {
       this.allOnlineUsers = this.allOnlineUsers.filter((v) => Number(v.id) !== Number(user.id))

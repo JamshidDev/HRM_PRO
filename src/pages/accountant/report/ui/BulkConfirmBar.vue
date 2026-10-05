@@ -1,6 +1,11 @@
 <script setup>
   import { useAccountStore, useUploadReportStore } from '@/store/modules/index.js'
-  import { CheckmarkCircle20Filled, DismissCircle20Regular } from '@vicons/fluent'
+  import {
+    CheckmarkCircle20Filled,
+    DismissCircle20Regular,
+    LockOpen20Regular,
+    LockClosed20Regular
+  } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
   const store = useUploadReportStore()
@@ -17,9 +22,13 @@
   const canConfirm = computed(() =>
     accStore.checkPermission(accStore.pn.economistUploadsConfirm)
   )
+  // «Hammasini ochish/yopish» — davr-status ruxsati (economist-uploads-status).
+  const canStatus = computed(() =>
+    accStore.checkPermission(accStore.pn.economistUploadsStatus)
+  )
   const visible = computed(
     () =>
-      canConfirm.value &&
+      (canConfirm.value || canStatus.value) &&
       store.confirmSelected.length > 0 &&
       store.params.year &&
       store.params.month
@@ -35,34 +44,63 @@
       <span class="text-sm text-textColor2">
         {{ $t('uploadReport.bulkSelected', { n: store.confirmSelected.length }) }}
       </span>
-      <n-select
-        class="w-[240px]!"
-        size="small"
-        v-model:value="store.bulkConfirmType"
-        :options="typeOptions"
-      />
-      <n-button
-        type="primary"
-        size="small"
-        :loading="store.bulkConfirmLoading"
-        @click="store._confirmMany(false)"
-      >
-        <template #icon>
-          <n-icon><CheckmarkCircle20Filled /></n-icon>
-        </template>
-        {{ $t('content.confirm') }}
-      </n-button>
-      <n-button
-        type="warning"
-        size="small"
-        :loading="store.bulkConfirmLoading"
-        @click="store._confirmMany(true)"
-      >
-        <template #icon>
-          <n-icon><DismissCircle20Regular /></n-icon>
-        </template>
-        {{ $t('uploadReport.cancelConfirm') }}
-      </n-button>
+      <template v-if="canConfirm">
+        <n-select
+          class="w-[240px]!"
+          size="small"
+          v-model:value="store.bulkConfirmType"
+          :options="typeOptions"
+        />
+        <n-button
+          type="primary"
+          size="small"
+          :loading="store.bulkConfirmLoading"
+          @click="store._confirmMany(false)"
+        >
+          <template #icon>
+            <n-icon><CheckmarkCircle20Filled /></n-icon>
+          </template>
+          {{ $t('content.confirm') }}
+        </n-button>
+        <n-button
+          type="warning"
+          size="small"
+          :loading="store.bulkConfirmLoading"
+          @click="store._confirmMany(true)"
+        >
+          <template #icon>
+            <n-icon><DismissCircle20Regular /></n-icon>
+          </template>
+          {{ $t('uploadReport.cancelConfirm') }}
+        </n-button>
+      </template>
+
+      <template v-if="canStatus">
+        <span v-if="canConfirm" class="h-5 w-px bg-surface-line"></span>
+        <n-button
+          type="info"
+          size="small"
+          :loading="store.bulkOpenLoading"
+          @click="store._openMany(true)"
+        >
+          <template #icon>
+            <n-icon><LockOpen20Regular /></n-icon>
+          </template>
+          {{ $t('uploadReport.openAll') }}
+        </n-button>
+        <n-button
+          type="error"
+          size="small"
+          :loading="store.bulkOpenLoading"
+          @click="store._openMany(false)"
+        >
+          <template #icon>
+            <n-icon><LockClosed20Regular /></n-icon>
+          </template>
+          {{ $t('uploadReport.closeAll') }}
+        </n-button>
+      </template>
+
       <n-button text size="small" @click="store.clearConfirmSelected()">
         {{ $t('content.clear') }}
       </n-button>

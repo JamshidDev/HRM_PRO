@@ -67,7 +67,11 @@
     >
       {{ $t(label) }}
     </span>
-    <span class="text-[10px] leading-[16px] font-semibold whitespace-nowrap" :class="colorClass">
+    <span
+      class="text-[10px] leading-[16px] font-semibold whitespace-nowrap"
+      :class="colorClass"
+      :title="$t(label)"
+    >
       {{ text }}
     </span>
   </div>
