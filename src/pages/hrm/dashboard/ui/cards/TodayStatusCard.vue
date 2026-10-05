@@ -114,7 +114,7 @@
       </div>
 
       <div
-        class="min-w-[280px] flex-1 overflow-hidden rounded-xl border border-fig-br-disable"
+        class="min-w-[280px] flex-1 overflow-hidden rounded-xl"
       >
         <table class="today-table w-full border-collapse text-[13px] leading-[18px]">
           <thead>
