@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
 import { getMonthOfRage } from '@utils'
+import { useAccountStore } from '@/store/modules/index.js'
 const { t } = i18n.global
 
 export const useShiftTypeStore = defineStore('shiftTypeStore', {
@@ -17,10 +18,11 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
     totalItems: 0,
     structureCheck2: [],
 
+    // Smena turlari kam (o'nlab) — chap ro'yxat hammasini bir sahifada oladi va
+    // qidiruvni brauzerda qiladi (backend bu endpointda `search` ni qo'llamaydi).
     params: {
       page: 1,
-      per_page: 15,
-      search: null,
+      per_page: 200,
       organizations: [],
       departments: []
     },
@@ -66,8 +68,6 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
     totalWorkerCount: 0,
     workerLoading: false,
 
-    activeTab: 1,
-    activeGroupTab: 1,
 
     groupList: [],
     groupParams: {
@@ -82,15 +82,6 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
     groupLoading: false,
     totalGroup: 0,
 
-    groupWorkerLoading: false,
-    groupWorkerList: [],
-    totalGroupWorkerCount: 0,
-    groupWorkerParams: {
-      page: 1,
-      per_page: 15,
-      search: null,
-      group: null
-    },
     selectedDate: null,
 
     notScheduleParams: {
@@ -196,21 +187,6 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
         })
         .finally(() => {
           this.notScheduleLoading = false
-        })
-    },
-    _groupWorkers() {
-      const params = {
-        ...this.groupWorkerParams
-      }
-      this.groupWorkerLoading = true
-      $ApiService.shiftTypeService
-        ._groupWorker({ params })
-        .then((res) => {
-          this.groupWorkerList = res.data.data.data
-          this.totalGroupWorkerCount = res.data.data.total
-        })
-        .finally(() => {
-          this.groupWorkerLoading = false
         })
     },
     _group() {
@@ -342,7 +318,7 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
         .then((res) => {
           this.scheduleVisible = false
           this.notScheduleVisible = false
-          ;(this.activeTab === 1 ? this._index : this._group).call()
+          this._refreshAfterGroupChange()
         })
         .finally(() => {
           this.saveLoading = false
@@ -357,15 +333,23 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       this.generatePayload.work_date = this.generatePayload.work_date ?? today.getTime()
       this.generatePayload.count = this.generatePayload.count ?? 1
     },
+    // Guruh qo'shilganda/o'chirilganda chapdagi smena turlaridagi guruh/xodim soni ham
+    // o'zgaradi. Turlarni faqat ko'rish huquqi borlar uchun qayta yuklaymiz — aks holda
+    // 403 xatosi toast bo'lib chiqardi.
+    _refreshAfterGroupChange() {
+      const accStore = useAccountStore()
+      if (accStore.canView(accStore.pn.turnstileSheetsWorkersRead)) this._index()
+      if (accStore.canView(accStore.pn.turnstileSheetsGroupsRead)) this._group()
+    },
     _deleteGroup() {
       this.groupLoading = true
       $ApiService.shiftTypeService
         ._groupDelete({ id: this.elementId })
         .then((res) => {
-          this._group()
+          this._refreshAfterGroupChange()
         })
-        .finally(() => {
-          this.groupLoading = true
+        .catch(() => {
+          this.groupLoading = false
         })
     },
     _editGroup(data) {

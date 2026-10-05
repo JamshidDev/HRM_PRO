@@ -1,10 +1,20 @@
 <script setup>
-  import { useComponentStore, useShiftTypeStore } from '@/store/modules/index.js'
+  import { useAccountStore, useComponentStore, useShiftTypeStore } from '@/store/modules/index.js'
   import { UINSelect, UIPageFilter, UISelect } from '@/components/index.js'
-  import { ArrowLeft20Filled } from '@vicons/fluent'
 
   const store = useShiftTypeStore()
   const componentStore = useComponentStore()
+  const accStore = useAccountStore()
+
+  // Tuzilma/bo'lim filtri sahifadagi ikkala ro'yxatga ham tegishli: chapdagi smena turlari
+  // ham, o'ngdagi guruhlar ham bir xil tashkilot bo'yicha ko'rinsin.
+  const syncShiftTypeFilter = () => {
+    if (!accStore.canView(accStore.pn.turnstileSheetsWorkersRead)) return
+    store.params.organizations = store.groupParams.organizations
+    store.params.departments = store.groupParams.departments
+    store.params.page = 1
+    store._index()
+  }
 
   const onSearchEv = () => {
     store.groupParams.page = 1
@@ -14,6 +24,7 @@
   const filterEvent = () => {
     store.groupParams.page = 1
     store._group()
+    syncShiftTypeFilter()
   }
 
   const onChangeStructure = (v) => {
@@ -45,26 +56,26 @@
     store.departmentGroupList = []
     filterEvent()
   }
+
+  const filterCount = computed(
+    () =>
+      Number(Boolean(store.groupParams.organizations.length)) +
+      Number(Boolean(store.groupParams.departments.length))
+  )
 </script>
 
 <template>
   <UIPageFilter
     v-model:search="store.groupParams.search"
+    :show-search-input="!store.groupParams.schedule_type"
+    :placeholder="$t('shiftType.form.searchByShiftName')"
     :search-loading="store.groupLoading"
     :show-add-button="false"
-    :show-filter-button="!store.groupParams.schedule_type"
+    :filter-count="filterCount"
     @onSearch="onSearchEv"
     @show="beforeShow"
     @onClear="resetFilter"
   >
-    <template #filterAction>
-      <n-button v-if="store.groupParams.schedule_type" type="error" @click="store.activeTab = 1">
-        <template #icon>
-          <ArrowLeft20Filled />
-        </template>
-        {{ $t('content.back') }}
-      </n-button>
-    </template>
     <template #filterContent>
       <div class="ui-filter-grid grid grid-cols-12 gap-x-5 gap-y-4">
         <div class="col-span-12 md:col-span-6">
