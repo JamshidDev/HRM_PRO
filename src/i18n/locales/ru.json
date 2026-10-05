@@ -2845,6 +2845,10 @@
     }
   },
   "applicationPage": {
+    "draft": "Черновик",
+    "draftSignTitle": "Заявление в черновике",
+    "draftSignBody": "После подписания заявление будет отправлено в HR.",
+    "approved": "Утверждено",
     "name": "Заявления",
     "addApp": "Отправить заявление",
     "createWorkerApplication": "Создать заявление",

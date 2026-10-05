@@ -21,15 +21,23 @@
   const accountStore = useAccountStore()
   const t = i18n.global.t
 
-  // Tahrir faqat o'z arizasi, HR ko'rib chiqmagan va jarayondagi holatda (backend bilan bir xil qoida).
+  const DRAFT_CONFIRMATION = 6
+
+  // Tahrir faqat o'z arizasi, HR ko'rib chiqmagan va qoralama/jarayondagi holatda (backend bilan bir xil qoida).
   const canEdit = (row) => {
     const app = row?.worker_application
     return (
       app?.worker?.id === accountStore.account?.worker?.id &&
       app?.status === 0 &&
-      app?.confirmation?.id === 1
+      [1, DRAFT_CONFIRMATION].includes(app?.confirmation?.id)
     )
   }
+
+  // Ariza holati 6 = Qoralama; UIStatus'da 6 «Active» (yashil) — neytral ko'rinishga almashtiramiz.
+  const confirmationStatus = (conf) =>
+    conf?.id === DRAFT_CONFIRMATION
+      ? { id: 2, name: conf?.name || t('applicationPage.draft') }
+      : conf
 
   const emits = defineEmits(['openOffice'])
 
@@ -215,7 +223,7 @@
     </template>
 
     <template #[`cell-worker_application.confirmation`]="{ row }">
-      <UIStatus :status="row?.worker_application.confirmation" />
+      <UIStatus :status="confirmationStatus(row?.worker_application.confirmation)" />
     </template>
 
     <template #[`cell-worker_application.generate`]="{ row }">

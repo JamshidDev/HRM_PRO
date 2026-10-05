@@ -2857,6 +2857,10 @@
     }
   },
   "applicationPage": {
+    "draft": "Qoralama",
+    "draftSignTitle": "Ariza qoralama holatida",
+    "draftSignBody": "Imzolaganingizdan keyin ariza HR ga yuboriladi.",
+    "approved": "Tasdiqlangan",
     "name": "Arizalar",
     "addApp": "Ariza yuborish",
     "createWorkerApplication": "Ariza yaratish",
