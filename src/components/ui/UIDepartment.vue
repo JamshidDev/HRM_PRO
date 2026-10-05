@@ -113,10 +113,21 @@
       store._departmentTree()
     }
   }
+  // Popover ochilganda pastdagi qidiruv inputiga fokus — darhol klaviatura bilan qidirish uchun.
+  const searchInputRef = ref(null)
+  const onPopoverShow = (show) => {
+    if (show) nextTick(() => searchInputRef.value?.focus())
+  }
 </script>
 
 <template>
-  <n-popover placement="bottom" trigger="click" width="400px" class="h-[400px] py-0! px-1">
+  <n-popover
+    @update:show="onPopoverShow"
+    placement="bottom"
+    trigger="click"
+    width="400px"
+    class="h-[400px] py-0! px-1"
+  >
     <template #trigger>
       <n-badge class="w-full" :value="modelV.length" type="info">
         <n-input
@@ -146,6 +157,7 @@
     <div class="w-full h-[40px] flex items-center">
       <n-input-group>
         <n-input
+          ref="searchInputRef"
           size="small"
           v-model:value="searchModel"
           round

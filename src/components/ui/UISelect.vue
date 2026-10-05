@@ -198,6 +198,12 @@
   onMounted(() => {
     callDefaultValue()
   })
+  // Popover ochilganda pastdagi qidiruv inputiga fokus — darhol klaviatura bilan qidirish uchun.
+  const searchInputRef = ref(null)
+  const onPopoverShow = (show) => {
+    // searchableInput rejimida trigger input'ning o'zi qidiruv — fokusni tortib olmaymiz.
+    if (show && !props.searchableInput) nextTick(() => searchInputRef.value?.focus())
+  }
 </script>
 
 <template>
@@ -207,6 +213,7 @@
        qisilib qolgan edi. Ichma-ich popover begona ajdodning trigger kengligiga
        bog'lanmasligi kerak. -->
   <n-popover
+    @update:show="onPopoverShow"
     :placement="placement"
     trigger="click"
     class="h-[400px] md:max-w-auto py-0! px-0! max-w-[calc(100vw-32px)] md:max-w-none! md:w-[400px]"
@@ -257,6 +264,7 @@
           {{ store.structureShort ? $t('content.long') : $t('content.short') }}
         </n-button>
         <n-input
+          ref="searchInputRef"
           clearable
           size="small"
           v-model:value="searchModel"

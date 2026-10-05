@@ -110,6 +110,11 @@
   const inputVal = computed(() => modelV.value.map((a) => a.name).toString())
 
   const slot = useSlots()
+  // Popover ochilganda pastdagi qidiruv inputiga fokus — darhol klaviatura bilan qidirish uchun.
+  const searchInputRef = ref(null)
+  const onPopoverShow = (show) => {
+    if (show) nextTick(() => searchInputRef.value?.focus())
+  }
 </script>
 
 <template>
@@ -117,6 +122,7 @@
        clamp `!important` bilan (aks holda inline qiymat yengardi): tor ekranda
        daraxt viewport'dan chiqib ketmasin. -->
   <n-popover
+    @update:show="onPopoverShow"
     placement="bottom"
     trigger="click"
     width="500px"
@@ -160,7 +166,13 @@
     </div>
     <div class="w-full h-[40px] flex items-center">
       <n-input-group>
-        <n-input size="small" v-model:value="searchModel" round :loading="loading">
+        <n-input
+          ref="searchInputRef"
+          size="small"
+          v-model:value="searchModel"
+          round
+          :loading="loading"
+        >
           <template #prefix>
             <n-icon :component="Search48Filled" />
           </template>
