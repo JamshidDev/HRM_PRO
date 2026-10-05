@@ -5027,7 +5027,14 @@
       "notAllowedThisAction": "Use Duty Schedule menu for special shifts!",
       "turnstileSetting": "Turnstile management",
       "howMuchGroup": "Number of groups in schedule",
-      "group": "Groups"
+      "group": "Groups",
+      "shiftTypes": "Shift types",
+      "allGroups": "All groups",
+      "groupWorkers": "Group workers",
+      "goToSchedule": "Open duty schedule",
+      "customShiftHint": "Custom shifts have no groups — they are filled directly in the duty schedule.",
+      "noShiftTypes": "No shift types found",
+      "searchByShiftName": "Search by shift name"
     }
   },
   "publicPage": {

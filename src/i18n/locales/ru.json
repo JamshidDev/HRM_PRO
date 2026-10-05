@@ -5038,7 +5038,14 @@
       "notAllowedThisAction": "Для специальных смен используйте меню График дежурств!",
       "turnstileSetting": "Управление турникетом",
       "howMuchGroup": "Количество групп в графике",
-      "group": "Группы"
+      "group": "Группы",
+      "shiftTypes": "Типы смен",
+      "allGroups": "Все группы",
+      "groupWorkers": "Сотрудники группы",
+      "goToSchedule": "Открыть график дежурств",
+      "customShiftHint": "У особой смены нет групп — она заполняется напрямую в графике дежурств.",
+      "noShiftTypes": "Типы смен не найдены",
+      "searchByShiftName": "Поиск по названию смены"
     }
   },
   "publicPage": {
