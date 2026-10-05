@@ -117,7 +117,7 @@
             h(
               'div',
               { class: 'text-xs font-medium text-gray-500 leading-[1.2]' },
-              `${option.last_name}.${option.last_name[0]}.${option.middle_name[0]}`
+              `${option.last_name}.${option.last_name?.[0] ?? ''}.${option.middle_name?.[0] ?? ''}`
             ),
             h('div', { class: 'text-xs text-primary leading-[1.2]' }, option.position)
           ])
@@ -159,6 +159,19 @@
     ]
   }
 
+  // Tanlangan qiymat variantlar ro'yxatida bo'lmasa (masalan, tasdiqlangan hujjatdagi
+  // kelishuvchi endi ro'yxatda yo'q) naive-ui faqat `id` li option beradi — ism
+  // `form_state` dan tiklangan `sortableConfirmations` dan olinadi.
+  const optionFullName = (option) => {
+    if (option?.last_name) {
+      return [option.last_name, option.first_name, option.middle_name].filter(Boolean).join(' ')
+    }
+    const id = option?.id ?? option?.value
+    const saved = store.sortableConfirmations.find((v) => v.id === id)?.data
+    if (saved) return [saved.lastName, saved.firstName, saved.middleName].filter(Boolean).join(' ')
+    return option?.label ?? String(id ?? '')
+  }
+
   const renderValue = ({ option }) => {
     return [
       h(
@@ -166,7 +179,7 @@
         {
           class: 'flex gap-2 my-1 items-center'
         },
-        `${option?.last_name} ${option?.first_name} ${option?.middle_name}`
+        optionFullName(option)
       )
     ]
   }
@@ -916,7 +929,7 @@
         <div
           class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
         >
-          <div class="col-span-6">
+          <div class="col-span-12 @lg:col-span-6">
             <n-form-item :label="$t(`documentPage.command.form.director_id`)" path="director_id">
               <n-select
                 value-field="id"
@@ -930,7 +943,7 @@
               />
             </n-form-item>
           </div>
-          <div class="col-span-6">
+          <div class="col-span-12 @lg:col-span-6">
             <n-form-item :label="$t(`documentPage.command.form.finance_id`)">
               <n-select
                 :disabled="!store.payload.director_id"
@@ -963,7 +976,7 @@
             </n-form-item>
           </div>
           <template v-if="store.sortableConfirmations?.length">
-            <div class="col-span-12 pb-2 px-2 flex justify-between">
+            <div class="col-span-12 pb-2 px-2 flex flex-wrap justify-between gap-x-4 gap-y-1">
               <span class="text-secondary">{{
                 $t('documentPage.command.form.viewDescription')
               }}</span>
@@ -987,13 +1000,13 @@
                   <div class="handle">
                     <n-icon
                       size="24"
-                      class="text-secondary cursor-move scale-100 hover:scale-[1.2] mx-2"
+                      class="text-secondary cursor-move scale-100 hover:scale-[1.2] mx-1 @lg:mx-2"
                     >
                       <Drag24Filled />
                     </n-icon>
                   </div>
 
-                  <div class="w-[calc(100%-60px)] select-none flex">
+                  <div class="flex-1 min-w-0 select-none flex">
                     <UIUser class="!w-full" :data="item.data" :hide-tooltip="true" :short="false" />
                   </div>
                   <template v-if="store.oneByOne">

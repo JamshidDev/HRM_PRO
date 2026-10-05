@@ -41,7 +41,7 @@
   <div class="w-full flex">
     <div
       ref="scrollElementRef"
-      class="flex flex-col mx-auto overflow-y-auto relative pb-8"
+      class="flex flex-col mx-auto overflow-y-auto relative pb-8 max-md:max-w-full"
       :style="{ height: container ? `calc(100vh - 50px)` : '100%' }"
     >
       <div
@@ -59,7 +59,12 @@
         </template>
       </div>
       <div v-for="idx in store.totalPdfPage" :key="idx">
-        <canvas class="border border-surface-line" :id="`pdfCanvas${idx}`"></canvas>
+        <!-- Mobil'da sahifa ekran kengligiga sig'adi (gorizontal skrolsiz); desktop'da
+             Ctrl+g'ildirak zoom ishlashi uchun asl o'lcham saqlanadi. -->
+        <canvas
+          class="border border-surface-line max-md:max-w-full max-md:h-auto"
+          :id="`pdfCanvas${idx}`"
+        ></canvas>
       </div>
     </div>
   </div>
