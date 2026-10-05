@@ -1,8 +1,9 @@
 <script setup>
-  import { Search48Filled, Search32Filled } from '@vicons/fluent'
+  import { Search48Filled, Search32Filled, Dismiss16Filled } from '@vicons/fluent'
   import TreeOrg from '@/components/tree/TreeOrg.vue'
   import { useDebounceFn } from '@vueuse/core'
   import { useComponentStore } from '@/store/modules/index.js'
+  import { useTreePopoverKeyboard } from '@/composables/useTreePopoverKeyboard.js'
   const store = useComponentStore()
   const instance = getCurrentInstance()
   const props = defineProps({
@@ -20,7 +21,9 @@
     // true bo'lsa katta (trigger) input ham qidiruv sifatida yoziladi.
     searchableInput: { type: Boolean, default: false },
     // Berilmasa avvalgi default matn ishlatiladi (content.search / content.choose).
-    placeholder: { type: String, default: null }
+    placeholder: { type: String, default: null },
+    // Tanlangan qiymat bo'lsa trigger ichida tozalash (×) tugmasi chiqadi.
+    clearable: { type: Boolean, default: false }
   })
 
   const inputFocused = ref(false)
@@ -198,11 +201,23 @@
   onMounted(() => {
     callDefaultValue()
   })
-  // Popover ochilganda pastdagi qidiruv inputiga fokus — darhol klaviatura bilan qidirish uchun.
-  const searchInputRef = ref(null)
-  const onPopoverShow = (show) => {
-    // searchableInput rejimida trigger input'ning o'zi qidiruv — fokusni tortib olmaymiz.
-    if (show && !props.searchableInput) nextTick(() => searchInputRef.value?.focus())
+
+  // ♿ Klaviatura: ochish/yopish, qatorlar bo'ylab yurish, Tab bilan keyingi maydonga
+  // o'tish. Ochilganda pastdagi qidiruv inputiga fokus tushadi.
+  const { show, triggerRef, panelRef, searchInputRef, onTriggerKeydown, onPanelKeydown } =
+    useTreePopoverKeyboard({
+      searchable: () => props.searchableInput,
+      multiple: () => props.multiple
+    })
+
+  // Tanlov bilan birga pastdagi qidiruv ham tozalanadi — daraxt to'liq holiga qaytadi.
+  const onClear = () => {
+    emits('updateModel', [])
+    if (searchModel.value) {
+      searchModel.value = null
+      emits('onSearch', null)
+    }
+    triggerRef.value?.$el?.querySelector('input')?.focus()
   }
 </script>
 
@@ -213,13 +228,19 @@
        qisilib qolgan edi. Ichma-ich popover begona ajdodning trigger kengligiga
        bog'lanmasligi kerak. -->
   <n-popover
-    @update:show="onPopoverShow"
+    v-model:show="show"
     :placement="placement"
     trigger="click"
     class="h-[400px] md:max-w-auto py-0! px-0! max-w-[calc(100vw-32px)] md:max-w-none! md:w-[400px]"
   >
     <template #trigger>
-      <n-badge class="w-full block" :value="modelV.length" type="info" :offset="[-10, -4]">
+      <n-badge
+        ref="triggerRef"
+        class="w-full block"
+        :value="modelV.length"
+        type="info"
+        :offset="[-10, -4]"
+      >
         <n-input
           :placeholder="
             placeholder || (searchableInput ? $t('content.search') : $t('content.choose'))
@@ -232,57 +253,75 @@
           @update:value="onTriggerInput"
           @focus="inputFocused = true"
           @blur="onTriggerBlur"
-        />
-      </n-badge>
-    </template>
-    <div class="w-full h-[10px]"></div>
-    <div class="w-full h-[344px] overflow-y-auto px-1">
-      <n-spin :show="loading" class="w-full h-full">
-        <TreeOrg
-          :short="store.structureShort"
-          :data="options"
-          :modelV="modelV"
-          :checkedVal="checkedVal"
-          :getChildIds="getChildIds"
-          :changeCheckVal="changeCheckVal"
-          :multiple="multiple"
-          @onSelect="onSelect"
-          @onSelectAll="onSelectAll"
+          @keydown="onTriggerKeydown"
         >
-          <template v-if="$slots.label" #label="{ data }">
-            <slot name="label" :data="data" />
-          </template>
-        </TreeOrg>
-      </n-spin>
-    </div>
-    <div class="w-full h-[40px] flex items-center px-1">
-      <n-input-group>
-        <n-button size="small" @click="store.structureShort = !store.structureShort">
-          <template #icon>
-            <n-checkbox v-model:checked="store.structureShort" @click.stop />
-          </template>
-          {{ store.structureShort ? $t('content.long') : $t('content.short') }}
-        </n-button>
-        <n-input
-          ref="searchInputRef"
-          clearable
-          size="small"
-          v-model:value="searchModel"
-          round
-          :on-keyup="searchEvent"
-          @update:value="searchEvent"
-          :loading="loading"
-        >
-          <template #prefix>
-            <n-icon :component="Search48Filled" />
+          <template v-if="clearable && modelV.length" #suffix>
+            <button
+              type="button"
+              :aria-label="$t('content.clear')"
+              :title="$t('content.clear')"
+              class="ui-select__clear flex items-center justify-center w-4 h-4 rounded-full text-textColor3 hover:text-textColor1 outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+              @click.stop="onClear"
+              @keydown.enter.stop
+              @keydown.space.stop
+            >
+              <n-icon size="14"><Dismiss16Filled /></n-icon>
+            </button>
           </template>
         </n-input>
-        <n-button @click="emits('onSubmit')" type="primary" size="small" :loading="loading">
-          <template #icon>
-            <Search32Filled />
-          </template>
-        </n-button>
-      </n-input-group>
+      </n-badge>
+    </template>
+    <div ref="panelRef" @keydown="onPanelKeydown">
+      <div class="w-full h-[10px]"></div>
+      <div class="w-full h-[344px] overflow-y-auto px-1">
+        <n-spin :show="loading" class="w-full h-full">
+          <TreeOrg
+            :short="store.structureShort"
+            :data="options"
+            :modelV="modelV"
+            :checkedVal="checkedVal"
+            :getChildIds="getChildIds"
+            :changeCheckVal="changeCheckVal"
+            :multiple="multiple"
+            @onSelect="onSelect"
+            @onSelectAll="onSelectAll"
+          >
+            <template v-if="$slots.label" #label="{ data }">
+              <slot name="label" :data="data" />
+            </template>
+          </TreeOrg>
+        </n-spin>
+      </div>
+      <div class="w-full h-[40px] flex items-center px-1">
+        <n-input-group>
+          <n-button size="small" @click="store.structureShort = !store.structureShort">
+            <template #icon>
+              <n-checkbox v-model:checked="store.structureShort" @click.stop />
+            </template>
+            {{ store.structureShort ? $t('content.long') : $t('content.short') }}
+          </n-button>
+          <n-input
+            ref="searchInputRef"
+            data-tree-search
+            clearable
+            size="small"
+            v-model:value="searchModel"
+            round
+            :on-keyup="searchEvent"
+            @update:value="searchEvent"
+            :loading="loading"
+          >
+            <template #prefix>
+              <n-icon :component="Search48Filled" />
+            </template>
+          </n-input>
+          <n-button @click="emits('onSubmit')" type="primary" size="small" :loading="loading">
+            <template #icon>
+              <Search32Filled />
+            </template>
+          </n-button>
+        </n-input-group>
+      </div>
     </div>
   </n-popover>
 </template>

@@ -56,12 +56,77 @@
   }
 
   const slot = useSlots()
+
+  // ♿ Klaviatura (qatorlar `tabindex="-1"` — ular orasida ↑/↓ bilan
+  // composables/useTreePopoverKeyboard.js yuradi, bu yerda qator amallari):
+  //   Enter / Space — tanlash, Shift+Enter — barcha ichki bo'linmalarni tanlash
+  //   → — ochish, ochiq bo'lsa birinchi ichki qatorga o'tish
+  //   ← — yopish, yopiq bo'lsa ota qatorga o'tish
+  const hasChildren = (item) => Array.isArray(item?.children) && item.children.length > 0
+  const isExpanded = (item) => props.opened || props.checkedVal.includes(item.id)
+
+  const ROW = '[data-tree-row]'
+  const visibleRows = (el) =>
+    [...(el.closest('[data-tree-root]')?.querySelectorAll(ROW) ?? [])].filter(
+      (r) => r.getClientRects().length > 0
+    )
+
+  const onRowKeydown = (e, item) => {
+    const row = e.currentTarget
+    switch (e.key) {
+      case 'Enter':
+      case ' ':
+        e.preventDefault()
+        if (e.shiftKey && props.multiple && hasChildren(item)) onSelectRadio(item)
+        else onSelect(item)
+        break
+      case 'ArrowRight':
+        if (!hasChildren(item)) return
+        e.preventDefault()
+        if (!isExpanded(item)) onOpen(item)
+        else {
+          const rows = visibleRows(row)
+          rows[rows.indexOf(row) + 1]?.focus()
+        }
+        break
+      case 'ArrowLeft': {
+        e.preventDefault()
+        if (hasChildren(item) && isExpanded(item) && !props.opened) {
+          onOpen(item)
+          break
+        }
+        const rows = visibleRows(row)
+        const parent = rows
+          .slice(0, rows.indexOf(row))
+          .reverse()
+          .find((r) => Number(r.dataset.deep) === props.deep - 1)
+        parent?.focus()
+        break
+      }
+    }
+  }
 </script>
 
 <template>
-  <div>
+  <div
+    :role="deep === 1 ? 'tree' : 'group'"
+    :data-tree-root="deep === 1 ? '' : undefined"
+    :aria-multiselectable="deep === 1 ? multiple : undefined"
+  >
     <template v-for="(item, idx) in data" :key="idx">
-      <div class="w-full flex cursor-pointer hover:bg-blue-50 ui__tree-hover">
+      <div
+        data-tree-row
+        :data-deep="deep"
+        :data-selectable="String(!item.group)"
+        role="treeitem"
+        tabindex="-1"
+        :aria-level="deep"
+        :aria-selected="modelV.some((a) => a.id === item.id)"
+        :aria-expanded="hasChildren(item) ? isExpanded(item) : undefined"
+        :aria-disabled="item.group ? true : undefined"
+        class="w-full flex cursor-pointer hover:bg-blue-50 ui__tree-hover outline-none focus-visible:bg-blue-50 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
+        @keydown="onRowKeydown($event, item)"
+      >
         <template v-if="deep > 1">
           <div
             v-for="(item, idx) in deep - 1"
