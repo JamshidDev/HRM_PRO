@@ -251,10 +251,11 @@ export const useTopicExamStore = defineStore('topicExamStore', {
         })
         .then((res) => {
           this.attachCategoryVisible = false
+          // Xato bo'lsa tanlov saqlanib qolsin — foydalanuvchi sonni tuzatib qayta saqlaydi.
+          this.resetCategoryPayload()
         })
         .finally(() => {
           this.saveLoading = false
-          this.resetCategoryPayload()
         })
     },
     _get_attached_categories() {
@@ -288,6 +289,8 @@ export const useTopicExamStore = defineStore('topicExamStore', {
       this.payload.whom_ids = []
       this.payload.chances = 3
       this.payload.tests_count = 36
+      this.payload.description = null
+      this.payload.camera = false
     },
     resetCategoryPayload() {
       this.categoryPayload.category_ids = []

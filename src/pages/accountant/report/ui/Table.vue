@@ -1,11 +1,13 @@
 <script setup>
-  import { UIStatus, UIPageTitle } from '@/components/index.js'
+  import { UIStatus } from '@/components/index.js'
   import { useUploadReportStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import {
     Info24Regular,
     ArrowCircleDown12Regular,
-    ChevronDown24Regular
+    ChevronDown24Regular,
+    ArrowClockwise24Regular,
+    History24Regular
   } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
@@ -16,6 +18,9 @@
   const latest = computed(() => store.list?.[0] ?? null)
   const older = computed(() => store.list?.slice(1) ?? [])
   const showHistory = ref(false)
+  const selectedCard = computed(() =>
+    store.selectedIndex === null ? null : store.cards[store.selectedIndex]
+  )
 
   const onDownload = (url) => {
     window.open(url, '_blank')
@@ -43,47 +48,86 @@
 </script>
 
 <template>
-  <n-spin :show="store.cardLoading">
-    <UIPageTitle v-if="store.params?.organization_id" class="mt-2">
-      <template #title>
-        {{ $t('content.historyUpload') }}
-        <span class="text-primary" v-if="store.cards[store.selectedIndex]"
-          >#{{ store.cards[store.selectedIndex]?.name }}</span
+  <n-spin class="flex-1 min-h-0" content-class="h-full flex flex-col" :show="store.cardLoading">
+    <div class="flex items-center justify-between gap-2 mt-4">
+      <h2 class="text-base font-semibold flex items-center gap-2 min-w-0">
+        <span class="shrink-0">{{ $t('content.historyUpload') }}</span>
+        <span
+          v-if="selectedCard"
+          class="truncate px-2 h-6 inline-flex items-center rounded-full bg-primary/10 text-primary text-xs font-medium"
         >
-      </template>
-      <template #actions>
-        <n-button @click="store._cards()" type="primary">{{ $t('content.refresh') }}</n-button>
-      </template>
-    </UIPageTitle>
-    <div class="w-full overflow-y-auto h-[calc(100vh-520px)] mt-4">
-      <!-- Oxirgi (joriy) yuklama — ajratib ko'rsatiladi -->
+          {{ selectedCard.name }}
+        </span>
+      </h2>
+      <n-tooltip>
+        <template #trigger>
+          <n-button quaternary circle size="small" @click="store._cards()">
+            <template #icon><ArrowClockwise24Regular /></template>
+          </n-button>
+        </template>
+        {{ $t('content.refresh') }}
+      </n-tooltip>
+    </div>
+    <div class="w-full flex-1 min-h-[200px] overflow-y-auto mt-3">
       <div
-        v-if="latest"
-        class="bg-surface-section p-2 rounded-xl border-2 border-primary/40"
+        v-if="!latest"
+        class="h-full min-h-[200px] flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-surface-line text-center px-6"
       >
+        <n-icon size="32" class="text-textColor3"><History24Regular /></n-icon>
+        <span class="text-sm text-textColor3 max-w-[320px]">
+          {{ $t(selectedCard ? 'uploadReport.ui.noUploads' : 'uploadReport.ui.selectType') }}
+        </span>
+      </div>
+      <!-- Oxirgi (joriy) yuklama — ajratib ko'rsatiladi -->
+      <div v-if="latest" class="bg-surface-section p-2 rounded-xl border-2 border-primary/40">
         <div class="grid grid-cols-2">
           <div class="border-l-2 border-primary pl-2">
             <h1 class="font-semibold text-xs flex items-center gap-1 flex-wrap">
               {{ Utils.getMonthNameById(latest.month) }} - {{ latest.year }}
-              <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-success/15 text-success">
+              <span
+                class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-success/15 text-success"
+              >
                 {{ $t('uploadReport.latest') }}
               </span>
               <span
                 class="px-1.5 py-0.5 rounded text-[10px] font-medium"
-                :class="latest.source === 2 ? 'bg-primary/10 text-primary' : 'bg-secondary/10 text-secondary'"
+                :class="
+                  latest.source === 2
+                    ? 'bg-primary/10 text-primary'
+                    : 'bg-secondary/10 text-secondary'
+                "
               >
-                {{ latest.source === 2 ? $t('uploadReport.source.ones') : $t('uploadReport.source.excel') }}
+                {{
+                  latest.source === 2
+                    ? $t('uploadReport.source.ones')
+                    : $t('uploadReport.source.excel')
+                }}
               </span>
             </h1>
             <div class="text-secondary text-xs">
-              {{ Utils.timeOnlyDate(latest.created_at) }} {{ Utils.timeOnlyHour(latest.created_at) }}
+              {{ Utils.timeOnlyDate(latest.created_at) }}
+              {{ Utils.timeOnlyHour(latest.created_at) }}
             </div>
           </div>
           <div class="flex justify-end gap-2">
-            <n-button v-if="latest?.file" type="success" size="small" secondary circle @click="onDownload(latest.file)">
+            <n-button
+              v-if="latest?.file"
+              type="success"
+              size="small"
+              secondary
+              circle
+              @click="onDownload(latest.file)"
+            >
               <template #icon><ArrowCircleDown12Regular /></template>
             </n-button>
-            <n-button @click="showComment(latest)" size="small" class="ml-2" v-if="latest.comment" circle secondary>
+            <n-button
+              @click="showComment(latest)"
+              size="small"
+              class="ml-2"
+              v-if="latest.comment"
+              circle
+              secondary
+            >
               <template #icon><Info24Regular /></template>
             </n-button>
           </div>
@@ -109,7 +153,9 @@
           <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-error/10 text-error">
             {{ $t('uploadReport.changes.removed') }}: {{ latest.removed_count }}
           </span>
-          <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-secondary/10 text-secondary">
+          <span
+            class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-secondary/10 text-secondary"
+          >
             {{ $t('uploadReport.changes.unchanged') }}: {{ latest.unchanged_count }}
           </span>
         </div>
@@ -138,20 +184,43 @@
                     {{ Utils.getMonthNameById(item.month) }} - {{ item.year }}
                     <span
                       class="px-1.5 py-0.5 rounded text-[10px] font-medium"
-                      :class="item.source === 2 ? 'bg-primary/10 text-primary' : 'bg-secondary/10 text-secondary'"
+                      :class="
+                        item.source === 2
+                          ? 'bg-primary/10 text-primary'
+                          : 'bg-secondary/10 text-secondary'
+                      "
                     >
-                      {{ item.source === 2 ? $t('uploadReport.source.ones') : $t('uploadReport.source.excel') }}
+                      {{
+                        item.source === 2
+                          ? $t('uploadReport.source.ones')
+                          : $t('uploadReport.source.excel')
+                      }}
                     </span>
                   </h1>
                   <div class="text-secondary text-xs">
-                    {{ Utils.timeOnlyDate(item.created_at) }} {{ Utils.timeOnlyHour(item.created_at) }}
+                    {{ Utils.timeOnlyDate(item.created_at) }}
+                    {{ Utils.timeOnlyHour(item.created_at) }}
                   </div>
                 </div>
                 <div class="flex justify-end gap-2">
-                  <n-button v-if="item?.file" type="success" size="small" secondary circle @click="onDownload(item.file)">
+                  <n-button
+                    v-if="item?.file"
+                    type="success"
+                    size="small"
+                    secondary
+                    circle
+                    @click="onDownload(item.file)"
+                  >
                     <template #icon><ArrowCircleDown12Regular /></template>
                   </n-button>
-                  <n-button @click="showComment(item)" size="small" class="ml-2" v-if="item.comment" circle secondary>
+                  <n-button
+                    @click="showComment(item)"
+                    size="small"
+                    class="ml-2"
+                    v-if="item.comment"
+                    circle
+                    secondary
+                  >
                     <template #icon><Info24Regular /></template>
                   </n-button>
                 </div>
@@ -163,16 +232,22 @@
                 </div>
               </div>
               <div v-if="item.added_count != null" class="flex flex-wrap gap-1 mt-2">
-                <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-success/10 text-success">
+                <span
+                  class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-success/10 text-success"
+                >
                   {{ $t('uploadReport.changes.added') }}: {{ item.added_count }}
                 </span>
-                <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-warning/10 text-warning">
+                <span
+                  class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-warning/10 text-warning"
+                >
                   {{ $t('uploadReport.changes.changed') }}: {{ item.changed_count }}
                 </span>
                 <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-error/10 text-error">
                   {{ $t('uploadReport.changes.removed') }}: {{ item.removed_count }}
                 </span>
-                <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-secondary/10 text-secondary">
+                <span
+                  class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-secondary/10 text-secondary"
+                >
                   {{ $t('uploadReport.changes.unchanged') }}: {{ item.unchanged_count }}
                 </span>
               </div>

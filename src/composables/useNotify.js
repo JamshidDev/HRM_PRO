@@ -65,7 +65,9 @@ const resume = (itemId) => {
 
 export const useNotify = () => {
   const notify = (content, type = 'success', options = {}) => {
-    const { duration, persistent, meta } = normalizeOptions(options)
+    // `description` / `action` — tizim xabarlari uchun (push `meta` siz): ostki izoh
+    // va bitta tugma `{ label, onClick }`.
+    const { duration, persistent, meta, description, action } = normalizeOptions(options)
 
     // DUBLIKATNI TO'SISH: bitta push socket qayta ulanganda yoki server ikki
     // marta emit qilganda ayni xabar ikki toast bo'lib chiqib qolardi.
@@ -81,6 +83,8 @@ export const useNotify = () => {
       type: normalizeType(type),
       content,
       meta,
+      description,
+      action,
       // Progress bar shu qiymat bo'yicha animatsiya qilinadi.
       duration: persistent ? 0 : ms,
       paused: false

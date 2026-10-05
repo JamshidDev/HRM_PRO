@@ -91,11 +91,23 @@ export const useNotificationStore = defineStore('notificationStore', {
       $ApiService.notificationService
         ._user_index({ params: { ...this.userUnreadNotificationsParams, read_at: true } })
         .then((res) => {
-          this.userUnreadNotifications.push(...res.data.data.data)
+          // Jonli qo'shilgan (socket) yozuvlar bilan takrorlanmasin — dedup (id bo'yicha).
+          const fresh = (res.data.data.data || []).filter(
+            (n) => !this.userUnreadNotifications.some((i) => i.id === n.id)
+          )
+          this.userUnreadNotifications.push(...fresh)
         })
         .finally(() => {
           this.userUnreadNotificationsLoading = false
         })
+    },
+    // Yangi o'qilmagan bildirishnomani ro'yxat BOSHIGA qo'shadi (panelga jonli
+    // «tushadi», drop-animatsiya bilan). Takror (id) bo'lsa — qo'shmaymiz.
+    _addUnread(item) {
+      if (!item?.id) return
+      if (this.userUnreadNotifications.some((i) => i.id === item.id)) return
+      this.userUnreadNotifications.unshift(item)
+      this.userUnreadNotificationsCount++
     },
     _user_index() {
       this.userNotificationsLoading = true

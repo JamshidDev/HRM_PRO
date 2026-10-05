@@ -30,6 +30,7 @@
     return dv?.[filterName] !== undefined ? dv[filterName] : store.defaultParams[filterName]
   }
 
+  // Bo'sh holatdan farq qilgan har filtr sanaladi — karta qo'ygan standart filtr ham ko'rinadi.
   const filtersCount = computed(() => {
     if (!store.activeDetail) return 0
     if (!store.activeDetail?.filters) return 0
@@ -37,10 +38,12 @@
     const filters = store.activeDetail.filters
     for (let i of filters) {
       if (i === 'month' && filters.includes('year')) continue
+      // «Barchasi» jinsi — filtr emas, sanalmaydi.
+      if (i === 'sex' && store.params.sex === 'all') continue
       if (store.typeNames.includes(i)) {
-        a += !isdeepequal(getDefault(i), store.params.type)
+        a += !isdeepequal(store.defaultParams.type, store.params.type)
       } else {
-        a += !isdeepequal(getDefault(i), store.params[i])
+        a += !isdeepequal(store.defaultParams[i], store.params[i])
       }
     }
     return a
@@ -125,6 +128,9 @@
   //   store.params.page = 1
   //   filterEvent()
   // })
+
+  // Jins: «Barchasi» (ikkala jins) + erkak/ayol.
+  const sexOptions = computed(() => [{ id: 'all', name: t('content.all') }, ...componentStore.genderList])
 </script>
 <template>
   <UIPageFilter
@@ -226,7 +232,7 @@
               filterable
               @update:value="filterEvent"
               clearablewA
-              :options="componentStore.genderList"
+              :options="sexOptions"
               label-field="name"
               value-field="id"
               :ignore-composition="false"

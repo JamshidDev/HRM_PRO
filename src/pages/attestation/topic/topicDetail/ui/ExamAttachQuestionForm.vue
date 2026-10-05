@@ -82,7 +82,7 @@
                 store.categoryPayload.categories.find(
                   (i) => i.exam_category_id === option.option.value
                 )?.count)(),
-              min: 0,
+              min: 1,
               max: option.option.total
             })
         )
@@ -114,9 +114,10 @@
       return false
     })
     newVal.forEach((i) => {
+      // 0 savolli kategoriya xodimga savolsiz imtihon berardi — kamida 1.
       payload.push({
         exam_category_id: i,
-        count: 0
+        count: 1
       })
     })
     store.categoryPayload.categories = payload

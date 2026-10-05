@@ -11,15 +11,23 @@
   import { computed } from 'vue'
   const store = useUploadReportStore()
 
+  // Qidiruvda mos korxona va uning barcha ota-bo'linmalari ko'rinadi, mos
+  // farzandi bor tugunlar avtomatik ochiladi.
+  const query = computed(() => store.orgSearch?.trim().toLowerCase() || '')
+  const matches = (node) =>
+    !query.value || node.name?.toLowerCase().includes(query.value) || !!node.children?.some(matches)
+
   const flattenData = computed(() => {
     function flattenTreeWithLevel(tree, level = 0) {
       const result = []
 
       function traverse(nodes, currentLevel) {
         for (const node of nodes) {
+          if (!matches(node)) continue
           const { children, ...rest } = node
-          result.push({ ...rest, level: currentLevel, isHasChildren: !!children.length })
-          const isExpanded = store.expandSet.has(node.id)
+          result.push({ ...rest, level: currentLevel, isHasChildren: !!children?.length })
+          const isExpanded =
+            store.expandSet.has(node.id) || (query.value && children?.some(matches))
           if (isExpanded && children && children.length > 0) {
             traverse(children, currentLevel + 1)
           }
@@ -30,6 +38,19 @@
     }
     return flattenTreeWithLevel(store.structuresList, 0)
   })
+
+  const isOpen = (item) =>
+    store.expandSet.has(item.id) ||
+    (!!query.value && !!findNode(store.structuresList, item.id)?.children?.some(matches))
+
+  const findNode = (list, id) => {
+    for (const n of list) {
+      if (n.id === id) return n
+      const f = n.children?.length ? findNode(n.children, id) : null
+      if (f) return f
+    }
+    return null
+  }
 
   const toggleExpand = (id) => {
     if (store.expandSet.has(id)) {
@@ -48,9 +69,7 @@
   )
   const toggleAllVisible = () => {
     if (allVisibleSelected.value) {
-      store.setConfirmSelected(
-        store.confirmSelected.filter((id) => !visibleIds.value.includes(id))
-      )
+      store.setConfirmSelected(store.confirmSelected.filter((id) => !visibleIds.value.includes(id)))
     } else {
       const merged = new Set([...store.confirmSelected, ...visibleIds.value])
       store.setConfirmSelected([...merged])
@@ -59,28 +78,25 @@
 </script>
 
 <template>
-  <n-spin class="min-h-[400px]" :show="store.structuresLoading">
-    <div class="h-[calc(100vh-200px)] overflow-auto">
+  <n-spin class="h-full" content-class="h-full" :show="store.structuresLoading">
+    <div class="h-full overflow-auto">
       <n-table class="!border-t-0 sticky-table-header" :single-line="false" size="small">
         <thead>
           <tr>
             <th class="min-w-[40px] w-[40px] !text-center">
-              <n-checkbox
-                :checked="allVisibleSelected"
-                @update:checked="toggleAllVisible"
-              />
+              <n-checkbox :checked="allVisibleSelected" @update:checked="toggleAllVisible" />
             </th>
-            <th class="min-w-[400px] !text-center">{{ $t('content.organization') }}</th>
-            <th class="min-w-[80px] w-[80px] !text-center text-xs">
+            <th class="min-w-[320px] !text-left">{{ $t('content.organization') }}</th>
+            <th class="min-w-[76px] w-[76px] !text-center text-xs !whitespace-normal leading-tight">
               {{ $t('uploadReport.form.monthReport') }}
             </th>
-            <th class="min-w-[80px] w-[80px] !text-center text-xs">
+            <th class="min-w-[76px] w-[76px] !text-center text-xs !whitespace-normal leading-tight">
               {{ $t('uploadReport.form.applicationFour') }}
             </th>
-            <th class="min-w-[80px] w-[80px] !text-center text-xs">
+            <th class="min-w-[76px] w-[76px] !text-center text-xs !whitespace-normal leading-tight">
               {{ $t('uploadReport.form.applicationFive') }}
             </th>
-            <th class="min-w-[80px] w-[80px] !text-center text-xs">
+            <th class="min-w-[76px] w-[76px] !text-center text-xs !whitespace-normal leading-tight">
               {{ $t('uploadReport.form.INPSPayment') }}
             </th>
           </tr>
@@ -93,9 +109,7 @@
               :class="[item.id === store.params.organization_id && 'selectedRow']"
             >
               <td @click.stop="store.toggleConfirmSelect(item.id)">
-                <n-checkbox
-                  :checked="store.confirmSelected.includes(item.id)"
-                ></n-checkbox>
+                <n-checkbox :checked="store.confirmSelected.includes(item.id)"></n-checkbox>
               </td>
               <td
                 @click="store.onChangeStructure(item)"
@@ -105,8 +119,8 @@
                   <div class="flex justify-end w-[40px] cursor-pointer">
                     <n-icon
                       v-if="item.isHasChildren"
-                      @click="toggleExpand(item.id)"
-                      :class="[store.expandSet.has(item.id) ? 'rotate-90' : 'rotate-0']"
+                      @click.stop="toggleExpand(item.id)"
+                      :class="[isOpen(item) ? 'rotate-90' : 'rotate-0']"
                       class="transition-all"
                       size="18"
                     >
@@ -114,10 +128,7 @@
                     </n-icon>
                     <n-icon size="20">
                       <template v-if="item.isHasChildren">
-                        <FolderOpen24Filled
-                          v-if="!store.expandSet.has(item.id)"
-                          class="text-[#a312df]"
-                        />
+                        <FolderOpen24Filled v-if="isOpen(item)" class="text-[#a312df]" />
                         <Folder20Filled v-else class="text-[#a312df]" />
                       </template>
                       <DocumentBulletList24Filled v-else class="text-primary" />
@@ -125,7 +136,8 @@
                   </div>
                   <span
                     class="ml-2 leading-[1.2] inline-block !text-wrap text-sm w-[calc(100%-40px)]"
-                  >{{ ' ' + item.name }}</span>
+                    >{{ ' ' + item.name }}</span
+                  >
                 </div>
                 <span v-if="!item.uploadStatus" class="absolute right-[4px] top-[4px]">
                   <n-icon size="18" class="text-warning">
@@ -167,6 +179,11 @@
               </td>
             </tr>
           </template>
+          <tr v-if="!flattenData.length && !store.structuresLoading">
+            <td colspan="6" class="!py-10 !text-center text-sm text-textColor3">
+              {{ $t('content.no-data') }}
+            </td>
+          </tr>
         </tbody>
       </n-table>
     </div>

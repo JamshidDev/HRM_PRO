@@ -3,7 +3,6 @@
   import i18n from '@/i18n/index.js'
   import { useComponentStore } from '@/store/modules/index.js'
 
-  import defaultPhoto from '@/assets/images/content/profilePhoto.avif'
   import IdCardIcon from '@/assets/icons/jshirIcon.svg'
   import DocumentTab from './shared/DocumentTab.vue'
   // import IdCard from '../../ui/IdCard.vue'
@@ -16,40 +15,48 @@
   import IdRailWayDetail from '../../ui/IdRailWayDetail.vue'
   import IdForeignDetail from '../../ui/IdForeignDetail.vue'
   import IdRedCertificate from '../../ui/IdRedCertificate.vue'
+  import { workerPhotoUrl, workerSex, workerToIdRailWayData } from '../../ui/idRailWayPdf.js'
 
   const { t } = i18n.global
   const store = useComponentStore()
 
   const activeId = ref(1)
   const idRailWayRef = ref(null)
-  const railWayPdfLoading = ref(false)
+  // Qaysi format yuklanayotgani: 'pdf' | 'svg' | null
+  const railWayLoading = ref(null)
 
   const certificateRefs = ref([])
-  const certificatePdfLoading = ref(null)
+  // { index, format } | null
+  const certificateLoading = ref(null)
 
-  async function downloadCertificatePdf(index) {
-    if (certificatePdfLoading.value !== null) return
-    certificatePdfLoading.value = index
+  const DOWNLOADERS = { pdf: 'downloadPdf', svg: 'downloadSvg' }
+
+  async function downloadCertificate(index, format) {
+    if (certificateLoading.value) return
+    certificateLoading.value = { index, format }
     try {
-      await certificateRefs.value[index]?.downloadPdf()
+      await certificateRefs.value[index]?.[DOWNLOADERS[format]]()
     } catch (e) {
       console.error(e)
     } finally {
-      certificatePdfLoading.value = null
+      certificateLoading.value = null
     }
   }
 
-  async function downloadRailWayPdf() {
-    if (railWayPdfLoading.value) return
-    railWayPdfLoading.value = true
+  async function downloadRailWay(format) {
+    if (railWayLoading.value) return
+    railWayLoading.value = format
     try {
-      await idRailWayRef.value?.downloadPdf()
+      await idRailWayRef.value?.[DOWNLOADERS[format]]()
     } catch (e) {
       console.error(e)
     } finally {
-      railWayPdfLoading.value = false
+      railWayLoading.value = null
     }
   }
+
+  const isCertificateLoading = (index, format) =>
+    certificateLoading.value?.index === index && certificateLoading.value?.format === format
 
   const tabList = computed(() => [
     { id: 1, label: t('workerView.Edocument.pasport'), icon: IdCardIcon },
@@ -60,23 +67,9 @@
 
   const worker = computed(() => store.workerPreview?.worker || {})
 
-  const photoUrl = computed(() => {
-    const w = worker.value
-    const photos = w.photos || []
-    return (
-      photos.find((p) => p.current === 1 || p.current === true)?.photo ||
-      photos[0]?.photo ||
-      w.photo ||
-      defaultPhoto
-    )
-  })
+  const photoUrl = computed(() => workerPhotoUrl(worker.value))
 
-  const sex = computed(() => {
-    const s = worker.value.sex
-    if (s === true || s === 1 || s === '1') return 'M'
-    if (s === false || s === 0 || s === '0') return 'F'
-    return undefined
-  })
+  const sex = computed(() => workerSex(worker.value))
 
   const idCardData = computed(() => {
     const w = worker.value
@@ -101,23 +94,7 @@
 
   const hasCertificate = computed(() => Boolean(worker.value.digital_certificate))
 
-  const idRailWayData = computed(() => {
-    const w = worker.value
-    const certificate = w.digital_certificate || {}
-    return {
-      photoUrl: photoUrl.value,
-      surname: w.last_name,
-      givenName: w.first_name,
-      patronymic: w.middle_name,
-      sex: sex.value,
-      birthDate: w.birthday,
-      cardNumber: certificate.serial,
-      issueDate: certificate.issue_date,
-      expiryDate: certificate.expiry_date,
-      personalNumber: w.pin,
-      issuePlace: certificate.issued_place
-    }
-  })
+  const idRailWayData = computed(() => workerToIdRailWayData(worker.value))
 
   const hasForeignPassport = computed(() => Boolean(worker.value.foreign_passports?.length))
 
@@ -185,19 +162,24 @@
             <IdRailWay ref="idRailWayRef" :data="idRailWayData" class="w-[100%] lg:w-[55%]" />
             <div class="w-[100%] lg:w-[45%] flex flex-col gap-3">
               <IdRailWayDetail :data="idRailWayData" class="w-full" />
-              <n-button
-                class="self-end !rounded-full !text-white"
-                type="primary"
-                :loading="railWayPdfLoading"
-                @click="downloadRailWayPdf"
-              >
-                <span class="flex items-center justify-center gap-2">
-                  <span>{{ $t('workerView.Edocument.download_pdf') }}</span>
-                  <n-icon size="18">
-                    <DownloadIcon />
-                  </n-icon>
-                </span>
-              </n-button>
+              <div class="self-end flex flex-wrap justify-end gap-2">
+                <n-button
+                  v-for="format in ['pdf', 'svg']"
+                  :key="format"
+                  class="!rounded-full !text-white"
+                  type="primary"
+                  :loading="railWayLoading === format"
+                  :disabled="railWayLoading !== null && railWayLoading !== format"
+                  @click="downloadRailWay(format)"
+                >
+                  <span class="flex items-center justify-center gap-2">
+                    <span>{{ $t(`workerView.Edocument.download_${format}`) }}</span>
+                    <n-icon size="18">
+                      <DownloadIcon />
+                    </n-icon>
+                  </span>
+                </n-button>
+              </div>
             </div>
           </template>
           <h4 v-else class="w-full text-center text-secondary">
@@ -234,20 +216,24 @@
                 :data="certificate"
                 class="w-full"
               />
-              <n-button
-                class="self-end !rounded-full !text-white"
-                type="primary"
-                :loading="certificatePdfLoading === index"
-                :disabled="certificatePdfLoading !== null && certificatePdfLoading !== index"
-                @click="downloadCertificatePdf(index)"
-              >
-                <span class="flex items-center justify-center gap-2">
-                  <span>{{ $t('workerView.Edocument.download_pdf') }}</span>
-                  <n-icon size="18">
-                    <DownloadIcon />
-                  </n-icon>
-                </span>
-              </n-button>
+              <div class="self-end flex flex-wrap justify-end gap-2">
+                <n-button
+                  v-for="format in ['pdf', 'svg']"
+                  :key="format"
+                  class="!rounded-full !text-white"
+                  type="primary"
+                  :loading="isCertificateLoading(index, format)"
+                  :disabled="certificateLoading !== null && !isCertificateLoading(index, format)"
+                  @click="downloadCertificate(index, format)"
+                >
+                  <span class="flex items-center justify-center gap-2">
+                    <span>{{ $t(`workerView.Edocument.download_${format}`) }}</span>
+                    <n-icon size="18">
+                      <DownloadIcon />
+                    </n-icon>
+                  </span>
+                </n-button>
+              </div>
             </div>
           </div>
           <h4 v-else class="w-full text-center text-secondary">

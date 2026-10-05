@@ -92,8 +92,45 @@ const initialPayload32 = () => ({
   warning_number: null
 })
 
-export const useCommandStore = defineStore('commandStore', {
+// Buyruq formasining holati — yaratishda saqlanadi, «Ma'lumotlar» tabida aynan tiklanadi.
+const FORM_STATE_KEYS = [
+  'payload',
+  'structureCheck',
+  'form_32',
+  'form_34',
+  'form_46',
+  'vacation',
+  'form_43',
+  'form_44',
+  'form_45',
+  'form_47',
+  'form_48',
+  'form_49',
+  'form_50',
+  'form_51',
+  'form_56',
+  'form_57',
+  'form_58',
+  'form_74',
+  'form_75',
+  'vacations',
+  'vacations55',
+  'vacations62',
+  'workerData',
+  'workerVacations',
+  'recipientType',
+  'isSingleSelect',
+  'sortableConfirmations',
+  'oneByOne',
+  'commandBase'
+]
+
+const clone = (v) => JSON.parse(JSON.stringify(v ?? null))
+
+const commandStoreOptions = {
   state: () => ({
+    // Holat tiklanayotganda ichki formalarning avto-to'ldirish watch'lari ishlamasin.
+    restoring: false,
     list: [],
     loading: false,
     saveLoading: false,
@@ -282,6 +319,8 @@ export const useCommandStore = defineStore('commandStore', {
     isSingleSelect: false,
     sortableConfirmations: [],
     oneByOne: true,
+    // 71/73 — «Asos» matni (forma holati bilan saqlanadi).
+    commandBase: null,
     workerVacations: [],
     workerVacationLoading: false
   }),
@@ -451,17 +490,78 @@ export const useCommandStore = defineStore('commandStore', {
           this.viewLoading = false
         })
     },
-    _update() {
+    snapshotFormState() {
+      const state = {}
+      for (const key of FORM_STATE_KEYS) state[key] = clone(this[key])
+      // Korxona daraxti (children) saqlanmaydi — yorliq uchun o'zi yetarli.
+      const stripTree = ({ children: _children, ...org }) => org
+      state.payload.organization_id = (state.payload.organization_id || []).map(stripTree)
+      state.structureCheck = (state.structureCheck || []).map((v) =>
+        v && typeof v === 'object' ? stripTree(v) : v
+      )
+      // Select yorliqlari uchun faqat tanlangan variantlar saqlanadi.
+      const selected = new Set(
+        [...(this.payload.workers || []), this.payload.worker].filter(Boolean)
+      )
+      state.workerList = clone(this.workerList.filter((v) => selected.has(v.id)))
+      state.cancelCommandList = clone(
+        this.cancelCommandList.filter((v) => v.id === this.payload.cancel_command_id)
+      )
+      return state
+    },
+    restoreFormState(state) {
+      for (const key of FORM_STATE_KEYS) {
+        if (state?.[key] !== undefined) this[key] = clone(state[key])
+      }
+      this.workerList = clone(state?.workerList || [])
+      this.totalWorker = this.workerList.length
+      this.cancelCommandList = clone(state?.cancelCommandList || [])
+      const orgId = this.payload.organization_id?.[0]?.id ?? null
+      this.workerParams.organization_id = orgId
+      this.workerParams.page = 1
+      this.workerParams.search = null
+      this.cancelCommandParams.organization_id = orgId
+      if (state?.legacy) this.fillLegacyForm(state.data || {})
+      // Eski saqlangan formalarda «Asos» yo'q edi — buyruq ma'lumotidan olinadi.
+      if (this.commandBase == null && [71, 73].includes(this.payload.command_type)) {
+        this.commandBase = state?.data?.base ?? state?.data?.command_additional?.base ?? null
+      }
+    },
+    // Eski buyruq: saqlangan `data` maydonlari turga mos `form_N` blokiga ko'chiriladi.
+    fillLegacyForm(data) {
+      const type = this.payload.command_type
+      const key = [51, 52, 53, 54].includes(type)
+        ? 'form_51'
+        : [34, 35, 39].includes(type)
+          ? 'form_34'
+          : type >= 32 && type <= 39
+            ? 'form_32'
+            : `form_${type}`
+      const form = this[key]
+      if (!form || typeof form !== 'object') return
+      const toValue = (v) => {
+        if (typeof v !== 'string') return v
+        if (/^\d{4}-\d{2}-\d{2}/.test(v)) return new Date(v.slice(0, 10) + 'T00:00:00').getTime()
+        if (/^\d{2}:\d{2}/.test(v)) return new Date(`1970-01-01T${v.slice(0, 5)}:00`).getTime()
+        return v
+      }
+      for (const k of Object.keys(form)) {
+        if (data[k] !== undefined && data[k] !== null) form[k] = toValue(data[k])
+      }
+    },
+    _form(id) {
+      return $ApiService.commandService._form({ id }).then((res) => res.data.data)
+    },
+    _signersPreview(id, data) {
+      return $ApiService.commandService
+        ._signersPreview({ id, data })
+        .then((res) => res.data.data)
+    },
+    _updateCommand(id, data) {
       this.saveLoading = true
-      $ApiService.nationalityService
-        ._update({ data: this.payload, id: this.elementId })
-        .then((res) => {
-          this.visible = false
-          this._index()
-        })
-        .finally(() => {
-          this.saveLoading = false
-        })
+      return $ApiService.commandService._update({ id, data }).finally(() => {
+        this.saveLoading = false
+      })
     },
     _delete() {
       this.deleteLoading = true
@@ -504,6 +604,7 @@ export const useCommandStore = defineStore('commandStore', {
       this.resetPayload32()
 
       this.vacations = []
+      this.commandBase = null
 
       this.form_44.vacation_id = null
       this.form_44.new_date = null
@@ -624,4 +725,8 @@ export const useCommandStore = defineStore('commandStore', {
         })
     }
   }
-})
+}
+
+export const useCommandStore = defineStore('commandStore', commandStoreOptions)
+// «Ma'lumotlar» tabi uchun alohida nusxa — yaratish modalining holatiga tegmaydi.
+export const useCommandEditStore = defineStore('commandEditStore', commandStoreOptions)

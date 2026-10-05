@@ -31,7 +31,8 @@ export const useMobileUserStore = defineStore('mobileUser', {
     // Hozir tahrirlanayotgan platforma ('android'|'ios'|null) — bir vaqtda
     // faqat bitta karta inline-tahrir rejimida bo'ladi.
     editingPlatform: null,
-    editValue: null,
+    editLatest: '',
+    editMin: '',
     versionSaving: false
   }),
   actions: {
@@ -45,36 +46,33 @@ export const useMobileUserStore = defineStore('mobileUser', {
       }
     },
 
-    // «Yangilash» bosildi — matn o'rniga number input ochiladi, joriy
-    // qiymat bilan oldindan to'ldirilgan.
+    // Tahrir joriy so'nggi va minimal versiya bilan oldindan to'ldiriladi (matn — `1.9.2` son emas).
     _startVersionEdit(platform) {
       const row = this.versions.find((v) => v.platform === platform)
       this.editingPlatform = platform
-      // Versiya matn: `Number()` `1.9.2` ni NaN qilardi.
-      this.editValue = row?.latest_version ? String(row.latest_version) : ''
+      this.editLatest = row?.latest_version ? String(row.latest_version) : ''
+      this.editMin = row?.min_supported_version ? String(row.min_supported_version) : ''
     },
 
     _cancelVersionEdit() {
       this.editingPlatform = null
-      this.editValue = ''
+      this.editLatest = ''
+      this.editMin = ''
     },
 
-    // Sodda qoida (mavjud tarixiy qatorlarning barchasida ham shunday):
-    // «yangilash» — so'nggi VA minimal qo'llab-quvvatlanadigan versiyani
-    // BIR XIL qilib qo'yish (force update = shu versiyadan pastlar majburan).
-    // store_url/download_url o'zgarmaydi — joriy qatordan ko'chiriladi
-    // (yangi qator sifatida yoziladi, aks holda yo'qolib qolardi).
+    // min < latest — ixtiyoriy yangilash, min = latest — majburiy; store_url joriy qatordan ko'chiriladi.
     async _saveVersion() {
-      const version = String(this.editValue ?? '').trim()
-      if (!this.editingPlatform || !version) return
+      const latest = String(this.editLatest ?? '').trim()
+      const min = String(this.editMin ?? '').trim()
+      if (!this.editingPlatform || !latest || !min) return
       const current = this.versions.find((v) => v.platform === this.editingPlatform)
       this.versionSaving = true
       try {
         await $ApiService.mobileUserService._updateVersion({
           data: {
             platform: this.editingPlatform,
-            latest_version: version,
-            min_supported_version: version,
+            latest_version: latest,
+            min_supported_version: min,
             store_url: current?.store_url || undefined,
             download_url: current?.download_url || undefined
           }

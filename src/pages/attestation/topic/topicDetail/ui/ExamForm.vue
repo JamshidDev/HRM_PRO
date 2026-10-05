@@ -1,4 +1,5 @@
 <script setup>
+  import { useAppSetting } from '@/utils/index.js'
   import validationRules from '@/utils/validationRules.js'
   import { useComponentStore, useTopicExamStore } from '@/store/modules/index.js'
   import { SuperSelect, UINSelect } from '@/components/index.js'
@@ -81,7 +82,8 @@
         <n-date-picker
           class="w-full"
           v-model:value="store.payload.deadline"
-          type="datetime"
+          type="date"
+          :format="useAppSetting.datePicketFormat"
           update-value-on-close
           :actions="null"
           clearable

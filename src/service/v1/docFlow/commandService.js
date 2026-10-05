@@ -20,6 +20,21 @@ const _selectable = async (payload) => {
   return await axios.get(`/v1/hr/commands/selectable`, { params: payload.params })
 }
 
+// «Ma'lumotlar» tabi — saqlangan forma holati va tahrirlash imkoniyati.
+const _form = async (payload) => {
+  return await axios.get(`/v1/hr/commands/${payload.id}/form`)
+}
+
+// Saqlashdan oldin yakuniy imzolovchilar va joriy holati (qayta yuborish modali).
+const _signersPreview = async (payload) => {
+  return await axios.post(`/v1/hr/commands/${payload.id}/signers-preview`, payload.data)
+}
+
+// Tasdiqlanmagan buyruqni qayta rasmiylashtirish (barchaga yoki tanlanganlarga qayta yuborish).
+const _update = async (payload) => {
+  return await axios.put(`/v1/hr/commands/${payload.id}`, payload.data)
+}
+
 const _delete = async (payload) => {
   return await axios.delete(`/v1/hr/commands/${payload.id}`)
 }
@@ -30,5 +45,8 @@ export default {
   _delete,
   _viewFile,
   _additionalData,
-  _selectable
+  _selectable,
+  _form,
+  _update,
+  _signersPreview
 }

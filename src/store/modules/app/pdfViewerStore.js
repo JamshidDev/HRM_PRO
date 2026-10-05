@@ -80,6 +80,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     rejectLoading: false,
 
     pdfDocument: null,
+    // `pdfDocument` qaysi URL'dan yuklangani — qayta mount'da eski hujjat chizilmasin.
+    pdfDocumentUrl: null,
     isCtrlPressed: false,
     renderTasks: {},
 
@@ -98,10 +100,18 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     ],
     typeAttach: 1,
     attachFiles: [],
+    fileDeleting: null,
+    // Markaziy qismda ko'rilayotgan biriktirilgan fayl (null — buyruq PDF'i).
+    previewFile: null,
+    // Markaziy qismning faol tabi: 'document' (hujjat) | 'data' (buyruq ma'lumotlari).
+    // Store'da — chap paneldan fayl ochilganda «Hujjat» tabiga o'tkazish uchun.
+    centerTab: 'document',
     attachLoading: false,
 
     documentApplications: [],
     docApplicationLoading: false,
+    docApplicationReqId: 0,
+    documentApplicationsTotal: 0,
     workerApplications: [],
 
     viewerLoading: false,
@@ -116,6 +126,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
       // const pdfUrl = "https://s3.dasuty.com/docflow/documents/timesheets/c4ca4238a0b923820dcc509a6f75849b.pdf"
       try {
         this.pdfDocument = await pdfjsLib.getDocument(pdfUrl).promise
+        this.pdfDocumentUrl = pdfUrl
         this.totalPdfPage = this.pdfDocument.numPages
         for (let pageNumber = 1; pageNumber <= this.totalPdfPage; pageNumber++) {
           await this.renderPdf(pageNumber)
@@ -218,6 +229,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
       this.messagesPage = 1
       this.messagesTotal = 0
       this.fileList = []
+      this.previewFile = null
     },
     _addMessage(msg) {
       if (msg.trim().length > 0) {
@@ -351,6 +363,29 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
           this.rejectLoading = false
         })
     },
+    _deleteFile(id, callBack) {
+      this.fileDeleting = id
+      $ApiService.documentFileService
+        ._delete({ id })
+        .then(() => callBack?.())
+        .finally(() => {
+          this.fileDeleting = null
+        })
+    },
+    // Imzolovchilar va hujjat tarixini PDF'ni qayta yuklamasdan yangilaydi.
+    _refreshMeta() {
+      if (!this.document_id) return
+      $ApiService.documentService
+        ._openDocument({ params: { model: this.model, document_id: this.document_id } })
+        .then((res) => {
+          const v = res.data.data
+          this.confirmations = v.confirmations
+          if (this.document) {
+            this.document.document_events = v.document_events
+            this.document.files = v.files
+          }
+        })
+    },
     _attachFile(data, callBack) {
       this.attachLoading = true
       $ApiService.documentFileService
@@ -364,20 +399,33 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
           this.attachLoading = false
         })
     },
-    _documentApplications(params) {
+    // Ariza biriktirish oynasi: qidiruv serverda, sahifalar scroll bilan qo'shiladi.
+    _documentApplications(params, append = false) {
+      const reqId = ++this.docApplicationReqId
       this.docApplicationLoading = true
       $ApiService.applicationService
         ._documentApplication({ params })
         .then((res) => {
-          this.documentApplications = res.data.data.data.map((v) => ({
+          if (reqId !== this.docApplicationReqId) return
+          const page = res.data.data
+          const items = page.data.map((v) => ({
             name: v.number + ' - ' + v.type?.name,
             id: v.id,
-            photo: v.worker.photo,
+            number: v.number,
+            typeName: v.type?.name,
+            created: v.created_at || v.created,
+            photo: v.worker?.photo,
             fullName: Utils.combineFullName(v.worker)
           }))
+          this.documentApplications = append
+            ? Array.from(
+                new Map([...this.documentApplications, ...items].map((v) => [v.id, v])).values()
+              )
+            : items
+          this.documentApplicationsTotal = page.total ?? items.length
         })
         .finally(() => {
-          this.docApplicationLoading = false
+          if (reqId === this.docApplicationReqId) this.docApplicationLoading = false
         })
     }
   }

@@ -3,6 +3,7 @@
   import TreeOrg from './ui/TreeOrg.vue'
   import Table from './ui/Table.vue'
   import ListItem from './ui/ListItem.vue'
+  import OrgHeader from './ui/OrgHeader.vue'
   import createForm from './ui/createForm.vue'
   import Filter from './ui/Filter.vue'
   import BulkConfirmBar from './ui/BulkConfirmBar.vue'
@@ -12,9 +13,23 @@
   import ReportPullHistoryModal from './ui/ReportPullHistoryModal.vue'
   import { useAccountStore, useUploadReportStore } from '@/store/modules/index.js'
   import { getOneMonthAgoYearMonth } from '@utils'
+  import { BuildingMultiple24Regular } from '@vicons/fluent'
+  import { useElementBounding, useMediaQuery, useResizeObserver, useWindowSize } from '@vueuse/core'
 
   const store = useUploadReportStore()
   const accStore = useAccountStore()
+
+  // Jadval va o'ng panel sahifa pastigacha cho'zilishi uchun balandlik
+  // blokning haqiqiy joylashuvidan hisoblanadi (Filter/BulkConfirmBar balandligi o'zgaruvchan).
+  const headerRef = ref(null)
+  const bodyRef = ref(null)
+  const isDesktop = useMediaQuery('(min-width: 1024px)')
+  const { height: windowHeight } = useWindowSize()
+  const { top: bodyTop, update: updateBodyTop } = useElementBounding(bodyRef)
+  useResizeObserver(headerRef, () => updateBodyTop())
+  const bodyStyle = computed(() =>
+    isDesktop.value ? { height: `${Math.max(480, windowHeight.value - bodyTop.value - 16)}px` } : {}
+  )
 
   onMounted(() => {
     const oneMonthAgo = getOneMonthAgoYearMonth()
@@ -29,21 +44,37 @@
 
 <template>
   <UIPageContent>
-    <div class="w-full grid grid-cols-12">
-      <div class="col-span-12 mb-4">
-        <Filter />
-      </div>
-      <div class="col-span-12">
+    <div class="w-full flex flex-col">
+      <div ref="headerRef">
+        <div class="mb-4">
+          <Filter />
+        </div>
         <BulkConfirmBar />
       </div>
-      <div class="col-span-12 lg:col-span-6">
-        <TreeOrg />
+      <div ref="bodyRef" :style="bodyStyle" class="grid grid-cols-12 gap-3">
+        <div
+          class="col-span-12 lg:col-span-7 h-[70vh] lg:h-full min-h-0 rounded-2xl bg-surface-section p-1 overflow-hidden"
+        >
+          <TreeOrg />
+        </div>
+        <div class="col-span-12 lg:col-span-5 flex flex-col lg:h-full min-h-0">
+          <template v-if="store.params.organization_id">
+            <OrgHeader />
+            <ListItem />
+            <Table />
+          </template>
+          <div
+            v-else
+            class="h-full min-h-[240px] flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-surface-line text-center px-6"
+          >
+            <n-icon size="40" class="text-textColor3"><BuildingMultiple24Regular /></n-icon>
+            <span class="text-sm text-textColor3 max-w-[300px]">
+              {{ $t('uploadReport.ui.selectOrg') }}
+            </span>
+          </div>
+        </div>
       </div>
-      <div class="col-span-12 lg:col-span-6 pl-2">
-        <ListItem />
-        <Table />
-      </div>
-      <div class="col-span-12">
+      <div>
         <UIModal
           :width="600"
           v-model:visible="store.visible"

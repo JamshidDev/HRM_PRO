@@ -9,7 +9,7 @@
   import AuditDetail from './ui/audit/AuditDetail.vue'
   import AuditDetailFilter from './ui/audit/AuditDetailFilter.vue'
   import DashboardSkeleton from './ui/DashboardSkeleton.vue'
-  import LegacyDashboard from './ui/legacy/LegacyDashboard.vue'
+  import ActivityTab from './ui/activity/ActivityTab.vue'
 
   import { DashboardTab, tabCards } from './constants.js'
   import { buildKpiCards } from './kpi.js'
@@ -28,7 +28,6 @@
   // Audit — alohida ko'rish ruxsati; bo'lmasa tab umuman chizilmaydi.
   const tabList = computed(() =>
     [
-      { id: DashboardTab.LEGACY, name: t('dashboardPage.tabs.legacy') },
       { id: DashboardTab.GENERAL, name: t('dashboardPage.tabs.general') },
       { id: DashboardTab.MOVEMENT, name: t('dashboardPage.tabs.movement') },
       { id: DashboardTab.ATTENDANCE, name: t('dashboardPage.tabs.attendance') },
@@ -46,6 +45,9 @@
     kpiCards.value.length === 3 ? '12 m:4' : kpiCards.value.length > 2 ? '12 m:6 xl:3' : '12 m:6'
   )
   const cards = computed(() => tabCards[store.activeTab] || [])
+  // `top: true` kartalar KPI qatoridan oldin chiziladi.
+  const topCards = computed(() => cards.value.filter((c) => c.top))
+  const restCards = computed(() => cards.value.filter((c) => !c.top))
 
   const onTabSelect = (tab) => {
     store.activeTab = tab
@@ -87,9 +89,8 @@
   })
 
   onBeforeMount(() => {
-    // Sahifaga HAR kirganda «Eski» bobi ochiladi — store pinia'da saqlanib
-    // qolgani uchun bunsiz oxirgi tanlangan bob qaytib kelardi.
-    store.activeTab = DashboardTab.LEGACY
+    // Sahifaga har kirganda «Umumiy» bobi ochiladi (pinia oxirgi bobni saqlab qoladi).
+    store.activeTab = DashboardTab.GENERAL
     if (!canViewDashboard.value) return
     store.activeDetail = null
     store.resetAuditDetail()
@@ -98,11 +99,10 @@
 
   const onDetailEv = (detailComponent, key) => {
     store.resetDetailData()
-    if (detailComponent?.detailFactory && key) {
-      store.activeDetail = detailComponent.detailFactory(key)
-      return
-    }
-    store.activeDetail = detailComponent
+    store.activeDetail =
+      detailComponent?.detailFactory && key ? detailComponent.detailFactory(key) : detailComponent
+    // Karta filtri (`defaultValues`) detal ochilishidan oldin params'ga yoziladi — select'da ko'rinadi.
+    Object.assign(store.params, store.activeDetail?.defaultValues || {})
   }
 
   // Tab almashganda ikkala drill-down ham yopiladi va barcha filtrlar tozalanadi.
@@ -117,7 +117,8 @@
     // Ko'rsatilayotgan ma'lumot tozalangan filtrga mos bo'lishi uchun qayta yuklanadi.
     // Audit tabida `AuditTab` qayta mount bo'lib `_getAuditCounts()` ni o'zi chaqiradi
     // (kontent `v-if` bilan almashadi, ya'ni har safar yangidan mount bo'ladi).
-    if (tab !== DashboardTab.AUDIT) store._dashboard()
+    // Audit va Kadrlar harakati boblari o'z ma'lumotini o'zi yuklaydi.
+    if (tab !== DashboardTab.AUDIT && tab !== DashboardTab.MOVEMENT) store._dashboard()
   }
 </script>
 
@@ -145,16 +146,9 @@
       style="overflow-y: auto; scrollbar-gutter: stable"
       :style="contentHeight ? { height: contentHeight } : null"
     >
-      <!-- «Eski» bobi — o'z drill-down'i bilan yopiq: pastdagi umumiy
-           `store.activeDetail` tarmog'iga TUSHMASLIGI kerak, aks holda detal
-           eski kartalar konteksidan tashqarida, yangi maket ichida ochilardi. -->
-      <template v-if="store.activeTab === DashboardTab.LEGACY">
-        <LegacyDashboard />
-      </template>
-
       <!-- Audit bobi — o'z jadvali va pagination'i bilan, o'lchangan konteyner
            balandligini to'liq egallaydi. -->
-      <template v-else-if="store.activeTab === DashboardTab.AUDIT">
+      <template v-if="store.activeTab === DashboardTab.AUDIT">
         <!-- `!h-full` global `.ui-page-content { height: 100dvh }` ni bosib o'tadi:
              jadval o'lchangan konteyner balandligini to'liq egallaydi va uning
              pagination footeri eng pastda turadi — sahifa scroll qilinmaydi. -->
@@ -164,6 +158,11 @@
             <AuditDetail />
           </div>
         </UIPageContent>
+      </template>
+
+      <!-- Kadrlar harakati bobi — korxonalar faolligi (`/hr/dashboard/activity`), o'zi yuklaydi. -->
+      <template v-else-if="store.activeTab === DashboardTab.MOVEMENT">
+        <ActivityTab v-if="canViewDashboard" />
       </template>
 
       <!-- Karta drill-down'i. Jadval `h-full` ni hisoblay olishi uchun balandlik
@@ -195,6 +194,12 @@
             <DashboardSkeleton v-if="store.loading" />
 
             <n-grid v-else x-gap="8 m:12 l:16" y-gap="8 m:12 l:16" cols="12" responsive="screen">
+              <n-grid-item v-for="(item, idx) in topCards" :key="`top-${idx}`" :span="item.span">
+                <div class="dash-card-wrap">
+                  <component :is="item.component" v-bind="item.props" />
+                </div>
+              </n-grid-item>
+
               <n-grid-item v-for="card in kpiCards" :key="card.variant" :span="kpiSpan">
                 <FigKpiCard
                   :card="card"
@@ -203,7 +208,7 @@
                 />
               </n-grid-item>
 
-              <n-grid-item v-for="(item, idx) in cards" :key="idx" :span="item.span">
+              <n-grid-item v-for="(item, idx) in restCards" :key="idx" :span="item.span">
                 <!-- Blur + «Tez orada» endi `FigPanel` ichida: u kartaning o'z
                      `mock` bayrog'iga tayanadi, ya'ni sarlavhadagi "mock" chipi
                      turgan HAR BIR karta yopiladi. Bu yerdagi eski shart faqat

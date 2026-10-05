@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { AppLayouts, AppPaths, useAppSetting } from '@/utils/index.js'
 import { useAccountStore } from '@/store/modules/app/accountStore.js'
 import i18n from '@/i18n/index.js'
+import { isAppUpdateAvailable, markAppUpdateNotice } from '@/utils/appUpdate.js'
 
 import {
   adminRoutes,
@@ -219,6 +220,15 @@ const router = createRouter({
 const firstAccessiblePath = (accountStore) =>
   navigations.find((v) => accountStore.canView(v.permission))?.path ?? AppPaths.Home
 
+// 🔄 Yangi versiya aniqlangan bo'lsa (utils/appUpdate.js) — keyingi sahifa almashishini
+// to'liq reload bilan qilamiz: eski chunk'lar serverda yo'q, SPA navigatsiya yiqiladi.
+// Faqat sahifa (path) o'zgarganda — query/tab almashishida ish jarayoni uzilmasin.
+router.beforeEach((to, from) => {
+  if (!isAppUpdateAvailable() || to.path === from.path) return
+  window.location.assign(router.resolve(to.fullPath).href)
+  return false
+})
+
 // 🔒 Ruxsat qo'riqchisi. Sidebar bilan AYNAN bir xil qoida (`canView`) qo'llanadi:
 // bare slug YOKI uning '-read' varianti. `meta.permission` bo'lmasa (login, public
 // sahifalar) bloklamaymiz — endi ichki route'lar otadan meros olgani uchun bu
@@ -267,6 +277,7 @@ router.onError((error, to) => {
   const target = to?.fullPath ?? window.location.pathname
   if (sessionStorage.getItem(CHUNK_RELOAD_KEY) === target) return
   sessionStorage.setItem(CHUNK_RELOAD_KEY, target)
+  markAppUpdateNotice()
   window.location.assign(router.resolve(target).href)
 })
 

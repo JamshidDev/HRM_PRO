@@ -321,6 +321,7 @@ export const MEANINGFUL = new Set([
   'chat-telegram-broadcast-read',
   'chat-telegram-broadcast-write',
   'chat-telegram-messages',
+  'chat-live-chat',
   'cities',
   'cities-delete',
   'cities-read',
@@ -1069,7 +1070,8 @@ export const PERMISSION_GROUPS = [
       { prefix: 'chat', label: 'userRole.form.moduleAccess' },
       { prefix: 'instructions', label: 'notificationPage.name' },
       { prefix: 'chat-telegram-broadcast', label: 'telegramBroadcast.tab' },
-      { prefix: 'chat-telegram-messages', label: 'congratulation.name' }
+      { prefix: 'chat-telegram-messages', label: 'congratulation.name' },
+      { prefix: 'chat-live-chat', label: 'liveChatPage.name' }
     ]
   },
   {

@@ -75,6 +75,19 @@
 
   const allValid = computed(() => rules.value.every(r => r.valid))
 
+  const passwordInputRef = ref(null)
+
+  /* Profil sahifasiga kirganda yangi parol inputiga fokus qo'yiladi. Input
+     ekrandan tashqarida bo'lsa, ko'rinadigan joygacha suriladi (`nearest` —
+     allaqachon ko'rinib turgan bo'lsa sahifa sakramaydi). */
+  onMounted(async () => {
+    await nextTick()
+    const el = passwordInputRef.value
+    if (!el) return
+    el.focus({ preventScroll: true })
+    el.$el?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+  })
+
   const onSave = () => {
     if (!allValid.value) return
     store._changePassword(password.value).then(() => {
@@ -123,6 +136,7 @@
         <div>
           <label class="text-sm text-textColor0 mb-1 block">{{ $t('passwordForm.newPassword') }}</label>
           <n-input
+            ref="passwordInputRef"
             size="large"
             v-model:value="password"
             type="password"

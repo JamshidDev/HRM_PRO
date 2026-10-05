@@ -66,9 +66,23 @@ const _reportStatusExport = async (payload) => {
   })
 }
 
+// Bitta korxonaning oy oralig'idagi 4 turdagi hisobotlari — ZIP (blob).
+// Mavjud eksport strukturasi (reportStatusExport): blob → blobFileDownload.
+const _reportsZip = async (payload) => {
+  return await axios.get(`/v1/economist/upload/reports-zip`, {
+    params: payload?.params,
+    responseType: 'blob'
+  })
+}
+
 // Tortish tarixi (pull-log) — barcha davrlar bo'yicha paginatsiyalangan yuklamalar.
 const _pullHistory = async (payload) => {
   return await axios.get(`/v1/economist/upload-report-history`, { params: payload?.params })
+}
+
+// ZIP yuklab olish tarixi (Tortish tarixi → ZIP yuklab olishlar tab).
+const _reportDownloads = async (payload) => {
+  return await axios.get(`/v1/economist/report-downloads`, { params: payload?.params })
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -121,7 +135,9 @@ export default {
   _updateStatus,
   _reportStatus,
   _reportStatusExport,
+  _reportsZip,
   _pullHistory,
+  _reportDownloads,
   _paymentAnalysisIndex,
   _paymentWhitelistUpload,
   _paymentWhitelistIndex,

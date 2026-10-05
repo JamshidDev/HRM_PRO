@@ -497,6 +497,9 @@
     "warning-data": "Ma'lumotlar yetarli emas!",
     "minimumOneItem": "Kamida bitta lavozim tanlanishi shart!",
     "noPermission": "Ruxsat etilmadi!",
+    "appUpdated": "Tizim yangilandi",
+    "appUpdatedHint": "Yangi versiya keyingi sahifaga o'tganingizda yuklanadi",
+    "appUpdateNow": "Hozir yangilash",
     "unSignedDocumentCount": "Tasdiqlanmagan hujjatlar soni"
   },
   "enum": {
@@ -738,7 +741,10 @@
     },
     "account": {
       "title": "Hisob ma'lumotlari",
-      "warningText": "Hisobingiz xavfsizligini ta'minlash maqsadida akkaunt ma'lumotlaringizni muntazam ravishda yangilab turishingiz tavsiya etiladi. Bu choralar hisobingizni ruxsatsiz kirishlardan himoya qilishga yordam beradi."
+      "warningText": "Hisobingiz xavfsizligini ta'minlash maqsadida akkaunt ma'lumotlaringizni muntazam ravishda yangilab turishingiz tavsiya etiladi. Bu choralar hisobingizni ruxsatsiz kirishlardan himoya qilishga yordam beradi.",
+      "offerAccepted": "Rozilik bildirilgan",
+      "offerNotAccepted": "Rozilik bildirilmagan",
+      "offerView": "Ko'rish"
     },
     "sidebar": {
       "title": "Profil bo'limlari"
@@ -1308,6 +1314,98 @@
         "reason_six": "Tabiiy ofatdan zarar ko'rganligi munosabati bilan tasdiqlangan baholash dalolatnomasi muvofiq",
         "reason_seven": "Maishiy ko'mir yoqilg'isi sotib olishi munosabati bilan",
         "reason_eight": "Qishloq xo'jaligi mahsulotlarini sotib olish uchun"
+      },
+      "dataTab": {
+        "tabDocument": "Hujjat",
+        "tabData": "Ma'lumotlar",
+        "editableTitle": "Buyruqni tahrirlash mumkin",
+        "editableHint": "Ma'lumotlarni o'zgartirib saqlang — buyruq qayta rasmiylashtiriladi va barcha kelishuvchilar uni qaytadan imzolaydi.",
+        "rejectedTitle": "Buyruq rad etilgan",
+        "readonlyTitle": "Faqat ko'rish",
+        "blocks": {
+          "cancelled": "Buyruq bekor qilingan — uni o'zgartirib bo'lmaydi.",
+          "contract": "Bu buyruq shartnoma asosida yaratilgan — ma'lumotlari shartnoma orqali o'zgartiriladi.",
+          "signed": "Buyruqni kelishuvchilardan biri imzolagan — tahrirlash faqat rad etilgandan keyin mumkin.",
+          "no_form_state": "Bu buyruq tizim yangilanishidan oldin yaratilgan — ma'lumotlar bazadan tiklandi va faqat ko'rish uchun. Ayrim maydonlar bo'sh bo'lishi mumkin."
+        },
+        "emptyTitle": "Ma'lumotlar mavjud emas",
+        "loadError": "Ma'lumotlarni yuklab bo'lmadi. Birozdan so'ng qayta urinib ko'ring.",
+        "reset": "Asl holatiga qaytarish",
+        "preview": "Ko'rish",
+        "save": "Saqlash va qayta yuborish",
+        "savedNotify": "Buyruq yangilandi va qayta imzolashga yuborildi",
+        "sectionMain": "Asosiy ma'lumotlar",
+        "sectionWorkers": "Korxona va xodim(lar)",
+        "sectionDetails": "Buyruq tafsilotlari",
+        "sectionSigners": "Rahbar va kelishuvchilar",
+        "locked": {
+          "approved": "Hujjat tasdiqlangan",
+          "cancelled": "Buyruq bekor qilingan",
+          "contract": "Shartnoma orqali o'zgartiriladi",
+          "contract_additional": "Qo'shimcha kelishuv orqali o'zgartiriladi",
+          "no_form_state": "Eski buyruq — faqat ko'rish uchun"
+        },
+        "resend": {
+          "title": "Qayta tasdiqlashga yuborish",
+          "all": "Barchaga",
+          "allHint": "Tasdiqlagan va rad etganlar ham qaytadan «Jarayonda» bo'ladi",
+          "selected": "Tanlanganlarga",
+          "selectedHint": "Faqat belgilanganlar «Jarayonda» bo'ladi, qolganlarning holati saqlanadi",
+          "contentChanged": "Buyruq matni o'zgardi — tanlanmaganlarning oldingi tasdig'i eski versiyaga tegishli bo'lib qoladi.",
+          "required": "majburiy",
+          "count": "{count} kishiga yuboriladi",
+          "submit": "Yuborish",
+          "types": {
+            "w": "Xodim",
+            "s": "Kelishuvchi",
+            "d": "Rahbar"
+          },
+          "status": {
+            "1": "Jarayonda",
+            "2": "Ko'rilgan",
+            "3": "Tasdiqlagan",
+            "4": "Rad etgan",
+            "new": "Yangi"
+          }
+        },
+        "source": {
+          "titleContract": "№{number} shartnoma asosida yaratilgan",
+          "titleAdditional": "№{number} qo'shimcha kelishuv asosida yaratilgan",
+          "hintContract": "Buyruq ma'lumotlari faqat shartnomani tahrirlash orqali o'zgartiriladi — shartnoma qayta rasmiylashtirilganda buyruq ham yangilanadi.",
+          "hintAdditional": "Buyruq ma'lumotlari faqat qo'shimcha kelishuvni tahrirlash orqali o'zgartiriladi — kelishuv qayta rasmiylashtirilganda buyruq ham yangilanadi.",
+          "openContract": "Shartnomani ochish",
+          "openAdditional": "Qo'shimcha kelishuvni ochish",
+          "deleted": "Manba hujjat o'chirilgan",
+          "sectionCommand": "Buyruq",
+          "sectionWorker": "Xodim",
+          "sectionTerms": "Lavozim va mehnat shartlari",
+          "sectionSigners": "Kelishuvchilar",
+          "noTerms": "Shartlar bo'yicha ma'lumot topilmadi",
+          "noSigners": "Kelishuvchilar belgilanmagan",
+          "fields": {
+            "number": "Buyruq raqami",
+            "date": "Buyruq sanasi",
+            "type": "Buyruq turi",
+            "director": "Rahbar",
+            "sourceType": "Hujjat turi",
+            "organization": "Korxona",
+            "currentPosition": "Joriy lavozim",
+            "position": "Lavozim",
+            "salary": "Maosh",
+            "rate": "Stavka",
+            "group": "Guruh",
+            "rank": "Razryad",
+            "probation": "Sinov muddati",
+            "vacationMain": "Asosiy ta'til",
+            "vacationAdditional": "Qo'shimcha ta'til",
+            "positionDate": "Lavozimga tayinlash sanasi",
+            "contractTo": "Amal qilish muddati",
+            "workDays": "Ish kunlari",
+            "workTime": "Ish vaqti",
+            "days": "{count} kun",
+            "sum": "{value} so'm"
+          }
+        }
       }
     },
     "form": {
@@ -1341,7 +1439,31 @@
     "signature": {
       "history": "O'zgarishlar tarixini ko'rish",
       "viewer": "Hujjat bilan tanishuvchilar",
-      "files": "Hujjat fayllari",
+      "files": {
+        "locked": "Hujjat tasdiqlangan — fayllarni ko'rish va yuklab olish mumkin, qo'shish va o'chirish yopiq",
+        "tooMany": "Ko'pi bilan {max} ta fayl biriktirish mumkin",
+        "tooBig": "«{name}» {max} MB dan katta",
+        "wrongType": "«{name}» — faqat PDF, PNG yoki JPG yuklash mumkin",
+        "deleteConfirm": "«{name}» faylini o'chirasizmi?",
+        "attachApplication": "Ariza biriktirish",
+        "backToDocument": "Hujjatga qaytish",
+        "noApplications": "Bog'lash mumkin bo'lgan ariza topilmadi",
+        "linked": "biriktirilgan",
+        "selectedCount": "{count} ta tanlandi",
+        "attachSubmit": "Biriktirish",
+        "applications": "Arizalar",
+        "application": "Ariza",
+        "unlinkConfirm": "№{number} arizani hujjatdan uzasizmi?",
+        "files": "Fayllar",
+        "attachShort": "Biriktirish",
+        "applicationsLimit": "Ko'pi bilan {max} ta ariza biriktirish mumkin",
+        "attachFile": "Fayl biriktirish",
+        "view": "Ko'rish",
+        "download": "Yuklab olish",
+        "deleteTitle": "Faylni o'chirish",
+        "unlinkTitle": "Arizani uzish",
+        "unlink": "Uzish"
+      },
       "checkDocument": "Hujjat holatini tekshirish uchun bosing",
       "attachedDocuments": "Biriktirilgan hujjatlar",
       "attachDocument": "Hujjat biriktirish",
@@ -1378,12 +1500,12 @@
       },
       "approval": {
         "title": "Imzolash jarayoni",
-        "signers": "Imzolovchilar",
+        "signers": "Kelishuvchilar",
         "history": "Harakatlar tarixi",
         "progress": "{done} / {total} tasdiqlandi",
-        "step": "{n}-bosqich",
         "you": "Siz",
         "actions": "Harakatlar",
+        "chat": "Yozish",
         "signedWithEri": "E-imzo bilan tasdiqlangan",
         "certificate": "Sertifikat",
         "noHistory": "Hozircha harakatlar yo'q",
@@ -1398,9 +1520,39 @@
           "viewed": "Hujjatni ko'rib chiqdi",
           "approved": "Tasdiqladi",
           "rejected": "Rad etdi",
-          "resent": "Qayta yuborildi"
-        }
-      }
+          "resent": "Qayta yuborildi",
+          "file_added": "Fayl qo'shildi",
+          "file_removed": "Fayl o'chirildi"
+        },
+        "sign": "Imzolash",
+        "notForYou": "Bu hujjat sizga imzolashga kelmagan",
+        "youSigned": "Siz imzolagansiz",
+        "youRejected": "Siz rad qilgansiz",
+        "yourTurn": "Imzolash navbati sizda",
+        "yourTurnSub": "Hujjat E-IMZO orqali tasdiqlanadi",
+        "notForYouSub": "Siz hujjatni faqat ko'rib chiqishingiz mumkin",
+        "roles": {
+          "w": "Xodim",
+          "s": "Kelishuvchi",
+          "d": "Rahbar"
+        },
+        "groups": {
+          "sent": "{count} kishiga imzolashga yuborildi",
+          "resent": "{count} kishiga qayta yuborildi"
+        },
+        "verbs": {
+          "sent": "— imzolashga yuborildi",
+          "viewed": "ko'rib chiqdi",
+          "approved": "tasdiqladi",
+          "rejected": "rad etdi",
+          "resent": "— qayta yuborildi",
+          "file_added": "fayl qo'shdi",
+          "file_removed": "faylni o'chirdi"
+        },
+        "showAll": "Barchasi"
+      },
+      "rejectReasonSelect": "Rad etish sababini tanlang",
+      "optional": "ixtiyoriy"
     },
     "attach": {
       "title": "Biriktirish",
@@ -1691,9 +1843,17 @@
     "versionSaved": "Versiya yangilandi",
     "upgrade": "Yangilash",
     "form": {
-      "latestVersion": "So'nggi versiya"
+      "latestVersion": "So'nggi versiya",
+      "minVersion": "Minimal versiya"
     },
-    "versionInvalid": "Versiya formati noto'g'ri. Masalan: 1.9.2"
+    "versionInvalid": "Versiya formati noto'g'ri. Masalan: 1.9.2",
+    "forced": "Majburiy",
+    "optional": "Ixtiyoriy",
+    "forcedHint": "{version} dan past versiyalar bloklanadi",
+    "optionalHint": "{min} dan past versiyalar bloklanadi, qolganlarga taklif qilinadi",
+    "minGreaterThanLatest": "Minimal versiya so'nggi versiyadan katta bo'lmasligi kerak",
+    "confirmMinRaise": "Minimal versiya {version} ga ko'tariladi — bundan past versiyadagi barcha foydalanuvchilar ilovadan foydalana olmaydi. {version} store'da chiqqanmi?",
+    "confirmSave": "Versiya saqlansinmi?"
   },
   "vacancyApprovePage": {
     "menuName": "Tasdiqlash",
@@ -2027,6 +2187,7 @@
     },
     "Edocument": {
       "download_pdf": "PDF yuklab olish",
+      "download_svg": "SVG yuklab olish",
       "pasport": "Pasport",
       "railway_pasport": "Temiryo'l guvohnoma",
       "foreign_pasport": "Xorijiy pasport",
@@ -2247,7 +2408,7 @@
       "title": "Xodimlarning yoshi bo'yicha",
       "age31": "30 yoshgacha",
       "age32_45": "31 dan 45 yoshgacha",
-      "age46": "46 yoshdan kattalar",
+      "age46": "46 yosh va undan kattalar",
       "structureTitle": "Yosh bo'yicha tuzilma",
       "yearsOld": "yoshdagilar"
     },
@@ -2366,7 +2527,6 @@
       "worker": "Xodim"
     },
     "tabs": {
-      "legacy": "Eski",
       "general": "Umumiy",
       "movement": "Kadrlar harakati",
       "attendance": "Davomat va ta'til"
@@ -2529,6 +2689,170 @@
       "types": {
         "incentive": "Rag'batlantirish",
         "disciplinary": "Intizomiy jazo"
+      }
+    },
+    "activity": {
+      "title": "Korxonalar faolligi",
+      "subtitle": "Korxonalardagi o'zgarishlar tahlili — oy kesimida",
+      "export": "Yuklash",
+      "totalActions": "Jami amallar",
+      "activeUsers": "Faol ma’sullar",
+      "dailyAvg": "Kunlik o'rtacha",
+      "mostActiveDay": "Eng faol kun",
+      "monthly": "Oylik faollik",
+      "byRoles": "Rollar kesimida",
+      "topUsers": "Top foydalanuvchilar",
+      "search": "Xodimni qidiring",
+      "top10": "Top 10",
+      "all": "Barchasi",
+      "no": "№",
+      "worker": "Xodim",
+      "department": "Bo’lim",
+      "actions": "Amallar",
+      "distribution": "Taqsimot",
+      "lastActivity": "Oxirgi faollik",
+      "shown": "Ko'rsatilgan: {shown} / {total}",
+      "viewAll": "Barchasini ko'rish",
+      "unit": "amal",
+      "total": "Jami",
+      "totalUnit": "{n} amal",
+      "average": "O'rtacha: {n}",
+      "dayMonth": "{day}-{month}",
+      "today": "Bugun, {time}",
+      "yesterday": "Kecha, {time}",
+      "empty": "Ma'lumot topilmadi",
+      "soon": "Tez orada",
+      "types": {
+        "add": "Qo'shish",
+        "edit": "Tahrirlash",
+        "delete": "O’chirish",
+        "create": "Yaratish"
+      },
+      "user": {
+        "last30": "So'nggi 30 kun",
+        "updated": "Yangilangan: {time}",
+        "legendActions": "Amallar",
+        "legendAverage": "O'rtacha",
+        "legendOff": "Dam olish / bayram",
+        "recent": "Oxirgi amallar"
+      },
+      "activeOrganizations": "Faol korxonalar",
+      "topOrganizations": "Top korxonalar",
+      "searchOrganization": "Korxonani qidiring",
+      "organization": "Korxona",
+      "workersCount": "{n} xodim",
+      "otherPage": "Boshqa",
+      "roles": {
+        "HR": "HR (kadrlar)",
+        "HrLeader": "HR rahbari",
+        "Admin": "Administrator",
+        "Economist": "Iqtisodchi",
+        "EconomistLeader": "Iqtisodchi rahbari",
+        "EconomistManagement": "Iqtisod boshqaruvi",
+        "TimesheetHR": "Tabelchi",
+        "Finance": "Moliya",
+        "Worker": "Xodim",
+        "OrganizationLeader": "Korxona rahbari",
+        "LeaderManagement": "Rahbariyat",
+        "Hospital": "Shifoxona",
+        "TurnstileLeader": "Turniket rahbari",
+        "TurnstileViewer": "Turniket kuzatuvchisi",
+        "LmsLearningCenter": "O‘quv markazi",
+        "LmsSupervisor": "LMS nazoratchisi",
+        "IntegrationHrFull": "Integratsiya (HR)"
+      },
+      "commandsCreated": "Buyruqlar",
+      "approvedDocuments": "Tasdiqlangan",
+      "applications": "Arizalar",
+      "score": "Ball"
+    },
+    "orgRating": {
+      "title": "Korxonalarning tizimdan foydalanish reytingi",
+      "viewAll": "Barchasini ko'rish",
+      "allTitle": "Tizimdan foydalanish reytingi",
+      "period7": "7 kun",
+      "period30": "30 kun",
+      "periodAll": "Butun davr",
+      "yourOrg": "Sizning korxonangiz",
+      "small": "kichik",
+      "inactive": "faol emas",
+      "workers": "{n} xodim",
+      "coverageShort": "qamrov {n}%",
+      "docsShort": "hujjat {n} ({a} tasdiq.)",
+      "daysShort": "{n}/{t} kun",
+      "score": "Ball",
+      "rank": "O'rin",
+      "workersLabel": "Xodimlar",
+      "lastActivity": "Oxirgi faollik",
+      "onlyInactive": "Faqat faol emaslar",
+      "editsNote": "Ma'lumot tahrirlari: {n} ta amal, {w} ta xodim",
+      "rankOf": "{r}-o'rin / {t}",
+      "activeChip": "faol",
+      "partsTitle": "Ball tarkibi",
+      "docsTitle": "Hujjatlar",
+      "categoriesTitle": "Faol yo'nalishlar",
+      "noCategories": "Davr ichida ma'lumot o'zgarmagan",
+      "summary": {
+        "total": "Jami",
+        "active": "Faol",
+        "inactive": "Faol emas",
+        "avg": "O'rtacha ball"
+      },
+      "filter": {
+        "all": "Barchasi",
+        "active": "Faol",
+        "inactive": "Faol emas"
+      },
+      "docStatus": {
+        "approved": "Tasdiqlangan",
+        "pending": "Jarayonda",
+        "rejected": "Rad etilgan"
+      },
+      "parts": {
+        "coverage": {
+          "title": "Ma'lumotlar qamrovi",
+          "hint": "Ma'lumoti yangilangan xodimlar: {v} / {t}"
+        },
+        "documents": {
+          "title": "Hujjat kiritish",
+          "hint": "100 xodimga {v} ta hujjat (to'liq ball — {t} ta)"
+        },
+        "approval": {
+          "title": "Hujjat tasdiqlanishi",
+          "hint": "Tasdiqlangan: {v} / {t}"
+        },
+        "regularity": {
+          "title": "Muntazamlik",
+          "hint": "Faol kunlar: {v} / {t} ish kuni"
+        },
+        "breadth": {
+          "title": "Yo'nalishlar kengligi",
+          "hint": "O'zgarish turlari: {v} / {t}"
+        }
+      },
+      "docs": {
+        "commands": "Buyruqlar",
+        "contracts": "Shartnomalar",
+        "additionals": "Qo'sh. kelishuvlar",
+        "status": "Tasdiq. / jarayon / rad"
+      },
+      "categories": {
+        "worker": "Xodim ma'lumoti",
+        "relatives": "Qarindoshlar",
+        "passport": "Pasport",
+        "phone": "Telefon",
+        "staffing": "Shtat",
+        "documents": "Hujjatlar",
+        "sick_leave": "Kasallik varaqasi",
+        "account": "Hisob va rollar"
+      },
+      "col": {
+        "org": "Korxona",
+        "coverage": "Qamrov",
+        "docs": "Hujjat",
+        "days": "Kun",
+        "score": "Ball",
+        "logs": "Loglar"
       }
     }
   },
@@ -2777,7 +3101,21 @@
     "tipPlan": "Ish grafigida shu kunga belgilangan norma — ish boshlanishidan tugashigacha, tushlik ayrilgan holda. Xodim qancha ishlashi KERAK bo'lganini ko'rsatadi.",
     "tipTurnstile": "Turniket kirish–chiqishlari bo‘yicha binoda o‘tkazilgan jami vaqt. Ish grafigidan tashqaridagi vaqt ham shu yerga kiradi, tushlik esa ayrilmaydi.",
     "tipOutside": "Ish vaqti ichida binodan tashqarida o‘tkazilgan vaqt: har bir chiqishdan keyingi kirishgacha bo‘lgan oraliqlar yig‘indisi.",
-    "tipCounted": "Tabelga tushadigan vaqt. Turniketdagi vaqtdan faqat ish grafigi oynasiga tushgan qismi olinadi va undan tushlik ayriladi."
+    "tipCounted": "Tabelga tushadigan vaqt. Turniketdagi vaqtdan faqat ish grafigi oynasiga tushgan qismi olinadi va undan tushlik ayriladi.",
+    "unsaved": {
+      "title": "Saqlanmagan o'zgarishlar",
+      "content": "{count} ta katak saqlanmagan. Saqlaysizmi?",
+      "discard": "Saqlamasdan yopish"
+    },
+    "calcDiff": {
+      "system": "Tizim",
+      "entered": "Kiritilgan",
+      "diff": "Farq",
+      "more": "{n} soat ko‘p",
+      "less": "{n} soat kam",
+      "typeOnly": "soat bir xil, tur o‘zgargan",
+      "empty": "bo‘sh (0 soat)"
+    }
   },
   "turnstile": {
     "title": "Turniket",
@@ -3211,6 +3549,17 @@
     "staffingExportQueued": "Shtat jadvali yuklash navbatiga qo'shildi",
     "addDepartment": "Bo'linma qo'shish",
     "addPosition": "Lavozim qo'shish",
+    "listView": "Ro'yxat",
+    "tableView": "Jadval",
+    "table": {
+      "position": "Lavozim",
+      "occupancy": "Bandlik",
+      "total": "Jami",
+      "all": "Barchasi",
+      "search": "Bo'linma yoki lavozim qidirish",
+      "positionsCount": "{n} ta lavozim",
+      "noPositions": "Lavozim kiritilmagan"
+    },
     "tooltip": {
       "P": "Plan",
       "G": "Guruh",
@@ -3291,6 +3640,16 @@
     "name": "Hisobotlar"
   },
   "uploadReport": {
+    "ui": {
+      "searchOrg": "Korxona qidirish",
+      "selectOrg": "Hisobot yuklash va tasdiqlash uchun chap tomondagi ro'yxatdan korxonani tanlang",
+      "selectType": "Yuklashlar tarixini ko'rish uchun yuqoridagi hisobot turlaridan birini tanlang",
+      "noUploads": "Bu tur bo'yicha hali hisobot yuklanmagan",
+      "notConfirmed": "Tasdiqlanmagan",
+      "uploads": "ta yuklangan",
+      "uploadOpen": "Yuklash ochiq",
+      "uploadClosed": "Yuklash yopiq"
+    },
     "name": "Hisobot yuklash",
     "latest": "Oxirgi",
     "olderUploads": "Oldingi yuklamalar",
@@ -3335,11 +3694,17 @@
       "allTypes": "Barcha shakllar",
       "search": "Korxona yoki izoh bo'yicha qidirish",
       "total": "Jami",
+      "tabPulls": "Tortishlar",
+      "tabDownloads": "ZIP yuklab olishlar",
+      "filesCount": "{n} ta fayl",
       "columns": {
         "date": "Sana",
         "organization": "Korxona",
         "form": "Shakl",
         "period": "Davr",
+        "range": "Davr (oraliq)",
+        "user": "Foydalanuvchi",
+        "files": "Fayllar",
         "source": "Manba",
         "status": "Holat",
         "changes": "O'zgarish",
@@ -3389,7 +3754,18 @@
     "cancelConfirmQuestion": "Tasdiqni bekor qilasizmi? Qayta yuklash imkoni ochiladi.",
     "cancelConfirm": "Tasdiqni bekor qilish",
     "bulkSelected": "{n} ta korxona tanlandi",
-    "bulkSkipped": "{n} ta korxona o'tkazib yuborildi (xato yoki ma'lumot yo'q)"
+    "bulkSkipped": "{n} ta korxona o'tkazib yuborildi (xato yoki ma'lumot yo'q)",
+    "openAll": "Hammasini ochish",
+    "closeAll": "Hammasini yopish",
+    "zip": {
+      "button": "ZIP yuklab olish",
+      "title": "Hisobotlarni ZIP qilib yuklab olish",
+      "hint": "«{org}» korxonasining tanlangan oy oralig'idagi 4 turdagi hisobotlari bitta ZIP faylga yuklanadi.",
+      "from": "Boshlang'ich oy",
+      "to": "Oxirgi oy",
+      "invalid": "Oy oralig'i noto'g'ri (boshlang'ich oy oxirgisidan katta bo'lmasin).",
+      "download": "Yuklab olish"
+    }
   },
   "instructionPage": {
     "name": "Instruksiya",
@@ -5437,10 +5813,68 @@
     "saved": "Shablon saqlandi — yangi hujjatlar shu shablon bo'yicha tuziladi",
     "resetDone": "Standart shablonga qaytarildi",
     "saveConfirmTitle": "Shablonni global saqlash",
-    "saveConfirmText": "Bu shablon barcha korxonalarning keyingi hujjatlariga qo'llanadi. Avvalgi nusxa saqlanadi. O'zgarishlarni saqlaysizmi?",
+    "saveConfirmText": "«{name}» shabloni barcha korxonalarning keyingi hujjatlariga qo'llanadi. Avvalgi nusxa saqlanadi. O'zgarishlarni saqlaysizmi?",
     "resetConfirmTitle": "Standart shablonga qaytarish",
     "resetConfirmText": "Tahrirlangan shablon o'chiriladi va standart nusxa tiklanadi. Davom etasizmi?",
-    "fileLabel": "Fayl"
+    "fileLabel": "Fayl",
+    "variablesHintInsert": "Bosing — kursor turgan joyga qo'yiladi. Nomini o'zgartirmang.",
+    "insertTitle": "Kursor joyiga qo'yish",
+    "insertFallback": "Kursor hujjatda emas — o'zgaruvchi nusxalandi, kerakli joyga joylang (Ctrl+V)",
+    "updatedAt": "O'zgartirilgan",
+    "usedTimes": "Hujjatda {n} marta",
+    "notInDocument": "Hujjatda yo'q",
+    "unknownVariables": "Noma'lum o'zgaruvchilar",
+    "unknownHint": "Bular ro'yxatda yo'q va hujjatga to'ldirilmaydi. Nomi xato yozilgan bo'lishi mumkin.",
+    "missingCount": "{n} ta o'zgaruvchi hujjatda yo'q",
+    "missingHint": "Ular o'chib ketgan bo'lishi mumkin — bunday shablon saqlanmaydi.",
+    "unsavedTitle": "Saqlanmagan o'zgarishlar",
+    "unsavedText": "«{name}» shablonida saqlanmagan o'zgarishlar bor. Ular bilan nima qilamiz?",
+    "discard": "Saqlamaslik",
+    "saveAnyway": "Baribir saqlash",
+    "missingText": "Hujjatda topilmadi (o'chib ketgan bo'lishi mumkin):",
+    "unknownText": "Ro'yxatda yo'q, to'ldirilmaydi:",
+    "groups": {
+      "organization": "Tashkilot",
+      "worker": "Xodim",
+      "document": "Hujjat",
+      "terms": "Shartlar va ish haqi",
+      "other": "Boshqa"
+    },
+    "vars": {
+      "organization_name": "Tashkilot nomi",
+      "city": "Shahar",
+      "document_date": "Hujjat sanasi",
+      "document_number": "Hujjat raqami",
+      "director_position": "Rahbar lavozimi",
+      "director_name": "Rahbar F.I.Sh.",
+      "worker_full_name": "Xodim F.I.Sh. (to'liq)",
+      "worker_short_name": "Xodim F.I.Sh. (qisqa)",
+      "worker_address": "Xodim manzili",
+      "department_name": "Bo'lim",
+      "position_name": "Lavozim",
+      "new_department_name": "Yangi bo'lim",
+      "new_position_name": "Yangi lavozim",
+      "start_date": "Ishga kirish sanasi",
+      "change_date": "O'zgarish sanasi",
+      "rate": "Stavka",
+      "salary": "Ish haqi",
+      "new_salary": "Yangi ish haqi",
+      "probation_period": "Sinov muddati (oy)",
+      "schedule_name": "Ish tartibi",
+      "vacation_period": "Ta'til davri (ish yili)",
+      "vacation_days": "Ta'til kunlari",
+      "vacation_from": "Ta'til boshlanishi",
+      "vacation_to": "Ta'til tugashi",
+      "dismissal_reason": "Bo'shatish asosi",
+      "dismissal_date": "Bo'shatish sanasi",
+      "contract_number": "Shartnoma raqami",
+      "contract_date": "Shartnoma sanasi",
+      "additional_number": "Qo'shimcha kelishuv raqami"
+    },
+    "editedBadge": "Tahrirlangan",
+    "zoomIn": "Kattalashtirish",
+    "zoomOut": "Kichraytirish",
+    "zoomFit": "Sahifa eniga moslash"
   },
   "turnstileDownload": {
     "title": "Hodisalarni yuklash"

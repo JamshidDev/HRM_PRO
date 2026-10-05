@@ -41,6 +41,8 @@ export const useUploadReportStore = defineStore('uploadReport', {
     selectedIndex: null,
     selectedId: null,
     selectedOrgName: null,
+    // Korxonalar daraxtini nomi bo'yicha (klientda) filtrlash
+    orgSearch: '',
     commentVisible: false,
     commentContent: null,
     confirmLoading: false,
@@ -79,6 +81,12 @@ export const useUploadReportStore = defineStore('uploadReport', {
     confirmSelected: [], // belgilangan organization_id lar
     bulkConfirmType: 1, // tanlangan tur (1=Oylik,2=INPS4,3=INPS5,4=to'lovlar)
     bulkConfirmLoading: false,
+    // «Hammasini ochish/yopish» — tanlangan korxonalar davrini ommaviy ochish/yopish.
+    bulkOpenLoading: false,
+    // Ko'p-oylik ZIP yuklab olish (bitta korxona, oy oralig'i).
+    reportZipVisible: false,
+    reportZipLoading: false,
+    reportZip: { year: null, from_month: 1, to_month: 12 },
     // Tortish tarixi (pull-log) modal — barcha davrlar bo'yicha yuklamalar (server paginatsiyasi).
     pullHistoryVisible: false,
     pullHistoryLoading: false,
@@ -91,6 +99,18 @@ export const useUploadReportStore = defineStore('uploadReport', {
       organization_id: null,
       source: null, // 1=Excel, 2=1C
       done: null, // 1=xato, 2=jarayonda, 3=bajarildi
+      search: null,
+      page: 1,
+      per_page: 20
+    },
+    // Tortish tarixi ichidagi tab: 'pulls' (tortishlar) | 'downloads' (ZIP yuklab olishlar).
+    pullHistoryTab: 'pulls',
+    downloadsRows: [],
+    downloadsTotal: 0,
+    downloadsLoading: false,
+    downloadsParams: {
+      organization_id: null,
+      year: null,
       search: null,
       page: 1,
       per_page: 20
@@ -172,11 +192,43 @@ export const useUploadReportStore = defineStore('uploadReport', {
           }
           this.clearConfirmSelected()
           this._structures()
-          this._cards()
+          // Kartalar faqat tanlangan korxona uchun — checkbox-bulk (org tanlanmagan)
+          // da org_id null bo'lib, _index "organization_id shart" xatosini bermasin.
+          if (this.params.organization_id) this._cards()
         })
         .catch(() => {})
         .finally(() => {
           this.bulkConfirmLoading = false
+        })
+    },
+    // «Hammasini ochish/yopish» — tanlangan korxonalar davrini birdan ochadi
+    // (open=true) yoki yopadi (open=false). Tasdiqlash bulk naqshi bilan bir xil;
+    // type kerak emas (davr darajasi). Javobdagi skipped bo'yicha ogohlantiramiz.
+    _openMany(open = true) {
+      if (!this.confirmSelected.length || !this.params.year || !this.params.month) return
+      this.bulkOpenLoading = true
+      const data = {
+        organization_ids: [...this.confirmSelected],
+        year: this.params.year,
+        month: this.params.month,
+        status: open
+      }
+      $ApiService.accountantService
+        ._updateStatus({ data })
+        .then((res) => {
+          const skipped = res?.data?.data?.skipped ?? []
+          if (skipped.length) {
+            $Toast.warning(t('uploadReport.bulkSkipped', { n: skipped.length }))
+          }
+          this.clearConfirmSelected()
+          this._structures()
+          // Kartalar faqat tanlangan korxona uchun — checkbox-bulk (org tanlanmagan)
+          // da org_id null bo'lib, _index "organization_id shart" xatosini bermasin.
+          if (this.params.organization_id) this._cards()
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.bulkOpenLoading = false
         })
     },
     _structures() {
@@ -451,6 +503,55 @@ export const useUploadReportStore = defineStore('uploadReport', {
         this._structures()
       })
     },
+    // Ko'p-oylik ZIP modalini ochish (tanlangan korxona, sahifa filtridagi yil).
+    openReportZip() {
+      this.reportZip = {
+        year: this.params.year,
+        from_month: 1,
+        to_month: this.params.month || 12
+      }
+      this.reportZipVisible = true
+    },
+    // Bitta korxonaning yil + oy oralig'idagi 4 turdagi hisobotlarini .zip yuklab olish.
+    _downloadReportsZip() {
+      const orgId = this.params.organization_id
+      const { year, from_month, to_month } = this.reportZip
+      if (!orgId || !year || !from_month || !to_month) return
+      this.reportZipLoading = true
+      // Yuklab olinadigan ZIP nomi: «korxona nomi _ yil _ oy oralig'i» (fayl-xavfsiz).
+      const safeOrg = String(this.selectedOrgName || 'hisobotlar')
+        .replace(/[\\/:*?"<>|]+/g, '')
+        .trim()
+      const name = `${safeOrg}_${year}_${String(from_month).padStart(2, '0')}-${String(
+        to_month
+      ).padStart(2, '0')}.zip`
+      $ApiService.accountantService
+        ._reportsZip({
+          params: { organization_id: orgId, year, from_month, to_month }
+        })
+        .then(async (res) => {
+          // Biznes-xato HTTP 200 + JSON qaytaradi (Laravel parity). Blob JSON bo'lsa —
+          // bu ZIP emas, xato; uni fayl qilib yuklamaymiz, xabarini ko'rsatamiz.
+          const blob = res?.data
+          if (blob && blob.type && blob.type.includes('application/json')) {
+            let msg = t('content.error')
+            try {
+              const parsed = JSON.parse(await blob.text())
+              if (typeof parsed?.message === 'string') msg = parsed.message
+            } catch (e) {}
+            $Toast.error(msg)
+            return
+          }
+          Utils.blobFileDownload(blob, 'application/zip', name)
+          this.reportZipVisible = false
+        })
+        .catch(() => {
+          $Toast.error(t('content.error'))
+        })
+        .finally(() => {
+          this.reportZipLoading = false
+        })
+    },
     // Hisobot holati modalini ochish + tanlangan oy uchun ma'lumotni yuklash.
     // Davr argumentsiz — upload-report sahifa filtridan; berilsa (masalan dashboarddan)
     // o'sha yil/oy bilan ochiladi. Modal ichida keyin o'zgartirilishi mumkin.
@@ -509,6 +610,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
     // --- Tortish tarixi (pull-log) ---
     openPullHistory() {
       this.pullHistoryVisible = true
+      this.pullHistoryTab = 'pulls'
       this.pullHistoryParams = {
         type: null,
         year: null,
@@ -520,6 +622,15 @@ export const useUploadReportStore = defineStore('uploadReport', {
         page: 1,
         per_page: 20
       }
+      this.downloadsParams = {
+        organization_id: null,
+        year: null,
+        search: null,
+        page: 1,
+        per_page: 20
+      }
+      this.downloadsRows = []
+      this.downloadsTotal = 0
       this._loadPullHistory()
     },
     _loadPullHistory() {
@@ -557,6 +668,42 @@ export const useUploadReportStore = defineStore('uploadReport', {
     _changePullFilter() {
       this.pullHistoryParams.page = 1
       this._loadPullHistory()
+    },
+    // --- «ZIP yuklab olishlar» tab (Tortish tarixi ichida) ---
+    _loadDownloads() {
+      this.downloadsLoading = true
+      const p = this.downloadsParams
+      const params = {
+        organization_id: p.organization_id || undefined,
+        year: p.year || undefined,
+        search: p.search?.trim() || undefined,
+        page: p.page,
+        per_page: p.per_page
+      }
+      $ApiService.accountantService
+        ._reportDownloads({ params })
+        .then((res) => {
+          const d = res.data.data ?? {}
+          this.downloadsRows = d.data ?? []
+          this.downloadsTotal = d.total ?? 0
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.downloadsLoading = false
+        })
+    },
+    _onDownloadsPage(page) {
+      this.downloadsParams.page = page
+      this._loadDownloads()
+    },
+    _changeDownloadsFilter() {
+      this.downloadsParams.page = 1
+      this._loadDownloads()
+    },
+    // Tab almashganda — «ZIP yuklab olishlar» birinchi marta yuklanadi.
+    _setHistoryTab(tab) {
+      this.pullHistoryTab = tab
+      if (tab === 'downloads' && !this.downloadsRows.length) this._loadDownloads()
     }
   }
 })

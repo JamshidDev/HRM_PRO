@@ -13,6 +13,8 @@
       store._getAuditPreview()
       return
     }
+    // Kadrlar harakati bobi filtrni o'zi kuzatadi.
+    if (store.activeTab === 'movement') return
     if (store?.activeDetail) {
       store.params.page = 1
       store._index_detail()

@@ -1,5 +1,6 @@
 <script setup>
-  import { useCommandStore, useComponentStore } from '@/store/modules/index.js'
+  import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
+  import { useComponentStore } from '@/store/modules/index.js'
   import { PersonNote20Regular, DismissCircle16Regular, Eye24Regular, Copy16Regular, ClipboardPaste20Regular } from '@vicons/fluent'
   import Utils from '../../../../../utils/Utils.js'
   import i18n from '@/i18n/index.js'
@@ -7,7 +8,7 @@
   import { useAppSetting } from '@/utils/index.js'
   import validationRules from '@/utils/validationRules.js'
 
-  const store = useCommandStore()
+  const store = useCommandFormStore()
   const componentStore = useComponentStore()
   const { t } = i18n.global
   const clipboardStore = ref(null)

@@ -26,12 +26,13 @@
     image_url: item.meta.image_url || null
   })
 
-  // Qo'ng'iroq badge'i uchun o'qilmaganlar ro'yxatiga qo'shadi.
+  // Qo'ng'iroq badge'i uchun o'qilmaganlar ro'yxatiga qo'shadi (dedup — socket
+  // orqali allaqachon jonli qo'shilgan bo'lishi mumkin).
   const pushToUnread = (item, data) => {
-    store.userUnreadNotificationsCount++
-    store.userUnreadNotifications.unshift({
+    store._addUnread({
       id: item.meta.id,
       created_at: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+      read_at: null,
       data
     })
   }
@@ -64,6 +65,11 @@
     pushToUnread(item, data)
     remove(item.id)
   }
+
+  const onClickAction = (item) => {
+    remove(item.id)
+    item.action.onClick()
+  }
 </script>
 
 <template>
@@ -90,6 +96,15 @@
           <div class="toast__body">
             <p class="toast__title">{{ item.content }}</p>
             <p v-if="item.meta?.message" class="toast__text">{{ item.meta.message }}</p>
+            <p v-else-if="item.description" class="toast__text">{{ item.description }}</p>
+            <button
+              v-if="item.action"
+              type="button"
+              class="toast__action"
+              @click.stop="onClickAction(item)"
+            >
+              {{ item.action.label }}
+            </button>
           </div>
 
           <img v-if="item.meta?.image_url" :src="item.meta.image_url" alt="" class="toast__thumb" />
@@ -233,6 +248,23 @@
     line-height: 16px;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+  }
+
+  .toast__action {
+    margin-top: 8px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--toast-color) 14%, transparent);
+    color: var(--toast-color);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .toast__action:hover {
+    background: color-mix(in srgb, var(--toast-color) 24%, transparent);
   }
 
   .toast__thumb {

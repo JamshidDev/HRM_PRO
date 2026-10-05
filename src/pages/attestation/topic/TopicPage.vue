@@ -37,7 +37,7 @@
     :value="store.activeTab"
     :tab-style="{ display: 'none', margin: 0 }"
     :pane-style="{ padding: 0, height: '100%' }"
-    class="h-full"
+    class="topic-page-tabs h-full"
     animated
   >
     <n-tab-pane name="list" style="height: 100%">
@@ -84,3 +84,11 @@
     </n-tab-pane>
   </n-tabs>
 </template>
+
+<style scoped>
+  /* Panel o'rami qolgan balandlikni egallasin — aks holda `height: 100%` hech narsaga teng bo'lib, detaldagi imtihonlar jadvali 0px ga tushib qolardi. */
+  .topic-page-tabs > :deep(.n-tabs-pane-wrapper) {
+    flex: 1 1 0;
+    min-height: 0;
+  }
+</style>

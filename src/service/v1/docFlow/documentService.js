@@ -5,6 +5,10 @@ const _confirmationDocument = async (payload) => {
     silentError: payload.silentError
   })
 }
+// Rad etish sabablari (so'rov tilida) — web va mobil uchun umumiy ro'yxat.
+const _rejectReasons = async () => {
+  return await axios.get(`/v1/confirmation/reject-reasons`)
+}
 const _documentBase64 = async (payload) => {
   return await axios.get(`/v1/confirmation/document/base64`, { params: payload.params })
 }
@@ -60,6 +64,7 @@ const _editorSave = async (payload) => {
 
 export default {
   _confirmationDocument,
+  _rejectReasons,
   _documentBase64,
   _addQRCode,
   _openDocument,
