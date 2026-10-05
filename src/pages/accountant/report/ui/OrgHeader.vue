@@ -1,11 +1,13 @@
 <script setup>
   import {
+    ArrowDownload20Regular,
     DocumentArrowUp20Regular,
     DocumentBulletList24Filled,
     LockClosed24Filled,
     LockOpen16Filled
   } from '@vicons/fluent'
   import { useAccountStore, useUploadReportStore } from '@/store/modules/index.js'
+  import ReportZipModal from './ReportZipModal.vue'
 
   // Tanlangan korxona sarlavhasi va unga tegishli amallar.
   // `orgStatus` true — yuklash ochiq (tugma "Yopish"), false — yopiq ("Ochish").
@@ -59,6 +61,17 @@
           <LockOpen16Filled v-else />
         </template>
       </n-button>
+      <n-button
+        v-if="accStore.checkPermission(accStore.pn.economistUploadsRead)"
+        secondary
+        type="info"
+        @click="store.openReportZip()"
+      >
+        {{ $t('uploadReport.zip.button') }}
+        <template #icon>
+          <ArrowDownload20Regular />
+        </template>
+      </n-button>
       <n-button type="success" @click="onAdd">
         {{ $t('uploadReport.form.uploadFile') }}
         <template #icon>
@@ -66,5 +79,7 @@
         </template>
       </n-button>
     </div>
+
+    <ReportZipModal />
   </div>
 </template>

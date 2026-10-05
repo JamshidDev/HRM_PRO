@@ -19,6 +19,12 @@
     if (!componentStore.uploadTypes?.length) componentStore._enumAccountant()
   })
 
+  const MONTHS = [
+    'Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun',
+    'Iyul', 'Avgust', 'Sentyabr', 'Oktyabr', 'Noyabr', 'Dekabr'
+  ]
+  const monthName = (m) => MONTHS[(Number(m) || 1) - 1] || m
+
   // Shakl (tur) tanlagichi — «Hammasi» + 4 tur.
   const typeOptions = computed(() => [
     { label: t('uploadReport.pullHistory.allTypes'), value: null },
@@ -36,6 +42,9 @@
 
   const pageCount = computed(() =>
     Math.max(1, Math.ceil(store.pullHistoryTotal / store.pullHistoryParams.per_page))
+  )
+  const downloadsPageCount = computed(() =>
+    Math.max(1, Math.ceil(store.downloadsTotal / store.downloadsParams.per_page))
   )
 
   // done → holat badge (3=bajarildi/yashil, 2=jarayonda/sariq, 1=xato/qizil).
@@ -164,6 +173,57 @@
           : h('span', { class: 'text-secondary' }, '—')
     }
   ])
+
+  // «ZIP yuklab olishlar» tab jadvali.
+  const downloadsColumns = computed(() => [
+    {
+      title: '№',
+      key: '_index',
+      width: 56,
+      align: 'center',
+      render: (_row, index) =>
+        (store.downloadsParams.page - 1) * store.downloadsParams.per_page + index + 1
+    },
+    {
+      title: t('uploadReport.pullHistory.columns.date'),
+      key: 'created_at',
+      width: 150,
+      render: (row) => (row.created_at ? dayjs(row.created_at).format('YYYY-MM-DD HH:mm') : '—')
+    },
+    {
+      title: t('uploadReport.pullHistory.columns.organization'),
+      key: 'organization',
+      minWidth: 200,
+      ellipsis: { tooltip: true }
+    },
+    {
+      title: t('uploadReport.pullHistory.columns.range'),
+      key: 'range',
+      width: 180,
+      render: (row) => `${monthName(row.from_month)}–${monthName(row.to_month)} ${row.year}`
+    },
+    {
+      title: t('uploadReport.pullHistory.columns.user'),
+      key: 'user',
+      minWidth: 160,
+      ellipsis: { tooltip: true },
+      render: (row) => row.user || '—'
+    },
+    {
+      title: t('uploadReport.pullHistory.columns.files'),
+      key: 'files',
+      minWidth: 240,
+      render: (row) =>
+        h('div', { class: 'flex flex-wrap items-center gap-1' }, [
+          h(NTag, { size: 'small', round: true, type: 'success', bordered: false }, () =>
+            t('uploadReport.pullHistory.filesCount', { n: row.file_count })
+          ),
+          ...(row.types || []).map((tp) =>
+            h(NTag, { size: 'small', round: true, type: 'info' }, () => tp.name)
+          )
+        ])
+    }
+  ])
 </script>
 
 <template>
@@ -174,80 +234,145 @@
     :title="$t('uploadReport.pullHistory.title')"
   >
     <div class="flex flex-col gap-3" style="height: 100%">
-      <!-- Filtrlar -->
-      <div class="shrink-0 flex flex-wrap items-center gap-2">
-        <n-select
-          v-model:value="store.pullHistoryParams.type"
-          :options="typeOptions"
-          :placeholder="$t('uploadReport.pullHistory.form')"
-          class="min-w-[150px]"
-          @update:value="store._changePullFilter()"
-        />
-        <div class="max-w-[160px]">
-          <UIYearMonth
-            v-model:year="store.pullHistoryParams.year"
-            v-model:month="store.pullHistoryParams.month"
-            :clearable="true"
-            @change="store._changePullFilter()"
+      <!-- Tab: Tortishlar | ZIP yuklab olishlar -->
+      <n-tabs
+        :value="store.pullHistoryTab"
+        @update:value="store._setHistoryTab"
+        type="line"
+        size="small"
+        class="shrink-0"
+      >
+        <n-tab-pane name="pulls" :tab="$t('uploadReport.pullHistory.tabPulls')" />
+        <n-tab-pane name="downloads" :tab="$t('uploadReport.pullHistory.tabDownloads')" />
+      </n-tabs>
+
+      <!-- ===== Tortishlar tab ===== -->
+      <template v-if="store.pullHistoryTab === 'pulls'">
+        <div class="shrink-0 flex flex-wrap items-center gap-2">
+          <n-select
+            v-model:value="store.pullHistoryParams.type"
+            :options="typeOptions"
+            :placeholder="$t('uploadReport.pullHistory.form')"
+            class="min-w-[150px]"
+            @update:value="store._changePullFilter()"
+          />
+          <div class="max-w-[160px]">
+            <UIYearMonth
+              v-model:year="store.pullHistoryParams.year"
+              v-model:month="store.pullHistoryParams.month"
+              :clearable="true"
+              @change="store._changePullFilter()"
+            />
+          </div>
+          <n-select
+            v-model:value="store.pullHistoryParams.source"
+            :options="sourceOptions"
+            :placeholder="$t('uploadReport.pullHistory.columns.source')"
+            clearable
+            class="min-w-[120px]"
+            @update:value="store._changePullFilter()"
+          />
+          <n-select
+            v-model:value="store.pullHistoryParams.done"
+            :options="doneOptions"
+            :placeholder="$t('uploadReport.pullHistory.columns.status')"
+            clearable
+            class="min-w-[130px]"
+            @update:value="store._changePullFilter()"
+          />
+          <n-input
+            v-model:value="store.pullHistoryParams.search"
+            :placeholder="$t('uploadReport.pullHistory.search')"
+            clearable
+            class="flex-1 min-w-[160px]"
+            @keyup.enter="store._changePullFilter()"
+            @clear="store._changePullFilter()"
+          >
+            <template #prefix>
+              <n-icon><Search24Regular /></n-icon>
+            </template>
+          </n-input>
+        </div>
+
+        <div class="flex-1 min-h-0">
+          <n-data-table
+            :columns="columns"
+            :data="store.pullHistoryRows"
+            :loading="store.pullHistoryLoading"
+            :bordered="true"
+            :single-line="false"
+            size="small"
+            flex-height
+            style="height: 100%"
+            :scroll-x="1040"
           />
         </div>
-        <n-select
-          v-model:value="store.pullHistoryParams.source"
-          :options="sourceOptions"
-          :placeholder="$t('uploadReport.pullHistory.columns.source')"
-          clearable
-          class="min-w-[120px]"
-          @update:value="store._changePullFilter()"
-        />
-        <n-select
-          v-model:value="store.pullHistoryParams.done"
-          :options="doneOptions"
-          :placeholder="$t('uploadReport.pullHistory.columns.status')"
-          clearable
-          class="min-w-[130px]"
-          @update:value="store._changePullFilter()"
-        />
-        <n-input
-          v-model:value="store.pullHistoryParams.search"
-          :placeholder="$t('uploadReport.pullHistory.search')"
-          clearable
-          class="flex-1 min-w-[160px]"
-          @keyup.enter="store._changePullFilter()"
-          @clear="store._changePullFilter()"
-        >
-          <template #prefix>
-            <n-icon><Search24Regular /></n-icon>
-          </template>
-        </n-input>
-      </div>
 
-      <!-- Jadval — qolgan balandlikni to'ldiradi, ichida vertikal skroll -->
-      <div class="flex-1 min-h-0">
-        <n-data-table
-          :columns="columns"
-          :data="store.pullHistoryRows"
-          :loading="store.pullHistoryLoading"
-          :bordered="true"
-          :single-line="false"
-          size="small"
-          flex-height
-          style="height: 100%"
-          :scroll-x="1040"
-        />
-      </div>
+        <div class="shrink-0 flex items-center justify-between">
+          <span class="text-xs text-secondary">
+            {{ $t('uploadReport.pullHistory.total') }}: {{ store.pullHistoryTotal }}
+          </span>
+          <n-pagination
+            :page="store.pullHistoryParams.page"
+            :page-count="pageCount"
+            :page-size="store.pullHistoryParams.per_page"
+            @update:page="store._onPullHistoryPage"
+          />
+        </div>
+      </template>
 
-      <!-- Paginatsiya -->
-      <div class="shrink-0 flex items-center justify-between">
-        <span class="text-xs text-secondary">
-          {{ $t('uploadReport.pullHistory.total') }}: {{ store.pullHistoryTotal }}
-        </span>
-        <n-pagination
-          :page="store.pullHistoryParams.page"
-          :page-count="pageCount"
-          :page-size="store.pullHistoryParams.per_page"
-          @update:page="store._onPullHistoryPage"
-        />
-      </div>
+      <!-- ===== ZIP yuklab olishlar tab ===== -->
+      <template v-else>
+        <div class="shrink-0 flex flex-wrap items-center gap-2">
+          <n-input-number
+            v-model:value="store.downloadsParams.year"
+            :placeholder="$t('content.year')"
+            :min="2010"
+            :max="2030"
+            clearable
+            class="max-w-[120px]"
+            @update:value="store._changeDownloadsFilter()"
+          />
+          <n-input
+            v-model:value="store.downloadsParams.search"
+            :placeholder="$t('uploadReport.pullHistory.search')"
+            clearable
+            class="flex-1 min-w-[160px]"
+            @keyup.enter="store._changeDownloadsFilter()"
+            @clear="store._changeDownloadsFilter()"
+          >
+            <template #prefix>
+              <n-icon><Search24Regular /></n-icon>
+            </template>
+          </n-input>
+        </div>
+
+        <div class="flex-1 min-h-0">
+          <n-data-table
+            :columns="downloadsColumns"
+            :data="store.downloadsRows"
+            :loading="store.downloadsLoading"
+            :bordered="true"
+            :single-line="false"
+            size="small"
+            flex-height
+            style="height: 100%"
+            :scroll-x="900"
+          />
+        </div>
+
+        <div class="shrink-0 flex items-center justify-between">
+          <span class="text-xs text-secondary">
+            {{ $t('uploadReport.pullHistory.total') }}: {{ store.downloadsTotal }}
+          </span>
+          <n-pagination
+            :page="store.downloadsParams.page"
+            :page-count="downloadsPageCount"
+            :page-size="store.downloadsParams.per_page"
+            @update:page="store._onDownloadsPage"
+          />
+        </div>
+      </template>
     </div>
   </UIModal>
 </template>
