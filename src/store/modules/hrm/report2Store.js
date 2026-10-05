@@ -14,6 +14,16 @@ export const useReport2Store = defineStore('report2Store', {
     totalPosition: 0,
     positionList: [],
     byPosition: true,
+    // 'list' — bo'linma kartochkalari, 'table' — bo'linma → lavozim → xodim daraxt jadvali
+    viewMode: 'list',
+    // Jadval ko'rinishi barcha bo'linmalar lavozimlarini birdaniga ko'rsatadi
+    table: {
+      loading: false,
+      seq: 0,
+      done: 0,
+      total: 0,
+      positions: {}
+    },
 
     workerParams: {
       page: 1,
@@ -178,8 +188,62 @@ export const useReport2Store = defineStore('report2Store', {
       this.position.loading = true
       $ApiService.departmentPositionService._delete({ id: this.position.elementId }).finally(() => {
         this.position.loading = false
-        this.getPosition()
+        this.refreshPositions()
       })
+    },
+    // Jadval ko'rinishida yuklangan bolalar qatorlari bo'linma ro'yxati bilan
+    // birga qayta quriladi — lavozim o'zgargach butun daraxtni yangilaymiz.
+    refreshPositions() {
+      if (this.viewMode === 'table') this._getDepartment()
+      else this.getPosition()
+    },
+    // Har bir bo'linma lavozimlari alohida so'rov bilan keladi, shu bois ular
+    // cheklangan parallellikda yuklanadi. Eski so'rov natijasi yangisini
+    // bosib ketmasligi uchun `token` tekshiriladi.
+    async _loadTable() {
+      const token = ++this.table.seq
+      const ids = []
+      const walk = (list) =>
+        list.forEach((v) => {
+          ids.push(v.id)
+          if (v.children?.length) walk(v.children)
+        })
+      walk(this.department.list)
+
+      const positions = {}
+      this.table.loading = true
+      this.table.done = 0
+      this.table.total = ids.length
+      let cursor = 0
+      const worker = async () => {
+        while (cursor < ids.length) {
+          const id = ids[cursor++]
+          positions[id] = await this._tablePositions(id).catch(() => [])
+          if (this.table.seq !== token) return
+          this.table.done++
+        }
+      }
+      await Promise.all(Array.from({ length: Math.min(6, ids.length) }, worker))
+      if (this.table.seq !== token) return
+      this.table.positions = positions
+      this.table.loading = false
+    },
+    _tablePositions(departmentId) {
+      const params = {
+        ...this.position.params,
+        organization_id: this.department.params.organization_id?.[0]?.id,
+        department_id: departmentId
+      }
+      return $ApiService.reportService._position({ params }).then((res) => res.data.data.data)
+    },
+    _tableWorkers(departmentId, departmentPositionId) {
+      const params = {
+        ...this.workerParams,
+        organization_id: this.department.params.organization_id?.[0]?.id,
+        department_id: departmentId,
+        department_position_id: departmentPositionId
+      }
+      return $ApiService.reportService._worker({ params }).then((res) => res.data.data.data)
     },
     getPosition() {
       this.position.loading = true
@@ -283,7 +347,9 @@ export const useReport2Store = defineStore('report2Store', {
         ._create({ data })
         .then((res) => {
           this.position.visible = false
-          if (this.department.selectedId === this.positionPayload.department_id) {
+          if (this.viewMode === 'table') {
+            this._getDepartment()
+          } else if (this.department.selectedId === this.positionPayload.department_id) {
             this.getPosition()
           }
         })
@@ -298,6 +364,10 @@ export const useReport2Store = defineStore('report2Store', {
         ._update({ data, id: this.elementId })
         .then((res) => {
           this.position.visible = false
+          if (this.viewMode === 'table') {
+            this._getDepartment()
+            return
+          }
           this.getPosition()
           if (this.lastDepartmentId !== this.positionPayload.department_id) {
             this._getDepartment()

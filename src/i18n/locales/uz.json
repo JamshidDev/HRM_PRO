@@ -3549,6 +3549,17 @@
     "staffingExportQueued": "Shtat jadvali yuklash navbatiga qo'shildi",
     "addDepartment": "Bo'linma qo'shish",
     "addPosition": "Lavozim qo'shish",
+    "listView": "Ro'yxat",
+    "tableView": "Jadval",
+    "table": {
+      "position": "Lavozim",
+      "occupancy": "Bandlik",
+      "total": "Jami",
+      "all": "Barchasi",
+      "search": "Bo'linma yoki lavozim qidirish",
+      "positionsCount": "{n} ta lavozim",
+      "noPositions": "Lavozim kiritilmagan"
+    },
     "tooltip": {
       "P": "Plan",
       "G": "Guruh",
@@ -3629,6 +3640,16 @@
     "name": "Hisobotlar"
   },
   "uploadReport": {
+    "ui": {
+      "searchOrg": "Korxona qidirish",
+      "selectOrg": "Hisobot yuklash va tasdiqlash uchun chap tomondagi ro'yxatdan korxonani tanlang",
+      "selectType": "Yuklashlar tarixini ko'rish uchun yuqoridagi hisobot turlaridan birini tanlang",
+      "noUploads": "Bu tur bo'yicha hali hisobot yuklanmagan",
+      "notConfirmed": "Tasdiqlanmagan",
+      "uploads": "ta yuklangan",
+      "uploadOpen": "Yuklash ochiq",
+      "uploadClosed": "Yuklash yopiq"
+    },
     "name": "Hisobot yuklash",
     "latest": "Oxirgi",
     "olderUploads": "Oldingi yuklamalar",
@@ -4912,6 +4933,23 @@
     "filter": {
       "organizationPlaceholder": "Korxonani tanlang",
       "departmentPlaceholder": "Bo'limni tanlang"
+    },
+    "attendance": {
+      "vacation": "Ta'tilda",
+      "day_off": "Dam olish kunida",
+      "excused": "Sababli",
+      "firstEvent": "Birinchi hodisa",
+      "lastEvent": "Oxirgi hodisa",
+      "reasons": "Belgilar"
+    },
+    "attendanceReason": {
+      "sick_leave": "Kasallik varaqasi",
+      "business_trip": "Xizmat safari",
+      "no_turnstile": "Turniketdan o'tmaydi",
+      "exempt": "Hisobdan ozod",
+      "vacation": "Ta'til",
+      "day_off": "Dam olish kuni",
+      "no_schedule": "Grafik yo'q"
     }
   },
   "hcWorkDuration": {

@@ -21,16 +21,12 @@
       <n-skeleton width="140px" height="14px" :sharp="false" />
     </div>
 
-    <div class="flex items-center justify-between gap-3 px-2">
-      <n-skeleton width="96px" height="24px" :sharp="false" />
-      <n-skeleton :width="68" round size="small" />
-    </div>
-
-    <div class="bg-surface-ground-soft rounded-xl px-3 py-1.5 mt-auto">
-      <div class="flex items-center justify-between gap-2">
-        <n-skeleton width="130px" height="12px" :sharp="false" />
-        <n-skeleton width="70px" height="12px" :sharp="false" />
+    <div class="flex items-center justify-between gap-3 px-2 pb-3 min-h-[40px]">
+      <div class="flex items-center gap-2">
+        <n-skeleton width="80px" height="24px" :sharp="false" />
+        <n-skeleton width="64px" height="12px" :sharp="false" />
       </div>
+      <n-skeleton width="68px" height="28px" round />
     </div>
   </div>
 </template>

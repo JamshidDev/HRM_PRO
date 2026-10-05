@@ -45,9 +45,7 @@
       <CardHeader
         :icon="HeadDesktopIcon"
         tint="indigo"
-        small-subtitle
         :title="$t('turnStileDashboard.cards.deviceAnalytic')"
-        :subtitle="$t('turnStileDashboard.cards.deviceAnalyticDescription')"
       />
 
       <div class="flex-1 flex flex-col justify-center gap-2.5 p-2">
