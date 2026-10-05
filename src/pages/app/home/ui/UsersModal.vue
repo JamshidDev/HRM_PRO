@@ -93,7 +93,7 @@ const filteredUsers = computed(()=>{
         </n-button-group>
       </div>
       <div class="w-full h-[calc(100vh-120px)] overflow-y-auto overflow-x-hidden">
-        <template v-for="user in filteredUsers" :key="user.id">
+        <template v-for="user in filteredUsers" :key="user.socketId ?? user.id">
           <div class="pl-3 mb-1 py-1 group relative hover:bg-surface-ground">
             <div class="relative">
               <UIUser

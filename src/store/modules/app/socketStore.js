@@ -170,14 +170,21 @@ export const useSocketStore = defineStore('useSocketStore', {
         30 * 60 * 1000
       ) // 30 minutes
     },
+    // Har ulanish (socketId) alohida yozuv: web/mobil va har brauzer alohida ko'rinadi.
+    onlineKey(user) {
+      return user.socketId ?? `user-${user.id}`
+    },
     addUserToOnlineUsers(user) {
-      // Mavjud user qayta kelsa (web↔mobil) — yozuv yangilanadi, belgi to'g'ri chiqsin.
-      const index = this.allOnlineUsers.findIndex((v) => Number(v.id) === Number(user.id))
+      const key = this.onlineKey(user)
+      const index = this.allOnlineUsers.findIndex((v) => this.onlineKey(v) === key)
       if (index === -1) this.allOnlineUsers.push(user)
       else this.allOnlineUsers.splice(index, 1, { ...this.allOnlineUsers[index], ...user })
     },
     removeUserFromOnlineUsers(user) {
-      this.allOnlineUsers = this.allOnlineUsers.filter((v) => Number(v.id) !== Number(user.id))
+      // socketId bo'lsa — faqat shu ulanish; bo'lmasa (eski server) — userning hammasi.
+      this.allOnlineUsers = user.socketId
+        ? this.allOnlineUsers.filter((v) => v.socketId !== user.socketId)
+        : this.allOnlineUsers.filter((v) => Number(v.id) !== Number(user.id))
     },
     setOffline() {
       if (this.socket && this.currentUserId) {

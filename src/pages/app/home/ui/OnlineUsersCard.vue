@@ -101,7 +101,7 @@
       >
         <div
           v-for="(user, index) in visibleUsers"
-          :key="user.id"
+          :key="user.socketId ?? user.id"
           class="online-users__item group relative"
           :style="{ zIndex: 50 - index }"
           :title="user.short_name"
