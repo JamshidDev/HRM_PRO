@@ -33,9 +33,14 @@
     officeAppRef.value.openPdf(v.documentId, Utils.documentModels.workerApplication, v.signatureId)
   }
 
-  const activeFilter = ref('all')
-  const onFilterChange = (v) => {
-    store.params.application_confirmation = v === 'draft' ? DRAFT_CONFIRMATION : null
+  // Ariza holati tablari: 1 Jarayonda, 6 Qoralama, 3 Tasdiqlangan, 4 Rad etilgan.
+  const statusTabs = computed(() => [
+    { id: 1, name: t('content.Process') },
+    { id: DRAFT_CONFIRMATION, name: t('applicationPage.draft') },
+    { id: 3, name: t('applicationPage.approved') },
+    { id: 4, name: t('content.Rejected') }
+  ])
+  const onFilterChange = () => {
     store.params.page = 1
     store._index()
   }
@@ -96,14 +101,13 @@
       </template>
     </UIModal>
     <n-tabs
-      v-model:value="activeFilter"
+      v-model:value="store.params.application_confirmation"
       type="line"
       size="small"
       class="mt-2"
       @update:value="onFilterChange"
     >
-      <n-tab name="all" :tab="$t('content.all')" />
-      <n-tab name="draft" :tab="$t('applicationPage.draft')" />
+      <n-tab v-for="tab in statusTabs" :key="tab.id" :name="tab.id" :tab="tab.name" />
     </n-tabs>
     <Table @openOffice="openOffice" />
     <UIOfficeApp ref="officeAppRef" />

@@ -2840,6 +2840,7 @@
     "draft": "Draft",
     "draftSignTitle": "Application is a draft",
     "draftSignBody": "After you sign it, the application is sent to HR.",
+    "approved": "Approved",
     "name": "Applications",
     "addApp": "Submit application",
     "createWorkerApplication": "Create application",

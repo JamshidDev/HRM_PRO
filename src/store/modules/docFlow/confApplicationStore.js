@@ -63,7 +63,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
       page: 1,
       per_page: 15,
       search: null,
-      application_confirmation: null
+      application_confirmation: 1
     },
     // Yangi yaratilgan qoralama qatori — sahifa uni ochib imzolashni so'raydi.
     signPromptRow: null,
@@ -228,6 +228,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
           // Qoralama: modal yopiladi, hujjat ochilib imzolash so'raladi.
           this.visible = false
           this.params.page = 1
+          this.params.application_confirmation = 6
           this._index(() => {
             this.signPromptRow =
               this.list.find((v) => v.worker_application?.id === createdId) ?? null
