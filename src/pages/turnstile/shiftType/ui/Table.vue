@@ -38,15 +38,15 @@
 <template>
   <div class="flex-1 flex flex-col overflow-auto">
     <n-spin :show="store.loading" class="overflow-auto rounded-md p-1">
-      <div v-if="store.list.length > 0" class="w-full table md:min-w-[700px]">
+      <div v-if="store.list.length > 0" class="w-full">
         <template v-for="(item, idx) in store.list" :key="item.id">
           <div
-            class="flex flex-col md:flex-row bg-surface-section rounded-tl-lg rounded-tr-lg gap-2 px-2 pt-[10px] items-center w-full"
+            class="flex flex-col md:flex-row md:flex-wrap bg-surface-section rounded-tl-lg rounded-tr-lg gap-2 px-2 pt-[10px] items-center w-full"
           >
-            <div class="w-[40px] text-center text-sm text-secondary">
+            <div class="w-[40px] shrink-0 text-center text-sm text-secondary">
               {{ (store.params.page - 1) * store.params.per_page + idx + 1 }}
             </div>
-            <div class="flex flex-col md:w-[calc(100%-840px)] md:min-w-[200px] w-full">
+            <div class="flex flex-col md:flex-1 md:min-w-[220px] min-w-0 w-full">
               <p class="leading-[1.2] font-semibold text-textColor0 line-clamp-1">
                 {{ item?.name }}
               </p>
@@ -54,7 +54,7 @@
                 {{ item?.type?.name }}
               </p>
             </div>
-            <div class="flex flex-col text-xs text-secondary md:w-[260px] w-full">
+            <div class="flex flex-col text-xs text-secondary md:w-[180px] md:shrink-0 w-full">
               <p class="leading-[1.2] line-clamp-1 w-full">
                 {{ $t('shiftType.form.groupCount') }}:
                 <span class="font-semibold text-textColor0">{{ item.groups }}</span>
@@ -64,13 +64,13 @@
                 <span class="font-semibold text-textColor0">{{ item.workers }}</span>
               </p>
             </div>
-            <div class="flex flex-col text-xs md:w-[260px] w-full text-secondary">
+            <div class="flex flex-col text-xs md:w-[200px] md:shrink-0 w-full text-secondary">
               <n-button @click="onGroups(item)" class="max-w-[200px]">
                 <template #icon><Eye16Filled /></template>
                 {{ $t('shiftType.form.showGroup') }}
               </n-button>
             </div>
-            <div class="flex md:w-[300px]! !w-full md:justify-end">
+            <div class="flex md:shrink-0 w-full md:w-auto md:justify-end">
               <n-button
                 v-if="accStore.checkPermission(accStore.pn.turnstileSheetsWorkersWrite)"
                 @click="onOpenModal(item)"

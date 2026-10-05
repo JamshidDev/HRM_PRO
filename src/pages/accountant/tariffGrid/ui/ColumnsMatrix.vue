@@ -280,7 +280,7 @@
   .cm-rk, .cm-grp {
     position: sticky; left: 0; z-index: 1;
     background: var(--table-header, #f1f5f9);
-    font-weight: 700; color: var(--textColor1, #101828);
+    font-weight: 700; color: var(--textColor1, #475569);
   }
   .cm thead .cm-rk, .cm thead .cm-grp { z-index: 3; }
   .cm-grp { left: 52px; font-weight: 500; color: var(--textColor2, #475467); }

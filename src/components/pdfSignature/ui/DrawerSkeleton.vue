@@ -3,8 +3,8 @@
 </script>
 
 <template>
-  <div class="w-full flex-1 min-h-0 flex gap-3">
-    <div class="hidden md:flex flex-col w-[300px] h-full">
+  <div class="w-full flex-1 min-h-0 flex gap-3 max-md:!px-2">
+    <div class="hidden min-[1200px]:flex flex-col w-[280px] xl:w-[300px] shrink-0 h-full">
       <SectionHeader full-height tight-body :title="$t('documentPage.signature.attachedDocuments')">
         <div class="flex flex-col">
           <div v-for="i in 2" :key="i" class="flex items-center gap-2 p-2">
@@ -27,7 +27,7 @@
           <n-skeleton width="180px" height="16px" :sharp="false" class="rounded-md" />
           <n-skeleton width="80px" height="12px" :sharp="false" class="rounded-md" />
         </div>
-        <div class="flex gap-2 shrink-0">
+        <div class="hidden sm:flex gap-2 shrink-0">
           <n-skeleton width="120px" height="34px" :sharp="false" class="rounded-md" />
           <n-skeleton width="120px" height="34px" :sharp="false" class="rounded-md" />
         </div>
@@ -35,7 +35,7 @@
       <n-skeleton class="flex-1 min-h-0 rounded-2xl" :sharp="false" />
     </div>
 
-    <div class="hidden md:flex flex-col w-[360px] h-full">
+    <div class="hidden lg:flex flex-col w-[320px] xl:w-[360px] shrink-0 h-full">
       <SectionHeader full-height tight-body :title="$t('documentPage.signature.approval.title')">
         <div class="flex flex-col gap-2">
           <div

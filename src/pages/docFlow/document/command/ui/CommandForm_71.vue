@@ -4,10 +4,12 @@
   import { PersonNote20Regular, DismissCircle16Regular, Eye24Regular } from '@vicons/fluent'
   import Utils from '../../../../../utils/Utils.js'
   import i18n from '@/i18n/index.js'
+  import { isEmptyValue, useEmptyFieldMarks } from '../useEmptyFieldMarks.js'
 
   const store = useCommandFormStore()
   const componentStore = useComponentStore()
   const { t } = i18n.global
+  const { showErrors, status } = useEmptyFieldMarks()
 
   const onRemoveWorker = (id) => {
     store.workerData = store.workerData.filter((v) => v.id !== id)
@@ -16,11 +18,12 @@
   const onSubmit = (mainData) => {
     const checkForm = store.workerData.every(
       (v) =>
-        v.by_whom !== null &&
-        v.reason !== null &&
-        v.gift_type !== null &&
-        (v.gift_type === 5 ? v.gift !== null : true)
+        !isEmptyValue(v.by_whom) &&
+        !isEmptyValue(v.reason) &&
+        !isEmptyValue(v.gift_type) &&
+        (v.gift_type === 5 ? !isEmptyValue(v.gift) : true)
     )
+    showErrors.value = !checkForm
     if (checkForm) {
       const data = store.workerData.map((v) => ({
         id: v.id,
@@ -76,29 +79,32 @@
         {{ $t('documentPage.command.form.removeWorker') }}
       </n-button>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-12">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-12">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.reason`)"
         path="reason"
+        :validation-status="status(item.reason)"
       >
         <n-input class="w-full" type="text" v-model:value="item.reason" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-4">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.by_whom`)"
         path="by_whom"
+        :validation-status="status(item.by_whom)"
       >
         <n-input class="w-full" type="text" v-model:value="item.by_whom" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-4">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.gift_type`)"
         path="gift_type"
+        :validation-status="status(item.gift_type)"
       >
         <n-select
           v-model:value="item.gift_type"
@@ -110,8 +116,13 @@
         />
       </n-form-item>
     </div>
-    <div v-if="item.gift_type === 5" class="col-span-12 md:col-span-6 lg:col-span-4">
-      <n-form-item :show-feedback="false" :label="$t(`documentPage.command.form.gift`)" path="gift">
+    <div v-if="item.gift_type === 5" class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
+      <n-form-item
+        :show-feedback="false"
+        :label="$t(`documentPage.command.form.gift`)"
+        path="gift"
+        :validation-status="status(item.gift)"
+      >
         <n-input class="w-full" type="text" v-model:value="item.gift" />
       </n-form-item>
     </div>

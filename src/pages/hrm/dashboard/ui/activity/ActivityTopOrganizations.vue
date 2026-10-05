@@ -3,12 +3,11 @@
   import { UISegmentTabs } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import HeadUsers from '@/assets/icons/hrmDashboard/activity/head-users.svg?url'
-  import SearchIcon from '@/assets/icons/hrmDashboard/activity/search.svg?url'
   import ChevronRight from '@/assets/icons/hrmDashboard/activity/chevron-right.svg?url'
   import ApiService from '@/service/ApiService.js'
   import { useDashboardStore } from '@/store/modules/index.js'
   import { NIcon } from 'naive-ui'
-  import { Building20Regular } from '@vicons/fluent'
+  import { Building20Regular, DismissCircle16Filled, Search20Regular } from '@vicons/fluent'
   import { actionTypes, formatCount } from './utils.js'
 
   const { t } = i18n.global
@@ -101,7 +100,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 rounded-2xl bg-fig-block p-4">
+  <div class="flex flex-col gap-4 rounded-2xl bg-fig-block shadow-card p-4">
     <!-- Sarlavha + qidiruv + rejim -->
     <div class="flex w-full flex-wrap items-center justify-between gap-2">
       <div class="flex min-w-0 flex-1 items-center gap-2.5">
@@ -114,23 +113,32 @@
       </div>
 
       <div class="flex w-full flex-wrap items-center gap-2 sm:w-auto">
-        <label
-          class="flex h-9 w-full cursor-text items-center gap-2 rounded-lg bg-fig-bg-secondary px-4 sm:w-[264px]"
-        >
-          <img :src="SearchIcon" alt="" width="18" height="18" class="block shrink-0" />
+        <!-- Qidiruv: balandligi yonidagi davr segmenti bilan bir xil (36px). Fokusda
+             chegara brend rangga o'tadi va atrofida yumshoq halqa paydo bo'ladi. -->
+        <label class="activity-search group/search">
+          <n-icon
+            :component="Search20Regular"
+            :size="18"
+            class="shrink-0 text-fig-text-tertiary transition-colors group-focus-within/search:text-fig-text-brand"
+          />
           <input
             v-model="search"
             type="text"
             class="min-w-0 flex-1 bg-transparent text-[14px] leading-5 text-fig-text-primary outline-none placeholder:text-fig-text-tertiary"
             :placeholder="$t('dashboardPage.activity.searchOrganization')"
+            @keydown.esc="search = ''"
           />
+          <button
+            v-if="search"
+            type="button"
+            class="-mr-1 flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-md text-fig-text-tertiary transition-colors hover:bg-fig-bg-tertiary hover:text-fig-text-primary"
+            :aria-label="$t('content.clear')"
+            @click="search = ''"
+          >
+            <n-icon :component="DismissCircle16Filled" :size="16" />
+          </button>
         </label>
-        <UISegmentTabs
-          v-model="period"
-          :tabs="periodTabs"
-          variant="surface"
-          class="activity-mode"
-        />
+        <UISegmentTabs v-model="period" :tabs="periodTabs" />
       </div>
     </div>
 
@@ -260,10 +268,34 @@
     gap: 16px;
   }
 
-  /* Maketdagi «Top 10 / Barchasi» toggle — 12px matn, 12px gorizontal padding. */
-  .activity-mode :deep(.seg-tabs__item) {
-    padding: 8px 12px;
-    font-size: 12px;
-    line-height: 16px;
+  .activity-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--fig-br-secondary);
+    border-radius: 10px;
+    background: var(--fig-block-bg);
+    cursor: text;
+    transition:
+      border-color 0.16s ease,
+      box-shadow 0.16s ease;
+  }
+
+  @media (min-width: 640px) {
+    .activity-search {
+      width: 280px;
+    }
+  }
+
+  .activity-search:hover {
+    border-color: var(--fig-text-disable);
+  }
+
+  .activity-search:focus-within {
+    border-color: var(--fig-bg-brand-fill);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--fig-bg-brand-fill) 16%, transparent);
   }
 </style>

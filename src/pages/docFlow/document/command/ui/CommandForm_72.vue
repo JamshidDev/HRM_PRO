@@ -4,10 +4,12 @@
   import { PersonNote20Regular, DismissCircle16Regular, Eye24Regular } from '@vicons/fluent'
   import Utils from '../../../../../utils/Utils.js'
   import i18n from '@/i18n/index.js'
+  import { isEmptyValue, useEmptyFieldMarks } from '../useEmptyFieldMarks.js'
 
   const store = useCommandFormStore()
   const componentStore = useComponentStore()
   const { t } = i18n.global
+  const { showErrors, status } = useEmptyFieldMarks()
 
   const onRemoveWorker = (id) => {
     store.workerData = store.workerData.filter((v) => v.id !== id)
@@ -16,8 +18,11 @@
   const onSubmit = (mainData) => {
     const checkForm = store.workerData.every(
       (v) =>
-        v.reason !== null && v.fine_type !== null && (v.fine_type === 2 ? v.fine !== null : true)
+        !isEmptyValue(v.reason) &&
+        !isEmptyValue(v.fine_type) &&
+        (v.fine_type === 2 ? !isEmptyValue(v.fine) : true)
     )
+    showErrors.value = !checkForm
     if (checkForm) {
       const data = store.workerData.map((v) => ({
         id: v.id,
@@ -77,15 +82,17 @@
         :show-feedback="false"
         :label="$t(`documentPage.command.form.reason`)"
         path="reason"
+        :validation-status="status(item.reason)"
       >
         <n-input class="w-full" type="text" v-model:value="item.reason" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-4">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.fine_type`)"
         path="fine_type"
+        :validation-status="status(item.fine_type)"
       >
         <n-select
           v-model:value="item.fine_type"
@@ -97,8 +104,13 @@
         />
       </n-form-item>
     </div>
-    <div v-if="item.fine_type === 2" class="col-span-12 md:col-span-6 lg:col-span-4">
-      <n-form-item :show-feedback="false" :label="$t(`documentPage.command.form.fine`)" path="fine">
+    <div v-if="item.fine_type === 2" class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
+      <n-form-item
+        :show-feedback="false"
+        :label="$t(`documentPage.command.form.fine`)"
+        path="fine"
+        :validation-status="status(item.fine)"
+      >
         <n-input class="w-full" type="text" v-model:value="item.fine" />
       </n-form-item>
     </div>

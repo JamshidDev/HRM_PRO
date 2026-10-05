@@ -7,8 +7,12 @@
     Signature20Regular,
     CheckmarkCircle20Filled,
     DismissCircle20Filled,
-    Eye20Regular
+    Eye20Regular,
+    Attach20Regular,
+    People20Regular
   } from '@vicons/fluent'
+  import { useMediaQuery } from '@vueuse/core'
+  import { useAppBreakpoints } from '@/composables/useBreakpoint.js'
   import { UIUser, UILottieReader, UISegmentTabs } from '@/components/index.js'
   import CommandDataTab from '@/pages/docFlow/document/command/CommandDataTab.vue'
   import AttachmentPreview from './ui/AttachmentPreview.vue'
@@ -55,6 +59,23 @@
   const notify = useNotify()
 
   const confirmSignatureVisible = ref(false)
+
+  // Yon panellar: o'ng (kelishuvchilar) `lg` dan, chap (biriktirilgan hujjatlar) 1200px dan
+  // joyida turadi. Undan tor ekranda markaz siqilmasin — panel header tugmasi orqali
+  // yon drawer'da ochiladi (aks holda mobil'da ularga umuman kirib bo'lmasdi).
+  const { isDesktop: showRightInline } = useAppBreakpoints()
+  // 1200px — chap panel joyida turadigan va header tugmalari matnli bo'ladigan chegara.
+  const isWide = useMediaQuery('(min-width: 1200px)')
+  const showLeftInline = isWide
+  const leftPanelVisible = ref(false)
+  const rightPanelVisible = ref(false)
+  watch(showLeftInline, (v) => v && (leftPanelVisible.value = false))
+  watch(showRightInline, (v) => v && (rightPanelVisible.value = false))
+  // Faylni ko'rish uchun tanlanganda drawer yopiladi — preview uning ostida qolmasin.
+  watch(
+    () => store.previewFile,
+    (v) => v && (leftPanelVisible.value = false)
+  )
   const signatureInfoVisible = ref(false)
   const resendActionsVisible = ref(false)
 
@@ -205,6 +226,8 @@
     store.model = model
     store._resetForm()
     resendActionsVisible.value = false
+    leftPanelVisible.value = false
+    rightPanelVisible.value = false
     activeTab.value = 'document'
 
     store.visible = true
@@ -358,10 +381,12 @@
         <div
           class="w-full h-screen overflow-hidden flex flex-col relative gap-3 pb-3 bg-gradient-to-b from-surface-ground to-surface-section"
         >
+          <!-- Mobil'da tablar ikkinchi qatorga tushadi; `md` dan header markazida turadi.
+               Tugma matnlari 1200px dan ko'rinadi, undan torda faqat ikonka. -->
           <div
-            class="relative w-full h-[60px] shrink-0 border-b border-surface-line flex items-center justify-between px-4 bg-surface-section"
+            class="relative w-full shrink-0 border-b border-surface-line flex flex-wrap md:flex-nowrap items-center justify-between gap-y-2 px-3 py-2.5 md:px-4 md:py-0 md:h-[60px] bg-surface-section"
           >
-            <div class="flex items-center gap-x-3">
+            <div class="flex items-center gap-x-3 min-w-0">
               <n-button
                 @click="onClose()"
                 quaternary
@@ -375,12 +400,12 @@
                   </n-icon>
                 </template>
               </n-button>
-              <div v-if="store.loading" class="hidden md:flex flex-col gap-1.5">
+              <div v-if="store.loading" class="hidden min-[1200px]:flex flex-col gap-1.5">
                 <n-skeleton width="220px" height="16px" :sharp="false" class="rounded-md" />
                 <n-skeleton width="80px" height="11px" :sharp="false" class="rounded-md" />
               </div>
-              <div v-else class="hidden md:inline-block">
-                <div class="text-sm font-semibold text-textColor1 leading-tight">
+              <div v-else class="hidden min-[1200px]:block min-w-0">
+                <div class="text-sm font-semibold text-textColor1 leading-tight truncate max-w-[280px]">
                   {{ store.document?.document?.file_name }}
                 </div>
                 <div class="text-xs text-gray-400 tabular-nums">
@@ -389,22 +414,25 @@
                 </div>
               </div>
             </div>
-            <div class="absolute left-1/2 -translate-x-1/2">
-              <UISegmentTabs
-                v-if="isCommand && !store.loading"
-                v-model="activeTab"
-                :tabs="tabs"
-                variant="surface"
-              />
+            <div
+              v-if="isCommand && !store.loading"
+              class="order-last w-full flex justify-center md:order-none md:w-auto md:absolute md:left-1/2 md:-translate-x-1/2"
+            >
+              <UISegmentTabs v-model="activeTab" :tabs="tabs" variant="surface" />
             </div>
-            <div v-if="store.loading" class="flex gap-3">
+            <div v-if="store.loading" class="hidden md:flex gap-3">
               <n-skeleton width="110px" height="34px" :sharp="false" class="rounded-md" />
               <n-skeleton width="110px" height="34px" :sharp="false" class="rounded-md" />
               <n-skeleton width="110px" height="34px" :sharp="false" class="rounded-md" />
             </div>
-            <div v-else class="flex gap-3">
-              <n-button v-if="store.permissions.canEdit && showEditButton" @click="onEdit" tertiary>
-                {{ $t('content.edit') }}
+            <div v-else class="flex items-center gap-2 md:gap-3">
+              <n-button
+                v-if="store.permissions.canEdit && showEditButton"
+                @click="onEdit"
+                tertiary
+                :title="$t('content.edit')"
+              >
+                <template v-if="isWide">{{ $t('content.edit') }}</template>
                 <template #icon>
                   <n-icon size="16">
                     <EditRefreshIcon />
@@ -418,12 +446,15 @@
                 :href="store.pdfUrl"
                 download
                 type="error"
+                :title="$t('documentPage.signature.downloadPdf')"
               >
                 <div class="flex items-center gap-2">
                   <n-icon size="16">
                     <PdfFileIcon />
                   </n-icon>
-                  <span>{{ $t('documentPage.signature.downloadPdf') }}</span>
+                  <span v-if="isWide">
+                    {{ $t('documentPage.signature.downloadPdf') }}
+                  </span>
                 </div>
               </n-button>
               <n-button
@@ -433,20 +464,46 @@
                 :href="store?.docxUrl"
                 download
                 type="info"
+                :title="$t('documentPage.signature.downloadWord')"
               >
                 <div class="flex items-center gap-2">
                   <n-icon size="16">
                     <WordFileIcon />
                   </n-icon>
-                  <span>{{ $t('documentPage.signature.downloadWord') }}</span>
+                  <span v-if="isWide">
+                    {{ $t('documentPage.signature.downloadWord') }}
+                  </span>
                 </div>
+              </n-button>
+              <n-button
+                v-if="!showLeftInline"
+                secondary
+                :title="$t('documentPage.signature.attachedDocuments')"
+                @click="leftPanelVisible = true"
+              >
+                <template #icon>
+                  <n-icon size="18"><Attach20Regular /></n-icon>
+                </template>
+              </n-button>
+              <n-button
+                v-if="!showRightInline"
+                secondary
+                :title="$t('documentPage.signature.approval.title')"
+                @click="rightPanelVisible = true"
+              >
+                <template #icon>
+                  <n-icon size="18"><People20Regular /></n-icon>
+                </template>
               </n-button>
             </div>
           </div>
 
           <DrawerSkeleton v-if="store.loading" class="px-3" />
-          <div v-else class="w-full flex-1 min-h-0 flex gap-3 px-3">
-            <div class="hidden md:flex flex-col w-[300px] h-full gap-3 relative">
+          <div v-else class="w-full flex-1 min-h-0 flex gap-3 px-2 md:px-3">
+            <div
+              v-if="showLeftInline"
+              class="flex flex-col w-[280px] xl:w-[300px] shrink-0 h-full gap-3 relative"
+            >
               <div class="w-full flex-1 min-h-0">
                 <LeftContent />
               </div>
@@ -480,7 +537,7 @@
                     />
                   <div
                     v-if="showConfirmButtons"
-                    class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex items-center justify-between gap-4 mb-3"
+                    class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 mb-3"
                   >
                     <div class="min-w-0">
                       <div class="font-semibold text-textColor1 truncate">
@@ -522,7 +579,7 @@
 
                   <div
                     v-else-if="isSigned && showSignature"
-                    class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex items-center justify-between gap-4 mb-3"
+                    class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 mb-3"
                   >
                     <div class="min-w-0">
                       <div class="font-semibold text-textColor1 truncate">
@@ -557,7 +614,7 @@
 
                   <div
                     v-else-if="isRejected && showSignature"
-                    class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex items-center justify-between gap-4 mb-3"
+                    class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 mb-3"
                   >
                     <div class="min-w-0">
                       <div class="font-semibold text-textColor1 truncate">
@@ -689,13 +746,13 @@
                       :class="signState === 'sign' ? 'border-fig-blue-100' : signStateMeta.border"
                     >
                       <!-- Imzolash navbati: chapda izoh, o'ngda amallar — holat kartochkasi bilan bir uslubda -->
-                      <div v-if="signState === 'sign'" class="flex items-center gap-3 pl-1">
+                      <div v-if="signState === 'sign'" class="flex items-center gap-3 sm:pl-1">
                         <div
                           class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-fig-chip-brand text-fig-chip-brand-text"
                         >
                           <n-icon size="18"><Signature20Regular /></n-icon>
                         </div>
-                        <div class="min-w-0 leading-tight mr-2">
+                        <div class="hidden sm:block min-w-0 leading-tight mr-2">
                           <div class="text-[13px] font-semibold text-textColor0 whitespace-nowrap">
                             {{ $t('documentPage.signature.approval.yourTurn') }}
                           </div>
@@ -720,7 +777,7 @@
                           <n-button
                             type="primary"
                             round
-                            class="px-9! font-semibold"
+                            class="px-5! sm:px-9! font-semibold"
                             :loading="signatureStore.loading"
                             @click="onSaveSignature"
                           >
@@ -759,12 +816,36 @@
               </Transition>
             </div>
 
-            <div class="hidden md:flex flex-col w-[360px] h-full relative">
+            <div
+              v-if="showRightInline"
+              class="flex flex-col w-[320px] xl:w-[360px] shrink-0 h-full relative"
+            >
               <ConfirmationList />
             </div>
           </div>
         </div>
       </n-drawer-content>
+    </n-drawer>
+    <!-- Tor ekranda yon panellar shu drawer'larda ochiladi -->
+    <n-drawer
+      v-if="!showLeftInline"
+      v-model:show="leftPanelVisible"
+      placement="left"
+      width="min(320px, 88vw)"
+    >
+      <div class="h-full flex flex-col p-2 bg-surface-ground">
+        <LeftContent />
+      </div>
+    </n-drawer>
+    <n-drawer
+      v-if="!showRightInline"
+      v-model:show="rightPanelVisible"
+      placement="right"
+      width="min(380px, 92vw)"
+    >
+      <div class="h-full flex flex-col p-2 bg-surface-ground">
+        <ConfirmationList />
+      </div>
     </n-drawer>
     <ConformAndRejectModal />
     <DocumentFileModal />

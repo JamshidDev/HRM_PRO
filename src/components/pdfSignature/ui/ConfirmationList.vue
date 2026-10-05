@@ -98,7 +98,7 @@
         />
 
         <div v-else class="slide-pane">
-          <n-tabs v-model:value="activeTab" type="segment" size="small" animated class="mb-3">
+          <UITabs v-model:value="activeTab" type="segment" size="small" animated class="mb-3">
             <n-tab name="signers">
               <div class="flex items-center gap-1.5">
                 <n-icon size="16"><People20Regular /></n-icon>
@@ -111,7 +111,7 @@
                 {{ $t('documentPage.signature.approval.history') }}
               </div>
             </n-tab>
-          </n-tabs>
+          </UITabs>
 
           <div v-if="activeTab === 'signers'">
             <SignerCard

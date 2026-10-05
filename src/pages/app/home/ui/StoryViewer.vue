@@ -420,7 +420,7 @@
     justify-content: center;
     border-radius: 9999px;
     background: #fff;
-    color: #101828;
+    color: #0f172a;
     cursor: pointer;
     transition: opacity 0.2s ease;
   }

@@ -7,7 +7,7 @@
 </script>
 
 <template>
-  <n-tabs
+  <UITabs
     animated
     v-model:value="store.activeTab"
     class="hidden-tab-header1 flex-1 overflow-auto"
@@ -27,7 +27,7 @@
         </template>
       </n-tab-pane>
     </template>
-  </n-tabs>
+  </UITabs>
 </template>
 
 <style scoped></style>

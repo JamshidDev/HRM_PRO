@@ -2,8 +2,8 @@
   /**
    * Figma v3 dashboard KPI kartasi (node 2959:58231).
    *
-   * Tuzilishi: tint chip + 20px ikonka, 20px qiymat, o'ng yuqorida 64px xira
-   * suv belgisi va pastda 12px radiusli `bg-secondary` blokda uch qator —
+   * Tuzilishi: tint chip + 20px ikonka, 20px qiymat va pastda 12px radiusli
+   * `bg-secondary` blokda uch qator —
    * ikkita "nom — qiymat" va eng pastda "o'tgan yilga" trendi.
    *
    * Karta konfiguratsiyasi `pages/hrm/dashboard/kpi.js` da yasaladi: bu yerda
@@ -14,10 +14,6 @@
   import ChipHierarchy from '@/assets/icons/hrmDashboard/chip-hierarchy.svg'
   import ChipAgreement from '@/assets/icons/hrmDashboard/chip-agreement.svg'
   import ChipMedicalFile from '@/assets/icons/hrmDashboard/head-medical-file.svg'
-  import MarkUsers from '@/assets/icons/hrmDashboard/wm-users.svg'
-  import MarkUserAlt from '@/assets/icons/hrmDashboard/wm-user-alt.svg'
-  import MarkHierarchy from '@/assets/icons/hrmDashboard/wm-hierarchy.svg'
-  import MarkAgreement from '@/assets/icons/hrmDashboard/wm-agreement.svg'
   import FigTrend from './FigTrend.vue'
 
   const props = defineProps({
@@ -36,20 +32,20 @@
     mock: Boolean
   })
 
-  // Maketdagi kartalar: chip foni, 20px ikonka va 64px suv belgisi.
+  // Maketdagi kartalar: chip foni va 20px ikonka.
   const VARIANTS = {
-    users: { tint: 'bg-fig-blue-100', icon: ChipUsers, mark: MarkUsers },
-    pension: { tint: 'bg-fig-amber-100', icon: ChipUserAlt, mark: MarkUserAlt },
-    positions: { tint: 'bg-fig-indigo-100', icon: ChipHierarchy, mark: MarkHierarchy },
-    fxsh: { tint: 'bg-fig-indigo-100', icon: ChipAgreement, mark: MarkAgreement },
+    users: { tint: 'bg-fig-blue-100', icon: ChipUsers },
+    pension: { tint: 'bg-fig-amber-100', icon: ChipUserAlt },
+    positions: { tint: 'bg-fig-indigo-100', icon: ChipHierarchy },
+    fxsh: { tint: 'bg-fig-indigo-100', icon: ChipAgreement },
     // Kadrlar harakati bobi
-    timeToFill: { tint: 'bg-fig-blue-100', icon: ChipHierarchy, mark: MarkHierarchy },
-    tenure: { tint: 'bg-fig-amber-100', icon: ChipUserAlt, mark: MarkUserAlt },
+    timeToFill: { tint: 'bg-fig-blue-100', icon: ChipHierarchy },
+    tenure: { tint: 'bg-fig-amber-100', icon: ChipUserAlt },
     // Davomat bobi
-    atWork: { tint: 'bg-fig-blue-100', icon: ChipUsers, mark: MarkUsers },
-    vacation: { tint: 'bg-fig-amber-100', icon: ChipUserAlt, mark: MarkUserAlt },
-    chronicLate: { tint: 'bg-fig-red-100', icon: ChipMedicalFile, mark: null },
-    sickLeave: { tint: 'bg-fig-red-100', icon: ChipMedicalFile, mark: null }
+    atWork: { tint: 'bg-fig-blue-100', icon: ChipUsers },
+    vacation: { tint: 'bg-fig-amber-100', icon: ChipUserAlt },
+    chronicLate: { tint: 'bg-fig-red-100', icon: ChipMedicalFile },
+    sickLeave: { tint: 'bg-fig-red-100', icon: ChipMedicalFile }
   }
 
   const variant = computed(() => VARIANTS[props.variant] || VARIANTS.users)
@@ -75,17 +71,8 @@
        zahoti `store.isMock(...)` `false` qaytaradi va qatlam o'zi yo'qoladi. -->
   <div class="fig-soon" :class="mock && 'fig-soon--on'">
     <div
-      class="fig-soon__card relative flex flex-col gap-2 overflow-hidden rounded-2xl border border-fig-blue-300 bg-fig-block px-1 pt-1.5 pb-1"
+      class="fig-soon__card relative flex flex-col gap-2 overflow-hidden rounded-2xl bg-fig-block shadow-card px-1 pt-1.5 pb-1"
     >
-      <!-- o'ng yuqoridagi xira suv belgisi: 64px ramka, ikonka o'z o'lchamida markazda -->
-      <span
-        v-if="variant.mark"
-        aria-hidden="true"
-        class="pointer-events-none absolute top-3 right-3 flex h-16 w-16 items-center justify-center select-none"
-      >
-        <component :is="variant.mark" />
-      </span>
-
       <div class="relative flex items-center gap-1 px-2">
         <span class="shrink-0 rounded-lg p-1" :class="variant.tint">
           <span class="flex h-5 w-5 items-center justify-center">

@@ -3,6 +3,34 @@ import i18n from '@/i18n/index.js'
 import { useComponentStore } from '@/store/modules/index.js'
 
 const { t } = i18n.global
+
+/**
+ * `tree` dan faqat `matches` daraxtidagi id'larga ega tugunlar va ularning
+ * ota-zanjirini qoldiradi. To'liq daraxtda topilmagan natija bo'lsa (masalan,
+ * keshdan keyin qo'shilgan) — backend javobining o'zi qaytariladi.
+ */
+const pickWithAncestors = (tree, matches) => {
+  const ids = new Set()
+  const collect = (nodes) => {
+    for (const n of nodes || []) {
+      ids.add(n.id)
+      collect(n.children)
+    }
+  }
+  collect(matches)
+
+  let found = 0
+  const prune = (nodes) =>
+    (nodes || []).reduce((acc, n) => {
+      const children = prune(n.children)
+      if (ids.has(n.id)) found++
+      if (ids.has(n.id) || children.length) acc.push({ ...n, children })
+      return acc
+    }, [])
+
+  const result = prune(tree)
+  return found === ids.size ? result : matches
+}
 export const useReport2Store = defineStore('report2Store', {
   state: () => ({
     list: [],
@@ -76,6 +104,9 @@ export const useReport2Store = defineStore('report2Store', {
       cache: [],
       loading: false,
       list: [],
+      // Qidiruvsiz to'liq daraxt — qidiruv natijasiga ota-tashkilotlarni qo'shish uchun.
+      full: null,
+      seq: 0,
       params: {
         search: null
       }
@@ -125,20 +156,31 @@ export const useReport2Store = defineStore('report2Store', {
         console.log(res.data)
       })
     },
-    _fetchStructure(callback) {
-      const params = {
-        ...this.structure.params
-      }
+    // Backend qidiruvda faqat mos kelgan tashkilotlarni qaytaradi — ota-tashkilotlari
+    // kelmaydi. Shu sababli qidiruvsiz to'liq daraxtni (`full`) saqlab, natijani shu
+    // daraxtdan qirqib olamiz: mos kelganlar ota-zanjiri bilan ko'rinadi.
+    async _fetchStructure(callback) {
+      const seq = ++this.structure.seq
+      const search = this.structure.params.search?.trim() || null
       this.structure.loading = true
-      $ApiService.reportService
-        ._structure({ params })
-        .then((res) => {
-          this.structure.list = res.data.data
-          callback?.(res.data.data)
-        })
-        .finally(() => {
-          this.structure.loading = false
-        })
+      try {
+        // Qidiruvsiz so'rovda har safar yangilanadi — P/F raqamlari eskirib qolmasin.
+        if (!search || !this.structure.full) {
+          const res = await $ApiService.reportService._structure({ params: { search: null } })
+          this.structure.full = res.data.data
+        }
+        let list = this.structure.full
+        if (search) {
+          const res = await $ApiService.reportService._structure({ params: { search } })
+          list = pickWithAncestors(this.structure.full, res.data.data)
+        }
+        // Tez yozilganda eski javob yangisining ustiga yozilmasin.
+        if (seq !== this.structure.seq) return
+        this.structure.list = list
+        callback?.(list)
+      } finally {
+        if (seq === this.structure.seq) this.structure.loading = false
+      }
     },
     _getOptimization() {
       this.optimizationLoading = true

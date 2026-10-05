@@ -73,6 +73,7 @@
   }
 
   const formRef = ref(null)
+  const rootRef = ref(null)
   const confirmationList = ref([])
   const financeList = ref([])
 
@@ -116,7 +117,7 @@
             h(
               'div',
               { class: 'text-xs font-medium text-gray-500 leading-[1.2]' },
-              `${option.last_name}.${option.last_name[0]}.${option.middle_name[0]}`
+              `${option.last_name}.${option.last_name?.[0] ?? ''}.${option.middle_name?.[0] ?? ''}`
             ),
             h('div', { class: 'text-xs text-primary leading-[1.2]' }, option.position)
           ])
@@ -158,6 +159,19 @@
     ]
   }
 
+  // Tanlangan qiymat variantlar ro'yxatida bo'lmasa (masalan, tasdiqlangan hujjatdagi
+  // kelishuvchi endi ro'yxatda yo'q) naive-ui faqat `id` li option beradi — ism
+  // `form_state` dan tiklangan `sortableConfirmations` dan olinadi.
+  const optionFullName = (option) => {
+    if (option?.last_name) {
+      return [option.last_name, option.first_name, option.middle_name].filter(Boolean).join(' ')
+    }
+    const id = option?.id ?? option?.value
+    const saved = store.sortableConfirmations.find((v) => v.id === id)?.data
+    if (saved) return [saved.lastName, saved.firstName, saved.middleName].filter(Boolean).join(' ')
+    return option?.label ?? String(id ?? '')
+  }
+
   const renderValue = ({ option }) => {
     return [
       h(
@@ -165,7 +179,7 @@
         {
           class: 'flex gap-2 my-1 items-center'
         },
-        `${option?.last_name} ${option?.first_name} ${option?.middle_name}`
+        optionFullName(option)
       )
     ]
   }
@@ -202,8 +216,23 @@
     store.form_32.command_additional = []
   }
 
+  // Saqlash o'tmasa — birinchi qizil (bo'sh/xato) maydonga olib boradi.
+  const scrollToFirstError = async () => {
+    await nextTick()
+    const el = rootRef.value?.querySelector('.n-form-item-blank--error')
+    if (!el) return
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    el.querySelector('input, textarea')?.focus({ preventScroll: true })
+  }
+
+  const submit = async () => {
+    const res = await validateAll()
+    if (!res.isValid) scrollToFirstError()
+    return res
+  }
+
   // Forma + turga xos blok validatsiyasi; natija — backendga yuboriladigan data.
-  const submit = () =>
+  const validateAll = () =>
     new Promise((resolve) => {
       formRef.value?.validate(async (error) => {
         validationComponent()
@@ -649,7 +678,7 @@
 </script>
 
 <template>
-  <div class="command-form-body" :class="{ 'is-readonly': readonly }">
+  <div ref="rootRef" class="command-form-body @container" :class="{ 'is-readonly': readonly }">
     <n-form
       ref="formRef"
       :model="store.payload"
@@ -667,7 +696,7 @@
         <div
           class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
         >
-          <div class="col-span-12 md:col-span-6 lg:col-span-2">
+          <div class="col-span-6 @4xl:col-span-2">
             <n-form-item
               :label="$t(`documentPage.command.form.command_number`)"
               path="command_number"
@@ -675,7 +704,7 @@
               <n-input class="w-full" type="text" v-model:value="store.payload.command_number" />
             </n-form-item>
           </div>
-          <div class="col-span-12 md:col-span-6 lg:col-span-2">
+          <div class="col-span-6 @4xl:col-span-2">
             <n-form-item :label="$t(`documentPage.command.form.command_date`)" path="command_date">
               <n-date-picker
                 class="w-full"
@@ -685,7 +714,7 @@
               />
             </n-form-item>
           </div>
-          <div class="col-span-12 lg:col-span-8">
+          <div class="col-span-12 @4xl:col-span-8">
             <n-form-item :label="$t(`documentPage.command.form.type`)" path="command_type">
               <n-select
                 v-model:value="store.payload.command_type"
@@ -713,7 +742,7 @@
           class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
           :class="{ 'mt-6': !isEdit }"
         >
-          <div class="col-span-12 md:col-span-6 flex">
+          <div class="col-span-12 @xl:col-span-6 flex">
             <n-form-item
               class="w-full"
               :label="$t(`documentPage.form.organization`)"
@@ -733,7 +762,7 @@
               />
             </n-form-item>
           </div>
-          <div class="col-span-12 md:col-span-6 flex" v-if="isCancelCommand">
+          <div class="col-span-12 @xl:col-span-6 flex" v-if="isCancelCommand">
             <n-form-item
               class="w-full"
               :label="$t(`commandPage.form_75.cancel_command_id`)"
@@ -755,7 +784,7 @@
               />
             </n-form-item>
           </div>
-          <div class="col-span-12 md:col-span-6 flex" v-else>
+          <div class="col-span-12 @xl:col-span-6 flex" v-else>
             <template v-if="store.isSingleSelect">
               <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker">
                 <SuperSelect
@@ -900,7 +929,7 @@
         <div
           class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
         >
-          <div class="col-span-6">
+          <div class="col-span-12 @lg:col-span-6">
             <n-form-item :label="$t(`documentPage.command.form.director_id`)" path="director_id">
               <n-select
                 value-field="id"
@@ -914,7 +943,7 @@
               />
             </n-form-item>
           </div>
-          <div class="col-span-6">
+          <div class="col-span-12 @lg:col-span-6">
             <n-form-item :label="$t(`documentPage.command.form.finance_id`)">
               <n-select
                 :disabled="!store.payload.director_id"
@@ -947,7 +976,7 @@
             </n-form-item>
           </div>
           <template v-if="store.sortableConfirmations?.length">
-            <div class="col-span-12 pb-2 px-2 flex justify-between">
+            <div class="col-span-12 pb-2 px-2 flex flex-wrap justify-between gap-x-4 gap-y-1">
               <span class="text-secondary">{{
                 $t('documentPage.command.form.viewDescription')
               }}</span>
@@ -971,13 +1000,13 @@
                   <div class="handle">
                     <n-icon
                       size="24"
-                      class="text-secondary cursor-move scale-100 hover:scale-[1.2] mx-2"
+                      class="text-secondary cursor-move scale-100 hover:scale-[1.2] mx-1 @lg:mx-2"
                     >
                       <Drag24Filled />
                     </n-icon>
                   </div>
 
-                  <div class="w-[calc(100%-60px)] select-none flex">
+                  <div class="flex-1 min-w-0 select-none flex">
                     <UIUser class="!w-full" :data="item.data" :hide-tooltip="true" :short="false" />
                   </div>
                   <template v-if="store.oneByOne">

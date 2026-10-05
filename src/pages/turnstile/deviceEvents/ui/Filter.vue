@@ -117,7 +117,7 @@
     </template>
     <template #filterSearch>
       <div class="tab-wrapper ml-2">
-        <n-tabs
+        <UITabs
           class="tab-switcher"
           :value="eventStore.activeTab"
           @update:value="eventStore._changeView"
@@ -126,7 +126,7 @@
         >
           <n-tab-pane :name="eventStore.tabs[0]" :tab="$t('hcEvent.oldView')" />
           <n-tab-pane :name="eventStore.tabs[1]" :tab="$t('deviceEvent.tab')" />
-        </n-tabs>
+        </UITabs>
       </div>
     </template>
   </UIPageFilter>
@@ -147,21 +147,7 @@
     height: 100%;
   }
 
-  .tab-switcher :deep(.n-tabs-pane-wrapper) {
-    display: none;
-  }
 
-  .tab-switcher :deep(.n-tabs-nav) {
-    height: 100%;
-  }
 
-  .tab-switcher :deep(.n-tabs-rail) {
-    height: 100%;
-  }
 
-  .tab-switcher :deep(.n-tabs-tab) {
-    height: 28px;
-    padding: 0 10px;
-    line-height: 28px;
-  }
 </style>

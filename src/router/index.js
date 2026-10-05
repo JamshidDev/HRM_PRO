@@ -266,9 +266,12 @@ router.beforeEach(async (to, from, next) => {
 // qolmaydi → lazy route yuklanmaydi va navigatsiya jim to'xtaydi. Bunday holatda
 // kerakli sahifaga to'liq reload qilamiz — yangi index.html yangi chunk'larni oladi.
 // Cheksiz reload'dan saqlanish uchun bir xil manzilga faqat bir marta urinamiz.
+// ⚠️ Sahifada CSS (scoped style) bo'lsa Vite avval CSS'ni preload qiladi va eski
+// CSS topilmasa JS xatosi emas, "Unable to preload CSS for ..." tashlaydi — shuning
+// uchun u ham chunk xatosi hisoblanadi.
 const CHUNK_RELOAD_KEY = 'chunk-reload-target'
 const isChunkLoadError = (error) =>
-  /Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module/i.test(
+  /Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module|Unable to preload CSS/i.test(
     error?.message ?? ''
   )
 

@@ -2857,6 +2857,10 @@
     }
   },
   "applicationPage": {
+    "draft": "Qoralama",
+    "draftSignTitle": "Ariza qoralama holatida",
+    "draftSignBody": "Imzolaganingizdan keyin ariza HR ga yuboriladi.",
+    "approved": "Tasdiqlangan",
     "name": "Arizalar",
     "addApp": "Ariza yuborish",
     "createWorkerApplication": "Ariza yaratish",
@@ -3694,11 +3698,17 @@
       "allTypes": "Barcha shakllar",
       "search": "Korxona yoki izoh bo'yicha qidirish",
       "total": "Jami",
+      "tabPulls": "Tortishlar",
+      "tabDownloads": "ZIP yuklab olishlar",
+      "filesCount": "{n} ta fayl",
       "columns": {
         "date": "Sana",
         "organization": "Korxona",
         "form": "Shakl",
         "period": "Davr",
+        "range": "Davr (oraliq)",
+        "user": "Foydalanuvchi",
+        "files": "Fayllar",
         "source": "Manba",
         "status": "Holat",
         "changes": "O'zgarish",
@@ -3748,7 +3758,18 @@
     "cancelConfirmQuestion": "Tasdiqni bekor qilasizmi? Qayta yuklash imkoni ochiladi.",
     "cancelConfirm": "Tasdiqni bekor qilish",
     "bulkSelected": "{n} ta korxona tanlandi",
-    "bulkSkipped": "{n} ta korxona o'tkazib yuborildi (xato yoki ma'lumot yo'q)"
+    "bulkSkipped": "{n} ta korxona o'tkazib yuborildi (xato yoki ma'lumot yo'q)",
+    "openAll": "Hammasini ochish",
+    "closeAll": "Hammasini yopish",
+    "zip": {
+      "button": "ZIP yuklab olish",
+      "title": "Hisobotlarni ZIP qilib yuklab olish",
+      "hint": "«{org}» korxonasining tanlangan oy oralig'idagi 4 turdagi hisobotlari bitta ZIP faylga yuklanadi.",
+      "from": "Boshlang'ich oy",
+      "to": "Oxirgi oy",
+      "invalid": "Oy oralig'i noto'g'ri (boshlang'ich oy oxirgisidan katta bo'lmasin).",
+      "download": "Yuklab olish"
+    }
   },
   "instructionPage": {
     "name": "Instruksiya",
@@ -6007,5 +6028,72 @@
       "noDoc": "Hujjat keltirilmagan",
       "stillOpen": "Varaqa hali ochiq"
     }
+  },
+  "paymentAnalysis": {
+    "name": "Asossiz to'lovlarni aniqlash",
+    "title": "To'lov turlari bo'yicha asossiz to'lovlarni aniqlash",
+    "tabs": {
+      "analysis": "To'lov tahlili",
+      "whitelist": "Imtiyozli xodimlar"
+    },
+    "filter": {
+      "payingCode": "To'lov kodi",
+      "onlyFlagged": "Faqat asossizlar"
+    },
+    "buttons": {
+      "blanka": "Blanka yuklash",
+      "whitelist": "Imtiyozli ro'yxatni yuklash",
+      "analyze": "Qayta tahlil",
+      "export": "Excelga yuklash",
+      "addRow": "Xodim qo'shish",
+      "whitelistList": "Imtiyozli xodimlar ro'yxati",
+      "addWhitelist": "Xodim qo'shish"
+    },
+    "table": {
+      "rowNo": "№",
+      "fio": "F.I.SH.",
+      "organization": "Korxona",
+      "position": "Lavozim",
+      "pinfl": "PINFL",
+      "payingCode": "To'lov kodi",
+      "summa": "Summa",
+      "reason": "Aniqlangan sabab",
+      "verdict": "Natija"
+    },
+    "verdict": {
+      "valid": "Asosli",
+      "invalid": "Asossiz",
+      "review": "Qo'shimcha tekshiruv"
+    },
+    "blanka": {
+      "title": "НН to'lov blankasi yuklash"
+    },
+    "whitelist": {
+      "title": "Tasdiqlangan xodimlar ro'yxatini yuklash"
+    },
+    "addRow": {
+      "title": "Xodim qo'shish",
+      "worker": "Xodim",
+      "payingCode": "To'lov kodi",
+      "summa": "Summa"
+    },
+    "toast": {
+      "uploaded": "Blanka yuklandi va tahlil qilindi",
+      "whitelistUploaded": "Whitelist yuklandi",
+      "analyzed": "Tahlil qayta bajarildi",
+      "requiredOrganization": "Korxonani tanlang",
+      "requiredPayingCode": "To'lov kodini tanlang",
+      "requiredWorker": "Xodimni tanlang",
+      "requiredFilters": "Korxona va davrni tanlang",
+      "added": "Xodim qo'shildi va tahlil qilindi",
+      "deleted": "Xodim o'chirildi"
+    },
+    "whitelistList": {
+      "title": "Imtiyozli xodimlar ro’yxati"
+    },
+    "whitelistAdd": {
+      "title": "Imtiyozli xodim qo'shish"
+    },
+    "confirmDelete": "O'chirilsinmi?"
   }
 }

@@ -404,7 +404,7 @@
 .polygon-card__title {
   font-weight: 600;
   font-size: 13px;
-  color: #374151;
+  color: #475569;
   line-height: 1.2;
 }
 

@@ -53,7 +53,7 @@
     :rules="validationRules.form_56"
     class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
   >
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_56.work_date`)" path="work_date">
         <n-date-picker
           class="w-full"
@@ -63,7 +63,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_56.start_time`)" path="start_time">
         <n-time-picker
           format="HH:mm"
@@ -73,7 +73,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_56.end_time`)" path="end_time">
         <n-time-picker
           format="HH:mm"
@@ -83,17 +83,17 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_56.duration`)" path="duration">
         <n-input class="w-full" :disabled="true" v-model:value="store.form_56.duration" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6">
+    <div class="col-span-12 @xl:col-span-6">
       <n-form-item :label="$t(`commandPage.form_56.reason`)" path="reason">
         <n-input class="w-full" type="text" v-model:value="store.form_56.reason" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6">
+    <div class="col-span-12 @xl:col-span-6">
       <n-form-item :label="$t(`commandPage.form_56.responsible`)" path="responsible">
         <n-input class="w-full" type="text" v-model:value="store.form_56.responsible" />
       </n-form-item>

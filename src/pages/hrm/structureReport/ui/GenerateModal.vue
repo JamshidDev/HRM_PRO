@@ -362,17 +362,17 @@
             :placeholder="$t('content.choose')"
             @update:value="onSelectOrg"
           />
-          <n-tabs v-model:value="reportInnerTab" type="segment" size="small">
+          <UITabs v-model:value="reportInnerTab" type="segment" size="small">
             <n-tab name="jadval">{{ $t('structureReport.tableTab') }}</n-tab>
             <n-tab name="xodimlar">
               <span class="inline-flex items-center gap-1.5">
                 {{ $t('structureReport.workersTab') }}
-                <span v-if="totalContracts > 0" class="text-[11px] font-medium bg-primary text-white rounded-full min-w-[18px] h-[18px] inline-flex items-center justify-center px-1">
+                <span v-if="totalContracts > 0" class="text-[11px] font-medium [background:color-mix(in_srgb,currentColor_16%,transparent)] rounded-full min-w-[18px] h-[18px] inline-flex items-center justify-center px-1">
                   {{ totalContracts }}
                 </span>
               </span>
             </n-tab>
-          </n-tabs>
+          </UITabs>
         </div>
 
         <ReportTable

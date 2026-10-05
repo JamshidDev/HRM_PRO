@@ -77,7 +77,7 @@ export const signerTone = (statusId) => {
         icon: Checkmark16Filled,
         node: TIMELINE_NODE,
         line: TIMELINE_LINE,
-        card: 'border-surface-line'
+        card: 'border-surface-line/70'
       }
     case STATUS.rejected:
       return {
@@ -91,14 +91,14 @@ export const signerTone = (statusId) => {
         icon: Eye16Regular,
         node: TIMELINE_NODE,
         line: TIMELINE_LINE,
-        card: 'border-surface-line'
+        card: 'border-surface-line/70'
       }
     default:
       return {
         icon: Clock16Regular,
         node: TIMELINE_NODE,
         line: TIMELINE_LINE,
-        card: 'border-surface-line'
+        card: 'border-surface-line/70'
       }
   }
 }

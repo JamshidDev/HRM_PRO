@@ -104,7 +104,7 @@
       </n-form-item>
     </div>
     <div class="col-span-12">
-      <n-tabs v-model:value="store.employmentSelectedType" type="segment" animated>
+      <UITabs v-model:value="store.employmentSelectedType" type="segment" animated>
         <n-tab-pane :name="1" :tab="$t('applicationPage.form.temporarily_option')">
           <n-form-item :label="$t(`applicationPage.form.temporarily_absent`)" path="temporarily_absent">
             <n-select
@@ -128,7 +128,7 @@
             />
           </n-form-item>
         </n-tab-pane>
-      </n-tabs>
+      </UITabs>
     </div>
   </div>
 </template>

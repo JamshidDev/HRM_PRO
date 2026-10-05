@@ -182,8 +182,10 @@
         />
 
         <div ref="scrollContainer" class="w-full h-full overflow-y-auto px-1" @scroll="onScrollEv">
-          <template v-for="item in store.userUnreadNotifications" :key="item.id">
+          <TransitionGroup name="notif-drop" tag="div">
             <div
+              v-for="item in store.userUnreadNotifications"
+              :key="item.id"
               :data-notification-id="item.id"
               :data-is-read="item.read_at ? 1 : 0"
               class="px-2 my-1 border border-surface-line rounded-xl pt-2 transition-all duration-300 hover:bg-info/10"
@@ -227,7 +229,7 @@
 
               <div class="flex justify-between items-center mt-1 pb-1"></div>
             </div>
-          </template>
+          </TransitionGroup>
         </div>
       </n-spin>
       <!--          @click="goViewAll"-->
@@ -300,5 +302,35 @@
 <style scoped>
   .transition-all {
     transition: all 0.3s ease;
+  }
+
+  /* Yangi bildirishnoma panelga «tushadi» — tepadan sakrab (spring) kiradi. */
+  .notif-drop-enter-active {
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .notif-drop-enter-from {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.96);
+  }
+  .notif-drop-leave-active {
+    transition: all 0.25s ease;
+    position: absolute;
+    width: calc(100% - 0.5rem);
+  }
+  .notif-drop-leave-to {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  /* Qolganlari silliq suriladi. */
+  .notif-drop-move {
+    transition: transform 0.3s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .notif-drop-enter-active,
+    .notif-drop-leave-active,
+    .notif-drop-move {
+      transition: none;
+    }
   }
 </style>
