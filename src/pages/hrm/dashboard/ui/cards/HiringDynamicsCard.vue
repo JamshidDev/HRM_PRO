@@ -45,7 +45,7 @@
   const series = computed(() => [
     {
       key: 'incoming',
-      token: '--fig-icon-green',
+      token: '--fig-bg-brand-fill',
       value: contracts.value.reduce((sum, item) => sum + Number(item.new_contracts || 0), 0),
       data: contracts.value.map((item) => Number(item.new_contracts || 0))
     },
