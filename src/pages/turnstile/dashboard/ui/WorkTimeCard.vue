@@ -45,7 +45,6 @@
         :icon="HeadChartUserIcon"
         tint="indigo"
         :title="$t('turnStileDashboard.cards.workTimeTitle')"
-        :subtitle="$t('turnStileDashboard.cards.workTimeSubtitle')"
       />
 
       <div class="flex flex-wrap items-center gap-1 px-2 pb-2">

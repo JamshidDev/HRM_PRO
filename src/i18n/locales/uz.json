@@ -4933,6 +4933,23 @@
     "filter": {
       "organizationPlaceholder": "Korxonani tanlang",
       "departmentPlaceholder": "Bo'limni tanlang"
+    },
+    "attendance": {
+      "vacation": "Ta'tilda",
+      "day_off": "Dam olish kunida",
+      "excused": "Sababli",
+      "firstEvent": "Birinchi hodisa",
+      "lastEvent": "Oxirgi hodisa",
+      "reasons": "Belgilar"
+    },
+    "attendanceReason": {
+      "sick_leave": "Kasallik varaqasi",
+      "business_trip": "Xizmat safari",
+      "no_turnstile": "Turniketdan o'tmaydi",
+      "exempt": "Hisobdan ozod",
+      "vacation": "Ta'til",
+      "day_off": "Dam olish kuni",
+      "no_schedule": "Grafik yo'q"
     }
   },
   "hcWorkDuration": {

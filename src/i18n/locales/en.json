@@ -4904,6 +4904,23 @@
     "filter": {
       "organizationPlaceholder": "Select organization",
       "departmentPlaceholder": "Select department"
+    },
+    "attendance": {
+      "vacation": "On vacation",
+      "day_off": "Day off",
+      "excused": "Excused",
+      "firstEvent": "First event",
+      "lastEvent": "Last event",
+      "reasons": "Flags"
+    },
+    "attendanceReason": {
+      "sick_leave": "Sick leave",
+      "business_trip": "Business trip",
+      "no_turnstile": "No turnstile",
+      "exempt": "Exempt from tracking",
+      "vacation": "Vacation",
+      "day_off": "Day off",
+      "no_schedule": "No schedule"
     }
   },
   "hcWorkDuration": {

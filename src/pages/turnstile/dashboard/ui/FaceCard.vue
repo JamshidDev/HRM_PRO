@@ -12,20 +12,21 @@
   const store = useTurnstileDashboardStore()
   const emits = defineEmits(['onPreview'])
 
-  const turnstileCount = computed(() => store?.faceIdData?.other || 0)
-  const mobileCount = computed(() => store?.faceIdData?.mobile_face || 0)
+  // «Kelgan» xodimlarning bo'linishi: kun davomida mobil orqali o'tgan / faqat turniket.
+  const turnstileCount = computed(() => store.attendance?.came_turnstile || 0)
+  const mobileCount = computed(() => store.attendance?.came_mobile || 0)
   const totalCount = computed(() => turnstileCount.value + mobileCount.value)
 
   const cells = computed(() => [
     {
-      previewType: 'ACSEventFaceVerifyPass',
+      previewType: 'att_came_turnstile',
       label: 'turnStileDashboard.cards.turnstileFace',
       count: turnstileCount.value,
       icon: markRaw(FaceTurnstileIcon),
       delta: store.deltas.faceTurnstile
     },
     {
-      previewType: 'MobileFaceEvent',
+      previewType: 'att_came_mobile',
       label: 'turnStileDashboard.cards.mobileFace',
       count: mobileCount.value,
       icon: markRaw(FaceMobileIcon),
@@ -38,14 +39,13 @@
 
 <template>
   <div class="bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col">
-    <FaceCardSkeleton v-if="store.dailyAttendanceLoading" />
+    <FaceCardSkeleton v-if="store.mainChartLoading" />
 
     <template v-else>
       <CardHeader
         :icon="HeadAiScanIcon"
         tint="teal"
         :title="$t('turnStileDashboard.compare.faceIdTitle')"
-        :subtitle="$t('turnStileDashboard.compare.faceIdSubtitle')"
       />
 
       <div class="flex-1 flex flex-col justify-center gap-2">

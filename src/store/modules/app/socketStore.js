@@ -119,6 +119,8 @@ export const useSocketStore = defineStore('useSocketStore', {
       })
 
       this.socket.on('online_users', (data) => {
+        // Server ro'yxati — yagona manba: uzilishda o'tkazib yuborilgan offline'lar tozalanadi.
+        this.allOnlineUsers = []
         for (let key in data) {
           const user = data[key]
           this.addUserToOnlineUsers(user)
@@ -169,9 +171,10 @@ export const useSocketStore = defineStore('useSocketStore', {
       ) // 30 minutes
     },
     addUserToOnlineUsers(user) {
-      const existUser = this.allOnlineUsers.find((v) => Number(v.id) === Number(user.id))
-      if (existUser) return
-      this.allOnlineUsers.push(user)
+      // Mavjud user qayta kelsa (web↔mobil) — yozuv yangilanadi, belgi to'g'ri chiqsin.
+      const index = this.allOnlineUsers.findIndex((v) => Number(v.id) === Number(user.id))
+      if (index === -1) this.allOnlineUsers.push(user)
+      else this.allOnlineUsers.splice(index, 1, { ...this.allOnlineUsers[index], ...user })
     },
     removeUserFromOnlineUsers(user) {
       this.allOnlineUsers = this.allOnlineUsers.filter((v) => Number(v.id) !== Number(user.id))

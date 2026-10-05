@@ -4915,6 +4915,23 @@
     "filter": {
       "organizationPlaceholder": "Выберите предприятие",
       "departmentPlaceholder": "Выберите отдел"
+    },
+    "attendance": {
+      "vacation": "В отпуске",
+      "day_off": "В выходной день",
+      "excused": "По уважительной причине",
+      "firstEvent": "Первое событие",
+      "lastEvent": "Последнее событие",
+      "reasons": "Отметки"
+    },
+    "attendanceReason": {
+      "sick_leave": "Больничный лист",
+      "business_trip": "Командировка",
+      "no_turnstile": "Не проходит турникет",
+      "exempt": "Освобождён от учёта",
+      "vacation": "Отпуск",
+      "day_off": "Выходной день",
+      "no_schedule": "Нет графика"
     }
   },
   "hcWorkDuration": {
