@@ -129,7 +129,7 @@
           </div>
 
           <div
-            class="online-users__reaction pointer-events-none opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100"
+            class="online-users__reaction pointer-events-none opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100"
           >
             <ReactionButton @onReaction="onReactionEv($event, user)" />
           </div>

@@ -916,7 +916,7 @@
   .age-mode-group :deep(.n-radio-button--checked) {
     border-color: transparent;
     background: #fff;
-    color: #101828;
+    color: #0f172a;
   }
 
   .age-mode-group :deep(.n-radio-button__state-border) {

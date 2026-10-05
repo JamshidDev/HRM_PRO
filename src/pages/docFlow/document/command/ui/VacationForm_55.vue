@@ -214,7 +214,7 @@
         {{ $t('documentPage.command.form.removeWorker') }}</n-button
       >
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-2">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item :show-feedback="false" :label="$t(`content.type`)" path="from">
         <n-select
           v-model:value="item.group"
@@ -228,7 +228,7 @@
       </n-form-item>
     </div>
 
-    <div v-if="item.from !== 0" class="col-span-12 md:col-span-6 lg:col-span-2">
+    <div v-if="item.from !== 0" class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item :show-feedback="false" :label="$t(`commandPage.form_55.from`)" path="from">
         <n-date-picker
           class="w-full"
@@ -239,7 +239,7 @@
         />
       </n-form-item>
     </div>
-    <div v-if="item.from_time !== 0" class="col-span-12 md:col-span-6 lg:col-span-2">
+    <div v-if="item.from_time !== 0" class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item
         :show-feedback="false"
         :label="$t(`commandPage.form_55.from_time`)"
@@ -248,7 +248,7 @@
         <n-time-picker format="HH:mm" class="w-full" v-model:value="item.from_time" />
       </n-form-item>
     </div>
-    <div v-if="item.to !== 0" class="col-span-12 md:col-span-6 lg:col-span-2">
+    <div v-if="item.to !== 0" class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item :show-feedback="false" :label="$t(`commandPage.form_55.to`)" path="to">
         <n-date-picker
           class="w-full"
@@ -259,12 +259,12 @@
         />
       </n-form-item>
     </div>
-    <div v-if="item.to_time !== 0" class="col-span-12 md:col-span-6 lg:col-span-2">
+    <div v-if="item.to_time !== 0" class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item :show-feedback="false" :label="$t(`commandPage.form_55.to_time`)" path="to_time">
         <n-time-picker format="HH:mm" class="w-full" v-model:value="item.to_time" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-2">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item
         :show-feedback="false"
         :label="$t(`commandPage.form_55.work_day`)"

@@ -38,7 +38,7 @@
 </script>
 
 <template>
-  <div class="bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col">
+  <div class="bg-surface-section shadow-card rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col">
     <DeviceCardSkeleton v-if="store.devicesLoading" />
 
     <template v-else>

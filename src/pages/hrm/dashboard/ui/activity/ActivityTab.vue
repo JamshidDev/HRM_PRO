@@ -173,7 +173,7 @@
         <div
           v-for="kpi in kpis"
           :key="kpi.key"
-          class="relative flex flex-col gap-2 overflow-hidden rounded-2xl bg-fig-block px-2 py-3"
+          class="relative flex flex-col gap-2 overflow-hidden rounded-2xl bg-fig-block shadow-card px-2 py-3"
         >
           <div class="relative flex flex-col gap-2">
             <div class="flex items-center gap-2 px-2">

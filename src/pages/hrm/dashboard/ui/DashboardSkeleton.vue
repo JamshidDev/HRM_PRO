@@ -25,7 +25,7 @@
   <n-grid x-gap="8 m:12 l:16" y-gap="8 m:12 l:16" cols="12" responsive="screen" aria-hidden="true">
     <!-- KPI kartalari: sarlavha + katta raqam + ikkita kichik qiymat. -->
     <n-grid-item v-for="i in kpiCount" :key="`kpi-${i}`" :span="kpiSpan">
-      <div class="w-full border border-surface-line p-4 rounded-lg bg-surface-section">
+      <div class="w-full p-4 rounded-2xl bg-fig-block shadow-card">
         <n-skeleton height="14px" width="55%" round />
         <div class="mt-2">
           <n-skeleton height="24px" width="40%" round />
@@ -40,7 +40,7 @@
     <!-- Chart/karta bloklari: sarlavha qatori + kontent maydoni. -->
     <n-grid-item v-for="(card, idx) in cards" :key="`card-${idx}`" :span="card.span">
       <div
-        class="w-full h-full min-h-[300px] flex flex-col border border-surface-line p-4 rounded-lg bg-surface-section"
+        class="w-full h-full min-h-[300px] flex flex-col p-4 rounded-2xl bg-fig-block shadow-card"
       >
         <div class="flex justify-between items-center mb-4">
           <n-skeleton height="14px" width="45%" round />

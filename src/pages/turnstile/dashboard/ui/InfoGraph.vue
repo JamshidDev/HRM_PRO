@@ -40,7 +40,7 @@
 </script>
 
 <template>
-  <div class="bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden">
+  <div class="bg-surface-section shadow-card rounded-2xl px-1 pb-1 relative overflow-hidden">
     <InfoGraphSkeleton v-if="store.grandLoading" />
 
     <template v-else>

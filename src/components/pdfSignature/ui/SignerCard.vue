@@ -51,7 +51,7 @@
     </div>
 
     <div
-      class="flex-1 min-w-0 mb-2 rounded-xl border bg-surface-section overflow-hidden"
+      class="flex-1 min-w-0 mb-2 rounded-xl border bg-surface-section overflow-hidden shadow-[0_1px_2px_rgb(16_24_40/0.04)]"
       :class="[tone.card, isSelf && 'ring-1 ring-fig-blue-300']"
     >
       <div class="px-3 pt-2.5 pb-2">
@@ -128,7 +128,7 @@
       </div>
 
       <div
-        class="flex items-center gap-1 px-2 py-1 border-t border-dashed border-surface-line bg-fig-bg-secondary"
+        class="flex items-center gap-1 px-2 py-1 border-t border-surface-line/60 bg-surface-ground/40"
       >
         <n-button quaternary size="tiny" @click="expanded = !expanded">
           <template #icon>
@@ -172,8 +172,9 @@
       </div>
 
       <n-collapse-transition :show="expanded">
-        <div class="px-3 py-2 border-t border-surface-line">
-          <div v-if="!events.length" class="text-xs text-textColor3 py-1">
+        <!-- Chiziq o'rniga yumshoq fonli ichki blok — "Harakatlar tarixi" kartasi bilan bir uslubda -->
+        <div class="mx-2 mb-2 rounded-lg bg-surface-ground/70 px-2.5 pt-2 pb-0.5">
+          <div v-if="!events.length" class="text-xs text-textColor3 pb-1.5">
             {{ $t('documentPage.signature.approval.noHistory') }}
           </div>
           <div v-for="(ev, i) in events" :key="i" class="flex gap-2">
@@ -184,7 +185,7 @@
               >
                 <n-icon size="11"><component :is="eventMeta[ev.type]?.icon" /></n-icon>
               </div>
-              <div v-if="i < events.length - 1" class="w-px flex-1 bg-surface-line my-0.5"></div>
+              <div v-if="i < events.length - 1" class="w-px flex-1 bg-surface-line/70 my-0.5"></div>
             </div>
             <div class="min-w-0 flex-1 pb-2">
               <div class="flex items-baseline justify-between gap-2">

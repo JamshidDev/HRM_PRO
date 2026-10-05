@@ -41,7 +41,9 @@ instance.interceptors.response.use(
         response.config.method
       )
     ) {
+      // `silentSuccess`: chaqiruvchi o'z (aniqroq) xabarini ko'rsatadi — takror toast chiqmasin.
       if (
+        !response.config?.silentSuccess &&
         !response.data?.error &&
         response?.data?.message &&
         typeof response.data?.message === 'string'

@@ -39,7 +39,7 @@
           class="-mx-2 -mt-2 rounded-t-xl border-b border-surface-line bg-surface-ground/60 px-6 py-3.5 flex items-center justify-between gap-4"
         >
           <div class="w-[300px] max-w-full shrink">
-            <n-tabs v-model:value="store.detailTab" type="segment" size="small" animated>
+            <UITabs v-model:value="store.detailTab" type="segment" size="small" animated>
               <n-tab :name="store.detailTabs.face">
                 <div class="flex items-center gap-1.5">
                   <n-icon size="15"><Person20Regular /></n-icon>
@@ -52,13 +52,13 @@
                   <span>{{ $t('mobileUserPage.tabDevices') }}</span>
                   <span
                     v-if="deviceCount"
-                    class="text-[10px] font-semibold leading-none px-1.5 py-0.5 rounded-full bg-surface-line text-textColor1"
+                    class="text-[10px] font-semibold leading-none px-1.5 py-0.5 rounded-full [background:color-mix(in_srgb,currentColor_16%,transparent)]"
                   >
                     {{ deviceCount }}
                   </span>
                 </div>
               </n-tab>
-            </n-tabs>
+            </UITabs>
           </div>
           <div
             @click="store.detailVisible = false"

@@ -209,7 +209,7 @@
         <n-button v-else @click="onCopy(item)" type="primary" size="tiny" secondary><template #icon><Copy16Regular /></template> {{ $t('content.copy') }}</n-button>
       </div>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-2">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item :label="$t(`commandPage.form_62.from`)" path="from">
         <n-date-picker
           class="w-full"
@@ -219,7 +219,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-2">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item :label="$t(`commandPage.form_62.to`)" path="to">
         <n-date-picker
           class="w-full"
@@ -229,12 +229,12 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-5">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-5">
       <n-form-item :label="$t(`commandPage.form_62.reason`)" path="reason">
         <n-input class="w-full" type="text" v-model:value="item.reason" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item
         :show-feedback="false"
         :label="$t(`commandPage.form_62.orgType`)"
@@ -250,7 +250,7 @@
     </div>
 
     <template v-if="item.organizationType === 1">
-      <div class="col-span-12 md:col-span-6">
+      <div class="col-span-12 @xl:col-span-6">
         <n-form-item
           :show-feedback="false"
           :label="$t(`commandPage.form_62.to_organization`)"
@@ -269,7 +269,7 @@
           />
         </n-form-item>
       </div>
-      <div class="col-span-12 md:col-span-6">
+      <div class="col-span-12 @xl:col-span-6">
         <n-form-item
           :show-feedback="false"
           :label="$t(`commandPage.form_62.department_id`)"

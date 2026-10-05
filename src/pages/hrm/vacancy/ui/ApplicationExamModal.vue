@@ -68,7 +68,7 @@
       </div>
 
       <!-- Tablar -->
-      <n-tabs v-model:value="activeTab" type="line" animated>
+      <UITabs v-model:value="activeTab" type="line" animated>
 
         <!-- Onlayn tab -->
         <n-tab-pane name="online" :tab="$t('vacancy.exam.onlineTab')">
@@ -142,7 +142,7 @@
           </div>
         </n-tab-pane>
 
-      </n-tabs>
+      </UITabs>
 
     </div>
   </UIModal>

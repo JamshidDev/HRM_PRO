@@ -137,7 +137,7 @@
     border: 1px solid var(--surface-line, #e5e7eb); border-radius: 12px; padding: 10px 12px;
   }
   .tb-meta-lbl { font-size: 11px; color: var(--textColor3, #98a2b3); margin-bottom: 4px; }
-  .tb-meta-val { font-weight: 600; color: var(--textColor1, #101828); font-variant-numeric: tabular-nums; }
+  .tb-meta-val { font-weight: 600; color: var(--textColor1, #475569); font-variant-numeric: tabular-nums; }
   .tb-unit { font-size: 11px; font-weight: 400; color: var(--textColor3, #98a2b3); }
   .tb-ver {
     display: flex; align-items: center; justify-content: space-between; gap: 10px;

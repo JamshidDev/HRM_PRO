@@ -235,7 +235,7 @@
   >
     <div class="flex flex-col gap-3" style="height: 100%">
       <!-- Tab: Tortishlar | ZIP yuklab olishlar -->
-      <n-tabs
+      <UITabs
         :value="store.pullHistoryTab"
         @update:value="store._setHistoryTab"
         type="line"
@@ -244,7 +244,7 @@
       >
         <n-tab-pane name="pulls" :tab="$t('uploadReport.pullHistory.tabPulls')" />
         <n-tab-pane name="downloads" :tab="$t('uploadReport.pullHistory.tabDownloads')" />
-      </n-tabs>
+      </UITabs>
 
       <!-- ===== Tortishlar tab ===== -->
       <template v-if="store.pullHistoryTab === 'pulls'">

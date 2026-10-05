@@ -52,7 +52,7 @@
 
 <template>
   <div
-    class="flex flex-col gap-3 cursor-pointer hover-effect-card pt-4 px-1 pb-1 rounded-2xl bg-surface-section relative overflow-hidden"
+    class="flex flex-col gap-3 cursor-pointer hover-effect-card pt-4 px-1 pb-1 rounded-2xl bg-surface-section shadow-card relative overflow-hidden"
   >
     <!-- yuqori o'ng burchakdagi xira dekor -->
     <span

@@ -130,10 +130,10 @@
 <template>
   <UIPageContent>
     <div class="mb-3">
-      <n-tabs type="segment" v-model:value="activeTab" size="small" class="tg-seg">
+      <UITabs type="segment" v-model:value="activeTab" size="small" class="tg-seg">
         <n-tab-pane name="grids" :tab="$t('tariffBase.tab.grids')" />
         <n-tab-pane name="bases" :tab="$t('tariffBase.tab.bases')" />
-      </n-tabs>
+      </UITabs>
     </div>
 
     <!-- ============ SETKALAR ============ -->

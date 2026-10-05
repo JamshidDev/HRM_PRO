@@ -9,10 +9,12 @@
   } from '@vicons/fluent'
   import Utils from '../../../../../utils/Utils.js'
   import i18n from '@/i18n/index.js'
+  import { isEmptyValue, useEmptyFieldMarks } from '../useEmptyFieldMarks.js'
 
   const store = useCommandFormStore()
   const componentStore = useComponentStore()
   const { t } = i18n.global
+  const { showErrors, status } = useEmptyFieldMarks()
 
   const loading = ref(false)
 
@@ -22,8 +24,9 @@
   }
   const onSubmit = (mainData) => {
     const checkForm = store.workerData.every(
-      (v) => v.reason !== null && v.type !== null && v.amount !== null
+      (v) => !isEmptyValue(v.reason) && !isEmptyValue(v.type) && !isEmptyValue(v.amount)
     )
+    showErrors.value = !checkForm
     if (checkForm) {
       const data = store.workerData.map((v) => ({
         id: v.id,
@@ -125,6 +128,7 @@
         :show-feedback="false"
         :label="$t(`documentPage.command.form.reason`)"
         path="reason"
+        :validation-status="status(item.reason)"
       >
         <div class="!w-full flex gap-2">
           <n-input
@@ -157,11 +161,12 @@
         </div>
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-4">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.financeType`)"
         path="financeType"
+        :validation-status="status(item.type)"
       >
         <n-select
           :disabled="loading"
@@ -175,11 +180,12 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-4">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.amount`)"
         path="amount"
+        :validation-status="status(item.amount)"
       >
         <n-input
           class="w-full"

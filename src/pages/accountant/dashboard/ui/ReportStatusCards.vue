@@ -34,7 +34,7 @@
       <div
         v-for="s in summary"
         :key="s.id"
-        class="flex cursor-pointer flex-col gap-2 rounded-2xl bg-fig-block px-3 pt-2.5 pb-2 transition hover:ring-1 hover:ring-fig-br-disable"
+        class="flex cursor-pointer flex-col gap-2 rounded-2xl bg-fig-block shadow-card px-3 pt-2.5 pb-2"
         @click="openDetail"
       >
         <!-- Tur nomi + yuklagan / jami -->

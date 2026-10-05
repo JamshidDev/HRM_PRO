@@ -187,7 +187,7 @@
   .tg-rank {
     background: var(--table-header, #f1f5f9);
     font-weight: 700;
-    color: var(--textColor1, #101828);
+    color: var(--textColor1, #475569);
   }
   /* KO'RISH kataki */
   .tg-cell-view {
@@ -199,7 +199,7 @@
   .tg-amt {
     font-weight: 600;
     font-variant-numeric: tabular-nums;
-    color: var(--textColor1, #101828);
+    color: var(--textColor1, #475569);
   }
   .tg-coef {
     font-size: 11px;

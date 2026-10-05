@@ -880,7 +880,7 @@
     <div class="ts-filters">
       <!-- Tablar korxona tanlovidan OLDIN, SHU qatorda. `segment` — tugma
            ko'rinishidagi tab; yorliqli maydonlar bilan pastdan tekislanadi. -->
-      <n-tabs
+      <UITabs
         v-model:value="activeTab"
         class="ts-tabs"
         type="segment"
@@ -888,7 +888,7 @@
       >
         <n-tab name="grid">{{ $t('timesheetPage.tabGrid') }}</n-tab>
         <n-tab name="timekeepers">{{ $t('timesheetPage.tabTimekeepers') }}</n-tab>
-      </n-tabs>
+      </UITabs>
 
       <div class="ts-field">
         <n-select
@@ -1042,7 +1042,7 @@
         <!-- Kelishuvchilar / Tarix — ichki tabli kartochka. -->
         <div class="ts-info-card ts-approvers-card">
           <div class="ts-info-head">
-            <n-tabs
+            <UITabs
               v-model:value="approverTab"
               class="ts-approver-tabs"
               size="small"
@@ -1051,7 +1051,7 @@
             >
               <n-tab name="list">{{ $t('timesheetPage.verifiers') }}</n-tab>
               <n-tab name="history">{{ $t('timesheetPage.history') }}</n-tab>
-            </n-tabs>
+            </UITabs>
             <div class="ts-approvers-actions">
               <n-button
                 v-if="approverTab === 'list' && !timesheetLocked"
@@ -2039,44 +2039,6 @@
     /* `n-tabs` standart holatda `width: 100%` — filtr qatorini siqib chiqarardi. */
     width: auto;
   }
-  /* `segment` tab standart holatda ustunlarni TENG bo'ladi — «Tabel» va
-     «Tabelchilar» bir xil kenglik olardi. Har tugma o'z matniga moslanadi. */
-  .ts-tabs :deep(.n-tabs-rail) {
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: max-content;
-  }
-  .ts-tabs :deep(.n-tabs-tab) {
-    padding-inline: 16px;
-    font-weight: 500;
-    transition:
-      color 0.22s ease,
-      background-color 0.22s ease;
-  }
-  /* Asosiy rangdagi segment: chegara va xira fon railda, faol tab to'liq ko'k. */
-  .ts-tabs :deep(.n-tabs-rail) {
-    border: 1px solid color-mix(in srgb, var(--fig-icon-brand) 35%, transparent);
-    background-color: color-mix(in srgb, var(--fig-icon-brand) 8%, transparent);
-  }
-  /* Faol tab foni — tabning O'ZIDA emas, ko'chib yuruvchi `capsule` da. */
-  .ts-tabs :deep(.n-tabs-capsule) {
-    border-color: var(--fig-icon-brand);
-    background-color: var(--fig-icon-brand);
-  }
-  .ts-tabs :deep(.n-tabs-tab--active),
-  .ts-tabs :deep(.n-tabs-tab--active .n-tabs-tab__label) {
-    color: #fff;
-  }
-  /* Bosilganda kichik javob — segment tugmaday his qilinsin. */
-  .ts-tabs :deep(.n-tabs-tab:active) {
-    transform: scale(0.97);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .ts-tabs :deep(.n-tabs-tab) {
-      transition: none;
-    }
-  }
   /* Tabelchilar tabi ikkiga bo'linadi: chapda jadval, o'ngda ma'lumot. */
   .ts-keepers {
     display: flex;
@@ -2158,14 +2120,6 @@
   }
   .ts-approver-tabs {
     width: auto;
-  }
-  .ts-approver-tabs :deep(.n-tabs-rail) {
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: max-content;
-  }
-  .ts-approver-tabs :deep(.n-tabs-tab) {
-    padding-inline: 12px;
   }
   .ts-approver-meta {
     display: flex;

@@ -21,6 +21,43 @@ const getValueOfCssVariable = (variableName) => {
   return rootStyles.getPropertyValue(variableName).trim()
 }
 
+// Yangi "filled" input/select ko'rinishi (sinov). Yoqmasa — `false` qiling, eski ko'rinish qaytadi.
+// Input, Select, DatePicker, InputNumber, TreeSelect, Cascader — hammasi shu ikki override orqali.
+const NEW_INPUT_LOOK = true
+
+const filledInputOverrides = () => {
+  const fill = getValueOfCssVariable('--input-fill')
+  const fillFocus = getValueOfCssVariable('--input-fill-focus')
+  const border = `1px solid ${getValueOfCssVariable('--input-border')}`
+  const borderHover = `1px solid ${getValueOfCssVariable('--input-border-hover')}`
+  const borderFocus = `1px solid ${getValueOfCssVariable('--primary-color')}`
+  const ring = `0 0 0 3px ${getValueOfCssVariable('--input-ring')}`
+  return {
+    Input: {
+      color: fill,
+      colorFocus: fillFocus,
+      colorDisabled: fill,
+      border,
+      borderHover,
+      borderFocus,
+      borderDisabled: border,
+      boxShadowFocus: ring
+    },
+    InternalSelection: {
+      color: fill,
+      colorActive: fillFocus,
+      colorDisabled: fill,
+      border,
+      borderHover,
+      borderActive: borderFocus,
+      borderFocus,
+      boxShadowActive: ring,
+      boxShadowFocus: ring,
+      boxShadowHover: 'none'
+    }
+  }
+}
+
 /** @returns {GlobalThemeOverrides} */
 export const customTheme = () => {
   return {
@@ -143,12 +180,16 @@ export const customTheme = () => {
         check: () => h(NIcon, null, { default: () => h(CheckmarkCircle24Regular) })
       }
     },
-    InternalSelection: {
-      border: `1px solid ${getValueOfCssVariable('--surface-line')}`
-    },
-    Input: {
-      border: `1px solid ${getValueOfCssVariable('--surface-line')}`
-    },
+    ...(NEW_INPUT_LOOK
+      ? filledInputOverrides()
+      : {
+          InternalSelection: {
+            border: `1px solid ${getValueOfCssVariable('--surface-line')}`
+          },
+          Input: {
+            border: `1px solid ${getValueOfCssVariable('--surface-line')}`
+          }
+        }),
     Dropdown: {
       optionTextColorHover: '#2E90FA'
     },

@@ -168,7 +168,7 @@
     <div class="col-span-12">
       <LastVacationItem ref="lastVacationRef" />
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-2">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.from`)"
@@ -184,7 +184,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-2">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.main_day`)"
@@ -194,7 +194,7 @@
         <n-input-number class="w-full" min="0" max="100" v-model:value="store.form_46.main_day" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-2">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.second_day`)"
@@ -204,7 +204,7 @@
         <n-input-number class="w-full" min="0" max="100" v-model:value="store.form_46.second_day" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-6">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-6">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.additional`)"
@@ -255,7 +255,7 @@
           {{ $t('documentPage.command.form.calculateVacation') }}
         </n-button>
       </div>
-      <div class="col-span-12 md:col-span-6 lg:col-span-3 mb-2 lg:mb-0">
+      <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3 mb-2 @4xl:mb-0">
         <n-form-item
           :show-feedback="false"
           :label="$t(`documentPage.command.form.period_from`)"
@@ -270,7 +270,7 @@
           />
         </n-form-item>
       </div>
-      <div class="col-span-12 md:col-span-6 lg:col-span-3 mb-2 lg:mb-0">
+      <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3 mb-2 @4xl:mb-0">
         <n-form-item
           :show-feedback="false"
           :label="$t(`documentPage.command.form.period_to`)"
@@ -285,7 +285,7 @@
           />
         </n-form-item>
       </div>
-      <div class="col-span-12 md:col-span-6 lg:col-span-3 mb-2 lg:mb-0">
+      <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3 mb-2 @4xl:mb-0">
         <n-form-item
           :show-feedback="false"
           :label="$t(`documentPage.command.form.all_day`)"
@@ -300,7 +300,7 @@
           />
         </n-form-item>
       </div>
-      <div class="col-span-12 md:col-span-6 lg:col-span-3 mb-2 lg:mb-0">
+      <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3 mb-2 @4xl:mb-0">
         <n-form-item
           :show-feedback="false"
           :label="$t(`vacationSchedule.form.experience`)"
@@ -318,7 +318,7 @@
     <div
       class="col-span-12 grid mt-2 grid-cols-12 gap-x-4 gap-y-2 w-full border border-dashed border-surface-line bg-surface-section/40 rounded-md p-2"
     >
-      <div class="col-span-12 md:col-span-6 lg:col-span-3">
+      <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
         <n-form-item
           :show-feedback="false"
           :label="$t(`documentPage.command.form.half_one_day`)"
@@ -334,7 +334,7 @@
           />
         </n-form-item>
       </div>
-      <div class="col-span-12 md:col-span-6 lg:col-span-3">
+      <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
         <n-form-item :show-feedback="false" :label="$t(`content.type`)" path="additional">
           <n-select
             v-model:value="store.form_46.half_two_base"
@@ -345,7 +345,7 @@
           />
         </n-form-item>
       </div>
-      <div class="col-span-12 md:col-span-6 lg:col-span-3">
+      <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
         <n-form-item
           :show-feedback="false"
           :label="$t(`documentPage.command.form.to`)"
@@ -361,7 +361,7 @@
           />
         </n-form-item>
       </div>
-      <div class="col-span-12 md:col-span-6 lg:col-span-3">
+      <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
         <n-form-item
           :show-feedback="false"
           :label="$t(`documentPage.command.form.work_day`)"
@@ -377,7 +377,7 @@
         </n-form-item>
       </div>
       <template v-if="store.form_46.half_two_base === 2">
-        <div class="col-span-12 md:col-span-6 lg:col-span-3">
+        <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
           <n-form-item
             :show-feedback="false"
             :label="$t(`documentPage.command.form.half_two_date`)"
@@ -392,7 +392,7 @@
             />
           </n-form-item>
         </div>
-        <div class="col-span-12 md:col-span-6 lg:col-span-3">
+        <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
           <n-form-item :show-feedback="false" :label="$t(`documentPage.command.form.half_two_day`)">
             <n-input-number
               :disabled="true"

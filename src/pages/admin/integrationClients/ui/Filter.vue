@@ -59,7 +59,7 @@
   >
     <template #filterBefore>
       <div class="tab-wrapper">
-        <n-tabs class="tab-switcher" v-model:value="store.activeTab" type="segment" size="small">
+        <UITabs class="tab-switcher" v-model:value="store.activeTab" type="segment" size="small">
           <n-tab-pane
             :name="store.tabs[0]"
             :tab="$t('integrationLog.tabs.dashboard')"
@@ -71,7 +71,7 @@
             class="!pt-0"
           />
           <n-tab-pane :name="store.tabs[2]" :tab="$t('integrationLog.tabs.list')" class="!pt-0" />
-        </n-tabs>
+        </UITabs>
       </div>
     </template>
     <template #filterContent>
@@ -136,21 +136,7 @@
     height: 100%;
   }
 
-  .tab-switcher :deep(.n-tabs-pane-wrapper) {
-    display: none;
-  }
 
-  .tab-switcher :deep(.n-tabs-nav) {
-    height: 100%;
-  }
 
-  .tab-switcher :deep(.n-tabs-rail) {
-    height: 100%;
-  }
 
-  .tab-switcher :deep(.n-tabs-tab) {
-    height: 28px;
-    padding: 0 12px;
-    line-height: 28px;
-  }
 </style>
