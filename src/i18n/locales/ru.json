@@ -782,6 +782,7 @@
     }
   },
   "organizationPage": {
+    "collapseAll": "Свернуть все",
     "name": "Организации",
     "createTitle": "Добавить организацию",
     "updateTitle": "Редактировать организацию",
