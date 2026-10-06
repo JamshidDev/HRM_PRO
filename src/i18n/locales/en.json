@@ -965,6 +965,13 @@
     "name": "Document history"
   },
   "workerProfile": {
+    "fundedEducation": {
+      "title": "Education funding",
+      "marked": "Marked",
+      "label": "Higher education funded by the Company",
+      "hint": "Employee who completed studies funded by the Company",
+      "filter": "Company-funded education"
+    },
     "tabs": {
       "personal": "Personal",
       "education": "Education and skills",
