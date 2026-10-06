@@ -2,8 +2,6 @@
   import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
   import SearchElement from '@/pages/turnstile/schedule/ui/SearchElement.vue'
   import Utils from '@/utils/Utils.js'
-  import { getMonthOfRage } from '@utils'
-  import MonthTab from './MonthTab.vue'
   import { MoreHorizontal32Filled } from '@vicons/fluent'
   import { UIPagination } from '@components'
 
@@ -13,9 +11,11 @@
   const currentScheduleList = ref([])
 
   watchEffect(() => {
-    currentScheduleList.value = store.list.map((v) => {
+    const offset = (store.params.page - 1) * store.params.per_page
+    currentScheduleList.value = store.list.map((v, index) => {
       const fullName = Utils.combineFullName(v)
       return {
+        number: offset + index + 1,
         workerId: v.worker_id,
         workerPositionId: v.worker_position_id,
         fullName,
@@ -32,27 +32,19 @@
     })
   })
 
-  const calculateWorkTime = (index) => {
-    const totalMinute = currentScheduleList.value[index].days.reduce(
-      (sum, item) => sum + item.workTime,
-      0
+  // Backend `schedule-workers` `search` parametrini qo'llamaydi — guruh xodimlari bitta
+  // sahifada keladi (store'da per_page katta) va qidiruv brauzerda bajariladi.
+  const visibleList = computed(() => {
+    const q = store.params.search?.trim().toLowerCase()
+    if (!q) return currentScheduleList.value
+    return currentScheduleList.value.filter(
+      (v) => v.fullName?.toLowerCase().includes(q) || v.position?.toLowerCase().includes(q)
     )
-    return Math.floor(totalMinute / 60)
-  }
-
-  // const selectedDate = ref(null)
-
-  onMounted(() => {
-    store.monthsList = getMonthOfRage(store.params.startDate, store.params.endDate)
-    store.selectedDate = store.monthsList[0].id
   })
 
-  const onChange = (v) => {
-    store.params.year1 = v.split('-')[0]
-    store.params.month1 = v.split('-')[1]
-    store._dayOfMonth(() => {
-      store._index()
-    })
+  const calculateWorkTime = (worker) => {
+    const totalMinute = worker.days.reduce((sum, item) => sum + item.workTime, 0)
+    return Math.floor(totalMinute / 60)
   }
 
   const onChangePage = (v) => {
@@ -74,13 +66,6 @@
 <template>
   <n-spin :show="store.dayOfMonthLoading || store.loading" class="h-full">
     <div class="h-full flex flex-col gap-4">
-      <MonthTab
-        v-if="store.selectedDate"
-        :options="store.monthsList"
-        v-model:date="store.selectedDate"
-        @update:date="onChange"
-      />
-
       <div class="w-full flex-1 overflow-auto relative rounded-lg">
         <div class="schedule-header-row flex z-[10] w-fit min-w-full sticky top-0">
           <div
@@ -112,19 +97,17 @@
             {{ $t('schedule.form.workTime') }}
           </div>
         </div>
-        <template v-if="currentScheduleList.length > 0">
+        <template v-if="visibleList.length > 0">
           <div
-            v-for="(worker, index) in currentScheduleList"
-            :key="index"
+            v-for="worker in visibleList"
+            :key="worker.workerPositionId"
             class="schedule-header-body-row flex w-fit min-w-full bg-surface-section"
           >
             <!-- Worker Name - Sticky Left -->
             <div
               class="border-r border-l border-b border-t-0 border-surface-line text-center p-2 w-[60px] min-w-[60px] h-[50px] border sticky left-0 bg-surface-section flex-shrink-0 z-[5] flex items-center justify-center"
             >
-              <span class="leading-[1.2] text-secondary font-medium">{{
-                (store.params.page - 1) * store.params.per_page + index + 1
-              }}</span>
+              <span class="leading-[1.2] text-secondary font-medium">{{ worker.number }}</span>
             </div>
             <div
               class="border-r border-l-[0] border-b border-t-0 border-surface-line p-2 w-[340px] min-w-[320px] h-[50px] border sticky left-[60px] bg-surface-section flex-shrink-0 z-[5] flex items-center"
@@ -176,7 +159,7 @@
             <div
               class="border-r border-l border-b -ml-[1px] border-surface-line w-[80px] min-w-[80px] h-[50px] sticky right-0 bg-surface-section flex-shrink-0 z-[5] flex items-center justify-center"
             >
-              {{ calculateWorkTime(index) }}
+              {{ calculateWorkTime(worker) }}
             </div>
           </div>
         </template>

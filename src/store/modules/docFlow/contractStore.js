@@ -163,6 +163,9 @@ export const useContractStore = defineStore('contractStore', {
           this._index()
           callback?.()
         })
+        // 400 (validatsiya) xabarini interceptor toast qiladi — bu yerda faqat
+        // "Uncaught (in promise)" chiqmasligi uchun ushlab qo'yamiz.
+        .catch(() => {})
         .finally(() => {
           this.saveLoading = false
         })

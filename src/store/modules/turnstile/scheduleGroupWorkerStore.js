@@ -14,7 +14,9 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
 
     params: {
       page: 1,
-      per_page: 20,
+      // Guruh odatda bir necha o'nlab xodimdan iborat — butun guruh bitta sahifada
+      // keladi, shunda brauzerdagi qidiruv hamma xodimni qamraydi.
+      per_page: 100,
       search: null,
       group: null,
       startDate: null,
@@ -131,11 +133,10 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     },
     _dayOfMonth(callback) {
       this.dayOfMonthLoading = true
-      const month = this.selectedDate.split('-')[1]
-      const params = {
-        year: this.params.year1,
-        month: month
-      }
+      // Yil ham tanlangan oydan olinadi: ilgari `params.year1` faqat oy almashtirilganda
+      // to'ldirilardi va birinchi ochilishda yil umuman yuborilmasdi.
+      const [year, month] = this.selectedDate.split('-')
+      const params = { year, month }
       $ApiService.workerScheduleService
         ._daysOfMonth({ params })
         .then((res) => {

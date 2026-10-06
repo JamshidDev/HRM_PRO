@@ -780,6 +780,7 @@
     }
   },
   "organizationPage": {
+    "collapseAll": "Collapse all",
     "name": "Organizations",
     "createTitle": "Add organization",
     "updateTitle": "Edit organization",
@@ -1159,6 +1160,7 @@
     "legalPerson": "Legal entity",
     "naturalPerson": "Individual",
     "connectionError": "E-signature not installed or misconfigured!",
+    "localNetworkBlocked": "The browser blocked the connection to E-IMZO. Click the lock icon in the address bar → “Local network access” → “Allow”, then reload the page.",
     "confirmError": "An error occurred while confirming the document. Please try again shortly.",
     "certCheckError": "The E-IMZO certificate status service is temporarily unavailable. Please try again shortly.",
     "serverError": "A server error occurred. Please try again shortly.",
@@ -5048,7 +5050,14 @@
       "notAllowedThisAction": "Use Duty Schedule menu for special shifts!",
       "turnstileSetting": "Turnstile management",
       "howMuchGroup": "Number of groups in schedule",
-      "group": "Groups"
+      "group": "Groups",
+      "shiftTypes": "Shift types",
+      "allGroups": "All groups",
+      "groupWorkers": "Group workers",
+      "goToSchedule": "Open duty schedule",
+      "customShiftHint": "Custom shifts have no groups — they are filled directly in the duty schedule.",
+      "noShiftTypes": "No shift types found",
+      "searchByShiftName": "Search by shift name"
     }
   },
   "publicPage": {

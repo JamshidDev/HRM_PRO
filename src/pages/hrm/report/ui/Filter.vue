@@ -3,15 +3,30 @@
   import { useComponentStore, useDepartmentStore, useReport2Store } from '@/store/modules/index.js'
   import { useAccountStore } from '@/store/modules/index.js'
   import { AddCircle24Regular, ArrowDownload24Regular } from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
   const accStore = useAccountStore()
   const { proxy } = getCurrentInstance()
   const staffingButtonRef = ref(null)
 
   const componentStore = useComponentStore()
   const store = useReport2Store()
+  const { t } = i18n.global
   const dpStore = useDepartmentStore()
 
   const selectedOrg = computed(() => store.department.params.organization_id?.[0] || null)
+
+  const orgStats = computed(() => {
+    const org = selectedOrg.value
+    if (!org) return []
+    return [
+      { label: t('report.tooltip.P'), value: org.rate, cls: 'text-fig-text-primary' },
+      {
+        label: t('report.tooltip.F'),
+        value: org.real_rate,
+        cls: org.real_rate > org.rate ? 'text-fig-text-red' : 'text-fig-text-primary'
+      }
+    ]
+  })
 
   const onChangeOrg = (v) => {
     store.department.params.organization_id = v
@@ -57,14 +72,13 @@
 
 <template>
   <div
-    class="w-full bg-surface-section rounded-[20px] p-3 flex flex-col md:flex-row md:items-end gap-3"
+    class="w-full rounded-[20px] flex flex-col md:flex-row md:items-center gap-3"
+    :class="store.viewMode === 'table' ? 'py-1' : 'bg-surface-section p-3'"
   >
+    <!-- Jadval ko'rinishida filter fonsiz — jadval kartochkasi bilan ikki qavat fon bo'lmasin. -->
     <!-- Tashkilot select'i o'ng chetda: desktopda `order-last` bilan oxiriga
          o'tadi, mobilda esa birinchi bo'lib qoladi. -->
     <div class="w-full md:w-[360px] shrink-0 md:order-last" :class="{ 'md:ml-auto': !selectedOrg }">
-      <label class="block text-xs text-gray-500 mb-1 font-medium">
-        {{ $t('content.organization') }}
-      </label>
       <UISelect
         placement="bottom-end"
         clearable
@@ -106,32 +120,20 @@
     </div>
 
     <template v-if="selectedOrg">
-      <div class="flex items-center gap-2">
+      <!-- Tashkilot bo'yicha jami Plan/Fakt: bitta guruhda, ajratgich bilan.
+           Fakt plandan oshsa qizil bo'ladi. -->
+      <div
+        class="flex items-center self-start md:self-auto h-[34px] rounded-xl border border-table-border divide-x divide-table-border"
+      >
         <div
-          class="flex items-center gap-2 h-[34px] px-3 rounded-md border border-table-border bg-surface/2"
+          v-for="item in orgStats"
+          :key="item.label"
+          class="flex items-center gap-2 h-full px-3.5"
         >
-          <span class="text-xs text-gray-500">{{ $t('report.tooltip.P') }}</span>
-          <n-tag
-            size="small"
-            round
-            :bordered="false"
-            :type="selectedOrg.rate > selectedOrg.real_rate ? 'success' : 'default'"
-          >
-            {{ selectedOrg.rate }}
-          </n-tag>
-        </div>
-        <div
-          class="flex items-center gap-2 h-[34px] px-3 rounded-md border border-table-border bg-surface/2"
-        >
-          <span class="text-xs text-gray-500">{{ $t('report.tooltip.F') }}</span>
-          <n-tag
-            size="small"
-            round
-            :bordered="false"
-            :type="selectedOrg.real_rate > selectedOrg.rate ? 'error' : 'default'"
-          >
-            {{ selectedOrg.real_rate }}
-          </n-tag>
+          <span class="text-xs text-fig-text-tertiary">{{ item.label }}</span>
+          <span class="text-sm font-semibold tabular-nums" :class="item.cls">
+            {{ item.value ?? 0 }}
+          </span>
         </div>
       </div>
 

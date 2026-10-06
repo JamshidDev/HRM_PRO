@@ -795,6 +795,7 @@
     }
   },
   "organizationPage": {
+    "collapseAll": "Hammasini yig'ish",
     "name": "Tashkilotlar",
     "createTitle": "Tashkilot qo'shish",
     "updateTitle": "Tashkilotni tahrirlash",
@@ -1176,6 +1177,7 @@
     "legalPerson": "Yuridik shaxs",
     "naturalPerson": "Jismoniy shaxs",
     "connectionError": "E-imzo o'rnatilmagan yoki to'g'ri sozlanmagan!",
+    "localNetworkBlocked": "Brauzer E-imzo'ga ulanishni blokladi. Manzil satridagi qulf belgisini bosing → «Mahalliy tarmoqqa kirish» (Local network access) → «Ruxsat berish», so'ng sahifani yangilang.",
     "confirmError": "Hujjatni tasdiqlashda xatolik yuz berdi. Birozdan so'ng qayta urinib ko'ring.",
     "certCheckError": "E-IMZO sertifikat holatini tekshirish xizmati vaqtincha ishlamayapti. Birozdan so'ng qayta urinib ko'ring.",
     "serverError": "Serverda xatolik yuz berdi. Birozdan so'ng qayta urinib ko'ring.",
@@ -5095,7 +5097,14 @@
       "notAllowedThisAction": "Maxsus smena uchun Navbatchilik grafiki menyusida ishlang!",
       "turnstileSetting": "Turniket boshqaruvi",
       "howMuchGroup": "Grafikdagi guruhlar soni",
-      "group": "Guruhlar"
+      "group": "Guruhlar",
+      "shiftTypes": "Smena turlari",
+      "allGroups": "Barcha guruhlar",
+      "groupWorkers": "Guruh xodimlari",
+      "goToSchedule": "Navbatchilik grafigini ochish",
+      "customShiftHint": "Maxsus smenada guruh bo'lmaydi — u to'g'ridan-to'g'ri Navbatchilik grafigida to'ldiriladi.",
+      "noShiftTypes": "Smena turlari topilmadi",
+      "searchByShiftName": "Smena nomi bo'yicha qidirish"
     }
   },
   "lmsCertificate": {
