@@ -1,6 +1,11 @@
 <script setup>
   import dayjs from 'dayjs'
-  import { ShieldCheckmark16Filled, ChevronDown16Regular } from '@vicons/fluent'
+  import {
+    ShieldCheckmark16Filled,
+    ChevronDown16Regular,
+    Person16Regular,
+    Link16Regular
+  } from '@vicons/fluent'
   import { UIUserGroup } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
   import PdfFileIcon from '@/assets/icons/pdfFileIcon.svg'
@@ -71,6 +76,10 @@
     })
     return [...map.entries()].map(([key, items]) => ({ key, items }))
   })
+
+  // Imzo usuli belgisi: 5 Face, 2 havola, qolgani E-IMZO.
+  const methodIcon = (id) =>
+    ({ 5: Person16Regular, 2: Link16Regular })[id] ?? ShieldCheckmark16Filled
 
   const dayLabel = (key) => {
     const d = dayjs(key)
@@ -352,6 +361,13 @@
             class="mt-1.5 rounded-md border-l-2 border-fig-red bg-fig-red-50 px-2 py-1 text-[11px] text-textColor1 leading-snug"
           >
             {{ row.comment }}
+          </div>
+          <div
+            v-if="row.method"
+            class="mt-1 mr-2 inline-flex items-center gap-1 rounded-full bg-surface-ground px-2 py-0.5 text-[11px] font-medium text-textColor1"
+          >
+            <n-icon size="12" :component="methodIcon(row.method.id)" />
+            {{ row.method.name }}
           </div>
           <div
             v-if="row.certificate?.serial"
