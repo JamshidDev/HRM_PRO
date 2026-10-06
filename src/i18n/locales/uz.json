@@ -3685,7 +3685,9 @@
       "stop": "To'xtatish",
       "close": "Yopish",
       "background": "Modal yopilsa ham yuklash fonda davom etadi.",
-      "stopped": "Yuklash to'xtatildi."
+      "stopped": "Yuklash to'xtatildi.",
+      "exportErrors": "Xatolarni Excel'ga",
+      "noErrors": "Yuklab olish uchun xato yo'q."
     },
     "pullHistory": {
       "button": "Tortish tarixi",
