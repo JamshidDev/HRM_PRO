@@ -8,6 +8,7 @@
   import { money, mln, positionGroup, chartTheme, tokenColor } from '../helpers.js'
   import Card from './Card.vue'
   import EChart from './EChart.vue'
+  import ScSkeleton from './ScSkeleton.vue'
 
   const { t } = i18n.global
   const store = useSalaryControlStore()
@@ -212,7 +213,12 @@
 </script>
 
 <template>
-  <n-spin :show="store.dashboardLoading">
+  <template v-if="store.dashboardLoading">
+    <ScSkeleton variant="chart2" chart-height="340px" />
+    <div style="margin-top: 16px"><ScSkeleton variant="chart" chart-height="360px" /></div>
+  </template>
+
+  <template v-else>
     <div class="sc-grid2">
       <Card :title="$t('salaryControl.vids.scatter')" :sub="$t('salaryControl.vids.scatterSub')">
         <EChart :option="scatterOption" height="340px" />
@@ -234,7 +240,7 @@
         <span><i class="sw" :style="{ background: 'var(--fig-icon-red)' }"></i>Tekshirilishi kerak</span>
       </div>
     </Card>
-  </n-spin>
+  </template>
 </template>
 
 <style scoped>

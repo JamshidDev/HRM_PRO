@@ -8,6 +8,7 @@
   import { money, mln, chartTheme, tokenColor } from '../helpers.js'
   import Card from './Card.vue'
   import EChart from './EChart.vue'
+  import ScSkeleton from './ScSkeleton.vue'
 
   const { t } = i18n.global
   const store = useSalaryControlStore()
@@ -163,7 +164,9 @@
 </script>
 
 <template>
-  <n-spin :show="store.dashboardLoading">
+  <ScSkeleton v-if="store.dashboardLoading" variant="chart2" chart-height="320px" />
+
+  <template v-else>
     <div class="sc-grid2">
       <Card :title="$t('salaryControl.deductions.wf')" :sub="$t('salaryControl.deductions.wfSub')">
         <EChart :option="wfOption" height="320px" />
@@ -177,7 +180,7 @@
         <EChart :option="dshOption" height="320px" />
       </Card>
     </div>
-  </n-spin>
+  </template>
 </template>
 
 <style scoped>

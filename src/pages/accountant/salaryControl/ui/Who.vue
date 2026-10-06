@@ -8,6 +8,7 @@
   import { money, mln, positionGroup, chartTheme, tokenColor } from '../helpers.js'
   import Card from './Card.vue'
   import EChart from './EChart.vue'
+  import ScSkeleton from './ScSkeleton.vue'
 
   const { t } = i18n.global
   const store = useSalaryControlStore()
@@ -368,7 +369,13 @@
 </script>
 
 <template>
-  <n-spin :show="store.dashboardLoading">
+  <template v-if="store.dashboardLoading">
+    <ScSkeleton variant="chart2" chart-height="340px" />
+    <div style="margin-top: 16px"><ScSkeleton variant="chart2" chart-height="340px" /></div>
+    <div style="margin-top: 16px"><ScSkeleton variant="chart2" chart-height="340px" /></div>
+  </template>
+
+  <template v-else>
     <div class="sc-grid2">
       <Card :title="$t('salaryControl.who.topAccrued')" :sub="$t('salaryControl.who.topAccruedSub')">
         <EChart :option="topOption" height="340px" />
@@ -395,7 +402,7 @@
         <EChart :option="grpOption" height="340px" />
       </Card>
     </div>
-  </n-spin>
+  </template>
 </template>
 
 <style scoped>

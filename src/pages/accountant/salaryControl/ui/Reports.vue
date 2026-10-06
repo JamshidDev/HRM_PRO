@@ -5,6 +5,7 @@
   import { useSalaryControlStore } from '@/store/modules/index.js'
   import { money } from '../helpers.js'
   import Card from './Card.vue'
+  import ScSkeleton from './ScSkeleton.vue'
 
   const { t } = i18n.global
   const store = useSalaryControlStore()
@@ -27,35 +28,34 @@
 </script>
 
 <template>
-  <n-spin :show="store.dashboardLoading">
-    <Card :title="$t('salaryControl.reports.title')" :sub="$t('salaryControl.reports.sub')">
-      <div class="sc-scroll">
-        <table class="sc-tbl">
-          <thead>
-            <tr>
-              <th>{{ $t('salaryControl.reports.indicator') }}</th>
-              <th class="num">{{ $t('salaryControl.reports.vedomost') }}</th>
-              <th class="num">{{ $t('salaryControl.reports.report') }}</th>
-              <th class="num">{{ $t('salaryControl.reports.diff') }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(r, i) in rows" :key="i">
-              <td>
-                <b>{{ r.label }}</b>
-                <div class="sc-muted">{{ r.src }}</div>
-              </td>
-              <td class="num">{{ money(r.ved) }}</td>
-              <td class="num">{{ money(r.rep) }}</td>
-              <td class="num" :class="r.bad ? 'sc-diff--bad' : 'sc-diff--ok'">
-                {{ r.bad ? '⚠ ' : '✓ ' }}{{ money(r.diff) }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </Card>
-  </n-spin>
+  <ScSkeleton v-if="store.dashboardLoading" variant="table" />
+  <Card v-else :title="$t('salaryControl.reports.title')" :sub="$t('salaryControl.reports.sub')">
+    <div class="sc-scroll">
+      <table class="sc-tbl">
+        <thead>
+          <tr>
+            <th>{{ $t('salaryControl.reports.indicator') }}</th>
+            <th class="num">{{ $t('salaryControl.reports.vedomost') }}</th>
+            <th class="num">{{ $t('salaryControl.reports.report') }}</th>
+            <th class="num">{{ $t('salaryControl.reports.diff') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(r, i) in rows" :key="i">
+            <td>
+              <b>{{ r.label }}</b>
+              <div class="sc-muted">{{ r.src }}</div>
+            </td>
+            <td class="num">{{ money(r.ved) }}</td>
+            <td class="num">{{ money(r.rep) }}</td>
+            <td class="num" :class="r.bad ? 'sc-diff--bad' : 'sc-diff--ok'">
+              {{ r.bad ? '⚠ ' : '✓ ' }}{{ money(r.diff) }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </Card>
 </template>
 
 <style scoped>

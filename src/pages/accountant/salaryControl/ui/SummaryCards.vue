@@ -2,6 +2,7 @@
   import { useSalaryControlStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
+  import ScSkeleton from './ScSkeleton.vue'
 
   const { t } = i18n.global
   const store = useSalaryControlStore()
@@ -52,43 +53,42 @@
 </script>
 
 <template>
-  <n-spin :show="store.summaryLoading">
-    <div class="kpi-grid">
-      <div v-for="card in cards" :key="card.key" class="kpi-card">
-        <div class="kpi-head">
-          <span class="kpi-tile" :class="`kpi-tile--${card.tint}`">
-            <!-- money -->
-            <svg v-if="card.icon === 'money'" viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="2" y="6" width="20" height="12" rx="2" />
-              <circle cx="12" cy="12" r="3" />
-            </svg>
-            <!-- users -->
-            <svg v-else-if="card.icon === 'users'" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="9" cy="8" r="3.5" />
-              <path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6" />
-            </svg>
-            <!-- card -->
-            <svg v-else-if="card.icon === 'card'" viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="2" y="5" width="20" height="14" rx="2" />
-              <path d="M2 10h20" />
-            </svg>
-            <!-- minus / deduction -->
-            <svg v-else-if="card.icon === 'minus'" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="9" />
-              <path d="M8 12h8" />
-            </svg>
-            <!-- building / org -->
-            <svg v-else viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M14 9h4a2 2 0 0 1 2 2v10" />
-              <path d="M8 7h2M8 11h2M8 15h2" />
-            </svg>
-          </span>
-          <p class="kpi-title">{{ card.label }}</p>
-        </div>
-        <p class="kpi-value">{{ card.value }}</p>
+  <ScSkeleton v-if="store.summaryLoading" variant="kpi" :count="5" />
+  <div v-else class="kpi-grid">
+    <div v-for="card in cards" :key="card.key" class="kpi-card">
+      <div class="kpi-head">
+        <span class="kpi-tile" :class="`kpi-tile--${card.tint}`">
+          <!-- money -->
+          <svg v-if="card.icon === 'money'" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2" y="6" width="20" height="12" rx="2" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+          <!-- users -->
+          <svg v-else-if="card.icon === 'users'" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="9" cy="8" r="3.5" />
+            <path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6" />
+          </svg>
+          <!-- card -->
+          <svg v-else-if="card.icon === 'card'" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2" y="5" width="20" height="14" rx="2" />
+            <path d="M2 10h20" />
+          </svg>
+          <!-- minus / deduction -->
+          <svg v-else-if="card.icon === 'minus'" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M8 12h8" />
+          </svg>
+          <!-- building / org -->
+          <svg v-else viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M14 9h4a2 2 0 0 1 2 2v10" />
+            <path d="M8 7h2M8 11h2M8 15h2" />
+          </svg>
+        </span>
+        <p class="kpi-title">{{ card.label }}</p>
       </div>
+      <p class="kpi-value">{{ card.value }}</p>
     </div>
-  </n-spin>
+  </div>
 </template>
 
 <style scoped>

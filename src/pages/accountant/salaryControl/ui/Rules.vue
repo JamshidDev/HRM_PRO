@@ -8,6 +8,7 @@
   import { money, mln, chartTheme, tokenColor } from '../helpers.js'
   import Card from './Card.vue'
   import EChart from './EChart.vue'
+  import ScSkeleton from './ScSkeleton.vue'
 
   const { t } = i18n.global
   const store = useSalaryControlStore()
@@ -92,7 +93,13 @@
 </script>
 
 <template>
-  <n-spin :show="store.dashboardLoading">
+  <template v-if="store.dashboardLoading">
+    <ScSkeleton variant="kpi" :count="4" />
+    <div style="margin-top: 16px"><ScSkeleton variant="table" /></div>
+    <div style="margin-top: 16px"><ScSkeleton variant="chart" chart-height="240px" /></div>
+  </template>
+
+  <template v-else>
     <!-- rk — KPI qatori -->
     <div class="sc-kpis">
       <div class="sc-kpi">
@@ -212,7 +219,7 @@
         </table>
       </div>
     </Card>
-  </n-spin>
+  </template>
 </template>
 
 <style scoped>

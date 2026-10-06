@@ -2,6 +2,7 @@
   import { useSalaryControlStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
+  import ScSkeleton from './ScSkeleton.vue'
 
   const { t } = i18n.global
   const store = useSalaryControlStore()
@@ -30,7 +31,7 @@
         icon: statusMeta[status]?.icon ?? 'chart',
         label: statusLabel(status),
         count: items.length,
-        numbers: items.map((r) => r.n).join(', ')
+        hint: t(`salaryControl.risk.statusHint.${status}`)
       }
     })
   })
@@ -58,128 +59,156 @@
 </script>
 
 <template>
-  <n-spin :show="store.risksLoading">
-    <!-- Yuqori KPI qatori: status bo'yicha risklar soni. -->
-    <div class="sc-kpi-grid">
-      <div v-for="card in kpi" :key="card.status" class="sc-kpi-card">
-        <div class="sc-kpi-head">
-          <span class="sc-tile" :class="`sc-tile--${card.tone}`">
-            <svg v-if="card.icon === 'warn'" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 3 2 20h20L12 3zM12 10v4M12 17h.01" />
-            </svg>
-            <svg v-else-if="card.icon === 'flag'" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4 21V4h13l-2 4 2 4H4" />
-            </svg>
-            <svg v-else-if="card.icon === 'check'" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
-            </svg>
-            <svg v-else viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 3v18h18M7 14l4-4 3 3 5-6" />
-            </svg>
-          </span>
-          <span class="sc-badge" :class="`sc-badge--${card.tone}`">
-            <i class="sc-dot"></i>{{ card.label }}
-          </span>
-        </div>
-        <p class="sc-kpi-value">
-          {{ $t('salaryControl.risk.riskCount', { count: card.count }) }}
-        </p>
-        <p class="sc-kpi-numbers">
-          <template v-if="card.numbers">
-            {{ $t('salaryControl.risk.riskNumbers', { list: card.numbers }) }}
-          </template>
-          <template v-else>—</template>
-        </p>
-      </div>
+  <!-- Yuklanish: kontent shaklidagi skeleton (spinner emas). -->
+  <template v-if="store.risksLoading">
+    <ScSkeleton variant="kpi" :count="4" />
+    <div class="sc-sk-gap">
+      <ScSkeleton variant="cards" :count="6" />
+    </div>
+  </template>
+
+  <template v-else>
+    <!-- Bu davr uchun ma'lumot yo'q — aniq xabar (noldan iborat kartalar o'rniga). -->
+    <div v-if="!(store.risks?.length)" class="sc-empty-period">
+      {{ $t('salaryControl.risk.emptyPeriod') }}
     </div>
 
-    <!-- Oy me'yori. -->
-    <p v-if="store.norm != null" class="sc-norm">
-      {{ $t('salaryControl.risk.norm', { norm: store.norm }) }}
-    </p>
-
-    <!-- Bloklar bo'yicha risk kartalari. -->
-    <div v-for="group in blocks" :key="group.block" class="sc-block">
-      <div class="sc-block-title">{{ group.block }}</div>
-
-      <div class="sc-risk-grid">
-        <div v-for="risk in group.items" :key="risk.n" class="sc-risk-card">
-          <div class="sc-risk-head">
-            <span class="sc-rn">{{ risk.n }}</span>
-            <b class="sc-risk-title">{{ risk.title }}</b>
-            <span class="sc-badge" :class="`sc-badge--${statusTone(risk.status)}`">
-              <i class="sc-dot"></i>{{ statusLabel(risk.status) }}
+    <template v-else>
+      <!-- Yuqori KPI qatori: status bo'yicha risklar soni. -->
+      <div class="sc-kpi-grid">
+        <div
+          v-for="card in kpi"
+          :key="card.status"
+          class="sc-kpi-card"
+          :class="`sc-accent--${card.tone}`"
+        >
+          <div class="sc-kpi-head">
+            <span class="sc-tile" :class="`sc-tile--${card.tone}`">
+              <svg v-if="card.icon === 'warn'" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3 2 20h20L12 3zM12 10v4M12 17h.01" />
+              </svg>
+              <svg v-else-if="card.icon === 'flag'" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 21V4h13l-2 4 2 4H4" />
+              </svg>
+              <svg v-else-if="card.icon === 'check'" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
+              </svg>
+              <svg v-else viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 3v18h18M7 14l4-4 3 3 5-6" />
+              </svg>
+            </span>
+            <span class="sc-badge" :class="`sc-badge--${card.tone}`">
+              <i class="sc-dot"></i>{{ card.label }}
             </span>
           </div>
-
-          <div v-if="risk.finding" class="sc-finding">
-            {{ risk.finding }}
-          </div>
-          <div v-if="risk.advice" class="sc-advice">→ {{ risk.advice }}</div>
-
-          <!-- Hisoblash usuli — kartaga bosilganda ochiladi (formula + manba). -->
-          <button
-            v-if="risk.method"
-            type="button"
-            class="sc-method-toggle"
-            @click="toggleMethod(risk.n)"
-          >
-            <span
-              class="sc-method-caret"
-              :class="{ 'sc-method-caret--open': isMethodOpen(risk.n) }"
-            >›</span>
-            {{ $t('salaryControl.risk.method') }}
-          </button>
-          <div v-if="risk.method && isMethodOpen(risk.n)" class="sc-method">
-            {{ risk.method }}
-          </div>
-
-          <!-- Ta'sirlangan xodimlar (status na bo'lmaganda va ro'yxat bor bo'lsa). -->
-          <n-collapse
-            v-if="risk.status !== 'na' && risk.count > 0 && risk.affected?.length"
-            class="sc-collapse"
-          >
-            <n-collapse-item
-              :title="$t('salaryControl.risk.affected', { count: risk.count })"
-              name="affected"
-            >
-              <n-table :bordered="false" :single-line="false" size="small">
-                <thead>
-                  <tr>
-                    <th>{{ $t('salaryControl.risk.table.fio') }}</th>
-                    <th>{{ $t('salaryControl.risk.table.position') }}</th>
-                    <th>{{ $t('salaryControl.risk.table.detail') }}</th>
-                    <th class="text-right">{{ $t('salaryControl.risk.table.summa') }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(emp, idx) in risk.affected" :key="idx">
-                    <td>{{ emp.fio }}</td>
-                    <td>{{ emp.position }}</td>
-                    <td>{{ emp.detail }}</td>
-                    <td class="text-right">
-                      {{ emp.summa != null ? Utils.formatNumberToMoney(emp.summa) : '—' }}
-                    </td>
-                  </tr>
-                </tbody>
-              </n-table>
-            </n-collapse-item>
-          </n-collapse>
+          <p class="sc-kpi-value">
+            {{ $t('salaryControl.risk.riskCount', { count: card.count }) }}
+          </p>
+          <p class="sc-kpi-numbers">{{ card.hint }}</p>
         </div>
       </div>
-    </div>
 
-    <!-- Ma'lumot yo'q holati. -->
-    <div
-      v-if="!store.risksLoading && (store.risks?.length ?? 0) === 0"
-      class="py-16 text-center text-textColor3"
-    >
-      {{ $t('salaryControl.risk.empty') }}
-    </div>
-  </n-spin>
+      <!-- Oy me'yori. -->
+      <p v-if="store.norm != null" class="sc-norm">
+        {{ $t('salaryControl.risk.norm', { norm: store.norm }) }}
+      </p>
+
+      <!-- Bloklar bo'yicha risk kartalari. -->
+      <div v-for="group in blocks" :key="group.block" class="sc-block">
+        <div class="sc-block-title">{{ group.block }}</div>
+
+        <div class="sc-risk-grid">
+          <div
+            v-for="risk in group.items"
+            :key="risk.n"
+            class="sc-risk-card"
+            :class="`sc-accent--${statusTone(risk.status)}`"
+          >
+            <div class="sc-risk-head">
+              <span class="sc-rn" :class="`sc-rn--${statusTone(risk.status)}`">{{ risk.n }}</span>
+              <b class="sc-risk-title">{{ risk.title }}</b>
+              <span class="sc-badge" :class="`sc-badge--${statusTone(risk.status)}`">
+                <i class="sc-dot"></i>{{ statusLabel(risk.status) }}
+              </span>
+            </div>
+
+            <div v-if="risk.finding" class="sc-finding">
+              {{ risk.finding }}
+            </div>
+            <div v-if="risk.advice" class="sc-advice">→ {{ risk.advice }}</div>
+
+            <!-- Hisoblash usuli — kartaga bosilganda ochiladi (formula + manba). -->
+            <button
+              v-if="risk.method"
+              type="button"
+              class="sc-method-toggle"
+              @click="toggleMethod(risk.n)"
+            >
+              <span
+                class="sc-method-caret"
+                :class="{ 'sc-method-caret--open': isMethodOpen(risk.n) }"
+              >›</span>
+              {{ $t('salaryControl.risk.method') }}
+            </button>
+            <div v-if="risk.method && isMethodOpen(risk.n)" class="sc-method">
+              {{ risk.method }}
+            </div>
+
+            <!-- Ta'sirlangan xodimlar (status na bo'lmaganda va ro'yxat bor bo'lsa). -->
+            <n-collapse
+              v-if="risk.status !== 'na' && risk.count > 0 && risk.affected?.length"
+              class="sc-collapse"
+            >
+              <n-collapse-item
+                :title="$t('salaryControl.risk.affected', { count: risk.count })"
+                name="affected"
+              >
+                <n-table :bordered="false" :single-line="false" size="small">
+                  <thead>
+                    <tr>
+                      <th>{{ $t('salaryControl.risk.table.fio') }}</th>
+                      <th>{{ $t('salaryControl.risk.table.position') }}</th>
+                      <th>{{ $t('salaryControl.risk.table.detail') }}</th>
+                      <th class="text-right">{{ $t('salaryControl.risk.table.summa') }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(emp, idx) in risk.affected" :key="idx">
+                      <td>{{ emp.fio }}</td>
+                      <td>{{ emp.position }}</td>
+                      <td>{{ emp.detail }}</td>
+                      <td class="text-right">
+                        {{ emp.summa != null ? Utils.formatNumberToMoney(emp.summa) : '—' }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </n-table>
+              </n-collapse-item>
+            </n-collapse>
+          </div>
+        </div>
+      </div>
+    </template>
+  </template>
 </template>
 
 <style scoped>
+  .sc-sk-gap {
+    margin-top: 20px;
+  }
+
+  /* Bu davr uchun ma'lumot yo'q — aniq, markazlashgan xabar. */
+  .sc-empty-period {
+    padding: 56px 24px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--fig-text-tertiary);
+    background: var(--fig-block-bg);
+    border: 0.8px dashed var(--fig-blue-300);
+    border-radius: 16px;
+  }
+
   /* ---- yuqori status KPI qatori ---- */
   .sc-kpi-grid {
     display: grid;
@@ -362,6 +391,21 @@
     background: var(--fig-block-bg);
   }
 
+  /* Status-rangli chap aksent — kartani buzmay, holatni bir qarashda ajratadi.
+     Ramka/fon o'zgarmaydi; faqat ichki 3px rangli chiziq (fig-icon-* token). */
+  .sc-accent--red {
+    box-shadow: inset 3px 0 0 0 var(--fig-icon-red);
+  }
+  .sc-accent--amber {
+    box-shadow: inset 3px 0 0 0 var(--fig-icon-amber);
+  }
+  .sc-accent--green {
+    box-shadow: inset 3px 0 0 0 var(--fig-icon-green);
+  }
+  .sc-accent--indigo {
+    box-shadow: inset 3px 0 0 0 var(--fig-icon-indigo);
+  }
+
   .sc-risk-head {
     display: flex;
     align-items: flex-start;
@@ -381,6 +425,20 @@
     color: #fff;
     font-weight: 700;
     font-size: 12px;
+  }
+
+  /* Raqam plitasi ham holat rangida — aksent bilan uyg'un (fig-icon-* token). */
+  .sc-rn--red {
+    background: var(--fig-icon-red);
+  }
+  .sc-rn--amber {
+    background: var(--fig-icon-amber);
+  }
+  .sc-rn--green {
+    background: var(--fig-icon-green);
+  }
+  .sc-rn--indigo {
+    background: var(--fig-icon-indigo);
   }
 
   .sc-risk-title {

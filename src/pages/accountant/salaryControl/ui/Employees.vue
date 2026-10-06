@@ -6,6 +6,7 @@
   import { useSalaryControlStore } from '@/store/modules/index.js'
   import { money } from '../helpers.js'
   import Card from './Card.vue'
+  import ScSkeleton from './ScSkeleton.vue'
 
   const { t } = i18n.global
   const store = useSalaryControlStore()
@@ -121,35 +122,34 @@
 </script>
 
 <template>
-  <n-spin :show="store.dashboardLoading">
-    <Card :title="$t('salaryControl.employees.title')" :sub="$t('salaryControl.employees.sub')">
-      <template #head>
-        <button
-          class="sc-export"
-          :disabled="store.exporting === 'employees'"
-          @click="store._export('employees')"
-        >
-          {{ store.exporting === 'employees' ? '…' : $t('salaryControl.common.export') }}
-        </button>
-      </template>
-      <div class="sc-toolbar">
-        <n-input
-          v-model:value="q"
-          size="small"
-          clearable
-          :placeholder="$t('salaryControl.common.search')"
-          class="sc-search"
-        />
-      </div>
-      <n-data-table
-        :columns="columns"
-        :data="rows"
-        :pagination="pagination"
-        :bordered="false"
+  <ScSkeleton v-if="store.dashboardLoading" variant="table" />
+  <Card v-else :title="$t('salaryControl.employees.title')" :sub="$t('salaryControl.employees.sub')">
+    <template #head>
+      <button
+        class="sc-export"
+        :disabled="store.exporting === 'employees'"
+        @click="store._export('employees')"
+      >
+        {{ store.exporting === 'employees' ? '…' : $t('salaryControl.common.export') }}
+      </button>
+    </template>
+    <div class="sc-toolbar">
+      <n-input
+        v-model:value="q"
         size="small"
+        clearable
+        :placeholder="$t('salaryControl.common.search')"
+        class="sc-search"
       />
-    </Card>
-  </n-spin>
+    </div>
+    <n-data-table
+      :columns="columns"
+      :data="rows"
+      :pagination="pagination"
+      :bordered="false"
+      size="small"
+    />
+  </Card>
 </template>
 
 <style scoped>

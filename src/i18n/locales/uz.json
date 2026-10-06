@@ -6098,6 +6098,13 @@
       "title": "Risk {n} · {title}",
       "riskNumbers": "Risklar: {list}",
       "riskCount": "{count} ta risk",
+      "statusHint": {
+        "bad": "Darhol ko'rib chiqishni talab qiladi",
+        "chk": "Qo'shimcha tekshirish tavsiya etiladi",
+        "ok": "Muammo aniqlanmadi",
+        "na": "Baholash uchun ma'lumot yetarli emas"
+      },
+      "emptyPeriod": "Bu davr uchun ma'lumot topilmadi. Boshqa oy yoki tashkilotni tanlang.",
       "norm": "Oy me'yori: {norm} soat",
       "method": "Hisoblash usuli",
       "finding": "Aniqlangan holat",

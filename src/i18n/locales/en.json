@@ -6039,6 +6039,13 @@
       "title": "Risk {n} · {title}",
       "riskNumbers": "Risks: {list}",
       "riskCount": "{count} risks",
+      "statusHint": {
+        "bad": "Requires immediate review",
+        "chk": "Additional review recommended",
+        "ok": "No issues found",
+        "na": "Insufficient data to evaluate"
+      },
+      "emptyPeriod": "No data for this period. Select another month or organization.",
       "norm": "Monthly norm: {norm} hours",
       "method": "Calculation method",
       "finding": "Finding",
