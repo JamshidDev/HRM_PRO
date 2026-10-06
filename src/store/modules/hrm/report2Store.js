@@ -32,10 +32,18 @@ const pickWithAncestors = (tree, matches) => {
   const result = prune(tree)
   return found === ids.size ? result : matches
 }
-// `table.positions` qaysi `department.list` uchun to'liq yuklangani. Ro'yxat
-// o'zgarmagan bo'lsa (ro'yxat ↔ jadval almashtirilganda) qayta so'ralmaydi.
-// Reaktiv emas — faqat solishtirish uchun.
+// Jadval lavozimlari bo'linma ochilganda (bosilganda) yuklanadi.
+// Quyidagilar reaktiv emas — faqat navbatni boshqarish uchun:
+// `tableSource` — `table.positions` qaysi `department.list` ga tegishli. Ro'yxat
+//   o'zgarmagan bo'lsa (ro'yxat ↔ jadval almashtirilganda) kesh saqlanadi.
+// `tableStale` — keshda bor, lekin qayta so'ralishi kerak (tahrirdan keyin).
+//   Yangisi kelguncha eski qatorlar ko'rinib turadi — jadval sakramaydi.
 let tableSource = null
+let tableStale = new Set()
+let tableQueue = []
+let tableInflight = new Set()
+let tableWorkers = 0
+const TABLE_CONCURRENCY = 6
 
 export const useReport2Store = defineStore('report2Store', {
   state: () => ({
@@ -50,13 +58,17 @@ export const useReport2Store = defineStore('report2Store', {
     byPosition: true,
     // 'list' — bo'linma kartochkalari, 'table' — bo'linma → lavozim → xodim daraxt jadvali
     viewMode: 'list',
-    // Jadval ko'rinishi barcha bo'linmalar lavozimlarini birdaniga ko'rsatadi
+    // Jadval ko'rinishi: bo'linma → lavozimlar. `positions[id]` yo'q bo'lsa — hali yuklanmagan.
     table: {
       loading: false,
       seq: 0,
       done: 0,
       total: 0,
       positions: {},
+      // Joriy `department.list` daraxtidagi barcha bo'linma id'lari (tartib bilan)
+      ids: [],
+      // Ochilgan bo'linmalar: { [id]: true } — tahrirdan keyin ham ochiq qoladi.
+      expanded: {},
       // Keyingi `_loadTable` faqat shu bo'linmalarni (va keshda yo'qlarini)
       // qayta so'raydi; null — hammasi qaytadan.
       refreshIds: null
@@ -271,16 +283,15 @@ export const useReport2Store = defineStore('report2Store', {
       this._invalidateTable(departmentIds)
       if (this.viewMode !== 'table') this.getPosition()
     },
-    // Har bir bo'linma lavozimlari alohida so'rov bilan keladi, shu bois ular
-    // cheklangan parallellikda yuklanadi. Eski so'rov natijasi yangisini
-    // bosib ketmasligi uchun `token` tekshiriladi.
-    async _loadTable() {
+    // `department.list` o'zgarganda jadval holati qayta quriladi, lekin hech narsa
+    // so'ralmaydi — lavozimlarni ochilgan bo'linmalar uchun TableView
+    // `_requestTablePositions` orqali so'raydi.
+    _loadTable() {
       const list = toRaw(this.department.list)
       const only = this.table.refreshIds
       this.table.refreshIds = null
       if (list === tableSource && !only) return
 
-      const token = ++this.table.seq
       const ids = []
       const walk = (items) =>
         items.forEach((v) => {
@@ -289,33 +300,70 @@ export const useReport2Store = defineStore('report2Store', {
         })
       walk(list)
 
-      // Oldingi to'liq yuklash bo'lsa — keshdagi lavozimlar qayta ishlatiladi,
-      // faqat o'zgargan va yangi bo'linmalar so'raladi.
-      const cache = tableSource ? this.table.positions : {}
+      // `only` bo'lsa (tahrir) — kesh saqlanadi, faqat shu bo'linmalar eskirgan
+      // deb belgilanadi. Aks holda (tashkilot almashdi, sahifa qayta ochildi) — noldan.
+      const cache = only && tableSource ? toRaw(this.table.positions) : {}
       const positions = {}
-      const fetchIds = []
+      tableStale = new Set()
       ids.forEach((id) => {
-        if (only && !only.includes(id) && id in cache) positions[id] = cache[id]
-        else fetchIds.push(id)
+        if (!(id in cache)) return
+        positions[id] = cache[id]
+        if (only.includes(id)) tableStale.add(id)
       })
 
-      this.table.loading = true
-      this.table.done = 0
-      this.table.total = fetchIds.length
-      let cursor = 0
-      const worker = async () => {
-        while (cursor < fetchIds.length) {
-          const id = fetchIds[cursor++]
-          positions[id] = await this._tablePositions(id).catch(() => [])
-          if (this.table.seq !== token) return
-          this.table.done++
-        }
-      }
-      await Promise.all(Array.from({ length: Math.min(6, fetchIds.length) }, worker))
-      if (this.table.seq !== token) return
+      this.table.seq++
+      tableQueue = []
+      tableInflight = new Set()
+      tableWorkers = 0
       this.table.positions = positions
+      this.table.ids = ids
+      if (!only) this.table.expanded = {}
       this.table.loading = false
+      this.table.done = 0
+      this.table.total = 0
       tableSource = list
+    },
+    // Berilgan bo'linmalardan yuklanmagan/eskirganlarini navbatga qo'yadi.
+    _requestTablePositions(ids) {
+      const want = ids.filter(
+        (id) =>
+          (!(id in this.table.positions) || tableStale.has(id)) &&
+          !tableInflight.has(id) &&
+          !tableQueue.includes(id)
+      )
+      if (!want.length) return
+      tableQueue.push(...want)
+      this.table.total += want.length
+      this.table.loading = true
+      const seq = this.table.seq
+      while (tableWorkers < TABLE_CONCURRENCY && tableWorkers < tableQueue.length) {
+        tableWorkers++
+        this._tableWorker(seq)
+      }
+    },
+    async _tableWorker(seq) {
+      while (tableQueue.length && this.table.seq === seq) {
+        const id = tableQueue.shift()
+        tableInflight.add(id)
+        const list = await this._tablePositions(id).catch(() => null)
+        // Eski so'rov natijasi yangi holatni bosib ketmasin.
+        if (this.table.seq !== seq) return
+        tableInflight.delete(id)
+        if (list) {
+          this.table.positions[id] = list
+          tableStale.delete(id)
+        } else if (!(id in this.table.positions)) {
+          this.table.positions[id] = []
+        }
+        this.table.done++
+      }
+      if (this.table.seq !== seq) return
+      tableWorkers--
+      if (tableWorkers === 0) {
+        this.table.loading = false
+        this.table.done = 0
+        this.table.total = 0
+      }
     },
     _tablePositions(departmentId) {
       const params = {

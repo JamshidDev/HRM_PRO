@@ -68,13 +68,16 @@
 </script>
 
 <template>
-  <div
-    class="w-full flex flex-col md:flex-row md:items-center gap-3"
-  >
+  <!-- Tor ekranda bloklar butunligicha keyingi qatorga o'tadi (`flex-wrap`);
+       `justify-end` — o'tib ketgan tashkilot select'i o'ng chetda qoladi. -->
+  <div class="w-full flex flex-wrap items-center justify-end gap-3">
     <!-- Filter fonsiz — pastdagi kartochka bilan ikki qavat fon bo'lmasin. -->
     <!-- Tashkilot select'i o'ng chetda: desktopda `order-last` bilan oxiriga
          o'tadi, mobilda esa birinchi bo'lib qoladi. -->
-    <div class="w-full md:w-[360px] shrink-0 md:order-last" :class="{ 'md:ml-auto': !selectedOrg }">
+    <!-- Mobilda select birinchi qatorda to'liq kenglikda, desktopda o'ng chetda.
+         `pt-2 pr-2` — tanlanganlar badge'i (n-badge offset) tor ekranda sahifa
+         chetidan kesilib qolmasin. -->
+    <div class="w-full md:w-[300px] xl:w-[360px] shrink-0 order-first md:order-last pt-2 pr-2 md:p-0">
       <UISelect
         placement="bottom-end"
         clearable
@@ -118,10 +121,11 @@
     <template v-if="selectedOrg">
       <UISegmentTabs
         v-if="store.department.list.length > 0"
+        class="shrink-0 mr-auto"
         :tabs="modeTabs"
         v-model="store.viewMode"
       />
-      <div class="flex flex-wrap gap-2 md:ml-auto">
+      <div class="flex flex-wrap gap-2">
         <n-button
           v-if="accStore.checkPermission(accStore.pn.hrReportStaffingExport)"
           ref="staffingButtonRef"
