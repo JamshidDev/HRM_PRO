@@ -1160,6 +1160,7 @@
     "legalPerson": "Legal entity",
     "naturalPerson": "Individual",
     "connectionError": "E-signature not installed or misconfigured!",
+    "localNetworkBlocked": "The browser blocked the connection to E-IMZO. Click the lock icon in the address bar → “Local network access” → “Allow”, then reload the page.",
     "confirmError": "An error occurred while confirming the document. Please try again shortly.",
     "certCheckError": "The E-IMZO certificate status service is temporarily unavailable. Please try again shortly.",
     "serverError": "A server error occurred. Please try again shortly.",

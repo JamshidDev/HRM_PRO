@@ -229,6 +229,9 @@ export const useAccountStore = defineStore('accountStore', {
         .then(() => {
           callback?.()
         })
+        // Token allaqachon eskirgan bo'lsa backend 401 qaytaradi — interceptor
+        // tokenni o'chirib login'ga yo'naltiradi, bu yerda xatoni yutamiz.
+        .catch(() => {})
         .finally(() => {
           this.loading = false
         })

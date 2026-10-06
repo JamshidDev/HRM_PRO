@@ -109,20 +109,12 @@
     return { pct, cls }
   }
 
-  const stats = computed(() => {
-    const occ = occupancy(totals.value)
-    return [
-      { label: t('report.tooltip.P'), value: totals.value.rate, cls: 'text-fig-text-primary' },
-      { label: t('report.tooltip.F'), value: totals.value.real_rate, cls: 'text-fig-text-primary' },
-      { label: t('report.tooltip.V'), value: totals.value.vacant, cls: 'text-fig-chip-green-text' },
-      { label: t('report.tooltip.S'), value: totals.value.over, cls: 'text-fig-text-red' },
-      {
-        label: t('report.table.occupancy'),
-        value: occ?.pct != null ? `${occ.pct}%` : '—',
-        cls: 'text-primary'
-      }
-    ]
-  })
+  const stats = computed(() => [
+    { label: t('report.tooltip.P'), value: totals.value.rate, cls: 'text-fig-text-primary' },
+    { label: t('report.tooltip.F'), value: totals.value.real_rate, cls: 'text-fig-text-primary' },
+    { label: t('report.tooltip.V'), value: totals.value.vacant, cls: 'text-fig-chip-green-text' },
+    { label: t('report.tooltip.S'), value: totals.value.over, cls: 'text-fig-text-red' }
+  ])
 
   // Lavozim qatori bosilganda shu lavozimdagi xodimlar jadval ichida ochiladi.
   const workers = reactive({})
@@ -192,12 +184,21 @@
     if (key === 'over') return 'text-fig-text-red font-semibold'
     return 'text-fig-text-primary'
   }
+
+  // Vakant va sverx qiymatlari bo'lsa badge ko'rinishida ko'rsatiladi
+  // Fon -100 tokenlarda — chip/50 fonlari oq fonda deyarli ko'rinmaydi.
+  const badgeCls = (key, value) => {
+    if (!value) return null
+    if (key === 'vacant') return 'bg-fig-green-100 text-fig-chip-green-text'
+    if (key === 'over') return 'bg-fig-red-100 text-fig-text-red'
+    return null
+  }
 </script>
 
 <template>
   <div class="flex flex-col gap-3 px-1 pb-1">
     <!-- Umumiy ko'rsatkichlar (barcha lavozimlar yig'indisi) -->
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-2">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
       <div
         v-for="item in stats"
         :key="item.label"
@@ -281,7 +282,14 @@
                 class="text-center font-semibold tabular-nums"
                 :class="valueCls(col.key, valueOf(section.dept, col.key))"
               >
-                {{ valueOf(section.dept, col.key) || '–' }}
+                <span
+                  v-if="badgeCls(col.key, valueOf(section.dept, col.key))"
+                  class="inline-flex items-center justify-center min-w-8 h-6 px-2 rounded-full text-xs font-semibold"
+                  :class="badgeCls(col.key, valueOf(section.dept, col.key))"
+                >
+                  {{ valueOf(section.dept, col.key) }}
+                </span>
+                <template v-else>{{ valueOf(section.dept, col.key) || '–' }}</template>
               </td>
               <td>
                 <template v-if="occupancy(section.dept)">
@@ -346,7 +354,14 @@
                   class="text-center tabular-nums"
                   :class="valueCls(col.key, valueOf(p, col.key))"
                 >
-                  {{ valueOf(p, col.key) || '–' }}
+                  <span
+                    v-if="badgeCls(col.key, valueOf(p, col.key))"
+                    class="inline-flex items-center justify-center min-w-8 h-6 px-2 rounded-full text-xs font-semibold"
+                    :class="badgeCls(col.key, valueOf(p, col.key))"
+                  >
+                    {{ valueOf(p, col.key) }}
+                  </span>
+                  <template v-else>{{ valueOf(p, col.key) || '–' }}</template>
                 </td>
                 <td>
                   <template v-if="occupancy(p)">
@@ -430,7 +445,14 @@
               class="text-center font-semibold tabular-nums"
               :class="valueCls(col.key, visibleTotals[col.key])"
             >
-              {{ visibleTotals[col.key] || '–' }}
+              <span
+                v-if="badgeCls(col.key, visibleTotals[col.key])"
+                class="inline-flex items-center justify-center min-w-8 h-6 px-2 rounded-full text-xs font-semibold"
+                :class="badgeCls(col.key, visibleTotals[col.key])"
+              >
+                {{ visibleTotals[col.key] }}
+              </span>
+              <template v-else>{{ visibleTotals[col.key] || '–' }}</template>
             </td>
             <td class="text-xs font-semibold tabular-nums">
               {{ occupancy(visibleTotals)?.pct ?? '—' }}%
