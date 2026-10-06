@@ -158,17 +158,21 @@
     [
       {
         key: 'group',
+        letter: 'G',
         label: 'report.tooltip.G',
         value: w.group,
         cls: 'bg-fig-bg-secondary text-fig-text-primary'
       },
       {
         key: 'rank',
+        letter: 'R',
         label: 'report.tooltip.R',
         value: w.rank,
         cls: 'bg-fig-chip-amber text-fig-chip-amber-text'
       }
     ].filter((tag) => tag.value)
+
+  const ellipsisTooltip = { style: { maxWidth: '400px' } }
 
   const departmentActions = computed(() => [
     {
@@ -271,7 +275,7 @@
     />
 
     <div class="overflow-auto max-h-[calc(100vh-320px)] rounded-2xl border border-table-border">
-      <table class="report-sheet w-full min-w-[820px] text-sm">
+      <table class="report-sheet w-full min-w-[820px] table-fixed text-sm">
         <thead>
           <tr>
             <th class="w-12 text-center">№</th>
@@ -447,39 +451,50 @@
                 >
                   <td></td>
                   <td>
+                    <!-- Har ustun qat'iy kenglikda — ism/shartnoma/lavozim qatorlar
+                         bo'ylab bir xil joyda turadi. Sig'maganda "..." bilan kesiladi,
+                         to'liq matn popupda (n-ellipsis faqat kesilganda ko'rsatadi). -->
                     <div
-                      class="flex items-center gap-2 min-w-0"
+                      class="report-worker"
                       :style="{ paddingLeft: `${section.depth * 20 + 30}px` }"
                     >
-                      <span
-                        class="truncate cursor-pointer hover:text-primary hover:underline"
+                      <n-ellipsis
+                        class="report-worker__name cursor-pointer hover:text-primary hover:underline"
+                        :tooltip="ellipsisTooltip"
                         @click="openWorker(w)"
                       >
                         {{ Utils.combineFullName(w.worker) }}
-                      </span>
-                      <n-tag v-if="w.type" size="tiny" round :bordered="false" type="warning">
-                        {{ w.type?.name }}
-                      </n-tag>
-                      <span class="text-xs text-fig-text-tertiary truncate">
-                        {{ w.post_name }}
-                      </span>
-                      <!-- Guruh va razryad — ro'yxat ko'rinishidagi WorkerCard'dagi G/R bilan bir xil. -->
-                      <span class="ml-auto flex items-center gap-1 shrink-0">
+                      </n-ellipsis>
+                      <div class="min-w-0">
                         <span
-                          v-for="tag in workerTags(w)"
-                          :key="tag.key"
-                          class="inline-flex items-center gap-1 h-5 px-2 rounded-full text-[11px] font-semibold tabular-nums"
-                          :class="tag.cls"
+                          v-if="w.type"
+                          class="inline-flex max-w-full h-5 items-center px-2 rounded-full text-[11px] bg-primary/10 text-primary"
                         >
-                          <span class="font-normal opacity-70">{{ $t(tag.label) }}</span>
-                          {{ tag.value }}
+                          <n-ellipsis class="min-w-0" :tooltip="ellipsisTooltip">{{ w.type?.name }}</n-ellipsis>
                         </span>
-                      </span>
+                      </div>
+                      <n-ellipsis class="text-xs text-fig-text-tertiary" :tooltip="ellipsisTooltip">
+                        {{ w.post_name }}
+                      </n-ellipsis>
                     </div>
                   </td>
                   <td></td>
                   <td class="text-center tabular-nums text-xs">{{ num(w.rate) || '' }}</td>
-                  <td colspan="4"></td>
+                  <!-- Guruh (G) va razryad (R) — Vakant ustunida, WorkerCard'dagi G/R kabi. -->
+                  <td class="report-sheet__gr">
+                    <div class="flex items-center justify-center gap-1">
+                      <span
+                        v-for="tag in workerTags(w)"
+                        :key="tag.key"
+                        :title="$t(tag.label)"
+                        class="inline-flex items-center gap-0.5 h-5 px-1.5 rounded-full text-[11px] font-semibold tabular-nums"
+                        :class="tag.cls"
+                      >
+                        <span class="font-normal opacity-70">{{ tag.letter }}</span>{{ tag.value }}
+                      </span>
+                    </div>
+                  </td>
+                  <td colspan="3"></td>
                 </tr>
               </template>
             </template>
@@ -558,6 +573,21 @@
   .report-sheet__position:hover td,
   .report-sheet__position.is-open td {
     background: var(--fig-bg-secondary);
+  }
+
+  /* ism | shartnoma turi | lavozim */
+  .report-worker {
+    display: grid;
+    grid-template-columns: minmax(0, 240px) minmax(0, 210px) minmax(0, 1fr);
+    align-items: center;
+    column-gap: 10px;
+    min-width: 0;
+  }
+
+  /* Vakant ustuni tor (w-20) — ikkala chip sig'ishi uchun yon padding kichik. */
+  .report-sheet .report-sheet__gr {
+    padding-left: 4px;
+    padding-right: 4px;
   }
 
   .report-sheet__worker td {

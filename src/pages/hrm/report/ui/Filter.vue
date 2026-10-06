@@ -3,30 +3,15 @@
   import { useComponentStore, useDepartmentStore, useReport2Store } from '@/store/modules/index.js'
   import { useAccountStore } from '@/store/modules/index.js'
   import { AddCircle24Regular, ArrowDownload24Regular } from '@vicons/fluent'
-  import i18n from '@/i18n/index.js'
   const accStore = useAccountStore()
   const { proxy } = getCurrentInstance()
   const staffingButtonRef = ref(null)
 
   const componentStore = useComponentStore()
   const store = useReport2Store()
-  const { t } = i18n.global
   const dpStore = useDepartmentStore()
 
   const selectedOrg = computed(() => store.department.params.organization_id?.[0] || null)
-
-  const orgStats = computed(() => {
-    const org = selectedOrg.value
-    if (!org) return []
-    return [
-      { label: t('report.tooltip.P'), value: org.rate, cls: 'text-fig-text-primary' },
-      {
-        label: t('report.tooltip.F'),
-        value: org.real_rate,
-        cls: org.real_rate > org.rate ? 'text-fig-text-red' : 'text-fig-text-primary'
-      }
-    ]
-  })
 
   const onChangeOrg = (v) => {
     store.department.params.organization_id = v
@@ -120,23 +105,6 @@
     </div>
 
     <template v-if="selectedOrg">
-      <!-- Tashkilot bo'yicha jami Plan/Fakt: bitta guruhda, ajratgich bilan.
-           Fakt plandan oshsa qizil bo'ladi. -->
-      <div
-        class="flex items-center self-start md:self-auto h-[34px] rounded-xl border border-table-border divide-x divide-table-border"
-      >
-        <div
-          v-for="item in orgStats"
-          :key="item.label"
-          class="flex items-center gap-2 h-full px-3.5"
-        >
-          <span class="text-xs text-fig-text-tertiary">{{ item.label }}</span>
-          <span class="text-sm font-semibold tabular-nums" :class="item.cls">
-            {{ item.value ?? 0 }}
-          </span>
-        </div>
-      </div>
-
       <div class="flex flex-wrap gap-2 md:ml-auto">
         <n-button
           v-if="accStore.checkPermission(accStore.pn.hrReportStaffingExport)"
