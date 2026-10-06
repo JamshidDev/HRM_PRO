@@ -224,7 +224,7 @@
     </p>
 
     <!-- Yuklash tugagach xato bo'lsa — barcha xatolarni Excel'ga yuklab olish -->
-    <div v-if="!store.bulkRunning && failedCount > 0" class="mt-3">
+    <div v-if="!store.bulkRunning && failCount > 0" class="mt-3">
       <n-button
         block
         @click="store._exportBulkErrors()"
@@ -232,7 +232,7 @@
         type="warning"
         ghost
       >
-        {{ $t('uploadReport.bulkOnes.exportErrors') }} ({{ failedCount }})
+        {{ $t('uploadReport.bulkOnes.exportErrors') }} ({{ failCount }})
       </n-button>
     </div>
 
