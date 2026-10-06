@@ -1,5 +1,10 @@
 <script setup>
-  import { useAccountStore, useComponentStore, useEventStore, useEventV2Store } from '@/store/modules/index.js'
+  import {
+    useAccountStore,
+    useComponentStore,
+    useEventStore,
+    useEventV2Store
+  } from '@/store/modules/index.js'
   import { ArrowSync24Filled, ArrowCircleDown32Regular } from '@vicons/fluent'
   import { UIPageFilter, UISelect, SuperSelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
@@ -203,18 +208,16 @@
       />
     </template>
     <template #filterSearch>
-      <div class="tab-wrapper ml-2">
-        <UITabs
-          class="tab-switcher"
-          :value="store.activeTab"
-          @update:value="store._changeView"
-          type="segment"
-          size="small"
-        >
-          <n-tab-pane :name="store.tabs[0]" :tab="$t('hcEvent.oldView')" />
-          <n-tab-pane :name="store.tabs[1]" :tab="$t('deviceEvent.tab')" />
-        </UITabs>
-      </div>
+      <UITabs
+        class="ml-2"
+        :value="store.activeTab"
+        @update:value="store._changeView"
+        type="segment"
+        size="small"
+      >
+        <n-tab-pane :name="store.tabs[0]" :tab="$t('hcEvent.oldView')" />
+        <n-tab-pane :name="store.tabs[1]" :tab="$t('deviceEvent.tab')" />
+      </UITabs>
     </template>
     <template #filterAction>
       <!-- `checkAction` yon ta'sirli (toast chiqaradi) — template'da chaqirilsa
@@ -245,23 +248,3 @@
     </template>
   </UIPageFilter>
 </template>
-
-<style scoped>
-.tab-wrapper {
-  border: 1px solid var(--surface-line);
-  border-radius: 6px;
-  padding: 1px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-}
-
-.tab-switcher {
-  width: 200px;
-  height: 100%;
-}
-
-
-
-
-</style>
