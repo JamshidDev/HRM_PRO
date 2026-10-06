@@ -2,6 +2,7 @@
   import { useOrganizationStore, useComponentStore } from '@/store/modules/index.js'
   import { UITree, UIPagination } from '@/components/index.js'
   import { useDialog } from 'naive-ui'
+  import { ChevronDoubleUp16Regular, LocalLanguage16Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
   import { useAccountStore } from '@/store/modules/index.js'
   const accStore = useAccountStore()
@@ -100,51 +101,62 @@
 
 <template>
   <div
-    class="flex-1 flex flex-col overflow-auto gap-4 rounded-xl border border-surface-line bg-surface-section px-4 pt-4"
+    class="flex-1 min-h-0 flex flex-col overflow-hidden rounded-xl border border-surface-line bg-surface-section"
   >
-    <div class="flex flex-wrap items-center justify-between gap-2">
+    <div
+      class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-surface-line"
+    >
       <div class="flex items-center gap-2">
-        <div class="h-2.5 w-2.5 rounded-full bg-primary"></div>
-        <span class="text-sm font-medium text-textColor0">{{ $t('organizationPage.name') }}</span>
+        <span class="text-base font-semibold text-textColor0">{{ $t('organizationPage.name') }}</span>
+        <span
+          class="rounded-full bg-surface-ground px-2 py-0.5 text-xs font-medium text-secondary tabular-nums"
+        >
+          {{ store.totalItems }}
+        </span>
       </div>
-      <div class="ml-auto flex w-full items-center justify-end gap-2 sm:w-auto">
+      <div class="ml-auto flex items-center gap-2">
+        <Transition name="fade">
+          <n-button v-if="expandedKeys.length" size="small" quaternary @click="expandedKeys = []">
+            <template #icon>
+              <n-icon><ChevronDoubleUp16Regular /></n-icon>
+            </template>
+            {{ $t('organizationPage.collapseAll') }}
+          </n-button>
+        </Transition>
         <n-select
           size="small"
-          style="width: 200px"
+          class="w-[160px]!"
           v-model:value="store.headerLang"
           :options="headerOption"
           value-field="id"
           label-field="name"
           @update:value="changeHeaderLang"
-        />
-        <span
-          class="whitespace-nowrap rounded-md bg-surface-ground px-2 py-1 text-xs text-textColor0"
         >
-          {{ $t('documentSetting.form.count', { n: store.totalItems }) }}
-        </span>
+          <template #arrow>
+            <n-icon><LocalLanguage16Regular /></n-icon>
+          </template>
+        </n-select>
       </div>
     </div>
 
-    <div class="flex-1 flex flex-col overflow-auto">
-      <n-spin :show="store.loading" class="flex-1 overflow-auto">
-        <div
-          class="min-h-[260px] h-full overflow-auto rounded-lg border border-surface-line bg-surface-ground p-2"
-        >
-          <UITree
-            v-if="store.list.length"
-            :children="store.list"
-            @on-load="onLoad"
-            @on-change="onChange"
-            @on-toggle="onToggle"
-            :element-id="store.indexPath"
-            :action-loading="store.deleteLoading"
-            :action-loading-id="store.elementId"
-            :expanded-keys="expandedKeys"
-          />
-          <n-empty v-else class="py-16" :description="$t('content.no-data')" />
-        </div>
-      </n-spin>
+    <n-spin :show="store.loading" class="flex-1 min-h-0" content-class="h-full">
+      <div class="h-full overflow-auto px-3 py-2 tree-scroll">
+        <UITree
+          v-if="store.list.length"
+          :children="store.list"
+          @on-load="onLoad"
+          @on-change="onChange"
+          @on-toggle="onToggle"
+          :element-id="store.indexPath"
+          :action-loading="store.deleteLoading"
+          :action-loading-id="store.elementId"
+          :expanded-keys="expandedKeys"
+        />
+        <n-empty v-else-if="!store.loading" class="py-16" :description="$t('content.no-data')" />
+      </div>
+    </n-spin>
 
+    <div class="px-4 border-t border-surface-line">
       <UIPagination
         :page="store.params.page"
         :per_page="store.params.per_page"
@@ -154,3 +166,18 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.15s ease;
+  }
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
+
+  .tree-scroll {
+    scrollbar-width: thin;
+  }
+</style>

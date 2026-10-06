@@ -780,6 +780,7 @@
     }
   },
   "organizationPage": {
+    "collapseAll": "Collapse all",
     "name": "Organizations",
     "createTitle": "Add organization",
     "updateTitle": "Edit organization",

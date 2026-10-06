@@ -699,6 +699,7 @@
     }
   },
   "organizationPage": {
+    "collapseAll": "Ҳаммасини йиғиш",
     "name": "Ташкилотлар",
     "createTitle": "Ташкилот қўшиш",
     "updateTitle": "Ташкилотни таҳрирлаш",

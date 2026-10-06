@@ -795,6 +795,7 @@
     }
   },
   "organizationPage": {
+    "collapseAll": "Hammasini yig'ish",
     "name": "Tashkilotlar",
     "createTitle": "Tashkilot qo'shish",
     "updateTitle": "Tashkilotni tahrirlash",
