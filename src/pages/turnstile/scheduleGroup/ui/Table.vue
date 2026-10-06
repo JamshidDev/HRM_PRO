@@ -1,10 +1,6 @@
 <script setup>
   import { UIBadge, UITable } from '@/components/index.js'
-  import {
-    useAccountStore,
-    useScheduleGroupWorkerStore,
-    useShiftTypeStore
-  } from '@/store/modules/index.js'
+  import { useAccountStore, useShiftTypeStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
@@ -17,8 +13,8 @@
 
   const { t } = i18n.global
   const store = useShiftTypeStore()
-  const scheduleGroupworkerStore = useScheduleGroupWorkerStore()
   const accStore = useAccountStore()
+  const router = useRouter()
 
   const changePage = (v) => {
     store.groupParams.page = v.page
@@ -26,13 +22,18 @@
     store._group()
   }
 
+  // Sana oralig'i va nomi query'da: sahifa refresh qilinganda ham grafik qayta quriladi.
   const onViewWorkers = (row) => {
-    store.elementId = row.id
-    store.groupId = row.id
-    scheduleGroupworkerStore.params.group = row.id
-    scheduleGroupworkerStore.params.startDate = row.start_date
-    scheduleGroupworkerStore.params.endDate = row.end_date
-    store.activeTab = 3
+    router.push({
+      name: 'turnstile-shift-type-group-workers',
+      params: { groupId: row.id },
+      query: {
+        name: row.name,
+        start: row.start_date,
+        end: row.end_date,
+        type: store.groupParams.schedule_type || undefined
+      }
+    })
   }
 
   const onEdit = (row) => {

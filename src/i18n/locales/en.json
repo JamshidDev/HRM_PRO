@@ -2837,6 +2837,10 @@
     }
   },
   "applicationPage": {
+    "draft": "Draft",
+    "draftSignTitle": "Application is a draft",
+    "draftSignBody": "After you sign it, the application is sent to HR.",
+    "approved": "Approved",
     "name": "Applications",
     "addApp": "Submit application",
     "createWorkerApplication": "Create application",
@@ -5044,7 +5048,14 @@
       "notAllowedThisAction": "Use Duty Schedule menu for special shifts!",
       "turnstileSetting": "Turnstile management",
       "howMuchGroup": "Number of groups in schedule",
-      "group": "Groups"
+      "group": "Groups",
+      "shiftTypes": "Shift types",
+      "allGroups": "All groups",
+      "groupWorkers": "Group workers",
+      "goToSchedule": "Open duty schedule",
+      "customShiftHint": "Custom shifts have no groups — they are filled directly in the duty schedule.",
+      "noShiftTypes": "No shift types found",
+      "searchByShiftName": "Search by shift name"
     }
   },
   "publicPage": {

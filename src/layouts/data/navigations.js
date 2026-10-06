@@ -35,7 +35,6 @@ import TurnstileDevicesIcon from '@assets/icons/Devices.svg'
 import TurnstileOthersIcon from '@assets/icons/Additional.svg'
 import TurnstileDutyScheduleIcon from '@assets/icons/DutySchedule.svg'
 import TurnstileShiftTypeIcon from '@assets/icons/Shifts.svg'
-import TurnstileShiftTypeGroupIcon from '@assets/icons/ShiftGroups.svg'
 import TurnstileScheduleIcon from '@assets/icons/TurnstileSchedule.svg'
 import TurnstileApproveIcon from '@assets/icons/sentEmployees.svg'
 import LmsDirectionIcon from '@assets/icons/Directions.svg'
@@ -679,18 +678,14 @@ export const navigations = withRawIcons([
         permission: appPermissions.turnstileSheetsRead
       },
       {
-        label: 'shiftType.name', // Smenalar
+        label: 'shiftType.name', // Smenalar (smena turlari + ularning guruhlari bitta sahifada)
         path: Utils.routeTurnstilePathMaker(AppPaths.ShiftType),
         icon: TurnstileShiftTypeIcon,
         color: 'bg-dark',
-        permission: appPermissions.turnstileSheetsWorkersRead
-      },
-      {
-        label: 'shiftType.groupName', // Smena guruhlari
-        path: Utils.routeTurnstilePathMaker(AppPaths.ShiftTypeGroup),
-        icon: TurnstileShiftTypeGroupIcon,
-        color: 'bg-dark',
-        permission: appPermissions.turnstileSheetsGroupsRead
+        permission: [
+          appPermissions.turnstileSheetsWorkersRead,
+          appPermissions.turnstileSheetsGroupsRead
+        ]
       },
       {
         label: 'turnstileSchedule.name', // Turniket grafiki
