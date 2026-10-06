@@ -63,7 +63,23 @@
             <n-popover trigger="hover" placement="bottom-end" :disabled="!actedAt">
               <template #trigger>
                 <span class="inline-flex">
-                  <UIStatus fig compact :tooltip="false" :status="item.status" />
+                  <!-- Tanishuvchi imzolamaydi: «Tanishdi» (ochgan) yoki «Tanishishni kutmoqda» -->
+                  <span
+                    v-if="item.type === 'r'"
+                    class="text-[10px] font-semibold rounded-full px-2 py-0.5 whitespace-nowrap"
+                    :class="
+                      item.status?.id >= 2
+                        ? 'bg-fig-chip-green text-fig-chip-green-text'
+                        : 'bg-surface-ground text-textColor3'
+                    "
+                  >
+                    {{
+                      item.status?.id >= 2
+                        ? $t('applicationPage.forward.viewerRead')
+                        : $t('applicationPage.forward.viewerWaiting')
+                    }}
+                  </span>
+                  <UIStatus v-else fig compact :tooltip="false" :status="item.status" />
                 </span>
               </template>
               <div class="text-xs">
@@ -109,12 +125,19 @@
           </div>
         </div>
 
-        <!-- Qo'shimcha ma'lumot: "Siz" belgisi -->
-        <div v-if="isSelf" class="flex items-center gap-2 mt-2">
+        <!-- Qo'shimcha ma'lumot: "Siz" va tanishuvchi (`r`, imzolamaydi) belgilari -->
+        <div v-if="isSelf || item.type === 'r'" class="flex items-center gap-2 mt-2">
           <span
+            v-if="isSelf"
             class="text-[10px] font-semibold rounded-full px-2 py-0.5 bg-fig-chip-brand text-fig-chip-brand-text"
           >
             {{ $t('documentPage.signature.approval.you') }}
+          </span>
+          <span
+            v-if="item.type === 'r'"
+            class="text-[10px] font-semibold rounded-full px-2 py-0.5 bg-fig-chip-indigo text-fig-chip-indigo-text"
+          >
+            {{ $t('applicationPage.forward.viewerChip') }}
           </span>
         </div>
 

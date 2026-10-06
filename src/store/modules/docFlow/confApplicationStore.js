@@ -35,6 +35,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
     editLoading: false,
     // typeList:[1,2,6,7],
     typeList: [1, 2],
+    orgError: false,
     // Muddatli ishga kirish turi: 1 - ta'tildagi xodim, 2 - muddatli shartnoma
     employmentSelectedType: 1,
     payload: {

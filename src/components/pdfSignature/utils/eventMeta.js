@@ -6,12 +6,39 @@ import {
   ArrowRepeatAll16Regular,
   Clock16Regular,
   Attach16Regular,
-  Delete16Regular
+  Delete16Regular,
+  PeopleTeam16Regular,
+  DocumentDismiss16Regular
 } from '@vicons/fluent'
 import { EVENT, STATUS } from './approvalHistory.js'
 
 // Harakat turi → ikonka, rang va i18n kaliti. Ranglar `--fig-*` tokenlaridan.
 export const eventMeta = {
+  // Ariza kelishuv marshruti (HR): yo'naltirdi / o'zgartirdi / qayta yubordi / rad etib yopdi.
+  route_forwarded: {
+    icon: Send16Regular,
+    action: 'documentPage.signature.approval.verbs.route_forwarded',
+    text: 'text-fig-chip-brand-text',
+    dot: 'bg-fig-chip-brand text-fig-chip-brand-text'
+  },
+  route_changed: {
+    icon: PeopleTeam16Regular,
+    action: 'documentPage.signature.approval.verbs.route_changed',
+    text: 'text-fig-chip-indigo-text',
+    dot: 'bg-fig-chip-indigo text-fig-chip-indigo-text'
+  },
+  route_resent: {
+    icon: ArrowRepeatAll16Regular,
+    action: 'documentPage.signature.approval.verbs.route_resent',
+    text: 'text-fig-chip-brand-text',
+    dot: 'bg-fig-chip-brand text-fig-chip-brand-text'
+  },
+  route_closed: {
+    icon: DocumentDismiss16Regular,
+    action: 'documentPage.signature.approval.verbs.route_closed',
+    text: 'text-fig-text-red',
+    dot: 'bg-fig-red-100 text-fig-text-red'
+  },
   // Hujjat darajasidagi: fayl qo'shildi / o'chirildi (aktyor bilan).
   file_added: {
     icon: Attach16Regular,

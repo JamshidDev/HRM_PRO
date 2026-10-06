@@ -1556,7 +1556,11 @@
           "rejected": "rad etdi",
           "resent": "— qayta yuborildi",
           "file_added": "fayl qo'shdi",
-          "file_removed": "faylni o'chirdi"
+          "file_removed": "faylni o'chirdi",
+          "route_forwarded": "kelishuvchilarga yo‘naltirdi",
+          "route_changed": "kelishuvchilarni o‘zgartirdi",
+          "route_resent": "qayta kelishishga yubordi",
+          "route_closed": "arizani rad etib yopdi"
         },
         "showAll": "Barchasi"
       },
@@ -2918,6 +2922,45 @@
       "user": "Arizani qabul qiluvchi shaxs",
       "sendApp": "Arizani yuborish",
       "type": "Ariza turi"
+    },
+    "forward": {
+      "title": "Kelishuvchilarga yo‘naltirish",
+      "director": "Rahbar",
+      "approvers": "Kelishuvchilar",
+      "mode": "Imzolash tartibi",
+      "parallel": "Parallel",
+      "parallelHint": "Barcha kelishuvchilar bir vaqtda imzolaydi, so‘ng rahbar",
+      "sequential": "Ketma-ket",
+      "sequentialHint": "Kelishuvchilar tanlangan tartibda birin-ketin imzolaydi, oxirida rahbar",
+      "order": "Imzolash navbati",
+      "submit": "Yo‘naltirish",
+      "signAndForward": "Imzolash va yo‘naltirish",
+      "setApprovers": "Kelishuvchilarni belgilash",
+      "done": "Ariza kelishuvchilarga yo‘naltirildi",
+      "panelSub": "Imzolab, kelishuvchilarga yo‘naltiring",
+      "searchPlaceholder": "Xodimni qidiring va qo‘shing",
+      "empty": "Kelishuvchi yo‘q — ariza to‘g‘ridan-to‘g‘ri rahbarga boradi",
+      "directorLast": "Oxirgi imzo",
+      "together": "{n} kishi bir vaqtda imzolaydi",
+      "viewers": "Tanishuvchilar",
+      "viewersHint": "Imzolamaydi — hujjat tasdiqlangandan keyin u bilan tanishadi",
+      "viewerChip": "Tanishish uchun",
+      "remove": "Olib tashlash",
+      "roleSign": "Kelishuvchi",
+      "roleView": "Tanishuvchi",
+      "roleSignHint": "Hujjatni navbat bilan imzolaydi",
+      "roleViewHint": "Imzolamaydi — hujjat tasdiqlangandan keyin u bilan tanishadi",
+      "editTitle": "Kelishuvchilarni o‘zgartirish",
+      "resendTitle": "Qayta kelishishga yuborish",
+      "resendSubmit": "Qayta yuborish",
+      "signedLocked": "Imzolagan",
+      "closeApplication": "Rad etib yopish",
+      "panelProcess": "Kelishuvda — imzolamaganlarni o‘zgartirish mumkin",
+      "panelRejected": "Rad etilgan — qayta yuboring yoki yoping",
+      "viewerRead": "Tanishdi",
+      "viewerWaiting": "Tanishishni kutmoqda",
+      "panelProcessTitle": "Ariza kelishuvda",
+      "panelRejectedTitle": "Ariza rad etildi"
     }
   },
   "userDepartmentPage": {
@@ -4981,7 +5024,9 @@
       "exempt": "Hisobdan ozod",
       "vacation": "Ta'til",
       "day_off": "Dam olish kuni",
-      "no_schedule": "Grafik yo'q"
+      "no_schedule": "Grafik yo'q",
+      "not_started": "Ish vaqti boshlanmagan",
+      "after_night_shift": "Tungi smenadan keyin"
     }
   },
   "hcWorkDuration": {

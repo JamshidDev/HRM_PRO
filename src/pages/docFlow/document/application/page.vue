@@ -1,12 +1,5 @@
 <script setup>
-  import {
-    TurnstileDownloadModal,
-    UIModal,
-    UIOfficeApp,
-    UIPageContent,
-    UIPageFilter
-  } from '@/components/index.js'
-  import createForm from './ui/createForm.vue'
+  import { TurnstileDownloadModal, UIOfficeApp, UIPageContent } from '@/components/index.js'
   import Table from './ui/Table.vue'
   import Filter from './ui/Filter.vue'
   import { useAccountStore, useApplicationStore, useComponentStore } from '@/store/modules/index.js'
@@ -33,18 +26,6 @@
 <template>
   <UIPageContent>
     <Filter />
-    <UIModal
-      :width="600"
-      :visible="store.visible"
-      @update:visible="(v) => (store.visible = v)"
-      :title="
-        store.visibleType ? $t('applicationPage.createTitle') : $t('applicationPage.updateTitle')
-      "
-    >
-      <template #default>
-        <createForm />
-      </template>
-    </UIModal>
     <Table @openOffice="openApplication" />
     <TurnstileDownloadModal />
     <UIOfficeApp ref="officeAppRef" />

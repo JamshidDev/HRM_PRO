@@ -28,6 +28,24 @@ export const useApplicationStore = defineStore('applicationStore', {
       organizations: [],
       created: null
     },
+    // HR: imzolab kelishuvchilarga yo'naltirish modali.
+    signStartLoading: false,
+    forwardVisible: false,
+    forwardLoading: false,
+    forwardDirector: null,
+    forwardMode: 'parallel',
+    forwardIds: [],
+    forwardViewerIds: [],
+    // 'forward' — birinchi yo'naltirish, 'edit' — jarayonda o'zgartirish, 'resend' — rad etilgandan keyin qayta yuborish.
+    forwardAction: 'forward',
+    forwardPrefill: [],
+    routeLoading: false,
+    approverList: [],
+    approverLoading: false,
+    approverTotal: 0,
+    viewerList: [],
+    viewerLoading: false,
+    viewerParams: { page: 1, per_page: 50, search: null, director_id: null },
     tabList: [1, 2, 3],
     activeTab: 1,
     applicationLink: null,
@@ -110,7 +128,106 @@ export const useApplicationStore = defineStore('applicationStore', {
           this.saveLoading = false
         })
     },
-    _accept(data, id, loadingKey = 'acceptLoading') {
+    _signStart(id, callback) {
+      this.signStartLoading = true
+      $ApiService.applicationService
+        ._signStart({ id })
+        .then((res) => callback?.(res.data.data))
+        .finally(() => {
+          this.signStartLoading = false
+        })
+    },
+    openForward(director, action = 'forward', route = null) {
+      this.forwardDirector = director
+      this.forwardAction = action
+      this.forwardPrefill = route?.items || []
+      this.forwardMode = route?.mode || 'parallel'
+      this.forwardIds = []
+      this.forwardViewerIds = []
+      this.approverList = []
+      this.viewerList = []
+      this.viewerParams = { page: 1, per_page: 50, search: null, director_id: director?.id ?? null }
+      this.forwardVisible = true
+      this._approvers()
+    },
+    // Kelishuvchilar — ariza korxonasining «Mas'ul xodimlar» ro'yxati (barcha xodimlar emas).
+    _approvers() {
+      this.approverLoading = true
+      const pdfStore = usePdfViewerStore()
+      $ApiService.applicationService
+        ._approverOptions({ id: pdfStore.document_id })
+        .then((res) => {
+          this.approverList = (res.data.data || []).map((v) => ({
+            ...v,
+            name: Utils.combineFullName(v.worker)
+          }))
+        })
+        .finally(() => {
+          this.approverLoading = false
+        })
+    },
+    // Tanishuvchilar — istalgan faol xodim (qidiruv + scroll).
+    _viewers(infinite) {
+      this.viewerLoading = true
+      $ApiService.applicationService
+        ._confirmation({ params: { ...this.viewerParams } })
+        .then((res) => {
+          const newData = res.data.data.data.map((v) => ({
+            ...v,
+            name: Utils.combineFullName(v.worker),
+            position: v?.post_short_name,
+            subPosition: v?.organization?.name
+          }))
+          this.viewerList = infinite ? [...this.viewerList, ...newData] : newData
+        })
+        .finally(() => {
+          this.viewerLoading = false
+        })
+    },
+    onSearchViewer(v) {
+      this.viewerParams.page = 1
+      this.viewerParams.search = v
+      this._viewers()
+    },
+    onScrollViewer() {
+      this.viewerParams.page += 1
+      this._viewers(true)
+    },
+    // Joriy marshrut (tahrir/qayta yuborish uchun) + rahbar → modal.
+    _openRoute(id, action, director) {
+      this.routeLoading = true
+      $ApiService.applicationService
+        ._route({ id })
+        .then((res) => this.openForward(director, action, res.data.data))
+        .finally(() => {
+          this.routeLoading = false
+        })
+    },
+    _forward(id, callback) {
+      this.forwardLoading = true
+      const method = {
+        forward: '_forward',
+        edit: '_updateRoute',
+        resend: '_resend'
+      }[this.forwardAction]
+      $ApiService.applicationService
+        [method]({
+          id,
+          data: {
+            mode: this.forwardMode,
+            confirmations: this.forwardIds,
+            viewers: this.forwardViewerIds
+          }
+        })
+        .then(() => {
+          this.forwardVisible = false
+          callback?.()
+        })
+        .finally(() => {
+          this.forwardLoading = false
+        })
+    },
+    _accept(data, id, loadingKey = 'acceptLoading', callback) {
       this[loadingKey] = true
       const payload = {
         data: {
@@ -122,7 +239,7 @@ export const useApplicationStore = defineStore('applicationStore', {
 
       $ApiService.applicationService
         ._accept(payload)
-        .then((res) => {})
+        .then(() => callback?.())
         .finally(() => {
           this[loadingKey] = false
         })
