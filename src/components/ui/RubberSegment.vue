@@ -137,13 +137,20 @@
     if (!track) return
     const rect = track.getBoundingClientRect()
     box = rect
+    // getBoundingClientRect transformni ham hisobga oladi: modal ochilish animatsiyasida
+    // (scale < 1) o'lchansa, thumb noto'g'ri kenglikda qotib qolardi — ResizeObserver
+    // transform o'zgarishini sezmaydi. Shu sababli o'lchamlarni layout px'ga qaytaramiz.
+    const scale = track.offsetWidth ? rect.width / track.offsetWidth : 1
     slots = list.value.map((_, i) => {
       const el = itemEls[i]
       if (!el) return { l: 0, r: 0 }
       const r = el.getBoundingClientRect()
-      return { l: r.left - rect.left - props.inset, r: r.right - rect.left - props.inset }
+      return {
+        l: (r.left - rect.left) / scale - props.inset,
+        r: (r.right - rect.left) / scale - props.inset
+      }
     })
-    innerW.set(rect.width - props.inset * 2)
+    innerW.set(rect.width / scale - props.inset * 2)
     jumpTo(committed)
   }
 

@@ -406,7 +406,10 @@
       v-else
       ref="tableWrapperRef"
       class="ui-table__wrapper flex flex-col p-1 bg-surface-section rounded-[20px]"
-      :class="!autoHeight && 'h-full min-h-[clamp(200px,calc(100vh-100%),600px)]'"
+      :class="[
+        !autoHeight && 'h-full min-h-[clamp(200px,calc(100vh-100%),600px)]',
+        total === null && !slots.footer && 'ui-table__wrapper--no-footer'
+      ]"
     >
       <n-data-table
         class="ui-table__table flex-1"
@@ -481,5 +484,29 @@
   .ui-table__table :deep(.n-data-table-table),
   .ui-table__table :deep(.n-data-table-th:last-child) {
     border-top-right-radius: 16px !important;
+  }
+
+  /* Footer (pagination) bo'lmasa oxirgi qator kartaning pastki chetiga tegib turadi:
+     uning ajratuvchi chizig'i va to'g'ri burchakli (striped bo'lsa kulrang) kataklari
+     kartaning 20px yumaloq burchagidan chiqib, "kesilgan" ko'rinardi. */
+  .ui-table__wrapper--no-footer :deep(.n-data-table-wrapper),
+  .ui-table__wrapper--no-footer :deep(.n-data-table-table) {
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+  }
+
+  .ui-table__wrapper--no-footer
+    :deep(.n-data-table-tbody .n-data-table-tr:last-child .n-data-table-td) {
+    border-bottom: none;
+  }
+
+  .ui-table__wrapper--no-footer
+    :deep(.n-data-table-tbody .n-data-table-tr:last-child .n-data-table-td:first-child) {
+    border-bottom-left-radius: 16px;
+  }
+
+  .ui-table__wrapper--no-footer
+    :deep(.n-data-table-tbody .n-data-table-tr:last-child .n-data-table-td:last-child) {
+    border-bottom-right-radius: 16px;
   }
 </style>
