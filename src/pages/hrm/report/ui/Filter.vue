@@ -72,14 +72,13 @@
 
 <template>
   <div
-    class="w-full bg-surface-section rounded-[20px] p-3 flex flex-col md:flex-row md:items-end gap-3"
+    class="w-full rounded-[20px] flex flex-col md:flex-row md:items-center gap-3"
+    :class="store.viewMode === 'table' ? 'py-1' : 'bg-surface-section p-3'"
   >
+    <!-- Jadval ko'rinishida filter fonsiz — jadval kartochkasi bilan ikki qavat fon bo'lmasin. -->
     <!-- Tashkilot select'i o'ng chetda: desktopda `order-last` bilan oxiriga
          o'tadi, mobilda esa birinchi bo'lib qoladi. -->
     <div class="w-full md:w-[360px] shrink-0 md:order-last" :class="{ 'md:ml-auto': !selectedOrg }">
-      <label class="block text-xs text-gray-500 mb-1 font-medium">
-        {{ $t('content.organization') }}
-      </label>
       <UISelect
         placement="bottom-end"
         clearable
