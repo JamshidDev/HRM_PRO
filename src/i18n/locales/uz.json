@@ -1084,7 +1084,8 @@
       "fact": "Lavozimdagi xodimlar soni",
       "salary": "Oylik maosh",
       "experience": "Ish tajribasi (oy)",
-      "educations": "Talab qilinadigan minimal ma'lumot"
+      "educations": "Talab qilinadigan minimal ma'lumot",
+      "position_code": "Lavozim kodi"
     },
     "table": {
       "position": "Lavozim",

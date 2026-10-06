@@ -1068,7 +1068,8 @@
       "fact": "Actual employees",
       "salary": "Monthly salary",
       "experience": "Required experience (months)",
-      "educations": "Minimum education required"
+      "educations": "Minimum education required",
+      "position_code": "Position code"
     },
     "table": {
       "position": "Position",
