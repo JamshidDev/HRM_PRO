@@ -9,6 +9,8 @@
 
   const onSuccessEv = () => {
     store.department.visible = false
+    // Bo'linma tahriri lavozimlarga ta'sir qilmaydi — jadval keshi saqlanadi.
+    store.table.refreshIds = []
     store._getDepartment()
   }
 </script>

@@ -65,7 +65,21 @@
       { rate: 0, real_rate: 0, vacant: 0, over: 0 }
     )
 
-  const totals = computed(() => sumOf(allPositions.value))
+  // Jami Plan/Fakt — backend hisoblagan tashkilot qiymati (`/report/structure`),
+  // sahifa tepasidagi Plan/Fakt bilan bir xil bo'lishi uchun. Lavozimlarni
+  // frontendda qo'shsak, bo'linmaga tushmagan shtatlar tushib qoladi.
+  // Vakant/sverx structure javobida bo'lmasa — lavozimlar yig'indisi olinadi.
+  const totals = computed(() => {
+    const sum = sumOf(allPositions.value)
+    const org = store.department.params.organization_id?.[0]
+    if (!org) return sum
+    return {
+      rate: num(org.rate),
+      real_rate: num(org.real_rate),
+      vacant: org.vacant !== undefined ? num(org.vacant) : sum.vacant,
+      over: org.over !== undefined ? num(org.over) : sum.over
+    }
+  })
 
   const statusTabs = computed(() => [
     { id: 'all', name: t('report.table.all'), badge: allPositions.value.length },
@@ -97,7 +111,13 @@
       .filter((s) => s.positions.length > 0 || (status.value === 'all' && s.deptMatch))
   })
 
-  const visibleTotals = computed(() => sumOf(visibleSections.value.flatMap((s) => s.positions)))
+  // Filtrsiz holatda "Jami" qatori ham backend jamini ko'rsatadi; qidiruv yoki
+  // status filtri bo'lsa — faqat ko'rinib turgan lavozimlar yig'indisi.
+  const visibleTotals = computed(() =>
+    !search.value?.trim() && status.value === 'all'
+      ? totals.value
+      : sumOf(visibleSections.value.flatMap((s) => s.positions))
+  )
 
   const occupancy = (d) => {
     const plan = num(d.rate)
@@ -134,20 +154,39 @@
       })
   }
 
+  const workerTags = (w) =>
+    [
+      {
+        key: 'group',
+        label: 'report.tooltip.G',
+        value: w.group,
+        cls: 'bg-fig-bg-secondary text-fig-text-primary'
+      },
+      {
+        key: 'rank',
+        label: 'report.tooltip.R',
+        value: w.rank,
+        cls: 'bg-fig-chip-amber text-fig-chip-amber-text'
+      }
+    ].filter((tag) => tag.value)
+
   const departmentActions = computed(() => [
     {
       label: t('report.addPosition'),
       key: 'addPosition',
+      disabled: store.busy,
       icon: UIHelper.renderIcon(AddCircle24Regular)
     },
     {
       label: t('content.edit'),
       key: Utils.ActionTypes.edit,
+      disabled: store.busy,
       icon: UIHelper.renderIcon(Edit32Regular)
     },
     {
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
+      disabled: store.busy,
       icon: UIHelper.renderIcon(Delete20Regular)
     }
   ])
@@ -160,9 +199,9 @@
     else if (key === Utils.ActionTypes.delete) deleteDepartment(dept)
   }
 
-  const onPositionAction = (key, p) => {
+  const onPositionAction = (key, p, dept) => {
     if (key === Utils.ActionTypes.edit) editPosition(p)
-    else if (key === Utils.ActionTypes.delete) deletePosition(p)
+    else if (key === Utils.ActionTypes.delete) deletePosition(p, dept.id)
   }
 
   const numberCols = [
@@ -219,7 +258,7 @@
         <UISearchInput v-model:value="search" :placeholder="$t('report.table.search')" />
       </div>
       <div class="md:ml-auto md:shrink-0 max-w-full">
-        <UISegmentTabs v-model="status" variant="surface" :tabs="statusTabs" />
+        <UISegmentTabs v-model="status" :tabs="statusTabs" />
       </div>
     </div>
 
@@ -289,7 +328,7 @@
                 >
                   {{ valueOf(section.dept, col.key) }}
                 </span>
-                <template v-else>{{ valueOf(section.dept, col.key) || '–' }}</template>
+                <template v-else>{{ valueOf(section.dept, col.key) || '' }}</template>
               </td>
               <td>
                 <template v-if="occupancy(section.dept)">
@@ -361,7 +400,7 @@
                   >
                     {{ valueOf(p, col.key) }}
                   </span>
-                  <template v-else>{{ valueOf(p, col.key) || '–' }}</template>
+                  <template v-else>{{ valueOf(p, col.key) || '' }}</template>
                 </td>
                 <td>
                   <template v-if="occupancy(p)">
@@ -382,7 +421,7 @@
                 <td class="text-center" @click.stop>
                   <UITableActionsMenu
                     :options="positionActions"
-                    @select="(key) => onPositionAction(key, p)"
+                    @select="(key) => onPositionAction(key, p, section.dept)"
                   />
                 </td>
               </tr>
@@ -424,10 +463,22 @@
                       <span class="text-xs text-fig-text-tertiary truncate">
                         {{ w.post_name }}
                       </span>
+                      <!-- Guruh va razryad — ro'yxat ko'rinishidagi WorkerCard'dagi G/R bilan bir xil. -->
+                      <span class="ml-auto flex items-center gap-1 shrink-0">
+                        <span
+                          v-for="tag in workerTags(w)"
+                          :key="tag.key"
+                          class="inline-flex items-center gap-1 h-5 px-2 rounded-full text-[11px] font-semibold tabular-nums"
+                          :class="tag.cls"
+                        >
+                          <span class="font-normal opacity-70">{{ $t(tag.label) }}</span>
+                          {{ tag.value }}
+                        </span>
+                      </span>
                     </div>
                   </td>
                   <td></td>
-                  <td class="text-center tabular-nums text-xs">{{ num(w.rate) || '–' }}</td>
+                  <td class="text-center tabular-nums text-xs">{{ num(w.rate) || '' }}</td>
                   <td colspan="4"></td>
                 </tr>
               </template>
@@ -452,11 +503,9 @@
               >
                 {{ visibleTotals[col.key] }}
               </span>
-              <template v-else>{{ visibleTotals[col.key] || '–' }}</template>
+              <template v-else>{{ visibleTotals[col.key] || '' }}</template>
             </td>
-            <td class="text-xs font-semibold tabular-nums">
-              {{ occupancy(visibleTotals)?.pct ?? '—' }}%
-            </td>
+            <td></td>
             <td></td>
           </tr>
         </tfoot>

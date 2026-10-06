@@ -41,7 +41,6 @@
           />
           <UISegmentTabs
             class="ml-auto"
-            variant="surface"
             :tabs="modeTabs"
             v-model="store.viewMode"
           />
