@@ -6058,19 +6058,17 @@
       "reasonPlaceholder": "Nima uchun hujjatsiz yopilmoqda",
       "hint": "Yopilgandan keyin varaqa o'zgartirilmaydi.",
       "withDocumentHint": "Varaqa raqami, sanasi va PDF fayl",
-      "unexcusedHint": "Hujjat yo'q — sabab yoziladi"
+      "unexcusedHint": "Hujjat yo'q — sabab yoziladi",
+      "section": "Yopish ma'lumotlari"
     },
     "actions": {
-      "close": "Yakunlash"
+      "close": "Yakunlash",
+      "open": "Ochish",
+      "openAndClose": "Ochish va yakunlash"
     },
     "delete": {
       "title": "Varaqani o'chirasizmi?",
       "desc": "Bu amalni orqaga qaytarib bo'lmaydi."
-    },
-    "info": {
-      "fromDate": "Boshlanish sanasi — xodim kasal bo'lgan kun. Uni bugundan 4 kun orqagacha tanlash mumkin.",
-      "toDate": "Yopilish sanasini hozir tanlamasangiz, varaqa ochiq qoladi — xodim ishga chiqqanda «Yakunlash» orqali yopasiz.",
-      "maxDays": "Bitta varaqa 14 kundan uzoq bo'lmaydi. Kasallik cho'zilsa, keyingi kunlarga yangi varaqa ochiladi."
     },
     "view": {
       "title": "Kasallik varaqasi",
@@ -6090,6 +6088,14 @@
       "openFile": "PDF ni ochish",
       "noDoc": "Hujjat keltirilmagan",
       "stillOpen": "Varaqa hali ochiq"
+    },
+    "hint": {
+      "fromDate": "Bugundan ko'pi bilan 4 kun oldin",
+      "toDate": "Bo'sh qolsa — ochiq qoladi · maks. 14 kun"
+    },
+    "summary": {
+      "open": "Varaqa ochiq holatda yaratiladi — xodim ishga chiqqanda «Yakunlash» orqali yopasiz.",
+      "closed": "{days} kun — varaqa darhol yopiladi."
     }
   },
   "paymentAnalysis": {
