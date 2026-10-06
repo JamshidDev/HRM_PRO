@@ -76,12 +76,7 @@
 
       <UISegmentTabs :tabs="tabList" v-model="store.activeTab" />
 
-      <n-button
-        secondary
-        class="profile-history"
-        :disabled="!store.workerId"
-        @click="onHistory"
-      >
+      <n-button secondary class="profile-history" :disabled="!store.workerId" @click="onHistory">
         <template #icon>
           <n-icon><ArrowCounterclockwise20Regular /></n-icon>
         </template>
@@ -96,9 +91,14 @@
 <style lang="scss" scoped>
   // Maketda tana 16px chetdan turadi va sahifa foni kartalardan ochroq.
   // Tepa padding sarlavha panelining o'zida — u chetdan chetgacha yopishib turadi.
+  // `flex: 1 0 auto` — kontent qisqa boblarda (Qo'shimcha) fon ekran tubigacha
+  // yetadi, aks holda pastida boshqa rangli bo'sh maydon qolardi.
+  // Pastki 88px — o'ng pastdagi suzuvchi chat-bot tugmasi oxirgi qatordagi
+  // amallar (⋮, Qo'shish) ustini yopib qo'ymasligi uchun.
   .profile-page {
+    flex: 1 0 auto;
     width: 100%;
-    padding: 0 16px 16px;
+    padding: 0 16px 88px;
     background: var(--surface-ground);
   }
 
