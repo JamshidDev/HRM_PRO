@@ -981,6 +981,13 @@
     "name": "Hujjatlar tarixi"
   },
   "workerProfile": {
+    "fundedEducation": {
+      "title": "Ta'lim moliyalashtirilishi",
+      "marked": "Belgilangan",
+      "label": "Oliy ta'lim Jamiyat hisobidan moliyalashtirilgan",
+      "hint": "Jamiyat mablag'lari hisobidan tahsil olib qaytgan xodim",
+      "filter": "Jamiyat hisobidan o'qigan"
+    },
     "tabs": {
       "personal": "Shaxsiy",
       "education": "Ma'lumot va malaka",

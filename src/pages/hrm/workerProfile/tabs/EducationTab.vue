@@ -6,6 +6,7 @@
   import UniversityPage from '@/pages/hrm/university/UniversityPage.vue'
   import AcademicDegreePage from '@/pages/hrm/academicDegree/AcademicDegreePage.vue'
   import AcademicTitlePage from '@/pages/hrm/academicTitle/AcademicTitlePage.vue'
+  import FundedEducationBlock from '../ui/blocks/FundedEducationBlock.vue'
 
   /** Figma "Ma'lumot va malaka" bobi (node 2667:253728) */
   const store = useWorkerProfileStore()
@@ -34,6 +35,8 @@
         />
       </UIFigField>
     </div>
+
+    <FundedEducationBlock />
 
     <LanguagePage />
     <LanguageCertificatePage />

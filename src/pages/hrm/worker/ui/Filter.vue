@@ -141,7 +141,8 @@
       store.params.current_city_id,
       store.params.marital_status,
       store.params.multiple_position,
-      store.params.pension_age
+      store.params.pension_age,
+      store.params.company_funded_education
     ].filter(Boolean).length
   })
 
@@ -172,6 +173,7 @@
     store.params.middle_name = null
     store.params.multiple_position = false
     store.params.pension_age = false
+    store.params.company_funded_education = false
 
     filterEvent()
   }
@@ -473,6 +475,18 @@
             <div class="worker-filter-check">
               <n-checkbox @change="filterEvent" v-model:checked="store.params.pension_age">
                 {{ $t('workerPage.filter.pension_age') }}
+              </n-checkbox>
+            </div>
+          </div>
+
+          <div class="col-span-12 sm:col-span-6">
+            <label class="invisible">-</label>
+            <div class="worker-filter-check">
+              <n-checkbox
+                @change="filterEvent"
+                v-model:checked="store.params.company_funded_education"
+              >
+                {{ $t('workerProfile.fundedEducation.filter') }}
               </n-checkbox>
             </div>
           </div>
