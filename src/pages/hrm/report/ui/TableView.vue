@@ -12,6 +12,7 @@
   import UIHelper from '@/utils/UIHelper.js'
   import i18n from '@/i18n/index.js'
   import { useReportActions } from '../useReportActions.js'
+  import { useElementBounding, useWindowSize } from '@vueuse/core'
 
   // Shtat jadvali ko'rinishi: barcha bo'linmalar va ularning lavozimlari bitta
   // ochiq jadvalda, bo'linma qatorlari bo'lim sarlavhasi vazifasini bajaradi.
@@ -30,6 +31,21 @@
     () => store.department.list,
     () => store._loadTable(),
     { immediate: true }
+  )
+
+  // Jadval sahifa pastigacha cho'zilishi uchun balandlik konteynerning haqiqiy
+  // joylashuvidan hisoblanadi (accountant/report sahifasidagi kabi). 24px —
+  // kartochka p-1 + o'ram pb-1 + UIPageContent p-4.
+  const sheetRef = ref(null)
+  const { height: windowHeight } = useWindowSize()
+  const { top: sheetTop, update: updateSheetTop } = useElementBounding(sheetRef)
+  const sheetStyle = computed(() => ({
+    height: `${Math.max(400, windowHeight.value - sheetTop.value - 24)}px`
+  }))
+  // Progress chizig'i paydo bo'lib/yo'qolganda jadval tepasi siljiydi.
+  watch(
+    () => store.table.loading,
+    () => nextTick(updateSheetTop)
   )
 
   const search = ref('')
@@ -132,8 +148,13 @@
   const stats = computed(() => [
     { label: t('report.tooltip.P'), value: totals.value.rate, cls: 'text-fig-text-primary' },
     { label: t('report.tooltip.F'), value: totals.value.real_rate, cls: 'text-fig-text-primary' },
-    { label: t('report.tooltip.V'), value: totals.value.vacant, cls: 'text-fig-chip-green-text' },
-    { label: t('report.tooltip.S'), value: totals.value.over, cls: 'text-fig-text-red' }
+    // Vakant/Sverx — jadvaldagi badge'lar bilan bir xil ranglar.
+    {
+      label: t('report.tooltip.V'),
+      value: totals.value.vacant,
+      cls: 'bg-fig-green-100 text-fig-chip-green-text'
+    },
+    { label: t('report.tooltip.S'), value: totals.value.over, cls: 'bg-fig-red-100 text-fig-text-red' }
   ])
 
   // Lavozim qatori bosilganda shu lavozimdagi xodimlar jadval ichida ochiladi.
@@ -154,6 +175,8 @@
       })
   }
 
+  // G/R ranglari design system tokenlaridan — Vakant/Sverx badge'lari bilan bir
+  // xil qolip: -100 fon + chip matn rangi (dark mavzu variantlari tokenlarda).
   const workerTags = (w) =>
     [
       {
@@ -161,14 +184,14 @@
         letter: 'G',
         label: 'report.tooltip.G',
         value: w.group,
-        cls: 'bg-fig-bg-secondary text-fig-text-primary'
+        cls: 'bg-fig-indigo-100 text-fig-chip-indigo-text'
       },
       {
         key: 'rank',
         letter: 'R',
         label: 'report.tooltip.R',
         value: w.rank,
-        cls: 'bg-fig-chip-amber text-fig-chip-amber-text'
+        cls: 'bg-fig-amber-100 text-fig-chip-amber-text'
       }
     ].filter((tag) => tag.value)
 
@@ -240,26 +263,32 @@
 
 <template>
   <div class="flex flex-col gap-3 px-1 pb-1">
-    <!-- Umumiy ko'rsatkichlar (barcha lavozimlar yig'indisi) -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-      <div
-        v-for="item in stats"
-        :key="item.label"
-        class="flex flex-col gap-1 px-4 py-3 rounded-2xl border border-table-border"
-      >
-        <span class="text-xs text-fig-text-tertiary">{{ item.label }}</span>
-        <n-skeleton v-if="store.table.loading" height="24px" width="60%" round />
-        <span v-else class="text-xl font-semibold tabular-nums" :class="item.cls">
-          {{ item.value }}
-        </span>
-      </div>
-    </div>
-
     <!-- n-input o'zi `width: 100%` oladi, shu sababli kenglik o'ramga beriladi;
          tablar `shrink-0` bilan siqilmaydi va to'liq ko'rinadi. -->
     <div class="flex flex-col md:flex-row md:items-center gap-2">
       <div class="w-full md:w-[320px] md:shrink-0">
         <UISearchInput v-model:value="search" :placeholder="$t('report.table.search')" />
+      </div>
+      <!-- Umumiy ko'rsatkichlar — alohida kartochkalar o'rniga qidiruv qatorida
+           ixcham guruh: bitta ramka, bo'limlar ajratgich bilan. -->
+      <div
+        class="flex items-center self-start md:self-auto h-[34px] rounded-xl border border-table-border divide-x divide-table-border"
+      >
+        <div
+          v-for="item in stats"
+          :key="item.label"
+          class="flex items-center gap-2 h-full px-3"
+        >
+          <span class="text-xs text-fig-text-tertiary">{{ item.label }}</span>
+          <n-skeleton v-if="store.table.loading" height="14px" width="24px" round />
+          <span
+            v-else
+            class="inline-flex items-center justify-center min-w-6 h-5 px-1.5 rounded-full text-xs font-semibold tabular-nums"
+            :class="item.value ? item.cls : 'text-fig-text-disable'"
+          >
+            {{ item.value }}
+          </span>
+        </div>
       </div>
       <div class="md:ml-auto md:shrink-0 max-w-full">
         <UISegmentTabs v-model="status" :tabs="statusTabs" />
@@ -274,7 +303,11 @@
       :percentage="store.table.total ? (store.table.done / store.table.total) * 100 : 0"
     />
 
-    <div class="overflow-auto max-h-[calc(100vh-320px)] rounded-2xl border border-table-border">
+    <div
+      ref="sheetRef"
+      :style="sheetStyle"
+      class="overflow-auto rounded-2xl border border-table-border"
+    >
       <table class="report-sheet w-full min-w-[820px] table-fixed text-sm">
         <thead>
           <tr>
@@ -480,21 +513,21 @@
                   </td>
                   <td></td>
                   <td class="text-center tabular-nums text-xs">{{ num(w.rate) || '' }}</td>
-                  <!-- Guruh (G) va razryad (R) — Vakant ustunida, WorkerCard'dagi G/R kabi. -->
-                  <td class="report-sheet__gr">
-                    <div class="flex items-center justify-center gap-1">
+                  <!-- Guruh (G) va razryad (R) — Vakant + Sverx ustunlarini egallaydi. -->
+                  <td colspan="2" class="report-sheet__gr">
+                    <div class="flex items-center justify-center gap-1.5">
                       <span
                         v-for="tag in workerTags(w)"
                         :key="tag.key"
                         :title="$t(tag.label)"
-                        class="inline-flex items-center gap-0.5 h-5 px-1.5 rounded-full text-[11px] font-semibold tabular-nums"
+                        class="inline-flex items-center h-5 px-2 rounded-md text-[11px] font-semibold tabular-nums"
                         :class="tag.cls"
                       >
-                        <span class="font-normal opacity-70">{{ tag.letter }}</span>{{ tag.value }}
+                        {{ tag.letter }}-{{ tag.value }}
                       </span>
                     </div>
                   </td>
-                  <td colspan="3"></td>
+                  <td colspan="2"></td>
                 </tr>
               </template>
             </template>
@@ -582,12 +615,6 @@
     align-items: center;
     column-gap: 10px;
     min-width: 0;
-  }
-
-  /* Vakant ustuni tor (w-20) — ikkala chip sig'ishi uchun yon padding kichik. */
-  .report-sheet .report-sheet__gr {
-    padding-left: 4px;
-    padding-right: 4px;
   }
 
   .report-sheet__worker td {

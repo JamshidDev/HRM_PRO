@@ -3,7 +3,6 @@
   import { useReport2Store } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
 
-  import { Table24Regular, TextBulletListLtr24Regular } from '@vicons/fluent'
   import DepartmentList from './DepartmentList.vue'
   import TableView from './TableView.vue'
   import IndicatorTitle from '@/pages/hrm/report/ui/IndicatorTitle.vue'
@@ -16,11 +15,6 @@
     { id: 'worker', name: t('report.form.byWorker') }
   ])
 
-  const modeTabs = computed(() => [
-    { id: 'list', name: t('report.listView'), icon: TextBulletListLtr24Regular },
-    { id: 'table', name: t('report.tableView'), icon: Table24Regular }
-  ])
-
   const activeView = computed(() => (store.byPosition ? 'position' : 'worker'))
 
   const onChangeView = (v) => {
@@ -29,20 +23,15 @@
 </script>
 
 <template>
-  <div class="w-full bg-surface-section rounded-[20px] p-1 mt-3">
+  <div class="w-full bg-surface-section rounded-[20px] p-1">
     <n-spin :show="store.department.loading">
       <template v-if="store.department.list.length > 0">
-        <div class="flex flex-wrap items-center gap-2 px-2 py-2">
+        <!-- Ro'yxat/Jadval almashtirgichi Filter qatorida (tugmalar bilan bir qatorda). -->
+        <div v-if="store.viewMode === 'list'" class="flex flex-wrap items-center gap-2 px-2 py-2">
           <UISegmentTabs
-            v-if="store.viewMode === 'list'"
             :tabs="viewTabs"
             :model-value="activeView"
             @update:model-value="onChangeView"
-          />
-          <UISegmentTabs
-            class="ml-auto"
-            :tabs="modeTabs"
-            v-model="store.viewMode"
           />
         </div>
         <TableView v-if="store.viewMode === 'table'" />
