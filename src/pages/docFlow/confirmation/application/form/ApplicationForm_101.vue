@@ -104,6 +104,7 @@
           @updateCheck="(v) => (store.structureCheck = v)"
           v-model:search="componentStore.structureParams.search"
           @onSearch="componentStore._allStructures"
+          @onSubmit="componentStore._allStructures"
           :loading="componentStore.allStructureLoading"
           :multiple="false"
         />
