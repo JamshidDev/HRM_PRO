@@ -25,6 +25,8 @@
       await store._checkVersion()
       store.checkListKey()
       store.checkCardPluggedIn()
+    } catch {
+      // xabar _checkVersion ichida ko'rsatilgan
     } finally {
       store.loading = false
     }
