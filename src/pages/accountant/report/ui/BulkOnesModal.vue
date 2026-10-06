@@ -223,6 +223,19 @@
       {{ $t('uploadReport.bulkOnes.background') }}
     </p>
 
+    <!-- Yuklash tugagach xato bo'lsa — barcha xatolarni Excel'ga yuklab olish -->
+    <div v-if="!store.bulkRunning && failCount > 0" class="mt-3">
+      <n-button
+        block
+        @click="store._exportBulkErrors()"
+        :loading="store.bulkErrorExportLoading"
+        type="warning"
+        ghost
+      >
+        {{ $t('uploadReport.bulkOnes.exportErrors') }} ({{ failCount }})
+      </n-button>
+    </div>
+
     <div class="grid grid-cols-2 gap-2 mt-4">
       <!-- Yugurish paytida — To'xtatish (yangi korxonalar olinmaydi); aks holda — Yopish -->
       <n-button v-if="store.bulkRunning" @click="store.stopBulk()" type="error">
