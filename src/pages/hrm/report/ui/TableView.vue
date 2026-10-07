@@ -539,7 +539,7 @@
                       </td>
                     </tr>
                     <tr
-                      v-for="w in workers[p.id].list"
+                      v-for="(w, wIdx) in workers[p.id].list"
                       v-else
                       :key="`w-${w.id}`"
                       class="report-sheet__worker"
@@ -553,6 +553,9 @@
                           class="report-worker"
                           :style="{ paddingLeft: `${section.depth * 20 + 30}px` }"
                         >
+                          <span class="text-xs text-fig-text-tertiary tabular-nums text-right">
+                            {{ wIdx + 1 }}.
+                          </span>
                           <n-ellipsis
                             class="report-worker__name cursor-pointer hover:text-primary hover:underline"
                             :tooltip="ellipsisTooltip"
@@ -681,10 +684,10 @@
     background: var(--fig-bg-secondary);
   }
 
-  /* ism | shartnoma turi | lavozim */
+  /* tartib raqami | ism | shartnoma turi | lavozim */
   .report-worker {
     display: grid;
-    grid-template-columns: minmax(0, 240px) minmax(0, 210px) minmax(0, 1fr);
+    grid-template-columns: 22px minmax(0, 240px) minmax(0, 210px) minmax(0, 1fr);
     align-items: center;
     column-gap: 10px;
     min-width: 0;
