@@ -1,8 +1,8 @@
 <script setup>
   import { UIUser, UIStatus } from '@/components/index.js'
-  import { Link28Filled, Chat20Filled, ChevronDown16Regular } from '@vicons/fluent'
-  import { EVENT, STATUS, lastActionDate } from '../utils/approvalHistory.js'
-  import { eventMeta, signerTone } from '../utils/eventMeta.js'
+  import { Link28Filled, Chat20Filled } from '@vicons/fluent'
+  import { STATUS, lastActionDate } from '../utils/approvalHistory.js'
+  import { signerTone } from '../utils/eventMeta.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -18,8 +18,6 @@
 
   const emit = defineEmits(['link', 'chat'])
 
-  const expanded = ref(false)
-
   const tone = computed(() => signerTone(props.item.status?.id))
   const isRejected = computed(() => props.item.status?.id === STATUS.rejected)
   const actedAt = computed(() => lastActionDate(props.events))
@@ -28,15 +26,6 @@
       return t('documentPage.signature.approval.events.approved')
     if (isRejected.value) return t('documentPage.signature.approval.events.rejected')
     return null
-  })
-
-  const rejectComment = computed(() => {
-    if (!isRejected.value) return null
-    return (
-      props.item.comment ||
-      [...props.events].reverse().find((e) => e.type === EVENT.rejected)?.comment ||
-      null
-    )
   })
 </script>
 
@@ -140,28 +129,13 @@
             {{ $t('applicationPage.forward.viewerChip') }}
           </span>
         </div>
-
-        <div
-          v-if="rejectComment"
-          class="mt-2 rounded-lg border-l-2 border-fig-red bg-fig-red-50 px-2 py-1.5 text-[11px] text-fig-text-red"
-        >
-          <div class="font-semibold mb-0.5">{{ $t('documentPage.signature.rejectedReason') }}</div>
-          <div class="text-textColor1 leading-snug">{{ rejectComment }}</div>
-        </div>
       </div>
 
+      <!-- Harakatlar va rad etish sababi «Harakatlar tarixi» tabida -->
       <div
+        v-if="canLink || !isSelf"
         class="flex items-center gap-1 px-2 py-1 border-t border-surface-line/60 bg-surface-ground/40"
       >
-        <n-button quaternary size="tiny" @click="expanded = !expanded">
-          <template #icon>
-            <n-icon size="14" class="transition-transform" :class="expanded && 'rotate-180'">
-              <ChevronDown16Regular />
-            </n-icon>
-          </template>
-          {{ $t('documentPage.signature.approval.actions') }} ({{ events.length }})
-        </n-button>
-
         <div class="ml-auto flex items-center gap-1.5">
           <n-tooltip v-if="canLink" trigger="hover">
             <template #trigger>
@@ -194,38 +168,6 @@
         </div>
       </div>
 
-      <n-collapse-transition :show="expanded">
-        <!-- Chiziq o'rniga yumshoq fonli ichki blok — "Harakatlar tarixi" kartasi bilan bir uslubda -->
-        <div class="mx-2 mb-2 rounded-lg bg-surface-ground/70 px-2.5 pt-2 pb-0.5">
-          <div v-if="!events.length" class="text-xs text-textColor3 pb-1.5">
-            {{ $t('documentPage.signature.approval.noHistory') }}
-          </div>
-          <div v-for="(ev, i) in events" :key="i" class="flex gap-2">
-            <div class="flex flex-col items-center shrink-0">
-              <div
-                class="w-5 h-5 rounded-full flex items-center justify-center"
-                :class="eventMeta[ev.type]?.dot"
-              >
-                <n-icon size="11"><component :is="eventMeta[ev.type]?.icon" /></n-icon>
-              </div>
-              <div v-if="i < events.length - 1" class="w-px flex-1 bg-surface-line/70 my-0.5"></div>
-            </div>
-            <div class="min-w-0 flex-1 pb-2">
-              <div class="flex items-baseline justify-between gap-2">
-                <span class="text-xs font-medium text-textColor1">{{
-                  $t(eventMeta[ev.type]?.label)
-                }}</span>
-                <span class="text-[10px] tabular-nums text-textColor3 shrink-0">
-                  {{ ev.date.format('DD.MM.YYYY HH:mm') }}
-                </span>
-              </div>
-              <div v-if="ev.comment" class="text-[11px] text-textColor2 italic leading-snug mt-0.5">
-                “{{ ev.comment }}”
-              </div>
-            </div>
-          </div>
-        </div>
-      </n-collapse-transition>
     </div>
   </div>
 </template>

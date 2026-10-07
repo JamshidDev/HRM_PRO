@@ -103,6 +103,8 @@
     store._index()
   }
 
+  // Yopilgan: HR rad etib yopgan (qizil) yoki rahbar imzolagan (yashil).
+  const closedApproved = { id: 3, name: t('applicationPage.hrCheck.closed') }
   const checkingStatus = {
     0: {
       id: 1,
@@ -114,7 +116,7 @@
     },
     2: {
       id: 4,
-      name: t('content.Rejected')
+      name: t('applicationPage.hrCheck.closed')
     }
   }
 
@@ -175,6 +177,7 @@
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete20Regular),
+      visible: canEdit,
       action: onDelete
     }
   ])
@@ -213,7 +216,13 @@
     </template>
 
     <template #[`cell-worker_application.status`]="{ row }">
-      <UIStatus :status="checkingStatus[Number(row?.worker_application.status)]" />
+      <UIStatus
+        :status="
+          row?.worker_application.confirmation?.id === 3
+            ? closedApproved
+            : checkingStatus[Number(row?.worker_application.status)]
+        "
+      />
     </template>
 
     <template #[`cell-worker_application.confirmation`]="{ row }">

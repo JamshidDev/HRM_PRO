@@ -26,7 +26,9 @@ export const useApplicationStore = defineStore('applicationStore', {
       per_page: 15,
       search: null,
       organizations: [],
-      created: null
+      created: null,
+      // HR bo'limi: new | process | rejected | approved | closed | all
+      stage: 'all'
     },
     // HR: imzolab kelishuvchilarga yo'naltirish modali.
     signStartLoading: false,
@@ -93,7 +95,8 @@ export const useApplicationStore = defineStore('applicationStore', {
       const params = {
         ...this.params,
         created: Utils.timeToZone(this.params.created),
-        organizations: this.params.organizations.map((v) => v.id).toString() || undefined
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
+        stage: this.params.stage === 'all' ? undefined : this.params.stage
       }
       $ApiService.applicationService
         ._index({ params })
@@ -210,15 +213,15 @@ export const useApplicationStore = defineStore('applicationStore', {
         edit: '_updateRoute',
         resend: '_resend'
       }[this.forwardAction]
-      $ApiService.applicationService
-        [method]({
-          id,
-          data: {
-            mode: this.forwardMode,
-            confirmations: this.forwardIds,
-            viewers: this.forwardViewerIds
-          }
-        })
+      const send = $ApiService.applicationService[method]
+      send({
+        id,
+        data: {
+          mode: this.forwardMode,
+          confirmations: this.forwardIds,
+          viewers: this.forwardViewerIds
+        }
+      })
         .then(() => {
           this.forwardVisible = false
           callback?.()

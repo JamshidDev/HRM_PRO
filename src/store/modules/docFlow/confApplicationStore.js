@@ -64,7 +64,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
       page: 1,
       per_page: 15,
       search: null,
-      application_confirmation: 1
+      application_confirmation: 0
     },
     // Yangi yaratilgan qoralama qatori — sahifa uni ochib imzolashni so'raydi.
     signPromptRow: null,

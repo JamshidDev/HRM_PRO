@@ -1429,12 +1429,37 @@
           "route_forwarded": "келишувчиларга йўналтирди",
           "route_changed": "келишувчиларни ўзгартирди",
           "route_resent": "қайта келишишга юборди",
-          "route_closed": "аризани рад этиб ёпди"
+          "route_closed": "аризани ёпди"
+        },
+        "badges": {
+          "sent": "Юборилди",
+          "viewed": "Кўрди",
+          "approved": "Тасдиқлади",
+          "rejected": "Рад этди",
+          "resent": "Қайта юборилди",
+          "file_added": "Файл қўшди",
+          "file_removed": "Файл ўчирди",
+          "route_forwarded": "Йўналтирди",
+          "route_changed": "Ўзгартирди",
+          "route_resent": "Қайта юборди",
+          "route_closed": "Ёпилди"
         },
         "showAll": "Барчаси"
       },
       "rejectReasonSelect": "Рад этиш сабабини танланг",
-      "optional": "ихтиёрий"
+      "optional": "ихтиёрий",
+      "rejectedPanel": {
+        "title": "Ариза рад этилди",
+        "titleClosed": "Ариза ёпилди",
+        "reason": "Сабаб",
+        "hintOwnerClosed": "Камчиликларни тузатиб, янги ариза юборинг.",
+        "hintOwnerPending": "HR аризани қайта кўриб чиқади — натижа ҳақида хабар берилади.",
+        "hintOtherClosed": "Ариза ёпилган, бошқа амал талаб қилинмайди.",
+        "hintOtherPending": "HR қарорини кутмоқда: қайта юбориш ёки ёпиш.",
+        "more": "Батафсил",
+        "less": "Йиғиш",
+        "titleOwner": "Аризангиз рад этилди"
+      }
     },
     "attach": {
       "title": "Бириктириш",
@@ -2723,6 +2748,19 @@
       "viewerWaiting": "Танишишни кутмоқда",
       "panelProcessTitle": "Ариза келишувда",
       "panelRejectedTitle": "Ариза рад этилди"
+    },
+    "hrTabs": {
+      "new": "Янги",
+      "process": "Келишувда",
+      "rejected": "Рад этилган",
+      "approved": "Тасдиқланган",
+      "closed": "Ёпилган",
+      "all": "Ҳаммаси"
+    },
+    "hrCheck": {
+      "new": "Янги",
+      "forwarded": "Йўналтирилган",
+      "closed": "Ёпилган"
     }
   },
   "userDepartmentPage": {

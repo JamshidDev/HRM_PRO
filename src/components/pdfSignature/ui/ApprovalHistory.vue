@@ -38,8 +38,18 @@
   })
 
   const groups = computed(() => {
+    // HR yopganda uning qatori ham «rad etilgan» bo'ladi — «Yopildi» yetarli, dublikat chiqmasin.
+    const closedAt = props.documentEvents
+      .filter((ev) => ev.type === 'route_closed')
+      .map((ev) => dayjs(ev.date).valueOf())
     const flat = props.bySigner.flatMap((events, idx) =>
-      events.map((ev) => ({ ...ev, signer: props.confirmations[idx] }))
+      events
+        .filter(
+          (ev) =>
+            ev.type !== EVENT.rejected ||
+            !closedAt.some((t) => Math.abs(ev.date.valueOf() - t) < 60000)
+        )
+        .map((ev) => ({ ...ev, signer: props.confirmations[idx] }))
     )
     // Fayl hodisalari: aktyor imzolovchi o'rnida, fayl nomi alohida.
     for (const ev of props.documentEvents) {
@@ -205,12 +215,15 @@
           <!-- Bir kishi: «Familiya I.O. · Tasdiqladi» -->
           <template v-if="row.signers.length === 1">
             <div class="flex items-start justify-between gap-2">
-              <div class="min-w-0 text-xs leading-snug">
+              <div class="min-w-0 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs leading-snug">
                 <span class="font-semibold text-textColor0">
                   {{ shortName(row.signers[0]?.worker) }}
                 </span>
-                <span class="ml-1 font-medium" :class="eventMeta[row.type]?.text">
-                  {{ $t(eventMeta[row.type]?.action) }}
+                <span
+                  class="inline-flex items-center rounded-full px-1.5 py-px text-[11px] font-semibold whitespace-nowrap"
+                  :class="eventMeta[row.type]?.dot"
+                >
+                  {{ $t(eventMeta[row.type]?.badge) }}
                 </span>
               </div>
               <span class="text-[11px] tabular-nums text-textColor3 shrink-0">

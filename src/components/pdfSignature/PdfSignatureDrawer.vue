@@ -80,12 +80,19 @@
 
   const isSigned = computed(() => store.document?.document?.confirmation?.id === 3)
   const isRejected = computed(() => store.document?.document?.confirmation?.id === 4)
+  // Rad etish: backend `document.rejection` (sabab, kim, qachon); eski maydonlar zaxira.
+  const rejection = computed(() => store.document?.document?.rejection || null)
   const rejectReason = computed(() => {
     return (
+      rejection.value?.reason ||
       store.document?.document?.comment ||
       store.confirmations?.find((v) => v.status?.id === 4)?.comment ||
       null
     )
+  })
+  const rejectedBy = computed(() => {
+    const b = rejection.value?.by
+    return b ? [b.last_name, b.first_name].filter(Boolean).join(' ') : null
   })
   const hasDocumentFile = computed(() => !!store.pdfUrl)
 
@@ -157,6 +164,32 @@
         }
       })[signState.value]
   )
+
+  // Rad etilgan ariza — pastdagi qotgan panelda sabab va keyingi qadam (kim/qachon tarixda).
+  const docRejectedPanel = computed(() => isApplication.value && isRejected.value)
+  const isClosedDoc = computed(() => !!store.document?.document?.closed)
+  // Ariza egasiga yopilganda qo'shimcha izoh kerak emas (sarlavha yetarli).
+  const rejectedHint = computed(() => {
+    const owner = selfConfirmation.value?.type === 'w'
+    if (owner && isClosedDoc.value) return null
+    const key = `${owner ? 'Owner' : 'Other'}${isClosedDoc.value ? 'Closed' : 'Pending'}`
+    return `documentPage.signature.rejectedPanel.hint${key}`
+  })
+  // Ariza egasiga — «Arizangiz rad etildi», boshqalarga — holat (yopilgan / rad etilgan).
+  const rejectedTitle = computed(() => {
+    if (selfConfirmation.value?.type === 'w')
+      return 'documentPage.signature.rejectedPanel.titleOwner'
+    return isClosedDoc.value
+      ? 'documentPage.signature.rejectedPanel.titleClosed'
+      : 'documentPage.signature.rejectedPanel.title'
+  })
+  // Uzun sabab — 2 qatorga qisqartiriladi, «Batafsil» bilan to'liq ochiladi.
+  const reasonExpanded = ref(false)
+  watch(
+    () => store.document_id,
+    () => (reasonExpanded.value = false)
+  )
+  const reasonLong = computed(() => (rejectReason.value?.length || 0) > 90)
 
   const onOpenConfirmSignature = () => {
     confirmSignatureVisible.value = true
@@ -482,7 +515,9 @@
                 <n-skeleton width="80px" height="11px" :sharp="false" class="rounded-md" />
               </div>
               <div v-else class="hidden min-[1200px]:block min-w-0">
-                <div class="text-sm font-semibold text-textColor1 leading-tight truncate max-w-[280px]">
+                <div
+                  class="text-sm font-semibold text-textColor1 leading-tight truncate max-w-[280px]"
+                >
                   {{ store.document?.document?.file_name }}
                 </div>
                 <div class="text-xs text-gray-400 tabular-nums">
@@ -605,13 +640,13 @@
                   />
                 </div>
                 <div v-else key="document" class="relative h-full flex flex-col">
-                    <!-- Biriktirilgan fayl — buyruq PDF'i ustida; PDF ko'ruvchisi fonda saqlanadi -->
-                    <AttachmentPreview
-                      v-if="store.previewFile"
-                      class="absolute inset-0 z-20"
-                      :file="store.previewFile"
-                      @close="store.previewFile = null"
-                    />
+                  <!-- Biriktirilgan fayl — buyruq PDF'i ustida; PDF ko'ruvchisi fonda saqlanadi -->
+                  <AttachmentPreview
+                    v-if="store.previewFile"
+                    class="absolute inset-0 z-20"
+                    :file="store.previewFile"
+                    @close="store.previewFile = null"
+                  />
                   <div
                     v-if="isSigned && showSignature"
                     class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 mb-3"
@@ -648,18 +683,26 @@
                   </div>
 
                   <div
-                    v-else-if="isRejected && showSignature"
-                    class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 mb-3"
+                    v-else-if="isRejected && showSignature && !isApplication"
+                    class="w-full shrink-0 rounded-2xl border border-fig-br-error bg-fig-red-50 px-4 py-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 mb-3"
                   >
-                    <div class="min-w-0">
-                      <div class="font-semibold text-textColor1 truncate">
-                        {{ $t('documentPage.signature.rejected') }}
-                      </div>
-                      <div class="text-xs text-gray-400">
-                        {{ Utils.timeOnlyDate(store.document?.document?.created) }}
-                        <template v-if="rejectReason">
-                          · {{ $t('documentPage.signature.rejectedReason') }}: {{ rejectReason }}
-                        </template>
+                    <div class="min-w-0 flex items-start gap-3">
+                      <n-icon size="20" class="text-fig-text-red mt-0.5 shrink-0">
+                        <DismissCircle20Filled />
+                      </n-icon>
+                      <div class="min-w-0">
+                        <div class="font-semibold text-fig-text-red">
+                          {{ $t('documentPage.signature.rejected') }}
+                        </div>
+                        <div v-if="rejectReason" class="text-sm text-textColor1 mt-0.5">
+                          {{ $t('documentPage.signature.rejectedReason') }}: {{ rejectReason }}
+                        </div>
+                        <div class="text-xs text-fig-text-secondary mt-0.5">
+                          <template v-if="rejectedBy">{{ rejectedBy }} · </template>
+                          {{
+                            Utils.timeOnlyDate(rejection?.at || store.document?.document?.created)
+                          }}
+                        </div>
                       </div>
                     </div>
                     <!-- Arizani qayta yuborish — faqat HR panelidan (pastda) -->
@@ -783,7 +826,9 @@
                       :class="
                         showConfirmButtons || signState === 'sign'
                           ? 'border-fig-blue-100'
-                          : signStateMeta.border
+                          : docRejectedPanel
+                            ? 'border-fig-red-100 rejected-panel'
+                            : signStateMeta.border
                       "
                     >
                       <!-- HR: arizani rad etish yoki imzolab kelishuvchilarga yo'naltirish (buyruqlardagi kabi) -->
@@ -809,7 +854,9 @@
                             round
                             class="px-3!"
                             :loading="applicationStore.modalLoading"
-                            :disabled="applicationStore.modalLoading || applicationStore.signStartLoading"
+                            :disabled="
+                              applicationStore.modalLoading || applicationStore.signStartLoading
+                            "
                             @click="openConfirmModal(false)"
                           >
                             <template #icon>
@@ -891,6 +938,56 @@
                           </n-button>
                         </div>
                       </div>
+                      <!-- Rad etilgan ariza: sabab + keyingi qadam (qotgan, har doim ko'rinadi) -->
+                      <div
+                        v-else-if="docRejectedPanel"
+                        class="flex items-start gap-3 pl-1 pr-4 py-1"
+                      >
+                        <div
+                          class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-fig-red-100 text-fig-text-red"
+                        >
+                          <n-icon size="18"><DismissCircle20Filled /></n-icon>
+                        </div>
+                        <div class="min-w-0 leading-snug">
+                          <div class="text-[14px] font-bold text-fig-text-red">
+                            {{ $t(rejectedTitle) }}
+                          </div>
+                          <div
+                            v-if="rejectReason"
+                            class="text-[13px] text-textColor1 mt-0.5 whitespace-pre-line break-words"
+                            :class="
+                              !reasonExpanded && reasonLong
+                                ? 'line-clamp-2'
+                                : 'max-h-40 overflow-y-auto pr-1'
+                            "
+                          >
+                            <span class="font-medium"
+                              >{{ $t('documentPage.signature.rejectedPanel.reason') }}:</span
+                            >
+                            {{ rejectReason }}
+                          </div>
+                          <button
+                            v-if="reasonLong"
+                            type="button"
+                            class="text-[12px] font-medium text-primary mt-0.5 hover:underline"
+                            @click="reasonExpanded = !reasonExpanded"
+                          >
+                            {{
+                              $t(
+                                reasonExpanded
+                                  ? 'documentPage.signature.rejectedPanel.less'
+                                  : 'documentPage.signature.rejectedPanel.more'
+                              )
+                            }}
+                          </button>
+                          <div
+                            v-if="rejectedHint"
+                            class="text-[12px] text-fig-text-secondary mt-0.5"
+                          >
+                            {{ $t(rejectedHint) }}
+                          </div>
+                        </div>
+                      </div>
                       <!-- Holat kartochkasi: rangli ikonka doirasi + sarlavha va izoh (vaqt) -->
                       <div v-else class="flex items-center gap-2.5 pl-1 pr-4 py-0.5">
                         <div
@@ -907,9 +1004,13 @@
                             v-if="signStateMeta.sub || selfActedAt"
                             class="text-[11px] text-textColor3 tabular-nums mt-0.5"
                           >
-                            <template v-if="signStateMeta.sub">{{ $t(signStateMeta.sub) }}</template>
+                            <template v-if="signStateMeta.sub">{{
+                              $t(signStateMeta.sub)
+                            }}</template>
                             <template v-if="signStateMeta.sub && selfActedAt"> · </template>
-                            <template v-if="selfActedAt">{{ selfActedAt.format('DD.MM.YYYY HH:mm') }}</template>
+                            <template v-if="selfActedAt">{{
+                              selfActedAt.format('DD.MM.YYYY HH:mm')
+                            }}</template>
                           </div>
                         </div>
                       </div>
@@ -972,6 +1073,28 @@
     border-style: solid;
     background-color: var(--surface-section);
     box-shadow: 0 8px 24px rgb(16 24 40 / 0.12);
+  }
+  /* Rad etilgan ariza — ko'p qatorli karta, pastdan chiqadi */
+  .floating-sign-panel.rejected-panel {
+    border-radius: 16px;
+    max-width: 560px;
+    padding: 10px 12px;
+    animation: rejected-panel-in 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes rejected-panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .floating-sign-panel.rejected-panel {
+      animation: none;
+    }
   }
   .tab-slide-left-enter-active,
   .tab-slide-left-leave-active,

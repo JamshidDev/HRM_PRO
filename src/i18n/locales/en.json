@@ -1545,12 +1545,37 @@
           "route_forwarded": "forwarded for approval",
           "route_changed": "changed approvers",
           "route_resent": "resent for approval",
-          "route_closed": "rejected and closed the application"
+          "route_closed": "closed the application"
+        },
+        "badges": {
+          "sent": "Sent",
+          "viewed": "Viewed",
+          "approved": "Approved",
+          "rejected": "Rejected",
+          "resent": "Resent",
+          "file_added": "Added file",
+          "file_removed": "Removed file",
+          "route_forwarded": "Forwarded",
+          "route_changed": "Changed",
+          "route_resent": "Resent",
+          "route_closed": "Closed"
         },
         "showAll": "Show all"
       },
       "rejectReasonSelect": "Select a rejection reason",
-      "optional": "optional"
+      "optional": "optional",
+      "rejectedPanel": {
+        "title": "Application rejected",
+        "titleClosed": "Application closed",
+        "reason": "Reason",
+        "hintOwnerClosed": "Fix the issues and submit a new application.",
+        "hintOwnerPending": "HR will review the application again — you will be notified.",
+        "hintOtherClosed": "The application is closed, no action needed.",
+        "hintOtherPending": "Awaiting HR decision: resend or close.",
+        "more": "More",
+        "less": "Less",
+        "titleOwner": "Your application was rejected"
+      }
     },
     "attach": {
       "title": "Attach",
@@ -2942,6 +2967,19 @@
       "viewerWaiting": "Awaiting review",
       "panelProcessTitle": "Application in approval",
       "panelRejectedTitle": "Application rejected"
+    },
+    "hrTabs": {
+      "new": "New",
+      "process": "In approval",
+      "rejected": "Rejected",
+      "approved": "Approved",
+      "closed": "Closed",
+      "all": "All"
+    },
+    "hrCheck": {
+      "new": "New",
+      "forwarded": "Forwarded",
+      "closed": "Closed"
     }
   },
   "userDepartmentPage": {

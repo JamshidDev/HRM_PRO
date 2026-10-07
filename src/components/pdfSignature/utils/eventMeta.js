@@ -18,24 +18,28 @@ export const eventMeta = {
   route_forwarded: {
     icon: Send16Regular,
     action: 'documentPage.signature.approval.verbs.route_forwarded',
+    badge: 'documentPage.signature.approval.badges.route_forwarded',
     text: 'text-fig-chip-brand-text',
     dot: 'bg-fig-chip-brand text-fig-chip-brand-text'
   },
   route_changed: {
     icon: PeopleTeam16Regular,
     action: 'documentPage.signature.approval.verbs.route_changed',
+    badge: 'documentPage.signature.approval.badges.route_changed',
     text: 'text-fig-chip-indigo-text',
     dot: 'bg-fig-chip-indigo text-fig-chip-indigo-text'
   },
   route_resent: {
     icon: ArrowRepeatAll16Regular,
     action: 'documentPage.signature.approval.verbs.route_resent',
+    badge: 'documentPage.signature.approval.badges.route_resent',
     text: 'text-fig-chip-brand-text',
     dot: 'bg-fig-chip-brand text-fig-chip-brand-text'
   },
   route_closed: {
     icon: DocumentDismiss16Regular,
     action: 'documentPage.signature.approval.verbs.route_closed',
+    badge: 'documentPage.signature.approval.badges.route_closed',
     text: 'text-fig-text-red',
     dot: 'bg-fig-red-100 text-fig-text-red'
   },
@@ -44,6 +48,7 @@ export const eventMeta = {
     icon: Attach16Regular,
     label: 'documentPage.signature.approval.events.file_added',
     action: 'documentPage.signature.approval.verbs.file_added',
+    badge: 'documentPage.signature.approval.badges.file_added',
     text: 'text-fig-chip-brand-text',
     dot: 'bg-fig-chip-brand text-fig-chip-brand-text'
   },
@@ -51,6 +56,7 @@ export const eventMeta = {
     icon: Delete16Regular,
     label: 'documentPage.signature.approval.events.file_removed',
     action: 'documentPage.signature.approval.verbs.file_removed',
+    badge: 'documentPage.signature.approval.badges.file_removed',
     text: 'text-fig-text-red',
     dot: 'bg-fig-red-100 text-fig-text-red'
   },
@@ -58,6 +64,7 @@ export const eventMeta = {
     icon: Send16Regular,
     label: 'documentPage.signature.approval.events.sent',
     action: 'documentPage.signature.approval.verbs.sent',
+    badge: 'documentPage.signature.approval.badges.sent',
     text: 'text-fig-chip-brand-text',
     dot: 'bg-fig-chip-brand text-fig-chip-brand-text'
   },
@@ -65,6 +72,7 @@ export const eventMeta = {
     icon: Eye16Regular,
     label: 'documentPage.signature.approval.events.viewed',
     action: 'documentPage.signature.approval.verbs.viewed',
+    badge: 'documentPage.signature.approval.badges.viewed',
     text: 'text-textColor3',
     dot: 'bg-fig-bg-disable text-fig-text-tertiary'
   },
@@ -72,6 +80,7 @@ export const eventMeta = {
     icon: Checkmark16Filled,
     label: 'documentPage.signature.approval.events.approved',
     action: 'documentPage.signature.approval.verbs.approved',
+    badge: 'documentPage.signature.approval.badges.approved',
     text: 'text-fig-chip-green-text',
     dot: 'bg-fig-chip-green text-fig-chip-green-text'
   },
@@ -79,6 +88,7 @@ export const eventMeta = {
     icon: Dismiss16Filled,
     label: 'documentPage.signature.approval.events.rejected',
     action: 'documentPage.signature.approval.verbs.rejected',
+    badge: 'documentPage.signature.approval.badges.rejected',
     text: 'text-fig-text-red',
     dot: 'bg-fig-red-100 text-fig-text-red'
   },
@@ -86,6 +96,7 @@ export const eventMeta = {
     icon: ArrowRepeatAll16Regular,
     label: 'documentPage.signature.approval.events.resent',
     action: 'documentPage.signature.approval.verbs.resent',
+    badge: 'documentPage.signature.approval.badges.resent',
     text: 'text-fig-chip-indigo-text',
     dot: 'bg-fig-chip-indigo text-fig-chip-indigo-text'
   }

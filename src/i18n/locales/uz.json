@@ -1561,12 +1561,37 @@
           "route_forwarded": "kelishuvchilarga yo‘naltirdi",
           "route_changed": "kelishuvchilarni o‘zgartirdi",
           "route_resent": "qayta kelishishga yubordi",
-          "route_closed": "arizani rad etib yopdi"
+          "route_closed": "arizani yopdi"
+        },
+        "badges": {
+          "sent": "Yuborildi",
+          "viewed": "Ko'rdi",
+          "approved": "Tasdiqladi",
+          "rejected": "Rad etdi",
+          "resent": "Qayta yuborildi",
+          "file_added": "Fayl qo'shdi",
+          "file_removed": "Fayl o'chirdi",
+          "route_forwarded": "Yo'naltirdi",
+          "route_changed": "O'zgartirdi",
+          "route_resent": "Qayta yubordi",
+          "route_closed": "Yopildi"
         },
         "showAll": "Barchasi"
       },
       "rejectReasonSelect": "Rad etish sababini tanlang",
-      "optional": "ixtiyoriy"
+      "optional": "ixtiyoriy",
+      "rejectedPanel": {
+        "title": "Ariza rad etildi",
+        "titleClosed": "Ariza yopildi",
+        "reason": "Sabab",
+        "hintOwnerClosed": "Kamchiliklarni tuzatib, yangi ariza yuboring.",
+        "hintOwnerPending": "HR arizani qayta ko'rib chiqadi — natija haqida xabar beriladi.",
+        "hintOtherClosed": "Ariza yopilgan, boshqa amal talab qilinmaydi.",
+        "hintOtherPending": "HR qarorini kutmoqda: qayta yuborish yoki yopish.",
+        "more": "Batafsil",
+        "less": "Yig'ish",
+        "titleOwner": "Arizangiz rad etildi"
+      }
     },
     "attach": {
       "title": "Biriktirish",
@@ -2962,6 +2987,19 @@
       "viewerWaiting": "Tanishishni kutmoqda",
       "panelProcessTitle": "Ariza kelishuvda",
       "panelRejectedTitle": "Ariza rad etildi"
+    },
+    "hrTabs": {
+      "new": "Yangi",
+      "process": "Kelishuvda",
+      "rejected": "Rad etilgan",
+      "approved": "Tasdiqlangan",
+      "closed": "Yopilgan",
+      "all": "Hammasi"
+    },
+    "hrCheck": {
+      "new": "Yangi",
+      "forwarded": "Yo'naltirilgan",
+      "closed": "Yopilgan"
     }
   },
   "userDepartmentPage": {
