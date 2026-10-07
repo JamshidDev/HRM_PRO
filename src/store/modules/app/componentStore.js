@@ -55,6 +55,7 @@ export const useComponentStore = defineStore('componentStore', {
     militaryStatuses: [],
     applicationTypes: [],
     workTypes: [],
+    positionCodeList: [],
     vacationAdditional: [],
     medStatus: [],
     organizationDocumentTypes: [],
@@ -497,6 +498,7 @@ export const useComponentStore = defineStore('componentStore', {
           this.fineTypes = res.data.data.fine_types
           this.vacationTypes = res.data.data.vacation_types
           this.work_Types = res.data.data.work_types
+          this.positionCodeList = res.data.data.position_codes || []
           this.deleteCommandEnum = Object.entries(
             res.data.data.command_additional.delete_additional
           ).map(([key, v]) => ({
