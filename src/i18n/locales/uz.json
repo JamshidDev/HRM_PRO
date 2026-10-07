@@ -1084,7 +1084,8 @@
       "fact": "Lavozimdagi xodimlar soni",
       "salary": "Oylik maosh",
       "experience": "Ish tajribasi (oy)",
-      "educations": "Talab qilinadigan minimal ma'lumot"
+      "educations": "Talab qilinadigan minimal ma'lumot",
+      "position_code": "Lavozim kodi"
     },
     "table": {
       "position": "Lavozim",
@@ -1418,6 +1419,8 @@
       }
     },
     "form": {
+      "changes": "O‘zgartirish bandlari",
+      "changesPlaceholder": "Masalan: 2-banddagi “to‘liq ish vaqti” so‘zlari “to‘liq bo‘lmagan ish vaqti” so‘zlariga o‘zgartirilsin. Bo‘sh qoldirilsa, hujjatda qo‘lda yozish uchun joy qoladi.",
       "candidate": "Xodim",
       "contractDate": "Shartnoma sanasi",
       "contractNumber": "Shartnoma raqami",
@@ -1556,12 +1559,41 @@
           "rejected": "rad etdi",
           "resent": "— qayta yuborildi",
           "file_added": "fayl qo'shdi",
-          "file_removed": "faylni o'chirdi"
+          "file_removed": "faylni o'chirdi",
+          "route_forwarded": "kelishuvchilarga yo‘naltirdi",
+          "route_changed": "kelishuvchilarni o‘zgartirdi",
+          "route_resent": "qayta kelishishga yubordi",
+          "route_closed": "arizani yopdi"
+        },
+        "badges": {
+          "sent": "Yuborildi",
+          "viewed": "Ko'rdi",
+          "approved": "Tasdiqladi",
+          "rejected": "Rad etdi",
+          "resent": "Qayta yuborildi",
+          "file_added": "Fayl qo'shdi",
+          "file_removed": "Fayl o'chirdi",
+          "route_forwarded": "Yo'naltirdi",
+          "route_changed": "O'zgartirdi",
+          "route_resent": "Qayta yubordi",
+          "route_closed": "Yopildi"
         },
         "showAll": "Barchasi"
       },
       "rejectReasonSelect": "Rad etish sababini tanlang",
-      "optional": "ixtiyoriy"
+      "optional": "ixtiyoriy",
+      "rejectedPanel": {
+        "title": "Ariza rad etildi",
+        "titleClosed": "Ariza yopildi",
+        "reason": "Sabab",
+        "hintOwnerClosed": "Kamchiliklarni tuzatib, yangi ariza yuboring.",
+        "hintOwnerPending": "HR arizani qayta ko'rib chiqadi — natija haqida xabar beriladi.",
+        "hintOtherClosed": "Ariza yopilgan, boshqa amal talab qilinmaydi.",
+        "hintOtherPending": "HR qarorini kutmoqda: qayta yuborish yoki yopish.",
+        "more": "Batafsil",
+        "less": "Yig'ish",
+        "titleOwner": "Arizangiz rad etildi"
+      }
     },
     "attach": {
       "title": "Biriktirish",
@@ -2918,6 +2950,58 @@
       "user": "Arizani qabul qiluvchi shaxs",
       "sendApp": "Arizani yuborish",
       "type": "Ariza turi"
+    },
+    "forward": {
+      "title": "Kelishuvchilarga yo‘naltirish",
+      "director": "Rahbar",
+      "approvers": "Kelishuvchilar",
+      "mode": "Imzolash tartibi",
+      "parallel": "Parallel",
+      "parallelHint": "Barcha kelishuvchilar bir vaqtda imzolaydi, so‘ng rahbar",
+      "sequential": "Ketma-ket",
+      "sequentialHint": "Kelishuvchilar tanlangan tartibda birin-ketin imzolaydi, oxirida rahbar",
+      "order": "Imzolash navbati",
+      "submit": "Yo‘naltirish",
+      "signAndForward": "Imzolash va yo‘naltirish",
+      "setApprovers": "Kelishuvchilarni belgilash",
+      "done": "Ariza kelishuvchilarga yo‘naltirildi",
+      "panelSub": "Imzolab, kelishuvchilarga yo‘naltiring",
+      "searchPlaceholder": "Xodimni qidiring va qo‘shing",
+      "empty": "Kelishuvchi yo‘q — ariza to‘g‘ridan-to‘g‘ri rahbarga boradi",
+      "directorLast": "Oxirgi imzo",
+      "together": "{n} kishi bir vaqtda imzolaydi",
+      "viewers": "Tanishuvchilar",
+      "viewersHint": "Imzolamaydi — hujjat tasdiqlangandan keyin u bilan tanishadi",
+      "viewerChip": "Tanishish uchun",
+      "remove": "Olib tashlash",
+      "roleSign": "Kelishuvchi",
+      "roleView": "Tanishuvchi",
+      "roleSignHint": "Hujjatni navbat bilan imzolaydi",
+      "roleViewHint": "Imzolamaydi — hujjat tasdiqlangandan keyin u bilan tanishadi",
+      "editTitle": "Kelishuvchilarni o‘zgartirish",
+      "resendTitle": "Qayta kelishishga yuborish",
+      "resendSubmit": "Qayta yuborish",
+      "signedLocked": "Imzolagan",
+      "closeApplication": "Rad etib yopish",
+      "panelProcess": "Kelishuvda — imzolamaganlarni o‘zgartirish mumkin",
+      "panelRejected": "Rad etilgan — qayta yuboring yoki yoping",
+      "viewerRead": "Tanishdi",
+      "viewerWaiting": "Tanishishni kutmoqda",
+      "panelProcessTitle": "Ariza kelishuvda",
+      "panelRejectedTitle": "Ariza rad etildi"
+    },
+    "hrTabs": {
+      "new": "Yangi",
+      "process": "Kelishuvda",
+      "rejected": "Rad etilgan",
+      "approved": "Tasdiqlangan",
+      "closed": "Yopilgan",
+      "all": "Hammasi"
+    },
+    "hrCheck": {
+      "new": "Yangi",
+      "forwarded": "Yo'naltirilgan",
+      "closed": "Yopilgan"
     }
   },
   "userDepartmentPage": {
@@ -3698,7 +3782,9 @@
       "stop": "To'xtatish",
       "close": "Yopish",
       "background": "Modal yopilsa ham yuklash fonda davom etadi.",
-      "stopped": "Yuklash to'xtatildi."
+      "stopped": "Yuklash to'xtatildi.",
+      "exportErrors": "Xatolarni Excel'ga",
+      "noErrors": "Yuklab olish uchun xato yo'q."
     },
     "pullHistory": {
       "button": "Tortish tarixi",
@@ -4979,7 +5065,9 @@
       "exempt": "Hisobdan ozod",
       "vacation": "Ta'til",
       "day_off": "Dam olish kuni",
-      "no_schedule": "Grafik yo'q"
+      "no_schedule": "Grafik yo'q",
+      "not_started": "Ish vaqti boshlanmagan",
+      "after_night_shift": "Tungi smenadan keyin"
     }
   },
   "hcWorkDuration": {
@@ -6011,19 +6099,17 @@
       "reasonPlaceholder": "Nima uchun hujjatsiz yopilmoqda",
       "hint": "Yopilgandan keyin varaqa o'zgartirilmaydi.",
       "withDocumentHint": "Varaqa raqami, sanasi va PDF fayl",
-      "unexcusedHint": "Hujjat yo'q — sabab yoziladi"
+      "unexcusedHint": "Hujjat yo'q — sabab yoziladi",
+      "section": "Yopish ma'lumotlari"
     },
     "actions": {
-      "close": "Yakunlash"
+      "close": "Yakunlash",
+      "open": "Ochish",
+      "openAndClose": "Ochish va yakunlash"
     },
     "delete": {
       "title": "Varaqani o'chirasizmi?",
       "desc": "Bu amalni orqaga qaytarib bo'lmaydi."
-    },
-    "info": {
-      "fromDate": "Boshlanish sanasi — xodim kasal bo'lgan kun. Uni bugundan 4 kun orqagacha tanlash mumkin.",
-      "toDate": "Yopilish sanasini hozir tanlamasangiz, varaqa ochiq qoladi — xodim ishga chiqqanda «Yakunlash» orqali yopasiz.",
-      "maxDays": "Bitta varaqa 14 kundan uzoq bo'lmaydi. Kasallik cho'zilsa, keyingi kunlarga yangi varaqa ochiladi."
     },
     "view": {
       "title": "Kasallik varaqasi",
@@ -6043,6 +6129,14 @@
       "openFile": "PDF ni ochish",
       "noDoc": "Hujjat keltirilmagan",
       "stillOpen": "Varaqa hali ochiq"
+    },
+    "hint": {
+      "fromDate": "Bugundan ko'pi bilan 4 kun oldin",
+      "toDate": "Bo'sh qolsa — ochiq qoladi · maks. 14 kun"
+    },
+    "summary": {
+      "open": "Varaqa ochiq holatda yaratiladi — xodim ishga chiqqanda «Yakunlash» orqali yopasiz.",
+      "closed": "{days} kun — varaqa darhol yopiladi."
     }
   },
   "paymentAnalysis": {

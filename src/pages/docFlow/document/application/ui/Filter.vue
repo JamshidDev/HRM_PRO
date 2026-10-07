@@ -7,13 +7,6 @@
   const store = useApplicationStore()
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
-  const onAdd = () => {
-    if (!accStore.checkAction(accStore.pn.hrWorkerApplicationsWrite)) return
-    store.resetForm()
-    store.visibleType = true
-    store.visible = true
-  }
-
   const onSearch = () => {
     if (!accStore.checkAction(accStore.pn.hrWorkerApplicationsRead)) return
     store.params.page = 1
@@ -62,10 +55,9 @@
 
 <template>
   <UIPageFilter
-    :add-permission="accStore.pn.hrWorkerApplicationsWrite"
+    :show-add-button="false"
     v-model:search="store.params.search"
     @onSearch="onSearch"
-    @onAdd="onAdd"
     @show="beforeShow"
     @onClear="resetFilter"
     :filter-count="filterCount"

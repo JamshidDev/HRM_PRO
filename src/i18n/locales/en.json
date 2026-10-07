@@ -1068,7 +1068,8 @@
       "fact": "Actual employees",
       "salary": "Monthly salary",
       "experience": "Required experience (months)",
-      "educations": "Minimum education required"
+      "educations": "Minimum education required",
+      "position_code": "Position code"
     },
     "table": {
       "position": "Position",
@@ -1402,6 +1403,8 @@
       }
     },
     "form": {
+      "changes": "Amended clauses",
+      "changesPlaceholder": "E.g.: in clause 2 replace “full-time” with “part-time”. If left empty, the document keeps a blank line to fill in by hand.",
       "candidate": "Employee",
       "contractDate": "Contract date",
       "contractNumber": "Contract number",
@@ -1540,12 +1543,41 @@
           "rejected": "rejected",
           "resent": "— resent",
           "file_added": "added a file",
-          "file_removed": "removed a file"
+          "file_removed": "removed a file",
+          "route_forwarded": "forwarded for approval",
+          "route_changed": "changed approvers",
+          "route_resent": "resent for approval",
+          "route_closed": "closed the application"
+        },
+        "badges": {
+          "sent": "Sent",
+          "viewed": "Viewed",
+          "approved": "Approved",
+          "rejected": "Rejected",
+          "resent": "Resent",
+          "file_added": "Added file",
+          "file_removed": "Removed file",
+          "route_forwarded": "Forwarded",
+          "route_changed": "Changed",
+          "route_resent": "Resent",
+          "route_closed": "Closed"
         },
         "showAll": "Show all"
       },
       "rejectReasonSelect": "Select a rejection reason",
-      "optional": "optional"
+      "optional": "optional",
+      "rejectedPanel": {
+        "title": "Application rejected",
+        "titleClosed": "Application closed",
+        "reason": "Reason",
+        "hintOwnerClosed": "Fix the issues and submit a new application.",
+        "hintOwnerPending": "HR will review the application again — you will be notified.",
+        "hintOtherClosed": "The application is closed, no action needed.",
+        "hintOtherPending": "Awaiting HR decision: resend or close.",
+        "more": "More",
+        "less": "Less",
+        "titleOwner": "Your application was rejected"
+      }
     },
     "attach": {
       "title": "Attach",
@@ -2898,6 +2930,58 @@
       "user": "Recipient",
       "sendApp": "Submit application",
       "type": "Application type"
+    },
+    "forward": {
+      "title": "Forward for approval",
+      "director": "Director",
+      "approvers": "Approvers",
+      "mode": "Signing order",
+      "parallel": "Parallel",
+      "parallelHint": "All approvers sign at the same time, then the director",
+      "sequential": "Sequential",
+      "sequentialHint": "Approvers sign one by one in the selected order, the director signs last",
+      "order": "Signing queue",
+      "submit": "Forward",
+      "signAndForward": "Sign and forward",
+      "setApprovers": "Set approvers",
+      "done": "The application has been forwarded for approval",
+      "panelSub": "Sign and forward for approval",
+      "searchPlaceholder": "Search and add an employee",
+      "empty": "No approvers — the application goes straight to the director",
+      "directorLast": "Signs last",
+      "together": "{n} people sign at the same time",
+      "viewers": "For review",
+      "viewersHint": "Does not sign — reviews the document after it is approved",
+      "viewerChip": "For review",
+      "remove": "Remove",
+      "roleSign": "Approver",
+      "roleView": "Reviewer",
+      "roleSignHint": "Signs the document in turn",
+      "roleViewHint": "Does not sign — reviews the document after it is approved",
+      "editTitle": "Change approvers",
+      "resendTitle": "Resend for approval",
+      "resendSubmit": "Resend",
+      "signedLocked": "Signed",
+      "closeApplication": "Reject and close",
+      "panelProcess": "In approval — unsigned approvers can be changed",
+      "panelRejected": "Rejected — resend or close",
+      "viewerRead": "Reviewed",
+      "viewerWaiting": "Awaiting review",
+      "panelProcessTitle": "Application in approval",
+      "panelRejectedTitle": "Application rejected"
+    },
+    "hrTabs": {
+      "new": "New",
+      "process": "In approval",
+      "rejected": "Rejected",
+      "approved": "Approved",
+      "closed": "Closed",
+      "all": "All"
+    },
+    "hrCheck": {
+      "new": "New",
+      "forwarded": "Forwarded",
+      "closed": "Closed"
     }
   },
   "userDepartmentPage": {
@@ -4933,7 +5017,9 @@
       "exempt": "Exempt from tracking",
       "vacation": "Vacation",
       "day_off": "Day off",
-      "no_schedule": "No schedule"
+      "no_schedule": "No schedule",
+      "not_started": "Shift not started yet",
+      "after_night_shift": "After night shift"
     }
   },
   "hcWorkDuration": {
@@ -5952,19 +6038,17 @@
       "reasonPlaceholder": "Why it is closed without a document",
       "hint": "Once closed, the sheet cannot be changed.",
       "withDocumentHint": "Sheet number, date and a PDF file",
-      "unexcusedHint": "No document — a reason is entered"
+      "unexcusedHint": "No document — a reason is entered",
+      "section": "Closing details"
     },
     "actions": {
-      "close": "Finish"
+      "close": "Finish",
+      "open": "Open",
+      "openAndClose": "Open and finish"
     },
     "delete": {
       "title": "Delete the sheet?",
       "desc": "This action cannot be undone."
-    },
-    "info": {
-      "fromDate": "The start date is the day the worker fell ill. It can go back at most 4 days.",
-      "toDate": "If you leave the closing date empty, the sheet stays open — close it with «Finish» when the worker returns.",
-      "maxDays": "One sheet cannot last longer than 14 days. If the illness continues, open a new sheet for the following days."
     },
     "view": {
       "title": "Sick leave",
@@ -5984,6 +6068,14 @@
       "openFile": "Open PDF",
       "noDoc": "No document provided",
       "stillOpen": "The sheet is still open"
+    },
+    "hint": {
+      "fromDate": "At most 4 days before today",
+      "toDate": "Empty — stays open · max 14 days"
+    },
+    "summary": {
+      "open": "The sheet will be created open — close it with «Finish» when the worker returns.",
+      "closed": "{days} days — the sheet will be closed right away."
     }
   },
   "paymentAnalysis": {

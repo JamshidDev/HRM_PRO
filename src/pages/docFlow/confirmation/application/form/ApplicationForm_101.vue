@@ -1,6 +1,6 @@
 <script setup>
   import { useComponentStore, useConfApplicationStore } from '@/store/modules/index.js'
-  import { UISelect, SuperSelect } from '@/components/index.js'
+  import { UISelect } from '@/components/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import { useAppSetting } from '@/utils/index.js'
 
@@ -9,11 +9,6 @@
 
   const isPosition = computed(() => ![1, 2].includes(store.payload.type))
 
-  const onFocusDirector = () => {
-    // if(store.directorList.length === 0  && !store.directorLoading){
-    //   getDirectors(store.organization_id?.[0]?.id )
-    // }
-  }
   const onFocusPosition = () => {
     if (store.myPositionList.length === 0) {
       store._myPositions((list) => {
@@ -28,21 +23,8 @@
     }
   }
 
-  const onSelectDirector = () => {
-    store.confirmParams.director_id = store.payload.director_id
-    store.confirmParams.search = null
-    store.confirmationList = []
-    store.payload.confirmations = []
-    store.confirmParams.page = 1
-    store.confirmParams.search = null
-    store._confirmation()
-  }
+  // Rahbar va kelishuvchilarni xodim tanlamaydi: rahbar backendda lavozimdan, kelishuvchilarni HR belgilaydi.
   const onSelectApplication = (v) => {
-    store.directorList = []
-    store.payload.director_id = null
-    store.confirmationList = []
-    store.payload.confirmations = []
-
     if (isPosition.value) {
       onFocusPosition()
     } else {
@@ -53,27 +35,8 @@
 
   const onChangeStructure = (v) => {
     store.organization_id = v
-    store.payload.director_id = null
-    store.payload.confirmations = []
-    if (v.length > 0) {
-      store.directorList = []
-      store.confirmParams.organization_id = v[0].id
-      getDirectors(v[0].id)
-    }
-  }
-
-  const getDirectors = (id) => {
-    store.confirmParams.organization_id = id
-    store._directors(id, (list) => {
-      if (list.length === 1) {
-        store.payload.director_id = list[0].id
-        store.confirmParams.director_id = list[0].id
-        store.confirmParams.search = null
-        store.confirmationList = []
-        store.payload.confirmations = []
-        store._confirmation()
-      }
-    })
+    store.orgError = false
+    if (v.length > 0) store.confirmParams.organization_id = v[0].id
   }
 
   const changePosition = (id) => {
@@ -81,15 +44,9 @@
     if (index !== -1) {
       const org = store.myPositionList[index]?.organization  // org - to'liq object
       store.organization_id = org ? [org] : []
-      getDirectors(org?.id)
+      store.confirmParams.organization_id = org?.id
     }
   }
-
-  const disabledDirector = computed(() => {2
-    return store.typeList.includes(store.payload.type)
-      ? !(store.organization_id.length > 0)
-      : !store.payload.worker_position_id
-  })
 
   onMounted(() => {
     if (componentStore.workerApplicationTypes.length === 0) {
@@ -132,7 +89,12 @@
       </n-form-item>
     </div>
     <div class="col-span-12 pr-3" v-if="!isPosition">
-      <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
+      <n-form-item
+        :label="$t(`documentPage.form.organization`)"
+        :show-require-mark="true"
+        :validation-status="store.orgError ? 'error' : undefined"
+        :feedback="store.orgError ? $t('rules.requiredField') : undefined"
+      >
         <UISelect
           :options="componentStore.allStructureList"
           :model-v="store.organization_id"
@@ -142,51 +104,9 @@
           @updateCheck="(v) => (store.structureCheck = v)"
           v-model:search="componentStore.structureParams.search"
           @onSearch="componentStore._allStructures"
+          @onSubmit="componentStore._allStructures"
           :loading="componentStore.allStructureLoading"
           :multiple="false"
-        />
-      </n-form-item>
-    </div>
-    <div class="col-span-12">
-      <n-form-item :label="$t(`applicationPage.form.director_id`)" path="director_id">
-        <SuperSelect
-          v-model:value="store.payload.director_id"
-          :disabled="disabledDirector"
-          :options="store.directorList"
-          :loading="store.directorLoading"
-          @update:value="onSelectDirector"
-          @focus="onFocusDirector"
-        />
-      </n-form-item>
-    </div>
-    <div class="col-span-12">
-      <n-form-item :label="$t(`applicationPage.form.confirmations`)" path="confirmations">
-        <!--        <n-select-->
-        <!--            :disabled="!store.payload.director_id"-->
-        <!--            multiple-->
-        <!--            v-model:value="store.payload.confirmations"-->
-        <!--            @scroll="store.onScrollConfirmation"-->
-        <!--            :options="store.confirmationList"-->
-        <!--            :loading="store.confirmLoading"-->
-        <!--            :render-label="UIHelper.selectRender.label"-->
-        <!--            :render-tag="UIHelper.selectRender.value"-->
-        <!--            label-field="id"-->
-        <!--            value-field="id"-->
-        <!--            :max-tag-count="1"-->
-        <!--            filterable-->
-        <!--            :filter="()=>true"-->
-        <!--            @search="store.onSearchConfirmation"-->
-        <!--        />-->
-
-        <SuperSelect
-          multiple
-          v-model:value="store.payload.confirmations"
-          v-model:search="store.confirmParams.search"
-          :disabled="!store.payload.director_id"
-          :options="store.confirmationList"
-          :loading="store.confirmLoading"
-          @onScrollEv="store.onScrollConfirmation"
-          @onSearch="store.onSearchConfirmation"
         />
       </n-form-item>
     </div>

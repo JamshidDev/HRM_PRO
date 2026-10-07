@@ -31,16 +31,19 @@
     {
       label: t('report.addPosition'),
       key: addPositionKey,
+      disabled: store.busy,
       icon: UIHelper.renderIcon(AddCircle24Regular)
     },
     {
       label: t('content.edit'),
       key: Utils.ActionTypes.edit,
+      disabled: store.busy,
       icon: UIHelper.renderIcon(Edit32Regular)
     },
     {
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
+      disabled: store.busy,
       icon: UIHelper.renderIcon(Delete20Regular)
     }
   ])
