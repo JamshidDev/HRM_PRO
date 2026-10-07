@@ -34,7 +34,7 @@
   })
 
   const colorClass = computed(() => {
-    if (isGood.value === null) return 'text-fig-text-muted'
+    if (isGood.value === null) return 'text-fig-text-tertiary'
     return isGood.value ? 'text-fig-success' : 'text-fig-red'
   })
 
@@ -63,7 +63,7 @@
   <div v-else-if="delta" class="flex items-center gap-2 flex-wrap">
     <span
       v-if="!hideLabel"
-      class="text-[12px] leading-[16px] text-fig-text-muted whitespace-nowrap"
+      class="text-[12px] leading-[16px] text-fig-text-tertiary whitespace-nowrap"
     >
       {{ $t(label) }}
     </span>

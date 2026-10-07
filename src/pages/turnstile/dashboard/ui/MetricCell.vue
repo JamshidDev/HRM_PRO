@@ -50,7 +50,7 @@
           class="w-2.5 h-2.5 rounded-full shrink-0"
           :style="{ backgroundColor: `var(${dotColor})` }"
         ></span>
-        <span class="text-[14px] leading-[20px] text-fig-text-muted truncate">
+        <span class="text-[14px] leading-[20px] text-fig-text-tertiary truncate">
           {{ label }}
         </span>
       </div>

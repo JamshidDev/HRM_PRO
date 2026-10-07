@@ -128,7 +128,7 @@
 
     <UIModal v-model:visible="dashboardStore.previewVisible" :width="1400">
       <template #header-title>
-        <h1 class="text-lg font-medium flex items-center gap-4">
+        <h1 class="text-lg font-medium text-fig-text-primary flex items-center gap-4">
           {{ $t('hcEvent.preview') }}
           <span class="bg-primary/10 text-primary py-1 px-2 rounded-2xl text-sm">
             #{{ $t(typeTitle) }}
