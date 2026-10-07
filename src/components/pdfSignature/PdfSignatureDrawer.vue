@@ -175,13 +175,13 @@
     const key = `${owner ? 'Owner' : 'Other'}${isClosedDoc.value ? 'Closed' : 'Pending'}`
     return `documentPage.signature.rejectedPanel.hint${key}`
   })
-  // Ariza egasiga — «Arizangiz rad etildi», boshqalarga — holat (yopilgan / rad etilgan).
+  // Ariza egasiga — «Arizangiz rad etildi» (sabab bilan), boshqalarga — ixcham holat.
+  const rejectedOwner = computed(() => selfConfirmation.value?.type === 'w')
   const rejectedTitle = computed(() => {
-    if (selfConfirmation.value?.type === 'w')
-      return 'documentPage.signature.rejectedPanel.titleOwner'
+    if (rejectedOwner.value) return 'documentPage.signature.rejectedPanel.titleOwner'
     return isClosedDoc.value
       ? 'documentPage.signature.rejectedPanel.titleClosed'
-      : 'documentPage.signature.rejectedPanel.title'
+      : 'documentPage.signature.rejectedPanel.notAgreed'
   })
   // Uzun sabab — 2 qatorga qisqartiriladi, «Batafsil» bilan to'liq ochiladi.
   const reasonExpanded = ref(false)
@@ -962,7 +962,7 @@
                             {{ $t(rejectedTitle) }}
                           </div>
                           <div
-                            v-if="rejectReason"
+                            v-if="rejectedOwner && rejectReason"
                             class="text-[13px] text-textColor1 mt-0.5 whitespace-pre-line break-words"
                             :class="
                               !reasonExpanded && reasonLong
@@ -976,7 +976,7 @@
                             {{ rejectReason }}
                           </div>
                           <button
-                            v-if="reasonLong"
+                            v-if="rejectedOwner && reasonLong"
                             type="button"
                             class="text-[12px] font-medium text-primary mt-0.5 hover:underline"
                             @click="reasonExpanded = !reasonExpanded"
@@ -990,7 +990,7 @@
                             }}
                           </button>
                           <div
-                            v-if="rejectedHint"
+                            v-if="rejectedOwner && rejectedHint"
                             class="text-[12px] text-fig-text-secondary mt-0.5"
                           >
                             {{ $t(rejectedHint) }}

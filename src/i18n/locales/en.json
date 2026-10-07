@@ -1576,7 +1576,8 @@
         "hintOtherPending": "Awaiting HR decision: resend or close.",
         "more": "More",
         "less": "Less",
-        "titleOwner": "Your application was rejected"
+        "titleOwner": "Your application was rejected",
+        "notAgreed": "Not agreed"
       }
     },
     "attach": {

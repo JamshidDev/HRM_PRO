@@ -1592,7 +1592,8 @@
         "hintOtherPending": "HR qarorini kutmoqda: qayta yuborish yoki yopish.",
         "more": "Batafsil",
         "less": "Yig'ish",
-        "titleOwner": "Arizangiz rad etildi"
+        "titleOwner": "Arizangiz rad etildi",
+        "notAgreed": "Kelishilmadi"
       }
     },
     "attach": {
