@@ -2988,6 +2988,8 @@
       "viewerRead": "Tanishdi",
       "viewerWaiting": "Tanishishni kutmoqda",
       "panelProcessTitle": "Ariza kelishuvda",
+      "panelLegacyTitle": "Eski tartibdagi ariza",
+      "panelLegacy": "Rahbarga to‘g‘ridan-to‘g‘ri yuborilgan — marshrutni o‘zgartirib bo‘lmaydi",
       "panelRejectedTitle": "Ariza rad etildi"
     },
     "hrTabs": {

@@ -2968,6 +2968,8 @@
       "viewerRead": "Reviewed",
       "viewerWaiting": "Awaiting review",
       "panelProcessTitle": "Application in approval",
+      "panelLegacyTitle": "Legacy application",
+      "panelLegacy": "Sent directly to the director — the route cannot be changed",
       "panelRejectedTitle": "Application rejected"
     },
     "hrTabs": {

@@ -2749,6 +2749,8 @@
       "viewerRead": "Танишди",
       "viewerWaiting": "Танишишни кутмоқда",
       "panelProcessTitle": "Ариза келишувда",
+      "panelLegacyTitle": "Эски тартибдаги ариза",
+      "panelLegacy": "Раҳбарга тўғридан-тўғри юборилган — маршрутни ўзгартириб бўлмайди",
       "panelRejectedTitle": "Ариза рад этилди"
     },
     "hrTabs": {

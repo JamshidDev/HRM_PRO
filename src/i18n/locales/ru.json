@@ -2976,6 +2976,8 @@
       "viewerRead": "Ознакомлен",
       "viewerWaiting": "Ожидает ознакомления",
       "panelProcessTitle": "Заявление на согласовании",
+      "panelLegacyTitle": "Заявление старого порядка",
+      "panelLegacy": "Отправлено напрямую руководителю — маршрут изменить нельзя",
       "panelRejectedTitle": "Заявление отклонено"
     },
     "hrTabs": {

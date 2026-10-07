@@ -239,14 +239,19 @@
 
   // HR: «Jarayonda» va hali yo'naltirilmagan ariza (rahbar qatori yo'q) — imzolash/yo'naltirish.
   const isApplication = computed(() => store.model === Utils.documentModels.workerApplication)
-  const isForwarded = computed(() => store.confirmations?.some((c) => c.type === 'd'))
+  const hasDirector = computed(() => store.confirmations?.some((c) => c.type === 'd'))
   const hrSigned = computed(() =>
     store.confirmations?.some((c) => c.type === 's' && c.order === 2 && c.status?.id === 3)
   )
+  // Backend bilan bir xil: yo'naltirilgan = HR imzolagan va rahbar qatori bor.
+  const isForwarded = computed(() => hasDirector.value && hrSigned.value)
+  // Eski tartib: rahbar yaratishda qo'shilgan, HR marshruti yo'q — faqat yopish mumkin.
+  const isLegacy = computed(() => hasDirector.value && !hrSigned.value)
   // HR paneli: yangi (imzolash) / jarayonda (o'zgartirish) / rad etilgan (qayta yuborish) — HR yopmagan bo'lsa.
   const docConfirmation = computed(() => store.document?.document?.confirmation?.id)
   const hrStage = computed(() => {
     if (route.path !== '/hrm/application' || store.document?.document?.closed) return null
+    if (isLegacy.value && [1, 4].includes(docConfirmation.value)) return 'legacy'
     if (docConfirmation.value === 1) return isForwarded.value ? 'process' : 'new'
     if (docConfirmation.value === 4 && isForwarded.value) return 'rejected'
     return null
@@ -261,6 +266,7 @@
   const canClose = computed(
     () =>
       hrStage.value === 'rejected' ||
+      (hrStage.value === 'legacy' && (docConfirmation.value === 4 || !approverSigned.value)) ||
       (hrStage.value === 'new' && !hrSigned.value) ||
       (hrStage.value === 'process' && !approverSigned.value)
   )
@@ -269,7 +275,8 @@
       ({
         new: 'documentPage.signature.approval.yourTurn',
         process: 'applicationPage.forward.panelProcessTitle',
-        rejected: 'applicationPage.forward.panelRejectedTitle'
+        rejected: 'applicationPage.forward.panelRejectedTitle',
+        legacy: 'applicationPage.forward.panelLegacyTitle'
       })[hrStage.value]
   )
   const hrPanelSub = computed(
@@ -277,7 +284,8 @@
       ({
         new: 'applicationPage.forward.panelSub',
         process: 'applicationPage.forward.panelProcess',
-        rejected: 'applicationPage.forward.panelRejected'
+        rejected: 'applicationPage.forward.panelRejected',
+        legacy: 'applicationPage.forward.panelLegacy'
       })[hrStage.value]
   )
   const hrDirector = () => ({
@@ -869,6 +877,7 @@
                             }}
                           </n-button>
                           <n-button
+                            v-if="hrStage !== 'legacy'"
                             type="primary"
                             round
                             class="px-5! sm:px-9! font-semibold"
