@@ -1403,6 +1403,8 @@
       }
     },
     "form": {
+      "changes": "Amended clauses",
+      "changesPlaceholder": "E.g.: in clause 2 replace “full-time” with “part-time”. If left empty, the document keeps a blank line to fill in by hand.",
       "candidate": "Employee",
       "contractDate": "Contract date",
       "contractNumber": "Contract number",

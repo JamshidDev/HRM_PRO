@@ -1419,6 +1419,8 @@
       }
     },
     "form": {
+      "changes": "O‘zgartirish bandlari",
+      "changesPlaceholder": "Masalan: 2-banddagi “to‘liq ish vaqti” so‘zlari “to‘liq bo‘lmagan ish vaqti” so‘zlariga o‘zgartirilsin. Bo‘sh qoldirilsa, hujjatda qo‘lda yozish uchun joy qoladi.",
       "candidate": "Xodim",
       "contractDate": "Shartnoma sanasi",
       "contractNumber": "Shartnoma raqami",
