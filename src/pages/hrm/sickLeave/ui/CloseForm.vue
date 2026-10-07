@@ -1,7 +1,7 @@
 <script setup>
   import { useSickLeaveStore, SICK_LEAVE_CLOSE_TYPE } from '@/store/modules/index.js'
-  import { DocumentPdf24Regular } from '@vicons/fluent'
   import CloseTypePicker from './CloseTypePicker.vue'
+  import PdfPicker from './PdfPicker.vue'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -16,10 +16,6 @@
     if (!store.closeFrom) return false
     const from = new Date(`${store.closeFrom}T00:00:00`).getTime()
     return ts < from || ts > from + 13 * 86400000
-  }
-
-  const onFileChange = ({ file }) => {
-    store.closePayload.file = file?.file ?? null
   }
 
   const onSubmit = () => {
@@ -77,25 +73,7 @@
         </div>
 
         <n-form-item :label="$t('sickLeave.form.file')" required>
-          <n-upload
-            class="w-full"
-            accept="application/pdf"
-            :max="1"
-            :default-upload="false"
-            @change="onFileChange"
-          >
-            <n-upload-dragger>
-              <div class="flex flex-col items-center gap-1 py-2">
-                <n-icon size="26" class="text-fig-brand">
-                  <DocumentPdf24Regular />
-                </n-icon>
-                <span class="text-sm text-fig-text-primary">
-                  {{ $t('sickLeave.form.selectPdf') }}
-                </span>
-                <span class="text-xs text-fig-text-muted">PDF · 10 MB</span>
-              </div>
-            </n-upload-dragger>
-          </n-upload>
+          <PdfPicker v-model="store.closePayload.file" />
         </n-form-item>
       </template>
 

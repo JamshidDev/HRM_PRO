@@ -6,10 +6,18 @@
   import CreateForm from './ui/CreateForm.vue'
   import CloseForm from './ui/CloseForm.vue'
   import ViewModal from './ui/ViewModal.vue'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   const store = useSickLeaveStore()
   const createFormRef = ref(null)
   const closeFormRef = ref(null)
+
+  const createActionLabel = computed(() => {
+    if (!store.visibleType) return t('content.save')
+    return store.payload.to_date ? t('sickLeave.actions.openAndClose') : t('sickLeave.actions.open')
+  })
 
   onMounted(() => {
     store._index()
@@ -33,13 +41,14 @@
           <n-button type="error" ghost class="w-[130px]" @click="store.visible = false">
             {{ $t('content.cancel') }}
           </n-button>
+          <!-- Tugma nima bo'lishini aytadi: varaqa ochiladimi yoki darhol yopiladimi. -->
           <n-button
             type="primary"
-            class="w-[130px]"
+            class="min-w-[130px]"
             :loading="store.saveLoading"
             @click="createFormRef?.submit()"
           >
-            {{ $t('content.save') }}
+            {{ createActionLabel }}
           </n-button>
         </div>
       </template>

@@ -75,6 +75,13 @@ const _reportsZip = async (payload) => {
   })
 }
 
+// «1C dan ommaviy yuklash» xatolarini Excel (.xlsx) qilib yuklab olish.
+const _onesErrorsExport = async (payload) => {
+  return await axios.post(`/v1/economist/upload/ones-errors-export`, payload.data, {
+    responseType: 'blob'
+  })
+}
+
 // Tortish tarixi (pull-log) — barcha davrlar bo'yicha paginatsiyalangan yuklamalar.
 const _pullHistory = async (payload) => {
   return await axios.get(`/v1/economist/upload-report-history`, { params: payload?.params })
@@ -136,6 +143,7 @@ export default {
   _reportStatus,
   _reportStatusExport,
   _reportsZip,
+  _onesErrorsExport,
   _pullHistory,
   _reportDownloads,
   _paymentAnalysisIndex,

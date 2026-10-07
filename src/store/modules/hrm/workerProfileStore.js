@@ -34,7 +34,8 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       work_experience: null,
       experience_date: null,
       education: null,
-      table_number: null
+      table_number: null,
+      company_funded_education: false
     },
     params: {
       page: 1,
@@ -200,6 +201,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
             // this.payload.inn = this.data.inn?.toString()
             this.payload.marital_status = this.data.marital_status?.id
             this.payload.table_number = this.data.table_number?.toString() ?? null
+            this.payload.company_funded_education = Boolean(this.data.company_funded_education)
 
             this.positionList = this.data.positions
             this.districts = [this.data.city]

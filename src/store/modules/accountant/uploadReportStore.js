@@ -62,8 +62,9 @@ export const useUploadReportStore = defineStore('uploadReport', {
     bulkSelected: [], // tanlangan organization_id lar
     bulkSearch: '',
     bulkRunning: false, // yuklash jarayoni ketyaptimi
+    bulkErrorExportLoading: false, // xatolarni Excel'ga yuklab olish jarayoni
     bulkProgress: { done: 0, total: 0 },
-    // organization_id -> { status: 'uploading'|'done'|'failed', message? }
+    // organization_id -> { status: 'uploading'|'done'|'failed', message?, at? }
     bulkResults: {},
     // To'xtatish so'ralganda true — worker'lar yangi korxona OLMAYDI.
     bulkCancelRequested: false,
@@ -419,7 +420,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
             this.bulkResults = {
               ...this.bulkResults,
               [orgId]: failed
-                ? { status: 'failed', message: res?.data?.message }
+                ? { status: 'failed', message: res?.data?.message, at: new Date().toISOString() }
                 : { status: 'done' }
             }
           } catch (e) {
@@ -427,7 +428,8 @@ export const useUploadReportStore = defineStore('uploadReport', {
               ...this.bulkResults,
               [orgId]: {
                 status: 'failed',
-                message: e?.response?.data?.message ?? e?.message
+                message: e?.response?.data?.message ?? e?.message,
+                at: new Date().toISOString()
               }
             }
           } finally {
@@ -446,6 +448,47 @@ export const useUploadReportStore = defineStore('uploadReport', {
         this._structures()
         if (this.params.organization_id) this._cards()
       }
+    },
+    // «1C dan ommaviy yuklash» XATOlarini Excel (.xlsx) qilib yuklab olish:
+    // korxona, 1C ID, davr, tortilgan vaqt, xato. Backend 1C ID (ones_org_code) ni
+    // har org uchun aniqlaydi; bu yerda faqat xato natijalarni yuboramiz.
+    _exportBulkErrors() {
+      const errors = Object.entries(this.bulkResults)
+        .filter(([, r]) => r?.status === 'failed')
+        .map(([orgId, r]) => {
+          const org = this.bulkOrgs.find(
+            (o) => String(o.organization_id) === String(orgId)
+          )
+          return {
+            organization_id: Number(orgId),
+            organization_name: org?.organization ?? '',
+            error: r.message ?? '',
+            pulled_at: r.at ?? ''
+          }
+        })
+      if (!errors.length) {
+        $Toast.info(t('uploadReport.bulkOnes.noErrors'))
+        return
+      }
+      this.bulkErrorExportLoading = true
+      const data = {
+        year: this.bulkPeriod.year,
+        month: this.bulkPeriod.month,
+        type: this.bulkType,
+        errors
+      }
+      $ApiService.accountantService
+        ._onesErrorsExport({ data })
+        .then((res) => {
+          Utils.blobFileDownload(
+            res.data,
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            `1c-yuklash-xatolari-${this.bulkPeriod.year}-${String(this.bulkPeriod.month).padStart(2, '0')}.xlsx`
+          )
+        })
+        .finally(() => {
+          this.bulkErrorExportLoading = false
+        })
     },
     _delete() {
       this.deleteLoading = true

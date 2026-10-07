@@ -780,6 +780,7 @@
     }
   },
   "organizationPage": {
+    "collapseAll": "Collapse all",
     "name": "Organizations",
     "createTitle": "Add organization",
     "updateTitle": "Edit organization",
@@ -964,6 +965,13 @@
     "name": "Document history"
   },
   "workerProfile": {
+    "fundedEducation": {
+      "title": "Education funding",
+      "marked": "Marked",
+      "label": "Higher education funded by the Company",
+      "hint": "Employee who completed studies funded by the Company",
+      "filter": "Company-funded education"
+    },
     "tabs": {
       "personal": "Personal",
       "education": "Education and skills",
@@ -5944,19 +5952,17 @@
       "reasonPlaceholder": "Why it is closed without a document",
       "hint": "Once closed, the sheet cannot be changed.",
       "withDocumentHint": "Sheet number, date and a PDF file",
-      "unexcusedHint": "No document — a reason is entered"
+      "unexcusedHint": "No document — a reason is entered",
+      "section": "Closing details"
     },
     "actions": {
-      "close": "Finish"
+      "close": "Finish",
+      "open": "Open",
+      "openAndClose": "Open and finish"
     },
     "delete": {
       "title": "Delete the sheet?",
       "desc": "This action cannot be undone."
-    },
-    "info": {
-      "fromDate": "The start date is the day the worker fell ill. It can go back at most 4 days.",
-      "toDate": "If you leave the closing date empty, the sheet stays open — close it with «Finish» when the worker returns.",
-      "maxDays": "One sheet cannot last longer than 14 days. If the illness continues, open a new sheet for the following days."
     },
     "view": {
       "title": "Sick leave",
@@ -5976,6 +5982,14 @@
       "openFile": "Open PDF",
       "noDoc": "No document provided",
       "stillOpen": "The sheet is still open"
+    },
+    "hint": {
+      "fromDate": "At most 4 days before today",
+      "toDate": "Empty — stays open · max 14 days"
+    },
+    "summary": {
+      "open": "The sheet will be created open — close it with «Finish» when the worker returns.",
+      "closed": "{days} days — the sheet will be closed right away."
     }
   },
   "paymentAnalysis": {
