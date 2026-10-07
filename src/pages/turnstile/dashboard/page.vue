@@ -71,10 +71,7 @@
               :tint="item.tint"
               :list="item.list"
               :list-more="item.listMore"
-              :delta="dashboardStore.deltas[item.deltaKey]"
-              :invert="item.invert"
               :decor="item.decor"
-              :delta-loading="dashboardStore.compareLoading"
               @click="onPreview(item.previewType)"
             />
           </template>
@@ -92,10 +89,7 @@
               :tint="item.tint"
               :list="item.list"
               :list-more="item.listMore"
-              :delta="dashboardStore.deltas[item.deltaKey]"
-              :invert="item.invert"
               :decor="item.decor"
-              :delta-loading="dashboardStore.compareLoading"
               @click="onPreview(item.previewType)"
             />
           </template>
