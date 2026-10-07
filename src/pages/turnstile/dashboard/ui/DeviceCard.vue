@@ -1,8 +1,7 @@
 <script setup>
+  import { ChevronRight20Regular } from '@vicons/fluent'
   import { Utils } from '@/utils/index.js'
   import CardHeader from './CardHeader.vue'
-  import DeltaBadge from './DeltaBadge.vue'
-  import DetailsLine from './DetailsLine.vue'
   import { DeviceCardSkeleton } from './skeleton/index.js'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
   import HeadDesktopIcon from '@/assets/icons/dashboard/head-desktop.svg'
@@ -10,31 +9,35 @@
   const store = useTurnstileDashboardStore()
   const emits = defineEmits(['onPreview'])
 
-  const percent = computed(() => {
-    const all = store.deviceData?.all || 0
-    if (!all) return 0
-    return Math.min(Math.round(((store.deviceData?.online || 0) / all) * 100), 100)
+  const formatCount = (v) => Utils.formatNumberToMoney(v) || '0'
+
+  const total = computed(() => store.deviceData?.all || 0)
+  const share = (v) => (total.value ? Math.round((v / total.value) * 100) : 0)
+
+  const rows = computed(() => {
+    const online = store.deviceData?.online || 0
+    const offline = store.deviceData?.offline || 0
+    return [
+      {
+        previewType: 'online_devices',
+        label: 'content.online',
+        count: online,
+        percent: share(online),
+        dotClass: 'bg-fig-green'
+      },
+      {
+        previewType: 'offline_devices',
+        label: 'content.offline',
+        count: offline,
+        percent: share(offline),
+        dotClass: 'bg-fig-red'
+      }
+    ]
   })
 
-  const cells = computed(() => [
-    {
-      previewType: 'online_devices',
-      label: 'turnStileDashboard.cards.onlineDevices',
-      count: store.deviceData?.online || 0,
-      color: '--fig-icon-green',
-      delta: store.deltas.devicesOnline
-    },
-    {
-      previewType: 'offline_devices',
-      label: 'turnStileDashboard.cards.offlineDevices',
-      count: store.deviceData?.offline || 0,
-      color: '--fig-icon-brand',
-      delta: store.deltas.devicesOffline,
-      invert: true
-    }
-  ])
-
-  const formattedAll = computed(() => Utils.formatNumberToMoney(store.deviceData?.all) || '0')
+  // Bar segmentlari: onlayn + oflayn ulushi (jami 0 bo'lsa bar bo'sh trek bo'lib qoladi).
+  const onlineWidth = computed(() => (total.value ? (rows.value[0].count / total.value) * 100 : 0))
+  const offlineWidth = computed(() => (total.value ? (rows.value[1].count / total.value) * 100 : 0))
 </script>
 
 <template>
@@ -48,59 +51,69 @@
         :title="$t('turnStileDashboard.cards.deviceAnalytic')"
       />
 
-      <div class="flex-1 flex flex-col justify-center gap-2.5 p-2">
-        <div class="h-14 flex flex-col items-center justify-center">
-          <div class="flex items-center justify-center gap-2.5 flex-wrap">
-            <span
-              class="font-grotesk font-semibold text-[20px] leading-[30px] text-fig-text-primary"
+      <!-- jami son + onlayn ulushi -->
+      <div class="flex-1 flex flex-col justify-center gap-3 px-3 py-3">
+        <div class="flex items-end justify-between gap-2">
+          <div class="min-w-0">
+            <p class="text-[12px] leading-[16px] text-fig-text-secondary truncate">
+              {{ $t('turnStileDashboard.compare.totalDevices') }}
+            </p>
+            <p
+              class="font-grotesk font-semibold text-[28px] leading-[34px] text-fig-text-primary whitespace-nowrap"
             >
-              {{ formattedAll }}
-            </span>
-            <DeltaBadge
-              hide-label
-              :delta="store.deltas.devicesAll"
-              :loading="store.compareLoading"
-            />
+              {{ formatCount(total) }}
+            </p>
           </div>
-          <p class="text-[10px] leading-[12px] text-fig-text-tertiary text-center">
-            {{ $t('turnStileDashboard.compare.totalDevices') }}
-          </p>
+          <span
+            class="shrink-0 mb-1 rounded-full bg-fig-green-100 px-2 py-0.5 text-[12px] leading-[16px] font-semibold text-fig-text-green whitespace-nowrap"
+          >
+            {{ rows[0].percent }}% {{ $t('content.online').toLowerCase() }}
+          </span>
         </div>
 
-        <!-- onlayn ulushi -->
-        <div class="py-3">
-          <div class="h-14 w-full rounded-2xl bg-fig-neutral-300 overflow-hidden relative">
-            <div
-              class="h-full rounded-2xl relative overflow-hidden transition-all duration-500"
-              :style="{
-                width: Math.max(percent, 14) + '%',
-                background: 'linear-gradient(to left, var(--fig-icon-green), var(--fig-green-400))'
-              }"
-            >
-              <span
-                class="absolute right-0 top-1/2 -translate-y-1/2 bg-surface-section rounded-l-full px-1.5 py-0.5 text-[12px] leading-[16px] font-semibold text-fig-text-green"
-              >
-                {{ percent }}%
-              </span>
-            </div>
-          </div>
+        <!-- onlayn / oflayn taqsimoti -->
+        <div class="h-2.5 w-full rounded-full bg-fig-neutral-300 overflow-hidden flex gap-0.5">
+          <div
+            class="h-full rounded-full bg-fig-green transition-all duration-500"
+            :style="{ width: onlineWidth + '%' }"
+          ></div>
+          <div
+            v-if="offlineWidth"
+            class="h-full rounded-full bg-fig-red transition-all duration-500"
+            :style="{ width: offlineWidth + '%' }"
+          ></div>
         </div>
       </div>
 
-      <div class="bg-surface-ground-soft rounded-xl p-3 flex items-start gap-1">
-        <DetailsLine
-          v-for="(cell, idx) in cells"
-          :key="idx"
-          clickable
-          class="flex-1"
-          :label="$t(cell.label)"
-          :count="cell.count"
-          :bar-color="cell.color"
-          :delta="cell.delta"
-          :invert="cell.invert"
-          :delta-loading="store.compareLoading"
-          @click="emits('onPreview', cell.previewType)"
-        />
+      <div class="bg-surface-ground-soft rounded-xl p-1.5 flex flex-col">
+        <button
+          v-for="row in rows"
+          :key="row.previewType"
+          type="button"
+          class="group w-full flex items-center gap-2.5 rounded-lg px-2 py-2 text-left cursor-pointer transition-colors duration-200 hover:bg-surface-section"
+          @click="emits('onPreview', row.previewType)"
+        >
+          <span class="w-2.5 h-2.5 rounded-full shrink-0" :class="row.dotClass"></span>
+          <span class="flex-1 min-w-0 text-[14px] leading-[20px] text-fig-text-secondary truncate">
+            {{ $t(row.label) }}
+          </span>
+          <span
+            class="font-grotesk font-semibold text-[16px] leading-[20px] text-fig-text-primary whitespace-nowrap"
+          >
+            {{ formatCount(row.count) }}
+          </span>
+          <span
+            class="w-10 text-right text-[12px] leading-[16px] text-fig-text-tertiary whitespace-nowrap"
+          >
+            {{ row.percent }}%
+          </span>
+          <n-icon
+            size="16"
+            class="shrink-0 text-fig-text-tertiary transition-transform duration-200 group-hover:translate-x-0.5"
+          >
+            <ChevronRight20Regular />
+          </n-icon>
+        </button>
       </div>
     </template>
   </div>

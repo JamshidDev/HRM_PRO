@@ -1185,7 +1185,7 @@
     "legalPerson": "Yuridik shaxs",
     "naturalPerson": "Jismoniy shaxs",
     "connectionError": "E-imzo o'rnatilmagan yoki to'g'ri sozlanmagan!",
-    "localNetworkBlocked": "Brauzer E-imzo'ga ulanishni blokladi. Manzil satridagi qulf belgisini bosing → «Mahalliy tarmoqqa kirish» (Local network access) → «Ruxsat berish», so'ng sahifani yangilang.",
+    "localNetworkBlocked": "Brauzer E-imzo'ga ulanishni blokladi. Manzil satrining o'ng tomonidagi ⊘ belgisini bosing → «Ruxsat berish». Belgi bo'lmasa: chap tomondagi sozlamalar belgisi → «Sayt sozlamalari» → «Mahalliy tarmoqqa kirish» (Local network access) → «Ruxsat berish». So'ng sahifani yangilang.",
     "confirmError": "Hujjatni tasdiqlashda xatolik yuz berdi. Birozdan so'ng qayta urinib ko'ring.",
     "certCheckError": "E-IMZO sertifikat holatini tekshirish xizmati vaqtincha ishlamayapti. Birozdan so'ng qayta urinib ko'ring.",
     "serverError": "Serverda xatolik yuz berdi. Birozdan so'ng qayta urinib ko'ring.",

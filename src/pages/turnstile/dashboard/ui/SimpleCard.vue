@@ -1,7 +1,6 @@
 <script setup>
   import { UIUserGroup } from '@/components/index.js'
   import { Utils } from '@/utils/index.js'
-  import DeltaBadge from './DeltaBadge.vue'
   import Watermark1 from '@/assets/icons/dashboard/card-watermark-1.svg'
   import Watermark2 from '@/assets/icons/dashboard/card-watermark-2.svg'
   import Watermark3 from '@/assets/icons/dashboard/card-watermark-3.svg'
@@ -16,12 +15,6 @@
       type: Number,
       default: null
     },
-    delta: {
-      type: Object,
-      default: null
-    },
-    invert: Boolean,
-    deltaLoading: Boolean,
     // Chip foni: green | orange | yellow | red
     tint: {
       type: String,
@@ -83,7 +76,6 @@
         >
           {{ formatted }}
         </p>
-        <DeltaBadge hide-label :delta="delta" :invert="invert" :loading="deltaLoading" />
       </div>
       <span class="shrink-0 card-avatars" v-if="listMore">
         <UIUserGroup

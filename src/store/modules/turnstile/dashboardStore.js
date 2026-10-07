@@ -216,98 +216,10 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
 
     grandWorkerData: null,
     grandLoading: false,
-    faceIdData: null,
-
-    // Oldingi kun ko'rsatkichlari — "o'tgan kunga nisbatan" farqini hisoblash uchun.
-    prevStats: null,
-    compareLoading: false
+    faceIdData: null
   }),
 
-  getters: {
-    /**
-     * Har bir metrika uchun `{diff, percent, dir}` yoki `null` (oldingi kun ma'lumoti yo'q).
-     * Manba yo'llari `_dashboard()` dagi mapping bilan bir xil.
-     */
-    deltas(state) {
-      const p = state.prevStats
-      const d = (cur, prev) => Utils.compareDelta(cur, prev)
-      // Indeks emas, eng oxirgi sana bo'yicha — backend tartibiga bog'liq bo'lmasin.
-      const lateCount = (v) =>
-        v?.late_and_early?.late ? Utils.latestByDate(v.late_and_early.late) : null
-      const earlyCount = (v) =>
-        v?.late_and_early?.early ? Utils.latestByDate(v.late_and_early.early) : null
-
-      const a = state.attendance
-      const pa = p?.attendance
-      return {
-        totalWorkers: d(a?.total, pa?.total),
-        planned: d(a?.scheduled, pa?.scheduled),
-        come: d(a?.came, pa?.came),
-        notCome: d(a?.absent, pa?.absent),
-        currentIn: d(a?.in_office, pa?.in_office),
-        currentOut: d(a?.left_office, pa?.left_office),
-        vacation: d(a?.vacation, pa?.vacation),
-        dayOff: d(a?.day_off, pa?.day_off),
-        excused: d(a?.excused, pa?.excused),
-
-        late: d(lateCount(state.workTime), lateCount(p?.seven)),
-        early: d(earlyCount(state.workTime), earlyCount(p?.seven)),
-
-        devicesAll: d(state.deviceData?.all, p?.four?.devices?.all),
-        devicesOnline: d(state.deviceData?.online, p?.four?.devices?.online),
-        devicesOffline: d(state.deviceData?.offline, p?.four?.devices?.offline),
-
-        faceTotal: d(a?.came, pa?.came),
-        faceTurnstile: d(a?.came_turnstile, pa?.came_turnstile),
-        faceMobile: d(a?.came_mobile, pa?.came_mobile),
-
-        withoutSchedule: d(state.monthlyTotalWorkerCount, p?.two?.count)
-      }
-    }
-  },
-
   actions: {
-    /**
-     * Dashboard statistikasining 6 ta endpointini berilgan sana uchun yuklaydi.
-     * Xato bo'lgan so'rov `null` bo'lib qaytadi — qolganlari to'xtamaydi.
-     */
-    async _fetchStats(dateMs) {
-      const params = {
-        ...this._previewQueryParams(),
-        start_time: this.dashboardParams.start_time,
-        end_time: this.dashboardParams.end_time,
-        date: Utils.timeToZone(dateMs),
-        type: undefined
-      }
-
-      const keys = Object.keys(STATS_URLS)
-      const responses = await Promise.all(
-        keys.map((key) =>
-          $ApiService.eventService
-            ._allDashboard({ url: STATS_URLS[key], params })
-            .then((res) => res.data.data)
-            .catch(() => null)
-        )
-      )
-      return Object.fromEntries(keys.map((key, idx) => [key, responses[idx]]))
-    },
-
-    /** Oldingi kun ko'rsatkichlarini fonda yuklaydi (asosiy renderni bloklamaydi). */
-    _compareStats() {
-      if (!this.dashboardParams.date) return
-      this.compareLoading = true
-      const prevDate = new Date(this.dashboardParams.date)
-      prevDate.setDate(prevDate.getDate() - 1)
-
-      this._fetchStats(prevDate.getTime())
-        .then((data) => {
-          this.prevStats = data
-        })
-        .finally(() => {
-          this.compareLoading = false
-        })
-    },
-
     async _dashboard() {
       this.dashboardLoading = true
       this.dailyAttendanceLoading = true
@@ -317,7 +229,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
       this.workTimeLoading = true
       this.grandLoading = true
       this.mainChartLoading = true
-      this.prevStats = null
 
       const params = {
         ...this._previewQueryParams(),
@@ -384,8 +295,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         this.workTimeLoading = false
         this.grandLoading = false
         this.mainChartLoading = false
-
-        this._compareStats()
       }
     },
 
@@ -400,7 +309,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
           icon: markRaw(TurnstileIcon1),
           tint: 'green',
           previewType: 'att_came',
-          deltaKey: 'come',
           decor: 1
         },
         {
@@ -409,8 +317,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
           icon: markRaw(TurnstileIcon2),
           tint: 'orange',
           previewType: 'att_absent',
-          deltaKey: 'notCome',
-          invert: true,
           decor: 2
         }
       ]
@@ -423,7 +329,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
           listMore: a?.in_office || 0,
           list: this.officeTop.in_office,
           previewType: 'att_in_office',
-          deltaKey: 'currentIn',
           decor: 3
         },
         {
@@ -434,8 +339,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
           listMore: a?.left_office || 0,
           list: this.officeTop.left_office,
           previewType: 'att_left_office',
-          deltaKey: 'currentOut',
-          invert: true,
           decor: 4
         }
       ]
