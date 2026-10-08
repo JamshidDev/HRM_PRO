@@ -3,6 +3,7 @@ import i18n from '@/i18n/index.js'
 import router from '@/router/index.js'
 import { AppPaths, useAppSetting, appPermissions, setErrorReporterUser } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
+import { useEimzoGateStore } from '@/features/eimzoGate/eimzoGateStore.js'
 
 const { t } = i18n.global
 
@@ -335,6 +336,8 @@ export const useAccountStore = defineStore('accountStore', {
           // true → parol muddati o'tgan. Ilgari bu MAJBURIY modal ochardi (login'dan
           // keyin yopib bo'lmasdi) — modal OLIB TASHLANDI; bayroq faqat profil
           // sahifasidagi "Parol" tabini belgilash uchun qoladi (`profile/ui/Tabs.vue`).
+          // eimzoGate: iqtisod bo'limi E-IMZO tasdig'i holati profil bilan keladi.
+          useEimzoGateStore()._apply(res.data.data.eimzo_gate)
           this.loginMethods = res.data.data.login_methods ?? null
           this.mustChangePassword = res.data.data.must_change === true
           if (this.mustChangePassword) {
