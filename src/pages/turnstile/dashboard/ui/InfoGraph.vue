@@ -15,19 +15,22 @@
       previewType: 'att_vacation',
       label: 'turnStileDashboard.attendance.vacation',
       count: store.attendance?.vacation || 0,
-      color: '--fig-icon-indigo'
+      color: '--fig-icon-indigo',
+      delta: store.deltas.vacation
     },
     {
       previewType: 'att_day_off',
       label: 'turnStileDashboard.attendance.day_off',
       count: store.attendance?.day_off || 0,
-      color: '--fig-icon-amber'
+      color: '--fig-icon-amber',
+      delta: store.deltas.dayOff
     },
     {
       previewType: 'att_excused',
       label: 'turnStileDashboard.attendance.excused',
       count: store.attendance?.excused || 0,
-      color: '--fig-icon-green'
+      color: '--fig-icon-green',
+      delta: store.deltas.excused
     }
   ])
 
@@ -59,6 +62,9 @@
               :label="$t(cell.label)"
               :count="cell.count"
               :bar-color="cell.color"
+              :delta="cell.delta"
+              :invert="cell.invert"
+              :delta-loading="store.compareLoading"
               @click="emits('onPreview', cell.previewType)"
             />
             <div v-if="idx < cells.length - 1" class="h-px w-full bg-fig-br-disable"></div>

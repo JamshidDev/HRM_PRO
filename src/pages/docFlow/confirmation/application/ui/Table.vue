@@ -64,7 +64,13 @@
     store.payload.univer_number = v.univer_number
     store.organization_id = v?.organization_id
     store.department_id = v?.department_id
-    store.confirmParams.organization_id = v.organization_id?.at(0)?.id || undefined
+    store._directors(v.organization_id?.at(0).id || undefined)
+
+    store.confirmParams.director_id = v.director_id
+    store.confirmParams.organization_id = v.organization_id?.at(0) || undefined
+    store.confirmParams.search = null
+    store.confirmationList = []
+    store._confirmation()
     store._myPositions()
     if (store.department_id?.length) {
       store._allPositions(store.department_id.at(0)?.id || undefined)
@@ -103,8 +109,6 @@
     store._index()
   }
 
-  // Yopilgan: HR rad etib yopgan (qizil) yoki rahbar imzolagan (yashil).
-  const closedApproved = { id: 3, name: t('applicationPage.hrCheck.closed') }
   const checkingStatus = {
     0: {
       id: 1,
@@ -116,7 +120,7 @@
     },
     2: {
       id: 4,
-      name: t('applicationPage.hrCheck.closed')
+      name: t('content.Rejected')
     }
   }
 
@@ -177,7 +181,6 @@
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete20Regular),
-      visible: canEdit,
       action: onDelete
     }
   ])
@@ -216,13 +219,7 @@
     </template>
 
     <template #[`cell-worker_application.status`]="{ row }">
-      <UIStatus
-        :status="
-          row?.worker_application.confirmation?.id === 3
-            ? closedApproved
-            : checkingStatus[Number(row?.worker_application.status)]
-        "
-      />
+      <UIStatus :status="checkingStatus[Number(row?.worker_application.status)]" />
     </template>
 
     <template #[`cell-worker_application.confirmation`]="{ row }">

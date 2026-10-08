@@ -1,10 +1,16 @@
 <script setup>
-  import { TurnstileDownloadModal, UIOfficeApp, UIPageContent } from '@/components/index.js'
+  import {
+    TurnstileDownloadModal,
+    UIModal,
+    UIOfficeApp,
+    UIPageContent,
+    UIPageFilter
+  } from '@/components/index.js'
+  import createForm from './ui/createForm.vue'
   import Table from './ui/Table.vue'
   import Filter from './ui/Filter.vue'
   import { useAccountStore, useApplicationStore, useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
-  import i18n from '@/i18n/index.js'
   const store = useApplicationStore()
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
@@ -12,19 +18,6 @@
 
   const openApplication = (id) => {
     officeAppRef.value.openPdf(id, Utils.documentModels.workerApplication)
-  }
-
-  const { t } = i18n.global
-  // HR bo'limlari — backend `stage` filtri; standart «Hammasi».
-  const stageTabs = computed(() =>
-    ['all', 'new', 'process', 'rejected', 'approved', 'closed'].map((id) => ({
-      id,
-      name: t(`applicationPage.hrTabs.${id}`)
-    }))
-  )
-  const onStageChange = () => {
-    store.params.page = 1
-    store._index()
   }
 
   onMounted(() => {
@@ -40,15 +33,18 @@
 <template>
   <UIPageContent>
     <Filter />
-    <n-tabs
-      v-model:value="store.params.stage"
-      type="line"
-      size="small"
-      class="mt-2"
-      @update:value="onStageChange"
+    <UIModal
+      :width="600"
+      :visible="store.visible"
+      @update:visible="(v) => (store.visible = v)"
+      :title="
+        store.visibleType ? $t('applicationPage.createTitle') : $t('applicationPage.updateTitle')
+      "
     >
-      <n-tab v-for="tab in stageTabs" :key="tab.id" :name="tab.id" :tab="tab.name" />
-    </n-tabs>
+      <template #default>
+        <createForm />
+      </template>
+    </UIModal>
     <Table @openOffice="openApplication" />
     <TurnstileDownloadModal />
     <UIOfficeApp ref="officeAppRef" />

@@ -29,10 +29,6 @@
     formRef.value?.validate((error) => {
       if (!error) {
         if (store.activeTab === 101) {
-          // Ishga kirish (1, 2): korxona majburiy — rahbar va HR shu korxonadan aniqlanadi.
-          store.orgError =
-            store.typeList.includes(store.payload.type) && !store.organization_id?.length
-          if (store.orgError) return
           store.activeTab = store.payload.type
           if (store.typeList.includes(store.payload.type) && !store.visibleType) {
             componentStore._departmentPosition(store.department_id?.[0]?.id)

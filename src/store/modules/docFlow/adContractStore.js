@@ -44,9 +44,7 @@ export const useAdContractStore = defineStore('adContractStore', {
       confirmations: [],
       finance_id: null,
       position_date: null,
-      contract_to_date: null,
-      // 1-tur: o'zgartirish bandlari (ixtiyoriy)
-      changes: null
+      contract_to_date: null
     },
     params: {
       page: 1,
@@ -105,7 +103,6 @@ export const useAdContractStore = defineStore('adContractStore', {
           command_date: Utils.timeToZone(this.payload.command_date) || undefined,
           contract_date: Utils.timeToZone(this.payload.contract_date) || undefined,
           contract_to_date: Utils.timeToZone(this.payload.contract_to_date) || undefined,
-          changes: this.payload.type === 1 ? this.payload.changes?.trim() || undefined : undefined,
           organization_id:
             this.payload.organization_id.length > 0
               ? this.payload.organization_id[0].id
@@ -222,7 +219,6 @@ export const useAdContractStore = defineStore('adContractStore', {
       this.payload.command_number = null
       this.payload.position_date = null
       this.payload.contract_to_date = new Date().getTime()
-      this.payload.changes = null
     }
   }
 })

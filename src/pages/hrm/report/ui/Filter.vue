@@ -1,13 +1,8 @@
 <script setup>
-  import { UISegmentTabs, UISelect } from '@/components/index.js'
+  import { UISelect } from '@/components/index.js'
   import { useComponentStore, useDepartmentStore, useReport2Store } from '@/store/modules/index.js'
   import { useAccountStore } from '@/store/modules/index.js'
-  import {
-    AddCircle24Regular,
-    ArrowDownload24Regular,
-    Table24Regular,
-    TextBulletListLtr24Regular
-  } from '@vicons/fluent'
+  import { AddCircle24Regular, ArrowDownload24Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
   const accStore = useAccountStore()
   const { proxy } = getCurrentInstance()
@@ -15,15 +10,23 @@
 
   const componentStore = useComponentStore()
   const store = useReport2Store()
-  const dpStore = useDepartmentStore()
   const { t } = i18n.global
-
-  const modeTabs = computed(() => [
-    { id: 'list', name: t('report.listView'), icon: TextBulletListLtr24Regular },
-    { id: 'table', name: t('report.tableView'), icon: Table24Regular }
-  ])
+  const dpStore = useDepartmentStore()
 
   const selectedOrg = computed(() => store.department.params.organization_id?.[0] || null)
+
+  const orgStats = computed(() => {
+    const org = selectedOrg.value
+    if (!org) return []
+    return [
+      { label: t('report.tooltip.P'), value: org.rate, cls: 'text-fig-text-primary' },
+      {
+        label: t('report.tooltip.F'),
+        value: org.real_rate,
+        cls: org.real_rate > org.rate ? 'text-fig-text-red' : 'text-fig-text-primary'
+      }
+    ]
+  })
 
   const onChangeOrg = (v) => {
     store.department.params.organization_id = v
@@ -68,16 +71,14 @@
 </script>
 
 <template>
-  <!-- Tor ekranda bloklar butunligicha keyingi qatorga o'tadi (`flex-wrap`);
-       `justify-end` — o'tib ketgan tashkilot select'i o'ng chetda qoladi. -->
-  <div class="w-full flex flex-wrap items-center justify-end gap-3">
-    <!-- Filter fonsiz — pastdagi kartochka bilan ikki qavat fon bo'lmasin. -->
+  <div
+    class="w-full rounded-[20px] flex flex-col md:flex-row md:items-center gap-3"
+    :class="store.viewMode === 'table' ? 'py-1' : 'bg-surface-section p-3'"
+  >
+    <!-- Jadval ko'rinishida filter fonsiz — jadval kartochkasi bilan ikki qavat fon bo'lmasin. -->
     <!-- Tashkilot select'i o'ng chetda: desktopda `order-last` bilan oxiriga
          o'tadi, mobilda esa birinchi bo'lib qoladi. -->
-    <!-- Mobilda select birinchi qatorda to'liq kenglikda, desktopda o'ng chetda.
-         `pt-2 pr-2` — tanlanganlar badge'i (n-badge offset) tor ekranda sahifa
-         chetidan kesilib qolmasin. -->
-    <div class="w-full md:w-[300px] xl:w-[360px] shrink-0 order-first md:order-last pt-2 pr-2 md:p-0">
+    <div class="w-full md:w-[360px] shrink-0 md:order-last" :class="{ 'md:ml-auto': !selectedOrg }">
       <UISelect
         placement="bottom-end"
         clearable
@@ -119,13 +120,24 @@
     </div>
 
     <template v-if="selectedOrg">
-      <UISegmentTabs
-        v-if="store.department.list.length > 0"
-        class="shrink-0 mr-auto"
-        :tabs="modeTabs"
-        v-model="store.viewMode"
-      />
-      <div class="flex flex-wrap gap-2">
+      <!-- Tashkilot bo'yicha jami Plan/Fakt: bitta guruhda, ajratgich bilan.
+           Fakt plandan oshsa qizil bo'ladi. -->
+      <div
+        class="flex items-center self-start md:self-auto h-[34px] rounded-xl border border-table-border divide-x divide-table-border"
+      >
+        <div
+          v-for="item in orgStats"
+          :key="item.label"
+          class="flex items-center gap-2 h-full px-3.5"
+        >
+          <span class="text-xs text-fig-text-tertiary">{{ item.label }}</span>
+          <span class="text-sm font-semibold tabular-nums" :class="item.cls">
+            {{ item.value ?? 0 }}
+          </span>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-2 md:ml-auto">
         <n-button
           v-if="accStore.checkPermission(accStore.pn.hrReportStaffingExport)"
           ref="staffingButtonRef"

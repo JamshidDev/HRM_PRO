@@ -33,9 +33,8 @@
     officeAppRef.value.openPdf(v.documentId, Utils.documentModels.workerApplication, v.signatureId)
   }
 
-  // Ariza holati tablari: 0 Hammasi (standart), 1 Jarayonda, 6 Qoralama, 3 Tasdiqlangan, 4 Rad etilgan.
+  // Ariza holati tablari: 1 Jarayonda, 6 Qoralama, 3 Tasdiqlangan, 4 Rad etilgan.
   const statusTabs = computed(() => [
-    { id: 0, name: t('applicationPage.hrTabs.all') },
     { id: 1, name: t('content.Process') },
     { id: DRAFT_CONFIRMATION, name: t('applicationPage.draft') },
     { id: 3, name: t('applicationPage.approved') },

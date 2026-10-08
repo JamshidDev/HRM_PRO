@@ -3,7 +3,7 @@
   import DOMPurify from 'dompurify'
   import { Pin24Filled, ArrowLeft24Filled, Image24Regular, Play24Filled } from '@vicons/fluent'
   import { useNewsStore, useNewsCategoryStore } from '@/store/modules/index.js'
-  import { UIPhoneFrame, UISegmentTabs } from '@/components/index.js'
+  import { UIPhoneFrame } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import { isEditorContentEmpty } from '@/utils/EditorValidator.js'
@@ -37,7 +37,7 @@
   )
 
   const langTabs = computed(() =>
-    store.payload.translations.map((t, index) => ({ id: index, name: t.label }))
+    store.payload.translations.map((t, index) => ({ label: t.label, value: index }))
   )
 
   const translation = computed(() => store.payload.translations[previewLang.value] ?? {})
@@ -92,7 +92,22 @@
     </div>
 
     <!-- ── Til almashtirgich ────────────────────────────────────────────────── -->
-    <UISegmentTabs v-model="previewLang" :tabs="langTabs" class="mb-3" />
+    <div class="flex items-center gap-1 mb-3 p-1 rounded-lg bg-surface-ground w-fit">
+      <button
+        v-for="tab in langTabs"
+        :key="tab.value"
+        type="button"
+        class="px-2.5 py-1 text-xs font-medium rounded-md transition-colors cursor-pointer"
+        :class="
+          previewLang === tab.value
+            ? 'bg-primary text-white'
+            : 'text-textColor1 hover:bg-surface-line'
+        "
+        @click="previewLang = tab.value"
+      >
+        {{ tab.label }}
+      </button>
+    </div>
 
     <!-- ── Telefon ramkasi ──────────────────────────────────────────────────── -->
     <UIPhoneFrame screen-class="overflow-y-auto bg-white">

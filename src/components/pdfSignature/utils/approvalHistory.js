@@ -22,8 +22,7 @@ const normalizeApiHistory = (list) =>
     type: v.type,
     date: dayjs(v.date ?? v.created_at),
     comment: v.comment ?? null,
-    certificate: v.certificate ?? null,
-    method: v.method ?? null
+    certificate: v.certificate ?? null
   }))
 
 /**

@@ -15,20 +15,18 @@
   const { editPosition, deletePosition } = useReportActions()
   const { t } = i18n.global
 
-  const actions = computed(() => [
+  const actions = [
     {
       label: t('content.edit'),
       key: Utils.ActionTypes.edit,
-      disabled: store.busy,
       icon: UIHelper.renderIcon(Edit32Regular)
     },
     {
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
-      disabled: store.busy,
       icon: UIHelper.renderIcon(Delete20Regular)
     }
-  ])
+  ]
 
   const onAction = (key, item) => {
     if (key === Utils.ActionTypes.edit) editPosition(item)

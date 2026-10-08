@@ -190,12 +190,7 @@
       <n-button @click="store.position.visible = false" type="error" ghost>
         {{ $t('content.cancel') }}
       </n-button>
-      <n-button
-        @click="onSubmit"
-        :loading="store.saveLoading"
-        :disabled="store.showLoading"
-        type="primary"
-      >
+      <n-button @click="onSubmit" :loading="store.saveLoading" type="primary">
         {{ $t('content.save') }}
       </n-button>
     </div>

@@ -19,12 +19,10 @@
     /**
      * `brand` (default) — faol bo'lim ko'k thumb.
      * `surface` — faol bo'lim oq (kartochka rangidagi) thumb, matn to'q rangda qoladi.
-     * `elevated` — yo'lakning o'zi oq (kartochka rangida), thumb ko'k. Sahifa foni
-     *   (`--surface-ground`) ustida turganda — standart yo'lak u bilan qo'shilib ketadi.
      */
     variant: {
       type: String,
-      default: 'brand' // brand | surface | elevated
+      default: 'brand' // brand | surface
     },
     size: {
       type: String,
@@ -48,15 +46,11 @@
     props.modelValue === null || props.modelValue === undefined ? undefined : String(props.modelValue)
   )
 
-  const theme = computed(() => {
-    if (props.variant === 'surface') {
-      return { ...RUBBER_THEME, thumbColor: 'var(--fig-block-bg)', activeTextColor: 'var(--fig-text-primary)' }
-    }
-    if (props.variant === 'elevated') {
-      return { ...RUBBER_THEME, trackColor: 'var(--fig-block-bg)', textColor: 'var(--fig-text-secondary)' }
-    }
-    return RUBBER_THEME
-  })
+  const theme = computed(() =>
+    props.variant === 'surface'
+      ? { ...RUBBER_THEME, thumbColor: 'var(--fig-block-bg)', activeTextColor: 'var(--fig-text-primary)' }
+      : RUBBER_THEME
+  )
 
   const onChange = (_, index) => emits('update:modelValue', props.tabs[index]?.id)
 </script>

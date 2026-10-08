@@ -74,7 +74,7 @@
         {{ $t('content.back') }}
       </button>
 
-      <UISegmentTabs :tabs="tabList" v-model="store.activeTab" variant="elevated" />
+      <UISegmentTabs :tabs="tabList" v-model="store.activeTab" />
 
       <n-button secondary class="profile-history" :disabled="!store.workerId" @click="onHistory">
         <template #icon>
@@ -117,11 +117,9 @@
     background: var(--surface-ground);
   }
 
-  // Tarix tugmasi qator oxirida (boblardan keyin) turadi; balandligi tab yo'lagi bilan bir xil.
+  // Tarix tugmasi qator oxirida (boblardan keyin) turadi.
   .profile-history {
     margin-left: auto;
-    height: 36px;
-    border-radius: 10px;
   }
 
   .profile-back {
@@ -130,19 +128,19 @@
     justify-content: center;
     gap: 8px;
     height: 36px;
-    padding: 0 16px 0 12px;
+    padding: 10px 16px 10px 12px;
     border: none;
-    border-radius: 10px;
-    background: var(--fig-block-bg);
+    border-radius: 8px;
+    background: var(--fig-bg-tertiary);
     color: var(--fig-text-secondary);
     font-size: 14px;
     font-weight: 500;
     line-height: 18px;
     cursor: pointer;
-    transition: color 0.15s ease;
+    transition: opacity 0.15s ease;
 
     &:hover {
-      color: var(--fig-text-primary);
+      opacity: 0.85;
     }
   }
 </style>

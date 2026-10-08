@@ -26,7 +26,6 @@
     UIDConfirm,
     UIDragSelector,
     UIPagination,
-    UISegmentTabs,
     UITable,
     UIUser
   } from '@/components/index.js'
@@ -128,10 +127,6 @@
    * Panjara `v-show` bilan yashiriladi — tanlov va yuklangan sahifa saqlanadi.
    * ---------------------------------------------------------------------- */
   const activeTab = ref('grid')
-  const mainTabs = computed(() => [
-    { id: 'grid', name: t('timesheetPage.tabGrid') },
-    { id: 'timekeepers', name: t('timesheetPage.tabTimekeepers') }
-  ])
   // Tab almashganda ma'lumot HAR DOIM qayta o'qiladi — qulf yoki soat boshqa
   // joyda o'zgargan bo'lishi mumkin, eski keshni ko'rsatmaymiz.
   // «Qo'shish» — `TimesheetList.vue` dagi mavjud kelishuvchilar oynasini ochadi,
@@ -173,10 +168,6 @@
 
   // Kelishuvchilar kartochkasi ichidagi tab.
   const approverTab = ref('list')
-  const approverTabs = computed(() => [
-    { id: 'list', name: t('timesheetPage.verifiers') },
-    { id: 'history', name: t('timesheetPage.history') }
-  ])
   const onApproverTab = (v) => {
     if (v === 'history') store._confirmationHistory()
     else store._confirmations()
@@ -889,12 +880,15 @@
     <div class="ts-filters">
       <!-- Tablar korxona tanlovidan OLDIN, SHU qatorda. `segment` — tugma
            ko'rinishidagi tab; yorliqli maydonlar bilan pastdan tekislanadi. -->
-      <UISegmentTabs
-        v-model="activeTab"
-        :tabs="mainTabs"
+      <UITabs
+        v-model:value="activeTab"
         class="ts-tabs"
-        @update:model-value="onTabChange"
-      />
+        type="segment"
+        @update:value="onTabChange"
+      >
+        <n-tab name="grid">{{ $t('timesheetPage.tabGrid') }}</n-tab>
+        <n-tab name="timekeepers">{{ $t('timesheetPage.tabTimekeepers') }}</n-tab>
+      </UITabs>
 
       <div class="ts-field">
         <n-select
@@ -1048,11 +1042,16 @@
         <!-- Kelishuvchilar / Tarix — ichki tabli kartochka. -->
         <div class="ts-info-card ts-approvers-card">
           <div class="ts-info-head">
-            <UISegmentTabs
-              v-model="approverTab"
-              :tabs="approverTabs"
-              @update:model-value="onApproverTab"
-            />
+            <UITabs
+              v-model:value="approverTab"
+              class="ts-approver-tabs"
+              size="small"
+              type="segment"
+              @update:value="onApproverTab"
+            >
+              <n-tab name="list">{{ $t('timesheetPage.verifiers') }}</n-tab>
+              <n-tab name="history">{{ $t('timesheetPage.history') }}</n-tab>
+            </UITabs>
             <div class="ts-approvers-actions">
               <n-button
                 v-if="approverTab === 'list' && !timesheetLocked"
@@ -2021,8 +2020,7 @@
     flex-direction: column;
     gap: 16px;
     padding: 16px;
-    /* Dashboard bilan bir xil fon — segment tab yo'lagi (kulrang) ajralib turadi. */
-    background: var(--app-bg);
+    background: var(--surface-ground);
     overflow: hidden;
   }
 
@@ -2038,6 +2036,8 @@
   /* Filtr qatorining birinchi elementi — kengligi mazmuniga qarab. */
   .ts-tabs {
     flex: 0 0 auto;
+    /* `n-tabs` standart holatda `width: 100%` — filtr qatorini siqib chiqarardi. */
+    width: auto;
   }
   /* Tabelchilar tabi ikkiga bo'linadi: chapda jadval, o'ngda ma'lumot. */
   .ts-keepers {
@@ -2117,6 +2117,9 @@
     flex: 0 0 auto;
     align-items: center;
     gap: 12px;
+  }
+  .ts-approver-tabs {
+    width: auto;
   }
   .ts-approver-meta {
     display: flex;

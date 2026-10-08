@@ -59,10 +59,9 @@
     return allowedPaths.includes(route.path)
   })
 
-  // Tasdiqlangan yoki HR yopgan hujjatning fayllari muzlatiladi.
+  // Tasdiqlangan hujjatning fayllari muzlatiladi.
   const isApproved = computed(() => store.document?.document?.confirmation?.id === 3)
-  const isClosed = computed(() => !!store.document?.document?.closed)
-  const canEdit = computed(() => showDocumentFiles.value && !isApproved.value && !isClosed.value)
+  const canEdit = computed(() => showDocumentFiles.value && !isApproved.value)
   // Fayllar — plitkalarda, bog'langan arizalar — alohida ro'yxatda.
   const files = computed(() => store.fileList.filter((v) => v?.file))
   const applications = computed(() =>
@@ -237,11 +236,7 @@
           <!-- Amallar: faol (ochiq) faylda doim, qolganlarida hover'da ko'rinadi -->
           <div
             class="flex items-center gap-0.5 shrink-0 transition-opacity"
-            :class="
-              store.previewFile?.id === item.id
-                ? 'opacity-100'
-                : 'opacity-0 group-hover:opacity-100'
-            "
+            :class="store.previewFile?.id === item.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'"
             @click.stop
           >
             <DangerConfirm
@@ -296,9 +291,7 @@
               {{ applications.length }}/{{ MAX_APPLICATIONS }}
             </span>
           </div>
-          <n-tooltip
-            v-if="canEdit && applications.length && applications.length < MAX_APPLICATIONS"
-          >
+          <n-tooltip v-if="canEdit && applications.length && applications.length < MAX_APPLICATIONS">
             <template #trigger>
               <n-button quaternary circle size="small" type="primary" @click="onOpenAttach">
                 <template #icon>

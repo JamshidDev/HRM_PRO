@@ -17,6 +17,7 @@
       <div class="flex items-center gap-2 pl-1">
         <n-skeleton width="120px" height="12px" :sharp="false" />
         <n-skeleton width="56px" height="20px" :sharp="false" />
+        <n-skeleton width="64px" height="12px" :sharp="false" />
       </div>
     </div>
   </div>

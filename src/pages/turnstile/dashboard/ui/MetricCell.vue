@@ -1,6 +1,7 @@
 <script setup>
   import { Eye20Filled } from '@vicons/fluent'
   import { Utils } from '@/utils/index.js'
+  import DeltaBadge from './DeltaBadge.vue'
 
   const props = defineProps({
     label: String,
@@ -13,6 +14,16 @@
       type: String,
       default: '--fig-icon-indigo'
     },
+    delta: {
+      type: Object,
+      default: null
+    },
+    invert: Boolean,
+    deltaLabel: {
+      type: String,
+      default: 'turnStileDashboard.compare.vsYesterday'
+    },
+    deltaLoading: Boolean,
     clickable: Boolean
   })
 
@@ -39,7 +50,7 @@
           class="w-2.5 h-2.5 rounded-full shrink-0"
           :style="{ backgroundColor: `var(${dotColor})` }"
         ></span>
-        <span class="text-[14px] leading-[20px] text-fig-text-tertiary truncate">
+        <span class="text-[14px] leading-[20px] text-fig-text-muted truncate">
           {{ label }}
         </span>
       </div>
@@ -48,6 +59,14 @@
       >
         {{ formatted }}
       </p>
+      <DeltaBadge
+        class="mt-1"
+        hide-label
+        :delta="delta"
+        :invert="invert"
+        :label="deltaLabel"
+        :loading="deltaLoading"
+      />
     </div>
   </div>
 </template>

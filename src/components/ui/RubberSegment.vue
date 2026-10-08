@@ -368,9 +368,7 @@
     itemEls[next]?.focus()
   }
 
-  // Loyihadagi barcha tab'lar bir xil balandlikda bo'lsin — `size` (sm/lg)
-  // e'tiborsiz qoldiriladi, hamma joyda standart `md` o'lcham chiziladi.
-  const preset = computed(() => SIZES.md)
+  const preset = computed(() => SIZES[props.size] || SIZES.md)
   const thumbRadius = computed(() => Math.max(0, props.radius - props.inset))
 
   const rootStyle = computed(() => ({

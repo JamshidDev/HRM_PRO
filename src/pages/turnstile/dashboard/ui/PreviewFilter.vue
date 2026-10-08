@@ -112,7 +112,7 @@
 <template>
   <div class="w-full grid gap-2 grid-cols-12">
     <div class="col-span-2">
-      <label class="mt-3 text-xs text-textColor3">{{ $t('content.search') }}</label>
+      <label class="mt-3 text-xs text-gray-500">{{ $t('content.search') }}</label>
       <n-input
         class="w-full"
         type="text"
@@ -125,7 +125,7 @@
       />
     </div>
     <div v-if="filterVisible.date" class="col-span-2">
-      <label class="mt-3 text-xs text-textColor3">{{ $t('content.date') }}</label>
+      <label class="mt-3 text-xs text-gray-500">{{ $t('content.date') }}</label>
       <n-date-picker
         v-model:value="dashboardStore.previewParams.date"
         @update:value="filterEvent"

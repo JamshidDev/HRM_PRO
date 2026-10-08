@@ -9,7 +9,7 @@
 
   const onSuccessEv = () => {
     store.department.visible = false
-    store._refreshDepartments()
+    store._getDepartment()
   }
 </script>
 

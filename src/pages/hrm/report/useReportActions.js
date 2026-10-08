@@ -16,14 +16,12 @@ export const useReportActions = () => {
   const accStore = useAccountStore()
 
   const deleteDepartment = (v) => {
-    if (store.busy) return
     store.department.selectedId = null
     store.department.elementId = v.id
     store._deleteDepartment()
   }
 
   const editDepartment = (v) => {
-    if (store.busy) return
     dpStore.elementId = v.id
     dpStore.visibleType = false
     store.department.visible = true
@@ -39,7 +37,6 @@ export const useReportActions = () => {
   }
 
   const addPosition = (v) => {
-    if (store.busy) return
     store.position.visible = true
     store.position.visibleType = true
     store.resetPositionPayload()
@@ -49,17 +46,14 @@ export const useReportActions = () => {
   }
 
   const editPosition = (item) => {
-    if (store.busy) return
     if (!accStore.checkAction(accStore.pn.hrReportWrite)) return
     store.onEdit(item)
   }
 
-  // `departmentId` — jadval ko'rinishida faqat shu bo'linma lavozimlari qayta yuklanadi.
-  const deletePosition = (v, departmentId) => {
-    if (store.busy) return
+  const deletePosition = (v) => {
     store.position.selectedId = null
     store.position.elementId = v.id
-    store._deletePosition(departmentId)
+    store._deletePosition()
   }
 
   const openWorker = (v) => {

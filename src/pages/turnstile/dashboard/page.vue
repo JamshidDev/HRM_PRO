@@ -71,7 +71,10 @@
               :tint="item.tint"
               :list="item.list"
               :list-more="item.listMore"
+              :delta="dashboardStore.deltas[item.deltaKey]"
+              :invert="item.invert"
               :decor="item.decor"
+              :delta-loading="dashboardStore.compareLoading"
               @click="onPreview(item.previewType)"
             />
           </template>
@@ -89,7 +92,10 @@
               :tint="item.tint"
               :list="item.list"
               :list-more="item.listMore"
+              :delta="dashboardStore.deltas[item.deltaKey]"
+              :invert="item.invert"
               :decor="item.decor"
+              :delta-loading="dashboardStore.compareLoading"
               @click="onPreview(item.previewType)"
             />
           </template>
@@ -122,7 +128,7 @@
 
     <UIModal v-model:visible="dashboardStore.previewVisible" :width="1400">
       <template #header-title>
-        <h1 class="text-lg font-medium text-fig-text-primary flex items-center gap-4">
+        <h1 class="text-lg font-medium flex items-center gap-4">
           {{ $t('hcEvent.preview') }}
           <span class="bg-primary/10 text-primary py-1 px-2 rounded-2xl text-sm">
             #{{ $t(typeTitle) }}

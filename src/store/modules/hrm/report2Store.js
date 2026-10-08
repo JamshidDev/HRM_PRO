@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { toRaw } from 'vue'
 import i18n from '@/i18n/index.js'
 import { useComponentStore } from '@/store/modules/index.js'
 
@@ -32,19 +31,6 @@ const pickWithAncestors = (tree, matches) => {
   const result = prune(tree)
   return found === ids.size ? result : matches
 }
-// Jadval lavozimlari bo'linma ochilganda (bosilganda) yuklanadi.
-// Quyidagilar reaktiv emas — faqat navbatni boshqarish uchun:
-// `tableSource` — `table.positions` qaysi `department.list` ga tegishli. Ro'yxat
-//   o'zgarmagan bo'lsa (ro'yxat ↔ jadval almashtirilganda) kesh saqlanadi.
-// `tableStale` — keshda bor, lekin qayta so'ralishi kerak (tahrirdan keyin).
-//   Yangisi kelguncha eski qatorlar ko'rinib turadi — jadval sakramaydi.
-let tableSource = null
-let tableStale = new Set()
-let tableQueue = []
-let tableInflight = new Set()
-let tableWorkers = 0
-const TABLE_CONCURRENCY = 6
-
 export const useReport2Store = defineStore('report2Store', {
   state: () => ({
     list: [],
@@ -58,24 +44,13 @@ export const useReport2Store = defineStore('report2Store', {
     byPosition: true,
     // 'list' — bo'linma kartochkalari, 'table' — bo'linma → lavozim → xodim daraxt jadvali
     viewMode: 'list',
-    // Jadval ko'rinishi: bo'linma → lavozimlar. `positions[id]` yo'q bo'lsa — hali yuklanmagan.
+    // Jadval ko'rinishi barcha bo'linmalar lavozimlarini birdaniga ko'rsatadi
     table: {
       loading: false,
       seq: 0,
       done: 0,
       total: 0,
-      positions: {},
-      // Joriy `department.list` daraxtidagi barcha bo'linma id'lari (tartib bilan)
-      ids: [],
-      // Ochilgan bo'linmalar: { [id]: true } — tahrirdan keyin ham ochiq qoladi.
-      expanded: {},
-      // Tahrir/o'chirishdan keyingi to'liq yangilanish: bo'linmalar ro'yxati VA
-      // ochiq bo'linmalarning eskirgan lavozimlari kelguncha true — jadval
-      // ustida spinner turadi, boshqa tahrir ochib bo'lmaydi.
-      refreshing: false,
-      // Keyingi `_loadTable` faqat shu bo'linmalarni (va keshda yo'qlarini)
-      // qayta so'raydi; null — hammasi qaytadan.
-      refreshIds: null
+      positions: {}
     },
 
     workerParams: {
@@ -157,18 +132,6 @@ export const useReport2Store = defineStore('report2Store', {
       visible: false
     }
   }),
-  getters: {
-    // Saqlash yoki undan keyingi qayta yuklash tugamaguncha qator amallari
-    // (tahrirlash/o'chirish/lavozim qo'shish) bloklanadi — aks holda eski
-    // ma'lumot ustida ikkinchi tahrir ochilib, birinchisini bosib ketadi.
-    busy: (state) =>
-      state.saveLoading ||
-      state.showLoading ||
-      state.department.loading ||
-      state.position.loading ||
-      state.table.loading ||
-      state.table.refreshing
-  },
   actions: {
     _exportStaffing(organizationId) {
       this.staffingExportLoading = true
@@ -226,7 +189,6 @@ export const useReport2Store = defineStore('report2Store', {
         ._optimization({ params: { department_id } })
         .then((res) => {
           this.confirmVisible = false
-          this._invalidateTable([department_id])
           this.getPosition()
         })
         .finally(() => {
@@ -248,10 +210,6 @@ export const useReport2Store = defineStore('report2Store', {
             position: v?.organization?.name
           }))
         })
-        .catch(() => {
-          // Ro'yxat kelmasa lavozimlar ham so'ralmaydi — jadvalni qulflab qo'ymaymiz.
-          this.table.refreshing = false
-        })
         .finally(() => {
           this.department.loading = false
         })
@@ -262,133 +220,55 @@ export const useReport2Store = defineStore('report2Store', {
       $ApiService.departmentService
         ._delete({ id })
         .then((res) => {
-          // Bo'linma o'zgarishi lavozimlarga ta'sir qilmaydi — jadval keshi saqlanadi.
-          this._refreshDepartments()
+          this._getDepartment()
         })
         .finally(() => {
           this.department.loading = false
         })
     },
-    _deletePosition(departmentId) {
+    _deletePosition() {
       this.position.loading = true
       $ApiService.departmentPositionService._delete({ id: this.position.elementId }).finally(() => {
         this.position.loading = false
-        this.refreshPositions([departmentId ?? this.department.selectedId])
+        this.refreshPositions()
       })
     },
-    // Lavozim o'zgargach: jadvalda bo'linma ro'yxati (P/F jamlari) yangilanadi,
-    // lavozimlar esa faqat o'zgargan bo'linmalar uchun qayta so'raladi.
-    // Ro'yxat ko'rinishida jadval keshi eskiradi — keyingi ochilishda to'liq yuklanadi.
-    _invalidateTable(departmentIds) {
-      if (this.viewMode === 'table') {
-        this.table.refreshIds = departmentIds.filter(Boolean)
-        this.table.refreshing = true
-        this._getDepartment()
-      } else {
-        tableSource = null
-      }
+    // Jadval ko'rinishida yuklangan bolalar qatorlari bo'linma ro'yxati bilan
+    // birga qayta quriladi — lavozim o'zgargach butun daraxtni yangilaymiz.
+    refreshPositions() {
+      if (this.viewMode === 'table') this._getDepartment()
+      else this.getPosition()
     },
-    // Bo'linma qo'shildi/tahrirlandi/o'chirildi — lavozimlar keshi saqlanadi.
-    _refreshDepartments() {
-      if (this.viewMode === 'table') {
-        this.table.refreshIds = []
-        this.table.refreshing = true
-      }
-      this._getDepartment()
-    },
-    refreshPositions(departmentIds = []) {
-      this._invalidateTable(departmentIds)
-      if (this.viewMode !== 'table') this.getPosition()
-    },
-    // `department.list` o'zgarganda jadval holati qayta quriladi, lekin hech narsa
-    // so'ralmaydi — lavozimlarni ochilgan bo'linmalar uchun TableView
-    // `_requestTablePositions` orqali so'raydi.
-    _loadTable() {
-      const list = toRaw(this.department.list)
-      const only = this.table.refreshIds
-      this.table.refreshIds = null
-      if (list === tableSource && !only) return
-
+    // Har bir bo'linma lavozimlari alohida so'rov bilan keladi, shu bois ular
+    // cheklangan parallellikda yuklanadi. Eski so'rov natijasi yangisini
+    // bosib ketmasligi uchun `token` tekshiriladi.
+    async _loadTable() {
+      const token = ++this.table.seq
       const ids = []
-      const walk = (items) =>
-        items.forEach((v) => {
+      const walk = (list) =>
+        list.forEach((v) => {
           ids.push(v.id)
           if (v.children?.length) walk(v.children)
         })
-      walk(list)
+      walk(this.department.list)
 
-      // `only` bo'lsa (tahrir) — kesh saqlanadi, faqat shu bo'linmalar eskirgan
-      // deb belgilanadi. Aks holda (tashkilot almashdi, sahifa qayta ochildi) — noldan.
-      const cache = only && tableSource ? toRaw(this.table.positions) : {}
       const positions = {}
-      tableStale = new Set()
-      ids.forEach((id) => {
-        if (!(id in cache)) return
-        positions[id] = cache[id]
-        if (only.includes(id)) tableStale.add(id)
-      })
-
-      this.table.seq++
-      tableQueue = []
-      tableInflight = new Set()
-      tableWorkers = 0
-      this.table.positions = positions
-      this.table.ids = ids
-      if (!only) this.table.expanded = {}
-      this.table.loading = false
-      this.table.done = 0
-      this.table.total = 0
-      tableSource = list
-      // Ochiq bo'linmalarning eskirgan lavozimlari darhol qayta so'raladi; so'raladigan
-      // narsa bo'lmasa `_requestTablePositions` yangilanishni (`refreshing`) yopadi.
-      this._requestTablePositions(ids.filter((id) => this.table.expanded[id]))
-    },
-    // Berilgan bo'linmalardan yuklanmagan/eskirganlarini navbatga qo'yadi.
-    _requestTablePositions(ids) {
-      const want = ids.filter(
-        (id) =>
-          (!(id in this.table.positions) || tableStale.has(id)) &&
-          !tableInflight.has(id) &&
-          !tableQueue.includes(id)
-      )
-      if (!want.length) {
-        // Qayta so'raladigan narsa qolmadi — yangilanish tugadi.
-        if (!tableWorkers) this.table.refreshing = false
-        return
-      }
-      tableQueue.push(...want)
-      this.table.total += want.length
       this.table.loading = true
-      const seq = this.table.seq
-      while (tableWorkers < TABLE_CONCURRENCY && tableWorkers < tableQueue.length) {
-        tableWorkers++
-        this._tableWorker(seq)
-      }
-    },
-    async _tableWorker(seq) {
-      while (tableQueue.length && this.table.seq === seq) {
-        const id = tableQueue.shift()
-        tableInflight.add(id)
-        const list = await this._tablePositions(id).catch(() => null)
-        // Eski so'rov natijasi yangi holatni bosib ketmasin.
-        if (this.table.seq !== seq) return
-        tableInflight.delete(id)
-        if (list) {
-          this.table.positions[id] = list
-          tableStale.delete(id)
-        } else if (!(id in this.table.positions)) {
-          this.table.positions[id] = []
+      this.table.done = 0
+      this.table.total = ids.length
+      let cursor = 0
+      const worker = async () => {
+        while (cursor < ids.length) {
+          const id = ids[cursor++]
+          positions[id] = await this._tablePositions(id).catch(() => [])
+          if (this.table.seq !== token) return
+          this.table.done++
         }
-        this.table.done++
       }
-      if (this.table.seq !== seq) return
-      tableWorkers--
-      if (tableWorkers === 0) {
-        this.table.loading = false
-        this.table.refreshing = false
-        this.table.done = 0
-        this.table.total = 0
-      }
+      await Promise.all(Array.from({ length: Math.min(6, ids.length) }, worker))
+      if (this.table.seq !== token) return
+      this.table.positions = positions
+      this.table.loading = false
     },
     _tablePositions(departmentId) {
       const params = {
@@ -509,11 +389,9 @@ export const useReport2Store = defineStore('report2Store', {
         ._create({ data })
         .then((res) => {
           this.position.visible = false
-          this._invalidateTable([this.positionPayload.department_id])
-          if (
-            this.viewMode !== 'table' &&
-            this.department.selectedId === this.positionPayload.department_id
-          ) {
+          if (this.viewMode === 'table') {
+            this._getDepartment()
+          } else if (this.department.selectedId === this.positionPayload.department_id) {
             this.getPosition()
           }
         })
@@ -528,8 +406,10 @@ export const useReport2Store = defineStore('report2Store', {
         ._update({ data, id: this.elementId })
         .then((res) => {
           this.position.visible = false
-          this._invalidateTable([this.lastDepartmentId, this.positionPayload.department_id])
-          if (this.viewMode === 'table') return
+          if (this.viewMode === 'table') {
+            this._getDepartment()
+            return
+          }
           this.getPosition()
           if (this.lastDepartmentId !== this.positionPayload.department_id) {
             this._getDepartment()

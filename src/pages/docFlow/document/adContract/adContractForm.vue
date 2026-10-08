@@ -340,19 +340,6 @@
                 />
               </n-form-item>
             </div>
-            <!-- 1-tur: o'zgartirish bandlari — bo'sh qolsa hujjatda qo'lda yozish uchun nuqtali qator -->
-            <div v-if="store.payload.type === 1" class="col-span-12">
-              <n-form-item :label="$t(`documentPage.form.changes`)" path="changes">
-                <n-input
-                  v-model:value="store.payload.changes"
-                  type="textarea"
-                  :autosize="{ minRows: 2, maxRows: 6 }"
-                  :maxlength="3000"
-                  show-count
-                  :placeholder="$t(`documentPage.form.changesPlaceholder`)"
-                />
-              </n-form-item>
-            </div>
           </div>
         </div>
 

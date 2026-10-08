@@ -64,6 +64,10 @@
   >
     <template #default>
       <div class="w-full flex flex-col gap-4">
+        <p class="text-sm text-gray-400">
+          {{ $t('documentPage.signature.rejectDesc') }}
+        </p>
+
         <div>
           <div class="text-sm font-medium text-textColor1 mb-2">
             {{ $t('documentPage.signature.rejectReasonSelect') }}

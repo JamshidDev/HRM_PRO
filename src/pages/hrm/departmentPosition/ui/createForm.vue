@@ -367,7 +367,7 @@
           </n-input>
         </n-form-item>
         <n-form-item
-          class="col-span-12 md:col-span-6 lg:col-span-4"
+          class="col-span-12 md:col-span-6 lg:col-span-8"
           :label="$t(`departmentPositionPage.form.educations`)"
           path="education"
           :rule-path="validationRules.rulesNames.requiredNumberField"
@@ -377,20 +377,6 @@
             filterable
             clearable
             :options="componentStore.educationList"
-            label-field="name"
-            value-field="id"
-            :loading="componentStore.enumLoading"
-          />
-        </n-form-item>
-        <n-form-item
-          class="col-span-12 md:col-span-6 lg:col-span-4"
-          :label="$t(`departmentPositionPage.form.position_code`)"
-        >
-          <n-select
-            v-model:value="store.payload.position_code"
-            filterable
-            clearable
-            :options="componentStore.positionCodeList"
             label-field="name"
             value-field="id"
             :loading="componentStore.enumLoading"

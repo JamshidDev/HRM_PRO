@@ -50,26 +50,6 @@ const _accept = async (payload) => {
   return await axios.put(`/v1/hr/applications/${payload.id}/accept`, payload.data)
 }
 
-// HR imzo qatorini oladi (yo'q bo'lsa yaratiladi) va kelishuvchilarga yo'naltiradi.
-const _signStart = async (payload) => {
-  return await axios.post(`/v1/hr/applications/${payload.id}/sign-start`)
-}
-const _approverOptions = async (payload) => {
-  return await axios.get(`/v1/hr/applications/${payload.id}/approvers`)
-}
-const _route = async (payload) => {
-  return await axios.get(`/v1/hr/applications/${payload.id}/route`)
-}
-const _updateRoute = async (payload) => {
-  return await axios.put(`/v1/hr/applications/${payload.id}/approvers`, payload.data)
-}
-const _resend = async (payload) => {
-  return await axios.post(`/v1/hr/applications/${payload.id}/resend`, payload.data)
-}
-const _forward = async (payload) => {
-  return await axios.post(`/v1/hr/applications/${payload.id}/forward`, payload.data)
-}
-
 const _documentApplication = async (payload) => {
   return await axios.get(`/v1/document/applications`, { params: payload?.params })
 }
@@ -91,12 +71,6 @@ export default {
   _details,
   _updateWorkerApplication,
   _accept,
-  _signStart,
-  _approverOptions,
-  _route,
-  _updateRoute,
-  _resend,
-  _forward,
   _documentApplication,
   _statistic,
   _deleteWorkerApplication

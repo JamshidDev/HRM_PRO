@@ -1,5 +1,5 @@
 <script setup>
-  // MetricCell.vue ning skeleton ko'rinishi: nuqta + yorliq, katta raqam.
+  // MetricCell.vue ning skeleton ko'rinishi: nuqta + yorliq, katta raqam, delta badge.
 </script>
 
 <template>
@@ -9,5 +9,6 @@
       <n-skeleton width="70%" height="14px" :sharp="false" />
     </div>
     <n-skeleton width="64px" height="20px" :sharp="false" class="mt-1" />
+    <n-skeleton width="64px" height="12px" :sharp="false" class="mt-1" />
   </div>
 </template>

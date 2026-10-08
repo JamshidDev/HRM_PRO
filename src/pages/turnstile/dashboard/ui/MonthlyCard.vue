@@ -2,6 +2,7 @@
   import { Eye20Filled } from '@vicons/fluent'
   import { Utils } from '@/utils/index.js'
   import CardHeader from './CardHeader.vue'
+  import DeltaBadge from './DeltaBadge.vue'
   import { MonthlyCardSkeleton } from './skeleton/index.js'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
   import HeadTableRowsIcon from '@/assets/icons/dashboard/head-table-rows.svg'
@@ -62,6 +63,12 @@
             >
               {{ formatted }}
             </span>
+            <DeltaBadge
+              hide-label
+              :delta="store.deltas.withoutSchedule"
+              invert
+              :loading="store.compareLoading"
+            />
           </div>
         </div>
       </div>
