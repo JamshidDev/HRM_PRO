@@ -1,10 +1,12 @@
 <script setup>
-  import { useEventV2Store, useComponentStore, useAccountStore } from '@stores'
+  import { useEventV2Store, useEventStore, useComponentStore, useAccountStore } from '@stores'
   import { UIModal, UISelect, SuperSelect } from '@components'
   import { useAppSetting, validationRules } from '@utils'
   import { LockClosed20Regular } from '@vicons/fluent'
 
   const store = useEventV2Store()
+  // Turniket guruhlari ro'yxati sahifa filtri bilan umumiy (foydalanuvchi korxonasi guruhlari).
+  const eventStore = useEventStore()
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
 
@@ -15,6 +17,7 @@
     if (!v) return
     if (!componentStore.structureList.length) componentStore._structures()
     if (!store.download.worker.list.length) store._downloadWorkers()
+    if (!eventStore.levelList.length) eventStore._levels()
   })
 
   // --- Umumiy filtrlar (ikkala tab uchun) ---
@@ -130,6 +133,26 @@
           clearable
         />
       </n-form-item>
+      <n-form-item class="col-span-12" :label="$t('hcEvent.accessLevels')">
+        <n-select
+          v-model:value="store.download.payload.access_levels"
+          :options="eventStore.levelList"
+          :loading="eventStore.levelLoading"
+          :placeholder="$t('hcEvent.accessLevelsAll')"
+          label-field="name"
+          value-field="id"
+          :max-tag-count="2"
+          multiple
+          clearable
+          filterable
+        />
+      </n-form-item>
+      <div
+        v-if="store.download.payload.access_levels.length"
+        class="col-span-12 -mt-3 mb-3 text-xs leading-5 text-textColor3"
+      >
+        {{ $t('hcEvent.accessLevelsHint') }}
+      </div>
     </div>
 
     <!-- Yuklash tab — sanalar -->

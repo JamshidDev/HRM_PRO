@@ -19,7 +19,8 @@
     if (!accStore.checkAction(accStore.pn.turnstileAbsentWorkersExport)) return
     storeV2._openDownload({
       organizations: store.params.organizations,
-      departments: store.params.departments
+      departments: store.params.departments,
+      accessLevels: store.params.access_levels
     })
   }
 
