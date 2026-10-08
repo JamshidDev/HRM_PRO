@@ -131,7 +131,10 @@
             >
               <template #icon><Info24Regular /></template>
             </n-button>
-            <n-popconfirm @positive-click="store._deleteUpload(latest.id)">
+            <n-popconfirm
+              v-if="latest.status !== 3"
+              @positive-click="store._deleteUpload(latest.id)"
+            >
               <template #trigger>
                 <n-button
                   type="error"
@@ -238,7 +241,10 @@
                   >
                     <template #icon><Info24Regular /></template>
                   </n-button>
-                  <n-popconfirm @positive-click="store._deleteUpload(item.id)">
+                  <n-popconfirm
+                    v-if="item.status !== 3"
+                    @positive-click="store._deleteUpload(item.id)"
+                  >
                     <template #trigger>
                       <n-button
                         type="error"

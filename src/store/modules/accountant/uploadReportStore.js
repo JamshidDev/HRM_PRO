@@ -511,8 +511,10 @@ export const useUploadReportStore = defineStore('uploadReport', {
           $Toast.success(t('content.deleted'))
           this._cards()
         })
-        .catch(() => {
-          $Toast.error(t('content.error'))
+        .catch((e) => {
+          // Backend xabari (mas. tasdiqlangan hisobotni o'chirib bo'lmaydi — avval
+          // bekor qiling) bo'lsa — aynan o'shani ko'rsatamiz.
+          $Toast.error(e?.response?.data?.message || t('content.error'))
         })
         .finally(() => {
           this.deleteLoading = false
