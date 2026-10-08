@@ -60,14 +60,6 @@
     }
   }
 
-  // Tugun + uning BARCHA avlodlari (subtree) id'lari — belgilash/bekor qilish
-  // ichki korxonalarга ham ta'sir qilishi uchun.
-  const collectIds = (node) => {
-    const ids = [node.id]
-    if (node.children?.length) for (const c of node.children) ids.push(...collectIds(c))
-    return ids
-  }
-
   // Butun daraxtdagi (yopiq/ochiq — barcha) korxona id'lari. «Hammasini belgilash»
   // faqat ko'rinib turganlar emas, BARCHA ichki korxonalarni ham qamraydi.
   const allTreeIds = computed(() => {
@@ -98,26 +90,8 @@
       store.setConfirmSelected([...new Set([...store.confirmSelected, ...allTreeIds.value])])
     }
   }
-
-  // Bitta tugun checkbox'i — o'zi + butun subtree'sini birga belgilaydi/bekor qiladi.
-  const toggleNode = (item) => {
-    const node = findNode(store.structuresList, item.id)
-    const ids = node ? collectIds(node) : [item.id]
-    const isOn = store.confirmSelected.includes(item.id)
-    if (isOn) {
-      store.setConfirmSelected(store.confirmSelected.filter((id) => !ids.includes(id)))
-    } else {
-      store.setConfirmSelected([...new Set([...store.confirmSelected, ...ids])])
-    }
-  }
-  // Parent tugun qisman belgilangan (ba'zi avlodlari) — indeterminate ko'rsatish uchun.
-  const nodeIndeterminate = (item) => {
-    if (store.confirmSelected.includes(item.id)) return false
-    const node = findNode(store.structuresList, item.id)
-    if (!node?.children?.length) return false
-    const ids = collectIds(node)
-    return ids.some((id) => store.confirmSelected.includes(id))
-  }
+  // Har qator checkbox'i FAQAT o'zini belgilaydi (bittalab) — `store.toggleConfirmSelect`.
+  // Subtree cascade YO'Q; butun daraxt kerak bo'lsa yuqoridagi «Hammasini belgilash».
 </script>
 
 <template>
@@ -155,10 +129,9 @@
               class="hover-row"
               :class="[item.id === store.params.organization_id && 'selectedRow']"
             >
-              <td @click.stop="toggleNode(item)">
+              <td @click.stop="store.toggleConfirmSelect(item.id)">
                 <n-checkbox
                   :checked="store.confirmSelected.includes(item.id)"
-                  :indeterminate="nodeIndeterminate(item)"
                 ></n-checkbox>
               </td>
               <td
