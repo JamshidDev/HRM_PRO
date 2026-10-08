@@ -795,6 +795,15 @@
     }
   },
   "organizationPage": {
+    "closedBadge": "Yopilgan",
+    "close": "Yopish",
+    "reopen": "Qayta ochish",
+    "closeTitle": "Korxonani yopish",
+    "reopenTitle": "Korxonani qayta ochish",
+    "closeHint": "Korxonada ishlayotgan xodim va ochiq ichki korxona qolmagan bo'lishi kerak. Yopilgan korxona tarixda saqlanadi, yangi amallarda tanlanmaydi.",
+    "moveComment": "Ko'chirish izohi (ixtiyoriy)",
+    "basis": {"title": "Asos", "hint": "Izoh yoki fayl majburiy", "comment": "Izoh (qaror, buyruq raqami va h.k.)", "file": "Fayl biriktirish (pdf, doc, jpg)", "required": "Asosni kiriting: izoh yoki fayl", "tooLarge": "Fayl {mb} MB dan katta"},
+    "history": {"title": "Tarix", "empty": "Tarix yo'q", "root": "Yuqori daraja", "file": "Fayl", "types": {"created": "Yaratildi", "moved": "Ko'chirildi", "closed": "Yopildi", "reopened": "Qayta ochildi"}},
     "collapseAll": "Hammasini yig'ish",
     "name": "Tashkilotlar",
     "createTitle": "Tashkilot qo'shish",
@@ -1185,7 +1194,7 @@
     "legalPerson": "Yuridik shaxs",
     "naturalPerson": "Jismoniy shaxs",
     "connectionError": "E-imzo o'rnatilmagan yoki to'g'ri sozlanmagan!",
-    "localNetworkBlocked": "Brauzer E-imzo'ga ulanishni blokladi. Manzil satridagi qulf belgisini bosing → «Mahalliy tarmoqqa kirish» (Local network access) → «Ruxsat berish», so'ng sahifani yangilang.",
+    "localNetworkBlocked": "Brauzer E-imzo'ga ulanishni blokladi. Manzil satrining o'ng tomonidagi ⊘ belgisini bosing → «Ruxsat berish». Belgi bo'lmasa: chap tomondagi sozlamalar belgisi → «Sayt sozlamalari» → «Mahalliy tarmoqqa kirish» (Local network access) → «Ruxsat berish». So'ng sahifani yangilang.",
     "confirmError": "Hujjatni tasdiqlashda xatolik yuz berdi. Birozdan so'ng qayta urinib ko'ring.",
     "certCheckError": "E-IMZO sertifikat holatini tekshirish xizmati vaqtincha ishlamayapti. Birozdan so'ng qayta urinib ko'ring.",
     "serverError": "Serverda xatolik yuz berdi. Birozdan so'ng qayta urinib ko'ring.",
@@ -1592,7 +1601,8 @@
         "hintOtherPending": "HR qarorini kutmoqda: qayta yuborish yoki yopish.",
         "more": "Batafsil",
         "less": "Yig'ish",
-        "titleOwner": "Arizangiz rad etildi"
+        "titleOwner": "Arizangiz rad etildi",
+        "notAgreed": "Kelishilmadi"
       }
     },
     "attach": {
@@ -2988,6 +2998,8 @@
       "viewerRead": "Tanishdi",
       "viewerWaiting": "Tanishishni kutmoqda",
       "panelProcessTitle": "Ariza kelishuvda",
+      "panelLegacyTitle": "Eski tartibdagi ariza",
+      "panelLegacy": "Rahbarga to‘g‘ridan-to‘g‘ri yuborilgan — marshrutni o‘zgartirib bo‘lmaydi",
       "panelRejectedTitle": "Ariza rad etildi"
     },
     "hrTabs": {
@@ -3859,7 +3871,7 @@
     "zip": {
       "button": "ZIP yuklab olish",
       "title": "Hisobotlarni ZIP qilib yuklab olish",
-      "hint": "«{org}» korxonasining tanlangan oy oralig'idagi 4 turdagi hisobotlari bitta ZIP faylga yuklanadi.",
+      "hint": "«{org}» korxonasining tanlangan oy oralig'idagi hisobotlari va davr bo'yicha umumiy yig'ma hisobot (ved'lar bilan) bitta ZIP faylga yuklanadi.",
       "from": "Boshlang'ich oy",
       "to": "Oxirgi oy",
       "invalid": "Oy oralig'i noto'g'ri (boshlang'ich oy oxirgisidan katta bo'lmasin).",
@@ -4785,6 +4797,9 @@
     "syncTitle": "Sinxronlash",
     "tabDownload": "Yuklash",
     "tabAbsent": "Kelmaganlar",
+    "accessLevels": "Turniket guruhlari",
+    "accessLevelsAll": "Barcha guruhlar",
+    "accessLevelsHint": "Faqat tanlangan guruh a'zolari va shu guruh qurilmalaridagi hodisalar hisobga olinadi. Boshqa turniketdan o'tgan xodim «kelmagan» bo'lib chiqadi.",
     "syncText": "Iltimos, sinxronlash uchun kerakli vaqtni tanlang. Tizim ushbu kunni oxirigacha bo'lgan vaqtni avtomatik ravishda sinxronlaydi.",
     "preview": "Ko'rish",
     "availableEvent": "Mavjud hodisalar",
@@ -5913,6 +5928,22 @@
     "historyBtn": "Tarix",
     "showMasked": "Maskani ochish",
     "hideMasked": "Maskani yopish"
+  },
+  "eimzoGateAdmin": {
+    "name": "E-IMZO tasdig'i",
+    "title": "Iqtisod bo'limi uchun E-IMZO tasdig'i",
+    "subtitle": "Yoqilganda Admin'dan boshqa barcha foydalanuvchilar iqtisod bo'limiga kirishdan oldin shaxsini o'z ERI kaliti bilan tasdiqlaydi. Tasdiq qayta login qilinguncha amal qiladi.",
+    "listTitle": "Faol tasdiqlar",
+    "refresh": "Yangilash",
+    "user": "Foydalanuvchi",
+    "phone": "Telefon",
+    "cert": "Sertifikat egasi",
+    "serial": "Sertifikat raqami",
+    "verifiedAt": "Tasdiqlangan vaqt",
+    "revoke": "Bekor qilish",
+    "enabledToast": "E-IMZO tasdig'i yoqildi",
+    "disabledToast": "E-IMZO tasdig'i o'chirildi",
+    "revokedToast": "Tasdiq bekor qilindi — foydalanuvchi qayta tasdiqlaydi"
   },
   "eimzoGate": {
     "title": "Xavfsizlik uchun tekshiruv",

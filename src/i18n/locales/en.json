@@ -780,6 +780,15 @@
     }
   },
   "organizationPage": {
+    "closedBadge": "Closed",
+    "close": "Close",
+    "reopen": "Reopen",
+    "closeTitle": "Close organization",
+    "reopenTitle": "Reopen organization",
+    "closeHint": "The organization must have no active employees and no open sub-organizations. A closed organization stays in history and is not selectable for new operations.",
+    "moveComment": "Move comment (optional)",
+    "basis": {"title": "Basis", "hint": "A comment or a file is required", "comment": "Comment (decision, order number, etc.)", "file": "Attach file (pdf, doc, jpg)", "required": "Provide a basis: a comment or a file", "tooLarge": "File is larger than {mb} MB"},
+    "history": {"title": "History", "empty": "No history", "root": "Top level", "file": "File", "types": {"created": "Created", "moved": "Moved", "closed": "Closed", "reopened": "Reopened"}},
     "collapseAll": "Collapse all",
     "name": "Organizations",
     "createTitle": "Add organization",
@@ -1168,7 +1177,7 @@
     "legalPerson": "Legal entity",
     "naturalPerson": "Individual",
     "connectionError": "E-signature not installed or misconfigured!",
-    "localNetworkBlocked": "The browser blocked the connection to E-IMZO. Click the lock icon in the address bar → “Local network access” → “Allow”, then reload the page.",
+    "localNetworkBlocked": "The browser blocked the connection to E-IMZO. Click the ⊘ icon on the right side of the address bar → “Allow”. If there is no icon: the settings icon left of the address → “Site settings” → “Local network access” → “Allow”. Then reload the page.",
     "confirmError": "An error occurred while confirming the document. Please try again shortly.",
     "certCheckError": "The E-IMZO certificate status service is temporarily unavailable. Please try again shortly.",
     "serverError": "A server error occurred. Please try again shortly.",
@@ -1576,7 +1585,8 @@
         "hintOtherPending": "Awaiting HR decision: resend or close.",
         "more": "More",
         "less": "Less",
-        "titleOwner": "Your application was rejected"
+        "titleOwner": "Your application was rejected",
+        "notAgreed": "Not agreed"
       }
     },
     "attach": {
@@ -2968,6 +2978,8 @@
       "viewerRead": "Reviewed",
       "viewerWaiting": "Awaiting review",
       "panelProcessTitle": "Application in approval",
+      "panelLegacyTitle": "Legacy application",
+      "panelLegacy": "Sent directly to the director — the route cannot be changed",
       "panelRejectedTitle": "Application rejected"
     },
     "hrTabs": {
@@ -4738,6 +4750,9 @@
     "syncTitle": "Sync",
     "tabDownload": "Download",
     "tabAbsent": "Absent",
+    "accessLevels": "Turnstile groups",
+    "accessLevelsAll": "All groups",
+    "accessLevelsHint": "Only members of the selected groups and events from those groups' devices are counted. An employee who passed another turnstile will be marked absent.",
     "syncText": "Select time to sync. System will sync up to end of selected day.",
     "preview": "View",
     "availableEvent": "Available events",
@@ -5852,6 +5867,22 @@
     "historyBtn": "History",
     "showMasked": "Reveal masked",
     "hideMasked": "Hide masked"
+  },
+  "eimzoGateAdmin": {
+    "name": "E-IMZO verification",
+    "title": "E-IMZO verification for the economist section",
+    "subtitle": "When enabled, every user except Admin confirms their identity with their own e-signature key before entering the economist section. Verification lasts until the next login.",
+    "listTitle": "Active verifications",
+    "refresh": "Refresh",
+    "user": "User",
+    "phone": "Phone",
+    "cert": "Certificate owner",
+    "serial": "Certificate number",
+    "verifiedAt": "Verified at",
+    "revoke": "Revoke",
+    "enabledToast": "E-IMZO verification enabled",
+    "disabledToast": "E-IMZO verification disabled",
+    "revokedToast": "Verification revoked — the user will verify again"
   },
   "eimzoGate": {
     "title": "Security verification",

@@ -1,13 +1,28 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
   const formRef = ref(null)
+  import i18n from '@/i18n/index.js'
+  const { t } = i18n.global
   import { UIMultipleLangItems } from '@/components/index.js'
   import { useOrganizationStore, useComponentStore } from '@/store/modules/index.js'
+  import BasisFields from './BasisFields.vue'
 
   const store = useOrganizationStore()
   const componentStore = useComponentStore()
 
+  // Yaratishda asos majburiy; tahrirda faqat ota korxona o'zgarsa ko'chirish izohi so'raladi.
+  const parentChanged = computed(
+    () => !store.visibleType && (store.payload.parent_id ?? null) !== store.originalParentId
+  )
+  const basisMissing = computed(
+    () => store.visibleType && !(store.payload.basis_comment?.trim() || store.payload.basis_file)
+  )
+
   const onSubmit = () => {
+    if (basisMissing.value) {
+      $Toast.error(t('organizationPage.basis.required'))
+      return
+    }
     formRef.value?.validate((error) => {
       if (!error) {
         store.saveLoading = true
@@ -122,6 +137,20 @@
         <n-checkbox
           :label="$t(`organizationPage.form.group`)"
           v-model:checked="store.payload.group"
+        />
+      </n-form-item>
+      <BasisFields
+        v-if="store.visibleType"
+        v-model:comment="store.payload.basis_comment"
+        v-model:file="store.payload.basis_file"
+        v-model:file-name="store.payload.basis_file_name"
+      />
+      <n-form-item v-else-if="parentChanged" :label="$t('organizationPage.moveComment')">
+        <n-input
+          v-model:value="store.payload.basis_comment"
+          type="textarea"
+          :autosize="{ minRows: 2, maxRows: 4 }"
+          :maxlength="2000"
         />
       </n-form-item>
     </div>

@@ -1,6 +1,6 @@
 <script setup>
   import { useAccountStore, useDeviceEventStore, useEventStore } from '@/store/modules/index.js'
-  import { UIPageFilter } from '@/components/index.js'
+  import { UIPageFilter, UISegmentTabs } from '@/components/index.js'
   import { useAppSetting } from '@utils'
   import i18n from '@/i18n/index.js'
 
@@ -9,6 +9,11 @@
   // Access level ro'yxati eventStore'da (ikkala tab bir xil manbadan oladi).
   const eventStore = useEventStore()
   const accStore = useAccountStore()
+
+  const viewTabs = computed(() => [
+    { id: eventStore.tabs[0], name: t('hcEvent.oldView') },
+    { id: eventStore.tabs[1], name: t('deviceEvent.tab') }
+  ])
 
   const filterEvent = () => {
     if (!accStore.checkPermission(accStore.pn.turnstileHikCentralEventsRead)) return
@@ -116,16 +121,12 @@
       />
     </template>
     <template #filterSearch>
-      <UITabs
+      <UISegmentTabs
         class="ml-2"
-        :value="eventStore.activeTab"
-        @update:value="eventStore._changeView"
-        type="segment"
-        size="small"
-      >
-        <n-tab-pane :name="eventStore.tabs[0]" :tab="$t('hcEvent.oldView')" />
-        <n-tab-pane :name="eventStore.tabs[1]" :tab="$t('deviceEvent.tab')" />
-      </UITabs>
+        :tabs="viewTabs"
+        :model-value="eventStore.activeTab"
+        @update:model-value="eventStore._changeView"
+      />
     </template>
   </UIPageFilter>
 </template>

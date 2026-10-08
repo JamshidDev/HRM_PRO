@@ -60,20 +60,63 @@
     }
   }
 
-  // Ko'rinib turgan (flatten) barcha korxonalarni belgilash/bekor qilish.
-  const visibleIds = computed(() => flattenData.value.map((i) => i.id))
-  const allVisibleSelected = computed(
-    () =>
-      visibleIds.value.length > 0 &&
-      visibleIds.value.every((id) => store.confirmSelected.includes(id))
-  )
-  const toggleAllVisible = () => {
-    if (allVisibleSelected.value) {
-      store.setConfirmSelected(store.confirmSelected.filter((id) => !visibleIds.value.includes(id)))
-    } else {
-      const merged = new Set([...store.confirmSelected, ...visibleIds.value])
-      store.setConfirmSelected([...merged])
+  // Tugun + uning BARCHA avlodlari (subtree) id'lari — belgilash/bekor qilish
+  // ichki korxonalarга ham ta'sir qilishi uchun.
+  const collectIds = (node) => {
+    const ids = [node.id]
+    if (node.children?.length) for (const c of node.children) ids.push(...collectIds(c))
+    return ids
+  }
+
+  // Butun daraxtdagi (yopiq/ochiq — barcha) korxona id'lari. «Hammasini belgilash»
+  // faqat ko'rinib turganlar emas, BARCHA ichki korxonalarni ham qamraydi.
+  const allTreeIds = computed(() => {
+    const ids = []
+    const walk = (nodes) => {
+      for (const n of nodes) {
+        ids.push(n.id)
+        if (n.children?.length) walk(n.children)
+      }
     }
+    walk(store.structuresList)
+    return ids
+  })
+  const allSelected = computed(
+    () =>
+      allTreeIds.value.length > 0 &&
+      allTreeIds.value.every((id) => store.confirmSelected.includes(id))
+  )
+  const someSelected = computed(
+    () =>
+      !allSelected.value &&
+      allTreeIds.value.some((id) => store.confirmSelected.includes(id))
+  )
+  const toggleAll = () => {
+    if (allSelected.value) {
+      store.setConfirmSelected(store.confirmSelected.filter((id) => !allTreeIds.value.includes(id)))
+    } else {
+      store.setConfirmSelected([...new Set([...store.confirmSelected, ...allTreeIds.value])])
+    }
+  }
+
+  // Bitta tugun checkbox'i — o'zi + butun subtree'sini birga belgilaydi/bekor qiladi.
+  const toggleNode = (item) => {
+    const node = findNode(store.structuresList, item.id)
+    const ids = node ? collectIds(node) : [item.id]
+    const isOn = store.confirmSelected.includes(item.id)
+    if (isOn) {
+      store.setConfirmSelected(store.confirmSelected.filter((id) => !ids.includes(id)))
+    } else {
+      store.setConfirmSelected([...new Set([...store.confirmSelected, ...ids])])
+    }
+  }
+  // Parent tugun qisman belgilangan (ba'zi avlodlari) — indeterminate ko'rsatish uchun.
+  const nodeIndeterminate = (item) => {
+    if (store.confirmSelected.includes(item.id)) return false
+    const node = findNode(store.structuresList, item.id)
+    if (!node?.children?.length) return false
+    const ids = collectIds(node)
+    return ids.some((id) => store.confirmSelected.includes(id))
   }
 </script>
 
@@ -84,7 +127,11 @@
         <thead>
           <tr>
             <th class="min-w-[40px] w-[40px] !text-center">
-              <n-checkbox :checked="allVisibleSelected" @update:checked="toggleAllVisible" />
+              <n-checkbox
+                :checked="allSelected"
+                :indeterminate="someSelected"
+                @update:checked="toggleAll"
+              />
             </th>
             <th class="min-w-[320px] !text-left">{{ $t('content.organization') }}</th>
             <th class="min-w-[76px] w-[76px] !text-center text-xs !whitespace-normal leading-tight">
@@ -108,8 +155,11 @@
               class="hover-row"
               :class="[item.id === store.params.organization_id && 'selectedRow']"
             >
-              <td @click.stop="store.toggleConfirmSelect(item.id)">
-                <n-checkbox :checked="store.confirmSelected.includes(item.id)"></n-checkbox>
+              <td @click.stop="toggleNode(item)">
+                <n-checkbox
+                  :checked="store.confirmSelected.includes(item.id)"
+                  :indeterminate="nodeIndeterminate(item)"
+                ></n-checkbox>
               </td>
               <td
                 @click="store.onChangeStructure(item)"
