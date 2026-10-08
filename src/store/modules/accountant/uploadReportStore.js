@@ -247,7 +247,17 @@ export const useUploadReportStore = defineStore('uploadReport', {
           const list = res.data.data
           this.structuresList = list
           if (list.length === 1 && list[0]?.children?.length === 0) {
-            this.onChangeStructure(list[0])
+            const only = list[0]
+            // Avtomatik tanlash faqat org hali tanlanmaganda. Agar allaqachon
+            // tanlangan bo'lsa (masalan tasdiqlash/bekor qilishdan keyingi refresh),
+            // onChangeStructure TOGGLE qilib org_id'ni null'ga aylantirib panelni
+            // yopib qo'yardi. Shu holatda faqat holatni yangilaymiz — panel ochiq qoladi.
+            if (this.params.organization_id === only.id) {
+              this.orgStatus = only.uploadStatus
+              this.isBlocked = !only.uploadStatus
+            } else {
+              this.onChangeStructure(only)
+            }
           }
         })
         .finally(() => {

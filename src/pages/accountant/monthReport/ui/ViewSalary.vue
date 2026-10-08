@@ -18,7 +18,15 @@
   watch(
     () => store.showList,
     () => {
-      currentIndex.value = 1
+      // Bosilgan qatorning korxonasiga mos kareshokdan boshlaymiz (bir xil PINFL
+      // bir nechta korxonada bo'lsa); topilmasa — birinchisi.
+      const idx =
+        store.showOrgId != null
+          ? store.showList.findIndex(
+              (it) => it.worker?.organization_id === store.showOrgId
+            )
+          : -1
+      currentIndex.value = idx >= 0 ? idx + 1 : 1
     }
   )
 

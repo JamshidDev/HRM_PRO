@@ -46,7 +46,7 @@
               {{ $t('salaryReport.form.name') }}
             </th>
             <th rowspan="2" class="!text-center">{{ $t('salaryReport.form.type') }}</th>
-            <th colspan="12" class="!text-center">2025</th>
+            <th colspan="12" class="!text-center">{{ store.params.year }}</th>
             <th
               rowspan="2"
               class="min-w-[160px] w-[160px] !text-center sticky-element !right-0 !border-l"
