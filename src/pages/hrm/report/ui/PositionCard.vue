@@ -35,14 +35,10 @@
     else if (key === Utils.ActionTypes.delete) deletePosition(item)
   }
 
+  // Butun tartib yuboriladi — backend faqat o'zgarganlarini yozadi (eski sort=1 lar ham tuzaladi).
   const onDraggleEnd = (v) => {
-    const data = [
-      {
-        id: v.data.id,
-        sort: v.newIndex
-      }
-    ]
-    store._positionOrderable(data)
+    if (v.oldIndex === v.newIndex) return
+    store._positionOrderable(store.position.list.map((item, idx) => ({ id: item.id, sort: idx })))
   }
 </script>
 

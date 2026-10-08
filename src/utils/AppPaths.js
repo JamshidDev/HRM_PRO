@@ -75,6 +75,7 @@ export const AppPaths = {
   DocViewer: '/doc-viewer',
   DocumentViewer: '/document-viewer',
   Holiday: '/holiday',
+  EimzoGateAdmin: '/eimzo-gate',
   Questions: '/questions',
   Command: '/command',
   AdContract: '/ad-contract',
