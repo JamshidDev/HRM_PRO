@@ -3859,7 +3859,7 @@
     "zip": {
       "button": "ZIP yuklab olish",
       "title": "Hisobotlarni ZIP qilib yuklab olish",
-      "hint": "«{org}» korxonasining tanlangan oy oralig'idagi 4 turdagi hisobotlari bitta ZIP faylga yuklanadi.",
+      "hint": "«{org}» korxonasining tanlangan oy oralig'idagi hisobotlari va davr bo'yicha umumiy yig'ma hisobot (ved'lar bilan) bitta ZIP faylga yuklanadi.",
       "from": "Boshlang'ich oy",
       "to": "Oxirgi oy",
       "invalid": "Oy oralig'i noto'g'ri (boshlang'ich oy oxirgisidan katta bo'lmasin).",
