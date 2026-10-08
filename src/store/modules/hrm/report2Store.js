@@ -184,8 +184,9 @@ export const useReport2Store = defineStore('report2Store', {
         order: order
       }
 
-      $ApiService.reportService._orderable({ data }).then((res) => {
-        console.log(res.data)
+      // Saqlanmasa ekrandagi tartib yolg'on qolmasin — serverdagi holat qayta yuklanadi.
+      $ApiService.reportService._orderable({ data }).catch(() => {
+        this.getPosition()
       })
     },
     // Backend qidiruvda faqat mos kelgan tashkilotlarni qaytaradi — ota-tashkilotlari
