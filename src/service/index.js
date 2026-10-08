@@ -67,6 +67,15 @@ instance.interceptors.response.use(
       return Promise.reject(error)
     }
 
+    // eimzoGate: iqtisod API'si E-IMZO tasdig'ini talab qildi — sahifa o'rniga tasdiqlash kartasi chiqadi.
+    if (
+      error.response?.status === 403 &&
+      error.response?.data?.code === 'eimzo_verification_required'
+    ) {
+      import('@/features/eimzoGate/eimzoGateStore.js').then((m) => m.useEimzoGateStore()._lock())
+      return Promise.reject(error)
+    }
+
     if (error.response?.status === 401) {
       const serviceUrl = error.response?.config?.url?.toString()
       if(serviceUrl.includes('auth/login')){

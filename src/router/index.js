@@ -119,6 +119,8 @@ const routes = [
         path: AppPaths.Accountant,
         beforeEnter: beforeLogin,
         redirect: AppPaths.Home,
+        // eimzoGate: E-IMZO tasdiqlanmaguncha iqtisod sahifalari yuklanmaydi.
+        component: () => import('@/features/eimzoGate/EimzoGateView.vue'),
         children: accountantRoutes,
         meta: {
           layout: AppLayouts.main

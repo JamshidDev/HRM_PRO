@@ -1592,7 +1592,8 @@
         "hintOtherPending": "HR qarorini kutmoqda: qayta yuborish yoki yopish.",
         "more": "Batafsil",
         "less": "Yig'ish",
-        "titleOwner": "Arizangiz rad etildi"
+        "titleOwner": "Arizangiz rad etildi",
+        "notAgreed": "Kelishilmadi"
       }
     },
     "attach": {
@@ -2988,6 +2989,8 @@
       "viewerRead": "Tanishdi",
       "viewerWaiting": "Tanishishni kutmoqda",
       "panelProcessTitle": "Ariza kelishuvda",
+      "panelLegacyTitle": "Eski tartibdagi ariza",
+      "panelLegacy": "Rahbarga to‘g‘ridan-to‘g‘ri yuborilgan — marshrutni o‘zgartirib bo‘lmaydi",
       "panelRejectedTitle": "Ariza rad etildi"
     },
     "hrTabs": {
@@ -5913,6 +5916,22 @@
     "historyBtn": "Tarix",
     "showMasked": "Maskani ochish",
     "hideMasked": "Maskani yopish"
+  },
+  "eimzoGateAdmin": {
+    "name": "E-IMZO tasdig'i",
+    "title": "Iqtisod bo'limi uchun E-IMZO tasdig'i",
+    "subtitle": "Yoqilganda Admin'dan boshqa barcha foydalanuvchilar iqtisod bo'limiga kirishdan oldin shaxsini o'z ERI kaliti bilan tasdiqlaydi. Tasdiq qayta login qilinguncha amal qiladi.",
+    "listTitle": "Faol tasdiqlar",
+    "refresh": "Yangilash",
+    "user": "Foydalanuvchi",
+    "phone": "Telefon",
+    "cert": "Sertifikat egasi",
+    "serial": "Sertifikat raqami",
+    "verifiedAt": "Tasdiqlangan vaqt",
+    "revoke": "Bekor qilish",
+    "enabledToast": "E-IMZO tasdig'i yoqildi",
+    "disabledToast": "E-IMZO tasdig'i o'chirildi",
+    "revokedToast": "Tasdiq bekor qilindi — foydalanuvchi qayta tasdiqlaydi"
   },
   "eimzoGate": {
     "title": "Xavfsizlik uchun tekshiruv",
