@@ -14,7 +14,6 @@
   import {
     ArrowDownload20Regular,
     Delete20Regular,
-    Edit32Regular,
     Eye16Regular
   } from '@vicons/fluent'
 
@@ -26,20 +25,14 @@
 
   const emits = defineEmits(['openOffice'])
 
-  const checkingStatus = {
-    0: {
-      id: 1,
-      name: t('content.Process')
-    },
-    1: {
-      id: 3,
-      name: t('content.checked')
-    },
-    2: {
-      id: 4,
-      name: t('content.Rejected')
-    }
-  }
+  // HR holati (worker_applications.status): 0 yangi, 1 kelishuvchilarga yo'naltirilgan, 2 HR yopgan.
+  const checkingStatus = computed(() => ({
+    0: { id: 1, name: t('applicationPage.hrCheck.new') },
+    1: { id: 3, name: t('applicationPage.hrCheck.forwarded') },
+    2: { id: 4, name: t('applicationPage.hrCheck.closed') }
+  }))
+  // Rahbar imzolagan ariza ham yopilgan (yashil).
+  const closedApproved = computed(() => ({ id: 3, name: t('applicationPage.hrCheck.closed') }))
 
   const onOpenFile = (v) => {
     emits('openOffice', v)
@@ -122,11 +115,6 @@
       action: onView
     },
     {
-      label: t('content.edit'),
-      key: Utils.ActionTypes.edit,
-      icon: UIHelper.renderIcon(Edit32Regular)
-    },
-    {
       label: t('turnstileDownload.title'),
       key: 'turnstileDownload',
       icon: UIHelper.renderIcon(ArrowDownload20Regular),
@@ -181,7 +169,7 @@
     </template>
 
     <template #cell-status="{ row }">
-      <UIStatus :status="checkingStatus[Number(row?.status)]" />
+      <UIStatus :status="row?.confirmation?.id === 3 ? closedApproved : checkingStatus[Number(row?.status)]" />
     </template>
 
     <template #cell-confirmation="{ row }">

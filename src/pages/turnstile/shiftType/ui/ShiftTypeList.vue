@@ -32,11 +32,11 @@
   const showSkeleton = computed(() => store.loading && store.list.length === 0)
 
   const itemClass = (id) => [
-    'shift-item group relative w-full text-left rounded-lg px-3 py-2.5 cursor-pointer',
+    'shift-item group relative w-full text-left rounded-lg px-3 py-2.5 cursor-pointer border',
     'transition-colors duration-150',
     props.selectedId === id
-      ? 'shift-item--active bg-primary/10'
-      : 'hover:bg-surface-ground/60'
+      ? 'shift-item--active bg-primary/10 border-primary/40'
+      : 'border-surface-line hover:bg-surface-ground/60 hover:border-primary/30'
   ]
 
 </script>
@@ -89,7 +89,7 @@
 
       <div
         v-else
-        class="flex flex-col gap-0.5 transition-opacity duration-200"
+        class="flex flex-col gap-2 transition-opacity duration-200"
         :class="store.loading && 'opacity-50 pointer-events-none'"
       >
         <button

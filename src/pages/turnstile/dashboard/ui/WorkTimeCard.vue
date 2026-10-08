@@ -19,16 +19,12 @@
       label: 'turnStileDashboard.cards.earlyGo',
       count: earlyGoCount.value,
       dotColor: '--fig-icon-green',
-      delta: store.deltas.early,
-      invert: true,
       previewType: 'early_leave'
     },
     {
       label: 'turnStileDashboard.cards.lateCome',
       count: lateComeCount.value,
       dotColor: '--fig-icon-red',
-      delta: store.deltas.late,
-      invert: true,
       previewType: 'late_come'
     }
   ])
@@ -54,9 +50,6 @@
           :label="$t(cell.label)"
           :count="cell.count"
           :dot-color="cell.dotColor"
-          :delta="cell.delta"
-          :invert="cell.invert"
-          :delta-loading="store.compareLoading"
           clickable
           @click="emits('onPreview', cell.previewType)"
         />

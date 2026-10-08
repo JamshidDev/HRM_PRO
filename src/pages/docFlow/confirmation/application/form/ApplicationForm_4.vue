@@ -22,6 +22,7 @@
         <n-date-picker
           class="w-full"
           v-model:value="store.payload.to"
+          :is-date-disabled="(ts) => !!store.payload.from && ts < store.payload.from"
           type="date"
           :format="useAppSetting.datePicketFormat"
         />
