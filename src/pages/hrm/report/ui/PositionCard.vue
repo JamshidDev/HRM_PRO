@@ -35,13 +35,12 @@
     else if (key === Utils.ActionTypes.delete) deletePosition(item)
   }
 
+  // Faqat surilgan lavozim yuborilsa, qolganlarining `sort` qiymati eski qoladi —
+  // bir xil `sort`li tashkilotlarda tartib yangilangach ortga qaytib qolardi.
+  // Shu sababli butun ro'yxatning yangi tartibi yuboriladi.
   const onDraggleEnd = (v) => {
-    const data = [
-      {
-        id: v.data.id,
-        sort: v.newIndex
-      }
-    ]
+    if (v.oldIndex === v.newIndex) return
+    const data = store.position.list.map((item, index) => ({ id: item.id, sort: index }))
     store._positionOrderable(data)
   }
 </script>

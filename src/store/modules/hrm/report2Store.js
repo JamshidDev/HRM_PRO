@@ -189,9 +189,17 @@ export const useReport2Store = defineStore('report2Store', {
         order: order
       }
 
-      $ApiService.reportService._orderable({ data }).then((res) => {
-        console.log(res.data)
-      })
+      const departmentId = this.department.selectedId
+      $ApiService.reportService
+        ._orderable({ data })
+        .then(() => {
+          // Jadval ko'rinishidagi lavozimlar keshi eski tartibda qolmasin.
+          this._invalidateTable([departmentId])
+        })
+        .catch(() => {
+          // Saqlanmagan bo'lsa ekrandagi tartib serverdagi bilan qayta tenglashadi.
+          this.getPosition()
+        })
     },
     // Backend qidiruvda faqat mos kelgan tashkilotlarni qaytaradi — ota-tashkilotlari
     // kelmaydi. Shu sababli qidiruvsiz to'liq daraxtni (`full`) saqlab, natijani shu
@@ -295,6 +303,17 @@ export const useReport2Store = defineStore('report2Store', {
         this.table.refreshing = true
       }
       this._getDepartment()
+    },
+    // «Yangilash» tugmasi: bo'linmalar ro'yxati qayta so'raladi. Jadvalda ochiq
+    // bo'linmalarning lavozimlari ham eskirgan deb belgilanadi (ochiqligi saqlanadi),
+    // ro'yxat ko'rinishida tanlangan bo'linma lavozimlari qayta o'qiladi.
+    _refreshAll() {
+      if (this.viewMode === 'table') {
+        this._invalidateTable(this.table.ids.filter((id) => this.table.expanded[id]))
+        return
+      }
+      this._getDepartment()
+      if (this.department.selectedId) this.getPosition()
     },
     refreshPositions(departmentIds = []) {
       this._invalidateTable(departmentIds)
