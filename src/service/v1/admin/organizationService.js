@@ -20,15 +20,26 @@ const _update = async (payload) => {
   return await axios.put(`/v1/structure/organizations/${payload.id}`, payload.data)
 }
 
-const _delete = async (payload) => {
-  return await axios.delete(`/v1/structure/organizations/${payload.id}`)
+// Hard delete yo'q — korxona asos (izoh yoki fayl) bilan yopiladi / qayta ochiladi.
+const _close = async (payload) => {
+  return await axios.post(`/v1/structure/organizations/${payload.id}/close`, payload.data)
+}
+
+const _reopen = async (payload) => {
+  return await axios.post(`/v1/structure/organizations/${payload.id}/reopen`, payload.data)
+}
+
+const _events = async (payload) => {
+  return await axios.get(`/v1/structure/organizations/${payload.id}/events`)
 }
 
 export default {
   _index,
   _create,
   _update,
-  _delete,
+  _close,
+  _reopen,
+  _events,
   _show,
   _level
 }

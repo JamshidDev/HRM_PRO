@@ -182,7 +182,8 @@ export const useEventV2Store = defineStore('eventV2Store', {
         to: null,
         organizations: [], // UISelect (daraxt) — {id, name} obyektlari
         departments: [], // SuperSelect — id'lar
-        workers: [] // SuperSelect — workers.id
+        workers: [], // SuperSelect — workers.id
+        access_levels: [] // Turniket guruhlari — hik_central_access_levels.id
       },
       // Bo'lim/xodim dropdownlari modalning O'Z ro'yxatlari: sahifa filtri
       // o'zgarsa yuklash oynasidagi tanlov buzilmasin.
@@ -237,12 +238,13 @@ export const useEventV2Store = defineStore('eventV2Store', {
     // toraytiradi, ruxsatni kengaytirmaydi.
     // Ikkala eksport uchun umumiy filtr parametrlari (korxona/bo'lim/xodim).
     _downloadFilterParams() {
-      const { organizations, departments, workers } = this.download.payload
+      const { organizations, departments, workers, access_levels } = this.download.payload
       const orgs = organizations.map((v) => v.id)
       return {
         ...(orgs.length ? { organizations: orgs.toString() } : {}),
         ...(departments.length ? { departments: departments.toString() } : {}),
-        ...(workers.length ? { workers: workers.toString() } : {})
+        ...(workers.length ? { workers: workers.toString() } : {}),
+        ...(access_levels.length ? { access_levels: access_levels.toString() } : {})
       }
     },
     _download(onSuccess) {
@@ -335,7 +337,7 @@ export const useEventV2Store = defineStore('eventV2Store', {
     // Yuklash oynasini ochish: sana defaultlari + sahifa filtrini bir marta
     // oldindan to'ldirish. Ilgari eksport sahifa filtrini o'zi olardi — o'sha
     // xulq saqlanadi, lekin endi foydalanuvchi uni modalda o'zgartira oladi.
-    _openDownload({ organizations = [], departments = [] } = {}) {
+    _openDownload({ organizations = [], departments = [], accessLevels = [] } = {}) {
       if (!this.download.payload.from) {
         const today = new Date()
         const tomorrow = new Date(today)
@@ -346,6 +348,7 @@ export const useEventV2Store = defineStore('eventV2Store', {
       const isFirstOpen =
         this.download.payload.organizations.length === 0 &&
         this.download.payload.workers.length === 0
+      if (isFirstOpen && accessLevels.length) this.download.payload.access_levels = [...accessLevels]
       if (isFirstOpen && organizations.length) {
         this.download.payload.organizations = [...organizations]
         this.download.payload.departments = [...departments]
