@@ -1,6 +1,13 @@
 <script setup>
-  import { Building16Regular, ChevronRight16Regular } from '@vicons/fluent'
+  import {
+    Building16Regular,
+    ChevronRight16Regular,
+    History16Regular,
+    LockClosed16Regular,
+    LockOpen16Regular
+  } from '@vicons/fluent'
   import { UIMenuButton } from '@/components/index.js'
+  import i18n from '@/i18n/index.js'
   const props = defineProps({
     children: Array,
     deep: {
@@ -58,6 +65,8 @@
       onChange({ ...payload, type: 'delete' })
     } else if (ev.key === 'attachment') {
       onChange({ ...payload, type: 'create' })
+    } else if (['orgClose', 'orgReopen', 'orgHistory'].includes(ev.key)) {
+      onChange({ ...payload, type: ev.key })
     }
   }
 
@@ -85,6 +94,13 @@
 
   // To'liq nom ko'pincha qisqa nom bilan bir xil — takror qatorni ko'rsatmaymiz.
   const normalize = (v) => (v || '').replace(/[^\p{L}\p{N}]/gu, '').toLowerCase()
+  // Hard delete yo'q: korxona yopiladi / qayta ochiladi, tarixi ko'riladi.
+  const orgOptions = (item) => [
+    { label: i18n.global.t('organizationPage.close'), key: 'orgClose', icon: LockClosed16Regular, visible: !item.closedAt },
+    { label: i18n.global.t('organizationPage.reopen'), key: 'orgReopen', icon: LockOpen16Regular, visible: !!item.closedAt },
+    { label: i18n.global.t('organizationPage.history.title'), key: 'orgHistory', icon: History16Regular }
+  ]
+
   const showFullName = (item) => item.fullName && normalize(item.fullName) !== normalize(item.name)
 </script>
 
@@ -140,6 +156,12 @@
             :title="item.name"
           >
             {{ item.name }}
+            <span
+              v-if="item.closedAt"
+              class="ml-1.5 inline-flex rounded-full bg-fig-red-100 px-1.5 py-px text-[10px] font-semibold text-fig-text-red align-middle"
+            >
+              {{ $t('organizationPage.closedBadge') }}
+            </span>
           </div>
           <div
             v-if="showFullName(item)"
@@ -158,8 +180,9 @@
           <UIMenuButton
             :data="item"
             :show-edit="true"
-            :show-delete="true"
-            :show-attachment="true"
+            :show-delete="false"
+            :show-attachment="!item.closedAt"
+            :extra-options="orgOptions(item)"
             :loading="props.actionLoading && props.actionLoadingId === item.id"
             @selectEv="(ev) => onMenuSelect(item, idx, ev)"
           />

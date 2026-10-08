@@ -1,15 +1,15 @@
 <script setup>
   import { useOrganizationStore, useComponentStore } from '@/store/modules/index.js'
   import { UITree, UIPagination } from '@/components/index.js'
-  import { useDialog } from 'naive-ui'
   import { ChevronDoubleUp16Regular, LocalLanguage16Regular } from '@vicons/fluent'
+  import BasisModal from './BasisModal.vue'
+  import HistoryModal from './HistoryModal.vue'
   import i18n from '@/i18n/index.js'
   import { useAccountStore } from '@/store/modules/index.js'
   const accStore = useAccountStore()
 
   const store = useOrganizationStore()
   const componentStore = useComponentStore()
-  const dialog = useDialog()
   const { t } = i18n.global
   const expandedKeys = ref([])
 
@@ -43,11 +43,19 @@
   }
 
   const onChange = (v) => {
+    if (v.type === 'orgHistory') {
+      if (!accStore.checkAction(accStore.pn.organizationsRead)) return
+      store._history(v)
+      return
+    }
+    if (v.type === 'orgClose' || v.type === 'orgReopen') {
+      if (!accStore.checkAction(accStore.pn.organizationsDelete)) return
+      store.openBasis(v.type === 'orgClose' ? 'close' : 'reopen', v)
+      return
+    }
     if (!accStore.checkAction(accStore.pn.organizationsWrite)) return
     if (v.type === 'create') {
       createNested(v)
-    } else if (v.type === 'delete') {
-      onDelete(v)
     } else if (v.type === 'update') {
       onEdit(v)
     }
@@ -65,20 +73,6 @@
       name: v.name
     }
     store.visible = true
-  }
-
-  const onDelete = (v) => {
-    store.elementId = v.id
-    dialog.info({
-      title: t('content.confirm'),
-      content: t('organizationPage.deleteContent'),
-      positiveText: t('content.yes'),
-      negativeText: t('content.no'),
-      onPositiveClick: () => {
-        store._delete()
-      },
-      onNegativeClick: () => {}
-    })
   }
 
   const onEdit = (v) => {
@@ -148,8 +142,8 @@
           @on-change="onChange"
           @on-toggle="onToggle"
           :element-id="store.indexPath"
-          :action-loading="store.deleteLoading"
-          :action-loading-id="store.elementId"
+          :action-loading="store.basis.loading"
+          :action-loading-id="store.basis.id"
           :expanded-keys="expandedKeys"
         />
         <n-empty v-else-if="!store.loading" class="py-16" :description="$t('content.no-data')" />
@@ -164,6 +158,8 @@
         @change-page="changePage"
       />
     </div>
+    <BasisModal />
+    <HistoryModal />
   </div>
 </template>
 
