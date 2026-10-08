@@ -24,7 +24,6 @@
     <div class="flex items-center justify-between gap-3 px-2 pb-3 min-h-[40px]">
       <div class="flex items-center gap-2">
         <n-skeleton width="80px" height="24px" :sharp="false" />
-        <n-skeleton width="64px" height="12px" :sharp="false" />
       </div>
       <n-skeleton width="68px" height="28px" round />
     </div>

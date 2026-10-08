@@ -36,7 +36,8 @@ import { Delete24Regular, Edit32Regular, Eye16Regular, History16Regular } from '
       salary: row.salary != null ? String(row.salary) : null,
       experience: row.experience.toString(),
       tariff_grid_id: row.tariff_grid_id ?? null,
-      tariff_grid_column: row.tariff_grid_column ?? null
+      tariff_grid_column: row.tariff_grid_column ?? null,
+      position_code: row.position_code ?? null
     })
     // Tanlangan setka ustunlarini oldindan yuklaymiz (oklad/ustun ko'rinishi uchun).
     if (row.tariff_grid_id) store._loadGridColumns(row.tariff_grid_id)

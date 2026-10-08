@@ -2,7 +2,6 @@
   import { Eye20Filled } from '@vicons/fluent'
   import { Utils } from '@/utils/index.js'
   import CardHeader from './CardHeader.vue'
-  import DeltaBadge from './DeltaBadge.vue'
   import { FaceCardSkeleton } from './skeleton/index.js'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
   import HeadAiScanIcon from '@/assets/icons/dashboard/head-ai-scan.svg'
@@ -22,15 +21,13 @@
       previewType: 'att_came_turnstile',
       label: 'turnStileDashboard.cards.turnstileFace',
       count: turnstileCount.value,
-      icon: markRaw(FaceTurnstileIcon),
-      delta: store.deltas.faceTurnstile
+      icon: markRaw(FaceTurnstileIcon)
     },
     {
       previewType: 'att_came_mobile',
       label: 'turnStileDashboard.cards.mobileFace',
       count: mobileCount.value,
-      icon: markRaw(FaceMobileIcon),
-      delta: store.deltas.faceMobile
+      icon: markRaw(FaceMobileIcon)
     }
   ])
 
@@ -56,11 +53,6 @@
             >
               {{ formatCount(totalCount) }}
             </span>
-            <DeltaBadge
-              hide-label
-              :delta="store.deltas.faceTotal"
-              :loading="store.compareLoading"
-            />
           </div>
           <p class="text-[12px] text-fig-text-tertiary text-center">
             {{ $t('turnStileDashboard.cards.allWorkerOfFace') }}
@@ -98,7 +90,6 @@
               >
                 {{ formatCount(cell.count) }}
               </span>
-              <DeltaBadge hide-label :delta="cell.delta" :loading="store.compareLoading" />
             </div>
           </div>
         </div>
