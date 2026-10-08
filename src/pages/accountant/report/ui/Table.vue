@@ -7,7 +7,8 @@
     ArrowCircleDown12Regular,
     ChevronDown24Regular,
     ArrowClockwise24Regular,
-    History24Regular
+    History24Regular,
+    Delete24Regular
   } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
@@ -130,6 +131,20 @@
             >
               <template #icon><Info24Regular /></template>
             </n-button>
+            <n-popconfirm @positive-click="store._deleteUpload(latest.id)">
+              <template #trigger>
+                <n-button
+                  type="error"
+                  size="small"
+                  secondary
+                  circle
+                  :loading="store.deleteLoading"
+                >
+                  <template #icon><Delete24Regular /></template>
+                </n-button>
+              </template>
+              {{ $t('content.confirmDelete') }}
+            </n-popconfirm>
           </div>
         </div>
         <div class="grid grid-cols-2 gap-x-2 mt-2">
@@ -223,6 +238,20 @@
                   >
                     <template #icon><Info24Regular /></template>
                   </n-button>
+                  <n-popconfirm @positive-click="store._deleteUpload(item.id)">
+                    <template #trigger>
+                      <n-button
+                        type="error"
+                        size="small"
+                        secondary
+                        circle
+                        :loading="store.deleteLoading"
+                      >
+                        <template #icon><Delete24Regular /></template>
+                      </n-button>
+                    </template>
+                    {{ $t('content.confirmDelete') }}
+                  </n-popconfirm>
                 </div>
               </div>
               <div class="mt-2">

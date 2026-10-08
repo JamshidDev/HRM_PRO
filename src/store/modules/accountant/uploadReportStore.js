@@ -500,12 +500,19 @@ export const useUploadReportStore = defineStore('uploadReport', {
           this.bulkErrorExportLoading = false
         })
     },
-    _delete() {
+    // Yuklangan hisobotni (economist_upload) o'chirish — ma'lumot satrlari + soft-delete.
+    // So'ng tanlangan korxona kartalari (list = latest/older) qayta yuklanadi.
+    _deleteUpload(id) {
+      if (!id) return
       this.deleteLoading = true
-      $ApiService.countryService
-        ._delete({ id: this.elementId })
-        .then((res) => {
-          this._index()
+      $ApiService.accountantService
+        ._deleteUpload({ id })
+        .then(() => {
+          $Toast.success(t('content.deleted'))
+          this._cards()
+        })
+        .catch(() => {
+          $Toast.error(t('content.error'))
         })
         .finally(() => {
           this.deleteLoading = false

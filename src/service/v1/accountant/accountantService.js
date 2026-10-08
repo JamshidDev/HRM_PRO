@@ -54,6 +54,11 @@ const _updateStatus = async (payload) => {
   return await axios.post(`/v1/economist/upload-statuses`, payload.data)
 }
 
+// Yuklangan hisobotni o'chirish (upload id bo'yicha) — ma'lumot satrlari + soft-delete.
+const _deleteUpload = async (payload) => {
+  return await axios.delete(`/v1/economist/upload/${payload.id}`)
+}
+
 // Hisobot yuklash holati — tanlangan oy uchun korxonalar kesimida (yuklagan/yuklamagan).
 const _reportStatus = async (payload) => {
   return await axios.get(`/v1/economist/upload-report-status`, { params: payload?.params })
@@ -140,6 +145,7 @@ export default {
   _confirm,
   _cancelConfirm,
   _updateStatus,
+  _deleteUpload,
   _reportStatus,
   _reportStatusExport,
   _reportsZip,
