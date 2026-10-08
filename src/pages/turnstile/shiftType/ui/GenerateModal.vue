@@ -4,15 +4,29 @@
   import validationRules from '@/utils/validationRules.js'
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
+  import i18n from '@/i18n/index.js'
 
   const store = useShiftTypeStore()
   const accStore = useAccountStore()
   const formRef = ref(null)
+  const { t } = i18n.global
+
+  // Teskari oraliqda oylar ro'yxati bo'sh chiqib, `_generateSchedule` yiqilardi va tugma
+  // cheksiz aylanib qolardi — so'rovni yubormasdan oldin to'xtatamiz.
+  const isInvalidRange = () => {
+    const start = new Date(store.generatePayload.start_date).setHours(0, 0, 0, 0)
+    const end = new Date(store.generatePayload.end_date).setHours(0, 0, 0, 0)
+    return end < start
+  }
 
   const onSubmit = () => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsWorkersWrite)) return
     formRef.value?.validate((error) => {
       if (!error) {
+        if (store.visibleType && isInvalidRange()) {
+          $Toast.warning(t('content.dateRangeError'))
+          return
+        }
         const data = {
           start_date: Utils.timeToZone(store.generatePayload.start_date),
           end_date: Utils.timeToZone(store.generatePayload.end_date),
