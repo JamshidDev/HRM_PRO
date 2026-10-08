@@ -1105,6 +1105,13 @@ export const navigations = withRawIcons([
         permission: appPermissions.documentExamplesRead
       },
       {
+        label: 'eimzoGateAdmin.name', // E-IMZO tasdig'i (faqat Admin)
+        path: Utils.routePathMaker(AppPaths.EimzoGateAdmin),
+        icon: AdminFolderIcon,
+        color: 'bg-dark',
+        permission: appPermissions.admin
+      },
+      {
         label: 'holidayPage.name', // Bayram kunlari
         path: Utils.routePathMaker(AppPaths.Holiday),
         icon: AdminFolderIcon,

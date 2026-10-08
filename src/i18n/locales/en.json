@@ -5856,6 +5856,22 @@
     "showMasked": "Reveal masked",
     "hideMasked": "Hide masked"
   },
+  "eimzoGateAdmin": {
+    "name": "E-IMZO verification",
+    "title": "E-IMZO verification for the economist section",
+    "subtitle": "When enabled, every user except Admin confirms their identity with their own e-signature key before entering the economist section. Verification lasts until the next login.",
+    "listTitle": "Active verifications",
+    "refresh": "Refresh",
+    "user": "User",
+    "phone": "Phone",
+    "cert": "Certificate owner",
+    "serial": "Certificate number",
+    "verifiedAt": "Verified at",
+    "revoke": "Revoke",
+    "enabledToast": "E-IMZO verification enabled",
+    "disabledToast": "E-IMZO verification disabled",
+    "revokedToast": "Verification revoked — the user will verify again"
+  },
   "eimzoGate": {
     "title": "Security verification",
     "description": "To access economist data, confirm your identity with an e-signature (E-IMZO) key.",
