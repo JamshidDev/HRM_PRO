@@ -83,8 +83,9 @@
 </template>
 
 <style lang="scss" scoped>
-  // Yopishgan sarlavha ostidan kontent ko'rinmasligi uchun to'liq shaffofmas fon.
+  // Yopishgan sarlavha ostidan kontent ko'rinmasligi uchun to'liq shaffofmas fon —
+  // sahifa foni bilan bir xil, alohida kulrang chiziq bo'lib ko'rinmasin.
   .news-form-header {
-    background: var(--surface-ground);
+    background: var(--app-bg);
   }
 </style>

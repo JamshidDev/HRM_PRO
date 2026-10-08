@@ -1,7 +1,6 @@
 <script setup>
   import { Eye20Filled } from '@vicons/fluent'
   import { Utils } from '@/utils/index.js'
-  import DeltaBadge from './DeltaBadge.vue'
 
   const props = defineProps({
     label: String,
@@ -14,12 +13,6 @@
       type: String,
       default: '--fig-icon-green'
     },
-    delta: {
-      type: Object,
-      default: null
-    },
-    invert: Boolean,
-    deltaLoading: Boolean,
     clickable: Boolean
   })
 
@@ -55,7 +48,6 @@
         <span class="font-grotesk font-semibold text-[14px] leading-[18px] text-fig-text-primary">
           {{ formatted }}
         </span>
-        <DeltaBadge hide-label :delta="delta" :invert="invert" :loading="deltaLoading" />
       </div>
     </div>
   </div>

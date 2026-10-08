@@ -60,12 +60,10 @@
     store._requestTablePositions([id])
   }
 
-  // Tahrirdan keyin holat qayta quriladi — ochiq turgan bo'linmalarning
-  // eskirgan lavozimlari qayta so'raladi.
-  watch(
-    () => store.table.seq,
-    () => store._requestTablePositions(store.table.ids.filter((id) => store.table.expanded[id]))
-  )
+  // Yangilanish o'rtasida ro'yxat ko'rinishiga o'tilsa, jadval qulfi qolib ketmasin.
+  onBeforeUnmount(() => {
+    store.table.refreshing = false
+  })
 
   // Qidiruv yoki Vakant/Sverx filtri barcha lavozimlarni talab qiladi.
   watch(
@@ -345,7 +343,9 @@
 
     <!-- Progress jadval ustida absolute — scroll paytida paydo bo'lib, jadvalni
          pastga surib yubormasin. -->
-    <div class="relative">
+    <!-- Tahrirdan keyin to'liq qayta yuklanguncha jadval spinner bilan yopiladi —
+         eski ma'lumot ustida boshqa tahrir ochib bo'lmaydi. -->
+    <n-spin :show="store.table.refreshing" class="relative">
       <n-progress
         v-if="store.table.loading"
         class="!absolute inset-x-3 top-0 z-10"
@@ -539,7 +539,7 @@
                       </td>
                     </tr>
                     <tr
-                      v-for="w in workers[p.id].list"
+                      v-for="(w, wIdx) in workers[p.id].list"
                       v-else
                       :key="`w-${w.id}`"
                       class="report-sheet__worker"
@@ -553,6 +553,9 @@
                           class="report-worker"
                           :style="{ paddingLeft: `${section.depth * 20 + 30}px` }"
                         >
+                          <span class="text-xs text-fig-text-tertiary tabular-nums text-right">
+                            {{ wIdx + 1 }}.
+                          </span>
                           <n-ellipsis
                             class="report-worker__name cursor-pointer hover:text-primary hover:underline"
                             :tooltip="ellipsisTooltip"
@@ -623,7 +626,7 @@
           </tfoot>
         </table>
       </div>
-    </div>
+    </n-spin>
   </div>
 </template>
 
@@ -681,10 +684,10 @@
     background: var(--fig-bg-secondary);
   }
 
-  /* ism | shartnoma turi | lavozim */
+  /* tartib raqami | ism | shartnoma turi | lavozim */
   .report-worker {
     display: grid;
-    grid-template-columns: minmax(0, 240px) minmax(0, 210px) minmax(0, 1fr);
+    grid-template-columns: 22px minmax(0, 240px) minmax(0, 210px) minmax(0, 1fr);
     align-items: center;
     column-gap: 10px;
     min-width: 0;

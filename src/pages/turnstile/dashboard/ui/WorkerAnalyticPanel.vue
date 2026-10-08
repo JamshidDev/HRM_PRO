@@ -14,29 +14,24 @@
       label: 'turnStileDashboard.cards.allWorkerOfCompany',
       count: store.attendance?.total || 0,
       dotColor: '--fig-icon-indigo',
-      delta: store.deltas.totalWorkers,
       previewType: null
     },
     {
       label: 'turnStileDashboard.cards.planned',
       count: store.attendance?.scheduled || 0,
       dotColor: '--fig-icon-brand',
-      delta: store.deltas.planned,
       previewType: null
     },
     {
       label: 'turnStileDashboard.cards.todayCome',
       count: store.attendance?.came || 0,
       dotColor: '--fig-icon-green',
-      delta: store.deltas.come,
       previewType: 'att_came'
     },
     {
       label: 'turnStileDashboard.cards.todayDontCome',
       count: store.attendance?.absent || 0,
       dotColor: '--fig-icon-red',
-      delta: store.deltas.notCome,
-      invert: true,
       previewType: 'att_absent'
     }
   ])
@@ -60,9 +55,6 @@
           :label="$t(cell.label)"
           :count="cell.count"
           :dot-color="cell.dotColor"
-          :delta="cell.delta"
-          :invert="cell.invert"
-          :delta-loading="store.compareLoading"
           :clickable="!!cell.previewType"
           @click="cell.previewType && emits('onPreview', cell.previewType)"
         />

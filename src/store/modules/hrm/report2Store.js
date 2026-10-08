@@ -69,6 +69,10 @@ export const useReport2Store = defineStore('report2Store', {
       ids: [],
       // Ochilgan bo'linmalar: { [id]: true } — tahrirdan keyin ham ochiq qoladi.
       expanded: {},
+      // Tahrir/o'chirishdan keyingi to'liq yangilanish: bo'linmalar ro'yxati VA
+      // ochiq bo'linmalarning eskirgan lavozimlari kelguncha true — jadval
+      // ustida spinner turadi, boshqa tahrir ochib bo'lmaydi.
+      refreshing: false,
       // Keyingi `_loadTable` faqat shu bo'linmalarni (va keshda yo'qlarini)
       // qayta so'raydi; null — hammasi qaytadan.
       refreshIds: null
@@ -162,7 +166,8 @@ export const useReport2Store = defineStore('report2Store', {
       state.showLoading ||
       state.department.loading ||
       state.position.loading ||
-      state.table.loading
+      state.table.loading ||
+      state.table.refreshing
   },
   actions: {
     _exportStaffing(organizationId) {
@@ -244,6 +249,10 @@ export const useReport2Store = defineStore('report2Store', {
             position: v?.organization?.name
           }))
         })
+        .catch(() => {
+          // Ro'yxat kelmasa lavozimlar ham so'ralmaydi — jadvalni qulflab qo'ymaymiz.
+          this.table.refreshing = false
+        })
         .finally(() => {
           this.department.loading = false
         })
@@ -255,8 +264,7 @@ export const useReport2Store = defineStore('report2Store', {
         ._delete({ id })
         .then((res) => {
           // Bo'linma o'zgarishi lavozimlarga ta'sir qilmaydi — jadval keshi saqlanadi.
-          this.table.refreshIds = []
-          this._getDepartment()
+          this._refreshDepartments()
         })
         .finally(() => {
           this.department.loading = false
@@ -275,10 +283,19 @@ export const useReport2Store = defineStore('report2Store', {
     _invalidateTable(departmentIds) {
       if (this.viewMode === 'table') {
         this.table.refreshIds = departmentIds.filter(Boolean)
+        this.table.refreshing = true
         this._getDepartment()
       } else {
         tableSource = null
       }
+    },
+    // Bo'linma qo'shildi/tahrirlandi/o'chirildi — lavozimlar keshi saqlanadi.
+    _refreshDepartments() {
+      if (this.viewMode === 'table') {
+        this.table.refreshIds = []
+        this.table.refreshing = true
+      }
+      this._getDepartment()
     },
     refreshPositions(departmentIds = []) {
       this._invalidateTable(departmentIds)
@@ -323,6 +340,9 @@ export const useReport2Store = defineStore('report2Store', {
       this.table.done = 0
       this.table.total = 0
       tableSource = list
+      // Ochiq bo'linmalarning eskirgan lavozimlari darhol qayta so'raladi; so'raladigan
+      // narsa bo'lmasa `_requestTablePositions` yangilanishni (`refreshing`) yopadi.
+      this._requestTablePositions(ids.filter((id) => this.table.expanded[id]))
     },
     // Berilgan bo'linmalardan yuklanmagan/eskirganlarini navbatga qo'yadi.
     _requestTablePositions(ids) {
@@ -332,7 +352,11 @@ export const useReport2Store = defineStore('report2Store', {
           !tableInflight.has(id) &&
           !tableQueue.includes(id)
       )
-      if (!want.length) return
+      if (!want.length) {
+        // Qayta so'raladigan narsa qolmadi — yangilanish tugadi.
+        if (!tableWorkers) this.table.refreshing = false
+        return
+      }
       tableQueue.push(...want)
       this.table.total += want.length
       this.table.loading = true
@@ -362,6 +386,7 @@ export const useReport2Store = defineStore('report2Store', {
       tableWorkers--
       if (tableWorkers === 0) {
         this.table.loading = false
+        this.table.refreshing = false
         this.table.done = 0
         this.table.total = 0
       }

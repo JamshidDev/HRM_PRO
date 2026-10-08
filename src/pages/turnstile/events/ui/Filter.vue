@@ -6,12 +6,17 @@
     useEventV2Store
   } from '@/store/modules/index.js'
   import { ArrowSync24Filled, ArrowCircleDown32Regular } from '@vicons/fluent'
-  import { UIPageFilter, UISelect, SuperSelect } from '@/components/index.js'
+  import { UIPageFilter, UISegmentTabs, UISelect, SuperSelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAppSetting } from '@utils'
 
   const { t } = i18n.global
   const store = useEventStore()
+
+  const viewTabs = computed(() => [
+    { id: store.tabs[0], name: t('hcEvent.oldView') },
+    { id: store.tabs[1], name: t('deviceEvent.tab') }
+  ])
   const storeV2 = useEventV2Store()
   const accStore = useAccountStore()
 
@@ -209,16 +214,12 @@
       />
     </template>
     <template #filterSearch>
-      <UITabs
+      <UISegmentTabs
         class="ml-2"
-        :value="store.activeTab"
-        @update:value="store._changeView"
-        type="segment"
-        size="small"
-      >
-        <n-tab-pane :name="store.tabs[0]" :tab="$t('hcEvent.oldView')" />
-        <n-tab-pane :name="store.tabs[1]" :tab="$t('deviceEvent.tab')" />
-      </UITabs>
+        :tabs="viewTabs"
+        :model-value="store.activeTab"
+        @update:model-value="store._changeView"
+      />
     </template>
     <template #filterAction>
       <!-- `checkAction` yon ta'sirli (toast chiqaradi) — template'da chaqirilsa

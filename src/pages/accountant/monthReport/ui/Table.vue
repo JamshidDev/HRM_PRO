@@ -21,6 +21,9 @@
   const onShow = (row) => {
     store.visible = true
     store.elementId = row.pin
+    // Bir xil PINFL bir nechta korxonada bo'lishi mumkin (ish joyi o'zgargan) —
+    // karusel bosilgan qatorning korxonasidan ochilsin (organization_id bo'yicha).
+    store.showOrgId = row.organization?.id ?? null
     store.showPrams.year = store.params.year
     store.showPrams.month = store.params.month
     store.workerPhotoUrl = row.worker?.photo
