@@ -40,7 +40,10 @@ export const useOrganizationStore = defineStore('organizationStore', {
     showLoading: false,
     indexPath: null,
     parentElement: null,
-    nestedPath: null
+    nestedPath: null,
+    originalParentId: null,
+    basis: { visible: false, mode: 'close', id: null, name: null, comment: null, file: null, fileName: null, loading: false },
+    history: { visible: false, name: null, list: [], loading: false }
   }),
   actions: {
     _index() {
@@ -58,7 +61,8 @@ export const useOrganizationStore = defineStore('organizationStore', {
             en: v.name_en,
             id: v.id,
             children: [],
-            isHaveChild: Boolean(v?.descendants)
+            isHaveChild: Boolean(v?.descendants),
+            closedAt: v.closed_at ?? null
           }))
           this.totalItems = res.data.data.total
         })
@@ -89,7 +93,8 @@ export const useOrganizationStore = defineStore('organizationStore', {
           en: v.name_en,
           id: v.id,
           children: [],
-          isHaveChild: Boolean(v?.descendants)
+          isHaveChild: Boolean(v?.descendants),
+          closedAt: v.closed_at ?? null
         }))
 
         if (this.visibleType) {
@@ -105,6 +110,11 @@ export const useOrganizationStore = defineStore('organizationStore', {
           this.payload.full_name_en = organization.full_name_en
           this.payload.level = organization.level
           this.payload.parent_id = organization.parent_id
+          this.originalParentId = organization.parent_id ?? null
+          // Yaratishdan qolgan asos tahrirga o'tmasin.
+          this.payload.basis_comment = null
+          this.payload.basis_file = null
+          this.payload.basis_file_name = null
           this.payload.city_id = organization?.city?.id || null
           this.payload.group = Boolean(organization.group)
           this.payload.code = organization.code
@@ -144,15 +154,49 @@ export const useOrganizationStore = defineStore('organizationStore', {
           this.saveLoading = false
         })
     },
-    _delete() {
-      this.deleteLoading = true
-      $ApiService.organizationService
-        ._delete({ id: this.elementId })
-        .then((res) => {
+    // Yopish / qayta ochish — asos (izoh yoki fayl) bilan.
+    _basisSubmit() {
+      const { mode, id, comment, file, fileName } = this.basis
+      const data = {
+        basis_comment: comment || undefined,
+        basis_file: file || undefined,
+        basis_file_name: fileName || undefined
+      }
+      this.basis.loading = true
+      const send =
+        mode === 'reopen'
+          ? $ApiService.organizationService._reopen
+          : $ApiService.organizationService._close
+      send({ id, data })
+        .then(() => {
+          this.basis.visible = false
           this._index()
         })
         .finally(() => {
-          this.deleteLoading = false
+          this.basis.loading = false
+        })
+    },
+    openBasis(mode, item) {
+      this.basis = {
+        visible: true,
+        mode,
+        id: item.id,
+        name: item.name,
+        comment: null,
+        file: null,
+        fileName: null,
+        loading: false
+      }
+    },
+    _history(item) {
+      this.history = { visible: true, name: item.name, list: [], loading: true }
+      $ApiService.organizationService
+        ._events({ id: item.id })
+        .then((res) => {
+          this.history.list = res.data.data
+        })
+        .finally(() => {
+          this.history.loading = false
         })
     },
     _getCountryList() {
@@ -192,6 +236,10 @@ export const useOrganizationStore = defineStore('organizationStore', {
       this.payload.inn = null
       this.payload.gateway_id = null
       this.payload.group = null
+      this.payload.basis_comment = null
+      this.payload.basis_file = null
+      this.payload.basis_file_name = null
+      this.originalParentId = null
     },
     nestedElement(node, indexPath, newNode) {
       let currentNode = node

@@ -780,6 +780,15 @@
     }
   },
   "organizationPage": {
+    "closedBadge": "Closed",
+    "close": "Close",
+    "reopen": "Reopen",
+    "closeTitle": "Close organization",
+    "reopenTitle": "Reopen organization",
+    "closeHint": "The organization must have no active employees and no open sub-organizations. A closed organization stays in history and is not selectable for new operations.",
+    "moveComment": "Move comment (optional)",
+    "basis": {"title": "Basis", "hint": "A comment or a file is required", "comment": "Comment (decision, order number, etc.)", "file": "Attach file (pdf, doc, jpg)", "required": "Provide a basis: a comment or a file", "tooLarge": "File is larger than {mb} MB"},
+    "history": {"title": "History", "empty": "No history", "root": "Top level", "file": "File", "types": {"created": "Created", "moved": "Moved", "closed": "Closed", "reopened": "Reopened"}},
     "collapseAll": "Collapse all",
     "name": "Organizations",
     "createTitle": "Add organization",
