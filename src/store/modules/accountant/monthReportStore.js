@@ -13,6 +13,9 @@ export const useMonthReportStore = defineStore('monthReportStore', {
     visible: false,
     visibleType: true,
     elementId: null,
+    // Bosilgan qatorning korxonasi (organization_id) — karusel shu org kareshogidan
+    // ochilsin (bir xil PINFL bir nechta korxonada bo'lsa).
+    showOrgId: null,
     totalItems: 0,
     allPermissionList: [],
     payload: {},
