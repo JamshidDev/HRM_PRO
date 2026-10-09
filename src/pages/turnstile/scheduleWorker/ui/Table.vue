@@ -121,15 +121,34 @@
     }
     const byDeptPosName = (a, b) =>
       (a.department || '').localeCompare(b.department || '') || byPositionName(a, b)
-    lists.forEach((l) => l.sort(byDeptPosName))
+
+    // Bir navbatda vaqti kesishmaydigan xodimlar (biri tugab, ikkinchisi boshlagan) — bitta o'rin.
+    const activeRange = (w) => {
+      const idx = w.days.map((d, i) => (d.isEmpty ? -1 : i)).filter((i) => i >= 0)
+      return [idx[0] ?? 0, idx[idx.length - 1] ?? 0]
+    }
+    const chainsOf = (list) => {
+      const chains = []
+      const sorted = [...list].sort(
+        (a, b) => activeRange(a)[0] - activeRange(b)[0] || byDeptPosName(a, b)
+      )
+      for (const w of sorted) {
+        const [from] = activeRange(w)
+        const free = chains.find((c) => activeRange(c[c.length - 1])[1] < from)
+        if (free) free.push(w)
+        else chains.push([w])
+      }
+      return chains.sort((a, b) => byDeptPosName(a[0], b[0]))
+    }
+    const slots = lists.map(chainsOf)
 
     const out = []
-    const crews = Math.max(0, ...lists.map((l) => l.length))
+    const crews = Math.max(0, ...slots.map((c) => c.length))
     for (let k = 0; k < crews; k++) {
-      const workers = lists.map((l, i) =>
-        l[k]
-          ? numbered(l[k], i + 1)
-          : { empty: true, phase: i + 1, workerPositionId: `e-${k}-${i}` }
+      const workers = slots.flatMap((chains, i) =>
+        chains[k]
+          ? chains[k].map((w) => numbered(w, i + 1))
+          : [{ empty: true, phase: i + 1, workerPositionId: `e-${k}-${i}` }]
       )
       const depts = [...new Set(workers.filter((w) => !w.empty).map((w) => w.department || '—'))]
       out.push({
@@ -151,6 +170,7 @@
     }
     return out
   })
+
   // Aylanmada har doim ekipaj sarlavhasi; boshqa turlarda — bir nechta blok bo'lsa.
   const showSections = computed(
     () => sections.value[0]?.key !== 'all' && (rotating.value || sections.value.length > 1)
@@ -217,30 +237,18 @@
         </div>
         <template v-if="visibleList.length > 0">
           <template v-for="sec in sections" :key="sec.key">
-            <div v-if="showSections" class="flex w-fit min-w-full">
+            <template v-for="(worker, wi) in sec.workers" :key="worker.workerPositionId">
               <div
-                class="sticky left-0 z-[6] flex items-center gap-2 px-3 h-[36px] w-[400px] min-w-[400px] bg-surface-ground border-l border-b border-surface-line border-t-2 border-t-primary/40 text-sm font-semibold"
+                v-if="worker.empty"
+                class="flex w-fit min-w-full"
+                :class="{ 'grp-end': showSections && wi === sec.workers.length - 1 }"
               >
-                <span class="shrink-0">{{ sec.title }}</span>
-                <n-tag size="tiny" round class="shrink-0">
-                  {{ sec.workers.filter((w) => !w.empty).length }}
-                </n-tag>
-                <span v-if="sec.department" class="text-xs text-secondary font-normal line-clamp-1">
-                  {{ sec.department }}
-                </span>
-                <n-tag v-if="sec.missing" size="tiny" round class="shrink-0">
-                  {{ $t('shiftType.groupView.emptySlots', { n: sec.missing }) }}
-                </n-tag>
-              </div>
-              <div
-                class="flex-1 h-[36px] bg-surface-ground border-r border-b border-surface-line border-t-2 border-t-primary/40"
-                :style="{ minWidth: fillerWidth }"
-              ></div>
-            </div>
-            <template v-for="worker in sec.workers" :key="worker.workerPositionId">
-              <div v-if="worker.empty" class="flex w-fit min-w-full">
                 <div
-                  class="sticky left-0 z-[5] flex items-center gap-2 px-3 w-[400px] min-w-[400px] h-[40px] border-l border-r border-b border-surface-line bg-surface-section"
+                  class="sticky left-0 z-[5] w-[60px] min-w-[60px] h-[40px] border-l border-r border-b border-surface-line bg-surface-section"
+                >
+                </div>
+                <div
+                  class="sticky left-[60px] z-[5] flex items-center gap-2 px-3 w-[340px] min-w-[340px] h-[40px] border-r border-b border-surface-line bg-surface-section"
                 >
                   <span class="shrink-0 text-[11px] leading-none px-1.5 py-0.5 rounded bg-surface-line text-secondary">
                     {{ $t('shiftType.groupView.navbat', { n: worker.phase }) }}
@@ -255,12 +263,15 @@
               <div
                 v-else
                 class="schedule-header-body-row flex w-fit min-w-full bg-surface-section"
+                :class="{ 'grp-end': showSections && wi === sec.workers.length - 1 }"
               >
                 <!-- Worker Name - Sticky Left -->
                 <div
                   class="border-r border-l border-b border-t-0 border-surface-line text-center p-2 w-[60px] min-w-[60px] h-[50px] border sticky left-0 bg-surface-section flex-shrink-0 z-[5] flex items-center justify-center"
                 >
-                  <span class="leading-[1.2] text-secondary font-medium">{{ worker.number }}</span>
+                  <span class="leading-[1.2] text-secondary font-medium">
+                    {{ worker.number }}
+                  </span>
                 </div>
                 <div
                   class="border-r border-l-[0] border-b border-t-0 border-surface-line p-2 w-[340px] min-w-[320px] h-[50px] border sticky left-[60px] bg-surface-section flex-shrink-0 z-[5] flex items-center"
@@ -348,6 +359,9 @@
 </template>
 
 <style scoped>
+  .grp-end > div {
+    border-bottom: 2px solid color-mix(in srgb, var(--color-primary) 45%, transparent);
+  }
   .out-of-period {
     background: repeating-linear-gradient(
       -45deg,
