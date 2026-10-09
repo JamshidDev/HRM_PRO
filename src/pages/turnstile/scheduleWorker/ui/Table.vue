@@ -29,6 +29,7 @@
         workerPositionId: v.worker_position_id,
         fullName,
         position: v.position_name,
+        department: v.department_name,
         navbat: rotating.value ? navbatOf(v.days, pattern.value) : null,
         days: v.days.map((e) => ({
           date: e.date,
@@ -83,38 +84,88 @@
     return parts.join(', ')
   }
 
-  // Bir xil grafikdagi (aylanmada — bir navbatdagi) xodimlar bitta bo'limga yig'iladi.
+  const sigOf = (w) =>
+    w.days.map((d) => (d.isEmpty ? '_' : d.isWorkDay ? `W${d.startTime}` : '-')).join('|')
+  const firstWork = (w) => w.days.findIndex((d) => !d.isEmpty && d.isWorkDay)
+  const byPositionName = (a, b) =>
+    (a.position || '').localeCompare(b.position || '') || a.fullName.localeCompare(b.fullName)
+
+  // Guruh (ekipaj) = bitta bo'limda har navbatdan bittadan xodim; yetishmagan navbat — bo'sh o'rin.
   const sections = computed(() => {
-    const map = new Map()
-    for (const w of visibleList.value) {
-      const key =
-        rotating.value && w.navbat
-          ? `n${w.navbat}`
-          : w.days.map((d) => (d.isEmpty ? '_' : d.isWorkDay ? `W${d.startTime}` : '-')).join('|')
-      if (!map.has(key)) map.set(key, [])
-      map.get(key).push(w)
-    }
-    const groups = [...map.values()]
-    if (!rotating.value) {
-      const firstWork = (w) => w.days.findIndex((d) => !d.isEmpty && d.isWorkDay)
-      groups.sort((a, b) => firstWork(a[0]) - firstWork(b[0]))
-    }
-    // Raqam bo'limlar tartibida — ketma-ket bo'lsin.
+    const ws = visibleList.value
     let num = (store.params.page - 1) * store.params.per_page
-    return groups.map((ws, i) => {
-      const workers = ws.map((w) => ({ ...w, number: ++num }))
-      return {
-      key: `${i}-${workers[0].workerPositionId}`,
-      title:
-        rotating.value && workers[0].navbat
-          ? t('shiftType.groupView.navbat', { n: workers[0].navbat })
-          : t('shiftType.groupView.groupN', { n: i + 1 }),
-      workers,
-      workDays: workDaysText(workers[0])
+    const numbered = (w, phase) => ({ ...w, phase, number: ++num })
+
+    // Aylanma bo'lmagan turda ekipaj yo'q — bir xil grafikdagilar bitta blokda.
+    if (!rotating.value) {
+      const map = new Map()
+      for (const w of ws) {
+        if (!map.has(sigOf(w))) map.set(sigOf(w), [])
+        map.get(sigOf(w)).push(w)
       }
-    })
+      return [...map.values()]
+        .sort((a, b) => firstWork(a[0]) - firstWork(b[0]))
+        .map((group, i) => ({
+          key: `s-${i}`,
+          title: t('shiftType.groupView.scheduleN', { n: i + 1 }),
+          department: `${t('shiftType.groupView.workDays')}: ${workDaysText(group[0])}`,
+          workers: group.map((w) => numbered(w, null)),
+          missing: 0
+        }))
+    }
+
+    const phaseCount = pattern.value.length
+    const phaseOf = (w) => w.navbat
+    if (phaseCount <= 1) {
+      return [{ key: 'all', workers: ws.map((w) => numbered(w, null)), missing: 0 }]
+    }
+
+    const byDept = new Map()
+    const unknown = []
+    for (const w of ws) {
+      const ph = phaseOf(w)
+      if (!ph) {
+        unknown.push(w)
+        continue
+      }
+      const dept = w.department || '—'
+      if (!byDept.has(dept)) byDept.set(dept, Array.from({ length: phaseCount }, () => []))
+      byDept.get(dept)[ph - 1].push(w)
+    }
+
+    const out = []
+    for (const [dept, lists] of [...byDept.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+      lists.forEach((l) => l.sort(byPositionName))
+      const max = Math.max(...lists.map((l) => l.length))
+      for (let k = 0; k < max; k++) {
+        const workers = lists.map((l, i) =>
+          l[k]
+            ? numbered(l[k], i + 1)
+            : { empty: true, phase: i + 1, workerPositionId: `e-${dept}-${k}-${i}` }
+        )
+        out.push({
+          key: `${dept}-${k}`,
+          title: t('shiftType.groupView.groupN', { n: out.length + 1 }),
+          department: dept,
+          workers,
+          missing: workers.filter((w) => w.empty).length
+        })
+      }
+    }
+    if (unknown.length) {
+      out.push({
+        key: 'unknown',
+        title: t('shiftType.groupView.unknownNavbat'),
+        department: '',
+        workers: unknown.map((w) => numbered(w, null)),
+        missing: 0
+      })
+    }
+    return out
   })
   const showSections = computed(() => sections.value.length > 1)
+  // Bo'lim/bo'sh o'rin qatori fonini kunlar + «Ish soati» ustunlari kengligiga cho'zish.
+  const fillerWidth = computed(() => `${store.dayOfMonth.length * 59 + 80}px`)
 
   const calculateWorkTime = (worker) => {
     const totalMinute = worker.days.reduce((sum, item) => sum + item.workTime, 0)
@@ -140,7 +191,7 @@
 <template>
   <n-spin :show="store.dayOfMonthLoading || store.loading" class="h-full">
     <div class="h-full flex flex-col gap-4">
-      <div class="w-full flex-1 overflow-auto relative rounded-lg max-h-[calc(100vh-330px)] min-h-[300px]">
+      <div class="w-full flex-1 overflow-auto relative rounded-lg max-h-[calc(100vh-190px)] min-h-[300px]">
         <div class="schedule-header-row flex z-[10] w-fit min-w-full sticky top-0">
           <div
             class="rounded-tl-lg border-r border-t border-l border-b border-surface-line p-2 w-[60px] min-w-[60px] h-[50px] sticky left-0 top-0 z-[20] bg-surface-section flex-shrink-0"
@@ -180,88 +231,109 @@
                 class="sticky left-0 z-[6] flex items-center gap-2 px-3 h-[36px] w-[400px] min-w-[400px] bg-surface-ground border-l border-b border-surface-line border-t-2 border-t-primary/40 text-sm font-semibold"
               >
                 <span class="shrink-0">{{ sec.title }}</span>
-                <n-tag size="tiny" round class="shrink-0">{{ sec.workers.length }}</n-tag>
-                <span v-if="sec.workDays" class="text-xs text-secondary font-normal line-clamp-1">
-                  {{ $t('shiftType.groupView.workDays') }}: {{ sec.workDays }}
+                <n-tag size="tiny" round class="shrink-0">
+                  {{ sec.workers.filter((w) => !w.empty).length }}
+                </n-tag>
+                <span v-if="sec.department" class="text-xs text-secondary font-normal line-clamp-1">
+                  {{ sec.department }}
                 </span>
+                <n-tag v-if="sec.missing" size="tiny" round class="shrink-0">
+                  {{ $t('shiftType.groupView.emptySlots', { n: sec.missing }) }}
+                </n-tag>
               </div>
-              <div class="flex-1 h-[36px] bg-surface-ground border-r border-b border-surface-line border-t-2 border-t-primary/40"></div>
+              <div
+                class="flex-1 h-[36px] bg-surface-ground border-r border-b border-surface-line border-t-2 border-t-primary/40"
+                :style="{ minWidth: fillerWidth }"
+              ></div>
             </div>
-            <div
-              v-for="worker in sec.workers"
-              :key="worker.workerPositionId"
-              class="schedule-header-body-row flex w-fit min-w-full bg-surface-section"
-            >
-              <!-- Worker Name - Sticky Left -->
-              <div
-                class="border-r border-l border-b border-t-0 border-surface-line text-center p-2 w-[60px] min-w-[60px] h-[50px] border sticky left-0 bg-surface-section flex-shrink-0 z-[5] flex items-center justify-center"
-              >
-                <span class="leading-[1.2] text-secondary font-medium">{{ worker.number }}</span>
-              </div>
-              <div
-                class="border-r border-l-[0] border-b border-t-0 border-surface-line p-2 w-[340px] min-w-[320px] h-[50px] border sticky left-[60px] bg-surface-section flex-shrink-0 z-[5] flex items-center"
-              >
-                <div class="w-[calc(100%-28px)]">
-                  <div class="flex items-center gap-1.5 min-w-0">
-                    <span
-                      v-if="rotating"
-                      class="shrink-0 text-[11px] leading-none px-1.5 py-0.5 rounded"
-                      :class="worker.navbat ? 'bg-primary/10 text-primary' : 'bg-surface-line text-secondary'"
-                      :title="worker.navbat ? null : $t('shiftType.groupView.unknownNavbat')"
-                    >
-                      {{ worker.navbat ? $t('shiftType.groupView.navbat', { n: worker.navbat }) : '?' }}
-                    </span>
-                    <span class="line-clamp-1 leading-[1.2] font-medium">{{ worker.fullName }}</span>
-                  </div>
-                  <div class="text-xs line-clamp-1 leading-[1.2] text-secondary">
-                    {{ worker.position }}
-                  </div>
-                </div>
-
+            <template v-for="worker in sec.workers" :key="worker.workerPositionId">
+              <div v-if="worker.empty" class="flex w-fit min-w-full">
                 <div
-                  v-if="accStore.checkPermission(accStore.pn.turnstileSheetsGroupsWrite)"
-                  @click="onReplace(worker)"
-                  class="w-[28px] h-[28px] border border-surface-line rounded-lg flex justify-center items-center text-secondary cursor-pointer"
+                  class="sticky left-0 z-[5] flex items-center gap-2 px-3 w-[400px] min-w-[400px] h-[40px] border-l border-r border-b border-surface-line bg-surface-section"
                 >
-                  <n-icon size="20">
-                    <MoreHorizontal32Filled />
-                  </n-icon>
+                  <span class="shrink-0 text-[11px] leading-none px-1.5 py-0.5 rounded bg-surface-line text-secondary">
+                    {{ $t('shiftType.groupView.navbat', { n: worker.phase }) }}
+                  </span>
+                  <span class="text-xs text-secondary italic">{{ $t('shiftType.groupView.emptySlot') }}</span>
+                </div>
+                <div
+                  class="flex-1 h-[40px] border-b border-r border-dashed border-surface-line bg-surface-ground"
+                  :style="{ minWidth: fillerWidth }"
+                ></div>
+              </div>
+              <div
+                v-else
+                class="schedule-header-body-row flex w-fit min-w-full bg-surface-section"
+              >
+                <!-- Worker Name - Sticky Left -->
+                <div
+                  class="border-r border-l border-b border-t-0 border-surface-line text-center p-2 w-[60px] min-w-[60px] h-[50px] border sticky left-0 bg-surface-section flex-shrink-0 z-[5] flex items-center justify-center"
+                >
+                  <span class="leading-[1.2] text-secondary font-medium">{{ worker.number }}</span>
+                </div>
+                <div
+                  class="border-r border-l-[0] border-b border-t-0 border-surface-line p-2 w-[340px] min-w-[320px] h-[50px] border sticky left-[60px] bg-surface-section flex-shrink-0 z-[5] flex items-center"
+                >
+                  <div class="w-[calc(100%-28px)]">
+                    <div class="flex items-center gap-1.5 min-w-0">
+                      <span
+                        v-if="worker.phase"
+                        class="shrink-0 text-[11px] leading-none px-1.5 py-0.5 rounded bg-primary/10 text-primary"
+                      >
+                        {{ $t('shiftType.groupView.navbat', { n: worker.phase }) }}
+                      </span>
+                      <span class="line-clamp-1 leading-[1.2] font-medium">{{ worker.fullName }}</span>
+                    </div>
+                    <div class="text-xs line-clamp-1 leading-[1.2] text-secondary">
+                      {{ worker.position }}
+                    </div>
+                  </div>
+
+                  <div
+                    v-if="accStore.checkPermission(accStore.pn.turnstileSheetsGroupsWrite)"
+                    @click="onReplace(worker)"
+                    class="w-[28px] h-[28px] border border-surface-line rounded-lg flex justify-center items-center text-secondary cursor-pointer"
+                  >
+                    <n-icon size="20">
+                      <MoreHorizontal32Filled />
+                    </n-icon>
+                  </div>
+                </div>
+
+                <!-- Day Cells -->
+                <div
+                  v-for="(day, dayIndex) in worker.days"
+                  :key="dayIndex"
+                  class="border-r text-center border-l border-b border-t-0 -ml-[1px] border-surface-line w-[60px] min-w-[60px] h-[50px] border text-xs text-secondary p-2 pb-0 flex-shrink-0 cursor-pointer relative"
+                  :class="{ 'out-of-period': !day.inPeriod && day.isEmpty }"
+                  :title="!day.inPeriod && day.isEmpty ? $t('shiftType.groupView.outOfPeriod') : null"
+                >
+                  <template v-if="day.isEmpty"></template>
+                  <template v-else-if="day.isWorkDay">
+                    <div class="leading-[1.2] pt-3">{{ day.startTime }}</div>
+                    <div class="leading-[1.2]">{{ day.endTime }}</div>
+                    <div
+                      class="absolute top-[0] left-[0] min-w-[16px] h-[16px] px-0.5 bg-secondary/80 text-white text-xs rounded"
+                      :title="$t('shiftType.groupView.hours', { n: Math.floor(day.workTime / 60) })"
+                    >
+                      {{ Math.floor(day.workTime / 60) }}
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div class="h-full flex items-center justify-center pb-2 text-success/80 font-medium">
+                      {{ $t('shiftType.groupView.rest') }}
+                    </div>
+                  </template>
+                </div>
+
+                <!-- Total - Sticky Right -->
+                <div
+                  class="border-r border-l border-b -ml-[1px] border-surface-line w-[80px] min-w-[80px] h-[50px] sticky right-0 bg-surface-section flex-shrink-0 z-[5] flex items-center justify-center"
+                >
+                  {{ calculateWorkTime(worker) }}
                 </div>
               </div>
-
-              <!-- Day Cells -->
-              <div
-                v-for="(day, dayIndex) in worker.days"
-                :key="dayIndex"
-                class="border-r text-center border-l border-b border-t-0 -ml-[1px] border-surface-line w-[60px] min-w-[60px] h-[50px] border text-xs text-secondary p-2 pb-0 flex-shrink-0 cursor-pointer relative"
-                :class="{ 'out-of-period': !day.inPeriod && day.isEmpty }"
-                :title="!day.inPeriod && day.isEmpty ? $t('shiftType.groupView.outOfPeriod') : null"
-              >
-                <template v-if="day.isEmpty"></template>
-                <template v-else-if="day.isWorkDay">
-                  <div class="leading-[1.2] pt-3">{{ day.startTime }}</div>
-                  <div class="leading-[1.2]">{{ day.endTime }}</div>
-                  <div
-                    class="absolute top-[0] left-[0] min-w-[16px] h-[16px] px-0.5 bg-secondary/80 text-white text-xs rounded"
-                    :title="$t('shiftType.groupView.hours', { n: Math.floor(day.workTime / 60) })"
-                  >
-                    {{ Math.floor(day.workTime / 60) }}
-                  </div>
-                </template>
-                <template v-else>
-                  <div class="h-full flex items-center justify-center pb-2 text-success/80 font-medium">
-                    {{ $t('shiftType.groupView.rest') }}
-                  </div>
-                </template>
-              </div>
-
-              <!-- Total - Sticky Right -->
-              <div
-                class="border-r border-l border-b -ml-[1px] border-surface-line w-[80px] min-w-[80px] h-[50px] sticky right-0 bg-surface-section flex-shrink-0 z-[5] flex items-center justify-center"
-              >
-                {{ calculateWorkTime(worker) }}
-              </div>
-            </div>
+            </template>
           </template>
         </template>
         <template v-else>

@@ -8,7 +8,6 @@
   import Table from './ui/Table.vue'
   import Filter from './ui/Filter.vue'
   import ReplaceModal from './ui/ReplaceModal.vue'
-  import GroupHeader from './ui/GroupHeader.vue'
 
   const store = useScheduleGroupWorkerStore()
   const route = useRoute()
@@ -61,7 +60,6 @@
         </n-breadcrumb-item>
       </n-breadcrumb>
     </div>
-    <GroupHeader />
     <Filter />
     <Table />
     <ReplaceModal />

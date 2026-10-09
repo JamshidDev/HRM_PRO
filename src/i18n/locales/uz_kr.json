@@ -4953,7 +4953,9 @@
       "fullCrews": "Тўлиқ экипаж",
       "missing": "Етишмайди",
       "groupN": "{n}-гуруҳ",
-      "workDays": "Иш кунлари"
+      "workDays": "Иш кунлари",
+      "emptySlot": "Бўш ўрин — ходим қўйилмаган",
+      "scheduleN": "{n}-жадвал"
     }
   },
   "lmsCertificate": {
