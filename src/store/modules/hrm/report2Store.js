@@ -181,18 +181,28 @@ export const useReport2Store = defineStore('report2Store', {
           this.staffingExportLoading = false
         })
     },
-    _positionOrderable(order) {
+    // Ro'yxat ko'rinishida — tanlangan bo'linma, jadvalda — surilgan qator bo'linmasi.
+    _positionOrderable(order, departmentId = this.department.selectedId) {
       const data = {
         type: 'position',
         organization_id: this.department.params.organization_id?.[0]?.id,
-        department_id: this.department.selectedId,
+        department_id: departmentId,
         order: order
       }
 
-      // Saqlanmasa ekrandagi tartib yolg'on qolmasin — serverdagi holat qayta yuklanadi.
-      $ApiService.reportService._orderable({ data }).catch(() => {
-        this.getPosition()
-      })
+      const fromTable = this.viewMode === 'table'
+      $ApiService.reportService
+        ._orderable({ data })
+        .then(() => {
+          // Jadvalda tartib allaqachon joyida o'zgargan — qayta yuklash shart emas.
+          // Ro'yxatdan surilganda jadval keshi eski tartibda qolmasin.
+          if (!fromTable) this._invalidateTable([departmentId])
+        })
+        .catch(() => {
+          // Saqlanmagan bo'lsa ekrandagi tartib serverdagi bilan qayta tenglashadi.
+          if (fromTable) this._invalidateTable([departmentId])
+          else this.getPosition()
+        })
     },
     // Backend qidiruvda faqat mos kelgan tashkilotlarni qaytaradi — ota-tashkilotlari
     // kelmaydi. Shu sababli qidiruvsiz to'liq daraxtni (`full`) saqlab, natijani shu
@@ -296,6 +306,17 @@ export const useReport2Store = defineStore('report2Store', {
         this.table.refreshing = true
       }
       this._getDepartment()
+    },
+    // «Yangilash» tugmasi: bo'linmalar ro'yxati qayta so'raladi. Jadvalda ochiq
+    // bo'linmalarning lavozimlari ham eskirgan deb belgilanadi (ochiqligi saqlanadi),
+    // ro'yxat ko'rinishida tanlangan bo'linma lavozimlari qayta o'qiladi.
+    _refreshAll() {
+      if (this.viewMode === 'table') {
+        this._invalidateTable(this.table.ids.filter((id) => this.table.expanded[id]))
+        return
+      }
+      this._getDepartment()
+      if (this.department.selectedId) this.getPosition()
     },
     refreshPositions(departmentIds = []) {
       this._invalidateTable(departmentIds)
