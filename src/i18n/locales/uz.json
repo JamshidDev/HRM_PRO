@@ -3675,7 +3675,8 @@
       "F": "Fakt",
       "V": "Vakant",
       "S": "Sverx",
-      "R": "Razryad"
+      "R": "Razryad",
+      "MR": "Maksimal razryad"
     },
     "form": {
       "position": "Lavozimlar",

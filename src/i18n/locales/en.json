@@ -3653,7 +3653,8 @@
       "F": "Actual",
       "V": "Vacant",
       "S": "Overstaffed",
-      "R": "Rank"
+      "R": "Rank",
+      "MR": "Max rank"
     },
     "form": {
       "position": "Positions",
