@@ -291,6 +291,13 @@
       }
     ].filter((tag) => tag.value)
 
+  // Lavozim qatori: max razryad bo'lsa razryad oraliq ko'rinishida (R-3–5).
+  const positionTags = (p) =>
+    workerTags({
+      group: p.group,
+      rank: p.rank && p.max_rank && p.max_rank !== p.rank ? `${p.rank}–${p.max_rank}` : p.rank || p.max_rank
+    })
+
   const ellipsisTooltip = { style: { maxWidth: '400px' } }
 
   const departmentActions = computed(() => [
@@ -549,6 +556,15 @@
                           <ChevronRight20Regular />
                         </n-icon>
                         <span>{{ p.position?.name }}</span>
+                        <span
+                          v-for="tag in positionTags(p)"
+                          :key="tag.key"
+                          :title="$t(tag.label)"
+                          class="inline-flex shrink-0 items-center h-5 px-2 rounded-md text-[11px] font-semibold tabular-nums"
+                          :class="tag.cls"
+                        >
+                          {{ tag.letter }}-{{ tag.value }}
+                        </span>
                       </div>
                     </td>
                     <td
