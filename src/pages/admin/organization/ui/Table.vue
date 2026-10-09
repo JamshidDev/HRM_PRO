@@ -1,17 +1,12 @@
 <script setup>
-  import { useOrganizationStore, useComponentStore } from '@/store/modules/index.js'
-  import { UITree, UIPagination } from '@/components/index.js'
+  import { useOrganizationStore, useAccountStore } from '@/store/modules/index.js'
+  import { UITree } from '@/components/index.js'
   import { ChevronDoubleUp16Regular, LocalLanguage16Regular } from '@vicons/fluent'
-  import BasisModal from './BasisModal.vue'
-  import HistoryModal from './HistoryModal.vue'
   import i18n from '@/i18n/index.js'
-  import { useAccountStore } from '@/store/modules/index.js'
-  const accStore = useAccountStore()
 
+  const accStore = useAccountStore()
   const store = useOrganizationStore()
-  const componentStore = useComponentStore()
   const { t } = i18n.global
-  const expandedKeys = ref([])
 
   const headerOption = [
     { name: t('content.nameUz'), id: 'uz' },
@@ -19,77 +14,47 @@
     { name: t('content.nameEn'), id: 'en' }
   ]
 
+  // Qidiruv natijasi daraxtning kesimi — undagi o'rinlar haqiqiy tartibni
+  // bildirmaydi, shuning uchun qidiruvda sudrash o'chiriladi.
+  const canDrag = computed(
+    () => accStore.checkPermission(accStore.pn.organizationsWrite) && !store.searchQuery
+  )
+
   const changeHeaderLang = (v) => {
     store.headerLang = v
-    expandedKeys.value = []
     store._index()
   }
 
   const onToggle = (key) => {
-    const hasKey = expandedKeys.value.includes(key)
+    const hasKey = store.expandedKeys.includes(key)
     if (hasKey) {
-      expandedKeys.value = expandedKeys.value.filter((k) => !(k === key || k.startsWith(`${key}-`)))
+      store.expandedKeys = store.expandedKeys.filter((k) => !(k === key || k.startsWith(`${key}-`)))
     } else {
-      expandedKeys.value.push(key)
+      store.expandedKeys.push(key)
     }
   }
 
   const onLoad = (v) => {
     if (!accStore.checkAction(accStore.pn.organizationsRead)) return
-    store.elementId = v.id
-    store.indexPath = v.index
-    store.visibleType = true
-    store._show()
+    store._loadChildren(v)
   }
 
-  const onChange = (v) => {
-    if (v.type === 'orgHistory') {
-      if (!accStore.checkAction(accStore.pn.organizationsRead)) return
-      store._history(v)
-      return
-    }
-    if (v.type === 'orgClose' || v.type === 'orgReopen') {
-      if (!accStore.checkAction(accStore.pn.organizationsDelete)) return
-      store.openBasis(v.type === 'orgClose' ? 'close' : 'reopen', v)
-      return
-    }
+  const onSelect = (v) => {
+    if (!accStore.checkAction(accStore.pn.organizationsRead)) return
+    store.select(v)
+  }
+
+  const onMove = (v) => {
     if (!accStore.checkAction(accStore.pn.organizationsWrite)) return
-    if (v.type === 'create') {
-      createNested(v)
-    } else if (v.type === 'update') {
-      onEdit(v)
-    }
-  }
-
-  const createNested = (v) => {
-    componentStore._organizationLevel()
-    store.resetForm()
-    store.elementId = v.id
-    store.payload.parent_id = v.id
-    store.nestedPath = v.index
-    store.visibleType = true
-    store.parentElement = {
+    store.openMove({
       id: v.id,
-      name: v.name
-    }
-    store.visible = true
-  }
-
-  const onEdit = (v) => {
-    store.visibleType = false
-    store.elementId = v.id
-    store.parentElement = null
-    componentStore._organizationLevel()
-    componentStore._organizations()
-    componentStore._allCities()
-    store._show()
-  }
-
-  const changePage = (v) => {
-    store.params.page = v.page
-    store.params.per_page = v.per_page
-    expandedKeys.value = []
-    store._index()
+      name: v.name,
+      fromParentId: v.parentId,
+      fromParentName: v.parentName,
+      parentId: v.toParentId,
+      parentName: v.toParentName,
+      position: v.position
+    })
   }
 </script>
 
@@ -102,15 +67,25 @@
     >
       <div class="flex items-center gap-2">
         <span class="text-base font-semibold text-textColor0">{{ $t('organizationPage.name') }}</span>
-        <span
-          class="rounded-full bg-surface-ground px-2 py-0.5 text-xs font-medium text-secondary tabular-nums"
-        >
-          {{ store.totalItems }}
-        </span>
+        <!-- Faqat qidiruvda — topilgan korxonalar soni. Oddiy ko'rinishda `total` faqat
+             ildiz korxonalarni sanaydi (odatda 1) va chalg'itardi. -->
+        <Transition name="fade">
+          <span
+            v-if="store.searchHighlight"
+            class="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary tabular-nums"
+          >
+            {{ store.totalItems }}
+          </span>
+        </Transition>
       </div>
       <div class="ml-auto flex items-center gap-2">
         <Transition name="fade">
-          <n-button v-if="expandedKeys.length" size="small" quaternary @click="expandedKeys = []">
+          <n-button
+            v-if="store.expandedKeys.length"
+            size="small"
+            quaternary
+            @click="store.expandedKeys = []"
+          >
             <template #icon>
               <n-icon><ChevronDoubleUp16Regular /></n-icon>
             </template>
@@ -138,28 +113,19 @@
         <UITree
           v-if="store.list.length"
           :children="store.list"
-          @on-load="onLoad"
-          @on-change="onChange"
-          @on-toggle="onToggle"
           :element-id="store.indexPath"
-          :action-loading="store.basis.loading"
-          :action-loading-id="store.basis.id"
-          :expanded-keys="expandedKeys"
+          :expanded-keys="store.expandedKeys"
+          :selected-id="store.panel.open ? store.panel.id : null"
+          :draggable="canDrag"
+          :highlight="store.searchHighlight"
+          @on-load="onLoad"
+          @on-toggle="onToggle"
+          @on-select="onSelect"
+          @on-move="onMove"
         />
         <n-empty v-else-if="!store.loading" class="py-16" :description="$t('content.no-data')" />
       </div>
     </n-spin>
-
-    <div class="px-4 border-t border-surface-line">
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
-      />
-    </div>
-    <BasisModal />
-    <HistoryModal />
   </div>
 </template>
 

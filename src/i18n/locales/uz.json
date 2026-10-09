@@ -802,8 +802,27 @@
     "reopenTitle": "Korxonani qayta ochish",
     "closeHint": "Korxonada ishlayotgan xodim va ochiq ichki korxona qolmagan bo'lishi kerak. Yopilgan korxona tarixda saqlanadi, yangi amallarda tanlanmaydi.",
     "moveComment": "Ko'chirish izohi (ixtiyoriy)",
-    "basis": {"title": "Asos", "hint": "Izoh yoki fayl majburiy", "comment": "Izoh (qaror, buyruq raqami va h.k.)", "file": "Fayl biriktirish (pdf, doc, jpg)", "required": "Asosni kiriting: izoh yoki fayl", "tooLarge": "Fayl {mb} MB dan katta"},
-    "history": {"title": "Tarix", "empty": "Tarix yo'q", "root": "Yuqori daraja", "file": "Fayl", "types": {"created": "Yaratildi", "moved": "Ko'chirildi", "closed": "Yopildi", "reopened": "Qayta ochildi"}},
+    "basis": {
+      "title": "Asos",
+      "hint": "Izoh yoki fayl majburiy",
+      "comment": "Izoh (qaror, buyruq raqami va h.k.)",
+      "file": "Fayl biriktirish (pdf, doc, jpg)",
+      "required": "Asosni kiriting: izoh yoki fayl",
+      "tooLarge": "Fayl {mb} MB dan katta"
+    },
+    "history": {
+      "title": "Tarix",
+      "empty": "Tarix yo'q",
+      "root": "Yuqori daraja",
+      "file": "Fayl",
+      "types": {
+        "created": "Yaratildi",
+        "moved": "Ko'chirildi",
+        "closed": "Yopildi",
+        "reopened": "Qayta ochildi",
+        "reordered": "Tartibi o'zgardi"
+      }
+    },
     "collapseAll": "Hammasini yig'ish",
     "name": "Tashkilotlar",
     "createTitle": "Tashkilot qo'shish",
@@ -821,7 +840,26 @@
       "gateway_id": "Gateway ID"
     },
     "selectedOrg": "Tanlangan tashkilot",
-    "deleteContent": "Haqiqatan ham bu tashkilotni o'chirmoqchimisiz?"
+    "deleteContent": "Haqiqatan ham bu tashkilotni o'chirmoqchimisiz?",
+    "panel": {
+      "parent": "Yuqori tashkilot"
+    },
+    "move": {
+      "title": "Tashkilotni ko'chirish",
+      "reorderTitle": "Tartibni o'zgartirish",
+      "confirmMove": "{name} boshqa tashkilot ichiga ko'chiriladi. Davom etasizmi?",
+      "confirmReorder": "{name} tartibi o'zgartiriladi. Davom etasizmi?",
+      "from": "Qayerdan",
+      "to": "Qayerga",
+      "position": "{n}-o'rin",
+      "end": "Ro'yxat oxiriga",
+      "confirm": "Tasdiqlash",
+      "newPosition": "Yangi o'rni"
+    },
+    "saveConfirm": {
+      "title": "O'zgarishlar saqlansinmi?",
+      "confirm": "Ha, saqlash"
+    }
   },
   "timesheet": {
     "name": "Tabel",
