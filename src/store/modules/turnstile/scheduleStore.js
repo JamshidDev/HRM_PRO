@@ -340,7 +340,6 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
         type: undefined,
         has_schedule,
         date: `${this.params.year}-${this.params.month}-01`,
-        schedule_type: this.params.type,
         organization_id:
           this.workerParams.organization_id?.map((v) => v.id).toString() || undefined,
         department_id: this.workerParams.department_id?.toString() || undefined
@@ -356,6 +355,7 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
           this.attachWorkerLoading = false
         })
     },
+    // Barcha shtat xodimlari ko'rinadi — navbatchilik turi faqat grafik to'ldirish uchun, filtr emas.
     _allWorkers() {
       const has_schedule =
         this.workerParams.has_schedule === 'all' ? undefined : this.workerParams.has_schedule
@@ -365,7 +365,6 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
         type: undefined,
         has_schedule,
         date: `${this.params.year}-${this.params.month}-01`,
-        schedule_type: this.params.type,
         organization_id:
           this.workerParams.organization_id?.map((v) => v.id).toString() || undefined,
         department_id: this.workerParams.department_id?.toString() || undefined
