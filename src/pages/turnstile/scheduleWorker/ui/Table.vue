@@ -69,21 +69,6 @@
     )
   })
 
-  // Ish kunlari raqamlari oraliq ko'rinishida: «1–6, 14–19».
-  const workDaysText = (worker) => {
-    const nums = worker.days
-      .filter((d) => !d.isEmpty && d.isWorkDay)
-      .map((d) => Number(String(d.date).slice(8, 10)))
-    const parts = []
-    for (let i = 0; i < nums.length; i++) {
-      let j = i
-      while (j + 1 < nums.length && nums[j + 1] === nums[j] + 1) j++
-      parts.push(i === j ? `${nums[i]}` : `${nums[i]}–${nums[j]}`)
-      i = j
-    }
-    return parts.join(', ')
-  }
-
   const sigOf = (w) =>
     w.days.map((d) => (d.isEmpty ? '_' : d.isWorkDay ? `W${d.startTime}` : '-')).join('|')
   const firstWork = (w) => w.days.findIndex((d) => !d.isEmpty && d.isWorkDay)
@@ -108,7 +93,7 @@
         .map((group, i) => ({
           key: `s-${i}`,
           title: t('shiftType.groupView.scheduleN', { n: i + 1 }),
-          department: `${t('shiftType.groupView.workDays')}: ${workDaysText(group[0])}`,
+          department: '',
           workers: group.map((w) => numbered(w, null)),
           missing: 0
         }))
