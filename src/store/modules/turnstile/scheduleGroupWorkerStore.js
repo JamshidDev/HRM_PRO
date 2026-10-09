@@ -58,7 +58,9 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     monthsList: [],
     selectedDate: null,
     // Guruh smena turi (nom + naqsh) — sahifa kartochkasi va navbat hisobi uchun.
-    shiftType: null
+    shiftType: null,
+    // Bo'sh navbatga xodim qo'shish oynasi.
+    addSlot: { visible: false, phase: null, fam: 0 }
   }),
   getters: {
     calculateWorkTime: (state) => (workerIndex) => {

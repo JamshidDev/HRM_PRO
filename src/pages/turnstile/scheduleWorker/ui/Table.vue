@@ -4,7 +4,7 @@
   import Utils from '@/utils/Utils.js'
   import { MoreHorizontal32Filled } from '@vicons/fluent'
   import { UIPagination } from '@components'
-  import { isRotating, navbatOf, patternOf } from './navbat.js'
+  import { cycleOf, isRotating, navbatOf, patternOf } from './navbat.js'
   import i18n from '@/i18n/index.js'
 
   const store = useScheduleGroupWorkerStore()
@@ -105,19 +105,25 @@
         }))
     }
 
-    const phaseCount = pattern.value.length
-    const phaseOf = (w) => w.navbat
-    if (phaseCount <= 1) {
+    const { pattern: cyc, crewSize } = cycleOf(store.shiftType)
+    const phaseCount = cyc.length
+    if (phaseCount <= 1 || !crewSize) {
       return [{ key: 'all', workers: ws.map((w) => numbered(w, null)), missing: 0 }]
     }
 
-    // Ekipaj butun smena bo'yicha (bo'limga qaramasdan): navbat ichida bo'lim, lavozim, ism tartibida.
-    const lists = Array.from({ length: phaseCount }, () => [])
+    // Sikl fazasi → ekipaj oilasi (siljish) va navbat: «Smena»da bitta oila, «1 haftalik»da faza mod 7.
+    const step = phaseCount / crewSize
+    const families = new Map()
     const unknown = []
     for (const w of ws) {
-      const ph = phaseOf(w)
-      if (ph) lists[ph - 1].push(w)
-      else unknown.push(w)
+      if (!w.navbat) {
+        unknown.push(w)
+        continue
+      }
+      const fam = (w.navbat - 1) % step
+      const nav = Math.floor((w.navbat - 1) / step)
+      if (!families.has(fam)) families.set(fam, Array.from({ length: crewSize }, () => []))
+      families.get(fam)[nav].push(w)
     }
     const byDeptPosName = (a, b) =>
       (a.department || '').localeCompare(b.department || '') || byPositionName(a, b)
@@ -140,24 +146,25 @@
       }
       return chains.sort((a, b) => byDeptPosName(a[0], b[0]))
     }
-    const slots = lists.map(chainsOf)
-
     const out = []
+    for (const fam of [...families.keys()].sort((a, b) => a - b)) {
+    const slots = families.get(fam).map(chainsOf)
     const crews = Math.max(0, ...slots.map((c) => c.length))
     for (let k = 0; k < crews; k++) {
       const workers = slots.flatMap((chains, i) =>
         chains[k]
           ? chains[k].map((w) => numbered(w, i + 1))
-          : [{ empty: true, phase: i + 1, workerPositionId: `e-${k}-${i}` }]
+          : [{ empty: true, phase: i + 1, fam, workerPositionId: `e-${fam}-${k}-${i}` }]
       )
       const depts = [...new Set(workers.filter((w) => !w.empty).map((w) => w.department || '—'))]
       out.push({
-        key: `crew-${k}`,
-        title: t('shiftType.groupView.groupN', { n: k + 1 }),
+        key: `crew-${fam}-${k}`,
+        title: t('shiftType.groupView.groupN', { n: out.length + 1 }),
         department: depts.join(' · '),
         workers,
         missing: workers.filter((w) => w.empty).length
       })
+    }
     }
     if (unknown.length) {
       out.push({
@@ -187,6 +194,20 @@
     store.params.page = v.page
     store.params.per_page = v.per_page
     store._index()
+  }
+
+  // Bo'sh navbatga qo'shish backendda faqat «Smena» (1-tur) uchun.
+  const canAddToSlot = computed(
+    () =>
+      store.shiftType?.type?.id === 1 &&
+      accStore.checkPermission(accStore.pn.turnstileSheetsGroupsWrite)
+  )
+
+  const onAddToSlot = (slot) => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
+    store.addSlot.phase = slot.phase
+    store.addSlot.fam = slot.fam ?? 0
+    store.addSlot.visible = true
   }
 
   const onReplace = (v) => {
@@ -253,7 +274,17 @@
                   <span class="shrink-0 text-[11px] leading-none px-1.5 py-0.5 rounded bg-surface-line text-secondary">
                     {{ $t('shiftType.groupView.navbat', { n: worker.phase }) }}
                   </span>
-                  <span class="text-xs text-secondary italic">{{ $t('shiftType.groupView.emptySlot') }}</span>
+                  <n-button
+                    v-if="canAddToSlot"
+                    size="tiny"
+                    dashed
+                    @click="onAddToSlot(worker)"
+                  >
+                    + {{ $t('shiftType.groupView.addWorker') }}
+                  </n-button>
+                  <span v-else class="text-xs text-secondary italic">
+                    {{ $t('shiftType.groupView.emptySlot') }}
+                  </span>
                 </div>
                 <div
                   class="flex-1 h-[40px] border-b border-r border-dashed border-surface-line bg-surface-ground"

@@ -4960,7 +4960,11 @@
       "groupN": "{n}-гуруҳ",
       "workDays": "Иш кунлари",
       "emptySlot": "Бўш ўрин — ходим қўйилмаган",
-      "scheduleN": "{n}-жадвал"
+      "scheduleN": "{n}-жадвал",
+      "addWorker": "Ходим қўшиш",
+      "addWorkerTitle": "{n}-навбатга ходим қўшиш",
+      "crewSize": "{n} кишилик",
+      "crewSizeHint": "Битта постни навбат билан ушлаб турадиган ходимлар сони"
     }
   },
   "lmsCertificate": {

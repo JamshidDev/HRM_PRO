@@ -5281,7 +5281,11 @@
       "groupN": "{n}-guruh",
       "workDays": "Ish kunlari",
       "emptySlot": "Bo'sh o'rin — xodim qo'yilmagan",
-      "scheduleN": "{n}-jadval"
+      "scheduleN": "{n}-jadval",
+      "addWorker": "Xodim qo'shish",
+      "addWorkerTitle": "{n}-navbatga xodim qo'shish",
+      "crewSize": "{n} kishilik",
+      "crewSizeHint": "Bitta postni navbat bilan ushlab turadigan xodimlar soni"
     }
   },
   "lmsCertificate": {

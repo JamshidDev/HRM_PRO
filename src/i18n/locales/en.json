@@ -5232,7 +5232,11 @@
       "groupN": "Group {n}",
       "workDays": "Work days",
       "emptySlot": "Empty slot — no worker assigned",
-      "scheduleN": "Schedule {n}"
+      "scheduleN": "Schedule {n}",
+      "addWorker": "Add worker",
+      "addWorkerTitle": "Add worker to rotation {n}",
+      "crewSize": "{n}-person",
+      "crewSizeHint": "How many workers rotate to cover one post"
     }
   },
   "publicPage": {
