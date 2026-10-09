@@ -5253,6 +5253,9 @@
     "signAllNote2": "Signer statuses in the approval queue stay unchanged.",
     "signAllNote3": "The action runs in the background — refresh the list when it finishes: the status becomes “Confirmed” and a QR code appears in the document."
   },
+  "uploadSourceConfig": {
+    "name": "Upload Source"
+  },
   "staffingApproval": {
     "name": "Staffing",
     "createTitle": "Send staffing for approval",
