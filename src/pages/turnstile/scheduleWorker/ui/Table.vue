@@ -274,11 +274,11 @@
                 :class="{ 'grp-end': showSections && wi === sec.workers.length - 1 }"
               >
                 <div
-                  class="sticky left-0 z-[5] w-[60px] min-w-[60px] h-[40px] border-l border-r border-b border-surface-line bg-surface-section"
+                  class="sticky left-0 z-[5] w-[60px] min-w-[60px] h-[50px] border-l border-r border-b border-surface-line bg-surface-section"
                 >
                 </div>
                 <div
-                  class="sticky left-[60px] z-[5] flex items-center gap-2 px-3 w-[340px] min-w-[340px] h-[40px] border-r border-b border-surface-line bg-surface-section"
+                  class="sticky left-[60px] z-[5] flex items-center gap-2 px-3 w-[340px] min-w-[340px] h-[50px] border-r border-b border-surface-line bg-surface-section"
                 >
                   <n-button
                     v-if="canAddToSlot && worker.phase"
@@ -293,7 +293,7 @@
                   </span>
                 </div>
                 <div
-                  class="flex-1 h-[40px] border-b border-r border-dashed border-surface-line bg-surface-ground"
+                  class="flex-1 h-[50px] border-b border-r border-dashed border-surface-line bg-surface-ground"
                   :style="{ minWidth: fillerWidth }"
                 ></div>
               </div>
@@ -391,7 +391,7 @@
 
 <style scoped>
   .grp-end > div {
-    border-bottom: 2px solid color-mix(in srgb, var(--color-primary) 45%, transparent);
+    box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--color-primary) 45%, transparent);
   }
   .out-of-period {
     background: repeating-linear-gradient(
