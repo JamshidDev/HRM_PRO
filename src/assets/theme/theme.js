@@ -13,8 +13,25 @@ export const naiveBreakpoints = {
   xl: 1280,
   '2xl': 1568
 }
+import { h } from 'vue'
 import { NIcon } from 'naive-ui'
 import { CheckmarkCircle24Regular } from '@vicons/fluent'
+
+// Barcha clearable maydonlar (Input, Select, DatePicker, TreeSelect, ...) uchun yagona
+// tozalash ikonkasi — tugma ko'rinishi `overwrite.scss`dagi `.n-base-clear__clear`da.
+export const naiveIcons = {
+  clear: () =>
+    h(
+      'svg',
+      { viewBox: '0 0 16 16', fill: 'none', xmlns: 'http://www.w3.org/2000/svg' },
+      h('path', {
+        d: 'M4.5 4.5l7 7m0-7l-7 7',
+        stroke: 'currentColor',
+        'stroke-width': '1.8',
+        'stroke-linecap': 'round'
+      })
+    )
+}
 
 const getValueOfCssVariable = (variableName) => {
   const rootStyles = getComputedStyle(document.documentElement)

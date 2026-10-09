@@ -3636,8 +3636,6 @@
     "name": "Plan vs Actual",
     "addDepartment": "Add department",
     "addPosition": "Add position",
-    "listView": "List",
-    "tableView": "Table",
     "table": {
       "position": "Position",
       "occupancy": "Occupancy",
@@ -3666,9 +3664,7 @@
       "worker": "Number of employees",
       "who": "By whom",
       "reason": "Reason",
-      "byPosition": "By position",
-      "optimizationConfirm": "This will merge identical positions in department. Confirm to proceed",
-      "byWorker": "By employee"
+      "optimizationConfirm": "This will merge identical positions in department. Confirm to proceed"
     }
   },
   "specialReport": {

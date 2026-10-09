@@ -145,7 +145,8 @@
 
   const num = (v) => Math.round((Number(v) || 0) * 100) / 100
   // Lavozimda bitta shtat birligi — ayirma to'g'ri. Bo'linmada esa API'ning
-  // `vacant`/`over` maydonlari olinadi (Indicator.vue dagi izohga qarang).
+  // `vacant`/`over` maydonlari olinadi: ular har shtat birligi bo'yicha hisoblanadi,
+  // `rate - real_rate` olsak bir lavozimdagi bo'sh o'rin boshqasidagi ortiqchani yeb qo'yadi.
   const vacantOf = (d) => num(d.vacant ?? Math.max(num(d.rate) - num(d.real_rate), 0))
   const overOf = (d) => num(d.over ?? Math.max(num(d.real_rate) - num(d.rate), 0))
 
@@ -411,13 +412,15 @@
             <tr>
               <th class="w-9 md:w-12 text-center">№</th>
               <th class="text-left">{{ $t('report.table.position') }}</th>
-              <th
-                v-for="col in gradeCols"
-                :key="col.key"
-                :title="$t(col.label)"
-                class="w-10 md:w-14 text-center"
-              >
-                {{ col.short }}
+              <th v-for="col in gradeCols" :key="col.key" class="w-10 md:w-14 text-center">
+                <n-tooltip placement="top">
+                  <template #trigger>
+                    <span class="cursor-help border-b border-dashed border-fig-text-tertiary">
+                      {{ col.short }}
+                    </span>
+                  </template>
+                  {{ $t(col.label) }}
+                </n-tooltip>
               </th>
               <th v-for="col in numberCols" :key="col.key" class="w-12 md:w-20 text-center">
                 {{ $t(col.label) }}
