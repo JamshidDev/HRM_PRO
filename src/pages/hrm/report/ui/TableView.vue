@@ -6,7 +6,8 @@
     ChevronRight20Regular,
     Delete20Regular,
     Edit32Regular,
-    Folder20Regular
+    Folder20Regular,
+    ReOrderDotsVertical20Regular
   } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -58,6 +59,57 @@
     }
     store.table.expanded[id] = true
     store._requestTablePositions([id])
+  }
+
+  // Lavozimlarni sudrab tartiblash — faqat o'z bo'linmasi ichida. Qidiruv/filtr
+  // paytida ro'yxat to'liq emas, tartib noto'g'ri saqlanardi — o'chiriladi.
+  // Qatorlar bitta tbody'da bo'linma va xodim qatorlari bilan aralash, shu sababli
+  // VueDraggable emas, brauzerning o'z drag-and-drop'i ishlatiladi.
+  const canDrag = computed(() => !filterActive.value && !store.busy)
+  const drag = reactive({ deptId: null, from: null, over: null, after: false })
+
+  const onDragStart = (e, deptId, idx) => {
+    drag.deptId = deptId
+    drag.from = idx
+    e.dataTransfer.effectAllowed = 'move'
+    // Firefox `setData`siz drag'ni boshlamaydi.
+    e.dataTransfer.setData('text/plain', String(idx))
+  }
+
+  const onDragOver = (e, deptId, idx) => {
+    if (drag.deptId !== deptId) return
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    const rect = e.currentTarget.getBoundingClientRect()
+    drag.over = idx
+    drag.after = e.clientY > rect.top + rect.height / 2
+  }
+
+  const resetDrag = () => {
+    drag.deptId = null
+    drag.from = null
+    drag.over = null
+  }
+
+  const onDrop = (deptId) => {
+    const list = store.table.positions[deptId]
+    const { from, over, after } = drag
+    resetDrag()
+    if (!list || from === null || over === null) return
+    let to = over + (after ? 1 : 0)
+    if (from < to) to--
+    if (from === to) return
+    const [moved] = list.splice(from, 1)
+    list.splice(to, 0, moved)
+    store._positionOrderable(
+      list.map((item, index) => ({ id: item.id, sort: index })),
+      deptId
+    )
+  }
+
+  const dropCls = (deptId, idx) => {
+    if (drag.deptId !== deptId || drag.over !== idx || drag.from === idx) return null
+    return drag.after ? 'drop-after' : 'drop-before'
   }
 
   // Yangilanish o'rtasida ro'yxat ko'rinishiga o'tilsa, jadval qulfi qolib ketmasin.
@@ -465,11 +517,24 @@
                 <template v-for="(p, idx) in section.positions" :key="p.id">
                   <tr
                     class="report-sheet__position cursor-pointer"
-                    :class="workers[p.id] && 'is-open'"
+                    :class="[
+                      workers[p.id] && 'is-open',
+                      drag.deptId === section.dept.id && drag.from === idx && 'is-dragging',
+                      dropCls(section.dept.id, idx)
+                    ]"
+                    :draggable="canDrag"
                     @click="toggleWorkers(section, p)"
+                    @dragstart="onDragStart($event, section.dept.id, idx)"
+                    @dragover="onDragOver($event, section.dept.id, idx)"
+                    @drop.prevent="onDrop(section.dept.id)"
+                    @dragend="resetDrag"
                   >
                     <td class="text-center text-xs text-fig-text-tertiary tabular-nums">
-                      {{ idx + 1 }}
+                      <!-- Sudrash mumkin bo'lsa, hover'da raqam o'rnida tutqich chiqadi. -->
+                      <span :class="canDrag && 'report-sheet__num'">{{ idx + 1 }}</span>
+                      <n-icon v-if="canDrag" size="16" class="report-sheet__handle cursor-move">
+                        <ReOrderDotsVertical20Regular />
+                      </n-icon>
                     </td>
                     <td>
                       <div
@@ -682,6 +747,32 @@
   .report-sheet__position:hover td,
   .report-sheet__position.is-open td {
     background: var(--fig-bg-secondary);
+  }
+
+  .report-sheet__handle {
+    display: none;
+    vertical-align: middle;
+  }
+
+  .report-sheet__position:hover .report-sheet__handle {
+    display: inline-flex;
+  }
+
+  .report-sheet__position:hover .report-sheet__num {
+    display: none;
+  }
+
+  .report-sheet__position.is-dragging td {
+    opacity: 0.4;
+  }
+
+  /* Tushish joyi — qator ustida yoki ostida brand rangli chiziq. */
+  .report-sheet__position.drop-before td {
+    box-shadow: inset 0 2px 0 var(--fig-bg-brand-fill);
+  }
+
+  .report-sheet__position.drop-after td {
+    box-shadow: inset 0 -2px 0 var(--fig-bg-brand-fill);
   }
 
   /* tartib raqami | ism | shartnoma turi | lavozim */
