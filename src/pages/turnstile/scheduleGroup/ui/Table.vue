@@ -31,7 +31,7 @@
         name: row.name,
         start: row.start_date,
         end: row.end_date,
-        type: store.groupParams.schedule_type || undefined
+        type: row.schedule_type?.id || store.groupParams.schedule_type || undefined
       }
     })
   }

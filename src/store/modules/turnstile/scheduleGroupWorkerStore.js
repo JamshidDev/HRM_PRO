@@ -136,6 +136,9 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
         .then((res) => {
           this.list = res.data.data.data
           this.totalItems = res.data.data.total
+          // Havolada `type` bo'lmasa — smena turi javobdan olinadi.
+          const typeId = res.data.data.schedule_type_id
+          if (typeId && this.shiftType?.id !== typeId) this._shiftType(typeId)
         })
         .finally(() => {
           this.loading = false

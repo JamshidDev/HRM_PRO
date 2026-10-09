@@ -13,6 +13,7 @@
 
   const currentScheduleList = ref([])
 
+  const DAILY_TYPE = 2
   const rotating = computed(() => isRotating(store.shiftType))
   const pattern = computed(() => patternOf(store.shiftType))
   // Smena davri (start..end) — undan tashqaridagi kunlar xiralashtiriladi.
@@ -81,6 +82,11 @@
     let num = (store.params.page - 1) * store.params.per_page
     const numbered = (w, phase) => ({ ...w, phase, number: ++num })
 
+    // Xar kunlik smenada guruh yo'q — oddiy ro'yxat.
+    if (store.shiftType?.type?.id === DAILY_TYPE) {
+      return [{ key: 'all', workers: ws.map((w) => numbered(w, null)), missing: 0 }]
+    }
+
     // Aylanma bo'lmagan turda ekipaj yo'q — bir xil grafikdagilar bitta blokda.
     if (!rotating.value) {
       const map = new Map()
@@ -105,37 +111,34 @@
       return [{ key: 'all', workers: ws.map((w) => numbered(w, null)), missing: 0 }]
     }
 
-    const byDept = new Map()
+    // Ekipaj butun smena bo'yicha (bo'limga qaramasdan): navbat ichida bo'lim, lavozim, ism tartibida.
+    const lists = Array.from({ length: phaseCount }, () => [])
     const unknown = []
     for (const w of ws) {
       const ph = phaseOf(w)
-      if (!ph) {
-        unknown.push(w)
-        continue
-      }
-      const dept = w.department || '—'
-      if (!byDept.has(dept)) byDept.set(dept, Array.from({ length: phaseCount }, () => []))
-      byDept.get(dept)[ph - 1].push(w)
+      if (ph) lists[ph - 1].push(w)
+      else unknown.push(w)
     }
+    const byDeptPosName = (a, b) =>
+      (a.department || '').localeCompare(b.department || '') || byPositionName(a, b)
+    lists.forEach((l) => l.sort(byDeptPosName))
 
     const out = []
-    for (const [dept, lists] of [...byDept.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
-      lists.forEach((l) => l.sort(byPositionName))
-      const max = Math.max(...lists.map((l) => l.length))
-      for (let k = 0; k < max; k++) {
-        const workers = lists.map((l, i) =>
-          l[k]
-            ? numbered(l[k], i + 1)
-            : { empty: true, phase: i + 1, workerPositionId: `e-${dept}-${k}-${i}` }
-        )
-        out.push({
-          key: `${dept}-${k}`,
-          title: t('shiftType.groupView.groupN', { n: out.length + 1 }),
-          department: dept,
-          workers,
-          missing: workers.filter((w) => w.empty).length
-        })
-      }
+    const crews = Math.max(0, ...lists.map((l) => l.length))
+    for (let k = 0; k < crews; k++) {
+      const workers = lists.map((l, i) =>
+        l[k]
+          ? numbered(l[k], i + 1)
+          : { empty: true, phase: i + 1, workerPositionId: `e-${k}-${i}` }
+      )
+      const depts = [...new Set(workers.filter((w) => !w.empty).map((w) => w.department || '—'))]
+      out.push({
+        key: `crew-${k}`,
+        title: t('shiftType.groupView.groupN', { n: k + 1 }),
+        department: depts.join(' · '),
+        workers,
+        missing: workers.filter((w) => w.empty).length
+      })
     }
     if (unknown.length) {
       out.push({
@@ -148,7 +151,10 @@
     }
     return out
   })
-  const showSections = computed(() => sections.value.length > 1)
+  // Aylanmada har doim ekipaj sarlavhasi; boshqa turlarda — bir nechta blok bo'lsa.
+  const showSections = computed(
+    () => sections.value[0]?.key !== 'all' && (rotating.value || sections.value.length > 1)
+  )
   // Bo'lim/bo'sh o'rin qatori fonini kunlar + «Ish soati» ustunlari kengligiga cho'zish.
   const fillerWidth = computed(() => `${store.dayOfMonth.length * 59 + 80}px`)
 
