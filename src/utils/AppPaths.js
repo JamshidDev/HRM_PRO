@@ -134,6 +134,7 @@ export const AppPaths = {
   PensionPayment: '/pension-payment',
   TariffGrid: '/tariff-grid',
   Salary1c: '/salary-1c',
+  UploadSourceConfig: '/upload-source-config',
   HcServer: '/hc-server',
   HcEvents: '/hc-events',
   Pensioner: '/pensioner',

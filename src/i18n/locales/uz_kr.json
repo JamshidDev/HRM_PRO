@@ -4989,6 +4989,9 @@
       "received": "Келган"
     }
   },
+  "uploadSourceConfig": {
+    "name": "Юклаш манбаси"
+  },
   "staffingApproval": {
     "name": "Штатлар",
     "createTitle": "Штатларни тасдиқлашга юбориш",

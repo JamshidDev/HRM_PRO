@@ -5316,6 +5316,9 @@
       "received": "Kelgan"
     }
   },
+  "uploadSourceConfig": {
+    "name": "Yuklash manbasi"
+  },
   "staffingApproval": {
     "name": "Shtatlar",
     "createTitle": "Shtatlarni tasdiqlashga yuborish",
