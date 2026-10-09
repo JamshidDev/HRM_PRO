@@ -205,11 +205,9 @@
     store._index()
   }
 
-  // Bo'sh navbatga qo'shish backendda faqat «Smena» (1-tur) uchun.
+  // Aylanma smenada bo'sh o'ringa har doim xodim qo'shish mumkin.
   const canAddToSlot = computed(
-    () =>
-      store.shiftType?.type?.id === 1 &&
-      accStore.checkPermission(accStore.pn.turnstileSheetsGroupsWrite)
+    () => rotating.value && accStore.checkPermission(accStore.pn.turnstileSheetsGroupsWrite)
   )
 
   const onAddToSlot = (slot) => {
@@ -281,7 +279,7 @@
                   class="sticky left-[60px] z-[5] flex items-center gap-2 px-3 w-[340px] min-w-[340px] h-[50px] border-r border-b border-surface-line bg-surface-section"
                 >
                   <n-button
-                    v-if="canAddToSlot && worker.phase"
+                    v-if="canAddToSlot"
                     size="tiny"
                     dashed
                     @click="onAddToSlot(worker)"

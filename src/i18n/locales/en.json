@@ -5236,7 +5236,8 @@
       "addWorker": "Add worker",
       "addWorkerTitle": "Add worker to rotation {n}",
       "crewSize": "{n}-person",
-      "crewSizeHint": "How many workers rotate to cover one post"
+      "crewSizeHint": "How many workers rotate to cover one post",
+      "patternStart": "Pattern day on the selected date"
     }
   },
   "publicPage": {
