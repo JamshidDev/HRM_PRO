@@ -29,6 +29,23 @@ const crewSizeFor = (pattern) => {
   return size && n % size === 0 ? size : n
 }
 
+// Siklning to'liq kunlari (vaqt, daqiqa bilan); «1 haftalik»da dam kunlari qo'shiladi.
+export const cycleDays = (shiftType) => {
+  if (!isRotating(shiftType)) return []
+  const base = shiftType.days
+  return shiftType.type.id === WEEKLY_TYPE ? [...base, ...base.map(() => ({ work_status: false }))] : base
+}
+
+// Naqsh qat'iy sanadan sanaladi — keyingi oy grafigi oldingisining davomi bo'ladi.
+const ANCHOR = Date.UTC(2026, 0, 1)
+export const cycleIndex = (date, phase, n) => {
+  const d = Math.round((Date.parse(`${date}T00:00:00Z`) - ANCHOR) / 86400000)
+  return (((d + phase) % n) + n) % n
+}
+
+// Ekipaj ichidagi o'rin fazasi: o'rinlar siklda teng qadam bilan siljiydi.
+export const slotPhase = (slot, crewSize, n) => (slot % crewSize) * (n / crewSize)
+
 export const patternOf = (shiftType) => cycleOf(shiftType).pattern
 
 // Smena turi necha kishilik (kunlik/maxsus turlarda — null).

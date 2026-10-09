@@ -36,8 +36,15 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       start_date: null,
       end_date: null,
       work_date: null,
-      count: 1
+      count: 1,
+      month: null,
+      workers_count: null,
+      count_mode: 'count',
+      period: false,
+      period_from: null,
+      period_to: null
     },
+    rotatingVisible: false,
     scheduleParams: {
       year: null,
       month: null
@@ -289,13 +296,12 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       $ApiService.shiftTypeService
         ._generateSchedule({ data })
         .then((res) => {
-          this.scheduleList = res.data.data.work_days.map((v) => {
-            console.log(v)
-            return v.map((d) => ({
+          this.scheduleList = res.data.data.work_days.map((v) =>
+            v.map((d) => ({
               ...d,
               isEmpty: d.work_status === null
             }))
-          })
+          )
           this.workers = res.data.data.work_days.map((x) => ({ id: null }))
 
           const fromDate = new Date(this.generatePayload.start_date)
@@ -318,6 +324,7 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
         .then((res) => {
           this.scheduleVisible = false
           this.notScheduleVisible = false
+          this.rotatingVisible = false
           this._refreshAfterGroupChange()
         })
         .finally(() => {
@@ -332,6 +339,11 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       this.generatePayload.end_date = this.generatePayload.end_date ?? nextMonth.getTime()
       this.generatePayload.work_date = this.generatePayload.work_date ?? today.getTime()
       this.generatePayload.count = this.generatePayload.count ?? 1
+      this.generatePayload.month = new Date(today.getFullYear(), today.getMonth(), 1).getTime()
+      this.generatePayload.count_mode = 'count'
+      this.generatePayload.period = false
+      this.generatePayload.period_from = null
+      this.generatePayload.period_to = null
     },
     // Guruh qo'shilganda/o'chirilganda chapdagi smena turlaridagi guruh/xodim soni ham
     // o'zgaradi. Turlarni faqat ko'rish huquqi borlar uchun qayta yuklaymiz — aks holda
