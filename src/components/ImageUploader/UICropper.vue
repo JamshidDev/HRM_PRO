@@ -1,6 +1,7 @@
 <script setup>
   import 'vue-advanced-cropper/dist/style.css'
   import { Cropper } from 'vue-advanced-cropper'
+  import { ArrowRotateClockwise24Regular, ArrowRotateCounterclockwise24Regular } from '@vicons/fluent'
   const cropperRef = ref(null)
   const imageRef = ref(null)
   const visible = ref(false)
@@ -43,6 +44,10 @@
     if (!originFileSizeInBytes.value) return 0
     return (originFileSizeInBytes.value / 1024).toFixed(2)
   })
+
+  const onRotate = (angle) => {
+    cropperRef.value?.rotate(angle)
+  }
 
   const onClose = () => {
     visible.value = false
@@ -89,6 +94,18 @@
         @change="onChange"
       />
       <template #footer>
+        <div class="flex justify-center gap-x-2 mb-3">
+          <n-button circle secondary @click="onRotate(-90)">
+            <template #icon>
+              <n-icon><ArrowRotateCounterclockwise24Regular /></n-icon>
+            </template>
+          </n-button>
+          <n-button circle secondary @click="onRotate(90)">
+            <template #icon>
+              <n-icon><ArrowRotateClockwise24Regular /></n-icon>
+            </template>
+          </n-button>
+        </div>
         <div class="grid grid-cols-2 gap-x-2">
           <n-button ghost @click="onClose" type="error">
             {{ $t('content.cancel') }}
