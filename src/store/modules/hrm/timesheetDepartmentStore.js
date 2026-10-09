@@ -130,7 +130,8 @@ export const useTimesheetDepartmentStore = defineStore('timesheetDepartmentStore
       this.payload.worker_position_id = row.id
       this.previewWorkerId = row.id
       this.previewList = row.departments ?? []
-      const org = row?.departments?.[0]?.organization
+      // Bo'limsiz tabelchida — lavozim korxonasi.
+      const org = row?.departments?.[0]?.organization ?? row?.organization
       if (org?.id) {
         this.payload.organizations = [{ id: org.id, name: org.name }]
         this._department()
