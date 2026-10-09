@@ -787,8 +787,27 @@
     "reopenTitle": "Reopen organization",
     "closeHint": "The organization must have no active employees and no open sub-organizations. A closed organization stays in history and is not selectable for new operations.",
     "moveComment": "Move comment (optional)",
-    "basis": {"title": "Basis", "hint": "A comment or a file is required", "comment": "Comment (decision, order number, etc.)", "file": "Attach file (pdf, doc, jpg)", "required": "Provide a basis: a comment or a file", "tooLarge": "File is larger than {mb} MB"},
-    "history": {"title": "History", "empty": "No history", "root": "Top level", "file": "File", "types": {"created": "Created", "moved": "Moved", "closed": "Closed", "reopened": "Reopened"}},
+    "basis": {
+      "title": "Basis",
+      "hint": "A comment or a file is required",
+      "comment": "Comment (decision, order number, etc.)",
+      "file": "Attach file (pdf, doc, jpg)",
+      "required": "Provide a basis: a comment or a file",
+      "tooLarge": "File is larger than {mb} MB"
+    },
+    "history": {
+      "title": "History",
+      "empty": "No history",
+      "root": "Top level",
+      "file": "File",
+      "types": {
+        "created": "Created",
+        "moved": "Moved",
+        "closed": "Closed",
+        "reopened": "Reopened",
+        "reordered": "Reordered"
+      }
+    },
     "collapseAll": "Collapse all",
     "name": "Organizations",
     "createTitle": "Add organization",
@@ -806,7 +825,26 @@
       "gateway_id": "Gateway ID"
     },
     "selectedOrg": "Selected organization",
-    "deleteContent": "Are you sure you want to delete this organization?"
+    "deleteContent": "Are you sure you want to delete this organization?",
+    "panel": {
+      "parent": "Parent organization"
+    },
+    "move": {
+      "title": "Move organization",
+      "reorderTitle": "Change order",
+      "confirmMove": "{name} will be moved into another organization. Continue?",
+      "confirmReorder": "The order of {name} will be changed. Continue?",
+      "from": "From",
+      "to": "To",
+      "position": "Position {n}",
+      "end": "End of list",
+      "confirm": "Confirm",
+      "newPosition": "New position"
+    },
+    "saveConfirm": {
+      "title": "Save changes?",
+      "confirm": "Yes, save"
+    }
   },
   "timesheet": {
     "name": "Timesheet",
