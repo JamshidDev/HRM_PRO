@@ -56,5 +56,23 @@ export const navbatOf = (days, pattern) => {
     }
     i0 += Math.max(len, 1)
   }
-  return null
+  return bestNavbat(days, pattern)
+}
+
+// Aniq moslik topilmasa (grafik qisman o'zgargan) — kunlarning eng ko'pi mos keladigan faza.
+const BEST_MATCH_RATIO = 0.6
+const bestNavbat = (days, pattern) => {
+  const n = pattern.length
+  const filled = days.map((d, i) => [d, i]).filter(([d]) => d.id !== null)
+  if (filled.length < MIN_WINDOW) return null
+  const scores = Array.from({ length: n }, (_, k) =>
+    filled.reduce(
+      (acc, [d, i]) => acc + (pattern[(k + i) % n] === sig(d.work_status, d.start_time) ? 1 : 0),
+      0
+    )
+  )
+  const best = Math.max(...scores)
+  if (best / filled.length < BEST_MATCH_RATIO) return null
+  if (scores.filter((s) => s === best).length !== 1) return null
+  return scores.indexOf(best) + 1
 }

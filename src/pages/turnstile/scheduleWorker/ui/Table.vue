@@ -166,13 +166,22 @@
       })
     }
     }
-    if (unknown.length) {
+    // Navbati aniqlanmagan xodim — o'z guruhi, sheriklar o'rni bo'sh (navbat noma'lum: qo'shib bo'lmaydi).
+    for (const w of [...unknown].sort(byPositionName)) {
+      const workers = [
+        numbered(w, null),
+        ...Array.from({ length: crewSize - 1 }, (_, i) => ({
+          empty: true,
+          phase: null,
+          workerPositionId: `u-${w.workerPositionId}-${i}`
+        }))
+      ]
       out.push({
-        key: 'unknown',
-        title: t('shiftType.groupView.unknownNavbat'),
-        department: '',
-        workers: unknown.map((w) => numbered(w, null)),
-        missing: 0
+        key: `unknown-${w.workerPositionId}`,
+        title: t('shiftType.groupView.groupN', { n: out.length + 1 }),
+        department: w.department || '',
+        workers,
+        missing: crewSize - 1
       })
     }
     return out
@@ -271,11 +280,8 @@
                 <div
                   class="sticky left-[60px] z-[5] flex items-center gap-2 px-3 w-[340px] min-w-[340px] h-[40px] border-r border-b border-surface-line bg-surface-section"
                 >
-                  <span class="shrink-0 text-[11px] leading-none px-1.5 py-0.5 rounded bg-surface-line text-secondary">
-                    {{ $t('shiftType.groupView.navbat', { n: worker.phase }) }}
-                  </span>
                   <n-button
-                    v-if="canAddToSlot"
+                    v-if="canAddToSlot && worker.phase"
                     size="tiny"
                     dashed
                     @click="onAddToSlot(worker)"
@@ -309,12 +315,6 @@
                 >
                   <div class="w-[calc(100%-28px)]">
                     <div class="flex items-center gap-1.5 min-w-0">
-                      <span
-                        v-if="worker.phase"
-                        class="shrink-0 text-[11px] leading-none px-1.5 py-0.5 rounded bg-primary/10 text-primary"
-                      >
-                        {{ $t('shiftType.groupView.navbat', { n: worker.phase }) }}
-                      </span>
                       <span class="line-clamp-1 leading-[1.2] font-medium">{{ worker.fullName }}</span>
                     </div>
                     <div class="text-xs line-clamp-1 leading-[1.2] text-secondary">
