@@ -3696,8 +3696,6 @@
     "staffingExportQueued": "Shtat jadvali yuklash navbatiga qo'shildi",
     "addDepartment": "Bo'linma qo'shish",
     "addPosition": "Lavozim qo'shish",
-    "listView": "Ro'yxat",
-    "tableView": "Jadval",
     "table": {
       "position": "Lavozim",
       "occupancy": "Bandlik",
@@ -3713,7 +3711,8 @@
       "F": "Fakt",
       "V": "Vakant",
       "S": "Sverx",
-      "R": "Razryad"
+      "R": "Razryad",
+      "MR": "Maksimal razryad"
     },
     "form": {
       "position": "Lavozimlar",
@@ -3725,9 +3724,7 @@
       "worker": "Xodimlar soni",
       "who": "Kim tomonidan",
       "reason": "Sabab",
-      "byPosition": "Lavozimlar kesimida",
-      "optimizationConfirm": "Ushbu amalni bajarish orqali bo'limdagi bir xil turdagi barcha lavozimlarni birlashtiriladi. Tasdiqlash orqali amalni bajaring",
-      "byWorker": "Xodimlar kesimida"
+      "optimizationConfirm": "Ushbu amalni bajarish orqali bo'limdagi bir xil turdagi barcha lavozimlarni birlashtiriladi. Tasdiqlash orqali amalni bajaring"
     }
   },
   "specialReport": {

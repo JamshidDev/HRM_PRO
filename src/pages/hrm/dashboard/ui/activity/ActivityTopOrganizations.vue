@@ -7,7 +7,8 @@
   import ApiService from '@/service/ApiService.js'
   import { useDashboardStore } from '@/store/modules/index.js'
   import { NIcon } from 'naive-ui'
-  import { Building20Regular, DismissCircle16Filled, Search20Regular } from '@vicons/fluent'
+  import { Building20Regular, Search20Regular } from '@vicons/fluent'
+  import { naiveIcons } from '@/assets/theme/theme.js'
   import { actionTypes, formatCount } from './utils.js'
 
   const { t } = i18n.global
@@ -131,11 +132,11 @@
           <button
             v-if="search"
             type="button"
-            class="-mr-1 flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-md text-fig-text-tertiary transition-colors hover:bg-fig-bg-tertiary hover:text-fig-text-primary"
+            class="ui-clear-btn -mr-1"
             :aria-label="$t('content.clear')"
             @click="search = ''"
           >
-            <n-icon :component="DismissCircle16Filled" :size="16" />
+            <component :is="naiveIcons.clear" />
           </button>
         </label>
         <UISegmentTabs v-model="period" :tabs="periodTabs" />

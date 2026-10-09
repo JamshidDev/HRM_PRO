@@ -509,3 +509,102 @@ input:-webkit-autofill {
 .n-card:not(.n-modal) {
   box-shadow: var(--card-shadow);
 }
+
+// Yagona clear tugmasi (ikonka — theme.js → naiveIcons.clear). Naive UI'da hamma
+// clearable maydonlar `n-base-clear` orqali o'tadi; o'zimiz yozgan clear tugmalari
+// (UISelect va h.k.) esa `.ui-clear-btn` klassini oladi — ko'rinish bitta.
+// `html` prefiksi — Naive o'z stilini runtime'da keyinroq qo'shadi, specificity yutishi kerak.
+html .n-base-clear > .n-base-clear__clear,
+.ui-clear-btn {
+  display: flex;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  font-size: 12px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 6px;
+  border: 1px solid var(--surface-line);
+  background: var(--surface-section);
+  color: var(--textColor3) !important;
+  box-shadow: 0 1px 2px rgb(15 23 41 / 8%);
+  outline: none;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  svg {
+    width: 1em;
+    height: 1em;
+  }
+
+  &:hover {
+    color: var(--textColor0) !important;
+    background: var(--fig-bg-tertiary);
+    border-color: var(--fig-br-secondary);
+  }
+
+  &:active {
+    box-shadow: none;
+    filter: brightness(0.95);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--primary-color);
+  }
+}
+
+// Naive konteyneri 1em (~14px) — 22px tugma undan chiqib, inputning o'ng chetiga
+// yopishib qolardi. Tugma ko'ringanda konteyner uning o'lchamiga moslashadi.
+html .n-base-clear:has(> .n-base-clear__clear) {
+  width: 22px;
+  height: 22px;
+}
+
+// Kichik inputlar (masalan UISelect pastidagi qidiruv) — tugma ham kichikroq
+html .n-input--small-size,
+html .n-input--tiny-size {
+  .n-base-clear:has(> .n-base-clear__clear) {
+    width: 18px;
+    height: 18px;
+  }
+
+  .n-base-clear > .n-base-clear__clear {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    border-radius: 5px;
+  }
+}
+
+// Tanlangan teg ichidagi "olib tashlash" ikonkasi — maydonning clear tugmasi bilan
+// adashmasligi uchun ramkasiz/fonsiz, faqat `×` (UIHelper.selectValueV2).
+.ui-tag-remove {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  color: var(--textColor3);
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+
+  svg {
+    width: 1em;
+    height: 1em;
+  }
+
+  &:hover {
+    color: var(--textColor0);
+    background: var(--fig-bg-tertiary);
+  }
+}
