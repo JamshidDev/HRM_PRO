@@ -5,9 +5,11 @@
   import { MoreHorizontal32Filled } from '@vicons/fluent'
   import { UIPagination } from '@components'
   import { isRotating, navbatOf, patternOf } from './navbat.js'
+  import i18n from '@/i18n/index.js'
 
   const store = useScheduleGroupWorkerStore()
   const accStore = useAccountStore()
+  const { t } = i18n.global
 
   const currentScheduleList = ref([])
 
@@ -48,9 +50,13 @@
     currentScheduleList.value = rows.map((r, i) => ({ ...r, number: offset + i + 1 }))
   })
 
-  const headerInPeriod = computed(() =>
-    (currentScheduleList.value[0]?.days ?? []).map((d) => d.inPeriod)
-  )
+  // Davrdan tashqari va hech kimda kun yo'q ustunlar xiralashtiriladi (ma'lumot bo'lsa — ko'rinadi).
+  const headerInPeriod = computed(() => {
+    const first = currentScheduleList.value[0]?.days ?? []
+    return first.map(
+      (d, i) => d.inPeriod || currentScheduleList.value.some((w) => !w.days[i]?.isEmpty)
+    )
+  })
 
   // Backend `schedule-workers` `search` parametrini qo'llamaydi — guruh xodimlari bitta
   // sahifada keladi (store'da per_page katta) va qidiruv brauzerda bajariladi.
@@ -61,6 +67,54 @@
       (v) => v.fullName?.toLowerCase().includes(q) || v.position?.toLowerCase().includes(q)
     )
   })
+
+  // Ish kunlari raqamlari oraliq ko'rinishida: «1–6, 14–19».
+  const workDaysText = (worker) => {
+    const nums = worker.days
+      .filter((d) => !d.isEmpty && d.isWorkDay)
+      .map((d) => Number(String(d.date).slice(8, 10)))
+    const parts = []
+    for (let i = 0; i < nums.length; i++) {
+      let j = i
+      while (j + 1 < nums.length && nums[j + 1] === nums[j] + 1) j++
+      parts.push(i === j ? `${nums[i]}` : `${nums[i]}–${nums[j]}`)
+      i = j
+    }
+    return parts.join(', ')
+  }
+
+  // Bir xil grafikdagi (aylanmada — bir navbatdagi) xodimlar bitta bo'limga yig'iladi.
+  const sections = computed(() => {
+    const map = new Map()
+    for (const w of visibleList.value) {
+      const key =
+        rotating.value && w.navbat
+          ? `n${w.navbat}`
+          : w.days.map((d) => (d.isEmpty ? '_' : d.isWorkDay ? `W${d.startTime}` : '-')).join('|')
+      if (!map.has(key)) map.set(key, [])
+      map.get(key).push(w)
+    }
+    const groups = [...map.values()]
+    if (!rotating.value) {
+      const firstWork = (w) => w.days.findIndex((d) => !d.isEmpty && d.isWorkDay)
+      groups.sort((a, b) => firstWork(a[0]) - firstWork(b[0]))
+    }
+    // Raqam bo'limlar tartibida — ketma-ket bo'lsin.
+    let num = (store.params.page - 1) * store.params.per_page
+    return groups.map((ws, i) => {
+      const workers = ws.map((w) => ({ ...w, number: ++num }))
+      return {
+      key: `${i}-${workers[0].workerPositionId}`,
+      title:
+        rotating.value && workers[0].navbat
+          ? t('shiftType.groupView.navbat', { n: workers[0].navbat })
+          : t('shiftType.groupView.groupN', { n: i + 1 }),
+      workers,
+      workDays: workDaysText(workers[0])
+      }
+    })
+  })
+  const showSections = computed(() => sections.value.length > 1)
 
   const calculateWorkTime = (worker) => {
     const totalMinute = worker.days.reduce((sum, item) => sum + item.workTime, 0)
@@ -86,7 +140,7 @@
 <template>
   <n-spin :show="store.dayOfMonthLoading || store.loading" class="h-full">
     <div class="h-full flex flex-col gap-4">
-      <div class="w-full flex-1 overflow-auto relative rounded-lg">
+      <div class="w-full flex-1 overflow-auto relative rounded-lg max-h-[calc(100vh-330px)] min-h-[300px]">
         <div class="schedule-header-row flex z-[10] w-fit min-w-full sticky top-0">
           <div
             class="rounded-tl-lg border-r border-t border-l border-b border-surface-line p-2 w-[60px] min-w-[60px] h-[50px] sticky left-0 top-0 z-[20] bg-surface-section flex-shrink-0"
@@ -120,81 +174,95 @@
           </div>
         </div>
         <template v-if="visibleList.length > 0">
-          <div
-            v-for="worker in visibleList"
-            :key="worker.workerPositionId"
-            class="schedule-header-body-row flex w-fit min-w-full bg-surface-section"
-          >
-            <!-- Worker Name - Sticky Left -->
-            <div
-              class="border-r border-l border-b border-t-0 border-surface-line text-center p-2 w-[60px] min-w-[60px] h-[50px] border sticky left-0 bg-surface-section flex-shrink-0 z-[5] flex items-center justify-center"
-            >
-              <span class="leading-[1.2] text-secondary font-medium">{{ worker.number }}</span>
-            </div>
-            <div
-              class="border-r border-l-[0] border-b border-t-0 border-surface-line p-2 w-[340px] min-w-[320px] h-[50px] border sticky left-[60px] bg-surface-section flex-shrink-0 z-[5] flex items-center"
-            >
-              <div class="w-[calc(100%-28px)]">
-                <div class="flex items-center gap-1.5 min-w-0">
-                  <span
-                    v-if="rotating"
-                    class="shrink-0 text-[11px] leading-none px-1.5 py-0.5 rounded"
-                    :class="worker.navbat ? 'bg-primary/10 text-primary' : 'bg-surface-line text-secondary'"
-                    :title="worker.navbat ? null : $t('shiftType.groupView.unknownNavbat')"
-                  >
-                    {{ worker.navbat ? $t('shiftType.groupView.navbat', { n: worker.navbat }) : '?' }}
-                  </span>
-                  <span class="line-clamp-1 leading-[1.2] font-medium">{{ worker.fullName }}</span>
-                </div>
-                <div class="text-xs line-clamp-1 leading-[1.2] text-secondary">
-                  {{ worker.position }}
-                </div>
-              </div>
-
+          <template v-for="sec in sections" :key="sec.key">
+            <div v-if="showSections" class="flex w-fit min-w-full">
               <div
-                v-if="accStore.checkPermission(accStore.pn.turnstileSheetsGroupsWrite)"
-                @click="onReplace(worker)"
-                class="w-[28px] h-[28px] border border-surface-line rounded-lg flex justify-center items-center text-secondary cursor-pointer"
+                class="sticky left-0 z-[6] flex items-center gap-2 px-3 h-[36px] w-[400px] min-w-[400px] bg-surface-ground border-l border-b border-surface-line border-t-2 border-t-primary/40 text-sm font-semibold"
               >
-                <n-icon size="20">
-                  <MoreHorizontal32Filled />
-                </n-icon>
+                <span class="shrink-0">{{ sec.title }}</span>
+                <n-tag size="tiny" round class="shrink-0">{{ sec.workers.length }}</n-tag>
+                <span v-if="sec.workDays" class="text-xs text-secondary font-normal line-clamp-1">
+                  {{ $t('shiftType.groupView.workDays') }}: {{ sec.workDays }}
+                </span>
+              </div>
+              <div class="flex-1 h-[36px] bg-surface-ground border-r border-b border-surface-line border-t-2 border-t-primary/40"></div>
+            </div>
+            <div
+              v-for="worker in sec.workers"
+              :key="worker.workerPositionId"
+              class="schedule-header-body-row flex w-fit min-w-full bg-surface-section"
+            >
+              <!-- Worker Name - Sticky Left -->
+              <div
+                class="border-r border-l border-b border-t-0 border-surface-line text-center p-2 w-[60px] min-w-[60px] h-[50px] border sticky left-0 bg-surface-section flex-shrink-0 z-[5] flex items-center justify-center"
+              >
+                <span class="leading-[1.2] text-secondary font-medium">{{ worker.number }}</span>
+              </div>
+              <div
+                class="border-r border-l-[0] border-b border-t-0 border-surface-line p-2 w-[340px] min-w-[320px] h-[50px] border sticky left-[60px] bg-surface-section flex-shrink-0 z-[5] flex items-center"
+              >
+                <div class="w-[calc(100%-28px)]">
+                  <div class="flex items-center gap-1.5 min-w-0">
+                    <span
+                      v-if="rotating"
+                      class="shrink-0 text-[11px] leading-none px-1.5 py-0.5 rounded"
+                      :class="worker.navbat ? 'bg-primary/10 text-primary' : 'bg-surface-line text-secondary'"
+                      :title="worker.navbat ? null : $t('shiftType.groupView.unknownNavbat')"
+                    >
+                      {{ worker.navbat ? $t('shiftType.groupView.navbat', { n: worker.navbat }) : '?' }}
+                    </span>
+                    <span class="line-clamp-1 leading-[1.2] font-medium">{{ worker.fullName }}</span>
+                  </div>
+                  <div class="text-xs line-clamp-1 leading-[1.2] text-secondary">
+                    {{ worker.position }}
+                  </div>
+                </div>
+
+                <div
+                  v-if="accStore.checkPermission(accStore.pn.turnstileSheetsGroupsWrite)"
+                  @click="onReplace(worker)"
+                  class="w-[28px] h-[28px] border border-surface-line rounded-lg flex justify-center items-center text-secondary cursor-pointer"
+                >
+                  <n-icon size="20">
+                    <MoreHorizontal32Filled />
+                  </n-icon>
+                </div>
+              </div>
+
+              <!-- Day Cells -->
+              <div
+                v-for="(day, dayIndex) in worker.days"
+                :key="dayIndex"
+                class="border-r text-center border-l border-b border-t-0 -ml-[1px] border-surface-line w-[60px] min-w-[60px] h-[50px] border text-xs text-secondary p-2 pb-0 flex-shrink-0 cursor-pointer relative"
+                :class="{ 'out-of-period': !day.inPeriod && day.isEmpty }"
+                :title="!day.inPeriod && day.isEmpty ? $t('shiftType.groupView.outOfPeriod') : null"
+              >
+                <template v-if="day.isEmpty"></template>
+                <template v-else-if="day.isWorkDay">
+                  <div class="leading-[1.2] pt-3">{{ day.startTime }}</div>
+                  <div class="leading-[1.2]">{{ day.endTime }}</div>
+                  <div
+                    class="absolute top-[0] left-[0] min-w-[16px] h-[16px] px-0.5 bg-secondary/80 text-white text-xs rounded"
+                    :title="$t('shiftType.groupView.hours', { n: Math.floor(day.workTime / 60) })"
+                  >
+                    {{ Math.floor(day.workTime / 60) }}
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="h-full flex items-center justify-center pb-2 text-success/80 font-medium">
+                    {{ $t('shiftType.groupView.rest') }}
+                  </div>
+                </template>
+              </div>
+
+              <!-- Total - Sticky Right -->
+              <div
+                class="border-r border-l border-b -ml-[1px] border-surface-line w-[80px] min-w-[80px] h-[50px] sticky right-0 bg-surface-section flex-shrink-0 z-[5] flex items-center justify-center"
+              >
+                {{ calculateWorkTime(worker) }}
               </div>
             </div>
-
-            <!-- Day Cells -->
-            <div
-              v-for="(day, dayIndex) in worker.days"
-              :key="dayIndex"
-              class="border-r text-center border-l border-b border-t-0 -ml-[1px] border-surface-line w-[60px] min-w-[60px] h-[50px] border text-xs text-secondary p-2 pb-0 flex-shrink-0 cursor-pointer relative"
-              :class="{ 'out-of-period': !day.inPeriod }"
-              :title="!day.inPeriod ? $t('shiftType.groupView.outOfPeriod') : null"
-            >
-              <template v-if="day.isEmpty"></template>
-              <template v-else-if="day.isWorkDay">
-                <div class="leading-[1.2] pt-3">{{ day.startTime }}</div>
-                <div class="leading-[1.2]">{{ day.endTime }}</div>
-                <div
-                  class="absolute top-[0] left-[0] min-w-[16px] h-[16px] px-0.5 bg-secondary/80 text-white text-xs rounded"
-                  :title="$t('shiftType.groupView.hours', { n: Math.floor(day.workTime / 60) })"
-                >
-                  {{ Math.floor(day.workTime / 60) }}
-                </div>
-              </template>
-              <template v-else>
-                <div class="h-full flex items-center justify-center pb-2 text-success/80 font-medium">
-                  {{ $t('shiftType.groupView.rest') }}
-                </div>
-              </template>
-            </div>
-
-            <!-- Total - Sticky Right -->
-            <div
-              class="border-r border-l border-b -ml-[1px] border-surface-line w-[80px] min-w-[80px] h-[50px] sticky right-0 bg-surface-section flex-shrink-0 z-[5] flex items-center justify-center"
-            >
-              {{ calculateWorkTime(worker) }}
-            </div>
-          </div>
+          </template>
         </template>
         <template v-else>
           <div

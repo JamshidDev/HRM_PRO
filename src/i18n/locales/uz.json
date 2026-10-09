@@ -5272,7 +5272,9 @@
       "byDepartment": "Bo'limlar bo'yicha ekipajlar",
       "department": "Bo'lim",
       "fullCrews": "To'liq ekipaj",
-      "missing": "Yetishmaydi"
+      "missing": "Yetishmaydi",
+      "groupN": "{n}-guruh",
+      "workDays": "Ish kunlari"
     }
   },
   "lmsCertificate": {

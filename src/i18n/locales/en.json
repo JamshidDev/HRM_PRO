@@ -5223,7 +5223,9 @@
       "byDepartment": "Crews by department",
       "department": "Department",
       "fullCrews": "Full crews",
-      "missing": "Missing"
+      "missing": "Missing",
+      "groupN": "Group {n}",
+      "workDays": "Work days"
     }
   },
   "publicPage": {
