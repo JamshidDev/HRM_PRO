@@ -4,33 +4,53 @@
   import Utils from '@/utils/Utils.js'
   import { MoreHorizontal32Filled } from '@vicons/fluent'
   import { UIPagination } from '@components'
+  import { isRotating, navbatOf, patternOf } from './navbat.js'
 
   const store = useScheduleGroupWorkerStore()
   const accStore = useAccountStore()
 
   const currentScheduleList = ref([])
 
+  const rotating = computed(() => isRotating(store.shiftType))
+  const pattern = computed(() => patternOf(store.shiftType))
+  // Smena davri (start..end) — undan tashqaridagi kunlar xiralashtiriladi.
+  const inPeriod = (date) =>
+    (!store.params.startDate || date >= String(store.params.startDate).slice(0, 10)) &&
+    (!store.params.endDate || date <= String(store.params.endDate).slice(0, 10))
+
   watchEffect(() => {
     const offset = (store.params.page - 1) * store.params.per_page
-    currentScheduleList.value = store.list.map((v, index) => {
+    const rows = store.list.map((v) => {
       const fullName = Utils.combineFullName(v)
       return {
-        number: offset + index + 1,
         workerId: v.worker_id,
         workerPositionId: v.worker_position_id,
         fullName,
         position: v.position_name,
+        navbat: rotating.value ? navbatOf(v.days, pattern.value) : null,
         days: v.days.map((e) => ({
           date: e.date,
           isWorkDay: e.work_status,
           startTime: e.start_time || null,
           endTime: e.end_time || null,
           workTime: e.daily_minutes,
-          isEmpty: e.id === null
+          isEmpty: e.id === null,
+          inPeriod: inPeriod(e.date)
         }))
       }
     })
+    // Aylanma smenada navbat tartibida — kim qaysi navbatda ekani ko'rinsin.
+    if (rotating.value) {
+      rows.sort(
+        (a, b) => (a.navbat ?? 99) - (b.navbat ?? 99) || a.fullName.localeCompare(b.fullName)
+      )
+    }
+    currentScheduleList.value = rows.map((r, i) => ({ ...r, number: offset + i + 1 }))
   })
+
+  const headerInPeriod = computed(() =>
+    (currentScheduleList.value[0]?.days ?? []).map((d) => d.inPeriod)
+  )
 
   // Backend `schedule-workers` `search` parametrini qo'llamaydi — guruh xodimlari bitta
   // sahifada keladi (store'da per_page katta) va qidiruv brauzerda bajariladi.
@@ -78,8 +98,10 @@
           >
             <SearchElement :disable="true" />
           </div>
-          <template v-for="item in store.dayOfMonth" :key="`header-${item}`">
+          <template v-for="(item, hIndex) in store.dayOfMonth" :key="`header-${item}`">
             <div
+              :class="{ 'opacity-40': headerInPeriod[hIndex] === false }"
+              :title="headerInPeriod[hIndex] === false ? $t('shiftType.groupView.outOfPeriod') : null"
               :style="{
                 background: [6, 0].includes(item.weekDay)
                   ? 'var(--schedule-weekend-bg)'
@@ -113,7 +135,17 @@
               class="border-r border-l-[0] border-b border-t-0 border-surface-line p-2 w-[340px] min-w-[320px] h-[50px] border sticky left-[60px] bg-surface-section flex-shrink-0 z-[5] flex items-center"
             >
               <div class="w-[calc(100%-28px)]">
-                <div class="line-clamp-1 leading-[1.2] font-medium">{{ worker.fullName }}</div>
+                <div class="flex items-center gap-1.5 min-w-0">
+                  <span
+                    v-if="rotating"
+                    class="shrink-0 text-[11px] leading-none px-1.5 py-0.5 rounded"
+                    :class="worker.navbat ? 'bg-primary/10 text-primary' : 'bg-surface-line text-secondary'"
+                    :title="worker.navbat ? null : $t('shiftType.groupView.unknownNavbat')"
+                  >
+                    {{ worker.navbat ? $t('shiftType.groupView.navbat', { n: worker.navbat }) : '?' }}
+                  </span>
+                  <span class="line-clamp-1 leading-[1.2] font-medium">{{ worker.fullName }}</span>
+                </div>
                 <div class="text-xs line-clamp-1 leading-[1.2] text-secondary">
                   {{ worker.position }}
                 </div>
@@ -135,22 +167,23 @@
               v-for="(day, dayIndex) in worker.days"
               :key="dayIndex"
               class="border-r text-center border-l border-b border-t-0 -ml-[1px] border-surface-line w-[60px] min-w-[60px] h-[50px] border text-xs text-secondary p-2 pb-0 flex-shrink-0 cursor-pointer relative"
+              :class="{ 'out-of-period': !day.inPeriod }"
+              :title="!day.inPeriod ? $t('shiftType.groupView.outOfPeriod') : null"
             >
-              <template v-if="worker.days?.[dayIndex].isEmpty"></template>
-              <template v-else-if="worker.days?.[dayIndex].isWorkDay">
-                <div class="leading-[1.2] pt-3">{{ worker.days?.[dayIndex]?.startTime }}</div>
-                <div class="leading-[1.2]">{{ worker.days?.[dayIndex]?.endTime }}</div>
+              <template v-if="day.isEmpty"></template>
+              <template v-else-if="day.isWorkDay">
+                <div class="leading-[1.2] pt-3">{{ day.startTime }}</div>
+                <div class="leading-[1.2]">{{ day.endTime }}</div>
                 <div
-                  class="absolute top-[0] left-[0] w-[16px] h-[16px] bg-secondary/80 text-white text-xs rounded"
+                  class="absolute top-[0] left-[0] min-w-[16px] h-[16px] px-0.5 bg-secondary/80 text-white text-xs rounded"
+                  :title="$t('shiftType.groupView.hours', { n: Math.floor(day.workTime / 60) })"
                 >
-                  {{ Math.floor(worker.days?.[dayIndex]?.workTime / 60) }}
+                  {{ Math.floor(day.workTime / 60) }}
                 </div>
               </template>
               <template v-else>
-                <div
-                  class="absolute top-[0] left-[0] w-[16px] h-[16px] bg-success/10 text-white text-xs rounded hover:bg-success/50"
-                >
-                  D
+                <div class="h-full flex items-center justify-center pb-2 text-success/80 font-medium">
+                  {{ $t('shiftType.groupView.rest') }}
                 </div>
               </template>
             </div>
@@ -182,3 +215,14 @@
     </div>
   </n-spin>
 </template>
+
+<style scoped>
+  .out-of-period {
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent 0 6px,
+      var(--schedule-weekend-bg) 6px 8px
+    );
+    opacity: 0.55;
+  }
+</style>

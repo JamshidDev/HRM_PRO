@@ -8,6 +8,7 @@
   import Table from './ui/Table.vue'
   import Filter from './ui/Filter.vue'
   import ReplaceModal from './ui/ReplaceModal.vue'
+  import GroupHeader from './ui/GroupHeader.vue'
 
   const store = useScheduleGroupWorkerStore()
   const route = useRoute()
@@ -22,6 +23,7 @@
   store.params.page = 1
   store.monthsList = getMonthOfRage(store.params.startDate, store.params.endDate)
   store.selectedDate = store.monthsList[0]?.id ?? null
+  store._shiftType(route.query.type)
 
   const backTo = computed(() => ({
     path: Utils.routeTurnstilePathMaker(AppPaths.ShiftType),
@@ -55,10 +57,11 @@
           <router-link :to="backTo">{{ $t('shiftType.name') }}</router-link>
         </n-breadcrumb-item>
         <n-breadcrumb-item :clickable="false">
-          {{ route.query.name || $t('shiftType.form.groupWorkers') }}
+          {{ store.shiftType?.name || route.query.name || $t('shiftType.form.groupWorkers') }}
         </n-breadcrumb-item>
       </n-breadcrumb>
     </div>
+    <GroupHeader />
     <Filter />
     <Table />
     <ReplaceModal />

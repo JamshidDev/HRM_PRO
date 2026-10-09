@@ -5253,6 +5253,26 @@
       "customShiftHint": "Maxsus smenada guruh bo'lmaydi — u to'g'ridan-to'g'ri Navbatchilik grafigida to'ldiriladi.",
       "noShiftTypes": "Smena turlari topilmadi",
       "searchByShiftName": "Smena nomi bo'yicha qidirish"
+    },
+    "groupView": {
+      "period": "Davr",
+      "workers": "Xodimlar",
+      "pattern": "Naqsh",
+      "cycle": "{n} kunlik aylanma",
+      "navbat": "{n}-navbat",
+      "navbatTitle": "Navbatlar",
+      "navbatHint": "Aylanma smenada har xodim o'z navbatida ishlaydi: navbatlar soni teng bo'lsa post to'liq qoplangan.",
+      "emptySlots": "{n} ta bo'sh o'rin",
+      "allFilled": "Navbatlar to'liq",
+      "outOfPeriod": "Smena davridan tashqari",
+      "hours": "{n} soat",
+      "rest": "Dam",
+      "unknownNavbat": "Navbat aniqlanmadi",
+      "work": "Ish kuni",
+      "byDepartment": "Bo'limlar bo'yicha ekipajlar",
+      "department": "Bo'lim",
+      "fullCrews": "To'liq ekipaj",
+      "missing": "Yetishmaydi"
     }
   },
   "lmsCertificate": {

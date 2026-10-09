@@ -5204,6 +5204,26 @@
       "customShiftHint": "Custom shifts have no groups — they are filled directly in the duty schedule.",
       "noShiftTypes": "No shift types found",
       "searchByShiftName": "Search by shift name"
+    },
+    "groupView": {
+      "period": "Period",
+      "workers": "Workers",
+      "pattern": "Pattern",
+      "cycle": "{n}-day rotation",
+      "navbat": "Rotation {n}",
+      "navbatTitle": "Rotations",
+      "navbatHint": "In a rotating shift each worker works in their own rotation slot: equal counts mean the post is fully covered.",
+      "emptySlots": "{n} empty slot(s)",
+      "allFilled": "Rotations complete",
+      "outOfPeriod": "Outside the shift period",
+      "hours": "{n} h",
+      "rest": "Day off",
+      "unknownNavbat": "Rotation not detected",
+      "work": "Work day",
+      "byDepartment": "Crews by department",
+      "department": "Department",
+      "fullCrews": "Full crews",
+      "missing": "Missing"
     }
   },
   "publicPage": {
