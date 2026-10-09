@@ -40,6 +40,8 @@ export const ENFORCED = new Set([
   'economist-staffing-approve-delete',
   'economist-staffing-approve-read',
   'economist-staffing-approve-write',
+  'economist-upload-source-config-read',
+  'economist-upload-source-config-write',
   'economist-statements-delete',
   'economist-statements-read',
   'economist-statements-write',
@@ -378,6 +380,8 @@ export const MEANINGFUL = new Set([
   'economist-tax-four-delete',
   'economist-tax-four-read',
   'economist-tax-four-write',
+  'economist-upload-source-config-read',
+  'economist-upload-source-config-write',
   'economist-uploads',
   'economist-uploads-confirm',
   'economist-uploads-read',
@@ -1049,7 +1053,8 @@ export const PERMISSION_GROUPS = [
         actions: [{ slug: 'salary-1c-access', label: 'Ruxsat' }]
       },
       { prefix: 'hr-report', label: 'report.name' },
-      { prefix: 'economist-staffing-approve', label: 'staffingApproval.name' }
+      { prefix: 'economist-staffing-approve', label: 'staffingApproval.name' },
+      { prefix: 'economist-upload-source-config', label: 'uploadSourceConfig.name' }
     ]
   },
   {
