@@ -69,7 +69,7 @@ import ExtraWorkerRoleIcon from '@assets/icons/Users.svg'
 import ExtraEducationDirectoryIcon from '@assets/icons/EducationDirectory.svg'
 import ExtraDepartmentLocationIcon from '@assets/icons/DepartmentLocation.svg'
 import AdminFolderIcon from '@assets/icons/adminFolder.svg'
-import { Calculator24Regular, ClipboardTaskListLtr24Filled, Grid20Filled } from '@vicons/fluent'
+import { Calculator24Regular, ClipboardTaskListLtr24Filled, Grid20Filled, DataFunnel24Filled } from '@vicons/fluent'
 const {
   usersIcon,
   menuIcon,
@@ -886,6 +886,13 @@ export const navigations = withRawIcons([
         icon: EconomistStaffingApprovalIcon,
         color: 'bg-info',
         permission: appPermissions.economistStaffingApproveRead
+      },
+      {
+        label: 'uploadSourceConfig.name', // Yuklash manbasi cheklovi
+        path: Utils.routeAccountantPathMaker(AppPaths.UploadSourceConfig),
+        icon: DataFunnel24Filled,
+        color: 'bg-dark',
+        permission: appPermissions.economistUploadSourceConfigRead
       }
     ]
   },

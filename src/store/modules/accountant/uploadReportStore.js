@@ -367,6 +367,32 @@ export const useUploadReportStore = defineStore('uploadReport', {
       this.bulkCancelRequested = false
       this._loadBulkOrgs()
     },
+    // Daraxtdan tanlangan korxonalar uchun ommaviy 1C yuklash modalini ochish.
+    // _onesOrgs (salary_reports bor korxonalar) dan faqat confirmSelected bo'lganlarini qoldiradi.
+    // 1C ma'lumotisiz yoki faqat Excel manbali korxonalar avtomatik chiqib ketadi.
+    openBulkFromSelected() {
+      if (this.bulkRunning) { this.bulkVisible = true; return }
+      const preSelected = new Set(this.confirmSelected)
+      this.bulkPeriod = { year: this.params.year, month: this.params.month }
+      this.bulkType = 1
+      this.bulkVisible = true
+      this.bulkOrgs = []
+      this.bulkSelected = []
+      this.bulkSearch = ''
+      this.bulkResults = {}
+      this.bulkProgress = { done: 0, total: 0 }
+      this.bulkRunning = false
+      this.bulkCancelRequested = false
+      this.bulkLoading = true
+      $ApiService.accountantService
+        ._onesOrgs({ params: { year: this.bulkPeriod.year, month: this.bulkPeriod.month } })
+        .then((res) => {
+          const allOrgs = res.data.data?.data ?? []
+          this.bulkOrgs = allOrgs.filter((o) => preSelected.has(o.organization_id))
+          this.bulkSelected = this.bulkOrgs.map((o) => o.organization_id)
+        })
+        .finally(() => { this.bulkLoading = false })
+    },
     // Ketayotgan ommaviy yuklashni to'xtatish — worker'lar yangi korxona OLMAYDI
     // (jarayondagi ≤6 so'rov tugaydi). Progress qolgan joyida to'xtaydi.
     stopBulk() {
@@ -501,7 +527,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
         })
     },
     // Yuklangan hisobotni (economist_upload) o'chirish — ma'lumot satrlari + soft-delete.
-    // So'ng tanlangan korxona kartalari (list = latest/older) qayta yuklanadi.
+    // So'ng tanlangan korxona kartalari (list = latest/older) va tuzilma holati qayta yuklanadi.
     _deleteUpload(id) {
       if (!id) return
       this.deleteLoading = true
@@ -510,6 +536,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
         .then(() => {
           $Toast.success(t('content.deleted'))
           this._cards()
+          this._uploadStatus()
         })
         .catch((e) => {
           // Backend xabari (mas. tasdiqlangan hisobotni o'chirib bo'lmaydi — avval

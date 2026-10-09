@@ -29,6 +29,12 @@ const _reopen = async (payload) => {
   return await axios.post(`/v1/structure/organizations/${payload.id}/reopen`, payload.data)
 }
 
+// Drag & drop: boshqa otaga ko'chirish va/yoki aka-ukalar orasida tartibni o'zgartirish.
+// data: { parent_id: number|null, position: number|null (0 dan; null — oxiriga), basis_comment? }
+const _move = async (payload) => {
+  return await axios.post(`/v1/structure/organizations/${payload.id}/move`, payload.data)
+}
+
 const _events = async (payload) => {
   return await axios.get(`/v1/structure/organizations/${payload.id}/events`)
 }
@@ -40,6 +46,7 @@ export default {
   _close,
   _reopen,
   _events,
+  _move,
   _show,
   _level
 }

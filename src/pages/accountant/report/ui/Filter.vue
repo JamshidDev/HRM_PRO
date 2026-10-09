@@ -1,7 +1,6 @@
 <script setup>
   import { UIPageFilter, UIYearMonth } from '@/components/index.js'
   import {
-    CloudArrowUp24Regular,
     ClipboardTaskListLtr20Regular,
     History24Regular
   } from '@vicons/fluent'
@@ -17,12 +16,6 @@
     store.params.organization_id = null
     store.resetCards()
     store._structures()
-  }
-
-  // 1C dan ommaviy yuklash (Oylik hisobot) — korxona tanlash shart emas (davr bo'yicha).
-  const onBulkOnes = () => {
-    if (!accStore.checkAction(accStore.pn.economistUploadsWrite)) return
-    store.openBulk()
   }
 
   // Hisobot holati (kim yuklagan/yuklamagan) — tanlangan oy uchun modal.
@@ -73,17 +66,6 @@
         </template>
       </n-button>
 
-      <n-button
-        v-if="accStore.checkPermission(accStore.pn.economistUploadsWrite)"
-        type="primary"
-        class="w-full! md:w-auto!"
-        @click="onBulkOnes"
-      >
-        {{ $t('uploadReport.bulkOnes.button') }}
-        <template #icon>
-          <CloudArrowUp24Regular />
-        </template>
-      </n-button>
     </template>
   </UIPageFilter>
 </template>
