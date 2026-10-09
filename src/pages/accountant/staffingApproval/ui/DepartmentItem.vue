@@ -21,12 +21,6 @@
     }
   })
 
-  const changeStatus = {
-    1: 'primary',
-    2: 'warning',
-    3: 'error'
-  }
-
   const emits = defineEmits(['toggle', 'selectAll', 'unselectAll'])
 
   const selectedSet = computed(() => new Set(props.selectedIds))
@@ -112,11 +106,6 @@
                     position.amount +
                     ' ' +
                     $t('content.sum')
-                  }}</n-tag>
-                </div>
-                <div>
-                  <n-tag round :type="changeStatus[position?.changed_status?.id]" size="tiny">{{
-                    position?.changed_status?.name
                   }}</n-tag>
                 </div>
               </div>

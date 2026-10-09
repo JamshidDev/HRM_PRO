@@ -4,6 +4,7 @@
   import { useAccountStore } from '@/store/modules/index.js'
   import {
     AddCircle24Regular,
+    ArrowClockwise24Regular,
     ArrowDownload24Regular,
     Table24Regular,
     TextBulletListLtr24Regular
@@ -126,6 +127,12 @@
         v-model="store.viewMode"
       />
       <div class="flex flex-wrap gap-2">
+        <n-button :loading="store.busy" :disabled="store.busy" @click="store._refreshAll()" secondary>
+          <template #icon>
+            <n-icon><ArrowClockwise24Regular /></n-icon>
+          </template>
+          {{ $t('content.refresh') }}
+        </n-button>
         <n-button
           v-if="accStore.checkPermission(accStore.pn.hrReportStaffingExport)"
           ref="staffingButtonRef"
