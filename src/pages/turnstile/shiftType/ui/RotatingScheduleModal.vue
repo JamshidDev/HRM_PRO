@@ -66,8 +66,10 @@
   )
 
   const slots = ref([])
+  // O'rin soni o'zgarganda qayta quriladi; xodim tanlash kunlar hisobini qayta ishlatmaydi.
+  const slotCount = ref(0)
   const rows = computed(() =>
-    slots.value.map((s, i) => {
+    Array.from({ length: slotCount.value }, (_, i) => {
       const n = pattern.value.length
       const phase = daily.value ? 0 : slotPhase(i, crewSize.value, n)
       const cells = days.value.map((d) => {
@@ -85,14 +87,13 @@
       const hours = Math.round(cells.filter((c) => c.work && !c.out).reduce((a, c) => a + c.minutes, 0) / 60)
       const crew = daily.value ? null : Math.floor(i / crewSize.value)
       return {
-        slot: s,
         index: i,
         phase,
         cells,
         hours,
         crew,
         crewStart: !daily.value && i % crewSize.value === 0,
-        crewEnd: !daily.value && ((i + 1) % crewSize.value === 0 || i === slots.value.length - 1)
+        crewEnd: !daily.value && ((i + 1) % crewSize.value === 0 || i === slotCount.value - 1)
       }
     })
   )
@@ -105,7 +106,7 @@
       for (const r of rows.value) {
         if (d.out || !r.cells[di].work || r.cells[di].cont) continue
         total++
-        if (r.slot.wp) filled++
+        if (slots.value[r.index].wp) filled++
       }
       return { out: d.out, total, filled }
     })
@@ -133,14 +134,25 @@
       const n = Math.max(1, Number(store.generatePayload.workers_count) || 1)
       const total = daily.value ? n : Math.ceil(n / crewSize.value) * crewSize.value
       slots.value = Array.from({ length: total }, (_, i) => ({ wp: null, worker: null, extra: i >= n }))
+      slotCount.value = total
+      scrollTop.value = 0
       holidays.value = new Set()
       loadHolidays()
       busyIds.value = new Set()
-      if (mode.value !== 'count') fillWorkers(n)
+      if (store.generatePayload.placement === 'auto') fillWorkers(n)
     }
   )
 
-  // «Smenasizlar» / «Barchasi»: xodimlar o'rinlarga ketma-ket joylanadi, HR keyin almashtira oladi.
+  // Fisher–Yates: xodimlar o'rinlarga tasodifiy tartibda tushadi.
+  const shuffle = (arr) => {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[arr[i], arr[j]] = [arr[j], arr[i]]
+    }
+    return arr
+  }
+
+  // Avtomatik joylashtirish: tanlangan rejim xodimlari o'rinlarga tasodifiy tushadi, HR keyin almashtira oladi.
   const mode = computed(() => store.generatePayload.count_mode)
   const busyIds = ref(new Set())
   const filling = ref(false)
@@ -148,17 +160,19 @@
     const range = { start_date: startDate.value, end_date: endDate.value }
     filling.value = true
     const list = $ApiService.shiftTypeService._getWorkers({
-      params: { page: 1, per_page: n, ...(mode.value === 'free' ? { has_schedule: 'No', ...range } : {}) }
+      params: { page: 1, per_page: 10000, ...(mode.value === 'all' ? { exclude_schedule_type: store.elementId, ...range } : { has_schedule: 'No', ...range }) }
     })
     // «Barchasi»da shu davrda boshqa smenasi borlar belgilanadi — saqlanganda ular shu smenaga ko'chadi.
     const busy =
       mode.value === 'all'
-        ? $ApiService.shiftTypeService._getWorkers({ params: { page: 1, per_page: 10000, has_schedule: 'Yes', ...range } })
+        ? $ApiService.shiftTypeService._getWorkers({
+            params: { page: 1, per_page: 10000, has_schedule: 'Yes', exclude_schedule_type: store.elementId, ...range }
+          })
         : Promise.resolve(null)
     Promise.all([list, busy])
       .then(([res, busyRes]) => {
         busyIds.value = new Set((busyRes?.data.data.data ?? []).map((v) => v.id))
-        res.data.data.data.map(toWorkerItem).forEach((w, i) => {
+        shuffle(res.data.data.data.map(toWorkerItem)).slice(0, n).forEach((w, i) => {
           if (!slots.value[i]) return
           slots.value[i].wp = w.id
           slots.value[i].worker = w
@@ -218,9 +232,9 @@
       start_date: startDate.value,
       end_date: endDate.value
     }
-    const filled = rows.value.filter((r) => r.slot.wp)
+    const filled = rows.value.filter((r) => slots.value[r.index].wp)
     if (daily.value) {
-      store._generateWorkerSchedule({ ...base, worker_position_ids: filled.map((r) => r.slot.wp) })
+      store._generateWorkerSchedule({ ...base, worker_position_ids: filled.map((r) => slots.value[r.index].wp) })
       return
     }
     // Backend birinchi kunda (day + 1) % n naqsh kunini oladi.
@@ -228,9 +242,64 @@
     store._generateWorkerSchedule({
       ...base,
       schedule_workers: filled.map((r) => ({
-        worker_position_id: r.slot.wp,
+        worker_position_id: slots.value[r.index].wp,
         day: (cycleIndex(startDate.value, r.phase, n) - 1 + n) % n
       }))
+    })
+  }
+
+  // Virtual ro'yxat: faqat ko'rinib turgan qatorlar chiziladi (minglab o'rinda ham tez).
+  const ROW_H = 52
+  const CREW_H = 28
+  const HEAD_H = 46
+  const OVERSCAN = 8
+  const scroller = ref(null)
+  const scrollTop = ref(0)
+  const viewH = ref(800)
+  const items = computed(() => {
+    const out = []
+    let top = 0
+    for (const r of rows.value) {
+      if (r.crewStart) {
+        out.push({ key: `c${r.crew}`, crew: r.crew, top, h: CREW_H })
+        top += CREW_H
+      }
+      out.push({ key: `r${r.index}`, row: r, top, h: ROW_H })
+      top += ROW_H
+    }
+    return { list: out, height: top }
+  })
+  const firstAt = (y) => {
+    const list = items.value.list
+    let lo = 0
+    let hi = list.length - 1
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1
+      if (list[mid].top + list[mid].h <= y) lo = mid + 1
+      else hi = mid
+    }
+    return lo
+  }
+  const visible = computed(() => {
+    const list = items.value.list
+    if (!list.length) return { list: [], before: 0, after: 0 }
+    const y = Math.max(0, scrollTop.value - HEAD_H)
+    const start = Math.max(0, firstAt(y) - OVERSCAN)
+    const end = Math.min(list.length, firstAt(y + viewH.value) + OVERSCAN)
+    const last = list[end - 1]
+    return {
+      list: list.slice(start, end),
+      before: list[start].top,
+      after: items.value.height - (last.top + last.h)
+    }
+  })
+  let raf = 0
+  const onScroll = () => {
+    if (raf) return
+    raf = requestAnimationFrame(() => {
+      raf = 0
+      scrollTop.value = scroller.value?.scrollTop ?? 0
+      viewH.value = scroller.value?.clientHeight ?? 800
     })
   }
 
@@ -289,7 +358,11 @@
 
       <div class="flex-1 min-h-0 p-4">
         <n-spin :show="filling" class="h-full" content-class="h-full">
-          <div class="h-full overflow-auto relative bg-surface-section border border-surface-line rounded-xl">
+          <div
+            ref="scroller"
+            class="h-full overflow-auto relative bg-surface-section border border-surface-line rounded-xl"
+            @scroll.passive="onScroll"
+          >
             <div class="flex w-fit min-w-full sticky top-0 z-[10] bg-surface-section">
               <div class="cell-h w-[48px] min-w-[48px] sticky left-0 z-[20]">№</div>
               <div class="cell-h w-[300px] min-w-[300px] sticky left-[48px] z-[20] justify-start! px-3">
@@ -307,29 +380,30 @@
               <div class="cell-h w-[70px] min-w-[70px] sticky right-0 z-[20]">{{ $t('schedule.form.workTime') }}</div>
             </div>
 
-            <template v-for="r in rows" :key="r.index">
+            <div :style="{ height: `${visible.before}px` }" />
+            <template v-for="it in visible.list" :key="it.key">
               <div
-                v-if="r.crewStart"
+                v-if="!it.row"
                 class="flex min-w-full bg-surface-ground text-xs font-semibold text-secondary h-[28px] items-center"
                 :style="{ width: tableWidth }"
               >
-                <span class="sticky left-0 px-3">{{ $t('shiftType.generate.crewN', { n: r.crew + 1 }) }}</span>
+                <span class="sticky left-0 px-3">{{ $t('shiftType.generate.crewN', { n: it.crew + 1 }) }}</span>
               </div>
-              <div class="flex w-fit min-w-full" :class="{ 'crew-end': r.crewEnd }">
+              <div v-else class="flex w-fit min-w-full" :class="{ 'crew-end': it.row.crewEnd }">
                 <div class="cell w-[48px] min-w-[48px] sticky left-0 z-[5] bg-surface-section text-secondary">
-                  {{ r.index + 1 }}
+                  {{ it.row.index + 1 }}
                 </div>
                 <div class="cell w-[300px] min-w-[300px] sticky left-[48px] z-[5] bg-surface-section px-2 justify-start!">
-                  <div v-if="r.slot.worker" class="group w-full flex items-center gap-1 min-w-0">
+                  <div v-if="slots[it.row.index].worker" class="group w-full flex items-center gap-1 min-w-0">
                     <button
                       type="button"
                       class="flex-1 min-w-0 text-left rounded-md px-1 py-0.5 hover:bg-primary/5"
                       :title="$t('shiftType.generate.change')"
-                      @click="openAssign(r)"
+                      @click="openAssign(it.row)"
                     >
-                      <UIUser :data="r.slot.worker.data" :short="false" :avatar-clickable="false" hide-tooltip />
+                      <UIUser :data="slots[it.row.index].worker.data" :short="false" :avatar-clickable="false" hide-tooltip />
                       <span
-                        v-if="busyIds.has(r.slot.wp)"
+                        v-if="busyIds.has(slots[it.row.index].wp)"
                         class="ml-[42px] -mt-0.5 block text-[10px] leading-none text-warning font-medium"
                       >
                         {{ $t('shiftType.generate.inOtherShift') }}
@@ -341,7 +415,7 @@
                       size="tiny"
                       class="opacity-0 group-hover:opacity-100"
                       :title="$t('shiftType.generate.unassign')"
-                      @click="unassign(r)"
+                      @click="unassign(it.row)"
                     >
                       <template #icon><n-icon><Dismiss16Regular /></n-icon></template>
                     </n-button>
@@ -351,28 +425,28 @@
                     type="button"
                     class="w-full h-[36px] flex items-center justify-center gap-1.5 rounded-lg border border-dashed text-sm transition-colors"
                     :class="
-                      r.slot.extra
+                      slots[it.row.index].extra
                         ? 'border-surface-line text-secondary hover:border-primary/50 hover:text-primary'
                         : 'border-primary/40 text-primary hover:bg-primary/5'
                     "
-                    @click="openAssign(r)"
+                    @click="openAssign(it.row)"
                   >
                     <n-icon size="16"><Add16Regular /></n-icon>
                     <span>{{ $t('shiftType.generate.assign') }}</span>
-                    <span v-if="r.slot.extra" class="text-xs opacity-70">· {{ $t('shiftType.generate.emptySlot') }}</span>
+                    <span v-if="slots[it.row.index].extra" class="text-xs opacity-70">· {{ $t('shiftType.generate.emptySlot') }}</span>
                   </button>
                 </div>
                 <div
-                  v-for="c in r.cells"
+                  v-for="c in it.row.cells"
                   :key="c.date"
                   class="cell w-[52px] min-w-[52px] flex-col text-[10px] leading-[1.15]"
                   :class="
                     c.out
                       ? 'out'
                       : c.work
-                        ? r.slot.wp
+                        ? slots[it.row.index].wp
                           ? 'bg-primary/15 text-primary'
-                          : r.slot.extra
+                          : slots[it.row.index].extra
                             ? 'empty-work text-secondary'
                             : 'bg-primary/5 text-primary/70'
                         : 'text-secondary/60'
@@ -386,10 +460,11 @@
                   <span v-else>{{ $t('shiftType.groupView.rest') }}</span>
                 </div>
                 <div class="cell w-[70px] min-w-[70px] sticky right-0 z-[5] bg-surface-section font-medium">
-                  {{ r.hours }}
+                  {{ it.row.hours }}
                 </div>
               </div>
             </template>
+            <div :style="{ height: `${visible.after}px` }" />
 
             <div class="flex w-fit min-w-full sticky bottom-0 z-[10] bg-surface-section border-t-2 border-surface-line">
               <div class="cell w-[348px] min-w-[348px] sticky left-0 z-[20] bg-surface-section justify-start! px-3 text-xs font-semibold text-secondary">
@@ -398,10 +473,13 @@
               <div
                 v-for="(c, i) in coverage"
                 :key="i"
-                class="cell w-[52px] min-w-[52px] text-xs font-semibold"
+                class="cell w-[52px] min-w-[52px] flex-col leading-[1.1] font-semibold"
                 :class="c.out ? 'out' : c.filled < c.total ? 'text-warning' : 'text-success'"
               >
-                <template v-if="!c.out">{{ c.filled }}/{{ c.total }}</template>
+                <template v-if="!c.out">
+                  <span class="text-xs">{{ c.filled }}</span>
+                  <span class="text-[10px] opacity-70">/ {{ c.total }}</span>
+                </template>
               </div>
               <div class="cell w-[70px] min-w-[70px] sticky right-0 z-[20] bg-surface-section"></div>
             </div>
@@ -418,6 +496,7 @@
       :end-date="endDate"
       :taken-ids="takenIds"
       :only-free="mode !== 'all'"
+      :exclude-type="store.elementId"
       @select="onAssign"
     />
   </n-drawer>

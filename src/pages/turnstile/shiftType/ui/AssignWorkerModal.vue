@@ -11,7 +11,9 @@
     endDate: { type: String, default: null },
     takenIds: { type: Array, default: () => [] },
     // false — korxonaning barcha shtat xodimlari («Barchasi» rejimi).
-    onlyFree: { type: Boolean, default: true }
+    onlyFree: { type: Boolean, default: true },
+    // «Barchasi»da shu smena turiga allaqachon qo'yilganlar ko'rsatilmaydi.
+    excludeType: { type: Number, default: null }
   })
   const emit = defineEmits(['select'])
   const visible = defineModel('visible', { type: Boolean, default: false })
@@ -30,7 +32,9 @@
           page: 1,
           per_page: 50,
           search: search.value?.trim() || undefined,
-          ...(props.onlyFree ? { has_schedule: 'No', start_date: props.startDate, end_date: props.endDate } : {})
+          start_date: props.startDate,
+          end_date: props.endDate,
+          ...(props.onlyFree ? { has_schedule: 'No' } : { exclude_schedule_type: props.excludeType || undefined })
         }
       })
       .then((res) => {

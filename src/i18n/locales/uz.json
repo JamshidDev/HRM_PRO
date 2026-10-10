@@ -5290,16 +5290,13 @@
     },
     "generate": {
       "month": "Oy",
-      "workersCount": "Shu smenada nechta xodim ishlaydi?",
+      "workersCount": "Smenada ishlaydigan xodimlar soni",
       "crewN": "{n}-brigada",
       "coverage": "Har kuni ishda",
       "filled": "{filled} / {total} o'ringa xodim qo'yildi",
       "noWorkerSelected": "Kamida bitta o'ringa xodim tanlang",
       "emptySlot": "Bo'sh o'rin",
-      "workersN": "{n} xodim",
       "crewsN": "{n} ta brigada",
-      "moreCrews": "+{n} ta brigada",
-      "emptyInLast": "Oxirgi brigadada {n} ta bo'sh o'rin qoladi — keyin xodim qo'shish mumkin",
       "assign": "Biriktirish",
       "assignTitle": "{n}-o'ringa xodim biriktirish",
       "assignHint": "{crew}-brigada, {slot}-o'rin. Xodim shu qatordagi kunlarda ishlaydi.",
@@ -5317,7 +5314,14 @@
       "allWorkers": "Korxonaning barcha shtat xodimlari: {n}",
       "inOtherShift": "Boshqa smenada",
       "moveTitle": "Xodimlar boshqa smenadan ko'chiriladi",
-      "moveConfirm": "{n} ta xodimning shu davrda boshqa smenasi bor. Saqlansa, ular shu smenaga ko'chiriladi. Davom etasizmi?"
+      "moveConfirm": "{n} ta xodimning shu davrda boshqa smenasi bor. Saqlansa, ular shu smenaga ko'chiriladi. Davom etasizmi?",
+      "placement": "Xodimlarni joylashtirish",
+      "placementAuto": "Avtomatik",
+      "placementAutoHint": "Tizim xodimlarni o'rinlarga tasodifiy joylaydi",
+      "placementEmpty": "Bo'sh qoldirish",
+      "placementEmptyHint": "O'rinlar bo'sh chiqadi, HR o'zi biriktiradi",
+      "maxHint": "Bitta generatsiyada ko'pi bilan {n} ta xodim",
+      "batchHint": "Jami {total} ta xodim. Bu safar {n} tasi joylanadi, qolgan {rest} tasini keyingi generatsiyada qo'shing — ular shu oy guruhiga tushadi."
     }
   },
   "lmsCertificate": {

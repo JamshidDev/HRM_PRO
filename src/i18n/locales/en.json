@@ -5241,16 +5241,13 @@
     },
     "generate": {
       "month": "Month",
-      "workersCount": "How many employees work this shift?",
+      "workersCount": "Number of employees in the shift",
       "crewN": "Crew {n}",
       "coverage": "On duty per day",
       "filled": "Employees assigned: {filled} / {total}",
       "noWorkerSelected": "Assign an employee to at least one slot",
       "emptySlot": "Empty slot",
-      "workersN": "{n} employees",
       "crewsN": "{n} crew(s)",
-      "moreCrews": "+{n} crew(s)",
-      "emptyInLast": "The last crew has {n} empty slot(s) — employees can be added later",
       "assign": "Assign",
       "assignTitle": "Assign employee to slot {n}",
       "assignHint": "Crew {crew}, slot {slot}. The employee works on this row's days.",
@@ -5268,7 +5265,14 @@
       "allWorkers": "All staff employees of the organization: {n}",
       "inOtherShift": "In another shift",
       "moveTitle": "Employees will be moved from another shift",
-      "moveConfirm": "{n} employees already have another shift in this period. Saving will move them to this shift. Continue?"
+      "moveConfirm": "{n} employees already have another shift in this period. Saving will move them to this shift. Continue?",
+      "placement": "Employee placement",
+      "placementAuto": "Automatic",
+      "placementAutoHint": "The system places employees into slots at random",
+      "placementEmpty": "Leave empty",
+      "placementEmptyHint": "Slots stay empty, HR assigns them",
+      "maxHint": "At most {n} employees per generation",
+      "batchHint": "{total} employees in total. {n} will be placed now; add the remaining {rest} in the next generation — they go into this month's group."
     }
   },
   "publicPage": {

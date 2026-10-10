@@ -6,7 +6,7 @@
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
   import { crewSizeOf, cycleDays, isRotating } from '@/pages/turnstile/scheduleWorker/ui/navbat.js'
-  import CrewInfo from './CrewInfo.vue'
+  import { Checkmark12Filled, Flash16Regular, PersonAdd16Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -52,18 +52,15 @@
   const yearOptions = computed(() => {
     const now = dayjs()
     const last = now.add(MAX_MONTHS_AHEAD, 'month').year()
-    const out = []
-    for (let y = now.year(); y <= last; y++) out.push({ label: String(y), value: y })
-    return out
+    return Utils.yearList.map((y) => ({ ...y, disabled: y.id < now.year() || y.id > last }))
   })
   const PERIOD = 'period'
   const monthOptions = computed(() => [
     ...Utils.monthList.map((m) => ({
-      label: m.name,
-      value: m.id,
+      ...m,
       disabled: isMonthDisabled(new Date(year.value, m.id - 1, 1).getTime())
     })),
-    { label: t('shiftType.generate.byPeriod'), value: PERIOD }
+    { name: t('shiftType.generate.byPeriod'), id: PERIOD }
   ])
   const setMonth = (y, m) => {
     let ts = new Date(y, m - 1, 1).getTime()
@@ -112,33 +109,58 @@
     }
   )
 
-  // Xodimlar soni: aniq son, shu davrda umuman smenasi yo'qlar yoki korxonaning barcha shtat xodimlari.
-  const counts = reactive({ free: null, all: null })
+  // Joylashtirish: tizim xodimlarni o'zi tasodifiy qo'yadi yoki o'rinlar bo'sh qoladi (HR o'zi biriktiradi).
+  const placementOptions = computed(() => [
+    {
+      value: 'auto',
+      icon: Flash16Regular,
+      label: t('shiftType.generate.placementAuto'),
+      hint: t('shiftType.generate.placementAutoHint')
+    },
+    {
+      value: 'empty',
+      icon: PersonAdd16Regular,
+      label: t('shiftType.generate.placementEmpty'),
+      hint: t('shiftType.generate.placementEmptyHint')
+    }
+  ])
+
+  // Xodimlar soni: aniq son yoki hisoblab to'ldiriladi — shu davrda smenasi yo'qlar / barcha shtat xodimlari.
   const countLoading = ref(false)
   const countModeOptions = computed(() => [
     { label: t('shiftType.generate.byCount'), value: 'count' },
-    { label: withCount(t('shiftType.generate.freeWorkersMode'), counts.free), value: 'free' },
-    { label: withCount(t('shiftType.generate.allWorkersMode'), counts.all), value: 'all' }
+    { label: t('shiftType.generate.freeWorkersMode'), value: 'free' },
+    { label: t('shiftType.generate.allWorkersMode'), value: 'all' }
   ])
-  const withCount = (label, n) => (n == null ? label : `${label} (${n})`)
 
   const totalOf = (params) =>
     $ApiService.shiftTypeService
       ._getWorkers({ params: { page: 1, per_page: 1, ...params } })
       .then((res) => Number(res.data.data.total) || 0)
 
+  // Bitta saqlashda ko'pi bilan 100 xodim (backend ham tekshiradi); smenada brigada buzilmasin — brigadaga karrali.
+  const BATCH_MAX = 100
+  const maxWorkers = computed(() => (rotating.value ? Math.floor(BATCH_MAX / crewSize.value) * crewSize.value : BATCH_MAX))
+  const totalFound = ref(null)
+  watch(
+    () => store.generatePayload.workers_count,
+    (v) => {
+      if (Number(v) > maxWorkers.value) store.generatePayload.workers_count = maxWorkers.value
+    }
+  )
+
   const loadCounts = () => {
     const mode = store.generatePayload.count_mode
     if (mode === 'count' || !store.visible) return
     const range = monthRange()
     countLoading.value = true
-    Promise.all([totalOf({ has_schedule: 'No', ...range }), totalOf({})])
-      .then(([free, all]) => {
-        counts.free = free
-        counts.all = all
-        if (store.generatePayload.count_mode !== 'count') {
-          store.generatePayload.workers_count = store.generatePayload.count_mode === 'all' ? all : free
-        }
+    totalOf(
+      mode === 'free' ? { has_schedule: 'No', ...range } : { exclude_schedule_type: store.elementId, ...range }
+    )
+      .then((n) => {
+        if (store.generatePayload.count_mode !== mode) return
+        totalFound.value = n
+        store.generatePayload.workers_count = Math.min(n, maxWorkers.value)
       })
       .finally(() => {
         countLoading.value = false
@@ -153,15 +175,6 @@
       store.generatePayload.period_to
     ],
     loadCounts
-  )
-  watch(
-    () => store.visible,
-    (v) => {
-      if (v) {
-        counts.free = null
-        counts.all = null
-      }
-    }
   )
 
   const onSubmit = () => {
@@ -255,10 +268,16 @@
 
         <div class="grid grid-cols-12 gap-x-4">
           <n-form-item class="col-span-5 sm:col-span-4" :label="$t('content.year')">
-            <n-select v-model:value="year" :options="yearOptions" :disabled="store.generatePayload.period" />
+            <n-select
+              v-model:value="year"
+              :options="yearOptions"
+              label-field="name"
+              value-field="id"
+              :disabled="store.generatePayload.period"
+            />
           </n-form-item>
           <n-form-item class="col-span-7 sm:col-span-8" :label="$t('content.month')">
-            <n-select v-model:value="month" :options="monthOptions" />
+            <n-select v-model:value="month" :options="monthOptions" label-field="name" value-field="id" />
           </n-form-item>
           <template v-if="store.generatePayload.period">
             <n-form-item class="col-span-6" :label="$t('shiftType.generate.periodFrom')">
@@ -291,7 +310,7 @@
             <n-input-group>
               <n-input-number
                 :min="1"
-                :max="500"
+                :max="maxWorkers"
                 :step="1"
                 class="flex-1"
                 :disabled="store.generatePayload.count_mode !== 'count'"
@@ -307,6 +326,15 @@
                 class="w-[210px]!"
               />
             </n-input-group>
+            <template #feedback>
+              <span
+                v-if="store.generatePayload.count_mode !== 'count' && totalFound > maxWorkers"
+                class="text-warning"
+              >
+                {{ $t('shiftType.generate.batchHint', { total: totalFound, n: maxWorkers, rest: totalFound - maxWorkers }) }}
+              </span>
+              <span v-else class="text-secondary">{{ $t('shiftType.generate.maxHint', { n: maxWorkers }) }}</span>
+            </template>
           </n-form-item>
 
           <n-form-item
@@ -328,11 +356,40 @@
           </n-form-item>
         </div>
 
-        <CrewInfo
-          v-if="rotating"
-          :size="crewSize"
-          :workers="Number(store.generatePayload.workers_count) || 0"
-        />
+        <n-form-item v-if="slotted" :label="$t('shiftType.generate.placement')" :show-feedback="false" class="mb-4">
+          <div class="w-full grid grid-cols-2 gap-2">
+            <button
+              v-for="o in placementOptions"
+              :key="o.value"
+              type="button"
+              class="relative text-left pl-3 pr-9 py-2.5 rounded-lg border transition-colors"
+              :class="
+                store.generatePayload.placement === o.value
+                  ? 'border-primary bg-primary/5 ring-1 ring-primary'
+                  : 'border-surface-line hover:border-primary/40'
+              "
+              @click="store.generatePayload.placement = o.value"
+            >
+              <span
+                class="absolute top-2.5 right-2.5 w-5 h-5 rounded-full flex items-center justify-center transition-colors"
+                :class="
+                  store.generatePayload.placement === o.value
+                    ? 'bg-primary text-white'
+                    : 'border-2 border-surface-line'
+                "
+              >
+                <n-icon v-if="store.generatePayload.placement === o.value" size="12"><Checkmark12Filled /></n-icon>
+              </span>
+              <div class="flex items-center gap-1.5 text-sm font-medium">
+                <n-icon size="16" :class="store.generatePayload.placement === o.value ? 'text-primary' : 'text-secondary'">
+                  <component :is="o.icon" />
+                </n-icon>
+                {{ o.label }}
+              </div>
+              <div class="mt-0.5 text-xs text-secondary leading-[1.3]">{{ o.hint }}</div>
+            </button>
+          </div>
+        </n-form-item>
       </template>
 
       <div class="grid grid-cols-1 mt-6">

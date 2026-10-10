@@ -40,6 +40,7 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       month: null,
       workers_count: null,
       count_mode: 'count',
+      placement: 'auto',
       period: false,
       period_from: null,
       period_to: null
@@ -341,6 +342,7 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       this.generatePayload.count = this.generatePayload.count ?? 1
       this.generatePayload.month = new Date(today.getFullYear(), today.getMonth(), 1).getTime()
       this.generatePayload.count_mode = 'count'
+      this.generatePayload.placement = 'auto'
       this.generatePayload.period = false
       this.generatePayload.period_from = null
       this.generatePayload.period_to = null
