@@ -5267,6 +5267,17 @@
   "uploadSourceConfig": {
     "name": "Источник загрузки"
   },
+  "salaryHidden": {
+    "name": "Скрытые зарплаты",
+    "searchPlaceholder": "Поиск по ПИНФЛ или примечанию...",
+    "addButton": "Добавить ПИНФЛ",
+    "pinfl": "ПИНФЛ",
+    "pinflPlaceholder": "14-значный ПИНФЛ",
+    "note": "Примечание",
+    "notePlaceholder": "Причина (необязательно)",
+    "addedAt": "Дата добавления",
+    "actions": "Действия"
+  },
   "staffingApproval": {
     "name": "Штаты",
     "createTitle": "Отправить штаты на согласование",

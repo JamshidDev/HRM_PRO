@@ -5357,6 +5357,17 @@
   "uploadSourceConfig": {
     "name": "Yuklash manbasi"
   },
+  "salaryHidden": {
+    "name": "Oylik cheklovi",
+    "searchPlaceholder": "PINFL yoki izoh bo'yicha qidiring...",
+    "addButton": "PINFL qo'shish",
+    "pinfl": "PINFL",
+    "pinflPlaceholder": "14 xonali PINFL",
+    "note": "Izoh",
+    "notePlaceholder": "Sabab (ixtiyoriy)",
+    "addedAt": "Qo'shilgan sana",
+    "actions": "Amallar"
+  },
   "staffingApproval": {
     "name": "Shtatlar",
     "createTitle": "Shtatlarni tasdiqlashga yuborish",

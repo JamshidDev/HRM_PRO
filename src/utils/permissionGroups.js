@@ -1054,7 +1054,8 @@ export const PERMISSION_GROUPS = [
       },
       { prefix: 'hr-report', label: 'report.name' },
       { prefix: 'economist-staffing-approve', label: 'staffingApproval.name' },
-      { prefix: 'economist-upload-source-config', label: 'uploadSourceConfig.name' }
+      { prefix: 'economist-upload-source-config', label: 'uploadSourceConfig.name' },
+      { prefix: 'salary-hidden', label: 'salaryHidden.name' }
     ]
   },
   {

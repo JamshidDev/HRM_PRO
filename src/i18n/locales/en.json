@@ -5256,6 +5256,17 @@
   "uploadSourceConfig": {
     "name": "Upload Source"
   },
+  "salaryHidden": {
+    "name": "Salary Hidden",
+    "searchPlaceholder": "Search by PINFL or note...",
+    "addButton": "Add PINFL",
+    "pinfl": "PINFL",
+    "pinflPlaceholder": "14-digit PINFL",
+    "note": "Note",
+    "notePlaceholder": "Reason (optional)",
+    "addedAt": "Added date",
+    "actions": "Actions"
+  },
   "staffingApproval": {
     "name": "Staffing",
     "createTitle": "Send staffing for approval",

@@ -5030,6 +5030,17 @@
   "uploadSourceConfig": {
     "name": "Юклаш манбаси"
   },
+  "salaryHidden": {
+    "name": "Ойлик чеклови",
+    "searchPlaceholder": "ПИНФЛ ёки изоҳ бўйича қидиринг...",
+    "addButton": "ПИНФЛ қўшиш",
+    "pinfl": "ПИНФЛ",
+    "pinflPlaceholder": "14 хонали ПИНФЛ",
+    "note": "Изоҳ",
+    "notePlaceholder": "Сабаб (ихтиёрий)",
+    "addedAt": "Қўшилган сана",
+    "actions": "Амаллар"
+  },
   "staffingApproval": {
     "name": "Штатлар",
     "createTitle": "Штатларни тасдиқлашга юбориш",
