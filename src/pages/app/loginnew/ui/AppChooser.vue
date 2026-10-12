@@ -110,12 +110,14 @@
       <p v-else class="app-chooser__warn text-sm mt-2 max-w-[320px]">
         {{ $t(`loginPage.appLogin.${phase}`) }}
       </p>
-      <n-button type="primary" size="large" block class="mt-6" :loading="opening" icon-placement="right" @click="openApp">
-        {{ $t('loginPage.appLogin.open') }}
-        <template #icon>
-          <n-icon><ArrowRight16Regular /></n-icon>
-        </template>
-      </n-button>
+      <div class="w-full mt-6">
+        <n-button type="primary" size="large" block :loading="opening" icon-placement="right" @click="openApp">
+          {{ $t('loginPage.appLogin.open') }}
+          <template #icon>
+            <n-icon><ArrowRight16Regular /></n-icon>
+          </template>
+        </n-button>
+      </div>
     </template>
 
     <template v-else-if="phase === 'waiting'">
