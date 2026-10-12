@@ -27,6 +27,11 @@
   )
 
   // replace — «Orqaga» bosilsa HRM login sahifasiga qaytib qolmasin.
+  const otherAccount = () => {
+    clearInterval(timer)
+    store._ssoUseOtherAccount()
+  }
+
   const go = () => {
     clearInterval(timer)
     window.location.replace(store.ssoRedirect.url)
@@ -92,6 +97,9 @@
           <p class="sso__text text-login-body text-sm mt-2">
             {{ $t('loginPage.sso.seconds', { n: Math.max(left, 1) }) }}
           </p>
+          <p v-if="store.ssoSession?.name" class="sso__text text-login-ink text-sm font-semibold mt-3">
+            {{ $t('loginPage.sso.as', { name: store.ssoSession.name }) }}
+          </p>
 
           <div class="sso__progress w-full max-w-[320px] mt-6" aria-hidden="true">
             <span class="sso__progress-bar" :style="{ animationDuration: `${SECONDS}s` }"></span>
@@ -105,6 +113,10 @@
               </template>
             </n-button>
           </div>
+          <!-- Mavjud sessiya bilan o'tilayotganda — boshqa akkauntga almashtirish imkoni -->
+          <button v-if="store.ssoSession" type="button" class="sso__other text-sm mt-5" @click="otherAccount">
+            {{ $t('loginPage.sso.otherAccount') }}
+          </button>
         </div>
       </div>
     </Transition>
@@ -216,6 +228,12 @@
 
   .sso__arrow {
     animation: sso-arrow 1.2s ease-in-out infinite;
+  }
+
+  .sso__other {
+    color: var(--login-body);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .sso__text {

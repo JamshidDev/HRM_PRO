@@ -620,8 +620,26 @@
       "redirecting": "Sizni «{name}» tizimiga yo'naltirmoqdamiz",
       "seconds": "Hisobingiz tasdiqlandi. {n} soniyadan so'ng avtomatik yo'naltiramiz.",
       "goNow": "Hozir o'tish",
-      "verified": "Tasdiqlandi"
-    }
+      "verified": "Tasdiqlandi",
+      "as": "{name} sifatida",
+      "otherAccount": "Boshqa akkaunt bilan kirish"
+    },
+    "appLogin": {
+      "label": "HRM orqali kirish",
+      "title": "«{name}» tizimiga kirish",
+      "text": "HR Rail ilovasi orqali parolsiz va tez kiring.",
+      "open": "HR Rail'da davom etish",
+      "browser": "Brauzerda davom etish",
+      "waitTitle": "HR Rail ilovasida tasdiqlang",
+      "waitText": "HR Rail ilovasida tasdiqlang — «{name}» tizimi avtomatik ochiladi.",
+      "reopen": "Ilovani qayta ochish",
+      "missing": "HR Rail ilovasi topilmadi. O'rnating yoki brauzerda davom eting.",
+      "install": "HR Rail'ni o'rnatish",
+      "approved": "Tasdiqlandi, kirilmoqda…",
+      "rejected": "Kirish ilovada rad etildi.",
+      "expired": "Vaqt tugadi. Qaytadan urinib ko'ring."
+    },
+    "sessionRevoked": "Sessiyangiz telefoningizdagi HR Rail ilovasidan tugatildi. Qayta kiring."
   },
   "registerPage": {
     "name": "Ro'yxatdan o'tish",
@@ -6362,7 +6380,9 @@
     "method": {
       "password": "Parol",
       "qr": "QR-kod",
-      "eimzo": "E-IMZO"
+      "eimzo": "E-IMZO",
+      "app": "HR Rail ilovasi",
+      "session": "Mavjud sessiya"
     }
   }
 }
