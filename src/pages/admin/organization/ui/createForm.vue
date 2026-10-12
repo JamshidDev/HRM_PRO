@@ -6,8 +6,15 @@
   import { UIMultipleLangItems, UIDConfirm } from '@/components/index.js'
   import { useOrganizationStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
   import BasisFields from './BasisFields.vue'
+  import { Info16Regular } from '@vicons/fluent'
 
   const store = useOrganizationStore()
+  const onlyDigits = (v) => !v || /^\d+$/.test(v)
+  // JSHSHIR ixtiyoriy, kiritilsa aniq 14 raqam.
+  const pinRule = {
+    trigger: ['blur', 'input'],
+    validator: (_, v) => !v || /^\d{14}$/.test(v) || new Error(t('organizationPage.form.pinInvalid'))
+  }
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
   // Panelda korxona tanlanganda forma darhol ochiladi — yozish huquqi bo'lmasa faqat ko'rish.
@@ -182,12 +189,46 @@
             :min="0" :precision="0" clearable />
         </n-form-item>
       </div>
-      <n-form-item path="code">
-        <n-checkbox
-          :label="$t(`organizationPage.form.group`)"
-          v-model:checked="store.payload.group"
-        />
+      <n-form-item path="code" :show-feedback="false" class="mb-4">
+        <div class="flex flex-col gap-1.5">
+          <n-checkbox
+            :label="$t(`organizationPage.form.group`)"
+            v-model:checked="store.payload.group"
+          />
+          <!-- «Guruh» nimaligini tushuntiruvchi izoh. -->
+          <div class="flex items-start gap-1.5 text-xs leading-4 text-textColor2">
+            <n-icon size="14" class="mt-px shrink-0 text-primary"><Info16Regular /></n-icon>
+            <span>{{ $t('organizationPage.form.groupInfo') }}</span>
+          </div>
+        </div>
       </n-form-item>
+      <!-- Faqat yangi korxonada: birinchi HR va rahbar standart shtatga yoziladi. -->
+      <template v-if="store.isCreate && !store.payload.group">
+        <div class="grid grid-cols-2 gap-2">
+          <n-form-item :label="$t('organizationPage.form.hrPin')" path="hr_pin" :rule="pinRule">
+            <n-input
+              v-model:value="store.payload.hr_pin"
+              :allow-input="onlyDigits"
+              :maxlength="14"
+              placeholder="12345678901234"
+              clearable
+            />
+          </n-form-item>
+          <n-form-item :label="$t('organizationPage.form.directorPin')" path="director_pin" :rule="pinRule">
+            <n-input
+              v-model:value="store.payload.director_pin"
+              :allow-input="onlyDigits"
+              :maxlength="14"
+              placeholder="12345678901234"
+              clearable
+            />
+          </n-form-item>
+        </div>
+        <div class="mb-4 -mt-2 flex items-start gap-1.5 text-xs leading-4 text-textColor2">
+          <n-icon size="14" class="mt-px shrink-0 text-primary"><Info16Regular /></n-icon>
+          <span>{{ $t('organizationPage.form.startStaffInfo') }}</span>
+        </div>
+      </template>
       <BasisFields
         v-if="store.isCreate"
         v-model:comment="store.payload.basis_comment"

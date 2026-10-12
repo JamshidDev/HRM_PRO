@@ -8,6 +8,11 @@ const _create = async (payload) => {
   return await axios.post(`/v1/turnstile/schedule/types`, payload.data)
 }
 
+// Smena turlari naqshi bilan (days) — guruh sahifasidagi kartochka uchun.
+const _types = async (payload) => {
+  return await axios.get(`/v1/turnstile/schedule/types`, { params: payload?.params })
+}
+
 const _generateSchedule = async (payload) => {
   return await axios.post(`/v1/turnstile/schedule/generate-schedule`, payload.data)
 }
@@ -46,6 +51,7 @@ const _replaceWorker = async (payload) => {
 }
 
 export default {
+  _types,
   _index,
   _create,
   _update,

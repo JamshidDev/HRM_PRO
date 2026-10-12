@@ -4,7 +4,6 @@
   import { useAppSetting } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
-  import { UISelect } from '@/components/index.js'
   import UIDepartment from '../../../../components/ui/UIDepartment.vue'
 
   const store = useWorkerProfileStore()
@@ -19,17 +18,6 @@
     })
   }
 
-  const onChangeStructure = (v) => {
-    store.editPayload.organization_id = v
-    if (v.length > 0) {
-      componentStore.departmentList = []
-      store.editPayload.department_id = []
-      store.editPayload.department_position_id = null
-      componentStore.depParams.organizations = v[0].id
-      componentStore._departmentTree()
-    }
-  }
-
   const onChangeDepartment = (v) => {
     store.editPayload.department_id = v
     componentStore.departmentPositionList = []
@@ -40,7 +28,6 @@
   onMounted(() => {
     componentStore._enums()
     componentStore._scheduleList()
-    componentStore._structures()
   })
 </script>
 
@@ -192,18 +179,9 @@
       </div>
 
       <div class="col-span-12 md:col-span-9">
+        <!-- Boshqa korxonaga faqat o'tkazish buyrug'i orqali — bu yerda faqat ko'rsatiladi. -->
         <n-form-item :label="$t(`documentPage.form.organization`)" path="organization_id">
-          <UISelect
-            :options="componentStore.structureList"
-            :modelV="store.editPayload.organization_id"
-            @updateModel="onChangeStructure"
-            :checkedVal="store.structureCheckV2"
-            @updateCheck="(v) => (store.structureCheckV2 = v)"
-            :loading="componentStore.structureLoading"
-            v-model:search="componentStore.structureParams.search"
-            @onSearch="componentStore._structures"
-            :multiple="false"
-          />
+          <n-input class="w-full" :value="store.editPayload.organization_id?.[0]?.name" disabled />
         </n-form-item>
       </div>
       <div class="col-span-12 md:col-span-6">

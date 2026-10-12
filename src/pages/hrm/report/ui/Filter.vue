@@ -1,15 +1,12 @@
 <script setup>
-  import { UISegmentTabs, UISelect } from '@/components/index.js'
+  import { UISelect } from '@/components/index.js'
   import { useComponentStore, useDepartmentStore, useReport2Store } from '@/store/modules/index.js'
   import { useAccountStore } from '@/store/modules/index.js'
   import {
     AddCircle24Regular,
     ArrowClockwise24Regular,
-    ArrowDownload24Regular,
-    Table24Regular,
-    TextBulletListLtr24Regular
+    ArrowDownload24Regular
   } from '@vicons/fluent'
-  import i18n from '@/i18n/index.js'
   const accStore = useAccountStore()
   const { proxy } = getCurrentInstance()
   const staffingButtonRef = ref(null)
@@ -17,12 +14,6 @@
   const componentStore = useComponentStore()
   const store = useReport2Store()
   const dpStore = useDepartmentStore()
-  const { t } = i18n.global
-
-  const modeTabs = computed(() => [
-    { id: 'list', name: t('report.listView'), icon: TextBulletListLtr24Regular },
-    { id: 'table', name: t('report.tableView'), icon: Table24Regular }
-  ])
 
   const selectedOrg = computed(() => store.department.params.organization_id?.[0] || null)
 
@@ -120,12 +111,6 @@
     </div>
 
     <template v-if="selectedOrg">
-      <UISegmentTabs
-        v-if="store.department.list.length > 0"
-        class="shrink-0 mr-auto"
-        :tabs="modeTabs"
-        v-model="store.viewMode"
-      />
       <div class="flex flex-wrap gap-2">
         <n-button :loading="store.busy" :disabled="store.busy" @click="store._refreshAll()" secondary>
           <template #icon>

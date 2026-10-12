@@ -47,9 +47,14 @@
 
     componentStore.departmentList = []
     componentStore.departmentPositionList = []
-    store.editPayload.organization_id = []
+    // Korxona o'zgarmaydi — bo'limlar shu lavozim korxonasidan yuklanadi.
+    store.editPayload.organization_id = v.organization ? [v.organization] : []
     store.editPayload.department_id = []
     store.editPayload.department_position_id = null
+    if (v.organization?.id) {
+      componentStore.depParams.organizations = v.organization.id
+      componentStore._departmentTree()
+    }
   }
 </script>
 

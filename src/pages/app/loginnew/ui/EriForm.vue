@@ -1,11 +1,8 @@
 <script setup>
-  import { useRouter } from 'vue-router'
-  import { useAccountStore, useSignatureStore } from '@/store/modules/index.js'
-  import { AppPaths, useAppSetting } from '@/utils/index.js'
+  import { useLoginNewStore, useSignatureStore } from '@/store/modules/index.js'
 
   const signatureStore = useSignatureStore()
-  const accountStore = useAccountStore()
-  const router = useRouter()
+  const loginStore = useLoginNewStore()
 
   // Matnlar OneID (id.egov.uz) bilan bir xil formulirovkada — foydalanuvchi
   // uchun tanish. Havolalar ham o'sha yerdagi rasmiy manzillar.
@@ -25,22 +22,10 @@
     await signatureStore._initialSignature(signatureStore.signatureTypes.auth, onSuccess)
   }
 
-  // E-IMZO oqimi LoginForm'dan ko'chirildi — mantiq o'zgarmagan:
-  // kalitlar ro'yxati modalda ochiladi, muvaffaqiyatda token localStorage'ga yoziladi.
+  // Umumiy login oqimi (SSO yo'naltirish ham shu yerda) — parol va QR bilan bir xil.
   const onSuccess = (data) => {
-    new Promise((resolve, reject) => {
-      try {
-        localStorage.setItem(useAppSetting.tokenKey, data?.access_token)
-        accountStore._index(() => {
-          router.push(AppPaths.Home)
-        })
-        resolve(true)
-      } catch {
-        reject(false)
-      }
-    }).then((ok) => {
-      if (ok) signatureStore.visible = false
-    })
+    signatureStore.visible = false
+    loginStore._handleAuthSuccess({ data }, 'eimzo')
   }
 </script>
 

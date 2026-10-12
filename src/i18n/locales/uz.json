@@ -615,6 +615,12 @@
       "refresh": "Yangilash",
       "connectionError": "Ulanishda xatolik",
       "signingIn": "Tizimga kirilmoqda…"
+    },
+    "sso": {
+      "redirecting": "Sizni «{name}» tizimiga yo'naltirmoqdamiz",
+      "seconds": "Hisobingiz tasdiqlandi. {n} soniyadan so'ng avtomatik yo'naltiramiz.",
+      "goNow": "Hozir o'tish",
+      "verified": "Tasdiqlandi"
     }
   },
   "registerPage": {
@@ -764,7 +770,8 @@
         "join": "Qo'shilish",
         "copySuccess": "Link nusxa olindi!",
         "copyError": "Nusxa olishda xatolik!"
-      }
+      },
+      "ssoLogins": "Kirishlar tarixi (SSO)"
     },
     "org": {
       "title": "Buyruq blankasi uchun ma'lumotlar",
@@ -832,6 +839,11 @@
       "name": "Tashkilot nomi",
       "full_name": "Tashkilotning to'liq nomi",
       "group": "Guruh",
+      "groupInfo": "Guruh — alohida korxona emas, boshqa tashkilotlarni birlashtiruvchi bo'lim (masalan, «Markaziy apparat»). Tashkilot tanlash ro'yxatlarida uni yakka tanlab bo'lmaydi va u korxonalar soniga kirmaydi.",
+      "hrPin": "HR JSHSHIR",
+      "directorPin": "Rahbar JSHSHIR",
+      "startStaffInfo": "Korxona bilan birga «Boshqaruv apparati» bo'limi va «boshqaruv xodimi» shtati (5 stavka) ochiladi. HR va rahbar shu lavozimga yoziladi: hech qayerda asosiy lavozimi bo'lmasa — asosiy, 1 stavka; boshqa joyda asosiy lavozimi bo'lsa — o'rindosh, 0.5 stavka. Keyin HR shtat va kelishuvchilarni o'zi to'g'irlaydi.",
+      "pinInvalid": "JSHSHIR 14 ta raqamdan iborat bo'lishi kerak",
       "code": "Kod",
       "city_id": "Tuman",
       "level": "Tashkilot turi",
@@ -3696,8 +3708,6 @@
     "staffingExportQueued": "Shtat jadvali yuklash navbatiga qo'shildi",
     "addDepartment": "Bo'linma qo'shish",
     "addPosition": "Lavozim qo'shish",
-    "listView": "Ro'yxat",
-    "tableView": "Jadval",
     "table": {
       "position": "Lavozim",
       "occupancy": "Bandlik",
@@ -3713,7 +3723,8 @@
       "F": "Fakt",
       "V": "Vakant",
       "S": "Sverx",
-      "R": "Razryad"
+      "R": "Razryad",
+      "MR": "Maksimal razryad"
     },
     "form": {
       "position": "Lavozimlar",
@@ -3725,9 +3736,7 @@
       "worker": "Xodimlar soni",
       "who": "Kim tomonidan",
       "reason": "Sabab",
-      "byPosition": "Lavozimlar kesimida",
-      "optimizationConfirm": "Ushbu amalni bajarish orqali bo'limdagi bir xil turdagi barcha lavozimlarni birlashtiriladi. Tasdiqlash orqali amalni bajaring",
-      "byWorker": "Xodimlar kesimida"
+      "optimizationConfirm": "Ushbu amalni bajarish orqali bo'limdagi bir xil turdagi barcha lavozimlarni birlashtiriladi. Tasdiqlash orqali amalni bajaring"
     }
   },
   "specialReport": {
@@ -5253,6 +5262,70 @@
       "customShiftHint": "Maxsus smenada guruh bo'lmaydi — u to'g'ridan-to'g'ri Navbatchilik grafigida to'ldiriladi.",
       "noShiftTypes": "Smena turlari topilmadi",
       "searchByShiftName": "Smena nomi bo'yicha qidirish"
+    },
+    "groupView": {
+      "period": "Davr",
+      "workers": "Xodimlar",
+      "pattern": "Naqsh",
+      "cycle": "{n} kunlik aylanma",
+      "navbat": "{n}-navbat",
+      "navbatTitle": "Navbatlar",
+      "navbatHint": "Aylanma smenada har xodim o'z navbatida ishlaydi: navbatlar soni teng bo'lsa post to'liq qoplangan.",
+      "emptySlots": "{n} ta bo'sh o'rin",
+      "allFilled": "Navbatlar to'liq",
+      "outOfPeriod": "Smena davridan tashqari",
+      "hours": "{n} soat",
+      "rest": "Dam",
+      "unknownNavbat": "Navbat aniqlanmadi",
+      "work": "Ish kuni",
+      "byDepartment": "Bo'limlar bo'yicha brigadalar",
+      "department": "Bo'lim",
+      "fullCrews": "To'liq brigada",
+      "missing": "Yetishmaydi",
+      "groupN": "{n}-guruh",
+      "workDays": "Ish kunlari",
+      "emptySlot": "Bo'sh o'rin — xodim qo'yilmagan",
+      "scheduleN": "{n}-jadval",
+      "addWorker": "Xodim qo'shish",
+      "addWorkerTitle": "{n}-navbatga xodim qo'shish",
+      "crewSize": "{n} kishilik",
+      "crewSizeHint": "Bitta postni navbat bilan ushlab turadigan xodimlar soni",
+      "patternStart": "Tanlangan sanada naqshning qaysi kuni"
+    },
+    "generate": {
+      "month": "Oy",
+      "workersCount": "Smenada ishlaydigan xodimlar soni",
+      "crewN": "{n}-brigada",
+      "coverage": "Har kuni ishda",
+      "filled": "{filled} / {total} o'ringa xodim qo'yildi",
+      "noWorkerSelected": "Kamida bitta o'ringa xodim tanlang",
+      "emptySlot": "Bo'sh o'rin",
+      "crewsN": "{n} ta brigada",
+      "assign": "Biriktirish",
+      "assignTitle": "{n}-o'ringa xodim biriktirish",
+      "assignHint": "{crew}-brigada, {slot}-o'rin. Xodim shu qatordagi kunlarda ishlaydi.",
+      "freeWorkers": "Shu davrda smenasi yo'q xodimlar: {n}",
+      "noFreeWorkers": "Smenasiz xodim topilmadi",
+      "alreadyAssigned": "Biriktirilgan",
+      "change": "O'zgartirish",
+      "unassign": "Olib tashlash",
+      "byPeriod": "Sana oralig'ini tanlash",
+      "periodFrom": "Qachondan",
+      "periodTo": "Qachongacha",
+      "byCount": "Aniq son",
+      "freeWorkersMode": "Smenasizlar",
+      "allWorkersMode": "Barchasi",
+      "allWorkers": "Korxonaning barcha shtat xodimlari: {n}",
+      "inOtherShift": "Boshqa smenada",
+      "moveTitle": "Xodimlar boshqa smenadan ko'chiriladi",
+      "moveConfirm": "{n} ta xodimning shu davrda boshqa smenasi bor. Saqlansa, ular shu smenaga ko'chiriladi. Davom etasizmi?",
+      "placement": "Xodimlarni joylashtirish",
+      "placementAuto": "Avtomatik",
+      "placementAutoHint": "Tizim xodimlarni o'rinlarga tasodifiy joylaydi",
+      "placementEmpty": "Bo'sh qoldirish",
+      "placementEmptyHint": "O'rinlar bo'sh chiqadi, HR o'zi biriktiradi",
+      "maxHint": "Bitta generatsiyada ko'pi bilan {n} ta xodim",
+      "batchHint": "Jami {total} ta xodim. Bu safar {n} tasi joylanadi, qolgan {rest} tasini keyingi generatsiyada qo'shing — ular shu oy guruhiga tushadi."
     }
   },
   "lmsCertificate": {
@@ -5678,13 +5751,16 @@
       "organizationsPlaceholder": "Korxonalarni tanlang",
       "selectedCount": "Tanlangan: {n}",
       "expiresAt": "Amal qilish muddati",
-      "expiresPlaceholder": "Muddatsiz"
+      "expiresPlaceholder": "Muddatsiz",
+      "sso": "HRM orqali kirish (SSO)",
+      "ssoBaseUrl": "SSO qaytish manzili (to'liq URL)"
     },
     "validation": {
       "name": "Nom majburiy",
       "role": "Rol tanlang",
       "scope": "Qamrovni tanlang",
-      "organizations": "Kamida bitta korxona tanlang"
+      "organizations": "Kamida bitta korxona tanlang",
+      "ssoBaseUrl": "To'liq URL kiriting (https://...)"
     },
     "create": {
       "button": "Yangi client",
@@ -6277,5 +6353,16 @@
       "title": "Imtiyozli xodim qo'shish"
     },
     "confirmDelete": "O'chirilsinmi?"
+  },
+  "ssoLogins": {
+    "title": "HRM orqali kirishlar tarixi",
+    "description": "Boshqa tizimlarga HRM hisobingiz orqali muvaffaqiyatli kirishlaringiz. Tanimagan kirishni ko'rsangiz, parolingizni almashtiring.",
+    "allSystems": "Barcha tizimlar",
+    "empty": "Hali HRM orqali boshqa tizimga kirilmagan",
+    "method": {
+      "password": "Parol",
+      "qr": "QR-kod",
+      "eimzo": "E-IMZO"
+    }
   }
 }

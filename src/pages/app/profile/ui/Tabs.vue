@@ -17,6 +17,8 @@
   import Notifications from './Notifications.vue'
   import MySalary from './MySalary.vue'
   import LoginMethods from './LoginMethods.vue'
+  import SsoLogins from './SsoLogins.vue'
+  import EnterIcon from '@/assets/icons/tsDoorOpen.svg'
 
   const { t } = i18n.global
   const store = useAccountStore()
@@ -36,7 +38,8 @@
       { id: store.tabs[4], name: t('profilePage.tabs.social.title'), icon: TelegramIcon },
       { id: store.tabs[1], name: t('profilePage.tabs.notification'), icon: RingIcon },
       { id: store.tabs[3], name: t('salary1c.mySalary'), icon: FileEditIcon },
-      { id: store.tabs[5], name: t('profilePage.tabs.secure'), icon: ShieldIcon }
+      { id: store.tabs[5], name: t('profilePage.tabs.secure'), icon: ShieldIcon },
+      { id: store.tabs[6], name: t('profilePage.tabs.ssoLogins'), icon: EnterIcon }
     ].filter(Boolean)
   )
 </script>
@@ -108,6 +111,8 @@
           <MySalary v-else-if="store.activeTab === store.tabs[3]" />
 
           <LoginMethods v-else-if="store.activeTab === store.tabs[5]" />
+
+          <SsoLogins v-else-if="store.activeTab === store.tabs[6]" />
         </div>
       </Transition>
     </div>

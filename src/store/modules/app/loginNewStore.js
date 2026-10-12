@@ -17,7 +17,12 @@ export const useLoginNewStore = defineStore('loginNewStore', {
     phone: '+998',
     password: null,
     loading: false,
-    authPayload: null,
+    // SSO: tashqi tizim `?client_id=` bilan yuborgan bo'lsa — { client_id, name }.
+    sso: null,
+    // Qaysi usulda kirildi (password | qr | eimzo) — SSO tarixiga yoziladi.
+    loginMethod: 'password',
+    // Login'dan keyin to'liq ekranli yo'naltirish oynasi uchun — { name, url }.
+    ssoRedirect: null,
     // custom (rasm) captcha — login sahifasidagidek
     captchaAnswer: null,
     captchaKey: null,
@@ -144,8 +149,9 @@ export const useLoginNewStore = defineStore('loginNewStore', {
       this.codeError = null
     },
     // login va 2FA muvaffaqiyatli token olgandan keyingi umumiy oqim
-    _handleAuthSuccess(res) {
+    _handleAuthSuccess(res, method = 'password') {
       const token = res.data.access_token
+      this.loginMethod = method
 
       // offer=true → offerta HALI qabul qilinmagan. Login yakunlanmaydi:
       // token'ni vaqtincha ushlaymiz (localStorage'ga YOZMAYMIZ) va modalni ochamiz.
@@ -165,8 +171,8 @@ export const useLoginNewStore = defineStore('loginNewStore', {
     _finalizeLogin(token) {
       localStorage.setItem(useAppSetting.tokenKey, token)
 
-      if (this.authPayload) {
-        this._getAuthCode()
+      if (this.sso) {
+        this._ssoRedirect()
         return
       }
 
@@ -203,13 +209,31 @@ export const useLoginNewStore = defineStore('loginNewStore', {
       this.showOfferModal = false
       this.pendingToken = null
     },
-    _getAuthCode() {
-      this.loading = true
-      const data = this.authPayload
+    // Login sahifasi `?client_id=` bilan ochilganda: tizim SSO'ga ulanganini tekshiradi.
+    _loadSsoClient(clientId) {
+      this.sso = null
+      if (!clientId) return
       $ApiService.authService
-        ._authCode({ data })
+        ._ssoClient({ params: { client_id: clientId } })
         .then((res) => {
-          window.location.href = res.data.data.url
+          this.sso = { client_id: clientId, name: res.data.data.name }
+        })
+        // Ulanmagan tizim — oddiy login kabi HRM'ga kiriladi.
+        .catch(() => {})
+    },
+    // Bir martalik client_code olib, to'liq ekranli yo'naltirish oynasini ochadi.
+    _ssoRedirect() {
+      this.loading = true
+      const data = { client_id: this.sso.client_id, method: this.loginMethod }
+      $ApiService.authService
+        ._ssoCode({ data })
+        .then((res) => {
+          this.ssoRedirect = res.data.data
+        })
+        .catch(() => {
+          // Yo'naltirib bo'lmasa — oddiy login kabi HRM'ga kiramiz.
+          this.sso = null
+          this._finalizeLogin(localStorage.getItem(useAppSetting.tokenKey))
         })
         .finally(() => {
           this.loading = false
