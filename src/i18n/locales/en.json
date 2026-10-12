@@ -600,6 +600,12 @@
       "refresh": "Refresh",
       "connectionError": "Connection error",
       "signingIn": "Signing in…"
+    },
+    "sso": {
+      "redirecting": "Redirecting you to «{name}»",
+      "seconds": "You're signed in. We'll redirect you automatically in {n} s.",
+      "goNow": "Go now",
+      "verified": "Verified"
     }
   },
   "registerPage": {
@@ -749,7 +755,8 @@
         "join": "Join",
         "copySuccess": "Link copied!",
         "copyError": "Copy error!"
-      }
+      },
+      "ssoLogins": "Sign-in history (SSO)"
     },
     "org": {
       "title": "Order form data",
@@ -817,6 +824,11 @@
       "name": "Organization name",
       "full_name": "Full organization name",
       "group": "Group",
+      "groupInfo": "A group is not a separate enterprise but a node that unites other organizations (e.g. “Central office”). It cannot be selected on its own in organization pickers and is not counted as an enterprise.",
+      "hrPin": "HR PINFL",
+      "directorPin": "Director PINFL",
+      "startStaffInfo": "Together with the organization, a \"Management office\" department and a \"management employee\" staff position (5 units) are created. HR and the director are recorded in it: with no main job elsewhere — main position, 1 unit; with a main job elsewhere — part-time, 0.5 unit. HR then adjusts the staff and approvers.",
+      "pinInvalid": "PINFL must contain 14 digits",
       "code": "Code",
       "city_id": "District",
       "level": "Organization type",
@@ -5201,6 +5213,70 @@
       "customShiftHint": "Custom shifts have no groups — they are filled directly in the duty schedule.",
       "noShiftTypes": "No shift types found",
       "searchByShiftName": "Search by shift name"
+    },
+    "groupView": {
+      "period": "Period",
+      "workers": "Workers",
+      "pattern": "Pattern",
+      "cycle": "{n}-day rotation",
+      "navbat": "Rotation {n}",
+      "navbatTitle": "Rotations",
+      "navbatHint": "In a rotating shift each worker works in their own rotation slot: equal counts mean the post is fully covered.",
+      "emptySlots": "{n} empty slot(s)",
+      "allFilled": "Rotations complete",
+      "outOfPeriod": "Outside the shift period",
+      "hours": "{n} h",
+      "rest": "Day off",
+      "unknownNavbat": "Rotation not detected",
+      "work": "Work day",
+      "byDepartment": "Crews by department",
+      "department": "Department",
+      "fullCrews": "Full crews",
+      "missing": "Missing",
+      "groupN": "Group {n}",
+      "workDays": "Work days",
+      "emptySlot": "Empty slot — no worker assigned",
+      "scheduleN": "Schedule {n}",
+      "addWorker": "Add worker",
+      "addWorkerTitle": "Add worker to rotation {n}",
+      "crewSize": "{n}-person",
+      "crewSizeHint": "How many workers rotate to cover one post",
+      "patternStart": "Pattern day on the selected date"
+    },
+    "generate": {
+      "month": "Month",
+      "workersCount": "Number of employees in the shift",
+      "crewN": "Crew {n}",
+      "coverage": "On duty per day",
+      "filled": "Employees assigned: {filled} / {total}",
+      "noWorkerSelected": "Assign an employee to at least one slot",
+      "emptySlot": "Empty slot",
+      "crewsN": "{n} crew(s)",
+      "assign": "Assign",
+      "assignTitle": "Assign employee to slot {n}",
+      "assignHint": "Crew {crew}, slot {slot}. The employee works on this row's days.",
+      "freeWorkers": "Employees without a shift in this period: {n}",
+      "noFreeWorkers": "No employees without a shift found",
+      "alreadyAssigned": "Assigned",
+      "change": "Change",
+      "unassign": "Remove",
+      "byPeriod": "Choose date range",
+      "periodFrom": "From",
+      "periodTo": "To",
+      "byCount": "Exact number",
+      "freeWorkersMode": "Without shift",
+      "allWorkersMode": "All",
+      "allWorkers": "All staff employees of the organization: {n}",
+      "inOtherShift": "In another shift",
+      "moveTitle": "Employees will be moved from another shift",
+      "moveConfirm": "{n} employees already have another shift in this period. Saving will move them to this shift. Continue?",
+      "placement": "Employee placement",
+      "placementAuto": "Automatic",
+      "placementAutoHint": "The system places employees into slots at random",
+      "placementEmpty": "Leave empty",
+      "placementEmptyHint": "Slots stay empty, HR assigns them",
+      "maxHint": "At most {n} employees per generation",
+      "batchHint": "{total} employees in total. {n} will be placed now; add the remaining {rest} in the next generation — they go into this month's group."
     }
   },
   "publicPage": {
@@ -5614,13 +5690,16 @@
       "organizationsPlaceholder": "Select organizations",
       "selectedCount": "Selected: {n}",
       "expiresAt": "Expires at",
-      "expiresPlaceholder": "No expiry"
+      "expiresPlaceholder": "No expiry",
+      "sso": "Sign in with HRM (SSO)",
+      "ssoBaseUrl": "SSO redirect URL (full path)"
     },
     "validation": {
       "name": "Name is required",
       "role": "Select a role",
       "scope": "Select a scope",
-      "organizations": "Select at least one organization"
+      "organizations": "Select at least one organization",
+      "ssoBaseUrl": "Enter a full URL (https://...)"
     },
     "create": {
       "button": "New client",
@@ -6213,5 +6292,16 @@
       "title": "Add privileged employee"
     },
     "confirmDelete": "Delete?"
+  },
+  "ssoLogins": {
+    "title": "Sign-ins via HRM",
+    "description": "Successful sign-ins to other systems with your HRM account. If you see one you don't recognise, change your password.",
+    "allSystems": "All systems",
+    "empty": "No sign-ins to other systems via HRM yet",
+    "method": {
+      "password": "Password",
+      "qr": "QR code",
+      "eimzo": "E-IMZO"
+    }
   }
 }

@@ -1,5 +1,4 @@
 <script setup>
-  import { useRoute } from 'vue-router'
   import { useAppStore, useLoginNewStore } from '@/store/modules/index.js'
   import validationRules from '@/utils/validationRules.js'
   import { Call24Regular, Eye24Regular, EyeOff24Regular, LockClosed24Regular } from '@vicons/fluent'
@@ -10,7 +9,6 @@
 
   const store = useLoginNewStore()
   const appStore = useAppStore()
-  const route = useRoute()
 
   const formRef = ref(null)
   const captchaRef = ref(null)
@@ -57,17 +55,6 @@
   }
 
   onMounted(() => {
-    const { client_id, state, scope } = route.query
-    if (client_id && state && scope) {
-      store.authPayload = {
-        client_id,
-        state,
-        scope
-      }
-    } else {
-      store.authPayload = null
-    }
-
     const inputElement = document.querySelector('input[type="password"].n-input__input-el')
     inputElement?.addEventListener(
       'animationstart',

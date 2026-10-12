@@ -31,7 +31,7 @@
         name: row.name,
         start: row.start_date,
         end: row.end_date,
-        type: store.groupParams.schedule_type || undefined
+        type: row.schedule_type?.id || store.groupParams.schedule_type || undefined
       }
     })
   }
@@ -72,6 +72,11 @@
       key: 'name',
       title: t('content.name'),
       minWidth: 260
+    },
+    {
+      key: 'organization',
+      title: t('content.organization'),
+      minWidth: 200
     },
     {
       key: 'workers_count',
@@ -147,6 +152,9 @@
       </div>
     </template>
 
+    <template #cell-organization="{ row }">
+      <span class="line-clamp-2 leading-[1.3]">{{ row.organization?.name || '—' }}</span>
+    </template>
     <template #cell-workers_count="{ row }">
       <UIBadge :show-icon="false" :label="String(row.workers_count)" />
     </template>

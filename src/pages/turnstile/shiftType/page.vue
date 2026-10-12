@@ -9,15 +9,21 @@
     CalendarClock20Regular,
     CalendarLtr24Regular
   } from '@vicons/fluent'
-  import { ShiftTypeList, GenerateModal, ScheduleModal, DailyScheduleModal } from './ui/index.js'
+  import {
+    ShiftTypeList,
+    GenerateModal,
+    ScheduleModal,
+    DailyScheduleModal,
+    RotatingScheduleModal
+  } from './ui/index.js'
+  import { crewSizeOf } from '@/pages/turnstile/scheduleWorker/ui/navbat.js'
   import GroupFilter from '@/pages/turnstile/scheduleGroup/ui/Filter.vue'
   import GroupTable from '@/pages/turnstile/scheduleGroup/ui/Table.vue'
 
   // Smena turi (`type.id`) bo'yicha guruh yaratish oqimi farq qiladi.
   const DAILY_TYPE = 2
-  const WORK_DATE_TYPE = 4
+  const PART_TIME_TYPE = 3
   const CUSTOM_TYPE = 5
-  const GROUP_COUNT_TYPES = [1, 3, 4]
 
   const store = useShiftTypeStore()
   const accStore = useAccountStore()
@@ -56,9 +62,10 @@
     if (!accStore.checkAction(accStore.pn.turnstileSheetsWorkersWrite)) return
     const typeId = selected.value?.type?.id
     store.isDailySchedule = typeId === DAILY_TYPE
-    store.showWorkDate = typeId === WORK_DATE_TYPE
-    store.showGroupCountField = GROUP_COUNT_TYPES.includes(typeId)
+    store.showWorkDate = false
+    store.showGroupCountField = typeId === PART_TIME_TYPE
     store._resetGenerateModal()
+    store.generatePayload.workers_count = crewSizeOf(selected.value) ?? 1
     store.elementId = selected.value.id
     store.visibleType = true
     store.visible = true
@@ -146,6 +153,7 @@
     <GenerateModal />
     <ScheduleModal />
     <DailyScheduleModal />
+    <RotatingScheduleModal />
   </UIPageContent>
 </template>
 

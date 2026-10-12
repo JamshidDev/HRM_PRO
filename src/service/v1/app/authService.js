@@ -8,6 +8,14 @@ const _authCode = async (payload) => {
   return await axios.post(`/oauth/auth-code`, payload.data)
 }
 
+const _ssoClient = async (payload) => {
+  return await axios.get(`/v1/sso/client`, { params: payload.params, silentError: true })
+}
+
+const _ssoCode = async (payload) => {
+  return await axios.post(`/v1/sso/code`, payload.data)
+}
+
 const _registerOtp = async (payload) => {
   return await axios.post(`/auth/send-code`, payload.data)
 }
@@ -45,6 +53,8 @@ export default {
   _registerOtp,
   _register,
   _authCode,
+  _ssoClient,
+  _ssoCode,
   _getCaptcha,
   _verifyResetCode,
   _resetPassword,

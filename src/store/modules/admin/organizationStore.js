@@ -63,7 +63,10 @@ export const useOrganizationStore = defineStore('organizationStore', {
       code: null,
       ones_org_code: null,
       inn: null,
-      gateway_id: null
+      gateway_id: null,
+      // Faqat yaratishda: yangi korxonaning birinchi HR'i va rahbari (JSHSHIR).
+      hr_pin: null,
+      director_pin: null
     },
     headerLang: 'uz',
     // Daraxt sahifalanmaydi — ildiz korxonalar bir so'rovda to'liq keladi.
@@ -312,6 +315,9 @@ export const useOrganizationStore = defineStore('organizationStore', {
     _create() {
       this.saveLoading = true
       const data = { ...this.payload, group: Number(this.payload.group) }
+      // Guruhga HR/rahbar biriktirilmaydi; bo'sh JSHSHIR yuborilmaydi.
+      if (data.group || !data.hr_pin) delete data.hr_pin
+      if (data.group || !data.director_pin) delete data.director_pin
       $ApiService.organizationService
         ._create({ data })
         .then(() => {
@@ -325,6 +331,8 @@ export const useOrganizationStore = defineStore('organizationStore', {
     _update() {
       this.saveLoading = true
       const data = { ...this.payload, group: Number(this.payload.group) }
+      delete data.hr_pin
+      delete data.director_pin
       $ApiService.organizationService
         ._update({ data, id: this.panel.id })
         .then(() => {
@@ -426,6 +434,8 @@ export const useOrganizationStore = defineStore('organizationStore', {
       this.payload.ones_org_code = null
       this.payload.inn = null
       this.payload.gateway_id = null
+      this.payload.hr_pin = null
+      this.payload.director_pin = null
       this.payload.group = null
       this.payload.basis_comment = null
       this.payload.basis_file = null
