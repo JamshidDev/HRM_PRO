@@ -19,6 +19,7 @@ export const useLoginNewStore = defineStore('loginNewStore', {
     loading: false,
     // SSO: tashqi tizim `?client_id=` bilan yuborgan bo'lsa — { client_id, name }.
     sso: null,
+    ssoLoading: false,
     // Qaysi usulda kirildi (password | qr | eimzo) — SSO tarixiga yoziladi.
     loginMethod: 'password',
     // Login'dan keyin to'liq ekranli yo'naltirish oynasi uchun — { name, url }.
@@ -213,6 +214,7 @@ export const useLoginNewStore = defineStore('loginNewStore', {
     _loadSsoClient(clientId) {
       this.sso = null
       if (!clientId) return
+      this.ssoLoading = true
       $ApiService.authService
         ._ssoClient({ params: { client_id: clientId } })
         .then((res) => {
@@ -220,6 +222,9 @@ export const useLoginNewStore = defineStore('loginNewStore', {
         })
         // Ulanmagan tizim — oddiy login kabi HRM'ga kiriladi.
         .catch(() => {})
+        .finally(() => {
+          this.ssoLoading = false
+        })
     },
     // Bir martalik client_code olib, to'liq ekranli yo'naltirish oynasini ochadi.
     _ssoRedirect() {

@@ -621,6 +621,21 @@
       "seconds": "Hisobingiz tasdiqlandi. {n} soniyadan so'ng avtomatik yo'naltiramiz.",
       "goNow": "Hozir o'tish",
       "verified": "Tasdiqlandi"
+    },
+    "appLogin": {
+      "label": "HRM orqali kirish",
+      "title": "«{name}» tizimiga kirish",
+      "text": "HR Rail ilovasi orqali parolsiz va tez kiring.",
+      "open": "HR Rail'da davom etish",
+      "browser": "Brauzerda davom etish",
+      "waitTitle": "HR Rail ilovasida tasdiqlang",
+      "waitText": "Tasdiqlagach shu sahifaga qayting — kirish avtomatik davom etadi.",
+      "reopen": "Ilovani qayta ochish",
+      "missing": "HR Rail ilovasi topilmadi. O'rnating yoki brauzerda davom eting.",
+      "install": "HR Rail'ni o'rnatish",
+      "approved": "Tasdiqlandi, kirilmoqda…",
+      "rejected": "Kirish ilovada rad etildi.",
+      "expired": "Vaqt tugadi. Qaytadan urinib ko'ring."
     }
   },
   "registerPage": {
@@ -6362,7 +6377,8 @@
     "method": {
       "password": "Parol",
       "qr": "QR-kod",
-      "eimzo": "E-IMZO"
+      "eimzo": "E-IMZO",
+      "app": "HR Rail ilovasi"
     }
   }
 }

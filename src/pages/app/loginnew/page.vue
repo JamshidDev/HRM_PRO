@@ -19,6 +19,7 @@ import StoreLinks from './ui/StoreLinks.vue'
 import SeasonEffect from './ui/SeasonEffect.vue'
 import OfferModal from '@/components/OfferModal.vue'
 import SsoRedirectOverlay from './ui/SsoRedirectOverlay.vue'
+import AppChooser from './ui/AppChooser.vue'
 import { useRoute } from 'vue-router'
 import loginPatternUrl from '@/assets/images/svg/login-pattern.png?url'
 import loginPatternBottomUrl from '@/assets/images/svg/pattern-bottom.png?url'
@@ -33,6 +34,11 @@ const route = useRoute()
 
 // Tashqi tizim «HRM orqali kirish» bilan yuborgan bo'lsa — login'dan keyin o'sha tizimga qaytamiz.
 loginStore._loadSsoClient(route.query.client_id)
+
+const isPhone = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+const appChooserDismissed = ref(false)
+const ssoChecking = computed(() => isPhone && !!route.query.client_id && loginStore.ssoLoading)
+const showAppChooser = computed(() => isPhone && !!loginStore.sso && !appChooserDismissed.value)
 
 const steps = { login: 'login', twofa: 'twofa', reset: 'reset', expired: 'expired' }
 const step = ref(steps.login)
@@ -245,6 +251,10 @@ const onDone = () => {
         </div>
 
         <div class="relative z-10 w-full login-new__fade-in login-new__fade-in-delay-1">
+          <!-- Telefonda tashqi tizimdan kelinganda — avval HR Rail ilovasi tavsiya qilinadi -->
+          <div v-if="ssoChecking" class="h-[360px]"></div>
+          <AppChooser v-else-if="showAppChooser" class="mt-10 lg:mt-9" @browser="appChooserDismissed = true" />
+          <template v-else>
           <!-- Kirish usuli: Login / ERI / QR-kod.
                ⚠️ Tab qatori BARCHA qadamlarda ko'rinadi (2FA / parol tiklashda ham):
                yashirilsa yo joyi yo'qolib karta ~100px sakrardi, yo `invisible`
@@ -302,6 +312,7 @@ const onDone = () => {
               </div>
             </Transition>
           </div>
+          </template>
         </div>
 
         <!-- Mualliflik huquqi -->

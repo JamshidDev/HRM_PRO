@@ -606,6 +606,21 @@
       "seconds": "You're signed in. We'll redirect you automatically in {n} s.",
       "goNow": "Go now",
       "verified": "Verified"
+    },
+    "appLogin": {
+      "label": "Sign in with HRM",
+      "title": "Sign in to «{name}»",
+      "text": "Sign in quickly without a password using the HR Rail app.",
+      "open": "Continue in HR Rail",
+      "browser": "Continue in browser",
+      "waitTitle": "Confirm in the HR Rail app",
+      "waitText": "After confirming, return to this page — sign-in continues automatically.",
+      "reopen": "Open the app again",
+      "missing": "HR Rail app not found. Install it or continue in the browser.",
+      "install": "Install HR Rail",
+      "approved": "Confirmed, signing in…",
+      "rejected": "Sign-in was rejected in the app.",
+      "expired": "Time is up. Please try again."
     }
   },
   "registerPage": {
@@ -6301,7 +6316,8 @@
     "method": {
       "password": "Password",
       "qr": "QR code",
-      "eimzo": "E-IMZO"
+      "eimzo": "E-IMZO",
+      "app": "HR Rail app"
     }
   }
 }

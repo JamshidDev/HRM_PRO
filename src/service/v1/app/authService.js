@@ -16,6 +16,15 @@ const _ssoCode = async (payload) => {
   return await axios.post(`/v1/sso/code`, payload.data)
 }
 
+// «HR Rail ilovasi orqali kirish» — brauzer sessiyasi va natijani olish.
+const _appLoginStart = async (payload) => {
+  return await axios.post(`/auth/app-login/start`, payload.data, { silentSuccess: true })
+}
+
+const _appLoginClaim = async (payload) => {
+  return await axios.post(`/auth/app-login/claim`, payload.data, { silentSuccess: true, silentError: true })
+}
+
 const _registerOtp = async (payload) => {
   return await axios.post(`/auth/send-code`, payload.data)
 }
@@ -55,6 +64,8 @@ export default {
   _authCode,
   _ssoClient,
   _ssoCode,
+  _appLoginStart,
+  _appLoginClaim,
   _getCaptcha,
   _verifyResetCode,
   _resetPassword,
