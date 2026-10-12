@@ -9,6 +9,9 @@ import { pickI18nText } from '@/utils/i18nText.js'
 import { useAppStore } from '@/store/modules/app/appStore.js'
 import { useNotificationStore } from '@/store/modules/chat/notificationStore.js'
 import dayjs from 'dayjs'
+import router from '@/router/index.js'
+import i18n from '@/i18n/index.js'
+import { AppPaths, useAppSetting } from '@/utils/index.js'
 
 const allowedEvents = [
   Events.APPLICATION_GENERATED,
@@ -86,6 +89,17 @@ export const useSocketStore = defineStore('useSocketStore', {
       })
 
       this.socket.on('notification', (data) => {
+        // Telefondan «Bu men emasman» — aynan shu brauzer sessiyasi bo'lsa darhol chiqariladi.
+        if (data?.type === 'session_revoked') {
+          const token = localStorage.getItem(useAppSetting.tokenKey) || ''
+          if (String(data.token_id) === token.split('|')[0]) {
+            localStorage.removeItem(useAppSetting.tokenKey)
+            this.disconnect()
+            $Toast.warning(i18n.global.t('loginPage.sessionRevoked'))
+            router.push(AppPaths.Login)
+          }
+          return
+        }
         // Xabar turi: yangi payload'da `type` (= action.type), eskisida `alert`.
         const alertType = allowedAlertTypes.includes(data?.type)
           ? data.type
