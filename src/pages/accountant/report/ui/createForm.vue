@@ -2,7 +2,7 @@
   import { UIUpload, UIYearMonth } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import { CheckboxChecked24Filled } from '@vicons/fluent'
-  import { useUploadReportStore, useComponentStore } from '@/store/modules/index.js'
+  import { useUploadReportStore, useComponentStore, useUploadSourceConfigStore } from '@/store/modules/index.js'
   import ValidationRules from '@/utils/validationRules.js'
   import LockWrapper from './LockWrapper.vue'
 
@@ -14,15 +14,42 @@
 
   const store = useUploadReportStore()
   const componentStore = useComponentStore()
+  const sourceConfigStore = useUploadSourceConfigStore()
 
   // Barcha hisobot turlari (Oylik + INPS 4/5/to'lovlar) 1C manbasini qo'llaydi.
   const hasSource = computed(() => [1, 2, 3, 4].includes(Number(store.payload.type)))
   const isOnes = computed(() => hasSource.value && Number(store.payload.source) === 2)
 
-  const sourceOptions = [
+  const ALL_SOURCE_OPTIONS = [
     { label: t('uploadReport.source.excel'), value: 1 },
     { label: t('uploadReport.source.ones'), value: 2 }
   ]
+
+  // Tanlangan korxona uchun ruxsat etilgan manba (1=Excel, 2=1C, 3=ikkalasi)
+  const orgAllowedSource = computed(() => {
+    const orgId = store.params.organization_id
+    if (!orgId || !sourceConfigStore.tree.length) return 3
+    const find = (nodes) => {
+      for (const n of nodes) {
+        if (n.id === orgId) return n
+        if (n.children?.length) { const f = find(n.children); if (f) return f }
+      }
+      return null
+    }
+    return find(sourceConfigStore.tree)?.allowed_source ?? 3
+  })
+
+  const sourceOptions = computed(() => {
+    const allowed = orgAllowedSource.value
+    if (allowed === 1) return [ALL_SOURCE_OPTIONS[0]]
+    if (allowed === 2) return [ALL_SOURCE_OPTIONS[1]]
+    return ALL_SOURCE_OPTIONS
+  })
+
+  // Manba opsiyalari o'zgarganda avtomatik to'g'ri qiymatga o'rnat
+  watch(sourceOptions, (opts) => {
+    if (opts.length === 1) store.payload.source = opts[0].value
+  })
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {
@@ -46,6 +73,7 @@
 
   onMounted(() => {
     componentStore._enumAccountant()
+    if (!sourceConfigStore.tree.length) sourceConfigStore._index()
   })
 </script>
 

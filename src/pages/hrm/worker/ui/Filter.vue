@@ -353,7 +353,7 @@
     <template #filterContent>
       <div class="worker-filter-panel">
         <div class="grid grid-cols-12 gap-6">
-          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
+          <div class="col-span-12 sm:col-span-6">
             <label>{{ $t('workerPage.filter.organization') }}</label>
             <UISelect
               multiple
@@ -371,7 +371,7 @@
             />
           </div>
 
-          <div class="col-span-12 sm:col-span-6 lg:col-span-4">
+          <div class="col-span-12 sm:col-span-6">
             <label>{{ $t('workerPage.filter.department') }}</label>
             <UINSelect
               multiple

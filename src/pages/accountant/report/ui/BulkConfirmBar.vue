@@ -4,7 +4,8 @@
     CheckmarkCircle20Filled,
     DismissCircle20Regular,
     LockOpen20Regular,
-    LockClosed20Regular
+    LockClosed20Regular,
+    CloudArrowUp20Regular
   } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
@@ -26,9 +27,12 @@
   const canStatus = computed(() =>
     accStore.checkPermission(accStore.pn.economistUploadsStatus)
   )
+  const canWrite = computed(() =>
+    accStore.checkPermission(accStore.pn.economistUploadsWrite)
+  )
   const visible = computed(
     () =>
-      (canConfirm.value || canStatus.value) &&
+      (canConfirm.value || canStatus.value || canWrite.value) &&
       store.confirmSelected.length > 0 &&
       store.params.year &&
       store.params.month
@@ -98,6 +102,20 @@
             <n-icon><LockClosed20Regular /></n-icon>
           </template>
           {{ $t('uploadReport.closeAll') }}
+        </n-button>
+      </template>
+
+      <template v-if="canWrite">
+        <span v-if="canConfirm || canStatus" class="h-5 w-px bg-surface-line"></span>
+        <n-button
+          type="primary"
+          size="small"
+          @click="store.openBulkFromSelected()"
+        >
+          <template #icon>
+            <n-icon><CloudArrowUp20Regular /></n-icon>
+          </template>
+          1C dan tortish ({{ store.confirmSelected.length }} ta)
         </n-button>
       </template>
 

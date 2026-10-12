@@ -56,7 +56,7 @@ const _updateStatus = async (payload) => {
 
 // Yuklangan hisobotni o'chirish (upload id bo'yicha) — ma'lumot satrlari + soft-delete.
 const _deleteUpload = async (payload) => {
-  return await axios.delete(`/v1/economist/upload/${payload.id}`)
+  return await axios.delete(`/v1/economist/upload/${payload.id}`, { silentSuccess: true })
 }
 
 // Hisobot yuklash holati — tanlangan oy uchun korxonalar kesimida (yuklagan/yuklamagan).

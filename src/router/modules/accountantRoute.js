@@ -92,5 +92,12 @@ export const accountantRoutes = [
     meta: {
       layout: AppLayouts.main
     }
+  },
+  {
+    path: Utils.routeAccountantPathMaker(AppPaths.UploadSourceConfig),
+    component: () => import('@/pages/accountant/uploadSourceConfig/page.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
   }
 ]

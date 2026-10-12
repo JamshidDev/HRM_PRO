@@ -3679,8 +3679,6 @@
     "name": "Plan vs Actual",
     "addDepartment": "Add department",
     "addPosition": "Add position",
-    "listView": "List",
-    "tableView": "Table",
     "table": {
       "position": "Position",
       "occupancy": "Occupancy",
@@ -3696,7 +3694,8 @@
       "F": "Actual",
       "V": "Vacant",
       "S": "Overstaffed",
-      "R": "Rank"
+      "R": "Rank",
+      "MR": "Max rank"
     },
     "form": {
       "position": "Positions",
@@ -3708,9 +3707,7 @@
       "worker": "Number of employees",
       "who": "By whom",
       "reason": "Reason",
-      "byPosition": "By position",
-      "optimizationConfirm": "This will merge identical positions in department. Confirm to proceed",
-      "byWorker": "By employee"
+      "optimizationConfirm": "This will merge identical positions in department. Confirm to proceed"
     }
   },
   "specialReport": {
@@ -5321,6 +5318,9 @@
     "signAllNote1": "A signature QR code is stamped on each document and the status becomes “Confirmed”.",
     "signAllNote2": "Signer statuses in the approval queue stay unchanged.",
     "signAllNote3": "The action runs in the background — refresh the list when it finishes: the status becomes “Confirmed” and a QR code appears in the document."
+  },
+  "uploadSourceConfig": {
+    "name": "Upload Source"
   },
   "staffingApproval": {
     "name": "Staffing",
