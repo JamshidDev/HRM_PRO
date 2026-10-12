@@ -1,6 +1,6 @@
 <script setup>
 import { UIPageContent, UIPageFilter, UIPagination } from '@/components/index.js'
-import { Add24Regular, Delete24Regular, EyeHide24Regular } from '@vicons/fluent'
+import { Add24Regular, Delete24Regular, EyeOff24Regular } from '@vicons/fluent'
 import { useAccountStore, useSalaryHiddenStore } from '@/store/modules/index.js'
 import { useDebounceFn } from '@vueuse/core'
 
@@ -117,7 +117,7 @@ const confirmDelete = (row) => {
             <td :colspan="canWrite ? 5 : 4" class="!py-12 !text-center text-textColor3">
               <div class="flex flex-col items-center gap-2">
                 <n-icon size="40" class="text-textColor3 opacity-40">
-                  <EyeHide24Regular />
+                  <EyeOff24Regular />
                 </n-icon>
                 <span class="text-sm">{{ $t('content.no-data') }}</span>
               </div>
