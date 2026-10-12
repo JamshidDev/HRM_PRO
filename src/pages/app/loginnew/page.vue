@@ -18,6 +18,8 @@ import ExpiredForm from './ui/ExpiredForm.vue'
 import StoreLinks from './ui/StoreLinks.vue'
 import SeasonEffect from './ui/SeasonEffect.vue'
 import OfferModal from '@/components/OfferModal.vue'
+import SsoRedirectOverlay from './ui/SsoRedirectOverlay.vue'
+import { useRoute } from 'vue-router'
 import loginPatternUrl from '@/assets/images/svg/login-pattern.png?url'
 import loginPatternBottomUrl from '@/assets/images/svg/pattern-bottom.png?url'
 import banner from '@/assets/images/content/banner.png?url'
@@ -27,6 +29,10 @@ const appStore = useAppStore()
 const loginStore = useLoginNewStore()
 const resetStore = useResetPasswordStore()
 const qrStore = useQrLoginStore()
+const route = useRoute()
+
+// Tashqi tizim «HRM orqali kirish» bilan yuborgan bo'lsa — login'dan keyin o'sha tizimga qaytamiz.
+loginStore._loadSsoClient(route.query.client_id)
 
 const steps = { login: 'login', twofa: 'twofa', reset: 'reset', expired: 'expired' }
 const step = ref(steps.login)
@@ -307,6 +313,7 @@ const onDone = () => {
 
     <!-- Offerta modali — login javobida `offer:true` kelsa ochiladi (teleport) -->
     <OfferModal />
+    <SsoRedirectOverlay />
   </div>
 </template>
 

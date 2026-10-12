@@ -615,6 +615,12 @@
       "refresh": "Yangilash",
       "connectionError": "Ulanishda xatolik",
       "signingIn": "Tizimga kirilmoqda…"
+    },
+    "sso": {
+      "redirecting": "Sizni «{name}» tizimiga yo'naltirmoqdamiz",
+      "seconds": "Hisobingiz tasdiqlandi. {n} soniyadan so'ng avtomatik yo'naltiramiz.",
+      "goNow": "Hozir o'tish",
+      "verified": "Tasdiqlandi"
     }
   },
   "registerPage": {
@@ -764,7 +770,8 @@
         "join": "Qo'shilish",
         "copySuccess": "Link nusxa olindi!",
         "copyError": "Nusxa olishda xatolik!"
-      }
+      },
+      "ssoLogins": "Kirishlar tarixi (SSO)"
     },
     "org": {
       "title": "Buyruq blankasi uchun ma'lumotlar",
@@ -5744,13 +5751,16 @@
       "organizationsPlaceholder": "Korxonalarni tanlang",
       "selectedCount": "Tanlangan: {n}",
       "expiresAt": "Amal qilish muddati",
-      "expiresPlaceholder": "Muddatsiz"
+      "expiresPlaceholder": "Muddatsiz",
+      "sso": "HRM orqali kirish (SSO)",
+      "ssoBaseUrl": "SSO qaytish manzili (to'liq URL)"
     },
     "validation": {
       "name": "Nom majburiy",
       "role": "Rol tanlang",
       "scope": "Qamrovni tanlang",
-      "organizations": "Kamida bitta korxona tanlang"
+      "organizations": "Kamida bitta korxona tanlang",
+      "ssoBaseUrl": "To'liq URL kiriting (https://...)"
     },
     "create": {
       "button": "Yangi client",
@@ -6343,5 +6353,16 @@
       "title": "Imtiyozli xodim qo'shish"
     },
     "confirmDelete": "O'chirilsinmi?"
+  },
+  "ssoLogins": {
+    "title": "HRM orqali kirishlar tarixi",
+    "description": "Boshqa tizimlarga HRM hisobingiz orqali muvaffaqiyatli kirishlaringiz. Tanimagan kirishni ko'rsangiz, parolingizni almashtiring.",
+    "allSystems": "Barcha tizimlar",
+    "empty": "Hali HRM orqali boshqa tizimga kirilmagan",
+    "method": {
+      "password": "Parol",
+      "qr": "QR-kod",
+      "eimzo": "E-IMZO"
+    }
   }
 }

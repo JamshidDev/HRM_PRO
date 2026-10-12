@@ -600,6 +600,12 @@
       "refresh": "Refresh",
       "connectionError": "Connection error",
       "signingIn": "Signing in…"
+    },
+    "sso": {
+      "redirecting": "Redirecting you to «{name}»",
+      "seconds": "You're signed in. We'll redirect you automatically in {n} s.",
+      "goNow": "Go now",
+      "verified": "Verified"
     }
   },
   "registerPage": {
@@ -749,7 +755,8 @@
         "join": "Join",
         "copySuccess": "Link copied!",
         "copyError": "Copy error!"
-      }
+      },
+      "ssoLogins": "Sign-in history (SSO)"
     },
     "org": {
       "title": "Order form data",
@@ -5683,13 +5690,16 @@
       "organizationsPlaceholder": "Select organizations",
       "selectedCount": "Selected: {n}",
       "expiresAt": "Expires at",
-      "expiresPlaceholder": "No expiry"
+      "expiresPlaceholder": "No expiry",
+      "sso": "Sign in with HRM (SSO)",
+      "ssoBaseUrl": "SSO redirect URL (full path)"
     },
     "validation": {
       "name": "Name is required",
       "role": "Select a role",
       "scope": "Select a scope",
-      "organizations": "Select at least one organization"
+      "organizations": "Select at least one organization",
+      "ssoBaseUrl": "Enter a full URL (https://...)"
     },
     "create": {
       "button": "New client",
@@ -6282,5 +6292,16 @@
       "title": "Add privileged employee"
     },
     "confirmDelete": "Delete?"
+  },
+  "ssoLogins": {
+    "title": "Sign-ins via HRM",
+    "description": "Successful sign-ins to other systems with your HRM account. If you see one you don't recognise, change your password.",
+    "allSystems": "All systems",
+    "empty": "No sign-ins to other systems via HRM yet",
+    "method": {
+      "password": "Password",
+      "qr": "QR code",
+      "eimzo": "E-IMZO"
+    }
   }
 }
