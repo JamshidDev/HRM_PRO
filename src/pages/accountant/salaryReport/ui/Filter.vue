@@ -1,5 +1,5 @@
 <script setup>
-  import { UIPageFilter, UISelect, UIYearMonth } from '@/components/index.js'
+  import { OnesCodeFilter, UIPageFilter, UISelect, UIYearMonth } from '@/components/index.js'
   import {
     useAccountStore,
     useComponentStore,
@@ -22,8 +22,11 @@
 
   const onChangeStructure = (v) => {
     store.params.organizations = v
+    store.params.ones_code = null // korxona o'zgardi — kod filtrini bekor qilamiz
     filterEvent()
   }
+
+  const selectedOrgIds = computed(() => (store.params.organizations || []).map((o) => o?.id ?? o))
 
   const filterCount = computed(() => {
     return Number(Boolean(store.params.organizations.length))
@@ -31,6 +34,7 @@
 
   const onClear = () => {
     store.params.organizations = []
+    store.params.ones_code = null
     filterEvent()
   }
 
@@ -92,6 +96,11 @@
         v-model:search="componentStore.structureParams.search"
         @onSearch="componentStore._structures"
         @onSubmit="filterEvent"
+      />
+      <OnesCodeFilter
+        :org-ids="selectedOrgIds"
+        v-model="store.params.ones_code"
+        @change="filterEvent"
       />
     </template>
   </UIPageFilter>

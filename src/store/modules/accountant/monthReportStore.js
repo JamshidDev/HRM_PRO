@@ -25,6 +25,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
       search: null,
       organizations: [],
       code: null,
+      ones_code: null, // ko'p 1C kod: aynan kod bo'yicha filter (bitta kodli org — null)
       year: null,
       month: null,
       sort_by: null,

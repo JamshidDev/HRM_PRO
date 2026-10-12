@@ -1,6 +1,6 @@
 <script setup>
 import {useAccountStore, useComponentStore, useMonthReportStore} from '@/store/modules/index.js'
-import {UIPageFilter, UISelect, UIYearMonth} from '@/components/index.js'
+import {OnesCodeFilter, UIPageFilter, UISelect, UIYearMonth} from '@/components/index.js'
 import UIHelper from '@/utils/UIHelper.js'
 import {ArrowCircleDown32Regular, ArrowSync20Filled} from '@vicons/fluent'
 import { useDebounce } from "@utils"
@@ -19,8 +19,12 @@ const componentStore = useComponentStore()
 
 const onChangeStructure = (v) => {
   store.params.organizations = v
+  store.params.ones_code = null // korxona o'zgardi — kod filtrini bekor qilamiz
   filterEvent()
 }
+
+// Tanlangan korxona id'lari — ko'p 1C kod filtri uchun (bitta bo'lsa kodlar yuklanadi).
+const selectedOrgIds = computed(() => (store.params.organizations || []).map((o) => o?.id ?? o))
 
 const beforeShow = (v) => {
   if (componentStore.structureList.length === 0) {
@@ -35,6 +39,7 @@ const beforeShow = (v) => {
 const resetFilter = () => {
   store.params.organizations = []
   store.params.code = null
+  store.params.ones_code = null
   store.params.sex = null
   filterEvent()
 }
@@ -94,6 +99,11 @@ const onChangeInput = useDebounce(filterEvent, 600)
         v-model:search="componentStore.structureParams.search"
         @onSearch="componentStore._structures"
         @onSubmit="filterEvent"
+      />
+      <OnesCodeFilter
+        :org-ids="selectedOrgIds"
+        v-model="store.params.ones_code"
+        @change="filterEvent"
       />
       <label class="text-xs mt-3 text-textColor3 mb-1 font-medium">{{
         $t('monthReport.form.code')

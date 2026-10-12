@@ -82,6 +82,7 @@ export const useAccDashboardStore = defineStore('accDashboardStore', {
       per_page: 15,
       search: null,
       organizations: [],
+      ones_code: null, // ko'p 1C kod: aynan kod bo'yicha (bitta kodli org — null)
       year: null,
       month: null
     },
