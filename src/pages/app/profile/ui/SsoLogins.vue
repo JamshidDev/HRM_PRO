@@ -13,7 +13,7 @@
 
   const PER_PAGE = 10
 
-  const methodIcons = { password: Password20Regular, qr: QrCode20Regular, eimzo: Certificate20Regular, app: Phone20Regular }
+  const methodIcons = { password: Password20Regular, qr: QrCode20Regular, eimzo: Certificate20Regular, app: Phone20Regular, session: ArrowEnterLeft20Regular }
 
   const loading = ref(false)
   const rows = ref([])

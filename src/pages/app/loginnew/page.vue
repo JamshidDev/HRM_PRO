@@ -34,10 +34,23 @@ const route = useRoute()
 
 // Tashqi tizim «HRM orqali kirish» bilan yuborgan bo'lsa — login'dan keyin o'sha tizimga qaytamiz.
 loginStore._loadSsoClient(route.query.client_id)
+if (route.query.client_id) loginStore._checkSsoSession()
+
+// HRM'ga allaqachon kirilgan bo'lsa — qayta login yo'q, darhol tizimga yo'naltiriladi.
+watch(
+  () => [loginStore.sso, loginStore.ssoSession],
+  ([sso, session]) => {
+    if (sso && session && !loginStore.ssoRedirect) loginStore._ssoContinueSession()
+  }
+)
 
 const isPhone = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
 const appChooserDismissed = ref(false)
-const ssoChecking = computed(() => isPhone && !!route.query.client_id && loginStore.ssoLoading)
+const ssoChecking = computed(
+  () =>
+    !!route.query.client_id &&
+    (loginStore.ssoSessionChecking || (isPhone && loginStore.ssoLoading) || (!!loginStore.ssoSession && !!loginStore.sso))
+)
 const showAppChooser = computed(() => isPhone && !!loginStore.sso && !appChooserDismissed.value)
 
 const steps = { login: 'login', twofa: 'twofa', reset: 'reset', expired: 'expired' }

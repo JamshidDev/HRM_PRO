@@ -605,7 +605,9 @@
       "redirecting": "Redirecting you to «{name}»",
       "seconds": "You're signed in. We'll redirect you automatically in {n} s.",
       "goNow": "Go now",
-      "verified": "Verified"
+      "verified": "Verified",
+      "as": "as {name}",
+      "otherAccount": "Sign in with another account"
     },
     "appLogin": {
       "label": "Sign in with HRM",
@@ -6317,7 +6319,8 @@
       "password": "Password",
       "qr": "QR code",
       "eimzo": "E-IMZO",
-      "app": "HR Rail app"
+      "app": "HR Rail app",
+      "session": "Existing session"
     }
   }
 }

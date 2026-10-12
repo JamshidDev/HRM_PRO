@@ -620,7 +620,9 @@
       "redirecting": "Sizni «{name}» tizimiga yo'naltirmoqdamiz",
       "seconds": "Hisobingiz tasdiqlandi. {n} soniyadan so'ng avtomatik yo'naltiramiz.",
       "goNow": "Hozir o'tish",
-      "verified": "Tasdiqlandi"
+      "verified": "Tasdiqlandi",
+      "as": "{name} sifatida",
+      "otherAccount": "Boshqa akkaunt bilan kirish"
     },
     "appLogin": {
       "label": "HRM orqali kirish",
@@ -6378,7 +6380,8 @@
       "password": "Parol",
       "qr": "QR-kod",
       "eimzo": "E-IMZO",
-      "app": "HR Rail ilovasi"
+      "app": "HR Rail ilovasi",
+      "session": "Mavjud sessiya"
     }
   }
 }

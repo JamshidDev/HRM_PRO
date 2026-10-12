@@ -20,6 +20,9 @@ export const useLoginNewStore = defineStore('loginNewStore', {
     // SSO: tashqi tizim `?client_id=` bilan yuborgan bo'lsa — { client_id, name }.
     sso: null,
     ssoLoading: false,
+    // Brauzerda yaroqli HRM sessiyasi bor — qayta login so'ralmaydi ({ name }).
+    ssoSession: null,
+    ssoSessionChecking: false,
     // Qaysi usulda kirildi (password | qr | eimzo) — SSO tarixiga yoziladi.
     loginMethod: 'password',
     // Login'dan keyin to'liq ekranli yo'naltirish oynasi uchun — { name, url }.
@@ -225,6 +228,38 @@ export const useLoginNewStore = defineStore('loginNewStore', {
         .finally(() => {
           this.ssoLoading = false
         })
+    },
+    // `client_id` bilan kelinganda: brauzerdagi token yaroqlimi (axios'siz — 401 client_id'ni yo'qotmasin).
+    async _checkSsoSession() {
+      const token = localStorage.getItem(useAppSetting.tokenKey)
+      if (!token) return
+      this.ssoSessionChecking = true
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/user/profile`, {
+          headers: { Accept: 'application/json', Authorization: `Bearer ${token}`, 'X-Auth-Type': 'sanctum' }
+        })
+        if (res.ok) {
+          const w = (await res.json())?.data?.worker
+          this.ssoSession = { name: [w?.last_name, w?.first_name].filter(Boolean).join(' ') }
+        } else if (res.status === 401) {
+          localStorage.removeItem(useAppSetting.tokenKey)
+        }
+      } catch {
+        // tarmoq xatosi — oddiy login oqimi
+      } finally {
+        this.ssoSessionChecking = false
+      }
+    },
+    // Mavjud sessiya bilan tizimga o'tish — login so'ralmaydi.
+    _ssoContinueSession() {
+      this.loginMethod = 'session'
+      this._ssoRedirect()
+    },
+    // «Boshqa akkaunt bilan kirish» — sessiya shu brauzerdan olib tashlanadi, login ochiladi.
+    _ssoUseOtherAccount() {
+      localStorage.removeItem(useAppSetting.tokenKey)
+      this.ssoSession = null
+      this.ssoRedirect = null
     },
     // Bir martalik client_code olib, to'liq ekranli yo'naltirish oynasini ochadi.
     _ssoRedirect() {
