@@ -1,18 +1,21 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
+import { getOneMonthAgoYearMonth } from '@utils'
 
 const { t } = i18n.global
 
-const now = new Date()
+// Oylik hisobot bir oy orqada hisoblanadi — default davr bir oy oldingisi
+// (boshqa oylik hisobot sahifalari bilan parity: upload-report, month-report, ...).
+const defaultPeriod = getOneMonthAgoYearMonth()
 
 export const useSalary1cStore = defineStore('salary1cStore', {
   state: () => ({
     // Filter
     params: {
       organization_id: null,
-      year: now.getFullYear(),
-      month: now.getMonth() + 1,
+      year: defaultPeriod.year,
+      month: defaultPeriod.month,
       page: 1,
       per_page: 20,
       search: null,
