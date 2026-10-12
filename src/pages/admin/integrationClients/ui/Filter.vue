@@ -1,10 +1,18 @@
 <script setup>
-  import { UIPageFilter } from '@/components/index.js'
+  import { UIPageFilter, UISegmentTabs } from '@/components/index.js'
   import { useIntegrationClientsStore } from '@/store/modules/index.js'
   import { ArrowSync24Filled } from '@vicons/fluent'
   import { useAppSetting } from '@/utils/AppSetting.js'
+  import i18n from '@/i18n/index.js'
 
   const store = useIntegrationClientsStore()
+  const { t } = i18n.global
+
+  const tabOptions = computed(() => [
+    { id: store.tabs[0], name: t('integrationLog.tabs.dashboard') },
+    { id: store.tabs[1], name: t('integrationLog.tabs.clients') },
+    { id: store.tabs[2], name: t('integrationLog.tabs.list') }
+  ])
 
   const methodOptions = [
     { label: 'GET', value: 'GET' },
@@ -58,21 +66,10 @@
     @onSearch="filterEvent"
   >
     <template #filterBefore>
-      <div class="tab-wrapper">
-        <UITabs class="tab-switcher" v-model:value="store.activeTab" type="segment" size="small">
-          <n-tab-pane
-            :name="store.tabs[0]"
-            :tab="$t('integrationLog.tabs.dashboard')"
-            class="!pt-0"
-          />
-          <n-tab-pane
-            :name="store.tabs[1]"
-            :tab="$t('integrationLog.tabs.clients')"
-            class="!pt-0"
-          />
-          <n-tab-pane :name="store.tabs[2]" :tab="$t('integrationLog.tabs.list')" class="!pt-0" />
-        </UITabs>
-      </div>
+      <UISegmentTabs
+        :tabs="tabOptions"
+        v-model="store.activeTab"
+      />
     </template>
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500">{{ $t('integrationLog.filter.method') }}</label>
@@ -121,22 +118,3 @@
   </UIPageFilter>
 </template>
 
-<style scoped>
-  .tab-wrapper {
-    border: 1px solid var(--surface-line);
-    border-radius: 6px;
-    padding: 1px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-  }
-
-  .tab-switcher {
-    width: 290px;
-    height: 100%;
-  }
-
-
-
-
-</style>
