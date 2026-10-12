@@ -638,7 +638,8 @@
       "approved": "Tasdiqlandi, kirilmoqda…",
       "rejected": "Kirish ilovada rad etildi.",
       "expired": "Vaqt tugadi. Qaytadan urinib ko'ring."
-    }
+    },
+    "sessionRevoked": "Sessiyangiz telefoningizdagi HR Rail ilovasidan tugatildi. Qayta kiring."
   },
   "registerPage": {
     "name": "Ro'yxatdan o'tish",

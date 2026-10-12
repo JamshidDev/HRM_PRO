@@ -623,7 +623,8 @@
       "approved": "Confirmed, signing in…",
       "rejected": "Sign-in was rejected in the app.",
       "expired": "Time is up. Please try again."
-    }
+    },
+    "sessionRevoked": "Your session was ended from the HR Rail app on your phone. Please sign in again."
   },
   "registerPage": {
     "name": "Sign up",
