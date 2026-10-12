@@ -614,7 +614,7 @@
       "open": "Continue in HR Rail",
       "browser": "Continue in browser",
       "waitTitle": "Confirm in the HR Rail app",
-      "waitText": "After confirming, return to this page — sign-in continues automatically.",
+      "waitText": "Confirm in the HR Rail app — «{name}» will open automatically.",
       "reopen": "Open the app again",
       "missing": "HR Rail app not found. Install it or continue in the browser.",
       "install": "Install HR Rail",

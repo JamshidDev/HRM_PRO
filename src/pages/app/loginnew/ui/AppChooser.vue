@@ -1,5 +1,5 @@
 <script setup>
-  import { ArrowRight16Regular, CheckmarkCircle16Filled, Phone24Regular } from '@vicons/fluent'
+  import { ArrowRight16Regular, Phone24Regular } from '@vicons/fluent'
   import { useLoginNewStore } from '@/store/modules/index.js'
 
   const emit = defineEmits(['browser'])
@@ -7,87 +7,41 @@
   const ANDROID_PACKAGE = 'hrms.railway.uz'
   const PLAY_URL = `https://play.google.com/store/apps/details?id=${ANDROID_PACKAGE}`
   const APP_STORE_URL = 'https://apps.apple.com/us/app/hr-rail/id6759365016'
-  const POLL_MS = 2000
 
   const store = useLoginNewStore()
   const isAndroid = /Android/i.test(navigator.userAgent)
 
-  // idle → waiting → (approved | rejected | expired | missing)
+  // idle → opened (ilova ochildi) | missing (iOS: ilova topilmadi)
   const phase = ref('idle')
-  const opening = ref(false)
-  let session = null
-  let pollTimer = null
   let missingTimer = null
 
-  const appUrl = (payload) => {
-    const q = `payload=${encodeURIComponent(payload)}`
+  // Ilova tizimni o'zi tasdiqlab, code bilan ochadi — brauzer hech narsa kutmaydi.
+  const appUrl = () => {
+    const q = `client_id=${encodeURIComponent(store.sso?.client_id ?? '')}`
     // Android: ilova bo'lmasa Chrome o'zi Play Store'ni ochadi.
     return isAndroid
-      ? `intent://open/app-login?${q}#Intent;scheme=hrrail;package=${ANDROID_PACKAGE};S.browser_fallback_url=${encodeURIComponent(PLAY_URL)};end`
-      : `hrrail://open/app-login?${q}`
+      ? `intent://open/sso?${q}#Intent;scheme=hrrail;package=${ANDROID_PACKAGE};S.browser_fallback_url=${encodeURIComponent(PLAY_URL)};end`
+      : `hrrail://open/sso?${q}`
   }
 
-  const stop = () => {
-    clearInterval(pollTimer)
+  const openApp = () => {
+    phase.value = 'opened'
     clearTimeout(missingTimer)
-    pollTimer = null
-  }
-
-  const claim = async () => {
-    if (!session) return
-    try {
-      const res = await $ApiService.authService._appLoginClaim({
-        data: { id: session.id, secret: session.secret }
-      })
-      const data = res.data.data
-      if (data.status === 'approved') {
-        stop()
-        phase.value = 'approved'
-        store._handleAuthSuccess({ data: { access_token: data.access_token, offer: data.offer } }, 'app')
-      } else if (data.status === 'rejected' || data.status === 'expired') {
-        stop()
-        session = null
-        phase.value = data.status
-      }
-    } catch {
-      // tarmoq uzilishi — keyingi urinishda qayta so'raladi
-    }
-  }
-
-  const openApp = async () => {
-    opening.value = true
-    try {
-      const res = await $ApiService.authService._appLoginStart({
-        data: { client_id: store.sso?.client_id }
-      })
-      session = res.data.data
-    } finally {
-      opening.value = false
-    }
-    phase.value = 'waiting'
-    stop()
-    pollTimer = setInterval(claim, POLL_MS)
     // iOS: ilova ochilmasa sahifa ko'rinishda qoladi — «topilmadi» deymiz.
     if (!isAndroid) {
       missingTimer = setTimeout(() => {
-        if (document.visibilityState === 'visible' && phase.value === 'waiting') phase.value = 'missing'
+        if (document.visibilityState === 'visible') phase.value = 'missing'
       }, 2500)
     }
-    window.location.href = appUrl(session.payload)
+    window.location.href = appUrl()
   }
 
-  // Brauzerga qaytilganda natijani darhol so'raymiz.
-  const onVisible = () => {
-    if (document.visibilityState !== 'visible') return
+  const toBrowser = () => {
     clearTimeout(missingTimer)
-    if (phase.value === 'waiting' || phase.value === 'missing') claim()
+    emit('browser')
   }
 
-  onMounted(() => document.addEventListener('visibilitychange', onVisible))
-  onBeforeUnmount(() => {
-    stop()
-    document.removeEventListener('visibilitychange', onVisible)
-  })
+  onBeforeUnmount(() => clearTimeout(missingTimer))
 </script>
 
 <template>
@@ -103,37 +57,7 @@
       {{ $t('loginPage.appLogin.title', { name: store.sso?.name }) }}
     </h2>
 
-    <template v-if="phase === 'idle' || phase === 'rejected' || phase === 'expired'">
-      <p v-if="phase === 'idle'" class="text-sm text-login-body mt-2 max-w-[320px]">
-        {{ $t('loginPage.appLogin.text') }}
-      </p>
-      <p v-else class="app-chooser__warn text-sm mt-2 max-w-[320px]">
-        {{ $t(`loginPage.appLogin.${phase}`) }}
-      </p>
-      <div class="w-full mt-6">
-        <n-button type="primary" size="large" block :loading="opening" icon-placement="right" @click="openApp">
-          {{ $t('loginPage.appLogin.open') }}
-          <template #icon>
-            <n-icon><ArrowRight16Regular /></n-icon>
-          </template>
-        </n-button>
-      </div>
-    </template>
-
-    <template v-else-if="phase === 'waiting'">
-      <div class="app-chooser__wait mt-5 w-full rounded-xl px-4 py-3.5 flex items-center gap-3 text-left">
-        <n-spin size="small" />
-        <div>
-          <p class="text-sm font-semibold text-login-ink">{{ $t('loginPage.appLogin.waitTitle') }}</p>
-          <p class="text-xs text-login-body mt-0.5">{{ $t('loginPage.appLogin.waitText') }}</p>
-        </div>
-      </div>
-      <button type="button" class="app-chooser__link text-sm font-semibold mt-4" @click="openApp">
-        {{ $t('loginPage.appLogin.reopen') }}
-      </button>
-    </template>
-
-    <template v-else-if="phase === 'missing'">
+    <template v-if="phase === 'missing'">
       <div class="app-chooser__wait mt-5 w-full rounded-xl px-4 py-3.5 flex items-center gap-3 text-left">
         <n-icon size="22" class="text-login-body shrink-0"><Phone24Regular /></n-icon>
         <p class="text-sm text-login-ink">{{ $t('loginPage.appLogin.missing') }}</p>
@@ -143,19 +67,21 @@
       </a>
     </template>
 
-    <template v-else-if="phase === 'approved'">
-      <div class="app-chooser__ok mt-5 w-full rounded-xl px-4 py-3.5 flex items-center justify-center gap-2">
-        <n-icon size="18"><CheckmarkCircle16Filled /></n-icon>
-        <span class="text-sm font-semibold">{{ $t('loginPage.appLogin.approved') }}</span>
+    <template v-else>
+      <p class="text-sm text-login-body mt-2 max-w-[320px]">
+        {{ phase === 'opened' ? $t('loginPage.appLogin.waitText', { name: store.sso?.name }) : $t('loginPage.appLogin.text') }}
+      </p>
+      <div class="w-full mt-6">
+        <n-button type="primary" size="large" block icon-placement="right" @click="openApp">
+          {{ phase === 'opened' ? $t('loginPage.appLogin.reopen') : $t('loginPage.appLogin.open') }}
+          <template #icon>
+            <n-icon><ArrowRight16Regular /></n-icon>
+          </template>
+        </n-button>
       </div>
     </template>
 
-    <button
-      v-if="phase !== 'approved'"
-      type="button"
-      class="app-chooser__browser text-sm mt-5"
-      @click="stop(); emit('browser')"
-    >
+    <button type="button" class="app-chooser__browser text-sm mt-5" @click="toBrowser">
       {{ $t('loginPage.appLogin.browser') }}
     </button>
   </div>
@@ -174,23 +100,13 @@
     box-shadow: 0 10px 30px -12px rgba(18, 121, 240, 0.35);
   }
 
-  .app-chooser__label,
-  .app-chooser__link {
+  .app-chooser__label {
     color: var(--login-link);
-  }
-
-  .app-chooser__warn {
-    color: var(--login-star);
   }
 
   .app-chooser__wait {
     background: var(--login-eimzo-bg);
     border: 1px solid var(--login-eimzo-border);
-  }
-
-  .app-chooser__ok {
-    color: #16a34a;
-    background: rgba(22, 163, 74, 0.1);
   }
 
   .app-chooser__browser {

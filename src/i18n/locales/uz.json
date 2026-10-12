@@ -629,7 +629,7 @@
       "open": "HR Rail'da davom etish",
       "browser": "Brauzerda davom etish",
       "waitTitle": "HR Rail ilovasida tasdiqlang",
-      "waitText": "Tasdiqlagach shu sahifaga qayting — kirish avtomatik davom etadi.",
+      "waitText": "HR Rail ilovasida tasdiqlang — «{name}» tizimi avtomatik ochiladi.",
       "reopen": "Ilovani qayta ochish",
       "missing": "HR Rail ilovasi topilmadi. O'rnating yoki brauzerda davom eting.",
       "install": "HR Rail'ni o'rnatish",
