@@ -136,6 +136,7 @@
         "title": "Hisobot",
         "subtitle": "Hisobot yuklash"
       },
+      "guides": {"title": "Qo'llanma", "subtitle": "Video darsliklar"},
       "income": {
         "title": "Daromad",
         "subtitle": "Ish haqi va to'lovlar"
@@ -6393,5 +6394,69 @@
       "app": "HR Rail ilovasi",
       "session": "Mavjud sessiya"
     }
+  },
+  "guidesPage": {
+    "title": "Qo'llanma",
+    "subtitle": "Tizimdan foydalanish bo'yicha video darsliklar",
+    "platform": {
+      "web": "Web-tizim",
+      "mobile": "Mobil ilova"
+    },
+    "search": "Qo'llanmani qidirish",
+    "all": "Barchasi",
+    "new": "Yangi",
+    "viewed": "Ko'rilgan",
+    "empty": "Hozircha qo'llanma yo'q",
+    "emptyHint": "Video darsliklar tez orada qo'shiladi",
+    "notFound": "Hech narsa topilmadi",
+    "notFoundHint": "Boshqa so'z yoki kategoriyani tanlab ko'ring",
+    "categories": {
+      "general": "Umumiy",
+      "workers": "Xodimlar",
+      "commands": "Buyruqlar",
+      "contracts": "Shartnomalar",
+      "signing": "Elektron imzo",
+      "turnstile": "Turniket",
+      "timesheet": "Tabel",
+      "vacations": "Ta'tillar",
+      "vacancies": "Vakansiyalar",
+      "learning": "Malaka oshirish",
+      "attestation": "Attestatsiya",
+      "applications": "Arizalar",
+      "mobile": "Mobil ilova",
+      "reports": "Hisobotlar"
+    }
+  },
+  "videoGuidePage": {
+    "name": "Video qo'llanmalar",
+    "create": "Yangi qo'llanma",
+    "edit": "Qo'llanmani tahrirlash",
+    "form": {
+      "title": "Nomi",
+      "description": "Izoh",
+      "platform": "Platforma",
+      "category": "Kategoriya",
+      "sort": "Tartib",
+      "status": "Holat",
+      "video": "Video",
+      "poster": "Muqova"
+    },
+    "platform": {
+      "all": "Web va mobil",
+      "web": "Web",
+      "mobile": "Mobil"
+    },
+    "published": "E'lon qilingan",
+    "draft": "Qoralama",
+    "duration": "Davomiyligi",
+    "views": "Ko'rishlar",
+    "chooseVideo": "Video tanlash",
+    "replaceVideo": "Videoni almashtirish",
+    "changePoster": "Muqovani almashtirish",
+    "uploadingVideo": "Video yuklanmoqda…",
+    "uploadingPoster": "Muqova yuklanmoqda…",
+    "uploaded": "Video yuklandi",
+    "required": "Nomi (UZ) va video majburiy",
+    "confirmDelete": "Qo'llanma o'chirilsinmi?"
   }
 }

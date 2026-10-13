@@ -132,6 +132,7 @@
         "title": "Report",
         "subtitle": "Download a report"
       },
+      "guides": {"title": "Guides", "subtitle": "Video tutorials"},
       "income": {
         "title": "Income",
         "subtitle": "Salary and payments"
@@ -6332,5 +6333,69 @@
       "app": "HR Rail app",
       "session": "Existing session"
     }
+  },
+  "guidesPage": {
+    "title": "Guides",
+    "subtitle": "Video tutorials on using the system",
+    "platform": {
+      "web": "Web system",
+      "mobile": "Mobile app"
+    },
+    "search": "Search guides",
+    "all": "All",
+    "new": "New",
+    "viewed": "Watched",
+    "empty": "No guides yet",
+    "emptyHint": "Video tutorials will be added soon",
+    "notFound": "Nothing found",
+    "notFoundHint": "Try a different search or category",
+    "categories": {
+      "general": "General",
+      "workers": "Employees",
+      "commands": "Orders",
+      "contracts": "Contracts",
+      "signing": "E-signature",
+      "turnstile": "Turnstile",
+      "timesheet": "Timesheet",
+      "vacations": "Vacations",
+      "vacancies": "Vacancies",
+      "learning": "Training",
+      "attestation": "Attestation",
+      "applications": "Applications",
+      "mobile": "Mobile app",
+      "reports": "Reports"
+    }
+  },
+  "videoGuidePage": {
+    "name": "Video guides",
+    "create": "New guide",
+    "edit": "Edit guide",
+    "form": {
+      "title": "Title",
+      "description": "Description",
+      "platform": "Platform",
+      "category": "Category",
+      "sort": "Order",
+      "status": "Status",
+      "video": "Video",
+      "poster": "Cover"
+    },
+    "platform": {
+      "all": "Web and mobile",
+      "web": "Web",
+      "mobile": "Mobile"
+    },
+    "published": "Published",
+    "draft": "Draft",
+    "duration": "Duration",
+    "views": "Views",
+    "chooseVideo": "Choose video",
+    "replaceVideo": "Replace video",
+    "changePoster": "Replace cover",
+    "uploadingVideo": "Uploading video…",
+    "uploadingPoster": "Uploading cover…",
+    "uploaded": "Video uploaded",
+    "required": "Title (UZ) and video are required",
+    "confirmDelete": "Delete this guide?"
   }
 }

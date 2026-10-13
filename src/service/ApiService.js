@@ -34,6 +34,7 @@ import telegramService from '@/service/v1/admin/telegramService.js'
 import instructionService from '@/service/v1/admin/instructionService.js'
 import mobileUserService from '@/service/v1/admin/mobileUserService.js'
 import mobileStoryService from '@/service/v1/admin/mobileStoryService.js'
+import videoGuideService from '@/service/v1/app/videoGuideService.js'
 import vacancyApproveService from '@/service/v1/admin/vacancyApproveService.js'
 import integrationClientsService from '@/service/v1/admin/integrationClientsService.js'
 import dbBackupService from '@/service/v1/admin/dbBackupService.js'
@@ -329,6 +330,7 @@ export default {
   newsService,
   mobileUserService,
   mobileStoryService,
+  videoGuideService,
   vacancyApproveService,
   structureReportService,
   confirmationReportService,
