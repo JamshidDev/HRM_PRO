@@ -18,6 +18,8 @@
   import MySalary from './MySalary.vue'
   import LoginMethods from './LoginMethods.vue'
   import SsoLogins from './SsoLogins.vue'
+  import LoginActivity from './LoginActivity.vue'
+  import CalendarDaysIcon from '@/assets/icons/calendarDaysIcon.svg'
   import EnterIcon from '@/assets/icons/tsDoorOpen.svg'
 
   const { t } = i18n.global
@@ -29,6 +31,9 @@
     store.checkPermission(store.pn.hrCommandsBlank)
   )
 
+  // Faollik xaritasi — rol orqali yoqiladi (Rollar > Profil bo'limlari > Faollik).
+  const canSeeActivity = computed(() => store.checkPermission(store.pn.profileActivity))
+
   const tabList = computed(() =>
     [
       { id: store.tabs[0], name: t('profilePage.tabs.profileInfo'), icon: UserIcon },
@@ -39,7 +44,10 @@
       { id: store.tabs[1], name: t('profilePage.tabs.notification'), icon: RingIcon },
       { id: store.tabs[3], name: t('salary1c.mySalary'), icon: FileEditIcon },
       { id: store.tabs[5], name: t('profilePage.tabs.secure'), icon: ShieldIcon },
-      { id: store.tabs[6], name: t('profilePage.tabs.ssoLogins'), icon: EnterIcon }
+      { id: store.tabs[6], name: t('profilePage.tabs.ssoLogins'), icon: EnterIcon },
+      canSeeActivity.value
+        ? { id: store.tabs[7], name: t('profilePage.tabs.activity'), icon: CalendarDaysIcon }
+        : null
     ].filter(Boolean)
   )
 </script>
@@ -113,6 +121,8 @@
           <LoginMethods v-else-if="store.activeTab === store.tabs[5]" />
 
           <SsoLogins v-else-if="store.activeTab === store.tabs[6]" />
+
+          <LoginActivity v-else-if="store.activeTab === store.tabs[7] && canSeeActivity" />
         </div>
       </Transition>
     </div>

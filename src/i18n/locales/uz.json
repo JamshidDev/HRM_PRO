@@ -789,7 +789,8 @@
         "copySuccess": "Link nusxa olindi!",
         "copyError": "Nusxa olishda xatolik!"
       },
-      "ssoLogins": "Kirishlar tarixi (SSO)"
+      "ssoLogins": "Kirishlar tarixi (SSO)",
+      "activity": "Faollik"
     },
     "org": {
       "title": "Buyruq blankasi uchun ma'lumotlar",
@@ -6392,6 +6393,36 @@
       "eimzo": "E-IMZO",
       "app": "HR Rail ilovasi",
       "session": "Mavjud sessiya"
+    },
+    "activity": {
+      "title": "Faollik",
+      "demo": "Demo ma'lumot",
+      "total": "{year}-yilda {count} ta kirish",
+      "count": "{count} ta kirish",
+      "none": "Kirish yo'q",
+      "less": "Kam",
+      "more": "Ko'p",
+      "months": "Yan,Fev,Mar,Apr,May,Iyn,Iyl,Avg,Sen,Okt,Noy,Dek",
+      "days": "Du,Se,Ch,Pa,Ju,Sh,Ya",
+      "stats": {
+        "total": "Jami kirishlar",
+        "activeDays": "Faol kunlar",
+        "streak": "Eng uzun ketma-ketlik",
+        "busiest": "Eng faol kun",
+        "days": "{count} kun"
+      },
+      "guide": {
+        "title": "Yo'riqnoma",
+        "howTitle": "Qanday hisoblanadi",
+        "howText": "Har bir katak — bir kun. HRM hisobingiz orqali boshqa tizimlarga qilingan har bir muvaffaqiyatli kirish o'sha kunga qo'shiladi.",
+        "hoverTitle": "Kun tafsiloti",
+        "hoverText": "Kursorni katak ustiga olib boring — o'sha kungi kirishlar soni va sana ko'rinadi. Yilni yuqoridagi tugmalar bilan tanlang.",
+        "privateTitle": "Faqat siz ko'rasiz",
+        "privateText": "Bu xarita shaxsiy: uni faqat siz ko'rasiz, rahbar yoki HR uchun ko'rsatilmaydi.",
+        "soonTitle": "Tez orada",
+        "soonText": "HRM'da o'tkazilgan vaqt (soatlarda) ham hisobga olinadi — har bir soat rangni bir pog'ona to'qroq qiladi.",
+        "levelsTitle": "Rang darajalari"
+      }
     }
   }
 }

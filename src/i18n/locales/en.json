@@ -774,7 +774,8 @@
         "copySuccess": "Link copied!",
         "copyError": "Copy error!"
       },
-      "ssoLogins": "Sign-in history (SSO)"
+      "ssoLogins": "Sign-in history (SSO)",
+      "activity": "Activity"
     },
     "org": {
       "title": "Order form data",
@@ -6331,6 +6332,36 @@
       "eimzo": "E-IMZO",
       "app": "HR Rail app",
       "session": "Existing session"
+    },
+    "activity": {
+      "title": "Activity",
+      "demo": "Demo data",
+      "total": "{count} sign-ins in {year}",
+      "count": "{count} sign-ins",
+      "none": "No sign-ins",
+      "less": "Less",
+      "more": "More",
+      "months": "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",
+      "days": "Mon,Tue,Wed,Thu,Fri,Sat,Sun",
+      "stats": {
+        "total": "Total sign-ins",
+        "activeDays": "Active days",
+        "streak": "Longest streak",
+        "busiest": "Busiest day",
+        "days": "{count} days"
+      },
+      "guide": {
+        "title": "How to read it",
+        "howTitle": "How it's counted",
+        "howText": "Each square is one day. Every successful sign-in to another system through your HRM account is added to that day.",
+        "hoverTitle": "Day details",
+        "hoverText": "Hover over a square to see that day's sign-in count and date. Pick the year with the buttons above.",
+        "privateTitle": "Only you can see it",
+        "privateText": "This map is personal: only you see it, it isn't shown to managers or HR.",
+        "soonTitle": "Coming soon",
+        "soonText": "Time spent in HRM (in hours) will be counted too — each hour makes the color one step darker.",
+        "levelsTitle": "Color levels"
+      }
     }
   }
 }
