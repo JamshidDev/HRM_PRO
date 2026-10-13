@@ -854,6 +854,15 @@
       "inn": "INN",
       "gateway_id": "Gateway ID"
     },
+    "startPerson": {
+      "loading": "Looking up employee…",
+      "notFound": "No employee found for this PINFL",
+      "noAccount": "No system account — the organization won't be created",
+      "positions": "Current positions",
+      "noPositions": "No active positions",
+      "rate": "{n} rate",
+      "willBe": "In the new organization: {type}, {n} rate"
+    },
     "selectedOrg": "Selected organization",
     "deleteContent": "Are you sure you want to delete this organization?",
     "panel": {

@@ -312,6 +312,12 @@ export const useOrganizationStore = defineStore('organizationStore', {
       if (this.panel.id && this.panel.mode !== 'edit') this.panel.mode = 'edit'
       else this.closePanel()
     },
+    // Forma kartasi uchun; topilmasa null.
+    _startPerson(pin) {
+      return $ApiService.organizationService
+        ._startPerson({ params: { pin } })
+        .then((res) => res.data.data ?? null)
+    },
     _create() {
       this.saveLoading = true
       const data = { ...this.payload, group: Number(this.payload.group) }
