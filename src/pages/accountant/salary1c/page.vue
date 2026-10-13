@@ -3,7 +3,7 @@
   import { NoDataPicture, OnesCodeFilter, UIBadge, UIModal, UIPageContent, UIPageFilter, UIPagination, UITable, UIYearMonth, UISelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useSalary1cStore, useUploadReportStore } from '@/store/modules/index.js'
   import BulkOnesModal from '@/pages/accountant/report/ui/BulkOnesModal.vue'
-  import OnesCodesManager from '@/pages/accountant/salary1c/ui/OnesCodesManager.vue'
+  import { OnesCodesManager } from '@/components/index.js'
   import { useDebounceFn } from '@vueuse/core'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'

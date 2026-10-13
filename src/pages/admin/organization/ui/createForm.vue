@@ -3,13 +3,33 @@
   const formRef = ref(null)
   import i18n from '@/i18n/index.js'
   const { t } = i18n.global
-  import { UIMultipleLangItems, UIDConfirm } from '@/components/index.js'
+  import { UIMultipleLangItems, UIDConfirm, OnesCodesManager } from '@/components/index.js'
   import { useOrganizationStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
+  import salary1cService from '@/service/v1/accountant/salary1cService.js'
   import BasisFields from './BasisFields.vue'
 
   const store = useOrganizationStore()
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
+
+  // Ko'p 1C kod boshqaruvi — faqat tahrir rejimida (korxona saqlangan, id bor).
+  const codesManagerVisible = ref(false)
+  // Formada DOIMO ko'rinadigan 1C kodlar ro'yxati (modal ochmasdan). Tahrirda yuklanadi.
+  const onesCodes = ref([])
+  const loadOnesCodes = async () => {
+    const id = store.panel?.id
+    if (!id || store.isCreate) {
+      onesCodes.value = []
+      return
+    }
+    try {
+      const res = await salary1cService._getOrgCodes({ params: { organization_id: id } })
+      onesCodes.value = res?.data?.data ?? []
+    } catch {
+      onesCodes.value = []
+    }
+  }
+  watch(() => [store.panel?.id, store.isCreate], loadOnesCodes, { immediate: true })
   // Panelda korxona tanlanganda forma darhol ochiladi — yozish huquqi bo'lmasa faqat ko'rish.
   const canWrite = computed(() => accStore.checkPermission(accStore.pn.organizationsWrite))
 
@@ -164,12 +184,40 @@
           <n-input type="text" v-model:value="store.payload.code" />
         </n-form-item>
         <n-form-item :label="$t(`organizationPage.form.ones_org_code`)" path="ones_org_code">
-          <n-input
-            class="skip-format"
-            type="text"
-            v-model:value="store.payload.ones_org_code"
-            :placeholder="$t('salary1c.orgCodePh')"
-          />
+          <div class="w-full">
+            <n-input
+              class="skip-format"
+              type="text"
+              v-model:value="store.payload.ones_org_code"
+              :placeholder="$t('salary1c.orgCodePh')"
+            />
+            <!-- Ko'p 1C kod: korxona 1C'da bir nechta kodga bo'lingan bo'lsa shu yerdan
+                 qo'shiladi (yuqoridagi maydon — asosiy/primary kod). Faqat tahrir rejimida. -->
+            <!-- Biriktirilган kodlar DOIMO ko'rinadi (modal ochmasdan). -->
+            <div
+              v-if="!store.isCreate && onesCodes.length"
+              class="mt-1 flex flex-wrap items-center gap-1"
+            >
+              <span
+                v-for="(c, i) in onesCodes"
+                :key="c.id"
+                class="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary"
+                :title="c.label || ''"
+              >
+                {{ c.ones_org_code }}<template v-if="i === 0"> ({{ $t('salary1c.onesCode.primary') }})</template>
+              </span>
+            </div>
+            <n-button
+              v-if="!store.isCreate && store.panel.id"
+              text
+              type="primary"
+              size="tiny"
+              class="mt-1"
+              @click="codesManagerVisible = true"
+            >
+              + {{ $t('salary1c.onesCode.manageBtn') }}
+            </n-button>
+          </div>
         </n-form-item>
       </div>
       <div class="grid grid-cols-2 gap-2">
@@ -242,6 +290,14 @@
         </span>
       </div>
     </UIDConfirm>
+
+    <!-- Ko'p 1C kod boshqaruvi (korxonaga 2+ 1C kod biriktirish) -->
+    <OnesCodesManager
+      v-model:visible="codesManagerVisible"
+      :organization-id="store.panel.id ?? null"
+      :organization-name="store.panel.name ?? store.payload.name ?? ''"
+      @changed="loadOnesCodes(); store._detail()"
+    />
   </n-form>
 </template>
 

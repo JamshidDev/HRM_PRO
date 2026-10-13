@@ -2,8 +2,9 @@
 // Ko'p 1C kod boshqaruvi — bitta korxonaga biriktirilgan 1C kodlarini ko'rish,
 // qo'shish va o'chirish. Korxona 1C'da bir nechta kodga bo'lingan bo'lsa (aslida bitta
 // korxona), shu yerda kodlar ro'yxati yuritiladi. Birinchi kod — primary (backward compat).
+// Umumiy komponent: "Oylik hisobot (1C)" sahifasida ham, korxona (admin) formasida ham.
 import { ref, watch } from 'vue'
-import { UIModal } from '@/components/index.js'
+import UIModal from '@/components/ui/UIModal.vue'
 import salary1cService from '@/service/v1/accountant/salary1cService.js'
 import i18n from '@/i18n/index.js'
 

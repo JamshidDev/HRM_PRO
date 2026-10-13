@@ -3800,6 +3800,33 @@
     "name": "Hisobot yuklash",
     "latest": "Oxirgi",
     "olderUploads": "Oldingi yuklamalar",
+    "hasOnesCode": "1C kodi sozlangan — buxgalteriya 1C da yuritiladi",
+    "onesCodeDownload": "1C kodi bo'yicha alohida Excel yuklab olish",
+    "anomaly": {
+      "toast": "1C ma'lumotida muammo: {dup} ta takroriy JSHSHIR, {code} ta kodsiz to'lov turi — tekshiring",
+      "title": "1C ma'lumot sifati — anomaliyalar",
+      "headerHint": "1C'dan tortilgan ma'lumotdagi muammolar (takroriy JSHSHIR / kodsiz to'lov turi)",
+      "all": "Barchasi",
+      "duplicatePinfl": "Takroriy JSHSHIR",
+      "missingCode": "Kodsiz to'lov turi",
+      "noData": "Anomaliya topilmadi",
+      "cameNTimes": "{n} marta kelgan",
+      "diffFields": "Farq qiladi",
+      "code": "Kod",
+      "empty": "(bo'sh)",
+      "accrual": "Hisoblanma",
+      "deduction": "Ushlanma",
+      "employees": "Xodimlar",
+      "examples": "Masalan",
+      "field": {
+        "tab_nomer": "Tabel",
+        "position": "Lavozim",
+        "oklad": "Oklad",
+        "hours_worked": "Soat",
+        "accrual": "Hisoblanma",
+        "deduction": "Ushlanma"
+      }
+    },
     "changes": {
       "added": "Yangi",
       "changed": "O'zgargan",
@@ -3997,7 +4024,11 @@
     "view": {
       "main_salary": "Oklad",
       "work_time": "Ishlagan vaqti",
-      "net_salary": "Qo'lga tegadigan summa"
+      "net_salary": "Qo'lga tegadigan summa",
+      "kareshok": {
+        "title": "Kareshoklar ({n}) — har tabel bo'yicha alohida",
+        "tab": "Tabel"
+      }
     },
     "in": {
       "code": "To'lov shifri",
@@ -4452,7 +4483,11 @@
     "duration": "Davomiyligi",
     "pulledAt": "Vaqti",
     "searchOrg": "Korxona bo'yicha qidirish",
-    "all": "Hammasi"
+    "all": "Hammasi",
+    "kareshok": {
+      "title": "Kareshoklar ({n}) — har tabel bo'yicha alohida",
+      "tab": "Tabel"
+    }
   },
   "tariffBase": {
     "title": "Bazaviy summa",
