@@ -4,6 +4,7 @@ import router from '@/router/index.js'
 import { AppPaths, useAppSetting, appPermissions, setErrorReporterUser } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
 import { useEimzoGateStore } from '@/features/eimzoGate/eimzoGateStore.js'
+import { useSocketStore } from '@/store/modules/app/socketStore.js'
 
 const { t } = i18n.global
 
@@ -64,7 +65,7 @@ export const useAccountStore = defineStore('accountStore', {
     // foydalanuvchi nima kutayotganini bilmasdi.
     loadingKind: 'boot',
     activeTab: 1,
-    tabs: [1, 2, 3, 4, 5, 6],
+    tabs: [1, 2, 3, 4, 5, 6, 7, 8],
     // Profil > Xavfsizlik: web kirish usullari (`/user/profile` javobidan).
     // Har element {enabled, editable}; hozircha faqat `password` tahrirlanadi.
     loginMethods: null,
@@ -338,6 +339,12 @@ export const useAccountStore = defineStore('accountStore', {
           // sahifasidagi "Parol" tabini belgilash uchun qoladi (`profile/ui/Tabs.vue`).
           // eimzoGate: iqtisod bo'limi E-IMZO tasdig'i holati profil bilan keladi.
           useEimzoGateStore()._apply(res.data.data.eimzo_gate)
+          // Sahifa qayta yuklanganda ham socket ulansin (telefondan sessiya tugatilsa darhol chiqish uchun).
+          // Login oqimi (callback bilan) socketni o'zi ochadi — ikki ulanish bo'lmasin.
+          const socketStore = useSocketStore()
+          if (!callback && !socketStore.socket) {
+            socketStore.initSocket(localStorage.getItem(useAppSetting.tokenKey), res.data.data.id)
+          }
           this.loginMethods = res.data.data.login_methods ?? null
           this.mustChangePassword = res.data.data.must_change === true
           if (this.mustChangePassword) {

@@ -17,7 +17,16 @@ export const useLoginNewStore = defineStore('loginNewStore', {
     phone: '+998',
     password: null,
     loading: false,
-    authPayload: null,
+    // SSO: tashqi tizim `?client_id=` bilan yuborgan bo'lsa — { client_id, name }.
+    sso: null,
+    ssoLoading: false,
+    // Brauzerda yaroqli HRM sessiyasi bor — qayta login so'ralmaydi ({ name }).
+    ssoSession: null,
+    ssoSessionChecking: false,
+    // Qaysi usulda kirildi (password | qr | eimzo) — SSO tarixiga yoziladi.
+    loginMethod: 'password',
+    // Login'dan keyin to'liq ekranli yo'naltirish oynasi uchun — { name, url }.
+    ssoRedirect: null,
     // custom (rasm) captcha — login sahifasidagidek
     captchaAnswer: null,
     captchaKey: null,
@@ -144,8 +153,9 @@ export const useLoginNewStore = defineStore('loginNewStore', {
       this.codeError = null
     },
     // login va 2FA muvaffaqiyatli token olgandan keyingi umumiy oqim
-    _handleAuthSuccess(res) {
+    _handleAuthSuccess(res, method = 'password') {
       const token = res.data.access_token
+      this.loginMethod = method
 
       // offer=true → offerta HALI qabul qilinmagan. Login yakunlanmaydi:
       // token'ni vaqtincha ushlaymiz (localStorage'ga YOZMAYMIZ) va modalni ochamiz.
@@ -165,8 +175,8 @@ export const useLoginNewStore = defineStore('loginNewStore', {
     _finalizeLogin(token) {
       localStorage.setItem(useAppSetting.tokenKey, token)
 
-      if (this.authPayload) {
-        this._getAuthCode()
+      if (this.sso) {
+        this._ssoRedirect()
         return
       }
 
@@ -203,13 +213,67 @@ export const useLoginNewStore = defineStore('loginNewStore', {
       this.showOfferModal = false
       this.pendingToken = null
     },
-    _getAuthCode() {
-      this.loading = true
-      const data = this.authPayload
+    // Login sahifasi `?client_id=` bilan ochilganda: tizim SSO'ga ulanganini tekshiradi.
+    _loadSsoClient(clientId) {
+      this.sso = null
+      if (!clientId) return
+      this.ssoLoading = true
       $ApiService.authService
-        ._authCode({ data })
+        ._ssoClient({ params: { client_id: clientId } })
         .then((res) => {
-          window.location.href = res.data.data.url
+          this.sso = { client_id: clientId, name: res.data.data.name }
+        })
+        // Ulanmagan tizim — oddiy login kabi HRM'ga kiriladi.
+        .catch(() => {})
+        .finally(() => {
+          this.ssoLoading = false
+        })
+    },
+    // `client_id` bilan kelinganda: brauzerdagi token yaroqlimi (axios'siz — 401 client_id'ni yo'qotmasin).
+    async _checkSsoSession() {
+      const token = localStorage.getItem(useAppSetting.tokenKey)
+      if (!token) return
+      this.ssoSessionChecking = true
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/user/profile`, {
+          headers: { Accept: 'application/json', Authorization: `Bearer ${token}`, 'X-Auth-Type': 'sanctum' }
+        })
+        if (res.ok) {
+          const w = (await res.json())?.data?.worker
+          this.ssoSession = { name: [w?.last_name, w?.first_name].filter(Boolean).join(' ') }
+        } else if (res.status === 401) {
+          localStorage.removeItem(useAppSetting.tokenKey)
+        }
+      } catch {
+        // tarmoq xatosi — oddiy login oqimi
+      } finally {
+        this.ssoSessionChecking = false
+      }
+    },
+    // Mavjud sessiya bilan tizimga o'tish — login so'ralmaydi.
+    _ssoContinueSession() {
+      this.loginMethod = 'session'
+      this._ssoRedirect()
+    },
+    // «Boshqa akkaunt bilan kirish» — sessiya shu brauzerdan olib tashlanadi, login ochiladi.
+    _ssoUseOtherAccount() {
+      localStorage.removeItem(useAppSetting.tokenKey)
+      this.ssoSession = null
+      this.ssoRedirect = null
+    },
+    // Bir martalik client_code olib, to'liq ekranli yo'naltirish oynasini ochadi.
+    _ssoRedirect() {
+      this.loading = true
+      const data = { client_id: this.sso.client_id, method: this.loginMethod }
+      $ApiService.authService
+        ._ssoCode({ data })
+        .then((res) => {
+          this.ssoRedirect = res.data.data
+        })
+        .catch(() => {
+          // Yo'naltirib bo'lmasa — oddiy login kabi HRM'ga kiramiz.
+          this.sso = null
+          this._finalizeLogin(localStorage.getItem(useAppSetting.tokenKey))
         })
         .finally(() => {
           this.loading = false

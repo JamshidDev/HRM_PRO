@@ -35,7 +35,7 @@ const pickWithAncestors = (tree, matches) => {
 // Jadval lavozimlari bo'linma ochilganda (bosilganda) yuklanadi.
 // Quyidagilar reaktiv emas — faqat navbatni boshqarish uchun:
 // `tableSource` — `table.positions` qaysi `department.list` ga tegishli. Ro'yxat
-//   o'zgarmagan bo'lsa (ro'yxat ↔ jadval almashtirilganda) kesh saqlanadi.
+//   o'zgarmagan bo'lsa kesh saqlanadi.
 // `tableStale` — keshda bor, lekin qayta so'ralishi kerak (tahrirdan keyin).
 //   Yangisi kelguncha eski qatorlar ko'rinib turadi — jadval sakramaydi.
 let tableSource = null
@@ -47,17 +47,6 @@ const TABLE_CONCURRENCY = 6
 
 export const useReport2Store = defineStore('report2Store', {
   state: () => ({
-    list: [],
-    loading: false,
-    orgCheck: [],
-    selectedPosId: null,
-
-    positionLoading: false,
-    totalPosition: 0,
-    positionList: [],
-    byPosition: true,
-    // 'list' — bo'linma kartochkalari, 'table' — bo'linma → lavozim → xodim daraxt jadvali
-    viewMode: 'list',
     // Jadval ko'rinishi: bo'linma → lavozimlar. `positions[id]` yo'q bo'lsa — hali yuklanmagan.
     table: {
       loading: false,
@@ -86,10 +75,6 @@ export const useReport2Store = defineStore('report2Store', {
       department_id: null,
       department_position_id: null
     },
-    workerLoading: false,
-    workerList: [],
-    totalWorker: 0,
-    optimizationLoading: false,
     staffingExportLoading: false,
 
     visible: false,
@@ -104,9 +89,6 @@ export const useReport2Store = defineStore('report2Store', {
         per_page: 1000,
         search: null
       },
-      list: [],
-      total: 0,
-      selectedId: null,
       elementId: null,
       visible: false,
       visibleType: false
@@ -124,7 +106,6 @@ export const useReport2Store = defineStore('report2Store', {
       organizations: [],
       departments: []
     },
-    confirmVisible: false,
     structure: {
       cache: [],
       loading: false,
@@ -150,10 +131,7 @@ export const useReport2Store = defineStore('report2Store', {
         comment: null
       },
       list: [],
-      cache: [],
-      selectedId: null,
       elementId: null,
-      selectDepartments: [],
       visible: false
     }
   }),
@@ -181,8 +159,8 @@ export const useReport2Store = defineStore('report2Store', {
           this.staffingExportLoading = false
         })
     },
-    // Ro'yxat ko'rinishida — tanlangan bo'linma, jadvalda — surilgan qator bo'linmasi.
-    _positionOrderable(order, departmentId = this.department.selectedId) {
+    // Tartib jadvalda allaqachon joyida o'zgargan — muvaffaqiyatda qayta yuklash shart emas.
+    _positionOrderable(order, departmentId) {
       const data = {
         type: 'position',
         organization_id: this.department.params.organization_id?.[0]?.id,
@@ -190,19 +168,10 @@ export const useReport2Store = defineStore('report2Store', {
         order: order
       }
 
-      const fromTable = this.viewMode === 'table'
-      $ApiService.reportService
-        ._orderable({ data })
-        .then(() => {
-          // Jadvalda tartib allaqachon joyida o'zgargan — qayta yuklash shart emas.
-          // Ro'yxatdan surilganda jadval keshi eski tartibda qolmasin.
-          if (!fromTable) this._invalidateTable([departmentId])
-        })
-        .catch(() => {
-          // Saqlanmagan bo'lsa ekrandagi tartib serverdagi bilan qayta tenglashadi.
-          if (fromTable) this._invalidateTable([departmentId])
-          else this.getPosition()
-        })
+      $ApiService.reportService._orderable({ data }).catch(() => {
+        // Saqlanmagan bo'lsa ekrandagi tartib serverdagi bilan qayta tenglashadi.
+        this._invalidateTable([departmentId])
+      })
     },
     // Backend qidiruvda faqat mos kelgan tashkilotlarni qaytaradi — ota-tashkilotlari
     // kelmaydi. Shu sababli qidiruvsiz to'liq daraxtni (`full`) saqlab, natijani shu
@@ -229,20 +198,6 @@ export const useReport2Store = defineStore('report2Store', {
       } finally {
         if (seq === this.structure.seq) this.structure.loading = false
       }
-    },
-    _getOptimization() {
-      this.optimizationLoading = true
-      const department_id = this.department.selectedId
-      $ApiService.reportService
-        ._optimization({ params: { department_id } })
-        .then((res) => {
-          this.confirmVisible = false
-          this._invalidateTable([department_id])
-          this.getPosition()
-        })
-        .finally(() => {
-          this.optimizationLoading = false
-        })
     },
     _getDepartment() {
       this.department.loading = true
@@ -284,43 +239,26 @@ export const useReport2Store = defineStore('report2Store', {
       this.position.loading = true
       $ApiService.departmentPositionService._delete({ id: this.position.elementId }).finally(() => {
         this.position.loading = false
-        this.refreshPositions([departmentId ?? this.department.selectedId])
+        this._invalidateTable([departmentId])
       })
     },
-    // Lavozim o'zgargach: jadvalda bo'linma ro'yxati (P/F jamlari) yangilanadi,
+    // Lavozim o'zgargach: bo'linma ro'yxati (P/F jamlari) yangilanadi,
     // lavozimlar esa faqat o'zgargan bo'linmalar uchun qayta so'raladi.
-    // Ro'yxat ko'rinishida jadval keshi eskiradi — keyingi ochilishda to'liq yuklanadi.
     _invalidateTable(departmentIds) {
-      if (this.viewMode === 'table') {
-        this.table.refreshIds = departmentIds.filter(Boolean)
-        this.table.refreshing = true
-        this._getDepartment()
-      } else {
-        tableSource = null
-      }
+      this.table.refreshIds = departmentIds.filter(Boolean)
+      this.table.refreshing = true
+      this._getDepartment()
     },
     // Bo'linma qo'shildi/tahrirlandi/o'chirildi — lavozimlar keshi saqlanadi.
     _refreshDepartments() {
-      if (this.viewMode === 'table') {
-        this.table.refreshIds = []
-        this.table.refreshing = true
-      }
+      this.table.refreshIds = []
+      this.table.refreshing = true
       this._getDepartment()
     },
-    // «Yangilash» tugmasi: bo'linmalar ro'yxati qayta so'raladi. Jadvalda ochiq
-    // bo'linmalarning lavozimlari ham eskirgan deb belgilanadi (ochiqligi saqlanadi),
-    // ro'yxat ko'rinishida tanlangan bo'linma lavozimlari qayta o'qiladi.
+    // «Yangilash» tugmasi: bo'linmalar ro'yxati qayta so'raladi, ochiq
+    // bo'linmalarning lavozimlari ham eskirgan deb belgilanadi (ochiqligi saqlanadi).
     _refreshAll() {
-      if (this.viewMode === 'table') {
-        this._invalidateTable(this.table.ids.filter((id) => this.table.expanded[id]))
-        return
-      }
-      this._getDepartment()
-      if (this.department.selectedId) this.getPosition()
-    },
-    refreshPositions(departmentIds = []) {
-      this._invalidateTable(departmentIds)
-      if (this.viewMode !== 'table') this.getPosition()
+      this._invalidateTable(this.table.ids.filter((id) => this.table.expanded[id]))
     },
     // `department.list` o'zgarganda jadval holati qayta quriladi, lekin hech narsa
     // so'ralmaydi — lavozimlarni ochilgan bo'linmalar uchun TableView
@@ -429,75 +367,6 @@ export const useReport2Store = defineStore('report2Store', {
       }
       return $ApiService.reportService._worker({ params }).then((res) => res.data.data.data)
     },
-    getPosition() {
-      this.position.loading = true
-      let params = {
-        ...this.position.params,
-        organization_id: this.department.params.organization_id?.[0]?.id,
-        department_id: this.department.selectedId
-      }
-      $ApiService.reportService
-        ._position({ params })
-        .then((res) => {
-          this.position.list = res.data.data.data
-          this.position.total = res.data.data.total
-        })
-        .finally(() => {
-          this.position.loading = false
-        })
-    },
-    getWorker() {
-      this.workerLoading = true
-      let params = {
-        ...this.workerParams,
-        organization_id: this.department.params.organization_id?.[0]?.id,
-        department_id: this.department.selectedId,
-        department_position_id: this.byPosition ? this.position.selectedId : undefined
-      }
-      $ApiService.reportService
-        ._worker({ params })
-        .then((res) => {
-          this.workerList = res.data.data.data
-          this.totalWorker = res.data.data.total
-        })
-        .finally(() => {
-          this.workerLoading = false
-        })
-    },
-    onChangeDepartment(v) {},
-    async onChangeRadio(v) {
-      this.department.selectedId = this.department.selectedId === v.id ? null : v.id
-      this.position.selectedId = null
-      this.position.list = []
-      await nextTick()
-      if (this.department.selectedId) {
-        this.positionList = []
-        this.workerList = []
-        if (this.byPosition) {
-          this.getPosition()
-        } else {
-          this.getWorker()
-        }
-      }
-    },
-    async onChangePosRadio(v) {
-      this.position.selectedId = this.position.selectedId === v.id ? null : v.id
-      await nextTick()
-      this.workerList = []
-      if (this.position.selectedId) {
-        this.getWorker()
-      }
-    },
-    onChangeFilter() {
-      this.department.selectedId = null
-      this.byPosition = !this.byPosition
-    },
-    onChangeOrg(v) {
-      const store = useComponentStore()
-      store.depParams.organizations = [v?.[0]?.id]
-      this.params.organization_id = v
-      this._getDepartment()
-    },
     onEdit(v) {
       const store = useComponentStore()
       this.position.visibleType = false
@@ -532,12 +401,6 @@ export const useReport2Store = defineStore('report2Store', {
         .then((res) => {
           this.position.visible = false
           this._invalidateTable([this.positionPayload.department_id])
-          if (
-            this.viewMode !== 'table' &&
-            this.department.selectedId === this.positionPayload.department_id
-          ) {
-            this.getPosition()
-          }
         })
         .finally(() => {
           this.saveLoading = false
@@ -551,11 +414,6 @@ export const useReport2Store = defineStore('report2Store', {
         .then((res) => {
           this.position.visible = false
           this._invalidateTable([this.lastDepartmentId, this.positionPayload.department_id])
-          if (this.viewMode === 'table') return
-          this.getPosition()
-          if (this.lastDepartmentId !== this.positionPayload.department_id) {
-            this._getDepartment()
-          }
         })
         .finally(() => {
           this.saveLoading = false

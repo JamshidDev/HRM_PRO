@@ -1,5 +1,6 @@
 <script setup>
-  import { Search48Filled, Search32Filled, Dismiss16Filled } from '@vicons/fluent'
+  import { Search48Filled, Search32Filled } from '@vicons/fluent'
+  import { naiveIcons } from '@/assets/theme/theme.js'
   import TreeOrg from '@/components/tree/TreeOrg.vue'
   import { useDebounceFn } from '@vueuse/core'
   import { useComponentStore } from '@/store/modules/index.js'
@@ -260,12 +261,12 @@
               type="button"
               :aria-label="$t('content.clear')"
               :title="$t('content.clear')"
-              class="ui-select__clear flex items-center justify-center w-4 h-4 rounded-full text-textColor3 hover:text-textColor1 outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+              class="ui-clear-btn"
               @click.stop="onClear"
               @keydown.enter.stop
               @keydown.space.stop
             >
-              <n-icon size="14"><Dismiss16Filled /></n-icon>
+              <component :is="naiveIcons.clear" />
             </button>
           </template>
         </n-input>
@@ -307,9 +308,9 @@
             size="small"
             v-model:value="searchModel"
             round
+            :theme-overrides="{ paddingSmall: '0 4px 0 10px' }"
             :on-keyup="searchEvent"
             @update:value="searchEvent"
-            :loading="loading"
           >
             <template #prefix>
               <n-icon :component="Search48Filled" />

@@ -145,7 +145,8 @@
 
   const num = (v) => Math.round((Number(v) || 0) * 100) / 100
   // Lavozimda bitta shtat birligi — ayirma to'g'ri. Bo'linmada esa API'ning
-  // `vacant`/`over` maydonlari olinadi (Indicator.vue dagi izohga qarang).
+  // `vacant`/`over` maydonlari olinadi: ular har shtat birligi bo'yicha hisoblanadi,
+  // `rate - real_rate` olsak bir lavozimdagi bo'sh o'rin boshqasidagi ortiqchani yeb qo'yadi.
   const vacantOf = (d) => num(d.vacant ?? Math.max(num(d.rate) - num(d.real_rate), 0))
   const overOf = (d) => num(d.over ?? Math.max(num(d.real_rate) - num(d.rate), 0))
 
@@ -273,31 +274,6 @@
 
   // G/R ranglari design system tokenlaridan — Vakant/Sverx badge'lari bilan bir
   // xil qolip: -100 fon + chip matn rangi (dark mavzu variantlari tokenlarda).
-  const workerTags = (w) =>
-    [
-      {
-        key: 'group',
-        letter: 'G',
-        label: 'report.tooltip.G',
-        value: w.group,
-        cls: 'bg-fig-indigo-100 text-fig-chip-indigo-text'
-      },
-      {
-        key: 'rank',
-        letter: 'R',
-        label: 'report.tooltip.R',
-        value: w.rank,
-        cls: 'bg-fig-amber-100 text-fig-chip-amber-text'
-      }
-    ].filter((tag) => tag.value)
-
-  // Lavozim qatori: max razryad bo'lsa razryad oraliq ko'rinishida (R-3–5).
-  const positionTags = (p) =>
-    workerTags({
-      group: p.group,
-      rank: p.rank && p.max_rank && p.max_rank !== p.rank ? `${p.rank}–${p.max_rank}` : p.rank || p.max_rank
-    })
-
   const ellipsisTooltip = { style: { maxWidth: '400px' } }
 
   const departmentActions = computed(() => [
@@ -332,6 +308,19 @@
   const onPositionAction = (key, p, dept) => {
     if (key === Utils.ActionTypes.edit) editPosition(p)
     else if (key === Utils.ActionTypes.delete) deletePosition(p, dept.id)
+  }
+
+  // Lavozim guruhi, razryadi va maksimal razryadi. Ro'yxat API'sida obyekt
+  // (`{ id, name }`) yoki oddiy qiymat bo'lib kelishi mumkin — ikkalasi ham qo'llanadi.
+  const gradeCols = [
+    { key: 'group', short: 'G', label: 'report.tooltip.G', cls: 'bg-fig-indigo-100 text-fig-chip-indigo-text' },
+    { key: 'rank', short: 'R', label: 'report.tooltip.R', cls: 'bg-fig-amber-100 text-fig-chip-amber-text' },
+    { key: 'max_rank', short: 'MR', label: 'report.tooltip.MR', cls: 'bg-fig-amber-100 text-fig-chip-amber-text' }
+  ]
+
+  const gradeOf = (d, key) => {
+    const v = d?.[key]
+    return v && typeof v === 'object' ? v.name : v
   }
 
   const numberCols = [
@@ -418,11 +407,21 @@
         :style="sheetStyle"
         class="overflow-auto rounded-2xl border border-table-border"
       >
-        <table class="report-sheet w-full min-w-[480px] table-fixed text-sm">
+        <table class="report-sheet w-full min-w-[640px] table-fixed text-sm">
           <thead>
             <tr>
               <th class="w-9 md:w-12 text-center">№</th>
               <th class="text-left">{{ $t('report.table.position') }}</th>
+              <th v-for="col in gradeCols" :key="col.key" class="w-10 md:w-14 text-center">
+                <n-tooltip placement="top">
+                  <template #trigger>
+                    <span class="cursor-help border-b border-dashed border-fig-text-tertiary">
+                      {{ col.short }}
+                    </span>
+                  </template>
+                  {{ $t(col.label) }}
+                </n-tooltip>
+              </th>
               <th v-for="col in numberCols" :key="col.key" class="w-12 md:w-20 text-center">
                 {{ $t(col.label) }}
               </th>
@@ -433,7 +432,7 @@
 
           <tbody v-if="!visibleSections.length">
             <tr>
-              <td colspan="8" class="py-8 text-center text-xs text-fig-text-tertiary">
+              <td colspan="11" class="py-8 text-center text-xs text-fig-text-tertiary">
                 {{ $t('content.no-data') }}
               </td>
             </tr>
@@ -442,7 +441,7 @@
           <tbody v-else>
             <template v-for="section in visibleSections" :key="section.dept.id">
               <tr class="report-sheet__dept cursor-pointer" @click="toggleDept(section.dept.id)">
-                <td colspan="2">
+                <td colspan="5">
                   <div
                     class="flex items-center gap-2"
                     :style="{ paddingLeft: `${section.depth * 20}px` }"
@@ -506,7 +505,7 @@
               <template v-if="section.open">
                 <tr v-if="!section.loaded">
                   <td></td>
-                  <td colspan="7">
+                  <td colspan="10">
                     <div :style="{ paddingLeft: `${section.depth * 20 + 8}px` }">
                       <n-skeleton height="14px" width="40%" round />
                     </div>
@@ -514,7 +513,7 @@
                 </tr>
                 <tr v-else-if="!section.positions.length">
                   <td></td>
-                  <td colspan="7" class="text-xs text-fig-text-tertiary italic">
+                  <td colspan="10" class="text-xs text-fig-text-tertiary italic">
                     <span :style="{ paddingLeft: `${section.depth * 20}px` }">
                       {{ $t('report.table.noPositions') }}
                     </span>
@@ -556,16 +555,17 @@
                           <ChevronRight20Regular />
                         </n-icon>
                         <span>{{ p.position?.name }}</span>
-                        <span
-                          v-for="tag in positionTags(p)"
-                          :key="tag.key"
-                          :title="$t(tag.label)"
-                          class="inline-flex shrink-0 items-center h-5 px-2 rounded-md text-[11px] font-semibold tabular-nums"
-                          :class="tag.cls"
-                        >
-                          {{ tag.letter }}-{{ tag.value }}
-                        </span>
                       </div>
+                    </td>
+                    <td v-for="col in gradeCols" :key="col.key" class="text-center">
+                      <span
+                        v-if="gradeOf(p, col.key)"
+                        :title="$t(col.label)"
+                        class="inline-flex items-center justify-center min-w-7 h-5 px-1.5 rounded-md text-[11px] font-semibold tabular-nums"
+                        :class="col.cls"
+                      >
+                        {{ gradeOf(p, col.key) }}
+                      </span>
                     </td>
                     <td
                       v-for="col in numberCols"
@@ -609,11 +609,11 @@
                   <template v-if="workers[p.id]">
                     <tr v-if="workers[p.id].loading" class="report-sheet__worker">
                       <td></td>
-                      <td colspan="7"><n-skeleton height="14px" width="40%" round /></td>
+                      <td colspan="10"><n-skeleton height="14px" width="40%" round /></td>
                     </tr>
                     <tr v-else-if="!workers[p.id].list.length" class="report-sheet__worker">
                       <td></td>
-                      <td colspan="7" class="text-xs text-fig-text-tertiary">
+                      <td colspan="10" class="text-xs text-fig-text-tertiary">
                         <span :style="{ paddingLeft: `${section.depth * 20 + 30}px` }">
                           {{ $t('content.no-data') }}
                         </span>
@@ -657,23 +657,21 @@
                           </n-ellipsis>
                         </div>
                       </td>
+                      <!-- Xodimning guruhi va razryadi lavozimdagi G / R ustunlarida;
+                           maksimal razryad xodimga tegishli emas. -->
+                      <td v-for="col in gradeCols" :key="col.key" class="text-center">
+                        <span
+                          v-if="col.key !== 'max_rank' && gradeOf(w, col.key)"
+                          :title="$t(col.label)"
+                          class="inline-flex items-center justify-center min-w-7 h-5 px-1.5 rounded-md text-[11px] font-semibold tabular-nums"
+                          :class="col.cls"
+                        >
+                          {{ gradeOf(w, col.key) }}
+                        </span>
+                      </td>
                       <td></td>
                       <td class="text-center tabular-nums text-xs">{{ num(w.rate) || '' }}</td>
-                      <!-- Guruh (G) va razryad (R) — Vakant + Sverx ustunlarini egallaydi. -->
-                      <td colspan="2" class="report-sheet__gr">
-                        <div class="flex flex-wrap items-center justify-center gap-1">
-                          <span
-                            v-for="tag in workerTags(w)"
-                            :key="tag.key"
-                            :title="$t(tag.label)"
-                            class="inline-flex items-center h-5 px-2 rounded-md text-[11px] font-semibold tabular-nums"
-                            :class="tag.cls"
-                          >
-                            {{ tag.letter }}-{{ tag.value }}
-                          </span>
-                        </div>
-                      </td>
-                      <td colspan="2"></td>
+                      <td colspan="4"></td>
                     </tr>
                   </template>
                 </template>
@@ -686,6 +684,7 @@
             <tr>
               <td></td>
               <td class="font-semibold">{{ $t('report.table.total') }}</td>
+              <td v-for="col in gradeCols" :key="col.key"></td>
               <td
                 v-for="col in numberCols"
                 :key="col.key"

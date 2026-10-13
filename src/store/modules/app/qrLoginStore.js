@@ -57,7 +57,7 @@ export const useQrLoginStore = defineStore('qrLoginStore', {
         this.status = 'approved'
         this._stopCountdown()
         this.close()
-        useLoginNewStore()._handleAuthSuccess({ data })
+        useLoginNewStore()._handleAuthSuccess({ data }, 'qr')
       })
 
       this.socket.on('connect_error', () => {

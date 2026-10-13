@@ -56,7 +56,11 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     totalWorker: 0,
     workerLoading: false,
     monthsList: [],
-    selectedDate: null
+    selectedDate: null,
+    // Guruh smena turi (nom + naqsh) — sahifa kartochkasi va navbat hisobi uchun.
+    shiftType: null,
+    // Bo'sh navbatga xodim qo'shish oynasi.
+    addSlot: { visible: false, phase: null, fam: 0 }
   }),
   getters: {
     calculateWorkTime: (state) => (workerIndex) => {
@@ -65,6 +69,14 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     }
   },
   actions: {
+    _shiftType(id) {
+      this.shiftType = null
+      if (!id) return
+      $ApiService.shiftTypeService._types({ params: { page: 1, per_page: 200 } }).then((res) => {
+        const list = res.data.data?.data ?? res.data.data ?? []
+        this.shiftType = list.find((v) => v.id === Number(id)) ?? null
+      })
+    },
     _replaceWorker(data) {
       this.replaceLoading = true
       $ApiService.shiftTypeService
@@ -126,6 +138,9 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
         .then((res) => {
           this.list = res.data.data.data
           this.totalItems = res.data.data.total
+          // Havolada `type` bo'lmasa — smena turi javobdan olinadi.
+          const typeId = res.data.data.schedule_type_id
+          if (typeId && this.shiftType?.id !== typeId) this._shiftType(typeId)
         })
         .finally(() => {
           this.loading = false

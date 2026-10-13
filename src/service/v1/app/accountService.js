@@ -42,6 +42,13 @@ const _updateLoginMethod = async (payload) => {
   return await axios.put(`/v1/user/security/login-methods`, payload.data)
 }
 
+const _ssoLogins = async (payload) => {
+  return await axios.get(`/v1/sso/logins`, { params: payload?.params })
+}
+const _ssoLoginClients = async () => {
+  return await axios.get(`/v1/sso/logins/clients`)
+}
+
 export default {
   _index,
   _update,
@@ -51,5 +58,7 @@ export default {
   _orgInfo,
   _updateOrgInfo,
   _acceptOffer,
-  _updateLoginMethod
+  _updateLoginMethod,
+  _ssoLogins,
+  _ssoLoginClients
 }

@@ -1,5 +1,6 @@
 <script setup>
   import { useShiftTypeStore } from '@/store/modules/index.js'
+  import { crewSizeOf } from '@/pages/turnstile/scheduleWorker/ui/navbat.js'
   import { Apps20Regular, People16Regular, PeopleTeam16Regular, Search20Regular } from '@vicons/fluent'
 
   const props = defineProps({
@@ -108,6 +109,13 @@
           </div>
           <div class="mt-1.5 flex items-center gap-3 text-xs text-secondary">
             <span class="truncate">{{ item.type?.name }}</span>
+            <span
+              v-if="crewSizeOf(item)"
+              class="shrink-0 px-1.5 rounded bg-primary/10 text-primary font-medium"
+              :title="$t('shiftType.groupView.crewSizeHint')"
+            >
+              {{ $t('shiftType.groupView.crewSize', { n: crewSizeOf(item) }) }}
+            </span>
             <span class="ml-auto flex items-center gap-1 shrink-0" :title="$t('shiftType.form.groupCount')">
               <n-icon size="14"><PeopleTeam16Regular /></n-icon>
               <span class="font-medium tabular-nums">{{ item.groups }}</span>

@@ -44,6 +44,22 @@
     store.select(v)
   }
 
+  // Saqlash/ko'chirishdan keyin daraxt yangilanadi va qatorlar siljiydi — o'zgargan
+  // korxona ko'rinmay qolmasligi uchun unga silliq aylantiramiz. Ochilish animatsiyasi
+  // (≈520ms) tugaguncha kutiladi, aks holda qator joyi hali aniq emas.
+  const scrollRef = ref(null)
+  watch(
+    () => store.reveal.seq,
+    async () => {
+      const id = store.reveal.id
+      await nextTick()
+      setTimeout(() => {
+        const row = scrollRef.value?.querySelector(`[data-tree-id="${id}"]`)
+        row?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+      }, 560)
+    }
+  )
+
   const onMove = (v) => {
     if (!accStore.checkAction(accStore.pn.organizationsWrite)) return
     store.openMove({
@@ -109,7 +125,7 @@
     </div>
 
     <n-spin :show="store.loading" class="flex-1 min-h-0" content-class="h-full">
-      <div class="h-full overflow-auto px-3 py-2 tree-scroll">
+      <div ref="scrollRef" class="h-full overflow-auto px-3 py-2 tree-scroll">
         <UITree
           v-if="store.list.length"
           :children="store.list"

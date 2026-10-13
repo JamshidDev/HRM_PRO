@@ -39,8 +39,14 @@ const _events = async (payload) => {
   return await axios.get(`/v1/structure/organizations/${payload.id}/events`)
 }
 
+// Yangi korxona HR/rahbar JSHSHIR'i: xodim, faol lavozimlari va yoziladigan stavka.
+const _startPerson = async (payload) => {
+  return await axios.get(`/v1/structure/organizations/start-person`, { params: payload.params })
+}
+
 export default {
   _index,
+  _startPerson,
   _create,
   _update,
   _close,

@@ -1,5 +1,5 @@
 import { NAvatar, NIcon } from 'naive-ui'
-import { DismissCircle20Filled } from '@vicons/fluent'
+import { naiveIcons } from '@/assets/theme/theme.js'
 import Utils from '@utils/Utils.js'
 
 const scheduleLabel = (option) => {
@@ -134,16 +134,15 @@ const selectValueV2 =
 
           allow &&
             h(
-              NIcon,
+              'span',
               {
-                size: 18,
-                class: 'text-danger/80 opacity-0 group-hover:opacity-100 flex-shrink-0',
+                class: 'ui-tag-remove opacity-0 group-hover:opacity-100',
                 onClick: (e) => {
                   e.stopPropagation()
                   callbacks(option)
                 }
               },
-              { default: () => h(DismissCircle20Filled) }
+              naiveIcons.clear()
             )
         ]
       )
