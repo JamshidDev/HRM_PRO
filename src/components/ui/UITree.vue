@@ -279,6 +279,7 @@
           drag.source?.key === `${id}-${idx}` && 'opacity-40',
           dropClass(`${id}-${idx}`)
         ]"
+        :data-tree-id="item.id"
         :draggable="draggable"
         @click="handleSelect($event, item, `${id}-${idx}`)"
         @dblclick="handleDblClick(item, `${id}-${idx}`)"
