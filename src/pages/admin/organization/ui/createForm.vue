@@ -6,6 +6,7 @@
   import { UIMultipleLangItems, UIDConfirm } from '@/components/index.js'
   import { useOrganizationStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
   import BasisFields from './BasisFields.vue'
+  import StartPersonCard from './StartPersonCard.vue'
   import { Info16Regular } from '@vicons/fluent'
 
   const store = useOrganizationStore()
@@ -204,7 +205,7 @@
       </n-form-item>
       <!-- Faqat yangi korxonada: birinchi HR va rahbar standart shtatga yoziladi. -->
       <template v-if="store.isCreate && !store.payload.group">
-        <div class="grid grid-cols-2 gap-2">
+        <div class="flex flex-col">
           <n-form-item :label="$t('organizationPage.form.hrPin')" path="hr_pin" :rule="pinRule">
             <n-input
               v-model:value="store.payload.hr_pin"
@@ -214,6 +215,7 @@
               clearable
             />
           </n-form-item>
+          <StartPersonCard :pin="store.payload.hr_pin" />
           <n-form-item :label="$t('organizationPage.form.directorPin')" path="director_pin" :rule="pinRule">
             <n-input
               v-model:value="store.payload.director_pin"
@@ -223,6 +225,7 @@
               clearable
             />
           </n-form-item>
+          <StartPersonCard :pin="store.payload.director_pin" />
         </div>
         <div class="mb-4 -mt-2 flex items-start gap-1.5 text-xs leading-4 text-textColor2">
           <n-icon size="14" class="mt-px shrink-0 text-primary"><Info16Regular /></n-icon>

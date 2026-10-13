@@ -869,6 +869,15 @@
       "inn": "INN",
       "gateway_id": "Gateway ID"
     },
+    "startPerson": {
+      "loading": "Xodim qidirilmoqda…",
+      "notFound": "Bu JSHSHIR bo'yicha xodim topilmadi",
+      "noAccount": "Tizim hisobi yo'q — korxona yaratilmaydi",
+      "positions": "Hozirgi lavozimlari",
+      "noPositions": "Faol lavozimi yo'q",
+      "rate": "{n} stavka",
+      "willBe": "Yangi korxonada: {type}, {n} stavka"
+    },
     "selectedOrg": "Tanlangan tashkilot",
     "deleteContent": "Haqiqatan ham bu tashkilotni o'chirmoqchimisiz?",
     "panel": {
