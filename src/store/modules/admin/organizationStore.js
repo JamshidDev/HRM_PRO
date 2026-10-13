@@ -93,7 +93,10 @@ export const useOrganizationStore = defineStore('organizationStore', {
     basis: { comment: null, file: null, fileName: null, loading: false },
     history: { id: null, list: [], loading: false },
     // Drag & drop natijasi — tasdiqlanmaguncha daraxt o'zgarmaydi.
-    move: emptyMove()
+    move: emptyMove(),
+    // Saqlash/ko'chirishdan keyin daraxt shu korxonaga aylantiriladi (Table.vue kuzatadi).
+    // `seq` — bir xil id qayta kelganda ham watcher ishlashi uchun.
+    reveal: { id: null, seq: 0 }
   }),
   getters: {
     isCreate: (state) => state.panel.mode === 'create',
@@ -207,6 +210,27 @@ export const useOrganizationStore = defineStore('organizationStore', {
     // keyin yangilanmasa, unda eski nomlar va eski holat qolib ketadi.
     _refreshOrgOptions() {
       useComponentStore()._organizations()
+    },
+    // Korxona va uning barcha ota-bobolari id'lari (pastdan yuqoriga). Yangi otaga
+    // ko'chirilgan korxona ko'rinishi uchun butun yo'l ochilishi kerak — faqat ota emas.
+    async _pathIds(id) {
+      const ids = []
+      while (id != null && !ids.includes(id) && ids.length < 30) {
+        ids.push(id)
+        try {
+          const res = await $ApiService.organizationService._show({ id })
+          id = res.data.data.organization?.parent_id ?? null
+        } catch {
+          break
+        }
+      }
+      return ids
+    },
+    // Daraxtni yangilab, `parentId` gacha butun yo'lni ochadi va `revealId` ga aylantiradi.
+    // Kutilmaydi — saqlash tugmasi daraxt yuklanishini kutib qolmasin.
+    async _refreshTo(parentId, revealId) {
+      await this._refresh(await this._pathIds(parentId))
+      if (revealId != null) this.reveal = { id: revealId, seq: this.reveal.seq + 1 }
     },
     _level() {
       this.levelLoading = true
@@ -328,8 +352,8 @@ export const useOrganizationStore = defineStore('organizationStore', {
         ._create({ data })
         .then(() => {
           this.closePanel()
-          this._refresh([data.parent_id])
           this._refreshOrgOptions()
+          this._refreshTo(data.parent_id, data.parent_id)
         })
         .finally(() => {
           this.saveLoading = false
@@ -340,13 +364,15 @@ export const useOrganizationStore = defineStore('organizationStore', {
       const data = { ...this.payload, group: Number(this.payload.group) }
       delete data.hr_pin
       delete data.director_pin
+      const id = this.panel.id
       $ApiService.organizationService
-        ._update({ data, id: this.panel.id })
+        ._update({ data, id })
         .then(() => {
           this._detail()
           if (this.history.id) this._history()
-          this._refresh([data.parent_id])
           this._refreshOrgOptions()
+          // Ota o'zgargan bo'lsa ham korxona yangi joyida ochiq va ko'rinib turadi.
+          this._refreshTo(data.parent_id, id)
         })
         .finally(() => {
           this.saveLoading = false
@@ -420,8 +446,8 @@ export const useOrganizationStore = defineStore('organizationStore', {
             this._detail()
             if (this.history.id) this._history()
           }
-          this._refresh([parentId])
           this._refreshOrgOptions()
+          this._refreshTo(parentId, id)
         })
         .finally(() => {
           this.move.loading = false
