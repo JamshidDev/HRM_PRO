@@ -25,6 +25,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
       search: null,
       organizations: [],
       code: null,
+      ones_code: null, // ko'p 1C kod: aynan kod bo'yicha filter (bitta kodli org — null)
       year: null,
       month: null,
       sort_by: null,
@@ -284,6 +285,9 @@ export const useMonthReportStore = defineStore('monthReportStore', {
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
         search: this.params.search || undefined,
         code: this.params.code || undefined,
+        // Ko'p 1C kod: tanlangan kod bo'yicha Excel ham ro'yxat (_index) bilan bir xil
+        // filtrlansin — 2 kodli korxonada har 1C ID ni ALOHIDA yuklab, 1C bilan solishtirish uchun.
+        ones_code: this.params.ones_code || undefined,
         sex: this.params.sex ?? undefined,
         start_hours: this.params.start_hours ?? undefined,
         end_hours: this.params.end_hours ?? undefined

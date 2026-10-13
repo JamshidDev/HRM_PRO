@@ -181,6 +181,17 @@
                     </n-icon>
                   </div>
                   <span class="ml-2 leading-[1.2] text-sm flex-1 min-w-0 break-words">{{ ' ' + item.name }}</span>
+                  <!-- 1C kodi sozlangan korxona — buxgalteriya 1C da yuritiladi (ajratib ko'rsatish) -->
+                  <n-tooltip v-if="item.has_ones_code">
+                    <template #trigger>
+                      <span
+                        class="flex-shrink-0 ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-semibold leading-none bg-success/15 text-success"
+                      >
+                        1C
+                      </span>
+                    </template>
+                    {{ $t('uploadReport.hasOnesCode') }}
+                  </n-tooltip>
                   <!-- Radio: parent korxonalar uchun — childlar bilan birga tanlash -->
                   <n-radio
                     v-if="item.isHasChildren"

@@ -3812,6 +3812,33 @@
     "name": "Upload report",
     "latest": "Latest",
     "olderUploads": "Previous uploads",
+    "hasOnesCode": "1C code configured — bookkeeping is kept in 1C",
+    "onesCodeDownload": "Download a separate Excel per 1C code",
+    "anomaly": {
+      "toast": "1C data issues: {dup} duplicate PINFL, {code} payment types without a code — please review",
+      "title": "1C data quality — anomalies",
+      "headerHint": "Issues in data pulled from 1C (duplicate PINFL / payment types without a code)",
+      "all": "All",
+      "duplicatePinfl": "Duplicate PINFL",
+      "missingCode": "Payment type without code",
+      "noData": "No anomalies found",
+      "cameNTimes": "appeared {n} times",
+      "diffFields": "Differs",
+      "code": "Code",
+      "empty": "(empty)",
+      "accrual": "Accrual",
+      "deduction": "Deduction",
+      "employees": "Employees",
+      "examples": "e.g.",
+      "field": {
+        "tab_nomer": "Tab №",
+        "position": "Position",
+        "oklad": "Salary",
+        "hours_worked": "Hours",
+        "accrual": "Accrual",
+        "deduction": "Deduction"
+      }
+    },
     "changes": {
       "added": "Added",
       "changed": "Changed",
@@ -3987,7 +4014,11 @@
     "view": {
       "main_salary": "Base salary",
       "work_time": "Worked time",
-      "net_salary": "Take-home amount"
+      "net_salary": "Take-home amount",
+      "kareshok": {
+        "title": "Payslips ({n}) — by tab number",
+        "tab": "Tab №"
+      }
     },
     "in": {
       "code": "Payment code",
@@ -4374,6 +4405,24 @@
     "statistics": "Statistics",
     "orgCode": "1C code",
     "orgCodePh": "1C org code (e.g. АППАРАТ)",
+    "onesCode": {
+      "filterLabel": "1C code",
+      "filterPh": "All codes",
+      "manageBtn": "1C codes",
+      "manageTitle": "Organization 1C codes",
+      "selectOneOrg": "Select one organization first",
+      "code": "1C code",
+      "label": "Label (optional)",
+      "labelPh": "e.g. PCH-1",
+      "add": "Add",
+      "delete": "Delete",
+      "primary": "primary",
+      "empty": "No 1C codes added",
+      "codeRequired": "Enter a 1C code",
+      "deleteConfirm": "Delete this code?",
+      "addSuccess": "1C code added",
+      "deleteSuccess": "1C code deleted"
+    },
     "orgCodeHint": "1C code not set — enter it before pulling",
     "codeSaved": "1C code saved",
     "version": "Version",
@@ -4424,7 +4473,11 @@
     "duration": "Duration",
     "pulledAt": "Time",
     "searchOrg": "Search by organization",
-    "all": "All"
+    "all": "All",
+    "kareshok": {
+      "title": "Payslips ({n}) — by tab number",
+      "tab": "Tab №"
+    }
   },
   "tariffBase": {
     "title": "Base amount",
@@ -5356,6 +5409,17 @@
   },
   "uploadSourceConfig": {
     "name": "Upload Source"
+  },
+  "salaryHidden": {
+    "name": "Salary Hidden",
+    "searchPlaceholder": "Search by PINFL or note...",
+    "addButton": "Add PINFL",
+    "pinfl": "PINFL",
+    "pinflPlaceholder": "14-digit PINFL",
+    "note": "Note",
+    "notePlaceholder": "Reason (optional)",
+    "addedAt": "Added date",
+    "actions": "Actions"
   },
   "staffingApproval": {
     "name": "Staffing",

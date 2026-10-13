@@ -19,6 +19,7 @@ export const useSalaryReportStore = defineStore('salaryReportStore', {
     params: {
       search: null,
       organizations: [],
+      ones_code: null, // ko'p 1C kod: aynan kod bo'yicha ved (bitta kodli org — null)
       year: null,
       month: null
     },

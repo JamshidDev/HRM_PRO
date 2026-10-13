@@ -33,6 +33,11 @@
       minWidth: 240
     },
     {
+      key: 'organization',
+      title: t('paymentAnalysis.table.organization'),
+      minWidth: 200
+    },
+    {
       key: 'position',
       title: t('paymentAnalysis.table.position'),
       minWidth: 200

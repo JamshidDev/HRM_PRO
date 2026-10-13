@@ -69,7 +69,7 @@ import ExtraWorkerRoleIcon from '@assets/icons/Users.svg'
 import ExtraEducationDirectoryIcon from '@assets/icons/EducationDirectory.svg'
 import ExtraDepartmentLocationIcon from '@assets/icons/DepartmentLocation.svg'
 import AdminFolderIcon from '@assets/icons/adminFolder.svg'
-import { Calculator24Regular, ClipboardTaskListLtr24Filled, Grid20Filled, DataFunnel24Filled } from '@vicons/fluent'
+import { Calculator24Regular, ClipboardTaskListLtr24Filled, Grid20Filled, DataFunnel24Filled, EyeOff24Regular } from '@vicons/fluent'
 const {
   usersIcon,
   menuIcon,
@@ -893,6 +893,13 @@ export const navigations = withRawIcons([
         icon: DataFunnel24Filled,
         color: 'bg-dark',
         permission: appPermissions.economistUploadSourceConfigRead
+      },
+      {
+        label: 'salaryHidden.name', // Oylik ko'rinish cheklovi
+        path: Utils.routeAccountantPathMaker(AppPaths.SalaryHidden),
+        icon: EyeOff24Regular,
+        color: 'bg-error',
+        permission: appPermissions.economistSalaryHiddenRead
       }
     ]
   },

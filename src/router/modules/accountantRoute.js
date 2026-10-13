@@ -99,5 +99,12 @@ export const accountantRoutes = [
     meta: {
       layout: AppLayouts.main
     }
+  },
+  {
+    path: Utils.routeAccountantPathMaker(AppPaths.SalaryHidden),
+    component: () => import('@/pages/accountant/salaryHidden/page.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
   }
 ]

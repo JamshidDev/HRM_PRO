@@ -27,8 +27,15 @@ const _cancelBatch = async (jobId) =>
 const _pullHistory = async (payload) => axios.get(`/v1/economist/salary-1c/pull-history`, { params: payload?.params })
 const _pullHistoryExport = async (payload) =>
   axios.get(`/v1/economist/salary-1c/pull-history/export`, { params: payload?.params, responseType: 'blob' })
+// 1C pull ma'lumot sifati anomaliyalari (dubl PINFL + kodsiz/matnli paying_code).
+const _pullAnomalies = async (payload) => axios.get(`/v1/economist/salary-1c/pull-anomalies`, { params: payload?.params })
+const _pullAnomaliesSummary = async (payload) => axios.get(`/v1/economist/salary-1c/pull-anomalies/summary`, { params: payload?.params })
 const _getOrgCode = async (payload) => axios.get(`/v1/economist/salary-1c/org-code`, { params: payload?.params })
 const _setOrgCode = async (payload) => axios.put(`/v1/economist/salary-1c/org-code`, payload.data)
+// Ko'p 1C kod: korxonaga biriktirilgan kodlar ro'yxati + qo'shish/o'chirish.
+const _getOrgCodes = async (payload) => axios.get(`/v1/economist/salary-1c/org-codes`, { params: payload?.params })
+const _createOrgCode = async (payload) => axios.post(`/v1/economist/salary-1c/org-codes`, payload.data)
+const _deleteOrgCode = async (payload) => axios.delete(`/v1/economist/salary-1c/org-codes/${payload.id}`)
 
 // Oylik step-up — Telegram OTP (2FA). Kod foydalanuvchining Telegram'iga yuboriladi.
 const _salaryAccessStatus = async () => axios.get(`/v1/economist/salary-access/status`)
@@ -63,8 +70,13 @@ export default {
   _cancelBatch,
   _pullHistory,
   _pullHistoryExport,
+  _pullAnomalies,
+  _pullAnomaliesSummary,
   _getOrgCode,
   _setOrgCode,
+  _getOrgCodes,
+  _createOrgCode,
+  _deleteOrgCode,
   _salaryAccessStatus,
   _salaryAccessRequestCode,
   _salaryAccessVerifyCode,

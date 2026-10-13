@@ -411,6 +411,8 @@ export const appPermissions = {
   economistPaymentAnalysisWrite: 'economist-payment-analysis-write',
   economistUploadSourceConfigRead: 'economist-upload-source-config-read',
   economistUploadSourceConfigWrite: 'economist-upload-source-config-write',
+  economistSalaryHiddenRead: 'salary-hidden-read',
+  economistSalaryHiddenWrite: 'salary-hidden-write',
 
   lms: 'lms',
   lmsDirection: 'lms-direction',

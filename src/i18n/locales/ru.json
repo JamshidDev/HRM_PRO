@@ -3823,6 +3823,33 @@
     "name": "Загрузить отчёт",
     "latest": "Последняя",
     "olderUploads": "Предыдущие загрузки",
+    "hasOnesCode": "Настроен код 1C — бухгалтерия ведётся в 1C",
+    "onesCodeDownload": "Скачать отдельный Excel по коду 1C",
+    "anomaly": {
+      "toast": "Проблема в данных 1C: {dup} дубль ПИНФЛ, {code} видов выплат без кода — проверьте",
+      "title": "Качество данных 1C — аномалии",
+      "headerHint": "Проблемы в данных из 1C (дубли ПИНФЛ / виды выплат без кода)",
+      "all": "Все",
+      "duplicatePinfl": "Дубль ПИНФЛ",
+      "missingCode": "Выплата без кода",
+      "noData": "Аномалий не найдено",
+      "cameNTimes": "встретился {n} раз",
+      "diffFields": "Отличается",
+      "code": "Код",
+      "empty": "(пусто)",
+      "accrual": "Начисление",
+      "deduction": "Удержание",
+      "employees": "Сотрудники",
+      "examples": "Например",
+      "field": {
+        "tab_nomer": "Табель",
+        "position": "Должность",
+        "oklad": "Оклад",
+        "hours_worked": "Часы",
+        "accrual": "Начисление",
+        "deduction": "Удержание"
+      }
+    },
     "changes": {
       "added": "Новые",
       "changed": "Изменённые",
@@ -3998,7 +4025,11 @@
     "view": {
       "main_salary": "Оклад",
       "work_time": "Отработанное время",
-      "net_salary": "Сумма на руки"
+      "net_salary": "Сумма на руки",
+      "kareshok": {
+        "title": "Расчётные листки ({n}) — по табелям",
+        "tab": "Табель"
+      }
     },
     "in": {
       "code": "Код платежа",
@@ -4385,6 +4416,24 @@
     "statistics": "Статистика",
     "orgCode": "Код 1C",
     "orgCodePh": "Код организации 1C (напр.: АППАРАТ)",
+    "onesCode": {
+      "filterLabel": "Код 1C",
+      "filterPh": "Все коды",
+      "manageBtn": "Коды 1C",
+      "manageTitle": "Коды 1C организации",
+      "selectOneOrg": "Сначала выберите одну организацию",
+      "code": "Код 1C",
+      "label": "Название (необязательно)",
+      "labelPh": "Напр.: PCH-1",
+      "add": "Добавить",
+      "delete": "Удалить",
+      "primary": "основной",
+      "empty": "Коды 1C не добавлены",
+      "codeRequired": "Введите код 1C",
+      "deleteConfirm": "Удалить этот код?",
+      "addSuccess": "Код 1C добавлен",
+      "deleteSuccess": "Код 1C удалён"
+    },
     "orgCodeHint": "Код 1C не задан — укажите перед загрузкой",
     "codeSaved": "Код 1C сохранён",
     "version": "Версия",
@@ -4435,7 +4484,11 @@
     "duration": "Длительность",
     "pulledAt": "Время",
     "searchOrg": "Поиск по организации",
-    "all": "Все"
+    "all": "Все",
+    "kareshok": {
+      "title": "Расчётные листки ({n}) — по табелям",
+      "tab": "Табель"
+    }
   },
   "tariffBase": {
     "title": "Базовая сумма",
@@ -5367,6 +5420,17 @@
   },
   "uploadSourceConfig": {
     "name": "Источник загрузки"
+  },
+  "salaryHidden": {
+    "name": "Скрытые зарплаты",
+    "searchPlaceholder": "Поиск по ПИНФЛ или примечанию...",
+    "addButton": "Добавить ПИНФЛ",
+    "pinfl": "ПИНФЛ",
+    "pinflPlaceholder": "14-значный ПИНФЛ",
+    "note": "Примечание",
+    "notePlaceholder": "Причина (необязательно)",
+    "addedAt": "Дата добавления",
+    "actions": "Действия"
   },
   "staffingApproval": {
     "name": "Штаты",

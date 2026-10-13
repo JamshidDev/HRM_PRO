@@ -3536,6 +3536,33 @@
     "name": "Ҳисобот юклаш",
     "latest": "Охирги",
     "olderUploads": "Олдинги юкламалар",
+    "hasOnesCode": "1C коди созланган — бухгалтерия 1C да юритилади",
+    "onesCodeDownload": "1C коди бўйича алоҳида Excel юклаб олиш",
+    "anomaly": {
+      "toast": "1C маълумотида муаммо: {dup} та такрорий ЖШШИР, {code} та кодсиз тўлов тури — текширинг",
+      "title": "1C маълумот сифати — аномалиялар",
+      "headerHint": "1C'дан тортилган маълумотдаги муаммолар (такрорий ЖШШИР / кодсиз тўлов тури)",
+      "all": "Барчаси",
+      "duplicatePinfl": "Такрорий ЖШШИР",
+      "missingCode": "Кодсиз тўлов тури",
+      "noData": "Аномалия топилмади",
+      "cameNTimes": "{n} марта келган",
+      "diffFields": "Фарқ қилади",
+      "code": "Код",
+      "empty": "(бўш)",
+      "accrual": "Ҳисобланма",
+      "deduction": "Ушланма",
+      "employees": "Ходимлар",
+      "examples": "Масалан",
+      "field": {
+        "tab_nomer": "Табел",
+        "position": "Лавозим",
+        "oklad": "Оклад",
+        "hours_worked": "Соат",
+        "accrual": "Ҳисобланма",
+        "deduction": "Ушланма"
+      }
+    },
     "changes": {
       "added": "Янги",
       "changed": "Ўзгарган",
@@ -3714,7 +3741,11 @@
     "view": {
       "main_salary": "Оклад",
       "work_time": "Ишлаган вақти",
-      "net_salary": "Қўлга тегадиган сумма"
+      "net_salary": "Қўлга тегадиган сумма",
+      "kareshok": {
+        "title": "Карешоклар ({n}) — ҳар табел бўйича алоҳида",
+        "tab": "Табел"
+      }
     },
     "in": {
       "code": "Тўлов шифри",
@@ -4101,6 +4132,24 @@
     "statistics": "Статистика",
     "orgCode": "1C коди",
     "orgCodePh": "1C орг коди (масалан: АППАРАТ)",
+    "onesCode": {
+      "filterLabel": "1C код",
+      "filterPh": "Барча кодлар",
+      "manageBtn": "1C кодлари",
+      "manageTitle": "Корхона 1C кодлари",
+      "selectOneOrg": "Аввал битта корхона танланг",
+      "code": "1C код",
+      "label": "Номи (ихтиёрий)",
+      "labelPh": "Масалан: PCH-1",
+      "add": "Қўшиш",
+      "delete": "Ўчириш",
+      "primary": "асосий",
+      "empty": "1C код қўшилмаган",
+      "codeRequired": "1C кодни киритинг",
+      "deleteConfirm": "Ушбу кодни ўчирмоқчимисиз?",
+      "addSuccess": "1C код қўшилди",
+      "deleteSuccess": "1C код ўчирилди"
+    },
     "orgCodeHint": "1C коди киритилмаган — тортишдан олдин киритинг",
     "codeSaved": "1C коди сақланди",
     "version": "Версия",
@@ -4151,7 +4200,11 @@
     "duration": "Давомийлиги",
     "pulledAt": "Вақти",
     "searchOrg": "Корхона бўйича қидириш",
-    "all": "Ҳаммаси"
+    "all": "Ҳаммаси",
+    "kareshok": {
+      "title": "Карешоклар ({n}) — ҳар табел бўйича алоҳида",
+      "tab": "Табел"
+    }
   },
   "tariffBase": {
     "title": "Базавий сумма",
@@ -5130,6 +5183,17 @@
   },
   "uploadSourceConfig": {
     "name": "Юклаш манбаси"
+  },
+  "salaryHidden": {
+    "name": "Ойлик чеклови",
+    "searchPlaceholder": "ПИНФЛ ёки изоҳ бўйича қидиринг...",
+    "addButton": "ПИНФЛ қўшиш",
+    "pinfl": "ПИНФЛ",
+    "pinflPlaceholder": "14 хонали ПИНФЛ",
+    "note": "Изоҳ",
+    "notePlaceholder": "Сабаб (ихтиёрий)",
+    "addedAt": "Қўшилган сана",
+    "actions": "Амаллар"
   },
   "staffingApproval": {
     "name": "Штатлар",
