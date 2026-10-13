@@ -65,7 +65,7 @@ export const useAccountStore = defineStore('accountStore', {
     // foydalanuvchi nima kutayotganini bilmasdi.
     loadingKind: 'boot',
     activeTab: 1,
-    tabs: [1, 2, 3, 4, 5, 6, 7],
+    tabs: [1, 2, 3, 4, 5, 6, 7, 8],
     // Profil > Xavfsizlik: web kirish usullari (`/user/profile` javobidan).
     // Har element {enabled, editable}; hozircha faqat `password` tahrirlanadi.
     loginMethods: null,
