@@ -18,9 +18,9 @@
   )
   const worker = computed(() => accStore.account?.worker)
 
-  // Ko'rinishni tekshirish uchun soxta ma'lumot — faqat dev rejimida (prod'ga tushmaydi).
-  // Haqiqiy ma'lumotni dev'da ko'rish uchun `false` qiling.
-  const USE_MOCK = import.meta.env.DEV
+  // Hozircha hamma joyda (prod ham) demo ma'lumot — backend kunlik faollik endpoint'i
+  // tayyor bo'lgach `false` qilinadi (yoki mock butunlay olib tashlanadi).
+  const USE_MOCK = true
 
   const PER_PAGE = 100
   // Ro'yxat yangidan eskiga keladi; yil boshidan o'tganda to'xtaymiz. Cheklov — xavfsizlik uchun.
