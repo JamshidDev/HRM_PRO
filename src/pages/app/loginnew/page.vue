@@ -34,6 +34,15 @@ const route = useRoute()
 // Tashqi tizim «HRM orqali kirish» bilan yuborgan bo'lsa — login'dan keyin o'sha tizimga qaytamiz.
 loginStore._loadSsoClient(route.query.client_id)
 
+// Faqat lokal dev: `/login?sso_preview` — SSO yo'naltirish oynasini soxta ma'lumot bilan ko'rsatadi (UI ustida ishlash uchun).
+if (import.meta.env.DEV && route.query.sso_preview !== undefined) {
+  loginStore.ssoRedirect = {
+    name: route.query.sso_preview || 'KPI-Application-Ismoil',
+    url: 'https://kpi.das-uty.uz/',
+    preview: true
+  }
+}
+
 const steps = { login: 'login', twofa: 'twofa', reset: 'reset', expired: 'expired' }
 const step = ref(steps.login)
 

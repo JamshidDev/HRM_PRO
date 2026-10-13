@@ -602,10 +602,12 @@
       "signingIn": "Signing in…"
     },
     "sso": {
-      "redirecting": "Redirecting you to «{name}»",
-      "seconds": "You're signed in. We'll redirect you automatically in {n} s.",
-      "goNow": "Go now",
-      "verified": "Verified"
+      "title": "You're going to {name}",
+      "redirecting": "Redirecting you to {name}",
+      "seconds": "Opens automatically in {n} s",
+      "goNow": "Go to {name}",
+      "stay": "Stay in HRM Pro",
+      "otherAccount": "Another account"
     }
   },
   "registerPage": {
