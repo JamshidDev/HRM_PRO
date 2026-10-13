@@ -6349,6 +6349,9 @@
     "emptyHint": "Video tutorials will be added soon",
     "notFound": "Nothing found",
     "notFoundHint": "Try a different search or category",
+    "sequence": "Learning order",
+    "sequenceHint": "Watch the videos in this order",
+    "count": "{n} videos",
     "categories": {
       "general": "General",
       "workers": "Employees",
@@ -6375,7 +6378,7 @@
       "description": "Description",
       "platform": "Platform",
       "category": "Category",
-      "sort": "Order",
+      "sort": "Order number",
       "status": "Status",
       "video": "Video",
       "poster": "Cover"

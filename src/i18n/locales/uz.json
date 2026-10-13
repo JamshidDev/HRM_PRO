@@ -6410,6 +6410,9 @@
     "emptyHint": "Video darsliklar tez orada qo'shiladi",
     "notFound": "Hech narsa topilmadi",
     "notFoundHint": "Boshqa so'z yoki kategoriyani tanlab ko'ring",
+    "sequence": "O'rganish tartibi",
+    "sequenceHint": "Videolarni shu ketma-ketlikda ko'ring",
+    "count": "{n} ta video",
     "categories": {
       "general": "Umumiy",
       "workers": "Xodimlar",
@@ -6436,7 +6439,7 @@
       "description": "Izoh",
       "platform": "Platforma",
       "category": "Kategoriya",
-      "sort": "Tartib",
+      "sort": "Tartib raqami",
       "status": "Holat",
       "video": "Video",
       "poster": "Muqova"

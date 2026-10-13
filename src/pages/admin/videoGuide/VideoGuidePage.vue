@@ -43,7 +43,8 @@
   const categoryOptions = computed(() => GUIDE_CATEGORIES.map((v) => ({ value: v, label: t(`guidesPage.categories.${v}`) })))
 
   const openCreate = () => {
-    form.value = emptyForm()
+    // Yangi video ketma-ketlikning oxiriga qo'shiladi.
+    form.value = { ...emptyForm(), sort: Math.max(0, ...rows.value.map((r) => r.sort || 0)) + 1 }
     visible.value = true
   }
   const openEdit = (row) => {
@@ -145,6 +146,7 @@
   const remove = (row) => api()._adminDelete({ id: row.id }).then(load)
 
   const columns = computed(() => [
+    { title: '№', key: 'sort', width: 60 },
     {
       title: '',
       key: 'poster',

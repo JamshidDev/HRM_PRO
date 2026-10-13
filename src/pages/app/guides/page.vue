@@ -3,15 +3,14 @@
    * «Qo'llanma» — web va mobil ilova bo'yicha video qo'llanmalar (grid, kategoriya, qidiruv, pleer).
    */
   import { UIPageContent, UISegmentTabs } from '@/components/index.js'
-  import { Search20Regular } from '@vicons/fluent'
+  import { Search20Regular, CheckmarkCircle16Filled } from '@vicons/fluent'
+  import { formatDuration } from './categories.js'
   import GuideCard from './ui/GuideCard.vue'
   import GuidePlayer from './ui/GuidePlayer.vue'
-  import { GUIDE_CATEGORIES } from './categories.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
   const platform = ref('web')
-  const category = ref(null)
   const search = ref('')
   const loading = ref(false)
   const guides = ref([])
@@ -22,11 +21,12 @@
     { id: 'mobile', name: t('guidesPage.platform.mobile') }
   ])
 
-  // Faqat videosi bor kategoriyalar chip sifatida chiqadi.
-  const categories = computed(() => GUIDE_CATEGORIES.filter((c) => guides.value.some((g) => g.category === c)))
+  // O'rganish tartibidagi raqam (qidiruvda ham o'zgarmaydi).
+  const stepOf = (g) => guides.value.indexOf(g) + 1
+
   const shown = computed(() => {
     const q = search.value.trim().toLowerCase()
-    return guides.value.filter((g) => (!category.value || g.category === category.value) && (!q || g.title?.toLowerCase().includes(q)))
+    return guides.value.filter((g) => !q || g.title?.toLowerCase().includes(q))
   })
 
   const load = () => {
@@ -35,7 +35,6 @@
       ._index({ params: { platform: platform.value } })
       .then((res) => {
         guides.value = res.data.data || []
-        if (category.value && !categories.value.includes(category.value)) category.value = null
       })
       .finally(() => (loading.value = false))
   }
@@ -70,29 +69,46 @@
       <n-input v-model:value="search" :placeholder="$t('guidesPage.search')" clearable class="!w-full sm:!w-72">
         <template #prefix><n-icon><Search20Regular /></n-icon></template>
       </n-input>
-      <button
-        type="button"
-        class="rounded-full px-3 py-1.5 text-[13px] font-semibold transition"
-        :class="!category ? 'bg-primary text-white' : 'bg-fig-block text-fig-text-secondary hover:text-fig-text-primary'"
-        @click="category = null"
-      >
-        {{ $t('guidesPage.all') }}
-      </button>
-      <button
-        v-for="c in categories"
-        :key="c"
-        type="button"
-        class="rounded-full px-3 py-1.5 text-[13px] font-semibold transition"
-        :class="category === c ? 'bg-primary text-white' : 'bg-fig-block text-fig-text-secondary hover:text-fig-text-primary'"
-        @click="category = c"
-      >
-        {{ $t(`guidesPage.categories.${c}`) }}
-      </button>
     </div>
 
     <n-spin :show="loading" class="w-full">
-      <div v-if="shown.length" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-        <GuideCard v-for="g in shown" :key="g.id" :guide="g" @open="open" />
+      <div v-if="shown.length" class="flex w-full flex-col gap-5 lg:flex-row lg:items-start">
+        <div class="grid min-w-0 flex-1 grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          <GuideCard v-for="g in shown" :key="g.id" :guide="g" :step="stepOf(g)" @open="open" />
+        </div>
+
+        <!-- O'rganish tartibi: videolarni shu ketma-ketlikda ko'rish tavsiya etiladi. -->
+        <aside class="flex w-full shrink-0 flex-col gap-2 rounded-2xl bg-fig-block p-3 shadow-card lg:sticky lg:top-4 lg:w-80">
+          <div class="flex flex-col gap-0.5 px-1 pb-1">
+            <div class="flex items-center justify-between">
+              <p class="text-[15px] font-semibold text-fig-text-primary">{{ $t('guidesPage.sequence') }}</p>
+              <span class="text-[12px] text-fig-text-secondary">{{ $t('guidesPage.count', { n: guides.length }) }}</span>
+            </div>
+            <p class="text-[12px] text-fig-text-secondary">{{ $t('guidesPage.sequenceHint') }}</p>
+          </div>
+          <button
+            v-for="g in shown"
+            :key="g.id"
+            type="button"
+            class="flex w-full items-center gap-3 rounded-xl px-2 py-2 text-left transition hover:bg-surface-ground"
+            :class="active?.id === g.id ? 'bg-fig-chip-brand' : ''"
+            @click="open(g)"
+          >
+            <span
+              class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[12px] font-semibold"
+              :class="active?.id === g.id ? 'bg-primary text-white' : 'bg-surface-ground text-fig-text-secondary'"
+            >
+              {{ stepOf(g) }}
+            </span>
+            <span class="flex min-w-0 flex-1 flex-col">
+              <span class="line-clamp-2 text-[13px] leading-[18px] font-medium text-fig-text-primary">{{ g.title }}</span>
+              <span class="flex items-center gap-1 text-[12px] text-fig-text-secondary">
+                {{ formatDuration(g.duration) }}
+                <n-icon v-if="g.is_viewed" size="13" class="text-fig-chip-green-text"><CheckmarkCircle16Filled /></n-icon>
+              </span>
+            </span>
+          </button>
+        </aside>
       </div>
       <div v-else-if="!loading" class="flex flex-col items-center gap-2 py-16 text-center">
         <p class="text-[16px] font-semibold text-fig-text-primary">{{ $t(guides.length ? 'guidesPage.notFound' : 'guidesPage.empty') }}</p>

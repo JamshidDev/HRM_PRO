@@ -2,7 +2,7 @@
   import { Play24Filled, CheckmarkCircle16Filled } from '@vicons/fluent'
   import { formatDuration } from '../categories.js'
 
-  defineProps({ guide: { type: Object, required: true } })
+  defineProps({ guide: { type: Object, required: true }, step: { type: Number, default: null } })
   defineEmits(['open'])
 </script>
 
@@ -28,7 +28,9 @@
       </span>
     </div>
     <div class="flex min-w-0 flex-col gap-1 px-1 pb-1">
-      <p class="line-clamp-2 text-[15px] leading-5 font-semibold text-fig-text-primary">{{ guide.title }}</p>
+      <p class="line-clamp-2 text-[15px] leading-5 font-semibold text-fig-text-primary">
+        <span v-if="step" class="text-primary">{{ step }}.</span> {{ guide.title }}
+      </p>
       <div class="flex items-center gap-2 text-[13px] text-fig-text-secondary">
         <span class="truncate">{{ $t(`guidesPage.categories.${guide.category}`) }}</span>
         <span v-if="guide.is_viewed" class="flex shrink-0 items-center gap-1 text-fig-chip-green-text">
