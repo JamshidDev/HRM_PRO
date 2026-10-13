@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { useComponentStore } from '@/store/modules/app/componentStore.js'
 import i18n from '@/i18n/index.js'
 const { t } = i18n.global
 
@@ -202,6 +203,11 @@ export const useOrganizationStore = defineStore('organizationStore', {
         this.loading = false
       }
     },
+    // Formadagi "Yuqori tashkilot" ro'yxati bir marta yuklanadi — saqlash/ko'chirish/yopishdan
+    // keyin yangilanmasa, unda eski nomlar va eski holat qolib ketadi.
+    _refreshOrgOptions() {
+      useComponentStore()._organizations()
+    },
     _level() {
       this.levelLoading = true
       $ApiService.organizationService
@@ -323,6 +329,7 @@ export const useOrganizationStore = defineStore('organizationStore', {
         .then(() => {
           this.closePanel()
           this._refresh([data.parent_id])
+          this._refreshOrgOptions()
         })
         .finally(() => {
           this.saveLoading = false
@@ -339,6 +346,7 @@ export const useOrganizationStore = defineStore('organizationStore', {
           this._detail()
           if (this.history.id) this._history()
           this._refresh([data.parent_id])
+          this._refreshOrgOptions()
         })
         .finally(() => {
           this.saveLoading = false
@@ -364,6 +372,7 @@ export const useOrganizationStore = defineStore('organizationStore', {
           this._detail()
           if (this.history.id) this._history()
           this._refresh()
+          this._refreshOrgOptions()
         })
         .finally(() => {
           this.basis.loading = false
@@ -412,6 +421,7 @@ export const useOrganizationStore = defineStore('organizationStore', {
             if (this.history.id) this._history()
           }
           this._refresh([parentId])
+          this._refreshOrgOptions()
         })
         .finally(() => {
           this.move.loading = false
