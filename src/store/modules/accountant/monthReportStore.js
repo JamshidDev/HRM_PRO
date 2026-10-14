@@ -181,7 +181,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
     _vedReport() {
       const p = this._vedReportRequestParams()
       if (!p.codes) {
-        $Toast.warning(i18n.global.t('monthReport.vedReport.selectCodes'))
+        $Alert.validation(i18n.global.t('monthReport.vedReport.selectCodes'))
         return
       }
       this.vedReportLoading = true
@@ -195,7 +195,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
           this.vedReportTotal = res.data.data.total
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? i18n.global.t('content.error'))
+          $Alert.error(e, i18n.global.t('content.error'))
         })
         .finally(() => {
           this.vedReportLoading = false
@@ -208,14 +208,14 @@ export const useMonthReportStore = defineStore('monthReportStore', {
     _vedReportExport() {
       const p = this._vedReportRequestParams()
       if (!p.codes) {
-        $Toast.warning(i18n.global.t('monthReport.vedReport.selectCodes'))
+        $Alert.validation(i18n.global.t('monthReport.vedReport.selectCodes'))
         return false
       }
       this.vedReportExporting = true
       $ApiService.monthReportService
         ._vedReportExport({ params: p })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? i18n.global.t('content.error'))
+          $Alert.error(e, i18n.global.t('content.error'))
         })
         .finally(() => {
           this.vedReportExporting = false
@@ -241,7 +241,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
     _vedThresholdCompute() {
       const params = this._thresholdRequestParams()
       if (!params.thresholds) {
-        $Toast.warning(i18n.global.t('monthReport.threshold.atLeastOneAmount'))
+        $Alert.validation(i18n.global.t('monthReport.threshold.atLeastOneAmount'))
         return
       }
       this.thresholdLoading = true
@@ -251,7 +251,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
           this.thresholdResult = res.data.data
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? i18n.global.t('content.error'))
+          $Alert.error(e, i18n.global.t('content.error'))
         })
         .finally(() => {
           this.thresholdLoading = false
@@ -261,14 +261,14 @@ export const useMonthReportStore = defineStore('monthReportStore', {
     _vedThresholdExport() {
       const params = this._thresholdRequestParams()
       if (!params.thresholds) {
-        $Toast.warning(i18n.global.t('monthReport.threshold.atLeastOneAmount'))
+        $Alert.validation(i18n.global.t('monthReport.threshold.atLeastOneAmount'))
         return false
       }
       this.thresholdExporting = true
       $ApiService.monthReportService
         ._vedThresholdExport({ params })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? i18n.global.t('content.error'))
+          $Alert.error(e, i18n.global.t('content.error'))
         })
         .finally(() => {
           this.thresholdExporting = false
@@ -292,7 +292,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
       $ApiService.monthReportService
         ._exportFiltered({ params })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? i18n.global.t('content.error'))
+          $Alert.error(e, i18n.global.t('content.error'))
         })
         .finally(() => {
           this.filteredExporting = false
@@ -311,7 +311,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
           router.push(Utils.routeHrmPathMaker(AppPaths.Export))
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? i18n.global.t('content.error'))
+          $Alert.error(e, i18n.global.t('content.error'))
         })
         .finally(() => {
           this.showLoading = false

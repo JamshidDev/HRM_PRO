@@ -541,7 +541,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
         .catch((e) => {
           // Backend xabari (mas. tasdiqlangan hisobotni o'chirib bo'lmaydi — avval
           // bekor qiling) bo'lsa — aynan o'shani ko'rsatamiz.
-          $Toast.error(e?.response?.data?.message || t('content.error'))
+          $Alert.error(e, t('content.error'))
         })
         .finally(() => {
           this.deleteLoading = false
@@ -628,7 +628,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
               const parsed = JSON.parse(await blob.text())
               if (typeof parsed?.message === 'string') msg = parsed.message
             } catch (e) {}
-            $Toast.error(msg)
+            $Alert.warning(msg)
             return
           }
           Utils.blobFileDownload(blob, 'application/zip', name)

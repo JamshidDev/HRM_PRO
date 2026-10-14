@@ -132,7 +132,10 @@
         "title": "Report",
         "subtitle": "Download a report"
       },
-      "guides": {"title": "Guides", "subtitle": "Video tutorials"},
+      "guides": {
+        "title": "Guides",
+        "subtitle": "Video tutorials"
+      },
       "income": {
         "title": "Income",
         "subtitle": "Salary and payments"
@@ -6400,5 +6403,17 @@
     "uploaded": "Video uploaded",
     "required": "Title (UZ) and video are required",
     "confirmDelete": "Delete this guide?"
+  },
+  "alertDialog": {
+    "ok": "Got it",
+    "checkFields": "Please check the following and try again:",
+    "titles": {
+      "forbidden": "Access denied",
+      "validation": "Some fields need attention",
+      "warning": "Action can't be completed",
+      "notfound": "Not found",
+      "network": "Connection lost"
+    },
+    "eimzoTitle": "Couldn't connect to E-IMZO"
   }
 }

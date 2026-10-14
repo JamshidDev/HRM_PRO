@@ -180,7 +180,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
           // Ilgari .catch yo'q edi — so'rov 400 (validatsiya) qaytarsa ro'yxat JIMGINA
           // eski holatda qolardi (sort/filtr «ishlamayapti» ko'rinardi). Endi xato ko'rinadi.
           console.error('[salary1c._index] error:', err?.response?.data ?? err?.message, params)
-          $Toast.error(err?.response?.data?.message ?? t('content.error'))
+          $Alert.error(err, t('content.error'))
         })
         .finally(() => {
           this.loading = false
@@ -208,7 +208,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     },
     _pull() {
       if (!this.params.organization_id) {
-        $Toast.warning(t('salary1c.selectOrg'))
+        $Alert.validation(t('salary1c.selectOrg'))
         return
       }
       this.pullLoading = true
@@ -229,7 +229,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
           this._index()
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          $Alert.error(e, t('content.error'))
         })
         .finally(() => {
           this.pullLoading = false
@@ -282,7 +282,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     _runBatchPull() {
       const ids = this.pullSelectOrgs.filter((o) => o.selected).map((o) => o.organization_id)
       if (!ids.length) {
-        $Toast.warning(t('salary1c.selectOrg'))
+        $Alert.validation(t('salary1c.selectOrg'))
         return
       }
       $ApiService.salary1cService
@@ -299,7 +299,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
           else this._onJobFinished()
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          $Alert.error(e, t('content.error'))
         })
     },
     _startPolling() {
@@ -346,7 +346,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
         })
         .catch((e) => {
           this.pullCancelling = false
-          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          $Alert.error(e, t('content.error'))
         })
     },
     _onJobFinished() {
@@ -442,7 +442,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
       const pinfl = row?.pinfl
       const organization_id = row?.organization_id ?? this.params.organization_id
       if (!pinfl || !organization_id) {
-        $Toast.warning(t('salary1c.selectOrg'))
+        $Alert.validation(t('salary1c.selectOrg'))
         return
       }
       this.repullPinfl = pinfl
@@ -460,7 +460,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
           this._index()
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          $Alert.error(e, t('content.error'))
         })
         .finally(() => {
           this.repullPinfl = null
@@ -591,7 +591,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     // «Hisoblash» — natija modalini ochib, matritsani yuklaydi.
     openVedMatrix() {
       if (!this.selectedVedCodes.length) {
-        $Toast.warning(t('salary1c.veds.selectFirst'))
+        $Alert.validation(t('salary1c.veds.selectFirst'))
         return
       }
       this.vedMatrixParams.page = 1
@@ -602,7 +602,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     // Tanlangan vedlar bo'yicha korxona×ved matritsasini hisoblaydi.
     _vedMatrix() {
       if (!this.selectedVedCodes.length) {
-        $Toast.warning(t('salary1c.veds.selectFirst'))
+        $Alert.validation(t('salary1c.veds.selectFirst'))
         return
       }
       this.vedMatrixLoading = true
@@ -621,7 +621,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
           this.vedMatrix = res.data.data
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          $Alert.error(e, t('content.error'))
         })
         .finally(() => {
           this.vedMatrixLoading = false
@@ -636,7 +636,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     // --- Ved drill-down: bir ved summasi qaysi xodimlardan (modal) ---
     openVedWorkers(row) {
       if (!this._orgCsv()) {
-        $Toast.warning(t('salary1c.reconcile.selectOneOrg'))
+        $Alert.validation(t('salary1c.reconcile.selectOneOrg'))
         return
       }
       this.vedWorkersRow = { type: row.type, code: row.code, name: row.name }
@@ -685,7 +685,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     _reconcile() {
       const orgs = this._orgCsv()
       if (!orgs) {
-        $Toast.warning(t('salary1c.reconcile.selectOneOrg'))
+        $Alert.validation(t('salary1c.reconcile.selectOneOrg'))
         return
       }
       this.reconcileLoading = true
@@ -701,7 +701,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
           this.reconcile = res.data.data
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          $Alert.error(e, t('content.error'))
         })
         .finally(() => {
           this.reconcileLoading = false
@@ -751,7 +751,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
           $Toast.success(t('salary1c.codeSaved'))
           this._getOrgCode()
         })
-        .catch((e) => $Toast.error(e?.response?.data?.message ?? t('content.error')))
+        .catch((e) => $Alert.error(e, t('content.error')))
         .finally(() => {
           this.orgCodeSaving = false
         })

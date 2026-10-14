@@ -147,7 +147,7 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
     // --- Imtiyozli xodimni whitelist'ga qo'lda qo'shish (summa yo'q) ---
     openWhitelistAdd() {
       if (!this.params.organization_id || !this.params.year || !this.params.month) {
-        $Toast.warning(t('paymentAnalysis.toast.requiredFilters'))
+        $Alert.validation(t('paymentAnalysis.toast.requiredFilters'))
         return
       }
       this.whitelistAddPayload = {
@@ -158,15 +158,15 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
     },
     _addWhitelistRow() {
       if (!this.params.organization_id || !this.params.year || !this.params.month) {
-        $Toast.warning(t('paymentAnalysis.toast.requiredFilters'))
+        $Alert.validation(t('paymentAnalysis.toast.requiredFilters'))
         return
       }
       if (!this.whitelistAddPayload.worker_id) {
-        $Toast.warning(t('paymentAnalysis.toast.requiredWorker'))
+        $Alert.validation(t('paymentAnalysis.toast.requiredWorker'))
         return
       }
       if (!this.whitelistAddPayload.paying_code) {
-        $Toast.warning(t('paymentAnalysis.toast.requiredPayingCode'))
+        $Alert.validation(t('paymentAnalysis.toast.requiredPayingCode'))
         return
       }
       this.whitelistAddLoading = true
@@ -201,7 +201,7 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
     // --- Qoidalar dvigatelini qayta ishga tushirish ---
     _analyze() {
       if (!this.params.organization_id || !this.params.year || !this.params.month) {
-        $Toast.warning(t('paymentAnalysis.toast.requiredFilters'))
+        $Alert.validation(t('paymentAnalysis.toast.requiredFilters'))
         return
       }
       this.analyzeLoading = true

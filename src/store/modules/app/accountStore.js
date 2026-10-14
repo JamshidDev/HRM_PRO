@@ -139,7 +139,7 @@ export const useAccountStore = defineStore('accountStore', {
      */
     checkAction: (state) => (permission) => {
       if (!state.checkPermission(permission)) {
-        $Toast.warning(t('message.noPermission'))
+        $Alert({ type: 'forbidden' })
         return false
       }
       return true

@@ -68,7 +68,7 @@
     const secondField = props.foreign ? given_place : address
 
     if (!serial_number || !from_date || !to_date || !secondField) {
-      $Toast.warning(t('message.warning-data'))
+      $Alert.validation(t('message.warning-data'))
       return
     }
 

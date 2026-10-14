@@ -58,11 +58,11 @@
     const { latest, min } = draft.value
     if (!latest || !min) return false
     if (!VERSION_RE.test(latest) || !VERSION_RE.test(min)) {
-      $Toast.error(t('mobileUserPage.versionInvalid'))
+      $Alert.validation(t('mobileUserPage.versionInvalid'))
       return false
     }
     if (compareVersions(min, latest) > 0) {
-      $Toast.error(t('mobileUserPage.minGreaterThanLatest'))
+      $Alert.validation(t('mobileUserPage.minGreaterThanLatest'))
       return false
     }
     return true

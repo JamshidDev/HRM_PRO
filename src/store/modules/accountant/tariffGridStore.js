@@ -333,7 +333,7 @@ export const useTariffGridStore = defineStore('tariffGridStore', {
           this.compareData = res.data.data
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          $Alert.error(e, t('content.error'))
           this.compareVisible = false
         })
         .finally(() => {
@@ -357,24 +357,24 @@ export const useTariffGridStore = defineStore('tariffGridStore', {
     },
     _store() {
       if (!this.gridPayload.name || !this.gridPayload.name.trim()) {
-        $Toast.warning(t('tariffGrid.form.name'))
+        $Alert.validation(t('tariffGrid.form.name'))
         return
       }
       if (!this.gridPayload.tariff_base_id) {
-        $Toast.warning(t('tariffGrid.form.baseSelect'))
+        $Alert.validation(t('tariffGrid.form.baseSelect'))
         return
       }
       if (!this.gridPayload.effective_date) {
-        $Toast.warning(t('tariffGrid.form.effectiveDate'))
+        $Alert.validation(t('tariffGrid.form.effectiveDate'))
         return
       }
       const { cells, columns, missingName } = buildCreatePayload(this.createColumns)
       if (missingName) {
-        $Toast.warning(t('tariffGrid.form.columnNameRequired'))
+        $Alert.validation(t('tariffGrid.form.columnNameRequired'))
         return
       }
       if (cells.length === 0) {
-        $Toast.warning(t('tariffGrid.form.noCells'))
+        $Alert.validation(t('tariffGrid.form.noCells'))
         return
       }
       this.gridSaveLoading = true
@@ -462,7 +462,7 @@ export const useTariffGridStore = defineStore('tariffGridStore', {
           this._index()
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          $Alert.error(e, t('content.error'))
         })
     },
     // Saqlash formini ochish (izoh / sana / asos-fayl).
@@ -484,7 +484,7 @@ export const useTariffGridStore = defineStore('tariffGridStore', {
     },
     async _storeVersion() {
       if (!this.versionPayload.effective_date) {
-        $Toast.warning(t('tariffGrid.form.effectiveDate'))
+        $Alert.validation(t('tariffGrid.form.effectiveDate'))
         return
       }
       this.versionSaveLoading = true
@@ -590,7 +590,7 @@ export const useTariffGridStore = defineStore('tariffGridStore', {
           this.scopeVisible = false
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          $Alert.error(e, t('content.error'))
         })
         .finally(() => {
           this.scopeSaving = false
@@ -623,7 +623,7 @@ export const useTariffGridStore = defineStore('tariffGridStore', {
           this.applyData = res.data.data
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          $Alert.error(e, t('content.error'))
           this.applyVisible = false
         })
         .finally(() => {
@@ -650,7 +650,7 @@ export const useTariffGridStore = defineStore('tariffGridStore', {
         this.applyFiles = []
         this._index()
       } catch (e) {
-        $Toast.error(e?.response?.data?.message ?? t('content.error'))
+        $Alert.error(e, t('content.error'))
       } finally {
         this.applySubmitLoading = false
       }
@@ -751,7 +751,7 @@ export const useTariffGridStore = defineStore('tariffGridStore', {
     applyFormulaToRows(rows, { groups = [], ranks = [], expr = '' }) {
       const fn = compileFormula(expr)
       if (!fn) {
-        $Toast.warning(t('tariffGrid.formula.invalid'))
+        $Alert.validation(t('tariffGrid.formula.invalid'))
         return
       }
       const gset = groups.length ? new Set(groups.map(Number)) : new Set(GROUPS)

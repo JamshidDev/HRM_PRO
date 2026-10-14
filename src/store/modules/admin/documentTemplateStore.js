@@ -96,7 +96,7 @@ export const useDocumentTemplateStore = defineStore('documentTemplateStore', {
         this.dirty = false
       } catch (e) {
         this.bytes = null
-        $Toast.error(this._errorMessage(e))
+        $Alert.warning(this._errorMessage(e))
       } finally {
         this.contentLoading = false
       }

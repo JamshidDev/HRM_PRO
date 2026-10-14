@@ -30,6 +30,7 @@ export default [
                 ...globals.node,
                 ...autoImportGlobals,
                 $Toast: 'readonly',
+                $Alert: 'readonly',
                 $ApiService: 'readonly'
             }
         },

@@ -98,7 +98,7 @@
       if (val !== null) break
     }
     if (val === null) {
-      $Toast.warning(t('tariffGrid.form.fillEmpty'))
+      $Alert.validation(t('tariffGrid.form.fillEmpty'))
       return
     }
     for (const row of col.rows) for (const g of GROUPS) row[`c${g}`] = val

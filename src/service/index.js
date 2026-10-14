@@ -5,6 +5,7 @@ import Utils from '@/utils/Utils.js'
 import i18n from '@/i18n/index.js'
 import { reportApiError } from '@/utils/errorReporter.js'
 import { getDeviceUuid } from '@/utils/webPush.js'
+import { showAlert, alertFromAxiosError, isToastOnlyPage } from '@/components/notify/alertDialog.js'
 const apiUrl = import.meta.env.VITE_API_URL
 console.log(apiUrl)
 const { t } = i18n.global
@@ -93,15 +94,26 @@ instance.interceptors.response.use(
       isLoggingOut = true
       localStorage.removeItem(useAppSetting.tokenKey)
       await router.push(AppPaths.Login)
+    } else if (
+      !error.config?.silentError &&
+      error.config?.errorUi !== 'toast' &&
+      !isToastOnlyPage() &&
+      alertFromAxiosError(error)
+    ) {
+      // Foydalanuvchi amali xatosi (403, 422, 4xx, aloqa) — 3D ikonkali modal; login sahifasida toast.
+      showAlert(alertFromAxiosError(error))
+      error.__notified = true
     } else if (error.response?.data?.message) {
       if (!error.config?.silentError) {
         $Toast.error(error.response?.data?.message)
+        error.__notified = true
       }
     } else if (error?.message) {
       // `silentError` bu yerda ham hisobga olinadi: backend `message` bermagan
       // 403 larda oldin xom "Request failed with status code 403" chiqib ketardi.
       if (!error.config?.silentError) {
         $Toast.warning(error.message)
+        error.__notified = true
       }
     }
 

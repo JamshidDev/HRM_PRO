@@ -136,7 +136,10 @@
         "title": "Hisobot",
         "subtitle": "Hisobot yuklash"
       },
-      "guides": {"title": "Qo'llanma", "subtitle": "Video darsliklar"},
+      "guides": {
+        "title": "Qo'llanma",
+        "subtitle": "Video darsliklar"
+      },
       "income": {
         "title": "Daromad",
         "subtitle": "Ish haqi va to'lovlar"
@@ -6461,5 +6464,17 @@
     "uploaded": "Video yuklandi",
     "required": "Nomi (UZ) va video majburiy",
     "confirmDelete": "Qo'llanma o'chirilsinmi?"
+  },
+  "alertDialog": {
+    "ok": "Tushunarli",
+    "checkFields": "Quyidagilarni tekshirib, qayta urinib ko'ring:",
+    "titles": {
+      "forbidden": "Ruxsat berilmagan",
+      "validation": "Ma'lumotlar to'liq emas",
+      "warning": "Amalni bajarib bo'lmaydi",
+      "notfound": "Ma'lumot topilmadi",
+      "network": "Aloqa uzildi"
+    },
+    "eimzoTitle": "E-IMZO dasturiga ulanib bo'lmadi"
   }
 }
