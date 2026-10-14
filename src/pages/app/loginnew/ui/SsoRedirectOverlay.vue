@@ -94,7 +94,8 @@
     const preview = store.ssoRedirect?.preview
     store.ssoRedirect = null
     if (preview) return
-    localStorage.removeItem(useAppSetting.tokenKey)
+    // Token va mavjud sessiya (`ssoSession`) tozalanadi.
+    store._ssoUseOtherAccount()
     store.password = null
   }
 

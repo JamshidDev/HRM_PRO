@@ -745,7 +745,9 @@ export const MEANINGFUL = new Set([
   'salary-1c-access',
   'tariff-grid-access-read',
   'tariff-grid-access-write',
-  'tariff-grid-access-delete'
+  'tariff-grid-access-delete',
+  // Profil > Faollik tabi (faqat frontend ko'rinishi; ma'lumot — foydalanuvchining o'zi).
+  'profile-activity-read'
 ])
 
 export const PERMISSION_GROUPS = [
@@ -1054,7 +1056,8 @@ export const PERMISSION_GROUPS = [
       },
       { prefix: 'hr-report', label: 'report.name' },
       { prefix: 'economist-staffing-approve', label: 'staffingApproval.name' },
-      { prefix: 'economist-upload-source-config', label: 'uploadSourceConfig.name' }
+      { prefix: 'economist-upload-source-config', label: 'uploadSourceConfig.name' },
+      { prefix: 'salary-hidden', label: 'salaryHidden.name' }
     ]
   },
   {
@@ -1101,6 +1104,13 @@ export const PERMISSION_GROUPS = [
       { prefix: 'educations-structure-menu', label: 'educationDirectory.name' },
       { prefix: 'department-location', label: 'departmentLocationPage.name' }
     ]
+  },
+  // Profil sahifasidagi ixtiyoriy tablar. Modul-kirish slug'i yo'q — profil hammaga ochiq,
+  // bu yerda faqat qo'shimcha tablar yoqiladi.
+  {
+    module: 'profile',
+    label: 'profilePage.sidebar.title',
+    groups: [{ prefix: 'profile-activity', label: 'profilePage.tabs.activity' }]
   },
   {
     module: 'admin',

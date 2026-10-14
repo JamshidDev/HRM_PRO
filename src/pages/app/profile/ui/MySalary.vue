@@ -111,6 +111,42 @@
 
           <div class="ms-net"><span>{{ $t('salary1c.net') }}</span><b class="text-primary">{{ fmt(p.net_total) }}</b></div>
 
+          <!-- Ko'p-kareshok: shu korxonada ish joyi almashgan → har tabel ALOHIDA -->
+          <template v-if="p.kareshoks?.length">
+            <p class="ms-grp mt-5 text-warning">
+              ⚠ {{ $t('salary1c.kareshok.title', { n: p.kareshoks.length }) }}
+            </p>
+            <div v-for="(k, ki) in p.kareshoks" :key="'k' + ki" class="ms-kar">
+              <div class="ms-kar-head">
+                <span><b>{{ $t('salary1c.kareshok.tab') }}:</b> {{ k.tab_nomer || '—' }}</span>
+                <span class="text-textColor3">{{ k.position || '—' }}</span>
+              </div>
+              <n-table :single-line="false" size="small" class="mt-1">
+                <tbody>
+                  <tr v-for="(a, i) in k.accruals" :key="'ka' + i">
+                    <td class="w-[80px]">{{ a.paying_code || '—' }}</td>
+                    <td class="text-xs">{{ a.paying_name }}</td>
+                    <td class="text-right! ms-num w-[130px]">{{ fmt(a.summa) }}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" class="font-semibold">{{ $t('salary1c.accrual') }}</td>
+                    <td class="text-right! ms-num font-semibold">{{ fmt(k.accrual_total) }}</td>
+                  </tr>
+                  <tr v-for="(d, i) in k.deductions" :key="'kd' + i">
+                    <td class="w-[80px]">{{ d.paying_code || 'НДФЛ' }}</td>
+                    <td class="text-xs">{{ d.paying_name }}</td>
+                    <td class="text-right! ms-num w-[130px]">{{ fmt(d.summa) }}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" class="font-semibold">{{ $t('salary1c.deduction') }}</td>
+                    <td class="text-right! ms-num font-semibold">{{ fmt(k.deduction_total) }}</td>
+                  </tr>
+                </tbody>
+              </n-table>
+              <div class="ms-net"><span>{{ $t('salary1c.net') }}</span><b class="text-primary">{{ fmt(k.net_total) }}</b></div>
+            </div>
+          </template>
+
           <template v-if="historyOf(p.organization_id).length > 1">
             <p class="ms-grp mt-4">{{ $t('salary1c.history') }}</p>
             <n-table :single-line="false" size="small">
@@ -148,4 +184,6 @@
   .ms-grp { font-size: 12px; font-weight: 700; color: var(--textColor2, #475467); margin-bottom: 4px; }
   .ms-num { font-variant-numeric: tabular-nums; }
   .ms-net { display: flex; justify-content: space-between; padding: 8px 12px; margin-top: 10px; background: var(--color-brand-surface, #eff8ff); border-radius: 10px; font-weight: 700; }
+  .ms-kar { border: 1px solid rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.05); border-radius: 10px; padding: 10px; margin-bottom: 12px; }
+  .ms-kar-head { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
 </style>

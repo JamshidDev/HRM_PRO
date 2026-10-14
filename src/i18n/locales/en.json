@@ -607,8 +607,26 @@
       "seconds": "Opens automatically in {n} s",
       "goNow": "Go to {name}",
       "stay": "Stay in HRM Pro",
-      "otherAccount": "Another account"
-    }
+      "otherAccount": "Another account",
+      "verified": "Verified",
+      "as": "as {name}"
+    },
+    "appLogin": {
+      "label": "Sign in with HRM",
+      "title": "Sign in to «{name}»",
+      "text": "Sign in quickly without a password using the HR Rail app.",
+      "open": "Continue in HR Rail",
+      "browser": "Continue in browser",
+      "waitTitle": "Confirm in the HR Rail app",
+      "waitText": "Confirm in the HR Rail app — «{name}» will open automatically.",
+      "reopen": "Open the app again",
+      "missing": "HR Rail app not found. Install it or continue in the browser.",
+      "install": "Install HR Rail",
+      "approved": "Confirmed, signing in…",
+      "rejected": "Sign-in was rejected in the app.",
+      "expired": "Time is up. Please try again."
+    },
+    "sessionRevoked": "Your session was ended from the HR Rail app on your phone. Please sign in again."
   },
   "registerPage": {
     "name": "Sign up",
@@ -758,7 +776,8 @@
         "copySuccess": "Link copied!",
         "copyError": "Copy error!"
       },
-      "ssoLogins": "Sign-in history (SSO)"
+      "ssoLogins": "Sign-in history (SSO)",
+      "activity": "Activity"
     },
     "org": {
       "title": "Order form data",
@@ -837,6 +856,15 @@
       "ones_org_code": "1C code",
       "inn": "INN",
       "gateway_id": "Gateway ID"
+    },
+    "startPerson": {
+      "loading": "Looking up employee…",
+      "notFound": "No employee found for this PINFL",
+      "noAccount": "No system account — the organization won't be created",
+      "positions": "Current positions",
+      "noPositions": "No active positions",
+      "rate": "{n} rate",
+      "willBe": "In the new organization: {type}, {n} rate"
     },
     "selectedOrg": "Selected organization",
     "deleteContent": "Are you sure you want to delete this organization?",
@@ -3786,6 +3814,33 @@
     "name": "Upload report",
     "latest": "Latest",
     "olderUploads": "Previous uploads",
+    "hasOnesCode": "1C code configured — bookkeeping is kept in 1C",
+    "onesCodeDownload": "Download a separate Excel per 1C code",
+    "anomaly": {
+      "toast": "1C data issues: {dup} duplicate PINFL, {code} payment types without a code — please review",
+      "title": "1C data quality — anomalies",
+      "headerHint": "Issues in data pulled from 1C (duplicate PINFL / payment types without a code)",
+      "all": "All",
+      "duplicatePinfl": "Duplicate PINFL",
+      "missingCode": "Payment type without code",
+      "noData": "No anomalies found",
+      "cameNTimes": "appeared {n} times",
+      "diffFields": "Differs",
+      "code": "Code",
+      "empty": "(empty)",
+      "accrual": "Accrual",
+      "deduction": "Deduction",
+      "employees": "Employees",
+      "examples": "e.g.",
+      "field": {
+        "tab_nomer": "Tab №",
+        "position": "Position",
+        "oklad": "Salary",
+        "hours_worked": "Hours",
+        "accrual": "Accrual",
+        "deduction": "Deduction"
+      }
+    },
     "changes": {
       "added": "Added",
       "changed": "Changed",
@@ -3961,7 +4016,11 @@
     "view": {
       "main_salary": "Base salary",
       "work_time": "Worked time",
-      "net_salary": "Take-home amount"
+      "net_salary": "Take-home amount",
+      "kareshok": {
+        "title": "Payslips ({n}) — by tab number",
+        "tab": "Tab №"
+      }
     },
     "in": {
       "code": "Payment code",
@@ -4348,6 +4407,24 @@
     "statistics": "Statistics",
     "orgCode": "1C code",
     "orgCodePh": "1C org code (e.g. АППАРАТ)",
+    "onesCode": {
+      "filterLabel": "1C code",
+      "filterPh": "All codes",
+      "manageBtn": "1C codes",
+      "manageTitle": "Organization 1C codes",
+      "selectOneOrg": "Select one organization first",
+      "code": "1C code",
+      "label": "Label (optional)",
+      "labelPh": "e.g. PCH-1",
+      "add": "Add",
+      "delete": "Delete",
+      "primary": "primary",
+      "empty": "No 1C codes added",
+      "codeRequired": "Enter a 1C code",
+      "deleteConfirm": "Delete this code?",
+      "addSuccess": "1C code added",
+      "deleteSuccess": "1C code deleted"
+    },
     "orgCodeHint": "1C code not set — enter it before pulling",
     "codeSaved": "1C code saved",
     "version": "Version",
@@ -4398,7 +4475,11 @@
     "duration": "Duration",
     "pulledAt": "Time",
     "searchOrg": "Search by organization",
-    "all": "All"
+    "all": "All",
+    "kareshok": {
+      "title": "Payslips ({n}) — by tab number",
+      "tab": "Tab №"
+    }
   },
   "tariffBase": {
     "title": "Base amount",
@@ -5330,6 +5411,17 @@
   },
   "uploadSourceConfig": {
     "name": "Upload Source"
+  },
+  "salaryHidden": {
+    "name": "Salary Hidden",
+    "searchPlaceholder": "Search by PINFL or note...",
+    "addButton": "Add PINFL",
+    "pinfl": "PINFL",
+    "pinflPlaceholder": "14-digit PINFL",
+    "note": "Note",
+    "notePlaceholder": "Reason (optional)",
+    "addedAt": "Added date",
+    "actions": "Actions"
   },
   "staffingApproval": {
     "name": "Staffing",
@@ -6303,7 +6395,39 @@
     "method": {
       "password": "Password",
       "qr": "QR code",
-      "eimzo": "E-IMZO"
+      "eimzo": "E-IMZO",
+      "app": "HR Rail app",
+      "session": "Existing session"
+    },
+    "activity": {
+      "title": "Activity",
+      "demo": "Demo data",
+      "total": "{count} sign-ins in {year}",
+      "count": "{count} sign-ins",
+      "none": "No sign-ins",
+      "less": "Less",
+      "more": "More",
+      "months": "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",
+      "days": "Mon,Tue,Wed,Thu,Fri,Sat,Sun",
+      "stats": {
+        "total": "Total sign-ins",
+        "activeDays": "Active days",
+        "streak": "Longest streak",
+        "busiest": "Busiest day",
+        "days": "{count} days"
+      },
+      "guide": {
+        "title": "How to read it",
+        "howTitle": "How it's counted",
+        "howText": "Each square is one day. Every successful sign-in to another system through your HRM account is added to that day.",
+        "hoverTitle": "Day details",
+        "hoverText": "Hover over a square to see that day's sign-in count and date. Pick the year with the buttons above.",
+        "privateTitle": "Only you can see it",
+        "privateText": "This map is personal: only you see it, it isn't shown to managers or HR.",
+        "soonTitle": "Coming soon",
+        "soonText": "Time spent in HRM (in hours) will be counted too — each hour makes the color one step darker.",
+        "levelsTitle": "Color levels"
+      }
     }
   }
 }

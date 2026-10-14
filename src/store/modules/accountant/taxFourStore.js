@@ -19,6 +19,7 @@ export const useTaxFourStore = defineStore('taxFourStore', {
       per_page: 15,
       search: null,
       organizations: [],
+      ones_code: null, // ko'p 1C kod: aynan kod bo'yicha filter (bitta kodli org — null)
       year: null,
       month: null
     },
@@ -29,7 +30,8 @@ export const useTaxFourStore = defineStore('taxFourStore', {
       this.loading = true
       const params = {
         ...this.params,
-        organizations: this.params.organizations.map((v) => v.id).toString() || undefined
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
+        ones_code: this.params.ones_code || undefined
       }
       $ApiService.taxFourService
         ._index({ params })
