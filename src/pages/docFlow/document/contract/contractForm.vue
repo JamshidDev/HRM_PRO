@@ -24,7 +24,11 @@
       if (!error) {
         // FXSH (turi 2) — bitta qadam: tashkilot ham 1-qadamda so'raladi, shu yerda
         // yaratiladi (2-qadam bo'sh). Boshqa turlar avvalgidek 3-qadamda yaratadi.
-        if (store.activeTab === 1 && store.payload.type === 2) {
+        // Tahrir rejimida oxirgi qadam — saqlash o'rniga qayta yuborish modali.
+        const last = (store.activeTab === 1 && store.payload.type === 2) || store.activeTab === 3
+        if (last && store.editId) {
+          store._submitEdit()
+        } else if (store.activeTab === 1 && store.payload.type === 2) {
           store.saveLoading = true
           store._create(props.callBack)
         } else if (store.activeTab === 3) {
@@ -48,7 +52,8 @@
       componentStore._enums()
     }
     componentStore._scheduleList((data) => {
-      store.payload.schedule_id = data[0]?.id
+      // Tahrirda tiklangan jadval saqlanadi.
+      if (!store.payload.schedule_id) store.payload.schedule_id = data[0]?.id
     })
   })
 

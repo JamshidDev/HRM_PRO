@@ -1807,6 +1807,13 @@
     }
   },
   "contractPage": {
+    "edit": {
+      "locked": {
+        "approved": "Tasdiqlangan shartnomani tahrirlab bo'lmaydi",
+        "command_approved": "Shartnoma asosidagi buyruq tasdiqlangan — tahrirlab bo'lmaydi",
+        "no_form_state": "Bu shartnoma tahrir imkoniyati qo'shilishidan oldin yaratilgan — tahrirlab bo'lmaydi"
+      }
+    },
     "name": "Shartnomalar",
     "succeedText": "Shartnoma muvaffaqiyatli ravishda yaratildi!",
     "table": {

@@ -4,11 +4,13 @@
   import { useAccountStore, useComponentStore, useContractStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
+  import { useNotify } from '@/composables/useNotify'
   import {
     ArrowSyncCheckmark20Filled,
     CheckmarkCircle32Regular,
     Delete20Regular,
     DocumentCheckmark24Regular,
+    Edit20Regular,
     Eye16Regular,
     ReceiptAdd24Regular
   } from '@vicons/fluent'
@@ -43,6 +45,13 @@
     store.elementId = row.id
     componentStore.files = []
     componentStore.fileVisible = true
+  }
+
+  const notify = useNotify()
+  // Tahrir: tasdiqlangan yoki tahrir imkoniyatidan oldingi shartnoma — sababi ko'rsatiladi.
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrContractsWrite)) return
+    store._openEdit(row.id, (block) => notify.warning(t(`contractPage.edit.locked.${block}`)))
   }
 
   const onOpenCommand = (row) => {
@@ -104,6 +113,12 @@
       key: Utils.ActionTypes.view,
       icon: UIHelper.renderIcon(Eye16Regular),
       action: onPreview
+    },
+    {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit20Regular),
+      action: onEdit
     },
     {
       label: t('content.delete'),

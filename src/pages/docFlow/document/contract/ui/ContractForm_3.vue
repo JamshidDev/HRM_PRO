@@ -117,11 +117,17 @@
       <!-- Buyruq yaratish tugmasi bo'lim sarlavhasining o'ng chetida -->
       <div class="form-section__head">
         <span class="form-section__title">{{ $t('contractPage.step.stepThree') }}</span>
+        <!-- Tahrirda buyruq bilan rasmiylashtirish holati o'zgarmaydi. -->
         <div
           class="command-switch"
-          @click="store.payload.command_status = !store.payload.command_status"
+          @click="!store.editId && (store.payload.command_status = !store.payload.command_status)"
         >
-          <n-switch v-model:value="store.payload.command_status" size="small" @click.stop />
+          <n-switch
+            v-model:value="store.payload.command_status"
+            :disabled="Boolean(store.editId)"
+            size="small"
+            @click.stop
+          />
           <span>{{ $t('documentPage.form.command_status') }}</span>
         </div>
       </div>

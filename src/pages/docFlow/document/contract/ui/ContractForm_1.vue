@@ -81,7 +81,9 @@
         type: store.payload.type
       }
       componentStore._commandTypes(data, (id) => {
-        store.payload.command_type = id
+        // Tahrirda tiklangan buyruq turi saqlanadi.
+        store.payload.command_type = store.editCommandType ?? id
+        store.editCommandType = null
       })
     }
     store.payload.position_date = store.payload.contract_date
@@ -127,6 +129,7 @@
         >
           <n-select
             v-model:value="store.payload.type"
+            :disabled="Boolean(store.editId)"
             filterable
             :options="componentStore.contractTypeList"
             label-field="name"

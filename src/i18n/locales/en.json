@@ -1791,6 +1791,13 @@
     }
   },
   "contractPage": {
+    "edit": {
+      "locked": {
+        "approved": "An approved contract cannot be edited",
+        "command_approved": "The order based on this contract is approved — it cannot be edited",
+        "no_form_state": "This contract was created before editing was available — it cannot be edited"
+      }
+    },
     "name": "Contracts",
     "succeedText": "Contract created successfully!",
     "table": {
