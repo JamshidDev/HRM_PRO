@@ -5,13 +5,14 @@
     useExportStore,
     useAccountStore
   } from '@/store/modules/index.js'
-  import { UINSelect, UIPageFilter, UISelect } from '@/components/index.js'
+  import { UINSelect, UIPageFilter, UISelect, UIToggleTag } from '@/components/index.js'
   import { useAppBreakpoints } from '@/composables/index.js'
   import {
     ArrowCounterclockwise20Regular,
     ChevronDown20Regular,
     ChevronUp20Regular,
-    Dismiss16Regular
+    Dismiss16Regular,
+    Checkmark12Filled
   } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { AppPaths, appPermissions, useDebounce } from '@/utils/index.js'
@@ -145,6 +146,12 @@
       store.params.company_funded_education
     ].filter(Boolean).length
   })
+
+  // Belgilash filtrlari (pill'lar) — qiymatni almashtirib, darhol filtrlaydi.
+  const toggleFlag = (key) => {
+    store.params[key] = !store.params[key]
+    filterEvent()
+  }
 
   const clearFilter = () => {
     store.params.organizations = []
@@ -460,36 +467,37 @@
               @update:value="filterEvent"
             />
           </div>
+        </div>
 
-          <div class="col-span-12 sm:col-span-6">
-            <label class="invisible">-</label>
-            <div class="worker-filter-check">
-              <n-checkbox @change="filterEvent" v-model:checked="store.params.multiple_position">
-                {{ $t('workerPage.filter.multiple_position') }}
-              </n-checkbox>
-            </div>
-          </div>
-
-          <div class="col-span-12 sm:col-span-6">
-            <label class="invisible">-</label>
-            <div class="worker-filter-check">
-              <n-checkbox @change="filterEvent" v-model:checked="store.params.pension_age">
-                {{ $t('workerPage.filter.pension_age') }}
-              </n-checkbox>
-            </div>
-          </div>
-
-          <div class="col-span-12 sm:col-span-6">
-            <label class="invisible">-</label>
-            <div class="worker-filter-check">
-              <n-checkbox
-                @change="filterEvent"
-                v-model:checked="store.params.company_funded_education"
-              >
-                {{ $t('workerProfile.fundedEducation.filter') }}
-              </n-checkbox>
-            </div>
-          </div>
+        <!-- Belgilash filtrlari: matn uzunligiga qarab pill'lar, bir qatorda -->
+        <div class="worker-filter-checks">
+          <UIToggleTag
+            :checked="store.params.multiple_position"
+            @toggle="toggleFlag('multiple_position')"
+          >
+            <span class="worker-flag-box" aria-hidden="true">
+              <n-icon v-if="store.params.multiple_position" size="12"><Checkmark12Filled /></n-icon>
+            </span>
+            {{ $t('workerPage.filter.multiple_position') }}
+          </UIToggleTag>
+          <UIToggleTag
+            :checked="store.params.pension_age"
+            @toggle="toggleFlag('pension_age')"
+          >
+            <span class="worker-flag-box" aria-hidden="true">
+              <n-icon v-if="store.params.pension_age" size="12"><Checkmark12Filled /></n-icon>
+            </span>
+            {{ $t('workerPage.filter.pension_age') }}
+          </UIToggleTag>
+          <UIToggleTag
+            :checked="store.params.company_funded_education"
+            @toggle="toggleFlag('company_funded_education')"
+          >
+            <span class="worker-flag-box" aria-hidden="true">
+              <n-icon v-if="store.params.company_funded_education" size="12"><Checkmark12Filled /></n-icon>
+            </span>
+            {{ $t('workerProfile.fundedEducation.filter') }}
+          </UIToggleTag>
         </div>
 
         <n-divider class="worker-filter-divider" />
@@ -876,28 +884,39 @@
     padding-right: 12px;
   }
 
-  .worker-filter-check {
+  .worker-filter-checks {
     display: flex;
-    align-items: center;
-    box-sizing: border-box;
-    /* `height` EMAS: tor ekranda yorliq ikki qatorga bo'linadi va qat'iy 40px
-       matnni ramkadan chiqarib yuborardi. */
-    min-height: 40px;
-    padding: 8px 14px;
-    border: 1px solid var(--surface-line);
-    border-radius: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
   }
 
-  /* naive-ui `.n-checkbox` ga o'zi `align-items: flex-start` beradi, shu bois
-     yorliq ikki qatorga bo'linganda kvadratcha birinchi qatorga qadalib qolardi.
-     Bir qatorli yorliqda bu qoida hech narsani o'zgartirmaydi. */
-  .worker-filter-check :deep(.n-checkbox) {
-    align-items: center;
+  .worker-filter-checks :deep(.ui-toggle-tag) {
+    gap: 8px;
+    height: 36px;
+    padding: 0 14px 0 10px;
+    font-weight: 500;
   }
 
-  .worker-filter-check :deep(.n-checkbox__label) {
-    color: var(--textColor2);
-    font-size: 13px;
+  /* Pill ichidagi kichik "checkbox": tanlanganda oq fonda belgi */
+  .worker-flag-box {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid var(--textColor3);
+    border-radius: 5px;
+    color: var(--primary-color);
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .ui-toggle-tag--on .worker-flag-box {
+    border-color: var(--white-color);
+    background: var(--white-color);
   }
 
   .worker-filter-divider {
@@ -979,10 +998,19 @@
       margin-bottom: 4px;
     }
 
-    /* Checkbox kartochkalari ustidagi `invisible` yorliq — bir ustunli tartibda
-       u faqat bo'sh qator hosil qiladi (desktopda ikki ustunni tekislash uchun). */
-    .worker-filter-panel label.invisible {
-      display: none;
+    .worker-filter-checks {
+      margin-top: 14px;
+    }
+
+    /* Tor ekranda uzun yorliq pill'dan chiqib ketmasin */
+    .worker-filter-checks :deep(.ui-toggle-tag) {
+      height: auto;
+      min-height: 36px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      white-space: normal;
+      text-align: left;
+      line-height: 1.3;
     }
 
     .worker-filter-divider {
