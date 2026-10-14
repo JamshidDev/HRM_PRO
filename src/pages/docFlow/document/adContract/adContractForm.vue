@@ -35,12 +35,10 @@
   const onSubmit = () => {
     formRef.value?.validate((error) => {
       if (!error) {
+        // Tahrir rejimi — saqlash o'rniga qayta yuborish modali.
+        if (store.editId) return store._submitEdit()
         store.saveLoading = true
-        if (store.visibleType) {
-          store._create(props.callBack)
-        } else {
-          store._update()
-        }
+        store._create(props.callBack)
       }
     })
   }
@@ -131,6 +129,14 @@
   // (32 ta variant: ta'til, xizmat safari...). Ta'til buyrug'i tanlansa hujjat
   // yaratilar, lekin xodim ishlayotgan bo'lib qolaverardi.
   // FXSH uchun alohida buyruq turi va shabloni ham mavjud emas.
+  // Tahrirda tiklangan xodim uchun «lavozim holati» belgisi (yaratishdagidek).
+  watch(
+    () => store.editId,
+    (id) => {
+      if (id) showCheckBox.value = [2, 4, 5].includes(componentStore.workerList[0]?.typeId)
+    },
+    { immediate: true }
+  )
   const AD_TYPE_CIVIL_CANCEL = 14
   const commandAllowed = computed(() => store.payload.type !== AD_TYPE_CIVIL_CANCEL)
 
@@ -152,7 +158,9 @@
         type: store.payload.type
       }
       componentStore._commandTypes(data, (id) => {
-        store.payload.command_type = id
+        // Tahrirda tiklangan buyruq turi saqlanadi.
+        store.payload.command_type = store.editCommandType ?? id
+        store.editCommandType = null
       })
     }
   })
@@ -285,7 +293,7 @@
             <div class="col-span-12 md:col-span-6 flex">
               <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker">
                 <n-select
-                  :disabled="store.organization.length === 0 || workers.length > 0"
+                  :disabled="store.organization.length === 0 || workers.length > 0 || Boolean(store.editId)"
                   v-model:value="store.payload.worker_position_id"
                   filterable
                   :options="componentStore.workerList"
@@ -322,6 +330,7 @@
               <n-form-item :label="$t(`documentPage.form.type`)" path="type">
                 <n-select
                   v-model:value="store.payload.type"
+                  :disabled="Boolean(store.editId)"
                   filterable
                   :options="componentStore.adContractTypes"
                   label-field="name"
@@ -560,7 +569,10 @@
         >
           <n-divider dashed title-placement="left" class="w-full mt-1!">
             <div class="flex items-center gap-3">
-              <n-switch v-model:value="store.payload.command_status" />
+              <n-switch
+                v-model:value="store.payload.command_status"
+                :disabled="Boolean(store.editId)"
+              />
               <span class="text-primary font-medium">{{
                 $t(`documentPage.form.command_status`)
               }}</span>

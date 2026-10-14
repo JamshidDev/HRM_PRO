@@ -1825,6 +1825,13 @@
     "name": "Chat"
   },
   "adContractPage": {
+    "edit": {
+      "locked": {
+        "approved": "An approved additional agreement cannot be edited",
+        "command_approved": "The order based on this agreement is approved — it cannot be edited",
+        "no_form_state": "This agreement was created before editing was available — it cannot be edited"
+      }
+    },
     "createTitle": "Create additional agreement",
     "updateTitle": "Edit additional agreement",
     "name": "Additional agreement"

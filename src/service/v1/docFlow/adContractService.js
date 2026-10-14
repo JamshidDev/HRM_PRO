@@ -12,10 +12,15 @@ const _create = async (payload) => {
   return await axios.post(`/v1/hr/contract-additional`, payload.data)
 }
 
+// Tahrir: saqlangan forma, yakuniy imzolovchilar va saqlash (qayta yuborish bilan).
+const _form = async (payload) => {
+  return await axios.get(`/v1/hr/contract-additional/${payload.id}/form`)
+}
+const _signersPreview = async (payload) => {
+  return await axios.post(`/v1/hr/contract-additional/${payload.id}/signers-preview`, payload.data)
+}
 const _update = async (payload) => {
-  return await axios.post(`/v1/hr/contract-additional/${payload.id}`, payload.data, {
-    params: payload.params
-  })
+  return await axios.put(`/v1/hr/contract-additional/${payload.id}`, payload.data)
 }
 
 const _delete = async (payload) => {
@@ -27,5 +32,7 @@ export default {
   _create,
   _update,
   _delete,
-  _show
+  _show,
+  _form,
+  _signersPreview
 }

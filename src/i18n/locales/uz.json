@@ -1841,6 +1841,13 @@
     "name": "Chat"
   },
   "adContractPage": {
+    "edit": {
+      "locked": {
+        "approved": "Tasdiqlangan qo'shimcha kelishuvni tahrirlab bo'lmaydi",
+        "command_approved": "Kelishuv asosidagi buyruq tasdiqlangan — tahrirlab bo'lmaydi",
+        "no_form_state": "Bu kelishuv tahrir imkoniyati qo'shilishidan oldin yaratilgan — tahrirlab bo'lmaydi"
+      }
+    },
     "createTitle": "Qo'shimcha kelishuv tuzish",
     "updateTitle": "Qo'shimcha kelishuvni tahrirlash",
     "name": "Qo'shimcha kelishuv"
