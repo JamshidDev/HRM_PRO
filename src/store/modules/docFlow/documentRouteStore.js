@@ -19,6 +19,10 @@ export const useDocumentRouteStore = defineStore('documentRouteStore', {
     approverList: [],
     approverLoading: false
   }),
+  getters: {
+    // Buyruqda tanishuvchi roli yo'q — faqat kelishuvchilar.
+    allowViewers: (state) => state.model !== Utils.documentModels.command
+  },
   actions: {
     // Xodim va rahbar marshrutda turmaydi — select'da ko'rinmaydi.
     fixedWorkerIds(confirmations) {

@@ -269,7 +269,11 @@
                           : $t('applicationPage.forward.roleView')
                       }}
                     </span>
-                    <n-switch :value="item.role === 'sign'" @update:value="(v) => setRole(item, v)">
+                    <n-switch
+                      v-if="app.allowViewers !== false"
+                      :value="item.role === 'sign'"
+                      @update:value="(v) => setRole(item, v)"
+                    >
                       <template #checked-icon><n-icon><Signature16Regular /></n-icon></template>
                       <template #unchecked-icon><n-icon><Eye16Regular /></n-icon></template>
                     </n-switch>
@@ -310,7 +314,7 @@
               — {{ $t('applicationPage.forward.roleSignHint') }}
             </div>
           </div>
-          <div class="flex items-center gap-2.5">
+          <div v-if="app.allowViewers !== false" class="flex items-center gap-2.5">
             <div class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 bg-surface-section text-textColor3">
               <n-icon size="14"><Eye16Regular /></n-icon>
             </div>

@@ -468,9 +468,13 @@
     emits('signatureEv')
   }
 
-  // Shartnoma / qo'shimcha kelishuv: kelishuvchilar marshruti (parallel / ketma-ket).
+  // Buyruq / shartnoma / qo'shimcha kelishuv: kelishuvchilar marshruti (parallel / ketma-ket).
   const isRouteDoc = computed(() =>
-    [Utils.documentModels.contract, Utils.documentModels.adContract].includes(store.model)
+    [
+      Utils.documentModels.command,
+      Utils.documentModels.contract,
+      Utils.documentModels.adContract
+    ].includes(store.model)
   )
   const openDocumentRoute = () =>
     documentRouteStore._openRoute(store.model, store.document_id, hrDirector())
