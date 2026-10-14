@@ -495,7 +495,9 @@
       (!isRouteDoc.value || accountStore.checkAction(ROUTE_WRITE[store.model]))
   )
   const openDocumentRoute = () =>
-    documentRouteStore._openRoute(store.model, store.document_id, hrDirector())
+    documentRouteStore._openRoute(store.model, store.document_id, hrDirector(), (block) =>
+      notify.warning(t(`documentPage.command.dataTab.locked.${block}`))
+    )
   // Muvaffaqiyat xabarini backend javobi o'zi chiqaradi.
   const onRouteSaved = () => {
     getDocument(store.document_id, store.model)

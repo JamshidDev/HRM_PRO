@@ -47,7 +47,7 @@ export const useDocumentRouteStore = defineStore('documentRouteStore', {
         })
     },
     // Joriy marshrut + rahbar → modal (rad etilgan hujjat — qayta yuborish).
-    _openRoute(model, documentId, director) {
+    _openRoute(model, documentId, director, onLocked) {
       this.model = model
       this.documentId = documentId
       this.routeLoading = true
@@ -55,6 +55,8 @@ export const useDocumentRouteStore = defineStore('documentRouteStore', {
         ._documentRoute({ params: { model, document_id: documentId } })
         .then((res) => {
           const route = res.data.data
+          // Buyruq tahrirlanmaydigan holatda (shartnoma asosida, tasdiqlangan...) — modal ochilmaydi.
+          if (route?.locked) return onLocked?.(route.locked)
           this.forwardDirector = director
           this.forwardAction = route?.rejected ? 'resend' : 'edit'
           this.forwardPrefill = route?.items || []
