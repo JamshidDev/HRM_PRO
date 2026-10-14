@@ -6,6 +6,7 @@ import i18n from '@/i18n/index.js'
 import { reportApiError } from '@/utils/errorReporter.js'
 import { getDeviceUuid } from '@/utils/webPush.js'
 import { showAlert, alertFromAxiosError, isToastOnlyPage } from '@/components/notify/alertDialog.js'
+import { endSession, isSessionEnded, sessionSignal } from '@/features/sessionEnded/sessionEnded.js'
 const apiUrl = import.meta.env.VITE_API_URL
 console.log(apiUrl)
 const { t } = i18n.global
@@ -16,6 +17,12 @@ const instance = axios.create({
 let isLoggingOut = false
 
 instance.interceptors.request.use(function (config) {
+  // Seans tugagan — alert turgan paytda hech qanday so'rov ketmaydi.
+  if (isSessionEnded()) return Promise.reject(new axios.CanceledError('session_ended'))
+  // Chaqiruvchining o'z signali bo'lsa ikkalasi birlashtiriladi (eski brauzerda — o'zinikini saqlaymiz).
+  if (!config.signal) config.signal = sessionSignal()
+  else if (typeof AbortSignal.any === 'function')
+    config.signal = AbortSignal.any([config.signal, sessionSignal()])
   let token = localStorage.getItem(useAppSetting.tokenKey) || null
   config.headers['Accept-Language'] =
     localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
@@ -56,6 +63,14 @@ instance.interceptors.response.use(
     return Promise.resolve(response)
   },
   async (error) => {
+    // Seans tugadi (socket yoki 401 session_ended) — toast/redirect yo'q, alert o'zi login'ga olib o'tadi.
+    if (error.response?.status === 401 && error.response?.data?.code === 'session_ended') {
+      endSession(error.response.data)
+    }
+    if (isSessionEnded()) {
+      error.__notified = true
+      return Promise.reject(error)
+    }
     if (error.name === 'CanceledError') {
       error.message = t('content.waitResponse')
     }
@@ -79,12 +94,12 @@ instance.interceptors.response.use(
 
     if (error.response?.status === 401) {
       const serviceUrl = error.response?.config?.url?.toString()
-      if(serviceUrl.includes('auth/login')){
+      if (serviceUrl.includes('auth/login')) {
         $Toast.error(error.response?.data?.message ?? error.message)
         return Promise.reject(error)
       }
 
-      if (isLoggingOut){
+      if (isLoggingOut) {
         return Promise.reject(error)
       }
 

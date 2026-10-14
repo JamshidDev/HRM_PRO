@@ -6590,5 +6590,22 @@
       "network": "Aloqa uzildi"
     },
     "eimzoTitle": "E-IMZO dasturiga ulanib bo'lmadi"
+  },
+  "sessionEnded": {
+    "title": "Seansingiz tugatildi",
+    "redirect": "{seconds} soniyada chiqiladi",
+    "reasons": {
+      "replaced": "Hisobingizga boshqa brauzer orqali kirildi{device}.",
+      "revoked_mobile": "Seansingiz HR Rail ilovasi orqali telefondan tugatildi{device}.",
+      "revoked_web": "Seansingiz boshqa brauzerdan tugatildi{device}.",
+      "expired_idle": "8 soat davomida faollik bo'lmagani uchun seans muddati tugadi.",
+      "expired_absolute": "Seansning 7 kunlik muddati tugadi.",
+      "password_changed": "Hisobingiz paroli o'zgartirildi. Yangi parol bilan kiring.",
+      "password_reset": "Hisobingiz paroli tiklandi. Yangi parol bilan kiring.",
+      "blocked": "Hisobingiz bloklangan. Tizim ma'muriga murojaat qiling.",
+      "deleted": "Hisobingiz o'chirilgan. Tizim ma'muriga murojaat qiling.",
+      "no_position": "Faol lavozimingiz yo'qligi sababli tizimga kirish to'xtatildi.",
+      "default": "Xavfsizlik maqsadida seansingiz yopildi. Qayta kiring."
+    }
   }
 }

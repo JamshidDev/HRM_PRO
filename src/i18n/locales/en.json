@@ -6529,5 +6529,22 @@
       "network": "Connection lost"
     },
     "eimzoTitle": "Couldn't connect to E-IMZO"
+  },
+  "sessionEnded": {
+    "title": "Your session was ended",
+    "redirect": "Signing out in {seconds}s",
+    "reasons": {
+      "replaced": "Your account was signed in from another browser{device}.",
+      "revoked_mobile": "Your session was ended from your phone via the HR Rail app{device}.",
+      "revoked_web": "Your session was ended from another browser{device}.",
+      "expired_idle": "The session expired after 8 hours of inactivity.",
+      "expired_absolute": "The 7-day session limit was reached.",
+      "password_changed": "Your account password was changed. Sign in with the new password.",
+      "password_reset": "Your account password was reset. Sign in with the new password.",
+      "blocked": "Your account is blocked. Contact the administrator.",
+      "deleted": "Your account was deleted. Contact the administrator.",
+      "no_position": "Access stopped: you have no active position.",
+      "default": "Your session was closed for security reasons. Please sign in again."
+    }
   }
 }
