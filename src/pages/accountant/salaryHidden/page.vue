@@ -1,6 +1,6 @@
 <script setup>
 import { UIPageContent, UIPageFilter, UIPagination } from '@/components/index.js'
-import { Add24Regular, Delete24Regular, EyeOff24Regular } from '@vicons/fluent'
+import { Delete24Regular, EyeOff24Regular } from '@vicons/fluent'
 import { useAccountStore, useSalaryHiddenStore } from '@/store/modules/index.js'
 import { useDebounceFn } from '@vueuse/core'
 
@@ -26,6 +26,9 @@ const confirmDelete = (row) => {
     onPositiveClick: () => store._delete(row.id)
   })
 }
+
+// Xodimni ism/PINFL bo'yicha qidirish (yozish o'rniga tanlab yashirish).
+const onWorkerSearch = useDebounceFn((q) => store._searchWorkers(q), 300)
 </script>
 
 <template>
@@ -35,9 +38,9 @@ const confirmDelete = (row) => {
       :placeholder="$t('salaryHidden.searchPlaceholder')"
       :show-filter-button="false"
       :show-add-button="canWrite"
-      :add-button-label="$t('salaryHidden.addButton')"
-      @add="store.showForm = true"
-      @update:search="onSearch"
+      :add-button-title="$t('salaryHidden.addButton')"
+      @on-add="store.showForm = true"
+      @on-search="onSearch"
     />
 
     <!-- Qo'shish formasi -->
@@ -46,6 +49,21 @@ const confirmDelete = (row) => {
         v-if="store.showForm && canWrite"
         class="mb-4 p-4 rounded-xl border border-surface-line bg-surface-section flex flex-wrap gap-3 items-end"
       >
+        <div class="flex flex-col gap-1 flex-1 min-w-[260px]">
+          <span class="text-xs text-textColor3">{{ $t('salaryHidden.searchWorker') }}</span>
+          <n-select
+            :value="store.form.pinfl || null"
+            filterable
+            remote
+            clearable
+            :options="store.workerOptions"
+            :loading="store.workerSearchLoading"
+            :placeholder="$t('salaryHidden.searchWorkerPlaceholder')"
+            :clear-filter-after-select="false"
+            @search="onWorkerSearch"
+            @update:value="(v) => (store.form.pinfl = v || '')"
+          />
+        </div>
         <div class="flex flex-col gap-1 flex-1 min-w-[180px]">
           <span class="text-xs text-textColor3">{{ $t('salaryHidden.pinfl') }}</span>
           <n-input
@@ -85,7 +103,8 @@ const confirmDelete = (row) => {
         <thead>
           <tr>
             <th class="w-[60px] !text-center">#</th>
-            <th>PINFL</th>
+            <th>{{ $t('content.fullName') }}</th>
+            <th>{{ $t('content.organization') }}</th>
             <th>{{ $t('salaryHidden.note') }}</th>
             <th>{{ $t('salaryHidden.addedAt') }}</th>
             <th v-if="canWrite" class="w-[80px] !text-center">{{ $t('salaryHidden.actions') }}</th>
@@ -97,8 +116,12 @@ const confirmDelete = (row) => {
               {{ (store.currentPage - 1) * 20 + idx + 1 }}
             </td>
             <td>
-              <span class="font-mono font-medium">{{ row.pinfl }}</span>
+              <div class="flex flex-col">
+                <span class="font-medium">{{ row.fio || '—' }}</span>
+                <span class="font-mono text-xs text-textColor3">{{ row.pinfl }}</span>
+              </div>
             </td>
+            <td class="text-sm text-textColor2">{{ row.organization?.name || '—' }}</td>
             <td class="text-sm text-textColor2">{{ row.note || '—' }}</td>
             <td class="text-sm text-textColor3">{{ row.created_at?.slice(0, 16) || '—' }}</td>
             <td v-if="canWrite" class="!text-center">
@@ -114,7 +137,7 @@ const confirmDelete = (row) => {
             </td>
           </tr>
           <tr v-if="!store.list.length && !store.loading">
-            <td :colspan="canWrite ? 5 : 4" class="!py-12 !text-center text-textColor3">
+            <td :colspan="canWrite ? 6 : 5" class="!py-12 !text-center text-textColor3">
               <div class="flex flex-col items-center gap-2">
                 <n-icon size="40" class="text-textColor3 opacity-40">
                   <EyeOff24Regular />

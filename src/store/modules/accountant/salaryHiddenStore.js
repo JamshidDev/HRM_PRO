@@ -14,7 +14,10 @@ export const useSalaryHiddenStore = defineStore('salaryHidden', {
       pinfl: '',
       note: ''
     },
-    showForm: false
+    showForm: false,
+    // Xodim qidiruvi (ism/PINFL bo'yicha tanlab yashirish)
+    workerOptions: [],
+    workerSearchLoading: false
   }),
   actions: {
     _index(page = 1) {
@@ -62,6 +65,31 @@ export const useSalaryHiddenStore = defineStore('salaryHidden', {
 
     onSearch() {
       this._index(1)
+    },
+
+    // Xodimni ism/PINFL bo'yicha qidirish — select uchun variantlar.
+    _searchWorkers(query) {
+      const q = (query || '').trim()
+      if (q.length < 2) {
+        this.workerOptions = []
+        return
+      }
+      this.workerSearchLoading = true
+      $ApiService.salaryHiddenService
+        ._searchWorkers({ search: q })
+        .then((res) => {
+          this.workerOptions = (res.data.data || []).map((w) => ({
+            label: `${w.fio || '—'} — ${w.pinfl}${w.organization?.name ? ' · ' + w.organization.name : ''}`,
+            value: w.pinfl,
+            disabled: w.already_hidden
+          }))
+        })
+        .catch(() => {
+          this.workerOptions = []
+        })
+        .finally(() => {
+          this.workerSearchLoading = false
+        })
     }
   }
 })

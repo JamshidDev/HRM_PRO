@@ -5512,7 +5512,9 @@
     "name": "Yuklash manbasi"
   },
   "salaryHidden": {
-    "name": "Oylik cheklovi",
+    "name": "Yashirilgan oyliklar",
+    "searchWorker": "Xodimni qidirish",
+    "searchWorkerPlaceholder": "Ism yoki PINFL bo'yicha qidiring...",
     "searchPlaceholder": "PINFL yoki izoh bo'yicha qidiring...",
     "addButton": "PINFL qo'shish",
     "pinfl": "PINFL",

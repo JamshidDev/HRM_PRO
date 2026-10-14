@@ -5185,7 +5185,9 @@
     "name": "Юклаш манбаси"
   },
   "salaryHidden": {
-    "name": "Ойлик чеклови",
+    "name": "Яширилган ойликлар",
+    "searchWorker": "Ходимни қидириш",
+    "searchWorkerPlaceholder": "Исм ёки ПИНФЛ бўйича қидиринг...",
     "searchPlaceholder": "ПИНФЛ ёки изоҳ бўйича қидиринг...",
     "addButton": "ПИНФЛ қўшиш",
     "pinfl": "ПИНФЛ",
