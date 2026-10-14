@@ -42,7 +42,8 @@ export function permissionGuardPlugin({ store }) {
       // mumkin (accountStore ↔ router aylanma bog'liqligi ham bor).
       const accStore = useAccountStore()
       if (!accStore.checkPermission(slug)) {
-        window.$Toast?.warning(i18n.global.t('message.noPermission'))
+        if (window.$Alert) window.$Alert({ type: 'forbidden' })
+        else window.$Toast?.warning(i18n.global.t('message.noPermission'))
         // Chaqiruvchilar odatda `.then()`/`await` qiladi — Promise qaytaramiz.
         return Promise.resolve()
       }

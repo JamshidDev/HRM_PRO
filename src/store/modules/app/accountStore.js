@@ -133,9 +133,9 @@ export const useAccountStore = defineStore('accountStore', {
     canDo: (state) => (prefix, action) => state.checkPermission(`${prefix}-${action}`),
 
     /**
-     * Amalni bajarishdan oldingi qo'riqchi: rad etilsa toast chiqaradi.
+     * Amalni bajarishdan oldingi qo'riqchi: rad etilsa «Ruxsat berilmagan» modali chiqadi.
      * DIQQAT: yon ta'sirli — `v-if` / `computed` ichida ISHLATILMASIN, aks holda
-     * har render'da toast chiqadi. Ko'rinish uchun `checkPermission`/`canView` ishlatiladi.
+     * har render'da modal chiqadi. Ko'rinish uchun `checkPermission`/`canView` ishlatiladi.
      */
     checkAction: (state) => (permission) => {
       if (!state.checkPermission(permission)) {

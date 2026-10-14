@@ -8,12 +8,10 @@
     Dismiss16Regular,
     Document24Regular,
     Stop24Filled,
-    Prohibited24Filled,
     ArrowReply16Regular
   } from '@vicons/fluent'
   import { useAccountStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
-  import { renderIcon } from '@/utils/UIHelper.js'
   import { formatFileSize, formatDuration, messagePreviewLabel } from './format.js'
 
   const { t } = i18n.global
@@ -77,7 +75,7 @@
     const list = Array.from(e.target.files || [])
     for (const file of list) {
       if (file.size > MAX_FILE_SIZE) {
-        window.$Toast?.error(t('liveChatPage.fileTooLarge', { name: file.name }))
+        $Alert.validation(t('liveChatPage.fileTooLarge', { name: file.name }))
         continue
       }
       stagedFiles.value.push({
@@ -106,9 +104,7 @@
 
   // Mikrofon imkoni yo'qligi haqida "taqiqlangan" ikonkali bildirishnoma.
   const notifyMicUnavailable = () => {
-    window.$Toast?.error(t('liveChatPage.micUnavailable'), {
-      icon: renderIcon(Prohibited24Filled, '#d03050')
-    })
+    $Alert.warning(t('liveChatPage.micUnavailable'))
   }
 
   const onMicButtonClick = () => {
@@ -127,7 +123,7 @@
     try {
       mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true })
     } catch {
-      window.$Toast?.error(t('liveChatPage.micPermissionDenied'))
+      $Alert.warning(t('liveChatPage.micPermissionDenied'))
       return
     }
     recordedChunks = []

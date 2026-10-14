@@ -116,7 +116,7 @@
 
   const save = async () => {
     if (!form.value.title.uz?.trim() || !form.value.video_path) {
-      window.$Toast?.error(t('videoGuidePage.required'))
+      $Alert.validation(t('videoGuidePage.required'))
       return
     }
     saving.value = true
