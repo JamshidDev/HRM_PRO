@@ -1303,6 +1303,11 @@
     "storageToken": "USB token"
   },
   "documentPage": {
+    "route": {
+      "parallelHint": "Barcha kelishuvchilar bir vaqtda imzolaydi; rahbar istalgan paytda imzolay oladi",
+      "sequentialHint": "Kelishuvchilar tanlangan tartibda birin-ketin imzolaydi; rahbar istalgan paytda imzolay oladi",
+      "directorAnytime": "Istalgan paytda"
+    },
     "name": "Hujjatlar",
     "createTitle": "Shartnoma tuzish",
     "updateTitle": "Shartnomani tahrirlash",

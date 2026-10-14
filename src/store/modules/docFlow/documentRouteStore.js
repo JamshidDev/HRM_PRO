@@ -21,7 +21,9 @@ export const useDocumentRouteStore = defineStore('documentRouteStore', {
   }),
   getters: {
     // Buyruqda tanishuvchi roli yo'q — faqat kelishuvchilar.
-    allowViewers: (state) => state.model !== Utils.documentModels.command
+    allowViewers: (state) => state.model !== Utils.documentModels.command,
+    // Rahbar navbatsiz — istalgan paytda imzolaydi (Arizada esa oxirida).
+    directorAnytime: () => true
   },
   actions: {
     // Xodim va rahbar marshrutda turmaydi — select'da ko'rinmaydi.

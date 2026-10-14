@@ -170,9 +170,11 @@
         <div class="flex items-center justify-between gap-3">
           <div class="text-xs text-textColor3 min-w-0">
             {{
-              isSequential
-                ? $t('applicationPage.forward.sequentialHint')
-                : $t('applicationPage.forward.parallelHint')
+              $t(
+                `${app.directorAnytime ? 'documentPage.route' : 'applicationPage.forward'}.${
+                  isSequential ? 'sequentialHint' : 'parallelHint'
+                }`
+              )
             }}
           </div>
           <div class="inline-flex shrink-0 gap-1 rounded-xl bg-surface-ground p-1">
@@ -290,7 +292,7 @@
           <!-- Rahbar — doim oxirida -->
           <div class="flex gap-3" :class="!isSequential && picked.length && 'mt-1.5'">
             <div
-              v-if="isSequential"
+              v-if="isSequential && !app.directorAnytime"
               class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-xs font-semibold bg-fig-chip-brand text-fig-chip-brand-text"
             >
               {{ signersCount + 1 }}
@@ -299,6 +301,12 @@
               <div class="min-w-0 flex-1">
                 <UIUser :short="false" :data="userData(app.forwardDirector, app.forwardDirector?.position)" />
               </div>
+              <span
+                v-if="app.directorAnytime"
+                class="text-[11px] font-medium rounded-full px-2 py-0.5 bg-fig-chip-brand text-fig-chip-brand-text shrink-0"
+              >
+                {{ $t('documentPage.route.directorAnytime') }}
+              </span>
             </div>
           </div>
         </div>

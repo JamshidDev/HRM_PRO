@@ -1287,6 +1287,11 @@
     "notValidDate": "Expired"
   },
   "documentPage": {
+    "route": {
+      "parallelHint": "All approvers sign at the same time; the director can sign at any moment",
+      "sequentialHint": "Approvers sign one by one in the chosen order; the director can sign at any moment",
+      "directorAnytime": "Any time"
+    },
     "name": "Documents",
     "createTitle": "Create contract",
     "updateTitle": "Edit contract",
