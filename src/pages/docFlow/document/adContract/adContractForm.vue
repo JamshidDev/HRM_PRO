@@ -3,7 +3,8 @@
   import UIHelper from '@/utils/UIHelper.js'
   import validationRules from '@/utils/validationRules.js'
   const formRef = ref(null)
-  import { useAdContractStore, useComponentStore } from '@/store/modules/index.js'
+  import { useComponentStore } from '@/store/modules/index.js'
+  import { useAdContractFormStore } from './adContractFormStore.js'
   import { NAvatar } from 'naive-ui'
   import Utils from '@/utils/Utils.js'
   import UIDepartment from '@/components/ui/UIDepartment.vue'
@@ -11,7 +12,7 @@
   import { Drag24Filled, DrawText24Regular } from '@vicons/fluent'
   import { VueDraggable } from 'vue-draggable-plus'
 
-  const store = useAdContractStore()
+  const store = useAdContractFormStore()
   const componentStore = useComponentStore()
   const showCheckBox = ref(false)
   const confirmationList = ref([])
@@ -29,8 +30,19 @@
     organization: {
       type: Array,
       default: []
-    }
+    },
+    // create — yaratish modali; edit — hujjat drawer'idagi «Ma'lumotlar» tabi.
+    mode: { type: String, default: 'create' },
+    readonly: { type: Boolean, default: false }
   })
+  const isEdit = computed(() => props.mode === 'edit')
+
+  // Tab uchun: tekshiruv natijasi (saqlash tugmalari tabning o'zida).
+  const submit = () =>
+    new Promise((resolve) => {
+      formRef.value?.validate((error) => resolve({ isValid: !error }))
+    })
+  defineExpose({ submit })
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {
@@ -264,8 +276,16 @@
 </script>
 
 <template>
-  <n-form ref="formRef" :rules="validationRules.adContractFrom" :model="store.payload">
-    <div style="height: calc(100vh - 120px)" class="overflow-y-auto overflow-x-hidden pb-12">
+  <n-form
+    ref="formRef"
+    :rules="validationRules.adContractFrom"
+    :model="store.payload"
+    :class="{ 'ad-contract-form--readonly': readonly }"
+  >
+    <div
+      :style="isEdit ? null : 'height: calc(100vh - 120px)'"
+      :class="isEdit ? '' : 'overflow-y-auto overflow-x-hidden pb-12'"
+    >
       <div class="grid grid-cols-12 gap-x-4">
         <div class="col-span-12">
           <div
@@ -707,7 +727,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-2 gap-2">
+    <div v-if="!isEdit" class="grid grid-cols-2 gap-2">
       <n-button @click="store.openVisible(false)" type="error" ghost>
         {{ $t('content.cancel') }}
       </n-button>
@@ -717,3 +737,10 @@
     </div>
   </n-form>
 </template>
+
+<style scoped>
+  /* Faqat ko'rish rejimi — maydonlar o'qiladi, lekin o'zgartirilmaydi. */
+  .ad-contract-form--readonly {
+    pointer-events: none;
+  }
+</style>

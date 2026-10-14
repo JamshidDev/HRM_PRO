@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 import Utils from '@/utils/Utils.js'
 import { useComponentStore } from '@/store/modules/index.js'
 
-export const useContractStore = defineStore('contractStore', {
+// Hujjat drawer'idagi «Ma'lumotlar» tabi alohida nusxa bilan ishlaydi — yaratish modaliga tegmaydi.
+const storeOptions = {
   state: () => ({
     list: [],
     loading: false,
@@ -372,4 +373,7 @@ export const useContractStore = defineStore('contractStore', {
       this.payload.end_time = null
     }
   }
-})
+}
+
+export const useContractStore = defineStore('contractStore', storeOptions)
+export const useContractEditStore = defineStore('contractEditStore', storeOptions)

@@ -20,7 +20,12 @@ const _signersPreview = async (payload) => {
   return await axios.post(`/v1/hr/contract-additional/${payload.id}/signers-preview`, payload.data)
 }
 const _update = async (payload) => {
-  return await axios.put(`/v1/hr/contract-additional/${payload.id}`, payload.data)
+  // `silent` — muvaffaqiyat xabarini chaqiruvchi o'zi ko'rsatadi («Ma'lumotlar» tabi).
+  return await axios.put(
+    `/v1/hr/contract-additional/${payload.id}`,
+    payload.data,
+    payload.silent ? { silentSuccess: true } : undefined
+  )
 }
 
 const _delete = async (payload) => {

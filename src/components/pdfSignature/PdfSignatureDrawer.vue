@@ -13,6 +13,7 @@
   import { useAppBreakpoints } from '@/composables/useBreakpoint.js'
   import { UIUser, UILottieReader, UISegmentTabs } from '@/components/index.js'
   import CommandDataTab from '@/pages/docFlow/document/command/CommandDataTab.vue'
+  import DocumentFormDataTab from '@/pages/docFlow/document/DocumentFormDataTab.vue'
   import AttachmentPreview from './ui/AttachmentPreview.vue'
   import EditRefreshIcon from '@/assets/icons/editRefreshIcon.svg'
   import PdfFileIcon from '@/assets/icons/pdfFileIcon.svg'
@@ -98,8 +99,16 @@
   })
   const hasDocumentFile = computed(() => !!store.pdfUrl)
 
-  // Buyruqda header markazida tablar: «Hujjat» (ko'rish/imzolash) va «Ma'lumotlar» (forma).
+  // Buyruq, shartnoma va qo'shimcha kelishuvda header markazida tablar: «Hujjat» va «Ma'lumotlar» (forma).
   const isCommand = computed(() => store.model === Utils.documentModels.command)
+  const dataTabKind = computed(
+    () =>
+      ({
+        [Utils.documentModels.contract]: 'contract',
+        [Utils.documentModels.adContract]: 'adContract'
+      })[store.model] ?? null
+  )
+  const hasDataTab = computed(() => isCommand.value || !!dataTabKind.value)
   const activeTab = computed({
     get: () => store.centerTab,
     set: (v) => (store.centerTab = v)
@@ -573,7 +582,7 @@
               </div>
             </div>
             <div
-              v-if="isCommand && !store.loading"
+              v-if="hasDataTab && !store.loading"
               class="order-last w-full flex justify-center md:order-none md:w-auto md:absolute md:left-1/2 md:-translate-x-1/2"
             >
               <UISegmentTabs v-model="activeTab" :tabs="tabs" variant="surface" />
@@ -689,14 +698,22 @@
             <div class="flex-1 min-w-0 h-full flex flex-col relative overflow-hidden">
               <Transition :name="tabTransition" mode="out-in">
                 <div
-                  v-if="isCommand && activeTab === 'data'"
+                  v-if="hasDataTab && activeTab === 'data'"
                   key="data"
                   class="h-full flex flex-col"
                 >
                   <CommandDataTab
+                    v-if="isCommand"
                     :command-id="store.document_id"
                     @saved="onDataSaved"
                     @open-source="(v) => getDocument(v.id, v.model)"
+                  />
+                  <DocumentFormDataTab
+                    v-else
+                    :key="`${dataTabKind}-${store.document_id}`"
+                    :document-id="store.document_id"
+                    :kind="dataTabKind"
+                    @saved="onDataSaved"
                   />
                 </div>
                 <div v-else key="document" class="relative h-full flex flex-col">

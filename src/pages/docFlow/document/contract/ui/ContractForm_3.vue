@@ -1,5 +1,6 @@
 <script setup>
-  import { useComponentStore, useContractStore } from '@/store/modules/index.js'
+  import { useContractFormStore } from '../contractFormStore.js'
+  import { useComponentStore } from '@/store/modules/index.js'
   import { NAvatar } from 'naive-ui'
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
@@ -9,7 +10,7 @@
   import icons from '@/assets/icons'
   import { VueDraggable } from 'vue-draggable-plus'
 
-  const store = useContractStore()
+  const store = useContractFormStore()
   const componentStore = useComponentStore()
   const confirmationList = ref([])
   const financeList = ref([])

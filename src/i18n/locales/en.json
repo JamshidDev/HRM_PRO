@@ -1441,7 +1441,7 @@
           "allHint": "Those who approved or rejected will also be «In progress» again",
           "selected": "Selected",
           "selectedHint": "Only checked people become «In progress», others keep their status",
-          "contentChanged": "The order text changed — earlier approvals of unselected people will refer to the old version.",
+          "contentChanged": "The document text changed — earlier approvals of unselected people will refer to the old version.",
           "required": "required",
           "count": "Will be sent to {count}",
           "submit": "Send",
@@ -1797,7 +1797,8 @@
         "approved": "An approved contract cannot be edited",
         "command_approved": "The order based on this contract is approved — it cannot be edited",
         "no_form_state": "This contract was created before editing was available — it cannot be edited"
-      }
+      },
+      "savedNotify": "The contract was updated and sent for signing again"
     },
     "name": "Contracts",
     "succeedText": "Contract created successfully!",
@@ -1831,7 +1832,8 @@
         "approved": "An approved additional agreement cannot be edited",
         "command_approved": "The order based on this agreement is approved — it cannot be edited",
         "no_form_state": "This agreement was created before editing was available — it cannot be edited"
-      }
+      },
+      "savedNotify": "The additional agreement was updated and sent for signing again"
     },
     "createTitle": "Create additional agreement",
     "updateTitle": "Edit additional agreement",

@@ -1,12 +1,13 @@
 <script setup>
+  import { useContractFormStore } from '../contractFormStore.js'
   import Utils from '@/utils/Utils.js'
   import { UIAutoComplete, UIUser, UISelect, UIFigField } from '@/components/index.js'
-  import { useComponentStore, useContractStore } from '@/store/modules/index.js'
+  import { useComponentStore } from '@/store/modules/index.js'
   import { NAvatar } from 'naive-ui'
   import UIHelper from '@/utils/UIHelper.js'
   import { useAppSetting } from '@/utils/index.js'
 
-  const store = useContractStore()
+  const store = useContractFormStore()
   const componentStore = useComponentStore()
 
   // Ro'yxat qatori `UIHelper.avatarRender` bilan bir xil qolipda: px-2 chetlar,

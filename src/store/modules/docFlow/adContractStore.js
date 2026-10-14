@@ -3,7 +3,8 @@ import Utils from '@/utils/Utils.js'
 import { useComponentStore } from '@/store/modules/index.js'
 import UIHelper from '@/utils/UIHelper.js'
 
-export const useAdContractStore = defineStore('adContractStore', {
+// Hujjat drawer'idagi «Ma'lumotlar» tabi alohida nusxa bilan ishlaydi — yaratish modaliga tegmaydi.
+const storeOptions = {
   state: () => ({
     list: [],
     loading: false,
@@ -323,4 +324,7 @@ export const useAdContractStore = defineStore('adContractStore', {
       this.payload.changes = null
     }
   }
-})
+}
+
+export const useAdContractStore = defineStore('adContractStore', storeOptions)
+export const useAdContractEditStore = defineStore('adContractEditStore', storeOptions)
