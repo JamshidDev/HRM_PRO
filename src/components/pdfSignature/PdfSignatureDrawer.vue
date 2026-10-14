@@ -476,6 +476,18 @@
       Utils.documentModels.adContract
     ].includes(store.model)
   )
+  // Marshrutni faqat hujjat turining yozish ruxsati bor (HR) o'zgartiradi — kelishuvchiga tugma ko'rinmaydi.
+  const ROUTE_WRITE = {
+    [Utils.documentModels.command]: accountStore.pn.hrCommandsWrite,
+    [Utils.documentModels.contract]: accountStore.pn.hrContractsWrite,
+    [Utils.documentModels.adContract]: accountStore.pn.hrContractAdditionalWrite
+  }
+  const canRoute = computed(
+    () =>
+      isRouteDoc.value &&
+      store.permissions.canEdit &&
+      accountStore.checkAction(ROUTE_WRITE[store.model])
+  )
   const openDocumentRoute = () =>
     documentRouteStore._openRoute(store.model, store.document_id, hrDirector())
   // Muvaffaqiyat xabarini backend javobi o'zi chiqaradi.
@@ -565,7 +577,7 @@
             </div>
             <div v-else class="flex items-center gap-2 md:gap-3">
               <n-button
-                v-if="isRouteDoc && store.permissions.canEdit && showEditButton"
+                v-if="canRoute && showEditButton"
                 :loading="documentRouteStore.routeLoading"
                 @click="openDocumentRoute"
                 tertiary
