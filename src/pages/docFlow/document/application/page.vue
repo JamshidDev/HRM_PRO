@@ -1,5 +1,5 @@
 <script setup>
-  import { TurnstileDownloadModal, UIOfficeApp, UIPageContent } from '@/components/index.js'
+  import { TurnstileDownloadModal, UIOfficeApp, UIPageContent, UISegmentTabs } from '@/components/index.js'
   import Table from './ui/Table.vue'
   import Filter from './ui/Filter.vue'
   import { useAccountStore, useApplicationStore, useComponentStore } from '@/store/modules/index.js'
@@ -40,15 +40,11 @@
 <template>
   <UIPageContent>
     <Filter />
-    <n-tabs
-      v-model:value="store.params.stage"
-      type="line"
-      size="small"
-      class="mt-2"
-      @update:value="onStageChange"
-    >
-      <n-tab v-for="tab in stageTabs" :key="tab.id" :name="tab.id" :tab="tab.name" />
-    </n-tabs>
+    <UISegmentTabs
+      v-model="store.params.stage"
+      :tabs="stageTabs"
+      @update:model-value="onStageChange"
+    />
     <Table @openOffice="openApplication" />
     <TurnstileDownloadModal />
     <UIOfficeApp ref="officeAppRef" />

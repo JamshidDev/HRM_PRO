@@ -1,7 +1,9 @@
 <script setup>
-  import { Search48Filled } from '@vicons/fluent'
   import TreeOrg from '@/components/tree/TreeOrg.vue'
+  import TreeSelectPanel from '@/components/tree/TreeSelectPanel.vue'
+  import TreeSelectTrigger from '@/components/tree/TreeSelectTrigger.vue'
   import { useTreePopoverKeyboard } from '@/composables/useTreePopoverKeyboard.js'
+  import { useTreePopoverWidth } from '@/composables/useTreePopoverWidth.js'
   import { useDebounceFn } from '@vueuse/core'
   import { useComponentStore } from '@/store/modules/index.js'
   const store = useComponentStore()
@@ -118,77 +120,55 @@
       disabled: () => props.disabled,
       multiple: () => props.multiple
     })
+  // Filtr paneli ichida — panel kengligida, boshqa joyda — kamida 500px.
+  const { popoverStyle } = useTreePopoverWidth(show, triggerRef, { fallback: 500 })
 </script>
 
 <template>
-  <!-- `width="500px"` popover'ga inline style bo'lib tushadi, shuning uchun
-       clamp `!important` bilan (aks holda inline qiymat yengardi): tor ekranda
-       daraxt viewport'dan chiqib ketmasin. -->
   <n-popover
     v-model:show="show"
     placement="bottom"
     trigger="click"
-    width="500px"
-    class="h-[460px] py-0! px-1 max-w-[calc(100vw-32px)]!"
+    class="py-0! px-0!"
+    :style="popoverStyle"
   >
     <template #trigger>
-      <n-badge
+      <TreeSelectTrigger
         ref="triggerRef"
-        :show="!disabled"
-        :offset="[-10, -4]"
-        class="w-full"
-        :value="modelV.length"
-        type="info"
-      >
-        <n-input
-          @keydown="onTriggerKeydown"
-          :disabled="disabled"
-          class="ui__structure-input w-full"
-          type="text"
-          :value="inputVal?.toString()"
-          :loading="loading"
-        />
-      </n-badge>
+        :value="inputVal?.toString()"
+        :count="modelV.length"
+        :open="show"
+        :disabled="disabled"
+        :loading="loading"
+        @keydown="onTriggerKeydown"
+      />
     </template>
     <div ref="panelRef" @keydown="onPanelKeydown">
-      <div class="w-full h-[10px]"></div>
-      <div class="w-full h-[404px] overflow-y-auto">
-        <n-spin :show="loading" class="w-full h-full">
-          <TreeOrg
-            :data="options"
-            :modelV="modelV"
-            :checkedVal="checkedVal"
-            :getChildIds="getChildIds"
-            :changeCheckVal="changeCheckVal"
-            :multiple="multiple"
-            @onSelect="onSelect"
-            @onSelectAll="onSelectAll"
-          >
-            <template #label="{ data }">
-              <slot name="label" :data="data"></slot>
-            </template>
-          </TreeOrg>
-        </n-spin>
-      </div>
-      <div class="w-full h-[40px] flex items-center">
-        <n-input-group>
-          <n-input
-            ref="searchInputRef"
-            data-tree-search
-            size="small"
-            v-model:value="searchModel"
-            round
-            :loading="loading"
-          >
-            <template #prefix>
-              <n-icon :component="Search48Filled" />
-            </template>
-          </n-input>
-          <n-button @click="emits('onSubmit')" type="primary" size="small" :loading="loading">
-            {{ $t('content.search') }}
-          </n-button>
-        </n-input-group>
-      </div>
+      <TreeSelectPanel
+        ref="searchInputRef"
+        v-model:search="searchModel"
+        :loading="loading"
+        :selected-count="multiple ? modelV.length : 0"
+        :empty="!options?.length"
+        @submit="emits('onSubmit')"
+        @clear="modelV = []"
+      >
+        <TreeOrg
+          :data="options"
+          :modelV="modelV"
+          :checkedVal="checkedVal"
+          :getChildIds="getChildIds"
+          :changeCheckVal="changeCheckVal"
+          :multiple="multiple"
+          :highlight="searchModel ?? ''"
+          @onSelect="onSelect"
+          @onSelectAll="onSelectAll"
+        >
+          <template #label="{ data }">
+            <slot name="label" :data="data"></slot>
+          </template>
+        </TreeOrg>
+      </TreeSelectPanel>
     </div>
   </n-popover>
 </template>
