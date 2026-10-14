@@ -214,7 +214,7 @@
     <template #title-suffix>
       <span
         v-if="USE_MOCK"
-        class="rounded-full bg-warning/15 px-2 py-0.5 text-[11px] font-medium text-warning"
+        class="rounded-full bg-primary/15 px-2 py-0.5 text-[11px] font-medium text-primary"
       >
         {{ $t('ssoLogins.activity.demo') }}
       </span>
