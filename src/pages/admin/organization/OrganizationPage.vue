@@ -9,6 +9,7 @@
   } from '@/store/modules/index.js'
   import { useAppBreakpoints } from '@/composables/useBreakpoint.js'
   import { useElementSize } from '@vueuse/core'
+  import { ArrowDownload24Regular } from '@vicons/fluent'
 
   const store = useOrganizationStore()
   const componentStore = useComponentStore()
@@ -52,7 +53,18 @@
       v-model:search="store.params.search"
       @on-search="onSearch"
       @on-add="onAdd"
-    />
+    >
+      <template #filterAction>
+        <n-button type="success" :loading="store.exportLoading" @click="store._export()">
+          <template #icon>
+            <n-icon size="24">
+              <ArrowDownload24Regular />
+            </n-icon>
+          </template>
+          {{ $t('content.download') }}
+        </n-button>
+      </template>
+    </UIPageFilter>
     <div ref="splitRef" class="flex-1 min-h-0 flex">
       <Table class="min-w-0" />
       <!-- Tashqi qatlam kengligi 0 dan ochiladi (daraxt silliq torayadi), ichkisi
