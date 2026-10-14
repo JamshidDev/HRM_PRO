@@ -11,6 +11,7 @@
   import BulkOnesModal from './ui/BulkOnesModal.vue'
   import ReportStatusModal from './ui/ReportStatusModal.vue'
   import ReportPullHistoryModal from './ui/ReportPullHistoryModal.vue'
+  import AnomalyModal from './ui/AnomalyModal.vue'
   import { useAccountStore, useUploadReportStore } from '@/store/modules/index.js'
   import { getOneMonthAgoYearMonth } from '@utils'
   import { BuildingMultiple24Regular } from '@vicons/fluent'
@@ -87,6 +88,7 @@
         <BulkOnesModal />
         <ReportStatusModal />
         <ReportPullHistoryModal />
+        <AnomalyModal />
         <CommentModal />
       </div>
     </div>

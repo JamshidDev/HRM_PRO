@@ -1,8 +1,9 @@
 <script setup>
   import { CloudArrowDown24Regular, CloudArrowUp24Regular, Eye16Regular, History24Regular, Search24Regular, ArrowDownload24Regular, Calculator24Regular, ArrowSync24Regular } from '@vicons/fluent'
-  import { NoDataPicture, UIBadge, UIModal, UIPageContent, UIPageFilter, UIPagination, UITable, UIYearMonth, UISelect } from '@/components/index.js'
+  import { NoDataPicture, OnesCodeFilter, UIBadge, UIModal, UIPageContent, UIPageFilter, UIPagination, UITable, UIYearMonth, UISelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useSalary1cStore, useUploadReportStore } from '@/store/modules/index.js'
   import BulkOnesModal from '@/pages/accountant/report/ui/BulkOnesModal.vue'
+  import { OnesCodesManager } from '@/components/index.js'
   import { useDebounceFn } from '@vueuse/core'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -79,6 +80,20 @@
 
   // Kod/Jins/Ish soati filtrlari faqat «Xodimlar» tabiga tegishli (org — hamma tabga).
   const mrFilterActive = computed(() => activeTab.value === 'workers')
+  // Tanlangan korxona id'lari (ko'p 1C kod filtri uchun — bitta bo'lsa kodlar yuklanadi).
+  const selectedOrgIds = computed(() => (store.selectedOrgs || []).map((o) => o?.id ?? o))
+  // Ko'p 1C kod boshqaruvi — aynan bitta korxona tanlanганда faollashadi.
+  const codesManagerVisible = ref(false)
+  const singleOrg = computed(() =>
+    (store.selectedOrgs || []).length === 1 ? store.selectedOrgs[0] : null
+  )
+  const openCodesManager = () => {
+    if (!singleOrg.value) {
+      window.$Toast?.warning(t('salary1c.onesCode.selectOneOrg'))
+      return
+    }
+    codesManagerVisible.value = true
+  }
   // «Filterlar» tugmasidagi faol filtr soni — korxona + Kod + Jins + Ish soati.
   const filterCount = computed(
     () =>
@@ -103,6 +118,7 @@
     store.selectedOrgs = []
     store.structureCheck = []
     store.params.code = null
+    store.params.ones_code = null
     store.params.sex = null
     store.params.start_hours = null
     store.params.end_hours = null
@@ -264,6 +280,14 @@
           </template>
           {{ pullRunning ? `${pullProcessed}/${pullTotal}` : $t('salary1c.pull') }}
         </n-button>
+        <n-tooltip :disabled="!!singleOrg" trigger="hover" placement="bottom">
+          <template #trigger>
+            <n-button :disabled="!singleOrg" @click="openCodesManager">
+              {{ $t('salary1c.onesCode.manageBtn') }}
+            </n-button>
+          </template>
+          <span>{{ $t('salary1c.onesCode.selectOneOrg') }}</span>
+        </n-tooltip>
       </template>
 
       <template #filterContent>
@@ -285,6 +309,12 @@
             <span v-if="pullCodeSet.has(data.id)" class="s1-1c-dot" :title="$t('salary1c.pullableHint')"></span>
           </template>
         </UISelect>
+
+        <OnesCodeFilter
+          :org-ids="selectedOrgIds"
+          v-model="store.params.ones_code"
+          @change="onApply"
+        />
 
         <label class="mt-3">{{ $t('salary1c.code') }}</label>
         <n-select
@@ -1182,6 +1212,13 @@
 
     <!-- 1C dan ommaviy "Oylik hisobot" yuklash (upload-report bilan bir xil modal) -->
     <BulkOnesModal />
+
+    <!-- Ko'p 1C kod boshqaruvi (tanlangan bitta korxona uchun) -->
+    <OnesCodesManager
+      v-model:visible="codesManagerVisible"
+      :organization-id="singleOrg?.id ?? null"
+      :organization-name="singleOrg?.name ?? ''"
+    />
   </UIPageContent>
 </template>
 

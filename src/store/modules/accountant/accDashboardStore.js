@@ -2,11 +2,14 @@ import { defineStore } from 'pinia'
 import Utils from '@/utils/Utils.js'
 
 /**
- * `statement` blokidagi "Jami ish haqi" (`total_four`). Ba'zi davrlarda backend
- * bu qatorni yubormaydi — u holda birinchi uchta to'lov turi yig'indisi olinadi
- * (maketdagi donut markazidagi jami ham aynan shu qiymat).
+ * Ish haqi fondi (`total_four` = total_one + total_three) tarkibi.
+ * MUHIM: `total_two` kodlari ALLAQACHON `total_three` ichida (code-groups.ts:
+ * "total_two ham total_three tarkibida" — Laravel parity). Shuning uchun donut
+ * va fallback faqat `total_one + total_three` yig'adi; aks holda `total_two`
+ * ikki marta sanalib, donut jamisi fonddan katta chiqadi va "jami to'lov
+ * turlari yig'indisiga mos emas" yolg'on ogohlantirishi beradi.
  */
-const FUND_PARTS = ['total_one', 'total_two', 'total_three']
+const FUND_PARTS = ['total_one', 'total_three']
 
 /** `last_month` bloklaridagi `[{key, value}]` dan `total_four` qiymatini oladi. */
 const fundValue = (rows) => {
@@ -43,11 +46,17 @@ const rowIndex = (rows, monthIndex) => {
   return monthIndex >= 0 && monthIndex < rows.length ? monthIndex : rows.length - 1
 }
 
-/** Tanlangan oyni bir oldingi oy bilan solishtiradi. */
+/**
+ * Tanlangan oyni bir oldingi (eskiroq) oy bilan solishtiradi. Seriya YANGI→ESKI
+ * tartibda (index 0 = eng yangi/tanlangan oy), shuning uchun oldingi oy = i + 1.
+ * Avval `i - 1` (yangiroq oy) olinardi — bu delta'ni noto'g'ri yo'nalishda
+ * hisoblardi; monthIndex clamp bilan birga Fevral/Mart kabi tasodifiy oylarni
+ * solishtirib, mavjud bo'lmagan "keskin pasayish"ni ko'rsatardi.
+ */
 const deltaOf = (series, monthIndex) => {
   const i = rowIndex(series, monthIndex)
-  if (i < 1) return null
-  return Utils.compareDelta(series[i], series[i - 1])
+  if (i < 0 || i + 1 >= series.length) return null
+  return Utils.compareDelta(series[i], series[i + 1])
 }
 
 /** Seriyadan tanlangan oydagi qiymatni oladi. */
@@ -73,6 +82,7 @@ export const useAccDashboardStore = defineStore('accDashboardStore', {
       per_page: 15,
       search: null,
       organizations: [],
+      ones_code: null, // ko'p 1C kod: aynan kod bo'yicha (bitta kodli org — null)
       year: null,
       month: null
     },
@@ -85,10 +95,22 @@ export const useAccDashboardStore = defineStore('accDashboardStore', {
   }),
 
   getters: {
-    /** Filtrdagi oyning 0 dan boshlanuvchi indeksi (`-1` — oy tanlanmagan). */
+    /**
+     * Tanlangan oyning SERIYADAGI (statements, yangi→eski) pozitsiyasi.
+     * Backend tanlangan oydan 8 oy ortga qaytaradi — tanlangan oy odatda index 0.
+     * Avval `params.month - 1` (kalendar oyi 0-11) edi: u 8 elementli nisbiy
+     * oynaga mos kelmay, Sentyabr uchun index 8 → oxirgi elementga (eng eski oy)
+     * clamp bo'lib, delta va grafik qiymatlarini noto'g'ri oyga surardi.
+     */
     monthIndex(state) {
-      const month = Number(state.params.month)
-      return month >= 1 && month <= 12 ? month - 1 : -1
+      const labels = (state.dashboardData?.statements || []).map((v) => v.label)
+      if (!labels.length) return -1
+      const y = Number(state.params.year)
+      const m = Number(state.params.month)
+      if (!(m >= 1 && m <= 12)) return 0
+      const target = `${String(y).padStart(4, '0')}-${String(m).padStart(2, '0')}`
+      const idx = labels.indexOf(target)
+      return idx >= 0 ? idx : 0
     },
 
     /** INPS oylik qatori — backend nomlanishi bir xil emas, ikkalasini ham qaraymiz. */

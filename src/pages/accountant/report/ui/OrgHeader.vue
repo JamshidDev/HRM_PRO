@@ -4,7 +4,8 @@
     DocumentArrowUp20Regular,
     DocumentBulletList24Filled,
     LockClosed24Filled,
-    LockOpen16Filled
+    LockOpen16Filled,
+    Warning20Filled
   } from '@vicons/fluent'
   import { useAccountStore, useUploadReportStore } from '@/store/modules/index.js'
   import ReportZipModal from './ReportZipModal.vue'
@@ -46,6 +47,16 @@
     </div>
 
     <div class="flex items-center gap-2 shrink-0">
+      <!-- 1C ma'lumot sifati anomaliyalari — bo'lsagina ko'rinadi (ogohlantirish) -->
+      <n-tooltip v-if="store.anomalySummary.total > 0">
+        <template #trigger>
+          <n-button secondary type="warning" @click="store.openAnomalies()">
+            <template #icon><Warning20Filled /></template>
+            {{ store.anomalySummary.total }}
+          </n-button>
+        </template>
+        {{ $t('uploadReport.anomaly.headerHint') }}
+      </n-tooltip>
       <n-button
         v-if="accStore.checkPermission(accStore.pn.economistUploadsStatus)"
         secondary

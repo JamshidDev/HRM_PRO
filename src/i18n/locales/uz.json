@@ -793,7 +793,8 @@
         "copySuccess": "Link nusxa olindi!",
         "copyError": "Nusxa olishda xatolik!"
       },
-      "ssoLogins": "Kirishlar tarixi (SSO)"
+      "ssoLogins": "Kirishlar tarixi (SSO)",
+      "activity": "Faollik"
     },
     "org": {
       "title": "Buyruq blankasi uchun ma'lumotlar",
@@ -3859,6 +3860,33 @@
     "name": "Hisobot yuklash",
     "latest": "Oxirgi",
     "olderUploads": "Oldingi yuklamalar",
+    "hasOnesCode": "1C kodi sozlangan — buxgalteriya 1C da yuritiladi",
+    "onesCodeDownload": "1C kodi bo'yicha alohida Excel yuklab olish",
+    "anomaly": {
+      "toast": "1C ma'lumotida muammo: {dup} ta takroriy JSHSHIR, {code} ta kodsiz to'lov turi — tekshiring",
+      "title": "1C ma'lumot sifati — anomaliyalar",
+      "headerHint": "1C'dan tortilgan ma'lumotdagi muammolar (takroriy JSHSHIR / kodsiz to'lov turi)",
+      "all": "Barchasi",
+      "duplicatePinfl": "Takroriy JSHSHIR",
+      "missingCode": "Kodsiz to'lov turi",
+      "noData": "Anomaliya topilmadi",
+      "cameNTimes": "{n} marta kelgan",
+      "diffFields": "Farq qiladi",
+      "code": "Kod",
+      "empty": "(bo'sh)",
+      "accrual": "Hisoblanma",
+      "deduction": "Ushlanma",
+      "employees": "Xodimlar",
+      "examples": "Masalan",
+      "field": {
+        "tab_nomer": "Tabel",
+        "position": "Lavozim",
+        "oklad": "Oklad",
+        "hours_worked": "Soat",
+        "accrual": "Hisoblanma",
+        "deduction": "Ushlanma"
+      }
+    },
     "changes": {
       "added": "Yangi",
       "changed": "O'zgargan",
@@ -4056,7 +4084,11 @@
     "view": {
       "main_salary": "Oklad",
       "work_time": "Ishlagan vaqti",
-      "net_salary": "Qo'lga tegadigan summa"
+      "net_salary": "Qo'lga tegadigan summa",
+      "kareshok": {
+        "title": "Kareshoklar ({n}) — har tabel bo'yicha alohida",
+        "tab": "Tabel"
+      }
     },
     "in": {
       "code": "To'lov shifri",
@@ -4443,6 +4475,24 @@
     "statistics": "Statistika",
     "orgCode": "1C kodi",
     "orgCodePh": "1C org kodi (masalan: АППАРАТ)",
+    "onesCode": {
+      "filterLabel": "1C kod",
+      "filterPh": "Barcha kodlar",
+      "manageBtn": "1C kodlari",
+      "manageTitle": "Korxona 1C kodlari",
+      "selectOneOrg": "Avval bitta korxona tanlang",
+      "code": "1C kod",
+      "label": "Nomi (ixtiyoriy)",
+      "labelPh": "Masalan: PCH-1",
+      "add": "Qo'shish",
+      "delete": "O'chirish",
+      "primary": "asosiy",
+      "empty": "1C kod qo'shilmagan",
+      "codeRequired": "1C kodni kiriting",
+      "deleteConfirm": "Ushbu kodni o'chirmoqchimisiz?",
+      "addSuccess": "1C kod qo'shildi",
+      "deleteSuccess": "1C kod o'chirildi"
+    },
     "orgCodeHint": "1C kodi kiritilmagan — tortishdan oldin kiriting",
     "codeSaved": "1C kodi saqlandi",
     "version": "Versiya",
@@ -4493,7 +4543,11 @@
     "duration": "Davomiyligi",
     "pulledAt": "Vaqti",
     "searchOrg": "Korxona bo'yicha qidirish",
-    "all": "Hammasi"
+    "all": "Hammasi",
+    "kareshok": {
+      "title": "Kareshoklar ({n}) — har tabel bo'yicha alohida",
+      "tab": "Tabel"
+    }
   },
   "tariffBase": {
     "title": "Bazaviy summa",
@@ -5480,6 +5534,17 @@
   "uploadSourceConfig": {
     "name": "Yuklash manbasi"
   },
+  "salaryHidden": {
+    "name": "Oylik cheklovi",
+    "searchPlaceholder": "PINFL yoki izoh bo'yicha qidiring...",
+    "addButton": "PINFL qo'shish",
+    "pinfl": "PINFL",
+    "pinflPlaceholder": "14 xonali PINFL",
+    "note": "Izoh",
+    "notePlaceholder": "Sabab (ixtiyoriy)",
+    "addedAt": "Qo'shilgan sana",
+    "actions": "Amallar"
+  },
   "staffingApproval": {
     "name": "Shtatlar",
     "createTitle": "Shtatlarni tasdiqlashga yuborish",
@@ -6415,6 +6480,36 @@
       "eimzo": "E-IMZO",
       "app": "HR Rail ilovasi",
       "session": "Mavjud sessiya"
+    },
+    "activity": {
+      "title": "Faollik",
+      "demo": "Demo ma'lumot",
+      "total": "{year}-yilda {count} ta kirish",
+      "count": "{count} ta kirish",
+      "none": "Kirish yo'q",
+      "less": "Kam",
+      "more": "Ko'p",
+      "months": "Yan,Fev,Mar,Apr,May,Iyn,Iyl,Avg,Sen,Okt,Noy,Dek",
+      "days": "Du,Se,Ch,Pa,Ju,Sh,Ya",
+      "stats": {
+        "total": "Jami kirishlar",
+        "activeDays": "Faol kunlar",
+        "streak": "Eng uzun ketma-ketlik",
+        "busiest": "Eng faol kun",
+        "days": "{count} kun"
+      },
+      "guide": {
+        "title": "Yo'riqnoma",
+        "howTitle": "Qanday hisoblanadi",
+        "howText": "Har bir katak — bir kun. HRM hisobingiz orqali boshqa tizimlarga qilingan har bir muvaffaqiyatli kirish o'sha kunga qo'shiladi.",
+        "hoverTitle": "Kun tafsiloti",
+        "hoverText": "Kursorni katak ustiga olib boring — o'sha kungi kirishlar soni va sana ko'rinadi. Yilni yuqoridagi tugmalar bilan tanlang.",
+        "privateTitle": "Faqat siz ko'rasiz",
+        "privateText": "Bu xarita shaxsiy: uni faqat siz ko'rasiz, rahbar yoki HR uchun ko'rsatilmaydi.",
+        "soonTitle": "Tez orada",
+        "soonText": "HRM'da o'tkazilgan vaqt (soatlarda) ham hisobga olinadi — har bir soat rangni bir pog'ona to'qroq qiladi.",
+        "levelsTitle": "Rang darajalari"
+      }
     }
   },
   "guidesPage": {

@@ -1,24 +1,28 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
+import { getOneMonthAgoYearMonth } from '@utils'
 
 const { t } = i18n.global
 
-const now = new Date()
+// Oylik hisobot bir oy orqada hisoblanadi — default davr bir oy oldingisi
+// (boshqa oylik hisobot sahifalari bilan parity: upload-report, month-report, ...).
+const defaultPeriod = getOneMonthAgoYearMonth()
 
 export const useSalary1cStore = defineStore('salary1cStore', {
   state: () => ({
     // Filter
     params: {
       organization_id: null,
-      year: now.getFullYear(),
-      month: now.getMonth() + 1,
+      year: defaultPeriod.year,
+      month: defaultPeriod.month,
       page: 1,
       per_page: 20,
       search: null,
       matched: null, // null=barchasi | 'out'=faqat tizimda yo'q | 'in'=faqat tizimda bor
       // Oylik hisobot (month-report) filtri bilan parity — qo'shimcha maydonlar.
       code: null, // 1C to'lov kodi (paying_code)
+      ones_code: null, // ko'p 1C kod: aynan kod bo'yicha (bitta kodli org — null)
       sex: null, // 1=erkak | 0=ayol
       start_hours: null, // ishlagan soat (dan)
       end_hours: null, // ishlagan soat (gacha)
@@ -126,6 +130,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     onChangeStructure(v) {
       this.selectedOrgs = v
       this.params.matched = null
+      this.params.ones_code = null // korxona o'zgardi — kod filtrini bekor qilamiz
       this.params.page = 1
       // Joriy tabga qarab mos ro'yxatni yangilaymiz (org filtri hammasiga ta'sir qiladi).
       if (this.activeTab === 'veds') {
@@ -158,6 +163,8 @@ export const useSalary1cStore = defineStore('salary1cStore', {
       // month-report parity filtrlari — bo'sh bo'lsa yubormaymiz.
       // sex=0 (ayol) ham to'g'ri qiymat → faqat null/undefined bo'lsa olib tashlaymiz.
       if (params.code == null || params.code === '') delete params.code
+      // ko'p 1C kod: bo'sh bo'lsa yubormaymiz → hamma kod (birlashган).
+      if (params.ones_code == null || params.ones_code === '') delete params.ones_code
       if (params.sex == null) delete params.sex
       if (params.start_hours == null) delete params.start_hours
       if (params.end_hours == null) delete params.end_hours
