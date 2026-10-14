@@ -53,6 +53,15 @@ const ssoChecking = computed(
 )
 const showAppChooser = computed(() => isPhone && !!loginStore.sso && !appChooserDismissed.value)
 
+// Faqat lokal dev: `/login?sso_preview` — SSO yo'naltirish oynasini soxta ma'lumot bilan ko'rsatadi (UI ustida ishlash uchun).
+if (import.meta.env.DEV && route.query.sso_preview !== undefined) {
+  loginStore.ssoRedirect = {
+    name: route.query.sso_preview || 'KPI-Application-Ismoil',
+    url: 'https://kpi.das-uty.uz/',
+    preview: true
+  }
+}
+
 const steps = { login: 'login', twofa: 'twofa', reset: 'reset', expired: 'expired' }
 const step = ref(steps.login)
 

@@ -277,7 +277,8 @@ input:-webkit-autofill {
   }
 }
 
-.n-checkbox .n-checkbox-box .n-checkbox-icon {
+// Qiyshiq belgi — faqat ✓ uchun; "qisman" (−) holatda chiziq tekis turadi.
+.n-checkbox:not(.n-checkbox--indeterminate) .n-checkbox-box .n-checkbox-icon {
   transform: rotate(-13deg);
 }
 
