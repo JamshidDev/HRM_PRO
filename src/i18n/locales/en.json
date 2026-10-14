@@ -6103,18 +6103,18 @@
   "eimzoGateAdmin": {
     "name": "E-IMZO verification",
     "title": "E-IMZO verification for the economist section",
-    "subtitle": "When enabled, every user except Admin confirms their identity with their own e-signature key before entering the economist section. Verification lasts until the next login.",
-    "listTitle": "Active verifications",
+    "subtitle": "When enabled, all users except Admin and exempt roles confirm their identity with their E-signature key before entering the economist section. The confirmation lasts until the next login.",
     "refresh": "Refresh",
-    "user": "User",
-    "phone": "Phone",
-    "cert": "Certificate owner",
-    "serial": "Certificate number",
-    "verifiedAt": "Verified at",
-    "revoke": "Revoke",
     "enabledToast": "E-IMZO verification enabled",
     "disabledToast": "E-IMZO verification disabled",
-    "revokedToast": "Verification revoked — the user will verify again"
+    "rolesTitle": "Roles exempt from verification",
+    "rolesHint": "Users with checked roles enter the economist section without E-IMZO verification. This permission can also be granted in the role form.",
+    "role": "Role",
+    "usersCount": "Users",
+    "exempt": "Exempt",
+    "adminLocked": "Admin is always exempt",
+    "exemptOnToast": "Role exempted from E-IMZO verification",
+    "exemptOffToast": "E-IMZO verification restored for the role"
   },
   "eimzoGate": {
     "title": "Security verification",

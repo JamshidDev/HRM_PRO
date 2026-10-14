@@ -1028,7 +1028,7 @@ export const PERMISSION_GROUPS = [
         // E-IMZO tasdiqlash oynasidan ozod qilish — bitta switch (read/write yo'q).
         prefix: 'economist-eimzo-skip',
         label: 'userRole.form.eimzoSkip',
-        actions: [{ slug: 'economist-eimzo-skip', label: 'So‘ralmasin' }]
+        actions: [{ slug: 'economist-eimzo-skip', label: 'Tasdiqdan ozod' }]
       },
       { prefix: 'economist-dashboard', label: 'accDashboard.name' },
       { prefix: 'economist-worker-categories', label: 'salaryCategory.name' },

@@ -6164,18 +6164,18 @@
   "eimzoGateAdmin": {
     "name": "E-IMZO tasdig'i",
     "title": "Iqtisod bo'limi uchun E-IMZO tasdig'i",
-    "subtitle": "Yoqilganda Admin'dan boshqa barcha foydalanuvchilar iqtisod bo'limiga kirishdan oldin shaxsini o'z ERI kaliti bilan tasdiqlaydi. Tasdiq qayta login qilinguncha amal qiladi.",
-    "listTitle": "Faol tasdiqlar",
+    "subtitle": "Yoqilganda Admin va ozod qilingan rollardan boshqa barcha foydalanuvchilar iqtisod bo'limiga kirishdan oldin shaxsini o'z ERI kaliti bilan tasdiqlaydi. Tasdiq qayta login qilinguncha amal qiladi.",
     "refresh": "Yangilash",
-    "user": "Foydalanuvchi",
-    "phone": "Telefon",
-    "cert": "Sertifikat egasi",
-    "serial": "Sertifikat raqami",
-    "verifiedAt": "Tasdiqlangan vaqt",
-    "revoke": "Bekor qilish",
     "enabledToast": "E-IMZO tasdig'i yoqildi",
     "disabledToast": "E-IMZO tasdig'i o'chirildi",
-    "revokedToast": "Tasdiq bekor qilindi — foydalanuvchi qayta tasdiqlaydi"
+    "rolesTitle": "Tasdiqdan ozod rollar",
+    "rolesHint": "Belgilangan rol egalari iqtisod bo'limiga E-IMZO tasdig'isiz kiradi. Shu ruxsatni rol formasida ham berish mumkin.",
+    "role": "Rol",
+    "usersCount": "Foydalanuvchilar",
+    "exempt": "Ozod",
+    "adminLocked": "Admin doim ozod",
+    "exemptOnToast": "Rol E-IMZO tasdig'idan ozod qilindi",
+    "exemptOffToast": "Rol uchun E-IMZO tasdig'i qaytarildi"
   },
   "eimzoGate": {
     "title": "Xavfsizlik uchun tekshiruv",
