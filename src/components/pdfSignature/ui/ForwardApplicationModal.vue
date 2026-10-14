@@ -15,8 +15,10 @@
 
   const { t } = i18n.global
   const emits = defineEmits(['forwarded'])
+  // `routeStore` — boshqa hujjat (shartnoma) marshruti; berilmasa Arizalar store'i.
+  const props = defineProps({ routeStore: { type: Object, default: null } })
   const store = usePdfViewerStore()
-  const app = useApplicationStore()
+  const app = props.routeStore ?? useApplicationStore()
 
   const pick = ref(null)
   // Bitta ro'yxat: `role` — 'sign' (kelishuvchi, imzolaydi) yoki 'view' (tanishuvchi); switch joyida almashtiradi.
@@ -94,9 +96,11 @@
       new Set(
         [
           app.forwardDirector?.worker_id,
-          ...(store.confirmations || [])
-            .filter((c) => c.type === 'w' || (c.type === 's' && c.order === 2))
-            .map((c) => c.worker?.id),
+          ...(app.fixedWorkerIds
+            ? app.fixedWorkerIds(store.confirmations)
+            : (store.confirmations || [])
+                .filter((c) => c.type === 'w' || (c.type === 's' && c.order === 2))
+                .map((c) => c.worker?.id)),
           ...locked.value.map((v) => v.worker?.id),
           ...picked.value.map((v) => v.worker?.id)
         ].filter(Boolean)

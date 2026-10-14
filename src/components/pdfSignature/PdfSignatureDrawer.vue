@@ -23,6 +23,7 @@
     usePdfViewerStore,
     useSignatureStore,
     useApplicationStore,
+    useDocumentRouteStore,
     useAccountStore
   } from '@/store/modules/index.js'
   import { useNotify } from '@/composables/useNotify'
@@ -55,6 +56,7 @@
   const accountStore = useAccountStore()
   const signatureStore = useSignatureStore()
   const applicationStore = useApplicationStore()
+  const documentRouteStore = useDocumentRouteStore()
   const notify = useNotify()
 
   const confirmSignatureVisible = ref(false)
@@ -466,6 +468,18 @@
     emits('signatureEv')
   }
 
+  // Shartnoma / qo'shimcha kelishuv: kelishuvchilar marshruti (parallel / ketma-ket).
+  const isRouteDoc = computed(() =>
+    [Utils.documentModels.contract, Utils.documentModels.adContract].includes(store.model)
+  )
+  const openDocumentRoute = () =>
+    documentRouteStore._openRoute(store.model, store.document_id, hrDirector())
+  // Muvaffaqiyat xabarini backend javobi o'zi chiqaradi.
+  const onRouteSaved = () => {
+    getDocument(store.document_id, store.model)
+    emits('signatureEv')
+  }
+
   const onForwarded = () => {
     notify.success(t('applicationPage.forward.done'))
     emits('signatureEv')
@@ -546,6 +560,20 @@
               <n-skeleton width="110px" height="34px" :sharp="false" class="rounded-md" />
             </div>
             <div v-else class="flex items-center gap-2 md:gap-3">
+              <n-button
+                v-if="isRouteDoc && store.permissions.canEdit && showEditButton"
+                :loading="documentRouteStore.routeLoading"
+                @click="openDocumentRoute"
+                tertiary
+                :title="$t('documentPage.command.form.confirm')"
+              >
+                <template v-if="isWide">{{ $t('documentPage.command.form.confirm') }}</template>
+                <template #icon>
+                  <n-icon size="16">
+                    <People20Regular />
+                  </n-icon>
+                </template>
+              </n-button>
               <n-button
                 v-if="store.permissions.canEdit && showEditButton"
                 @click="onEdit"
@@ -1062,6 +1090,11 @@
     </n-drawer>
     <ConformAndRejectModal @rejected="onRejected" />
     <ForwardApplicationModal @forwarded="onForwarded" />
+    <ForwardApplicationModal
+      v-if="isRouteDoc"
+      :route-store="documentRouteStore"
+      @forwarded="onRouteSaved"
+    />
     <DocumentFileModal />
     <ConfirmSignatureModal
       v-model:visible="confirmSignatureVisible"

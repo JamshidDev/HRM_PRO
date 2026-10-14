@@ -62,6 +62,17 @@ const _editorSave = async (payload) => {
   })
 }
 
+// Shartnoma / qo'shimcha kelishuv kelishuvchilar marshruti (parallel / ketma-ket).
+const _documentRoute = async (payload) => {
+  return await axios.get(`/v1/document-route`, { params: payload.params })
+}
+const _documentRouteApprovers = async (payload) => {
+  return await axios.get(`/v1/document-route/approvers`, { params: payload.params })
+}
+const _updateDocumentRoute = async (payload) => {
+  return await axios.put(`/v1/document-route`, payload.data)
+}
+
 export default {
   _confirmationDocument,
   _rejectReasons,
@@ -76,5 +87,8 @@ export default {
   _signature,
   _confirmationTimesheet,
   _editorContent,
-  _editorSave
+  _editorSave,
+  _documentRoute,
+  _documentRouteApprovers,
+  _updateDocumentRoute
 }
