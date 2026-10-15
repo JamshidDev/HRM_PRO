@@ -74,7 +74,8 @@ export const useConfirmationAdContractStore = defineStore('confirmationAdContrac
     _contractWorkers() {
       const ids = new Set(
         this.list
-          .filter((row) => row.document && !row.document.worker)
+          // Backend xodimni o'zi qaytaradi ('worker' kaliti bor) — hr/contracts/:id faqat eski javob uchun.
+          .filter((row) => row.document && !('worker' in row.document))
           .map((row) => row.document.contract_id)
           .filter((id) => id && !(id in this.contractWorkers))
       )
