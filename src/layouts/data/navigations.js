@@ -951,7 +951,7 @@ export const navigations = withRawIcons([
         path: Utils.routeChatPathMaker(AppPaths.Notification),
         icon: ChatNotificationIcon,
         color: 'bg-dark',
-        permission: appPermissions.instructionsRead
+        permission: appPermissions.chatNotification
       },
       {
         label: 'newsPage.name', // Yangiliklar
