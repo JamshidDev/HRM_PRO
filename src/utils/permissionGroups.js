@@ -307,7 +307,11 @@ export const ENFORCED = new Set([
   'salary-1c-access',
   'tariff-grid-access-read',
   'tariff-grid-access-write',
-  'tariff-grid-access-delete'
+  'tariff-grid-access-delete',
+  // 2026-10-14 — Oylik yashirish (salary_hidden, migr 0160). Rol formasidan (Iqtisodchi
+  // tab) grantable bo'lishi uchun. read = ko'rish; write = yashirish/qaytarish.
+  'salary-hidden-read',
+  'salary-hidden-write'
 ])
 
 // AVTO-GENERATSIYA: backend @Permission (enforce qilinadigan) + frontend AppPermissions
@@ -751,7 +755,10 @@ export const MEANINGFUL = new Set([
   'tariff-grid-access-write',
   'tariff-grid-access-delete',
   // Profil > Faollik tabi (faqat frontend ko'rinishi; ma'lumot — foydalanuvchining o'zi).
-  'profile-activity-read'
+  'profile-activity-read',
+  // 2026-10-14 — Oylik yashirish (salary_hidden, migr 0160).
+  'salary-hidden-read',
+  'salary-hidden-write'
 ])
 
 export const PERMISSION_GROUPS = [
@@ -1061,7 +1068,8 @@ export const PERMISSION_GROUPS = [
       { prefix: 'hr-report', label: 'report.name' },
       { prefix: 'economist-staffing-approve', label: 'staffingApproval.name' },
       { prefix: 'economist-upload-source-config', label: 'uploadSourceConfig.name' },
-      { prefix: 'salary-hidden', label: 'salaryHidden.name' }
+      // ownerOnly: faqat tizim egasi (OWNER) ko'radi/bera oladi (createForm.vue + backend).
+      { prefix: 'salary-hidden', label: 'salaryHidden.name', ownerOnly: true }
     ]
   },
   {

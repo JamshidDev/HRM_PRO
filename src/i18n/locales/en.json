@@ -5441,7 +5441,9 @@
     "name": "Upload Source"
   },
   "salaryHidden": {
-    "name": "Salary Hidden",
+    "name": "Hidden Salaries",
+    "searchWorker": "Search employee",
+    "searchWorkerPlaceholder": "Search by name or PINFL...",
     "searchPlaceholder": "Search by PINFL or note...",
     "addButton": "Add PINFL",
     "pinfl": "PINFL",

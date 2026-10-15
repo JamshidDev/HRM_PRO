@@ -5453,6 +5453,8 @@
   },
   "salaryHidden": {
     "name": "Скрытые зарплаты",
+    "searchWorker": "Поиск сотрудника",
+    "searchWorkerPlaceholder": "Поиск по ФИО или ПИНФЛ...",
     "searchPlaceholder": "Поиск по ПИНФЛ или примечанию...",
     "addButton": "Добавить ПИНФЛ",
     "pinfl": "ПИНФЛ",
