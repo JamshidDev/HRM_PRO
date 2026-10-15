@@ -30,6 +30,10 @@ const _openDocument = async (payload) => {
 const _history = async (payload) => {
   return await axios.get(`/v1/document/history`, { params: payload.params })
 }
+// OnlyOffice tahrirlovchi sozlamasini backend imzolaydi (sir brauzerda saqlanmaydi).
+const _officeConfigToken = async (payload) => {
+  return await axios.post(`/v1/document/office-config-token`, payload.data)
+}
 const _generateLink = async (payload) => {
   return await axios.get(`/v1/document/generate-url`, { params: payload.params })
 }
@@ -84,6 +88,7 @@ export default {
   _confirmationCommand,
   _confirmationAdContract,
   _generateLink,
+  _officeConfigToken,
   _signature,
   _confirmationTimesheet,
   _editorContent,
