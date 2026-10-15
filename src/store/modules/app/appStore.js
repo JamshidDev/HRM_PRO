@@ -103,7 +103,15 @@ export const useAppStore = defineStore('appStore', {
     },
     _logOutApp() {
       localStorage.removeItem('telegramPopup')
-      localStorage.removeItem('app-token')
+      localStorage.removeItem(useAppSetting.tokenKey)
+      // Keyingi foydalanuvchiga oldingi akkaunt holati qolmasin.
+      ;[
+        useAppSetting.accountUserId,
+        useAppSetting.accountRoleScopeKey,
+        useAppSetting.mustChangeKey,
+        'permOverride',
+        'secretKey'
+      ].forEach((k) => localStorage.removeItem(k))
       sessionStorage.clear()
       // accountStore'da `skipReset: true` — quyidagi reset() uni chetlab o'tadi,
       // shuning uchun ruxsatlar aniq tozalanadi (aks holda keyingi foydalanuvchiga sizadi).

@@ -16,7 +16,6 @@
   import StoryViewer from './ui/StoryViewer.vue'
   import NewsModal from './ui/NewsModal.vue'
   import UsersModal from './ui/UsersModal.vue'
-  import { useAppSetting } from '@/utils/index.js'
   import ornamentUrl from '@/assets/icons/home/ornament.svg?url'
   import { useHomeStore, useQuoteStore } from '@/store/modules/index.js'
   import { syncPushOnHome } from '@/utils/webPush.js'
@@ -29,25 +28,7 @@
   // Iqtibos har daqiqada yangilanadi (avvalgi `Quotes.vue` xulqi saqlandi).
   let quoteInterval = null
 
-  const handleKeyDown = (e) => {
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p') {
-      e.preventDefault()
-      const secret = prompt('Enter login secret')
-      if (secret === useAppSetting.adminSecret) {
-        localStorage.setItem(useAppSetting.adminSecretKey, secret)
-        window.location.reload()
-      } else if (secret === useAppSetting.adminExistSecret) {
-        localStorage.removeItem(useAppSetting.adminSecretKey)
-        window.location.reload()
-      } else {
-        $Toast.warning('Wrong secret!')
-      }
-    }
-  }
-
   onMounted(() => {
-    window.addEventListener('keydown', handleKeyDown)
-
     homeStore._init()
     quoteStore._randomText()
     quoteInterval = setInterval(() => {
@@ -59,7 +40,6 @@
   })
 
   onUnmounted(() => {
-    window.removeEventListener('keydown', handleKeyDown)
     clearInterval(quoteInterval)
   })
 </script>

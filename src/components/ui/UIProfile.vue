@@ -42,8 +42,8 @@ const options = computed(() => {
     { label: t('content.logOutSystem'), key: 'logout', icon: renderIcon(icons.logoutSystemIcon) }
   ]
 
-  const secret = localStorage.getItem(useAppSetting.adminSecretKey)
-  if (secret === useAppSetting.adminSecret) {
+  // Admin «user sifatida kirish»dan qaytish — faqat vaqtinchalik admin tokeni bo'lsa.
+  if (sessionStorage.getItem(useAppSetting.temporaryToken)) {
     opts.unshift({
       label: t('content.asAdmin'),
       key: 'asAdmin',
