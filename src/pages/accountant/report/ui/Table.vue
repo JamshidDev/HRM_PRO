@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { UIStatus } from '@/components/index.js'
   import { useUploadReportStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
@@ -37,7 +38,7 @@
   )
 
   const onDownload = (url) => {
-    window.open(url, '_blank')
+    openSafeUrl(url)
   }
 
   const showComment = (v) => {

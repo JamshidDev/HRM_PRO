@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import Utils from '@/utils/Utils.js'
+import { openSafeUrl } from '@/utils/sanitize.js'
 
 // ContractTypeEnum: 2 = fuqarolik-huquqiy shartnoma (FXSH).
 const CONTRACT_TYPE_CIVIL = 2
@@ -483,7 +484,7 @@ const commandStoreOptions = {
           const url = window.URL.createObjectURL(
             new Blob([response.data], { type: 'application/pdf' })
           )
-          window.open(url, '_blank')
+          openSafeUrl(url)
           setTimeout(() => window.URL.revokeObjectURL(url), 20000)
         })
         .finally(() => {

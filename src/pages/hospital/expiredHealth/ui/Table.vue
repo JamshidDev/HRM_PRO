@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { UIBadge, UIStatus, UITable, UIUser } from '@/components/index.js'
   import { useExpiredHealthStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
@@ -31,7 +32,7 @@
   }
 
   const openFileNewTab = (url) => {
-    window.open(url, '_blank')
+    openSafeUrl(url)
   }
   const columns = computed(() => [
     {

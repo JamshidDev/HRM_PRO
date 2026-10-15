@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import {
     ArrowLeft20Filled,
     CloudArrowDown16Regular,
@@ -60,7 +61,7 @@
     loading.value = false
   }
   const onDownload = () => {
-    if (props.file?.file) window.open(props.file.file, '_blank')
+    if (props.file?.file) openSafeUrl(props.file.file)
   }
 </script>
 

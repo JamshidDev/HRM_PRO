@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { AppPaths, eventBus, Events, useDebounce, Utils } from '@utils'
   import { useAccountStore } from '@stores'
   import router from '@/router'
@@ -64,7 +65,7 @@
     store._fetchUnReadNotificationCount()
   }
   const onDownload = (url) => {
-    window.open(url, '_blank')
+    openSafeUrl(url)
   }
   const goViewAll = () => {
     router.push(Utils.routeHrmPathMaker(AppPaths.Export))

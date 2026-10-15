@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
   import icons from '@/assets/icons'
@@ -43,7 +44,7 @@
     if (file) row.value.file = file
   }
 
-  const onDownload = () => window.open(row.value.file.name, '_blank')
+  const onDownload = () => openSafeUrl(row.value.file.name)
 
   const onDelete = () => {
     deleteVisible.value = false

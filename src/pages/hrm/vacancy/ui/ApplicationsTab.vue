@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { UIUser, UIBadge, UIModal, UIStatus, UITable } from '@/components/index.js'
   import { useVacancyStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
@@ -101,7 +102,7 @@
   }
 
   const openFile = (url) => {
-    window.open(url, '_blank')
+    openSafeUrl(url)
   }
 
   const handleAccept = () => {

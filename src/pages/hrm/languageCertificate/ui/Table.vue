@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { UITable, UIProfileSection, UIProfileEmpty, UIFileDownload } from '@/components/index.js'
   import { Edit32Regular, Delete20Regular } from '@vicons/fluent'
   import { useLanguageCertificateStore } from '@/store/modules/index.js'
@@ -36,7 +37,7 @@
   }
 
   const onDownload = (v) => {
-    window.open(v.file, '_blank')
+    openSafeUrl(v.file)
   }
 
   const columns = computed(() => [

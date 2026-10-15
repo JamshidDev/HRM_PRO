@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import Utils from '@/utils/Utils.js'
+import { openSafeUrl } from '@/utils/sanitize.js'
 export const useActionLogStore = defineStore('actionLog', {
   state: () => ({
     list: [],
@@ -83,7 +84,7 @@ export const useActionLogStore = defineStore('actionLog', {
         ._generateLogViewer()
         .then((res) => {
           const url = res.data?.url || res.data?.data?.url
-          window.open(url, '_blank')
+          openSafeUrl(url)
         })
         .finally(() => {
           this.logViewerLoading = false

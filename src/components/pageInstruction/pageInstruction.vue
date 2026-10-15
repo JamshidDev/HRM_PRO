@@ -1,4 +1,5 @@
 <script setup>
+  import { sanitizeHtml } from '@/utils/sanitize.js'
   import { CalendarQuestionMark20Regular } from '@vicons/fluent'
   import { useAccountStore, usePageInstructionStore } from '@/store/modules/index.js'
   import { UIDrawer, UIMenuButton, NoDataPicture } from '@/components/index.js'
@@ -93,7 +94,7 @@
                 <UIMenuButton v-if="isAdmin" :data="section" show-edit @select-ev="onSelectEv" />
               </div>
               <!--   !Do not touch the classname. It is styling html from wange editor. you can customize it in wange editor styles in custom scss files   -->
-              <div class="w-e-viewer" v-html="section.text"></div>
+              <div class="w-e-viewer" v-html="sanitizeHtml(section.text)"></div>
             </div>
           </n-tab-pane>
           <n-tab-pane v-if="isAdmin" :name="99999">
