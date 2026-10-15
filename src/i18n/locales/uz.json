@@ -621,12 +621,14 @@
       "signingIn": "Tizimga kirilmoqda…"
     },
     "sso": {
-      "redirecting": "Sizni «{name}» tizimiga yo'naltirmoqdamiz",
-      "seconds": "Hisobingiz tasdiqlandi. {n} soniyadan so'ng avtomatik yo'naltiramiz.",
-      "goNow": "Hozir o'tish",
+      "title": "{name} tizimiga o‘tmoqdasiz",
+      "redirecting": "{name} tizimiga yo'naltirmoqdamiz",
+      "seconds": "{n} soniyadan so‘ng avtomatik ochiladi",
+      "goNow": "{name} tizimiga o‘tish",
+      "stay": "HRM Proda qolish",
+      "otherAccount": "Boshqa hisobdan",
       "verified": "Tasdiqlandi",
-      "as": "{name} sifatida",
-      "otherAccount": "Boshqa akkaunt bilan kirish"
+      "as": "{name} sifatida"
     },
     "appLogin": {
       "label": "HRM orqali kirish",
