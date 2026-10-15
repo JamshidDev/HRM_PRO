@@ -1,12 +1,16 @@
 <script setup>
+  import { useDocumentDateLimit } from '@/composables/useDocumentDateLimit.js'
+  import { useContractFormStore } from '../contractFormStore.js'
   import Utils from '@/utils/Utils.js'
   import { UIAutoComplete, UIUser, UISelect, UIFigField } from '@/components/index.js'
-  import { useComponentStore, useContractStore } from '@/store/modules/index.js'
+  import { useComponentStore } from '@/store/modules/index.js'
   import { NAvatar } from 'naive-ui'
   import UIHelper from '@/utils/UIHelper.js'
   import { useAppSetting } from '@/utils/index.js'
 
-  const store = useContractStore()
+  // Hujjat sanasi: yaratishda sozlamadagi oyna, tahrirda o'zgarmaydi.
+  const { isDateDisabled } = useDocumentDateLimit()
+  const store = useContractFormStore()
   const componentStore = useComponentStore()
 
   // Ro'yxat qatori `UIHelper.avatarRender` bilan bir xil qolipda: px-2 chetlar,
@@ -81,7 +85,9 @@
         type: store.payload.type
       }
       componentStore._commandTypes(data, (id) => {
-        store.payload.command_type = id
+        // Tahrirda tiklangan buyruq turi saqlanadi.
+        store.payload.command_type = store.editCommandType ?? id
+        store.editCommandType = null
       })
     }
     store.payload.position_date = store.payload.contract_date
@@ -127,6 +133,7 @@
         >
           <n-select
             v-model:value="store.payload.type"
+            :disabled="Boolean(store.editId)"
             filterable
             :options="componentStore.contractTypeList"
             label-field="name"
@@ -142,6 +149,8 @@
             v-model:value="store.payload.contract_date"
             type="date"
             :format="useAppSetting.datePicketFormat"
+            :is-date-disabled="isDateDisabled"
+            :disabled="Boolean(store.editId)"
           />
         </UIFigField>
 

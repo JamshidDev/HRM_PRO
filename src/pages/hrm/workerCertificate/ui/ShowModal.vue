@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { UIBadge, UIModal } from '@/components/index.js'
   import { ArrowCircleDown24Regular } from '@vicons/fluent'
   import { useWorkerCertificateStore } from '@stores'
@@ -13,7 +14,7 @@
   })
 
   const onDownload = (item) => {
-    window.open(item.file, '_blank')
+    openSafeUrl(item.file)
   }
 </script>
 

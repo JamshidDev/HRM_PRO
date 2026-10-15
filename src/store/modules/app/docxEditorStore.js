@@ -71,7 +71,7 @@ export const useDocxEditorStore = defineStore('docxEditorStore', {
       } catch (e) {
         // Xato javobi ham arraybuffer — JSON'ni dekod qilib xabarni ko'rsatamiz.
         this.visible = false
-        $Toast.error(this._errorMessage(e))
+        $Alert.warning(this._errorMessage(e))
       } finally {
         this.loading = false
       }

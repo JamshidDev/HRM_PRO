@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { computed, h, onMounted } from 'vue'
   import { NTag, NIcon, NTooltip, NButton } from 'naive-ui'
   import dayjs from 'dayjs'
@@ -150,7 +151,7 @@
                 size: 'small',
                 quaternary: true,
                 circle: true,
-                onClick: () => window.open(row.file, '_blank')
+                onClick: () => openSafeUrl(row.file)
               },
               () => h(NIcon, { size: 18 }, () => h(ArrowDownload20Regular))
             )

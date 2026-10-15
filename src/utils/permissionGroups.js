@@ -196,6 +196,8 @@ export const ENFORCED = new Set([
   'lms-teachers-write',
   'log-viewer-read',
   'mobile-stories-delete',
+  'video-guides',
+  'video-guides-delete',
   'mobile-users-read',
   'mobile-app-version',
   'nationalities-delete',
@@ -607,6 +609,8 @@ export const MEANINGFUL = new Set([
   'lms-worker-write',
   'log-viewer-read',
   'mobile-stories-delete',
+  'video-guides',
+  'video-guides-delete',
   'mobile-users-read',
   'mobile-app-version',
   'nationalities',
@@ -1031,7 +1035,7 @@ export const PERMISSION_GROUPS = [
         // E-IMZO tasdiqlash oynasidan ozod qilish — bitta switch (read/write yo'q).
         prefix: 'economist-eimzo-skip',
         label: 'userRole.form.eimzoSkip',
-        actions: [{ slug: 'economist-eimzo-skip', label: 'So‘ralmasin' }]
+        actions: [{ slug: 'economist-eimzo-skip', label: 'Tasdiqdan ozod' }]
       },
       { prefix: 'economist-dashboard', label: 'accDashboard.name' },
       { prefix: 'economist-worker-categories', label: 'salaryCategory.name' },
@@ -1148,6 +1152,7 @@ export const PERMISSION_GROUPS = [
       { prefix: 'telegram', label: 'telegramPage.name' },
       { prefix: 'learning-centers', label: 'learningCenterPage.name' },
       { prefix: 'instructions', label: 'instructionPage.name' },
+      { prefix: 'video-guides', label: 'videoGuidePage.name' },
       {
         prefix: 'mobile-users',
         label: 'mobileUserPage.name',

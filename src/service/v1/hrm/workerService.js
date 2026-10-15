@@ -93,10 +93,6 @@ const _updateUserPassword = async (payload) => {
 }
 
 
-const _updatePosition = async (payload) => {
-  return await axios.put(`/v1/hr/worker-positions/${payload.id}/update`, payload.data)
-}
-
 export default {
   _checkWorker,
   _index,
@@ -113,7 +109,6 @@ export default {
   _storeRole,
   _setActiveRole,
   _userRole,
-  _updatePosition,
   _attachUserRole,
   _createUser,
   _detachUserRole,

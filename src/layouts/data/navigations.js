@@ -951,7 +951,7 @@ export const navigations = withRawIcons([
         path: Utils.routeChatPathMaker(AppPaths.Notification),
         icon: ChatNotificationIcon,
         color: 'bg-dark',
-        permission: appPermissions.instructionsRead
+        permission: appPermissions.chatNotification
       },
       {
         label: 'newsPage.name', // Yangiliklar
@@ -1159,6 +1159,13 @@ export const navigations = withRawIcons([
         icon: AdminFolderIcon,
         color: 'bg-dark',
         permission: appPermissions.instructionsRead
+      },
+      {
+        label: 'videoGuidePage.name', // Video qo'llanmalar
+        path: Utils.routePathMaker(AppPaths.VideoGuides),
+        icon: AdminFolderIcon,
+        color: 'bg-dark',
+        permission: appPermissions.videoGuides
       },
       {
         label: 'mobileUserPage.name', // Mobil foydalanuvchilar

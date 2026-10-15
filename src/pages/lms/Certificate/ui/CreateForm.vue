@@ -22,7 +22,7 @@
             .map((v) => [v.data?.lastName, v.data?.firstName].filter(Boolean).join(' '))
             .filter(Boolean)
             .join(', ')
-          $Toast.warning(t('lmsCertificate.warning.noExamWorkers', { workers: names }))
+          $Alert.warning(t('lmsCertificate.warning.noExamWorkers', { workers: names }))
         }
 
         const workerData = store.payload.workers.filter(filterCallback).map((v) => ({
@@ -38,7 +38,7 @@
         }))
 
         if (!workerData?.length) {
-          $Toast.warning(t('lmsCertificate.warning.noValidWorkers'))
+          $Alert.warning(t('lmsCertificate.warning.noValidWorkers'))
           return
         }
 
@@ -81,7 +81,7 @@
 
       if (!match) {
         worker[field] = null
-        $Toast.warning(t('lmsCertificate.warning.invalidResult'))
+        $Alert.validation(t('lmsCertificate.warning.invalidResult'))
         return
       }
 
@@ -90,14 +90,14 @@
       // Ball umumiy balldan katta bo'lmasligi kerak
       if (score > total) {
         worker[field] = null
-        $Toast.warning(t('lmsCertificate.warning.invalidResult'))
+        $Alert.validation(t('lmsCertificate.warning.invalidResult'))
         return
       }
 
       // Umumiy ball 0 bo'lmasligi kerak
       if (total === 0) {
         worker[field] = null
-        $Toast.warning(t('lmsCertificate.warning.invalidResult'))
+        $Alert.validation(t('lmsCertificate.warning.invalidResult'))
         return
       }
 

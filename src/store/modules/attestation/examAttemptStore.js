@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import router from '@/router/index.js'
+import { openSafeUrl } from '@/utils/sanitize.js'
 
 const { t } = i18n.global
 export const useExamAttemptStore = defineStore('examAttemptStore', {
@@ -45,7 +46,7 @@ export const useExamAttemptStore = defineStore('examAttemptStore', {
       $ApiService.workerExamService
         ._downloadResult({ id: this.elementId, params })
         .then((res) => {
-          window.open(res.data.data.file, '_blank')
+          openSafeUrl(res.data.data.file)
         })
         .finally(() => {
           this.loading = false

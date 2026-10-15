@@ -50,7 +50,7 @@
       options.length >= 3 &&
       options.length <= 5
     if (!isValid) {
-      $Toast.warning(t('categoryPage.warning'))
+      $Alert.validation(t('categoryPage.warning'))
       return
     }
     let mapping = {}

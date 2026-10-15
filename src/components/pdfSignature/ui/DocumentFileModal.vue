@@ -162,7 +162,9 @@
               <div class="min-w-0 flex-1">
                 <div class="text-sm font-medium text-textColor1 truncate">{{ a.fullName }}</div>
                 <div class="text-xs text-textColor3 truncate">
-                  №{{ a.number }} · {{ a.typeName }}
+                  №{{ a.number
+                  }}<template v-if="a.electronicNumber"> · {{ a.electronicNumber }}</template> ·
+                  {{ a.typeName }}
                   <template v-if="a.created"> · {{ Utils.timeOnlyDate(a.created) }}</template>
                 </div>
               </div>

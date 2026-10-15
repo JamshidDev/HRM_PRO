@@ -1,5 +1,11 @@
 <script setup>
-  import { UIStatus, UITable, UITableBadgeCell, UITableNameCell } from '@/components/index.js'
+  import {
+    UIStatus,
+    UITable,
+    UITableBadgeCell,
+    UITableNameCell,
+    UIElectronicNumber
+  } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useConfirmCommandStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -37,6 +43,11 @@
       title: t('confirmation.contract.form.number'),
       width: 100,
       align: 'center'
+    },
+    {
+      key: 'command.electronic_number',
+      title: t('documentSettings.electronicNumber'),
+      width: 130
     },
     {
       key: 'command.organization.name',
@@ -84,6 +95,10 @@
   >
     <template #[`cell-command.type.name`]="{ row }">
       <UITableNameCell :name="row?.command?.type.name" @click="onPreview(row)" />
+    </template>
+
+    <template #[`cell-command.electronic_number`]="{ row }">
+      <UIElectronicNumber :value="row?.command?.electronic_number" />
     </template>
 
     <template #[`cell-command.command_number`]="{ row }">

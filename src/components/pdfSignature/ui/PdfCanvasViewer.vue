@@ -43,7 +43,7 @@
     canvasRefs.value = []
     if (!props.url) return
     try {
-      pdfDocument = await pdfjsLib.getDocument(props.url).promise
+      pdfDocument = await pdfjsLib.getDocument({ url: props.url, isEvalSupported: false }).promise
       totalPages.value = pdfDocument.numPages
       await nextTick()
       for (let pageNumber = 1; pageNumber <= totalPages.value; pageNumber++) {

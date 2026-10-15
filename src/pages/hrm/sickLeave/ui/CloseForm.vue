@@ -21,15 +21,15 @@
   const onSubmit = () => {
     const p = store.closePayload
     if (!p.to_date) {
-      $Toast.warning(t('sickLeave.close.toDateRequired'))
+      $Alert.validation(t('sickLeave.close.toDateRequired'))
       return
     }
     if (withDocument.value && (!p.number || !p.issued_date || !p.file)) {
-      $Toast.warning(t('sickLeave.close.documentRequired'))
+      $Alert.validation(t('sickLeave.close.documentRequired'))
       return
     }
     if (!withDocument.value && !p.close_reason?.trim()) {
-      $Toast.warning(t('sickLeave.close.reasonRequired'))
+      $Alert.validation(t('sickLeave.close.reasonRequired'))
       return
     }
     store._close()

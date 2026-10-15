@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
   import icons from '@/assets/icons'
@@ -43,7 +44,7 @@
     if (file) row.value.file = file
   }
 
-  const onDownload = () => window.open(row.value.file.name, '_blank')
+  const onDownload = () => openSafeUrl(row.value.file.name)
 
   const onDelete = () => {
     deleteVisible.value = false
@@ -68,7 +69,7 @@
     const secondField = props.foreign ? given_place : address
 
     if (!serial_number || !from_date || !to_date || !secondField) {
-      $Toast.warning(t('message.warning-data'))
+      $Alert.validation(t('message.warning-data'))
       return
     }
 

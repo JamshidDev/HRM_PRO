@@ -35,6 +35,16 @@
       minWidth: 200
     },
     {
+      key: 'number',
+      title: t('contractPage.table.number'),
+      width: 110
+    },
+    {
+      key: 'electronic_number',
+      title: t('documentSettings.electronicNumber'),
+      width: 130
+    },
+    {
       key: 'organization.name',
       title: t('content.organization'),
       minWidth: 100,

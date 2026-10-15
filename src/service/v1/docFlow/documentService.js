@@ -30,6 +30,10 @@ const _openDocument = async (payload) => {
 const _history = async (payload) => {
   return await axios.get(`/v1/document/history`, { params: payload.params })
 }
+// OnlyOffice tahrirlovchi sozlamasini backend imzolaydi (sir brauzerda saqlanmaydi).
+const _officeConfigToken = async (payload) => {
+  return await axios.post(`/v1/document/office-config-token`, payload.data)
+}
 const _generateLink = async (payload) => {
   return await axios.get(`/v1/document/generate-url`, { params: payload.params })
 }
@@ -62,6 +66,17 @@ const _editorSave = async (payload) => {
   })
 }
 
+// Shartnoma / qo'shimcha kelishuv kelishuvchilar marshruti (parallel / ketma-ket).
+const _documentRoute = async (payload) => {
+  return await axios.get(`/v1/document-route`, { params: payload.params })
+}
+const _documentRouteApprovers = async (payload) => {
+  return await axios.get(`/v1/document-route/approvers`, { params: payload.params })
+}
+const _updateDocumentRoute = async (payload) => {
+  return await axios.put(`/v1/document-route`, payload.data)
+}
+
 export default {
   _confirmationDocument,
   _rejectReasons,
@@ -73,8 +88,12 @@ export default {
   _confirmationCommand,
   _confirmationAdContract,
   _generateLink,
+  _officeConfigToken,
   _signature,
   _confirmationTimesheet,
   _editorContent,
-  _editorSave
+  _editorSave,
+  _documentRoute,
+  _documentRouteApprovers,
+  _updateDocumentRoute
 }
