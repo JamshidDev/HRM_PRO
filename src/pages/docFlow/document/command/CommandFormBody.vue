@@ -1,4 +1,5 @@
 <script setup>
+  import { useDocumentDateLimit } from '@/composables/useDocumentDateLimit.js'
   import { Drag24Filled, DrawText24Regular, DismissCircle28Filled } from '@vicons/fluent'
   import validationRules from '@/utils/validationRules.js'
   import { useComponentStore } from '@/store/modules/index.js'
@@ -33,6 +34,8 @@
   import { VueDraggable } from 'vue-draggable-plus'
 
   // create — yaratish modali; edit — hujjat drawer'idagi «Ma'lumotlar» tabi.
+  // Hujjat sanasi: yaratishda sozlamadagi oyna, tahrirda o'zgarmaydi.
+  const { isDateDisabled } = useDocumentDateLimit()
   const props = defineProps({
     mode: { type: String, default: 'create' },
     readonly: { type: Boolean, default: false }
@@ -711,6 +714,8 @@
                 v-model:value="store.payload.command_date"
                 type="date"
                 :format="useAppSetting.datePicketFormat"
+                :is-date-disabled="isDateDisabled"
+                :disabled="isEdit"
               />
             </n-form-item>
           </div>

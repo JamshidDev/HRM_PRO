@@ -412,6 +412,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
             name: v.number + ' - ' + v.type?.name,
             id: v.id,
             number: v.number,
+            electronicNumber: v.electronic_number,
             typeName: v.type?.name,
             created: v.created_at || v.created,
             photo: v.worker?.photo,

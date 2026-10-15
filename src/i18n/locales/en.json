@@ -1433,7 +1433,8 @@
           "cancelled": "The order is cancelled",
           "contract": "Changed via the contract",
           "contract_additional": "Changed via the additional agreement",
-          "no_form_state": "Old order — view only"
+          "no_form_state": "Old order — view only",
+          "expired": "Signing deadline has passed — delete the document and create it again"
         },
         "resend": {
           "title": "Send for signing again",
@@ -1796,7 +1797,8 @@
       "locked": {
         "approved": "An approved contract cannot be edited",
         "command_approved": "The order based on this contract is approved — it cannot be edited",
-        "no_form_state": "This contract was created before editing was available — it cannot be edited"
+        "no_form_state": "This contract was created before editing was available — it cannot be edited",
+        "expired": "Signing deadline has passed — delete the document and create it again"
       },
       "savedNotify": "The contract was updated and sent for signing again"
     },
@@ -1831,7 +1833,8 @@
       "locked": {
         "approved": "An approved additional agreement cannot be edited",
         "command_approved": "The order based on this agreement is approved — it cannot be edited",
-        "no_form_state": "This agreement was created before editing was available — it cannot be edited"
+        "no_form_state": "This agreement was created before editing was available — it cannot be edited",
+        "expired": "Signing deadline has passed — delete the document and create it again"
       },
       "savedNotify": "The additional agreement was updated and sent for signing again"
     },
@@ -6548,5 +6551,23 @@
       "no_position": "Access stopped: you have no active position.",
       "default": "Your session was closed for security reasons. Please sign in again."
     }
+  },
+  "documentSettings": {
+    "title": "Deadlines and electronic number",
+    "backdate": "Backdate limit",
+    "backdateHint": "how many days back a document date may be",
+    "signDeadline": "Signing deadline",
+    "signDeadlineHint": "a document not approved in time becomes «Problematic»",
+    "prefix": "Electronic number prefix",
+    "prefixSample": "Example: {sample}. Existing document numbers stay the same",
+    "prefixInvalid": "2–5 uppercase Latin letters (e.g. UTY)",
+    "days": "days",
+    "daysValue": "{n} days",
+    "noLimit": "No limit",
+    "confirmTitle": "Save settings",
+    "confirmText": "The change applies to new documents of all organizations. Save?",
+    "saved": "Deadline and number settings saved",
+    "electronicNumber": "Electronic number",
+    "searchPlaceholder": "Name or number"
   }
 }

@@ -1449,7 +1449,8 @@
           "cancelled": "Buyruq bekor qilingan",
           "contract": "Shartnoma orqali o'zgartiriladi",
           "contract_additional": "Qo'shimcha kelishuv orqali o'zgartiriladi",
-          "no_form_state": "Eski buyruq — faqat ko'rish uchun"
+          "no_form_state": "Eski buyruq — faqat ko'rish uchun",
+          "expired": "Imzolash muddati o'tgan — hujjatni o'chirib, qaytadan yarating"
         },
         "resend": {
           "title": "Qayta tasdiqlashga yuborish",
@@ -1812,7 +1813,8 @@
       "locked": {
         "approved": "Tasdiqlangan shartnomani tahrirlab bo'lmaydi",
         "command_approved": "Shartnoma asosidagi buyruq tasdiqlangan — tahrirlab bo'lmaydi",
-        "no_form_state": "Bu shartnoma tahrir imkoniyati qo'shilishidan oldin yaratilgan — tahrirlab bo'lmaydi"
+        "no_form_state": "Bu shartnoma tahrir imkoniyati qo'shilishidan oldin yaratilgan — tahrirlab bo'lmaydi",
+        "expired": "Imzolash muddati o'tgan — hujjatni o'chirib, qaytadan yarating"
       },
       "savedNotify": "Shartnoma yangilandi va qayta imzolashga yuborildi"
     },
@@ -1847,7 +1849,8 @@
       "locked": {
         "approved": "Tasdiqlangan qo'shimcha kelishuvni tahrirlab bo'lmaydi",
         "command_approved": "Kelishuv asosidagi buyruq tasdiqlangan — tahrirlab bo'lmaydi",
-        "no_form_state": "Bu kelishuv tahrir imkoniyati qo'shilishidan oldin yaratilgan — tahrirlab bo'lmaydi"
+        "no_form_state": "Bu kelishuv tahrir imkoniyati qo'shilishidan oldin yaratilgan — tahrirlab bo'lmaydi",
+        "expired": "Imzolash muddati o'tgan — hujjatni o'chirib, qaytadan yarating"
       },
       "savedNotify": "Qo'shimcha kelishuv yangilandi va qayta imzolashga yuborildi"
     },
@@ -6609,5 +6612,23 @@
       "no_position": "Faol lavozimingiz yo'qligi sababli tizimga kirish to'xtatildi.",
       "default": "Xavfsizlik maqsadida seansingiz yopildi. Qayta kiring."
     }
+  },
+  "documentSettings": {
+    "title": "Muddatlar va elektron raqam",
+    "backdate": "Orqa sana chegarasi",
+    "backdateHint": "hujjat sanasi bugundan necha kun orqada bo'la oladi",
+    "signDeadline": "Imzolash muddati",
+    "signDeadlineHint": "shu muddatda tasdiqlanmagan hujjat «Muammoli» bo'ladi",
+    "prefix": "Elektron raqam prefiksi",
+    "prefixSample": "Namuna: {sample}. Eski hujjatlar raqami o'zgarmaydi",
+    "prefixInvalid": "2–5 ta lotin bosh harfi (masalan, UTY)",
+    "days": "kun",
+    "daysValue": "{n} kun",
+    "noLimit": "Cheklov yo'q",
+    "confirmTitle": "Sozlamalarni saqlash",
+    "confirmText": "O'zgarish barcha korxonalarning yangi hujjatlariga qo'llanadi. Saqlaysizmi?",
+    "saved": "Muddat va raqam sozlamalari saqlandi",
+    "electronicNumber": "Elektron raqam",
+    "searchPlaceholder": "F.I.Sh. yoki raqam"
   }
 }

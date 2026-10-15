@@ -1,4 +1,5 @@
 <script setup>
+  import { useDocumentDateLimit } from '@/composables/useDocumentDateLimit.js'
   import { useContractFormStore } from '../contractFormStore.js'
   import Utils from '@/utils/Utils.js'
   import { UIAutoComplete, UIUser, UISelect, UIFigField } from '@/components/index.js'
@@ -7,6 +8,8 @@
   import UIHelper from '@/utils/UIHelper.js'
   import { useAppSetting } from '@/utils/index.js'
 
+  // Hujjat sanasi: yaratishda sozlamadagi oyna, tahrirda o'zgarmaydi.
+  const { isDateDisabled } = useDocumentDateLimit()
   const store = useContractFormStore()
   const componentStore = useComponentStore()
 
@@ -146,6 +149,8 @@
             v-model:value="store.payload.contract_date"
             type="date"
             :format="useAppSetting.datePicketFormat"
+            :is-date-disabled="isDateDisabled"
+            :disabled="Boolean(store.editId)"
           />
         </UIFigField>
 

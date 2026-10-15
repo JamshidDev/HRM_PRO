@@ -1,4 +1,5 @@
 <script setup>
+  import { useDocumentDateLimit } from '@/composables/useDocumentDateLimit.js'
   import { useContractFormStore } from '../contractFormStore.js'
   import { useComponentStore } from '@/store/modules/index.js'
   import { NAvatar } from 'naive-ui'
@@ -10,6 +11,8 @@
   import icons from '@/assets/icons'
   import { VueDraggable } from 'vue-draggable-plus'
 
+  // Hujjat sanasi: yaratishda sozlamadagi oyna, tahrirda o'zgarmaydi.
+  const { isDateDisabled } = useDocumentDateLimit()
   const store = useContractFormStore()
   const componentStore = useComponentStore()
   const confirmationList = ref([])
@@ -171,6 +174,8 @@
             v-model:value="store.payload.command_date"
             type="date"
             :format="useAppSetting.datePicketFormat"
+            :is-date-disabled="isDateDisabled"
+            :disabled="Boolean(store.editId)"
           />
         </UIFigField>
 

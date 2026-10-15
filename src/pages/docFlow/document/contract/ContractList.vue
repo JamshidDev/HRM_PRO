@@ -1,5 +1,5 @@
 <script setup>
-  import { UIStatus, UITable, UITableBadgeCell, UITableNameCell, UIUser } from '@/components/index.js'
+  import { UIStatus, UITable, UITableBadgeCell, UITableNameCell, UIUser, UIElectronicNumber } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useComponentStore, useContractStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -69,6 +69,11 @@
       key: 'number',
       title: t('contractPage.table.number'),
       width: 140
+    },
+    {
+      key: 'electronic_number',
+      title: t('documentSettings.electronicNumber'),
+      width: 130
     },
     {
       key: 'worker',
@@ -154,6 +159,10 @@
         :created-at="row.created_at"
         @click="onPreview(row)"
       />
+    </template>
+
+    <template #cell-electronic_number="{ row }">
+      <UIElectronicNumber :value="row?.electronic_number" />
     </template>
 
     <template #cell-number="{ row }">

@@ -4,7 +4,8 @@
     UITable,
     UITableBadgeCell,
     UITableNameCell,
-    UIUser
+    UIUser,
+    UIElectronicNumber
   } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useTurnstileDownload } from '@/composables/useTurnstileDownload.js'
@@ -81,6 +82,11 @@
       align: 'center'
     },
     {
+      key: 'electronic_number',
+      title: t('documentSettings.electronicNumber'),
+      width: 130
+    },
+    {
       key: 'worker',
       title: t('content.worker'),
       minWidth: 200
@@ -150,6 +156,10 @@
         :created-at="row.created_at"
         @click="onOpenFile(row.id)"
       />
+    </template>
+
+    <template #cell-electronic_number="{ row }">
+      <UIElectronicNumber :value="row?.electronic_number" />
     </template>
 
     <template #cell-number="{ row }">

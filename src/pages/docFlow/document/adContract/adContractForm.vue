@@ -1,7 +1,10 @@
 <script setup>
+  import { useDocumentDateLimit } from '@/composables/useDocumentDateLimit.js'
   import { UISelect, UIUser } from '@/components/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import validationRules from '@/utils/validationRules.js'
+  // Hujjat sanasi: yaratishda sozlamadagi oyna, tahrirda o'zgarmaydi.
+  const { isDateDisabled } = useDocumentDateLimit()
   const formRef = ref(null)
   import { useComponentStore } from '@/store/modules/index.js'
   import { useAdContractFormStore } from './adContractFormStore.js'
@@ -366,6 +369,8 @@
                   v-model:value="store.payload.contract_date"
                   type="date"
                   :format="useAppSetting.datePicketFormat"
+                  :is-date-disabled="isDateDisabled"
+                  :disabled="Boolean(store.editId)"
                 />
               </n-form-item>
             </div>
@@ -636,6 +641,8 @@
                   v-model:value="store.payload.command_date"
                   type="date"
                   :format="useAppSetting.datePicketFormat"
+                  :is-date-disabled="isDateDisabled"
+                  :disabled="Boolean(store.editId)"
                 />
               </n-form-item>
             </div>

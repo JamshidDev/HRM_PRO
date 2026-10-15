@@ -18,6 +18,7 @@
       value: Utils.timeOnlyDate(props.item.contract?.contract_date)
     },
     { label: 'workerProfile.position.contractNumber', value: props.item.contract?.number },
+    { label: 'documentSettings.electronicNumber', value: props.item.contract?.electronic_number },
     {
       label: 'workerProfile.position.positionDate',
       value: Utils.timeOnlyDate(props.item.position_date)
