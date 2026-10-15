@@ -49,15 +49,15 @@
 
   const onSubmit = () => {
     if (!store.whitelistPayload.organization_id) {
-      $Toast.warning(t('paymentAnalysis.toast.requiredOrganization'))
+      $Alert.validation(t('paymentAnalysis.toast.requiredOrganization'))
       return
     }
     if (!store.whitelistPayload.paying_code) {
-      $Toast.warning(t('paymentAnalysis.toast.requiredPayingCode'))
+      $Alert.validation(t('paymentAnalysis.toast.requiredPayingCode'))
       return
     }
     if (store.whitelistPayload.file.length === 0) {
-      $Toast.warning(t('rules.requiredFileField'))
+      $Alert.validation(t('rules.requiredFileField'))
       return
     }
     store._uploadWhitelist()

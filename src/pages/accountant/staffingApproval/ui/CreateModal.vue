@@ -65,7 +65,7 @@
     formRef.value?.validate((error) => {
       if (!error) {
         if (!store.payload.department_positions?.length) {
-          $Toast.warning(t('message.minimumOneItem'))
+          $Alert.validation(t('message.minimumOneItem'))
           return
         }
         const data = {

@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import icons from '@/assets/icons'
   import Utils from '@/utils/Utils.js'
 
@@ -13,7 +14,7 @@
     }
   })
 
-  const onDownload = () => props.file && window.open(props.file, '_blank')
+  const onDownload = () => props.file && openSafeUrl(props.file)
 </script>
 
 <template>

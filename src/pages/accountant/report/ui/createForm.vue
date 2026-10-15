@@ -61,7 +61,7 @@
           return
         }
         if (store.payload.file.length === 0) {
-          $Toast.warning(t('rules.requiredFileField'))
+          $Alert.validation(t('rules.requiredFileField'))
           return
         }
         store.saveLoading = true

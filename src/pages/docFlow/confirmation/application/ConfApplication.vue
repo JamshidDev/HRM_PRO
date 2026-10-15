@@ -80,6 +80,7 @@
   <UIPageContent>
     <Banner />
     <UIPageFilter
+      :placeholder="$t('documentSettings.searchPlaceholder')"
       class="mt-4"
       v-model:search="store.params.search"
       :show-filter-button="false"

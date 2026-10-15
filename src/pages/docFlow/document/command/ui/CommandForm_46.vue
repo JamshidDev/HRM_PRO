@@ -70,7 +70,7 @@
 
   const onCalculate = () => {
     if (!store.payload.worker || !store.form_46.main_day || !store.form_46.from) {
-      $Toast.warning(t('message.warning-data'))
+      $Alert.validation(t('message.warning-data'))
       return
     }
 
@@ -117,7 +117,7 @@
 
   const validateForm = async () => {
     if (!store.form_46.result || !store.form_46.result?.all_day) {
-      $Toast.warning(t('message.warning-data'))
+      $Alert.validation(t('message.warning-data'))
       return false
     }
     await formRef.value?.validate()

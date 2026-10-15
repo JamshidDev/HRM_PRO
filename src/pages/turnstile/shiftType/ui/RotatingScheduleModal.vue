@@ -213,7 +213,7 @@
   const onSave = () => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsWorkersWrite)) return
     if (!filledCount.value) {
-      $Toast.warning(t('shiftType.generate.noWorkerSelected'))
+      $Alert.validation(t('shiftType.generate.noWorkerSelected'))
       return
     }
     if (!movedCount.value) return save()

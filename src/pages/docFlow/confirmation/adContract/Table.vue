@@ -4,7 +4,8 @@
     UITable,
     UITableBadgeCell,
     UITableNameCell,
-    UIUser
+    UIUser,
+    UIElectronicNumber
   } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useConfirmationAdContractStore } from '@/store/modules/index.js'
@@ -76,6 +77,11 @@
       align: 'center'
     },
     {
+      key: 'contract_additional.electronic_number',
+      title: t('documentSettings.electronicNumber'),
+      width: 130
+    },
+    {
       key: 'status',
       title: t('content.status'),
       width: 140
@@ -114,6 +120,10 @@
     storage-key="docflow-confirmation-ad-contract"
     @change-page="changePage"
   >
+    <template #[`cell-contract_additional.electronic_number`]="{ row }">
+      <UIElectronicNumber :value="row?.contract_additional?.electronic_number" />
+    </template>
+
     <template #[`cell-contract_additional.type.name`]="{ row }">
       <UITableNameCell :name="typeName(row)" @click="onPreview(row)" />
     </template>

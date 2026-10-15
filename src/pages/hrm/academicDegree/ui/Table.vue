@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { UITable, UIProfileSection, UIProfileEmpty, UIFileDownload } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAcademicDegreeStore } from '@/store/modules/index.js'
@@ -37,7 +38,7 @@
   }
 
   const onDownload = (url) => {
-    window.open(url, '_blank')
+    openSafeUrl(url)
   }
 
   const columns = computed(() => [

@@ -1,14 +1,16 @@
 <script setup>
-  import { UIStatus, UITable, UITableBadgeCell, UITableNameCell, UIUser } from '@/components/index.js'
+  import { UIStatus, UITable, UITableBadgeCell, UITableNameCell, UIUser, UIElectronicNumber } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useComponentStore, useContractStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
+  import { useNotify } from '@/composables/useNotify'
   import {
     ArrowSyncCheckmark20Filled,
     CheckmarkCircle32Regular,
     Delete20Regular,
     DocumentCheckmark24Regular,
+    Edit20Regular,
     Eye16Regular,
     ReceiptAdd24Regular
   } from '@vicons/fluent'
@@ -45,6 +47,13 @@
     componentStore.fileVisible = true
   }
 
+  const notify = useNotify()
+  // Tahrir: tasdiqlangan yoki tahrir imkoniyatidan oldingi shartnoma — sababi ko'rsatiladi.
+  const onEdit = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrContractsWrite)) return
+    store._openEdit(row.id, (block) => notify.warning(t(`contractPage.edit.locked.${block}`)))
+  }
+
   const onOpenCommand = (row) => {
     if (row?.command_status?.id === 2) return
     emits('commandEv', row)
@@ -60,6 +69,11 @@
       key: 'number',
       title: t('contractPage.table.number'),
       width: 140
+    },
+    {
+      key: 'electronic_number',
+      title: t('documentSettings.electronicNumber'),
+      width: 130
     },
     {
       key: 'worker',
@@ -106,6 +120,12 @@
       action: onPreview
     },
     {
+      label: t('content.edit'),
+      key: Utils.ActionTypes.edit,
+      icon: UIHelper.renderIcon(Edit20Regular),
+      action: onEdit
+    },
+    {
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete20Regular),
@@ -139,6 +159,10 @@
         :created-at="row.created_at"
         @click="onPreview(row)"
       />
+    </template>
+
+    <template #cell-electronic_number="{ row }">
+      <UIElectronicNumber :value="row?.electronic_number" />
     </template>
 
     <template #cell-number="{ row }">

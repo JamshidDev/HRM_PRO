@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <radialGradient id="disc" cx="38%" cy="30%" r="80%">
+      <stop offset="0" stop-color="#ff6b6b"/>
+      <stop offset="0.45" stop-color="#e5212f"/>
+      <stop offset="1" stop-color="#8f0c18"/>
+    </radialGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffb3b3"/>
+      <stop offset="1" stop-color="#7a0a14"/>
+    </linearGradient>
+    <linearGradient id="palm" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e6e9ee"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#5a0008" flood-opacity="0.45"/>
+    </filter>
+    <filter id="blur"><feGaussianBlur stdDeviation="6"/></filter>
+  </defs>
+  <circle cx="128" cy="128" r="116" fill="url(#rim)"/>
+  <circle cx="128" cy="128" r="108" fill="url(#disc)"/>
+  <circle cx="128" cy="128" r="96" fill="none" stroke="#ffffff" stroke-opacity="0.9" stroke-width="5"/>
+  <ellipse cx="96" cy="72" rx="58" ry="30" fill="#ffffff" opacity="0.28" filter="url(#blur)"/>
+  <g fill="url(#palm)" filter="url(#soft)">
+    <rect x="93" y="64" width="19" height="72" rx="9.5"/>
+    <rect x="116" y="54" width="20" height="82" rx="10"/>
+    <rect x="140" y="60" width="19" height="76" rx="9.5"/>
+    <rect x="163" y="76" width="17" height="62" rx="8.5"/>
+    <rect x="68" y="116" width="19" height="58" rx="9.5" transform="rotate(-38 77 145)"/>
+    <path d="M93 118 H180 V160 C180 186 162 202 136 202 C110 202 93 188 91 166 Z"/>
+  </g>
+</svg>

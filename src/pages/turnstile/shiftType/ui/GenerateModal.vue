@@ -187,7 +187,7 @@
       }
       const range = monthRange()
       if (slotted.value && !(Number(store.generatePayload.workers_count) > 0)) {
-        $Toast.warning(t('shiftType.generate.noFreeWorkers'))
+        $Alert.warning(t('shiftType.generate.noFreeWorkers'))
         return
       }
       store.generatePayload.start_date = range.start_date

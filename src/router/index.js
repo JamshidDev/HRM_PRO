@@ -256,7 +256,9 @@ router.beforeEach(async (to, from, next) => {
 
   // `window.$Toast` ToastProvider mount bo'lganda paydo bo'ladi — ilk navigatsiyada
   // hali mavjud bo'lmasligi mumkin, shuning uchun ixtiyoriy chaqiruv.
-  window.$Toast?.warning(i18n.global.t('message.noPermission'))
+  const deniedMsg = i18n.global.t('message.noPermission')
+  if (window.$Alert) window.$Alert({ type: 'forbidden' })
+  else window.$Toast?.warning(deniedMsg)
 
   // Cheksiz redirectdan saqlanish.
   const fallback = firstAccessiblePath(accountStore)

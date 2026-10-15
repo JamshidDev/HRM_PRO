@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { useComponentStore } from '@/store/modules/app/componentStore.js'
 import i18n from '@/i18n/index.js'
+import Utils from '@/utils/Utils.js'
 const { t } = i18n.global
 
 const toTreeNode = (v, lang) => ({
@@ -82,6 +83,7 @@ export const useOrganizationStore = defineStore('organizationStore', {
     searchHighlight: '',
     levelLoading: false,
     levelList: [],
+    exportLoading: false,
     // Bolalari yuklanayotgan tugun kaliti (UITree spinneri uchun).
     indexPath: null,
     parentElement: null,
@@ -103,6 +105,21 @@ export const useOrganizationStore = defineStore('organizationStore', {
     searchQuery: (state) => state.params.search?.trim() || ''
   },
   actions: {
+    _export() {
+      this.exportLoading = true
+      $ApiService.organizationService
+        ._export()
+        .then((res) => {
+          Utils.blobFileDownload(
+            res.data,
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'tashkilotlar.xlsx'
+          )
+        })
+        .finally(() => {
+          this.exportLoading = false
+        })
+    },
     _index() {
       if (this.searchQuery) return this._search()
       this.loading = true

@@ -51,7 +51,7 @@
       }
       store._calculateVacation(data, idx)
     } else {
-      $Toast.warning(t('documentPage.command.form.isNotValid'))
+      $Alert.validation(t('documentPage.command.form.isNotValid'))
     }
   }
   const onSubmit = (mainData) => {
@@ -80,7 +80,7 @@
         isValid: true
       }
     } else {
-      $Toast.warning(t('documentPage.command.form.isNotCalculate'))
+      $Alert.warning(t('documentPage.command.form.isNotCalculate'))
       return {
         data: null,
         isValid: false

@@ -16,7 +16,7 @@
     formRef.value?.validate((error) => {
       if (!error) {
         if (store.selectedWorkers.length === 0) {
-          $Toast.warning(t('ticket.form.requiredWorker'))
+          $Alert.validation(t('ticket.form.requiredWorker'))
           return
         }
         store.saveLoading = true

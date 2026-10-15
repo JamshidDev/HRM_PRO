@@ -4,7 +4,8 @@
     UITable,
     UITableBadgeCell,
     UITableNameCell,
-    UIUser
+    UIUser,
+    UIElectronicNumber
   } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useConfirmationContractStore } from '@/store/modules/index.js'
@@ -43,6 +44,11 @@
       title: t('confirmation.contract.form.number'),
       width: 100,
       align: 'center'
+    },
+    {
+      key: 'contract.electronic_number',
+      title: t('documentSettings.electronicNumber'),
+      width: 130
     },
     {
       key: 'contract.worker',
@@ -95,6 +101,10 @@
   >
     <template #[`cell-contract.type.name`]="{ row }">
       <UITableNameCell :name="row?.contract?.type.name" @click="onPreview(row)" />
+    </template>
+
+    <template #[`cell-contract.electronic_number`]="{ row }">
+      <UIElectronicNumber :value="row?.contract?.electronic_number" />
     </template>
 
     <template #[`cell-contract.number`]="{ row }">

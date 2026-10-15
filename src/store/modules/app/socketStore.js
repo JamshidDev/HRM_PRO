@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { endSession } from '@/features/sessionEnded/sessionEnded.js'
 import io from 'socket.io-client'
 const socketUrl = import.meta.env.VITE_SOCKET_URL
 const socketSecret = import.meta.env.VITE_SOCKET_SECRET
@@ -9,9 +10,7 @@ import { pickI18nText } from '@/utils/i18nText.js'
 import { useAppStore } from '@/store/modules/app/appStore.js'
 import { useNotificationStore } from '@/store/modules/chat/notificationStore.js'
 import dayjs from 'dayjs'
-import router from '@/router/index.js'
-import i18n from '@/i18n/index.js'
-import { AppPaths, useAppSetting } from '@/utils/index.js'
+import { useAppSetting } from '@/utils/index.js'
 
 const allowedEvents = [
   Events.APPLICATION_GENERATED,
@@ -33,11 +32,7 @@ export const useSocketStore = defineStore('useSocketStore', {
     counts: {
       confirmation: {},
       hr: {}
-    },
-
-
-
-
+    }
   }),
   getters: {
     getCategoryTotal: (state) => (category) => {
@@ -89,14 +84,11 @@ export const useSocketStore = defineStore('useSocketStore', {
       })
 
       this.socket.on('notification', (data) => {
-        // Telefondan «Bu men emasman» — aynan shu brauzer sessiyasi bo'lsa darhol chiqariladi.
+        // Shu brauzer sessiyasi yopildi — sababli alert, 5 soniyadan keyin login (boshqa tokenlar e'tiborsiz).
         if (data?.type === 'session_revoked') {
           const token = localStorage.getItem(useAppSetting.tokenKey) || ''
-          if (String(data.token_id) === token.split('|')[0]) {
-            localStorage.removeItem(useAppSetting.tokenKey)
-            this.disconnect()
-            $Toast.warning(i18n.global.t('loginPage.sessionRevoked'))
-            router.push(AppPaths.Login)
+          if (String(data.token_id) === token.split('|')[0] && data.reason !== 'logout') {
+            endSession(data)
           }
           return
         }

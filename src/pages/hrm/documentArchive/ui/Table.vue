@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { UIStatus, UITable } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useDocumentArchiveStore } from '@/store/modules/index.js'
@@ -13,7 +14,7 @@
   const accStore = useAccountStore()
 
   const openFile = (url) => {
-    window.open(url, '_blank')
+    openSafeUrl(url)
   }
 
   const statusData = (id) => {
