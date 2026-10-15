@@ -37,7 +37,7 @@
 
   const worker = (row) => {
     const d = doc(row)
-    if (d?.worker) return { worker: d.worker, position: null }
+    if (d?.worker) return { worker: d.worker, position: d.position_name ?? null }
     return store.contractWorkers[d?.contract_id]
   }
 
