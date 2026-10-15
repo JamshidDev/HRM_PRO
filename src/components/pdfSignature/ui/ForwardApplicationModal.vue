@@ -15,8 +15,10 @@
 
   const { t } = i18n.global
   const emits = defineEmits(['forwarded'])
+  // `routeStore` — boshqa hujjat (shartnoma) marshruti; berilmasa Arizalar store'i.
+  const props = defineProps({ routeStore: { type: Object, default: null } })
   const store = usePdfViewerStore()
-  const app = useApplicationStore()
+  const app = props.routeStore ?? useApplicationStore()
 
   const pick = ref(null)
   // Bitta ro'yxat: `role` — 'sign' (kelishuvchi, imzolaydi) yoki 'view' (tanishuvchi); switch joyida almashtiradi.
@@ -94,9 +96,11 @@
       new Set(
         [
           app.forwardDirector?.worker_id,
-          ...(store.confirmations || [])
-            .filter((c) => c.type === 'w' || (c.type === 's' && c.order === 2))
-            .map((c) => c.worker?.id),
+          ...(app.fixedWorkerIds
+            ? app.fixedWorkerIds(store.confirmations)
+            : (store.confirmations || [])
+                .filter((c) => c.type === 'w' || (c.type === 's' && c.order === 2))
+                .map((c) => c.worker?.id)),
           ...locked.value.map((v) => v.worker?.id),
           ...picked.value.map((v) => v.worker?.id)
         ].filter(Boolean)
@@ -166,9 +170,11 @@
         <div class="flex items-center justify-between gap-3">
           <div class="text-xs text-textColor3 min-w-0">
             {{
-              isSequential
-                ? $t('applicationPage.forward.sequentialHint')
-                : $t('applicationPage.forward.parallelHint')
+              $t(
+                `${app.directorAnytime ? 'documentPage.route' : 'applicationPage.forward'}.${
+                  isSequential ? 'sequentialHint' : 'parallelHint'
+                }`
+              )
             }}
           </div>
           <div class="inline-flex shrink-0 gap-1 rounded-xl bg-surface-ground p-1">
@@ -265,7 +271,11 @@
                           : $t('applicationPage.forward.roleView')
                       }}
                     </span>
-                    <n-switch :value="item.role === 'sign'" @update:value="(v) => setRole(item, v)">
+                    <n-switch
+                      v-if="app.allowViewers !== false"
+                      :value="item.role === 'sign'"
+                      @update:value="(v) => setRole(item, v)"
+                    >
                       <template #checked-icon><n-icon><Signature16Regular /></n-icon></template>
                       <template #unchecked-icon><n-icon><Eye16Regular /></n-icon></template>
                     </n-switch>
@@ -282,7 +292,7 @@
           <!-- Rahbar — doim oxirida -->
           <div class="flex gap-3" :class="!isSequential && picked.length && 'mt-1.5'">
             <div
-              v-if="isSequential"
+              v-if="isSequential && !app.directorAnytime"
               class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-xs font-semibold bg-fig-chip-brand text-fig-chip-brand-text"
             >
               {{ signersCount + 1 }}
@@ -291,6 +301,12 @@
               <div class="min-w-0 flex-1">
                 <UIUser :short="false" :data="userData(app.forwardDirector, app.forwardDirector?.position)" />
               </div>
+              <span
+                v-if="app.directorAnytime"
+                class="text-[11px] font-medium rounded-full px-2 py-0.5 bg-fig-chip-brand text-fig-chip-brand-text shrink-0"
+              >
+                {{ $t('documentPage.route.directorAnytime') }}
+              </span>
             </div>
           </div>
         </div>
@@ -306,7 +322,7 @@
               — {{ $t('applicationPage.forward.roleSignHint') }}
             </div>
           </div>
-          <div class="flex items-center gap-2.5">
+          <div v-if="app.allowViewers !== false" class="flex items-center gap-2.5">
             <div class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 bg-surface-section text-textColor3">
               <n-icon size="14"><Eye16Regular /></n-icon>
             </div>

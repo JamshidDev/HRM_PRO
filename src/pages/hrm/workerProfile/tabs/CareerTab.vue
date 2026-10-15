@@ -4,7 +4,6 @@
   import {
     UITable,
     UIDrawer,
-    UIModal,
     UIProfileSection,
     UIProfileEmpty
   } from '@/components/index.js'
@@ -14,7 +13,6 @@
   import i18n from '@/i18n/index.js'
   import PositionBlock from '../ui/blocks/PositionBlock.vue'
   import createForm from '@/pages/hrm/oldCareer/ui/createForm.vue'
-  import editFrom from '../ui/editFrom.vue'
 
   /** Figma "Ish faoliyati" bobi (node 2667:253173) */
   const { t } = i18n.global
@@ -148,8 +146,5 @@
       </template>
     </UIDrawer>
 
-    <UIModal :title="$t('content.edit')" :width="1200" v-model:visible="store.editVisible">
-      <editFrom />
-    </UIModal>
   </div>
 </template>

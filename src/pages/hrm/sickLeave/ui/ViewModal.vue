@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { UIStatus } from '@/components/index.js'
   import { useSickLeaveStore, SICK_LEAVE_CLOSE_TYPE } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
@@ -26,7 +27,7 @@
       .join(' ')
   )
 
-  const openFile = () => window.open(row.value.file, '_blank')
+  const openFile = () => openSafeUrl(row.value.file)
 </script>
 
 <template>

@@ -11,7 +11,7 @@
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
 
-  // Tashkilot tree (single-select) uchun holat.
+  // Tashkilot tree (ko'p tanlash + o'zi/bolalari subtree) uchun holat.
   const orgModel = ref([])
   const orgCheck = ref([])
 
@@ -38,9 +38,12 @@
     if (componentStore.structureList.length === 0) componentStore._structures()
   }
 
-  // Tashkilot tanlanganda (single-select) — organization_id ni yangilaymiz.
+  // Tashkilot tanlanganda — ko'p org (o'zi + bolalari). `organizations` = list/export
+  // filtri (subtree); `organization_id` = birinchi tanlangan (analyze + whitelist amallari
+  // yakka org talab qiladi).
   const onChangeOrg = (list) => {
     orgModel.value = list
+    store.params.organizations = list.map((o) => o.id)
     store.params.organization_id = list[0]?.id ?? null
     filterEvent()
   }
@@ -48,6 +51,7 @@
   const resetFilter = () => {
     orgModel.value = []
     orgCheck.value = []
+    store.params.organizations = []
     store.params.organization_id = null
     store.params.paying_code = null
     store.onlyFlagged = false
@@ -56,7 +60,8 @@
 
   const filterCount = computed(() => {
     return (
-      Number(Boolean(store.params.organization_id)) + Number(Boolean(store.params.paying_code))
+      Number(Boolean(store.params.organizations.length)) +
+      Number(Boolean(store.params.paying_code))
     )
   })
 
@@ -124,7 +129,6 @@
       }}</label>
       <UISelect
         :options="componentStore.structureList"
-        :multiple="false"
         :model-v="orgModel"
         @updateModel="onChangeOrg"
         :checked-val="orgCheck"

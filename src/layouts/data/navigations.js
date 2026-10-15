@@ -69,7 +69,7 @@ import ExtraWorkerRoleIcon from '@assets/icons/Users.svg'
 import ExtraEducationDirectoryIcon from '@assets/icons/EducationDirectory.svg'
 import ExtraDepartmentLocationIcon from '@assets/icons/DepartmentLocation.svg'
 import AdminFolderIcon from '@assets/icons/adminFolder.svg'
-import { Calculator24Regular, ClipboardTaskListLtr24Filled, Grid20Filled, DataFunnel24Filled } from '@vicons/fluent'
+import { Calculator24Regular, ClipboardTaskListLtr24Filled, Grid20Filled, DataFunnel24Filled, EyeOff24Regular } from '@vicons/fluent'
 const {
   usersIcon,
   menuIcon,
@@ -893,6 +893,13 @@ export const navigations = withRawIcons([
         icon: DataFunnel24Filled,
         color: 'bg-dark',
         permission: appPermissions.economistUploadSourceConfigRead
+      },
+      {
+        label: 'salaryHidden.name', // Oylik ko'rinish cheklovi
+        path: Utils.routeAccountantPathMaker(AppPaths.SalaryHidden),
+        icon: EyeOff24Regular,
+        color: 'bg-error',
+        permission: appPermissions.economistSalaryHiddenRead
       }
     ]
   },
@@ -944,7 +951,7 @@ export const navigations = withRawIcons([
         path: Utils.routeChatPathMaker(AppPaths.Notification),
         icon: ChatNotificationIcon,
         color: 'bg-dark',
-        permission: appPermissions.instructionsRead
+        permission: appPermissions.chatNotification
       },
       {
         label: 'newsPage.name', // Yangiliklar
@@ -1152,6 +1159,13 @@ export const navigations = withRawIcons([
         icon: AdminFolderIcon,
         color: 'bg-dark',
         permission: appPermissions.instructionsRead
+      },
+      {
+        label: 'videoGuidePage.name', // Video qo'llanmalar
+        path: Utils.routePathMaker(AppPaths.VideoGuides),
+        icon: AdminFolderIcon,
+        color: 'bg-dark',
+        permission: appPermissions.videoGuides
       },
       {
         label: 'mobileUserPage.name', // Mobil foydalanuvchilar

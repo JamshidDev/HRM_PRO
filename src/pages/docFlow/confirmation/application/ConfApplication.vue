@@ -1,5 +1,5 @@
 <script setup>
-  import { UIModal, UIOfficeApp, UIPageContent, UIPageFilter } from '@/components/index.js'
+  import { UIModal, UIOfficeApp, UIPageContent, UIPageFilter, UISegmentTabs } from '@/components/index.js'
   import createForm from './ui/createForm.vue'
   import Table from './ui/Table.vue'
   import { useConfApplicationStore } from '@/store/modules/index.js'
@@ -80,6 +80,7 @@
   <UIPageContent>
     <Banner />
     <UIPageFilter
+      :placeholder="$t('documentSettings.searchPlaceholder')"
       class="mt-4"
       v-model:search="store.params.search"
       :show-filter-button="false"
@@ -101,15 +102,11 @@
         <createForm />
       </template>
     </UIModal>
-    <n-tabs
-      v-model:value="store.params.application_confirmation"
-      type="line"
-      size="small"
-      class="mt-2"
-      @update:value="onFilterChange"
-    >
-      <n-tab v-for="tab in statusTabs" :key="tab.id" :name="tab.id" :tab="tab.name" />
-    </n-tabs>
+    <UISegmentTabs
+      v-model="store.params.application_confirmation"
+      :tabs="statusTabs"
+      @update:model-value="onFilterChange"
+    />
     <Table @openOffice="openOffice" />
     <UIOfficeApp ref="officeAppRef" />
   </UIPageContent>

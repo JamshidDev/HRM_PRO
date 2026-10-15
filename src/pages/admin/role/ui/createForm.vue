@@ -22,6 +22,7 @@
   import ChatModIcon from '@assets/icons/Chat.svg'
   import ExtraModIcon from '@assets/icons/Extra.svg'
   import AdminModIcon from '@assets/icons/Admin.svg'
+  import ProfileModIcon from '@assets/icons/user.svg'
 
   // PERMISSION_GROUPS.module → sidebar iconi.
   const MODULE_ICONS = {
@@ -36,6 +37,7 @@
     chat: ChatModIcon,
     extra: ExtraModIcon,
     admin: AdminModIcon,
+    profile: ProfileModIcon,
   }
   const moduleIcon = (mod) => MODULE_ICONS[mod.module] || Apps24Filled
 

@@ -2,7 +2,7 @@
   import { UIUpload, UIYearMonth } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import { CheckboxChecked24Filled } from '@vicons/fluent'
-  import { useUploadReportStore, useComponentStore, useUploadSourceConfigStore } from '@/store/modules/index.js'
+  import { useUploadReportStore, useComponentStore } from '@/store/modules/index.js'
   import ValidationRules from '@/utils/validationRules.js'
   import LockWrapper from './LockWrapper.vue'
 
@@ -14,7 +14,6 @@
 
   const store = useUploadReportStore()
   const componentStore = useComponentStore()
-  const sourceConfigStore = useUploadSourceConfigStore()
 
   // Barcha hisobot turlari (Oylik + INPS 4/5/to'lovlar) 1C manbasini qo'llaydi.
   const hasSource = computed(() => [1, 2, 3, 4].includes(Number(store.payload.type)))
@@ -25,10 +24,12 @@
     { label: t('uploadReport.source.ones'), value: 2 }
   ]
 
-  // Tanlangan korxona uchun ruxsat etilgan manba (1=Excel, 2=1C, 3=ikkalasi)
+  // Tanlangan korxona uchun ruxsat etilgan manba (1=Excel, 2=1C, 3=ikkalasi).
+  // Manba cheklovi structure endpoint tugunida (`allowed_source`) keladi — korxona
+  // ekonomisti admin config endpointiga ruxsatsiz, lekin structure'ni oladi.
   const orgAllowedSource = computed(() => {
     const orgId = store.params.organization_id
-    if (!orgId || !sourceConfigStore.tree.length) return 3
+    if (!orgId || !store.structuresList.length) return 3
     const find = (nodes) => {
       for (const n of nodes) {
         if (n.id === orgId) return n
@@ -36,7 +37,7 @@
       }
       return null
     }
-    return find(sourceConfigStore.tree)?.allowed_source ?? 3
+    return find(store.structuresList)?.allowed_source ?? 3
   })
 
   const sourceOptions = computed(() => {
@@ -60,7 +61,7 @@
           return
         }
         if (store.payload.file.length === 0) {
-          $Toast.warning(t('rules.requiredFileField'))
+          $Alert.validation(t('rules.requiredFileField'))
           return
         }
         store.saveLoading = true
@@ -73,7 +74,6 @@
 
   onMounted(() => {
     componentStore._enumAccountant()
-    if (!sourceConfigStore.tree.length) sourceConfigStore._index()
   })
 </script>
 

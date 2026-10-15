@@ -1,4 +1,5 @@
 <script setup>
+  import { sanitizeHtml } from '@/utils/sanitize.js'
   import {
     Document24Regular,
     Image24Regular,
@@ -250,7 +251,7 @@
           <article class="flex-1 min-w-0">
             <!-- HTML content -->
             <div class="news-content text-textColor0">
-              <span v-html="translation.content" />
+              <span v-html="sanitizeHtml(translation.content)" />
             </div>
           </article>
 

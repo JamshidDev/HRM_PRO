@@ -4,12 +4,14 @@
     UITable,
     UITableBadgeCell,
     UITableNameCell,
-    UIUser
+    UIUser,
+    UIElectronicNumber
   } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useAdContractStore, useComponentStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
+  import { useNotify } from '@/composables/useNotify'
   import {
     ArrowSyncCheckmark20Filled,
     CheckmarkCircle32Regular,
@@ -37,15 +39,11 @@
     onOpenFile(row.id)
   }
 
+  const notify = useNotify()
+  // Tahrir: saqlangan forma tiklanadi; qulflangan bo'lsa sababi ko'rsatiladi.
   const onEdit = (row) => {
     if (!accStore.checkAction(accStore.pn.hrContractAdditionalWrite)) return
-    store.visibleType = false
-    store.payload.number = row.number.toString()
-    store.payload.type = row.type.id
-    store.payload.contract_date = new Date(row.contract_date).getTime()
-    store.payload.contract_to_date = new Date(row.contract_date).getTime()
-    store.payload.position_date = new Date(row.contract_date).getTime()
-    store.visible = true
+    store._openEdit(row.id, (block) => notify.warning(t(`adContractPage.edit.locked.${block}`)))
   }
 
   const onDelete = (row) => {
@@ -78,6 +76,11 @@
       title: t('contractPage.table.number'),
       width: 120,
       align: 'center'
+    },
+    {
+      key: 'electronic_number',
+      title: t('documentSettings.electronicNumber'),
+      width: 130
     },
     {
       key: 'worker',
@@ -158,6 +161,10 @@
         :created-at="row.created_at"
         @click="onOpenFile(row.id)"
       />
+    </template>
+
+    <template #cell-electronic_number="{ row }">
+      <UIElectronicNumber :value="row?.electronic_number" />
     </template>
 
     <template #cell-number="{ row }">

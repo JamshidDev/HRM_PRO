@@ -87,6 +87,32 @@ const _onesErrorsExport = async (payload) => {
   })
 }
 
+// Ko'p 1C kodli korxonaning bitta kod (ones_code) bo'yicha per-kod snapshot Excel'lari.
+const _onesStatementExcel = async (payload) => {
+  return await axios.get(`/v1/economist/upload/ones-statement-excel`, {
+    params: payload?.params,
+    responseType: 'blob'
+  })
+}
+const _taxFourExcel = async (payload) => {
+  return await axios.get(`/v1/economist/upload/tax-four-excel`, {
+    params: payload?.params,
+    responseType: 'blob'
+  })
+}
+const _taxFiveExcel = async (payload) => {
+  return await axios.get(`/v1/economist/upload/tax-five-excel`, {
+    params: payload?.params,
+    responseType: 'blob'
+  })
+}
+const _pensionExcel = async (payload) => {
+  return await axios.get(`/v1/economist/upload/pension-excel`, {
+    params: payload?.params,
+    responseType: 'blob'
+  })
+}
+
 // Tortish tarixi (pull-log) — barcha davrlar bo'yicha paginatsiyalangan yuklamalar.
 const _pullHistory = async (payload) => {
   return await axios.get(`/v1/economist/upload-report-history`, { params: payload?.params })
@@ -150,6 +176,10 @@ export default {
   _reportStatusExport,
   _reportsZip,
   _onesErrorsExport,
+  _onesStatementExcel,
+  _taxFourExcel,
+  _taxFiveExcel,
+  _pensionExcel,
   _pullHistory,
   _reportDownloads,
   _paymentAnalysisIndex,

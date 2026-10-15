@@ -1,4 +1,5 @@
 <script setup>
+  import { sanitizeHtml } from '@/utils/sanitize.js'
 import {useCongratulationStore} from "@stores"
 import { UIModal} from "@components"
 
@@ -12,7 +13,7 @@ const store = useCongratulationStore()
     :title="$t('content.view')"
   >
     <div class="bg-surface-ground p-4 rounded-lg h-[300px] overflow-y-auto">
-      <pre v-html="store.selectedContent"></pre>
+      <pre v-html="sanitizeHtml(store.selectedContent)"></pre>
     </div>
   </UIModal>
 </template>

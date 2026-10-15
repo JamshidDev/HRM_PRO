@@ -65,7 +65,7 @@ export const useAccountStore = defineStore('accountStore', {
     // foydalanuvchi nima kutayotganini bilmasdi.
     loadingKind: 'boot',
     activeTab: 1,
-    tabs: [1, 2, 3, 4, 5, 6, 7],
+    tabs: [1, 2, 3, 4, 5, 6, 7, 8],
     // Profil > Xavfsizlik: web kirish usullari (`/user/profile` javobidan).
     // Har element {enabled, editable}; hozircha faqat `password` tahrirlanadi.
     loginMethods: null,
@@ -133,13 +133,13 @@ export const useAccountStore = defineStore('accountStore', {
     canDo: (state) => (prefix, action) => state.checkPermission(`${prefix}-${action}`),
 
     /**
-     * Amalni bajarishdan oldingi qo'riqchi: rad etilsa toast chiqaradi.
+     * Amalni bajarishdan oldingi qo'riqchi: rad etilsa «Ruxsat berilmagan» modali chiqadi.
      * DIQQAT: yon ta'sirli — `v-if` / `computed` ichida ISHLATILMASIN, aks holda
-     * har render'da toast chiqadi. Ko'rinish uchun `checkPermission`/`canView` ishlatiladi.
+     * har render'da modal chiqadi. Ko'rinish uchun `checkPermission`/`canView` ishlatiladi.
      */
     checkAction: (state) => (permission) => {
       if (!state.checkPermission(permission)) {
-        $Toast.warning(t('message.noPermission'))
+        $Alert({ type: 'forbidden' })
         return false
       }
       return true

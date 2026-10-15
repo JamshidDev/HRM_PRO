@@ -10,14 +10,15 @@
    */
   import PlaneDepartureIcon from '@/assets/icons/home/plane-departure.svg'
   import CertificateCheckIcon from '@/assets/icons/home/certificate-check.svg'
-  import FileArrowDownIcon from '@/assets/icons/home/file-arrow-down.svg'
+  import VideoGuideIcon from '@/assets/icons/home/video-guide.svg'
+  import { AppPaths } from '@/utils/index.js'
   import WalletAltIcon from '@/assets/icons/home/wallet-alt.svg'
   import DoorOpenIcon from '@/assets/icons/home/door-open.svg'
 
   const actions = [
     { key: 'vacation', icon: markRaw(PlaneDepartureIcon) },
     { key: 'reference', icon: markRaw(CertificateCheckIcon) },
-    { key: 'report', icon: markRaw(FileArrowDownIcon) },
+    { key: 'guides', icon: markRaw(VideoGuideIcon), to: AppPaths.Guides },
     { key: 'income', icon: markRaw(WalletAltIcon) },
     { key: 'turnstile', icon: markRaw(DoorOpenIcon) }
   ]
@@ -25,10 +26,13 @@
 
 <template>
   <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-    <div
+    <component
+      :is="action.to ? 'router-link' : 'div'"
       v-for="action in actions"
       :key="action.key"
-      class="flex cursor-default flex-col gap-3 overflow-hidden rounded-2xl bg-fig-block shadow-card p-4"
+      :to="action.to"
+      class="flex flex-col gap-3 overflow-hidden rounded-2xl bg-fig-block shadow-card p-4"
+      :class="action.to ? 'cursor-pointer transition hover:-translate-y-0.5 hover:shadow-lg' : 'cursor-default'"
     >
       <span class="flex h-9 w-9 shrink-0 items-center justify-center">
         <component :is="action.icon" />
@@ -41,6 +45,6 @@
           {{ $t(`homePage.actions.${action.key}.subtitle`) }}
         </p>
       </div>
-    </div>
+    </component>
   </div>
 </template>

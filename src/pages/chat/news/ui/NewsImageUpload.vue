@@ -39,7 +39,7 @@
 
   // ── Hajm nazorati ────────────────────────────────────────────────────────────
   const rejectTooLarge = (name) =>
-    window.$Toast?.error(t('newsPage.fileTooLarge', { name: name ?? '' }))
+    $Alert.validation(t('newsPage.fileTooLarge', { name: name ?? '' }))
 
   // Rasm yuborishdan oldin siqiladi; siqilgandan keyin ham limitdan katta
   // bo'lsa qo'shilmaydi (backend uni baribir rad etadi).

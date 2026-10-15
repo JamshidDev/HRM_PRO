@@ -32,6 +32,7 @@
     Subtract16Regular
   } from '@vicons/fluent'
   import VariablePanel from './ui/VariablePanel.vue'
+  import DocumentSettingsCard from './ui/DocumentSettingsCard.vue'
   import { extractVariables } from './variableMeta.js'
 
   const { t } = i18n.global
@@ -437,6 +438,8 @@
         </span>
       </div>
     </UIFigBlock>
+
+    <DocumentSettingsCard />
 
     <!-- Muharrir chapda, ma'lumot kartasi o'ngda. -->
     <div class="dt-workspace">

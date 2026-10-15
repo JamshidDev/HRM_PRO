@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
+import { openSafeUrl } from '@/utils/sanitize.js'
 
 const { t } = i18n.global
 export const useListenerStore = defineStore('listenerStore', {
@@ -48,7 +49,7 @@ export const useListenerStore = defineStore('listenerStore', {
       $ApiService.listenerService
         ._joinLesson({ id: this.elementId })
         .then((res) => {
-          window.open(res.data.data.zoom_start_url, '_blank')
+          openSafeUrl(res.data.data.zoom_start_url)
         })
         .finally(() => {
           this.showLoading = false

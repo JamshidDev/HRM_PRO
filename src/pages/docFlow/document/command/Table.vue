@@ -4,7 +4,8 @@
     UITable,
     UITableNameCell,
     UIUser,
-    UIUserGroup
+    UIUserGroup,
+    UIElectronicNumber
   } from '@/components/index.js'
   import { useAccountStore, useCommandStore, useComponentStore } from '@/store/modules/index.js'
   import {
@@ -100,6 +101,11 @@
       width: 90
     },
     {
+      key: 'electronic_number',
+      title: t('documentSettings.electronicNumber'),
+      width: 130
+    },
+    {
       key: 'organization.name',
       title: t('confirmation.contract.form.organization'),
       minWidth: 160
@@ -178,6 +184,10 @@
     </template>
 
     <!-- Maketda raqam chip'siz, oddiy matn ko'rinishida va chapga tekislangan. -->
+    <template #cell-electronic_number="{ row }">
+      <UIElectronicNumber :value="row?.electronic_number" />
+    </template>
+
     <template #cell-command_number="{ row }">
       <span class="text-sm leading-5 text-fig-text-secondary">
         {{ row?.command_number || '—' }}

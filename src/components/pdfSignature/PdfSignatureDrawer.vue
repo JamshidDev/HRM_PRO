@@ -13,6 +13,7 @@
   import { useAppBreakpoints } from '@/composables/useBreakpoint.js'
   import { UIUser, UILottieReader, UISegmentTabs } from '@/components/index.js'
   import CommandDataTab from '@/pages/docFlow/document/command/CommandDataTab.vue'
+  import DocumentFormDataTab from '@/pages/docFlow/document/DocumentFormDataTab.vue'
   import AttachmentPreview from './ui/AttachmentPreview.vue'
   import EditRefreshIcon from '@/assets/icons/editRefreshIcon.svg'
   import PdfFileIcon from '@/assets/icons/pdfFileIcon.svg'
@@ -23,6 +24,7 @@
     usePdfViewerStore,
     useSignatureStore,
     useApplicationStore,
+    useDocumentRouteStore,
     useAccountStore
   } from '@/store/modules/index.js'
   import { useNotify } from '@/composables/useNotify'
@@ -55,6 +57,7 @@
   const accountStore = useAccountStore()
   const signatureStore = useSignatureStore()
   const applicationStore = useApplicationStore()
+  const documentRouteStore = useDocumentRouteStore()
   const notify = useNotify()
 
   const confirmSignatureVisible = ref(false)
@@ -96,8 +99,16 @@
   })
   const hasDocumentFile = computed(() => !!store.pdfUrl)
 
-  // Buyruqda header markazida tablar: «Hujjat» (ko'rish/imzolash) va «Ma'lumotlar» (forma).
+  // Buyruq, shartnoma va qo'shimcha kelishuvda header markazida tablar: «Hujjat» va «Ma'lumotlar» (forma).
   const isCommand = computed(() => store.model === Utils.documentModels.command)
+  const dataTabKind = computed(
+    () =>
+      ({
+        [Utils.documentModels.contract]: 'contract',
+        [Utils.documentModels.adContract]: 'adContract'
+      })[store.model] ?? null
+  )
+  const hasDataTab = computed(() => isCommand.value || !!dataTabKind.value)
   const activeTab = computed({
     get: () => store.centerTab,
     set: (v) => (store.centerTab = v)
@@ -466,6 +477,42 @@
     emits('signatureEv')
   }
 
+  // Buyruq / shartnoma / qo'shimcha kelishuv: kelishuvchilar marshruti (parallel / ketma-ket).
+  const isRouteDoc = computed(() =>
+    [
+      Utils.documentModels.command,
+      Utils.documentModels.contract,
+      Utils.documentModels.adContract
+    ].includes(store.model)
+  )
+  // Marshrutni faqat hujjat turining yozish ruxsati bor (HR) o'zgartiradi — kelishuvchiga tugma ko'rinmaydi.
+  const ROUTE_WRITE = {
+    [Utils.documentModels.command]: accountStore.pn.hrCommandsWrite,
+    [Utils.documentModels.contract]: accountStore.pn.hrContractsWrite,
+    [Utils.documentModels.adContract]: accountStore.pn.hrContractAdditionalWrite
+  }
+  const canRoute = computed(
+    () =>
+      isRouteDoc.value &&
+      store.permissions.canEdit &&
+      accountStore.checkAction(ROUTE_WRITE[store.model])
+  )
+  // Hujjat matnini (OnlyOffice) tahrirlash ham — buyruq/shartnomada faqat HR yozish ruxsati bilan.
+  const canEditDoc = computed(
+    () =>
+      store.permissions.canEdit &&
+      (!isRouteDoc.value || accountStore.checkAction(ROUTE_WRITE[store.model]))
+  )
+  const openDocumentRoute = () =>
+    documentRouteStore._openRoute(store.model, store.document_id, hrDirector(), (block) =>
+      notify.warning(t(`documentPage.command.dataTab.locked.${block}`))
+    )
+  // Muvaffaqiyat xabarini backend javobi o'zi chiqaradi.
+  const onRouteSaved = () => {
+    getDocument(store.document_id, store.model)
+    emits('signatureEv')
+  }
+
   const onForwarded = () => {
     notify.success(t('applicationPage.forward.done'))
     emits('signatureEv')
@@ -535,7 +582,7 @@
               </div>
             </div>
             <div
-              v-if="isCommand && !store.loading"
+              v-if="hasDataTab && !store.loading"
               class="order-last w-full flex justify-center md:order-none md:w-auto md:absolute md:left-1/2 md:-translate-x-1/2"
             >
               <UISegmentTabs v-model="activeTab" :tabs="tabs" variant="surface" />
@@ -547,7 +594,21 @@
             </div>
             <div v-else class="flex items-center gap-2 md:gap-3">
               <n-button
-                v-if="store.permissions.canEdit && showEditButton"
+                v-if="canRoute && showEditButton"
+                :loading="documentRouteStore.routeLoading"
+                @click="openDocumentRoute"
+                tertiary
+                :title="$t('documentPage.command.form.confirm')"
+              >
+                <template v-if="isWide">{{ $t('documentPage.command.form.confirm') }}</template>
+                <template #icon>
+                  <n-icon size="16">
+                    <People20Regular />
+                  </n-icon>
+                </template>
+              </n-button>
+              <n-button
+                v-if="canEditDoc && showEditButton"
                 @click="onEdit"
                 tertiary
                 :title="$t('content.edit')"
@@ -637,14 +698,22 @@
             <div class="flex-1 min-w-0 h-full flex flex-col relative overflow-hidden">
               <Transition :name="tabTransition" mode="out-in">
                 <div
-                  v-if="isCommand && activeTab === 'data'"
+                  v-if="hasDataTab && activeTab === 'data'"
                   key="data"
                   class="h-full flex flex-col"
                 >
                   <CommandDataTab
+                    v-if="isCommand"
                     :command-id="store.document_id"
                     @saved="onDataSaved"
                     @open-source="(v) => getDocument(v.id, v.model)"
+                  />
+                  <DocumentFormDataTab
+                    v-else
+                    :key="`${dataTabKind}-${store.document_id}`"
+                    :document-id="store.document_id"
+                    :kind="dataTabKind"
+                    @saved="onDataSaved"
                   />
                 </div>
                 <div v-else key="document" class="relative h-full flex flex-col">
@@ -1062,6 +1131,11 @@
     </n-drawer>
     <ConformAndRejectModal @rejected="onRejected" />
     <ForwardApplicationModal @forwarded="onForwarded" />
+    <ForwardApplicationModal
+      v-if="isRouteDoc"
+      :route-store="documentRouteStore"
+      @forwarded="onRouteSaved"
+    />
     <DocumentFileModal />
     <ConfirmSignatureModal
       v-model:visible="confirmSignatureVisible"

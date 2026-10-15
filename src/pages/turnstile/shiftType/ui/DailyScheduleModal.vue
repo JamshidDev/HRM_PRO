@@ -18,7 +18,7 @@
   const onSave = () => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsWorkersWrite)) return
     if (store.selectedWorkers.length === 0) {
-      $Toast.warning(t('content.empty'))
+      $Alert.validation(t('content.empty'))
       return
     }
     const data = {

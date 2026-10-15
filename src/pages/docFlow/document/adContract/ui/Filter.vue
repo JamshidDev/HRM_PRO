@@ -63,6 +63,7 @@
 
 <template>
   <UIPageFilter
+    :placeholder="$t('documentSettings.searchPlaceholder')"
     :add-permission="accStore.pn.hrContractAdditionalWrite"
     @onAdd="onAdd"
     @onSearch="onSearchEv"

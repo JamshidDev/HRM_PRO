@@ -1,4 +1,5 @@
 <script setup>
+  import { sanitizeHtml } from '@/utils/sanitize.js'
   import { UITable, UITablePagination, UIUser } from '@/components/index.js'
   import { useCongratulationStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
@@ -74,7 +75,7 @@
       <div
         @click="onPreview(row)"
         class="line-clamp-2 hover:underline hover:text-primary cursor-pointer"
-        v-html="row.message"
+        v-html="sanitizeHtml(row.message)"
       ></div>
     </template>
 

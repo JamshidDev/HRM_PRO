@@ -1,4 +1,6 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
+  import { sanitizeHtml } from '@/utils/sanitize.js'
   import { UIBadge, UIUser } from '@/components/index.js'
   import { useVacancyStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
@@ -96,7 +98,7 @@
     if (statusId === 3) return Utils.colorTypes.error
     return Utils.colorTypes.warning
   }
-  const openFile = (url) => window.open(url, '_blank')
+  const openFile = (url) => openSafeUrl(url)
 
   // Tanlangan / joriy levelga mos ariza statusi
   const getLevelStatus = (app) =>
@@ -240,7 +242,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" /></svg>
               </n-icon>
             </button>
-            <div v-show="openBlocks.position_obligations" class="collapse-body" v-html="v.position_obligations"></div>
+            <div v-show="openBlocks.position_obligations" class="collapse-body" v-html="sanitizeHtml(v.position_obligations)"></div>
           </div>
 
           <div v-if="v.qualification_requirements" class="collapse-block">
@@ -253,7 +255,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" /></svg>
               </n-icon>
             </button>
-            <div v-show="openBlocks.qualification_requirements" class="collapse-body" v-html="v.qualification_requirements"></div>
+            <div v-show="openBlocks.qualification_requirements" class="collapse-body" v-html="sanitizeHtml(v.qualification_requirements)"></div>
           </div>
 
           <div v-if="v.working_conditions" class="collapse-block">
@@ -266,7 +268,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" /></svg>
               </n-icon>
             </button>
-            <div v-show="openBlocks.working_conditions" class="collapse-body" v-html="v.working_conditions"></div>
+            <div v-show="openBlocks.working_conditions" class="collapse-body" v-html="sanitizeHtml(v.working_conditions)"></div>
           </div>
 
           <div v-if="v.specialties" class="collapse-block">
@@ -279,7 +281,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" /></svg>
               </n-icon>
             </button>
-            <div v-show="openBlocks.specialties" class="collapse-body" v-html="v.specialties"></div>
+            <div v-show="openBlocks.specialties" class="collapse-body" v-html="sanitizeHtml(v.specialties)"></div>
           </div>
         </div>
 

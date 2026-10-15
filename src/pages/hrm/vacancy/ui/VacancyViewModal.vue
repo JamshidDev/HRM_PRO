@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { UIModal, UIBadge, UIUser } from '@/components/index.js'
   import { useVacancyStore } from '@/store/modules/index.js'
   import ApplicationDetailModal from './ApplicationDetailModal.vue'
@@ -48,7 +49,7 @@
     return 'Kutilmoqda'
   }
 
-  const openFile = (url) => window.open(url, '_blank')
+  const openFile = (url) => openSafeUrl(url)
 </script>
 
 <template>

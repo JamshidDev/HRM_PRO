@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { computed } from 'vue'
   import { Airplane20Regular, HatGraduation20Filled } from '@vicons/fluent'
   import { useComponentStore } from '@/store/modules/index.js'
@@ -17,7 +18,7 @@
   )
 
   const onDownload = (file) => {
-    window.open(file, '_blank')
+    openSafeUrl(file)
   }
 </script>
 

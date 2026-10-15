@@ -1,24 +1,28 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
+import { getOneMonthAgoYearMonth } from '@utils'
 
 const { t } = i18n.global
 
-const now = new Date()
+// Oylik hisobot bir oy orqada hisoblanadi — default davr bir oy oldingisi
+// (boshqa oylik hisobot sahifalari bilan parity: upload-report, month-report, ...).
+const defaultPeriod = getOneMonthAgoYearMonth()
 
 export const useSalary1cStore = defineStore('salary1cStore', {
   state: () => ({
     // Filter
     params: {
       organization_id: null,
-      year: now.getFullYear(),
-      month: now.getMonth() + 1,
+      year: defaultPeriod.year,
+      month: defaultPeriod.month,
       page: 1,
       per_page: 20,
       search: null,
       matched: null, // null=barchasi | 'out'=faqat tizimda yo'q | 'in'=faqat tizimda bor
       // Oylik hisobot (month-report) filtri bilan parity — qo'shimcha maydonlar.
       code: null, // 1C to'lov kodi (paying_code)
+      ones_code: null, // ko'p 1C kod: aynan kod bo'yicha (bitta kodli org — null)
       sex: null, // 1=erkak | 0=ayol
       start_hours: null, // ishlagan soat (dan)
       end_hours: null, // ishlagan soat (gacha)
@@ -126,6 +130,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     onChangeStructure(v) {
       this.selectedOrgs = v
       this.params.matched = null
+      this.params.ones_code = null // korxona o'zgardi — kod filtrini bekor qilamiz
       this.params.page = 1
       // Joriy tabga qarab mos ro'yxatni yangilaymiz (org filtri hammasiga ta'sir qiladi).
       if (this.activeTab === 'veds') {
@@ -158,6 +163,8 @@ export const useSalary1cStore = defineStore('salary1cStore', {
       // month-report parity filtrlari — bo'sh bo'lsa yubormaymiz.
       // sex=0 (ayol) ham to'g'ri qiymat → faqat null/undefined bo'lsa olib tashlaymiz.
       if (params.code == null || params.code === '') delete params.code
+      // ko'p 1C kod: bo'sh bo'lsa yubormaymiz → hamma kod (birlashган).
+      if (params.ones_code == null || params.ones_code === '') delete params.ones_code
       if (params.sex == null) delete params.sex
       if (params.start_hours == null) delete params.start_hours
       if (params.end_hours == null) delete params.end_hours
@@ -180,7 +187,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
           // Ilgari .catch yo'q edi — so'rov 400 (validatsiya) qaytarsa ro'yxat JIMGINA
           // eski holatda qolardi (sort/filtr «ishlamayapti» ko'rinardi). Endi xato ko'rinadi.
           console.error('[salary1c._index] error:', err?.response?.data ?? err?.message, params)
-          $Toast.error(err?.response?.data?.message ?? t('content.error'))
+          $Alert.error(err, t('content.error'))
         })
         .finally(() => {
           this.loading = false
@@ -208,7 +215,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     },
     _pull() {
       if (!this.params.organization_id) {
-        $Toast.warning(t('salary1c.selectOrg'))
+        $Alert.validation(t('salary1c.selectOrg'))
         return
       }
       this.pullLoading = true
@@ -229,7 +236,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
           this._index()
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          $Alert.error(e, t('content.error'))
         })
         .finally(() => {
           this.pullLoading = false
@@ -282,7 +289,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     _runBatchPull() {
       const ids = this.pullSelectOrgs.filter((o) => o.selected).map((o) => o.organization_id)
       if (!ids.length) {
-        $Toast.warning(t('salary1c.selectOrg'))
+        $Alert.validation(t('salary1c.selectOrg'))
         return
       }
       $ApiService.salary1cService
@@ -299,7 +306,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
           else this._onJobFinished()
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          $Alert.error(e, t('content.error'))
         })
     },
     _startPolling() {
@@ -346,7 +353,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
         })
         .catch((e) => {
           this.pullCancelling = false
-          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          $Alert.error(e, t('content.error'))
         })
     },
     _onJobFinished() {
@@ -442,7 +449,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
       const pinfl = row?.pinfl
       const organization_id = row?.organization_id ?? this.params.organization_id
       if (!pinfl || !organization_id) {
-        $Toast.warning(t('salary1c.selectOrg'))
+        $Alert.validation(t('salary1c.selectOrg'))
         return
       }
       this.repullPinfl = pinfl
@@ -460,7 +467,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
           this._index()
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          $Alert.error(e, t('content.error'))
         })
         .finally(() => {
           this.repullPinfl = null
@@ -591,7 +598,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     // «Hisoblash» — natija modalini ochib, matritsani yuklaydi.
     openVedMatrix() {
       if (!this.selectedVedCodes.length) {
-        $Toast.warning(t('salary1c.veds.selectFirst'))
+        $Alert.validation(t('salary1c.veds.selectFirst'))
         return
       }
       this.vedMatrixParams.page = 1
@@ -602,7 +609,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     // Tanlangan vedlar bo'yicha korxona×ved matritsasini hisoblaydi.
     _vedMatrix() {
       if (!this.selectedVedCodes.length) {
-        $Toast.warning(t('salary1c.veds.selectFirst'))
+        $Alert.validation(t('salary1c.veds.selectFirst'))
         return
       }
       this.vedMatrixLoading = true
@@ -621,7 +628,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
           this.vedMatrix = res.data.data
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          $Alert.error(e, t('content.error'))
         })
         .finally(() => {
           this.vedMatrixLoading = false
@@ -636,7 +643,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     // --- Ved drill-down: bir ved summasi qaysi xodimlardan (modal) ---
     openVedWorkers(row) {
       if (!this._orgCsv()) {
-        $Toast.warning(t('salary1c.reconcile.selectOneOrg'))
+        $Alert.validation(t('salary1c.reconcile.selectOneOrg'))
         return
       }
       this.vedWorkersRow = { type: row.type, code: row.code, name: row.name }
@@ -685,7 +692,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
     _reconcile() {
       const orgs = this._orgCsv()
       if (!orgs) {
-        $Toast.warning(t('salary1c.reconcile.selectOneOrg'))
+        $Alert.validation(t('salary1c.reconcile.selectOneOrg'))
         return
       }
       this.reconcileLoading = true
@@ -701,7 +708,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
           this.reconcile = res.data.data
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          $Alert.error(e, t('content.error'))
         })
         .finally(() => {
           this.reconcileLoading = false
@@ -751,7 +758,7 @@ export const useSalary1cStore = defineStore('salary1cStore', {
           $Toast.success(t('salary1c.codeSaved'))
           this._getOrgCode()
         })
-        .catch((e) => $Toast.error(e?.response?.data?.message ?? t('content.error')))
+        .catch((e) => $Alert.error(e, t('content.error')))
         .finally(() => {
           this.orgCodeSaving = false
         })

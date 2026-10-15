@@ -24,7 +24,11 @@
       if (!error) {
         // FXSH (turi 2) — bitta qadam: tashkilot ham 1-qadamda so'raladi, shu yerda
         // yaratiladi (2-qadam bo'sh). Boshqa turlar avvalgidek 3-qadamda yaratadi.
-        if (store.activeTab === 1 && store.payload.type === 2) {
+        // Tahrir rejimida oxirgi qadam — saqlash o'rniga qayta yuborish modali.
+        const last = (store.activeTab === 1 && store.payload.type === 2) || store.activeTab === 3
+        if (last && store.editId) {
+          store._submitEdit()
+        } else if (store.activeTab === 1 && store.payload.type === 2) {
           store.saveLoading = true
           store._create(props.callBack)
         } else if (store.activeTab === 3) {
@@ -48,7 +52,8 @@
       componentStore._enums()
     }
     componentStore._scheduleList((data) => {
-      store.payload.schedule_id = data[0]?.id
+      // Tahrirda tiklangan jadval saqlanadi.
+      if (!store.payload.schedule_id) store.payload.schedule_id = data[0]?.id
     })
   })
 
@@ -156,78 +161,5 @@
     padding: 0 12px 0 0;
   }
 
-  /*
-    Kartalar (`UIFigBlock`) olib tashlandi — oldin maydonlar to'ri va bo'lim
-    sarlavhasi qolipini karta bergan edi, endi shu yerda, forma darajasida.
-  */
-  .contract-form :deep(.form-section) {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
-  }
-
-  .contract-form :deep(.form-section__title) {
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 16px;
-    color: var(--fig-text-secondary);
-  }
-
-  .contract-form :deep(.form-section__head) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    width: 100%;
-  }
-
-  /*
-    Sanoqchi nishoni (`n-badge`) maydonning o'ng YUQORI BURCHAGIDA turadi —
-    markazi aynan burchakda: yuqori chiziqning ham, o'ng chiziqning ham o'rtasida.
-    Naive'ning o'zi uni `left: 100%` + `bottom: calc(100% - 9px)` orqali qo'yadi,
-    `transform` ni esa `offset` propidan inline yozadi — shu bois `!important`.
-    Nishonning o'ngga chiqqan yarmi tab panelining o'ng padding'iga tushadi
-    (pastdagi `.n-tab-pane` qoidasiga qarang).
-  */
-  .contract-form :deep(.n-badge-sup) {
-    top: 0;
-    right: 0;
-    bottom: auto;
-    left: auto;
-    transform: translate(50%, -50%) !important;
-  }
-
-  .contract-form :deep(.fig-grid) {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-items: start;
-    gap: 12px;
-    width: 100%;
-  }
-
-  .contract-form :deep(.fig-grid > .fig-grid__wide) {
-    grid-column: span 2;
-  }
-
-  .contract-form :deep(.fig-grid > .fig-grid__full) {
-    grid-column: 1 / -1;
-  }
-
-  @media (max-width: 976px) {
-    .contract-form :deep(.fig-grid) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 480px) {
-    .contract-form :deep(.fig-grid) {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
-    .contract-form :deep(.fig-grid > .fig-grid__wide),
-    .contract-form :deep(.fig-grid > .fig-grid__full) {
-      grid-column: span 1;
-    }
-  }
+  @import './contractFormSections.scss';
 </style>

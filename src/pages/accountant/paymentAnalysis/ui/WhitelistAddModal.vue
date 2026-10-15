@@ -52,7 +52,7 @@
 
   const onSubmit = () => {
     if (!workerPositionId.value || !store.whitelistAddPayload.worker_id) {
-      $Toast.warning(t('paymentAnalysis.toast.requiredWorker'))
+      $Alert.validation(t('paymentAnalysis.toast.requiredWorker'))
       return
     }
     store._addWhitelistRow()

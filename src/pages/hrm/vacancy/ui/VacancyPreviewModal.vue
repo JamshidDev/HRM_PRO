@@ -1,4 +1,5 @@
 <script setup>
+  import { sanitizeHtml } from '@/utils/sanitize.js'
   import { UIModal } from '@/components/index.js'
   import { useVacancyStore } from '@/store/modules/index.js'
   import numeral from 'numeral'
@@ -165,7 +166,7 @@
               <n-icon size="17"><ClipboardTaskListLtr20Regular /></n-icon>
               {{ $t('vacancy.form.qualification_requirements') }}
             </h3>
-            <div class="section-body" v-html="v.qualification_requirements" />
+            <div class="section-body" v-html="sanitizeHtml(v.qualification_requirements)" />
           </div>
 
           <div v-if="v.position_obligations" class="text-section">
@@ -173,7 +174,7 @@
               <n-icon size="17"><Briefcase24Regular /></n-icon>
               {{ $t('vacancy.form.position_obligations') }}
             </h3>
-            <div class="section-body" v-html="v.position_obligations" />
+            <div class="section-body" v-html="sanitizeHtml(v.position_obligations)" />
           </div>
 
           <div v-if="v.working_conditions" class="text-section">
@@ -181,7 +182,7 @@
               <n-icon size="17"><RibbonStar20Regular /></n-icon>
               {{ $t('vacancy.form.working_conditions') }}
             </h3>
-            <div class="section-body" v-html="v.working_conditions" />
+            <div class="section-body" v-html="sanitizeHtml(v.working_conditions)" />
           </div>
 
           <div v-if="v.specialties" class="text-section">
@@ -189,7 +190,7 @@
               <n-icon size="17"><FlowchartCircle24Regular /></n-icon>
               {{ $t('vacancy.form.specialties') }}
             </h3>
-            <div class="section-body" v-html="v.specialties" />
+            <div class="section-body" v-html="sanitizeHtml(v.specialties)" />
           </div>
 
         </div>

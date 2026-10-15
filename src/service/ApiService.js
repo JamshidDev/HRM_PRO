@@ -25,6 +25,7 @@ import scheduleService from '@/service/v1/admin/scheduleService.js'
 import workdayService from '@/service/v1/admin/workdayService.js'
 import commandTempService from '@/service/v1/admin/commandTempService.js'
 import documentTemplateService from '@/service/v1/admin/documentTemplateService.js'
+import documentSettingsService from '@/service/v1/admin/documentSettingsService.js'
 import specialityService from '@/service/v1/admin/specialityService.js'
 import uploadService from '@/service/v1/admin/uploadService.js'
 import holidayService from '@/service/v1/admin/holidayService.js'
@@ -34,6 +35,7 @@ import telegramService from '@/service/v1/admin/telegramService.js'
 import instructionService from '@/service/v1/admin/instructionService.js'
 import mobileUserService from '@/service/v1/admin/mobileUserService.js'
 import mobileStoryService from '@/service/v1/admin/mobileStoryService.js'
+import videoGuideService from '@/service/v1/app/videoGuideService.js'
 import vacancyApproveService from '@/service/v1/admin/vacancyApproveService.js'
 import integrationClientsService from '@/service/v1/admin/integrationClientsService.js'
 import dbBackupService from '@/service/v1/admin/dbBackupService.js'
@@ -171,6 +173,7 @@ import tariffGridService from './v1/accountant/tariffGridService.js'
 import tariffBaseService from './v1/accountant/tariffBaseService.js'
 import salary1cService from './v1/accountant/salary1cService.js'
 import uploadSourceConfigService from './v1/accountant/uploadSourceConfigService.js'
+import salaryHiddenService from './v1/accountant/salaryHiddenService.js'
 
 import expiredHealthService from './v1/hospital/expiredHealthService.js'
 import ticketService from './v1/hospital/ticketService.js'
@@ -220,6 +223,7 @@ export default {
   workdayService,
   commandTempService,
   documentTemplateService,
+  documentSettingsService,
   specialityService,
   commandService,
   documentChatService,
@@ -291,6 +295,7 @@ export default {
   tariffBaseService,
   salary1cService,
   uploadSourceConfigService,
+  salaryHiddenService,
   taxFourService,
   taxFiveService,
   accDashboardService,
@@ -329,6 +334,7 @@ export default {
   newsService,
   mobileUserService,
   mobileStoryService,
+  videoGuideService,
   vacancyApproveService,
   structureReportService,
   confirmationReportService,

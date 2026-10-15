@@ -348,6 +348,9 @@
             </n-ellipsis>
             <div class="mt-0.5 text-[11px] font-medium text-textColor2 tabular-nums">
               №{{ item.worker_application?.number }}
+              <template v-if="item.worker_application?.electronic_number">
+                · {{ item.worker_application.electronic_number }}
+              </template>
               <template v-if="item.worker_application?.created_at">
                 · {{ Utils.timeOnlyDate(item.worker_application.created_at) }}
               </template>

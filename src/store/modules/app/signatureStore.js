@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import { useAppSetting } from '@/utils/index.js'
+import { isToastOnlyPage } from '@/components/notify/alertDialog.js'
 const apiUrl = import.meta.env.VITE_API_URL
 
 const { t } = i18n.global
@@ -57,7 +58,9 @@ export const useSignatureStore = defineStore('signatureStore', {
           async (error) => {
             this.loading = false
             const blocked = await isLocalNetworkBlocked()
-            $Toast.error(t(blocked ? 'signature.localNetworkBlocked' : 'signature.connectionError'))
+            const message = t(blocked ? 'signature.localNetworkBlocked' : 'signature.connectionError')
+            if (isToastOnlyPage()) $Toast.error(message)
+            else $Alert({ type: 'network', title: t('alertDialog.eimzoTitle'), message, duration: 0 })
             reject(error)
           }
         )
@@ -184,7 +187,7 @@ export const useSignatureStore = defineStore('signatureStore', {
         key = this.allKeys[idx]
         this.workerPin = key?.pinfl
         if (key.expired) {
-          $Toast.error(t('signature.expiredKey'))
+          $Alert.warning(t('signature.expiredKey'))
           return ''
         }
       }
@@ -305,9 +308,10 @@ export const useSignatureStore = defineStore('signatureStore', {
         (pkcs7) => {
           callback(pkcs7)
         },
-        () => {
+        (e, r) => {
+          // Kalit paroli noto'g'ri yoki imzo yaratilmadi — oldin xabarsiz qolardi.
           this.loading = false
-          return uiHandleError
+          $Alert.warning(e ? `${errorCAPIWS}: ${e}` : r || t('signature.confirmError'))
         },
         false
       )
@@ -329,8 +333,7 @@ export const useSignatureStore = defineStore('signatureStore', {
         .catch((error) => {
           this.loading = false
           // Backend aniq sabab qaytarsa (masalan, "Imzo mos emas: ..."), shuni ko'rsatamiz
-          const message = String(error?.response?.data?.message ?? '').trim()
-          $Toast.error(message || t('signature.confirmError'))
+          $Alert.error(error, t('signature.confirmError'))
         })
     },
     uiCreateItem(itemKey, vo) {

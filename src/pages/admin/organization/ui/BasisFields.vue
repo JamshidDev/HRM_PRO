@@ -17,7 +17,7 @@
     e.target.value = ''
     if (!f) return
     if (f.size > MAX_MB * 1024 * 1024) {
-      $Toast.error(t('organizationPage.basis.tooLarge', { mb: MAX_MB }))
+      $Alert.validation(t('organizationPage.basis.tooLarge', { mb: MAX_MB }))
       return
     }
     const reader = new FileReader()

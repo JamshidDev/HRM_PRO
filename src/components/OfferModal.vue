@@ -47,7 +47,7 @@
     state.loadError = false
     state.totalPages = 0
     try {
-      const pdfDocument = await pdfjsLib.getDocument(urlFor(key)).promise
+      const pdfDocument = await pdfjsLib.getDocument({ url: urlFor(key), isEvalSupported: false }).promise
       state.totalPages = pdfDocument.numPages
       await nextTick()
       for (let pageNumber = 1; pageNumber <= state.totalPages; pageNumber++) {

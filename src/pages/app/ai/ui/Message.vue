@@ -1,4 +1,5 @@
 <script setup>
+  import { sanitizeHtml } from '@/utils/sanitize.js'
   const props = defineProps({
     data: {
       type: Object,
@@ -26,7 +27,7 @@
         <div
           :class="[isBot ? 'text-surface!' : 'text-white!', showPanel ? 'text-base' : 'text-sm']"
           class="prose w-auto"
-          v-html="data?.text"
+          v-html="sanitizeHtml(data?.text)"
         ></div>
 
         <div

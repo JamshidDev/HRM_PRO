@@ -83,9 +83,10 @@ function uiLoaded() {
 }
 
 function uiShowMessage(message) {
-    if (typeof window !== 'undefined' && window.$Toast && window.$Toast.error) {
-        window.$Toast.error(message);
-    }
+    // Ilova ichida — ogohlantirish modali, login sahifasida — toast.
+    if (typeof window === 'undefined') return;
+    if (window.$Alert && window.$Alert.warning) window.$Alert.warning(message);
+    else if (window.$Toast && window.$Toast.error) window.$Toast.error(message);
 }
 
 function uiUpdateApp() {

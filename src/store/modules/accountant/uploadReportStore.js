@@ -50,6 +50,18 @@ export const useUploadReportStore = defineStore('uploadReport', {
     flattenData: [],
     isBlocked: false,
     orgStatus: true,
+    // Tanlangan korxonaning 1C kodlari (ko'p kodli bo'lsa — Oylik hisobot tarixida
+    // har kod bo'yicha alohida Excel yuklab olish uchun). [{ ones_org_code, label }]
+    onesCodes: [],
+    // Per-kod Oylik hisobot Excel yuklab olish jarayoni (kod → true/false).
+    onesExporting: {},
+    // 1C pull ma'lumot sifati anomaliyalari (dubl PINFL + kodsiz/matnli paying_code).
+    anomalySummary: { duplicate_pinfl: 0, missing_code: 0, total: 0 },
+    anomalyVisible: false,
+    anomalyLoading: false,
+    anomalyRows: [],
+    anomalyTotal: 0,
+    anomalyParams: { kind: null, page: 1, per_page: 20 },
     // 1C dan ommaviy yuklash (Oylik hisobot) — modal holati.
     // bulkPeriod — modal davri: upload-report yoki salary-1c sahifasidan uzatiladi.
     bulkPeriod: { year: null, month: null },
@@ -337,6 +349,9 @@ export const useUploadReportStore = defineStore('uploadReport', {
           this._cards()
           this._structures()
           this._refreshSoon()
+          // Oylik (type=1) sinxron tortiladi → anomaliyalar tayyor, ogohlantiramiz.
+          // INPS (2/3/4) 1c-zup (boshqa manba) — salary-1c anomaliyasi yo'q.
+          if (Number(this.payload.type) === 1) this._loadAnomalySummary(true)
         })
         .finally(() => {
           this.saveLoading = false
@@ -541,7 +556,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
         .catch((e) => {
           // Backend xabari (mas. tasdiqlangan hisobotni o'chirib bo'lmaydi — avval
           // bekor qiling) bo'lsa — aynan o'shani ko'rsatamiz.
-          $Toast.error(e?.response?.data?.message || t('content.error'))
+          $Alert.error(e, t('content.error'))
         })
         .finally(() => {
           this.deleteLoading = false
@@ -569,7 +584,143 @@ export const useUploadReportStore = defineStore('uploadReport', {
       if (this.params.organization_id) {
         this.selectedOrgName = v.name
         this._cards()
+        this._loadOnesCodes(this.params.organization_id)
+        this._loadAnomalySummary(false)
+      } else {
+        this.onesCodes = []
+        this.anomalySummary = { duplicate_pinfl: 0, missing_code: 0, total: 0 }
       }
+    },
+    // Tanlangan korxonaning 1C kodlari (OnesCodeFilter bilan bir manba). Ko'p kodli
+    // bo'lsa — Oylik hisobot tarixida har kod bo'yicha alohida Excel tugmasi chiqadi.
+    _loadOnesCodes(orgId) {
+      this.onesCodes = []
+      if (!orgId) return
+      $ApiService.salary1cService
+        ._getOrgCodes({ params: { organization_id: orgId } })
+        .then((res) => {
+          this.onesCodes = res?.data?.data ?? []
+        })
+        .catch(() => {
+          this.onesCodes = []
+        })
+    },
+    // 1C pull anomaliyalari yig'masi (tanlangan korxona + davr). notify=true bo'lsa va
+    // anomaliya bo'lsa — ogohlantirish toast (1C'dan tortgandan keyin chaqiriladi).
+    _loadAnomalySummary(notify = false) {
+      const orgId = this.params.organization_id
+      if (!orgId || !this.params.year || !this.params.month) {
+        this.anomalySummary = { duplicate_pinfl: 0, missing_code: 0, total: 0 }
+        return
+      }
+      $ApiService.salary1cService
+        ._pullAnomaliesSummary({
+          params: {
+            organization_id: orgId,
+            year: this.params.year,
+            month: this.params.month
+          }
+        })
+        .then((res) => {
+          const s = res?.data?.data ?? { duplicate_pinfl: 0, missing_code: 0, total: 0 }
+          this.anomalySummary = s
+          if (notify && s.total > 0) {
+            $Toast.warning(
+              t('uploadReport.anomaly.toast', {
+                dup: s.duplicate_pinfl,
+                code: s.missing_code
+              })
+            )
+          }
+        })
+        .catch(() => {})
+    },
+    // Anomaliya hisobot modalini ochish + ro'yxatni yuklash (tanlangan korxona + davr).
+    openAnomalies() {
+      this.anomalyVisible = true
+      this.anomalyParams = { kind: null, page: 1, per_page: 20 }
+      this._loadAnomalies()
+    },
+    _loadAnomalies() {
+      const orgId = this.params.organization_id
+      if (!orgId) return
+      this.anomalyLoading = true
+      $ApiService.salary1cService
+        ._pullAnomalies({
+          params: {
+            organization_id: orgId,
+            year: this.params.year,
+            month: this.params.month,
+            kind: this.anomalyParams.kind || undefined,
+            page: this.anomalyParams.page,
+            per_page: this.anomalyParams.per_page
+          }
+        })
+        .then((res) => {
+          const d = res?.data?.data ?? {}
+          this.anomalyRows = d.data ?? []
+          this.anomalyTotal = d.total ?? 0
+        })
+        .catch(() => {
+          this.anomalyRows = []
+          this.anomalyTotal = 0
+        })
+        .finally(() => {
+          this.anomalyLoading = false
+        })
+    },
+    _changeAnomalyKind(kind) {
+      this.anomalyParams.kind = kind
+      this.anomalyParams.page = 1
+      this._loadAnomalies()
+    },
+    _onAnomalyPage(p) {
+      this.anomalyParams.page = p
+      this._loadAnomalies()
+    },
+    // Ko'p 1C kodli korxonada bitta kod bo'yicha hisobot snapshot Excel'ini yuklab olish
+    // (1C hisob-kitobini har ID bo'yicha alohida solishtirish uchun). `reportType`:
+    // 1=Oylik, 2=INPS4, 3=INPS5, 4=INPS to'lovlar — mos endpoint tanlanadi.
+    _downloadOnesStatement(year, month, code, reportType = 1) {
+      const orgId = this.params.organization_id
+      if (!orgId || !year || !month || !code) return
+      this.onesExporting = { ...this.onesExporting, [code]: true }
+      const safeOrg = String(this.selectedOrgName || 'hisobot')
+        .replace(/[\\/:*?"<>|]+/g, '')
+        .trim()
+      const safeCode = String(code).replace(/[\\/:*?"<>|]+/g, '').trim()
+      const name = `${safeOrg}_${year}-${String(month).padStart(2, '0')}_${safeCode}.xlsx`
+      const svc = $ApiService.accountantService
+      const apiByType = {
+        1: svc._onesStatementExcel,
+        2: svc._taxFourExcel,
+        3: svc._taxFiveExcel,
+        4: svc._pensionExcel
+      }
+      const apiCall = apiByType[Number(reportType)] ?? svc._onesStatementExcel
+      apiCall({ params: { organization_id: orgId, year, month, ones_code: code } })
+        .then(async (res) => {
+          // Biznes-xato HTTP 200 + JSON qaytarishi mumkin (blob JSON bo'lsa — xato).
+          const blob = res?.data
+          if (blob && blob.type && blob.type.includes('application/json')) {
+            let msg = t('content.error')
+            try {
+              const parsed = JSON.parse(await blob.text())
+              if (typeof parsed?.message === 'string') msg = parsed.message
+            } catch {
+              // JSON emas — standart xato xabari qoladi.
+            }
+            $Toast.error(msg)
+            return
+          }
+          Utils.blobFileDownload(blob, XLSX_MIME, name)
+        })
+        .catch(() => {
+          $Toast.error(t('content.error'))
+        })
+        .finally(() => {
+          this.onesExporting = { ...this.onesExporting, [code]: false }
+        })
     },
     resetCards() {
       this.isBlocked = false
@@ -627,8 +778,10 @@ export const useUploadReportStore = defineStore('uploadReport', {
             try {
               const parsed = JSON.parse(await blob.text())
               if (typeof parsed?.message === 'string') msg = parsed.message
-            } catch (e) {}
-            $Toast.error(msg)
+            } catch {
+              // JSON emas — standart xato xabari qoladi.
+            }
+            $Alert.warning(msg)
             return
           }
           Utils.blobFileDownload(blob, 'application/zip', name)
