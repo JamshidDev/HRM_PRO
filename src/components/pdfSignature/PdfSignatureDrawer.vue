@@ -485,7 +485,7 @@
       Utils.documentModels.adContract
     ].includes(store.model)
   )
-  // Marshrutni faqat hujjat turining yozish ruxsati bor (HR) o'zgartiradi — kelishuvchiga tugma ko'rinmaydi.
+  // Marshrutni faqat hujjat turining yozish ruxsati bor (HR) o'zgartiradi — computed'da checkPermission (checkAction modal chiqaradi).
   const ROUTE_WRITE = {
     [Utils.documentModels.command]: accountStore.pn.hrCommandsWrite,
     [Utils.documentModels.contract]: accountStore.pn.hrContractsWrite,
@@ -495,13 +495,13 @@
     () =>
       isRouteDoc.value &&
       store.permissions.canEdit &&
-      accountStore.checkAction(ROUTE_WRITE[store.model])
+      accountStore.checkPermission(ROUTE_WRITE[store.model])
   )
   // Hujjat matnini (OnlyOffice) tahrirlash ham — buyruq/shartnomada faqat HR yozish ruxsati bilan.
   const canEditDoc = computed(
     () =>
       store.permissions.canEdit &&
-      (!isRouteDoc.value || accountStore.checkAction(ROUTE_WRITE[store.model]))
+      (!isRouteDoc.value || accountStore.checkPermission(ROUTE_WRITE[store.model]))
   )
   const openDocumentRoute = () =>
     documentRouteStore._openRoute(store.model, store.document_id, hrDirector(), (block) =>
