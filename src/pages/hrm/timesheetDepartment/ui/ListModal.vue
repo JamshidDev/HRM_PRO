@@ -4,6 +4,9 @@
   import { Delete20Filled } from '@vicons/fluent'
   import { useDialog } from 'naive-ui'
   import i18n from '@/i18n/index.js'
+  import TransferWarning from './TransferWarning.vue'
+  import { renderDepartmentLabel } from './departmentOption.js'
+  import { confirmTransfer } from './confirmTransfer.js'
 
   const store = useTimesheetDepartmentStore()
   const dialog = useDialog()
@@ -25,7 +28,9 @@
     })
   }
 
-  const onAdd = () => store._attachSelected()
+
+
+  const onAdd = () => confirmTransfer((transfer) => store._attachSelected(transfer))
 
   const onSearchEv = (v) => {
     store.departmentParams.search = v
@@ -55,6 +60,7 @@
           v-model:value="store.payload.departments"
           v-model:search="store.departmentParams.search"
           value-field="id"
+          :render-label="renderDepartmentLabel"
           @onSearch="onSearchEv"
           @onScrollEv="onScrollEv"
         />
@@ -74,6 +80,7 @@
     >
       {{ $t('timesheetWorkerPage.free_departments_empty') }}
     </p>
+    <TransferWarning />
 
     <!-- Pastda: biriktirilgan bo'limlar ro'yxati, har birida o'chirish. -->
     <div class="h-[420px] w-full overflow-y-auto rounded-lg border border-surface-line p-2">

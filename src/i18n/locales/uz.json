@@ -921,14 +921,20 @@
     "searchWorkerHint": "FISH / tabel №"
   },
   "timesheetWorkerPage": {
+    "transfer_confirm": "Baribir saqlash",
+    "transfer_hint": "Tasdiqlasangiz, bu bo'limlar avvalgi tabelchidan olinib, {to} ga biriktiriladi.",
+    "transfer_item": "«{department}» — {from}",
+    "transfer_title": "Bo'lim boshqa tabelchiga biriktirilgan",
+    "own_department": "Shu tabelchiga biriktirilgan",
+    "assigned_to": "Biriktirilgan: {name}",
     "worker_role_info": "Ro'yxatda faqat «TimesheetHR» (tabelchi) roli berilgan xodimlar ko'rinadi. Rol Xodimlar bo'limidan beriladi.",
-    "departments_info": "Faqat boshqa tabelchiga biriktirilmagan bo'limlar ko'rsatiladi. Bitta bo'lim faqat bitta tabelchiga biriktiriladi; biriktirilmagan bo'limlarni HR o'zi to'ldiradi.",
+    "departments_info": "Korxonaning barcha bo'limlari ko'rsatiladi. Bitta bo'lim faqat bitta tabelchiga biriktiriladi: boshqa tabelchidagi bo'lim tanlansa, tasdiqlangach undan olinib, yangi tabelchiga o'tkaziladi.",
     "attach_department": "Bo'lim biriktirish",
     "detach_all": "Barcha bo'limlarni uzish",
     "detach_confirm": "Bo'limni tabelchidan uzasizmi?",
     "detach_all_confirm": "Bu tabelchidan barcha bo'limlar uziladi. Davom etasizmi?",
     "department_count": "Bo'limlar soni",
-    "free_departments_empty": "Bu korxonada bo'sh bo'lim qolmagan",
+    "free_departments_empty": "Bu korxonada bo'lim topilmadi",
     "name": "Tabelchilar",
     "work_place": "Tashkilot/Bo'lim"
   },
