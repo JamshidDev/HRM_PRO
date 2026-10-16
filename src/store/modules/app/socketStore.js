@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
-import { endSession } from '@/features/sessionEnded/sessionEnded.js'
+import { currentTokenId, endSessionIfForeign } from '@/features/sessionEnded/sessionEnded.js'
+import { useAppSetting } from '@/utils/index.js'
 import io from 'socket.io-client'
 const socketUrl = import.meta.env.VITE_SOCKET_URL
 const socketSecret = import.meta.env.VITE_SOCKET_SECRET
@@ -10,7 +11,6 @@ import { pickI18nText } from '@/utils/i18nText.js'
 import { useAppStore } from '@/store/modules/app/appStore.js'
 import { useNotificationStore } from '@/store/modules/chat/notificationStore.js'
 import dayjs from 'dayjs'
-import { useAppSetting } from '@/utils/index.js'
 
 const allowedEvents = [
   Events.APPLICATION_GENERATED,
@@ -84,12 +84,10 @@ export const useSocketStore = defineStore('useSocketStore', {
       })
 
       this.socket.on('notification', (data) => {
-        // Shu brauzer sessiyasi yopildi — sababli alert, 5 soniyadan keyin login (boshqa tokenlar e'tiborsiz).
+        // Shu brauzer sessiyasi yopildi — alert faqat boshqa qurilma chiqargan bo'lsa.
         if (data?.type === 'session_revoked') {
-          const token = localStorage.getItem(useAppSetting.tokenKey) || ''
-          if (String(data.token_id) === token.split('|')[0] && data.reason !== 'logout') {
-            endSession(data)
-          }
+          endSessionIfForeign(data, data.token_id)
+          this.reconnectIfTokenChanged(data.token_id)
           return
         }
         // Xabar turi: yangi payload'da `type` (= action.type), eskisida `alert`.
@@ -218,6 +216,16 @@ export const useSocketStore = defineStore('useSocketStore', {
         }
         this.counts[type] = { ...this.counts[type], ...fields }
       })
+    },
+    // Boshqa tabda qayta kirildi — server eski socketni uzadi, yangi token bilan qayta ulanamiz.
+    reconnectIfTokenChanged(tokenId) {
+      setTimeout(() => {
+        const token = localStorage.getItem(useAppSetting.tokenKey)
+        const userId = Number(localStorage.getItem(useAppSetting.accountUserId)) || this.currentUserId
+        if (!token || !userId || String(tokenId) === currentTokenId()) return
+        this.disconnect()
+        this.initSocket(token, userId)
+      }, 3000)
     },
     disconnect() {
       if (this.socket) {

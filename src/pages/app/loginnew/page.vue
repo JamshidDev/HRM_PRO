@@ -6,7 +6,8 @@ import {
   useAppStore,
   useLoginNewStore,
   useQrLoginStore,
-  useResetPasswordStore
+  useResetPasswordStore,
+  useSocketStore
 } from '@/store/modules/index.js'
 import i18n from '@/i18n/index.js'
 import LoginForm from './ui/LoginForm.vue'
@@ -118,6 +119,8 @@ const onResize = () => {
 }
 
 onMounted(() => {
+  // Login sahifasida eski sessiya socket'i kerak emas — qayta kirishda «chiqarildingiz» chiqmasin.
+  useSocketStore().disconnect()
   void measureBase()
   // Captcha rasmi/shriftlar kech yuklansa balandlik o'zgaradi — qayta o'lchaymiz.
   setTimeout(measureBase, 600)
@@ -130,6 +133,11 @@ onBeforeUnmount(() => {
   clearTimeout(resizeTimer)
   window.removeEventListener('resize', onResize)
   qrStore.close()
+  // Login qilmay ortga qaytildi — eski sessiya socket'i qayta ulanadi.
+  const socketStore = useSocketStore()
+  const token = localStorage.getItem(useAppSetting.tokenKey)
+  const userId = localStorage.getItem(useAppSetting.accountUserId)
+  if (!socketStore.socket && token && userId) socketStore.initSocket(token, Number(userId))
 })
 
 // o'tish yo'nalishi: oldinga (slide-next) yoki orqaga (slide-prev)
