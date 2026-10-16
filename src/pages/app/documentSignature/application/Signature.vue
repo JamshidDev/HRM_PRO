@@ -40,7 +40,7 @@
 
       store._confirmSignature(route.query, payload)
     } else {
-      $Toast.warning(t('message.requiredSignature'))
+      $Alert.validation(t('message.requiredSignature'))
     }
   }
 
@@ -49,7 +49,7 @@
     if (!isEmpty) {
       return data
     } else {
-      $Toast.warning(t('message.requiredSignature'))
+      $Alert.validation(t('message.requiredSignature'))
       return null
     }
   }

@@ -44,8 +44,14 @@ const _startPerson = async (payload) => {
   return await axios.get(`/v1/structure/organizations/start-person`, { params: payload.params })
 }
 
+// Barcha tashkilotlar Excel'i (daraxt tartibida).
+const _export = async () => {
+  return await axios.get(`/v1/structure/organizations/export`, { responseType: 'blob' })
+}
+
 export default {
   _index,
+  _export,
   _startPerson,
   _create,
   _update,

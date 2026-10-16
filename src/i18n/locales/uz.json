@@ -136,6 +136,10 @@
         "title": "Hisobot",
         "subtitle": "Hisobot yuklash"
       },
+      "guides": {
+        "title": "Qo'llanma",
+        "subtitle": "Video darsliklar"
+      },
       "income": {
         "title": "Daromad",
         "subtitle": "Ish haqi va to'lovlar"
@@ -1302,6 +1306,11 @@
     "storageToken": "USB token"
   },
   "documentPage": {
+    "route": {
+      "parallelHint": "Barcha kelishuvchilar bir vaqtda imzolaydi; rahbar istalgan paytda imzolay oladi",
+      "sequentialHint": "Kelishuvchilar tanlangan tartibda birin-ketin imzolaydi; rahbar istalgan paytda imzolay oladi",
+      "directorAnytime": "Istalgan paytda"
+    },
     "name": "Hujjatlar",
     "createTitle": "Shartnoma tuzish",
     "updateTitle": "Shartnomani tahrirlash",
@@ -1442,7 +1451,8 @@
           "cancelled": "Buyruq bekor qilingan",
           "contract": "Shartnoma orqali o'zgartiriladi",
           "contract_additional": "Qo'shimcha kelishuv orqali o'zgartiriladi",
-          "no_form_state": "Eski buyruq — faqat ko'rish uchun"
+          "no_form_state": "Eski buyruq — faqat ko'rish uchun",
+          "expired": "Imzolash muddati o'tgan — hujjatni o'chirib, qaytadan yarating"
         },
         "resend": {
           "title": "Qayta tasdiqlashga yuborish",
@@ -1450,7 +1460,7 @@
           "allHint": "Tasdiqlagan va rad etganlar ham qaytadan «Jarayonda» bo'ladi",
           "selected": "Tanlanganlarga",
           "selectedHint": "Faqat belgilanganlar «Jarayonda» bo'ladi, qolganlarning holati saqlanadi",
-          "contentChanged": "Buyruq matni o'zgardi — tanlanmaganlarning oldingi tasdig'i eski versiyaga tegishli bo'lib qoladi.",
+          "contentChanged": "Hujjat matni o'zgardi — tanlanmaganlarning oldingi tasdig'i eski versiyaga tegishli bo'lib qoladi.",
           "required": "majburiy",
           "count": "{count} kishiga yuboriladi",
           "submit": "Yuborish",
@@ -1801,6 +1811,15 @@
     }
   },
   "contractPage": {
+    "edit": {
+      "locked": {
+        "approved": "Tasdiqlangan shartnomani tahrirlab bo'lmaydi",
+        "command_approved": "Shartnoma asosidagi buyruq tasdiqlangan — tahrirlab bo'lmaydi",
+        "no_form_state": "Bu shartnoma tahrir imkoniyati qo'shilishidan oldin yaratilgan — tahrirlab bo'lmaydi",
+        "expired": "Imzolash muddati o'tgan — hujjatni o'chirib, qaytadan yarating"
+      },
+      "savedNotify": "Shartnoma yangilandi va qayta imzolashga yuborildi"
+    },
     "name": "Shartnomalar",
     "succeedText": "Shartnoma muvaffaqiyatli ravishda yaratildi!",
     "table": {
@@ -1828,6 +1847,15 @@
     "name": "Chat"
   },
   "adContractPage": {
+    "edit": {
+      "locked": {
+        "approved": "Tasdiqlangan qo'shimcha kelishuvni tahrirlab bo'lmaydi",
+        "command_approved": "Kelishuv asosidagi buyruq tasdiqlangan — tahrirlab bo'lmaydi",
+        "no_form_state": "Bu kelishuv tahrir imkoniyati qo'shilishidan oldin yaratilgan — tahrirlab bo'lmaydi",
+        "expired": "Imzolash muddati o'tgan — hujjatni o'chirib, qaytadan yarating"
+      },
+      "savedNotify": "Qo'shimcha kelishuv yangilandi va qayta imzolashga yuborildi"
+    },
     "createTitle": "Qo'shimcha kelishuv tuzish",
     "updateTitle": "Qo'shimcha kelishuvni tahrirlash",
     "name": "Qo'shimcha kelishuv"
@@ -5514,7 +5542,9 @@
     "name": "Yuklash manbasi"
   },
   "salaryHidden": {
-    "name": "Oylik cheklovi",
+    "name": "Yashirilgan oyliklar",
+    "searchWorker": "Xodimni qidirish",
+    "searchWorkerPlaceholder": "Ism yoki PINFL bo'yicha qidiring...",
     "searchPlaceholder": "PINFL yoki izoh bo'yicha qidiring...",
     "addButton": "PINFL qo'shish",
     "pinfl": "PINFL",
@@ -6143,18 +6173,18 @@
   "eimzoGateAdmin": {
     "name": "E-IMZO tasdig'i",
     "title": "Iqtisod bo'limi uchun E-IMZO tasdig'i",
-    "subtitle": "Yoqilganda Admin'dan boshqa barcha foydalanuvchilar iqtisod bo'limiga kirishdan oldin shaxsini o'z ERI kaliti bilan tasdiqlaydi. Tasdiq qayta login qilinguncha amal qiladi.",
-    "listTitle": "Faol tasdiqlar",
+    "subtitle": "Yoqilganda Admin va ozod qilingan rollardan boshqa barcha foydalanuvchilar iqtisod bo'limiga kirishdan oldin shaxsini o'z ERI kaliti bilan tasdiqlaydi. Tasdiq qayta login qilinguncha amal qiladi.",
     "refresh": "Yangilash",
-    "user": "Foydalanuvchi",
-    "phone": "Telefon",
-    "cert": "Sertifikat egasi",
-    "serial": "Sertifikat raqami",
-    "verifiedAt": "Tasdiqlangan vaqt",
-    "revoke": "Bekor qilish",
     "enabledToast": "E-IMZO tasdig'i yoqildi",
     "disabledToast": "E-IMZO tasdig'i o'chirildi",
-    "revokedToast": "Tasdiq bekor qilindi — foydalanuvchi qayta tasdiqlaydi"
+    "rolesTitle": "Tasdiqdan ozod rollar",
+    "rolesHint": "Belgilangan rol egalari iqtisod bo'limiga E-IMZO tasdig'isiz kiradi. Shu ruxsatni rol formasida ham berish mumkin.",
+    "role": "Rol",
+    "usersCount": "Foydalanuvchilar",
+    "exempt": "Ozod",
+    "adminLocked": "Admin doim ozod",
+    "exemptOnToast": "Rol E-IMZO tasdig'idan ozod qilindi",
+    "exemptOffToast": "Rol uchun E-IMZO tasdig'i qaytarildi"
   },
   "eimzoGate": {
     "title": "Xavfsizlik uchun tekshiruv",
@@ -6490,5 +6520,119 @@
         "levelsTitle": "Rang darajalari"
       }
     }
+  },
+  "guidesPage": {
+    "title": "Qo'llanma",
+    "subtitle": "Tizimdan foydalanish bo'yicha video darsliklar",
+    "platform": {
+      "web": "Web-tizim",
+      "mobile": "Mobil ilova"
+    },
+    "search": "Qo'llanmani qidirish",
+    "all": "Barchasi",
+    "new": "Yangi",
+    "viewed": "Ko'rilgan",
+    "empty": "Hozircha qo'llanma yo'q",
+    "emptyHint": "Video darsliklar tez orada qo'shiladi",
+    "notFound": "Hech narsa topilmadi",
+    "notFoundHint": "Boshqa so'z yoki kategoriyani tanlab ko'ring",
+    "sequence": "O'rganish tartibi",
+    "sequenceHint": "Videolarni shu ketma-ketlikda ko'ring",
+    "count": "{n} ta video",
+    "categories": {
+      "general": "Umumiy",
+      "workers": "Xodimlar",
+      "commands": "Buyruqlar",
+      "contracts": "Shartnomalar",
+      "signing": "Elektron imzo",
+      "turnstile": "Turniket",
+      "timesheet": "Tabel",
+      "vacations": "Ta'tillar",
+      "vacancies": "Vakansiyalar",
+      "learning": "Malaka oshirish",
+      "attestation": "Attestatsiya",
+      "applications": "Arizalar",
+      "mobile": "Mobil ilova",
+      "reports": "Hisobotlar"
+    }
+  },
+  "videoGuidePage": {
+    "name": "Video qo'llanmalar",
+    "create": "Yangi qo'llanma",
+    "edit": "Qo'llanmani tahrirlash",
+    "form": {
+      "title": "Nomi",
+      "description": "Izoh",
+      "platform": "Platforma",
+      "category": "Kategoriya",
+      "sort": "Tartib raqami",
+      "status": "Holat",
+      "video": "Video",
+      "poster": "Muqova"
+    },
+    "platform": {
+      "all": "Web va mobil",
+      "web": "Web",
+      "mobile": "Mobil"
+    },
+    "published": "E'lon qilingan",
+    "draft": "Qoralama",
+    "duration": "Davomiyligi",
+    "views": "Ko'rishlar",
+    "chooseVideo": "Video tanlash",
+    "replaceVideo": "Videoni almashtirish",
+    "changePoster": "Muqovani almashtirish",
+    "uploadingVideo": "Video yuklanmoqda…",
+    "uploadingPoster": "Muqova yuklanmoqda…",
+    "uploaded": "Video yuklandi",
+    "required": "Nomi (UZ) va video majburiy",
+    "confirmDelete": "Qo'llanma o'chirilsinmi?"
+  },
+  "alertDialog": {
+    "ok": "Tushunarli",
+    "checkFields": "Quyidagilarni tekshirib, qayta urinib ko'ring:",
+    "titles": {
+      "forbidden": "Ruxsat berilmagan",
+      "validation": "Ma'lumotlar to'liq emas",
+      "warning": "Amalni bajarib bo'lmaydi",
+      "notfound": "Ma'lumot topilmadi",
+      "network": "Aloqa uzildi"
+    },
+    "eimzoTitle": "E-IMZO dasturiga ulanib bo'lmadi"
+  },
+  "sessionEnded": {
+    "title": "Seansingiz tugatildi",
+    "redirect": "{seconds} soniyada chiqiladi",
+    "reasons": {
+      "replaced": "Hisobingizga boshqa brauzer orqali kirildi{device}.",
+      "revoked_mobile": "Seansingiz HR Rail ilovasi orqali telefondan tugatildi{device}.",
+      "revoked_web": "Seansingiz boshqa brauzerdan tugatildi{device}.",
+      "expired_idle": "8 soat davomida faollik bo'lmagani uchun seans muddati tugadi.",
+      "expired_absolute": "Seansning 7 kunlik muddati tugadi.",
+      "password_changed": "Hisobingiz paroli o'zgartirildi. Yangi parol bilan kiring.",
+      "password_reset": "Hisobingiz paroli tiklandi. Yangi parol bilan kiring.",
+      "blocked": "Hisobingiz bloklangan. Tizim ma'muriga murojaat qiling.",
+      "deleted": "Hisobingiz o'chirilgan. Tizim ma'muriga murojaat qiling.",
+      "no_position": "Faol lavozimingiz yo'qligi sababli tizimga kirish to'xtatildi.",
+      "default": "Xavfsizlik maqsadida seansingiz yopildi. Qayta kiring."
+    }
+  },
+  "documentSettings": {
+    "title": "Muddatlar va elektron raqam",
+    "backdate": "Orqa sana chegarasi",
+    "backdateHint": "hujjat sanasi bugundan necha kun orqada bo'la oladi",
+    "signDeadline": "Imzolash muddati",
+    "signDeadlineHint": "shu muddatda tasdiqlanmagan hujjat «Muammoli» bo'ladi",
+    "prefix": "Elektron raqam prefiksi",
+    "prefixSample": "Namuna: {sample}. Eski hujjatlar raqami o'zgarmaydi",
+    "prefixInvalid": "2–5 ta lotin bosh harfi (masalan, UTY)",
+    "days": "kun",
+    "daysValue": "{n} kun",
+    "noLimit": "Cheklov yo'q",
+    "confirmTitle": "Sozlamalarni saqlash",
+    "confirmText": "O'zgarish barcha korxonalarning yangi hujjatlariga qo'llanadi. Saqlaysizmi?",
+    "saved": "Muddat va raqam sozlamalari saqlandi",
+    "electronicNumber": "Elektron raqam",
+    "searchPlaceholder": "F.I.Sh. yoki raqam"
   }
 }

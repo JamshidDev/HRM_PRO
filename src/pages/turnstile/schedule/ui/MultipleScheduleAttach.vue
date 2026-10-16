@@ -12,7 +12,7 @@
   const onSubmit = () => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsCopy)) return
     if (store.selectedWorkers.length === 0) {
-      $Toast.warning(t('content.miniOneWorker'))
+      $Alert.validation(t('content.miniOneWorker'))
       return
     }
 

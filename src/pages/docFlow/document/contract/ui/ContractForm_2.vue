@@ -1,11 +1,12 @@
 <script setup>
+  import { useContractFormStore } from '../contractFormStore.js'
   import Utils from '@/utils/Utils.js'
   import { UISelect, UIFigField } from '@/components/index.js'
   import UIDepartment from '@/components/ui/UIDepartment.vue'
-  import { useComponentStore, useContractStore } from '@/store/modules/index.js'
+  import { useComponentStore } from '@/store/modules/index.js'
   import UIHelper from '@utils/UIHelper.js'
 
-  const store = useContractStore()
+  const store = useContractFormStore()
   const componentStore = useComponentStore()
 
   const onChangeDepartment = (v) => {

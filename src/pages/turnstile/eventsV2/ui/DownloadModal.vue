@@ -10,7 +10,7 @@
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
 
-  const canAbsent = computed(() => accStore.checkAction(accStore.pn.turnstileAbsentWorkersExport))
+  const canAbsent = computed(() => accStore.checkPermission(accStore.pn.turnstileAbsentWorkersExport))
 
   // Modal ochilganda korxona daraxti va xodim ro'yxati bir marta tortiladi.
   watch(() => store.download.visible, (v) => {

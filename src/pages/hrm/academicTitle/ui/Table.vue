@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { UITable, UIProfileSection, UIProfileEmpty, UIFileDownload } from '@/components/index.js'
   import { useAcademicTitleStore } from '@/store/modules/index.js'
   import { Edit32Regular, Delete20Regular } from '@vicons/fluent'
@@ -51,7 +52,7 @@
   }
 
   const onDownload = (url) => {
-    window.open(url, '_blank')
+    openSafeUrl(url)
   }
 
   const actions = computed(() => [

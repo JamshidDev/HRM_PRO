@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { ArrowUpRight16Regular, Copy16Regular } from '@vicons/fluent'
   import { useMessage } from 'naive-ui'
   import i18n from '@/i18n/index.js'
@@ -40,7 +41,7 @@
   }
 
   const openLink = (url) => {
-    window.open(url, '_blank')
+    openSafeUrl(url)
   }
 </script>
 

@@ -1,5 +1,7 @@
 <script setup>
-  import { useComponentStore, useContractStore } from '@/store/modules/index.js'
+  import { useDocumentDateLimit } from '@/composables/useDocumentDateLimit.js'
+  import { useContractFormStore } from '../contractFormStore.js'
+  import { useComponentStore } from '@/store/modules/index.js'
   import { NAvatar } from 'naive-ui'
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
@@ -9,7 +11,9 @@
   import icons from '@/assets/icons'
   import { VueDraggable } from 'vue-draggable-plus'
 
-  const store = useContractStore()
+  // Hujjat sanasi: yaratishda sozlamadagi oyna, tahrirda o'zgarmaydi.
+  const { isDateDisabled } = useDocumentDateLimit()
+  const store = useContractFormStore()
   const componentStore = useComponentStore()
   const confirmationList = ref([])
   const financeList = ref([])
@@ -117,11 +121,17 @@
       <!-- Buyruq yaratish tugmasi bo'lim sarlavhasining o'ng chetida -->
       <div class="form-section__head">
         <span class="form-section__title">{{ $t('contractPage.step.stepThree') }}</span>
+        <!-- Tahrirda buyruq bilan rasmiylashtirish holati o'zgarmaydi. -->
         <div
           class="command-switch"
-          @click="store.payload.command_status = !store.payload.command_status"
+          @click="!store.editId && (store.payload.command_status = !store.payload.command_status)"
         >
-          <n-switch v-model:value="store.payload.command_status" size="small" @click.stop />
+          <n-switch
+            v-model:value="store.payload.command_status"
+            :disabled="Boolean(store.editId)"
+            size="small"
+            @click.stop
+          />
           <span>{{ $t('documentPage.form.command_status') }}</span>
         </div>
       </div>
@@ -164,6 +174,8 @@
             v-model:value="store.payload.command_date"
             type="date"
             :format="useAppSetting.datePicketFormat"
+            :is-date-disabled="isDateDisabled"
+            :disabled="Boolean(store.editId)"
           />
         </UIFigField>
 

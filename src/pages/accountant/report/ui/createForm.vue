@@ -25,20 +25,9 @@
   ]
 
   // Tanlangan korxona uchun ruxsat etilgan manba (1=Excel, 2=1C, 3=ikkalasi).
-  // Manba cheklovi structure endpoint tugunida (`allowed_source`) keladi — korxona
-  // ekonomisti admin config endpointiga ruxsatsiz, lekin structure'ni oladi.
-  const orgAllowedSource = computed(() => {
-    const orgId = store.params.organization_id
-    if (!orgId || !store.structuresList.length) return 3
-    const find = (nodes) => {
-      for (const n of nodes) {
-        if (n.id === orgId) return n
-        if (n.children?.length) { const f = find(n.children); if (f) return f }
-      }
-      return null
-    }
-    return find(store.structuresList)?.allowed_source ?? 3
-  })
+  // Tanlash paytida tugundan (structure allowed_source) olingan qiymat — fragile
+  // daraxt-qidiruv (id tipi/topilmaslik) o'rniga ishonchli.
+  const orgAllowedSource = computed(() => store.selectedOrgAllowedSource ?? 3)
 
   const sourceOptions = computed(() => {
     const allowed = orgAllowedSource.value
@@ -47,10 +36,15 @@
     return ALL_SOURCE_OPTIONS
   })
 
-  // Manba opsiyalari o'zgarganda avtomatik to'g'ri qiymatga o'rnat
-  watch(sourceOptions, (opts) => {
-    if (opts.length === 1) store.payload.source = opts[0].value
-  })
+  // Manba opsiyalari o'zgarganda (va modal ochilishida — immediate) avtomatik to'g'ri
+  // qiymatga o'rnat: faqat bitta ruxsat etilgan manba bo'lsa, o'shani tanla.
+  watch(
+    sourceOptions,
+    (opts) => {
+      if (opts.length === 1) store.payload.source = opts[0].value
+    },
+    { immediate: true }
+  )
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {
@@ -61,7 +55,7 @@
           return
         }
         if (store.payload.file.length === 0) {
-          $Toast.warning(t('rules.requiredFileField'))
+          $Alert.validation(t('rules.requiredFileField'))
           return
         }
         store.saveLoading = true

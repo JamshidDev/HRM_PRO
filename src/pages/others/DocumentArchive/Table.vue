@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { NoDataPicture } from '@/components/index.js'
   import { useDocumentArchiveStore } from '@/store/modules/index.js'
   import { CalendarRtl16Regular } from '@vicons/fluent'
@@ -10,7 +11,7 @@
   const store = useDocumentArchiveStore()
 
   const downloadFile = (url) => {
-    window.open(url, '_blank')
+    openSafeUrl(url)
   }
 
   const fileSize = (bytes) => {

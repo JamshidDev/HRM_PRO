@@ -15,9 +15,6 @@ export const useAppSetting = {
     pfx: 'pfx'
   },
   appPermission: 'appPermission',
-  adminSecret: 'JAMACODER',
-  adminExistSecret: 'EXIST',
-  adminSecretKey: 'secretKey',
   temporaryToken: 'temporarySecretKey',
   mustChangeKey: 'must-change-password',
   soundEnabledKey: 'app-sound-enabled',

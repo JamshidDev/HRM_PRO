@@ -42,7 +42,7 @@
         isValid: true
       }
     } else {
-      $Toast.warning(t('message.warning-data'))
+      $Alert.validation(t('message.warning-data'))
       return {
         data: null,
         isValid: false

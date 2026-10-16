@@ -15,7 +15,7 @@
   const onSubmit = () => {
     if (payload.value.files.length > 0) {
     } else {
-      $Toast.warning(t('message.warning-data'))
+      $Alert.validation(t('message.warning-data'))
     }
   }
 </script>

@@ -125,7 +125,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
       const pdfUrl = this.pdfUrl
       // const pdfUrl = "https://s3.dasuty.com/docflow/documents/timesheets/c4ca4238a0b923820dcc509a6f75849b.pdf"
       try {
-        this.pdfDocument = await pdfjsLib.getDocument(pdfUrl).promise
+        this.pdfDocument = await pdfjsLib.getDocument({ url: pdfUrl, isEvalSupported: false }).promise
         this.pdfDocumentUrl = pdfUrl
         this.totalPdfPage = this.pdfDocument.numPages
         for (let pageNumber = 1; pageNumber <= this.totalPdfPage; pageNumber++) {
@@ -412,6 +412,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
             name: v.number + ' - ' + v.type?.name,
             id: v.id,
             number: v.number,
+            electronicNumber: v.electronic_number,
             typeName: v.type?.name,
             created: v.created_at || v.created,
             photo: v.worker?.photo,

@@ -18,6 +18,7 @@
   import CommandForm from '@/pages/docFlow/document/command/CommandForm.vue'
   import Utils from '@/utils/Utils.js'
   import Filter from './ui/Filter.vue'
+  import ResendSignersModal from '@/pages/docFlow/document/command/ResendSignersModal.vue'
 
   const componentStore = useComponentStore()
   const store = useAdContractStore()
@@ -76,6 +77,14 @@
     >
       <adContractForm />
     </UIModal>
+    <!-- Tahrir saqlanganda: qayta imzolashga barchaga yoki tanlanganlarga. -->
+    <ResendSignersModal
+      v-model:visible="store.resendVisible"
+      :rows="store.resendRows"
+      :content-changed="true"
+      :loading="store.resendLoading"
+      @confirm="(v) => store._confirmEdit(v)"
+    />
     <UIModal
       :title="
         commandStore.visibleType

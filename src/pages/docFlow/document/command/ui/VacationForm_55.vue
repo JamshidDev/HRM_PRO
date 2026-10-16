@@ -36,7 +36,7 @@
         isValid: true
       }
     } else {
-      $Toast.warning(t('documentPage.command.form.requiredVacationData'))
+      $Alert.validation(t('documentPage.command.form.requiredVacationData'))
       return {
         data: null,
         isValid: false

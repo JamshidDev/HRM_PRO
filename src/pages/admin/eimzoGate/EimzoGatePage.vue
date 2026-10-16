@@ -1,31 +1,30 @@
 <script setup>
-  // Admin: iqtisod bo'limi E-IMZO tasdig'i — yoqish/o'chirish, faol tasdiqlar, bekor qilish.
+  // Admin: iqtisod bo'limi E-IMZO tasdig'i — yoqish/o'chirish va tasdiqdan ozod rollar.
   import { ShieldKeyhole24Filled } from '@vicons/fluent'
   import { UIPageContent } from '@/components/index.js'
   import axios from '@/service/index.js'
   import i18n from '@/i18n/index.js'
-  import dayjs from 'dayjs'
 
   const { t } = i18n.global
 
   const enabled = ref(true)
   const settingsLoading = ref(false)
-  const list = ref([])
-  const listLoading = ref(false)
-  const revoking = ref(null)
+  const roles = ref([])
+  const rolesLoading = ref(false)
+  const saving = ref(null)
 
   const loadSettings = async () => {
     const res = await axios.get('/v1/eimzo-gate/admin/settings')
     enabled.value = !!res.data?.data?.enabled
   }
 
-  const loadList = async () => {
-    listLoading.value = true
+  const loadRoles = async () => {
+    rolesLoading.value = true
     try {
-      const res = await axios.get('/v1/eimzo-gate/admin/verifications')
-      list.value = res.data?.data ?? []
+      const res = await axios.get('/v1/eimzo-gate/admin/exempt-roles')
+      roles.value = res.data?.data ?? []
     } finally {
-      listLoading.value = false
+      rolesLoading.value = false
     }
   }
 
@@ -38,57 +37,56 @@
         { silentSuccess: true }
       )
       enabled.value = !!res.data?.data?.enabled
-      $Toast.success(t(enabled.value ? 'eimzoGateAdmin.enabledToast' : 'eimzoGateAdmin.disabledToast'))
+      $Toast.success(
+        t(enabled.value ? 'eimzoGateAdmin.enabledToast' : 'eimzoGateAdmin.disabledToast')
+      )
     } finally {
       settingsLoading.value = false
     }
   }
 
-  const onRevoke = async (row) => {
-    revoking.value = row.user_id
+  const onExempt = async (row, value) => {
+    saving.value = row.id
     try {
-      await axios.delete(`/v1/eimzo-gate/admin/verifications/${row.user_id}`, {
-        silentSuccess: true
-      })
-      $Toast.success(t('eimzoGateAdmin.revokedToast'))
-      await loadList()
+      await axios.put(
+        `/v1/eimzo-gate/admin/exempt-roles/${row.id}`,
+        { exempt: value },
+        { silentSuccess: true }
+      )
+      row.exempt = value
+      $Toast.success(t(value ? 'eimzoGateAdmin.exemptOnToast' : 'eimzoGateAdmin.exemptOffToast'))
     } finally {
-      revoking.value = null
+      saving.value = null
     }
   }
 
+  const exemptCount = computed(() => roles.value.filter((r) => r.exempt).length)
+
   const columns = computed(() => [
-    { title: t('eimzoGateAdmin.user'), key: 'full_name', render: (r) => r.full_name || `#${r.user_id}` },
-    { title: t('eimzoGateAdmin.phone'), key: 'phone' },
-    { title: t('eimzoGateAdmin.cert'), key: 'cert_name' },
-    { title: t('eimzoGateAdmin.serial'), key: 'cert_serial' },
+    { title: t('eimzoGateAdmin.role'), key: 'name' },
+    { title: t('eimzoGateAdmin.usersCount'), key: 'users_count', width: 160 },
     {
-      title: t('eimzoGateAdmin.verifiedAt'),
-      key: 'verified_at',
-      render: (r) => dayjs(r.verified_at).format('DD.MM.YYYY HH:mm')
-    },
-    {
-      title: '',
-      key: 'actions',
-      width: 150,
+      title: t('eimzoGateAdmin.exempt'),
+      key: 'exempt',
+      width: 220,
       render: (r) =>
-        h(
-          resolveComponent('n-button'),
-          {
-            size: 'small',
-            type: 'error',
-            secondary: true,
-            loading: revoking.value === r.user_id,
-            onClick: () => onRevoke(r)
-          },
-          { default: () => t('eimzoGateAdmin.revoke') }
-        )
+        h('div', { class: 'flex items-center gap-2' }, [
+          h(resolveComponent('n-switch'), {
+            value: r.exempt,
+            disabled: r.locked,
+            loading: saving.value === r.id,
+            'onUpdate:value': (v) => onExempt(r, v)
+          }),
+          r.locked
+            ? h('span', { class: 'text-xs text-textColor3' }, t('eimzoGateAdmin.adminLocked'))
+            : null
+        ])
     }
   ])
 
   onMounted(() => {
     loadSettings()
-    loadList()
+    loadRoles()
   })
 </script>
 
@@ -110,21 +108,24 @@
         <n-switch :value="enabled" :loading="settingsLoading" @update:value="onToggle" />
       </div>
 
-      <div class="flex items-center justify-between">
-        <div class="text-sm font-semibold text-textColor0">
-          {{ t('eimzoGateAdmin.listTitle') }} ({{ list.length }})
+      <div class="flex items-center justify-between gap-4">
+        <div class="min-w-0">
+          <div class="text-sm font-semibold text-textColor0">
+            {{ t('eimzoGateAdmin.rolesTitle') }} ({{ exemptCount }})
+          </div>
+          <div class="text-xs text-textColor3 mt-0.5">{{ t('eimzoGateAdmin.rolesHint') }}</div>
         </div>
-        <n-button size="small" secondary :loading="listLoading" @click="loadList">
+        <n-button size="small" secondary :loading="rolesLoading" @click="loadRoles">
           {{ t('eimzoGateAdmin.refresh') }}
         </n-button>
       </div>
       <n-data-table
         :columns="columns"
-        :data="list"
-        :loading="listLoading"
+        :data="roles"
+        :loading="rolesLoading"
         :bordered="false"
         size="small"
-        :row-key="(r) => r.token_id"
+        :row-key="(r) => r.id"
       />
     </div>
   </UIPageContent>

@@ -132,6 +132,10 @@
         "title": "Report",
         "subtitle": "Download a report"
       },
+      "guides": {
+        "title": "Guides",
+        "subtitle": "Video tutorials"
+      },
       "income": {
         "title": "Income",
         "subtitle": "Salary and payments"
@@ -1286,6 +1290,11 @@
     "notValidDate": "Expired"
   },
   "documentPage": {
+    "route": {
+      "parallelHint": "All approvers sign at the same time; the director can sign at any moment",
+      "sequentialHint": "Approvers sign one by one in the chosen order; the director can sign at any moment",
+      "directorAnytime": "Any time"
+    },
     "name": "Documents",
     "createTitle": "Create contract",
     "updateTitle": "Edit contract",
@@ -1426,7 +1435,8 @@
           "cancelled": "The order is cancelled",
           "contract": "Changed via the contract",
           "contract_additional": "Changed via the additional agreement",
-          "no_form_state": "Old order — view only"
+          "no_form_state": "Old order — view only",
+          "expired": "Signing deadline has passed — delete the document and create it again"
         },
         "resend": {
           "title": "Send for signing again",
@@ -1434,7 +1444,7 @@
           "allHint": "Those who approved or rejected will also be «In progress» again",
           "selected": "Selected",
           "selectedHint": "Only checked people become «In progress», others keep their status",
-          "contentChanged": "The order text changed — earlier approvals of unselected people will refer to the old version.",
+          "contentChanged": "The document text changed — earlier approvals of unselected people will refer to the old version.",
           "required": "required",
           "count": "Will be sent to {count}",
           "submit": "Send",
@@ -1785,6 +1795,15 @@
     }
   },
   "contractPage": {
+    "edit": {
+      "locked": {
+        "approved": "An approved contract cannot be edited",
+        "command_approved": "The order based on this contract is approved — it cannot be edited",
+        "no_form_state": "This contract was created before editing was available — it cannot be edited",
+        "expired": "Signing deadline has passed — delete the document and create it again"
+      },
+      "savedNotify": "The contract was updated and sent for signing again"
+    },
     "name": "Contracts",
     "succeedText": "Contract created successfully!",
     "table": {
@@ -1812,6 +1831,15 @@
     "name": "Chat"
   },
   "adContractPage": {
+    "edit": {
+      "locked": {
+        "approved": "An approved additional agreement cannot be edited",
+        "command_approved": "The order based on this agreement is approved — it cannot be edited",
+        "no_form_state": "This agreement was created before editing was available — it cannot be edited",
+        "expired": "Signing deadline has passed — delete the document and create it again"
+      },
+      "savedNotify": "The additional agreement was updated and sent for signing again"
+    },
     "createTitle": "Create additional agreement",
     "updateTitle": "Edit additional agreement",
     "name": "Additional agreement"
@@ -5413,7 +5441,9 @@
     "name": "Upload Source"
   },
   "salaryHidden": {
-    "name": "Salary Hidden",
+    "name": "Hidden Salaries",
+    "searchWorker": "Search employee",
+    "searchWorkerPlaceholder": "Search by name or PINFL...",
     "searchPlaceholder": "Search by PINFL or note...",
     "addButton": "Add PINFL",
     "pinfl": "PINFL",
@@ -6082,18 +6112,18 @@
   "eimzoGateAdmin": {
     "name": "E-IMZO verification",
     "title": "E-IMZO verification for the economist section",
-    "subtitle": "When enabled, every user except Admin confirms their identity with their own e-signature key before entering the economist section. Verification lasts until the next login.",
-    "listTitle": "Active verifications",
+    "subtitle": "When enabled, all users except Admin and exempt roles confirm their identity with their E-signature key before entering the economist section. The confirmation lasts until the next login.",
     "refresh": "Refresh",
-    "user": "User",
-    "phone": "Phone",
-    "cert": "Certificate owner",
-    "serial": "Certificate number",
-    "verifiedAt": "Verified at",
-    "revoke": "Revoke",
     "enabledToast": "E-IMZO verification enabled",
     "disabledToast": "E-IMZO verification disabled",
-    "revokedToast": "Verification revoked — the user will verify again"
+    "rolesTitle": "Roles exempt from verification",
+    "rolesHint": "Users with checked roles enter the economist section without E-IMZO verification. This permission can also be granted in the role form.",
+    "role": "Role",
+    "usersCount": "Users",
+    "exempt": "Exempt",
+    "adminLocked": "Admin is always exempt",
+    "exemptOnToast": "Role exempted from E-IMZO verification",
+    "exemptOffToast": "E-IMZO verification restored for the role"
   },
   "eimzoGate": {
     "title": "Security verification",
@@ -6429,5 +6459,119 @@
         "levelsTitle": "Color levels"
       }
     }
+  },
+  "guidesPage": {
+    "title": "Guides",
+    "subtitle": "Video tutorials on using the system",
+    "platform": {
+      "web": "Web system",
+      "mobile": "Mobile app"
+    },
+    "search": "Search guides",
+    "all": "All",
+    "new": "New",
+    "viewed": "Watched",
+    "empty": "No guides yet",
+    "emptyHint": "Video tutorials will be added soon",
+    "notFound": "Nothing found",
+    "notFoundHint": "Try a different search or category",
+    "sequence": "Learning order",
+    "sequenceHint": "Watch the videos in this order",
+    "count": "{n} videos",
+    "categories": {
+      "general": "General",
+      "workers": "Employees",
+      "commands": "Orders",
+      "contracts": "Contracts",
+      "signing": "E-signature",
+      "turnstile": "Turnstile",
+      "timesheet": "Timesheet",
+      "vacations": "Vacations",
+      "vacancies": "Vacancies",
+      "learning": "Training",
+      "attestation": "Attestation",
+      "applications": "Applications",
+      "mobile": "Mobile app",
+      "reports": "Reports"
+    }
+  },
+  "videoGuidePage": {
+    "name": "Video guides",
+    "create": "New guide",
+    "edit": "Edit guide",
+    "form": {
+      "title": "Title",
+      "description": "Description",
+      "platform": "Platform",
+      "category": "Category",
+      "sort": "Order number",
+      "status": "Status",
+      "video": "Video",
+      "poster": "Cover"
+    },
+    "platform": {
+      "all": "Web and mobile",
+      "web": "Web",
+      "mobile": "Mobile"
+    },
+    "published": "Published",
+    "draft": "Draft",
+    "duration": "Duration",
+    "views": "Views",
+    "chooseVideo": "Choose video",
+    "replaceVideo": "Replace video",
+    "changePoster": "Replace cover",
+    "uploadingVideo": "Uploading video…",
+    "uploadingPoster": "Uploading cover…",
+    "uploaded": "Video uploaded",
+    "required": "Title (UZ) and video are required",
+    "confirmDelete": "Delete this guide?"
+  },
+  "alertDialog": {
+    "ok": "Got it",
+    "checkFields": "Please check the following and try again:",
+    "titles": {
+      "forbidden": "Access denied",
+      "validation": "Some fields need attention",
+      "warning": "Action can't be completed",
+      "notfound": "Not found",
+      "network": "Connection lost"
+    },
+    "eimzoTitle": "Couldn't connect to E-IMZO"
+  },
+  "sessionEnded": {
+    "title": "Your session was ended",
+    "redirect": "Signing out in {seconds}s",
+    "reasons": {
+      "replaced": "Your account was signed in from another browser{device}.",
+      "revoked_mobile": "Your session was ended from your phone via the HR Rail app{device}.",
+      "revoked_web": "Your session was ended from another browser{device}.",
+      "expired_idle": "The session expired after 8 hours of inactivity.",
+      "expired_absolute": "The 7-day session limit was reached.",
+      "password_changed": "Your account password was changed. Sign in with the new password.",
+      "password_reset": "Your account password was reset. Sign in with the new password.",
+      "blocked": "Your account is blocked. Contact the administrator.",
+      "deleted": "Your account was deleted. Contact the administrator.",
+      "no_position": "Access stopped: you have no active position.",
+      "default": "Your session was closed for security reasons. Please sign in again."
+    }
+  },
+  "documentSettings": {
+    "title": "Deadlines and electronic number",
+    "backdate": "Backdate limit",
+    "backdateHint": "how many days back a document date may be",
+    "signDeadline": "Signing deadline",
+    "signDeadlineHint": "a document not approved in time becomes «Problematic»",
+    "prefix": "Electronic number prefix",
+    "prefixSample": "Example: {sample}. Existing document numbers stay the same",
+    "prefixInvalid": "2–5 uppercase Latin letters (e.g. UTY)",
+    "days": "days",
+    "daysValue": "{n} days",
+    "noLimit": "No limit",
+    "confirmTitle": "Save settings",
+    "confirmText": "The change applies to new documents of all organizations. Save?",
+    "saved": "Deadline and number settings saved",
+    "electronicNumber": "Electronic number",
+    "searchPlaceholder": "Name or number"
   }
 }

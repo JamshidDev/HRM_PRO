@@ -154,6 +154,14 @@ export const adminRoutes = [
     }
   },
   {
+    path: Utils.routePathMaker(AppPaths.VideoGuides),
+    name: AppPaths.VideoGuides.substring(1),
+    component: () => import('@/pages/admin/videoGuide/VideoGuidePage.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
     path: Utils.routePathMaker(AppPaths.MobileUsers),
     name: AppPaths.MobileUsers.substring(1),
     component: () => import('@pages/admin/mobileUser/page.vue'),

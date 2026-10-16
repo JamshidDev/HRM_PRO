@@ -29,7 +29,7 @@ const onSubmit = () => {
   // biriktirmaydi — foydalanuvchi buni «muvaffaqiyat» deb ko'rardi. Shuning
   // uchun so'rov yuborilishidan OLDIN to'xtatamiz.
   if (store.isOverEduPlanLimit) {
-    $Toast.error(
+    $Alert.validation(
       t('lmsWorkerPage.form.planLimitExceeded', {
         limit: store.eduPlanLimit,
         n: store.payload.worker_position_ids.length

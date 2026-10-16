@@ -91,7 +91,7 @@
   const onSubmit = () => {
     if (!accStore.checkAction(accStore.pn.organizationsWrite)) return
     if (basisMissing.value) {
-      $Toast.error(t('organizationPage.basis.required'))
+      $Alert.validation(t('organizationPage.basis.required'))
       return
     }
     formRef.value?.validate((error) => {

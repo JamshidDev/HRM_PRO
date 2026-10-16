@@ -540,6 +540,8 @@ export const appPermissions = {
   lmsSubjectsDelete: 'lms-subjects-delete',
   lmsTeachersDelete: 'lms-teachers-delete',
   mobileStoriesDelete: 'mobile-stories-delete',
+  videoGuides: 'video-guides',
+  videoGuidesDelete: 'video-guides-delete',
   nationalitiesDelete: 'nationalities-delete',
   organizationsDelete: 'organizations-delete',
   permissionsDelete: 'permissions-delete',

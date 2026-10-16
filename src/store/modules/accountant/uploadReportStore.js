@@ -41,6 +41,9 @@ export const useUploadReportStore = defineStore('uploadReport', {
     selectedIndex: null,
     selectedId: null,
     selectedOrgName: null,
+    // Tanlangan korxona uchun ruxsat etilgan manba (1=Excel, 2=1C, 3=ikkala) —
+    // tanlash paytida tugundan to'g'ridan-to'g'ri olinadi (strukturani qayta qidirmasdan).
+    selectedOrgAllowedSource: 3,
     // Korxonalar daraxtini nomi bo'yicha (klientda) filtrlash
     orgSearch: '',
     commentVisible: false,
@@ -556,7 +559,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
         .catch((e) => {
           // Backend xabari (mas. tasdiqlangan hisobotni o'chirib bo'lmaydi — avval
           // bekor qiling) bo'lsa — aynan o'shani ko'rsatamiz.
-          $Toast.error(e?.response?.data?.message || t('content.error'))
+          $Alert.error(e, t('content.error'))
         })
         .finally(() => {
           this.deleteLoading = false
@@ -583,10 +586,14 @@ export const useUploadReportStore = defineStore('uploadReport', {
       this.params.organization_id = this.params.organization_id === v.id ? null : v.id
       if (this.params.organization_id) {
         this.selectedOrgName = v.name
+        // Manba cheklovini tugunning o'zidan olamiz (structure allowed_source) — modal
+        // shu asosda Excel/1C tanlovini ko'rsatadi (taqiqlangan manba ko'rinmaydi).
+        this.selectedOrgAllowedSource = v.allowed_source ?? 3
         this._cards()
         this._loadOnesCodes(this.params.organization_id)
         this._loadAnomalySummary(false)
       } else {
+        this.selectedOrgAllowedSource = 3
         this.onesCodes = []
         this.anomalySummary = { duplicate_pinfl: 0, missing_code: 0, total: 0 }
       }
@@ -781,7 +788,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
             } catch {
               // JSON emas — standart xato xabari qoladi.
             }
-            $Toast.error(msg)
+            $Alert.warning(msg)
             return
           }
           Utils.blobFileDownload(blob, 'application/zip', name)

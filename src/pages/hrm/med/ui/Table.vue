@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { UIBadge, UIStatus, UITable, UIUser } from '@/components/index.js'
 import i18n from '@/i18n/index.js'
 import { useAccountStore, useMedStore } from '@/store/modules/index.js'
@@ -44,7 +45,7 @@ import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
   }
 
   const openFileNewTab = (url) => {
-    window.open(url, '_blank')
+    openSafeUrl(url)
   }
 
   const changePage = (v) => {

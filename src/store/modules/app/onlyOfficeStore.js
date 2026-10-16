@@ -3,12 +3,10 @@ import { v4 as uuidv4 } from 'uuid'
 import config from '@/utils/onlyOfficeConfig.json'
 const _CallBackUrl = import.meta.env.VITE_CALLBACK_URL
 const _ServerUrl = import.meta.env.VITE_OFFICE_SERVER
-const _JwtSecret = import.meta.env.VITE_OFFICE_JWT_SECRET
 export const useOnlyOfficeStore = defineStore('onlyOfficeStore', {
   state: () => ({
     visible: false,
     serverUrl: _ServerUrl,
-    secret: _JwtSecret,
     config: {
       document: {
         fileType: 'docx',

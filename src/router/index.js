@@ -247,16 +247,22 @@ router.beforeEach(async (to, from, next) => {
   // TABDA deep-link ochilganda ruxsatlar bo'sh bo'lib, qo'riqchi noto'g'ri rad etardi
   // va foydalanuvchi Home'ga uchib ketardi. Baholashdan oldin o'zimiz yuklaymiz.
   const token = localStorage.getItem(useAppSetting.tokenKey)
-  if (token && !accountStore.permissionsLoaded) {
+  // Kirilmagan — «Ruxsat berilmagan»siz login'ga (beforeLogin yo'naltiradi).
+  if (!token) return next()
+  if (!accountStore.permissionsLoaded) {
     // 401 bo'lsa axios interceptor Login'ga o'zi yo'naltiradi (service/index.js).
     await accountStore._index().catch(() => {})
+    // Sessiya tugagan (401 token'ni o'chirgan) — alert emas, login.
+    if (!localStorage.getItem(useAppSetting.tokenKey)) return next(AppPaths.Login)
   }
 
   if (accountStore.canView(permission)) return next()
 
   // `window.$Toast` ToastProvider mount bo'lganda paydo bo'ladi — ilk navigatsiyada
   // hali mavjud bo'lmasligi mumkin, shuning uchun ixtiyoriy chaqiruv.
-  window.$Toast?.warning(i18n.global.t('message.noPermission'))
+  const deniedMsg = i18n.global.t('message.noPermission')
+  if (window.$Alert) window.$Alert({ type: 'forbidden' })
+  else window.$Toast?.warning(deniedMsg)
 
   // Cheksiz redirectdan saqlanish.
   const fallback = firstAccessiblePath(accountStore)

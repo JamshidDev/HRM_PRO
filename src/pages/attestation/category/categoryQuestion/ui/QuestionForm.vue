@@ -17,11 +17,7 @@
           store._update()
         }
       } else {
-        let message = ''
-        error.forEach((i) => {
-          message += i.map((j) => j.message).join('\n') + '\n'
-        })
-        $Toast.error(message)
+        $Alert({ type: 'validation', errors: error.flat().map((j) => j.message) })
       }
     })
   }
