@@ -410,11 +410,19 @@
     onReplace(worker)
     store.replacePayload.date = new Date(`${day.date}T00:00:00`).getTime()
     store.replacePayload.status = true
+    // Katakdan — avval kunni o'zgartirish, xohlasa almashtirishga o'tadi.
+    store.replaceModeSwitch = true
+    store.replaceMode = 'edit'
   }
 
   const onReplace = (v) => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
     store.selectedWorker = v
+    store.replaceModeSwitch = false
+    store.replaceMode = 'swap'
+    // «…» — uzoq muddatli almashtirish; katakdan ochilganda pastda «Faqat shu kun» qo'yiladi.
+    store.replacePayload.status = false
+    store.dayEdit = { choice: null, start: null, end: null }
     store.workerParams.search = null
     store._workers()
     store.replacePayload.positonId = null

@@ -332,6 +332,13 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
           this.scheduleVisible = false
           this.notScheduleVisible = false
           this.rotatingVisible = false
+          // Ro'yxat yaratilgan oyga o'tadi — yangi guruh darhol ko'rinsin.
+          const start = data?.start_date ? new Date(`${String(data.start_date).slice(0, 10)}T00:00:00`) : null
+          if (start && !Number.isNaN(start.getTime())) {
+            this.groupParams.year = this.params.year = start.getFullYear()
+            this.groupParams.month = this.params.month = start.getMonth() + 1
+            this.groupParams.page = 1
+          }
           this._refreshAfterGroupChange()
         })
         .finally(() => {

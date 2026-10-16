@@ -5,13 +5,116 @@
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
-  import { findSwapConflicts } from './conflicts.js'
+  import { findDayConflicts, findNewGaps, findSwapConflicts } from './conflicts.js'
   import { showAlert } from '@/components/notify/alertDialog.js'
 
   const store = useScheduleGroupWorkerStore()
   const accStore = useAccountStore()
   const formRef = ref(null)
   const { t } = i18n.global
+
+  const conflictLines = (conflicts) => [
+    ...new Set(
+      conflicts.map(
+        (c) =>
+          `${c.title}: ${c.first.name} (${c.first.start}–${c.first.end}) ⟷ ${c.second.name} (${c.second.start}–${c.second.end})`
+      )
+    )
+  ]
+  // Smena turidagi ish smenalari (bo'shliq tekshiruvi uchun).
+  const typeShifts = computed(() => {
+    const seen = new Map()
+    for (const d of store.shiftType?.days ?? []) {
+      if (!d?.work_status) continue
+      const st = String(d.start_time).slice(0, 5)
+      const et = String(d.end_time).slice(0, 5)
+      seen.set(`${st}-${et}`, { start: st, end: et })
+    }
+    return [...seen.values()]
+  })
+  const daysMap = (list) => Object.fromEntries(list.map((v) => [v.worker_position_id, v.days]))
+  // Kesishma yoki yangi bo'shliq bo'lsa ovozli ogohlantirish, tasdiqlansa saqlanadi.
+  const confirmIfConflicts = (conflicts, save, gaps = []) => {
+    if (!conflicts.length && !gaps.length) return save()
+    showAlert({
+      type: 'warning',
+      title: t('shiftType.groupView.conflictTitle'),
+      message: conflicts.length ? t('shiftType.groupView.conflictHint') : t('shiftType.groupView.gapHint'),
+      listHint: '',
+      errors: [
+        ...new Set([
+          ...conflictLines(conflicts),
+          ...gaps.map((g) => t('shiftType.groupView.gapLine', { group: g.title, shift: g.shift }))
+        ])
+      ],
+      confirmText: t('shiftType.groupView.conflictSave'),
+      onConfirm: save
+    })
+  }
+
+  // Kunni o'zgartirish: Dam, smena turidagi smenalar yoki boshqa vaqt.
+  const dayDate = computed(() => Utils.timeToZone(store.replacePayload.date))
+  const currentDay = computed(() => store.selectedWorker?.days?.find((d) => d.date === dayDate.value))
+  const currentLabel = computed(() => {
+    const d = currentDay.value
+    if (!d || d.isEmpty) return '—'
+    return d.isWorkDay ? `${d.startTime}–${d.endTime}` : t('shiftType.groupView.rest')
+  })
+  const shiftChoices = computed(() => {
+    const seen = new Set()
+    const out = [{ key: 'rest', label: t('shiftType.groupView.rest'), plan: { work_status: false } }]
+    for (const d of store.shiftType?.days ?? []) {
+      if (!d?.work_status) continue
+      const st = String(d.start_time).slice(0, 5)
+      const et = String(d.end_time).slice(0, 5)
+      if (seen.has(`${st}-${et}`)) continue
+      seen.add(`${st}-${et}`)
+      out.push({ key: `${st}-${et}`, label: `${st}–${et}`, plan: { work_status: true, start_time: st, end_time: et } })
+    }
+    out.push({ key: 'custom', label: t('shiftType.groupView.customTime'), plan: null })
+    return out
+  })
+  const editPlan = computed(() => {
+    const c = store.dayEdit.choice
+    if (!c) return null
+    if (c !== 'custom') return shiftChoices.value.find((x) => x.key === c)?.plan ?? null
+    if (!store.dayEdit.start || !store.dayEdit.end) return null
+    return { work_status: true, start_time: store.dayEdit.start, end_time: store.dayEdit.end }
+  })
+  const onSaveDay = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
+    const plan = editPlan.value
+    if (!plan) return
+    const data = {
+      worker_position_id: store.selectedWorker.workerPositionId,
+      date: dayDate.value,
+      group_id: store.params.group,
+      ...plan
+    }
+    const conflicts = findDayConflicts({
+      list: store.list,
+      crewMap: store.crewMap,
+      wp: data.worker_position_id,
+      date: data.date,
+      plan
+    })
+    const before = daysMap(store.list)
+    const after = {
+      ...before,
+      [data.worker_position_id]: (before[data.worker_position_id] ?? []).map((d) =>
+        d.date === data.date ? { ...d, id: d.id ?? -1, work_status: plan.work_status ? 1 : 0, start_time: plan.start_time, end_time: plan.end_time } : d
+      )
+    }
+    const gaps = findNewGaps({
+      before,
+      after,
+      crewMap: store.crewMap,
+      wps: [data.worker_position_id],
+      dates: [data.date],
+      shifts: typeShifts.value
+    })
+    confirmIfConflicts(conflicts, () => store._editDay(data), gaps)
+  }
 
   const partnerGroupAt = (w, date) =>
     w.ranges?.find((r) => r.date_from <= date && date <= r.date_to)?.group_id || undefined
@@ -44,24 +147,32 @@
           from: data.date,
           to: data.status ? data.date : store.monthRange.to
         })
-        if (!conflicts.length) return store._replaceWorker(data)
-        // Ovozli 3D ogohlantirish (AlertDialog) — tasdiqlansa saqlanadi.
-        showAlert({
-          type: 'warning',
-          title: t('shiftType.groupView.conflictTitle'),
-          message: t('shiftType.groupView.conflictHint'),
-          listHint: '',
-          errors: [
-            ...new Set(
-              conflicts.map(
-                (c) =>
-                  `${c.title}: ${c.first.name} (${c.first.start}–${c.first.end}) ⟷ ${c.second.name} (${c.second.start}–${c.second.end})`
-              )
-            )
-          ],
-          confirmText: t('shiftType.groupView.conflictSave'),
-          onConfirm: () => store._replaceWorker(data)
+        // Almashishdan keyingi holat — yangi bo'shliqlar uchun.
+        const to = data.status ? data.date : store.monthRange.to
+        const before = daysMap(store.list)
+        const swapDays = (own, other) =>
+          (own ?? []).map((d) =>
+            d.date >= data.date && d.date <= to
+              ? ((other ?? []).find((x) => x.date === d.date) ?? { ...d, id: null, work_status: false })
+              : d
+          )
+        const after = {
+          ...before,
+          [data.worker_position_1]: swapDays(before[data.worker_position_1], before[data.worker_position_2])
+        }
+        if (before[data.worker_position_2]) {
+          after[data.worker_position_2] = swapDays(before[data.worker_position_2], before[data.worker_position_1])
+        }
+        const dates = (before[data.worker_position_1] ?? []).map((d) => d.date).filter((d) => d >= data.date && d <= to)
+        const gaps = findNewGaps({
+          before,
+          after,
+          crewMap: store.crewMap,
+          wps: [data.worker_position_1, data.worker_position_2],
+          dates,
+          shifts: typeShifts.value
         })
+        confirmIfConflicts(conflicts, () => store._replaceWorker(data), gaps)
       }
     })
   }
@@ -96,7 +207,7 @@
   <UIModal
     v-model:visible="store.replaceVisible"
     :width="500"
-    :title="$t('shiftType.form.replaceWorker')"
+    :title="store.replaceMode === 'edit' ? $t('shiftType.groupView.editDay') : $t('shiftType.form.replaceWorker')"
   >
     <n-form
       class="grid grid-cols-12"
@@ -114,6 +225,57 @@
           {{ store.selectedWorker.position }}
         </div>
       </div>
+      <div v-if="store.replaceModeSwitch" class="col-span-12 mb-5">
+        <n-radio-group v-model:value="store.replaceMode" class="w-full flex!">
+          <n-radio-button value="edit" class="flex-1 text-center">{{ $t('shiftType.groupView.editDay') }}</n-radio-button>
+          <n-radio-button value="swap" class="flex-1 text-center">{{ $t('shiftType.groupView.swapMode') }}</n-radio-button>
+        </n-radio-group>
+      </div>
+
+      <template v-if="store.replaceMode === 'edit'">
+        <div class="col-span-12 flex justify-between text-sm mb-3">
+          <span class="text-secondary">{{ Utils.timeOnlyDate(dayDate) }}</span>
+          <span>
+            <span class="text-secondary">{{ $t('shiftType.groupView.actual') }}:</span>
+            <span class="font-medium ml-1">{{ currentLabel }}</span>
+          </span>
+        </div>
+        <div class="col-span-12 flex flex-wrap gap-2 mb-4">
+          <n-button
+            v-for="c in shiftChoices"
+            :key="c.key"
+            :type="store.dayEdit.choice === c.key ? 'primary' : 'default'"
+            :secondary="store.dayEdit.choice !== c.key"
+            @click="store.dayEdit.choice = c.key"
+          >
+            {{ c.label }}
+          </n-button>
+        </div>
+        <div v-if="store.dayEdit.choice === 'custom'" class="col-span-12 grid grid-cols-2 gap-3 mb-4">
+          <n-time-picker
+            v-model:formatted-value="store.dayEdit.start"
+            value-format="HH:mm"
+            format="HH:mm"
+            :placeholder="$t('shiftType.groupView.startTime')"
+          />
+          <n-time-picker
+            v-model:formatted-value="store.dayEdit.end"
+            value-format="HH:mm"
+            format="HH:mm"
+            :placeholder="$t('shiftType.groupView.endTime')"
+          />
+        </div>
+        <div class="col-span-12 flex justify-end gap-4">
+          <n-button @click="store.replaceVisible = false" type="error" secondary>
+            {{ $t('content.cancel') }}
+          </n-button>
+          <n-button @click="onSaveDay" :disabled="!editPlan" :loading="store.replaceLoading" type="primary">
+            {{ $t('content.save') }}
+          </n-button>
+        </div>
+      </template>
+
+      <template v-else>
       <n-form-item
         class="col-span-12"
         :label="$t('shiftType.groupView.swapWith')"
@@ -169,6 +331,7 @@
           {{ $t('content.save') }}
         </n-button>
       </div>
+      </template>
     </n-form>
   </UIModal>
 </template>

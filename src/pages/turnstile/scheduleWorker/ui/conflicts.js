@@ -32,10 +32,13 @@ export const findSwapConflicts = ({ list, crewMap, a, b, from, to }) => {
   // Almashishdan keyingi kunlar.
   const sim = new Map([...rows].map(([wp, r]) => [wp, r.days]))
   const rowB = rows.get(Number(b))
-  sim.set(
-    Number(a),
-    rowA.days.map((d) => (inRange(d.date) ? (dayOf(rowB, d.date) ?? emptyDay(d.date)) : d))
-  )
+  // b = -1 — sherik yo'q (bitta kun tahriri): A ning kunlari o'zgartirilgan holicha qoladi.
+  if (Number(b) !== -1) {
+    sim.set(
+      Number(a),
+      rowA.days.map((d) => (inRange(d.date) ? (dayOf(rowB, d.date) ?? emptyDay(d.date)) : d))
+    )
+  }
   if (rowB) {
     sim.set(
       Number(b),
@@ -69,6 +72,45 @@ export const findSwapConflicts = ({ list, crewMap, a, b, from, to }) => {
         const changed = (x) => (x.wp === Number(a) || x.wp === Number(b)) && inRange(x.date)
         if (!changed(items[i]) && !changed(items[j])) continue
         out.push({ date: items[j].date, title: items[i].title, first: items[i], second: items[j] })
+      }
+    }
+  }
+  return out
+}
+
+// Bitta kun o'zgarganda (plan) shu xodim guruhida kesishma bormi.
+export const findDayConflicts = ({ list, crewMap, wp, date, plan }) => {
+  const row = list.find((v) => Number(v.worker_position_id) === Number(wp))
+  if (!row) return []
+  const patched = {
+    ...row,
+    days: row.days.map((d) =>
+      d.date === date ? { ...d, id: d.id ?? -1, work_status: plan.work_status ? 1 : 0, start_time: plan.start_time, end_time: plan.end_time } : d
+    )
+  }
+  const others = list.filter((v) => v !== row)
+  // Almashish tekshiruvchisidan foydalanamiz: sherik yo'q, faqat shu kun o'zgargan.
+  return findSwapConflicts({ list: [patched, ...others], crewMap, a: wp, b: -1, from: date, to: date })
+}
+
+// Shu o'zgarish yangi paydo qilgan bo'shliqlar: guruhda smena turining biror smenasida hech kim qolmagan kun.
+// before/after — { wp: days[] }; shifts — smena turidagi ish smenalari [{start,end}].
+export const findNewGaps = ({ before, after, crewMap, wps, dates, shifts }) => {
+  if (!shifts?.length) return []
+  const sig = (d) => (d && d.id !== null && Number(d.work_status) ? `${String(d.start_time).slice(0, 5)}-${String(d.end_time).slice(0, 5)}` : null)
+  const keys = new Set(wps.map((w) => crewMap[w]?.key).filter(Boolean))
+  const out = []
+  for (const key of keys) {
+    const members = Object.entries(crewMap).filter(([, c]) => c.key === key)
+    const title = members[0]?.[1]?.title
+    for (const date of dates) {
+      const covered = (src) =>
+        new Set(members.map(([wp]) => sig((src[wp] ?? []).find((d) => d.date === date))).filter(Boolean))
+      const was = covered(before)
+      const now = covered(after)
+      for (const s of shifts) {
+        const k = `${s.start}-${s.end}`
+        if (was.has(k) && !now.has(k)) out.push({ date, title, shift: `${s.start}–${s.end}` })
       }
     }
   }

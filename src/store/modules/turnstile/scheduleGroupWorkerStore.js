@@ -63,6 +63,10 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
       status: false
     },
     replaceLoading: false,
+    // Katakdan ochilganda: 'edit' — kunni o'zgartirish, 'swap' — xodim bilan almashtirish.
+    replaceMode: 'swap',
+    replaceModeSwitch: false,
+    dayEdit: { choice: null, start: null, end: null },
 
     workerParams: {
       page: 1,
@@ -114,6 +118,18 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
         const list = res.data.data?.data ?? res.data.data ?? []
         this.shiftType = list.find((v) => v.id === Number(id)) ?? null
       })
+    },
+    _editDay(data) {
+      this.replaceLoading = true
+      $ApiService.shiftTypeService
+        ._editDay({ data })
+        .then(() => {
+          this.replaceVisible = false
+          this._index()
+        })
+        .finally(() => {
+          this.replaceLoading = false
+        })
     },
     _replaceWorker(data) {
       this.replaceLoading = true
