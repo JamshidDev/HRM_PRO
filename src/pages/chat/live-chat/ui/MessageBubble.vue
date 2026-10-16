@@ -10,7 +10,10 @@
     Checkmark16Filled,
     Dismiss16Regular,
     ArrowReply16Regular,
-    ArrowForward16Regular
+    ArrowForward16Regular,
+    Clock12Regular,
+    ErrorCircle16Filled,
+    ArrowClockwise16Regular
   } from '@vicons/fluent'
   import { useAccountStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
@@ -109,8 +112,15 @@
   }
 
   const onDelete = () => {
-    props.chat.deleteMessage(props.message.id)
+    props.chat.deleteMessage(props.message)
   }
+
+  // Serverga yetmagan xabar (vaqtinchalik id) — amallar menyusi ochilmaydi.
+  // Kirish animatsiyasi faqat yangi kelgan xabarda (tarix yuklanganda emas).
+  const isFresh = Math.abs(Date.now() - dayjs(props.message.createdAt).valueOf()) < 5000
+
+  const isSaved = computed(() => typeof props.message.id === 'number')
+  const onRetry = () => props.chat.retryMessage(props.message)
 
   // ── Javob, nusxalash, yo'naltirish, reaksiya ────────────────────────────────
 
@@ -119,7 +129,7 @@
   const replyToSenderName = computed(() => {
     const senderId = props.message.replyTo?.senderId
     if (!senderId) return ''
-    return senderId === 'me' ? accountStore.fullName : props.chat.selectedUser.value?.fullName
+    return props.chat.isOwn({ senderId }) ? accountStore.fullName : props.chat.selectedUser.value?.fullName
   })
 
   const replyToPreview = computed(() =>
@@ -152,19 +162,21 @@
   const actionsMenuRef = ref(null)
 
   const onContextMenu = (e) => {
-    if (isEditing.value) return
+    if (isEditing.value || !isSaved.value) return
     actionsMenuRef.value?.openAt(e.clientX, e.clientY)
   }
 
   // Avatar bosilganda profil oynasini ochadi — o'ziniki uchun akkaunt do'konidan,
   // suhbatdosh uchun esa tanlangan foydalanuvchidan olinadi.
   const openOtherProfile = () => {
-    props.chat.openProfile(props.chat.selectedUser.value)
+    const u = props.chat.selectedUser.value
+    props.chat.openProfile(u ? { ...u, conversationId: u.id } : null)
   }
 
   const openOwnProfile = () => {
     props.chat.openProfile({
-      id: 'me',
+      id: props.chat.meId.value,
+      own: true,
       fullName: accountStore.fullName,
       photo: accountStore.userPhoto,
       phone: accountStore.account?.worker?.phones?.[0]?.phone,
@@ -183,7 +195,7 @@
         :size="34"
         class="cursor-pointer"
         :src="chat.selectedUser.value?.photo"
-        :color="getAvatarColor(chat.selectedUser.value?.id)"
+        :color="getAvatarColor(chat.selectedUser.value?.peerId)"
         @click="openOtherProfile"
       >
         {{ getInitials(chat.selectedUser.value?.fullName) }}
@@ -206,17 +218,35 @@
       @react="onReact"
     />
 
+    <!-- Yuborilmagan xabar: qayta yuborish -->
+    <Transition name="fade">
+      <n-tooltip v-if="isOwn && message.status === 'failed'" trigger="hover">
+        <template #trigger>
+          <button
+            type="button"
+            class="mb-1 size-7 shrink-0 self-end rounded-full bg-danger/10 text-danger flex items-center justify-center hover:bg-danger/20"
+            @click="onRetry"
+          >
+            <n-icon size="15"><ArrowClockwise16Regular /></n-icon>
+          </button>
+        </template>
+        {{ $t('liveChatPage.retry') }}
+      </n-tooltip>
+    </Transition>
+
     <!-- Avatarga qarab turgan burchak faqat guruh oxirida (avatar chiqqanda) Telegram'dagi kabi
          egri quyruqqa ega bo'ladi — pastdagi SVG orqali chiziladi (rangi CSS var'dan olinadi,
          shu sababli mavzu/dark-mode bilan avtomatik moslashadi) -->
     <div
-      class="relative max-w-[78%] md:max-w-[60%] rounded-2xl px-3.5 py-2.5 text-sm shadow-sm"
+      class="relative max-w-[78%] md:max-w-[60%] rounded-2xl px-3.5 py-2.5 text-sm shadow-sm transition-opacity"
       :class="[
         isOwn
           ? 'bg-[var(--chat-bubble-own-bg)] text-white'
           : 'bg-[var(--chat-bubble-in-bg)] text-textColor0',
         showAvatar ? (isOwn ? 'rounded-br-none' : 'rounded-bl-none') : '',
-        message.type === 'image' && !isEditing && '!p-1.5'
+        message.type === 'image' && !isEditing && '!p-1.5',
+        message.status === 'sending' && 'opacity-80',
+        isFresh && 'bubble-new'
       ]"
       @contextmenu.prevent="onContextMenu"
     >
@@ -373,8 +403,10 @@
         <span class="flex items-center gap-1">
           <span v-if="message.edited" class="text-[11px] italic">{{ $t('liveChatPage.edited') }}</span>
           <span class="text-[11px]">{{ timeLabel }}</span>
-          <n-icon v-if="isOwn" size="13">
-            <CheckmarkCircle20Filled v-if="message.status === 'read'" />
+          <n-icon v-if="isOwn" size="13" :class="message.status === 'failed' && 'text-[#ffb4b4]'">
+            <Clock12Regular v-if="message.status === 'sending'" />
+            <ErrorCircle16Filled v-else-if="message.status === 'failed'" />
+            <CheckmarkCircle20Filled v-else-if="message.status === 'read'" />
             <Checkmark20Filled v-else />
           </n-icon>
         </span>
@@ -436,6 +468,24 @@
 </template>
 
 <style scoped>
+  .bubble-new {
+    animation: bubble-in 0.18s ease-out;
+  }
+  @keyframes bubble-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px) scale(0.98);
+    }
+  }
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.2s;
+  }
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
+
   /* Tahrirlash maydoni doim ochiq/qorong'i mavzuga mos, aniq kontrastli
      fon-matn-kursor rangida bo'ladi — o'z xabar pufakchasi ko'k (yoki
      boshqasiniki neytral) bo'lgani uchun ularga tayanilmaydi, aks holda

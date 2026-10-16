@@ -5640,7 +5640,7 @@
   },
   "liveChatPage": {
     "name": "Live chat",
-    "searchPlaceholder": "Search user",
+    "searchPlaceholder": "Search chats",
     "selectChatTitle": "Select a chat",
     "selectChatHint": "Pick a user on the left to start messaging",
     "typePlaceholder": "Type a message...",
@@ -5683,7 +5683,16 @@
     "files": "Files",
     "photosCount": "{n} photos",
     "voiceMessagesCount": "{n} voice messages",
-    "filesCount": "{n} files"
+    "filesCount": "{n} files",
+    "newChat": "New chat",
+    "noChats": "No chats yet",
+    "searchEmployee": "Employee name or phone",
+    "searchMinHint": "Type at least 2 characters to search",
+    "typing": "typing",
+    "retry": "Resend",
+    "newMessage": "New message",
+    "open": "Open",
+    "unreadCount": "Unread messages"
   },
   "newsCategoryPage": {
     "name": "News Categories",

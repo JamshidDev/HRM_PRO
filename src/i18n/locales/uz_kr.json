@@ -5338,7 +5338,7 @@
   },
   "liveChatPage": {
     "name": "Онлайн чат",
-    "searchPlaceholder": "Фойдаланувчини қидириш",
+    "searchPlaceholder": "Суҳбатларни қидириш",
     "selectChatTitle": "Суҳбатни танланг",
     "selectChatHint": "Ёзишмани бошлаш учун чапдан фойдаланувчини танланг",
     "typePlaceholder": "Хабар ёзинг...",
@@ -5381,7 +5381,16 @@
     "files": "Файллар",
     "photosCount": "{n} та расм",
     "voiceMessagesCount": "{n} та овозли хабар",
-    "filesCount": "{n} та файл"
+    "filesCount": "{n} та файл",
+    "newChat": "Янги суҳбат",
+    "noChats": "Ҳали суҳбатлар йўқ",
+    "searchEmployee": "Ходимнинг Ф.И.Ш. ёки телефони",
+    "searchMinHint": "Қидириш учун камида 2 та ҳарф киритинг",
+    "typing": "ёзмоқда",
+    "retry": "Қайта юбориш",
+    "newMessage": "Янги хабар",
+    "open": "Очиш",
+    "unreadCount": "Ўқилмаган хабарлар"
   },
   "newsCategoryPage": {
     "name": "Янгилик категориялари",

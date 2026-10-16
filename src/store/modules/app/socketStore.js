@@ -60,7 +60,8 @@ export const useSocketStore = defineStore('useSocketStore', {
         reconnection: true,
         reconnectionDelay: 1000,
         reconnectionDelayMax: 5000,
-        reconnectionAttempts: 5,
+        // Chat uchun ulanish to'xtamasligi kerak — urinishlar cheklanmaydi.
+        reconnectionAttempts: Infinity,
         transports: ['websocket']
       })
 
@@ -69,6 +70,7 @@ export const useSocketStore = defineStore('useSocketStore', {
 
         this.setupIdleDetection()
         this.getAllOnlineUsers()
+        import('@/store/modules/chat/liveChatStore.js').then((m) => m.useLiveChatStore().onSocketConnect(this.socket))
       })
 
       this.socket.on('disconnect', () => {

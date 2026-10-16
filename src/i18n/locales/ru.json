@@ -5651,7 +5651,7 @@
   },
   "liveChatPage": {
     "name": "Онлайн-чат",
-    "searchPlaceholder": "Поиск пользователя",
+    "searchPlaceholder": "Поиск чатов",
     "selectChatTitle": "Выберите чат",
     "selectChatHint": "Выберите пользователя слева, чтобы начать переписку",
     "typePlaceholder": "Напишите сообщение...",
@@ -5694,7 +5694,16 @@
     "files": "Файлы",
     "photosCount": "{n} фото",
     "voiceMessagesCount": "{n} голосовых сообщений",
-    "filesCount": "{n} файлов"
+    "filesCount": "{n} файлов",
+    "newChat": "Новый чат",
+    "noChats": "Пока нет чатов",
+    "searchEmployee": "Ф.И.О. или телефон сотрудника",
+    "searchMinHint": "Введите минимум 2 символа для поиска",
+    "typing": "печатает",
+    "retry": "Отправить повторно",
+    "newMessage": "Новое сообщение",
+    "open": "Открыть",
+    "unreadCount": "Непрочитанные сообщения"
   },
   "newsCategoryPage": {
     "name": "Категории новостей",

@@ -942,6 +942,7 @@ export const navigations = withRawIcons([
   },
   {
     label: 'navigation.chat', // Chat
+    name: 'chat',
     path: AppPaths.Chat,
     icon: ChatSidebarIcon,
     permission: appPermissions.chat,
@@ -983,6 +984,7 @@ export const navigations = withRawIcons([
       },
       {
         label: 'liveChatPage.name',
+        name: 'live-chat',
         path: Utils.routeChatPathMaker(AppPaths.LiveChat),
         icon: ChatSidebarIcon,
         color: 'bg-dark',

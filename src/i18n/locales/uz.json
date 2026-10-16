@@ -5700,7 +5700,7 @@
   },
   "liveChatPage": {
     "name": "Onlayn chat",
-    "searchPlaceholder": "Foydalanuvchini qidirish",
+    "searchPlaceholder": "Suhbatlarni qidirish",
     "selectChatTitle": "Suhbatni tanlang",
     "selectChatHint": "Yozishmani boshlash uchun chapdan foydalanuvchini tanlang",
     "typePlaceholder": "Xabar yozing...",
@@ -5743,7 +5743,16 @@
     "files": "Fayllar",
     "photosCount": "{n} ta rasm",
     "voiceMessagesCount": "{n} ta ovozli xabar",
-    "filesCount": "{n} ta fayl"
+    "filesCount": "{n} ta fayl",
+    "newChat": "Yangi suhbat",
+    "noChats": "Hali suhbatlar yo'q",
+    "searchEmployee": "Xodimning F.I.Sh. yoki telefoni",
+    "searchMinHint": "Qidirish uchun kamida 2 ta harf kiriting",
+    "typing": "yozmoqda",
+    "retry": "Qayta yuborish",
+    "newMessage": "Yangi xabar",
+    "open": "Ochish",
+    "unreadCount": "O'qilmagan xabarlar"
   },
   "newsCategoryPage": {
     "name": "Yangilik kategoriyalari",
