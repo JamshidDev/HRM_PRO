@@ -1,5 +1,5 @@
 <script setup>
-  import { alertState, closeAlert } from './alertDialog.js'
+  import { alertState, closeAlert, confirmAlert } from './alertDialog.js'
   import { useAppStore } from '@stores'
   import i18n from '@/i18n/index.js'
   import { useNotificationSound } from '@/composables/useNotificationSound.js'
@@ -30,6 +30,8 @@
     const m = String(current.value?.message ?? '').trim()
     return m && m.toLowerCase() !== title.value.toLowerCase() ? m : ''
   })
+  // Ro'yxat ustidagi izoh: berilmasa — forma xatolari matni, bo'sh satr — yashiriladi.
+  const listHint = computed(() => current.value?.listHint ?? t('alertDialog.checkFields'))
   const show = computed({
     get: () => Boolean(current.value),
     set: (v) => !v && closeAlert()
@@ -84,7 +86,7 @@
       </p>
 
       <template v-if="current.errors.length">
-        <p class="mt-2 text-sm text-fig-text-secondary">{{ $t('alertDialog.checkFields') }}</p>
+        <p v-if="listHint" class="mt-2 text-sm text-fig-text-secondary">{{ listHint }}</p>
         <ul
           class="mt-3 max-h-48 overflow-y-auto rounded-2xl bg-surface-ground p-3 text-left text-sm text-textColor1"
         >
@@ -100,7 +102,15 @@
         </ul>
       </template>
 
-      <div class="relative mt-6 overflow-hidden rounded-xl">
+      <div v-if="current.onConfirm" class="mt-6 grid grid-cols-2 gap-3">
+        <n-button secondary size="large" class="!rounded-xl" @click="closeAlert">
+          {{ current.cancelText || $t('content.cancel') }}
+        </n-button>
+        <n-button type="primary" size="large" class="!rounded-xl" @click="confirmAlert">
+          {{ current.confirmText || $t('alertDialog.ok') }}
+        </n-button>
+      </div>
+      <div v-else class="relative mt-6 overflow-hidden rounded-xl">
         <n-button type="primary" block size="large" class="!rounded-xl" @click="closeAlert">
           {{ $t('alertDialog.ok') }}
         </n-button>

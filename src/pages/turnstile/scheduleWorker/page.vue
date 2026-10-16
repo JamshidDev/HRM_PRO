@@ -9,6 +9,7 @@
   import Filter from './ui/Filter.vue'
   import ReplaceModal from './ui/ReplaceModal.vue'
   import AddSlotModal from './ui/AddSlotModal.vue'
+  import ChangeInfoModal from './ui/ChangeInfoModal.vue'
 
   const store = useScheduleGroupWorkerStore()
   const route = useRoute()
@@ -65,5 +66,6 @@
     <Table />
     <ReplaceModal />
     <AddSlotModal />
+    <ChangeInfoModal />
   </UIPageContent>
 </template>
