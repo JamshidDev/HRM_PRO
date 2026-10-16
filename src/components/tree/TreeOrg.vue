@@ -181,7 +181,7 @@
         </span>
 
         <n-checkbox
-          class="shrink-0"
+          class="tso-check"
           :disabled="Boolean(item.group)"
           :checked="isSelected(item)"
           @click.stop="onSelect(item)"
@@ -189,7 +189,7 @@
 
         <div class="tso-label">
           <slot name="label" :data="item">
-            <span class="truncate" :title="short ? item.code : item.name">
+            <span class="tso-text">
               <template v-for="(p, pi) in parts(short ? item.code : item.name)" :key="pi">
                 <mark v-if="p.hit" class="tso-hit">{{ p.text }}</mark>
                 <template v-else>{{ p.text }}</template>
@@ -243,11 +243,13 @@
     --tso-line: var(--surface-line);
     position: relative;
     display: flex;
-    align-items: center;
+    /* Uzun nom bir necha qatorga bo'linadi — strelka, checkbox va tugma
+       birinchi qator bilan bir chiziqda qoladi (har biri 20px balandlikda). */
+    align-items: flex-start;
     gap: 6px;
     min-height: 28px;
     margin: 0;
-    padding: 0 6px 0 4px;
+    padding: 4px 6px 4px 4px;
     border-radius: 8px;
     cursor: pointer;
     outline: none;
@@ -286,6 +288,7 @@
   .tso-guide {
     position: relative;
     align-self: stretch;
+    margin: -4px 0;
     width: 18px;
     flex-shrink: 0;
   }
@@ -339,8 +342,22 @@
     min-width: 0;
     display: flex;
     align-items: center;
+    min-height: 20px;
+    padding: 1px 0;
     font-size: 13px;
-    line-height: 1.3;
+    line-height: 18px;
+  }
+
+  .tso-text {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .tso-check {
+    flex-shrink: 0;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
   }
 
   .tso-hit {
@@ -352,8 +369,8 @@
 
   /* Faqat hover/fokusda ko'rinadi; shoxcha to'liq tanlangan bo'lsa — doim */
   .tso-branch {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
