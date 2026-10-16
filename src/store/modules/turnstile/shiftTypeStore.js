@@ -24,7 +24,10 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       page: 1,
       per_page: 200,
       organizations: [],
-      departments: []
+      departments: [],
+      // Smena turlaridagi guruh/xodim sonlari — guruhlar filtri bilan bir davr.
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() + 1
     },
     payload: {
       name: null,
@@ -84,7 +87,10 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       search: null,
       schedule_type: null,
       organizations: [],
-      departments: []
+      departments: [],
+      // Davr filtri — standart joriy yil va oy.
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() + 1
     },
     groupId: null,
     groupLoading: false,

@@ -1,6 +1,7 @@
 <script setup>
   import { useAccountStore, useComponentStore, useShiftTypeStore } from '@/store/modules/index.js'
   import { UINSelect, UIPageFilter, UISelect } from '@/components/index.js'
+  import Utils from '@/utils/Utils.js'
 
   const store = useShiftTypeStore()
   const componentStore = useComponentStore()
@@ -12,6 +13,17 @@
     if (!accStore.canView(accStore.pn.turnstileSheetsWorkersRead)) return
     store.params.organizations = store.groupParams.organizations
     store.params.departments = store.groupParams.departments
+    store.params.page = 1
+    store._index()
+  }
+
+  // Yil/oy — filtr panelidan tashqarida, doim ko'rinadi.
+  const onChangePeriod = () => {
+    store.groupParams.page = 1
+    store._group()
+    if (!accStore.canView(accStore.pn.turnstileSheetsWorkersRead)) return
+    store.params.year = store.groupParams.year
+    store.params.month = store.groupParams.month
     store.params.page = 1
     store._index()
   }
@@ -76,9 +88,31 @@
     @show="beforeShow"
     @onClear="resetFilter"
   >
+    <template #filterSearch>
+      <div class="flex items-center gap-2 shrink-0">
+        <n-select
+          class="w-[110px]!"
+          v-model:value="store.groupParams.year"
+          :options="Utils.yearList"
+          label-field="name"
+          value-field="id"
+          @update:value="onChangePeriod"
+        />
+        <n-select
+          class="w-[150px]!"
+          v-model:value="store.groupParams.month"
+          :options="Utils.monthList"
+          label-field="name"
+          value-field="id"
+          clearable
+          :placeholder="$t('content.month')"
+          @update:value="onChangePeriod"
+        />
+      </div>
+    </template>
     <template #filterContent>
       <div class="ui-filter-grid grid grid-cols-12 gap-x-5 gap-y-4">
-        <div class="col-span-12 md:col-span-6">
+        <div class="col-span-12">
           <label>{{ $t('actionLog.table.structure') }}</label>
           <UISelect
             :options="componentStore.structureList"
@@ -94,7 +128,7 @@
             :multiple="false"
           />
         </div>
-        <div class="col-span-12 md:col-span-6">
+        <div class="col-span-12">
           <label>{{ $t('content.department') }}</label>
           <UINSelect
             multiple
