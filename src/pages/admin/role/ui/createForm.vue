@@ -2,13 +2,14 @@
   import validationRules from '@/utils/validationRules.js'
   import { computed, ref, watch } from 'vue'
   import i18n from '@/i18n/index.js'
-  import { useUserRoleStore } from '@/store/modules/index.js'
+  import { useUserRoleStore, useAccountStore } from '@/store/modules/index.js'
   import {
     PERMISSION_GROUPS,
     ACTION_LABELS,
     MEANINGFUL,
     ENFORCED,
   } from '@/utils/permissionGroups.js'
+  import { OWNER_USER_ID } from '@/utils/privileged.js'
   // Modul tab iconlari — sidebardagi (navigations.js) bilan bir xil SVG'lar.
   import { Apps24Filled, Search24Regular } from '@vicons/fluent'
   import HrModIcon from '@assets/icons/HrManagement.svg'
@@ -43,7 +44,14 @@
 
   const formRef = ref(null)
   const store = useUserRoleStore()
+  const accStore = useAccountStore()
   const t = i18n.global.t
+
+  // `ownerOnly` guruhlar (masalan "Yashirilgan oyliklar" / salary-hidden) FAQAT tizim
+  // egasiga ko'rinadi — boshqa adminlar bu ruxsatni rolга bera olmasin (backend ham
+  // enforce qiladi). Qolganlar uchun karta umuman render qilinmaydi.
+  const isOwner = computed(() => accStore.account?.id === OWNER_USER_ID)
+  const canSeeGroup = (g) => !g.ownerOnly || isOwner.value
 
   // Har modulning modul-kirish guruhi shu label bilan belgilangan.
   const MODULE_ACCESS_LABEL = 'userRole.form.moduleAccess'
@@ -183,8 +191,10 @@
     // `sw.key` bo'yicha unique: bitta slug ikki kartada ko'rsatilsa (masalan
     // `hr-contracts-write` — «Xodimlar» va «Shartnomalar») badge ikki marta sanamasin.
     const on = new Set()
-    for (const g of mod.groups)
+    for (const g of mod.groups) {
+      if (!canSeeGroup(g)) continue
       for (const sw of groupSwitches(g)) if (switchOn(sw)) on.add(sw.key)
+    }
     return on.size
   }
 
@@ -194,6 +204,7 @@
     return mod.groups.filter(
       (g) =>
         groupSwitches(g).length > 0 &&
+        canSeeGroup(g) &&
         (!q || t(g.label).toLowerCase().includes(q))
     )
   }
@@ -204,7 +215,7 @@
     PERMISSION_GROUPS.filter(
       (m) =>
         (m.guard ?? 'sanctum') === (store.payload.guard_name || 'sanctum') &&
-        m.groups.some((g) => groupSwitches(g).length > 0)
+        m.groups.some((g) => groupSwitches(g).length > 0 && canSeeGroup(g))
     )
   )
 
