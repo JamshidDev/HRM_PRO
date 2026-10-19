@@ -37,7 +37,7 @@
         <template #trigger>
           <n-badge class="menu-item-badge" :value="value" :max="99" />
         </template>
-        {{ $t('message.unSignedDocumentCount') }}
+        {{ category === 'chat' ? $t('liveChatPage.unreadCount') : $t('message.unSignedDocumentCount') }}
       </n-tooltip>
       <span
         v-if="isRippling"

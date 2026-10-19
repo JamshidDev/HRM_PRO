@@ -13,6 +13,7 @@
   const formRef = ref(null)
   const captchaRef = ref(null)
   const captchaError = ref(false)
+  const captchaEnabled = ref(true)
 
   const onCaptchaAnswer = (val) => {
     store.captchaAnswer = val
@@ -36,8 +37,9 @@
     submitInFlight = true
     formRef.value?.validate((_error) => {
       submitInFlight = false
-      if (!store.captchaAnswer) captchaError.value = true
-      if (!_error && store.captchaAnswer) {
+      const captchaOk = !captchaEnabled.value || !!store.captchaAnswer
+      if (!captchaOk) captchaError.value = true
+      if (!_error && captchaOk) {
         captchaError.value = false
         store._auth(() => captchaRef.value?.reset())
       }
@@ -127,6 +129,7 @@
       </div>
 
       <n-form-item
+        v-show="captchaEnabled"
         :validation-status="captchaError ? 'error' : undefined"
         :feedback="captchaError ? $t('rules.captchaRequired') : undefined"
         style="--n-blank-height: 0px; --n-item-padding-bottom: 4px"
@@ -135,6 +138,7 @@
           ref="captchaRef"
           @update:answer="onCaptchaAnswer"
           @update:key="onCaptchaKey"
+          @update:enabled="(v) => (captchaEnabled = v)"
           @submit="onSubmit"
         />
       </n-form-item>

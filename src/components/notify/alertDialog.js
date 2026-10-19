@@ -14,12 +14,40 @@ const TOAST_ONLY_PATHS = ['/login', '/register', '/verification-email', '/public
 export const isToastOnlyPage = () =>
   TOAST_ONLY_PATHS.some((p) => window.location.pathname.startsWith(p))
 
-export function showAlert({ type = 'warning', title = null, message = '', errors = [], duration } = {}) {
+// onConfirm berilsa — ikki tugmali tasdiqlash (bekor / tasdiqlash), o'zi yopilmaydi.
+export function showAlert({
+  type = 'warning',
+  title = null,
+  message = '',
+  errors = [],
+  duration,
+  listHint,
+  onConfirm,
+  confirmText,
+  cancelText
+} = {}) {
   const items = errors.filter(Boolean)
   const key = `${type}|${message}|${items.join('|')}`
   if (alertState.queue.some((a) => a.key === key)) return
   const kind = ALERT_TYPES.includes(type) ? type : 'warning'
-  alertState.queue.push({ key, type: kind, title, message, errors: items, duration: duration ?? AUTO_CLOSE[kind] ?? 0 })
+  alertState.queue.push({
+    key,
+    type: kind,
+    title,
+    message,
+    errors: items,
+    listHint,
+    onConfirm,
+    confirmText,
+    cancelText,
+    duration: onConfirm ? 0 : (duration ?? AUTO_CLOSE[kind] ?? 0)
+  })
+}
+
+export function confirmAlert() {
+  const cb = alertState.queue[0]?.onConfirm
+  alertState.queue.shift()
+  cb?.()
 }
 
 export function closeAlert() {

@@ -9,6 +9,7 @@
   import Filter from './ui/Filter.vue'
   import ReplaceModal from './ui/ReplaceModal.vue'
   import AddSlotModal from './ui/AddSlotModal.vue'
+  import ChangeInfoModal from './ui/ChangeInfoModal.vue'
 
   const store = useScheduleGroupWorkerStore()
   const route = useRoute()
@@ -22,7 +23,9 @@
   store.params.search = null
   store.params.page = 1
   store.monthsList = getMonthOfRage(store.params.startDate, store.params.endDate)
-  store.selectedDate = store.monthsList[0]?.id ?? null
+  // Havolada oy berilgan va u guruh davrida bo'lsa — o'sha oy, aks holda birinchi oy.
+  store.selectedDate =
+    store.monthsList.find((m) => m.id === route.query.month)?.id ?? store.monthsList[0]?.id ?? null
   store._shiftType(route.query.type)
 
   const backTo = computed(() => ({
@@ -65,5 +68,6 @@
     <Table />
     <ReplaceModal />
     <AddSlotModal />
+    <ChangeInfoModal />
   </UIPageContent>
 </template>

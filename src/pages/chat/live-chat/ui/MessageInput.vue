@@ -26,7 +26,7 @@
   const replyPreviewName = computed(() => {
     const senderId = props.chat.replyMessage.value?.senderId
     if (!senderId) return ''
-    return senderId === 'me' ? accountStore.fullName : props.chat.selectedUser.value?.fullName
+    return props.chat.isOwn({ senderId }) ? accountStore.fullName : props.chat.selectedUser.value?.fullName
   })
 
   const replyPreviewText = computed(() => messagePreviewLabel(props.chat.replyMessage.value))
@@ -196,7 +196,7 @@
       if (shouldSend && !tooShort && recordedChunks.length) {
         const blob = new Blob(recordedChunks, { type: mediaRecorder.mimeType || 'audio/webm' })
         const waveform = await extractWaveform(blob)
-        props.chat.sendVoice(URL.createObjectURL(blob), recordSeconds.value, blob.size, waveform)
+        props.chat.sendVoice(blob, recordSeconds.value, waveform)
       }
       recordedChunks = []
       mediaRecorder = null
@@ -227,6 +227,31 @@
       text.value = ''
     }
   }
+
+  // Har suhbatning yozilgan-yuborilmagan matni alohida saqlanadi.
+  const drafts = new Map()
+  const textareaRef = ref(null)
+  watch(
+    () => props.chat.selectedUserId.value,
+    (next, prev) => {
+      if (prev) drafts.set(prev, text.value)
+      text.value = drafts.get(next) ?? ''
+      stagedFiles.value = []
+      // Modal (yangi suhbat/yo'naltirish) yopilish animatsiyasidan keyin fokus inputga.
+      nextTick(() => textareaRef.value?.focus())
+      setTimeout(() => textareaRef.value?.focus(), 320)
+    }
+  )
+  watch(
+    () => props.chat.replyMessage.value,
+    (value) => value && nextTick(() => textareaRef.value?.focus())
+  )
+
+  const onInput = () => {
+    if (text.value.trim()) props.chat.sendTyping()
+  }
+
+  onMounted(() => nextTick(() => textareaRef.value?.focus()))
 
   const onKeydown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -315,7 +340,10 @@
         </n-button>
 
         <n-input
+          ref="textareaRef"
           v-model:value="text"
+          :maxlength="4000"
+          @input="onInput"
           type="textarea"
           :autosize="{ minRows: 1, maxRows: 5 }"
           :placeholder="$t('liveChatPage.typePlaceholder')"
