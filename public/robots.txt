@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /$
+Allow: /login
+Allow: /privacy-policy
+Allow: /og-image.jpg
+Allow: /terms/
+Disallow: /
+
+Sitemap: https://hrm.railway.uz/sitemap.xml
