@@ -1,9 +1,12 @@
 <!doctype html>
-<html lang="en" data-theme="light" translate="no">
+<html lang="uz" data-theme="light" translate="no">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/logo-new.png" />
-    <link rel="apple-touch-icon" href="/logo-new.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -11,22 +14,55 @@
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-      <meta name="description" content="HRM PRO — inson resurslarini boshqarish va tashkilotdagi xodimlarni samarali boshqarish uchun mo'ljallangan tizim." />
+      <meta name="apple-mobile-web-app-title" content="HRM PRO" />
+      <meta name="application-name" content="HRM PRO" />
+      <meta name="theme-color" content="#2552EB" />
 
-      <!-- Open Graph / Telegram, Facebook va shunga o'xshash joylarda link preview uchun -->
+      <!-- SEO -->
+      <meta name="description" content="HRM PRO — «O'zbekiston temir yo'llari» AJ uchun inson resurslarini boshqarish, elektron hujjat aylanishi, attestatsiya va E-IMZO bilan ishlash yagona platformasi." />
+      <meta name="keywords" content="HRM PRO, HRM, kadrlar boshqaruvi, inson resurslari, elektron hujjat aylanishi, attestatsiya, E-IMZO, O'zbekiston temir yo'llari, railway.uz" />
+      <meta name="author" content="HRM PRO" />
+      <meta name="robots" content="index, follow, max-image-preview:large" />
+      <link rel="canonical" href="https://hrm.railway.uz/" />
+
+      <!-- Open Graph / Telegram, Facebook va shunga o'xshash joylarda link preview uchun.
+           Rasm: public/og-image.jpg (1200x630, <300KB — WhatsApp/Telegram talabi). -->
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content="HRM PRO" />
-      <meta property="og:title" content="HRM PRO" />
-      <meta property="og:description" content="HRM PRO — inson resurslarini boshqarish va tashkilotdagi xodimlarni samarali boshqarish uchun mo'ljallangan tizim." />
-      <meta property="og:url" content="https://hrm.railway.uz" />
-      <meta property="og:image" content="https://hrm.railway.uz/resourses/login-page.png" />
+      <meta property="og:title" content="HRM PRO — inson resurslarini boshqarish platformasi" />
+      <meta property="og:description" content="«O'zbekiston temir yo'llari» AJ uchun kadrlar, elektron hujjat aylanishi, attestatsiya va E-IMZO bilan ishlash yagona platformasi." />
+      <meta property="og:url" content="https://hrm.railway.uz/" />
+      <meta property="og:image" content="https://hrm.railway.uz/og-image.jpg" />
+      <meta property="og:image:secure_url" content="https://hrm.railway.uz/og-image.jpg" />
+      <meta property="og:image:type" content="image/jpeg" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content="HRM PRO — inson resurslarini boshqarish platformasi" />
       <meta property="og:locale" content="uz_UZ" />
+      <meta property="og:locale:alternate" content="ru_RU" />
+      <meta property="og:locale:alternate" content="en_US" />
 
       <!-- Twitter Card (ba'zi messengerlar shu teglarni ham o'qiydi) -->
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content="HRM PRO" />
-      <meta name="twitter:description" content="HRM PRO — inson resurslarini boshqarish va tashkilotdagi xodimlarni samarali boshqarish uchun mo'ljallangan tizim." />
-      <meta name="twitter:image" content="https://hrm.railway.uz/resourses/login-page.png" />
+      <meta name="twitter:title" content="HRM PRO — inson resurslarini boshqarish platformasi" />
+      <meta name="twitter:description" content="«O'zbekiston temir yo'llari» AJ uchun kadrlar, elektron hujjat aylanishi, attestatsiya va E-IMZO bilan ishlash yagona platformasi." />
+      <meta name="twitter:image" content="https://hrm.railway.uz/og-image.jpg" />
+      <meta name="twitter:image:alt" content="HRM PRO — inson resurslarini boshqarish platformasi" />
+
+      <!-- Structured data (Google) -->
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "HRM PRO",
+          "url": "https://hrm.railway.uz/",
+          "image": "https://hrm.railway.uz/og-image.jpg",
+          "description": "«O'zbekiston temir yo'llari» AJ uchun inson resurslarini boshqarish, elektron hujjat aylanishi, attestatsiya va E-IMZO bilan ishlash yagona platformasi.",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web",
+          "inLanguage": ["uz", "ru", "en"]
+        }
+      </script>
 
       <!-- OnlyOffice api.js — env orqali (VITE_OFFICE_SERVER): dev=lokal DS, prod=office.dasuty.com -->
       <script defer src="%VITE_OFFICE_SERVER%/web-apps/apps/api/documents/api.js"></script>
@@ -37,7 +73,7 @@
       <script defer src="/eimzo/e-imzo-init.js"></script>
       <script defer src="/djvu/djvu.js"></script>
       <script defer src="/djvu/djvu_viewer.js"></script>
-      <title>HRM PRO</title>
+      <title>HRM PRO — inson resurslarini boshqarish platformasi</title>
   </head>
   <body>
     <div id="app"></div>
