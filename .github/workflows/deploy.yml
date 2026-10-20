@@ -63,7 +63,9 @@ jobs:
               echo "::error::DEPLOY_PATH ($TARGET) xavfli — alohida frontend papka bo'lsin" && exit 1 ;;
           esac
           test -d "$TARGET" || { echo "::error::$TARGET papkasi yo'q"; exit 1; }
-          rsync -a --delete dist/ "$TARGET"/
+          # Uzilishsiz: avval yangi fayllar, index.html eng oxirida, eski assetlar 7 kundan keyin
+          # (`rsync --delete` ochiq tablar so'raydigan eski chunk'larni darhol o'chirardi).
+          bash scripts/publish-dist.sh dist "$TARGET"
 
   # DEV: dev serverdagi self-hosted runnerda build + publish.
   # Env GitHub'dan emas — serverdagi mavjud /var/www/hrm_front/.env dan o'qiladi.
@@ -114,4 +116,6 @@ jobs:
               echo "::error::DEPLOY_PATH ($TARGET) xavfli — alohida frontend papka bo'lsin" && exit 1 ;;
           esac
           test -d "$TARGET" || { echo "::error::$TARGET papkasi yo'q"; exit 1; }
-          rsync -a --delete dist/ "$TARGET"/
+          # Uzilishsiz: avval yangi fayllar, index.html eng oxirida, eski assetlar 7 kundan keyin
+          # (`rsync --delete` ochiq tablar so'raydigan eski chunk'larni darhol o'chirardi).
+          bash scripts/publish-dist.sh dist "$TARGET"
