@@ -4074,6 +4074,7 @@
       "code": "Payment code",
       "type": "Payment type and name",
       "amount": "Amount",
+      "hours": "Hours worked",
       "total": "Total calculated",
       "out_total": "Total deductions"
     },
