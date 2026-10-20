@@ -791,7 +791,7 @@ export const useComponentStore = defineStore('componentStore', {
         callback?.(res.data.data)
       })
     },
-    _allDepartmentTree(id = undefined) {
+    _allDepartmentTree(id = undefined, callback) {
       this.allDepartmentLoading = true
       let params = {
         organization_id: id
@@ -800,6 +800,7 @@ export const useComponentStore = defineStore('componentStore', {
         ._allDepartmentTree({ params })
         .then((res) => {
           this.allDepartmentTrees = res.data.data
+          callback?.(res.data.data)
         })
         .finally(() => {
           this.allDepartmentLoading = false

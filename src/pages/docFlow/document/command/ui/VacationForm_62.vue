@@ -95,7 +95,8 @@
     store.vacations62[index].department_id = []
     store.vacations62[index].loading = true
     if (v.length > 0) {
-      componentStore._departmentTreeList(v[0].id, (x) => {
+      // Begona korxona bo'limlari ham kerak — kesimsiz daraxt.
+      componentStore._allDepartmentTree(v[0].id, (x) => {
         store.vacations62[index].departmentList = x
         store.vacations62[index].loading = false
       })
@@ -117,8 +118,9 @@
 
   onMounted(() => {
     componentStore._enums()
-    if (componentStore.structureList.length === 0) {
-      componentStore._structures()
+    // Xizmat safari istalgan temir yo'l korxonasiga — foydalanuvchi kesimi emas, barcha korxonalar.
+    if (componentStore.allStructureList.length === 0) {
+      componentStore._allStructures()
     }
   })
 </script>
@@ -257,14 +259,14 @@
           path="to_organization"
         >
           <UISelect
-            :options="componentStore.structureList"
+            :options="componentStore.allStructureList"
             :model-v="item.work_place_id"
             @updateModel="onChangeStructure($event, item.id)"
             :checked-val="item.orgCheck"
             @updateCheck="(v) => (item.orgCheck = v)"
-            :loading="componentStore.structureLoading"
+            :loading="componentStore.allStructureLoading"
             v-model:search="componentStore.structureParams.search"
-            @onSearch="componentStore._structures"
+            @onSearch="componentStore._allStructures"
             :multiple="false"
           />
         </n-form-item>
