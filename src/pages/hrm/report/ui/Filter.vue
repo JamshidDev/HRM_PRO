@@ -42,6 +42,7 @@
     dpStore.visibleType = true
     dpStore._level()
     componentStore._departments()
+    componentStore._regions()
     dpStore.resetForm()
   }
 
