@@ -65,25 +65,29 @@
         <div v-for="p in payslips" :key="p.id" class="ms-card mb-5">
           <p class="font-semibold text-base">{{ p.fio }}</p>
           <p class="text-xs text-textColor3 mb-1">{{ p.position }} · {{ p.year }}/{{ p.month }}</p>
-          <p v-if="p.organization?.name" class="text-xs font-medium text-primary mb-3">
+          <p v-if="p.organization?.name" class="text-xs font-medium text-primary mb-1">
             {{ p.organization.name }}
           </p>
+          <div class="ms-net mb-3"><span>{{ $t('salary1c.hours') }}</span><b>{{ fmt(p.hours_worked) }}</b></div>
 
           <p class="ms-grp">{{ $t('salary1c.accruals') }}</p>
           <n-table :single-line="false" size="small">
             <thead><tr>
               <th class="w-[80px]">{{ $t('salary1c.code') }}</th>
               <th>{{ $t('salary1c.rowName') }}</th>
-              <th class="text-right! w-[140px]">{{ $t('salary1c.amount') }}</th>
+              <th class="text-right! w-[80px]">{{ $t('salary1c.hours') }}</th>
+              <th class="text-right! w-[130px]">{{ $t('salary1c.amount') }}</th>
             </tr></thead>
             <tbody>
               <tr v-for="(a, i) in p.accruals" :key="'a' + i">
                 <td>{{ a.paying_code || '—' }}</td>
                 <td>{{ a.paying_name }}</td>
+                <td class="text-right! ms-num">{{ a.hours_worked ? fmt(a.hours_worked) : '—' }}</td>
                 <td class="text-right! ms-num">{{ fmt(a.summa) }}</td>
               </tr>
               <tr>
                 <td colspan="2" class="font-semibold">{{ $t('salary1c.accrual') }}</td>
+                <td class="text-right! ms-num font-semibold">{{ fmt(p.hours_worked) }}</td>
                 <td class="text-right! ms-num font-semibold">{{ fmt(p.accrual_total) }}</td>
               </tr>
             </tbody>
@@ -126,19 +130,23 @@
                   <tr v-for="(a, i) in k.accruals" :key="'ka' + i">
                     <td class="w-[80px]">{{ a.paying_code || '—' }}</td>
                     <td class="text-xs">{{ a.paying_name }}</td>
-                    <td class="text-right! ms-num w-[130px]">{{ fmt(a.summa) }}</td>
+                    <td class="text-right! ms-num w-[70px]">{{ a.hours_worked ? fmt(a.hours_worked) : '—' }}</td>
+                    <td class="text-right! ms-num w-[120px]">{{ fmt(a.summa) }}</td>
                   </tr>
                   <tr>
                     <td colspan="2" class="font-semibold">{{ $t('salary1c.accrual') }}</td>
+                    <td class="text-right! ms-num font-semibold">{{ fmt(k.hours_worked) }}</td>
                     <td class="text-right! ms-num font-semibold">{{ fmt(k.accrual_total) }}</td>
                   </tr>
                   <tr v-for="(d, i) in k.deductions" :key="'kd' + i">
                     <td class="w-[80px]">{{ d.paying_code || 'НДФЛ' }}</td>
                     <td class="text-xs">{{ d.paying_name }}</td>
-                    <td class="text-right! ms-num w-[130px]">{{ fmt(d.summa) }}</td>
+                    <td class="text-right! ms-num">—</td>
+                    <td class="text-right! ms-num w-[120px]">{{ fmt(d.summa) }}</td>
                   </tr>
                   <tr>
                     <td colspan="2" class="font-semibold">{{ $t('salary1c.deduction') }}</td>
+                    <td class="text-right! ms-num">—</td>
                     <td class="text-right! ms-num font-semibold">{{ fmt(k.deduction_total) }}</td>
                   </tr>
                 </tbody>

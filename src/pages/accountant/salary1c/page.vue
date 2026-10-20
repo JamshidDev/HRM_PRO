@@ -831,16 +831,19 @@
             <thead><tr>
               <th class="w-[80px]">{{ $t('salary1c.code') }}</th>
               <th>{{ $t('salary1c.rowName') }}</th>
+              <th class="text-right! w-[90px]">{{ $t('salary1c.hours') }}</th>
               <th class="text-right! w-[140px]">{{ $t('salary1c.amount') }}</th>
             </tr></thead>
             <tbody>
               <tr v-for="(a, i) in store.payslip.accruals" :key="'a' + i">
                 <td>{{ a.paying_code || '—' }}</td>
                 <td>{{ a.paying_name }}</td>
+                <td class="text-right! tnum">{{ a.hours_worked ? fmt(a.hours_worked) : '—' }}</td>
                 <td class="text-right! tnum">{{ fmt(a.summa) }}</td>
               </tr>
               <tr>
                 <td colspan="2" class="font-semibold">{{ $t('salary1c.accrual') }}</td>
+                <td class="text-right! tnum font-semibold">{{ fmt(store.payslip.hours_worked) }}</td>
                 <td class="text-right! tnum font-semibold">{{ fmt(store.payslip.accrual_total) }}</td>
               </tr>
             </tbody>
