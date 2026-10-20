@@ -5768,7 +5768,22 @@
     "retry": "Qayta yuborish",
     "newMessage": "Yangi xabar",
     "open": "Ochish",
-    "unreadCount": "O'qilmagan xabarlar"
+    "unreadCount": "O'qilmagan xabarlar",
+    "chats": "Chatlar",
+    "all": "Barchasi",
+    "unread": "O'qilmagan",
+    "pinnedChats": "Qadalgan",
+    "allChats": "Barcha suhbatlar",
+    "you": "Siz",
+    "noUnread": "O'qilmagan xabarlar yo'q",
+    "enterHint": "Enter — yuborish · Shift+Enter — yangi qator",
+    "emoji": "Emoji",
+    "attach": "Fayl biriktirish",
+    "send": "Yuborish",
+    "scrollDown": "Pastga",
+    "back": "Orqaga",
+    "discardVoice": "Yozuvni o'chirish",
+    "stopAndReview": "To'xtatib tinglash"
   },
   "newsCategoryPage": {
     "name": "Yangilik kategoriyalari",

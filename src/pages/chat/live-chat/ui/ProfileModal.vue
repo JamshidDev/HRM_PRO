@@ -16,8 +16,7 @@
     Document24Regular,
     Play24Filled,
     Pause24Filled,
-    ArrowDownload20Regular,
-    Dismiss24Regular
+    ArrowDownload20Regular
   } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
@@ -167,9 +166,11 @@
 </script>
 
 <template>
-  <UIModal v-model:visible="show" :width="420" :height="isOwn ? undefined : 560">
+  <!-- X tugmasi yo'q: tashqariga bosilganda yoki Esc bilan o'zi yopiladi -->
+  <UIModal v-model:visible="show" :width="420" :height="isOwn ? undefined : 560" :persistent="false">
     <template #header>
-      <div class="flex items-center justify-between gap-3 -mx-2 -mt-2 px-4 py-2.5">
+      <!-- Bo'sh bo'lsa ham element qoladi — aks holda UIModal o'zining standart sarlavhasini (X bilan) chiqaradi -->
+      <div :class="section !== 'info' && 'flex items-center gap-3 -mx-2 -mt-2 px-4 py-2.5'">
         <button
           v-if="section !== 'info'"
           type="button"
@@ -179,13 +180,6 @@
           <n-icon size="18"><ArrowLeft24Regular /></n-icon>
           <span class="text-base font-semibold">{{ sectionTitle }}</span>
         </button>
-        <span v-else />
-        <div
-          class="w-9 h-9 rounded-full bg-surface-ground hover:bg-surface-line flex items-center justify-center cursor-pointer shrink-0 transition-colors"
-          @click="show = false"
-        >
-          <n-icon size="16" class="text-textColor1"><Dismiss24Regular /></n-icon>
-        </div>
       </div>
     </template>
 
