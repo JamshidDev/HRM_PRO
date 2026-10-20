@@ -7,32 +7,21 @@
   const months = ref([])
   const selected = ref(null) // 'YYYY-M'
   const payslips = ref([]) // [{...payslip, organization}]
-  const historyByOrg = ref({}) // organization_id → versions[]
   const loading = ref(false)
 
   const fmt = (v) => (v === null || v === undefined ? '—' : Number(v).toLocaleString('ru-RU'))
   const monthOptions = computed(() =>
     months.value.map((m) => ({ label: `${m.year} / ${m.month}`, value: `${m.year}-${m.month}` }))
   )
-  const historyOf = (orgId) => historyByOrg.value[orgId] ?? []
 
   const loadSalary = async () => {
     if (!selected.value) return
     const [y, m] = selected.value.split('-').map(Number)
     loading.value = true
     try {
+      // Xodim faqat joriy oyligini ko'radi — versiya tarixi KO'RSATILMAYDI.
       const res = await salary1cService._mySalary({ params: { year: y, month: m } })
-      const list = res.data.data?.salary ?? []
-      payslips.value = list
-      // Har kareshok (korxona) uchun versiya tarixini alohida yuklaymiz.
-      const entries = await Promise.all(
-        list.map((p) =>
-          salary1cService
-            ._myHistory({ params: { year: y, month: m, organization_id: p.organization_id } })
-            .then((r) => [p.organization_id, r.data.data?.versions ?? []])
-        )
-      )
-      historyByOrg.value = Object.fromEntries(entries)
+      payslips.value = res.data.data?.salary ?? []
     } finally {
       loading.value = false
     }
@@ -155,31 +144,8 @@
             </div>
           </template>
 
-          <template v-if="historyOf(p.organization_id).length > 1">
-            <p class="ms-grp mt-4">{{ $t('salary1c.history') }}</p>
-            <n-table :single-line="false" size="small">
-              <thead><tr>
-                <th class="w-[70px]">{{ $t('salary1c.version') }}</th>
-                <th>{{ $t('salary1c.event') }}</th>
-                <th class="text-right! w-[140px]">{{ $t('salary1c.net') }}</th>
-              </tr></thead>
-              <tbody>
-                <tr v-for="v in historyOf(p.organization_id)" :key="v.id">
-                  <td>v{{ v.version }}</td>
-                  <td class="text-xs">
-                    <template v-if="v.version === 1">
-                      {{ $t('salary1c.added') }}: {{ (v.first_synced_at || '').slice(0, 16) }}
-                    </template>
-                    <template v-else>
-                      {{ $t('salary1c.changed') }}: {{ (v.valid_from || '').slice(0, 16) }}
-                    </template>
-                    <n-tag v-if="v.is_current" type="success" size="tiny" round class="ml-2">{{ $t('salary1c.current') }}</n-tag>
-                  </td>
-                  <td class="text-right! ms-num">{{ fmt(v.net_total) }}</td>
-                </tr>
-              </tbody>
-            </n-table>
-          </template>
+          <!-- Versiya tarixi (Tarix) OLIB TASHLANDI — xodim o'z oyligining versiyalarini
+               ko'rmasligi kerak (faqat joriy holat). -->
         </div>
       </template>
       <n-empty v-else-if="!loading" :description="$t('salary1c.noData')" class="py-10" />
