@@ -16,7 +16,11 @@ export const cycleOf = (shiftType) => {
   const base = shiftType.days.map((d) => sig(d.work_status, d.start_time))
   const pattern =
     shiftType.type.id === WEEKLY_TYPE ? [...base, ...base.map(() => '-')] : base
-  return { pattern, crewSize: crewSizeFor(pattern) }
+  // per_day — bir smenada bir vaqtda nechta xodim: guruh shuncha marta katta, xodimlar kunma-kun siljiydi.
+  const baseCrew = crewSizeFor(pattern)
+  const perDay = Math.max(1, Number(shiftType.per_day) || 1)
+  const crewSize = baseCrew * perDay
+  return { pattern, crewSize: crewSize && pattern.length % crewSize === 0 ? crewSize : baseCrew }
 }
 
 // Har bir smena vaqti har kuni bitta odam bilan qoplanishi uchun kerakli xodimlar soni.

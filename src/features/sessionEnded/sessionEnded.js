@@ -34,6 +34,19 @@ export function endSession(info = {}) {
   }, 1000)
 }
 
+// Shu brauzerda qayta kirilganda token almashadi — biroz kutib, token hali o'shami tekshiriladi.
+const RELOGIN_GRACE_MS = 2000
+export const currentTokenId = () => (localStorage.getItem(useAppSetting.tokenKey) || '').split('|')[0]
+
+// Faqat boshqa qurilma/tizim yopgan bo'lsa alert; o'zi qayta kirgan bo'lsa (relogin, token almashgan) — jim.
+export function endSessionIfForeign(info = {}, tokenId) {
+  if (['logout', 'relogin'].includes(info.reason)) return
+  if (!tokenId || String(tokenId) !== currentTokenId()) return
+  setTimeout(() => {
+    if (String(tokenId) === currentTokenId()) endSession(info)
+  }, RELOGIN_GRACE_MS)
+}
+
 // Sabab → i18n kaliti (`sessionEnded.reasons.*`).
 export function sessionEndedReasonKey(info) {
   if (!info) return 'default'

@@ -3,6 +3,9 @@
   import { SuperSelect, UISelect } from '@/components/index.js'
   import { Info16Regular } from '@vicons/fluent'
   import ValidationRules from '@/utils/validationRules.js'
+  import TransferWarning from './TransferWarning.vue'
+  import { renderDepartmentLabel } from './departmentOption.js'
+  import { confirmTransfer } from './confirmTransfer.js'
 
   const store = useTimesheetDepartmentStore()
   const componentStore = useComponentStore()
@@ -14,6 +17,17 @@
   })
 
   const formRef = ref(null)
+
+
+  // Tabelchi almashsa — bo'limlardagi «o'zida bor» belgisi yangilanadi.
+  watch(
+    () => store.payload.worker_position_id,
+    () => {
+      if (!props.withWorker || !store.payload.organizations.length) return
+      store.departmentParams.page = 1
+      store._department()
+    }
+  )
 
   const changeOrg = (v) => {
     store.payload.organizations = v
@@ -57,7 +71,7 @@
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {
-      if (!error) store._create()
+      if (!error) confirmTransfer((transfer) => store._create(transfer))
     })
   }
 
@@ -150,10 +164,12 @@
             v-model:value="store.payload.departments"
             v-model:search="store.departmentParams.search"
             value-field="id"
+            :render-label="renderDepartmentLabel"
             @onSearch="onSearchEv"
             @onScrollEv="onScrollEv"
           />
         </n-form-item>
+        <TransferWarning />
         <p
           v-if="
             store.payload.organizations.length > 0 &&

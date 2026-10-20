@@ -35,7 +35,7 @@
     chat: { type: Object, default: null }
   })
 
-  const isOwn = computed(() => props.user?.id === 'me')
+  const isOwn = computed(() => !!props.user?.own)
 
   // Oxirgi qator faqat oflayn va `lastSeenAt` mavjud bo'lsa ko'rinadi —
   // onlaynda (yoki o'zimizda) "oxirgi faollik" ma'nosiz.
@@ -89,15 +89,38 @@
     show.value = false
   }
 
-  const conversation = computed(() => (isOwn.value ? [] : props.chat?.messages?.value || []))
-  const photoMessages = computed(() => conversation.value.filter((m) => m.type === 'image'))
-  const voiceMessages = computed(() => conversation.value.filter((m) => m.type === 'voice'))
-  const fileMessages = computed(() => conversation.value.filter((m) => m.type === 'file'))
+  // Media butun suhbat bo'yicha serverdan (faqat yuklangan xabarlardan emas).
+  const media = ref({ image: [], voice: [], file: [] })
+  const mediaLoading = ref(false)
+  watch(
+    () => [show.value, props.user?.conversationId],
+    async ([visible, conversationId]) => {
+      if (!visible || isOwn.value || !conversationId) return
+      mediaLoading.value = true
+      try {
+        media.value = await props.chat.loadMedia(conversationId)
+      } finally {
+        mediaLoading.value = false
+      }
+    },
+    { immediate: true }
+  )
+  const photoMessages = computed(() => media.value.image)
+  const voiceMessages = computed(() => media.value.voice)
+  const fileMessages = computed(() => media.value.file)
 
   const senderName = (senderId) =>
-    senderId === 'me' ? accountStore.fullName : props.user?.fullName
+    props.chat?.isOwn({ senderId }) ? accountStore.fullName : props.user?.fullName
 
-  const itemTimeLabel = (iso) => dayjs(iso).format('MMM D, YYYY, HH:mm')
+  const itemTimeLabel = (iso) => dayjs(iso).format('DD.MM.YYYY, HH:mm')
+
+  // Oy nomi joriy tilda (dayjs locale ulanmagan).
+  const INTL_LOCALE = { uz: 'uz-Latn', uz_kr: 'uz-Cyrl', ru: 'ru', en: 'en' }
+  const monthLabel = (iso) => {
+    const tag = INTL_LOCALE[i18n.global.locale?.value ?? i18n.global.locale] ?? 'uz-Latn'
+    const text = new Intl.DateTimeFormat(tag, { month: 'long', year: 'numeric' }).format(dayjs(iso).toDate())
+    return text.charAt(0).toUpperCase() + text.slice(1)
+  }
 
   // Rasmlar oyma-oy guruhlanadi (Telegram'dagi kabi) — ketma-ket bir xil
   // oydagi rasmlar bitta guruh ichida qoladi.
@@ -105,7 +128,7 @@
     const groups = []
     let current = null
     photoMessages.value.forEach((m) => {
-      const label = dayjs(m.createdAt).format('MMMM YYYY')
+      const label = monthLabel(m.createdAt)
       if (!current || current.label !== label) {
         current = { label, items: [] }
         groups.push(current)
@@ -175,7 +198,7 @@
               round
               :size="88"
               :src="user?.photo"
-              :color="isOwn ? 'var(--primary-color)' : getAvatarColor(user?.id)"
+              :color="isOwn ? 'var(--primary-color)' : getAvatarColor(user?.peerId ?? user?.id)"
               class="text-3xl"
             >
               {{ getInitials(user?.fullName) || 'M' }}
@@ -261,7 +284,8 @@
           </div>
 
           <!-- Media statistikasi — faqat suhbatdosh profilida -->
-          <div v-if="!isOwn" class="mt-3 flex flex-col">
+          <div v-if="!isOwn && mediaLoading" class="mt-3 flex justify-center py-2"><n-spin size="small" /></div>
+          <div v-else-if="!isOwn" class="mt-3 flex flex-col">
             <button
               v-if="photoMessages.length"
               type="button"

@@ -34,7 +34,7 @@
     trigger="manual"
     :x="x"
     :y="y"
-    placement="bottom-end"
+    placement="bottom-start"
     :show-arrow="false"
     @clickoutside="show = false"
   >

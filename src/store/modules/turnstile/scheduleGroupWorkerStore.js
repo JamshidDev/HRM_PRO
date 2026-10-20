@@ -3,6 +3,19 @@ import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
 const { t } = i18n.global
 
+const fmt = (d) => (d ? d.slice(8, 10) + '.' + d.slice(5, 7) : '')
+// Xodim shu oyda qaysi grafikda — ro'yxat ostidagi izoh.
+export const scheduleLabel = (ranges, groupId) => {
+  if (!ranges?.length) return t('shiftType.groupView.noSchedule')
+  return ranges
+    .map((r) =>
+      r.group_id === Number(groupId)
+        ? t('shiftType.groupView.inThisSchedule')
+        : t('shiftType.groupView.otherSchedule', { name: r.type_name, from: fmt(r.date_from), to: fmt(r.date_to) })
+    )
+    .join(' · ')
+}
+
 export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore', {
   state: () => ({
     list: [],
@@ -39,6 +52,10 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
       0: t('shortWeek.Sun')
     },
     selectedWorker: null,
+    // Xodim qaysi guruhda (jadvaldan) — almashishda kesishma ogohlantirishi uchun.
+    crewMap: {},
+    // O'zgartirilgan kun ma'lumoti oynasi.
+    changeInfo: { visible: false },
     replaceVisible: false,
     replacePayload: {
       positonId: null,
@@ -46,10 +63,14 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
       status: false
     },
     replaceLoading: false,
+    // Katakdan ochilganda: 'edit' — kunni o'zgartirish, 'swap' — xodim bilan almashtirish.
+    replaceMode: 'swap',
+    replaceModeSwitch: false,
+    dayEdit: { choice: null, start: null, end: null },
 
     workerParams: {
       page: 1,
-      per_page: 300,
+      per_page: 50,
       search: null
     },
     workerList: [],
@@ -66,6 +87,27 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     calculateWorkTime: (state) => (workerIndex) => {
       state.scheduleList
       return 0
+    },
+    // Tanlangan oy oralig'i (YYYY-MM-DD).
+    monthRange: (state) => {
+      if (!state.selectedDate) return { from: null, to: null }
+      const [y, m] = state.selectedDate.split('-').map(Number)
+      const last = new Date(Date.UTC(y, m, 0)).getUTCDate()
+      const mm = String(m).padStart(2, '0')
+      return { from: `${y}-${mm}-01`, to: `${y}-${mm}-${String(last).padStart(2, '0')}` }
+    },
+    // O'tgan oy grafigi faqat ko'rish uchun.
+    isPastMonth: (state) => {
+      if (!state.selectedDate) return false
+      const [y, m] = state.selectedDate.split('-').map(Number)
+      const now = new Date()
+      return y * 12 + m < now.getFullYear() * 12 + now.getMonth() + 1
+    },
+    // Standart sana: bugun shu oyda bo'lsa — bugun, aks holda oy boshi.
+    defaultDate() {
+      const { from, to } = this.monthRange
+      const today = Utils.timeToZone(Date.now())
+      return from && today >= from && today <= to ? today : from
     }
   },
   actions: {
@@ -77,25 +119,39 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
         this.shiftType = list.find((v) => v.id === Number(id)) ?? null
       })
     },
-    _replaceWorker(data) {
+    _editDay(data) {
       this.replaceLoading = true
       $ApiService.shiftTypeService
-        ._replaceWorker({ data })
-        .then((res) => {
+        ._editDay({ data })
+        .then(() => {
           this.replaceVisible = false
-          this._dayOfMonth(() => {
-            this._index()
-          })
+          this._index()
         })
         .finally(() => {
           this.replaceLoading = false
         })
     },
-    _workers() {
+    _replaceWorker(data) {
+      this.replaceLoading = true
+      $ApiService.shiftTypeService
+        ._replaceWorker({ data })
+        .then(() => {
+          this.replaceVisible = false
+          // Oy o'zgarmaydi — faqat jadval yangilanadi.
+          this._index()
+        })
+        .finally(() => {
+          this.replaceLoading = false
+        })
+    },
+    // append=true — skrolda keyingi sahifa qo'shiladi.
+    _workers(append = false) {
+      this.workerParams.page = append ? this.workerParams.page + 1 : 1
       const params = {
         ...this.workerParams,
-        start_date: Utils.timeToZone(this.params.startDate),
-        end_date: Utils.timeToZone(this.params.endDate)
+        start_date: this.monthRange.from,
+        end_date: this.monthRange.to,
+        priority_group: this.params.group
       }
       this.workerLoading = true
       $ApiService.shiftTypeService
@@ -109,12 +165,15 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
             name: Utils.combineFullName(v.worker),
             id: v.worker.id,
             positionId: v.id,
-            position: v.scheduleType?.name || t('shiftType.form.noGraphic'),
+            position: scheduleLabel(v.rangeSchedules, this.params.group),
+            ranges: v.rangeSchedules ?? [],
             group: v.scheduleGroup,
             type: v.scheduleType
           }))
+            .filter((v) => v.positionId !== this.selectedWorker?.workerPositionId)
+          const base = append ? this.workerList : selectedData
           this.workerList = [
-            ...new Map([...selectedData, ...data].map((v) => [v.positionId, v])).values()
+            ...new Map([...base, ...data].map((v) => [v.positionId, v])).values()
           ]
           this.totalWorker = res.data.data.total
         })
