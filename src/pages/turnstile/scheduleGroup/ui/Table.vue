@@ -31,6 +31,8 @@
         name: row.name,
         start: row.start_date,
         end: row.end_date,
+        // Generatsiyadagi o'rinlar soni — bo'sh o'rinlar ham ko'rinsin.
+        slots: row.slots_count || undefined,
         type: row.schedule_type?.id || store.groupParams.schedule_type || undefined,
         // Ro'yxatda tanlangan oy — guruh shu oyda ochiladi.
         month:

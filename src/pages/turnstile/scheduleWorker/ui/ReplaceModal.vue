@@ -5,7 +5,7 @@
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
-  import { findDayConflicts, findNewGaps, findSwapConflicts } from './conflicts.js'
+  import { findNewGaps } from './conflicts.js'
   import { showAlert } from '@/components/notify/alertDialog.js'
 
   const store = useScheduleGroupWorkerStore()
@@ -13,14 +13,6 @@
   const formRef = ref(null)
   const { t } = i18n.global
 
-  const conflictLines = (conflicts) => [
-    ...new Set(
-      conflicts.map(
-        (c) =>
-          `${c.title}: ${c.first.name} (${c.first.start}–${c.first.end}) ⟷ ${c.second.name} (${c.second.start}–${c.second.end})`
-      )
-    )
-  ]
   // Smena turidagi ish smenalari (bo'shliq tekshiruvi uchun).
   const typeShifts = computed(() => {
     const seen = new Map()
@@ -33,19 +25,16 @@
     return [...seen.values()]
   })
   const daysMap = (list) => Object.fromEntries(list.map((v) => [v.worker_position_id, v.days]))
-  // Kesishma yoki yangi bo'shliq bo'lsa ovozli ogohlantirish, tasdiqlansa saqlanadi.
-  const confirmIfConflicts = (conflicts, save, gaps = []) => {
-    if (!conflicts.length && !gaps.length) return save()
+  // Smenada hech kim qolmasa ogohlantirish, tasdiqlansa saqlanadi (vaqt kesishmasi tekshirilmaydi).
+  const confirmIfGaps = (save, gaps) => {
+    if (!gaps.length) return save()
     showAlert({
       type: 'warning',
       title: t('shiftType.groupView.conflictTitle'),
-      message: conflicts.length ? t('shiftType.groupView.conflictHint') : t('shiftType.groupView.gapHint'),
+      message: t('shiftType.groupView.gapHint'),
       listHint: '',
       errors: [
-        ...new Set([
-          ...conflictLines(conflicts),
-          ...gaps.map((g) => t('shiftType.groupView.gapLine', { group: g.title, shift: g.shift }))
-        ])
+        ...new Set(gaps.map((g) => t('shiftType.groupView.gapLine', { group: g.title, shift: g.shift })))
       ],
       confirmText: t('shiftType.groupView.conflictSave'),
       onConfirm: save
@@ -91,13 +80,6 @@
       group_id: store.params.group,
       ...plan
     }
-    const conflicts = findDayConflicts({
-      list: store.list,
-      crewMap: store.crewMap,
-      wp: data.worker_position_id,
-      date: data.date,
-      plan
-    })
     const before = daysMap(store.list)
     const after = {
       ...before,
@@ -113,7 +95,7 @@
       dates: [data.date],
       shifts: typeShifts.value
     })
-    confirmIfConflicts(conflicts, () => store._editDay(data), gaps)
+    confirmIfGaps(() => store._editDay(data), gaps)
   }
 
   const partnerGroupAt = (w, date) =>
@@ -138,15 +120,6 @@
           status: store.replacePayload.status,
           date: Utils.timeToZone(store.replacePayload.date)
         }
-        // Guruhda soat kesishsa — ogohlantirish; foydalanuvchi tasdiqlasa saqlanadi.
-        const conflicts = findSwapConflicts({
-          list: store.list,
-          crewMap: store.crewMap,
-          a: data.worker_position_1,
-          b: data.worker_position_2,
-          from: data.date,
-          to: data.status ? data.date : store.monthRange.to
-        })
         // Almashishdan keyingi holat — yangi bo'shliqlar uchun.
         const to = data.status ? data.date : store.monthRange.to
         const before = daysMap(store.list)
@@ -172,7 +145,7 @@
           dates,
           shifts: typeShifts.value
         })
-        confirmIfConflicts(conflicts, () => store._replaceWorker(data), gaps)
+        confirmIfGaps(() => store._replaceWorker(data), gaps)
       }
     })
   }

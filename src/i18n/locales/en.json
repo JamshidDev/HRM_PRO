@@ -5402,7 +5402,12 @@
       "movesHere": "This employee is in «{name}» this month ({from} – {to}). From the chosen date they move to this slot; the old slot becomes free.",
       "workFrom": "Works from",
       "monthStart": "From month start",
-      "pastMonth": "A past month's schedule cannot be changed"
+      "pastMonth": "A past month's schedule cannot be changed",
+      "regenTitle": "Regenerate by rotation slot",
+      "regenNavbat": "Slot {n}",
+      "regenUnknown": "Slot not detected",
+      "regenChanged": "days off pattern: {n}",
+      "regenHint": "From the selected date to {to}, days will be rewritten by the slot pattern. Manual changes will be discarded."
     },
     "generate": {
       "month": "Month",
@@ -5416,17 +5421,9 @@
       "assign": "Assign",
       "assignTitle": "Assign employee to slot {n}",
       "assignHint": "Group {crew}, slot {slot}. The employee works on this row's days.",
-      "freeWorkers": "Employees without a shift in this period: {n}",
-      "noFreeWorkers": "No employees without a shift found",
       "alreadyAssigned": "Assigned",
       "change": "Change",
       "unassign": "Remove",
-      "byPeriod": "Choose date range",
-      "periodFrom": "From",
-      "periodTo": "To",
-      "byCount": "Exact number",
-      "freeWorkersMode": "Without shift",
-      "allWorkersMode": "All",
       "allWorkers": "All staff employees of the organization: {n}",
       "inOtherShift": "In another shift",
       "moveTitle": "Employees will be moved from another shift",
@@ -5437,7 +5434,10 @@
       "placementEmpty": "Leave empty",
       "placementEmptyHint": "Slots stay empty, HR assigns them",
       "maxHint": "At most {n} employees per generation",
-      "batchHint": "{total} employees in total. {n} will be placed now; add the remaining {rest} in the next generation — they go into this month's group."
+      "noShift": "No shift",
+      "onlyFree": "Only without shift",
+      "freeWorkersCount": "Employees without a shift this month: {n}",
+      "workersNotFound": "No employees found"
     }
   },
   "publicPage": {

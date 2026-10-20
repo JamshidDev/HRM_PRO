@@ -33,7 +33,9 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
       search: null,
       group: null,
       startDate: null,
-      endDate: null
+      endDate: null,
+      // Guruhdagi rejalashtirilgan o'rinlar soni (generatsiyada).
+      slots: 0
     },
     uiParams: {
       year: null,
@@ -81,7 +83,9 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     // Guruh smena turi (nom + naqsh) — sahifa kartochkasi va navbat hisobi uchun.
     shiftType: null,
     // Bo'sh navbatga xodim qo'shish oynasi.
-    addSlot: { visible: false, phase: null, fam: 0 }
+    addSlot: { visible: false, phase: null, fam: 0 },
+    // Xodim grafigini navbati bo'yicha qayta yaratish oynasi.
+    regen: { visible: false, worker: null }
   }),
   getters: {
     calculateWorkTime: (state) => (workerIndex) => {
