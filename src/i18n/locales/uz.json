@@ -4121,6 +4121,7 @@
       "code": "To'lov shifri",
       "type": "To'lov turi va nomi",
       "amount": "Summa",
+      "hours": "Ishlagan soati",
       "total": "Jami hisoblandi",
       "out_total": "Jami ushlanma"
     },
