@@ -1,8 +1,6 @@
 <script setup>
   import dayjs from 'dayjs'
   import {
-    Checkmark20Filled,
-    CheckmarkCircle20Filled,
     Document24Regular,
     ArrowDownload20Regular,
     Play24Filled,
@@ -11,8 +9,6 @@
     Dismiss16Regular,
     ArrowReply16Regular,
     ArrowForward16Regular,
-    Clock12Regular,
-    ErrorCircle16Filled,
     ArrowClockwise16Regular
   } from '@vicons/fluent'
   import { useAccountStore } from '@/store/modules/index.js'
@@ -25,9 +21,11 @@
     getAvatarColor,
     generateWaveform,
     hashString,
-    messagePreviewLabel
+    messagePreviewLabel,
+    bigEmojiCount
   } from './format.js'
   import MessageActionsMenu from './MessageActionsMenu.vue'
+  import MessageMeta from './MessageMeta.vue'
 
   const { t } = i18n.global
 
@@ -44,7 +42,7 @@
   // Yo'naltirish oynasi bitta konversiyada bitta bo'lishi kifoya — ota
   // komponent (`ChatWindow`) darajasida boshqariladi, shu sababli bu yerdan
   // faqat so'rov "yuqoriga" uzatiladi.
-  const emit = defineEmits(['forward'])
+  const emit = defineEmits(['forward', 'jump'])
 
   const accountStore = useAccountStore()
 
@@ -144,6 +142,32 @@
     return [...counts.entries()].map(([emoji, count]) => ({ emoji, count }))
   })
 
+  // Faqat 1–3 ta emoji (javob/yo'naltirishsiz) — pufaksiz, katta o'lchamda (Telegram kabi).
+  const bigEmoji = computed(() => {
+    const m = props.message
+    if (m.type !== 'text' || isEditing.value || m.replyTo || m.forwarded) return 0
+    return bigEmojiCount(m.text)
+  })
+  const BIG_EMOJI_SIZE = { 1: 'text-[56px]', 2: 'text-[44px]', 3: 'text-[36px]' }
+
+  // Vaqt alohida qatorda emas, oxirgi qator (matn yoki reaksiyalar) burchagida — pufak ixchamroq.
+  // Katta emojida vaqt pastda alohida "chip"da turadi (fon yo'q, burchakka qo'yib bo'lmaydi).
+  const metaFloating = computed(
+    () =>
+      !isEditing.value &&
+      !bigEmoji.value &&
+      (props.message.type === 'text' || reactionGroups.value.length > 0)
+  )
+
+  // Ovoz/fayl ostidagi qisqa ma'lumot (davomiylik, hajm).
+  const infoLabel = computed(() => {
+    const m = props.message
+    const size = m.fileSize ? formatFileSize(m.fileSize) : ''
+    if (m.type === 'voice') return [formatDuration(playing.value ? currentTime.value : m.duration), size].filter(Boolean).join(', ')
+    if (m.type === 'file') return size
+    return ''
+  })
+
   const onReply = () => {
     props.chat.setReplyMessage(props.message)
   }
@@ -188,11 +212,11 @@
 <template>
   <div class="group flex items-end gap-1.5" :class="isOwn ? 'justify-end' : 'justify-start'">
     <!-- Suhbatdosh avatari — chapda, faqat guruh oxirida -->
-    <div v-if="!isOwn" class="size-9 shrink-0 self-end translate-y-1.5">
+    <div v-if="!isOwn" class="size-8 shrink-0 self-end translate-y-1">
       <n-avatar
         v-if="showAvatar"
         round
-        :size="34"
+        :size="30"
         class="cursor-pointer"
         :src="chat.selectedUser.value?.photo"
         :color="getAvatarColor(chat.selectedUser.value?.peerId)"
@@ -238,20 +262,22 @@
          egri quyruqqa ega bo'ladi — pastdagi SVG orqali chiziladi (rangi CSS var'dan olinadi,
          shu sababli mavzu/dark-mode bilan avtomatik moslashadi) -->
     <div
-      class="relative max-w-[78%] md:max-w-[60%] rounded-2xl px-3.5 py-2.5 text-sm shadow-sm transition-opacity"
+      class="relative max-w-[78%] md:max-w-[60%] rounded-[14px] px-2.5 py-1.5 text-sm shadow-sm transition-opacity"
       :class="[
-        isOwn
-          ? 'bg-[var(--chat-bubble-own-bg)] text-white'
-          : 'bg-[var(--chat-bubble-in-bg)] text-textColor0',
+        bigEmoji
+          ? '!bg-transparent !p-0 !shadow-none'
+          : isOwn
+            ? 'bg-[var(--chat-bubble-own-bg)] text-white'
+            : 'bg-[var(--chat-bubble-in-bg)] text-textColor0',
         showAvatar ? (isOwn ? 'rounded-br-none' : 'rounded-bl-none') : '',
-        message.type === 'image' && !isEditing && '!p-1.5',
+        message.type === 'image' && !isEditing && '!p-1',
         message.status === 'sending' && 'opacity-80',
         isFresh && 'bubble-new'
       ]"
       @contextmenu.prevent="onContextMenu"
     >
       <svg
-        v-if="showAvatar"
+        v-if="showAvatar && !bigEmoji"
         class="absolute bottom-0"
         :class="isOwn ? '-right-[5px] scale-x-[-1]' : '-left-[5px]'"
         width="5"
@@ -278,8 +304,9 @@
       <!-- Javob berilgan xabar tirnoqchasi -->
       <div
         v-if="message.replyTo && !isEditing"
-        class="mb-1.5 flex items-start gap-1.5 rounded-lg border-l-2 py-1 pl-2 pr-2 text-xs"
-        :class="isOwn ? 'border-white/60 bg-white/10' : 'border-primary bg-primary/5'"
+        class="mt-0.5 mb-1 flex cursor-pointer items-start gap-1.5 rounded-md border-l-[3px] py-0.5 pl-2 pr-2 text-xs transition-colors"
+        :class="isOwn ? 'border-white/70 bg-white/10 hover:bg-white/15' : 'border-primary bg-primary/5 hover:bg-primary/10'"
+        @click="emit('jump', message.replyTo.id)"
       >
         <n-icon size="13" class="mt-0.5 shrink-0 opacity-70"><ArrowReply16Regular /></n-icon>
         <div class="min-w-0">
@@ -317,8 +344,22 @@
         </div>
       </div>
 
+      <!-- Faqat emoji — katta o'lchamda -->
+      <p v-else-if="bigEmoji" class="leading-none" :class="BIG_EMOJI_SIZE[bigEmoji]">{{ message.text.trim() }}</p>
+
       <!-- Matn -->
-      <p v-else-if="message.type === 'text'" class="whitespace-pre-line break-words leading-relaxed">{{ message.text }}</p>
+      <!-- pre-line faqat matnda: <p> ichidagi qator ko'chishlari bo'sh qator bo'lib chiqmasin -->
+      <p v-else-if="message.type === 'text'" class="break-words leading-snug">
+        <span class="whitespace-pre-line">{{ message.text }}</span>
+        <MessageMeta
+          v-if="!reactionGroups.length"
+          aria-hidden="true"
+          class="invisible ml-1.5"
+          :message="message"
+          :is-own="isOwn"
+          :time="timeLabel"
+        />
+      </p>
 
       <!-- Rasm -->
       <div v-else-if="message.type === 'image'" class="cursor-pointer overflow-hidden rounded-xl" @click="showPreview = true">
@@ -334,7 +375,7 @@
         v-else-if="message.type === 'file'"
         :href="message.fileUrl"
         :download="message.fileName"
-        class="flex items-center gap-2.5 min-w-[190px]"
+        class="flex items-center gap-2.5 min-w-[180px] pt-0.5"
         :class="isOwn ? 'text-white' : 'text-textColor0'"
       >
         <span
@@ -345,16 +386,15 @@
         </span>
         <div class="min-w-0 flex-1">
           <div class="truncate text-sm font-medium">{{ message.fileName }}</div>
-          <div class="text-xs opacity-75">{{ formatFileSize(message.fileSize) }}</div>
         </div>
         <n-icon size="16" class="shrink-0 opacity-80"><ArrowDownload20Regular /></n-icon>
       </a>
 
       <!-- Ovozli xabar -->
-      <div v-else-if="message.type === 'voice'" class="flex items-center gap-2.5 min-w-[220px]">
+      <div v-else-if="message.type === 'voice'" class="flex items-center gap-2 min-w-[200px] pt-0.5">
         <button
           type="button"
-          class="shrink-0 size-10 rounded-full flex items-center justify-center transition-colors"
+          class="shrink-0 size-9 rounded-full flex items-center justify-center transition-colors"
           :class="isOwn ? 'bg-white/20 hover:bg-white/30' : 'bg-primary/10 hover:bg-primary/15'"
           @click="togglePlay"
         >
@@ -387,44 +427,51 @@
         />
       </div>
 
-      <!-- Vaqt + status -->
+      <!-- Ovoz/fayl ma'lumoti va (burchakda bo'lmasa) vaqt + status -->
       <div
-        v-if="!isEditing"
-        class="flex items-center gap-1"
+        v-if="!isEditing && (infoLabel || !metaFloating)"
+        class="flex items-center gap-2"
         :class="[
-          isOwn ? 'text-white/70' : 'text-textColor3',
-          message.type === 'image' ? 'px-1.5 pt-1' : 'mt-1',
-          message.type === 'voice' ? 'justify-between pl-[50px]' : 'justify-end'
+          bigEmoji ? 'text-textColor3' : isOwn ? 'text-white/70' : 'text-textColor3',
+          message.type === 'image' ? 'px-1.5 pt-1 pb-0.5' : 'mt-0.5',
+          infoLabel ? 'justify-between pl-[46px]' : 'justify-end'
         ]"
       >
-        <span v-if="message.type === 'voice'" class="text-[11px] tabular-nums">
-          {{ formatDuration(playing ? currentTime : message.duration) }}<template v-if="message.fileSize">, {{ formatFileSize(message.fileSize) }}</template>
-        </span>
-        <span class="flex items-center gap-1">
-          <span v-if="message.edited" class="text-[11px] italic">{{ $t('liveChatPage.edited') }}</span>
-          <span class="text-[11px]">{{ timeLabel }}</span>
-          <n-icon v-if="isOwn" size="13" :class="message.status === 'failed' && 'text-[#ffb4b4]'">
-            <Clock12Regular v-if="message.status === 'sending'" />
-            <ErrorCircle16Filled v-else-if="message.status === 'failed'" />
-            <CheckmarkCircle20Filled v-else-if="message.status === 'read'" />
-            <Checkmark20Filled v-else />
-          </n-icon>
-        </span>
+        <span v-if="infoLabel" class="text-[11px] tabular-nums">{{ infoLabel }}</span>
+        <MessageMeta
+          v-if="!metaFloating"
+          :class="bigEmoji && 'meta-chip rounded-full px-1.5 py-1'"
+          :message="message"
+          :is-own="isOwn"
+          :time="timeLabel"
+        />
       </div>
 
+      <!-- Vaqt + status — oxirgi qator burchagida (Telegram kabi) -->
+      <MessageMeta
+        v-if="metaFloating"
+        class="absolute bottom-[7px] right-2.5"
+        :class="isOwn ? 'text-white/70' : 'text-textColor3'"
+        :message="message"
+        :is-own="isOwn"
+        :time="timeLabel"
+      />
+
       <!-- Reaksiyalar -->
-      <div v-if="reactionGroups.length" class="mt-1.5 flex flex-wrap gap-1.5">
+      <div v-if="reactionGroups.length" class="mt-1 flex flex-wrap items-center gap-1" :class="message.type === 'image' && 'px-1 pb-0.5'">
         <button
           v-for="group in reactionGroups"
           :key="group.emoji"
           type="button"
-          class="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-base leading-none"
-          :class="isOwn ? 'bg-white/15 hover:bg-white/25' : 'bg-primary/10 hover:bg-primary/20'"
+          class="flex items-center gap-1 rounded-full px-2 py-[3px] text-sm leading-none"
+          :class="isOwn && !bigEmoji ? 'bg-white/15 hover:bg-white/25' : 'bg-primary/10 hover:bg-primary/20'"
           @click="onReact(group.emoji)"
         >
           <span>{{ group.emoji }}</span>
-          <span v-if="group.count > 1" class="text-sm tabular-nums">{{ group.count }}</span>
+          <span v-if="group.count > 1" class="text-xs tabular-nums">{{ group.count }}</span>
         </button>
+        <!-- Burchakdagi vaqt uchun joy -->
+        <MessageMeta v-if="metaFloating" aria-hidden="true" class="invisible ml-1" :message="message" :is-own="isOwn" :time="timeLabel" />
       </div>
     </div>
 
@@ -441,11 +488,11 @@
     />
 
     <!-- O'z avatarim — o'ngda, faqat guruh oxirida -->
-    <div v-if="isOwn" class="size-9 shrink-0 self-end translate-y-1.5">
+    <div v-if="isOwn" class="size-8 shrink-0 self-end translate-y-1">
       <n-avatar
         v-if="showAvatar"
         round
-        :size="34"
+        :size="30"
         class="cursor-pointer"
         :src="accountStore.userPhoto"
         color="var(--primary-color)"
@@ -468,6 +515,10 @@
 </template>
 
 <style scoped>
+  /* Katta emoji ostidagi vaqt — nuqtali fon ustida o'qilishi uchun yarim shaffof chip */
+  .meta-chip {
+    background: color-mix(in srgb, var(--surface-section) 85%, transparent);
+  }
   .bubble-new {
     animation: bubble-in 0.18s ease-out;
   }

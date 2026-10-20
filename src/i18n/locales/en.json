@@ -5709,7 +5709,22 @@
     "retry": "Resend",
     "newMessage": "New message",
     "open": "Open",
-    "unreadCount": "Unread messages"
+    "unreadCount": "Unread messages",
+    "chats": "Chats",
+    "all": "All",
+    "unread": "Unread",
+    "pinnedChats": "Pinned",
+    "allChats": "All chats",
+    "you": "You",
+    "noUnread": "No unread messages",
+    "enterHint": "Enter — send · Shift+Enter — new line",
+    "emoji": "Emoji",
+    "attach": "Attach file",
+    "send": "Send",
+    "scrollDown": "Scroll down",
+    "back": "Back",
+    "discardVoice": "Delete recording",
+    "stopAndReview": "Stop and listen"
   },
   "newsCategoryPage": {
     "name": "News Categories",

@@ -111,6 +111,7 @@ export const useLiveChatStore = defineStore('liveChatStore', {
         const keep = this.conversations.find((c) => c.id === this.selectedId)
         if (keep && !list.some((c) => c.id === keep.id) && !this.search) list.push(keep)
         this.conversations = list
+        list.forEach((c) => this.applyPeerRead(c.id, c.peerLastRead))
       } finally {
         this.listLoading = false
       }
@@ -147,7 +148,7 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       this.loadingMessages[id] = true
       try {
         const res = await this.api().messages(id, { limit: PAGE })
-        this.messages[id] = res.data.map(toMessage)
+        this.messages[id] = res.data.map((m) => this.withPeerRead(id, toMessage(m)))
         this.hasMore[id] = res.has_more
       } finally {
         this.loadingMessages[id] = false
@@ -163,7 +164,8 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       try {
         const res = await this.api().messages(id, { before_id: first.id, limit: PAGE })
         const known = new Set(this.messages[id].map((m) => m.id))
-        this.messages[id] = [...res.data.map(toMessage).filter((m) => !known.has(m.id)), ...this.messages[id]]
+        const older = res.data.map((m) => this.withPeerRead(id, toMessage(m))).filter((m) => !known.has(m.id))
+        this.messages[id] = [...older, ...this.messages[id]]
         this.hasMore[id] = res.has_more
         return true
       } finally {
@@ -404,13 +406,46 @@ export const useLiveChatStore = defineStore('liveChatStore', {
     },
 
     // ── Server hodisalari ─────────────────────────────────────────────────────
+    // O'z xabarim suhbatdosh o'qigan id gacha bo'lsa — ✓✓ (server javobi/yuklash chat:read'dan keyin kelsa ham yo'qolmasin).
+    withPeerRead(id, m) {
+      if (m.status === 'read' || String(m.senderId) !== String(this.meId) || typeof m.id !== 'number') return m
+      const peerLastRead = Number(this.conversations.find((c) => c.id === id)?.peerLastRead ?? 0)
+      return peerLastRead && m.id <= peerLastRead ? { ...m, status: 'read' } : m
+    },
+
+    // Suhbatdosh shu id gacha o'qidi: ochiq ro'yxatdagi o'z xabarlarimni va suhbat qatorini ✓✓ qiladi.
+    applyPeerRead(id, lastReadId) {
+      const upTo = Number(lastReadId) || 0
+      if (!upTo) return
+      ;(this.messages[id] ?? []).forEach((m) => {
+        if (String(m.senderId) === String(this.meId) && typeof m.id === 'number' && m.id <= upTo) m.status = 'read'
+      })
+      const conv = this.conversations.find((c) => c.id === id)
+      if (!conv) return
+      conv.peerLastRead = Math.max(Number(conv.peerLastRead) || 0, upTo)
+      const last = conv.lastMessageRaw
+      if (last && String(last.senderId) === String(this.meId) && typeof last.id === 'number' && last.id <= upTo) {
+        conv.lastMessageRaw = { ...last, status: 'read' }
+      }
+    },
+
+    // Lokal (vaqtinchalik) xabar serverda saqlangach — ro'yxatdagi oxirgi xabar ham real id/status oladi.
+    syncLastMessage(id, m) {
+      const conv = this.conversations.find((c) => c.id === id)
+      const last = conv?.lastMessageRaw
+      if (!last || !m.clientId || last.clientId !== m.clientId) return
+      conv.lastMessageRaw = { ...last, id: m.id, status: m.status }
+    },
+
     addMessage(id, m) {
       const list = (this.messages[id] ??= [])
+      m = this.withPeerRead(id, m)
       const byClient = m.clientId ? list.findIndex((x) => x.clientId === m.clientId) : -1
       if (byClient !== -1) {
         const prev = list[byClient]
         // Lokal blob ko'rinishi saqlanadi — server havolasi kelguncha rasm miltillamasin.
         list[byClient] = { ...m, status: prev.status === 'read' ? 'read' : m.status }
+        this.syncLastMessage(id, list[byClient])
         return
       }
       if (list.some((x) => x.id === m.id)) return
@@ -472,17 +507,8 @@ export const useLiveChatStore = defineStore('liveChatStore', {
 
     // Suhbatdosh o'qidi — shu id gacha o'z xabarlarim ✓✓.
     onRead({ conversation_id: id, user_id, last_read_message_id }) {
-      if (user_id === this.meId) return
-      ;(this.messages[id] ?? []).forEach((m) => {
-        if (m.senderId === this.meId && typeof m.id === 'number' && m.id <= last_read_message_id) m.status = 'read'
-      })
-      const conv = this.conversations.find((c) => c.id === id)
-      if (conv) {
-        conv.peerLastRead = last_read_message_id
-        if (conv.lastMessageRaw?.senderId === this.meId && conv.lastMessageRaw.id <= last_read_message_id) {
-          conv.lastMessageRaw = { ...conv.lastMessageRaw, status: 'read' }
-        }
-      }
+      if (String(user_id) === String(this.meId)) return
+      this.applyPeerRead(id, last_read_message_id)
     },
 
     upsertConversation(raw, ready = null) {
@@ -490,7 +516,11 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       const i = this.conversations.findIndex((c) => c.id === conv.id)
       if (this.selectedId === conv.id && isChatPageVisible()) conv.unreadCount = 0
       if (i === -1) this.conversations.push(conv)
-      else this.conversations[i] = { ...this.conversations[i], ...conv }
+      else {
+        const prevRead = Number(this.conversations[i].peerLastRead) || 0
+        this.conversations[i] = { ...this.conversations[i], ...conv, peerLastRead: Math.max(prevRead, Number(conv.peerLastRead) || 0) }
+      }
+      this.applyPeerRead(conv.id, conv.peerLastRead)
       this.refreshUnreadLater()
     },
 

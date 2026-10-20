@@ -5407,7 +5407,22 @@
     "retry": "Қайта юбориш",
     "newMessage": "Янги хабар",
     "open": "Очиш",
-    "unreadCount": "Ўқилмаган хабарлар"
+    "unreadCount": "Ўқилмаган хабарлар",
+    "chats": "Чатлар",
+    "all": "Барчаси",
+    "unread": "Ўқилмаган",
+    "pinnedChats": "Қадалган",
+    "allChats": "Барча суҳбатлар",
+    "you": "Сиз",
+    "noUnread": "Ўқилмаган хабарлар йўқ",
+    "enterHint": "Enter — юбориш · Shift+Enter — янги қатор",
+    "emoji": "Эмоджи",
+    "attach": "Файл бириктириш",
+    "send": "Юбориш",
+    "scrollDown": "Пастга",
+    "back": "Орқага",
+    "discardVoice": "Ёзувни ўчириш",
+    "stopAndReview": "Тўхтатиб тинглаш"
   },
   "newsCategoryPage": {
     "name": "Янгилик категориялари",
