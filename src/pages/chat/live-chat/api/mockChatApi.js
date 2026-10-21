@@ -92,6 +92,9 @@ export const createMockChatApi = () => {
       file_url: m.file_url ?? null,
       file_name: m.file_name ?? null,
       file_size: m.file_size ?? null,
+      width: m.width ?? null,
+      height: m.height ?? null,
+      thumb: m.thumb ?? null,
       duration: m.duration ?? null,
       waveform: m.waveform ?? null,
       reply_to: r ? { id: r.id, sender_id: r.sender_id, type: r.type, text: r.text, file_name: r.file_name ?? null } : null,
@@ -335,7 +338,7 @@ export const createMockChatApi = () => {
       simulatePeer(c)
       return out
     },
-    async sendFiles(id, files, { client_ids, reply_to_id, voice, duration, waveform }) {
+    async sendFiles(id, files, { client_ids, reply_to_id, voice, duration, waveform, width, height, thumb }) {
       await wait(900)
       const c = conv(id)
       const out = files.map((file, i) => {
@@ -348,6 +351,9 @@ export const createMockChatApi = () => {
           file_size: file.size,
           duration: voice ? duration : null,
           waveform: voice ? waveform : null,
+          width: type === 'image' ? (width ?? null) : null,
+          height: type === 'image' ? (height ?? null) : null,
+          thumb: type === 'image' ? (thumb ?? null) : null,
           reply_to_id: i === 0 ? (reply_to_id ?? null) : null
         })
         const s = serializeMessage(m, meId)

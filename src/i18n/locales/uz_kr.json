@@ -5422,7 +5422,17 @@
     "scrollDown": "Пастга",
     "back": "Орқага",
     "discardVoice": "Ёзувни ўчириш",
-    "stopAndReview": "Тўхтатиб тинглаш"
+    "stopAndReview": "Тўхтатиб тинглаш",
+    "fullscreen": "Тўлиқ экран",
+    "exitFullscreen": "Тўлиқ экрандан чиқиш",
+    "searchChats": "Суҳбатлардан қидириш",
+    "closeSearch": "Қидирувни ёпиш",
+    "close": "Ёпиш",
+    "releaseToCancel": "Бекор қилиш учун майдондан ташқарида қўйиб юборинг",
+    "releaseNowToCancel": "Қўйиб юборсангиз бекор қилинади",
+    "holdToRecord": "Овозли хабар ёзиш учун босиб туринг",
+    "nothingShared": "Ҳали ҳеч нарса улашилмаган",
+    "showMore": "Тўлиқ кўриш"
   },
   "newsCategoryPage": {
     "name": "Янгилик категориялари",

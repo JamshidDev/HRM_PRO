@@ -5724,7 +5724,17 @@
     "scrollDown": "Scroll down",
     "back": "Back",
     "discardVoice": "Delete recording",
-    "stopAndReview": "Stop and listen"
+    "stopAndReview": "Stop and listen",
+    "fullscreen": "Full screen",
+    "exitFullscreen": "Exit full screen",
+    "searchChats": "Search chats",
+    "closeSearch": "Close search",
+    "close": "Close",
+    "releaseToCancel": "Release outside this field to cancel",
+    "releaseNowToCancel": "Release to cancel",
+    "holdToRecord": "Hold to record a voice message",
+    "nothingShared": "Nothing shared yet",
+    "showMore": "Show more"
   },
   "newsCategoryPage": {
     "name": "News Categories",

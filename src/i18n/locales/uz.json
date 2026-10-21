@@ -5784,7 +5784,17 @@
     "scrollDown": "Pastga",
     "back": "Orqaga",
     "discardVoice": "Yozuvni o'chirish",
-    "stopAndReview": "To'xtatib tinglash"
+    "stopAndReview": "To'xtatib tinglash",
+    "fullscreen": "To'liq ekran",
+    "exitFullscreen": "To'liq ekrandan chiqish",
+    "searchChats": "Suhbatlardan qidirish",
+    "closeSearch": "Qidiruvni yopish",
+    "close": "Yopish",
+    "releaseToCancel": "Bekor qilish uchun maydondan tashqarida qo'yib yuboring",
+    "releaseNowToCancel": "Qo'yib yuborsangiz bekor qilinadi",
+    "holdToRecord": "Ovozli xabar yozish uchun bosib turing",
+    "nothingShared": "Hali hech narsa ulashilmagan",
+    "showMore": "To'liq ko'rish"
   },
   "newsCategoryPage": {
     "name": "Yangilik kategoriyalari",

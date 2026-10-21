@@ -175,11 +175,15 @@
   --login-badge-border: #0f1114;
   --login-glow: rgba(18, 121, 240, 0.14);
 
-  // Live chat xabar pufakchalari — `--primary-color` (#1279f0) juda yorqin/ko'zga
-  // botadigan bo'lgani uchun o'z xabarlar shu alohida, bosiqroq to'q ko'k rangda.
-  // Boshqa foydalanuvchi pufakchasi ham sof oqdan ozgina farqlanadi.
-  --chat-bubble-own-bg: #2c5b82;
-  --chat-bubble-in-bg: #eef1f6;
+  // Live chat xabar pufakchalari (Telegram yorug' mavzusi kabi): o'z xabarlar — och ko'k
+  // fonda to'q matn, suhbatdoshniki — oq. `own-*` — o'z pufagim ichidagi matn/izoh/urg'u
+  // ranglari (to'q mavzuda oq bo'ladi, pastga qarang).
+  --chat-bubble-own-bg: #d9eafd;
+  --chat-bubble-own-text: #101828;
+  --chat-bubble-own-muted: #5a7a9e;
+  --chat-bubble-own-accent: #1279f0;
+  --chat-bubble-own-tint: rgba(18, 121, 240, 0.1);
+  --chat-bubble-in-bg: #ffffff;
 
   // Input/Select "filled" ko'rinishi (theme.js → NEW_INPUT_LOOK).
   --input-fill: #f5f7fa;
@@ -343,6 +347,10 @@
   // charchatmaydigan to'q ko'k-kulrang; boshqasiniki `--surface-section`dan
   // biroz ochroq — fon (`--surface-ground`) bilan aralashib ketmasin.
   --chat-bubble-own-bg: #1e2d40;
+  --chat-bubble-own-text: #ffffff;
+  --chat-bubble-own-muted: rgba(255, 255, 255, 0.7);
+  --chat-bubble-own-accent: #ffffff;
+  --chat-bubble-own-tint: rgba(255, 255, 255, 0.12);
   --chat-bubble-in-bg: #24334a;
 }
 

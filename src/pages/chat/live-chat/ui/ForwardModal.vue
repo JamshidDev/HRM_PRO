@@ -38,10 +38,12 @@
 
     <div class="max-h-[360px] overflow-y-auto">
       <ChatUserItem
-        v-for="user in targets"
+        v-for="(user, index) in targets"
         :key="user.id"
         :user="user"
         :show-actions="false"
+        class="list-in"
+        :style="{ animationDelay: Math.min(index, 8) * 30 + 'ms' }"
         @click="pick(user.id)"
       />
 
@@ -51,3 +53,16 @@
     </div>
   </UIModal>
 </template>
+
+<style scoped>
+  /* Suhbatlar birin-ketin, pastdan yengil chiqadi */
+  .list-in {
+    animation: list-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes list-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+</style>

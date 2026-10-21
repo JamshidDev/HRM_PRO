@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import i18n from '@/i18n/index.js'
 import { liveChatApi } from '@/pages/chat/live-chat/api/index.js'
 import { toConversation, toMessage, toUser } from '@/pages/chat/live-chat/api/mapper.js'
-import { messagePreviewLabel } from '@/pages/chat/live-chat/ui/format.js'
+import { messagePreviewLabel, makeImageThumb } from '@/pages/chat/live-chat/ui/format.js'
 import { useAccountStore } from '@/store/modules/app/accountStore.js'
 import { useSocketStore } from '@/store/modules/app/socketStore.js'
 import { useAppStore } from '@/store/modules/app/appStore.js'
@@ -252,7 +252,7 @@ export const useLiveChatStore = defineStore('liveChatStore', {
     sendFiles(files, replyTo) {
       const id = this.selectedId
       if (!id || !files.length) return
-      files.forEach((file, i) => {
+      files.forEach(async (file, i) => {
         const clientId = uuidv4()
         const isImage = file.type.startsWith('image/')
         const local = this.localMessage({
@@ -265,6 +265,15 @@ export const useLiveChatStore = defineStore('liveChatStore', {
           _retry: { kind: 'file', file, replyToId: i === 0 ? replyTo?.id : undefined }
         })
         this.pushLocal(id, local)
+        // Rasm: o'lcham va kichik xira ko'rinish (qabul qiluvchi yuklamasdan shaklini ko'radi)
+        if (isImage) {
+          const meta = await makeImageThumb(file)
+          if (meta) {
+            local._retry.meta = meta
+            const shown = (this.messages[id] ?? []).find((x) => x.clientId === clientId)
+            if (shown) Object.assign(shown, meta)
+          }
+        }
         this.deliver(id, local)
       })
     },
@@ -304,7 +313,8 @@ export const useLiveChatStore = defineStore('liveChatStore', {
             reply_to_id: r.replyToId,
             voice: r.kind === 'voice',
             duration: r.duration,
-            waveform: r.waveform ? JSON.stringify(r.waveform) : undefined
+            waveform: r.waveform ? JSON.stringify(r.waveform) : undefined,
+            ...(r.meta ?? {})
           })
           saved = res
         }
@@ -444,7 +454,14 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       if (byClient !== -1) {
         const prev = list[byClient]
         // Lokal blob ko'rinishi saqlanadi — server havolasi kelguncha rasm miltillamasin.
-        list[byClient] = { ...m, status: prev.status === 'read' ? 'read' : m.status }
+        list[byClient] = {
+          ...m,
+          // Backend hali qaytarmasa — o'zimizda hisoblangan o'lcham/xira ko'rinish yo'qolmasin
+          width: m.width ?? prev.width ?? null,
+          height: m.height ?? prev.height ?? null,
+          thumb: m.thumb ?? prev.thumb ?? null,
+          status: prev.status === 'read' ? 'read' : m.status
+        }
         this.syncLastMessage(id, list[byClient])
         return
       }
