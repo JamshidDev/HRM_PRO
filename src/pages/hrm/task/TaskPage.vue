@@ -40,11 +40,11 @@
               <template #icon><n-icon><Dismiss24Regular /></n-icon></template>
             </n-button>
           </div>
-          <n-tabs v-model:value="store.detailTab" type="segment" size="small">
+          <UITabs v-model:value="store.detailTab" type="segment" size="small">
             <n-tab name="info" :tab="$t('task.info')" />
             <n-tab name="history" :tab="$t('task.history')" />
             <n-tab name="comments" :tab="$t('task.comments')" />
-          </n-tabs>
+          </UITabs>
         </div>
       </template>
       <detail />

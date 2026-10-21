@@ -16,6 +16,7 @@ import { useAccountStore } from '@/store/modules/index.js'
 import { initErrorReporter } from '@/utils/errorReporter.js'
 import { RecycleScroller } from 'vue3-virtual-scroller'
 import 'vue3-virtual-scroller/dist/vue3-virtual-scroller.css'
+import UITabs from '@/components/ui/UITabs.js'
 
 const app = createApp(App)
 
@@ -35,6 +36,8 @@ app.use(router)
 app.use(pinia)
 
 app.component('RecycleScroller', RecycleScroller)
+// Loyihadagi barcha tab sarlavhalari — RubberSegment ko'rinishida (n-tabs o'rniga)
+app.component('UITabs', UITabs)
 
 const store = useAccountStore()
 

@@ -96,6 +96,8 @@
         :modelV="currentParams.organizations"
         @defaultValue="(v) => (currentParams.organizations = v)"
         @updateModel="onChangeStructure"
+        :checked-val="store.structureCheck"
+        @updateCheck="(v) => (store.structureCheck = v)"
         :loading="componentStore.structureLoading"
         v-model:search="componentStore.structureParams.search"
         @onSearch="componentStore._structures"

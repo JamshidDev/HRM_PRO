@@ -10,7 +10,11 @@
   } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
+  // eimzoGate ulanishi (olib tashlashda shu ikki qator ham o'chadi).
+  import { useEimzoGateStore } from '@/features/eimzoGate/eimzoGateStore.js'
+  import { GATE_SIGNATURE_TYPE } from '@/features/eimzoGate/config.js'
   const store = useSignatureStore()
+  const gateStore = useEimzoGateStore()
 
   const hasKeys = computed(() => store.usbVisible || store.allKeys.length > 0)
 
@@ -18,6 +22,9 @@
   // so'raladi va parol to'g'ri bo'lsa tizimga avtomatik kiritiladi. Hujjat
   // imzolashda esa avvalgidek tanlab, keyin "Davom etish" bosiladi.
   const isAuth = computed(() => store.signatureType === store.signatureTypes.auth)
+  // eimzoGate: sarlavha, tavsif va tugmalarsiz — kalit bosilishi bilan imzolanadi.
+  const isGate = computed(() => store.signatureType === GATE_SIGNATURE_TYPE)
+  const instant = computed(() => isAuth.value || isGate.value)
 
   const onRefreshKeys = async () => {
     store.loading = true
@@ -25,6 +32,8 @@
       await store._checkVersion()
       store.checkListKey()
       store.checkCardPluggedIn()
+    } catch {
+      // xabar _checkVersion ichida ko'rsatilgan
     } finally {
       store.loading = false
     }
@@ -36,6 +45,8 @@
   const activeCallback = computed(() => {
     if (store.signatureType === store.signatureTypes.auth) return store._auth
     if (store.signatureType === store.signatureTypes.contract) return store._contract
+    // eimzoGate: olib tashlashda shu qator va yuqoridagi import o'chiriladi.
+    if (store.signatureType === GATE_SIGNATURE_TYPE) return gateStore._sign
   })
 
   const canContinue = computed(() => {
@@ -55,7 +66,7 @@
   const onSelect = (value) => {
     if (store.loading) return
     selected.value = value
-    if (isAuth.value) onContinue()
+    if (instant.value) onContinue()
   }
 
   const storageLabel = (type) =>
@@ -101,9 +112,10 @@
       closable
       @close="store.visible = false"
       class="bg-surface-section shadow-lg! overflow-hidden!"
+      :class="{ 'eimzo-gate-modal': isGate }"
     >
       <template #header>
-        <div class="text-lg font-semibold text-textColor1">
+        <div v-if="!isGate" class="text-lg font-semibold text-textColor1">
           {{
             isAuth
               ? $t('signature.authKeySelectTitle')
@@ -111,7 +123,7 @@
           }}
         </div>
       </template>
-      <p v-if="hasKeys" class="text-sm text-gray-400 mb-3">
+      <p v-if="hasKeys && !isGate" class="text-sm text-gray-400 mb-3">
         {{
           isAuth ? $t('signature.authKeySelectDesc') : $t('documentPage.signature.keySelectDesc')
         }}
@@ -153,6 +165,7 @@
             ]"
           >
             <div
+              v-if="!isGate"
               class="w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0"
               :class="[selected === 'usb' ? 'border-primary' : 'border-surface-line']"
             >
@@ -182,7 +195,7 @@
               <div class="flex items-start justify-between gap-3">
                 <div class="flex items-start gap-3 min-w-0">
                   <div
-                    v-if="key.isValid"
+                    v-if="key.isValid && !isGate"
                     class="w-4 h-4 mt-1 rounded-full border-2 flex items-center justify-center shrink-0"
                     :class="[selected === idx ? 'border-primary' : 'border-surface-line']"
                   >
@@ -235,27 +248,33 @@
               <dl class="mt-2.5 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 text-[13px]">
                 <div v-if="key.pinfl" class="flex gap-1.5 min-w-0">
                   <dt class="text-textColor3 shrink-0">{{ $t('signature.pinfl') }}:</dt>
-                  <dd class="text-textColor1 truncate">{{ maskValue(idx, key.pinfl) }}</dd>
+                  <dd class="text-textColor1 font-semibold truncate">
+                    {{ maskValue(idx, key.pinfl) }}
+                  </dd>
                 </div>
                 <div v-if="key.inn" class="flex gap-1.5 min-w-0">
                   <dt class="text-textColor3 shrink-0">{{ $t('signature.inn') }}:</dt>
-                  <dd class="text-textColor1 truncate">{{ maskValue(idx, key.inn) }}</dd>
+                  <dd class="text-textColor1 font-semibold truncate">
+                    {{ maskValue(idx, key.inn) }}
+                  </dd>
                 </div>
                 <div v-if="key.organization" class="flex gap-1.5 min-w-0 sm:col-span-2">
                   <dt class="text-textColor3 shrink-0">{{ $t('signature.organization') }}:</dt>
-                  <dd class="text-textColor1 truncate">{{ key.organization }}</dd>
+                  <dd class="text-textColor1 font-semibold truncate">{{ key.organization }}</dd>
                 </div>
                 <div v-if="key.position" class="flex gap-1.5 min-w-0 sm:col-span-2">
                   <dt class="text-textColor3 shrink-0">{{ $t('signature.position') }}:</dt>
-                  <dd class="text-textColor1 truncate">{{ key.position }}</dd>
+                  <dd class="text-textColor1 font-semibold truncate">{{ key.position }}</dd>
                 </div>
                 <div v-if="key.serialNumber" class="flex gap-1.5 min-w-0">
                   <dt class="text-textColor3 shrink-0">{{ $t('signature.certificate') }}:</dt>
-                  <dd class="text-textColor1 truncate">{{ maskValue(idx, key.serialNumber) }}</dd>
+                  <dd class="text-textColor1 font-semibold truncate">
+                    {{ maskValue(idx, key.serialNumber) }}
+                  </dd>
                 </div>
                 <div class="flex gap-1.5 min-w-0">
                   <dt class="text-textColor3 shrink-0">{{ $t('signature.validDate') }}:</dt>
-                  <dd class="text-textColor1 truncate">{{ validPeriod(key) }}</dd>
+                  <dd class="text-textColor1 font-semibold truncate">{{ validPeriod(key) }}</dd>
                 </div>
               </dl>
             </div>
@@ -263,7 +282,7 @@
         </div>
       </n-spin>
 
-      <div v-if="!isAuth" class="grid grid-cols-2 gap-3 mt-4">
+      <div v-if="!instant" class="grid grid-cols-2 gap-3 mt-4">
         <n-button secondary @click="store.visible = false">
           {{ $t('content.cancel') }}
         </n-button>
@@ -274,3 +293,10 @@
     </n-card>
   </n-modal>
 </template>
+
+<style>
+  /* eimzoGate: kalit tanlash oynasi ochilganda orqa fon biroz xiralashadi. */
+  .n-modal-container:has(.eimzo-gate-modal) .n-modal-mask {
+    backdrop-filter: blur(4px);
+  }
+</style>

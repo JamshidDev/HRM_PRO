@@ -119,6 +119,8 @@ const routes = [
         path: AppPaths.Accountant,
         beforeEnter: beforeLogin,
         redirect: AppPaths.Home,
+        // eimzoGate: E-IMZO tasdiqlanmaguncha iqtisod sahifalari yuklanmaydi.
+        component: () => import('@/features/eimzoGate/EimzoGateView.vue'),
         children: accountantRoutes,
         meta: {
           layout: AppLayouts.main
@@ -245,16 +247,22 @@ router.beforeEach(async (to, from, next) => {
   // TABDA deep-link ochilganda ruxsatlar bo'sh bo'lib, qo'riqchi noto'g'ri rad etardi
   // va foydalanuvchi Home'ga uchib ketardi. Baholashdan oldin o'zimiz yuklaymiz.
   const token = localStorage.getItem(useAppSetting.tokenKey)
-  if (token && !accountStore.permissionsLoaded) {
+  // Kirilmagan — «Ruxsat berilmagan»siz login'ga (beforeLogin yo'naltiradi).
+  if (!token) return next()
+  if (!accountStore.permissionsLoaded) {
     // 401 bo'lsa axios interceptor Login'ga o'zi yo'naltiradi (service/index.js).
     await accountStore._index().catch(() => {})
+    // Sessiya tugagan (401 token'ni o'chirgan) — alert emas, login.
+    if (!localStorage.getItem(useAppSetting.tokenKey)) return next(AppPaths.Login)
   }
 
   if (accountStore.canView(permission)) return next()
 
   // `window.$Toast` ToastProvider mount bo'lganda paydo bo'ladi — ilk navigatsiyada
   // hali mavjud bo'lmasligi mumkin, shuning uchun ixtiyoriy chaqiruv.
-  window.$Toast?.warning(i18n.global.t('message.noPermission'))
+  const deniedMsg = i18n.global.t('message.noPermission')
+  if (window.$Alert) window.$Alert({ type: 'forbidden' })
+  else window.$Toast?.warning(deniedMsg)
 
   // Cheksiz redirectdan saqlanish.
   const fallback = firstAccessiblePath(accountStore)
@@ -266,9 +274,12 @@ router.beforeEach(async (to, from, next) => {
 // qolmaydi → lazy route yuklanmaydi va navigatsiya jim to'xtaydi. Bunday holatda
 // kerakli sahifaga to'liq reload qilamiz — yangi index.html yangi chunk'larni oladi.
 // Cheksiz reload'dan saqlanish uchun bir xil manzilga faqat bir marta urinamiz.
+// ⚠️ Sahifada CSS (scoped style) bo'lsa Vite avval CSS'ni preload qiladi va eski
+// CSS topilmasa JS xatosi emas, "Unable to preload CSS for ..." tashlaydi — shuning
+// uchun u ham chunk xatosi hisoblanadi.
 const CHUNK_RELOAD_KEY = 'chunk-reload-target'
 const isChunkLoadError = (error) =>
-  /Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module/i.test(
+  /Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module|Unable to preload CSS/i.test(
     error?.message ?? ''
   )
 

@@ -115,6 +115,14 @@ export const adminRoutes = [
     }
   },
   {
+    path: Utils.routePathMaker(AppPaths.EimzoGateAdmin),
+    name: AppPaths.EimzoGateAdmin.substring(1),
+    component: () => import('@/pages/admin/eimzoGate/EimzoGatePage.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
     path: Utils.routePathMaker(AppPaths.Holiday),
     name: AppPaths.Holiday.substring(1),
     component: () => import('@/pages/admin/holiday/HolidayPage.vue'),
@@ -141,6 +149,14 @@ export const adminRoutes = [
     path: Utils.routePathMaker(AppPaths.Instruction),
     name: AppPaths.Instruction.substring(1),
     component: () => import('@/pages/admin/instruction/InstructionPage.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
+    path: Utils.routePathMaker(AppPaths.VideoGuides),
+    name: AppPaths.VideoGuides.substring(1),
+    component: () => import('@/pages/admin/videoGuide/VideoGuidePage.vue'),
     meta: {
       layout: AppLayouts.main
     }

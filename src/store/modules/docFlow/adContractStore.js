@@ -3,7 +3,8 @@ import Utils from '@/utils/Utils.js'
 import { useComponentStore } from '@/store/modules/index.js'
 import UIHelper from '@/utils/UIHelper.js'
 
-export const useAdContractStore = defineStore('adContractStore', {
+// Hujjat drawer'idagi «Ma'lumotlar» tabi alohida nusxa bilan ishlaydi — yaratish modaliga tegmaydi.
+const storeOptions = {
   state: () => ({
     list: [],
     loading: false,
@@ -44,7 +45,9 @@ export const useAdContractStore = defineStore('adContractStore', {
       confirmations: [],
       finance_id: null,
       position_date: null,
-      contract_to_date: null
+      contract_to_date: null,
+      // 1-tur: o'zgartirish bandlari (ixtiyoriy)
+      changes: null
     },
     params: {
       page: 1,
@@ -63,7 +66,13 @@ export const useAdContractStore = defineStore('adContractStore', {
     },
 
     sortableConfirmations: [],
-    oneByOne: true
+    oneByOne: true,
+    // Tahrir rejimi: kelishuv id, tiklangan buyruq turi va qayta yuborish modali.
+    editId: null,
+    editCommandType: null,
+    resendVisible: false,
+    resendRows: [],
+    resendLoading: false
   }),
   actions: {
     _getStructures() {
@@ -94,15 +103,16 @@ export const useAdContractStore = defineStore('adContractStore', {
           this.loading = false
         })
     },
-    _create(callBack) {
-      this.saveLoading = true
-      let data = {
+    // Yaratish va tahrir uchun bir xil so'rov ma'lumoti.
+    buildData() {
+      const data = {
         ...this.payload,
         ...{
           position_date: Utils.timeToZone(this.payload.position_date) || undefined,
           command_date: Utils.timeToZone(this.payload.command_date) || undefined,
           contract_date: Utils.timeToZone(this.payload.contract_date) || undefined,
           contract_to_date: Utils.timeToZone(this.payload.contract_to_date) || undefined,
+          changes: this.payload.type === 1 ? this.payload.changes?.trim() || undefined : undefined,
           organization_id:
             this.payload.organization_id.length > 0
               ? this.payload.organization_id[0].id
@@ -120,6 +130,11 @@ export const useAdContractStore = defineStore('adContractStore', {
       }
 
       Utils.checkRequestBody(data)
+      return data
+    },
+    _create(callBack) {
+      this.saveLoading = true
+      const data = { ...this.buildData(), form_state: this.snapshotFormState() }
       $ApiService.adContractService
         ._create({ data })
         .then((res) => {
@@ -128,18 +143,6 @@ export const useAdContractStore = defineStore('adContractStore', {
             this._index()
           }
           callBack?.()
-        })
-        .finally(() => {
-          this.saveLoading = false
-        })
-    },
-    _update() {
-      this.saveLoading = true
-      $ApiService.adContractService
-        ._update({ data: this.payload, id: this.elementId })
-        .then((res) => {
-          this.visible = false
-          this._index()
         })
         .finally(() => {
           this.saveLoading = false
@@ -193,7 +196,106 @@ export const useAdContractStore = defineStore('adContractStore', {
     openVisible(data) {
       this.visible = data
     },
+    // Forma holati — tahrirda formani aynan shu holatda tiklash uchun backend'da saqlanadi.
+    snapshotFormState() {
+      const compStore = useComponentStore()
+      const clone = (v) => JSON.parse(JSON.stringify(v ?? null))
+      const strip = (list) => (list || []).map(({ children: _c, ...v }) => v)
+      return {
+        payload: {
+          ...clone(this.payload),
+          organization_id: strip(this.payload.organization_id),
+          department_id: strip(this.payload.department_id),
+          confirmations: this.sortableConfirmations.map((v) => v.id)
+        },
+        organization: strip(this.organization),
+        structureCheck: clone(this.structureCheck),
+        structureCheck2: clone(this.structureCheck2),
+        departmentCheck: clone(this.departmentCheck),
+        sortableConfirmations: clone(this.sortableConfirmations),
+        oneByOne: this.oneByOne,
+        workerOption: clone(
+          compStore.workerList.find((v) => v.id === this.payload.worker_position_id) || null
+        )
+      }
+    },
+    restoreFormState(state) {
+      const compStore = useComponentStore()
+      Object.assign(this.payload, state.payload || {})
+      this.organization = state.organization || []
+      this.structureCheck = state.structureCheck || []
+      this.structureCheck2 = state.structureCheck2 || []
+      this.departmentCheck = state.departmentCheck || []
+      this.sortableConfirmations = state.sortableConfirmations || []
+      this.oneByOne = state.oneByOne ?? true
+      // Xodim tanlovi yorlig'i va tur ro'yxati — saqlangan variantdan.
+      const worker = state.workerOption
+      compStore.workerList = worker ? [worker] : []
+      compStore.workerParams.organization_id = this.organization?.[0]?.id ?? null
+      if (worker) compStore._adContractType(worker.typeId ?? worker.contractTypeId)
+      const orgId = this.payload.organization_id?.[0]?.id
+      if (orgId) {
+        compStore.depParams.organizations = orgId
+        compStore._departmentTree()
+      }
+      const depId = this.payload.department_id?.[0]?.id
+      if (depId) compStore._departmentPosition(depId)
+    },
+    // Ro'yxatdan «Tahrirlash»: saqlangan forma tiklanib, tahrir rejimida ochiladi.
+    _openEdit(id, onLocked) {
+      $ApiService.adContractService._form({ id }).then((res) => {
+        const form = res.data.data
+        if (!form.editable) return onLocked?.(form.edit_block)
+        this.resetForm()
+        this.restoreFormState(form.form_state)
+        this.editCommandType = this.payload.command_type
+        this.editId = id
+        this.visibleType = false
+        this.visible = true
+      })
+    },
+    _submitEdit() {
+      this.saveLoading = true
+      $ApiService.adContractService
+        ._signersPreview({ id: this.editId, data: this.buildData() })
+        .then((res) => {
+          this.resendRows = res.data.data || []
+          this.resendVisible = true
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.saveLoading = false
+        })
+    },
+    _confirmEdit(resend) {
+      this.resendLoading = true
+      $ApiService.adContractService
+        ._update({
+          id: this.editId,
+          data: { ...this.buildData(), form_state: this.snapshotFormState(), ...resend }
+        })
+        .then(() => {
+          this.resendVisible = false
+          this.visible = false
+          this.editId = null
+          this._index()
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.resendLoading = false
+        })
+    },
     resetForm() {
+      // Tahrirdan keyin yangi kelishuv ochilsa — tahrir rejimi qolmasin.
+      if (this.editId) {
+        this.sortableConfirmations = []
+        this.organization = []
+        this.structureCheck = []
+        this.structureCheck2 = []
+        this.departmentCheck = []
+      }
+      this.editId = null
+      this.editCommandType = null
       // this.payload.director_id = null
       // this.payload.confirmations = []
 
@@ -219,6 +321,10 @@ export const useAdContractStore = defineStore('adContractStore', {
       this.payload.command_number = null
       this.payload.position_date = null
       this.payload.contract_to_date = new Date().getTime()
+      this.payload.changes = null
     }
   }
-})
+}
+
+export const useAdContractStore = defineStore('adContractStore', storeOptions)
+export const useAdContractEditStore = defineStore('adContractEditStore', storeOptions)

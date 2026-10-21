@@ -54,6 +54,11 @@ const _updateStatus = async (payload) => {
   return await axios.post(`/v1/economist/upload-statuses`, payload.data)
 }
 
+// Yuklangan hisobotni o'chirish (upload id bo'yicha) — ma'lumot satrlari + soft-delete.
+const _deleteUpload = async (payload) => {
+  return await axios.delete(`/v1/economist/upload/${payload.id}`, { silentSuccess: true })
+}
+
 // Hisobot yuklash holati — tanlangan oy uchun korxonalar kesimida (yuklagan/yuklamagan).
 const _reportStatus = async (payload) => {
   return await axios.get(`/v1/economist/upload-report-status`, { params: payload?.params })
@@ -70,6 +75,39 @@ const _reportStatusExport = async (payload) => {
 // Mavjud eksport strukturasi (reportStatusExport): blob → blobFileDownload.
 const _reportsZip = async (payload) => {
   return await axios.get(`/v1/economist/upload/reports-zip`, {
+    params: payload?.params,
+    responseType: 'blob'
+  })
+}
+
+// «1C dan ommaviy yuklash» xatolarini Excel (.xlsx) qilib yuklab olish.
+const _onesErrorsExport = async (payload) => {
+  return await axios.post(`/v1/economist/upload/ones-errors-export`, payload.data, {
+    responseType: 'blob'
+  })
+}
+
+// Ko'p 1C kodli korxonaning bitta kod (ones_code) bo'yicha per-kod snapshot Excel'lari.
+const _onesStatementExcel = async (payload) => {
+  return await axios.get(`/v1/economist/upload/ones-statement-excel`, {
+    params: payload?.params,
+    responseType: 'blob'
+  })
+}
+const _taxFourExcel = async (payload) => {
+  return await axios.get(`/v1/economist/upload/tax-four-excel`, {
+    params: payload?.params,
+    responseType: 'blob'
+  })
+}
+const _taxFiveExcel = async (payload) => {
+  return await axios.get(`/v1/economist/upload/tax-five-excel`, {
+    params: payload?.params,
+    responseType: 'blob'
+  })
+}
+const _pensionExcel = async (payload) => {
+  return await axios.get(`/v1/economist/upload/pension-excel`, {
     params: payload?.params,
     responseType: 'blob'
   })
@@ -133,9 +171,15 @@ export default {
   _confirm,
   _cancelConfirm,
   _updateStatus,
+  _deleteUpload,
   _reportStatus,
   _reportStatusExport,
   _reportsZip,
+  _onesErrorsExport,
+  _onesStatementExcel,
+  _taxFourExcel,
+  _taxFiveExcel,
+  _pensionExcel,
   _pullHistory,
   _reportDownloads,
   _paymentAnalysisIndex,

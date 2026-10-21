@@ -135,8 +135,30 @@
       required: true,
       message: () => t('integrationClients.validation.scope'),
       trigger: ['change', 'blur']
+    },
+    sso_base_url: {
+      trigger: ['blur', 'input'],
+      validator: (_rule, value) => {
+        if (!value?.trim()) return true
+        try {
+          const url = new URL(value.trim())
+          const isLocal = ['localhost', '127.0.0.1'].includes(url.hostname)
+          if (url.protocol === 'https:' || (isLocal && url.protocol === 'http:')) return true
+        } catch {
+          // noto'g'ri URL — pastdagi xato qaytadi
+        }
+        return new Error(t('integrationClients.validation.ssoBaseUrl'))
+      }
     }
   }
+
+  // Base URL o'chirilsa SSO switch ham o'chadi (backend URL'siz yoqishga ruxsat bermaydi).
+  watch(
+    () => form.value.sso_base_url,
+    (value) => {
+      if (!value?.trim()) form.value.sso_enabled = false
+    }
+  )
 
   const emptyForm = () => ({
     id: null,
@@ -145,7 +167,9 @@
     role_id: null,
     scope_mode: 'exact',
     expires_at: null,
-    is_active: true
+    is_active: true,
+    sso_enabled: false,
+    sso_base_url: ''
   })
 
   const openCreate = () => {
@@ -167,7 +191,9 @@
       role_id: item.role?.id ?? null,
       scope_mode: item.scope_mode,
       expires_at: item.expires_at ? new Date(item.expires_at).getTime() : null,
-      is_active: item.is_active
+      is_active: item.is_active,
+      sso_enabled: item.sso_enabled ?? false,
+      sso_base_url: item.sso_base_url ?? ''
     }
     formOrgs.value = []
     formOrgChecked.value = []
@@ -199,7 +225,9 @@
           role_id: form.value.role_id,
           scope_mode: form.value.scope_mode,
           expires_at: toIsoDate(form.value.expires_at),
-          is_active: form.value.is_active
+          is_active: form.value.is_active,
+          sso_enabled: form.value.sso_enabled,
+          sso_base_url: form.value.sso_base_url?.trim() || null
         }
         store._update(form.value.id, payload).then(() => {
           const done = () => {
@@ -219,7 +247,9 @@
           description: form.value.description || undefined,
           role_id: form.value.role_id,
           scope_mode: form.value.scope_mode,
-          expires_at: toIsoDate(form.value.expires_at) || undefined
+          expires_at: toIsoDate(form.value.expires_at) || undefined,
+          sso_enabled: form.value.sso_enabled,
+          sso_base_url: form.value.sso_base_url?.trim() || undefined
         }
         if (form.value.scope_mode !== 'all') payload.organization_ids = orgIds
         store._create(payload).then((created) => {
@@ -321,7 +351,10 @@
     @change-page="changePage"
   >
     <template #cell-name="{ row }">
-      <p class="text-sm font-semibold text-textColor0">{{ row.name }}</p>
+      <p class="text-sm font-semibold text-textColor0">
+        {{ row.name }}
+        <n-tag v-if="row.sso_enabled" type="info" size="tiny" round class="ml-1 align-middle">SSO</n-tag>
+      </p>
       <p v-if="row.description" class="text-[11px] text-textColor3">{{ row.description }}</p>
     </template>
 
@@ -426,6 +459,27 @@
               form.is_active ? $t('content.active') : $t('content.noActive')
             }}</span>
             <n-switch v-model:value="form.is_active" />
+          </div>
+        </n-form-item>
+      </div>
+
+      <!-- HRM orqali kirish (SSO): switch faqat base URL kiritilganda yoqiladi -->
+      <div class="grid grid-cols-2 gap-3 items-start mt-4">
+        <n-form-item :label="$t('integrationClients.clients.ssoBaseUrl')" path="sso_base_url">
+          <n-input
+            v-model:value="form.sso_base_url"
+            clearable
+            placeholder="https://app.uz/auth/hrm"
+          />
+        </n-form-item>
+        <n-form-item :label="$t('integrationClients.clients.sso')" :show-feedback="false">
+          <div
+            class="flex items-center h-[34px] px-3 border border-surface-line rounded-lg w-full justify-between"
+          >
+            <span class="text-xs text-textColor3">{{
+              form.sso_enabled ? $t('content.active') : $t('content.noActive')
+            }}</span>
+            <n-switch v-model:value="form.sso_enabled" :disabled="!form.sso_base_url?.trim()" />
           </div>
         </n-form-item>
       </div>

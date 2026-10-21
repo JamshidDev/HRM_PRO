@@ -13,12 +13,66 @@ export const naiveBreakpoints = {
   xl: 1280,
   '2xl': 1568
 }
+import { h } from 'vue'
 import { NIcon } from 'naive-ui'
 import { CheckmarkCircle24Regular } from '@vicons/fluent'
+
+// Barcha clearable maydonlar (Input, Select, DatePicker, TreeSelect, ...) uchun yagona
+// tozalash ikonkasi — tugma ko'rinishi `overwrite.scss`dagi `.n-base-clear__clear`da.
+export const naiveIcons = {
+  clear: () =>
+    h(
+      'svg',
+      { viewBox: '0 0 16 16', fill: 'none', xmlns: 'http://www.w3.org/2000/svg' },
+      h('path', {
+        d: 'M4.5 4.5l7 7m0-7l-7 7',
+        stroke: 'currentColor',
+        'stroke-width': '1.8',
+        'stroke-linecap': 'round'
+      })
+    )
+}
 
 const getValueOfCssVariable = (variableName) => {
   const rootStyles = getComputedStyle(document.documentElement)
   return rootStyles.getPropertyValue(variableName).trim()
+}
+
+// Yangi "filled" input/select ko'rinishi (sinov). Yoqmasa — `false` qiling, eski ko'rinish qaytadi.
+// Input, Select, DatePicker, InputNumber, TreeSelect, Cascader — hammasi shu ikki override orqali.
+const NEW_INPUT_LOOK = true
+
+const filledInputOverrides = () => {
+  const fill = getValueOfCssVariable('--input-fill')
+  const fillFocus = getValueOfCssVariable('--input-fill-focus')
+  const border = `1px solid ${getValueOfCssVariable('--input-border')}`
+  const borderHover = `1px solid ${getValueOfCssVariable('--input-border-hover')}`
+  const borderFocus = `1px solid ${getValueOfCssVariable('--primary-color')}`
+  const ring = `0 0 0 3px ${getValueOfCssVariable('--input-ring')}`
+  return {
+    Input: {
+      color: fill,
+      colorFocus: fillFocus,
+      colorDisabled: fill,
+      border,
+      borderHover,
+      borderFocus,
+      borderDisabled: border,
+      boxShadowFocus: ring
+    },
+    InternalSelection: {
+      color: fill,
+      colorActive: fillFocus,
+      colorDisabled: fill,
+      border,
+      borderHover,
+      borderActive: borderFocus,
+      borderFocus,
+      boxShadowActive: ring,
+      boxShadowFocus: ring,
+      boxShadowHover: 'none'
+    }
+  }
 }
 
 /** @returns {GlobalThemeOverrides} */
@@ -143,12 +197,16 @@ export const customTheme = () => {
         check: () => h(NIcon, null, { default: () => h(CheckmarkCircle24Regular) })
       }
     },
-    InternalSelection: {
-      border: `1px solid ${getValueOfCssVariable('--surface-line')}`
-    },
-    Input: {
-      border: `1px solid ${getValueOfCssVariable('--surface-line')}`
-    },
+    ...(NEW_INPUT_LOOK
+      ? filledInputOverrides()
+      : {
+          InternalSelection: {
+            border: `1px solid ${getValueOfCssVariable('--surface-line')}`
+          },
+          Input: {
+            border: `1px solid ${getValueOfCssVariable('--surface-line')}`
+          }
+        }),
     Dropdown: {
       optionTextColorHover: '#2E90FA'
     },

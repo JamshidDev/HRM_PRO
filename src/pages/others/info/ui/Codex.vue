@@ -1,4 +1,5 @@
 <script setup>
+  import { sanitizeHtml } from '@/utils/sanitize.js'
   import { useUsefulStore } from '@stores'
 
   const store = useUsefulStore()
@@ -13,6 +14,6 @@
     :show="store.loading"
     class="bg-surface-section overflow-auto"
   >
-    <div v-html="store.codex" />
+    <div v-html="sanitizeHtml(store.codex)" />
   </n-spin>
 </template>

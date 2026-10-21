@@ -1,5 +1,4 @@
 <script setup>
-  import { useRoute } from 'vue-router'
   import { useAppStore, useLoginNewStore } from '@/store/modules/index.js'
   import validationRules from '@/utils/validationRules.js'
   import { Call24Regular, Eye24Regular, EyeOff24Regular, LockClosed24Regular } from '@vicons/fluent'
@@ -10,11 +9,11 @@
 
   const store = useLoginNewStore()
   const appStore = useAppStore()
-  const route = useRoute()
 
   const formRef = ref(null)
   const captchaRef = ref(null)
   const captchaError = ref(false)
+  const captchaEnabled = ref(true)
 
   const onCaptchaAnswer = (val) => {
     store.captchaAnswer = val
@@ -38,8 +37,9 @@
     submitInFlight = true
     formRef.value?.validate((_error) => {
       submitInFlight = false
-      if (!store.captchaAnswer) captchaError.value = true
-      if (!_error && store.captchaAnswer) {
+      const captchaOk = !captchaEnabled.value || !!store.captchaAnswer
+      if (!captchaOk) captchaError.value = true
+      if (!_error && captchaOk) {
         captchaError.value = false
         store._auth(() => captchaRef.value?.reset())
       }
@@ -57,17 +57,6 @@
   }
 
   onMounted(() => {
-    const { client_id, state, scope } = route.query
-    if (client_id && state && scope) {
-      store.authPayload = {
-        client_id,
-        state,
-        scope
-      }
-    } else {
-      store.authPayload = null
-    }
-
     const inputElement = document.querySelector('input[type="password"].n-input__input-el')
     inputElement?.addEventListener(
       'animationstart',
@@ -140,6 +129,7 @@
       </div>
 
       <n-form-item
+        v-show="captchaEnabled"
         :validation-status="captchaError ? 'error' : undefined"
         :feedback="captchaError ? $t('rules.captchaRequired') : undefined"
         style="--n-blank-height: 0px; --n-item-padding-bottom: 4px"
@@ -148,6 +138,7 @@
           ref="captchaRef"
           @update:answer="onCaptchaAnswer"
           @update:key="onCaptchaKey"
+          @update:enabled="(v) => (captchaEnabled = v)"
           @submit="onSubmit"
         />
       </n-form-item>

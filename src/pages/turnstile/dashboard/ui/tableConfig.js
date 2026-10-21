@@ -874,6 +874,36 @@ export const getTableConfig = (cardType) => {
     }
   }
 
+  // Yangi davomat API ro'yxatlari: kelganlarda hodisa vaqtlari, qolganlarida sababi.
+  const attendanceBase = [
+    { headerName: 'content.worker', key: 'user', minWidth: '200px', component: 'UIUser' },
+    { headerName: 'content.organization', key: 'organization_name', minWidth: '200px' },
+    { headerName: 'content.department', key: 'department_name', minWidth: '180px' }
+  ]
+  const eventColumns = [
+    {
+      headerName: 'turnStileDashboard.attendance.firstEvent',
+      key: 'first_event',
+      minWidth: '150px'
+    },
+    { headerName: 'turnStileDashboard.attendance.lastEvent', key: 'last_event', minWidth: '150px' }
+  ]
+  const reasonColumn = [
+    { headerName: 'turnStileDashboard.attendance.reasons', key: 'reasons', minWidth: '200px' }
+  ]
+  for (const type of [
+    'att_came',
+    'att_in_office',
+    'att_left_office',
+    'att_came_mobile',
+    'att_came_turnstile'
+  ]) {
+    configs[type] = { columns: [...attendanceBase, ...eventColumns] }
+  }
+  for (const type of ['att_absent', 'att_vacation', 'att_day_off', 'att_excused']) {
+    configs[type] = { columns: [...attendanceBase, ...reasonColumn] }
+  }
+
   return configs[cardType]
 }
 

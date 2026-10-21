@@ -1,7 +1,6 @@
 import dayjs from 'dayjs'
 import { v4 as uuidv4 } from 'uuid'
 import { AppPaths } from '@/utils/AppPaths.js'
-import CryptoJS from 'crypto-js'
 import i18n from '@/i18n/index.js'
 import { useAppSetting } from '@/utils/AppSetting.js'
 import { useDebounceFn } from '@vueuse/core'
@@ -112,26 +111,6 @@ const safeBase64Encode = (str) => {
   return binary
 }
 
-const base64UrlEncode = (obj) => {
-  return btoa(JSON.stringify(obj)).replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_')
-}
-
-const generateJwtToken = (payload, secret) => {
-  const header = {
-    alg: 'HS256',
-    typ: 'JWT'
-  }
-
-  const encodedHeader = base64UrlEncode(header)
-  const encodedPayload = base64UrlEncode(payload)
-  const signature = CryptoJS.HmacSHA256(`${encodedHeader}.${encodedPayload}`, secret)
-  const encodedSignature = signature
-    .toString(CryptoJS.enc.Base64)
-    .replace(/=+$/, '')
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-  return `${encodedHeader}.${encodedPayload}.${encodedSignature}`
-}
 
 const noAvailableImage = '/no-picture.png'
 
@@ -600,7 +579,6 @@ export default {
   routeAccountantPathMaker,
   routeHospitalPathMaker,
   routeExtraPathMaker,
-  generateJwtToken,
   fileNameFromUrl,
   documentModels,
   copyToClipboard,

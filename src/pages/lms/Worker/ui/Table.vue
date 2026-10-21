@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { UITable, UIUser } from '@/components/index.js'
   import { useAccountStore, useLmsWorkerStore } from '@/store/modules/index.js'
   import { ArrowCircleDown16Filled, Delete20Regular } from '@vicons/fluent'
@@ -18,7 +19,7 @@
   }
 
   const onDownload = (url) => {
-    window.open(url, '_blank')
+    openSafeUrl(url)
   }
 
   const changePage = (v) => {

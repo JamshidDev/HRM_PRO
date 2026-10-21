@@ -51,7 +51,6 @@
 <template>
   <div class="flex flex-1 flex-col gap-4 min-h-0">
     <UISegmentTabs
-      variant="surface"
       :tabs="tabs"
       :model-value="store.activeTab"
       @update:model-value="onChange"

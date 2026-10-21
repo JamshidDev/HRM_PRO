@@ -55,7 +55,8 @@ export const useWorkerStore = defineStore('workerStore', {
       last_name: null,
       middle_name: null,
       multiple_position: false,
-      pension_age: false
+      pension_age: false,
+      company_funded_education: false
     },
     structureCheck: [],
     workerVisible: false,
@@ -348,7 +349,8 @@ export const useWorkerStore = defineStore('workerStore', {
         multiple_position: this.params.multiple_position || undefined,
         // Belgilansa `pension_age=1`, aks holda umuman yuborilmaydi (cleanParams
         // `undefined`ni tashlab yuboradi). Boolean `false` ham tozalanadi.
-        pension_age: this.params.pension_age ? 1 : undefined
+        pension_age: this.params.pension_age ? 1 : undefined,
+        company_funded_education: this.params.company_funded_education ? 1 : undefined
       }
 
       return cleanParams(params)

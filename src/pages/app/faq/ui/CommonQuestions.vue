@@ -49,7 +49,7 @@
   <div class="flex w-full flex-col gap-4">
     <UISegmentTabs v-model="activeTab" :tabs="tabs" />
 
-    <div v-if="filteredQuestions.length" class="flex flex-col gap-3 rounded-2xl bg-fig-block p-4">
+    <div v-if="filteredQuestions.length" class="flex flex-col gap-3 rounded-2xl bg-fig-block shadow-card p-4">
       <div
         v-for="item in filteredQuestions"
         :key="item.id"
@@ -93,12 +93,12 @@
 
     <p
       v-else
-      class="rounded-2xl bg-fig-block p-4 text-center text-[14px] leading-5 text-fig-text-tertiary"
+      class="rounded-2xl bg-fig-block shadow-card p-4 text-center text-[14px] leading-5 text-fig-text-tertiary"
     >
       {{ $t('faqPage.empty') }}
     </p>
 
-    <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-fig-block p-4">
+    <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-fig-block shadow-card p-4">
       <div class="flex items-center gap-3">
         <span
           class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-fig-green-100 text-fig-green"

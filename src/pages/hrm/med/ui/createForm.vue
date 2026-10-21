@@ -94,7 +94,7 @@
   <n-form ref="formRef" :rules="validationRules.medFrom" :model="store.payload">
     <n-spin class="w-full" :show="store.showLoading">
       <div>
-        <n-tabs v-model:value="store.activeTab" type="segment" animated>
+        <UITabs v-model:value="store.activeTab" type="segment" animated>
           <template v-for="(item, index) in store.tabs">
             <n-tab-pane :name="item.id" :tab="$t(item.name)">
               <template v-if="item.id === store.tabs[0].id">
@@ -147,7 +147,7 @@
               </template>
             </n-tab-pane>
           </template>
-        </n-tabs>
+        </UITabs>
         <n-form-item :label="$t(`medPage.form.status`)" path="status">
           <n-select
             v-model:value="store.payload.status"

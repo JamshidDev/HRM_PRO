@@ -35,7 +35,6 @@ import TurnstileDevicesIcon from '@assets/icons/Devices.svg'
 import TurnstileOthersIcon from '@assets/icons/Additional.svg'
 import TurnstileDutyScheduleIcon from '@assets/icons/DutySchedule.svg'
 import TurnstileShiftTypeIcon from '@assets/icons/Shifts.svg'
-import TurnstileShiftTypeGroupIcon from '@assets/icons/ShiftGroups.svg'
 import TurnstileScheduleIcon from '@assets/icons/TurnstileSchedule.svg'
 import TurnstileApproveIcon from '@assets/icons/sentEmployees.svg'
 import LmsDirectionIcon from '@assets/icons/Directions.svg'
@@ -70,7 +69,7 @@ import ExtraWorkerRoleIcon from '@assets/icons/Users.svg'
 import ExtraEducationDirectoryIcon from '@assets/icons/EducationDirectory.svg'
 import ExtraDepartmentLocationIcon from '@assets/icons/DepartmentLocation.svg'
 import AdminFolderIcon from '@assets/icons/adminFolder.svg'
-import { Calculator24Regular, ClipboardTaskListLtr24Filled, Grid20Filled } from '@vicons/fluent'
+import { Calculator24Regular, ClipboardTaskListLtr24Filled, Grid20Filled, DataFunnel24Filled, EyeOff24Regular } from '@vicons/fluent'
 const {
   usersIcon,
   menuIcon,
@@ -679,18 +678,14 @@ export const navigations = withRawIcons([
         permission: appPermissions.turnstileSheetsRead
       },
       {
-        label: 'shiftType.name', // Smenalar
+        label: 'shiftType.name', // Smenalar (smena turlari + ularning guruhlari bitta sahifada)
         path: Utils.routeTurnstilePathMaker(AppPaths.ShiftType),
         icon: TurnstileShiftTypeIcon,
         color: 'bg-dark',
-        permission: appPermissions.turnstileSheetsWorkersRead
-      },
-      {
-        label: 'shiftType.groupName', // Smena guruhlari
-        path: Utils.routeTurnstilePathMaker(AppPaths.ShiftTypeGroup),
-        icon: TurnstileShiftTypeGroupIcon,
-        color: 'bg-dark',
-        permission: appPermissions.turnstileSheetsGroupsRead
+        permission: [
+          appPermissions.turnstileSheetsWorkersRead,
+          appPermissions.turnstileSheetsGroupsRead
+        ]
       },
       {
         label: 'turnstileSchedule.name', // Turniket grafiki
@@ -898,6 +893,20 @@ export const navigations = withRawIcons([
         icon: EconomistStaffingApprovalIcon,
         color: 'bg-info',
         permission: appPermissions.economistStaffingApproveRead
+      },
+      {
+        label: 'uploadSourceConfig.name', // Yuklash manbasi cheklovi
+        path: Utils.routeAccountantPathMaker(AppPaths.UploadSourceConfig),
+        icon: DataFunnel24Filled,
+        color: 'bg-dark',
+        permission: appPermissions.economistUploadSourceConfigRead
+      },
+      {
+        label: 'salaryHidden.name', // Oylik ko'rinish cheklovi
+        path: Utils.routeAccountantPathMaker(AppPaths.SalaryHidden),
+        icon: EyeOff24Regular,
+        color: 'bg-error',
+        permission: appPermissions.economistSalaryHiddenRead
       }
     ]
   },
@@ -940,6 +949,7 @@ export const navigations = withRawIcons([
   },
   {
     label: 'navigation.chat', // Chat
+    name: 'chat',
     path: AppPaths.Chat,
     icon: ChatSidebarIcon,
     permission: appPermissions.chat,
@@ -949,7 +959,7 @@ export const navigations = withRawIcons([
         path: Utils.routeChatPathMaker(AppPaths.Notification),
         icon: ChatNotificationIcon,
         color: 'bg-dark',
-        permission: appPermissions.instructionsRead
+        permission: appPermissions.chatNotification
       },
       {
         label: 'newsPage.name', // Yangiliklar
@@ -981,6 +991,7 @@ export const navigations = withRawIcons([
       },
       {
         label: 'liveChatPage.name',
+        name: 'live-chat',
         path: Utils.routeChatPathMaker(AppPaths.LiveChat),
         icon: ChatSidebarIcon,
         color: 'bg-dark',
@@ -1117,6 +1128,13 @@ export const navigations = withRawIcons([
         permission: appPermissions.documentExamplesRead
       },
       {
+        label: 'eimzoGateAdmin.name', // E-IMZO tasdig'i (faqat Admin)
+        path: Utils.routePathMaker(AppPaths.EimzoGateAdmin),
+        icon: AdminFolderIcon,
+        color: 'bg-dark',
+        permission: appPermissions.admin
+      },
+      {
         label: 'holidayPage.name', // Bayram kunlari
         path: Utils.routePathMaker(AppPaths.Holiday),
         icon: AdminFolderIcon,
@@ -1150,6 +1168,13 @@ export const navigations = withRawIcons([
         icon: AdminFolderIcon,
         color: 'bg-dark',
         permission: appPermissions.instructionsRead
+      },
+      {
+        label: 'videoGuidePage.name', // Video qo'llanmalar
+        path: Utils.routePathMaker(AppPaths.VideoGuides),
+        icon: AdminFolderIcon,
+        color: 'bg-dark',
+        permission: appPermissions.videoGuides
       },
       {
         label: 'mobileUserPage.name', // Mobil foydalanuvchilar

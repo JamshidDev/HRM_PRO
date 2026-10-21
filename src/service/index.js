@@ -5,6 +5,8 @@ import Utils from '@/utils/Utils.js'
 import i18n from '@/i18n/index.js'
 import { reportApiError } from '@/utils/errorReporter.js'
 import { getDeviceUuid } from '@/utils/webPush.js'
+import { showAlert, alertFromAxiosError, isToastOnlyPage } from '@/components/notify/alertDialog.js'
+import { endSessionIfForeign, isSessionEnded, sessionSignal } from '@/features/sessionEnded/sessionEnded.js'
 const apiUrl = import.meta.env.VITE_API_URL
 console.log(apiUrl)
 const { t } = i18n.global
@@ -14,7 +16,20 @@ const instance = axios.create({
 
 let isLoggingOut = false
 
+// So'rov yuborilgandan keyin localStorage'dagi token almashganmi (qayta login).
+const isStaleTokenRequest = (config) => {
+  const sent = String(config?.headers?.Authorization || '').replace(/^Bearer /, '')
+  if (!sent || config?.url === '/auth/login') return false
+  return sent !== (localStorage.getItem(useAppSetting.tokenKey) || '')
+}
+
 instance.interceptors.request.use(function (config) {
+  // Seans tugagan — alert turgan paytda hech qanday so'rov ketmaydi.
+  if (isSessionEnded()) return Promise.reject(new axios.CanceledError('session_ended'))
+  // Chaqiruvchining o'z signali bo'lsa ikkalasi birlashtiriladi (eski brauzerda — o'zinikini saqlaymiz).
+  if (!config.signal) config.signal = sessionSignal()
+  else if (typeof AbortSignal.any === 'function')
+    config.signal = AbortSignal.any([config.signal, sessionSignal()])
   let token = localStorage.getItem(useAppSetting.tokenKey) || null
   config.headers['Accept-Language'] =
     localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
@@ -41,7 +56,9 @@ instance.interceptors.response.use(
         response.config.method
       )
     ) {
+      // `silentSuccess`: chaqiruvchi o'z (aniqroq) xabarini ko'rsatadi — takror toast chiqmasin.
       if (
+        !response.config?.silentSuccess &&
         !response.data?.error &&
         response?.data?.message &&
         typeof response.data?.message === 'string'
@@ -53,6 +70,26 @@ instance.interceptors.response.use(
     return Promise.resolve(response)
   },
   async (error) => {
+    // Eski token bilan ketgan so'rov (shu brauzerda qayta kirildi) — yangi token bilan bir marta qayta yuboriladi.
+    if (error.response?.status === 401 && isStaleTokenRequest(error.config)) {
+      if (!error.config.__staleRetried && localStorage.getItem(useAppSetting.tokenKey)) {
+        error.config.__staleRetried = true
+        return instance(error.config)
+      }
+      error.__notified = true
+      return Promise.reject(error)
+    }
+    // Seans tugadi (socket yoki 401 session_ended) — toast/redirect yo'q, alert o'zi login'ga olib o'tadi.
+    if (error.response?.status === 401 && error.response?.data?.code === 'session_ended') {
+      const sent = String(error.config?.headers?.Authorization || '').replace(/^Bearer /, '')
+      endSessionIfForeign(error.response.data, sent.split('|')[0])
+      error.__notified = true
+      return Promise.reject(error)
+    }
+    if (isSessionEnded()) {
+      error.__notified = true
+      return Promise.reject(error)
+    }
     if (error.name === 'CanceledError') {
       error.message = t('content.waitResponse')
     }
@@ -65,14 +102,23 @@ instance.interceptors.response.use(
       return Promise.reject(error)
     }
 
+    // eimzoGate: iqtisod API'si E-IMZO tasdig'ini talab qildi — sahifa o'rniga tasdiqlash kartasi chiqadi.
+    if (
+      error.response?.status === 403 &&
+      error.response?.data?.code === 'eimzo_verification_required'
+    ) {
+      import('@/features/eimzoGate/eimzoGateStore.js').then((m) => m.useEimzoGateStore()._lock())
+      return Promise.reject(error)
+    }
+
     if (error.response?.status === 401) {
       const serviceUrl = error.response?.config?.url?.toString()
-      if(serviceUrl.includes('auth/login')){
+      if (serviceUrl.includes('auth/login')) {
         $Toast.error(error.response?.data?.message ?? error.message)
         return Promise.reject(error)
       }
 
-      if (isLoggingOut){
+      if (isLoggingOut) {
         return Promise.reject(error)
       }
 
@@ -82,15 +128,26 @@ instance.interceptors.response.use(
       isLoggingOut = true
       localStorage.removeItem(useAppSetting.tokenKey)
       await router.push(AppPaths.Login)
+    } else if (
+      !error.config?.silentError &&
+      error.config?.errorUi !== 'toast' &&
+      !isToastOnlyPage() &&
+      alertFromAxiosError(error)
+    ) {
+      // Foydalanuvchi amali xatosi (403, 422, 4xx, aloqa) — 3D ikonkali modal; login sahifasida toast.
+      showAlert(alertFromAxiosError(error))
+      error.__notified = true
     } else if (error.response?.data?.message) {
       if (!error.config?.silentError) {
         $Toast.error(error.response?.data?.message)
+        error.__notified = true
       }
     } else if (error?.message) {
       // `silentError` bu yerda ham hisobga olinadi: backend `message` bermagan
       // 403 larda oldin xom "Request failed with status code 403" chiqib ketardi.
       if (!error.config?.silentError) {
         $Toast.warning(error.message)
+        error.__notified = true
       }
     }
 

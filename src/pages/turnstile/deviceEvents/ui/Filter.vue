@@ -1,6 +1,6 @@
 <script setup>
   import { useAccountStore, useDeviceEventStore, useEventStore } from '@/store/modules/index.js'
-  import { UIPageFilter } from '@/components/index.js'
+  import { UIPageFilter, UISegmentTabs } from '@/components/index.js'
   import { useAppSetting } from '@utils'
   import i18n from '@/i18n/index.js'
 
@@ -9,6 +9,11 @@
   // Access level ro'yxati eventStore'da (ikkala tab bir xil manbadan oladi).
   const eventStore = useEventStore()
   const accStore = useAccountStore()
+
+  const viewTabs = computed(() => [
+    { id: eventStore.tabs[0], name: t('hcEvent.oldView') },
+    { id: eventStore.tabs[1], name: t('deviceEvent.tab') }
+  ])
 
   const filterEvent = () => {
     if (!accStore.checkPermission(accStore.pn.turnstileHikCentralEventsRead)) return
@@ -116,52 +121,12 @@
       />
     </template>
     <template #filterSearch>
-      <div class="tab-wrapper ml-2">
-        <n-tabs
-          class="tab-switcher"
-          :value="eventStore.activeTab"
-          @update:value="eventStore._changeView"
-          type="segment"
-          size="small"
-        >
-          <n-tab-pane :name="eventStore.tabs[0]" :tab="$t('hcEvent.oldView')" />
-          <n-tab-pane :name="eventStore.tabs[1]" :tab="$t('deviceEvent.tab')" />
-        </n-tabs>
-      </div>
+      <UISegmentTabs
+        class="ml-2"
+        :tabs="viewTabs"
+        :model-value="eventStore.activeTab"
+        @update:model-value="eventStore._changeView"
+      />
     </template>
   </UIPageFilter>
 </template>
-
-<style scoped>
-  .tab-wrapper {
-    border: 1px solid var(--surface-line);
-    border-radius: 6px;
-    padding: 1px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-  }
-
-  .tab-switcher {
-    width: 200px;
-    height: 100%;
-  }
-
-  .tab-switcher :deep(.n-tabs-pane-wrapper) {
-    display: none;
-  }
-
-  .tab-switcher :deep(.n-tabs-nav) {
-    height: 100%;
-  }
-
-  .tab-switcher :deep(.n-tabs-rail) {
-    height: 100%;
-  }
-
-  .tab-switcher :deep(.n-tabs-tab) {
-    height: 28px;
-    padding: 0 10px;
-    line-height: 28px;
-  }
-</style>

@@ -47,10 +47,10 @@
     <!-- Tab qatori: sahifa sarlavhasi `origin/dev` da olib tashlangan, uning
          o'rnida Push / Telegram almashtirgichi turadi. -->
     <div class="w-full max-w-[200px] shrink-0">
-      <n-tabs v-model:value="activeTab" type="segment" size="small">
+      <UITabs v-model:value="activeTab" type="segment" size="small">
         <n-tab name="push">{{ $t('telegramBroadcast.pushTab') }}</n-tab>
         <n-tab v-if="canSeeTelegram" name="telegram">{{ $t('telegramBroadcast.tab') }}</n-tab>
-      </n-tabs>
+      </UITabs>
     </div>
 
     <!-- Ekran ikkiga bo'linadi: chapda forma (doimiy ochiq), o'ngda yuborilganlar.

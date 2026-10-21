@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia'
+import { currentTokenId, endSessionIfForeign } from '@/features/sessionEnded/sessionEnded.js'
+import { useAppSetting } from '@/utils/index.js'
 import io from 'socket.io-client'
 const socketUrl = import.meta.env.VITE_SOCKET_URL
 const socketSecret = import.meta.env.VITE_SOCKET_SECRET
@@ -30,11 +32,7 @@ export const useSocketStore = defineStore('useSocketStore', {
     counts: {
       confirmation: {},
       hr: {}
-    },
-
-
-
-
+    }
   }),
   getters: {
     getCategoryTotal: (state) => (category) => {
@@ -62,7 +60,8 @@ export const useSocketStore = defineStore('useSocketStore', {
         reconnection: true,
         reconnectionDelay: 1000,
         reconnectionDelayMax: 5000,
-        reconnectionAttempts: 5,
+        // Chat uchun ulanish to'xtamasligi kerak — urinishlar cheklanmaydi.
+        reconnectionAttempts: Infinity,
         transports: ['websocket']
       })
 
@@ -71,6 +70,7 @@ export const useSocketStore = defineStore('useSocketStore', {
 
         this.setupIdleDetection()
         this.getAllOnlineUsers()
+        import('@/store/modules/chat/liveChatStore.js').then((m) => m.useLiveChatStore().onSocketConnect(this.socket))
       })
 
       this.socket.on('disconnect', () => {
@@ -86,6 +86,12 @@ export const useSocketStore = defineStore('useSocketStore', {
       })
 
       this.socket.on('notification', (data) => {
+        // Shu brauzer sessiyasi yopildi — alert faqat boshqa qurilma chiqargan bo'lsa.
+        if (data?.type === 'session_revoked') {
+          endSessionIfForeign(data, data.token_id)
+          this.reconnectIfTokenChanged(data.token_id)
+          return
+        }
         // Xabar turi: yangi payload'da `type` (= action.type), eskisida `alert`.
         const alertType = allowedAlertTypes.includes(data?.type)
           ? data.type
@@ -133,6 +139,8 @@ export const useSocketStore = defineStore('useSocketStore', {
       })
 
       this.socket.on('online_users', (data) => {
+        // Server ro'yxati — yagona manba: uzilishda o'tkazib yuborilgan offline'lar tozalanadi.
+        this.allOnlineUsers = []
         for (let key in data) {
           const user = data[key]
           this.addUserToOnlineUsers(user)
@@ -182,13 +190,21 @@ export const useSocketStore = defineStore('useSocketStore', {
         30 * 60 * 1000
       ) // 30 minutes
     },
+    // Har ulanish (socketId) alohida yozuv: web/mobil va har brauzer alohida ko'rinadi.
+    onlineKey(user) {
+      return user.socketId ?? `user-${user.id}`
+    },
     addUserToOnlineUsers(user) {
-      const existUser = this.allOnlineUsers.find((v) => Number(v.id) === Number(user.id))
-      if (existUser) return
-      this.allOnlineUsers.push(user)
+      const key = this.onlineKey(user)
+      const index = this.allOnlineUsers.findIndex((v) => this.onlineKey(v) === key)
+      if (index === -1) this.allOnlineUsers.push(user)
+      else this.allOnlineUsers.splice(index, 1, { ...this.allOnlineUsers[index], ...user })
     },
     removeUserFromOnlineUsers(user) {
-      this.allOnlineUsers = this.allOnlineUsers.filter((v) => Number(v.id) !== Number(user.id))
+      // socketId bo'lsa — faqat shu ulanish; bo'lmasa (eski server) — userning hammasi.
+      this.allOnlineUsers = user.socketId
+        ? this.allOnlineUsers.filter((v) => v.socketId !== user.socketId)
+        : this.allOnlineUsers.filter((v) => Number(v.id) !== Number(user.id))
     },
     setOffline() {
       if (this.socket && this.currentUserId) {
@@ -202,6 +218,16 @@ export const useSocketStore = defineStore('useSocketStore', {
         }
         this.counts[type] = { ...this.counts[type], ...fields }
       })
+    },
+    // Boshqa tabda qayta kirildi — server eski socketni uzadi, yangi token bilan qayta ulanamiz.
+    reconnectIfTokenChanged(tokenId) {
+      setTimeout(() => {
+        const token = localStorage.getItem(useAppSetting.tokenKey)
+        const userId = Number(localStorage.getItem(useAppSetting.accountUserId)) || this.currentUserId
+        if (!token || !userId || String(tokenId) === currentTokenId()) return
+        this.disconnect()
+        this.initSocket(token, userId)
+      }, 3000)
     },
     disconnect() {
       if (this.socket) {

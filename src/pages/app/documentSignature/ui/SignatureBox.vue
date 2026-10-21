@@ -26,7 +26,7 @@
       }
       store._confirmSignature(route.query, payload)
     } else {
-      $Toast.warning(t('message.requiredSignature'))
+      $Alert.validation(t('message.requiredSignature'))
     }
   }
 </script>

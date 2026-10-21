@@ -4,7 +4,8 @@
     UITable,
     UITableBadgeCell,
     UITableNameCell,
-    UIUser
+    UIUser,
+    UIElectronicNumber
   } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useTurnstileDownload } from '@/composables/useTurnstileDownload.js'
@@ -14,7 +15,6 @@
   import {
     ArrowDownload20Regular,
     Delete20Regular,
-    Edit32Regular,
     Eye16Regular
   } from '@vicons/fluent'
 
@@ -26,20 +26,14 @@
 
   const emits = defineEmits(['openOffice'])
 
-  const checkingStatus = {
-    0: {
-      id: 1,
-      name: t('content.Process')
-    },
-    1: {
-      id: 3,
-      name: t('content.checked')
-    },
-    2: {
-      id: 4,
-      name: t('content.Rejected')
-    }
-  }
+  // HR holati (worker_applications.status): 0 yangi, 1 kelishuvchilarga yo'naltirilgan, 2 HR yopgan.
+  const checkingStatus = computed(() => ({
+    0: { id: 1, name: t('applicationPage.hrCheck.new') },
+    1: { id: 3, name: t('applicationPage.hrCheck.forwarded') },
+    2: { id: 4, name: t('applicationPage.hrCheck.closed') }
+  }))
+  // Rahbar imzolagan ariza ham yopilgan (yashil).
+  const closedApproved = computed(() => ({ id: 3, name: t('applicationPage.hrCheck.closed') }))
 
   const onOpenFile = (v) => {
     emits('openOffice', v)
@@ -88,6 +82,11 @@
       align: 'center'
     },
     {
+      key: 'electronic_number',
+      title: t('documentSettings.electronicNumber'),
+      width: 130
+    },
+    {
       key: 'worker',
       title: t('content.worker'),
       minWidth: 200
@@ -120,11 +119,6 @@
       key: Utils.ActionTypes.view,
       icon: UIHelper.renderIcon(Eye16Regular),
       action: onView
-    },
-    {
-      label: t('content.edit'),
-      key: Utils.ActionTypes.edit,
-      icon: UIHelper.renderIcon(Edit32Regular)
     },
     {
       label: t('turnstileDownload.title'),
@@ -164,6 +158,10 @@
       />
     </template>
 
+    <template #cell-electronic_number="{ row }">
+      <UIElectronicNumber :value="row?.electronic_number" />
+    </template>
+
     <template #cell-number="{ row }">
       <UITableBadgeCell :number="row?.number" type="error" />
     </template>
@@ -181,7 +179,7 @@
     </template>
 
     <template #cell-status="{ row }">
-      <UIStatus :status="checkingStatus[Number(row?.status)]" />
+      <UIStatus :status="row?.confirmation?.id === 3 ? closedApproved : checkingStatus[Number(row?.status)]" />
     </template>
 
     <template #cell-confirmation="{ row }">

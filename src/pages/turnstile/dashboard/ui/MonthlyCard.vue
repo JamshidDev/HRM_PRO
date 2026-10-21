@@ -2,7 +2,6 @@
   import { Eye20Filled } from '@vicons/fluent'
   import { Utils } from '@/utils/index.js'
   import CardHeader from './CardHeader.vue'
-  import DeltaBadge from './DeltaBadge.vue'
   import { MonthlyCardSkeleton } from './skeleton/index.js'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
   import HeadTableRowsIcon from '@/assets/icons/dashboard/head-table-rows.svg'
@@ -15,7 +14,7 @@
 </script>
 
 <template>
-  <div class="bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col">
+  <div class="bg-surface-section shadow-card rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col">
     <MonthlyCardSkeleton v-if="store.monthlyLoading" />
 
     <template v-else>
@@ -23,7 +22,6 @@
         :icon="HeadTableRowsIcon"
         tint="lime"
         :title="$t('turnStileDashboard.cards.graphAnalytic')"
-        :subtitle="$t('turnStileDashboard.cards.graphAnalyticDescription')"
       />
 
       <!-- markazdagi qiyshaytirilgan dekor + pastdan oq gradient niqob -->
@@ -64,17 +62,6 @@
             >
               {{ formatted }}
             </span>
-          </div>
-          <div class="flex items-center justify-between gap-2 mt-1">
-            <span class="text-[12px] leading-[16px] text-fig-text-muted">
-              {{ $t('turnStileDashboard.compare.vsYesterday') }}
-            </span>
-            <DeltaBadge
-              hide-label
-              :delta="store.deltas.withoutSchedule"
-              invert
-              :loading="store.compareLoading"
-            />
           </div>
         </div>
       </div>

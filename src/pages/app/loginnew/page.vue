@@ -6,7 +6,8 @@ import {
   useAppStore,
   useLoginNewStore,
   useQrLoginStore,
-  useResetPasswordStore
+  useResetPasswordStore,
+  useSocketStore
 } from '@/store/modules/index.js'
 import i18n from '@/i18n/index.js'
 import LoginForm from './ui/LoginForm.vue'
@@ -18,6 +19,9 @@ import ExpiredForm from './ui/ExpiredForm.vue'
 import StoreLinks from './ui/StoreLinks.vue'
 import SeasonEffect from './ui/SeasonEffect.vue'
 import OfferModal from '@/components/OfferModal.vue'
+import SsoRedirectOverlay from './ui/SsoRedirectOverlay.vue'
+import AppChooser from './ui/AppChooser.vue'
+import { useRoute } from 'vue-router'
 import loginPatternUrl from '@/assets/images/svg/login-pattern.png?url'
 import loginPatternBottomUrl from '@/assets/images/svg/pattern-bottom.png?url'
 import banner from '@/assets/images/content/banner.png?url'
@@ -27,6 +31,37 @@ const appStore = useAppStore()
 const loginStore = useLoginNewStore()
 const resetStore = useResetPasswordStore()
 const qrStore = useQrLoginStore()
+const route = useRoute()
+
+// Tashqi tizim «HRM orqali kirish» bilan yuborgan bo'lsa — login'dan keyin o'sha tizimga qaytamiz.
+loginStore._loadSsoClient(route.query.client_id)
+if (route.query.client_id) loginStore._checkSsoSession()
+
+// HRM'ga allaqachon kirilgan bo'lsa — qayta login yo'q, darhol tizimga yo'naltiriladi.
+watch(
+  () => [loginStore.sso, loginStore.ssoSession],
+  ([sso, session]) => {
+    if (sso && session && !loginStore.ssoRedirect) loginStore._ssoContinueSession()
+  }
+)
+
+const isPhone = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+const appChooserDismissed = ref(false)
+const ssoChecking = computed(
+  () =>
+    !!route.query.client_id &&
+    (loginStore.ssoSessionChecking || (isPhone && loginStore.ssoLoading) || (!!loginStore.ssoSession && !!loginStore.sso))
+)
+const showAppChooser = computed(() => isPhone && !!loginStore.sso && !appChooserDismissed.value)
+
+// Faqat lokal dev: `/login?sso_preview` — SSO yo'naltirish oynasini soxta ma'lumot bilan ko'rsatadi (UI ustida ishlash uchun).
+if (import.meta.env.DEV && route.query.sso_preview !== undefined) {
+  loginStore.ssoRedirect = {
+    name: route.query.sso_preview || 'KPI-Application-Ismoil',
+    url: 'https://kpi.das-uty.uz/',
+    preview: true
+  }
+}
 
 const steps = { login: 'login', twofa: 'twofa', reset: 'reset', expired: 'expired' }
 const step = ref(steps.login)
@@ -84,6 +119,8 @@ const onResize = () => {
 }
 
 onMounted(() => {
+  // Login sahifasida eski sessiya socket'i kerak emas — qayta kirishda «chiqarildingiz» chiqmasin.
+  useSocketStore().disconnect()
   void measureBase()
   // Captcha rasmi/shriftlar kech yuklansa balandlik o'zgaradi — qayta o'lchaymiz.
   setTimeout(measureBase, 600)
@@ -96,6 +133,11 @@ onBeforeUnmount(() => {
   clearTimeout(resizeTimer)
   window.removeEventListener('resize', onResize)
   qrStore.close()
+  // Login qilmay ortga qaytildi — eski sessiya socket'i qayta ulanadi.
+  const socketStore = useSocketStore()
+  const token = localStorage.getItem(useAppSetting.tokenKey)
+  const userId = localStorage.getItem(useAppSetting.accountUserId)
+  if (!socketStore.socket && token && userId) socketStore.initSocket(token, Number(userId))
 })
 
 // o'tish yo'nalishi: oldinga (slide-next) yoki orqaga (slide-prev)
@@ -239,6 +281,10 @@ const onDone = () => {
         </div>
 
         <div class="relative z-10 w-full login-new__fade-in login-new__fade-in-delay-1">
+          <!-- Telefonda tashqi tizimdan kelinganda — avval HR Rail ilovasi tavsiya qilinadi -->
+          <div v-if="ssoChecking" class="h-[360px]"></div>
+          <AppChooser v-else-if="showAppChooser" class="mt-10 lg:mt-9" @browser="appChooserDismissed = true" />
+          <template v-else>
           <!-- Kirish usuli: Login / ERI / QR-kod.
                ⚠️ Tab qatori BARCHA qadamlarda ko'rinadi (2FA / parol tiklashda ham):
                yashirilsa yo joyi yo'qolib karta ~100px sakrardi, yo `invisible`
@@ -296,6 +342,7 @@ const onDone = () => {
               </div>
             </Transition>
           </div>
+          </template>
         </div>
 
         <!-- Mualliflik huquqi -->
@@ -307,6 +354,7 @@ const onDone = () => {
 
     <!-- Offerta modali — login javobida `offer:true` kelsa ochiladi (teleport) -->
     <OfferModal />
+    <SsoRedirectOverlay />
   </div>
 </template>
 

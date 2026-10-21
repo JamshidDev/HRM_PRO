@@ -36,7 +36,7 @@
   <n-form :model="store.gridPayload" class="flex flex-col">
     <!-- CREATE: ikki tab — ma'lumotlar / koeffitsientlar -->
     <div v-if="isCreate" class="tg-body">
-      <n-tabs type="line" animated size="small" v-model:value="formTab">
+      <UITabs type="line" animated size="small" v-model:value="formTab">
         <n-tab-pane name="meta" :tab="$t('tariffGrid.form.metaTitle')">
           <div class="grid grid-cols-12 gap-x-4 gap-y-1 pt-1">
             <n-form-item class="col-span-12 md:col-span-6" :label="$t('tariffGrid.form.name')">
@@ -59,7 +59,7 @@
           <p class="text-xs text-surface-500 mb-3 pt-1">{{ $t('tariffGrid.form.columnsHint') }}</p>
           <ColumnsMatrix />
         </n-tab-pane>
-      </n-tabs>
+      </UITabs>
     </div>
 
     <!-- EDIT-META: faqat ma'lumotlar -->

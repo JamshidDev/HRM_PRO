@@ -1,8 +1,11 @@
 <script setup>
-  import { Search48Filled, Search32Filled } from '@vicons/fluent'
   import TreeOrg from '@/components/tree/TreeOrg.vue'
+  import TreeSelectPanel from '@/components/tree/TreeSelectPanel.vue'
+  import TreeSelectTrigger from '@/components/tree/TreeSelectTrigger.vue'
   import { useDebounceFn } from '@vueuse/core'
   import { useComponentStore } from '@/store/modules/index.js'
+  import { useTreePopoverKeyboard } from '@/composables/useTreePopoverKeyboard.js'
+  import { useTreePopoverWidth } from '@/composables/useTreePopoverWidth.js'
   const store = useComponentStore()
   const instance = getCurrentInstance()
   const props = defineProps({
@@ -20,7 +23,9 @@
     // true bo'lsa katta (trigger) input ham qidiruv sifatida yoziladi.
     searchableInput: { type: Boolean, default: false },
     // Berilmasa avvalgi default matn ishlatiladi (content.search / content.choose).
-    placeholder: { type: String, default: null }
+    placeholder: { type: String, default: null },
+    // Tanlangan qiymat bo'lsa trigger ichida tozalash (×) tugmasi chiqadi.
+    clearable: { type: Boolean, default: false }
   })
 
   const inputFocused = ref(false)
@@ -198,6 +203,26 @@
   onMounted(() => {
     callDefaultValue()
   })
+
+  // ♿ Klaviatura: ochish/yopish, qatorlar bo'ylab yurish, Tab bilan keyingi maydonga
+  // o'tish. Ochilganda pastdagi qidiruv inputiga fokus tushadi.
+  const { show, triggerRef, panelRef, searchInputRef, onTriggerKeydown, onPanelKeydown } =
+    useTreePopoverKeyboard({
+      searchable: () => props.searchableInput,
+      multiple: () => props.multiple
+    })
+  // Filtr paneli ichida — panel kengligida, boshqa joyda — kamida 420px.
+  const { popoverStyle } = useTreePopoverWidth(show, triggerRef, { fallback: 420 })
+
+  // Tanlov bilan birga pastdagi qidiruv ham tozalanadi — daraxt to'liq holiga qaytadi.
+  const onClear = () => {
+    emits('updateModel', [])
+    if (searchModel.value) {
+      searchModel.value = null
+      emits('onSearch', null)
+    }
+    triggerRef.value?.$el?.querySelector('input')?.focus()
+  }
 </script>
 
 <template>
@@ -207,30 +232,60 @@
        qisilib qolgan edi. Ichma-ich popover begona ajdodning trigger kengligiga
        bog'lanmasligi kerak. -->
   <n-popover
+    v-model:show="show"
     :placement="placement"
     trigger="click"
-    class="h-[400px] md:max-w-auto py-0! px-0! max-w-[calc(100vw-32px)] md:max-w-none! md:w-[400px]"
+    class="py-0! px-0!"
+    :style="popoverStyle"
   >
     <template #trigger>
-      <n-badge class="w-full block" :value="modelV.length" type="info" :offset="[-10, -4]">
-        <n-input
-          :placeholder="
-            placeholder || (searchableInput ? $t('content.search') : $t('content.choose'))
-          "
-          :loading="loading"
-          class="ui__structure-input w-full"
-          type="text"
-          :readonly="!searchableInput"
-          :value="triggerValue"
-          @update:value="onTriggerInput"
-          @focus="inputFocused = true"
-          @blur="onTriggerBlur"
-        />
-      </n-badge>
+      <TreeSelectTrigger
+        ref="triggerRef"
+        :value="triggerValue"
+        :count="modelV.length"
+        :open="show"
+        :loading="loading"
+        :readonly="!searchableInput"
+        :clearable="clearable"
+        :placeholder="
+          placeholder || (searchableInput ? $t('content.search') : $t('content.choose'))
+        "
+        @update:value="onTriggerInput"
+        @focus="inputFocused = true"
+        @blur="onTriggerBlur"
+        @keydown="onTriggerKeydown"
+        @clear="onClear"
+      />
     </template>
-    <div class="w-full h-[10px]"></div>
-    <div class="w-full h-[344px] overflow-y-auto px-1">
-      <n-spin :show="loading" class="w-full h-full">
+    <div ref="panelRef" @keydown="onPanelKeydown">
+      <TreeSelectPanel
+        ref="searchInputRef"
+        v-model:search="searchModel"
+        :loading="loading"
+        :selected-count="multiple ? modelV.length : 0"
+        :empty="!options?.length"
+        @input="searchEvent"
+        @submit="emits('onSubmit')"
+        @clear="onClear"
+      >
+        <template #toolbar>
+          <div class="ui-select-seg" role="group">
+            <button
+              type="button"
+              :class="store.structureShort && 'ui-select-seg--on'"
+              @click="store.structureShort = true"
+            >
+              {{ $t('content.short') }}
+            </button>
+            <button
+              type="button"
+              :class="!store.structureShort && 'ui-select-seg--on'"
+              @click="store.structureShort = false"
+            >
+              {{ $t('content.long') }}
+            </button>
+          </div>
+        </template>
         <TreeOrg
           :short="store.structureShort"
           :data="options"
@@ -239,6 +294,7 @@
           :getChildIds="getChildIds"
           :changeCheckVal="changeCheckVal"
           :multiple="multiple"
+          :highlight="searchModel ?? ''"
           @onSelect="onSelect"
           @onSelectAll="onSelectAll"
         >
@@ -246,35 +302,33 @@
             <slot name="label" :data="data" />
           </template>
         </TreeOrg>
-      </n-spin>
-    </div>
-    <div class="w-full h-[40px] flex items-center px-1">
-      <n-input-group>
-        <n-button size="small" @click="store.structureShort = !store.structureShort">
-          <template #icon>
-            <n-checkbox v-model:checked="store.structureShort" @click.stop />
-          </template>
-          {{ store.structureShort ? $t('content.long') : $t('content.short') }}
-        </n-button>
-        <n-input
-          clearable
-          size="small"
-          v-model:value="searchModel"
-          round
-          :on-keyup="searchEvent"
-          @update:value="searchEvent"
-          :loading="loading"
-        >
-          <template #prefix>
-            <n-icon :component="Search48Filled" />
-          </template>
-        </n-input>
-        <n-button @click="emits('onSubmit')" type="primary" size="small" :loading="loading">
-          <template #icon>
-            <Search32Filled />
-          </template>
-        </n-button>
-      </n-input-group>
+      </TreeSelectPanel>
     </div>
   </n-popover>
 </template>
+
+<style scoped>
+  .ui-select-seg {
+    display: inline-flex;
+    padding: 2px;
+    border-radius: 7px;
+    background: var(--surface-ground);
+  }
+
+  .ui-select-seg button {
+    padding: 2px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--textColor2);
+    transition:
+      background-color 0.12s ease,
+      color 0.12s ease;
+  }
+
+  .ui-select-seg button.ui-select-seg--on {
+    color: var(--textColor0);
+    background: var(--surface-section);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+  }
+</style>

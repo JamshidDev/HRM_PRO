@@ -211,7 +211,7 @@
         />
       </div>
       <div v-else-if="loaded" class="max-w-[960px] mx-auto flex flex-col gap-3">
-        <div class="rounded-2xl bg-surface-section border border-surface-line px-5 pt-2 pb-5">
+        <div class="rounded-2xl bg-surface-section border border-surface-line px-3 sm:px-5 pt-2 pb-5">
           <CommandFormBody ref="bodyRef" mode="edit" :readonly="!editable" />
         </div>
       </div>

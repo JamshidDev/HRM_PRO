@@ -68,7 +68,7 @@
   >
     <div class="flex flex-col gap-3">
       <n-radio-group v-model:value="mode" class="w-full">
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <label
             v-for="opt in ['all', 'selected']"
             :key="opt"
@@ -140,7 +140,7 @@
     </div>
 
     <template #footer>
-      <div class="flex items-center justify-between gap-3">
+      <div class="flex flex-wrap items-center justify-between gap-3">
         <span class="text-xs text-textColor3">
           {{ $t('documentPage.command.dataTab.resend.count', { count: resendCount }) }}
         </span>

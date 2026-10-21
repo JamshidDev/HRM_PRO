@@ -21,7 +21,10 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
       page: 1,
       per_page: 15,
       search: null,
+      // organization_id — YAKKA org (analyze + whitelist amallari uchun; birinchi tanlangan).
       organization_id: null,
+      // organizations — ko'p org (o'zi + bolalari subtree) ID massivi; list/export filtri.
+      organizations: [],
       year: null,
       month: null,
       paying_code: null
@@ -65,7 +68,13 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
       const params = {
         ...this.params,
         search: this.params.search?.trim() || undefined,
-        organization_id: this.params.organization_id || undefined,
+        // Ko'p org (subtree) tanlanganda — CSV; aks holda yakka organization_id.
+        organizations: this.params.organizations?.length
+          ? this.params.organizations.join(',')
+          : undefined,
+        organization_id: this.params.organizations?.length
+          ? undefined
+          : this.params.organization_id || undefined,
         paying_code: this.params.paying_code || undefined,
         only_flagged: this.onlyFlagged || undefined
       }
@@ -124,7 +133,12 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
         ...this.whitelistListParams,
         search: this.whitelistListParams.search?.trim() || undefined,
         paying_code: this.whitelistListParams.paying_code || undefined,
-        organization_id: this.params.organization_id || undefined,
+        organizations: this.params.organizations?.length
+          ? this.params.organizations.join(',')
+          : undefined,
+        organization_id: this.params.organizations?.length
+          ? undefined
+          : this.params.organization_id || undefined,
         year: this.params.year || undefined,
         month: this.params.month || undefined
       }
@@ -147,7 +161,7 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
     // --- Imtiyozli xodimni whitelist'ga qo'lda qo'shish (summa yo'q) ---
     openWhitelistAdd() {
       if (!this.params.organization_id || !this.params.year || !this.params.month) {
-        $Toast.warning(t('paymentAnalysis.toast.requiredFilters'))
+        $Alert.validation(t('paymentAnalysis.toast.requiredFilters'))
         return
       }
       this.whitelistAddPayload = {
@@ -158,15 +172,15 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
     },
     _addWhitelistRow() {
       if (!this.params.organization_id || !this.params.year || !this.params.month) {
-        $Toast.warning(t('paymentAnalysis.toast.requiredFilters'))
+        $Alert.validation(t('paymentAnalysis.toast.requiredFilters'))
         return
       }
       if (!this.whitelistAddPayload.worker_id) {
-        $Toast.warning(t('paymentAnalysis.toast.requiredWorker'))
+        $Alert.validation(t('paymentAnalysis.toast.requiredWorker'))
         return
       }
       if (!this.whitelistAddPayload.paying_code) {
-        $Toast.warning(t('paymentAnalysis.toast.requiredPayingCode'))
+        $Alert.validation(t('paymentAnalysis.toast.requiredPayingCode'))
         return
       }
       this.whitelistAddLoading = true
@@ -201,7 +215,7 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
     // --- Qoidalar dvigatelini qayta ishga tushirish ---
     _analyze() {
       if (!this.params.organization_id || !this.params.year || !this.params.month) {
-        $Toast.warning(t('paymentAnalysis.toast.requiredFilters'))
+        $Alert.validation(t('paymentAnalysis.toast.requiredFilters'))
         return
       }
       this.analyzeLoading = true
@@ -227,7 +241,12 @@ export const usePaymentAnalysisStore = defineStore('paymentAnalysis', {
       const y = this.params.year
       const m = this.params.month
       const params = {
-        organization_id: this.params.organization_id || undefined,
+        organizations: this.params.organizations?.length
+          ? this.params.organizations.join(',')
+          : undefined,
+        organization_id: this.params.organizations?.length
+          ? undefined
+          : this.params.organization_id || undefined,
         year: y || undefined,
         month: m || undefined,
         only_flagged: this.onlyFlagged || undefined

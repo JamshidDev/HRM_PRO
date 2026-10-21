@@ -17,7 +17,7 @@
 </script>
 
 <template>
-  <div class="relative h-full overflow-hidden rounded-2xl bg-fig-block p-4">
+  <div class="relative h-full overflow-hidden rounded-2xl bg-fig-block shadow-card p-4">
     <!-- Maketdagi bezaklar (node 3257:112472 va 3257:112473): naqsh kartaning
          vertikal markazida (4% shaffof), bezak esa yuqori markazda, 90° burilgan. -->
     <img :src="patternUrl" alt="" aria-hidden="true" class="welcome-card__pattern" />

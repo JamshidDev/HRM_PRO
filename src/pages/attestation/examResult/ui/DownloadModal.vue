@@ -22,10 +22,10 @@
     :width="480"
   >
     <div class="flex flex-col">
-      <n-tabs v-model:value="store.downloadParams.type" type="segment" size="small">
+      <UITabs v-model:value="store.downloadParams.type" type="segment" size="small">
         <n-tab name="results">{{ $t('examPage.downloadResult') }}</n-tab>
         <n-tab name="notPassed">{{ $t('examPage.downloadNotPassed') }}</n-tab>
-      </n-tabs>
+      </UITabs>
 
       <label class="text-xs mt-4 text-gray-500 mb-1 font-medium">{{
         $t('actionLog.table.structure')

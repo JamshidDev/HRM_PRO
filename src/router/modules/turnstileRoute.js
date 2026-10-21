@@ -135,17 +135,25 @@ export const turnstileRoutes = [
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.ShiftType),
-    component: () => import('@turnstile/shiftType/ui/Tabs.vue'),
+    component: () => import('@turnstile/shiftType/page.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
-    path: Utils.routeTurnstilePathMaker(AppPaths.ShiftTypeGroup),
-    component: () => import('@turnstile/shiftType/ui/Tabs.vue'),
+    // Guruh xodimlari grafigi — ilgari yashirin 3-tab edi (URL'siz, refresh'da yo'qolardi).
+    path: Utils.routeTurnstilePathMaker(`${AppPaths.ShiftType}/group/:groupId`),
+    name: 'turnstile-shift-type-group-workers',
+    component: () => import('@turnstile/scheduleWorker/page.vue'),
     meta: {
-      layout: AppLayouts.main
+      layout: AppLayouts.main,
+      permission: appPermissions.turnstileSheetsGroupsRead
     }
+  },
+  {
+    // «Smena guruhlari» endi «Smenalar» sahifasining o'ng paneli. Eski havola/xatcho'plar uchun.
+    path: Utils.routeTurnstilePathMaker(AppPaths.ShiftTypeGroup),
+    redirect: Utils.routeTurnstilePathMaker(AppPaths.ShiftType)
   },
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.TurnstileSchedule),

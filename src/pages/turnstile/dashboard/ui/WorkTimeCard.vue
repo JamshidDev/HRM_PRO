@@ -19,16 +19,12 @@
       label: 'turnStileDashboard.cards.earlyGo',
       count: earlyGoCount.value,
       dotColor: '--fig-icon-green',
-      delta: store.deltas.early,
-      invert: true,
       previewType: 'early_leave'
     },
     {
       label: 'turnStileDashboard.cards.lateCome',
       count: lateComeCount.value,
       dotColor: '--fig-icon-red',
-      delta: store.deltas.late,
-      invert: true,
       previewType: 'late_come'
     }
   ])
@@ -37,7 +33,7 @@
 </script>
 
 <template>
-  <div class="bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col">
+  <div class="bg-surface-section shadow-card rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col">
     <WorkTimeCardSkeleton v-if="store.workTimeLoading" />
 
     <template v-else>
@@ -45,7 +41,6 @@
         :icon="HeadChartUserIcon"
         tint="indigo"
         :title="$t('turnStileDashboard.cards.workTimeTitle')"
-        :subtitle="$t('turnStileDashboard.cards.workTimeSubtitle')"
       />
 
       <div class="flex flex-wrap items-center gap-1 px-2 pb-2">
@@ -55,9 +50,6 @@
           :label="$t(cell.label)"
           :count="cell.count"
           :dot-color="cell.dotColor"
-          :delta="cell.delta"
-          :invert="cell.invert"
-          :delta-loading="store.compareLoading"
           clickable
           @click="emits('onPreview', cell.previewType)"
         />

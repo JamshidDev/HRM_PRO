@@ -96,6 +96,7 @@
     </template>
 
     <template #cell-departments="{ row }">
+      <span v-if="!row.departments?.length" class="text-gray-400">—</span>
       {{ row.departments?.[0]?.department?.name }}
 
       <n-button

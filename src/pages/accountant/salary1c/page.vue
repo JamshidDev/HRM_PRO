@@ -1,8 +1,9 @@
 <script setup>
   import { CloudArrowDown24Regular, CloudArrowUp24Regular, Eye16Regular, History24Regular, Search24Regular, ArrowDownload24Regular, Calculator24Regular, ArrowSync24Regular } from '@vicons/fluent'
-  import { NoDataPicture, UIBadge, UIModal, UIPageContent, UIPageFilter, UIPagination, UITable, UIYearMonth, UISelect } from '@/components/index.js'
+  import { NoDataPicture, OnesCodeFilter, UIBadge, UIModal, UIPageContent, UIPageFilter, UIPagination, UITable, UIYearMonth, UISelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useSalary1cStore, useUploadReportStore } from '@/store/modules/index.js'
   import BulkOnesModal from '@/pages/accountant/report/ui/BulkOnesModal.vue'
+  import { OnesCodesManager } from '@/components/index.js'
   import { useDebounceFn } from '@vueuse/core'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -79,6 +80,20 @@
 
   // Kod/Jins/Ish soati filtrlari faqat «Xodimlar» tabiga tegishli (org — hamma tabga).
   const mrFilterActive = computed(() => activeTab.value === 'workers')
+  // Tanlangan korxona id'lari (ko'p 1C kod filtri uchun — bitta bo'lsa kodlar yuklanadi).
+  const selectedOrgIds = computed(() => (store.selectedOrgs || []).map((o) => o?.id ?? o))
+  // Ko'p 1C kod boshqaruvi — aynan bitta korxona tanlanганда faollashadi.
+  const codesManagerVisible = ref(false)
+  const singleOrg = computed(() =>
+    (store.selectedOrgs || []).length === 1 ? store.selectedOrgs[0] : null
+  )
+  const openCodesManager = () => {
+    if (!singleOrg.value) {
+      window.$Toast?.warning(t('salary1c.onesCode.selectOneOrg'))
+      return
+    }
+    codesManagerVisible.value = true
+  }
   // «Filterlar» tugmasidagi faol filtr soni — korxona + Kod + Jins + Ish soati.
   const filterCount = computed(
     () =>
@@ -103,6 +118,7 @@
     store.selectedOrgs = []
     store.structureCheck = []
     store.params.code = null
+    store.params.ones_code = null
     store.params.sex = null
     store.params.start_hours = null
     store.params.end_hours = null
@@ -264,6 +280,14 @@
           </template>
           {{ pullRunning ? `${pullProcessed}/${pullTotal}` : $t('salary1c.pull') }}
         </n-button>
+        <n-tooltip :disabled="!!singleOrg" trigger="hover" placement="bottom">
+          <template #trigger>
+            <n-button :disabled="!singleOrg" @click="openCodesManager">
+              {{ $t('salary1c.onesCode.manageBtn') }}
+            </n-button>
+          </template>
+          <span>{{ $t('salary1c.onesCode.selectOneOrg') }}</span>
+        </n-tooltip>
       </template>
 
       <template #filterContent>
@@ -285,6 +309,12 @@
             <span v-if="pullCodeSet.has(data.id)" class="s1-1c-dot" :title="$t('salary1c.pullableHint')"></span>
           </template>
         </UISelect>
+
+        <OnesCodeFilter
+          :org-ids="selectedOrgIds"
+          v-model="store.params.ones_code"
+          @change="onApply"
+        />
 
         <label class="mt-3">{{ $t('salary1c.code') }}</label>
         <n-select
@@ -334,12 +364,12 @@
     </UIPageFilter>
 
     <div class="flex items-center justify-between flex-wrap gap-2">
-      <n-tabs type="segment" v-model:value="activeTab" size="small" class="s1-seg">
+      <UITabs type="segment" v-model:value="activeTab" size="small" class="s1-seg">
         <n-tab-pane name="workers" :tab="$t('salary1c.workers')" />
         <n-tab-pane name="orgs" :tab="$t('salary1c.byOrg')" />
         <n-tab-pane name="veds" :tab="$t('salary1c.veds.tab')" />
         <n-tab-pane name="reconcile" :tab="$t('salary1c.reconcile.tab')" />
-      </n-tabs>
+      </UITabs>
       <div class="flex items-center gap-2">
         <n-button
           v-if="accStore.checkPermission(accStore.pn.economistUploadsWrite)"
@@ -801,16 +831,19 @@
             <thead><tr>
               <th class="w-[80px]">{{ $t('salary1c.code') }}</th>
               <th>{{ $t('salary1c.rowName') }}</th>
+              <th class="text-right! w-[90px]">{{ $t('salary1c.hours') }}</th>
               <th class="text-right! w-[140px]">{{ $t('salary1c.amount') }}</th>
             </tr></thead>
             <tbody>
               <tr v-for="(a, i) in store.payslip.accruals" :key="'a' + i">
                 <td>{{ a.paying_code || '—' }}</td>
                 <td>{{ a.paying_name }}</td>
+                <td class="text-right! tnum">{{ a.hours_worked ? fmt(a.hours_worked) : '—' }}</td>
                 <td class="text-right! tnum">{{ fmt(a.summa) }}</td>
               </tr>
               <tr>
                 <td colspan="2" class="font-semibold">{{ $t('salary1c.accrual') }}</td>
+                <td class="text-right! tnum font-semibold">{{ fmt(store.payslip.hours_worked) }}</td>
                 <td class="text-right! tnum font-semibold">{{ fmt(store.payslip.accrual_total) }}</td>
               </tr>
             </tbody>
@@ -1182,6 +1215,13 @@
 
     <!-- 1C dan ommaviy "Oylik hisobot" yuklash (upload-report bilan bir xil modal) -->
     <BulkOnesModal />
+
+    <!-- Ko'p 1C kod boshqaruvi (tanlangan bitta korxona uchun) -->
+    <OnesCodesManager
+      v-model:visible="codesManagerVisible"
+      :organization-id="singleOrg?.id ?? null"
+      :organization-name="singleOrg?.name ?? ''"
+    />
   </UIPageContent>
 </template>
 
@@ -1232,7 +1272,7 @@
   .s1-stat--warn:hover { box-shadow: 0 0 0 2px rgba(231, 0, 10, 0.30) inset; }
   .s1-stat--active { box-shadow: 0 0 0 2px var(--danger-color, #dc2626) inset; }
   .s1-stat-lbl { font-size: 11px; color: var(--textColor3, #98a2b3); }
-  .s1-stat-val { font-size: 16px; font-weight: 700; color: var(--textColor1, #101828); font-variant-numeric: tabular-nums; }
+  .s1-stat-val { font-size: 16px; font-weight: 700; color: var(--textColor1, #475569); font-variant-numeric: tabular-nums; }
   /* Tizimda yo'q xodim qatori */
   :deep(.s1-row-out > td) { background: rgba(231, 0, 10, 0.08); }
 
@@ -1260,7 +1300,7 @@
   .s1-pinfo { display: flex; gap: 10px; margin-bottom: 14px; }
   .s1-pinfo > div { flex: 1; display: flex; flex-direction: column; gap: 2px; padding: 8px 12px; border: 1px solid var(--surface-line, #e5e7eb); border-radius: 10px; }
   .s1-pinfo-lbl { font-size: 11px; color: var(--textColor3, #98a2b3); }
-  .s1-pinfo b { font-size: 15px; color: var(--textColor1, #101828); }
+  .s1-pinfo b { font-size: 15px; color: var(--textColor1, #475569); }
   .s1-cmp-sec { font-size: 13px; font-weight: 600; margin: 6px 0 4px; color: var(--textColor2, #475467); }
 
   /* Ved kesimida — kartalar (tizim dizayni) */
@@ -1316,7 +1356,7 @@
   .s1-col-name { font-size: 10px; font-weight: 400; color: var(--textColor3, #98a2b3); line-height: 1.1; }
 
   /* Solishtirish */
-  .s1-rec-info { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 14px; font-weight: 600; color: var(--textColor1, #101828); }
+  .s1-rec-info { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 14px; font-weight: 600; color: var(--textColor1, #475569); }
   .s1-rec-diff > :deep(td) { background: rgba(253, 199, 0, 0.14); }
   /* «Bizniki» drill-down — bosiladigan summa */
   .s1-drill { color: var(--primary-color, #1279f0); cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px; }

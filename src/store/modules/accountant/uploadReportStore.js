@@ -41,6 +41,9 @@ export const useUploadReportStore = defineStore('uploadReport', {
     selectedIndex: null,
     selectedId: null,
     selectedOrgName: null,
+    // Tanlangan korxona uchun ruxsat etilgan manba (1=Excel, 2=1C, 3=ikkala) —
+    // tanlash paytida tugundan to'g'ridan-to'g'ri olinadi (strukturani qayta qidirmasdan).
+    selectedOrgAllowedSource: 3,
     // Korxonalar daraxtini nomi bo'yicha (klientda) filtrlash
     orgSearch: '',
     commentVisible: false,
@@ -50,6 +53,18 @@ export const useUploadReportStore = defineStore('uploadReport', {
     flattenData: [],
     isBlocked: false,
     orgStatus: true,
+    // Tanlangan korxonaning 1C kodlari (ko'p kodli bo'lsa — Oylik hisobot tarixida
+    // har kod bo'yicha alohida Excel yuklab olish uchun). [{ ones_org_code, label }]
+    onesCodes: [],
+    // Per-kod Oylik hisobot Excel yuklab olish jarayoni (kod → true/false).
+    onesExporting: {},
+    // 1C pull ma'lumot sifati anomaliyalari (dubl PINFL + kodsiz/matnli paying_code).
+    anomalySummary: { duplicate_pinfl: 0, missing_code: 0, total: 0 },
+    anomalyVisible: false,
+    anomalyLoading: false,
+    anomalyRows: [],
+    anomalyTotal: 0,
+    anomalyParams: { kind: null, page: 1, per_page: 20 },
     // 1C dan ommaviy yuklash (Oylik hisobot) — modal holati.
     // bulkPeriod — modal davri: upload-report yoki salary-1c sahifasidan uzatiladi.
     bulkPeriod: { year: null, month: null },
@@ -62,8 +77,9 @@ export const useUploadReportStore = defineStore('uploadReport', {
     bulkSelected: [], // tanlangan organization_id lar
     bulkSearch: '',
     bulkRunning: false, // yuklash jarayoni ketyaptimi
+    bulkErrorExportLoading: false, // xatolarni Excel'ga yuklab olish jarayoni
     bulkProgress: { done: 0, total: 0 },
-    // organization_id -> { status: 'uploading'|'done'|'failed', message? }
+    // organization_id -> { status: 'uploading'|'done'|'failed', message?, at? }
     bulkResults: {},
     // To'xtatish so'ralganda true — worker'lar yangi korxona OLMAYDI.
     bulkCancelRequested: false,
@@ -246,7 +262,17 @@ export const useUploadReportStore = defineStore('uploadReport', {
           const list = res.data.data
           this.structuresList = list
           if (list.length === 1 && list[0]?.children?.length === 0) {
-            this.onChangeStructure(list[0])
+            const only = list[0]
+            // Avtomatik tanlash faqat org hali tanlanmaganda. Agar allaqachon
+            // tanlangan bo'lsa (masalan tasdiqlash/bekor qilishdan keyingi refresh),
+            // onChangeStructure TOGGLE qilib org_id'ni null'ga aylantirib panelni
+            // yopib qo'yardi. Shu holatda faqat holatni yangilaymiz — panel ochiq qoladi.
+            if (this.params.organization_id === only.id) {
+              this.orgStatus = only.uploadStatus
+              this.isBlocked = !only.uploadStatus
+            } else {
+              this.onChangeStructure(only)
+            }
           }
         })
         .finally(() => {
@@ -326,6 +352,9 @@ export const useUploadReportStore = defineStore('uploadReport', {
           this._cards()
           this._structures()
           this._refreshSoon()
+          // Oylik (type=1) sinxron tortiladi → anomaliyalar tayyor, ogohlantiramiz.
+          // INPS (2/3/4) 1c-zup (boshqa manba) — salary-1c anomaliyasi yo'q.
+          if (Number(this.payload.type) === 1) this._loadAnomalySummary(true)
         })
         .finally(() => {
           this.saveLoading = false
@@ -355,6 +384,32 @@ export const useUploadReportStore = defineStore('uploadReport', {
       this.bulkRunning = false
       this.bulkCancelRequested = false
       this._loadBulkOrgs()
+    },
+    // Daraxtdan tanlangan korxonalar uchun ommaviy 1C yuklash modalini ochish.
+    // _onesOrgs (salary_reports bor korxonalar) dan faqat confirmSelected bo'lganlarini qoldiradi.
+    // 1C ma'lumotisiz yoki faqat Excel manbali korxonalar avtomatik chiqib ketadi.
+    openBulkFromSelected() {
+      if (this.bulkRunning) { this.bulkVisible = true; return }
+      const preSelected = new Set(this.confirmSelected)
+      this.bulkPeriod = { year: this.params.year, month: this.params.month }
+      this.bulkType = 1
+      this.bulkVisible = true
+      this.bulkOrgs = []
+      this.bulkSelected = []
+      this.bulkSearch = ''
+      this.bulkResults = {}
+      this.bulkProgress = { done: 0, total: 0 }
+      this.bulkRunning = false
+      this.bulkCancelRequested = false
+      this.bulkLoading = true
+      $ApiService.accountantService
+        ._onesOrgs({ params: { year: this.bulkPeriod.year, month: this.bulkPeriod.month } })
+        .then((res) => {
+          const allOrgs = res.data.data?.data ?? []
+          this.bulkOrgs = allOrgs.filter((o) => preSelected.has(o.organization_id))
+          this.bulkSelected = this.bulkOrgs.map((o) => o.organization_id)
+        })
+        .finally(() => { this.bulkLoading = false })
     },
     // Ketayotgan ommaviy yuklashni to'xtatish — worker'lar yangi korxona OLMAYDI
     // (jarayondagi ≤6 so'rov tugaydi). Progress qolgan joyida to'xtaydi.
@@ -419,7 +474,7 @@ export const useUploadReportStore = defineStore('uploadReport', {
             this.bulkResults = {
               ...this.bulkResults,
               [orgId]: failed
-                ? { status: 'failed', message: res?.data?.message }
+                ? { status: 'failed', message: res?.data?.message, at: new Date().toISOString() }
                 : { status: 'done' }
             }
           } catch (e) {
@@ -427,7 +482,8 @@ export const useUploadReportStore = defineStore('uploadReport', {
               ...this.bulkResults,
               [orgId]: {
                 status: 'failed',
-                message: e?.response?.data?.message ?? e?.message
+                message: e?.response?.data?.message ?? e?.message,
+                at: new Date().toISOString()
               }
             }
           } finally {
@@ -447,12 +503,63 @@ export const useUploadReportStore = defineStore('uploadReport', {
         if (this.params.organization_id) this._cards()
       }
     },
-    _delete() {
-      this.deleteLoading = true
-      $ApiService.countryService
-        ._delete({ id: this.elementId })
+    // «1C dan ommaviy yuklash» XATOlarini Excel (.xlsx) qilib yuklab olish:
+    // korxona, 1C ID, davr, tortilgan vaqt, xato. Backend 1C ID (ones_org_code) ni
+    // har org uchun aniqlaydi; bu yerda faqat xato natijalarni yuboramiz.
+    _exportBulkErrors() {
+      const errors = Object.entries(this.bulkResults)
+        .filter(([, r]) => r?.status === 'failed')
+        .map(([orgId, r]) => {
+          const org = this.bulkOrgs.find(
+            (o) => String(o.organization_id) === String(orgId)
+          )
+          return {
+            organization_id: Number(orgId),
+            organization_name: org?.organization ?? '',
+            error: r.message ?? '',
+            pulled_at: r.at ?? ''
+          }
+        })
+      if (!errors.length) {
+        $Toast.info(t('uploadReport.bulkOnes.noErrors'))
+        return
+      }
+      this.bulkErrorExportLoading = true
+      const data = {
+        year: this.bulkPeriod.year,
+        month: this.bulkPeriod.month,
+        type: this.bulkType,
+        errors
+      }
+      $ApiService.accountantService
+        ._onesErrorsExport({ data })
         .then((res) => {
-          this._index()
+          Utils.blobFileDownload(
+            res.data,
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            `1c-yuklash-xatolari-${this.bulkPeriod.year}-${String(this.bulkPeriod.month).padStart(2, '0')}.xlsx`
+          )
+        })
+        .finally(() => {
+          this.bulkErrorExportLoading = false
+        })
+    },
+    // Yuklangan hisobotni (economist_upload) o'chirish — ma'lumot satrlari + soft-delete.
+    // So'ng tanlangan korxona kartalari (list = latest/older) va tuzilma holati qayta yuklanadi.
+    _deleteUpload(id) {
+      if (!id) return
+      this.deleteLoading = true
+      $ApiService.accountantService
+        ._deleteUpload({ id })
+        .then(() => {
+          $Toast.success(t('content.deleted'))
+          this._cards()
+          this._uploadStatus()
+        })
+        .catch((e) => {
+          // Backend xabari (mas. tasdiqlangan hisobotni o'chirib bo'lmaydi — avval
+          // bekor qiling) bo'lsa — aynan o'shani ko'rsatamiz.
+          $Alert.error(e, t('content.error'))
         })
         .finally(() => {
           this.deleteLoading = false
@@ -479,8 +586,148 @@ export const useUploadReportStore = defineStore('uploadReport', {
       this.params.organization_id = this.params.organization_id === v.id ? null : v.id
       if (this.params.organization_id) {
         this.selectedOrgName = v.name
+        // Manba cheklovini tugunning o'zidan olamiz (structure allowed_source) — modal
+        // shu asosda Excel/1C tanlovini ko'rsatadi (taqiqlangan manba ko'rinmaydi).
+        this.selectedOrgAllowedSource = v.allowed_source ?? 3
         this._cards()
+        this._loadOnesCodes(this.params.organization_id)
+        this._loadAnomalySummary(false)
+      } else {
+        this.selectedOrgAllowedSource = 3
+        this.onesCodes = []
+        this.anomalySummary = { duplicate_pinfl: 0, missing_code: 0, total: 0 }
       }
+    },
+    // Tanlangan korxonaning 1C kodlari (OnesCodeFilter bilan bir manba). Ko'p kodli
+    // bo'lsa — Oylik hisobot tarixida har kod bo'yicha alohida Excel tugmasi chiqadi.
+    _loadOnesCodes(orgId) {
+      this.onesCodes = []
+      if (!orgId) return
+      $ApiService.salary1cService
+        ._getOrgCodes({ params: { organization_id: orgId } })
+        .then((res) => {
+          this.onesCodes = res?.data?.data ?? []
+        })
+        .catch(() => {
+          this.onesCodes = []
+        })
+    },
+    // 1C pull anomaliyalari yig'masi (tanlangan korxona + davr). notify=true bo'lsa va
+    // anomaliya bo'lsa — ogohlantirish toast (1C'dan tortgandan keyin chaqiriladi).
+    _loadAnomalySummary(notify = false) {
+      const orgId = this.params.organization_id
+      if (!orgId || !this.params.year || !this.params.month) {
+        this.anomalySummary = { duplicate_pinfl: 0, missing_code: 0, total: 0 }
+        return
+      }
+      $ApiService.salary1cService
+        ._pullAnomaliesSummary({
+          params: {
+            organization_id: orgId,
+            year: this.params.year,
+            month: this.params.month
+          }
+        })
+        .then((res) => {
+          const s = res?.data?.data ?? { duplicate_pinfl: 0, missing_code: 0, total: 0 }
+          this.anomalySummary = s
+          if (notify && s.total > 0) {
+            $Toast.warning(
+              t('uploadReport.anomaly.toast', {
+                dup: s.duplicate_pinfl,
+                code: s.missing_code
+              })
+            )
+          }
+        })
+        .catch(() => {})
+    },
+    // Anomaliya hisobot modalini ochish + ro'yxatni yuklash (tanlangan korxona + davr).
+    openAnomalies() {
+      this.anomalyVisible = true
+      this.anomalyParams = { kind: null, page: 1, per_page: 20 }
+      this._loadAnomalies()
+    },
+    _loadAnomalies() {
+      const orgId = this.params.organization_id
+      if (!orgId) return
+      this.anomalyLoading = true
+      $ApiService.salary1cService
+        ._pullAnomalies({
+          params: {
+            organization_id: orgId,
+            year: this.params.year,
+            month: this.params.month,
+            kind: this.anomalyParams.kind || undefined,
+            page: this.anomalyParams.page,
+            per_page: this.anomalyParams.per_page
+          }
+        })
+        .then((res) => {
+          const d = res?.data?.data ?? {}
+          this.anomalyRows = d.data ?? []
+          this.anomalyTotal = d.total ?? 0
+        })
+        .catch(() => {
+          this.anomalyRows = []
+          this.anomalyTotal = 0
+        })
+        .finally(() => {
+          this.anomalyLoading = false
+        })
+    },
+    _changeAnomalyKind(kind) {
+      this.anomalyParams.kind = kind
+      this.anomalyParams.page = 1
+      this._loadAnomalies()
+    },
+    _onAnomalyPage(p) {
+      this.anomalyParams.page = p
+      this._loadAnomalies()
+    },
+    // Ko'p 1C kodli korxonada bitta kod bo'yicha hisobot snapshot Excel'ini yuklab olish
+    // (1C hisob-kitobini har ID bo'yicha alohida solishtirish uchun). `reportType`:
+    // 1=Oylik, 2=INPS4, 3=INPS5, 4=INPS to'lovlar — mos endpoint tanlanadi.
+    _downloadOnesStatement(year, month, code, reportType = 1) {
+      const orgId = this.params.organization_id
+      if (!orgId || !year || !month || !code) return
+      this.onesExporting = { ...this.onesExporting, [code]: true }
+      const safeOrg = String(this.selectedOrgName || 'hisobot')
+        .replace(/[\\/:*?"<>|]+/g, '')
+        .trim()
+      const safeCode = String(code).replace(/[\\/:*?"<>|]+/g, '').trim()
+      const name = `${safeOrg}_${year}-${String(month).padStart(2, '0')}_${safeCode}.xlsx`
+      const svc = $ApiService.accountantService
+      const apiByType = {
+        1: svc._onesStatementExcel,
+        2: svc._taxFourExcel,
+        3: svc._taxFiveExcel,
+        4: svc._pensionExcel
+      }
+      const apiCall = apiByType[Number(reportType)] ?? svc._onesStatementExcel
+      apiCall({ params: { organization_id: orgId, year, month, ones_code: code } })
+        .then(async (res) => {
+          // Biznes-xato HTTP 200 + JSON qaytarishi mumkin (blob JSON bo'lsa — xato).
+          const blob = res?.data
+          if (blob && blob.type && blob.type.includes('application/json')) {
+            let msg = t('content.error')
+            try {
+              const parsed = JSON.parse(await blob.text())
+              if (typeof parsed?.message === 'string') msg = parsed.message
+            } catch {
+              // JSON emas — standart xato xabari qoladi.
+            }
+            $Toast.error(msg)
+            return
+          }
+          Utils.blobFileDownload(blob, XLSX_MIME, name)
+        })
+        .catch(() => {
+          $Toast.error(t('content.error'))
+        })
+        .finally(() => {
+          this.onesExporting = { ...this.onesExporting, [code]: false }
+        })
     },
     resetCards() {
       this.isBlocked = false
@@ -538,8 +785,10 @@ export const useUploadReportStore = defineStore('uploadReport', {
             try {
               const parsed = JSON.parse(await blob.text())
               if (typeof parsed?.message === 'string') msg = parsed.message
-            } catch (e) {}
-            $Toast.error(msg)
+            } catch {
+              // JSON emas — standart xato xabari qoladi.
+            }
+            $Alert.warning(msg)
             return
           }
           Utils.blobFileDownload(blob, 'application/zip', name)

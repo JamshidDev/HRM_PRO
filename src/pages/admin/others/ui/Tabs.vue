@@ -19,7 +19,7 @@
 </script>
 
 <template>
-  <n-tabs
+  <UITabs
     animated
     v-model:value="store.activeTab"
     @update:value="onChange"
@@ -40,5 +40,5 @@
         </template>
       </n-tab-pane>
     </template>
-  </n-tabs>
+  </UITabs>
 </template>

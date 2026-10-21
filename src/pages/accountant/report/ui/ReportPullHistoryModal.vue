@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { computed, h, onMounted } from 'vue'
   import { NTag, NIcon, NTooltip, NButton } from 'naive-ui'
   import dayjs from 'dayjs'
@@ -150,7 +151,7 @@
                 size: 'small',
                 quaternary: true,
                 circle: true,
-                onClick: () => window.open(row.file, '_blank')
+                onClick: () => openSafeUrl(row.file)
               },
               () => h(NIcon, { size: 18 }, () => h(ArrowDownload20Regular))
             )
@@ -235,7 +236,7 @@
   >
     <div class="flex flex-col gap-3" style="height: 100%">
       <!-- Tab: Tortishlar | ZIP yuklab olishlar -->
-      <n-tabs
+      <UITabs
         :value="store.pullHistoryTab"
         @update:value="store._setHistoryTab"
         type="line"
@@ -244,7 +245,7 @@
       >
         <n-tab-pane name="pulls" :tab="$t('uploadReport.pullHistory.tabPulls')" />
         <n-tab-pane name="downloads" :tab="$t('uploadReport.pullHistory.tabDownloads')" />
-      </n-tabs>
+      </UITabs>
 
       <!-- ===== Tortishlar tab ===== -->
       <template v-if="store.pullHistoryTab === 'pulls'">

@@ -145,7 +145,7 @@
         {{ $t('documentPage.command.lastVacation') }}</n-button
       >
     </div>
-    <div class="col-span-12 md:col-span-6">
+    <div class="col-span-12 @xl:col-span-6">
       <n-form-item :label="$t(`commandPage.form_50.vacation_id`)" path="vacation_id">
         <n-select
           v-model:value="store.form_44.vacation_id"
@@ -159,7 +159,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_44.new_date`)" path="new_date">
         <n-date-picker
           class="w-full"
@@ -169,7 +169,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_44.rest_day`)" path="rest_day">
         <n-input
           class="w-full"
@@ -179,7 +179,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-6">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-6">
       <n-form-item :label="$t(`commandPage.form_44.reason`)" path="reason">
         <n-select
           v-model:value="store.form_44.reason"

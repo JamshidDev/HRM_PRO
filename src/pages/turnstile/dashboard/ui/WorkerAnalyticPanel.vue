@@ -12,38 +12,33 @@
   const cells = computed(() => [
     {
       label: 'turnStileDashboard.cards.allWorkerOfCompany',
-      count: store.totalWorkerCount || 0,
+      count: store.attendance?.total || 0,
       dotColor: '--fig-icon-indigo',
-      delta: store.deltas.totalWorkers,
       previewType: null
     },
     {
       label: 'turnStileDashboard.cards.planned',
-      count: store.mainChart?.scheduled_workers_today || 0,
+      count: store.attendance?.scheduled || 0,
       dotColor: '--fig-icon-brand',
-      delta: store.deltas.planned,
       previewType: null
     },
     {
       label: 'turnStileDashboard.cards.todayCome',
-      count: store.mainChart?.attended_workers_today || 0,
+      count: store.attendance?.came || 0,
       dotColor: '--fig-icon-green',
-      delta: store.deltas.come,
-      previewType: 'come'
+      previewType: 'att_came'
     },
     {
       label: 'turnStileDashboard.cards.todayDontCome',
-      count: store.mainChart?.absent_workers_today || 0,
+      count: store.attendance?.absent || 0,
       dotColor: '--fig-icon-red',
-      delta: store.deltas.notCome,
-      invert: true,
-      previewType: 'not_come'
+      previewType: 'att_absent'
     }
   ])
 </script>
 
 <template>
-  <div class="bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden">
+  <div class="bg-surface-section shadow-card rounded-2xl px-1 pb-1 relative overflow-hidden">
     <WorkerAnalyticPanelSkeleton v-if="store.mainChartLoading" />
 
     <template v-else>
@@ -51,7 +46,6 @@
         :icon="HeadUsersIcon"
         tint="indigo"
         :title="$t('turnStileDashboard.cards.workerAnalytic')"
-        :subtitle="$t('turnStileDashboard.cards.workerAnalyticDescription')"
       />
 
       <div class="flex flex-wrap items-center gap-1 px-2 py-2">
@@ -61,9 +55,6 @@
           :label="$t(cell.label)"
           :count="cell.count"
           :dot-color="cell.dotColor"
-          :delta="cell.delta"
-          :invert="cell.invert"
-          :delta-loading="store.compareLoading"
           :clickable="!!cell.previewType"
           @click="cell.previewType && emits('onPreview', cell.previewType)"
         />

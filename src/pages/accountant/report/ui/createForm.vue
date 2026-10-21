@@ -19,10 +19,32 @@
   const hasSource = computed(() => [1, 2, 3, 4].includes(Number(store.payload.type)))
   const isOnes = computed(() => hasSource.value && Number(store.payload.source) === 2)
 
-  const sourceOptions = [
+  const ALL_SOURCE_OPTIONS = [
     { label: t('uploadReport.source.excel'), value: 1 },
     { label: t('uploadReport.source.ones'), value: 2 }
   ]
+
+  // Tanlangan korxona uchun ruxsat etilgan manba (1=Excel, 2=1C, 3=ikkalasi).
+  // Tanlash paytida tugundan (structure allowed_source) olingan qiymat — fragile
+  // daraxt-qidiruv (id tipi/topilmaslik) o'rniga ishonchli.
+  const orgAllowedSource = computed(() => store.selectedOrgAllowedSource ?? 3)
+
+  const sourceOptions = computed(() => {
+    const allowed = orgAllowedSource.value
+    if (allowed === 1) return [ALL_SOURCE_OPTIONS[0]]
+    if (allowed === 2) return [ALL_SOURCE_OPTIONS[1]]
+    return ALL_SOURCE_OPTIONS
+  })
+
+  // Manba opsiyalari o'zgarganda (va modal ochilishida — immediate) avtomatik to'g'ri
+  // qiymatga o'rnat: faqat bitta ruxsat etilgan manba bo'lsa, o'shani tanla.
+  watch(
+    sourceOptions,
+    (opts) => {
+      if (opts.length === 1) store.payload.source = opts[0].value
+    },
+    { immediate: true }
+  )
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {
@@ -33,7 +55,7 @@
           return
         }
         if (store.payload.file.length === 0) {
-          $Toast.warning(t('rules.requiredFileField'))
+          $Alert.validation(t('rules.requiredFileField'))
           return
         }
         store.saveLoading = true

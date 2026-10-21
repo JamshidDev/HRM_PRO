@@ -2,6 +2,12 @@ import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import dayjs from 'dayjs'
 const { t } = i18n.global
+
+// «Familiya I. O.» — bo'lim egasini qisqa ko'rsatish.
+const holderName = (w) =>
+  [w?.last_name, w?.first_name?.[0] && `${w.first_name[0]}.`, w?.middle_name?.[0] && `${w.middle_name[0]}.`]
+    .filter(Boolean)
+    .join(' ')
 export const useTimesheetDepartmentStore = defineStore('timesheetDepartmentStore', {
   state: () => ({
     list: [],
@@ -50,6 +56,8 @@ export const useTimesheetDepartmentStore = defineStore('timesheetDepartmentStore
       search: null
     },
     departmentList: [],
+    // Ko'rilgan bo'limlar (id → option) — qidiruv almashganda ham tanlanganlarning egasi ma'lum bo'lsin.
+    departmentSeen: {},
     departmentLoading: false,
     totalDepartmentCount: 0,
 
@@ -69,11 +77,24 @@ export const useTimesheetDepartmentStore = defineStore('timesheetDepartmentStore
       organization_id: null
     }
   }),
+  getters: {
+    // Tanlangan, lekin boshqa tabelchida turgan bo'limlar — saqlashdan oldin tasdiq so'raladi.
+    transferConflicts(state) {
+      const target = state.payload.worker_position_id
+      return state.payload.departments
+        .map((id) => state.departmentSeen[id])
+        .filter(Boolean)
+        .map((d) => ({ ...d, others: d.timekeepers.filter((k) => k.worker_position_id !== target) }))
+        .filter((d) => d.others.length > 0)
+    },
+    // Biriktirilayotgan tabelchining ismi (ogohlantirish matni uchun).
+    targetWorkerName(state) {
+      if (state.editWorker?.worker) return holderName(state.editWorker.worker)
+      return state.workerList.find((w) => w.id === state.payload.worker_position_id)?.name ?? ''
+    }
+  },
   actions: {
-    // Bo'lim select'i: FAQAT hech kimga biriktirilmagan bo'limlar.
-    // 🔴 `worker_position_id` ATAYLAB yuborilmaydi: u tabelchining O'Z bo'limlarini
-    // ham ro'yxatda qoldirardi va endi qo'shilgan bo'lim selectda qayta chiqib
-    // ketardi. Tahrirlash modalida biriktirilganlar pastdagi ro'yxatda ko'rinadi.
+    // Bo'lim select'i: korxonaning barcha bo'limlari, band bo'lsa egasi bilan.
     _department(infinity = false) {
       this.departmentLoading = true
       let params = {
@@ -83,11 +104,27 @@ export const useTimesheetDepartmentStore = defineStore('timesheetDepartmentStore
       $ApiService.timesheetDepartmentService
         ._availableDepartments({ params })
         .then((res) => {
-          const data = res.data.data.data.map((v) => ({
-            id: v.id,
-            name: v.name,
-            position: v.organization?.name
-          }))
+          const target = this.payload.worker_position_id
+          const data = res.data.data.data.map((v) => {
+            const timekeepers = v.timekeepers ?? []
+            const others = timekeepers.filter((k) => k.worker_position_id !== target)
+            return {
+              id: v.id,
+              name: v.name,
+              position: v.organization?.name,
+              timekeepers,
+              // Boshqa tabelchida — option ogohlantirish rangida.
+              takenByOther: others.length > 0,
+              subPosition: others.length
+                ? t('timesheetWorkerPage.assigned_to', {
+                    name: others.map(holderName).join(', ')
+                  })
+                : !!target && timekeepers.length
+                  ? t('timesheetWorkerPage.own_department')
+                  : null
+            }
+          })
+          data.forEach((v) => (this.departmentSeen[v.id] = v))
 
           this.totalDepartmentCount = res.data.data.total
           const options = infinity ? [...this.departmentList, ...data] : data
@@ -130,7 +167,8 @@ export const useTimesheetDepartmentStore = defineStore('timesheetDepartmentStore
       this.payload.worker_position_id = row.id
       this.previewWorkerId = row.id
       this.previewList = row.departments ?? []
-      const org = row?.departments?.[0]?.organization
+      // Bo'limsiz tabelchida — lavozim korxonasi.
+      const org = row?.departments?.[0]?.organization ?? row?.organization
       if (org?.id) {
         this.payload.organizations = [{ id: org.id, name: org.name }]
         this._department()
@@ -139,12 +177,13 @@ export const useTimesheetDepartmentStore = defineStore('timesheetDepartmentStore
     },
 
     // Tahrirlash modalidan tanlangan bo'limlarni biriktirish.
-    _attachSelected() {
+    _attachSelected(transfer = false) {
       if (!this.payload.worker_position_id || this.payload.departments.length === 0) return
       this.saveLoading = true
       const data = {
         worker_position_id: this.payload.worker_position_id,
-        departments: this.payload.departments
+        departments: this.payload.departments,
+        transfer
       }
       $ApiService.timesheetDepartmentService
         ._create({ data })
@@ -184,12 +223,13 @@ export const useTimesheetDepartmentStore = defineStore('timesheetDepartmentStore
           this.loading = false
         })
     },
-    _create() {
+    _create(transfer = false) {
       this.saveLoading = true
       let data = {
         worker_position_id: this.payload.worker_position_id,
         organization_id: this.payload.organizations.map((i) => i.id),
-        departments: this.payload.departments
+        departments: this.payload.departments,
+        transfer
       }
       $ApiService.timesheetDepartmentService
         ._create({ data })
@@ -224,6 +264,7 @@ export const useTimesheetDepartmentStore = defineStore('timesheetDepartmentStore
       this.payload.type = 'organization'
       this.payload.worker_position_id = null
       this.departmentList = []
+      this.departmentSeen = {}
       this.departmentParams.page = 1
       this.departmentParams.search = null
       this.workerList = []

@@ -13,6 +13,9 @@ export const useMonthReportStore = defineStore('monthReportStore', {
     visible: false,
     visibleType: true,
     elementId: null,
+    // Bosilgan qatorning korxonasi (organization_id) — karusel shu org kareshogidan
+    // ochilsin (bir xil PINFL bir nechta korxonada bo'lsa).
+    showOrgId: null,
     totalItems: 0,
     allPermissionList: [],
     payload: {},
@@ -22,6 +25,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
       search: null,
       organizations: [],
       code: null,
+      ones_code: null, // ko'p 1C kod: aynan kod bo'yicha filter (bitta kodli org — null)
       year: null,
       month: null,
       sort_by: null,
@@ -178,7 +182,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
     _vedReport() {
       const p = this._vedReportRequestParams()
       if (!p.codes) {
-        $Toast.warning(i18n.global.t('monthReport.vedReport.selectCodes'))
+        $Alert.validation(i18n.global.t('monthReport.vedReport.selectCodes'))
         return
       }
       this.vedReportLoading = true
@@ -192,7 +196,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
           this.vedReportTotal = res.data.data.total
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? i18n.global.t('content.error'))
+          $Alert.error(e, i18n.global.t('content.error'))
         })
         .finally(() => {
           this.vedReportLoading = false
@@ -205,14 +209,14 @@ export const useMonthReportStore = defineStore('monthReportStore', {
     _vedReportExport() {
       const p = this._vedReportRequestParams()
       if (!p.codes) {
-        $Toast.warning(i18n.global.t('monthReport.vedReport.selectCodes'))
+        $Alert.validation(i18n.global.t('monthReport.vedReport.selectCodes'))
         return false
       }
       this.vedReportExporting = true
       $ApiService.monthReportService
         ._vedReportExport({ params: p })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? i18n.global.t('content.error'))
+          $Alert.error(e, i18n.global.t('content.error'))
         })
         .finally(() => {
           this.vedReportExporting = false
@@ -238,7 +242,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
     _vedThresholdCompute() {
       const params = this._thresholdRequestParams()
       if (!params.thresholds) {
-        $Toast.warning(i18n.global.t('monthReport.threshold.atLeastOneAmount'))
+        $Alert.validation(i18n.global.t('monthReport.threshold.atLeastOneAmount'))
         return
       }
       this.thresholdLoading = true
@@ -248,7 +252,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
           this.thresholdResult = res.data.data
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? i18n.global.t('content.error'))
+          $Alert.error(e, i18n.global.t('content.error'))
         })
         .finally(() => {
           this.thresholdLoading = false
@@ -258,14 +262,14 @@ export const useMonthReportStore = defineStore('monthReportStore', {
     _vedThresholdExport() {
       const params = this._thresholdRequestParams()
       if (!params.thresholds) {
-        $Toast.warning(i18n.global.t('monthReport.threshold.atLeastOneAmount'))
+        $Alert.validation(i18n.global.t('monthReport.threshold.atLeastOneAmount'))
         return false
       }
       this.thresholdExporting = true
       $ApiService.monthReportService
         ._vedThresholdExport({ params })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? i18n.global.t('content.error'))
+          $Alert.error(e, i18n.global.t('content.error'))
         })
         .finally(() => {
           this.thresholdExporting = false
@@ -281,6 +285,9 @@ export const useMonthReportStore = defineStore('monthReportStore', {
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
         search: this.params.search || undefined,
         code: this.params.code || undefined,
+        // Ko'p 1C kod: tanlangan kod bo'yicha Excel ham ro'yxat (_index) bilan bir xil
+        // filtrlansin — 2 kodli korxonada har 1C ID ni ALOHIDA yuklab, 1C bilan solishtirish uchun.
+        ones_code: this.params.ones_code || undefined,
         sex: this.params.sex ?? undefined,
         start_hours: this.params.start_hours ?? undefined,
         end_hours: this.params.end_hours ?? undefined
@@ -289,7 +296,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
       $ApiService.monthReportService
         ._exportFiltered({ params })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? i18n.global.t('content.error'))
+          $Alert.error(e, i18n.global.t('content.error'))
         })
         .finally(() => {
           this.filteredExporting = false
@@ -308,7 +315,7 @@ export const useMonthReportStore = defineStore('monthReportStore', {
           router.push(Utils.routeHrmPathMaker(AppPaths.Export))
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? i18n.global.t('content.error'))
+          $Alert.error(e, i18n.global.t('content.error'))
         })
         .finally(() => {
           this.showLoading = false

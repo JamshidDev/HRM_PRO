@@ -32,7 +32,8 @@ const _signersPreview = async (payload) => {
 
 // Tasdiqlanmagan buyruqni qayta rasmiylashtirish (barchaga yoki tanlanganlarga qayta yuborish).
 const _update = async (payload) => {
-  return await axios.put(`/v1/hr/commands/${payload.id}`, payload.data)
+  // Muvaffaqiyat xabarini `CommandDataTab` o'zi ko'rsatadi (qayta imzolashga yuborilgani bilan).
+  return await axios.put(`/v1/hr/commands/${payload.id}`, payload.data, { silentSuccess: true })
 }
 
 const _delete = async (payload) => {

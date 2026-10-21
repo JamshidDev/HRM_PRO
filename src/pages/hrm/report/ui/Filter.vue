@@ -2,7 +2,11 @@
   import { UISelect } from '@/components/index.js'
   import { useComponentStore, useDepartmentStore, useReport2Store } from '@/store/modules/index.js'
   import { useAccountStore } from '@/store/modules/index.js'
-  import { AddCircle24Regular, ArrowDownload24Regular } from '@vicons/fluent'
+  import {
+    AddCircle24Regular,
+    ArrowClockwise24Regular,
+    ArrowDownload24Regular
+  } from '@vicons/fluent'
   const accStore = useAccountStore()
   const { proxy } = getCurrentInstance()
   const staffingButtonRef = ref(null)
@@ -56,17 +60,19 @@
 </script>
 
 <template>
-  <div
-    class="w-full bg-surface-section rounded-[20px] p-3 flex flex-col md:flex-row md:items-end gap-3"
-  >
+  <!-- Tor ekranda bloklar butunligicha keyingi qatorga o'tadi (`flex-wrap`);
+       `justify-end` — o'tib ketgan tashkilot select'i o'ng chetda qoladi. -->
+  <div class="w-full flex flex-wrap items-center justify-end gap-3">
+    <!-- Filter fonsiz — pastdagi kartochka bilan ikki qavat fon bo'lmasin. -->
     <!-- Tashkilot select'i o'ng chetda: desktopda `order-last` bilan oxiriga
          o'tadi, mobilda esa birinchi bo'lib qoladi. -->
-    <div class="w-full md:w-[360px] shrink-0 md:order-last" :class="{ 'md:ml-auto': !selectedOrg }">
-      <label class="block text-xs text-gray-500 mb-1 font-medium">
-        {{ $t('content.organization') }}
-      </label>
+    <!-- Mobilda select birinchi qatorda to'liq kenglikda, desktopda o'ng chetda.
+         `pt-2 pr-2` — tanlanganlar badge'i (n-badge offset) tor ekranda sahifa
+         chetidan kesilib qolmasin. -->
+    <div class="w-full md:w-[300px] xl:w-[360px] shrink-0 order-first md:order-last pt-2 pr-2 md:p-0">
       <UISelect
         placement="bottom-end"
+        clearable
         :multiple="false"
         :options="store.structure.list"
         :loading="store.structure.loading"
@@ -105,36 +111,13 @@
     </div>
 
     <template v-if="selectedOrg">
-      <div class="flex items-center gap-2">
-        <div
-          class="flex items-center gap-2 h-[34px] px-3 rounded-md border border-table-border bg-surface/2"
-        >
-          <span class="text-xs text-gray-500">{{ $t('report.tooltip.P') }}</span>
-          <n-tag
-            size="small"
-            round
-            :bordered="false"
-            :type="selectedOrg.rate > selectedOrg.real_rate ? 'success' : 'default'"
-          >
-            {{ selectedOrg.rate }}
-          </n-tag>
-        </div>
-        <div
-          class="flex items-center gap-2 h-[34px] px-3 rounded-md border border-table-border bg-surface/2"
-        >
-          <span class="text-xs text-gray-500">{{ $t('report.tooltip.F') }}</span>
-          <n-tag
-            size="small"
-            round
-            :bordered="false"
-            :type="selectedOrg.real_rate > selectedOrg.rate ? 'error' : 'default'"
-          >
-            {{ selectedOrg.real_rate }}
-          </n-tag>
-        </div>
-      </div>
-
-      <div class="flex flex-wrap gap-2 md:ml-auto">
+      <div class="flex flex-wrap gap-2">
+        <n-button :loading="store.busy" :disabled="store.busy" @click="store._refreshAll()" secondary>
+          <template #icon>
+            <n-icon><ArrowClockwise24Regular /></n-icon>
+          </template>
+          {{ $t('content.refresh') }}
+        </n-button>
         <n-button
           v-if="accStore.checkPermission(accStore.pn.hrReportStaffingExport)"
           ref="staffingButtonRef"

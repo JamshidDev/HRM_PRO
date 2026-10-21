@@ -1,20 +1,23 @@
 <script setup>
-  import { useEventV2Store, useComponentStore, useAccountStore } from '@stores'
+  import { useEventV2Store, useEventStore, useComponentStore, useAccountStore } from '@stores'
   import { UIModal, UISelect, SuperSelect } from '@components'
   import { useAppSetting, validationRules } from '@utils'
   import { LockClosed20Regular } from '@vicons/fluent'
 
   const store = useEventV2Store()
+  // Turniket guruhlari ro'yxati sahifa filtri bilan umumiy (foydalanuvchi korxonasi guruhlari).
+  const eventStore = useEventStore()
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
 
-  const canAbsent = computed(() => accStore.checkAction(accStore.pn.turnstileAbsentWorkersExport))
+  const canAbsent = computed(() => accStore.checkPermission(accStore.pn.turnstileAbsentWorkersExport))
 
   // Modal ochilganda korxona daraxti va xodim ro'yxati bir marta tortiladi.
   watch(() => store.download.visible, (v) => {
     if (!v) return
     if (!componentStore.structureList.length) componentStore._structures()
     if (!store.download.worker.list.length) store._downloadWorkers()
+    if (!eventStore.levelList.length) eventStore._levels()
   })
 
   // --- Umumiy filtrlar (ikkala tab uchun) ---
@@ -73,7 +76,7 @@
 
 <template>
   <UIModal v-model:visible="store.download.visible" :title="$t('content.download')" :width="420">
-    <n-tabs v-model:value="store.download.activeTab" type="segment" size="small" class="mb-4">
+    <UITabs v-model:value="store.download.activeTab" type="segment" size="small" class="mb-4">
       <n-tab name="download">{{ $t('hcEvent.tabDownload') }}</n-tab>
       <n-tab name="absent" :disabled="!canAbsent">
         <div class="flex items-center gap-1">
@@ -81,7 +84,7 @@
           {{ $t('hcEvent.tabAbsent') }}
         </div>
       </n-tab>
-    </n-tabs>
+    </UITabs>
 
     <!-- Umumiy filtrlar — ikkala tab ham AYNAN shu korxona/bo'lim/xodim
          tanlovi bilan yuklaydi (backend'da ikkala endpoint bir xil qabul qiladi). -->
@@ -130,6 +133,26 @@
           clearable
         />
       </n-form-item>
+      <n-form-item class="col-span-12" :label="$t('hcEvent.accessLevels')">
+        <n-select
+          v-model:value="store.download.payload.access_levels"
+          :options="eventStore.levelList"
+          :loading="eventStore.levelLoading"
+          :placeholder="$t('hcEvent.accessLevelsAll')"
+          label-field="name"
+          value-field="id"
+          :max-tag-count="2"
+          multiple
+          clearable
+          filterable
+        />
+      </n-form-item>
+      <div
+        v-if="store.download.payload.access_levels.length"
+        class="col-span-12 -mt-3 mb-3 text-xs leading-5 text-textColor3"
+      >
+        {{ $t('hcEvent.accessLevelsHint') }}
+      </div>
     </div>
 
     <!-- Yuklash tab — sanalar -->

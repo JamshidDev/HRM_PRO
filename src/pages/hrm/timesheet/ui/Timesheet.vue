@@ -26,6 +26,7 @@
     UIDConfirm,
     UIDragSelector,
     UIPagination,
+    UISegmentTabs,
     UITable,
     UIUser
   } from '@/components/index.js'
@@ -127,6 +128,10 @@
    * Panjara `v-show` bilan yashiriladi — tanlov va yuklangan sahifa saqlanadi.
    * ---------------------------------------------------------------------- */
   const activeTab = ref('grid')
+  const mainTabs = computed(() => [
+    { id: 'grid', name: t('timesheetPage.tabGrid') },
+    { id: 'timekeepers', name: t('timesheetPage.tabTimekeepers') }
+  ])
   // Tab almashganda ma'lumot HAR DOIM qayta o'qiladi — qulf yoki soat boshqa
   // joyda o'zgargan bo'lishi mumkin, eski keshni ko'rsatmaymiz.
   // «Qo'shish» — `TimesheetList.vue` dagi mavjud kelishuvchilar oynasini ochadi,
@@ -168,6 +173,10 @@
 
   // Kelishuvchilar kartochkasi ichidagi tab.
   const approverTab = ref('list')
+  const approverTabs = computed(() => [
+    { id: 'list', name: t('timesheetPage.verifiers') },
+    { id: 'history', name: t('timesheetPage.history') }
+  ])
   const onApproverTab = (v) => {
     if (v === 'history') store._confirmationHistory()
     else store._confirmations()
@@ -880,15 +889,12 @@
     <div class="ts-filters">
       <!-- Tablar korxona tanlovidan OLDIN, SHU qatorda. `segment` — tugma
            ko'rinishidagi tab; yorliqli maydonlar bilan pastdan tekislanadi. -->
-      <n-tabs
-        v-model:value="activeTab"
+      <UISegmentTabs
+        v-model="activeTab"
+        :tabs="mainTabs"
         class="ts-tabs"
-        type="segment"
-        @update:value="onTabChange"
-      >
-        <n-tab name="grid">{{ $t('timesheetPage.tabGrid') }}</n-tab>
-        <n-tab name="timekeepers">{{ $t('timesheetPage.tabTimekeepers') }}</n-tab>
-      </n-tabs>
+        @update:model-value="onTabChange"
+      />
 
       <div class="ts-field">
         <n-select
@@ -1042,16 +1048,11 @@
         <!-- Kelishuvchilar / Tarix — ichki tabli kartochka. -->
         <div class="ts-info-card ts-approvers-card">
           <div class="ts-info-head">
-            <n-tabs
-              v-model:value="approverTab"
-              class="ts-approver-tabs"
-              size="small"
-              type="segment"
-              @update:value="onApproverTab"
-            >
-              <n-tab name="list">{{ $t('timesheetPage.verifiers') }}</n-tab>
-              <n-tab name="history">{{ $t('timesheetPage.history') }}</n-tab>
-            </n-tabs>
+            <UISegmentTabs
+              v-model="approverTab"
+              :tabs="approverTabs"
+              @update:model-value="onApproverTab"
+            />
             <div class="ts-approvers-actions">
               <n-button
                 v-if="approverTab === 'list' && !timesheetLocked"
@@ -2020,7 +2021,8 @@
     flex-direction: column;
     gap: 16px;
     padding: 16px;
-    background: var(--surface-ground);
+    /* Dashboard bilan bir xil fon — segment tab yo'lagi (kulrang) ajralib turadi. */
+    background: var(--app-bg);
     overflow: hidden;
   }
 
@@ -2036,46 +2038,6 @@
   /* Filtr qatorining birinchi elementi — kengligi mazmuniga qarab. */
   .ts-tabs {
     flex: 0 0 auto;
-    /* `n-tabs` standart holatda `width: 100%` — filtr qatorini siqib chiqarardi. */
-    width: auto;
-  }
-  /* `segment` tab standart holatda ustunlarni TENG bo'ladi — «Tabel» va
-     «Tabelchilar» bir xil kenglik olardi. Har tugma o'z matniga moslanadi. */
-  .ts-tabs :deep(.n-tabs-rail) {
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: max-content;
-  }
-  .ts-tabs :deep(.n-tabs-tab) {
-    padding-inline: 16px;
-    font-weight: 500;
-    transition:
-      color 0.22s ease,
-      background-color 0.22s ease;
-  }
-  /* Asosiy rangdagi segment: chegara va xira fon railda, faol tab to'liq ko'k. */
-  .ts-tabs :deep(.n-tabs-rail) {
-    border: 1px solid color-mix(in srgb, var(--fig-icon-brand) 35%, transparent);
-    background-color: color-mix(in srgb, var(--fig-icon-brand) 8%, transparent);
-  }
-  /* Faol tab foni — tabning O'ZIDA emas, ko'chib yuruvchi `capsule` da. */
-  .ts-tabs :deep(.n-tabs-capsule) {
-    border-color: var(--fig-icon-brand);
-    background-color: var(--fig-icon-brand);
-  }
-  .ts-tabs :deep(.n-tabs-tab--active),
-  .ts-tabs :deep(.n-tabs-tab--active .n-tabs-tab__label) {
-    color: #fff;
-  }
-  /* Bosilganda kichik javob — segment tugmaday his qilinsin. */
-  .ts-tabs :deep(.n-tabs-tab:active) {
-    transform: scale(0.97);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .ts-tabs :deep(.n-tabs-tab) {
-      transition: none;
-    }
   }
   /* Tabelchilar tabi ikkiga bo'linadi: chapda jadval, o'ngda ma'lumot. */
   .ts-keepers {
@@ -2155,17 +2117,6 @@
     flex: 0 0 auto;
     align-items: center;
     gap: 12px;
-  }
-  .ts-approver-tabs {
-    width: auto;
-  }
-  .ts-approver-tabs :deep(.n-tabs-rail) {
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: max-content;
-  }
-  .ts-approver-tabs :deep(.n-tabs-tab) {
-    padding-inline: 12px;
   }
   .ts-approver-meta {
     display: flex;

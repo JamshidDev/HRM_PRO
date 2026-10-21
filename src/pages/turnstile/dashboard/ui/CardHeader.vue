@@ -2,14 +2,11 @@
   const props = defineProps({
     icon: Object,
     title: String,
-    subtitle: String,
     // Chip foni: maketdagi tint tokenlari
     tint: {
       type: String,
       default: 'indigo'
-    },
-    // Qurilmalar kartasida tavsif 10px (maketda shunday)
-    smallSubtitle: Boolean
+    }
   })
 
   const tintClass = computed(
@@ -36,17 +33,8 @@
         <component :is="icon" />
       </span>
     </div>
-    <div class="flex-1 min-w-0 flex flex-col justify-center">
-      <p class="text-[14px] leading-[18px] font-medium text-fig-text-primary truncate">
-        {{ title }}
-      </p>
-      <p
-        v-if="subtitle"
-        class="text-[#74788d] truncate"
-        :class="smallSubtitle ? 'text-[10px] leading-[12px]' : 'text-[12px] leading-[14.4px]'"
-      >
-        {{ subtitle }}
-      </p>
-    </div>
+    <p class="flex-1 min-w-0 text-[14px] leading-[18px] font-medium text-fig-text-primary truncate">
+      {{ title }}
+    </p>
   </div>
 </template>

@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
   import icons from '@/assets/icons'
@@ -36,14 +37,29 @@
   })
 
   const hasStoredFile = computed(() => Boolean(row.value.file?.name && !row.value.file?.size))
+  const hasFile = computed(() => Boolean(row.value.file?.name))
+  // Serverdagi fayl olib tashlangani — saqlashda backendga bo'sh `file` yuboriladi
+  const fileRemoved = ref(false)
 
   const onPickFile = () => fileRef.value?.click()
   const onFileChange = (e) => {
     const file = e.target.files?.[0]
     if (file) row.value.file = file
+    // Bir xil faylni qayta tanlaganda ham `change` ishlashi uchun
+    e.target.value = ''
   }
 
-  const onDownload = () => window.open(row.value.file.name, '_blank')
+  const onRemoveFile = () => {
+    if (hasStoredFile.value) fileRemoved.value = true
+    row.value.file = null
+  }
+
+  const onFileBoxClick = () => {
+    if (editing.value) onPickFile()
+    else if (hasStoredFile.value) onDownload()
+  }
+
+  const onDownload = () => openSafeUrl(row.value.file.name)
 
   const onDelete = () => {
     deleteVisible.value = false
@@ -60,6 +76,7 @@
 
   const onCancel = () => {
     editing.value = false
+    fileRemoved.value = false
     props.foreign ? store._indexForeignPassport() : store._indexPassport()
   }
 
@@ -68,7 +85,7 @@
     const secondField = props.foreign ? given_place : address
 
     if (!serial_number || !from_date || !to_date || !secondField) {
-      $Toast.warning(t('message.warning-data'))
+      $Alert.validation(t('message.warning-data'))
       return
     }
 
@@ -79,6 +96,7 @@
     formData.append('to_date', Utils.timeToZone(to_date))
     formData.append(props.foreign ? 'given_place' : 'address', secondField)
     if (file?.size) formData.append('file', file)
+    else if (exist && fileRemoved.value) formData.append('file', '')
 
     if (props.foreign) {
       exist ? store._updateForeignPassport(formData, id) : store._storeForeignPassport(formData)
@@ -86,6 +104,7 @@
       exist ? store._updatePassport(formData, id) : store._storePassport(formData)
     }
     editing.value = false
+    fileRemoved.value = false
   }
 </script>
 
@@ -152,14 +171,36 @@
       </UIFigField>
 
       <!-- Maketda oxirgi katak — punktir chegarali fayl qutisi -->
-      <div class="flex items-end">
-        <button type="button" class="file-box" :disabled="!editing" @click="onPickFile">
-          <n-icon :size="24" class="text-fig-text-tertiary">
-            <component :is="icons.figImagePlus" />
+      <div class="relative flex items-end">
+        <button
+          type="button"
+          class="file-box"
+          :class="{ 'file-box--filled': hasFile }"
+          :disabled="!editing && !hasStoredFile"
+          :title="fileLabel"
+          @click="onFileBoxClick"
+        >
+          <n-icon :size="24" :class="hasFile ? 'text-fig-text-brand' : 'text-fig-text-tertiary'">
+            <component :is="hasFile ? icons.pdfFileIcon : icons.figImagePlus" />
           </n-icon>
-          <span class="text-xs leading-4 text-fig-text-tertiary text-center truncate w-full">
+          <span
+            class="text-xs leading-4 text-center truncate w-full"
+            :class="hasFile ? 'text-fig-text-primary' : 'text-fig-text-tertiary'"
+          >
             {{ fileLabel }}
           </span>
+        </button>
+        <button
+          v-if="editing && hasFile"
+          type="button"
+          class="file-box__remove"
+          :title="$t('documentPage.signature.files.deleteTitle')"
+          :aria-label="$t('documentPage.signature.files.deleteTitle')"
+          @click.stop="onRemoveFile"
+        >
+          <n-icon :size="14">
+            <component :is="icons.figXmark" />
+          </n-icon>
         </button>
         <input ref="fileRef" type="file" accept=".pdf" class="hidden" @change="onFileChange" />
       </div>
@@ -221,6 +262,33 @@
 
     &:disabled {
       cursor: default;
+    }
+  }
+
+  .file-box--filled {
+    border-style: solid;
+    border-color: var(--fig-br-secondary);
+    padding-right: 28px;
+    padding-left: 28px;
+  }
+
+  // PhotoBlock'dagi ✕ tugmasi bilan bir xil ko'rinish
+  .file-box__remove {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    border: none;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);
+    color: #ffffff;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(220, 38, 38, 0.85);
     }
   }
 

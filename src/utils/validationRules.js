@@ -1698,12 +1698,6 @@ export default {
     }
   },
   applicationPage: {
-    director_id: {
-      type: 'number',
-      required: true,
-      message: t(`rules.requiredField`),
-      trigger: triggerEvents
-    },
     type: {
       type: 'number',
       required: true,

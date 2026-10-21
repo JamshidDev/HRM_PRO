@@ -44,7 +44,7 @@
     :rules="validationRules.form_75"
     class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
   >
-    <div class="col-span-12 md:col-span-6">
+    <div class="col-span-12 @xl:col-span-6">
       <n-form-item :label="$t(`commandPage.form_75.cancel_reason`)" path="cancel_reason">
         <n-select
           v-model:value="store.form_75.cancel_reason"
@@ -58,7 +58,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6">
+    <div class="col-span-12 @xl:col-span-6">
       <n-form-item :label="$t(`commandPage.form_75.base_reason`)" path="base_reason">
         <n-select
           v-model:value="store.form_75.base_reason"

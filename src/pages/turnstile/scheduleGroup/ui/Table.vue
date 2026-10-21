@@ -1,10 +1,6 @@
 <script setup>
   import { UIBadge, UITable } from '@/components/index.js'
-  import {
-    useAccountStore,
-    useScheduleGroupWorkerStore,
-    useShiftTypeStore
-  } from '@/store/modules/index.js'
+  import { useAccountStore, useShiftTypeStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
@@ -17,8 +13,8 @@
 
   const { t } = i18n.global
   const store = useShiftTypeStore()
-  const scheduleGroupworkerStore = useScheduleGroupWorkerStore()
   const accStore = useAccountStore()
+  const router = useRouter()
 
   const changePage = (v) => {
     store.groupParams.page = v.page
@@ -26,13 +22,23 @@
     store._group()
   }
 
+  // Sana oralig'i va nomi query'da: sahifa refresh qilinganda ham grafik qayta quriladi.
   const onViewWorkers = (row) => {
-    store.elementId = row.id
-    store.groupId = row.id
-    scheduleGroupworkerStore.params.group = row.id
-    scheduleGroupworkerStore.params.startDate = row.start_date
-    scheduleGroupworkerStore.params.endDate = row.end_date
-    store.activeTab = 3
+    router.push({
+      name: 'turnstile-shift-type-group-workers',
+      params: { groupId: row.id },
+      query: {
+        name: row.name,
+        start: row.start_date,
+        end: row.end_date,
+        type: row.schedule_type?.id || store.groupParams.schedule_type || undefined,
+        // Ro'yxatda tanlangan oy — guruh shu oyda ochiladi.
+        month:
+          store.groupParams.year && store.groupParams.month
+            ? `${store.groupParams.year}-${store.groupParams.month}`
+            : undefined
+      }
+    })
   }
 
   const onEdit = (row) => {
@@ -73,19 +79,24 @@
       minWidth: 260
     },
     {
+      key: 'organization',
+      title: t('content.organization'),
+      minWidth: 200
+    },
+    {
       key: 'workers_count',
       title: t('content.worker'),
-      width: 200
+      width: 90
     },
     {
       key: 'start_date',
       title: t('content.from'),
-      width: 160
+      width: 120
     },
     {
       key: 'end_date',
       title: t('content.to'),
-      width: 160
+      width: 120
     }
   ])
 
@@ -146,16 +157,19 @@
       </div>
     </template>
 
+    <template #cell-organization="{ row }">
+      <span class="line-clamp-2 leading-[1.3]">{{ row.organization?.name || '—' }}</span>
+    </template>
     <template #cell-workers_count="{ row }">
-      <UIBadge :show-icon="false" :label="String(row.workers_count)" />
+      <UIBadge :show-icon="false" :type="Utils.colorTypes.secondary" :label="String(row.workers_count)" />
     </template>
 
     <template #cell-start_date="{ row }">
-      <UIBadge :show-icon="false" :label="row.start_date" />
+      {{ Utils.timeOnlyDate(row.start_date) }}
     </template>
 
     <template #cell-end_date="{ row }">
-      <UIBadge :show-icon="false" :label="row.end_date" />
+      {{ Utils.timeOnlyDate(row.end_date) }}
     </template>
   </UITable>
 </template>

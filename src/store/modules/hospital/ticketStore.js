@@ -132,7 +132,7 @@ export const useTicketStore = defineStore('ticketStore', {
     },
     _delete(v) {
       if (v.commission_leader_id === null) {
-        $Toast.warning(t('ticket.form.warning'))
+        $Alert.validation(t('ticket.form.warning'))
         return
       }
 

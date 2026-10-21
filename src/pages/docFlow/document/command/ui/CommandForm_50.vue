@@ -104,7 +104,7 @@
     :rules="validationRules.common"
     class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
   >
-    <div class="col-span-12 md:col-span-6 lg:col-span-6">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-6">
       <n-form-item
         :label="$t(`commandPage.form_50.vacation_id`)"
         path="vacation_id"
@@ -121,7 +121,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item
         :label="$t(`commandPage.form_50.to`)"
         path="to"
@@ -135,7 +135,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item
         :label="$t(`commandPage.form_45.work_day`)"
         path="work_day"
@@ -150,7 +150,7 @@
       </n-form-item>
     </div>
 
-    <div class="col-span-12 md:col-span-6 lg:col-span-6">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-6">
       <n-form-item
         :label="$t(`content.workTime`)"
         path="vacation_finish_status"
@@ -167,7 +167,7 @@
     </div>
     <div
       v-if="store.form_50.vacation_finish_status === 1"
-      class="col-span-12 md:col-span-6 lg:col-span-6"
+      class="col-span-12 @xl:col-span-6 @4xl:col-span-6"
     >
       <n-form-item
         :label="$t(`content.workTime`)"
@@ -186,7 +186,7 @@
 
     <div
       v-if="store.form_50.vacation_finish_status === 2"
-      class="col-span-12 md:col-span-6 lg:col-span-6"
+      class="col-span-12 @xl:col-span-6 @4xl:col-span-6"
     >
       <n-form-item
         :label="$t(`documentPage.command.form.deadlineOfVacation`)"

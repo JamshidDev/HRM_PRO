@@ -7,7 +7,8 @@
   import AppWatermark from '@/components/watermark/AppWatermark.vue'
   import SignatureInstance from '@/pages/app/e-imzo/SignatureInstance.vue'
   import AIConversationModal from '@/pages/app/ai/AIConversationModal.vue'
-  import { naiveBreakpoints } from '@/assets/theme/theme.js'
+  import SessionEndedView from '@/features/sessionEnded/SessionEndedView.vue'
+  import { naiveBreakpoints, naiveIcons } from '@/assets/theme/theme.js'
   import { useLocaleProvider, useAppInit } from '@/composables/index.js'
   import { useAppStore } from '@/store/modules/index.js'
   const { localeProvider } = useLocaleProvider()
@@ -21,6 +22,7 @@
     :theme-overrides="appStore.theme"
     :locale="localeProvider.lang"
     :date-locale="localeProvider.date"
+    :icons="naiveIcons"
   >
     <n-notification-provider>
       <n-message-provider placement="top-right" :container-style="{ zIndex: 10000 }">
@@ -30,6 +32,7 @@
           <MediaViewer />
           <SignatureInstance />
           <AIConversationModal />
+          <SessionEndedView />
         </n-dialog-provider>
       </n-message-provider>
     </n-notification-provider>

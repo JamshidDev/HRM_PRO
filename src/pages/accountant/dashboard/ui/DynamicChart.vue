@@ -93,7 +93,7 @@
 </script>
 
 <template>
-  <div class="flex h-full flex-col rounded-2xl bg-fig-block px-1 pb-1">
+  <div class="flex h-full flex-col rounded-2xl bg-fig-block shadow-card px-1 pb-1">
     <PanelHeader
       plain
       tint="indigo"

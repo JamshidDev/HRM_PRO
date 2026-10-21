@@ -12,17 +12,14 @@
 // yuboradi, 429 kelsa retry_after gacha butun navbat to'xtaydi. Shu sabab bot flood
 // uchun bloklanmaydi.
 //
-// DIQQAT: token prod bundle ichida ochiq bo'ladi (VITE_* build vaqtida inline bo'ladi).
-// Shuning uchun bu bot faqat log guruhida turishi kerak. Backend proxy'ga o'tish uchun
-// faqat pastdagi postMessage() ni almashtirish kifoya — qolgan mantiq o'zgarmaydi.
+// Xabarlar backend proxy (POST /api/v1/services/client-logs) orqali ketadi — token bundle'da yo'q.
 
 import { useAppSetting } from '@/utils/AppSetting.js'
 
 const env = import.meta.env
 
-const TOKEN = (env.VITE_TG_LOG_BOT_TOKEN || '').trim()
-const CHAT_ID = (env.VITE_TG_LOG_CHAT_ID || '').trim()
-const TOPIC_ID = (env.VITE_TG_LOG_TOPIC_ID || '').trim()
+const LOG_PATH = '/api/v1/services/client-logs'
+const LOG_URL = `${(env.VITE_API_URL || '').trim()}${LOG_PATH}`
 
 // Har qanday `vite build` da ishlaydi. Ilgari shart `env.MODE === 'production'` edi —
 // shu sabab `build:dev` / `build:local` buildlarida logger sassiz o'chib qolardi.
@@ -33,21 +30,9 @@ const flag = String(env.VITE_TG_LOG_ENABLED ?? '')
   .toLowerCase()
 const forcedOn = flag === 'true' || flag === '1'
 const forcedOff = flag === 'false' || flag === '0'
-const hasCredentials = !!TOKEN && !!CHAT_ID
+const hasCredentials = !!(env.VITE_API_URL || '').trim()
 
 const isEnabled = hasCredentials && !forcedOff && (env.PROD || forcedOn)
-
-// Eng ko'p uchragan nosozlik: kalitlar `.env` da bor, lekin `.env.<mode>` da bo'sh
-// qayta e'lon qilingan — Vite'da mode fayli `.env` ustidan bosadi va logger jim o'chadi.
-// Endi buni konsolda aytamiz (ilovaga ta'sir qilmaydi).
-if (!hasCredentials && env.PROD && !forcedOff) {
-  console.warn(
-    "[errorReporter] VITE_TG_LOG_BOT_TOKEN / VITE_TG_LOG_CHAT_ID bo'sh — Telegram log o'chiq. " +
-      "Ular `.env` da bo'lsa ham, `.env.<mode>` da bo'sh qayta e'lon qilinsa ustidan bosiladi."
-  )
-}
-
-const TELEGRAM_HOST = 'api.telegram.org'
 
 // Spamdan himoya: bir xil xato DEDUP_WINDOW ichida bir marta ketadi.
 const DEDUP_WINDOW = 5 * 60 * 1000
@@ -85,7 +70,7 @@ const IGNORED = [
   'safari-extension://',
   'CanceledError',
   'AbortError',
-  TELEGRAM_HOST
+  LOG_PATH
 ]
 
 // ------------------------------------------------------------------ yordamchilar
@@ -188,9 +173,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 // ------------------------------------------------------------------ xabar matni
 
-// Sessiya tokeni TO'LIQ yuboriladi — xatoni foydalanuvchining o'z sessiyasida
-// qayta ko'rish uchun. Shu sabab log guruhi yopiq bo'lishi va faqat jamoa a'zolari
-// turishi shart: token bilan o'sha foydalanuvchi nomidan API'ga kirish mumkin.
+// Logga faqat token id'si (`id|...` boshi) ketadi — to'liq token sir hisoblanadi.
 const buildText = (entries, dropped) => {
   const authToken = fromStorage(useAppSetting.tokenKey)
   // id storage'da login paytidan bor; ism-familiya esa profil yuklangandan keyin
@@ -207,7 +190,7 @@ const buildText = (entries, dropped) => {
     `<b>Vaqt:</b> ${formatTime(new Date())}`,
     `<b>User:</b> ${escapeHtml(userLabel)}`,
     `<b>Rol:</b> ${escapeHtml(currentUser?.role || '—')}`,
-    `<b>Token:</b> <code>${escapeHtml(authToken || '—')}</code>`
+    `<b>Token id:</b> <code>${escapeHtml(String(authToken || '').split('|')[0] || '—')}</code>`
   ]
 
   // Bitta xato bo'lsa stack uzunroq, ko'p bo'lsa qisqaroq — 4096 belgiga sig'ishi uchun.
@@ -260,24 +243,15 @@ const buildText = (entries, dropped) => {
 
 // Topic id noto'g'ri/o'chirilgan bo'lsa Telegram 400 "message thread not found" qaytaradi.
 // O'sha holda topic'siz qayta yuboramiz — aks holda xato xabarlari umuman ko'rinmaydi.
-let useTopic = !!TOPIC_ID
+let useTopic = true
 
-const postMessage = (text, keepalive) => {
-  const body = {
-    chat_id: CHAT_ID,
-    text,
-    parse_mode: 'HTML',
-    disable_web_page_preview: true
-  }
-  if (useTopic) body.message_thread_id = Number(TOPIC_ID)
-
-  return fetch(`https://${TELEGRAM_HOST}/bot${TOKEN}/sendMessage`, {
+const postMessage = (text, keepalive) =>
+  fetch(LOG_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
+    body: JSON.stringify({ text, topic: useTopic }),
     keepalive
   })
-}
 
 // Telegram qoidalari: ketma-ket xabarlar orasida MIN_INTERVAL, daqiqasiga RATE_MAX,
 // 429 kelsa retry_after gacha umumiy tanaffus.
@@ -465,7 +439,7 @@ export const reportApiError = (error) => {
 
     const config = error.config || {}
     const url = `${config.baseURL || ''}${config.url || ''}`
-    if (url.includes(TELEGRAM_HOST)) return
+    if (url.includes(LOG_PATH)) return
 
     const method = String(config.method || 'get').toUpperCase()
     const status = error.response?.status
@@ -527,7 +501,7 @@ const onUnhandledRejection = (event) => {
   const message = reason?.message || (typeof reason === 'string' ? reason : String(reason))
   // Eski deploy belgisi: brauzer hali eski chunk nomlarini so'rayapti.
   const isChunkError =
-    /dynamically imported module|Loading chunk|Importing a module script failed/i.test(message)
+    /dynamically imported module|Loading chunk|Importing a module script failed|Unable to preload CSS/i.test(message)
 
   reportError({
     type: isChunkError ? 'Chunk yuklanmadi' : 'Promise',

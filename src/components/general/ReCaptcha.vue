@@ -2,7 +2,7 @@
   import { ref, onMounted, onBeforeUnmount } from 'vue'
   import { ArrowClockwise20Filled } from '@vicons/fluent'
 
-  const emit = defineEmits(['update:answer', 'update:key', 'submit'])
+  const emit = defineEmits(['update:answer', 'update:key', 'update:enabled', 'submit'])
 
   const imgSrc = ref(null)
   const loading = ref(false)
@@ -29,6 +29,8 @@
       const data = res.data?.data ?? res.data
       imgSrc.value = data.captcha_image
       emit('update:key', data.captcha_key)
+      // Backend captcha o'chirilgan (lokal) bo'lsa — maydon ko'rsatilmaydi.
+      emit('update:enabled', data.enabled !== false)
       if (data.expires_in) {
         expireTimer = setTimeout(loadCaptcha, data.expires_in * 1000)
       }

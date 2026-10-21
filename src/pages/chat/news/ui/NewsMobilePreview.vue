@@ -3,7 +3,7 @@
   import DOMPurify from 'dompurify'
   import { Pin24Filled, ArrowLeft24Filled, Image24Regular, Play24Filled } from '@vicons/fluent'
   import { useNewsStore, useNewsCategoryStore } from '@/store/modules/index.js'
-  import { UIPhoneFrame } from '@/components/index.js'
+  import { UIPhoneFrame, UISegmentTabs } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import { isEditorContentEmpty } from '@/utils/EditorValidator.js'
@@ -37,7 +37,7 @@
   )
 
   const langTabs = computed(() =>
-    store.payload.translations.map((t, index) => ({ label: t.label, value: index }))
+    store.payload.translations.map((t, index) => ({ id: index, name: t.label }))
   )
 
   const translation = computed(() => store.payload.translations[previewLang.value] ?? {})
@@ -92,22 +92,7 @@
     </div>
 
     <!-- ── Til almashtirgich ────────────────────────────────────────────────── -->
-    <div class="flex items-center gap-1 mb-3 p-1 rounded-lg bg-surface-ground w-fit">
-      <button
-        v-for="tab in langTabs"
-        :key="tab.value"
-        type="button"
-        class="px-2.5 py-1 text-xs font-medium rounded-md transition-colors cursor-pointer"
-        :class="
-          previewLang === tab.value
-            ? 'bg-primary text-white'
-            : 'text-textColor1 hover:bg-surface-line'
-        "
-        @click="previewLang = tab.value"
-      >
-        {{ tab.label }}
-      </button>
-    </div>
+    <UISegmentTabs v-model="previewLang" :tabs="langTabs" class="mb-3" />
 
     <!-- ── Telefon ramkasi ──────────────────────────────────────────────────── -->
     <UIPhoneFrame screen-class="overflow-y-auto bg-white">
@@ -140,7 +125,7 @@
                 <span
                   class="w-11 h-11 rounded-full bg-white/85 flex items-center justify-center"
                 >
-                  <n-icon size="20" color="#101828"><Play24Filled /></n-icon>
+                  <n-icon size="20" color="#0f172a"><Play24Filled /></n-icon>
                 </span>
               </div>
             </div>
@@ -217,7 +202,7 @@
         <!-- Sarlavha -->
         <h1
           class="text-[19px] font-bold leading-snug mb-2"
-          :class="translation.title ? 'text-[#101828]' : 'text-[#98A2B3] italic font-medium'"
+          :class="translation.title ? 'text-[#0f172a]' : 'text-[#98A2B3] italic font-medium'"
         >
           {{ translation.title || $t('newsPage.previewEmptyTitle') }}
         </h1>
@@ -285,7 +270,7 @@
   .mobile-news-content {
     font-size: 13px;
     line-height: 1.75;
-    color: #344054;
+    color: #475569;
     word-break: break-word;
   }
 
@@ -293,14 +278,14 @@
   .mobile-news-content :deep(h2) {
     font-size: 15px;
     font-weight: 700;
-    color: #101828;
+    color: #0f172a;
     margin: 1.25rem 0 0.5rem;
   }
 
   .mobile-news-content :deep(h3) {
     font-size: 14px;
     font-weight: 600;
-    color: #101828;
+    color: #0f172a;
     margin: 1rem 0 0.4rem;
   }
 
@@ -335,7 +320,7 @@
 
   .mobile-news-content :deep(strong) {
     font-weight: 700;
-    color: #101828;
+    color: #0f172a;
   }
 
   .mobile-news-content :deep(a) {

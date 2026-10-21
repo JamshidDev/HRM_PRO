@@ -64,7 +64,7 @@
     :rules="validationRules.common"
     class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
   >
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item
         :label="$t(`commandPage.form_50.from`)"
         path="to"
@@ -78,7 +78,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-6">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-6">
       <n-form-item
         :label="$t(`content.type`)"
         path="type"
@@ -94,7 +94,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item
         :label="$t(`commandPage.form_47.vacation_reason_day`)"
         path="vacation_reason_day"
@@ -108,7 +108,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item
         :label="$t(`commandPage.form_45.work_day`)"
         path="work_day"
@@ -134,7 +134,7 @@
         />
       </n-form-item>
     </div>
-    <!--    <div class="col-span-12 md:col-span-6 lg:col-span-9">-->
+    <!--    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-9">-->
     <!--      <n-form-item-->
     <!--          :label="$t(`commandPage.form_44.reason`)"-->
     <!--          path="vacation_reason_type"-->

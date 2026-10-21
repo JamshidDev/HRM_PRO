@@ -50,14 +50,14 @@
     label-placement="top"
   >
     <div class="flex justify-end mb-3">
-      <n-tabs v-model:value="activeLang" type="segment" size="small" class="story-lang">
+      <UITabs v-model:value="activeLang" type="segment" size="small" class="story-lang">
         <n-tab v-for="l in langs" :key="l.key" :name="l.key">
           <span class="inline-flex items-center gap-1">
             {{ l.label }}
             <span v-if="isFilled(l.key)" class="story-lang-dot" />
           </span>
         </n-tab>
-      </n-tabs>
+      </UITabs>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1">
@@ -119,14 +119,10 @@
     font-size: 13px;
   }
 
-  .story-lang {
-    width: 168px;
-  }
-
   .story-lang-dot {
     width: 5px;
     height: 5px;
     border-radius: 999px;
-    background: var(--primary-color);
+    background: currentColor;
   }
 </style>

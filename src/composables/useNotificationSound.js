@@ -7,7 +7,13 @@ import {
 const soundFiles = {
   success: '/sounds/notification.mp3',
   error: '/sounds/error.wav',
-  notice: '/sounds/notice.wav'
+  notice: '/sounds/notice.wav',
+  // Xato modallari — har tur o'z ovozi bilan.
+  'alert-forbidden': '/sounds/alert-forbidden.wav',
+  'alert-validation': '/sounds/alert-validation.wav',
+  'alert-warning': '/sounds/alert-warning.wav',
+  'alert-notfound': '/sounds/alert-notfound.wav',
+  'alert-network': '/sounds/alert-network.wav'
 }
 
 const audioCache = {}

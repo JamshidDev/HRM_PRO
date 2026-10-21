@@ -74,14 +74,9 @@
         {{ $t('content.back') }}
       </button>
 
-      <UISegmentTabs :tabs="tabList" v-model="store.activeTab" />
+      <UISegmentTabs :tabs="tabList" v-model="store.activeTab" variant="elevated" />
 
-      <n-button
-        secondary
-        class="profile-history"
-        :disabled="!store.workerId"
-        @click="onHistory"
-      >
+      <n-button secondary class="profile-history" :disabled="!store.workerId" @click="onHistory">
         <template #icon>
           <n-icon><ArrowCounterclockwise20Regular /></n-icon>
         </template>
@@ -96,9 +91,14 @@
 <style lang="scss" scoped>
   // Maketda tana 16px chetdan turadi va sahifa foni kartalardan ochroq.
   // Tepa padding sarlavha panelining o'zida — u chetdan chetgacha yopishib turadi.
+  // `flex: 1 0 auto` — kontent qisqa boblarda (Qo'shimcha) fon ekran tubigacha
+  // yetadi, aks holda pastida boshqa rangli bo'sh maydon qolardi.
+  // Pastki 88px — o'ng pastdagi suzuvchi chat-bot tugmasi oxirgi qatordagi
+  // amallar (⋮, Qo'shish) ustini yopib qo'ymasligi uchun.
   .profile-page {
+    flex: 1 0 auto;
     width: 100%;
-    padding: 0 16px 16px;
+    padding: 0 16px 88px;
     background: var(--surface-ground);
   }
 
@@ -117,9 +117,11 @@
     background: var(--surface-ground);
   }
 
-  // Tarix tugmasi qator oxirida (boblardan keyin) turadi.
+  // Tarix tugmasi qator oxirida (boblardan keyin) turadi; balandligi tab yo'lagi bilan bir xil.
   .profile-history {
     margin-left: auto;
+    height: 36px;
+    border-radius: 10px;
   }
 
   .profile-back {
@@ -128,19 +130,19 @@
     justify-content: center;
     gap: 8px;
     height: 36px;
-    padding: 10px 16px 10px 12px;
+    padding: 0 16px 0 12px;
     border: none;
-    border-radius: 8px;
-    background: var(--fig-bg-tertiary);
+    border-radius: 10px;
+    background: var(--fig-block-bg);
     color: var(--fig-text-secondary);
     font-size: 14px;
     font-weight: 500;
     line-height: 18px;
     cursor: pointer;
-    transition: opacity 0.15s ease;
+    transition: color 0.15s ease;
 
     &:hover {
-      opacity: 0.85;
+      color: var(--fig-text-primary);
     }
   }
 </style>

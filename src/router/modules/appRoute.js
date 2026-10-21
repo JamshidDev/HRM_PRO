@@ -44,6 +44,14 @@ export const appRoutes = [
     }
   },
   {
+    path: AppPaths.Guides,
+    name: AppPaths.Guides.substring(1),
+    component: () => import('@/pages/app/guides/page.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
     path: AppPaths.AIConversation,
     name: AppPaths.AIConversation.substring(1),
     component: () => import('@/pages/app/ai/AIConversationPage.vue'),

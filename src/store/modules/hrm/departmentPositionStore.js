@@ -12,6 +12,7 @@ const initialPayload = () => ({
   salary: null,
   experience: null,
   education: null,
+  position_code: null,
   organizations: [],
   departments: [],
   // Tarif setka + oklad oshiruvchi koeffitsientlar

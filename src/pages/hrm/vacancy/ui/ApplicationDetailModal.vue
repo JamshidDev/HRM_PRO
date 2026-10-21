@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { UIModal, UIBadge } from '@/components/index.js'
   import { useVacancyStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
@@ -52,7 +53,7 @@
     return 'warning'
   }
 
-  const openFile = (url) => window.open(url, '_blank')
+  const openFile = (url) => openSafeUrl(url)
 
   const isArrayDetails = (details) => Array.isArray(details)
   const hasZoom        = (details) => !Array.isArray(details) && details?.zoom

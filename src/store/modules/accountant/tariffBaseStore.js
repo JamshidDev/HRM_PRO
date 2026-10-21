@@ -113,11 +113,11 @@ export const useTariffBaseStore = defineStore('tariffBaseStore', {
     },
     _store() {
       if (!this.payload.name || !this.payload.name.trim()) {
-        $Toast.warning(t('tariffBase.form.name'))
+        $Alert.validation(t('tariffBase.form.name'))
         return
       }
       if (!this.payload.effective_date) {
-        $Toast.warning(t('tariffBase.form.effectiveDate'))
+        $Alert.validation(t('tariffBase.form.effectiveDate'))
         return
       }
       this.saveLoading = true
@@ -163,7 +163,7 @@ export const useTariffBaseStore = defineStore('tariffBaseStore', {
           this._index()
         })
         .catch((e) => {
-          $Toast.error(e?.response?.data?.message ?? t('content.error'))
+          $Alert.error(e, t('content.error'))
         })
     },
     _confirmVersion(versionId) {
@@ -180,7 +180,7 @@ export const useTariffBaseStore = defineStore('tariffBaseStore', {
     },
     _storeVersion() {
       if (!this.versionPayload.effective_date) {
-        $Toast.warning(t('tariffBase.form.effectiveDate'))
+        $Alert.validation(t('tariffBase.form.effectiveDate'))
         return
       }
       this.versionSaveLoading = true

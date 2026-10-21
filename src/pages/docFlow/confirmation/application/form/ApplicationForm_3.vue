@@ -80,6 +80,7 @@
           :disabled="disabledPeriod"
           class="w-full"
           v-model:value="store.payload.period_to"
+          :is-date-disabled="(ts) => !!store.payload.period_from && ts < store.payload.period_from"
           type="date"
           :format="useAppSetting.datePicketFormat"
         />
@@ -101,6 +102,7 @@
         <n-date-picker
           class="w-full"
           v-model:value="store.payload.to"
+          :is-date-disabled="(ts) => !!store.payload.from && ts < store.payload.from"
           type="date"
           :format="useAppSetting.datePicketFormat"
         />

@@ -1,16 +1,12 @@
 <script setup>
   import Utils from '@/utils/Utils.js'
   import icons from '@/assets/icons'
-  import { UIProfileButton, UIFigBlock, UIFigField } from '@/components/index.js'
-  import { useComponentStore, useWorkerProfileStore } from '@/store/modules/index.js'
+  import { UIFigBlock, UIFigField } from '@/components/index.js'
 
-  /** Figma "Lavozim ma'lumotlari" bloki (node 2789:71773) */
+  /** Figma "Lavozim ma'lumotlari" bloki (node 2789:71773) — faqat ko'rish; lavozim buyruq orqali o'zgaradi. */
   const props = defineProps({
     item: { type: Object, required: true }
   })
-
-  const store = useWorkerProfileStore()
-  const componentStore = useComponentStore()
 
   const fields = computed(() => [
     {
@@ -22,6 +18,7 @@
       value: Utils.timeOnlyDate(props.item.contract?.contract_date)
     },
     { label: 'workerProfile.position.contractNumber', value: props.item.contract?.number },
+    { label: 'documentSettings.electronicNumber', value: props.item.contract?.electronic_number },
     {
       label: 'workerProfile.position.positionDate',
       value: Utils.timeOnlyDate(props.item.position_date)
@@ -30,27 +27,6 @@
     { label: 'workerProfile.personal.positionRank', value: props.item.rank },
     { label: 'workerProfile.personal.positionRate', value: props.item.rate }
   ])
-
-  // Tahrirlash mavjud `editFrom` modalini ochadi — saqlash mantig'i o'zgarmadi
-  const onEdit = () => {
-    const v = props.item
-    store.positionId = v.id
-    store.editVisible = true
-    store.editPayload.rank = v.rank
-    store.editPayload.salary = v.salary?.toString()
-    store.editPayload.group = v.group
-    store.editPayload.rate = v.rate
-    store.editPayload.type = v.type?.id
-    store.editPayload.contract_number = v.contract?.number
-    store.editPayload.contract_date = Utils.datePickerFormatter(v.contract?.contract_date)
-    store.editPayload.position_date = Utils.datePickerFormatter(v.position_date)
-
-    componentStore.departmentList = []
-    componentStore.departmentPositionList = []
-    store.editPayload.organization_id = []
-    store.editPayload.department_id = []
-    store.editPayload.department_position_id = null
-  }
 </script>
 
 <template>
@@ -78,9 +54,6 @@
       </div>
     </div>
 
-    <template #actions>
-      <UIProfileButton @click="onEdit">{{ $t('content.edit') }}</UIProfileButton>
-    </template>
   </UIFigBlock>
 </template>
 

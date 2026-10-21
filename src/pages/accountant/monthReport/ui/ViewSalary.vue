@@ -18,7 +18,15 @@
   watch(
     () => store.showList,
     () => {
-      currentIndex.value = 1
+      // Bosilgan qatorning korxonasiga mos kareshokdan boshlaymiz (bir xil PINFL
+      // bir nechta korxonada bo'lsa); topilmasa — birinchisi.
+      const idx =
+        store.showOrgId != null
+          ? store.showList.findIndex(
+              (it) => it.worker?.organization_id === store.showOrgId
+            )
+          : -1
+      currentIndex.value = idx >= 0 ? idx + 1 : 1
     }
   )
 
@@ -170,11 +178,13 @@
                 <tr>
                   <td class="w-[120px] font-semibold py-0!">{{ $t('monthReport.in.code') }}</td>
                   <td class="font-semibold py-0!">{{ $t('monthReport.in.type') }}</td>
+                  <td class="w-[110px] font-semibold py-0!">{{ $t('monthReport.in.hours') }}</td>
                   <td class="w-[120px] font-semibold py-0!">{{ $t('monthReport.in.amount') }}</td>
                 </tr>
                 <tr v-for="(card, index) in currentItem.in" :key="index">
                   <td class="w-[120px] font-semibold py-0!">{{ card.code }}</td>
                   <td class="py-0!">{{ card.type }}</td>
+                  <td class="py-0!">{{ card.hours_worked ? card.hours_worked : '—' }}</td>
                   <td class="font-semibold py-0!">{{ card.amount }}</td>
                 </tr>
                 <tr>
@@ -183,6 +193,7 @@
                       $t('monthReport.in.total')
                     }}</span>
                   </td>
+                  <td class="font-semibold py-0!">{{ currentItem.worker?.work_time }}</td>
                   <td class="font-semibold py-0!">{{ currentItem.in_total }}</td>
                 </tr>
               </tbody>
@@ -212,10 +223,62 @@
             <!-- Qo‘lga tegadigan summa (plastik kartaga o'tkazish, kod 885) -->
             <div
               v-if="currentItem.in_card"
-              class="flex items-center justify-between px-3 py-2 mt-4 mb-10 rounded-lg bg-primary/5 border border-primary/20"
+              class="flex items-center justify-between px-3 py-2 mt-4 rounded-lg bg-primary/5 border border-primary/20"
             >
               <span class="font-semibold">{{ $t('monthReport.view.net_salary') }}</span>
               <b class="text-primary text-lg tnum">{{ currentItem.in_card.amount }}</b>
+            </div>
+
+            <!-- Ko'p-kareshok: bir korxonada ish joyi almashgan → har tabel ALOHIDA -->
+            <div v-if="currentItem.kareshoks?.length" class="mt-6 mb-10">
+              <div class="text-sm font-semibold text-warning mb-2">
+                ⚠ {{ $t('monthReport.view.kareshok.title', { n: currentItem.kareshoks.length }) }}
+              </div>
+              <div
+                v-for="(k, ki) in currentItem.kareshoks"
+                :key="ki"
+                class="mb-4 rounded-lg border border-warning/30 bg-warning/5 p-3"
+              >
+                <div class="flex flex-wrap gap-x-4 gap-y-1 text-sm mb-2">
+                  <div>
+                    <span class="text-primary">{{ $t('monthReport.view.kareshok.tab') }}:</span>
+                    <b> {{ k.tab_nomer || '—' }}</b>
+                  </div>
+                  <div><span class="text-primary">{{ $t('content.position') }}:</span> {{ k.position || '—' }}</div>
+                  <div><span class="text-primary">{{ $t('monthReport.view.main_salary') }}:</span> {{ k.main_salary }}</div>
+                  <div><span class="text-primary">{{ $t('monthReport.view.work_time') }}:</span> {{ k.work_time }} {{ $t('content.hour') }}</div>
+                </div>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-xs border-collapse mb-2">
+                    <tbody>
+                      <tr v-for="(c, i) in k.in" :key="'in' + i" class="border-t border-surface-line">
+                        <td class="w-[90px] font-medium py-0.5">{{ c.code }}</td>
+                        <td class="py-0.5">{{ c.type }}</td>
+                        <td class="w-[80px] text-right py-0.5">{{ c.hours_worked ? c.hours_worked : '—' }}</td>
+                        <td class="w-[120px] text-right font-medium py-0.5">{{ c.amount }}</td>
+                      </tr>
+                      <tr class="border-t border-surface-line">
+                        <td colspan="2" class="text-primary font-semibold py-0.5">{{ $t('monthReport.in.total') }}</td>
+                        <td class="text-right font-semibold py-0.5">{{ k.work_time }}</td>
+                        <td class="text-right font-semibold py-0.5">{{ k.in_total }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table v-if="k.out?.length" class="w-full text-xs border-collapse">
+                    <tbody>
+                      <tr v-for="(c, i) in k.out" :key="'out' + i" class="border-t border-surface-line">
+                        <td class="w-[90px] font-medium py-0.5">{{ c.code }}</td>
+                        <td class="py-0.5">{{ c.type }}</td>
+                        <td class="w-[120px] text-right font-medium py-0.5">{{ c.amount }}</td>
+                      </tr>
+                      <tr class="border-t border-surface-line">
+                        <td colspan="2" class="text-primary font-semibold py-0.5">{{ $t('monthReport.in.out_total') }}</td>
+                        <td class="text-right font-semibold py-0.5">{{ k.out_total }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
           <template v-if="store.showList.length === 0 && !store.showLoading">

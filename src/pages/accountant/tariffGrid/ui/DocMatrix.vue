@@ -247,7 +247,7 @@
     z-index: 1;
     background: var(--table-header, #f1f5f9);
     font-weight: 700;
-    color: var(--textColor1, #101828);
+    color: var(--textColor1, #475569);
   }
   .doc thead .rk-h,
   .doc thead .grp-h {
@@ -266,7 +266,7 @@
   .a {
     font-variant-numeric: tabular-nums;
     font-weight: 600;
-    color: var(--textColor1, #101828);
+    color: var(--textColor1, #475569);
     text-align: right;
   }
   .doc tbody tr:hover td {

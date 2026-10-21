@@ -1,4 +1,5 @@
 <script setup>
+  import { sanitizeHtml } from '@/utils/sanitize.js'
   /**
    * Bosh sahifadagi yangilikni katta ko'rinishda ochish.
    *
@@ -116,7 +117,7 @@
 
       <!-- Matn wangEditor'dan HTML bo'lib keladi. Klass nomiga tegilmasin:
            global `.w-e-viewer` uslublari shunga bog'langan. -->
-      <div v-if="body" class="w-e-viewer text-fig-text-secondary" v-html="body"></div>
+      <div v-if="body" class="w-e-viewer text-fig-text-secondary" v-html="sanitizeHtml(body)"></div>
       <p v-else class="text-[14px] leading-5 text-fig-text-tertiary">
         {{ $t('content.no-data') }}
       </p>

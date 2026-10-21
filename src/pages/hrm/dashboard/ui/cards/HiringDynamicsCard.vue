@@ -45,7 +45,7 @@
   const series = computed(() => [
     {
       key: 'incoming',
-      token: '--fig-icon-green',
+      token: '--fig-bg-brand-fill',
       value: contracts.value.reduce((sum, item) => sum + Number(item.new_contracts || 0), 0),
       data: contracts.value.map((item) => Number(item.new_contracts || 0))
     },
@@ -131,7 +131,7 @@
     </div>
 
     <div
-      class="mx-2 mb-2 min-h-[200px] flex-1 rounded-xl border border-fig-br-disable p-2"
+      class="mx-2 mb-2 min-h-[200px] flex-1 rounded-xl p-2"
     >
       <v-chart autoresize :option="option" class="h-full min-h-[240px] w-full" />
     </div>

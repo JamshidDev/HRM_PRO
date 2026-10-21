@@ -140,11 +140,11 @@
             </div>
           </div>
 
-          <n-tabs v-if="shownAnnexes.length" type="line" animated size="small">
+          <UITabs v-if="shownAnnexes.length" type="line" animated size="small">
             <n-tab-pane v-for="a in shownAnnexes" :key="a.code" :name="a.code" :tab="a.name">
               <DocMatrix :annex="a" :base-amount="store.currentBase" :editable="false" :show-coef="showCoef" />
             </n-tab-pane>
-          </n-tabs>
+          </UITabs>
           <n-empty v-else :description="$t('tariffGrid.noData')" class="py-8" />
         </div>
       </n-spin>
@@ -163,6 +163,6 @@
     padding: 10px 12px;
   }
   .tg-meta-lbl { font-size: 11px; color: var(--textColor3, #98a2b3); margin-bottom: 4px; }
-  .tg-meta-val { font-weight: 600; color: var(--textColor1, #101828); }
+  .tg-meta-val { font-weight: 600; color: var(--textColor1, #475569); }
   .tg-unit { font-size: 11px; font-weight: 400; color: var(--textColor3, #98a2b3); }
 </style>

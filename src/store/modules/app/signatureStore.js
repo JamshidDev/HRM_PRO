@@ -1,9 +1,29 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import { useAppSetting } from '@/utils/index.js'
+import { isToastOnlyPage } from '@/components/notify/alertDialog.js'
 const apiUrl = import.meta.env.VITE_API_URL
 
 const { t } = i18n.global
+
+// Chrome 142+ (Local Network Access): ommaviy saytdan 127.0.0.1 dagi E-IMZO
+// websocket'iga ulanish foydalanuvchi ruxsatini talab qiladi. Ruxsat rad etilsa
+// konsolda ERR_BLOCKED_BY_LOCAL_NETWORK_ACCESS_CHECKS chiqadi, xato Event'idan
+// esa sababni bilib bo'lmaydi — shuning uchun ruxsat holatini alohida so'raymiz.
+// Ruxsat nomi Chrome versiyasiga qarab har xil, qo'llab-quvvatlanmasa query throw qiladi.
+const LOCAL_NETWORK_PERMISSIONS = ['loopback-network', 'local-network-access', 'local-network']
+const isLocalNetworkBlocked = async () => {
+  if (!navigator.permissions?.query) return false
+  for (const name of LOCAL_NETWORK_PERMISSIONS) {
+    try {
+      const status = await navigator.permissions.query({ name })
+      return status.state === 'denied'
+    } catch {
+      // bu brauzerda bunday ruxsat nomi yo'q — keyingisini sinaymiz
+    }
+  }
+  return false
+}
 export const useSignatureStore = defineStore('signatureStore', {
   state: () => ({
     allKeys: [],
@@ -35,10 +55,13 @@ export const useSignatureStore = defineStore('signatureStore', {
           function (major, minor) {
             resolve({ major, minor })
           },
-          (error, message) => {
+          async (error) => {
             this.loading = false
-            $Toast.error(t('signature.connectionError'))
-            reject(error, message)
+            const blocked = await isLocalNetworkBlocked()
+            const message = t(blocked ? 'signature.localNetworkBlocked' : 'signature.connectionError')
+            if (isToastOnlyPage()) $Toast.error(message)
+            else $Alert({ type: 'network', title: t('alertDialog.eimzoTitle'), message, duration: 0 })
+            reject(error)
           }
         )
       })
@@ -69,7 +92,13 @@ export const useSignatureStore = defineStore('signatureStore', {
     async _initialSignature(signatureType, callback) {
       this.signatureType = signatureType
       this.successCallback = callback
-      await this._checkVersion()
+      // Ulanish xatosi _checkVersion ichida toast qilinadi — bu yerda faqat
+      // "Uncaught (in promise)" bo'lmasligi uchun ushlaymiz.
+      try {
+        await this._checkVersion()
+      } catch {
+        return
+      }
       this.checkListKey()
       this.checkCardPluggedIn()
     },
@@ -80,7 +109,11 @@ export const useSignatureStore = defineStore('signatureStore', {
       this.documentId = documentId
       this.loading = true
 
-      await this._checkVersion()
+      try {
+        await this._checkVersion()
+      } catch {
+        return
+      }
       $ApiService.documentService
         ._documentBase64({
           params: {
@@ -154,7 +187,7 @@ export const useSignatureStore = defineStore('signatureStore', {
         key = this.allKeys[idx]
         this.workerPin = key?.pinfl
         if (key.expired) {
-          $Toast.error(t('signature.expiredKey'))
+          $Alert.warning(t('signature.expiredKey'))
           return ''
         }
       }
@@ -275,9 +308,10 @@ export const useSignatureStore = defineStore('signatureStore', {
         (pkcs7) => {
           callback(pkcs7)
         },
-        () => {
+        (e, r) => {
+          // Kalit paroli noto'g'ri yoki imzo yaratilmadi — oldin xabarsiz qolardi.
           this.loading = false
-          return uiHandleError
+          $Alert.warning(e ? `${errorCAPIWS}: ${e}` : r || t('signature.confirmError'))
         },
         false
       )
@@ -299,8 +333,7 @@ export const useSignatureStore = defineStore('signatureStore', {
         .catch((error) => {
           this.loading = false
           // Backend aniq sabab qaytarsa (masalan, "Imzo mos emas: ..."), shuni ko'rsatamiz
-          const message = String(error?.response?.data?.message ?? '').trim()
-          $Toast.error(message || t('signature.confirmError'))
+          $Alert.error(error, t('signature.confirmError'))
         })
     },
     uiCreateItem(itemKey, vo) {

@@ -1,5 +1,5 @@
 <script setup>
-  import { UIModal, UIOfficeApp, UIPageContent, UIPageFilter } from '@/components/index.js'
+  import { UIModal, UIOfficeApp, UIPageContent, UIPageFilter, UISegmentTabs } from '@/components/index.js'
   import createForm from './ui/createForm.vue'
   import Table from './ui/Table.vue'
   import { useConfApplicationStore } from '@/store/modules/index.js'
@@ -7,6 +7,11 @@
   import Banner from './ui/Banner.vue'
   import { useAccountStore } from '@/store/modules/index.js'
   import { Events, eventBus } from '@utils'
+  import { useNotify } from '@/composables/useNotify'
+  import i18n from '@/i18n'
+
+  const t = i18n.global.t
+  const DRAFT_CONFIRMATION = 6
 
   const accStore = useAccountStore()
 
@@ -27,6 +32,32 @@
   const openOffice = (v) => {
     officeAppRef.value.openPdf(v.documentId, Utils.documentModels.workerApplication, v.signatureId)
   }
+
+  // Ariza holati tablari: 0 Hammasi (standart), 1 Jarayonda, 6 Qoralama, 3 Tasdiqlangan, 4 Rad etilgan.
+  const statusTabs = computed(() => [
+    { id: 0, name: t('applicationPage.hrTabs.all') },
+    { id: 1, name: t('content.Process') },
+    { id: DRAFT_CONFIRMATION, name: t('applicationPage.draft') },
+    { id: 3, name: t('applicationPage.approved') },
+    { id: 4, name: t('content.Rejected') }
+  ])
+  const onFilterChange = () => {
+    store.params.page = 1
+    store._index()
+  }
+
+  // Yangi qoralama: hujjatni ochib imzolashni so'raymiz (mobil bilan bir xil).
+  watch(
+    () => store.signPromptRow,
+    (row) => {
+      if (!row) return
+      store.signPromptRow = null
+      openOffice({ documentId: row.worker_application.id, signatureId: row.id })
+      useNotify().info(t('applicationPage.draftSignTitle'), {
+        description: t('applicationPage.draftSignBody')
+      })
+    }
+  )
 
   const onUpdateItem = (v) => {
     const index = store.list.findIndex((x) => x.id === v.documentId)
@@ -49,6 +80,7 @@
   <UIPageContent>
     <Banner />
     <UIPageFilter
+      :placeholder="$t('documentSettings.searchPlaceholder')"
       class="mt-4"
       v-model:search="store.params.search"
       :show-filter-button="false"
@@ -70,6 +102,11 @@
         <createForm />
       </template>
     </UIModal>
+    <UISegmentTabs
+      v-model="store.params.application_confirmation"
+      :tabs="statusTabs"
+      @update:model-value="onFilterChange"
+    />
     <Table @openOffice="openOffice" />
     <UIOfficeApp ref="officeAppRef" />
   </UIPageContent>

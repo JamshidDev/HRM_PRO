@@ -69,7 +69,7 @@
         isValid: true
       }
     } else {
-      $Toast.warning(t('message.warning-data'))
+      $Alert.validation(t('message.warning-data'))
       return {
         data: null,
         isValid: false
@@ -95,7 +95,8 @@
     store.vacations62[index].department_id = []
     store.vacations62[index].loading = true
     if (v.length > 0) {
-      componentStore._departmentTreeList(v[0].id, (x) => {
+      // Begona korxona bo'limlari ham kerak — kesimsiz daraxt.
+      componentStore._allDepartmentTree(v[0].id, (x) => {
         store.vacations62[index].departmentList = x
         store.vacations62[index].loading = false
       })
@@ -117,8 +118,9 @@
 
   onMounted(() => {
     componentStore._enums()
-    if (componentStore.structureList.length === 0) {
-      componentStore._structures()
+    // Xizmat safari istalgan temir yo'l korxonasiga — foydalanuvchi kesimi emas, barcha korxonalar.
+    if (componentStore.allStructureList.length === 0) {
+      componentStore._allStructures()
     }
   })
 </script>
@@ -209,7 +211,7 @@
         <n-button v-else @click="onCopy(item)" type="primary" size="tiny" secondary><template #icon><Copy16Regular /></template> {{ $t('content.copy') }}</n-button>
       </div>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-2">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item :label="$t(`commandPage.form_62.from`)" path="from">
         <n-date-picker
           class="w-full"
@@ -219,7 +221,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-2">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item :label="$t(`commandPage.form_62.to`)" path="to">
         <n-date-picker
           class="w-full"
@@ -229,12 +231,12 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-5">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-5">
       <n-form-item :label="$t(`commandPage.form_62.reason`)" path="reason">
         <n-input class="w-full" type="text" v-model:value="item.reason" />
       </n-form-item>
     </div>
-    <div class="col-span-12 md:col-span-6 lg:col-span-3">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item
         :show-feedback="false"
         :label="$t(`commandPage.form_62.orgType`)"
@@ -250,26 +252,26 @@
     </div>
 
     <template v-if="item.organizationType === 1">
-      <div class="col-span-12 md:col-span-6">
+      <div class="col-span-12 @xl:col-span-6">
         <n-form-item
           :show-feedback="false"
           :label="$t(`commandPage.form_62.to_organization`)"
           path="to_organization"
         >
           <UISelect
-            :options="componentStore.structureList"
+            :options="componentStore.allStructureList"
             :model-v="item.work_place_id"
             @updateModel="onChangeStructure($event, item.id)"
             :checked-val="item.orgCheck"
             @updateCheck="(v) => (item.orgCheck = v)"
-            :loading="componentStore.structureLoading"
+            :loading="componentStore.allStructureLoading"
             v-model:search="componentStore.structureParams.search"
-            @onSearch="componentStore._structures"
+            @onSearch="componentStore._allStructures"
             :multiple="false"
           />
         </n-form-item>
       </div>
-      <div class="col-span-12 md:col-span-6">
+      <div class="col-span-12 @xl:col-span-6">
         <n-form-item
           :show-feedback="false"
           :label="$t(`commandPage.form_62.department_id`)"

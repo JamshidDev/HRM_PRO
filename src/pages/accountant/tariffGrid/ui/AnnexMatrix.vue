@@ -17,7 +17,7 @@
 </script>
 
 <template>
-  <n-tabs type="line" animated size="small">
+  <UITabs type="line" animated size="small">
     <n-tab-pane v-for="a in annexes" :key="a.code" :name="a.code" :tab="a.name">
       <MatrixTable
         v-if="a.categories.length === 1"
@@ -28,7 +28,7 @@
         :editable="editable"
         @formula="(p) => onFormula(a.code, a.categories[0].key, p)"
       />
-      <n-tabs v-else type="segment" animated size="small">
+      <UITabs v-else type="segment" animated size="small">
         <n-tab-pane v-for="c in a.categories" :key="c.key" :name="String(c.key)" :tab="c.name">
           <MatrixTable
             :rows="rowsOf(a.code, c.key)"
@@ -39,7 +39,7 @@
             @formula="(p) => onFormula(a.code, c.key, p)"
           />
         </n-tab-pane>
-      </n-tabs>
+      </UITabs>
     </n-tab-pane>
-  </n-tabs>
+  </UITabs>
 </template>

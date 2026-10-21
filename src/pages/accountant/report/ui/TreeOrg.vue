@@ -60,21 +60,61 @@
     }
   }
 
-  // Ko'rinib turgan (flatten) barcha korxonalarni belgilash/bekor qilish.
-  const visibleIds = computed(() => flattenData.value.map((i) => i.id))
-  const allVisibleSelected = computed(
+  // Butun daraxtdagi (yopiq/ochiq — barcha) korxona id'lari. «Hammasini belgilash»
+  // faqat ko'rinib turganlar emas, BARCHA ichki korxonalarni ham qamraydi.
+  const allTreeIds = computed(() => {
+    const ids = []
+    const walk = (nodes) => {
+      for (const n of nodes) {
+        ids.push(n.id)
+        if (n.children?.length) walk(n.children)
+      }
+    }
+    walk(store.structuresList)
+    return ids
+  })
+  const allSelected = computed(
     () =>
-      visibleIds.value.length > 0 &&
-      visibleIds.value.every((id) => store.confirmSelected.includes(id))
+      allTreeIds.value.length > 0 &&
+      allTreeIds.value.every((id) => store.confirmSelected.includes(id))
   )
-  const toggleAllVisible = () => {
-    if (allVisibleSelected.value) {
-      store.setConfirmSelected(store.confirmSelected.filter((id) => !visibleIds.value.includes(id)))
+  const someSelected = computed(
+    () =>
+      !allSelected.value &&
+      allTreeIds.value.some((id) => store.confirmSelected.includes(id))
+  )
+  const toggleAll = () => {
+    if (allSelected.value) {
+      store.setConfirmSelected(store.confirmSelected.filter((id) => !allTreeIds.value.includes(id)))
     } else {
-      const merged = new Set([...store.confirmSelected, ...visibleIds.value])
-      store.setConfirmSelected([...merged])
+      store.setConfirmSelected([...new Set([...store.confirmSelected, ...allTreeIds.value])])
     }
   }
+  // Subtree: node + barcha avlodlari ID'lari (yopiq childlar ham)
+  const collectSubtreeIds = (nodeId) => {
+    const ids = []
+    const walk = (node) => {
+      ids.push(node.id)
+      for (const c of node.children || []) walk(c)
+    }
+    const node = findNode(store.structuresList, nodeId)
+    if (node) walk(node)
+    return ids
+  }
+
+  // Node + barcha childlarini tanlash/olib tashlash (radio tugmasi uchun)
+  const toggleSubtree = (item) => {
+    const ids = collectSubtreeIds(item.id)
+    const allIn = ids.every((id) => store.confirmSelected.includes(id))
+    if (allIn) {
+      store.setConfirmSelected(store.confirmSelected.filter((id) => !ids.includes(id)))
+    } else {
+      store.setConfirmSelected([...new Set([...store.confirmSelected, ...ids])])
+    }
+  }
+
+  const isSubtreeSelected = (item) =>
+    collectSubtreeIds(item.id).every((id) => store.confirmSelected.includes(id))
 </script>
 
 <template>
@@ -84,7 +124,11 @@
         <thead>
           <tr>
             <th class="min-w-[40px] w-[40px] !text-center">
-              <n-checkbox :checked="allVisibleSelected" @update:checked="toggleAllVisible" />
+              <n-checkbox
+                :checked="allSelected"
+                :indeterminate="someSelected"
+                @update:checked="toggleAll"
+              />
             </th>
             <th class="min-w-[320px] !text-left">{{ $t('content.organization') }}</th>
             <th class="min-w-[76px] w-[76px] !text-center text-xs !whitespace-normal leading-tight">
@@ -109,14 +153,16 @@
               :class="[item.id === store.params.organization_id && 'selectedRow']"
             >
               <td @click.stop="store.toggleConfirmSelect(item.id)">
-                <n-checkbox :checked="store.confirmSelected.includes(item.id)"></n-checkbox>
+                <n-checkbox
+                  :checked="store.confirmSelected.includes(item.id)"
+                ></n-checkbox>
               </td>
               <td
                 @click="store.onChangeStructure(item)"
-                class="!text-left select-none cursor-pointer relative !pr-[20px]"
+                class="!text-left select-none cursor-pointer relative !pr-[4px]"
               >
-                <div :style="{ paddingLeft: item.level * 15 + 'px' }" class="flex items-start">
-                  <div class="flex justify-end w-[40px] cursor-pointer">
+                <div :style="{ paddingLeft: item.level * 15 + 'px' }" class="flex items-center">
+                  <div class="flex justify-end w-[40px] flex-shrink-0 cursor-pointer">
                     <n-icon
                       v-if="item.isHasChildren"
                       @click.stop="toggleExpand(item.id)"
@@ -134,16 +180,32 @@
                       <DocumentBulletList24Filled v-else class="text-primary" />
                     </n-icon>
                   </div>
-                  <span
-                    class="ml-2 leading-[1.2] inline-block !text-wrap text-sm w-[calc(100%-40px)]"
-                    >{{ ' ' + item.name }}</span
-                  >
+                  <span class="ml-2 leading-[1.2] text-sm flex-1 min-w-0 break-words">{{ ' ' + item.name }}</span>
+                  <!-- 1C kodi sozlangan korxona — buxgalteriya 1C da yuritiladi (ajratib ko'rsatish) -->
+                  <n-tooltip v-if="item.has_ones_code">
+                    <template #trigger>
+                      <span
+                        class="flex-shrink-0 ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-semibold leading-none bg-success/15 text-success"
+                      >
+                        1C
+                      </span>
+                    </template>
+                    {{ $t('uploadReport.hasOnesCode') }}
+                  </n-tooltip>
+                  <!-- Radio: parent korxonalar uchun — childlar bilan birga tanlash -->
+                  <n-radio
+                    v-if="item.isHasChildren"
+                    :checked="isSubtreeSelected(item)"
+                    :value="item.id"
+                    @click.stop.prevent="toggleSubtree(item)"
+                    class="flex-shrink-0 ml-1"
+                  />
+                  <span v-if="!item.uploadStatus" class="flex-shrink-0 ml-1">
+                    <n-icon size="18" class="text-warning">
+                      <LockClosed12Filled />
+                    </n-icon>
+                  </span>
                 </div>
-                <span v-if="!item.uploadStatus" class="absolute right-[4px] top-[4px]">
-                  <n-icon size="18" class="text-warning">
-                    <LockClosed12Filled />
-                  </n-icon>
-                </span>
               </td>
               <td>
                 <div class="flex justify-center w-full">

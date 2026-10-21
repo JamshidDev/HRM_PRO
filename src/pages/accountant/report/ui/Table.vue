@@ -1,4 +1,5 @@
 <script setup>
+  import { openSafeUrl } from '@/utils/sanitize.js'
   import { UIStatus } from '@/components/index.js'
   import { useUploadReportStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
@@ -7,7 +8,8 @@
     ArrowCircleDown12Regular,
     ChevronDown24Regular,
     ArrowClockwise24Regular,
-    History24Regular
+    History24Regular,
+    Delete24Regular
   } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
@@ -22,8 +24,21 @@
     store.selectedIndex === null ? null : store.cards[store.selectedIndex]
   )
 
+  // Per-kod yuklab olish — 4 hisobot turi (1=Oylik, 2=INPS4, 3=INPS5, 4=to'lovlar) +
+  // ko'p (>1) 1C kodli korxonada. `reportType` = selectedCard.id → mos endpoint.
+  const reportType = computed(() => Number(selectedCard.value?.id) || 0)
+  const onesCodeOptions = computed(() =>
+    (store.onesCodes || []).map((c) => ({
+      label: c.label ? `${c.ones_org_code} — ${c.label}` : c.ones_org_code,
+      key: c.ones_org_code
+    }))
+  )
+  const showCodeDownload = computed(
+    () => [1, 2, 3, 4].includes(reportType.value) && onesCodeOptions.value.length > 1
+  )
+
   const onDownload = (url) => {
-    window.open(url, '_blank')
+    openSafeUrl(url)
   }
 
   const showComment = (v) => {
@@ -110,6 +125,23 @@
             </div>
           </div>
           <div class="flex justify-end gap-2">
+            <!-- Ko'p 1C kodli korxona (Oylik hisobot): har kod bo'yicha alohida Excel -->
+            <n-dropdown
+              v-if="showCodeDownload"
+              trigger="click"
+              :options="onesCodeOptions"
+              @select="(code) => store._downloadOnesStatement(latest.year, latest.month, code, reportType)"
+            >
+              <n-tooltip>
+                <template #trigger>
+                  <n-button type="info" size="small" secondary>
+                    <template #icon><ArrowCircleDown12Regular /></template>
+                    1C kod
+                  </n-button>
+                </template>
+                {{ $t('uploadReport.onesCodeDownload') }}
+              </n-tooltip>
+            </n-dropdown>
             <n-button
               v-if="latest?.file"
               type="success"
@@ -130,6 +162,23 @@
             >
               <template #icon><Info24Regular /></template>
             </n-button>
+            <n-popconfirm
+              v-if="latest.status !== 3"
+              @positive-click="store._deleteUpload(latest.id)"
+            >
+              <template #trigger>
+                <n-button
+                  type="error"
+                  size="small"
+                  secondary
+                  circle
+                  :loading="store.deleteLoading"
+                >
+                  <template #icon><Delete24Regular /></template>
+                </n-button>
+              </template>
+              {{ $t('content.confirmDelete') }}
+            </n-popconfirm>
           </div>
         </div>
         <div class="grid grid-cols-2 gap-x-2 mt-2">
@@ -203,6 +252,17 @@
                   </div>
                 </div>
                 <div class="flex justify-end gap-2">
+                  <n-dropdown
+                    v-if="showCodeDownload"
+                    trigger="click"
+                    :options="onesCodeOptions"
+                    @select="(code) => store._downloadOnesStatement(item.year, item.month, code, reportType)"
+                  >
+                    <n-button type="info" size="small" secondary>
+                      <template #icon><ArrowCircleDown12Regular /></template>
+                      1C kod
+                    </n-button>
+                  </n-dropdown>
                   <n-button
                     v-if="item?.file"
                     type="success"
@@ -223,6 +283,23 @@
                   >
                     <template #icon><Info24Regular /></template>
                   </n-button>
+                  <n-popconfirm
+                    v-if="item.status !== 3"
+                    @positive-click="store._deleteUpload(item.id)"
+                  >
+                    <template #trigger>
+                      <n-button
+                        type="error"
+                        size="small"
+                        secondary
+                        circle
+                        :loading="store.deleteLoading"
+                      >
+                        <template #icon><Delete24Regular /></template>
+                      </n-button>
+                    </template>
+                    {{ $t('content.confirmDelete') }}
+                  </n-popconfirm>
                 </div>
               </div>
               <div class="mt-2">

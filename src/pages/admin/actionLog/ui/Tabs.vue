@@ -14,7 +14,7 @@
 </script>
 
 <template>
-  <n-tabs
+  <UITabs
     animated
     v-model:value="store.activeTab"
     @update:value="changeTab"
@@ -28,7 +28,7 @@
     <n-tab-pane :name="2" :tab="$t('actionLog.tab.auth')" class="flex-1 overflow-auto">
       <AuthTable />
     </n-tab-pane>
-  </n-tabs>
+  </UITabs>
 </template>
 
 <style scoped></style>

@@ -12,7 +12,7 @@
 </script>
 
 <template>
-  <n-tabs v-model:value="activeTab" type="line" animated class="topic-tabs ui-pill-tabs h-full">
+  <UITabs v-model:value="activeTab" type="line" animated class="topic-tabs ui-pill-tabs h-full">
     <n-tab-pane :name="TopicUtils.EXAM" :tab="$t('examPage.name')" class="h-full pt-0!">
       <TopicExamsTable />
     </n-tab-pane>
@@ -25,7 +25,7 @@
     >
       <FilePanel :object="group" />
     </n-tab-pane>
-  </n-tabs>
+  </UITabs>
 </template>
 
 <style scoped>

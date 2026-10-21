@@ -1,12 +1,22 @@
 <script setup>
-  import { useAccountStore, useComponentStore, useEventStore, useEventV2Store } from '@/store/modules/index.js'
+  import {
+    useAccountStore,
+    useComponentStore,
+    useEventStore,
+    useEventV2Store
+  } from '@/store/modules/index.js'
   import { ArrowSync24Filled, ArrowCircleDown32Regular } from '@vicons/fluent'
-  import { UIPageFilter, UISelect, SuperSelect } from '@/components/index.js'
+  import { UIPageFilter, UISegmentTabs, UISelect, SuperSelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAppSetting } from '@utils'
 
   const { t } = i18n.global
   const store = useEventStore()
+
+  const viewTabs = computed(() => [
+    { id: store.tabs[0], name: t('hcEvent.oldView') },
+    { id: store.tabs[1], name: t('deviceEvent.tab') }
+  ])
   const storeV2 = useEventV2Store()
   const accStore = useAccountStore()
 
@@ -14,7 +24,8 @@
     if (!accStore.checkAction(accStore.pn.turnstileAbsentWorkersExport)) return
     storeV2._openDownload({
       organizations: store.params.organizations,
-      departments: store.params.departments
+      departments: store.params.departments,
+      accessLevels: store.params.access_levels
     })
   }
 
@@ -203,18 +214,12 @@
       />
     </template>
     <template #filterSearch>
-      <div class="tab-wrapper ml-2">
-        <n-tabs
-          class="tab-switcher"
-          :value="store.activeTab"
-          @update:value="store._changeView"
-          type="segment"
-          size="small"
-        >
-          <n-tab-pane :name="store.tabs[0]" :tab="$t('hcEvent.oldView')" />
-          <n-tab-pane :name="store.tabs[1]" :tab="$t('deviceEvent.tab')" />
-        </n-tabs>
-      </div>
+      <UISegmentTabs
+        class="ml-2"
+        :tabs="viewTabs"
+        :model-value="store.activeTab"
+        @update:model-value="store._changeView"
+      />
     </template>
     <template #filterAction>
       <!-- `checkAction` yon ta'sirli (toast chiqaradi) — template'da chaqirilsa
@@ -245,37 +250,3 @@
     </template>
   </UIPageFilter>
 </template>
-
-<style scoped>
-.tab-wrapper {
-  border: 1px solid var(--surface-line);
-  border-radius: 6px;
-  padding: 1px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-}
-
-.tab-switcher {
-  width: 200px;
-  height: 100%;
-}
-
-.tab-switcher :deep(.n-tabs-pane-wrapper) {
-  display: none;
-}
-
-.tab-switcher :deep(.n-tabs-nav) {
-  height: 100%;
-}
-
-.tab-switcher :deep(.n-tabs-rail) {
-  height: 100%;
-}
-
-.tab-switcher :deep(.n-tabs-tab) {
-  height: 28px;
-  padding: 0 12px;
-  line-height: 28px;
-}
-</style>

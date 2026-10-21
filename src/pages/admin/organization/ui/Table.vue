@@ -1,16 +1,12 @@
 <script setup>
-  import { useOrganizationStore, useComponentStore } from '@/store/modules/index.js'
-  import { UITree, UIPagination } from '@/components/index.js'
-  import { useDialog } from 'naive-ui'
+  import { useOrganizationStore, useAccountStore } from '@/store/modules/index.js'
+  import { UITree } from '@/components/index.js'
+  import { ChevronDoubleUp16Regular, LocalLanguage16Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
-  import { useAccountStore } from '@/store/modules/index.js'
-  const accStore = useAccountStore()
 
+  const accStore = useAccountStore()
   const store = useOrganizationStore()
-  const componentStore = useComponentStore()
-  const dialog = useDialog()
   const { t } = i18n.global
-  const expandedKeys = ref([])
 
   const headerOption = [
     { name: t('content.nameUz'), id: 'uz' },
@@ -18,139 +14,148 @@
     { name: t('content.nameEn'), id: 'en' }
   ]
 
+  // Qidiruv natijasi daraxtning kesimi — undagi o'rinlar haqiqiy tartibni
+  // bildirmaydi, shuning uchun qidiruvda sudrash o'chiriladi.
+  const canDrag = computed(
+    () => accStore.checkPermission(accStore.pn.organizationsWrite) && !store.searchQuery
+  )
+
   const changeHeaderLang = (v) => {
     store.headerLang = v
-    expandedKeys.value = []
     store._index()
   }
 
   const onToggle = (key) => {
-    const hasKey = expandedKeys.value.includes(key)
+    const hasKey = store.expandedKeys.includes(key)
     if (hasKey) {
-      expandedKeys.value = expandedKeys.value.filter((k) => !(k === key || k.startsWith(`${key}-`)))
+      store.expandedKeys = store.expandedKeys.filter((k) => !(k === key || k.startsWith(`${key}-`)))
     } else {
-      expandedKeys.value.push(key)
+      store.expandedKeys.push(key)
     }
   }
 
   const onLoad = (v) => {
     if (!accStore.checkAction(accStore.pn.organizationsRead)) return
-    store.elementId = v.id
-    store.indexPath = v.index
-    store.visibleType = true
-    store._show()
+    store._loadChildren(v)
   }
 
-  const onChange = (v) => {
+  const onSelect = (v) => {
+    if (!accStore.checkAction(accStore.pn.organizationsRead)) return
+    store.select(v)
+  }
+
+  // Saqlash/ko'chirishdan keyin daraxt yangilanadi va qatorlar siljiydi — o'zgargan
+  // korxona ko'rinmay qolmasligi uchun unga silliq aylantiramiz. Ochilish animatsiyasi
+  // (≈520ms) tugaguncha kutiladi, aks holda qator joyi hali aniq emas.
+  const scrollRef = ref(null)
+  watch(
+    () => store.reveal.seq,
+    async () => {
+      const id = store.reveal.id
+      await nextTick()
+      setTimeout(() => {
+        const row = scrollRef.value?.querySelector(`[data-tree-id="${id}"]`)
+        row?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+      }, 560)
+    }
+  )
+
+  const onMove = (v) => {
     if (!accStore.checkAction(accStore.pn.organizationsWrite)) return
-    if (v.type === 'create') {
-      createNested(v)
-    } else if (v.type === 'delete') {
-      onDelete(v)
-    } else if (v.type === 'update') {
-      onEdit(v)
-    }
-  }
-
-  const createNested = (v) => {
-    componentStore._organizationLevel()
-    store.resetForm()
-    store.elementId = v.id
-    store.payload.parent_id = v.id
-    store.nestedPath = v.index
-    store.visibleType = true
-    store.parentElement = {
+    store.openMove({
       id: v.id,
-      name: v.name
-    }
-    store.visible = true
-  }
-
-  const onDelete = (v) => {
-    store.elementId = v.id
-    dialog.info({
-      title: t('content.confirm'),
-      content: t('organizationPage.deleteContent'),
-      positiveText: t('content.yes'),
-      negativeText: t('content.no'),
-      onPositiveClick: () => {
-        store._delete()
-      },
-      onNegativeClick: () => {}
+      name: v.name,
+      fromParentId: v.parentId,
+      fromParentName: v.parentName,
+      parentId: v.toParentId,
+      parentName: v.toParentName,
+      position: v.position
     })
-  }
-
-  const onEdit = (v) => {
-    store.visibleType = false
-    store.elementId = v.id
-    store.parentElement = null
-    componentStore._organizationLevel()
-    componentStore._organizations()
-    componentStore._allCities()
-    store._show()
-  }
-
-  const changePage = (v) => {
-    store.params.page = v.page
-    store.params.per_page = v.per_page
-    expandedKeys.value = []
-    store._index()
   }
 </script>
 
 <template>
   <div
-    class="flex-1 flex flex-col overflow-auto gap-4 rounded-xl border border-surface-line bg-surface-section px-4 pt-4"
+    class="flex-1 min-h-0 flex flex-col overflow-hidden rounded-xl border border-surface-line bg-surface-section"
   >
-    <div class="flex flex-wrap items-center justify-between gap-2">
+    <div
+      class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-surface-line"
+    >
       <div class="flex items-center gap-2">
-        <div class="h-2.5 w-2.5 rounded-full bg-primary"></div>
-        <span class="text-sm font-medium text-textColor0">{{ $t('organizationPage.name') }}</span>
+        <span class="text-base font-semibold text-textColor0">{{ $t('organizationPage.name') }}</span>
+        <!-- Faqat qidiruvda — topilgan korxonalar soni. Oddiy ko'rinishda `total` faqat
+             ildiz korxonalarni sanaydi (odatda 1) va chalg'itardi. -->
+        <Transition name="fade">
+          <span
+            v-if="store.searchHighlight"
+            class="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary tabular-nums"
+          >
+            {{ store.totalItems }}
+          </span>
+        </Transition>
       </div>
-      <div class="ml-auto flex w-full items-center justify-end gap-2 sm:w-auto">
+      <div class="ml-auto flex items-center gap-2">
+        <Transition name="fade">
+          <n-button
+            v-if="store.expandedKeys.length"
+            size="small"
+            quaternary
+            @click="store.expandedKeys = []"
+          >
+            <template #icon>
+              <n-icon><ChevronDoubleUp16Regular /></n-icon>
+            </template>
+            {{ $t('organizationPage.collapseAll') }}
+          </n-button>
+        </Transition>
         <n-select
           size="small"
-          style="width: 200px"
+          class="w-[160px]!"
           v-model:value="store.headerLang"
           :options="headerOption"
           value-field="id"
           label-field="name"
           @update:value="changeHeaderLang"
-        />
-        <span
-          class="whitespace-nowrap rounded-md bg-surface-ground px-2 py-1 text-xs text-textColor0"
         >
-          {{ $t('documentSetting.form.count', { n: store.totalItems }) }}
-        </span>
+          <template #arrow>
+            <n-icon><LocalLanguage16Regular /></n-icon>
+          </template>
+        </n-select>
       </div>
     </div>
 
-    <div class="flex-1 flex flex-col overflow-auto">
-      <n-spin :show="store.loading" class="flex-1 overflow-auto">
-        <div
-          class="min-h-[260px] h-full overflow-auto rounded-lg border border-surface-line bg-surface-ground p-2"
-        >
-          <UITree
-            v-if="store.list.length"
-            :children="store.list"
-            @on-load="onLoad"
-            @on-change="onChange"
-            @on-toggle="onToggle"
-            :element-id="store.indexPath"
-            :action-loading="store.deleteLoading"
-            :action-loading-id="store.elementId"
-            :expanded-keys="expandedKeys"
-          />
-          <n-empty v-else class="py-16" :description="$t('content.no-data')" />
-        </div>
-      </n-spin>
-
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems"
-        @change-page="changePage"
-      />
-    </div>
+    <n-spin :show="store.loading" class="flex-1 min-h-0" content-class="h-full">
+      <div ref="scrollRef" class="h-full overflow-auto px-3 py-2 tree-scroll">
+        <UITree
+          v-if="store.list.length"
+          :children="store.list"
+          :element-id="store.indexPath"
+          :expanded-keys="store.expandedKeys"
+          :selected-id="store.panel.open ? store.panel.id : null"
+          :draggable="canDrag"
+          :highlight="store.searchHighlight"
+          @on-load="onLoad"
+          @on-toggle="onToggle"
+          @on-select="onSelect"
+          @on-move="onMove"
+        />
+        <n-empty v-else-if="!store.loading" class="py-16" :description="$t('content.no-data')" />
+      </div>
+    </n-spin>
   </div>
 </template>
+
+<style scoped>
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.15s ease;
+  }
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
+
+  .tree-scroll {
+    scrollbar-width: thin;
+  }
+</style>

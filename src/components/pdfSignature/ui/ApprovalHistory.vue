@@ -1,6 +1,11 @@
 <script setup>
   import dayjs from 'dayjs'
-  import { ShieldCheckmark16Filled, ChevronDown16Regular } from '@vicons/fluent'
+  import {
+    ShieldCheckmark16Filled,
+    ChevronDown16Regular,
+    Person16Regular,
+    Link16Regular
+  } from '@vicons/fluent'
   import { UIUserGroup } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
   import PdfFileIcon from '@/assets/icons/pdfFileIcon.svg'
@@ -33,8 +38,18 @@
   })
 
   const groups = computed(() => {
+    // HR yopganda uning qatori ham «rad etilgan» bo'ladi — «Yopildi» yetarli, dublikat chiqmasin.
+    const closedAt = props.documentEvents
+      .filter((ev) => ev.type === 'route_closed')
+      .map((ev) => dayjs(ev.date).valueOf())
     const flat = props.bySigner.flatMap((events, idx) =>
-      events.map((ev) => ({ ...ev, signer: props.confirmations[idx] }))
+      events
+        .filter(
+          (ev) =>
+            ev.type !== EVENT.rejected ||
+            !closedAt.some((t) => Math.abs(ev.date.valueOf() - t) < 60000)
+        )
+        .map((ev) => ({ ...ev, signer: props.confirmations[idx] }))
     )
     // Fayl hodisalari: aktyor imzolovchi o'rnida, fayl nomi alohida.
     for (const ev of props.documentEvents) {
@@ -42,7 +57,8 @@
         type: ev.type,
         date: dayjs(ev.date),
         file: ev.name,
-        signer: { worker: ev.actor, type: null }
+        route: ev.route || null,
+        signer: { worker: ev.actor, type: ev.route ? 's' : null }
       })
     }
     flat.sort((a, b) => b.date.valueOf() - a.date.valueOf())
@@ -70,6 +86,10 @@
     })
     return [...map.entries()].map(([key, items]) => ({ key, items }))
   })
+
+  // Imzo usuli belgisi: 5 Face, 2 havola, qolgani E-IMZO.
+  const methodIcon = (id) =>
+    ({ 5: Person16Regular, 2: Link16Regular })[id] ?? ShieldCheckmark16Filled
 
   const dayLabel = (key) => {
     const d = dayjs(key)
@@ -189,23 +209,57 @@
         </div>
 
         <!-- Hodisa kartasi -->
-        <div class="min-w-0 flex-1 mb-2 rounded-lg border border-surface-line bg-surface-section px-2.5 py-2">
+        <div
+          class="min-w-0 flex-1 mb-2 rounded-xl border border-surface-line/70 bg-surface-section px-2.5 py-2 shadow-[0_1px_2px_rgb(16_24_40/0.04)]"
+        >
           <!-- Bir kishi: «Familiya I.O. · Tasdiqladi» -->
           <template v-if="row.signers.length === 1">
             <div class="flex items-start justify-between gap-2">
-              <div class="min-w-0 text-xs leading-snug">
+              <div class="min-w-0 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs leading-snug">
                 <span class="font-semibold text-textColor0">
                   {{ shortName(row.signers[0]?.worker) }}
                 </span>
-                <span class="ml-1 font-medium" :class="eventMeta[row.type]?.text">
-                  {{ $t(eventMeta[row.type]?.action) }}
+                <span
+                  class="inline-flex items-center rounded-full px-1.5 py-px text-[11px] font-semibold whitespace-nowrap"
+                  :class="eventMeta[row.type]?.dot"
+                >
+                  {{ $t(eventMeta[row.type]?.badge) }}
                 </span>
               </div>
               <span class="text-[11px] tabular-nums text-textColor3 shrink-0">
                 {{ row.date.format('HH:mm') }}
               </span>
             </div>
-            <div v-if="row.file" class="mt-1.5 min-w-0">
+            <!-- Marshrut: rejim, qo'shilgan / olib tashlangan kelishuvchi va tanishuvchilar, yopish sababi -->
+            <div v-if="row.route" class="mt-1.5 flex flex-col gap-1 text-[11px] leading-snug">
+              <div v-if="row.route.event !== 'closed' && (row.route.event !== 'changed' || row.route.mode_changed)" class="text-textColor3">
+                {{ $t('applicationPage.forward.mode') }}:
+                <span class="font-medium text-textColor1">
+                  {{ $t(`applicationPage.forward.${row.route.mode}`) }}
+                </span>
+              </div>
+              <div v-for="(p, k) in row.route.added || []" :key="'a' + k" class="flex items-center gap-1.5 min-w-0">
+                <span class="shrink-0 font-semibold text-fig-chip-green-text">+</span>
+                <span class="shrink-0 rounded-full px-1.5 py-px bg-surface-ground text-textColor2">
+                  {{ $t(p.role === 'view' ? 'applicationPage.forward.roleView' : 'applicationPage.forward.roleSign') }}
+                </span>
+                <span class="truncate text-textColor1">{{ p.name }}</span>
+              </div>
+              <div v-for="(p, k) in row.route.removed || []" :key="'r' + k" class="flex items-center gap-1.5 min-w-0">
+                <span class="shrink-0 font-semibold text-fig-text-red">−</span>
+                <span class="shrink-0 rounded-full px-1.5 py-px bg-surface-ground text-textColor2">
+                  {{ $t(p.role === 'view' ? 'applicationPage.forward.roleView' : 'applicationPage.forward.roleSign') }}
+                </span>
+                <span class="truncate text-textColor3 line-through">{{ p.name }}</span>
+              </div>
+              <div v-if="row.route.event === 'forwarded' && !(row.route.added || []).length" class="text-textColor3">
+                {{ $t('applicationPage.forward.empty') }}
+              </div>
+              <div v-if="row.route.reason" class="rounded-lg border-l-2 border-fig-red bg-fig-red-50 px-2 py-1 text-fig-text-red">
+                {{ row.route.reason }}
+              </div>
+            </div>
+            <div v-else-if="row.file" class="mt-1.5 min-w-0">
               <span
                 class="inline-flex max-w-full items-center gap-1 rounded-md border border-surface-line bg-fig-bg-secondary px-1.5 py-0.5 text-[11px] text-textColor1"
               >
@@ -279,11 +333,12 @@
             </n-collapse-transition>
 
             <n-collapse-transition :show="expanded.has(rowId(row))">
-              <div class="mt-1.5 flex flex-col divide-y divide-surface-line border-t border-surface-line">
+              <!-- Chiziqlar o'rniga yumshoq fonli ichki blok: qatorlar bo'shliq bilan ajraladi -->
+              <div class="mt-2 flex flex-col gap-0.5 rounded-lg bg-surface-ground/70 p-1">
                 <div
                   v-for="(s, k) in row.signers"
                   :key="k"
-                  class="flex items-center gap-2 min-w-0 py-1.5"
+                  class="flex items-center gap-2 min-w-0 rounded-md px-1.5 py-1 transition-colors hover:bg-surface-section"
                 >
                   <n-avatar
                     round
@@ -297,20 +352,20 @@
                     {{ shortName(s?.worker) }}
                   </span>
                   <span
-                    class="shrink-0 text-[10px] font-medium rounded-full px-1.5 py-px bg-surface-ground text-textColor2"
+                    class="shrink-0 text-[10px] font-medium rounded-full px-1.5 py-px bg-surface-section text-textColor3"
                   >
                     {{ $t(roleLabel(s?.type)) }}
                   </span>
                 </div>
-                <button
-                  type="button"
-                  class="pt-1.5 flex items-center justify-center gap-0.5 text-[11px] font-medium text-primary"
-                  @click="toggle(rowId(row))"
-                >
-                  {{ $t('content.hide') }}
-                  <n-icon size="12" class="rotate-180"><ChevronDown16Regular /></n-icon>
-                </button>
               </div>
+              <button
+                type="button"
+                class="mt-1 w-full py-1 rounded-md flex items-center justify-center gap-0.5 text-[11px] font-medium text-primary transition-colors hover:bg-primary/5"
+                @click="toggle(rowId(row))"
+              >
+                {{ $t('content.hide') }}
+                <n-icon size="12" class="rotate-180"><ChevronDown16Regular /></n-icon>
+              </button>
             </n-collapse-transition>
           </template>
 
@@ -319,6 +374,13 @@
             class="mt-1.5 rounded-md border-l-2 border-fig-red bg-fig-red-50 px-2 py-1 text-[11px] text-textColor1 leading-snug"
           >
             {{ row.comment }}
+          </div>
+          <div
+            v-if="row.method"
+            class="mt-1 mr-2 inline-flex items-center gap-1 rounded-full bg-surface-ground px-2 py-0.5 text-[11px] font-medium text-textColor1"
+          >
+            <n-icon size="12" :component="methodIcon(row.method.id)" />
+            {{ row.method.name }}
           </div>
           <div
             v-if="row.certificate?.serial"

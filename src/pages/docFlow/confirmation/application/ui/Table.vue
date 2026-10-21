@@ -4,7 +4,8 @@
     UITable,
     UITableBadgeCell,
     UITableNameCell,
-    UIUser
+    UIUser,
+    UIElectronicNumber
   } from '@/components/index.js'
   import {
     useAccountStore,
@@ -21,15 +22,23 @@
   const accountStore = useAccountStore()
   const t = i18n.global.t
 
-  // Tahrir faqat o'z arizasi, HR ko'rib chiqmagan va jarayondagi holatda (backend bilan bir xil qoida).
+  const DRAFT_CONFIRMATION = 6
+
+  // Tahrir faqat o'z arizasi, HR ko'rib chiqmagan va qoralama/jarayondagi holatda (backend bilan bir xil qoida).
   const canEdit = (row) => {
     const app = row?.worker_application
     return (
       app?.worker?.id === accountStore.account?.worker?.id &&
       app?.status === 0 &&
-      app?.confirmation?.id === 1
+      [1, DRAFT_CONFIRMATION].includes(app?.confirmation?.id)
     )
   }
+
+  // Ariza holati 6 = Qoralama; UIStatus'da 6 «Active» (yashil) — neytral ko'rinishga almashtiramiz.
+  const confirmationStatus = (conf) =>
+    conf?.id === DRAFT_CONFIRMATION
+      ? { id: 2, name: conf?.name || t('applicationPage.draft') }
+      : conf
 
   const emits = defineEmits(['openOffice'])
 
@@ -56,13 +65,7 @@
     store.payload.univer_number = v.univer_number
     store.organization_id = v?.organization_id
     store.department_id = v?.department_id
-    store._directors(v.organization_id?.at(0).id || undefined)
-
-    store.confirmParams.director_id = v.director_id
-    store.confirmParams.organization_id = v.organization_id?.at(0) || undefined
-    store.confirmParams.search = null
-    store.confirmationList = []
-    store._confirmation()
+    store.confirmParams.organization_id = v.organization_id?.at(0)?.id || undefined
     store._myPositions()
     if (store.department_id?.length) {
       store._allPositions(store.department_id.at(0)?.id || undefined)
@@ -101,6 +104,8 @@
     store._index()
   }
 
+  // Yopilgan: HR rad etib yopgan (qizil) yoki rahbar imzolagan (yashil).
+  const closedApproved = { id: 3, name: t('applicationPage.hrCheck.closed') }
   const checkingStatus = {
     0: {
       id: 1,
@@ -112,7 +117,7 @@
     },
     2: {
       id: 4,
-      name: t('content.Rejected')
+      name: t('applicationPage.hrCheck.closed')
     }
   }
 
@@ -127,6 +132,11 @@
       title: t('applicationPage.form.number'),
       width: 100,
       align: 'center'
+    },
+    {
+      key: 'worker_application.electronic_number',
+      title: t('documentSettings.electronicNumber'),
+      width: 130
     },
     {
       key: 'worker_application.worker',
@@ -173,6 +183,7 @@
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete20Regular),
+      visible: canEdit,
       action: onDelete
     }
   ])
@@ -190,6 +201,10 @@
     storage-key="docflow-confirmation-application"
     @change-page="changePage"
   >
+    <template #[`cell-worker_application.electronic_number`]="{ row }">
+      <UIElectronicNumber :value="row?.worker_application?.electronic_number" />
+    </template>
+
     <template #[`cell-worker_application.type.name`]="{ row }">
       <UITableNameCell :name="row?.worker_application?.type.name" @click="onPreview(row)" />
     </template>
@@ -211,11 +226,17 @@
     </template>
 
     <template #[`cell-worker_application.status`]="{ row }">
-      <UIStatus :status="checkingStatus[Number(row?.worker_application.status)]" />
+      <UIStatus
+        :status="
+          row?.worker_application.confirmation?.id === 3
+            ? closedApproved
+            : checkingStatus[Number(row?.worker_application.status)]
+        "
+      />
     </template>
 
     <template #[`cell-worker_application.confirmation`]="{ row }">
-      <UIStatus :status="row?.worker_application.confirmation" />
+      <UIStatus :status="confirmationStatus(row?.worker_application.confirmation)" />
     </template>
 
     <template #[`cell-worker_application.generate`]="{ row }">

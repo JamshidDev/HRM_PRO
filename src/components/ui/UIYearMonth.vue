@@ -150,7 +150,7 @@
   .ym-panel__year {
     font-weight: 600;
     font-size: 13px;
-    color: var(--n-text-color, #434349);
+    color: var(--n-text-color, #0f172a);
   }
 
   .ym-panel__grid {
@@ -168,7 +168,7 @@
     padding: 5px 4px;
     font-size: 12px;
     font-weight: 600;
-    color: var(--n-text-color, #434349);
+    color: var(--n-text-color, #0f172a);
     border: 1px solid var(--surface-line, #e5e5e5);
     border-radius: 6px;
     cursor: pointer;

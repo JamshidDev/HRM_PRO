@@ -19,6 +19,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     elementId: null,
     totalItems: 0,
     selectedDepartment: null,
+    structureCheck: [],
     payload: {
       department_id: null,
       geo_type: false,

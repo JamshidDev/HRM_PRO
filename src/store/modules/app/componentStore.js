@@ -55,6 +55,7 @@ export const useComponentStore = defineStore('componentStore', {
     militaryStatuses: [],
     applicationTypes: [],
     workTypes: [],
+    positionCodeList: [],
     vacationAdditional: [],
     medStatus: [],
     organizationDocumentTypes: [],
@@ -497,6 +498,7 @@ export const useComponentStore = defineStore('componentStore', {
           this.fineTypes = res.data.data.fine_types
           this.vacationTypes = res.data.data.vacation_types
           this.work_Types = res.data.data.work_types
+          this.positionCodeList = res.data.data.position_codes || []
           this.deleteCommandEnum = Object.entries(
             res.data.data.command_additional.delete_additional
           ).map(([key, v]) => ({
@@ -789,7 +791,7 @@ export const useComponentStore = defineStore('componentStore', {
         callback?.(res.data.data)
       })
     },
-    _allDepartmentTree(id = undefined) {
+    _allDepartmentTree(id = undefined, callback) {
       this.allDepartmentLoading = true
       let params = {
         organization_id: id
@@ -798,6 +800,7 @@ export const useComponentStore = defineStore('componentStore', {
         ._allDepartmentTree({ params })
         .then((res) => {
           this.allDepartmentTrees = res.data.data
+          callback?.(res.data.data)
         })
         .finally(() => {
           this.allDepartmentLoading = false

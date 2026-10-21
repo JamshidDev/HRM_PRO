@@ -65,7 +65,7 @@
 </script>
 
 <template>
-  <div class="flex h-full flex-col gap-4 rounded-2xl bg-fig-block p-4">
+  <div class="flex h-full flex-col gap-4 rounded-2xl bg-fig-block shadow-card p-4">
     <div class="flex w-full flex-wrap items-center justify-between gap-2">
       <div class="flex min-w-0 flex-1 items-center gap-2.5">
         <span class="flex shrink-0 items-center rounded-full bg-fig-blue-100 p-1.5">

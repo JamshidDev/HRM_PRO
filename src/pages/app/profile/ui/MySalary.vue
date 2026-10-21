@@ -1,12 +1,13 @@
 <script setup>
-  // Xodim o'z oyligini ko'radi (PINFL orqali). Backend: /v1/me/salary(+/months)
+  // Xodim o'z oyligini ko'radi (PINFL orqali). Backend: /v1/me/salary(+/months).
+  // Bir oyda BIR NECHTA kareshok bo'lishi mumkin (ish joyi o'zgargan: eski + yangi
+  // korxona) → `salary` massivi. Har kareshok alohida karta + o'z korxona tarixi.
   import salary1cService from '@/service/v1/accountant/salary1cService.js'
 
   const months = ref([])
   const selected = ref(null) // 'YYYY-M'
-  const payslip = ref(null)
+  const payslips = ref([]) // [{...payslip, organization}]
   const loading = ref(false)
-  const history = ref([])
 
   const fmt = (v) => (v === null || v === undefined ? '—' : Number(v).toLocaleString('ru-RU'))
   const monthOptions = computed(() =>
@@ -18,12 +19,9 @@
     const [y, m] = selected.value.split('-').map(Number)
     loading.value = true
     try {
-      const [ps, hist] = await Promise.all([
-        salary1cService._mySalary({ params: { year: y, month: m } }),
-        salary1cService._myHistory({ params: { year: y, month: m } })
-      ])
-      payslip.value = ps.data.data
-      history.value = hist.data.data?.versions ?? []
+      // Xodim faqat joriy oyligini ko'radi — versiya tarixi KO'RSATILMAYDI.
+      const res = await salary1cService._mySalary({ params: { year: y, month: m } })
+      payslips.value = res.data.data?.salary ?? []
     } finally {
       loading.value = false
     }
@@ -52,78 +50,104 @@
     </div>
 
     <n-spin :show="loading">
-      <div v-if="payslip" class="ms-card">
-        <p class="font-semibold text-base">{{ payslip.fio }}</p>
-        <p class="text-xs text-textColor3 mb-3">{{ payslip.position }} · {{ payslip.year }}/{{ payslip.month }}</p>
+      <template v-if="payslips.length">
+        <div v-for="p in payslips" :key="p.id" class="ms-card mb-5">
+          <p class="font-semibold text-base">{{ p.fio }}</p>
+          <p class="text-xs text-textColor3 mb-1">{{ p.position }} · {{ p.year }}/{{ p.month }}</p>
+          <p v-if="p.organization?.name" class="text-xs font-medium text-primary mb-1">
+            {{ p.organization.name }}
+          </p>
+          <div class="ms-net mb-3"><span>{{ $t('salary1c.hours') }}</span><b>{{ fmt(p.hours_worked) }}</b></div>
 
-        <p class="ms-grp">{{ $t('salary1c.accruals') }}</p>
-        <n-table :single-line="false" size="small">
-          <thead><tr>
-            <th class="w-[80px]">{{ $t('salary1c.code') }}</th>
-            <th>{{ $t('salary1c.rowName') }}</th>
-            <th class="text-right! w-[140px]">{{ $t('salary1c.amount') }}</th>
-          </tr></thead>
-          <tbody>
-            <tr v-for="(a, i) in payslip.accruals" :key="'a' + i">
-              <td>{{ a.paying_code || '—' }}</td>
-              <td>{{ a.paying_name }}</td>
-              <td class="text-right! ms-num">{{ fmt(a.summa) }}</td>
-            </tr>
-            <tr>
-              <td colspan="2" class="font-semibold">{{ $t('salary1c.accrual') }}</td>
-              <td class="text-right! ms-num font-semibold">{{ fmt(payslip.accrual_total) }}</td>
-            </tr>
-          </tbody>
-        </n-table>
-
-        <p class="ms-grp mt-4">{{ $t('salary1c.deductions') }}</p>
-        <n-table :single-line="false" size="small">
-          <thead><tr>
-            <th class="w-[80px]">{{ $t('salary1c.code') }}</th>
-            <th>{{ $t('salary1c.rowName') }}</th>
-            <th class="text-right! w-[140px]">{{ $t('salary1c.amount') }}</th>
-          </tr></thead>
-          <tbody>
-            <tr v-for="(d, i) in payslip.deductions" :key="'d' + i">
-              <td>{{ d.paying_code || 'НДФЛ' }}</td>
-              <td>{{ d.paying_name }}</td>
-              <td class="text-right! ms-num">{{ fmt(d.summa) }}</td>
-            </tr>
-            <tr>
-              <td colspan="2" class="font-semibold">{{ $t('salary1c.deduction') }}</td>
-              <td class="text-right! ms-num font-semibold">{{ fmt(payslip.deduction_total) }}</td>
-            </tr>
-          </tbody>
-        </n-table>
-
-        <div class="ms-net"><span>{{ $t('salary1c.net') }}</span><b class="text-primary">{{ fmt(payslip.net_total) }}</b></div>
-
-        <template v-if="history.length > 1">
-          <p class="ms-grp mt-4">{{ $t('salary1c.history') }}</p>
+          <p class="ms-grp">{{ $t('salary1c.accruals') }}</p>
           <n-table :single-line="false" size="small">
             <thead><tr>
-              <th class="w-[70px]">{{ $t('salary1c.version') }}</th>
-              <th>{{ $t('salary1c.event') }}</th>
-              <th class="text-right! w-[140px]">{{ $t('salary1c.net') }}</th>
+              <th class="w-[80px]">{{ $t('salary1c.code') }}</th>
+              <th>{{ $t('salary1c.rowName') }}</th>
+              <th class="text-right! w-[80px]">{{ $t('salary1c.hours') }}</th>
+              <th class="text-right! w-[130px]">{{ $t('salary1c.amount') }}</th>
             </tr></thead>
             <tbody>
-              <tr v-for="v in history" :key="v.id">
-                <td>v{{ v.version }}</td>
-                <td class="text-xs">
-                  <template v-if="v.version === 1">
-                    {{ $t('salary1c.added') }}: {{ (v.first_synced_at || '').slice(0, 16) }}
-                  </template>
-                  <template v-else>
-                    {{ $t('salary1c.changed') }}: {{ (v.valid_from || '').slice(0, 16) }}
-                  </template>
-                  <n-tag v-if="v.is_current" type="success" size="tiny" round class="ml-2">{{ $t('salary1c.current') }}</n-tag>
-                </td>
-                <td class="text-right! ms-num">{{ fmt(v.net_total) }}</td>
+              <tr v-for="(a, i) in p.accruals" :key="'a' + i">
+                <td>{{ a.paying_code || '—' }}</td>
+                <td>{{ a.paying_name }}</td>
+                <td class="text-right! ms-num">{{ a.hours_worked ? fmt(a.hours_worked) : '—' }}</td>
+                <td class="text-right! ms-num">{{ fmt(a.summa) }}</td>
+              </tr>
+              <tr>
+                <td colspan="2" class="font-semibold">{{ $t('salary1c.accrual') }}</td>
+                <td class="text-right! ms-num font-semibold">{{ fmt(p.hours_worked) }}</td>
+                <td class="text-right! ms-num font-semibold">{{ fmt(p.accrual_total) }}</td>
               </tr>
             </tbody>
           </n-table>
-        </template>
-      </div>
+
+          <p class="ms-grp mt-4">{{ $t('salary1c.deductions') }}</p>
+          <n-table :single-line="false" size="small">
+            <thead><tr>
+              <th class="w-[80px]">{{ $t('salary1c.code') }}</th>
+              <th>{{ $t('salary1c.rowName') }}</th>
+              <th class="text-right! w-[140px]">{{ $t('salary1c.amount') }}</th>
+            </tr></thead>
+            <tbody>
+              <tr v-for="(d, i) in p.deductions" :key="'d' + i">
+                <td>{{ d.paying_code || 'НДФЛ' }}</td>
+                <td>{{ d.paying_name }}</td>
+                <td class="text-right! ms-num">{{ fmt(d.summa) }}</td>
+              </tr>
+              <tr>
+                <td colspan="2" class="font-semibold">{{ $t('salary1c.deduction') }}</td>
+                <td class="text-right! ms-num font-semibold">{{ fmt(p.deduction_total) }}</td>
+              </tr>
+            </tbody>
+          </n-table>
+
+          <div class="ms-net"><span>{{ $t('salary1c.net') }}</span><b class="text-primary">{{ fmt(p.net_total) }}</b></div>
+
+          <!-- Ko'p-kareshok: shu korxonada ish joyi almashgan → har tabel ALOHIDA -->
+          <template v-if="p.kareshoks?.length">
+            <p class="ms-grp mt-5 text-warning">
+              ⚠ {{ $t('salary1c.kareshok.title', { n: p.kareshoks.length }) }}
+            </p>
+            <div v-for="(k, ki) in p.kareshoks" :key="'k' + ki" class="ms-kar">
+              <div class="ms-kar-head">
+                <span><b>{{ $t('salary1c.kareshok.tab') }}:</b> {{ k.tab_nomer || '—' }}</span>
+                <span class="text-textColor3">{{ k.position || '—' }}</span>
+              </div>
+              <n-table :single-line="false" size="small" class="mt-1">
+                <tbody>
+                  <tr v-for="(a, i) in k.accruals" :key="'ka' + i">
+                    <td class="w-[80px]">{{ a.paying_code || '—' }}</td>
+                    <td class="text-xs">{{ a.paying_name }}</td>
+                    <td class="text-right! ms-num w-[70px]">{{ a.hours_worked ? fmt(a.hours_worked) : '—' }}</td>
+                    <td class="text-right! ms-num w-[120px]">{{ fmt(a.summa) }}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" class="font-semibold">{{ $t('salary1c.accrual') }}</td>
+                    <td class="text-right! ms-num font-semibold">{{ fmt(k.hours_worked) }}</td>
+                    <td class="text-right! ms-num font-semibold">{{ fmt(k.accrual_total) }}</td>
+                  </tr>
+                  <tr v-for="(d, i) in k.deductions" :key="'kd' + i">
+                    <td class="w-[80px]">{{ d.paying_code || 'НДФЛ' }}</td>
+                    <td class="text-xs">{{ d.paying_name }}</td>
+                    <td class="text-right! ms-num">—</td>
+                    <td class="text-right! ms-num w-[120px]">{{ fmt(d.summa) }}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" class="font-semibold">{{ $t('salary1c.deduction') }}</td>
+                    <td class="text-right! ms-num">—</td>
+                    <td class="text-right! ms-num font-semibold">{{ fmt(k.deduction_total) }}</td>
+                  </tr>
+                </tbody>
+              </n-table>
+              <div class="ms-net"><span>{{ $t('salary1c.net') }}</span><b class="text-primary">{{ fmt(k.net_total) }}</b></div>
+            </div>
+          </template>
+
+          <!-- Versiya tarixi (Tarix) OLIB TASHLANDI — xodim o'z oyligining versiyalarini
+               ko'rmasligi kerak (faqat joriy holat). -->
+        </div>
+      </template>
       <n-empty v-else-if="!loading" :description="$t('salary1c.noData')" class="py-10" />
     </n-spin>
   </div>
@@ -134,4 +158,6 @@
   .ms-grp { font-size: 12px; font-weight: 700; color: var(--textColor2, #475467); margin-bottom: 4px; }
   .ms-num { font-variant-numeric: tabular-nums; }
   .ms-net { display: flex; justify-content: space-between; padding: 8px 12px; margin-top: 10px; background: var(--color-brand-surface, #eff8ff); border-radius: 10px; font-weight: 700; }
+  .ms-kar { border: 1px solid rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.05); border-radius: 10px; padding: 10px; margin-bottom: 12px; }
+  .ms-kar-head { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
 </style>

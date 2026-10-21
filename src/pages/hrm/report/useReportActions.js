@@ -7,8 +7,7 @@ import {
 import { AppPaths } from '@utils'
 import router from '@/router/index.js'
 
-// Bo'linma/lavozim/xodim amallari — ro'yxat (kartochka) va jadval
-// ko'rinishlari bir xil modal va so'rovlardan foydalanadi.
+// Jadvaldagi bo'linma/lavozim/xodim amallari.
 export const useReportActions = () => {
   const store = useReport2Store()
   const dpStore = useDepartmentStore()
@@ -16,12 +15,13 @@ export const useReportActions = () => {
   const accStore = useAccountStore()
 
   const deleteDepartment = (v) => {
-    store.department.selectedId = null
+    if (store.busy) return
     store.department.elementId = v.id
     store._deleteDepartment()
   }
 
   const editDepartment = (v) => {
+    if (store.busy) return
     dpStore.elementId = v.id
     dpStore.visibleType = false
     store.department.visible = true
@@ -37,6 +37,7 @@ export const useReportActions = () => {
   }
 
   const addPosition = (v) => {
+    if (store.busy) return
     store.position.visible = true
     store.position.visibleType = true
     store.resetPositionPayload()
@@ -46,14 +47,16 @@ export const useReportActions = () => {
   }
 
   const editPosition = (item) => {
+    if (store.busy) return
     if (!accStore.checkAction(accStore.pn.hrReportWrite)) return
     store.onEdit(item)
   }
 
-  const deletePosition = (v) => {
-    store.position.selectedId = null
+  // `departmentId` — jadval ko'rinishida faqat shu bo'linma lavozimlari qayta yuklanadi.
+  const deletePosition = (v, departmentId) => {
+    if (store.busy) return
     store.position.elementId = v.id
-    store._deletePosition()
+    store._deletePosition(departmentId)
   }
 
   const openWorker = (v) => {

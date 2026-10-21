@@ -1,16 +1,19 @@
 <script setup>
   import {
     ArrowSyncCircle16Filled,
-    ClipboardCheckmark20Regular,
-    CalendarCancel20Regular,
     Dismiss20Regular,
     Signature20Regular,
     CheckmarkCircle20Filled,
     DismissCircle20Filled,
-    Eye20Regular
+    Eye20Regular,
+    Attach20Regular,
+    People20Regular
   } from '@vicons/fluent'
+  import { useMediaQuery } from '@vueuse/core'
+  import { useAppBreakpoints } from '@/composables/useBreakpoint.js'
   import { UIUser, UILottieReader, UISegmentTabs } from '@/components/index.js'
   import CommandDataTab from '@/pages/docFlow/document/command/CommandDataTab.vue'
+  import DocumentFormDataTab from '@/pages/docFlow/document/DocumentFormDataTab.vue'
   import AttachmentPreview from './ui/AttachmentPreview.vue'
   import EditRefreshIcon from '@/assets/icons/editRefreshIcon.svg'
   import PdfFileIcon from '@/assets/icons/pdfFileIcon.svg'
@@ -21,6 +24,7 @@
     usePdfViewerStore,
     useSignatureStore,
     useApplicationStore,
+    useDocumentRouteStore,
     useAccountStore
   } from '@/store/modules/index.js'
   import { useNotify } from '@/composables/useNotify'
@@ -36,6 +40,7 @@
   import PdfViewer from '@/components/pdfSignature/PdfViewer.vue'
   import ConformAndRejectModal from '@/components/pdfSignature/ui/ConformAndRejectModal.vue'
   import DocumentFileModal from '@/components/pdfSignature/ui/DocumentFileModal.vue'
+  import ForwardApplicationModal from '@/components/pdfSignature/ui/ForwardApplicationModal.vue'
   const pdfViewerRef = ref(null)
 
   const route = useRoute()
@@ -52,25 +57,58 @@
   const accountStore = useAccountStore()
   const signatureStore = useSignatureStore()
   const applicationStore = useApplicationStore()
+  const documentRouteStore = useDocumentRouteStore()
   const notify = useNotify()
 
   const confirmSignatureVisible = ref(false)
+
+  // Yon panellar: o'ng (kelishuvchilar) `lg` dan, chap (biriktirilgan hujjatlar) 1200px dan
+  // joyida turadi. Undan tor ekranda markaz siqilmasin — panel header tugmasi orqali
+  // yon drawer'da ochiladi (aks holda mobil'da ularga umuman kirib bo'lmasdi).
+  const { isDesktop: showRightInline } = useAppBreakpoints()
+  // 1200px — chap panel joyida turadigan va header tugmalari matnli bo'ladigan chegara.
+  const isWide = useMediaQuery('(min-width: 1200px)')
+  const showLeftInline = isWide
+  const leftPanelVisible = ref(false)
+  const rightPanelVisible = ref(false)
+  watch(showLeftInline, (v) => v && (leftPanelVisible.value = false))
+  watch(showRightInline, (v) => v && (rightPanelVisible.value = false))
+  // Faylni ko'rish uchun tanlanganda drawer yopiladi — preview uning ostida qolmasin.
+  watch(
+    () => store.previewFile,
+    (v) => v && (leftPanelVisible.value = false)
+  )
   const signatureInfoVisible = ref(false)
   const resendActionsVisible = ref(false)
 
   const isSigned = computed(() => store.document?.document?.confirmation?.id === 3)
   const isRejected = computed(() => store.document?.document?.confirmation?.id === 4)
+  // Rad etish: backend `document.rejection` (sabab, kim, qachon); eski maydonlar zaxira.
+  const rejection = computed(() => store.document?.document?.rejection || null)
   const rejectReason = computed(() => {
     return (
+      rejection.value?.reason ||
       store.document?.document?.comment ||
       store.confirmations?.find((v) => v.status?.id === 4)?.comment ||
       null
     )
   })
+  const rejectedBy = computed(() => {
+    const b = rejection.value?.by
+    return b ? [b.last_name, b.first_name].filter(Boolean).join(' ') : null
+  })
   const hasDocumentFile = computed(() => !!store.pdfUrl)
 
-  // Buyruqda header markazida tablar: «Hujjat» (ko'rish/imzolash) va «Ma'lumotlar» (forma).
+  // Buyruq, shartnoma va qo'shimcha kelishuvda header markazida tablar: «Hujjat» va «Ma'lumotlar» (forma).
   const isCommand = computed(() => store.model === Utils.documentModels.command)
+  const dataTabKind = computed(
+    () =>
+      ({
+        [Utils.documentModels.contract]: 'contract',
+        [Utils.documentModels.adContract]: 'adContract'
+      })[store.model] ?? null
+  )
+  const hasDataTab = computed(() => isCommand.value || !!dataTabKind.value)
   const activeTab = computed({
     get: () => store.centerTab,
     set: (v) => (store.centerTab = v)
@@ -138,6 +176,32 @@
       })[signState.value]
   )
 
+  // Rad etilgan ariza — pastdagi qotgan panelda sabab va keyingi qadam (kim/qachon tarixda).
+  const docRejectedPanel = computed(() => isApplication.value && isRejected.value)
+  const isClosedDoc = computed(() => !!store.document?.document?.closed)
+  // Ariza egasiga yopilganda qo'shimcha izoh kerak emas (sarlavha yetarli).
+  const rejectedHint = computed(() => {
+    const owner = selfConfirmation.value?.type === 'w'
+    if (owner && isClosedDoc.value) return null
+    const key = `${owner ? 'Owner' : 'Other'}${isClosedDoc.value ? 'Closed' : 'Pending'}`
+    return `documentPage.signature.rejectedPanel.hint${key}`
+  })
+  // Ariza egasiga — «Arizangiz rad etildi» (sabab bilan), boshqalarga — ixcham holat.
+  const rejectedOwner = computed(() => selfConfirmation.value?.type === 'w')
+  const rejectedTitle = computed(() => {
+    if (rejectedOwner.value) return 'documentPage.signature.rejectedPanel.titleOwner'
+    return isClosedDoc.value
+      ? 'documentPage.signature.rejectedPanel.titleClosed'
+      : 'documentPage.signature.rejectedPanel.notAgreed'
+  })
+  // Uzun sabab — 2 qatorga qisqartiriladi, «Batafsil» bilan to'liq ochiladi.
+  const reasonExpanded = ref(false)
+  watch(
+    () => store.document_id,
+    () => (reasonExpanded.value = false)
+  )
+  const reasonLong = computed(() => (rejectReason.value?.length || 0) > 90)
+
   const onOpenConfirmSignature = () => {
     confirmSignatureVisible.value = true
   }
@@ -184,9 +248,70 @@
     return !rejects.includes(route.path)
   })
 
-  const showConfirmButtons = computed(() => {
-    return route.path === '/hrm/application'
+  // HR: «Jarayonda» va hali yo'naltirilmagan ariza (rahbar qatori yo'q) — imzolash/yo'naltirish.
+  const isApplication = computed(() => store.model === Utils.documentModels.workerApplication)
+  const hasDirector = computed(() => store.confirmations?.some((c) => c.type === 'd'))
+  const hrSigned = computed(() =>
+    store.confirmations?.some((c) => c.type === 's' && c.order === 2 && c.status?.id === 3)
+  )
+  // Backend bilan bir xil: yo'naltirilgan = HR imzolagan va rahbar qatori bor.
+  const isForwarded = computed(() => hasDirector.value && hrSigned.value)
+  // Eski tartib: rahbar yaratishda qo'shilgan, HR marshruti yo'q — faqat yopish mumkin.
+  const isLegacy = computed(() => hasDirector.value && !hrSigned.value)
+  // HR paneli: yangi (imzolash) / jarayonda (o'zgartirish) / rad etilgan (qayta yuborish) — HR yopmagan bo'lsa.
+  const docConfirmation = computed(() => store.document?.document?.confirmation?.id)
+  const hrStage = computed(() => {
+    if (route.path !== '/hrm/application' || store.document?.document?.closed) return null
+    if (isLegacy.value && [1, 4].includes(docConfirmation.value)) return 'legacy'
+    if (docConfirmation.value === 1) return isForwarded.value ? 'process' : 'new'
+    if (docConfirmation.value === 4 && isForwarded.value) return 'rejected'
+    return null
   })
+  const showConfirmButtons = computed(() => hrStage.value !== null)
+  // Kelishuvchi yoki rahbar tasdiqlagan bo'lsa, rad etilmaguncha HR yopa olmaydi.
+  const approverSigned = computed(() =>
+    store.confirmations?.some(
+      (c) => c.status?.id === 3 && (c.type === 'd' || (c.type === 's' && c.order >= 3))
+    )
+  )
+  const canClose = computed(
+    () =>
+      hrStage.value === 'rejected' ||
+      (hrStage.value === 'legacy' && (docConfirmation.value === 4 || !approverSigned.value)) ||
+      (hrStage.value === 'new' && !hrSigned.value) ||
+      (hrStage.value === 'process' && !approverSigned.value)
+  )
+  const hrPanelTitle = computed(
+    () =>
+      ({
+        new: 'documentPage.signature.approval.yourTurn',
+        process: 'applicationPage.forward.panelProcessTitle',
+        rejected: 'applicationPage.forward.panelRejectedTitle',
+        legacy: 'applicationPage.forward.panelLegacyTitle'
+      })[hrStage.value]
+  )
+  const hrPanelSub = computed(
+    () =>
+      ({
+        new: 'applicationPage.forward.panelSub',
+        process: 'applicationPage.forward.panelProcess',
+        rejected: 'applicationPage.forward.panelRejected',
+        legacy: 'applicationPage.forward.panelLegacy'
+      })[hrStage.value]
+  )
+  const hrDirector = () => ({
+    ...store.confirmations?.find((c) => c.type === 'd')?.worker,
+    worker_id: store.confirmations?.find((c) => c.type === 'd')?.worker?.id,
+    position: store.confirmations?.find((c) => c.type === 'd')?.position
+  })
+  const onHrPrimary = () => {
+    if (hrStage.value === 'new') return openConfirmModal(true)
+    applicationStore._openRoute(
+      store.document_id,
+      hrStage.value === 'rejected' ? 'resend' : 'edit',
+      hrDirector()
+    )
+  }
 
   const showEditButton = computed(() => {
     const rejects = ['/docflow/conf-report']
@@ -205,6 +330,8 @@
     store.model = model
     store._resetForm()
     resendActionsVisible.value = false
+    leftPanelVisible.value = false
+    rightPanelVisible.value = false
     activeTab.value = 'document'
 
     store.visible = true
@@ -235,13 +362,18 @@
           store.signatureId = v.signature?.current_user?.id ?? null
         }
 
-        const worker = v.signature?.current_user?.worker
+        // Ariza rahbar imzosi bilan kuchga kiradi — tanishuvchi/kelishuvchiga ham rahbar ko'rsatiladi.
+        const signer =
+          model === Utils.documentModels.workerApplication
+            ? v.confirmations?.find((c) => c.type === 'd') || v.signature?.current_user
+            : v.signature?.current_user
+        const worker = signer?.worker
         store.signatureMan = {
           photo: worker?.photo,
           lastName: worker?.last_name,
           firstName: worker?.first_name,
           middleName: worker?.middle_name,
-          position: v.signature?.current_user?.position
+          position: signer?.position
         }
         store.permissions.qrcode = false
 
@@ -319,15 +451,71 @@
     store.appButtonType = v
     store.applicationComment = null
     store.applicationVisible = !v
+    if (v) onHrSign()
+  }
 
-    if (!v) return
+  // HR imzolaydi (imzolagan bo'lsa o'tkazib yuboriladi), so'ng kelishuvchilar modali ochiladi.
+  const onHrSign = () => {
+    applicationStore._signStart(store.document_id, (res) => {
+      if (res.signed) return applicationStore.openForward(res.director)
+      signatureStore.confirmationId = res.confirmation_id
+      signatureStore.documentType = store.model
+      signatureStore._signatureDocument(
+        signatureStore.signatureTypes.contract,
+        store.document_id,
+        () => {
+          signatureStore.visible = false
+          notify.success(t('documentPage.signature.confirmedNotification'))
+          getDocument(store.document_id, store.model)
+          applicationStore.openForward(res.director)
+        }
+      )
+    })
+  }
 
-    const data = {
-      status: v,
-      comment: null
-    }
-    const id = store.document_id
-    applicationStore._accept(data, id)
+  const onRejected = () => {
+    emits('signatureEv')
+  }
+
+  // Buyruq / shartnoma / qo'shimcha kelishuv: kelishuvchilar marshruti (parallel / ketma-ket).
+  const isRouteDoc = computed(() =>
+    [
+      Utils.documentModels.command,
+      Utils.documentModels.contract,
+      Utils.documentModels.adContract
+    ].includes(store.model)
+  )
+  // Marshrutni faqat hujjat turining yozish ruxsati bor (HR) o'zgartiradi — computed'da checkPermission (checkAction modal chiqaradi).
+  const ROUTE_WRITE = {
+    [Utils.documentModels.command]: accountStore.pn.hrCommandsWrite,
+    [Utils.documentModels.contract]: accountStore.pn.hrContractsWrite,
+    [Utils.documentModels.adContract]: accountStore.pn.hrContractAdditionalWrite
+  }
+  const canRoute = computed(
+    () =>
+      isRouteDoc.value &&
+      store.permissions.canEdit &&
+      accountStore.checkPermission(ROUTE_WRITE[store.model])
+  )
+  // Hujjat matnini (OnlyOffice) tahrirlash ham — buyruq/shartnomada faqat HR yozish ruxsati bilan.
+  const canEditDoc = computed(
+    () =>
+      store.permissions.canEdit &&
+      (!isRouteDoc.value || accountStore.checkPermission(ROUTE_WRITE[store.model]))
+  )
+  const openDocumentRoute = () =>
+    documentRouteStore._openRoute(store.model, store.document_id, hrDirector(), (block) =>
+      notify.warning(t(`documentPage.command.dataTab.locked.${block}`))
+    )
+  // Muvaffaqiyat xabarini backend javobi o'zi chiqaradi.
+  const onRouteSaved = () => {
+    getDocument(store.document_id, store.model)
+    emits('signatureEv')
+  }
+
+  const onForwarded = () => {
+    notify.success(t('applicationPage.forward.done'))
+    emits('signatureEv')
   }
 
   defineExpose({
@@ -358,10 +546,12 @@
         <div
           class="w-full h-screen overflow-hidden flex flex-col relative gap-3 pb-3 bg-gradient-to-b from-surface-ground to-surface-section"
         >
+          <!-- Mobil'da tablar ikkinchi qatorga tushadi; `md` dan header markazida turadi.
+               Tugma matnlari 1200px dan ko'rinadi, undan torda faqat ikonka. -->
           <div
-            class="relative w-full h-[60px] shrink-0 border-b border-surface-line flex items-center justify-between px-4 bg-surface-section"
+            class="relative w-full shrink-0 border-b border-surface-line flex flex-wrap md:flex-nowrap items-center justify-between gap-y-2 px-3 py-2.5 md:px-4 md:py-0 md:h-[60px] bg-surface-section"
           >
-            <div class="flex items-center gap-x-3">
+            <div class="flex items-center gap-x-3 min-w-0">
               <n-button
                 @click="onClose()"
                 quaternary
@@ -375,12 +565,14 @@
                   </n-icon>
                 </template>
               </n-button>
-              <div v-if="store.loading" class="hidden md:flex flex-col gap-1.5">
+              <div v-if="store.loading" class="hidden min-[1200px]:flex flex-col gap-1.5">
                 <n-skeleton width="220px" height="16px" :sharp="false" class="rounded-md" />
                 <n-skeleton width="80px" height="11px" :sharp="false" class="rounded-md" />
               </div>
-              <div v-else class="hidden md:inline-block">
-                <div class="text-sm font-semibold text-textColor1 leading-tight">
+              <div v-else class="hidden min-[1200px]:block min-w-0">
+                <div
+                  class="text-sm font-semibold text-textColor1 leading-tight truncate max-w-[280px]"
+                >
                   {{ store.document?.document?.file_name }}
                 </div>
                 <div class="text-xs text-gray-400 tabular-nums">
@@ -389,22 +581,39 @@
                 </div>
               </div>
             </div>
-            <div class="absolute left-1/2 -translate-x-1/2">
-              <UISegmentTabs
-                v-if="isCommand && !store.loading"
-                v-model="activeTab"
-                :tabs="tabs"
-                variant="surface"
-              />
+            <div
+              v-if="hasDataTab && !store.loading"
+              class="order-last w-full flex justify-center md:order-none md:w-auto md:absolute md:left-1/2 md:-translate-x-1/2"
+            >
+              <UISegmentTabs v-model="activeTab" :tabs="tabs" variant="surface" />
             </div>
-            <div v-if="store.loading" class="flex gap-3">
+            <div v-if="store.loading" class="hidden md:flex gap-3">
               <n-skeleton width="110px" height="34px" :sharp="false" class="rounded-md" />
               <n-skeleton width="110px" height="34px" :sharp="false" class="rounded-md" />
               <n-skeleton width="110px" height="34px" :sharp="false" class="rounded-md" />
             </div>
-            <div v-else class="flex gap-3">
-              <n-button v-if="store.permissions.canEdit && showEditButton" @click="onEdit" tertiary>
-                {{ $t('content.edit') }}
+            <div v-else class="flex items-center gap-2 md:gap-3">
+              <n-button
+                v-if="canRoute && showEditButton"
+                :loading="documentRouteStore.routeLoading"
+                @click="openDocumentRoute"
+                tertiary
+                :title="$t('documentPage.command.form.confirm')"
+              >
+                <template v-if="isWide">{{ $t('documentPage.command.form.confirm') }}</template>
+                <template #icon>
+                  <n-icon size="16">
+                    <People20Regular />
+                  </n-icon>
+                </template>
+              </n-button>
+              <n-button
+                v-if="canEditDoc && showEditButton"
+                @click="onEdit"
+                tertiary
+                :title="$t('content.edit')"
+              >
+                <template v-if="isWide">{{ $t('content.edit') }}</template>
                 <template #icon>
                   <n-icon size="16">
                     <EditRefreshIcon />
@@ -418,12 +627,15 @@
                 :href="store.pdfUrl"
                 download
                 type="error"
+                :title="$t('documentPage.signature.downloadPdf')"
               >
                 <div class="flex items-center gap-2">
                   <n-icon size="16">
                     <PdfFileIcon />
                   </n-icon>
-                  <span>{{ $t('documentPage.signature.downloadPdf') }}</span>
+                  <span v-if="isWide">
+                    {{ $t('documentPage.signature.downloadPdf') }}
+                  </span>
                 </div>
               </n-button>
               <n-button
@@ -433,20 +645,46 @@
                 :href="store?.docxUrl"
                 download
                 type="info"
+                :title="$t('documentPage.signature.downloadWord')"
               >
                 <div class="flex items-center gap-2">
                   <n-icon size="16">
                     <WordFileIcon />
                   </n-icon>
-                  <span>{{ $t('documentPage.signature.downloadWord') }}</span>
+                  <span v-if="isWide">
+                    {{ $t('documentPage.signature.downloadWord') }}
+                  </span>
                 </div>
+              </n-button>
+              <n-button
+                v-if="!showLeftInline"
+                secondary
+                :title="$t('documentPage.signature.attachedDocuments')"
+                @click="leftPanelVisible = true"
+              >
+                <template #icon>
+                  <n-icon size="18"><Attach20Regular /></n-icon>
+                </template>
+              </n-button>
+              <n-button
+                v-if="!showRightInline"
+                secondary
+                :title="$t('documentPage.signature.approval.title')"
+                @click="rightPanelVisible = true"
+              >
+                <template #icon>
+                  <n-icon size="18"><People20Regular /></n-icon>
+                </template>
               </n-button>
             </div>
           </div>
 
           <DrawerSkeleton v-if="store.loading" class="px-3" />
-          <div v-else class="w-full flex-1 min-h-0 flex gap-3 px-3">
-            <div class="hidden md:flex flex-col w-[300px] h-full gap-3 relative">
+          <div v-else class="w-full flex-1 min-h-0 flex gap-3 px-2 md:px-3">
+            <div
+              v-if="showLeftInline"
+              class="flex flex-col w-[280px] xl:w-[300px] shrink-0 h-full gap-3 relative"
+            >
               <div class="w-full flex-1 min-h-0">
                 <LeftContent />
               </div>
@@ -460,69 +698,35 @@
             <div class="flex-1 min-w-0 h-full flex flex-col relative overflow-hidden">
               <Transition :name="tabTransition" mode="out-in">
                 <div
-                  v-if="isCommand && activeTab === 'data'"
+                  v-if="hasDataTab && activeTab === 'data'"
                   key="data"
                   class="h-full flex flex-col"
                 >
                   <CommandDataTab
+                    v-if="isCommand"
                     :command-id="store.document_id"
                     @saved="onDataSaved"
                     @open-source="(v) => getDocument(v.id, v.model)"
                   />
+                  <DocumentFormDataTab
+                    v-else
+                    :key="`${dataTabKind}-${store.document_id}`"
+                    :document-id="store.document_id"
+                    :kind="dataTabKind"
+                    @saved="onDataSaved"
+                  />
                 </div>
                 <div v-else key="document" class="relative h-full flex flex-col">
-                    <!-- Biriktirilgan fayl — buyruq PDF'i ustida; PDF ko'ruvchisi fonda saqlanadi -->
-                    <AttachmentPreview
-                      v-if="store.previewFile"
-                      class="absolute inset-0 z-20"
-                      :file="store.previewFile"
-                      @close="store.previewFile = null"
-                    />
+                  <!-- Biriktirilgan fayl — buyruq PDF'i ustida; PDF ko'ruvchisi fonda saqlanadi -->
+                  <AttachmentPreview
+                    v-if="store.previewFile"
+                    class="absolute inset-0 z-20"
+                    :file="store.previewFile"
+                    @close="store.previewFile = null"
+                  />
                   <div
-                    v-if="showConfirmButtons"
-                    class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex items-center justify-between gap-4 mb-3"
-                  >
-                    <div class="min-w-0">
-                      <div class="font-semibold text-textColor1 truncate">
-                        {{ $t('documentPage.signature.confirmDocument') }}
-                      </div>
-                      <div class="text-xs text-gray-400">
-                        {{ Utils.timeOnlyDate(store.document?.document?.created) }}
-                      </div>
-                    </div>
-                    <div class="flex gap-2 shrink-0">
-                      <n-button
-                        type="error"
-                        :loading="applicationStore.modalLoading"
-                        :disabled="applicationStore.acceptLoading || applicationStore.modalLoading"
-                        @click="openConfirmModal(false)"
-                      >
-                        {{ $t('content.rejectByMistake') }}
-                        <template #icon>
-                          <n-icon size="18">
-                            <CalendarCancel20Regular />
-                          </n-icon>
-                        </template>
-                      </n-button>
-                      <n-button
-                        type="primary"
-                        :loading="applicationStore.acceptLoading"
-                        :disabled="applicationStore.modalLoading || applicationStore.acceptLoading"
-                        @click="openConfirmModal(true)"
-                      >
-                        {{ $t('content.sendToSign') }}
-                        <template #icon>
-                          <n-icon size="18">
-                            <ClipboardCheckmark20Regular />
-                          </n-icon>
-                        </template>
-                      </n-button>
-                    </div>
-                  </div>
-
-                  <div
-                    v-else-if="isSigned && showSignature"
-                    class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex items-center justify-between gap-4 mb-3"
+                    v-if="isSigned && showSignature"
+                    class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 mb-3"
                   >
                     <div class="min-w-0">
                       <div class="font-semibold text-textColor1 truncate">
@@ -556,22 +760,32 @@
                   </div>
 
                   <div
-                    v-else-if="isRejected && showSignature"
-                    class="w-full shrink-0 rounded-2xl bg-surface-section px-4 py-3 flex items-center justify-between gap-4 mb-3"
+                    v-else-if="isRejected && showSignature && !isApplication"
+                    class="w-full shrink-0 rounded-2xl border border-fig-br-error bg-fig-red-50 px-4 py-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 mb-3"
                   >
-                    <div class="min-w-0">
-                      <div class="font-semibold text-textColor1 truncate">
-                        {{ $t('documentPage.signature.rejected') }}
-                      </div>
-                      <div class="text-xs text-gray-400">
-                        {{ Utils.timeOnlyDate(store.document?.document?.created) }}
-                        <template v-if="rejectReason">
-                          · {{ $t('documentPage.signature.rejectedReason') }}: {{ rejectReason }}
-                        </template>
+                    <div class="min-w-0 flex items-start gap-3">
+                      <n-icon size="20" class="text-fig-text-red mt-0.5 shrink-0">
+                        <DismissCircle20Filled />
+                      </n-icon>
+                      <div class="min-w-0">
+                        <div class="font-semibold text-fig-text-red">
+                          {{ $t('documentPage.signature.rejected') }}
+                        </div>
+                        <div v-if="rejectReason" class="text-sm text-textColor1 mt-0.5">
+                          {{ $t('documentPage.signature.rejectedReason') }}: {{ rejectReason }}
+                        </div>
+                        <div class="text-xs text-fig-text-secondary mt-0.5">
+                          <template v-if="rejectedBy">{{ rejectedBy }} · </template>
+                          {{
+                            Utils.timeOnlyDate(rejection?.at || store.document?.document?.created)
+                          }}
+                        </div>
                       </div>
                     </div>
+                    <!-- Arizani qayta yuborish — faqat HR panelidan (pastda) -->
+                    <template v-if="isApplication" />
                     <n-button
-                      v-if="!resendActionsVisible"
+                      v-else-if="!resendActionsVisible"
                       type="success"
                       class="shrink-0"
                       @click="resendActionsVisible = true"
@@ -686,16 +900,87 @@
                   >
                     <div
                       class="pointer-events-auto floating-sign-panel"
-                      :class="signState === 'sign' ? 'border-fig-blue-100' : signStateMeta.border"
+                      :class="
+                        showConfirmButtons || signState === 'sign'
+                          ? 'border-fig-blue-100'
+                          : docRejectedPanel
+                            ? 'border-fig-red-100 rejected-panel'
+                            : signStateMeta.border
+                      "
                     >
-                      <!-- Imzolash navbati: chapda izoh, o'ngda amallar — holat kartochkasi bilan bir uslubda -->
-                      <div v-if="signState === 'sign'" class="flex items-center gap-3 pl-1">
+                      <!-- HR: arizani rad etish yoki imzolab kelishuvchilarga yo'naltirish (buyruqlardagi kabi) -->
+                      <div v-if="showConfirmButtons" class="flex items-center gap-3 sm:pl-1">
                         <div
                           class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-fig-chip-brand text-fig-chip-brand-text"
                         >
                           <n-icon size="18"><Signature20Regular /></n-icon>
                         </div>
-                        <div class="min-w-0 leading-tight mr-2">
+                        <div class="hidden sm:block min-w-0 leading-tight mr-2">
+                          <div class="text-[13px] font-semibold text-textColor0 whitespace-nowrap">
+                            {{ $t(hrPanelTitle) }}
+                          </div>
+                          <div class="text-[11px] text-textColor3 mt-0.5 whitespace-nowrap">
+                            {{ $t(hrPanelSub) }}
+                          </div>
+                        </div>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                          <n-button
+                            v-if="canClose"
+                            type="error"
+                            secondary
+                            round
+                            class="px-3!"
+                            :loading="applicationStore.modalLoading"
+                            :disabled="
+                              applicationStore.modalLoading || applicationStore.signStartLoading
+                            "
+                            @click="openConfirmModal(false)"
+                          >
+                            <template #icon>
+                              <n-icon><Dismiss20Regular /></n-icon>
+                            </template>
+                            {{
+                              hrStage === 'new'
+                                ? $t('documentPage.signature.rejectSubmit')
+                                : $t('applicationPage.forward.closeApplication')
+                            }}
+                          </n-button>
+                          <n-button
+                            v-if="hrStage !== 'legacy'"
+                            type="primary"
+                            round
+                            class="px-5! sm:px-9! font-semibold"
+                            :loading="
+                              applicationStore.signStartLoading ||
+                              applicationStore.routeLoading ||
+                              signatureStore.loading
+                            "
+                            :disabled="applicationStore.modalLoading"
+                            @click="onHrPrimary"
+                          >
+                            <template #icon>
+                              <n-icon><Signature20Regular /></n-icon>
+                            </template>
+                            {{
+                              hrStage === 'rejected'
+                                ? $t('applicationPage.forward.resendTitle')
+                                : hrStage === 'process'
+                                  ? $t('applicationPage.forward.editTitle')
+                                  : hrSigned
+                                    ? $t('applicationPage.forward.setApprovers')
+                                    : $t('documentPage.signature.approval.sign')
+                            }}
+                          </n-button>
+                        </div>
+                      </div>
+                      <!-- Imzolash navbati: chapda izoh, o'ngda amallar — holat kartochkasi bilan bir uslubda -->
+                      <div v-else-if="signState === 'sign'" class="flex items-center gap-3 sm:pl-1">
+                        <div
+                          class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-fig-chip-brand text-fig-chip-brand-text"
+                        >
+                          <n-icon size="18"><Signature20Regular /></n-icon>
+                        </div>
+                        <div class="hidden sm:block min-w-0 leading-tight mr-2">
                           <div class="text-[13px] font-semibold text-textColor0 whitespace-nowrap">
                             {{ $t('documentPage.signature.approval.yourTurn') }}
                           </div>
@@ -720,7 +1005,7 @@
                           <n-button
                             type="primary"
                             round
-                            class="px-9! font-semibold"
+                            class="px-5! sm:px-9! font-semibold"
                             :loading="signatureStore.loading"
                             @click="onSaveSignature"
                           >
@@ -729,6 +1014,56 @@
                             </template>
                             {{ $t('documentPage.signature.approval.sign') }}
                           </n-button>
+                        </div>
+                      </div>
+                      <!-- Rad etilgan ariza: sabab + keyingi qadam (qotgan, har doim ko'rinadi) -->
+                      <div
+                        v-else-if="docRejectedPanel"
+                        class="flex items-start gap-3 pl-1 pr-4 py-1"
+                      >
+                        <div
+                          class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-fig-red-100 text-fig-text-red"
+                        >
+                          <n-icon size="18"><DismissCircle20Filled /></n-icon>
+                        </div>
+                        <div class="min-w-0 leading-snug">
+                          <div class="text-[14px] font-bold text-fig-text-red">
+                            {{ $t(rejectedTitle) }}
+                          </div>
+                          <div
+                            v-if="rejectedOwner && rejectReason"
+                            class="text-[13px] text-textColor1 mt-0.5 whitespace-pre-line break-words"
+                            :class="
+                              !reasonExpanded && reasonLong
+                                ? 'line-clamp-2'
+                                : 'max-h-40 overflow-y-auto pr-1'
+                            "
+                          >
+                            <span class="font-medium"
+                              >{{ $t('documentPage.signature.rejectedPanel.reason') }}:</span
+                            >
+                            {{ rejectReason }}
+                          </div>
+                          <button
+                            v-if="rejectedOwner && reasonLong"
+                            type="button"
+                            class="text-[12px] font-medium text-primary mt-0.5 hover:underline"
+                            @click="reasonExpanded = !reasonExpanded"
+                          >
+                            {{
+                              $t(
+                                reasonExpanded
+                                  ? 'documentPage.signature.rejectedPanel.less'
+                                  : 'documentPage.signature.rejectedPanel.more'
+                              )
+                            }}
+                          </button>
+                          <div
+                            v-if="rejectedOwner && rejectedHint"
+                            class="text-[12px] text-fig-text-secondary mt-0.5"
+                          >
+                            {{ $t(rejectedHint) }}
+                          </div>
                         </div>
                       </div>
                       <!-- Holat kartochkasi: rangli ikonka doirasi + sarlavha va izoh (vaqt) -->
@@ -747,9 +1082,13 @@
                             v-if="signStateMeta.sub || selfActedAt"
                             class="text-[11px] text-textColor3 tabular-nums mt-0.5"
                           >
-                            <template v-if="signStateMeta.sub">{{ $t(signStateMeta.sub) }}</template>
+                            <template v-if="signStateMeta.sub">{{
+                              $t(signStateMeta.sub)
+                            }}</template>
                             <template v-if="signStateMeta.sub && selfActedAt"> · </template>
-                            <template v-if="selfActedAt">{{ selfActedAt.format('DD.MM.YYYY HH:mm') }}</template>
+                            <template v-if="selfActedAt">{{
+                              selfActedAt.format('DD.MM.YYYY HH:mm')
+                            }}</template>
                           </div>
                         </div>
                       </div>
@@ -759,14 +1098,44 @@
               </Transition>
             </div>
 
-            <div class="hidden md:flex flex-col w-[360px] h-full relative">
+            <div
+              v-if="showRightInline"
+              class="flex flex-col w-[320px] xl:w-[360px] shrink-0 h-full relative"
+            >
               <ConfirmationList />
             </div>
           </div>
         </div>
       </n-drawer-content>
     </n-drawer>
-    <ConformAndRejectModal />
+    <!-- Tor ekranda yon panellar shu drawer'larda ochiladi -->
+    <n-drawer
+      v-if="!showLeftInline"
+      v-model:show="leftPanelVisible"
+      placement="left"
+      width="min(320px, 88vw)"
+    >
+      <div class="h-full flex flex-col p-2 bg-surface-ground">
+        <LeftContent />
+      </div>
+    </n-drawer>
+    <n-drawer
+      v-if="!showRightInline"
+      v-model:show="rightPanelVisible"
+      placement="right"
+      width="min(380px, 92vw)"
+    >
+      <div class="h-full flex flex-col p-2 bg-surface-ground">
+        <ConfirmationList />
+      </div>
+    </n-drawer>
+    <ConformAndRejectModal @rejected="onRejected" />
+    <ForwardApplicationModal @forwarded="onForwarded" />
+    <ForwardApplicationModal
+      v-if="isRouteDoc"
+      :route-store="documentRouteStore"
+      @forwarded="onRouteSaved"
+    />
     <DocumentFileModal />
     <ConfirmSignatureModal
       v-model:visible="confirmSignatureVisible"
@@ -787,6 +1156,28 @@
     border-style: solid;
     background-color: var(--surface-section);
     box-shadow: 0 8px 24px rgb(16 24 40 / 0.12);
+  }
+  /* Rad etilgan ariza — ko'p qatorli karta, pastdan chiqadi */
+  .floating-sign-panel.rejected-panel {
+    border-radius: 16px;
+    max-width: 560px;
+    padding: 10px 12px;
+    animation: rejected-panel-in 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes rejected-panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .floating-sign-panel.rejected-panel {
+      animation: none;
+    }
   }
   .tab-slide-left-enter-active,
   .tab-slide-left-leave-active,

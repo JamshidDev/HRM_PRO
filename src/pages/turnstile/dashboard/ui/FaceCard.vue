@@ -2,7 +2,6 @@
   import { Eye20Filled } from '@vicons/fluent'
   import { Utils } from '@/utils/index.js'
   import CardHeader from './CardHeader.vue'
-  import DeltaBadge from './DeltaBadge.vue'
   import { FaceCardSkeleton } from './skeleton/index.js'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
   import HeadAiScanIcon from '@/assets/icons/dashboard/head-ai-scan.svg'
@@ -12,24 +11,23 @@
   const store = useTurnstileDashboardStore()
   const emits = defineEmits(['onPreview'])
 
-  const turnstileCount = computed(() => store?.faceIdData?.other || 0)
-  const mobileCount = computed(() => store?.faceIdData?.mobile_face || 0)
+  // «Kelgan» xodimlarning bo'linishi: kun davomida mobil orqali o'tgan / faqat turniket.
+  const turnstileCount = computed(() => store.attendance?.came_turnstile || 0)
+  const mobileCount = computed(() => store.attendance?.came_mobile || 0)
   const totalCount = computed(() => turnstileCount.value + mobileCount.value)
 
   const cells = computed(() => [
     {
-      previewType: 'ACSEventFaceVerifyPass',
+      previewType: 'att_came_turnstile',
       label: 'turnStileDashboard.cards.turnstileFace',
       count: turnstileCount.value,
-      icon: markRaw(FaceTurnstileIcon),
-      delta: store.deltas.faceTurnstile
+      icon: markRaw(FaceTurnstileIcon)
     },
     {
-      previewType: 'MobileFaceEvent',
+      previewType: 'att_came_mobile',
       label: 'turnStileDashboard.cards.mobileFace',
       count: mobileCount.value,
-      icon: markRaw(FaceMobileIcon),
-      delta: store.deltas.faceMobile
+      icon: markRaw(FaceMobileIcon)
     }
   ])
 
@@ -37,15 +35,14 @@
 </script>
 
 <template>
-  <div class="bg-surface-section rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col">
-    <FaceCardSkeleton v-if="store.dailyAttendanceLoading" />
+  <div class="bg-surface-section shadow-card rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col">
+    <FaceCardSkeleton v-if="store.mainChartLoading" />
 
     <template v-else>
       <CardHeader
         :icon="HeadAiScanIcon"
         tint="teal"
         :title="$t('turnStileDashboard.compare.faceIdTitle')"
-        :subtitle="$t('turnStileDashboard.compare.faceIdSubtitle')"
       />
 
       <div class="flex-1 flex flex-col justify-center gap-2">
@@ -56,11 +53,6 @@
             >
               {{ formatCount(totalCount) }}
             </span>
-            <DeltaBadge
-              hide-label
-              :delta="store.deltas.faceTotal"
-              :loading="store.compareLoading"
-            />
           </div>
           <p class="text-[12px] text-fig-text-tertiary text-center">
             {{ $t('turnStileDashboard.cards.allWorkerOfFace') }}
@@ -98,7 +90,6 @@
               >
                 {{ formatCount(cell.count) }}
               </span>
-              <DeltaBadge hide-label :delta="cell.delta" :loading="store.compareLoading" />
             </div>
           </div>
         </div>

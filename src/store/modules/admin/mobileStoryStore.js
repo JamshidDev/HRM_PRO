@@ -113,7 +113,7 @@ export const useMobileStoryStore = defineStore('mobileStory', {
       const isVideo = (file.type ?? '').startsWith('video/')
       // Rasm keyinchalik siqiladi, videoni brauzerda siqib bo'lmaydi — darhol tekshiramiz.
       if (isVideo && file.size > MAX_UPLOAD_SIZE) {
-        window.$Toast?.error(t('mobileStoryPage.form.fileTooLarge'))
+        $Alert.validation(t('mobileStoryPage.form.fileTooLarge'))
         return
       }
       this.pendingSlides.push({
@@ -216,7 +216,7 @@ export const useMobileStoryStore = defineStore('mobileStory', {
     async _prepareSlideFile(file) {
       const prepared = await compressImageFile(file)
       if (prepared.size > MAX_UPLOAD_SIZE) {
-        window.$Toast?.error(t('mobileStoryPage.form.fileTooLarge'))
+        $Alert.validation(t('mobileStoryPage.form.fileTooLarge'))
         return null
       }
       return prepared
