@@ -91,9 +91,8 @@
       positionId.value = null
       startIndex.value = null
       search.value = null
-      const def = store.defaultDate
-      const start = def && minDay.value && def < minDay.value ? minDay.value : def || minDay.value
-      date.value = start ? new Date(`${start}T00:00:00`).getTime() : null
+      // Xodim doim oy (smena davri) boshidan ishlaydi.
+      date.value = minDay.value ? new Date(`${minDay.value}T00:00:00`).getTime() : null
       load()
     }
   )
@@ -106,9 +105,6 @@
     const f = (d) => d.slice(8, 10) + '.' + d.slice(5, 7)
     return t('shiftType.groupView.movesHere', { name: r.type_name, from: f(r.date_from), to: f(r.date_to) })
   })
-  const fromMonthStart = () => {
-    if (minDay.value) date.value = new Date(`${minDay.value}T00:00:00`).getTime()
-  }
 
   const onSearch = (v) => {
     search.value = v
@@ -155,10 +151,6 @@
       })
   }
 
-  const disabledDate = (ts) => {
-    const d = Utils.timeToZone(ts)
-    return !minDay.value || d < minDay.value || d > lastDay.value
-  }
 </script>
 
 <template>
@@ -183,14 +175,8 @@
           @onScrollEv="load(true)"
         />
       </div>
-      <div class="col-span-12">
-        <div class="flex items-center justify-between mb-1">
-          <span class="text-xs text-secondary">{{ $t('shiftType.groupView.workFrom') }}</span>
-          <n-button text size="tiny" type="primary" @click="fromMonthStart">
-            {{ $t('shiftType.groupView.monthStart') }}
-          </n-button>
-        </div>
-        <n-date-picker v-model:value="date" type="date" class="w-full" :is-date-disabled="disabledDate" />
+      <div class="col-span-12 text-xs text-secondary">
+        {{ $t('shiftType.groupView.addFromMonthStart', { from: minDay ? `${minDay.slice(8, 10)}.${minDay.slice(5, 7)}` : '' }) }}
       </div>
       <div v-if="moveInfo" class="col-span-12">
         <n-alert type="warning" :show-icon="true">{{ moveInfo }}</n-alert>

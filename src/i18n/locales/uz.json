@@ -5492,15 +5492,14 @@
       "regenHint2": "{from} dan {to} gacha kunlar navbat bo'yicha qayta yoziladi; qo'lda o'zgartirilgan kunlar va bir kunlik almashtirishlar bekor bo'ladi.",
       "menuRemove": "O'chirish",
       "removeTitle": "Xodimni smenadan o'chirish",
-      "removeFrom": "Qaysi kundan o'chiriladi",
-      "removeKept": "{to} gacha qoladi",
-      "removeDays": "{n} kun",
       "removeGone": "{from} – {to} o'chadi",
       "removeWorkDays": "{n} ish kuni",
-      "removeHint": "{from} dan oy oxirigacha xodim shu oyda grafiksiz qoladi: tabelda reja bo'lmaydi, turniketda kutilmaydi, o'rni bo'sh qoladi. Fakt bo'lgan kunlar saqlanadi. Keyin uni boshqa smenaga qo'shish mumkin.",
       "removeSubs": "Bu kunlardagi {n} ta bir kunlik almashtirish bekor bo'ladi, sheriklar rejasi qaytadi.",
       "lunch": "Tushlik {t}",
-      "hoursShort": "{n} soat"
+      "hoursShort": "{n} soat",
+      "removeWholeMonth": "Butun oy",
+      "removeHintMonth": "Xodimning shu oydagi butun grafigi o'chadi va u shu oy grafiksiz qoladi: tabelda reja bo'lmaydi, turniketda kutilmaydi, o'rni bo'sh qoladi. Fakt bo'lgan kunlar saqlanadi. Keyin uni boshqa smenaga qo'shish mumkin.",
+      "addFromMonthStart": "Xodim oy boshidan ({from}) shu o'rinda ishlaydi."
     },
     "generate": {
       "month": "Oy",

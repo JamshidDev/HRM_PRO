@@ -5443,15 +5443,14 @@
       "regenHint2": "Days from {from} to {to} are rewritten by rotation; manual changes and one-day swaps are cancelled.",
       "menuRemove": "Remove",
       "removeTitle": "Remove employee from shift",
-      "removeFrom": "Remove from",
-      "removeKept": "Kept until {to}",
-      "removeDays": "{n} days",
       "removeGone": "Removed {from} – {to}",
       "removeWorkDays": "{n} working days",
-      "removeHint": "From {from} to month end the employee has no schedule: no plan in the timesheet, not expected at the turnstile, the slot becomes free. Days with facts are kept. They can be added to another shift later.",
       "removeSubs": "{n} one-day swap(s) on these days will be cancelled and partners' plans restored.",
       "lunch": "Lunch {t}",
-      "hoursShort": "{n} h"
+      "hoursShort": "{n} h",
+      "removeWholeMonth": "Whole month",
+      "removeHintMonth": "The employee's whole schedule for this month is removed: no plan in the timesheet, not expected at the turnstile, the slot becomes free. Days with facts are kept. They can be added to another shift later.",
+      "addFromMonthStart": "The employee works in this slot from the start of the month ({from})."
     },
     "generate": {
       "month": "Month",
