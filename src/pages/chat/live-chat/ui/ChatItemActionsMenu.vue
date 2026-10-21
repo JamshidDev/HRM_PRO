@@ -31,10 +31,11 @@
   <n-popover
     v-model:show="show"
     raw
+    style="background: transparent; box-shadow: none; border-radius: 16px"
     trigger="manual"
     :x="x"
     :y="y"
-    placement="bottom-end"
+    placement="bottom-start"
     :show-arrow="false"
     @clickoutside="show = false"
   >

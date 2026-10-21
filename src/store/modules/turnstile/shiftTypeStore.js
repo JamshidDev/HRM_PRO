@@ -24,7 +24,10 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       page: 1,
       per_page: 200,
       organizations: [],
-      departments: []
+      departments: [],
+      // Smena turlaridagi guruh/xodim sonlari — guruhlar filtri bilan bir davr.
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() + 1
     },
     payload: {
       name: null,
@@ -38,12 +41,7 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       work_date: null,
       count: 1,
       month: null,
-      workers_count: null,
-      count_mode: 'count',
-      placement: 'auto',
-      period: false,
-      period_from: null,
-      period_to: null
+      workers_count: null
     },
     rotatingVisible: false,
     scheduleParams: {
@@ -84,7 +82,10 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       search: null,
       schedule_type: null,
       organizations: [],
-      departments: []
+      departments: [],
+      // Davr filtri — standart joriy yil va oy.
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() + 1
     },
     groupId: null,
     groupLoading: false,
@@ -326,6 +327,13 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
           this.scheduleVisible = false
           this.notScheduleVisible = false
           this.rotatingVisible = false
+          // Ro'yxat yaratilgan oyga o'tadi — yangi guruh darhol ko'rinsin.
+          const start = data?.start_date ? new Date(`${String(data.start_date).slice(0, 10)}T00:00:00`) : null
+          if (start && !Number.isNaN(start.getTime())) {
+            this.groupParams.year = this.params.year = start.getFullYear()
+            this.groupParams.month = this.params.month = start.getMonth() + 1
+            this.groupParams.page = 1
+          }
           this._refreshAfterGroupChange()
         })
         .finally(() => {
@@ -341,11 +349,6 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       this.generatePayload.work_date = this.generatePayload.work_date ?? today.getTime()
       this.generatePayload.count = this.generatePayload.count ?? 1
       this.generatePayload.month = new Date(today.getFullYear(), today.getMonth(), 1).getTime()
-      this.generatePayload.count_mode = 'count'
-      this.generatePayload.placement = 'auto'
-      this.generatePayload.period = false
-      this.generatePayload.period_from = null
-      this.generatePayload.period_to = null
     },
     // Guruh qo'shilganda/o'chirilganda chapdagi smena turlaridagi guruh/xodim soni ham
     // o'zgaradi. Turlarni faqat ko'rish huquqi borlar uchun qayta yuklaymiz — aks holda

@@ -68,3 +68,33 @@ export const generateWaveform = (seed, count = 40) => {
   }
   return bars
 }
+
+// Xabar faqat emojidan iborat bo'lsa (1–3 ta) — ularning soni, aks holda 0.
+// Telegram'dagi kabi bunday xabarlar pufaksiz, katta o'lchamda chiziladi.
+const EMOJI_GRAPHEME = /^(?:\p{Extended_Pictographic}|\p{Regional_Indicator}|[#*0-9]\uFE0F?\u20E3)/u
+export const bigEmojiCount = (text, max = 3) => {
+  const s = (text || '').replace(/\s+/g, '')
+  if (!s || typeof Intl === 'undefined' || !Intl.Segmenter) return 0
+  const parts = [...new Intl.Segmenter(undefined, { granularity: 'grapheme' }).segment(s)]
+  if (parts.length > max) return 0
+  return parts.every((p) => EMOJI_GRAPHEME.test(p.segment)) ? parts.length : 0
+}
+
+// Rasm yuborilayotganda (Telegram kabi): asl o'lcham + juda kichik (≈20px, <1KB) xira ko'rinish.
+// Qabul qiluvchi rasmni yuklamasdan turib uning shaklini va xira nusxasini ko'radi.
+const THUMB_SIDE = 20
+export const makeImageThumb = async (file) => {
+  try {
+    const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' })
+    const { width, height } = bitmap
+    const scale = THUMB_SIDE / Math.max(width, height)
+    const canvas = document.createElement('canvas')
+    canvas.width = Math.max(1, Math.round(width * scale))
+    canvas.height = Math.max(1, Math.round(height * scale))
+    canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height)
+    bitmap.close?.()
+    return { width, height, thumb: canvas.toDataURL('image/jpeg', 0.6) }
+  } catch {
+    return null
+  }
+}

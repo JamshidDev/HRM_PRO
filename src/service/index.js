@@ -6,7 +6,7 @@ import i18n from '@/i18n/index.js'
 import { reportApiError } from '@/utils/errorReporter.js'
 import { getDeviceUuid } from '@/utils/webPush.js'
 import { showAlert, alertFromAxiosError, isToastOnlyPage } from '@/components/notify/alertDialog.js'
-import { endSession, isSessionEnded, sessionSignal } from '@/features/sessionEnded/sessionEnded.js'
+import { endSessionIfForeign, isSessionEnded, sessionSignal } from '@/features/sessionEnded/sessionEnded.js'
 const apiUrl = import.meta.env.VITE_API_URL
 console.log(apiUrl)
 const { t } = i18n.global
@@ -15,6 +15,13 @@ const instance = axios.create({
 })
 
 let isLoggingOut = false
+
+// So'rov yuborilgandan keyin localStorage'dagi token almashganmi (qayta login).
+const isStaleTokenRequest = (config) => {
+  const sent = String(config?.headers?.Authorization || '').replace(/^Bearer /, '')
+  if (!sent || config?.url === '/auth/login') return false
+  return sent !== (localStorage.getItem(useAppSetting.tokenKey) || '')
+}
 
 instance.interceptors.request.use(function (config) {
   // Seans tugagan — alert turgan paytda hech qanday so'rov ketmaydi.
@@ -63,9 +70,21 @@ instance.interceptors.response.use(
     return Promise.resolve(response)
   },
   async (error) => {
+    // Eski token bilan ketgan so'rov (shu brauzerda qayta kirildi) — yangi token bilan bir marta qayta yuboriladi.
+    if (error.response?.status === 401 && isStaleTokenRequest(error.config)) {
+      if (!error.config.__staleRetried && localStorage.getItem(useAppSetting.tokenKey)) {
+        error.config.__staleRetried = true
+        return instance(error.config)
+      }
+      error.__notified = true
+      return Promise.reject(error)
+    }
     // Seans tugadi (socket yoki 401 session_ended) — toast/redirect yo'q, alert o'zi login'ga olib o'tadi.
     if (error.response?.status === 401 && error.response?.data?.code === 'session_ended') {
-      endSession(error.response.data)
+      const sent = String(error.config?.headers?.Authorization || '').replace(/^Bearer /, '')
+      endSessionIfForeign(error.response.data, sent.split('|')[0])
+      error.__notified = true
+      return Promise.reject(error)
     }
     if (isSessionEnded()) {
       error.__notified = true

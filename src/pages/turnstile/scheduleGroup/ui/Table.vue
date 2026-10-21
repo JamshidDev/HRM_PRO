@@ -31,7 +31,14 @@
         name: row.name,
         start: row.start_date,
         end: row.end_date,
-        type: row.schedule_type?.id || store.groupParams.schedule_type || undefined
+        // Generatsiyadagi o'rinlar soni — bo'sh o'rinlar ham ko'rinsin.
+        slots: row.slots_count || undefined,
+        type: row.schedule_type?.id || store.groupParams.schedule_type || undefined,
+        // Ro'yxatda tanlangan oy — guruh shu oyda ochiladi.
+        month:
+          store.groupParams.year && store.groupParams.month
+            ? `${store.groupParams.year}-${store.groupParams.month}`
+            : undefined
       }
     })
   }
@@ -55,12 +62,31 @@
     store._deleteGroup()
   }
 
+  // Biriktirish faqat bitta oyga: ro'yxatda tanlangan oy ∩ guruh davri, joriy oydan oldin emas.
+  const attachRange = (row) => {
+    const pad = (n) => String(n).padStart(2, '0')
+    const now = new Date()
+    const y = store.groupParams.year || now.getFullYear()
+    const m = store.groupParams.month || now.getMonth() + 1
+    const monthFrom = `${y}-${pad(m)}-01`
+    const monthTo = `${y}-${pad(m)}-${pad(new Date(y, m, 0).getDate())}`
+    const thisMonth = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-01`
+    const from = [monthFrom, String(row.start_date).slice(0, 10), thisMonth].sort().pop()
+    const to = [monthTo, String(row.end_date).slice(0, 10)].sort()[0]
+    return from <= to ? { from, to } : null
+  }
+
   const onAttachWorker = (row) => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
+    const range = attachRange(row)
+    if (!range) {
+      $Alert.warning(t('shiftType.groupView.pastMonth'))
+      return
+    }
     store.groupId = row.id
     store.elementId = row.schedule_type?.id
-    store.notScheduleParams.start_date = row.start_date
-    store.notScheduleParams.end_date = row.end_date
+    store.notScheduleParams.start_date = range.from
+    store.notScheduleParams.end_date = range.to
     store.notScheduleParams.page = 1
     store._notScheduleWorker()
     store.selectedWorkers = []
@@ -81,17 +107,17 @@
     {
       key: 'workers_count',
       title: t('content.worker'),
-      width: 200
+      width: 90
     },
     {
       key: 'start_date',
       title: t('content.from'),
-      width: 160
+      width: 120
     },
     {
       key: 'end_date',
       title: t('content.to'),
-      width: 160
+      width: 120
     }
   ])
 
@@ -156,15 +182,15 @@
       <span class="line-clamp-2 leading-[1.3]">{{ row.organization?.name || '—' }}</span>
     </template>
     <template #cell-workers_count="{ row }">
-      <UIBadge :show-icon="false" :label="String(row.workers_count)" />
+      <UIBadge :show-icon="false" :type="Utils.colorTypes.secondary" :label="String(row.workers_count)" />
     </template>
 
     <template #cell-start_date="{ row }">
-      <UIBadge :show-icon="false" :label="row.start_date" />
+      {{ Utils.timeOnlyDate(row.start_date) }}
     </template>
 
     <template #cell-end_date="{ row }">
-      <UIBadge :show-icon="false" :label="row.end_date" />
+      {{ Utils.timeOnlyDate(row.end_date) }}
     </template>
   </UITable>
 </template>

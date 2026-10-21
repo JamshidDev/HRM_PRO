@@ -21,26 +21,20 @@
     })
   }
 
-  // `birthday` odatda MAJBURIY, lekin «Vafot etgan» belgilanganda u bloklanadi
-  // va tozalanadi — qoida qolsa forma umuman saqlanmasdi. Shu sabab qoidalar
-  // computed: died bo'lsa `birthday` talabi olib tashlanadi.
+  // Vafot etgan qarindoshda tug'ilgan sana majburiy emas (ko'pincha aniq ma'lum emas).
   const rules = computed(() => {
     if (!store.payload.died) return validationRules.relativePage
     const { birthday, ...rest } = validationRules.relativePage
     return rest
   })
 
-  // «Vafot etgan» — tirik odamga tegishli maydonlar tozalanib bloklanadi.
-  // Backend ham ularni majburan `null` qiladi, bu yerda faqat ko'rinish
-  // (aks holda foydalanuvchi bloklangan maydonda eski qiymatni ko'rib turardi).
+  // «Vafot etgan» — tirik odamga tegishli maydonlar tozalanadi; tug'ilgan sana/joy qoladi (obyektivkada chiqadi).
   watch(
     () => store.payload.died,
     (died) => {
       if (!died) return
       store.payload.pin = null
-      store.payload.birthday = null
       store.payload.post_name = null
-      store.payload.birth_place = null
       store.payload.address = null
     }
   )
@@ -85,14 +79,13 @@
           v-model:value="store.payload.birthday"
           type="date"
           :format="useAppSetting.datePicketFormat"
-          :disabled="store.payload.died"
         />
       </n-form-item>
       <n-form-item :label="$t(`relativePage.form.post_name`)" path="post_name">
         <n-input type="text" v-model:value="store.payload.post_name" :disabled="store.payload.died" />
       </n-form-item>
       <n-form-item :label="$t(`relativePage.form.birth_place`)" path="birth_place">
-        <n-input type="text" v-model:value="store.payload.birth_place" :disabled="store.payload.died" />
+        <n-input type="text" v-model:value="store.payload.birth_place" />
       </n-form-item>
       <n-form-item :label="$t(`createWorkerPage.form.address`)" path="address">
         <n-input type="text" v-model:value="store.payload.address" :disabled="store.payload.died" />

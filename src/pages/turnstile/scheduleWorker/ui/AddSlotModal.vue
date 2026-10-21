@@ -4,6 +4,7 @@
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import { cycleOf } from './navbat.js'
+  import { scheduleLabel } from '@/store/modules/turnstile/scheduleGroupWorkerStore.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -13,6 +14,8 @@
   const accStore = useAccountStore()
 
   const workers = ref([])
+  const page = ref(1)
+  const total = ref(0)
   const loading = ref(false)
   const saving = ref(false)
   const search = ref(null)
@@ -43,32 +46,38 @@
     const start = store.params.startDate ? String(store.params.startDate).slice(0, 10) : null
     return start && firstDay.value && start > firstDay.value ? start : firstDay.value
   })
+  // Faqat shu oy: grafik oxiri va oy oxiridan qaysi oldin bo'lsa.
   const endDate = computed(() => {
     const end = store.params.endDate ? String(store.params.endDate).slice(0, 10) : null
-    return end && end >= (Utils.timeToZone(date.value) || '') ? end : lastDay.value
+    const monthEnd = store.monthRange.to || lastDay.value
+    return end && end < monthEnd ? end : monthEnd
   })
 
-  const load = () => {
+  // append=true — skrolda keyingi sahifa.
+  const load = (append = false) => {
     const start = Utils.timeToZone(date.value)
     if (!start || !endDate.value) return
+    page.value = append === true ? page.value + 1 : 1
     loading.value = true
     $ApiService.shiftTypeService
       ._getWorkers({
         params: {
-          page: 1,
-          per_page: 100,
+          page: page.value,
+          per_page: 50,
           search: search.value || undefined,
-          has_schedule: 'No',
-          start_date: start,
-          end_date: endDate.value
+          start_date: store.monthRange.from,
+          end_date: store.monthRange.to
         }
       })
       .then((res) => {
-        workers.value = res.data.data.data.map((v) => ({
+        total.value = res.data.data.total
+        const list = res.data.data.data.map((v) => ({
           name: Utils.combineFullName(v.worker),
           positionId: v.id,
-          position: v.position
+          position: [v.position, scheduleLabel(v.rangeSchedules, store.params.group)].filter(Boolean).join(' · '),
+          ranges: v.rangeSchedules ?? []
         }))
+        workers.value = append === true ? [...workers.value, ...list] : list
       })
       .finally(() => {
         loading.value = false
@@ -82,12 +91,24 @@
       positionId.value = null
       startIndex.value = null
       search.value = null
-      const today = Utils.timeToZone(Date.now())
-      const start = minDay.value && today >= minDay.value && today <= lastDay.value ? today : minDay.value
+      const def = store.defaultDate
+      const start = def && minDay.value && def < minDay.value ? minDay.value : def || minDay.value
       date.value = start ? new Date(`${start}T00:00:00`).getTime() : null
       load()
     }
   )
+
+  // Boshqa grafikdagi xodim — tanlangan sanadan shu o'ringa o'tadi.
+  const moveInfo = computed(() => {
+    const w = workers.value.find((v) => v.positionId === positionId.value)
+    const r = w?.ranges?.find((x) => x.group_id !== Number(store.params.group))
+    if (!r) return null
+    const f = (d) => d.slice(8, 10) + '.' + d.slice(5, 7)
+    return t('shiftType.groupView.movesHere', { name: r.type_name, from: f(r.date_from), to: f(r.date_to) })
+  })
+  const fromMonthStart = () => {
+    if (minDay.value) date.value = new Date(`${minDay.value}T00:00:00`).getTime()
+  }
 
   const onSearch = (v) => {
     search.value = v
@@ -158,17 +179,21 @@
           :render-label="UIHelper.selectRender.label"
           :render-tag="UIHelper.selectRender.value"
           :loading="loading"
+          :total-count="total"
+          @onScrollEv="load(true)"
         />
       </div>
       <div class="col-span-12">
-        <div class="text-xs text-secondary mb-1">{{ $t('shiftType.form.fromThisDate') }}</div>
-        <n-date-picker
-          v-model:value="date"
-          type="date"
-          class="w-full"
-          :is-date-disabled="disabledDate"
-          @update:value="load"
-        />
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-xs text-secondary">{{ $t('shiftType.groupView.workFrom') }}</span>
+          <n-button text size="tiny" type="primary" @click="fromMonthStart">
+            {{ $t('shiftType.groupView.monthStart') }}
+          </n-button>
+        </div>
+        <n-date-picker v-model:value="date" type="date" class="w-full" :is-date-disabled="disabledDate" />
+      </div>
+      <div v-if="moveInfo" class="col-span-12">
+        <n-alert type="warning" :show-icon="true">{{ moveInfo }}</n-alert>
       </div>
       <div v-if="!phaseKnown" class="col-span-12">
         <div class="text-xs text-secondary mb-1">{{ $t('shiftType.groupView.patternStart') }}</div>

@@ -12,8 +12,14 @@ const _delete = async (id) => {
   return await axios.delete(`/v1/economist/salary-hidden/${id}`)
 }
 
+// Xodimni ism/PINFL bo'yicha qidirish (yashirish uchun tanlash).
+const _searchWorkers = async (params) => {
+  return await axios.get('/v1/economist/salary-hidden/search', { params })
+}
+
 export default {
   _index,
   _create,
-  _delete
+  _delete,
+  _searchWorkers
 }

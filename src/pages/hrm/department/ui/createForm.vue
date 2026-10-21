@@ -162,7 +162,13 @@
         <n-input :rows="2" type="textarea" v-model:value="store.payload.comment" />
       </n-form-item>
 
-      <n-form-item :label="$t(`departmentPage.form.region`)" path="region_id">
+      <!-- Backend `city_id` ni majburiy qiladi (422), Tuman esa Viloyatsiz tanlanmaydi —
+           shuning uchun ikkalasi ham shu yerda majburiy. -->
+      <n-form-item
+        :label="$t(`departmentPage.form.region`)"
+        path="region_id"
+        :rule-path="validationRules.rulesNames.requiredNumberField"
+      >
         <n-select
           v-model:value="store.payload.region_id"
           @update:value="store.changeRegion"
@@ -174,7 +180,11 @@
           :loading="componentStore.regionLoading"
         />
       </n-form-item>
-      <n-form-item :label="$t(`departmentPage.form.city`)" path="city_id">
+      <n-form-item
+        :label="$t(`departmentPage.form.city`)"
+        path="city_id"
+        :rule-path="validationRules.rulesNames.requiredNumberField"
+      >
         <n-select
           :disabled="!store.payload.region_id"
           v-model:value="store.payload.city_id"
