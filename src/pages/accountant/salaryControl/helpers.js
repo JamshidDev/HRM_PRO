@@ -7,6 +7,15 @@ import Utils from '@/utils/Utils.js'
 // —— Formatlash ——————————————————————————————————————————————————————
 // To'liq son (so'm) — mavjud Utils bilan.
 export const money = (v) => Utils.formatNumberToMoney(Math.round(Number(v) || 0))
+// Summa (so'm) — `money` uchun aniq nom (formatSum). Bo'sh joy minglik ajratgich.
+export const formatSum = money
+// Ishlagan vaqt (soat) — butun bo'lsa butun, aks holda 1 kasr xona.
+export const formatHours = (v) => {
+  const n = Number(v) || 0
+  return Number.isInteger(n) ? String(n) : n.toFixed(1)
+}
+// Foiz — standart ko'rinish («50%»). `digits` kasr xonalar soni.
+export const formatPercent = (v, digits = 0) => `${(Number(v) || 0).toFixed(digits)}%`
 // Mln so'mda, 1 kasr xona (grafik o'qlari/tooltip uchun).
 export const mln = (v) => (Number(v) || 0) / 1e6
 export const mlnText = (v) => {
