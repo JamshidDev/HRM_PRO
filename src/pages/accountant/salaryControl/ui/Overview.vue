@@ -9,6 +9,7 @@
   import Card from './Card.vue'
   import EChart from './EChart.vue'
   import ScSkeleton from './ScSkeleton.vue'
+  import StatusBadge from './StatusBadge.vue'
 
   const { t } = i18n.global
   const store = useSalaryControlStore()
@@ -106,8 +107,8 @@
     }
   })
 
-  const sevClass = (s) =>
-    s === 'Yuqori' ? 'sc-b--red' : s === 'O‘rta' ? 'sc-b--orange' : 'sc-b--amber'
+  // StatusBadge uchun tone (severity → rang).
+  const sevTone = (s) => (s === 'Yuqori' ? 'red' : s === 'O‘rta' ? 'orange' : 'amber')
 </script>
 
 <template>
@@ -175,7 +176,7 @@
           <tbody>
             <tr v-for="(f, i) in rows" :key="i">
               <td>
-                <span class="sc-badge" :class="sevClass(f.sev)"><i class="sc-dot"></i>{{ f.sev }}</span>
+                <StatusBadge :tone="sevTone(f.sev)" :label="f.sev" />
                 <b class="sc-fio">{{ f.fio || '—' }}</b>
                 <div class="sc-muted">{{ f.txt }}</div>
               </td>

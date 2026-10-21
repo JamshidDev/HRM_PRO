@@ -9,15 +9,16 @@
   import Card from './Card.vue'
   import EChart from './EChart.vue'
   import ScSkeleton from './ScSkeleton.vue'
+  import StatusBadge from './StatusBadge.vue'
 
   const { t } = i18n.global
   const store = useSalaryControlStore()
   const appStore = useAppStore()
 
-  // Natija tokeni ('based'|'check') → yorliq + badge sinfi.
+  // Natija tokeni ('based'|'check') → yorliq + badge toni.
   const resLabel = (res) =>
     res === 'check' ? t('salaryControl.rules.check') : res === 'based' ? t('salaryControl.rules.based') : ''
-  const resClass = (res) => (res === 'check' ? 'sc-b--amber' : 'sc-b--green')
+  const resTone = (res) => (res === 'check' ? 'amber' : 'green')
   const isCheck = (res) => res === 'check'
 
   // —— KPI qatori (rk) — server tomonda hisoblangan ————————————————————————
@@ -151,9 +152,7 @@
               <td class="num">{{ row.n }}</td>
               <td class="num">{{ money(row.sum) }}</td>
               <td>
-                <span v-if="row.res" class="sc-badge" :class="resClass(row.res)">
-                  <i class="sc-dot"></i>{{ resLabel(row.res) }}
-                </span>
+                <StatusBadge v-if="row.res" :tone="resTone(row.res)" :label="resLabel(row.res)" />
                 <span v-else class="sc-muted">{{ $t('salaryControl.common.empty') }}</span>
               </td>
             </tr>
@@ -209,7 +208,7 @@
               <td class="num">{{ money(x.s) }}</td>
               <td class="sc-muted">{{ x.why }}</td>
               <td>
-                <span class="sc-badge" :class="resClass(x.res)"><i class="sc-dot"></i>{{ resLabel(x.res) }}</span>
+                <StatusBadge :tone="resTone(x.res)" :label="resLabel(x.res)" />
               </td>
             </tr>
             <tr v-if="!registry.length">

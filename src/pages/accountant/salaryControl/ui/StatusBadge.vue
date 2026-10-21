@@ -6,8 +6,12 @@
   const { t } = i18n.global
 
   const props = defineProps({
-    // backend status: bad | chk | ok | na
-    status: { type: String, default: 'na' },
+    // backend risk status: bad | chk | ok | na (META'dan tone+matn olinadi)
+    status: { type: String, default: '' },
+    // YOKI to'g'ridan-to'g'ri tone + label (severity/result kabi boshqa lug'atlar uchun):
+    // tone: red | amber | green | indigo | orange
+    tone: { type: String, default: '' },
+    label: { type: String, default: '' },
     // matnni yashirish (faqat nuqta) kerak bo'lsa
     labelHidden: { type: Boolean, default: false }
   })
@@ -19,8 +23,11 @@
     na: { tone: 'indigo', label: 'salaryControl.risk.status.na' }
   }
 
-  const tone = computed(() => META[props.status]?.tone ?? 'indigo')
-  const label = computed(() => t(META[props.status]?.label ?? 'salaryControl.risk.status.na'))
+  // tone/label to'g'ridan-to'g'ri berilsa — o'shani, aks holda status META'sidan.
+  const tone = computed(() => props.tone || META[props.status]?.tone || 'indigo')
+  const label = computed(() =>
+    props.label || t(META[props.status]?.label ?? 'salaryControl.risk.status.na')
+  )
 </script>
 
 <template>
@@ -55,6 +62,10 @@
   .sc-badge--amber {
     background: var(--fig-chip-amber-bg);
     color: var(--fig-chip-amber-text);
+  }
+  .sc-badge--orange {
+    background: var(--fig-chip-amber-bg);
+    color: var(--fig-icon-orange);
   }
   .sc-badge--green {
     background: var(--fig-chip-green-bg);
