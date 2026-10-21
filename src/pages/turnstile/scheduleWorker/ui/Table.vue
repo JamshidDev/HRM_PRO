@@ -2,7 +2,8 @@
   import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
   import SearchElement from '@/pages/turnstile/schedule/ui/SearchElement.vue'
   import Utils from '@/utils/Utils.js'
-  import { ArrowReset20Regular, MoreHorizontal32Filled } from '@vicons/fluent'
+  import { ArrowReset20Regular, CalendarEdit16Regular, MoreHorizontal32Filled, PeopleSwap20Regular } from '@vicons/fluent'
+  import UIHelper from '@/utils/UIHelper.js'
   import { UIPagination } from '@components'
   import { cycleDays, cycleOf, isRotating, navbatOf, patternOf } from './navbat.js'
   import i18n from '@/i18n/index.js'
@@ -437,6 +438,24 @@
     store.replaceMode = 'edit'
   }
 
+  // Xodim qatoridagi «…» menyusi: almashtirish, kunni o'zgartirish, navbat bo'yicha qayta yaratish.
+  const rowMenu = computed(() => [
+    { label: t('shiftType.groupView.swapMode'), key: 'swap', icon: UIHelper.renderIcon(PeopleSwap20Regular) },
+    { label: t('shiftType.groupView.editDay'), key: 'edit', icon: UIHelper.renderIcon(CalendarEdit16Regular) },
+    ...(rotating.value
+      ? [{ label: t('shiftType.groupView.regenTitle'), key: 'regen', icon: UIHelper.renderIcon(ArrowReset20Regular) }]
+      : [])
+  ])
+  const onRowMenu = (key, worker) => {
+    if (key === 'regen') return onRegen(worker)
+    onReplace(worker)
+    if (key === 'edit') {
+      store.replacePayload.status = true
+      store.replaceModeSwitch = true
+      store.replaceMode = 'edit'
+    }
+  }
+
   // Aylanma smenada xodim grafigini navbati bo'yicha qayta yaratish.
   const onRegen = (v) => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
@@ -614,7 +633,7 @@
                 <div
                   class="border-r border-l-[0] border-b border-t-0 border-surface-line p-2 w-[340px] min-w-[320px] h-[50px] border sticky left-[calc(var(--lw)+var(--sw))] bg-surface-section flex-shrink-0 z-[5] flex items-center"
                 >
-                  <div :class="rotating && canReplace ? 'w-[calc(100%-60px)]' : 'w-[calc(100%-28px)]'">
+                  <div class="w-[calc(100%-28px)]">
                     <div class="flex items-center gap-1.5 min-w-0">
                       <span class="line-clamp-1 leading-[1.2] font-medium">{{ worker.fullName }}</span>
                     </div>
@@ -623,25 +642,21 @@
                     </div>
                   </div>
 
-                  <div
-                    v-if="canReplace && rotating"
-                    @click="onRegen(worker)"
-                    :title="$t('shiftType.groupView.regenTitle')"
-                    class="w-[28px] h-[28px] mr-1 border border-surface-line rounded-lg flex justify-center items-center text-secondary cursor-pointer"
-                  >
-                    <n-icon size="16">
-                      <ArrowReset20Regular />
-                    </n-icon>
-                  </div>
-                  <div
+                  <n-dropdown
                     v-if="canReplace"
-                    @click="onReplace(worker)"
-                    class="w-[28px] h-[28px] border border-surface-line rounded-lg flex justify-center items-center text-secondary cursor-pointer"
+                    size="small"
+                    trigger="click"
+                    :options="rowMenu"
+                    @select="(key) => onRowMenu(key, worker)"
                   >
-                    <n-icon size="20">
-                      <MoreHorizontal32Filled />
-                    </n-icon>
-                  </div>
+                    <div
+                      class="w-[28px] h-[28px] border border-surface-line rounded-lg flex justify-center items-center text-secondary cursor-pointer hover:border-primary hover:text-primary"
+                    >
+                      <n-icon size="20">
+                        <MoreHorizontal32Filled />
+                      </n-icon>
+                    </div>
+                  </n-dropdown>
                 </div>
 
                 <!-- Day Cells -->

@@ -62,12 +62,31 @@
     store._deleteGroup()
   }
 
+  // Biriktirish faqat bitta oyga: ro'yxatda tanlangan oy ∩ guruh davri, joriy oydan oldin emas.
+  const attachRange = (row) => {
+    const pad = (n) => String(n).padStart(2, '0')
+    const now = new Date()
+    const y = store.groupParams.year || now.getFullYear()
+    const m = store.groupParams.month || now.getMonth() + 1
+    const monthFrom = `${y}-${pad(m)}-01`
+    const monthTo = `${y}-${pad(m)}-${pad(new Date(y, m, 0).getDate())}`
+    const thisMonth = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-01`
+    const from = [monthFrom, String(row.start_date).slice(0, 10), thisMonth].sort().pop()
+    const to = [monthTo, String(row.end_date).slice(0, 10)].sort()[0]
+    return from <= to ? { from, to } : null
+  }
+
   const onAttachWorker = (row) => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
+    const range = attachRange(row)
+    if (!range) {
+      $Alert.warning(t('shiftType.groupView.pastMonth'))
+      return
+    }
     store.groupId = row.id
     store.elementId = row.schedule_type?.id
-    store.notScheduleParams.start_date = row.start_date
-    store.notScheduleParams.end_date = row.end_date
+    store.notScheduleParams.start_date = range.from
+    store.notScheduleParams.end_date = range.to
     store.notScheduleParams.page = 1
     store._notScheduleWorker()
     store.selectedWorkers = []
