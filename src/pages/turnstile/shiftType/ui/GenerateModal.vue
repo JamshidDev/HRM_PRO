@@ -6,10 +6,6 @@
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
   import { crewSizeOf, cycleDays, isRotating } from '@/pages/turnstile/scheduleWorker/ui/navbat.js'
-  import { Checkmark12Filled, Flash16Regular, PersonAdd16Regular } from '@vicons/fluent'
-  import i18n from '@/i18n/index.js'
-
-  const { t } = i18n.global
 
   const store = useShiftTypeStore()
   const accStore = useAccountStore()
@@ -26,16 +22,9 @@
   const slotted = computed(() => rotating.value || store.isDailySchedule)
 
 
-  // Grafik chegarasi — tanlangan oyning birinchi va oxirgi kuni yoki shu oy ichidagi davr.
+  // Grafik chegarasi — tanlangan oyning birinchi va oxirgi kuni.
   const monthRange = () => {
-    const p = store.generatePayload
-    if (p.period && p.period_from && p.period_to) {
-      return {
-        start_date: dayjs(p.period_from).format('YYYY-MM-DD'),
-        end_date: dayjs(p.period_to).format('YYYY-MM-DD')
-      }
-    }
-    const m = dayjs(p.month)
+    const m = dayjs(store.generatePayload.month ?? Date.now())
     return {
       start_date: m.startOf('month').format('YYYY-MM-DD'),
       end_date: m.endOf('month').format('YYYY-MM-DD')
@@ -54,14 +43,12 @@
     const last = now.add(MAX_MONTHS_AHEAD, 'month').year()
     return Utils.yearList.map((y) => ({ ...y, disabled: y.id < now.year() || y.id > last }))
   })
-  const PERIOD = 'period'
-  const monthOptions = computed(() => [
-    ...Utils.monthList.map((m) => ({
+  const monthOptions = computed(() =>
+    Utils.monthList.map((m) => ({
       ...m,
       disabled: isMonthDisabled(new Date(year.value, m.id - 1, 1).getTime())
-    })),
-    { name: t('shiftType.generate.byPeriod'), id: PERIOD }
-  ])
+    }))
+  )
   const setMonth = (y, m) => {
     let ts = new Date(y, m - 1, 1).getTime()
     // Yil almashganda ruxsat etilmagan oy — eng yaqin ruxsat etilganiga suriladi.
@@ -76,105 +63,18 @@
     set: (y) => setMonth(y, month.value)
   })
   const month = computed({
-    get: () => (store.generatePayload.period ? PERIOD : dayjs(store.generatePayload.month ?? Date.now()).month() + 1),
-    set: (m) => {
-      const p = store.generatePayload
-      if (m === PERIOD) {
-        // Davr standart holatda — tanlangan oyning birinchi va oxirgi kuni.
-        const base = dayjs(p.month ?? Date.now())
-        p.period_from = base.startOf('month').valueOf()
-        p.period_to = base.endOf('month').startOf('day').valueOf()
-        p.period = true
-        return
-      }
-      p.period = false
-      setMonth(year.value, m)
-    }
+    get: () => dayjs(store.generatePayload.month ?? Date.now()).month() + 1,
+    set: (m) => setMonth(year.value, m)
   })
-
-  // Davr bitta oy ichida: «gacha» sanasi «dan» oyidan chiqmaydi.
-  const isFromDisabled = (ts) => isMonthDisabled(ts)
-  const isToDisabled = (ts) => {
-    const from = dayjs(store.generatePayload.period_from)
-    const d = dayjs(ts)
-    return d.isBefore(from, 'day') || !d.isSame(from, 'month')
-  }
-  watch(
-    () => store.generatePayload.period_from,
-    (v) => {
-      const p = store.generatePayload
-      if (!v || !p.period) return
-      p.month = dayjs(v).startOf('month').valueOf()
-      if (!p.period_to || isToDisabled(p.period_to)) p.period_to = dayjs(v).endOf('month').startOf('day').valueOf()
-    }
-  )
-
-  // Joylashtirish: tizim xodimlarni o'zi tasodifiy qo'yadi yoki o'rinlar bo'sh qoladi (HR o'zi biriktiradi).
-  const placementOptions = computed(() => [
-    {
-      value: 'auto',
-      icon: Flash16Regular,
-      label: t('shiftType.generate.placementAuto'),
-      hint: t('shiftType.generate.placementAutoHint')
-    },
-    {
-      value: 'empty',
-      icon: PersonAdd16Regular,
-      label: t('shiftType.generate.placementEmpty'),
-      hint: t('shiftType.generate.placementEmptyHint')
-    }
-  ])
-
-  // Xodimlar soni: aniq son yoki hisoblab to'ldiriladi — shu davrda smenasi yo'qlar / barcha shtat xodimlari.
-  const countLoading = ref(false)
-  const countModeOptions = computed(() => [
-    { label: t('shiftType.generate.byCount'), value: 'count' },
-    { label: t('shiftType.generate.freeWorkersMode'), value: 'free' },
-    { label: t('shiftType.generate.allWorkersMode'), value: 'all' }
-  ])
-
-  const totalOf = (params) =>
-    $ApiService.shiftTypeService
-      ._getWorkers({ params: { page: 1, per_page: 1, ...params } })
-      .then((res) => Number(res.data.data.total) || 0)
 
   // Bitta saqlashda ko'pi bilan 100 xodim (backend ham tekshiradi); smenada brigada buzilmasin — brigadaga karrali.
   const BATCH_MAX = 100
   const maxWorkers = computed(() => (rotating.value ? Math.floor(BATCH_MAX / crewSize.value) * crewSize.value : BATCH_MAX))
-  const totalFound = ref(null)
   watch(
     () => store.generatePayload.workers_count,
     (v) => {
       if (Number(v) > maxWorkers.value) store.generatePayload.workers_count = maxWorkers.value
     }
-  )
-
-  const loadCounts = () => {
-    const mode = store.generatePayload.count_mode
-    if (mode === 'count' || !store.visible) return
-    const range = monthRange()
-    countLoading.value = true
-    totalOf(
-      mode === 'free' ? { has_schedule: 'No', ...range } : { exclude_schedule_type: store.elementId, ...range }
-    )
-      .then((n) => {
-        if (store.generatePayload.count_mode !== mode) return
-        totalFound.value = n
-        store.generatePayload.workers_count = Math.min(n, maxWorkers.value)
-      })
-      .finally(() => {
-        countLoading.value = false
-      })
-  }
-  watch(
-    () => [
-      store.generatePayload.count_mode,
-      store.generatePayload.month,
-      store.generatePayload.period,
-      store.generatePayload.period_from,
-      store.generatePayload.period_to
-    ],
-    loadCounts
   )
 
   const onSubmit = () => {
@@ -186,10 +86,6 @@
         return
       }
       const range = monthRange()
-      if (slotted.value && !(Number(store.generatePayload.workers_count) > 0)) {
-        $Alert.warning(t('shiftType.generate.noFreeWorkers'))
-        return
-      }
       store.generatePayload.start_date = range.start_date
       store.generatePayload.end_date = range.end_date
 
@@ -273,32 +169,11 @@
               :options="yearOptions"
               label-field="name"
               value-field="id"
-              :disabled="store.generatePayload.period"
             />
           </n-form-item>
           <n-form-item class="col-span-7 sm:col-span-8" :label="$t('content.month')">
             <n-select v-model:value="month" :options="monthOptions" label-field="name" value-field="id" />
           </n-form-item>
-          <template v-if="store.generatePayload.period">
-            <n-form-item class="col-span-6" :label="$t('shiftType.generate.periodFrom')">
-              <n-date-picker
-                v-model:value="store.generatePayload.period_from"
-                type="date"
-                class="w-full"
-                :format="useAppSetting.datePicketFormat"
-                :is-date-disabled="isFromDisabled"
-              />
-            </n-form-item>
-            <n-form-item class="col-span-6" :label="$t('shiftType.generate.periodTo')">
-              <n-date-picker
-                v-model:value="store.generatePayload.period_to"
-                type="date"
-                class="w-full"
-                :format="useAppSetting.datePicketFormat"
-                :is-date-disabled="isToDisabled"
-              />
-            </n-form-item>
-          </template>
 
           <n-form-item
             v-if="slotted"
@@ -307,33 +182,17 @@
             path="workers_count"
             :rule-path="validationRules.rulesNames.requiredNumberField"
           >
-            <n-input-group>
-              <n-input-number
-                :min="1"
-                :max="maxWorkers"
-                :step="1"
-                class="flex-1"
-                :disabled="store.generatePayload.count_mode !== 'count'"
-                :show-button="false"
-                :allow-input="Utils.onlyAllowNumber"
-                v-model:value="store.generatePayload.workers_count"
-              />
-              <n-select
-                v-model:value="store.generatePayload.count_mode"
-                :options="countModeOptions"
-                :loading="countLoading"
-                :consistent-menu-width="false"
-                class="w-[210px]!"
-              />
-            </n-input-group>
+            <n-input-number
+              :min="1"
+              :max="maxWorkers"
+              :step="1"
+              class="w-full"
+              :show-button="false"
+              :allow-input="Utils.onlyAllowNumber"
+              v-model:value="store.generatePayload.workers_count"
+            />
             <template #feedback>
-              <span
-                v-if="store.generatePayload.count_mode !== 'count' && totalFound > maxWorkers"
-                class="text-warning"
-              >
-                {{ $t('shiftType.generate.batchHint', { total: totalFound, n: maxWorkers, rest: totalFound - maxWorkers }) }}
-              </span>
-              <span v-else class="text-secondary">{{ $t('shiftType.generate.maxHint', { n: maxWorkers }) }}</span>
+              <span class="text-secondary">{{ $t('shiftType.generate.maxHint', { n: maxWorkers }) }}</span>
             </template>
           </n-form-item>
 
@@ -356,40 +215,6 @@
           </n-form-item>
         </div>
 
-        <n-form-item v-if="slotted" :label="$t('shiftType.generate.placement')" :show-feedback="false" class="mb-4">
-          <div class="w-full grid grid-cols-2 gap-2">
-            <button
-              v-for="o in placementOptions"
-              :key="o.value"
-              type="button"
-              class="relative text-left pl-3 pr-9 py-2.5 rounded-lg border transition-colors"
-              :class="
-                store.generatePayload.placement === o.value
-                  ? 'border-primary bg-primary/5 ring-1 ring-primary'
-                  : 'border-surface-line hover:border-primary/40'
-              "
-              @click="store.generatePayload.placement = o.value"
-            >
-              <span
-                class="absolute top-2.5 right-2.5 w-5 h-5 rounded-full flex items-center justify-center transition-colors"
-                :class="
-                  store.generatePayload.placement === o.value
-                    ? 'bg-primary text-white'
-                    : 'border-2 border-surface-line'
-                "
-              >
-                <n-icon v-if="store.generatePayload.placement === o.value" size="12"><Checkmark12Filled /></n-icon>
-              </span>
-              <div class="flex items-center gap-1.5 text-sm font-medium">
-                <n-icon size="16" :class="store.generatePayload.placement === o.value ? 'text-primary' : 'text-secondary'">
-                  <component :is="o.icon" />
-                </n-icon>
-                {{ o.label }}
-              </div>
-              <div class="mt-0.5 text-xs text-secondary leading-[1.3]">{{ o.hint }}</div>
-            </button>
-          </div>
-        </n-form-item>
       </template>
 
       <div class="grid grid-cols-1 mt-6">

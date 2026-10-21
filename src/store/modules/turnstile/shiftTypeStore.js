@@ -41,12 +41,7 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       work_date: null,
       count: 1,
       month: null,
-      workers_count: null,
-      count_mode: 'count',
-      placement: 'auto',
-      period: false,
-      period_from: null,
-      period_to: null
+      workers_count: null
     },
     rotatingVisible: false,
     scheduleParams: {
@@ -354,11 +349,6 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
       this.generatePayload.work_date = this.generatePayload.work_date ?? today.getTime()
       this.generatePayload.count = this.generatePayload.count ?? 1
       this.generatePayload.month = new Date(today.getFullYear(), today.getMonth(), 1).getTime()
-      this.generatePayload.count_mode = 'count'
-      this.generatePayload.placement = 'auto'
-      this.generatePayload.period = false
-      this.generatePayload.period_from = null
-      this.generatePayload.period_to = null
     },
     // Guruh qo'shilganda/o'chirilganda chapdagi smena turlaridagi guruh/xodim soni ham
     // o'zgaradi. Turlarni faqat ko'rish huquqi borlar uchun qayta yuklaymiz — aks holda
