@@ -3,6 +3,8 @@
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import ScSkeleton from './ScSkeleton.vue'
+  import StatusBadge from './StatusBadge.vue'
+  import EmptyState from './EmptyState.vue'
 
   const { t } = i18n.global
   const store = useSalaryControlStore()
@@ -85,9 +87,10 @@
 
   <template v-else>
     <!-- Bu davr uchun ma'lumot yo'q — aniq xabar (noldan iborat kartalar o'rniga). -->
-    <div v-if="!(store.risks?.length)" class="sc-empty-period">
-      {{ $t('salaryControl.risk.emptyPeriod') }}
-    </div>
+    <EmptyState
+      v-if="!(store.risks?.length)"
+      :text="$t('salaryControl.risk.emptyPeriod')"
+    />
 
     <template v-else>
       <!-- Yuqori KPI qatori: status bo'yicha risklar soni. -->
@@ -122,9 +125,7 @@
                 <path d="M3 3v18h18M7 14l4-4 3 3 5-6" />
               </svg>
             </span>
-            <span class="sc-badge" :class="`sc-badge--${card.tone}`">
-              <i class="sc-dot"></i>{{ card.label }}
-            </span>
+            <StatusBadge :status="card.status" />
           </div>
           <p class="sc-kpi-value">
             {{ $t('salaryControl.risk.riskCount', { count: card.count }) }}
@@ -152,9 +153,7 @@
             <div class="sc-risk-head">
               <span class="sc-rn" :class="`sc-rn--${statusTone(risk.status)}`">{{ risk.n }}</span>
               <b class="sc-risk-title">{{ risk.title }}</b>
-              <span class="sc-badge" :class="`sc-badge--${statusTone(risk.status)}`">
-                <i class="sc-dot"></i>{{ statusLabel(risk.status) }}
-              </span>
+              <StatusBadge :status="risk.status" />
             </div>
 
             <div v-if="risk.finding" class="sc-finding">
