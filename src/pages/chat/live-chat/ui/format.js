@@ -79,3 +79,22 @@ export const bigEmojiCount = (text, max = 3) => {
   if (parts.length > max) return 0
   return parts.every((p) => EMOJI_GRAPHEME.test(p.segment)) ? parts.length : 0
 }
+
+// Rasm yuborilayotganda (Telegram kabi): asl o'lcham + juda kichik (≈20px, <1KB) xira ko'rinish.
+// Qabul qiluvchi rasmni yuklamasdan turib uning shaklini va xira nusxasini ko'radi.
+const THUMB_SIDE = 20
+export const makeImageThumb = async (file) => {
+  try {
+    const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' })
+    const { width, height } = bitmap
+    const scale = THUMB_SIDE / Math.max(width, height)
+    const canvas = document.createElement('canvas')
+    canvas.width = Math.max(1, Math.round(width * scale))
+    canvas.height = Math.max(1, Math.round(height * scale))
+    canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height)
+    bitmap.close?.()
+    return { width, height, thumb: canvas.toDataURL('image/jpeg', 0.6) }
+  } catch {
+    return null
+  }
+}
