@@ -5735,7 +5735,17 @@
     "scrollDown": "Вниз",
     "back": "Назад",
     "discardVoice": "Удалить запись",
-    "stopAndReview": "Остановить и прослушать"
+    "stopAndReview": "Остановить и прослушать",
+    "fullscreen": "Во весь экран",
+    "exitFullscreen": "Выйти из полноэкранного режима",
+    "searchChats": "Поиск по чатам",
+    "closeSearch": "Закрыть поиск",
+    "close": "Закрыть",
+    "releaseToCancel": "Отпустите вне поля, чтобы отменить",
+    "releaseNowToCancel": "Отпустите, чтобы отменить",
+    "holdToRecord": "Удерживайте, чтобы записать голосовое",
+    "nothingShared": "Пока ничего не отправлено",
+    "showMore": "Показать полностью"
   },
   "newsCategoryPage": {
     "name": "Категории новостей",

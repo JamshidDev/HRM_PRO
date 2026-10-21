@@ -17,8 +17,6 @@
   import {
     formatFileSize,
     formatDuration,
-    getInitials,
-    getAvatarColor,
     generateWaveform,
     hashString,
     messagePreviewLabel,
@@ -26,6 +24,8 @@
   } from './format.js'
   import MessageActionsMenu from './MessageActionsMenu.vue'
   import MessageMeta from './MessageMeta.vue'
+  import ChatImage from './ChatImage.vue'
+  import { imageSrcFor } from './imageCache.js'
 
   const { t } = i18n.global
 
@@ -36,7 +36,10 @@
     // Guruhlangan (ketma-ket bir yuboruvchidan) xabarlarda faqat GURUH OXIRIDA
     // ko'rsatiladi — Telegram/WhatsApp'dagi kabi, aks holda har qatorda avatar
     // takrorlanib ko'zni band qiladi.
-    showAvatar: { type: Boolean, default: true }
+    showAvatar: { type: Boolean, default: true },
+    // Telegram'dagi kabi: guruh ichidagi xabarlarning yuboruvchi tomonidagi burchaklari kichik (5px),
+    // quyruq faqat guruhning oxirgi xabarida. `showAvatar` — "guruh oxiri" ma'nosida qoldi.
+    firstInGroup: { type: Boolean, default: true }
   })
 
   // Yo'naltirish oynasi bitta konversiyada bitta bo'lishi kifoya — ota
@@ -47,6 +50,7 @@
   const accountStore = useAccountStore()
 
   const showPreview = ref(false)
+
 
   const audioRef = ref(null)
   const waveformRef = ref(null)
@@ -109,8 +113,34 @@
     isEditing.value = false
   }
 
-  const onDelete = () => {
-    props.chat.deleteMessage(props.message)
+  // O'chirish: avval xabar qatori kichrayib-so'nib yig'iladi, keyin so'rov yuboriladi.
+  // So'rov xato bilan tugasa (xabar ro'yxatda qolsa) — animatsiya bekor qilinib, xabar qaytadi.
+  const rowRef = ref(null)
+  let unmounted = false
+  onBeforeUnmount(() => {
+    unmounted = true
+  })
+
+  const onDelete = async () => {
+    const el = rowRef.value
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    let anim = null
+    if (el?.animate && !reduceMotion) {
+      el.style.transformOrigin = props.isOwn ? 'right bottom' : 'left bottom'
+      anim = el.animate(
+        [
+          { opacity: 1, transform: 'scale(1)', height: `${el.offsetHeight}px`, marginTop: getComputedStyle(el).marginTop },
+          { opacity: 0, transform: 'scale(0.9)', height: '0px', marginTop: '0px' }
+        ],
+        { duration: 220, easing: 'cubic-bezier(0.4, 0, 1, 1)', fill: 'forwards' }
+      )
+      await anim.finished.catch(() => {})
+    }
+    try {
+      await props.chat.deleteMessage(props.message)
+    } finally {
+      if (anim && !unmounted) anim.cancel()
+    }
   }
 
   // Serverga yetmagan xabar (vaqtinchalik id) — amallar menyusi ochilmaydi.
@@ -141,6 +171,8 @@
     })
     return [...counts.entries()].map(([emoji, count]) => ({ emoji, count }))
   })
+  // Ochilganda bor bo'lgan reaksiyalar "sakramaydi" — faqat yangi qo'shilgani.
+  const initialReactions = new Set(reactionGroups.value.map((g) => g.emoji))
 
   // Faqat 1–3 ta emoji (javob/yo'naltirishsiz) — pufaksiz, katta o'lchamda (Telegram kabi).
   const bigEmoji = computed(() => {
@@ -157,6 +189,11 @@
       !isEditing.value &&
       !bigEmoji.value &&
       (props.message.type === 'text' || reactionGroups.value.length > 0)
+  )
+
+  // Rasm (reaksiyasiz) — vaqt rasm ustida turadi, alohida qator kerak emas.
+  const imageMetaOverlay = computed(
+    () => props.message.type === 'image' && !isEditing.value && !reactionGroups.value.length
   )
 
   // Ovoz/fayl ostidagi qisqa ma'lumot (davomiylik, hajm).
@@ -189,43 +226,10 @@
     if (isEditing.value || !isSaved.value) return
     actionsMenuRef.value?.openAt(e.clientX, e.clientY)
   }
-
-  // Avatar bosilganda profil oynasini ochadi — o'ziniki uchun akkaunt do'konidan,
-  // suhbatdosh uchun esa tanlangan foydalanuvchidan olinadi.
-  const openOtherProfile = () => {
-    const u = props.chat.selectedUser.value
-    props.chat.openProfile(u ? { ...u, conversationId: u.id } : null)
-  }
-
-  const openOwnProfile = () => {
-    props.chat.openProfile({
-      id: props.chat.meId.value,
-      own: true,
-      fullName: accountStore.fullName,
-      photo: accountStore.userPhoto,
-      phone: accountStore.account?.worker?.phones?.[0]?.phone,
-      position: accountStore.account?.role?.name
-    })
-  }
 </script>
 
 <template>
-  <div class="group flex items-end gap-1.5" :class="isOwn ? 'justify-end' : 'justify-start'">
-    <!-- Suhbatdosh avatari — chapda, faqat guruh oxirida -->
-    <div v-if="!isOwn" class="size-8 shrink-0 self-end translate-y-1">
-      <n-avatar
-        v-if="showAvatar"
-        round
-        :size="30"
-        class="cursor-pointer"
-        :src="chat.selectedUser.value?.photo"
-        :color="getAvatarColor(chat.selectedUser.value?.peerId)"
-        @click="openOtherProfile"
-      >
-        {{ getInitials(chat.selectedUser.value?.fullName) }}
-      </n-avatar>
-    </div>
-
+  <div ref="rowRef" class="group flex items-end gap-1.5 px-1" :class="isOwn ? 'justify-end' : 'justify-start'">
     <!-- Amallar menyusi — o'z xabarlarda, faqat o'ng klik orqali ochiladi -->
     <MessageActionsMenu
       v-if="isOwn && !isEditing"
@@ -262,31 +266,33 @@
          egri quyruqqa ega bo'ladi — pastdagi SVG orqali chiziladi (rangi CSS var'dan olinadi,
          shu sababli mavzu/dark-mode bilan avtomatik moslashadi) -->
     <div
-      class="relative max-w-[78%] md:max-w-[60%] rounded-[14px] px-2.5 py-1.5 text-sm shadow-sm transition-opacity"
+      class="tg-bubble relative max-w-[min(480px,85%)] rounded-[15px] px-2 pt-1 pb-[5px] text-[16px] leading-[21px] shadow-sm transition-opacity"
       :class="[
         bigEmoji
           ? '!bg-transparent !p-0 !shadow-none'
           : isOwn
-            ? 'bg-[var(--chat-bubble-own-bg)] text-white'
+            ? 'bg-[var(--chat-bubble-own-bg)] text-[var(--chat-bubble-own-text)]'
             : 'bg-[var(--chat-bubble-in-bg)] text-textColor0',
-        showAvatar ? (isOwn ? 'rounded-br-none' : 'rounded-bl-none') : '',
+        isOwn
+          ? [!firstInGroup && 'rounded-tr-[5px]', showAvatar ? 'rounded-br-none' : 'rounded-br-[5px]']
+          : [!firstInGroup && 'rounded-tl-[5px]', showAvatar ? 'rounded-bl-none' : 'rounded-bl-[5px]'],
         message.type === 'image' && !isEditing && '!p-1',
         message.status === 'sending' && 'opacity-80',
-        isFresh && 'bubble-new'
+        isFresh && (isOwn ? 'bubble-enter-out' : 'bubble-enter-in')
       ]"
       @contextmenu.prevent="onContextMenu"
     >
       <svg
         v-if="showAvatar && !bigEmoji"
         class="absolute bottom-0"
-        :class="isOwn ? '-right-[5px] scale-x-[-1]' : '-left-[5px]'"
-        width="5"
-        height="8"
-        viewBox="0 0 5 8"
+        :class="isOwn ? '-right-[8px] scale-x-[-1]' : '-left-[8px]'"
+        width="9"
+        height="17"
+        viewBox="0 0 9 17"
       >
         <path
           :fill="isOwn ? 'var(--chat-bubble-own-bg)' : 'var(--chat-bubble-in-bg)'"
-          d="M5,0 C5,2.5 2.5,5 0,8 L5,8 Z"
+          d="M9,0 L9,17 L1.5,17 C0.4,17 -0.1,15.7 0.7,14.9 C3.6,12.1 9,7.5 9,0 Z"
         />
       </svg>
 
@@ -305,12 +311,12 @@
       <div
         v-if="message.replyTo && !isEditing"
         class="mt-0.5 mb-1 flex cursor-pointer items-start gap-1.5 rounded-md border-l-[3px] py-0.5 pl-2 pr-2 text-xs transition-colors"
-        :class="isOwn ? 'border-white/70 bg-white/10 hover:bg-white/15' : 'border-primary bg-primary/5 hover:bg-primary/10'"
+        :class="isOwn ? 'border-[var(--chat-bubble-own-accent)] bg-[var(--chat-bubble-own-tint)]' : 'border-primary bg-primary/5 hover:bg-primary/10'"
         @click="emit('jump', message.replyTo.id)"
       >
         <n-icon size="13" class="mt-0.5 shrink-0 opacity-70"><ArrowReply16Regular /></n-icon>
         <div class="min-w-0">
-          <div class="font-medium" :class="isOwn ? 'text-white' : 'text-primary'">{{ replyToSenderName }}</div>
+          <div class="font-medium" :class="isOwn ? 'text-[var(--chat-bubble-own-accent)]' : 'text-primary'">{{ replyToSenderName }}</div>
           <div class="truncate opacity-80">{{ replyToPreview }}</div>
         </div>
       </div>
@@ -329,14 +335,14 @@
         <div class="flex items-center justify-end gap-1">
           <button
             type="button"
-            class="size-6 rounded-full flex items-center justify-center hover:bg-white/20"
+            class="size-6 rounded-full flex items-center justify-center hover:bg-[var(--chat-bubble-own-tint)]"
             @click="cancelEdit"
           >
             <n-icon size="14"><Dismiss16Regular /></n-icon>
           </button>
           <button
             type="button"
-            class="size-6 rounded-full flex items-center justify-center hover:bg-white/20"
+            class="size-6 rounded-full flex items-center justify-center hover:bg-[var(--chat-bubble-own-tint)]"
             @click="saveEdit"
           >
             <n-icon size="14"><Checkmark16Filled /></n-icon>
@@ -349,7 +355,7 @@
 
       <!-- Matn -->
       <!-- pre-line faqat matnda: <p> ichidagi qator ko'chishlari bo'sh qator bo'lib chiqmasin -->
-      <p v-else-if="message.type === 'text'" class="break-words leading-snug">
+      <p v-else-if="message.type === 'text'" class="break-words">
         <span class="whitespace-pre-line">{{ message.text }}</span>
         <MessageMeta
           v-if="!reactionGroups.length"
@@ -362,11 +368,17 @@
       </p>
 
       <!-- Rasm -->
-      <div v-else-if="message.type === 'image'" class="cursor-pointer overflow-hidden rounded-xl" @click="showPreview = true">
-        <img
-          :src="message.fileUrl"
-          :alt="message.fileName"
-          class="max-w-[240px] max-h-[240px] w-full object-cover transition-opacity hover:opacity-90"
+      <div v-else-if="message.type === 'image'" class="relative overflow-hidden rounded-xl">
+        <!-- Telegram kabi: kelgan rasm bosilgandagina yuklanadi (⬇ → ✕ + progress → rasm) -->
+        <ChatImage :message="message" :is-own="isOwn" @open="showPreview = true" />
+        <!-- Vaqt — rasm ustida, qora shaffof "chip"da -->
+        <MessageMeta
+          v-if="imageMetaOverlay"
+          class="pointer-events-none absolute bottom-1.5 right-1.5 rounded-full bg-black/45 px-1.5 py-1 text-white"
+          :message="message"
+          :is-own="isOwn"
+          overlay
+          :time="timeLabel"
         />
       </div>
 
@@ -376,13 +388,13 @@
         :href="message.fileUrl"
         :download="message.fileName"
         class="flex items-center gap-2.5 min-w-[180px] pt-0.5"
-        :class="isOwn ? 'text-white' : 'text-textColor0'"
+        :class="isOwn ? 'text-[var(--chat-bubble-own-text)]' : 'text-textColor0'"
       >
         <span
           class="shrink-0 size-9 rounded-full flex items-center justify-center"
-          :class="isOwn ? 'bg-white/20' : 'bg-primary/10'"
+          :class="isOwn ? 'bg-[var(--chat-bubble-own-tint)]' : 'bg-primary/10'"
         >
-          <n-icon size="18" :color="isOwn ? '#fff' : 'var(--primary-color)'"><Document24Regular /></n-icon>
+          <n-icon size="18" :color="isOwn ? 'var(--chat-bubble-own-accent)' : 'var(--primary-color)'"><Document24Regular /></n-icon>
         </span>
         <div class="min-w-0 flex-1">
           <div class="truncate text-sm font-medium">{{ message.fileName }}</div>
@@ -395,10 +407,10 @@
         <button
           type="button"
           class="shrink-0 size-9 rounded-full flex items-center justify-center transition-colors"
-          :class="isOwn ? 'bg-white/20 hover:bg-white/30' : 'bg-primary/10 hover:bg-primary/15'"
+          :class="isOwn ? 'bg-[var(--chat-bubble-own-tint)]' : 'bg-primary/10 hover:bg-primary/15'"
           @click="togglePlay"
         >
-          <n-icon size="18" :color="isOwn ? '#fff' : 'var(--primary-color)'">
+          <n-icon size="18" :color="isOwn ? 'var(--chat-bubble-own-accent)' : 'var(--primary-color)'">
             <Pause24Filled v-if="playing" />
             <Play24Filled v-else />
           </n-icon>
@@ -410,8 +422,8 @@
             class="w-[2.5px] rounded-full shrink-0"
             :class="
               (i / waveform.length) * 100 <= progress
-                ? isOwn ? 'bg-white' : 'bg-primary'
-                : isOwn ? 'bg-white/30' : 'bg-primary/25'
+                ? isOwn ? 'bg-[var(--chat-bubble-own-accent)]' : 'bg-primary'
+                : isOwn ? 'wave-own-idle' : 'bg-primary/25'
             "
             :style="{ height: Math.max(2, amp * 28) + 'px' }"
           />
@@ -429,10 +441,10 @@
 
       <!-- Ovoz/fayl ma'lumoti va (burchakda bo'lmasa) vaqt + status -->
       <div
-        v-if="!isEditing && (infoLabel || !metaFloating)"
+        v-if="!isEditing && !imageMetaOverlay && (infoLabel || !metaFloating)"
         class="flex items-center gap-2"
         :class="[
-          bigEmoji ? 'text-textColor3' : isOwn ? 'text-white/70' : 'text-textColor3',
+          bigEmoji ? 'text-textColor3' : isOwn ? 'text-[var(--chat-bubble-own-muted)]' : 'text-textColor3',
           message.type === 'image' ? 'px-1.5 pt-1 pb-0.5' : 'mt-0.5',
           infoLabel ? 'justify-between pl-[46px]' : 'justify-end'
         ]"
@@ -443,6 +455,7 @@
           :class="bigEmoji && 'meta-chip rounded-full px-1.5 py-1'"
           :message="message"
           :is-own="isOwn"
+          :on-bubble="isOwn && !bigEmoji"
           :time="timeLabel"
         />
       </div>
@@ -450,10 +463,11 @@
       <!-- Vaqt + status — oxirgi qator burchagida (Telegram kabi) -->
       <MessageMeta
         v-if="metaFloating"
-        class="absolute bottom-[7px] right-2.5"
-        :class="isOwn ? 'text-white/70' : 'text-textColor3'"
+        class="absolute bottom-[5px] right-2"
+        :class="isOwn ? 'text-[var(--chat-bubble-own-muted)]' : 'text-textColor3'"
         :message="message"
         :is-own="isOwn"
+        :on-bubble="isOwn"
         :time="timeLabel"
       />
 
@@ -464,7 +478,10 @@
           :key="group.emoji"
           type="button"
           class="flex items-center gap-1 rounded-full px-2 py-[3px] text-sm leading-none"
-          :class="isOwn && !bigEmoji ? 'bg-white/15 hover:bg-white/25' : 'bg-primary/10 hover:bg-primary/20'"
+          :class="[
+            isOwn && !bigEmoji ? 'bg-[var(--chat-bubble-own-tint)]' : 'bg-primary/10 hover:bg-primary/20',
+            !initialReactions.has(group.emoji) && 'reaction-pop'
+          ]"
           @click="onReact(group.emoji)"
         >
           <span>{{ group.emoji }}</span>
@@ -487,20 +504,6 @@
       @react="onReact"
     />
 
-    <!-- O'z avatarim — o'ngda, faqat guruh oxirida -->
-    <div v-if="isOwn" class="size-8 shrink-0 self-end translate-y-1">
-      <n-avatar
-        v-if="showAvatar"
-        round
-        :size="30"
-        class="cursor-pointer"
-        :src="accountStore.userPhoto"
-        color="var(--primary-color)"
-        @click="openOwnProfile"
-      >
-        {{ getInitials(accountStore.fullName) || 'M' }}
-      </n-avatar>
-    </div>
 
     <!-- Rasmni katta ko'rish -->
     <n-modal
@@ -509,7 +512,7 @@
       :mask-closable="true"
       style="background: transparent; box-shadow: none; padding: 0"
     >
-      <img :src="message.fileUrl" :alt="message.fileName" class="max-w-[92vw] max-h-[88vh] rounded-xl" @click.stop />
+      <img :src="imageSrcFor(message)" :alt="message.fileName" class="max-w-[92vw] max-h-[88vh] rounded-xl" @click.stop />
     </n-modal>
   </div>
 </template>
@@ -519,13 +522,47 @@
   .meta-chip {
     background: color-mix(in srgb, var(--surface-section) 85%, transparent);
   }
-  .bubble-new {
-    animation: bubble-in 0.18s ease-out;
+  /* O'z ovozli xabarimdagi hali chalinmagan to'lqin ustunlari */
+  .wave-own-idle {
+    background: color-mix(in srgb, var(--chat-bubble-own-accent) 30%, transparent);
   }
-  @keyframes bubble-in {
+  /* Yangi xabar: o'zimniki "yuborish" tugmasi tomondan (o'ng past) o'sib chiqadi,
+     suhbatdoshniki chapdan siljib kiradi — ikkalasida yengil "prujina" */
+  .bubble-enter-out {
+    transform-origin: right bottom;
+    animation: bubble-enter-out 0.32s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+  @keyframes bubble-enter-out {
     from {
       opacity: 0;
-      transform: translateY(6px) scale(0.98);
+      transform: translateY(14px) scale(0.9);
+    }
+  }
+  .bubble-enter-in {
+    transform-origin: left bottom;
+    animation: bubble-enter-in 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+  }
+  @keyframes bubble-enter-in {
+    from {
+      opacity: 0;
+      transform: translateX(-12px) scale(0.94);
+    }
+  }
+  /* Yangi qo'shilgan reaksiya "sakrab" chiqadi */
+  .reaction-pop {
+    animation: reaction-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes reaction-pop {
+    from {
+      transform: scale(0.3);
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bubble-enter-out,
+    .bubble-enter-in,
+    .reaction-pop {
+      animation: none;
     }
   }
   .fade-enter-active,
