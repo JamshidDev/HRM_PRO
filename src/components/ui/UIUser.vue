@@ -1,6 +1,7 @@
 <script setup>
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
+  import UIHighlight from './UIHighlight.vue'
   const props = defineProps({
     short: {
       type: Boolean,
@@ -38,6 +39,11 @@
     showOnlineBadge: {
       type: Boolean,
       default: false
+    },
+    // Qidiruv so'zi — ism ichida sariq bilan belgilanadi (bo'sh bo'lsa hech narsa o'zgarmaydi)
+    highlight: {
+      type: String,
+      default: ''
     }
   })
 
@@ -80,7 +86,7 @@
               :class="[overLine && 'line-through']"
               class="text-sm text-textColor2 leading-[1.2] w-full truncate"
             >
-              {{ shortName }}
+              <UIHighlight :text="shortName" :query="highlight" />
             </span>
           </template>
           <span>{{ fullName }}</span>
@@ -92,7 +98,7 @@
           :class="[overLine && 'line-through']"
           class="w-full text-sm text-textColor2 leading-[1.2]"
         >
-          {{ fullName }}
+          <UIHighlight :text="fullName" :query="highlight" />
         </n-ellipsis>
       </slot>
 

@@ -2,6 +2,7 @@
   import {
     PasswordUpdateModal,
     UIGender,
+    UIHighlight,
     UIPhoneNumber,
     UITable,
     UIUser,
@@ -315,6 +316,7 @@
       <UIUser
         @onClickFullName="onPreview(row)"
         :short="false"
+        :highlight="store.searchHighlight"
         :data="{
           photo: row?.worker.photo,
           firstName: row?.worker.first_name,
@@ -323,6 +325,15 @@
           position: row?.type?.name
         }"
       />
+    </template>
+
+    <!-- Qidiruv mosligi sariq bilan (Tashkilotlar kabi) -->
+    <template #[`cell-worker.pin`]="{ row }">
+      <UIHighlight :text="row?.worker?.pin" :query="store.searchHighlight" />
+    </template>
+
+    <template #[`cell-worker.passport.serial_number`]="{ row }">
+      <UIHighlight :text="row?.worker?.passport?.serial_number" :query="store.searchHighlight" />
     </template>
 
     <template #cell-group="{ row }">
