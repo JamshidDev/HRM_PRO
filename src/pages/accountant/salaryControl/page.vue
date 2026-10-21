@@ -8,6 +8,7 @@
   import SummaryCards from './ui/SummaryCards.vue'
   import Overview from './ui/Overview.vue'
   import RiskMap from './ui/RiskMap.vue'
+  import ErrorState from './ui/ErrorState.vue'
 
   // Aktiv tab URL (?tab=) da saqlanadi — refresh/orqaga bosganda yo'qolmaydi.
   const TAB_NAMES = [
@@ -54,6 +55,19 @@
     store._loadForTab(v)
   }
 
+  // Faol tab yuklamasi yiqilganmi — ErrorState (qayta urinish) ko'rsatish uchun.
+  const viewError = computed(() => {
+    const v = store.mainView
+    if (v === 'summary') return store.summaryError && !store.summaryLoading
+    if (v === 'risks')
+      return (
+        (store.risksError || store.dashboardError) &&
+        !store.risksLoading &&
+        !store.dashboardLoading
+      )
+    return store.dashboardError && !store.dashboardLoading
+  })
+
   // Sarlavha ostidagi davr yozuvi (faqat ko'rsatish uchun).
   const periodLabel = computed(() => {
     const { year, month } = store.params
@@ -94,20 +108,23 @@
 
     <Filter />
 
-    <template v-if="store.mainView === 'summary'">
-      <SummaryCards />
-      <Overview />
+    <ErrorState v-if="viewError" @retry="store._retryView(store.mainView)" />
+    <template v-else>
+      <template v-if="store.mainView === 'summary'">
+        <SummaryCards />
+        <Overview />
+      </template>
+      <template v-else-if="store.mainView === 'risks'">
+        <RiskMap />
+        <RiskCharts />
+      </template>
+      <Rules v-else-if="store.mainView === 'rules'" />
+      <Who v-else-if="store.mainView === 'who'" />
+      <Vids v-else-if="store.mainView === 'vids'" />
+      <Deductions v-else-if="store.mainView === 'deductions'" />
+      <Reports v-else-if="store.mainView === 'reports'" />
+      <Employees v-else-if="store.mainView === 'employees'" />
     </template>
-    <template v-else-if="store.mainView === 'risks'">
-      <RiskMap />
-      <RiskCharts />
-    </template>
-    <Rules v-else-if="store.mainView === 'rules'" />
-    <Who v-else-if="store.mainView === 'who'" />
-    <Vids v-else-if="store.mainView === 'vids'" />
-    <Deductions v-else-if="store.mainView === 'deductions'" />
-    <Reports v-else-if="store.mainView === 'reports'" />
-    <Employees v-else-if="store.mainView === 'employees'" />
   </UIPageContent>
 </template>
 

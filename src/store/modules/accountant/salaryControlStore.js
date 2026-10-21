@@ -27,15 +27,18 @@ export const useSalaryControlStore = defineStore('salaryControl', {
     // «Umumiy» tab KPI xulosasi.
     summary: {},
     summaryLoading: false,
+    summaryError: false,
     // «Xavflar» tab — 14 ta risk ro'yxati va oy me'yori (soat).
     risks: [],
     norm: null,
     risksLoading: false,
     risksLoaded: false,
+    risksError: false,
     // Boy bo'limlar uchun to'liq payload: { kpi, emps, vids, F, rc, norm }.
     dashboard: {},
     dashboardLoading: false,
     dashboardLoaded: false,
+    dashboardError: false,
     // Excel eksport holati (tur bo'yicha yuklanish indikatori).
     exporting: ''
   }),
@@ -91,6 +94,7 @@ export const useSalaryControlStore = defineStore('salaryControl', {
       const accStore = useAccountStore()
       if (!accStore.checkPermission(accStore.pn.economistSalaryControlRead)) return
       this.summaryLoading = true
+      this.summaryError = false
       const params = {
         organization_id: this.params.organization_id || undefined,
         year: this.params.year || undefined,
@@ -101,6 +105,9 @@ export const useSalaryControlStore = defineStore('salaryControl', {
         .then((res) => {
           this.summary = res.data.data ?? {}
         })
+        .catch(() => {
+          this.summaryError = true
+        })
         .finally(() => {
           this.summaryLoading = false
         })
@@ -110,6 +117,7 @@ export const useSalaryControlStore = defineStore('salaryControl', {
       const accStore = useAccountStore()
       if (!accStore.checkPermission(accStore.pn.economistSalaryControlRead)) return
       this.risksLoading = true
+      this.risksError = false
       const params = {
         organization_id: this.params.organization_id || undefined,
         year: this.params.year || undefined,
@@ -123,6 +131,9 @@ export const useSalaryControlStore = defineStore('salaryControl', {
           this.norm = data.norm ?? null
           this.risksLoaded = true
         })
+        .catch(() => {
+          this.risksError = true
+        })
         .finally(() => {
           this.risksLoading = false
         })
@@ -132,6 +143,7 @@ export const useSalaryControlStore = defineStore('salaryControl', {
       const accStore = useAccountStore()
       if (!accStore.checkPermission(accStore.pn.economistSalaryControlRead)) return
       this.dashboardLoading = true
+      this.dashboardError = false
       const params = {
         organization_id: this.params.organization_id || undefined,
         year: this.params.year || undefined,
@@ -142,6 +154,9 @@ export const useSalaryControlStore = defineStore('salaryControl', {
         .then((res) => {
           this.dashboard = res.data.data ?? {}
           this.dashboardLoaded = true
+        })
+        .catch(() => {
+          this.dashboardError = true
         })
         .finally(() => {
           this.dashboardLoading = false
@@ -181,6 +196,16 @@ export const useSalaryControlStore = defineStore('salaryControl', {
       if (tab === 'risks' && !this.risksLoaded) this._risks()
       const needsDashboard = tab === 'risks' || DASHBOARD_TABS.includes(tab)
       if (needsDashboard && !this.dashboardLoaded) this._dashboard()
+    },
+    // Faol tab yuklamasini qayta urinish (ErrorState «Qayta urinish» tugmasi).
+    _retryView(tab) {
+      if (tab === 'summary') return this._summary()
+      if (tab === 'risks') {
+        this._risks()
+        this._dashboard()
+        return
+      }
+      this._dashboard()
     },
     // Filtr o'zgarganda — faol tabga qarab tegishli ma'lumotni qayta yuklaymiz.
     _filter() {
