@@ -391,7 +391,9 @@ export const useScheduleTableStore = defineStore('scheduleStore', {
             empty: day.id === null,
             dayTime: day.daytime || 0,
             eveningTime: day.evening_time || 0,
-            isEdit: false
+            isEdit: false,
+            // Bir kunlik almashtirish (asl reja ko'rsatiladi).
+            substitution: day.substitution ?? null
           })
 
           this.workerList = res.data.data.data.map((v, index) => ({
