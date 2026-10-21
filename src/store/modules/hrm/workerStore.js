@@ -5,6 +5,8 @@ export const useWorkerStore = defineStore('workerStore', {
   state: () => ({
     list: [],
     loading: false,
+    // Joriy ro'yxatni keltirgan qidiruv so'zi — jadvalda moslik sariq bilan belgilanadi
+    searchHighlight: '',
     saveLoading: false,
     deleteLoading: false,
     visible: false,
@@ -236,6 +238,7 @@ export const useWorkerStore = defineStore('workerStore', {
         .then((res) => {
           this.list = res.data.data.data
           this.totalItems = res.data.data.total
+          this.searchHighlight = params.search || ''
         })
         .finally(() => {
           this.loading = false
