@@ -2,7 +2,8 @@
   import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
   import SearchElement from '@/pages/turnstile/schedule/ui/SearchElement.vue'
   import Utils from '@/utils/Utils.js'
-  import { MoreHorizontal32Filled } from '@vicons/fluent'
+  import { ArrowReset20Regular, CalendarEdit16Regular, MoreHorizontal32Filled, PeopleSwap20Regular } from '@vicons/fluent'
+  import UIHelper from '@/utils/UIHelper.js'
   import { UIPagination } from '@components'
   import { cycleDays, cycleOf, isRotating, navbatOf, patternOf } from './navbat.js'
   import i18n from '@/i18n/index.js'
@@ -82,7 +83,11 @@
     const cd = cycleDays(store.shiftType)
     const { crewSize } = cycleOf(store.shiftType)
     const n = cd.length
-    const dates = store.list[0]?.days?.map((d) => d.date) ?? []
+    // Xodimsiz guruhda sanalar oy kunlaridan olinadi.
+    const monthStart = store.monthRange.from
+    const dates =
+      store.list[0]?.days?.map((d) => d.date) ??
+      (monthStart ? store.dayOfMonth.map((d) => `${monthStart.slice(0, 8)}${String(d.day).padStart(2, '0')}`) : [])
     if (!n || !crewSize || !phase) return null
     const phase0 = fam + (phase - 1) * (n / crewSize)
     return dates.map((date, i) => {
@@ -278,6 +283,24 @@
       })
     }
     }
+    // Generatsiyadagi o'rinlar — xodim biriktirilmagan brigadalar ham bo'sh o'rin bo'lib ko'rinadi.
+    const planned = Math.ceil((store.params.slots || 0) / crewSize)
+    for (let k = out.length; k < planned; k++) {
+      out.push({
+        key: `crew-plan-${k}`,
+        title: t('shiftType.groupView.groupN', { n: out.length + 1 }),
+        department: '',
+        workers: Array.from({ length: crewSize }, (_, i) => ({
+          empty: true,
+          phase: i + 1,
+          fam: 0,
+          workerPositionId: `p-${k}-${i}`,
+          days: slotDays(0, i + 1),
+          number: ++num
+        })),
+        missing: crewSize
+      })
+    }
     // Navbati aniqlanmagan xodim — o'z guruhi, sheriklar o'rni bo'sh (navbat noma'lum: qo'shib bo'lmaydi).
     for (const w of [...unknown].sort(byPositionName)) {
       const workers = [
@@ -415,6 +438,31 @@
     store.replaceMode = 'edit'
   }
 
+  // Xodim qatoridagi «…» menyusi: almashtirish, kunni o'zgartirish, navbat bo'yicha qayta yaratish.
+  const rowMenu = computed(() => [
+    { label: t('shiftType.groupView.swapMode'), key: 'swap', icon: UIHelper.renderIcon(PeopleSwap20Regular) },
+    { label: t('shiftType.groupView.editDay'), key: 'edit', icon: UIHelper.renderIcon(CalendarEdit16Regular) },
+    ...(rotating.value
+      ? [{ label: t('shiftType.groupView.regenTitle'), key: 'regen', icon: UIHelper.renderIcon(ArrowReset20Regular) }]
+      : [])
+  ])
+  const onRowMenu = (key, worker) => {
+    if (key === 'regen') return onRegen(worker)
+    onReplace(worker)
+    if (key === 'edit') {
+      store.replacePayload.status = true
+      store.replaceModeSwitch = true
+      store.replaceMode = 'edit'
+    }
+  }
+
+  // Aylanma smenada xodim grafigini navbati bo'yicha qayta yaratish.
+  const onRegen = (v) => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
+    store.regen.worker = v
+    store.regen.visible = true
+  }
+
   const onReplace = (v) => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
     store.selectedWorker = v
@@ -481,7 +529,7 @@
             {{ $t('schedule.form.workTime') }}
           </div>
         </div>
-        <template v-if="visibleList.length > 0">
+        <template v-if="sections.length > 0">
           <div v-for="sec in sections" :key="sec.key" class="flex w-fit min-w-full">
             <!-- Tartib raqami — guruh ustunidan oldin. -->
             <div v-if="showSections" class="sticky left-0 z-[6] flex flex-col w-[44px] min-w-[44px] flex-shrink-0">
@@ -594,15 +642,21 @@
                     </div>
                   </div>
 
-                  <div
+                  <n-dropdown
                     v-if="canReplace"
-                    @click="onReplace(worker)"
-                    class="w-[28px] h-[28px] border border-surface-line rounded-lg flex justify-center items-center text-secondary cursor-pointer"
+                    size="small"
+                    trigger="click"
+                    :options="rowMenu"
+                    @select="(key) => onRowMenu(key, worker)"
                   >
-                    <n-icon size="20">
-                      <MoreHorizontal32Filled />
-                    </n-icon>
-                  </div>
+                    <div
+                      class="w-[28px] h-[28px] border border-surface-line rounded-lg flex justify-center items-center text-secondary cursor-pointer hover:border-primary hover:text-primary"
+                    >
+                      <n-icon size="20">
+                        <MoreHorizontal32Filled />
+                      </n-icon>
+                    </div>
+                  </n-dropdown>
                 </div>
 
                 <!-- Day Cells -->

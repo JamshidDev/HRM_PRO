@@ -42,11 +42,17 @@ export const createRealChatApi = () => {
     messages: async (id, params) => data(await service._messages(id, params)),
     media: async (id, type) => data(await service._media(id, type)),
     sendText: async (id, body) => data(await service._sendText(id, body)),
-    sendFiles: async (id, files, { client_ids, reply_to_id, voice, duration, waveform }) => {
+    sendFiles: async (id, files, { client_ids, reply_to_id, voice, duration, waveform, width, height, thumb }) => {
       const form = new FormData()
       files.forEach((f) => form.append('files', f))
       client_ids.forEach((c) => form.append('client_ids', c))
       if (reply_to_id) form.append('reply_to_id', reply_to_id)
+      // Rasm: o'lcham + kichik xira ko'rinish (backend saqlab, xabar bilan qaytaradi)
+      if (width && height) {
+        form.append('width', String(width))
+        form.append('height', String(height))
+      }
+      if (thumb) form.append('thumb', thumb)
       if (voice) {
         form.append('voice', 'true')
         form.append('duration', String(duration ?? 0))

@@ -11,7 +11,6 @@
     slotPhase
   } from '@/pages/turnstile/scheduleWorker/ui/navbat.js'
   import AssignWorkerModal from './AssignWorkerModal.vue'
-  import { toWorkerItem } from './workerItem.js'
   import { Add16Regular, CalendarLtr20Regular, Dismiss16Regular, Dismiss24Regular } from '@vicons/fluent'
   import { useDialog } from 'naive-ui'
   import i18n from '@/i18n/index.js'
@@ -36,6 +35,8 @@
   const days = computed(() => {
     if (!endDate.value) return []
     const end = dayjs(endDate.value)
+    // Noto'g'ri sana — cheksiz sikl bo'lmasin.
+    if (!end.isValid()) return []
     const out = []
     for (let d = end.startOf('month'); !d.isAfter(end, 'day'); d = d.add(1, 'day')) {
       const date = d.format('YYYY-MM-DD')
@@ -139,49 +140,11 @@
       holidays.value = new Set()
       loadHolidays()
       busyIds.value = new Set()
-      if (store.generatePayload.placement === 'auto') fillWorkers(n)
     }
   )
 
-  // Fisher–Yates: xodimlar o'rinlarga tasodifiy tartibda tushadi.
-  const shuffle = (arr) => {
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-      ;[arr[i], arr[j]] = [arr[j], arr[i]]
-    }
-    return arr
-  }
-
-  // Avtomatik joylashtirish: tanlangan rejim xodimlari o'rinlarga tasodifiy tushadi, HR keyin almashtira oladi.
-  const mode = computed(() => store.generatePayload.count_mode)
+  // Boshqa smenadan biriktirilgan xodimlar — saqlashda ko'chirish tasdig'i so'raladi.
   const busyIds = ref(new Set())
-  const filling = ref(false)
-  const fillWorkers = (n) => {
-    const range = { start_date: startDate.value, end_date: endDate.value }
-    filling.value = true
-    const list = $ApiService.shiftTypeService._getWorkers({
-      params: { page: 1, per_page: 10000, ...(mode.value === 'all' ? { exclude_schedule_type: store.elementId, ...range } : { has_schedule: 'No', ...range }) }
-    })
-    // «Barchasi»da shu davrda boshqa smenasi borlar belgilanadi — saqlanganda ular shu smenaga ko'chadi.
-    const busy =
-      mode.value === 'all'
-        ? $ApiService.shiftTypeService._getWorkers({
-            params: { page: 1, per_page: 10000, has_schedule: 'Yes', exclude_schedule_type: store.elementId, ...range }
-          })
-        : Promise.resolve(null)
-    Promise.all([list, busy])
-      .then(([res, busyRes]) => {
-        busyIds.value = new Set((busyRes?.data.data.data ?? []).map((v) => v.id))
-        shuffle(res.data.data.data.map(toWorkerItem)).slice(0, n).forEach((w, i) => {
-          if (!slots.value[i]) return
-          slots.value[i].wp = w.id
-          slots.value[i].worker = w
-        })
-      })
-      .finally(() => {
-        filling.value = false
-      })
-  }
   const movedCount = computed(() => slots.value.filter((s) => s.wp && busyIds.value.has(s.wp)).length)
 
   // Biriktirish oynasi: qaysi qatorga xodim qo'yilayotgani.
@@ -195,6 +158,7 @@
     const s = slots.value[assign.row.index]
     s.wp = worker.id
     s.worker = worker
+    if (worker.shifts?.length) busyIds.value = new Set([...busyIds.value, worker.id])
   }
   const unassign = (row) => {
     const s = slots.value[row.index]
@@ -212,10 +176,6 @@
 
   const onSave = () => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsWorkersWrite)) return
-    if (!filledCount.value) {
-      $Alert.validation(t('shiftType.generate.noWorkerSelected'))
-      return
-    }
     if (!movedCount.value) return save()
     dialog.warning({
       title: t('shiftType.generate.moveTitle'),
@@ -227,10 +187,12 @@
   }
 
   const save = () => {
+    // Guruh barcha o'rinlari bilan saqlanadi — bo'sh o'rinlarga keyin xodim biriktiriladi.
     const base = {
       schedule_type: store.elementId,
       start_date: startDate.value,
-      end_date: endDate.value
+      end_date: endDate.value,
+      slots_count: slots.value.length
     }
     const filled = rows.value.filter((r) => slots.value[r.index].wp)
     if (daily.value) {
@@ -347,7 +309,7 @@
 
         <div class="ml-auto flex items-center gap-3">
           <n-button secondary type="error" @click="store.rotatingVisible = false">{{ $t('content.cancel') }}</n-button>
-          <n-button type="primary" :loading="store.saveLoading" :disabled="!filledCount" @click="onSave">
+          <n-button type="primary" :loading="store.saveLoading" @click="onSave">
             {{ $t('content.save') }}
           </n-button>
           <n-button quaternary circle @click="store.rotatingVisible = false">
@@ -357,7 +319,7 @@
       </header>
 
       <div class="flex-1 min-h-0 p-4">
-        <n-spin :show="filling" class="h-full" content-class="h-full">
+        <div class="h-full">
           <div
             ref="scroller"
             class="h-full overflow-auto relative bg-surface-section border border-surface-line rounded-xl"
@@ -402,12 +364,6 @@
                       @click="openAssign(it.row)"
                     >
                       <UIUser :data="slots[it.row.index].worker.data" :short="false" :avatar-clickable="false" hide-tooltip />
-                      <span
-                        v-if="busyIds.has(slots[it.row.index].wp)"
-                        class="ml-[42px] -mt-0.5 block text-[10px] leading-none text-warning font-medium"
-                      >
-                        {{ $t('shiftType.generate.inOtherShift') }}
-                      </span>
                     </button>
                     <n-button
                       quaternary
@@ -484,7 +440,7 @@
               <div class="cell w-[70px] min-w-[70px] sticky right-0 z-[20] bg-surface-section"></div>
             </div>
           </div>
-        </n-spin>
+        </div>
       </div>
     </div>
 
@@ -495,8 +451,6 @@
       :start-date="startDate"
       :end-date="endDate"
       :taken-ids="takenIds"
-      :only-free="mode !== 'all'"
-      :exclude-type="store.elementId"
       @select="onAssign"
     />
   </n-drawer>

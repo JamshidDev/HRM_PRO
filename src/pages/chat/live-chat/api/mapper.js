@@ -12,6 +12,10 @@ export const toMessage = (m) => ({
   audioUrl: m.type === 'voice' ? (m.file_url ?? null) : null,
   fileName: m.file_name ?? null,
   fileSize: m.file_size ?? null,
+  // Rasm: asl o'lcham va kichik xira ko'rinish (data URL) — yuklamasdan shakli/xira nusxasi ko'rinadi
+  width: m.width ?? null,
+  height: m.height ?? null,
+  thumb: m.thumb ?? null,
   duration: m.duration ?? null,
   waveform: m.waveform ?? null,
   replyTo: m.reply_to
