@@ -6527,6 +6527,7 @@
       "finding": "Finding",
       "advice": "Advice",
       "affected": "Details ({count} employees)",
+      "affectedCapped": "Showing {shown} of {count} — full list in Excel",
       "empty": "No data found",
       "status": {
         "bad": "Risk detected",

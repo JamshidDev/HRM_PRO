@@ -36,15 +36,31 @@
     })
   })
 
-  // Risklarni blok bo'yicha guruhlaymiz (tartibni birinchi uchrash bo'yicha saqlaymiz).
+  // Status bo'yicha filtr — status kartochka bosilganda (null = barchasi).
+  const activeStatus = ref(null)
+  const toggleStatus = (s) => {
+    activeStatus.value = activeStatus.value === s ? null : s
+  }
+
+  // Risklarni status muhimligi bo'yicha saralash: avval «Xavf aniqlandi».
+  const STATUS_RANK = { bad: 0, chk: 1, na: 2, ok: 3 }
+
+  // Risklarni blok bo'yicha guruhlaymiz (tartibni birinchi uchrash bo'yicha saqlaymiz),
+  // aktiv status bo'yicha filtrlab, har blok ichida muhimligi bo'yicha saralaymiz.
   const blocks = computed(() => {
     const map = new Map()
     for (const r of store.risks ?? []) {
+      if (activeStatus.value && r.status !== activeStatus.value) continue
       const key = r.block ?? ''
       if (!map.has(key)) map.set(key, [])
       map.get(key).push(r)
     }
-    return Array.from(map, ([block, items]) => ({ block, items }))
+    return Array.from(map, ([block, items]) => ({
+      block,
+      items: items
+        .slice()
+        .sort((a, b) => (STATUS_RANK[a.status] ?? 9) - (STATUS_RANK[b.status] ?? 9))
+    }))
   })
 
   // «Hisoblash usuli» — kartaga bosilganda ochiladi (qaysi risklar ochiq).
@@ -79,8 +95,17 @@
         <div
           v-for="card in kpi"
           :key="card.status"
-          class="sc-kpi-card"
-          :class="`sc-accent--${card.tone}`"
+          class="sc-kpi-card sc-kpi-card--btn"
+          :class="[
+            `sc-accent--${card.tone}`,
+            { 'sc-kpi-card--active': activeStatus === card.status }
+          ]"
+          role="button"
+          tabindex="0"
+          :aria-pressed="activeStatus === card.status"
+          @click="toggleStatus(card.status)"
+          @keydown.enter.prevent="toggleStatus(card.status)"
+          @keydown.space.prevent="toggleStatus(card.status)"
         >
           <div class="sc-kpi-head">
             <span class="sc-tile" :class="`sc-tile--${card.tone}`">
@@ -183,6 +208,14 @@
                     </tr>
                   </tbody>
                 </n-table>
+                <p v-if="risk.affected.length < risk.count" class="sc-affected-note">
+                  {{
+                    $t('salaryControl.risk.affectedCapped', {
+                      count: risk.count,
+                      shown: risk.affected.length
+                    })
+                  }}
+                </p>
               </n-collapse-item>
             </n-collapse>
           </div>
@@ -226,10 +259,44 @@
     background: var(--fig-block-bg);
   }
 
+  /* Status kartochka bosiladigan (filtr) — hover/active holati. */
+  .sc-kpi-card--btn {
+    cursor: pointer;
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease,
+      transform 0.05s ease;
+    outline: none;
+  }
+  .sc-kpi-card--btn:hover {
+    border-color: var(--fig-icon-brand);
+  }
+  .sc-kpi-card--btn:focus-visible {
+    border-color: var(--fig-icon-brand);
+    box-shadow: 0 0 0 2px var(--fig-icon-brand);
+  }
+  .sc-kpi-card--btn:active {
+    transform: translateY(1px);
+  }
+  .sc-kpi-card--active {
+    border-color: var(--fig-icon-brand);
+    box-shadow: inset 3px 0 0 0 var(--fig-icon-brand);
+    background: var(--fig-bg-secondary);
+  }
+
   .sc-kpi-head {
     display: flex;
     align-items: center;
     gap: 8px;
+  }
+
+  /* «N tadan K tasi ko'rsatilgan» — affected jadval ostidagi eslatma. */
+  .sc-affected-note {
+    margin-top: 6px;
+    font-size: 11.5px;
+    line-height: 16px;
+    color: var(--fig-text-tertiary);
+    font-style: italic;
   }
 
   .sc-kpi-value {

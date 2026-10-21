@@ -6588,6 +6588,7 @@
       "finding": "Aniqlangan holat",
       "advice": "Tavsiya",
       "affected": "Batafsil ({count} ta xodim)",
+      "affectedCapped": "{count} tadan {shown} tasi ko'rsatilgan — to'liq ro'yxat Excel'da",
       "empty": "Ma'lumot topilmadi",
       "status": {
         "bad": "Xavf aniqlandi",
