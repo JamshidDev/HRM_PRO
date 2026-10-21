@@ -248,8 +248,8 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
         pin: this.payload.pin.split('-').join(''),
         birthday: Utils.timeToZone(this.payload.birthday),
         experience_date: Utils.timeToZone(this.payload.experience_date),
-        // Tabel raqami ixtiyoriy — bo'sh qoldirilsa null ketadi.
-        table_number: this.payload.table_number ? Number(this.payload.table_number) : null,
+        // Tabel raqami kiritilganidek (0086) — songa aylantirilmaydi; bo'sh bo'lsa null.
+        table_number: this.payload.table_number || null,
         user_phone: this.payload.phones
           .filter((v) => v.main)[0]
           .phone.split('-')
