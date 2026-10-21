@@ -55,6 +55,13 @@ export const useLiveChat = () => {
     store.select(id)
   }
 
+  // Mobil: suhbatdan ro'yxatga qaytish.
+  const closeChat = () => {
+    replyMessage.value = null
+    showProfile.value = false
+    store.select(null)
+  }
+
   return {
     meId,
     isOwn,
@@ -75,6 +82,7 @@ export const useLiveChat = () => {
     closeProfile,
     setSearch,
     selectUser,
+    closeChat,
     openWithUser: (user) => {
       replyMessage.value = null
       return store.openWithUser(user)

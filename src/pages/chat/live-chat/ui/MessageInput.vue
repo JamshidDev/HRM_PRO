@@ -1,3 +1,8 @@
+<script>
+  // Suhbatlar bo'yicha qoralamalar — komponent qayta yaratilganda ham saqlanadi.
+  const drafts = new Map()
+</script>
+
 <script setup>
   import { v4 as uuidv4 } from 'uuid'
   import {
@@ -8,11 +13,15 @@
     Dismiss16Regular,
     Document24Regular,
     Stop24Filled,
-    ArrowReply16Regular
+    ArrowReply16Regular,
+    Emoji24Regular,
+    Play24Filled,
+    Pause24Filled
   } from '@vicons/fluent'
   import { useAccountStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
-  import { formatFileSize, formatDuration, messagePreviewLabel } from './format.js'
+  import { formatFileSize, formatDuration, messagePreviewLabel, generateWaveform, hashString } from './format.js'
+  import { EMOJI_LIST } from './emojiData.js'
 
   const { t } = i18n.global
   const accountStore = useAccountStore()
@@ -136,9 +145,9 @@
     recordSeconds.value = 0
     recordTimer = setInterval(() => {
       recordSeconds.value += 1
-      // Maksimal davomiylikka yetganda avtomatik to'xtatib, yuborib yuboriladi.
+      // Maksimal davomiylikka yetganda avtomatik to'xtatiladi — yuborishdan oldin tinglash uchun.
       if (recordSeconds.value >= MAX_RECORD_SECONDS) {
-        stopRecording(true)
+        stopRecording('review')
       }
     }, 1000)
   }
@@ -178,30 +187,96 @@
     }
   }
 
-  const stopRecording = (shouldSend) => {
+  // mode: 'cancel' — tashlab yuborish, 'review' — tinglash paneliga, 'send' — darhol yuborish.
+  const stopRecording = (mode) => {
     if (!mediaRecorder) return
     clearInterval(recordTimer)
     isRecording.value = false
+    const keep = mode !== 'cancel'
+    const duration = recordSeconds.value
 
     // Minimal chegaradan qisqa yozuv yuborilmaydi — foydalanuvchiga xabar beriladi.
-    const tooShort = shouldSend && recordSeconds.value < MIN_RECORD_SECONDS
+    const tooShort = keep && duration < MIN_RECORD_SECONDS
     if (tooShort) {
       window.$Toast?.warning(
         t('liveChatPage.voiceTooShort', { seconds: MIN_RECORD_SECONDS })
       )
     }
 
-    mediaRecorder.onstop = async () => {
+    const recorder = mediaRecorder
+    recorder.onstop = async () => {
       mediaStream?.getTracks().forEach((track) => track.stop())
-      if (shouldSend && !tooShort && recordedChunks.length) {
-        const blob = new Blob(recordedChunks, { type: mediaRecorder.mimeType || 'audio/webm' })
+      if (keep && !tooShort && recordedChunks.length) {
+        const blob = new Blob(recordedChunks, { type: recorder.mimeType || 'audio/webm' })
         const waveform = await extractWaveform(blob)
-        props.chat.sendVoice(blob, recordSeconds.value, waveform)
+        if (mode === 'send') props.chat.sendVoice(blob, duration, waveform)
+        else setVoiceDraft(blob, duration, waveform)
       }
       recordedChunks = []
-      mediaRecorder = null
+      if (mediaRecorder === recorder) mediaRecorder = null
     }
-    mediaRecorder.stop()
+    recorder.stop()
+  }
+
+  // ── Yozib olingan ovozni yuborishdan oldin tinglash ──────────────────────
+  const voiceDraft = ref(null)
+  const draftAudioRef = ref(null)
+  const draftPlaying = ref(false)
+  const draftTime = ref(0)
+
+  const discardVoiceDraft = () => {
+    draftAudioRef.value?.pause()
+    if (voiceDraft.value) URL.revokeObjectURL(voiceDraft.value.url)
+    voiceDraft.value = null
+    draftPlaying.value = false
+    draftTime.value = 0
+  }
+
+  const setVoiceDraft = (blob, duration, waveform) => {
+    discardVoiceDraft()
+    voiceDraft.value = {
+      blob,
+      duration,
+      waveform,
+      url: URL.createObjectURL(blob),
+      bars: waveform?.length ? waveform : generateWaveform(hashString(String(blob.size)))
+    }
+  }
+
+  const sendVoiceDraft = () => {
+    const d = voiceDraft.value
+    if (!d) return
+    props.chat.sendVoice(d.blob, d.duration, d.waveform)
+    discardVoiceDraft()
+  }
+
+  const toggleDraftPlay = () => {
+    const el = draftAudioRef.value
+    if (!el) return
+    if (draftPlaying.value) el.pause()
+    else el.play()
+  }
+
+  const draftProgress = computed(() => {
+    const d = voiceDraft.value
+    return d?.duration ? Math.min(100, (draftTime.value / d.duration) * 100) : 0
+  })
+
+  // MediaRecorder (webm) faylida brauzer davomiylikni ko'pincha bilmaydi —
+  // shu sababli yozib olingan soniyalar asosida sakraladi.
+  const seekDraft = (e) => {
+    const el = draftAudioRef.value
+    const d = voiceDraft.value
+    if (!el || !d?.duration) return
+    const rect = e.currentTarget.getBoundingClientRect()
+    const ratio = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width))
+    el.currentTime = ratio * d.duration
+    draftTime.value = el.currentTime
+  }
+
+  const onDraftEnded = () => {
+    draftPlaying.value = false
+    draftTime.value = 0
   }
 
   onMounted(() => {
@@ -212,6 +287,7 @@
   onBeforeUnmount(() => {
     clearInterval(recordTimer)
     mediaStream?.getTracks().forEach((track) => track.stop())
+    discardVoiceDraft()
     navigator.mediaDevices?.removeEventListener?.('devicechange', checkMicAvailability)
   })
 
@@ -228,18 +304,25 @@
     }
   }
 
-  // Har suhbatning yozilgan-yuborilmagan matni alohida saqlanadi.
-  const drafts = new Map()
+  // Har suhbatning yozilgan-yuborilmagan matni alohida saqlanadi (`drafts` — modul darajasida,
+  // mobilda suhbat yopilib komponent qayta yaratilganda ham yo'qolmasin).
   const textareaRef = ref(null)
+  // Sensorli qurilmada suhbat ochilishi bilan klaviatura chiqib ketmasin; Enter — yangi qator.
+  const isTouch = window.matchMedia?.('(pointer: coarse)').matches ?? false
+  const autoFocus = () => {
+    if (isTouch) return
+    nextTick(() => textareaRef.value?.focus())
+  }
   watch(
     () => props.chat.selectedUserId.value,
     (next, prev) => {
       if (prev) drafts.set(prev, text.value)
       text.value = drafts.get(next) ?? ''
       stagedFiles.value = []
+      discardVoiceDraft()
       // Modal (yangi suhbat/yo'naltirish) yopilish animatsiyasidan keyin fokus inputga.
-      nextTick(() => textareaRef.value?.focus())
-      setTimeout(() => textareaRef.value?.focus(), 320)
+      autoFocus()
+      if (!isTouch) setTimeout(() => textareaRef.value?.focus(), 320)
     }
   )
   watch(
@@ -251,10 +334,32 @@
     if (text.value.trim()) props.chat.sendTyping()
   }
 
-  onMounted(() => nextTick(() => textareaRef.value?.focus()))
+  onMounted(() => {
+    text.value = drafts.get(props.chat.selectedUserId.value) ?? ''
+    autoFocus()
+  })
+  onBeforeUnmount(() => {
+    const id = props.chat.selectedUserId.value
+    if (id) drafts.set(id, text.value)
+  })
+
+  // Emoji paneli: tanlangan emoji kursor turgan joyga qo'yiladi.
+  const showEmoji = ref(false)
+  const uniqueEmojis = [...new Set(EMOJI_LIST)]
+  const insertEmoji = (emoji) => {
+    const el = textareaRef.value?.$el?.querySelector('textarea')
+    const start = el?.selectionStart ?? text.value.length
+    const end = el?.selectionEnd ?? text.value.length
+    text.value = text.value.slice(0, start) + emoji + text.value.slice(end)
+    nextTick(() => {
+      textareaRef.value?.focus()
+      const pos = start + emoji.length
+      el?.setSelectionRange(pos, pos)
+    })
+  }
 
   const onKeydown = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === 'Enter' && !e.shiftKey && !isTouch) {
       e.preventDefault()
       onSend()
     }
@@ -266,7 +371,7 @@
     <!-- Javob beriladigan xabar kartochkasi -->
     <div
       v-if="chat.replyMessage.value"
-      class="mx-1 mb-1.5 flex items-center gap-2 rounded-xl bg-surface-ground px-3 py-1.5"
+      class="mx-1 mb-2 flex items-center gap-2.5 rounded-xl border-l-[3px] border-primary bg-brand-surface px-3 py-2"
     >
       <n-icon size="16" class="shrink-0 text-primary"><ArrowReply16Regular /></n-icon>
       <div class="min-w-0 flex-1">
@@ -311,19 +416,84 @@
       <span class="text-sm text-textColor0">{{ $t('liveChatPage.recording') }}</span>
       <span class="text-sm text-textColor3">{{ formatDuration(recordSeconds) }} / {{ formatDuration(MAX_RECORD_SECONDS) }}</span>
       <div class="flex-1" />
-      <n-button quaternary circle @click="stopRecording(false)">
+      <n-button quaternary circle :aria-label="$t('liveChatPage.discardVoice')" @click="stopRecording('cancel')">
         <template #icon>
           <n-icon size="18" class="text-danger"><Delete20Regular /></n-icon>
         </template>
       </n-button>
+      <!-- To'xtatish — yuborilmaydi, tinglash paneliga o'tadi -->
+      <n-tooltip trigger="hover">
+        <template #trigger>
+          <n-button
+            secondary
+            circle
+            :disabled="recordSeconds < MIN_RECORD_SECONDS"
+            :aria-label="$t('liveChatPage.stopAndReview')"
+            @click="stopRecording('review')"
+          >
+            <template #icon>
+              <n-icon size="18" class="text-danger"><Stop24Filled /></n-icon>
+            </template>
+          </n-button>
+        </template>
+        {{ $t('liveChatPage.stopAndReview') }}
+      </n-tooltip>
       <n-button
         type="primary"
         circle
         :disabled="recordSeconds < MIN_RECORD_SECONDS"
-        @click="stopRecording(true)"
+        :aria-label="$t('liveChatPage.send')"
+        @click="stopRecording('send')"
       >
         <template #icon>
-          <n-icon size="18"><Stop24Filled /></n-icon>
+          <n-icon size="18"><Send24Filled /></n-icon>
+        </template>
+      </n-button>
+    </div>
+
+    <!-- Yozib olingan ovoz: yuborishdan oldin tinglash yoki o'chirish -->
+    <div v-else-if="voiceDraft" class="flex items-center gap-2 px-1">
+      <n-button quaternary circle :aria-label="$t('liveChatPage.discardVoice')" @click="discardVoiceDraft">
+        <template #icon>
+          <n-icon size="20" class="text-danger"><Delete20Regular /></n-icon>
+        </template>
+      </n-button>
+      <div class="flex min-w-0 flex-1 items-center gap-2.5 rounded-3xl bg-surface-ground py-1.5 pl-1.5 pr-4">
+        <button
+          type="button"
+          class="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary text-white transition-opacity hover:opacity-90"
+          @click="toggleDraftPlay"
+        >
+          <n-icon size="18">
+            <Pause24Filled v-if="draftPlaying" />
+            <Play24Filled v-else />
+          </n-icon>
+        </button>
+        <div class="flex h-7 min-w-0 flex-1 cursor-pointer items-center gap-[2px] overflow-hidden" @click="seekDraft">
+          <span
+            v-for="(amp, i) in voiceDraft.bars"
+            :key="i"
+            class="w-[2.5px] shrink-0 rounded-full"
+            :class="(i / voiceDraft.bars.length) * 100 <= draftProgress ? 'bg-primary' : 'bg-primary/25'"
+            :style="{ height: Math.max(2, amp * 26) + 'px' }"
+          />
+        </div>
+        <span class="shrink-0 text-xs tabular-nums text-textColor3">
+          {{ formatDuration(draftPlaying || draftTime ? draftTime : voiceDraft.duration) }}
+        </span>
+        <audio
+          ref="draftAudioRef"
+          :src="voiceDraft.url"
+          class="hidden"
+          @play="draftPlaying = true"
+          @pause="draftPlaying = false"
+          @ended="onDraftEnded"
+          @timeupdate="draftTime = draftAudioRef.currentTime"
+        />
+      </div>
+      <n-button type="primary" circle size="large" class="send-btn" :aria-label="$t('liveChatPage.send')" @click="sendVoiceDraft">
+        <template #icon>
+          <n-icon size="20"><Send24Filled /></n-icon>
         </template>
       </n-button>
     </div>
@@ -332,7 +502,7 @@
     <div v-else class="flex items-center gap-2 px-1">
       <input ref="fileInputRef" type="file" multiple v-show="false" @change="onFilesChosen" />
 
-      <div class="compose-pill flex flex-1 items-center gap-1 rounded-3xl bg-surface-ground px-2 py-1">
+      <div class="compose-pill flex flex-1 items-center gap-1 rounded-3xl border border-transparent bg-surface-ground px-1.5 py-1 transition-colors">
         <n-button quaternary circle @click="onPickFiles">
           <template #icon>
             <n-icon size="22" class="text-textColor3"><Attach24Regular /></n-icon>
@@ -350,9 +520,30 @@
           class="flex-1"
           @keydown="onKeydown"
         />
+
+        <n-popover v-model:show="showEmoji" trigger="click" placement="top-end" :show-arrow="false" raw>
+          <template #trigger>
+            <n-button quaternary circle :aria-label="$t('liveChatPage.emoji')">
+              <template #icon>
+                <n-icon size="22" class="text-textColor3"><Emoji24Regular /></n-icon>
+              </template>
+            </n-button>
+          </template>
+          <div class="grid w-[264px] grid-cols-7 gap-0.5 rounded-2xl border border-surface-line bg-surface-section p-2 shadow-lg">
+            <button
+              v-for="emoji in uniqueEmojis"
+              :key="emoji"
+              type="button"
+              class="flex size-9 items-center justify-center rounded-lg text-xl hover:bg-surface-ground"
+              @click="insertEmoji(emoji)"
+            >
+              {{ emoji }}
+            </button>
+          </div>
+        </n-popover>
       </div>
 
-      <n-button v-if="canSend" type="primary" circle @click="onSend">
+      <n-button v-if="canSend" type="primary" circle size="large" class="send-btn" :aria-label="$t('liveChatPage.send')" @click="onSend">
         <template #icon>
           <n-icon size="20"><Send24Filled /></n-icon>
         </template>
@@ -369,6 +560,9 @@
         </template>
       </n-button>
     </div>
+    <div v-if="!isRecording && !voiceDraft" class="hidden px-4 pt-1.5 text-[11px] text-textColor3 md:block">
+      {{ $t('liveChatPage.enterHint') }}
+    </div>
   </div>
 </template>
 
@@ -377,6 +571,14 @@
      `--n-height` bitta qatorli holatda pillni cho'zib yubormasligi uchun
      aniq belgilangan — aks holda naive'ning standart balandligi ikonalar
      bilan markazlanmay, pill haddan tashqari baland ko'rinardi. */
+  /* Fokusda pill ajralib turadi */
+  .compose-pill:focus-within {
+    border-color: var(--primary-color);
+    background: var(--surface-section);
+  }
+  .send-btn {
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--primary-color) 40%, transparent);
+  }
   .compose-pill :deep(.n-input) {
     --n-height: 40px !important;
     --n-color: transparent !important;

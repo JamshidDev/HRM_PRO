@@ -38,6 +38,15 @@
     pendingAction.value = null
   }
 
+  // Ro'yxat filtri: barchasi / faqat o'qilmaganlar. Qadalganlar alohida bo'limda.
+  const filter = ref('all')
+  const unreadChats = computed(() => props.chat.userList.value.filter((u) => u.unreadCount > 0))
+  const visibleList = computed(() => (filter.value === 'unread' ? unreadChats.value : props.chat.userList.value))
+  const pinnedList = computed(() => visibleList.value.filter((u) => u.pinned))
+  const otherList = computed(() => visibleList.value.filter((u) => !u.pinned))
+  // Bo'lim sarlavhalari faqat qadalgan suhbat bo'lsa (aks holda ortiqcha shovqin).
+  const showSections = computed(() => pinnedList.value.length > 0)
+
   const showNewChat = ref(false)
   // Modal yopilganda fokus tugmaga qaytmasin (aks holda Space modalni qayta ochadi).
   const openNewChat = (e) => {
@@ -52,12 +61,25 @@
 
 <template>
   <div class="flex h-full flex-col">
-    <div class="flex shrink-0 items-center gap-2 px-1 pb-3">
+    <div class="flex shrink-0 items-center justify-between gap-2 px-2 pt-1 pb-3">
+      <h2 class="text-lg font-bold text-textColor0">{{ $t('liveChatPage.chats') }}</h2>
+      <n-tooltip trigger="hover">
+        <template #trigger>
+          <n-button circle type="primary" secondary @click="openNewChat">
+            <template #icon>
+              <n-icon size="18"><Compose20Regular /></n-icon>
+            </template>
+          </n-button>
+        </template>
+        {{ $t('liveChatPage.newChat') }}
+      </n-tooltip>
+    </div>
+
+    <div class="shrink-0 px-1">
       <n-input
         :value="chat.search.value"
         clearable
-        round
-        size="large"
+        class="chat-search"
         :placeholder="$t('liveChatPage.searchPlaceholder')"
         @update:value="chat.setSearch"
       >
@@ -65,16 +87,24 @@
           <n-icon size="18" class="text-textColor3"><Search24Regular /></n-icon>
         </template>
       </n-input>
-      <n-tooltip trigger="hover">
-        <template #trigger>
-          <n-button circle type="primary" secondary size="large" @click="openNewChat">
-            <template #icon>
-              <n-icon size="20"><Compose20Regular /></n-icon>
-            </template>
-          </n-button>
-        </template>
-        {{ $t('liveChatPage.newChat') }}
-      </n-tooltip>
+    </div>
+
+    <div class="flex shrink-0 items-center gap-1.5 px-1 pt-2.5 pb-1">
+      <button
+        v-for="tab in ['all', 'unread']"
+        :key="tab"
+        type="button"
+        class="flex items-center gap-1 rounded-full border px-3 py-1 text-[13px] transition-colors"
+        :class="
+          filter === tab
+            ? 'border-primary bg-primary text-white'
+            : 'border-surface-line text-textColor1 hover:border-primary hover:text-primary'
+        "
+        @click="filter = tab"
+      >
+        {{ $t(`liveChatPage.${tab}`) }}
+        <span v-if="tab === 'unread' && unreadChats.length" class="font-semibold opacity-90">{{ unreadChats.length }}</span>
+      </button>
     </div>
 
     <div class="min-h-0 flex-1 overflow-y-auto px-1">
@@ -87,20 +117,36 @@
           </div>
         </div>
       </template>
-      <TransitionGroup v-else name="chat-list" tag="div" class="relative">
-        <ChatUserItem
-          v-for="user in chat.userList.value"
-          :key="user.id"
-          :user="user"
-          :me-id="chat.meId.value"
-          :typing="chat.isTyping(user.id)"
-          :active="user.id === chat.selectedUserId.value"
-          @click="chat.selectUser(user.id)"
-          @pin="chat.togglePinChat(user.id)"
-          @clear="confirmClearHistory(user)"
-          @delete="confirmDeleteChat(user)"
-        />
-      </TransitionGroup>
+      <template v-else>
+        <template v-for="section in showSections ? ['pinned', 'other'] : ['other']" :key="section">
+          <div
+            v-if="showSections && (section === 'pinned' ? pinnedList : otherList).length"
+            class="px-3 pt-3 pb-1 text-[11px] font-medium uppercase tracking-wider text-textColor3"
+          >
+            {{ section === 'pinned' ? $t('liveChatPage.pinnedChats') : $t('liveChatPage.allChats') }}
+          </div>
+          <TransitionGroup name="chat-list" tag="div" class="relative">
+            <ChatUserItem
+              v-for="user in section === 'pinned' ? pinnedList : otherList"
+              :key="user.id"
+              :user="user"
+              :me-id="chat.meId.value"
+              :typing="chat.isTyping(user.id)"
+              :active="user.id === chat.selectedUserId.value"
+              @click="chat.selectUser(user.id)"
+              @pin="chat.togglePinChat(user.id)"
+              @clear="confirmClearHistory(user)"
+              @delete="confirmDeleteChat(user)"
+            />
+          </TransitionGroup>
+        </template>
+      </template>
+      <div
+        v-if="!chat.listLoading.value && chat.userList.value.length && !visibleList.length"
+        class="py-10 text-center text-sm text-textColor3"
+      >
+        {{ $t('liveChatPage.noUnread') }}
+      </div>
       <div
         v-if="!chat.listLoading.value && !chat.userList.value.length"
         class="flex flex-col items-center gap-3 py-10 text-center text-sm text-textColor3"
@@ -124,5 +170,13 @@
 <style scoped>
   .chat-list-move {
     transition: transform 0.25s ease;
+  }
+  /* Qidiruv — fonli, chegarasiz (fokusda primary chegara) */
+  .chat-search {
+    --n-color: var(--surface-ground) !important;
+    --n-border: 1px solid transparent !important;
+    --n-border-hover: 1px solid var(--surface-line) !important;
+    --n-height: 40px !important;
+    --n-border-radius: 12px !important;
   }
 </style>

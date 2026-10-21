@@ -68,3 +68,14 @@ export const generateWaveform = (seed, count = 40) => {
   }
   return bars
 }
+
+// Xabar faqat emojidan iborat bo'lsa (1–3 ta) — ularning soni, aks holda 0.
+// Telegram'dagi kabi bunday xabarlar pufaksiz, katta o'lchamda chiziladi.
+const EMOJI_GRAPHEME = /^(?:\p{Extended_Pictographic}|\p{Regional_Indicator}|[#*0-9]\uFE0F?\u20E3)/u
+export const bigEmojiCount = (text, max = 3) => {
+  const s = (text || '').replace(/\s+/g, '')
+  if (!s || typeof Intl === 'undefined' || !Intl.Segmenter) return 0
+  const parts = [...new Intl.Segmenter(undefined, { granularity: 'grapheme' }).segment(s)]
+  if (parts.length > max) return 0
+  return parts.every((p) => EMOJI_GRAPHEME.test(p.segment)) ? parts.length : 0
+}

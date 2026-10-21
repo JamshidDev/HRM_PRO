@@ -178,11 +178,13 @@
                 <tr>
                   <td class="w-[120px] font-semibold py-0!">{{ $t('monthReport.in.code') }}</td>
                   <td class="font-semibold py-0!">{{ $t('monthReport.in.type') }}</td>
+                  <td class="w-[110px] font-semibold py-0!">{{ $t('monthReport.in.hours') }}</td>
                   <td class="w-[120px] font-semibold py-0!">{{ $t('monthReport.in.amount') }}</td>
                 </tr>
                 <tr v-for="(card, index) in currentItem.in" :key="index">
                   <td class="w-[120px] font-semibold py-0!">{{ card.code }}</td>
                   <td class="py-0!">{{ card.type }}</td>
+                  <td class="py-0!">{{ card.hours_worked ? card.hours_worked : '—' }}</td>
                   <td class="font-semibold py-0!">{{ card.amount }}</td>
                 </tr>
                 <tr>
@@ -191,6 +193,7 @@
                       $t('monthReport.in.total')
                     }}</span>
                   </td>
+                  <td class="font-semibold py-0!">{{ currentItem.worker?.work_time }}</td>
                   <td class="font-semibold py-0!">{{ currentItem.in_total }}</td>
                 </tr>
               </tbody>
@@ -251,10 +254,12 @@
                       <tr v-for="(c, i) in k.in" :key="'in' + i" class="border-t border-surface-line">
                         <td class="w-[90px] font-medium py-0.5">{{ c.code }}</td>
                         <td class="py-0.5">{{ c.type }}</td>
+                        <td class="w-[80px] text-right py-0.5">{{ c.hours_worked ? c.hours_worked : '—' }}</td>
                         <td class="w-[120px] text-right font-medium py-0.5">{{ c.amount }}</td>
                       </tr>
                       <tr class="border-t border-surface-line">
                         <td colspan="2" class="text-primary font-semibold py-0.5">{{ $t('monthReport.in.total') }}</td>
+                        <td class="text-right font-semibold py-0.5">{{ k.work_time }}</td>
                         <td class="text-right font-semibold py-0.5">{{ k.in_total }}</td>
                       </tr>
                     </tbody>
