@@ -10,6 +10,7 @@
   import ReplaceModal from './ui/ReplaceModal.vue'
   import AddSlotModal from './ui/AddSlotModal.vue'
   import RegenModal from './ui/RegenModal.vue'
+  import RemoveModal from './ui/RemoveModal.vue'
   import ChangeInfoModal from './ui/ChangeInfoModal.vue'
 
   const store = useScheduleGroupWorkerStore()
@@ -71,6 +72,7 @@
     <ReplaceModal />
     <AddSlotModal />
     <RegenModal />
+    <RemoveModal />
     <ChangeInfoModal />
   </UIPageContent>
 </template>

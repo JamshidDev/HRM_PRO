@@ -96,7 +96,6 @@
         v-if="canSeeTypes"
         class="lg:w-[320px] shrink-0"
         :selected-id="store.groupParams.schedule_type"
-        :show-all="canSeeGroups"
         @select="onSelectType"
       />
 
