@@ -109,6 +109,8 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
     notScheduleLoading: false,
     isDailySchedule: false,
     selectedWorkers: [],
+    // Shu davrda boshqa smenasi bor xodimlar (lavozim id) — saqlashda ko'chirish tasdig'i so'raladi.
+    busyWorkerIds: [],
 
     departmentLoading: false,
     departmentList: [],
@@ -184,6 +186,8 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
             name: Utils.combineFullName(v.worker),
             id: v.id,
             position: v.position,
+            // Shu davrdagi boshqa smena(lar) nomi
+            shifts: (v.rangeSchedules ?? []).map((r) => r.type_name).filter(Boolean),
             data: {
               firstName: v.worker.first_name,
               lastName: v.worker.last_name,
@@ -193,6 +197,10 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
             }
           }))
           this.notScheduleWorkerCount = res.data.data.total
+          // Sahifalar almashsa ham tanlanganlar orasidagi "band" xodimlar eslab qolinadi.
+          const busy = new Set(this.busyWorkerIds)
+          this.notScheduleWorkerList.forEach((v) => v.shifts.length && busy.add(v.id))
+          this.busyWorkerIds = [...busy]
         })
         .finally(() => {
           this.notScheduleLoading = false
@@ -340,6 +348,17 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
           this.saveLoading = false
         })
     },
+    // «Xodim biriktirish» har safar toza ochiladi — oldingi guruhdagi qidiruv/filtr qolib ketmasin.
+    _resetAttachFilters() {
+      this.notScheduleParams.search = null
+      this.notScheduleParams.has_schedule = 'No'
+      this.notScheduleParams.organizations = []
+      this.notScheduleParams.department_id = null
+      this.structureCheck2 = []
+      this.departmentList = []
+      this.selectedWorkers = []
+      this.busyWorkerIds = []
+    },
     _resetGenerateModal() {
       const today = new Date()
       const nextMonth = new Date(today)
@@ -375,7 +394,8 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
         ._groupEdit({ id: this.elementId, data })
         .then((res) => {
           this.visible = false
-          this._group()
+          // Chapdagi smena turlaridagi sonlar ham yangilansin.
+          this._refreshAfterGroupChange()
         })
         .finally(() => {
           this.saveLoading = false
