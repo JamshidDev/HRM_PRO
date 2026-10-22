@@ -505,7 +505,9 @@
         class="w-full flex-1 overflow-auto relative rounded-lg max-h-[calc(100vh-190px)] min-h-[300px]"
         :style="{ '--lw': showSections ? '80px' : '0px', '--sw': showSections ? '40px' : '60px' }"
       >
-        <div class="schedule-header-row flex z-[10] w-fit min-w-full sticky top-0">
+        <!-- Qattiq fon shart: dark mode'da `--schedule-*-bg` yarim shaffof (alpha .24),
+             fonsiz sticky sarlavha ostidan skroll qilinayotgan qatorlar ko'rinib qoladi. -->
+        <div class="schedule-header-row flex z-[10] w-fit min-w-full sticky top-0 bg-surface-section">
           <template v-if="showSections">
             <div
               class="rounded-tl-lg border-t border-l border-b border-surface-line p-2 w-[44px] min-w-[44px] h-[50px] sticky left-0 top-0 z-[20] bg-surface-section flex-shrink-0"
