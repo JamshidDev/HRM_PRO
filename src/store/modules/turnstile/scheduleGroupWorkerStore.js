@@ -61,13 +61,11 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     replaceVisible: false,
     replacePayload: {
       positonId: null,
-      date: null,
-      status: false
+      date: null
     },
     replaceLoading: false,
     // Katakdan ochilganda: 'edit' — kunni o'zgartirish, 'swap' — xodim bilan almashtirish.
     replaceMode: 'swap',
-    replaceModeSwitch: false,
     dayEdit: { choice: null, start: null, end: null },
 
     workerParams: {
@@ -85,7 +83,9 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     // Bo'sh navbatga xodim qo'shish oynasi.
     addSlot: { visible: false, phase: null, fam: 0 },
     // Xodim grafigini navbati bo'yicha qayta yaratish oynasi.
-    regen: { visible: false, worker: null }
+    regen: { visible: false, worker: null },
+    // Xodimni guruhdan chiqarish oynasi.
+    remove: { visible: false, worker: null, loading: false }
   }),
   getters: {
     calculateWorkTime: (state) => (workerIndex) => {
@@ -148,6 +148,30 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
           this.replaceLoading = false
         })
     },
+    _removeWorker(data) {
+      this.remove.loading = true
+      $ApiService.shiftTypeService
+        ._removeWorker({ data })
+        .then(() => {
+          this.remove.visible = false
+          this._index()
+        })
+        .finally(() => {
+          this.remove.loading = false
+        })
+    },
+    _cancelSubstitution(id) {
+      this.replaceLoading = true
+      $ApiService.shiftTypeService
+        ._cancelSubstitution({ id })
+        .then(() => {
+          this.changeInfo.visible = false
+          this._index()
+        })
+        .finally(() => {
+          this.replaceLoading = false
+        })
+    },
     // append=true — skrolda keyingi sahifa qo'shiladi.
     _workers(append = false) {
       this.workerParams.page = append ? this.workerParams.page + 1 : 1
@@ -155,7 +179,9 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
         ...this.workerParams,
         start_date: this.monthRange.from,
         end_date: this.monthRange.to,
-        priority_group: this.params.group
+        priority_group: this.params.group,
+        // O'rinbosar — faqat shu kuni dam bo'lganlar.
+        free_on: this.replacePayload.date ? Utils.timeToZone(this.replacePayload.date) : undefined
       }
       this.workerLoading = true
       $ApiService.shiftTypeService

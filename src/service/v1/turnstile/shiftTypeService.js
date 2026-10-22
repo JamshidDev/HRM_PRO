@@ -52,6 +52,12 @@ const _editDay = async (payload) => {
 const _replaceWorker = async (payload) => {
   return await axios.post(`/v1/turnstile/schedule/schedule-workers-replacement`, payload.data)
 }
+const _removeWorker = async (payload) => {
+  return await axios.post(`/v1/turnstile/schedule/schedule-workers-remove`, payload.data)
+}
+const _cancelSubstitution = async (payload) => {
+  return await axios.delete(`/v1/turnstile/schedule/substitutions/${payload.id}`)
+}
 
 export default {
   _types,
@@ -67,5 +73,7 @@ export default {
   _editDay,
   _groupDelete,
   _groupEdit,
-  _replaceWorker
+  _replaceWorker,
+  _cancelSubstitution,
+  _removeWorker
 }

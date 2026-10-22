@@ -7,6 +7,14 @@
   import i18n from '@/i18n/index.js'
   import { findNewGaps } from './conflicts.js'
   import { showAlert } from '@/components/notify/alertDialog.js'
+  import {
+    ArrowDown16Regular,
+    ArrowRight16Regular,
+    Clock16Regular,
+    Edit16Regular,
+    Info16Regular,
+    WeatherMoon16Regular
+  } from '@vicons/fluent'
 
   const store = useScheduleGroupWorkerStore()
   const accStore = useAccountStore()
@@ -58,10 +66,34 @@
       const et = String(d.end_time).slice(0, 5)
       if (seen.has(`${st}-${et}`)) continue
       seen.add(`${st}-${et}`)
-      out.push({ key: `${st}-${et}`, label: `${st}–${et}`, plan: { work_status: true, start_time: st, end_time: et } })
+      const br = d.break_times?.start_time && d.break_times?.end_time
+        ? `${String(d.break_times.start_time).slice(0, 5)}–${String(d.break_times.end_time).slice(0, 5)}`
+        : null
+      out.push({
+        key: `${st}-${et}`,
+        label: `${st}–${et}`,
+        lunch: br,
+        hours: d.daily_minutes ? Math.round((d.daily_minutes / 60) * 10) / 10 : null,
+        plan: { work_status: true, start_time: st, end_time: et }
+      })
     }
     out.push({ key: 'custom', label: t('shiftType.groupView.customTime'), plan: null })
     return out
+  })
+  // Smena turidagi shu vaqtli kunning tushligi.
+  const lunchOf = (st, et) => shiftChoices.value.find((c) => c.key === `${st}-${et}`)?.lunch ?? null
+  const currentLunch = computed(() => {
+    const d = currentDay.value
+    return d?.isWorkDay ? lunchOf(d.startTime, d.endTime) : null
+  })
+  const newLunch = computed(() => {
+    const p = editPlan.value
+    return p?.work_status ? lunchOf(p.start_time, p.end_time) : null
+  })
+  const newLabel = computed(() => {
+    const p = editPlan.value
+    if (!p) return '—'
+    return p.work_status ? `${p.start_time}–${p.end_time}` : t('shiftType.groupView.rest')
   })
   const editPlan = computed(() => {
     const c = store.dayEdit.choice
@@ -98,76 +130,47 @@
     confirmIfGaps(() => store._editDay(data), gaps)
   }
 
-  const partnerGroupAt = (w, date) =>
-    w.ranges?.find((r) => r.date_from <= date && date <= r.date_to)?.group_id || undefined
-
+  // O'rinbosarlik: tanlangan ish kuni xodim dam, o'rniga shu kuni dam bo'lgan xodim chiqadi — grafiklar o'zgarmaydi.
+  const swapDate = computed(() => (store.replacePayload.date ? Utils.timeToZone(store.replacePayload.date) : null))
+  const swapDay = computed(() => store.selectedWorker?.days?.find((d) => d.date === swapDate.value))
+  const picked = computed(() => store.workerList.find((v) => v.positionId === store.replacePayload.positonId))
+  const initials = (name) =>
+    String(name || '')
+      .split(' ')
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((x) => x[0])
+      .join('')
+      .toUpperCase()
+  const swapTime = computed(() => (swapDay.value?.isWorkDay ? `${swapDay.value.startTime}–${swapDay.value.endTime}` : null))
   const onSubmit = () => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
     formRef.value?.validate((error) => {
-      if (!error) {
-        const newWorker = store.workerList.find(
-          (v) => v.positionId === store.replacePayload.positonId
-        )
-        const data = {
-          group_1: store.params.group,
-          worker_1: store.selectedWorker.workerId,
-          worker_position_1: store.selectedWorker.workerPositionId,
-
-          worker_2: newWorker.id,
-          worker_position_2: newWorker.positionId,
-          // Sherikning o'sha sanadagi grafigi (eski/o'chirilgan bog'lanish emas).
-          group_2: partnerGroupAt(newWorker, Utils.timeToZone(store.replacePayload.date)),
-          status: store.replacePayload.status,
-          date: Utils.timeToZone(store.replacePayload.date)
-        }
-        // Almashishdan keyingi holat — yangi bo'shliqlar uchun.
-        const to = data.status ? data.date : store.monthRange.to
-        const before = daysMap(store.list)
-        const swapDays = (own, other) =>
-          (own ?? []).map((d) =>
-            d.date >= data.date && d.date <= to
-              ? ((other ?? []).find((x) => x.date === d.date) ?? { ...d, id: null, work_status: false })
-              : d
-          )
-        const after = {
-          ...before,
-          [data.worker_position_1]: swapDays(before[data.worker_position_1], before[data.worker_position_2])
-        }
-        if (before[data.worker_position_2]) {
-          after[data.worker_position_2] = swapDays(before[data.worker_position_2], before[data.worker_position_1])
-        }
-        const dates = (before[data.worker_position_1] ?? []).map((d) => d.date).filter((d) => d >= data.date && d <= to)
-        const gaps = findNewGaps({
-          before,
-          after,
-          crewMap: store.crewMap,
-          wps: [data.worker_position_1, data.worker_position_2],
-          dates,
-          shifts: typeShifts.value
-        })
-        confirmIfGaps(() => store._replaceWorker(data), gaps)
-      }
+      if (error || !swapTime.value) return
+      store._replaceWorker({
+        worker_position_1: store.selectedWorker.workerPositionId,
+        worker_position_2: store.replacePayload.positonId,
+        date: swapDate.value
+      })
     })
   }
+  // Kun yoki rejim almashsa — nomzodlar shu kun bo'yicha qayta yuklanadi.
+  watch(
+    () => [store.replaceVisible, store.replaceMode, swapDate.value],
+    ([visible, mode], old) => {
+      if (!visible || mode !== 'swap' || (old && old[0] === visible && old[1] === mode && old[2] === swapDate.value)) return
+      store.replacePayload.positonId = null
+      store._workers()
+    }
+  )
 
-  // Bir kunlik almashishda xodimning o'sha kuni dam bo'lsa — ogohlantirish.
-  // Faqat ma'nosiz holatda: sherik grafiksiz yoki uning ham shu kuni dami.
-  const isRestDay = computed(() => {
-    if (store.replacePayload.status !== true || !store.replacePayload.positonId) return false
-    const date = Utils.timeToZone(store.replacePayload.date)
-    const day = store.selectedWorker?.days?.find((d) => d.date === date)
-    if (!day || day.isEmpty || day.isWorkDay || day.sub) return false
-    const partner = store.workerList.find((v) => v.positionId === store.replacePayload.positonId)
-    if (!partner?.ranges?.length) return true
-    const row = store.list.find((v) => v.worker_position_id === partner.positionId)
-    const pd = row?.days?.find((d) => d.date === date)
-    return !!pd && pd.id !== null && !Number(pd.work_status)
-  })
-
-  // Sana faqat tanlangan oy ichida.
+  // Faqat shu oydagi xodimning ish kunlari.
   const disabledDate = (ts) => {
     const d = Utils.timeToZone(ts)
-    return d < store.monthRange.from || d > store.monthRange.to
+    if (d < store.monthRange.from || d > store.monthRange.to) return true
+    if (store.replaceMode !== 'swap') return false
+    const day = store.selectedWorker?.days?.find((x) => x.date === d)
+    return !day?.isWorkDay || !!day?.substitution
   }
 
   const onSearch = (v) => {
@@ -180,7 +183,7 @@
   <UIModal
     v-model:visible="store.replaceVisible"
     :width="500"
-    :title="store.replaceMode === 'edit' ? $t('shiftType.groupView.editDay') : $t('shiftType.form.replaceWorker')"
+    :title="store.replaceMode === 'edit' ? $t('shiftType.groupView.editDay') : $t('shiftType.groupView.subTitle')"
   >
     <n-form
       class="grid grid-cols-12"
@@ -188,57 +191,89 @@
       :rules="validationRules.common"
       :model="store.replacePayload"
     >
-      <div
-        class="col-span-12 border border-surface-line px-4 py-2 mb-6 rounded-xl bg-surface-ground/40"
-      >
-        <div class="line-clamp-1 leading-[1.2] font-semibold">
-          {{ store.selectedWorker.fullName }}
-        </div>
-        <div class="line-clamp-1 leading-[1.2] text-secondary">
-          {{ store.selectedWorker.position }}
-        </div>
-      </div>
-      <div v-if="store.replaceModeSwitch" class="col-span-12 mb-5">
-        <n-radio-group v-model:value="store.replaceMode" class="w-full flex!">
-          <n-radio-button value="edit" class="flex-1 text-center">{{ $t('shiftType.groupView.editDay') }}</n-radio-button>
-          <n-radio-button value="swap" class="flex-1 text-center">{{ $t('shiftType.groupView.swapMode') }}</n-radio-button>
-        </n-radio-group>
-      </div>
 
       <template v-if="store.replaceMode === 'edit'">
-        <div class="col-span-12 flex justify-between text-sm mb-3">
-          <span class="text-secondary">{{ Utils.timeOnlyDate(dayDate) }}</span>
-          <span>
-            <span class="text-secondary">{{ $t('shiftType.groupView.actual') }}:</span>
-            <span class="font-medium ml-1">{{ currentLabel }}</span>
-          </span>
-        </div>
-        <div class="col-span-12 flex flex-wrap gap-2 mb-4">
-          <n-button
-            v-for="c in shiftChoices"
-            :key="c.key"
-            :type="store.dayEdit.choice === c.key ? 'primary' : 'default'"
-            :secondary="store.dayEdit.choice !== c.key"
-            @click="store.dayEdit.choice = c.key"
-          >
-            {{ c.label }}
-          </n-button>
-        </div>
-        <div v-if="store.dayEdit.choice === 'custom'" class="col-span-12 grid grid-cols-2 gap-3 mb-4">
-          <n-time-picker
-            v-model:formatted-value="store.dayEdit.start"
-            value-format="HH:mm"
-            format="HH:mm"
-            :placeholder="$t('shiftType.groupView.startTime')"
+        <div class="col-span-12 flex flex-col gap-3 text-sm">
+          <div class="flex items-center gap-3 rounded-xl border border-surface-line px-3 py-2.5">
+            <div class="w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold bg-primary/10 text-primary">
+              {{ initials(store.selectedWorker.fullName) }}
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="font-medium leading-[1.25] line-clamp-2">{{ store.selectedWorker.fullName }}</div>
+              <div class="text-xs text-secondary line-clamp-1">{{ store.selectedWorker.position }}</div>
+            </div>
+          </div>
+
+          <n-date-picker
+            v-model:value="store.replacePayload.date"
+            type="date"
+            class="w-full"
+            format="dd.MM.yyyy"
+            :is-date-disabled="disabledDate"
           />
-          <n-time-picker
-            v-model:formatted-value="store.dayEdit.end"
-            value-format="HH:mm"
-            format="HH:mm"
-            :placeholder="$t('shiftType.groupView.endTime')"
-          />
+
+          <div class="text-xs text-secondary">{{ $t('shiftType.groupView.dayNewState') }}</div>
+          <div class="grid grid-cols-2 gap-2">
+            <button
+              v-for="c in shiftChoices"
+              :key="c.key"
+              type="button"
+              class="flex items-center gap-2 rounded-xl border px-3 py-2.5 text-left transition-colors"
+              :class="
+                store.dayEdit.choice === c.key
+                  ? 'border-primary bg-primary/5 text-primary'
+                  : 'border-surface-line hover:border-primary/50'
+              "
+              @click="store.dayEdit.choice = c.key"
+            >
+              <n-icon size="16" class="shrink-0">
+                <WeatherMoon16Regular v-if="c.key === 'rest'" />
+                <Edit16Regular v-else-if="c.key === 'custom'" />
+                <Clock16Regular v-else />
+              </n-icon>
+              <span class="min-w-0">
+                <span class="block font-medium">{{ c.label }}</span>
+                <span v-if="c.lunch || c.hours" class="block text-[11px] text-secondary font-normal">
+                  {{ [c.hours ? $t('shiftType.groupView.hoursShort', { n: c.hours }) : null, c.lunch ? $t('shiftType.groupView.lunch', { t: c.lunch }) : null].filter(Boolean).join(' · ') }}
+                </span>
+              </span>
+            </button>
+          </div>
+
+          <div v-if="store.dayEdit.choice === 'custom'" class="grid grid-cols-2 gap-3">
+            <n-time-picker
+              v-model:formatted-value="store.dayEdit.start"
+              value-format="HH:mm"
+              format="HH:mm"
+              :placeholder="$t('shiftType.groupView.startTime')"
+            />
+            <n-time-picker
+              v-model:formatted-value="store.dayEdit.end"
+              value-format="HH:mm"
+              format="HH:mm"
+              :placeholder="$t('shiftType.groupView.endTime')"
+            />
+          </div>
+
+          <div class="flex items-center justify-center gap-3 rounded-xl bg-surface-ground px-3 py-2.5">
+            <div class="text-center">
+              <div class="text-[11px] text-secondary">{{ $t('shiftType.groupView.dayNow') }}</div>
+              <div class="font-medium">{{ currentLabel }}</div>
+              <div v-if="currentLunch" class="text-[11px] text-secondary">{{ $t('shiftType.groupView.lunch', { t: currentLunch }) }}</div>
+            </div>
+            <n-icon size="16" class="text-secondary"><ArrowRight16Regular /></n-icon>
+            <div class="text-center">
+              <div class="text-[11px] text-secondary">{{ $t('shiftType.groupView.dayAfter') }}</div>
+              <div class="font-medium" :class="editPlan ? 'text-primary' : 'text-secondary'">{{ newLabel }}</div>
+              <div v-if="newLunch" class="text-[11px] text-secondary">{{ $t('shiftType.groupView.lunch', { t: newLunch }) }}</div>
+            </div>
+          </div>
+
+          <n-alert v-if="currentDay?.substitution" type="warning" :show-icon="false">
+            {{ $t('shiftType.groupView.dayHasSub') }}
+          </n-alert>
         </div>
-        <div class="col-span-12 flex justify-end gap-4">
+        <div class="col-span-12 flex justify-end gap-4 mt-5">
           <n-button @click="store.replaceVisible = false" type="error" secondary>
             {{ $t('content.cancel') }}
           </n-button>
@@ -249,61 +284,107 @@
       </template>
 
       <template v-else>
-      <n-form-item
-        class="col-span-12"
-        :label="$t('shiftType.groupView.swapWith')"
-        path="positonId"
-        :rule-path="validationRules.rulesNames.requiredNumberField"
-      >
-        <UINSelect
-          @onSearch="onSearch"
-          :query="store.workerParams.search"
-          :options="store.workerList"
-          v-model:value="store.replacePayload.positonId"
-          value-field="positionId"
-          :render-label="UIHelper.selectRender.label"
-          :render-tag="UIHelper.selectRender.value"
-          :loading="store.workerLoading"
-          :total-count="store.totalWorker"
-          @onScrollEv="store._workers(true)"
-        />
-      </n-form-item>
-      <n-form-item
-        class="col-span-12"
-        :label="$t('shiftType.groupView.swapFrom')"
-        path="date"
-        :rule-path="validationRules.rulesNames.requiredNumberField"
-      >
-        <n-date-picker
-          clearable
-          v-model:value="store.replacePayload.date"
-          type="date"
-          class="w-full"
-          :is-date-disabled="disabledDate"
-        />
-      </n-form-item>
-      <n-radio-group
-        v-model:value="store.replacePayload.status"
-        class="col-span-12 grid! grid-cols-2 gap-2 mb-6"
-      >
-        <n-radio :value="true" class="border px-2 py-1 border-surface-line rounded-lg">
-          {{ $t('shiftType.groupView.swapOneDay') }}
-        </n-radio>
-        <n-radio :value="false" class="border px-2 py-1 border-surface-line rounded-lg">
-          {{ $t('shiftType.groupView.swapToMonthEnd') }}
-        </n-radio>
-      </n-radio-group>
-      <n-alert v-if="isRestDay" type="warning" class="col-span-12 mb-4">
-        {{ $t('shiftType.groupView.restDayWarn') }}
-      </n-alert>
-      <div class="col-span-12 flex justify-end gap-4">
-        <n-button @click="store.replaceVisible = false" type="error" secondary>
-          {{ $t('content.cancel') }}
-        </n-button>
-        <n-button @click="onSubmit" :loading="store.replaceLoading" type="primary">
-          {{ $t('content.save') }}
-        </n-button>
-      </div>
+        <div class="col-span-12 flex flex-col gap-2 text-sm mb-5">
+          <!-- 1. Dam oladigan xodim (ish kuni) -->
+          <div class="flex items-center gap-3 rounded-xl border border-surface-line px-3 py-2.5">
+            <div class="w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold bg-fig-red-50 text-fig-text-red">
+              {{ initials(store.selectedWorker.fullName) }}
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="font-medium leading-[1.25] line-clamp-2">{{ store.selectedWorker.fullName }}</div>
+              <div class="text-xs text-secondary line-clamp-1">{{ store.selectedWorker.position }}</div>
+            </div>
+            <div class="shrink-0 flex flex-col items-end gap-1 text-xs">
+              <span v-if="swapTime" class="text-secondary line-through">{{ swapTime }}</span>
+              <span class="px-1.5 py-0.5 rounded font-medium bg-fig-red-50 text-fig-text-red">
+                {{ $t('shiftType.groupView.subAbsentLabel') }}
+              </span>
+            </div>
+          </div>
+
+          <n-form-item
+            :show-label="false"
+            path="date"
+            :rule-path="validationRules.rulesNames.requiredNumberField"
+            class="-mb-4"
+          >
+            <n-date-picker
+              v-model:value="store.replacePayload.date"
+              type="date"
+              class="w-full"
+              format="dd.MM.yyyy"
+              :placeholder="$t('shiftType.groupView.subDate')"
+              :is-date-disabled="disabledDate"
+            />
+          </n-form-item>
+
+          <div class="flex items-center gap-2 pl-3 text-xs text-warning font-medium">
+            <span class="w-7 h-7 rounded-full bg-warning/10 flex items-center justify-center">
+              <n-icon size="14"><ArrowDown16Regular /></n-icon>
+            </span>
+            {{ $t('shiftType.groupView.subArrow') }}
+          </div>
+
+          <!-- 2. O'rniga chiqadigan xodim (shu kuni dam) -->
+          <n-form-item
+            :show-label="false"
+            path="positonId"
+            :rule-path="validationRules.rulesNames.requiredNumberField"
+            class="-mb-4"
+          >
+            <UINSelect
+              @onSearch="onSearch"
+              :query="store.workerParams.search"
+              :options="store.workerList"
+              v-model:value="store.replacePayload.positonId"
+              value-field="positionId"
+              :placeholder="$t('shiftType.groupView.subWorker')"
+              :render-label="UIHelper.selectRender.label"
+              :render-tag="UIHelper.selectRender.value"
+              :loading="store.workerLoading"
+              :total-count="store.totalWorker"
+              @onScrollEv="store._workers(true)"
+            />
+          </n-form-item>
+          <div
+            v-if="picked"
+            class="flex items-center gap-3 rounded-xl border border-success/40 bg-success/5 px-3 py-2.5"
+          >
+            <div class="w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold bg-success/10 text-success">
+              {{ initials(picked.name) }}
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="font-medium leading-[1.25] line-clamp-2">{{ picked.name }}</div>
+              <div class="text-xs text-secondary line-clamp-1">{{ picked.position }}</div>
+            </div>
+            <div class="shrink-0 flex flex-col items-end gap-1 text-xs">
+              <span class="text-secondary line-through">{{ $t('shiftType.groupView.rest') }}</span>
+              <span class="px-1.5 py-0.5 rounded font-medium bg-success/10 text-success">{{ swapTime }}</span>
+            </div>
+          </div>
+          <div
+            v-else
+            class="rounded-xl border border-dashed border-surface-line px-3 py-3 text-xs text-secondary text-center"
+          >
+            {{ $t('shiftType.groupView.subPickHint') }}
+          </div>
+
+          <div v-if="swapTime" class="flex items-start gap-1.5 text-xs text-secondary mt-1">
+            <n-icon size="14" class="mt-px shrink-0"><Info16Regular /></n-icon>
+            {{ $t('shiftType.groupView.subKeepsPlan') }}
+          </div>
+          <n-alert v-else type="warning" class="mt-1">
+            {{ $t('shiftType.groupView.subNotWorkDay') }}
+          </n-alert>
+        </div>
+        <div class="col-span-12 flex justify-end gap-4">
+          <n-button @click="store.replaceVisible = false" type="error" secondary>
+            {{ $t('content.cancel') }}
+          </n-button>
+          <n-button @click="onSubmit" :disabled="!swapTime" :loading="store.replaceLoading" type="primary">
+            {{ $t('content.save') }}
+          </n-button>
+        </div>
       </template>
     </n-form>
   </UIModal>

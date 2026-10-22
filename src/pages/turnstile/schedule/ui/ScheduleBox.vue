@@ -1,4 +1,6 @@
 <script setup>
+  import { PeopleSwap20Regular } from '@vicons/fluent'
+
   const props = defineProps({
     worker: {
       type: Object,
@@ -12,6 +14,26 @@
 </script>
 
 <template>
+  <n-popover v-if="worker?.days?.[dayIndex]?.substitution" trigger="hover" placement="top" :width="260">
+    <template #trigger>
+      <div
+        class="absolute top-0 right-0 z-[1] w-[18px] h-[16px] flex items-center justify-center rounded-bl bg-warning text-white"
+      >
+        <n-icon size="12"><PeopleSwap20Regular /></n-icon>
+      </div>
+    </template>
+    <div class="text-xs leading-[1.4]">
+      <div class="font-semibold mb-1">{{ $t('shiftType.groupView.subTitle') }}</div>
+      {{
+        worker.days[dayIndex].substitution.role === 'absent'
+          ? $t('shiftType.groupView.subAbsentTitle', { name: worker.days[dayIndex].substitution.name })
+          : $t('shiftType.groupView.subWorksTitle', { name: worker.days[dayIndex].substitution.name })
+      }}
+      <span class="text-secondary">
+        ({{ worker.days[dayIndex].substitution.start_time }}–{{ worker.days[dayIndex].substitution.end_time }})
+      </span>
+    </div>
+  </n-popover>
   <template v-if="worker?.days?.[dayIndex]?.empty">
     <!--                  Empty box-->
   </template>
