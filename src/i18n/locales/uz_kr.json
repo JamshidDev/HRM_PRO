@@ -5503,6 +5503,7 @@
     },
     "table": {
       "department": "Бўлим",
+      "name": "Номи",
       "organization": "Ташкилот",
       "geoType": "Жойлашув тури",
       "lat": "Кенглик",
@@ -5514,6 +5515,8 @@
     },
     "form": {
       "department": "Бўлим",
+      "name": "Ўтиш жойи номи",
+      "namePlaceholder": "Масалан: Асосий кириш",
       "geoType": "Жойлашув тури",
       "lat": "Лат",
       "lng": "Лнг",
@@ -5532,6 +5535,7 @@
     },
     "validation": {
       "departmentRequired": "Бўлимни танланг",
+      "nameRequired": "Ўтиш жойи номини киритинг",
       "markerRequired": "Харитада жойлашувни белгиланг",
       "polygonRequired": "Харитада полйгон белгиланг (камида 3 та нуқта)",
       "radiusRequired": "Радиусни киритинг",

@@ -37,6 +37,11 @@
 
   const columns = computed(() => [
     {
+      key: 'name',
+      title: t('departmentLocationPage.table.name'),
+      minWidth: 180
+    },
+    {
       key: 'department.name',
       title: t('departmentLocationPage.table.department'),
       minWidth: 200
@@ -133,6 +138,10 @@
     :total="store.locationTotalItems"
     @change-page="changePage"
   >
+    <template #cell-name="{ row }">
+      {{ row.name || '—' }}
+    </template>
+
     <template #cell-geo_type="{ row }">
       <UIBadge
         :show-icon="false"
