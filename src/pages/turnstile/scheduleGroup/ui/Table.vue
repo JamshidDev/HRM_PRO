@@ -86,11 +86,11 @@
     }
     store.groupId = row.id
     store.elementId = row.schedule_type?.id
+    store._resetAttachFilters()
     store.notScheduleParams.start_date = range.from
     store.notScheduleParams.end_date = range.to
     store.notScheduleParams.page = 1
     store._notScheduleWorker()
-    store.selectedWorkers = []
     store.notScheduleVisible = true
   }
 
