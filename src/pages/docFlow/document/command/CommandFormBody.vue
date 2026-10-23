@@ -30,6 +30,7 @@
   import CommandForm_57 from './ui/CommandForm_57.vue'
   import CommandForm_58 from './ui/CommandForm_58.vue'
   import CommandForm_59 from './ui/CommandForm_59.vue'
+  import CommandForm_60 from './ui/CommandForm_60.vue'
   import CommandForm_75 from './ui/CommandForm_75.vue'
   import { useAppSetting } from '@/utils/index.js'
   import { VueDraggable } from 'vue-draggable-plus'
@@ -53,7 +54,7 @@
   const commandIdList = [32, 33, 34, 35, 36, 37, 38, 39]
   const singleSelectCommands = [
     32, 33, 34, 35, 36, 37, 38, 39, 44, 43, 45, 46, 47, 49, 48, 50, 51, 52, 53, 54, 74, 56, 57, 58,
-    59
+    59, 60
   ]
 
   // 75 da xodim select'i ko'rsatilmaydi — xodim bekor qilinayotgan buyruqdan olinadi.
@@ -104,6 +105,7 @@
   const commandForm_57 = ref(null)
   const commandForm_58 = ref(null)
   const commandForm_59 = ref(null)
+  const commandForm_60 = ref(null)
   const commandForm_75 = ref(null)
 
   const renderLabel = (option) => {
@@ -303,6 +305,8 @@
             validate = await commandForm_58.value?.onSubmit(mainData)
           } else if (store.payload.command_type === 59) {
             validate = await commandForm_59.value?.onSubmit(mainData)
+          } else if (store.payload.command_type === 60) {
+            validate = await commandForm_60.value?.onSubmit(mainData)
           } else if (store.payload.command_type === CANCEL_COMMAND_TYPE) {
             validate = await commandForm_75.value?.onSubmit(mainData)
           }
@@ -340,6 +344,8 @@
       commandForm_58.value?.validateForm()
     } else if (store.payload.command_type === 59) {
       commandForm_59.value?.validateForm()
+    } else if (store.payload.command_type === 60) {
+      commandForm_60.value?.validateForm()
     } else if (store.payload.command_type === CANCEL_COMMAND_TYPE) {
       commandForm_75.value?.validateForm()
     }
@@ -925,6 +931,9 @@
         </template>
         <template v-else-if="store.payload.command_type === 59">
           <CommandForm_59 ref="commandForm_59" />
+        </template>
+        <template v-else-if="store.payload.command_type === 60">
+          <CommandForm_60 ref="commandForm_60" />
         </template>
         <template v-else-if="isCancelCommand">
           <CommandForm_75 ref="commandForm_75" />

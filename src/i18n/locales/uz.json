@@ -1793,6 +1793,14 @@
       "reference_date": "Ma’lumotnoma sanasi",
       "reference_number": "Ma’lumotnoma raqami"
     },
+    "form_60": {
+      "from": "Harbiy yig‘in boshlanish sanasi",
+      "to": "Harbiy yig‘in tugash sanasi",
+      "military_office": "Mudofaa ishlari bo‘limi (tuman/shahar)",
+      "military_office_placeholder": "Masalan: Mirobod tumani",
+      "reference_date": "Ma’lumotnoma sanasi",
+      "reference_number": "Ma’lumotnoma raqami"
+    },
     "form_75": {
       "cancel_command_id": "Bekor qilinayotgan buyruq",
       "cancel_reason": "Bekor qilish sababi",
