@@ -5393,7 +5393,9 @@
       "goToSchedule": "Navbatchilik grafigini ochish",
       "customShiftHint": "Maxsus smenada guruh bo'lmaydi — u to'g'ridan-to'g'ri Navbatchilik grafigida to'ldiriladi.",
       "noShiftTypes": "Smena turlari topilmadi",
-      "searchByShiftName": "Smena nomi bo'yicha qidirish"
+      "searchByShiftName": "Smena nomi bo'yicha qidirish",
+      "duplicateWorker": "Bitta xodim bir nechta qatorda tanlangan",
+      "groupEndDate": "Guruh tugash sanasi"
     },
     "groupView": {
       "period": "Davr",
@@ -5482,6 +5484,7 @@
       "dayNewState": "Shu kun qanday bo'lsin?",
       "dayNow": "Hozir",
       "dayAfter": "Saqlangandan keyin",
+      "dayUnchanged": "Bu kun allaqachon shunday — o'zgartirish yo'q",
       "dayHasSub": "Bu kunda bir kunlik almashtirish bor — saqlansa u bekor bo'ladi va sherikning rejasi qaytadi.",
       "regenFrom": "Qaysi kundan qayta yaratiladi",
       "regenToday": "Bugundan",
@@ -5495,11 +5498,19 @@
       "removeGone": "{from} – {to} o'chadi",
       "removeWorkDays": "{n} ish kuni",
       "removeSubs": "Bu kunlardagi {n} ta bir kunlik almashtirish bekor bo'ladi, sheriklar rejasi qaytadi.",
-      "lunch": "Tushlik {t}",
+      "lunch": "Tanaffus {t}",
+      "lunchHint": "Asosan ovqatlanish uchun tanaffus. Ish vaqtiga kirmaydi.",
       "hoursShort": "{n} soat",
+      "lunchLabel": "Tanaffus (ovqatlanish uchun)",
+      "hasLunch": "Tanaffus bor",
+      "lunchStart": "Tanaffus boshi",
+      "lunchEnd": "Tanaffus oxiri",
+      "noLunch": "tanaffussiz",
+      "lunchInvalid": "Tanaffus ish vaqti ichida bo'lsin (boshi oxiridan oldin). Tanaffus bo'lmasa, belgini olib tashlang.",
       "removeWholeMonth": "Butun oy",
       "removeHintMonth": "Xodimning shu oydagi butun grafigi o'chadi va u shu oy grafiksiz qoladi: tabelda reja bo'lmaydi, turniketda kutilmaydi, o'rni bo'sh qoladi. Fakt bo'lgan kunlar saqlanadi. Keyin uni boshqa smenaga qo'shish mumkin.",
-      "addFromMonthStart": "Xodim oy boshidan ({from}) shu o'rinda ishlaydi."
+      "addFromMonthStart": "Xodim oy boshidan ({from}) shu o'rinda ishlaydi.",
+      "attachTitle": "Xodim biriktirish — {name}"
     },
     "generate": {
       "month": "Oy",
@@ -5529,7 +5540,9 @@
       "noShift": "Smena yo'q",
       "onlyFree": "Faqat smenasizlar",
       "freeWorkersCount": "Shu oyda smenasi yo'q xodimlar: {n}",
-      "workersNotFound": "Xodim topilmadi"
+      "workersNotFound": "Xodim topilmadi",
+      "discardTitle": "Saqlamasdan yopilsinmi?",
+      "discardConfirm": "{n} ta biriktirilgan xodim saqlanmaydi. Baribir yopilsinmi?"
     }
   },
   "lmsCertificate": {
@@ -5865,6 +5878,7 @@
     },
     "table": {
       "department": "Bo'lim",
+      "name": "Nomi",
       "organization": "Tashkilot",
       "geoType": "Joylashuv turi",
       "lat": "Kenglik",
@@ -5876,6 +5890,8 @@
     },
     "form": {
       "department": "Bo'lim",
+      "name": "O'tish joyi nomi",
+      "namePlaceholder": "Masalan: Asosiy kirish",
       "geoType": "Joylashuv turi",
       "lat": "Lat",
       "lng": "Lng",
@@ -5894,6 +5910,7 @@
     },
     "validation": {
       "departmentRequired": "Bo'limni tanlang",
+      "nameRequired": "O'tish joyi nomini kiriting",
       "markerRequired": "Xaritada joylashuvni belgilang",
       "polygonRequired": "Xaritada polygon belgilang (kamida 3 ta nuqta)",
       "radiusRequired": "Radiusni kiriting",

@@ -6,6 +6,7 @@ import { useAccountStore } from '@/store/modules/index.js'
 import { useAppSetting } from '@/utils/index.js'
 import { v4 as uuidv4 } from 'uuid'
 import Utils from '@/utils/Utils.js'
+import { dpopProof } from '@/service/dpop.js'
 const apiUrl = import.meta.env.VITE_API_URL
 
 const { t } = i18n.global
@@ -64,13 +65,16 @@ export const useAIConversationStore = defineStore('AIConversationStore', {
       const index = this.messages.length
       this.loading = true
       try {
-        const response = await fetch(`${apiUrl}/api/v1/ai/lawyer`, {
+        const url = `${apiUrl}/api/v1/ai/lawyer`
+        const proof = await dpopProof('POST', url, token).catch(() => null)
+        const response = await fetch(url, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'X-Auth-Type': 'sanctum',
             Accept: 'text/event-stream',
-            Authorization: 'Bearer ' + token
+            Authorization: 'Bearer ' + token,
+            ...(proof ? { DPoP: proof } : {})
           },
           mode: 'cors',
           body: JSON.stringify(data) // payload ma'lumotlari

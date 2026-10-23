@@ -4,7 +4,9 @@
   import SearchElement from '@/pages/turnstile/schedule/ui/SearchElement.vue'
   import MonthTab from '@/pages/turnstile/scheduleWorker/ui/MonthTab.vue'
   import { Utils } from '@utils'
+  import i18n from '@/i18n/index.js'
 
+  const { t } = i18n.global
   const store = useShiftTypeStore()
   const accStore = useAccountStore()
 
@@ -12,16 +14,27 @@
 
   const onSubmit = () => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsWorkersWrite)) return
+    // Faqat xodim tanlangan qatorlar yuboriladi (bo'sh qator — `worker_position_id: null` emas);
+    // `day` — qatorning grafikdagi tartibi, shuning uchun filtrdan oldin olinadi.
+    const picked = store.workers
+      .map((v, index) => ({ worker_position_id: v.id, day: index + 1 }))
+      .filter((x) => x.worker_position_id)
+    if (!picked.length) {
+      $Alert.validation(t('shiftType.generate.noWorkerSelected'))
+      return
+    }
+    const ids = picked.map((x) => x.worker_position_id)
+    if (new Set(ids).size !== ids.length) {
+      $Alert.validation(t('shiftType.form.duplicateWorker'))
+      return
+    }
     const data = {
       start_date: Utils.timeToZone(store.generatePayload.start_date),
       end_date: Utils.timeToZone(store.generatePayload.end_date),
       work_date: store.showWorkDate ? Utils.timeToZone(store.generatePayload.work_date) : undefined,
       schedule_type: store.elementId,
       count: store.showGroupCountField ? store.generatePayload.count : undefined,
-      schedule_workers: store.workers.map((v, index) => ({
-        worker_position_id: v.id,
-        day: index + 1
-      }))
+      schedule_workers: picked
     }
     store._generateWorkerSchedule(data)
   }
@@ -94,7 +107,7 @@
             <div
               class="rounded-tl-lg border-r border-t border-l border-b border-surface-line p-2 w-[60px] min-w-[60px] h-[50px] sticky left-0 top-0 z-[20] bg-surface-section flex-shrink-0"
             >
-              N0
+              №
             </div>
             <div
               class="border-r border-t border-l-[0] border-b border-surface-line flex text-secondary font-medium justify-center items-center w-[260px] min-w-[320px] h-[50px] sticky left-[60px] top-0 z-[20] bg-surface-section flex-shrink-0"
@@ -147,9 +160,9 @@
               </div>
 
               <!-- Day Cells -->
-              <template v-for="(day, dayIndex) in worker">
+              <template v-for="(day, dayIndex) in worker" :key="dayIndex">
                 <div
-                  class="border-r text-center border-l border-b border-t-0 -ml-[1px] border-surface-line w-[60px] min-w-[60px] h-[50px] border text-xs text-secondary p-2 pb-0 flex-shrink-0 cursor-pointer relative"
+                  class="border-r text-center border-l border-b border-t-0 -ml-[1px] border-surface-line w-[60px] min-w-[60px] h-[50px] border text-xs text-secondary p-2 pb-0 flex-shrink-0 relative"
                 >
                   <template v-if="worker?.[dayIndex].isEmpty"> </template>
                   <template v-else-if="worker?.[dayIndex].isWorkDay">
@@ -162,10 +175,11 @@
                     </div>
                   </template>
                   <template v-else>
+                    <!-- Dam kuni belgisi (oq matn och yashil fonda ko'rinmasdi) -->
                     <div
-                      class="absolute top-[0] left-[0] w-[16px] h-[16px] bg-success/10 text-white text-xs rounded hover:bg-success/50"
+                      class="absolute top-[0] left-[0] w-[16px] h-[16px] bg-success/15 text-success text-xs font-semibold rounded"
                     >
-                      D
+                      {{ $t('shiftType.groupView.restShort') }}
                     </div>
                   </template>
                 </div>
@@ -189,12 +203,12 @@
         </div>
       </n-spin>
       <div class="flex justify-end gap-4 pt-6">
-        <n-button @click="store.scheduleVisible = false" type="error">{{
-          $t('content.cancel')
-        }}</n-button>
-        <n-button :loading="store.saveLoading" type="primary" @click="onSubmit">{{
-          $t('content.save')
-        }}</n-button>
+        <n-button secondary @click="store.scheduleVisible = false">{{ $t('content.cancel') }}</n-button>
+        <n-button :loading="store.saveLoading" type="primary" @click="onSubmit">
+          {{
+            $t('content.save')
+          }}
+        </n-button>
       </div>
     </div>
   </UIModal>

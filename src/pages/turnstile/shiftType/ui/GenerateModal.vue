@@ -77,6 +77,12 @@
     }
   )
 
+  // Guruhni yakunlash: tugash sanasi guruh boshlanishidan oldin bo'lmasin
+  // (o'tgan kunlar ruxsat — guruhni orqa sana bilan yopish mumkin).
+  const groupStart = computed(() => store.generatePayload.start_date)
+  const isEndDateDisabled = (ts) => !!groupStart.value && dayjs(ts).isBefore(dayjs(groupStart.value), 'day')
+  const groupStartLabel = computed(() => (groupStart.value ? dayjs(groupStart.value).format('DD.MM.YYYY') : '—'))
+
   const onSubmit = () => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsWorkersWrite)) return
     formRef.value?.validate((error) => {
@@ -112,8 +118,15 @@
   >
     <n-form ref="formRef" :rules="validationRules.common" :model="store.generatePayload">
       <template v-if="!store.visibleType">
+        <!-- Qaysi guruh yakunlanayotgani -->
+        <div class="mb-4 p-3 rounded-xl border border-surface-line bg-surface-ground/40">
+          <div class="font-semibold line-clamp-1" :title="store.generatePayload.name">
+            {{ store.generatePayload.name }}
+          </div>
+          <div class="mt-1 text-xs text-secondary">{{ $t('content.startDate') }}: {{ groupStartLabel }}</div>
+        </div>
         <n-form-item
-          :label="$t(`content.date`)"
+          :label="$t('shiftType.form.groupEndDate')"
           path="end_date"
           :rule-path="validationRules.rulesNames.requiredNumberField"
         >
@@ -122,6 +135,7 @@
             v-model:value="store.generatePayload.end_date"
             type="date"
             class="w-full"
+            :is-date-disabled="isEndDateDisabled"
           />
         </n-form-item>
       </template>
@@ -214,7 +228,6 @@
             />
           </n-form-item>
         </div>
-
       </template>
 
       <div class="grid grid-cols-1 mt-6">
