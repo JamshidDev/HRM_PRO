@@ -21,8 +21,8 @@
         formData.append('document_date', Utils.timeToZone(store.payload.document_date))
 
         if (store.visibleType) {
-          store._create(formData)
           formData.append('file', store.payload.file[0]?.file)
+          store._create(formData)
         } else {
           if (typeof store.payload.file[0]?.file !== 'string') {
             formData.append('file', store.payload.file[0]?.file)
@@ -35,7 +35,8 @@
 
   watchEffect(() => {
     store.payload.fakeFile = store.payload.file.length > 0 ? 'valid' : null
-    if (store.payload.file.length > 0) {
+    // Nom faqat yangi tanlangan fayldan olinadi — tahrirlashda mavjud fayl hujjat nomini almashtirmasin.
+    if (store.payload.file[0]?.file instanceof File) {
       store.payload.title = store.payload.file[0].name?.replace(/\..*$/, '')
     }
   })

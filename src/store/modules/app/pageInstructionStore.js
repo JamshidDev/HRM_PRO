@@ -137,6 +137,7 @@ export const usePageInstructionStore = defineStore('pageInstructionStore', {
       this.payload.title = null
       this.payload.text = ''
       this.payload.photos = []
+      this.imgCarouselIdx = 0
       this.elementId = null
       this.visibleType = true
     }

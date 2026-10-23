@@ -43,7 +43,8 @@
 
   const onEdit = (row) => {
     store.resetPassportForm()
-    store.elementId = row.id
+    // row.id — lavozim id'si; pasport id'si alohida keladi (yo'q bo'lsa — yangi pasport yaratiladi).
+    store.elementId = row?.passport?.id ?? null
     store.workerId = row?.worker?.id
     store.visible = true
   }

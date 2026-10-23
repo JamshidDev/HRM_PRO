@@ -81,12 +81,11 @@
           <NoImage class="w-[200px]" />
           <p class="text-secondary/40 text-xl">{{ $t('content.noImage') }}</p>
         </div>
+        <!-- autoplay yo'q: aylanib turgan karuselda «O'chirish» ko'rinmayotgan rasmni o'chirib yuborardi. -->
         <n-carousel
           v-model:current-index="store.imgCarouselIdx"
           v-else
           :draggable="store.payload.photos.length > 1"
-          draggable
-          autoplay
           show-arrow
           :show-dots="false"
         >
