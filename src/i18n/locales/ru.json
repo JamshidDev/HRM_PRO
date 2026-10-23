@@ -1772,6 +1772,13 @@
       "act_date": "Дата акта",
       "responsible": "Ответственный сотрудник"
     },
+    "form_59": {
+      "from": "Дата направления (на один месяц)",
+      "military_office": "Отдел по делам обороны (район/город)",
+      "military_office_placeholder": "Например: Мирабадский район",
+      "reference_date": "Дата справки",
+      "reference_number": "Номер справки"
+    },
     "form_75": {
       "cancel_command_id": "Отменяемый приказ",
       "cancel_reason": "Причина отмены",

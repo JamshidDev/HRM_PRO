@@ -43,6 +43,7 @@ export const useSignatureStore = defineStore('signatureStore', {
     documentType: null,
     rejectLoading: null,
     usbVisible: false,
+    usbKeyId: null,
     keyType: useAppSetting.signatureUseType.pfx,
     signatureBtnLoading: false
   }),
@@ -58,27 +59,36 @@ export const useSignatureStore = defineStore('signatureStore', {
           async (error) => {
             this.loading = false
             const blocked = await isLocalNetworkBlocked()
-            const message = t(blocked ? 'signature.localNetworkBlocked' : 'signature.connectionError')
+            const message = t(
+              blocked ? 'signature.localNetworkBlocked' : 'signature.connectionError'
+            )
             if (isToastOnlyPage()) $Toast.error(message)
-            else $Alert({ type: 'network', title: t('alertDialog.eimzoTitle'), message, duration: 0 })
+            else
+              $Alert({ type: 'network', title: t('alertDialog.eimzoTitle'), message, duration: 0 })
             reject(error)
           }
         )
       })
     },
-    checkCardPluggedIn() {
-      EIMZOClient.idCardIsPLuggedIn(
-        (yes) => {
-          this.usbVisible = yes
-        },
-        function (e, r) {
-          if (e) {
-            console.warn(errorCAPIWS + ' : ' + e)
-            uiShowMessage(errorCAPIWS + ' : ' + e)
-          } else {
-          }
-        }
-      )
+    // USB qurilma: CKC (har qanday mos token) → BAIK-token → ID-karta; topilganining keyId'si bilan imzolanadi.
+    async checkCardPluggedIn() {
+      const probe = (fn) =>
+        new Promise((resolve) =>
+          fn(
+            (yes) => resolve(yes),
+            (e, r) => {
+              console.warn('E-IMZO USB check:', e || r)
+              resolve(false)
+            }
+          )
+        )
+      const [ckc, baikey, idcard] = await Promise.all([
+        probe(EIMZOClient.isCKCPLuggedIn),
+        probe(EIMZOClient.isBAIKTokenPLuggedIn),
+        probe(EIMZOClient.idCardIsPLuggedIn)
+      ])
+      this.usbKeyId = ckc ? 'ckc' : baikey ? 'baikey' : idcard ? 'idcard' : null
+      this.usbVisible = Boolean(this.usbKeyId)
     },
     checkListKey() {
       EIMZOClient.listAllUserKeys(
@@ -179,10 +189,12 @@ export const useSignatureStore = defineStore('signatureStore', {
     },
     _accepted(idx, callback) {
       let key = null
-      if (idx === useAppSetting.signatureUseType.idCard) {
+      const isUsb = idx === useAppSetting.signatureUseType.idCard
+      if (isUsb) {
         if (!this.usbVisible) return
 
-        key = useAppSetting.signatureUseType.idCard
+        // PIN'ni E-IMZO o'zi so'raydi — load_key kerak emas.
+        key = this.usbKeyId || useAppSetting.signatureUseType.idCard
       } else {
         key = this.allKeys[idx]
         this.workerPin = key?.pinfl
@@ -193,7 +205,7 @@ export const useSignatureStore = defineStore('signatureStore', {
       }
 
       this.getChallenge((challenge) => {
-        if (key === useAppSetting.signatureUseType.idCard) {
+        if (isUsb) {
           callback(key, challenge)
         } else {
           let vo = key.vo
