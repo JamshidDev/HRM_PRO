@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { currentTokenId, endSessionIfForeign } from '@/features/sessionEnded/sessionEnded.js'
 import { useAppSetting } from '@/utils/index.js'
 import io from 'socket.io-client'
+import { dpopProof } from '@/service/dpop.js'
 const socketUrl = import.meta.env.VITE_SOCKET_URL
 const socketSecret = import.meta.env.VITE_SOCKET_SECRET
 import { useNotify } from '@/composables/useNotify'
@@ -52,10 +53,11 @@ export const useSocketStore = defineStore('useSocketStore', {
 
       this.currentUserId = userId
       this.socket = io(socketUrl, {
-        auth: {
-          userId: userId,
-          token: token,
-          secret: socketSecret
+        // Har (qayta) ulanishda yangi DPoP imzo — token brauzer kalitiga bog'langan.
+        auth: (cb) => {
+          dpopProof('GET', '/socket.io/', token)
+            .catch(() => null)
+            .then((dpop) => cb({ userId, token, secret: socketSecret, ...(dpop ? { dpop } : {}) }))
         },
         reconnection: true,
         reconnectionDelay: 1000,
@@ -65,7 +67,19 @@ export const useSocketStore = defineStore('useSocketStore', {
         transports: ['websocket']
       })
 
+      // Server rad etsa socket.io o'zi qayta ulanmaydi — soat HTTP javobidan moslangach yangi imzo bilan qayta (≤3).
+      let deniedRetries = 0
+      const socket = this.socket
+      socket.on('connect_error', () => {
+        if (socket.active || deniedRetries >= 3) return
+        deniedRetries += 1
+        setTimeout(() => {
+          if (this.socket === socket && !socket.connected) socket.connect()
+        }, 2000 * deniedRetries)
+      })
+
       this.socket.on('connect', () => {
+        deniedRetries = 0
         console.info('<=== Socket connected:', this.socket.id + '===>')
 
         this.setupIdleDetection()
