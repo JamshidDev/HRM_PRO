@@ -1343,6 +1343,8 @@
     "command": {
       "createTitle": "Buyruq yaratish",
       "updateTitle": "Buyruqni tahrirlash",
+      "fullscreen": "To'liq ekran",
+      "exitFullscreen": "Kichraytirish",
       "lastVacation": "Oxirgi ta'til ma'lumotlarini ko'rish",
       "form": {
         "beforeFromDeadline": "Muddatidan avval",
@@ -1354,6 +1356,16 @@
         "viewSameTime": "Bir vaqtda tanishish",
         "viewDescription": "Kelishuvchilar quyidagi tartibda yoki bir vaqtda ko'rib hujjatni imzolaydilar",
         "viewOneByOne": "Tartib bo'yicha tanishish",
+        "route": {
+          "parallel": "Parallel",
+          "sequential": "Tartibli",
+          "parallelHint": "Hujjat hammaga bir vaqtda yuboriladi — kim oldin yoki keyin ko'rishi muhim emas",
+          "sequentialHint": "Hujjat navbat bilan yuboriladi: oldingi kelishuvchi imzolagach keyingisiga o'tadi. Tartibni sudrab o'zgartiring",
+          "roleSign": "Kelishuvchi",
+          "roleView": "Tanishuvchi",
+          "step": "{n}-navbat",
+          "drag": "Sudrab tartibini o'zgartiring"
+        },
         "type": "Buyruq turi",
         "byContract": "{n} - raqamli shartnoma asosida",
         "confirm": "Kelishuvchilar",
