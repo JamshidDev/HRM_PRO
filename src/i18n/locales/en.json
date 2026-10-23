@@ -1777,6 +1777,14 @@
       "reference_date": "Certificate date",
       "reference_number": "Certificate number"
     },
+    "form_60": {
+      "from": "Training start date",
+      "to": "Training end date",
+      "military_office": "Defense affairs department (district/city)",
+      "military_office_placeholder": "E.g.: Mirobod district",
+      "reference_date": "Certificate date",
+      "reference_number": "Certificate number"
+    },
     "form_75": {
       "cancel_command_id": "Command being cancelled",
       "cancel_reason": "Cancellation reason",
