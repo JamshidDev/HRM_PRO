@@ -122,7 +122,6 @@ export const useNewsStore = defineStore('newsStore', {
         const promises = []
 
         const fd = new FormData()
-        fd.append('_method', 'PUT')
 
         if (this.payload.slug !== inst.slug) fd.append('slug', this.payload.slug)
 

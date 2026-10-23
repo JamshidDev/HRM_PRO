@@ -9,10 +9,9 @@ const _create = async (payload) => {
   return await axios.post(`/v1/hr/language-certificates`, payload.data)
 }
 
-// `_method: 'PUT'` params orqali — multipart bilan PUT yuborish uchun
-// (worker-languages bilan bir xil uslub).
+// Haqiqiy PUT (multipart ham) — backend FileInterceptor bilan qabul qiladi.
 const _update = async (payload) => {
-  return await axios.post(`/v1/hr/language-certificates/${payload.id}`, payload.data, {
+  return await axios.put(`/v1/hr/language-certificates/${payload.id}`, payload.data, {
     params: payload.params
   })
 }

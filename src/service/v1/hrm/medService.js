@@ -13,7 +13,7 @@ const _show = async (payload) => {
 }
 
 const _update = async (payload) => {
-  return await axios.post(`/v1/hr/worker-meds/${payload.id}`, payload.data, {
+  return await axios.put(`/v1/hr/worker-meds/${payload.id}`, payload.data, {
     params: payload?.params
   })
 }

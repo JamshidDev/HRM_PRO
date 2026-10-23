@@ -52,9 +52,8 @@ export const useLanguageStore = defineStore('languageStore', {
     },
     _update(data) {
       this.saveLoading = true
-      const params = { _method: 'PUT' }
       $ApiService.languageService
-        ._update({ data, id: this.elementId, params })
+        ._update({ data, id: this.elementId })
         .then((res) => {
           this.visible = false
           this._index()

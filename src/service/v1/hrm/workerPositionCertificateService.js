@@ -10,10 +10,9 @@ const _create = async (payload) => {
   return await axios.post(`/v1/hr/worker-position-certificates`, payload.data)
 }
 
-// `_method: 'PUT'` params orqali — multipart bilan PUT yuborish uchun
-// (NestJS method-override middleware POST'ni PUT'ga aylantiradi).
+// Haqiqiy PUT (multipart ham) — backend FileInterceptor bilan qabul qiladi.
 const _update = async (payload) => {
-  return await axios.post(`/v1/hr/worker-position-certificates/${payload.id}`, payload.data, {
+  return await axios.put(`/v1/hr/worker-position-certificates/${payload.id}`, payload.data, {
     params: payload.params
   })
 }
