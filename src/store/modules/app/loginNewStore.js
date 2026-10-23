@@ -4,6 +4,7 @@ import { AppPaths, useAppSetting, isPasswordExpiredError } from '@/utils/index.j
 import { useAccountStore, useSocketStore } from '@/store/modules/index.js'
 import { getActivePinia } from 'pinia'
 import { getLoginDeviceData } from '@/utils/webPush.js'
+import { dpopProof } from '@/service/dpop.js'
 
 const otpExpireTime = import.meta.env.VITE_OTP_EXPIRE_TIME
 
@@ -235,8 +236,15 @@ export const useLoginNewStore = defineStore('loginNewStore', {
       if (!token) return
       this.ssoSessionChecking = true
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/user/profile`, {
-          headers: { Accept: 'application/json', Authorization: `Bearer ${token}`, 'X-Auth-Type': 'sanctum' }
+        const url = `${import.meta.env.VITE_API_URL}/api/v1/user/profile`
+        const proof = await dpopProof('GET', url, token).catch(() => null)
+        const res = await fetch(url, {
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
+            'X-Auth-Type': 'sanctum',
+            ...(proof ? { DPoP: proof } : {})
+          }
         })
         if (res.ok) {
           const w = (await res.json())?.data?.worker

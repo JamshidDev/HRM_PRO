@@ -1,0 +1,4 @@
+# unplugin-auto-import bu fayllarni har safar LF bilan qayta yozadi — Windows'da (core.autocrlf=true)
+# ular doim "o'zgargan" bo'lib ko'rinmasligi uchun LF qilib qotiramiz.
+auto-imports.d.ts text eol=lf
+.eslintrc-auto-import.json text eol=lf
