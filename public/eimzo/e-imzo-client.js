@@ -149,8 +149,9 @@ var EIMZOClient = {
         if (!EIMZOClient.NEW_API) {
             fail(null, 'Please install new version of E-IMZO');
         } else {
-            if (EIMZOClient.NEW_API2) {
-                EIMZOClient._findPfxs2(itemIdGen, itemUiGen, items, errors, function (firstItmId2) {
+            // USB token (ftjc) kalitlari ham pfx bilan birga ro'yxatga olinadi — 4.12+ da ham.
+            EIMZOClient._findPfxs2(itemIdGen, itemUiGen, items, errors, function (firstItmId2) {
+                EIMZOClient._findTokens2(itemIdGen, itemUiGen, items, errors, function (firstItmId3) {
                     if (items.length === 0 && errors.length > 0) {
                         fail(errors[0].e, errors[0].r);
                     } else {
@@ -158,30 +159,14 @@ var EIMZOClient = {
                         if (items.length === 1) {
                             if (firstItmId2) {
                                 firstId = firstItmId2;
+                            } else if (firstItmId3) {
+                                firstId = firstItmId3;
                             }
                         }
                         success(items, firstId);
                     }
                 });
-            } else {
-                EIMZOClient._findPfxs2(itemIdGen, itemUiGen, items, errors, function (firstItmId2) {
-                    EIMZOClient._findTokens2(itemIdGen, itemUiGen, items, errors, function (firstItmId3) {
-                        if (items.length === 0 && errors.length > 0) {
-                            fail(errors[0].e, errors[0].r);
-                        } else {
-                            var firstId = null;
-                            if (items.length === 1) {
-                                if (firstItmId2) {
-                                    firstId = firstItmId2;
-                                } else if (firstItmId3) {
-                                    firstId = firstItmId3;
-                                }
-                            }
-                            success(items, firstId);
-                        }
-                    });
-                });
-            }
+            });
         }
     },
     idCardIsPLuggedIn: function (success, fail) {
@@ -446,8 +431,8 @@ var EIMZOClient = {
                         ownerName: el.ownerName,
                         info: el.info,
                         serialNumber: EIMZOClient._getX500Val(x500name_ex, "SERIALNUMBER"),
-                        validFrom: new Date(EIMZOClient._getX500Val(x500name_ex, "VALIDFROM")),
-                        validTo: new Date(EIMZOClient._getX500Val(x500name_ex, "VALIDTO")),
+                        validFrom: new Date(EIMZOClient._getX500Val(x500name_ex, "VALIDFROM").replace(/\./g, "-").replace(" ", "T")),
+                        validTo: new Date(EIMZOClient._getX500Val(x500name_ex, "VALIDTO").replace(/\./g, "-").replace(" ", "T")),
                         CN: EIMZOClient._getX500Val(x500name_ex, "CN"),
                         TIN: (EIMZOClient._getX500Val(x500name_ex, "INN") ? EIMZOClient._getX500Val(x500name_ex, "INN") : EIMZOClient._getX500Val(x500name_ex, "UID")),
                         UID: EIMZOClient._getX500Val(x500name_ex, "UID"),

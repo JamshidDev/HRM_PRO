@@ -80,6 +80,22 @@ instance.interceptors.response.use(
     return Promise.resolve(response)
   },
   async (error) => {
+    // DPoP vaqtinchalik rad etishi (soat farqi yoki tarmoq qayta yuborgan nusxa) — seans tugamaydi, yangi imzo bilan bir marta qayta.
+    // Kodlar: 4171 — soat farqi, 4108 — takroriy nusxa (super-power/api-security-dpop.md); eski `reason` ham tushuniladi.
+    const data = error.response?.status === 401 ? error.response?.data || {} : {}
+    const clockSkew = data.code === 4171 || data.reason === 'iat'
+    const replay = data.code === 4108 || data.reason === 'replay'
+    if (clockSkew || replay) {
+      syncServerClock(error.response.headers?.date)
+      const method = String(error.config?.method || 'get').toLowerCase()
+      // Replay'da birinchi nusxa bajarilgan — faqat GET/HEAD qayta yuboriladi (POST ikki marta bajarilmasin).
+      if (!error.config.__dpopRetried && (clockSkew || method === 'get' || method === 'head')) {
+        error.config.__dpopRetried = true
+        return instance(error.config)
+      }
+      error.__notified = true
+      return Promise.reject(error)
+    }
     // Eski token bilan ketgan so'rov (shu brauzerda qayta kirildi) — yangi token bilan bir marta qayta yuboriladi.
     if (error.response?.status === 401 && isStaleTokenRequest(error.config)) {
       if (!error.config.__staleRetried && localStorage.getItem(useAppSetting.tokenKey)) {
@@ -133,7 +149,9 @@ instance.interceptors.response.use(
       }
 
       if (!error.response.request.responseURL.includes(AppPaths.Profile)) {
-        $Toast.error(error.response.data.message)
+        // Raqamli kod xabarga qo'shiladi — foydalanuvchi yuborsa sababni kod bo'yicha topamiz.
+        const code = typeof error.response.data?.code === 'number' ? ` (${error.response.data.code})` : ''
+        $Toast.error(`${error.response.data.message}${code}`)
       }
       isLoggingOut = true
       localStorage.removeItem(useAppSetting.tokenKey)
