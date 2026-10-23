@@ -24,7 +24,6 @@
           store._create(formData)
           formData.append('file', store.payload.file[0]?.file)
         } else {
-          formData.append('_method', 'PUT')
           if (typeof store.payload.file[0]?.file !== 'string') {
             formData.append('file', store.payload.file[0]?.file)
           }

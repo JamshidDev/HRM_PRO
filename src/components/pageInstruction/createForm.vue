@@ -53,7 +53,6 @@
         if (store.visibleType) {
           store._create(data)
         } else {
-          data.append('_method', 'PUT')
           store._update(data)
         }
       }

@@ -138,7 +138,7 @@ export const useDashboardStore = defineStore('dashboardStore', {
     _updatePassport(data) {
       this.loadingPassport = true
       $ApiService.passportService
-        ._update({ data, id: this.elementId, params: { _method: 'PUT' } })
+        ._update({ data, id: this.elementId })
         .then((res) => {
           this._index_detail()
           this.visible = false
