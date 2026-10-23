@@ -1770,6 +1770,13 @@
       "act_date": "Act date",
       "responsible": "Responsible employee"
     },
+    "form_59": {
+      "from": "Start date (for one month)",
+      "military_office": "Defense affairs department (district/city)",
+      "military_office_placeholder": "E.g.: Mirobod district",
+      "reference_date": "Certificate date",
+      "reference_number": "Certificate number"
+    },
     "form_75": {
       "cancel_command_id": "Command being cancelled",
       "cancel_reason": "Cancellation reason",

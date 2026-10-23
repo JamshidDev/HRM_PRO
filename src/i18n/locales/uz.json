@@ -1786,6 +1786,13 @@
       "act_date": "Dalolatnoma sanasi",
       "responsible": "Mas'ul xodim"
     },
+    "form_59": {
+      "from": "Yuborish sanasi (shu kundan bir oy)",
+      "military_office": "Mudofaa ishlari bo‘limi (tuman/shahar)",
+      "military_office_placeholder": "Masalan: Mirobod tumani",
+      "reference_date": "Ma’lumotnoma sanasi",
+      "reference_number": "Ma’lumotnoma raqami"
+    },
     "form_75": {
       "cancel_command_id": "Bekor qilinayotgan buyruq",
       "cancel_reason": "Bekor qilish sababi",
