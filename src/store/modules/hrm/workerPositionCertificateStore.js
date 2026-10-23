@@ -49,9 +49,8 @@ export const useWorkerPositionCertificateStore = defineStore('workerPositionCert
     },
     _update(data) {
       this.saveLoading = true
-      const params = { _method: 'PUT' }
       $ApiService.workerPositionCertificateService
-        ._update({ data, id: this.elementId, params })
+        ._update({ data, id: this.elementId })
         .then(() => {
           this.visible = false
           this._index()

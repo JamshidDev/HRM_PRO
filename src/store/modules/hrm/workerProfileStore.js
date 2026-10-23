@@ -392,11 +392,8 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
     },
     _updatePassport(data, id) {
       this.passportLoading = true
-      const params = {
-        _method: 'PUT'
-      }
       $ApiService.passportService
-        ._update({ data, id, params })
+        ._update({ data, id })
         .then(() => {
           this._indexPassport()
         })
@@ -452,11 +449,8 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
     },
     _updateForeignPassport(data, id) {
       this.foreignPassportLoading = true
-      const params = {
-        _method: 'PUT'
-      }
       $ApiService.foreignPassportService
-        ._update({ data, id, params })
+        ._update({ data, id })
         .then(() => {
           this._indexForeignPassport()
         })

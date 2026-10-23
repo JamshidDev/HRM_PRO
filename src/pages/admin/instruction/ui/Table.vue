@@ -16,7 +16,10 @@
     store.elementId = row.id
     store.payload.text = row.text
     store.payload.title = row.title
+    store.payload.menu = row.menu
+    store.payload.sub_menu = row.sub_menu
     store.payload.photos = row.photos.map((v) => ({ photo: v.photo, id: v.id }))
+    store.imgCarouselIdx = 0
     store.visibleType = false
     store.visible = true
     store.activeSection = 99999

@@ -112,9 +112,8 @@ export const useLanguageCertificateStore = defineStore('languageCertificateStore
     },
     _update(data) {
       this.saveLoading = true
-      const params = { _method: 'PUT' }
       $ApiService.languageCertificateService
-        ._update({ data, id: this.elementId, params })
+        ._update({ data, id: this.elementId })
         .then(() => {
           this.visible = false
           this._index()

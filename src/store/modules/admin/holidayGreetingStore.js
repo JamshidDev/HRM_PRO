@@ -90,7 +90,6 @@ export const useHolidayGreetingStore = defineStore('holidayGreetingStore', {
     _update() {
       this.saveLoading = true
       const data = this.buildFormData()
-      data.append('_method', 'PUT')
       $ApiService.holidayGreetingService
         ._update({ data, id: this.elementId })
         .then(() => {

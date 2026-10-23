@@ -50,11 +50,8 @@ export const useAcademicDegreeStore = defineStore('academicDegreeStore', {
     },
     _update(data) {
       this.saveLoading = true
-      const params = {
-        _method: 'PUT'
-      }
       $ApiService.academicDegreeService
-        ._update({ data, id: this.elementId, params })
+        ._update({ data, id: this.elementId })
         .then((res) => {
           this.visible = false
           this._index()
