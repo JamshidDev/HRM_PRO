@@ -112,6 +112,7 @@ const FORM_STATE_KEYS = [
   'form_56',
   'form_57',
   'form_58',
+  'form_59',
   'form_74',
   'form_75',
   'vacations',
@@ -248,6 +249,13 @@ const commandStoreOptions = {
       to: null,
       act_date: null,
       responsible: null
+    },
+    // 59 — Bir oylik harbiy yig'inga yuborish (hujjatgina).
+    form_59: {
+      from: null,
+      military_office: null,
+      reference_date: null,
+      reference_number: null
     },
     // 75 — Buyruqni bekor qilish (faqat tasdiqlangan buyruq bekor qilinadi).
     form_75: {
@@ -662,6 +670,12 @@ const commandStoreOptions = {
         to: null,
         act_date: null,
         responsible: null
+      }
+      this.form_59 = {
+        from: null,
+        military_office: null,
+        reference_date: null,
+        reference_number: null
       }
 
       this.form_75 = {

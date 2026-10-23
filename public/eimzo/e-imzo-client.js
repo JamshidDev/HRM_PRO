@@ -108,6 +108,7 @@ String.prototype.splitKeep = function (splitter, ahead) {
 var EIMZOClient = {
     NEW_API: false,
     NEW_API2: false,
+    NEW_API3: false,
     API_KEYS: [
         'localhost', '96D0C1491615C82B9A54D9989779DF825B690748224C2B04F500F370D51827CE2644D8D4A82C18184D73AB8530BB8ED537269603F61DB0D03D2104ABF789970B',
         '127.0.0.1', 'A7BCFA5D490B351BE0754130DF03A068F855DB4333D43921125B9CF2670EF6A40370C646B90401955E1F7BC9CDBF59CE0B2C5467D820BE189C845D0B79CFC96F',
@@ -120,6 +121,7 @@ var EIMZOClient = {
                     var installedVersion = parseInt(data.major) * 100 + parseInt(data.minor);
                     EIMZOClient.NEW_API = installedVersion >= 336;
                     EIMZOClient.NEW_API2 = installedVersion >= 412;
+                    EIMZOClient.NEW_API3 = installedVersion >= 486;
                     success(data.major, data.minor);
                 } else {
                     fail(null, 'E-IMZO Version is undefined');
@@ -149,9 +151,8 @@ var EIMZOClient = {
         if (!EIMZOClient.NEW_API) {
             fail(null, 'Please install new version of E-IMZO');
         } else {
-            // USB token (ftjc) kalitlari ham pfx bilan birga ro'yxatga olinadi — 4.12+ da ham.
-            EIMZOClient._findPfxs2(itemIdGen, itemUiGen, items, errors, function (firstItmId2) {
-                EIMZOClient._findTokens2(itemIdGen, itemUiGen, items, errors, function (firstItmId3) {
+            if (EIMZOClient.NEW_API2) {
+                EIMZOClient._findPfxs2(itemIdGen, itemUiGen, items, errors, function (firstItmId2) {
                     if (items.length === 0 && errors.length > 0) {
                         fail(errors[0].e, errors[0].r);
                     } else {
@@ -159,14 +160,30 @@ var EIMZOClient = {
                         if (items.length === 1) {
                             if (firstItmId2) {
                                 firstId = firstItmId2;
-                            } else if (firstItmId3) {
-                                firstId = firstItmId3;
                             }
                         }
                         success(items, firstId);
                     }
                 });
-            });
+            } else {
+                EIMZOClient._findPfxs2(itemIdGen, itemUiGen, items, errors, function (firstItmId2) {
+                    EIMZOClient._findTokens2(itemIdGen, itemUiGen, items, errors, function (firstItmId3) {
+                        if (items.length === 0 && errors.length > 0) {
+                            fail(errors[0].e, errors[0].r);
+                        } else {
+                            var firstId = null;
+                            if (items.length === 1) {
+                                if (firstItmId2) {
+                                    firstId = firstItmId2;
+                                } else if (firstItmId3) {
+                                    firstId = firstItmId3;
+                                }
+                            }
+                            success(items, firstId);
+                        }
+                    });
+                });
+            }
         }
     },
     idCardIsPLuggedIn: function (success, fail) {
@@ -177,6 +194,38 @@ var EIMZOClient = {
             CAPIWS.callFunction({plugin: "idcard", name: "list_readers"}, function (event, data) {
                 if (data.success) {
                     success(data.readers.length > 0);
+                } else {
+                    fail(null, data.reason);
+                }
+            }, function (e) {
+                fail(e, null);
+            });
+        }
+    },
+    isBAIKTokenPLuggedIn: function (success, fail) {
+        if (!EIMZOClient.NEW_API3) {
+            console.log("E-IMZO version should be 4.86 or newer");
+            success(false);
+        } else {
+            CAPIWS.callFunction({plugin: "baikey", name: "list_tokens"}, function (event, data) {
+                if (data.success) {
+                    success(data.tokens.length > 0);
+                } else {
+                    fail(null, data.reason);
+                }
+            }, function (e) {
+                fail(e, null);
+            });
+        }
+    },
+    isCKCPLuggedIn: function (success, fail) {
+        if (!EIMZOClient.NEW_API3) {
+            console.log("E-IMZO version should be 4.86 or newer");
+            success(false);
+        } else {
+            CAPIWS.callFunction({plugin: "ckc", name: "list_ckc"}, function (event, data) {
+                if (data.success) {
+                    success(data.devices.length > 0);
                 } else {
                     fail(null, data.reason);
                 }
