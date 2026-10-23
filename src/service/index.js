@@ -31,7 +31,9 @@ instance.interceptors.request.use(async function (config) {
   if (!config.signal) config.signal = sessionSignal()
   else if (typeof AbortSignal.any === 'function')
     config.signal = AbortSignal.any([config.signal, sessionSignal()])
-  let token = localStorage.getItem(useAppSetting.tokenKey) || null
+  // Token hali saqlanmagan bo'lsa (masalan, offerta) — chaqiruvchi bergan Authorization tokeni imzolanadi.
+  const explicit = String(config.headers['Authorization'] || '').replace(/^Bearer\s+/i, '') || null
+  let token = localStorage.getItem(useAppSetting.tokenKey) || explicit
   config.headers['Accept-Language'] =
     localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
   config.headers['Access-Control-Allow-Origin'] = '*'
