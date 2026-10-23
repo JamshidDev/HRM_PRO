@@ -5878,6 +5878,7 @@
     },
     "table": {
       "department": "Bo'lim",
+      "name": "Nomi",
       "organization": "Tashkilot",
       "geoType": "Joylashuv turi",
       "lat": "Kenglik",
@@ -5889,6 +5890,8 @@
     },
     "form": {
       "department": "Bo'lim",
+      "name": "O'tish joyi nomi",
+      "namePlaceholder": "Masalan: Asosiy kirish",
       "geoType": "Joylashuv turi",
       "lat": "Lat",
       "lng": "Lng",
@@ -5907,6 +5910,7 @@
     },
     "validation": {
       "departmentRequired": "Bo'limni tanlang",
+      "nameRequired": "O'tish joyi nomini kiriting",
       "markerRequired": "Xaritada joylashuvni belgilang",
       "polygonRequired": "Xaritada polygon belgilang (kamida 3 ta nuqta)",
       "radiusRequired": "Radiusni kiriting",

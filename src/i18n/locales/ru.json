@@ -5829,6 +5829,7 @@
     },
     "table": {
       "department": "Отдел",
+      "name": "Название",
       "organization": "Организация",
       "geoType": "Гео тип",
       "lat": "Широта",
@@ -5840,6 +5841,8 @@
     },
     "form": {
       "department": "Отдел",
+      "name": "Название точки прохода",
+      "namePlaceholder": "Например: Главный вход",
       "geoType": "Гео тип",
       "lat": "Lat",
       "lng": "Lng",
@@ -5858,6 +5861,7 @@
     },
     "validation": {
       "departmentRequired": "Выберите отдел",
+      "nameRequired": "Введите название точки прохода",
       "markerRequired": "Укажите местоположение на карте",
       "polygonRequired": "Укажите полигон на карте (минимум 3 точки)",
       "radiusRequired": "Введите радиус",

@@ -33,6 +33,12 @@
       message: proxy.$t('departmentLocationPage.validation.departmentRequired'),
       trigger: ['blur', 'change']
     },
+    name: {
+      required: true,
+      validator: (_rule, value) => !!value?.trim(),
+      message: proxy.$t('departmentLocationPage.validation.nameRequired'),
+      trigger: ['blur', 'input']
+    },
     lat: {
       required: true,
       type: 'number',
@@ -164,6 +170,17 @@
                 @search="componentStore._onSearchDepartment"
                 @scroll="componentStore._onScrollDepartment"
                 @update:show="componentStore.onOpenDepartmentEv"
+              />
+            </n-form-item>
+
+            <!-- O'tish joyi nomi: mobil ilovada shu nom bilan chiqadi -->
+            <n-form-item :label="$t('departmentLocationPage.form.name')" path="name">
+              <n-input
+                v-model:value="store.payload.name"
+                :placeholder="$t('departmentLocationPage.form.namePlaceholder')"
+                :maxlength="255"
+                clearable
+                size="large"
               />
             </n-form-item>
 

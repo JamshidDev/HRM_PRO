@@ -5817,6 +5817,7 @@
     },
     "table": {
       "department": "Department",
+      "name": "Name",
       "organization": "Organization",
       "geoType": "Geo Type",
       "lat": "Latitude",
@@ -5828,6 +5829,8 @@
     },
     "form": {
       "department": "Department",
+      "name": "Passage point name",
+      "namePlaceholder": "e.g. Main entrance",
       "geoType": "Geo Type",
       "lat": "Lat",
       "lng": "Lng",
@@ -5846,6 +5849,7 @@
     },
     "validation": {
       "departmentRequired": "Select a department",
+      "nameRequired": "Enter the passage point name",
       "markerRequired": "Mark the location on the map",
       "polygonRequired": "Draw a polygon on the map (minimum 3 points)",
       "radiusRequired": "Enter the radius",

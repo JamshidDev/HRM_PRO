@@ -7,6 +7,7 @@ import { reportApiError } from '@/utils/errorReporter.js'
 import { getDeviceUuid } from '@/utils/webPush.js'
 import { showAlert, alertFromAxiosError, isToastOnlyPage } from '@/components/notify/alertDialog.js'
 import { endSessionIfForeign, isSessionEnded, sessionSignal } from '@/features/sessionEnded/sessionEnded.js'
+import { dpopProof, syncServerClock } from '@/service/dpop.js'
 const apiUrl = import.meta.env.VITE_API_URL
 console.log(apiUrl)
 const { t } = i18n.global
@@ -23,7 +24,7 @@ const isStaleTokenRequest = (config) => {
   return sent !== (localStorage.getItem(useAppSetting.tokenKey) || '')
 }
 
-instance.interceptors.request.use(function (config) {
+instance.interceptors.request.use(async function (config) {
   // Seans tugagan — alert turgan paytda hech qanday so'rov ketmaydi.
   if (isSessionEnded()) return Promise.reject(new axios.CanceledError('session_ended'))
   // Chaqiruvchining o'z signali bo'lsa ikkalasi birlashtiriladi (eski brauzerda — o'zinikini saqlaymiz).
@@ -46,11 +47,18 @@ instance.interceptors.request.use(function (config) {
   // Qurilma id — logout shu header orqali push tokenini o'chiradi.
   config.headers['X-Device-UUID'] = getDeviceUuid()
 
+  // Token shu brauzer kalitiga bog'lanadi — URL (query bilan) va vaqt imzolanadi.
+  if (token) {
+    const proof = await dpopProof(config.method, instance.getUri(config), token).catch(() => null)
+    if (proof) config.headers['DPoP'] = proof
+  }
+
   return config
 })
 
 instance.interceptors.response.use(
   (response) => {
+    syncServerClock(response.headers?.date)
     if (
       [Utils.methodTypes.PUT, Utils.methodTypes.POST, Utils.methodTypes.DELETE].includes(
         response.config.method
