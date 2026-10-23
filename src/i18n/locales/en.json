@@ -1327,6 +1327,8 @@
     "command": {
       "createTitle": "Create order",
       "updateTitle": "Edit order",
+      "fullscreen": "Full screen",
+      "exitFullscreen": "Exit full screen",
       "lastVacation": "View last vacation data",
       "form": {
         "beforeFromDeadline": "Before deadline",
@@ -1338,6 +1340,16 @@
         "viewSameTime": "Review simultaneously",
         "viewDescription": "Approvers review in order or simultaneously",
         "viewOneByOne": "Review in order",
+        "route": {
+          "parallel": "Parallel",
+          "sequential": "In order",
+          "parallelHint": "The document goes to everyone at once — it doesn't matter who sees it first",
+          "sequentialHint": "The document goes step by step: the next person gets it after the previous one signs. Drag to change the order",
+          "roleSign": "Approver",
+          "roleView": "Reviewer",
+          "step": "Step {n}",
+          "drag": "Drag to change the order"
+        },
         "type": "Order type",
         "byContract": "Based on contract No. {n}",
         "confirm": "Approvers",
