@@ -10,7 +10,7 @@
   import ChatCotent from '../chat/ChatCotent.vue'
   import SignerCard from './SignerCard.vue'
   import ApprovalHistory from './ApprovalHistory.vue'
-  import { buildApprovalHistory } from '../utils/approvalHistory.js'
+  import { buildApprovalHistory, STATUS } from '../utils/approvalHistory.js'
   const { t } = i18.global
 
   const store = usePdfViewerStore()
@@ -24,6 +24,38 @@
 
   // Tarix FAQAT backenddan keladi (`confirmations[].histories`).
   const history = computed(() => buildApprovalHistory(store.confirmations))
+
+  // Marshrut ko'rinishi. Kelishuvchilar (`s`) har xil `order` da bo'lsa — tartibli (navbat bilan),
+  // hammasi bir xil bo'lsa — parallel. Tanishuvchilar (`r`) navbatda turmaydi va pastda ko'rsatiladi.
+  // Faqat buyruqda: Arizada HR bosqichi ham `s` (order 2) — u yerda bu hisob noto'g'ri «tartibli» derdi.
+  const showRoute = computed(() => store.model === Utils.documentModels.command)
+  const signers = computed(() =>
+    showRoute.value ? (store.confirmations || []).filter((c) => c.type === 's') : []
+  )
+  const isSequential = computed(() => new Set(signers.value.map((c) => c.order)).size > 1)
+  // Navbat raqami — `order` bo'yicha o'rni (1, 2, 3 ...).
+  const stepOf = computed(() => {
+    if (!isSequential.value) return new Map()
+    const orders = [...new Set(signers.value.map((c) => c.order))].sort((a, b) => a - b)
+    return new Map(signers.value.map((c) => [c, orders.indexOf(c.order) + 1]))
+  })
+  // Hozirgi navbat — hali imzolamagan kelishuvchilarning eng kichik `order` i.
+  const pending = (c) => [STATUS.process, STATUS.read].includes(c.status?.id)
+  const currentOrder = computed(() => {
+    const list = signers.value.filter(pending).map((c) => c.order)
+    return list.length ? Math.min(...list) : null
+  })
+  const isCurrent = (c) => isSequential.value && c.type === 's' && pending(c) && c.order === currentOrder.value
+  const isWaiting = (c) => isSequential.value && c.type === 's' && pending(c) && c.order > currentOrder.value
+  // Asl indeks saqlanadi — tarix (`history.bySigner`) shu indeks bo'yicha.
+  const rows = computed(() => {
+    const list = (store.confirmations || []).map((item, idx) => ({ item, idx }))
+    if (!showRoute.value) return list
+    return [...list.filter((r) => r.item.type !== 'r'), ...list.filter((r) => r.item.type === 'r')]
+  })
+  const firstViewerIdx = computed(() =>
+    showRoute.value ? rows.value.findIndex((r) => r.item.type === 'r') : -1
+  )
 
   const generateLink = (v) => {
     if (v.type === 'w') {
@@ -114,18 +146,55 @@
           </UITabs>
 
           <div v-if="activeTab === 'signers'">
-            <SignerCard
-              v-for="(item, idx) in store.confirmations"
-              :key="item.id ?? idx"
-              :item="item"
-              :is-last="idx === store.confirmations.length - 1"
-              :is-self="isSelf(item)"
-              :events="history.bySigner[idx] || []"
-              :can-link="item.type === 'w' && isDocFlow && item.status?.id !== 3 && !store.viewerLoading"
-              :link-loading="store.linkLoading"
-              @link="generateLink"
-              @chat="onOpenChat"
-            />
+            <!-- Marshrut turi: parallel yoki tartibli -->
+            <div
+              v-if="signers.length"
+              class="flex items-center gap-2 mb-2.5 px-1 text-xs text-textColor3"
+            >
+              <span
+                class="text-[11px] font-semibold rounded-full px-2 py-0.5 bg-fig-chip-brand text-fig-chip-brand-text"
+              >
+                {{
+                  $t(
+                    isSequential
+                      ? 'documentPage.command.form.route.sequential'
+                      : 'documentPage.command.form.route.parallel'
+                  )
+                }}
+              </span>
+              <span class="leading-snug">
+                {{
+                  $t(
+                    isSequential
+                      ? 'documentPage.signature.approval.modeSequentialHint'
+                      : 'documentPage.signature.approval.modeParallelHint'
+                  )
+                }}
+              </span>
+            </div>
+            <template v-for="(row, i) in rows" :key="row.item.id ?? row.idx">
+              <div
+                v-if="i === firstViewerIdx"
+                class="mt-1 mb-2 px-1 text-[11px] font-semibold uppercase tracking-wide text-textColor3"
+              >
+                {{ $t('documentPage.signature.approval.viewers') }}
+              </div>
+              <SignerCard
+                :item="row.item"
+                :is-last="i === rows.length - 1 || i + 1 === firstViewerIdx"
+                :is-self="isSelf(row.item)"
+                :events="history.bySigner[row.idx] || []"
+                :step="stepOf.get(row.item) ?? null"
+                :current="isCurrent(row.item)"
+                :waiting="isWaiting(row.item)"
+                :can-link="
+                  row.item.type === 'w' && isDocFlow && row.item.status?.id !== 3 && !store.viewerLoading
+                "
+                :link-loading="store.linkLoading"
+                @link="generateLink"
+                @chat="onOpenChat"
+              />
+            </template>
           </div>
 
           <ApprovalHistory

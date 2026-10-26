@@ -13,13 +13,21 @@
     isSelf: { type: Boolean, default: false },
     events: { type: Array, default: () => [] },
     canLink: { type: Boolean, default: false },
-    linkLoading: { type: Boolean, default: false }
+    linkLoading: { type: Boolean, default: false },
+    // Tartibli marshrut: kelishuvchining navbat raqami (parallelda null).
+    step: { type: Number, default: null },
+    // Hozir shu kelishuvchining navbati / u hali navbatini kutyapti.
+    current: { type: Boolean, default: false },
+    waiting: { type: Boolean, default: false }
   })
 
   const emit = defineEmits(['link', 'chat'])
 
   const tone = computed(() => signerTone(props.item.status?.id))
   const isRejected = computed(() => props.item.status?.id === STATUS.rejected)
+  // Hali imzolamagan/rad etmagan kelishuvchi tugunida belgi o'rniga navbat raqami.
+  const isDone = computed(() => [STATUS.success, STATUS.rejected].includes(props.item.status?.id))
+  const showStep = computed(() => props.step != null && !isDone.value)
   const actedAt = computed(() => lastActionDate(props.events))
   const actedLabel = computed(() => {
     if (props.item.status?.id === STATUS.success)
@@ -33,15 +41,24 @@
   <div class="flex gap-3">
     <!-- Stepper tuguni va keyingi bosqichga ulovchi chiziq -->
     <div class="flex flex-col items-center shrink-0 pt-1.5">
-      <div class="w-7 h-7 rounded-full border flex items-center justify-center" :class="tone.node">
-        <n-icon size="14"><component :is="tone.icon" /></n-icon>
+      <div
+        class="w-7 h-7 rounded-full border flex items-center justify-center"
+        :class="current ? 'border-primary bg-primary text-white' : tone.node"
+      >
+        <span v-if="showStep" class="text-xs font-bold tabular-nums">{{ step }}</span>
+        <n-icon v-else size="14"><component :is="tone.icon" /></n-icon>
       </div>
       <div v-if="!isLast" class="w-0.5 flex-1 mt-1 rounded-full" :class="tone.line"></div>
     </div>
 
     <div
       class="flex-1 min-w-0 mb-2 rounded-xl border bg-surface-section overflow-hidden shadow-[0_1px_2px_rgb(16_24_40/0.04)]"
-      :class="[tone.card, isSelf && 'ring-1 ring-fig-blue-300']"
+      :class="[
+        tone.card,
+        isSelf && 'ring-1 ring-fig-blue-300',
+        current && 'ring-2 ring-primary/60',
+        waiting && 'opacity-70'
+      ]"
     >
       <div class="px-3 pt-2.5 pb-2">
         <!-- Holat o'ng yuqori burchakda; faqat ism unga joy qoldiradi,
@@ -67,6 +84,12 @@
                         ? $t('applicationPage.forward.viewerRead')
                         : $t('applicationPage.forward.viewerWaiting')
                     }}
+                  </span>
+                  <span
+                    v-else-if="waiting"
+                    class="text-[10px] font-semibold rounded-full px-2 py-0.5 whitespace-nowrap bg-surface-ground text-textColor3"
+                  >
+                    {{ $t('documentPage.signature.approval.waitingTurn') }}
                   </span>
                   <UIStatus v-else fig compact :tooltip="false" :status="item.status" />
                 </span>
@@ -115,7 +138,13 @@
         </div>
 
         <!-- Qo'shimcha ma'lumot: "Siz" va tanishuvchi (`r`, imzolamaydi) belgilari -->
-        <div v-if="isSelf || item.type === 'r'" class="flex items-center gap-2 mt-2">
+        <div v-if="isSelf || current || item.type === 'r'" class="flex items-center gap-2 mt-2">
+          <span
+            v-if="current"
+            class="text-[10px] font-semibold rounded-full px-2 py-0.5 bg-primary text-white"
+          >
+            {{ $t('documentPage.signature.approval.nowTurn') }}
+          </span>
           <span
             v-if="isSelf"
             class="text-[10px] font-semibold rounded-full px-2 py-0.5 bg-fig-chip-brand text-fig-chip-brand-text"

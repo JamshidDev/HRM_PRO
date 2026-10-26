@@ -176,7 +176,7 @@
     @change-page="changePage"
   >
     <template #cell-hours="{ row }">
-      <n-button circle size="tiny">
+      <n-button secondary circle size="tiny">
         {{ row.hours }}
       </n-button>
     </template>
@@ -188,7 +188,7 @@
     </template>
 
     <template #cell-workers_count="{ row }">
-      <n-button circle size="tiny">
+      <n-button secondary circle size="tiny">
         {{ row.workers_count }}
       </n-button>
     </template>

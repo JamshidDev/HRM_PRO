@@ -1231,6 +1231,7 @@
       "updateTitle": "Буйруқни таҳрирлаш",
       "fullscreen": "Тўлиқ экран",
       "exitFullscreen": "Кичрайтириш",
+      "previewTitle": "Буйруқни кўриш",
       "lastVacation": "Охирги таътил маълумотларини кўриш",
       "form": {
         "beforeFromDeadline": "Муддатидан аввал",
@@ -1417,6 +1418,11 @@
             "days": "{count} кун",
             "sum": "{value} сўм"
           }
+        },
+        "signers": {
+          "change": "Ўзгартириш",
+          "empty": "Келишувчилар танланмаган",
+          "done": "Тайёр"
         }
       }
     },
@@ -1579,7 +1585,12 @@
           "route_resent": "Қайта юборди",
           "route_closed": "Ёпилди"
         },
-        "showAll": "Барчаси"
+        "showAll": "Барчаси",
+        "modeParallelHint": "Ҳужжат ҳаммага бир вақтда юборилган",
+        "modeSequentialHint": "Ҳужжат навбат билан имзоланади",
+        "nowTurn": "Навбатда",
+        "waitingTurn": "Навбат кутмоқда",
+        "viewers": "Танишувчилар"
       },
       "rejectReasonSelect": "Рад этиш сабабини танланг",
       "optional": "ихтиёрий",

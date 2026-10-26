@@ -1345,6 +1345,7 @@
       "updateTitle": "Buyruqni tahrirlash",
       "fullscreen": "To'liq ekran",
       "exitFullscreen": "Kichraytirish",
+      "previewTitle": "Buyruqni ko'rish",
       "lastVacation": "Oxirgi ta'til ma'lumotlarini ko'rish",
       "form": {
         "beforeFromDeadline": "Muddatidan avval",
@@ -1546,6 +1547,11 @@
             "days": "{count} kun",
             "sum": "{value} so'm"
           }
+        },
+        "signers": {
+          "change": "O'zgartirish",
+          "empty": "Kelishuvchilar tanlanmagan",
+          "done": "Tayyor"
         }
       }
     },
@@ -1709,7 +1715,12 @@
           "route_resent": "Qayta yubordi",
           "route_closed": "Yopildi"
         },
-        "showAll": "Barchasi"
+        "showAll": "Barchasi",
+        "modeParallelHint": "Hujjat hammaga bir vaqtda yuborilgan",
+        "modeSequentialHint": "Hujjat navbat bilan imzolanadi",
+        "nowTurn": "Navbatda",
+        "waitingTurn": "Navbat kutmoqda",
+        "viewers": "Tanishuvchilar"
       },
       "rejectReasonSelect": "Rad etish sababini tanlang",
       "optional": "ixtiyoriy",

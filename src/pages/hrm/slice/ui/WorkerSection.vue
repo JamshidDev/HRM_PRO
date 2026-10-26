@@ -53,10 +53,10 @@
               />
             </td>
             <td>
-              <n-button circle size="tiny">{{ item.rate }}</n-button>
+              <n-button secondary circle size="tiny">{{ item.rate }}</n-button>
             </td>
             <td>
-              <n-button circle size="tiny">{{ item.rank }}</n-button>
+              <n-button secondary circle size="tiny">{{ item.rank }}</n-button>
             </td>
           </tr>
         </tbody>

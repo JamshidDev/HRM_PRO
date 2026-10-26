@@ -1329,6 +1329,7 @@
       "updateTitle": "Edit order",
       "fullscreen": "Full screen",
       "exitFullscreen": "Exit full screen",
+      "previewTitle": "Command preview",
       "lastVacation": "View last vacation data",
       "form": {
         "beforeFromDeadline": "Before deadline",
@@ -1530,6 +1531,11 @@
             "days": "{count} days",
             "sum": "{value} UZS"
           }
+        },
+        "signers": {
+          "change": "Change",
+          "empty": "No approvers selected",
+          "done": "Done"
         }
       }
     },
@@ -1693,7 +1699,12 @@
           "route_resent": "Resent",
           "route_closed": "Closed"
         },
-        "showAll": "Show all"
+        "showAll": "Show all",
+        "modeParallelHint": "Sent to everyone at once",
+        "modeSequentialHint": "Signed one by one",
+        "nowTurn": "Current turn",
+        "waitingTurn": "Waiting for turn",
+        "viewers": "Reviewers"
       },
       "rejectReasonSelect": "Select a rejection reason",
       "optional": "optional",

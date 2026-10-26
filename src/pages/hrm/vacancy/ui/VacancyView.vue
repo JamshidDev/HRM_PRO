@@ -1029,13 +1029,11 @@
   font-weight: 600;
   color: white;
   white-space: nowrap;
-  transition: opacity 0.15s, transform 0.15s, box-shadow 0.15s;
+  transition: opacity 0.15s, transform 0.15s;
   user-select: none;
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--primary-color, #3b82f6) 35%, transparent);
 }
 .next-step-btn:hover {
   opacity: 0.9;
-  box-shadow: 0 4px 14px color-mix(in srgb, var(--primary-color, #3b82f6) 45%, transparent);
 }
 .next-step-btn:active {
   transform: scale(0.98);

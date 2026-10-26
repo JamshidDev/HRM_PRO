@@ -199,7 +199,7 @@ import { Delete24Regular, Edit32Regular, Eye16Regular, History16Regular } from '
     </template>
 
     <template #cell-experience="{ row }">
-      <n-button v-if="row.experience" size="small" circle>
+      <n-button secondary v-if="row.experience" size="small" circle>
         {{ row.experience }}
       </n-button>
     </template>

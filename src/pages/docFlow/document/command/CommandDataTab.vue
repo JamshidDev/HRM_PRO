@@ -2,7 +2,7 @@
   import {
     LockClosed20Regular,
     ArrowCounterclockwise20Regular,
-    DocumentBulletList20Filled,
+    Eye20Regular,
     Save20Regular,
     CheckmarkCircle20Filled,
     DismissCircle20Filled,
@@ -19,7 +19,9 @@
   const { t } = i18n.global
 
   const props = defineProps({
-    commandId: { type: Number, required: true }
+    commandId: { type: Number, required: true },
+    // Kelishuvchilarni o'zgartirish huquqi (hujjatni tahrirlash + buyruq yozish ruxsati).
+    canEditSigners: { type: Boolean, default: false }
   })
   const emits = defineEmits(['saved', 'open-source'])
 
@@ -91,6 +93,8 @@
         store.restoring = true
         store.restoreFormState(data.form_state)
         loadOptionLists(data.command_type)
+        // Kelishuvchilar — hujjatning joriy marshrutidan (o'qilmasa saqlangan forma holati qoladi).
+        await store._loadLiveRoute(props.commandId).catch(() => {})
         initialContent.value = contentFingerprint()
       }
       loaded.value = true
@@ -211,8 +215,13 @@
         />
       </div>
       <div v-else-if="loaded" class="max-w-[960px] mx-auto flex flex-col gap-3">
-        <div class="rounded-2xl bg-surface-section border border-surface-line px-3 sm:px-5 pt-2 pb-5">
-          <CommandFormBody ref="bodyRef" mode="edit" :readonly="!editable" />
+        <div class="rounded-2xl bg-surface-section border border-surface-line p-3 sm:p-4">
+          <CommandFormBody
+            ref="bodyRef"
+            mode="edit"
+            :readonly="!editable"
+            :can-edit-signers="canEditSigners"
+          />
         </div>
       </div>
     </div>
@@ -249,7 +258,7 @@
           @click="onPreview"
         >
           <template #icon>
-            <n-icon><DocumentBulletList20Filled /></n-icon>
+            <n-icon><Eye20Regular /></n-icon>
           </template>
           {{ $t('documentPage.command.dataTab.preview') }}
         </n-button>
