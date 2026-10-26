@@ -1,6 +1,5 @@
 <script setup>
   import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
   import { ArrowReset20Regular, Search20Regular } from '@vicons/fluent'
   import MonthTab from './MonthTab.vue'
   import { isRotating } from './navbat.js'
@@ -9,12 +8,11 @@
   const store = useScheduleGroupWorkerStore()
   const accStore = useAccountStore()
 
-  // Qayta generatsiya — faqat aylanma smenada va faqat joriy oy ochiq bo'lganda.
-  const currentMonth = Utils.timeToZone(Date.now()).slice(0, 7)
+  // Qayta generatsiya — aylanma smenada, ochilgan oyda (o'tgan oy — faqat ruxsat bilan).
   const canGroupRegen = computed(
     () =>
       isRotating(store.shiftType) &&
-      String(store.selectedDate || '').slice(0, 7) === currentMonth &&
+      !store.isPastMonth &&
       store.list.length > 0 &&
       accStore.checkPermission(accStore.pn.turnstileSheetsGroupsWrite)
   )

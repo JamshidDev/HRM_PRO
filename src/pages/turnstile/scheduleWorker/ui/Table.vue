@@ -33,7 +33,9 @@
     const pat = pattern.value
     const rows = store.list.map((v) => {
       const fullName = Utils.combineFullName(v)
-      const nav = rotating.value ? navbatOf(v.days, pat) : null
+      // O'rinbosarlik kunlarida navbat asl reja bo'yicha aniqlanadi.
+      const planDays = v.days.map((e) => (e.substitution?.original ? { ...e, ...e.substitution.original } : e))
+      const nav = rotating.value ? navbatOf(planDays, pat) : null
       return {
         workerId: v.worker_id,
         workerPositionId: v.worker_position_id,

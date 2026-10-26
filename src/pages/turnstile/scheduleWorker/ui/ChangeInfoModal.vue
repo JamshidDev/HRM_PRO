@@ -2,6 +2,9 @@
   import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
   import { UIModal } from '@/components/index.js'
   import { ArrowDown16Regular, CalendarLtr16Regular, Clock16Regular, Info16Regular } from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   // O'zgartirilgan kun haqida: grafik bo'yicha reja, hozirgi holat, kim bilan almashgan.
   const store = useScheduleGroupWorkerStore()
@@ -30,6 +33,12 @@
     return s.role === 'absent' ? { absent: me, substitute: other } : { absent: other, substitute: me }
   })
   const shiftTime = computed(() => (sub.value ? `${sub.value.start_time}–${sub.value.end_time}` : ''))
+  // O'rinbosarning shu kungi o'z rejasi (faqat o'rinbosar bosilganda ma'lum).
+  const substituteOwn = computed(() => {
+    const o = sub.value?.role === 'substitute' ? sub.value.original : null
+    if (!o) return null
+    return o.work_status ? `${o.start_time}–${o.end_time}` : t('shiftType.groupView.rest')
+  })
 </script>
 
 <template>
@@ -75,8 +84,8 @@
               <div class="text-xs text-secondary line-clamp-1">{{ p.position }}</div>
             </div>
             <div class="shrink-0 flex flex-col items-end gap-1 text-xs">
-              <span class="text-secondary line-through">
-                {{ key === 'absent' ? shiftTime : $t('shiftType.groupView.rest') }}
+              <span v-if="key === 'absent' || substituteOwn" class="text-secondary line-through">
+                {{ key === 'absent' ? shiftTime : substituteOwn }}
               </span>
               <span
                 class="px-1.5 py-0.5 rounded font-medium"

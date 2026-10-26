@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { useAccountStore } from '@/store/modules/index.js'
 import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
 const { t } = i18n.global
@@ -102,12 +103,14 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
       const mm = String(m).padStart(2, '0')
       return { from: `${y}-${mm}-01`, to: `${y}-${mm}-${String(last).padStart(2, '0')}` }
     },
-    // O'tgan oy grafigi faqat ko'rish uchun.
+    // O'tgan oy grafigi faqat ko'rish uchun (`turnstile-sheets-groups-past-write` ruxsati bo'lmasa).
     isPastMonth: (state) => {
       if (!state.selectedDate) return false
       const [y, m] = state.selectedDate.split('-').map(Number)
       const now = new Date()
-      return y * 12 + m < now.getFullYear() * 12 + now.getMonth() + 1
+      if (y * 12 + m >= now.getFullYear() * 12 + now.getMonth() + 1) return false
+      const accStore = useAccountStore()
+      return !accStore.checkPermission(accStore.pn.turnstileSheetsGroupsPastWrite)
     },
     // Standart sana: bugun shu oyda bo'lsa — bugun, aks holda oy boshi.
     defaultDate() {

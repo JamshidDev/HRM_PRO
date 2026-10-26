@@ -72,7 +72,8 @@
     const monthFrom = `${y}-${pad(m)}-01`
     const monthTo = `${y}-${pad(m)}-${pad(new Date(y, m, 0).getDate())}`
     const thisMonth = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-01`
-    const from = [monthFrom, String(row.start_date).slice(0, 10), thisMonth].sort().pop()
+    const canPast = accStore.checkPermission(accStore.pn.turnstileSheetsGroupsPastWrite)
+    const from = [monthFrom, String(row.start_date).slice(0, 10), canPast ? monthFrom : thisMonth].sort().pop()
     const to = [monthTo, String(row.end_date).slice(0, 10)].sort()[0]
     return from <= to ? { from, to } : null
   }

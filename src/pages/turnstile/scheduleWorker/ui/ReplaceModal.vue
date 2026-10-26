@@ -357,10 +357,7 @@
               <div class="font-medium leading-[1.25] line-clamp-2">{{ picked.name }}</div>
               <div class="text-xs text-secondary line-clamp-1">{{ picked.position }}</div>
             </div>
-            <div class="shrink-0 flex flex-col items-end gap-1 text-xs">
-              <span class="text-secondary line-through">{{ $t('shiftType.groupView.rest') }}</span>
-              <span class="px-1.5 py-0.5 rounded font-medium bg-success/10 text-success">{{ swapTime }}</span>
-            </div>
+            <span class="shrink-0 px-1.5 py-0.5 rounded text-xs font-medium bg-success/10 text-success">{{ swapTime }}</span>
           </div>
           <div
             v-else
