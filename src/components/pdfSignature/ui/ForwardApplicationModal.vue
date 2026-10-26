@@ -1,15 +1,5 @@
 <script setup>
-  import {
-    Delete16Regular,
-    ArrowSplit20Regular,
-    TextNumberListLtr20Regular,
-    ReOrderDotsVertical20Regular,
-    Eye16Regular,
-    Signature16Regular,
-    LockClosed16Regular
-  } from '@vicons/fluent'
-  import { VueDraggable } from 'vue-draggable-plus'
-  import { UIModal, SuperSelect, UIUser } from '@/components/index.js'
+  import { UIModal, SuperSelect, UIUser, UISegmentTabs, UISignerList } from '@/components/index.js'
   import { usePdfViewerStore, useApplicationStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
 
@@ -43,7 +33,7 @@
       })
       .filter(Boolean)
     locked.value = items.filter((v) => v.locked)
-    picked.value = items.filter((v) => !v.locked)
+    picked.value = viewersLast(items.filter((v) => !v.locked))
     sync()
   }
   watch(
@@ -75,9 +65,10 @@
       })[app.forwardAction]
   )
 
+  // Buyruq yaratishdagi kabi — faqat matnli UISegmentTabs.
   const tabs = computed(() => [
-    { id: 'parallel', name: t('applicationPage.forward.parallel'), icon: ArrowSplit20Regular },
-    { id: 'sequential', name: t('applicationPage.forward.sequential'), icon: TextNumberListLtr20Regular }
+    { id: 'parallel', name: t('applicationPage.forward.parallel') },
+    { id: 'sequential', name: t('applicationPage.forward.sequential') }
   ])
   const isSequential = computed(() => app.forwardMode === 'sequential')
 
@@ -110,10 +101,13 @@
     app.approverList.filter((v) => !excludedWorkers.value.has(v.worker?.id))
   )
 
-  // Ketma-ket navbat raqami faqat kelishuvchilarga; tanishuvchi navbatda turmaydi.
+  // Ro'yxat ko'rinishi va navbat raqamlari — umumiy UISignerList'da (buyruq yaratish bilan bir xil).
+  // Tanishuvchilar doim oxirida turadi.
+  const viewersLast = (list) => [
+    ...list.filter((v) => v.role !== 'view'),
+    ...list.filter((v) => v.role === 'view')
+  ]
   const lockedSigners = computed(() => locked.value.filter((v) => v.role === 'sign').length)
-  const signNumber = (index) =>
-    lockedSigners.value + picked.value.slice(0, index + 1).filter((v) => v.role === 'sign').length
   const signersCount = computed(
     () => lockedSigners.value + picked.value.filter((v) => v.role === 'sign').length
   )
@@ -124,18 +118,15 @@
   }
   const addPicked = (id) => {
     const item = app.approverList.find((v) => v.id === id)
-    if (item) picked.value.push({ ...item, role: 'sign' })
+    if (item) picked.value = viewersLast([...picked.value, { ...item, role: 'sign' }])
     sync()
     nextTick(() => (pick.value = null))
   }
-  const removePicked = (id) => {
-    picked.value = picked.value.filter((v) => v.id !== id)
+  const onUpdate = (items) => {
+    picked.value = items
     sync()
   }
-  const setRole = (item, isSign) => {
-    item.role = isSign ? 'sign' : 'view'
-    sync()
-  }
+  const userOf = (item) => userData(item.worker, item.position)
 
   const onSubmit = () => {
     sync()
@@ -177,127 +168,31 @@
               )
             }}
           </div>
-          <div class="inline-flex shrink-0 gap-1 rounded-xl bg-surface-ground p-1">
-            <button
-              v-for="tab in tabs"
-              :key="tab.id"
-              type="button"
-              class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors cursor-pointer"
-              :class="
-                app.forwardMode === tab.id
-                  ? 'bg-fig-brand text-white shadow-sm'
-                  : 'text-textColor2 hover:bg-surface-section'
-              "
-              @click="app.forwardMode = tab.id"
-            >
-              <n-icon size="16"><component :is="tab.icon" /></n-icon>
-              {{ tab.name }}
-            </button>
-          </div>
+          <UISegmentTabs v-model="app.forwardMode" :tabs="tabs" class="shrink-0" />
         </div>
 
         <!-- 3. Tanlanganlar — kelishuvchi va tanishuvchi bir ro'yxatda; drag & drop faqat ketma-ketda -->
         <div>
-          <!-- Imzolaganlar — o'zgartirib bo'lmaydi -->
-          <div v-for="(item, i) in locked" :key="'l' + item.id" class="flex gap-3">
-            <div v-if="isSequential" class="flex flex-col items-center">
-              <div class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 bg-fig-chip-green text-fig-chip-green-text">
-                <n-icon size="14"><LockClosed16Regular /></n-icon>
-              </div>
-              <div class="w-0.5 flex-1 bg-surface-line my-1 min-h-3" />
-            </div>
-            <div class="flex-1 min-w-0" :class="isSequential ? 'pb-2' : 'pb-1.5'">
-              <div class="flex items-center gap-2 rounded-lg border border-surface-line bg-surface-ground px-2 py-1.5 opacity-80">
-                <div class="min-w-0 flex-1">
-                  <UIUser :short="false" :data="userData(item.worker, item.position)" />
-                </div>
-                <span class="text-[11px] font-medium rounded-full px-2 py-0.5 bg-fig-chip-green text-fig-chip-green-text shrink-0">
-                  {{ $t('applicationPage.forward.signedLocked') }}
-                </span>
-              </div>
-            </div>
-          </div>
-          <VueDraggable
-            v-model="picked"
-            handle=".drag-handle"
-            :animation="150"
-            :disabled="!isSequential"
-            class="flex flex-col"
-            :class="!isSequential && 'gap-1.5'"
-            @end="sync"
-          >
-            <div v-for="(item, i) in picked" :key="item.id" class="flex gap-3">
-              <div v-if="isSequential" class="flex flex-col items-center">
-                <div
-                  class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-xs font-semibold"
-                  :class="
-                    item.role === 'sign'
-                      ? 'bg-fig-chip-brand text-fig-chip-brand-text'
-                      : 'bg-surface-ground text-textColor3'
-                  "
-                >
-                  <template v-if="item.role === 'sign'">{{ signNumber(i) }}</template>
-                  <n-icon v-else size="14"><Eye16Regular /></n-icon>
-                </div>
-                <div class="w-0.5 flex-1 bg-surface-line my-1 min-h-3" />
-              </div>
-              <div class="flex-1 min-w-0" :class="isSequential && 'pb-2'">
-                <div
-                  class="flex items-center gap-2 rounded-lg border px-2 py-1.5"
-                  :class="
-                    item.role === 'sign'
-                      ? 'border-surface-line bg-surface-section'
-                      : 'border-dashed border-surface-line bg-surface-ground'
-                  "
-                >
-                  <n-icon
-                    v-if="isSequential"
-                    size="18"
-                    class="drag-handle text-textColor3 cursor-move shrink-0"
-                  >
-                    <ReOrderDotsVertical20Regular />
-                  </n-icon>
-                  <div class="min-w-0 flex-1">
-                    <UIUser :short="false" :data="userData(item.worker, item.position)" />
-                  </div>
-                  <div class="flex items-center gap-1.5 shrink-0">
-                    <span
-                      class="text-[11px] font-medium w-[78px] text-right"
-                      :class="item.role === 'sign' ? 'text-fig-text-brand' : 'text-textColor3'"
-                    >
-                      {{
-                        item.role === 'sign'
-                          ? $t('applicationPage.forward.roleSign')
-                          : $t('applicationPage.forward.roleView')
-                      }}
-                    </span>
-                    <n-switch
-                      v-if="app.allowViewers !== false"
-                      :value="item.role === 'sign'"
-                      @update:value="(v) => setRole(item, v)"
-                    >
-                      <template #checked-icon><n-icon><Signature16Regular /></n-icon></template>
-                      <template #unchecked-icon><n-icon><Eye16Regular /></n-icon></template>
-                    </n-switch>
-                  </div>
-                  <n-button secondary size="tiny" type="error" @click="removePicked(item.id)">
-                    <template #icon><n-icon><Delete16Regular /></n-icon></template>
-                    {{ $t('applicationPage.forward.remove') }}
-                  </n-button>
-                </div>
-              </div>
-            </div>
-          </VueDraggable>
+          <UISignerList
+            :items="picked"
+            :locked="locked"
+            :sequential="isSequential"
+            :allow-viewers="app.allowViewers !== false"
+            :user-of="userOf"
+            @update:items="onUpdate"
+          />
 
           <!-- Rahbar — doim oxirida -->
-          <div class="flex gap-3" :class="!isSequential && picked.length && 'mt-1.5'">
+          <div
+            class="flex items-center gap-2 mt-1.5 px-2 py-1.5 rounded-xl border border-surface-line bg-surface-section"
+          >
             <div
               v-if="isSequential && !app.directorAnytime"
-              class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-xs font-semibold bg-fig-chip-brand text-fig-chip-brand-text"
+              class="w-9 h-8 rounded-lg flex items-center justify-center shrink-0 text-sm font-bold bg-fig-chip-brand text-fig-chip-brand-text"
             >
               {{ signersCount + 1 }}
             </div>
-            <div class="flex-1 min-w-0 flex items-center gap-2 rounded-lg border border-surface-line bg-surface-section px-3 py-1.5">
+            <div class="flex-1 min-w-0 flex items-center gap-2">
               <div class="min-w-0 flex-1">
                 <UIUser :short="false" :data="userData(app.forwardDirector, app.forwardDirector?.position)" />
               </div>
@@ -307,28 +202,6 @@
               >
                 {{ $t('documentPage.route.directorAnytime') }}
               </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 4. Izoh: kelishuvchi va tanishuvchi farqi — bitta kartada -->
-        <div class="rounded-xl border border-surface-line bg-surface-ground px-3 py-2.5 flex flex-col gap-2">
-          <div class="flex items-center gap-2.5">
-            <div class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 bg-fig-chip-brand text-fig-chip-brand-text">
-              <n-icon size="14"><Signature16Regular /></n-icon>
-            </div>
-            <div class="text-xs text-textColor3 leading-snug">
-              <span class="font-semibold text-textColor1">{{ $t('applicationPage.forward.roleSign') }}</span>
-              — {{ $t('applicationPage.forward.roleSignHint') }}
-            </div>
-          </div>
-          <div v-if="app.allowViewers !== false" class="flex items-center gap-2.5">
-            <div class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 bg-surface-section text-textColor3">
-              <n-icon size="14"><Eye16Regular /></n-icon>
-            </div>
-            <div class="text-xs text-textColor3 leading-snug">
-              <span class="font-semibold text-textColor1">{{ $t('applicationPage.forward.roleView') }}</span>
-              — {{ $t('applicationPage.forward.roleViewHint') }}
             </div>
           </div>
         </div>

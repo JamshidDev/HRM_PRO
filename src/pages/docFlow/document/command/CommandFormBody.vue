@@ -33,6 +33,8 @@
   import CommandForm_75 from './ui/CommandForm_75.vue'
   import { useAppSetting } from '@/utils/index.js'
   import CommandSigners from './CommandSigners.vue'
+  import CommandSignersSummary from './CommandSignersSummary.vue'
+  import { Checkmark16Regular } from '@vicons/fluent'
 
   // create — yaratish modali; edit — hujjat drawer'idagi «Ma'lumotlar» tabi.
   // Hujjat sanasi: yaratishda sozlamadagi oyna, tahrirda o'zgarmaydi.
@@ -41,9 +43,16 @@
     mode: { type: String, default: 'create' },
     readonly: { type: Boolean, default: false },
     // To'liq ekran: keng ekranda imzolovchilar o'ng ustunga chiqadi.
-    wide: { type: Boolean, default: false }
+    wide: { type: Boolean, default: false },
+    // Tahrirda: kelishuvchilarni o'zgartirish (qalam tugmasi) mumkinmi.
+    canEditSigners: { type: Boolean, default: false }
   })
   const isEdit = computed(() => props.mode === 'edit')
+  // «Ma'lumotlar»da kelishuvchilar odatda faqat ko'rinadi; qalam bosilganda shu joyning o'zida
+  // yaratishdagi muharrir ochiladi. O'zgarishlar tabning «Saqlash» tugmasi bilan yuboriladi.
+  const editingSigners = ref(false)
+  // Signer muharriri ochiq — yaratishda doim, tahrirda faqat qalam bosilganda.
+  const signerEditorOpen = computed(() => !isEdit.value || editingSigners.value)
   const isWide = computed(() => props.wide && !isEdit.value)
 
   const store = useCommandFormStore()
@@ -644,13 +653,20 @@
     fillSortableConfirmations()
     syncConfirmationEv()
   }
+  // Joriy foydalanuvchining mas'ul xodimlari + (tahrirda) hujjat tashkilotiniki — aks holda boshqa
+  // tashkilot buyrug'ida rahbar/buxgalter ismi o'rniga raqami (id) chiqib qolardi.
+  const allConfirmations = computed(() => {
+    const ids = new Set(componentStore.confirmationList.map((v) => v.id))
+    return [
+      ...componentStore.confirmationList,
+      ...(store.extraConfirmations || []).filter((v) => !ids.has(v.id))
+    ]
+  })
   const syncConfirmationEv = () => {
     if (store.payload.finance_id === store.payload.director_id) store.payload.finance_id = null
     const ids = [store.payload.finance_id, store.payload.director_id]
-    financeList.value = componentStore.confirmationList.filter(
-      (v) => v.id !== store.payload.director_id
-    )
-    confirmationList.value = componentStore.confirmationList.filter((v) => !ids.includes(v.id))
+    financeList.value = allConfirmations.value.filter((v) => v.id !== store.payload.director_id)
+    confirmationList.value = allConfirmations.value.filter((v) => !ids.includes(v.id))
     onRemoveEv(store.payload.finance_id)
     onRemoveEv(store.payload.director_id)
   }
@@ -700,7 +716,7 @@
 
   // Kelishuvchilar ro'yxati kech yuklansa, direktor/moliya chiqarib tashlangan variantlar qayta hisoblanadi.
   watch(
-    () => componentStore.confirmationList,
+    () => [componentStore.confirmationList, store.extraConfirmations],
     () => syncConfirmationEv()
   )
 
@@ -717,6 +733,7 @@
       ref="formRef"
       :model="store.payload"
       :rules="validationRules.commandFrom"
+      :disabled="readonly"
       class="grid grid-cols-12 gap-x-4"
       :class="{ '@7xl:gap-x-6': isWide }"
     >
@@ -725,12 +742,6 @@
         class="col-span-12 grid grid-cols-12 gap-x-4 content-start"
         :class="{ '@7xl:col-span-7': isWide }"
       >
-        <div
-          v-if="isEdit"
-          class="col-span-12 mb-1.5 text-xs font-semibold uppercase tracking-wide text-textColor3"
-        >
-          {{ $t('documentPage.command.dataTab.sectionMain') }}
-        </div>
         <!--      Command header-->
         <div class="col-span-12">
           <div
@@ -773,16 +784,9 @@
           </div>
         </div>
 
-        <div
-          v-if="isEdit"
-          class="col-span-12 mt-6 mb-1.5 text-xs font-semibold uppercase tracking-wide text-textColor3"
-        >
-          {{ $t('documentPage.command.dataTab.sectionWorkers') }}
-        </div>
         <div class="col-span-12">
           <div
-            class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
-            :class="{ 'mt-6': !isEdit }"
+            class="mt-6 grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
           >
             <div class="col-span-12 @xl:col-span-6 flex">
               <n-form-item
@@ -880,13 +884,7 @@
             </div>
           </div>
         </div>
-        <div
-          v-if="isEdit"
-          class="col-span-12 mt-6 mb-1.5 text-xs font-semibold uppercase tracking-wide text-textColor3"
-        >
-          {{ $t('documentPage.command.dataTab.sectionDetails') }}
-        </div>
-        <div class="col-span-12" :class="{ 'mt-4': !isEdit }">
+        <div class="col-span-12 mt-4">
           <template v-if="store.payload.command_type === 41">
             <VacationForm_41 ref="vacationForm_41" />
           </template>
@@ -968,17 +966,11 @@
           </template>
         </div>
       </div>
-      <div
-        v-if="isEdit"
-        class="col-span-12 mt-6 mb-1.5 text-xs font-semibold uppercase tracking-wide text-textColor3"
-      >
-        {{ $t('documentPage.command.dataTab.sectionSigners') }}
-      </div>
       <!-- Imzolovchilar. To'liq ekranda — o'ng ustun, skrollda yopishib turadi. -->
       <div
-        class="col-span-12 mb-6"
+        class="col-span-12 mt-6"
         :class="{
-          'mt-6': !isEdit,
+          'mb-6': !isEdit,
           '@7xl:col-span-5 @7xl:mt-0 @7xl:self-start @7xl:sticky @7xl:top-0 @7xl:max-h-[calc(100dvh-110px)] @7xl:overflow-y-auto @7xl:overflow-x-hidden @7xl:mb-0':
             isWide
         }"
@@ -998,7 +990,7 @@
                 value-field="id"
                 label-field="last_name"
                 v-model:value="store.payload.director_id"
-                :options="componentStore.confirmationList"
+                :options="allConfirmations"
                 :loading="componentStore.confirmationLoading"
                 :render-label="renderLabel"
                 :virtual-scroll="false"
@@ -1023,8 +1015,39 @@
               />
             </n-form-item>
           </div>
-          <div class="col-span-12">
-            <n-form-item :label="$t(`documentPage.command.form.confirm`)" path="confirmations">
+          <!-- Tahrirda kelishuvchilar faqat ko'rinadi; qalam bosilsa — shu yerda tahrirlanadi. -->
+          <div v-if="!signerEditorOpen" class="col-span-12 pb-2">
+            <CommandSignersSummary
+              :can-edit="canEditSigners && !readonly"
+              @edit="editingSigners = true"
+            />
+          </div>
+          <div v-if="signerEditorOpen" class="col-span-12">
+            <!-- Tahrirda: xulosadagi kabi sarlavha qatori — chapda nom, o'ngda tahrirni yopish (✓).
+                 O'zgarishlar «Saqlash» bosilguncha shu yerda qoladi. -->
+            <div v-if="isEdit" class="flex items-center gap-3 mb-2">
+              <span class="text-sm text-textColor1">{{ $t('documentPage.command.form.confirm') }}</span>
+              <div class="ml-auto">
+                <n-button
+                  size="small"
+                  circle
+                  secondary
+                  type="primary"
+                  :title="$t('documentPage.command.dataTab.signers.done')"
+                  :aria-label="$t('documentPage.command.dataTab.signers.done')"
+                  @click="editingSigners = false"
+                >
+                  <template #icon>
+                    <n-icon><Checkmark16Regular /></n-icon>
+                  </template>
+                </n-button>
+              </div>
+            </div>
+            <n-form-item
+              :label="$t(`documentPage.command.form.confirm`)"
+              :show-label="!isEdit"
+              path="confirmations"
+            >
               <n-select
                 :disabled="!store.payload.director_id"
                 size="large"
@@ -1041,7 +1064,7 @@
               />
             </n-form-item>
           </div>
-          <div v-if="store.sortableConfirmations?.length" class="col-span-12 pb-1">
+          <div v-if="signerEditorOpen && store.sortableConfirmations?.length" class="col-span-12 pb-1">
             <CommandSigners />
           </div>
         </div>

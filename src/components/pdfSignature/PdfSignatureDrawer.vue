@@ -594,7 +594,7 @@
             </div>
             <div v-else class="flex items-center gap-2 md:gap-3">
               <n-button
-                v-if="canRoute && showEditButton"
+                v-if="canRoute && showEditButton && !isCommand"
                 :loading="documentRouteStore.routeLoading"
                 @click="openDocumentRoute"
                 tertiary
@@ -705,6 +705,7 @@
                   <CommandDataTab
                     v-if="isCommand"
                     :command-id="store.document_id"
+                    :can-edit-signers="canRoute && showEditButton"
                     @saved="onDataSaved"
                     @open-source="(v) => getDocument(v.id, v.model)"
                   />
