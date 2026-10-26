@@ -113,6 +113,8 @@ import { Delete20Regular, Edit32Regular, Eye16Regular, OpenFolder24Filled } from
     {
       key: 'worker_rate',
       title: t('departmentPositionPage.table.fact'),
+      // «F» — hover'da to'liq nomi (DAS-11666).
+      fullTitle: t('departmentPositionPage.form.fact'),
       width: 100,
       align: 'center'
     },
