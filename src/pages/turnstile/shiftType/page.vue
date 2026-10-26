@@ -7,16 +7,20 @@
     AddCircle24Regular,
     Apps20Regular,
     CalendarClock20Regular,
-    CalendarLtr24Regular
+    CalendarLtr24Regular,
+    People16Regular,
+    PeopleTeam16Regular
   } from '@vicons/fluent'
   import {
     ShiftTypeList,
+    ShiftPattern,
     GenerateModal,
     ScheduleModal,
     DailyScheduleModal,
     RotatingScheduleModal
   } from './ui/index.js'
-  import { crewSizeOf } from '@/pages/turnstile/scheduleWorker/ui/navbat.js'
+  import { crewSizeOf, isRotating } from '@/pages/turnstile/scheduleWorker/ui/navbat.js'
+  import { dayStrip, formatCount } from './ui/shiftPattern.js'
   import GroupFilter from '@/pages/turnstile/scheduleGroup/ui/Filter.vue'
   import GroupTable from '@/pages/turnstile/scheduleGroup/ui/Table.vue'
 
@@ -47,6 +51,18 @@
     )
   })
   const isCustom = computed(() => selected.value?.type?.id === CUSTOM_TYPE)
+  const selectedDays = computed(() => dayStrip(selected.value))
+  const crewSize = computed(() => crewSizeOf(selected.value))
+
+  // Sarlavhadagi raqamlar: tur tanlanganda — shu tur, aks holda — umumiy.
+  const stats = computed(() =>
+    selected.value?.type
+      ? [
+          { key: 'groups', icon: PeopleTeam16Regular, label: 'shiftType.form.groupCount', value: selected.value.groups },
+          { key: 'workers', icon: People16Regular, label: 'shiftType.form.workerCount', value: selected.value.workers }
+        ]
+      : [{ key: 'groups', icon: PeopleTeam16Regular, label: 'shiftType.form.groupCount', value: store.totalGroup }]
+  )
 
   const onSelectType = (item) => {
     store.groupParams.schedule_type = item?.id ?? null
@@ -100,42 +116,82 @@
       />
 
       <section v-if="canSeeGroups" class="flex-1 min-w-0 min-h-0 flex flex-col gap-4">
-        <header
-          class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 rounded-xl bg-surface-section border border-surface-line"
-        >
-          <Transition name="shift-fade" mode="out-in">
-            <div :key="selected?.id ?? 'all'" class="flex items-center gap-3 min-w-0">
-              <span
-                class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0"
-              >
-                <n-icon size="22">
-                  <CalendarClock20Regular v-if="selected" />
-                  <Apps20Regular v-else />
-                </n-icon>
-              </span>
-              <div class="min-w-0">
-                <div class="text-base font-semibold leading-[1.25] line-clamp-1" :title="selected?.name">
-                  {{ selected?.name || $t('shiftType.form.allGroups') }}
-                </div>
-                <div v-if="selected?.type" class="mt-1 text-xs">
-                  <span class="px-1.5 py-px rounded bg-primary/10 text-primary font-medium">
-                    {{ selected.type.name }}
-                  </span>
+        <header class="rounded-xl bg-surface-section border border-surface-line">
+          <div class="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
+            <Transition name="shift-fade" mode="out-in">
+              <div :key="selected?.id ?? 'all'" class="flex items-center gap-3 min-w-0 flex-1">
+                <span
+                  class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0"
+                >
+                  <n-icon size="22">
+                    <CalendarClock20Regular v-if="selected" />
+                    <Apps20Regular v-else />
+                  </n-icon>
+                </span>
+                <div class="min-w-0">
+                  <div class="text-base font-semibold leading-[1.25] line-clamp-1" :title="selected?.name">
+                    {{ selected?.name || $t('shiftType.form.allGroups') }}
+                  </div>
+                  <div v-if="selected?.type" class="mt-1 flex items-center gap-1.5 text-xs">
+                    <span class="px-1.5 py-px rounded bg-primary/10 text-primary font-medium">
+                      {{ selected.type.name }}
+                    </span>
+                    <span
+                      v-if="crewSize"
+                      class="px-1.5 py-px rounded bg-surface-ground text-secondary font-medium"
+                      :title="$t('shiftType.groupView.crewSizeHint')"
+                    >
+                      {{ $t('shiftType.groupView.crewSize', { n: crewSize }) }}
+                    </span>
+                  </div>
+                  <div v-else-if="!selected" class="mt-0.5 text-xs text-secondary line-clamp-1">
+                    {{ $t('shiftType.form.pickTypeHint') }}
+                  </div>
                 </div>
               </div>
-            </div>
-          </Transition>
+            </Transition>
 
-          <template v-if="selected?.type && canCreateGroup">
-            <n-button v-if="isCustom" secondary type="primary" @click="goToSchedule">
-              <template #icon><CalendarLtr24Regular /></template>
-              {{ $t('shiftType.form.goToSchedule') }}
-            </n-button>
-            <n-button v-else type="primary" @click="onCreateGroup">
-              <template #icon><AddCircle24Regular /></template>
-              {{ $t('shiftType.form.createGroup') }}
-            </n-button>
-          </template>
+            <div class="flex items-center gap-4 shrink-0">
+              <div
+                v-for="s in stats"
+                :key="s.key"
+                class="flex items-center gap-2"
+                :title="$t(s.label)"
+              >
+                <span class="w-8 h-8 rounded-lg bg-surface-ground text-secondary flex items-center justify-center">
+                  <n-icon size="16"><component :is="s.icon" /></n-icon>
+                </span>
+                <div class="leading-[1.15]">
+                  <div class="text-sm font-semibold">{{ formatCount(s.value) }}</div>
+                  <div class="text-[11px] text-secondary">{{ $t(s.label) }}</div>
+                </div>
+              </div>
+
+              <template v-if="selected?.type && canCreateGroup">
+                <n-button v-if="isCustom" secondary type="primary" @click="goToSchedule">
+                  <template #icon><CalendarLtr24Regular /></template>
+                  {{ $t('shiftType.form.goToSchedule') }}
+                </n-button>
+                <n-button v-else type="primary" @click="onCreateGroup">
+                  <template #icon><AddCircle24Regular /></template>
+                  {{ $t('shiftType.form.createGroup') }}
+                </n-button>
+              </template>
+            </div>
+          </div>
+
+          <n-collapse-transition :show="selectedDays.length > 0">
+            <div class="px-4 pb-3 pt-3 border-t border-surface-line">
+              <div class="mb-2 text-xs text-secondary">
+                {{
+                  isRotating(selected)
+                    ? $t('shiftType.groupView.cycle', { n: selectedDays.length })
+                    : $t('shiftType.groupView.workDays')
+                }}
+              </div>
+              <ShiftPattern :shift-type="selected" variant="tiles" />
+            </div>
+          </n-collapse-transition>
         </header>
 
         <n-collapse-transition :show="isCustom">

@@ -125,7 +125,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
       const pdfUrl = this.pdfUrl
       // const pdfUrl = "https://s3.dasuty.com/docflow/documents/timesheets/c4ca4238a0b923820dcc509a6f75849b.pdf"
       try {
-        this.pdfDocument = await pdfjsLib.getDocument({ url: pdfUrl, isEvalSupported: false }).promise
+        this.pdfDocument = await pdfjsLib.getDocument({ url: pdfUrl, isEvalSupported: false })
+          .promise
         this.pdfDocumentUrl = pdfUrl
         this.totalPdfPage = this.pdfDocument.numPages
         for (let pageNumber = 1; pageNumber <= this.totalPdfPage; pageNumber++) {
@@ -274,10 +275,12 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
           }
         })
         .then((res) => {
+          // Xodimga bog'lanmagan foydalanuvchida `worker` bo'sh bo'ladi.
           this.userList = res.data.data.map((v) => ({
-            name: v.worker.last_name + ' ' + v.worker.first_name,
+            name:
+              [v.worker?.last_name, v.worker?.first_name].filter(Boolean).join(' ') || `#${v.id}`,
             id: v.id,
-            workerId: v.worker.id
+            workerId: v.worker?.id ?? null
           }))
         })
         .finally(() => {

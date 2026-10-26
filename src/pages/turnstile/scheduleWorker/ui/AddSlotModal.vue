@@ -1,9 +1,10 @@
 <script setup>
   import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
-  import { UIModal, UINSelect } from '@/components/index.js'
+  import { UIFigField, UIModal, UINSelect } from '@/components/index.js'
+  import QuickDates from './QuickDates.vue'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import { cycleOf } from './navbat.js'
+  import { cycleOf, toAnchored } from './navbat.js'
   import { scheduleLabel } from '@/store/modules/turnstile/scheduleGroupWorkerStore.js'
   import i18n from '@/i18n/index.js'
 
@@ -66,7 +67,9 @@
           per_page: 50,
           search: search.value || undefined,
           start_date: store.monthRange.from,
-          end_date: store.monthRange.to
+          end_date: store.monthRange.to,
+          // Faqat guruh korxonasi xodimlari — grafik xodim korxonasiga bog'lanadi.
+          priority_group: store.params.group
         }
       })
       .then((res) => {
@@ -74,7 +77,7 @@
         const list = res.data.data.data.map((v) => ({
           name: Utils.combineFullName(v.worker),
           positionId: v.id,
-          position: [v.position, scheduleLabel(v.rangeSchedules, store.params.group)].filter(Boolean).join(' · '),
+          position: [v.position, scheduleLabel(v.rangeSchedules)].filter(Boolean).join(' · '),
           ranges: v.rangeSchedules ?? []
         }))
         workers.value = append === true ? [...workers.value, ...list] : list
@@ -91,11 +94,21 @@
       positionId.value = null
       startIndex.value = null
       search.value = null
-      // Xodim doim oy (smena davri) boshidan ishlaydi.
-      date.value = minDay.value ? new Date(`${minDay.value}T00:00:00`).getTime() : null
+      // Bo'shagan o'ringa — egasi ketgan kundan; aks holda bugun (davr ichida bo'lsa) yoki davr boshi.
+      setDate(store.addSlot.from || (todayAllowed.value ? today : minDay.value))
+      store.addSlot.from = null
       load()
     }
   )
+
+  const today = Utils.timeToZone(Date.now())
+  const todayAllowed = computed(() => !!minDay.value && today >= minDay.value && today <= endDate.value)
+  const setDate = (d) => (date.value = d ? new Date(`${d}T00:00:00`).getTime() : null)
+  const startStr = computed(() => (date.value ? Utils.timeToZone(date.value) : null))
+  const disabledDate = (ts) => {
+    const d = Utils.timeToZone(ts)
+    return !minDay.value || d < minDay.value || d > endDate.value
+  }
 
   // Boshqa grafikdagi xodim — tanlangan sanadan shu o'ringa o'tadi.
   const moveInfo = computed(() => {
@@ -142,7 +155,24 @@
           schedule_workers: [{ worker_position_id: positionId.value, day: dayOffset() }]
         }
       })
-      .then(() => {
+      .then(async () => {
+        // Tanlangan ekipaj o'rni saqlanadi — ko'rinishda aynan shu joyda turadi.
+        if (phaseKnown.value && store.addSlot.crew) {
+          const { pattern, crewSize } = cycleOf(store.shiftType)
+          const n = pattern.length
+          const k = (store.addSlot.fam ?? 0) + (store.addSlot.phase - 1) * (n / crewSize) + 1
+          await store._saveSlots(
+            [
+              {
+                worker_position_id: positionId.value,
+                crew: store.addSlot.crew,
+                navbat: toAnchored(k, firstDay.value ?? store.monthRange.from, n),
+                owner_worker_position_id: null
+              }
+            ],
+            true
+          )
+        }
         store.addSlot.visible = false
         store._index()
       })
@@ -156,12 +186,11 @@
 <template>
   <UIModal
     v-model:visible="store.addSlot.visible"
-    :width="500"
-    :title="phaseKnown ? $t('shiftType.groupView.addWorkerTitle', { n: store.addSlot.phase }) : $t('shiftType.groupView.addWorker')"
+    :width="480"
+    :title="phaseKnown ? $t('shiftType.groupView.addWorkerTitle', { n: store.addSlot.pos ?? store.addSlot.phase }) : $t('shiftType.groupView.addWorker')"
   >
-    <div class="grid grid-cols-12 gap-y-4">
-      <div class="col-span-12">
-        <div class="text-xs text-secondary mb-1">{{ $t('content.worker') }}</div>
+    <div class="flex flex-col gap-4 text-sm">
+      <UIFigField :label="$t('content.worker')" editing>
         <UINSelect
           @onSearch="onSearch"
           :query="search"
@@ -174,18 +203,27 @@
           :total-count="total"
           @onScrollEv="load(true)"
         />
-      </div>
-      <div class="col-span-12 text-xs text-secondary">
-        {{ $t('shiftType.groupView.addFromMonthStart', { from: minDay ? `${minDay.slice(8, 10)}.${minDay.slice(5, 7)}` : '' }) }}
-      </div>
-      <div v-if="moveInfo" class="col-span-12">
-        <n-alert type="warning" :show-icon="true">{{ moveInfo }}</n-alert>
-      </div>
-      <div v-if="!phaseKnown" class="col-span-12">
-        <div class="text-xs text-secondary mb-1">{{ $t('shiftType.groupView.patternStart') }}</div>
+      </UIFigField>
+
+      <UIFigField :label="$t('shiftType.groupView.workFrom')" editing>
+        <n-date-picker
+          v-model:value="date"
+          type="date"
+          class="w-full"
+          format="dd.MM.yyyy"
+          :clearable="false"
+          :is-date-disabled="disabledDate"
+        />
+        <QuickDates class="mt-2" :current="startStr" :today="today" :today-allowed="todayAllowed" :min-day="minDay" @pick="setDate" />
+      </UIFigField>
+
+      <n-alert v-if="moveInfo" type="warning" :show-icon="false">{{ moveInfo }}</n-alert>
+
+      <UIFigField v-if="!phaseKnown" :label="$t('shiftType.groupView.patternStart')" editing>
         <n-select v-model:value="startIndex" :options="patternOptions" />
-      </div>
-      <div class="col-span-12 flex justify-end gap-4">
+      </UIFigField>
+
+      <div class="flex justify-end gap-3 pt-2">
         <n-button @click="store.addSlot.visible = false" type="error" secondary>
           {{ $t('content.cancel') }}
         </n-button>
