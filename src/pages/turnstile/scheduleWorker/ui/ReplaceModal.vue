@@ -1,14 +1,15 @@
 <script setup>
   import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
-  import { UIModal, UINSelect } from '@/components/index.js'
+  import { RubberSegment, UIFigField, UIModal, UINSelect } from '@/components/index.js'
+  import WorkerCard from './WorkerCard.vue'
+  import { RUBBER_THEME } from '@/components/ui/rubberSegmentTheme.js'
   import validationRules from '@/utils/validationRules.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
-  import { findNewGaps } from './conflicts.js'
-  import { showAlert } from '@/components/notify/alertDialog.js'
   import {
-    ArrowDown16Regular,
+    CalendarArrowRight16Regular,
+    CalendarDay16Regular,
     ArrowRight16Regular,
     Clock16Regular,
     Edit16Regular,
@@ -22,34 +23,6 @@
   const accStore = useAccountStore()
   const formRef = ref(null)
   const { t } = i18n.global
-
-  // Smena turidagi ish smenalari (bo'shliq tekshiruvi uchun).
-  const typeShifts = computed(() => {
-    const seen = new Map()
-    for (const d of store.shiftType?.days ?? []) {
-      if (!d?.work_status) continue
-      const st = String(d.start_time).slice(0, 5)
-      const et = String(d.end_time).slice(0, 5)
-      seen.set(`${st}-${et}`, { start: st, end: et })
-    }
-    return [...seen.values()]
-  })
-  const daysMap = (list) => Object.fromEntries(list.map((v) => [v.worker_position_id, v.days]))
-  // Smenada hech kim qolmasa ogohlantirish, tasdiqlansa saqlanadi (vaqt kesishmasi tekshirilmaydi).
-  const confirmIfGaps = (save, gaps) => {
-    if (!gaps.length) return save()
-    showAlert({
-      type: 'warning',
-      title: t('shiftType.groupView.conflictTitle'),
-      message: t('shiftType.groupView.gapHint'),
-      listHint: '',
-      errors: [
-        ...new Set(gaps.map((g) => t('shiftType.groupView.gapLine', { group: g.title, shift: g.shift })))
-      ],
-      confirmText: t('shiftType.groupView.conflictSave'),
-      onConfirm: save
-    })
-  }
 
   // Kunni o'zgartirish: Dam, smena turidagi smenalar yoki boshqa vaqt.
   const dayDate = computed(() => Utils.timeToZone(store.replacePayload.date))
@@ -191,25 +164,10 @@
       group_id: store.params.group,
       ...plan
     }
-    const before = daysMap(store.list)
-    const after = {
-      ...before,
-      [data.worker_position_id]: (before[data.worker_position_id] ?? []).map((d) =>
-        d.date === data.date ? { ...d, id: d.id ?? -1, work_status: plan.work_status ? 1 : 0, start_time: plan.start_time, end_time: plan.end_time } : d
-      )
-    }
-    const gaps = findNewGaps({
-      before,
-      after,
-      crewMap: store.crewMap,
-      wps: [data.worker_position_id],
-      dates: [data.date],
-      shifts: typeShifts.value
-    })
-    confirmIfGaps(() => store._editDay(data), gaps)
+    store._editDay(data)
   }
 
-  // O'rinbosarlik: tanlangan ish kuni xodim dam, o'rniga shu kuni dam bo'lgan xodim chiqadi — grafiklar o'zgarmaydi.
+  // O'rinbosarlik: tanlangan ish kuni xodim dam, o'rniga boshqa xodim uning smenasida ishlaydi.
   const swapDate = computed(() => (store.replacePayload.date ? Utils.timeToZone(store.replacePayload.date) : null))
   const swapDay = computed(() => store.selectedWorker?.days?.find((d) => d.date === swapDate.value))
   const picked = computed(() => store.workerList.find((v) => v.positionId === store.replacePayload.positonId))
@@ -222,6 +180,35 @@
       .join('')
       .toUpperCase()
   const swapTime = computed(() => (swapDay.value?.isWorkDay ? `${swapDay.value.startTime}–${swapDay.value.endTime}` : null))
+  // Almashtirish turi: bir kunlik o'rinbosarlik yoki tanlangan kundan oy oxirigacha o'ringa boshqa xodim (egasi grafigi o'zgarmaydi).
+  const tabTheme = { ...RUBBER_THEME, thumbColor: 'var(--fig-block-bg)', activeTextColor: 'var(--fig-text-primary)' }
+  const kindItems = computed(() => [
+    { value: 'day', label: t('shiftType.groupView.swapKindDay'), icon: CalendarDay16Regular },
+    { value: 'full', label: t('shiftType.groupView.swapKindFull'), icon: CalendarArrowRight16Regular }
+  ])
+  const isFull = computed(() => store.transferMode)
+  const transferEnd = computed(() => {
+    const end = store.params.endDate ? String(store.params.endDate).slice(0, 10) : null
+    return end && end < store.monthRange.to ? end : store.monthRange.to
+  })
+  const fmtShort = (d) => (d ? `${d.slice(8, 10)}.${d.slice(5, 7)}` : '')
+  const setKind = (full) => {
+    store.transferMode = full
+    store.replacePayload.positonId = null
+    if (full) store.replacePayload.date = new Date(`${store.defaultDate}T00:00:00`).getTime()
+  }
+  const onTransfer = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
+    if (!picked.value || !swapDate.value) return
+    store._transferSlot({
+      group_id: store.params.group,
+      worker_position_id: store.selectedWorker.workerPositionId,
+      new_worker_position_id: store.replacePayload.positonId,
+      from: swapDate.value,
+      owner_mode: 'keep'
+    })
+  }
+
   const onSubmit = () => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
     formRef.value?.validate((error) => {
@@ -235,9 +222,10 @@
   }
   // Kun yoki rejim almashsa — nomzodlar shu kun bo'yicha qayta yuklanadi.
   watch(
-    () => [store.replaceVisible, store.replaceMode, swapDate.value],
+    () => [store.replaceVisible, store.replaceMode, swapDate.value, store.transferMode],
     ([visible, mode], old) => {
-      if (!visible || mode !== 'swap' || (old && old[0] === visible && old[1] === mode && old[2] === swapDate.value)) return
+      if (!visible || mode !== 'swap') return
+      if (old && old[0] === visible && old[1] === mode && old[2] === swapDate.value && old[3] === store.transferMode) return
       store.replacePayload.positonId = null
       store._workers()
     }
@@ -248,6 +236,8 @@
     const d = Utils.timeToZone(ts)
     if (d < store.monthRange.from || d > store.monthRange.to) return true
     if (store.replaceMode !== 'swap') return false
+    // To'liq almashtirishda — o'rin egasining shu guruhdagi istalgan kuni.
+    if (store.transferMode) return d < store.monthRange.from || d > transferEnd.value
     const day = store.selectedWorker?.days?.find((x) => x.date === d)
     return !day?.isWorkDay || !!day?.substitution
   }
@@ -261,8 +251,14 @@
 <template>
   <UIModal
     v-model:visible="store.replaceVisible"
-    :width="500"
-    :title="store.replaceMode === 'edit' ? $t('shiftType.groupView.editDay') : $t('shiftType.groupView.subTitle')"
+    :width="480"
+    :title="
+      store.replaceMode === 'edit'
+        ? $t('shiftType.groupView.editDay')
+        : isFull
+          ? $t('shiftType.groupView.transferTitle')
+          : $t('shiftType.groupView.subTitle')
+    "
   >
     <n-form
       class="grid grid-cols-12"
@@ -272,24 +268,18 @@
     >
 
       <template v-if="store.replaceMode === 'edit'">
-        <div class="col-span-12 flex flex-col gap-3 text-sm">
-          <div class="flex items-center gap-3 rounded-xl border border-surface-line px-3 py-2.5">
-            <div class="w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold bg-primary/10 text-primary">
-              {{ initials(store.selectedWorker.fullName) }}
-            </div>
-            <div class="min-w-0 flex-1">
-              <div class="font-medium leading-[1.25] line-clamp-2">{{ store.selectedWorker.fullName }}</div>
-              <div class="text-xs text-secondary line-clamp-1">{{ store.selectedWorker.position }}</div>
-            </div>
-          </div>
+        <div class="col-span-12 flex flex-col gap-4 text-sm">
+          <WorkerCard :name="store.selectedWorker.fullName" :position="store.selectedWorker.position" />
 
-          <n-date-picker
-            v-model:value="store.replacePayload.date"
-            type="date"
-            class="w-full"
-            format="dd.MM.yyyy"
-            :is-date-disabled="disabledDate"
-          />
+          <UIFigField :label="$t('content.date')" editing>
+            <n-date-picker
+              v-model:value="store.replacePayload.date"
+              type="date"
+              class="w-full"
+              format="dd.MM.yyyy"
+              :is-date-disabled="disabledDate"
+            />
+          </UIFigField>
 
           <!-- Bu kunda almashtirish bor — avval nima bo'layotganini tushuntiramiz -->
           <div v-if="subPair" class="flex flex-col gap-2 rounded-xl border border-warning/40 bg-warning/5 px-3 py-2.5">
@@ -336,7 +326,7 @@
             </div>
           </div>
 
-          <div class="text-xs text-secondary">{{ $t('shiftType.groupView.dayNewState') }}</div>
+          <UIFigField :label="$t('shiftType.groupView.dayNewState')" editing>
           <div class="grid grid-cols-2 gap-2">
             <button
               v-for="c in shiftChoices"
@@ -363,6 +353,7 @@
               </span>
             </button>
           </div>
+          </UIFigField>
 
           <div v-if="store.dayEdit.choice === 'custom'" class="grid grid-cols-2 gap-x-3 gap-y-1.5">
             <div class="col-span-2 flex items-center gap-1.5 text-xs text-secondary">
@@ -444,7 +435,7 @@
             </div>
           </div>
         </div>
-        <div class="col-span-12 flex justify-end gap-4 mt-5">
+        <div class="col-span-12 flex justify-end gap-3 pt-6">
           <n-button @click="store.replaceVisible = false" type="error" secondary>
             {{ $t('content.cancel') }}
           </n-button>
@@ -455,29 +446,84 @@
       </template>
 
       <template v-else>
-        <div class="col-span-12 flex flex-col gap-2 text-sm mb-5">
+        <div class="col-span-12 mb-4">
+          <RubberSegment
+            v-bind="tabTheme"
+            :items="kindItems"
+            :value="isFull ? 'full' : 'day'"
+            size="md"
+            class-name="w-full"
+            @change="(v) => setKind(v === 'full')"
+          />
+        </div>
+
+        <!-- To'liq almashtirish: tanlangan kundan oy oxirigacha o'ringa boshqa xodim -->
+        <div v-if="isFull" class="col-span-12 flex flex-col gap-4 text-sm mb-5">
+          <WorkerCard :name="store.selectedWorker.fullName" :position="store.selectedWorker.position" />
+
+          <UIFigField :label="$t('shiftType.groupView.transferFrom')" editing>
+            <n-date-picker
+              v-model:value="store.replacePayload.date"
+              type="date"
+              class="w-full"
+              format="dd.MM.yyyy"
+              :clearable="false"
+              :is-date-disabled="disabledDate"
+            />
+          </UIFigField>
+
+          <UIFigField :label="$t('shiftType.groupView.transferNew')" editing>
+            <UINSelect
+              @onSearch="onSearch"
+              :query="store.workerParams.search"
+              :options="store.workerList.filter((v) => v.positionId !== store.selectedWorker.workerPositionId)"
+              v-model:value="store.replacePayload.positonId"
+              value-field="positionId"
+              :placeholder="$t('shiftType.groupView.transferNew')"
+              :render-label="UIHelper.selectRender.label"
+              :render-tag="UIHelper.selectRender.value"
+              :loading="store.workerLoading"
+              :total-count="store.totalWorker"
+              @onScrollEv="store._workers(true)"
+            />
+          </UIFigField>
+
+          <div v-if="picked && swapDate" class="text-xs text-secondary">
+            {{
+              $t('shiftType.groupView.transferSummary', {
+                name: picked.name,
+                from: fmtShort(swapDate),
+                to: fmtShort(transferEnd),
+                owner: store.selectedWorker.fullName
+              })
+            }}
+          </div>
+        </div>
+        <div v-if="isFull" class="col-span-12 flex justify-end gap-3 pt-2">
+          <n-button @click="store.replaceVisible = false" type="error" secondary>
+            {{ $t('content.cancel') }}
+          </n-button>
+          <n-button @click="onTransfer" :disabled="!picked || !swapDate" :loading="store.replaceLoading" type="primary">
+            {{ $t('content.save') }}
+          </n-button>
+        </div>
+
+        <div v-if="!isFull" class="sub-fields col-span-12 flex flex-col gap-4 text-sm mb-2">
           <!-- 1. Dam oladigan xodim (ish kuni) -->
-          <div class="flex items-center gap-3 rounded-xl border border-surface-line px-3 py-2.5">
-            <div class="w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold bg-fig-red-50 text-fig-text-red">
-              {{ initials(store.selectedWorker.fullName) }}
-            </div>
-            <div class="min-w-0 flex-1">
-              <div class="font-medium leading-[1.25] line-clamp-2">{{ store.selectedWorker.fullName }}</div>
-              <div class="text-xs text-secondary line-clamp-1">{{ store.selectedWorker.position }}</div>
-            </div>
-            <div class="shrink-0 flex flex-col items-end gap-1 text-xs">
+          <WorkerCard :name="store.selectedWorker.fullName" :position="store.selectedWorker.position" tone="danger">
+            <template #aside>
               <span v-if="swapTime" class="text-secondary line-through">{{ swapTime }}</span>
               <span class="px-1.5 py-0.5 rounded font-medium bg-fig-red-50 text-fig-text-red">
                 {{ $t('shiftType.groupView.subAbsentLabel') }}
               </span>
-            </div>
-          </div>
+            </template>
+          </WorkerCard>
 
-          <n-form-item
-            :show-label="false"
+          <UIFigField
+            :label="$t('shiftType.groupView.subDate')"
+            editing
             path="date"
             :rule-path="validationRules.rulesNames.requiredNumberField"
-            class="-mb-4"
           >
             <n-date-picker
               v-model:value="store.replacePayload.date"
@@ -487,21 +533,14 @@
               :placeholder="$t('shiftType.groupView.subDate')"
               :is-date-disabled="disabledDate"
             />
-          </n-form-item>
-
-          <div class="flex items-center gap-2 pl-3 text-xs text-warning font-medium">
-            <span class="w-7 h-7 rounded-full bg-warning/10 flex items-center justify-center">
-              <n-icon size="14"><ArrowDown16Regular /></n-icon>
-            </span>
-            {{ $t('shiftType.groupView.subArrow') }}
-          </div>
+          </UIFigField>
 
           <!-- 2. O'rniga chiqadigan xodim (shu kuni dam) -->
-          <n-form-item
-            :show-label="false"
+          <UIFigField
+            :label="$t('shiftType.groupView.subWorker')"
+            editing
             path="positonId"
             :rule-path="validationRules.rulesNames.requiredNumberField"
-            class="-mb-4"
           >
             <UINSelect
               @onSearch="onSearch"
@@ -516,39 +555,18 @@
               :total-count="store.totalWorker"
               @onScrollEv="store._workers(true)"
             />
-          </n-form-item>
-          <div
-            v-if="picked"
-            class="flex items-center gap-3 rounded-xl border border-success/40 bg-success/5 px-3 py-2.5"
-          >
-            <div class="w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold bg-success/10 text-success">
-              {{ initials(picked.name) }}
-            </div>
-            <div class="min-w-0 flex-1">
-              <div class="font-medium leading-[1.25] line-clamp-2">{{ picked.name }}</div>
-              <div class="text-xs text-secondary line-clamp-1">{{ picked.position }}</div>
-            </div>
-            <div class="shrink-0 flex flex-col items-end gap-1 text-xs">
-              <span class="text-secondary line-through">{{ $t('shiftType.groupView.rest') }}</span>
+          </UIFigField>
+          <WorkerCard v-if="picked" :name="picked.name" :position="picked.position" tone="success" highlight>
+            <template #aside>
               <span class="px-1.5 py-0.5 rounded font-medium bg-success/10 text-success">{{ swapTime }}</span>
-            </div>
-          </div>
-          <div
-            v-else
-            class="rounded-xl border border-dashed border-surface-line px-3 py-3 text-xs text-secondary text-center"
-          >
-            {{ $t('shiftType.groupView.subPickHint') }}
-          </div>
+            </template>
+          </WorkerCard>
 
-          <div v-if="swapTime" class="flex items-start gap-1.5 text-xs text-secondary mt-1">
-            <n-icon size="14" class="mt-px shrink-0"><Info16Regular /></n-icon>
-            {{ $t('shiftType.groupView.subKeepsPlan') }}
-          </div>
-          <n-alert v-else type="warning" class="mt-1">
+          <n-alert v-if="!swapTime" type="warning" :show-icon="false">
             {{ $t('shiftType.groupView.subNotWorkDay') }}
           </n-alert>
         </div>
-        <div class="col-span-12 flex justify-end gap-4">
+        <div v-if="!isFull" class="col-span-12 flex justify-end gap-3 pt-2">
           <n-button @click="store.replaceVisible = false" type="error" secondary>
             {{ $t('content.cancel') }}
           </n-button>
@@ -560,3 +578,10 @@
     </n-form>
   </UIModal>
 </template>
+
+<style scoped>
+  /* Validatsiya xabari bo'lmasa — maydonlar orasi boshqa modallardagidek. */
+  .sub-fields :deep(.n-form-item-feedback-wrapper:empty) {
+    min-height: 0;
+  }
+</style>
