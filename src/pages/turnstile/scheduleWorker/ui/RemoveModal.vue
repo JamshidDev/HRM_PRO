@@ -1,7 +1,7 @@
 <script setup>
   import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
   import { UIModal } from '@/components/index.js'
-  import { Warning16Regular } from '@vicons/fluent'
+  import WorkerCard from './WorkerCard.vue'
 
   // Xodimni guruhdan chiqarish: shu oydagi butun grafigi o'chadi, o'rni bo'sh qoladi.
   const store = useScheduleGroupWorkerStore()
@@ -33,22 +33,19 @@
 
 <template>
   <UIModal v-model:visible="store.remove.visible" :width="480" :title="$t('shiftType.groupView.removeTitle')">
-    <div v-if="worker" class="flex flex-col gap-3 text-sm">
-      <div class="rounded-xl border border-surface-line px-3 py-2.5">
-        <div class="font-medium leading-[1.25] line-clamp-2">{{ worker.fullName }}</div>
-        <div class="text-xs text-secondary line-clamp-1">{{ worker.position }}</div>
-        <div class="mt-1.5 text-xs text-fig-text-red">
+    <div v-if="worker" class="flex flex-col gap-4 text-sm">
+      <WorkerCard :name="worker.fullName" :position="worker.position" tone="danger">
+        <div class="mt-1 text-xs text-fig-text-red">
           {{ $t('shiftType.groupView.removeGone', { from: fmt(monthFrom), to: fmt(monthTo) }) }} ·
           {{ $t('shiftType.groupView.removeWorkDays', { n: affected.work }) }}
         </div>
-      </div>
+      </WorkerCard>
 
-      <div v-if="affected.subs" class="flex items-start gap-1.5 text-xs text-secondary">
-        <n-icon size="14" class="mt-px shrink-0 text-warning"><Warning16Regular /></n-icon>
+      <n-alert v-if="affected.subs" type="warning" :show-icon="false">
         {{ $t('shiftType.groupView.removeSubs', { n: affected.subs }) }}
-      </div>
+      </n-alert>
 
-      <div class="flex justify-end gap-4 mt-1">
+      <div class="flex justify-end gap-3 pt-2">
         <n-button @click="store.remove.visible = false" secondary>
           {{ $t('content.cancel') }}
         </n-button>

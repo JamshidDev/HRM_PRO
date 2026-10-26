@@ -4,17 +4,10 @@ import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
 const { t } = i18n.global
 
-const fmt = (d) => (d ? d.slice(8, 10) + '.' + d.slice(5, 7) : '')
-// Xodim shu oyda qaysi grafikda — ro'yxat ostidagi izoh.
-export const scheduleLabel = (ranges, groupId) => {
-  if (!ranges?.length) return t('shiftType.groupView.noSchedule')
-  return ranges
-    .map((r) =>
-      r.group_id === Number(groupId)
-        ? t('shiftType.groupView.inThisSchedule')
-        : t('shiftType.groupView.otherSchedule', { name: r.type_name, from: fmt(r.date_from), to: fmt(r.date_to) })
-    )
-    .join(' · ')
+// Xodim shu oyda qaysi grafikda — ro'yxat ostidagi izoh: faqat grafik nomi yoki «Grafiksiz».
+export const scheduleLabel = (ranges) => {
+  const names = [...new Set((ranges ?? []).map((r) => r.type_name).filter(Boolean))]
+  return names.length ? names.join(' · ') : t('shiftType.groupView.noSchedule')
 }
 
 export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore', {
@@ -86,7 +79,7 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     // Guruh smena turi (nom + naqsh) — sahifa kartochkasi va navbat hisobi uchun.
     shiftType: null,
     // Bo'sh navbatga xodim qo'shish oynasi.
-    addSlot: { visible: false, phase: null, fam: 0, from: null, crew: null },
+    addSlot: { visible: false, phase: null, fam: 0, from: null, crew: null, pos: null },
     // Xodim grafigini navbati bo'yicha qayta yaratish oynasi.
     regen: { visible: false, worker: null },
     // Xodimni guruhdan chiqarish oynasi.
@@ -229,7 +222,7 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
             name: Utils.combineFullName(v.worker),
             id: v.worker.id,
             positionId: v.id,
-            position: scheduleLabel(v.rangeSchedules, this.params.group),
+            position: scheduleLabel(v.rangeSchedules),
             ranges: v.rangeSchedules ?? [],
             group: v.scheduleGroup,
             type: v.scheduleType

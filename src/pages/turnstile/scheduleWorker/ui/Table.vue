@@ -264,12 +264,14 @@
     }
     // Generatsiyadagi o'rinlar — xodim biriktirilmagan brigadalar ham bo'sh o'rin bo'lib ko'rinadi.
     const planned = Math.ceil((store.params.slots || 0) / crewSize)
-    for (let c = 1; c <= planned; c++) crewOf(c, 0)
+    // Faqat hali o'rin saqlanmagan (yangi, bo'sh) guruhda — keyin bo'shagan brigada o'chiriladi.
+    if (!store.slots.length) for (let c = 1; c <= planned; c++) crewOf(c, 0)
     const unslotted = []
     const unknown = []
     for (const w of ws) {
       const s = resolveSlot(w.workerPositionId)
-      const k = w.navbat ?? (s?.navbat ? fromAnchored(s.navbat, monthStart, phaseCount) : null)
+      // Saqlangan o'rin navbati ustun — o'tkazilgan xodimning eski kunlari uni boshqa o'ringa tortmaydi.
+      const k = s?.navbat ? fromAnchored(s.navbat, monthStart, phaseCount) : w.navbat
       const crew = s && k ? crewOf(s.crew, famOf(k)) : null
       if (crew && crew.fam === famOf(k)) crew.navs[navOf(k)].push(w)
       else if (k) unslotted.push({ w, k })
@@ -513,6 +515,7 @@
     store.addSlot.phase = slot.phase
     store.addSlot.fam = slot.fam ?? 0
     store.addSlot.crew = slot.crew ?? null
+    store.addSlot.pos = slot.pos ?? slot.phase
     store.addSlot.visible = true
   }
 
@@ -525,6 +528,7 @@
     store.addSlot.phase = Math.floor((w.navbat - 1) / step) + 1
     store.addSlot.from = vacantFrom(w)
     store.addSlot.crew = w.crew ?? null
+    store.addSlot.pos = w.pos ?? null
     store.addSlot.visible = true
   }
 

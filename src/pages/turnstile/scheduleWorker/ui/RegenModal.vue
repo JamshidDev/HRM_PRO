@@ -1,6 +1,8 @@
 <script setup>
   import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
-  import { UIModal } from '@/components/index.js'
+  import { UIFigField, UIModal } from '@/components/index.js'
+  import WorkerCard from './WorkerCard.vue'
+  import QuickDates from './QuickDates.vue'
   import Utils from '@/utils/Utils.js'
   import { cycleDays } from './navbat.js'
   import i18n from '@/i18n/index.js'
@@ -95,14 +97,6 @@
     return !minDay.value || d < minDay.value || d > endDate.value
   }
 
-  const initials = (name) =>
-    String(name || '')
-      .split(' ')
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((x) => x[0])
-      .join('')
-      .toUpperCase()
   const today = Utils.timeToZone(Date.now())
   const todayAllowed = computed(() => !!minDay.value && today >= minDay.value && today <= endDate.value)
   const setDate = (d) => (date.value = d ? new Date(`${d}T00:00:00`).getTime() : null)
@@ -112,45 +106,19 @@
 
 <template>
   <UIModal v-model:visible="store.regen.visible" :width="480" :title="$t('shiftType.groupView.regenTitle')">
-    <div v-if="worker" class="flex flex-col gap-5 text-sm">
-      <div class="flex items-center gap-3 rounded-xl border border-surface-line p-3">
-        <div
-          class="w-10 h-10 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold bg-primary/10 text-primary"
-        >
-          {{ initials(worker.fullName) }}
-        </div>
-        <div class="min-w-0 flex-1">
-          <div class="font-medium leading-[1.3] line-clamp-1" :title="worker.fullName">{{ worker.fullName }}</div>
-          <div class="mt-0.5 text-xs text-secondary line-clamp-1">{{ worker.position }}</div>
-        </div>
-        <div class="shrink-0 flex flex-col items-end gap-1 text-[11px] leading-none">
-          <span class="px-2 py-1 rounded-md bg-surface-ground font-medium">
-            {{ navbat ? $t('shiftType.groupView.regenNavbat', { n: navbat }) : $t('shiftType.groupView.regenUnknown') }}
+    <div v-if="worker" class="flex flex-col gap-4 text-sm">
+      <WorkerCard :name="worker.fullName" :position="worker.position">
+        <template #aside>
+          <span class="px-1.5 py-0.5 rounded font-medium bg-surface-ground">
+            {{ navbat ? $t('shiftType.groupView.regenNavbat', { n: worker.pos ?? navbat }) : $t('shiftType.groupView.regenUnknown') }}
           </span>
-          <span v-if="changedCount" class="px-2 py-1 rounded-md bg-warning/10 text-warning font-medium">
+          <span v-if="changedCount" class="px-1.5 py-0.5 rounded font-medium bg-warning/10 text-warning">
             {{ $t('shiftType.groupView.regenChanged', { n: changedCount }) }}
           </span>
-        </div>
-      </div>
+        </template>
+      </WorkerCard>
 
-      <div class="flex flex-col gap-1.5">
-        <div class="h-6 flex items-center justify-between gap-2">
-          <span class="text-xs text-secondary">{{ $t('shiftType.groupView.regenFrom') }}</span>
-          <div class="flex gap-1.5">
-            <n-button
-              v-if="todayAllowed"
-              size="tiny"
-              secondary
-              :type="startStr === today ? 'primary' : 'default'"
-              @click="setDate(today)"
-            >
-              {{ $t('shiftType.groupView.regenToday') }}
-            </n-button>
-            <n-button size="tiny" secondary :type="startStr === minDay ? 'primary' : 'default'" @click="setDate(minDay)">
-              {{ $t('shiftType.groupView.regenMonthStart') }}
-            </n-button>
-          </div>
-        </div>
+      <UIFigField :label="$t('shiftType.groupView.regenFrom')" editing>
         <n-date-picker
           v-model:value="date"
           type="date"
@@ -159,14 +127,14 @@
           :clearable="false"
           :is-date-disabled="disabledDate"
         />
-      </div>
+        <QuickDates class="mt-2" :current="startStr" :today="today" :today-allowed="todayAllowed" :min-day="minDay" @pick="setDate" />
+      </UIFigField>
 
-      <div v-if="!navbat" class="flex flex-col gap-1.5">
-        <div class="h-6 flex items-center text-xs text-secondary">{{ $t('shiftType.groupView.patternStart') }}</div>
+      <UIFigField v-if="!navbat" :label="$t('shiftType.groupView.patternStart')" editing>
         <n-select v-model:value="startIndex" :options="patternOptions" />
-      </div>
+      </UIFigField>
 
-      <div class="-mx-6 px-6 pt-4 border-t border-surface-line flex justify-end gap-3">
+      <div class="flex justify-end gap-3 pt-2">
         <n-button type="error" secondary @click="store.regen.visible = false">
           {{ $t('content.cancel') }}
         </n-button>

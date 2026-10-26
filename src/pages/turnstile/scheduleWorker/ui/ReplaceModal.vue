@@ -1,6 +1,7 @@
 <script setup>
   import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
-  import { RubberSegment, UIModal, UINSelect } from '@/components/index.js'
+  import { RubberSegment, UIFigField, UIModal, UINSelect } from '@/components/index.js'
+  import WorkerCard from './WorkerCard.vue'
   import { RUBBER_THEME } from '@/components/ui/rubberSegmentTheme.js'
   import validationRules from '@/utils/validationRules.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -9,11 +10,9 @@
   import {
     CalendarArrowRight16Regular,
     CalendarDay16Regular,
-    ArrowDown16Regular,
     ArrowRight16Regular,
     Clock16Regular,
     Edit16Regular,
-    Info16Regular,
     WeatherMoon16Regular
   } from '@vicons/fluent'
 
@@ -92,14 +91,6 @@
   const swapDate = computed(() => (store.replacePayload.date ? Utils.timeToZone(store.replacePayload.date) : null))
   const swapDay = computed(() => store.selectedWorker?.days?.find((d) => d.date === swapDate.value))
   const picked = computed(() => store.workerList.find((v) => v.positionId === store.replacePayload.positonId))
-  const initials = (name) =>
-    String(name || '')
-      .split(' ')
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((x) => x[0])
-      .join('')
-      .toUpperCase()
   const swapTime = computed(() => (swapDay.value?.isWorkDay ? `${swapDay.value.startTime}–${swapDay.value.endTime}` : null))
   // Almashtirish turi: bir kunlik o'rinbosarlik yoki tanlangan kundan oy oxirigacha o'ringa boshqa xodim (egasi grafigi o'zgarmaydi).
   const tabTheme = { ...RUBBER_THEME, thumbColor: 'var(--fig-block-bg)', activeTextColor: 'var(--fig-text-primary)' }
@@ -172,7 +163,7 @@
 <template>
   <UIModal
     v-model:visible="store.replaceVisible"
-    :width="500"
+    :width="480"
     :title="
       store.replaceMode === 'edit'
         ? $t('shiftType.groupView.editDay')
@@ -189,26 +180,20 @@
     >
 
       <template v-if="store.replaceMode === 'edit'">
-        <div class="col-span-12 flex flex-col gap-3 text-sm">
-          <div class="flex items-center gap-3 rounded-xl border border-surface-line px-3 py-2.5">
-            <div class="w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold bg-primary/10 text-primary">
-              {{ initials(store.selectedWorker.fullName) }}
-            </div>
-            <div class="min-w-0 flex-1">
-              <div class="font-medium leading-[1.25] line-clamp-2">{{ store.selectedWorker.fullName }}</div>
-              <div class="text-xs text-secondary line-clamp-1">{{ store.selectedWorker.position }}</div>
-            </div>
-          </div>
+        <div class="col-span-12 flex flex-col gap-4 text-sm">
+          <WorkerCard :name="store.selectedWorker.fullName" :position="store.selectedWorker.position" />
 
-          <n-date-picker
-            v-model:value="store.replacePayload.date"
-            type="date"
-            class="w-full"
-            format="dd.MM.yyyy"
-            :is-date-disabled="disabledDate"
-          />
+          <UIFigField :label="$t('content.date')" editing>
+            <n-date-picker
+              v-model:value="store.replacePayload.date"
+              type="date"
+              class="w-full"
+              format="dd.MM.yyyy"
+              :is-date-disabled="disabledDate"
+            />
+          </UIFigField>
 
-          <div class="text-xs text-secondary">{{ $t('shiftType.groupView.dayNewState') }}</div>
+          <UIFigField :label="$t('shiftType.groupView.dayNewState')" editing>
           <div class="grid grid-cols-2 gap-2">
             <button
               v-for="c in shiftChoices"
@@ -235,6 +220,7 @@
               </span>
             </button>
           </div>
+          </UIFigField>
 
           <div v-if="store.dayEdit.choice === 'custom'" class="grid grid-cols-2 gap-3">
             <n-time-picker
@@ -269,7 +255,7 @@
             {{ $t('shiftType.groupView.dayHasSub') }}
           </n-alert>
         </div>
-        <div class="col-span-12 flex justify-end gap-4 mt-5">
+        <div class="col-span-12 flex justify-end gap-3 pt-6">
           <n-button @click="store.replaceVisible = false" type="error" secondary>
             {{ $t('content.cancel') }}
           </n-button>
@@ -293,18 +279,9 @@
 
         <!-- To'liq almashtirish: tanlangan kundan oy oxirigacha o'ringa boshqa xodim -->
         <div v-if="isFull" class="col-span-12 flex flex-col gap-4 text-sm mb-5">
-          <div class="flex items-center gap-3 rounded-xl border border-surface-line p-3">
-            <div class="w-10 h-10 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold bg-primary/10 text-primary">
-              {{ initials(store.selectedWorker.fullName) }}
-            </div>
-            <div class="min-w-0 flex-1">
-              <div class="font-medium leading-[1.3] line-clamp-1">{{ store.selectedWorker.fullName }}</div>
-              <div class="mt-0.5 text-xs text-secondary line-clamp-1">{{ store.selectedWorker.position }}</div>
-            </div>
-          </div>
+          <WorkerCard :name="store.selectedWorker.fullName" :position="store.selectedWorker.position" />
 
-          <div class="flex flex-col gap-1.5">
-            <div class="h-6 flex items-center text-xs text-secondary">{{ $t('shiftType.groupView.transferFrom') }}</div>
+          <UIFigField :label="$t('shiftType.groupView.transferFrom')" editing>
             <n-date-picker
               v-model:value="store.replacePayload.date"
               type="date"
@@ -313,10 +290,9 @@
               :clearable="false"
               :is-date-disabled="disabledDate"
             />
-          </div>
+          </UIFigField>
 
-          <div class="flex flex-col gap-1.5">
-            <div class="h-6 flex items-center text-xs text-secondary">{{ $t('shiftType.groupView.transferNew') }}</div>
+          <UIFigField :label="$t('shiftType.groupView.transferNew')" editing>
             <UINSelect
               @onSearch="onSearch"
               :query="store.workerParams.search"
@@ -330,10 +306,9 @@
               :total-count="store.totalWorker"
               @onScrollEv="store._workers(true)"
             />
-          </div>
+          </UIFigField>
 
-          <div v-if="picked && swapDate" class="flex items-start gap-1.5 text-xs text-secondary">
-            <n-icon size="14" class="mt-px shrink-0"><Info16Regular /></n-icon>
+          <div v-if="picked && swapDate" class="text-xs text-secondary">
             {{
               $t('shiftType.groupView.transferSummary', {
                 name: picked.name,
@@ -344,7 +319,7 @@
             }}
           </div>
         </div>
-        <div v-if="isFull" class="col-span-12 -mx-6 px-6 pt-4 border-t border-surface-line flex justify-end gap-3">
+        <div v-if="isFull" class="col-span-12 flex justify-end gap-3 pt-2">
           <n-button @click="store.replaceVisible = false" type="error" secondary>
             {{ $t('content.cancel') }}
           </n-button>
@@ -353,29 +328,22 @@
           </n-button>
         </div>
 
-        <div v-if="!isFull" class="col-span-12 flex flex-col gap-2 text-sm mb-5">
+        <div v-if="!isFull" class="sub-fields col-span-12 flex flex-col gap-4 text-sm mb-2">
           <!-- 1. Dam oladigan xodim (ish kuni) -->
-          <div class="flex items-center gap-3 rounded-xl border border-surface-line px-3 py-2.5">
-            <div class="w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold bg-fig-red-50 text-fig-text-red">
-              {{ initials(store.selectedWorker.fullName) }}
-            </div>
-            <div class="min-w-0 flex-1">
-              <div class="font-medium leading-[1.25] line-clamp-2">{{ store.selectedWorker.fullName }}</div>
-              <div class="text-xs text-secondary line-clamp-1">{{ store.selectedWorker.position }}</div>
-            </div>
-            <div class="shrink-0 flex flex-col items-end gap-1 text-xs">
+          <WorkerCard :name="store.selectedWorker.fullName" :position="store.selectedWorker.position" tone="danger">
+            <template #aside>
               <span v-if="swapTime" class="text-secondary line-through">{{ swapTime }}</span>
               <span class="px-1.5 py-0.5 rounded font-medium bg-fig-red-50 text-fig-text-red">
                 {{ $t('shiftType.groupView.subAbsentLabel') }}
               </span>
-            </div>
-          </div>
+            </template>
+          </WorkerCard>
 
-          <n-form-item
-            :show-label="false"
+          <UIFigField
+            :label="$t('shiftType.groupView.subDate')"
+            editing
             path="date"
             :rule-path="validationRules.rulesNames.requiredNumberField"
-            class="-mb-4"
           >
             <n-date-picker
               v-model:value="store.replacePayload.date"
@@ -385,21 +353,14 @@
               :placeholder="$t('shiftType.groupView.subDate')"
               :is-date-disabled="disabledDate"
             />
-          </n-form-item>
-
-          <div class="flex items-center gap-2 pl-3 text-xs text-warning font-medium">
-            <span class="w-7 h-7 rounded-full bg-warning/10 flex items-center justify-center">
-              <n-icon size="14"><ArrowDown16Regular /></n-icon>
-            </span>
-            {{ $t('shiftType.groupView.subArrow') }}
-          </div>
+          </UIFigField>
 
           <!-- 2. O'rniga chiqadigan xodim (shu kuni dam) -->
-          <n-form-item
-            :show-label="false"
+          <UIFigField
+            :label="$t('shiftType.groupView.subWorker')"
+            editing
             path="positonId"
             :rule-path="validationRules.rulesNames.requiredNumberField"
-            class="-mb-4"
           >
             <UINSelect
               @onSearch="onSearch"
@@ -414,36 +375,18 @@
               :total-count="store.totalWorker"
               @onScrollEv="store._workers(true)"
             />
-          </n-form-item>
-          <div
-            v-if="picked"
-            class="flex items-center gap-3 rounded-xl border border-success/40 bg-success/5 px-3 py-2.5"
-          >
-            <div class="w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold bg-success/10 text-success">
-              {{ initials(picked.name) }}
-            </div>
-            <div class="min-w-0 flex-1">
-              <div class="font-medium leading-[1.25] line-clamp-2">{{ picked.name }}</div>
-              <div class="text-xs text-secondary line-clamp-1">{{ picked.position }}</div>
-            </div>
-            <span class="shrink-0 px-1.5 py-0.5 rounded text-xs font-medium bg-success/10 text-success">{{ swapTime }}</span>
-          </div>
-          <div
-            v-else
-            class="rounded-xl border border-dashed border-surface-line px-3 py-3 text-xs text-secondary text-center"
-          >
-            {{ $t('shiftType.groupView.subPickHint') }}
-          </div>
+          </UIFigField>
+          <WorkerCard v-if="picked" :name="picked.name" :position="picked.position" tone="success" highlight>
+            <template #aside>
+              <span class="px-1.5 py-0.5 rounded font-medium bg-success/10 text-success">{{ swapTime }}</span>
+            </template>
+          </WorkerCard>
 
-          <div v-if="swapTime" class="flex items-start gap-1.5 text-xs text-secondary mt-1">
-            <n-icon size="14" class="mt-px shrink-0"><Info16Regular /></n-icon>
-            {{ $t('shiftType.groupView.subKeepsPlan') }}
-          </div>
-          <n-alert v-else type="warning" class="mt-1">
+          <n-alert v-if="!swapTime" type="warning" :show-icon="false">
             {{ $t('shiftType.groupView.subNotWorkDay') }}
           </n-alert>
         </div>
-        <div v-if="!isFull" class="col-span-12 flex justify-end gap-4">
+        <div v-if="!isFull" class="col-span-12 flex justify-end gap-3 pt-2">
           <n-button @click="store.replaceVisible = false" type="error" secondary>
             {{ $t('content.cancel') }}
           </n-button>
@@ -455,3 +398,10 @@
     </n-form>
   </UIModal>
 </template>
+
+<style scoped>
+  /* Validatsiya xabari bo'lmasa — maydonlar orasi boshqa modallardagidek. */
+  .sub-fields :deep(.n-form-item-feedback-wrapper:empty) {
+    min-height: 0;
+  }
+</style>

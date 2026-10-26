@@ -1,7 +1,8 @@
 <script setup>
   import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
   import { UIModal } from '@/components/index.js'
-  import { ArrowDown16Regular, CalendarLtr16Regular, Clock16Regular, Info16Regular } from '@vicons/fluent'
+  import { ArrowDown16Regular, CalendarLtr16Regular, Clock16Regular } from '@vicons/fluent'
+  import WorkerCard from './WorkerCard.vue'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -16,14 +17,6 @@
     store._cancelSubstitution(sub.value.id)
   }
   const fmt = (d) => (d ? `${d.slice(8, 10)}.${d.slice(5, 7)}.${d.slice(0, 4)}` : '')
-  const initials = (name) =>
-    String(name || '')
-      .split(' ')
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((x) => x[0])
-      .join('')
-      .toUpperCase()
   // O'rinbosarlik juftligi: kim dam oladi (A) va kim o'rniga chiqadi (B); bosilgan xodim ajratib ko'rsatiladi.
   const pair = computed(() => {
     const s = sub.value
@@ -42,12 +35,9 @@
 </script>
 
 <template>
-  <UIModal v-model:visible="store.changeInfo.visible" :width="sub ? 460 : 420" :title="sub ? $t('shiftType.groupView.subTitle') : $t('shiftType.groupView.changeTitle')">
-    <div class="flex flex-col gap-3 text-sm">
-      <div v-if="!sub" class="rounded-xl border border-surface-line bg-surface-ground/40 px-4 py-2">
-        <div class="font-semibold leading-[1.3]">{{ info.worker }}</div>
-        <div class="text-secondary text-xs">{{ [info.crew, fmt(info.date)].filter(Boolean).join(' · ') }}</div>
-      </div>
+  <UIModal v-model:visible="store.changeInfo.visible" :width="480" :title="sub ? $t('shiftType.groupView.subInfoTitle') : $t('shiftType.groupView.changeTitle')">
+    <div class="flex flex-col gap-4 text-sm">
+      <WorkerCard v-if="!sub" :name="info.worker" :position="[info.crew, fmt(info.date)].filter(Boolean).join(' · ')" />
 
       <template v-if="sub">
         <div class="rounded-xl bg-surface-ground px-3 py-2 text-[13px] leading-[1.4]">
@@ -69,21 +59,13 @@
           :key="key"
           class="contents"
         >
-          <div
-            class="flex items-center gap-3 rounded-xl border px-3 py-2.5"
-            :class="p.self ? 'border-primary/60 bg-primary/5' : 'border-surface-line'"
+          <WorkerCard
+            :name="p.name"
+            :position="p.position"
+            :tone="key === 'absent' ? 'danger' : 'success'"
+            :highlight="p.self"
           >
-            <div
-              class="w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold"
-              :class="key === 'absent' ? 'bg-fig-red-50 text-fig-text-red' : 'bg-success/10 text-success'"
-            >
-              {{ initials(p.name) }}
-            </div>
-            <div class="min-w-0 flex-1">
-              <div class="font-medium leading-[1.25] line-clamp-2">{{ p.name }}</div>
-              <div class="text-xs text-secondary line-clamp-1">{{ p.position }}</div>
-            </div>
-            <div class="shrink-0 flex flex-col items-end gap-1 text-xs">
+            <template #aside>
               <span v-if="key === 'absent' || substituteOwn" class="text-secondary line-through">
                 {{ key === 'absent' ? shiftTime : substituteOwn }}
               </span>
@@ -93,8 +75,8 @@
               >
                 {{ key === 'absent' ? $t('shiftType.groupView.subAbsentLabel') : $t('shiftType.groupView.subWorksLabel') }}
               </span>
-            </div>
-          </div>
+            </template>
+          </WorkerCard>
           <div v-if="key === 'absent'" class="flex items-center gap-2 pl-3 -my-1 text-xs text-warning font-medium">
             <span class="w-7 h-7 rounded-full bg-warning/10 flex items-center justify-center">
               <n-icon size="14"><ArrowDown16Regular /></n-icon>
@@ -103,10 +85,6 @@
           </div>
         </div>
 
-        <div class="flex items-start gap-1.5 text-xs text-secondary">
-          <n-icon size="14" class="mt-px shrink-0"><Info16Regular /></n-icon>
-          {{ $t('shiftType.groupView.subKeepsPlan') }}
-        </div>
       </template>
       <template v-else>
       <div class="grid grid-cols-2 gap-3">
@@ -135,7 +113,7 @@
 
       </template>
 
-      <div class="flex justify-end gap-3 mt-2">
+      <div class="flex justify-end gap-3 pt-2">
         <n-button
           v-if="sub && !store.isPastMonth"
           type="error"

@@ -1,6 +1,7 @@
 <script setup>
   import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
-  import { UIModal, UINSelect } from '@/components/index.js'
+  import { UIFigField, UIModal, UINSelect } from '@/components/index.js'
+  import QuickDates from './QuickDates.vue'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import { cycleOf, toAnchored } from './navbat.js'
@@ -76,8 +77,7 @@
         const list = res.data.data.data.map((v) => ({
           name: Utils.combineFullName(v.worker),
           positionId: v.id,
-          // «Shu grafikda» emas — har doim grafik nomi yoki «Grafiksiz».
-          position: [v.position, scheduleLabel(v.rangeSchedules, null)].filter(Boolean).join(' · '),
+          position: [v.position, scheduleLabel(v.rangeSchedules)].filter(Boolean).join(' · '),
           ranges: v.rangeSchedules ?? []
         }))
         workers.value = append === true ? [...workers.value, ...list] : list
@@ -186,12 +186,11 @@
 <template>
   <UIModal
     v-model:visible="store.addSlot.visible"
-    :width="500"
-    :title="phaseKnown ? $t('shiftType.groupView.addWorkerTitle', { n: store.addSlot.phase }) : $t('shiftType.groupView.addWorker')"
+    :width="480"
+    :title="phaseKnown ? $t('shiftType.groupView.addWorkerTitle', { n: store.addSlot.pos ?? store.addSlot.phase }) : $t('shiftType.groupView.addWorker')"
   >
-    <div class="grid grid-cols-12 gap-y-4">
-      <div class="col-span-12">
-        <div class="text-xs text-secondary mb-1">{{ $t('content.worker') }}</div>
+    <div class="flex flex-col gap-4 text-sm">
+      <UIFigField :label="$t('content.worker')" editing>
         <UINSelect
           @onSearch="onSearch"
           :query="search"
@@ -204,25 +203,9 @@
           :total-count="total"
           @onScrollEv="load(true)"
         />
-      </div>
-      <div class="col-span-12">
-        <div class="h-6 flex items-center justify-between gap-2 mb-1.5">
-          <span class="text-xs text-secondary">{{ $t('shiftType.groupView.workFrom') }}</span>
-          <div class="flex gap-1.5">
-            <n-button
-              v-if="todayAllowed"
-              size="tiny"
-              secondary
-              :type="startStr === today ? 'primary' : 'default'"
-              @click="setDate(today)"
-            >
-              {{ $t('shiftType.groupView.regenToday') }}
-            </n-button>
-            <n-button size="tiny" secondary :type="startStr === minDay ? 'primary' : 'default'" @click="setDate(minDay)">
-              {{ $t('shiftType.groupView.regenMonthStart') }}
-            </n-button>
-          </div>
-        </div>
+      </UIFigField>
+
+      <UIFigField :label="$t('shiftType.groupView.workFrom')" editing>
         <n-date-picker
           v-model:value="date"
           type="date"
@@ -231,15 +214,16 @@
           :clearable="false"
           :is-date-disabled="disabledDate"
         />
-      </div>
-      <div v-if="moveInfo" class="col-span-12">
-        <n-alert type="warning" :show-icon="true">{{ moveInfo }}</n-alert>
-      </div>
-      <div v-if="!phaseKnown" class="col-span-12">
-        <div class="text-xs text-secondary mb-1">{{ $t('shiftType.groupView.patternStart') }}</div>
+        <QuickDates class="mt-2" :current="startStr" :today="today" :today-allowed="todayAllowed" :min-day="minDay" @pick="setDate" />
+      </UIFigField>
+
+      <n-alert v-if="moveInfo" type="warning" :show-icon="false">{{ moveInfo }}</n-alert>
+
+      <UIFigField v-if="!phaseKnown" :label="$t('shiftType.groupView.patternStart')" editing>
         <n-select v-model:value="startIndex" :options="patternOptions" />
-      </div>
-      <div class="col-span-12 flex justify-end gap-4">
+      </UIFigField>
+
+      <div class="flex justify-end gap-3 pt-2">
         <n-button @click="store.addSlot.visible = false" type="error" secondary>
           {{ $t('content.cancel') }}
         </n-button>
