@@ -337,15 +337,15 @@
     </template>
 
     <template #cell-group="{ row }">
-      <n-button size="small" circle>{{ row?.group }}</n-button>
+      <n-button secondary size="small" circle>{{ row?.group }}</n-button>
     </template>
 
     <template #cell-rank="{ row }">
-      <n-button size="small" circle>{{ row?.rank }}</n-button>
+      <n-button secondary size="small" circle>{{ row?.rank }}</n-button>
     </template>
 
     <template #cell-rate="{ row }">
-      <n-button size="small" circle>{{ row?.rate }}</n-button>
+      <n-button secondary size="small" circle>{{ row?.rate }}</n-button>
     </template>
 
     <template #[`cell-position_date`]="{ row }">

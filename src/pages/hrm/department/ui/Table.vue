@@ -187,7 +187,7 @@ import { Delete20Regular, Edit32Regular, Eye16Regular, OpenFolder24Filled } from
     </template>
 
     <template #cell-worker_rate="{ row }">
-      <n-button v-if="row.worker_rate" size="small" circle>{{ row.worker_rate }}</n-button>
+      <n-button secondary v-if="row.worker_rate" size="small" circle>{{ row.worker_rate }}</n-button>
     </template>
 
     <template #cell-comment="{ row }">
