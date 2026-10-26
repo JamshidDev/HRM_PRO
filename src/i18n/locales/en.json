@@ -5355,6 +5355,7 @@
       "group": "Groups",
       "shiftTypes": "Shift types",
       "allGroups": "All groups",
+      "pickTypeHint": "Select a shift type on the left to see its groups",
       "groupWorkers": "Group workers",
       "goToSchedule": "Open duty schedule",
       "customShiftHint": "Custom shifts have no groups — they are filled directly in the duty schedule.",
@@ -5465,7 +5466,12 @@
       "hoursShort": "{n} h",
       "removeWholeMonth": "Whole month",
       "removeHintMonth": "The employee's whole schedule for this month is removed: no plan in the timesheet, not expected at the turnstile, the slot becomes free. Days with facts are kept. They can be added to another shift later.",
-      "addFromMonthStart": "The employee works in this slot from the start of the month ({from})."
+      "addFromMonthStart": "The employee works in this slot from the start of the month ({from}).",
+      "groupRegen": "Regenerate",
+      "groupRegenTitle": "Regenerate group schedule",
+      "groupRegenWorkers": "{n} employees",
+      "groupRegenRange": "Period: {from} – {to} (to month end)",
+      "groupRegenSkipped": "{n} employees with an unknown rotation order will not change"
     },
     "generate": {
       "month": "Month",

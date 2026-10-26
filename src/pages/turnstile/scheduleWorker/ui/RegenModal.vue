@@ -3,7 +3,6 @@
   import { UIModal } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
   import { cycleDays } from './navbat.js'
-  import { Warning16Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -95,7 +94,6 @@
     const d = Utils.timeToZone(ts)
     return !minDay.value || d < minDay.value || d > endDate.value
   }
-  const fmt = (d) => (d ? `${d.slice(8, 10)}.${d.slice(5, 7)}` : '')
 
   const initials = (name) =>
     String(name || '')
@@ -110,55 +108,42 @@
   const setDate = (d) => (date.value = d ? new Date(`${d}T00:00:00`).getTime() : null)
   const startStr = computed(() => (date.value ? Utils.timeToZone(date.value) : null))
 
-  // Tanlangan sanadan 7 kun: hozirgi holat va qayta yaratilgandan keyingisi.
-  const preview = computed(() => {
-    const cd = cycleDays(store.shiftType)
-    const n = cd.length
-    if (!n || !startStr.value || !canSave.value) return []
-    const first = (dayOffset() + 1) % n
-    const short = (d) => (d?.work_status ? String(d.start_time ?? '').slice(0, 5) : t('shiftType.groupView.restShort'))
-    const out = []
-    for (let k = 0; k < 7; k++) {
-      const dt = new Date(`${startStr.value}T00:00:00`)
-      dt.setDate(dt.getDate() + k)
-      const ds = Utils.timeToZone(dt.getTime())
-      if (ds > endDate.value) break
-      const cur = worker.value?.days?.find((x) => x.date === ds)
-      const next = cd[(first + k) % n]
-      const nowLabel = !cur || cur.isEmpty ? '—' : cur.isWorkDay ? cur.startTime : t('shiftType.groupView.restShort')
-      const nextLabel = short(next)
-      out.push({ date: ds, day: ds.slice(8, 10), now: nowLabel, next: nextLabel, diff: nowLabel !== nextLabel })
-    }
-    return out
-  })
 </script>
 
 <template>
-  <UIModal v-model:visible="store.regen.visible" :width="520" :title="$t('shiftType.groupView.regenTitle')">
-    <div v-if="worker" class="flex flex-col gap-3 text-sm">
-      <div class="flex items-center gap-3 rounded-xl border border-surface-line px-3 py-2.5">
-        <div class="w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold bg-primary/10 text-primary">
+  <UIModal v-model:visible="store.regen.visible" :width="480" :title="$t('shiftType.groupView.regenTitle')">
+    <div v-if="worker" class="flex flex-col gap-5 text-sm">
+      <div class="flex items-center gap-3 rounded-xl border border-surface-line p-3">
+        <div
+          class="w-10 h-10 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold bg-primary/10 text-primary"
+        >
           {{ initials(worker.fullName) }}
         </div>
         <div class="min-w-0 flex-1">
-          <div class="font-medium leading-[1.25] line-clamp-2">{{ worker.fullName }}</div>
-          <div class="text-xs text-secondary line-clamp-1">{{ worker.position }}</div>
+          <div class="font-medium leading-[1.3] line-clamp-1" :title="worker.fullName">{{ worker.fullName }}</div>
+          <div class="mt-0.5 text-xs text-secondary line-clamp-1">{{ worker.position }}</div>
         </div>
-        <div class="shrink-0 flex flex-col items-end gap-1 text-[11px]">
-          <span class="px-1.5 py-0.5 rounded bg-surface-ground font-medium">
+        <div class="shrink-0 flex flex-col items-end gap-1 text-[11px] leading-none">
+          <span class="px-2 py-1 rounded-md bg-surface-ground font-medium">
             {{ navbat ? $t('shiftType.groupView.regenNavbat', { n: navbat }) : $t('shiftType.groupView.regenUnknown') }}
           </span>
-          <span v-if="changedCount" class="px-1.5 py-0.5 rounded bg-warning/10 text-warning font-medium">
+          <span v-if="changedCount" class="px-2 py-1 rounded-md bg-warning/10 text-warning font-medium">
             {{ $t('shiftType.groupView.regenChanged', { n: changedCount }) }}
           </span>
         </div>
       </div>
 
-      <div>
-        <div class="flex items-center justify-between mb-1">
+      <div class="flex flex-col gap-1.5">
+        <div class="h-6 flex items-center justify-between gap-2">
           <span class="text-xs text-secondary">{{ $t('shiftType.groupView.regenFrom') }}</span>
           <div class="flex gap-1.5">
-            <n-button v-if="todayAllowed" size="tiny" secondary :type="startStr === today ? 'primary' : 'default'" @click="setDate(today)">
+            <n-button
+              v-if="todayAllowed"
+              size="tiny"
+              secondary
+              :type="startStr === today ? 'primary' : 'default'"
+              @click="setDate(today)"
+            >
               {{ $t('shiftType.groupView.regenToday') }}
             </n-button>
             <n-button size="tiny" secondary :type="startStr === minDay ? 'primary' : 'default'" @click="setDate(minDay)">
@@ -166,43 +151,26 @@
             </n-button>
           </div>
         </div>
-        <n-date-picker v-model:value="date" type="date" class="w-full" format="dd.MM.yyyy" :is-date-disabled="disabledDate" />
+        <n-date-picker
+          v-model:value="date"
+          type="date"
+          class="w-full"
+          format="dd.MM.yyyy"
+          :clearable="false"
+          :is-date-disabled="disabledDate"
+        />
       </div>
 
-      <div v-if="!navbat">
-        <div class="text-xs text-secondary mb-1">{{ $t('shiftType.groupView.patternStart') }}</div>
+      <div v-if="!navbat" class="flex flex-col gap-1.5">
+        <div class="h-6 flex items-center text-xs text-secondary">{{ $t('shiftType.groupView.patternStart') }}</div>
         <n-select v-model:value="startIndex" :options="patternOptions" />
       </div>
 
-      <div v-if="preview.length" class="rounded-xl border border-surface-line p-2">
-        <div class="text-xs text-secondary mb-1.5 px-1">{{ $t('shiftType.groupView.regenPreview') }}</div>
-        <div class="grid grid-cols-[52px_repeat(7,1fr)] gap-1 text-[11px] text-center">
-          <span></span>
-          <span v-for="p in preview" :key="`d${p.date}`" class="text-secondary font-medium">{{ p.day }}</span>
-          <span class="text-left text-secondary self-center">{{ $t('shiftType.groupView.dayNow') }}</span>
-          <span v-for="p in preview" :key="`n${p.date}`" class="rounded py-1 bg-surface-ground">{{ p.now }}</span>
-          <span class="text-left text-secondary self-center">{{ $t('shiftType.groupView.regenNew') }}</span>
-          <span
-            v-for="p in preview"
-            :key="`x${p.date}`"
-            class="rounded py-1 font-medium"
-            :class="p.diff ? 'bg-primary/10 text-primary' : 'bg-surface-ground'"
-          >
-            {{ p.next }}
-          </span>
-        </div>
-      </div>
-
-      <div class="flex items-start gap-1.5 text-xs text-secondary">
-        <n-icon size="14" class="mt-px shrink-0 text-warning"><Warning16Regular /></n-icon>
-        {{ $t('shiftType.groupView.regenHint2', { from: fmt(startStr), to: fmt(endDate) }) }}
-      </div>
-
-      <div class="flex justify-end gap-4 mt-1">
-        <n-button @click="store.regen.visible = false" type="error" secondary>
+      <div class="-mx-6 px-6 pt-4 border-t border-surface-line flex justify-end gap-3">
+        <n-button type="error" secondary @click="store.regen.visible = false">
           {{ $t('content.cancel') }}
         </n-button>
-        <n-button @click="onSave" :loading="saving" :disabled="!canSave" type="primary">
+        <n-button type="primary" :loading="saving" :disabled="!canSave" @click="onSave">
           {{ $t('content.save') }}
         </n-button>
       </div>

@@ -10,6 +10,7 @@
   import ReplaceModal from './ui/ReplaceModal.vue'
   import AddSlotModal from './ui/AddSlotModal.vue'
   import RegenModal from './ui/RegenModal.vue'
+  import GroupRegenModal from './ui/GroupRegenModal.vue'
   import RemoveModal from './ui/RemoveModal.vue'
   import ChangeInfoModal from './ui/ChangeInfoModal.vue'
 
@@ -72,6 +73,7 @@
     <ReplaceModal />
     <AddSlotModal />
     <RegenModal />
+    <GroupRegenModal />
     <RemoveModal />
     <ChangeInfoModal />
   </UIPageContent>
