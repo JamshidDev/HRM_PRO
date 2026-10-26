@@ -69,7 +69,9 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     replaceMode: 'swap',
     // Almashtirishda: true — tanlangan kundan oy oxirigacha o'ringa boshqa xodim.
     transferMode: false,
-    dayEdit: { choice: null, start: null, end: null },
+    // breakStart/breakEnd — «Boshqa vaqt» uchun tushlik (HH:mm), backendga break_start_time/break_end_time;
+    // hasBreak — tushlik belgisi (olinsa tushliksiz kun).
+    dayEdit: { choice: null, start: null, end: null, breakStart: null, breakEnd: null, hasBreak: false },
 
     workerParams: {
       page: 1,

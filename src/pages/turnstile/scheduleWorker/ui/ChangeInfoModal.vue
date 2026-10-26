@@ -95,6 +95,8 @@
         <div class="rounded-xl border border-primary/60 bg-primary/5 px-3 py-2">
           <div class="text-xs text-secondary">{{ $t('shiftType.groupView.actual') }}</div>
           <div class="font-medium mt-1 text-primary">{{ info.actual }}</div>
+          <!-- O'zgartirilgan kunning tushligi — backend kun uchun qaytarganda ko'rinadi -->
+          <div v-if="info.actualLunch" class="text-[11px] text-secondary">{{ $t('shiftType.groupView.lunch', { t: info.actualLunch }) }}</div>
         </div>
       </div>
 

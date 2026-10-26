@@ -1327,6 +1327,8 @@
     "command": {
       "createTitle": "Create order",
       "updateTitle": "Edit order",
+      "fullscreen": "Full screen",
+      "exitFullscreen": "Exit full screen",
       "lastVacation": "View last vacation data",
       "form": {
         "beforeFromDeadline": "Before deadline",
@@ -1338,6 +1340,16 @@
         "viewSameTime": "Review simultaneously",
         "viewDescription": "Approvers review in order or simultaneously",
         "viewOneByOne": "Review in order",
+        "route": {
+          "parallel": "Parallel",
+          "sequential": "In order",
+          "parallelHint": "The document goes to everyone at once — it doesn't matter who sees it first",
+          "sequentialHint": "The document goes step by step: the next person gets it after the previous one signs. Drag to change the order",
+          "roleSign": "Approver",
+          "roleView": "Reviewer",
+          "step": "Step {n}",
+          "drag": "Drag to change the order"
+        },
         "type": "Order type",
         "byContract": "Based on contract No. {n}",
         "confirm": "Approvers",
@@ -5360,7 +5372,9 @@
       "goToSchedule": "Open duty schedule",
       "customShiftHint": "Custom shifts have no groups — they are filled directly in the duty schedule.",
       "noShiftTypes": "No shift types found",
-      "searchByShiftName": "Search by shift name"
+      "searchByShiftName": "Search by shift name",
+      "duplicateWorker": "The same employee is selected in more than one row",
+      "groupEndDate": "Group end date"
     },
     "groupView": {
       "period": "Period",
@@ -5453,6 +5467,7 @@
       "dayNewState": "What should this day be?",
       "dayNow": "Now",
       "dayAfter": "After saving",
+      "dayUnchanged": "This day is already set like this — nothing to change",
       "dayHasSub": "This day has a one-day swap — saving cancels it and restores the partner's plan.",
       "regenFrom": "Regenerate from",
       "regenToday": "From today",
@@ -5466,8 +5481,15 @@
       "removeGone": "Removed {from} – {to}",
       "removeWorkDays": "{n} working days",
       "removeSubs": "{n} one-day swap(s) on these days will be cancelled and partners' plans restored.",
-      "lunch": "Lunch {t}",
+      "lunch": "Break {t}",
+      "lunchHint": "A break mainly for eating. It is not counted as working time.",
       "hoursShort": "{n} h",
+      "lunchLabel": "Break (for meals)",
+      "hasLunch": "Has a break",
+      "lunchStart": "Break from",
+      "lunchEnd": "Break to",
+      "noLunch": "no break",
+      "lunchInvalid": "The break must be inside the working hours (start before end). If there is no break, untick it.",
       "removeWholeMonth": "Whole month",
       "removeHintMonth": "The employee's whole schedule for this month is removed: no plan in the timesheet, not expected at the turnstile, the slot becomes free. Days with facts are kept. They can be added to another shift later.",
       "addFromMonthStart": "The employee works in this slot from the start of the month ({from}).",
@@ -5477,7 +5499,8 @@
       "transferFrom": "From which day",
       "transferNew": "Employee for this slot",
       "transferSummary": "{name} works {from} – {to} on this slot's schedule; their days in another shift for this period are removed. {owner}'s schedule is unchanged — edit it separately if needed.",
-      "otherShiftDay": "On this day — in shift «{name}»"
+      "otherShiftDay": "On this day — in shift «{name}»",
+      "attachTitle": "Assign employees — {name}"
     },
     "generate": {
       "month": "Month",
@@ -5507,7 +5530,9 @@
       "noShift": "No shift",
       "onlyFree": "Only without shift",
       "freeWorkersCount": "Employees without a shift this month: {n}",
-      "workersNotFound": "No employees found"
+      "workersNotFound": "No employees found",
+      "discardTitle": "Close without saving?",
+      "discardConfirm": "{n} assigned employee(s) will not be saved. Close anyway?"
     }
   },
   "publicPage": {

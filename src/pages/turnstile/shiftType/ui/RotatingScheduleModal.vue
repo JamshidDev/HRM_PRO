@@ -160,6 +160,26 @@
   )
 
   const filledCount = computed(() => takenIds.value.length)
+
+  // Yopish (Bekor qilish, ✕, Esc): biriktirilgan xodim bo'lsa — avval so'raymiz, aks holda ish yo'qoladi.
+  const requestClose = () => {
+    if (!filledCount.value || store.saveLoading) {
+      store.rotatingVisible = false
+      return
+    }
+    dialog.warning({
+      title: t('shiftType.generate.discardTitle'),
+      content: t('shiftType.generate.discardConfirm', { n: filledCount.value }),
+      positiveText: t('content.yes'),
+      negativeText: t('content.no'),
+      onPositiveClick: () => {
+        store.rotatingVisible = false
+      }
+    })
+  }
+  const onDrawerShow = (v) => {
+    if (!v) requestClose()
+  }
   const crewCount = computed(() => (daily.value ? 0 : Math.ceil(slots.value.length / crewSize.value)))
 
   const onSave = () => {
@@ -261,7 +281,13 @@
 </script>
 
 <template>
-  <n-drawer v-model:show="store.rotatingVisible" height="100%" placement="bottom" :mask-closable="false">
+  <n-drawer
+    :show="store.rotatingVisible"
+    height="100%"
+    placement="bottom"
+    :mask-closable="false"
+    @update:show="onDrawerShow"
+  >
     <div class="h-full flex flex-col bg-surface-ground">
       <header class="shrink-0 flex flex-wrap items-center gap-x-4 gap-y-2 px-5 py-3 bg-surface-section border-b border-surface-line">
         <span class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
@@ -297,11 +323,11 @@
         </div>
 
         <div class="ml-auto flex items-center gap-3">
-          <n-button secondary type="error" @click="store.rotatingVisible = false">{{ $t('content.cancel') }}</n-button>
+          <n-button secondary @click="requestClose">{{ $t('content.cancel') }}</n-button>
           <n-button type="primary" :loading="store.saveLoading" @click="onSave">
             {{ $t('content.save') }}
           </n-button>
-          <n-button quaternary circle @click="store.rotatingVisible = false">
+          <n-button quaternary circle @click="requestClose">
             <template #icon><n-icon><Dismiss24Regular /></n-icon></template>
           </n-button>
         </div>

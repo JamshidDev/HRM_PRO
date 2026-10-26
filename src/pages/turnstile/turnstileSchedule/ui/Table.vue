@@ -134,7 +134,7 @@
     <n-spin :show="store.workerLoading" class="flex-1 overflow-auto rounded-lg">
       <div ref="scheduleContainer" class="flex flex-col relative overflow-auto rounded-lg">
         <div
-          class="no-selectable-item schedule-header-row flex z-[202] w-fit min-w-full sticky top-0"
+          class="no-selectable-item schedule-header-row flex z-[202] w-fit min-w-full sticky top-0 bg-surface-section"
         >
           <div
             class="font-bold flex justify-center items-center rounded-tl-lg border-r border-t border-l border-b border-surface-line p-2 w-[60px] min-w-[60px] h-[50px] sticky left-0 top-0 z-[20] bg-surface-section flex-shrink-0"

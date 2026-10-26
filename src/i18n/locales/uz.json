@@ -1343,6 +1343,8 @@
     "command": {
       "createTitle": "Buyruq yaratish",
       "updateTitle": "Buyruqni tahrirlash",
+      "fullscreen": "To'liq ekran",
+      "exitFullscreen": "Kichraytirish",
       "lastVacation": "Oxirgi ta'til ma'lumotlarini ko'rish",
       "form": {
         "beforeFromDeadline": "Muddatidan avval",
@@ -1354,6 +1356,16 @@
         "viewSameTime": "Bir vaqtda tanishish",
         "viewDescription": "Kelishuvchilar quyidagi tartibda yoki bir vaqtda ko'rib hujjatni imzolaydilar",
         "viewOneByOne": "Tartib bo'yicha tanishish",
+        "route": {
+          "parallel": "Parallel",
+          "sequential": "Tartibli",
+          "parallelHint": "Hujjat hammaga bir vaqtda yuboriladi — kim oldin yoki keyin ko'rishi muhim emas",
+          "sequentialHint": "Hujjat navbat bilan yuboriladi: oldingi kelishuvchi imzolagach keyingisiga o'tadi. Tartibni sudrab o'zgartiring",
+          "roleSign": "Kelishuvchi",
+          "roleView": "Tanishuvchi",
+          "step": "{n}-navbat",
+          "drag": "Sudrab tartibini o'zgartiring"
+        },
         "type": "Buyruq turi",
         "byContract": "{n} - raqamli shartnoma asosida",
         "confirm": "Kelishuvchilar",
@@ -5409,7 +5421,9 @@
       "goToSchedule": "Navbatchilik grafigini ochish",
       "customShiftHint": "Maxsus smenada guruh bo'lmaydi — u to'g'ridan-to'g'ri Navbatchilik grafigida to'ldiriladi.",
       "noShiftTypes": "Smena turlari topilmadi",
-      "searchByShiftName": "Smena nomi bo'yicha qidirish"
+      "searchByShiftName": "Smena nomi bo'yicha qidirish",
+      "duplicateWorker": "Bitta xodim bir nechta qatorda tanlangan",
+      "groupEndDate": "Guruh tugash sanasi"
     },
     "groupView": {
       "period": "Davr",
@@ -5502,6 +5516,7 @@
       "dayNewState": "Shu kun qanday bo'lsin?",
       "dayNow": "Hozir",
       "dayAfter": "Saqlangandan keyin",
+      "dayUnchanged": "Bu kun allaqachon shunday — o'zgartirish yo'q",
       "dayHasSub": "Bu kunda bir kunlik almashtirish bor — saqlansa u bekor bo'ladi va sherikning rejasi qaytadi.",
       "regenFrom": "Qaysi kundan qayta yaratiladi",
       "regenToday": "Bugundan",
@@ -5515,8 +5530,15 @@
       "removeGone": "{from} – {to} o'chadi",
       "removeWorkDays": "{n} ish kuni",
       "removeSubs": "Bu kunlardagi {n} ta bir kunlik almashtirish bekor bo'ladi, sheriklar rejasi qaytadi.",
-      "lunch": "Tushlik {t}",
+      "lunch": "Tanaffus {t}",
+      "lunchHint": "Asosan ovqatlanish uchun tanaffus. Ish vaqtiga kirmaydi.",
       "hoursShort": "{n} soat",
+      "lunchLabel": "Tanaffus (ovqatlanish uchun)",
+      "hasLunch": "Tanaffus bor",
+      "lunchStart": "Tanaffus boshi",
+      "lunchEnd": "Tanaffus oxiri",
+      "noLunch": "tanaffussiz",
+      "lunchInvalid": "Tanaffus ish vaqti ichida bo'lsin (boshi oxiridan oldin). Tanaffus bo'lmasa, belgini olib tashlang.",
       "removeWholeMonth": "Butun oy",
       "removeHintMonth": "Xodimning shu oydagi butun grafigi o'chadi va u shu oy grafiksiz qoladi: tabelda reja bo'lmaydi, turniketda kutilmaydi, o'rni bo'sh qoladi. Fakt bo'lgan kunlar saqlanadi. Keyin uni boshqa smenaga qo'shish mumkin.",
       "addFromMonthStart": "Xodim oy boshidan ({from}) shu o'rinda ishlaydi.",
@@ -5526,7 +5548,8 @@
       "transferFrom": "Qaysi kundan",
       "transferNew": "O'ringa keladigan xodim",
       "transferSummary": "{name} {from} – {to} kunlari shu o'rin grafigi bo'yicha ishlaydi, uning boshqa smenadagi shu kunlari o'chadi. {owner} grafigi o'zgarmaydi — kerak bo'lsa keyin alohida o'zgartiring.",
-      "otherShiftDay": "Bu kuni «{name}» smenasida"
+      "otherShiftDay": "Bu kuni «{name}» smenasida",
+      "attachTitle": "Xodim biriktirish — {name}"
     },
     "generate": {
       "month": "Oy",
@@ -5556,7 +5579,9 @@
       "noShift": "Smena yo'q",
       "onlyFree": "Faqat smenasizlar",
       "freeWorkersCount": "Shu oyda smenasi yo'q xodimlar: {n}",
-      "workersNotFound": "Xodim topilmadi"
+      "workersNotFound": "Xodim topilmadi",
+      "discardTitle": "Saqlamasdan yopilsinmi?",
+      "discardConfirm": "{n} ta biriktirilgan xodim saqlanmaydi. Baribir yopilsinmi?"
     }
   },
   "lmsCertificate": {
