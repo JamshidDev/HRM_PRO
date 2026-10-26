@@ -174,7 +174,9 @@ export const useShiftTypeStore = defineStore('shiftTypeStore', {
         end_date: Utils.timeToZone(this.notScheduleParams.end_date),
         organizations:
           this.notScheduleParams.organizations.map((v) => v.id).toString() || undefined,
-        department_id: this.notScheduleParams.department_id
+        department_id: this.notScheduleParams.department_id,
+        // Mavjud guruhga biriktirishda — faqat guruh korxonasi xodimlari.
+        priority_group: this.groupId || undefined
       }
       this.notScheduleLoading = true
       $ApiService.shiftTypeService

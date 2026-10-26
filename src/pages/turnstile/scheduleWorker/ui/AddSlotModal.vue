@@ -66,7 +66,9 @@
           per_page: 50,
           search: search.value || undefined,
           start_date: store.monthRange.from,
-          end_date: store.monthRange.to
+          end_date: store.monthRange.to,
+          // Faqat guruh korxonasi xodimlari — grafik xodim korxonasiga bog'lanadi.
+          priority_group: store.params.group
         }
       })
       .then((res) => {
