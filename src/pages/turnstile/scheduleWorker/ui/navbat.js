@@ -65,6 +65,8 @@ export const navbatOf = (days, pattern) => {
   const n = pattern.length
   if (!n || !days?.length) return null
   let i0 = 0
+  // Qisqa (1–2 kunlik) oraliqdagi yagona moslik — faqat boshqa yo'l bilan aniqlanmasa (oy chetidagi kunlar).
+  let short = null
   while (i0 < days.length) {
     if (days[i0].id === null) {
       i0++
@@ -72,17 +74,19 @@ export const navbatOf = (days, pattern) => {
     }
     let len = 0
     while (i0 + len < days.length && days[i0 + len].id !== null && len < n) len++
-    if (len >= Math.min(n, MIN_WINDOW)) {
-      const seq = days.slice(i0, i0 + len).map((d) => sig(d.work_status, d.start_time))
-      const hits = []
-      for (let k = 0; k < n; k++) {
-        if (seq.every((s, j) => pattern[(k + j) % n] === s)) hits.push(k)
-      }
-      if (hits.length === 1) return ((((hits[0] - i0) % n) + n) % n) + 1
+    const seq = days.slice(i0, i0 + len).map((d) => sig(d.work_status, d.start_time))
+    const hits = []
+    for (let k = 0; k < n; k++) {
+      if (seq.every((s, j) => pattern[(k + j) % n] === s)) hits.push(k)
+    }
+    if (hits.length === 1) {
+      const nav = ((((hits[0] - i0) % n) + n) % n) + 1
+      if (len >= Math.min(n, MIN_WINDOW)) return nav
+      if (!short || len > short.len) short = { len, nav }
     }
     i0 += Math.max(len, 1)
   }
-  return bestNavbat(days, pattern)
+  return bestNavbat(days, pattern) ?? short?.nav ?? null
 }
 
 // Aniq moslik topilmasa (grafik qisman o'zgargan) — kunlarning eng ko'pi mos keladigan faza.

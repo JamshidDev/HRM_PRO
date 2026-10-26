@@ -5480,6 +5480,8 @@
       "menuEditDay": "Kunni o'zgartirish",
       "subTitle": "Bir kunga o'rinbosar qo'yish",
       "subInfoTitle": "Bir kunlik o'rinbosarlik",
+      "deleteCrew": "Guruhni o'chirish",
+      "deleteCrewConfirm": "«{name}» xodimsiz — o'chirilsinmi?",
       "subDate": "Kun (xodimning ish kuni)",
       "subWorker": "O'rniga chiqadigan xodim",
       "subHint": "{name} shu kuni dam oladi, tanlangan xodim uning o'rniga {time} da ishlaydi.",

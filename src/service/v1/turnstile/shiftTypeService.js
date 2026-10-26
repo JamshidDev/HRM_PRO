@@ -65,11 +65,16 @@ const _saveSlots = async (payload) => {
     silentSuccess: true
   })
 }
+// Xodimsiz brigadani o'chirish.
+const _deleteCrew = async (payload) => {
+  return await axios.post(`/v1/turnstile/schedule/schedule-slots/delete-crew`, payload.data)
+}
 const _cancelSubstitution = async (payload) => {
   return await axios.delete(`/v1/turnstile/schedule/substitutions/${payload.id}`)
 }
 
 export default {
+  _deleteCrew,
   _saveSlots,
   _types,
   _index,

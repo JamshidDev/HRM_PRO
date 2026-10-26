@@ -11,7 +11,6 @@
     PeopleSwap20Regular
   } from '@vicons/fluent'
   import UIHelper from '@/utils/UIHelper.js'
-  import { UIPagination } from '@components'
   import {
     cycleDays,
     cycleOf,
@@ -38,7 +37,7 @@
     (!store.params.endDate || date <= String(store.params.endDate).slice(0, 10))
 
   watchEffect(() => {
-    const offset = (store.params.page - 1) * store.params.per_page
+    const offset = Math.max((store.paging.from || 1) - 1, 0)
     const pat = pattern.value
     const rows = store.list.map((v) => {
       const fullName = Utils.combineFullName(v)
@@ -183,7 +182,7 @@
   // Guruh (ekipaj) = bitta bo'limda har navbatdan bittadan xodim; yetishmagan navbat — bo'sh o'rin.
   const sections = computed(() => {
     const ws = visibleList.value
-    let num = (store.params.page - 1) * store.params.per_page
+    let num = Math.max((store.paging.from || 1) - 1, 0)
     const numbered = (w, phase) => ({ ...w, phase, number: ++num })
     // Bitta o'rindagi xodimlar (egasi + o'tkazilgan) — bitta raqam, «№»/navbat kataklari birlashadi.
     const sharedSlot = (chain, phase) => {
@@ -388,8 +387,16 @@
       return chain.filter((w) => !subs.includes(w)).map((w) => (w === host ? { ...host, days } : w))
     }
     const out = []
-    for (const c of [...crews.keys()].sort((a, b) => a - b)) {
+    // Sahifada faqat shu sahifadagi brigadalar; xodimsiz brigadalar — oxirgi sahifada (o'chirish mumkin).
+    const monthSet = new Set(store.monthWps)
+    const membersOf = (c) => store.slots.filter((x) => resolveSlot(x.worker_position_id)?.crew === c)
+    const lastPage = store.params.page >= (store.paging.last_page || 1)
+    const crewKeys = [...crews.keys()].sort((a, b) => a - b)
+    const emptyCrew = (c) => !membersOf(c).some((x) => monthSet.has(x.worker_position_id))
+    for (const c of crewKeys) {
       const { fam, navs } = crews.get(c)
+      const deletable = emptyCrew(c) && navs.every((l) => !l.length)
+      if (!navs.some((l) => l.length) && !(deletable && lastPage)) continue
       // Ichki tartib qat'iy navbat bo'yicha — oy almashganda ham o'zgarmaydi.
       const order = navs
         .map((_, i) => i)
@@ -416,10 +423,13 @@
       const depts = [...new Set(workers.filter((w) => !w.empty).map((w) => w.department || '—'))]
       out.push({
         key: `crew-${c}`,
-        title: t('shiftType.groupView.groupN', { n: out.length + 1 }),
+        // Raqam butun guruh bo'yicha — sahifa almashsa ham bir xil.
+        title: t('shiftType.groupView.groupN', { n: crewKeys.indexOf(c) + 1 }),
         department: depts.join(' · '),
         workers,
-        missing: workers.filter((w) => w.empty).length
+        missing: workers.filter((w) => w.empty).length,
+        crew: c,
+        deletable
       })
     }
     // Navbati aniqlanmagan xodim — o'z guruhi, sheriklar o'rni bo'sh (navbat noma'lum: qo'shib bo'lmaydi).
@@ -443,13 +453,6 @@
     }
     return out
   })
-
-  // Katakka birlashtirilgan o'rinbosarlar — umumiy sondan chiqariladi.
-  const hiddenSubs = computed(
-    () =>
-      visibleList.value.length -
-      sections.value.reduce((n, sec) => n + sec.workers.filter((w) => !w.empty).length, 0)
-  )
 
   // Aylanmada har doim ekipaj sarlavhasi; boshqa turlarda — bir nechta blok bo'lsa.
   const showSections = computed(
@@ -750,12 +753,24 @@
             <!-- Guruh: guruh qatorlari uchun bitta vertikal katak. -->
             <div
               v-if="showSections"
-              class="brigade-cell sticky left-[44px] z-[6] w-[36px] min-w-[36px] border-l border-b border-surface-line bg-surface-section flex items-center justify-center flex-shrink-0"
+              class="brigade-cell sticky left-[44px] z-[6] w-[36px] min-w-[36px] border-l border-b border-surface-line bg-surface-section flex flex-col items-center justify-center flex-shrink-0"
               :title="sec.department || null"
             >
               <span class="brigade-label text-xs text-secondary whitespace-nowrap">
                 {{ sec.title }}
               </span>
+              <n-popconfirm v-if="sec.deletable && canReplace" @positive-click="store._deleteCrew(sec.crew, sec.workers.length)">
+                <template #trigger>
+                  <button
+                    type="button"
+                    class="mt-2 w-6 h-6 rounded-md flex items-center justify-center text-fig-text-red hover:bg-fig-red-50"
+                    :title="$t('shiftType.groupView.deleteCrew')"
+                  >
+                    <n-icon size="14"><Delete16Regular /></n-icon>
+                  </button>
+                </template>
+                {{ $t('shiftType.groupView.deleteCrewConfirm', { name: sec.title }) }}
+              </n-popconfirm>
             </div>
             <div class="flex flex-col flex-1 min-w-0">
               <template v-for="(worker, wi) in sec.workers" :key="worker.workerPositionId">
@@ -977,13 +992,19 @@
         </template>
       </div>
 
-      <UIPagination
-        :page="store.params.page"
-        :per_page="store.params.per_page"
-        :total="store.totalItems - hiddenSubs"
-        @change-page="onChangePage"
-        :show-size-picker="false"
-      />
+      <!-- Sahifa brigada chegarasida — sahifalar soni backenddan. -->
+      <div class="flex flex-wrap justify-center lg:justify-between items-center gap-4 py-4 w-full">
+        <span class="font-normal text-textColor2">
+          <span class="font-bold text-primary">{{ store.totalItems }}</span> {{ $t('content.fromTa') }}
+          <span class="font-bold text-primary">{{ store.paging.from }}-{{ store.paging.to }}</span>
+          {{ $t('content.untilShow') }}
+        </span>
+        <n-pagination
+          :page="store.params.page"
+          :page-count="store.paging.last_page || 1"
+          @update:page="(p) => onChangePage({ page: p, per_page: store.params.per_page })"
+        />
+      </div>
     </div>
   </n-spin>
 </template>

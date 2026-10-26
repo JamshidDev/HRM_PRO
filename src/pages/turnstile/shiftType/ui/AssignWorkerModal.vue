@@ -151,7 +151,7 @@
             </div>
             <span
               v-if="item.shifts.length"
-              class="shrink-0 max-w-[40%] inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] leading-none bg-fig-chip-amber text-fig-chip-amber-text"
+              class="shrink-0 max-w-[40%] inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] leading-none bg-fig-chip-brand text-fig-chip-brand-text"
               :title="item.shifts.join(', ')"
             >
               <n-icon size="12" class="shrink-0"><Clock12Regular /></n-icon>

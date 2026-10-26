@@ -15,6 +15,9 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     list: [],
     // Saqlangan o'rinlar: [{worker_position_id, crew, navbat, owner_worker_position_id}].
     slots: [],
+    // Shu oyda guruhdagi barcha lavozimlar va brigada chegarasidagi sahifalash.
+    monthWps: [],
+    paging: { last_page: 1, from: 0, to: 0 },
     loading: false,
     visible: false,
 
@@ -25,7 +28,7 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
       page: 1,
       // Guruh odatda bir necha o'nlab xodimdan iborat — butun guruh bitta sahifada
       // keladi, shunda brauzerdagi qidiruv hamma xodimni qamraydi.
-      per_page: 100,
+      per_page: 50,
       search: null,
       group: null,
       startDate: null,
@@ -187,6 +190,15 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
         })
         .catch(() => {})
     },
+    // Xodimsiz brigadani o'chirish (rejadagi bo'sh brigada — o'rinlar soni kamayadi).
+    _deleteCrew(crew, crewSize) {
+      $ApiService.shiftTypeService
+        ._deleteCrew({ data: { group_id: Number(this.params.group), crew, crew_size: crewSize } })
+        .then(() => {
+          if (!this.slots.some((v) => v.crew === crew)) this.params.slots = Math.max((this.params.slots || 0) - crewSize, 0)
+          this._index()
+        })
+    },
     _cancelSubstitution(id) {
       this.replaceLoading = true
       $ApiService.shiftTypeService
@@ -254,6 +266,9 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
         .then((res) => {
           this.list = res.data.data.data
           this.slots = res.data.data.slots ?? []
+          this.monthWps = res.data.data.month_wps ?? []
+          const { last_page = 1, from = 0, to = 0 } = res.data.data
+          this.paging = { last_page, from, to }
           this.totalItems = res.data.data.total
           // Havolada `type` bo'lmasa — smena turi javobdan olinadi.
           const typeId = res.data.data.schedule_type_id

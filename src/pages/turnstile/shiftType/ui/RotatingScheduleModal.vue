@@ -11,7 +11,7 @@
     slotPhase
   } from '@/pages/turnstile/scheduleWorker/ui/navbat.js'
   import AssignWorkerModal from './AssignWorkerModal.vue'
-  import { Add16Regular, CalendarLtr20Regular, Dismiss16Regular, Dismiss24Regular } from '@vicons/fluent'
+  import { CalendarLtr20Regular, Dismiss16Regular, Dismiss24Regular } from '@vicons/fluent'
   import { useDialog } from 'naive-ui'
   import i18n from '@/i18n/index.js'
 
@@ -94,22 +94,10 @@
         hours,
         crew,
         crewStart: !daily.value && i % crewSize.value === 0,
+        crewRows: Math.min(crewSize.value, slotCount.value - i),
+        pos: daily.value ? null : (i % crewSize.value) + 1,
         crewEnd: !daily.value && ((i + 1) % crewSize.value === 0 || i === slotCount.value - 1)
       }
-    })
-  )
-
-  // Kunlik qoplama: shu kuni ishlaydigan, xodim biriktirilgan o'rinlar / jami ishlaydigan o'rinlar.
-  const coverage = computed(() =>
-    days.value.map((d, di) => {
-      let total = 0
-      let filled = 0
-      for (const r of rows.value) {
-        if (d.out || !r.cells[di].work || r.cells[di].cont) continue
-        total++
-        if (slots.value[r.index].wp) filled++
-      }
-      return { out: d.out, total, filled }
     })
   )
 
@@ -214,9 +202,10 @@
   }
 
   // Virtual ro'yxat: faqat ko'rinib turgan qatorlar chiziladi (minglab o'rinda ham tez).
-  const ROW_H = 52
-  const CREW_H = 28
-  const HEAD_H = 46
+  const ROW_H = 50
+  // Chap ustunlar: N0 (44) + guruh (36) + o'rin (40); kunlik smenada faqat N0.
+  const leftW = computed(() => (daily.value ? 44 : 120))
+  const HEAD_H = 50
   const OVERSCAN = 8
   const scroller = ref(null)
   const scrollTop = ref(0)
@@ -225,10 +214,6 @@
     const out = []
     let top = 0
     for (const r of rows.value) {
-      if (r.crewStart) {
-        out.push({ key: `c${r.crew}`, crew: r.crew, top, h: CREW_H })
-        top += CREW_H
-      }
       out.push({ key: `r${r.index}`, row: r, top, h: ROW_H })
       top += ROW_H
     }
@@ -268,9 +253,6 @@
     })
   }
 
-  // Jadvalning to'liq kengligi: №, xodim, kunlar, soat ustunlari.
-  const tableWidth = computed(() => `${48 + 300 + 52 * days.value.length + 70}px`)
-
   const monthTitle = computed(() => {
     if (!endDate.value) return ''
     const m = dayjs(endDate.value)
@@ -296,15 +278,19 @@
         </div>
 
         <div class="flex flex-wrap items-center gap-2 text-xs">
-          <span v-if="!daily" class="px-2.5 py-1 rounded-full bg-primary text-white font-medium">
+          <span v-if="!daily" class="px-2.5 py-1 rounded-full bg-fig-chip-brand text-fig-chip-brand-text font-medium">
             {{ $t('shiftType.groupView.crewSize', { n: crewSize }) }}
           </span>
-          <span v-if="!daily" class="px-2.5 py-1 rounded-full bg-surface-ground font-medium">
+          <span v-if="!daily" class="px-2.5 py-1 rounded-full bg-fig-chip-indigo text-fig-chip-indigo-text font-medium">
             {{ $t('shiftType.generate.crewsN', { n: crewCount }) }}
           </span>
           <span
             class="px-2.5 py-1 rounded-full font-medium"
-            :class="filledCount === slots.length ? 'bg-success/10 text-success' : 'bg-warning/10 text-warning'"
+            :class="
+              filledCount === slots.length
+                ? 'bg-fig-chip-green text-fig-chip-green-text'
+                : 'bg-fig-chip-amber text-fig-chip-amber-text'
+            "
           >
             {{ $t('shiftType.generate.filled', { filled: filledCount, total: slots.length }) }}
           </span>
@@ -329,36 +315,60 @@
             @scroll.passive="onScroll"
           >
             <div class="flex w-fit min-w-full sticky top-0 z-[10] bg-surface-section">
-              <div class="cell-h w-[48px] min-w-[48px] sticky left-0 z-[20]">№</div>
-              <div class="cell-h w-[300px] min-w-[300px] sticky left-[48px] z-[20] justify-start! px-3">
+              <div class="cell-h w-[44px] min-w-[44px] sticky left-0 z-[20]">N0</div>
+              <template v-if="!daily">
+                <div class="cell-h w-[36px] min-w-[36px] sticky left-[44px] z-[20]"></div>
+                <div class="cell-h w-[40px] min-w-[40px] sticky left-[80px] z-[20]"></div>
+              </template>
+              <div
+                class="cell-h w-[340px] min-w-[340px] sticky z-[20] justify-start! px-3 font-medium"
+                :style="{ left: leftW + 'px' }"
+              >
                 {{ $t('content.worker') }}
               </div>
               <div
                 v-for="d in days"
                 :key="d.date"
-                class="cell-h w-[52px] min-w-[52px] flex-col"
-                :class="{ 'text-error': d.off, 'opacity-40': d.out }"
+                class="cell-h w-[60px] min-w-[60px] flex-col"
+                :class="{ 'opacity-40': d.out }"
+                :style="{ background: d.off ? 'var(--schedule-weekend-bg)' : 'var(--schedule-weekday-bg)' }"
               >
                 <span class="font-bold">{{ d.day }}</span>
-                <span class="text-[10px]">{{ store.shortNameOfWeek[d.weekDay] }}</span>
+                <span>{{ store.shortNameOfWeek[d.weekDay] }}</span>
               </div>
-              <div class="cell-h w-[70px] min-w-[70px] sticky right-0 z-[20]">{{ $t('schedule.form.workTime') }}</div>
+              <div class="cell-h w-[80px] min-w-[80px] sticky right-0 z-[20]">{{ $t('schedule.form.workTime') }}</div>
             </div>
 
             <div :style="{ height: `${visible.before}px` }" />
             <template v-for="it in visible.list" :key="it.key">
-              <div
-                v-if="!it.row"
-                class="flex min-w-full bg-surface-ground text-xs font-semibold text-secondary h-[28px] items-center"
-                :style="{ width: tableWidth }"
-              >
-                <span class="sticky left-0 px-3">{{ $t('shiftType.generate.crewN', { n: it.crew + 1 }) }}</span>
-              </div>
-              <div v-else class="flex w-fit min-w-full" :class="{ 'crew-end': it.row.crewEnd }">
-                <div class="cell w-[48px] min-w-[48px] sticky left-0 z-[5] bg-surface-section text-secondary">
+              <div class="flex w-fit min-w-full" :class="{ 'crew-end': it.row.crewEnd }">
+                <div class="cell w-[44px] min-w-[44px] sticky left-0 z-[5] bg-surface-section text-secondary font-medium">
                   {{ it.row.index + 1 }}
                 </div>
-                <div class="cell w-[300px] min-w-[300px] sticky left-[48px] z-[5] bg-surface-section px-2 justify-start!">
+                <template v-if="!daily">
+                  <!-- Guruh: brigada qatorlari uchun bitta vertikal katak (sahifadagi kabi). -->
+                  <div
+                    class="crew-cell w-[36px] min-w-[36px] sticky left-[44px] bg-surface-section"
+                    :class="it.row.crewStart ? 'z-[7]' : 'z-[6]'"
+                  >
+                    <div
+                      v-if="it.row.crewStart"
+                      class="absolute inset-x-0 top-0 flex items-center justify-center"
+                      :style="{ height: `${ROW_H * it.row.crewRows}px` }"
+                    >
+                      <span class="crew-label text-xs text-secondary whitespace-nowrap">
+                        {{ $t('shiftType.groupView.groupN', { n: it.row.crew + 1 }) }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="cell w-[40px] min-w-[40px] sticky left-[80px] z-[5] bg-surface-section text-secondary font-medium">
+                    {{ it.row.pos }}
+                  </div>
+                </template>
+                <div
+                  class="cell w-[340px] min-w-[340px] sticky z-[5] bg-surface-section px-3 justify-start!"
+                  :style="{ left: leftW + 'px' }"
+                >
                   <div v-if="slots[it.row.index].worker" class="group w-full flex items-center gap-1 min-w-0">
                     <button
                       type="button"
@@ -379,69 +389,37 @@
                       <template #icon><n-icon><Dismiss16Regular /></n-icon></template>
                     </n-button>
                   </div>
-                  <button
-                    v-else
-                    type="button"
-                    class="w-full h-[36px] flex items-center justify-center gap-1.5 rounded-lg border border-dashed text-sm transition-colors"
-                    :class="
-                      slots[it.row.index].extra
-                        ? 'border-surface-line text-secondary hover:border-primary/50 hover:text-primary'
-                        : 'border-primary/40 text-primary hover:bg-primary/5'
-                    "
-                    @click="openAssign(it.row)"
-                  >
-                    <n-icon size="16"><Add16Regular /></n-icon>
-                    <span>{{ $t('shiftType.generate.assign') }}</span>
-                    <span v-if="slots[it.row.index].extra" class="text-xs opacity-70">· {{ $t('shiftType.generate.emptySlot') }}</span>
-                  </button>
+                  <n-button v-else size="tiny" dashed @click="openAssign(it.row)">
+                    + {{ $t('shiftType.groupView.addWorker') }}
+                  </n-button>
                 </div>
                 <div
                   v-for="c in it.row.cells"
                   :key="c.date"
-                  class="cell w-[52px] min-w-[52px] flex-col text-[10px] leading-[1.15]"
-                  :class="
-                    c.out
-                      ? 'out'
-                      : c.work
-                        ? slots[it.row.index].wp
-                          ? 'bg-primary/15 text-primary'
-                          : slots[it.row.index].extra
-                            ? 'empty-work text-secondary'
-                            : 'bg-primary/5 text-primary/70'
-                        : 'text-secondary/60'
-                  "
+                  class="cell w-[60px] min-w-[60px] relative text-xs text-secondary bg-surface-section"
+                  :class="{ out: c.out }"
                 >
                   <template v-if="c.out" />
                   <template v-else-if="c.work">
-                    <span class="font-medium">{{ c.start }}</span>
-                    <span>{{ c.end }}</span>
+                    <div class="flex flex-col items-center leading-[1.2] pt-2">
+                      <span>{{ c.start }}</span>
+                      <span>{{ c.end }}</span>
+                    </div>
+                    <span
+                      v-if="!c.cont"
+                      class="absolute top-0 left-0 min-w-[16px] h-[16px] px-0.5 bg-secondary/80 text-white rounded leading-[16px] text-center"
+                    >
+                      {{ Math.floor(c.minutes / 60) }}
+                    </span>
                   </template>
-                  <span v-else>{{ $t('shiftType.groupView.rest') }}</span>
+                  <span v-else class="text-success/80 font-medium">{{ $t('shiftType.groupView.rest') }}</span>
                 </div>
-                <div class="cell w-[70px] min-w-[70px] sticky right-0 z-[5] bg-surface-section font-medium">
+                <div class="cell w-[80px] min-w-[80px] sticky right-0 z-[5] bg-surface-section font-medium text-textColor1">
                   {{ it.row.hours }}
                 </div>
               </div>
             </template>
             <div :style="{ height: `${visible.after}px` }" />
-
-            <div class="flex w-fit min-w-full sticky bottom-0 z-[10] bg-surface-section border-t-2 border-surface-line">
-              <div class="cell w-[348px] min-w-[348px] sticky left-0 z-[20] bg-surface-section justify-start! px-3 text-xs font-semibold text-secondary">
-                {{ $t('shiftType.generate.coverage') }}
-              </div>
-              <div
-                v-for="(c, i) in coverage"
-                :key="i"
-                class="cell w-[52px] min-w-[52px] flex-col leading-[1.1] font-semibold"
-                :class="c.out ? 'out' : c.filled < c.total ? 'text-warning' : 'text-success'"
-              >
-                <template v-if="!c.out">
-                  <span class="text-xs">{{ c.filled }}</span>
-                  <span class="text-[10px] opacity-70">/ {{ c.total }}</span>
-                </template>
-              </div>
-              <div class="cell w-[70px] min-w-[70px] sticky right-0 z-[20] bg-surface-section"></div>
-            </div>
           </div>
         </div>
       </div>
@@ -470,17 +448,22 @@
     flex-shrink: 0;
   }
   .cell-h {
-    height: 46px;
+    height: 50px;
     font-size: 12px;
     color: var(--color-secondary);
     background: var(--color-surface-section);
   }
   .cell {
-    height: 52px;
+    height: 50px;
   }
-  .empty-work {
-    outline: 1px dashed color-mix(in srgb, var(--color-secondary) 45%, transparent);
-    outline-offset: -4px;
+  .crew-cell {
+    height: 50px;
+    flex-shrink: 0;
+    border-right: 1px solid var(--color-surface-line);
+  }
+  .crew-label {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
   }
   .out {
     background: repeating-linear-gradient(
@@ -489,7 +472,8 @@
       color-mix(in srgb, var(--color-secondary) 12%, transparent) 4px 6px
     );
   }
+  /* Brigada chegarasi — guruh sahifasidagi kabi. */
   .crew-end > div {
-    box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--color-primary) 45%, transparent);
+    box-shadow: inset 0 -2px 0 var(--color-surface-line);
   }
 </style>

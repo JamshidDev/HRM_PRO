@@ -5431,6 +5431,8 @@
       "menuEditDay": "Change day",
       "subTitle": "One-day substitute",
       "subInfoTitle": "One-day substitution",
+      "deleteCrew": "Delete group",
+      "deleteCrewConfirm": "«{name}» has no employees — delete it?",
       "subDate": "Day (employee's working day)",
       "subWorker": "Substitute employee",
       "subHint": "{name} rests on this day; the selected employee works instead at {time}.",
