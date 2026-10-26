@@ -264,7 +264,7 @@
     // Generatsiyadagi o'rinlar — xodim biriktirilmagan brigadalar ham bo'sh o'rin bo'lib ko'rinadi.
     const planned = Math.ceil((store.params.slots || 0) / crewSize)
     // Faqat hali o'rin saqlanmagan (yangi, bo'sh) guruhda — keyin bo'shagan brigada o'chiriladi.
-    if (!store.slots.length) for (let c = 1; c <= planned; c++) crewOf(c, 0)
+    if (!store.slots.length && !store.maxCrew) for (let c = 1; c <= planned; c++) crewOf(c, 0)
     const unslotted = []
     const unknown = []
     for (const w of ws) {
@@ -320,7 +320,7 @@
       return chains
     }
     const newSlots = []
-    let nextCrew = Math.max(0, ...crews.keys())
+    let nextCrew = Math.max(store.maxCrew || 0, ...crews.keys())
     const byFam = new Map()
     for (const u of fresh) {
       if (!byFam.has(famOf(u.k)))

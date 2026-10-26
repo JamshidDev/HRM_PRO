@@ -17,6 +17,8 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     slots: [],
     // Shu oyda guruhdagi barcha lavozimlar va brigada chegarasidagi sahifalash.
     monthWps: [],
+    // Guruhdagi eng katta brigada raqami (tabelchi ko'rmaydiganlari ham) — yangi brigada to'qnashmasin.
+    maxCrew: 0,
     paging: { last_page: 1, from: 0, to: 0 },
     loading: false,
     visible: false,
@@ -267,6 +269,7 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
           this.list = res.data.data.data
           this.slots = res.data.data.slots ?? []
           this.monthWps = res.data.data.month_wps ?? []
+          this.maxCrew = res.data.data.max_crew ?? 0
           const { last_page = 1, from = 0, to = 0 } = res.data.data
           this.paging = { last_page, from, to }
           this.totalItems = res.data.data.total
