@@ -32,6 +32,13 @@
     filterEvent()
   }
 
+  // Tab (oy / korxona bo'yicha) o'zgarganda tegishli ro'yxatni qayta yuklaymiz —
+  // ilgari tab almashganda hech narsa yuklanmasdi (filter «ishlamayotgandek»).
+  const onTabChange = (v) => {
+    store.activeTab = v
+    filterEvent()
+  }
+
   const filterCount = computed(() => {
     return Number(Boolean(store.params.organizations.length))
   })
@@ -68,7 +75,8 @@
       </div>
       <n-select
         class="w-full! md:w-[200px]!"
-        v-model:value="store.activeTab"
+        :value="store.activeTab"
+        @update:value="onTabChange"
         :options="store.tabs"
         label-field="name"
         value-field="id"

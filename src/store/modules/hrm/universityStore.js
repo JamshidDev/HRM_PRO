@@ -72,11 +72,8 @@ export const useUniversityStore = defineStore('universityStore', {
     },
     _update(data) {
       this.saveLoading = true
-      const params = {
-        _method: 'PUT'
-      }
       $ApiService.universityService
-        ._update({ data, id: this.elementId, params })
+        ._update({ data, id: this.elementId })
         .then((res) => {
           this.visible = false
           this._index()

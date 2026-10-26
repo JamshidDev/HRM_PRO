@@ -82,7 +82,7 @@ export const useMedStore = defineStore('medStore', {
     _update(data) {
       this.saveLoading = true
       $ApiService.medService
-        ._update({ data, id: this.elementId, params: { _method: 'PUT' } })
+        ._update({ data, id: this.elementId })
         .then((res) => {
           this.visible = false
           this._index()

@@ -7,6 +7,7 @@ import { reportApiError } from '@/utils/errorReporter.js'
 import { getDeviceUuid } from '@/utils/webPush.js'
 import { showAlert, alertFromAxiosError, isToastOnlyPage } from '@/components/notify/alertDialog.js'
 import { endSessionIfForeign, isSessionEnded, sessionSignal } from '@/features/sessionEnded/sessionEnded.js'
+import { dpopProof, syncServerClock } from '@/service/dpop.js'
 const apiUrl = import.meta.env.VITE_API_URL
 console.log(apiUrl)
 const { t } = i18n.global
@@ -23,14 +24,16 @@ const isStaleTokenRequest = (config) => {
   return sent !== (localStorage.getItem(useAppSetting.tokenKey) || '')
 }
 
-instance.interceptors.request.use(function (config) {
+instance.interceptors.request.use(async function (config) {
   // Seans tugagan — alert turgan paytda hech qanday so'rov ketmaydi.
   if (isSessionEnded()) return Promise.reject(new axios.CanceledError('session_ended'))
   // Chaqiruvchining o'z signali bo'lsa ikkalasi birlashtiriladi (eski brauzerda — o'zinikini saqlaymiz).
   if (!config.signal) config.signal = sessionSignal()
   else if (typeof AbortSignal.any === 'function')
     config.signal = AbortSignal.any([config.signal, sessionSignal()])
-  let token = localStorage.getItem(useAppSetting.tokenKey) || null
+  // Token hali saqlanmagan bo'lsa (masalan, offerta) — chaqiruvchi bergan Authorization tokeni imzolanadi.
+  const explicit = String(config.headers['Authorization'] || '').replace(/^Bearer\s+/i, '') || null
+  let token = localStorage.getItem(useAppSetting.tokenKey) || explicit
   config.headers['Accept-Language'] =
     localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
   config.headers['Access-Control-Allow-Origin'] = '*'
@@ -46,11 +49,18 @@ instance.interceptors.request.use(function (config) {
   // Qurilma id — logout shu header orqali push tokenini o'chiradi.
   config.headers['X-Device-UUID'] = getDeviceUuid()
 
+  // Token shu brauzer kalitiga bog'lanadi — URL (query bilan) va vaqt imzolanadi.
+  if (token) {
+    const proof = await dpopProof(config.method, instance.getUri(config), token).catch(() => null)
+    if (proof) config.headers['DPoP'] = proof
+  }
+
   return config
 })
 
 instance.interceptors.response.use(
   (response) => {
+    syncServerClock(response.headers?.date)
     if (
       [Utils.methodTypes.PUT, Utils.methodTypes.POST, Utils.methodTypes.DELETE].includes(
         response.config.method
@@ -70,6 +80,22 @@ instance.interceptors.response.use(
     return Promise.resolve(response)
   },
   async (error) => {
+    // DPoP vaqtinchalik rad etishi (soat farqi yoki tarmoq qayta yuborgan nusxa) — seans tugamaydi, yangi imzo bilan bir marta qayta.
+    // Kodlar: 4171 — soat farqi, 4108 — takroriy nusxa (super-power/api-security-dpop.md); eski `reason` ham tushuniladi.
+    const data = error.response?.status === 401 ? error.response?.data || {} : {}
+    const clockSkew = data.code === 4171 || data.reason === 'iat'
+    const replay = data.code === 4108 || data.reason === 'replay'
+    if (clockSkew || replay) {
+      syncServerClock(error.response.headers?.date)
+      const method = String(error.config?.method || 'get').toLowerCase()
+      // Replay'da birinchi nusxa bajarilgan — faqat GET/HEAD qayta yuboriladi (POST ikki marta bajarilmasin).
+      if (!error.config.__dpopRetried && (clockSkew || method === 'get' || method === 'head')) {
+        error.config.__dpopRetried = true
+        return instance(error.config)
+      }
+      error.__notified = true
+      return Promise.reject(error)
+    }
     // Eski token bilan ketgan so'rov (shu brauzerda qayta kirildi) — yangi token bilan bir marta qayta yuboriladi.
     if (error.response?.status === 401 && isStaleTokenRequest(error.config)) {
       if (!error.config.__staleRetried && localStorage.getItem(useAppSetting.tokenKey)) {
@@ -123,7 +149,9 @@ instance.interceptors.response.use(
       }
 
       if (!error.response.request.responseURL.includes(AppPaths.Profile)) {
-        $Toast.error(error.response.data.message)
+        // Raqamli kod xabarga qo'shiladi — foydalanuvchi yuborsa sababni kod bo'yicha topamiz.
+        const code = typeof error.response.data?.code === 'number' ? ` (${error.response.data.code})` : ''
+        $Toast.error(`${error.response.data.message}${code}`)
       }
       isLoggingOut = true
       localStorage.removeItem(useAppSetting.tokenKey)

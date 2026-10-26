@@ -29,6 +29,12 @@ export const useLiveChat = () => {
     showProfile.value = false
   }
 
+  // Suhbat panelini butun oynaga yoyish (sarlavhadagi tugma, Esc — chiqish).
+  const fullscreen = ref(false)
+  const setFullscreen = (value) => {
+    fullscreen.value = !!value
+  }
+
   const meId = computed(() => store.meId)
   const userList = computed(() => store.sortedConversations)
   const selectedUserId = computed(() => store.selectedId)
@@ -83,6 +89,8 @@ export const useLiveChat = () => {
     setSearch,
     selectUser,
     closeChat,
+    fullscreen,
+    setFullscreen,
     openWithUser: (user) => {
       replyMessage.value = null
       return store.openWithUser(user)

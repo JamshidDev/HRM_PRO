@@ -22,6 +22,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     structureCheck: [],
     payload: {
       department_id: null,
+      name: null,
       geo_type: false,
       lat: null,
       lng: null,
@@ -81,6 +82,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.saveLoading = true
       const data = {
         department_id: this.payload.department_id,
+        name: this.payload.name?.trim() || null,
         geo_type: this.payload.geo_type,
         lat: this.payload.lat,
         lng: this.payload.lng,
@@ -106,6 +108,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.saveLoading = true
       const data = {
         department_id: this.payload.department_id,
+        name: this.payload.name?.trim() || null,
         geo_type: this.payload.geo_type,
         lat: this.payload.lat,
         lng: this.payload.lng,
@@ -188,6 +191,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
           const data = res.data.data
           if (data) {
             this.payload.department_id = data.department_id
+            this.payload.name = data.name ?? null
             this.payload.geo_type = data.geo_type
             this.payload.lat = data.lat
             this.payload.lng = data.lng
@@ -214,6 +218,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.elementId = null
       this.selectedDepartment = null
       this.payload.department_id = null
+      this.payload.name = null
       this.payload.geo_type = false
       this.payload.lat = null
       this.payload.lng = null

@@ -4,6 +4,7 @@
   import i18n from '@/i18n/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
+  import { crewSizeOf } from '@/pages/turnstile/scheduleWorker/ui/navbat.js'
   import {
     CheckmarkCircle32Regular,
     Delete20Regular,
@@ -31,6 +32,8 @@
         name: row.name,
         start: row.start_date,
         end: row.end_date,
+        // Generatsiyadagi o'rinlar soni — bo'sh o'rinlar ham ko'rinsin.
+        slots: row.slots_count || undefined,
         type: row.schedule_type?.id || store.groupParams.schedule_type || undefined,
         // Ro'yxatda tanlangan oy — guruh shu oyda ochiladi.
         month:
@@ -60,15 +63,34 @@
     store._deleteGroup()
   }
 
+  // Biriktirish faqat bitta oyga: ro'yxatda tanlangan oy ∩ guruh davri, joriy oydan oldin emas.
+  const attachRange = (row) => {
+    const pad = (n) => String(n).padStart(2, '0')
+    const now = new Date()
+    const y = store.groupParams.year || now.getFullYear()
+    const m = store.groupParams.month || now.getMonth() + 1
+    const monthFrom = `${y}-${pad(m)}-01`
+    const monthTo = `${y}-${pad(m)}-${pad(new Date(y, m, 0).getDate())}`
+    const thisMonth = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-01`
+    const from = [monthFrom, String(row.start_date).slice(0, 10), thisMonth].sort().pop()
+    const to = [monthTo, String(row.end_date).slice(0, 10)].sort()[0]
+    return from <= to ? { from, to } : null
+  }
+
   const onAttachWorker = (row) => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
+    const range = attachRange(row)
+    if (!range) {
+      $Alert.warning(t('shiftType.groupView.pastMonth'))
+      return
+    }
     store.groupId = row.id
     store.elementId = row.schedule_type?.id
-    store.notScheduleParams.start_date = row.start_date
-    store.notScheduleParams.end_date = row.end_date
+    store._resetAttachFilters()
+    store.notScheduleParams.start_date = range.from
+    store.notScheduleParams.end_date = range.to
     store.notScheduleParams.page = 1
     store._notScheduleWorker()
-    store.selectedWorkers = []
     store.notScheduleVisible = true
   }
 
@@ -89,16 +111,27 @@
       width: 90
     },
     {
-      key: 'start_date',
-      title: t('content.from'),
-      width: 120
-    },
-    {
-      key: 'end_date',
-      title: t('content.to'),
-      width: 120
+      key: 'month',
+      title: t('content.month'),
+      width: 190
     }
   ])
+
+  // Smena kartasidagi kabi «N kishilik» — smena turi chap ro'yxatdan olinadi.
+  const crewOf = (row) => crewSizeOf(store.list.find((v) => v.id === row.schedule_type?.id))
+  const MONTH_KEYS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
+  // To'liq oy (1 → oxirgi kun) bo'lsa oy nomi, aks holda davr sanalari.
+  const groupMonth = (row) => {
+    const start = String(row.start_date || '').slice(0, 10)
+    const end = String(row.end_date || '').slice(0, 10)
+    const [y, m] = start.split('-').map(Number)
+    if (!y || !m) return '—'
+    const lastDay = new Date(y, m, 0).getDate()
+    const fullMonth = start.endsWith('-01') && end === `${start.slice(0, 8)}${lastDay}`
+    return fullMonth
+      ? t(`month.${MONTH_KEYS[m - 1]}`)
+      : `${Utils.timeOnlyDate(row.start_date)} – ${Utils.timeOnlyDate(row.end_date)}`
+  }
 
   const actions = computed(() => [
     {
@@ -145,14 +178,20 @@
   >
     <template #cell-name="{ row }">
       <div @click="onViewWorkers(row)" class="cursor-pointer">
-        <div class="hover:text-primary leading-[1.2] font-medium">
-          {{ row.name }}
+        <div class="hover:text-primary leading-[1.25] font-medium line-clamp-2">
+          {{ row.schedule_type?.name || row.name }}
         </div>
-        <div class="hover:text-primary line-clamp-1 text-xs text-secondary">
-          <n-button class="!h-[16px] !font-medium" size="tiny" type="primary" secondary>
-            {{ row.schedule_type?.type?.name }}
-          </n-button>
-          {{ row.schedule_type?.name }}
+        <div class="mt-1 flex items-center gap-1.5 text-[11px] leading-none text-secondary">
+          <span v-if="row.schedule_type?.type?.name" class="px-1.5 py-0.5 rounded bg-surface-ground">
+            {{ row.schedule_type.type.name }}
+          </span>
+          <span
+            v-if="crewOf(row)"
+            class="px-1.5 py-0.5 rounded bg-surface-ground"
+            :title="t('shiftType.groupView.crewSizeHint')"
+          >
+            {{ t('shiftType.groupView.crewSize', { n: crewOf(row) }) }}
+          </span>
         </div>
       </div>
     </template>
@@ -164,12 +203,8 @@
       <UIBadge :show-icon="false" :type="Utils.colorTypes.secondary" :label="String(row.workers_count)" />
     </template>
 
-    <template #cell-start_date="{ row }">
-      {{ Utils.timeOnlyDate(row.start_date) }}
-    </template>
-
-    <template #cell-end_date="{ row }">
-      {{ Utils.timeOnlyDate(row.end_date) }}
+    <template #cell-month="{ row }">
+      <span class="whitespace-nowrap">{{ groupMonth(row) }}</span>
     </template>
   </UITable>
 </template>

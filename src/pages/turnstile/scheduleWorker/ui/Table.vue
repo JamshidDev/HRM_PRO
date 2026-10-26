@@ -2,7 +2,14 @@
   import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
   import SearchElement from '@/pages/turnstile/schedule/ui/SearchElement.vue'
   import Utils from '@/utils/Utils.js'
-  import { MoreHorizontal32Filled } from '@vicons/fluent'
+  import {
+    ArrowReset20Regular,
+    CalendarEdit16Regular,
+    Delete16Regular,
+    MoreHorizontal32Filled,
+    PeopleSwap20Regular
+  } from '@vicons/fluent'
+  import UIHelper from '@/utils/UIHelper.js'
   import { UIPagination } from '@components'
   import { cycleDays, cycleOf, isRotating, navbatOf, patternOf } from './navbat.js'
   import i18n from '@/i18n/index.js'
@@ -40,12 +47,20 @@
           startTime: e.start_time || null,
           endTime: e.end_time || null,
           workTime: e.daily_minutes,
+          // Kunning o'z tushligi. BACKEND: schedule-workers → days[] har bir kunda
+          // `break_start_time` / `break_end_time` ("HH:mm" yoki null) qaytarishi kerak —
+          // docs/api/turnstile-day-break.md. Hozircha kelmaydi → null, UI smena turidagi tushlikni ko'rsatadi.
+          breakStart: e.break_start_time ? String(e.break_start_time).slice(0, 5) : null,
+          breakEnd: e.break_end_time ? String(e.break_end_time).slice(0, 5) : null,
           isEmpty: e.id === null,
           inPeriod: inPeriod(e.date),
+          // Bir kunlik o'rinbosarlik (backend asl rejani qaytaradi).
+          substitution: e.substitution ?? null,
           // Naqshdan farqli kun — almashtirilgan.
           changed:
             !!nav &&
             e.id !== null &&
+            !e.substitution &&
             pat[(nav - 1 + i) % pat.length] !== (e.work_status ? `W${(e.start_time || '').slice(0, 5)}` : '-')
         }))
       }
@@ -82,7 +97,11 @@
     const cd = cycleDays(store.shiftType)
     const { crewSize } = cycleOf(store.shiftType)
     const n = cd.length
-    const dates = store.list[0]?.days?.map((d) => d.date) ?? []
+    // Xodimsiz guruhda sanalar oy kunlaridan olinadi.
+    const monthStart = store.monthRange.from
+    const dates =
+      store.list[0]?.days?.map((d) => d.date) ??
+      (monthStart ? store.dayOfMonth.map((d) => `${monthStart.slice(0, 8)}${String(d.day).padStart(2, '0')}`) : [])
     if (!n || !crewSize || !phase) return null
     const phase0 = fam + (phase - 1) * (n / crewSize)
     return dates.map((date, i) => {
@@ -278,6 +297,24 @@
       })
     }
     }
+    // Generatsiyadagi o'rinlar — xodim biriktirilmagan brigadalar ham bo'sh o'rin bo'lib ko'rinadi.
+    const planned = Math.ceil((store.params.slots || 0) / crewSize)
+    for (let k = out.length; k < planned; k++) {
+      out.push({
+        key: `crew-plan-${k}`,
+        title: t('shiftType.groupView.groupN', { n: out.length + 1 }),
+        department: '',
+        workers: Array.from({ length: crewSize }, (_, i) => ({
+          empty: true,
+          phase: i + 1,
+          fam: 0,
+          workerPositionId: `p-${k}-${i}`,
+          days: slotDays(0, i + 1),
+          number: ++num
+        })),
+        missing: crewSize
+      })
+    }
     // Navbati aniqlanmagan xodim — o'z guruhi, sheriklar o'rni bo'sh (navbat noma'lum: qo'shib bo'lmaydi).
     for (const w of [...unknown].sort(byPositionName)) {
       const workers = [
@@ -394,11 +431,14 @@
     }
     store.changeInfo = {
       visible: true,
+      substitution: day.substitution ?? null,
       date: day.date,
       worker: worker.fullName,
+      position: worker.position,
       crew: store.crewMap[worker.workerPositionId]?.title,
       planned: fmtPlan(exp),
       actual: day.isWorkDay ? `${day.startTime}–${day.endTime}` : rest,
+      actualLunch: day.isWorkDay && day.breakStart && day.breakEnd ? `${day.breakStart}–${day.breakEnd}` : null,
       sub: day.sub?.name ?? null,
       partner: partner ? { name: partner.fullName, crew: store.crewMap[partner.workerPositionId]?.title } : null
     }
@@ -409,24 +449,57 @@
     if (!canReplace.value || !day.inPeriod) return
     onReplace(worker)
     store.replacePayload.date = new Date(`${day.date}T00:00:00`).getTime()
-    store.replacePayload.status = true
-    // Katakdan — avval kunni o'zgartirish, xohlasa almashtirishga o'tadi.
-    store.replaceModeSwitch = true
+    // Katakdan — kunni o'zgartirish (almashtirish «…» menyusida alohida).
     store.replaceMode = 'edit'
+  }
+
+  // Xodim qatoridagi «…» menyusi: almashtirish, qayta generatsiya, kunni o'zgartirish.
+  const rowMenu = computed(() => [
+    { label: t('shiftType.groupView.menuSwap'), key: 'swap', icon: UIHelper.renderIcon(PeopleSwap20Regular) },
+    ...(rotating.value
+      ? [{ label: t('shiftType.groupView.menuRegen'), key: 'regen', icon: UIHelper.renderIcon(ArrowReset20Regular) }]
+      : []),
+    { label: t('shiftType.groupView.menuEditDay'), key: 'edit', icon: UIHelper.renderIcon(CalendarEdit16Regular) },
+    { type: 'divider', key: 'd-remove' },
+    {
+      label: t('shiftType.groupView.menuRemove'),
+      key: 'remove',
+      icon: UIHelper.renderIcon(Delete16Regular),
+      props: { style: 'color: var(--color-error, #e5484d)' }
+    }
+  ])
+  const onRowMenu = (key, worker) => {
+    if (key === 'regen') return onRegen(worker)
+    if (key === 'remove') {
+      if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
+      store.remove.worker = worker
+      store.remove.visible = true
+      return
+    }
+    onReplace(worker)
+    if (key === 'edit') {
+      store.replacePayload.date = new Date(`${store.defaultDate}T00:00:00`).getTime()
+      store.replaceMode = 'edit'
+    }
+  }
+
+  // Aylanma smenada xodim grafigini navbati bo'yicha qayta yaratish.
+  const onRegen = (v) => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
+    store.regen.worker = v
+    store.regen.visible = true
   }
 
   const onReplace = (v) => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
     store.selectedWorker = v
-    store.replaceModeSwitch = false
     store.replaceMode = 'swap'
-    // «…» — uzoq muddatli almashtirish; katakdan ochilganda pastda «Faqat shu kun» qo'yiladi.
-    store.replacePayload.status = false
-    store.dayEdit = { choice: null, start: null, end: null }
+    store.dayEdit = { choice: null, start: null, end: null, breakStart: null, breakEnd: null, hasBreak: false }
     store.workerParams.search = null
-    store._workers()
     store.replacePayload.positonId = null
-    store.replacePayload.date = new Date(`${store.defaultDate}T00:00:00`).getTime()
+    // O'rinbosarlik — standart kundan boshlab xodimning birinchi ish kuni.
+    const free = v.days.find((d) => d.date >= store.defaultDate && d.isWorkDay && !d.substitution && !d.isEmpty)
+    store.replacePayload.date = new Date(`${free?.date ?? store.defaultDate}T00:00:00`).getTime()
     store.replaceVisible = true
   }
 </script>
@@ -438,7 +511,9 @@
         class="w-full flex-1 overflow-auto relative rounded-lg max-h-[calc(100vh-190px)] min-h-[300px]"
         :style="{ '--lw': showSections ? '80px' : '0px', '--sw': showSections ? '40px' : '60px' }"
       >
-        <div class="schedule-header-row flex z-[10] w-fit min-w-full sticky top-0">
+        <!-- Qattiq fon shart: dark mode'da `--schedule-*-bg` yarim shaffof (alpha .24),
+             fonsiz sticky sarlavha ostidan skroll qilinayotgan qatorlar ko'rinib qoladi. -->
+        <div class="schedule-header-row flex z-[10] w-fit min-w-full sticky top-0 bg-surface-section">
           <template v-if="showSections">
             <div
               class="rounded-tl-lg border-t border-l border-b border-surface-line p-2 w-[44px] min-w-[44px] h-[50px] sticky left-0 top-0 z-[20] bg-surface-section flex-shrink-0"
@@ -481,7 +556,7 @@
             {{ $t('schedule.form.workTime') }}
           </div>
         </div>
-        <template v-if="visibleList.length > 0">
+        <template v-if="sections.length > 0">
           <div v-for="sec in sections" :key="sec.key" class="flex w-fit min-w-full">
             <!-- Tartib raqami — guruh ustunidan oldin. -->
             <div v-if="showSections" class="sticky left-0 z-[6] flex flex-col w-[44px] min-w-[44px] flex-shrink-0">
@@ -594,15 +669,21 @@
                     </div>
                   </div>
 
-                  <div
+                  <n-dropdown
                     v-if="canReplace"
-                    @click="onReplace(worker)"
-                    class="w-[28px] h-[28px] border border-surface-line rounded-lg flex justify-center items-center text-secondary cursor-pointer"
+                    size="small"
+                    trigger="click"
+                    :options="rowMenu"
+                    @select="(key) => onRowMenu(key, worker)"
                   >
-                    <n-icon size="20">
-                      <MoreHorizontal32Filled />
-                    </n-icon>
-                  </div>
+                    <div
+                      class="w-[28px] h-[28px] border border-surface-line rounded-lg flex justify-center items-center text-secondary cursor-pointer hover:border-primary hover:text-primary"
+                    >
+                      <n-icon size="20">
+                        <MoreHorizontal32Filled />
+                      </n-icon>
+                    </div>
+                  </n-dropdown>
                 </div>
 
                 <!-- Day Cells -->
@@ -610,9 +691,11 @@
                   v-for="(day, dayIndex) in worker.days"
                   :key="dayIndex"
                   class="border-r text-center border-l border-b border-t-0 -ml-[1px] border-surface-line w-[60px] min-w-[60px] h-[50px] border text-xs text-secondary p-2 pb-0 flex-shrink-0 cursor-pointer relative"
-                  :class="{ 'out-of-period': !day.inPeriod && day.isEmpty, 'changed-cell': day.sub || day.changed }"
+                  :class="{ 'out-of-period': !day.inPeriod && day.isEmpty, 'changed-cell': day.sub || day.changed || day.substitution }"
                   :title="
-                    day.sub
+                    day.substitution
+                      ? $t(day.substitution.role === 'absent' ? 'shiftType.groupView.subAbsentTitle' : 'shiftType.groupView.subWorksTitle', { name: day.substitution.name })
+                      : day.sub
                       ? $t('shiftType.groupView.subWorks', { name: day.sub.name, host: worker.fullName })
                       : day.changed
                         ? $t('shiftType.groupView.changedDay')
@@ -623,7 +706,14 @@
                   @click="onCellClick(worker, day)"
                 >
                   <div
-                    v-if="day.sub || day.changed"
+                    v-if="day.substitution"
+                    class="absolute top-0 right-0 z-[1] w-[18px] h-[16px] flex items-center justify-center rounded-bl bg-warning text-white cursor-pointer hover:brightness-110"
+                    @click.stop="openChangeInfo(worker, day, dayIndex)"
+                  >
+                    <n-icon size="12"><PeopleSwap20Regular /></n-icon>
+                  </div>
+                  <div
+                    v-else-if="day.sub || day.changed"
                     class="absolute top-0 right-0 z-[1] px-1 h-[16px] leading-[16px] text-[10px] font-semibold rounded-bl bg-primary text-white cursor-pointer hover:brightness-110"
                     @click.stop="openChangeInfo(worker, day, dayIndex)"
                   >

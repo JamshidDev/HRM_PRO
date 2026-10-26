@@ -80,7 +80,6 @@
     statusUpdatingId.value = row.id
     try {
       const fd = new FormData()
-      fd.append('_method', 'PUT')
       fd.append('status', status)
       await $ApiService.newsService._update({ id: row.id, data: fd })
     } catch {
@@ -109,7 +108,6 @@
     pinLoadingId.value = row.id
     try {
       const fd = new FormData()
-      fd.append('_method', 'PUT')
       fd.append('is_pinned', next ? 1 : 0)
       await $ApiService.newsService._update({ id: row.id, data: fd })
       row.is_pinned = next

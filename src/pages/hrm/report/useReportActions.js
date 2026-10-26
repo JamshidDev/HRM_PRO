@@ -32,8 +32,13 @@ export const useReportActions = () => {
     dpStore.payload.level = v.level.id
     dpStore.showParent = Boolean(v.parent_id)
     dpStore.payload.parent_id = v.parent_id
+    dpStore.payload.region_id = v.region_id ?? null
+    dpStore.payload.city_id = v.city_id ?? null
+    dpStore.districtList = []
+    if (dpStore.payload.region_id) dpStore._districts(dpStore.payload.region_id)
     dpStore._level()
     componentStore._departments()
+    componentStore._regions()
   }
 
   const addPosition = (v) => {

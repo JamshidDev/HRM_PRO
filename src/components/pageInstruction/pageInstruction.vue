@@ -36,6 +36,7 @@
       store.payload.text = v.data.text
       store.payload.title = v.data.title
       store.payload.photos = v.data.photos
+      store.imgCarouselIdx = 0
       store.activeSection = 99999
       store.visibleType = false
     }

@@ -123,7 +123,8 @@ const onImgError = (e) => {
 }
 
 const fileNameFromUrl = (url) => {
-  return url.split('/').pop()?.split('?')[0].split('#')[0] || ''
+  // Fayl biriktirilmagan yozuvda url null — tahrirlash formasi ochilmay qolardi.
+  return String(url || '').split('/').pop()?.split('?')[0].split('#')[0] || ''
 }
 
 const formatNumberToMoney = (num) => {

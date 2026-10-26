@@ -9,7 +9,7 @@ const _create = async (payload) => {
 }
 
 const _update = async (payload) => {
-  return await axios.post(`/v1/hr/organization-documents/${payload.id}`, payload.data)
+  return await axios.put(`/v1/hr/organization-documents/${payload.id}`, payload.data)
 }
 
 const _delete = async (payload) => {

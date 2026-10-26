@@ -2,7 +2,8 @@
   import { UIDrawer, UIPageContent, UIPageFilter } from '@/components/index.js'
   import Table from './ui/Table.vue'
   import { usePageInstructionStore, useAccountStore } from '@/store/modules/index.js'
-  import createFrom from './ui/createForm.vue'
+  // Yo'riqnoma formasi sahifa ichidagi tahrirlagich bilan bitta (rasm, matn, menyu).
+  import InstructionForm from '@/components/pageInstruction/createForm.vue'
   import i18n from '@/i18n/index.js'
   const { t } = i18n.global
 
@@ -39,5 +40,10 @@
       :show-add-button="false"
     />
     <Table />
+    <UIDrawer :width="1000" v-model:visible="store.visible" :title="t('content.edit')">
+      <template #content>
+        <InstructionForm />
+      </template>
+    </UIDrawer>
   </UIPageContent>
 </template>

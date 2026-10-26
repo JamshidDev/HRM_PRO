@@ -112,6 +112,8 @@ const FORM_STATE_KEYS = [
   'form_56',
   'form_57',
   'form_58',
+  'form_59',
+  'form_60',
   'form_74',
   'form_75',
   'vacations',
@@ -248,6 +250,21 @@ const commandStoreOptions = {
       to: null,
       act_date: null,
       responsible: null
+    },
+    // 59 — Bir oylik harbiy yig'inga yuborish (hujjatgina).
+    form_59: {
+      from: null,
+      military_office: null,
+      reference_date: null,
+      reference_number: null
+    },
+    // 60 — Harbiy yig'inga yuborish (hujjatgina, from–to).
+    form_60: {
+      from: null,
+      to: null,
+      military_office: null,
+      reference_date: null,
+      reference_number: null
     },
     // 75 — Buyruqni bekor qilish (faqat tasdiqlangan buyruq bekor qilinadi).
     form_75: {
@@ -599,6 +616,17 @@ const commandStoreOptions = {
     },
 
     resetForm() {
+      // Formaning BARCHA qismi boshlang'ich holatga qaytadi — rahbar, buxgalter, kelishuvchilar,
+      // korxona va xodim qatorlari ham. Ilgari ular qolib ketar, bekor qilib qayta ochilganda
+      // eski qiymatlar ko'rinardi. Quyidagi qatorlar ayrim maydonlarga o'z standart qiymatini beradi.
+      const fresh = commandStoreOptions.state()
+      for (const key of FORM_STATE_KEYS) this[key] = fresh[key]
+      this.workerList = []
+      this.totalWorker = 0
+      this.workerParams.page = 1
+      this.workerParams.search = null
+      this.workerParams.organization_id = null
+
       this.resetPayload()
       this.resetPayload46()
       this.resetPayload34()
@@ -662,6 +690,19 @@ const commandStoreOptions = {
         to: null,
         act_date: null,
         responsible: null
+      }
+      this.form_59 = {
+        from: null,
+        military_office: null,
+        reference_date: null,
+        reference_number: null
+      }
+      this.form_60 = {
+        from: null,
+        to: null,
+        military_office: null,
+        reference_date: null,
+        reference_number: null
       }
 
       this.form_75 = {

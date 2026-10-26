@@ -52,7 +52,16 @@
           <!-- Info cards -->
           <div class="rounded-xl border border-surface-line overflow-hidden">
 
-                    <!-- Geo type -->
+            <!-- O'tish joyi nomi -->
+            <div class="info-row border-b border-surface-line">
+              <div class="info-label-col">
+                <n-icon size="15" class="shrink-0"><Location20Filled /></n-icon>
+                <span>{{ $t('departmentLocationPage.form.name') }}</span>
+              </div>
+              <span class="info-value-col">{{ data.name || '—' }}</span>
+            </div>
+
+            <!-- Geo type -->
             <div class="info-row border-b border-surface-line">
               <div class="info-label-col">
                 <n-icon size="15" class="shrink-0"><Map20Filled /></n-icon>

@@ -1,13 +1,12 @@
 <script setup>
   import { useDocumentDateLimit } from '@/composables/useDocumentDateLimit.js'
-  import { Drag24Filled, DrawText24Regular, DismissCircle28Filled } from '@vicons/fluent'
   import validationRules from '@/utils/validationRules.js'
   import { useComponentStore } from '@/store/modules/index.js'
   import { useCommandFormStore } from './commandFormStore.js'
   import { NAvatar, NSwitch } from 'naive-ui'
   import Utils from '@/utils/Utils.js'
   import VacationForm_41 from '@/pages/docFlow/document/command/ui/VacationForm_41.vue'
-  import { UISelect, SuperSelect, UIUser } from '@/components/index.js'
+  import { UISelect, SuperSelect } from '@/components/index.js'
   import EmptyForm from '@/pages/docFlow/document/command/ui/EmptyForm.vue'
   import CancelForm_32 from '@/pages/docFlow/document/command/ui/CancelForm_32.vue'
   import CancelCommandForm_34 from '@/pages/docFlow/document/command/ui/CancelCommandForm_34.vue'
@@ -29,18 +28,23 @@
   import CommandForm_56 from './ui/CommandForm_56.vue'
   import CommandForm_57 from './ui/CommandForm_57.vue'
   import CommandForm_58 from './ui/CommandForm_58.vue'
+  import CommandForm_59 from './ui/CommandForm_59.vue'
+  import CommandForm_60 from './ui/CommandForm_60.vue'
   import CommandForm_75 from './ui/CommandForm_75.vue'
   import { useAppSetting } from '@/utils/index.js'
-  import { VueDraggable } from 'vue-draggable-plus'
+  import CommandSigners from './CommandSigners.vue'
 
   // create — yaratish modali; edit — hujjat drawer'idagi «Ma'lumotlar» tabi.
   // Hujjat sanasi: yaratishda sozlamadagi oyna, tahrirda o'zgarmaydi.
   const { isDateDisabled } = useDocumentDateLimit()
   const props = defineProps({
     mode: { type: String, default: 'create' },
-    readonly: { type: Boolean, default: false }
+    readonly: { type: Boolean, default: false },
+    // To'liq ekran: keng ekranda imzolovchilar o'ng ustunga chiqadi.
+    wide: { type: Boolean, default: false }
   })
   const isEdit = computed(() => props.mode === 'edit')
+  const isWide = computed(() => props.wide && !isEdit.value)
 
   const store = useCommandFormStore()
   const componentStore = useComponentStore()
@@ -51,7 +55,8 @@
   // command ids of only a single select
   const commandIdList = [32, 33, 34, 35, 36, 37, 38, 39]
   const singleSelectCommands = [
-    32, 33, 34, 35, 36, 37, 38, 39, 44, 43, 45, 46, 47, 49, 48, 50, 51, 52, 53, 54, 74, 56, 57, 58
+    32, 33, 34, 35, 36, 37, 38, 39, 44, 43, 45, 46, 47, 49, 48, 50, 51, 52, 53, 54, 74, 56, 57, 58,
+    59, 60
   ]
 
   // 75 da xodim select'i ko'rsatilmaydi — xodim bekor qilinayotgan buyruqdan olinadi.
@@ -101,31 +106,37 @@
   const commandForm_56 = ref(null)
   const commandForm_57 = ref(null)
   const commandForm_58 = ref(null)
+  const commandForm_59 = ref(null)
+  const commandForm_60 = ref(null)
   const commandForm_75 = ref(null)
 
+  // Rahbar / buxgalter / kelishuvchi varianti: to'liq ism va lavozim, o'qiladigan o'lchamda.
+  // Variant balandligi o'zgaruvchan — shuning uchun bu select'larda virtual skroll o'chirilgan.
   const renderLabel = (option) => {
     return [
-      h(
-        'div',
-        {
-          class: 'flex gap-2 my-1 items-center px-2'
-        },
-        [
-          h(NAvatar, {
-            class: '',
-            src: option.photo || Utils.noAvailableImage,
-            'fallback-src': Utils.noAvailableImage
-          }),
-          h('div', { class: 'flex flex-col' }, [
-            h(
-              'div',
-              { class: 'text-xs font-medium text-gray-500 leading-[1.2]' },
-              `${option.last_name}.${option.last_name?.[0] ?? ''}.${option.middle_name?.[0] ?? ''}`
-            ),
-            h('div', { class: 'text-xs text-primary leading-[1.2]' }, option.position)
-          ])
-        ]
-      )
+      h('div', { class: 'flex gap-3 py-2 items-center px-1' }, [
+        h(NAvatar, {
+          class: 'flex-shrink-0',
+          round: true,
+          size: 36,
+          src: option.photo || Utils.noAvailableImage,
+          'fallback-src': Utils.noAvailableImage
+        }),
+        h('div', { class: 'flex flex-col min-w-0 gap-0.5' }, [
+          h(
+            'div',
+            { class: 'text-sm font-medium text-textColor1 leading-snug !text-wrap' },
+            optionFullName(option)
+          ),
+          option.position
+            ? h(
+                'div',
+                { class: 'text-xs text-textColor3 leading-snug !text-wrap' },
+                option.position
+              )
+            : null
+        ])
+      ])
     ]
   }
   // Xodim/pensioner select'i uchun ALOHIDA renderer.
@@ -239,16 +250,22 @@
     new Promise((resolve) => {
       formRef.value?.validate(async (error) => {
         validationComponent()
+        // Tanishuvchilar imzolamaydi — ular alohida `viewers` ro'yxatida ketadi.
+        // Hammasi tanishuvchi bo'lishi ham mumkin (unda `confirmations` bo'sh).
+        const signers = store.sortableConfirmations.filter((v) => v.role !== 'view')
+        const viewers = store.sortableConfirmations.filter((v) => v.role === 'view')
         if (!error) {
           const mainData = {
             command_date: Utils.timeToZone(store.payload.command_date),
             director_id: store.payload.director_id,
             finance_id: store.payload.finance_id || undefined,
             organization_id: store.payload.organization_id?.[0]?.id,
-            confirmations: store.sortableConfirmations.map((v, idx) => ({
+            confirmations: signers.map((v, idx) => ({
               id: v.id,
               order: store.oneByOne ? idx + 1 : 1
             })),
+            // Tanishuvchi bo'lmasa maydon umuman yuborilmaydi — so'rov avvalgidek qoladi.
+            ...(viewers.length ? { viewers: viewers.map((v) => v.id) } : {}),
             command_number: store.payload.command_number,
             command_type: store.payload.command_type,
             workers: store.payload.worker ? [store.payload.worker] : store.payload.workers,
@@ -298,6 +315,10 @@
             validate = await commandForm_57.value?.onSubmit(mainData)
           } else if (store.payload.command_type === 58) {
             validate = await commandForm_58.value?.onSubmit(mainData)
+          } else if (store.payload.command_type === 59) {
+            validate = await commandForm_59.value?.onSubmit(mainData)
+          } else if (store.payload.command_type === 60) {
+            validate = await commandForm_60.value?.onSubmit(mainData)
           } else if (store.payload.command_type === CANCEL_COMMAND_TYPE) {
             validate = await commandForm_75.value?.onSubmit(mainData)
           }
@@ -333,6 +354,10 @@
       commandForm_57.value?.validateForm()
     } else if (store.payload.command_type === 58) {
       commandForm_58.value?.validateForm()
+    } else if (store.payload.command_type === 59) {
+      commandForm_59.value?.validateForm()
+    } else if (store.payload.command_type === 60) {
+      commandForm_60.value?.validateForm()
     } else if (store.payload.command_type === CANCEL_COMMAND_TYPE) {
       commandForm_75.value?.validateForm()
     }
@@ -615,9 +640,6 @@
     if (componentStore.confirmationList.length > 0) return
     componentStore._confirmations()
   }
-  const onChangeDraggle = () => {
-    store.payload.confirmations = store.sortableConfirmations.map((v) => v.id)
-  }
   const onChangeConfirmation = () => {
     fillSortableConfirmations()
     syncConfirmationEv()
@@ -632,11 +654,17 @@
     onRemoveEv(store.payload.finance_id)
     onRemoveEv(store.payload.director_id)
   }
+  // Avval tanlanganlar o'z o'rni va roli bilan qoladi, yangilari kelishuvchilar oxiriga qo'shiladi.
+  // Ilgari ro'yxat har safar qaytadan tuzilib, sudrab berilgan tartib yo'qolardi.
   const fillSortableConfirmations = () => {
-    store.sortableConfirmations = confirmationList.value
-      .filter((v) => store.payload.confirmations.includes(v.id))
+    const selected = store.payload.confirmations
+    const kept = store.sortableConfirmations.filter((v) => selected.includes(v.id))
+    const keptIds = kept.map((v) => v.id)
+    const added = confirmationList.value
+      .filter((v) => selected.includes(v.id) && !keptIds.includes(v.id))
       .map((v) => ({
         id: v.id,
+        role: 'sign',
         data: {
           firstName: v.first_name,
           lastName: v.last_name,
@@ -645,6 +673,9 @@
           position: v?.position || ''
         }
       }))
+    // Yangilar kelishuvchi — tanishuvchilardan oldin, ular doim oxirida turadi.
+    const viewers = kept.filter((v) => v.role === 'view')
+    store.sortableConfirmations = [...kept.filter((v) => v.role !== 'view'), ...added, ...viewers]
   }
   const onRemoveEv = (id) => {
     store.sortableConfirmations = store.sortableConfirmations.filter((v) => v.id !== id)
@@ -687,242 +718,255 @@
       :model="store.payload"
       :rules="validationRules.commandFrom"
       class="grid grid-cols-12 gap-x-4"
+      :class="{ '@7xl:gap-x-6': isWide }"
     >
+      <!-- Asosiy qism: buyruq, xodimlar va turga xos maydonlar. To'liq ekranda — chap ustun. -->
       <div
-        v-if="isEdit"
-        class="col-span-12 mb-1.5 text-xs font-semibold uppercase tracking-wide text-textColor3"
+        class="col-span-12 grid grid-cols-12 gap-x-4 content-start"
+        :class="{ '@7xl:col-span-7': isWide }"
       >
-        {{ $t('documentPage.command.dataTab.sectionMain') }}
-      </div>
-      <!--      Command header-->
-      <div class="col-span-12">
         <div
-          class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
+          v-if="isEdit"
+          class="col-span-12 mb-1.5 text-xs font-semibold uppercase tracking-wide text-textColor3"
         >
-          <div class="col-span-6 @4xl:col-span-2">
-            <n-form-item
-              :label="$t(`documentPage.command.form.command_number`)"
-              path="command_number"
-            >
-              <n-input class="w-full" type="text" v-model:value="store.payload.command_number" />
-            </n-form-item>
-          </div>
-          <div class="col-span-6 @4xl:col-span-2">
-            <n-form-item :label="$t(`documentPage.command.form.command_date`)" path="command_date">
-              <n-date-picker
-                class="w-full"
-                v-model:value="store.payload.command_date"
-                type="date"
-                :format="useAppSetting.datePicketFormat"
-                :is-date-disabled="isDateDisabled"
-                :disabled="isEdit"
-              />
-            </n-form-item>
-          </div>
-          <div class="col-span-12 @4xl:col-span-8">
-            <n-form-item :label="$t(`documentPage.command.form.type`)" path="command_type">
-              <n-select
-                v-model:value="store.payload.command_type"
-                :disabled="isEdit"
-                filterable
-                :options="componentStore.commandTypeList"
-                label-field="name"
-                value-field="id"
-                :loading="componentStore.commandTypeLoading"
-                @update:value="onChangeCommandType"
-              />
-            </n-form-item>
-          </div>
+          {{ $t('documentPage.command.dataTab.sectionMain') }}
         </div>
-      </div>
-
-      <div
-        v-if="isEdit"
-        class="col-span-12 mt-6 mb-1.5 text-xs font-semibold uppercase tracking-wide text-textColor3"
-      >
-        {{ $t('documentPage.command.dataTab.sectionWorkers') }}
-      </div>
-      <div class="col-span-12">
-        <div
-          class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
-          :class="{ 'mt-6': !isEdit }"
-        >
-          <div class="col-span-12 @xl:col-span-6 flex">
-            <n-form-item
-              class="w-full"
-              :label="$t(`documentPage.form.organization`)"
-              path="organization_id"
-            >
-              <UISelect
-                :options="componentStore.structureList"
-                :modelV="store.payload.organization_id"
-                @updateModel="onChangeStructure"
-                :checkedVal="store.structureCheck"
-                @updateCheck="(v) => (store.structureCheck = v)"
-                v-model:search="componentStore.structureParams.search"
-                @onSearch="componentStore._structures"
-                :loading="componentStore.structureLoading"
-                :multiple="false"
-                :auto-select="true"
-              />
-            </n-form-item>
-          </div>
-          <div class="col-span-12 @xl:col-span-6 flex" v-if="isCancelCommand">
-            <n-form-item
-              class="w-full"
-              :label="$t(`commandPage.form_75.cancel_command_id`)"
-              path="cancel_command_id"
-            >
-              <SuperSelect
-                :disabled="store.payload.organization_id.length === 0"
-                :options="store.cancelCommandList"
-                :loading="store.cancelCommandLoading"
-                :total-count="store.totalCancelCommand"
-                :per-page="store.cancelCommandParams.per_page"
-                v-model:value="store.payload.cancel_command_id"
-                v-model:search="store.cancelCommandParams.search"
-                value-field="id"
-                :render-label="renderCancelCommandLabel"
-                :render-tag="renderCancelCommandTag"
-                @onSearch="onSearchCancelCommand"
-                @onScrollEv="onScrollCancelCommand"
-              />
-            </n-form-item>
-          </div>
-          <div class="col-span-12 @xl:col-span-6 flex" v-else>
-            <template v-if="store.isSingleSelect">
-              <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker">
-                <SuperSelect
-                  :disabled="store.payload.organization_id.length === 0"
-                  :max-tag-count="1"
-                  :options="store.workerList"
-                  :loading="store.workerLoading"
-                  :total-count="store.totalWorker"
-                  :per-page="store.workerParams.per_page"
-                  v-model:value="store.payload.worker"
-                  v-model:search="store.workerParams.search"
-                  value-field="id"
-                  @update:value="onChangeWorker"
-                  @onSearch="onSearchEv"
-                  @onScrollEv="onScrollEv"
+        <!--      Command header-->
+        <div class="col-span-12">
+          <div
+            class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
+          >
+            <div class="col-span-6 @4xl:col-span-2">
+              <n-form-item
+                :label="$t(`documentPage.command.form.command_number`)"
+                path="command_number"
+              >
+                <n-input class="w-full" type="text" v-model:value="store.payload.command_number" />
+              </n-form-item>
+            </div>
+            <div class="col-span-6 @4xl:col-span-2">
+              <n-form-item :label="$t(`documentPage.command.form.command_date`)" path="command_date">
+                <n-date-picker
+                  class="w-full"
+                  v-model:value="store.payload.command_date"
+                  type="date"
+                  :format="useAppSetting.datePicketFormat"
+                  :is-date-disabled="isDateDisabled"
+                  :disabled="isEdit"
                 />
               </n-form-item>
-            </template>
-            <template v-else>
-              <n-form-item class="w-full" :label="$t(recipientLabelKey)" path="workers">
-                <div class="flex items-center gap-2 w-full">
+            </div>
+            <div class="col-span-12 @4xl:col-span-8">
+              <n-form-item :label="$t(`documentPage.command.form.type`)" path="command_type">
+                <n-select
+                  v-model:value="store.payload.command_type"
+                  :disabled="isEdit"
+                  filterable
+                  :options="componentStore.commandTypeList"
+                  label-field="name"
+                  value-field="id"
+                  :loading="componentStore.commandTypeLoading"
+                  @update:value="onChangeCommandType"
+                />
+              </n-form-item>
+            </div>
+          </div>
+        </div>
+
+        <div
+          v-if="isEdit"
+          class="col-span-12 mt-6 mb-1.5 text-xs font-semibold uppercase tracking-wide text-textColor3"
+        >
+          {{ $t('documentPage.command.dataTab.sectionWorkers') }}
+        </div>
+        <div class="col-span-12">
+          <div
+            class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
+            :class="{ 'mt-6': !isEdit }"
+          >
+            <div class="col-span-12 @xl:col-span-6 flex">
+              <n-form-item
+                class="w-full"
+                :label="$t(`documentPage.form.organization`)"
+                path="organization_id"
+              >
+                <UISelect
+                  :options="componentStore.structureList"
+                  :modelV="store.payload.organization_id"
+                  @updateModel="onChangeStructure"
+                  :checkedVal="store.structureCheck"
+                  @updateCheck="(v) => (store.structureCheck = v)"
+                  v-model:search="componentStore.structureParams.search"
+                  @onSearch="componentStore._structures"
+                  :loading="componentStore.structureLoading"
+                  :multiple="false"
+                  :auto-select="true"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-12 @xl:col-span-6 flex" v-if="isCancelCommand">
+              <n-form-item
+                class="w-full"
+                :label="$t(`commandPage.form_75.cancel_command_id`)"
+                path="cancel_command_id"
+              >
+                <SuperSelect
+                  :disabled="store.payload.organization_id.length === 0"
+                  :options="store.cancelCommandList"
+                  :loading="store.cancelCommandLoading"
+                  :total-count="store.totalCancelCommand"
+                  :per-page="store.cancelCommandParams.per_page"
+                  v-model:value="store.payload.cancel_command_id"
+                  v-model:search="store.cancelCommandParams.search"
+                  value-field="id"
+                  :render-label="renderCancelCommandLabel"
+                  :render-tag="renderCancelCommandTag"
+                  @onSearch="onSearchCancelCommand"
+                  @onScrollEv="onScrollCancelCommand"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-12 @xl:col-span-6 flex" v-else>
+              <template v-if="store.isSingleSelect">
+                <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker">
                   <SuperSelect
-                    class="flex-1 min-w-0"
-                    multiple
                     :disabled="store.payload.organization_id.length === 0"
                     :max-tag-count="1"
                     :options="store.workerList"
                     :loading="store.workerLoading"
                     :total-count="store.totalWorker"
                     :per-page="store.workerParams.per_page"
-                    v-model:value="store.payload.workers"
+                    v-model:value="store.payload.worker"
                     v-model:search="store.workerParams.search"
                     value-field="id"
-                    :render-label="renderRecipientLabel"
-                    @update:value="onChangeWorkers"
+                    @update:value="onChangeWorker"
                     @onSearch="onSearchEv"
                     @onScrollEv="onScrollEv"
                   />
-                  <!-- Moddiy yordam (73): xodim ↔ pensioner almashtirgich.
-                         Matnsiz — joriy rejim select LABELIDA ko'rinadi.
-                         Pensionerda foto yo'q — render fallback avatar qo'yadi. -->
-                  <n-switch
-                    v-if="store.payload.command_type === 73"
-                    :value="store.recipientType === 'pensioner'"
-                    :disabled="store.payload.organization_id.length === 0"
-                    @update:value="onToggleRecipient"
-                  />
-                </div>
-              </n-form-item>
-            </template>
+                </n-form-item>
+              </template>
+              <template v-else>
+                <n-form-item class="w-full" :label="$t(recipientLabelKey)" path="workers">
+                  <div class="flex items-center gap-2 w-full">
+                    <SuperSelect
+                      class="flex-1 min-w-0"
+                      multiple
+                      :disabled="store.payload.organization_id.length === 0"
+                      :max-tag-count="1"
+                      :options="store.workerList"
+                      :loading="store.workerLoading"
+                      :total-count="store.totalWorker"
+                      :per-page="store.workerParams.per_page"
+                      v-model:value="store.payload.workers"
+                      v-model:search="store.workerParams.search"
+                      value-field="id"
+                      :render-label="renderRecipientLabel"
+                      @update:value="onChangeWorkers"
+                      @onSearch="onSearchEv"
+                      @onScrollEv="onScrollEv"
+                    />
+                    <!-- Moddiy yordam (73): xodim ↔ pensioner almashtirgich.
+                           Matnsiz — joriy rejim select LABELIDA ko'rinadi.
+                           Pensionerda foto yo'q — render fallback avatar qo'yadi. -->
+                    <n-switch
+                      v-if="store.payload.command_type === 73"
+                      :value="store.recipientType === 'pensioner'"
+                      :disabled="store.payload.organization_id.length === 0"
+                      @update:value="onToggleRecipient"
+                    />
+                  </div>
+                </n-form-item>
+              </template>
+            </div>
           </div>
         </div>
-      </div>
-      <div
-        v-if="isEdit"
-        class="col-span-12 mt-6 mb-1.5 text-xs font-semibold uppercase tracking-wide text-textColor3"
-      >
-        {{ $t('documentPage.command.dataTab.sectionDetails') }}
-      </div>
-      <div class="col-span-12" :class="{ 'mt-4': !isEdit }">
-        <template v-if="store.payload.command_type === 41">
-          <VacationForm_41 ref="vacationForm_41" />
-        </template>
-        <template v-else-if="[34, 35, 39].includes(store.payload.command_type)">
-          <CancelCommandForm_34 ref="cancelCommandForm_34" />
-        </template>
-        <template v-else-if="commandIdList.includes(store.payload.command_type)">
-          <CancelForm_32 ref="cancelForm_32" />
-        </template>
-        <template v-else-if="store.payload.command_type === 44">
-          <VacationForm_44 ref="vacationForm_44" />
-        </template>
-        <template v-else-if="store.payload.command_type === 43">
-          <VacationForm_43 ref="vacationForm_43" />
-        </template>
-        <template v-else-if="store.payload.command_type === 45">
-          <VacationForm_45 ref="vacationForm_45" />
-        </template>
-        <template v-else-if="store.payload.command_type === 46">
-          <CommandForm_46 ref="commandForm_46" />
-        </template>
-        <template v-else-if="store.payload.command_type === 48">
-          <VacationForm_48 ref="vacationForm_48" />
-        </template>
-        <template v-else-if="store.payload.command_type === 49">
-          <VacationForm_49 ref="vacationForm_49" />
-        </template>
-        <template v-else-if="store.payload.command_type === 47">
-          <CommandForm_47 ref="commandForm_47" />
-        </template>
-        <template v-else-if="store.payload.command_type === 50">
-          <CommandForm_50 ref="commandForm_50" />
-        </template>
-        <template v-else-if="store.payload.command_type === 55">
-          <VacationForm_55 ref="vacationForm_55" />
-        </template>
-        <template
-          v-else-if="store.payload.command_type === 62 || store.payload.command_type === 61"
+        <div
+          v-if="isEdit"
+          class="col-span-12 mt-6 mb-1.5 text-xs font-semibold uppercase tracking-wide text-textColor3"
         >
-          <VacationForm_62 ref="vacationForm_62" />
-        </template>
+          {{ $t('documentPage.command.dataTab.sectionDetails') }}
+        </div>
+        <div class="col-span-12" :class="{ 'mt-4': !isEdit }">
+          <template v-if="store.payload.command_type === 41">
+            <VacationForm_41 ref="vacationForm_41" />
+          </template>
+          <template v-else-if="[34, 35, 39].includes(store.payload.command_type)">
+            <CancelCommandForm_34 ref="cancelCommandForm_34" />
+          </template>
+          <template v-else-if="commandIdList.includes(store.payload.command_type)">
+            <CancelForm_32 ref="cancelForm_32" />
+          </template>
+          <template v-else-if="store.payload.command_type === 44">
+            <VacationForm_44 ref="vacationForm_44" />
+          </template>
+          <template v-else-if="store.payload.command_type === 43">
+            <VacationForm_43 ref="vacationForm_43" />
+          </template>
+          <template v-else-if="store.payload.command_type === 45">
+            <VacationForm_45 ref="vacationForm_45" />
+          </template>
+          <template v-else-if="store.payload.command_type === 46">
+            <CommandForm_46 ref="commandForm_46" />
+          </template>
+          <template v-else-if="store.payload.command_type === 48">
+            <VacationForm_48 ref="vacationForm_48" />
+          </template>
+          <template v-else-if="store.payload.command_type === 49">
+            <VacationForm_49 ref="vacationForm_49" />
+          </template>
+          <template v-else-if="store.payload.command_type === 47">
+            <CommandForm_47 ref="commandForm_47" />
+          </template>
+          <template v-else-if="store.payload.command_type === 50">
+            <CommandForm_50 ref="commandForm_50" />
+          </template>
+          <template v-else-if="store.payload.command_type === 55">
+            <VacationForm_55 ref="vacationForm_55" />
+          </template>
+          <template
+            v-else-if="store.payload.command_type === 62 || store.payload.command_type === 61"
+          >
+            <VacationForm_62 ref="vacationForm_62" />
+          </template>
 
-        <template v-else-if="[51, 52, 53, 54].includes(store.payload.command_type)">
-          <CommandFrom_51 ref="vacationForm_51" />
-        </template>
-        <template v-else-if="store.payload.command_type === 71">
-          <CommandForm_71 ref="vacationForm_71" />
-        </template>
-        <template v-else-if="store.payload.command_type === 72">
-          <CommandForm_72 ref="vacationForm_72" />
-        </template>
-        <template v-else-if="store.payload.command_type === 73">
-          <CommandForm_73 ref="vacationForm_73" />
-        </template>
-        <template v-else-if="store.payload.command_type === 74">
-          <CommandForm_74 ref="commandForm_74" />
-        </template>
-        <template v-else-if="store.payload.command_type === 56">
-          <CommandForm_56 ref="commandForm_56" />
-        </template>
-        <template v-else-if="store.payload.command_type === 57">
-          <CommandForm_57 ref="commandForm_57" />
-        </template>
-        <template v-else-if="store.payload.command_type === 58">
-          <CommandForm_58 ref="commandForm_58" />
-        </template>
-        <template v-else-if="isCancelCommand">
-          <CommandForm_75 ref="commandForm_75" />
-        </template>
+          <template v-else-if="[51, 52, 53, 54].includes(store.payload.command_type)">
+            <CommandFrom_51 ref="vacationForm_51" />
+          </template>
+          <template v-else-if="store.payload.command_type === 71">
+            <CommandForm_71 ref="vacationForm_71" />
+          </template>
+          <template v-else-if="store.payload.command_type === 72">
+            <CommandForm_72 ref="vacationForm_72" />
+          </template>
+          <template v-else-if="store.payload.command_type === 73">
+            <CommandForm_73 ref="vacationForm_73" />
+          </template>
+          <template v-else-if="store.payload.command_type === 74">
+            <CommandForm_74 ref="commandForm_74" />
+          </template>
+          <template v-else-if="store.payload.command_type === 56">
+            <CommandForm_56 ref="commandForm_56" />
+          </template>
+          <template v-else-if="store.payload.command_type === 57">
+            <CommandForm_57 ref="commandForm_57" />
+          </template>
+          <template v-else-if="store.payload.command_type === 58">
+            <CommandForm_58 ref="commandForm_58" />
+          </template>
+          <template v-else-if="store.payload.command_type === 59">
+            <CommandForm_59 ref="commandForm_59" />
+          </template>
+          <template v-else-if="store.payload.command_type === 60">
+            <CommandForm_60 ref="commandForm_60" />
+          </template>
+          <template v-else-if="isCancelCommand">
+            <CommandForm_75 ref="commandForm_75" />
+          </template>
 
-        <template v-else>
-          <EmptyForm />
-        </template>
+          <template v-else>
+            <EmptyForm />
+          </template>
+        </div>
       </div>
       <div
         v-if="isEdit"
@@ -930,7 +974,21 @@
       >
         {{ $t('documentPage.command.dataTab.sectionSigners') }}
       </div>
-      <div class="col-span-12 mb-6" :class="{ 'mt-6': !isEdit }">
+      <!-- Imzolovchilar. To'liq ekranda — o'ng ustun, skrollda yopishib turadi. -->
+      <div
+        class="col-span-12 mb-6"
+        :class="{
+          'mt-6': !isEdit,
+          '@7xl:col-span-5 @7xl:mt-0 @7xl:self-start @7xl:sticky @7xl:top-0 @7xl:max-h-[calc(100dvh-110px)] @7xl:overflow-y-auto @7xl:overflow-x-hidden @7xl:mb-0':
+            isWide
+        }"
+      >
+        <div
+          v-if="isWide"
+          class="hidden @7xl:flex items-center gap-2 mb-2 px-1 text-xs font-semibold uppercase tracking-wide text-textColor3"
+        >
+          {{ $t('documentPage.command.dataTab.sectionSigners') }}
+        </div>
         <div
           class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
         >
@@ -943,6 +1001,7 @@
                 :options="componentStore.confirmationList"
                 :loading="componentStore.confirmationLoading"
                 :render-label="renderLabel"
+                :virtual-scroll="false"
                 :render-tag="renderValue"
                 @update:value="syncConfirmationEv"
               />
@@ -958,6 +1017,7 @@
                 :options="financeList"
                 :loading="componentStore.confirmationLoading"
                 :render-label="renderLabel"
+                :virtual-scroll="false"
                 :render-tag="renderValue"
                 @update:value="syncConfirmationEv"
               />
@@ -974,63 +1034,16 @@
                 :options="confirmationList"
                 :loading="componentStore.confirmationLoading"
                 :render-label="renderLabel"
+                :virtual-scroll="false"
                 :render-tag="renderValue"
                 @update:value="onChangeConfirmation"
                 :max-tag-count="1"
               />
             </n-form-item>
           </div>
-          <template v-if="store.sortableConfirmations?.length">
-            <div class="col-span-12 pb-2 px-2 flex flex-wrap justify-between gap-x-4 gap-y-1">
-              <span class="text-secondary">{{
-                $t('documentPage.command.form.viewDescription')
-              }}</span>
-              <n-checkbox v-model:checked="store.oneByOne">
-                {{
-                  $t(
-                    store.oneByOne
-                      ? 'documentPage.command.form.viewOneByOne'
-                      : 'documentPage.command.form.viewSameTime'
-                  )
-                }}
-              </n-checkbox>
-            </div>
-            <div class="col-span-12">
-              <VueDraggable v-model="store.sortableConfirmations" @end="onChangeDraggle">
-                <div
-                  v-for="(item, index) in store.sortableConfirmations"
-                  :key="item.id"
-                  class="sort-target flex items-center gap-2 px-2 py-1 bg-surface-section border border-surface-line rounded-xl mb-1"
-                >
-                  <div class="handle">
-                    <n-icon
-                      size="24"
-                      class="text-secondary cursor-move scale-100 hover:scale-[1.2] mx-1 @lg:mx-2"
-                    >
-                      <Drag24Filled />
-                    </n-icon>
-                  </div>
-
-                  <div class="flex-1 min-w-0 select-none flex">
-                    <UIUser class="!w-full" :data="item.data" :hide-tooltip="true" :short="false" />
-                  </div>
-                  <template v-if="store.oneByOne">
-                    <n-button type="primary" secondary :icon-placement="'right'" size="small">
-                      <template #icon>
-                        <DrawText24Regular />
-                      </template>
-                      <span class="font-bold text-lg">{{ index + 1 }}</span>
-                    </n-button>
-                  </template>
-                  <n-button @click="onRemoveEv(item.id)" type="error" circle secondary>
-                    <template #icon>
-                      <DismissCircle28Filled />
-                    </template>
-                  </n-button>
-                </div>
-              </VueDraggable>
-            </div>
-          </template>
+          <div v-if="store.sortableConfirmations?.length" class="col-span-12 pb-1">
+            <CommandSigners />
+          </div>
         </div>
       </div>
     </n-form>

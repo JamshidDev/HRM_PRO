@@ -45,6 +45,31 @@
       results.value = []
     }
   })
+
+  // Klaviatura: ↓/↑ — ro'yxat bo'ylab bittadan yurish (tanlangan qator ko'rinib turadi), Enter — ochish.
+  const activeIndex = ref(-1)
+  const listRef = ref(null)
+  watch(results, (list) => {
+    activeIndex.value = list.length ? 0 : -1
+  })
+
+  const setActive = (index) => {
+    activeIndex.value = index
+    nextTick(() => listRef.value?.querySelector(`[data-index="${index}"]`)?.scrollIntoView({ block: 'nearest' }))
+  }
+
+  const onKeydown = (e) => {
+    const count = results.value.length
+    if (!count) return
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault()
+      const step = e.key === 'ArrowDown' ? 1 : -1
+      setActive((activeIndex.value + step + count) % count)
+    } else if (e.key === 'Enter' && results.value[activeIndex.value]) {
+      e.preventDefault()
+      emit('pick', results.value[activeIndex.value])
+    }
+  }
 </script>
 
 <template>
@@ -56,22 +81,27 @@
       round
       :placeholder="$t('liveChatPage.searchEmployee')"
       class="mb-2"
+      @keydown="onKeydown"
     >
       <template #prefix>
         <n-icon size="18" class="text-textColor3"><Search24Regular /></n-icon>
       </template>
     </n-input>
 
-    <div class="min-h-[200px] max-h-[380px] overflow-y-auto">
+    <div ref="listRef" class="user-list min-h-[200px] max-h-[380px] overflow-y-auto">
       <div v-if="loading" class="flex justify-center py-10"><n-spin size="small" /></div>
       <template v-else-if="results.length">
         <div
-          v-for="user in results"
+          v-for="(user, index) in results"
           :key="user.id"
-          class="flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-surface-ground"
+          :data-index="index"
+          class="list-in flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 transition-colors"
+          :class="index === activeIndex && 'bg-surface-ground'"
+          :style="{ animationDelay: Math.min(index, 8) * 30 + 'ms' }"
+          @mousemove="activeIndex = index"
           @click="emit('pick', user)"
         >
-          <div class="relative shrink-0">
+          <div class="relative flex shrink-0">
             <n-avatar round :size="40" :src="user.photo" :color="getAvatarColor(user.id)">
               {{ getInitials(user.fullName) }}
             </n-avatar>
@@ -92,3 +122,31 @@
     </div>
   </UIModal>
 </template>
+
+<style scoped>
+  /* Natijalar birin-ketin, pastdan yengil chiqadi */
+  .list-in {
+    animation: list-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes list-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+  /* Ingichka scrollbar, strelkalarsiz (chat oynasidagi kabi) */
+  .user-list {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--textColor3) 45%, transparent) transparent;
+  }
+  .user-list::-webkit-scrollbar {
+    width: 6px;
+  }
+  .user-list::-webkit-scrollbar-button {
+    display: none;
+  }
+  .user-list::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--textColor3) 45%, transparent);
+    border-radius: 9999px;
+  }
+</style>

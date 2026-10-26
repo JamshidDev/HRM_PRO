@@ -9,6 +9,8 @@
   import Filter from './ui/Filter.vue'
   import ReplaceModal from './ui/ReplaceModal.vue'
   import AddSlotModal from './ui/AddSlotModal.vue'
+  import RegenModal from './ui/RegenModal.vue'
+  import RemoveModal from './ui/RemoveModal.vue'
   import ChangeInfoModal from './ui/ChangeInfoModal.vue'
 
   const store = useScheduleGroupWorkerStore()
@@ -20,6 +22,7 @@
   store.params.group = Number(route.params.groupId)
   store.params.startDate = route.query.start
   store.params.endDate = route.query.end
+  store.params.slots = Number(route.query.slots) || 0
   store.params.search = null
   store.params.page = 1
   store.monthsList = getMonthOfRage(store.params.startDate, store.params.endDate)
@@ -68,6 +71,8 @@
     <Table />
     <ReplaceModal />
     <AddSlotModal />
+    <RegenModal />
+    <RemoveModal />
     <ChangeInfoModal />
   </UIPageContent>
 </template>
