@@ -1,11 +1,14 @@
 <script setup>
   import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
-  import { UIModal, UINSelect } from '@/components/index.js'
+  import { RubberSegment, UIModal, UINSelect } from '@/components/index.js'
+  import { RUBBER_THEME } from '@/components/ui/rubberSegmentTheme.js'
   import validationRules from '@/utils/validationRules.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import {
+    CalendarArrowRight16Regular,
+    CalendarDay16Regular,
     ArrowDown16Regular,
     ArrowRight16Regular,
     Clock16Regular,
@@ -98,14 +101,13 @@
       .join('')
       .toUpperCase()
   const swapTime = computed(() => (swapDay.value?.isWorkDay ? `${swapDay.value.startTime}–${swapDay.value.endTime}` : null))
-  // Almashtirish turi: bir kunlik o'rinbosarlik yoki tanlangan kundan oy oxirigacha o'ringa boshqa xodim.
-  const ownerModes = computed(() => [
-    { key: 'rest', label: t('shiftType.groupView.ownerRest'), hint: t('shiftType.groupView.ownerRestHint') },
-    { key: 'free', label: t('shiftType.groupView.ownerFree'), hint: t('shiftType.groupView.ownerFreeHint') },
-    { key: 'keep', label: t('shiftType.groupView.ownerKeep'), hint: t('shiftType.groupView.ownerKeepHint') }
+  // Almashtirish turi: bir kunlik o'rinbosarlik yoki tanlangan kundan oy oxirigacha o'ringa boshqa xodim (egasi grafigi o'zgarmaydi).
+  const tabTheme = { ...RUBBER_THEME, thumbColor: 'var(--fig-block-bg)', activeTextColor: 'var(--fig-text-primary)' }
+  const kindItems = computed(() => [
+    { value: 'day', label: t('shiftType.groupView.swapKindDay'), icon: CalendarDay16Regular },
+    { value: 'full', label: t('shiftType.groupView.swapKindFull'), icon: CalendarArrowRight16Regular }
   ])
   const isFull = computed(() => store.transferMode)
-  const ownerMode = ref('rest')
   const transferEnd = computed(() => {
     const end = store.params.endDate ? String(store.params.endDate).slice(0, 10) : null
     return end && end < store.monthRange.to ? end : store.monthRange.to
@@ -113,7 +115,6 @@
   const fmtDate = (d) => (d ? `${d.slice(8, 10)}.${d.slice(5, 7)}` : '')
   const setKind = (full) => {
     store.transferMode = full
-    ownerMode.value = 'rest'
     store.replacePayload.positonId = null
     if (full) store.replacePayload.date = new Date(`${store.defaultDate}T00:00:00`).getTime()
   }
@@ -125,7 +126,7 @@
       worker_position_id: store.selectedWorker.workerPositionId,
       new_worker_position_id: store.replacePayload.positonId,
       from: swapDate.value,
-      owner_mode: ownerMode.value
+      owner_mode: 'keep'
     })
   }
 
@@ -279,17 +280,15 @@
       </template>
 
       <template v-else>
-        <div class="col-span-12 grid grid-cols-2 gap-1 p-1 mb-4 rounded-xl bg-surface-ground text-sm">
-          <button
-            v-for="k in [false, true]"
-            :key="String(k)"
-            type="button"
-            class="h-9 rounded-lg font-medium transition-colors"
-            :class="isFull === k ? 'bg-surface-section text-primary shadow-sm' : 'text-secondary hover:text-textColor0'"
-            @click="setKind(k)"
-          >
-            {{ k ? $t('shiftType.groupView.swapKindFull') : $t('shiftType.groupView.swapKindDay') }}
-          </button>
+        <div class="col-span-12 mb-4">
+          <RubberSegment
+            v-bind="tabTheme"
+            :items="kindItems"
+            :value="isFull ? 'full' : 'day'"
+            size="md"
+            class-name="w-full"
+            @change="(v) => setKind(v === 'full')"
+          />
         </div>
 
         <!-- To'liq almashtirish: tanlangan kundan oy oxirigacha o'ringa boshqa xodim -->
@@ -331,25 +330,6 @@
               :total-count="store.totalWorker"
               @onScrollEv="store._workers(true)"
             />
-          </div>
-
-          <div class="flex flex-col gap-1.5">
-            <div class="h-6 flex items-center text-xs text-secondary">
-              {{ $t('shiftType.groupView.ownerModeLabel', { name: store.selectedWorker.fullName }) }}
-            </div>
-            <div class="grid grid-cols-3 gap-2">
-              <button
-                v-for="m in ownerModes"
-                :key="m.key"
-                type="button"
-                class="rounded-xl border px-3 py-2.5 text-left transition-colors"
-                :class="ownerMode === m.key ? 'border-primary bg-primary/5 text-primary' : 'border-surface-line hover:border-primary/50'"
-                @click="ownerMode = m.key"
-              >
-                <span class="block font-medium">{{ m.label }}</span>
-                <span class="block mt-0.5 text-[11px] leading-[1.3] text-secondary font-normal">{{ m.hint }}</span>
-              </button>
-            </div>
           </div>
 
           <div v-if="picked && swapDate" class="flex items-start gap-1.5 text-xs text-secondary">

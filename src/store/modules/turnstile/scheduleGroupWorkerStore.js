@@ -84,7 +84,7 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     // Guruh smena turi (nom + naqsh) — sahifa kartochkasi va navbat hisobi uchun.
     shiftType: null,
     // Bo'sh navbatga xodim qo'shish oynasi.
-    addSlot: { visible: false, phase: null, fam: 0 },
+    addSlot: { visible: false, phase: null, fam: 0, from: null },
     // Xodim grafigini navbati bo'yicha qayta yaratish oynasi.
     regen: { visible: false, worker: null },
     // Xodimni guruhdan chiqarish oynasi.

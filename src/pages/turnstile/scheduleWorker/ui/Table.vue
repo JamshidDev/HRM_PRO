@@ -4,6 +4,7 @@
   import Utils from '@/utils/Utils.js'
   import {
     ArrowSync20Regular,
+    PersonAdd20Regular,
     CalendarEdit16Regular,
     Delete16Regular,
     MoreHorizontal32Filled,
@@ -50,6 +51,8 @@
           endTime: e.end_time || null,
           workTime: e.daily_minutes,
           isEmpty: e.id === null,
+          // Shu kuni boshqa smenada (o'ringa oy o'rtasida kelgan/ketgan) — faqat ko'rsatish uchun.
+          other: e.id === null ? (e.other_schedule ?? null) : null,
           inPeriod: inPeriod(e.date),
           // Bir kunlik o'rinbosarlik (backend asl rejani qaytaradi).
           substitution: e.substitution ?? null,
@@ -215,6 +218,10 @@
     }
     // Bir o'rinda to'qnashuv — faqat ikkalasi bir kunda ishlasa (o'ringa D kundan kelganda egasining dam kunlari to'sqinlik qilmaydi).
     const workIdx = (w) => w.days.map((d, i) => (!d.isEmpty && d.isWorkDay ? i : -1)).filter((i) => i >= 0)
+    const joinedMidMonth = (w) => {
+      const first = w.days.findIndex((d) => !d.isEmpty)
+      return first > w.days.findIndex((d) => d.inPeriod) || w.days.some((d) => d.other)
+    }
     const noSharedWork = (a, b) => {
       const set = new Set(workIdx(a))
       return workIdx(b).every((i) => !set.has(i))
@@ -245,7 +252,8 @@
         (a, b) => filledIdx(b).length - filledIdx(a).length || firstDay(a) - firstDay(b) || byDeptPosName(a, b)
       )
       for (const w of sorted) {
-        const free = chains.find((c) => c.every((x) => noSharedWork(x, w)))
+        // Oy o'rtasida kelgan (yoki boshqa smenadan o'tgan) xodim — o'z navbatidagi mavjud o'ringa qo'shiladi.
+        const free = chains.find((c) => c.every((x) => noSharedWork(x, w))) ?? (joinedMidMonth(w) ? chains[0] : null)
         if (free) free.push(w)
         else chains.push([w])
       }
@@ -401,6 +409,17 @@
     store.addSlot.visible = true
   }
 
+  // Bo'shagan o'ringa (egasi ketgan kundan) xodim — shu navbat bilan, birinchi bo'sh kundan.
+  const onFillVacant = (w) => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
+    const { pattern, crewSize } = cycleOf(store.shiftType)
+    const step = pattern.length / crewSize
+    store.addSlot.fam = (w.navbat - 1) % step
+    store.addSlot.phase = Math.floor((w.navbat - 1) / step) + 1
+    store.addSlot.from = vacantFrom(w)
+    store.addSlot.visible = true
+  }
+
   // Burchak belgisini bosish — o'zgargan kun ma'lumoti (reja, hozirgi, kim bilan almashgan).
   const sigOfDay = (d) => (d?.isWorkDay ? `W${(d.startTime || '').slice(0, 5)}` : '-')
   const sigOfPlan = (p) => (p?.work_status ? `W${(p.start_time || '').slice(0, 5)}` : '-')
@@ -448,7 +467,7 @@
 
   // Katakni bosish — shu kun uchun almashtirish oynasi.
   const onCellClick = (worker, day) => {
-    if (!canReplace.value || !day.inPeriod) return
+    if (!canReplace.value || !day.inPeriod || day.other) return
     onReplace(worker)
     store.replacePayload.date = new Date(`${day.date}T00:00:00`).getTime()
     // Katakdan — kunni o'zgartirish (almashtirish «…» menyusida alohida).
@@ -456,7 +475,20 @@
   }
 
   // Xodim qatoridagi «…» menyusi: almashtirish, qayta generatsiya, kunni o'zgartirish.
-  const rowMenu = computed(() => [
+  // O'rin egasi oy o'rtasida ketgan bo'lsa — davr ichidagi oxirgi bo'sh kunlarning birinchisi (shu kundan o'rin bo'sh).
+  const vacantFrom = (w) => {
+    if (!rotating.value || !w?.navbat) return null
+    let last = -1
+    w.days.forEach((d, i) => {
+      if (!d.isEmpty) last = i
+    })
+    const next = w.days.slice(last + 1).find((d) => d.inPeriod && d.isEmpty)
+    return last >= 0 && next ? next.date : null
+  }
+  const rowMenuOf = (w) => [
+    ...(vacantFrom(w) && canAddToSlot.value
+      ? [{ label: t('shiftType.groupView.menuFillVacant'), key: 'fill', icon: UIHelper.renderIcon(PersonAdd20Regular) }]
+      : []),
     { label: t('shiftType.groupView.menuSwap'), key: 'swap', icon: UIHelper.renderIcon(PeopleSwap20Regular) },
     ...(rotating.value
       ? [{ label: t('shiftType.groupView.menuRegen'), key: 'regen', icon: UIHelper.renderIcon(ArrowSync20Regular) }]
@@ -469,8 +501,9 @@
       icon: UIHelper.renderIcon(Delete16Regular),
       props: { style: 'color: var(--color-error, #e5484d)' }
     }
-  ])
+  ]
   const onRowMenu = (key, worker) => {
+    if (key === 'fill') return onFillVacant(worker)
     if (key === 'regen') return onRegen(worker)
     if (key === 'remove') {
       if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
@@ -674,7 +707,7 @@
                     v-if="canReplace"
                     size="small"
                     trigger="click"
-                    :options="rowMenu"
+                    :options="rowMenuOf(worker)"
                     @select="(key) => onRowMenu(key, worker)"
                   >
                     <div
@@ -718,7 +751,18 @@
                   >
                     {{ day.sub.initials }}
                   </div>
-                  <template v-if="day.isEmpty"></template>
+                  <div
+                    v-if="day.isEmpty && day.other"
+                    class="other-shift absolute inset-[3px] rounded flex flex-col items-center justify-center text-[10px] leading-[1.15]"
+                    :title="$t('shiftType.groupView.otherShiftDay', { name: day.other.name })"
+                  >
+                    <template v-if="day.other.work_status">
+                      <span>{{ day.other.start_time }}</span>
+                      <span>{{ day.other.end_time }}</span>
+                    </template>
+                    <span v-else>{{ $t('shiftType.groupView.rest') }}</span>
+                  </div>
+                  <template v-else-if="day.isEmpty"></template>
                   <template v-else-if="day.isWorkDay">
                     <div class="leading-[1.2] pt-3">{{ day.startTime }}</div>
                     <div class="leading-[1.2]">{{ day.endTime }}</div>
@@ -777,6 +821,13 @@
   .brigade-label {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
+  }
+  /* Boshqa smenadagi kun — xira, chiziqli chegara */
+  .other-shift {
+    color: var(--fig-text-tertiary);
+    border: 1px dashed var(--surface-line);
+    background: color-mix(in srgb, var(--surface-ground) 60%, transparent);
+    cursor: default;
   }
   .changed-cell {
     box-shadow: inset 0 0 0 1.5px var(--color-primary);

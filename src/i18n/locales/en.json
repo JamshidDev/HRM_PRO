@@ -5426,6 +5426,7 @@
       "regenChanged": "days off pattern: {n}",
       "regenHint": "From the selected date to {to}, days will be rewritten by the slot pattern. Manual changes will be discarded.",
       "menuSwap": "Swap",
+      "menuFillVacant": "Add employee to vacant days",
       "menuRegen": "Rebuild",
       "menuEditDay": "Change day",
       "subTitle": "One-day swap",
@@ -5472,14 +5473,8 @@
       "transferTitle": "Another employee in this slot",
       "transferFrom": "From which day",
       "transferNew": "Employee for this slot",
-      "ownerModeLabel": "{name} after this date:",
-      "ownerRest": "Rest",
-      "ownerRestHint": "Remaining days off",
-      "ownerFree": "Release",
-      "ownerFreeHint": "To place into a free slot of another shift",
-      "ownerKeep": "Both",
-      "ownerKeepHint": "Schedule unchanged",
-      "transferSummary": "{name} works {from} – {to} instead of {owner} on this slot's schedule. Their days in another shift for this period are removed."
+      "transferSummary": "{name} works {from} – {to} on this slot's schedule; their days in another shift for this period are removed. {owner}'s schedule is unchanged — edit it separately if needed.",
+      "otherShiftDay": "On this day — in shift «{name}»"
     },
     "generate": {
       "month": "Month",

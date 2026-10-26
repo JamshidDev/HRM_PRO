@@ -93,8 +93,9 @@
       positionId.value = null
       startIndex.value = null
       search.value = null
-      // Standart — bugun (oy/smena davri ichida bo'lsa), aks holda davr boshi.
-      setDate(todayAllowed.value ? today : minDay.value)
+      // Bo'shagan o'ringa — egasi ketgan kundan; aks holda bugun (davr ichida bo'lsa) yoki davr boshi.
+      setDate(store.addSlot.from || (todayAllowed.value ? today : minDay.value))
+      store.addSlot.from = null
       load()
     }
   )
