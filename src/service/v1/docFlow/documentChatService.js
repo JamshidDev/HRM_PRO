@@ -13,7 +13,7 @@ const _sendMessage = async (payload) => {
 }
 
 const _readMessage = async (payload) => {
-  return await axios.post(`/v1/document/read`, payload.data)
+  return await axios.post(`/v1/document/messages/read`, payload.data)
 }
 
 const _delete = async (payload) => {
