@@ -335,7 +335,7 @@
       </div>
     </template>
     <template #footer>
-      <div class="px-4 pb-4 pt-3 border-t border-surface-line">
+      <div class="px-4 py-2 border-t border-surface-line">
         <div class="grid grid-cols-2 gap-3">
           <n-button secondary :disabled="app.forwardLoading" @click="app.forwardVisible = false">
             {{ $t('content.cancel') }}

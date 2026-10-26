@@ -1331,6 +1331,7 @@
       "updateTitle": "Редактировать приказ",
       "fullscreen": "Во весь экран",
       "exitFullscreen": "Свернуть",
+      "previewTitle": "Просмотр приказа",
       "lastVacation": "Просмотреть данные последнего отпуска",
       "form": {
         "beforeFromDeadline": "До истечения срока",

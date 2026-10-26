@@ -1329,6 +1329,7 @@
       "updateTitle": "Edit order",
       "fullscreen": "Full screen",
       "exitFullscreen": "Exit full screen",
+      "previewTitle": "Command preview",
       "lastVacation": "View last vacation data",
       "form": {
         "beforeFromDeadline": "Before deadline",

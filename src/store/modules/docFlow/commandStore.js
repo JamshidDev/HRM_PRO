@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import Utils from '@/utils/Utils.js'
-import { openSafeUrl } from '@/utils/sanitize.js'
+import i18n from '@/i18n/index.js'
 
 // ContractTypeEnum: 2 = fuqarolik-huquqiy shartnoma (FXSH).
 const CONTRACT_TYPE_CIVIL = 2
@@ -498,11 +498,15 @@ const commandStoreOptions = {
       $ApiService.commandService
         ._viewFile({ data: { ...data, status: 'view' } })
         .then((response) => {
+          // Yangi tab o'rniga universal ko'rish oynasi ($MediaViewer) ochiladi;
+          // oyna yopilganda blob URL o'zi bo'shatiladi.
           const url = window.URL.createObjectURL(
             new Blob([response.data], { type: 'application/pdf' })
           )
-          openSafeUrl(url)
-          setTimeout(() => window.URL.revokeObjectURL(url), 20000)
+          window.$MediaViewer.showMediaViewer(url, 'pdf', {
+            title: i18n.global.t('documentPage.command.previewTitle'),
+            revoke: true
+          })
         })
         .finally(() => {
           this.viewLoading = false

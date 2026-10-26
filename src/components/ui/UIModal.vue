@@ -58,6 +58,14 @@
     headerDivider: {
       type: Boolean,
       default: true
+    },
+    /**
+     * Ixcham tana: kichikroq ichki chekinish. Ko'rish oynalari kabi tanasi o'zi katta
+     * (PDF, rasm) bo'lgan modallar uchun. Sarlavha esa hamma modalda bir xil — past (ixcham).
+     */
+    compact: {
+      type: Boolean,
+      default: false
     }
   })
 
@@ -178,12 +186,12 @@
               <!-- `-mx-2 -mt-2` tashqi `p-2` ni bekor qiladi, shunda ajratuvchi chiziq
                    kartaning butun kengligi bo'ylab cho'ziladi. -->
               <div
-                class="ui-modal__header flex items-center justify-between gap-3 -mx-2 -mt-2 px-6 py-4"
+                class="ui-modal__header flex items-center justify-between gap-3 -mx-2 -mt-2 px-4 py-2"
                 :class="headerDivider && 'border-b border-surface-line'"
               >
                 <!-- `min-w-0` + `flex-1`: uzun sarlavha amallar qatorini (sana,
                      yopish tugmasi) siqib chiqarmasin, o'zi qisqartirilsin. -->
-                <h3 class="text-xl font-bold text-textColor0 truncate min-w-0 flex-1">
+                <h3 class="text-base font-bold text-textColor0 truncate min-w-0 flex-1">
                   <slot name="header-title">
                     {{ title }}
                   </slot>
@@ -198,9 +206,10 @@
                     :aria-label="$t('content.close')"
                     :title="$t('content.close')"
                     @click="onClickClose"
-                    class="w-9 h-9 rounded-full bg-surface-ground hover:bg-surface-line flex items-center justify-center cursor-pointer shrink-0 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                    class="w-8 h-8 rounded-full bg-fig-red-50 hover:bg-fig-red-100 text-fig-text-red flex items-center justify-center cursor-pointer shrink-0 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-fig-br-error"
                   >
-                    <n-icon size="18" class="text-textColor1">
+                    <!-- Yopish — loyihaning qizil ranglarida (yorug'/qorong'i mavzuda bir xil o'zgaruvchilar). -->
+                    <n-icon size="18">
                       <Dismiss24Regular />
                     </n-icon>
                   </button>
@@ -210,8 +219,7 @@
           </div>
           <div
             ref="bodyRef"
-            class="px-4 pt-4 pb-4"
-            :class="[isFlexBody && 'flex-1 min-h-0 overflow-y-auto']"
+            :class="[compact ? 'p-2' : 'px-4 pt-4 pb-4', isFlexBody && 'flex-1 min-h-0 overflow-y-auto']"
           >
             <slot name="default"> </slot>
           </div>
