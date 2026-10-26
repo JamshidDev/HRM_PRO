@@ -5584,7 +5584,10 @@
     "signAllCount": "Filtrga mos {count} ta imzolanmagan sertifikat topildi.",
     "signAllNote1": "Har bir hujjatga imzo QR kodi bosiladi va holat «Tasdiqlangan» bo'ladi.",
     "signAllNote2": "Imzo navbatidagi tasdiqlovchilar statusi o'zgarmaydi.",
-    "signAllNote3": "Amal fon rejimida bajariladi — tugagach ro'yxatni yangilang: holat «Tasdiqlangan» bo'ladi va hujjatda QR kod paydo bo'ladi."
+    "signAllNote3": "Amal fon rejimida bajariladi — ro'yxat o'zi yangilanib boradi: holat «Tasdiqlangan» bo'ladi va hujjatda QR kod paydo bo'ladi.",
+    "generateQueued": "{count} ta sertifikat yaratildi. Hujjatlar (PDF) fonda tayyorlanmoqda — «Hujjat» ustunidagi holat o'zi yangilanadi.",
+    "signAllQueued": "{count} ta sertifikatni imzolash fonda boshlandi. Ro'yxatdagi holat o'zi yangilanib boradi.",
+    "signDone": "Sertifikat imzolandi. Hujjatdagi QR kod bir necha soniyada paydo bo'ladi."
   },
   "publicPage": {
     "authentication": "Imtihon savollarini ko'rish",

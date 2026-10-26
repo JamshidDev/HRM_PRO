@@ -5557,7 +5557,10 @@
     "signAllCount": "{count} unsigned certificates match the filter.",
     "signAllNote1": "A signature QR code is stamped on each document and the status becomes “Confirmed”.",
     "signAllNote2": "Signer statuses in the approval queue stay unchanged.",
-    "signAllNote3": "The action runs in the background — refresh the list when it finishes: the status becomes “Confirmed” and a QR code appears in the document."
+    "signAllNote3": "The action runs in the background — the list refreshes automatically: the status becomes «Approved» and a QR code appears on the document.",
+    "generateQueued": "{count} certificates created. Documents (PDF) are being prepared in the background — the «Document» column updates automatically.",
+    "signAllQueued": "Signing of {count} certificates started in the background. The list status updates automatically.",
+    "signDone": "Certificate signed. The QR code on the document will appear in a few seconds."
   },
   "uploadSourceConfig": {
     "name": "Upload Source"

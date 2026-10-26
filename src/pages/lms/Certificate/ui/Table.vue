@@ -102,8 +102,8 @@
       label: t('content.confirm'),
       key: 'sign',
       icon: UIHelper.renderIcon(CheckmarkCircle20Regular),
-      // Allaqachon tasdiqlangan (3) sertifikat qayta imzolanmaydi.
-      disabled: (row) => row?.confirmation?.id === 3,
+      // Tasdiqlangan (3) yoki PDF'i hali tayyor bo'lmagan sertifikat imzolanmaydi.
+      disabled: (row) => row?.confirmation?.id === 3 || row?.generate !== 3,
       action: onSign
     },
     {
