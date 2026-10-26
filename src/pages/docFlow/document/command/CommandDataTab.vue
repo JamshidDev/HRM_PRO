@@ -2,7 +2,7 @@
   import {
     LockClosed20Regular,
     ArrowCounterclockwise20Regular,
-    DocumentBulletList20Filled,
+    Eye20Regular,
     Save20Regular,
     CheckmarkCircle20Filled,
     DismissCircle20Filled,
@@ -249,7 +249,7 @@
           @click="onPreview"
         >
           <template #icon>
-            <n-icon><DocumentBulletList20Filled /></n-icon>
+            <n-icon><Eye20Regular /></n-icon>
           </template>
           {{ $t('documentPage.command.dataTab.preview') }}
         </n-button>
