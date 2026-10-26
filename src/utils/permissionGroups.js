@@ -254,6 +254,7 @@ export const ENFORCED = new Set([
   'turnstile-sheets-groups-delete',
   'turnstile-sheets-groups-read',
   'turnstile-sheets-groups-write',
+  'turnstile-sheets-groups-past-write',
   'turnstile-sheets-read',
   'turnstile-sheets-workers-delete',
   'turnstile-sheets-workers-read',
@@ -711,6 +712,7 @@ export const MEANINGFUL = new Set([
   'turnstile-sheets-groups-delete',
   'turnstile-sheets-groups-read',
   'turnstile-sheets-groups-write',
+  'turnstile-sheets-groups-past-write',
   'turnstile-sheets-read',
   'turnstile-sheets-workers',
   'turnstile-sheets-workers-delete',
@@ -985,6 +987,7 @@ export const PERMISSION_GROUPS = [
         actions: [
           { slug: 'turnstile-sheets-groups-read', label: "Ko'rish" },
           { slug: 'turnstile-sheets-groups-write', label: 'Yaratish / Tahrirlash' },
+          { slug: 'turnstile-sheets-groups-past-write', label: "O'tgan oyni tahrirlash" },
           { slug: 'turnstile-sheets-groups-finish', label: 'Yakunlash' },
           { slug: 'turnstile-sheets-groups-delete', label: "O'chirish" }
         ]

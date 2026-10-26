@@ -28,6 +28,7 @@
 
   onUnmounted(() => {
     eventBus.off(Events.CERTIFICATED_GENERATED, onUpdateStatus)
+    store._stopRefresh()
   })
 </script>
 

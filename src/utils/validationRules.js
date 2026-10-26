@@ -1520,6 +1520,14 @@ export default {
     reference_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     reference_number: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
   },
+  // 60 — Harbiy yig'inga yuborish.
+  form_60: {
+    from: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    to: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    military_office: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    reference_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    reference_number: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
+  },
   // 75 — Buyruqni bekor qilish.
   form_75: {
     cancel_reason: {

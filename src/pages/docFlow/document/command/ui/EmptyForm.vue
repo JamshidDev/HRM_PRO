@@ -4,13 +4,13 @@
 
 <template>
   <div
-    class="grid grid-cols-12 w-full justify-center border border-warning border-dashed bg-surface-ground rounded-md p-10"
+    class="grid grid-cols-12 w-full justify-center border border-fig-br-error border-dashed bg-fig-red-50 rounded-md p-10"
   >
     <div class="col-span-12 flex items-center gap-4 mx-auto">
-      <n-icon size="30" class="text-warning">
+      <n-icon size="30" class="text-fig-text-red">
         <Warning24Filled />
       </n-icon>
-      <span class="font-semibold text-warning">{{
+      <span class="font-semibold text-fig-text-red">{{
         $t(`documentPage.command.form.notSelectCommand`)
       }}</span>
     </div>

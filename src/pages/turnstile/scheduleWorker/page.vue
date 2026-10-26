@@ -19,6 +19,12 @@
 
   // Setup'da (bolalar mount bo'lishidan oldin) to'ldiriladi: oylar paneli (Filter.vue)
   // birinchi render'dayoq tanlangan oyni ko'rsatsin.
+  // Oldingi sahifadan qolgan ochiq oynalar yopiladi.
+  store.regen.visible = false
+  store.remove.visible = false
+  store.addSlot.visible = false
+  store.changeInfo.visible = false
+  store.replaceVisible = false
   store.params.group = Number(route.params.groupId)
   store.params.startDate = route.query.start
   store.params.endDate = route.query.end
