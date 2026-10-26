@@ -55,6 +55,10 @@ const _replaceWorker = async (payload) => {
 const _removeWorker = async (payload) => {
   return await axios.post(`/v1/turnstile/schedule/schedule-workers-remove`, payload.data)
 }
+// O'ringa D kundan boshqa xodim (oy oxirigacha).
+const _transferSlot = async (payload) => {
+  return await axios.post(`/v1/turnstile/schedule/schedule-workers-transfer`, payload.data)
+}
 const _cancelSubstitution = async (payload) => {
   return await axios.delete(`/v1/turnstile/schedule/substitutions/${payload.id}`)
 }
@@ -75,5 +79,6 @@ export default {
   _groupEdit,
   _replaceWorker,
   _cancelSubstitution,
-  _removeWorker
+  _removeWorker,
+  _transferSlot
 }

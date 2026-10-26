@@ -5515,7 +5515,20 @@
       "hoursShort": "{n} soat",
       "removeWholeMonth": "Butun oy",
       "removeHintMonth": "Xodimning shu oydagi butun grafigi o'chadi va u shu oy grafiksiz qoladi: tabelda reja bo'lmaydi, turniketda kutilmaydi, o'rni bo'sh qoladi. Fakt bo'lgan kunlar saqlanadi. Keyin uni boshqa smenaga qo'shish mumkin.",
-      "addFromMonthStart": "Xodim oy boshidan ({from}) shu o'rinda ishlaydi."
+      "addFromMonthStart": "Xodim oy boshidan ({from}) shu o'rinda ishlaydi.",
+      "swapKindDay": "Bir kunlik",
+      "swapKindFull": "Sanadan oy oxirigacha",
+      "transferTitle": "O'ringa boshqa xodim",
+      "transferFrom": "Qaysi kundan",
+      "transferNew": "O'ringa keladigan xodim",
+      "ownerModeLabel": "{name} shu kundan keyin:",
+      "ownerRest": "Dam",
+      "ownerRestHint": "Qolgan kunlari dam",
+      "ownerFree": "Bo'shatish",
+      "ownerFreeHint": "Boshqa smenaning bo'sh o'rniga qo'shish uchun",
+      "ownerKeep": "Ikkalasi",
+      "ownerKeepHint": "Grafigi o'zgarmaydi",
+      "transferSummary": "{name} {from} – {to} kunlari {owner} o'rnida, shu o'rin grafigi bo'yicha ishlaydi. Uning boshqa smenadagi shu kunlari o'chadi."
     },
     "generate": {
       "month": "Oy",

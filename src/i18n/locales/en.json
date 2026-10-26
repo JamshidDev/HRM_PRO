@@ -5466,7 +5466,20 @@
       "hoursShort": "{n} h",
       "removeWholeMonth": "Whole month",
       "removeHintMonth": "The employee's whole schedule for this month is removed: no plan in the timesheet, not expected at the turnstile, the slot becomes free. Days with facts are kept. They can be added to another shift later.",
-      "addFromMonthStart": "The employee works in this slot from the start of the month ({from})."
+      "addFromMonthStart": "The employee works in this slot from the start of the month ({from}).",
+      "swapKindDay": "One day",
+      "swapKindFull": "From date to month end",
+      "transferTitle": "Another employee in this slot",
+      "transferFrom": "From which day",
+      "transferNew": "Employee for this slot",
+      "ownerModeLabel": "{name} after this date:",
+      "ownerRest": "Rest",
+      "ownerRestHint": "Remaining days off",
+      "ownerFree": "Release",
+      "ownerFreeHint": "To place into a free slot of another shift",
+      "ownerKeep": "Both",
+      "ownerKeepHint": "Schedule unchanged",
+      "transferSummary": "{name} works {from} – {to} instead of {owner} on this slot's schedule. Their days in another shift for this period are removed."
     },
     "generate": {
       "month": "Month",

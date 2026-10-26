@@ -67,6 +67,8 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     replaceLoading: false,
     // Katakdan ochilganda: 'edit' — kunni o'zgartirish, 'swap' — xodim bilan almashtirish.
     replaceMode: 'swap',
+    // Almashtirishda: true — tanlangan kundan oy oxirigacha o'ringa boshqa xodim.
+    transferMode: false,
     dayEdit: { choice: null, start: null, end: null },
 
     workerParams: {
@@ -163,6 +165,18 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
           this.remove.loading = false
         })
     },
+    _transferSlot(data) {
+      this.replaceLoading = true
+      $ApiService.shiftTypeService
+        ._transferSlot({ data })
+        .then(() => {
+          this.replaceVisible = false
+          this._index()
+        })
+        .finally(() => {
+          this.replaceLoading = false
+        })
+    },
     _cancelSubstitution(id) {
       this.replaceLoading = true
       $ApiService.shiftTypeService
@@ -184,7 +198,7 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
         end_date: this.monthRange.to,
         priority_group: this.params.group,
         // O'rinbosar — faqat shu kuni dam bo'lganlar.
-        free_on: this.replacePayload.date ? Utils.timeToZone(this.replacePayload.date) : undefined
+        free_on: !this.transferMode && this.replacePayload.date ? Utils.timeToZone(this.replacePayload.date) : undefined
       }
       this.workerLoading = true
       $ApiService.shiftTypeService

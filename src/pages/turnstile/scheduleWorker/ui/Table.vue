@@ -213,6 +213,12 @@
       const set = new Set(filledIdx(a))
       return filledIdx(b).every((i) => !set.has(i))
     }
+    // Bir o'rinda to'qnashuv — faqat ikkalasi bir kunda ishlasa (o'ringa D kundan kelganda egasining dam kunlari to'sqinlik qilmaydi).
+    const workIdx = (w) => w.days.map((d, i) => (!d.isEmpty && d.isWorkDay ? i : -1)).filter((i) => i >= 0)
+    const noSharedWork = (a, b) => {
+      const set = new Set(workIdx(a))
+      return workIdx(b).every((i) => !set.has(i))
+    }
     // Navbati aniqlanmagan (1–2 kunlik, masalan bir kunga almashgan) xodim — naqshi mos va kunlari bo'sh o'ringa.
     const daySig = (d) => (d.isWorkDay ? `W${(d.startTime || '').slice(0, 5)}` : '-')
     for (const w of [...unknown]) {
@@ -239,7 +245,7 @@
         (a, b) => filledIdx(b).length - filledIdx(a).length || firstDay(a) - firstDay(b) || byDeptPosName(a, b)
       )
       for (const w of sorted) {
-        const free = chains.find((c) => c.every((x) => disjoint(x, w)))
+        const free = chains.find((c) => c.every((x) => noSharedWork(x, w)))
         if (free) free.push(w)
         else chains.push([w])
       }
@@ -490,6 +496,7 @@
     if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
     store.selectedWorker = v
     store.replaceMode = 'swap'
+    store.transferMode = false
     store.dayEdit = { choice: null, start: null, end: null }
     store.workerParams.search = null
     store.replacePayload.positonId = null

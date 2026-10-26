@@ -98,6 +98,37 @@
       .join('')
       .toUpperCase()
   const swapTime = computed(() => (swapDay.value?.isWorkDay ? `${swapDay.value.startTime}–${swapDay.value.endTime}` : null))
+  // Almashtirish turi: bir kunlik o'rinbosarlik yoki tanlangan kundan oy oxirigacha o'ringa boshqa xodim.
+  const ownerModes = computed(() => [
+    { key: 'rest', label: t('shiftType.groupView.ownerRest'), hint: t('shiftType.groupView.ownerRestHint') },
+    { key: 'free', label: t('shiftType.groupView.ownerFree'), hint: t('shiftType.groupView.ownerFreeHint') },
+    { key: 'keep', label: t('shiftType.groupView.ownerKeep'), hint: t('shiftType.groupView.ownerKeepHint') }
+  ])
+  const isFull = computed(() => store.transferMode)
+  const ownerMode = ref('rest')
+  const transferEnd = computed(() => {
+    const end = store.params.endDate ? String(store.params.endDate).slice(0, 10) : null
+    return end && end < store.monthRange.to ? end : store.monthRange.to
+  })
+  const fmtDate = (d) => (d ? `${d.slice(8, 10)}.${d.slice(5, 7)}` : '')
+  const setKind = (full) => {
+    store.transferMode = full
+    ownerMode.value = 'rest'
+    store.replacePayload.positonId = null
+    if (full) store.replacePayload.date = new Date(`${store.defaultDate}T00:00:00`).getTime()
+  }
+  const onTransfer = () => {
+    if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
+    if (!picked.value || !swapDate.value) return
+    store._transferSlot({
+      group_id: store.params.group,
+      worker_position_id: store.selectedWorker.workerPositionId,
+      new_worker_position_id: store.replacePayload.positonId,
+      from: swapDate.value,
+      owner_mode: ownerMode.value
+    })
+  }
+
   const onSubmit = () => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
     formRef.value?.validate((error) => {
@@ -111,9 +142,10 @@
   }
   // Kun yoki rejim almashsa — nomzodlar shu kun bo'yicha qayta yuklanadi.
   watch(
-    () => [store.replaceVisible, store.replaceMode, swapDate.value],
+    () => [store.replaceVisible, store.replaceMode, swapDate.value, store.transferMode],
     ([visible, mode], old) => {
-      if (!visible || mode !== 'swap' || (old && old[0] === visible && old[1] === mode && old[2] === swapDate.value)) return
+      if (!visible || mode !== 'swap') return
+      if (old && old[0] === visible && old[1] === mode && old[2] === swapDate.value && old[3] === store.transferMode) return
       store.replacePayload.positonId = null
       store._workers()
     }
@@ -124,6 +156,8 @@
     const d = Utils.timeToZone(ts)
     if (d < store.monthRange.from || d > store.monthRange.to) return true
     if (store.replaceMode !== 'swap') return false
+    // To'liq almashtirishda — o'rin egasining shu guruhdagi istalgan kuni.
+    if (store.transferMode) return d < store.monthRange.from || d > transferEnd.value
     const day = store.selectedWorker?.days?.find((x) => x.date === d)
     return !day?.isWorkDay || !!day?.substitution
   }
@@ -138,7 +172,13 @@
   <UIModal
     v-model:visible="store.replaceVisible"
     :width="500"
-    :title="store.replaceMode === 'edit' ? $t('shiftType.groupView.editDay') : $t('shiftType.groupView.subTitle')"
+    :title="
+      store.replaceMode === 'edit'
+        ? $t('shiftType.groupView.editDay')
+        : isFull
+          ? $t('shiftType.groupView.transferTitle')
+          : $t('shiftType.groupView.subTitle')
+    "
   >
     <n-form
       class="grid grid-cols-12"
@@ -239,7 +279,101 @@
       </template>
 
       <template v-else>
-        <div class="col-span-12 flex flex-col gap-2 text-sm mb-5">
+        <div class="col-span-12 grid grid-cols-2 gap-1 p-1 mb-4 rounded-xl bg-surface-ground text-sm">
+          <button
+            v-for="k in [false, true]"
+            :key="String(k)"
+            type="button"
+            class="h-9 rounded-lg font-medium transition-colors"
+            :class="isFull === k ? 'bg-surface-section text-primary shadow-sm' : 'text-secondary hover:text-textColor0'"
+            @click="setKind(k)"
+          >
+            {{ k ? $t('shiftType.groupView.swapKindFull') : $t('shiftType.groupView.swapKindDay') }}
+          </button>
+        </div>
+
+        <!-- To'liq almashtirish: tanlangan kundan oy oxirigacha o'ringa boshqa xodim -->
+        <div v-if="isFull" class="col-span-12 flex flex-col gap-4 text-sm mb-5">
+          <div class="flex items-center gap-3 rounded-xl border border-surface-line p-3">
+            <div class="w-10 h-10 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold bg-primary/10 text-primary">
+              {{ initials(store.selectedWorker.fullName) }}
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="font-medium leading-[1.3] line-clamp-1">{{ store.selectedWorker.fullName }}</div>
+              <div class="mt-0.5 text-xs text-secondary line-clamp-1">{{ store.selectedWorker.position }}</div>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-1.5">
+            <div class="h-6 flex items-center text-xs text-secondary">{{ $t('shiftType.groupView.transferFrom') }}</div>
+            <n-date-picker
+              v-model:value="store.replacePayload.date"
+              type="date"
+              class="w-full"
+              format="dd.MM.yyyy"
+              :clearable="false"
+              :is-date-disabled="disabledDate"
+            />
+          </div>
+
+          <div class="flex flex-col gap-1.5">
+            <div class="h-6 flex items-center text-xs text-secondary">{{ $t('shiftType.groupView.transferNew') }}</div>
+            <UINSelect
+              @onSearch="onSearch"
+              :query="store.workerParams.search"
+              :options="store.workerList.filter((v) => v.positionId !== store.selectedWorker.workerPositionId)"
+              v-model:value="store.replacePayload.positonId"
+              value-field="positionId"
+              :placeholder="$t('shiftType.groupView.transferNew')"
+              :render-label="UIHelper.selectRender.label"
+              :render-tag="UIHelper.selectRender.value"
+              :loading="store.workerLoading"
+              :total-count="store.totalWorker"
+              @onScrollEv="store._workers(true)"
+            />
+          </div>
+
+          <div class="flex flex-col gap-1.5">
+            <div class="h-6 flex items-center text-xs text-secondary">
+              {{ $t('shiftType.groupView.ownerModeLabel', { name: store.selectedWorker.fullName }) }}
+            </div>
+            <div class="grid grid-cols-3 gap-2">
+              <button
+                v-for="m in ownerModes"
+                :key="m.key"
+                type="button"
+                class="rounded-xl border px-3 py-2.5 text-left transition-colors"
+                :class="ownerMode === m.key ? 'border-primary bg-primary/5 text-primary' : 'border-surface-line hover:border-primary/50'"
+                @click="ownerMode = m.key"
+              >
+                <span class="block font-medium">{{ m.label }}</span>
+                <span class="block mt-0.5 text-[11px] leading-[1.3] text-secondary font-normal">{{ m.hint }}</span>
+              </button>
+            </div>
+          </div>
+
+          <div v-if="picked && swapDate" class="flex items-start gap-1.5 text-xs text-secondary">
+            <n-icon size="14" class="mt-px shrink-0"><Info16Regular /></n-icon>
+            {{
+              $t('shiftType.groupView.transferSummary', {
+                name: picked.name,
+                from: fmtDate(swapDate),
+                to: fmtDate(transferEnd),
+                owner: store.selectedWorker.fullName
+              })
+            }}
+          </div>
+        </div>
+        <div v-if="isFull" class="col-span-12 -mx-6 px-6 pt-4 border-t border-surface-line flex justify-end gap-3">
+          <n-button @click="store.replaceVisible = false" type="error" secondary>
+            {{ $t('content.cancel') }}
+          </n-button>
+          <n-button @click="onTransfer" :disabled="!picked || !swapDate" :loading="store.replaceLoading" type="primary">
+            {{ $t('content.save') }}
+          </n-button>
+        </div>
+
+        <div v-if="!isFull" class="col-span-12 flex flex-col gap-2 text-sm mb-5">
           <!-- 1. Dam oladigan xodim (ish kuni) -->
           <div class="flex items-center gap-3 rounded-xl border border-surface-line px-3 py-2.5">
             <div class="w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold bg-fig-red-50 text-fig-text-red">
@@ -329,7 +463,7 @@
             {{ $t('shiftType.groupView.subNotWorkDay') }}
           </n-alert>
         </div>
-        <div class="col-span-12 flex justify-end gap-4">
+        <div v-if="!isFull" class="col-span-12 flex justify-end gap-4">
           <n-button @click="store.replaceVisible = false" type="error" secondary>
             {{ $t('content.cancel') }}
           </n-button>

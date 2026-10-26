@@ -93,11 +93,20 @@
       positionId.value = null
       startIndex.value = null
       search.value = null
-      // Xodim doim oy (smena davri) boshidan ishlaydi.
-      date.value = minDay.value ? new Date(`${minDay.value}T00:00:00`).getTime() : null
+      // Standart — bugun (oy/smena davri ichida bo'lsa), aks holda davr boshi.
+      setDate(todayAllowed.value ? today : minDay.value)
       load()
     }
   )
+
+  const today = Utils.timeToZone(Date.now())
+  const todayAllowed = computed(() => !!minDay.value && today >= minDay.value && today <= endDate.value)
+  const setDate = (d) => (date.value = d ? new Date(`${d}T00:00:00`).getTime() : null)
+  const startStr = computed(() => (date.value ? Utils.timeToZone(date.value) : null))
+  const disabledDate = (ts) => {
+    const d = Utils.timeToZone(ts)
+    return !minDay.value || d < minDay.value || d > endDate.value
+  }
 
   // Boshqa grafikdagi xodim — tanlangan sanadan shu o'ringa o'tadi.
   const moveInfo = computed(() => {
@@ -177,8 +186,32 @@
           @onScrollEv="load(true)"
         />
       </div>
-      <div class="col-span-12 text-xs text-secondary">
-        {{ $t('shiftType.groupView.addFromMonthStart', { from: minDay ? `${minDay.slice(8, 10)}.${minDay.slice(5, 7)}` : '' }) }}
+      <div class="col-span-12">
+        <div class="h-6 flex items-center justify-between gap-2 mb-1.5">
+          <span class="text-xs text-secondary">{{ $t('shiftType.groupView.workFrom') }}</span>
+          <div class="flex gap-1.5">
+            <n-button
+              v-if="todayAllowed"
+              size="tiny"
+              secondary
+              :type="startStr === today ? 'primary' : 'default'"
+              @click="setDate(today)"
+            >
+              {{ $t('shiftType.groupView.regenToday') }}
+            </n-button>
+            <n-button size="tiny" secondary :type="startStr === minDay ? 'primary' : 'default'" @click="setDate(minDay)">
+              {{ $t('shiftType.groupView.regenMonthStart') }}
+            </n-button>
+          </div>
+        </div>
+        <n-date-picker
+          v-model:value="date"
+          type="date"
+          class="w-full"
+          format="dd.MM.yyyy"
+          :clearable="false"
+          :is-date-disabled="disabledDate"
+        />
       </div>
       <div v-if="moveInfo" class="col-span-12">
         <n-alert type="warning" :show-icon="true">{{ moveInfo }}</n-alert>
