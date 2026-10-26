@@ -1,25 +1,10 @@
 <script setup>
-  import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
-  import { ArrowReset20Regular, Search20Regular } from '@vicons/fluent'
+  import { useScheduleGroupWorkerStore } from '@/store/modules/index.js'
+  import { Search20Regular } from '@vicons/fluent'
   import MonthTab from './MonthTab.vue'
-  import { isRotating } from './navbat.js'
 
   // Qidiruv brauzerda (Table.vue `visibleList`) — so'rov yuborilmaydi.
   const store = useScheduleGroupWorkerStore()
-  const accStore = useAccountStore()
-
-  // Qayta generatsiya — aylanma smenada, ochilgan oyda (o'tgan oy — faqat ruxsat bilan).
-  const canGroupRegen = computed(
-    () =>
-      isRotating(store.shiftType) &&
-      !store.isPastMonth &&
-      store.list.length > 0 &&
-      accStore.checkPermission(accStore.pn.turnstileSheetsGroupsWrite)
-  )
-  const onGroupRegen = () => {
-    if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
-    store.groupRegen.visible = true
-  }
 
   const onChangeMonth = () => {
     store.params.page = 1
@@ -48,9 +33,5 @@
       v-model:date="store.selectedDate"
       @update:date="onChangeMonth"
     />
-    <n-button v-if="canGroupRegen" secondary type="primary" class="shrink-0" @click="onGroupRegen">
-      <template #icon><ArrowReset20Regular /></template>
-      {{ $t('shiftType.groupView.groupRegen') }}
-    </n-button>
   </div>
 </template>

@@ -85,8 +85,6 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     addSlot: { visible: false, phase: null, fam: 0 },
     // Xodim grafigini navbati bo'yicha qayta yaratish oynasi.
     regen: { visible: false, worker: null },
-    // Butun guruhni joriy oyda qayta generatsiya qilish oynasi.
-    groupRegen: { visible: false },
     // Xodimni guruhdan chiqarish oynasi.
     remove: { visible: false, worker: null, loading: false }
   }),

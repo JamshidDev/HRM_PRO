@@ -5466,12 +5466,7 @@
       "hoursShort": "{n} h",
       "removeWholeMonth": "Whole month",
       "removeHintMonth": "The employee's whole schedule for this month is removed: no plan in the timesheet, not expected at the turnstile, the slot becomes free. Days with facts are kept. They can be added to another shift later.",
-      "addFromMonthStart": "The employee works in this slot from the start of the month ({from}).",
-      "groupRegen": "Regenerate",
-      "groupRegenTitle": "Regenerate group schedule",
-      "groupRegenWorkers": "{n} employees",
-      "groupRegenRange": "Period: {from} – {to} (to month end)",
-      "groupRegenSkipped": "{n} employees with an unknown rotation order will not change"
+      "addFromMonthStart": "The employee works in this slot from the start of the month ({from})."
     },
     "generate": {
       "month": "Month",

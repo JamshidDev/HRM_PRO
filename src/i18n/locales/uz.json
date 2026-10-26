@@ -5515,12 +5515,7 @@
       "hoursShort": "{n} soat",
       "removeWholeMonth": "Butun oy",
       "removeHintMonth": "Xodimning shu oydagi butun grafigi o'chadi va u shu oy grafiksiz qoladi: tabelda reja bo'lmaydi, turniketda kutilmaydi, o'rni bo'sh qoladi. Fakt bo'lgan kunlar saqlanadi. Keyin uni boshqa smenaga qo'shish mumkin.",
-      "addFromMonthStart": "Xodim oy boshidan ({from}) shu o'rinda ishlaydi.",
-      "groupRegen": "Qayta generatsiya",
-      "groupRegenTitle": "Guruhni qayta generatsiya qilish",
-      "groupRegenWorkers": "{n} ta xodim",
-      "groupRegenRange": "Davr: {from} – {to} (oy oxirigacha)",
-      "groupRegenSkipped": "Navbati aniqlanmagan {n} ta xodim o'zgarmaydi"
+      "addFromMonthStart": "Xodim oy boshidan ({from}) shu o'rinda ishlaydi."
     },
     "generate": {
       "month": "Oy",

@@ -3,7 +3,7 @@
   import SearchElement from '@/pages/turnstile/schedule/ui/SearchElement.vue'
   import Utils from '@/utils/Utils.js'
   import {
-    ArrowReset20Regular,
+    ArrowSync20Regular,
     CalendarEdit16Regular,
     Delete16Regular,
     MoreHorizontal32Filled,
@@ -453,7 +453,7 @@
   const rowMenu = computed(() => [
     { label: t('shiftType.groupView.menuSwap'), key: 'swap', icon: UIHelper.renderIcon(PeopleSwap20Regular) },
     ...(rotating.value
-      ? [{ label: t('shiftType.groupView.menuRegen'), key: 'regen', icon: UIHelper.renderIcon(ArrowReset20Regular) }]
+      ? [{ label: t('shiftType.groupView.menuRegen'), key: 'regen', icon: UIHelper.renderIcon(ArrowSync20Regular) }]
       : []),
     { label: t('shiftType.groupView.menuEditDay'), key: 'edit', icon: UIHelper.renderIcon(CalendarEdit16Regular) },
     { type: 'divider', key: 'd-remove' },
@@ -685,15 +685,13 @@
                   v-for="(day, dayIndex) in worker.days"
                   :key="dayIndex"
                   class="border-r text-center border-l border-b border-t-0 -ml-[1px] border-surface-line w-[60px] min-w-[60px] h-[50px] border text-xs text-secondary p-2 pb-0 flex-shrink-0 cursor-pointer relative"
-                  :class="{ 'out-of-period': !day.inPeriod && day.isEmpty, 'changed-cell': day.sub || day.changed || day.substitution }"
+                  :class="{ 'out-of-period': !day.inPeriod && day.isEmpty, 'changed-cell': day.sub || day.substitution }"
                   :title="
                     day.substitution
                       ? $t(day.substitution.role === 'absent' ? 'shiftType.groupView.subAbsentTitle' : 'shiftType.groupView.subWorksTitle', { name: day.substitution.name })
                       : day.sub
                       ? $t('shiftType.groupView.subWorks', { name: day.sub.name, host: worker.fullName })
-                      : day.changed
-                        ? $t('shiftType.groupView.changedDay')
-                        : !day.inPeriod && day.isEmpty
+                      : !day.inPeriod && day.isEmpty
                         ? $t('shiftType.groupView.outOfPeriod')
                         : null
                   "
@@ -707,11 +705,11 @@
                     <n-icon size="12"><PeopleSwap20Regular /></n-icon>
                   </div>
                   <div
-                    v-else-if="day.sub || day.changed"
+                    v-else-if="day.sub"
                     class="absolute top-0 right-0 z-[1] px-1 h-[16px] leading-[16px] text-[10px] font-semibold rounded-bl bg-primary text-white cursor-pointer hover:brightness-110"
                     @click.stop="openChangeInfo(worker, day, dayIndex)"
                   >
-                    {{ day.sub ? day.sub.initials : '⇄' }}
+                    {{ day.sub.initials }}
                   </div>
                   <template v-if="day.isEmpty"></template>
                   <template v-else-if="day.isWorkDay">

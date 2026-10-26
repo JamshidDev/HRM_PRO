@@ -5,8 +5,6 @@
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
-  import { findNewGaps } from './conflicts.js'
-  import { showAlert } from '@/components/notify/alertDialog.js'
   import {
     ArrowDown16Regular,
     ArrowRight16Regular,
@@ -20,34 +18,6 @@
   const accStore = useAccountStore()
   const formRef = ref(null)
   const { t } = i18n.global
-
-  // Smena turidagi ish smenalari (bo'shliq tekshiruvi uchun).
-  const typeShifts = computed(() => {
-    const seen = new Map()
-    for (const d of store.shiftType?.days ?? []) {
-      if (!d?.work_status) continue
-      const st = String(d.start_time).slice(0, 5)
-      const et = String(d.end_time).slice(0, 5)
-      seen.set(`${st}-${et}`, { start: st, end: et })
-    }
-    return [...seen.values()]
-  })
-  const daysMap = (list) => Object.fromEntries(list.map((v) => [v.worker_position_id, v.days]))
-  // Smenada hech kim qolmasa ogohlantirish, tasdiqlansa saqlanadi (vaqt kesishmasi tekshirilmaydi).
-  const confirmIfGaps = (save, gaps) => {
-    if (!gaps.length) return save()
-    showAlert({
-      type: 'warning',
-      title: t('shiftType.groupView.conflictTitle'),
-      message: t('shiftType.groupView.gapHint'),
-      listHint: '',
-      errors: [
-        ...new Set(gaps.map((g) => t('shiftType.groupView.gapLine', { group: g.title, shift: g.shift })))
-      ],
-      confirmText: t('shiftType.groupView.conflictSave'),
-      onConfirm: save
-    })
-  }
 
   // Kunni o'zgartirish: Dam, smena turidagi smenalar yoki boshqa vaqt.
   const dayDate = computed(() => Utils.timeToZone(store.replacePayload.date))
@@ -112,25 +82,10 @@
       group_id: store.params.group,
       ...plan
     }
-    const before = daysMap(store.list)
-    const after = {
-      ...before,
-      [data.worker_position_id]: (before[data.worker_position_id] ?? []).map((d) =>
-        d.date === data.date ? { ...d, id: d.id ?? -1, work_status: plan.work_status ? 1 : 0, start_time: plan.start_time, end_time: plan.end_time } : d
-      )
-    }
-    const gaps = findNewGaps({
-      before,
-      after,
-      crewMap: store.crewMap,
-      wps: [data.worker_position_id],
-      dates: [data.date],
-      shifts: typeShifts.value
-    })
-    confirmIfGaps(() => store._editDay(data), gaps)
+    store._editDay(data)
   }
 
-  // O'rinbosarlik: tanlangan ish kuni xodim dam, o'rniga shu kuni dam bo'lgan xodim chiqadi — grafiklar o'zgarmaydi.
+  // O'rinbosarlik: tanlangan ish kuni xodim dam, o'rniga boshqa xodim uning smenasida ishlaydi.
   const swapDate = computed(() => (store.replacePayload.date ? Utils.timeToZone(store.replacePayload.date) : null))
   const swapDay = computed(() => store.selectedWorker?.days?.find((d) => d.date === swapDate.value))
   const picked = computed(() => store.workerList.find((v) => v.positionId === store.replacePayload.positonId))
