@@ -126,12 +126,12 @@
         {{ $t('shiftType.generate.workersNotFound') }}
       </div>
       <template v-else>
-        <div class="flex flex-col gap-1.5">
+        <div class="flex flex-col gap-1">
           <button
             v-for="item in list"
             :key="item.id"
             type="button"
-            class="group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left border transition-colors"
+            class="group w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-left border transition-colors"
             :class="
               taken.has(item.id)
                 ? 'border-surface-line bg-surface-ground cursor-default'
@@ -141,34 +141,34 @@
           >
             <n-avatar
               round
-              :size="36"
+              :size="28"
               class="shrink-0"
               :src="item.data.photo || useAppSetting.noAvailableImage"
               :fallback-src="Utils.noAvailableImage"
             />
-            <div class="flex-1 min-w-0">
-              <div class="text-sm font-medium text-textColor0 leading-[1.25] truncate">{{ item.name }}</div>
-              <span
-                v-if="item.shifts.length"
-                class="mt-1 inline-flex max-w-full items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] leading-none bg-fig-chip-amber text-fig-chip-amber-text"
-                :title="item.shifts.join(', ')"
-              >
-                <n-icon size="12" class="shrink-0"><Clock12Regular /></n-icon>
-                <span class="truncate">{{ item.shifts.join(', ') }}</span>
-              </span>
-              <span
-                v-else
-                class="mt-1 inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] leading-none bg-fig-chip-green text-fig-chip-green-text"
-              >
-                <n-icon size="12"><CheckmarkCircle12Regular /></n-icon>
-                {{ $t('shiftType.generate.noShift') }}
-              </span>
+            <div class="flex-1 min-w-0 text-[13px] font-medium text-textColor0 leading-[1.25] truncate" :title="item.name">
+              {{ item.name }}
             </div>
+            <span
+              v-if="item.shifts.length"
+              class="shrink-0 max-w-[40%] inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] leading-none bg-fig-chip-amber text-fig-chip-amber-text"
+              :title="item.shifts.join(', ')"
+            >
+              <n-icon size="12" class="shrink-0"><Clock12Regular /></n-icon>
+              <span class="truncate">{{ item.shifts.join(', ') }}</span>
+            </span>
+            <span
+              v-else
+              class="shrink-0 inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] leading-none bg-fig-chip-green text-fig-chip-green-text"
+            >
+              <n-icon size="12"><CheckmarkCircle12Regular /></n-icon>
+              {{ $t('shiftType.generate.noShift') }}
+            </span>
             <span v-if="taken.has(item.id)" class="shrink-0 inline-flex items-center gap-1 text-xs text-success">
               <n-icon size="14"><Checkmark16Filled /></n-icon>
               {{ $t('shiftType.generate.alreadyAssigned') }}
             </span>
-            <n-icon v-else size="16" class="shrink-0 text-textColor3 group-hover:text-primary">
+            <n-icon v-else size="14" class="shrink-0 text-textColor3 group-hover:text-primary">
               <ChevronRight16Regular />
             </n-icon>
           </button>

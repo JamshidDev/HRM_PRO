@@ -5,12 +5,7 @@
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import { crewSizeOf } from '@/pages/turnstile/scheduleWorker/ui/navbat.js'
-  import {
-    CheckmarkCircle32Regular,
-    Delete20Regular,
-    Eye16Regular,
-    OpenFolder24Filled
-  } from '@vicons/fluent'
+  import { Delete20Regular, Eye16Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
   const store = useShiftTypeStore()
@@ -44,55 +39,11 @@
     })
   }
 
-  const onEdit = (row) => {
-    if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsFinish)) return
-    store.elementId = row.id
-    store.groupId = row.id
-    store.generatePayload.name = row.name
-    store.generatePayload.start_date = Utils.datePickerFormatter(row.start_date)
-    store.generatePayload.end_date = Utils.datePickerFormatter(row.end_date)
-    store.isDailySchedule = false
-    store.visibleType = false
-    store.visible = true
-  }
-
   const onDelete = (row) => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsDelete)) return
     store.elementId = row.id
     store.groupId = row.id
     store._deleteGroup()
-  }
-
-  // Biriktirish faqat bitta oyga: ro'yxatda tanlangan oy ∩ guruh davri, joriy oydan oldin emas.
-  const attachRange = (row) => {
-    const pad = (n) => String(n).padStart(2, '0')
-    const now = new Date()
-    const y = store.groupParams.year || now.getFullYear()
-    const m = store.groupParams.month || now.getMonth() + 1
-    const monthFrom = `${y}-${pad(m)}-01`
-    const monthTo = `${y}-${pad(m)}-${pad(new Date(y, m, 0).getDate())}`
-    const thisMonth = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-01`
-    const canPast = accStore.checkPermission(accStore.pn.turnstileSheetsGroupsPastWrite)
-    const from = [monthFrom, String(row.start_date).slice(0, 10), canPast ? monthFrom : thisMonth].sort().pop()
-    const to = [monthTo, String(row.end_date).slice(0, 10)].sort()[0]
-    return from <= to ? { from, to } : null
-  }
-
-  const onAttachWorker = (row) => {
-    if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
-    const range = attachRange(row)
-    if (!range) {
-      $Alert.warning(t('shiftType.groupView.pastMonth'))
-      return
-    }
-    store.groupId = row.id
-    store.elementId = row.schedule_type?.id
-    store.notScheduleParams.start_date = range.from
-    store.notScheduleParams.end_date = range.to
-    store.notScheduleParams.page = 1
-    store._notScheduleWorker()
-    store.selectedWorkers = []
-    store.notScheduleVisible = true
   }
 
   const columns = computed(() => [
@@ -136,13 +87,6 @@
 
   const actions = computed(() => [
     {
-      label: t('content.attachment'),
-      key: Utils.ActionTypes.attachment,
-      icon: UIHelper.renderIcon(OpenFolder24Filled),
-      action: onAttachWorker,
-      visible: (row) => row?.schedule_type?.type?.id === 2
-    },
-    {
       label: t('content.view'),
       key: Utils.ActionTypes.view,
       icon: UIHelper.renderIcon(Eye16Regular),
@@ -153,13 +97,6 @@
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete20Regular),
       action: onDelete
-    },
-    {
-      label: t('content.finish'),
-      key: Utils.ActionTypes.edit,
-      icon: UIHelper.renderIcon(CheckmarkCircle32Regular),
-      action: onEdit,
-      visible: () => accStore.checkPermission(accStore.pn.turnstileSheetsGroupsFinish)
     }
   ])
 </script>
