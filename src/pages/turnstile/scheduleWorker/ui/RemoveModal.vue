@@ -19,14 +19,6 @@
     }
   })
 
-  const initials = (name) =>
-    String(name || '')
-      .split(' ')
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((x) => x[0])
-      .join('')
-      .toUpperCase()
   const fmt = (d) => (d ? `${d.slice(8, 10)}.${d.slice(5, 7)}` : '')
 
   const onSave = () => {
@@ -42,33 +34,18 @@
 <template>
   <UIModal v-model:visible="store.remove.visible" :width="480" :title="$t('shiftType.groupView.removeTitle')">
     <div v-if="worker" class="flex flex-col gap-3 text-sm">
-      <div class="flex items-center gap-3 rounded-xl border border-surface-line px-3 py-2.5">
-        <div class="w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold bg-fig-red-50 text-fig-text-red">
-          {{ initials(worker.fullName) }}
-        </div>
-        <div class="min-w-0 flex-1">
-          <div class="font-medium leading-[1.25] line-clamp-2">{{ worker.fullName }}</div>
-          <div class="text-xs text-secondary line-clamp-1">{{ worker.position }}</div>
+      <div class="rounded-xl border border-surface-line px-3 py-2.5">
+        <div class="font-medium leading-[1.25] line-clamp-2">{{ worker.fullName }}</div>
+        <div class="text-xs text-secondary line-clamp-1">{{ worker.position }}</div>
+        <div class="mt-1.5 text-xs text-fig-text-red">
+          {{ $t('shiftType.groupView.removeGone', { from: fmt(monthFrom), to: fmt(monthTo) }) }} ·
+          {{ $t('shiftType.groupView.removeWorkDays', { n: affected.work }) }}
         </div>
       </div>
 
-      <div class="rounded-xl bg-fig-red-50 px-3 py-2.5 flex items-center justify-between gap-3">
-        <div>
-          <div class="text-[11px] text-fig-text-red">{{ $t('shiftType.groupView.removeGone', { from: fmt(monthFrom), to: fmt(monthTo) }) }}</div>
-          <div class="font-medium text-fig-text-red">{{ $t('shiftType.groupView.removeWorkDays', { n: affected.work }) }}</div>
-        </div>
-        <span class="text-xs text-fig-text-red font-medium">{{ $t('shiftType.groupView.removeWholeMonth') }}</span>
-      </div>
-
-      <div class="flex flex-col gap-1.5 text-xs text-secondary">
-        <div class="flex items-start gap-1.5">
-          <n-icon size="14" class="mt-px shrink-0 text-warning"><Warning16Regular /></n-icon>
-          {{ $t('shiftType.groupView.removeHintMonth') }}
-        </div>
-        <div v-if="affected.subs" class="flex items-start gap-1.5">
-          <n-icon size="14" class="mt-px shrink-0 text-warning"><Warning16Regular /></n-icon>
-          {{ $t('shiftType.groupView.removeSubs', { n: affected.subs }) }}
-        </div>
+      <div v-if="affected.subs" class="flex items-start gap-1.5 text-xs text-secondary">
+        <n-icon size="14" class="mt-px shrink-0 text-warning"><Warning16Regular /></n-icon>
+        {{ $t('shiftType.groupView.removeSubs', { n: affected.subs }) }}
       </div>
 
       <div class="flex justify-end gap-4 mt-1">

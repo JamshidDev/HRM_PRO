@@ -47,6 +47,11 @@ export const cycleIndex = (date, phase, n) => {
   return (((d + phase) % n) + n) % n
 }
 
+// Oy navbati (1..n, oy 1-kuniga nisbatan) ↔ saqlanadigan qat'iy navbat (1..n, ANCHOR'ga nisbatan).
+export const toAnchored = (k, monthStart, n) =>
+  ((((k - 1 - cycleIndex(monthStart, 0, n)) % n) + n) % n) + 1
+export const fromAnchored = (a, monthStart, n) => ((a - 1 + cycleIndex(monthStart, 0, n)) % n) + 1
+
 // Ekipaj ichidagi o'rin fazasi: o'rinlar siklda teng qadam bilan siljiydi.
 export const slotPhase = (slot, crewSize, n) => (slot % crewSize) * (n / crewSize)
 

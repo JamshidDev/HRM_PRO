@@ -3,7 +3,7 @@
   import { UIModal, UINSelect } from '@/components/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import { cycleOf } from './navbat.js'
+  import { cycleOf, toAnchored } from './navbat.js'
   import { scheduleLabel } from '@/store/modules/turnstile/scheduleGroupWorkerStore.js'
   import i18n from '@/i18n/index.js'
 
@@ -76,7 +76,8 @@
         const list = res.data.data.data.map((v) => ({
           name: Utils.combineFullName(v.worker),
           positionId: v.id,
-          position: [v.position, scheduleLabel(v.rangeSchedules, store.params.group)].filter(Boolean).join(' · '),
+          // «Shu grafikda» emas — har doim grafik nomi yoki «Grafiksiz».
+          position: [v.position, scheduleLabel(v.rangeSchedules, null)].filter(Boolean).join(' · '),
           ranges: v.rangeSchedules ?? []
         }))
         workers.value = append === true ? [...workers.value, ...list] : list
@@ -154,7 +155,24 @@
           schedule_workers: [{ worker_position_id: positionId.value, day: dayOffset() }]
         }
       })
-      .then(() => {
+      .then(async () => {
+        // Tanlangan ekipaj o'rni saqlanadi — ko'rinishda aynan shu joyda turadi.
+        if (phaseKnown.value && store.addSlot.crew) {
+          const { pattern, crewSize } = cycleOf(store.shiftType)
+          const n = pattern.length
+          const k = (store.addSlot.fam ?? 0) + (store.addSlot.phase - 1) * (n / crewSize) + 1
+          await store._saveSlots(
+            [
+              {
+                worker_position_id: positionId.value,
+                crew: store.addSlot.crew,
+                navbat: toAnchored(k, firstDay.value ?? store.monthRange.from, n),
+                owner_worker_position_id: null
+              }
+            ],
+            true
+          )
+        }
         store.addSlot.visible = false
         store._index()
       })

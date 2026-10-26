@@ -205,7 +205,10 @@
       ...base,
       schedule_workers: filled.map((r) => ({
         worker_position_id: slots.value[r.index].wp,
-        day: (cycleIndex(startDate.value, r.phase, n) - 1 + n) % n
+        day: (cycleIndex(startDate.value, r.phase, n) - 1 + n) % n,
+        // O'rin: brigada raqami va qat'iy navbat — guruh ko'rinishi yaratilgandagidek qoladi.
+        crew: r.crew + 1,
+        navbat: r.phase + 1
       }))
     })
   }

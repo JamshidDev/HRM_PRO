@@ -20,6 +20,8 @@ export const scheduleLabel = (ranges, groupId) => {
 export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore', {
   state: () => ({
     list: [],
+    // Saqlangan o'rinlar: [{worker_position_id, crew, navbat, owner_worker_position_id}].
+    slots: [],
     loading: false,
     visible: false,
 
@@ -84,7 +86,7 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     // Guruh smena turi (nom + naqsh) — sahifa kartochkasi va navbat hisobi uchun.
     shiftType: null,
     // Bo'sh navbatga xodim qo'shish oynasi.
-    addSlot: { visible: false, phase: null, fam: 0, from: null },
+    addSlot: { visible: false, phase: null, fam: 0, from: null, crew: null },
     // Xodim grafigini navbati bo'yicha qayta yaratish oynasi.
     regen: { visible: false, worker: null },
     // Xodimni guruhdan chiqarish oynasi.
@@ -177,6 +179,21 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
           this.replaceLoading = false
         })
     },
+    // overwrite=false — faqat yangi o'rinlar yoziladi (jim, xatoni ko'rsatmaydi).
+    _saveSlots(slots, overwrite = false) {
+      if (!slots.length || !this.params.group) return Promise.resolve()
+      return $ApiService.shiftTypeService
+        ._saveSlots({ data: { group_id: Number(this.params.group), slots, overwrite } })
+        .then(() => {
+          const byWp = new Map(this.slots.map((v) => [v.worker_position_id, v]))
+          slots.forEach(
+            (v) =>
+              (overwrite || !byWp.has(v.worker_position_id)) && byWp.set(v.worker_position_id, v)
+          )
+          this.slots = [...byWp.values()]
+        })
+        .catch(() => {})
+    },
     _cancelSubstitution(id) {
       this.replaceLoading = true
       $ApiService.shiftTypeService
@@ -243,6 +260,7 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
         ._groupWorker({ params })
         .then((res) => {
           this.list = res.data.data.data
+          this.slots = res.data.data.slots ?? []
           this.totalItems = res.data.data.total
           // Havolada `type` bo'lmasa — smena turi javobdan olinadi.
           const typeId = res.data.data.schedule_type_id

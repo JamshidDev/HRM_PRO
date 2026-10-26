@@ -59,11 +59,18 @@ const _removeWorker = async (payload) => {
 const _transferSlot = async (payload) => {
   return await axios.post(`/v1/turnstile/schedule/schedule-workers-transfer`, payload.data)
 }
+// Guruh o'rinlari (crew/navbat) — ko'rinish tartibi saqlanadi.
+const _saveSlots = async (payload) => {
+  return await axios.post(`/v1/turnstile/schedule/schedule-slots`, payload.data, {
+    silentSuccess: true
+  })
+}
 const _cancelSubstitution = async (payload) => {
   return await axios.delete(`/v1/turnstile/schedule/substitutions/${payload.id}`)
 }
 
 export default {
+  _saveSlots,
   _types,
   _index,
   _create,
