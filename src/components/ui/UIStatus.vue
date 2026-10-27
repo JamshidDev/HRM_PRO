@@ -77,7 +77,8 @@
       id: 4,
       name: 'Rejected',
       type: 'error',
-      icon: Eye16Filled
+      // «Rad etilgan» — ✕ belgili hujjat (src/assets/icons/figFileReject.svg).
+      icon: icons.figFileReject
     },
     {
       id: 5,
@@ -95,7 +96,8 @@
       id: 7,
       name: 'DeActive',
       type: 'error',
-      icon: Circle20Filled
+      // Hujjatlarda 7 = «Muammoli» (muddatida tasdiqlanmagan) — undov belgili doira.
+      icon: icons.figAlertCircle
     },
     {
       id: 8,
