@@ -23,11 +23,18 @@
 
           contract_to_date: Utils.timeToZone(store.form_34.contract_to_date),
           command_additional: {
-            warning_date: Utils.timeToZone(store.form_34.warning_date),
-            warning_number: store.form_34.warning_number || null,
+            warning_date: isShowWarningItem.value
+              ? Utils.timeToZone(store.form_34.warning_date)
+              : undefined,
+            warning_number: isShowWarningItem.value
+              ? store.form_34.warning_number || null
+              : undefined,
             reason: store.form_34.reason || null,
             reasonId: store.form_34.reasonId || null,
             pension_count: showPension.value ? store.form_34.pension_count : undefined,
+            pension_coefficient: showPensionCoefficient.value
+              ? store.form_34.pension_coefficient
+              : undefined,
             base: store.payload.command_type === 39 ? store.form_34.base : undefined,
             salary_withholding: showSalaryWithholding.value
               ? {
@@ -73,6 +80,8 @@
   const showPensionCoefficient = computed(() =>
     Boolean(store.form_34.command_additional.find((v) => v === typeConfig.pensionCoefficient))
   )
+  // 39 shablonida ogohlantirish xati yo'q — maydonlar ko'rsatilmaydi va yuborilmaydi.
+  const isShowWarningItem = computed(() => store.payload.command_type !== 39)
   const showCompensation = computed(() =>
     Boolean(store.form_34.command_additional.find((v) => v === typeConfig.compensation))
   )
@@ -233,7 +242,7 @@
     :rules="validationRules.form_32"
     class="grid grid-cols-12 mb-8 gap-x-4 gap-y-2 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
   >
-    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
+    <div v-if="isShowWarningItem" class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.warning_number`)"
@@ -242,7 +251,7 @@
         <n-input class="!w-full" type="text" v-model:value="store.form_34.warning_number" />
       </n-form-item>
     </div>
-    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
+    <div v-if="isShowWarningItem" class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.warning_date`)"
