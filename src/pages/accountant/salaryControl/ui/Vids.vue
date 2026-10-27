@@ -47,12 +47,24 @@
   })
   const kpis = computed(() => {
     const totalSum = store.vids.reduce((a, v) => a + (v.s || 0), 0)
-    return [
+    // O'tgan oyga nisbatan Δ% — faqat o'tgan oy jami summasi (prev_total_sum) bo'lsa.
+    const prev = store.dashKpi?.prev_total_sum || 0
+    const delta = prev > 0 ? ((totalSum - prev) / prev) * 100 : null
+    const cards = [
       { key: 'sum', label: t('salaryControl.vids.kpiSum'), value: formatMoney(totalSum, { unit: 'mln' }), tint: 'blue' },
       { key: 'count', label: t('salaryControl.vids.kpiCount'), value: String(store.vids.length), tint: 'indigo' },
       { key: 'recip', label: t('salaryControl.vids.kpiRecipients'), value: store.emps.length.toLocaleString('ru-RU'), tint: 'green' },
       { key: 'flag', label: t('salaryControl.vids.kpiFlagged'), value: flaggedBonusCount.value.toLocaleString('ru-RU'), tint: 'red' }
     ]
+    if (delta != null) {
+      cards.push({
+        key: 'delta',
+        label: t('salaryControl.vids.kpiDelta'),
+        value: `${delta >= 0 ? '+' : ''}${delta.toFixed(0)}%`,
+        tint: delta >= 0 ? 'green' : 'red'
+      })
+    }
+    return cards
   })
 
   // —— Faol filtr chiplari (o'chiriladigan) ————————————————————————————————————
@@ -83,7 +95,9 @@
       s: v.s || 0,
       sharePct: ((v.s || 0) / total) * 100,
       c: v.c || 0,
-      avg: v.c ? (v.s || 0) / v.c : 0
+      avg: v.c ? (v.s || 0) / v.c : 0,
+      // Δ% o'tgan oyga — faqat o'tgan oy summasi (sp) bo'lsa.
+      delta: v.sp > 0 ? (((v.s || 0) - v.sp) / v.sp) * 100 : null
     }))
   })
 
@@ -201,9 +215,29 @@
       title: t('salaryControl.vids.colAvg'),
       key: 'avg',
       align: 'right',
-      width: 160,
+      width: 150,
       sorter: (a, b) => a.avg - b.avg,
       render: (r) => formatMoney(r.avg, { unit: 'full' })
+    },
+    {
+      title: t('salaryControl.vids.colDelta'),
+      key: 'delta',
+      align: 'right',
+      width: 100,
+      sorter: (a, b) => (a.delta ?? -Infinity) - (b.delta ?? -Infinity),
+      render: (r) =>
+        r.delta == null
+          ? h('span', { style: { color: 'var(--fig-text-tertiary)' } }, '—')
+          : h(
+              'span',
+              {
+                style: {
+                  color: r.delta >= 0 ? 'var(--fig-icon-green)' : 'var(--fig-icon-red)',
+                  fontVariantNumeric: 'tabular-nums'
+                }
+              },
+              `${r.delta >= 0 ? '+' : ''}${r.delta.toFixed(0)}%`
+            )
     }
   ])
   const rowProps = (row) => ({
@@ -225,26 +259,32 @@
     if (!v) return []
     return store.emps
       .filter((e) => (e.v?.[v.k] || 0) > 0)
-      .map((e) => ({ fio: normText(e.fio) || '—', lav: e.lav || '—', amount: e.v[v.k] }))
+      .map((e) => ({
+        fio: normText(e.fio) || '—',
+        lav: e.lav || '—',
+        dep: e.dep || '—',
+        amount: e.v[v.k]
+      }))
       .sort((a, b) => b.amount - a.amount)
   })
   const drawerColumns = computed(() => [
     { title: '#', key: 'n', width: 54, render: (_r, i) => i + 1 },
     { title: t('salaryControl.risk.table.fio'), key: 'fio', minWidth: 200, ellipsis: { tooltip: true } },
-    { title: t('salaryControl.risk.table.position'), key: 'lav', minWidth: 180, ellipsis: { tooltip: true } },
+    { title: t('salaryControl.risk.table.position'), key: 'lav', minWidth: 170, ellipsis: { tooltip: true } },
+    { title: t('salaryControl.vids.colDep'), key: 'dep', minWidth: 150, ellipsis: { tooltip: true } },
     {
       title: t('salaryControl.common.sum'),
       key: 'amount',
       align: 'right',
-      width: 160,
+      width: 150,
       render: (r) => formatMoney(r.amount, { unit: 'full' })
     }
   ])
   const exportCsv = () => {
     const v = drawerVid.value
     if (!v) return
-    const header = ['#', 'F.I.Sh.', 'Lavozim', 'Summa']
-    const body = drawerRows.value.map((r, i) => [i + 1, r.fio, r.lav, Math.round(r.amount)])
+    const header = ['#', 'F.I.Sh.', 'Lavozim', 'Bo‘lim', 'Summa']
+    const body = drawerRows.value.map((r, i) => [i + 1, r.fio, r.lav, r.dep, Math.round(r.amount)])
     const csv =
       '﻿' +
       [header, ...body]
@@ -456,6 +496,7 @@
     const ok = e.ok || 0
     return [
       { label: t('salaryControl.risk.table.position'), value: normText(e.lav) || '—' },
+      { label: t('salaryControl.vids.colDep'), value: normText(e.dep) || '—' },
       { label: t('salaryControl.employees.oklad'), value: money(ok) },
       { label: '004 (vaqtbay)', value: `${money(v4)} · ${ok ? Math.round((v4 / ok) * 100) : 0}%` },
       { label: '011 (mukofot)', value: `${money(v11)} · ${ok ? Math.round((v11 / ok) * 100) : 0}%` },
@@ -554,7 +595,7 @@
           :pagination="showAll || search ? tablePagination : false"
           :bordered="false"
           size="small"
-          :scroll-x="1000"
+          :scroll-x="1120"
         />
         <p class="vid-hint">{{ $t('salaryControl.vids.rowHint') }}</p>
       </Card>
