@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none">
+<defs>
+<mask id="figAlertCircleMark" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
+<rect width="16" height="16" fill="#fff"/>
+<path d="M7.15 3.75H8.85C9.16 3.75 9.4 4.02 9.37 4.33L9.02 8.45C9 8.71 8.78 8.9 8.52 8.9H7.48C7.22 8.9 7 8.71 6.98 8.45L6.63 4.33C6.6 4.02 6.84 3.75 7.15 3.75Z" fill="#000"/>
+<circle cx="8" cy="11.3" r="0.97" fill="#000"/>
+</mask>
+</defs>
+<circle mask="url(#figAlertCircleMark)" cx="8" cy="8" r="7.6" fill="currentColor"/>
+</svg>

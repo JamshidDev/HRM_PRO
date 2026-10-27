@@ -1343,7 +1343,7 @@
         "viewOneByOne": "Review in order",
         "route": {
           "parallel": "Parallel",
-          "sequential": "In order",
+          "sequential": "Sequential",
           "parallelHint": "The document goes to everyone at once — it doesn't matter who sees it first",
           "sequentialHint": "The document goes step by step: the next person gets it after the previous one signs. Drag to change the order",
           "roleSign": "Approver",
@@ -1702,7 +1702,7 @@
           "route_closed": "Closed"
         },
         "showAll": "Show all",
-        "modeParallelHint": "Sent to everyone at once",
+        "modeParallelHint": "Sent to everyone for approval at the same time",
         "modeSequentialHint": "Signed one by one",
         "nowTurn": "Current turn",
         "waitingTurn": "Waiting for turn",
