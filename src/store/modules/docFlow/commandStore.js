@@ -52,6 +52,7 @@ const initialPayload34 = () => ({
     period1: null,
     period2: null,
     all_day: 0,
+    used_day: 0,
     rest_day: 0,
     month: null
   },
@@ -81,6 +82,7 @@ const initialPayload32 = () => ({
     period1: null,
     period2: null,
     all_day: 0,
+    used_day: 0,
     rest_day: 0,
     month: null
   },

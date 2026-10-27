@@ -1379,6 +1379,8 @@
         "calculateTitle": "Calculated vacation data. You can edit if incorrect",
         "requiredVacationData": "Enter employee vacation data!",
         "rest_day": "Remaining days",
+        "used_day": "Actually used",
+        "unworked_day": "Unworked days",
         "by_whom": "By whom",
         "reason": "Reason",
         "gift_type": "Gift type",

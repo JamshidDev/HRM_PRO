@@ -1339,6 +1339,12 @@ export default {
       message: t(`rules.requiredField`),
       trigger: triggerEvents
     },
+    'salary_withholding.used_day': {
+      type: 'number',
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
     'salary_withholding.rest_day': {
       type: 'number',
       required: true,
