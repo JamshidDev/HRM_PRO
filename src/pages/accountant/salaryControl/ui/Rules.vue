@@ -19,7 +19,6 @@
   const resLabel = (res) =>
     res === 'check' ? t('salaryControl.rules.check') : res === 'based' ? t('salaryControl.rules.based') : ''
   const resTone = (res) => (res === 'check' ? 'amber' : 'green')
-  const isCheck = (res) => res === 'check'
 
   // —— KPI qatori (rk) — server tomonda hisoblangan ————————————————————————
   const kpi = computed(() => {
@@ -34,6 +33,8 @@
 
   // —— Asosiy jadval (rtbl): 9 ta tur qatori (server) ——————————————————————
   const ruleRows = computed(() => store.rules.types || [])
+  // Natija ustuni server tomonda baholanadi; hali hech biriga natija kelmasa izoh.
+  const anyResult = computed(() => ruleRows.value.some((r) => r.res))
 
   // —— Grafik (r11): 011 oluvchilari lavozim toifasi bo'yicha (server) ————————
   const r11Option = computed(() => {
@@ -114,7 +115,7 @@
         </div>
         <div class="sc-kpi">
           <div class="sc-kpi__h">
-            <i class="sc-tile sc-tile--amber"></i>{{ $t('salaryControl.rules.check') }}
+            <i class="sc-tile" :class="kpi.checkTypes ? 'sc-tile--amber' : 'sc-tile--muted'"></i>{{ $t('salaryControl.rules.check') }}
           </div>
           <div class="sc-kpi__v">{{ kpi.checkTypes }}</div>
           <div class="sc-kpi__s">{{ $t('salaryControl.rules.code') }} — to‘lov turlari</div>
@@ -133,6 +134,7 @@
 
       <!-- rtbl — asosiy jadval (9 ta tur) -->
       <Card :title="$t('salaryControl.rules.title')" :sub="$t('salaryControl.rules.sub')">
+        <p v-if="!anyResult" class="sc-note">{{ $t('salaryControl.rules.uncheckedNote') }}</p>
         <div class="sc-scroll">
           <table class="sc-tbl">
             <thead>
@@ -155,7 +157,7 @@
                 <td class="num">{{ money(row.sum) }}</td>
                 <td>
                   <StatusBadge v-if="row.res" :tone="resTone(row.res)" :label="resLabel(row.res)" />
-                  <span v-else class="sc-muted">{{ $t('salaryControl.common.empty') }}</span>
+                  <span v-else class="sc-unchecked">{{ $t('salaryControl.rules.unchecked') }}</span>
                 </td>
               </tr>
             </tbody>
@@ -285,6 +287,20 @@
   }
   .sc-tile--indigo {
     background: var(--fig-icon-indigo);
+  }
+  .sc-tile--muted {
+    background: var(--fig-text-tertiary);
+  }
+
+  /* Natija: hali baholanmagan — neytral (xato emas) */
+  .sc-unchecked {
+    color: var(--fig-text-tertiary);
+    font-size: 12px;
+  }
+  .sc-note {
+    color: var(--fig-text-tertiary);
+    font-size: 12px;
+    margin-bottom: 10px;
   }
 
   /* —— Eksport tugmasi ———————————————————————————————————————————————— */

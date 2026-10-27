@@ -33,5 +33,12 @@
 </script>
 
 <template>
-  <VChart :option="option" autoresize :style="{ height, width: '100%' }" />
+  <!-- autoresize: vue-echarts ResizeObserver + unmount'da dispose; notMerge: ma'lumot
+       o'zgarganda eski seriyalar qolmasin. -->
+  <VChart
+    :option="option"
+    :update-options="{ notMerge: true }"
+    autoresize
+    :style="{ height, width: '100%' }"
+  />
 </template>

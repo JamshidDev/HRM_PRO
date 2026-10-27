@@ -6746,7 +6746,9 @@
       "check": "Qo'shimcha tekshirish",
       "registry": "Natija reestri",
       "r11Title": "011 mukofoti — lavozim toifasi bo'yicha",
-      "r11Sub": "011 vaqtbay ishchilar uchun. Mutaxassis/rahbarlarga to'langan bo'lsa tekshiriladi"
+      "r11Sub": "011 vaqtbay ishchilar uchun. Mutaxassis/rahbarlarga to'langan bo'lsa tekshiriladi",
+      "unchecked": "Tekshirilmagan",
+      "uncheckedNote": "Natija to‘lov turlari bo‘yicha server tomonda baholanadi — hozircha tekshirilmagan."
     },
     "who": {
       "topAccrued": "Eng ko'p hisoblangan",

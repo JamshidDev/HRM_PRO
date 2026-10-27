@@ -29,13 +29,13 @@
     { v: 'Past', label: t('salaryControl.findings.low') }
   ])
 
-  // —— Xodim (F.I.O.) bo'yicha guruhlash — bitta xodim bir necha holatda bo'lsa bitta
-  // qator; eng yuqori xavf darajasi; holatlar turi teglari; summa TAKROR qo'shilmaydi
-  // (eng katta olinadi). (F'da JSHSHIR yo'q — F.I.O.+lavozim bo'yicha guruhlaymiz.)
+  // —— Xodim bo'yicha guruhlash — bitta xodim bir necha holatda bo'lsa bitta qator;
+  // eng yuqori xavf darajasi; holatlar turi teglari; summa TAKROR qo'shilmaydi
+  // (eng katta olinadi). JSHSHIR (f.j) bo'yicha aniq guruhlash; yo'q bo'lsa F.I.O.+lavozim.
   const grouped = computed(() => {
     const map = new Map()
     for (const f of store.findings) {
-      const key = `${f.fio || ''}||${f.lav || ''}`
+      const key = f.j || `${f.fio || ''}||${f.lav || ''}`
       let g = map.get(key)
       if (!g) {
         g = { fio: f.fio || '—', lav: f.lav || '', cats: [], sev: f.sev, summa: 0, txt: f.txt }
