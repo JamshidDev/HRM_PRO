@@ -10,10 +10,21 @@
   const { t } = i18n.global
   const store = useSalaryControlStore()
 
+  const rc = computed(() => store.rc || {})
+
+  // Tashqi hisobotlar (NDFL-4/5, INPS) tomoni ulanganmi — hammasi 0 bo'lsa, solishtiruv
+  // mumkin emas (farq = butun vedomost bo'lib SOXTA ⚠ chiqardi). Shu holda faqat
+  // vedomost ko'rsatiladi + izoh.
+  const hasReportSide = computed(() => {
+    const r = rc.value
+    return (r.n4 || 0) + (r.n5 || 0) + (r.ntax || 0) + (r.ip || 0) > 0
+  })
+
   // Har qator: [nom, vedomost qiymati, hisobot qiymati, manba izohi, benign?]
   // benign=true — farq bo'lsa ham xato deb belgilanmaydi (me'yorda).
   const rows = computed(() => {
-    const r = store.rc || {}
+    const r = rc.value
+    const hasRep = hasReportSide.value
     return [
       { label: t('salaryControl.reports.rowFot'), ved: r.fot || 0, rep: r.n4 || 0, src: t('salaryControl.reports.withN4') },
       { label: t('salaryControl.reports.rowNon'), ved: r.non || 0, rep: r.n5 || 0, src: t('salaryControl.reports.withN5'), benign: true },
@@ -21,7 +32,8 @@
       { label: t('salaryControl.reports.rowInps'), ved: r.inps || 0, rep: r.ip || 0, src: t('salaryControl.reports.withInps') }
     ].map((x) => {
       const diff = x.ved - x.rep
-      const bad = Math.abs(diff) > 1000 && !x.benign
+      // Tashqi tomon yo'q bo'lsa farq belgilanmaydi (solishtiradigan narsa yo'q).
+      const bad = hasRep && Math.abs(diff) > 1000 && !x.benign
       return { ...x, diff, bad }
     })
   })
@@ -30,6 +42,9 @@
 <template>
   <ScSkeleton v-if="store.dashboardLoading" variant="table" />
   <Card v-else :title="$t('salaryControl.reports.title')" :sub="$t('salaryControl.reports.sub')">
+    <p v-if="!hasReportSide" class="sc-note">
+      {{ $t('salaryControl.reports.noExternal') }}
+    </p>
     <div class="sc-scroll">
       <table class="sc-tbl">
         <thead>
@@ -47,9 +62,13 @@
               <div class="sc-muted">{{ r.src }}</div>
             </td>
             <td class="num">{{ money(r.ved) }}</td>
-            <td class="num">{{ money(r.rep) }}</td>
-            <td class="num" :class="r.bad ? 'sc-diff--bad' : 'sc-diff--ok'">
-              {{ r.bad ? '⚠ ' : '✓ ' }}{{ money(r.diff) }}
+            <td class="num">{{ hasReportSide ? money(r.rep) : '—' }}</td>
+            <td
+              class="num"
+              :class="hasReportSide ? (r.bad ? 'sc-diff--bad' : 'sc-diff--ok') : 'sc-muted'"
+            >
+              <template v-if="hasReportSide">{{ r.bad ? '⚠ ' : '✓ ' }}{{ money(r.diff) }}</template>
+              <template v-else>—</template>
             </td>
           </tr>
         </tbody>
@@ -59,6 +78,16 @@
 </template>
 
 <style scoped>
+  .sc-note {
+    margin-bottom: 12px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: var(--fig-bg-brand-surface);
+    border: 0.8px solid var(--fig-blue-300);
+    color: var(--fig-text-secondary);
+    font-size: 13px;
+    line-height: 1.5;
+  }
   .sc-scroll {
     overflow: auto;
     border-radius: 12px;

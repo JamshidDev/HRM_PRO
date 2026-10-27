@@ -5,7 +5,7 @@
   import { computed } from 'vue'
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore, useAppStore } from '@/store/modules/index.js'
-  import { money, mln, positionGroup, chartTheme, tokenColor } from '../helpers.js'
+  import { money, mln, positionGroup, chartTheme, tokenColor, normText } from '../helpers.js'
   import Card from './Card.vue'
   import EChart from './EChart.vue'
   import ScSkeleton from './ScSkeleton.vue'
@@ -41,7 +41,15 @@
       },
       xAxis: {
         type: 'value',
-        axisLabel: { color: th.text, formatter: (v) => v.toFixed(0) },
+        // Katta sonlar (mlrd) yorliqlari yopishib qolmasin — mln/mlrd ixcham + hideOverlap.
+        axisLabel: {
+          color: th.text,
+          hideOverlap: true,
+          formatter: (v) =>
+            Math.abs(v) >= 1000
+              ? (v / 1000).toFixed(1) + ' mlrd'
+              : Math.round(v) + ' mln'
+        },
         splitLine: { lineStyle: { color: th.line } }
       },
       yAxis: {
@@ -90,7 +98,7 @@
       const e = d.raw
       const wp = Math.round(((e.v?.['004'] || 0) / e.ok) * 100)
       const bp = Math.round(((e.v?.['011'] || 0) / e.ok) * 100)
-      return `<b>${e.fio || '—'}</b><br/>${e.lav || ''}<br/>${t('salaryControl.vids.scatterSub')}<br/>004: ${wp}% · 011: ${bp}%`
+      return `<b>${normText(e.fio) || '—'}</b><br/>${e.lav || ''}<br/>${t('salaryControl.vids.scatterSub')}<br/>004: ${wp}% · 011: ${bp}%`
     }
     return {
       grid: { top: 12, left: 8, right: 16, bottom: 30, containLabel: true },
@@ -169,7 +177,7 @@
     })
     const tip = (d) => {
       const p = d.raw
-      return `<b>${p.e.fio || '—'}</b><br/>${p.e.lav || ''}<br/>011/004: ${Math.round(p.r * 100)}%<br/>011: ${money(p.e.v['011'])} · 004: ${money(p.e.v['004'])}`
+      return `<b>${normText(p.e.fio) || '—'}</b><br/>${p.e.lav || ''}<br/>011/004: ${Math.round(p.r * 100)}%<br/>011: ${money(p.e.v['011'])} · 004: ${money(p.e.v['004'])}`
     }
     return {
       grid: { top: 12, left: 8, right: 20, bottom: 30, containLabel: true },
@@ -213,34 +221,36 @@
 </script>
 
 <template>
-  <template v-if="store.dashboardLoading">
-    <ScSkeleton variant="chart2" chart-height="340px" />
-    <div style="margin-top: 16px"><ScSkeleton variant="chart" chart-height="360px" /></div>
-  </template>
+  <div class="flex flex-col gap-4">
+    <template v-if="store.dashboardLoading">
+      <ScSkeleton variant="chart2" chart-height="340px" />
+      <ScSkeleton variant="chart" chart-height="360px" />
+    </template>
 
-  <template v-else>
-    <div class="sc-grid2">
-      <Card :title="$t('salaryControl.vids.scatter')" :sub="$t('salaryControl.vids.scatterSub')">
-        <EChart :option="scatterOption" height="340px" />
+    <template v-else>
+      <div class="sc-grid2">
+        <Card :title="$t('salaryControl.vids.scatter')" :sub="$t('salaryControl.vids.scatterSub')">
+          <EChart :option="scatterOption" height="340px" />
+          <div class="sc-legend">
+            <span><i class="sw" :style="{ background: 'var(--fig-icon-brand)' }"></i>Me'yorda</span>
+            <span><i class="sw" :style="{ background: 'var(--fig-icon-red)' }"></i>Tekshirilishi kerak</span>
+            <span><i class="sw sw--line" :style="{ background: 'var(--fig-text-tertiary)' }"></i>Mutanosib (100%)</span>
+          </div>
+        </Card>
+        <Card :title="$t('salaryControl.vids.title')" :sub="$t('salaryControl.vids.sub')">
+          <EChart :option="vidOption" height="340px" />
+        </Card>
+      </div>
+
+      <Card :title="$t('salaryControl.vids.strip')" :sub="$t('salaryControl.vids.stripSub')">
+        <EChart :option="stripOption" height="360px" />
         <div class="sc-legend">
           <span><i class="sw" :style="{ background: 'var(--fig-icon-brand)' }"></i>Me'yorda</span>
           <span><i class="sw" :style="{ background: 'var(--fig-icon-red)' }"></i>Tekshirilishi kerak</span>
-          <span><i class="sw sw--line" :style="{ background: 'var(--fig-text-tertiary)' }"></i>Mutanosib (100%)</span>
         </div>
       </Card>
-      <Card :title="$t('salaryControl.vids.title')" :sub="$t('salaryControl.vids.sub')">
-        <EChart :option="vidOption" height="340px" />
-      </Card>
-    </div>
-
-    <Card :title="$t('salaryControl.vids.strip')" :sub="$t('salaryControl.vids.stripSub')">
-      <EChart :option="stripOption" height="360px" />
-      <div class="sc-legend">
-        <span><i class="sw" :style="{ background: 'var(--fig-icon-brand)' }"></i>Me'yorda</span>
-        <span><i class="sw" :style="{ background: 'var(--fig-icon-red)' }"></i>Tekshirilishi kerak</span>
-      </div>
-    </Card>
-  </template>
+    </template>
+  </div>
 </template>
 
 <style scoped>

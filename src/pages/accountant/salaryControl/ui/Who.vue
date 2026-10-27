@@ -5,10 +5,11 @@
   import { computed } from 'vue'
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore, useAppStore } from '@/store/modules/index.js'
-  import { money, mln, positionGroup, chartTheme, tokenColor } from '../helpers.js'
+  import { money, mln, positionGroup, chartTheme, tokenColor, normText } from '../helpers.js'
   import Card from './Card.vue'
   import EChart from './EChart.vue'
   import ScSkeleton from './ScSkeleton.vue'
+  import EmptyState from './EmptyState.vue'
 
   const { t } = i18n.global
   const store = useSalaryControlStore()
@@ -35,7 +36,7 @@
         axisPointer: { type: 'shadow' },
         formatter: (p) => {
           const r = rows[p[0].dataIndex]
-          return `<b>${r.fio || '—'}</b><br>${r.lav || '—'}<br>${money(r.tot)}`
+          return `<b>${normText(r.fio) || '—'}</b><br>${r.lav || '—'}<br>${money(r.tot)}`
         }
       },
       xAxis: {
@@ -46,7 +47,7 @@
       yAxis: {
         type: 'category',
         inverse: true,
-        data: rows.map((r) => r.fio),
+        data: rows.map((r) => normText(r.fio)),
         axisLabel: {
           color: th.textStrong,
           width: 150,
@@ -84,7 +85,7 @@
         axisPointer: { type: 'shadow' },
         formatter: (p) => {
           const r = rows[p[0].dataIndex]
-          return `<b>${r.fio || '—'}</b><br>${r.lav || '—'}<br>${money(r.ytd)}`
+          return `<b>${normText(r.fio) || '—'}</b><br>${r.lav || '—'}<br>${money(r.ytd)}`
         }
       },
       xAxis: {
@@ -95,7 +96,7 @@
       yAxis: {
         type: 'category',
         inverse: true,
-        data: rows.map((r) => r.fio),
+        data: rows.map((r) => normText(r.fio)),
         axisLabel: {
           color: th.textStrong,
           width: 150,
@@ -138,7 +139,7 @@
         axisPointer: { type: 'shadow' },
         formatter: (p) => {
           const r = rows[p[0].dataIndex]
-          return `<b>${r.fio || '—'}</b><br>${r.lav || '—'}<br>${t('salaryControl.who.topAccrued')}: ${money(
+          return `<b>${normText(r.fio) || '—'}</b><br>${r.lav || '—'}<br>${t('salaryControl.who.topAccrued')}: ${money(
             r.tot
           )}<br>${money(r.avg)}<br>${r.r.toFixed(2)}×`
         }
@@ -151,7 +152,7 @@
       yAxis: {
         type: 'category',
         inverse: true,
-        data: rows.map((r) => r.fio),
+        data: rows.map((r) => normText(r.fio)),
         axisLabel: {
           color: th.textStrong,
           width: 150,
@@ -197,7 +198,7 @@
     ]
     const tip = (o) => {
       const p = o.data.p
-      return `<b>${p.fio || '—'}</b><br>${p.lav || '—'}<br>Oklad: ${money(
+      return `<b>${normText(p.fio) || '—'}</b><br>${p.lav || '—'}<br>Oklad: ${money(
         p.ok
       )}<br>${t('salaryControl.common.total')}: ${money(p.tot)} (${(p.tot / p.ok).toFixed(2)}×)`
     }
@@ -263,6 +264,12 @@
     }
   })
 
+  // Scatter bo'sh bo'lsa (oklad hamma xodimda 0 — 1C oklad bermagan) — o'qlar
+  // o'rniga tushunarli «Ma'lumot yo'q» holatini ko'rsatamiz.
+  const okxEmpty = computed(
+    () => store.people.filter((p) => (p.ok || 0) > 0 && (p.tot || 0) > 0).length === 0
+  )
+
   // —— 5) Taqsimot histogrammasi (2 mln so'mlik intervallar) ——————————————
   const histOption = computed(() => {
     appStore.isDark
@@ -274,7 +281,7 @@
     for (const p of v) buckets[Math.min(nb - 1, Math.floor(p.tot / bw))]++
     const labels = buckets.map((_, i) => (i === nb - 1 ? i * 2 + '+' : String(i * 2)))
     return {
-      grid: { top: 16, left: 4, right: 10, bottom: 24, containLabel: true },
+      grid: { top: 36, left: 4, right: 10, bottom: 24, containLabel: true },
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
@@ -369,40 +376,43 @@
 </script>
 
 <template>
-  <template v-if="store.dashboardLoading">
-    <ScSkeleton variant="chart2" chart-height="340px" />
-    <div style="margin-top: 16px"><ScSkeleton variant="chart2" chart-height="340px" /></div>
-    <div style="margin-top: 16px"><ScSkeleton variant="chart2" chart-height="340px" /></div>
-  </template>
+  <div class="flex flex-col gap-4">
+    <template v-if="store.dashboardLoading">
+      <ScSkeleton variant="chart2" chart-height="340px" />
+      <ScSkeleton variant="chart2" chart-height="340px" />
+      <ScSkeleton variant="chart2" chart-height="340px" />
+    </template>
 
-  <template v-else>
-    <div class="sc-grid2">
-      <Card :title="$t('salaryControl.who.topAccrued')" :sub="$t('salaryControl.who.topAccruedSub')">
-        <EChart :option="topOption" height="340px" />
-      </Card>
-      <Card :title="$t('salaryControl.who.ytd')" :sub="$t('salaryControl.who.ytdSub')">
-        <EChart :option="ytdOption" height="340px" />
-      </Card>
-    </div>
+    <template v-else>
+      <div class="sc-grid2">
+        <Card :title="$t('salaryControl.who.topAccrued')" :sub="$t('salaryControl.who.topAccruedSub')">
+          <EChart :option="topOption" height="340px" />
+        </Card>
+        <Card :title="$t('salaryControl.who.ytd')" :sub="$t('salaryControl.who.ytdSub')">
+          <EChart :option="ytdOption" height="340px" />
+        </Card>
+      </div>
 
-    <div class="sc-grid2">
-      <Card :title="$t('salaryControl.who.spike')" :sub="$t('salaryControl.who.spikeSub')">
-        <EChart :option="spikeOption" height="340px" />
-      </Card>
-      <Card :title="$t('salaryControl.who.okx')" :sub="$t('salaryControl.who.okxSub')">
-        <EChart :option="okxOption" height="340px" />
-      </Card>
-    </div>
+      <div class="sc-grid2">
+        <Card :title="$t('salaryControl.who.spike')" :sub="$t('salaryControl.who.spikeSub')">
+          <EChart :option="spikeOption" height="340px" />
+        </Card>
+        <Card :title="$t('salaryControl.who.okx')" :sub="$t('salaryControl.who.okxSub')">
+          <EmptyState v-if="okxEmpty" :text="$t('salaryControl.common.empty')" />
+          <EChart v-else :option="okxOption" height="340px" />
+        </Card>
+      </div>
 
-    <div class="sc-grid2">
-      <Card :title="$t('salaryControl.who.hist')" :sub="$t('salaryControl.who.histSub')">
-        <EChart :option="histOption" height="340px" />
-      </Card>
-      <Card :title="$t('salaryControl.who.grp')" :sub="$t('salaryControl.who.grpSub')">
-        <EChart :option="grpOption" height="340px" />
-      </Card>
-    </div>
-  </template>
+      <div class="sc-grid2">
+        <Card :title="$t('salaryControl.who.hist')" :sub="$t('salaryControl.who.histSub')">
+          <EChart :option="histOption" height="340px" />
+        </Card>
+        <Card :title="$t('salaryControl.who.grp')" :sub="$t('salaryControl.who.grpSub')">
+          <EChart :option="grpOption" height="340px" />
+        </Card>
+      </div>
+    </template>
+  </div>
 </template>
 
 <style scoped>

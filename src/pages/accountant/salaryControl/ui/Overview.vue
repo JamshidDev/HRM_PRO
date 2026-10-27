@@ -1,10 +1,9 @@
 <script setup>
-  // «Umumiy» tab — SummaryCards'dan keyingi qism: holatlar turi/summa grafiklari
-  // + tekshirilishi kerak bo'lgan holatlar reestri (D.F). Manba: store.findings.
-  import { ref, computed } from 'vue'
+  // «Umumiy» tab — holatlar turi/summa grafiklari + tekshirilishi kerak bo'lgan
+  // holatlar reestri (D.F). Manba: store.findings.
+  import { ref, computed, h } from 'vue'
   import i18n from '@/i18n/index.js'
-  import { useAppStore } from '@/store/modules/index.js'
-  import { useSalaryControlStore } from '@/store/modules/index.js'
+  import { useAppStore, useSalaryControlStore } from '@/store/modules/index.js'
   import { money, mln, chartTheme, tokenColor } from '../helpers.js'
   import Card from './Card.vue'
   import EChart from './EChart.vue'
@@ -17,6 +16,8 @@
 
   const SEV = ['Yuqori', 'O‘rta', 'Past']
   const SEV_TOKEN = { Yuqori: '--fig-icon-red', 'O‘rta': '--fig-icon-orange', Past: '--fig-icon-amber' }
+  const SEV_RANK = { Yuqori: 0, 'O‘rta': 1, Past: 2 }
+  const sevTone = (s) => (s === 'Yuqori' ? 'red' : s === 'O‘rta' ? 'orange' : 'amber')
 
   // —— Filtrlar ————————————————————————————————————————————————————————
   const sev = ref('')
@@ -28,16 +29,82 @@
     { v: 'Past', label: t('salaryControl.findings.low') }
   ])
 
-  const rows = computed(() => {
-    const query = q.value.trim().toLowerCase()
-    return store.findings.filter(
-      (f) =>
-        (!sev.value || f.sev === sev.value) &&
-        (!query || (f.fio || '').toLowerCase().includes(query))
-    )
+  // —— Xodim (F.I.O.) bo'yicha guruhlash — bitta xodim bir necha holatda bo'lsa bitta
+  // qator; eng yuqori xavf darajasi; holatlar turi teglari; summa TAKROR qo'shilmaydi
+  // (eng katta olinadi). (F'da JSHSHIR yo'q — F.I.O.+lavozim bo'yicha guruhlaymiz.)
+  const grouped = computed(() => {
+    const map = new Map()
+    for (const f of store.findings) {
+      const key = `${f.fio || ''}||${f.lav || ''}`
+      let g = map.get(key)
+      if (!g) {
+        g = { fio: f.fio || '—', lav: f.lav || '', cats: [], sev: f.sev, summa: 0, txt: f.txt }
+        map.set(key, g)
+      }
+      if (!g.cats.includes(f.cat)) g.cats.push(f.cat)
+      if ((SEV_RANK[f.sev] ?? 9) < (SEV_RANK[g.sev] ?? 9)) {
+        g.sev = f.sev
+        g.txt = f.txt
+      }
+      g.summa = Math.max(g.summa, f.summa || 0)
+    }
+    return [...map.values()]
   })
 
-  const totalSum = computed(() => store.findings.reduce((a, f) => a + (f.summa || 0), 0))
+  const rows = computed(() => {
+    const query = q.value.trim().toLowerCase()
+    return grouped.value
+      .filter(
+        (g) =>
+          (!sev.value || g.sev === sev.value) &&
+          (!query || g.fio.toLowerCase().includes(query))
+      )
+      .sort((a, b) => (SEV_RANK[a.sev] - SEV_RANK[b.sev]) || b.summa - a.summa)
+  })
+
+  const totalSum = computed(() => rows.value.reduce((a, g) => a + (g.summa || 0), 0))
+
+  const columns = computed(() => [
+    {
+      title: t('salaryControl.risk.table.fio'),
+      key: 'fio',
+      minWidth: 260,
+      ellipsis: { tooltip: true },
+      render: (r) =>
+        h('div', { class: 'sc-fio-cell' }, [
+          h(StatusBadge, { tone: sevTone(r.sev), label: r.sev }),
+          h('b', { class: 'sc-fio' }, r.fio)
+        ])
+    },
+    {
+      title: t('salaryControl.risk.table.position'),
+      key: 'lav',
+      minWidth: 180,
+      ellipsis: { tooltip: true },
+      render: (r) => r.lav || t('salaryControl.common.notSet')
+    },
+    {
+      title: t('salaryControl.findings.byType'),
+      key: 'cats',
+      minWidth: 200,
+      render: (r) =>
+        h(
+          'div',
+          { class: 'sc-tags' },
+          r.cats.map((c) => h('span', { class: 'sc-tag' }, c))
+        )
+    },
+    {
+      title: t('salaryControl.common.sum'),
+      key: 'summa',
+      align: 'right',
+      width: 150,
+      className: 'sc-num',
+      render: (r) => money(r.summa)
+    }
+  ])
+
+  const pagination = { pageSize: 50, showSizePicker: true, pageSizes: [50, 100, 200] }
 
   // —— Grafik: holatlar turi bo'yicha (severity kesimida stacked bar) ————
   const catCountOption = computed(() => {
@@ -50,7 +117,7 @@
     })
     byCat.sort((a, b) => b.total - a.total)
     return {
-      grid: { top: 8, left: 4, right: 16, bottom: 4, containLabel: true },
+      grid: { top: 12, left: 4, right: 24, bottom: 4, containLabel: true },
       tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
       legend: { show: false },
       xAxis: { type: 'value', axisLabel: { color: th.text }, splitLine: { lineStyle: { color: th.line } } },
@@ -58,7 +125,7 @@
         type: 'category',
         inverse: true,
         data: byCat.map((r) => r.c),
-        axisLabel: { color: th.textStrong, width: 220, overflow: 'truncate', fontSize: 11 },
+        axisLabel: { color: th.textStrong, width: 200, overflow: 'truncate', fontSize: 11 },
         axisLine: { lineStyle: { color: th.line } }
       },
       series: SEV.map((s, i) => ({
@@ -82,7 +149,7 @@
       .map(([c, v]) => ({ c, v: mln(v) }))
       .sort((a, b) => b.v - a.v)
     return {
-      grid: { top: 8, left: 4, right: 16, bottom: 4, containLabel: true },
+      grid: { top: 12, left: 4, right: 24, bottom: 4, containLabel: true },
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
@@ -93,7 +160,7 @@
         type: 'category',
         inverse: true,
         data: arr.map((r) => r.c),
-        axisLabel: { color: th.textStrong, width: 220, overflow: 'truncate', fontSize: 11 },
+        axisLabel: { color: th.textStrong, width: 200, overflow: 'truncate', fontSize: 11 },
         axisLine: { lineStyle: { color: th.line } }
       },
       series: [
@@ -106,15 +173,12 @@
       ]
     }
   })
-
-  // StatusBadge uchun tone (severity → rang).
-  const sevTone = (s) => (s === 'Yuqori' ? 'red' : s === 'O‘rta' ? 'orange' : 'amber')
 </script>
 
 <template>
   <template v-if="store.dashboardLoading">
     <ScSkeleton variant="chart2" chart-height="300px" />
-    <div style="margin-top: 16px"><ScSkeleton variant="table" /></div>
+    <ScSkeleton variant="table" />
   </template>
 
   <template v-else>
@@ -134,7 +198,7 @@
 
     <Card
       :title="$t('salaryControl.findings.title')"
-      :sub="$t('salaryControl.findings.count', { count: store.findings.length, sum: money(totalSum) })"
+      :sub="$t('salaryControl.findings.count', { count: rows.length, sum: money(totalSum) })"
     >
       <template #head>
         <button
@@ -142,7 +206,7 @@
           :disabled="store.exporting === 'findings'"
           @click="store._export('findings')"
         >
-          {{ store.exporting === 'findings' ? '…' : $t('salaryControl.common.export') }}
+          {{ store.exporting === 'findings' ? $t('salaryControl.common.exporting') : $t('salaryControl.common.export') }}
         </button>
       </template>
       <div class="sc-filters">
@@ -163,33 +227,14 @@
           class="sc-search"
         />
       </div>
-      <div class="sc-scroll">
-        <table class="sc-tbl">
-          <thead>
-            <tr>
-              <th>{{ $t('salaryControl.risk.table.fio') }}</th>
-              <th>{{ $t('salaryControl.risk.table.position') }}</th>
-              <th>{{ $t('salaryControl.findings.byType') }}</th>
-              <th class="num">{{ $t('salaryControl.common.sum') }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(f, i) in rows" :key="i">
-              <td>
-                <StatusBadge :tone="sevTone(f.sev)" :label="f.sev" />
-                <b class="sc-fio">{{ f.fio || '—' }}</b>
-                <div class="sc-muted">{{ f.txt }}</div>
-              </td>
-              <td class="sc-muted">{{ f.lav || '—' }}</td>
-              <td>{{ f.cat }}</td>
-              <td class="num">{{ money(f.summa) }}</td>
-            </tr>
-            <tr v-if="!rows.length">
-              <td colspan="4" class="sc-empty">{{ $t('salaryControl.common.empty') }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <n-data-table
+        :columns="columns"
+        :data="rows"
+        :pagination="pagination"
+        :bordered="false"
+        :scroll-x="790"
+        size="small"
+      />
     </Card>
   </template>
 </template>
@@ -267,82 +312,33 @@
     opacity: 0.6;
     cursor: default;
   }
-  .sc-scroll {
-    overflow: auto;
-    max-height: 560px;
-    border-radius: 12px;
-    border: 0.8px solid var(--fig-br-disable);
+  :deep(.sc-fio-cell) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
   }
-  .sc-tbl {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    font-size: 13px;
-  }
-  .sc-tbl th {
-    text-align: left;
-    color: var(--fig-text-tertiary);
-    font-weight: 600;
-    font-size: 12px;
-    padding: 10px;
-    border-bottom: 1px solid var(--fig-br-disable);
-    position: sticky;
-    top: 0;
-    background: var(--fig-block-header-bg);
+  :deep(.sc-fio) {
+    color: var(--fig-text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .sc-tbl td {
-    padding: 10px;
-    border-bottom: 1px solid var(--fig-br-disable);
-    vertical-align: top;
-    color: var(--fig-text-secondary);
+  :deep(.sc-tags) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
   }
-  .sc-tbl .num {
-    text-align: right;
+  :deep(.sc-tag) {
+    background: var(--fig-bg-tertiary);
+    color: var(--fig-text-secondary);
+    border-radius: 6px;
+    padding: 1px 8px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  :deep(.sc-num) {
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
-  }
-  .sc-fio {
-    color: var(--fig-text-primary);
-    margin-left: 8px;
-  }
-  .sc-muted {
-    color: var(--fig-text-tertiary);
-    font-size: 12px;
-    margin-top: 3px;
-  }
-  .sc-empty {
-    text-align: center;
-    color: var(--fig-text-tertiary);
-    padding: 24px;
-  }
-  .sc-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    border-radius: 999px;
-    padding: 2px 10px;
-    font-size: 12px;
-    font-weight: 600;
-    white-space: nowrap;
-  }
-  .sc-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: currentColor;
-    display: inline-block;
-  }
-  .sc-b--red {
-    background: var(--fig-bg-red-fill);
-    color: var(--fig-text-red);
-  }
-  .sc-b--orange {
-    background: var(--fig-bg-brand-surface);
-    color: var(--fig-icon-orange);
-  }
-  .sc-b--amber {
-    background: var(--fig-bg-brand-surface);
-    color: var(--fig-icon-amber);
   }
 </style>

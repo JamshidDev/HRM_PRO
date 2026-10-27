@@ -6,49 +6,54 @@ import { useAccountStore } from '@/store/modules/app/accountStore.js'
 const { t } = i18n.global
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 
-// Rich tab'lar (dashboard payloadga tayanadi) — birinchi ochilganda `_dashboard()`
-// chaqiriladi.
+// Rich tab'lar (dashboard payloadga tayanadi).
 const DASHBOARD_TABS = ['rules', 'who', 'vids', 'deductions', 'reports', 'employees']
 
-// Oylik nazorati (salary-control) — 1C oylik hisoboti asosida umumiy nazorat
-// dashboardi. «Umumiy» + «Xavflar» tab'lari alohida yengil endpointlardan
-// (summary/risks) keladi; qolgan boy bo'limlar bitta `dashboard` payloaddan
-// (kpi + emps + vids + F + rc) client-side quriladi.
+// —— Modul darajasidagi kesh (reaktiv emas) — `year|month|org|code` kaliti bo'yicha.
+// Tablar orasida qaytganda yoki oldingi filtrга qaytganda qayta so'rov ketmaydi.
+const summaryCache = new Map()
+const risksCache = new Map()
+const dashCache = new Map()
+// Race guard: har «kind» uchun oxirgi so'rov id'si — kech kelgan eski javob
+// yangi tab/filtr holatini bosib ketmasin.
+let summaryReq = 0
+let risksReq = 0
+let dashReq = 0
+// Filtr/qidiruv debounce taymeri.
+let filterTimer = null
+
+// Oylik nazorati (salary-control) — 1C oylik hisoboti asosidagi nazorat dashboardi.
+// «Umumiy» (summary) + «Xavflar» (risks) yengil endpointlardan; boy bo'limlar bitta
+// `dashboard` payloaddan (kpi + emps + vids + F + rc + rules) client-side quriladi.
 export const useSalaryControlStore = defineStore('salaryControl', {
   state: () => ({
-    // Sahifadagi asosiy ko'rinish tabi.
+    // Sahifadagi asosiy ko'rinish tabi (route.query.tab bilan sinxron).
     mainView: 'summary',
-    // Sahifa filtri (davr + tashkilot).
+    // Sahifa filtri (davr + ko'p tashkilot + ko'p 1C kod).
     params: {
-      organization_id: null,
+      organizations: [],
+      ones_code: null,
       year: null,
       month: null
     },
-    // «Umumiy» tab KPI xulosasi.
+    structureCheck2: [],
     summary: {},
     summaryLoading: false,
     summaryError: false,
-    // «Xavflar» tab — 14 ta risk ro'yxati va oy me'yori (soat).
     risks: [],
     norm: null,
     risksLoading: false,
-    risksLoaded: false,
     risksError: false,
-    // Boy bo'limlar uchun to'liq payload: { kpi, emps, vids, F, rc, norm }.
     dashboard: {},
     dashboardLoading: false,
-    dashboardLoaded: false,
     dashboardError: false,
-    // Excel eksport holati (tur bo'yicha yuklanish indikatori).
     exporting: ''
   }),
   getters: {
-    // Xom massivlar (bo'lim komponentlari shulardan analitika quradi).
     emps: (s) => s.dashboard.emps ?? [],
     vids: (s) => s.dashboard.vids ?? [],
     findings: (s) => s.dashboard.F ?? [],
     rc: (s) => s.dashboard.rc ?? {},
-    // To'lov turlari mezonlari — server tomonda baholangan (9 tur + reestr + r11).
     rules: (s) =>
       s.dashboard.rules ?? {
         kpi: { based_types: 0, check_types: 0, total_recipients: 0, total_sum: 0 },
@@ -58,8 +63,7 @@ export const useSalaryControlStore = defineStore('salaryControl', {
       },
     dashKpi: (s) => s.dashboard.kpi ?? {},
     dashNorm: (s) => s.dashboard.norm ?? null,
-    // Xodimlar JSHSHIR (j) bo'yicha guruhlangan — bir shaxsning bir necha qatori
-    // (masalan 2 lavozim) birlashtiriladi. Maketdagi `people` ekvivalenti.
+    // Xodimlar JSHSHIR (j) bo'yicha guruhlangan — bir shaxsning bir necha qatori birlashtiriladi.
     people: (s) => {
       const emps = s.dashboard.emps ?? []
       const byPin = new Map()
@@ -89,97 +93,131 @@ export const useSalaryControlStore = defineStore('salaryControl', {
     }
   },
   actions: {
-    // Umumiy KPI xulosasini yuklaymiz (org + davr bo'yicha).
-    _summary() {
+    // Joriy filtr kaliti — kesh va race guard uchun.
+    _key() {
+      const orgs = this.params.organizations
+        .map((v) => v.id)
+        .sort()
+        .join(',')
+      return `${this.params.year}|${this.params.month}|${orgs}|${this.params.ones_code || ''}`
+    },
+    // API query paramlari (CSV id).
+    _params() {
+      return {
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
+        ones_code: this.params.ones_code || undefined,
+        year: this.params.year || undefined,
+        month: this.params.month || undefined
+      }
+    },
+    _canRead() {
       const accStore = useAccountStore()
-      if (!accStore.checkPermission(accStore.pn.economistSalaryControlRead)) return
+      return accStore.checkPermission(accStore.pn.economistSalaryControlRead)
+    },
+
+    // «Umumiy» KPI xulosasi (kesh + race guard).
+    _summary() {
+      if (!this._canRead()) return
+      const key = this._key()
+      if (summaryCache.has(key)) {
+        this.summary = summaryCache.get(key)
+        this.summaryError = false
+        this.summaryLoading = false
+        return
+      }
+      const reqId = ++summaryReq
       this.summaryLoading = true
       this.summaryError = false
-      const params = {
-        organization_id: this.params.organization_id || undefined,
-        year: this.params.year || undefined,
-        month: this.params.month || undefined
-      }
       $ApiService.salaryControlService
-        ._salaryControlSummary({ params })
-        .then((res) => {
-          this.summary = res.data.data ?? {}
-        })
-        .catch(() => {
-          this.summaryError = true
-        })
-        .finally(() => {
-          this.summaryLoading = false
-        })
-    },
-    // 14 ta riskni yuklaymiz (org + davr bo'yicha).
-    _risks() {
-      const accStore = useAccountStore()
-      if (!accStore.checkPermission(accStore.pn.economistSalaryControlRead)) return
-      this.risksLoading = true
-      this.risksError = false
-      const params = {
-        organization_id: this.params.organization_id || undefined,
-        year: this.params.year || undefined,
-        month: this.params.month || undefined
-      }
-      $ApiService.salaryControlService
-        ._salaryControlRisks({ params })
+        ._salaryControlSummary({ params: this._params() })
         .then((res) => {
           const data = res.data.data ?? {}
-          this.risks = data.risks ?? []
-          this.norm = data.norm ?? null
-          this.risksLoaded = true
+          summaryCache.set(key, data)
+          if (reqId === summaryReq && key === this._key()) this.summary = data
         })
         .catch(() => {
-          this.risksError = true
+          if (reqId === summaryReq) this.summaryError = true
         })
         .finally(() => {
-          this.risksLoading = false
+          if (reqId === summaryReq) this.summaryLoading = false
         })
     },
-    // To'liq dashboard payloadini yuklaymiz (boy bo'limlar uchun; bir marta).
+
+    // «Xavflar» risk ro'yxati + oy me'yori (kesh + race guard).
+    _risks() {
+      if (!this._canRead()) return
+      const key = this._key()
+      if (risksCache.has(key)) {
+        const data = risksCache.get(key)
+        this.risks = data.risks ?? []
+        this.norm = data.norm ?? null
+        this.risksError = false
+        this.risksLoading = false
+        return
+      }
+      const reqId = ++risksReq
+      this.risksLoading = true
+      this.risksError = false
+      $ApiService.salaryControlService
+        ._salaryControlRisks({ params: this._params() })
+        .then((res) => {
+          const data = res.data.data ?? {}
+          risksCache.set(key, data)
+          if (reqId === risksReq && key === this._key()) {
+            this.risks = data.risks ?? []
+            this.norm = data.norm ?? null
+          }
+        })
+        .catch(() => {
+          if (reqId === risksReq) this.risksError = true
+        })
+        .finally(() => {
+          if (reqId === risksReq) this.risksLoading = false
+        })
+    },
+
+    // To'liq dashboard payloadi (boy bo'limlar; kesh + race guard).
     _dashboard() {
-      const accStore = useAccountStore()
-      if (!accStore.checkPermission(accStore.pn.economistSalaryControlRead)) return
+      if (!this._canRead()) return
+      const key = this._key()
+      if (dashCache.has(key)) {
+        this.dashboard = dashCache.get(key)
+        this.dashboardError = false
+        this.dashboardLoading = false
+        return
+      }
+      const reqId = ++dashReq
       this.dashboardLoading = true
       this.dashboardError = false
-      const params = {
-        organization_id: this.params.organization_id || undefined,
-        year: this.params.year || undefined,
-        month: this.params.month || undefined
-      }
       $ApiService.salaryControlService
-        ._salaryControlDashboard({ params })
+        ._salaryControlDashboard({ params: this._params() })
         .then((res) => {
-          this.dashboard = res.data.data ?? {}
-          this.dashboardLoaded = true
+          const data = res.data.data ?? {}
+          dashCache.set(key, data)
+          if (reqId === dashReq && key === this._key()) this.dashboard = data
         })
         .catch(() => {
-          this.dashboardError = true
+          if (reqId === dashReq) this.dashboardError = true
         })
         .finally(() => {
-          this.dashboardLoading = false
+          if (reqId === dashReq) this.dashboardLoading = false
         })
     },
-    // Reestrni haqiqiy .xlsx qilib yuklab olamiz (type: rules|findings|employees|all).
+
+    // Reestr eksporti (.xlsx) — type: rules | findings | employees | all.
     _export(type = 'all') {
       const accStore = useAccountStore()
       if (!accStore.checkPermission(accStore.pn.economistSalaryControlExport)) return
       this.exporting = type
       const { year, month } = this.params
+      const orgPart = this.params.organizations.length
+        ? `-org${this.params.organizations.map((v) => v.id).join('_')}`
+        : ''
       const name = year
-        ? `oylik-nazorati-${type}-${year}-${String(month).padStart(2, '0')}.xlsx`
+        ? `oylik-nazorati-${type}-${year}-${String(month).padStart(2, '0')}${orgPart}.xlsx`
         : `oylik-nazorati-${type}.xlsx`
       $ApiService.salaryControlService
-        ._salaryControlExport({
-          params: {
-            organization_id: this.params.organization_id || undefined,
-            year: year || undefined,
-            month: month || undefined,
-            type
-          }
-        })
+        ._salaryControlExport({ params: { ...this._params(), type } })
         .then((res) => {
           Utils.blobFileDownload(res.data, XLSX_MIME, name)
         })
@@ -190,31 +228,42 @@ export const useSalaryControlStore = defineStore('salaryControl', {
           this.exporting = ''
         })
     },
-    // Faol tab birinchi marta ochilganda tegishli ma'lumotni yuklaymiz.
-    // «Xavflar» tab: risk ro'yxati (/risks) + emps (dashboard — risk grafiklari uchun).
+
+    // Faqat aktiv tabga kerakli endpointni yuklaymiz (kesh dedup qiladi).
+    //   summary → KPI (summary) + Overview holatlari (dashboard)
+    //   risks   → risklar (risks) + grafiklar (dashboard)
+    //   boshqa  → dashboard
     _loadForTab(tab) {
-      if (tab === 'risks' && !this.risksLoaded) this._risks()
-      const needsDashboard = tab === 'risks' || DASHBOARD_TABS.includes(tab)
-      if (needsDashboard && !this.dashboardLoaded) this._dashboard()
-    },
-    // Faol tab yuklamasini qayta urinish (ErrorState «Qayta urinish» tugmasi).
-    _retryView(tab) {
-      if (tab === 'summary') return this._summary()
-      if (tab === 'risks') {
+      if (tab === 'summary') {
+        this._summary()
+        this._dashboard()
+      } else if (tab === 'risks') {
         this._risks()
         this._dashboard()
-        return
-      }
-      this._dashboard()
-    },
-    // Filtr o'zgarganda — faol tabga qarab tegishli ma'lumotni qayta yuklaymiz.
-    _filter() {
-      this._summary()
-      if (this.mainView === 'risks') this._risks()
-      // Boy bo'limlar (yoki risk grafiklari) ochiq bo'lsa — dashboardni yangilaymiz.
-      if (this.mainView === 'risks' || DASHBOARD_TABS.includes(this.mainView)) {
+      } else if (DASHBOARD_TABS.includes(tab)) {
         this._dashboard()
       }
+    },
+
+    _tabNeedsDashboard(tab) {
+      return tab === 'summary' || tab === 'risks' || DASHBOARD_TABS.includes(tab)
+    },
+
+    // «Qayta urinish» — joriy kalit keshini tozalab, aktiv tabni qayta yuklaymiz.
+    _retryView(tab) {
+      const key = this._key()
+      summaryCache.delete(key)
+      risksCache.delete(key)
+      dashCache.delete(key)
+      this._loadForTab(tab)
+    },
+
+    // Filtr/qidiruv o'zgarganda — 300ms debounce bilan faqat aktiv tabni yangilaymiz.
+    // Kalit filtr tarkibidan quriladi — yangi filtr = yangi kalit = kesh miss (qayta
+    // so'rov); eski filtrга qaytilsa kesh hit (so'rovsiz).
+    _filter() {
+      clearTimeout(filterTimer)
+      filterTimer = setTimeout(() => this._loadForTab(this.mainView), 300)
     }
   }
 })

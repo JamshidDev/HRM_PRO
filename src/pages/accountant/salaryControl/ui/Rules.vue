@@ -41,7 +41,8 @@
     const th = chartTheme()
     const rows = (store.rules.r11 || []).filter((r) => r.n)
     return {
-      grid: { top: 8, left: 4, right: 16, bottom: 4, containLabel: true },
+      // right: o'ng tomondagi xodim soni yorlig'i (position:'right') kesilmasin.
+      grid: { top: 8, left: 4, right: 40, bottom: 4, containLabel: true },
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
@@ -94,131 +95,133 @@
 </script>
 
 <template>
-  <template v-if="store.dashboardLoading">
-    <ScSkeleton variant="kpi" :count="4" />
-    <div style="margin-top: 16px"><ScSkeleton variant="table" /></div>
-    <div style="margin-top: 16px"><ScSkeleton variant="chart" chart-height="240px" /></div>
-  </template>
+  <div class="flex flex-col gap-4">
+    <template v-if="store.dashboardLoading">
+      <ScSkeleton variant="kpi" :count="4" />
+      <ScSkeleton variant="table" />
+      <ScSkeleton variant="chart" chart-height="240px" />
+    </template>
 
-  <template v-else>
-    <!-- rk — KPI qatori -->
-    <div class="sc-kpis">
-      <div class="sc-kpi">
-        <div class="sc-kpi__h">
-          <i class="sc-tile sc-tile--green"></i>{{ $t('salaryControl.rules.based') }}
+    <template v-else>
+      <!-- rk — KPI qatori -->
+      <div class="sc-kpis">
+        <div class="sc-kpi">
+          <div class="sc-kpi__h">
+            <i class="sc-tile sc-tile--green"></i>{{ $t('salaryControl.rules.based') }}
+          </div>
+          <div class="sc-kpi__v">{{ kpi.basedTypes }}</div>
+          <div class="sc-kpi__s">{{ $t('salaryControl.rules.code') }} — to‘lov turlari</div>
         </div>
-        <div class="sc-kpi__v">{{ kpi.basedTypes }}</div>
-        <div class="sc-kpi__s">{{ $t('salaryControl.rules.code') }} — to‘lov turlari</div>
-      </div>
-      <div class="sc-kpi">
-        <div class="sc-kpi__h">
-          <i class="sc-tile sc-tile--amber"></i>{{ $t('salaryControl.rules.check') }}
+        <div class="sc-kpi">
+          <div class="sc-kpi__h">
+            <i class="sc-tile sc-tile--amber"></i>{{ $t('salaryControl.rules.check') }}
+          </div>
+          <div class="sc-kpi__v">{{ kpi.checkTypes }}</div>
+          <div class="sc-kpi__s">{{ $t('salaryControl.rules.code') }} — to‘lov turlari</div>
         </div>
-        <div class="sc-kpi__v">{{ kpi.checkTypes }}</div>
-        <div class="sc-kpi__s">{{ $t('salaryControl.rules.code') }} — to‘lov turlari</div>
+        <div class="sc-kpi">
+          <div class="sc-kpi__h"><i class="sc-tile sc-tile--brand"></i>{{ $t('salaryControl.common.people', { count: kpi.totalRecipients }) }}</div>
+          <div class="sc-kpi__v">{{ kpi.totalRecipients }}</div>
+          <div class="sc-kpi__s">{{ $t('salaryControl.common.count') }} — oluvchilar</div>
+        </div>
+        <div class="sc-kpi">
+          <div class="sc-kpi__h"><i class="sc-tile sc-tile--indigo"></i>{{ $t('salaryControl.common.total') }}</div>
+          <div class="sc-kpi__v">{{ mln(kpi.totalSum).toFixed(1) }} <span class="sc-kpi__u">mln</span></div>
+          <div class="sc-kpi__s">{{ money(kpi.totalSum) }}</div>
+        </div>
       </div>
-      <div class="sc-kpi">
-        <div class="sc-kpi__h"><i class="sc-tile sc-tile--brand"></i>{{ $t('salaryControl.common.people', { count: kpi.totalRecipients }) }}</div>
-        <div class="sc-kpi__v">{{ kpi.totalRecipients }}</div>
-        <div class="sc-kpi__s">{{ $t('salaryControl.common.count') }} — oluvchilar</div>
-      </div>
-      <div class="sc-kpi">
-        <div class="sc-kpi__h"><i class="sc-tile sc-tile--indigo"></i>{{ $t('salaryControl.common.total') }}</div>
-        <div class="sc-kpi__v">{{ mln(kpi.totalSum).toFixed(1) }} <span class="sc-kpi__u">mln</span></div>
-        <div class="sc-kpi__s">{{ money(kpi.totalSum) }}</div>
-      </div>
-    </div>
 
-    <!-- rtbl — asosiy jadval (9 ta tur) -->
-    <Card :title="$t('salaryControl.rules.title')" :sub="$t('salaryControl.rules.sub')">
-      <div class="sc-scroll">
-        <table class="sc-tbl">
-          <thead>
-            <tr>
-              <th style="width: 70px">{{ $t('salaryControl.rules.code') }}</th>
-              <th>{{ $t('salaryControl.rules.name') }}</th>
-              <th class="num" style="width: 80px">{{ $t('salaryControl.common.count') }}</th>
-              <th class="num" style="width: 140px">{{ $t('salaryControl.common.sum') }}</th>
-              <th style="width: 190px">{{ $t('salaryControl.rules.result') }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="row in ruleRows" :key="row.k">
-              <td><b>{{ row.k }}</b></td>
-              <td>
-                <b class="sc-name">{{ row.name }}</b>
-                <div class="sc-muted">{{ row.m }}</div>
-              </td>
-              <td class="num">{{ row.n }}</td>
-              <td class="num">{{ money(row.sum) }}</td>
-              <td>
-                <StatusBadge v-if="row.res" :tone="resTone(row.res)" :label="resLabel(row.res)" />
-                <span v-else class="sc-muted">{{ $t('salaryControl.common.empty') }}</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </Card>
+      <!-- rtbl — asosiy jadval (9 ta tur) -->
+      <Card :title="$t('salaryControl.rules.title')" :sub="$t('salaryControl.rules.sub')">
+        <div class="sc-scroll">
+          <table class="sc-tbl">
+            <thead>
+              <tr>
+                <th style="width: 70px">{{ $t('salaryControl.rules.code') }}</th>
+                <th>{{ $t('salaryControl.rules.name') }}</th>
+                <th class="num" style="width: 80px">{{ $t('salaryControl.common.count') }}</th>
+                <th class="num" style="width: 140px">{{ $t('salaryControl.common.sum') }}</th>
+                <th style="width: 190px">{{ $t('salaryControl.rules.result') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in ruleRows" :key="row.k">
+                <td><b>{{ row.k }}</b></td>
+                <td>
+                  <b class="sc-name">{{ row.name }}</b>
+                  <div class="sc-muted">{{ row.m }}</div>
+                </td>
+                <td class="num">{{ row.n }}</td>
+                <td class="num">{{ money(row.sum) }}</td>
+                <td>
+                  <StatusBadge v-if="row.res" :tone="resTone(row.res)" :label="resLabel(row.res)" />
+                  <span v-else class="sc-muted">{{ $t('salaryControl.common.empty') }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </Card>
 
-    <!-- r11 — 011 lavozim toifasi grafigi -->
-    <Card :title="$t('salaryControl.rules.r11Title')" :sub="$t('salaryControl.rules.r11Sub')">
-      <EChart :option="r11Option" height="240px" />
-      <div class="sc-legend">
-        <span><i class="sw" :style="{ background: 'var(--fig-icon-green)' }"></i>{{ $t('salaryControl.rules.based') }}</span>
-        <span><i class="sw" :style="{ background: 'var(--fig-icon-amber)' }"></i>{{ $t('salaryControl.rules.check') }}</span>
-      </div>
-    </Card>
+      <!-- r11 — 011 lavozim toifasi grafigi -->
+      <Card :title="$t('salaryControl.rules.r11Title')" :sub="$t('salaryControl.rules.r11Sub')">
+        <EChart :option="r11Option" height="240px" />
+        <div class="sc-legend">
+          <span><i class="sw" :style="{ background: 'var(--fig-icon-green)' }"></i>{{ $t('salaryControl.rules.based') }}</span>
+          <span><i class="sw" :style="{ background: 'var(--fig-icon-amber)' }"></i>{{ $t('salaryControl.rules.check') }}</span>
+        </div>
+      </Card>
 
-    <!-- rreg — reestr + rcsv -->
-    <Card :title="$t('salaryControl.rules.registry')" :sub="$t('salaryControl.findings.count', { count: registry.length, sum: money(registry.reduce((a, x) => a + x.s, 0)) })">
-      <template #head>
-        <button class="sc-export" :disabled="store.exporting === 'rules'" @click="onExport">
-          {{ store.exporting === 'rules' ? '…' : $t('salaryControl.common.export') }}
-        </button>
-      </template>
-      <div class="sc-filters">
-        <n-input
-          v-model:value="q"
-          size="small"
-          clearable
-          :placeholder="$t('salaryControl.common.search')"
-          class="sc-search"
-        />
-      </div>
-      <div class="sc-scroll">
-        <table class="sc-tbl">
-          <thead>
-            <tr>
-              <th class="num" style="width: 48px">№</th>
-              <th>{{ $t('salaryControl.risk.table.fio') }}</th>
-              <th>{{ $t('salaryControl.risk.table.position') }}</th>
-              <th>{{ $t('salaryControl.rules.name') }}</th>
-              <th class="num" style="width: 130px">{{ $t('salaryControl.common.sum') }}</th>
-              <th>{{ $t('salaryControl.risk.finding') }}</th>
-              <th style="width: 180px">{{ $t('salaryControl.rules.result') }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(x, i) in registry" :key="i">
-              <td class="num">{{ i + 1 }}</td>
-              <td><b class="sc-name">{{ x.fio || '—' }}</b></td>
-              <td class="sc-muted">{{ x.lav || '—' }}</td>
-              <td>{{ x.name }} <span class="sc-muted">({{ x.k }})</span></td>
-              <td class="num">{{ money(x.s) }}</td>
-              <td class="sc-muted">{{ x.why }}</td>
-              <td>
-                <StatusBadge :tone="resTone(x.res)" :label="resLabel(x.res)" />
-              </td>
-            </tr>
-            <tr v-if="!registry.length">
-              <td colspan="7" class="sc-empty">{{ $t('salaryControl.common.empty') }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </Card>
-  </template>
+      <!-- rreg — reestr + rcsv -->
+      <Card :title="$t('salaryControl.rules.registry')" :sub="$t('salaryControl.findings.count', { count: registry.length, sum: money(registry.reduce((a, x) => a + x.s, 0)) })">
+        <template #head>
+          <button class="sc-export" :disabled="store.exporting === 'rules'" @click="onExport">
+            {{ store.exporting === 'rules' ? '…' : $t('salaryControl.common.export') }}
+          </button>
+        </template>
+        <div class="sc-filters">
+          <n-input
+            v-model:value="q"
+            size="small"
+            clearable
+            :placeholder="$t('salaryControl.common.search')"
+            class="sc-search"
+          />
+        </div>
+        <div class="sc-scroll">
+          <table class="sc-tbl">
+            <thead>
+              <tr>
+                <th class="num" style="width: 48px">№</th>
+                <th>{{ $t('salaryControl.risk.table.fio') }}</th>
+                <th>{{ $t('salaryControl.risk.table.position') }}</th>
+                <th>{{ $t('salaryControl.rules.name') }}</th>
+                <th class="num" style="width: 130px">{{ $t('salaryControl.common.sum') }}</th>
+                <th>{{ $t('salaryControl.risk.finding') }}</th>
+                <th style="width: 180px">{{ $t('salaryControl.rules.result') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(x, i) in registry" :key="i">
+                <td class="num">{{ i + 1 }}</td>
+                <td><b class="sc-name">{{ x.fio || '—' }}</b></td>
+                <td class="sc-muted">{{ x.lav || '—' }}</td>
+                <td>{{ x.name }} <span class="sc-muted">({{ x.k }})</span></td>
+                <td class="num">{{ money(x.s) }}</td>
+                <td class="sc-muted">{{ x.why }}</td>
+                <td>
+                  <StatusBadge :tone="resTone(x.res)" :label="resLabel(x.res)" />
+                </td>
+              </tr>
+              <tr v-if="!registry.length">
+                <td colspan="7" class="sc-empty">{{ $t('salaryControl.common.empty') }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </Card>
+    </template>
+  </div>
 </template>
 
 <style scoped>

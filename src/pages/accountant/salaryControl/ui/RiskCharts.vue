@@ -5,7 +5,7 @@
   import { ref, computed } from 'vue'
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore, useAppStore } from '@/store/modules/index.js'
-  import { money, mln, chartTheme, tokenColor } from '../helpers.js'
+  import { money, mln, chartTheme, tokenColor, normText } from '../helpers.js'
   import Card from './Card.vue'
   import EChart from './EChart.vue'
   import ScSkeleton from './ScSkeleton.vue'
@@ -121,18 +121,19 @@
         formatter: (ps) => {
           const p = ps[0]
           const e = list[p.dataIndex]
-          return `<b>${e.fio}</b><br>Ushlanma ulushi: ${(e.share * 100).toFixed(0)}%<br>${money(e.ded)} so'm`
+          return `<b>${normText(e.fio)}</b><br>Ushlanma ulushi: ${(e.share * 100).toFixed(0)}%<br>${money(e.ded)} so‘m`
         }
       },
       xAxis: {
         type: 'value',
         max: 100,
-        axisLabel: { color: th.text, formatter: '{value}%' },
+        splitNumber: 5,
+        axisLabel: { color: th.text, formatter: '{value}%', hideOverlap: true },
         splitLine: { lineStyle: { color: th.line } }
       },
       yAxis: {
         type: 'category',
-        data: list.map((e) => trunc(e.fio, 22)),
+        data: list.map((e) => trunc(normText(e.fio), 22)),
         axisLabel: { color: th.textStrong, fontSize: 11 },
         axisLine: { lineStyle: { color: th.line } }
       },
@@ -179,7 +180,7 @@
       .map(Number)
       .sort((a, b) => a - b)
     return {
-      grid: { top: 24, left: 4, right: 16, bottom: 24, containLabel: true },
+      grid: { top: 36, left: 4, right: 16, bottom: 24, containLabel: true },
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
@@ -282,8 +283,8 @@
 <template>
   <template v-if="store.dashboardLoading">
     <ScSkeleton variant="chart2" chart-height="320px" />
-    <div class="sc-sk-gap"><ScSkeleton variant="chart" chart-height="300px" /></div>
-    <div class="sc-sk-gap"><ScSkeleton variant="table" /></div>
+    <ScSkeleton variant="chart" chart-height="300px" />
+    <ScSkeleton variant="table" />
   </template>
 
   <template v-else>

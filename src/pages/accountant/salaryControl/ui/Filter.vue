@@ -1,5 +1,10 @@
 <script setup>
-  import { UIPageFilter, UISelect, UIYearMonth } from '@/components/index.js'
+  import {
+    OnesCodeFilter,
+    UIPageFilter,
+    UISelect,
+    UIYearMonth
+  } from '@/components/index.js'
   import {
     useAccountStore,
     useComponentStore,
@@ -10,37 +15,37 @@
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
 
-  // Tashkilot tree (single-select) uchun holat.
-  const orgModel = ref([])
-  const orgCheck = ref([])
-
   const filterEvent = () => {
     if (!accStore.checkAction(accStore.pn.economistSalaryControlRead)) return
     store._filter()
+  }
+
+  // Ko'p korxona tanlash (select-all daraxt) — accountant/dashboard filtri bilan bir xil.
+  const onChangeStructure = (v) => {
+    store.params.organizations = v
+    store.params.ones_code = null // korxona o'zgardi — 1C kod filtrini bekor qilamiz
+    filterEvent()
+  }
+
+  const selectedOrgIds = computed(() =>
+    (store.params.organizations || []).map((o) => o?.id ?? o)
+  )
+
+  const filterCount = computed(
+    () => Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.ones_code))
+  )
+
+  const resetFilter = () => {
+    store.params.organizations = []
+    store.params.ones_code = null
+    store.structureCheck2 = []
+    filterEvent()
   }
 
   const beforeShow = (v) => {
     if (!v) return
     if (componentStore.structureList.length === 0) componentStore._structures()
   }
-
-  // Tashkilot tanlanganda (single-select) — organization_id ni yangilaymiz.
-  const onChangeOrg = (list) => {
-    orgModel.value = list
-    store.params.organization_id = list[0]?.id ?? null
-    filterEvent()
-  }
-
-  const resetFilter = () => {
-    orgModel.value = []
-    orgCheck.value = []
-    store.params.organization_id = null
-    filterEvent()
-  }
-
-  const filterCount = computed(() => {
-    return Number(Boolean(store.params.organization_id))
-  })
 </script>
 
 <template>
@@ -70,15 +75,20 @@
       }}</label>
       <UISelect
         :options="componentStore.structureList"
-        :multiple="false"
-        :model-v="orgModel"
-        @updateModel="onChangeOrg"
-        :checked-val="orgCheck"
-        @updateCheck="(v) => (orgCheck = v)"
+        :model-v="store.params.organizations"
+        @defaultValue="(v) => (store.params.organizations = v)"
+        @updateModel="onChangeStructure"
+        :checked-val="store.structureCheck2"
+        @updateCheck="(v) => (store.structureCheck2 = v)"
         :loading="componentStore.structureLoading"
         v-model:search="componentStore.structureParams.search"
         @onSearch="componentStore._structures"
         @onSubmit="filterEvent"
+      />
+      <OnesCodeFilter
+        :org-ids="selectedOrgIds"
+        v-model="store.params.ones_code"
+        @change="filterEvent"
       />
     </template>
   </UIPageFilter>

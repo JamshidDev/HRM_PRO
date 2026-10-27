@@ -80,9 +80,7 @@
   <!-- Yuklanish: kontent shaklidagi skeleton (spinner emas). -->
   <template v-if="store.risksLoading">
     <ScSkeleton variant="kpi" :count="4" />
-    <div class="sc-sk-gap">
-      <ScSkeleton variant="cards" :count="6" />
-    </div>
+    <ScSkeleton variant="cards" :count="6" />
   </template>
 
   <template v-else>

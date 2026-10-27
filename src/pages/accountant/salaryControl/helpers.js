@@ -23,6 +23,32 @@ export const mlnText = (v) => {
   return (Math.abs(m) >= 100 ? Math.round(m) : m.toFixed(1)) + ' mln'
 }
 
+// Yagona pul formatlovchi (spec 0.8) — minglik ajratgich bo'shliq, kasr vergul,
+// birlik doim ko'rsatiladi. `unit`: 'full' → «… so'm», 'mln' → «… mln so'm».
+// Barcha tab va ECharts axis/tooltip shu util'dan foydalanadi (format bir xil bo'lsin).
+export function formatMoney(value, { unit = 'full', digits } = {}) {
+  const n = Number(value) || 0
+  if (unit === 'mln') {
+    const m = n / 1e6
+    const d = digits ?? (Math.abs(m) >= 100 ? 0 : 1)
+    return (
+      m.toLocaleString('ru-RU', {
+        minimumFractionDigits: d,
+        maximumFractionDigits: d
+      }) + ' mln so‘m'
+    )
+  }
+  return Math.round(n).toLocaleString('ru-RU') + ' so‘m'
+}
+
+// Matndagi turli apostrof/qo'shtirnoq belgilarini oddiy «'» ga keltirish (spec 0.9).
+// ECharts canvas shriftida `ʻ ‘ ’` buzilib (bo'sh joy bilan) chiqadi — chartga
+// berishdan oldin normalizatsiya qilamiz. Kirill ИНПС → INPS (spec 0.10).
+export const normText = (s) =>
+  String(s ?? '')
+    .replace(/[ʻʼ‘’`´]/g, "'")
+    .replace(/ИНПС/g, 'INPS')
+
 // —— Lavozim guruhlari (maket grpOf) ———————————————————————————————————
 export function positionGroup(lav) {
   const l = (lav || '').toLowerCase()

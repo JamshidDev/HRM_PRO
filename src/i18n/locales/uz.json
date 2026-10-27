@@ -6711,7 +6711,12 @@
       "allTypes": "Barcha turlar",
       "empty": "Ma'lumot topilmadi",
       "people": "{count} ta xodim",
-      "norm": "Oy me'yori: {norm} soat"
+      "norm": "Oy me'yori: {norm} soat",
+      "chunkError": "Bo‘lim yuklanmadi. Iltimos, sahifani yangilang.",
+      "reload": "Sahifani yangilash",
+      "newVersion": "Yangi versiya chiqdi — sahifa yangilanmoqda…",
+      "exporting": "Yuklanmoqda…",
+      "notSet": "Ko‘rsatilmagan"
     },
     "findings": {
       "title": "Tekshirilishi kerak bo'lgan holatlar",
@@ -6782,6 +6787,7 @@
       "report": "Hisobot",
       "diff": "Farq",
       "note": "Izoh",
+      "noExternal": "Tashqi hisobotlar (NDFL-4/5, INPS) hali ulanmagan — faqat vedomost ko'rsatilmoqda. Solishtiruv hisobotlar ulangach ishlaydi.",
       "rowFot": "Mehnatga haq to'lash fondi (MHTF)",
       "rowNon": "MHTFga kirmaydigan to'lovlar",
       "rowTax": "Daromad solig'i + INPS",

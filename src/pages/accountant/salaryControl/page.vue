@@ -1,16 +1,22 @@
 <script setup>
-  import { defineAsyncComponent } from 'vue'
+  import { computed, defineAsyncComponent, watch, onMounted, onBeforeUnmount } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { UIPageContent } from '@/components/index.js'
+  import i18n from '@/i18n/index.js'
   import { useAccountStore, useSalaryControlStore } from '@/store/modules/index.js'
   import { getOneMonthAgoYearMonth } from '@utils'
   import Filter from './ui/Filter.vue'
-  import SummaryCards from './ui/SummaryCards.vue'
-  import Overview from './ui/Overview.vue'
-  import RiskMap from './ui/RiskMap.vue'
+  import SummaryTab from './ui/SummaryTab.vue'
+  import RisksTab from './ui/RisksTab.vue'
   import ErrorState from './ui/ErrorState.vue'
+  import EmptyState from './ui/EmptyState.vue'
+  import ScSkeleton from './ui/ScSkeleton.vue'
+  import ChunkError from './ui/ChunkError.vue'
 
-  // Aktiv tab URL (?tab=) da saqlanadi — refresh/orqaga bosganda yo'qolmaydi.
+  const { t } = i18n.global
+
+  // Aktiv tab — YAGONA MANBA `route.query.tab`. n-tabs shunga bog'lanadi; almashtirishda
+  // `router.replace` (URL yangilanadi → watch kontentni yuklaydi). Noma'lum → summary.
   const TAB_NAMES = [
     'summary',
     'risks',
@@ -22,42 +28,95 @@
     'employees'
   ]
 
-  // Boy bo'limlar — faqat ochilganda yuklanadi (lazy).
-  const RiskCharts = defineAsyncComponent(() => import('./ui/RiskCharts.vue'))
-  const Rules = defineAsyncComponent(() => import('./ui/Rules.vue'))
-  const Who = defineAsyncComponent(() => import('./ui/Who.vue'))
-  const Vids = defineAsyncComponent(() => import('./ui/Vids.vue'))
-  const Deductions = defineAsyncComponent(() => import('./ui/Deductions.vue'))
-  const Reports = defineAsyncComponent(() => import('./ui/Reports.vue'))
-  const Employees = defineAsyncComponent(() => import('./ui/Employees.vue'))
+  // Boy bo'limlar lazy-chunk + keep-alive. Chunk yuklanmasa (yangi deploy/tarmoq) —
+  // oq ekran emas, ChunkError (qayta yuklash); yuklanishda ScSkeleton.
+  const asyncTab = (loader) =>
+    defineAsyncComponent({
+      loader,
+      loadingComponent: ScSkeleton,
+      errorComponent: ChunkError,
+      delay: 150,
+      timeout: 20000
+    })
+  const Rules = asyncTab(() => import('./ui/Rules.vue'))
+  const Who = asyncTab(() => import('./ui/Who.vue'))
+  const Vids = asyncTab(() => import('./ui/Vids.vue'))
+  const Deductions = asyncTab(() => import('./ui/Deductions.vue'))
+  const Reports = asyncTab(() => import('./ui/Reports.vue'))
+  const Employees = asyncTab(() => import('./ui/Employees.vue'))
+
+  const TAB_COMPONENTS = {
+    summary: SummaryTab,
+    risks: RisksTab,
+    rules: Rules,
+    who: Who,
+    vids: Vids,
+    deductions: Deductions,
+    reports: Reports,
+    employees: Employees
+  }
 
   const store = useSalaryControlStore()
   const accStore = useAccountStore()
   const route = useRoute()
   const router = useRouter()
 
-  onMounted(() => {
-    if (!accStore.checkAction(accStore.pn.economistSalaryControlRead)) return
-    // URL'dagi ?tab= ni tiklaymiz (yaroqli bo'lsa), aks holda joriy/summary.
-    const urlTab = String(route.query.tab || '')
-    if (TAB_NAMES.includes(urlTab)) store.mainView = urlTab
-    const oneMonthAgo = getOneMonthAgoYearMonth()
-    store.params.year = oneMonthAgo.year
-    store.params.month = oneMonthAgo.month
-    store._summary()
-    store._loadForTab(store.mainView)
-  })
-
-  const onTabChange = (v) => {
-    store.mainView = v
-    // URL'ni yangilaymiz (refresh/ulashishda saqlanadi) — tarixni bosmaslik uchun replace.
-    router.replace({ query: { ...route.query, tab: v } }).catch(() => {})
-    store._loadForTab(v)
+  // Davr standart qiymati (bir oy oldin) — yuklashdan OLDIN o'rnatiladi.
+  if (!store.params.year) {
+    const ago = getOneMonthAgoYearMonth()
+    store.params.year = ago.year
+    store.params.month = ago.month
   }
 
-  // Faol tab yuklamasi yiqilganmi — ErrorState (qayta urinish) ko'rsatish uchun.
+  const activeTab = computed(() => {
+    const q = String(route.query.tab || '')
+    return TAB_NAMES.includes(q) ? q : 'summary'
+  })
+  const currentTab = computed(() => TAB_COMPONENTS[activeTab.value] ?? SummaryTab)
+
+  // URL (tab) o'zgarsa — store.mainView sinxron + faqat shu tab ma'lumotini yukla.
+  watch(
+    activeTab,
+    (v) => {
+      store.mainView = v
+      if (accStore.checkAction(accStore.pn.economistSalaryControlRead)) {
+        store._loadForTab(v)
+      }
+    },
+    { immediate: true }
+  )
+
+  const onTabChange = (v) => {
+    router.replace({ query: { ...route.query, tab: v } }).catch(() => {})
+  }
+
+  // Lazy-chunk preload xatosi (yangi deploy, eski hash): bir martalik avtomatik reload
+  // (sessionStorage flag bilan cheksiz loop oldini olamiz).
+  const CHUNK_FLAG = 'sc-chunk-reloaded'
+  const onPreloadError = () => {
+    try {
+      if (sessionStorage.getItem(CHUNK_FLAG)) return
+      sessionStorage.setItem(CHUNK_FLAG, '1')
+    } catch {
+      /* noop */
+    }
+    if (typeof $Toast !== 'undefined') $Toast.info(t('salaryControl.common.newVersion'))
+    window.location.reload()
+  }
+  onMounted(() => {
+    // Sahifa muvaffaqiyatli yuklandi — keyingi deployда qayta reload mumkin bo'lsin.
+    try {
+      sessionStorage.removeItem(CHUNK_FLAG)
+    } catch {
+      /* noop */
+    }
+    window.addEventListener('vite:preloadError', onPreloadError)
+  })
+  onBeforeUnmount(() => window.removeEventListener('vite:preloadError', onPreloadError))
+
+  // Faol tab yuklamasi yiqilganmi — ErrorState (qayta urinish).
   const viewError = computed(() => {
-    const v = store.mainView
+    const v = activeTab.value
     if (v === 'summary') return store.summaryError && !store.summaryLoading
     if (v === 'risks')
       return (
@@ -68,7 +127,24 @@
     return store.dashboardError && !store.dashboardLoading
   })
 
-  // Sarlavha ostidagi davr yozuvi (faqat ko'rsatish uchun).
+  // Per-xodim boy tablar korxona tanlanishini talab qiladi (backend filtrsiz bo'sh
+  // qaytaradi). Shu holatda «Korxona tanlang» ko'rsatamiz.
+  const hasOrg = computed(
+    () => store.params.organizations.length > 0 || Boolean(store.params.ones_code)
+  )
+  const ORG_REQUIRED_TABS = [
+    'risks',
+    'rules',
+    'who',
+    'vids',
+    'deductions',
+    'reports',
+    'employees'
+  ]
+  const showOrgPrompt = computed(
+    () => !hasOrg.value && ORG_REQUIRED_TABS.includes(activeTab.value)
+  )
+
   const periodLabel = computed(() => {
     const { year, month } = store.params
     if (!year || !month) return ''
@@ -77,7 +153,9 @@
 </script>
 
 <template>
-  <UIPageContent>
+  <!-- `!h-auto`: global `.main-content .ui-page-content { height: 100% }` ni bosib o'tadi —
+       sahifa kontent bo'yicha o'ssin, skrollni `.main-content` boshqarsin. -->
+  <UIPageContent class="!h-auto">
     <div class="mb-3 flex items-end justify-between gap-3">
       <div>
         <h1 class="text-[18px] leading-6 font-semibold text-textColor1">
@@ -90,7 +168,7 @@
     </div>
 
     <n-tabs
-      :value="store.mainView"
+      :value="activeTab"
       @update:value="onTabChange"
       type="line"
       animated
@@ -108,23 +186,12 @@
 
     <Filter />
 
-    <ErrorState v-if="viewError" @retry="store._retryView(store.mainView)" />
-    <template v-else>
-      <template v-if="store.mainView === 'summary'">
-        <SummaryCards />
-        <Overview />
-      </template>
-      <template v-else-if="store.mainView === 'risks'">
-        <RiskMap />
-        <RiskCharts />
-      </template>
-      <Rules v-else-if="store.mainView === 'rules'" />
-      <Who v-else-if="store.mainView === 'who'" />
-      <Vids v-else-if="store.mainView === 'vids'" />
-      <Deductions v-else-if="store.mainView === 'deductions'" />
-      <Reports v-else-if="store.mainView === 'reports'" />
-      <Employees v-else-if="store.mainView === 'employees'" />
-    </template>
+    <ErrorState v-if="viewError" @retry="store._retryView(activeTab)" />
+    <EmptyState v-else-if="showOrgPrompt" :text="$t('salary1c.selectOrg')" />
+    <!-- keep-alive: tab komponentlari bir marta chiziladi va keshlanadi — tez almashish. -->
+    <keep-alive v-else>
+      <component :is="currentTab" :key="activeTab" />
+    </keep-alive>
   </UIPageContent>
 </template>
 

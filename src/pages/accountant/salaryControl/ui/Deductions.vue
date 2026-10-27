@@ -5,7 +5,7 @@
   import { computed } from 'vue'
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore, useAppStore } from '@/store/modules/index.js'
-  import { money, mln, chartTheme, tokenColor } from '../helpers.js'
+  import { money, mln, chartTheme, tokenColor, normText } from '../helpers.js'
   import Card from './Card.vue'
   import EChart from './EChart.vue'
   import ScSkeleton from './ScSkeleton.vue'
@@ -42,7 +42,8 @@
     ]
 
     return {
-      grid: { top: 8, left: 4, right: 16, bottom: 4, containLabel: true },
+      // top: ustun ustidagi qiymat yorlig'i (position:'top') kesilmasligi uchun joy.
+      grid: { top: 32, left: 4, right: 16, bottom: 4, containLabel: true },
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
@@ -117,7 +118,7 @@
       .slice(0, 15)
 
     return {
-      grid: { top: 8, left: 4, right: 40, bottom: 4, containLabel: true },
+      grid: { top: 8, left: 4, right: 52, bottom: 4, containLabel: true },
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
@@ -128,20 +129,27 @@
             .map(([k, v]) => `${NM[k] || k}: ${money(v)}`)
             .join('<br/>')
           const pct = it.r < 0.01 ? (it.r * 100).toFixed(1) : Math.round(it.r * 100)
-          return `<b>${it.fio}</b><br/>${t('salaryControl.deductions.share')}: ${pct}%<br/>${rows}<br/>${t('salaryControl.deductions.accrued')}: ${money(it.tot)}`
+          return `<b>${normText(it.fio)}</b><br/>${t('salaryControl.deductions.share')}: ${pct}%<br/>${rows}<br/>${t('salaryControl.deductions.accrued')}: ${money(it.tot)}`
         }
       },
       xAxis: {
         type: 'value',
         max: 100,
-        axisLabel: { color: th.text, formatter: '{value}%' },
+        // splitNumber + hideOverlap: «20%40%60%» yorliqlari yopishib qolmasin.
+        splitNumber: 5,
+        axisLabel: {
+          color: th.text,
+          formatter: '{value}%',
+          hideOverlap: true
+        },
         splitLine: { lineStyle: { color: th.line } }
       },
       yAxis: {
         type: 'category',
         inverse: true,
-        data: list.map((r) => r.fio),
-        axisLabel: { color: th.textStrong, width: 150, overflow: 'truncate', fontSize: 11 },
+        // normText: ism apostroflari (ʻ ‘ ’) ECharts shriftida buzilmasin.
+        data: list.map((r) => normText(r.fio)),
+        axisLabel: { color: th.textStrong, width: 180, overflow: 'truncate', fontSize: 11 },
         axisLine: { lineStyle: { color: th.line } }
       },
       series: [

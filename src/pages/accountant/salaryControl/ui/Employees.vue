@@ -47,13 +47,23 @@
     {
       title: t('salaryControl.risk.table.fio'),
       key: 'fio',
+      minWidth: 240,
+      fixed: 'left',
+      ellipsis: { tooltip: true },
       sorter: (a, b) => String(a.fio).localeCompare(String(b.fio))
     },
-    { title: t('salaryControl.risk.table.position'), key: 'lav' },
+    {
+      title: t('salaryControl.risk.table.position'),
+      key: 'lav',
+      minWidth: 200,
+      ellipsis: { tooltip: true },
+      render: (row) => row.lav || t('salaryControl.common.notSet')
+    },
     {
       title: t('salaryControl.employees.oklad'),
       key: 'ok',
       align: 'right',
+      minWidth: 120,
       className: 'sc-num',
       sorter: num('ok'),
       render: moneyCell('ok')
@@ -62,6 +72,7 @@
       title: t('salaryControl.employees.hours'),
       key: 't',
       align: 'right',
+      minWidth: 120,
       className: 'sc-num',
       sorter: num('t'),
       render: (row) => (row.t ? row.t : '—')
@@ -70,6 +81,7 @@
       title: t('salaryControl.employees.b004'),
       key: 'b004',
       align: 'right',
+      minWidth: 120,
       className: 'sc-num',
       sorter: num('b004'),
       render: moneyCell('b004')
@@ -78,6 +90,7 @@
       title: t('salaryControl.employees.b011'),
       key: 'b011',
       align: 'right',
+      minWidth: 120,
       className: 'sc-num',
       sorter: num('b011'),
       render: moneyCell('b011')
@@ -86,13 +99,15 @@
       title: t('salaryControl.employees.other'),
       key: 'other',
       align: 'right',
+      minWidth: 120,
       className: 'sc-num',
-      render: moneyCell('other')
+      render: (row) => (row.other ? money(row.other) : '—')
     },
     {
       title: t('salaryControl.common.total'),
       key: 'tot',
       align: 'right',
+      minWidth: 140,
       className: 'sc-num sc-num--bold',
       sorter: num('tot'),
       render: (row) => h('b', money(row.tot))
@@ -101,6 +116,7 @@
       title: t('salaryControl.employees.card'),
       key: 'card',
       align: 'right',
+      minWidth: 120,
       className: 'sc-num',
       render: moneyCell('card')
     },
@@ -108,6 +124,7 @@
       title: t('salaryControl.employees.ytd'),
       key: 'ytd',
       align: 'right',
+      minWidth: 120,
       className: 'sc-num',
       sorter: num('ytd'),
       render: moneyCell('ytd')
@@ -117,7 +134,8 @@
   const pagination = {
     pageSize: 20,
     showSizePicker: true,
-    pageSizes: [20, 50, 100]
+    pageSizes: [20, 50, 100],
+    prefix: ({ itemCount }) => `${t('salaryControl.common.total')}: ${itemCount}`
   }
 </script>
 
@@ -147,6 +165,7 @@
       :data="rows"
       :pagination="pagination"
       :bordered="false"
+      :scroll-x="1360"
       size="small"
     />
   </Card>

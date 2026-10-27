@@ -16,35 +16,35 @@
       {
         key: 'accrued',
         label: t('salaryControl.kpi.accrued'),
-        value: Utils.formatNumberToMoney(d.total_accrued ?? 0),
+        value: Utils.formatNumberToMoney(Math.round(d.total_accrued ?? 0)),
         tint: 'blue',
         icon: 'money'
       },
       {
         key: 'employees',
         label: t('salaryControl.kpi.employees'),
-        value: d.employee_count ?? 0,
+        value: Utils.formatNumberToMoney(Math.round(d.employee_count ?? 0)),
         tint: 'indigo',
         icon: 'users'
       },
       {
         key: 'net',
         label: t('salaryControl.kpi.net'),
-        value: Utils.formatNumberToMoney(d.total_net ?? 0),
+        value: Utils.formatNumberToMoney(Math.round(d.total_net ?? 0)),
         tint: 'green',
         icon: 'card'
       },
       {
         key: 'deduction',
         label: t('salaryControl.kpi.deduction'),
-        value: Utils.formatNumberToMoney(d.total_deduction ?? 0),
+        value: Utils.formatNumberToMoney(Math.round(d.total_deduction ?? 0)),
         tint: 'amber',
         icon: 'minus'
       },
       {
         key: 'orgs',
         label: t('salaryControl.kpi.orgs'),
-        value: d.org_count ?? 0,
+        value: Utils.formatNumberToMoney(Math.round(d.org_count ?? 0)),
         tint: 'red',
         icon: 'building'
       }
@@ -94,7 +94,7 @@
 <style scoped>
   .kpi-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 16px;
   }
 
