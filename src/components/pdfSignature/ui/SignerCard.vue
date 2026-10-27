@@ -3,6 +3,7 @@
   import { Link28Filled, Chat20Filled } from '@vicons/fluent'
   import { STATUS, lastActionDate } from '../utils/approvalHistory.js'
   import { signerTone } from '../utils/eventMeta.js'
+  import icons from '@/assets/icons'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -52,7 +53,7 @@
     </div>
 
     <div
-      class="flex-1 min-w-0 mb-2 rounded-xl border bg-surface-section overflow-hidden shadow-[0_1px_2px_rgb(16_24_40/0.04)]"
+      class="flex-1 min-w-0 mb-1.5 rounded-xl border bg-surface-section overflow-hidden shadow-[0_1px_2px_rgb(16_24_40/0.04)]"
       :class="[
         tone.card,
         isSelf && 'ring-1 ring-fig-blue-300',
@@ -60,7 +61,7 @@
         waiting && 'opacity-70'
       ]"
     >
-      <div class="px-3 pt-2.5 pb-2">
+      <div class="px-3 pt-2 pb-1.5">
         <!-- Holat o'ng yuqori burchakda; faqat ism unga joy qoldiradi,
              lavozim esa kartaning o'ng chetigacha boradi -->
         <div class="relative">
@@ -121,6 +122,15 @@
                   class="w-full pr-[84px] text-xs font-medium text-textColor1 leading-[1.25]"
                 >
                   {{ title }}
+                  <!-- Rahbar — ismi yonida ko'k «tasdiq» belgisi -->
+                  <n-icon
+                    v-if="item.type === 'd'"
+                    size="14"
+                    class="text-primary align-[-2px] ml-0.5"
+                    :title="$t('documentPage.signature.approval.roles.d')"
+                  >
+                    <component :is="icons.figBadgeCheck" />
+                  </n-icon>
                 </n-ellipsis>
               </template>
               <template #position>

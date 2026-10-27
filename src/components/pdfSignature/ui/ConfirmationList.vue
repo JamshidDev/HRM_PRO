@@ -51,7 +51,14 @@
   const rows = computed(() => {
     const list = (store.confirmations || []).map((item, idx) => ({ item, idx }))
     if (!showRoute.value) return list
-    return [...list.filter((r) => r.item.type !== 'r'), ...list.filter((r) => r.item.type === 'r')]
+    // Buyruqda: rahbar (`d`) eng tepada — u navbatsiz, istalgan paytda imzolaydi; keyin qolganlar,
+    // oxirida tanishuvchilar.
+    const is = (t) => (r) => r.item.type === t
+    return [
+      ...list.filter(is('d')),
+      ...list.filter((r) => r.item.type !== 'd' && r.item.type !== 'r'),
+      ...list.filter(is('r'))
+    ]
   })
   const firstViewerIdx = computed(() =>
     showRoute.value ? rows.value.findIndex((r) => r.item.type === 'r') : -1
@@ -130,7 +137,7 @@
         />
 
         <div v-else class="slide-pane">
-          <UITabs v-model:value="activeTab" type="segment" size="small" animated class="mb-3">
+          <UITabs v-model:value="activeTab" type="segment" size="small" animated class="mb-2">
             <n-tab name="signers">
               <div class="flex items-center gap-1.5">
                 <n-icon size="16"><People20Regular /></n-icon>
@@ -149,10 +156,10 @@
             <!-- Marshrut turi: parallel yoki tartibli -->
             <div
               v-if="signers.length"
-              class="flex items-center gap-2 mb-2.5 px-1 text-xs text-textColor3"
+              class="flex items-center gap-2 mb-1.5 px-1 text-xs text-textColor3"
             >
               <span
-                class="text-[11px] font-semibold rounded-full px-2 py-0.5 bg-fig-chip-brand text-fig-chip-brand-text"
+                class="shrink-0 whitespace-nowrap text-[11px] font-semibold rounded-full px-2 py-0.5 bg-fig-chip-brand text-fig-chip-brand-text"
               >
                 {{
                   $t(
