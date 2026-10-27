@@ -2,7 +2,7 @@
   import contractForm from './contractForm.vue'
   import ContractFormSteps from './ui/ContractFormSteps.vue'
   import ContractList from './ContractList.vue'
-  import { UIModal, UIPageContent, UIOfficeApp, UIConfirmByFile } from '@/components/index.js'
+  import { UIModal, UIPageContent, UIOfficeApp } from '@/components/index.js'
   import { useContractStore, useAccountStore, useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import Filter from './ui/Filter.vue'
@@ -27,10 +27,6 @@
 
   const openOffice = (id) => {
     officeAppRef.value.openPdf(id, Utils.documentModels.contract)
-  }
-
-  const onSuccessEv = (v) => {
-    store._index()
   }
 
   onMounted(() => {
@@ -69,10 +65,5 @@
       @confirm="(v) => store._confirmEdit(v)"
     />
     <UIOfficeApp ref="officeAppRef" />
-    <UIConfirmByFile
-      :model="Utils.documentModels.contract"
-      :document-id="store.elementId"
-      @onSuccess="onSuccessEv"
-    />
   </UIPageContent>
 </template>

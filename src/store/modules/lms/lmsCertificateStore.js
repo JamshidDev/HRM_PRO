@@ -45,6 +45,7 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
       cert_from: null,
       cert_to: null
     },
+    workerStats: { members: 0, with_certificate: 0, signed: 0 },
     workerLoading: false,
     exam: {
       loading: false
@@ -304,39 +305,58 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
           this.protocol.loading = false
         })
     },
-    _getWorkers() {
+    // Guruh to'liq yuklanadi (sahifalab) — katta guruhda xodimlar tushib qolmasin.
+    async _getWorkers() {
       const group_id = this.payload.group_id
       const protocol_id = this.payload.protocol_id === 0 ? undefined : this.payload.protocol_id
+      const perPage = 500
       this.workerLoading = true
-      $ApiService.lmsGroupService
-        ._groupWorkers({ params: { group_id, protocol_id, page: 1, per_page: 500 } })
-        .then((res) => {
-          this.payload.workers = res.data.data.data.map((v) => ({
-            id: v.id,
-            workerId: v.worker?.id,
-            workerPositionId: v?.worker_position_id,
-            data: {
-              photo: v?.worker?.photo,
-              lastName: v?.worker?.last_name,
-              firstName: v?.worker?.first_name,
-              middleName: v?.worker?.middle_name,
-              position: v?.position ?? ''
-            },
-            start_exam_result: v?.certificate?.start_exam_result || null,
-            end_exam_result: v?.certificate?.end_exam_result || null,
-            start_exam_id: null,
-            end_exam_id: null,
+      this.payload.workers = []
+      try {
+        const rows = []
+        for (let page = 1; ; page++) {
+          const res = await $ApiService.lmsGroupService._groupWorkers({
+            params: { group_id, protocol_id, page, per_page: perPage }
+          })
+          const body = res.data.data
+          if (page === 1 && body.stats) this.workerStats = body.stats
+          rows.push(...body.data)
+          if (!body.data.length || rows.length >= Number(body.total)) break
+        }
+        this.payload.workers = rows.map((v) => ({
+          id: v.id,
+          workerId: v.worker?.id,
+          workerPositionId: v?.worker_position_id,
+          data: {
+            photo: v?.worker?.photo,
+            lastName: v?.worker?.last_name,
+            firstName: v?.worker?.first_name,
+            middleName: v?.worker?.middle_name,
+            position: v?.position ?? ''
+          },
+          certificate: v?.certificate
+            ? {
+                number: v.certificate.number,
+                signed: v.certificate.confirmation?.id === 3
+              }
+            : null,
+          // Sertifikati borlar standart holatda tanlanmaydi; imzolanganlari umuman tanlanmaydi.
+          selected: !v?.certificate,
 
-            showStartInput: true,
-            showEndInput: true,
+          start_exam_result: v?.certificate?.start_exam_result || null,
+          end_exam_result: v?.certificate?.end_exam_result || null,
+          start_exam_id: null,
+          end_exam_id: null,
 
-            startOption: [],
-            endOption: []
-          }))
-        })
-        .finally(() => {
-          this.workerLoading = false
-        })
+          showStartInput: true,
+          showEndInput: true,
+
+          startOption: [],
+          endOption: []
+        }))
+      } finally {
+        this.workerLoading = false
+      }
     },
     _create(data) {
       this.saveLoading = true

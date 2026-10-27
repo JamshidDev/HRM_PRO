@@ -6,54 +6,71 @@
   import UIHelper from '@utils/UIHelper.js'
   import { Utils } from '@utils'
   import i18n from '@/i18n/index.js'
+  import { useDialog } from 'naive-ui'
 
   const store = useLmsCertificateStore()
   const formRef = ref(null)
   const t = i18n.global.t
+  const dialog = useDialog()
+
+  const selectedCount = computed(() => store.payload.workers.filter((v) => v.selected).length)
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {
-      if (!error) {
-        // 🔴 Ilgari to'liqsiz xodimlar JIMGINA tashlab ketilardi — operator
-        // kimdir ro'yxatga tushmaganini bilmasdi. Endi ular nomi bilan ogohlantiriladi.
-        const skipped = store.payload.workers.filter((v) => !filterCallback(v))
-        if (skipped.length) {
-          const names = skipped
-            .map((v) => [v.data?.lastName, v.data?.firstName].filter(Boolean).join(' '))
-            .filter(Boolean)
-            .join(', ')
-          $Alert.warning(t('lmsCertificate.warning.noExamWorkers', { workers: names }))
-        }
-
-        const workerData = store.payload.workers.filter(filterCallback).map((v) => ({
-          id: v.id,
-          worker_id: v.workerId,
-          worker_position_id: v.workerPositionId,
-
-          start_exam_id: v.showStartInput ? undefined : v.start_exam_id,
-          end_exam_id: v.showEndInput ? undefined : v.end_exam_id,
-
-          start_exam_result: v.showStartInput ? v.start_exam_result : undefined,
-          end_exam_result: v.showEndInput ? v.end_exam_result : undefined
-        }))
-
-        if (!workerData?.length) {
-          $Alert.warning(t('lmsCertificate.warning.noValidWorkers'))
-          return
-        }
-
-        const data = {
-          group_id: store.payload.group_id,
-          protocol_id: store.payload.protocol_id === 0 ? undefined : store.payload.protocol_id,
-          protocol_date: Utils.timeToZone(store.payload.protocol_date),
-          cert_from: Utils.timeToZone(store.payload.cert_from),
-          cert_to: Utils.timeToZone(store.payload.cert_to),
-          workers: workerData
-        }
-
-        store._create(data)
-      }
+      if (error) return
+      // Mavjud sertifikatni qayta yaratish — faqat tasdiq bilan.
+      const regenerate = store.payload.workers.filter((v) => v.selected && v.certificate).length
+      if (!regenerate) return submit()
+      dialog.warning({
+        title: t('lmsCertificate.regenerateTitle'),
+        content: t('lmsCertificate.regenerateText', { count: regenerate }),
+        positiveText: t('content.save'),
+        negativeText: t('content.cancel'),
+        onPositiveClick: submit
+      })
     })
+  }
+
+  const submit = () => {
+    // 🔴 Ilgari to'liqsiz xodimlar JIMGINA tashlab ketilardi — operator
+    // kimdir ro'yxatga tushmaganini bilmasdi. Endi ular nomi bilan ogohlantiriladi.
+    const selected = store.payload.workers.filter((v) => v.selected)
+    const skipped = selected.filter((v) => !filterCallback(v))
+    if (skipped.length) {
+      const names = skipped
+        .map((v) => [v.data?.lastName, v.data?.firstName].filter(Boolean).join(' '))
+        .filter(Boolean)
+        .join(', ')
+      $Alert.warning(t('lmsCertificate.warning.noExamWorkers', { workers: names }))
+    }
+
+    const workerData = selected.filter(filterCallback).map((v) => ({
+      id: v.id,
+      worker_id: v.workerId,
+      worker_position_id: v.workerPositionId,
+
+      start_exam_id: v.showStartInput ? undefined : v.start_exam_id,
+      end_exam_id: v.showEndInput ? undefined : v.end_exam_id,
+
+      start_exam_result: v.showStartInput ? v.start_exam_result : undefined,
+      end_exam_result: v.showEndInput ? v.end_exam_result : undefined
+    }))
+
+    if (!workerData?.length) {
+      $Alert.warning(t('lmsCertificate.warning.noValidWorkers'))
+      return
+    }
+
+    const data = {
+      group_id: store.payload.group_id,
+      protocol_id: store.payload.protocol_id === 0 ? undefined : store.payload.protocol_id,
+      protocol_date: Utils.timeToZone(store.payload.protocol_date),
+      cert_from: Utils.timeToZone(store.payload.cert_from),
+      cert_to: Utils.timeToZone(store.payload.cert_to),
+      workers: workerData
+    }
+
+    store._create(data)
   }
 
   const filterCallback = (w) => {
@@ -168,6 +185,22 @@
             :format="useAppSetting.datePicketFormat"
           />
         </n-form-item>
+        <div class="col-span-12 flex flex-wrap gap-2 mb-2 text-sm">
+          <n-tag :bordered="false">
+            {{ $t('lmsCertificate.stats.members', { n: store.workerStats.members }) }}
+          </n-tag>
+          <n-tag :bordered="false" type="info">
+            {{
+              $t('lmsCertificate.stats.withCertificate', { n: store.workerStats.with_certificate })
+            }}
+          </n-tag>
+          <n-tag :bordered="false" type="success">
+            {{ $t('lmsCertificate.stats.signed', { n: store.workerStats.signed }) }}
+          </n-tag>
+          <n-tag :bordered="false" type="primary">
+            {{ $t('lmsCertificate.stats.selected', { n: selectedCount }) }}
+          </n-tag>
+        </div>
         <n-spin :show="store.workerLoading" class="col-span-12">
           <div
             class="border border-surface-line h-[calc(100vh-260px)] mb-6 rounded-xl overflow-y-auto relative"
@@ -186,9 +219,30 @@
             <template v-for="(worker, idx) of store.payload.workers" :key="worker.id">
               <div
                 class="mx-2 grid grid-cols-12 items-center gap-x-4 mb-2 bg-surface-ground/60 py-1 px-2 rounded-xl border border-surface-line"
+                :class="{ 'opacity-60': !worker.selected }"
               >
-                <div class="col-span-4">
+                <div class="col-span-4 flex items-center gap-2 min-w-0">
+                  <n-checkbox
+                    v-model:checked="worker.selected"
+                    :disabled="worker.certificate?.signed"
+                  />
                   <UIUser :hide-tooltip="true" :short="false" :data="worker.data" />
+                  <n-tag
+                    v-if="worker.certificate"
+                    size="small"
+                    :bordered="false"
+                    :type="worker.certificate.signed ? 'success' : 'info'"
+                    class="ml-auto shrink-0"
+                  >
+                    {{
+                      worker.certificate.signed
+                        ? $t('lmsCertificate.status.signed')
+                        : $t('lmsCertificate.status.generated')
+                    }}
+                    <template v-if="worker.certificate.number">
+                      №{{ worker.certificate.number }}
+                    </template>
+                  </n-tag>
                 </div>
                 <div class="col-span-4">
                   <n-input-group>

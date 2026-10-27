@@ -5,8 +5,7 @@
     UIDConfirm,
     UIModal,
     UIPageContent,
-    UIOfficeApp,
-    UIConfirmByFile
+    UIOfficeApp
   } from '@/components/index.js'
   import {
     useAccountStore,
@@ -117,10 +116,5 @@
       </template>
     </UIDConfirm>
     <UIOfficeApp ref="officeAppRef" />
-    <UIConfirmByFile
-      :model="Utils.documentModels.adContract"
-      :document-id="store.elementId"
-      @onSuccess="store._index"
-    />
   </UIPageContent>
 </template>
