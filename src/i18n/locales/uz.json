@@ -1359,7 +1359,7 @@
         "viewOneByOne": "Tartib bo'yicha tanishish",
         "route": {
           "parallel": "Parallel",
-          "sequential": "Tartibli",
+          "sequential": "Ketma-ket",
           "parallelHint": "Hujjat hammaga bir vaqtda yuboriladi — kim oldin yoki keyin ko'rishi muhim emas",
           "sequentialHint": "Hujjat navbat bilan yuboriladi: oldingi kelishuvchi imzolagach keyingisiga o'tadi. Tartibni sudrab o'zgartiring",
           "roleSign": "Kelishuvchi",
@@ -1716,7 +1716,7 @@
           "route_closed": "Yopildi"
         },
         "showAll": "Barchasi",
-        "modeParallelHint": "Hujjat hammaga bir vaqtda yuborilgan",
+        "modeParallelHint": "Hujjat hammaga tasdiqlash uchun bir vaqtda yuborilgan",
         "modeSequentialHint": "Hujjat navbat bilan imzolanadi",
         "nowTurn": "Navbatda",
         "waitingTurn": "Navbat kutmoqda",
