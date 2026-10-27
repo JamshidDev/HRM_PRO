@@ -259,8 +259,7 @@
     new Promise((resolve) => {
       formRef.value?.validate(async (error) => {
         validationComponent()
-        // Tanishuvchilar imzolamaydi — ular alohida `viewers` ro'yxatida ketadi.
-        // Hammasi tanishuvchi bo'lishi ham mumkin (unda `confirmations` bo'sh).
+        // Tanishuvchilar ham `confirmations` da ketadi — `role: 'view'`, navbatda turmaydi.
         const signers = store.sortableConfirmations.filter((v) => v.role !== 'view')
         const viewers = store.sortableConfirmations.filter((v) => v.role === 'view')
         if (!error) {
@@ -269,12 +268,14 @@
             director_id: store.payload.director_id,
             finance_id: store.payload.finance_id || undefined,
             organization_id: store.payload.organization_id?.[0]?.id,
-            confirmations: signers.map((v, idx) => ({
-              id: v.id,
-              order: store.oneByOne ? idx + 1 : 1
-            })),
-            // Tanishuvchi bo'lmasa maydon umuman yuborilmaydi — so'rov avvalgidek qoladi.
-            ...(viewers.length ? { viewers: viewers.map((v) => v.id) } : {}),
+            confirmations: [
+              ...signers.map((v, idx) => ({
+                id: v.id,
+                order: store.oneByOne ? idx + 1 : 1,
+                role: 'sign'
+              })),
+              ...viewers.map((v) => ({ id: v.id, order: 1, role: 'view' }))
+            ],
             command_number: store.payload.command_number,
             command_type: store.payload.command_type,
             workers: store.payload.worker ? [store.payload.worker] : store.payload.workers,
