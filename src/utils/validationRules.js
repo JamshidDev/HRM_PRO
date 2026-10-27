@@ -1534,6 +1534,16 @@ export default {
     reference_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     reference_number: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
   },
+  // 76 — Kasbga qayta tayyorlashga yuborish.
+  form_76: {
+    from: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    to: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    training_center: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    training_course: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    profession: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    acting_worker: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    telegram_number: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
+  },
   // 75 — Buyruqni bekor qilish.
   form_75: {
     cancel_reason: {

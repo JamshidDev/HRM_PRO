@@ -1802,6 +1802,19 @@
       "reference_date": "Certificate date",
       "reference_number": "Certificate number"
     },
+    "form_76": {
+      "from": "Retraining start date",
+      "to": "Retraining end date",
+      "training_center": "Training center",
+      "training_course": "Training course",
+      "profession": "Profession",
+      "acting_worker": "Acting employee (full name)",
+      "acting_worker_placeholder": "E.g. Aliyev Vali Valiyevich",
+      "telegram_number": "Telegram number",
+      "toggle_manual": "Type manually",
+      "toggle_list": "Choose from list",
+      "select_center_first": "Select a training center first"
+    },
     "form_60": {
       "from": "Training start date",
       "to": "Training end date",

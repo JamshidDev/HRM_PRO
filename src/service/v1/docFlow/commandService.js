@@ -20,6 +20,11 @@ const _selectable = async (payload) => {
   return await axios.get(`/v1/hr/commands/selectable`, { params: payload.params })
 }
 
+// 76 formasi — o'quv markazi, kursi (markaz bo'yicha) va kasb tanlovlari.
+const _trainingOptions = async (payload) => {
+  return await axios.get(`/v1/hr/commands/training-options`, { params: payload.params })
+}
+
 // «Ma'lumotlar» tabi — saqlangan forma holati va tahrirlash imkoniyati.
 const _form = async (payload) => {
   return await axios.get(`/v1/hr/commands/${payload.id}/form`)
@@ -47,6 +52,7 @@ export default {
   _viewFile,
   _additionalData,
   _selectable,
+  _trainingOptions,
   _form,
   _update,
   _signersPreview

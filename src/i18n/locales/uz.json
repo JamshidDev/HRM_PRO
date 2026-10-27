@@ -1818,6 +1818,19 @@
       "reference_date": "Ma’lumotnoma sanasi",
       "reference_number": "Ma’lumotnoma raqami"
     },
+    "form_76": {
+      "from": "Qayta tayyorlash boshlanish sanasi",
+      "to": "Qayta tayyorlash tugash sanasi",
+      "training_center": "O‘quv markazi",
+      "training_course": "O‘quv kursi",
+      "profession": "Kasb nomi",
+      "acting_worker": "Vazifani vaqtincha bajaruvchi (F.I.Sh.)",
+      "acting_worker_placeholder": "Masalan: Aliyev Vali Valiyevich",
+      "telegram_number": "Telegramma raqami",
+      "toggle_manual": "Qo‘lda yozish",
+      "toggle_list": "Ro‘yxatdan tanlash",
+      "select_center_first": "Avval o‘quv markazini tanlang"
+    },
     "form_60": {
       "from": "Harbiy yig‘in boshlanish sanasi",
       "to": "Harbiy yig‘in tugash sanasi",
