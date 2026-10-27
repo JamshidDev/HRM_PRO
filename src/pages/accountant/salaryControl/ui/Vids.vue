@@ -346,7 +346,7 @@
     }
     return {
       grid: { top: 16, left: 8, right: 18, bottom: 36, containLabel: true },
-      tooltip: { trigger: 'item', confine: true, formatter: (p) => tip(p.data.raw) },
+      tooltip: { trigger: 'item', confine: true, formatter: (p) => (p?.data?.raw ? tip(p.data.raw) : '') },
       xAxis: {
         type: 'value',
         min: 0,
@@ -442,7 +442,7 @@
       `011/004: ${Math.round(p.r * 100)}%<br/>011: ${money(p.e.v['011'])} · 004: ${money(p.e.v['004'])}`
     return {
       grid: { top: 12, left: 8, right: 22, bottom: 30, containLabel: true },
-      tooltip: { trigger: 'item', confine: true, formatter: (d) => tip(d.data.raw) },
+      tooltip: { trigger: 'item', confine: true, formatter: (d) => (d?.data?.raw ? tip(d.data.raw) : '') },
       xAxis: {
         type: 'value',
         min: 0,

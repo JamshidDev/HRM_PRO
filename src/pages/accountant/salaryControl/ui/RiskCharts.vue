@@ -119,6 +119,7 @@
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
         formatter: (ps) => {
+          if (!ps || !ps.length) return ''
           const p = ps[0]
           const e = list[p.dataIndex]
           return `<b>${normText(e.fio)}</b><br>Ushlanma ulushi: ${(e.share * 100).toFixed(0)}%<br>${money(e.ded)} so‘m`
@@ -185,6 +186,7 @@
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
         formatter: (ps) => {
+          if (!ps || !ps.length) return ''
           const k = keys[ps[0].dataIndex]
           const over = norm && k > norm ? `<br>Me'yordan ${k - norm} soat ko'p` : ''
           return `<b>${k} soat</b>: ${hist[k]} xodim${over}`

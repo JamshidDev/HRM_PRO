@@ -35,6 +35,7 @@
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
         formatter: (p) => {
+          if (!p || !p.length) return ''
           const r = rows[p[0].dataIndex]
           return `<b>${normText(r.fio) || '—'}</b><br>${r.lav || '—'}<br>${money(r.tot)}`
         }
@@ -84,6 +85,7 @@
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
         formatter: (p) => {
+          if (!p || !p.length) return ''
           const r = rows[p[0].dataIndex]
           return `<b>${normText(r.fio) || '—'}</b><br>${r.lav || '—'}<br>${money(r.ytd)}`
         }
@@ -138,6 +140,7 @@
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
         formatter: (p) => {
+          if (!p || !p.length) return ''
           const r = rows[p[0].dataIndex]
           return `<b>${normText(r.fio) || '—'}</b><br>${r.lav || '—'}<br>${t('salaryControl.who.topAccrued')}: ${money(
             r.tot
@@ -286,6 +289,7 @@
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
         formatter: (p) => {
+          if (!p || !p.length) return ''
           const i = p[0].dataIndex
           const lo = i * 2
           const hi = i === nb - 1 ? '28+' : lo + 2
@@ -344,6 +348,7 @@
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
         formatter: (p) => {
+          if (!p || !p.length) return ''
           const r = rows[p[0].dataIndex]
           return `<b>${r.g}</b> — ${r.n} ${t('salaryControl.common.employee')}<br>Min: ${money(
             r.mn

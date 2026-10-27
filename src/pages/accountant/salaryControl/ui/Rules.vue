@@ -48,6 +48,7 @@
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
         formatter: (p) => {
+          if (!p || !p.length) return ''
           const r = rows[p[0].dataIndex]
           return `<b>${r.c}</b> — 011 mukofoti<br/>${r.n} xodim · ${money(r.s)} so‘m`
         }

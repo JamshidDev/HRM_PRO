@@ -48,6 +48,7 @@
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
         formatter: (ps) => {
+          if (!ps || !ps.length) return ''
           const p = ps.find((x) => x.seriesName === 'val') || ps[0]
           const i = p.dataIndex
           const pct = tot ? ((raw[i] / tot) * 100).toFixed(1) : '0.0'
@@ -123,6 +124,7 @@
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
         formatter: (ps) => {
+          if (!ps || !ps.length) return ''
           const p = ps[0]
           const it = list[p.dataIndex]
           const rows = Object.entries(it.ded)
