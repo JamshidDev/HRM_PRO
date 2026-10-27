@@ -11,14 +11,12 @@
     ArrowCounterclockwise20Regular,
     ChevronDown20Regular,
     ChevronUp20Regular,
-    Dismiss16Regular,
     Checkmark12Filled
   } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { AppPaths, appPermissions, useDebounce } from '@/utils/index.js'
   import contractIcon from '@/assets/icons/contract.svg?url'
-  import reportIcon from '@/assets/icons/reportIcon.svg?url'
-  import exportIcon from '@/assets/icons/export.svg?url'
+  import ReportMorphButton from './ReportMorphButton.vue'
   import { onBeforeRouteLeave, useRouter } from 'vue-router'
 
   const store = useWorkerStore()
@@ -317,43 +315,16 @@
           {{ $t('audit.historyBtn') }}
         </n-button>
 
-        <!-- Belgilash rejimi YOQILMAGAN — bitta tugma. Yoqilgach xuddi shu tugma
-             ikkiga bo'linadi (button-group): «Yuklash» + yopish. Pastda alohida
-             panel chizilmaydi. -->
-        <button
-          v-if="canExport && !exportStore.isExportingResume"
-          type="button"
-          class="worker-report-trigger"
-          @click="openReportPanel"
-        >
-          <img :src="reportIcon" alt="" />
-          {{ $t('workerPage.filter.generateReport') }}
-        </button>
-
-        <n-button-group v-else-if="canExport" class="worker-report-group">
-          <n-button
-            type="success"
-            class="worker-report-group__main"
-            :disabled="!canExport || store.loading"
-            @click="onExport"
-          >
-            <template #icon>
-              <img class="worker-action-icon" :src="exportIcon" alt="" />
-            </template>
-            {{ $t('content.download') }}
-            <span class="worker-report-badge">{{ selectedCount }}</span>
-          </n-button>
-          <n-button
-            type="success"
-            class="worker-report-group__close"
-            :title="$t('content.cancel')"
-            @click="closeReportPanel"
-          >
-            <template #icon>
-              <n-icon size="16"><Dismiss16Regular /></n-icon>
-            </template>
-          </n-button>
-        </n-button-group>
+        <!-- «Hisobot olish» → belgilash rejimida yashil «Yuklash | ×» (bitta quti o'zgaradi). -->
+        <ReportMorphButton
+          v-if="canExport"
+          :active="exportStore.isExportingResume"
+          :count="selectedCount"
+          :disabled="store.loading"
+          @open="openReportPanel"
+          @export="onExport"
+          @close="closeReportPanel"
+        />
       </div>
     </template>
 
@@ -711,76 +682,6 @@
     filter: brightness(0) invert(1);
   }
 
-  /* «Hisobot olish» yoqilgach paydo bo'ladigan guruh: chapda «Yuklash»,
-     o'ngda yopish. Yopish qismi ajralib tursin — to'qroq yashil + oq chiziq.
-     Balandlik AYNAN «Hisobot olish» tugmasiniki (34px) — almashganda qator
-     sakramasin va yonidagi tugmalar bilan bir tekisda tursin. */
-  .worker-report-group :deep(.n-button) {
-    --n-height: 34px !important;
-  }
-
-  .worker-report-group__main :deep(.n-button__content) {
-    gap: 8px;
-  }
-
-  .worker-report-group__close {
-    --n-color: color-mix(in srgb, var(--success-color) 78%, #000) !important;
-    --n-color-hover: color-mix(in srgb, var(--success-color) 66%, #000) !important;
-    --n-color-pressed: color-mix(in srgb, var(--success-color) 60%, #000) !important;
-    --n-color-focus: color-mix(in srgb, var(--success-color) 66%, #000) !important;
-    --n-padding: 0 12px !important;
-    box-shadow: inset 1px 0 0 rgb(255 255 255 / 35%);
-  }
-
-  .worker-report-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 20px;
-    height: 20px;
-    padding: 0 5px;
-    border-radius: 999px;
-    background: var(--white-color);
-    color: var(--success-color);
-    font-size: 12px;
-    font-weight: 700;
-  }
-
-  .worker-report-trigger {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    height: 34px;
-    padding: 0 16px;
-    border: 0;
-    border-radius: 8px;
-    color: #fff;
-    background: linear-gradient(135deg, #6a5cf5, #4b3df0);
-    box-shadow: 0 6px 16px rgba(75, 61, 240, 0.24);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition:
-      opacity 160ms ease,
-      box-shadow 160ms ease;
-  }
-
-  .worker-report-trigger img {
-    width: 16px;
-    height: 16px;
-    filter: brightness(0) invert(1);
-  }
-
-  .worker-report-trigger:hover:not(:disabled) {
-    box-shadow: 0 8px 20px rgba(75, 61, 240, 0.32);
-  }
-
-  .worker-report-trigger:disabled {
-    box-shadow: none;
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
   /* Mobil amal paneli. Ilgari `flex-wrap: nowrap` uchala tugmani 375px da ~110px ga
      qisar, natijada har bir yorliq ellipsisga aylanib o'qilmas edi. */
   @media (max-width: 767.98px) {
@@ -812,43 +713,6 @@
       --n-height: 38px !important;
       /* Tor ekranda yorliqqa ko'proq joy qolsin (standart 0 16px). */
       --n-padding: 0 10px !important;
-    }
-
-    .worker-report-trigger {
-      justify-content: center;
-      height: 38px;
-      padding: 0 10px;
-    }
-
-    /* `min-width: 0` shart: usiz «Yuklash + 63551» kontenti guruhni o'z
-       tabiiy kengligida ushlab turadi va yopish (×) qismi ekrandan chiqib
-       ketadi. Endi matn qisiladi, × esa doim ko'rinadi. */
-    .worker-report-group {
-      display: flex;
-      min-width: 0;
-    }
-
-    .worker-report-group__main {
-      flex: 1 1 0;
-      min-width: 0;
-    }
-
-    .worker-report-group__main :deep(.n-button__content) {
-      min-width: 0;
-      gap: 6px;
-    }
-
-    .worker-report-group__close {
-      flex: 0 0 auto;
-      --n-padding: 0 10px !important;
-    }
-
-    .worker-report-badge {
-      flex: 0 0 auto;
-    }
-
-    .worker-report-group :deep(.n-button) {
-      --n-height: 38px !important;
     }
 
     .worker-action-group :deep(.n-button__content) {

@@ -1329,6 +1329,7 @@
       "updateTitle": "Edit order",
       "fullscreen": "Full screen",
       "exitFullscreen": "Exit full screen",
+      "previewTitle": "Command preview",
       "lastVacation": "View last vacation data",
       "form": {
         "beforeFromDeadline": "Before deadline",
@@ -1530,6 +1531,11 @@
             "days": "{count} days",
             "sum": "{value} UZS"
           }
+        },
+        "signers": {
+          "change": "Change",
+          "empty": "No approvers selected",
+          "done": "Done"
         }
       }
     },
@@ -1693,7 +1699,12 @@
           "route_resent": "Resent",
           "route_closed": "Closed"
         },
-        "showAll": "Show all"
+        "showAll": "Show all",
+        "modeParallelHint": "Sent to everyone at once",
+        "modeSequentialHint": "Signed one by one",
+        "nowTurn": "Current turn",
+        "waitingTurn": "Waiting for turn",
+        "viewers": "Reviewers"
       },
       "rejectReasonSelect": "Select a rejection reason",
       "optional": "optional",
@@ -5583,7 +5594,19 @@
     "signAllNote3": "The action runs in the background — the list refreshes automatically: the status becomes «Approved» and a QR code appears on the document.",
     "generateQueued": "{count} certificates created. Documents (PDF) are being prepared in the background — the «Document» column updates automatically.",
     "signAllQueued": "Signing of {count} certificates started in the background. The list status updates automatically.",
-    "signDone": "Certificate signed. The QR code on the document will appear in a few seconds."
+    "signDone": "Certificate signed. The QR code on the document will appear in a few seconds.",
+    "regenerateTitle": "Existing certificates will be regenerated",
+    "regenerateText": "{count} of the selected workers already have a certificate. They will be regenerated with the new date and result (the number is kept). Continue?",
+    "stats": {
+      "members": "Total: {n}",
+      "withCertificate": "With certificate: {n}",
+      "signed": "Signed: {n}",
+      "selected": "Selected: {n}"
+    },
+    "status": {
+      "generated": "Generated",
+      "signed": "Signed"
+    }
   },
   "uploadSourceConfig": {
     "name": "Upload Source"

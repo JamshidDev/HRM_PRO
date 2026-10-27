@@ -390,7 +390,7 @@
     </div>
 
     <template #footer>
-      <div class="flex justify-end gap-3 h-[60px] items-center" v-if="store.modalTab === 'organizations'">
+      <div class="flex justify-end gap-3 py-2 items-center" v-if="store.modalTab === 'organizations'">
         <n-button
           type="primary"
           @click="onSubmit"

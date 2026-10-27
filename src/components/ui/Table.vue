@@ -13,7 +13,7 @@
   import { useElementSize } from '@vueuse/core'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
-  import { NEllipsis } from 'naive-ui'
+  import { NEllipsis, NTooltip } from 'naive-ui'
   import { useAccountStore } from '@/store/modules/app/accountStore.js'
 
   const { t } = i18n.global
@@ -244,8 +244,8 @@
     })
   }
 
-  const renderHeaderLabel = (col) =>
-    h(
+  const renderHeaderLabel = (col) => {
+    const label = h(
       NEllipsis,
       {
         class: 'text-sm text-textColor2 w-full leading-[1.2]',
@@ -253,6 +253,26 @@
       },
       { default: () => col.title }
     )
+    // Qisqartma sarlavha (G, R, F ...) — sichqoncha ustiga kelganda to'liq nomi chiqadi.
+    // Nuqtali tagchiziq — «bu yerda izoh bor» belgisi.
+    if (!col.fullTitle || col.fullTitle === col.title) return label
+    return h(
+      NTooltip,
+      { placement: 'top', style: { maxWidth: '300px' } },
+      {
+        trigger: () =>
+          h(
+            'span',
+            {
+              class:
+                'inline-flex max-w-full cursor-help underline decoration-dotted decoration-textColor3 underline-offset-4'
+            },
+            [label]
+          ),
+        default: () => col.fullTitle
+      }
+    )
+  }
 
   const renderSortableHeader = (col) =>
     h(

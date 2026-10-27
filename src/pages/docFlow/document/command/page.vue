@@ -8,7 +8,6 @@
   import {
     UIOfficeApp,
     UIPageContent,
-    UIConfirmByFile,
     UIDocxEditorDrawer
   } from '@/components/index.js'
   import Table from './Table.vue'
@@ -46,10 +45,6 @@
     updateDocument({ documentId })
   }
 
-  const onSuccessEv = (v) => {
-    store._index()
-  }
-
   const updateDocument = (v) => {
     const index = store.list.findIndex((x) => x.id === v.documentId)
     if (index === -1) return
@@ -75,10 +70,5 @@
     <CommandForm />
     <UIOfficeApp ref="officeAppRef" />
     <UIDocxEditorDrawer @onSign="onEditorSign" @onSaved="onEditorSaved" />
-    <UIConfirmByFile
-      :model="Utils.documentModels.command"
-      :document-id="store.elementId"
-      @onSuccess="onSuccessEv"
-    />
   </UIPageContent>
 </template>

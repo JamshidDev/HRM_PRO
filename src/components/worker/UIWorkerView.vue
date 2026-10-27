@@ -24,7 +24,29 @@
 
   watch(activeTab, () => {
     previewPanelRef.value?.scrollTo({ top: 0 })
+    nextTick(markStuckHeaders)
   })
+
+  // Skrollda tepaga yopishgan bo'lim sarlavhasiga `is-stuck` qo'yiladi — faqat shunda uning
+  // ustida bo'sh joy va ostida xira o'tish ko'rinadi (DAS-11664). Tinch holatda hech narsa o'zgarmaydi.
+  const STICKY_TOP = 8
+  const markStuckHeaders = () => {
+    const panel = previewPanelRef.value
+    if (!panel) return
+    const panelTop = panel.getBoundingClientRect().top
+    panel.querySelectorAll('.section-header-top').forEach((el) => {
+      const cardTop = el.parentElement.getBoundingClientRect().top
+      // Faqat aynan 8px da turganda: karta oxirida sarlavha yuqoriga surib chiqarilayotganda
+      // emas — aks holda ostidagi xira o'tish kartalar orasidagi bo'shliqqa tushardi.
+      const stuck =
+        cardTop < panelTop && Math.abs(el.getBoundingClientRect().top - panelTop - STICKY_TOP) <= 1
+      el.classList.toggle('is-stuck', stuck)
+    })
+  }
+  const onPanelScroll = () => {
+    store.panelVisible = false
+    markStuckHeaders()
+  }
 
   const tabList = computed(() => [
     { name: t('workerView.tabs.general'), id: 1, icon: icons.menuIcon },
@@ -126,7 +148,7 @@
             <div
               ref="previewPanelRef"
               class="preview-panel overflow-x-hidden overflow-y-auto relative flex-1 pb-4"
-              @scroll="store.panelVisible = false"
+              @scroll="onPanelScroll"
             >
               <Transition name="tab-fade" mode="out-in">
                 <div :key="activeTab">
@@ -192,10 +214,42 @@
     .section-header {
       overflow: visible;
     }
+    /* Skrollda bo'lim sarlavhasi tepaga yopishib qolmasin — 8px joy qoladi (DAS-11664).
+       Yopishgan paytdagina (`is-stuck`, skriptdan): ustidagi joy kartaning o'z rangi bilan
+       yopiladi (ostidagi ma'lumot ko'rinmasin), ostida esa ma'lumot keskin kesilmay, xira
+       bo'lib yo'qoladi. `-4px` — kartaning `p-1` ichki chekinishi. */
     .section-header-top {
       position: sticky;
-      top: 0;
+      top: 8px;
       z-index: 5;
+
+      &.is-stuck::before,
+      &.is-stuck::after {
+        content: '';
+        position: absolute;
+        left: -4px;
+        right: -4px;
+        pointer-events: none;
+      }
+      &.is-stuck::before {
+        bottom: 100%;
+        height: 12px;
+        background: #fff;
+      }
+      &.is-stuck::after {
+        top: 100%;
+        height: 14px;
+        background: linear-gradient(#fff, rgb(255 255 255 / 0));
+      }
+    }
+  }
+
+  [data-theme='dark'] .preview-panel .section-header-top.is-stuck {
+    &::before {
+      background: var(--surface-section);
+    }
+    &::after {
+      background: linear-gradient(var(--surface-section), transparent);
     }
   }
 

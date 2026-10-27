@@ -89,7 +89,7 @@
     @change-page="changePage"
   >
     <template #cell-positions_count="{ row }">
-      <n-button circle>{{ row.positions_count }}</n-button>
+      <n-button secondary circle>{{ row.positions_count }}</n-button>
     </template>
   </UITable>
 </template>

@@ -55,6 +55,29 @@ Frontend endi yuboradi (kamida bitta tanishuvchi bo'lsa):
 4. Buyruq ma'lumotida (`signers-preview` va hujjat imzolovchilari) tanishuvchini ajratib berish,
    masalan `role: "view"` — keyin frontend ularni «Tanishuvchi» belgisi bilan ko'rsatadi.
 
+## 3.1. Marshrut API'si buyruq uchun — `GET/PUT /v1/document-route` (`model=commands`)
+
+Frontend endi buyruq kelishuvchilarini **faqat «Ma'lumotlar» tabida** tahrirlaydi (drawer'dagi alohida
+«Kelishuvchilar» tugmasi va oynasi buyruq uchun olib tashlandi; shartnoma / qo'shimcha kelishuvda qoldi).
+«Ma'lumotlar» ochilganda joriy marshrut `GET /v1/document-route` va `GET /v1/document-route/approvers`
+dan o'qiladi.
+
+Savollar / kerak bo'ladigan narsalar:
+
+1. **`GET /v1/document-route?model=commands`** — `items[].role` buyruq uchun ham qaytadimi
+   (`"sign"` / `"view"`)? Hozir frontend `role` bo'lmasa kelishuvchi deb oladi.
+2. **`PUT /v1/document-route`** buyruq uchun `viewers` ni qabul qiladimi? Sxemada bor, lekin frontend
+   hozircha buyruqda tanishuvchini shu API orqali yubormaydi (`documentRouteStore.allowViewers`).
+3. **Keyingi qadam (reja):** «Ma'lumotlar → Saqlash» aqlli bo'ladi —
+   - **faqat kelishuvchilar o'zgarsa** (kim, tartib, parallel/tartibli, rol) — buyruq qayta
+     rasmiylashtirilmaydi, faqat `PUT /v1/document-route` chaqiriladi; allaqachon imzolaganlar
+     imzosi saqlanib qoladi (`items[].locked`);
+   - **matn / ma'lumotlar o'zgarsa** — hozirgidek `PUT /v1/hr/commands/{id}` (qayta rasmiylashtirish +
+     kimga qayta yuborish).
+
+   Buning uchun tasdiqlang: buyruq **jarayonda** bo'lganda `PUT /v1/document-route` ishlaydimi va
+   imzolaganlarni o'zgartirmaydimi? Qaysi holatlarda `locked` qaytadi (tasdiqlangan, rad etilgan...)?
+
 ## 4. Frontend uchun eslatmalar
 
 - Rol `form_state.sortableConfirmations[].role` da saqlanadi (`"sign"` / `"view"`, yo'q bo'lsa `"sign"`),
@@ -65,9 +88,13 @@ Frontend endi yuboradi (kamida bitta tanishuvchi bo'lsa):
 
 - [ ] Tartibli rejimda tanishuvchi darhol oladimi yoki hujjat tasdiqlangandan keyinmi?
 - [ ] Tanishuvchi bildirishnoma (push/Telegram) oladimi?
+- [ ] `PUT /v1/document-route` buyruq uchun `viewers` va jarayondagi buyruqni qo'llaydimi (3.1-bo'lim)?
+- [ ] Barcha kelishuvchilar bir xil `order` da bo'lsa — parallel deb hisoblanadi; tartibli buyruqda
+      `order` lar har xil (1, 2, 3) kelishini tasdiqlang (o'ng paneldagi navbat raqamlari shunga tayanadi).
 
 ## O'zgarishlar tarixi
 
 | Sana | Kim | Nima o'zgardi |
 |---|---|---|
 | 2026-10-23 | Shahriyor | Birinchi versiya |
+| 2026-10-26 | Shahriyor | Marshrut API'si bo'yicha savollar va «aqlli Saqlash» rejasi (3.1) |

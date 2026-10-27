@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import Utils from '@/utils/Utils.js'
-import { openSafeUrl } from '@/utils/sanitize.js'
+import i18n from '@/i18n/index.js'
 
 // ContractTypeEnum: 2 = fuqarolik-huquqiy shartnoma (FXSH).
 const CONTRACT_TYPE_CIVIL = 2
@@ -336,6 +336,9 @@ const commandStoreOptions = {
 
     isSingleSelect: false,
     sortableConfirmations: [],
+    // «Ma'lumotlar» tabi: hujjat tashkilotining mas'ul xodimlari (marshrut API'dan). Rahbar/buxgalter
+    // joriy foydalanuvchi ro'yxatida bo'lmasa ham select'da ismi chiqishi uchun qo'shiladi.
+    extraConfirmations: [],
     oneByOne: true,
     // 71/73 — «Asos» matni (forma holati bilan saqlanadi).
     commandBase: null,
@@ -498,11 +501,15 @@ const commandStoreOptions = {
       $ApiService.commandService
         ._viewFile({ data: { ...data, status: 'view' } })
         .then((response) => {
+          // Yangi tab o'rniga universal ko'rish oynasi ($MediaViewer) ochiladi;
+          // oyna yopilganda blob URL o'zi bo'shatiladi.
           const url = window.URL.createObjectURL(
             new Blob([response.data], { type: 'application/pdf' })
           )
-          openSafeUrl(url)
-          setTimeout(() => window.URL.revokeObjectURL(url), 20000)
+          window.$MediaViewer.showMediaViewer(url, 'pdf', {
+            title: i18n.global.t('documentPage.command.previewTitle'),
+            revoke: true
+          })
         })
         .finally(() => {
           this.viewLoading = false
@@ -570,6 +577,56 @@ const commandStoreOptions = {
     _form(id) {
       return $ApiService.commandService._form({ id }).then((res) => res.data.data)
     },
+    // Hujjatning JORIY marshruti (kelishuvchilar, rollar, tartib) — «Kelishuvchilar» oynasida
+    // o'zgartirilgan bo'lishi mumkin, saqlangan forma holati esa eskirgan. Shu sabab «Ma'lumotlar»
+    // ochilganda ro'yxat shu yerdan olinadi; saqlashda ham aynan shu yuboriladi (marshrut buzilmaydi).
+    async _loadLiveRoute(documentId) {
+      const params = { model: Utils.documentModels.command, document_id: documentId }
+      const [routeRes, approverRes] = await Promise.all([
+        $ApiService.documentService._documentRoute({ params }),
+        $ApiService.documentService._documentRouteApprovers({ params })
+      ])
+      const approvers = (approverRes.data.data || []).map((v) => ({
+        position: v.position,
+        ...v.worker,
+        id: v.id
+      }))
+      this.extraConfirmations = approvers
+      const route = routeRes.data.data
+      // Tahrirlanmaydigan hujjat (tasdiqlangan va h.k.) — saqlangan forma holati qoladi.
+      if (!route || route.locked || !route.items?.length) return
+      // Navbat tartibi `order` bo'yicha (bo'lsa); id'siz qator tashlab ketiladi.
+      const routeItems = route.items
+        .filter((p) => p.confirmation_worker_id != null)
+        .slice()
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+      const items = routeItems.map((p) => {
+        const id = p.confirmation_worker_id
+        const a = approvers.find((v) => v.id === id)
+        const saved = this.sortableConfirmations.find((v) => v.id === id)
+        return {
+          id,
+          role: p.role === 'view' ? 'view' : 'sign',
+          data: a
+            ? {
+                firstName: a.first_name,
+                lastName: a.last_name,
+                middleName: a.middle_name,
+                photo: a.photo,
+                position: a.position || ''
+              }
+            : saved?.data || {}
+        }
+      })
+      this.sortableConfirmations = [
+        ...items.filter((v) => v.role !== 'view'),
+        ...items.filter((v) => v.role === 'view')
+      ]
+      this.payload.confirmations = this.sortableConfirmations.map((v) => v.id)
+      // `mode` kelmasa saqlangan forma holatidagi tartib qoladi — aks holda tartibli buyruq
+      // jimgina parallelga aylanib, «Saqlash» da hammaga `order: 1` ketardi.
+      if (route.mode) this.oneByOne = route.mode === 'sequential'
+    },
     _signersPreview(id, data) {
       return $ApiService.commandService
         ._signersPreview({ id, data })
@@ -621,6 +678,7 @@ const commandStoreOptions = {
       // eski qiymatlar ko'rinardi. Quyidagi qatorlar ayrim maydonlarga o'z standart qiymatini beradi.
       const fresh = commandStoreOptions.state()
       for (const key of FORM_STATE_KEYS) this[key] = fresh[key]
+      this.extraConfirmations = []
       this.workerList = []
       this.totalWorker = 0
       this.workerParams.page = 1

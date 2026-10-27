@@ -62,7 +62,8 @@
     </SectionHeader>
 
     <SectionHeader :title="$t('workerView.general.passportName')" :icon="JshirIcon">
-      <div class="space-y-3">
+      <!-- Pasport yo'q bo'lsa — boshqa bo'limlardagidek «Ma'lumot yo'q» (DAS-11662). -->
+      <div v-if="store.workerPreview?.worker.passports?.length" class="space-y-3">
         <div
           v-for="(item, idx) in store.workerPreview?.worker.passports"
           :key="idx"
@@ -77,6 +78,9 @@
           </div>
         </div>
       </div>
+      <h4 v-else class="text-center text-secondary">
+        {{ $t('content.no-data') }}
+      </h4>
       <template v-if="hasPassportFile" #footer>
         <template v-for="(item, idx) in store.workerPreview?.worker.passports" :key="idx">
           <n-button
