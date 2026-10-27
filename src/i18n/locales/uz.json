@@ -5740,7 +5740,10 @@
     "note": "Izoh",
     "notePlaceholder": "Sabab (ixtiyoriy)",
     "addedAt": "Qo'shilgan sana",
-    "actions": "Amallar"
+    "actions": "Amallar",
+    "tabHidden": "Yashirilganlar",
+    "tabViewers": "Ko‘ra oladiganlar",
+    "viewersHint": "Bu ro‘yxatdagi xodimlar o‘z korxonalari doirasida yashirilgan oyliklarni ham ko‘radi."
   },
   "staffingApproval": {
     "name": "Shtatlar",

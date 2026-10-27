@@ -5639,7 +5639,10 @@
     "note": "Note",
     "notePlaceholder": "Reason (optional)",
     "addedAt": "Added date",
-    "actions": "Actions"
+    "actions": "Actions",
+    "tabHidden": "Hidden",
+    "tabViewers": "Who can view",
+    "viewersHint": "Employees in this list can see hidden salaries within their organizations."
   },
   "staffingApproval": {
     "name": "Staffing",
