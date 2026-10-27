@@ -5594,7 +5594,19 @@
     "signAllNote3": "The action runs in the background — the list refreshes automatically: the status becomes «Approved» and a QR code appears on the document.",
     "generateQueued": "{count} certificates created. Documents (PDF) are being prepared in the background — the «Document» column updates automatically.",
     "signAllQueued": "Signing of {count} certificates started in the background. The list status updates automatically.",
-    "signDone": "Certificate signed. The QR code on the document will appear in a few seconds."
+    "signDone": "Certificate signed. The QR code on the document will appear in a few seconds.",
+    "regenerateTitle": "Existing certificates will be regenerated",
+    "regenerateText": "{count} of the selected workers already have a certificate. They will be regenerated with the new date and result (the number is kept). Continue?",
+    "stats": {
+      "members": "Total: {n}",
+      "withCertificate": "With certificate: {n}",
+      "signed": "Signed: {n}",
+      "selected": "Selected: {n}"
+    },
+    "status": {
+      "generated": "Generated",
+      "signed": "Signed"
+    }
   },
   "uploadSourceConfig": {
     "name": "Upload Source"
