@@ -55,11 +55,27 @@ const _replaceWorker = async (payload) => {
 const _removeWorker = async (payload) => {
   return await axios.post(`/v1/turnstile/schedule/schedule-workers-remove`, payload.data)
 }
+// O'ringa D kundan boshqa xodim (oy oxirigacha).
+const _transferSlot = async (payload) => {
+  return await axios.post(`/v1/turnstile/schedule/schedule-workers-transfer`, payload.data)
+}
+// Guruh o'rinlari (crew/navbat) — ko'rinish tartibi saqlanadi.
+const _saveSlots = async (payload) => {
+  return await axios.post(`/v1/turnstile/schedule/schedule-slots`, payload.data, {
+    silentSuccess: true
+  })
+}
+// Xodimsiz brigadani o'chirish.
+const _deleteCrew = async (payload) => {
+  return await axios.post(`/v1/turnstile/schedule/schedule-slots/delete-crew`, payload.data)
+}
 const _cancelSubstitution = async (payload) => {
   return await axios.delete(`/v1/turnstile/schedule/substitutions/${payload.id}`)
 }
 
 export default {
+  _deleteCrew,
+  _saveSlots,
   _types,
   _index,
   _create,
@@ -75,5 +91,6 @@ export default {
   _groupEdit,
   _replaceWorker,
   _cancelSubstitution,
-  _removeWorker
+  _removeWorker,
+  _transferSlot
 }

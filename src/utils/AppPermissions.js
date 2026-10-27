@@ -335,6 +335,7 @@ export const appPermissions = {
   turnstileHcpDurationRead: 'turnstile-hcp-duration-read',
 
   turnstileSheetsGroupsWrite: 'turnstile-sheets-groups-write',
+  turnstileSheetsGroupsPastWrite: 'turnstile-sheets-groups-past-write',
   turnstileSheetsGroupsRead: 'turnstile-sheets-groups-read',
   turnstileSheetsGroups: 'turnstile-sheets-groups',
   // «Smena guruhlari» → «Yakunlash» — alohida (audit 2026-08-12).

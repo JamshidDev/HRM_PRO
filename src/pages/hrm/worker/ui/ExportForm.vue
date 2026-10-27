@@ -659,26 +659,21 @@
     margin-top: 28px;
   }
 
-  /* To'liq yumaloq (pill) va biroz "ko'tarilgan" — oynadagi asosiy amal. */
+  /* To'liq yumaloq (pill) — oynadagi asosiy amal. Soya yo'q — boshqa tugmalar bilan bir xil. */
   .export-start :deep(.n-button) {
     --n-height: 50px !important;
     --n-padding: 0 34px !important;
     --n-border-radius: 999px !important;
     font-size: 15px;
     font-weight: 600;
-    box-shadow: 0 8px 20px color-mix(in srgb, var(--primary-color) 28%, transparent);
-    transition:
-      transform 0.15s ease,
-      box-shadow 0.15s ease;
+    transition: transform 0.15s ease;
   }
 
   .export-start :deep(.n-button:hover:not(.n-button--disabled)) {
-    box-shadow: 0 10px 26px color-mix(in srgb, var(--primary-color) 36%, transparent);
     transform: translateY(-1px);
   }
 
   .export-start :deep(.n-button:active:not(.n-button--disabled)) {
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--primary-color) 26%, transparent);
     transform: translateY(0);
   }
 

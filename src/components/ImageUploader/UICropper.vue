@@ -94,7 +94,7 @@
         @change="onChange"
       />
       <template #footer>
-        <div class="flex justify-center gap-x-2 mb-3">
+        <div class="flex justify-center gap-x-2 mb-1">
           <n-button circle secondary @click="onRotate(-90)">
             <template #icon>
               <n-icon><ArrowRotateCounterclockwise24Regular /></n-icon>

@@ -1329,6 +1329,7 @@
       "updateTitle": "Edit order",
       "fullscreen": "Full screen",
       "exitFullscreen": "Exit full screen",
+      "previewTitle": "Command preview",
       "lastVacation": "View last vacation data",
       "form": {
         "beforeFromDeadline": "Before deadline",
@@ -1342,7 +1343,7 @@
         "viewOneByOne": "Review in order",
         "route": {
           "parallel": "Parallel",
-          "sequential": "In order",
+          "sequential": "Sequential",
           "parallelHint": "The document goes to everyone at once — it doesn't matter who sees it first",
           "sequentialHint": "The document goes step by step: the next person gets it after the previous one signs. Drag to change the order",
           "roleSign": "Approver",
@@ -1530,6 +1531,11 @@
             "days": "{count} days",
             "sum": "{value} UZS"
           }
+        },
+        "signers": {
+          "change": "Change",
+          "empty": "No approvers selected",
+          "done": "Done"
         }
       }
     },
@@ -1693,7 +1699,12 @@
           "route_resent": "Resent",
           "route_closed": "Closed"
         },
-        "showAll": "Show all"
+        "showAll": "Show all",
+        "modeParallelHint": "Sent to everyone for approval at the same time",
+        "modeSequentialHint": "Signed one by one",
+        "nowTurn": "Current turn",
+        "waitingTurn": "Waiting for turn",
+        "viewers": "Reviewers"
       },
       "rejectReasonSelect": "Select a rejection reason",
       "optional": "optional",
@@ -5367,6 +5378,7 @@
       "group": "Groups",
       "shiftTypes": "Shift types",
       "allGroups": "All groups",
+      "pickTypeHint": "Select a shift type on the left to see its groups",
       "groupWorkers": "Group workers",
       "goToSchedule": "Open duty schedule",
       "customShiftHint": "Custom shifts have no groups — they are filled directly in the duty schedule.",
@@ -5439,25 +5451,29 @@
       "regenChanged": "days off pattern: {n}",
       "regenHint": "From the selected date to {to}, days will be rewritten by the slot pattern. Manual changes will be discarded.",
       "menuSwap": "Swap",
+      "menuFillVacant": "Add employee to vacant days",
       "menuRegen": "Rebuild",
       "menuEditDay": "Change day",
-      "subTitle": "One-day swap",
+      "subTitle": "One-day substitute",
+      "subInfoTitle": "One-day substitution",
+      "deleteCrew": "Delete group",
+      "deleteCrewConfirm": "«{name}» has no employees — delete it?",
       "subDate": "Day (employee's working day)",
-      "subWorker": "Substitute (day off on this date)",
-      "subHint": "{name} is off on this day; the selected employee works instead at {time}. Both schedules stay unchanged.",
+      "subWorker": "Substitute employee",
+      "subHint": "{name} rests on this day; the selected employee works instead at {time}.",
       "subNotWorkDay": "The selected day is not the employee's working day — choose a working day.",
       "subAbsentTitle": "Day off — {name} works instead",
       "subWorksTitle": "Works instead of {name} on this day",
       "subAbsentInfo": "The employee is off on this day; another employee works instead.",
       "subWorksInfo": "The employee works at {time} on this day (substitute).",
-      "subKeepsPlan": "The schedule stays unchanged; the timesheet counts this day.",
+      "subKeepsPlan": "On this day the substitute works the owner's shift and the owner rests. If cancelled, both schedules are restored.",
       "subInsteadOf": "Instead of",
       "subShift": "Working time",
       "subCancel": "Cancel",
       "subAbsentLabel": "Day off",
       "subWorksLabel": "Works",
       "subArrow": "covers the shift",
-      "subPickHint": "Choose an employee who is off on this day",
+      "subPickHint": "Select the employee who will work instead",
       "subSummary": "On {date}, {sub} works {time} instead of {absent}.",
       "dayNewState": "What should this day be?",
       "dayNow": "Now",
@@ -5488,6 +5504,13 @@
       "removeWholeMonth": "Whole month",
       "removeHintMonth": "The employee's whole schedule for this month is removed: no plan in the timesheet, not expected at the turnstile, the slot becomes free. Days with facts are kept. They can be added to another shift later.",
       "addFromMonthStart": "The employee works in this slot from the start of the month ({from}).",
+      "swapKindDay": "One-day substitute",
+      "swapKindFull": "Move until month end",
+      "transferTitle": "Move into this slot (until month end)",
+      "transferFrom": "From which day",
+      "transferNew": "Employee for this slot",
+      "transferSummary": "{name} works {from} – {to} on this slot's schedule; their days in another shift for this period are removed. {owner}'s schedule is unchanged — edit it separately if needed.",
+      "otherShiftDay": "On this day — in shift «{name}»",
       "attachTitle": "Assign employees — {name}"
     },
     "generate": {
@@ -5568,7 +5591,22 @@
     "signAllCount": "{count} unsigned certificates match the filter.",
     "signAllNote1": "A signature QR code is stamped on each document and the status becomes “Confirmed”.",
     "signAllNote2": "Signer statuses in the approval queue stay unchanged.",
-    "signAllNote3": "The action runs in the background — refresh the list when it finishes: the status becomes “Confirmed” and a QR code appears in the document."
+    "signAllNote3": "The action runs in the background — the list refreshes automatically: the status becomes «Approved» and a QR code appears on the document.",
+    "generateQueued": "{count} certificates created. Documents (PDF) are being prepared in the background — the «Document» column updates automatically.",
+    "signAllQueued": "Signing of {count} certificates started in the background. The list status updates automatically.",
+    "signDone": "Certificate signed. The QR code on the document will appear in a few seconds.",
+    "regenerateTitle": "Existing certificates will be regenerated",
+    "regenerateText": "{count} of the selected workers already have a certificate. They will be regenerated with the new date and result (the number is kept). Continue?",
+    "stats": {
+      "members": "Total: {n}",
+      "withCertificate": "With certificate: {n}",
+      "signed": "Signed: {n}",
+      "selected": "Selected: {n}"
+    },
+    "status": {
+      "generated": "Generated",
+      "signed": "Signed"
+    }
   },
   "uploadSourceConfig": {
     "name": "Upload Source"

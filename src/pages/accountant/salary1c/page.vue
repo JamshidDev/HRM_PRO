@@ -1113,7 +1113,7 @@
         </div>
       </n-spin>
       <template #footer>
-        <div class="flex items-center justify-between px-4 py-3">
+        <div class="flex items-center justify-between px-4 py-2">
           <span v-if="pullFinished" class="text-sm font-medium"
             :class="pullErrCount ? 'text-warning' : 'text-success'">
             {{ $t('salary1c.pullFinished') }}

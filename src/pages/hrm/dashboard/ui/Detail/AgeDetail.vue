@@ -83,7 +83,7 @@
     </template>
 
     <template #cell-age="{ row }">
-      <n-button circle size="small">{{ row.worker.age }}</n-button>
+      <n-button secondary circle size="small">{{ row.worker.age }}</n-button>
     </template>
   </UITable>
 </template>

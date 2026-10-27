@@ -1,6 +1,6 @@
 <script setup>
   import {
-    DocumentBulletList20Filled,
+    Eye20Regular,
     Save16Regular,
     DismissCircle32Filled,
     FullScreenMaximize24Regular,
@@ -83,15 +83,17 @@
             {{ $t('documentPage.command.createTitle') }}
           </h3>
         </div>
+        <!-- Tartib: bekor qilish → ko'rish → saqlash (asosiy amal eng o'ngda). -->
         <div class="flex items-center gap-2">
-          <n-button
-            class="no-scale"
-            ghost
-            :loading="store.viewLoading"
-            @click="onSubmit(true)"
-          >
+          <n-button class="no-scale" type="error" secondary @click="store.openVisible(false)">
             <template #icon>
-              <DocumentBulletList20Filled />
+              <DismissCircle32Filled />
+            </template>
+            {{ $t('content.cancel') }}
+          </n-button>
+          <n-button class="no-scale" ghost :loading="store.viewLoading" @click="onSubmit(true)">
+            <template #icon>
+              <Eye20Regular />
             </template>
             {{ $t('content.view') }}
           </n-button>
@@ -106,17 +108,6 @@
               <Save16Regular />
             </template>
             {{ $t('content.save') }}
-          </n-button>
-          <n-button
-            class="no-scale"
-            type="error"
-            secondary
-            @click="store.openVisible(false)"
-          >
-            <template #icon>
-              <DismissCircle32Filled />
-            </template>
-            {{ $t('content.cancel') }}
           </n-button>
         </div>
       </div>

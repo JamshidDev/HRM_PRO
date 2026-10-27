@@ -8,6 +8,9 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
   state: () => ({
     list: [],
     loading: false,
+    // Fon ishlari (PDF yasash/imzolash) tugaguncha ro'yxat o'zi yangilanadi.
+    refreshTimer: null,
+    autoRefreshUntil: 0,
     downloadLoading: false,
     zipLoading: false,
     signLoading: false,
@@ -42,6 +45,7 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
       cert_from: null,
       cert_to: null
     },
+    workerStats: { members: 0, with_certificate: 0, signed: 0 },
     workerLoading: false,
     exam: {
       loading: false
@@ -136,9 +140,7 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
         ._index({ params })
         .then((res) => {
           const data = res.data.data.data.map((v) => ({ id: v.id, name: v.name }))
-          this.learningCenter.list = infinity
-            ? [...this.learningCenter.list, ...data]
-            : data
+          this.learningCenter.list = infinity ? [...this.learningCenter.list, ...data] : data
           this.learningCenter.totalItems = res.data.data.total
         })
         .finally(() => {
@@ -201,12 +203,12 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
           this.spn.loading = false
         })
     },
-    _index() {
+    _index(silent = false) {
       const params = {
         ...this.params,
         organization_id: this.params.organization_id?.[0]?.id || undefined
       }
-      this.loading = true
+      if (!silent) this.loading = true
       $ApiService.certificateService
         ._index({ params })
         .then((res) => {
@@ -215,7 +217,22 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
         })
         .finally(() => {
           this.loading = false
+          this._scheduleRefresh()
         })
+    },
+    // «Jarayonda» (generate=2) hujjat bo'lsa yoki fon ishi yangi boshlangan bo'lsa — 10 s dan keyin jim yangilash.
+    _scheduleRefresh() {
+      clearTimeout(this.refreshTimer)
+      this.refreshTimer = null
+      const pending = this.list.some((r) => r.generate === 2)
+      if (pending || Date.now() < this.autoRefreshUntil) {
+        this.refreshTimer = setTimeout(() => this._index(true), 10_000)
+      }
+    },
+    _stopRefresh() {
+      clearTimeout(this.refreshTimer)
+      this.refreshTimer = null
+      this.autoRefreshUntil = 0
     },
     // Hisobot — joriy filtrlarni (_index bilan bir xil) export endpointiga yuboradi.
     // Modal yo'q; natija fonda yig'ilib "Eksport" bo'limida paydo bo'ladi.
@@ -227,11 +244,9 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
         per_page: undefined,
         organization_id: this.params.organization_id?.[0]?.id || undefined
       }
-      $ApiService.certificateService
-        ._export({ params })
-        .finally(() => {
-          this.downloadLoading = false
-        })
+      $ApiService.certificateService._export({ params }).finally(() => {
+        this.downloadLoading = false
+      })
     },
     // Imzolangan sertifikatlarni ZIP bilan yuklash — joriy filtrlar (_index bilan
     // bir xil). Fonda yig'ilib "Eksport" bo'limida paydo bo'ladi.
@@ -243,11 +258,9 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
         per_page: undefined,
         organization_id: this.params.organization_id?.[0]?.id || undefined
       }
-      $ApiService.certificateService
-        ._downloadCertificates({ params })
-        .finally(() => {
-          this.zipLoading = false
-        })
+      $ApiService.certificateService._downloadCertificates({ params }).finally(() => {
+        this.zipLoading = false
+      })
     },
     _openModal(v) {
       this.payload.group_id = v.id
@@ -292,39 +305,58 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
           this.protocol.loading = false
         })
     },
-    _getWorkers() {
+    // Guruh to'liq yuklanadi (sahifalab) — katta guruhda xodimlar tushib qolmasin.
+    async _getWorkers() {
       const group_id = this.payload.group_id
       const protocol_id = this.payload.protocol_id === 0 ? undefined : this.payload.protocol_id
+      const perPage = 500
       this.workerLoading = true
-      $ApiService.lmsGroupService
-        ._groupWorkers({ params: { group_id, protocol_id, page: 1, per_page: 500 } })
-        .then((res) => {
-          this.payload.workers = res.data.data.data.map((v) => ({
-            id: v.id,
-            workerId: v.worker?.id,
-            workerPositionId: v?.worker_position_id,
-            data: {
-              photo: v?.worker?.photo,
-              lastName: v?.worker?.last_name,
-              firstName: v?.worker?.first_name,
-              middleName: v?.worker?.middle_name,
-              position: v?.position ?? ''
-            },
-            start_exam_result: v?.certificate?.start_exam_result || null,
-            end_exam_result: v?.certificate?.end_exam_result || null,
-            start_exam_id: null,
-            end_exam_id: null,
+      this.payload.workers = []
+      try {
+        const rows = []
+        for (let page = 1; ; page++) {
+          const res = await $ApiService.lmsGroupService._groupWorkers({
+            params: { group_id, protocol_id, page, per_page: perPage }
+          })
+          const body = res.data.data
+          if (page === 1 && body.stats) this.workerStats = body.stats
+          rows.push(...body.data)
+          if (!body.data.length || rows.length >= Number(body.total)) break
+        }
+        this.payload.workers = rows.map((v) => ({
+          id: v.id,
+          workerId: v.worker?.id,
+          workerPositionId: v?.worker_position_id,
+          data: {
+            photo: v?.worker?.photo,
+            lastName: v?.worker?.last_name,
+            firstName: v?.worker?.first_name,
+            middleName: v?.worker?.middle_name,
+            position: v?.position ?? ''
+          },
+          certificate: v?.certificate
+            ? {
+                number: v.certificate.number,
+                signed: v.certificate.confirmation?.id === 3
+              }
+            : null,
+          // Sertifikati borlar standart holatda tanlanmaydi; imzolanganlari umuman tanlanmaydi.
+          selected: !v?.certificate,
 
-            showStartInput: true,
-            showEndInput: true,
+          start_exam_result: v?.certificate?.start_exam_result || null,
+          end_exam_result: v?.certificate?.end_exam_result || null,
+          start_exam_id: null,
+          end_exam_id: null,
 
-            startOption: [],
-            endOption: []
-          }))
-        })
-        .finally(() => {
-          this.workerLoading = false
-        })
+          showStartInput: true,
+          showEndInput: true,
+
+          startOption: [],
+          endOption: []
+        }))
+      } finally {
+        this.workerLoading = false
+      }
     },
     _create(data) {
       this.saveLoading = true
@@ -332,6 +364,10 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
         ._create({ data })
         .then((res) => {
           this.visible = false
+          const count = res.data?.data?.certificates ?? 0
+          window.$Toast?.success(t('lmsCertificate.generateQueued', { count }))
+          this.autoRefreshUntil = Date.now() + 5 * 60_000
+          this._index()
         })
         .finally(() => {
           this.saveLoading = false
@@ -361,6 +397,13 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
       this.signAllLoading = true
       $ApiService.certificateService
         ._signAllCertificates({ params: this._signParams() })
+        .then(() => {
+          const count = this.unsignedCount
+          window.$Toast?.success(t('lmsCertificate.signAllQueued', { count }))
+          // Taxminan har sertifikat ~3 s; ko'pi bilan 30 daqiqa kuzatamiz.
+          this.autoRefreshUntil = Date.now() + Math.min(Math.max(count * 3000, 60_000), 30 * 60_000)
+          this._index(true)
+        })
         .finally(() => {
           this.signAllLoading = false
         })
@@ -381,6 +424,7 @@ export const useLmsCertificateStore = defineStore('lmsCertificateStore', {
       $ApiService.certificateService
         ._signCertificate({ id: row.id })
         .then(() => {
+          window.$Toast?.success(t('lmsCertificate.signDone'))
           this._index()
         })
         .finally(() => {

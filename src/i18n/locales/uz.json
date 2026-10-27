@@ -1345,6 +1345,7 @@
       "updateTitle": "Buyruqni tahrirlash",
       "fullscreen": "To'liq ekran",
       "exitFullscreen": "Kichraytirish",
+      "previewTitle": "Buyruqni ko'rish",
       "lastVacation": "Oxirgi ta'til ma'lumotlarini ko'rish",
       "form": {
         "beforeFromDeadline": "Muddatidan avval",
@@ -1358,7 +1359,7 @@
         "viewOneByOne": "Tartib bo'yicha tanishish",
         "route": {
           "parallel": "Parallel",
-          "sequential": "Tartibli",
+          "sequential": "Ketma-ket",
           "parallelHint": "Hujjat hammaga bir vaqtda yuboriladi — kim oldin yoki keyin ko'rishi muhim emas",
           "sequentialHint": "Hujjat navbat bilan yuboriladi: oldingi kelishuvchi imzolagach keyingisiga o'tadi. Tartibni sudrab o'zgartiring",
           "roleSign": "Kelishuvchi",
@@ -1546,6 +1547,11 @@
             "days": "{count} kun",
             "sum": "{value} so'm"
           }
+        },
+        "signers": {
+          "change": "O'zgartirish",
+          "empty": "Kelishuvchilar tanlanmagan",
+          "done": "Tayyor"
         }
       }
     },
@@ -1709,7 +1715,12 @@
           "route_resent": "Qayta yubordi",
           "route_closed": "Yopildi"
         },
-        "showAll": "Barchasi"
+        "showAll": "Barchasi",
+        "modeParallelHint": "Hujjat hammaga tasdiqlash uchun bir vaqtda yuborilgan",
+        "modeSequentialHint": "Hujjat navbat bilan imzolanadi",
+        "nowTurn": "Navbatda",
+        "waitingTurn": "Navbat kutmoqda",
+        "viewers": "Tanishuvchilar"
       },
       "rejectReasonSelect": "Rad etish sababini tanlang",
       "optional": "ixtiyoriy",
@@ -5416,6 +5427,7 @@
       "group": "Guruhlar",
       "shiftTypes": "Smena turlari",
       "allGroups": "Barcha guruhlar",
+      "pickTypeHint": "Guruhlarni ko'rish uchun chapdan smena turini tanlang",
       "groupWorkers": "Guruh xodimlari",
       "goToSchedule": "Navbatchilik grafigini ochish",
       "customShiftHint": "Maxsus smenada guruh bo'lmaydi — u to'g'ridan-to'g'ri Navbatchilik grafigida to'ldiriladi.",
@@ -5488,25 +5500,29 @@
       "regenChanged": "naqshdan farqli kunlar: {n}",
       "regenHint": "Tanlangan sanadan {to} gacha kunlar navbat naqshi bo'yicha qayta yoziladi. Qo'lda kiritilgan o'zgarishlar bekor bo'ladi.",
       "menuSwap": "Almashtirish",
+      "menuFillVacant": "Bo'sh kunlarga xodim qo'shish",
       "menuRegen": "Qayta tuzish",
       "menuEditDay": "Kunni o'zgartirish",
-      "subTitle": "Bir kunlik almashtirish",
+      "subTitle": "Bir kunga o'rinbosar qo'yish",
+      "subInfoTitle": "Bir kunlik o'rinbosarlik",
+      "deleteCrew": "Guruhni o'chirish",
+      "deleteCrewConfirm": "«{name}» xodimsiz — o'chirilsinmi?",
       "subDate": "Kun (xodimning ish kuni)",
-      "subWorker": "O'rniga chiqadigan xodim (shu kuni dam)",
-      "subHint": "{name} shu kuni dam oladi, tanlangan xodim uning o'rniga {time} da ishlaydi. Ikkalasining grafigi o'zgarmaydi.",
+      "subWorker": "O'rniga chiqadigan xodim",
+      "subHint": "{name} shu kuni dam oladi, tanlangan xodim uning o'rniga {time} da ishlaydi.",
       "subNotWorkDay": "Tanlangan kun xodimning ish kuni emas — ish kunini tanlang.",
       "subAbsentTitle": "Bu kuni dam — o'rniga {name} ishlaydi",
       "subWorksTitle": "Bu kuni {name} o'rniga ishlaydi",
       "subAbsentInfo": "Bu kuni xodim dam oladi, o'rniga boshqa xodim ishlaydi.",
       "subWorksInfo": "Bu kuni xodim {time} da ishlaydi (o'rinbosar).",
-      "subKeepsPlan": "Grafik o'zgarmaydi, tabelda shu kun bo'yicha hisoblanadi.",
+      "subKeepsPlan": "Shu kuni o'rinbosar egasining smenasida ishlaydi, egasi dam oladi. Bekor qilinsa, ikkalasining grafigi qaytadi.",
       "subInsteadOf": "Kimning o'rniga",
       "subShift": "Ish vaqti",
       "subCancel": "Bekor qilish",
       "subAbsentLabel": "Dam oladi",
       "subWorksLabel": "Ishlaydi",
       "subArrow": "o'rniga chiqadi",
-      "subPickHint": "Shu kuni dam bo'lgan xodimni tanlang",
+      "subPickHint": "O'rniga ishlaydigan xodimni tanlang",
       "subSummary": "{date} kuni {sub} — {absent} o'rniga {time} da ishlaydi.",
       "dayNewState": "Shu kun qanday bo'lsin?",
       "dayNow": "Hozir",
@@ -5537,6 +5553,13 @@
       "removeWholeMonth": "Butun oy",
       "removeHintMonth": "Xodimning shu oydagi butun grafigi o'chadi va u shu oy grafiksiz qoladi: tabelda reja bo'lmaydi, turniketda kutilmaydi, o'rni bo'sh qoladi. Fakt bo'lgan kunlar saqlanadi. Keyin uni boshqa smenaga qo'shish mumkin.",
       "addFromMonthStart": "Xodim oy boshidan ({from}) shu o'rinda ishlaydi.",
+      "swapKindDay": "Bir kunga o'rinbosar",
+      "swapKindFull": "Oy oxirigacha o'tkazish",
+      "transferTitle": "O'ringa xodim o'tkazish (oy oxirigacha)",
+      "transferFrom": "Qaysi kundan",
+      "transferNew": "O'ringa keladigan xodim",
+      "transferSummary": "{name} {from} – {to} kunlari shu o'rin grafigi bo'yicha ishlaydi, uning boshqa smenadagi shu kunlari o'chadi. {owner} grafigi o'zgarmaydi — kerak bo'lsa keyin alohida o'zgartiring.",
+      "otherShiftDay": "Bu kuni «{name}» smenasida",
       "attachTitle": "Xodim biriktirish — {name}"
     },
     "generate": {
@@ -5595,7 +5618,22 @@
     "signAllCount": "Filtrga mos {count} ta imzolanmagan sertifikat topildi.",
     "signAllNote1": "Har bir hujjatga imzo QR kodi bosiladi va holat «Tasdiqlangan» bo'ladi.",
     "signAllNote2": "Imzo navbatidagi tasdiqlovchilar statusi o'zgarmaydi.",
-    "signAllNote3": "Amal fon rejimida bajariladi — tugagach ro'yxatni yangilang: holat «Tasdiqlangan» bo'ladi va hujjatda QR kod paydo bo'ladi."
+    "signAllNote3": "Amal fon rejimida bajariladi — ro'yxat o'zi yangilanib boradi: holat «Tasdiqlangan» bo'ladi va hujjatda QR kod paydo bo'ladi.",
+    "generateQueued": "{count} ta sertifikat yaratildi. Hujjatlar (PDF) fonda tayyorlanmoqda — «Hujjat» ustunidagi holat o'zi yangilanadi.",
+    "signAllQueued": "{count} ta sertifikatni imzolash fonda boshlandi. Ro'yxatdagi holat o'zi yangilanib boradi.",
+    "signDone": "Sertifikat imzolandi. Hujjatdagi QR kod bir necha soniyada paydo bo'ladi.",
+    "regenerateTitle": "Mavjud sertifikatlar qayta yaratiladi",
+    "regenerateText": "Tanlanganlar orasida {count} ta xodimda sertifikat allaqachon bor. Ular yangi sana va natija bilan qayta yaratiladi (raqami saqlanadi). Davom etasizmi?",
+    "stats": {
+      "members": "Jami: {n}",
+      "withCertificate": "Sertifikat bor: {n}",
+      "signed": "Imzolangan: {n}",
+      "selected": "Tanlangan: {n}"
+    },
+    "status": {
+      "generated": "Yaratilgan",
+      "signed": "Imzolangan"
+    }
   },
   "publicPage": {
     "authentication": "Imtihon savollarini ko'rish",

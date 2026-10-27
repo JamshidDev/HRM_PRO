@@ -8,6 +8,9 @@
   const mediaUrl = ref('')
   const isVisible = ref(false)
   const extension = ref('')
+  // Oyna sarlavhasi va yopilganda bo'shatiladigan blob URL (ixtiyoriy, `options` orqali).
+  const title = ref('')
+  const revokeOnClose = ref(false)
   const FileExtensions = {
     IMAGE: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'],
     PDF: ['pdf'],
@@ -21,8 +24,12 @@
     TEXT: ['txt', 'csv', 'json']
   }
 
+  // `options`: { title } — oyna sarlavhasi; { revoke: true } — `url` blob bo'lsa yopilganda bo'shatiladi.
   const mediaViewer = {
-    showMediaViewer(url, ext) {
+    showMediaViewer(url, ext, options = {}) {
+      if (revokeOnClose.value && mediaUrl.value) URL.revokeObjectURL(mediaUrl.value)
+      title.value = options.title || ''
+      revokeOnClose.value = Boolean(options.revoke)
       mediaUrl.value = url
       if (!ext) {
         let extPos = url.match(/./g).length || 1
@@ -33,6 +40,9 @@
       isVisible.value = true
     },
     hideMediaViewer() {
+      if (revokeOnClose.value && mediaUrl.value) URL.revokeObjectURL(mediaUrl.value)
+      revokeOnClose.value = false
+      title.value = ''
       mediaUrl.value = ''
       isVisible.value = false
       extension.value = ''
@@ -63,6 +73,7 @@
       <DocumentViewer
         v-if="FileExtensions.PDF.includes(extension)"
         :src="mediaUrl"
+        :title="title"
         @close="mediaViewer.hideMediaViewer()"
       />
       <DjvuViewer
