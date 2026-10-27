@@ -30,6 +30,8 @@
     option: { type: Object, required: true },
     height: { type: String, default: '340px' }
   })
+  // Grafik elementi bosilganda (drill-down uchun) echarts click hodisasini uzatamiz.
+  const emit = defineEmits(['chartClick'])
 </script>
 
 <template>
@@ -40,5 +42,6 @@
     :update-options="{ notMerge: true }"
     autoresize
     :style="{ height, width: '100%' }"
+    @click="(e) => emit('chartClick', e)"
   />
 </template>
