@@ -7,9 +7,8 @@
     UIUserGroup,
     UIElectronicNumber
   } from '@/components/index.js'
-  import { useAccountStore, useCommandStore, useComponentStore } from '@/store/modules/index.js'
+  import { useAccountStore, useCommandStore } from '@/store/modules/index.js'
   import {
-    CheckmarkCircle32Regular,
     Delete20Regular,
     Edit32Regular,
     Eye16Regular,
@@ -23,7 +22,6 @@
 
   const store = useCommandStore()
   const accStore = useAccountStore()
-  const componentStore = useComponentStore()
 
   const emits = defineEmits(['openOffice', 'openEditorV2'])
 
@@ -50,13 +48,6 @@
     if (!accStore.checkAction(accStore.pn.hrCommandsWrite)) return
     store.elementId = row.id
     store._delete()
-  }
-
-  const onConfirm = (row) => {
-    if (!accStore.checkAction(accStore.pn.hrCommandsWrite)) return
-    store.elementId = row.id
-    componentStore.files = []
-    componentStore.fileVisible = true
   }
 
   /**
@@ -151,12 +142,6 @@
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete20Regular),
       action: onDelete
-    },
-    {
-      label: t('content.confirm'),
-      key: Utils.ActionTypes.confirm,
-      icon: UIHelper.renderIcon(CheckmarkCircle32Regular),
-      action: onConfirm
     }
   ])
 </script>

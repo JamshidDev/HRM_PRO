@@ -8,13 +8,12 @@
     UIElectronicNumber
   } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
-  import { useAccountStore, useAdContractStore, useComponentStore } from '@/store/modules/index.js'
+  import { useAccountStore, useAdContractStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import { useNotify } from '@/composables/useNotify'
   import {
     ArrowSyncCheckmark20Filled,
-    CheckmarkCircle32Regular,
     Delete20Regular,
     DocumentCheckmark24Regular,
     Edit32Regular,
@@ -26,7 +25,6 @@
 
   const store = useAdContractStore()
   const accStore = useAccountStore()
-  const componentStore = useComponentStore()
 
   const emits = defineEmits(['openOffice', 'commandEv'])
 
@@ -50,13 +48,6 @@
     if (!accStore.checkAction(accStore.pn.hrContractAdditionalWrite)) return
     store.elementId = row.id
     store._delete()
-  }
-
-  const onConfirm = (row) => {
-    if (!accStore.checkAction(accStore.pn.hrContractAdditionalWrite)) return
-    store.elementId = row.id
-    componentStore.files = []
-    componentStore.fileVisible = true
   }
 
   const changePage = (v) => {
@@ -132,12 +123,6 @@
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete20Regular),
       action: onDelete
-    },
-    {
-      label: t('content.confirm'),
-      key: Utils.ActionTypes.confirm,
-      icon: UIHelper.renderIcon(CheckmarkCircle32Regular),
-      action: onConfirm
     }
   ])
 </script>
