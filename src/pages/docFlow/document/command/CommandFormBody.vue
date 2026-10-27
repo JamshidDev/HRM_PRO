@@ -66,7 +66,7 @@
   const commandIdList = [32, 33, 34, 35, 36, 37, 38, 39]
   const singleSelectCommands = [
     32, 33, 34, 35, 36, 37, 38, 39, 44, 43, 45, 46, 47, 49, 48, 50, 51, 52, 53, 54, 74, 56, 57, 58,
-    59, 60, 76
+    59, 60, 76, 77, 78
   ]
 
   // 75 da xodim select'i ko'rsatilmaydi — xodim bekor qilinayotgan buyruqdan olinadi.
@@ -331,7 +331,7 @@
             validate = await commandForm_59.value?.onSubmit(mainData)
           } else if (store.payload.command_type === 60) {
             validate = await commandForm_60.value?.onSubmit(mainData)
-          } else if (store.payload.command_type === 76) {
+          } else if ([76, 77, 78].includes(store.payload.command_type)) {
             validate = await commandForm_76.value?.onSubmit(mainData)
           } else if (store.payload.command_type === CANCEL_COMMAND_TYPE) {
             validate = await commandForm_75.value?.onSubmit(mainData)
@@ -372,7 +372,7 @@
       commandForm_59.value?.validateForm()
     } else if (store.payload.command_type === 60) {
       commandForm_60.value?.validateForm()
-    } else if (store.payload.command_type === 76) {
+    } else if ([76, 77, 78].includes(store.payload.command_type)) {
       commandForm_76.value?.validateForm()
     } else if (store.payload.command_type === CANCEL_COMMAND_TYPE) {
       commandForm_75.value?.validateForm()
@@ -964,7 +964,7 @@
           <template v-else-if="store.payload.command_type === 60">
             <CommandForm_60 ref="commandForm_60" />
           </template>
-          <template v-else-if="store.payload.command_type === 76">
+          <template v-else-if="[76, 77, 78].includes(store.payload.command_type)">
             <CommandForm_76 ref="commandForm_76" />
           </template>
           <template v-else-if="isCancelCommand">

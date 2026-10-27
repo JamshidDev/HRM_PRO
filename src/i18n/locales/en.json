@@ -1803,8 +1803,10 @@
       "reference_number": "Certificate number"
     },
     "form_76": {
-      "from": "Retraining start date",
-      "to": "Retraining end date",
+      "from_retraining": "Retraining start date",
+      "to_retraining": "Retraining end date",
+      "from_qualification": "Training start date",
+      "to_qualification": "Training end date",
       "training_center": "Training center",
       "training_course": "Training course",
       "profession": "Profession",

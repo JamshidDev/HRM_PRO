@@ -1534,7 +1534,7 @@ export default {
     reference_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     reference_number: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
   },
-  // 76 — Kasbga qayta tayyorlashga yuborish.
+  // 76–78 — Kasbga qayta tayyorlash va malaka oshirish (ko'rinmagan maydon tekshirilmaydi).
   form_76: {
     from: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     to: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },

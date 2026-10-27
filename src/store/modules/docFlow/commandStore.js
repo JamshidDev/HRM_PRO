@@ -269,7 +269,7 @@ const commandStoreOptions = {
       reference_date: null,
       reference_number: null
     },
-    // 76 — Kasbga qayta tayyorlashga yuborish (hujjatgina); `manual` — maydon ro'yxatdanmi yoki qo'lda.
+    // 76–78 — Kasbga qayta tayyorlash / malaka oshirish (hujjatgina); `manual` — maydon ro'yxatdanmi yoki qo'lda.
     form_76: {
       from: null,
       to: null,

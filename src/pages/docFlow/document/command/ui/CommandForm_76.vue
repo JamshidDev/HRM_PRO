@@ -7,9 +7,15 @@
   import { useDebounceFn } from '@vueuse/core'
   import ApiService from '@/service/ApiService.js'
 
-  // 76 — Kasbga qayta tayyorlashga yuborish (hujjatgina). Markaz/kurs/kasb — ro'yxatdan yoki qo'lda.
+  // 76 kasbga qayta tayyorlash · 77 malaka oshirish (masofadan) · 78 malaka oshirishga yuborish (hujjatgina).
   const store = useCommandFormStore()
   const formRef = ref(null)
+
+  const showProfession = computed(() => store.payload.command_type === 76)
+  const showActing = computed(() => store.payload.command_type !== 77)
+  const periodKey = computed(() =>
+    store.payload.command_type === 76 ? 'retraining' : 'qualification'
+  )
 
   const options = reactive({ center: [], course: [], profession: [] })
   const loading = reactive({ center: false, course: false, profession: false })
@@ -60,8 +66,8 @@
           to: Utils.timeToZone(store.form_76.to),
           training_center: store.form_76.training_center,
           training_course: store.form_76.training_course,
-          profession: store.form_76.profession,
-          acting_worker: store.form_76.acting_worker,
+          profession: showProfession.value ? store.form_76.profession : undefined,
+          acting_worker: showActing.value ? store.form_76.acting_worker : undefined,
           telegram_number: store.form_76.telegram_number
         }
       } else {
@@ -77,7 +83,7 @@
 
   onMounted(() => {
     load('center')
-    load('profession')
+    if (showProfession.value) load('profession')
     if (store.form_76.learning_center_id) load('course')
   })
 
@@ -92,7 +98,7 @@
     class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
   >
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
-      <n-form-item :label="$t(`commandPage.form_76.from`)" path="from">
+      <n-form-item :label="$t(`commandPage.form_76.from_${periodKey}`)" path="from">
         <n-date-picker
           class="w-full"
           v-model:value="store.form_76.from"
@@ -102,7 +108,7 @@
       </n-form-item>
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
-      <n-form-item :label="$t(`commandPage.form_76.to`)" path="to">
+      <n-form-item :label="$t(`commandPage.form_76.to_${periodKey}`)" path="to">
         <n-date-picker
           class="w-full"
           v-model:value="store.form_76.to"
@@ -117,7 +123,7 @@
         <n-input class="w-full" type="text" v-model:value="store.form_76.telegram_number" />
       </n-form-item>
     </div>
-    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
+    <div v-if="showActing" class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_76.acting_worker`)" path="acting_worker">
         <n-input
           class="w-full"
@@ -213,7 +219,7 @@
         </n-input-group>
       </n-form-item>
     </div>
-    <div class="col-span-12 @xl:col-span-6">
+    <div v-if="showProfession" class="col-span-12 @xl:col-span-6">
       <n-form-item :label="$t(`commandPage.form_76.profession`)" path="profession">
         <n-input-group>
           <n-input
