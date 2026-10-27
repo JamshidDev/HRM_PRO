@@ -1381,6 +1381,8 @@
         "calculateTitle": "Рассчитанные данные отпуска. При необходимости можно отредактировать",
         "requiredVacationData": "Введите данные отпуска сотрудников!",
         "rest_day": "Остаток дней",
+        "used_day": "Фактически использовано",
+        "unworked_day": "Неотработанные дни",
         "by_whom": "Кем",
         "reason": "Причина",
         "gift_type": "Тип подарка",
@@ -1801,6 +1803,21 @@
       "military_office_placeholder": "Например: Мирабадский район",
       "reference_date": "Дата справки",
       "reference_number": "Номер справки"
+    },
+    "form_76": {
+      "from_retraining": "Дата начала переподготовки",
+      "to_retraining": "Дата окончания переподготовки",
+      "from_qualification": "Дата начала повышения квалификации",
+      "to_qualification": "Дата окончания повышения квалификации",
+      "training_center": "Учебный центр",
+      "training_course": "Учебный курс",
+      "profession": "Профессия",
+      "acting_worker": "Временно исполняющий обязанности (Ф.И.О.)",
+      "acting_worker_placeholder": "Например: Алиев Вали Валиевич",
+      "telegram_number": "Номер телеграммы",
+      "toggle_manual": "Ввести вручную",
+      "toggle_list": "Выбрать из списка",
+      "select_center_first": "Сначала выберите учебный центр"
     },
     "form_60": {
       "from": "Дата начала военных сборов",

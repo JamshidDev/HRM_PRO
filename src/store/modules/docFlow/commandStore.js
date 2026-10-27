@@ -52,6 +52,7 @@ const initialPayload34 = () => ({
     period1: null,
     period2: null,
     all_day: 0,
+    used_day: 0,
     rest_day: 0,
     month: null
   },
@@ -81,6 +82,7 @@ const initialPayload32 = () => ({
     period1: null,
     period2: null,
     all_day: 0,
+    used_day: 0,
     rest_day: 0,
     month: null
   },
@@ -114,6 +116,7 @@ const FORM_STATE_KEYS = [
   'form_58',
   'form_59',
   'form_60',
+  'form_76',
   'form_74',
   'form_75',
   'vacations',
@@ -265,6 +268,18 @@ const commandStoreOptions = {
       military_office: null,
       reference_date: null,
       reference_number: null
+    },
+    // 76–78 — Kasbga qayta tayyorlash / malaka oshirish (hujjatgina); `manual` — maydon ro'yxatdanmi yoki qo'lda.
+    form_76: {
+      from: null,
+      to: null,
+      training_center: null,
+      training_course: null,
+      profession: null,
+      acting_worker: null,
+      telegram_number: null,
+      learning_center_id: null,
+      manual: { center: false, course: false, profession: false }
     },
     // 75 — Buyruqni bekor qilish (faqat tasdiqlangan buyruq bekor qilinadi).
     form_75: {
@@ -761,6 +776,18 @@ const commandStoreOptions = {
         military_office: null,
         reference_date: null,
         reference_number: null
+      }
+
+      this.form_76 = {
+        from: null,
+        to: null,
+        training_center: null,
+        training_course: null,
+        profession: null,
+        acting_worker: null,
+        telegram_number: null,
+        learning_center_id: null,
+        manual: { center: false, course: false, profession: false }
       }
 
       this.form_75 = {

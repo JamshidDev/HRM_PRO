@@ -33,6 +33,9 @@
                     : undefined
                 }),
             pension_count: showPension.value ? store.form_32.pension_count : undefined,
+            pension_coefficient: showPensionCoefficient.value
+              ? store.form_32.pension_coefficient
+              : undefined,
             salary_withholding: showSalaryWithholding.value
               ? {
                   ...store.form_32.salary_withholding,
@@ -125,6 +128,8 @@
             : null
           store.form_32.salary_withholding.all_day = data.all_day
           store.form_32.salary_withholding.rest_day = data.rest_day
+          store.form_32.salary_withholding.used_day =
+            (Number(data.all_day) || 0) + (Number(data.rest_day) || 0)
           store.form_32.salary_withholding.month = data.month
           salaryWithholdingLoading.value = false
         }
@@ -149,6 +154,9 @@
   const isMedCommand = computed(() => store.payload.command_type === 38)
 
   const isShowWarningItem = computed(() => store.payload.command_type !== 33)
+
+  // 32 — ushlab qolishda «Amalda foydalanilgan» va «Ishlab berilmagan kunlar», oy yo'q.
+  const isExpiryCommand = computed(() => store.payload.command_type === 32)
 
   defineExpose({
     onSubmit
@@ -434,10 +442,30 @@
             />
           </n-form-item>
         </div>
+        <div v-if="isExpiryCommand" class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
+          <n-form-item
+            :show-feedback="false"
+            :label="$t(`documentPage.command.form.used_day`)"
+            path="salary_withholding.used_day"
+          >
+            <n-input-number
+              class="w-full"
+              min="0"
+              max="1000"
+              v-model:value="store.form_32.salary_withholding.used_day"
+            />
+          </n-form-item>
+        </div>
         <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
           <n-form-item
             :show-feedback="false"
-            :label="$t(`documentPage.command.form.rest_day`)"
+            :label="
+              $t(
+                isExpiryCommand
+                  ? `documentPage.command.form.unworked_day`
+                  : `documentPage.command.form.rest_day`
+              )
+            "
             path="salary_withholding.rest_day"
           >
             <n-input-number
@@ -448,7 +476,7 @@
             />
           </n-form-item>
         </div>
-        <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
+        <div v-if="!isExpiryCommand" class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
           <n-form-item
             :show-feedback="false"
             :label="$t(`documentPage.command.form.rest_day`)"
