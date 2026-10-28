@@ -145,7 +145,7 @@ import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
     </template>
 
     <template #cell-period="{ row }">
-      <div class="flex">
+      <div class="flex gap-1.5">
         <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(row.from)" />
         <UIBadge :show-icon="false" :label="Utils.timeOnlyDate(row.to)" />
       </div>

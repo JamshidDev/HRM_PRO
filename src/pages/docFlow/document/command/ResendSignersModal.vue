@@ -15,6 +15,8 @@
   const emits = defineEmits(['update:visible', 'confirm'])
 
   const STATUS_REJECTED = 4
+  // «Tanlanganlarga» hozircha o'chiq — «Tez orada» belgisi bilan ko'rsatiladi.
+  const SOON_MODES = ['selected']
   const mode = ref('all')
   const selected = ref([])
 
@@ -31,6 +33,8 @@
   )
 
   const isChecked = (row) => mode.value === 'all' || row.forced || selected.value.includes(row.key)
+  // Qulflangan qator (barchaga yoki majburiy) — bosilmaydi, lekin belgisi oddiy (ko'k)
+  // ko'rinishda qoladi: Naive'ning `disabled` kulrangi «tanlanmagan» deb o'qilardi.
   const isDisabled = (row) => mode.value === 'all' || row.forced
 
   const toggle = (row, checked) => {
@@ -43,10 +47,10 @@
   const resendCount = computed(() => props.rows.filter(isChecked).length)
 
   const typeLabel = (type) => t(`documentPage.command.dataTab.resend.types.${type}`)
-  const statusOf = (row) =>
-    row.status === null
-      ? { id: 1, name: t('documentPage.command.dataTab.resend.status.new') }
-      : { id: row.status, name: t(`documentPage.command.dataTab.resend.status.${row.status}`) }
+  const statusOf = (row) => ({
+    id: row.status,
+    name: t(`documentPage.command.dataTab.resend.status.${row.status}`)
+  })
 
   const onConfirm = () => {
     emits('confirm', {
@@ -72,21 +76,34 @@
           <label
             v-for="opt in ['all', 'selected']"
             :key="opt"
-            class="flex items-start gap-2 rounded-xl border px-3 py-2.5 cursor-pointer transition-colors"
-            :class="
+            class="group relative flex items-start gap-2 rounded-xl border px-3 py-2.5 transition-colors"
+            :class="[
               mode === opt
                 ? 'border-primary bg-primary/5'
-                : 'border-surface-line bg-surface-section'
-            "
+                : 'border-surface-line bg-surface-section',
+              SOON_MODES.includes(opt) ? 'cursor-not-allowed' : 'cursor-pointer'
+            ]"
           >
-            <n-radio :value="opt" class="mt-0.5" />
-            <div class="min-w-0">
+            <n-radio
+              :value="opt"
+              :disabled="SOON_MODES.includes(opt)"
+              class="mt-0.5"
+              :class="{ 'opacity-60': SOON_MODES.includes(opt) }"
+            />
+            <div class="min-w-0" :class="{ 'opacity-60': SOON_MODES.includes(opt) }">
               <div class="text-sm font-semibold text-textColor1">
                 {{ $t(`documentPage.command.dataTab.resend.${opt}`) }}
               </div>
               <div class="text-xs text-textColor3 mt-0.5 text-pretty">
                 {{ $t(`documentPage.command.dataTab.resend.${opt}Hint`) }}
               </div>
+            </div>
+            <!-- Hover'da kartaning o'zida «Tez orada» chiqadi -->
+            <div
+              v-if="SOON_MODES.includes(opt)"
+              class="absolute inset-0 flex items-center justify-center rounded-xl bg-surface-section/90 text-sm font-semibold text-textColor2 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+            >
+              {{ $t('documentPage.command.dataTab.resend.soon') }}
             </div>
           </label>
         </div>
@@ -112,7 +129,7 @@
         >
           <n-checkbox
             :checked="isChecked(row)"
-            :disabled="isDisabled(row)"
+            :class="{ 'pointer-events-none': isDisabled(row) }"
             @click.stop
             @update:checked="(v) => toggle(row, v)"
           />
@@ -129,9 +146,17 @@
               }"
             />
           </div>
-          <div class="flex flex-col items-end gap-1 shrink-0">
-            <UIStatus fig compact :tooltip="false" :status="statusOf(row)" />
-            <span v-if="row.forced && row.status !== null" class="text-[10px] text-textColor3">
+          <!-- Holatlar bitta ustunda, chapdan tekislangan — hammasi bir chiziqda turadi -->
+          <div class="flex flex-col items-start gap-1 shrink-0 w-28">
+            <!-- «Yangi» — yangi qo'shilgan imzolovchi, «Jarayonda» dan ajralib tursin -->
+            <span
+              v-if="row.status === null"
+              class="text-[11px] font-semibold rounded-full px-2 py-0.5 whitespace-nowrap bg-fig-chip-brand text-fig-chip-brand-text"
+            >
+              {{ $t('documentPage.command.dataTab.resend.status.new') }}
+            </span>
+            <UIStatus v-else fig compact :tooltip="false" :status="statusOf(row)" />
+            <span v-if="row.forced && row.status !== null" class="text-[10px] text-textColor3 pl-1">
               {{ $t('documentPage.command.dataTab.resend.required') }}
             </span>
           </div>

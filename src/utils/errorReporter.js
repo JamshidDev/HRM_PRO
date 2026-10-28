@@ -13,6 +13,10 @@
 // uchun bloklanmaydi.
 //
 // Xabarlar backend proxy (POST /api/v1/services/client-logs) orqali ketadi — token bundle'da yo'q.
+//
+// Har bir xatoning darajasi (LEVELS) bor: critical / danger / warning / info.
+// Xabar sarlavhasi to'plamdagi eng og'ir daraja bilan chiqadi va guruhda
+// hashtag (#critical, #danger, ...) bo'yicha filtrlash mumkin.
 
 import { useAppSetting } from '@/utils/AppSetting.js'
 
@@ -72,6 +76,23 @@ const IGNORED = [
   'AbortError',
   LOG_PATH
 ]
+
+// ------------------------------------------------------------------ darajalar
+
+// rank — saralash va sarlavha uchun: kattasi og'irroq.
+const LEVELS = {
+  critical: { rank: 4, icon: '\u{1F6A8}', label: 'CRITICAL' }, // server ishlamayapti (502/503/504)
+  danger: { rank: 3, icon: '\u{1F534}', label: 'DANGER' }, // kod xatosi: JS/Vue crash, 500
+  warning: { rank: 2, icon: '\u{1F7E0}', label: 'WARNING' }, // tarmoq, timeout, kutilmagan 4xx, promise
+  info: { rank: 1, icon: '\u{1F535}', label: 'INFO' } // eski chunk (yangi deploy) — reload yetarli
+}
+
+const DEFAULT_LEVEL = 'danger'
+
+const levelOf = (entry) => (LEVELS[entry?.level] ? entry.level : DEFAULT_LEVEL)
+
+// Gateway statuslari — backend umuman javob bermayapti, kod xatosi emas.
+const GATEWAY_STATUSES = [502, 503, 504]
 
 // ------------------------------------------------------------------ yordamchilar
 
@@ -182,10 +203,16 @@ const buildText = (entries, dropped) => {
   const userLabel =
     [currentUser?.fullName, userId ? `id=${userId}` : ''].filter(Boolean).join(' · ') || 'mehmon'
 
+  // Og'irlari tepada; sarlavha eng og'ir daraja bilan.
+  entries.sort((a, b) => LEVELS[b.level].rank - LEVELS[a.level].rank)
+  const top = LEVELS[entries[0].level]
+  const tags = [...new Set(entries.map((entry) => `#${entry.level}`))].join(' ')
+
   const head = [
     entries.length > 1
-      ? `\u{1F534} <b>Frontend xato</b> — ${entries.length} ta`
-      : '\u{1F534} <b>Frontend xato</b>',
+      ? `${top.icon} <b>${top.label}</b> · Frontend xato — ${entries.length} ta`
+      : `${top.icon} <b>${top.label}</b> · Frontend xato`,
+    tags,
     `<b>Muhit:</b> ${escapeHtml(env.MODE)} · ${escapeHtml(browserInfo())}`,
     `<b>Vaqt:</b> ${formatTime(new Date())}`,
     `<b>User:</b> ${escapeHtml(userLabel)}`,
@@ -203,7 +230,7 @@ const buildText = (entries, dropped) => {
     const number = entries.length > 1 ? `${index + 1}) ` : ''
     const code = entry.code ? ` · <code>${escapeHtml(entry.code)}</code>` : ''
 
-    lines.push(`${number}<b>${escapeHtml(entry.type)}</b>${code}`)
+    lines.push(`${number}${LEVELS[entry.level].icon} <b>${escapeHtml(entry.type)}</b>${code}`)
     lines.push(`<b>Sahifa:</b> ${escapeHtml(cut(entry.page, 200))}`)
 
     for (const [label, value] of entry.rows || []) {
@@ -381,7 +408,8 @@ const scheduleFlush = () => {
 /**
  * Bitta xatoni buferga qo'yadi (5 s ichidagilar bitta xabar bo'lib ketadi).
  * Hech qachon throw qilmaydi.
- * @param {{ type: string, message: string, code?: string, stack?: string, rows?: Array<[string, string]> }} entry
+ * level berilmasa 'danger' hisoblanadi.
+ * @param {{ type: string, message: string, level?: 'critical'|'danger'|'warning'|'info', code?: string, stack?: string, rows?: Array<[string, string]> }} entry
  */
 export const reportError = (entry) => {
   try {
@@ -405,6 +433,7 @@ export const reportError = (entry) => {
 
     buffer.push({
       ...entry,
+      level: levelOf(entry),
       signature,
       repeated,
       page: `${location.pathname}${location.search}`
@@ -444,15 +473,22 @@ export const reportApiError = (error) => {
     const method = String(config.method || 'get').toUpperCase()
     const status = error.response?.status
     let type
+    let level
 
     if (!error.response) {
       // Foydalanuvchining o'z interneti uzilgan bo'lsa — bizning xatoyimiz emas.
       if (navigator.onLine === false) return
       type = error.code === 'ECONNABORTED' ? 'API timeout' : 'API network'
+      level = 'warning'
+    } else if (GATEWAY_STATUSES.includes(status)) {
+      type = 'API server ishlamayapti'
+      level = 'critical'
     } else if (status >= 500) {
       type = 'API server xatosi'
+      level = 'danger'
     } else if (status >= 400 && !EXPECTED_STATUSES.includes(status)) {
       type = 'API xatosi'
+      level = 'warning'
     } else {
       return
     }
@@ -465,6 +501,7 @@ export const reportApiError = (error) => {
 
     reportError({
       type,
+      level,
       // Kod: HTTP status + axios kodi (ERR_NETWORK, ECONNABORTED, ...)
       code: [status, error.code].filter(Boolean).join(' · '),
       message: backendMessage || error.message || 'Nomaʼlum API xatosi',
@@ -486,6 +523,7 @@ const onWindowError = (event) => {
 
   reportError({
     type: 'JS runtime',
+    level: 'danger',
     code: event.error?.name || 'Error',
     message: event.error?.message || event.message || 'Unknown error',
     stack: event.error?.stack,
@@ -505,6 +543,8 @@ const onUnhandledRejection = (event) => {
 
   reportError({
     type: isChunkError ? 'Chunk yuklanmadi' : 'Promise',
+    // Chunk — eski deploy, sahifani yangilash yetadi; ushlanmagan promise — kod e'tiborsizligi.
+    level: isChunkError ? 'info' : 'warning',
     code: reason?.name || (isChunkError ? 'ChunkLoadError' : ''),
     message,
     stack: reason?.stack
@@ -528,6 +568,7 @@ export const initErrorReporter = (app) => {
     app.config.errorHandler = (err, instance, info) => {
       reportError({
         type: 'Vue',
+        level: 'danger',
         code: err?.name || 'Error',
         message: err?.message || String(err),
         stack: err?.stack,

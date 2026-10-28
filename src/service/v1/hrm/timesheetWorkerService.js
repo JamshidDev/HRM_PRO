@@ -53,7 +53,16 @@ const _set_timekeeper_lock = async (payload) => {
   return await axios.post(`/v1/timesheet/${payload.id}/timekeeper-lock`, payload.data)
 }
 
+// «Форма ФТУ №3» Excel — bo'lim kesimida, tabelda saqlangan kataklar bo'yicha.
+const _export = async (payload) => {
+  return await axios.get(`/v1/timesheet/${payload.id}/export`, {
+    params: payload.params,
+    responseType: 'blob'
+  })
+}
+
 export default {
+  _export,
   _index,
   _get_days,
   _create,
