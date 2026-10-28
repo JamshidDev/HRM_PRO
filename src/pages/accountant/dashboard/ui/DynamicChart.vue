@@ -8,6 +8,7 @@
   import PanelHeader from './PanelHeader.vue'
   import { useAccDashboardStore, useAppStore } from '@/store/modules/index.js'
   import { toMln } from '../format.js'
+  import { UICountUp } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import Utils from '@/utils/Utils.js'
   import { AppPaths } from '@/utils/index.js'
@@ -121,7 +122,7 @@
         </div>
         <p class="whitespace-nowrap">
           <span class="text-[20px] leading-6 font-semibold text-fig-text-primary">
-            {{ toMln(item.value) }}
+            <UICountUp :value="toMln(item.value)" />
           </span>
           <span class="text-[14px] leading-5 text-fig-text-secondary">
             {{ $t('content.mln') }} {{ $t('content.sum') }}
