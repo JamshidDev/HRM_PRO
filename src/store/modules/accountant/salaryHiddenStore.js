@@ -17,7 +17,16 @@ export const useSalaryHiddenStore = defineStore('salaryHidden', {
     showForm: false,
     // Xodim qidiruvi (ism/PINFL bo'yicha tanlab yashirish)
     workerOptions: [],
-    workerSearchLoading: false
+    workerSearchLoading: false,
+    // "Yashirilganni ko'ra oladigan" (viewer) ro'yxati — faqat granterlar boshqaradi.
+    viewerList: [],
+    viewerTotal: 0,
+    viewerPage: 1,
+    viewerLoading: false,
+    canManageViewers: false, // GET /viewers 200 → true (tab ko'rinadi); 403 → false
+    viewerForm: { pinfl: '', note: '' },
+    viewerCreateLoading: false,
+    viewerDeleteLoading: false
   }),
   actions: {
     _index(page = 1) {
@@ -65,6 +74,54 @@ export const useSalaryHiddenStore = defineStore('salaryHidden', {
 
     onSearch() {
       this._index(1)
+    },
+
+    // ─── "Ko'ra oladiganlar" (viewers) ───────────────────────────────────────
+    // GET muvaffaqiyatli → granter (tab ko'rinadi); 403 → canManageViewers=false.
+    _viewers(page = 1) {
+      this.viewerPage = page
+      this.viewerLoading = true
+      $ApiService.salaryHiddenService
+        ._viewers({ page, per_page: 20 })
+        .then((res) => {
+          this.viewerList = res.data.data?.data || []
+          this.viewerTotal = res.data.data?.total || 0
+          this.canManageViewers = true
+        })
+        .catch((e) => {
+          if (e?.response?.status === 403) this.canManageViewers = false
+        })
+        .finally(() => {
+          this.viewerLoading = false
+        })
+    },
+
+    async _addViewer() {
+      if (!this.viewerForm.pinfl || this.viewerForm.pinfl.length !== 14) return
+      this.viewerCreateLoading = true
+      try {
+        await $ApiService.salaryHiddenService._addViewer({
+          pinfl: this.viewerForm.pinfl.trim(),
+          note: this.viewerForm.note.trim() || undefined
+        })
+        $Toast.success("Qo'shildi")
+        this.viewerForm.pinfl = ''
+        this.viewerForm.note = ''
+        this._viewers()
+      } finally {
+        this.viewerCreateLoading = false
+      }
+    },
+
+    async _removeViewer(id) {
+      this.viewerDeleteLoading = true
+      try {
+        await $ApiService.salaryHiddenService._removeViewer(id)
+        $Toast.success("O'chirildi")
+        this._viewers(this.viewerPage)
+      } finally {
+        this.viewerDeleteLoading = false
+      }
     },
 
     // Xodimni ism/PINFL bo'yicha qidirish — select uchun variantlar.

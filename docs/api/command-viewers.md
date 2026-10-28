@@ -92,9 +92,50 @@ Savollar / kerak bo'ladigan narsalar:
 - [ ] Barcha kelishuvchilar bir xil `order` da bo'lsa — parallel deb hisoblanadi; tartibli buyruqda
       `order` lar har xil (1, 2, 3) kelishini tasdiqlang (o'ng paneldagi navbat raqamlari shunga tayanadi).
 
+## 6. Tekshiruv natijasi (2026-10-27, dev API)
+
+Ishlaydi:
+- `GET /v1/document-route?model=commands` — `mode` (`parallel`/`sequential`), `items[].role = "sign"`,
+  `locked` sababi (`approved`, `expired`, `no_form_state`, jarayonda — `null`) qaytadi.
+- Tartibli buyruqda `order` lar 1, 2, 3 keladi (92687) — o'ng paneldagi navbat raqamlari to'g'ri.
+- `signers-preview` bo'sh `confirmations: []` ni qabul qiladi (faqat rahbar qoladi).
+
+Hali yo'q:
+- `viewers` jim e'tiborsiz qoldiriladi: Swagger `CreateCommandDto` / `UpdateCommandDto` da yo'q,
+  `signers-preview` javobida tanishuvchi chiqmaydi, `CommandSignerPreviewDto.type` faqat `w|s|d`.
+- 92690 tanishuvchi (961) bilan yaratilgan, lekin hujjatda `r` qatori yo'q, marshrutda ham yo'q.
+- **Isbot:** 2026-10-27 test buyruq **92691** (`TEST-VIEWER`, tur 32) yaratildi:
+  `confirmations: [{ id: 960, order: 1 }]`, `viewers: [961]` → `201`, lekin hujjatda faqat `w`, `s` (960) va `d`;
+  961 (Kadirov A.) hech qayerda yo'q — `viewers` saqlanmaydi.
+- `PUT /v1/document-route` jarayondagi buyruqda sinalmadi (ma'lumotni o'zgartiradi).
+
+## 7. Backend javobi (2026-10-27)
+
+**Tanishuvchi alohida `viewers` maydonida emas, `confirmations` ichida `role: 'view'` bilan yuboriladi.**
+92691 da `viewers: [961]` yuborilgan — bu maydon DTO'da yo'q, shuning uchun jimgina tashlab yuborilgan.
+
+```json
+"confirmations": [
+  { "id": 960, "order": 1, "role": "sign" },
+  { "id": 961, "order": 1, "role": "view" }
+]
+```
+
+- Frontend allaqachon shunday yuboradi (`CommandFormBody.vue` `validateAll`, dev'da bor) — formadan yaratilgan buyruqda tanishuvchi saqlanadi.
+  API'ni qo'lda sinaganda ham shu shakl kerak.
+- Swagger'da endi ko'rinadi: `CreateCommandDto.confirmations[]` → `CommandConfirmationItemDto { id, order, role: sign | view }`.
+- Lokal tekshiruv: `role: 'view'` bilan yaratilgan buyruqda `r` qatori (`order = 99`) bor,
+  `GET /v1/document-route` da `items[].role = "view"`.
+- `signers-preview` va uning `type` (`w|s|d`) da tanishuvchi **ataylab** yo'q — unga qayta imzolash yuborilmaydi.
+- `PUT /v1/document-route` jarayondagi buyruqda tanishuvchilarni saqlaydi (lokal sinalgan: imzolagan kelishuvchi qoladi, tanishuvchilar yo'qolmaydi).
+- Tanishuvchiga hujjat **tasdiqlangandan keyin** boradi (veb «imzolash uchun» ro'yxati, mobil ro'yxat va push).
+  Ochganda «Tanishdi» (`status = 2`) bo'ladi va ro'yxatdan chiqadi. Shartnoma va qo'shimcha kelishuvda ham xuddi shunday.
+
 ## O'zgarishlar tarixi
 
 | Sana | Kim | Nima o'zgardi |
 |---|---|---|
 | 2026-10-23 | Shahriyor | Birinchi versiya |
 | 2026-10-26 | Shahriyor | Marshrut API'si bo'yicha savollar va «aqlli Saqlash» rejasi (3.1) |
+| 2026-10-27 | Shahriyor | Dev API tekshiruvi (6-bo'lim): marshrut tayyor, `viewers` hali saqlanmaydi (test buyruq 92691) |
+| 2026-10-27 | Backend | 7-bo'lim: tanishuvchi `confirmations[].role = 'view'` bilan yuboriladi; Swagger yangilandi |

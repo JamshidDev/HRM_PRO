@@ -158,6 +158,11 @@ body {
   background-color: var(--app-bg);
 }
 
+/* Scrollbar paydo bo'lib-yo'qolganda header/filtr siljimasin (layout shift). */
+html {
+  scrollbar-gutter: stable;
+}
+
 .bg-gray-soft {
   background-color: #98a2b3;
 }

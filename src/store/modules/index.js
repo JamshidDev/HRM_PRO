@@ -168,6 +168,7 @@ export * from './accountant/staffApprovalStore.js'
 export * from './accountant/tariffGridStore.js'
 export * from './accountant/tariffBaseStore.js'
 export * from './accountant/salary1cStore.js'
+export * from './accountant/salaryControlStore.js'
 export * from './accountant/uploadSourceConfigStore.js'
 export * from './accountant/salaryHiddenStore.js'
 

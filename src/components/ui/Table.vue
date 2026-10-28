@@ -212,6 +212,70 @@
 
   const rowKeyFn = (row) => row[props.rowKey]
 
+  // Daraxt jadvali: Naive ichki qatorlarni animatsiyasiz qo'yadi va olib tashlaydi.
+  // Ochilganda ular silliq kirib keladi (CSS), yopilganda esa avval so'nib, keyin
+  // olib tashlanadi — shuning uchun ochiq qatorlar ro'yxatini o'zimiz boshqaramiz.
+  const COLLAPSE_MS = 280
+  const expandedKeys = ref([])
+  const leavingKeys = ref(new Set())
+  const topRows = computed(() => new Set(props.data))
+  const findRow = (key, rows = props.data) => {
+    for (const r of rows) {
+      if (rowKeyFn(r) === key) return r
+      const hit = r.children?.length ? findRow(key, r.children) : null
+      if (hit) return hit
+    }
+    return null
+  }
+  const descendantKeys = (row, out = []) => {
+    for (const c of row?.children || []) {
+      out.push(rowKeyFn(c))
+      descendantKeys(c, out)
+    }
+    return out
+  }
+  const reduceMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+  const onUpdateExpanded = (keys) => {
+    const closed = expandedKeys.value.filter((k) => !keys.includes(k))
+    if (!closed.length || reduceMotion()) {
+      expandedKeys.value = keys
+      return
+    }
+    // Yopilayotgan qatorning barcha ichki qatorlari so'nadi, keyin haqiqatan yopiladi.
+    leavingKeys.value = new Set(closed.flatMap((k) => descendantKeys(findRow(k))))
+    setTimeout(() => {
+      expandedKeys.value = expandedKeys.value.filter((k) => !closed.includes(k))
+      leavingKeys.value = new Set()
+    }, COLLAPSE_MS)
+  }
+  // Naive ichki qatorlarni hech qachon «zebra» qilmaydi va tashqi qatorlarni o'z
+  // indeksi bo'yicha bo'yaydi. Daraxtda zebrani o'zimiz hisoblaymiz: ko'rinib turgan
+  // barcha qatorlar (ochilgan ichkilari bilan) ketma-ket navbatma-navbat bo'yaladi.
+  const treeStriped = computed(() => {
+    const map = new Map()
+    if (!props.striped || !isTreeTable.value) return map
+    const open = new Set(expandedKeys.value)
+    let s = true
+    const walk = (rows) => {
+      for (const r of rows) {
+        s = !s
+        map.set(r, s)
+        if (open.has(rowKeyFn(r))) walk(r.children || [])
+      }
+    }
+    walk(props.data)
+    return map
+  })
+  const mergedRowClassName = (row, index) =>
+    [
+      props.rowClassName?.(row, index),
+      isTreeTable.value && !topRows.value.has(row) && 'ui-table__row--child',
+      treeStriped.value.get(row) && 'n-data-table-tr--striped',
+      leavingKeys.value.has(rowKeyFn(row)) && 'ui-table__row--leaving'
+    ]
+      .filter(Boolean)
+      .join(' ')
+
   const onActionSelect = (key, option, row) => {
     if (option.action) {
       option.action(row)
@@ -441,13 +505,15 @@
         :bordered="bordered"
         :single-column="!rowBorder"
         :single-line="!columnBorder"
-        :striped="striped"
+        :striped="striped && !isTreeTable"
         :scroll-x="scrollX"
         :row-props="rowProps"
-        :row-class-name="rowClassName"
+        :row-class-name="mergedRowClassName"
+        :expanded-row-keys="expandedKeys"
         :on-load="onLoad"
         :children-key="childrenKey"
         @unstable-column-resize="onUnstableColumnResize"
+        @update:expanded-row-keys="onUpdateExpanded"
       />
 
       <div
@@ -528,5 +594,37 @@
   .ui-table__wrapper--no-footer
     :deep(.n-data-table-tbody .n-data-table-tr:last-child .n-data-table-td:last-child) {
     border-bottom-right-radius: 16px;
+  }
+
+  /* Daraxt: ochilgan ichki qatorlar yuqoridan sirpanib, so'nib kirib keladi;
+     yopilganda teskarisi (keyin JS ularni olib tashlaydi). */
+  .ui-table__table :deep(.ui-table__row--child > .n-data-table-td) {
+    animation: ui-table-row-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Davomiyligi JS'dagi `COLLAPSE_MS` (280ms) bilan bir xil bo'lishi kerak. */
+  .ui-table__table :deep(.ui-table__row--leaving > .n-data-table-td) {
+    animation: ui-table-row-out 0.28s ease-in both;
+  }
+
+  @keyframes ui-table-row-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+  }
+
+  @keyframes ui-table-row-out {
+    to {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-table__table :deep(.ui-table__row--child > .n-data-table-td),
+    .ui-table__table :deep(.ui-table__row--leaving > .n-data-table-td) {
+      animation: none;
+    }
   }
 </style>

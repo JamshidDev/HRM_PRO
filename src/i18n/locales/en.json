@@ -1343,7 +1343,7 @@
         "viewOneByOne": "Review in order",
         "route": {
           "parallel": "Parallel",
-          "sequential": "In order",
+          "sequential": "Sequential",
           "parallelHint": "The document goes to everyone at once — it doesn't matter who sees it first",
           "sequentialHint": "The document goes step by step: the next person gets it after the previous one signs. Drag to change the order",
           "roleSign": "Approver",
@@ -1379,6 +1379,8 @@
         "calculateTitle": "Calculated vacation data. You can edit if incorrect",
         "requiredVacationData": "Enter employee vacation data!",
         "rest_day": "Remaining days",
+        "used_day": "Actually used",
+        "unworked_day": "Unworked days",
         "by_whom": "By whom",
         "reason": "Reason",
         "gift_type": "Gift type",
@@ -1700,7 +1702,7 @@
           "route_closed": "Closed"
         },
         "showAll": "Show all",
-        "modeParallelHint": "Sent to everyone at once",
+        "modeParallelHint": "Sent to everyone for approval at the same time",
         "modeSequentialHint": "Signed one by one",
         "nowTurn": "Current turn",
         "waitingTurn": "Waiting for turn",
@@ -1799,6 +1801,21 @@
       "military_office_placeholder": "E.g.: Mirobod district",
       "reference_date": "Certificate date",
       "reference_number": "Certificate number"
+    },
+    "form_76": {
+      "from_retraining": "Retraining start date",
+      "to_retraining": "Retraining end date",
+      "from_qualification": "Training start date",
+      "to_qualification": "Training end date",
+      "training_center": "Training center",
+      "training_course": "Training course",
+      "profession": "Profession",
+      "acting_worker": "Acting employee (full name)",
+      "acting_worker_placeholder": "E.g. Aliyev Vali Valiyevich",
+      "telegram_number": "Telegram number",
+      "toggle_manual": "Type manually",
+      "toggle_list": "Choose from list",
+      "select_center_first": "Select a training center first"
     },
     "form_60": {
       "from": "Training start date",
@@ -5622,7 +5639,10 @@
     "note": "Note",
     "notePlaceholder": "Reason (optional)",
     "addedAt": "Added date",
-    "actions": "Actions"
+    "actions": "Actions",
+    "tabHidden": "Hidden",
+    "tabViewers": "Who can view",
+    "viewersHint": "Employees in this list can see hidden salaries within their organizations."
   },
   "staffingApproval": {
     "name": "Staffing",
@@ -6625,6 +6645,58 @@
       "title": "Add privileged employee"
     },
     "confirmDelete": "Delete?"
+  },
+  "salaryControl": {
+    "title": "Salary control",
+    "tabs": {
+      "summary": "Summary",
+      "risks": "Risks",
+      "rules": "Criteria",
+      "who": "Top earners",
+      "vids": "Payment types",
+      "deductions": "Deductions",
+      "reports": "Reports",
+      "employees": "Employees"
+    },
+    "kpi": {
+      "employees": "Employee count",
+      "accrued": "Total accrued",
+      "deduction": "Total deductions",
+      "net": "To card",
+      "orgs": "Organizations"
+    },
+    "risk": {
+      "title": "Risk {n} · {title}",
+      "riskNumbers": "Risks: {list}",
+      "riskCount": "{count} risks",
+      "statusHint": {
+        "bad": "Requires immediate review",
+        "chk": "Additional review recommended",
+        "ok": "No issues found",
+        "na": "Insufficient data to evaluate"
+      },
+      "emptyPeriod": "No data for this period. Select another month or organization.",
+      "norm": "Monthly norm: {norm} hours",
+      "method": "Calculation method",
+      "finding": "Finding",
+      "advice": "Advice",
+      "affected": "Details ({count} employees)",
+      "affectedCapped": "Showing {shown} of {count} — full list in Excel",
+      "empty": "No data found",
+      "status": {
+        "bad": "Risk detected",
+        "chk": "Needs review",
+        "ok": "Normal",
+        "na": "Insufficient data"
+      },
+      "table": {
+        "fio": "Full name",
+        "position": "Position",
+        "detail": "Note",
+        "summa": "Amount"
+      }
+    },
+    "comingSoon": "Coming soon"
   },
   "ssoLogins": {
     "title": "Sign-ins via HRM",

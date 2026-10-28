@@ -70,7 +70,10 @@
 <style lang="scss" scoped>
   // `width: fit-content` — ustunli flex konteynerda yo'lak butun kenglikka
   // cho'zilib ketmasligi uchun. Sig'masa — yo'lak gorizontal suriladi.
+  // `flex-shrink: 0` — balandligi qat'iy sahifada (ustunli flex) blok 36px dan 32px ga
+  // siqilib, `overflow-x: auto` tufayli 4px lik vertikal skroll paydo bo'lardi.
   .seg-tabs {
+    flex-shrink: 0;
     width: fit-content;
     min-width: 0;
     max-width: 100%;
