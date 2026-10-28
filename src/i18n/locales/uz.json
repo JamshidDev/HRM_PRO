@@ -6714,6 +6714,10 @@
   },
   "salaryControl": {
     "title": "Oylik nazorati",
+    "testMode": {
+      "title": "Test rejimi",
+      "desc": "Bu modul sinov (test) rejimida ishlamoqda — ma'lumotlar va hisob-kitoblar tekshirilyapti. Yakuniy qarorlar uchun hali foydalanmang."
+    },
     "tabs": {
       "summary": "Umumiy",
       "risks": "Xavflar",
