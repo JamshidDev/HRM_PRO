@@ -1,10 +1,9 @@
 <script setup>
   import { ref, computed } from 'vue'
   import { useSalaryControlStore } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
   import { RISK_STATUS } from '../engine.js'
   import { SECTION, RISK_METHOD } from '../explain.js'
-  import { normText } from '../helpers.js'
+  import { normText, money } from '../helpers.js'
   import ScSkeleton from './ScSkeleton.vue'
   import StatusBadge from './StatusBadge.vue'
   import EmptyState from './EmptyState.vue'
@@ -232,7 +231,7 @@
                       <td>{{ emp.position }}</td>
                       <td>{{ emp.detail }}</td>
                       <td class="text-right">
-                        {{ emp.summa != null ? Utils.formatNumberToMoney(emp.summa) : '—' }}
+                        {{ emp.summa != null ? money(emp.summa) : '—' }}
                       </td>
                     </tr>
                   </tbody>

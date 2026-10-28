@@ -269,8 +269,9 @@ export function evalRules(emps = [], { lists = {}, cap = null, fmt } = {}) {
 export function computeFindings(emps = [], { fmt } = {}) {
   const f = fmt || ((n) => String(Math.round(num(n))))
   const F = []
+  // summa butun songa yaxlitlanadi — float artefaktlari (…66999999993) o'rniga toza so'm.
   const add = (sev, cat, e, summa, txt, chk) =>
-    F.push({ sev, cat, fio: e.fio, lav: e.lav, summa: num(summa), txt, chk })
+    F.push({ sev, cat, fio: e.fio, lav: e.lav, summa: Math.round(num(summa)), txt, chk })
 
   // 12-tekshiruv uchun: JSHSHIR qatorlar soni.
   const pinCount = new Map()
@@ -420,7 +421,8 @@ export function computeRisks(emps = [], kpi = {}, { year, month, fmt } = {}) {
   const NORM = num(kpi.norm) || 168
   const E = emps.filter((e) => num(e.tot) > 0)
   const registry = []
-  const add = (r, e, d, s) => registry.push({ r, fio: e.fio, lav: e.lav, d, s: num(s) })
+  const add = (r, e, d, s) =>
+    registry.push({ r, fio: e.fio, lav: e.lav, d, s: Math.round(num(s)) })
 
   // 1 — avans (880)
   const av = emps.reduce((a, e) => a + D(e, '880'), 0)
