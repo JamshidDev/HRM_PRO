@@ -1476,9 +1476,9 @@
         "resend": {
           "title": "Send for signing again",
           "all": "Everyone",
-          "allHint": "Those who approved or rejected will also be «In progress» again",
+          "allHint": "Everyone reviews the document again — even those who already approved or rejected",
           "selected": "Selected",
-          "selectedHint": "Only checked people become «In progress», others keep their status",
+          "selectedHint": "Only checked people review it again; everyone else keeps their answer",
           "contentChanged": "The document text changed — earlier approvals of unselected people will refer to the old version.",
           "required": "required",
           "count": "Will be sent to {count}",
@@ -1494,7 +1494,8 @@
             "3": "Approved",
             "4": "Rejected",
             "new": "New"
-          }
+          },
+          "soon": "Coming soon"
         },
         "source": {
           "titleContract": "Created from contract №{number}",
