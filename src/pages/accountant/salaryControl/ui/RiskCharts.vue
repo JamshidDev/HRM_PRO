@@ -5,7 +5,7 @@
   import { ref, computed } from 'vue'
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore, useAppStore } from '@/store/modules/index.js'
-  import { money, mln, chartTheme, tokenColor, normText } from '../helpers.js'
+  import { money, money2, mln, chartTheme, tokenColor, normText } from '../helpers.js'
   import { totalWithheld } from '../engine.js'
   import { CHART } from '../explain.js'
   import Card from './Card.vue'
@@ -349,7 +349,7 @@
               </td>
               <td>{{ r.riskTitle }}</td>
               <td class="sc-muted">{{ r.detail }}</td>
-              <td class="num">{{ r.summa != null ? money(r.summa) : '—' }}</td>
+              <td class="num">{{ r.summa != null ? money2(r.summa) : '—' }}</td>
             </tr>
             <tr v-if="!rows.length">
               <td colspan="5" class="sc-empty">{{ $t('salaryControl.common.empty') }}</td>

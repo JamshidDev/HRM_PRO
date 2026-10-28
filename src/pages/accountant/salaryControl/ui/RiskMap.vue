@@ -3,7 +3,7 @@
   import { useSalaryControlStore } from '@/store/modules/index.js'
   import { RISK_STATUS } from '../engine.js'
   import { SECTION, RISK_METHOD } from '../explain.js'
-  import { normText, money } from '../helpers.js'
+  import { normText, money2 } from '../helpers.js'
   import ScSkeleton from './ScSkeleton.vue'
   import StatusBadge from './StatusBadge.vue'
   import EmptyState from './EmptyState.vue'
@@ -231,7 +231,7 @@
                       <td>{{ emp.position }}</td>
                       <td>{{ emp.detail }}</td>
                       <td class="text-right">
-                        {{ emp.summa != null ? money(emp.summa) : '—' }}
+                        {{ emp.summa != null ? money2(emp.summa) : '—' }}
                       </td>
                     </tr>
                   </tbody>
