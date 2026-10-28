@@ -355,13 +355,16 @@ export function computeFindings(emps = [], { fmt } = {}) {
       add('Past', 'Moddiy yordam (278) — to‘liq oklad miqdorida', e, v278, `Moddiy yordam (278) ${f(v278)} — oklad ${f(ok)} ning ${Math.round((v278 / ok) * 100)}% i.`, "278 asosini (ariza/buyruq) va imtiyoz chegarasini tekshiring.")
     }
 
-    // 9. Kasaba badali xato: 902 ≠ MHTF×1% (farq>100). (xom ded['902'])
+    // 9. Kasaba badali xato: 902 ≠ MHTF×1% (farq>100). Baza = REAL MHTF (mhtfFot) —
+    //    e.fot EMAS (backend e.fot=tot, jami hisoblanma → baza shishib, a'zolarda ham
+    //    noto'g'ri yonardi). Faqat 902 ushlangan (kasaba a'zosi) xodim tekshiriladi —
+    //    kasaba ixtiyoriy, a'zo bo'lmaganni "yo'q" deb yoqib shovqin qilmaymiz (check 3 kabi).
     const v902 = D(e, '902')
-    const fot = num(e.fot)
-    if (v902 > 0 && fot > 0) {
-      const expected = fot * 0.01
+    const mhtf = mhtfFot(e)
+    if (v902 > 0 && mhtf > 0) {
+      const expected = mhtf * 0.01
       if (Math.abs(v902 - expected) > 100) {
-        add('O‘rta', 'Kasaba badali xato (902)', e, v902, `Kasaba uyushma badali (902) ${f(v902)} — MHTF (${f(fot)}) ning 1% i (${f(expected)}) bilan mos emas.`, "Badal bazasi va foizini tekshiring.")
+        add('O‘rta', 'Kasaba badali xato (902)', e, v902, `Kasaba uyushma badali (902) ${f(v902)} — MHTF (${f(mhtf)}) ning 1% i (${f(expected)}) bilan mos emas.`, "Badal bazasi va foizini tekshiring.")
       }
     }
 
