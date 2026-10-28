@@ -73,6 +73,10 @@
         {
           type: 'pie',
           radius: ['66%', '100%'],
+          // Hover'da bo'lak kattalashmaydi (halqa canvas chetiga tegib turadi — kattalashsa
+          // kesilib qolardi); uning o'rniga qolgan bo'laklar xiralashadi.
+          emphasis: { scale: false, focus: 'self' },
+          blur: { itemStyle: { opacity: 0.35 } },
           center: ['50%', '50%'],
           avoidLabelOverlap: false,
           label: { show: false },

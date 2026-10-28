@@ -1231,7 +1231,7 @@
       "from_date": "Issue date",
       "to_date": "Expiry date",
       "passport_address": "Issued by",
-      "passport_file": "Passport copy (.pdf)",
+      "passport_file": "Passport copy (.pdf, .jpg, .png)",
       "inn": "TIN",
       "sex": "Gender",
       "marital_status": "Marital status",
@@ -1245,7 +1245,9 @@
       "birthPlace": "Place of birth",
       "livingPlace": "Place of residence",
       "citizenship": "Citizenship",
-      "given_place": "Place of issue"
+      "given_place": "Place of issue",
+      "passport_front": "Front side (image or .pdf)",
+      "passport_back": "Back side (image)"
     },
     "step": {
       "personal": "Personal data",
@@ -1476,9 +1478,9 @@
         "resend": {
           "title": "Send for signing again",
           "all": "Everyone",
-          "allHint": "Those who approved or rejected will also be «In progress» again",
+          "allHint": "Everyone reviews the document again — even those who already approved or rejected",
           "selected": "Selected",
-          "selectedHint": "Only checked people become «In progress», others keep their status",
+          "selectedHint": "Only checked people review it again; everyone else keeps their answer",
           "contentChanged": "The document text changed — earlier approvals of unselected people will refer to the old version.",
           "required": "required",
           "count": "Will be sent to {count}",
@@ -1494,7 +1496,8 @@
             "3": "Approved",
             "4": "Rejected",
             "new": "New"
-          }
+          },
+          "soon": "Coming soon"
         },
         "source": {
           "titleContract": "Created from contract №{number}",
@@ -3207,6 +3210,8 @@
     "Sun": "Sun"
   },
   "timesheetPage": {
+    "exportTitle": "Export timesheet to Excel",
+    "exportNeedDepartment": "Select a department",
     "tabGrid": "Timesheet",
     "tabTimekeepers": "Timekeepers",
     "timesheetInfo": "Timesheet details",

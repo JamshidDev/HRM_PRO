@@ -120,8 +120,17 @@
    * ta'til buyruqlari. Natija LOKAL qo'yiladi, bazaga «Saqlash» bosilganda
    * ketadi. Turniket hodisalari bo'yicha hisoblash keyingi bosqichda.
    * ---------------------------------------------------------------------- */
-  // TODO: yuklash endpointi hali yo'q — backendda tabel eksporti qo'shilgach ulanadi.
-  const onDownload = () => {}
+  // «Форма ФТУ №3» Excel — faqat bo'lim kesimida: oynada bo'lim so'raladi.
+  const exportVisible = ref(false)
+  const exportDepartmentId = ref(null)
+  const onDownload = () => {
+    exportDepartmentId.value = store.params.department_id
+    exportVisible.value = true
+  }
+  const onExportConfirm = async () => {
+    await store._export(exportDepartmentId.value)
+    exportVisible.value = false
+  }
 
   /* ------------------------------------------------------------------------
    * Tablar: «Tabel» (panjara) va «Tabelchilar» (mas'ul xodimlar).
@@ -1532,7 +1541,11 @@
             </template>
             {{ $t('timesheetPage.infoShort') }}
           </n-button>
-          <n-button secondary type="success" @click="onDownload">
+          <n-button
+            secondary
+            type="success"
+            @click="onDownload"
+          >
             <template #icon>
               <n-icon :component="ArrowDownload20Filled" />
             </template>
@@ -1545,6 +1558,43 @@
     <!-- Kun tafsiloti.
          Tuzilishi ATAYLAB «javobdan tushuntirishga» qarab boradi:
          sarlavha (kim/qachon) → natija → ko'rsatkichlar → grafik → vaqt o'qi. -->
+    <n-modal
+      v-model:show="exportVisible"
+      :title="$t('timesheetPage.exportTitle')"
+      preset="card"
+      size="small"
+      style="width: 420px; max-width: 96vw"
+    >
+      <n-form-item :label="$t('documentPage.form.department')" :show-feedback="false">
+        <n-select
+          v-model:value="exportDepartmentId"
+          :loading="store.departmentLoading"
+          :options="store.departmentOptions"
+          :placeholder="$t('timesheetPage.exportNeedDepartment')"
+          clearable
+          filterable
+          label-field="name"
+          value-field="id"
+        />
+      </n-form-item>
+      <template #footer>
+        <div class="flex justify-end gap-2">
+          <n-button @click="exportVisible = false">{{ $t('content.cancel') }}</n-button>
+          <n-button
+            :disabled="!exportDepartmentId"
+            :loading="store.exportLoading"
+            type="primary"
+            @click="onExportConfirm"
+          >
+            <template #icon>
+              <n-icon :component="ArrowDownload20Filled" />
+            </template>
+            {{ $t('content.download') }}
+          </n-button>
+        </div>
+      </template>
+    </n-modal>
+
     <DayDetailModal
       v-if="USE_NEW_DAY_DETAIL"
       v-model:date="detailDate"
