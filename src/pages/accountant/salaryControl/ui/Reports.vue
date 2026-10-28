@@ -4,6 +4,7 @@
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore } from '@/store/modules/index.js'
   import { money } from '../helpers.js'
+  import { SECTION } from '../explain.js'
   import Card from './Card.vue'
   import ScSkeleton from './ScSkeleton.vue'
 
@@ -41,7 +42,7 @@
 
 <template>
   <ScSkeleton v-if="store.dashboardLoading" variant="table" />
-  <Card v-else :title="$t('salaryControl.reports.title')" :sub="$t('salaryControl.reports.sub')">
+  <Card v-else :title="$t('salaryControl.reports.title')" :sub="$t('salaryControl.reports.sub')" :info="SECTION.reports.info">
     <p v-if="!hasReportSide" class="sc-note">
       {{ $t('salaryControl.reports.noExternal') }}
     </p>

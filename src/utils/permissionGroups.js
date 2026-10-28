@@ -1071,8 +1071,9 @@ export const PERMISSION_GROUPS = [
       { prefix: 'hr-report', label: 'report.name' },
       { prefix: 'economist-staffing-approve', label: 'staffingApproval.name' },
       { prefix: 'economist-upload-source-config', label: 'uploadSourceConfig.name' },
-      // ownerOnly: faqat tizim egasi (OWNER) ko'radi/bera oladi (createForm.vue + backend).
-      { prefix: 'salary-hidden', label: 'salaryHidden.name', ownerOnly: true }
+      // Oylik yashirish — oddiy ruxsat (2026-10-28): permission ro'yxatida hamma admin
+      // ko'radi va istalgan rolga biriktira oladi (avval standalone role + ownerOnly edi).
+      { prefix: 'salary-hidden', label: 'salaryHidden.name' }
     ]
   },
   {

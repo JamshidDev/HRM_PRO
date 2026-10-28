@@ -1,7 +1,7 @@
 <script setup>
   // «To'lov turlari (vidlar)» tab — vidlar tarkibi (horizontal bar), mukofot/
   // ishlangan vaqt (scatter) va mukofot foizi strip-plot (lavozim guruhlari).
-  // Manba: store.vids + store.emps + store.findings. Maketning echarts ko'chirmasi.
+  // Manba: store.vids + store.emps + store.scFindings. Maketning echarts ko'chirmasi.
   import { computed, ref, h, onMounted } from 'vue'
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore, useAppStore } from '@/store/modules/index.js'
@@ -19,6 +19,7 @@
     VID_CATEGORIES,
     VID_CAT_TOKEN
   } from '../vid-meta.js'
+  import { CHART } from '../explain.js'
   import Card from './Card.vue'
   import EChart from './EChart.vue'
   import ScSkeleton from './ScSkeleton.vue'
@@ -28,7 +29,7 @@
   const store = useSalaryControlStore()
   const appStore = useAppStore()
 
-  const flagged = computed(() => new Set(store.findings.map((f) => f.fio)))
+  const flagged = computed(() => new Set(store.scFindings.map((f) => f.fio)))
 
   // —— KPI qatori ——————————————————————————————————————————————————————————
   // «Tekshirilishi kerak» — mukofot anomaliyasi bo'lgan xodimlar (scatter/strip qizil
@@ -476,6 +477,50 @@
     }
   })
 
+  // —— Top 20 xodim oyligi tarkibi (stacked) — maket `stk` (satr 346) ————————————
+  const STK_GROUPS = [
+    { label: 'Vaqtbay (004)', codes: ['004'], token: '--fig-icon-brand' },
+    { label: 'Mukofot (011, 097)', codes: ['011', '097'], token: '--fig-icon-orange' },
+    { label: 'Ustama (007, 023, 055, 058, 079)', codes: ['007', '023', '055', '058', '079'], token: '--fig-icon-indigo' },
+    { label: "Ta'til (032, 040)", codes: ['032', '040'], token: '--fig-icon-green' },
+    { label: 'Oziq-ovqat (247)', codes: ['247'], token: '--fig-icon-amber' },
+    { label: 'Moddiy yordam/nafaqa (278, 274, 556, 061)', codes: ['278', '274', '556', '061'], token: '--fig-icon-red' }
+  ]
+  const flaggedStk = computed(() => new Set(store.scFindings.map((f) => f.fio)))
+  const stkRows = computed(() => [...store.people].sort((a, b) => (b.tot || 0) - (a.tot || 0)).slice(0, 20))
+  const stkOption = computed(() => {
+    appStore.isDark
+    const th = chartTheme()
+    const rows = stkRows.value
+    const sumCodes = (p, codes) => codes.reduce((a, k) => a + (p.v?.[k] || 0), 0)
+    const label = (p) => (flaggedStk.value.has(p.fio) ? '⚠ ' : '') + normText(p.fio).split(' ').slice(0, 2).join(' ')
+    return {
+      grid: { top: 8, left: 4, right: 16, bottom: 4, containLabel: true },
+      legend: { show: true, bottom: 0, type: 'scroll', textStyle: { color: th.text, fontSize: 11 } },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: { type: 'shadow' },
+        valueFormatter: (v) => (v ? formatMoney(v, { unit: 'mln' }) : '0')
+      },
+      xAxis: { type: 'value', axisLabel: { color: th.text, formatter: (v) => (v / 1e6).toFixed(0) }, splitLine: { lineStyle: { color: th.line } } },
+      yAxis: {
+        type: 'category',
+        inverse: true,
+        data: rows.map(label),
+        axisLabel: { color: th.textStrong, width: 150, overflow: 'truncate', fontSize: 11 },
+        axisLine: { lineStyle: { color: th.line } }
+      },
+      series: STK_GROUPS.map((g) => ({
+        name: g.label,
+        type: 'bar',
+        stack: 'x',
+        data: rows.map((p) => sumCodes(p, g.codes)),
+        itemStyle: { color: tokenColor(g.token) },
+        barMaxWidth: 16
+      }))
+    }
+  })
+
   // —— Nuqta → xodim Drawer (click-to-detail) ————————————————————————————————————
   const empOpen = ref(false)
   const empData = ref(null)
@@ -554,7 +599,7 @@
       </div>
 
       <!-- Asosiy: Vidlar jadvali + turkum stacked bar -->
-      <Card :title="$t('salaryControl.vids.title')" :sub="$t('salaryControl.vids.sub')">
+      <Card :title="$t('salaryControl.vids.title')" :sub="$t('salaryControl.vids.sub')" :info="CHART.vid.sub">
         <div class="vid-catbar">
           <div
             v-for="seg in catSegments"
@@ -600,13 +645,18 @@
         <p class="vid-hint">{{ $t('salaryControl.vids.rowHint') }}</p>
       </Card>
 
+      <!-- Top 20 xodim oyligi tarkibi (stacked) -->
+      <Card :title="CHART.stk.title" :sub="CHART.stk.sub" :info="CHART.stk.sub">
+        <EChart :option="stkOption" height="520px" />
+      </Card>
+
       <!-- Mukofot tahlili bo'limi -->
       <div class="vids-section">
         <h3 class="vids-section-title">{{ $t('salaryControl.vids.bonusSection') }}</h3>
         <p class="vids-section-note">{{ $t('salaryControl.vids.bonusSectionNote') }}</p>
       </div>
       <div class="sc-grid2">
-        <Card :title="$t('salaryControl.vids.scatter')" :sub="$t('salaryControl.vids.scatterSub')">
+        <Card :title="$t('salaryControl.vids.scatter')" :sub="$t('salaryControl.vids.scatterSub')" :info="CHART.sc.sub">
           <template #head>
             <span class="vid-badge">
               {{ $t('salaryControl.vids.kpiFlagged') }}: {{ scatterRedCount }}
@@ -621,7 +671,7 @@
           </div>
           <p class="vid-rule">{{ $t('salaryControl.vids.scatterRule') }}</p>
         </Card>
-        <Card :title="$t('salaryControl.vids.strip')" :sub="$t('salaryControl.vids.stripSub')">
+        <Card :title="$t('salaryControl.vids.strip')" :sub="$t('salaryControl.vids.stripSub')" :info="CHART.strip.sub">
           <EChart :option="stripOption" height="340px" @chart-click="onPointClick" />
           <div class="vid-stripstats">
             <span v-for="s in stripStats" :key="s.g" class="vid-stripstat">

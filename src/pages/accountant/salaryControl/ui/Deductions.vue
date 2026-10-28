@@ -6,6 +6,7 @@
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore, useAppStore } from '@/store/modules/index.js'
   import { money, mln, chartTheme, tokenColor, normText } from '../helpers.js'
+  import { CHART } from '../explain.js'
   import Card from './Card.vue'
   import EChart from './EChart.vue'
   import ScSkeleton from './ScSkeleton.vue'
@@ -14,9 +15,14 @@
   const store = useSalaryControlStore()
   const appStore = useAppStore()
 
-  // Soliqdan tashqari ushlanma (bitta xodim) — ded qiymatlari yig'indisi
-  // (ded'da daromad solig'i yo'q).
-  const nonTaxDed = (e) => Object.values(e.ded || {}).reduce((a, b) => a + (Number(b) || 0), 0)
+  // Soliqdan tashqari ushlanmalar: bizning `ded` daromad solig'i (882), INPS (883 —
+  // 882 ichida) va kartaga o'tkazma (885) ni ham saqlaydi — ularni CHIQARAMIZ. Qolgani
+  // aliment (889), ijro (901), omonat (897), kredit (899), ortiqcha yordam (875) va h.k.
+  const TAX_DED = new Set(['882', '883', '885'])
+  const otherDedEntries = (ded) =>
+    Object.entries(ded || {}).filter(([k, v]) => !TAX_DED.has(k) && Number(v) > 0)
+  const nonTaxDed = (e) =>
+    otherDedEntries(e.ded).reduce((a, [, v]) => a + (Number(v) || 0), 0)
 
   // —— Grafik 1: Hisoblangandan kartagacha (waterfall) ——————————————————
   const wfOption = computed(() => {
@@ -127,7 +133,7 @@
           if (!ps || !ps.length) return ''
           const p = ps[0]
           const it = list[p.dataIndex]
-          const rows = Object.entries(it.ded)
+          const rows = otherDedEntries(it.ded)
             .map(([k, v]) => `${NM[k] || k}: ${money(v)}`)
             .join('<br/>')
           const pct = it.r < 0.01 ? (it.r * 100).toFixed(1) : Math.round(it.r * 100)
@@ -178,7 +184,7 @@
 
   <template v-else>
     <div class="sc-grid2">
-      <Card :title="$t('salaryControl.deductions.wf')" :sub="$t('salaryControl.deductions.wfSub')">
+      <Card :title="$t('salaryControl.deductions.wf')" :sub="$t('salaryControl.deductions.wfSub')" :info="CHART.wf.sub">
         <EChart :option="wfOption" height="320px" />
         <div class="sc-legend">
           <span><i class="sw" :style="{ background: 'var(--fig-icon-brand)' }"></i>{{ $t('salaryControl.deductions.accrued') }}</span>
@@ -186,7 +192,7 @@
           <span><i class="sw" :style="{ background: 'var(--fig-icon-green)' }"></i>{{ $t('salaryControl.deductions.card') }}</span>
         </div>
       </Card>
-      <Card :title="$t('salaryControl.deductions.share')" :sub="$t('salaryControl.deductions.shareSub')">
+      <Card :title="$t('salaryControl.deductions.share')" :sub="$t('salaryControl.deductions.shareSub')" :info="CHART.dsh.sub">
         <EChart :option="dshOption" height="320px" />
       </Card>
     </div>

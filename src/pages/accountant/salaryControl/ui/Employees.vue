@@ -4,7 +4,8 @@
   import { ref, computed, h } from 'vue'
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore } from '@/store/modules/index.js'
-  import { money } from '../helpers.js'
+  import { money, normText } from '../helpers.js'
+  import { SECTION } from '../explain.js'
   import Card from './Card.vue'
   import ScSkeleton from './ScSkeleton.vue'
 
@@ -14,29 +15,28 @@
   // —— Qidiruv ——————————————————————————————————————————————————————————
   const q = ref('')
 
-  // —— Qatorlar (filtrlangan + hosila ustunlar) —————————————————————————
+  // ⚠ belgisi — 14 tekshiruvda uchraydigan xodimlar.
+  const flagged = computed(() => new Set(store.scFindings.map((f) => f.fio)))
+
+  // —— Qatorlar (JSHSHIR bo'yicha birlashtirilgan — maketdagi `people`) ————
   const rows = computed(() => {
     const query = q.value.trim().toLowerCase()
-    return store.emps
-      .filter((e) => !query || (e.fio || '').toLowerCase().includes(query))
-      .map((e) => {
-        const v = e.v || {}
-        const b004 = v['004'] || 0
-        const b011 = v['011'] || 0
-        const tot = e.tot || 0
-        return {
-          fio: e.fio || '—',
-          lav: e.lav || '—',
-          ok: e.ok || 0,
-          t: e.t || 0,
-          b004,
-          b011,
-          other: tot - b004 - b011,
-          tot,
-          card: e.card || 0,
-          ytd: e.ytd || 0
-        }
-      })
+    return store.people
+      .filter((p) => (p.tot || 0) > 0 || (p.ytd || 0) > 0)
+      .filter((p) => !query || (p.fio || '').toLowerCase().includes(query))
+      .map((p) => ({
+        fio: p.fio || '—',
+        flagged: flagged.value.has(p.fio),
+        lav: p.lav || '—',
+        ok: p.ok || 0,
+        t: p.t || 0,
+        b004: p.b004 || 0,
+        b011: p.b011 || 0,
+        other: p.oth || 0,
+        tot: p.tot || 0,
+        card: p.card || 0,
+        ytd: p.ytd || 0
+      }))
   })
 
   // —— Raqamli ustun uchun umumiy solishtiruv ————————————————————————————
@@ -50,7 +50,11 @@
       minWidth: 240,
       fixed: 'left',
       ellipsis: { tooltip: true },
-      sorter: (a, b) => String(a.fio).localeCompare(String(b.fio))
+      sorter: (a, b) => String(a.fio).localeCompare(String(b.fio)),
+      render: (row) =>
+        row.flagged
+          ? h('span', [h('span', { style: 'color:var(--fig-icon-red)' }, '⚠ '), normText(row.fio)])
+          : normText(row.fio)
     },
     {
       title: t('salaryControl.risk.table.position'),
@@ -141,7 +145,7 @@
 
 <template>
   <ScSkeleton v-if="store.dashboardLoading" variant="table" />
-  <Card v-else :title="$t('salaryControl.employees.title')" :sub="$t('salaryControl.employees.sub')">
+  <Card v-else :title="$t('salaryControl.employees.title')" :sub="$t('salaryControl.employees.sub')" :info="SECTION.employees.info">
     <template #head>
       <button
         class="sc-export"
