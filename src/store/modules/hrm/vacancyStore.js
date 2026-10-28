@@ -84,7 +84,9 @@ export const useVacancyStore = defineStore('vacancyStore', {
       per_page: 15,
       search: null,
       organizations: [],
-      vacation_type: null
+      vacation_type: null,
+      // «Holati» filtri: 1 — faol, 0 — faol emas, null — hammasi (DAS-11879).
+      status: null
     },
     positionLoading: false,
     vacancyPositions: [],

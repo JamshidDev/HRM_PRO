@@ -1,6 +1,8 @@
 <script setup>
   import { UIPageFilter, UISelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useVacancyStore } from '@/store/modules/index.js'
+  import i18n from '@/i18n/index.js'
+  const { t } = i18n.global
 
   const store = useVacancyStore()
   const accStore = useAccountStore()
@@ -16,10 +18,22 @@
     store._index()
   }
 
+  // Vakansiya holati (jadvaldagi «Holati» switch'i bilan bir xil).
+  const statusOptions = computed(() => [
+    { id: 1, name: t('content.active') },
+    { id: 0, name: t('content.noActive') }
+  ])
+
+  const onChangeStatus = () => {
+    store.params.page = 1
+    filterEvent()
+  }
+
   const filterCount = computed(
     () =>
       Number(Boolean(store.params.organizations.length)) +
-      Number(Boolean(store.params.vacation_type))
+      Number(Boolean(store.params.vacation_type)) +
+      Number(store.params.status !== null)
   )
 
   const beforeShow = (v) => {
@@ -39,6 +53,7 @@
   const resetFilter = () => {
     store.params.organizations = []
     store.params.vacation_type = null
+    store.params.status = null
     filterEvent()
   }
 
@@ -76,6 +91,16 @@
         v-model:search="componentStore.structureParams.search"
         @onSearch="componentStore._structures"
         @onSubmit="filterEvent"
+      />
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.status') }}</label>
+      <n-select
+        v-model:value="store.params.status"
+        :options="statusOptions"
+        label-field="name"
+        value-field="id"
+        :placeholder="$t('content.all')"
+        clearable
+        @update:value="onChangeStatus"
       />
     </template>
   </UIPageFilter>
