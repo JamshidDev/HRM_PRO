@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import dayjs from 'dayjs'
+import Utils from '@/utils/Utils.js'
 // Tabel turi id → harf. Backenddagi TIMESHEET_TYPE_KEY bilan bir xil.
 const TIMESHEET_KEY_BY_ID = {
   1: 'K', 2: 'T', 3: 'РП', 5: 'С', 10: 'К', 14: 'MT', 15: 'ОД', 16: 'У',
@@ -33,6 +34,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     calcWorkers: {},
     loading: false,
     saveLoading: false,
+    exportLoading: false,
     pinLoading: false,
     pinWorkers: [],
     visible: false,
@@ -190,6 +192,24 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         })
         .finally(() => {
           this.timekeeperLockSaving = false
+        })
+    },
+    _export() {
+      const departmentId = this.params.department_id
+      if (!departmentId) return
+      this.exportLoading = true
+      $ApiService.timesheetWorkerService
+        ._export({ id: this.elementId, params: { department_id: departmentId } })
+        .then((res) => {
+          const month = String(this.month + 1).padStart(2, '0')
+          Utils.blobFileDownload(
+            res.data,
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            `tabel-${this.year}-${month}.xlsx`
+          )
+        })
+        .finally(() => {
+          this.exportLoading = false
         })
     },
     _index() {

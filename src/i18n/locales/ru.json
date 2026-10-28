@@ -3215,6 +3215,8 @@
     "Sun": "Вс"
   },
   "timesheetPage": {
+    "exportExcel": "Скачать Excel",
+    "exportNeedDepartment": "Сначала выберите отдел",
     "tabGrid": "Табель",
     "tabTimekeepers": "Табельщики",
     "timesheetInfo": "Данные табеля",

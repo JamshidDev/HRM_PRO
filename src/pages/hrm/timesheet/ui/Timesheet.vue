@@ -942,6 +942,24 @@
       </div>
 
       <div class="ts-filters-actions">
+        <n-tooltip :disabled="Boolean(store.params.department_id)">
+          <template #trigger>
+            <n-button
+              v-if="activeTab === 'grid'"
+              :disabled="!store.params.department_id"
+              :loading="store.exportLoading"
+              secondary
+              type="success"
+              @click="store._export()"
+            >
+              <template #icon>
+                <n-icon :component="ArrowDownload20Filled" />
+              </template>
+              {{ $t('timesheetPage.exportExcel') }}
+            </n-button>
+          </template>
+          {{ $t('timesheetPage.exportNeedDepartment') }}
+        </n-tooltip>
         <n-button secondary type="error" @click="onClose">
           <template #icon>
             <n-icon :component="Dismiss20Regular" />

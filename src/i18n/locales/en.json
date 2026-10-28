@@ -3207,6 +3207,8 @@
     "Sun": "Sun"
   },
   "timesheetPage": {
+    "exportExcel": "Download Excel",
+    "exportNeedDepartment": "Select a department first",
     "tabGrid": "Timesheet",
     "tabTimekeepers": "Timekeepers",
     "timesheetInfo": "Timesheet details",
