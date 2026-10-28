@@ -3210,6 +3210,8 @@
     "Sun": "Sun"
   },
   "timesheetPage": {
+    "exportTitle": "Export timesheet to Excel",
+    "exportNeedDepartment": "Select a department",
     "tabGrid": "Timesheet",
     "tabTimekeepers": "Timekeepers",
     "timesheetInfo": "Timesheet details",
@@ -6651,6 +6653,10 @@
   },
   "salaryControl": {
     "title": "Salary control",
+    "testMode": {
+      "title": "Test mode",
+      "desc": "This module is running in test mode — data and calculations are being verified. Do not use for final decisions yet."
+    },
     "tabs": {
       "summary": "Summary",
       "risks": "Risks",

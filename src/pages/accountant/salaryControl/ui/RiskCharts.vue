@@ -6,6 +6,8 @@
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore, useAppStore } from '@/store/modules/index.js'
   import { money, mln, chartTheme, tokenColor, normText } from '../helpers.js'
+  import { totalWithheld } from '../engine.js'
+  import { CHART } from '../explain.js'
   import Card from './Card.vue'
   import EChart from './EChart.vue'
   import ScSkeleton from './ScSkeleton.vue'
@@ -105,9 +107,9 @@
     const list = (store.emps ?? [])
       .map((e) => {
         const tot = Number(e.tot) || 0
-        const card = Number(e.card) || 0
-        const share = tot > 0 ? (tot - card) / tot : 0
-        return { fio: e.fio || '—', share, ded: tot - card }
+        const ded = totalWithheld(e)
+        const share = tot > 0 ? ded / tot : 0
+        return { fio: e.fio || '—', share, ded }
       })
       .filter((e) => e.share > 0)
       .sort((a, b) => b.share - a.share)
@@ -237,21 +239,16 @@
   // t14 — Risk reestri: bad/chk risklarning affected[] tekislangan ro'yxati
   // ————————————————————————————————————————————————————————————————————
   const allRows = computed(() => {
-    const rows = []
-    for (const r of store.risks ?? []) {
-      if (r.status !== 'bad' && r.status !== 'chk') continue
-      for (const a of r.affected ?? []) {
-        rows.push({
-          riskN: r.n,
-          riskTitle: r.title,
-          fio: a.fio || '—',
-          position: a.position || '',
-          detail: a.detail || '—',
-          summa: a.summa
-        })
-      }
-    }
-    return rows
+    const { cards, registry } = store.scRisks
+    const titleByN = new Map(cards.map((c) => [c.n, normText(c.t)]))
+    return registry.map((x) => ({
+      riskN: x.r,
+      riskTitle: titleByN.get(x.r) || `Risk ${x.r}`,
+      fio: x.fio || '—',
+      position: x.lav || '',
+      detail: normText(x.d) || '—',
+      summa: x.s
+    }))
   })
 
   // filtr — risk raqami bo'yicha chip + qidiruv
@@ -292,26 +289,21 @@
   <template v-else>
     <!-- c14a + c14b -->
     <div class="sc-grid2">
-      <Card
-        title="Risk 4 · Bir xil lavozim — turlicha oklad"
-        sub="Bir lavozimda bir nechta oklad qiymati bo'lgan guruhlar (har nuqta — bitta oklad)"
-      >
+      <Card :title="CHART.c14a.title" :sub="CHART.c14a.sub" :info="CHART.c14a.sub">
         <EChart :option="spreadOption" height="320px" />
         <p v-if="!spreadGroups.length" class="sc-empty">{{ $t('salaryControl.common.empty') }}</p>
       </Card>
 
-      <Card
-        title="Risk 11 · Ushlanmalar ulushi"
-        sub="Soliqdan tashqari ushlanmalar / jami hisoblangan — eng yuqori 15 xodim"
-      >
+      <Card :title="CHART.c14b.title" :sub="CHART.c14b.sub" :info="CHART.c14b.sub">
         <EChart :option="shareOption" height="320px" />
       </Card>
     </div>
 
     <!-- c14c -->
     <Card
-      title="Risk 9 · Ishlangan soatlar taqsimoti"
-      :sub="store.dashNorm ? $t('salaryControl.common.norm', { norm: store.dashNorm }) : ''"
+      :title="CHART.c14c.title"
+      :sub="store.dashNorm ? $t('salaryControl.common.norm', { norm: store.dashNorm }) : CHART.c14c.sub"
+      :info="CHART.c14c.sub"
     >
       <EChart :option="hoursOption" height="300px" />
     </Card>

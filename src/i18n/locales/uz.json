@@ -3230,6 +3230,8 @@
     "Sun": "Ya"
   },
   "timesheetPage": {
+    "exportTitle": "Tabelni Excelga yuklash",
+    "exportNeedDepartment": "Bo‘limni tanlang",
     "tabGrid": "Tabel",
     "tabTimekeepers": "Tabelchilar",
     "timesheetInfo": "Tabel maʼlumotlari",
@@ -6712,6 +6714,10 @@
   },
   "salaryControl": {
     "title": "Oylik nazorati",
+    "testMode": {
+      "title": "Test rejimi",
+      "desc": "Bu modul sinov (test) rejimida ishlamoqda — ma'lumotlar va hisob-kitoblar tekshirilyapti. Yakuniy qarorlar uchun hali foydalanmang."
+    },
     "tabs": {
       "summary": "Umumiy",
       "risks": "Xavflar",
