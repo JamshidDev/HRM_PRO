@@ -136,7 +136,9 @@
           :forced-recipient-worker-id="chatWith.worker.id"
         />
 
-        <div v-else class="slide-pane">
+        <!-- `pr-2`: kartalar skroll chizig'iga tegmasin (Edge/Windows 11 da u kontent
+             ustida chiziladi va kartaning o'ng chetini yopib qo'yardi). -->
+        <div v-else class="slide-pane pr-2">
           <UITabs v-model:value="activeTab" type="segment" size="small" animated class="mb-2">
             <n-tab name="signers">
               <div class="flex items-center gap-1.5">
