@@ -867,6 +867,9 @@
       "generateReport": "Ҳисобот олиш",
       "generateReportDesc": "Ҳисобот олиш учун ходимларни белгиланг",
       "relativesReport": "Қариндошлар бўйича",
+      "deptList": "Рўйхат",
+      "deptTree": "Дарахт",
+      "deptTreeHint": "Дарахт кўриниши фақат битта корхона танланганда ишлайди",
       "excelFile": "Excel файл",
       "downloadInfo": "Маълумотни юклаш"
     },
