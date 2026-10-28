@@ -172,6 +172,7 @@ import staffApprovalService from './v1/accountant/staffApprovalService.js'
 import tariffGridService from './v1/accountant/tariffGridService.js'
 import tariffBaseService from './v1/accountant/tariffBaseService.js'
 import salary1cService from './v1/accountant/salary1cService.js'
+import salaryControlService from './v1/accountant/salaryControlService.js'
 import uploadSourceConfigService from './v1/accountant/uploadSourceConfigService.js'
 import salaryHiddenService from './v1/accountant/salaryHiddenService.js'
 
@@ -294,6 +295,7 @@ export default {
   tariffGridService,
   tariffBaseService,
   salary1cService,
+  salaryControlService,
   uploadSourceConfigService,
   salaryHiddenService,
   taxFourService,

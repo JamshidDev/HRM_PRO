@@ -125,6 +125,7 @@ export const AppPaths = {
   MedWorker: '/med-worker',
   UploadReport: '/upload-report',
   PaymentAnalysis: '/payment-analysis',
+  SalaryControl: '/salary-control',
   MonthReport: '/month-report',
   TaxFour: '/tax-four',
   TaxFive: '/tax-five',
