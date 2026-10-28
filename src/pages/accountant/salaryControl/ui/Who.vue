@@ -6,6 +6,8 @@
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore, useAppStore } from '@/store/modules/index.js'
   import { money, mln, positionGroup, chartTheme, tokenColor, normText } from '../helpers.js'
+  import { elapsedMonths } from '../engine.js'
+  import { CHART } from '../explain.js'
   import Card from './Card.vue'
   import EChart from './EChart.vue'
   import ScSkeleton from './ScSkeleton.vue'
@@ -15,8 +17,8 @@
   const store = useSalaryControlStore()
   const appStore = useAppStore()
 
-  // ⚠ belgisi — findings'da uchraydigan xodimlar.
-  const flagged = computed(() => new Set(store.findings.map((f) => f.fio)))
+  // ⚠ belgisi — findings'da (14 tekshiruv) uchraydigan xodimlar.
+  const flagged = computed(() => new Set(store.scFindings.map((f) => f.fio)))
 
   // FIO'ni y-o'q uchun qisqartirish (dastlabki 2 so'z).
   const shortFio = (fio) => (fio || '').split(' ').slice(0, 2).join(' ')
@@ -128,9 +130,10 @@
   const spikeOption = computed(() => {
     appStore.isDark
     const th = chartTheme()
+    const elapsed = elapsedMonths(store.params.month)
     const rows = store.people
       .filter((p) => (p.ytd || 0) > 0 && (p.tot || 0) > 0)
-      .map((p) => ({ ...p, avg: p.ytd / 8, r: p.tot / (p.ytd / 8) }))
+      .map((p) => ({ ...p, avg: p.ytd / elapsed, r: p.tot / (p.ytd / elapsed) }))
       .filter((p) => p.r < 7.5)
       .sort((a, b) => b.r - a.r)
       .slice(0, 15)
@@ -390,29 +393,29 @@
 
     <template v-else>
       <div class="sc-grid2">
-        <Card :title="$t('salaryControl.who.topAccrued')" :sub="$t('salaryControl.who.topAccruedSub')">
+        <Card :title="$t('salaryControl.who.topAccrued')" :sub="$t('salaryControl.who.topAccruedSub')" :info="CHART.top.sub">
           <EChart :option="topOption" height="340px" />
         </Card>
-        <Card :title="$t('salaryControl.who.ytd')" :sub="$t('salaryControl.who.ytdSub')">
+        <Card :title="$t('salaryControl.who.ytd')" :sub="$t('salaryControl.who.ytdSub')" :info="CHART.ytd.sub">
           <EChart :option="ytdOption" height="340px" />
         </Card>
       </div>
 
       <div class="sc-grid2">
-        <Card :title="$t('salaryControl.who.spike')" :sub="$t('salaryControl.who.spikeSub')">
+        <Card :title="$t('salaryControl.who.spike')" :sub="$t('salaryControl.who.spikeSub')" :info="CHART.spike.sub">
           <EChart :option="spikeOption" height="340px" />
         </Card>
-        <Card :title="$t('salaryControl.who.okx')" :sub="$t('salaryControl.who.okxSub')">
+        <Card :title="$t('salaryControl.who.okx')" :sub="$t('salaryControl.who.okxSub')" :info="CHART.okx.sub">
           <EmptyState v-if="okxEmpty" :text="$t('salaryControl.common.empty')" />
           <EChart v-else :option="okxOption" height="340px" />
         </Card>
       </div>
 
       <div class="sc-grid2">
-        <Card :title="$t('salaryControl.who.hist')" :sub="$t('salaryControl.who.histSub')">
+        <Card :title="$t('salaryControl.who.hist')" :sub="$t('salaryControl.who.histSub')" :info="CHART.hist.sub">
           <EChart :option="histOption" height="340px" />
         </Card>
-        <Card :title="$t('salaryControl.who.grp')" :sub="$t('salaryControl.who.grpSub')">
+        <Card :title="$t('salaryControl.who.grp')" :sub="$t('salaryControl.who.grpSub')" :info="CHART.grp.sub">
           <EChart :option="grpOption" height="340px" />
         </Card>
       </div>
