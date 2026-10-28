@@ -1134,7 +1134,7 @@
       "from_date": "Берилган санаси",
       "to_date": "Амал қилиш муддати",
       "passport_address": "Берилган жойи",
-      "passport_file": "Паспорт нусхаси (.pdf)",
+      "passport_file": "Паспорт нусхаси (.pdf, .jpg, .png)",
       "inn": "Инн",
       "sex": "Жинси",
       "marital_status": "Оилавий ҳолати",

@@ -1233,7 +1233,7 @@
       "from_date": "Дата выдачи",
       "to_date": "Срок действия",
       "passport_address": "Кем выдан",
-      "passport_file": "Копия паспорта (.pdf)",
+      "passport_file": "Копия паспорта (.pdf, .jpg, .png)",
       "inn": "ИНН",
       "sex": "Пол",
       "marital_status": "Семейное положение",

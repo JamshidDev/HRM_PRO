@@ -1247,7 +1247,7 @@
       "from_date": "Berilgan sanasi",
       "to_date": "Amal qilish muddati",
       "passport_address": "Berilgan joyi",
-      "passport_file": "Pasport nusxasi (.pdf)",
+      "passport_file": "Pasport nusxasi (.pdf, .jpg, .png)",
       "inn": "Inn",
       "sex": "Jinsi",
       "marital_status": "Oilaviy holati",

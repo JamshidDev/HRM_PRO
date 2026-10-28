@@ -84,7 +84,14 @@
             {{ store.passportFileName || $t('createWorkerPage.form.passport_file') }}
           </span>
         </button>
-        <input ref="inputFileRef" type="file" accept=".pdf" class="hidden" @change="onUpload" />
+        <!-- PDF yoki rasm (skaner/telefon surati) — backend ikkalasini ham qabul qiladi -->
+        <input
+          ref="inputFileRef"
+          type="file"
+          accept=".pdf,.jpg,.jpeg,.png"
+          class="hidden"
+          @change="onUpload"
+        />
       </div>
     </div>
   </UIFigBlock>

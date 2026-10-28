@@ -1231,7 +1231,7 @@
       "from_date": "Issue date",
       "to_date": "Expiry date",
       "passport_address": "Issued by",
-      "passport_file": "Passport copy (.pdf)",
+      "passport_file": "Passport copy (.pdf, .jpg, .png)",
       "inn": "TIN",
       "sex": "Gender",
       "marital_status": "Marital status",
