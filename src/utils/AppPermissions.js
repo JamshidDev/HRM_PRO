@@ -410,6 +410,9 @@ export const appPermissions = {
   // To'lov turlari bo'yicha asossiz to'lovlarni aniqlash (payment-analysis).
   economistPaymentAnalysisRead: 'economist-payment-analysis-read',
   economistPaymentAnalysisWrite: 'economist-payment-analysis-write',
+  // Oylik nazorati (salary-control) — 1C oylik hisoboti asosidagi nazorat dashboardi.
+  economistSalaryControlRead: 'economist-salary-control-read',
+  economistSalaryControlExport: 'economist-salary-control-export',
   economistUploadSourceConfigRead: 'economist-upload-source-config-read',
   economistUploadSourceConfigWrite: 'economist-upload-source-config-write',
   economistSalaryHiddenRead: 'salary-hidden-read',

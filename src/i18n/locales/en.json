@@ -5642,7 +5642,10 @@
     "note": "Note",
     "notePlaceholder": "Reason (optional)",
     "addedAt": "Added date",
-    "actions": "Actions"
+    "actions": "Actions",
+    "tabHidden": "Hidden",
+    "tabViewers": "Who can view",
+    "viewersHint": "Employees in this list can see hidden salaries within their organizations."
   },
   "staffingApproval": {
     "name": "Staffing",
@@ -6645,6 +6648,58 @@
       "title": "Add privileged employee"
     },
     "confirmDelete": "Delete?"
+  },
+  "salaryControl": {
+    "title": "Salary control",
+    "tabs": {
+      "summary": "Summary",
+      "risks": "Risks",
+      "rules": "Criteria",
+      "who": "Top earners",
+      "vids": "Payment types",
+      "deductions": "Deductions",
+      "reports": "Reports",
+      "employees": "Employees"
+    },
+    "kpi": {
+      "employees": "Employee count",
+      "accrued": "Total accrued",
+      "deduction": "Total deductions",
+      "net": "To card",
+      "orgs": "Organizations"
+    },
+    "risk": {
+      "title": "Risk {n} · {title}",
+      "riskNumbers": "Risks: {list}",
+      "riskCount": "{count} risks",
+      "statusHint": {
+        "bad": "Requires immediate review",
+        "chk": "Additional review recommended",
+        "ok": "No issues found",
+        "na": "Insufficient data to evaluate"
+      },
+      "emptyPeriod": "No data for this period. Select another month or organization.",
+      "norm": "Monthly norm: {norm} hours",
+      "method": "Calculation method",
+      "finding": "Finding",
+      "advice": "Advice",
+      "affected": "Details ({count} employees)",
+      "affectedCapped": "Showing {shown} of {count} — full list in Excel",
+      "empty": "No data found",
+      "status": {
+        "bad": "Risk detected",
+        "chk": "Needs review",
+        "ok": "Normal",
+        "na": "Insufficient data"
+      },
+      "table": {
+        "fio": "Full name",
+        "position": "Position",
+        "detail": "Note",
+        "summa": "Amount"
+      }
+    },
+    "comingSoon": "Coming soon"
   },
   "ssoLogins": {
     "title": "Sign-ins via HRM",
