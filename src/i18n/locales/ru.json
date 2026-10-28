@@ -3218,6 +3218,8 @@
     "Sun": "Вс"
   },
   "timesheetPage": {
+    "exportTitle": "Выгрузка табеля в Excel",
+    "exportNeedDepartment": "Выберите отдел",
     "tabGrid": "Табель",
     "tabTimekeepers": "Табельщики",
     "timesheetInfo": "Данные табеля",

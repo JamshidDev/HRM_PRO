@@ -3230,6 +3230,8 @@
     "Sun": "Ya"
   },
   "timesheetPage": {
+    "exportTitle": "Tabelni Excelga yuklash",
+    "exportNeedDepartment": "Bo‘limni tanlang",
     "tabGrid": "Tabel",
     "tabTimekeepers": "Tabelchilar",
     "timesheetInfo": "Tabel maʼlumotlari",
