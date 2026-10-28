@@ -919,6 +919,16 @@
     "nHours": "{n} hours",
     "searchWorkerHint": "Name / table №"
   },
+  "hrAssistantPage": {
+    "name": "HR assistants",
+    "scope": "Scope",
+    "whole": "Whole organization",
+    "partial": "Partial",
+    "notAssigned": "Not assigned",
+    "scopeTitle": "Assistant scope",
+    "partialHint": "Works with employees of the selected departments and their sub-departments.",
+    "roleInfo": "Employees with the «HR assistant» role are listed. The role is granted in the Employees section."
+  },
   "timesheetWorkerPage": {
     "transfer_confirm": "Save anyway",
     "transfer_hint": "If you confirm, these departments will be taken from their current timekeeper and assigned to {to}.",
@@ -945,6 +955,9 @@
       "birthday": "Birth month",
       "contract_type": "Contract type",
       "department": "Departments",
+      "deptList": "List",
+      "deptTree": "Tree",
+      "deptTreeHint": "Tree view is available only when one organization is selected",
       "position": "Positions",
       "sex": "Gender",
       "multiple_position": "Employees with multiple contracts",
@@ -955,9 +968,6 @@
       "countByWorker": "By worker",
       "age": "Age",
       "quickActions": "Quick actions",
-      "deptList": "List",
-      "deptTree": "Tree",
-      "deptTreeHint": "Tree view is available only when one organization is selected",
       "downloadRelative": "Download relatives",
       "generateReport": "Get report",
       "generateReportDesc": "Select employees to get a report",

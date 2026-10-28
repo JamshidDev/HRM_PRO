@@ -934,6 +934,16 @@
     "nHours": "{n} soat",
     "searchWorkerHint": "FISH / tabel №"
   },
+  "hrAssistantPage": {
+    "name": "HR yordamchilari",
+    "scope": "Doira",
+    "whole": "Butun korxona",
+    "partial": "Qisman",
+    "notAssigned": "Biriktirilmagan",
+    "scopeTitle": "Yordamchi doirasi",
+    "partialHint": "Tanlangan bo'limlar va ularning pastki bo'limlari xodimlari bilan ishlaydi.",
+    "roleInfo": "Ro'yxatda «HR yordamchisi» roli berilgan xodimlar ko'rinadi. Rol Xodimlar bo'limidan beriladi."
+  },
   "timesheetWorkerPage": {
     "transfer_confirm": "Baribir saqlash",
     "transfer_hint": "Tasdiqlasangiz, bu bo'limlar avvalgi tabelchidan olinib, {to} ga biriktiriladi.",
@@ -960,6 +970,9 @@
       "birthday": "Tug'ilgan oy",
       "contract_type": "Shartnoma turi",
       "department": "Bo'linmalar",
+      "deptList": "Ro'yxat",
+      "deptTree": "Daraxt",
+      "deptTreeHint": "Daraxt ko'rinishi faqat bitta korxona tanlanganda ishlaydi",
       "position": "Lavozimlar",
       "sex": "Jinsi",
       "multiple_position": "Birdan ortiq shartnomaga ega xodimlar",
@@ -970,9 +983,6 @@
       "countByWorker": "Xodim bo'yicha",
       "age": "Yoshi",
       "quickActions": "Tezkor amallar",
-      "deptList": "Ro'yxat",
-      "deptTree": "Daraxt",
-      "deptTreeHint": "Daraxt ko'rinishi faqat bitta korxona tanlanganda ishlaydi",
       "downloadRelative": "Qarindoshlarni yuklash",
       "generateReport": "Hisobot olish",
       "generateReportDesc": "Hisobot olish uchun xodimlarni belgilang",
