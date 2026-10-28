@@ -1247,7 +1247,7 @@
       "from_date": "Berilgan sanasi",
       "to_date": "Amal qilish muddati",
       "passport_address": "Berilgan joyi",
-      "passport_file": "Pasport nusxasi (.pdf)",
+      "passport_file": "Pasport nusxasi (.pdf, .jpg, .png)",
       "inn": "Inn",
       "sex": "Jinsi",
       "marital_status": "Oilaviy holati",
@@ -1261,7 +1261,9 @@
       "birthPlace": "Tug'ilgan joy",
       "livingPlace": "Yashash joy",
       "citizenship": "Fuqarolik",
-      "given_place": "Berilgan joyi"
+      "given_place": "Berilgan joyi",
+      "passport_front": "Old tomoni (rasm yoki .pdf)",
+      "passport_back": "Orqa tomoni (rasm)"
     },
     "step": {
       "personal": "Kandidatning shaxsiy ma'lumotlari",
@@ -1492,9 +1494,9 @@
         "resend": {
           "title": "Qayta tasdiqlashga yuborish",
           "all": "Barchaga",
-          "allHint": "Tasdiqlagan va rad etganlar ham qaytadan «Jarayonda» bo'ladi",
+          "allHint": "Hamma hujjatni qaytadan ko'rib chiqadi — oldin tasdiqlagan yoki rad etganlar ham",
           "selected": "Tanlanganlarga",
-          "selectedHint": "Faqat belgilanganlar «Jarayonda» bo'ladi, qolganlarning holati saqlanadi",
+          "selectedHint": "Faqat belgilanganlar qaytadan ko'rib chiqadi, qolganlarning javobi o'zgarmaydi",
           "contentChanged": "Hujjat matni o'zgardi — tanlanmaganlarning oldingi tasdig'i eski versiyaga tegishli bo'lib qoladi.",
           "required": "majburiy",
           "count": "{count} kishiga yuboriladi",
@@ -1510,7 +1512,8 @@
             "3": "Tasdiqlagan",
             "4": "Rad etgan",
             "new": "Yangi"
-          }
+          },
+          "soon": "Tez orada"
         },
         "source": {
           "titleContract": "№{number} shartnoma asosida yaratilgan",

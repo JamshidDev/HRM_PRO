@@ -11,6 +11,7 @@
     Eye20Regular
   } from '@vicons/fluent'
   import numeral from 'numeral'
+  import dayjs from 'dayjs'
 
   const { t } = i18n.global
 
@@ -39,6 +40,20 @@
     if (!accStore.checkAction(accStore.pn.hrPublicVacancyRead)) return
     store.elementId = row.id
     store.openPreviewModal(row)
+  }
+
+  // Vakansiya muddati rangi (DAS-12005): bugun yoki o'tib ketgan — qizil,
+  // 3 kun va undan kam qolgan — sariq, qolganlari — oddiy kulrang.
+  // Tugatilgan vakansiya (`finish: 2`, «Tugatilgan») muddatidan qat'i nazar kulrang.
+  const SOON_DAYS = 3
+  const FINISHED = 2
+  const deadlineType = (row) => {
+    const to = row.to
+    if (!to || row.finish === FINISHED) return Utils.colorTypes.secondary
+    const daysLeft = dayjs(to).startOf('day').diff(dayjs().startOf('day'), 'day')
+    if (daysLeft <= 0) return Utils.colorTypes.error
+    if (daysLeft <= SOON_DAYS) return Utils.colorTypes.warning
+    return Utils.colorTypes.secondary
   }
 
   const changePage = (v) => {
@@ -170,7 +185,7 @@
 
     <template #cell-to="{ row }">
       <UIBadge
-        :type="Utils.colorTypes.secondary"
+        :type="deadlineType(row)"
         :show-icon="false"
         :label="Utils.timeOnlyDate(row.to)"
       />
