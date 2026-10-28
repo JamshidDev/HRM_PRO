@@ -1247,7 +1247,9 @@
       "birthPlace": "Место рождения",
       "livingPlace": "Место проживания",
       "citizenship": "Гражданство",
-      "given_place": "Место выдачи"
+      "given_place": "Место выдачи",
+      "passport_front": "Лицевая сторона (фото или .pdf)",
+      "passport_back": "Обратная сторона (фото)"
     },
     "step": {
       "personal": "Личные данные кандидата",

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
+import { mergePassportSides } from '@/utils/passportImage.js'
 const { t } = i18n.global
 export const useCreateWorkerStore = defineStore('createWorkerStore', {
   state: () => ({
@@ -38,6 +39,8 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
       to_date: null,
       passport_address: null,
       file: null,
+      // Pasportning orqa tomoni (rasm). Saqlashda old tomoni bilan bitta rasmga qo'shiladi.
+      file_back: null,
       photos: []
     },
     params: {
@@ -142,15 +145,18 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
     _successEv() {
       this.visible = false
     },
-    _passportFormData(id) {
+    async _passportFormData(id) {
       let formData = new FormData()
       formData.append('worker_id', id)
       formData.append('serial_number', this.payload.serial_number)
       formData.append('from_date', Utils.timeToZone(this.payload.from_date))
       formData.append('to_date', Utils.timeToZone(this.payload.to_date))
       formData.append('address', this.payload.passport_address ?? '')
-      if (this.payload.file) {
-        formData.append('file', this.payload.file)
+      // Faqat orqa tomoni tanlangan bo'lsa — uning o'zi yuboriladi.
+      const front = this.payload.file || this.payload.file_back
+      const back = this.payload.file ? this.payload.file_back : null
+      if (front) {
+        formData.append('file', await mergePassportSides(front, back))
       }
       $ApiService.passportService
         ._create({ data: formData })
@@ -191,6 +197,7 @@ export const useCreateWorkerStore = defineStore('createWorkerStore', {
       this.payload.to_date = null
       this.payload.passport_address = null
       this.payload.file = null
+      this.payload.file_back = null
 
       this.passportFileName = null
       this.payload.photos = []

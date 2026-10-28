@@ -1245,7 +1245,9 @@
       "birthPlace": "Place of birth",
       "livingPlace": "Place of residence",
       "citizenship": "Citizenship",
-      "given_place": "Place of issue"
+      "given_place": "Place of issue",
+      "passport_front": "Front side (image or .pdf)",
+      "passport_back": "Back side (image)"
     },
     "step": {
       "personal": "Personal data",

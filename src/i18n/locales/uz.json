@@ -1261,7 +1261,9 @@
       "birthPlace": "Tug'ilgan joy",
       "livingPlace": "Yashash joy",
       "citizenship": "Fuqarolik",
-      "given_place": "Berilgan joyi"
+      "given_place": "Berilgan joyi",
+      "passport_front": "Old tomoni (rasm yoki .pdf)",
+      "passport_back": "Orqa tomoni (rasm)"
     },
     "step": {
       "personal": "Kandidatning shaxsiy ma'lumotlari",

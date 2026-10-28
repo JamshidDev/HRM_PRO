@@ -1147,7 +1147,9 @@
       "livingPlace": "Яшаш жой",
       "citizenship": "Фуқаролик",
       "given_place": "Берилган жойи",
-      "foreignPassportTitle": "Хорижга чиқиш паспорти"
+      "foreignPassportTitle": "Хорижга чиқиш паспорти",
+      "passport_front": "Олд томони (расм ёки .pdf)",
+      "passport_back": "Орқа томони (расм)"
     },
     "step": {
       "personal": "Кандидатнинг шахсий маълумотлари",
