@@ -6653,6 +6653,10 @@
   },
   "salaryControl": {
     "title": "Salary control",
+    "testMode": {
+      "title": "Test mode",
+      "desc": "This module is running in test mode — data and calculations are being verified. Do not use for final decisions yet."
+    },
     "tabs": {
       "summary": "Summary",
       "risks": "Risks",

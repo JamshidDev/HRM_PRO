@@ -1,6 +1,7 @@
 <script setup>
   import { computed, defineAsyncComponent, watch, onMounted, onBeforeUnmount } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
+  import { Beaker24Filled } from '@vicons/fluent'
   import { UIPageContent } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useSalaryControlStore } from '@/store/modules/index.js'
@@ -156,6 +157,15 @@
   <!-- `!h-auto`: global `.main-content .ui-page-content { height: 100% }` ni bosib o'tadi —
        sahifa kontent bo'yicha o'ssin, skrollni `.main-content` boshqarsin. -->
   <UIPageContent class="!h-auto">
+    <!-- Test rejimi bayrog'i — modul hali sinovda; ma'lumot/hisob-kitob tekshirilmoqda. -->
+    <div class="sc-testmode" role="status">
+      <span class="sc-testmode__ic"><n-icon :size="20"><Beaker24Filled /></n-icon></span>
+      <div class="sc-testmode__txt">
+        <b>{{ $t('salaryControl.testMode.title') }}</b>
+        <span>{{ $t('salaryControl.testMode.desc') }}</span>
+      </div>
+    </div>
+
     <div class="mb-3 flex items-end justify-between gap-3">
       <div>
         <h1 class="text-[18px] leading-6 font-semibold text-textColor1">
@@ -195,4 +205,42 @@
   </UIPageContent>
 </template>
 
-<style scoped></style>
+<style scoped>
+  /* Test rejimi bayrog'i — sariq (warning) ohang, fig tokenlar (dark/light avto). */
+  .sc-testmode {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding: 11px 16px;
+    border-radius: 12px;
+    background: var(--fig-chip-amber-bg);
+    border: 1px solid var(--fig-icon-amber);
+  }
+  .sc-testmode__ic {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    background: var(--fig-icon-amber);
+    color: #fff;
+  }
+  .sc-testmode__txt {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+  .sc-testmode__txt b {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--fig-chip-amber-text);
+  }
+  .sc-testmode__txt span {
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--fig-text-secondary);
+  }
+</style>
