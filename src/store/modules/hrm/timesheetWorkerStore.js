@@ -194,11 +194,10 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
           this.timekeeperLockSaving = false
         })
     },
-    _export() {
-      const departmentId = this.params.department_id
-      if (!departmentId) return
+    _export(departmentId) {
+      if (!departmentId) return Promise.resolve()
       this.exportLoading = true
-      $ApiService.timesheetWorkerService
+      return $ApiService.timesheetWorkerService
         ._export({ id: this.elementId, params: { department_id: departmentId } })
         .then((res) => {
           const month = String(this.month + 1).padStart(2, '0')

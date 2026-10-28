@@ -3227,8 +3227,8 @@
     "Sun": "Ya"
   },
   "timesheetPage": {
-    "exportExcel": "Excel yuklash",
-    "exportNeedDepartment": "Avval bo‘limni tanlang",
+    "exportTitle": "Tabelni Excelga yuklash",
+    "exportNeedDepartment": "Bo‘limni tanlang",
     "tabGrid": "Tabel",
     "tabTimekeepers": "Tabelchilar",
     "timesheetInfo": "Tabel maʼlumotlari",

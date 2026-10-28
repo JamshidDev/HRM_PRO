@@ -2960,8 +2960,8 @@
     "Sun": "Я"
   },
   "timesheetPage": {
-    "exportExcel": "Excel юклаш",
-    "exportNeedDepartment": "Аввал бўлимни танланг",
+    "exportTitle": "Табелни Excelга юклаш",
+    "exportNeedDepartment": "Бўлимни танланг",
     "tabGrid": "Табел",
     "tabTimekeepers": "Табелчилар",
     "timesheetInfo": "Табел маълумотлари",
