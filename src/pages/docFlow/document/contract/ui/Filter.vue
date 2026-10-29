@@ -74,6 +74,7 @@
 <template>
   <UIPageFilter
     :placeholder="$t('documentSettings.searchPlaceholder')"
+    :add-permission="accStore.pn.hrContractsWrite"
     @onAdd="onAdd"
     @onSearch="onSearchEv"
     v-model:search="store.params.search"
@@ -81,7 +82,6 @@
     :filter-count="filterCount"
     @show="beforeShow"
     @onClear="resetFilter"
-    :show-add-button="false"
     filter-placement="bottom-end"
     :popover-style="{
       width: '560px',
