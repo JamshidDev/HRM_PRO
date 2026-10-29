@@ -730,7 +730,8 @@ export const useComponentStore = defineStore('componentStore', {
       const fetchWithVacancy = () =>
         $ApiService.departmentPositionService
           ._index({
-            params: { page: 1, per_page: 1000, department_id: id },
+            // for=form — HR yordamchisi o'tkazish uchun barcha bo'limlar shtatini ko'radi.
+            params: { page: 1, per_page: 1000, department_id: id, for: 'form' },
             silentError: true
           })
           .then((res) => res.data.data.data || [])
@@ -766,11 +767,13 @@ export const useComponentStore = defineStore('componentStore', {
           this.confirmationLoading = false
         })
     },
-    _departmentTree() {
+    // extra.own=1 — HR yordamchisi uchun faqat o'z bo'limlari (shartnoma formasi).
+    _departmentTree(extra = {}) {
       this.departmentLoading = true
       let params = {
         ...this.depParams,
-        organizations: this.depParams.organizations?.id ?? this.depParams.organizations
+        organizations: this.depParams.organizations?.id ?? this.depParams.organizations,
+        ...extra
       }
       $ApiService.componentService
         ._departmentTree({ params })

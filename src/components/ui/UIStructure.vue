@@ -155,6 +155,7 @@
         v-model:search="searchModel"
         :loading="store.structureLoading"
         :selected-count="multiple ? modelV.length : 0"
+        :footer="multiple"
         :empty="!store.structureList?.length"
         @input="searchEvent"
         @submit="emits('onSubmit')"

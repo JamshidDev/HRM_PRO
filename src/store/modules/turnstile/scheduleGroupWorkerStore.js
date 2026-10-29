@@ -62,7 +62,10 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
     replaceVisible: false,
     replacePayload: {
       positonId: null,
-      date: null
+      date: null,
+      // O'rinbosarlik: false — bitta kun, true — joriy oy ichidagi davr (range).
+      period: false,
+      range: null
     },
     replaceLoading: false,
     // Katakdan ochilganda: 'edit' — kunni o'zgartirish, 'swap' — xodim bilan almashtirish.
@@ -203,10 +206,11 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
           this._index()
         })
     },
-    _cancelSubstitution(id) {
+    // batch=true — davrli o'rinbosarlikni butunlay bekor qilish.
+    _cancelSubstitution(id, batch = false) {
       this.replaceLoading = true
       $ApiService.shiftTypeService
-        ._cancelSubstitution({ id })
+        ._cancelSubstitution({ id, batch })
         .then(() => {
           this.changeInfo.visible = false
           this._index()
@@ -214,6 +218,19 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
         .finally(() => {
           this.replaceLoading = false
         })
+    },
+    freeParams() {
+      if (this.transferMode) return {}
+      const p = this.replacePayload
+      if (p.period) {
+        if (p.range?.length !== 2) return {}
+        return {
+          free_on: Utils.timeToZone(p.range[0]),
+          free_to: Utils.timeToZone(p.range[1]),
+          absent_position_id: this.selectedWorker?.workerPositionId
+        }
+      }
+      return p.date ? { free_on: Utils.timeToZone(p.date) } : {}
     },
     // append=true — skrolda keyingi sahifa qo'shiladi.
     _workers(append = false) {
@@ -223,8 +240,8 @@ export const useScheduleGroupWorkerStore = defineStore('scheduleGroupWorkerStore
         start_date: this.monthRange.from,
         end_date: this.monthRange.to,
         priority_group: this.params.group,
-        // O'rinbosar — faqat shu kuni dam bo'lganlar.
-        free_on: !this.transferMode && this.replacePayload.date ? Utils.timeToZone(this.replacePayload.date) : undefined
+        // O'rinbosar nomzodlari — tanlangan kun/davrda grafigi bor va o'rinbosarlikda qatnashmaganlar.
+        ...this.freeParams()
       }
       this.workerLoading = true
       $ApiService.shiftTypeService

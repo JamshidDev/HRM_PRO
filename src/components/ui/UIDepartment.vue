@@ -151,6 +151,7 @@
         v-model:search="searchModel"
         :loading="store.departmentLoading"
         :selected-count="multiple ? modelV.length : 0"
+        :footer="multiple"
         :empty="!store.departmentList?.length"
         @input="searchEvent"
         @submit="emits('onSubmit')"

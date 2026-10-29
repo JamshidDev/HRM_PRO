@@ -4,6 +4,7 @@
   import ConfirmationPage from '@/pages/hrm/confirmation/ConfirmationPage.vue'
   import OrganizationLeaderPage from '@/pages/hrm/organizationLeader/organizationLeaderPage.vue'
   import TimesheetDepartmentPage from '@/pages/hrm/timesheetDepartment/TimesheetDepartmentPage.vue'
+  import HrAssistantPage from '@/pages/hrm/hrAssistant/HrAssistantPage.vue'
   import i18n from '@/i18n/index.js'
 
   const accStore = useAccountStore()
@@ -24,6 +25,9 @@
             name: t('timesheetWorkerPage.name'),
             component: TimesheetDepartmentPage
           }
+        : null,
+      accStore.canView(accStore.pn.hrAssistantsRead)
+        ? { id: 'hr_assistant', name: t('hrAssistantPage.name'), component: HrAssistantPage }
         : null
     ].filter(Boolean)
   )

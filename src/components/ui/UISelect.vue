@@ -11,9 +11,9 @@
   const props = defineProps({
     multiple: { type: Boolean, default: true },
     loading: { type: Boolean, default: false },
-    modelV: { type: Array, default: [] },
-    checkedVal: { type: Array, default: [] },
-    options: { type: Array, default: [] },
+    modelV: { type: Array, default: () => [] },
+    checkedVal: { type: Array, default: () => [] },
+    options: { type: Array, default: () => [] },
     // Popover 400px, ya'ni tor trigger ostida `bottom` (markazlashgan) holatda
     // har ikki tomondan chiqib ketadi va modal/viewport chegarasida kesiladi.
     // Shunday joylarda `bottom-start` berilsa, popover trigger'ning chap
@@ -263,12 +263,13 @@
         v-model:search="searchModel"
         :loading="loading"
         :selected-count="multiple ? modelV.length : 0"
+        :footer="multiple"
         :empty="!options?.length"
         @input="searchEvent"
         @submit="emits('onSubmit')"
         @clear="onClear"
       >
-        <template #toolbar>
+        <template #searchEnd>
           <div class="ui-select-seg" role="group">
             <button
               type="button"
@@ -308,16 +309,19 @@
 </template>
 
 <style scoped>
+  /* Qidiruv qatorining oxirida — balandligi qidiruv maydoni (34px) bilan bir xil. */
   .ui-select-seg {
     display: inline-flex;
-    padding: 2px;
-    border-radius: 7px;
+    flex-shrink: 0;
+    height: 34px;
+    padding: 3px;
+    border-radius: 9999px;
     background: var(--surface-ground);
   }
 
   .ui-select-seg button {
-    padding: 2px 10px;
-    border-radius: 5px;
+    padding: 0 12px;
+    border-radius: 9999px;
     font-size: 12px;
     font-weight: 500;
     color: var(--textColor2);
