@@ -4,7 +4,7 @@
   import { ref, computed, h } from 'vue'
   import i18n from '@/i18n/index.js'
   import { useAppStore, useSalaryControlStore } from '@/store/modules/index.js'
-  import { money, mln, chartTheme, tokenColor } from '../helpers.js'
+  import { money, money2, mln, chartTheme, tokenColor } from '../helpers.js'
   import { CHART, SECTION } from '../explain.js'
   import Card from './Card.vue'
   import EChart from './EChart.vue'
@@ -101,7 +101,7 @@
       align: 'right',
       width: 150,
       className: 'sc-num',
-      render: (r) => money(r.summa)
+      render: (r) => money2(r.summa)
     }
   ])
 
