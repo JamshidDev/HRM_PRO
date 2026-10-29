@@ -4161,6 +4161,27 @@
       "inTable": "Accruals",
       "outTable": "Deductions",
       "oneSideEmpty": "No data for one of the selected months"
+    },
+    "systemHours": {
+      "column": "System hours",
+      "title": "Work hours by system",
+      "tabMonth": "Month days",
+      "tabDay": "Day detail",
+      "total": "System total",
+      "totalTip": "Calculated with the timesheet «Auto» logic: turnstile events, work schedule and approved orders.",
+      "statement": "In statement (1C)",
+      "diff": "Difference",
+      "workedDays": "Days worked",
+      "hourShort": "h",
+      "dayShort": "d",
+      "rest": "Day off",
+      "zero": "0 h",
+      "vacation": "Leave / order",
+      "holiday": "Holiday work",
+      "work": "Work day",
+      "noPosition": "No position found for this employee in this organization",
+      "noPositionHint": "To calculate, the employee needs a position in this organization (or its subdivisions) valid during the month.",
+      "pickDay": "Pick a day in the month calendar to see its detail"
     }
   },
   "expiredHealth": {

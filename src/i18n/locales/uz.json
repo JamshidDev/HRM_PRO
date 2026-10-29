@@ -4208,6 +4208,27 @@
       "inTable": "Hisoblangan to'lovlar",
       "outTable": "Ushlanmalar",
       "oneSideEmpty": "Tanlangan oylardan birida ma'lumot yo'q"
+    },
+    "systemHours": {
+      "column": "Tizim soati",
+      "title": "Tizim bo'yicha ish soati",
+      "tabMonth": "Oy kunlari",
+      "tabDay": "Kun tafsiloti",
+      "total": "Tizim hisobi",
+      "totalTip": "Turniket hodisalari, ish vaqti grafigi va tasdiqlangan buyruqlar asosida tabeldagi «Auto» mantig'i bilan hisoblangan.",
+      "statement": "Qaydnomada (1C)",
+      "diff": "Farq",
+      "workedDays": "Ishlangan kunlar",
+      "hourShort": "soat",
+      "dayShort": "kun",
+      "rest": "Dam olish",
+      "zero": "0 soat",
+      "vacation": "Ta'til / buyruq",
+      "holiday": "Bayramda ish",
+      "work": "Ish kuni",
+      "noPosition": "Xodimning shu korxonada lavozimi topilmadi",
+      "noPositionHint": "Tizim soatini hisoblash uchun xodimning ushbu korxonada (yoki uning bo'linmalarida) oy davomida amal qilgan lavozimi bo'lishi kerak.",
+      "pickDay": "Kun tafsilotini ko'rish uchun oy jadvalidan kunni tanlang"
     }
   },
   "expiredHealth": {
