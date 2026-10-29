@@ -39,7 +39,30 @@ const _generateLink = async (payload) => {
 }
 
 const _signature = async (payload) => {
-  return await axios.post(`/v1/document/signature`, payload.data, { params: payload.params })
+  return await axios.post(`/v1/document/signature`, payload.data, {
+    params: payload.params,
+    silentError: payload.silentError
+  })
+}
+// Imzolovchi linki (token) — E-IMZO: kompyuter (PKCS7) va telefon (E-IMZO ilovasi).
+const _linkBase64 = async (payload) => {
+  return await axios.get(`/v1/document/signature/base64`, { params: payload.params })
+}
+const _linkEimzo = async (payload) => {
+  return await axios.post(`/v1/document/signature/eimzo`, payload.data, { params: payload.params })
+}
+const _linkMobileInit = async (payload) => {
+  return await axios.post(`/v1/document/signature/mobile/init`, {}, { params: payload.params })
+}
+const _linkMobileStatus = async (payload) => {
+  return await axios.post(`/v1/document/signature/mobile/status`, payload.data, {
+    params: payload.params
+  })
+}
+const _linkMobileVerify = async (payload) => {
+  return await axios.post(`/v1/document/signature/mobile/verify`, payload.data, {
+    params: payload.params
+  })
 }
 const _confirmationTimesheet = async (payload) => {
   return await axios.get(`/v1/confirmation/timesheet`, { params: payload.params })
@@ -90,6 +113,11 @@ export default {
   _generateLink,
   _officeConfigToken,
   _signature,
+  _linkBase64,
+  _linkEimzo,
+  _linkMobileInit,
+  _linkMobileStatus,
+  _linkMobileVerify,
   _confirmationTimesheet,
   _editorContent,
   _editorSave,

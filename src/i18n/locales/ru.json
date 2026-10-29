@@ -1324,7 +1324,25 @@
     "position": "Должность",
     "storagePfx": "Файловый ключ",
     "storageToken": "USB-токен",
-    "notValidDate": "Срок истёк"
+    "notValidDate": "Срок истёк",
+    "linkExpiresIn": "Ссылка перестанет работать через {time}",
+    "linkExpired": "Срок ссылки истёк. Получите новую ссылку.",
+    "newLink": "Новая ссылка",
+    "linkWaitTurn": "Ссылку можно получить, когда подойдёт очередь",
+    "linkTimeLeft": "Осталось времени на подписание:",
+    "linkExpiredPublic": "Срок ссылки истёк. Запросите новую ссылку у HR.",
+    "signedSuccess": "Документ успешно подписан",
+    "methodDraw": "Нарисовать подпись",
+    "methodEimzo": "E-IMZO (компьютер)",
+    "methodMobile": "E-IMZO (телефон)",
+    "eimzoHint": "Подпишите ключом E-IMZO на компьютере. Ключ должен принадлежать вам.",
+    "eimzoSign": "Подписать через E-IMZO",
+    "mobileHintPhone": "Подпишите в приложении E-IMZO, затем вернитесь на эту страницу.",
+    "mobileHintQr": "Отсканируйте QR-код приложением E-IMZO на телефоне.",
+    "mobileStart": "Начать",
+    "mobileOpenApp": "Открыть приложение E-IMZO",
+    "mobileWaiting": "Ожидание подписи...",
+    "mobileRetry": "Начать заново"
   },
   "documentPage": {
     "route": {

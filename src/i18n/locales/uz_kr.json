@@ -1224,7 +1224,25 @@
     "organization": "Ташкилот",
     "position": "Лавозим",
     "storagePfx": "Файл калити",
-    "storageToken": "USB токен"
+    "storageToken": "USB токен",
+    "linkExpiresIn": "Линк {time} дан кейин ишламай қолади",
+    "linkExpired": "Линк муддати тугади. Янги линк олинг.",
+    "newLink": "Янги линк",
+    "linkWaitTurn": "Навбати келганда линк олинади",
+    "linkTimeLeft": "Имзолаш учун қолган вақт:",
+    "linkExpiredPublic": "Линк муддати тугади. Имзолаш учун HR'дан янги линк сўранг.",
+    "signedSuccess": "Ҳужжат муваффақиятли имзоланди",
+    "methodDraw": "Имзо чизиш",
+    "methodEimzo": "E-IMZO (компьютер)",
+    "methodMobile": "E-IMZO (телефон)",
+    "eimzoHint": "Компьютерингиздаги E-IMZO калити билан имзоланг. Калит сизга тегишли бўлиши шарт.",
+    "eimzoSign": "E-IMZO билан имзолаш",
+    "mobileHintPhone": "E-IMZO иловаси орқали имзоланг. Имзолагач шу саҳифага қайтинг.",
+    "mobileHintQr": "Телефонингиздаги E-IMZO иловаси билан QR кодни сканерланг.",
+    "mobileStart": "Бошлаш",
+    "mobileOpenApp": "E-IMZO иловасини очиш",
+    "mobileWaiting": "Имзо кутилмоқда...",
+    "mobileRetry": "Қайтадан бошлаш"
   },
   "documentPage": {
     "route": {

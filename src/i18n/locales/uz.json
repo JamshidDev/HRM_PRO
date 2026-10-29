@@ -1338,7 +1338,25 @@
     "organization": "Tashkilot",
     "position": "Lavozim",
     "storagePfx": "Fayl kaliti",
-    "storageToken": "USB token"
+    "storageToken": "USB token",
+    "linkExpiresIn": "Link {time} dan keyin ishlamay qoladi",
+    "linkExpired": "Link muddati tugadi. Yangi link oling.",
+    "newLink": "Yangi link",
+    "linkWaitTurn": "Navbati kelganda link olinadi",
+    "linkTimeLeft": "Imzolash uchun qolgan vaqt:",
+    "linkExpiredPublic": "Link muddati tugadi. Imzolash uchun HR'dan yangi link so'rang.",
+    "signedSuccess": "Hujjat muvaffaqiyatli imzolandi",
+    "methodDraw": "Imzo chizish",
+    "methodEimzo": "E-IMZO (kompyuter)",
+    "methodMobile": "E-IMZO (telefon)",
+    "eimzoHint": "Kompyuteringizdagi E-IMZO kaliti bilan imzolang. Kalit sizga tegishli bo'lishi shart.",
+    "eimzoSign": "E-IMZO bilan imzolash",
+    "mobileHintPhone": "E-IMZO ilovasi orqali imzolang. Imzolagach shu sahifaga qayting.",
+    "mobileHintQr": "Telefoningizdagi E-IMZO ilovasi bilan QR kodni skanerlang.",
+    "mobileStart": "Boshlash",
+    "mobileOpenApp": "E-IMZO ilovasini ochish",
+    "mobileWaiting": "Imzo kutilmoqda...",
+    "mobileRetry": "Qaytadan boshlash"
   },
   "documentPage": {
     "route": {

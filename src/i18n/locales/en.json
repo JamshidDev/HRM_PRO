@@ -1322,7 +1322,25 @@
     "position": "Position",
     "storagePfx": "File key",
     "storageToken": "USB token",
-    "notValidDate": "Expired"
+    "notValidDate": "Expired",
+    "linkExpiresIn": "The link stops working in {time}",
+    "linkExpired": "The link has expired. Get a new link.",
+    "newLink": "New link",
+    "linkWaitTurn": "A link is available when it is this signer's turn",
+    "linkTimeLeft": "Time left to sign:",
+    "linkExpiredPublic": "The link has expired. Ask HR for a new link to sign.",
+    "signedSuccess": "The document was signed successfully",
+    "methodDraw": "Draw signature",
+    "methodEimzo": "E-IMZO (computer)",
+    "methodMobile": "E-IMZO (phone)",
+    "eimzoHint": "Sign with the E-IMZO key on your computer. The key must belong to you.",
+    "eimzoSign": "Sign with E-IMZO",
+    "mobileHintPhone": "Sign in the E-IMZO app, then return to this page.",
+    "mobileHintQr": "Scan the QR code with the E-IMZO app on your phone.",
+    "mobileStart": "Start",
+    "mobileOpenApp": "Open the E-IMZO app",
+    "mobileWaiting": "Waiting for the signature...",
+    "mobileRetry": "Start again"
   },
   "documentPage": {
     "route": {

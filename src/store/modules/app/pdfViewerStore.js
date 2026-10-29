@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import * as pdfjsLib from 'pdfjs-dist'
 import * as PdfWorker from 'pdfjs-dist/build/pdf.worker.min.js'
 import Utils from '@/utils/Utils.js'
+import i18n from '@/i18n/index.js'
 
 window.pdfjsWorker = PdfWorker
 
@@ -60,6 +61,16 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
 
     linkLoading: false,
     link: null,
+    // Link muddati (ms) va qaysi kartadan olingani — qayta olish uchun.
+    linkDeadline: null,
+    linkPayload: null,
+    // Ommaviy link sahifasi: imzolovchi turi va muddat tugash vaqti.
+    signerType: null,
+    signDeadline: null,
+    signedNow: false,
+    linkExpired: false,
+    mobileSession: null,
+    mobileLoading: false,
 
     checkLoading: false,
     expiredLink: false,
@@ -308,6 +319,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     },
     _generateLink(data) {
       this.link = null
+      this.linkDeadline = null
+      this.linkPayload = data
       this.linkLoading = true
       $ApiService.documentService
         ._generateLink({ params: data })
@@ -317,6 +330,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
             res.data.data.url,
             Utils.viewerStatus.signatureDocument
           )
+          this.linkDeadline = Date.now() + (res.data.data.expires_in ?? 300) * 1000
         })
         .finally(() => {
           this.linkLoading = false
@@ -331,16 +345,24 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     _checkSignature(params) {
       this.errorMessage = null
       this.documentUrl = null
+      this.signedNow = false
       this.checkLoading = true
       $ApiService.documentService
-        ._signature({ params, data: { status: 'check' } })
+        ._signature({ params, data: { status: 'check' }, silentError: true })
         .then((res) => {
-          this.pdfUrl = res.data.data.url
-          this.signatureWorker = `${res.data.data?.worker.last_name} ${res.data.data?.worker.first_name} ${res.data.data?.worker.middle_name}`
-          this.isSigned = res.data.data.status === 3
+          const d = res.data.data
+          this.pdfUrl = d.url
+          this.signatureWorker = `${d?.worker.last_name} ${d?.worker.first_name} ${d?.worker.middle_name}`
+          this.isSigned = d.status === 3
+          this.signerType = d.type ?? null
+          this.signDeadline = Date.now() + (d.expires_in ?? 0) * 1000
         })
         .catch((err) => {
-          this.errorMessage = err.response.data.message
+          // Muddati o'tgan/bekor link — sahifada tushunarli xabar (global oynasiz).
+          this.errorMessage =
+            err.response?.status === 403
+              ? i18n.global.t('signature.linkExpiredPublic')
+              : err.response?.data?.message
         })
         .finally(() => {
           this.checkLoading = false
@@ -350,12 +372,41 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
       this.saveLoading = true
       $ApiService.documentService
         ._signature({ params, data })
-        .then((res) => {
-          this._checkSignature(params)
+        .then(() => {
+          this.markLinkSigned()
         })
         .finally(() => {
           this.saveLoading = false
         })
+    },
+    // Imzolangach link bekor bo'ladi — qayta tekshirmasdan muvaffaqiyat holatiga o'tamiz.
+    markLinkSigned() {
+      this.isSigned = true
+      this.signedNow = true
+      this.mobileSession = null
+    },
+    _linkMobileInit(params) {
+      this.mobileLoading = true
+      this.mobileSession = null
+      return $ApiService.documentService
+        ._linkMobileInit({ params })
+        .then((res) => {
+          this.mobileSession = res.data.data
+        })
+        .finally(() => {
+          this.mobileLoading = false
+        })
+    },
+    _linkMobileStatus(params) {
+      return $ApiService.documentService._linkMobileStatus({
+        params,
+        data: { document_id: this.mobileSession?.document_id }
+      })
+    },
+    _linkMobileVerify(params) {
+      return $ApiService.documentService
+        ._linkMobileVerify({ params, data: { document_id: this.mobileSession?.document_id } })
+        .then(() => this.markLinkSigned())
     },
     _rejectDocument(data) {
       this.rejectLoading = true

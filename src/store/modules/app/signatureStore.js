@@ -31,8 +31,10 @@ export const useSignatureStore = defineStore('signatureStore', {
     signatureType: null,
     signatureTypes: {
       auth: 'auth',
-      contract: 'contracts'
+      contract: 'contracts',
+      link: 'link'
     },
+    linkToken: null,
 
     successCallback: null,
     documentBase64: null,
@@ -145,6 +147,54 @@ export const useSignatureStore = defineStore('signatureStore', {
         .finally(() => {
           this.loading = false
         })
+    },
+
+    // Imzolovchi linki: PDF token bo'yicha olinadi, PKCS7 ommaviy endpointga yuboriladi.
+    async _signatureLink(token, callback) {
+      this.signatureType = this.signatureTypes.link
+      this.successCallback = callback
+      this.linkToken = token
+      this.loading = true
+      try {
+        await this._checkVersion()
+      } catch {
+        this.loading = false
+        return
+      }
+      $ApiService.documentService
+        ._linkBase64({ params: { token } })
+        .then((res) => {
+          this.documentBase64 = res.data.data
+          this.checkListKey()
+          this.checkCardPluggedIn()
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    _link(keyId) {
+      EIMZOClient.createPkcs7(
+        keyId,
+        this.documentBase64,
+        null,
+        (pkcs7) => {
+          $ApiService.documentService
+            ._linkEimzo({ params: { token: this.linkToken }, data: { code: pkcs7 } })
+            .then(() => {
+              this.loading = false
+              this.visible = false
+              this.successCallback?.()
+            })
+            .catch(() => {
+              this.loading = false
+            })
+        },
+        (e, r) => {
+          this.loading = false
+          $Alert.warning(e ? `${errorCAPIWS}: ${e}` : r || t('signature.confirmError'))
+        },
+        false
+      )
     },
 
     _idGenCallback(o, i) {
