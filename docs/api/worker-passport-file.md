@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Holat** | `draft` — frontend tayyor, backend'dan tasdiq kerak |
+| **Holat** | `backend tayyor` — `feat/review-codes` branchida, dev'ga merge kutilmoqda |
 | **Frontend** | Shahriyor, 2026-10-28 (ClickUp DAS-12042) |
 | **Frontend sahifa** | HRM → Xodimlar → «Xodim qo'shish» (`/hrm/worker/create`) → «Pasport ma'lumotlari» bloki |
 
@@ -69,8 +69,13 @@ faylni alohida yuboradi.
 - [ ] Backend rasmni saqlaydimi va qanday hajm cheklovi bor? (3-bo'lim)
 - [ ] Ikki tomonni alohida saqlash kerakmi? (4-bo'lim)
 
+## Backend javobi (2026-10-29)
+
+- Tasdiqlandi: `POST /v1/hr/worker-passports` `file` uchun `pdf`, `jpg`, `jpeg`, `png` ni qabul qiladi va saqlaydi — backend o'zgarishi kerak emas.
+
 ## O'zgarishlar tarixi
 
 | Sana | Kim | Nima o'zgardi |
 |---|---|---|
 | 2026-10-28 | Shahriyor | Birinchi versiya |
+| 2026-10-29 | Backend | Tasdiq: rasm fayllar qabul qilinadi |

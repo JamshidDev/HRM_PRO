@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Holat** | `draft` — frontend tayyor, backend kutilmoqda |
+| **Holat** | `backend tayyor` — `feat/review-codes` branchida, dev'ga merge kutilmoqda |
 | **Frontend** | Shahriyor, 2026-10-22 |
 | **Frontend sahifa** | Turniket → Smenalar → guruh grafigi → katakni bosish → «Kunni o'zgartirish» |
 
@@ -111,8 +111,29 @@ ko'rsatadi. Kelmaguncha smena turidagi tushlik ko'rsatiladi.
       (`planned_break` — day-detail javobida bor)?
 - [ ] Swagger'ga `schedule-day` so'rov sxemasini qo'shish (hozir body umuman hujjatlanmagan).
 
+## Backend javobi (2026-10-29)
+
+- **`POST /v1/turnstile/schedule/schedule-day`** `break_start_time` / `break_end_time` (`HH:mm` yoki `null`) ni qabul qiladi:
+  - maydonlar **kelmasa** (eski klient) — smena turidagi shu vaqtli kunning tushligi olinadi;
+  - `null` — tushliksiz kun (smena turidagi tushlik **qo'shilmaydi**, vaqt smena turiniki bo'lsa ham);
+  - 422 (`schedule_day_break_invalid`): faqat bittasi kelsa, format noto'g'ri, tushlik ish vaqtidan tashqarida yoki boshi ≥ oxiri.
+    Tungi smena hisobga olinadi (20:00–08:00, tushlik 01:00–02:00 — to'g'ri).
+- **`daily_minutes`** endi tushlik ayirilib hisoblanadi: 11:00–20:00 + 14:00–15:00 → `480`, tushliksiz → `540`,
+  20:00–08:00 + 01:00–02:00 → `660` (kechki daqiqalardan ham tushlik ayiriladi).
+- **Saqlash:** `turnstile_worker_schedules.break_start_time / break_end_time` (migratsiya `0195`). Faqat qo'lda o'zgartirilgan kunga yoziladi;
+  tushliksiz kun ichki belgida saqlanadi (boshi = oxiri).
+- **Generatsiya** (`generate-schedule-workers` va h.k.) ustunlarga yozmaydi — bunday kunlarda tushlik smena turidan olinadi.
+  «Bir xil manba» o'qish tomonida ta'minlanadi: barcha o'quvchilar bitta qoidani ishlatadi — *kunning o'z tushligi, bo'lmasa smena turidagi*.
+- **`GET /v1/turnstile/schedule/schedule-workers`** — `days[]` da `break_start_time` / `break_end_time` (`HH:mm`, dam kunida va tushliksiz kunda `null`) —
+  yuqoridagi qoida bo'yicha **amaldagi** tushlik.
+- Ochiq savollarga javob:
+  - Noma'lum maydonlar rad etilmasdi (body DTO'siz) — endi maydonlar rasman qabul qilinadi.
+  - Tabel «Auto» hisobi va kun tafsiloti (`day-detail` → `planned_break`) endi kunning o'z tushligini ishlatadi.
+  - Swagger body sxemasi hali qo'shilmagan.
+
 ## O'zgarishlar tarixi
 
 | Sana | Kim | Nima o'zgardi |
 |---|---|---|
 | 2026-10-22 | Shahriyor (frontend) | Birinchi versiya |
+| 2026-10-29 | Backend | Kunlik tushlik: qabul, tekshiruv, `daily_minutes`, `schedule-workers` javobi |
