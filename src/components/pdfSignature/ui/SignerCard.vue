@@ -41,14 +41,20 @@
 
 <template>
   <div class="flex gap-3">
-    <!-- Stepper tuguni va keyingi bosqichga ulovchi chiziq -->
-    <div class="flex flex-col items-center shrink-0 pt-1.5">
+    <!-- Stepper tuguni va keyingi bosqichga ulovchi chiziq.
+         `pl-2`: navbatdagi tugun to'lqini ro'yxatning `overflow-x: clip` chetida kesilmasin -->
+    <div class="flex flex-col items-center shrink-0 pt-2 pl-2">
       <div
-        class="w-7 h-7 rounded-full border flex items-center justify-center"
+        class="relative size-5.5 rounded-full border flex items-center justify-center"
         :class="current ? 'border-primary bg-primary text-white' : tone.node"
       >
-        <span v-if="showStep" class="text-xs font-bold tabular-nums">{{ step }}</span>
-        <n-icon v-else size="14"><component :is="tone.icon" /></n-icon>
+        <!-- Navbati kelgan kelishuvchi tugunidan tarqaladigan to'lqin (ripple) -->
+        <template v-if="current">
+          <span class="signer-ripple" aria-hidden="true"></span>
+          <span class="signer-ripple signer-ripple--late" aria-hidden="true"></span>
+        </template>
+        <span v-if="showStep" class="relative text-[10px] font-bold tabular-nums">{{ step }}</span>
+        <n-icon v-else size="12" class="relative"><component :is="tone.icon" /></n-icon>
       </div>
       <div v-if="!isLast" class="w-0.5 flex-1 mt-1 rounded-full" :class="tone.line"></div>
     </div>
@@ -215,5 +221,38 @@
         color-mix(in srgb, var(--fig-bg-brand-fill) 3%, transparent) 70%
       ),
       var(--surface-section);
+  }
+
+  /* Tugundan tashqariga kengayib, so'nib boradigan halqa; ikkinchisi yarim davr kechikadi */
+  .signer-ripple {
+    position: absolute;
+    inset: -1px;
+    border-radius: 9999px;
+    background: var(--color-primary);
+    opacity: 0;
+    pointer-events: none;
+    animation: signer-ripple 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  .signer-ripple--late {
+    animation-delay: 1s;
+  }
+
+  @keyframes signer-ripple {
+    0% {
+      transform: scale(1);
+      opacity: 0.45;
+    }
+    100% {
+      transform: scale(1.6);
+      opacity: 0;
+    }
+  }
+
+  /* Harakatni kamaytirish so'ralgan bo'lsa to'lqin ko'rsatilmaydi */
+  @media (prefers-reduced-motion: reduce) {
+    .signer-ripple {
+      display: none;
+    }
   }
 </style>
