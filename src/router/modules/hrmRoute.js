@@ -115,7 +115,8 @@ export const hrmRoutes = [
       permission: [
         appPermissions.hrConfirmationsRead,
         appPermissions.hrLeadersRead,
-        appPermissions.hrTableWorkersRead
+        appPermissions.hrTableWorkersRead,
+        appPermissions.hrAssistantsRead
       ]
     }
   },
@@ -172,6 +173,13 @@ export const hrmRoutes = [
     path: Utils.routeHrmPathMaker(AppPaths.TimesheetDepartment),
     name: AppPaths.TimesheetDepartment.substring(1),
     component: () => import('@/pages/hrm/timesheetDepartment/TimesheetDepartmentPage.vue'),
+    meta: { layout: AppLayouts.main }
+  },
+  {
+    // «HR yordamchilari» — «Mas'ul xodimlar» menyusidagi alohida band.
+    path: Utils.routeHrmPathMaker(AppPaths.HrAssistant),
+    name: AppPaths.HrAssistant.substring(1),
+    component: () => import('@/pages/hrm/hrAssistant/HrAssistantPage.vue'),
     meta: { layout: AppLayouts.main }
   },
   {

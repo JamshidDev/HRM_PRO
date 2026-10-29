@@ -241,7 +241,8 @@ export const navigations = withRawIcons([
         permission: [
           appPermissions.hrConfirmationsRead,
           appPermissions.hrLeadersRead,
-          appPermissions.hrTableWorkersRead
+          appPermissions.hrTableWorkersRead,
+          appPermissions.hrAssistantsRead
         ],
         children: [
           {
@@ -264,6 +265,13 @@ export const navigations = withRawIcons([
             icon: DocFlowTimesheetIcon,
             color: 'bg-secondary',
             permission: appPermissions.hrTableWorkersRead
+          },
+          {
+            label: 'hrAssistantPage.name', // HR yordamchilari
+            path: Utils.routeHrmPathMaker(AppPaths.HrAssistant),
+            icon: TurnstileHcWorkersIcon,
+            color: 'bg-primary',
+            permission: appPermissions.hrAssistantsRead
           }
         ]
       },
