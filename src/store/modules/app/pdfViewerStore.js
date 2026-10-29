@@ -69,6 +69,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     signDeadline: null,
     signedNow: false,
     linkExpired: false,
+    // Imzolash uchun qolgan soniyalar — sahifa sarlavhasidagi sanoq chipi uchun.
+    linkLeft: 0,
     // Link orqali rad etish: sabablar ro'yxati (check javobidan) va natija.
     linkRejectReasons: [],
     rejectedNow: false,

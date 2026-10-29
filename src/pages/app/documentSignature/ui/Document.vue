@@ -16,12 +16,15 @@
   )
   const expired = computed(() => !store.isSigned && !store.rejectedNow && left.value === 0)
   watch(expired, (v) => (store.linkExpired = v), { immediate: true })
+  // Qolgan vaqt sarlavhadagi chipda ko'rsatiladi (ToolBar.vue).
+  watch(left, (v) => (store.linkLeft = v), { immediate: true })
 </script>
 
 <template>
   <div>
     <template v-if="store.pdfUrl && !store.checkLoading">
-      <LinkTimer v-if="!store.isSigned && !store.rejectedNow" :left="left" />
+      <!-- Sanoq sarlavhada; bu yerda faqat muddat tugaganda nima qilish kerakligi yoziladi -->
+      <LinkTimer v-if="expired" :left="0" />
       <div v-if="store.signedNow" class="px-4 mt-4">
         <div
           class="max-w-[800px] mx-auto flex items-center gap-2 rounded-lg border border-success/40 bg-success/10 px-4 py-3 text-success"
