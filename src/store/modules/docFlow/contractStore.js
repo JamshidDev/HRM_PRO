@@ -331,15 +331,19 @@ const storeOptions = {
         const compStore = useComponentStore()
         compStore.worker = null
         compStore.isSelectedWorker = false
-        this.sortableConfirmations = []
-        this.structureCheck = []
-        this.departmentCheck = []
       }
+      // Oldingi shartnomaning kelishuvchilari, tartib turi va tanlangan bo'limlari
+      // yangi shartnomaga o'tmasin (bekor qilingan, saqlangan yoki tahrirlangan bo'lsa ham).
+      this.sortableConfirmations = []
+      this.structureCheck = []
+      this.departmentCheck = []
+      this.oneByOne = false
       this.editId = null
       this.editCommandType = null
+      const now = new Date().getTime()
       this.payload.pin = null
       this.payload.organization_id = []
-      this.payload.contract_date = new Date().getTime()
+      this.payload.contract_date = now
       this.payload.number = null
       this.payload.table_number = null
       this.payload.type = null
@@ -354,7 +358,7 @@ const storeOptions = {
       this.payload.rate = 1
       this.payload.command_status = true
       this.payload.probation = null
-      this.payload.position_date = new Date().getTime()
+      this.payload.position_date = now
       this.payload.vacation_main_day = '21'
       this.payload.additional_vacation_day = '4'
       this.payload.schedule_id = null
@@ -362,7 +366,8 @@ const storeOptions = {
       // this.payload.files = []
       this.payload.contract_to_date = null
 
-      this.payload.command_date = null
+      // Buyruq sanasi sukut bo'yicha shartnoma sanasi bilan bir xil.
+      this.payload.command_date = now
       this.payload.command_number = null
       this.payload.temporary_worker_id = null
       this.payload.confirmations = []
