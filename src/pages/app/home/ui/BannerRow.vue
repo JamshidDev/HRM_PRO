@@ -39,12 +39,14 @@
    * Bannerga bosilganda umumiy rasm ko'ruvchisi (`UIImageViewer`, `HelperLayout`
    * da global mount qilingan) ochiladi — kichik matnlarni kattalashtirib o'qish
    * mumkin. Ro'yxatga BARCHA bannerlar beriladi, shuning uchun modal ichida
-   * o'q tugmalari bilan ular orasida yurish mumkin.
+   * o'q tugmalari bilan ular orasida yurish mumkin. `rounded` — bannerlar burchagi
+   * rasmning o'zida chizilgan, ko'ruvchi ham burchaklarni aylantirib ko'rsatadi.
    */
   const openBanner = (index) => {
     window.$openViewer?.(
       BANNERS.map((v) => v.image),
-      index
+      index,
+      { rounded: true }
     )
   }
 </script>
