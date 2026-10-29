@@ -34,23 +34,18 @@
       }
     }, 2000)
   }
+
+  // «Boshlash» tugmasi SignMethods.vue pastki qatorida turadi.
+  defineExpose({ start })
 </script>
 
 <template>
-  <div class="rounded-xl border border-surface-line bg-surface-section p-6 mt-2 text-center">
-    <n-icon size="40" class="text-primary"><Phone24Regular /></n-icon>
-    <p class="text-textColor2 mt-2 mb-5">
+  <div class="rounded-xl border border-dashed border-surface-line bg-surface-ground p-6 text-center">
+    <n-icon size="36" class="text-primary"><Phone24Regular /></n-icon>
+    <p class="text-sm text-textColor2 mt-2">
       {{ isPhone ? $t('signature.mobileHintPhone') : $t('signature.mobileHintQr') }}
     </p>
-    <n-button
-      v-if="!store.mobileSession"
-      type="primary"
-      :loading="store.mobileLoading"
-      @click="start"
-    >
-      {{ $t('signature.mobileStart') }}
-    </n-button>
-    <template v-else>
+    <div v-if="store.mobileSession" class="mt-5">
       <a v-if="isPhone" :href="store.mobileSession.deep_link" class="inline-block">
         <n-button type="primary" size="large">{{ $t('signature.mobileOpenApp') }}</n-button>
       </a>
@@ -63,6 +58,6 @@
       <n-button v-if="!waiting" text type="primary" class="mt-3" @click="start">
         {{ $t('signature.mobileRetry') }}
       </n-button>
-    </template>
+    </div>
   </div>
 </template>
