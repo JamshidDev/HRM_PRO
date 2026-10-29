@@ -1,6 +1,6 @@
 <script setup>
   import { useDocumentDateLimit } from '@/composables/useDocumentDateLimit.js'
-  import { UISelect, UIUser } from '@/components/index.js'
+  import { UISegmentTabs, UISelect, UISignerList } from '@/components/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import validationRules from '@/utils/validationRules.js'
   // Hujjat sanasi: yaratishda sozlamadagi oyna, tahrirda o'zgarmaydi.
@@ -12,8 +12,7 @@
   import Utils from '@/utils/Utils.js'
   import UIDepartment from '@/components/ui/UIDepartment.vue'
   import { useAppSetting } from '@/utils/index.js'
-  import { Drag24Filled, DrawText24Regular } from '@vicons/fluent'
-  import { VueDraggable } from 'vue-draggable-plus'
+  import i18n from '@/i18n/index.js'
 
   const store = useAdContractFormStore()
   const componentStore = useComponentStore()
@@ -36,7 +35,9 @@
     },
     // create — yaratish modali; edit — hujjat drawer'idagi «Ma'lumotlar» tabi.
     mode: { type: String, default: 'create' },
-    readonly: { type: Boolean, default: false }
+    readonly: { type: Boolean, default: false },
+    // To'liq ekranda modal tanasining o'zi skroll qiladi — ichki skroll kerak emas.
+    fullscreen: { type: Boolean, default: false }
   })
   const isEdit = computed(() => props.mode === 'edit')
 
@@ -45,7 +46,6 @@
     new Promise((resolve) => {
       formRef.value?.validate((error) => resolve({ isValid: !error }))
     })
-  defineExpose({ submit })
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {
@@ -57,6 +57,10 @@
       }
     })
   }
+
+  // Yaratish modalida tugmalar buyruqlar modalidagidek sarlavhada (page.vue) —
+  // ular `onSubmit` ni chaqiradi. Tab esa `submit` bilan faqat tekshiruv natijasini oladi.
+  defineExpose({ submit, onSubmit })
   const onChangeDepartment = (v) => {
     store.payload.department_id = v
     componentStore.departmentPositionList = []
@@ -204,9 +208,21 @@
     store.payload.type === null ? true : [1, 8].includes(store.payload.type)
   )
 
-  const onChangeDraggle = () => {
-    store.payload.confirmations = store.sortableConfirmations.map((v) => v.id)
+  // Ro'yxatda sudralganda yoki o'chirilganda — tartib payload'ga ham yoziladi.
+  const onSignersUpdate = (items) => {
+    store.sortableConfirmations = items
+    store.payload.confirmations = items.map((v) => v.id)
   }
+
+  // Yuborish tartibi: bir vaqtda yoki navbat bilan (`oneByOne`) — buyruqlardagidek almashtirgich.
+  const signMode = computed({
+    get: () => (store.oneByOne ? 'sequential' : 'parallel'),
+    set: (v) => (store.oneByOne = v === 'sequential')
+  })
+  const modeTabs = computed(() => [
+    { id: 'parallel', name: i18n.global.t('documentPage.command.form.route.parallel') },
+    { id: 'sequential', name: i18n.global.t('documentPage.command.form.route.sequential') }
+  ])
   const fetchConfirmation = () => {
     if (componentStore.confirmationList.length > 0) return
     componentStore._confirmations()
@@ -286,8 +302,8 @@
     :class="{ 'ad-contract-form--readonly': readonly }"
   >
     <div
-      :style="isEdit ? null : 'height: calc(100vh - 120px)'"
-      :class="isEdit ? '' : 'overflow-y-auto overflow-x-hidden pb-12'"
+      :style="isEdit || fullscreen ? null : 'height: calc(100vh - 100px)'"
+      :class="isEdit || fullscreen ? '' : 'overflow-y-auto overflow-x-hidden pb-4'"
     >
       <div class="grid grid-cols-12 gap-x-4">
         <div class="col-span-12">
@@ -572,7 +588,9 @@
             </div>
           </div>
         </div>
-        <div class="col-span-12">
+        <div
+          class="col-span-12 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground mt-4"
+        >
           <n-form-item :label="$t(`documentPage.form.director`)" path="director_id">
             <n-select
               size="large"
@@ -678,69 +696,31 @@
                 />
               </n-form-item>
             </div>
-            <template v-if="store.sortableConfirmations?.length">
-              <div class="col-span-12 pb-2 px-2 flex justify-between">
-                <span class="text-secondary">{{
-                  $t('documentPage.command.form.viewDescription')
-                }}</span>
-                <n-checkbox v-model:checked="store.oneByOne">
+            <!-- Buyruqlardagi (CommandSigners.vue) ko'rinish: yuborish tartibi almashtirgichi
+                 izohi bilan, ro'yxat — umumiy UISignerList. Kelishuvda tanishuvchi yo'q. -->
+            <div v-if="store.sortableConfirmations?.length" class="col-span-12 flex flex-col gap-2">
+              <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-1">
+                <div class="text-xs text-textColor3 min-w-0 flex-1 basis-[260px] leading-snug">
                   {{
                     $t(
                       store.oneByOne
-                        ? 'documentPage.command.form.viewOneByOne'
-                        : 'documentPage.command.form.viewSameTime'
+                        ? 'documentPage.command.form.route.sequentialHint'
+                        : 'documentPage.command.form.route.parallelHint'
                     )
                   }}
-                </n-checkbox>
+                </div>
+                <UISegmentTabs v-model="signMode" :tabs="modeTabs" class="shrink-0" />
               </div>
-              <div class="col-span-12">
-                <VueDraggable @end="onChangeDraggle" v-model="store.sortableConfirmations">
-                  <div
-                    v-for="(item, index) in store.sortableConfirmations"
-                    :key="item.id"
-                    class="sort-target flex items-center gap-2 px-2 py-1 bg-surface-section border border-surface-line rounded-xl mb-1"
-                  >
-                    <div class="handle">
-                      <n-icon
-                        size="24"
-                        class="text-secondary cursor-move scale-100 hover:scale-[1.2] mx-2"
-                      >
-                        <Drag24Filled />
-                      </n-icon>
-                    </div>
-
-                    <div class="w-[calc(100%-60px)] select-none">
-                      <UIUser
-                        class="!w-full"
-                        :data="item.data"
-                        :hide-tooltip="true"
-                        :short="false"
-                      />
-                    </div>
-                    <template v-if="store.oneByOne">
-                      <n-button type="primary" secondary :icon-placement="'right'" size="small">
-                        <template #icon>
-                          <DrawText24Regular />
-                        </template>
-                        <span class="font-bold text-lg">{{ index + 1 }}</span>
-                      </n-button>
-                    </template>
-                  </div>
-                </VueDraggable>
-              </div>
-            </template>
+              <UISignerList
+                :items="store.sortableConfirmations"
+                :sequential="store.oneByOne"
+                :allow-viewers="false"
+                @update:items="onSignersUpdate"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <div v-if="!isEdit" class="grid grid-cols-2 gap-2">
-      <n-button @click="store.openVisible(false)" type="error" ghost>
-        {{ $t('content.cancel') }}
-      </n-button>
-      <n-button @click="onSubmit" :loading="store.saveLoading" type="primary">
-        {{ $t('content.save') }}
-      </n-button>
     </div>
   </n-form>
 </template>

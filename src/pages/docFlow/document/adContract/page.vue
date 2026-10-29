@@ -13,7 +13,13 @@
     useCommandStore,
     useComponentStore
   } from '@/store/modules/index.js'
-  import { FlowchartCircle20Filled } from '@vicons/fluent'
+  import {
+    DismissCircle32Filled,
+    FlowchartCircle20Filled,
+    FullScreenMaximize24Regular,
+    FullScreenMinimize24Regular,
+    Save16Regular
+  } from '@vicons/fluent'
   import CommandForm from '@/pages/docFlow/document/command/CommandForm.vue'
   import Utils from '@/utils/Utils.js'
   import Filter from './ui/Filter.vue'
@@ -24,6 +30,22 @@
   const accStore = useAccountStore()
   const commandStore = useCommandStore()
   const officeAppRef = ref(null)
+  const formRef = ref(null)
+
+  // To'liq ekran — buyruqlar va shartnomalar modalidagidek, silliq o'tish View Transitions API bilan.
+  const isFullscreen = ref(false)
+  const fullscreenLabel = computed(() =>
+    isFullscreen.value ? 'documentPage.command.exitFullscreen' : 'documentPage.command.fullscreen'
+  )
+  const toggleFullscreen = () => {
+    const flip = async () => {
+      isFullscreen.value = !isFullscreen.value
+      await nextTick()
+    }
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    if (!document.startViewTransition || reduceMotion) return flip()
+    document.startViewTransition(flip)
+  }
 
   const emits = defineEmits(['openOffice'])
   const contractData = ref(null)
@@ -67,14 +89,65 @@
   <UIPageContent>
     <Filter />
     <Table @openOffice="openContract" @commandEv="openCommand" />
+    <!-- Buyruqlar (command/CommandForm.vue) va shartnomalar modali qolipida: sarlavhada
+         to'liq ekran tugmasi, nom va amallar. -->
     <UIModal
-      :title="
-        store.visibleType ? $t('adContractPage.createTitle') : $t('adContractPage.updateTitle')
-      "
-      :width="1200"
       v-model:visible="store.visible"
+      :width="isFullscreen ? '100vw' : 1200"
+      :max-width="isFullscreen ? '100vw' : undefined"
+      :height="isFullscreen ? '100dvh' : null"
+      :card-class="['ad-contract-modal-card', isFullscreen && 'ad-contract-modal-card--fullscreen']"
     >
-      <adContractForm />
+      <template #header>
+        <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 pb-2 px-4">
+          <div class="flex items-center gap-3 min-w-0">
+            <n-button
+              secondary
+              class="shrink-0 no-scale"
+              :title="$t(fullscreenLabel)"
+              :aria-label="$t(fullscreenLabel)"
+              :aria-pressed="isFullscreen"
+              @click="toggleFullscreen"
+            >
+              <template #icon>
+                <FullScreenMinimize24Regular v-if="isFullscreen" />
+                <FullScreenMaximize24Regular v-else />
+              </template>
+            </n-button>
+            <h3 class="text-lg font-medium truncate">
+              {{
+                store.visibleType
+                  ? $t('adContractPage.createTitle')
+                  : $t('adContractPage.updateTitle')
+              }}
+            </h3>
+          </div>
+          <!-- Tartib: bekor qilish → saqlash (asosiy amal eng o'ngda). -->
+          <div class="flex items-center gap-2">
+            <n-button class="no-scale" type="error" secondary @click="store.openVisible(false)">
+              <template #icon>
+                <DismissCircle32Filled />
+              </template>
+              {{ $t('content.cancel') }}
+            </n-button>
+            <n-button
+              class="no-scale"
+              type="primary"
+              data-modal-submit
+              :loading="store.saveLoading"
+              @click="formRef?.onSubmit()"
+            >
+              <template #icon>
+                <Save16Regular />
+              </template>
+              {{ $t('content.save') }}
+            </n-button>
+          </div>
+        </div>
+      </template>
+      <div :class="isFullscreen && 'max-w-[1760px] mx-auto'">
+        <adContractForm ref="formRef" :fullscreen="isFullscreen" />
+      </div>
     </UIModal>
     <!-- Tahrir saqlanganda: qayta imzolashga barchaga yoki tanlanganlarga. -->
     <ResendSignersModal
@@ -118,3 +191,10 @@
     <UIOfficeApp ref="officeAppRef" />
   </UIPageContent>
 </template>
+
+<style>
+  /* To'liq ekran: burchaksiz, ekran chetigacha (buyruqlar modalidagidek). */
+  .ad-contract-modal-card--fullscreen {
+    border-radius: 0 !important;
+  }
+</style>
