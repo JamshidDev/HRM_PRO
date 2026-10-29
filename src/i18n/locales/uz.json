@@ -1855,6 +1855,13 @@
       "reference_date": "Ma’lumotnoma sanasi",
       "reference_number": "Ma’lumotnoma raqami"
     },
+    "form_79": {
+      "mentor": "Murabbiy",
+      "mentor_date": "Murabbiy biriktirilgan sana",
+      "mentor_percent": "Ustama miqdori (lavozim maoshiga nisbatan, %)",
+      "from": "Murabbiylik boshlanish sanasi",
+      "to": "Murabbiylik tugash sanasi"
+    },
     "form_76": {
       "from_retraining": "Qayta tayyorlash boshlanish sanasi",
       "to_retraining": "Qayta tayyorlash tugash sanasi",
@@ -1909,6 +1916,21 @@
       "otherOrg": "Boshqa korxona",
       "orgType": "Tashkilot turi",
       "to_organization": "Tashkilot nomi"
+    },
+    "form_8": {
+      "pin": "Bo'shatilgan xodim JSHSHIR (PINFL)",
+      "pinPlaceholder": "14 xonali JSHSHIR",
+      "notFound": "Xodim topilmadi",
+      "termination": "Bekor qilinadigan buyruq: №{number} ({date}), {position}",
+      "noTermination": "Bu xodimning tasdiqlangan ishdan bo'shatish buyrug'i topilmadi — ishga tiklab bo'lmaydi",
+      "mainElsewhere": "Xodim boshqa joyda asosiy shtatda ishlaydi — asosiy lavozimga tiklab bo'lmaydi",
+      "workerRequired": "Bo'shatilgan xodimni JSHSHIR bo'yicha toping",
+      "position_date": "Ishga tiklanish sanasi",
+      "from": "Majburiy progul boshlangan sana",
+      "to": "Majburiy progul tugagan sana",
+      "court_name": "Sud nomi (fuqarolik ishlari bo'yicha)",
+      "courtPlaceholder": "Mirobod tumanlararo",
+      "court_decision_date": "Hal qiluv qarori sanasi"
     },
     "form_5": {
       "pin": "Xodim JSHSHIR (PINFL)",
