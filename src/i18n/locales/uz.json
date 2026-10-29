@@ -114,7 +114,7 @@
     "wrongWorkerPins": "Noto'g'ri xodim PIN-kodlari",
     "downloaded": "Fayl muvaffaqiyatli yuklab olindi",
     "downloadFailed": "Faylni yuklab olishda xatolik",
-    "appName": "HRM Rail",
+    "appName": "HRM PRO",
     "welcome": "Xush kelibsiz!",
     "contact": "Aloqa",
     "logout": "Chiqish",
@@ -1322,7 +1322,7 @@
     "goSignature": "Imzolash",
     "signatureTitle": "Hujjatni elektron yozuv orqali imzolash!",
     "signatureWorker": "Imzolash havolasi {name} uchun yaratilgan. Elektron imzo {name} tomonidan imzolangan holatdagina hujjat haqiqiy hisoblanadi.",
-    "linkText": "Hujjat uchun havola",
+    "linkText": "Hujjatni tasdiqlash uchun havola",
     "acceptApplication": "Arizani tasdiqlash",
     "comment": "Izoh",
     "rejectApplication": "Arizani rad qilish",
@@ -1339,12 +1339,20 @@
     "position": "Lavozim",
     "storagePfx": "Fayl kaliti",
     "storageToken": "USB token",
-    "linkExpiresIn": "Link {time} dan keyin ishlamay qoladi",
+    "linkExpiresIn": "{time} vaqt qoldi",
     "linkExpired": "Link muddati tugadi. Yangi link oling.",
     "newLink": "Yangi link",
     "linkWaitTurn": "Navbati kelganda link olinadi",
     "linkTimeLeft": "Imzolash uchun qolgan vaqt:",
-    "linkExpiredPublic": "Link muddati tugadi. Imzolash uchun HR'dan yangi link so'rang.",
+    "linkExpiredPublic": "Sizga berilgan link bilan imzolash vaqti tugadi. Linkni sizga yuborgan xodimdan yoki HR bo'limidan yangi link so'rang.",
+    "linkExpiredShort": "Muddati tugadi",
+    "linkExpiredTitle": "Link muddati tugadi",
+    "linkExpiredHint": "Bu link bilan endi imzolab bo'lmaydi. Linkni sizga yuborgan xodimdan yoki HR bo'limidan yangi link so'rang.",
+    "signTitle": "Hujjatni imzolash",
+    "methodDrawHint": "Sichqoncha yoki barmoq bilan",
+    "methodEimzoHint": "Kompyuterdagi E-IMZO kaliti bilan",
+    "methodMobileHint": "Telefondagi E-IMZO ilovasi orqali",
+    "drawHere": "Shu yerga imzo chizing",
     "signedSuccess": "Hujjat muvaffaqiyatli imzolandi",
     "methodDraw": "Imzo chizish",
     "methodEimzo": "E-IMZO (kompyuter)",
@@ -1357,7 +1365,9 @@
     "mobileOpenApp": "E-IMZO ilovasini ochish",
     "mobileWaiting": "Imzo kutilmoqda...",
     "mobileRetry": "Qaytadan boshlash",
-    "rejectedSuccess": "Hujjat rad etildi. Sabab HR'ga yuborildi."
+    "rejectedSuccess": "Hujjat rad etildi. Sabab HR'ga yuborildi.",
+    "linkDocApproved": "Hujjat allaqachon tasdiqlangan (rasman imzolangan). Link berilmaydi.",
+    "linkDocClosed": "Hujjat rad etilgan va yopilgan. Link berilmaydi."
   },
   "documentPage": {
     "route": {
@@ -1853,6 +1863,13 @@
       "reference_date": "Ma’lumotnoma sanasi",
       "reference_number": "Ma’lumotnoma raqami"
     },
+    "form_79": {
+      "mentor": "Murabbiy",
+      "mentor_date": "Murabbiy biriktirilgan sana",
+      "mentor_percent": "Ustama miqdori (lavozim maoshiga nisbatan, %)",
+      "from": "Murabbiylik boshlanish sanasi",
+      "to": "Murabbiylik tugash sanasi"
+    },
     "form_76": {
       "from_retraining": "Qayta tayyorlash boshlanish sanasi",
       "to_retraining": "Qayta tayyorlash tugash sanasi",
@@ -1907,6 +1924,21 @@
       "otherOrg": "Boshqa korxona",
       "orgType": "Tashkilot turi",
       "to_organization": "Tashkilot nomi"
+    },
+    "form_8": {
+      "pin": "Bo'shatilgan xodim JSHSHIR (PINFL)",
+      "pinPlaceholder": "14 xonali JSHSHIR",
+      "notFound": "Xodim topilmadi",
+      "termination": "Bekor qilinadigan buyruq: №{number} ({date}), {position}",
+      "noTermination": "Bu xodimning tasdiqlangan ishdan bo'shatish buyrug'i topilmadi — ishga tiklab bo'lmaydi",
+      "mainElsewhere": "Xodim boshqa joyda asosiy shtatda ishlaydi — asosiy lavozimga tiklab bo'lmaydi",
+      "workerRequired": "Bo'shatilgan xodimni JSHSHIR bo'yicha toping",
+      "position_date": "Ishga tiklanish sanasi",
+      "from": "Majburiy progul boshlangan sana",
+      "to": "Majburiy progul tugagan sana",
+      "court_name": "Sud nomi (fuqarolik ishlari bo'yicha)",
+      "courtPlaceholder": "Mirobod tumanlararo",
+      "court_decision_date": "Hal qiluv qarori sanasi"
     },
     "form_5": {
       "pin": "Xodim JSHSHIR (PINFL)",
@@ -6479,7 +6511,14 @@
       "empty": "Bu yozuv bo'yicha o'zgarish topilmadi",
       "moreInfo": "Qo'shimcha ma'lumot",
       "expandAll": "Kartochkalarni ochish",
-      "collapseAll": "Kartochkalarni yig'ish"
+      "collapseAll": "Kartochkalarni yig'ish",
+      "unknownCode": "Bu kodning tavsifi hali tizimda yo'q",
+      "summary": {
+        "create": "{n} ta qo'shildi",
+        "update": "{n} ta o'zgartirildi",
+        "delete": "{n} ta o'chirildi",
+        "restore": "{n} ta tiklandi"
+      }
     },
     "historyBtn": "Tarix",
     "showMasked": "Maskani ochish",

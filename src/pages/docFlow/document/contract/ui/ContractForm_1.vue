@@ -77,37 +77,49 @@
     store.payload.organization_id = v
   }
 
-  watchEffect(() => {
-    if (store.payload.type) {
-      store.payload.command_type = null
-      const data = {
-        status: Utils.documentModels.contract,
-        type: store.payload.type
-      }
-      componentStore._commandTypes(data, (id) => {
-        // Tahrirda tiklangan buyruq turi saqlanadi.
-        store.payload.command_type = store.editCommandType ?? id
-        store.editCommandType = null
-      })
+  // Buyruq turlari ro'yxati. Forma ochilganda (yangi, «Orqaga» bilan qaytish yoki tahrir)
+  // tanlangan/tiklangan buyruq turi saqlanadi; faqat shartnoma turi o'zgarganda tozalanadi.
+  // Tahrirda tiklangan qiymat `editCommandType` da keladi. Ro'yxatda bitta tur bo'lsa — o'zi tanlanadi.
+  const loadCommandTypes = (reset) => {
+    if (!store.payload.type) return
+    store.payload.command_type = store.editCommandType ?? (reset ? null : store.payload.command_type)
+    store.editCommandType = null
+    const data = {
+      status: Utils.documentModels.contract,
+      type: store.payload.type
     }
-    store.payload.position_date = store.payload.contract_date
-    store.payload.command_date = store.payload.contract_date
-  })
+    componentStore._commandTypes(data, (id) => {
+      if (!store.payload.command_type) store.payload.command_type = id
+    })
+  }
+  watch(
+    () => store.payload.type,
+    () => loadCommandTypes(true)
+  )
+
+  // Lavozim va buyruq sanasi shartnoma sanasiga faqat u O'ZGARGANDA tenglashadi —
+  // tiklangan yoki qo'lda o'zgartirilgan sanalar ochilishda ustidan yozilmaydi.
+  watch(
+    () => store.payload.contract_date,
+    (v) => {
+      store.payload.position_date = v
+      store.payload.command_date = v
+    }
+  )
 
   onMounted(() => {
     fetchConfirmation()
+    loadCommandTypes(false)
   })
 </script>
 
 <template>
   <div class="flex flex-col gap-6 w-full">
-    <!-- Xodim bloki markazda: qolgan bo'limlardan farqli, u bitta qatordan iborat
-         va to'liq kenglikda chapda turganda yonida katta bo'sh joy qolardi.
-         `w-[600px]` qat'iy edi: modal telefonda fullscreen bo'lgach ichkarida
-         gorizontal skroll berardi. -->
-    <section class="form-section w-full max-w-[600px] mx-auto items-center">
+    <!-- Xodim bloki boshqa bo'limlar kabi to'liq kenglikdagi ramkada; qidiruv
+         maydoni esa 600px gacha — keng ekranda cho'zilib ketmasin. -->
+    <section class="form-section">
       <span class="form-section__title">{{ $t('documentPage.form.candidate') }}</span>
-      <div class="w-full">
+      <div class="w-full max-w-[600px]">
         <!-- Karta: `UIUser` ning ichki matn bloki `calc(100% - 50px)` kenglikda,
              ya'ni u qatorni to'liq egallaydi va `justify-center` unga ta'sir
              qilmaydi — shu bois markazlash kartaning o'ziga (`mx-auto`) beriladi. -->
@@ -290,7 +302,7 @@
     align-items: center;
     width: 100%;
     max-width: 420px;
-    margin: 0 auto;
+    margin: 0;
     padding: 10px 16px;
     border: 1px solid var(--fig-br-disable);
     border-radius: 12px;

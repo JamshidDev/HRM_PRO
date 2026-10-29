@@ -25,6 +25,14 @@ const _trainingOptions = async (payload) => {
   return await axios.get(`/v1/hr/commands/training-options`, { params: payload.params })
 }
 
+// 8 formasi — xodimning oxirgi bo'shatish buyrug'i va yopilgan lavozimi.
+const _reinstatementTarget = async (payload) => {
+  return await axios.get(`/v1/hr/commands/reinstatement-target`, {
+    params: payload.params,
+    silentError: true
+  })
+}
+
 // «Ma'lumotlar» tabi — saqlangan forma holati va tahrirlash imkoniyati.
 const _form = async (payload) => {
   return await axios.get(`/v1/hr/commands/${payload.id}/form`)
@@ -53,6 +61,7 @@ export default {
   _additionalData,
   _selectable,
   _trainingOptions,
+  _reinstatementTarget,
   _form,
   _update,
   _signersPreview

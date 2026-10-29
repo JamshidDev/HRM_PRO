@@ -1,7 +1,12 @@
 <script setup>
-  import { UIDConfirm } from '@/components/index.js'
   import { usePdfViewerStore, useAccountStore } from '@/store/modules/index.js'
-  import { Copy20Regular, ArrowLeft20Filled, People20Regular, History20Regular } from '@vicons/fluent'
+  import {
+    Copy20Regular,
+    Open20Regular,
+    ArrowLeft20Filled,
+    People20Regular,
+    History20Regular
+  } from '@vicons/fluent'
   import i18 from '@/i18n/index.js'
   import Utils from '@/utils/Utils.js'
   import { useRoute } from 'vue-router'
@@ -50,10 +55,11 @@
   // Asl indeks saqlanadi — tarix (`history.bySigner`) shu indeks bo'yicha.
   const rows = computed(() => {
     const list = (store.confirmations || []).map((item, idx) => ({ item, idx }))
-    if (!showRoute.value) return list
-    // Buyruqda: rahbar (`d`) eng tepada — u navbatsiz, istalgan paytda imzolaydi; keyin qolganlar,
-    // oxirida tanishuvchilar.
     const is = (t) => (r) => r.item.type === t
+    // Rahbar (`d`) har qanday hujjatda (shartnoma, ariza...) eng tepada — u navbatsiz,
+    // istalgan paytda imzolaydi; qolganlar backend bergan tartibda.
+    if (!showRoute.value) return [...list.filter(is('d')), ...list.filter((r) => !is('d')(r))]
+    // Buyruqda: rahbardan keyin qolganlar, oxirida tanishuvchilar.
     return [
       ...list.filter(is('d')),
       ...list.filter((r) => r.item.type !== 'd' && r.item.type !== 'r'),
@@ -72,13 +78,29 @@
   }
   const canLink = (item) => {
     if (!isDocFlow.value || store.viewerLoading || item.status?.id === 3) return false
-    if (store.document?.document?.confirmation?.id === 3) return false
     const perm = LINK_PERMS[store.model]
     if (!perm) return item.type === 'w'
     return ['w', 's', 'd'].includes(item.type) && accountStore.checkPermission(perm)
   }
 
+  // Tasdiqlangan yoki rahbar rad etib yopgan hujjatga link berilmaydi — tugma bosilsa sababi aytiladi.
+  const linkBlockedReason = (item) => {
+    const docStatus = store.document?.document?.confirmation?.id
+    const afterApproval = store.model === Utils.documentModels.materialLiability && item.type === 'w'
+    if (docStatus === 3 && !afterApproval) return t('signature.linkDocApproved')
+    const directorRejected = (store.confirmations || []).some(
+      (c) => c.type === 'd' && c.status?.id === STATUS.rejected
+    )
+    if (docStatus === 4 && directorRejected) return t('signature.linkDocClosed')
+    return null
+  }
+
   const generateLink = (v) => {
+    const reason = linkBlockedReason(v)
+    if (reason) {
+      $Alert.warning(reason)
+      return
+    }
     store._generateLink({ confirmation_id: v.id, model: store.model })
   }
 
@@ -104,8 +126,13 @@
 
   const copyLink = () => {
     Utils.copyToClipboard(store.link, () => {
-      $Toast.info(t('signature.copied'))
+      $Toast.success(t('signature.copied'))
     })
+  }
+
+  // Imzolash sahifasini yangi oynada ochadi (HR linkni o'zi tekshirib ko'rishi uchun).
+  const openLink = () => {
+    window.open(store.link, '_blank', 'noopener')
   }
 
   const isDocFlow = computed(() => {
@@ -243,28 +270,40 @@
       </Transition>
     </div>
 
-    <UIDConfirm v-model:visible="store.linkVisible" type="warning">
-      <template #icon> <span></span></template>
-      <n-spin :show="store.linkLoading">
-        <div class="mt-4">
+    <!-- Havola oynasi: to'liq havola ko'rinadi, chekkalar ixcham (hamma tomondan 20px).
+         Tugmalar: yopish, nusxalash va havolani yangi oynada ochish -->
+    <n-modal v-model:show="store.linkVisible">
+      <n-card
+        :bordered="false"
+        role="dialog"
+        aria-modal="true"
+        style="width: min(460px, calc(100vw - 32px))"
+        content-style="padding: 20px"
+      >
+        <n-spin :show="store.linkLoading">
           <span
-            class="block text-lg select-none text-center uppercase font-semibold text-primary mb-6"
+            class="block text-lg select-none text-center uppercase font-semibold text-primary"
           >{{ $t('signature.linkText') }}</span>
-          <span
-            class="block text-sm border border-surface-line bg-surface-ground text-textColor2 border-dashed p-3 mt-4 rounded-md break-all"
-            :class="{ 'line-through opacity-50': linkExpired }"
-          >{{ store.link }}</span>
-          <div v-if="store.link" class="mt-3 text-center text-sm">
-            <span v-if="!linkExpired" class="text-textColor2">
-              {{ $t('signature.linkExpiresIn', { time: linkLeftText }) }}
-            </span>
-            <span v-else class="text-danger font-medium">{{ $t('signature.linkExpired') }}</span>
+          <!-- Havola qutisi; qolgan vaqt uning o'ng pastki burchagida -->
+          <div
+            class="mt-3 text-sm border border-surface-line bg-surface-ground border-dashed p-3 rounded-md"
+          >
+            <span
+              class="block text-textColor2 break-all"
+              :class="{ 'line-through opacity-50': linkExpired }"
+            >{{ store.link }}</span>
+            <div v-if="store.link" class="mt-1.5 text-right text-xs tabular-nums">
+              <span v-if="!linkExpired" class="text-textColor3">
+                {{ $t('signature.linkExpiresIn', { time: linkLeftText }) }}
+              </span>
+              <span v-else class="text-danger font-medium">{{ $t('signature.linkExpired') }}</span>
+            </div>
           </div>
-        </div>
-      </n-spin>
-      <template #action>
-        <div class="grid grid-cols-2 gap-2 select-none">
+        </n-spin>
+        <!-- Tugmalar orasida ingichka tik chiziq (|) ajratib turadi -->
+        <div class="flex items-center gap-2 mt-4 select-none">
           <n-button
+            class="flex-1"
             :loading="store.linkLoading"
             @click="store.linkVisible = false"
             secondary
@@ -272,8 +311,10 @@
           >
             {{ $t('content.close') }}
           </n-button>
+          <span class="link-divider" aria-hidden="true"></span>
           <n-button
             v-if="linkExpired"
+            class="flex-1"
             :loading="store.linkLoading"
             @click="store._generateLink(store.linkPayload)"
             secondary
@@ -281,19 +322,47 @@
           >
             {{ $t('signature.newLink') }}
           </n-button>
-          <n-button v-else :loading="store.linkLoading" @click="copyLink" secondary type="primary">
-            <template #icon>
-              <Copy20Regular />
-            </template>
-            {{ $t('signature.copyLink') }}
-          </n-button>
+          <template v-else>
+            <n-button
+              class="flex-[1.5]"
+              :loading="store.linkLoading"
+              @click="copyLink"
+              secondary
+              type="primary"
+            >
+              <template #icon>
+                <Copy20Regular />
+              </template>
+              {{ $t('signature.copyLink') }}
+            </n-button>
+            <span class="link-divider" aria-hidden="true"></span>
+            <n-button
+              class="flex-1"
+              :disabled="!store.link || store.linkLoading"
+              @click="openLink"
+              secondary
+            >
+              <template #icon>
+                <Open20Regular />
+              </template>
+              {{ $t('content.open') }}
+            </n-button>
+          </template>
         </div>
-      </template>
-    </UIDConfirm>
+      </n-card>
+    </n-modal>
   </SectionHeader>
 </template>
 
 <style scoped>
+  /* Havola oynasidagi tugmalar orasidagi tik chiziq */
+  .link-divider {
+    flex-shrink: 0;
+    width: 1px;
+    height: 20px;
+    background: var(--surface-line);
+  }
+
   /*
     Ikkala ko'rinish bitta grid katagida ustma-ust turadi: eskisi chiqib
     ketayotganda yangisi yonidan kirib keladi (`mode="out-in"` siz) — xuddi

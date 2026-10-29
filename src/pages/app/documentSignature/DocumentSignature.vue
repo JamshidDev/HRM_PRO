@@ -29,7 +29,7 @@
         <PersonalForm />
       </template>
 
-      <template v-if="!store.checkLoading && store.errorMessage">
+      <template v-if="!store.checkLoading && store.errorMessage && !store.pdfUrl">
         <ErrorMessage />
       </template>
       <template #description>

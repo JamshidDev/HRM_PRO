@@ -3,11 +3,19 @@
   Kartalar (`UIFigBlock`) olib tashlandi — oldin maydonlar to'ri va bo'lim
   sarlavhasi qolipini karta bergan edi, endi shu yerda, forma darajasida.
 */
+/*
+  Har bo'lim buyruqlar formasidagidek (CommandFormBody.vue) uzuq chiziqli
+  ramkada, fon — `surface-ground`: bo'limlar bir-biridan aniq ajralib turadi.
+*/
 .contract-form :deep(.form-section) {
   display: flex;
   flex-direction: column;
   gap: 12px;
   width: 100%;
+  padding: 12px;
+  border: 1px dashed var(--surface-line);
+  border-radius: 6px;
+  background: var(--surface-ground);
 }
 
 .contract-form :deep(.form-section__title) {

@@ -6,10 +6,10 @@
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
   import UIHelper from '@/utils/UIHelper.js'
-  import { DrawText24Regular } from '@vicons/fluent'
-  import { UIUser, UIFigField } from '@/components/index.js'
-  import icons from '@/assets/icons'
-  import { VueDraggable } from 'vue-draggable-plus'
+  import { UIFigField, UISegmentTabs, UISignerList } from '@/components/index.js'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   // Hujjat sanasi: yaratishda sozlamadagi oyna, tahrirda o'zgarmaydi.
   const { isDateDisabled } = useDocumentDateLimit()
@@ -54,7 +54,7 @@
             h(
               'div',
               { class: 'text-xs font-medium text-fig-text-secondary leading-[1.2]' },
-              `${option.last_name}.${option.last_name[0]}.${option.middle_name[0]}`
+              `${option.last_name}.${option.first_name?.[0] ?? ''}.${option.middle_name?.[0] ?? ''}`
             ),
             h('div', { class: 'text-xs text-primary leading-[1.2]' }, option.position)
           ])
@@ -73,9 +73,21 @@
       )
     ]
   }
-  const onChangeDraggle = () => {
-    store.payload.confirmations = store.sortableConfirmations.map((v) => v.id)
+  // Ro'yxatda sudralganda yoki o'chirilganda — tartib payload'ga ham yoziladi.
+  const onSignersUpdate = (items) => {
+    store.sortableConfirmations = items
+    store.payload.confirmations = items.map((v) => v.id)
   }
+
+  // Yuborish tartibi: bir vaqtda yoki navbat bilan (`oneByOne`).
+  const signMode = computed({
+    get: () => (store.oneByOne ? 'sequential' : 'parallel'),
+    set: (v) => (store.oneByOne = v === 'sequential')
+  })
+  const modeTabs = computed(() => [
+    { id: 'parallel', name: t('documentPage.command.form.route.parallel') },
+    { id: 'sequential', name: t('documentPage.command.form.route.sequential') }
+  ])
   const onChangeConfirmation = () => {
     fillSortableConfirmations()
     syncConfirmationEv()
@@ -315,55 +327,29 @@
         </UIFigField>
       </div>
 
-      <template v-if="store.sortableConfirmations?.length">
-        <div class="flex items-center justify-between gap-4 w-full">
-          <span class="text-sm text-fig-text-tertiary">
-            {{ $t('documentPage.command.form.viewDescription') }}
-          </span>
-          <n-checkbox v-model:checked="store.oneByOne">
+      <!-- Buyruqlardagi (CommandSigners.vue) ko'rinish: yuborish tartibi almashtirgichi
+           izohi bilan, ro'yxat — umumiy UISignerList. Shartnomada tanishuvchi yo'q. -->
+      <div v-if="store.sortableConfirmations?.length" class="flex flex-col gap-2 w-full">
+        <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-1">
+          <div class="text-xs text-textColor3 min-w-0 flex-1 basis-[260px] leading-snug">
             {{
               $t(
                 store.oneByOne
-                  ? 'documentPage.command.form.viewOneByOne'
-                  : 'documentPage.command.form.viewSameTime'
+                  ? 'documentPage.command.form.route.sequentialHint'
+                  : 'documentPage.command.form.route.parallelHint'
               )
             }}
-          </n-checkbox>
+          </div>
+          <UISegmentTabs v-model="signMode" :tabs="modeTabs" class="shrink-0" />
         </div>
 
-        <VueDraggable
-          class="flex flex-col gap-2 w-full"
-          v-model="store.sortableConfirmations"
-          @end="onChangeDraggle"
-        >
-          <div
-            v-for="(item, index) in store.sortableConfirmations"
-            :key="item.id"
-            class="sort-target confirm-row"
-          >
-            <div class="handle">
-              <n-icon :size="20" class="text-fig-text-tertiary cursor-move mx-1">
-                <component :is="icons.figDotsHorizontal" />
-              </n-icon>
-            </div>
-
-            <div class="flex-1 min-w-0 select-none">
-              <UIUser class="!w-full" :data="item.data" :hide-tooltip="true" :short="false" />
-            </div>
-
-            <span v-if="store.oneByOne" class="confirm-order">
-              <n-icon :size="16"><DrawText24Regular /></n-icon>
-              {{ index + 1 }}
-            </span>
-
-            <button type="button" class="confirm-remove" @click="onRemoveEv(item.id)">
-              <n-icon :size="16">
-                <component :is="icons.figXmark" />
-              </n-icon>
-            </button>
-          </div>
-        </VueDraggable>
-      </template>
+        <UISignerList
+          :items="store.sortableConfirmations"
+          :sequential="store.oneByOne"
+          :allow-viewers="false"
+          @update:items="onSignersUpdate"
+        />
+      </div>
     </section>
   </div>
 </template>
@@ -378,42 +364,5 @@
     font-weight: 600;
     line-height: 16px;
     color: var(--fig-text-brand);
-  }
-
-  // Radius 16 edi — fig tizimida quti radiusi 8 (`UIFigField` ning qiymat qutisi),
-  // 9999 esa faqat "pill" elementlarga. Padding ham 8-lik shkalaga keltirildi.
-  .confirm-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    padding: 4px 8px;
-    border-radius: 8px;
-    background: var(--fig-bg-secondary);
-  }
-
-  .confirm-order {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    flex-shrink: 0;
-    padding: 4px 10px;
-    border-radius: 9999px;
-    background: var(--fig-bg-brand-surface);
-    color: var(--fig-text-brand);
-    font-size: 13px;
-    font-weight: 600;
-  }
-
-  .confirm-remove {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-    padding: 6px;
-    border: none;
-    border-radius: 9999px;
-    background: var(--fig-red-100);
-    color: var(--fig-text-red);
-    cursor: pointer;
   }
 </style>

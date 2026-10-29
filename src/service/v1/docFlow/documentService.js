@@ -50,16 +50,29 @@ const _signature = async (payload) => {
 }
 // Imzolovchi linki (token) — E-IMZO: kompyuter (PKCS7) va telefon (E-IMZO ilovasi).
 const _linkBase64 = async (payload) => {
-  return await axios.get(`/v1/document/signature/base64`, { params: payload.params })
+  return await axios.get(`/v1/document/signature/base64`, {
+    params: payload.params,
+    silentError: payload.silentError
+  })
 }
 const _linkReject = async (payload) => {
-  return await axios.post(`/v1/document/signature/reject`, payload.data, { params: payload.params })
+  return await axios.post(`/v1/document/signature/reject`, payload.data, {
+    params: payload.params,
+    silentError: true
+  })
 }
 const _linkEimzo = async (payload) => {
-  return await axios.post(`/v1/document/signature/eimzo`, payload.data, { params: payload.params })
+  return await axios.post(`/v1/document/signature/eimzo`, payload.data, {
+    params: payload.params,
+    silentError: true
+  })
 }
 const _linkMobileInit = async (payload) => {
-  return await axios.post(`/v1/document/signature/mobile/init`, {}, { params: payload.params })
+  return await axios.post(
+    `/v1/document/signature/mobile/init`,
+    {},
+    { params: payload.params, silentError: true }
+  )
 }
 const _linkMobileStatus = async (payload) => {
   return await axios.post(`/v1/document/signature/mobile/status`, payload.data, {
@@ -68,7 +81,8 @@ const _linkMobileStatus = async (payload) => {
 }
 const _linkMobileVerify = async (payload) => {
   return await axios.post(`/v1/document/signature/mobile/verify`, payload.data, {
-    params: payload.params
+    params: payload.params,
+    silentError: true
   })
 }
 const _confirmationTimesheet = async (payload) => {

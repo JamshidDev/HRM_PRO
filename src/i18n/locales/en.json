@@ -110,7 +110,7 @@
     "wrongWorkerPins": "Wrong worker PINs",
     "downloaded": "File downloaded successfully",
     "downloadFailed": "Failed to download file",
-    "appName": "HRM Rail",
+    "appName": "HRM PRO",
     "welcome": "Welcome!",
     "contact": "Support",
     "logout": "Log out",
@@ -1305,7 +1305,7 @@
     "goSignature": "Sign",
     "signatureTitle": "Sign document electronically!",
     "signatureWorker": "Signature link created for {name}. Document valid only when signed by {name}.",
-    "linkText": "Document link",
+    "linkText": "Link to approve the document",
     "acceptApplication": "Approve application",
     "comment": "Comment",
     "rejectApplication": "Reject application",
@@ -1323,12 +1323,20 @@
     "storagePfx": "File key",
     "storageToken": "USB token",
     "notValidDate": "Expired",
-    "linkExpiresIn": "The link stops working in {time}",
+    "linkExpiresIn": "{time} left",
     "linkExpired": "The link has expired. Get a new link.",
     "newLink": "New link",
     "linkWaitTurn": "A link is available when it is this signer's turn",
     "linkTimeLeft": "Time left to sign:",
-    "linkExpiredPublic": "The link has expired. Ask HR for a new link to sign.",
+    "linkExpiredPublic": "The time to sign with the link you were given is over. Ask the person who sent it to you, or HR, for a new link.",
+    "linkExpiredShort": "Expired",
+    "linkExpiredTitle": "The link has expired",
+    "linkExpiredHint": "This link can no longer be used to sign. Ask the person who sent it to you, or HR, for a new link.",
+    "signTitle": "Sign the document",
+    "methodDrawHint": "With a mouse or finger",
+    "methodEimzoHint": "With the E-IMZO key on this computer",
+    "methodMobileHint": "With the E-IMZO app on your phone",
+    "drawHere": "Sign here",
     "signedSuccess": "The document was signed successfully",
     "methodDraw": "Draw signature",
     "methodEimzo": "E-IMZO (computer)",
@@ -1341,7 +1349,9 @@
     "mobileOpenApp": "Open the E-IMZO app",
     "mobileWaiting": "Waiting for the signature...",
     "mobileRetry": "Start again",
-    "rejectedSuccess": "The document was rejected. The reason was sent to HR."
+    "rejectedSuccess": "The document was rejected. The reason was sent to HR.",
+    "linkDocApproved": "The document is already approved (officially signed). No link is issued.",
+    "linkDocClosed": "The document was rejected and closed. No link is issued."
   },
   "documentPage": {
     "route": {
@@ -1837,6 +1847,13 @@
       "reference_date": "Certificate date",
       "reference_number": "Certificate number"
     },
+    "form_79": {
+      "mentor": "Mentor",
+      "mentor_date": "Mentor assignment date",
+      "mentor_percent": "Allowance (% of base salary)",
+      "from": "Mentorship start date",
+      "to": "Mentorship end date"
+    },
     "form_76": {
       "from_retraining": "Retraining start date",
       "to_retraining": "Retraining end date",
@@ -1891,6 +1908,21 @@
       "otherOrg": "Other organization",
       "orgType": "Organization type",
       "to_organization": "Organization name"
+    },
+    "form_8": {
+      "pin": "Dismissed worker PINFL",
+      "pinPlaceholder": "14-digit PINFL",
+      "notFound": "Worker not found",
+      "termination": "Command to cancel: №{number} ({date}), {position}",
+      "noTermination": "No approved dismissal command for this worker — cannot reinstate",
+      "mainElsewhere": "The worker holds a main position elsewhere — cannot reinstate to a main position",
+      "workerRequired": "Find the dismissed worker by PINFL",
+      "position_date": "Reinstatement date",
+      "from": "Forced absence start",
+      "to": "Forced absence end",
+      "court_name": "Court name (civil cases)",
+      "courtPlaceholder": "Mirobod inter-district",
+      "court_decision_date": "Court decision date"
     },
     "form_5": {
       "pin": "Employee PINFL",
@@ -6418,7 +6450,14 @@
       "empty": "No changes found for this record",
       "moreInfo": "More info",
       "expandAll": "Expand cards",
-      "collapseAll": "Collapse cards"
+      "collapseAll": "Collapse cards",
+      "unknownCode": "This code has no description in the system yet",
+      "summary": {
+        "create": "{n} added",
+        "update": "{n} changed",
+        "delete": "{n} deleted",
+        "restore": "{n} restored"
+      }
     },
     "historyBtn": "History",
     "showMasked": "Reveal masked",

@@ -4,8 +4,8 @@
   import i18n from '@/i18n/index.js'
 
   /**
-   * Shartnoma sehrgarining qadamlari — `UIModal` ning sarlavha qatorida turadi
-   * (`#header-actions`), shu bois ixcham ko'rinishda. Holat `contractStore` da,
+   * Shartnoma sehrgarining qadamlari — modal sarlavhasining ikkinchi qatorida turadi
+   * (ContractPage.vue), ixcham ko'rinishda. Holat `contractStore` da,
    * shuning uchun forma bilan bir vaqtda o'zi yangilanadi.
    */
   const { t } = i18n.global

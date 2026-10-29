@@ -3,6 +3,8 @@
   import { UIStatus, UITable, UIUser } from '@/components/index.js'
   import { useAuditStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import { summaryOf } from './detail/auditValues.js'
 
   const { t } = i18n.global
   const store = useAuditStore()
@@ -33,14 +35,24 @@
     return tm || '—'
   }
 
-  // Bitta hodisa bir necha jadvalga tegishi mumkin (bitta "Saqlash" —
-  // `request_id` bilan guruhlangan), shuning uchun statuslar RO'YXAT.
-  const statusesOf = (row) => [...new Set((row.changes || []).map((c) => c.status))]
+  // Bitta hodisa (bitta "Saqlash", `request_id` bilan guruhlangan) bir necha
+  // yozuvga tegishi mumkin: masalan buyruq saqlanganda bir imzolovchi o'chib,
+  // ikkitasi yaratiladi. Ustma-ust bir nechta belgi o'rniga BITTA umumiy holat:
+  // hammasi bir xil bo'lsa — o'sha, aralash bo'lsa — "O'zgartirildi".
+  // Tafsiloti ostida bir jumla: "2 ta qo'shildi, 1 ta o'chirildi".
+  const statusOfRow = (row) => {
+    const kinds = [...new Set((row.changes || []).map((c) => c.status))]
+    return statusOf(kinds.length === 1 ? kinds[0] : 'update')
+  }
 
-  // Amallar ustunini UITable O'ZI qo'shadi (`__actions`, o'ngga qotirilgan) —
-  // alohida ustun ta'riflanmaydi, `@action` hodisasi keladi.
+  const detailsOf = (row) => ((row.changes || []).length > 1 ? summaryOf(row) : '')
+
+  // Amallar ustunini UITable O'ZI qo'shadi (`__actions`, uch nuqtali menyu) —
+  // alohida ustun ta'riflanmaydi, `@action` hodisasi keladi. Menyu bandining
+  // ikonkasi komponentning o'zi emas, render funksiya bo'lishi SHART
+  // (`UIHelper.renderIcon`), aks holda ikonka chizilmaydi.
   const actions = computed(() => [
-    { key: 'view', label: t('audit.table.view'), icon: Eye20Regular }
+    { key: 'view', label: t('audit.table.view'), icon: UIHelper.renderIcon(Eye20Regular) }
   ])
 
   const onAction = (key, row) => {
@@ -48,7 +60,7 @@
   }
 
   const columns = computed(() => [
-    { key: 'status', title: t('audit.table.status'), width: 150, align: 'center' },
+    { key: 'status', title: t('audit.table.status'), width: 190 },
     { key: 'page', title: t('audit.table.page'), width: 170 },
     { key: 'user', title: t('audit.table.user'), minWidth: 320 },
     { key: 'created_date', title: t('content.date'), width: 120, align: 'center' },
@@ -70,8 +82,9 @@
     @action="onAction"
   >
     <template #cell-status="{ row }">
-      <div class="flex flex-wrap justify-center gap-1">
-        <UIStatus v-for="s in statusesOf(row)" :key="s" :status="statusOf(s)" pill />
+      <div class="flex flex-col items-start gap-0.5">
+        <UIStatus :status="statusOfRow(row)" pill />
+        <span v-if="detailsOf(row)" class="text-xs text-fig-text-secondary">{{ detailsOf(row) }}</span>
       </div>
     </template>
 

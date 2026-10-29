@@ -3,7 +3,6 @@
   const { t } = i18n.global
   import {
     UIDConfirm,
-    UIModal,
     UIOfficeApp,
     UIFigSteps,
     UIProfileButton
@@ -14,19 +13,20 @@
   import PhoneForm from './ui/PhoneForm.vue'
   import {
     useComponentStore,
+    useContractStore,
     useCreateWorkerStore,
     usePdfViewerStore
   } from '@/store/modules/index.js'
   import icons from '@/assets/icons'
   import router from '@/router/index.js'
   import validationRules from '@/utils/validationRules.js'
-  import ContractForm from '@/pages/docFlow/document/contract/contractForm.vue'
-  import ContractFormSteps from '@/pages/docFlow/document/contract/ui/ContractFormSteps.vue'
+  import ContractModal from '@/pages/docFlow/document/contract/ContractModal.vue'
   import { AppPaths } from '@/utils/index.js'
 
   const formRef = ref(null)
   const store = useCreateWorkerStore()
   const componentStore = useComponentStore()
+  const contractStore = useContractStore()
   const pdfStore = usePdfViewerStore()
 
   const officeAppRef = ref(null)
@@ -97,8 +97,13 @@
     $Toast.info(t('message.clearedFields'))
   }
 
+  // Shartnoma sehrgari har safar 1-qadamdan, toza formadan ochiladi
+  // (Asosiy xodimlardagi CheckWorker.vue `onContinue` kabi).
   const onSave = () => {
     store.successVisible = false
+    contractStore.resetForm()
+    contractStore.stepNumber = 1
+    contractStore.activeTab = 1
     componentStore.isSelectedWorker = true
     componentStore.worker = store.savedWorker
     store.visible = true
@@ -183,19 +188,11 @@
         </p>
       </div>
     </UIDConfirm>
-    <UIModal
-      :title="$t('documentPage.createTitle')"
-      :width="1200"
-      card-class="contract-modal-card"
-      :header-divider="false"
+    <ContractModal
       v-model:visible="store.visible"
-    >
-      <!-- Qadamlar sarlavha qatorida: forma faqat maydonlardan iborat qoladi -->
-      <template #header-actions>
-        <ContractFormSteps />
-      </template>
-      <ContractForm :call-back="onSuccessEv" />
-    </UIModal>
+      :title="$t('documentPage.createTitle')"
+      :call-back="onSuccessEv"
+    />
     <UIOfficeApp ref="officeAppRef" />
   </div>
 </template>

@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Holat** | `draft` — frontend tayyor, backend kutilmoqda |
+| **Holat** | `backend tayyor` — `feat/review-codes` branchida, dev'ga merge kutilmoqda |
 | **Frontend** | Shahriyor, 2026-10-28 (ClickUp DAS-11879) |
 | **Frontend sahifa** | HRM → Ochiq vakansiyalar (`/hrm/public-vacancy`) → «Filterlar» paneli |
 
@@ -55,8 +55,15 @@ vakansiyalar qolishi kerak. «Faol» — faqat yoqilganlar. Tozalansa — hammas
 
 - [ ] Backend `status` ni `1/0` sifatida qabul qiladimi yoki `true/false` kerakmi? (Frontend hozir `1/0` yuboradi.)
 
+## Backend javobi (2026-10-29)
+
+- `GET /v1/hr/vacancy` endi `status` ni qabul qiladi: `1` — faqat faol, `0` — faqat faol emas, yuborilmasa — hammasi.
+  Boshqa qiymat (`true`, `2` …) — 422.
+- Filtr `vacancy_positions.status` (jadvaldagi «Holati» switch'i) bo'yicha; korxona filtrlari bilan birga ishlaydi.
+
 ## O'zgarishlar tarixi
 
 | Sana | Kim | Nima o'zgardi |
 |---|---|---|
 | 2026-10-28 | Shahriyor | Birinchi versiya |
+| 2026-10-29 | Backend | `status` filtri qo'shildi |

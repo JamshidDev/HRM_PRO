@@ -69,6 +69,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     signDeadline: null,
     signedNow: false,
     linkExpired: false,
+    // Imzolash uchun qolgan soniyalar — sahifa sarlavhasidagi sanoq chipi uchun.
+    linkLeft: 0,
     // Link orqali rad etish: sabablar ro'yxati (check javobidan) va natija.
     linkRejectReasons: [],
     rejectedNow: false,
@@ -346,9 +348,19 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         this._messages()
       })
     },
+    // Link so'rovi xatosi: muddati o'tgan (403) yoki hujjat tasdiqlangan/yopilgan — sahifada sababi ko'rsatiladi.
+    linkError(err) {
+      const msg = err?.response?.data?.message ?? err?.response?.data?.data?.message
+      this.errorMessage =
+        err?.response?.status === 403
+          ? i18n.global.t('signature.linkExpiredPublic')
+          : msg || i18n.global.t('signature.serverError')
+      this.mobileSession = null
+    },
     _checkSignature(params) {
       this.errorMessage = null
       this.documentUrl = null
+      this.pdfUrl = null
       this.signedNow = false
       this.checkLoading = true
       $ApiService.documentService
@@ -377,10 +389,11 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     _confirmSignature(params, data) {
       this.saveLoading = true
       $ApiService.documentService
-        ._signature({ params, data })
+        ._signature({ params, data, silentError: true })
         .then(() => {
           this.markLinkSigned()
         })
+        .catch((err) => this.linkError(err))
         .finally(() => {
           this.saveLoading = false
         })
@@ -393,6 +406,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
           this.rejectedNow = true
           this.mobileSession = null
         })
+        .catch((err) => this.linkError(err))
         .finally(() => {
           this.linkRejectLoading = false
         })
@@ -411,6 +425,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         .then((res) => {
           this.mobileSession = res.data.data
         })
+        .catch((err) => this.linkError(err))
         .finally(() => {
           this.mobileLoading = false
         })
@@ -425,6 +440,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
       return $ApiService.documentService
         ._linkMobileVerify({ params, data: { document_id: this.mobileSession?.document_id } })
         .then(() => this.markLinkSigned())
+        .catch((err) => this.linkError(err))
     },
     _rejectDocument(data) {
       this.rejectLoading = true
