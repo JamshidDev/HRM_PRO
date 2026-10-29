@@ -114,6 +114,7 @@ const FORM_STATE_KEYS = [
   'form_56',
   'form_57',
   'form_58',
+  'form_5',
   'form_59',
   'form_60',
   'form_76',
@@ -247,6 +248,21 @@ const commandStoreOptions = {
       rest_end_time: null
     },
     // 58 — Vaqtincha ishdan chetlashtirish (hujjatgina).
+    // 5-turda rahbar select'iga qo'shiladigan PINFL'dagi odam (reyestrda bo'lmasa).
+    pinDirector: null,
+    // 5 — Lavozimga kirishganlik (rahbar tayinlovi): xodim PINFL bilan butun tizimdan.
+    form_5: {
+      pin: null,
+      worker: null,
+      department_id: [],
+      department_position_id: null,
+      position_date: null,
+      contract_date: null,
+      number: null,
+      superior_position: null,
+      superior_order_date: null,
+      superior_order_number: null
+    },
     form_58: {
       suspension_reason: null,
       from: null,
@@ -793,6 +809,19 @@ const commandStoreOptions = {
       this.form_75 = {
         cancel_reason: null,
         base_reason: null
+      }
+      this.pinDirector = null
+      this.form_5 = {
+        pin: null,
+        worker: null,
+        department_id: [],
+        department_position_id: null,
+        position_date: null,
+        contract_date: null,
+        number: null,
+        superior_position: null,
+        superior_order_date: null,
+        superior_order_number: null
       }
       this.cancelCommandList = []
       this.cancelCommandParams.organization_id = null

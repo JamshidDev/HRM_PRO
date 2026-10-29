@@ -1890,6 +1890,23 @@
       "otherOrg": "Other organization",
       "orgType": "Organization type",
       "to_organization": "Organization name"
+    },
+    "form_5": {
+      "pin": "Employee PINFL",
+      "pinPlaceholder": "14-digit PINFL",
+      "notFound": "Employee not found",
+      "addWorker": "Add employee",
+      "hasPositions": "Active positions: {n}",
+      "noPositions": "No active position",
+      "mainElsewhere": "The employee holds a main position elsewhere — the order cannot be created",
+      "workerRequired": "Find the employee by PINFL",
+      "superior_position": "Appointing manager (position and organization)",
+      "superiorPlaceholder": "Chairman of the Board, “Uzbekiston temir yullari” JSC",
+      "superior_order_date": "Appointment order date",
+      "superior_order_number": "Appointment order number",
+      "position_date": "Date of taking office",
+      "contract_date": "Employment contract date",
+      "number": "Employment contract number"
     }
   },
   "confirmationPage": {

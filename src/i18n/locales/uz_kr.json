@@ -1709,6 +1709,23 @@
       "otherOrg": "Бошқа корхона",
       "orgType": "Ташкилот тури",
       "to_organization": "Ташкилот номи"
+    },
+    "form_5": {
+      "pin": "Ходим ЖШШИР (PINFL)",
+      "pinPlaceholder": "14 хонали ЖШШИР",
+      "notFound": "Ходим топилмади",
+      "addWorker": "Ходим қўшиш",
+      "hasPositions": "Фаол лавозимлари: {n}",
+      "noPositions": "Фаол лавозими йўқ",
+      "mainElsewhere": "Ходим бошқа жойда асосий штатда ишлайди — буйруқ тузиб бўлмайди",
+      "workerRequired": "Ходимни ЖШШИР бўйича топинг",
+      "superior_position": "Тайинлаган раҳбар (лавозими ва ташкилоти)",
+      "superiorPlaceholder": "“Ўзбекистон темир йўллари” АЖ бошқаруви раиси",
+      "superior_order_date": "Тайинлов буйруғи санаси",
+      "superior_order_number": "Тайинлов буйруғи рақами",
+      "position_date": "Лавозимга киришган сана",
+      "contract_date": "Меҳнат шартномаси санаси",
+      "number": "Меҳнат шартномаси рақами"
     }
   },
   "confirmationPage": {

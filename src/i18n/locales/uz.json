@@ -1906,6 +1906,23 @@
       "otherOrg": "Boshqa korxona",
       "orgType": "Tashkilot turi",
       "to_organization": "Tashkilot nomi"
+    },
+    "form_5": {
+      "pin": "Xodim JSHSHIR (PINFL)",
+      "pinPlaceholder": "14 xonali JSHSHIR",
+      "notFound": "Xodim topilmadi",
+      "addWorker": "Xodim qo'shish",
+      "hasPositions": "Faol lavozimlari: {n}",
+      "noPositions": "Faol lavozimi yo'q",
+      "mainElsewhere": "Xodim boshqa joyda asosiy shtatda ishlaydi — buyruq tuzib bo'lmaydi",
+      "workerRequired": "Xodimni JSHSHIR bo'yicha toping",
+      "superior_position": "Tayinlagan rahbar (lavozimi va tashkiloti)",
+      "superiorPlaceholder": "“O‘zbekiston temir yo‘llari” AJ boshqaruvi raisi",
+      "superior_order_date": "Tayinlov buyrug'i sanasi",
+      "superior_order_number": "Tayinlov buyrug'i raqami",
+      "position_date": "Lavozimga kirishgan sana",
+      "contract_date": "Mehnat shartnomasi sanasi",
+      "number": "Mehnat shartnomasi raqami"
     }
   },
   "confirmationPage": {
