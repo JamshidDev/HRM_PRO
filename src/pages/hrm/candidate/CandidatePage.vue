@@ -3,7 +3,6 @@
   const { t } = i18n.global
   import {
     UIDConfirm,
-    UIModal,
     UIOfficeApp,
     UIFigSteps,
     UIProfileButton
@@ -20,8 +19,7 @@
   import icons from '@/assets/icons'
   import router from '@/router/index.js'
   import validationRules from '@/utils/validationRules.js'
-  import ContractForm from '@/pages/docFlow/document/contract/contractForm.vue'
-  import ContractFormSteps from '@/pages/docFlow/document/contract/ui/ContractFormSteps.vue'
+  import ContractModal from '@/pages/docFlow/document/contract/ContractModal.vue'
   import { AppPaths } from '@/utils/index.js'
 
   const formRef = ref(null)
@@ -183,19 +181,11 @@
         </p>
       </div>
     </UIDConfirm>
-    <UIModal
-      :title="$t('documentPage.createTitle')"
-      :width="1200"
-      card-class="contract-modal-card"
-      :header-divider="false"
+    <ContractModal
       v-model:visible="store.visible"
-    >
-      <!-- Qadamlar sarlavha qatorida: forma faqat maydonlardan iborat qoladi -->
-      <template #header-actions>
-        <ContractFormSteps />
-      </template>
-      <ContractForm :call-back="onSuccessEv" />
-    </UIModal>
+      :title="$t('documentPage.createTitle')"
+      :call-back="onSuccessEv"
+    />
     <UIOfficeApp ref="officeAppRef" />
   </div>
 </template>

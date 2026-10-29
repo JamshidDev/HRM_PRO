@@ -1,8 +1,6 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
   import { useContractStore, useComponentStore } from '@/store/modules/index.js'
-  import { UIProfileButton } from '@/components/index.js'
-  import icons from '@/assets/icons'
   import ContractForm_1 from '@/pages/docFlow/document/contract/ui/ContractForm_1.vue'
   import ContractForm_2 from '@/pages/docFlow/document/contract/ui/ContractForm_2.vue'
   import ContractForm_3 from '@/pages/docFlow/document/contract/ui/ContractForm_3.vue'
@@ -47,6 +45,10 @@
     store.stepNumber--
   }
 
+  // Tugmalar buyruqlar modalidagidek sarlavhada turadi (ContractPage.vue) va shu
+  // funksiyalarni chaqiradi — forma va uning tekshiruvi shu yerda qoladi.
+  defineExpose({ onSubmit, goBack })
+
   onMounted(() => {
     if (componentStore.groupList.length === 0) {
       componentStore._enums()
@@ -87,21 +89,6 @@
         </n-tab-pane>
       </n-tabs>
     </div>
-
-    <div v-if="store.activeTab !== 4" class="contract-form__actions">
-      <UIProfileButton
-        v-if="store.activeTab !== 1"
-        variant="danger"
-        :icon="icons.figArrowLeft"
-        :loading="store.saveLoading"
-        @click="goBack()"
-      >
-        {{ $t('content.back') }}
-      </UIProfileButton>
-      <UIProfileButton :loading="store.saveLoading" @click="onSubmit">
-        {{ $t('content.next') }}
-      </UIProfileButton>
-    </div>
   </n-form>
 </template>
 
@@ -115,9 +102,14 @@
     qirqilib qolardi. Fon burchakdan chiqmasligi uchun radius sarlavhaning o'ziga
     beriladi (`--n-border-radius` — `n-card` ning o'zgaruvchisi).
   */
-  :global(.contract-modal-card .ui-modal__header) {
+  :global(.contract-modal-card .contract-modal__head) {
     background: color-mix(in srgb, var(--surface-ground) 55%, var(--surface-section));
     border-radius: var(--n-border-radius) var(--n-border-radius) 0 0;
+  }
+
+  // To'liq ekran: burchaksiz, ekran chetigacha (buyruqlar modalidagidek).
+  :global(.contract-modal-card--fullscreen) {
+    border-radius: 0 !important;
   }
 
   .contract-form {
@@ -127,30 +119,14 @@
     width: 100%;
   }
 
-  // 220 = modal sarlavhasi (70) + tana chetlari (32) + amallar qatori (36) +
-  // oraliqlar va sahifa chetlari (82).
+  // 200 = modal sarlavhasi tugmalar va qadamlar bilan (110) + tana chetlari (32) +
+  // sahifa chetlari (58). Tugmalar endi sarlavhada — pastda alohida qator yo'q.
   .contract-form__body {
-    max-height: calc(100dvh - 220px);
+    max-height: calc(100dvh - 200px);
     overflow-x: hidden;
     overflow-y: auto;
     // Skroll paneli maydon soyasi/fokus halqasini qirqmasin.
     padding-right: 4px;
-  }
-
-  // Amallar qatori — sahifalardagi umumiy qolip: o'ngda, tugmalar o'z kengligida
-  // (`UIProfileButton` md: h36 / px24), oraliq 12.
-  .contract-form__actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 12px;
-  }
-
-  // Telefonda modal fullscreen bo'ladi — tugmalar qatorni to'liq egallagani qulay.
-  @media (max-width: 767.98px) {
-    .contract-form__actions > * {
-      flex: 1 1 0;
-    }
   }
 
   // Tab konteynerlari bo'limlarni qisib qo'ymasin. O'ngdagi 12px esa naive'ning
