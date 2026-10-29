@@ -104,7 +104,7 @@
 
   const copyLink = () => {
     Utils.copyToClipboard(store.link, () => {
-      $Toast.info(t('signature.copied'))
+      $Toast.success(t('signature.copied'))
     })
   }
 
