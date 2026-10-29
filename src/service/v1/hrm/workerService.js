@@ -1,7 +1,10 @@
 import axios from '@/service/index.js'
 
 const _checkWorker = async (payload) => {
-  return await axios.get(`/v1/hr/check-worker`, { params: payload.params })
+  return await axios.get(`/v1/hr/check-worker`, {
+    params: payload.params,
+    silentError: payload.silentError
+  })
 }
 const _index = async (payload) => {
   return await axios.get(`/v1/hr/worker-positions`, { params: payload.params })

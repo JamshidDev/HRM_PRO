@@ -759,6 +759,7 @@ export const useComponentStore = defineStore('componentStore', {
           this.confirmationList = res.data.data.data.map((v) => ({
             position: v.position,
             ...v.worker,
+            worker_id: v.worker?.id ?? null,
             id: v.id,
             fullName: Utils.combineFullName(v.worker)
           }))

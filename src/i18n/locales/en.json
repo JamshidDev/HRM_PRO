@@ -1322,7 +1322,26 @@
     "position": "Position",
     "storagePfx": "File key",
     "storageToken": "USB token",
-    "notValidDate": "Expired"
+    "notValidDate": "Expired",
+    "linkExpiresIn": "The link stops working in {time}",
+    "linkExpired": "The link has expired. Get a new link.",
+    "newLink": "New link",
+    "linkWaitTurn": "A link is available when it is this signer's turn",
+    "linkTimeLeft": "Time left to sign:",
+    "linkExpiredPublic": "The link has expired. Ask HR for a new link to sign.",
+    "signedSuccess": "The document was signed successfully",
+    "methodDraw": "Draw signature",
+    "methodEimzo": "E-IMZO (computer)",
+    "methodMobile": "E-IMZO (phone)",
+    "eimzoHint": "Sign with the E-IMZO key on your computer. The key must belong to you.",
+    "eimzoSign": "Sign with E-IMZO",
+    "mobileHintPhone": "Sign in the E-IMZO app, then return to this page.",
+    "mobileHintQr": "Scan the QR code with the E-IMZO app on your phone.",
+    "mobileStart": "Start",
+    "mobileOpenApp": "Open the E-IMZO app",
+    "mobileWaiting": "Waiting for the signature...",
+    "mobileRetry": "Start again",
+    "rejectedSuccess": "The document was rejected. The reason was sent to HR."
   },
   "documentPage": {
     "route": {
@@ -1872,6 +1891,23 @@
       "otherOrg": "Other organization",
       "orgType": "Organization type",
       "to_organization": "Organization name"
+    },
+    "form_5": {
+      "pin": "Employee PINFL",
+      "pinPlaceholder": "14-digit PINFL",
+      "notFound": "Employee not found",
+      "addWorker": "Add employee",
+      "hasPositions": "Active positions: {n}",
+      "noPositions": "No active position",
+      "mainElsewhere": "The employee holds a main position elsewhere — the order cannot be created",
+      "workerRequired": "Find the employee by PINFL",
+      "superior_position": "Appointing manager (position and organization)",
+      "superiorPlaceholder": "Chairman of the Board, “Uzbekiston temir yullari” JSC",
+      "superior_order_date": "Appointment order date",
+      "superior_order_number": "Appointment order number",
+      "position_date": "Date of taking office",
+      "contract_date": "Employment contract date",
+      "number": "Employment contract number"
     }
   },
   "confirmationPage": {
@@ -4161,6 +4197,27 @@
       "inTable": "Accruals",
       "outTable": "Deductions",
       "oneSideEmpty": "No data for one of the selected months"
+    },
+    "systemHours": {
+      "column": "System hours",
+      "title": "Work hours by system",
+      "tabMonth": "Month days",
+      "tabDay": "Day detail",
+      "total": "System total",
+      "totalTip": "Calculated with the timesheet «Auto» logic: turnstile events, work schedule and approved orders.",
+      "statement": "In statement (1C)",
+      "diff": "Difference",
+      "workedDays": "Days worked",
+      "hourShort": "h",
+      "dayShort": "d",
+      "rest": "Day off",
+      "zero": "0 h",
+      "vacation": "Leave / order",
+      "holiday": "Holiday work",
+      "work": "Work day",
+      "noPosition": "No position found for this employee in this organization",
+      "noPositionHint": "To calculate, the employee needs a position in this organization (or its subdivisions) valid during the month.",
+      "pickDay": "Pick a day in the month calendar to see its detail"
     }
   },
   "expiredHealth": {
@@ -6887,5 +6944,21 @@
     "saved": "Deadline and number settings saved",
     "electronicNumber": "Electronic number",
     "searchPlaceholder": "Name or number"
+  },
+  "materialLiabilityPage": {
+    "name": "Material liability",
+    "createTitle": "New material liability contract",
+    "updateTitle": "Edit material liability contract",
+    "form": {
+      "assets": "Entrusted property",
+      "assetsPlaceholder": "E.g.: Chevrolet Cobalt car (1 pc, plate 01 A 123 BC)",
+      "workDescription": "Work performed",
+      "workerObligations": "Employee's additional obligations (clause 1.3)",
+      "employerObligations": "Employer's additional obligations (clause 2.2)",
+      "optionalHint": "Optional — if empty, the clause is omitted from the document"
+    },
+    "locked": {
+      "approved": "The contract is approved and can't be edited"
+    }
   }
 }

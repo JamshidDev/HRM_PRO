@@ -45,6 +45,7 @@
   const activeCallback = computed(() => {
     if (store.signatureType === store.signatureTypes.auth) return store._auth
     if (store.signatureType === store.signatureTypes.contract) return store._contract
+    if (store.signatureType === store.signatureTypes.link) return store._link
     // eimzoGate: olib tashlashda shu qator va yuqoridagi import o'chiriladi.
     if (store.signatureType === GATE_SIGNATURE_TYPE) return gateStore._sign
   })

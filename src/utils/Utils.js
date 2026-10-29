@@ -181,6 +181,7 @@ const documentModels = {
   contract: 'contracts',
   command: 'commands',
   adContract: 'contract-additional',
+  materialLiability: 'material-liability',
   workerApplication: 'worker-application',
   timesheet: 'timesheet',
   vacationSchedule: 'vacation-schedule',

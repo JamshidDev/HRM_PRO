@@ -1338,7 +1338,26 @@
     "organization": "Tashkilot",
     "position": "Lavozim",
     "storagePfx": "Fayl kaliti",
-    "storageToken": "USB token"
+    "storageToken": "USB token",
+    "linkExpiresIn": "Link {time} dan keyin ishlamay qoladi",
+    "linkExpired": "Link muddati tugadi. Yangi link oling.",
+    "newLink": "Yangi link",
+    "linkWaitTurn": "Navbati kelganda link olinadi",
+    "linkTimeLeft": "Imzolash uchun qolgan vaqt:",
+    "linkExpiredPublic": "Link muddati tugadi. Imzolash uchun HR'dan yangi link so'rang.",
+    "signedSuccess": "Hujjat muvaffaqiyatli imzolandi",
+    "methodDraw": "Imzo chizish",
+    "methodEimzo": "E-IMZO (kompyuter)",
+    "methodMobile": "E-IMZO (telefon)",
+    "eimzoHint": "Kompyuteringizdagi E-IMZO kaliti bilan imzolang. Kalit sizga tegishli bo'lishi shart.",
+    "eimzoSign": "E-IMZO bilan imzolash",
+    "mobileHintPhone": "E-IMZO ilovasi orqali imzolang. Imzolagach shu sahifaga qayting.",
+    "mobileHintQr": "Telefoningizdagi E-IMZO ilovasi bilan QR kodni skanerlang.",
+    "mobileStart": "Boshlash",
+    "mobileOpenApp": "E-IMZO ilovasini ochish",
+    "mobileWaiting": "Imzo kutilmoqda...",
+    "mobileRetry": "Qaytadan boshlash",
+    "rejectedSuccess": "Hujjat rad etildi. Sabab HR'ga yuborildi."
   },
   "documentPage": {
     "route": {
@@ -1888,6 +1907,23 @@
       "otherOrg": "Boshqa korxona",
       "orgType": "Tashkilot turi",
       "to_organization": "Tashkilot nomi"
+    },
+    "form_5": {
+      "pin": "Xodim JSHSHIR (PINFL)",
+      "pinPlaceholder": "14 xonali JSHSHIR",
+      "notFound": "Xodim topilmadi",
+      "addWorker": "Xodim qo'shish",
+      "hasPositions": "Faol lavozimlari: {n}",
+      "noPositions": "Faol lavozimi yo'q",
+      "mainElsewhere": "Xodim boshqa joyda asosiy shtatda ishlaydi — buyruq tuzib bo'lmaydi",
+      "workerRequired": "Xodimni JSHSHIR bo'yicha toping",
+      "superior_position": "Tayinlagan rahbar (lavozimi va tashkiloti)",
+      "superiorPlaceholder": "“O‘zbekiston temir yo‘llari” AJ boshqaruvi raisi",
+      "superior_order_date": "Tayinlov buyrug'i sanasi",
+      "superior_order_number": "Tayinlov buyrug'i raqami",
+      "position_date": "Lavozimga kirishgan sana",
+      "contract_date": "Mehnat shartnomasi sanasi",
+      "number": "Mehnat shartnomasi raqami"
     }
   },
   "confirmationPage": {
@@ -4208,6 +4244,27 @@
       "inTable": "Hisoblangan to'lovlar",
       "outTable": "Ushlanmalar",
       "oneSideEmpty": "Tanlangan oylardan birida ma'lumot yo'q"
+    },
+    "systemHours": {
+      "column": "Tizim soati",
+      "title": "Tizim bo'yicha ish soati",
+      "tabMonth": "Oy kunlari",
+      "tabDay": "Kun tafsiloti",
+      "total": "Tizim hisobi",
+      "totalTip": "Turniket hodisalari, ish vaqti grafigi va tasdiqlangan buyruqlar asosida tabeldagi «Auto» mantig'i bilan hisoblangan.",
+      "statement": "Qaydnomada (1C)",
+      "diff": "Farq",
+      "workedDays": "Ishlangan kunlar",
+      "hourShort": "soat",
+      "dayShort": "kun",
+      "rest": "Dam olish",
+      "zero": "0 soat",
+      "vacation": "Ta'til / buyruq",
+      "holiday": "Bayramda ish",
+      "work": "Ish kuni",
+      "noPosition": "Xodimning shu korxonada lavozimi topilmadi",
+      "noPositionHint": "Tizim soatini hisoblash uchun xodimning ushbu korxonada (yoki uning bo'linmalarida) oy davomida amal qilgan lavozimi bo'lishi kerak.",
+      "pickDay": "Kun tafsilotini ko'rish uchun oy jadvalidan kunni tanlang"
     }
   },
   "expiredHealth": {
@@ -7085,5 +7142,21 @@
     "saved": "Muddat va raqam sozlamalari saqlandi",
     "electronicNumber": "Elektron raqam",
     "searchPlaceholder": "F.I.Sh. yoki raqam"
+  },
+  "materialLiabilityPage": {
+    "name": "Moddiy javobgarlik",
+    "createTitle": "Moddiy javobgarlik shartnomasi tuzish",
+    "updateTitle": "Moddiy javobgarlik shartnomasini tahrirlash",
+    "form": {
+      "assets": "Ishonib topshirilgan mol-mulk",
+      "assetsPlaceholder": "Masalan: Chevrolet Cobalt avtomobili (1 dona, davlat raqami 01 A 123 BC)",
+      "workDescription": "Bajarayotgan ishi",
+      "workerObligations": "Xodimning qo‘shimcha majburiyatlari (1.3-band)",
+      "employerObligations": "Ish beruvchining qo‘shimcha majburiyatlari (2.2-band)",
+      "optionalHint": "Ixtiyoriy — bo‘sh qolsa band hujjatga chiqmaydi"
+    },
+    "locked": {
+      "approved": "Shartnoma tasdiqlangan — tahrirlab bo‘lmaydi"
+    }
   }
 }

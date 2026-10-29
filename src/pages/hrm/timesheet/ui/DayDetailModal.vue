@@ -11,6 +11,7 @@
    * Ma'lumot manbai — o'sha `store.dayDetail(...)`, semantikasi o'zgarmadi.
    * ------------------------------------------------------------------------ */
   import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue'
+  import { NModal } from 'naive-ui'
   import dayjs from 'dayjs'
   import {
     ChevronLeft16Filled,
@@ -34,7 +35,13 @@
     visible: { type: Boolean, default: false },
     // Panjaradagi qator: { id, name, full_name, photo, position, table }
     worker: { type: Object, default: null },
-    date: { type: String, default: '' }
+    date: { type: String, default: '' },
+    // Tashqi manba (masalan oylik hisobot): (workerId, date) => detail; berilmasa tabel store.
+    loader: { type: Function, default: null },
+    // Kunma-kun yurish chegarasi ([{ day }]); berilmasa tabel store.days.
+    days: { type: Array, default: null },
+    // Modal o'ramisiz — boshqa oyna ichidagi tab sifatida.
+    embedded: { type: Boolean, default: false }
   })
   const emit = defineEmits(['update:visible', 'update:date'])
 
@@ -52,7 +59,9 @@
     loading.value = true
     detail.value = null
     try {
-      detail.value = await store.dayDetail(props.worker.id, props.date)
+      detail.value = props.loader
+        ? await props.loader(props.worker.id, props.date)
+        : await store.dayDetail(props.worker.id, props.date)
     } finally {
       loading.value = false
     }
@@ -90,13 +99,14 @@
   })
 
   // Kunma-kun yurish — oy ichida, `store.days` chegarasida.
+  const navDays = computed(() => props.days ?? store.days)
   const dayIndex = computed(() =>
-    props.date ? store.days.findIndex((d) => d.day === dayjs(props.date).date()) : -1
+    props.date ? navDays.value.findIndex((d) => d.day === dayjs(props.date).date()) : -1
   )
   const hasPrev = computed(() => dayIndex.value > 0)
-  const hasNext = computed(() => dayIndex.value > -1 && dayIndex.value < store.days.length - 1)
+  const hasNext = computed(() => dayIndex.value > -1 && dayIndex.value < navDays.value.length - 1)
   const go = (dir) => {
-    const next = store.days[dayIndex.value + dir]
+    const next = navDays.value[dayIndex.value + dir]
     if (!next) return
     emit('update:date', dayjs(props.date).date(next.day).format('YYYY-MM-DD'))
   }
@@ -848,8 +858,11 @@
 </script>
 
 <template>
-  <n-modal v-model:show="show" class="tsd-modal">
-    <div class="tsd">
+  <component
+    :is="embedded ? 'div' : NModal"
+    v-bind="embedded ? {} : { show, 'onUpdate:show': (v) => (show = v), class: 'tsd-modal' }"
+  >
+    <div :class="['tsd', { 'tsd--embedded': embedded }]">
       <!-- ── Sarlavha: kim / qaysi kun / yopish ──────────────────────────── -->
       <header class="tsd-head">
         <div class="tsd-id">
@@ -892,7 +905,13 @@
           </button>
         </div>
 
-        <button :title="$t('content.close')" class="tsd-close" type="button" @click="show = false">
+        <button
+          v-if="!embedded"
+          :title="$t('content.close')"
+          class="tsd-close"
+          type="button"
+          @click="show = false"
+        >
           <n-icon :component="Dismiss20Regular" size="20" />
         </button>
       </header>
@@ -1303,7 +1322,7 @@
         </div>
       </n-spin>
     </div>
-  </n-modal>
+  </component>
 </template>
 
 <style lang="scss" scoped>
@@ -1319,6 +1338,31 @@
     overflow: hidden;
     background: var(--fig-block-bg);
     border-radius: 32px;
+  }
+
+  // Tab ichida: xodim tashqi sarlavhada bor — faqat sana navigatsiyasi, ortiqcha chekka yo'q.
+  .tsd--embedded {
+    width: 100%;
+    max-width: none;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  .tsd--embedded .tsd-head {
+    justify-content: flex-end;
+    padding: 8px 0;
+    background: transparent;
+    border-bottom: 0;
+  }
+
+  .tsd--embedded .tsd-id {
+    display: none;
+  }
+
+  .tsd--embedded .tsd-body {
+    max-height: none;
+    padding: 0;
+    overflow: visible;
   }
 
   /* ── Sarlavha ─────────────────────────────────────────────────────────── */

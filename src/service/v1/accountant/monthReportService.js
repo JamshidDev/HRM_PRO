@@ -8,6 +8,15 @@ const _show = async (payload) => {
   return await axios.get(`/v1/economist/statements/${payload.id}`, { params: payload?.params })
 }
 
+// Tizim ish soati — tabel «Auto» mantig'i (turniket + grafik + buyruqlar), oy kunlari kesimida.
+const _systemHours = async (payload) => {
+  return await axios.get(`/v1/economist/statements-system-hours/${payload.id}`)
+}
+
+const _systemHoursDay = async (payload) => {
+  return await axios.get(`/v1/economist/statements-system-hours/${payload.id}/day`, { params: payload.params })
+}
+
 const _template = async (payload) => {
   return await axios.get(`/v1/economist/statement-example`, { params: payload?.params })
 }
@@ -61,6 +70,8 @@ const _vedThresholdExport = async (payload) => {
 export default {
   _index,
   _show,
+  _systemHours,
+  _systemHoursDay,
   _template,
   _exportWithCode,
   _exportMultiple,

@@ -60,6 +60,7 @@ export const STORE_PERMISSIONS = {
   // ── Hujjat aylanishi (nomlari bir ma'noli)
   contractStore: 'hr-contracts',
   adContractStore: 'hr-contract-additional',
+  materialLiabilityStore: 'hr-contracts',
   commandStore: 'hr-commands',
   applicationStore: 'hr-worker-applications',
 

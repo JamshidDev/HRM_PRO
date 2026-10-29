@@ -29,7 +29,7 @@
         <img class="w-full object-cover" src="/main-logo.svg" alt="app logo" />
       </div>
       <div class="flex gap-4">
-        <n-button v-if="!store.isSigned" @click="goSignature" type="default">
+        <n-button v-if="!store.isSigned && !store.linkExpired && !store.rejectedNow" @click="goSignature" type="default">
           <template #icon>
             <DrawText24Regular />
           </template>

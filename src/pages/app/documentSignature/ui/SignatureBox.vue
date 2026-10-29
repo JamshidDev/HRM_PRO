@@ -32,17 +32,9 @@
 </script>
 
 <template>
-  <div id="draw-signature" class="flex flex-col w-full max-w-[800px] mx-auto relative pt-[40px]">
-    <div class="grid grid-cols-12 gap-4 mt-10">
-      <div class="col-span-12">
-        <h3 class="text-2xl font-semibold">{{ $t('signature.signatureTitle') }}</h3>
-        <h3 class="text-gray-400">
-          {{ $t('signature.signatureWorker', { name: store.signatureWorker }) }}
-        </h3>
-      </div>
-    </div>
+  <div class="flex flex-col w-full relative pt-2">
     <UIDrawSignature class="mt-4" ref="signatureRef" />
-    <div class="grid grid-cols-12 gap-4 mt-10 mb-[200px]">
+    <div class="grid grid-cols-12 gap-2 sm:gap-4 mt-6">
       <div class="col-span-4">
         <n-button secondary @click="clearSignature" style="width: 100%" type="error">
           <template #icon>

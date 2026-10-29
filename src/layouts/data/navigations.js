@@ -177,7 +177,7 @@ export const navigations = withRawIcons([
           appPermissions.hrTableRead
         ],
         // Badge — bolalarning imzolanmagan hujjatlari yig'indisi.
-        name: ['contracts', 'commands', 'contract-additional', 'worker-applications'],
+        name: ['contracts', 'commands', 'contract-additional', 'material-liability', 'worker-applications'],
         children: [
           {
             label: 'confirmation.name', // Shartnomalar
@@ -202,6 +202,14 @@ export const navigations = withRawIcons([
             color: 'bg-warning',
             permission: appPermissions.hrContractAdditionalRead,
             name: 'contract-additional'
+          },
+          {
+            label: 'materialLiabilityPage.name', // Moddiy javobgarlik
+            path: Utils.routeHrmPathMaker(AppPaths.MaterialLiability),
+            icon: contractIcon,
+            color: 'bg-info',
+            permission: appPermissions.hrContractsRead,
+            name: 'material-liability'
           },
           {
             label: 'applicationPage.name', // Arizalar
@@ -460,6 +468,14 @@ export const navigations = withRawIcons([
         color: 'bg-warning',
         permission: appPermissions.confirmationAddContracts,
         name: 'contract-additional'
+      },
+      {
+        label: 'materialLiabilityPage.name', // Moddiy javobgarlik
+        path: Utils.routeDocFlowPathMaker(AppPaths.ConfMaterialLiability),
+        icon: DocFlowContractIcon,
+        color: 'bg-info',
+        permission: appPermissions.confirmationContracts,
+        name: 'material-liability'
       },
       {
         label: 'applicationPage.name', // Arizalar
