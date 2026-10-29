@@ -11,7 +11,7 @@ const router = useRouter()
     <div class="w-full max-w-[800px] flex items-center justify-between mb-8">
       <div class="flex items-center gap-3 cursor-pointer" @click="router.push(AppPaths.Login)">
         <img :src="useAppSetting.appLogoUrl" alt="HR Rail Logo" class="h-[44px] object-contain" />
-        <span class="text-white font-bold text-xl uppercase tracking-wide">HRM Railway</span>
+        <span class="text-white font-bold text-xl uppercase tracking-wide">HRM PRO</span>
       </div>
       <n-button
         text
@@ -37,7 +37,7 @@ const router = useRouter()
         </div>
         <p class="text-white opacity-70 text-sm mt-1">Effective Date: January 1, 2026</p>
         <p class="text-white opacity-85 mt-4 leading-relaxed text-sm">
-          <strong>HRM Railway</strong> is developed for internal use within railway organizations to
+          <strong>HRM PRO</strong> is developed for internal use within railway organizations to
           facilitate employee management and HR-related processes.
         </p>
       </div>
@@ -155,7 +155,7 @@ const router = useRouter()
 
       <!-- Card Footer -->
       <div class="privacy-card-footer px-10 py-5 flex items-center justify-between">
-        <span class="text-sm opacity-60">© 2026 HRM Railway. All rights reserved.</span>
+        <span class="text-sm opacity-60">© 2026 HRM PRO. All rights reserved.</span>
         <n-button
           size="small"
           class="footer-back-btn"

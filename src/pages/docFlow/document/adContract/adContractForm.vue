@@ -169,20 +169,26 @@
     }
   )
 
-  watchEffect(() => {
-    if (store.payload.type && commandAllowed.value) {
-      store.payload.command_type = null
-      const data = {
-        status: 'contract-additional',
-        type: store.payload.type
-      }
-      componentStore._commandTypes(data, (id) => {
-        // Tahrirda tiklangan buyruq turi saqlanadi.
-        store.payload.command_type = store.editCommandType ?? id
-        store.editCommandType = null
-      })
+  // Buyruq turlari ro'yxati. Forma ochilganda (yangi yoki tahrir) tanlangan/tiklangan buyruq
+  // turi saqlanadi; faqat kelishuv turi o'zgarganda tozalanadi. Tahrirda tiklangan qiymat
+  // `editCommandType` da keladi. Ro'yxatda bitta tur bo'lsa — o'zi tanlanadi.
+  const loadCommandTypes = (reset) => {
+    if (!store.payload.type || !commandAllowed.value) return
+    store.payload.command_type = store.editCommandType ?? (reset ? null : store.payload.command_type)
+    store.editCommandType = null
+    const data = {
+      status: 'contract-additional',
+      type: store.payload.type
     }
-  })
+    componentStore._commandTypes(data, (id) => {
+      if (!store.payload.command_type) store.payload.command_type = id
+    })
+  }
+  watch(
+    () => store.payload.type,
+    () => loadCommandTypes(true)
+  )
+  onMounted(() => loadCommandTypes(false))
 
   watchEffect(() => {
     if (store.payload.type === 8) {
@@ -242,9 +248,14 @@
     onRemoveEv(store.payload.finance_id)
     onRemoveEv(store.payload.director_id)
   }
+  // Avval tanlanganlar o'z o'rnida qoladi, yangilari oxiriga qo'shiladi (buyruqdagi
+  // CommandFormBody.vue kabi) — sudrab berilgan tartib yangi kelishuvchi qo'shilganda yo'qolmaydi.
   const fillSortableConfirmations = () => {
-    store.sortableConfirmations = confirmationList.value
-      .filter((v) => store.payload.confirmations.includes(v.id))
+    const selected = store.payload.confirmations
+    const kept = store.sortableConfirmations.filter((v) => selected.includes(v.id))
+    const keptIds = kept.map((v) => v.id)
+    const added = confirmationList.value
+      .filter((v) => selected.includes(v.id) && !keptIds.includes(v.id))
       .map((v) => ({
         id: v.id,
         data: {
@@ -255,6 +266,7 @@
           position: v?.position || ''
         }
       }))
+    store.sortableConfirmations = [...kept, ...added]
   }
   const onRemoveEv = (id) => {
     store.sortableConfirmations = store.sortableConfirmations.filter((v) => v.id !== id)

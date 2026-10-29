@@ -29,14 +29,12 @@
       .then(() => (visible.value = false))
       .catch(() => {})
   }
+
+  // «Rad etish» tugmasi SignMethods.vue pastki qatorida; bu yerda faqat oyna.
+  defineExpose({ open })
 </script>
 
 <template>
-  <div class="mt-6 flex justify-center">
-    <n-button type="error" secondary @click="open">
-      {{ $t('documentPage.signature.rejectTitle') }}
-    </n-button>
-  </div>
   <UIModal
     :width="520"
     :visible="visible"

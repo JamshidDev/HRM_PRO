@@ -77,25 +77,39 @@
     store.payload.organization_id = v
   }
 
-  watchEffect(() => {
-    if (store.payload.type) {
-      store.payload.command_type = null
-      const data = {
-        status: Utils.documentModels.contract,
-        type: store.payload.type
-      }
-      componentStore._commandTypes(data, (id) => {
-        // Tahrirda tiklangan buyruq turi saqlanadi.
-        store.payload.command_type = store.editCommandType ?? id
-        store.editCommandType = null
-      })
+  // Buyruq turlari ro'yxati. Forma ochilganda (yangi, «Orqaga» bilan qaytish yoki tahrir)
+  // tanlangan/tiklangan buyruq turi saqlanadi; faqat shartnoma turi o'zgarganda tozalanadi.
+  // Tahrirda tiklangan qiymat `editCommandType` da keladi. Ro'yxatda bitta tur bo'lsa — o'zi tanlanadi.
+  const loadCommandTypes = (reset) => {
+    if (!store.payload.type) return
+    store.payload.command_type = store.editCommandType ?? (reset ? null : store.payload.command_type)
+    store.editCommandType = null
+    const data = {
+      status: Utils.documentModels.contract,
+      type: store.payload.type
     }
-    store.payload.position_date = store.payload.contract_date
-    store.payload.command_date = store.payload.contract_date
-  })
+    componentStore._commandTypes(data, (id) => {
+      if (!store.payload.command_type) store.payload.command_type = id
+    })
+  }
+  watch(
+    () => store.payload.type,
+    () => loadCommandTypes(true)
+  )
+
+  // Lavozim va buyruq sanasi shartnoma sanasiga faqat u O'ZGARGANDA tenglashadi —
+  // tiklangan yoki qo'lda o'zgartirilgan sanalar ochilishda ustidan yozilmaydi.
+  watch(
+    () => store.payload.contract_date,
+    (v) => {
+      store.payload.position_date = v
+      store.payload.command_date = v
+    }
+  )
 
   onMounted(() => {
     fetchConfirmation()
+    loadCommandTypes(false)
   })
 </script>
 

@@ -1,16 +1,29 @@
 <script setup>
+  defineProps({
+    // Chizish maydoni balandligi; ko'pchilik joyda 400px.
+    height: { type: String, default: '400px' }
+  })
+
+  // `change` — har chizilgan chiziqdan, orqaga qaytarish yoki tozalashdan keyin maydon bo'shmi.
+  const emit = defineEmits(['change'])
+
   const signaturePad = ref(null)
 
+  const emitChange = () => emit('change', signaturePad.value?.isEmpty() ?? true)
+
   const options = ref({
-    penColor: '#00f'
+    penColor: '#00f',
+    onEnd: emitChange
   })
 
   const clearSignature = () => {
     signaturePad.value.clearSignature()
+    emitChange()
   }
 
   const unDoSignature = () => {
     signaturePad.value.undoSignature()
+    emitChange()
   }
 
   const saveSignature = () => {
@@ -39,7 +52,7 @@
     :options="options"
     class="border border-surface-line rounded-md bg-white"
     width="100%"
-    height="400px"
+    :height="height"
     ref="signaturePad"
   />
 </template>

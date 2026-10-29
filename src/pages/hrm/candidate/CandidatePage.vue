@@ -13,6 +13,7 @@
   import PhoneForm from './ui/PhoneForm.vue'
   import {
     useComponentStore,
+    useContractStore,
     useCreateWorkerStore,
     usePdfViewerStore
   } from '@/store/modules/index.js'
@@ -25,6 +26,7 @@
   const formRef = ref(null)
   const store = useCreateWorkerStore()
   const componentStore = useComponentStore()
+  const contractStore = useContractStore()
   const pdfStore = usePdfViewerStore()
 
   const officeAppRef = ref(null)
@@ -95,8 +97,13 @@
     $Toast.info(t('message.clearedFields'))
   }
 
+  // Shartnoma sehrgari har safar 1-qadamdan, toza formadan ochiladi
+  // (Asosiy xodimlardagi CheckWorker.vue `onContinue` kabi).
   const onSave = () => {
     store.successVisible = false
+    contractStore.resetForm()
+    contractStore.stepNumber = 1
+    contractStore.activeTab = 1
     componentStore.isSelectedWorker = true
     componentStore.worker = store.savedWorker
     store.visible = true

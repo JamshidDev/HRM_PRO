@@ -394,7 +394,8 @@ const commandStoreOptions = {
     // «Ma'lumotlar» tabi: hujjat tashkilotining mas'ul xodimlari (marshrut API'dan). Rahbar/buxgalter
     // joriy foydalanuvchi ro'yxatida bo'lmasa ham select'da ismi chiqishi uchun qo'shiladi.
     extraConfirmations: [],
-    oneByOne: true,
+    // Yangi buyruqda kelishuvchilar sukut bo'yicha parallel imzolaydi.
+    oneByOne: false,
     // 71/73 — «Asos» matni (forma holati bilan saqlanadi).
     commandBase: null,
     workerVacations: [],
