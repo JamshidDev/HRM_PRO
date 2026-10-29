@@ -180,6 +180,40 @@
       .join('')
       .toUpperCase()
   const swapTime = computed(() => (swapDay.value?.isWorkDay ? `${swapDay.value.startTime}–${swapDay.value.endTime}` : null))
+  // Davr rejimi: joriy oy ichida; o'rinbosar davr bo'yi egasining grafigi bo'yicha ishlaydi (dam kunlari ham).
+  const isPeriod = computed(() => store.replacePayload.period)
+  const periodRange = computed(() => {
+    const r = store.replacePayload.range
+    return r?.length === 2 ? [Utils.timeToZone(r[0]), Utils.timeToZone(r[1])] : null
+  })
+  const periodWork = computed(() => {
+    if (!periodRange.value) return []
+    const [from, to] = periodRange.value
+    return (store.selectedWorker?.days ?? []).filter(
+      (d) => d.date >= from && d.date <= to && !d.isEmpty && d.isWorkDay
+    )
+  })
+  const periodHours = computed(() =>
+    Math.floor(periodWork.value.reduce((s, d) => s + (d.workTime || 0), 0) / 60)
+  )
+  const periodBusy = computed(() => {
+    if (!periodRange.value) return false
+    const [from, to] = periodRange.value
+    return (store.selectedWorker?.days ?? []).some((d) => d.date >= from && d.date <= to && d.substitution)
+  })
+  const canSubmit = computed(() =>
+    isPeriod.value ? periodWork.value.length > 0 && !periodBusy.value : Boolean(swapTime.value)
+  )
+  const setPeriod = (v) => {
+    store.replacePayload.period = v
+    store.replacePayload.positonId = null
+    const base = store.replacePayload.date ?? new Date(`${store.defaultDate}T00:00:00`).getTime()
+    store.replacePayload.range = v ? [base, base] : null
+  }
+  const disabledPeriodDate = (ts) => {
+    const d = Utils.timeToZone(ts)
+    return d < store.monthRange.from || d > store.monthRange.to
+  }
   // Almashtirish turi: bir kunlik o'rinbosarlik yoki tanlangan kundan oy oxirigacha o'ringa boshqa xodim (egasi grafigi o'zgarmaydi).
   const tabTheme = { ...RUBBER_THEME, thumbColor: 'var(--fig-block-bg)', activeTextColor: 'var(--fig-text-primary)' }
   const kindItems = computed(() => [
@@ -212,20 +246,23 @@
   const onSubmit = () => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
     formRef.value?.validate((error) => {
-      if (error || !swapTime.value) return
+      if (error || !canSubmit.value) return
+      const [from, to] = isPeriod.value ? periodRange.value : [swapDate.value, swapDate.value]
       store._replaceWorker({
         worker_position_1: store.selectedWorker.workerPositionId,
         worker_position_2: store.replacePayload.positonId,
-        date: swapDate.value
+        date_from: from,
+        date_to: to
       })
     })
   }
   // Kun yoki rejim almashsa — nomzodlar shu kun bo'yicha qayta yuklanadi.
   watch(
-    () => [store.replaceVisible, store.replaceMode, swapDate.value, store.transferMode],
-    ([visible, mode], old) => {
+    () => [store.replaceVisible, store.replaceMode, swapDate.value, store.transferMode, isPeriod.value, periodRange.value?.join()],
+    (cur, old) => {
+      const [visible, mode] = cur
       if (!visible || mode !== 'swap') return
-      if (old && old[0] === visible && old[1] === mode && old[2] === swapDate.value && old[3] === store.transferMode) return
+      if (old && cur.every((v, i) => v === old[i])) return
       store.replacePayload.positonId = null
       store._workers()
     }
@@ -289,7 +326,7 @@
             </div>
             <div class="text-[13px] leading-[1.4]">
               {{
-                $t('shiftType.groupView.subSummary', {
+                $t(subPair.time ? 'shiftType.groupView.subSummary' : 'shiftType.groupView.subSummaryRest', {
                   date: fmtDate(dayDate),
                   sub: subPair.substitute.name,
                   absent: subPair.absent.name,
@@ -512,14 +549,33 @@
           <!-- 1. Dam oladigan xodim (ish kuni) -->
           <WorkerCard :name="store.selectedWorker.fullName" :position="store.selectedWorker.position" tone="danger">
             <template #aside>
-              <span v-if="swapTime" class="text-secondary line-through">{{ swapTime }}</span>
+              <span v-if="swapTime && !isPeriod" class="text-secondary line-through">{{ swapTime }}</span>
               <span class="px-1.5 py-0.5 rounded font-medium bg-fig-red-50 text-fig-text-red">
                 {{ $t('shiftType.groupView.subAbsentLabel') }}
               </span>
             </template>
           </WorkerCard>
 
+          <div class="flex items-center justify-between gap-3">
+            <span class="text-secondary">{{ $t('shiftType.groupView.subPeriodSwitch') }}</span>
+            <n-switch :value="isPeriod" @update:value="setPeriod">
+              <template #checked>{{ $t('shiftType.groupView.subModePeriod') }}</template>
+              <template #unchecked>{{ $t('shiftType.groupView.subModeDay') }}</template>
+            </n-switch>
+          </div>
+
+          <UIFigField v-if="isPeriod" :label="$t('shiftType.groupView.subPeriod')" editing>
+            <n-date-picker
+              v-model:value="store.replacePayload.range"
+              type="daterange"
+              class="w-full"
+              format="dd.MM.yyyy"
+              :clearable="false"
+              :is-date-disabled="disabledPeriodDate"
+            />
+          </UIFigField>
           <UIFigField
+            v-else
             :label="$t('shiftType.groupView.subDate')"
             editing
             path="date"
@@ -558,11 +614,33 @@
           </UIFigField>
           <WorkerCard v-if="picked" :name="picked.name" :position="picked.position" tone="success" highlight>
             <template #aside>
-              <span class="px-1.5 py-0.5 rounded font-medium bg-success/10 text-success">{{ swapTime }}</span>
+              <span class="px-1.5 py-0.5 rounded font-medium bg-success/10 text-success">
+                {{ isPeriod ? $t('shiftType.groupView.hoursShort', { n: periodHours }) : swapTime }}
+              </span>
             </template>
           </WorkerCard>
 
-          <n-alert v-if="!swapTime" type="warning" :show-icon="false">
+          <template v-if="isPeriod">
+            <n-alert v-if="periodBusy" type="warning" :show-icon="false">
+              {{ $t('shiftType.groupView.subPeriodBusy') }}
+            </n-alert>
+            <n-alert v-else-if="!periodWork.length" type="warning" :show-icon="false">
+              {{ $t('shiftType.groupView.subPeriodNoWork') }}
+            </n-alert>
+            <div v-else-if="picked" class="text-xs text-secondary">
+              {{
+                $t('shiftType.groupView.subPeriodSummary', {
+                  from: fmtShort(periodRange[0]),
+                  to: fmtShort(periodRange[1]),
+                  days: periodWork.length,
+                  hours: periodHours,
+                  name: picked.name,
+                  owner: store.selectedWorker.fullName
+                })
+              }}
+            </div>
+          </template>
+          <n-alert v-else-if="!swapTime" type="warning" :show-icon="false">
             {{ $t('shiftType.groupView.subNotWorkDay') }}
           </n-alert>
         </div>
@@ -570,7 +648,7 @@
           <n-button @click="store.replaceVisible = false" type="error" secondary>
             {{ $t('content.cancel') }}
           </n-button>
-          <n-button @click="onSubmit" :disabled="!swapTime" :loading="store.replaceLoading" type="primary">
+          <n-button @click="onSubmit" :disabled="!canSubmit" :loading="store.replaceLoading" type="primary">
             {{ $t('content.save') }}
           </n-button>
         </div>

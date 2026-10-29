@@ -15,6 +15,7 @@
   import ChipAgreement from '@/assets/icons/hrmDashboard/chip-agreement.svg'
   import ChipMedicalFile from '@/assets/icons/hrmDashboard/head-medical-file.svg'
   import FigTrend from './FigTrend.vue'
+  import { UICountUp } from '@/components/index.js'
 
   const props = defineProps({
     /**
@@ -95,7 +96,7 @@
       <p
         class="relative px-2 text-[20px] leading-6 font-semibold whitespace-nowrap text-fig-text-primary"
       >
-        {{ card.value }}<template v-if="card.unitKey"> {{ $t(card.unitKey) }}</template>
+        <UICountUp :value="card.value" /><template v-if="card.unitKey"> {{ $t(card.unitKey) }}</template>
       </p>
 
       <!-- `mt-auto` — qo'shni karta balandroq bo'lsa ham panel pastda qoladi -->
@@ -109,7 +110,7 @@
             <p
               class="shrink-0 text-right text-[12px] leading-4 font-semibold whitespace-nowrap text-fig-text-primary"
             >
-              {{ row.value }}<template v-if="row.unitKey"> {{ $t(row.unitKey) }}</template>
+              <UICountUp :value="row.value" /><template v-if="row.unitKey"> {{ $t(row.unitKey) }}</template>
             </p>
           </div>
         </template>

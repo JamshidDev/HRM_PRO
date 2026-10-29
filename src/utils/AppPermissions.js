@@ -165,6 +165,9 @@ export const appPermissions = {
   hrTableWorkers: 'hr-table-workers',
   hrTableWorkersWrite: 'hr-table-workers-write',
   hrTableWorkersRead: 'hr-table-workers-read',
+  hrAssistants: 'hr-assistants',
+  hrAssistantsRead: 'hr-assistants-read',
+  hrAssistantsWrite: 'hr-assistants-write',
 
   hrTable: 'hr-table',
   hrTableWrite: 'hr-table-write',

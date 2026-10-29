@@ -70,7 +70,9 @@ const _deleteCrew = async (payload) => {
   return await axios.post(`/v1/turnstile/schedule/schedule-slots/delete-crew`, payload.data)
 }
 const _cancelSubstitution = async (payload) => {
-  return await axios.delete(`/v1/turnstile/schedule/substitutions/${payload.id}`)
+  return await axios.delete(`/v1/turnstile/schedule/substitutions/${payload.id}`, {
+    params: payload.batch ? { batch: 1 } : undefined
+  })
 }
 
 export default {

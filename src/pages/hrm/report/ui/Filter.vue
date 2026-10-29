@@ -132,7 +132,11 @@
           </template>
           {{ $t('report.staffingExport') }}
         </n-button>
-        <n-button @click="addDepartment" type="primary">
+        <n-button
+          v-if="accStore.checkPermission(accStore.pn.hrDepartmentsWrite)"
+          @click="addDepartment"
+          type="primary"
+        >
           <template #icon>
             <n-icon><AddCircle24Regular /></n-icon>
           </template>

@@ -35,6 +35,8 @@
   const depParams = computed(() => ({
     ...store.depParams,
     organizations: store.payload.organization_id.map((v) => v.id).toString(),
+    // Lavozim faqat HR yordamchisining o'z bo'limlariga qo'shiladi (HR uchun o'zgarishsiz).
+    own: 1,
     key: undefined
   }))
   const departmentState = computed(() => componentStore.getDepartmentState(store.depParams.key))

@@ -72,6 +72,7 @@ import academicTitleService from '@/service/v1/hrm/academicTitleService.js'
 import academicDegreeService from '@/service/v1/hrm/academicDegreeService.js'
 import vacationService from '@/service/v1/hrm/vacationService.js'
 import timesheetDepartmentService from '@/service/v1/hrm/timesheetDepartmentService.js'
+import hrAssistantService from '@/service/v1/hrm/hrAssistantService.js'
 import timesheetService from '@/service/v1/hrm/timesheetService.js'
 import timesheetWorkerService from '@/service/v1/hrm/timesheetWorkerService.js'
 import dashboardService from '@/service/v1/hrm/dashboardService.js'
@@ -251,6 +252,7 @@ export default {
   applicationService,
   vacationService,
   timesheetDepartmentService,
+  hrAssistantService,
   timesheetService,
   timesheetWorkerService,
   timesheetConfirmService,

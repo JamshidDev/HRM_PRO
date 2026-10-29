@@ -57,6 +57,40 @@
     }
   ])
 
+  // Kursor ostidagi ustun (series index). Ustun ustida — tooltipda faqat uning qatori;
+  // oyning bo'sh joyida (ustunlar orasida) — ikkalasi ham.
+  let hoveredSeries = null
+
+  const tooltipRow = (p) =>
+    `<div style="display:flex;align-items:center;gap:8px;line-height:20px">${p.marker}` +
+    `<span style="flex:1">${p.seriesName}</span>` +
+    `<b style="margin-left:16px">${Utils.formatNumberToMoney(p.value) || 0}</b></div>`
+
+  const tooltipHtml = (params) => {
+    const list = Array.isArray(params) ? params : [params]
+    const own = list.filter((p) => p.seriesIndex === hoveredSeries)
+    const rows = hoveredSeries === null || !own.length ? list : own
+    return `<div style="margin-bottom:2px">${list[0]?.axisValueLabel ?? ''}</div>${rows.map(tooltipRow).join('')}`
+  }
+
+  // ECharts tooltip matnini ustunning `mouseover` hodisasidan oldin tuzadi va o'sha oy
+  // ichida qayta tuzmaydi. Shuning uchun oxirgi tooltipning `callback`i saqlanadi va
+  // ustun almashganda matn joyida yangilanadi (grafikka hech qanday amal yuborilmaydi).
+  let lastTip = null
+  const tooltipFormatter = (params, ticket, callback) => {
+    lastTip = { params, ticket, callback }
+    return tooltipHtml(params)
+  }
+  const setHovered = (index) => {
+    if (hoveredSeries === index) return
+    hoveredSeries = index
+    if (lastTip) lastTip.callback(lastTip.ticket, tooltipHtml(lastTip.params))
+  }
+  const onBarOver = (e) => {
+    if (e.componentType === 'series') setHovered(e.seriesIndex)
+  }
+  const onBarOut = () => setHovered(null)
+
   const option = computed(() => {
     // `isDark` ga bog'lanamiz — mavzu almashganda grafik ranglari yangilanadi.
     appStore.isDark
@@ -71,6 +105,7 @@
         appendTo: 'body',
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
+        formatter: tooltipFormatter,
         backgroundColor: tokenColor('--surface-section'),
         borderColor: tokenColor('--surface-line'),
         textStyle: { color: tokenColor('--fig-text-primary'), fontSize: 12 }
@@ -133,7 +168,13 @@
     <div
       class="mx-2 mb-2 min-h-[200px] flex-1 rounded-xl p-2"
     >
-      <v-chart autoresize :option="option" class="h-full min-h-[240px] w-full" />
+      <v-chart
+        autoresize
+        :option="option"
+        class="h-full min-h-[240px] w-full"
+        @mouseover="onBarOver"
+        @mouseout="onBarOut"
+      />
     </div>
   </FigPanel>
 </template>
