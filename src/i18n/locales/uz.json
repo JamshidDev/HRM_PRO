@@ -1357,7 +1357,9 @@
     "mobileOpenApp": "E-IMZO ilovasini ochish",
     "mobileWaiting": "Imzo kutilmoqda...",
     "mobileRetry": "Qaytadan boshlash",
-    "rejectedSuccess": "Hujjat rad etildi. Sabab HR'ga yuborildi."
+    "rejectedSuccess": "Hujjat rad etildi. Sabab HR'ga yuborildi.",
+    "linkDocApproved": "Hujjat allaqachon tasdiqlangan (rasman imzolangan). Link berilmaydi.",
+    "linkDocClosed": "Hujjat rad etilgan va yopilgan. Link berilmaydi."
   },
   "documentPage": {
     "route": {

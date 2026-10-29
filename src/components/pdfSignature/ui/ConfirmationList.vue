@@ -72,13 +72,29 @@
   }
   const canLink = (item) => {
     if (!isDocFlow.value || store.viewerLoading || item.status?.id === 3) return false
-    if (store.document?.document?.confirmation?.id === 3) return false
     const perm = LINK_PERMS[store.model]
     if (!perm) return item.type === 'w'
     return ['w', 's', 'd'].includes(item.type) && accountStore.checkPermission(perm)
   }
 
+  // Tasdiqlangan yoki rahbar rad etib yopgan hujjatga link berilmaydi — tugma bosilsa sababi aytiladi.
+  const linkBlockedReason = (item) => {
+    const docStatus = store.document?.document?.confirmation?.id
+    const afterApproval = store.model === Utils.documentModels.materialLiability && item.type === 'w'
+    if (docStatus === 3 && !afterApproval) return t('signature.linkDocApproved')
+    const directorRejected = (store.confirmations || []).some(
+      (c) => c.type === 'd' && c.status?.id === STATUS.rejected
+    )
+    if (docStatus === 4 && directorRejected) return t('signature.linkDocClosed')
+    return null
+  }
+
   const generateLink = (v) => {
+    const reason = linkBlockedReason(v)
+    if (reason) {
+      $Alert.warning(reason)
+      return
+    }
     store._generateLink({ confirmation_id: v.id, model: store.model })
   }
 

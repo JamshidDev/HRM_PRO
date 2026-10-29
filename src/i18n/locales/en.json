@@ -1341,7 +1341,9 @@
     "mobileOpenApp": "Open the E-IMZO app",
     "mobileWaiting": "Waiting for the signature...",
     "mobileRetry": "Start again",
-    "rejectedSuccess": "The document was rejected. The reason was sent to HR."
+    "rejectedSuccess": "The document was rejected. The reason was sent to HR.",
+    "linkDocApproved": "The document is already approved (officially signed). No link is issued.",
+    "linkDocClosed": "The document was rejected and closed. No link is issued."
   },
   "documentPage": {
     "route": {
