@@ -17,6 +17,7 @@
   import { AppPaths, appPermissions, useDebounce } from '@/utils/index.js'
   import contractIcon from '@/assets/icons/contract.svg?url'
   import ReportMorphButton from './ReportMorphButton.vue'
+  import DepartmentTreeFilter from './DepartmentTreeFilter.vue'
   import { onBeforeRouteLeave, useRouter } from 'vue-router'
 
   const store = useWorkerStore()
@@ -181,6 +182,30 @@
     store.params.company_funded_education = false
 
     filterEvent()
+  }
+
+  // Bo'lim tanlovi: ro'yxat (standart) yoki daraxt — daraxt faqat bitta korxonada.
+  const singleOrgId = computed(() =>
+    store.params.organizations.length === 1 ? store.params.organizations[0].id : null
+  )
+  watch(singleOrgId, (id) => {
+    if (!id && store.deptView === 'tree') {
+      store.deptView = 'list'
+      store.params.departments = []
+    }
+  })
+
+  const treeNodes = ref([])
+  const onChangeDeptView = (v) => {
+    // Daraxtda tanlanganlar ro'yxatda ham nomi bilan ko'rinsin.
+    if (v === 'list' && treeNodes.value.length) {
+      const orgName = store.params.organizations[0]?.name
+      const extra = treeNodes.value.map((n) => ({ id: n.id, name: n.name, position: orgName }))
+      store.filterDepartmentList = [
+        ...new Map([...extra, ...store.filterDepartmentList].map((x) => [x.id, x])).values()
+      ]
+    }
+    store.deptView = v
   }
 
   const onChangeDepartment = () => {
@@ -350,8 +375,32 @@
           </div>
 
           <div class="col-span-12 sm:col-span-6">
-            <label>{{ $t('workerPage.filter.department') }}</label>
+            <div class="dept-view-head">
+              <label>{{ $t('workerPage.filter.department') }}</label>
+              <n-tooltip :disabled="!!singleOrgId">
+                <template #trigger>
+                  <n-radio-group
+                    class="age-mode-group dept-view-group"
+                    :value="store.deptView"
+                    :disabled="!singleOrgId"
+                    @update:value="onChangeDeptView"
+                  >
+                    <n-radio-button value="list">{{ $t('workerPage.filter.deptList') }}</n-radio-button>
+                    <n-radio-button value="tree">{{ $t('workerPage.filter.deptTree') }}</n-radio-button>
+                  </n-radio-group>
+                </template>
+                {{ $t('workerPage.filter.deptTreeHint') }}
+              </n-tooltip>
+            </div>
+            <DepartmentTreeFilter
+              v-if="store.deptView === 'tree' && singleOrgId"
+              :organization-id="singleOrgId"
+              v-model="store.params.departments"
+              @nodes="(n) => (treeNodes = n)"
+              @change="onChangeDepartment"
+            />
             <UINSelect
+              v-else
               multiple
               clearable
               :disabled="store.params.organizations.length === 0"
@@ -796,6 +845,39 @@
     border: 3px solid var(--surface-line);
     border-radius: 12px;
     background: #eaecf0;
+  }
+
+  /* Bo'lim filtri: Ro'yxat | Daraxt — yorliq qatoriga sig'adigan ixcham variant. */
+  .dept-view-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .worker-filter-panel .dept-view-head > label {
+    margin-bottom: 0;
+  }
+
+  .age-mode-group.dept-view-group {
+    width: auto;
+    height: 24px;
+    border-width: 2px;
+    border-radius: 8px;
+  }
+
+  .worker-filter-panel .dept-view-group :deep(label) {
+    display: flex;
+    margin-bottom: 0;
+  }
+
+  .dept-view-group :deep(.n-radio-button) {
+    padding: 0 8px;
+  }
+
+  .dept-view-group :deep(.n-radio-button__label) {
+    font-size: 12px;
   }
 
   .age-mode-group :deep(.n-radio-button) {

@@ -8,6 +8,7 @@
   import MarkFile from '@/assets/icons/accDashboard/wm-file.svg'
   import MarkBank from '@/assets/icons/accDashboard/wm-bank.svg'
   import TrendValue from './TrendValue.vue'
+  import { UICountUp } from '@/components/index.js'
   import { toMln } from '../format.js'
   import i18n from '@/i18n/index.js'
 
@@ -63,7 +64,7 @@
 
     <p class="relative px-2 whitespace-nowrap">
       <span class="text-[20px] leading-[26px] font-semibold text-fig-text-primary">
-        {{ toMln(data.value) }}
+        <UICountUp :value="toMln(data.value)" />
       </span>
       <span class="text-[12px] leading-4 text-fig-text-tertiary">
         {{ $t('content.mln') }} {{ $t('content.sum') }}
@@ -88,7 +89,7 @@
           <p
             class="shrink-0 text-right text-[12px] leading-4 font-semibold whitespace-nowrap text-fig-text-primary"
           >
-            {{ toMln(data.extraValue) }} {{ $t('content.mln') }}
+            <UICountUp :value="toMln(data.extraValue)" /> {{ $t('content.mln') }}
           </p>
         </div>
       </template>

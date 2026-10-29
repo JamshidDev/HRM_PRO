@@ -677,6 +677,8 @@
     store.dayEdit = { choice: null, start: null, end: null, breakStart: null, breakEnd: null, hasBreak: false }
     store.workerParams.search = null
     store.replacePayload.positonId = null
+    store.replacePayload.period = false
+    store.replacePayload.range = null
     // O'rinbosarlik — standart kundan boshlab xodimning birinchi ish kuni.
     const free = v.days.find(
       (d) => d.date >= store.defaultDate && d.isWorkDay && !d.substitution && !d.isEmpty

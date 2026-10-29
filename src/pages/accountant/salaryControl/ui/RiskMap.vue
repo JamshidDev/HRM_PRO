@@ -1,16 +1,17 @@
 <script setup>
+  import { ref, computed } from 'vue'
   import { useSalaryControlStore } from '@/store/modules/index.js'
-  import Utils from '@/utils/Utils.js'
-  import i18n from '@/i18n/index.js'
+  import { RISK_STATUS } from '../engine.js'
+  import { SECTION, RISK_METHOD } from '../explain.js'
+  import { normText, money2 } from '../helpers.js'
   import ScSkeleton from './ScSkeleton.vue'
   import StatusBadge from './StatusBadge.vue'
   import EmptyState from './EmptyState.vue'
+  import InfoHint from './InfoHint.vue'
 
-  const { t } = i18n.global
   const store = useSalaryControlStore()
 
-  // Backend status -> vizual meta (badge rangi, plita rangi/ikonka, matn kaliti).
-  // Ranglar `fig-*` tokenlardan — dark/light temaga o'zi moslashadi.
+  // Status -> vizual meta (badge rangi, plita rangi/ikonka, matn kaliti).
   const statusMeta = {
     bad: { tone: 'red', icon: 'warn', label: 'salaryControl.risk.status.bad' },
     chk: { tone: 'amber', icon: 'flag', label: 'salaryControl.risk.status.chk' },
@@ -19,21 +20,46 @@
   }
 
   const statusTone = (status) => statusMeta[status]?.tone ?? 'indigo'
-  const statusLabel = (status) => t(statusMeta[status]?.label ?? 'salaryControl.risk.status.na')
+
+  // Engine (14 risk) natijasi — maketning R massivi + reestr. RiskMap shakliga moslanadi.
+  // card: {b,n,t,st,f,a} → {n,title,status,block,finding,advice,method,count,affected[]}
+  const riskList = computed(() => {
+    const { cards, registry } = store.scRisks
+    // Reestrni risk raqami bo'yicha guruhlab affected tuzamiz.
+    const byRisk = new Map()
+    for (const x of registry) {
+      if (!byRisk.has(x.r)) byRisk.set(x.r, [])
+      byRisk.get(x.r).push(x)
+    }
+    return cards.map((c) => {
+      const items = byRisk.get(c.n) || []
+      return {
+        n: c.n,
+        title: normText(c.t),
+        status: c.st,
+        block: c.b,
+        finding: normText(c.f),
+        advice: normText(c.a),
+        method: RISK_METHOD[c.n] || '',
+        count: items.length,
+        affected: items.slice(0, 10).map((x) => ({ fio: x.fio, position: x.lav, detail: normText(x.d), summa: x.s }))
+      }
+    })
+  })
 
   // 4 ta status bo'yicha KPI (soni + risk raqamlari ro'yxati).
   const statusOrder = ['bad', 'chk', 'ok', 'na']
   const kpi = computed(() => {
-    const list = store.risks ?? []
+    const list = riskList.value
     return statusOrder.map((status) => {
       const items = list.filter((r) => r.status === status)
       return {
         status,
         tone: statusTone(status),
         icon: statusMeta[status]?.icon ?? 'chart',
-        label: statusLabel(status),
+        label: RISK_STATUS[status],
         count: items.length,
-        hint: t(`salaryControl.risk.statusHint.${status}`)
+        hint: items.map((r) => r.n).join(', ') || '—'
       }
     })
   })
@@ -51,7 +77,7 @@
   // aktiv status bo'yicha filtrlab, har blok ichida muhimligi bo'yicha saralaymiz.
   const blocks = computed(() => {
     const map = new Map()
-    for (const r of store.risks ?? []) {
+    for (const r of riskList.value) {
       if (activeStatus.value && r.status !== activeStatus.value) continue
       const key = r.block ?? ''
       if (!map.has(key)) map.set(key, [])
@@ -64,6 +90,8 @@
         .sort((a, b) => (STATUS_RANK[a.status] ?? 9) - (STATUS_RANK[b.status] ?? 9))
     }))
   })
+
+  const hasData = computed(() => store.emps.length > 0)
 
   // «Hisoblash usuli» — kartaga bosilganda ochiladi (qaysi risklar ochiq).
   const openMethods = ref(new Set())
@@ -78,19 +106,22 @@
 
 <template>
   <!-- Yuklanish: kontent shaklidagi skeleton (spinner emas). -->
-  <template v-if="store.risksLoading">
+  <template v-if="store.dashboardLoading">
     <ScSkeleton variant="kpi" :count="4" />
     <ScSkeleton variant="cards" :count="6" />
   </template>
 
   <template v-else>
     <!-- Bu davr uchun ma'lumot yo'q — aniq xabar (noldan iborat kartalar o'rniga). -->
-    <EmptyState
-      v-if="!(store.risks?.length)"
-      :text="$t('salaryControl.risk.emptyPeriod')"
-    />
+    <EmptyState v-if="!hasData" :text="$t('salaryControl.risk.emptyPeriod')" />
 
     <template v-else>
+      <!-- Bo'lim izohi -->
+      <p class="sc-intro">
+        {{ SECTION.risks.sub }}
+        <InfoHint :text="SECTION.risks.info" />
+      </p>
+
       <!-- Yuqori KPI qatori: status bo'yicha risklar soni. -->
       <div class="sc-kpi-grid">
         <div
@@ -133,8 +164,8 @@
       </div>
 
       <!-- Oy me'yori. -->
-      <p v-if="store.norm != null" class="sc-norm">
-        {{ $t('salaryControl.risk.norm', { norm: store.norm }) }}
+      <p v-if="store.dashNorm != null" class="sc-norm">
+        {{ $t('salaryControl.risk.norm', { norm: store.dashNorm }) }}
       </p>
 
       <!-- Bloklar bo'yicha risk kartalari. -->
@@ -200,7 +231,7 @@
                       <td>{{ emp.position }}</td>
                       <td>{{ emp.detail }}</td>
                       <td class="text-right">
-                        {{ emp.summa != null ? Utils.formatNumberToMoney(emp.summa) : '—' }}
+                        {{ emp.summa != null ? money2(emp.summa) : '—' }}
                       </td>
                     </tr>
                   </tbody>
@@ -225,6 +256,14 @@
 <style scoped>
   .sc-sk-gap {
     margin-top: 20px;
+  }
+  .sc-intro {
+    font-size: 12.5px;
+    color: var(--fig-text-tertiary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 14px;
   }
 
   /* Bu davr uchun ma'lumot yo'q — aniq, markazlashgan xabar. */

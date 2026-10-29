@@ -1,10 +1,11 @@
 <script setup>
   // «Umumiy» tab — holatlar turi/summa grafiklari + tekshirilishi kerak bo'lgan
-  // holatlar reestri (D.F). Manba: store.findings.
+  // holatlar reestri (D.F). Manba: store.scFindings.
   import { ref, computed, h } from 'vue'
   import i18n from '@/i18n/index.js'
   import { useAppStore, useSalaryControlStore } from '@/store/modules/index.js'
-  import { money, mln, chartTheme, tokenColor } from '../helpers.js'
+  import { money, money2, mln, chartTheme, tokenColor } from '../helpers.js'
+  import { CHART, SECTION } from '../explain.js'
   import Card from './Card.vue'
   import EChart from './EChart.vue'
   import ScSkeleton from './ScSkeleton.vue'
@@ -34,7 +35,7 @@
   // (eng katta olinadi). JSHSHIR (f.j) bo'yicha aniq guruhlash; yo'q bo'lsa F.I.O.+lavozim.
   const grouped = computed(() => {
     const map = new Map()
-    for (const f of store.findings) {
+    for (const f of store.scFindings) {
       const key = f.j || `${f.fio || ''}||${f.lav || ''}`
       let g = map.get(key)
       if (!g) {
@@ -100,7 +101,7 @@
       align: 'right',
       width: 150,
       className: 'sc-num',
-      render: (r) => money(r.summa)
+      render: (r) => money2(r.summa)
     }
   ])
 
@@ -110,9 +111,9 @@
   const catCountOption = computed(() => {
     appStore.isDark
     const th = chartTheme()
-    const cats = [...new Set(store.findings.map((f) => f.cat))]
+    const cats = [...new Set(store.scFindings.map((f) => f.cat))]
     const byCat = cats.map((c) => {
-      const items = store.findings.filter((f) => f.cat === c)
+      const items = store.scFindings.filter((f) => f.cat === c)
       return { c, n: SEV.map((s) => items.filter((f) => f.sev === s).length), total: items.length }
     })
     byCat.sort((a, b) => b.total - a.total)
@@ -144,7 +145,7 @@
     appStore.isDark
     const th = chartTheme()
     const map = {}
-    for (const f of store.findings) map[f.cat] = (map[f.cat] || 0) + (f.summa || 0)
+    for (const f of store.scFindings) map[f.cat] = (map[f.cat] || 0) + (f.summa || 0)
     const arr = Object.entries(map)
       .map(([c, v]) => ({ c, v: mln(v) }))
       .sort((a, b) => b.v - a.v)
@@ -183,7 +184,7 @@
 
   <template v-else>
     <div class="sc-grid2">
-      <Card :title="$t('salaryControl.findings.byType')" :sub="$t('salaryControl.findings.byTypeSub')">
+      <Card :title="CHART.catc.title" :sub="CHART.catc.sub" :info="CHART.catc.sub">
         <EChart :option="catCountOption" height="300px" />
         <div class="sc-legend">
           <span><i class="sw" :style="{ background: 'var(--fig-icon-red)' }"></i>{{ $t('salaryControl.findings.high') }}</span>
@@ -191,7 +192,7 @@
           <span><i class="sw" :style="{ background: 'var(--fig-icon-amber)' }"></i>{{ $t('salaryControl.findings.low') }}</span>
         </div>
       </Card>
-      <Card :title="$t('salaryControl.findings.bySum')" :sub="$t('salaryControl.findings.bySumSub')">
+      <Card :title="CHART.cats.title" :sub="CHART.cats.sub" :info="CHART.cats.sub">
         <EChart :option="catSumOption" height="300px" />
       </Card>
     </div>
@@ -199,6 +200,7 @@
     <Card
       :title="$t('salaryControl.findings.title')"
       :sub="$t('salaryControl.findings.count', { count: rows.length, sum: money(totalSum) })"
+      :info="SECTION.summary.info"
     >
       <template #head>
         <button

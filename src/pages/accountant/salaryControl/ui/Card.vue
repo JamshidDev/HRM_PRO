@@ -1,16 +1,23 @@
 <script setup>
   // Oylik nazorati bo'limlari uchun sarlavhali karta wrapper (fig tema tokenlari).
+  // `info` berilsa — sarlavha yonida (i) belgisi (ustiga kelganda izoh ko'rsatadi).
+  import InfoHint from './InfoHint.vue'
+
   defineProps({
     title: { type: String, default: '' },
-    sub: { type: String, default: '' }
+    sub: { type: String, default: '' },
+    info: { type: String, default: '' }
   })
 </script>
 
 <template>
   <div class="sc-card">
     <div v-if="title || $slots.head" class="sc-card__head">
-      <div>
-        <h2 v-if="title" class="sc-card__title">{{ title }}</h2>
+      <div class="min-w-0">
+        <h2 v-if="title" class="sc-card__title">
+          <span>{{ title }}</span>
+          <InfoHint v-if="info" :text="info" />
+        </h2>
         <p v-if="sub" class="sc-card__sub">{{ sub }}</p>
       </div>
       <slot name="head" />
@@ -41,6 +48,9 @@
     font-size: 14px;
     font-weight: 600;
     color: var(--fig-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
   .sc-card__sub {
     margin: 2px 0 0;

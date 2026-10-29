@@ -32,6 +32,7 @@
   import CommandForm_60 from './ui/CommandForm_60.vue'
   import CommandForm_76 from './ui/CommandForm_76.vue'
   import CommandForm_75 from './ui/CommandForm_75.vue'
+  import CommandForm_5 from './ui/CommandForm_5.vue'
   import { useAppSetting } from '@/utils/index.js'
   import CommandSigners from './CommandSigners.vue'
   import CommandSignersSummary from './CommandSignersSummary.vue'
@@ -71,6 +72,11 @@
 
   // 75 da xodim select'i ko'rsatilmaydi — xodim bekor qilinayotgan buyruqdan olinadi.
   const isCancelCommand = computed(() => store.payload.command_type === CANCEL_COMMAND_TYPE)
+  // 5 — Lavozimga kirishganlik: xodim PINFL bilan (CommandForm_5), korxona xodimlari select'i yo'q.
+  const POSITION_COMMENCEMENT_TYPE = 5
+  const isPositionCommencement = computed(
+    () => store.payload.command_type === POSITION_COMMENCEMENT_TYPE
+  )
 
   // 75 select'i: «123 NOK - 12.04.2026» + ostida buyruq turi.
   const renderCancelCommandLabel = (option) => [
@@ -120,6 +126,7 @@
   const commandForm_60 = ref(null)
   const commandForm_76 = ref(null)
   const commandForm_75 = ref(null)
+  const commandForm_5 = ref(null)
 
   // Rahbar / buxgalter / kelishuvchi varianti: to'liq ism va lavozim, o'qiladigan o'lchamda.
   // Variant balandligi o'zgaruvchan — shuning uchun bu select'larda virtual skroll o'chirilgan.
@@ -335,6 +342,8 @@
             validate = await commandForm_76.value?.onSubmit(mainData)
           } else if (store.payload.command_type === CANCEL_COMMAND_TYPE) {
             validate = await commandForm_75.value?.onSubmit(mainData)
+          } else if (isPositionCommencement.value) {
+            validate = await commandForm_5.value?.onSubmit(mainData)
           }
 
           resolve(validate?.isValid ? { isValid: true, data: validate.data } : { isValid: false })
@@ -376,6 +385,8 @@
       commandForm_76.value?.validateForm()
     } else if (store.payload.command_type === CANCEL_COMMAND_TYPE) {
       commandForm_75.value?.validateForm()
+    } else if (isPositionCommencement.value) {
+      commandForm_5.value?.validateForm()
     }
   }
 
@@ -669,6 +680,12 @@
       ...(store.extraConfirmations || []).filter((v) => !ids.has(v.id))
     ]
   })
+  // 5-turda rahbar select'iga PINFL'dagi odam ham qo'shiladi (faqat shu buyruq uchun).
+  const directorOptions = computed(() =>
+    isPositionCommencement.value && store.pinDirector
+      ? [store.pinDirector, ...allConfirmations.value]
+      : allConfirmations.value
+  )
   const syncConfirmationEv = () => {
     if (store.payload.finance_id === store.payload.director_id) store.payload.finance_id = null
     const ids = [store.payload.finance_id, store.payload.director_id]
@@ -837,7 +854,7 @@
                 />
               </n-form-item>
             </div>
-            <div class="col-span-12 @xl:col-span-6 flex" v-else>
+            <div class="col-span-12 @xl:col-span-6 flex" v-else-if="!isPositionCommencement">
               <template v-if="store.isSingleSelect">
                 <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker">
                   <SuperSelect
@@ -970,6 +987,9 @@
           <template v-else-if="isCancelCommand">
             <CommandForm_75 ref="commandForm_75" />
           </template>
+          <template v-else-if="isPositionCommencement">
+            <CommandForm_5 ref="commandForm_5" />
+          </template>
 
           <template v-else>
             <EmptyForm />
@@ -1000,7 +1020,7 @@
                 value-field="id"
                 label-field="last_name"
                 v-model:value="store.payload.director_id"
-                :options="allConfirmations"
+                :options="directorOptions"
                 :loading="componentStore.confirmationLoading"
                 :render-label="renderLabel"
                 :virtual-scroll="false"

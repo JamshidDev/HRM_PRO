@@ -919,6 +919,16 @@
     "nHours": "{n} hours",
     "searchWorkerHint": "Name / table №"
   },
+  "hrAssistantPage": {
+    "name": "HR assistants",
+    "scope": "Scope",
+    "whole": "Whole organization",
+    "partial": "Partial",
+    "notAssigned": "Not assigned",
+    "scopeTitle": "Assistant scope",
+    "partialHint": "Works with employees of the selected departments and their sub-departments.",
+    "roleInfo": "Employees with the «HR assistant» role are listed. The role is granted in the Employees section."
+  },
   "timesheetWorkerPage": {
     "transfer_confirm": "Save anyway",
     "transfer_hint": "If you confirm, these departments will be taken from their current timekeeper and assigned to {to}.",
@@ -945,6 +955,9 @@
       "birthday": "Birth month",
       "contract_type": "Contract type",
       "department": "Departments",
+      "deptList": "List",
+      "deptTree": "Tree",
+      "deptTreeHint": "Tree view is available only when one organization is selected",
       "position": "Positions",
       "sex": "Gender",
       "multiple_position": "Employees with multiple contracts",
@@ -1309,7 +1322,26 @@
     "position": "Position",
     "storagePfx": "File key",
     "storageToken": "USB token",
-    "notValidDate": "Expired"
+    "notValidDate": "Expired",
+    "linkExpiresIn": "The link stops working in {time}",
+    "linkExpired": "The link has expired. Get a new link.",
+    "newLink": "New link",
+    "linkWaitTurn": "A link is available when it is this signer's turn",
+    "linkTimeLeft": "Time left to sign:",
+    "linkExpiredPublic": "The link has expired. Ask HR for a new link to sign.",
+    "signedSuccess": "The document was signed successfully",
+    "methodDraw": "Draw signature",
+    "methodEimzo": "E-IMZO (computer)",
+    "methodMobile": "E-IMZO (phone)",
+    "eimzoHint": "Sign with the E-IMZO key on your computer. The key must belong to you.",
+    "eimzoSign": "Sign with E-IMZO",
+    "mobileHintPhone": "Sign in the E-IMZO app, then return to this page.",
+    "mobileHintQr": "Scan the QR code with the E-IMZO app on your phone.",
+    "mobileStart": "Start",
+    "mobileOpenApp": "Open the E-IMZO app",
+    "mobileWaiting": "Waiting for the signature...",
+    "mobileRetry": "Start again",
+    "rejectedSuccess": "The document was rejected. The reason was sent to HR."
   },
   "documentPage": {
     "route": {
@@ -1859,6 +1891,23 @@
       "otherOrg": "Other organization",
       "orgType": "Organization type",
       "to_organization": "Organization name"
+    },
+    "form_5": {
+      "pin": "Employee PINFL",
+      "pinPlaceholder": "14-digit PINFL",
+      "notFound": "Employee not found",
+      "addWorker": "Add employee",
+      "hasPositions": "Active positions: {n}",
+      "noPositions": "No active position",
+      "mainElsewhere": "The employee holds a main position elsewhere — the order cannot be created",
+      "workerRequired": "Find the employee by PINFL",
+      "superior_position": "Appointing manager (position and organization)",
+      "superiorPlaceholder": "Chairman of the Board, “Uzbekiston temir yullari” JSC",
+      "superior_order_date": "Appointment order date",
+      "superior_order_number": "Appointment order number",
+      "position_date": "Date of taking office",
+      "contract_date": "Employment contract date",
+      "number": "Employment contract number"
     }
   },
   "confirmationPage": {
@@ -4148,6 +4197,27 @@
       "inTable": "Accruals",
       "outTable": "Deductions",
       "oneSideEmpty": "No data for one of the selected months"
+    },
+    "systemHours": {
+      "column": "System hours",
+      "title": "Work hours by system",
+      "tabMonth": "Month days",
+      "tabDay": "Day detail",
+      "total": "System total",
+      "totalTip": "Calculated with the timesheet «Auto» logic: turnstile events, work schedule and approved orders.",
+      "statement": "In statement (1C)",
+      "diff": "Difference",
+      "workedDays": "Days worked",
+      "hourShort": "h",
+      "dayShort": "d",
+      "rest": "Day off",
+      "zero": "0 h",
+      "vacation": "Leave / order",
+      "holiday": "Holiday work",
+      "work": "Work day",
+      "noPosition": "No position found for this employee in this organization",
+      "noPositionHint": "To calculate, the employee needs a position in this organization (or its subdivisions) valid during the month.",
+      "pickDay": "Pick a day in the month calendar to see its detail"
     }
   },
   "expiredHealth": {
@@ -5476,8 +5546,18 @@
       "menuFillVacant": "Add employee to vacant days",
       "menuRegen": "Rebuild",
       "menuEditDay": "Change day",
-      "subTitle": "One-day substitute",
-      "subInfoTitle": "One-day substitution",
+      "subTitle": "Assign substitute",
+      "subPeriodSwitch": "Duration",
+      "subModeDay": "One day",
+      "subModePeriod": "Period",
+      "subPeriod": "Period (within current month)",
+      "subPeriodSummary": "{from}–{to}: {name} works on {owner}'s schedule — {days} work days, {hours} h. {owner} is off during this period.",
+      "subPeriodNoWork": "The employee has no work days in the selected period.",
+      "subPeriodBusy": "The period already has a substituted day — pick another period or cancel it first.",
+      "subBatchInfo": "period {from} – {to} ({days} days)",
+      "subCancelDay": "This day only",
+      "subCancelBatch": "Cancel whole period",
+      "subInfoTitle": "Substitution",
       "deleteCrew": "Delete group",
       "deleteCrewConfirm": "«{name}» has no employees — delete it?",
       "subDate": "Day (employee's working day)",
@@ -5497,6 +5577,7 @@
       "subArrow": "covers the shift",
       "subPickHint": "Select the employee who will work instead",
       "subSummary": "On {date}, {sub} works {time} instead of {absent}.",
+      "subSummaryRest": "On {date} {sub} is also off, following {absent}'s schedule (period substitution).",
       "dayNewState": "What should this day be?",
       "dayNow": "Now",
       "dayAfter": "After saving",
@@ -5526,7 +5607,7 @@
       "removeWholeMonth": "Whole month",
       "removeHintMonth": "The employee's whole schedule for this month is removed: no plan in the timesheet, not expected at the turnstile, the slot becomes free. Days with facts are kept. They can be added to another shift later.",
       "addFromMonthStart": "The employee works in this slot from the start of the month ({from}).",
-      "swapKindDay": "One-day substitute",
+      "swapKindDay": "Substitute",
       "swapKindFull": "Move until month end",
       "transferTitle": "Move into this slot (until month end)",
       "transferFrom": "From which day",
@@ -6653,6 +6734,10 @@
   },
   "salaryControl": {
     "title": "Salary control",
+    "testMode": {
+      "title": "Test mode",
+      "desc": "This module is running in test mode — data and calculations are being verified. Do not use for final decisions yet."
+    },
     "tabs": {
       "summary": "Summary",
       "risks": "Risks",
@@ -6859,5 +6944,21 @@
     "saved": "Deadline and number settings saved",
     "electronicNumber": "Electronic number",
     "searchPlaceholder": "Name or number"
+  },
+  "materialLiabilityPage": {
+    "name": "Material liability",
+    "createTitle": "New material liability contract",
+    "updateTitle": "Edit material liability contract",
+    "form": {
+      "assets": "Entrusted property",
+      "assetsPlaceholder": "E.g.: Chevrolet Cobalt car (1 pc, plate 01 A 123 BC)",
+      "workDescription": "Work performed",
+      "workerObligations": "Employee's additional obligations (clause 1.3)",
+      "employerObligations": "Employer's additional obligations (clause 2.2)",
+      "optionalHint": "Optional — if empty, the clause is omitted from the document"
+    },
+    "locked": {
+      "approved": "The contract is approved and can't be edited"
+    }
   }
 }

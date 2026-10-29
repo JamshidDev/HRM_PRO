@@ -145,6 +145,12 @@ export const hrmRoutes = [
     meta: { layout: AppLayouts.main }
   },
   {
+    path: Utils.routeHrmPathMaker(AppPaths.MaterialLiability),
+    name: AppPaths.MaterialLiability.substring(1),
+    component: () => import('@pages/docFlow/document/materialLiability/page.vue'),
+    meta: { layout: AppLayouts.main }
+  },
+  {
     path: Utils.routeHrmPathMaker(AppPaths.Contract),
     name: AppPaths.Contract.substring(1),
     component: () => import('@/pages/docFlow/document/contract/ContractPage.vue'),
