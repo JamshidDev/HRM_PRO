@@ -14,6 +14,8 @@
     events: { type: Array, default: () => [] },
     canLink: { type: Boolean, default: false },
     linkLoading: { type: Boolean, default: false },
+    // Ketma-ket marshrutda navbati kelmagan — link tugmasi nofaol.
+    linkDisabled: { type: Boolean, default: false },
     // Tartibli marshrut: kelishuvchining navbat raqami (parallelda null).
     step: { type: Number, default: null },
     // Hozir shu kelishuvchining navbati / u hali navbatini kutyapti.
@@ -167,6 +169,7 @@
             <template #trigger>
               <n-button
                 :loading="linkLoading"
+                :disabled="linkDisabled"
                 circle
                 secondary
                 type="info"
@@ -176,7 +179,7 @@
                 <template #icon><Link28Filled /></template>
               </n-button>
             </template>
-            {{ $t('documentPage.signature.link') }}
+            {{ linkDisabled ? $t('signature.linkWaitTurn') : $t('documentPage.signature.link') }}
           </n-tooltip>
           <n-button
             v-if="!isSelf"

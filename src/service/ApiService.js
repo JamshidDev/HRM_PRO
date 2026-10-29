@@ -72,6 +72,7 @@ import academicTitleService from '@/service/v1/hrm/academicTitleService.js'
 import academicDegreeService from '@/service/v1/hrm/academicDegreeService.js'
 import vacationService from '@/service/v1/hrm/vacationService.js'
 import timesheetDepartmentService from '@/service/v1/hrm/timesheetDepartmentService.js'
+import hrAssistantService from '@/service/v1/hrm/hrAssistantService.js'
 import timesheetService from '@/service/v1/hrm/timesheetService.js'
 import timesheetWorkerService from '@/service/v1/hrm/timesheetWorkerService.js'
 import dashboardService from '@/service/v1/hrm/dashboardService.js'
@@ -96,6 +97,7 @@ import commandService from '@/service/v1/docFlow/commandService.js'
 import documentChatService from '@/service/v1/docFlow/documentChatService.js'
 import documentFileService from '@/service/v1/docFlow/documentFileService.js'
 import adContractService from '@/service/v1/docFlow/adContractService.js'
+import materialLiabilityService from '@/service/v1/docFlow/materialLiabilityService.js'
 import applicationService from '@/service/v1/docFlow/applicationService.js'
 import confVacationScheduleService from '@/service/v1/docFlow/vacationScheduleService.js'
 import confCertificateService from '@/service/v1/docFlow/confCertificateService.js'
@@ -241,6 +243,7 @@ export default {
   universityService,
   documentFileService,
   adContractService,
+  materialLiabilityService,
   olCareerService,
   partyService,
   militaryService,
@@ -251,6 +254,7 @@ export default {
   applicationService,
   vacationService,
   timesheetDepartmentService,
+  hrAssistantService,
   timesheetService,
   timesheetWorkerService,
   timesheetConfirmService,

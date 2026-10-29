@@ -149,6 +149,7 @@
         v-model:search="searchModel"
         :loading="loading"
         :selected-count="multiple ? modelV.length : 0"
+        :footer="multiple"
         :empty="!options?.length"
         @submit="emits('onSubmit')"
         @clear="modelV = []"

@@ -1,5 +1,6 @@
 import { AppPaths } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
+import { isSalaryControlEnabled } from '@/utils/featureFlags.js'
 import icons from '@assets/icons'
 import HrSidebarIcon from '@assets/icons/HrManagement.svg'
 import DocFlowSidebarIcon from '@assets/icons/DocumentFlow.svg'
@@ -177,7 +178,7 @@ export const navigations = withRawIcons([
           appPermissions.hrTableRead
         ],
         // Badge — bolalarning imzolanmagan hujjatlari yig'indisi.
-        name: ['contracts', 'commands', 'contract-additional', 'worker-applications'],
+        name: ['contracts', 'commands', 'contract-additional', 'material-liability', 'worker-applications'],
         children: [
           {
             label: 'confirmation.name', // Shartnomalar
@@ -202,6 +203,14 @@ export const navigations = withRawIcons([
             color: 'bg-warning',
             permission: appPermissions.hrContractAdditionalRead,
             name: 'contract-additional'
+          },
+          {
+            label: 'materialLiabilityPage.name', // Moddiy javobgarlik
+            path: Utils.routeHrmPathMaker(AppPaths.MaterialLiability),
+            icon: contractIcon,
+            color: 'bg-info',
+            permission: appPermissions.hrContractsRead,
+            name: 'material-liability'
           },
           {
             label: 'applicationPage.name', // Arizalar
@@ -460,6 +469,14 @@ export const navigations = withRawIcons([
         color: 'bg-warning',
         permission: appPermissions.confirmationAddContracts,
         name: 'contract-additional'
+      },
+      {
+        label: 'materialLiabilityPage.name', // Moddiy javobgarlik
+        path: Utils.routeDocFlowPathMaker(AppPaths.ConfMaterialLiability),
+        icon: DocFlowContractIcon,
+        color: 'bg-info',
+        permission: appPermissions.confirmationContracts,
+        name: 'material-liability'
       },
       {
         label: 'applicationPage.name', // Arizalar
@@ -824,13 +841,18 @@ export const navigations = withRawIcons([
         color: 'bg-error',
         permission: appPermissions.economistPaymentAnalysisRead
       },
-      {
-        label: 'salaryControl.title', // Oylik nazorati
-        path: Utils.routeAccountantPathMaker(AppPaths.SalaryControl),
-        icon: Calculator24Regular,
-        color: 'bg-info',
-        permission: appPermissions.economistSalaryControlRead
-      },
+      // Oylik nazorati — HOZIRCHA FAQAT DEV (prodda menyuda ko'rinmaydi, featureFlags).
+      ...(isSalaryControlEnabled
+        ? [
+            {
+              label: 'salaryControl.title', // Oylik nazorati
+              path: Utils.routeAccountantPathMaker(AppPaths.SalaryControl),
+              icon: Calculator24Regular,
+              color: 'bg-info',
+              permission: appPermissions.economistSalaryControlRead
+            }
+          ]
+        : []),
       {
         label: 'monthReport.name', // Oylik hisobot
         path: Utils.routeAccountantPathMaker(AppPaths.MonthReport),

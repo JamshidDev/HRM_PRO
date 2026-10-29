@@ -3,6 +3,7 @@
   import { useMonthReportStore } from '@/store/modules/index.js'
   import { CheckmarkCircle24Filled, ErrorCircle24Filled } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
+  import SystemHoursModal from './SystemHoursModal.vue'
 
   const { t } = i18n.global
   const store = useMonthReportStore()
@@ -28,6 +29,13 @@
     store.showPrams.month = store.params.month
     store.workerPhotoUrl = row.worker?.photo
     store._show()
+  }
+
+  const sysHoursVisible = ref(false)
+  const sysHoursId = ref(null)
+  const onSystemHours = (row) => {
+    sysHoursId.value = row.id
+    sysHoursVisible.value = true
   }
 
   const columns = computed(() => [
@@ -89,6 +97,12 @@
       width: 130,
       align: 'right',
       sortable: true
+    },
+    {
+      key: 'system_hours',
+      title: t('monthReport.systemHours.column'),
+      width: 140,
+      align: 'right'
     }
   ])
 </script>
@@ -152,5 +166,19 @@
         {{ row.total_four }}
       </n-button>
     </template>
+
+    <!-- Tizim soati: xodim bazada bo'lmasa 0, bosilsa kunlar kesimi -->
+    <template #cell-system_hours="{ row }">
+      <button
+        v-if="row.worker"
+        type="button"
+        class="text-sm tabular-nums text-textColor1 underline decoration-dotted underline-offset-4 hover:text-primary cursor-pointer"
+        @click="onSystemHours(row)"
+      >
+        {{ row.system_hours ?? 0 }}
+      </button>
+      <span v-else class="text-sm tabular-nums text-textColor1">0</span>
+    </template>
   </UITable>
+  <SystemHoursModal v-model:visible="sysHoursVisible" :statement-id="sysHoursId" />
 </template>

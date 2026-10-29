@@ -1234,8 +1234,9 @@ export default {
       message: t(`rules.requiredField`),
       trigger: triggerEvents
     },
+    // 5-turda PINFL'dan tanlangan rahbar qiymati — 'w<xodim id>' (satr).
     director_id: {
-      type: 'number',
+      validator: (_r, v) => (typeof v === 'number' && v > 0) || (typeof v === 'string' && /^w\d+$/.test(v)),
       required: true,
       message: t(`rules.requiredField`),
       trigger: triggerEvents
@@ -1512,6 +1513,17 @@ export default {
     responsible: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
   },
   // 58 — Vaqtincha ishdan chetlashtirish.
+  // 5 — Lavozimga kirishganlik.
+  form_5: {
+    pin: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    department_position_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
+    position_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    contract_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    number: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    superior_position: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    superior_order_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    superior_order_number: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
+  },
   form_58: {
     suspension_reason: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
     from: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },

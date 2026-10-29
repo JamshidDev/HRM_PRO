@@ -28,7 +28,8 @@
 
     if (v.length === 0) return
     componentStore.depParams.organizations = v[0].id
-    componentStore._departmentTree()
+    // Shartnoma faqat yordamchining o'z bo'limlariga (HR uchun o'zgarishsiz).
+    componentStore._departmentTree({ own: 1 })
   }
 
   onMounted(() => {

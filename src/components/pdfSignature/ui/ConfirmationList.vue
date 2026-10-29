@@ -65,15 +65,43 @@
     showRoute.value ? rows.value.findIndex((r) => r.item.type === 'r') : -1
   )
 
-  const generateLink = (v) => {
-    if (v.type === 'w') {
-      let data = {
-        confirmation_id: v.id,
-        model: store.model
-      }
-      store._generateLink(data)
-    }
+  // Marshrutli hujjatda link har imzolovchi kartasida (faqat HR), boshqalarda — faqat xodimda.
+  const LINK_PERMS = {
+    [Utils.documentModels.command]: accountStore.pn.hrCommandsWrite,
+    [Utils.documentModels.contract]: accountStore.pn.hrContractsWrite,
+    [Utils.documentModels.adContract]: accountStore.pn.hrContractAdditionalWrite
   }
+  const canLink = (item) => {
+    if (!isDocFlow.value || store.viewerLoading || item.status?.id === 3) return false
+    if (store.document?.document?.confirmation?.id === 3) return false
+    const perm = LINK_PERMS[store.model]
+    if (!perm) return item.type === 'w'
+    return ['w', 's', 'd'].includes(item.type) && accountStore.checkPermission(perm)
+  }
+
+  const generateLink = (v) => {
+    store._generateLink({ confirmation_id: v.id, model: store.model })
+  }
+
+  // Link oynasidagi teskari sanoq (qat'iy 5 daqiqa).
+  const now = ref(Date.now())
+  let timer = null
+  watch(
+    () => [store.linkVisible, store.linkDeadline],
+    ([v]) => {
+      clearInterval(timer)
+      now.value = Date.now()
+      if (v) timer = setInterval(() => (now.value = Date.now()), 1000)
+    }
+  )
+  onBeforeUnmount(() => clearInterval(timer))
+  const linkLeft = computed(() =>
+    store.linkDeadline ? Math.max(0, Math.ceil((store.linkDeadline - now.value) / 1000)) : 0
+  )
+  const linkExpired = computed(() => !!store.link && !store.linkLoading && linkLeft.value === 0)
+  const linkLeftText = computed(
+    () => `${Math.floor(linkLeft.value / 60)}:${String(linkLeft.value % 60).padStart(2, '0')}`
+  )
 
   const copyLink = () => {
     Utils.copyToClipboard(store.link, () => {
@@ -197,9 +225,8 @@
                 :step="stepOf.get(row.item) ?? null"
                 :current="isCurrent(row.item)"
                 :waiting="isWaiting(row.item)"
-                :can-link="
-                  row.item.type === 'w' && isDocFlow && row.item.status?.id !== 3 && !store.viewerLoading
-                "
+                :can-link="canLink(row.item)"
+                :link-disabled="isWaiting(row.item)"
                 :link-loading="store.linkLoading"
                 @link="generateLink"
                 @chat="onOpenChat"
@@ -225,8 +252,15 @@
             class="block text-lg select-none text-center uppercase font-semibold text-primary mb-6"
           >{{ $t('signature.linkText') }}</span>
           <span
-            class="block text-sm border border-surface-line bg-surface-ground text-textColor2 border-dashed p-3 mt-4 rounded-md"
+            class="block text-sm border border-surface-line bg-surface-ground text-textColor2 border-dashed p-3 mt-4 rounded-md break-all"
+            :class="{ 'line-through opacity-50': linkExpired }"
           >{{ store.link }}</span>
+          <div v-if="store.link" class="mt-3 text-center text-sm">
+            <span v-if="!linkExpired" class="text-textColor2">
+              {{ $t('signature.linkExpiresIn', { time: linkLeftText }) }}
+            </span>
+            <span v-else class="text-danger font-medium">{{ $t('signature.linkExpired') }}</span>
+          </div>
         </div>
       </n-spin>
       <template #action>
@@ -239,7 +273,16 @@
           >
             {{ $t('content.close') }}
           </n-button>
-          <n-button :loading="store.linkLoading" @click="copyLink" secondary type="primary">
+          <n-button
+            v-if="linkExpired"
+            :loading="store.linkLoading"
+            @click="store._generateLink(store.linkPayload)"
+            secondary
+            type="primary"
+          >
+            {{ $t('signature.newLink') }}
+          </n-button>
+          <n-button v-else :loading="store.linkLoading" @click="copyLink" secondary type="primary">
             <template #icon>
               <Copy20Regular />
             </template>

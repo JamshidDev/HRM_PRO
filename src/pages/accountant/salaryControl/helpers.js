@@ -9,6 +9,14 @@ import Utils from '@/utils/Utils.js'
 export const money = (v) => Utils.formatNumberToMoney(Math.round(Number(v) || 0))
 // Summa (so'm) — `money` uchun aniq nom (formatSum). Bo'sh joy minglik ajratgich.
 export const formatSum = money
+// 2 kasrli pul (so'm.tiyin) — BUTUN qism bo'shliq bilan guruhlanadi, kasr NUQTA bilan,
+// har doim 2 xona. Masalan 146267.66999999993 → "146 267.67". (Utils.formatNumberToMoney
+// kasr qismni ham bo'shliq bilan bo'lib yuborardi → "146 267.66 999 999 993", o'qilmasdi.)
+export const money2 = (v) => {
+  const n = Number(v) || 0
+  const [int, frac] = Math.abs(n).toFixed(2).split('.')
+  return (n < 0 ? '−' : '') + int.replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '.' + frac
+}
 // Ishlagan vaqt (soat) — butun bo'lsa butun, aks holda 1 kasr xona.
 export const formatHours = (v) => {
   const n = Number(v) || 0

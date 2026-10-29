@@ -16,12 +16,14 @@ export const useReportActions = () => {
 
   const deleteDepartment = (v) => {
     if (store.busy) return
+    if (!accStore.checkAction(accStore.pn.hrDepartmentsDelete)) return
     store.department.elementId = v.id
     store._deleteDepartment()
   }
 
   const editDepartment = (v) => {
     if (store.busy) return
+    if (!accStore.checkAction(accStore.pn.hrDepartmentsWrite)) return
     dpStore.elementId = v.id
     dpStore.visibleType = false
     store.department.visible = true

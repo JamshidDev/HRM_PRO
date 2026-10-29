@@ -4,7 +4,7 @@
   const props = defineProps({
     data: {
       type: Array,
-      default: []
+      default: () => []
     },
     deep: {
       type: Number,
@@ -14,8 +14,8 @@
       type: Boolean,
       default: false
     },
-    modelV: { type: Array, default: [] },
-    checkedVal: { type: Array, default: [] },
+    modelV: { type: Array, default: () => [] },
+    checkedVal: { type: Array, default: () => [] },
     getChildIds: {
       type: Function,
       required: true
@@ -27,8 +27,18 @@
     multiple: { type: Boolean, default: false },
     opened: { type: Boolean, default: false },
     // Qidiruv matni — nomdagi mos qism belgilanadi (default label'da).
-    highlight: { type: String, default: '' }
+    highlight: { type: String, default: '' },
+    // Ajdodlarning «oxirgi bola»ligi (ildizdan pastga) — chiziq qayerda tugashini belgilaydi.
+    trail: { type: Array, default: () => [] }
   })
+
+  // Chiziq ustuni: ajdod oxirgi bo'lmasa — davom etadi; o'z ustuni — «├» yoki «└».
+  const guideClass = (i, idx) => {
+    const own = i === props.deep - 1
+    const last = own ? idx === props.data.length - 1 : props.trail[i]
+    if (own) return last ? 'tso-guide--end' : 'tso-guide--tee'
+    return last ? '' : 'tso-guide--pass'
+  }
 
   const emits = defineEmits(['onSelect', 'onSelectAll'])
 
@@ -95,9 +105,10 @@
   const isExpanded = (item) => props.opened || props.checkedVal.includes(item.id)
 
   const ROW = '[data-tree-row]'
+  // Yopiq shoxcha qatorlari DOM'da qoladi (animatsiya uchun) — klaviatura ularni o'tkazib yuboradi.
   const visibleRows = (el) =>
     [...(el.closest('[data-tree-root]')?.querySelectorAll(ROW) ?? [])].filter(
-      (r) => r.getClientRects().length > 0
+      (r) => r.getClientRects().length > 0 && !r.closest('.tso-children:not(.tso-children--open)')
     )
 
   const onRowKeydown = (e, item) => {
@@ -158,8 +169,14 @@
         @click="onSelect(item)"
         @keydown="onRowKeydown($event, item)"
       >
-        <!-- Ajdod darajalari: har biri 18px ustun, o'rtasida ingichka chiziq -->
-        <span v-for="i in deep - 1" :key="i" class="tso-guide" aria-hidden="true"></span>
+        <!-- Ajdod darajalari: ota strelkasi ostidan chiqadigan «│ ├ └» chiziqlari -->
+        <span
+          v-for="i in deep - 1"
+          :key="i"
+          class="tso-guide"
+          :class="[guideClass(i, idx), i === deep - 1 && !hasChildren(item) && 'tso-guide--leaf']"
+          aria-hidden="true"
+        ></span>
 
         <button
           v-if="hasChildren(item)"
@@ -169,7 +186,7 @@
           :aria-label="isExpanded(item) ? 'collapse' : 'expand'"
           @click.stop="onOpen(item)"
         >
-          <n-icon size="14">
+          <n-icon size="16">
             <ChevronRight16Regular
               class="tso-chevron__icon"
               :class="isExpanded(item) && 'tso-chevron__icon--open'"
@@ -177,7 +194,7 @@
           </n-icon>
         </button>
         <span v-else class="tso-chevron tso-chevron--leaf" aria-hidden="true">
-          <span class="tso-dot"></span>
+          <span v-if="deep === 1" class="tso-dot"></span>
         </span>
 
         <n-checkbox
@@ -213,9 +230,15 @@
         </button>
       </div>
 
-      <n-collapse-transition :show="isExpanded(item)">
+      <div
+        v-if="hasChildren(item)"
+        class="tso-children"
+        :class="isExpanded(item) && 'tso-children--open'"
+        :inert="!isExpanded(item) || undefined"
+      >
+        <div class="tso-children__inner">
         <TreeOrg
-          v-if="hasChildren(item)"
+          :trail="[...trail, idx === data.length - 1]"
           :short="short"
           :deep="deep + 1"
           :opened="opened"
@@ -233,7 +256,8 @@
             <slot name="label" :data="data"></slot>
           </template>
         </TreeOrg>
-      </n-collapse-transition>
+        </div>
+      </div>
     </template>
   </div>
 </template>
@@ -285,22 +309,74 @@
     font-weight: 600;
   }
 
+  /* Ustun = strelka kengligi (20px): chiziq ota strelkasining aynan markazidan tushadi. */
   .tso-guide {
     position: relative;
     align-self: stretch;
     margin: -4px 0;
-    width: 18px;
+    width: 20px;
     flex-shrink: 0;
   }
 
-  .tso-guide::before {
+  .tso-guide--pass::before,
+  .tso-guide--tee::before,
+  .tso-guide--end::before {
     content: '';
     position: absolute;
-    left: 50%;
+    left: 9.5px;
     top: 0;
     bottom: 0;
     width: 1px;
     background: var(--tso-line);
+  }
+
+  /* «└» — oxirgi bolada chiziq qator markazida tugaydi. */
+  .tso-guide--end::before {
+    bottom: auto;
+    height: 14px;
+  }
+
+  /* Gorizontal tarmoq — strelkagacha (barg bo'lsa, uning o'rniga qadar). */
+  .tso-guide--tee::after,
+  .tso-guide--end::after {
+    content: '';
+    position: absolute;
+    left: 9.5px;
+    top: 14px;
+    width: 14px;
+    height: 1px;
+    background: var(--tso-line);
+  }
+
+  .tso-guide--leaf::after {
+    width: 22px;
+  }
+
+  /* Ochish/yopish: balandlik (grid 0fr→1fr) va shaffoflik birga — silliq. */
+  .tso-children {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition:
+      grid-template-rows 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.18s ease;
+  }
+
+  .tso-children--open {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  .tso-children__inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tso-children,
+    .tso-chevron__icon {
+      transition: none;
+    }
   }
 
   .tso-chevron {

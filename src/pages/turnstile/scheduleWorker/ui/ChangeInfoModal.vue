@@ -12,10 +12,11 @@
   const accStore = useAccountStore()
   const info = computed(() => store.changeInfo)
   const sub = computed(() => store.changeInfo.substitution)
-  const onCancelSub = () => {
+  const onCancelSub = (batch = false) => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
-    store._cancelSubstitution(sub.value.id)
+    store._cancelSubstitution(sub.value.id, batch)
   }
+  const batch = computed(() => sub.value?.batch ?? null)
   const fmt = (d) => (d ? `${d.slice(8, 10)}.${d.slice(5, 7)}.${d.slice(0, 4)}` : '')
   // O'rinbosarlik juftligi: kim dam oladi (A) va kim o'rniga chiqadi (B); bosilgan xodim ajratib ko'rsatiladi.
   const pair = computed(() => {
@@ -25,7 +26,10 @@
     const other = { name: s.name, position: s.position, self: false }
     return s.role === 'absent' ? { absent: me, substitute: other } : { absent: other, substitute: me }
   })
-  const shiftTime = computed(() => (sub.value ? `${sub.value.start_time}–${sub.value.end_time}` : ''))
+  const shiftTime = computed(() => {
+    if (!sub.value) return ''
+    return sub.value.start_time ? `${sub.value.start_time}–${sub.value.end_time}` : t('shiftType.groupView.rest')
+  })
   // O'rinbosarning shu kungi o'z rejasi (faqat o'rinbosar bosilganda ma'lum).
   const substituteOwn = computed(() => {
     const o = sub.value?.role === 'substitute' ? sub.value.original : null
@@ -41,12 +45,15 @@
 
       <template v-if="sub">
         <div class="rounded-xl bg-surface-ground px-3 py-2 text-[13px] leading-[1.4]">
-          {{ $t('shiftType.groupView.subSummary', { date: fmt(info.date), sub: pair.substitute.name, absent: pair.absent.name, time: shiftTime }) }}
+          {{ $t(sub.start_time ? 'shiftType.groupView.subSummary' : 'shiftType.groupView.subSummaryRest', { date: fmt(info.date), sub: pair.substitute.name, absent: pair.absent.name, time: shiftTime }) }}
         </div>
         <div class="flex items-center justify-between gap-2 text-xs text-secondary">
           <span class="flex items-center gap-1.5">
             <n-icon size="16"><CalendarLtr16Regular /></n-icon>
             {{ fmt(info.date) }}
+            <span v-if="batch" class="text-primary">
+              · {{ $t('shiftType.groupView.subBatchInfo', { from: fmt(batch.from), to: fmt(batch.to), days: batch.days }) }}
+            </span>
           </span>
           <span class="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-surface-ground text-textColor1 font-medium">
             <n-icon size="14"><Clock16Regular /></n-icon>
@@ -73,11 +80,11 @@
                 class="px-1.5 py-0.5 rounded font-medium"
                 :class="key === 'absent' ? 'bg-fig-red-50 text-fig-text-red' : 'bg-success/10 text-success'"
               >
-                {{ key === 'absent' ? $t('shiftType.groupView.subAbsentLabel') : $t('shiftType.groupView.subWorksLabel') }}
+                {{ key === 'absent' || !sub.start_time ? $t('shiftType.groupView.subAbsentLabel') : $t('shiftType.groupView.subWorksLabel') }}
               </span>
             </template>
           </WorkerCard>
-          <div v-if="key === 'absent'" class="flex items-center gap-2 pl-3 -my-1 text-xs text-warning font-medium">
+          <div v-if="key === 'absent' && sub.start_time" class="flex items-center gap-2 pl-3 -my-1 text-xs text-warning font-medium">
             <span class="w-7 h-7 rounded-full bg-warning/10 flex items-center justify-center">
               <n-icon size="14"><ArrowDown16Regular /></n-icon>
             </span>
@@ -121,9 +128,17 @@
           type="error"
           secondary
           :loading="store.replaceLoading"
-          @click="onCancelSub"
+          @click="onCancelSub(false)"
         >
-          {{ $t('shiftType.groupView.subCancel') }}
+          {{ batch ? $t('shiftType.groupView.subCancelDay') : $t('shiftType.groupView.subCancel') }}
+        </n-button>
+        <n-button
+          v-if="sub && batch && !store.isPastMonth"
+          type="error"
+          :loading="store.replaceLoading"
+          @click="onCancelSub(true)"
+        >
+          {{ $t('shiftType.groupView.subCancelBatch') }}
         </n-button>
         <n-button @click="store.changeInfo.visible = false">{{ $t('content.close') }}</n-button>
       </div>
