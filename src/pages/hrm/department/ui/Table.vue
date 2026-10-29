@@ -130,7 +130,9 @@ import { Delete20Regular, Edit32Regular, Eye16Regular, OpenFolder24Filled } from
       label: t('content.attachment'),
       key: Utils.ActionTypes.attachment,
       icon: UIHelper.renderIcon(OpenFolder24Filled),
-      action: onAddChild
+      action: onAddChild,
+      // Pastki bo'lim qo'shish — bo'lim yozish ruxsati bo'lmasa (masalan HR yordamchisi) o'chiq.
+      disabled: !accStore.checkPermission(accStore.pn.hrDepartmentsWrite)
     },
     {
       label: t('content.edit'),
