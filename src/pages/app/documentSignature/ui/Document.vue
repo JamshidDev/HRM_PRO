@@ -2,7 +2,7 @@
   import { usePdfViewerStore } from '@/store/modules/index.js'
   import DocumentContent from '@/pages/app/documentSignature/ui/DocumentContent.vue'
   import SignMethods from '@/pages/app/documentSignature/ui/SignMethods.vue'
-  import LinkTimer from '@/pages/app/documentSignature/ui/LinkTimer.vue'
+  import LinkExpired from '@/pages/app/documentSignature/ui/LinkExpired.vue'
   import { CheckmarkCircle24Filled, DismissCircle24Filled } from '@vicons/fluent'
 
   const store = usePdfViewerStore()
@@ -23,8 +23,6 @@
 <template>
   <div>
     <template v-if="store.pdfUrl && !store.checkLoading">
-      <!-- Sanoq sarlavhada; bu yerda faqat muddat tugaganda nima qilish kerakligi yoziladi -->
-      <LinkTimer v-if="expired" :left="0" />
       <div v-if="store.signedNow" class="px-4 mt-4">
         <div
           class="max-w-[800px] mx-auto flex items-center gap-2 rounded-lg border border-success/40 bg-success/10 px-4 py-3 text-success"
@@ -43,6 +41,8 @@
       </div>
       <DocumentContent />
       <SignMethods v-if="!store.isSigned && !store.rejectedNow && !expired" />
+      <!-- Sanoq sarlavhada; muddat tugasa imzolash bloki o'rnida nima qilish kerakligi yoziladi -->
+      <LinkExpired v-else-if="expired" />
     </template>
   </div>
 </template>

@@ -106,7 +106,7 @@
               :class="timerClass"
             >
               <n-icon size="16"><Timer24Regular /></n-icon>
-              {{ timeText }}
+              {{ store.linkLeft > 0 ? timeText : $t('signature.linkExpiredShort') }}
             </span>
           </template>
           {{
