@@ -4,6 +4,7 @@
   import ContractPage from './contract/ContractPage.vue'
   import CommandPage from './command/page.vue'
   import AdContractPage from './adContract/page.vue'
+  import MaterialLiabilityPage from './materialLiability/page.vue'
   import ApplicationPage from './application/page.vue'
   import TimesheetPage from '@/pages/hrm/timesheet/TimesheetList.vue'
   import i18n from '@/i18n/index.js'
@@ -39,6 +40,14 @@
             name: t('documentPage.tabs.adContract'),
             badge: badgeOf('contract-additional'),
             component: AdContractPage
+          }
+        : null,
+      accStore.canView(accStore.pn.hrContractsRead)
+        ? {
+            id: 'material_liability',
+            name: t('materialLiabilityPage.name'),
+            badge: badgeOf('material-liability'),
+            component: MaterialLiabilityPage
           }
         : null,
       accStore.canView(accStore.pn.hrWorkerApplicationsRead)

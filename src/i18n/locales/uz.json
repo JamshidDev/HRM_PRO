@@ -7141,5 +7141,21 @@
     "saved": "Muddat va raqam sozlamalari saqlandi",
     "electronicNumber": "Elektron raqam",
     "searchPlaceholder": "F.I.Sh. yoki raqam"
+  },
+  "materialLiabilityPage": {
+    "name": "Moddiy javobgarlik",
+    "createTitle": "Moddiy javobgarlik shartnomasi tuzish",
+    "updateTitle": "Moddiy javobgarlik shartnomasini tahrirlash",
+    "form": {
+      "assets": "Ishonib topshirilgan mol-mulk",
+      "assetsPlaceholder": "Masalan: Chevrolet Cobalt avtomobili (1 dona, davlat raqami 01 A 123 BC)",
+      "workDescription": "Bajarayotgan ishi",
+      "workerObligations": "Xodimning qo‘shimcha majburiyatlari (1.3-band)",
+      "employerObligations": "Ish beruvchining qo‘shimcha majburiyatlari (2.2-band)",
+      "optionalHint": "Ixtiyoriy — bo‘sh qolsa band hujjatga chiqmaydi"
+    },
+    "locked": {
+      "approved": "Shartnoma tasdiqlangan — tahrirlab bo‘lmaydi"
+    }
   }
 }

@@ -6943,5 +6943,21 @@
     "saved": "Deadline and number settings saved",
     "electronicNumber": "Electronic number",
     "searchPlaceholder": "Name or number"
+  },
+  "materialLiabilityPage": {
+    "name": "Material liability",
+    "createTitle": "New material liability contract",
+    "updateTitle": "Edit material liability contract",
+    "form": {
+      "assets": "Entrusted property",
+      "assetsPlaceholder": "E.g.: Chevrolet Cobalt car (1 pc, plate 01 A 123 BC)",
+      "workDescription": "Work performed",
+      "workerObligations": "Employee's additional obligations (clause 1.3)",
+      "employerObligations": "Employer's additional obligations (clause 2.2)",
+      "optionalHint": "Optional — if empty, the clause is omitted from the document"
+    },
+    "locked": {
+      "approved": "The contract is approved and can't be edited"
+    }
   }
 }
