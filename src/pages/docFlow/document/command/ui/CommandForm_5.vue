@@ -81,19 +81,23 @@
   )
   watch(() => form.value.department_position_id, applyDirector)
 
-  // Bo'limlar daraxti buyruq korxonasi bo'yicha.
-  const loadDepartments = (orgId) => {
-    form.value.department_id = []
-    form.value.department_position_id = null
+  // Bo'limlar daraxti buyruq korxonasi bo'yicha; birinchi yuklashda tiklangan bo'lim/lavozim saqlanadi.
+  const loadDepartments = (orgId, reset) => {
+    if (reset) {
+      form.value.department_id = []
+      form.value.department_position_id = null
+    }
     componentStore.departmentList = []
     componentStore.departmentPositionList = []
     if (!orgId) return
     componentStore.depParams.organizations = orgId
     componentStore._departmentTree({ own: 1 })
+    const dep = form.value.department_id?.[0]?.id
+    if (dep) componentStore._departmentPosition(dep)
   }
   watch(
     () => store.payload.organization_id?.[0]?.id,
-    (id) => loadDepartments(id),
+    (id, old) => loadDepartments(id, old !== undefined),
     { immediate: true }
   )
   const onChangeDepartment = (v) => {

@@ -29,7 +29,8 @@
         clearInterval(poll)
         await store._linkMobileVerify(route.query)
         stop()
-      } catch {
+      } catch (err) {
+        store.linkError(err)
         stop()
       }
     }, 2000)

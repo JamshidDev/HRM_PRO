@@ -1513,6 +1513,16 @@ export default {
     responsible: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
   },
   // 58 — Vaqtincha ishdan chetlashtirish.
+  // 8 — Ishga tiklash (sud qarori).
+  form_8: {
+    pin: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    department_position_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
+    position_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    from: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    to: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    court_name: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    court_decision_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
+  },
   // 5 — Lavozimga kirishganlik.
   form_5: {
     pin: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
@@ -1555,6 +1565,14 @@ export default {
     profession: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     acting_worker: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     telegram_number: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
+  },
+  // 79 — Murabbiylik.
+  form_79: {
+    mentor_worker_position_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    mentor_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    from: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    to: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    mentor_percent: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
   },
   // 75 — Buyruqni bekor qilish.
   form_75: {

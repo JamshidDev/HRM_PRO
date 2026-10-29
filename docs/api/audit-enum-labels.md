@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Holat** | `draft` — frontenddan so'rov, backend kutilmoqda |
+| **Holat** | `backend tayyor` — `feat/review-codes` branchida, dev'ga merge kutilmoqda |
 | **Frontend** | Shahriyor, 2026-10-29 |
 | **Frontend sahifa** | Tarix → yozuv tarixi modali («O'zgarish tafsiloti — Buyruqlar #…») |
 | **ClickUp** | DAS-12124 |
@@ -56,8 +56,22 @@ bo'lsa (turi maydonida `w/s/d/r` turibdi) bilgan kodlarini o'zi nomga aylantirad
 Bilmagan kod (masalan holat `5`) raqamligicha, «tavsifi yo'q» degan izoh bilan chiqadi.
 Backend `{ id, name }` qaytara boshlasa, bu xarita kerak bo'lmay qoladi.
 
+## Backend javobi (2026-10-29)
+
+- `GET /v1/audit` — kodli maydonlar endi `type: "ref"` va `old/new: { id, name }` (`name` — `Accept-Language` tilida):
+  - imzolovchilar jadvallari (`*_confirmations`): `type`, `status`, `confirmation_type`;
+  - hujjatlar: `confirmation`, hujjat turi `type` (buyruq, shartnoma, qo'shimcha kelishuv, ariza).
+  - Noma'lum kod — `{ id, name: null }`.
+- Savollarga javob:
+  - **Holat:** `1` Jarayonda, `2` O'qilgan, `3` Tasdiqlangan, `4` Rad etilgan, **`5` O'chirilgan** (tahrirda almashtirilgan imzolovchi qatori),
+    `6` Qoralama, `7` Muammoli.
+  - **Imzo usuli:** `1` E-IMZO, `2` qo'lda chizilgan imzo (havola orqali), `3` tugma, `4` imzolanmagan, `5` Face ID.
+  - **`field` kalitlari:** `type`, `status`, `confirmation_type`.
+- Hali raqam bo'lib qoladi: shartnoma va ariza `status` maydonlari.
+
 ## O'zgarishlar tarixi
 
 | Sana | Kim | Nima o'zgardi |
 |---|---|---|
 | 2026-10-29 | Shahriyor (frontend) | Birinchi versiya |
+| 2026-10-29 | Backend | Kodli maydonlar `{id, name}` bilan |

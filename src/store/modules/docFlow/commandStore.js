@@ -115,9 +115,11 @@ const FORM_STATE_KEYS = [
   'form_57',
   'form_58',
   'form_5',
+  'form_8',
   'form_59',
   'form_60',
   'form_76',
+  'form_79',
   'form_74',
   'form_75',
   'vacations',
@@ -250,6 +252,19 @@ const commandStoreOptions = {
     // 58 — Vaqtincha ishdan chetlashtirish (hujjatgina).
     // 5-turda rahbar select'iga qo'shiladigan PINFL'dagi odam (reyestrda bo'lmasa).
     pinDirector: null,
+    // 8 — Ishga tiklash (sud qarori): bo'shatilgan xodim PINFL bilan, yangi shtat joyiga qabul.
+    form_8: {
+      pin: null,
+      worker: null,
+      termination: null,
+      department_id: [],
+      department_position_id: null,
+      position_date: null,
+      from: null,
+      to: null,
+      court_name: null,
+      court_decision_date: null
+    },
     // 5 — Lavozimga kirishganlik (rahbar tayinlovi): xodim PINFL bilan butun tizimdan.
     form_5: {
       pin: null,
@@ -296,6 +311,15 @@ const commandStoreOptions = {
       telegram_number: null,
       learning_center_id: null,
       manual: { center: false, course: false, profession: false }
+    },
+    // 79 — Murabbiylik; `mentor_option` — select yorlig'i (tahrirda tiklash uchun).
+    form_79: {
+      mentor_worker_position_id: null,
+      mentor_option: null,
+      mentor_date: null,
+      from: null,
+      to: null,
+      mentor_percent: null
     },
     // 75 — Buyruqni bekor qilish (faqat tasdiqlangan buyruq bekor qilinadi).
     form_75: {
@@ -807,11 +831,32 @@ const commandStoreOptions = {
         manual: { center: false, course: false, profession: false }
       }
 
+      this.form_79 = {
+        mentor_worker_position_id: null,
+        mentor_option: null,
+        mentor_date: null,
+        from: null,
+        to: null,
+        mentor_percent: null
+      }
+
       this.form_75 = {
         cancel_reason: null,
         base_reason: null
       }
       this.pinDirector = null
+      this.form_8 = {
+        pin: null,
+        worker: null,
+        termination: null,
+        department_id: [],
+        department_position_id: null,
+        position_date: null,
+        from: null,
+        to: null,
+        court_name: null,
+        court_decision_date: null
+      }
       this.form_5 = {
         pin: null,
         worker: null,

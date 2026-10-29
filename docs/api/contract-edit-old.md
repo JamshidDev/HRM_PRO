@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Holat** | `draft` — frontend tayyor, backend kutilmoqda |
+| **Holat** | `backend tayyor` — `feat/review-codes` branchida, dev'ga merge kutilmoqda |
 | **Frontend** | Shahriyor, 2026-10-29 (ClickUp DAS-12128) |
 | **Frontend sahifa** | HRM → Shartnomalar (`/hrm/contract`): qatordagi «Tahrirlash» va hujjat oynasidagi «Ma'lumotlar» tabi |
 | **Bog'liq** | Qo'shimcha kelishuvlar uchun xuddi shu so'rov — `docs/api/ad-contract-edit-old.md` |
@@ -105,3 +105,21 @@ Izohlar:
 
 O'zgarish kerak emas: `form_state` va `editable: true` kelishi bilan «Tahrirlash» va
 «Ma'lumotlar» tabi ishlaydi (`contractStore._openEdit`, `DocumentFormDataTab.vue`).
+
+## Backend javobi (2026-10-29)
+
+- `GET /v1/hr/contracts/{id}/form` — saqlangan `form_state` bo'lmasa, backend uni **so'rov paytida tuzadi**; `PUT` ham saqlangan formasiz ishlaydi.
+  - Bazadan: xodim (`worker`), `pin`, korxona, raqam, tabel raqami, tur, sanalar, rahbar, `command_status`,
+    buyruq turi / raqami / sanasi, kelishuvchilar (`sortableConfirmations` buyruqdagi tartib bilan, `oneByOne`).
+  - Lavozim maydonlari (bo'lim, lavozim, maosh, razryad, stavka, sinov, ta'til kunlari, `position_date`) shartnoma tasdiqlanmaguncha
+    faqat snapshot'da (`json/contracts/{id}.json`) — bo'lsa olinadi, bo'lmasa `null`.
+  - **E'tibor:** `worker` hujjatdagi snake_case emas, `componentStore.worker` shaklida qaytadi:
+    `{ lastName, firstName, middleName, position, photo, pin, positions }` (`pin` — xodim id'si, check-worker'dagidek).
+- Savollarga javob: eski hujjatlarda kelishuvchilar tartibi buyruqdan olinadi (shartnomaning o'z kelishuvchilari marshrut oynasida);
+  `edit_block` — `command_approved` (bog'langan buyruq tasdiqlangan, birinchi tekshiriladi), `approved`, `expired`, `no_form_state`.
+
+## O'zgarishlar tarixi
+
+| Sana | Kim | Nima o'zgardi |
+|---|---|---|
+| 2026-10-29 | Backend | Eski shartnomalar uchun `form_state` bazadan tuziladi |

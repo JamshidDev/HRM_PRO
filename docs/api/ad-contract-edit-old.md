@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Holat** | `draft` — frontend tayyor, backend kutilmoqda |
+| **Holat** | `backend tayyor` — `feat/review-codes` branchida, dev'ga merge kutilmoqda |
 | **Frontend** | Shahriyor, 2026-10-29 (ClickUp DAS-12129) |
 | **Frontend sahifa** | HRM → Qo'shimcha kelishuvlar (`/hrm/ad-contract`): qatordagi «Tahrirlash» va hujjat oynasidagi «Ma'lumotlar» tabi |
 | **Bog'liq** | Shartnomalar uchun xuddi shu so'rov — `docs/api/contract-edit-old.md` |
@@ -75,3 +75,24 @@ imzolanmagan bo'lsa, `approved` bo'lmasligi kerak. `form_state` yo'q bo'lsa, sab
 
 O'zgarish kerak emas: `form_state` va `editable: true` kelishi bilan «Tahrirlash» va «Ma'lumotlar» tabi
 ishlaydi (`adContractStore._openEdit`, `DocumentFormDataTab.vue`).
+
+## Backend javobi (2026-10-29)
+
+- **So'rov 1:** `GET /v1/hr/contract-additional/{id}/form` — saqlangan `form_state` bo'lmasa, backend uni **so'rov paytida tuzadi**
+  (migratsiya yo'q, saqlash keyingi «Saqlash»da bo'ladi). `PUT` ham saqlangan formasiz ishlaydi.
+  - Manbalar: snapshot `json/contract-additional/{id}.json` (`request`, bo'lsa) → kelishuv qatori → bog'langan buyruq → xodim lavozimi.
+  - To'ladigan maydonlar: korxona, xodim (`workerOption`, `typeId`), raqam, tur, sanalar, rahbar, `command_status`,
+    buyruq turi / raqami / sanasi, kelishuvchilar (`sortableConfirmations` buyruqdagi tartib bilan, `oneByOne`).
+  - Bazada yo'q (`null`): tur 8 yangi lavozim maydonlari (bo'lim, lavozim, maosh, razryad, stavka, grafik, `position_date`), `changes`, `finance_id` —
+    snapshot bo'lmasa HR qayta to'ldiradi.
+- **So'rov 2 («tasdiqlangan» bloki):** bu kelishuvlar haqiqatan `confirmation = 3`. Ko'pchiligida o'z imzolovchilari imzolamagan,
+  lekin **bog'langan buyruq tasdiqlangan** (eski oqim) — shuning uchun imzolovchilar «Jarayonda» ko'rinadi.
+  Endi bunday holatda sabab `command_approved` qaytadi (`approved` emas). Tasdiqlangan hujjat tahrirlanmaydi.
+- **`edit_block`:** `command_approved` — bog'langan buyruq tasdiqlangan; `approved` — kelishuv tasdiqlangan;
+  `expired` — imzolash muddati o'tgan / «Muammoli»; `no_form_state` — forma tuzib bo'lmadi (xodim lavozimi yo'q).
+
+## O'zgarishlar tarixi
+
+| Sana | Kim | Nima o'zgardi |
+|---|---|---|
+| 2026-10-29 | Backend | Eski kelishuvlar uchun `form_state` bazadan tuziladi; `command_approved` sababi |

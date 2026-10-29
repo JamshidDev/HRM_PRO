@@ -31,8 +31,10 @@
   import CommandForm_59 from './ui/CommandForm_59.vue'
   import CommandForm_60 from './ui/CommandForm_60.vue'
   import CommandForm_76 from './ui/CommandForm_76.vue'
+  import CommandForm_79 from './ui/CommandForm_79.vue'
   import CommandForm_75 from './ui/CommandForm_75.vue'
   import CommandForm_5 from './ui/CommandForm_5.vue'
+  import CommandForm_8 from './ui/CommandForm_8.vue'
   import { useAppSetting } from '@/utils/index.js'
   import CommandSigners from './CommandSigners.vue'
   import CommandSignersSummary from './CommandSignersSummary.vue'
@@ -67,7 +69,7 @@
   const commandIdList = [32, 33, 34, 35, 36, 37, 38, 39]
   const singleSelectCommands = [
     32, 33, 34, 35, 36, 37, 38, 39, 44, 43, 45, 46, 47, 49, 48, 50, 51, 52, 53, 54, 74, 56, 57, 58,
-    59, 60, 76, 77, 78
+    59, 60, 76, 77, 78, 79
   ]
 
   // 75 da xodim select'i ko'rsatilmaydi — xodim bekor qilinayotgan buyruqdan olinadi.
@@ -77,6 +79,9 @@
   const isPositionCommencement = computed(
     () => store.payload.command_type === POSITION_COMMENCEMENT_TYPE
   )
+  // 8 — Ishga tiklash: bo'shatilgan xodim PINFL bilan (CommandForm_8), korxona xodimlari select'i yo'q.
+  const REINSTATEMENT_TYPE = 8
+  const isReinstatement = computed(() => store.payload.command_type === REINSTATEMENT_TYPE)
 
   // 75 select'i: «123 NOK - 12.04.2026» + ostida buyruq turi.
   const renderCancelCommandLabel = (option) => [
@@ -125,8 +130,10 @@
   const commandForm_59 = ref(null)
   const commandForm_60 = ref(null)
   const commandForm_76 = ref(null)
+  const commandForm_79 = ref(null)
   const commandForm_75 = ref(null)
   const commandForm_5 = ref(null)
+  const commandForm_8 = ref(null)
 
   // Rahbar / buxgalter / kelishuvchi varianti: to'liq ism va lavozim, o'qiladigan o'lchamda.
   // Variant balandligi o'zgaruvchan — shuning uchun bu select'larda virtual skroll o'chirilgan.
@@ -340,10 +347,14 @@
             validate = await commandForm_60.value?.onSubmit(mainData)
           } else if ([76, 77, 78].includes(store.payload.command_type)) {
             validate = await commandForm_76.value?.onSubmit(mainData)
+          } else if (store.payload.command_type === 79) {
+            validate = await commandForm_79.value?.onSubmit(mainData)
           } else if (store.payload.command_type === CANCEL_COMMAND_TYPE) {
             validate = await commandForm_75.value?.onSubmit(mainData)
           } else if (isPositionCommencement.value) {
             validate = await commandForm_5.value?.onSubmit(mainData)
+          } else if (isReinstatement.value) {
+            validate = await commandForm_8.value?.onSubmit(mainData)
           }
 
           resolve(validate?.isValid ? { isValid: true, data: validate.data } : { isValid: false })
@@ -383,10 +394,14 @@
       commandForm_60.value?.validateForm()
     } else if ([76, 77, 78].includes(store.payload.command_type)) {
       commandForm_76.value?.validateForm()
+    } else if (store.payload.command_type === 79) {
+      commandForm_79.value?.validateForm()
     } else if (store.payload.command_type === CANCEL_COMMAND_TYPE) {
       commandForm_75.value?.validateForm()
     } else if (isPositionCommencement.value) {
       commandForm_5.value?.validateForm()
+    } else if (isReinstatement.value) {
+      commandForm_8.value?.validateForm()
     }
   }
 
@@ -854,7 +869,7 @@
                 />
               </n-form-item>
             </div>
-            <div class="col-span-12 @xl:col-span-6 flex" v-else-if="!isPositionCommencement">
+            <div class="col-span-12 @xl:col-span-6 flex" v-else-if="!isPositionCommencement && !isReinstatement">
               <template v-if="store.isSingleSelect">
                 <n-form-item class="w-full" :label="$t(`documentPage.form.worker`)" path="worker">
                   <SuperSelect
@@ -984,11 +999,17 @@
           <template v-else-if="[76, 77, 78].includes(store.payload.command_type)">
             <CommandForm_76 ref="commandForm_76" />
           </template>
+          <template v-else-if="store.payload.command_type === 79">
+            <CommandForm_79 ref="commandForm_79" />
+          </template>
           <template v-else-if="isCancelCommand">
             <CommandForm_75 ref="commandForm_75" />
           </template>
           <template v-else-if="isPositionCommencement">
             <CommandForm_5 ref="commandForm_5" />
+          </template>
+          <template v-else-if="isReinstatement">
+            <CommandForm_8 ref="commandForm_8" />
           </template>
 
           <template v-else>

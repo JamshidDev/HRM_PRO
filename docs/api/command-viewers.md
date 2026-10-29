@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Holat** | `draft` — frontend tayyor, backend kutilmoqda |
+| **Holat** | `backend tayyor` — `feat/review-codes` branchida, dev'ga merge kutilmoqda |
 | **Frontend** | Shahriyor, 2026-10-23 |
 | **Frontend sahifa** | Hujjatlar → Buyruqlar → «Buyruq yaratish» modali va hujjatdagi «Ma'lumotlar» tabi |
 
@@ -131,6 +131,12 @@ Hali yo'q:
 - Tanishuvchiga hujjat **tasdiqlangandan keyin** boradi (veb «imzolash uchun» ro'yxati, mobil ro'yxat va push).
   Ochganda «Tanishdi» (`status = 2`) bo'ladi va ro'yxatdan chiqadi. Shartnoma va qo'shimcha kelishuvda ham xuddi shunday.
 
+## Backend javobi (2026-10-29)
+
+- `POST/PUT /v1/hr/commands`, `POST .../signers-preview` endi `viewers: int[]` ni **qabul qiladi** — backendda
+  `confirmations` ichiga `{ id, order: 1, role: 'view' }` bo'lib qo'shiladi (kelishuvchi sifatida bor id takrorlanmaydi).
+- `confirmations: []` (faqat tanishuvchilar) ruxsat etilgan. Eski shakl (`confirmations[].role = 'view'`) ham ishlaydi.
+
 ## O'zgarishlar tarixi
 
 | Sana | Kim | Nima o'zgardi |
@@ -139,3 +145,4 @@ Hali yo'q:
 | 2026-10-26 | Shahriyor | Marshrut API'si bo'yicha savollar va «aqlli Saqlash» rejasi (3.1) |
 | 2026-10-27 | Shahriyor | Dev API tekshiruvi (6-bo'lim): marshrut tayyor, `viewers` hali saqlanmaydi (test buyruq 92691) |
 | 2026-10-27 | Backend | 7-bo'lim: tanishuvchi `confirmations[].role = 'view'` bilan yuboriladi; Swagger yangilandi |
+| 2026-10-29 | Backend | `viewers` maydoni qabul qilinadi |

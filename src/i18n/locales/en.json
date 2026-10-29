@@ -1349,7 +1349,9 @@
     "mobileOpenApp": "Open the E-IMZO app",
     "mobileWaiting": "Waiting for the signature...",
     "mobileRetry": "Start again",
-    "rejectedSuccess": "The document was rejected. The reason was sent to HR."
+    "rejectedSuccess": "The document was rejected. The reason was sent to HR.",
+    "linkDocApproved": "The document is already approved (officially signed). No link is issued.",
+    "linkDocClosed": "The document was rejected and closed. No link is issued."
   },
   "documentPage": {
     "route": {
@@ -1845,6 +1847,13 @@
       "reference_date": "Certificate date",
       "reference_number": "Certificate number"
     },
+    "form_79": {
+      "mentor": "Mentor",
+      "mentor_date": "Mentor assignment date",
+      "mentor_percent": "Allowance (% of base salary)",
+      "from": "Mentorship start date",
+      "to": "Mentorship end date"
+    },
     "form_76": {
       "from_retraining": "Retraining start date",
       "to_retraining": "Retraining end date",
@@ -1899,6 +1908,21 @@
       "otherOrg": "Other organization",
       "orgType": "Organization type",
       "to_organization": "Organization name"
+    },
+    "form_8": {
+      "pin": "Dismissed worker PINFL",
+      "pinPlaceholder": "14-digit PINFL",
+      "notFound": "Worker not found",
+      "termination": "Command to cancel: №{number} ({date}), {position}",
+      "noTermination": "No approved dismissal command for this worker — cannot reinstate",
+      "mainElsewhere": "The worker holds a main position elsewhere — cannot reinstate to a main position",
+      "workerRequired": "Find the dismissed worker by PINFL",
+      "position_date": "Reinstatement date",
+      "from": "Forced absence start",
+      "to": "Forced absence end",
+      "court_name": "Court name (civil cases)",
+      "courtPlaceholder": "Mirobod inter-district",
+      "court_decision_date": "Court decision date"
     },
     "form_5": {
       "pin": "Employee PINFL",

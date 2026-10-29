@@ -46,9 +46,16 @@
   })
 
   const isSigned = computed(() => store.isSigned || store.signedNow)
-  const canSign = computed(() => !isSigned.value && !store.linkExpired && !store.rejectedNow)
+  const canSign = computed(
+    () => !isSigned.value && !store.linkExpired && !store.rejectedNow && !store.errorMessage
+  )
   const showTimer = computed(
-    () => isSignPage.value && store.pdfUrl && !isSigned.value && !store.rejectedNow
+    () =>
+      isSignPage.value &&
+      store.pdfUrl &&
+      !isSigned.value &&
+      !store.rejectedNow &&
+      !store.errorMessage
   )
   const timeText = computed(
     () => `${Math.floor(store.linkLeft / 60)}:${String(store.linkLeft % 60).padStart(2, '0')}`
@@ -110,7 +117,9 @@
             </span>
           </template>
           {{
-            store.linkLeft > 0 ? `${$t('signature.linkTimeLeft')} ${timeText}` : $t('signature.linkExpiredPublic')
+            store.linkLeft > 0
+              ? `${$t('signature.linkTimeLeft')} ${timeText}`
+              : $t('signature.linkExpiredPublic')
           }}
         </n-tooltip>
         <span

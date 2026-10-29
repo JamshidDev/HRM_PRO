@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import { useAppSetting } from '@/utils/index.js'
+import { usePdfViewerStore } from '@/store/modules/app/pdfViewerStore.js'
 import { isToastOnlyPage } from '@/components/notify/alertDialog.js'
 const apiUrl = import.meta.env.VITE_API_URL
 
@@ -162,12 +163,13 @@ export const useSignatureStore = defineStore('signatureStore', {
         return
       }
       $ApiService.documentService
-        ._linkBase64({ params: { token } })
+        ._linkBase64({ params: { token }, silentError: true })
         .then((res) => {
           this.documentBase64 = res.data.data
           this.checkListKey()
           this.checkCardPluggedIn()
         })
+        .catch((err) => usePdfViewerStore().linkError(err))
         .finally(() => {
           this.loading = false
         })
@@ -185,8 +187,10 @@ export const useSignatureStore = defineStore('signatureStore', {
               this.visible = false
               this.successCallback?.()
             })
-            .catch(() => {
+            .catch((err) => {
               this.loading = false
+              this.visible = false
+              usePdfViewerStore().linkError(err)
             })
         },
         (e, r) => {
