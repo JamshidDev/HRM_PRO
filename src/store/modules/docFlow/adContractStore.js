@@ -66,7 +66,8 @@ const storeOptions = {
     },
 
     sortableConfirmations: [],
-    oneByOne: true,
+    // Yangi hujjatda kelishuvchilar sukut bo'yicha parallel imzolaydi.
+    oneByOne: false,
     // Tahrir rejimi: kelishuv id, tiklangan buyruq turi va qayta yuborish modali.
     editId: null,
     editCommandType: null,
