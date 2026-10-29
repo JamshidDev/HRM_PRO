@@ -46,6 +46,13 @@
     if (!document.startViewTransition || reduceMotion) return flip()
     document.startViewTransition(flip)
   }
+  // Modal yopilganda to'liq ekran o'chadi — keyingi safar oddiy o'lchamda ochiladi.
+  watch(
+    () => store.visible,
+    (v) => {
+      if (!v) isFullscreen.value = false
+    }
+  )
 
   const emits = defineEmits(['openOffice'])
   const contractData = ref(null)

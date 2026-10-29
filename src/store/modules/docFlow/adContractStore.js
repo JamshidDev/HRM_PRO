@@ -278,7 +278,8 @@ const storeOptions = {
         .then(() => {
           this.resendVisible = false
           this.visible = false
-          this.editId = null
+          // To'liq tozalash: tahrirlangan kelishuv ma'lumoti keyingi yangi kelishuvga o'tmasin.
+          this.resetForm()
           this._index()
         })
         .catch(() => {})
@@ -290,6 +291,10 @@ const storeOptions = {
       // Tahrirdan keyin yangi kelishuv ochilsa — tahrir rejimi qolmasin.
       if (this.editId) {
         this.sortableConfirmations = []
+        // Tanlangan kelishuvchilar ro'yxati ham tozalanadi — aks holda select'da eski
+        // kelishuvchilar qolib, ro'yxat bo'sh bo'lgani uchun saqlashda `confirmations: []` ketardi.
+        this.payload.confirmations = []
+        this.oneByOne = false
         this.organization = []
         this.structureCheck = []
         this.structureCheck2 = []
