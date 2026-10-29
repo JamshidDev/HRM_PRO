@@ -49,8 +49,18 @@
       <a v-if="isPhone" :href="store.mobileSession.deep_link" class="inline-block">
         <n-button type="primary" size="large">{{ $t('signature.mobileOpenApp') }}</n-button>
       </a>
+      <!-- Oq hoshiya bizniki: n-qr-code ichki padding'i Tailwind `border-box` bilan
+           kod o'lchamidan torayib, kod hoshiyadan o'ngga-pastga chiqib ketardi -->
       <div v-else class="flex justify-center">
-        <n-qr-code :value="store.mobileSession.qr_code" :size="200" error-correction-level="M" />
+        <div class="rounded-xl bg-white p-3 shadow-sm">
+          <n-qr-code
+            :value="store.mobileSession.qr_code"
+            :size="200"
+            :padding="0"
+            error-correction-level="M"
+            class="block"
+          />
+        </div>
       </div>
       <p v-if="waiting" class="mt-4 text-sm text-textColor3">
         <n-spin size="small" class="mr-2 align-middle" />{{ $t('signature.mobileWaiting') }}
