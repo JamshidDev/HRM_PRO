@@ -18,7 +18,7 @@
     {
       key: 'app',
       image: appBanner,
-      alt: 'HRM Rail mobil ilovasi',
+      alt: 'HRM PRO mobil ilovasi',
       // Maketda birinchi banner shaffof PNG bo'lib, ostida gradient turadi
       // va rasm kartaga to'liq cho'zilmaydi (balandligi 94.2%, yuqoridan 2.9%).
       gradient: true
