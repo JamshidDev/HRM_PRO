@@ -6337,7 +6337,14 @@
       "empty": "No changes found for this record",
       "moreInfo": "More info",
       "expandAll": "Expand cards",
-      "collapseAll": "Collapse cards"
+      "collapseAll": "Collapse cards",
+      "unknownCode": "This code has no description in the system yet",
+      "summary": {
+        "create": "{n} added",
+        "update": "{n} changed",
+        "delete": "{n} deleted",
+        "restore": "{n} restored"
+      }
     },
     "historyBtn": "History",
     "showMasked": "Reveal masked",

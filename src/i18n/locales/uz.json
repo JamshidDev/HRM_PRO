@@ -6398,7 +6398,14 @@
       "empty": "Bu yozuv bo'yicha o'zgarish topilmadi",
       "moreInfo": "Qo'shimcha ma'lumot",
       "expandAll": "Kartochkalarni ochish",
-      "collapseAll": "Kartochkalarni yig'ish"
+      "collapseAll": "Kartochkalarni yig'ish",
+      "unknownCode": "Bu kodning tavsifi hali tizimda yo'q",
+      "summary": {
+        "create": "{n} ta qo'shildi",
+        "update": "{n} ta o'zgartirildi",
+        "delete": "{n} ta o'chirildi",
+        "restore": "{n} ta tiklandi"
+      }
     },
     "historyBtn": "Tarix",
     "showMasked": "Maskani ochish",
