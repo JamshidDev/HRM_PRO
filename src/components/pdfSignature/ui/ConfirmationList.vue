@@ -50,10 +50,11 @@
   // Asl indeks saqlanadi — tarix (`history.bySigner`) shu indeks bo'yicha.
   const rows = computed(() => {
     const list = (store.confirmations || []).map((item, idx) => ({ item, idx }))
-    if (!showRoute.value) return list
-    // Buyruqda: rahbar (`d`) eng tepada — u navbatsiz, istalgan paytda imzolaydi; keyin qolganlar,
-    // oxirida tanishuvchilar.
     const is = (t) => (r) => r.item.type === t
+    // Rahbar (`d`) har qanday hujjatda (shartnoma, ariza...) eng tepada — u navbatsiz,
+    // istalgan paytda imzolaydi; qolganlar backend bergan tartibda.
+    if (!showRoute.value) return [...list.filter(is('d')), ...list.filter((r) => !is('d')(r))]
+    // Buyruqda: rahbardan keyin qolganlar, oxirida tanishuvchilar.
     return [
       ...list.filter(is('d')),
       ...list.filter((r) => r.item.type !== 'd' && r.item.type !== 'r'),

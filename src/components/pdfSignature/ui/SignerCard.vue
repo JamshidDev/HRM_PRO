@@ -3,7 +3,6 @@
   import { Link28Filled, Chat20Filled } from '@vicons/fluent'
   import { STATUS, lastActionDate } from '../utils/approvalHistory.js'
   import { signerTone } from '../utils/eventMeta.js'
-  import icons from '@/assets/icons'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -26,6 +25,8 @@
 
   const tone = computed(() => signerTone(props.item.status?.id))
   const isRejected = computed(() => props.item.status?.id === STATUS.rejected)
+  // Rahbar kartasi ko'k fonda ajralib turadi.
+  const isDirector = computed(() => props.item.type === 'd')
   // Hali imzolamagan/rad etmagan kelishuvchi tugunida belgi o'rniga navbat raqami.
   const isDone = computed(() => [STATUS.success, STATUS.rejected].includes(props.item.status?.id))
   const showStep = computed(() => props.step != null && !isDone.value)
@@ -53,9 +54,10 @@
     </div>
 
     <div
-      class="flex-1 min-w-0 mb-1.5 rounded-xl border bg-surface-section overflow-hidden shadow-[0_1px_2px_rgb(16_24_40/0.04)]"
+      class="flex-1 min-w-0 mb-1.5 rounded-xl border overflow-hidden shadow-[0_1px_2px_rgb(16_24_40/0.04)]"
       :class="[
         tone.card,
+        isDirector ? 'signer-card--director' : 'bg-surface-section',
         isSelf && 'ring-1 ring-fig-blue-300',
         current && 'ring-2 ring-primary/60',
         waiting && 'opacity-70'
@@ -122,15 +124,6 @@
                   class="w-full pr-[84px] text-xs font-medium text-textColor1 leading-[1.25]"
                 >
                   {{ title }}
-                  <!-- Rahbar — ismi yonida ko'k «tasdiq» belgisi -->
-                  <n-icon
-                    v-if="item.type === 'd'"
-                    size="14"
-                    class="text-primary align-[-2px] ml-0.5"
-                    :title="$t('documentPage.signature.approval.roles.d')"
-                  >
-                    <component :is="icons.figBadgeCheck" />
-                  </n-icon>
                 </n-ellipsis>
               </template>
               <template #position>
@@ -210,3 +203,17 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+  /* Rahbar kartasi: chap yuqoridan brend ko'k tusi karta foniga o'tib boradi.
+     Ko'k ulushi `color-mix` bilan olinadi — yorug' va qorong'i mavzuda ham bir xil ishlaydi */
+  .signer-card--director {
+    background:
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--fig-bg-brand-fill) 16%, transparent) 0%,
+        color-mix(in srgb, var(--fig-bg-brand-fill) 3%, transparent) 70%
+      ),
+      var(--surface-section);
+  }
+</style>
