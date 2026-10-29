@@ -4,7 +4,7 @@
    * har hodisa bajaruvchi, bir jumlalik xulosa va o'zgargan yozuvlar ro'yxati.
    * Bitta hodisa `detail/HistoryEntry.vue`, bitta yozuv `detail/ChangeRow.vue`.
    */
-  import { ArrowExpand20Regular, ArrowMinimize20Regular } from '@vicons/fluent'
+  import { ArrowExpand20Regular, ArrowMinimize20Regular, CalendarLtr16Regular } from '@vicons/fluent'
   import { UIModal } from '@/components/index.js'
   import { useAuditStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
@@ -181,7 +181,12 @@
 
       <section v-for="day in days" :key="day.key" class="audit-day">
         <!-- Kun sarlavhasi STICKY: scroll qilganda qaysi kun ekani ko'rinib turadi. -->
-        <div class="audit-day__head">{{ day.label }}</div>
+        <div class="audit-day__head">
+          <span class="audit-day__chip">
+            <n-icon :size="14"><CalendarLtr16Regular /></n-icon>
+            {{ day.label }}
+          </span>
+        </div>
 
         <HistoryEntry
           v-for="{ ev, index } in day.items"
@@ -222,15 +227,46 @@
     font-size: 13px;
   }
 
-  /* Kun sarlavhasi STICKY: scroll qilganda qaysi kun ekani ko'rinib turadi. */
+  /*
+    Kun sarlavhasi STICKY. `top: -16px` va shuncha manfiy `margin-top` UIModal
+    tanasining ichki chekkasini (`pt-4`) qoplaydi: ostidan o'tayotgan kontent
+    sarlavha tepasida ko'rinib qolmaydi. Fon — modal kartochkasining o'z rangi
+    (`--n-color`), shuning uchun alohida kulrang chiziq bo'lib ajralmaydi;
+    yon tomonlarga chiqib ketmaydi (manfiy yon margin yo'q).
+  */
   .audit-day__head {
     position: sticky;
     top: -16px;
     z-index: 2;
-    margin: 0 -16px;
-    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: -16px;
+    padding: 16px 0 10px;
+    background: var(--n-color, var(--color-surface-section, #ffffff));
+  }
+
+  .audit-day + .audit-day .audit-day__head {
+    margin-top: -12px;
+  }
+
+  /* Sarlavhadan o'ngga cho'zilgan ingichka chiziq — kunlarni ajratadi. */
+  .audit-day__head::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--color-surface-line, #e2e8f0);
+  }
+
+  .audit-day__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 999px;
     font-size: 12px;
     font-weight: 600;
+    border: 1px solid var(--color-surface-line, #e2e8f0);
     background: var(--color-surface-ground, #f8fafc);
     color: var(--color-fig-text-secondary, #475467);
   }
