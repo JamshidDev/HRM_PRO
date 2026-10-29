@@ -1340,7 +1340,8 @@
     "mobileStart": "Start",
     "mobileOpenApp": "Open the E-IMZO app",
     "mobileWaiting": "Waiting for the signature...",
-    "mobileRetry": "Start again"
+    "mobileRetry": "Start again",
+    "rejectedSuccess": "The document was rejected. The reason was sent to HR."
   },
   "documentPage": {
     "route": {

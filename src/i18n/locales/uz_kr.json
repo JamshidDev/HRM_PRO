@@ -1242,7 +1242,8 @@
     "mobileStart": "Бошлаш",
     "mobileOpenApp": "E-IMZO иловасини очиш",
     "mobileWaiting": "Имзо кутилмоқда...",
-    "mobileRetry": "Қайтадан бошлаш"
+    "mobileRetry": "Қайтадан бошлаш",
+    "rejectedSuccess": "Ҳужжат рад этилди. Сабаб HR'га юборилди."
   },
   "documentPage": {
     "route": {

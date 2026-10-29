@@ -3,6 +3,7 @@
   import { usePdfViewerStore, useSignatureStore } from '@/store/modules/index.js'
   import SignatureBox from '@/pages/app/documentSignature/ui/SignatureBox.vue'
   import MobileEimzo from '@/pages/app/documentSignature/ui/MobileEimzo.vue'
+  import LinkReject from '@/pages/app/documentSignature/ui/LinkReject.vue'
   import { Key24Regular } from '@vicons/fluent'
 
   const store = usePdfViewerStore()
@@ -40,5 +41,6 @@
         <MobileEimzo :is-phone="isPhone" />
       </n-tab-pane>
     </n-tabs>
+    <LinkReject />
   </div>
 </template>

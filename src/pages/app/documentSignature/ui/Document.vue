@@ -3,7 +3,7 @@
   import DocumentContent from '@/pages/app/documentSignature/ui/DocumentContent.vue'
   import SignMethods from '@/pages/app/documentSignature/ui/SignMethods.vue'
   import LinkTimer from '@/pages/app/documentSignature/ui/LinkTimer.vue'
-  import { CheckmarkCircle24Filled } from '@vicons/fluent'
+  import { CheckmarkCircle24Filled, DismissCircle24Filled } from '@vicons/fluent'
 
   const store = usePdfViewerStore()
 
@@ -14,14 +14,14 @@
   const left = computed(() =>
     store.signDeadline ? Math.max(0, Math.ceil((store.signDeadline - now.value) / 1000)) : 0
   )
-  const expired = computed(() => !store.isSigned && left.value === 0)
+  const expired = computed(() => !store.isSigned && !store.rejectedNow && left.value === 0)
   watch(expired, (v) => (store.linkExpired = v), { immediate: true })
 </script>
 
 <template>
   <div>
     <template v-if="store.pdfUrl && !store.checkLoading">
-      <LinkTimer v-if="!store.isSigned" :left="left" />
+      <LinkTimer v-if="!store.isSigned && !store.rejectedNow" :left="left" />
       <div v-if="store.signedNow" class="px-4 mt-4">
         <div
           class="max-w-[800px] mx-auto flex items-center gap-2 rounded-lg border border-success/40 bg-success/10 px-4 py-3 text-success"
@@ -30,8 +30,16 @@
           <span class="font-medium">{{ $t('signature.signedSuccess') }}</span>
         </div>
       </div>
+      <div v-if="store.rejectedNow" class="px-4 mt-4">
+        <div
+          class="max-w-[800px] mx-auto flex items-center gap-2 rounded-lg border border-danger/40 bg-danger/10 px-4 py-3 text-danger"
+        >
+          <n-icon size="22"><DismissCircle24Filled /></n-icon>
+          <span class="font-medium">{{ $t('signature.rejectedSuccess') }}</span>
+        </div>
+      </div>
       <DocumentContent />
-      <SignMethods v-if="!store.isSigned && !expired" />
+      <SignMethods v-if="!store.isSigned && !store.rejectedNow && !expired" />
     </template>
   </div>
 </template>

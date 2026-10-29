@@ -52,6 +52,9 @@ const _signature = async (payload) => {
 const _linkBase64 = async (payload) => {
   return await axios.get(`/v1/document/signature/base64`, { params: payload.params })
 }
+const _linkReject = async (payload) => {
+  return await axios.post(`/v1/document/signature/reject`, payload.data, { params: payload.params })
+}
 const _linkEimzo = async (payload) => {
   return await axios.post(`/v1/document/signature/eimzo`, payload.data, { params: payload.params })
 }
@@ -120,6 +123,7 @@ export default {
   _signature,
   _linkBase64,
   _linkEimzo,
+  _linkReject,
   _linkMobileInit,
   _linkMobileStatus,
   _linkMobileVerify,

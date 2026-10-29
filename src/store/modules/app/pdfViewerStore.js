@@ -69,6 +69,10 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     signDeadline: null,
     signedNow: false,
     linkExpired: false,
+    // Link orqali rad etish: sabablar ro'yxati (check javobidan) va natija.
+    linkRejectReasons: [],
+    rejectedNow: false,
+    linkRejectLoading: false,
     mobileSession: null,
     mobileLoading: false,
 
@@ -355,6 +359,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
           this.signatureWorker = `${d?.worker.last_name} ${d?.worker.first_name} ${d?.worker.middle_name}`
           this.isSigned = d.status === 3
           this.signerType = d.type ?? null
+          this.linkRejectReasons = d.reject_reasons || []
+          this.rejectedNow = false
           this.signDeadline = Date.now() + (d.expires_in ?? 0) * 1000
         })
         .catch((err) => {
@@ -377,6 +383,18 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         })
         .finally(() => {
           this.saveLoading = false
+        })
+    },
+    _linkReject(params, data) {
+      this.linkRejectLoading = true
+      return $ApiService.documentService
+        ._linkReject({ params, data })
+        .then(() => {
+          this.rejectedNow = true
+          this.mobileSession = null
+        })
+        .finally(() => {
+          this.linkRejectLoading = false
         })
     },
     // Imzolangach link bekor bo'ladi — qayta tekshirmasdan muvaffaqiyat holatiga o'tamiz.

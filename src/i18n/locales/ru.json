@@ -1342,7 +1342,8 @@
     "mobileStart": "Начать",
     "mobileOpenApp": "Открыть приложение E-IMZO",
     "mobileWaiting": "Ожидание подписи...",
-    "mobileRetry": "Начать заново"
+    "mobileRetry": "Начать заново",
+    "rejectedSuccess": "Документ отклонён. Причина отправлена HR."
   },
   "documentPage": {
     "route": {
