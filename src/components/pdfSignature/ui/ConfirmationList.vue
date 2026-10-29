@@ -1,5 +1,4 @@
 <script setup>
-  import { UIDConfirm } from '@/components/index.js'
   import { usePdfViewerStore, useAccountStore } from '@/store/modules/index.js'
   import { Copy20Regular, ArrowLeft20Filled, People20Regular, History20Regular } from '@vicons/fluent'
   import i18 from '@/i18n/index.js'
@@ -244,31 +243,39 @@
       </Transition>
     </div>
 
-    <UIDConfirm v-model:visible="store.linkVisible" type="warning">
-      <template #icon> <span></span></template>
-      <n-spin :show="store.linkLoading">
-        <div class="mt-4">
+    <!-- Havola oynasi ixcham: hamma tomondan bir xil 16px chekka, ortiqcha bo'shliq yo'q.
+         Havola bitta qatorda, sig'masa «…» bilan kesiladi (to'liq matn tooltip'da,
+         nusxalash baribir butun havolani oladi) -->
+    <n-modal v-model:show="store.linkVisible">
+      <n-card
+        :bordered="false"
+        role="dialog"
+        aria-modal="true"
+        style="width: min(360px, calc(100vw - 32px))"
+        content-style="padding: 16px"
+      >
+        <n-spin :show="store.linkLoading">
           <span
-            class="block text-lg select-none text-center uppercase font-semibold text-primary mb-6"
+            class="block text-sm select-none text-center uppercase font-semibold text-primary"
           >{{ $t('signature.linkText') }}</span>
           <span
-            class="block text-sm border border-surface-line bg-surface-ground text-textColor2 border-dashed p-3 mt-4 rounded-md break-all"
+            class="block mt-3 text-xs truncate border border-surface-line bg-surface-ground text-textColor2 border-dashed px-2.5 py-2 rounded-md"
             :class="{ 'line-through opacity-50': linkExpired }"
+            :title="store.link"
           >{{ store.link }}</span>
-          <div v-if="store.link" class="mt-3 text-center text-sm">
+          <div v-if="store.link" class="mt-2 text-center text-xs">
             <span v-if="!linkExpired" class="text-textColor2">
               {{ $t('signature.linkExpiresIn', { time: linkLeftText }) }}
             </span>
             <span v-else class="text-danger font-medium">{{ $t('signature.linkExpired') }}</span>
           </div>
-        </div>
-      </n-spin>
-      <template #action>
-        <div class="grid grid-cols-2 gap-2 select-none">
+        </n-spin>
+        <div class="grid grid-cols-2 gap-2 mt-4 select-none">
           <n-button
             :loading="store.linkLoading"
             @click="store.linkVisible = false"
             secondary
+            size="small"
             type="error"
           >
             {{ $t('content.close') }}
@@ -278,19 +285,27 @@
             :loading="store.linkLoading"
             @click="store._generateLink(store.linkPayload)"
             secondary
+            size="small"
             type="primary"
           >
             {{ $t('signature.newLink') }}
           </n-button>
-          <n-button v-else :loading="store.linkLoading" @click="copyLink" secondary type="primary">
+          <n-button
+            v-else
+            :loading="store.linkLoading"
+            @click="copyLink"
+            secondary
+            size="small"
+            type="primary"
+          >
             <template #icon>
               <Copy20Regular />
             </template>
             {{ $t('signature.copyLink') }}
           </n-button>
         </div>
-      </template>
-    </UIDConfirm>
+      </n-card>
+    </n-modal>
   </SectionHeader>
 </template>
 
