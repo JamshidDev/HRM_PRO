@@ -2,7 +2,7 @@
   import { usePdfViewerStore } from '@/store/modules/index.js'
   import DocumentContent from '@/pages/app/documentSignature/ui/DocumentContent.vue'
   import SignMethods from '@/pages/app/documentSignature/ui/SignMethods.vue'
-  import LinkTimer from '@/pages/app/documentSignature/ui/LinkTimer.vue'
+  import LinkExpired from '@/pages/app/documentSignature/ui/LinkExpired.vue'
   import { CheckmarkCircle24Filled, DismissCircle24Filled } from '@vicons/fluent'
 
   const store = usePdfViewerStore()
@@ -16,12 +16,13 @@
   )
   const expired = computed(() => !store.isSigned && !store.rejectedNow && left.value === 0)
   watch(expired, (v) => (store.linkExpired = v), { immediate: true })
+  // Qolgan vaqt sarlavhadagi chipda ko'rsatiladi (ToolBar.vue).
+  watch(left, (v) => (store.linkLeft = v), { immediate: true })
 </script>
 
 <template>
   <div>
     <template v-if="store.pdfUrl && !store.checkLoading">
-      <LinkTimer v-if="!store.isSigned && !store.rejectedNow" :left="left" />
       <div v-if="store.signedNow" class="px-4 mt-4">
         <div
           class="max-w-[800px] mx-auto flex items-center gap-2 rounded-lg border border-success/40 bg-success/10 px-4 py-3 text-success"
@@ -40,6 +41,8 @@
       </div>
       <DocumentContent />
       <SignMethods v-if="!store.isSigned && !store.rejectedNow && !expired" />
+      <!-- Sanoq sarlavhada; muddat tugasa imzolash bloki o'rnida nima qilish kerakligi yoziladi -->
+      <LinkExpired v-else-if="expired" />
     </template>
   </div>
 </template>

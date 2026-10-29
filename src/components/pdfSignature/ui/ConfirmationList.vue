@@ -1,6 +1,12 @@
 <script setup>
   import { usePdfViewerStore, useAccountStore } from '@/store/modules/index.js'
-  import { Copy20Regular, ArrowLeft20Filled, People20Regular, History20Regular } from '@vicons/fluent'
+  import {
+    Copy20Regular,
+    Open20Regular,
+    ArrowLeft20Filled,
+    People20Regular,
+    History20Regular
+  } from '@vicons/fluent'
   import i18 from '@/i18n/index.js'
   import Utils from '@/utils/Utils.js'
   import { useRoute } from 'vue-router'
@@ -104,8 +110,13 @@
 
   const copyLink = () => {
     Utils.copyToClipboard(store.link, () => {
-      $Toast.info(t('signature.copied'))
+      $Toast.success(t('signature.copied'))
     })
+  }
+
+  // Imzolash sahifasini yangi oynada ochadi (HR linkni o'zi tekshirib ko'rishi uchun).
+  const openLink = () => {
+    window.open(store.link, '_blank', 'noopener')
   }
 
   const isDocFlow = computed(() => {
@@ -243,66 +254,84 @@
       </Transition>
     </div>
 
-    <!-- Havola oynasi ixcham: hamma tomondan bir xil 16px chekka, ortiqcha bo'shliq yo'q.
-         Havola bitta qatorda, sig'masa «…» bilan kesiladi (to'liq matn tooltip'da,
-         nusxalash baribir butun havolani oladi) -->
+    <!-- Havola oynasi: to'liq havola ko'rinadi, chekkalar ixcham (hamma tomondan 20px).
+         Tugmalar: yopish, nusxalash va havolani yangi oynada ochish -->
     <n-modal v-model:show="store.linkVisible">
       <n-card
         :bordered="false"
         role="dialog"
         aria-modal="true"
-        style="width: min(360px, calc(100vw - 32px))"
-        content-style="padding: 16px"
+        style="width: min(460px, calc(100vw - 32px))"
+        content-style="padding: 20px"
       >
         <n-spin :show="store.linkLoading">
           <span
-            class="block text-sm select-none text-center uppercase font-semibold text-primary"
+            class="block text-lg select-none text-center uppercase font-semibold text-primary"
           >{{ $t('signature.linkText') }}</span>
-          <span
-            class="block mt-3 text-xs truncate border border-surface-line bg-surface-ground text-textColor2 border-dashed px-2.5 py-2 rounded-md"
-            :class="{ 'line-through opacity-50': linkExpired }"
-            :title="store.link"
-          >{{ store.link }}</span>
-          <div v-if="store.link" class="mt-2 text-center text-xs">
-            <span v-if="!linkExpired" class="text-textColor2">
-              {{ $t('signature.linkExpiresIn', { time: linkLeftText }) }}
-            </span>
-            <span v-else class="text-danger font-medium">{{ $t('signature.linkExpired') }}</span>
+          <!-- Havola qutisi; qolgan vaqt uning o'ng pastki burchagida -->
+          <div
+            class="mt-3 text-sm border border-surface-line bg-surface-ground border-dashed p-3 rounded-md"
+          >
+            <span
+              class="block text-textColor2 break-all"
+              :class="{ 'line-through opacity-50': linkExpired }"
+            >{{ store.link }}</span>
+            <div v-if="store.link" class="mt-1.5 text-right text-xs tabular-nums">
+              <span v-if="!linkExpired" class="text-textColor3">
+                {{ $t('signature.linkExpiresIn', { time: linkLeftText }) }}
+              </span>
+              <span v-else class="text-danger font-medium">{{ $t('signature.linkExpired') }}</span>
+            </div>
           </div>
         </n-spin>
-        <div class="grid grid-cols-2 gap-2 mt-4 select-none">
+        <!-- Tugmalar orasida ingichka tik chiziq (|) ajratib turadi -->
+        <div class="flex items-center gap-2 mt-4 select-none">
           <n-button
+            class="flex-1"
             :loading="store.linkLoading"
             @click="store.linkVisible = false"
             secondary
-            size="small"
             type="error"
           >
             {{ $t('content.close') }}
           </n-button>
+          <span class="link-divider" aria-hidden="true"></span>
           <n-button
             v-if="linkExpired"
+            class="flex-1"
             :loading="store.linkLoading"
             @click="store._generateLink(store.linkPayload)"
             secondary
-            size="small"
             type="primary"
           >
             {{ $t('signature.newLink') }}
           </n-button>
-          <n-button
-            v-else
-            :loading="store.linkLoading"
-            @click="copyLink"
-            secondary
-            size="small"
-            type="primary"
-          >
-            <template #icon>
-              <Copy20Regular />
-            </template>
-            {{ $t('signature.copyLink') }}
-          </n-button>
+          <template v-else>
+            <n-button
+              class="flex-[1.5]"
+              :loading="store.linkLoading"
+              @click="copyLink"
+              secondary
+              type="primary"
+            >
+              <template #icon>
+                <Copy20Regular />
+              </template>
+              {{ $t('signature.copyLink') }}
+            </n-button>
+            <span class="link-divider" aria-hidden="true"></span>
+            <n-button
+              class="flex-1"
+              :disabled="!store.link || store.linkLoading"
+              @click="openLink"
+              secondary
+            >
+              <template #icon>
+                <Open20Regular />
+              </template>
+              {{ $t('content.open') }}
+            </n-button>
+          </template>
         </div>
       </n-card>
     </n-modal>
@@ -310,6 +339,14 @@
 </template>
 
 <style scoped>
+  /* Havola oynasidagi tugmalar orasidagi tik chiziq */
+  .link-divider {
+    flex-shrink: 0;
+    width: 1px;
+    height: 20px;
+    background: var(--surface-line);
+  }
+
   /*
     Ikkala ko'rinish bitta grid katagida ustma-ust turadi: eskisi chiqib
     ketayotganda yangisi yonidan kirib keladi (`mode="out-in"` siz) — xuddi
