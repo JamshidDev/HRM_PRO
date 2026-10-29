@@ -2,6 +2,12 @@ import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
 import { useAccountStore } from '@/store/modules/app/accountStore.js'
+import { money } from '@/pages/accountant/salaryControl/helpers.js'
+import {
+  buildPeople,
+  computeFindings,
+  computeRisks
+} from '@/pages/accountant/salaryControl/engine.js'
 
 const { t } = i18n.global
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -63,34 +69,19 @@ export const useSalaryControlStore = defineStore('salaryControl', {
       },
     dashKpi: (s) => s.dashboard.kpi ?? {},
     dashNorm: (s) => s.dashboard.norm ?? null,
-    // Xodimlar JSHSHIR (j) bo'yicha guruhlangan — bir shaxsning bir necha qatori birlashtiriladi.
-    people: (s) => {
-      const emps = s.dashboard.emps ?? []
-      const byPin = new Map()
-      const solo = []
-      for (const e of emps) {
-        if (!e.j) {
-          solo.push({ ...e, lavs: [e.lav], v: { ...e.v } })
-          continue
-        }
-        const p = byPin.get(e.j)
-        if (!p) {
-          byPin.set(e.j, { ...e, lavs: [e.lav], v: { ...e.v } })
-        } else {
-          p.tot += e.tot
-          p.fot += e.fot
-          p.card += e.card
-          p.tax += e.tax
-          p.inps += e.inps
-          p.kas += e.kas
-          p.t += e.t
-          p.ok = Math.max(p.ok, e.ok)
-          p.lavs.push(e.lav)
-          for (const k in e.v) p.v[k] = (p.v[k] || 0) + e.v[k]
-        }
-      }
-      return [...byPin.values(), ...solo]
-    }
+    // Xodimlar JSHSHIR (j) bo'yicha birlashtirilgan + boyitilgan (b004/b011/oth/g/cat).
+    // Engine (maket) mantig'i — barcha bo'limlar shu yagona manbadan foydalanadi.
+    people: (s) => buildPeople(s.dashboard.emps ?? []),
+    // 14 avtomatik tekshiruv natijasi (D.F) — maketning `yigish()` ko'chirmasi.
+    // Backend heuristikasi (store.findings) o'rniga dashboard ko'rinishi shuni ishlatadi.
+    scFindings: (s) => computeFindings(s.dashboard.emps ?? [], { fmt: money }),
+    // 14 risk kartalari + reestr — maketning `R` massivi ko'chirmasi.
+    scRisks: (s) =>
+      computeRisks(
+        s.dashboard.emps ?? [],
+        { ...(s.dashboard.kpi ?? {}), norm: s.dashboard.norm },
+        { year: s.params.year, month: s.params.month, fmt: money }
+      )
   },
   actions: {
     // Joriy filtr kaliti — kesh va race guard uchun.
