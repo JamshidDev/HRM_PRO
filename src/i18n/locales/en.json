@@ -5982,6 +5982,8 @@
     "noUnread": "No unread messages",
     "enterHint": "Enter — send · Shift+Enter — new line",
     "emoji": "Emoji",
+    "bold": "Bold",
+    "italic": "Italic",
     "attach": "Attach file",
     "send": "Send",
     "scrollDown": "Scroll down",

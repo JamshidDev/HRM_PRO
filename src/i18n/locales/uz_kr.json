@@ -5638,6 +5638,8 @@
     "noUnread": "Ўқилмаган хабарлар йўқ",
     "enterHint": "Enter — юбориш · Shift+Enter — янги қатор",
     "emoji": "Эмоджи",
+    "bold": "Қалин",
+    "italic": "Курсив",
     "attach": "Файл бириктириш",
     "send": "Юбориш",
     "scrollDown": "Пастга",

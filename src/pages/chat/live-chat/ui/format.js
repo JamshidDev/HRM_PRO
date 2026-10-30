@@ -1,3 +1,5 @@
+import { stripFormatting } from './textFormat.js'
+
 const AVATAR_COLORS = ['#1279f0', '#2dcb73', '#f26b1f', '#b832d6', '#e0417f', '#5550e5']
 
 export const getInitials = (fullName) =>
@@ -22,7 +24,7 @@ export const formatFileSize = (bytes) => {
 // va javob (reply) tirnoqchasida ishlatiladi.
 export const messagePreviewLabel = (message) => {
   if (!message) return ''
-  if (message.type === 'text') return message.text
+  if (message.type === 'text') return stripFormatting(message.text)
   if (message.type === 'image') return '📷 Rasm'
   if (message.type === 'voice') return '🎤 Ovozli xabar'
   return `📎 ${message.fileName || 'Fayl'}`

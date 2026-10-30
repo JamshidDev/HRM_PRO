@@ -24,6 +24,7 @@
   import i18n from '@/i18n/index.js'
   import { formatFileSize, formatDuration, messagePreviewLabel, generateWaveform, hashString } from './format.js'
   import { EMOJI_LIST } from './emojiData.js'
+  import RichTextInput from './RichTextInput.vue'
 
   const { t } = i18n.global
   const accountStore = useAccountStore()
@@ -493,17 +494,7 @@
   // Emoji paneli: tanlangan emoji kursor turgan joyga qo'yiladi.
   const showEmoji = ref(false)
   const uniqueEmojis = [...new Set(EMOJI_LIST)]
-  const insertEmoji = (emoji) => {
-    const el = textareaRef.value?.$el?.querySelector('textarea')
-    const start = el?.selectionStart ?? text.value.length
-    const end = el?.selectionEnd ?? text.value.length
-    text.value = text.value.slice(0, start) + emoji + text.value.slice(end)
-    nextTick(() => {
-      textareaRef.value?.focus()
-      const pos = start + emoji.length
-      el?.setSelectionRange(pos, pos)
-    })
-  }
+  const insertEmoji = (emoji) => textareaRef.value?.insertText(emoji)
 
   const onKeydown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey && !isTouch) {
@@ -693,15 +684,14 @@
             </template>
           </n-button>
 
-          <n-input
+          <!-- Qalin / kursiv haqiqiy ko'rinishda (belgilar ko'rinmaydi) — RichTextInput -->
+          <RichTextInput
             ref="textareaRef"
             v-model:value="text"
             :maxlength="4000"
-            @input="onInput"
-            type="textarea"
-            :autosize="{ minRows: 1, maxRows: 5 }"
             :placeholder="$t('liveChatPage.typePlaceholder')"
             class="flex-1"
+            @input="onInput"
             @keydown="onKeydown"
           />
 
@@ -790,8 +780,6 @@
     opacity: 0;
     transform: translateY(-6px);
   }
-  /* Textarea fonsiz/chegarasiz — tekis qatorga singib ketadi. `--n-height` bitta qatorda
-     ikonalar bilan bir xil balandlik (40px) bo'lishi uchun aniq belgilangan. */
   /* ── Telegram uslubidagi yozish ── */
   .rec-dot {
     width: 10px;
@@ -916,15 +904,6 @@
   .action-swap-leave-to {
     opacity: 0;
     transform: scale(0.6) rotate(45deg);
-  }
-  .compose-bar :deep(.n-input) {
-    --n-height: 40px !important;
-    --n-color: transparent !important;
-    --n-color-focus: transparent !important;
-    --n-border: none !important;
-    --n-border-focus: none !important;
-    --n-border-hover: none !important;
-    --n-box-shadow-focus: none !important;
   }
 
   /* naive-ui NButton o'zining ichki elementlariga `cursor: pointer`ni

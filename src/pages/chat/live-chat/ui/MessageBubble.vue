@@ -26,6 +26,7 @@
   import MessageMeta from './MessageMeta.vue'
   import ChatImage from './ChatImage.vue'
   import { imageSrcFor } from './imageCache.js'
+  import { parseFormatted, stripFormatting } from './textFormat.js'
 
   const { t } = i18n.global
 
@@ -107,6 +108,9 @@
     isEditing.value = false
   }
 
+  // **qalin** / __kursiv__ belgilari → bo'laklar (v-html'siz).
+  const textParts = computed(() => (props.message.type === 'text' ? parseFormatted(props.message.text) : []))
+
   const saveEdit = () => {
     if (!editText.value.trim()) return
     props.chat.editMessage(props.message.id, editText.value)
@@ -178,7 +182,7 @@
   const bigEmoji = computed(() => {
     const m = props.message
     if (m.type !== 'text' || isEditing.value || m.replyTo || m.forwarded) return 0
-    return bigEmojiCount(m.text)
+    return bigEmojiCount(stripFormatting(m.text))
   })
   const BIG_EMOJI_SIZE = { 1: 'text-[56px]', 2: 'text-[44px]', 3: 'text-[36px]' }
 
@@ -211,7 +215,7 @@
 
   const onCopyText = () => {
     if (!props.message.text) return
-    Utils.copyToClipboard(props.message.text, () => window.$Toast?.success(t('content.copied')))
+    Utils.copyToClipboard(stripFormatting(props.message.text), () => window.$Toast?.success(t('content.copied')))
   }
 
   const onReact = (emoji) => {
@@ -222,7 +226,9 @@
   // ref ikkalasiga ham ulanadi — o'ng klik shu orqali kursor joyida ochiladi.
   const actionsMenuRef = ref(null)
 
+  // Tahrirlashda — textarea'ning qalin/kursiv menyusi ishlaydi, amallar menyusi emas.
   const onContextMenu = (e) => {
+    e.preventDefault()
     if (isEditing.value || !isSaved.value) return
     actionsMenuRef.value?.openAt(e.clientX, e.clientY)
   }
@@ -280,7 +286,7 @@
         message.status === 'sending' && 'opacity-80',
         isFresh && (isOwn ? 'bubble-enter-out' : 'bubble-enter-in')
       ]"
-      @contextmenu.prevent="onContextMenu"
+      @contextmenu="onContextMenu"
     >
       <svg
         v-if="showAvatar && !bigEmoji"
@@ -351,12 +357,13 @@
       </div>
 
       <!-- Faqat emoji — katta o'lchamda -->
-      <p v-else-if="bigEmoji" class="leading-none" :class="BIG_EMOJI_SIZE[bigEmoji]">{{ message.text.trim() }}</p>
+      <p v-else-if="bigEmoji" class="leading-none" :class="BIG_EMOJI_SIZE[bigEmoji]">{{ stripFormatting(message.text).trim() }}</p>
 
       <!-- Matn -->
       <!-- pre-line faqat matnda: <p> ichidagi qator ko'chishlari bo'sh qator bo'lib chiqmasin -->
       <p v-else-if="message.type === 'text'" class="break-words">
-        <span class="whitespace-pre-line">{{ message.text }}</span>
+        <!-- Bo'laklar bir qatorda — orasidagi qator ko'chishi pre-line'da bo'sh joy bo'lib chiqmasin -->
+        <span class="whitespace-pre-line"><span v-for="(part, i) in textParts" :key="i" :class="{ 'font-semibold': part.bold, italic: part.italic }">{{ part.text }}</span></span>
         <MessageMeta
           v-if="!reactionGroups.length"
           aria-hidden="true"
