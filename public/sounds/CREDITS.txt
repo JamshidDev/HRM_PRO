@@ -1,0 +1,11 @@
+# Qo'ng'iroq ovozlari — mualliflar va litsenziyalar
+
+Fayllar Wikimedia Commons'dan olingan, MP3 (mono, 64 kbit/s) formatiga o'girilgan; boshqa o'zgartirish yo'q.
+
+| Fayl | Asl nomi | Muallif | Litsenziya |
+|---|---|---|---|
+| `call-ringtone.mp3` | [Model 500 Telephone British ring.ogg](https://commons.wikimedia.org/wiki/File:Model_500_Telephone_British_ring.ogg) | CianMcCann | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) |
+| `call-ringback.mp3` | [US ringback tone.ogg](https://commons.wikimedia.org/wiki/File:US_ringback_tone.ogg) | Edokter | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| `call-busy.mp3` | [Busy tone (France).ogg](https://commons.wikimedia.org/wiki/File:Busy_tone_(France).ogg) | Jjackoti | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) |
+
+CC BY-SA fayllarining o'girilgan nusxalari ham shu litsenziya (CC BY-SA 3.0) ostida tarqatiladi.

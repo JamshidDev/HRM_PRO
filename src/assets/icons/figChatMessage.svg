@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none">
+<defs>
+<mask id="figChatMessageLines" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
+<rect width="16" height="16" fill="#fff"/>
+<path d="M4.6 6.65H11.4M4.6 9.3H9.8" stroke="#000" stroke-width="1.1" stroke-linecap="round"/>
+</mask>
+</defs>
+<g mask="url(#figChatMessageLines)" fill="currentColor">
+<circle cx="8.5" cy="7.5" r="7.5"/>
+<path d="M1.48 9.9L0.36 14.35C0.24 14.8 0.62 15.2 1.07 15.1L5.2 14.15Z"/>
+</g>
+</svg>

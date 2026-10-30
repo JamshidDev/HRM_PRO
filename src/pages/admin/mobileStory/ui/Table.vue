@@ -1,6 +1,6 @@
 <script setup>
   import { UITable, UITableNameCell } from '@/components/index.js'
-  import { useMobileStoryStore } from '@/store/modules/index.js'
+  import { useAccountStore, useMobileStoryStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import {
@@ -65,18 +65,22 @@
     }
   ])
 
+  const accStore = useAccountStore()
+
   const actions = computed(() => [
     {
       label: t('content.edit'),
       key: Utils.ActionTypes.edit,
       icon: UIHelper.renderIcon(Edit32Regular),
-      action: onEdit
+      action: onEdit,
+      visible: accStore.checkPermission(accStore.pn.mobileStoriesWrite)
     },
     {
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete20Regular),
-      action: onDelete
+      action: onDelete,
+      visible: accStore.checkPermission(accStore.pn.mobileStoriesDelete)
     }
   ])
 </script>

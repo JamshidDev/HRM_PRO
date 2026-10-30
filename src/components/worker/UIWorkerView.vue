@@ -107,42 +107,46 @@
           <MainInfo v-model:masked="masked" class="shrink-0" />
 
           <div class="preview-body flex w-full flex-1 min-h-0 gap-4">
-            <div
-              class="preview-menu self-start max-h-full bg-surface-section rounded-3xl p-1 z-10 overflow-y-auto"
-            >
-              <div
-                class="sidebar-title-box text-primary text-md font-semibold rounded-t-3xl px-1 text-center py-2 mb-2"
-              >
-                {{ $t('workerView.sidebar.title') }}
-              </div>
-              <template v-if="store.workerPreview">
-                <div
-                  v-for="item in tabList"
-                  :key="item.id"
-                  class="flex items-center gap-3 px-2 py-2 mb-1 rounded-xl cursor-pointer transition-colors"
-                  :class="
-                    activeTab === item.id
-                      ? 'bg-primary text-white font-semibold'
-                      : 'text-textColor2 hover:bg-surface-ground'
-                  "
-                  @click="
-                    () => {
-                      activeTab = item.id
-                      store.panelVisible = false
-                    }
-                  "
-                >
-                  <span
-                    class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors"
-                    :class="activeTab === item.id ? 'bg-white/20' : ''"
+            <!-- Oq fon — skroll ichidagi alohida yumaloq kartada: scrollbar uning yonida (sahifa fonida)
+                 turadi va kartaning o'ng burchaklarini kesmaydi. Scrollbar o'zi o'zgarmagan. -->
+            <div class="preview-menu self-start max-h-full flex flex-col rounded-3xl z-10 overflow-hidden">
+              <div class="min-h-0 overflow-y-auto">
+                <div class="bg-surface-section rounded-3xl p-1">
+                  <div
+                    class="sidebar-title-box text-primary text-md font-semibold rounded-t-3xl px-1 text-center py-2 mb-2"
                   >
-                    <n-icon size="16" :color="activeTab === item.id ? '#ffffff' : undefined">
-                      <component :is="item.icon" />
-                    </n-icon>
-                  </span>
-                  <span class="text-sm font-medium truncate">{{ item.name }}</span>
+                    {{ $t('workerView.sidebar.title') }}
+                  </div>
+                  <template v-if="store.workerPreview">
+                    <div
+                      v-for="item in tabList"
+                      :key="item.id"
+                      class="flex items-center gap-3 px-2 py-2 mb-1 rounded-xl cursor-pointer transition-colors"
+                      :class="
+                        activeTab === item.id
+                          ? 'bg-primary text-white font-semibold'
+                          : 'text-textColor2 hover:bg-surface-ground'
+                      "
+                      @click="
+                        () => {
+                          activeTab = item.id
+                          store.panelVisible = false
+                        }
+                      "
+                    >
+                      <span
+                        class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-colors"
+                        :class="activeTab === item.id ? 'bg-white/20' : ''"
+                      >
+                        <n-icon size="16" :color="activeTab === item.id ? '#ffffff' : undefined">
+                          <component :is="item.icon" />
+                        </n-icon>
+                      </span>
+                      <span class="text-sm font-medium truncate">{{ item.name }}</span>
+                    </div>
+                  </template>
                 </div>
-              </template>
+              </div>
             </div>
 
             <div

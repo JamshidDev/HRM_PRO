@@ -90,7 +90,7 @@
           <span class="toast__accent" />
 
           <span class="toast__icon">
-            <component :is="typeOf(item).icon" class="size-[18px]" />
+            <component :is="item.icon || typeOf(item).icon" class="size-[18px]" />
           </span>
 
           <div class="toast__body">

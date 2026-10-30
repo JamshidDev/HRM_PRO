@@ -17,7 +17,7 @@
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore } from '@/store/modules/index.js'
-  import { getInitials, getAvatarColor, formatFileSize, formatDuration } from './format.js'
+  import { getInitials, getAvatarColor, formatFileSize, formatDuration, formatLastSeen } from './format.js'
   import ChatImage from './ChatImage.vue'
   import { imageSrcFor } from './imageCache.js'
 
@@ -41,9 +41,7 @@
     if (!props.user) return ''
     if (isOwn.value || props.user.online) return t('liveChatPage.online')
     if (props.user.lastSeenAt)
-      return t('liveChatPage.lastSeen', {
-        time: dayjs(props.user.lastSeenAt).format('DD.MM HH:mm')
-      })
+      return t('liveChatPage.lastSeen', { time: formatLastSeen(props.user.lastSeenAt, { lower: true }) })
     return t('liveChatPage.offline')
   })
 
@@ -234,7 +232,7 @@
             <div v-if="showLastSeen" class="tg-info-row">
               <n-icon size="22" class="tg-info-icon"><Clock20Regular /></n-icon>
               <div class="min-w-0 flex-1">
-                <div class="tg-info-value">{{ dayjs(user.lastSeenAt).format('DD.MM.YYYY HH:mm') }}</div>
+                <div class="tg-info-value">{{ formatLastSeen(user.lastSeenAt) }}</div>
                 <div class="tg-info-label">{{ $t('liveChatPage.lastSeenLabel') }}</div>
               </div>
             </div>

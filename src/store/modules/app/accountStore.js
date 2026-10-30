@@ -394,10 +394,11 @@ export const useAccountStore = defineStore('accountStore', {
           this.saveLoading = false
         })
     },
-    _changePassword(password) {
+    // Joriy parol majburiy — backend tekshiradi (xato bo'lsa 422).
+    _changePassword(password, current_password) {
       this.changePasswordLoading = true
       return $ApiService.accountService
-        ._update({ data: { password } })
+        ._update({ data: { password, current_password } })
         .then(() => {
           this.mustChangePassword = false
           localStorage.removeItem(useAppSetting.mustChangeKey)

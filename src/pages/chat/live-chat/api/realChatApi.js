@@ -37,6 +37,7 @@ export const createRealChatApi = () => {
 
     conversations: async (params = {}) => data(await service._conversations({ per_page: 100, ...params })),
     unreadCount: async () => data(await service._unreadCount()),
+    quota: async () => data(await service._quota()),
     users: async (search) => data(await service._users(search)),
     open: async (userId) => data(await service._open(userId)),
     messages: async (id, params) => data(await service._messages(id, params)),

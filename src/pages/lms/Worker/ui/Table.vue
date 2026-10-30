@@ -13,7 +13,7 @@
   const accStore = useAccountStore()
 
   const onDelete = (v) => {
-    if (!accStore.checkAction(accStore.pn.lmsWorkerWrite)) return
+    if (!accStore.checkAction(accStore.pn.hrEduPlansWrite)) return
     store.selectedWorkers = [v.id]
     store._delete()
   }
@@ -73,7 +73,7 @@
 
 <template>
   <UITable
-    permission-prefix="lms-worker"
+    permission-prefix="hr-edu-plans"
     :columns="columns"
     :actions="actions"
     :data="store.list"

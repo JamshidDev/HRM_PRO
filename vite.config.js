@@ -1,9 +1,10 @@
-import { defineConfig } from 'vite'
+import { defineConfig, searchForWorkspaceRoot } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import tailwindcss from '@tailwindcss/vite'
 import svgLoader from 'vite-svg-loader'
 import path from 'path'
+import fs from 'fs'
 
 export default defineConfig({
   resolve: {
@@ -57,7 +58,9 @@ export default defineConfig({
     // esbuild bilan alohida pre-bundle qilinadi va u o'z (standart) target'ini
     // oladi → `harfbuzzjs` TLA'si tufayli dev'da muharrir moduli yuklanmaydi.
     // Shuning uchun target bu yerda ham qo'yiladi.
-    esbuildOptions: { target: 'es2022' }
+    esbuildOptions: { target: 'es2022' },
+    // Pre-bundle shrift URL'larini (.vite/deps/../assets) buzadi — dev'da muharrir Word shriftisiz chizardi.
+    exclude: ['@docx-editor.dev/fonts']
   },
   server: {
     port: 8000,
@@ -65,6 +68,13 @@ export default defineConfig({
     watch: {
       ignored: ['dist/**', 'auto-imports.d.ts']
     },
-    allowedHosts: ['jamcoder-mac.local', 'calculate-aloof-slot.ngrok-free.dev']
+    allowedHosts: ['jamcoder-mac.local', 'calculate-aloof-slot.ngrok-free.dev'],
+    // Worktree'da node_modules symlink — haqiqiy yo'lidagi shriftlar 403 bermasin.
+    fs: {
+      allow: [
+        searchForWorkspaceRoot(process.cwd()),
+        fs.realpathSync(path.resolve(__dirname, 'node_modules'))
+      ]
+    }
   }
 })

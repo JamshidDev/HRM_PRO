@@ -6,6 +6,7 @@ const _conversations = (params) => axios.get(`${BASE}/conversations`, { params }
 const _open = (userId) => axios.post(`${BASE}/conversations`, { user_id: userId })
 const _users = (search) => axios.get(`${BASE}/users`, { params: { search } })
 const _unreadCount = () => axios.get(`${BASE}/unread-count`)
+const _quota = () => axios.get(`${BASE}/quota`)
 const _messages = (id, params) => axios.get(`${BASE}/conversations/${id}/messages`, { params })
 const _media = (id, type) => axios.get(`${BASE}/conversations/${id}/media`, { params: { type } })
 const _sendText = (id, data) => axios.post(`${BASE}/conversations/${id}/messages`, data)
@@ -18,12 +19,18 @@ const _edit = (messageId, text) => axios.patch(`${BASE}/messages/${messageId}`, 
 const _remove = (messageId) => axios.delete(`${BASE}/messages/${messageId}`)
 const _forward = (messageId, userIds) => axios.post(`${BASE}/messages/${messageId}/forward`, { user_ids: userIds })
 const _react = (messageId, emoji) => axios.put(`${BASE}/messages/${messageId}/reaction`, { emoji })
+const _startCall = (data) => axios.post(`${BASE}/calls`, data)
+const _acceptCall = (id) => axios.post(`${BASE}/calls/${id}/accept`)
+const _rejectCall = (id) => axios.post(`${BASE}/calls/${id}/reject`)
+const _endCall = (id, data) => axios.post(`${BASE}/calls/${id}/end`, data ?? {})
+const _callQuota = () => axios.get(`${BASE}/calls/quota`)
 
 export default {
   _conversations,
   _open,
   _users,
   _unreadCount,
+  _quota,
   _messages,
   _media,
   _sendText,
@@ -35,5 +42,10 @@ export default {
   _edit,
   _remove,
   _forward,
-  _react
+  _react,
+  _startCall,
+  _acceptCall,
+  _rejectCall,
+  _endCall,
+  _callQuota
 }

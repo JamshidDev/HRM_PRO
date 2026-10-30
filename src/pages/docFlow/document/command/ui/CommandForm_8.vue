@@ -1,35 +1,103 @@
 <script setup>
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import { useComponentStore } from '@/store/modules/index.js'
+  import { SuperSelect } from '@/components/index.js'
   import UIDepartment from '@/components/ui/UIDepartment.vue'
   import UIHelper from '@utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
   import { useAppSetting } from '@/utils/index.js'
-  import { Search24Regular, Warning24Filled, DocumentDismiss20Regular } from '@vicons/fluent'
+  import { Warning24Filled, DocumentDismiss20Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
   const store = useCommandFormStore()
   const componentStore = useComponentStore()
   const formRef = ref(null)
-  const searching = ref(false)
-  const notFound = ref(false)
-  const noTermination = ref(false)
+  const termError = ref(null)
   const DAY = 86400000
 
   const form = computed(() => store.form_8)
-  // Eski lavozim asosiy bo'lsa — boshqa joydagi faol asosiy shtat tiklashga to'sqinlik qiladi.
-  const mainElsewhere = computed(() =>
-    form.value.termination?.position_type === 1
-      ? (form.value.worker?.positions || []).filter((p) => p.type_id === 1)
-      : []
-  )
   const dayStart = (v) => new Date(`${v}T00:00:00`).getTime()
+  const fmtDate = (v) =>
+    String(v || '')
+      .split('-')
+      .reverse()
+      .join('.')
+
+  // Xodim butun tizimdan JSHSHIR boshi bo'yicha qidiriladi; variantda asosiy shtat / bo'shatish holati.
+  const candidates = reactive({
+    list: [],
+    total: 0,
+    loading: false,
+    search: null,
+    page: 1,
+    reqId: 0
+  })
+  const perPage = 50
+
+  const toOption = (v) => ({
+    ...v,
+    name: Utils.combineFullName(v),
+    position: v.pin,
+    subPosition: v.main_position
+      ? t('commandPage.form_8.optionMain', { organization: v.main_position.organization })
+      : v.termination
+        ? t('commandPage.form_8.optionDismissed', {
+            number: v.termination.command_number,
+            date: fmtDate(v.termination.command_date)
+          })
+        : t('commandPage.form_8.optionNoTermination')
+  })
+
+  const workerOptions = computed(() => {
+    const picked = form.value.worker
+    return picked ? [picked, ...candidates.list.filter((v) => v.id !== picked.id)] : candidates.list
+  })
+
+  const loadCandidates = (infinity = false) => {
+    const digits = String(candidates.search || '').replace(/\D/g, '')
+    const reqId = ++candidates.reqId
+    if (digits.length < 4) {
+      candidates.list = []
+      candidates.total = 0
+      candidates.loading = false
+      return
+    }
+    candidates.loading = true
+    $ApiService.commandService
+      ._reinstatementCandidates({
+        params: { search: digits, page: candidates.page, per_page: perPage }
+      })
+      .then((res) => {
+        if (reqId !== candidates.reqId) return
+        const data = res.data.data.data.map(toOption)
+        candidates.total = res.data.data.total
+        candidates.list = infinity ? [...candidates.list, ...data] : data
+      })
+      .finally(() => {
+        if (reqId === candidates.reqId) candidates.loading = false
+      })
+  }
+  const onSearchWorker = (v) => {
+    candidates.page = 1
+    candidates.search = v
+    loadCandidates()
+  }
+  const onScrollWorker = () => {
+    candidates.page += 1
+    loadCandidates(true)
+  }
+
+  // Tahrirda (eski saqlangan forma ham) tanlangan xodim select'da ko'rinsin.
+  if (form.value.worker) {
+    if (!form.value.worker.name) form.value.worker = toOption(form.value.worker)
+    if (!form.value.worker_id) form.value.worker_id = form.value.worker.id
+  }
 
   // Bo'shatish buyrug'i topilgach — progul boshlanishi bo'shatilgan kundan keyingi kun.
   const loadTermination = (workerId) => {
-    noTermination.value = false
+    termError.value = null
     form.value.termination = null
     $ApiService.commandService
       ._reinstatementTarget({ params: { worker_id: workerId } })
@@ -38,41 +106,22 @@
         const d = res.data.data?.dismissed_at
         if (d && !form.value.from) form.value.from = dayStart(d) + DAY
       })
-      .catch(() => {
-        noTermination.value = true
+      .catch((e) => {
+        termError.value = e?.response?.data?.message || t('commandPage.form_8.noTermination')
       })
   }
 
-  const search = () => {
-    const pin = String(form.value.pin || '').replace(/\D/g, '')
-    if (pin.length !== 14) return
-    searching.value = true
-    notFound.value = false
-    $ApiService.workerService
-      ._checkWorker({ params: { pin }, silentError: true })
-      .then((res) => {
-        form.value.worker = res.data.data
-        loadTermination(res.data.data.id)
-      })
-      .catch(() => {
-        form.value.worker = null
-        notFound.value = true
-      })
-      .finally(() => {
-        searching.value = false
-      })
-  }
-  watch(
-    () => form.value.pin,
-    (v) => {
-      if (String(v || '').replace(/\D/g, '').length === 14) search()
-      else {
-        form.value.worker = null
-        form.value.termination = null
-        noTermination.value = false
-      }
+  const onChangeWorker = (id) => {
+    const worker = workerOptions.value.find((v) => v.id === id) ?? null
+    form.value.worker = worker
+    form.value.termination = null
+    termError.value = null
+    if (!worker) return
+    if (worker.main_position) {
+      $Alert.warning(t('commandPage.form_8.mainPosition', worker.main_position))
     }
-  )
+    loadTermination(worker.id)
+  }
   // Progul tiklanishdan oldingi kungacha.
   watch(
     () => form.value.position_date,
@@ -116,11 +165,7 @@
         return
       }
       if (!form.value.termination) {
-        $Alert.warning(t('commandPage.form_8.noTermination'))
-        return
-      }
-      if (mainElsewhere.value.length) {
-        $Alert.warning(t('commandPage.form_8.mainElsewhere'))
+        $Alert.warning(termError.value || t('commandPage.form_8.noTermination'))
         return
       }
       data = {
@@ -155,19 +200,22 @@
     class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
   >
     <div class="col-span-12 @xl:col-span-6">
-      <n-form-item :label="$t('commandPage.form_8.pin')" path="pin">
-        <n-input
-          v-model:value="store.form_8.pin"
-          :allow-input="(v) => /^\d*$/.test(v)"
-          :maxlength="14"
-          :placeholder="$t('commandPage.form_8.pinPlaceholder')"
-          :loading="searching"
+      <n-form-item :label="$t('commandPage.form_8.pin')" path="worker_id">
+        <SuperSelect
+          pin-select
           clearable
-        >
-          <template #prefix>
-            <n-icon><Search24Regular /></n-icon>
-          </template>
-        </n-input>
+          placeholder="commandPage.form_8.pinPlaceholder"
+          :options="workerOptions"
+          :loading="candidates.loading"
+          :total-count="candidates.total"
+          :per-page="perPage"
+          v-model:value="store.form_8.worker_id"
+          v-model:search="candidates.search"
+          value-field="id"
+          @update:value="onChangeWorker"
+          @onSearch="onSearchWorker"
+          @onScrollEv="onScrollWorker"
+        />
       </n-form-item>
     </div>
     <div class="col-span-12 @xl:col-span-6 flex items-center">
@@ -182,37 +230,30 @@
             {{
               $t('commandPage.form_8.termination', {
                 number: form.termination.command_number,
-                date: String(form.termination.command_date || '')
-                  .split('-')
-                  .reverse()
-                  .join('.'),
+                date: fmtDate(form.termination.command_date),
                 position: form.termination.position
               })
             }}
           </div>
         </div>
       </div>
-      <div v-else-if="notFound" class="text-sm text-textColor2">
-        {{ $t('commandPage.form_8.notFound') }}
+    </div>
+    <div v-if="form.worker?.main_position" class="col-span-12 mb-3">
+      <div
+        class="flex gap-2 items-start rounded-lg border border-warning/40 bg-warning/10 px-3 py-2 text-sm text-warning"
+      >
+        <n-icon size="20" class="mt-0.5 flex-shrink-0"><Warning24Filled /></n-icon>
+        <div class="font-medium">
+          {{ $t('commandPage.form_8.mainPosition', form.worker.main_position) }}
+        </div>
       </div>
     </div>
-    <div v-if="noTermination || mainElsewhere.length" class="col-span-12 mb-3">
+    <div v-if="termError" class="col-span-12 mb-3">
       <div
         class="flex gap-2 items-start rounded-lg border border-danger/40 bg-danger/10 px-3 py-2 text-sm text-danger"
       >
         <n-icon size="20" class="mt-0.5 flex-shrink-0"><Warning24Filled /></n-icon>
-        <div>
-          <div class="font-medium">
-            {{
-              noTermination
-                ? $t('commandPage.form_8.noTermination')
-                : $t('commandPage.form_8.mainElsewhere')
-            }}
-          </div>
-          <div v-for="p in mainElsewhere" :key="p.id" class="text-xs mt-0.5">
-            {{ p.organization }} — {{ p.position }}
-          </div>
-        </div>
+        <div class="font-medium">{{ termError }}</div>
       </div>
     </div>
 

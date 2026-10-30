@@ -4,7 +4,6 @@
   import Table from './ui/Table.vue'
   import { useConfApplicationStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
-  import Banner from './ui/Banner.vue'
   import { useAccountStore } from '@/store/modules/index.js'
   import { Events, eventBus } from '@utils'
   import { useNotify } from '@/composables/useNotify'
@@ -78,13 +77,12 @@
 
 <template>
   <UIPageContent>
-    <Banner />
+    <!-- Sarlavhadagi banner (Xush kelibsiz + pie chart) olib tashlandi — ariza boshqa sahifalardagi
+         kabi qidiruv qatoridagi «Qo'shish» tugmasi bilan yaratiladi. -->
     <UIPageFilter
       :placeholder="$t('documentSettings.searchPlaceholder')"
-      class="mt-4"
       v-model:search="store.params.search"
       :show-filter-button="false"
-      :show-add-button="false"
       @onSearch="onSearch"
       @onAdd="onAdd"
     />

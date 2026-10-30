@@ -68,8 +68,10 @@
   >
     <template #header>
       <div class="contract-modal__head -mx-2 -mt-2 px-4 pt-2 pb-2">
-        <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-          <div class="flex items-center gap-3 min-w-0">
+        <!-- Bitta qator: chapda nom, o'rtada qadamlar (1–4), o'ngda amallar.
+             Tor ekranda (< 1280px) qadamlar sig'maydi — ular alohida pastki qatorga tushadi. -->
+        <div class="contract-modal__bar">
+          <div class="contract-modal__side flex items-center gap-3 min-w-0">
             <n-button
               secondary
               class="shrink-0 no-scale"
@@ -85,9 +87,12 @@
             </n-button>
             <h3 class="text-lg font-medium truncate">{{ title }}</h3>
           </div>
+          <div class="contract-modal__steps">
+            <ContractFormSteps />
+          </div>
           <!-- Tartib: bekor qilish → orqaga → keyingi/saqlash (asosiy amal eng o'ngda).
                4-qadam (holati) — natija, unda faqat yopish qoladi. -->
-          <div class="flex items-center gap-2">
+          <div class="contract-modal__side flex items-center justify-end gap-2">
             <n-button class="no-scale" type="error" secondary @click="visible = false">
               <template #icon>
                 <DismissCircle32Filled />
@@ -124,11 +129,33 @@
             </template>
           </div>
         </div>
-        <div class="mt-3 flex justify-center">
-          <ContractFormSteps />
-        </div>
       </div>
     </template>
     <contractForm ref="formRef" :call-back="callBack" />
   </UIModal>
 </template>
+
+<style scoped>
+  .contract-modal__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+  }
+  /* Chap va o'ng qism teng ulushda — qadamlar o'rtada turadi */
+  .contract-modal__side {
+    flex: 1 1 0;
+  }
+  .contract-modal__steps {
+    display: flex;
+    flex: 0 0 auto;
+    justify-content: center;
+  }
+  /* Modal 1200px dan torayganda (yoki telefonda) bir qatorga sig'maydi — qadamlar pastki qatorda */
+  @media (max-width: 1279px) {
+    .contract-modal__steps {
+      order: 3;
+      flex-basis: 100%;
+    }
+  }
+</style>

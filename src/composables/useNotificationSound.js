@@ -13,7 +13,16 @@ const soundFiles = {
   'alert-validation': '/sounds/alert-validation.wav',
   'alert-warning': '/sounds/alert-warning.wav',
   'alert-notfound': '/sounds/alert-notfound.wav',
-  'alert-network': '/sounds/alert-network.wav'
+  'alert-network': '/sounds/alert-network.wav',
+  // Live chat: ochiq suhbatda har bir xabar — qisqa, yumshoq "pop" (yuborish ↑, qabul ↓).
+  'message-out': '/sounds/message-out.wav',
+  'message-in': '/sounds/message-in.wav'
+}
+
+// Asosiy ovoz balandligi (0–1). Ro'yxatda yo'q — to'liq ovoz.
+const soundVolumes = {
+  'message-out': 0.35,
+  'message-in': 0.35
 }
 
 const audioCache = {}
@@ -78,6 +87,7 @@ export const useNotificationSound = () => {
     if (!playAudioUnlocked) return
 
     const audio = getAudio(type)
+    audio.volume = soundVolumes[type] ?? 1
     audio.currentTime = 0
     audio.play().catch(onPlaybackError)
   }

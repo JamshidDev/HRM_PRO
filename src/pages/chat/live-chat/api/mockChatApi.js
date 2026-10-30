@@ -288,6 +288,9 @@ export const createMockChatApi = () => {
         .sort((a, b) => (b.pinned - a.pinned) || String(b.last_message_at ?? '').localeCompare(String(a.last_message_at ?? '')))
       return { data, total: data.length }
     },
+    async quota() {
+      return { messages: { limit: 1000, used: 0 }, blocked: false, reset_at: null }
+    },
     async unreadCount() {
       await wait(80)
       return { total: conversations.reduce((s, c) => s + (part(c, meId).hidden ? 0 : part(c, meId).unread), 0) }

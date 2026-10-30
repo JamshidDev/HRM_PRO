@@ -1,6 +1,7 @@
 <script setup>
   import { Eye20Filled } from '@vicons/fluent'
   import { Utils } from '@/utils/index.js'
+  import { UICountUp } from '@/components/index.js'
   import CardHeader from './CardHeader.vue'
   import { MonthlyCardSkeleton } from './skeleton/index.js'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
@@ -60,7 +61,7 @@
             <span
               class="font-grotesk font-semibold text-[20px] leading-[30px] text-fig-text-primary"
             >
-              {{ formatted }}
+              <UICountUp :value="formatted" />
             </span>
           </div>
         </div>

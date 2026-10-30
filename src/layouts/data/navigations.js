@@ -443,7 +443,7 @@ export const navigations = withRawIcons([
         path: Utils.routeHrmPathMaker(AppPaths.LmsWorker),
         icon: qualificationIcon,
         color: 'bg-success',
-        permission: appPermissions.lmsWorkerRead
+        permission: appPermissions.hrEduPlansRead
       }
     ]
   },
@@ -996,21 +996,21 @@ export const navigations = withRawIcons([
         path: Utils.routeChatPathMaker(AppPaths.News),
         icon: ChatNewsIcon,
         color: 'bg-dark',
-        permission: appPermissions.chat
+        permission: appPermissions.chatNewsRead
       },
       {
         label: 'mobileStoryPage.name',
         path: Utils.routeChatPathMaker(AppPaths.MobileStories),
         icon: ChatMobileStoryIcon,
         color: 'bg-dark',
-        permission: appPermissions.chat
+        permission: appPermissions.mobileStoriesRead
       },
       {
         label: 'newsCategoryPage.name', // Yangilik kategoriyalari
         path: Utils.routeChatPathMaker(AppPaths.NewsCategory),
         icon: ChatNewsCategoryIcon,
         color: 'bg-dark',
-        permission: appPermissions.chat
+        permission: appPermissions.chatNewsCategoriesRead
       },
       {
         label: 'congratulation.name', // Telegram xabarlar
