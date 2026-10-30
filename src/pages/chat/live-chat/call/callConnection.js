@@ -114,6 +114,21 @@ export const createCallConnection = ({
     if (pc.iceConnectionState === 'failed') pc.restartIce()
   }
 
+  // Nomzod offer/answer'dan oldin kelishi mumkin (yig'ish setLocalDescription bilan boshlanadi) — remote description'gacha kutadi.
+  let earlyCandidates = []
+  const addCandidate = async (candidate) => {
+    try {
+      await pc.addIceCandidate(candidate)
+    } catch (err) {
+      if (!ignoreOffer) throw err
+    }
+  }
+  const flushCandidates = async () => {
+    const list = earlyCandidates
+    earlyCandidates = []
+    for (const c of list) await addCandidate(c).catch(() => {})
+  }
+
   const handleSignal = async ({ description, candidate }) => {
     if (description) {
       const collision =
@@ -121,6 +136,7 @@ export const createCallConnection = ({
       ignoreOffer = !polite && collision
       if (ignoreOffer) return
       await pc.setRemoteDescription(description)
+      await flushCandidates()
       if (description.type === 'offer') {
         // Qabul qiluvchi transceiverlari taklifdan yaratiladi — yuborishga ochiladi.
         pc.getTransceivers().forEach((t) => (t.direction = 'sendrecv'))
@@ -129,11 +145,8 @@ export const createCallConnection = ({
         onSignal({ description: pc.localDescription })
       }
     } else if (candidate) {
-      try {
-        await pc.addIceCandidate(candidate)
-      } catch (err) {
-        if (!ignoreOffer) throw err
-      }
+      if (!pc.remoteDescription) earlyCandidates.push(candidate)
+      else await addCandidate(candidate)
     }
   }
 

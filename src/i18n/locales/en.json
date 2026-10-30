@@ -2768,7 +2768,9 @@
     "yearly": {
       "title": "Hired and dismissed employees",
       "incoming": "Hired",
-      "outgoing": "Dismissed"
+      "outgoing": "Dismissed",
+      "incomingFxsh": "Part-time (FXSH) hired",
+      "outgoingFxsh": "Part-time (FXSH) left"
     },
     "birthday": {
       "title": "Birthdays",
@@ -5949,6 +5951,7 @@
       "unknown": "Checking connection"
     },
     "reason": {
+      "connect_failed": "Couldn't connect — the network blocked the call",
       "hangup": "Call ended",
       "limit": "Time limit reached",
       "no_answer": "No answer",
