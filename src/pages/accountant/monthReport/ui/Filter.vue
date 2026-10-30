@@ -4,9 +4,21 @@ import {OnesCodeFilter, UIPageFilter, UISelect, UIYearMonth} from '@/components/
 import UIHelper from '@/utils/UIHelper.js'
 import {ArrowCircleDown32Regular, ArrowSync20Filled} from '@vicons/fluent'
 import { useDebounce } from "@utils"
+import i18n from '@/i18n/index.js'
 
+const { t } = i18n.global
 const store = useMonthReportStore()
 const accStore = useAccountStore()
+
+// Ish soati (work_time) vs Tizim soati (system_hours) solishtirish filtri.
+const hoursCmpOptions = computed(() => [
+  { label: t('monthReport.hoursCmp.eq'), value: 'eq' },
+  { label: t('monthReport.hoursCmp.neq'), value: 'neq' },
+  { label: t('monthReport.hoursCmp.gt'), value: 'gt' },
+  { label: t('monthReport.hoursCmp.lt'), value: 'lt' },
+  { label: t('monthReport.hoursCmp.noWork'), value: 'no_work' },
+  { label: t('monthReport.hoursCmp.noSystem'), value: 'no_system' }
+])
 
 
 const filterEvent = () => {
@@ -41,13 +53,15 @@ const resetFilter = () => {
   store.params.code = null
   store.params.ones_code = null
   store.params.sex = null
+  store.params.hours_cmp = null
   filterEvent()
 }
 
 const filterCount = computed(() => {
   return (
     Number(Boolean(store.params.organizations.length)) +
-    Number(Boolean(store.params.code))
+    Number(Boolean(store.params.code)) +
+    Number(Boolean(store.params.hours_cmp))
   )
 })
 
@@ -136,6 +150,15 @@ const onChangeInput = useDebounce(filterEvent, 600)
       />
       <label class="text-xs mt-3 text-textColor3 mb-1 font-medium">{{ $t('monthReport.form.end_hours') }}</label>
       <n-input-number @update:value="onChangeInput" :min="1" :nax="100" v-model:value="store.params.end_hours" clearable />
+      <label class="text-xs mt-3 text-textColor3 mb-1 font-medium">{{ $t('monthReport.hoursCmp.label') }}</label>
+      <n-select
+        class="w-full"
+        clearable
+        v-model:value="store.params.hours_cmp"
+        :options="hoursCmpOptions"
+        :placeholder="$t('monthReport.hoursCmp.label')"
+        @update:value="filterEvent"
+      />
     </template>
     <template #filterAction>
       <div class="max-w-[160px]">

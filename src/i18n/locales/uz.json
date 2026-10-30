@@ -4277,6 +4277,15 @@
       "outTable": "Ushlanmalar",
       "oneSideEmpty": "Tanlangan oylardan birida ma'lumot yo'q"
     },
+    "hoursCmp": {
+      "label": "Soat solishtiruvi",
+      "eq": "Teng (ish = tizim)",
+      "neq": "Teng emas",
+      "gt": "Ish soati > Tizim soati",
+      "lt": "Ish soati < Tizim soati",
+      "noWork": "Ish soati yo'q",
+      "noSystem": "Tizim soati yo'q"
+    },
     "systemHours": {
       "column": "Tizim soati",
       "title": "Tizim bo'yicha ish soati",
