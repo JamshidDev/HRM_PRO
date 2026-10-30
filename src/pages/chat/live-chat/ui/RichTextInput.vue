@@ -15,7 +15,8 @@
     placeholder: { type: String, default: '' },
     maxlength: { type: Number, default: 4000 }
   })
-  const emit = defineEmits(['update:value', 'input', 'keydown'])
+  // `limit` — qo'yilgan matn `maxlength` ga sig'madi va qirqildi (ota ogohlantirish ko'rsatadi).
+  const emit = defineEmits(['update:value', 'input', 'keydown', 'limit'])
 
   const editorRef = ref(null)
   // Oxirgi chiqarilgan qiymat — tashqaridan kelgan o'zgarish (tozalash, qoralama) ni ajratish uchun.
@@ -154,6 +155,7 @@
     const text = e.clipboardData?.getData('text/plain') ?? ''
     const room = props.maxlength - currentLength() + selectedLength()
     if (text && room > 0) document.execCommand('insertText', false, text.slice(0, room))
+    if (text.length > room) emit('limit')
   }
 
   // Matnni sudrab tashlash — HTML kirmasin; fayllar esa yuqoriga (chat oynasiga) o'tadi.

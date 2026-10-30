@@ -25,6 +25,7 @@
   import { formatFileSize, formatDuration, messagePreviewLabel, generateWaveform, hashString } from './format.js'
   import { EMOJI_LIST } from './emojiData.js'
   import RichTextInput from './RichTextInput.vue'
+  import { stripFormatting } from './textFormat.js'
 
   const { t } = i18n.global
   const accountStore = useAccountStore()
@@ -48,6 +49,12 @@
 
   // Backend bilan bir xil: bitta xabarda ko'pi bilan 50 qator.
   const MAX_TEXT_LINES = 50
+
+  // Bitta xabar — ko'pi bilan 4000 belgi (RichTextInput undan ortiq yozdirmaydi). Hisoblagich faqat
+  // chegaraga yaqinlashganda (90% dan) chiqadi, chegarada qizil bo'ladi.
+  const MAX_TEXT_LENGTH = 4000
+  const COUNTER_FROM = MAX_TEXT_LENGTH * 0.9
+  const numberFormat = new Intl.NumberFormat('ru-RU')
 
   // Ovozli xabar davomiyligi chegaralari.
   const MIN_RECORD_SECONDS = 5
@@ -83,6 +90,14 @@
   const fileInputRef = ref(null)
 
   const canSend = computed(() => text.value.trim().length > 0 || stagedFiles.value.length > 0)
+
+  // Ko'rinadigan belgilar soni (**qalin** / __kursiv__ belgilarisiz).
+  const textLength = computed(() => stripFormatting(text.value).length)
+  const showCounter = computed(() => textLength.value >= COUNTER_FROM)
+  const counterLabel = computed(
+    () => `${numberFormat.format(textLength.value)} / ${numberFormat.format(MAX_TEXT_LENGTH)}`
+  )
+  const onTextLimit = () => $Alert.validation(t('liveChatPage.textTooLong', { max: numberFormat.format(MAX_TEXT_LENGTH) }))
 
   const onPickFiles = () => fileInputRef.value?.click()
 
@@ -684,16 +699,28 @@
             </template>
           </n-button>
 
-          <!-- Qalin / kursiv haqiqiy ko'rinishda (belgilar ko'rinmaydi) — RichTextInput -->
-          <RichTextInput
-            ref="textareaRef"
-            v-model:value="text"
-            :maxlength="4000"
-            :placeholder="$t('liveChatPage.typePlaceholder')"
-            class="flex-1"
-            @input="onInput"
-            @keydown="onKeydown"
-          />
+          <!-- Qalin / kursiv haqiqiy ko'rinishda (belgilar ko'rinmaydi) — RichTextInput.
+               Belgilar hisoblagichi — matn OSTIDA o'ngda (alohida ustun emas, matn kengligi qisqarmaydi);
+               faqat chegaraga yaqin (90% dan) chiqadi. -->
+          <div class="flex min-w-0 flex-1 flex-col">
+            <RichTextInput
+              ref="textareaRef"
+              v-model:value="text"
+              :maxlength="MAX_TEXT_LENGTH"
+              :placeholder="$t('liveChatPage.typePlaceholder')"
+              @input="onInput"
+              @keydown="onKeydown"
+              @limit="onTextLimit"
+            />
+            <span
+              v-if="showCounter"
+              class="-mt-1 self-end pr-3 pb-1 text-[11px] leading-4 font-medium tabular-nums"
+              :class="textLength >= MAX_TEXT_LENGTH ? 'text-danger' : 'text-textColor3'"
+              aria-live="polite"
+            >
+              {{ counterLabel }}
+            </span>
+          </div>
 
           <n-popover v-model:show="showEmoji" trigger="click" placement="top-end" :show-arrow="false" raw style="background: transparent; box-shadow: none; border-radius: 16px">
             <template #trigger>

@@ -5917,6 +5917,7 @@
     "fileTooLarge": "File \"{name}\" is too large — 4 MB maximum"
   },
   "liveChatPage": {
+    "textTooLong": "Message is too long: up to {max} characters allowed.",
     "dailyLimitReached": "Daily message limit ({limit}) reached. You can write again tomorrow from 00:00.",
     "tooManyLines": "Message is too long: at most {lines} lines allowed.",
     "name": "Live chat",

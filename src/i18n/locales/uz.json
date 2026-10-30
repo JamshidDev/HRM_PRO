@@ -5977,6 +5977,7 @@
     "fileTooLarge": "\"{name}\" fayl hajmi juda katta — maksimal 4 MB"
   },
   "liveChatPage": {
+    "textTooLong": "Xabar juda uzun: ko'pi bilan {max} ta belgi yozish mumkin.",
     "dailyLimitReached": "Kunlik xabarlar limiti ({limit} ta) tugadi. Ertaga soat 00:00 dan yoza olasiz.",
     "tooManyLines": "Xabar juda uzun: ko'pi bilan {lines} qator yozish mumkin.",
     "name": "Onlayn suhbatlar",

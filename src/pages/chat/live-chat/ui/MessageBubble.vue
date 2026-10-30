@@ -103,6 +103,9 @@
     isEditing.value = false
   }
 
+  // Qo'yilgan matn 4000 belgiga sig'madi (qirqildi) — yozish maydonidagi kabi ogohlantirish.
+  const onEditTextLimit = () => $Alert.validation(t('liveChatPage.textTooLong', { max: '4 000' }))
+
   // Qalin / kursiv RichTextInput'ning o'zida; bu yerda — saqlash / bekor qilish.
   const onEditKeydown = (e) => {
     if (e.key === 'Escape') cancelEdit()
@@ -356,6 +359,7 @@
         :maxlength="4000"
         @keydown="onEditKeydown"
         @focusout="onEditFocusOut"
+        @limit="onEditTextLimit"
       />
 
       <!-- Faqat emoji — katta o'lchamda -->
