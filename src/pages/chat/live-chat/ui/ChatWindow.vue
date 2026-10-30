@@ -391,7 +391,9 @@
         </Transition>
       </div>
 
-      <div class="shrink-0 px-2 pb-2">
+      <!-- pb-4: yozish paneli pastki chetdan biroz yuqorida — ovoz yozishdagi blob (tugmadan ~16px
+           chiqadi) oyna chetida (`overflow-hidden`) qirqilib qolmasin -->
+      <div class="shrink-0 px-2 pb-4">
         <div class="mx-auto w-full max-w-[728px]">
           <MessageInput :chat="chat" />
         </div>
