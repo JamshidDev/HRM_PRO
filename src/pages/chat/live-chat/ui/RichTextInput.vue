@@ -80,7 +80,11 @@
     document.execCommand('insertText', false, text)
   }
 
-defineExpose({ focus, insertText })
+  // Tashqariga bosishni aniqlash uchun (o'z menyusi ochiqligi ham "ichkarida" sanaladi).
+  const hasFocus = () => !!editorRef.value?.contains(document.activeElement)
+  const isMenuOpen = () => menu.show
+
+  defineExpose({ focus, insertText, hasFocus, isMenuOpen })
 
   // ── Formatlash ───────────────────────────────────────────────────────────
   const applyFormat = (kind) => {
@@ -203,8 +207,15 @@ defineExpose({ focus, insertText })
     outline: none;
     white-space: pre-wrap;
     overflow-wrap: anywhere;
-    color: var(--textColor0);
+    color: var(--rich-color, var(--textColor0));
     caret-color: var(--primary-color);
+  }
+  /* Belgilangan matn — och ko'k, matn rangi o'zgarmaydi (brauzerning to'q ko'k + oq matni o'rniga;
+     oldingi textarea'dagi kabi). Ichidagi <b>/<i> skript bilan yaratiladi — :deep kerak. */
+  .rich-editor::selection,
+  .rich-editor :deep(*::selection) {
+    background: color-mix(in srgb, var(--primary-color) 24%, transparent);
+    color: inherit;
   }
   .rich-editor :deep(b),
   .rich-editor :deep(strong) {
