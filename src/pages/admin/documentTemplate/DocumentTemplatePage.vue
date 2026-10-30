@@ -111,7 +111,10 @@
     }
     const known = new Set(store.variables)
     usage.value = counts
-    unknown.value = [...found.keys()].filter((name) => !known.has(name))
+    // `${/blok}` — shart/takror blokining yopuvchi markeri, o'zgaruvchi emas.
+    unknown.value = [...found.keys()].filter(
+      (name) => !known.has(name) && !(name.startsWith('/') && found.has(name.slice(1)))
+    )
     return {
       missing: store.variables.filter((name) => !counts.get(name)),
       unknown: unknown.value
