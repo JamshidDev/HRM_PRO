@@ -1,10 +1,11 @@
 <script setup>
   import { UIModal } from '@/components/index.js'
   import StoryPreview from './StoryPreview.vue'
-  import { useMobileStoryStore } from '@/store/modules/index.js'
+  import { useAccountStore, useMobileStoryStore } from '@/store/modules/index.js'
   import { Dismiss12Filled, ImageAdd24Regular, Play24Filled } from '@vicons/fluent'
 
   const store = useMobileStoryStore()
+  const accStore = useAccountStore()
 
   const fileInput = ref(null)
   const previewVisible = ref(false)
@@ -50,7 +51,10 @@
       <button v-if="s.pending" class="slide-remove" @click.stop="store._removePendingSlide(s.id)">
         <n-icon :component="Dismiss12Filled" :size="12" />
       </button>
-      <n-popconfirm v-else @positive-click="store._deleteSlide(s.id)">
+      <n-popconfirm
+        v-else-if="accStore.checkPermission(accStore.pn.mobileStoriesDelete)"
+        @positive-click="store._deleteSlide(s.id)"
+      >
         <template #trigger>
           <button class="slide-remove" @click.stop>
             <n-icon :component="Dismiss12Filled" :size="12" />
