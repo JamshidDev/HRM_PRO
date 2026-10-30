@@ -5,8 +5,6 @@
     ArrowDownload20Regular,
     Play24Filled,
     Pause24Filled,
-    Checkmark16Filled,
-    Dismiss16Regular,
     ArrowReply16Regular,
     ArrowForward16Regular,
     ArrowClockwise16Regular,
@@ -29,6 +27,8 @@
   import MessageMeta from './MessageMeta.vue'
   import ChatImage from './ChatImage.vue'
   import { imageSrcFor } from './imageCache.js'
+  import { parseFormatted, stripFormatting } from './textFormat.js'
+  import RichTextInput from './RichTextInput.vue'
 
   const { t } = i18n.global
 
@@ -100,22 +100,46 @@
     isEditing.value = true
     // `autofocus` atributi bu yerda ishonchli emas (v-if orqali qayta
     // qo'shiladigan komponent) — shu sababli fokus qo'lda, DOM yangilangandan
-    // keyin qo'yiladi; kursor esa matn oxiriga o'tkaziladi.
-    nextTick(() => {
-      editInputRef.value?.focus()
-      const el = document.activeElement
-      if (el?.tagName === 'TEXTAREA') el.setSelectionRange(el.value.length, el.value.length)
-    })
+    // keyin qo'yiladi; kursor matn oxirida (RichTextInput.focus).
+    nextTick(() => editInputRef.value?.focus())
   }
 
   const cancelEdit = () => {
     isEditing.value = false
   }
 
+  // Qo'yilgan matn 4000 belgiga sig'madi (qirqildi) — yozish maydonidagi kabi ogohlantirish.
+  const onEditTextLimit = () => $Alert.validation(t('liveChatPage.textTooLong', { max: '4 000' }))
+
+  // Qalin / kursiv RichTextInput'ning o'zida; bu yerda — saqlash / bekor qilish.
+  const onEditKeydown = (e) => {
+    if (e.key === 'Escape') cancelEdit()
+    else if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey) {
+      e.preventDefault()
+      saveEdit()
+    }
+  }
+
+  // **qalin** / __kursiv__ belgilari → bo'laklar (v-html'siz).
+  const textParts = computed(() => (props.message.type === 'text' ? parseFormatted(props.message.text) : []))
+
+  // O'zgarmagan matn serverga yuborilmaydi; bo'sh matn — bekor qilinadi (xabar o'chmaydi).
   const saveEdit = () => {
-    if (!editText.value.trim()) return
-    props.chat.editMessage(props.message.id, editText.value)
+    if (!isEditing.value) return
     isEditing.value = false
+    const text = editText.value.trim()
+    if (!text || text === props.message.text) return
+    props.chat.editMessage(props.message.id, text)
+  }
+
+  // Tashqariga bosilsa — saqlanadi. Qalin/kursiv menyusi bosilganda fokus bir lahza chiqib qaytadi,
+  // shuning uchun biroz kutib tekshiriladi.
+  const onEditFocusOut = () => {
+    setTimeout(() => {
+      const editor = editInputRef.value
+      if (!isEditing.value || !editor || editor.isMenuOpen() || editor.hasFocus()) return
+      saveEdit()
+    }, 200)
   }
 
   // O'chirish: avval xabar qatori kichrayib-so'nib yig'iladi, keyin so'rov yuboriladi.
@@ -183,7 +207,7 @@
   const bigEmoji = computed(() => {
     const m = props.message
     if (m.type !== 'text' || isEditing.value || m.replyTo || m.forwarded) return 0
-    return bigEmojiCount(m.text)
+    return bigEmojiCount(stripFormatting(m.text))
   })
   const BIG_EMOJI_SIZE = { 1: 'text-[56px]', 2: 'text-[44px]', 3: 'text-[36px]' }
 
@@ -216,7 +240,7 @@
 
   const onCopyText = () => {
     if (!props.message.text) return
-    Utils.copyToClipboard(props.message.text, () => window.$Toast?.success(t('content.copied')))
+    Utils.copyToClipboard(stripFormatting(props.message.text), () => window.$Toast?.success(t('content.copied')))
   }
 
   const onReact = (emoji) => {
@@ -227,7 +251,9 @@
   // ref ikkalasiga ham ulanadi — o'ng klik shu orqali kursor joyida ochiladi.
   const actionsMenuRef = ref(null)
 
+  // Tahrirlashda — textarea'ning qalin/kursiv menyusi ishlaydi, amallar menyusi emas.
   const onContextMenu = (e) => {
+    e.preventDefault()
     if (isEditing.value || !isSaved.value) return
     actionsMenuRef.value?.openAt(e.clientX, e.clientY)
   }
@@ -283,10 +309,11 @@
           ? [!firstInGroup && 'rounded-tr-[5px]', showAvatar ? 'rounded-br-none' : 'rounded-br-[5px]']
           : [!firstInGroup && 'rounded-tl-[5px]', showAvatar ? 'rounded-bl-none' : 'rounded-bl-[5px]'],
         message.type === 'image' && !isEditing && '!p-1',
+        isEditing && 'is-editing',
         message.status === 'sending' && 'opacity-80',
         isFresh && (isOwn ? 'bubble-enter-out' : 'bubble-enter-in')
       ]"
-      @contextmenu.prevent="onContextMenu"
+      @contextmenu="onContextMenu"
     >
       <svg
         v-if="showAvatar && !bigEmoji"
@@ -328,41 +355,27 @@
       </div>
 
       <!-- Tahrirlash rejimi -->
-      <div v-if="isEditing" class="edit-input flex flex-col gap-1.5 min-w-[200px]">
-        <n-input
-          ref="editInputRef"
-          v-model:value="editText"
-          type="textarea"
-          size="small"
-          :autosize="{ minRows: 1, maxRows: 5 }"
-          @keydown.enter.exact.prevent="saveEdit"
-          @keydown.esc="cancelEdit"
-        />
-        <div class="flex items-center justify-end gap-1">
-          <button
-            type="button"
-            class="size-6 rounded-full flex items-center justify-center hover:bg-[var(--chat-bubble-own-tint)]"
-            @click="cancelEdit"
-          >
-            <n-icon size="14"><Dismiss16Regular /></n-icon>
-          </button>
-          <button
-            type="button"
-            class="size-6 rounded-full flex items-center justify-center hover:bg-[var(--chat-bubble-own-tint)]"
-            @click="saveEdit"
-          >
-            <n-icon size="14"><Checkmark16Filled /></n-icon>
-          </button>
-        </div>
-      </div>
+      <!-- Tahrirlash — xabar matni o'z joyida tahrirlanadi (alohida maydon/tugmalarsiz):
+           Enter — saqlash, Esc — bekor, tashqariga bosish — saqlash. -->
+      <RichTextInput
+        v-if="isEditing"
+        ref="editInputRef"
+        v-model:value="editText"
+        class="edit-inline"
+        :maxlength="4000"
+        @keydown="onEditKeydown"
+        @focusout="onEditFocusOut"
+        @limit="onEditTextLimit"
+      />
 
       <!-- Faqat emoji — katta o'lchamda -->
-      <p v-else-if="bigEmoji" class="leading-none" :class="BIG_EMOJI_SIZE[bigEmoji]">{{ message.text.trim() }}</p>
+      <p v-else-if="bigEmoji" class="leading-none" :class="BIG_EMOJI_SIZE[bigEmoji]">{{ stripFormatting(message.text).trim() }}</p>
 
       <!-- Matn -->
       <!-- pre-line faqat matnda: <p> ichidagi qator ko'chishlari bo'sh qator bo'lib chiqmasin -->
       <p v-else-if="message.type === 'text'" class="break-words">
-        <span class="whitespace-pre-line">{{ message.text }}</span>
+        <!-- Bo'laklar bir qatorda — orasidagi qator ko'chishi pre-line'da bo'sh joy bo'lib chiqmasin -->
+        <span class="whitespace-pre-line"><span v-for="(part, i) in textParts" :key="i" :class="{ 'font-semibold': part.bold, italic: part.italic }">{{ part.text }}</span></span>
         <MessageMeta
           v-if="!reactionGroups.length"
           aria-hidden="true"
@@ -602,14 +615,21 @@
      fon-matn-kursor rangida bo'ladi — o'z xabar pufakchasi ko'k (yoki
      boshqasiniki neytral) bo'lgani uchun ularga tayanilmaydi, aks holda
      kursor va matn ko'zga tashlanmay qolishi mumkin edi. */
-  .edit-input :deep(.n-input) {
-    --n-color: var(--surface-section) !important;
-    --n-color-focus: var(--surface-section) !important;
-    --n-text-color: var(--textColor0) !important;
-    --n-caret-color: var(--primary-color) !important;
-    --n-border: 1px solid var(--surface-line) !important;
-    --n-border-hover: 1px solid var(--primary-color) !important;
-    --n-border-focus: 1px solid var(--primary-color) !important;
-    --n-box-shadow-focus: none !important;
+  /* Tahrirlash — oddiy matn bilan bir xil (shrift, rang, o'lcham), maydon ko'rinmaydi.
+     Pufak atrofidagi ingichka halqa — "tahrirlanmoqda" belgisi. */
+  .edit-inline {
+    --rich-padding: 0;
+    --rich-font-size: inherit;
+    --rich-line-height: inherit;
+    --rich-max-height: none;
+    --rich-color: inherit;
+  }
+  /* Belgilangan matn — yozish maydonidagi kabi och ko'k (RichTextInput bilan bir xil), matn rangi o'zgarmaydi. */
+  .tg-bubble :deep(::selection) {
+    background: color-mix(in srgb, var(--primary-color) 24%, transparent);
+    color: inherit;
+  }
+  .tg-bubble.is-editing {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-color) 55%, transparent);
   }
 </style>

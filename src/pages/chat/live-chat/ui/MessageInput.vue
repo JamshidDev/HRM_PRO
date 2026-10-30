@@ -24,6 +24,8 @@
   import i18n from '@/i18n/index.js'
   import { formatFileSize, formatDuration, messagePreviewLabel, generateWaveform, hashString } from './format.js'
   import { EMOJI_LIST } from './emojiData.js'
+  import RichTextInput from './RichTextInput.vue'
+  import { stripFormatting } from './textFormat.js'
 
   const { t } = i18n.global
   const accountStore = useAccountStore()
@@ -48,8 +50,14 @@
   // Backend bilan bir xil: bitta xabarda ko'pi bilan 50 qator.
   const MAX_TEXT_LINES = 50
 
+  // Bitta xabar — ko'pi bilan 4000 belgi (RichTextInput undan ortiq yozdirmaydi). Hisoblagich faqat
+  // chegaraga yaqinlashganda (90% dan) chiqadi, chegarada qizil bo'ladi.
+  const MAX_TEXT_LENGTH = 4000
+  const COUNTER_FROM = MAX_TEXT_LENGTH * 0.9
+  const numberFormat = new Intl.NumberFormat('ru-RU')
+
   // Ovozli xabar davomiyligi chegaralari.
-  const MIN_RECORD_SECONDS = 5
+  const MIN_RECORD_SECONDS = 3
   const MAX_RECORD_SECONDS = 2 * 60
 
   // Qurilmada mikrofon yozib olish imkoni bor-yo'qligi. Tekshiruv tugagunga
@@ -82,6 +90,14 @@
   const fileInputRef = ref(null)
 
   const canSend = computed(() => text.value.trim().length > 0 || stagedFiles.value.length > 0)
+
+  // Ko'rinadigan belgilar soni (**qalin** / __kursiv__ belgilarisiz).
+  const textLength = computed(() => stripFormatting(text.value).length)
+  const showCounter = computed(() => textLength.value >= COUNTER_FROM)
+  const counterLabel = computed(
+    () => `${numberFormat.format(textLength.value)} / ${numberFormat.format(MAX_TEXT_LENGTH)}`
+  )
+  const onTextLimit = () => $Alert.validation(t('liveChatPage.textTooLong', { max: numberFormat.format(MAX_TEXT_LENGTH) }))
 
   const onPickFiles = () => fileInputRef.value?.click()
 
@@ -130,6 +146,11 @@
   const recordElapsedMs = ref(0)
   const pointerOutside = ref(false)
   const voiceLevel = ref(0)
+  // Qulflangan rejimdagi jonli to'lqin (mikrofon haqiqatan yozayotgani ko'rinsin) va
+  // minimal davomiylikkacha qolgan vaqt — yuborish tugmasi atrofidagi to'luvchi halqa.
+  const LEVEL_BARS = 48
+  const levelHistory = ref([])
+  const minProgress = computed(() => Math.min(1, recordElapsedMs.value / (MIN_RECORD_SECONDS * 1000)))
   const LOCK_DRAG_PX = 60
   const TAP_MS = 300
   let recordStartedAt = 0
@@ -249,8 +270,52 @@
       voiceLevel.value = 0
     }
   }
+  // ── To'lqinlanuvchi "blob" (Telegram kabi) ──────────────────────────────
+  // Har kadrda SVG yo'li qayta chiziladi: aylana cheti bir nechta sinus to'lqin bilan har tomonga
+  // tebranadi; ovoz qancha baland bo'lsa — to'lqin shuncha kuchli va blob kattaroq. Ikki qavat
+  // (ichki/tashqi) har xil tezlik va fazada. DOM'ga to'g'ridan-to'g'ri yoziladi — Vue qayta chizmaydi.
+  const blobInnerRef = ref(null)
+  const blobOuterRef = ref(null)
+  const BLOB_POINTS = 72
+  let blobRaf = 0
+  let blobLevel = 0
+  const blobPath = (radius, wobble, t, phase) => {
+    let d = ''
+    for (let i = 0; i <= BLOB_POINTS; i++) {
+      const a = (i / BLOB_POINTS) * Math.PI * 2
+      const wave =
+        Math.sin(3 * a + t * 1.9 + phase) * 0.5 +
+        Math.sin(5 * a - t * 2.6 + phase * 2) * 0.3 +
+        Math.sin(2 * a + t * 1.3 - phase) * 0.2
+      const r = radius * (1 + wobble * wave)
+      d += `${i ? 'L' : 'M'}${(Math.cos(a) * r).toFixed(2)} ${(Math.sin(a) * r).toFixed(2)}`
+    }
+    return d + 'Z'
+  }
+  const drawBlob = (now) => {
+    // Balandlik silliqlanadi — blob sakramasdan "nafas oladi"
+    blobLevel += (Math.min(1, voiceLevel.value * 1.4) - blobLevel) * 0.18
+    const t = now / 1000
+    // O'lchamlar px (tugma radiusi 24). Eng baland ovozda ham tashqi qavat ~40px dan oshmaydi —
+    // tugmadan ≤16px chiqadi, ChatWindow'dagi pastki bo'shliq (pb-4) ichida qoladi.
+    blobInnerRef.value?.setAttribute('d', blobPath(27 + blobLevel * 5, 0.04 + blobLevel * 0.08, t, 0))
+    blobOuterRef.value?.setAttribute('d', blobPath(29 + blobLevel * 6, 0.05 + blobLevel * 0.09, t * 0.8, 2.1))
+    blobRaf = requestAnimationFrame(drawBlob)
+  }
+  const startBlob = () => {
+    cancelAnimationFrame(blobRaf)
+    blobLevel = 0
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+      // Harakatsiz rejim: oddiy doira, kadrma-kadr chizilmaydi
+      nextTick(() => blobInnerRef.value?.setAttribute('d', blobPath(27, 0, 0, 0)))
+      return
+    }
+    nextTick(() => (blobRaf = requestAnimationFrame(drawBlob)))
+  }
+
   const stopLevelMeter = () => {
     cancelAnimationFrame(levelRaf)
+    cancelAnimationFrame(blobRaf)
     levelCtx?.close()
     levelCtx = null
     voiceLevel.value = 0
@@ -268,6 +333,7 @@
       return
     }
     recordedChunks = []
+    levelHistory.value = []
     mediaRecorder = new MediaRecorder(mediaStream)
     mediaRecorder.ondataavailable = (e) => {
       if (e.data.size) recordedChunks.push(e.data)
@@ -278,9 +344,12 @@
     recordElapsedMs.value = 0
     recordStartedAt = performance.now()
     startLevelMeter(mediaStream)
+    startBlob()
     recordTimer = setInterval(() => {
       recordElapsedMs.value = performance.now() - recordStartedAt
       recordSeconds.value = Math.floor(recordElapsedMs.value / 1000)
+      // Jonli to'lqin: har 100 ms da joriy balandlik, oxirgi LEVEL_BARS tasi (yangisi o'ngda)
+      levelHistory.value = [...levelHistory.value, voiceLevel.value].slice(-LEVEL_BARS)
       // Maksimal davomiylikka yetganda avtomatik to'xtatiladi — yuborishdan oldin tinglash uchun.
       if (recordSeconds.value >= MAX_RECORD_SECONDS) {
         stopRecording('review')
@@ -493,17 +562,7 @@
   // Emoji paneli: tanlangan emoji kursor turgan joyga qo'yiladi.
   const showEmoji = ref(false)
   const uniqueEmojis = [...new Set(EMOJI_LIST)]
-  const insertEmoji = (emoji) => {
-    const el = textareaRef.value?.$el?.querySelector('textarea')
-    const start = el?.selectionStart ?? text.value.length
-    const end = el?.selectionEnd ?? text.value.length
-    text.value = text.value.slice(0, start) + emoji + text.value.slice(end)
-    nextTick(() => {
-      textareaRef.value?.focus()
-      const pos = start + emoji.length
-      el?.setSelectionRange(pos, pos)
-    })
-  }
+  const insertEmoji = (emoji) => textareaRef.value?.insertText(emoji)
 
   const onKeydown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey && !isTouch) {
@@ -583,7 +642,15 @@
             {{ pointerOutside ? $t('liveChatPage.releaseNowToCancel') : $t('liveChatPage.releaseToCancel') }}
           </span>
           <template v-else>
-            <div class="flex-1" />
+            <!-- Jonli to'lqin — eng yangi ustun o'ngda, ovoz balandligiga qarab -->
+            <div class="rec-wave flex h-7 min-w-0 flex-1 items-center justify-end gap-[2px] overflow-hidden" aria-hidden="true">
+              <span
+                v-for="(lvl, i) in levelHistory"
+                :key="levelHistory.length - i"
+                class="w-[2.5px] shrink-0 rounded-full bg-primary"
+                :style="{ height: Math.max(3, Math.min(1, lvl * 1.15) * 26) + 'px' }"
+              />
+            </div>
             <n-button quaternary circle size="large" :aria-label="$t('liveChatPage.discardVoice')" @click="stopRecording('cancel')">
               <template #icon>
                 <n-icon size="20" class="text-danger"><Delete20Regular /></n-icon>
@@ -610,9 +677,18 @@
           </template>
         </div>
 
-        <!-- Katta ko'k doira: ovoz balandligiga qarab "nafas oladi"; tepada — qulf (^) maslahati -->
-        <div class="relative size-12 shrink-0">
-          <span class="rec-halo" :style="{ transform: `scale(${1.2 + voiceLevel * 0.9})` }" />
+        <!-- Katta ko'k doira (Telegram kabi): atrofida ikki qavatli "blob" — sekin aylanib shaklini
+             o'zgartiradi va ovoz balandligiga qarab silliq kattalashadi; tepada — qulf (^) maslahati.
+             Qulflanganda minimal davomiylikkacha (MIN_RECORD_SECONDS) tugma atrofida to'luvchi halqa — qachon yuborish mumkinligi ko'rinadi. -->
+        <div class="rec-orb-wrap relative size-12 shrink-0">
+          <!-- To'lqinlanuvchi blob: yo'llar `drawBlob` da har kadr yangilanadi (markaz — tugma markazi) -->
+          <svg class="rec-blob" viewBox="-60 -60 120 120" aria-hidden="true">
+            <path ref="blobOuterRef" class="rec-blob__outer" />
+            <path ref="blobInnerRef" class="rec-blob__inner" />
+          </svg>
+          <svg v-if="recordLocked && minProgress < 1" class="rec-min-ring" viewBox="0 0 56 56" aria-hidden="true">
+            <circle cx="28" cy="28" r="26" pathLength="100" :stroke-dasharray="`${minProgress * 100} 100`" />
+          </svg>
           <Transition name="lock-hint">
             <div v-if="!recordLocked" class="rec-lock" aria-hidden="true">
               <n-icon size="14"><LockClosed16Regular /></n-icon>
@@ -693,17 +769,28 @@
             </template>
           </n-button>
 
-          <n-input
-            ref="textareaRef"
-            v-model:value="text"
-            :maxlength="4000"
-            @input="onInput"
-            type="textarea"
-            :autosize="{ minRows: 1, maxRows: 5 }"
-            :placeholder="$t('liveChatPage.typePlaceholder')"
-            class="flex-1"
-            @keydown="onKeydown"
-          />
+          <!-- Qalin / kursiv haqiqiy ko'rinishda (belgilar ko'rinmaydi) — RichTextInput.
+               Belgilar hisoblagichi — matn OSTIDA o'ngda (alohida ustun emas, matn kengligi qisqarmaydi);
+               faqat chegaraga yaqin (90% dan) chiqadi. -->
+          <div class="flex min-w-0 flex-1 flex-col">
+            <RichTextInput
+              ref="textareaRef"
+              v-model:value="text"
+              :maxlength="MAX_TEXT_LENGTH"
+              :placeholder="$t('liveChatPage.typePlaceholder')"
+              @input="onInput"
+              @keydown="onKeydown"
+              @limit="onTextLimit"
+            />
+            <span
+              v-if="showCounter"
+              class="-mt-1 self-end pr-3 pb-1 text-[11px] leading-4 font-medium tabular-nums"
+              :class="textLength >= MAX_TEXT_LENGTH ? 'text-danger' : 'text-textColor3'"
+              aria-live="polite"
+            >
+              {{ counterLabel }}
+            </span>
+          </div>
 
           <n-popover v-model:show="showEmoji" trigger="click" placement="top-end" :show-arrow="false" raw style="background: transparent; box-shadow: none; border-radius: 16px">
             <template #trigger>
@@ -790,8 +877,6 @@
     opacity: 0;
     transform: translateY(-6px);
   }
-  /* Textarea fonsiz/chegarasiz — tekis qatorga singib ketadi. `--n-height` bitta qatorda
-     ikonalar bilan bir xil balandlik (40px) bo'lishi uchun aniq belgilangan. */
   /* ── Telegram uslubidagi yozish ── */
   .rec-dot {
     width: 10px;
@@ -810,16 +895,43 @@
       opacity: 0.15;
     }
   }
-  .rec-halo {
+  /* Telegram'dagi kabi to'lqinlanuvchi "blob" — shakli JS'da (drawBlob) har kadr chiziladi.
+     viewBox birligi = 1px: 120px SVG tugma (48px) markazida, chetlardan 36px chiqib turadi. */
+  .rec-blob {
     position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: color-mix(in srgb, var(--primary-color) 22%, transparent);
-    transition: transform 0.08s linear;
+    inset: -36px;
+    width: 120px;
+    height: 120px;
+    overflow: visible;
     pointer-events: none;
+  }
+  .rec-blob__inner {
+    fill: color-mix(in srgb, var(--primary-color) 26%, transparent);
+  }
+  .rec-blob__outer {
+    fill: color-mix(in srgb, var(--primary-color) 13%, transparent);
+  }
+  /* Minimal davomiylik halqasi — tugma chetidan 4px tashqarida, yuqoridan soat yo'nalishida to'ladi.
+     `position: absolute` SHART: aks holda halqa joy egallab, tugmani pastga surib yuboradi. */
+  .rec-min-ring {
+    position: absolute;
+    inset: -4px;
+    width: calc(100% + 8px);
+    height: calc(100% + 8px);
+    rotate: -90deg;
+    pointer-events: none;
+  }
+  .rec-min-ring circle {
+    fill: none;
+    stroke: var(--primary-color);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    transition: stroke-dasharray 0.1s linear;
   }
   .rec-orb {
     position: relative;
+    /* Blob (SVG) va halqa ustida turadi */
+    z-index: 1;
     display: flex;
     width: 48px;
     height: 48px;
@@ -836,8 +948,10 @@
   .rec-orb.is-holding {
     transform: scale(1.15);
   }
+  /* Minimal davomiylikkacha ham to'liq rangda — shaffof qilinsa ortidagi blob ko'rinib, tugma "singan"
+     ko'rinardi. Holatni to'luvchi halqa ko'rsatadi. */
   .rec-orb:disabled {
-    opacity: 0.55;
+    box-shadow: none;
     cursor: not-allowed;
   }
   .rec-lock {
@@ -884,7 +998,7 @@
     .rec-lock-arrow {
       animation: none;
     }
-    .rec-halo {
+    .rec-blob__outer {
       display: none;
     }
   }
@@ -916,15 +1030,6 @@
   .action-swap-leave-to {
     opacity: 0;
     transform: scale(0.6) rotate(45deg);
-  }
-  .compose-bar :deep(.n-input) {
-    --n-height: 40px !important;
-    --n-color: transparent !important;
-    --n-color-focus: transparent !important;
-    --n-border: none !important;
-    --n-border-focus: none !important;
-    --n-border-hover: none !important;
-    --n-box-shadow-focus: none !important;
   }
 
   /* naive-ui NButton o'zining ichki elementlariga `cursor: pointer`ni

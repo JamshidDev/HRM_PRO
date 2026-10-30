@@ -5963,6 +5963,7 @@
     }
   },
   "liveChatPage": {
+    "textTooLong": "Message is too long: up to {max} characters allowed.",
     "dailyLimitReached": "Daily message limit ({limit}) reached. You can write again tomorrow from 00:00.",
     "tooManyLines": "Message is too long: at most {lines} lines allowed.",
     "name": "Live chat",
@@ -5975,6 +5976,7 @@
     "lastSeen": "Last seen: {time}",
     "today": "Today",
     "yesterday": "Yesterday",
+    "dayBeforeYesterday": "Day before yesterday",
     "noMessages": "No messages",
     "noUsers": "No one found",
     "fileTooLarge": "File \"{name}\" is too large — 10 MB maximum",
@@ -6028,6 +6030,8 @@
     "noUnread": "No unread messages",
     "enterHint": "Enter — send · Shift+Enter — new line",
     "emoji": "Emoji",
+    "bold": "Bold",
+    "italic": "Italic",
     "attach": "Attach file",
     "send": "Send",
     "scrollDown": "Scroll down",

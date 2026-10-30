@@ -6023,9 +6023,10 @@
     }
   },
   "liveChatPage": {
+    "textTooLong": "Xabar juda uzun: ko'pi bilan {max} ta belgi yozish mumkin.",
     "dailyLimitReached": "Kunlik xabarlar limiti ({limit} ta) tugadi. Ertaga soat 00:00 dan yoza olasiz.",
     "tooManyLines": "Xabar juda uzun: ko'pi bilan {lines} qator yozish mumkin.",
-    "name": "Onlayn chat",
+    "name": "Onlayn suhbatlar",
     "searchPlaceholder": "Suhbatlarni qidirish",
     "selectChatTitle": "Suhbatni tanlang",
     "selectChatHint": "Yozishmani boshlash uchun chapdan foydalanuvchini tanlang",
@@ -6035,6 +6036,7 @@
     "lastSeen": "Oxirgi faollik: {time}",
     "today": "Bugun",
     "yesterday": "Kecha",
+    "dayBeforeYesterday": "O'tgan kuni",
     "noMessages": "Xabarlar yo'q",
     "noUsers": "Hech kim topilmadi",
     "fileTooLarge": "\"{name}\" fayl hajmi juda katta — maksimal 10 MB",
@@ -6088,6 +6090,8 @@
     "noUnread": "O'qilmagan xabarlar yo'q",
     "enterHint": "Enter — yuborish · Shift+Enter — yangi qator",
     "emoji": "Emoji",
+    "bold": "Qalin",
+    "italic": "Kursiv",
     "attach": "Fayl biriktirish",
     "send": "Yuborish",
     "scrollDown": "Pastga",

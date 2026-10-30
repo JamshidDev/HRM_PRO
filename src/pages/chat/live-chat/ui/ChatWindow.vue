@@ -12,7 +12,7 @@
   } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
   import { UIDeleteConfirm } from '@/components/index.js'
-  import { getInitials, getAvatarColor } from './format.js'
+  import { getInitials, getAvatarColor, formatLastSeen } from './format.js'
   import MessageBubble from './MessageBubble.vue'
   import MessageInput from './MessageInput.vue'
   import ProfileModal from './ProfileModal.vue'
@@ -180,7 +180,7 @@
     if (!user) return ''
     if (props.chat.peerTyping.value) return t('liveChatPage.typing')
     if (user.online) return t('liveChatPage.online')
-    if (user.lastSeenAt) return t('liveChatPage.lastSeen', { time: dayjs(user.lastSeenAt).format('DD.MM HH:mm') })
+    if (user.lastSeenAt) return t('liveChatPage.lastSeen', { time: formatLastSeen(user.lastSeenAt, { lower: true }) })
     return t('liveChatPage.offline')
   })
 
@@ -197,6 +197,18 @@
     if (index === 0) return true
     return dayjs(list[index].createdAt).format('YYYY-MM-DD') !== dayjs(list[index - 1].createdAt).format('YYYY-MM-DD')
   }
+
+  // Xabarlar kunlar bo'yicha guruhlanadi: har kun o'z blokida, sana chipi shu blok ichida sticky —
+  // keyingi kunning chipi oldingisini yuqoriga itarib chiqaradi (aks holda ikkalasi ustma-ust qolardi).
+  // `index` — umumiy ro'yxatdagi o'rni (guruhlash/avatar hisobi uchun).
+  const dayGroups = computed(() => {
+    const groups = []
+    props.chat.messages.value.forEach((message, index) => {
+      if (showDaySeparator(index)) groups.push({ key: dayjs(message.createdAt).format('YYYY-MM-DD'), items: [] })
+      groups[groups.length - 1].items.push({ message, index })
+    })
+    return groups
+  })
 
   // Bir yuboruvchidan ketma-ket xabarlar orasidagi bo'shliq qisqaradi.
   const isGrouped = (index) => {
@@ -360,13 +372,15 @@
             <div v-if="chat.loadingMessages.value && !chat.messages.value.length" class="flex flex-1 items-center justify-center">
               <n-spin size="small" />
             </div>
-            <template v-for="(message, index) in chat.messages.value" :key="message.clientId || message.id">
-              <div v-if="showDaySeparator(index)" class="sticky top-2 z-[2] flex justify-center my-2 pointer-events-none">
+            <section v-for="day in dayGroups" :key="day.key" class="flex flex-col">
+              <div class="sticky top-2 z-[2] flex justify-center my-2 pointer-events-none">
                 <span class="day-chip rounded-full px-2 py-0.5 text-xs font-medium leading-4 text-textColor1 shadow-sm">
-                  {{ dayLabel(message.createdAt) }}
+                  {{ dayLabel(day.items[0].message.createdAt) }}
                 </span>
               </div>
               <MessageBubble
+                v-for="{ message, index } in day.items"
+                :key="message.clientId || message.id"
                 :message="message"
                 :is-own="chat.isOwn(message)"
                 :chat="chat"
@@ -377,7 +391,7 @@
                 @forward="requestForward"
                 @jump="jumpToMessage"
               />
-            </template>
+            </section>
             <!-- Suhbatdosh yozmoqda — xabarlar oxirida uch nuqtali pufakcha -->
             <Transition name="fab">
               <div v-if="chat.peerTyping.value" class="mt-3 flex items-end gap-1.5 px-1">
@@ -414,7 +428,9 @@
         </Transition>
       </div>
 
-      <div class="shrink-0 px-2 pb-2">
+      <!-- pb-4: yozish paneli pastki chetdan biroz yuqorida — ovoz yozishdagi blob (tugmadan ~16px
+           chiqadi) oyna chetida (`overflow-hidden`) qirqilib qolmasin -->
+      <div class="shrink-0 px-2 pb-4">
         <div class="mx-auto w-full max-w-[728px]">
           <MessageInput :chat="chat" />
         </div>
