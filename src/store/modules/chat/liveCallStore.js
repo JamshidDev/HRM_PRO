@@ -15,6 +15,8 @@ const HEARTBEAT_MS = 10_000
 // Ketma-ket 3 ta yomon o'lchov (~6 s) — avval kamera, keyin ekran o'chiriladi.
 const BAD_STREAK_LIMIT = 3
 const ENDED_VIEW_MS = 6000
+// Shu vaqt ichida media ulanmasa qo'ng'iroq «Ulanib bo'lmadi» bilan tugatiladi.
+const CONNECT_TIMEOUT_MS = 30_000
 
 const data = (res) => res.data.data
 
@@ -345,6 +347,18 @@ export const useLiveCallStore = defineStore('liveCallStore', {
       const pending = this._pendingSignals ?? []
       this._pendingSignals = []
       pending.forEach((p) => this.applySignal(p))
+      this._connectTimer = setTimeout(() => {
+        if (this.phase === 'connecting') this.connectFailed()
+      }, CONNECT_TIMEOUT_MS)
+    },
+
+    async connectFailed() {
+      const id = this.call?.id
+      if (!id) return
+      const res = await service._endCall(id, { relayed: this.relayed }).catch(() => null)
+      if (res) this.finishView(data(res).call)
+      else this.reset()
+      if (this.ended) this.ended.reason = 'connect_failed'
     },
 
     onStats({ quality, relayed }) {
@@ -392,6 +406,7 @@ export const useLiveCallStore = defineStore('liveCallStore', {
       clearInterval(this._hb)
       clearInterval(this._tick)
       clearTimeout(this._endedTimer)
+      clearTimeout(this._connectTimer)
       this._conn?.close()
       this._conn = null
       this._pendingSignals = []
