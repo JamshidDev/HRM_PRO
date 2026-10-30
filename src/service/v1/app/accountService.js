@@ -68,6 +68,13 @@ const _telegramLink = async () => {
 const _sessions = async () => {
   return await axios.get(`/v1/user/sessions`)
 }
+// Seansni yakunlash (60 daqiqalik himoya backendda tekshiriladi).
+const _revokeSession = async (payload) => {
+  return await axios.delete(`/v1/user/sessions/${payload.id}`)
+}
+const _revokeOtherSessions = async () => {
+  return await axios.post(`/v1/user/sessions/revoke-others`)
+}
 
 export default {
   _index,
@@ -84,5 +91,7 @@ export default {
   _ssoLoginsExport,
   _telegramStatus,
   _telegramLink,
-  _sessions
+  _sessions,
+  _revokeSession,
+  _revokeOtherSessions
 }

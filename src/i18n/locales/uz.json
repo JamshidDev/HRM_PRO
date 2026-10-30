@@ -7282,6 +7282,12 @@
       "mobile": "Mobil ilova"
     },
     "lastActive": "Oxirgi faollik",
-    "empty": "Faol seans yo'q"
+    "empty": "Faol seans yo'q",
+    "revoke": "Yakunlash",
+    "revokeOthers": "Boshqa barcha seanslarni yakunlash",
+    "revokeConfirm": "Bu seans yakunlansinmi? Qurilmada qayta kirish talab qilinadi.",
+    "revokeOthersConfirm": "Joriy seansdan boshqa barcha seanslar yakunlansinmi?",
+    "revoked": "Seans yakunlandi",
+    "protected": "Bu yangi seans: eski seanslarni {min} daqiqadan keyin yakunlay olasiz (xavfsizlik uchun 60 daqiqa)."
   }
 }

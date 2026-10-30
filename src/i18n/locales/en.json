@@ -7084,6 +7084,12 @@
       "mobile": "Mobile app"
     },
     "lastActive": "Last active",
-    "empty": "No active sessions"
+    "empty": "No active sessions",
+    "revoke": "End",
+    "revokeOthers": "End all other sessions",
+    "revokeConfirm": "End this session? The device will need to sign in again.",
+    "revokeOthersConfirm": "End all sessions except the current one?",
+    "revoked": "Session ended",
+    "protected": "This is a new session: you can end older sessions in {min} min (60 minutes for security)."
   }
 }
