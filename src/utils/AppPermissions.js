@@ -463,6 +463,7 @@ export const appPermissions = {
   chatTelegramMessages: 'chat-telegram-messages',
   chatNotification: 'chat-notification',
   chatLiveChat: 'chat-live-chat',
+  chatLiveCall: 'chat-live-call',
   // Ommaviy Telegram xabar — barcha shtat xodimlariga ketadi, alohida ruxsat.
   chatTelegramBroadcastRead: 'chat-telegram-broadcast-read',
   chatTelegramBroadcastWrite: 'chat-telegram-broadcast-write',

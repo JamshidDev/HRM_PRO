@@ -5916,6 +5916,49 @@
     "previewEmptyContent": "No content yet",
     "fileTooLarge": "File \"{name}\" is too large — 4 MB maximum"
   },
+  "liveCall": {
+    "audioCall": "Voice call",
+    "videoCall": "Video call",
+    "incomingAudio": "Incoming voice call",
+    "incomingVideo": "Incoming video call",
+    "accept": "Accept",
+    "reject": "Decline",
+    "hangup": "End call",
+    "calling": "Calling…",
+    "connecting": "Connecting…",
+    "remaining": "{time} left",
+    "mic": "Microphone",
+    "camera": "Camera",
+    "screen": "Share screen",
+    "screenShort": "Screen",
+    "stopScreen": "Stop sharing",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "redial": "Call again",
+    "close": "Close",
+    "warning": "The call will end automatically in {min} min",
+    "cameraAutoOff": "Weak connection — camera turned off automatically",
+    "screenAutoOff": "Weak connection — screen sharing stopped",
+    "mediaDenied": "No access to microphone or camera. Allow it in your browser settings.",
+    "notRecorded": "Calls are not recorded",
+    "missed": "Missed call",
+    "quality": {
+      "good": "Good connection",
+      "medium": "Fair connection",
+      "bad": "Poor connection",
+      "unknown": "Checking connection"
+    },
+    "reason": {
+      "hangup": "Call ended",
+      "limit": "Time limit reached",
+      "no_answer": "No answer",
+      "network": "Connection lost",
+      "declined": "Declined",
+      "cancelled": "Cancelled",
+      "busy": "User is busy",
+      "offline": "User is offline"
+    }
+  },
   "liveChatPage": {
     "textTooLong": "Message is too long: up to {max} characters allowed.",
     "dailyLimitReached": "Daily message limit ({limit}) reached. You can write again tomorrow from 00:00.",
@@ -6264,7 +6307,9 @@
       "number": "At least 1 digit (0-9)",
       "special": "At least 1 special character ({'@'}!#$%^&*)",
       "match": "Passwords match"
-    }
+    },
+    "currentPassword": "Current password",
+    "currentPasswordPlaceholder": "Enter your current password"
   },
   "loginMethods": {
     "title": "Login methods",
@@ -6285,6 +6330,14 @@
     "qr": {
       "title": "QR code",
       "hint": "Sign in by scanning the QR code in the mobile app"
+    },
+    "sso": {
+      "title": "Sign in with HRM",
+      "hint": "Sign in to other systems with your HRM account"
+    },
+    "otherSystems": {
+      "title": "Access to other systems",
+      "description": "Allow or restrict signing in to other systems with your HRM account. Allowed by default."
     }
   },
   "integrationPerm": {
@@ -6877,7 +6930,8 @@
         "soonText": "Time spent in HRM (in hours) will be counted too — each hour makes the color one step darker.",
         "levelsTitle": "Color levels"
       }
-    }
+    },
+    "export": "Excel"
   },
   "guidesPage": {
     "title": "Guides",
@@ -7008,5 +7062,38 @@
     "locked": {
       "approved": "The contract is approved and can't be edited"
     }
+  },
+  "securityPage": {
+    "tabs": {
+      "methods": "Sign-in methods",
+      "history": "Sign-in history"
+    }
+  },
+  "telegramLink": {
+    "title": "Telegram bot",
+    "description": "Connect your account to the HRM bot: notifications, password reset codes and services arrive in the bot. If you are not registered, connect in the bot via the link.",
+    "linked": "Account connected to the bot",
+    "notLinked": "Account not connected to the bot",
+    "notLinkedHint": "Click «Connect bot» and then press «Start» in the bot.",
+    "chatId": "Chat ID",
+    "linkedAt": "Connected at",
+    "connect": "Connect bot",
+    "relink": "Reconnect"
+  },
+  "deviceSessions": {
+    "title": "Devices and sessions",
+    "current": "Current",
+    "kind": {
+      "web": "Web browser",
+      "mobile": "Mobile app"
+    },
+    "lastActive": "Last active",
+    "empty": "No active sessions",
+    "revoke": "End",
+    "revokeOthers": "End all other sessions",
+    "revokeConfirm": "End this session? The device will need to sign in again.",
+    "revokeOthersConfirm": "End all sessions except the current one?",
+    "revoked": "Session ended",
+    "protected": "This is a new session: you can end older sessions in {min} min (60 minutes for security)."
   }
 }

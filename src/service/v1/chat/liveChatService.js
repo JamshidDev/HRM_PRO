@@ -19,6 +19,11 @@ const _edit = (messageId, text) => axios.patch(`${BASE}/messages/${messageId}`, 
 const _remove = (messageId) => axios.delete(`${BASE}/messages/${messageId}`)
 const _forward = (messageId, userIds) => axios.post(`${BASE}/messages/${messageId}/forward`, { user_ids: userIds })
 const _react = (messageId, emoji) => axios.put(`${BASE}/messages/${messageId}/reaction`, { emoji })
+const _startCall = (data) => axios.post(`${BASE}/calls`, data)
+const _acceptCall = (id) => axios.post(`${BASE}/calls/${id}/accept`)
+const _rejectCall = (id) => axios.post(`${BASE}/calls/${id}/reject`)
+const _endCall = (id, data) => axios.post(`${BASE}/calls/${id}/end`, data ?? {})
+const _callQuota = () => axios.get(`${BASE}/calls/quota`)
 
 export default {
   _conversations,
@@ -37,5 +42,10 @@ export default {
   _edit,
   _remove,
   _forward,
-  _react
+  _react,
+  _startCall,
+  _acceptCall,
+  _rejectCall,
+  _endCall,
+  _callQuota
 }

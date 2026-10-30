@@ -42,6 +42,7 @@ export const messagePreviewLabel = (message) => {
   if (message.type === 'text') return stripFormatting(message.text)
   if (message.type === 'image') return '📷 Rasm'
   if (message.type === 'voice') return '🎤 Ovozli xabar'
+  if (message.type === 'call') return `📞 ${callPreview(message)}`
   return `📎 ${message.fileName || 'Fayl'}`
 }
 
@@ -114,4 +115,28 @@ export const makeImageThumb = async (file) => {
   } catch {
     return null
   }
+}
+
+// Qo'ng'iroq yozuvi: sarlavha, izoh va javobsiz/rad etilganmi (qizil ikonka uchun).
+export const callLabel = (message, isOwn = true) => {
+  const { t } = i18n.global
+  const info = message?.call ?? {}
+  const typeTitle = info.call_type === 'video' ? t('liveCall.videoCall') : t('liveCall.audioCall')
+  if (info.status === 'ended') {
+    return { title: typeTitle, subtitle: formatDuration(message.duration), failed: false }
+  }
+  const reason = info.end_reason || 'no_answer'
+  const title =
+    isOwn || reason === 'declined' ? t(`liveCall.reason.${reason}`) : t('liveCall.missed')
+  return { title, subtitle: typeTitle, failed: true }
+}
+
+// Ro'yxatdagi qisqa ko'rinish kim yuborganini bilmaydi — ikki tomon uchun ham to'g'ri bo'ladigan neytral matn.
+const callPreview = (message) => {
+  const { t } = i18n.global
+  const info = message?.call ?? {}
+  if (info.status === 'ended') return callLabel(message).title
+  if (info.status === 'rejected') return t('liveCall.reason.declined')
+  if (info.status === 'busy') return t('liveCall.reason.busy')
+  return t('liveCall.missed')
 }

@@ -5976,6 +5976,49 @@
     "previewEmptyContent": "Kontent kiritilmagan",
     "fileTooLarge": "\"{name}\" fayl hajmi juda katta — maksimal 4 MB"
   },
+  "liveCall": {
+    "audioCall": "Ovozli qo'ng'iroq",
+    "videoCall": "Video qo'ng'iroq",
+    "incomingAudio": "Kiruvchi ovozli qo'ng'iroq",
+    "incomingVideo": "Kiruvchi video qo'ng'iroq",
+    "accept": "Qabul qilish",
+    "reject": "Rad etish",
+    "hangup": "Tugatish",
+    "calling": "Qo'ng'iroq qilinmoqda…",
+    "connecting": "Ulanmoqda…",
+    "remaining": "{time} qoldi",
+    "mic": "Mikrofon",
+    "camera": "Kamera",
+    "screen": "Ekranni ulashish",
+    "screenShort": "Ekran",
+    "stopScreen": "Ulashishni to'xtatish",
+    "expand": "Kattalashtirish",
+    "collapse": "Kichraytirish",
+    "redial": "Qayta qo'ng'iroq",
+    "close": "Yopish",
+    "warning": "Qo'ng'iroq {min} daqiqadan keyin avtomatik tugaydi",
+    "cameraAutoOff": "Aloqa sust — kamera avtomatik o'chirildi",
+    "screenAutoOff": "Aloqa sust — ekran ulashish to'xtatildi",
+    "mediaDenied": "Mikrofon yoki kameraga ruxsat berilmadi. Brauzer sozlamalarida ruxsat bering.",
+    "notRecorded": "Qo'ng'iroqlar yozib olinmaydi",
+    "missed": "Javobsiz qo'ng'iroq",
+    "quality": {
+      "good": "Aloqa yaxshi",
+      "medium": "Aloqa o'rtacha",
+      "bad": "Aloqa yomon",
+      "unknown": "Aloqa tekshirilmoqda"
+    },
+    "reason": {
+      "hangup": "Qo'ng'iroq tugadi",
+      "limit": "Vaqt limiti tugadi",
+      "no_answer": "Javob berilmadi",
+      "network": "Aloqa uzildi",
+      "declined": "Rad etildi",
+      "cancelled": "Bekor qilindi",
+      "busy": "Abonent band",
+      "offline": "Abonent tarmoqda emas"
+    }
+  },
   "liveChatPage": {
     "textTooLong": "Xabar juda uzun: ko'pi bilan {max} ta belgi yozish mumkin.",
     "dailyLimitReached": "Kunlik xabarlar limiti ({limit} ta) tugadi. Ertaga soat 00:00 dan yoza olasiz.",
@@ -6325,7 +6368,9 @@
       "number": "Kamida 1 ta raqam (0-9)",
       "special": "Kamida 1 ta maxsus belgi ({'@'}!#$%^&*)",
       "match": "Parollar mos keladi"
-    }
+    },
+    "currentPassword": "Joriy parol",
+    "currentPasswordPlaceholder": "Joriy parolingizni kiriting"
   },
   "loginMethods": {
     "title": "Kirish usullari",
@@ -6346,6 +6391,14 @@
     "qr": {
       "title": "QR kod",
       "hint": "Mobil ilovadagi QR kodni skanerlab kirish"
+    },
+    "sso": {
+      "title": "HRM orqali kirish",
+      "hint": "Boshqa tizimlarga HRM hisobingiz bilan kirish"
+    },
+    "otherSystems": {
+      "title": "Boshqa tizimlarga kirish",
+      "description": "HRM hisobingiz orqali boshqa tizimlarga kirishga ruxsat berasiz yoki cheklaysiz. Standart holatda ruxsat berilgan."
     }
   },
   "integrationPerm": {
@@ -7075,7 +7128,8 @@
         "soonText": "HRM'da o'tkazilgan vaqt (soatlarda) ham hisobga olinadi — har bir soat rangni bir pog'ona to'qroq qiladi.",
         "levelsTitle": "Rang darajalari"
       }
-    }
+    },
+    "export": "Excel"
   },
   "guidesPage": {
     "title": "Qo'llanma",
@@ -7206,5 +7260,38 @@
     "locked": {
       "approved": "Shartnoma tasdiqlangan — tahrirlab bo‘lmaydi"
     }
+  },
+  "securityPage": {
+    "tabs": {
+      "methods": "Kirish usullari",
+      "history": "Kirishlar tarixi"
+    }
+  },
+  "telegramLink": {
+    "title": "Telegram bot",
+    "description": "Hisobingizni HRM botga ulang: bildirishnomalar, parolni tiklash kodi va xizmatlar botda keladi. Ro'yxatdan o'tmagan bo'lsangiz, havola orqali botda ulanasiz.",
+    "linked": "Hisob botga ulangan",
+    "notLinked": "Hisob botga ulanmagan",
+    "notLinkedHint": "«Botga ulash» tugmasini bosing va botda «Start» ni bosing.",
+    "chatId": "Chat ID",
+    "linkedAt": "Ulangan vaqt",
+    "connect": "Botga ulash",
+    "relink": "Qayta ulash"
+  },
+  "deviceSessions": {
+    "title": "Qurilmalar va seanslar",
+    "current": "Joriy",
+    "kind": {
+      "web": "Web brauzer",
+      "mobile": "Mobil ilova"
+    },
+    "lastActive": "Oxirgi faollik",
+    "empty": "Faol seans yo'q",
+    "revoke": "Yakunlash",
+    "revokeOthers": "Boshqa barcha seanslarni yakunlash",
+    "revokeConfirm": "Bu seans yakunlansinmi? Qurilmada qayta kirish talab qilinadi.",
+    "revokeOthersConfirm": "Joriy seansdan boshqa barcha seanslar yakunlansinmi?",
+    "revoked": "Seans yakunlandi",
+    "protected": "Bu yangi seans: eski seanslarni {min} daqiqadan keyin yakunlay olasiz (xavfsizlik uchun 60 daqiqa)."
   }
 }

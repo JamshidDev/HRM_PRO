@@ -6,7 +6,9 @@
     ArrowLeft24Regular,
     MoreHorizontal24Regular,
     FullScreenMaximize24Regular,
-    FullScreenMinimize24Regular
+    FullScreenMinimize24Regular,
+    Call24Regular,
+    Video24Regular
   } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
   import { UIDeleteConfirm } from '@/components/index.js'
@@ -16,8 +18,21 @@
   import ProfileModal from './ProfileModal.vue'
   import ForwardModal from './ForwardModal.vue'
   import ChatItemActionsMenu from './ChatItemActionsMenu.vue'
+  import { useLiveCallStore } from '@/store/modules/index.js'
 
   const { t } = i18n.global
+  const callStore = useLiveCallStore()
+
+  // Qo'ng'iroq faqat ochiq suhbatdagi odamga; bir vaqtda bitta.
+  const startCall = (type) => {
+    const peer = props.chat.selectedUser.value
+    if (!peer?.peerId) return
+    callStore.startCall(props.chat.selectedUserId.value, type, {
+      id: peer.peerId,
+      fullName: peer.fullName,
+      photo: peer.photo
+    })
+  }
 
   const props = defineProps({
     chat: { type: Object, required: true },
@@ -291,6 +306,28 @@
             </div>
           </div>
           <div class="ml-auto flex shrink-0 items-center gap-1">
+            <template v-if="callStore.canCall()">
+              <n-tooltip v-for="type in ['audio', 'video']" :key="type" trigger="hover">
+                <template #trigger>
+                  <n-button
+                    quaternary
+                    circle
+                    size="large"
+                    :disabled="callStore.isBusy || !chat.selectedUser.value?.peerId"
+                    :aria-label="type === 'video' ? $t('liveCall.videoCall') : $t('liveCall.audioCall')"
+                    @click="startCall(type)"
+                  >
+                    <template #icon>
+                      <n-icon size="20" class="text-textColor3">
+                        <Video24Regular v-if="type === 'video'" />
+                        <Call24Regular v-else />
+                      </n-icon>
+                    </template>
+                  </n-button>
+                </template>
+                {{ type === 'video' ? $t('liveCall.videoCall') : $t('liveCall.audioCall') }}
+              </n-tooltip>
+            </template>
             <n-button quaternary circle size="large" @click="openMoreMenu">
               <template #icon>
                 <n-icon size="20" class="text-textColor3"><MoreHorizontal24Regular /></n-icon>
