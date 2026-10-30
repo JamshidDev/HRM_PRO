@@ -9,7 +9,9 @@
     Dismiss16Regular,
     ArrowReply16Regular,
     ArrowForward16Regular,
-    ArrowClockwise16Regular
+    ArrowClockwise16Regular,
+    Call24Filled,
+    Video24Filled
   } from '@vicons/fluent'
   import { useAccountStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
@@ -20,7 +22,8 @@
     generateWaveform,
     hashString,
     messagePreviewLabel,
-    bigEmojiCount
+    bigEmojiCount,
+    callLabel
   } from './format.js'
   import MessageActionsMenu from './MessageActionsMenu.vue'
   import MessageMeta from './MessageMeta.vue'
@@ -48,6 +51,8 @@
   const emit = defineEmits(['forward', 'jump'])
 
   const accountStore = useAccountStore()
+
+  const callInfo = computed(() => callLabel(props.message, props.isOwn))
 
   const showPreview = ref(false)
 
@@ -241,6 +246,7 @@
       @reply="onReply"
       @edit="startEdit"
       @copy="onCopyText"
+      :can-forward="message.type !== 'call'"
       @forward="emit('forward', message)"
       @delete="onDelete"
       @react="onReact"
@@ -402,6 +408,23 @@
         <n-icon size="16" class="shrink-0 opacity-80"><ArrowDownload20Regular /></n-icon>
       </a>
 
+      <!-- Qo'ng'iroq yozuvi -->
+      <div v-else-if="message.type === 'call'" class="flex min-w-[180px] items-center gap-2.5 py-0.5">
+        <span
+          class="flex size-9 shrink-0 items-center justify-center rounded-full"
+          :class="callInfo.failed ? 'bg-fig-red-50 text-fig-text-red' : 'bg-primary/10 text-primary'"
+        >
+          <n-icon size="18">
+            <Video24Filled v-if="message.call?.call_type === 'video'" />
+            <Call24Filled v-else />
+          </n-icon>
+        </span>
+        <div class="min-w-0">
+          <div class="truncate text-sm font-medium">{{ callInfo.title }}</div>
+          <div class="truncate text-xs tabular-nums text-textColor3">{{ callInfo.subtitle }}</div>
+        </div>
+      </div>
+
       <!-- Ovozli xabar -->
       <div v-else-if="message.type === 'voice'" class="flex items-center gap-2 min-w-[200px] pt-0.5">
         <button
@@ -500,6 +523,7 @@
       placement="bottom-start"
       @reply="onReply"
       @copy="onCopyText"
+      :can-forward="message.type !== 'call'"
       @forward="emit('forward', message)"
       @react="onReact"
     />
