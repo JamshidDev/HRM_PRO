@@ -5979,7 +5979,7 @@
   "liveChatPage": {
     "dailyLimitReached": "Kunlik xabarlar limiti ({limit} ta) tugadi. Ertaga soat 00:00 dan yoza olasiz.",
     "tooManyLines": "Xabar juda uzun: ko'pi bilan {lines} qator yozish mumkin.",
-    "name": "Onlayn chat",
+    "name": "Onlayn suhbatlar",
     "searchPlaceholder": "Suhbatlarni qidirish",
     "selectChatTitle": "Suhbatni tanlang",
     "selectChatHint": "Yozishmani boshlash uchun chapdan foydalanuvchini tanlang",
