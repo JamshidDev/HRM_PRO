@@ -5940,6 +5940,7 @@
     "lastSeen": "Был(а) в сети: {time}",
     "today": "Сегодня",
     "yesterday": "Вчера",
+    "dayBeforeYesterday": "Позавчера",
     "noMessages": "Сообщений нет",
     "noUsers": "Никто не найден",
     "fileTooLarge": "Файл «{name}» слишком большой — максимум 10 МБ",

@@ -5585,6 +5585,7 @@
     "lastSeen": "Охирги фаоллик: {time}",
     "today": "Бугун",
     "yesterday": "Кеча",
+    "dayBeforeYesterday": "Ўтган куни",
     "noMessages": "Хабарлар йўқ",
     "noUsers": "Ҳеч ким топилмади",
     "fileTooLarge": "\"{name}\" файл ҳажми жуда катта — максимал 10 МБ",

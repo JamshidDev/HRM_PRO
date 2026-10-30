@@ -10,7 +10,7 @@
   } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
   import { UIDeleteConfirm } from '@/components/index.js'
-  import { getInitials, getAvatarColor } from './format.js'
+  import { getInitials, getAvatarColor, formatLastSeen } from './format.js'
   import MessageBubble from './MessageBubble.vue'
   import MessageInput from './MessageInput.vue'
   import ProfileModal from './ProfileModal.vue'
@@ -165,7 +165,7 @@
     if (!user) return ''
     if (props.chat.peerTyping.value) return t('liveChatPage.typing')
     if (user.online) return t('liveChatPage.online')
-    if (user.lastSeenAt) return t('liveChatPage.lastSeen', { time: dayjs(user.lastSeenAt).format('DD.MM HH:mm') })
+    if (user.lastSeenAt) return t('liveChatPage.lastSeen', { time: formatLastSeen(user.lastSeenAt, { lower: true }) })
     return t('liveChatPage.offline')
   })
 

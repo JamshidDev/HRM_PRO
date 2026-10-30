@@ -5989,6 +5989,7 @@
     "lastSeen": "Oxirgi faollik: {time}",
     "today": "Bugun",
     "yesterday": "Kecha",
+    "dayBeforeYesterday": "O'tgan kuni",
     "noMessages": "Xabarlar yo'q",
     "noUsers": "Hech kim topilmadi",
     "fileTooLarge": "\"{name}\" fayl hajmi juda katta — maksimal 10 MB",

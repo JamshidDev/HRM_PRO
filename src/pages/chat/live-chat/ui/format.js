@@ -1,4 +1,19 @@
+import dayjs from 'dayjs'
+import i18n from '@/i18n/index.js'
 import { stripFormatting } from './textFormat.js'
+
+// Oxirgi faollik: bugun / kecha / o'tgan kuni + vaqt, undan oldin — to'liq sana + vaqt.
+// `lower` — gap ichida ("Oxirgi faollik: bugun, 09:41"), aks holda bosh harf bilan.
+const LAST_SEEN_DAYS = ['today', 'yesterday', 'dayBeforeYesterday']
+export const formatLastSeen = (iso, { lower = false } = {}) => {
+  const d = dayjs(iso)
+  const daysAgo = dayjs().startOf('day').diff(d.startOf('day'), 'day')
+  const time = d.format('HH:mm')
+  const key = LAST_SEEN_DAYS[daysAgo]
+  if (!key) return d.format('DD.MM.YYYY HH:mm')
+  const day = i18n.global.t(`liveChatPage.${key}`)
+  return `${lower ? day.toLocaleLowerCase() : day}, ${time}`
+}
 
 const AVATAR_COLORS = ['#1279f0', '#2dcb73', '#f26b1f', '#b832d6', '#e0417f', '#5550e5']
 

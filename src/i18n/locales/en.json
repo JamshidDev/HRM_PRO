@@ -5929,6 +5929,7 @@
     "lastSeen": "Last seen: {time}",
     "today": "Today",
     "yesterday": "Yesterday",
+    "dayBeforeYesterday": "Day before yesterday",
     "noMessages": "No messages",
     "noUsers": "No one found",
     "fileTooLarge": "File \"{name}\" is too large — 10 MB maximum",
