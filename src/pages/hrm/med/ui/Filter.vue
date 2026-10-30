@@ -21,7 +21,9 @@
     store.visible = true
   }
 
+  // Filtr o'zgarsa — 1-sahifadan (aks holda yangi natija kam bo'lsa bo'sh sahifa ochilardi).
   const filterEvent = () => {
+    store.params.page = 1
     store._index()
   }
 
