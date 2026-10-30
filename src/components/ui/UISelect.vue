@@ -25,7 +25,10 @@
     // Berilmasa avvalgi default matn ishlatiladi (content.search / content.choose).
     placeholder: { type: String, default: null },
     // Tanlangan qiymat bo'lsa trigger ichida tozalash (×) tugmasi chiqadi.
-    clearable: { type: Boolean, default: false }
+    clearable: { type: Boolean, default: false },
+    // true: element tanlangach ro'yxat yopiladi (yana tanlash uchun maydon qayta bosiladi).
+    // Tanlovni olib tashlaganda ochiq qoladi — boshqasini tanlash uchun. Default o'zgarmaydi.
+    closeOnSelect: { type: Boolean, default: false }
   })
 
   const inputFocused = ref(false)
@@ -35,7 +38,8 @@
 
   const onSelect = (v) => {
     let list = []
-    if (props.modelV.map((a) => a.id).includes(v.id)) {
+    const removing = props.modelV.map((a) => a.id).includes(v.id)
+    if (removing) {
       list = props.modelV.filter((x) => x.id !== v.id)
     } else {
       if (props.multiple) {
@@ -46,6 +50,7 @@
       }
     }
     emits('updateModel', list)
+    if (props.closeOnSelect && !removing) close()
   }
 
   const collectParentIds = (nodes) => {
@@ -206,7 +211,7 @@
 
   // ♿ Klaviatura: ochish/yopish, qatorlar bo'ylab yurish, Tab bilan keyingi maydonga
   // o'tish. Ochilganda pastdagi qidiruv inputiga fokus tushadi.
-  const { show, triggerRef, panelRef, searchInputRef, onTriggerKeydown, onPanelKeydown } =
+  const { show, triggerRef, panelRef, searchInputRef, close, onTriggerKeydown, onPanelKeydown } =
     useTreePopoverKeyboard({
       searchable: () => props.searchableInput,
       multiple: () => props.multiple

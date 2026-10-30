@@ -47,6 +47,7 @@
         @onSearch="componentStore._structures"
         :loading="componentStore.structureLoading"
         :multiple="false"
+        close-on-select
       />
     </n-form-item>
 
