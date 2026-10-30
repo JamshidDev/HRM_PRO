@@ -6364,7 +6364,9 @@
       "number": "Kamida 1 ta raqam (0-9)",
       "special": "Kamida 1 ta maxsus belgi ({'@'}!#$%^&*)",
       "match": "Parollar mos keladi"
-    }
+    },
+    "currentPassword": "Joriy parol",
+    "currentPasswordPlaceholder": "Joriy parolingizni kiriting"
   },
   "loginMethods": {
     "title": "Kirish usullari",

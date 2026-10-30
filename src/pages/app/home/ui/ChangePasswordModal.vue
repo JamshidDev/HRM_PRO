@@ -11,6 +11,7 @@
   const { t } = i18n.global
   const store = useAccountStore()
 
+  const currentPass  = ref('')
   const password     = ref('')
   const confirmPass  = ref('')
 
@@ -47,11 +48,11 @@
     }
   ])
 
-  const allValid = computed(() => rules.value.every(r => r.valid))
+  const allValid = computed(() => Boolean(currentPass.value) && rules.value.every(r => r.valid))
 
   const onSave = () => {
     if (!allValid.value) return
-    store._changePassword(password.value)
+    store._changePassword(password.value, currentPass.value)
   }
 </script>
 
@@ -76,6 +77,17 @@
       <p class="text-sm text-textColor2 text-center -mt-1">
         {{ $t('changePassword.description') }}
       </p>
+
+      <div>
+        <label class="text-xs text-textColor3 mb-1 block">{{ $t('passwordForm.currentPassword') }}</label>
+        <n-input
+          v-model:value="currentPass"
+          type="password"
+          show-password-on="click"
+          :input-props="{ autocomplete: 'current-password' }"
+          :placeholder="$t('passwordForm.currentPasswordPlaceholder')"
+        />
+      </div>
 
       <!-- New password -->
       <div>

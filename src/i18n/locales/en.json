@@ -6303,7 +6303,9 @@
       "number": "At least 1 digit (0-9)",
       "special": "At least 1 special character ({'@'}!#$%^&*)",
       "match": "Passwords match"
-    }
+    },
+    "currentPassword": "Current password",
+    "currentPasswordPlaceholder": "Enter your current password"
   },
   "loginMethods": {
     "title": "Login methods",
