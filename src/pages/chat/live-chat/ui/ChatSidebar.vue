@@ -82,24 +82,33 @@
           :placeholder="$t('liveChatPage.searchPlaceholder')"
           @update:value="chat.setSearch"
           @keydown.esc.stop="closeSearch"
-        />
+        >
+          <!-- Yumaloq maydon: 🔍 chapda, yopish (✕) — maydon ichida o'ngda -->
+          <template #prefix>
+            <n-icon size="16" class="text-textColor3"><Search24Regular /></n-icon>
+          </template>
+          <template #suffix>
+            <button
+              type="button"
+              class="search-close"
+              :aria-label="$t('liveChatPage.closeSearch')"
+              :title="$t('liveChatPage.closeSearch')"
+              @click="closeSearch"
+            >
+              <n-icon size="14"><Dismiss20Regular /></n-icon>
+            </button>
+          </template>
+        </n-input>
       </Transition>
 
-      <n-tooltip trigger="hover">
+      <!-- Qidiruv yopiq paytda — 🔍 tugmasi; ochilganda yopish maydon ichida -->
+      <n-tooltip v-if="!searchOpen" trigger="hover">
         <template #trigger>
-          <button
-            type="button"
-            class="head-icon"
-            :aria-label="searchOpen ? $t('liveChatPage.closeSearch') : $t('liveChatPage.searchChats')"
-            @click="searchOpen ? closeSearch() : openSearch()"
-          >
-            <n-icon size="20">
-              <Dismiss20Regular v-if="searchOpen" />
-              <Search24Regular v-else />
-            </n-icon>
+          <button type="button" class="head-icon" :aria-label="$t('liveChatPage.searchChats')" @click="openSearch">
+            <n-icon size="20"><Search24Regular /></n-icon>
           </button>
         </template>
-        {{ searchOpen ? $t('liveChatPage.closeSearch') : $t('liveChatPage.searchChats') }}
+        {{ $t('liveChatPage.searchChats') }}
       </n-tooltip>
       <n-tooltip trigger="hover">
         <template #trigger>
@@ -184,13 +193,32 @@
     opacity: 0;
     transform: translateX(12px);
   }
-  /* Qidiruv — fonli, chegarasiz (fokusda primary chegara) */
+  /* Qidiruv — fonli, chegarasiz, to'liq yumaloq (fokusda primary chegara) */
   .chat-search {
     --n-color: var(--surface-ground) !important;
     --n-border: 1px solid transparent !important;
     --n-border-hover: 1px solid var(--surface-line) !important;
     --n-height: 34px !important;
-    --n-border-radius: 10px !important;
+    --n-border-radius: 17px !important;
+  }
+  /* Maydon ichidagi yopish tugmasi — kichik doira, hoverda fon */
+  .search-close {
+    display: flex;
+    width: 22px;
+    height: 22px;
+    margin-right: -4px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--textColor3);
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+  .search-close:hover,
+  .search-close:focus-visible {
+    background: var(--surface-line);
+    color: var(--textColor0);
   }
   /* Sarlavhadagi ikonalar — doirasiz/fonsiz, faqat rang o'zgaradi */
   .head-icon {
