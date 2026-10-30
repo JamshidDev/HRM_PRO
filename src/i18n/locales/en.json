@@ -5930,6 +5930,7 @@
     "mic": "Microphone",
     "camera": "Camera",
     "screen": "Share screen",
+    "screenShort": "Screen",
     "stopScreen": "Stop sharing",
     "expand": "Expand",
     "collapse": "Collapse",

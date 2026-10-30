@@ -9,6 +9,7 @@ import {
   MEDIA_LIMITS,
   createCallConnection
 } from '@/pages/chat/live-chat/call/callConnection.js'
+import { callSounds } from '@/pages/chat/live-chat/call/callSounds.js'
 
 const HEARTBEAT_MS = 10_000
 // Ketma-ket 3 ta yomon o'lchov (~6 s) — avval kamera, keyin ekran o'chiriladi.
@@ -17,39 +18,26 @@ const ENDED_VIEW_MS = 6000
 
 const data = (res) => res.data.data
 
-// Signal ovozi fayl talab qilmaydi — WebAudio bilan qisqa ikki tonli jiringlash.
-const createRinger = () => {
-  let ctx = null
+// Qo'ng'iroq qiluvchi eshitadigan band signali shu holatlarda chalinadi.
+const BUSY_TONE_STATUSES = ['busy', 'missed', 'rejected']
+
+// Kiruvchi qo'ng'iroqda boshqa tabdagi foydalanuvchi ko'rishi uchun sarlavha miltillaydi.
+const createTitleFlash = () => {
   let timer = null
-  const beep = (freq, at, len) => {
-    const osc = ctx.createOscillator()
-    const gain = ctx.createGain()
-    osc.frequency.value = freq
-    gain.gain.setValueAtTime(0.0001, ctx.currentTime + at)
-    gain.gain.exponentialRampToValueAtTime(0.15, ctx.currentTime + at + 0.02)
-    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + at + len)
-    osc.connect(gain).connect(ctx.destination)
-    osc.start(ctx.currentTime + at)
-    osc.stop(ctx.currentTime + at + len + 0.05)
-  }
+  let original = null
   return {
-    start(kind) {
+    start(text) {
       this.stop()
-      try {
-        ctx = new AudioContext()
-      } catch {
-        return
-      }
-      const play = () =>
-        kind === 'incoming' ? (beep(660, 0, 0.35), beep(880, 0.45, 0.35)) : beep(440, 0, 0.9)
-      play()
-      timer = setInterval(play, kind === 'incoming' ? 2000 : 3000)
+      original = document.title
+      timer = setInterval(() => {
+        document.title = document.title === text ? original : text
+      }, 1000)
     },
     stop() {
       clearInterval(timer)
       timer = null
-      ctx?.close().catch(() => {})
-      ctx = null
+      if (original != null) document.title = original
+      original = null
     }
   }
 }
@@ -131,7 +119,7 @@ export const useLiveCallStore = defineStore('liveCallStore', {
         this.call = res.call
         this.iceServers = res.ice_servers ?? []
         if (res.call.status !== 'ringing') return this.finishView(res.call)
-        this._ringer().start('outgoing')
+        callSounds.ringback()
       } catch {
         this.cleanup()
         this.phase = 'idle'
@@ -144,13 +132,14 @@ export const useLiveCallStore = defineStore('liveCallStore', {
       this.call = call
       this.peer = caller ? { id: caller.id, fullName: caller.full_name, photo: caller.photo } : null
       this.phase = 'incoming'
-      this._ringer().start('incoming')
+      callSounds.ringtone()
+      this._title().start(`📞 ${this.peer?.fullName ?? ''}`)
     },
 
     async accept() {
       if (this.phase !== 'incoming' || this.accepting) return
       this.accepting = true
-      this._ringer().stop()
+      this._stopAlerts()
       try {
         await this.openMedia(this.call.type === 'video')
         const res = data(await service._acceptCall(this.call.id))
@@ -192,7 +181,7 @@ export const useLiveCallStore = defineStore('liveCallStore', {
       }
       this.call = call
       if (this.phase === 'outgoing') {
-        this._ringer().stop()
+        this._stopAlerts()
         this.connect(true)
       }
     },
@@ -371,6 +360,8 @@ export const useLiveCallStore = defineStore('liveCallStore', {
 
     finishView(call) {
       this.cleanup()
+      const iCalled = call.caller_id === useAccountStore().account?.id
+      if (iCalled && BUSY_TONE_STATUSES.includes(call.status)) callSounds.busy()
       this.call = call
       this.ended = { status: call.status, reason: call.end_reason, duration: call.duration_sec }
       this.phase = 'ended'
@@ -378,7 +369,7 @@ export const useLiveCallStore = defineStore('liveCallStore', {
     },
 
     cleanup() {
-      this._ringer().stop()
+      this._stopAlerts()
       clearInterval(this._hb)
       clearInterval(this._tick)
       clearTimeout(this._endedTimer)
@@ -411,9 +402,14 @@ export const useLiveCallStore = defineStore('liveCallStore', {
       })
     },
 
-    _ringer() {
-      this._ring ??= markRaw(createRinger())
-      return this._ring
+    _stopAlerts() {
+      callSounds.stop()
+      this._title().stop()
+    },
+
+    _title() {
+      this._flash ??= markRaw(createTitleFlash())
+      return this._flash
     }
   }
 })

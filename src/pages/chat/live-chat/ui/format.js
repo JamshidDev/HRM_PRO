@@ -27,7 +27,7 @@ export const messagePreviewLabel = (message) => {
   if (message.type === 'text') return message.text
   if (message.type === 'image') return '📷 Rasm'
   if (message.type === 'voice') return '🎤 Ovozli xabar'
-  if (message.type === 'call') return `📞 ${callLabel(message).title}`
+  if (message.type === 'call') return `📞 ${callPreview(message)}`
   return `📎 ${message.fileName || 'Fayl'}`
 }
 
@@ -114,4 +114,14 @@ export const callLabel = (message, isOwn = true) => {
   const title =
     isOwn || reason === 'declined' ? t(`liveCall.reason.${reason}`) : t('liveCall.missed')
   return { title, subtitle: typeTitle, failed: true }
+}
+
+// Ro'yxatdagi qisqa ko'rinish kim yuborganini bilmaydi — ikki tomon uchun ham to'g'ri bo'ladigan neytral matn.
+const callPreview = (message) => {
+  const { t } = i18n.global
+  const info = message?.call ?? {}
+  if (info.status === 'ended') return callLabel(message).title
+  if (info.status === 'rejected') return t('liveCall.reason.declined')
+  if (info.status === 'busy') return t('liveCall.reason.busy')
+  return t('liveCall.missed')
 }
