@@ -291,7 +291,10 @@ export const useMonthReportStore = defineStore('monthReportStore', {
         ones_code: this.params.ones_code || undefined,
         sex: this.params.sex ?? undefined,
         start_hours: this.params.start_hours ?? undefined,
-        end_hours: this.params.end_hours ?? undefined
+        end_hours: this.params.end_hours ?? undefined,
+        // Ish soati vs Tizim soati solishtiruvi — ro'yxat (_index) bilan bir xil
+        // filtrlansin (aks holda "ko'rgan ≠ yuklagan"). Backend buildListWhere qabul qiladi.
+        hours_cmp: this.params.hours_cmp ?? undefined
       }
       this.filteredExporting = true
       $ApiService.monthReportService
