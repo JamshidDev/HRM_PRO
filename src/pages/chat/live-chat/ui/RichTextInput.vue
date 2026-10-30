@@ -211,6 +211,24 @@
     overflow-wrap: anywhere;
     color: var(--rich-color, var(--textColor0));
     caret-color: var(--primary-color);
+    /* Ingichka, strelkasiz, shaffof yo'lak — standart kulrang strelkali scrollbar yumaloq maydon ichida
+       "sinib" ko'rinardi. Windows Chrome'da `scrollbar-width: thin` ham strelka qoldiradi, shuning uchun
+       ::-webkit-scrollbar ishlatiladi; u faqat `scrollbar-color: auto` bo'lsa ishlaydi (overwrite.scss
+       barcha elementlarga scrollbar-color beradi). */
+    scrollbar-color: auto;
+  }
+  .rich-editor::-webkit-scrollbar {
+    width: 6px;
+  }
+  .rich-editor::-webkit-scrollbar-button {
+    display: none;
+  }
+  .rich-editor::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .rich-editor::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--textColor3) 45%, transparent);
   }
   /* Belgilangan matn — och ko'k, matn rangi o'zgarmaydi (brauzerning to'q ko'k + oq matni o'rniga;
      oldingi textarea'dagi kabi). Ichidagi <b>/<i> skript bilan yaratiladi — :deep kerak. */
