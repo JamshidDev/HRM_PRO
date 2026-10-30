@@ -6342,6 +6342,14 @@
     "qr": {
       "title": "QR kod",
       "hint": "Mobil ilovadagi QR kodni skanerlab kirish"
+    },
+    "sso": {
+      "title": "HRM orqali kirish",
+      "hint": "Boshqa tizimlarga HRM hisobingiz bilan kirish"
+    },
+    "otherSystems": {
+      "title": "Boshqa tizimlarga kirish",
+      "description": "HRM hisobingiz orqali boshqa tizimlarga kirishga ruxsat berasiz yoki cheklaysiz. Standart holatda ruxsat berilgan."
     }
   },
   "integrationPerm": {
@@ -7071,7 +7079,8 @@
         "soonText": "HRM'da o'tkazilgan vaqt (soatlarda) ham hisobga olinadi — har bir soat rangni bir pog'ona to'qroq qiladi.",
         "levelsTitle": "Rang darajalari"
       }
-    }
+    },
+    "export": "Excel"
   },
   "guidesPage": {
     "title": "Qo'llanma",
@@ -7202,5 +7211,32 @@
     "locked": {
       "approved": "Shartnoma tasdiqlangan — tahrirlab bo‘lmaydi"
     }
+  },
+  "securityPage": {
+    "tabs": {
+      "methods": "Kirish usullari",
+      "history": "Kirishlar tarixi"
+    }
+  },
+  "telegramLink": {
+    "title": "Telegram bot",
+    "description": "Hisobingizni HRM botga ulang: bildirishnomalar, parolni tiklash kodi va xizmatlar botda keladi. Ro'yxatdan o'tmagan bo'lsangiz, havola orqali botda ulanasiz.",
+    "linked": "Hisob botga ulangan",
+    "notLinked": "Hisob botga ulanmagan",
+    "notLinkedHint": "«Botga ulash» tugmasini bosing va botda «Start» ni bosing.",
+    "chatId": "Chat ID",
+    "linkedAt": "Ulangan vaqt",
+    "connect": "Botga ulash",
+    "relink": "Qayta ulash"
+  },
+  "deviceSessions": {
+    "title": "Qurilmalar va seanslar",
+    "current": "Joriy",
+    "kind": {
+      "web": "Web brauzer",
+      "mobile": "Mobil ilova"
+    },
+    "lastActive": "Oxirgi faollik",
+    "empty": "Faol seans yo'q"
   }
 }

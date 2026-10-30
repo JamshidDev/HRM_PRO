@@ -1,5 +1,6 @@
 <script setup>
   import {
+    ArrowDownload16Regular,
     ArrowEnterLeft20Regular,
     Certificate20Regular,
     Desktop20Regular,
@@ -32,6 +33,25 @@
       })
       .finally(() => {
         loading.value = false
+      })
+  }
+
+  // Joriy filtr bo'yicha barcha yozuvlar .xlsx faylga.
+  const exporting = ref(false)
+  const exportExcel = () => {
+    exporting.value = true
+    $ApiService.accountService
+      ._ssoLoginsExport({ params: { client_id: clientId.value || undefined } })
+      .then((res) => {
+        const url = URL.createObjectURL(res.data)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = 'kirishlar-tarixi.xlsx'
+        a.click()
+        URL.revokeObjectURL(url)
+      })
+      .finally(() => {
+        exporting.value = false
       })
   }
 
@@ -68,14 +88,23 @@
   <SectionHeader :title="$t('ssoLogins.title')" :icon="ShieldIcon" large>
     <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
       <p class="text-sm text-textColor2 max-w-[640px]">{{ $t('ssoLogins.description') }}</p>
-      <n-select
-        v-model:value="clientId"
-        :options="clientOptions"
-        :placeholder="$t('ssoLogins.allSystems')"
-        clearable
-        class="w-[240px]"
-        @update:value="onFilter"
-      />
+      <div class="flex items-center gap-2 shrink-0">
+        <n-select
+          v-model:value="clientId"
+          :options="clientOptions"
+          :placeholder="$t('ssoLogins.allSystems')"
+          clearable
+          class="shrink-0"
+          style="width: 240px"
+          @update:value="onFilter"
+        />
+        <n-button type="primary" secondary :loading="exporting" :disabled="!total" @click="exportExcel">
+          <template #icon>
+            <n-icon><ArrowDownload16Regular /></n-icon>
+          </template>
+          {{ $t('ssoLogins.export') }}
+        </n-button>
+      </div>
     </div>
 
     <n-spin :show="loading">
