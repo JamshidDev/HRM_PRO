@@ -158,6 +158,7 @@ export const useLiveCallStore = defineStore('liveCallStore', {
       if (this.phase !== 'incoming') return
       const id = this.call.id
       this.cleanup()
+      callSounds.hangup()
       this.phase = 'idle'
       await service._rejectCall(id).catch(() => {})
     },
@@ -187,13 +188,26 @@ export const useLiveCallStore = defineStore('liveCallStore', {
     },
 
     onSignal({ call_id: callId, payload }) {
-      if (callId !== this.call?.id || !this._conn) return
+      if (callId !== this.call?.id) return
       if (payload?.meta) {
         if ('camera' in payload.meta) this.remoteCamera = !!payload.meta.camera
         if ('screen' in payload.meta) this.remoteScreen = !!payload.meta.screen
         return
       }
-      this._conn.handleSignal(payload).catch(() => {})
+      // Ulanish hali yaratilmagan (qabul javobi kechikkan) — offer/ICE yo'qolmasin, navbatda kutadi.
+      if (!this._conn) {
+        ;(this._pendingSignals ??= []).push(payload)
+        return
+      }
+      this.applySignal(payload)
+    },
+
+    // Signallar kelgan tartibda, ketma-ket qo'llanadi.
+    applySignal(payload) {
+      const conn = this._conn
+      this._sigChain = (this._sigChain ?? Promise.resolve())
+        .then(() => conn?.handleSignal(payload))
+        .catch(() => {})
     },
 
     onEnded({ call }) {
@@ -201,6 +215,7 @@ export const useLiveCallStore = defineStore('liveCallStore', {
       // Javob berilmagan kiruvchi qo'ng'iroq tugasa — oyna shunchaki yopiladi.
       if (this.phase === 'incoming') {
         this.cleanup()
+        callSounds.hangup()
         this.phase = 'idle'
         return
       }
@@ -327,6 +342,9 @@ export const useLiveCallStore = defineStore('liveCallStore', {
       conn.startStats()
       this.sendMeta({ camera: this.cameraOn, screen: false })
       this.startTimers()
+      const pending = this._pendingSignals ?? []
+      this._pendingSignals = []
+      pending.forEach((p) => this.applySignal(p))
     },
 
     onStats({ quality, relayed }) {
@@ -362,6 +380,7 @@ export const useLiveCallStore = defineStore('liveCallStore', {
       this.cleanup()
       const iCalled = call.caller_id === useAccountStore().account?.id
       if (iCalled && BUSY_TONE_STATUSES.includes(call.status)) callSounds.busy()
+      else callSounds.hangup()
       this.call = call
       this.ended = { status: call.status, reason: call.end_reason, duration: call.duration_sec }
       this.phase = 'ended'
@@ -375,6 +394,8 @@ export const useLiveCallStore = defineStore('liveCallStore', {
       clearTimeout(this._endedTimer)
       this._conn?.close()
       this._conn = null
+      this._pendingSignals = []
+      this._sigChain = null
       this.localStream?.getTracks().forEach((t) => t.stop())
       this._screenStream?.getTracks().forEach((t) => t.stop())
       this._screenStream = null
