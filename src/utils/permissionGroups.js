@@ -283,7 +283,6 @@ export const ENFORCED = new Set([
   'hr-vacations-write',
   'hr-business-trip-write',
   'hr-report-write',
-  'lms-worker-write',
   'hospital-med-worker-read',
   'hospital-pensioner-write',
   // 2026-09-21 — Kasallik varaqasi tabi (migratsiya 0137/0138):
@@ -605,9 +604,6 @@ export const MEANINGFUL = new Set([
   'lms-teachers-delete',
   'lms-teachers-read',
   'lms-teachers-write',
-  'lms-worker',
-  'lms-worker-read',
-  'lms-worker-write',
   'log-viewer-read',
   'mobile-stories-delete',
   'video-guides',
@@ -850,7 +846,7 @@ export const PERMISSION_GROUPS = [
           { slug: 'hr-report-staffing-export', labelKey: 'report.staffingExportPermission' }
         ]
       },
-      { prefix: 'lms-worker', label: 'lmsWorkerPage.name' },
+      { prefix: 'hr-edu-plans', label: 'lmsWorkerPage.name' },
       { prefix: 'hr-report-export', label: 'specialReport.name' },
       { prefix: 'hr-monthly-report', label: 'structureReport.name' },
       // Backend enforce qiladigan, lekin guruhi bo'lmagani uchun faqat "Boshqa"

@@ -443,7 +443,7 @@ export const navigations = withRawIcons([
         path: Utils.routeHrmPathMaker(AppPaths.LmsWorker),
         icon: qualificationIcon,
         color: 'bg-success',
-        permission: appPermissions.lmsWorkerRead
+        permission: appPermissions.hrEduPlansRead
       }
     ]
   },
