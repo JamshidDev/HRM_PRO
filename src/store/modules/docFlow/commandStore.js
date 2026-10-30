@@ -254,7 +254,7 @@ const commandStoreOptions = {
     pinDirector: null,
     // 8 — Ishga tiklash (sud qarori): bo'shatilgan xodim PINFL bilan, yangi shtat joyiga qabul.
     form_8: {
-      pin: null,
+      worker_id: null,
       worker: null,
       termination: null,
       department_id: [],
@@ -848,7 +848,7 @@ const commandStoreOptions = {
       }
       this.pinDirector = null
       this.form_8 = {
-        pin: null,
+        worker_id: null,
         worker: null,
         termination: null,
         department_id: [],

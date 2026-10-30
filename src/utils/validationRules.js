@@ -1515,7 +1515,7 @@ export default {
   // 58 — Vaqtincha ishdan chetlashtirish.
   // 8 — Ishga tiklash (sud qarori).
   form_8: {
-    pin: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    worker_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
     department_position_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
     position_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     from: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
