@@ -5977,6 +5977,8 @@
     "fileTooLarge": "\"{name}\" fayl hajmi juda katta — maksimal 4 MB"
   },
   "liveChatPage": {
+    "dailyLimitReached": "Kunlik xabarlar limiti ({limit} ta) tugadi. Ertaga soat 00:00 dan yoza olasiz.",
+    "tooManyLines": "Xabar juda uzun: ko'pi bilan {lines} qator yozish mumkin.",
     "name": "Onlayn chat",
     "searchPlaceholder": "Suhbatlarni qidirish",
     "selectChatTitle": "Suhbatni tanlang",

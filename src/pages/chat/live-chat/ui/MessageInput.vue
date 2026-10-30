@@ -45,6 +45,9 @@
   // 10 MB — talab qilingan limit (rasm, word va h.k. uchun umumiy).
   const MAX_FILE_SIZE = 10 * 1024 * 1024
 
+  // Backend bilan bir xil: bitta xabarda ko'pi bilan 50 qator.
+  const MAX_TEXT_LINES = 50
+
   // Ovozli xabar davomiyligi chegaralari.
   const MIN_RECORD_SECONDS = 5
   const MAX_RECORD_SECONDS = 2 * 60
@@ -433,7 +436,11 @@
 
   // ── Yuborish ─────────────────────────────────────────────────────────────
   const onSend = () => {
-    if (!canSend.value) return
+    if (!canSend.value || props.chat.quotaBlocked.value) return
+    if (text.value.trim().split('\n').length > MAX_TEXT_LINES) {
+      $Alert.validation(t('liveChatPage.tooManyLines', { lines: MAX_TEXT_LINES }))
+      return
+    }
     if (stagedFiles.value.length) {
       props.chat.sendFiles(stagedFiles.value.map((x) => x.file))
       stagedFiles.value = []
@@ -554,7 +561,16 @@
 
     <!-- Ovoz yozilayotgan holat -->
     <Transition name="compose-swap" mode="out-in">
-      <div v-if="isRecording" class="flex items-center gap-2">
+      <!-- Kunlik limit tugagan: yozish, fayl va ovoz bloklanadi -->
+      <div
+        v-if="chat.quotaBlocked.value"
+        key="limit"
+        class="tg-pill flex min-h-12 items-center gap-2.5 px-4 py-2 text-sm text-textColor3"
+      >
+        <n-icon size="18" class="shrink-0 text-warning"><LockClosed16Regular /></n-icon>
+        <span>{{ $t('liveChatPage.dailyLimitReached', { limit: chat.quotaLimit.value }) }}</span>
+      </div>
+      <div v-else-if="isRecording" class="flex items-center gap-2">
         <div class="tg-pill flex h-12 min-w-0 flex-1 items-center gap-3 pl-4 pr-1">
           <span class="rec-dot" />
           <span class="w-[58px] shrink-0 text-sm tabular-nums text-textColor0">{{ recordClock }}</span>
