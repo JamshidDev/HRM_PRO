@@ -51,7 +51,7 @@
 
 <template>
   <div class="w-full flex items-start gap-4">
-    <div class="w-[280px] shrink-0 bg-surface-section rounded-3xl p-1">
+    <div class="w-[280px] shrink-0 bg-surface-section rounded-3xl p-1 sticky top-0 self-start">
       <div class="bg-primary/10 text-primary text-base font-semibold rounded-2xl px-4 py-3 mb-2">
         {{ $t('profilePage.sidebar.title') }}
       </div>

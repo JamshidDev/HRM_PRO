@@ -19,7 +19,9 @@
 
 <template>
   <div>
-    <UISegmentTabs v-model="active" :tabs="tabs" variant="elevated" class="mb-4" />
+    <div class="sticky top-0 z-10 bg-app-bg pb-3 mb-1">
+      <UISegmentTabs v-model="active" :tabs="tabs" variant="elevated" />
+    </div>
 
     <div v-if="active === 'methods'" class="grid grid-cols-1 xl:grid-cols-2 gap-4">
       <LoginMethods />
