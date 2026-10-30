@@ -132,20 +132,12 @@
             <div
               v-for="perm in rightList"
               :key="perm.id"
-              class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs border"
-              :class="
-                perm.detachable === false
-                  ? 'border-surface-line bg-surface-ground text-textColor3'
-                  : 'border-surface-line bg-surface-section text-textColor0'
-              "
+              class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs border border-surface-line bg-surface-section text-textColor0"
             >
-              <!-- Remove button -->
               <n-button
                 text
                 size="tiny"
-                :disabled="perm.detachable === false"
-                class="!p-0 flex-shrink-0"
-                :class="perm.detachable === false ? '!text-textColor3' : '!text-danger'"
+                class="!p-0 flex-shrink-0 !text-danger"
                 @click="removePermission(perm)"
               >
                 <template #icon>
@@ -155,28 +147,7 @@
                 </template>
               </n-button>
 
-              <!-- Name -->
               <span class="leading-tight">{{ perm.name }}</span>
-
-              <!-- Roles count badge -->
-              <n-tooltip v-if="perm.roles && perm.roles.length > 0" trigger="hover" placement="top">
-                <template #trigger>
-                  <span
-                    class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-primary/15 text-primary text-[10px] font-semibold cursor-default flex-shrink-0 leading-none"
-                  >
-                    {{ perm.roles.length }}
-                  </span>
-                </template>
-                <div class="flex flex-wrap gap-1 max-w-[220px] py-0.5">
-                  <span
-                    v-for="role in perm.roles"
-                    :key="role.id"
-                    class="inline-block px-1.5 py-0.5 rounded bg-white/15 text-xs"
-                  >
-                    {{ role.name }}
-                  </span>
-                </div>
-              </n-tooltip>
             </div>
           </div>
           <div
