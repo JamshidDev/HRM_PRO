@@ -453,6 +453,13 @@ export const appPermissions = {
   lmsCertificateWrite: 'lms-certificate-write',
 
   chat: 'chat',
+  chatNewsRead: 'chat-news-read',
+  chatNewsWrite: 'chat-news-write',
+  chatNewsCategoriesRead: 'chat-news-categories-read',
+  chatNewsCategoriesWrite: 'chat-news-categories-write',
+  chatNewsCategoriesDelete: 'chat-news-categories-delete',
+  mobileStoriesRead: 'mobile-stories-read',
+  mobileStoriesWrite: 'mobile-stories-write',
   chatTelegramMessages: 'chat-telegram-messages',
   chatNotification: 'chat-notification',
   chatLiveChat: 'chat-live-chat',

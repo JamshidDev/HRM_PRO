@@ -9,7 +9,7 @@
   } from '@vicons/fluent'
   import { useRouter } from 'vue-router'
   import { UITable } from '@/components/index.js'
-  import { useNewsStore } from '@/store/modules/index.js'
+  import { useAccountStore, useNewsStore } from '@/store/modules/index.js'
   import { AppPaths } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -125,6 +125,10 @@
     store.totalItems--
   }
 
+  const accStore = useAccountStore()
+  const canWrite = computed(() => accStore.checkPermission(accStore.pn.chatNewsWrite))
+  const canDelete = computed(() => accStore.checkPermission(accStore.pn.chatNewsDelete))
+
   const actions = computed(() => [
     {
       label: t('content.view'),
@@ -136,19 +140,22 @@
       label: t('content.edit'),
       key: Utils.ActionTypes.edit,
       icon: UIHelper.renderIcon(Edit24Regular),
-      action: onEdit
+      action: onEdit,
+      visible: canWrite.value
     },
     {
       label: (row) => (row.is_pinned ? t('newsPage.unpin') : t('newsPage.pin')),
       key: 'pin',
       icon: (row) => UIHelper.renderIcon(row.is_pinned ? Pin24Filled : Pin24Regular),
-      action: onPinToggle
+      action: onPinToggle,
+      visible: canWrite.value
     },
     {
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete24Regular),
-      action: onDelete
+      action: onDelete,
+      visible: canDelete.value
     }
   ])
 

@@ -3,7 +3,7 @@
   import { useNewsStore } from '@/store/modules/index.js'
   import { useDebounce } from '@/utils/index.js'
   import { useRouter } from 'vue-router'
-  import { AppPaths } from '@/utils/index.js'
+  import { AppPaths, appPermissions } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
 
@@ -40,6 +40,7 @@
     :search-loading="store.loading"
     v-model:search="store.params.search"
     @onSearch="debounceSearch"
+    :add-permission="appPermissions.chatNewsWrite"
     @onAdd="onAdd"
     @onClear="onFilterClear"
   >

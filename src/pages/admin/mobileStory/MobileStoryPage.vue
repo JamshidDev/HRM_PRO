@@ -1,4 +1,5 @@
 <script setup>
+  import { appPermissions } from '@/utils/index.js'
   import { onMounted } from 'vue'
   import { UIModal, UIPageContent, UIPageFilter } from '@/components/index.js'
   import { Eye24Regular } from '@vicons/fluent'
@@ -53,6 +54,7 @@
       v-model:search="store.params.search"
       @on-search="onSearch"
       :search-loading="store.loading"
+      :add-permission="appPermissions.mobileStoriesWrite"
       @on-add="onAdd"
       :show-filter-button="false"
     />
