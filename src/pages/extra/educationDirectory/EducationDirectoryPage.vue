@@ -29,16 +29,16 @@
 
   const onSearch = () => {
     if (store.activeTab === 3) {
-      if (!accStore.checkAction(accStore.pn.languagesRead)) return
+      if (!accStore.checkAction(accStore.pn.educationsStructureMenu)) return
       store.params.search = universityStore.params.search
       store.params.page = 1
       store._index()
     } else if (store.activeTab === 1) {
-      if (!accStore.checkAction(accStore.pn.universitiesRead)) return
+      if (!accStore.checkAction(accStore.pn.educationsStructureMenu)) return
       universityStore.params.page = 1
       universityStore._index()
     } else if (store.activeTab === 2) {
-      if (!accStore.checkAction(accStore.pn.specialitiesRead)) return
+      if (!accStore.checkAction(accStore.pn.educationsStructureMenu)) return
       specialtyStore.params.search = universityStore.params.search
       specialtyStore.params.page = 1
       specialtyStore._index()

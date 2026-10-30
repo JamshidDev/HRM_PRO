@@ -1,4 +1,5 @@
 <script setup>
+  import { appPermissions } from '@/utils/index.js'
   import { UIPageFilter } from '@/components/index.js'
   import { useNewsCategoryStore } from '@/store/modules/index.js'
 
@@ -23,6 +24,7 @@
     :show-add-button="true"
     :show-filter-button="false"
     @onSearch="onSearch"
+    :add-permission="appPermissions.chatNewsCategoriesWrite"
     @onAdd="onAdd"
   />
 </template>

@@ -38,7 +38,8 @@ export const useLiveChatStore = defineStore('liveChatStore', {
     typing: {},
     readUpTo: {},
     unreadTotal: 0,
-    lastTypingSent: 0
+    lastTypingSent: 0,
+    quota: null
   }),
   getters: {
     sortedConversations: (s) =>
@@ -48,7 +49,12 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       }),
     selected: (s) => s.conversations.find((c) => c.id === s.selectedId) ?? null,
     selectedMessages: (s) => s.messages[s.selectedId] ?? [],
-    isTyping: (s) => (id) => !!s.typing[id]
+    isTyping: (s) => (id) => !!s.typing[id],
+    // Kunlik xabar limiti tugagan va hali ertangi 00:00 bo'lmagan.
+    quotaBlocked: (s) =>
+      !!s.quota?.reset_at &&
+      s.quota.messages.used >= s.quota.messages.limit &&
+      dayjs().isBefore(dayjs(s.quota.reset_at))
   },
   actions: {
     api() {
@@ -102,8 +108,28 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       this._connectedOnce = true
     },
 
+    async loadQuota() {
+      try {
+        this.quota = await this.api().quota()
+      } catch {
+        this.quota = null
+      }
+    },
+
+    // Yuborilgan xabarlar sonini lokal oshiradi (har yuborishda quota so'ralmasin).
+    countSent(n = 1) {
+      if (this.quota) this.quota.messages.used += n
+    },
+
+    // Backend limit xatosida yangi holatni qaytaradi — input darhol bloklanadi.
+    applyLimitError(e) {
+      const q = e?.response?.data?.data?.quota
+      if (q) this.quota = q
+    },
+
     async loadConversations() {
       this.listLoading = true
+      this.loadQuota()
       try {
         const res = await this.api().conversations({ search: this.search || undefined })
         const list = res.data.map(toConversation)
@@ -319,7 +345,9 @@ export const useLiveChatStore = defineStore('liveChatStore', {
           saved = res
         }
         this.addMessage(id, toMessage(saved))
-      } catch {
+        this.countSent()
+      } catch (e) {
+        this.applyLimitError(e)
         const m = (this.messages[id] ?? []).find((x) => x.clientId === local.clientId && x.status !== 'read')
         if (m && typeof m.id !== 'number') m.status = 'failed'
       }
@@ -366,7 +394,13 @@ export const useLiveChatStore = defineStore('liveChatStore', {
     async forward(message, conversationId) {
       const target = this.conversations.find((c) => c.id === conversationId)
       if (!target?.peerId || typeof message.id !== 'number') return false
-      await this.api().forward(message.id, [target.peerId])
+      try {
+        await this.api().forward(message.id, [target.peerId])
+      } catch (e) {
+        this.applyLimitError(e)
+        throw e
+      }
+      this.countSent()
       return true
     },
 

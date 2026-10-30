@@ -6,6 +6,7 @@ const _conversations = (params) => axios.get(`${BASE}/conversations`, { params }
 const _open = (userId) => axios.post(`${BASE}/conversations`, { user_id: userId })
 const _users = (search) => axios.get(`${BASE}/users`, { params: { search } })
 const _unreadCount = () => axios.get(`${BASE}/unread-count`)
+const _quota = () => axios.get(`${BASE}/quota`)
 const _messages = (id, params) => axios.get(`${BASE}/conversations/${id}/messages`, { params })
 const _media = (id, type) => axios.get(`${BASE}/conversations/${id}/media`, { params: { type } })
 const _sendText = (id, data) => axios.post(`${BASE}/conversations/${id}/messages`, data)
@@ -24,6 +25,7 @@ export default {
   _open,
   _users,
   _unreadCount,
+  _quota,
   _messages,
   _media,
   _sendText,

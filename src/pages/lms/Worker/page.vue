@@ -9,7 +9,7 @@
   const accStore = useAccountStore()
 
   onMounted(() => {
-    if (!accStore.checkAction(accStore.pn.lmsWorkerRead)) return
+    if (!accStore.checkAction(accStore.pn.hrEduPlansRead)) return
     store._index()
   })
 </script>
