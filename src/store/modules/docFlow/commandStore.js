@@ -300,14 +300,15 @@ const commandStoreOptions = {
       reference_date: null,
       reference_number: null
     },
-    // 76–78 — Kasbga qayta tayyorlash / malaka oshirish (hujjatgina); `manual` — maydon ro'yxatdanmi yoki qo'lda.
+    // 76–78 — Kasbga qayta tayyorlash / malaka oshirish (hujjatgina); `manual` — maydon ro'yxatdanmi yoki qo'lda, `acting_option` — select yorlig'i.
     form_76: {
       from: null,
       to: null,
       training_center: null,
       training_course: null,
       profession: null,
-      acting_worker: null,
+      acting_worker_position_id: null,
+      acting_option: null,
       telegram_number: null,
       learning_center_id: null,
       manual: { center: false, course: false, profession: false }
@@ -825,7 +826,8 @@ const commandStoreOptions = {
         training_center: null,
         training_course: null,
         profession: null,
-        acting_worker: null,
+        acting_worker_position_id: null,
+        acting_option: null,
         telegram_number: null,
         learning_center_id: null,
         manual: { center: false, course: false, profession: false }
