@@ -2788,7 +2788,9 @@
     "yearly": {
       "title": "Ishga qabul qilingan va ishdan bo'shatilgan xodimlar",
       "incoming": "Ishga qabul qilingan",
-      "outgoing": "Ishdan bo'shatilgan"
+      "outgoing": "Ishdan bo'shatilgan",
+      "incomingFxsh": "O'rindoshlik (FXSH) qabul",
+      "outgoingFxsh": "O'rindoshlik (FXSH) bo'shash"
     },
     "birthday": {
       "title": "Tug'ilgan kunlar",
@@ -6009,6 +6011,7 @@
       "unknown": "Aloqa tekshirilmoqda"
     },
     "reason": {
+      "connect_failed": "Ulanib bo'lmadi — tarmoq aloqani o'tkazmadi",
       "hangup": "Qo'ng'iroq tugadi",
       "limit": "Vaqt limiti tugadi",
       "no_answer": "Javob berilmadi",
