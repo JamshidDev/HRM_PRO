@@ -11,6 +11,7 @@ import { useSocketStore } from '@/store/modules/app/socketStore.js'
 import { useAppStore } from '@/store/modules/app/appStore.js'
 import { useNotify } from '@/composables/useNotify'
 import { useNotificationSound } from '@/composables/useNotificationSound.js'
+import icons from '@/assets/icons'
 
 const { t } = i18n.global
 const PAGE = 50
@@ -532,6 +533,7 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       }
       useNotify().notify(conv?.fullName || t('liveChatPage.newMessage'), 'info', {
         description: messagePreviewLabel(m),
+        icon: icons.figChatMessage,
         action: {
           label: t('liveChatPage.open'),
           onClick: async () => {
