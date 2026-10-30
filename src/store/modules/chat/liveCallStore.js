@@ -158,6 +158,7 @@ export const useLiveCallStore = defineStore('liveCallStore', {
       if (this.phase !== 'incoming') return
       const id = this.call.id
       this.cleanup()
+      callSounds.hangup()
       this.phase = 'idle'
       await service._rejectCall(id).catch(() => {})
     },
@@ -214,6 +215,7 @@ export const useLiveCallStore = defineStore('liveCallStore', {
       // Javob berilmagan kiruvchi qo'ng'iroq tugasa — oyna shunchaki yopiladi.
       if (this.phase === 'incoming') {
         this.cleanup()
+        callSounds.hangup()
         this.phase = 'idle'
         return
       }
@@ -378,6 +380,7 @@ export const useLiveCallStore = defineStore('liveCallStore', {
       this.cleanup()
       const iCalled = call.caller_id === useAccountStore().account?.id
       if (iCalled && BUSY_TONE_STATUSES.includes(call.status)) callSounds.busy()
+      else callSounds.hangup()
       this.call = call
       this.ended = { status: call.status, reason: call.end_reason, duration: call.duration_sec }
       this.phase = 'ended'
