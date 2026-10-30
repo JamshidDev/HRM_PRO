@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { markRaw, watch } from 'vue'
+import i18n from '@/i18n/index.js'
 import service from '@/service/v1/chat/liveChatService.js'
 import { useAccountStore } from '@/store/modules/app/accountStore.js'
 import {
@@ -297,10 +298,16 @@ export const useLiveCallStore = defineStore('liveCallStore', {
     // ── Ichki ────────────────────────────────────────────────────────────────
 
     async openMedia(withCamera) {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: AUDIO_CONSTRAINTS,
-        video: withCamera ? CAMERA_CONSTRAINTS : false
-      })
+      let stream
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          audio: AUDIO_CONSTRAINTS,
+          video: withCamera ? CAMERA_CONSTRAINTS : false
+        })
+      } catch (e) {
+        window.$Alert?.validation(i18n.global.t('liveCall.mediaDenied'))
+        throw e
+      }
       this.localStream = markRaw(stream)
       this.micOn = true
       this.cameraOn = withCamera && stream.getVideoTracks().length > 0

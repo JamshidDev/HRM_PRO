@@ -5916,6 +5916,48 @@
     "previewEmptyContent": "No content yet",
     "fileTooLarge": "File \"{name}\" is too large — 4 MB maximum"
   },
+  "liveCall": {
+    "audioCall": "Voice call",
+    "videoCall": "Video call",
+    "incomingAudio": "Incoming voice call",
+    "incomingVideo": "Incoming video call",
+    "accept": "Accept",
+    "reject": "Decline",
+    "hangup": "End call",
+    "calling": "Calling…",
+    "connecting": "Connecting…",
+    "remaining": "{time} left",
+    "mic": "Microphone",
+    "camera": "Camera",
+    "screen": "Share screen",
+    "stopScreen": "Stop sharing",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "redial": "Call again",
+    "close": "Close",
+    "warning": "The call will end automatically in {min} min",
+    "cameraAutoOff": "Weak connection — camera turned off automatically",
+    "screenAutoOff": "Weak connection — screen sharing stopped",
+    "mediaDenied": "No access to microphone or camera. Allow it in your browser settings.",
+    "notRecorded": "Calls are not recorded",
+    "missed": "Missed call",
+    "quality": {
+      "good": "Good connection",
+      "medium": "Fair connection",
+      "bad": "Poor connection",
+      "unknown": "Checking connection"
+    },
+    "reason": {
+      "hangup": "Call ended",
+      "limit": "Time limit reached",
+      "no_answer": "No answer",
+      "network": "Connection lost",
+      "declined": "Declined",
+      "cancelled": "Cancelled",
+      "busy": "User is busy",
+      "offline": "User is offline"
+    }
+  },
   "liveChatPage": {
     "dailyLimitReached": "Daily message limit ({limit}) reached. You can write again tomorrow from 00:00.",
     "tooManyLines": "Message is too long: at most {lines} lines allowed.",

@@ -5976,6 +5976,48 @@
     "previewEmptyContent": "Kontent kiritilmagan",
     "fileTooLarge": "\"{name}\" fayl hajmi juda katta — maksimal 4 MB"
   },
+  "liveCall": {
+    "audioCall": "Ovozli qo'ng'iroq",
+    "videoCall": "Video qo'ng'iroq",
+    "incomingAudio": "Kiruvchi ovozli qo'ng'iroq",
+    "incomingVideo": "Kiruvchi video qo'ng'iroq",
+    "accept": "Qabul qilish",
+    "reject": "Rad etish",
+    "hangup": "Tugatish",
+    "calling": "Qo'ng'iroq qilinmoqda…",
+    "connecting": "Ulanmoqda…",
+    "remaining": "{time} qoldi",
+    "mic": "Mikrofon",
+    "camera": "Kamera",
+    "screen": "Ekranni ulashish",
+    "stopScreen": "Ulashishni to'xtatish",
+    "expand": "Kattalashtirish",
+    "collapse": "Kichraytirish",
+    "redial": "Qayta qo'ng'iroq",
+    "close": "Yopish",
+    "warning": "Qo'ng'iroq {min} daqiqadan keyin avtomatik tugaydi",
+    "cameraAutoOff": "Aloqa sust — kamera avtomatik o'chirildi",
+    "screenAutoOff": "Aloqa sust — ekran ulashish to'xtatildi",
+    "mediaDenied": "Mikrofon yoki kameraga ruxsat berilmadi. Brauzer sozlamalarida ruxsat bering.",
+    "notRecorded": "Qo'ng'iroqlar yozib olinmaydi",
+    "missed": "Javobsiz qo'ng'iroq",
+    "quality": {
+      "good": "Aloqa yaxshi",
+      "medium": "Aloqa o'rtacha",
+      "bad": "Aloqa yomon",
+      "unknown": "Aloqa tekshirilmoqda"
+    },
+    "reason": {
+      "hangup": "Qo'ng'iroq tugadi",
+      "limit": "Vaqt limiti tugadi",
+      "no_answer": "Javob berilmadi",
+      "network": "Aloqa uzildi",
+      "declined": "Rad etildi",
+      "cancelled": "Bekor qilindi",
+      "busy": "Abonent band",
+      "offline": "Abonent tarmoqda emas"
+    }
+  },
   "liveChatPage": {
     "dailyLimitReached": "Kunlik xabarlar limiti ({limit} ta) tugadi. Ertaga soat 00:00 dan yoza olasiz.",
     "tooManyLines": "Xabar juda uzun: ko'pi bilan {lines} qator yozish mumkin.",
