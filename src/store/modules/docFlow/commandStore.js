@@ -268,6 +268,7 @@ const commandStoreOptions = {
     // 5 — Lavozimga kirishganlik (rahbar tayinlovi): xodim PINFL bilan butun tizimdan.
     form_5: {
       pin: null,
+      worker_id: null,
       worker: null,
       department_id: [],
       department_position_id: null,
@@ -861,6 +862,7 @@ const commandStoreOptions = {
       }
       this.form_5 = {
         pin: null,
+        worker_id: null,
         worker: null,
         department_id: [],
         department_position_id: null,

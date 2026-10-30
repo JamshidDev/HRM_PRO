@@ -1525,7 +1525,7 @@ export default {
   },
   // 5 — Lavozimga kirishganlik.
   form_5: {
-    pin: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    worker_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
     department_position_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
     position_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     contract_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
