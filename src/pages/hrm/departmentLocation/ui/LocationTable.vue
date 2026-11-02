@@ -143,7 +143,11 @@
     </template>
 
     <template #cell-geo_type="{ row }">
+      <n-tag v-if="row.is_free" size="small" round type="success">
+        {{ $t('departmentLocationPage.freeBadge') }}
+      </n-tag>
       <UIBadge
+        v-else
         :show-icon="false"
         :label="
           row.geo_type
@@ -154,8 +158,15 @@
       />
     </template>
 
+    <!-- Erkin rejimda hudud yo'q — radius va aniqlik ko'rsatilmaydi -->
     <template #cell-radius="{ row }">
-      <UIBadge :show-icon="false" :label="row.radius + ' m'" :type="Utils.colorTypes.info" />
+      <span v-if="row.is_free" class="text-gray-400">—</span>
+      <UIBadge v-else :show-icon="false" :label="row.radius + ' m'" :type="Utils.colorTypes.info" />
+    </template>
+
+    <template #cell-accuracy_limit="{ row }">
+      <span v-if="row.is_free" class="text-gray-400">—</span>
+      <span v-else>{{ row.accuracy_limit }}</span>
     </template>
 
     <template #cell-create_at="{ row }">
