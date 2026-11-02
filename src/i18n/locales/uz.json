@@ -6893,7 +6893,11 @@
         "position": "Lavozim",
         "detail": "Izoh",
         "summa": "Summa"
-      }
+      },
+      "viewList": "{count} ta xodim — ro‘yxatni ko‘rish",
+      "listTotal": "{count} ta xodim",
+      "searchPlaceholder": "Ism yoki lavozim bo‘yicha qidirish",
+      "noMatch": "Qidiruv bo‘yicha hech narsa topilmadi"
     },
     "common": {
       "sum": "Summa, so'm",

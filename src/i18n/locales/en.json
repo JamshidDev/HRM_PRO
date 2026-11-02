@@ -6832,7 +6832,11 @@
         "position": "Position",
         "detail": "Note",
         "summa": "Amount"
-      }
+      },
+      "viewList": "{count} employees — view list",
+      "listTotal": "{count} employees",
+      "searchPlaceholder": "Search by name or position",
+      "noMatch": "Nothing found"
     },
     "comingSoon": "Coming soon"
   },
