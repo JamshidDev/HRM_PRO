@@ -1,6 +1,6 @@
 <script setup>
   import { UITable } from '@/components/index.js'
-  import { useNewsCategoryStore } from '@/store/modules/index.js'
+  import { useAccountStore, useNewsCategoryStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
@@ -46,18 +46,22 @@
     }
   ])
 
+  const accStore = useAccountStore()
+
   const actions = computed(() => [
     {
       label: t('content.edit'),
       key: Utils.ActionTypes.edit,
       icon: UIHelper.renderIcon(Edit32Regular),
-      action: onEdit
+      action: onEdit,
+      visible: accStore.checkPermission(accStore.pn.chatNewsCategoriesWrite)
     },
     {
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete20Regular),
-      action: onDelete
+      action: onDelete,
+      visible: accStore.checkPermission(accStore.pn.chatNewsCategoriesDelete)
     }
   ])
 </script>

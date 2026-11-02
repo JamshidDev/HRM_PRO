@@ -133,7 +133,8 @@ export const useUserStore = defineStore('user', {
       $ApiService.userService
         ._userPermissions({ id: this.elementId })
         .then((res) => {
-          this.userPermissions = res.data.data
+          // Faqat alohida biriktirilganlar; rol orqali kelganlari ko'rsatilmaydi.
+          this.userPermissions = (res.data.data || []).filter((p) => p.direct !== false)
         })
         .finally(() => {
           this.userPermissionsLoading = false

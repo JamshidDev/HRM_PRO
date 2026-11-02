@@ -57,7 +57,7 @@
         icon: markRaw(CellularData124Filled),
         component: markRaw(HCServerPage),
         key: store.tabs[4],
-        visible: accStore.checkPermission(accStore.pn.turnstileHikCentralJob),
+        visible: accStore.checkPermission(accStore.pn.turnstileHikCentralJobRead),
         color: 'primary'
       },
       {

@@ -37,6 +37,7 @@
       : t('passwordForm.lastChanged', { days: store.passwordAgeDays })
   )
 
+  const currentPass = ref('')
   const password    = ref('')
   const confirmPass = ref('')
 
@@ -73,7 +74,7 @@
     }
   ])
 
-  const allValid = computed(() => rules.value.every(r => r.valid))
+  const allValid = computed(() => Boolean(currentPass.value) && rules.value.every(r => r.valid))
 
   const passwordInputRef = ref(null)
 
@@ -90,7 +91,8 @@
 
   const onSave = () => {
     if (!allValid.value) return
-    store._changePassword(password.value).then(() => {
+    store._changePassword(password.value, currentPass.value).then(() => {
+      currentPass.value = ''
       password.value = ''
       confirmPass.value = ''
     })
@@ -134,9 +136,21 @@
       <!-- Fields -->
       <div class="flex flex-col gap-3">
         <div>
+          <label class="text-sm text-textColor0 mb-1 block">{{ $t('passwordForm.currentPassword') }}</label>
+          <n-input
+            size="large"
+            ref="passwordInputRef"
+            v-model:value="currentPass"
+            type="password"
+            show-password-on="click"
+            :input-props="{ autocomplete: 'current-password' }"
+            :placeholder="$t('passwordForm.currentPasswordPlaceholder')"
+          />
+        </div>
+
+        <div>
           <label class="text-sm text-textColor0 mb-1 block">{{ $t('passwordForm.newPassword') }}</label>
           <n-input
-            ref="passwordInputRef"
             size="large"
             v-model:value="password"
             type="password"

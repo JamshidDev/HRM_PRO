@@ -16,11 +16,9 @@
   import PasswordForm from './PasswordForm.vue'
   import Notifications from './Notifications.vue'
   import MySalary from './MySalary.vue'
-  import LoginMethods from './LoginMethods.vue'
-  import SsoLogins from './SsoLogins.vue'
+  import SecurityPage from './SecurityPage.vue'
   import LoginActivity from './LoginActivity.vue'
   import CalendarDaysIcon from '@/assets/icons/calendarDaysIcon.svg'
-  import EnterIcon from '@/assets/icons/tsDoorOpen.svg'
 
   const { t } = i18n.global
   const store = useAccountStore()
@@ -44,7 +42,6 @@
       { id: store.tabs[1], name: t('profilePage.tabs.notification'), icon: RingIcon },
       { id: store.tabs[3], name: t('salary1c.mySalary'), icon: FileEditIcon },
       { id: store.tabs[5], name: t('profilePage.tabs.secure'), icon: ShieldIcon },
-      { id: store.tabs[6], name: t('profilePage.tabs.ssoLogins'), icon: EnterIcon },
       canSeeActivity.value
         ? { id: store.tabs[7], name: t('profilePage.tabs.activity'), icon: CalendarDaysIcon }
         : null
@@ -54,7 +51,7 @@
 
 <template>
   <div class="w-full flex items-start gap-4">
-    <div class="w-[280px] shrink-0 bg-surface-section rounded-3xl p-1">
+    <div class="w-[280px] shrink-0 bg-surface-section rounded-3xl p-1 sticky top-0 self-start">
       <div class="bg-primary/10 text-primary text-base font-semibold rounded-2xl px-4 py-3 mb-2">
         {{ $t('profilePage.sidebar.title') }}
       </div>
@@ -118,9 +115,7 @@
 
           <MySalary v-else-if="store.activeTab === store.tabs[3]" />
 
-          <LoginMethods v-else-if="store.activeTab === store.tabs[5]" />
-
-          <SsoLogins v-else-if="store.activeTab === store.tabs[6]" />
+          <SecurityPage v-else-if="store.activeTab === store.tabs[5]" />
 
           <LoginActivity v-else-if="store.activeTab === store.tabs[7] && canSeeActivity" />
         </div>

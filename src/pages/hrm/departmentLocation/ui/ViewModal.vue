@@ -68,7 +68,11 @@
                 <span>{{ $t('departmentLocationPage.form.geoType') }}</span>
               </div>
               <div class="info-value-col">
+                <n-tag v-if="data.is_free" size="small" round type="success">
+                  {{ $t('departmentLocationPage.form.freeMode') }}
+                </n-tag>
                 <UIBadge
+                  v-else
                   class="!w-auto"
                   :show-icon="false"
                   :label="data.geo_type ? $t('departmentLocationPage.form.area') : $t('departmentLocationPage.form.coordinate')"
@@ -77,6 +81,8 @@
               </div>
             </div>
 
+            <!-- Erkin rejimda koordinata, radius va aniqlik yo'q -->
+            <template v-if="!data.is_free">
             <!-- Lat -->
             <div class="info-row border-b border-surface-line">
               <div class="info-label-col">
@@ -119,6 +125,7 @@
               </div>
               <span class="info-value-col">{{ data.accuracy_limit }}</span>
             </div>
+            </template>
 
             <!-- Date -->
             <div class="info-row">
@@ -134,7 +141,16 @@
 
         <!-- Right side - Map (readonly) -->
         <div class="flex-1 h-full">
+          <div
+            v-if="data.is_free"
+            class="h-full flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-surface-line text-center p-6"
+          >
+            <n-icon size="36" class="text-primary"><Location20Filled /></n-icon>
+            <span class="font-medium text-textColor1">{{ $t('departmentLocationPage.form.freeMode') }}</span>
+            <span class="text-sm text-textColor3 max-w-[420px]">{{ $t('departmentLocationPage.form.freeModeHint') }}</span>
+          </div>
           <LocationMap
+            v-else
             :key="data.id"
             :lat="data.lat"
             :lng="data.lng"

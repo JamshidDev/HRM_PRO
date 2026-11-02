@@ -4,6 +4,7 @@
   import HelperLayout from './ui/HelperLayout.vue'
   import ReactionScreen from '@/pages/app/home/ui/ReactionScreen.vue'
   import AIFloatingButton from '@/components/buttons/AIFloatingButton.vue'
+  import LiveCallLayer from '@/pages/chat/live-chat/call/LiveCallLayer.vue'
   import { useAccountStore } from '@/store/modules/index.js'
   const store = useAccountStore()
 
@@ -49,5 +50,6 @@
     <HelperLayout />
     <ReactionScreen />
     <AIFloatingButton v-if="store.checkPermission(store.pn.ai)" />
+    <LiveCallLayer v-if="store.checkPermission(store.pn.chatLiveCall)" />
   </div>
 </template>

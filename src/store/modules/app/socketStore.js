@@ -85,6 +85,7 @@ export const useSocketStore = defineStore('useSocketStore', {
         this.setupIdleDetection()
         this.getAllOnlineUsers()
         import('@/store/modules/chat/liveChatStore.js').then((m) => m.useLiveChatStore().onSocketConnect(this.socket))
+        import('@/store/modules/chat/liveCallStore.js').then((m) => m.useLiveCallStore().onSocketConnect(this.socket))
       })
 
       this.socket.on('disconnect', () => {

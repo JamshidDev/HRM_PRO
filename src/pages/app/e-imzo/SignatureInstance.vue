@@ -91,6 +91,14 @@
   const maskValue = (idx, value) =>
     isRevealed(idx) ? value : '•'.repeat(String(value ?? '').length)
 
+  // JSHSHIR: faqat oxirgi 4 raqam ko'rinadi (**********0059). Kirishda doim shunday; imzolashda
+  // 👁 bosilganda to'liq ochiladi.
+  const maskPinfl = (idx, value) => {
+    const s = String(value ?? '')
+    if (!isAuth.value && revealed.value.has(idx)) return s
+    return '*'.repeat(Math.max(0, s.length - 4)) + s.slice(-4)
+  }
+
   watch(
     () => store.visible,
     (v) => {
@@ -105,18 +113,24 @@
 <template>
   <n-modal v-model:show="store.visible">
     <n-card
-      style="width: 640px; --n-border-radius: 20px"
+      :style="{
+        // Kirishda oynada faqat kalit kartalari — ixchamroq; imzolashda sarlavha/tavsif bor — kengroq
+        width: isAuth ? '560px' : '720px',
+        maxWidth: 'calc(100vw - 32px)',
+        '--n-border-radius': '20px'
+      }"
       :bordered="false"
       size="medium"
       role="dialog"
       aria-modal="true"
       closable
       @close="store.visible = false"
-      class="bg-surface-section shadow-lg! overflow-hidden!"
+      class="eimzo-key-modal bg-surface-section shadow-lg! overflow-hidden!"
       :class="{ 'eimzo-gate-modal': isGate }"
     >
       <template #header>
-        <div v-if="!isGate" class="text-lg font-semibold text-textColor1">
+        <!-- Kirishda (isAuth) tavsif va kalit turi qatori ko'rsatilmaydi — sarlavha va kalitlar qoladi -->
+        <div v-if="!isGate" class="text-xl font-semibold text-textColor0">
           {{
             isAuth
               ? $t('signature.authKeySelectTitle')
@@ -124,7 +138,8 @@
           }}
         </div>
       </template>
-      <p v-if="hasKeys && !isGate" class="text-sm text-gray-400 mb-3">
+      <!-- Tavsif o'qiladigan rangda (avval och kulrang `text-gray-400` edi — fon ustida yo'qolardi) -->
+      <p v-if="hasKeys && !isGate && !isAuth" class="text-[15px] leading-6 text-textColor2 mb-4">
         {{
           isAuth ? $t('signature.authKeySelectDesc') : $t('documentPage.signature.keySelectDesc')
         }}
@@ -154,7 +169,7 @@
             {{ $t('content.refresh') }}
           </n-button>
         </div>
-        <div v-else class="flex flex-col w-full max-h-[420px] overflow-y-auto space-y-2.5">
+        <div v-else class="flex flex-col w-full max-h-[480px] overflow-y-auto space-y-3">
           <div
             v-if="store.usbVisible"
             @click="onSelect('usb')"
@@ -183,7 +198,7 @@
           <template v-for="(key, idx) in store.allKeys" :key="idx">
             <div
               @click="key.isValid && onSelect(idx)"
-              class="border rounded-2xl px-4 py-3 transition-colors"
+              class="border rounded-2xl px-5 py-4 transition-colors"
               :class="[
                 !key.isValid
                   ? 'opacity-60 cursor-not-allowed border-surface-line'
@@ -203,13 +218,13 @@
                     <div v-if="selected === idx" class="w-2 h-2 rounded-full bg-primary"></div>
                   </div>
                   <div class="min-w-0">
-                    <div class="font-bold text-textColor0 truncate">
+                    <div class="text-base font-bold text-textColor0 truncate">
                       {{ key?.fullName
                       }}<template v-if="key.key_type === 'signature.legalPerson'">
                         — {{ $t('signature.sealKeyLabel') }}
                       </template>
                     </div>
-                    <div class="text-xs text-textColor3 mt-0.5">
+                    <div v-if="!isAuth" class="text-xs text-textColor3 mt-0.5">
                       {{ $t(key.key_type) }} · {{ $t(storageLabel(key.storageType)) }}
                     </div>
                   </div>
@@ -249,33 +264,33 @@
               <dl class="mt-2.5 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 text-[13px]">
                 <div v-if="key.pinfl" class="flex gap-1.5 min-w-0">
                   <dt class="text-textColor3 shrink-0">{{ $t('signature.pinfl') }}:</dt>
-                  <dd class="text-textColor1 font-semibold truncate">
-                    {{ maskValue(idx, key.pinfl) }}
+                  <dd class="text-textColor0 font-bold truncate">
+                    {{ maskPinfl(idx, key.pinfl) }}
                   </dd>
                 </div>
                 <div v-if="key.inn" class="flex gap-1.5 min-w-0">
                   <dt class="text-textColor3 shrink-0">{{ $t('signature.inn') }}:</dt>
-                  <dd class="text-textColor1 font-semibold truncate">
+                  <dd class="text-textColor0 font-bold truncate">
                     {{ maskValue(idx, key.inn) }}
                   </dd>
                 </div>
                 <div v-if="key.organization" class="flex gap-1.5 min-w-0 sm:col-span-2">
                   <dt class="text-textColor3 shrink-0">{{ $t('signature.organization') }}:</dt>
-                  <dd class="text-textColor1 font-semibold truncate">{{ key.organization }}</dd>
+                  <dd class="text-textColor0 font-bold truncate">{{ key.organization }}</dd>
                 </div>
                 <div v-if="key.position" class="flex gap-1.5 min-w-0 sm:col-span-2">
                   <dt class="text-textColor3 shrink-0">{{ $t('signature.position') }}:</dt>
-                  <dd class="text-textColor1 font-semibold truncate">{{ key.position }}</dd>
+                  <dd class="text-textColor0 font-bold truncate">{{ key.position }}</dd>
                 </div>
                 <div v-if="key.serialNumber" class="flex gap-1.5 min-w-0">
                   <dt class="text-textColor3 shrink-0">{{ $t('signature.certificate') }}:</dt>
-                  <dd class="text-textColor1 font-semibold truncate">
+                  <dd class="text-textColor0 font-bold truncate">
                     {{ maskValue(idx, key.serialNumber) }}
                   </dd>
                 </div>
                 <div class="flex gap-1.5 min-w-0">
                   <dt class="text-textColor3 shrink-0">{{ $t('signature.validDate') }}:</dt>
-                  <dd class="text-textColor1 font-semibold truncate">{{ validPeriod(key) }}</dd>
+                  <dd class="text-textColor0 font-bold truncate">{{ validPeriod(key) }}</dd>
                 </div>
               </dl>
             </div>
@@ -296,8 +311,10 @@
 </template>
 
 <style>
-  /* eimzoGate: kalit tanlash oynasi ochilganda orqa fon biroz xiralashadi. */
-  .n-modal-container:has(.eimzo-gate-modal) .n-modal-mask {
+  /* Kalit tanlash oynasi (kirish, imzolash, eimzoGate) ochilganda orqa fon to'qroq va xira —
+     login sahifasining rangli foni oyna bilan "aralashib" ketmasin, oyna aniq ajralib tursin. */
+  .n-modal-container:has(.eimzo-key-modal) .n-modal-mask {
+    background-color: rgba(15, 23, 42, 0.5);
     backdrop-filter: blur(4px);
   }
 </style>

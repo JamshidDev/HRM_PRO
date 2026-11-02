@@ -101,6 +101,8 @@ export const useLiveChat = () => {
     togglePinChat: (id) => store.togglePin(id),
     deleteChat: (id) => store.deleteChat(id),
     clearHistory: (id) => store.clearHistory(id),
+    quotaBlocked: computed(() => store.quotaBlocked),
+    quotaLimit: computed(() => store.quota?.messages.limit ?? 0),
     replyMessage,
     setReplyMessage,
     clearReply,

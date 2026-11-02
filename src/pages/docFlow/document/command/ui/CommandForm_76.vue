@@ -1,5 +1,6 @@
 <script setup>
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
+  import { SuperSelect } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
   import { useAppSetting } from '@/utils/index.js'
@@ -36,6 +37,74 @@
         loading[kind] = false
       })
   }
+  // Vazifani vaqtincha bajaruvchi — shu korxona xodimlaridan (buyruqdagi xodimning o'zi chiqarilmaydi).
+  const actings = reactive({ list: [], total: 0, loading: false, search: null, page: 1, reqId: 0 })
+  const perPage = 100
+
+  const actingOptions = computed(() => {
+    const picked = store.form_76.acting_option
+    const list = picked ? [picked, ...actings.list.filter((v) => v.id !== picked.id)] : actings.list
+    return list.filter((v) => v.id !== store.payload.worker)
+  })
+
+  const loadActings = (infinity = false) => {
+    const organizationId = store.workerParams.organization_id
+    if (!organizationId) return
+    const reqId = ++actings.reqId
+    actings.loading = true
+    ApiService.workerService
+      ._search({
+        params: {
+          organization_id: organizationId,
+          page: actings.page,
+          per_page: perPage,
+          search: actings.search
+        }
+      })
+      .then((res) => {
+        if (reqId !== actings.reqId) return
+        const data = res.data.data.data.map((v) => ({
+          id: v.id,
+          name: `${v.worker.last_name} ${v.worker.first_name} ${v.worker.middle_name}`,
+          position: v.position?.name || v?.post_name,
+          photo: v.worker?.photo
+        }))
+        actings.total = res.data.data.total
+        actings.list = infinity ? [...actings.list, ...data] : data
+      })
+      .finally(() => {
+        if (reqId === actings.reqId) actings.loading = false
+      })
+  }
+
+  const onSearchActing = (v) => {
+    actings.page = 1
+    actings.search = v
+    loadActings()
+  }
+  const onScrollActing = () => {
+    actings.page += 1
+    loadActings(true)
+  }
+  const onChangeActing = (id) => {
+    store.form_76.acting_option = actingOptions.value.find((v) => v.id === id) ?? null
+  }
+
+  // Korxona almashsa ro'yxat va tanlov yangilanadi.
+  watch(
+    () => store.workerParams.organization_id,
+    (v, old) => {
+      if (old !== undefined && v !== old) {
+        store.form_76.acting_worker_position_id = null
+        store.form_76.acting_option = null
+      }
+      actings.page = 1
+      actings.search = null
+      if (showActing.value) loadActings()
+    },
+    { immediate: true }
+  )
+
   const searchCourse = useDebounceFn((v) => load('course', v), 400)
   const searchProfession = useDebounceFn((v) => load('profession', v), 400)
 
@@ -67,7 +136,9 @@
           training_center: store.form_76.training_center,
           training_course: store.form_76.training_course,
           profession: showProfession.value ? store.form_76.profession : undefined,
-          acting_worker: showActing.value ? store.form_76.acting_worker : undefined,
+          acting_worker_position_id: showActing.value
+            ? store.form_76.acting_worker_position_id
+            : undefined,
           telegram_number: store.form_76.telegram_number
         }
       } else {
@@ -123,13 +194,23 @@
         <n-input class="w-full" type="text" v-model:value="store.form_76.telegram_number" />
       </n-form-item>
     </div>
-    <div v-if="showActing" class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
-      <n-form-item :label="$t(`commandPage.form_76.acting_worker`)" path="acting_worker">
-        <n-input
-          class="w-full"
-          type="text"
-          v-model:value="store.form_76.acting_worker"
-          :placeholder="$t(`commandPage.form_76.acting_worker_placeholder`)"
+    <div v-if="showActing" class="col-span-12 @xl:col-span-6">
+      <n-form-item
+        :label="$t(`commandPage.form_76.acting_worker`)"
+        path="acting_worker_position_id"
+      >
+        <SuperSelect
+          :disabled="!store.workerParams.organization_id"
+          :options="actingOptions"
+          :loading="actings.loading"
+          :total-count="actings.total"
+          :per-page="perPage"
+          v-model:value="store.form_76.acting_worker_position_id"
+          v-model:search="actings.search"
+          value-field="id"
+          @update:value="onChangeActing"
+          @onSearch="onSearchActing"
+          @onScrollEv="onScrollActing"
         />
       </n-form-item>
     </div>

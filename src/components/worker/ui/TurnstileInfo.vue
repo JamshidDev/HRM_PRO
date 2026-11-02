@@ -50,7 +50,9 @@
     calendarList.value.forEach((item) => {
       if (item.event_date) {
         data[item.event_date] = {
-          minute: Math.ceil(item.daily_minutes || 0),
+          // Tabel bilan bir xil: grafik ichidagi, tushliksiz vaqt.
+          minute: item.daily_minutes || 0,
+          fact: item.fact_minutes || 0,
           date: item.event_date
         }
       }
@@ -60,7 +62,7 @@
 
   const getItemByDate = (year, month, day) => {
     const date = `${year}-${month.toString().length > 1 ? month : '0' + month}-${day.toString().length > 1 ? day : '0' + day}`
-    return calendarItemData.value[date] || { minute: 0, date }
+    return calendarItemData.value[date] || { minute: 0, fact: 0, date }
   }
 
   // Fixed Mon-Sun short labels matching the design — this widget has no
@@ -125,7 +127,7 @@
   }
 
   const onViewDetail = (v) => {
-    if (!v?.minute) return
+    if (!v?.minute && !v?.fact) return
     _showEventsInDay(v.date)
   }
 
@@ -209,7 +211,8 @@
                     :class="{
                       'turnstile-calendar__cell--empty': !day.inMonth,
                       'turnstile-calendar__cell--today': day.isToday,
-                      'turnstile-calendar__cell--clickable': day.inMonth && day.item?.minute
+                      'turnstile-calendar__cell--clickable':
+                        day.inMonth && (day.item?.minute || day.item?.fact)
                     }"
                     @click="day.inMonth && onViewDetail(day.item)"
                   >
@@ -221,7 +224,7 @@
                         size="tiny"
                         class="turnstile-calendar__badge"
                       >
-                        {{ Math.ceil(day.item.minute / 60) }}
+                        {{ Math.round(day.item.minute / 60) }}
                       </n-button>
                     </template>
                   </div>

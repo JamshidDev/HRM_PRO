@@ -3,7 +3,7 @@
   import { UIModal } from '@/components/index.js'
   import { useComponentStore, useDepartmentLocationStore } from '@/store/modules/index.js'
   import LocationMap from './LocationMap.vue'
-  import { Map20Filled, Dismiss16Regular, Location20Filled } from '@vicons/fluent'
+  import { Map20Filled, Dismiss16Regular, Location20Filled, Person20Filled } from '@vicons/fluent'
 
   const { proxy } = getCurrentInstance()
   const store = useDepartmentLocationStore()
@@ -11,7 +11,16 @@
 
   // Bo'lim jadval qatoridan emas, jadval sarlavhasidagi "+" orqali ochilganda
   // oldindan tanlanmagan bo'ladi — shunda uni shu formaning o'zida tanlaymiz.
-  const needDepartment = computed(() => store.visibleType && !store.selectedDepartment)
+  const needDepartment = computed(
+    () => store.target === 'department' && store.visibleType && !store.selectedDepartment
+  )
+  const isWorker = computed(() => store.target === 'worker')
+  const isFree = computed(() => store.payload.is_free === true)
+  const workerName = computed(() =>
+    [store.selectedWorker?.last_name, store.selectedWorker?.first_name, store.selectedWorker?.middle_name]
+      .filter(Boolean)
+      .join(' ')
+  )
 
   watch(
     () => store.visible,
@@ -25,40 +34,46 @@
   const mapRef = ref(null)
   const formRef = ref(null)
 
+  // Rejim almashganda eski (endi majburiy bo'lmagan) maydon xatolari qolmasin.
+  watch(
+    () => store.payload.is_free,
+    () => formRef.value?.restoreValidation()
+  )
+
   const rules = computed(() => ({
     department_id: {
-      required: true,
+      required: needDepartment.value,
       // `type: 'number'` emas: backend id'ni satr sifatida ham qaytarishi mumkin.
       validator: (_rule, value) => value !== null && value !== undefined && value !== '',
       message: proxy.$t('departmentLocationPage.validation.departmentRequired'),
       trigger: ['blur', 'change']
     },
     name: {
-      required: true,
-      validator: (_rule, value) => !!value?.trim(),
+      required: !isFree.value,
+      validator: (_rule, value) => isFree.value || !!value?.trim(),
       message: proxy.$t('departmentLocationPage.validation.nameRequired'),
       trigger: ['blur', 'input']
     },
     lat: {
-      required: true,
+      required: !isFree.value,
       type: 'number',
       message: proxy.$t('departmentLocationPage.validation.markerRequired'),
       trigger: ['blur', 'change']
     },
     lng: {
-      required: true,
+      required: !isFree.value,
       type: 'number',
       message: proxy.$t('departmentLocationPage.validation.markerRequired'),
       trigger: ['blur', 'change']
     },
     radius: {
-      required: true,
+      required: !isFree.value,
       type: 'number',
       message: proxy.$t('departmentLocationPage.validation.radiusRequired'),
       trigger: ['blur', 'change']
     },
     accuracy_limit: {
-      required: true,
+      required: !isFree.value && !isWorker.value,
       type: 'number',
       message: proxy.$t('departmentLocationPage.validation.accuracyRequired'),
       trigger: ['blur', 'change']
@@ -71,7 +86,7 @@
         return
       }
 
-      if (store.payload.geo_type) {
+      if (!isFree.value && store.payload.geo_type) {
         if (!store.payload.polygon || store.payload.polygon.length < 3) {
           window.$message?.warning(proxy.$t('departmentLocationPage.validation.polygonRequired'))
           return
@@ -127,8 +142,23 @@
       <div class="flex flex-col lg:flex-row gap-6 h-full">
         <!-- Left side - Form -->
         <div class="w-full lg:w-[320px] shrink-0 flex flex-col gap-3">
+          <!-- Tanlangan xodim -->
+          <div class="department-card" v-if="isWorker && store.selectedWorker">
+            <div class="flex items-center gap-3">
+              <div class="department-card__icon">
+                <n-icon size="20">
+                  <Person20Filled />
+                </n-icon>
+              </div>
+              <div class="flex flex-col">
+                <span class="department-card__title">{{ workerName }}</span>
+                <span class="department-card__subtitle">{{ store.selectedWorker.organization?.name }}</span>
+              </div>
+            </div>
+          </div>
+
           <!-- Selected Department Card -->
-          <div class="department-card" v-if="store.selectedDepartment">
+          <div class="department-card" v-if="!isWorker && store.selectedDepartment">
             <div class="flex items-center gap-3">
               <div class="department-card__icon">
                 <n-icon size="20">
@@ -174,7 +204,7 @@
             </n-form-item>
 
             <!-- O'tish joyi nomi: mobil ilovada shu nom bilan chiqadi -->
-            <n-form-item :label="$t('departmentLocationPage.form.name')" path="name">
+            <n-form-item v-if="!isFree" :label="$t('departmentLocationPage.form.name')" path="name">
               <n-input
                 v-model:value="store.payload.name"
                 :placeholder="$t('departmentLocationPage.form.namePlaceholder')"
@@ -184,6 +214,18 @@
               />
             </n-form-item>
 
+            <!-- Erkin rejim: hudud cheklovi yo'q, faqat koordinata yoziladi -->
+            <div class="geo-type-card mb-3">
+              <div class="flex items-center justify-between gap-3">
+                <div class="flex flex-col">
+                  <span class="text-textColor1 font-medium">{{ $t('departmentLocationPage.form.freeMode') }}</span>
+                  <span class="text-xs text-textColor3">{{ $t('departmentLocationPage.form.freeModeHint') }}</span>
+                </div>
+                <n-switch v-model:value="store.payload.is_free" size="medium" />
+              </div>
+            </div>
+
+            <template v-if="!isFree">
             <!-- Geo Type Card -->
             <div class="geo-type-card">
               <div class="flex items-center justify-between">
@@ -282,7 +324,13 @@
               </div>
             </div>
 
-            <n-form-item :label="$t('departmentLocationPage.form.accuracy')" path="accuracy_limit">
+            </template>
+
+            <n-form-item
+              v-if="!isFree && !isWorker"
+              :label="$t('departmentLocationPage.form.accuracy')"
+              path="accuracy_limit"
+            >
               <n-input-number
                 v-model:value="store.payload.accuracy_limit"
                 :min="1"
@@ -306,8 +354,16 @@
 
         <!-- Right side - Map -->
         <div class="flex-1 min-h-[400px] lg:min-h-0">
+          <div
+            v-if="isFree"
+            class="h-full flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-surface-line text-center p-6"
+          >
+            <n-icon size="36" class="text-primary"><Location20Filled /></n-icon>
+            <span class="font-medium text-textColor1">{{ $t('departmentLocationPage.form.freeMode') }}</span>
+            <span class="text-sm text-textColor3 max-w-[420px]">{{ $t('departmentLocationPage.form.freeModeHint') }}</span>
+          </div>
           <LocationMap
-            v-if="!store.showLoading"
+            v-else-if="!store.showLoading"
             ref="mapRef"
             :key="store.elementId"
             :lat="store.payload.lat"

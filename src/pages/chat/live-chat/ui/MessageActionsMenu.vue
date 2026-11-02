@@ -14,6 +14,7 @@
     canEdit: { type: Boolean, default: false },
     canDelete: { type: Boolean, default: false },
     canCopy: { type: Boolean, default: false },
+    canForward: { type: Boolean, default: true },
     placement: { type: String, default: 'bottom-end' }
   })
 
@@ -148,6 +149,7 @@
           {{ $t('content.copy') }}
         </button>
         <button
+          v-if="canForward"
           type="button"
           class="flex w-full items-center gap-2.5 px-3.5 py-2 text-left text-sm text-textColor0 hover:bg-surface-ground"
           @click="runAction('forward')"

@@ -32,3 +32,6 @@ AGENTS.md
 
 .github/worktrees
 .github
+# Loyiha hujjatlari faqat lokalda qoladi (CLAUDE.md bundan mustasno).
+*.md
+!CLAUDE.md

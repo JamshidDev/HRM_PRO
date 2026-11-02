@@ -1,7 +1,7 @@
 // Ilova ichidagi push toast'lari navbati (socket bildirishnomalari shu yerdan chiqadi).
 // Modul darajasida — butun ilovada BITTA nusxa, shuning uchun qayerdan chaqirilmasin
 // bir xil ro'yxatga tushadi.
-import { ref } from 'vue'
+import { markRaw, ref } from 'vue'
 
 const notifications = ref([])
 // item.id -> { timeoutId, endsAt, remaining }
@@ -66,8 +66,8 @@ const resume = (itemId) => {
 export const useNotify = () => {
   const notify = (content, type = 'success', options = {}) => {
     // `description` / `action` — tizim xabarlari uchun (push `meta` siz): ostki izoh
-    // va bitta tugma `{ label, onClick }`.
-    const { duration, persistent, meta, description, action } = normalizeOptions(options)
+    // va bitta tugma `{ label, onClick }`. `icon` — tur ikonkasi o'rniga o'z ikonka komponenti.
+    const { duration, persistent, meta, description, action, icon } = normalizeOptions(options)
 
     // DUBLIKATNI TO'SISH: bitta push socket qayta ulanganda yoki server ikki
     // marta emit qilganda ayni xabar ikki toast bo'lib chiqib qolardi.
@@ -85,6 +85,8 @@ export const useNotify = () => {
       meta,
       description,
       action,
+      // Komponent reaktiv bo'lib qolmasin (Vue ogohlantiradi)
+      icon: icon ? markRaw(icon) : null,
       // Progress bar shu qiymat bo'yicha animatsiya qilinadi.
       duration: persistent ? 0 : ms,
       paused: false

@@ -1,6 +1,7 @@
 <script setup>
   import {
     Certificate24Regular,
+    Globe24Regular,
     Info20Regular,
     Password24Regular,
     QrCode24Regular
@@ -10,16 +11,24 @@
   import ShieldIcon from '@/assets/icons/lock.svg'
   import i18n from '@/i18n/index.js'
 
+  // Bir xil karta ikki joyda: kirish usullari va «boshqa tizimlarga kirish» (sso).
+  const props = defineProps({
+    keys: { type: Array, default: () => ['password', 'eimzo', 'qr'] },
+    titleKey: { type: String, default: 'loginMethods.title' },
+    descriptionKey: { type: String, default: 'loginMethods.description' },
+    icon: { type: [Object, Function], default: () => ShieldIcon }
+  })
+
   const { t } = i18n.global
   const store = useAccountStore()
 
-  // Uchala usul ham ko'rsatiladi; `editable:false` bo'lganlari (e-imzo, QR)
-  // «tez orada» tegi bilan bloklanadi — backend ham ularni hozircha rad etadi.
-  const methods = [
-    { key: 'password', icon: Password24Regular },
-    { key: 'eimzo', icon: Certificate24Regular },
-    { key: 'qr', icon: QrCode24Regular }
-  ]
+  const ICONS = {
+    password: Password24Regular,
+    eimzo: Certificate24Regular,
+    qr: QrCode24Regular,
+    sso: Globe24Regular
+  }
+  const methods = computed(() => props.keys.map((key) => ({ key, icon: ICONS[key] })))
 
   const stateOf = (key) => store.loginMethods?.[key] ?? { enabled: true, editable: false }
 
@@ -61,15 +70,13 @@
 </script>
 
 <template>
-  <SectionHeader :title="$t('loginMethods.title')" :icon="ShieldIcon" large>
-    <!-- Izoh oddiy <p> edi — sarlavha tagiga tiqilib, uzun bitta qator bo'lib
-         ko'rinardi. Endi info-banner: nafas oladi va o'qish oson. -->
+  <SectionHeader :title="$t(titleKey)" :icon="icon" large full-height>
     <div class="flex items-start gap-3 rounded-2xl bg-primary/8 px-4 py-3 mb-5">
       <n-icon size="20" class="text-primary shrink-0 mt-0.5">
         <Info20Regular />
       </n-icon>
       <p class="text-sm text-textColor2 leading-relaxed max-w-[760px]">
-        {{ $t('loginMethods.description') }}
+        {{ $t(descriptionKey) }}
       </p>
     </div>
 

@@ -1,6 +1,15 @@
 // API (snake_case) → UI shakli (camelCase); mock va real API bir xil javob beradi.
 import { messagePreviewLabel } from '../ui/format.js'
 
+// Qo'ng'iroq yozuvi matni — JSON (call_id, call_type, status, end_reason).
+const parseCall = (text) => {
+  try {
+    return JSON.parse(text || '{}')
+  } catch {
+    return {}
+  }
+}
+
 export const toMessage = (m) => ({
   id: m.id,
   clientId: m.client_id ?? null,
@@ -18,6 +27,7 @@ export const toMessage = (m) => ({
   thumb: m.thumb ?? null,
   duration: m.duration ?? null,
   waveform: m.waveform ?? null,
+  call: m.type === 'call' ? parseCall(m.text) : null,
   replyTo: m.reply_to
     ? {
         id: m.reply_to.id,

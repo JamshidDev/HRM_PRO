@@ -1515,7 +1515,7 @@ export default {
   // 58 — Vaqtincha ishdan chetlashtirish.
   // 8 — Ishga tiklash (sud qarori).
   form_8: {
-    pin: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    worker_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
     department_position_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
     position_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     from: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
@@ -1525,7 +1525,7 @@ export default {
   },
   // 5 — Lavozimga kirishganlik.
   form_5: {
-    pin: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    worker_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
     department_position_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
     position_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     contract_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
@@ -1563,7 +1563,7 @@ export default {
     training_center: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     training_course: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     profession: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
-    acting_worker: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    acting_worker_position_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     telegram_number: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
   },
   // 79 — Murabbiylik.

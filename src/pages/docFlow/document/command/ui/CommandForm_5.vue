@@ -1,13 +1,14 @@
 <script setup>
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import { useAccountStore, useComponentStore } from '@/store/modules/index.js'
+  import { SuperSelect } from '@/components/index.js'
   import UIDepartment from '@/components/ui/UIDepartment.vue'
   import UIHelper from '@utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
   import { useAppSetting, AppPaths } from '@/utils/index.js'
   import { useRouter } from 'vue-router'
-  import { Search24Regular, Warning24Filled, PersonAdd20Regular } from '@vicons/fluent'
+  import { Warning24Filled, PersonAdd20Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -16,8 +17,6 @@
   const accStore = useAccountStore()
   const router = useRouter()
   const formRef = ref(null)
-  const searching = ref(false)
-  const notFound = ref(false)
 
   const form = computed(() => store.form_5)
   // Boshqa joyda faol asosiy shtat (type=1) — rahbar sifatida qabul qilib bo'lmaydi.
@@ -50,35 +49,96 @@
     }
   }
 
-  const search = () => {
-    const pin = String(form.value.pin || '').replace(/\D/g, '')
-    if (pin.length !== 14) return
-    searching.value = true
-    notFound.value = false
-    $ApiService.workerService
-      ._checkWorker({ params: { pin }, silentError: true })
-      .then((res) => {
-        form.value.worker = res.data.data
+  // Xodim butun tizimdan JSHSHIR boshi bo'yicha qidiriladi (8-tur bilan bir xil select).
+  const candidates = reactive({
+    list: [],
+    total: 0,
+    loading: false,
+    search: null,
+    page: 1,
+    reqId: 0
+  })
+  const perPage = 50
+  const searchDigits = computed(() => String(candidates.search || '').replace(/\D/g, ''))
+  const notFound = computed(
+    () =>
+      !form.value.worker &&
+      !candidates.loading &&
+      searchDigits.value.length === 14 &&
+      !candidates.list.length
+  )
+
+  const toOption = (v) => ({
+    ...v,
+    name: Utils.combineFullName(v),
+    position: v.pin,
+    subPosition: v.main_position
+      ? t('commandPage.form_8.optionMain', { organization: v.main_position.organization })
+      : null
+  })
+
+  const workerOptions = computed(() => {
+    const picked = form.value.worker
+    return picked ? [picked, ...candidates.list.filter((v) => v.id !== picked.id)] : candidates.list
+  })
+
+  const loadCandidates = (infinity = false) => {
+    const digits = searchDigits.value
+    const reqId = ++candidates.reqId
+    if (digits.length < 4) {
+      candidates.list = []
+      candidates.total = 0
+      candidates.loading = false
+      return
+    }
+    candidates.loading = true
+    $ApiService.commandService
+      ._reinstatementCandidates({
+        params: { search: digits, page: candidates.page, per_page: perPage }
       })
-      .catch(() => {
-        form.value.worker = null
-        notFound.value = true
+      .then((res) => {
+        if (reqId !== candidates.reqId) return
+        const data = res.data.data.data.map(toOption)
+        candidates.total = res.data.data.total
+        candidates.list = infinity ? [...candidates.list, ...data] : data
       })
       .finally(() => {
-        searching.value = false
-        applyDirector()
+        if (reqId === candidates.reqId) candidates.loading = false
       })
   }
-  watch(
-    () => form.value.pin,
-    (v) => {
-      if (String(v || '').replace(/\D/g, '').length === 14) search()
-      else if (form.value.worker) {
-        form.value.worker = null
-        applyDirector()
-      }
+  const onSearchWorker = (v) => {
+    candidates.page = 1
+    candidates.search = v
+    loadCandidates()
+  }
+  const onScrollWorker = () => {
+    candidates.page += 1
+    loadCandidates(true)
+  }
+
+  // Tahrirda (eski saqlangan forma ham) tanlangan xodim select'da ko'rinsin.
+  if (form.value.worker) {
+    if (!form.value.worker.name) form.value.worker = toOption(form.value.worker)
+    if (!form.value.worker_id) form.value.worker_id = form.value.worker.id
+  }
+
+  // Tanlangach to'liq ma'lumot (faol lavozimlar) PINFL bo'yicha olinadi.
+  const onChangeWorker = (id) => {
+    const option = workerOptions.value.find((v) => v.id === id) ?? null
+    form.value.worker = option
+    form.value.pin = option?.pin ?? null
+    if (!option?.pin) {
+      applyDirector()
+      return
     }
-  )
+    $ApiService.workerService
+      ._checkWorker({ params: { pin: option.pin }, silentError: true })
+      .then((res) => {
+        if (form.value.worker_id !== id) return
+        form.value.worker = { ...option, ...res.data.data }
+      })
+      .finally(applyDirector)
+  }
   watch(() => form.value.department_position_id, applyDirector)
 
   // Bo'limlar daraxti buyruq korxonasi bo'yicha; birinchi yuklashda tiklangan bo'lim/lavozim saqlanadi.
@@ -160,19 +220,22 @@
     class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
   >
     <div class="col-span-12 @xl:col-span-6">
-      <n-form-item :label="$t('commandPage.form_5.pin')" path="pin">
-        <n-input
-          v-model:value="store.form_5.pin"
-          :allow-input="(v) => /^\d*$/.test(v)"
-          :maxlength="14"
-          :placeholder="$t('commandPage.form_5.pinPlaceholder')"
-          :loading="searching"
+      <n-form-item :label="$t('commandPage.form_5.pin')" path="worker_id">
+        <SuperSelect
+          pin-select
           clearable
-        >
-          <template #prefix>
-            <n-icon><Search24Regular /></n-icon>
-          </template>
-        </n-input>
+          placeholder="commandPage.form_8.pinPlaceholder"
+          :options="workerOptions"
+          :loading="candidates.loading"
+          :total-count="candidates.total"
+          :per-page="perPage"
+          v-model:value="store.form_5.worker_id"
+          v-model:search="candidates.search"
+          value-field="id"
+          @update:value="onChangeWorker"
+          @onSearch="onSearchWorker"
+          @onScrollEv="onScrollWorker"
+        />
       </n-form-item>
     </div>
     <div class="col-span-12 @xl:col-span-6 flex items-center">

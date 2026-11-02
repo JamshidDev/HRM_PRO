@@ -7,7 +7,7 @@
   const componentStore = useComponentStore()
 
   const filterEvent = () => {
-    if (!accStore.checkAction(accStore.pn.lmsWorkerRead)) return
+    if (!accStore.checkAction(accStore.pn.hrEduPlansRead)) return
     store.params.page = 1
     store._index()
   }
@@ -29,7 +29,7 @@
   )
 
   const onAdd = () => {
-    if (!accStore.checkAction(accStore.pn.lmsWorkerWrite)) return
+    if (!accStore.checkAction(accStore.pn.hrEduPlansWrite)) return
     store.resetForm()
     store.visibleType = true
     store.visible = true
@@ -49,7 +49,7 @@
 
 <template>
   <UIPageFilter
-    :add-permission="accStore.pn.lmsWorkerWrite"
+    :add-permission="accStore.pn.hrEduPlansWrite"
     v-model:search="store.params.search"
     :search-loading="store.loading"
     @onSearch="filterEvent"

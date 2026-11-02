@@ -11,6 +11,7 @@ import { useSocketStore } from '@/store/modules/app/socketStore.js'
 import { useAppStore } from '@/store/modules/app/appStore.js'
 import { useNotify } from '@/composables/useNotify'
 import { useNotificationSound } from '@/composables/useNotificationSound.js'
+import icons from '@/assets/icons'
 
 const { t } = i18n.global
 const PAGE = 50
@@ -19,6 +20,8 @@ const TYPING_SEND_MS = 2500
 const LIVE_CHAT_PATH = '/chat/live-chat'
 const TOAST_GAP_MS = 5000
 const SOUND_GAP_MS = 2000
+// Bir nechta fayl birdan yuborilsa — ovoz bitta.
+const MESSAGE_SOUND_GAP_MS = 300
 
 const isChatPageVisible = () =>
   window.location.pathname.startsWith(LIVE_CHAT_PATH) && document.visibilityState === 'visible'
@@ -38,7 +41,8 @@ export const useLiveChatStore = defineStore('liveChatStore', {
     typing: {},
     readUpTo: {},
     unreadTotal: 0,
-    lastTypingSent: 0
+    lastTypingSent: 0,
+    quota: null
   }),
   getters: {
     sortedConversations: (s) =>
@@ -48,7 +52,12 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       }),
     selected: (s) => s.conversations.find((c) => c.id === s.selectedId) ?? null,
     selectedMessages: (s) => s.messages[s.selectedId] ?? [],
-    isTyping: (s) => (id) => !!s.typing[id]
+    isTyping: (s) => (id) => !!s.typing[id],
+    // Kunlik xabar limiti tugagan va hali ertangi 00:00 bo'lmagan.
+    quotaBlocked: (s) =>
+      !!s.quota?.reset_at &&
+      s.quota.messages.used >= s.quota.messages.limit &&
+      dayjs().isBefore(dayjs(s.quota.reset_at))
   },
   actions: {
     api() {
@@ -102,8 +111,28 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       this._connectedOnce = true
     },
 
+    async loadQuota() {
+      try {
+        this.quota = await this.api().quota()
+      } catch {
+        this.quota = null
+      }
+    },
+
+    // Yuborilgan xabarlar sonini lokal oshiradi (har yuborishda quota so'ralmasin).
+    countSent(n = 1) {
+      if (this.quota) this.quota.messages.used += n
+    },
+
+    // Backend limit xatosida yangi holatni qaytaradi — input darhol bloklanadi.
+    applyLimitError(e) {
+      const q = e?.response?.data?.data?.quota
+      if (q) this.quota = q
+    },
+
     async loadConversations() {
       this.listLoading = true
+      this.loadQuota()
       try {
         const res = await this.api().conversations({ search: this.search || undefined })
         const list = res.data.map(toConversation)
@@ -319,7 +348,10 @@ export const useLiveChatStore = defineStore('liveChatStore', {
           saved = res
         }
         this.addMessage(id, toMessage(saved))
-      } catch {
+        this.countSent()
+        this.playMessageSound('message-out')
+      } catch (e) {
+        this.applyLimitError(e)
         const m = (this.messages[id] ?? []).find((x) => x.clientId === local.clientId && x.status !== 'read')
         if (m && typeof m.id !== 'number') m.status = 'failed'
       }
@@ -366,7 +398,13 @@ export const useLiveChatStore = defineStore('liveChatStore', {
     async forward(message, conversationId) {
       const target = this.conversations.find((c) => c.id === conversationId)
       if (!target?.peerId || typeof message.id !== 'number') return false
-      await this.api().forward(message.id, [target.peerId])
+      try {
+        await this.api().forward(message.id, [target.peerId])
+      } catch (e) {
+        this.applyLimitError(e)
+        throw e
+      }
+      this.countSent()
       return true
     },
 
@@ -475,11 +513,21 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       delete this.typing[id]
       if (m.senderId === this.meId) return
       if (this.selectedId === id && isChatPageVisible()) {
+        this.playMessageSound('message-in')
         this.markRead(id)
         return
       }
       this.refreshUnreadLater()
       this.notifyIncoming(id, m)
+    },
+
+    // Ochiq suhbatdagi xabar ovozi — past, qisqa (toast ovozidan alohida).
+    playMessageSound(type) {
+      if (!useAppStore().soundEnabled) return
+      const now = Date.now()
+      if (now - (this._messageSoundAt ?? 0) < MESSAGE_SOUND_GAP_MS) return
+      this._messageSoundAt = now
+      useNotificationSound().play(type)
     },
 
     // Yangi suhbat qatori (chat:conversation) xabardan keyin keladi — ism uchun qisqa kutiladi.
@@ -494,10 +542,12 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       const appStore = useAppStore()
       if (appStore.soundEnabled && now - (this._soundAt ?? 0) > SOUND_GAP_MS) {
         this._soundAt = now
-        useNotificationSound().play('notice')
+        // Chat toast'i — umumiy "notice" (ogohlantirish/info) dan farqli, yumshoq ikki notali chime.
+        useNotificationSound().play('success')
       }
       useNotify().notify(conv?.fullName || t('liveChatPage.newMessage'), 'info', {
         description: messagePreviewLabel(m),
+        icon: icons.figChatMessage,
         action: {
           label: t('liveChatPage.open'),
           onClick: async () => {

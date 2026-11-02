@@ -1,4 +1,4 @@
-import { AppLayouts, AppPaths } from '@/utils/index.js'
+import { AppLayouts, AppPaths, appPermissions } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
 
 import {
@@ -22,28 +22,32 @@ export const chatRoutes = [
     path: Utils.routeChatPathMaker(AppPaths.News),
     component: NewsPage,
     meta: {
-      layout: AppLayouts.main
+      layout: AppLayouts.main,
+      permission: appPermissions.chatNewsRead
     }
   },
   {
     path: Utils.routeChatPathMaker(`${AppPaths.News}/:id`),
     component: NewsFormPage,
     meta: {
-      layout: AppLayouts.main
+      layout: AppLayouts.main,
+      permission: appPermissions.chatNewsWrite
     }
   },
   {
     path: Utils.routeChatPathMaker(`${AppPaths.News}${AppPaths.View}/:id`),
     component: ViewNewsPage,
     meta: {
-      layout: AppLayouts.main
+      layout: AppLayouts.main,
+      permission: appPermissions.chatNewsRead
     }
   },
   {
     path: Utils.routeChatPathMaker(AppPaths.NewsCategory),
     component: NewsCategoryPage,
     meta: {
-      layout: AppLayouts.main
+      layout: AppLayouts.main,
+      permission: appPermissions.chatNewsCategoriesRead
     }
   },
   {
@@ -58,7 +62,8 @@ export const chatRoutes = [
     name: AppPaths.MobileStories.substring(1),
     component: () => import('@pages/admin/mobileStory/MobileStoryPage.vue'),
     meta: {
-      layout: AppLayouts.main
+      layout: AppLayouts.main,
+      permission: appPermissions.mobileStoriesRead
     }
   },
   {

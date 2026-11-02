@@ -137,6 +137,18 @@ instance.interceptors.response.use(
       return Promise.reject(error)
     }
 
+    // Xorijiy IP / VPN (backend WEB_GEO_MODE=enforce) — bitta xabar va login sahifasi, har so'rovga modal emas.
+    if (error.response?.status === 403 && error.response?.data?.code === 'foreign_web') {
+      error.__notified = true
+      if (!isLoggingOut) {
+        isLoggingOut = true
+        $Toast.error(error.response.data.message)
+        localStorage.removeItem(useAppSetting.tokenKey)
+        await router.push(AppPaths.Login)
+      }
+      return Promise.reject(error)
+    }
+
     if (error.response?.status === 401) {
       const serviceUrl = error.response?.config?.url?.toString()
       if (serviceUrl.includes('auth/login')) {

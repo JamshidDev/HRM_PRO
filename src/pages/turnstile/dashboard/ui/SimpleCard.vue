@@ -1,5 +1,5 @@
 <script setup>
-  import { UIUserGroup } from '@/components/index.js'
+  import { UICountUp, UIUserGroup } from '@/components/index.js'
   import { Utils } from '@/utils/index.js'
   import Watermark1 from '@/assets/icons/dashboard/card-watermark-1.svg'
   import Watermark2 from '@/assets/icons/dashboard/card-watermark-2.svg'
@@ -74,7 +74,7 @@
         <p
           class="font-grotesk font-semibold text-[20px] leading-[24px] text-fig-text-primary whitespace-nowrap"
         >
-          {{ formatted }}
+          <UICountUp :value="formatted" />
         </p>
       </div>
       <span class="shrink-0 card-avatars" v-if="listMore">

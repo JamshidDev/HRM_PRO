@@ -283,7 +283,6 @@ export const ENFORCED = new Set([
   'hr-vacations-write',
   'hr-business-trip-write',
   'hr-report-write',
-  'lms-worker-write',
   'hospital-med-worker-read',
   'hospital-pensioner-write',
   // 2026-09-21 — Kasallik varaqasi tabi (migratsiya 0137/0138):
@@ -312,7 +311,14 @@ export const ENFORCED = new Set([
   // 2026-10-14 — Oylik yashirish (salary_hidden, migr 0160). Rol formasidan (Iqtisodchi
   // tab) grantable bo'lishi uchun. read = ko'rish; write = yashirish/qaytarish.
   'salary-hidden-read',
-  'salary-hidden-write'
+  'salary-hidden-write',
+  'chat-news-read',
+  'chat-news-write',
+  'chat-news-categories-read',
+  'chat-news-categories-write',
+  'chat-news-categories-delete',
+  'mobile-stories-read',
+  'mobile-stories-write'
 ])
 
 // AVTO-GENERATSIYA: backend @Permission (enforce qilinadigan) + frontend AppPermissions
@@ -605,9 +611,6 @@ export const MEANINGFUL = new Set([
   'lms-teachers-delete',
   'lms-teachers-read',
   'lms-teachers-write',
-  'lms-worker',
-  'lms-worker-read',
-  'lms-worker-write',
   'log-viewer-read',
   'mobile-stories-delete',
   'video-guides',
@@ -760,7 +763,14 @@ export const MEANINGFUL = new Set([
   'profile-activity-read',
   // 2026-10-14 — Oylik yashirish (salary_hidden, migr 0160).
   'salary-hidden-read',
-  'salary-hidden-write'
+  'salary-hidden-write',
+  'chat-news-read',
+  'chat-news-write',
+  'chat-news-categories-read',
+  'chat-news-categories-write',
+  'chat-news-categories-delete',
+  'mobile-stories-read',
+  'mobile-stories-write'
 ])
 
 export const PERMISSION_GROUPS = [
@@ -850,7 +860,7 @@ export const PERMISSION_GROUPS = [
           { slug: 'hr-report-staffing-export', labelKey: 'report.staffingExportPermission' }
         ]
       },
-      { prefix: 'lms-worker', label: 'lmsWorkerPage.name' },
+      { prefix: 'hr-edu-plans', label: 'lmsWorkerPage.name' },
       { prefix: 'hr-report-export', label: 'specialReport.name' },
       { prefix: 'hr-monthly-report', label: 'structureReport.name' },
       // Backend enforce qiladigan, lekin guruhi bo'lmagani uchun faqat "Boshqa"
@@ -1093,6 +1103,9 @@ export const PERMISSION_GROUPS = [
     groups: [
       { prefix: 'chat', label: 'userRole.form.moduleAccess' },
       { prefix: 'instructions', label: 'notificationPage.name' },
+      { prefix: 'chat-news', label: 'newsPage.name' },
+      { prefix: 'chat-news-categories', label: 'newsCategoryPage.name' },
+      { prefix: 'mobile-stories', label: 'mobileStoryPage.name' },
       { prefix: 'chat-telegram-broadcast', label: 'telegramBroadcast.tab' },
       { prefix: 'chat-telegram-messages', label: 'congratulation.name' },
       { prefix: 'chat-live-chat', label: 'liveChatPage.name' }

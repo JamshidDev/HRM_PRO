@@ -10,7 +10,7 @@
   const createFormRef = ref(null)
 
   onMounted(() => {
-    if (!accStore.checkAction(accStore.pn.languagesRead)) return
+    if (!accStore.checkAction(accStore.pn.educationsStructureMenu)) return
     store._index()
   })
 </script>

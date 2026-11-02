@@ -115,14 +115,6 @@ export const adminRoutes = [
     }
   },
   {
-    path: Utils.routePathMaker(AppPaths.EimzoGateAdmin),
-    name: AppPaths.EimzoGateAdmin.substring(1),
-    component: () => import('@/pages/admin/eimzoGate/EimzoGatePage.vue'),
-    meta: {
-      layout: AppLayouts.main
-    }
-  },
-  {
     path: Utils.routePathMaker(AppPaths.Holiday),
     name: AppPaths.Holiday.substring(1),
     component: () => import('@/pages/admin/holiday/HolidayPage.vue'),

@@ -23,7 +23,9 @@
 </script>
 
 <template>
-  <span class="absolute top-[6px] right-[-2px]">
+  <!-- Nuqta ikona qutisining yuqori-o'ng burchagida (40px, radius 16px egri chizig'i ustida).
+       `flex` — inline badge'ning baseline bo'shlig'i nuqtani pastga surmasin. -->
+  <span class="absolute top-[1px] right-[1px] z-[1] flex leading-none">
     <n-badge v-if="value" type="warning" class="mini-menu-badge" :value="value" :max="100" dot />
     <span
       v-if="isRippling"

@@ -48,6 +48,33 @@ const _ssoLogins = async (payload) => {
 const _ssoLoginClients = async () => {
   return await axios.get(`/v1/sso/logins/clients`)
 }
+// Kirishlar tarixi — Excel fayl (filtr bilan).
+const _ssoLoginsExport = async (payload) => {
+  return await axios.get(`/v1/sso/logins/export`, {
+    params: payload?.params,
+    responseType: 'blob'
+  })
+}
+
+// HRM bot: ulanish holati va bir martalik ulash havolasi.
+const _telegramStatus = async () => {
+  return await axios.get(`/v1/user/telegram`)
+}
+const _telegramLink = async () => {
+  return await axios.post(`/v1/user/telegram/link`)
+}
+
+// Faol seanslar (web + mobil qurilmalar).
+const _sessions = async () => {
+  return await axios.get(`/v1/user/sessions`)
+}
+// Seansni yakunlash (60 daqiqalik himoya backendda tekshiriladi).
+const _revokeSession = async (payload) => {
+  return await axios.delete(`/v1/user/sessions/${payload.id}`)
+}
+const _revokeOtherSessions = async () => {
+  return await axios.post(`/v1/user/sessions/revoke-others`)
+}
 
 export default {
   _index,
@@ -60,5 +87,11 @@ export default {
   _acceptOffer,
   _updateLoginMethod,
   _ssoLogins,
-  _ssoLoginClients
+  _ssoLoginClients,
+  _ssoLoginsExport,
+  _telegramStatus,
+  _telegramLink,
+  _sessions,
+  _revokeSession,
+  _revokeOtherSessions
 }
