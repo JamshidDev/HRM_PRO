@@ -473,6 +473,9 @@
   }
   /* Xabarlar ro'yxati scrollbari: ingichka, strelkasiz, shaffof yo'lak; faqat ustiga kelganda ko'rinadi */
   .chat-scroll {
+    /* Yuqoriga ketgan xabarlar sarlavha ostida keskin kesilmaydi — ustki 12px da sekin yo'qoladi */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 12px);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 12px);
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
   }
