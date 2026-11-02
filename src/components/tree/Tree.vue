@@ -107,7 +107,7 @@
             :style="checkStyle ? checkStyle(item) : {}"
           ></n-checkbox>
           <span class="ml-2 w-full text-wrap py-1 text-textColor0">
-            <slot name="title" :data="item">{{ short ? item.code : item.name }}</slot>
+            <slot name="title" :data="item">{{ short ? (item.code || item.name) : item.name }}</slot>
           </span>
         </div>
         <div
