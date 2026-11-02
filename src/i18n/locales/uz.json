@@ -6116,7 +6116,7 @@
     "langEn": "Ingliz"
   },
   "departmentLocationPage": {
-    "name": "Bo'lim joylashuvi",
+    "name": "Mobile face",
     "createTitle": "Joylashuv qo'shish",
     "updateTitle": "Joylashuvni tahrirlash",
     "attachTitle": "Joylashuv biriktirish",
@@ -6126,7 +6126,37 @@
     "locationNotExists": "Yo'q",
     "locationCount": "{n} ta joylashuv",
     "noLocation": "Joylashuv yo'q",
+    "freeBadge": "Erkin",
+    "stats": {
+      "organizations": "Korxonalar",
+      "areas": "Hududlar",
+      "free": "Erkin rejim",
+      "unassignedDepartments": "Joy belgilanmagan bo'limlar",
+      "unassignedWorkers": "Joy belgilanmagan xodimlar"
+    },
+    "source": {
+      "department": "Bo'lim joyi",
+      "worker": "Xodim joyi",
+      "free": "Erkin rejim"
+    },
+    "events": {
+      "photo": "Kadr",
+      "direction": "Yo'nalish",
+      "place": "Joy",
+      "coords": "Koordinata",
+      "noPhoto": "Rasm yo'q",
+      "noCoords": "Koordinata yo'q",
+      "out": "Chiqish",
+      "source": "Joy turi",
+      "accuracy": "GPS aniqligi",
+      "similarity": "O'xshashlik",
+      "detailTitle": "Mobil o'tish",
+      "livePhoto": "Tasdiqlangan kadr",
+      "refPhoto": "Bazadagi rasm",
+      "in": "Kirish"
+    },
     "tabs": {
+      "workers": "Xodimlar",
       "departments": "Bo'limlar",
       "locations": "Joylashuvlar"
     },
@@ -6143,6 +6173,8 @@
       "location": "Joylashuv"
     },
     "form": {
+      "freeMode": "Erkin rejim",
+      "freeModeHint": "Hudud cheklovi yo'q — xodim istalgan joydan o'tadi, faqat koordinatasi va yuz rasmi yoziladi.",
       "department": "Bo'lim",
       "name": "O'tish joyi nomi",
       "namePlaceholder": "Masalan: Asosiy kirish",

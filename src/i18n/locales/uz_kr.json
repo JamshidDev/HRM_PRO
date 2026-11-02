@@ -5712,7 +5712,7 @@
     "langEn": "Инглиз"
   },
   "departmentLocationPage": {
-    "name": "Бўлим жойлашуви",
+    "name": "Mobile face",
     "createTitle": "Жойлашув қўшиш",
     "updateTitle": "Жойлашувни таҳрирлаш",
     "attachTitle": "Жойлашув бириктириш",
@@ -5722,7 +5722,37 @@
     "locationNotExists": "Йўқ",
     "locationCount": "{n} та жойлашув",
     "noLocation": "Жойлашув йўқ",
+    "freeBadge": "Эркин",
+    "stats": {
+      "organizations": "Корхоналар",
+      "areas": "Ҳудудлар",
+      "free": "Эркин режим",
+      "unassignedDepartments": "Жой белгиланмаган бўлимлар",
+      "unassignedWorkers": "Жой белгиланмаган ходимлар"
+    },
+    "source": {
+      "department": "Бўлим жойи",
+      "worker": "Ходим жойи",
+      "free": "Эркин режим"
+    },
+    "events": {
+      "photo": "Кадр",
+      "direction": "Йўналиш",
+      "place": "Жой",
+      "coords": "Координата",
+      "noPhoto": "Расм йўқ",
+      "noCoords": "Координата йўқ",
+      "out": "Чиқиш",
+      "source": "Жой тури",
+      "accuracy": "GPS аниқлиги",
+      "similarity": "Ўхшашлик",
+      "detailTitle": "Мобил ўтиш",
+      "livePhoto": "Тасдиқланган кадр",
+      "refPhoto": "Базадаги расм",
+      "in": "Кириш"
+    },
     "tabs": {
+      "workers": "Ходимлар",
       "departments": "Бўлимлар",
       "locations": "Жойлашувлар"
     },
@@ -5739,6 +5769,8 @@
       "location": "Жойлашув"
     },
     "form": {
+      "freeMode": "Эркин режим",
+      "freeModeHint": "Ҳудуд чеклови йўқ — ходим исталган жойдан ўтади, фақат координатаси ва юз расми ёзилади.",
       "department": "Бўлим",
       "name": "Ўтиш жойи номи",
       "namePlaceholder": "Масалан: Асосий кириш",

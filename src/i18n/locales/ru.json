@@ -6067,7 +6067,7 @@
     "langEn": "Английский"
   },
   "departmentLocationPage": {
-    "name": "Местоположение отдела",
+    "name": "Mobile face",
     "createTitle": "Добавить местоположение",
     "updateTitle": "Редактировать местоположение",
     "attachTitle": "Привязать местоположение",
@@ -6077,7 +6077,37 @@
     "locationNotExists": "Нет",
     "locationCount": "{n} местоположение(ий)",
     "noLocation": "Нет местоположения",
+    "freeBadge": "Свободно",
+    "stats": {
+      "organizations": "Организации",
+      "areas": "Зоны",
+      "free": "Свободный режим",
+      "unassignedDepartments": "Отделы без места",
+      "unassignedWorkers": "Сотрудники без места"
+    },
+    "source": {
+      "department": "Место отдела",
+      "worker": "Место сотрудника",
+      "free": "Свободный режим"
+    },
+    "events": {
+      "photo": "Кадр",
+      "direction": "Направление",
+      "place": "Место",
+      "coords": "Координаты",
+      "noPhoto": "Нет фото",
+      "noCoords": "Нет координат",
+      "out": "Выход",
+      "source": "Тип места",
+      "accuracy": "Точность GPS",
+      "similarity": "Сходство",
+      "detailTitle": "Мобильный проход",
+      "livePhoto": "Подтверждённый кадр",
+      "refPhoto": "Фото в базе",
+      "in": "Вход"
+    },
     "tabs": {
+      "workers": "Сотрудники",
       "departments": "Отделы",
       "locations": "Местоположения"
     },
@@ -6094,6 +6124,8 @@
       "location": "Местоположение"
     },
     "form": {
+      "freeMode": "Свободный режим",
+      "freeModeHint": "Без ограничения по зоне — сотрудник проходит из любого места, записываются только координаты и фото лица.",
       "department": "Отдел",
       "name": "Название точки прохода",
       "namePlaceholder": "Например: Главный вход",

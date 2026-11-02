@@ -6056,7 +6056,7 @@
     "langEn": "English"
   },
   "departmentLocationPage": {
-    "name": "Department Location",
+    "name": "Mobile face",
     "createTitle": "Add Location",
     "updateTitle": "Edit Location",
     "attachTitle": "Attach Location",
@@ -6065,7 +6065,37 @@
     "locationNotExists": "No",
     "locationCount": "{n} location(s)",
     "noLocation": "No location",
+    "freeBadge": "Free",
+    "stats": {
+      "organizations": "Organizations",
+      "areas": "Areas",
+      "free": "Free mode",
+      "unassignedDepartments": "Departments without a place",
+      "unassignedWorkers": "Employees without a place"
+    },
+    "source": {
+      "department": "Department place",
+      "worker": "Employee place",
+      "free": "Free mode"
+    },
+    "events": {
+      "photo": "Frame",
+      "direction": "Direction",
+      "place": "Place",
+      "coords": "Coordinates",
+      "noPhoto": "No photo",
+      "noCoords": "No coordinates",
+      "out": "Exit",
+      "source": "Place type",
+      "accuracy": "GPS accuracy",
+      "similarity": "Similarity",
+      "detailTitle": "Mobile pass",
+      "livePhoto": "Verified frame",
+      "refPhoto": "Photo on file",
+      "in": "Entry"
+    },
     "tabs": {
+      "workers": "Employees",
       "departments": "Departments",
       "locations": "Locations"
     },
@@ -6082,6 +6112,8 @@
       "location": "Location"
     },
     "form": {
+      "freeMode": "Free mode",
+      "freeModeHint": "No area restriction — the employee can pass from anywhere; only coordinates and the face photo are recorded.",
       "department": "Department",
       "name": "Passage point name",
       "namePlaceholder": "e.g. Main entrance",
