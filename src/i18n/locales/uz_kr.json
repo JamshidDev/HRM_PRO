@@ -5871,14 +5871,17 @@
       "expiresAt": "Амал қилиш муддати",
       "expiresPlaceholder": "Муддатсиз",
       "sso": "HRM орқали кириш (SSO)",
-      "ssoBaseUrl": "SSO қайтиш манзили (тўлиқ URL)"
+      "ssoBaseUrl": "SSO қайтиш манзили (тўлиқ URL)",
+      "allowedIps": "Рухсат этилган IP манзиллар",
+      "allowedIpsHint": "Бўш бўлса — фақат Ўзбекистон IP'лари. IP ёки CIDR (10.0.0.0/24) ёзиб Enter босинг."
     },
     "validation": {
       "name": "Ном мажбурий",
       "role": "Рол танланг",
       "scope": "Қамровни танланг",
       "organizations": "Камида битта корхона танланг",
-      "ssoBaseUrl": "Тўлиқ URL киритинг (https://...)"
+      "ssoBaseUrl": "Тўлиқ URL киритинг (https://...)",
+      "allowedIp": "IP ёки CIDR нотўғри. Намуна: 178.218.201.228 ёки 10.0.0.0/24"
     },
     "create": {
       "button": "Янги клиент",

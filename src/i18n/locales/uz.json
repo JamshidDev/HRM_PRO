@@ -6275,14 +6275,17 @@
       "expiresAt": "Amal qilish muddati",
       "expiresPlaceholder": "Muddatsiz",
       "sso": "HRM orqali kirish (SSO)",
-      "ssoBaseUrl": "SSO qaytish manzili (to'liq URL)"
+      "ssoBaseUrl": "SSO qaytish manzili (to'liq URL)",
+      "allowedIps": "Ruxsat etilgan IP manzillar",
+      "allowedIpsHint": "Bo'sh bo'lsa — faqat O'zbekiston IP'lari. IP yoki CIDR (10.0.0.0/24) yozib Enter bosing."
     },
     "validation": {
       "name": "Nom majburiy",
       "role": "Rol tanlang",
       "scope": "Qamrovni tanlang",
       "organizations": "Kamida bitta korxona tanlang",
-      "ssoBaseUrl": "To'liq URL kiriting (https://...)"
+      "ssoBaseUrl": "To'liq URL kiriting (https://...)",
+      "allowedIp": "IP yoki CIDR noto'g'ri. Namuna: 178.218.201.228 yoki 10.0.0.0/24"
     },
     "create": {
       "button": "Yangi client",

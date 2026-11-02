@@ -6226,14 +6226,17 @@
       "expiresAt": "Срок действия",
       "expiresPlaceholder": "Бессрочно",
       "sso": "Вход через HRM (SSO)",
-      "ssoBaseUrl": "SSO адрес возврата (полный URL)"
+      "ssoBaseUrl": "SSO адрес возврата (полный URL)",
+      "allowedIps": "Разрешённые IP-адреса",
+      "allowedIpsHint": "Если пусто — только IP Узбекистана. Введите IP или CIDR (10.0.0.0/24) и нажмите Enter."
     },
     "validation": {
       "name": "Название обязательно",
       "role": "Выберите роль",
       "scope": "Выберите охват",
       "organizations": "Выберите хотя бы одну организацию",
-      "ssoBaseUrl": "Введите полный URL (https://...)"
+      "ssoBaseUrl": "Введите полный URL (https://...)",
+      "allowedIp": "Неверный IP или CIDR. Пример: 178.218.201.228 или 10.0.0.0/24"
     },
     "create": {
       "button": "Новый клиент",
