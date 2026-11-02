@@ -46,6 +46,13 @@
     if (!v) return
     if (componentStore.structureList.length === 0) componentStore._structures()
   }
+
+  // Strukturani OLDINDAN yuklaymiz — korxona tanlash dropdown'i ochilganda bo'sh
+  // bo'lib (balandligi 0 → yuqoriga ochilib ko'rinmay) qolmasin, boshqa sahifalardagidek
+  // darhol to'la ro'yxat ko'rinsin.
+  onMounted(() => {
+    if (componentStore.structureList.length === 0) componentStore._structures()
+  })
 </script>
 
 <template>

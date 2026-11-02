@@ -115,6 +115,18 @@
     listSearch.value = ''
     listModal.value = true
   }
+  // F.I.O'dan avatar uchun bosh harflar (ikki so'z) — rasm yo'q, xodimlar ro'yxati uslubi.
+  const initials = (fio) => {
+    const parts = String(fio || '')
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+    if (!parts.length) return '—'
+    const a = parts[0]?.[0] ?? ''
+    const b = parts[1]?.[0] ?? ''
+    return (a + b).toUpperCase()
+  }
+
   // Modal ichidagi qidiruv — F.I.O yoki lavozim bo'yicha.
   const filteredAffected = computed(() => {
     const risk = activeRisk.value
@@ -288,13 +300,16 @@
       <div class="sc-list-rows">
         <div v-for="(emp, idx) in filteredAffected" :key="idx" class="sc-list-row">
           <span class="sc-list-idx">{{ idx + 1 }}</span>
+          <span class="sc-list-avatar" :class="`sc-list-avatar--${activeRisk ? statusTone(activeRisk.status) : 'indigo'}`">
+            {{ initials(emp.fio) }}
+          </span>
           <div class="sc-list-main">
             <div class="sc-list-fio">{{ emp.fio }}</div>
             <div v-if="emp.position" class="sc-list-pos">{{ emp.position }}</div>
             <div v-if="emp.detail" class="sc-list-detail">{{ emp.detail }}</div>
           </div>
-          <span class="sc-list-summa">
-            {{ emp.summa != null ? money2(emp.summa) : '—' }}
+          <span v-if="emp.summa != null && emp.summa !== 0" class="sc-list-summa">
+            {{ money2(emp.summa) }}
           </span>
         </div>
 
@@ -724,16 +739,43 @@
   }
   .sc-list-idx {
     flex: none;
-    min-width: 28px;
-    padding-top: 1px;
+    min-width: 22px;
+    padding-top: 9px;
     font-size: 12px;
     font-variant-numeric: tabular-nums;
     color: var(--fig-text-tertiary);
     text-align: right;
   }
+  /* Avatar — rasm o'rniga bosh harflar (xodimlar ro'yxati uslubi). */
+  .sc-list-avatar {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    color: #fff;
+    user-select: none;
+  }
+  .sc-list-avatar--red {
+    background: var(--fig-icon-red);
+  }
+  .sc-list-avatar--amber {
+    background: var(--fig-icon-amber);
+  }
+  .sc-list-avatar--green {
+    background: var(--fig-icon-green);
+  }
+  .sc-list-avatar--indigo {
+    background: var(--fig-icon-indigo);
+  }
   .sc-list-main {
     flex: 1;
     min-width: 0;
+    padding-top: 1px;
   }
   .sc-list-fio {
     font-size: 13.5px;
@@ -755,7 +797,7 @@
   }
   .sc-list-summa {
     flex: none;
-    padding-top: 1px;
+    padding-top: 9px;
     font-size: 13px;
     font-weight: 600;
     font-variant-numeric: tabular-nums;
