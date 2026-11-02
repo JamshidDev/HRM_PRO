@@ -5,10 +5,12 @@
   import Utils from '@/utils/Utils.js'
   import { Delete20Regular, Edit32Regular, RibbonStar24Filled } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
+  import { useEimzoGate } from './useEimzoGate.js'
 
   const { t } = i18n.global
   const accStore = useAccountStore()
   const store = useUserRoleStore()
+  const gate = useEimzoGate()
 
   const onEdit = (row) => {
     if (!accStore.checkAction(accStore.pn.rolesWrite)) return
@@ -54,7 +56,11 @@
       title: 'Scope',
       minWidth: 140,
       width: 160
-    }
+    },
+    // E-IMZO ozodligi — faqat Admin'ga (endpoint 403 bersa ustun yo'q).
+    ...(gate.available.value
+      ? [{ key: 'eimzo_exempt', title: 'E-imzo', width: 90 }]
+      : [])
   ])
 
   // Org-scope yorlig'i: local=faqat shu korxona, global=korxona+tarkibi (tree).
@@ -124,6 +130,24 @@
         {{ scopeLabel(row.scope_type) }}
       </n-tag>
       <span v-else class="text-gray-400">—</span>
+    </template>
+
+    <!-- Iqtisod bo'limiga E-IMZO tasdig'isiz kirish (faqat sanctum rollar). -->
+    <template #cell-eimzo_exempt="{ row }">
+      <div
+        v-if="gate.exemptById.value[row.id]"
+        class="flex items-center"
+        :title="gate.exemptById.value[row.id].locked ? t('eimzoGateAdmin.adminLocked') : ''"
+        @click.stop
+      >
+        <n-switch
+          size="small"
+          :value="gate.exemptById.value[row.id].exempt"
+          :disabled="gate.exemptById.value[row.id].locked || !gate.enabled.value"
+          :loading="gate.savingId.value === row.id"
+          @update:value="(v) => gate.setExempt(row.id, v)"
+        />
+      </div>
     </template>
   </UITable>
 </template>
