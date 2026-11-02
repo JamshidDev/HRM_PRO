@@ -93,6 +93,8 @@
       if (data.form_state) {
         store.resetForm()
         store.restoreFormState(data.form_state)
+        // Yuborish tartibi — joriy marshrutdan (saqlangan forma holati eskirgan bo'lishi mumkin).
+        await store._syncRouteMode(props.documentId)
         store.editCommandType = store.payload.command_type
         store.editId = props.documentId
       }
