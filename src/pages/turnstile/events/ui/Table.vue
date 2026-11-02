@@ -1,5 +1,6 @@
 <script setup>
   import { UIBadge, UIStatus, UITable, UIUser } from '@/components/index.js'
+  import MobileFaceModal from './MobileFaceModal.vue'
   import i18n from '@/i18n/index.js'
   import { useEventStore, useEventV2Store } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -8,6 +9,7 @@
     ArrowCircleDownRight20Regular,
     ArrowCircleUpLeft20Regular,
     CalendarLtr24Regular,
+    Camera20Regular,
     Eye16Regular
   } from '@vicons/fluent'
 
@@ -15,6 +17,18 @@
 
   const store = useEventStore()
   const v2Store = useEventV2Store()
+
+  // Mobil o'tish: joy, koordinata va kadr oynasi.
+  const faceVisible = ref(false)
+  const faceEvent = ref(null)
+  const onMobileFace = (row) => {
+    faceEvent.value = row
+    faceVisible.value = true
+  }
+
+  // Mobil yuz o'tishlarida qurilma — HR Rail ilovasi (eski yozuvlar ham shu nom bilan).
+  const MOBILE_AUTH = 'ACSEventFaceHRMobile'
+  const deviceLabel = (row) => (row.auth_type === MOBILE_AUTH ? 'HR Rail' : row.device)
 
   const changePage = (v) => {
     store.params.page = v.page
@@ -95,6 +109,10 @@
     MobileFaceEvent: {
       name: t('hcEvent.form.mobile'),
       id: 9
+    },
+    ACSEventFaceHRMobile: {
+      name: t('hcEvent.form.mobile'),
+      id: 9
     }
   }
 
@@ -137,6 +155,13 @@
   ])
 
   const actions = computed(() => [
+    {
+      label: t('departmentLocationPage.events.detailTitle'),
+      key: 'mobile-face',
+      icon: UIHelper.renderIcon(Camera20Regular),
+      visible: (row) => Boolean(row.mobile_face),
+      action: onMobileFace
+    },
     {
       label: t('content.view'),
       key: Utils.ActionTypes.view,
@@ -195,6 +220,30 @@
       </n-button>
     </template>
 
+    <!-- Mobil o'tishda qurilma o'rniga joy nomi; bosilsa xarita va kadr ochiladi -->
+    <template #cell-device="{ row }">
+      <button
+        v-if="row.mobile_face"
+        type="button"
+        class="flex items-start gap-2 text-left"
+        @click.stop="onMobileFace(row)"
+      >
+        <n-icon size="16" class="text-primary mt-0.5"><Camera20Regular /></n-icon>
+        <span class="flex flex-col">
+          <span class="flex items-center gap-2 text-primary hover:underline">
+            {{ deviceLabel(row) }}
+            <n-tag v-if="row.mobile_face.photo_missing" size="tiny" round type="warning">
+              {{ $t('departmentLocationPage.events.noPhoto') }}
+            </n-tag>
+          </span>
+          <span v-if="row.mobile_face.place_name" class="text-xs text-textColor3">
+            {{ row.mobile_face.place_name }}
+          </span>
+        </span>
+      </button>
+      <span v-else>{{ deviceLabel(row) }}</span>
+    </template>
+
     <template #cell-auth_type="{ row }">
       <UIStatus :status="eventStatus[row.auth_type]" />
     </template>
@@ -212,4 +261,5 @@
       </template>
     </template>
   </UITable>
+  <MobileFaceModal v-model:visible="faceVisible" :event="faceEvent" />
 </template>
