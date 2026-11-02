@@ -207,7 +207,7 @@
         <div class="tso-label">
           <slot name="label" :data="item">
             <span class="tso-text">
-              <template v-for="(p, pi) in parts(short ? item.code : item.name)" :key="pi">
+              <template v-for="(p, pi) in parts(short ? (item.code || item.name) : item.name)" :key="pi">
                 <mark v-if="p.hit" class="tso-hit">{{ p.text }}</mark>
                 <template v-else>{{ p.text }}</template>
               </template>

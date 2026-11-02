@@ -3,12 +3,15 @@
   import Table from './ui/Table.vue'
   import { useUserRoleStore, useAccountStore } from '@/store/modules/index.js'
   import createFrom from './ui/createForm.vue'
+  import EimzoGateCard from './ui/EimzoGateCard.vue'
+  import { useEimzoGate } from './ui/useEimzoGate.js'
   import i18n from '@/i18n/index.js'
   const { t } = i18n.global
 
   const store = useUserRoleStore()
   const accStore = useAccountStore()
   const createFormRef = ref(null)
+  const eimzoGate = useEimzoGate()
 
   // Header'dagi Guard/Scope select opsiyalari (forma maydonlari shu yerga ko'chirilgan).
   const guardOptions = computed(() => [
@@ -39,11 +42,13 @@
     if (!accStore.checkAction(accStore.pn.rolesRead)) return
     store._index()
     store._getAllPermission()
+    eimzoGate.load()
   })
 </script>
 
 <template>
   <UIPageContent>
+    <EimzoGateCard />
     <UIPageFilter
       :add-permission="accStore.pn.rolesWrite"
       v-model:search="store.params.search"
@@ -52,7 +57,8 @@
       @on-add="onAdd"
       :show-filter-button="false"
     />
-    <Table />
+    <!-- E-IMZO ustuni ruxsat aniqlangach qo'shiladi — jadval ustunlarini qayta hisoblasin. -->
+    <Table :key="eimzoGate.available.value ? 'with-eimzo' : 'plain'" />
     <UIModal v-model:visible="store.visible" :width="1200" height="85vh" card-class="relative">
       <template #header>
         <!-- Role nomi / Guard / Scope + Qidiruv / Bekor / Saqlash — bitta qatorda -->

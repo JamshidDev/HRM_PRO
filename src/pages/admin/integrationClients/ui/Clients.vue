@@ -169,7 +169,8 @@
     expires_at: null,
     is_active: true,
     sso_enabled: false,
-    sso_base_url: ''
+    sso_base_url: '',
+    allowed_ips: []
   })
 
   const openCreate = () => {
@@ -193,7 +194,8 @@
       expires_at: item.expires_at ? new Date(item.expires_at).getTime() : null,
       is_active: item.is_active,
       sso_enabled: item.sso_enabled ?? false,
-      sso_base_url: item.sso_base_url ?? ''
+      sso_base_url: item.sso_base_url ?? '',
+      allowed_ips: [...(item.allowed_ips ?? [])]
     }
     formOrgs.value = []
     formOrgChecked.value = []
@@ -204,6 +206,14 @@
       formOrgs.value = res.data.data.organizations ?? []
     })
     showForm.value = true
+  }
+
+  // IPv4 yoki CIDR; noto'g'risi qo'shilmaydi (backend ham tekshiradi).
+  const IP_RE = /^(25[0-5]|2[0-4]\d|1?\d?\d)(\.(25[0-5]|2[0-4]\d|1?\d?\d)){3}(\/([12]?\d|3[0-2]))?$/
+  const onAllowedIps = (values) => {
+    const list = values.map((v) => String(v).trim()).filter(Boolean)
+    if (list.some((v) => !IP_RE.test(v))) message.error(t('integrationClients.validation.allowedIp'))
+    form.value.allowed_ips = [...new Set(list.filter((v) => IP_RE.test(v)))]
   }
 
   const toIsoDate = (ts) => (ts ? new Date(ts).toISOString().slice(0, 19).replace('T', ' ') : null)
@@ -227,7 +237,8 @@
           expires_at: toIsoDate(form.value.expires_at),
           is_active: form.value.is_active,
           sso_enabled: form.value.sso_enabled,
-          sso_base_url: form.value.sso_base_url?.trim() || null
+          sso_base_url: form.value.sso_base_url?.trim() || null,
+          allowed_ips: form.value.allowed_ips
         }
         store._update(form.value.id, payload).then(() => {
           const done = () => {
@@ -249,7 +260,8 @@
           scope_mode: form.value.scope_mode,
           expires_at: toIsoDate(form.value.expires_at) || undefined,
           sso_enabled: form.value.sso_enabled,
-          sso_base_url: form.value.sso_base_url?.trim() || undefined
+          sso_base_url: form.value.sso_base_url?.trim() || undefined,
+          allowed_ips: form.value.allowed_ips
         }
         if (form.value.scope_mode !== 'all') payload.organization_ids = orgIds
         store._create(payload).then((created) => {
@@ -483,6 +495,11 @@
           </div>
         </n-form-item>
       </div>
+
+      <!-- Bo'sh — faqat O'zbekiston/ichki tarmoq IP'lari; to'ldirilsa — faqat shu IP/CIDR'lar -->
+      <n-form-item :label="$t('integrationClients.clients.allowedIps')" :feedback="$t('integrationClients.clients.allowedIpsHint')">
+        <n-dynamic-tags :value="form.allowed_ips" :max="50" @update:value="onAllowedIps" />
+      </n-form-item>
 
       <n-form-item :label="$t('integrationClients.clients.description')" path="description">
         <n-input

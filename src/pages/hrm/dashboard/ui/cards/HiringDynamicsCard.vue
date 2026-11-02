@@ -42,20 +42,26 @@
     contracts.value.map((item) => Utils.getMonthNameByKey(item.month.split('-')[1]))
   )
 
-  const series = computed(() => [
-    {
-      key: 'incoming',
-      token: '--fig-bg-brand-fill',
-      value: contracts.value.reduce((sum, item) => sum + Number(item.new_contracts || 0), 0),
-      data: contracts.value.map((item) => Number(item.new_contracts || 0))
-    },
-    {
-      key: 'outgoing',
-      token: '--fig-icon-red',
-      value: contracts.value.reduce((sum, item) => sum + Number(item.ended_contracts || 0), 0),
-      data: contracts.value.map((item) => Number(item.ended_contracts || 0))
-    }
-  ])
+  // FXSH (o'rindoshlik) asosiy ustun ustida och qatlam — asosiy qiymat oylik hisobot bilan bir xil.
+  const SERIES = [
+    { key: 'incoming', field: 'new_contracts', stack: 'in', token: '--fig-bg-brand-fill' },
+    { key: 'incomingFxsh', field: 'new_fxsh', stack: 'in', token: '--fig-bg-brand-fill', light: true },
+    { key: 'outgoing', field: 'ended_contracts', stack: 'out', token: '--fig-icon-red' },
+    { key: 'outgoingFxsh', field: 'ended_fxsh', stack: 'out', token: '--fig-icon-red', light: true }
+  ]
+  const series = computed(() =>
+    SERIES.map((s) => ({
+      ...s,
+      value: contracts.value.reduce((sum, item) => sum + Number(item[s.field] || 0), 0),
+      data: contracts.value.map((item) => Number(item[s.field] || 0))
+    }))
+  )
+  // Ustki qatlam bo'lmagan oyda asosiy ustun tepasi yumaloq qoladi.
+  const topValue = (s, index) => {
+    if (s.light) return 0
+    const fxsh = series.value.find((x) => x.stack === s.stack && x.light)
+    return fxsh?.data[index] || 0
+  }
 
   // Kursor ostidagi ustun (series index). Ustun ustida — tooltipda faqat uning qatori;
   // oyning bo'sh joyida (ustunlar orasida) — ikkalasi ham.
@@ -122,20 +128,25 @@
         axisLabel: { color: axis, fontSize: 11 },
         splitLine: { lineStyle: { color: split, type: 'dashed' } }
       },
-      series: series.value.map((item) => ({
-        name: t(`dashboardPage.yearly.${item.key}`),
-        type: 'bar',
-        barMaxWidth: 22,
-        // Juftlik zich, oylar orasi keng — ustunlar oy bo'yicha guruhlanib ko'rinadi.
-        barGap: '15%',
-        barCategoryGap: '42%',
-        data: item.data,
-        itemStyle: {
-          color: barFill(tokenColor(item.token)),
-          borderRadius: [8, 8, 0, 0]
-        },
-        emphasis: { focus: 'series', itemStyle: { color: tokenColor(item.token) } }
-      }))
+      series: series.value.map((item) => {
+        const base = tokenColor(item.token)
+        const color = item.light && /^#[0-9a-f]{6}$/i.test(base) ? `${base}66` : base
+        return {
+          name: t(`dashboardPage.yearly.${item.key}`),
+          type: 'bar',
+          stack: item.stack,
+          barMaxWidth: 22,
+          // Juftlik zich, oylar orasi keng — ustunlar oy bo'yicha guruhlanib ko'rinadi.
+          barGap: '15%',
+          barCategoryGap: '42%',
+          data: item.data.map((value, index) => ({
+            value,
+            itemStyle: { borderRadius: topValue(item, index) ? 0 : [8, 8, 0, 0] }
+          })),
+          itemStyle: { color: item.light ? color : barFill(color) },
+          emphasis: { focus: 'series', itemStyle: { color } }
+        }
+      })
     }
   })
 </script>
@@ -154,6 +165,7 @@
       <div v-for="item in series" :key="item.key" class="flex items-center gap-2 px-3">
         <span
           class="h-2.5 w-2.5 shrink-0 rounded-full"
+          :class="item.light && 'opacity-40'"
           :style="{ backgroundColor: `var(${item.token})` }"
         ></span>
         <p class="text-[14px] leading-5 whitespace-nowrap text-fig-text-muted">
