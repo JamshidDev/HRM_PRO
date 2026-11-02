@@ -5,7 +5,8 @@ const STORE = 'keys'
 const KEY_ID = 'current'
 
 let keyPromise = null
-let jwkPromise = null
+let keyToken = null
+const jwkCache = new WeakMap()
 let clockOffsetSec = 0
 
 const supported = () =>
@@ -36,31 +37,49 @@ const withStore = (mode, fn) =>
   })
 
 // Maxfiy kalit `extractable: false` — JS ham, DevTools ham uni o'qiy olmaydi; IndexedDB faqat ob'ektni saqlaydi.
+const readKey = () => withStore('readonly', (s) => s.get(KEY_ID))
+
+// `add` — boshqa tab ulgurib yozgan bo'lsa o'zinikini emas, o'shanikini oladi (bitta brauzer = bitta kalit).
 const generateAndSave = async () => {
   const pair = await crypto.subtle.generateKey({ name: 'ECDSA', namedCurve: 'P-256' }, false, [
     'sign',
     'verify'
   ])
-  await withStore('readwrite', (s) => s.put(pair, KEY_ID))
-  return pair
+  try {
+    await withStore('readwrite', (s) => s.add(pair, KEY_ID))
+    return pair
+  } catch {
+    return readKey()
+  }
 }
 
-const getKey = () => {
+// Token almashsa (qayta login, boshqa tab) kalit IndexedDB'dan qayta o'qiladi — eski tab xotirasidagi kalit ishlatilmaydi.
+const getKey = (token) => {
+  if (token !== keyToken) {
+    keyToken = token
+    keyPromise = null
+  }
   if (!keyPromise) {
-    keyPromise = withStore('readonly', (s) => s.get(KEY_ID))
+    const p = readKey()
       .then((pair) => pair || generateAndSave())
       .catch(() => null)
+    keyPromise = p
+    // Xato bo'lsa keshlanmaydi — keyingi so'rov qayta urinadi.
+    p.then((pair) => {
+      if (!pair && keyPromise === p) keyPromise = null
+    })
   }
   return keyPromise
 }
 
-const getJwk = async (pair) => {
-  if (!jwkPromise) {
-    jwkPromise = crypto.subtle
-      .exportKey('jwk', pair.publicKey)
-      .then(({ kty, crv, x, y }) => ({ kty, crv, x, y }))
+const getJwk = (pair) => {
+  if (!jwkCache.has(pair)) {
+    jwkCache.set(
+      pair,
+      crypto.subtle.exportKey('jwk', pair.publicKey).then(({ kty, crv, x, y }) => ({ kty, crv, x, y }))
+    )
   }
-  return jwkPromise
+  return jwkCache.get(pair)
 }
 
 const randomId = () => b64url(crypto.getRandomValues(new Uint8Array(18)))
@@ -74,7 +93,7 @@ export const syncServerClock = (dateHeader) => {
 /** `DPoP` sarlavhasi qiymati yoki null (eski brauzer / http — server log rejimida o'tkazadi). */
 export const dpopProof = async (method, url, token) => {
   if (!token || !supported()) return null
-  const pair = await getKey()
+  const pair = await getKey(token)
   if (!pair) return null
   const target = new URL(url, window.location.origin)
   const header = { typ: 'dpop+jwt', alg: 'ES256', jwk: await getJwk(pair) }
