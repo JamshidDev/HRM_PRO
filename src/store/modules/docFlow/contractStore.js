@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import Utils from '@/utils/Utils.js'
+import { loadLiveRouteSequential } from '@/utils/liveRouteMode.js'
 import { useComponentStore } from '@/store/modules/index.js'
 
 // Hujjat drawer'idagi «Ma'lumotlar» tabi alohida nusxa bilan ishlaydi — yaratish modaliga tegmaydi.
@@ -265,7 +266,9 @@ const storeOptions = {
       this.structureCheck = state.structureCheck || []
       this.departmentCheck = state.departmentCheck || []
       this.sortableConfirmations = state.sortableConfirmations || []
-      this.oneByOne = state.oneByOne ?? true
+      // Tartib saqlanmagan bo'lsa — yangi hujjatdagidek parallel (ilgari ketma-ket edi va parallel
+      // hujjat tahrirdan keyin ketma-ketga aylanib qolardi). Joriy tartib keyin `_syncRouteMode` da olinadi.
+      this.oneByOne = state.oneByOne ?? false
       compStore.worker = state.worker || null
       compStore.isSelectedWorker = Boolean(state.worker)
       // Tanlangan bo'lim/lavozim yorliqlari uchun ro'yxatlar qayta yuklanadi.
@@ -277,6 +280,11 @@ const storeOptions = {
       const depId = this.payload.department_id?.[0]?.id
       if (depId) compStore._departmentPosition(depId)
     },
+    // Tahrir ochilganda yuborish tartibi hujjatning joriy marshrutidan olinadi (aniqlansa).
+    async _syncRouteMode(id) {
+      const sequential = await loadLiveRouteSequential(Utils.documentModels.contract, id)
+      if (sequential !== null) this.oneByOne = sequential
+    },
     // Ro'yxatdan «Tahrirlash»: saqlangan forma tiklanib, usta tahrir rejimida ochiladi.
     _openEdit(id, onLocked) {
       $ApiService.contractService._form({ id }).then((res) => {
@@ -284,6 +292,7 @@ const storeOptions = {
         if (!form.editable) return onLocked?.(form.edit_block)
         this.resetForm()
         this.restoreFormState(form.form_state)
+        this._syncRouteMode(id)
         this.editCommandType = this.payload.command_type
         this.editId = id
         this.visibleType = false

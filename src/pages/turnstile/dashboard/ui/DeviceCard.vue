@@ -1,6 +1,7 @@
 <script setup>
   import { ChevronRight20Regular } from '@vicons/fluent'
   import { Utils } from '@/utils/index.js'
+  import { UICountUp } from '@/components/index.js'
   import CardHeader from './CardHeader.vue'
   import { DeviceCardSkeleton } from './skeleton/index.js'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
@@ -61,13 +62,13 @@
             <p
               class="font-grotesk font-semibold text-[28px] leading-[34px] text-fig-text-primary whitespace-nowrap"
             >
-              {{ formatCount(total) }}
+              <UICountUp :value="formatCount(total)" />
             </p>
           </div>
           <span
             class="shrink-0 mb-1 rounded-full bg-fig-green-100 px-2 py-0.5 text-[12px] leading-[16px] font-semibold text-fig-text-green whitespace-nowrap"
           >
-            {{ rows[0].percent }}% {{ $t('content.online').toLowerCase() }}
+            <UICountUp :value="rows[0].percent" />% {{ $t('content.online').toLowerCase() }}
           </span>
         </div>
 
@@ -100,12 +101,12 @@
           <span
             class="font-grotesk font-semibold text-[16px] leading-[20px] text-fig-text-primary whitespace-nowrap"
           >
-            {{ formatCount(row.count) }}
+            <UICountUp :value="formatCount(row.count)" />
           </span>
           <span
             class="w-10 text-right text-[12px] leading-[16px] text-fig-text-tertiary whitespace-nowrap"
           >
-            {{ row.percent }}%
+            <UICountUp :value="row.percent" />%
           </span>
           <n-icon
             size="16"

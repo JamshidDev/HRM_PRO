@@ -11,6 +11,7 @@ import { useSocketStore } from '@/store/modules/app/socketStore.js'
 import { useAppStore } from '@/store/modules/app/appStore.js'
 import { useNotify } from '@/composables/useNotify'
 import { useNotificationSound } from '@/composables/useNotificationSound.js'
+import icons from '@/assets/icons'
 
 const { t } = i18n.global
 const PAGE = 50
@@ -19,6 +20,8 @@ const TYPING_SEND_MS = 2500
 const LIVE_CHAT_PATH = '/chat/live-chat'
 const TOAST_GAP_MS = 5000
 const SOUND_GAP_MS = 2000
+// Bir nechta fayl birdan yuborilsa — ovoz bitta.
+const MESSAGE_SOUND_GAP_MS = 300
 
 const isChatPageVisible = () =>
   window.location.pathname.startsWith(LIVE_CHAT_PATH) && document.visibilityState === 'visible'
@@ -346,6 +349,7 @@ export const useLiveChatStore = defineStore('liveChatStore', {
         }
         this.addMessage(id, toMessage(saved))
         this.countSent()
+        this.playMessageSound('message-out')
       } catch (e) {
         this.applyLimitError(e)
         const m = (this.messages[id] ?? []).find((x) => x.clientId === local.clientId && x.status !== 'read')
@@ -509,11 +513,21 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       delete this.typing[id]
       if (m.senderId === this.meId) return
       if (this.selectedId === id && isChatPageVisible()) {
+        this.playMessageSound('message-in')
         this.markRead(id)
         return
       }
       this.refreshUnreadLater()
       this.notifyIncoming(id, m)
+    },
+
+    // Ochiq suhbatdagi xabar ovozi — past, qisqa (toast ovozidan alohida).
+    playMessageSound(type) {
+      if (!useAppStore().soundEnabled) return
+      const now = Date.now()
+      if (now - (this._messageSoundAt ?? 0) < MESSAGE_SOUND_GAP_MS) return
+      this._messageSoundAt = now
+      useNotificationSound().play(type)
     },
 
     // Yangi suhbat qatori (chat:conversation) xabardan keyin keladi — ism uchun qisqa kutiladi.
@@ -528,10 +542,12 @@ export const useLiveChatStore = defineStore('liveChatStore', {
       const appStore = useAppStore()
       if (appStore.soundEnabled && now - (this._soundAt ?? 0) > SOUND_GAP_MS) {
         this._soundAt = now
-        useNotificationSound().play('notice')
+        // Chat toast'i — umumiy "notice" (ogohlantirish/info) dan farqli, yumshoq ikki notali chime.
+        useNotificationSound().play('success')
       }
       useNotify().notify(conv?.fullName || t('liveChatPage.newMessage'), 'info', {
         description: messagePreviewLabel(m),
+        icon: icons.figChatMessage,
         action: {
           label: t('liveChatPage.open'),
           onClick: async () => {

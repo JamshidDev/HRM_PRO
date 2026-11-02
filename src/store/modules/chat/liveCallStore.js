@@ -14,7 +14,8 @@ import { callSounds } from '@/pages/chat/live-chat/call/callSounds.js'
 const HEARTBEAT_MS = 10_000
 // Ketma-ket 3 ta yomon o'lchov (~6 s) — avval kamera, keyin ekran o'chiriladi.
 const BAD_STREAK_LIMIT = 3
-const ENDED_VIEW_MS = 6000
+// Tugagan qo'ng'iroq oynasi shuncha vaqtdan keyin o'zi yopiladi (oynada pastga sanash halqasi shu vaqtga teng).
+export const ENDED_VIEW_MS = 6000
 // Shu vaqt ichida media ulanmasa qo'ng'iroq «Ulanib bo'lmadi» bilan tugatiladi.
 const CONNECT_TIMEOUT_MS = 30_000
 
@@ -65,6 +66,7 @@ export const useLiveCallStore = defineStore('liveCallStore', {
     warningSec: null,
     notice: null,
     ended: null,
+    endedHeld: false,
     accepting: false
   }),
   getters: {
@@ -297,6 +299,13 @@ export const useLiveCallStore = defineStore('liveCallStore', {
       this.startCall(call.conversation_id, call.type, peer)
     },
 
+    // Sichqoncha tugagan oyna ustiga kelsa — o'zi yopilmaydi, foydalanuvchi o'zi yopadi.
+    holdEnded() {
+      if (this.phase !== 'ended' || this.endedHeld) return
+      clearTimeout(this._endedTimer)
+      this.endedHeld = true
+    },
+
     closeEnded() {
       if (this.phase === 'ended') this.reset()
     },
@@ -398,6 +407,7 @@ export const useLiveCallStore = defineStore('liveCallStore', {
       this.call = call
       this.ended = { status: call.status, reason: call.end_reason, duration: call.duration_sec }
       this.phase = 'ended'
+      this.endedHeld = false
       this._endedTimer = setTimeout(() => this.closeEnded(), ENDED_VIEW_MS)
     },
 
@@ -434,7 +444,8 @@ export const useLiveCallStore = defineStore('liveCallStore', {
         answeredAt: null,
         warningSec: null,
         notice: null,
-        ended: null
+        ended: null,
+        endedHeld: false
       })
     },
 

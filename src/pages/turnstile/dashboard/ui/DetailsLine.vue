@@ -1,6 +1,7 @@
 <script setup>
   import { Eye20Filled } from '@vicons/fluent'
   import { Utils } from '@/utils/index.js'
+  import { UICountUp } from '@/components/index.js'
 
   const props = defineProps({
     label: String,
@@ -46,7 +47,7 @@
       <p class="text-[12px] leading-[16px] text-fig-text-secondary truncate">{{ label }}</p>
       <div class="flex items-center gap-1 flex-wrap">
         <span class="font-grotesk font-semibold text-[14px] leading-[18px] text-fig-text-primary">
-          {{ formatted }}
+          <UICountUp :value="formatted" />
         </span>
       </div>
     </div>

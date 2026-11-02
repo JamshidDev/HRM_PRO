@@ -94,9 +94,9 @@
     chat.setFullscreen(false)
   }
 
-  const onContextMenu = (e) => {
-    if (!e.target.closest('textarea, input, [contenteditable="true"]')) e.preventDefault()
-  }
+  // Brauzer menyusi butun sahifada o'chiq (matn maydonlarida ham) — o'ng klik faqat bizning menyular:
+  // xabar/suhbat amallari, matn belgilanganda — qalin/kursiv.
+  const onContextMenu = (e) => e.preventDefault()
 
   // Telefonning "orqaga" tugmasi sahifadan chiqib ketmasin — avval suhbatni yopsin.
   // Joriy URL o'zgarmaydi; router holati (history.state) saqlab qolinadi.
@@ -137,7 +137,7 @@
 
 <template>
   <div class="!h-full" @contextmenu="onContextMenu">
-    <!-- Brauzer kontekst menyusi o'chirilgan (o'ng klik — xabar/suhbat menyusi); matn maydonlarida qoladi. -->
+    <!-- Brauzer kontekst menyusi butunlay o'chirilgan (o'ng klik — faqat o'z menyularimiz). -->
     <UIPageContent ref="pageContentRef" class="!h-full">
       <!-- Ro'yxat va suhbat bitta panelda (orasida faqat ingichka chiziq). To'liq ekranda panel
            o'z joyida `position: fixed` bo'lib, ilova menyusi/sarlavhasi ustidan butun oynani egallaydi.
