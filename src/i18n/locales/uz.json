@@ -5997,6 +5997,9 @@
     "expand": "Kattalashtirish",
     "collapse": "Kichraytirish",
     "redial": "Qayta qo'ng'iroq",
+    "redialShort": "Qayta",
+    "minimize": "Yig'ish",
+    "openCall": "Qo'ng'iroqni ochish",
     "close": "Yopish",
     "warning": "Qo'ng'iroq {min} daqiqadan keyin avtomatik tugaydi",
     "cameraAutoOff": "Aloqa sust — kamera avtomatik o'chirildi",
@@ -6120,7 +6123,7 @@
     "langEn": "Ingliz"
   },
   "departmentLocationPage": {
-    "name": "Bo'lim joylashuvi",
+    "name": "Mobile face",
     "createTitle": "Joylashuv qo'shish",
     "updateTitle": "Joylashuvni tahrirlash",
     "attachTitle": "Joylashuv biriktirish",
@@ -6130,7 +6133,39 @@
     "locationNotExists": "Yo'q",
     "locationCount": "{n} ta joylashuv",
     "noLocation": "Joylashuv yo'q",
+    "freeBadge": "Erkin",
+    "stats": {
+      "organizations": "Korxonalar",
+      "areas": "Hududlar",
+      "free": "Erkin rejim",
+      "unassignedDepartments": "Joy belgilanmagan bo'limlar",
+      "unassignedWorkers": "Joy belgilanmagan xodimlar"
+    },
+    "source": {
+      "department": "Bo'lim joyi",
+      "worker": "Xodim joyi",
+      "free": "Erkin rejim"
+    },
+    "events": {
+      "photo": "Kadr",
+      "direction": "Yo'nalish",
+      "place": "Joy",
+      "coords": "Koordinata",
+      "noPhoto": "Rasm yo'q",
+      "noCoords": "Koordinata yo'q",
+      "out": "Chiqish",
+      "source": "Joy turi",
+      "accuracy": "GPS aniqligi",
+      "similarity": "O'xshashlik",
+      "detailTitle": "Mobil o'tish",
+      "info": "Ma'lumotlar",
+      "placeTitle": "O'tish joyi",
+      "livePhoto": "Tasdiqlangan kadr",
+      "refPhoto": "Bazadagi rasm",
+      "in": "Kirish"
+    },
     "tabs": {
+      "workers": "Xodimlar",
       "departments": "Bo'limlar",
       "locations": "Joylashuvlar"
     },
@@ -6147,6 +6182,8 @@
       "location": "Joylashuv"
     },
     "form": {
+      "freeMode": "Erkin rejim",
+      "freeModeHint": "Hudud cheklovi yo'q — xodim istalgan joydan o'tadi, faqat koordinatasi va yuz rasmi yoziladi.",
       "department": "Bo'lim",
       "name": "O'tish joyi nomi",
       "namePlaceholder": "Masalan: Asosiy kirish",
@@ -6279,14 +6316,17 @@
       "expiresAt": "Amal qilish muddati",
       "expiresPlaceholder": "Muddatsiz",
       "sso": "HRM orqali kirish (SSO)",
-      "ssoBaseUrl": "SSO qaytish manzili (to'liq URL)"
+      "ssoBaseUrl": "SSO qaytish manzili (to'liq URL)",
+      "allowedIps": "Ruxsat etilgan IP manzillar",
+      "allowedIpsHint": "Bo'sh bo'lsa — faqat O'zbekiston IP'lari. IP yoki CIDR (10.0.0.0/24) yozib Enter bosing."
     },
     "validation": {
       "name": "Nom majburiy",
       "role": "Rol tanlang",
       "scope": "Qamrovni tanlang",
       "organizations": "Kamida bitta korxona tanlang",
-      "ssoBaseUrl": "To'liq URL kiriting (https://...)"
+      "ssoBaseUrl": "To'liq URL kiriting (https://...)",
+      "allowedIp": "IP yoki CIDR noto'g'ri. Namuna: 178.218.201.228 yoki 10.0.0.0/24"
     },
     "create": {
       "button": "Yangi client",
@@ -6593,6 +6633,9 @@
     "name": "E-IMZO tasdig'i",
     "title": "Iqtisod bo'limi uchun E-IMZO tasdig'i",
     "subtitle": "Yoqilganda Admin va ozod qilingan rollardan boshqa barcha foydalanuvchilar iqtisod bo'limiga kirishdan oldin shaxsini o'z ERI kaliti bilan tasdiqlaydi. Tasdiq qayta login qilinguncha amal qiladi.",
+    "cardTitle": "E-IMZO tekshiruvi",
+    "statusOn": "Yoqilgan — ozod rollardan boshqalar iqtisod bo'limiga ERI bilan kiradi",
+    "statusOff": "O'chiq — barcha foydalanuvchilar ozod",
     "refresh": "Yangilash",
     "enabledToast": "E-IMZO tasdig'i yoqildi",
     "disabledToast": "E-IMZO tasdig'i o'chirildi",

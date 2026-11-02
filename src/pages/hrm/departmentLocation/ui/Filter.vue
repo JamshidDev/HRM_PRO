@@ -1,28 +1,37 @@
 <script setup>
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIPageFilter, UISegmentTabs, UISelect } from '@/components/index.js'
+  import i18n from '@/i18n/index.js'
   import { useComponentStore, useDepartmentLocationStore } from '@/store/modules/index.js'
   import { ArrowLeft20Filled } from '@vicons/fluent'
 
   const store = useDepartmentLocationStore()
   const componentStore = useComponentStore()
 
+  const { t } = i18n.global
+  const emit = defineEmits(['change-tab'])
+
+  // Bo'lim joylari ro'yxati — «Bo'limlar» tabining ichki ko'rinishi.
+  const viewTabs = computed(() => [
+    { id: 'departments', name: t('departmentLocationPage.tabs.departments') },
+    { id: 'workers', name: t('departmentLocationPage.tabs.workers') }
+  ])
+  const viewTab = computed(() => (store.activeTab === 'locations' ? 'departments' : store.activeTab))
+
   const isDepartmentsTab = computed(() => store.activeTab === 'departments')
+  const isLocationsTab = computed(() => store.activeTab === 'locations')
 
-  const currentParams = computed(() =>
-    isDepartmentsTab.value ? store.params : store.locationParams
-  )
-
-  const currentLoading = computed(() =>
-    isDepartmentsTab.value ? store.loading : store.locationLoading
-  )
-
-  const fetchData = () => {
-    if (isDepartmentsTab.value) {
-      store._index()
-    } else {
-      store._locationIndex()
-    }
+  const byTab = {
+    departments: { params: () => store.params, loading: () => store.loading, load: () => store._index() },
+    locations: { params: () => store.locationParams, loading: () => store.locationLoading, load: () => store._locationIndex() },
+    workers: { params: () => store.workerParams, loading: () => store.workerLoading, load: () => store._workerIndex() }
   }
+  const tab = computed(() => byTab[store.activeTab] ?? byTab.departments)
+
+  const currentParams = computed(() => tab.value.params())
+
+  const currentLoading = computed(() => tab.value.loading())
+
+  const fetchData = () => tab.value.load()
 
   const onSearch = () => {
     currentParams.value.page = 1
@@ -70,12 +79,20 @@
     :filter-count="filterCount"
     :search-loading="currentLoading"
     :show-add-button="false"
-    :show-filter-button="isDepartmentsTab"
+    :show-filter-button="!isLocationsTab"
   >
+    <template #filterSearch>
+      <UISegmentTabs
+        class="ml-2"
+        :tabs="viewTabs"
+        :model-value="viewTab"
+        @update:model-value="(v) => emit('change-tab', v)"
+      />
+    </template>
     <template #filterAction>
       <!-- Back button (locations tabda) -->
       <n-button
-        v-if="!isDepartmentsTab"
+        v-if="isLocationsTab"
         secondary
         @click="goBack"
       >

@@ -6,17 +6,13 @@
     useEventV2Store
   } from '@/store/modules/index.js'
   import { ArrowSync24Filled, ArrowCircleDown32Regular } from '@vicons/fluent'
-  import { UIPageFilter, UISegmentTabs, UISelect, SuperSelect } from '@/components/index.js'
+  import { UIPageFilter, UISelect, SuperSelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAppSetting } from '@utils'
 
   const { t } = i18n.global
   const store = useEventStore()
 
-  const viewTabs = computed(() => [
-    { id: store.tabs[0], name: t('hcEvent.oldView') },
-    { id: store.tabs[1], name: t('deviceEvent.tab') }
-  ])
   const storeV2 = useEventV2Store()
   const accStore = useAccountStore()
 
@@ -211,14 +207,6 @@
         :actions="null"
         :format="useAppSetting.datePicketFormat"
         clearable
-      />
-    </template>
-    <template #filterSearch>
-      <UISegmentTabs
-        class="ml-2"
-        :tabs="viewTabs"
-        :model-value="store.activeTab"
-        @update:model-value="store._changeView"
       />
     </template>
     <template #filterAction>
