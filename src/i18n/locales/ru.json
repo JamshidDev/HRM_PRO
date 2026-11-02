@@ -6109,6 +6109,8 @@
       "accuracy": "Точность GPS",
       "similarity": "Сходство",
       "detailTitle": "Мобильный проход",
+      "info": "Сведения",
+      "placeTitle": "Место прохода",
       "livePhoto": "Подтверждённый кадр",
       "refPhoto": "Фото в базе",
       "in": "Вход"

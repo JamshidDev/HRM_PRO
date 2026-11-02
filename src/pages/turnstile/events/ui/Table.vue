@@ -156,13 +156,6 @@
 
   const actions = computed(() => [
     {
-      label: t('departmentLocationPage.events.detailTitle'),
-      key: 'mobile-face',
-      icon: UIHelper.renderIcon(Camera20Regular),
-      visible: (row) => Boolean(row.mobile_face),
-      action: onMobileFace
-    },
-    {
       label: t('content.view'),
       key: Utils.ActionTypes.view,
       icon: UIHelper.renderIcon(Eye16Regular),

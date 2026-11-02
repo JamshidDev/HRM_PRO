@@ -6097,6 +6097,8 @@
       "accuracy": "GPS accuracy",
       "similarity": "Similarity",
       "detailTitle": "Mobile pass",
+      "info": "Details",
+      "placeTitle": "Pass location",
       "livePhoto": "Verified frame",
       "refPhoto": "Photo on file",
       "in": "Entry"
