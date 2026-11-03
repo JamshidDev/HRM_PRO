@@ -13,6 +13,7 @@
   import ApiService from '@/service/ApiService.js'
   import { useDashboardStore } from '@/store/modules/index.js'
   import ActivityChart from './ActivityChart.vue'
+  import ActivityDocuments from './ActivityDocuments.vue'
   import ActivityRoles from './ActivityRoles.vue'
   import ActivityTopOrganizations from './ActivityTopOrganizations.vue'
   import ActivityOrganizationModal from './ActivityOrganizationModal.vue'
@@ -166,6 +167,9 @@
         </n-tooltip>
       </div>
     </div>
+
+    <!-- Hujjatlar holati -->
+    <ActivityDocuments />
 
     <n-spin :show="loading" class="activity-body">
       <!-- KPI -->

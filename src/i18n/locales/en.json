@@ -3157,6 +3157,17 @@
         "score": "Score",
         "logs": "Logs"
       }
+    },
+    "documents": {
+      "title": "Document status",
+      "commands": "Orders",
+      "contracts": "Employment contracts",
+      "contract_additional": "Additional agreements",
+      "worker_applications": "Worker applications",
+      "process": "In progress",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "problem": "Problematic"
     }
   },
   "applicationPage": {

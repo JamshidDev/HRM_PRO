@@ -3177,6 +3177,17 @@
         "score": "Ball",
         "logs": "Loglar"
       }
+    },
+    "documents": {
+      "title": "Hujjatlar holati",
+      "commands": "Buyruqlar",
+      "contracts": "Mehnat shartnomalari",
+      "contract_additional": "Qo'shimcha kelishuvlar",
+      "worker_applications": "Xodim arizalari",
+      "process": "Jarayonda",
+      "approved": "Tasdiqlangan",
+      "rejected": "Rad etilgan",
+      "problem": "Muammoli"
     }
   },
   "applicationPage": {

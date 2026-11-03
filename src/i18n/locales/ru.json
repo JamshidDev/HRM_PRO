@@ -3165,6 +3165,17 @@
         "score": "Балл",
         "logs": "Логи"
       }
+    },
+    "documents": {
+      "title": "Статус документов",
+      "commands": "Приказы",
+      "contracts": "Трудовые договоры",
+      "contract_additional": "Дополнительные соглашения",
+      "worker_applications": "Заявления сотрудников",
+      "process": "В процессе",
+      "approved": "Утверждено",
+      "rejected": "Отклонено",
+      "problem": "Проблемные"
     }
   },
   "applicationPage": {

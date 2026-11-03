@@ -90,6 +90,11 @@ const _activity = async (payload) => {
   return await axios.get(`/v1/hr/dashboard/activity`, { params: payload?.params })
 }
 
+// Hujjatlar holati: organizations filtri.
+const _documents = async (payload) => {
+  return await axios.get(`/v1/hr/dashboard/documents`, { params: payload?.params })
+}
+
 // Top korxonalar reytingi: period=7|30|all + organizations.
 const _activityOrganizations = async (payload) => {
   return await axios.get(`/v1/hr/dashboard/activity/organizations`, { params: payload?.params })
@@ -104,6 +109,7 @@ export default {
   _overview,
   _orgRating,
   _activity,
+  _documents,
   _activityOrganizations,
   _activityOrganization,
   _auditCounts,
