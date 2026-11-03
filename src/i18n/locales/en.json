@@ -6080,6 +6080,12 @@
       "unassignedDepartments": "Departments without a place",
       "unassignedWorkers": "Employees without a place"
     },
+    "statsHint": {
+      "organizations": "Organizations with assigned places",
+      "areas": "Configured entry points",
+      "free": "Entry without area limits",
+      "unassigned": "No entry point assigned yet"
+    },
     "source": {
       "department": "Department place",
       "worker": "Employee place",

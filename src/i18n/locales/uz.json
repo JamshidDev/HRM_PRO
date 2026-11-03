@@ -6138,8 +6138,14 @@
       "organizations": "Korxonalar",
       "areas": "Hududlar",
       "free": "Erkin rejim",
-      "unassignedDepartments": "Joy belgilanmagan bo'limlar",
-      "unassignedWorkers": "Joy belgilanmagan xodimlar"
+      "unassignedDepartments": "Joylashuv belgilanmagan bo'limlar",
+      "unassignedWorkers": "Joylashuv belgilanmagan xodimlar"
+    },
+    "statsHint": {
+      "organizations": "Joylashuv biriktirilgan korxonalar",
+      "areas": "Belgilangan joylashuvlar",
+      "free": "Hudud cheklovisiz o'tadi",
+      "unassigned": "Hali joylashuv berilmagan"
     },
     "source": {
       "department": "Bo'lim joyi",

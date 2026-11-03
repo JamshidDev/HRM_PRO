@@ -5736,8 +5736,14 @@
       "organizations": "Корхоналар",
       "areas": "Ҳудудлар",
       "free": "Эркин режим",
-      "unassignedDepartments": "Жой белгиланмаган бўлимлар",
-      "unassignedWorkers": "Жой белгиланмаган ходимлар"
+      "unassignedDepartments": "Жойлашув белгиланмаган бўлимлар",
+      "unassignedWorkers": "Жойлашув белгиланмаган ходимлар"
+    },
+    "statsHint": {
+      "organizations": "Жойлашув бириктирилган корхоналар",
+      "areas": "Белгиланган жойлашувлар",
+      "free": "Ҳудуд чекловисиз ўтади",
+      "unassigned": "Ҳали жойлашув берилмаган"
     },
     "source": {
       "department": "Бўлим жойи",
