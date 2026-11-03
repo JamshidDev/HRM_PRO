@@ -37,6 +37,11 @@ const _reinstatementTarget = async (payload) => {
   })
 }
 
+// 80 formasi — xodimning FXSH shartnomasi raqami va sanasi (yo'q bo'lsa null).
+const _civilContract = async (payload) => {
+  return await axios.get(`/v1/hr/commands/civil-contract`, { params: payload.params, silentError: true })
+}
+
 // «Ma'lumotlar» tabi — saqlangan forma holati va tahrirlash imkoniyati.
 const _form = async (payload) => {
   return await axios.get(`/v1/hr/commands/${payload.id}/form`)
@@ -67,6 +72,7 @@ export default {
   _trainingOptions,
   _reinstatementTarget,
   _reinstatementCandidates,
+  _civilContract,
   _form,
   _update,
   _signersPreview
