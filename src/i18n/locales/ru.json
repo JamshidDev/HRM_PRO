@@ -1849,6 +1849,17 @@
       "reference_date": "Дата справки",
       "reference_number": "Номер справки"
     },
+    "form_80": {
+      "civil_contract_number": "Номер договора",
+      "civil_contract_date": "Дата заключения договора",
+      "civil_contract_kind": "Вид договора",
+      "kind_contract": "Подряд",
+      "kind_service": "Оказание услуг",
+      "civil_cancel_date": "Дата расторжения",
+      "hr_worker": "Ответственный сотрудник отдела кадров",
+      "contract_found": "Найден ГПД сотрудника — номер и дата заполнены",
+      "contract_not_found": "ГПД сотрудника не найден — введите номер и дату вручную"
+    },
     "form_79": {
       "mentor": "Наставник",
       "mentor_date": "Дата закрепления наставника",

@@ -120,6 +120,7 @@ const FORM_STATE_KEYS = [
   'form_60',
   'form_76',
   'form_79',
+  'form_80',
   'form_74',
   'form_75',
   'vacations',
@@ -322,6 +323,15 @@ const commandStoreOptions = {
       from: null,
       to: null,
       mentor_percent: null
+    },
+    // 80 — FXSH bekor qilish; `hr_option` — mas'ul xodim yorlig'i (tahrirda tiklash uchun).
+    form_80: {
+      civil_contract_number: null,
+      civil_contract_date: null,
+      civil_contract_kind: null,
+      civil_cancel_date: null,
+      hr_worker_position_id: null,
+      hr_option: null
     },
     // 75 — Buyruqni bekor qilish (faqat tasdiqlangan buyruq bekor qilinadi).
     form_75: {
@@ -841,6 +851,15 @@ const commandStoreOptions = {
         from: null,
         to: null,
         mentor_percent: null
+      }
+
+      this.form_80 = {
+        civil_contract_number: null,
+        civil_contract_date: null,
+        civil_contract_kind: null,
+        civil_cancel_date: null,
+        hr_worker_position_id: null,
+        hr_option: null
       }
 
       this.form_75 = {
