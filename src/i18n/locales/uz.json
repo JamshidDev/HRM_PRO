@@ -3015,8 +3015,6 @@
       }
     },
     "activity": {
-      "title": "Korxonalar faolligi",
-      "subtitle": "Korxonalardagi o'zgarishlar tahlili — oy kesimida",
       "export": "Yuklash",
       "totalActions": "Jami amallar",
       "activeUsers": "Faol ma’sullar",
@@ -3179,13 +3177,11 @@
       }
     },
     "documents": {
-      "title": "Hujjatlar holati",
       "commands": "Buyruqlar",
       "contracts": "Mehnat shartnomalari",
       "contract_additional": "Qo'shimcha kelishuvlar",
-      "worker_applications": "Xodim arizalari",
+      "worker_applications": "Arizalar",
       "process": "Jarayonda",
-      "approved": "Tasdiqlangan",
       "rejected": "Rad etilgan",
       "problem": "Muammoli"
     }

@@ -1,5 +1,12 @@
 <script setup>
-  // «Hujjatlar holati» — 4 ta karta (buyruqlar, shartnomalar, qo'shimcha kelishuvlar, arizalar).
+  // «Hujjatlar holati» — 4 ta hujjat turi × 3 holat (jarayonda, rad etilgan, muammoli).
+  import {
+    ChevronRight16Regular,
+    ClipboardTask20Regular,
+    DocumentAdd20Regular,
+    DocumentBulletList20Regular,
+    DocumentText20Regular
+  } from '@vicons/fluent'
   import ApiService from '@/service/ApiService.js'
   import { useDashboardStore } from '@/store/modules/index.js'
   import { AppPaths } from '@/utils/AppPaths.js'
@@ -18,23 +25,31 @@
   const cards = [
     {
       key: 'commands',
-      titleKey: 'dashboardPage.documents.commands',
-      path: Utils.routeHrmPathMaker(AppPaths.Command)
+      title: 'dashboardPage.documents.commands',
+      path: AppPaths.Command,
+      icon: DocumentBulletList20Regular,
+      chip: 'bg-fig-chip-brand text-fig-chip-brand-text'
     },
     {
       key: 'contracts',
-      titleKey: 'dashboardPage.documents.contracts',
-      path: Utils.routeHrmPathMaker(AppPaths.Contract)
+      title: 'dashboardPage.documents.contracts',
+      path: AppPaths.Contract,
+      icon: DocumentText20Regular,
+      chip: 'bg-fig-chip-green text-fig-chip-green-text'
     },
     {
       key: 'contract_additional',
-      titleKey: 'dashboardPage.documents.contract_additional',
-      path: Utils.routeHrmPathMaker(AppPaths.AdContract)
+      title: 'dashboardPage.documents.contract_additional',
+      path: AppPaths.AdContract,
+      icon: DocumentAdd20Regular,
+      chip: 'bg-fig-chip-indigo text-fig-chip-indigo-text'
     },
     {
       key: 'worker_applications',
-      titleKey: 'dashboardPage.documents.worker_applications',
-      path: Utils.routeHrmPathMaker(AppPaths.Application)
+      title: 'dashboardPage.documents.worker_applications',
+      path: AppPaths.Application,
+      icon: ClipboardTask20Regular,
+      chip: 'bg-fig-chip-pink text-fig-chip-pink-text'
     }
   ]
 
@@ -42,35 +57,31 @@
     {
       key: 'process',
       id: 1,
-      labelKey: 'dashboardPage.documents.process',
-      dotClass: 'bg-fig-brand'
-    },
-    {
-      key: 'approved',
-      id: 3,
-      labelKey: 'dashboardPage.documents.approved',
-      dotClass: 'bg-fig-green'
+      label: 'dashboardPage.documents.process',
+      tile: 'bg-fig-chip-amber',
+      value: 'text-fig-chip-amber-text'
     },
     {
       key: 'rejected',
       id: 4,
-      labelKey: 'dashboardPage.documents.rejected',
-      dotClass: 'bg-fig-red'
+      label: 'dashboardPage.documents.rejected',
+      tile: 'bg-fig-bg-secondary',
+      value: 'text-fig-text-secondary'
     },
     {
       key: 'problem',
       id: 7,
-      labelKey: 'dashboardPage.documents.problem',
-      dotClass: 'bg-fig-amber'
+      label: 'dashboardPage.documents.problem',
+      tile: 'bg-fig-red-50',
+      value: 'text-fig-text-red'
     }
   ]
 
   const load = () => {
     const id = ++requestId
     loading.value = true
-    const params = store.appendParams({})
     ApiService.dashboardService
-      ._documents({ params })
+      ._documents({ params: store.appendParams({}) })
       .then((res) => {
         if (id === requestId) data.value = res.data?.data || null
       })
@@ -85,80 +96,74 @@
   // Korxona filtri o'zgarganda qayta yuklanadi (oy tanlagichiga bog'liq emas).
   watch(() => store.params.organizations, load, { immediate: true, deep: true })
 
-  // worker_applications.problem null bo'ladi — chertilmaydi va «–» ko'rsatiladi.
-  const isClickable = (cardKey, statusKey) => {
-    if (loading.value) return false
-    if (cardKey === 'worker_applications' && statusKey === 'problem') return false
-    return true
-  }
+  // Qiymat yo'q (masalan, arizada «Muammoli») — 0.
+  const countOf = (card, status) => Number(data.value?.[card.key]?.[status.key] ?? 0)
 
-  const getDisplayValue = (cardKey, statusKey) => {
-    if (cardKey === 'worker_applications' && statusKey === 'problem') return '–'
-    const val = data.value?.[cardKey]?.[statusKey]
-    if (val === null || val === undefined) return '–'
-    return formatCount(val)
-  }
-
-  const onRowClick = (card, status) => {
-    if (!isClickable(card.key, status.key)) return
+  const open = (card, status) => {
+    if (loading.value || countOf(card, status) === 0) return
     router.push({
-      path: card.path,
-      query: { confirmation: status.id }
+      path: Utils.routeHrmPathMaker(card.path),
+      query: status ? { confirmation: status.id } : undefined
     })
   }
 </script>
 
 <template>
-  <div class="flex flex-col gap-3">
-    <!-- Sarlavha -->
-    <p class="text-[16px] leading-6 font-semibold text-fig-text-primary">
-      {{ $t('dashboardPage.documents.title') }}
-    </p>
-
-    <!-- 4 ta karta: 1 col mobile, 2 md, 4 xl -->
+  <div>
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
       <div
         v-for="card in cards"
         :key="card.key"
-        class="flex flex-col gap-2.5 rounded-2xl bg-fig-block shadow-card p-4 transition-colors"
+        class="flex flex-col gap-3 rounded-2xl bg-fig-block shadow-card p-3"
       >
-        <!-- Karta sarlavhasi -->
-        <div class="flex items-center justify-between border-b border-fig-bg-disable pb-2">
-          <p class="truncate text-[15px] leading-5 font-semibold text-fig-text-primary">
-            {{ $t(card.titleKey) }}
-          </p>
-        </div>
+        <!-- Sarlavha — bosilsa filtrsiz ro'yxat ochiladi. -->
+        <button
+          type="button"
+          class="group flex min-h-9 items-center gap-2 rounded-xl px-1 text-left"
+          @click="router.push(Utils.routeHrmPathMaker(card.path))"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full"
+            :class="card.chip"
+          >
+            <n-icon size="18"><component :is="card.icon" /></n-icon>
+          </span>
+          <span
+            class="min-w-0 flex-1 truncate text-[14px] leading-[18px] font-semibold text-fig-text-primary"
+          >
+            {{ $t(card.title) }}
+          </span>
+          <n-icon
+            size="16"
+            class="shrink-0 text-fig-text-tertiary transition-transform group-hover:translate-x-0.5"
+          >
+            <ChevronRight16Regular />
+          </n-icon>
+        </button>
 
-        <!-- 4 ta holat qatori -->
-        <div class="flex flex-col gap-1">
-          <div
+        <!-- Holatlar: rangli plitkalar, son 0 bo'lsa bosilmaydi. -->
+        <div class="grid grid-cols-3 gap-2">
+          <button
             v-for="status in statuses"
             :key="status.key"
-            :class="[
-              'flex items-center justify-between gap-2 rounded-lg px-2 py-1.5 transition-colors',
-              isClickable(card.key, status.key)
-                ? 'cursor-pointer hover:bg-fig-bg-secondary'
-                : 'cursor-default'
-            ]"
-            @click="isClickable(card.key, status.key) && onRowClick(card, status)"
+            type="button"
+            :disabled="loading || countOf(card, status) === 0"
+            class="flex min-h-[68px] min-w-0 flex-col justify-between gap-1 rounded-xl px-2.5 py-2 text-left transition enabled:cursor-pointer enabled:hover:brightness-95 disabled:cursor-default"
+            :class="status.tile"
+            @click="open(card, status)"
           >
-            <div class="flex min-w-0 items-center gap-2">
-              <span class="size-2 shrink-0 rounded-full" :class="status.dotClass" />
-              <span class="truncate text-[13px] leading-5 text-fig-text-secondary">
-                {{ $t(status.labelKey) }}
-              </span>
-            </div>
-
-            <div class="shrink-0">
-              <n-skeleton v-if="loading" width="32px" height="16px" round />
-              <span
-                v-else
-                class="text-[14px] leading-5 font-semibold tabular-nums text-fig-text-primary"
-              >
-                {{ getDisplayValue(card.key, status.key) }}
-              </span>
-            </div>
-          </div>
+            <span class="truncate text-[12px] leading-4 font-medium text-fig-text-secondary">
+              {{ $t(status.label) }}
+            </span>
+            <n-skeleton v-if="loading" width="40px" height="22px" round />
+            <span
+              v-else
+              class="text-[20px] leading-6 font-semibold tabular-nums"
+              :class="countOf(card, status) === 0 ? 'text-fig-text-tertiary' : status.value"
+            >
+              {{ formatCount(countOf(card, status)) }}
+            </span>
+          </button>
         </div>
       </div>
     </div>

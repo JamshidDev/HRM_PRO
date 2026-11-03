@@ -2995,8 +2995,6 @@
       }
     },
     "activity": {
-      "title": "Organization activity",
-      "subtitle": "Analysis of changes in organizations — by month",
       "export": "Download",
       "totalActions": "Total actions",
       "activeUsers": "Active users",
@@ -3159,13 +3157,11 @@
       }
     },
     "documents": {
-      "title": "Document status",
       "commands": "Orders",
       "contracts": "Employment contracts",
       "contract_additional": "Additional agreements",
-      "worker_applications": "Worker applications",
+      "worker_applications": "Applications",
       "process": "In progress",
-      "approved": "Approved",
       "rejected": "Rejected",
       "problem": "Problematic"
     }

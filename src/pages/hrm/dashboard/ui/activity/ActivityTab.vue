@@ -109,17 +109,8 @@
 
 <template>
   <div class="flex flex-col gap-4 pb-4">
-    <!-- Sarlavha -->
-    <div class="flex flex-wrap items-center justify-between gap-3">
-      <div class="flex min-w-0 flex-col gap-0.5">
-        <p class="text-[20px] leading-7 font-semibold text-fig-text-primary">
-          {{ $t('dashboardPage.activity.title') }}
-        </p>
-        <p class="text-[12.5px] leading-[18px] text-fig-text-tertiary">
-          {{ $t('dashboardPage.activity.subtitle') }}
-        </p>
-      </div>
-
+    <!-- Oy tanlovi va eksport -->
+    <div class="flex flex-wrap items-center justify-end gap-3">
       <div class="flex items-center gap-2.5">
         <n-popover
           v-model:show="pickerOpen"
