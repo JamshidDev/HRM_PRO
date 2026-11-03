@@ -6074,6 +6074,12 @@
     "noLocation": "Not assigned",
     "freeBadge": "Free",
     "locationExistsShort": "Assigned",
+    "unnamed": "Unnamed place",
+    "pointsCount": "{n} points",
+    "emptyDepartment": "No entry point set for this department yet",
+    "emptyDepartmentHint": "Mark on the map where employees can check in from the mobile app.",
+    "emptyFiltered": "No places match the selected filter",
+    "copyCoords": "Copy coordinates",
     "stats": {
       "organizations": "Organizations",
       "areas": "Areas",
@@ -6131,7 +6137,9 @@
       "radius": "Radius",
       "accuracy": "Accuracy",
       "hasLocation": "Locations",
-      "location": "Location"
+      "location": "Location",
+      "zone": "Zone",
+      "coords": "Coordinates"
     },
     "form": {
       "freeMode": "Free mode",
@@ -6152,7 +6160,7 @@
       "polygonInfoFull": "In polygon mode, employees can only mark attendance when inside the designated area. Click \"Add Polygon\" on the map and mark points sequentially (minimum 3, maximum 12 points).",
       "autoCalculated": "Auto",
       "centerMarkerInfo": "Drag the marker to change the center point",
-      "coordinate": "Coordinate",
+      "coordinate": "Circle",
       "area": "Area"
     },
     "validation": {

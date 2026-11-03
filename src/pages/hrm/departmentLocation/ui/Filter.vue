@@ -2,7 +2,6 @@
   import { UIPageFilter, UISegmentTabs, UISelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useComponentStore, useDepartmentLocationStore } from '@/store/modules/index.js'
-  import { ArrowLeft20Filled } from '@vicons/fluent'
 
   const store = useDepartmentLocationStore()
   const componentStore = useComponentStore()
@@ -133,11 +132,7 @@
     filterEvent()
   }
 
-  const goBack = () => {
-    store.activeTab = 'departments'
-    store.resetLocationParams()
-    store._index()
-  }
+  // Bo'lim joylaridan qaytish endi ro'yxat tepasidagi breadcrumb'da (`LocationTable.vue`).
 </script>
 
 <template>
@@ -153,19 +148,6 @@
   >
     <!-- Bo'limlar | Xodimlar — «Filterlar» tugmasi yonida (senior dev fikri) -->
     <template #filterAction>
-      <!-- Back button (locations tabda) -->
-      <n-button
-        v-if="isLocationsTab"
-        secondary
-        @click="goBack"
-      >
-        <template #icon>
-          <n-icon>
-            <ArrowLeft20Filled />
-          </n-icon>
-        </template>
-        {{ $t('content.back') }}
-      </n-button>
       <UISegmentTabs
         :tabs="viewTabs"
         :model-value="viewTab"

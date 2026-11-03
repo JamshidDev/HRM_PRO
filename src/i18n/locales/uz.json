@@ -6135,6 +6135,12 @@
     "noLocation": "Belgilanmagan",
     "freeBadge": "Erkin",
     "locationExistsShort": "Belgilangan",
+    "unnamed": "Nomsiz joylashuv",
+    "pointsCount": "{n} ta nuqta",
+    "emptyDepartment": "Bu bo'limga hali joylashuv belgilanmagan",
+    "emptyDepartmentHint": "Xodimlar mobil ilovada qayerdan o'tishi mumkinligini xaritada belgilang.",
+    "emptyFiltered": "Tanlangan filtr bo'yicha joylashuv topilmadi",
+    "copyCoords": "Koordinatani nusxalash",
     "stats": {
       "organizations": "Korxonalar",
       "areas": "Hududlar",
@@ -6192,7 +6198,9 @@
       "radius": "Radius",
       "accuracy": "Aniqlik",
       "hasLocation": "Joylashuvlar",
-      "location": "Joylashuv"
+      "location": "Joylashuv",
+      "zone": "Hudud",
+      "coords": "Koordinata"
     },
     "form": {
       "freeMode": "Erkin rejim",
@@ -6213,7 +6221,7 @@
       "polygonInfoFull": "Polygon rejimida xodimlar faqat belgilangan hudud ichida bo'lganda davomat belgilashi mumkin. Xaritada \"Polygon qo'shish\" tugmasini bosib, ketma-ket nuqtalarni belgilang (kamida 3, maksimal 12 ta nuqta).",
       "autoCalculated": "Avtomatik",
       "centerMarkerInfo": "Markerni surib markaziy nuqtani o'zgartirishingiz mumkin",
-      "coordinate": "Koordinata",
+      "coordinate": "Aylana",
       "area": "Hudud"
     },
     "validation": {

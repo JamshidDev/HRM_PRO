@@ -238,6 +238,13 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.selectedDepartment = department
       this._locationIndex()
     },
+    // Bo'lim joylari ro'yxatidan bo'limlar ro'yxatiga qaytish (breadcrumb). Bo'limlar ro'yxatining
+    // sahifasi va filtrlari o'zgarmaydi — foydalanuvchi qaerda bo'lsa, o'sha yerga qaytadi.
+    backToDepartments() {
+      this.activeTab = 'departments'
+      this.resetLocationParams()
+      this._index()
+    },
     // `department` null bo'lishi mumkin — jadval sarlavhasidagi "+" orqali
     // ochilganda bo'lim formaning o'zida tanlanadi.
     openLocationModal(department = null) {
