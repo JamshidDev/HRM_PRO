@@ -6147,6 +6147,12 @@
       "free": "Hudud cheklovisiz o'tadi",
       "unassigned": "Hali joylashuv berilmagan"
     },
+    "filter": {
+      "all": "Hammasi",
+      "locationState": "Joylashuv holati",
+      "hasLocation": "Belgilangan",
+      "noLocation": "Belgilanmagan"
+    },
     "source": {
       "department": "Bo'lim joyi",
       "worker": "Xodim joyi",

@@ -26,11 +26,18 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     workerList: [],
     workerLoading: false,
     workerTotal: 0,
+    // BACKEND: GET /v1/extra/mobile-face/workers — `has_location=false` hozir 0 ta qaytaradi
+    // (joysiz xodimlar 63 mingdan ortiq), ya'ni "false" satri true deb o'qilyapti. Shuningdek
+    // `is_free=true` (erkin rejimdagi xodimlar) parametri yo'q. Ikkalasi «Joy holati» filtri uchun kerak.
     workerParams: {
       page: 1,
       per_page: 15,
       search: null,
-      organizations: []
+      organizations: [],
+      // Swagger'da bor: `department_id`.
+      department_id: null,
+      has_location: null,
+      is_free: null
     },
     stats: null,
     statsLoading: false,
@@ -49,20 +56,40 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       polygon: [],
       accuracy_limit: 3
     },
+    // BACKEND: GET /v1/extra/department/list hozir `has_location` (true — joyi bor, false — joysiz)
+    // va `is_free` (true — erkin rejimdagi bo'limlar) parametrlarini e'tiborsiz qoldiradi.
+    // «Filterlar» → «Joy holati» tanlanganda ro'yxat shular bilan filtrlanadi.
     params: {
       page: 1,
       per_page: 15,
       search: null,
-      organizations: []
+      organizations: [],
+      has_location: null,
+      is_free: null
     },
+    // BACKEND: GET /v1/extra/department/locations — joylashuv turi bo'yicha filtr kerak:
+    // `geo_type` (false — nuqta+radius, true — hudud/polygon) va `is_free=true` (erkin rejim).
+    // Hozir swagger'da faqat page, per_page, search, organization_id, department_id bor.
     locationParams: {
       page: 1,
       per_page: 15,
       search: null,
       organizations: [],
-      department_id: null
+      department_id: null,
+      geo_type: null,
+      is_free: null
     }
   }),
+  getters: {
+    // Joriy ko'rinishda «Joy holati» filtrining qiymati (`applyLocationState` ga qarang; yo'q — null).
+    locationState(state) {
+      const p = state.activeTab === 'workers' ? state.workerParams : state.params
+      if (p.is_free === true) return 'free'
+      if (p.has_location === true) return 'areas'
+      if (p.has_location === false) return 'unassigned'
+      return null
+    }
+  },
   actions: {
     _index() {
       this.loading = true
@@ -376,6 +403,12 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
           this.deleteLoading = false
         })
     },
+    // «Joy holati» filtri: 'areas' — joyi bor, 'unassigned' — joysiz, 'free' — erkin rejim,
+    // null — hammasi. Param'larga `has_location` / `is_free` bo'lib yoziladi.
+    applyLocationState(p, key) {
+      p.has_location = key === 'areas' ? true : key === 'unassigned' ? false : null
+      p.is_free = key === 'free' ? true : null
+    },
     resetParams() {
       this.params.page = 1
       this.params.search = null
@@ -386,6 +419,8 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.locationParams.search = null
       this.locationParams.organizations = []
       this.locationParams.department_id = null
+      this.locationParams.geo_type = null
+      this.locationParams.is_free = null
       this.selectedDepartment = null
     }
   }
