@@ -2742,8 +2742,6 @@
       }
     },
     "activity": {
-      "title": "Корхоналар фаоллиги",
-      "subtitle": "Корхоналардаги ўзгаришлар таҳлили — ой кесимида",
       "export": "Юклаш",
       "totalActions": "Жами амаллар",
       "activeUsers": "Фаол масъуллар",
@@ -2904,6 +2902,15 @@
         "score": "Балл",
         "logs": "Логлар"
       }
+    },
+    "documents": {
+      "commands": "Буйруқлар",
+      "contracts": "Меҳнат шартномалари",
+      "contract_additional": "Қўшимча келишувлар",
+      "worker_applications": "Аризалар",
+      "process": "Жараёнда",
+      "rejected": "Рад этилган",
+      "problem": "Муаммоли"
     }
   },
   "applicationPage": {

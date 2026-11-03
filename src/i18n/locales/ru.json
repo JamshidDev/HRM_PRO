@@ -3003,8 +3003,6 @@
       }
     },
     "activity": {
-      "title": "Активность организаций",
-      "subtitle": "Анализ изменений в организациях — по месяцам",
       "export": "Скачать",
       "totalActions": "Всего действий",
       "activeUsers": "Активные ответственные",
@@ -3165,6 +3163,15 @@
         "score": "Балл",
         "logs": "Логи"
       }
+    },
+    "documents": {
+      "commands": "Приказы",
+      "contracts": "Трудовые договоры",
+      "contract_additional": "Дополнительные соглашения",
+      "worker_applications": "Заявления",
+      "process": "В процессе",
+      "rejected": "Отклонено",
+      "problem": "Проблемные"
     }
   },
   "applicationPage": {

@@ -27,6 +27,7 @@ export const useApplicationStore = defineStore('applicationStore', {
       search: null,
       organizations: [],
       created: null,
+      confirmation: null,
       // HR bo'limi: new | process | rejected | approved | closed | all
       stage: 'all'
     },
