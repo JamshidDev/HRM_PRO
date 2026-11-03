@@ -50,13 +50,23 @@ export const SECTION = {
 }
 
 // —— KPI kartalari (Umumiy) ——————————————————————————————————————————————
+// «Boy» (korxona tanlanганда, per-xodim) KPI'lar:
 export const KPI = {
-  tot: { label: 'Jami hisoblangan', info: 'Barcha xodimlarga avgustda hisoblangan umumiy summa (soliq va ushlanmalardan oldin). MHTF — mehnatga haq to‘lash fondi; MHTFdan tashqari — moddiy yordam, nafaqa kabi to‘lovlar.' },
-  n: { label: 'Xodimlar soni', info: 'Avgustda hisoblanma olgan xodimlar soni (JSHSHIR bo‘yicha). To‘liq oy ishlaganlar — vaqtbay haqi okladning ~100% i bo‘lganlar.' },
-  avg: { label: 'O‘rtacha oylik', info: 'Jami hisoblangan / xodimlar soni. Median — o‘rtadagi xodim oyligi (chetdagi katta summalar ta’sir qilmaydi).' },
-  card: { label: 'Kartaga o‘tkazildi', info: 'Ushlanmalardan keyin plastik kartaga o‘tkazilgan sof summa. Qolgani — daromad solig‘i va boshqa ushlanmalar.' },
-  suspicious: { label: 'Shubhali to‘lovlar', info: 'Yuqori xavfli holatlardagi summa (takroriy/soliq holatlari hisobga olinmaydi, chunki ular summa dublikatsiyasi). Yakuniy xulosa emas — tekshirish kerak.' },
-  flagged: { label: 'Belgilangan holatlar', info: '14 avtomatik tekshiruv aniqlagan jami holatlar soni, xavf darajasi (Yuqori/O‘rta/Past) bo‘yicha.' }
+  tot: { label: 'Jami hisoblangan', info: 'Nima: tanlangan davrda barcha xodimlarga hisoblangan umumiy ish haqi (soliq va ushlanmalardan OLDIN). Qanday: har xodimning jami hisoblanmasi (accrual_total) yig‘indisi. MHTF — mehnatga haq to‘lash fondi (jami − nafaqa/moddiy yordam kabi MHTFga kirmaydigan to‘lovlar); MHTFdan tashqari — qolgan qismi.' },
+  n: { label: 'Xodimlar soni', info: 'Nima: davrda hisoblanma olgan xodimlar soni. Qanday: noyob JSHSHIR (pinfl) soni. “To‘liq oy ishlaganlar” — vaqtbay haqi (004) okladning ~100% idan yuqori bo‘lganlar.' },
+  avg: { label: 'O‘rtacha oylik', info: 'Nima: bitta xodimga o‘rtacha hisoblangan summa. Qanday: Jami hisoblangan ÷ xodimlar soni. Median — ro‘yxatning o‘rtasidagi xodim oyligi (bir nechta juda katta summa o‘rtachani sun’iy ko‘tarib yubormaydi).' },
+  card: { label: 'Kartaga o‘tkazildi', info: 'Nima: ushlanmalardan keyin plastik kartaga o‘tkazilgan sof summa. Qanday: 885 (karta) kodi yig‘indisi, bo‘lmasa net_total. Qolgani = daromad solig‘i (882) + boshqa ushlanmalar.' },
+  suspicious: { label: 'Shubhali to‘lovlar', info: 'Nima: yuqori xavfli belgilangan holatlardagi jami summa. Qanday: faqat “Yuqori” darajali holatlar summasi; takroriy JSHSHIR va soliq/INPS holatlari QO‘SHILMAYDI (ular summa dublikatsiyasi/soliq kamomadi — boshqa tabiat). Yakuniy xulosa emas — tekshirish kerak.' },
+  flagged: { label: 'Belgilangan holatlar', info: 'Nima: 14 avtomatik tekshiruv aniqlagan jami holatlar soni. Qanday: har tekshiruv shartiga tushgan xodim-holatlari yig‘indisi, xavf darajasi (Yuqori/O‘rta/Past) bo‘yicha.' }
+}
+
+// «Yengil» (korxona tanlanmaganda — summary endpoint) KPI'lar:
+export const KPI_BASIC = {
+  accrued: 'Nima: tanlangan davrda barcha korxonalar bo‘yicha jami hisoblangan ish haqi (soliq/ushlanmalardan oldin). Qanday: barcha qatorlar accrual_total yig‘indisi.',
+  employees: 'Nima: hisoblanma olgan xodimlar soni. Qanday: noyob JSHSHIR (pinfl) soni.',
+  net: 'Nima: xodimlarga sof (qo‘lga) to‘langan summa. Qanday: net_total yig‘indisi = jami hisoblangan − soliq − boshqa ushlanmalar.',
+  deduction: 'Nima: jami ushlab qolingan summa (daromad solig‘i, INPS, aliment, kredit, omonat va boshq.). Qanday: jami hisoblangan − sof to‘langan.',
+  orgs: 'Nima: ma’lumot kelgan korxonalar soni. Qanday: noyob organization_id soni.'
 }
 
 // —— Grafiklar (id → sarlavha/izoh) ——————————————————————————————————————

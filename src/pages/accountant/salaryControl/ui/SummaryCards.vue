@@ -8,7 +8,7 @@
   import Utils from '@/utils/Utils.js'
   import { mlnText } from '../helpers.js'
   import { mhtfFot } from '../engine.js'
-  import { KPI } from '../explain.js'
+  import { KPI, KPI_BASIC } from '../explain.js'
   import ScSkeleton from './ScSkeleton.vue'
   import InfoHint from './InfoHint.vue'
 
@@ -52,11 +52,11 @@
   const basicCards = computed(() => {
     const d = store.summary ?? {}
     return [
-      { key: 'accrued', label: t('salaryControl.kpi.accrued'), value: money0(d.total_accrued), tint: 'blue', icon: 'money' },
-      { key: 'employees', label: t('salaryControl.kpi.employees'), value: money0(d.employee_count), tint: 'indigo', icon: 'users' },
-      { key: 'net', label: t('salaryControl.kpi.net'), value: money0(d.total_net), tint: 'green', icon: 'card' },
-      { key: 'deduction', label: t('salaryControl.kpi.deduction'), value: money0(d.total_deduction), tint: 'amber', icon: 'minus' },
-      { key: 'orgs', label: t('salaryControl.kpi.orgs'), value: money0(d.org_count), tint: 'red', icon: 'building' }
+      { key: 'accrued', label: t('salaryControl.kpi.accrued'), value: money0(d.total_accrued), tint: 'blue', icon: 'money', info: KPI_BASIC.accrued },
+      { key: 'employees', label: t('salaryControl.kpi.employees'), value: money0(d.employee_count), tint: 'indigo', icon: 'users', info: KPI_BASIC.employees },
+      { key: 'net', label: t('salaryControl.kpi.net'), value: money0(d.total_net), tint: 'green', icon: 'card', info: KPI_BASIC.net },
+      { key: 'deduction', label: t('salaryControl.kpi.deduction'), value: money0(d.total_deduction), tint: 'amber', icon: 'minus', info: KPI_BASIC.deduction },
+      { key: 'orgs', label: t('salaryControl.kpi.orgs'), value: money0(d.org_count), tint: 'red', icon: 'building', info: KPI_BASIC.orgs }
     ]
   })
 </script>
@@ -100,6 +100,7 @@
           <svg v-else viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M14 9h4a2 2 0 0 1 2 2v10" /><path d="M8 7h2M8 11h2M8 15h2" /></svg>
         </span>
         <p class="kpi-title">{{ card.label }}</p>
+        <InfoHint :text="card.info" />
       </div>
       <p class="kpi-value">{{ card.value }}</p>
     </div>
