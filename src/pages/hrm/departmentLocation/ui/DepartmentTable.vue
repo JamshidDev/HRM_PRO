@@ -1,11 +1,12 @@
 <script setup>
-  import { UITable } from '@/components/index.js'
+  import { UITable, UIHighlight } from '@/components/index.js'
   import { useDepartmentLocationStore } from '@/store/modules/index.js'
   import { useAccountStore } from '@/store/modules/app/accountStore.js'
-  import { Add16Filled, Eye16Regular, Delete20Regular } from '@vicons/fluent'
+  import { Add16Filled, Eye16Regular } from '@vicons/fluent'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
+  import LocationCountChip from './LocationCountChip.vue'
 
   const { t } = i18n.global
 
@@ -14,18 +15,19 @@
 
   const canWrite = computed(() => accStore.checkPermission(accStore.pn.departmentLocationWrite))
 
-  // Bo'lim ro'yxatida joylashuv backenddan uch xil shaklda kelishi mumkin:
-  // `locations_count` soni, `locations` massivi yoki bitta `location` obyekti.
-  const locationsOf = (row) =>
-    Array.isArray(row?.locations) ? row.locations : row?.location ? [row.location] : []
-
-  const locationCount = (row) => row?.locations_count ?? locationsOf(row).length
-
-  // O'chirish faqat bitta joylashuv bo'lganda ma'noga ega: bir nechtasi bo'lsa qaysi
-  // birini o'chirish noaniq, shu bois amal yashiriladi va foydalanuvchi "Ko'rish"
-  // orqali joylashuvlar ro'yxatiga o'tib, kerakligini o'chiradi.
-  const singleLocationId = (row) =>
-    locationCount(row) === 1 ? (locationsOf(row)[0]?.id ?? null) : null
+  // BACKEND: GET /v1/extra/department/list qatorida joy faqat `location: true/false` bo'lib keladi —
+  // soni yo'q, shuning uchun jadvalda «Joy bor» yoziladi. `locations_count` (soni) va `free`
+  // (bo'limda erkin rejimli joy bormi) qo'shilsa, chipda «3 ta joylashuv» va «Erkin» chiqadi.
+  // Eski shakllar (`locations` massivi / `location` obyekti) ham qo'llab-quvvatlanadi.
+  const locationCount = (row) => {
+    if (typeof row?.locations_count === 'number') return row.locations_count
+    if (Array.isArray(row?.locations)) return row.locations.length
+    return null
+  }
+  const hasLocation = (row) => {
+    const n = locationCount(row)
+    return n !== null ? n > 0 : Boolean(row?.location)
+  }
 
   const onOpenLocation = (row) => {
     store.openAttach(row)
@@ -33,13 +35,6 @@
 
   const onAddLocation = (row) => {
     store.openLocationModal(row)
-  }
-
-  const onDelete = (row) => {
-    const id = singleLocationId(row)
-    if (!id) return
-    store.elementId = id
-    store._delete()
   }
 
   const changePage = (v) => {
@@ -52,41 +47,36 @@
     {
       key: 'name',
       title: t('departmentLocationPage.table.department'),
-      minWidth: 200
+      minWidth: 240
     },
     {
       key: 'organization.name',
       title: t('departmentLocationPage.table.organization'),
-      minWidth: 180
+      minWidth: 200
     },
     {
       key: 'locations',
       title: t('departmentLocationPage.table.hasLocation'),
-      minWidth: 160
+      minWidth: 200
     }
   ])
 
+  // O'chirish bu yerda yo'q: bo'limda bir nechta joy bo'lishi mumkin — kerakli joy
+  // «Ko'rish» → joylar ro'yxatida o'chiriladi (u yerda tasdiqlash oynasi bor).
   const actions = computed(() => [
     {
       label: t('content.view'),
       key: Utils.ActionTypes.view,
       icon: UIHelper.renderIcon(Eye16Regular),
-      visible: (row) => locationCount(row) > 0,
+      visible: (row) => hasLocation(row),
       action: onOpenLocation
     },
     {
-      label: t('content.add'),
+      label: t('departmentLocationPage.addLocation'),
       key: 'add',
       icon: UIHelper.renderIcon(Add16Filled),
       disabled: !canWrite.value,
       action: onAddLocation
-    },
-    {
-      label: t('content.delete'),
-      key: Utils.ActionTypes.delete,
-      icon: UIHelper.renderIcon(Delete20Regular),
-      visible: (row) => Boolean(singleLocationId(row)),
-      action: onDelete
     }
   ])
 </script>
@@ -103,40 +93,20 @@
     permission-prefix="department-location"
     @change-page="changePage"
   >
+    <template #cell-name="{ row }">
+      <div class="flex min-w-0 flex-col">
+        <span class="truncate text-textColor0">
+          <UIHighlight :text="row.name" :query="store.params.search" />
+        </span>
+        <span v-if="row.level?.name" class="truncate text-xs text-textColor3">{{ row.level.name }}</span>
+      </div>
+    </template>
     <template #cell-locations="{ row }">
-      <button
-        v-if="locationCount(row) > 0"
-        type="button"
-        class="dl-locations-link"
-        @click.stop="onOpenLocation(row)"
-      >
-        {{ $t('departmentLocationPage.locationCount', { n: locationCount(row) }) }}
-      </button>
-      <span v-else class="dl-locations-empty">
-        {{ $t('departmentLocationPage.noLocation') }}
-      </span>
+      <LocationCountChip
+        :count="locationCount(row)"
+        :has="hasLocation(row)"
+        :free="Boolean(row.free)"
+      />
     </template>
   </UITable>
 </template>
-
-<style scoped>
-  .dl-locations-link {
-    color: var(--primary-color);
-    font-size: 14px;
-    line-height: 20px;
-    cursor: pointer;
-    background: none;
-    border: 0;
-    padding: 0;
-  }
-
-  .dl-locations-link:hover {
-    text-decoration: underline;
-  }
-
-  .dl-locations-empty {
-    color: var(--textColor2);
-    font-size: 14px;
-    line-height: 20px;
-  }
-</style>

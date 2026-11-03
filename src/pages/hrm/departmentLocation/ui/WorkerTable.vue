@@ -1,19 +1,23 @@
 <script setup>
   // Mobile face: xodimga bittalab o'tish joyi berish (org-scope backendda).
-  import { UITable } from '@/components/index.js'
+  import { UITable, UIUser } from '@/components/index.js'
   import { useDepartmentLocationStore } from '@/store/modules/index.js'
   import { useAccountStore } from '@/store/modules/app/accountStore.js'
   import { Add16Filled, Eye16Regular } from '@vicons/fluent'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
+  import LocationCountChip from './LocationCountChip.vue'
 
   const { t } = i18n.global
   const store = useDepartmentLocationStore()
   const accStore = useAccountStore()
   const canWrite = computed(() => accStore.checkPermission(accStore.pn.departmentLocationWrite))
 
-  const fullName = (row) => Utils.combineFullName(row)
+  // BACKEND: GET /v1/extra/mobile-face/workers qatorida `photo` (rasm URL) va `position` (lavozim nomi) yo'q —
+  // hozir avatarda standart placeholder chiqadi. Qo'shilsa, rasm va ism ostida lavozim avtomatik ko'rinadi.
+  const photoOf = (row) => row?.photo || null
+  const positionOf = (row) => row?.position?.name || (typeof row?.position === 'string' ? row.position : '')
 
   const changePage = (v) => {
     store.workerParams.page = v.page
@@ -22,10 +26,10 @@
   }
 
   const columns = computed(() => [
-    { key: 'worker', title: t('content.worker'), minWidth: 220 },
-    { key: 'department.name', title: t('departmentLocationPage.table.department'), minWidth: 180 },
-    { key: 'organization.name', title: t('departmentLocationPage.table.organization'), minWidth: 180 },
-    { key: 'locations', title: t('departmentLocationPage.table.hasLocation'), minWidth: 160 }
+    { key: 'worker', title: t('content.worker'), minWidth: 260 },
+    { key: 'department.name', title: t('departmentLocationPage.table.department'), minWidth: 200 },
+    { key: 'organization.name', title: t('departmentLocationPage.table.organization'), minWidth: 200 },
+    { key: 'locations', title: t('departmentLocationPage.table.hasLocation'), minWidth: 200 }
   ])
 
   const actions = computed(() => [
@@ -33,11 +37,10 @@
       label: t('content.view'),
       key: Utils.ActionTypes.view,
       icon: UIHelper.renderIcon(Eye16Regular),
-      visible: (row) => row.locations_count > 0,
       action: (row) => store.openWorkerLocations(row)
     },
     {
-      label: t('content.add'),
+      label: t('departmentLocationPage.addLocation'),
       key: 'add',
       icon: UIHelper.renderIcon(Add16Filled),
       disabled: !canWrite.value,
@@ -58,44 +61,26 @@
     permission-prefix="department-location"
     @change-page="changePage"
   >
+    <!-- Boshqa jadvallardagi kabi umumiy `UIUser`: rasm (bo'lmasa standart placeholder), F.I.Sh., lavozim -->
     <template #cell-worker="{ row }">
-      <span class="text-textColor0">{{ fullName(row) }}</span>
+      <UIUser
+        :short="false"
+        :highlight="store.workerParams.search || ''"
+        :data="{
+          photo: photoOf(row),
+          lastName: row.last_name ?? '',
+          firstName: row.first_name ?? '',
+          middleName: row.middle_name ?? '',
+          position: positionOf(row)
+        }"
+      />
     </template>
     <template #cell-locations="{ row }">
-      <div class="flex items-center gap-2">
-        <button
-          v-if="row.locations_count > 0"
-          type="button"
-          class="dl-locations-link"
-          @click.stop="store.openWorkerLocations(row)"
-        >
-          {{ $t('departmentLocationPage.locationCount', { n: row.locations_count }) }}
-        </button>
-        <span v-else class="dl-locations-empty">{{ $t('departmentLocationPage.noLocation') }}</span>
-        <n-tag v-if="row.free" size="small" round type="success">
-          {{ $t('departmentLocationPage.freeBadge') }}
-        </n-tag>
-      </div>
+      <LocationCountChip
+        :count="typeof row.locations_count === 'number' ? row.locations_count : null"
+        :has="Boolean(row.locations_count)"
+        :free="Boolean(row.free)"
+      />
     </template>
   </UITable>
 </template>
-
-<style scoped>
-  .dl-locations-link {
-    color: var(--primary-color);
-    font-size: 14px;
-    line-height: 20px;
-    cursor: pointer;
-    background: none;
-    border: 0;
-    padding: 0;
-  }
-  .dl-locations-link:hover {
-    text-decoration: underline;
-  }
-  .dl-locations-empty {
-    color: var(--textColor2);
-    font-size: 14px;
-    line-height: 20px;
-  }
-</style>
