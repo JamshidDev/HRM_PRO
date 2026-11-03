@@ -1,10 +1,12 @@
 <script setup>
+  import { useRoute } from 'vue-router'
   import { TurnstileDownloadModal, UIOfficeApp, UIPageContent, UISegmentTabs } from '@/components/index.js'
   import Table from './ui/Table.vue'
   import Filter from './ui/Filter.vue'
   import { useAccountStore, useApplicationStore, useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
+  const route = useRoute()
   const store = useApplicationStore()
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
@@ -29,6 +31,9 @@
 
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.hrWorkerApplicationsRead)) return
+    if (route.query.confirmation) {
+      store.params.confirmation = Number(route.query.confirmation)
+    }
     store._index()
   })
 

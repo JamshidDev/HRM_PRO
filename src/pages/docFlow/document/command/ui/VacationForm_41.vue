@@ -18,16 +18,30 @@
   const { t } = i18n.global
   const lastVacationRefs = ref([])
 
+  // «Qo'shimcha ta'til kuni» alohida input emas — «Qo'shimchalar» ro'yxatidan tanlanadi.
+  const SECOND_DAY_ID = 'second_day'
+  const additionalOptions = computed(() => [
+    { id: SECOND_DAY_ID, name: t('documentPage.command.form.second_day') },
+    ...componentStore.vacationAdditional
+  ])
+  const getSecondDay = (details) =>
+    details.addList.find((v) => v.id === SECOND_DAY_ID)?.day ?? 0
+  const getAdditional = (details) =>
+    details.addList
+      .filter((v) => v.id !== SECOND_DAY_ID)
+      .map((v) => ({ id: v.id, value: v.day ?? 0 }))
+
   const onChange = (id, idx) => {
-    if (store.vacations[idx].additional) {
-      const v = componentStore.vacationAdditional.filter(
-        (v) => v.id === store.vacations[idx].additional
-      )[0]
-      store.vacations[idx].addList.push({
+    const details = store.vacations[idx]
+    if (details.additional && !details.addList.some((x) => x.id === details.additional)) {
+      const v = additionalOptions.value.find((v) => v.id === details.additional)
+      details.addList.push({
         ...v,
         day: 0
       })
     }
+    // Select faqat qo'shish uchun — tanlov tozalanadi, o'chirilgan band qayta tanlanadi.
+    nextTick(() => (details.additional = null))
   }
   const onRemove = (id, idx) => {
     store.vacations[idx].addList = store.vacations[idx].addList.filter((x) => x.id !== id)
@@ -38,16 +52,13 @@
   }
   const onCalculate = (idx) => {
     const details = store.vacations[idx]
-    if (details.main_day && details.second_day && details.from) {
+    if (details.main_day && details.from) {
       const data = {
         id: details.id,
         from: Utils.timeToZone(details.from),
         main_day: details.main_day,
-        second_day: details.second_day,
-        additional: details.addList.map((v) => ({
-          id: v.id,
-          value: v.day
-        }))
+        second_day: getSecondDay(details),
+        additional: getAdditional(details)
       }
       store._calculateVacation(data, idx)
     } else {
@@ -66,10 +77,8 @@
         work_day: Utils.timeToZone(v.result?.work_day),
         all_day: v.result?.all_day,
         main_day: v.main_day,
-        additional: v.addList.map((x) => ({
-          id: x.id,
-          value: x.day
-        }))
+        second_day: getSecondDay(v),
+        additional: getAdditional(v)
       }))
 
       return {
@@ -152,16 +161,7 @@
         <n-input class="w-full" type="text" v-model:value="item.main_day" />
       </n-form-item>
     </div>
-    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
-      <n-form-item
-        :show-feedback="false"
-        :label="$t(`documentPage.command.form.second_day`)"
-        path="second_day"
-      >
-        <n-input class="w-full" type="text" v-model:value="item.second_day" />
-      </n-form-item>
-    </div>
-    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-6">
+    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-8">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.additional`)"
@@ -170,7 +170,7 @@
         <n-select
           v-model:value="item.additional"
           filterable
-          :options="componentStore.vacationAdditional"
+          :options="additionalOptions"
           label-field="name"
           value-field="id"
           :loading="componentStore.enumLoading"
@@ -179,13 +179,13 @@
       </n-form-item>
     </div>
     <div class="col-span-12">
-      <template v-for="(subItem, index) in item.addList" :key="index">
+      <template v-for="subItem in item.addList" :key="subItem.id">
         <div
           class="flex justify-between items-center w-full bg-surface-section border border-surface-line mt-2 px-2 py-1 rounded-md"
         >
           <span class="text-xs font-semibold">{{ subItem.name }}</span>
           <span class="w-[150px] min-w-[120px] flex gap-4">
-            <n-input-number v-model:value="subItem.day"></n-input-number>
+            <n-input-number v-model:value="subItem.day" :min="0" :precision="0"></n-input-number>
             <n-button @click="onRemove(subItem.id, idx)" circle type="error" secondary>
               <template #icon>
                 <DismissCircle20Filled />

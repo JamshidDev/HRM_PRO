@@ -2995,8 +2995,6 @@
       }
     },
     "activity": {
-      "title": "Organization activity",
-      "subtitle": "Analysis of changes in organizations — by month",
       "export": "Download",
       "totalActions": "Total actions",
       "activeUsers": "Active users",
@@ -3157,6 +3155,15 @@
         "score": "Score",
         "logs": "Logs"
       }
+    },
+    "documents": {
+      "commands": "Orders",
+      "contracts": "Employment contracts",
+      "contract_additional": "Additional agreements",
+      "worker_applications": "Applications",
+      "process": "In progress",
+      "rejected": "Rejected",
+      "problem": "Problematic"
     }
   },
   "applicationPage": {
