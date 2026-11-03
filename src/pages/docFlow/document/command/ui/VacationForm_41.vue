@@ -33,13 +33,15 @@
 
   const onChange = (id, idx) => {
     const details = store.vacations[idx]
-    if (details.additional) {
+    if (details.additional && !details.addList.some((x) => x.id === details.additional)) {
       const v = additionalOptions.value.find((v) => v.id === details.additional)
       details.addList.push({
         ...v,
         day: 0
       })
     }
+    // Select faqat qo'shish uchun — tanlov tozalanadi, o'chirilgan band qayta tanlanadi.
+    nextTick(() => (details.additional = null))
   }
   const onRemove = (id, idx) => {
     store.vacations[idx].addList = store.vacations[idx].addList.filter((x) => x.id !== id)
