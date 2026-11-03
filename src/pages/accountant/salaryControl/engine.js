@@ -127,7 +127,9 @@ export function buildPeople(emps = []) {
     p.b011 = V(p, '011')
     p.oth = num(p.tot) - p.b004 - p.b011
     p.g = positionGroup(p.lav)
-    p.cat = positionCategory(p.lav)
+    // Ishonchli toifa backenddan (positions.category) kelsa — o'shani, aks holda
+    // erkin matndan (fallback). seed() `e.cat`ni ko'chiradi.
+    p.cat = p.cat || positionCategory(p.lav)
   }
   return people
 }
@@ -204,7 +206,7 @@ export function evalRules(emps = [], { lists = {}, cap = null, fmt } = {}) {
     for (const rule of RULES) {
       const s = V(e, rule.k)
       if (!s) continue
-      const c = positionCategory(e.lav)
+      const c = e.cat || positionCategory(e.lav)
       let res
       let why
       if (rule.r === 'list') {
@@ -308,7 +310,7 @@ export function computeFindings(emps = [], { fmt } = {}) {
     const v004 = V(e, '004')
     const v011 = V(e, '011')
     const v032 = V(e, '032')
-    const cat = positionCategory(e.lav)
+    const cat = e.cat || positionCategory(e.lav)
     const isInspector = /kuzatuvchi/i.test(e.lav || '')
 
     // 1. Mukofot ishlangan vaqtga mos emas: 011 > 004×me'yor×1.05 & farq>300k.
