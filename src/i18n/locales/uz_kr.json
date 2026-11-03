@@ -5730,8 +5730,9 @@
     "locationExists": "Бор",
     "locationNotExists": "Йўқ",
     "locationCount": "{n} та жойлашув",
-    "noLocation": "Жойлашув йўқ",
+    "noLocation": "Белгиланмаган",
     "freeBadge": "Эркин",
+    "locationExistsShort": "Белгиланган",
     "stats": {
       "organizations": "Корхоналар",
       "areas": "Ҳудудлар",

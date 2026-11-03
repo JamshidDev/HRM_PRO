@@ -6132,8 +6132,9 @@
     "locationExists": "Bor",
     "locationNotExists": "Yo'q",
     "locationCount": "{n} ta joylashuv",
-    "noLocation": "Joylashuv yo'q",
+    "noLocation": "Belgilanmagan",
     "freeBadge": "Erkin",
+    "locationExistsShort": "Belgilangan",
     "stats": {
       "organizations": "Korxonalar",
       "areas": "Hududlar",

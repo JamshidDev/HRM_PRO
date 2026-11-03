@@ -6083,8 +6083,9 @@
     "locationExists": "Есть",
     "locationNotExists": "Нет",
     "locationCount": "{n} местоположение(ий)",
-    "noLocation": "Нет местоположения",
+    "noLocation": "Не задано",
     "freeBadge": "Свободно",
+    "locationExistsShort": "Задано",
     "stats": {
       "organizations": "Организации",
       "areas": "Зоны",

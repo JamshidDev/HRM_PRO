@@ -6071,8 +6071,9 @@
     "locationExists": "Yes",
     "locationNotExists": "No",
     "locationCount": "{n} location(s)",
-    "noLocation": "No location",
+    "noLocation": "Not assigned",
     "freeBadge": "Free",
+    "locationExistsShort": "Assigned",
     "stats": {
       "organizations": "Organizations",
       "areas": "Areas",
