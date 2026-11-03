@@ -1,15 +1,11 @@
 <script setup>
-  import {
-    OnesCodeFilter,
-    UIPageFilter,
-    UISelect,
-    UIYearMonth
-  } from '@/components/index.js'
+  import { OnesCodeFilter, UISelect, UIYearMonth } from '@/components/index.js'
   import {
     useAccountStore,
     useComponentStore,
     useSalaryControlStore
   } from '@/store/modules/index.js'
+  import { Dismiss16Regular } from '@vicons/fluent'
 
   const store = useSalaryControlStore()
   const componentStore = useComponentStore()
@@ -31,8 +27,8 @@
     (store.params.organizations || []).map((o) => o?.id ?? o)
   )
 
-  const filterCount = computed(
-    () => Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.ones_code))
+  const hasFilter = computed(
+    () => Boolean(store.params.organizations.length) || Boolean(store.params.ones_code)
   )
 
   const resetFilter = () => {
@@ -42,44 +38,28 @@
     filterEvent()
   }
 
-  const beforeShow = (v) => {
-    if (!v) return
-    if (componentStore.structureList.length === 0) componentStore._structures()
-  }
-
-  // Strukturani OLDINDAN yuklaymiz — korxona tanlash dropdown'i ochilganda bo'sh
-  // bo'lib (balandligi 0 → yuqoriga ochilib ko'rinmay) qolmasin, boshqa sahifalardagidek
-  // darhol to'la ro'yxat ko'rinsin.
+  // Strukturani OLDINDAN yuklaymiz — korxona tanlash dropdown'i darhol to'la ochilsin.
   onMounted(() => {
     if (componentStore.structureList.length === 0) componentStore._structures()
   })
 </script>
 
 <template>
-  <UIPageFilter
-    :show-search-input="false"
-    :search-loading="store.summaryLoading"
-    :show-add-button="false"
-    @onSearch="filterEvent"
-    @show="beforeShow"
-    @onClear="resetFilter"
-    :filter-count="filterCount"
-  >
-    <template #filterAction>
-      <div class="max-w-[160px]">
-        <UIYearMonth
-          v-model:year="store.params.year"
-          v-model:month="store.params.month"
-          :clearable="false"
-          @change="filterEvent"
-        />
-      </div>
-    </template>
+  <!-- Inline filtr paneli — popover EMAS. Bu sahifa korxona tanlashni majburiy qiladi,
+       shuning uchun filtr doim ko'rinib turadi (va popover joylashuvi muammosi yo'q). -->
+  <div class="sc-filterbar">
+    <div class="sc-f sc-f--period">
+      <label>{{ $t('content.date') }}</label>
+      <UIYearMonth
+        v-model:year="store.params.year"
+        v-model:month="store.params.month"
+        :clearable="false"
+        @change="filterEvent"
+      />
+    </div>
 
-    <template #filterContent>
-      <label class="mt-3 text-xs text-textColor3 mb-1 font-medium">{{
-        $t('content.organization')
-      }}</label>
+    <div class="sc-f sc-f--org">
+      <label>{{ $t('content.organization') }}</label>
       <UISelect
         :options="componentStore.structureList"
         :model-v="store.params.organizations"
@@ -92,13 +72,82 @@
         @onSearch="componentStore._structures"
         @onSubmit="filterEvent"
       />
+    </div>
+
+    <!-- OnesCodeFilter o'z labelini beradi (salary1c.onesCode.filterLabel). -->
+    <div class="sc-f sc-f--code">
       <OnesCodeFilter
         :org-ids="selectedOrgIds"
         v-model="store.params.ones_code"
         @change="filterEvent"
       />
-    </template>
-  </UIPageFilter>
+    </div>
+
+    <button v-if="hasFilter" type="button" class="sc-f-clear" @click="resetFilter">
+      <n-icon :size="15"><Dismiss16Regular /></n-icon>
+      <span>{{ $t('content.clearFilters') }}</span>
+    </button>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+  .sc-filterbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px 16px;
+    margin-bottom: 16px;
+    padding: 12px 14px;
+    background: var(--fig-block-bg);
+    border: 0.8px solid var(--fig-blue-300);
+    border-radius: 14px;
+  }
+  .sc-f {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+  .sc-f label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--fig-text-tertiary);
+  }
+  .sc-f--period {
+    width: 170px;
+    flex: none;
+  }
+  .sc-f--org {
+    flex: 1 1 280px;
+    min-width: 240px;
+  }
+  .sc-f--code {
+    flex: 1 1 220px;
+    min-width: 200px;
+  }
+  /* UISelect/OnesCodeFilter triggerlari to'liq kenglikda. */
+  .sc-f :deep(.n-base-selection),
+  .sc-f :deep(.ui__structure-input),
+  .sc-f :deep(.n-select) {
+    width: 100%;
+  }
+  .sc-f-clear {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 34px;
+    padding: 0 12px;
+    border: 0.8px solid var(--fig-blue-300);
+    border-radius: 10px;
+    background: var(--fig-bg-secondary);
+    color: var(--fig-text-red);
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+  .sc-f-clear:hover {
+    border-color: var(--fig-icon-red);
+  }
+</style>
