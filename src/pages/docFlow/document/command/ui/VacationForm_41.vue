@@ -29,7 +29,7 @@
   const getAdditional = (details) =>
     details.addList
       .filter((v) => v.id !== SECOND_DAY_ID)
-      .map((v) => ({ id: v.id, value: v.day }))
+      .map((v) => ({ id: v.id, value: v.day ?? 0 }))
 
   const onChange = (id, idx) => {
     const details = store.vacations[idx]
@@ -179,13 +179,13 @@
       </n-form-item>
     </div>
     <div class="col-span-12">
-      <template v-for="(subItem, index) in item.addList" :key="index">
+      <template v-for="subItem in item.addList" :key="subItem.id">
         <div
           class="flex justify-between items-center w-full bg-surface-section border border-surface-line mt-2 px-2 py-1 rounded-md"
         >
           <span class="text-xs font-semibold">{{ subItem.name }}</span>
           <span class="w-[150px] min-w-[120px] flex gap-4">
-            <n-input-number v-model:value="subItem.day"></n-input-number>
+            <n-input-number v-model:value="subItem.day" :min="0" :precision="0"></n-input-number>
             <n-button @click="onRemove(subItem.id, idx)" circle type="error" secondary>
               <template #icon>
                 <DismissCircle20Filled />
