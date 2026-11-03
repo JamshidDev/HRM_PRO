@@ -232,12 +232,16 @@ export function evalRules(emps = [], { lists = {}, cap = null, fmt } = {}) {
           why = 'Boshqaruv/mutaxassis toifasiga kirmaydi'
         }
       } else if (rule.r === 'cap') {
+        // ⚠️ Backend `e.fot = e.tot` (jami hisoblangan, mukofot/yordam bilan) — bu
+        // «oylik ish haqi» EMAS. Tarif-setka chegarasi bilan solishtirish uchun REAL
+        // MHTF (mhtfFot: jami − MHTFga kirmaydiganlar) ishlatiladi.
+        const fotReal = mhtfFot(e)
         if (!cap) {
           res = 'Qo‘shimcha tekshirish'
           why = 'Tarif setkasi chegarasi kiritilmagan'
-        } else if (num(e.fot) > cap) {
+        } else if (fotReal > cap) {
           res = 'Asossiz'
-          why = `Oylik ${f(e.fot)} > chegara ${f(cap)}`
+          why = `Oylik (MHTF) ${f(fotReal)} > chegara ${f(cap)}`
         } else {
           res = 'Asosli'
           why = 'Chegara doirasida'
@@ -395,10 +399,11 @@ export function computeFindings(emps = [], { fmt } = {}) {
       }
     }
 
-    // 12. Bitta JSHSHIR — bir necha qator.
+    // 12. Bitta JSHSHIR — bir necha qator. summa=0: bu STRUKTURAVIY belgi (dubl/ikki
+    //     lavozim), pul «buzilish miqdori» EMAS — «shubhali summa» KPI'ни shishirmasin.
     if (e.j && (pinCount.get(e.j) || 0) > 1 && !dupReported.has(e.j)) {
       dupReported.add(e.j)
-      add('Yuqori', 'Bitta JSHSHIR — bir necha qator', e, e.tot, `Bitta JSHSHIR vedomostda ${pinCount.get(e.j)} marta uchraydi.`, "Ikki lavozim/korxona yoki dubl yozuv ekanini aniqlang.")
+      add('Yuqori', 'Bitta JSHSHIR — bir necha qator', e, 0, `Bitta JSHSHIR vedomostda ${pinCount.get(e.j)} marta uchraydi.`, "Ikki lavozim/korxona yoki dubl yozuv ekanini aniqlang.")
     }
 
     // 13 va 14 — NDFL-4/5 va INPS hisoboti kerak (rc ulanganda qo'shiladi).
