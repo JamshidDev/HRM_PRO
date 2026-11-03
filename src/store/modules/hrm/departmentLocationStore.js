@@ -270,7 +270,16 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     },
     openEditModal(item) {
       this.resetForm()
-      this.payload.department_id = item.department_id
+      // Tahrirlashda qaysi bo'lim ekani ko'rinsin: `_show` javobida `department` yo'q, shuning uchun
+      // jadval qatoridan (`department`, `organization`) olinadi.
+      if (item.department) {
+        this.selectedDepartment = {
+          id: item.department.id,
+          name: item.department.name,
+          organization: { name: item.organization?.name ?? item.department.organization_name }
+        }
+      }
+      this.payload.department_id = item.department_id ?? item.department?.id ?? null
       this.elementId = item.id
       this.visibleType = false
       this.visible = true

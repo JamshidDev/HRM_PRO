@@ -6218,20 +6218,23 @@
       "accuracy": "Aniqlik limiti",
       "polygon": "Polygon",
       "points": "ta nuqta",
-      "noPolygon": "Polygon belgilanmagan",
+      "noPolygon": "Hudud hali chizilmagan",
       "polygonReady": "Hudud tayyor",
       "markerInfoFull": "Xaritaga bosib joylashuvni belgilang. Markerni kerakli joyga suring yoki xaritaning boshqa joyiga bosing. Radius sozlamalari orqali belgilangan nuqta atrofidagi masofani aniqlashingiz mumkin.",
       "polygonInfoFull": "Polygon rejimida xodimlar faqat belgilangan hudud ichida bo'lganda davomat belgilashi mumkin. Xaritada \"Polygon qo'shish\" tugmasini bosib, ketma-ket nuqtalarni belgilang (kamida 3, maksimal 12 ta nuqta).",
       "autoCalculated": "Avtomatik",
       "centerMarkerInfo": "Markerni surib markaziy nuqtani o'zgartirishingiz mumkin",
       "coordinate": "Aylana",
-      "area": "Hudud"
+      "area": "Hudud",
+      "modeHintCircle": "Xaritaga bosib nuqta qo'ying — xodim shu nuqta atrofidagi radius ichida o'tadi.",
+      "modeHintArea": "Xaritada hududni chizing — xodim faqat shu hudud ichida o'tadi.",
+      "polygonSteps": "«Hududni chizish» → xaritaga kamida 3 ta nuqta qo'ying → «Tugatish»."
     },
     "validation": {
       "departmentRequired": "Bo'limni tanlang",
       "nameRequired": "O'tish joyi nomini kiriting",
       "markerRequired": "Xaritada joylashuvni belgilang",
-      "polygonRequired": "Xaritada polygon belgilang (kamida 3 ta nuqta)",
+      "polygonRequired": "Xaritada hududni chizing (kamida 3 ta nuqta)",
       "radiusRequired": "Radiusni kiriting",
       "accuracyRequired": "Aniqlik limitini kiriting",
       "minPoints": "kamida 3 ta kerak"
@@ -6239,12 +6242,12 @@
     "map": {
       "title": "Xaritada belgilash",
       "clearMarker": "Markerni tozalash",
-      "clearPolygon": "Polygonni tozalash",
+      "clearPolygon": "Hududni tozalash",
       "myLocation": "Mening joylashuvim",
       "myLocationTooltip": "Joriy joylashuvni aniqlash",
       "clickToMark": "Xaritaga bosib marker qo'ying",
       "setLocation": "Joylashuvni belgilash",
-      "addPolygon": "Polygon qo'shish",
+      "addPolygon": "Hududni chizish",
       "polygonMode": "Polygon rejimi",
       "markerMode": "Marker rejimi",
       "finishPolygon": "Tugatish",
@@ -6252,7 +6255,12 @@
       "undo": "Ortga",
       "save": "Saqlash",
       "done": "Tayyor",
-      "points": "nuqta"
+      "points": "nuqta",
+      "redrawPolygon": "Hududni qayta chizish",
+      "drawHint": "Nuqta qo'shish uchun xaritaga bosing (kamida 3 ta)",
+      "drawHintDone": "Yana nuqta qo'shing yoki «Tugatish»ni bosing",
+      "polygonSaved": "Hudud chizildi. Markaziy nuqtani markerni surib o'zgartirish mumkin.",
+      "geoError": "Joylashuvni aniqlab bo'lmadi"
     }
   },
   "integrationLog": {

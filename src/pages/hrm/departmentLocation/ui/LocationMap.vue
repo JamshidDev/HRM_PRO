@@ -3,6 +3,9 @@
   import L from 'leaflet'
   import 'leaflet/dist/leaflet.css'
   import { Location24Regular, Checkmark24Regular, ArrowUndo24Regular, Map20Filled } from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   const props = defineProps({
     lat: {
@@ -43,6 +46,7 @@
   let polygonLayer = null
   let polygonCircles = []
   let polygonLines = null
+  let resizeObserver = null
 
   // Default center - Tashkent
   const defaultCenter = { lat: 41.311081, lng: 69.240562 }
@@ -68,25 +72,29 @@
       maxZoom: 19
     }).addTo(map)
 
-    // Load existing data based on geoType
+    // Xarita oyna ochilish animatsiyasi paytida yaratiladi — o'lchami noto'g'ri o'lchanib, tile'larning
+    // bir qismi kulrang qolardi. Konteyner o'lchami o'zgarganda Leaflet qayta o'lchaydi.
+    // Foydalanuvchi xaritani o'zi surmaguncha/kattalashtirmaguncha o'lcham o'zgarsa — shakl qayta moslanadi.
+    let touched = false
+    mapContainer.value.addEventListener('pointerdown', () => (touched = true), { once: true })
+    mapContainer.value.addEventListener('wheel', () => (touched = true), { once: true, passive: true })
+    resizeObserver = new ResizeObserver(() => {
+      if (!map) return
+      map.invalidateSize()
+      if (!touched) fitExisting()
+    })
+    resizeObserver.observe(mapContainer.value)
+    map.invalidateSize()
+
+    // Mavjud joylashuvni chizish va xaritani unga moslash (tahrirlashda ham — ilgari faqat
+    // ko'rish rejimida moslanardi, tahrirlashda hudud to'liq ko'rinmasdi).
     if (props.geoType) {
-      // Polygon mode - load existing polygon
-      if (props.polygon && props.polygon.length > 0) {
-        loadExistingPolygon(props.polygon)
-        if (props.readonly) fitToPolygon(props.polygon)
-      }
-    } else {
-      // Marker mode - load existing marker
-      if (props.lat && props.lng) {
-        addMarker(props.lat, props.lng)
-        if (props.radius) {
-          addCircle(props.lat, props.lng, props.radius)
-          if (props.readonly) fitToCircle(props.lat, props.lng, props.radius)
-        } else if (props.readonly) {
-          map.setView([props.lat, props.lng], 16)
-        }
-      }
+      if (props.polygon && props.polygon.length > 0) loadExistingPolygon(props.polygon)
+    } else if (props.lat && props.lng) {
+      addMarker(props.lat, props.lng)
+      if (props.radius) addCircle(props.lat, props.lng, props.radius)
     }
+    fitExisting()
 
     // Handle map click based on geoType (disabled in readonly mode)
     if (props.readonly) return
@@ -306,11 +314,11 @@
         emit('update:lng', center.lng)
       }
 
-      window.$message?.success('Polygon saqlandi. Markerni surib joylashuvni o\'zgartirishingiz mumkin.')
+      window.$message?.success(t('departmentLocationPage.map.polygonSaved'))
     } else {
       // Not enough points
       clearPolygon()
-      window.$message?.warning('Kamida 3 ta nuqta kerak')
+      window.$message?.warning(t('departmentLocationPage.validation.polygonRequired'))
     }
   }
 
@@ -477,9 +485,20 @@
         },
         (error) => {
           console.error('Geolocation error:', error)
-          window.$message?.error('Joylashuvni aniqlab bo\'lmadi')
+          window.$message?.error(t('departmentLocationPage.map.geoError'))
         }
       )
+    }
+  }
+
+  // Xaritani mavjud shaklga moslash: hudud — polygon chegarasi, aylana — doira, faqat nuqta — zoom 16.
+  const fitExisting = () => {
+    if (!map) return
+    if (props.geoType) {
+      if (props.polygon?.length > 0) fitToPolygon(props.polygon)
+    } else if (props.lat && props.lng) {
+      if (props.radius) fitToCircle(props.lat, props.lng, props.radius)
+      else map.setView([props.lat, props.lng], 16)
     }
   }
 
@@ -505,6 +524,8 @@
   })
 
   onUnmounted(() => {
+    resizeObserver?.disconnect()
+    resizeObserver = null
     if (map) {
       map.remove()
       map = null
@@ -546,7 +567,11 @@
               <template #icon>
                 <n-icon><Map20Filled /></n-icon>
               </template>
-              {{ $t('departmentLocationPage.map.addPolygon') }}
+              {{
+                polygonPoints.length >= 3
+                  ? $t('departmentLocationPage.map.redrawPolygon')
+                  : $t('departmentLocationPage.map.addPolygon')
+              }}
             </n-button>
           </div>
           <!-- Bir xil `flex items-center gap-2` o'ram — "Polygon qo'shish" holati
@@ -584,7 +609,7 @@
               <template #icon>
                 <n-icon><Checkmark24Regular /></n-icon>
               </template>
-              {{ $t('departmentLocationPage.map.save') }}
+              {{ $t('departmentLocationPage.map.finishPolygon') }}
             </n-button>
             <n-button size="small" type="error" round ghost @click="cancelPolygonDrawing">
               {{ $t('content.cancel') }}
@@ -595,7 +620,13 @@
     </div>
 
     <!-- Map container -->
-    <div ref="mapContainer" class="map-container"></div>
+    <div class="relative flex-1 flex flex-col min-h-0">
+      <div ref="mapContainer" class="map-container"></div>
+      <!-- Chizish paytida xarita ustida qisqa ko'rsatma -->
+      <div v-if="isDrawingPolygon && !readonly" class="map-draw-hint">
+        {{ polygonPoints.length < 3 ? $t('departmentLocationPage.map.drawHint') : $t('departmentLocationPage.map.drawHintDone') }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -605,10 +636,10 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #f8fafc;
+  background: var(--surface-ground);
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--surface-line);
 }
 
 .map-header {
@@ -616,8 +647,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 12px;
-  background: white;
-  border-bottom: 1px solid #e2e8f0;
+  background: var(--surface-section);
+  border-bottom: 1px solid var(--surface-line);
 }
 
 .map-container {
@@ -659,15 +690,22 @@
   color: var(--warning-color, #f0a020);
 }
 
-[data-theme='dark'] {
-  .location-map-wrapper {
-    background: var(--surface-ground);
-    border-color: var(--surface-line);
-  }
-
-  .map-header {
-    background: var(--surface-section);
-    border-bottom-color: var(--surface-line);
-  }
+/* Chizish ko'rsatmasi — xarita ustida, tepada markazda (Leaflet boshqaruvlaridan yuqori) */
+.map-draw-hint {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  max-width: calc(100% - 120px);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: var(--surface-section);
+  color: var(--textColor1);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: var(--card-shadow);
+  pointer-events: none;
+  text-align: center;
 }
 </style>
