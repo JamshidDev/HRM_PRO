@@ -1574,6 +1574,14 @@ export default {
     to: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     mentor_percent: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
   },
+  // 80 — FXSH bekor qilish.
+  form_80: {
+    civil_contract_number: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    civil_contract_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    civil_contract_kind: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
+    civil_cancel_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    hr_worker_position_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] }
+  },
   // 75 — Buyruqni bekor qilish.
   form_75: {
     cancel_reason: {
