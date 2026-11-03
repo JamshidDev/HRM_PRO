@@ -605,24 +605,24 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #f8fafc;
+  background: var(--surface-ground);
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--surface-line);
 }
 
 .map-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 12px;
-  background: white;
-  border-bottom: 1px solid #e2e8f0;
+  padding: 10px 14px;
+  background: var(--surface-section);
+  border-bottom: 1px solid var(--surface-line);
 }
 
 .map-container {
   flex: 1;
-  min-height: 300px;
+  min-height: 320px;
 }
 
 /* Nuqta soni — oddiy pill-belgi (button emas), shuning uchun tashqi o'rovchi

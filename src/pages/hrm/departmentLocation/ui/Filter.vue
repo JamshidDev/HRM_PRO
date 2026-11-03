@@ -1,8 +1,9 @@
 <script setup>
+  import { computed } from 'vue'
   import { UIPageFilter, UISegmentTabs, UISelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useComponentStore, useDepartmentLocationStore } from '@/store/modules/index.js'
-  import { ArrowLeft20Filled } from '@vicons/fluent'
+  import { ArrowLeft20Filled, Building20Regular } from '@vicons/fluent'
 
   const store = useDepartmentLocationStore()
   const componentStore = useComponentStore()
@@ -90,19 +91,32 @@
       />
     </template>
     <template #filterAction>
-      <!-- Back button (locations tabda) -->
-      <n-button
-        v-if="isLocationsTab"
-        secondary
-        @click="goBack"
-      >
-        <template #icon>
-          <n-icon>
-            <ArrowLeft20Filled />
-          </n-icon>
-        </template>
-        {{ $t('content.back') }}
-      </n-button>
+      <!-- Back button & Department breadcrumb badge (locations tabda) -->
+      <div v-if="isLocationsTab" class="flex items-center gap-2">
+        <div
+          v-if="store.selectedDepartment"
+          class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-xs"
+        >
+          <n-icon size="15" class="text-primary"><Building20Regular /></n-icon>
+          <span class="text-textColor3 font-normal">{{ $t('departmentLocationPage.table.department') }}:</span>
+          <span class="font-semibold text-primary truncate max-w-[200px]">
+            {{ store.selectedDepartment.name }}
+          </span>
+        </div>
+        <n-button
+          secondary
+          size="medium"
+          @click="goBack"
+          class="transition-all"
+        >
+          <template #icon>
+            <n-icon>
+              <ArrowLeft20Filled />
+            </n-icon>
+          </template>
+          {{ $t('content.back') }}
+        </n-button>
+      </div>
     </template>
     <template #filterContent>
       <label class="mt-3 text-xs text-textColor3 mb-1 font-medium">{{

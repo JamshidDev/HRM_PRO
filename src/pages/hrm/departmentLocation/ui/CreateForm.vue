@@ -3,7 +3,15 @@
   import { UIModal } from '@/components/index.js'
   import { useComponentStore, useDepartmentLocationStore } from '@/store/modules/index.js'
   import LocationMap from './LocationMap.vue'
-  import { Map20Filled, Dismiss16Regular, Location20Filled, Person20Filled } from '@vicons/fluent'
+  import {
+    Map20Filled,
+    Dismiss16Regular,
+    Location20Filled,
+    Person20Filled,
+    Building20Regular,
+    CheckmarkCircle20Regular,
+    Warning20Regular
+  } from '@vicons/fluent'
 
   const { proxy } = getCurrentInstance()
   const store = useDepartmentLocationStore()
@@ -139,228 +147,260 @@
     height="90vh"
   >
     <n-spin :show="store.showLoading" class="h-full">
-      <div class="flex flex-col lg:flex-row gap-6 h-full">
-        <!-- Left side - Form -->
-        <div class="w-full lg:w-[320px] shrink-0 flex flex-col gap-3">
-          <!-- Tanlangan xodim -->
-          <div class="department-card" v-if="isWorker && store.selectedWorker">
-            <div class="flex items-center gap-3">
-              <div class="department-card__icon">
-                <n-icon size="20">
-                  <Person20Filled />
-                </n-icon>
-              </div>
-              <div class="flex flex-col">
-                <span class="department-card__title">{{ workerName }}</span>
-                <span class="department-card__subtitle">{{ store.selectedWorker.organization?.name }}</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Selected Department Card -->
-          <div class="department-card" v-if="!isWorker && store.selectedDepartment">
-            <div class="flex items-center gap-3">
-              <div class="department-card__icon">
-                <n-icon size="20">
-                  <Location20Filled />
-                </n-icon>
-              </div>
-              <div class="flex flex-col">
-                <span class="department-card__title">{{ store.selectedDepartment.name }}</span>
-                <span class="department-card__subtitle">{{ store.selectedDepartment.organization?.name }}</span>
-              </div>
-            </div>
-          </div>
-
-          <n-form
-            ref="formRef"
-            :model="store.payload"
-            :rules="rules"
-            label-placement="top"
-            size="medium"
-            require-mark-placement="right-hanging"
-          >
-            <!-- Bo'lim tanlash (faqat bo'lim oldindan berilmaganda) -->
-            <n-form-item
-              v-if="needDepartment"
-              :label="$t('departmentLocationPage.form.department')"
-              path="department_id"
+      <div class="flex flex-col lg:flex-row gap-5 h-full">
+        <!-- Left side - Form column with pinned actions -->
+        <div class="w-full lg:w-[360px] shrink-0 flex flex-col h-full min-h-0">
+          <!-- Scrollable fields area -->
+          <div class="flex-1 overflow-y-auto pr-1 flex flex-col gap-3">
+            <!-- Tanlangan xodim kartasi -->
+            <div
+              v-if="isWorker && store.selectedWorker"
+              class="flex items-center gap-3 p-3 rounded-xl bg-primary/10 border border-primary/20"
             >
-              <n-select
-                v-model:value="store.payload.department_id"
-                :options="componentStore.departmentList"
-                :loading="componentStore.departmentLoading"
-                :placeholder="$t('departmentLocationPage.form.department')"
-                label-field="name"
-                value-field="id"
-                filterable
-                remote
-                clearable
-                size="large"
-                @search="componentStore._onSearchDepartment"
-                @scroll="componentStore._onScrollDepartment"
-                @update:show="componentStore.onOpenDepartmentEv"
-              />
-            </n-form-item>
-
-            <!-- O'tish joyi nomi: mobil ilovada shu nom bilan chiqadi -->
-            <n-form-item v-if="!isFree" :label="$t('departmentLocationPage.form.name')" path="name">
-              <n-input
-                v-model:value="store.payload.name"
-                :placeholder="$t('departmentLocationPage.form.namePlaceholder')"
-                :maxlength="255"
-                clearable
-                size="large"
-              />
-            </n-form-item>
-
-            <!-- Erkin rejim: hudud cheklovi yo'q, faqat koordinata yoziladi -->
-            <div class="geo-type-card mb-3">
-              <div class="flex items-center justify-between gap-3">
-                <div class="flex flex-col">
-                  <span class="text-textColor1 font-medium">{{ $t('departmentLocationPage.form.freeMode') }}</span>
-                  <span class="text-xs text-textColor3">{{ $t('departmentLocationPage.form.freeModeHint') }}</span>
-                </div>
-                <n-switch v-model:value="store.payload.is_free" size="medium" />
+              <div class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-white shadow-sm">
+                <n-icon size="20"><Person20Filled /></n-icon>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="text-sm font-semibold text-textColor0 truncate leading-tight">{{ workerName }}</span>
+                <span class="text-xs text-textColor3 truncate mt-0.5">{{ store.selectedWorker.organization?.name }}</span>
               </div>
             </div>
 
-            <template v-if="!isFree">
-            <!-- Geo Type Card -->
-            <div class="geo-type-card">
-              <div class="flex items-center justify-between">
-                <span class="text-textColor2">{{ $t('departmentLocationPage.form.geoType') }}</span>
-                <n-switch v-model:value="store.payload.geo_type" size="medium">
-                  <template #checked>{{ $t('departmentLocationPage.form.area') }}</template>
-                  <template #unchecked>{{ $t('departmentLocationPage.form.coordinate') }}</template>
-                </n-switch>
+            <!-- Tanlangan bo'lim kartasi -->
+            <div
+              v-if="!isWorker && store.selectedDepartment"
+              class="flex items-center gap-3 p-3 rounded-xl bg-primary/10 border border-primary/20"
+            >
+              <div class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-white shadow-sm">
+                <n-icon size="20"><Building20Regular /></n-icon>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="text-sm font-semibold text-textColor0 truncate leading-tight">{{ store.selectedDepartment.name }}</span>
+                <span class="text-xs text-textColor3 truncate mt-0.5">{{ store.selectedDepartment.organization?.name }}</span>
               </div>
             </div>
 
-            <!-- Polygon info (when geo_type = true) -->
-            <template v-if="store.payload.geo_type">
-              <div
-                class="polygon-card"
-                :class="{
-                  'polygon-card--success': store.payload.polygon.length >= 3,
-                  'polygon-card--warning': store.payload.polygon.length > 0 && store.payload.polygon.length < 3,
-                  'polygon-card--error': store.payload.polygon.length === 0
-                }"
+            <n-form
+              ref="formRef"
+              :model="store.payload"
+              :rules="rules"
+              label-placement="top"
+              size="medium"
+              require-mark-placement="right-hanging"
+              class="flex flex-col gap-2.5"
+            >
+              <!-- Bo'lim tanlash (faqat bo'lim oldindan berilmaganda) -->
+              <n-form-item
+                v-if="needDepartment"
+                :label="$t('departmentLocationPage.form.department')"
+                path="department_id"
+                class="!mb-1"
               >
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <div class="polygon-card__icon">
-                      <n-icon size="18">
-                        <Map20Filled />
-                      </n-icon>
-                    </div>
-                    <div class="flex flex-col">
-                      <span class="polygon-card__title">{{ $t('departmentLocationPage.form.area') }}</span>
-                      <span class="polygon-card__subtitle">
-                        <template v-if="store.payload.polygon.length === 0">
-                          {{ $t('departmentLocationPage.form.noPolygon') }}
+                <n-select
+                  v-model:value="store.payload.department_id"
+                  :options="componentStore.departmentList"
+                  :loading="componentStore.departmentLoading"
+                  :placeholder="$t('departmentLocationPage.form.department')"
+                  label-field="name"
+                  value-field="id"
+                  filterable
+                  remote
+                  clearable
+                  size="large"
+                  @search="componentStore._onSearchDepartment"
+                  @scroll="componentStore._onScrollDepartment"
+                  @update:show="componentStore.onOpenDepartmentEv"
+                />
+              </n-form-item>
+
+              <!-- O'tish joyi nomi: mobil ilovada shu nom bilan chiqadi -->
+              <n-form-item
+                v-if="!isFree"
+                :label="$t('departmentLocationPage.form.name')"
+                path="name"
+                class="!mb-1"
+              >
+                <n-input
+                  v-model:value="store.payload.name"
+                  :placeholder="$t('departmentLocationPage.form.namePlaceholder')"
+                  :maxlength="255"
+                  clearable
+                  size="large"
+                />
+              </n-form-item>
+
+              <!-- Erkin rejim: hudud cheklovi yo'q, faqat koordinata yoziladi -->
+              <div class="rounded-xl border border-surface-line bg-surface-section p-3 transition-all">
+                <div class="flex items-center justify-between gap-3">
+                  <div class="flex flex-col">
+                    <span class="text-sm font-medium text-textColor0">{{ $t('departmentLocationPage.form.freeMode') }}</span>
+                    <span class="text-xs text-textColor3 leading-relaxed">{{ $t('departmentLocationPage.form.freeModeHint') }}</span>
+                  </div>
+                  <n-switch v-model:value="store.payload.is_free" size="medium" />
+                </div>
+              </div>
+
+              <template v-if="!isFree">
+                <!-- Geo Type Card -->
+                <div class="rounded-xl border border-surface-line bg-surface-section p-3">
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-textColor1">{{ $t('departmentLocationPage.form.geoType') }}</span>
+                    <n-switch v-model:value="store.payload.geo_type" size="medium">
+                      <template #checked>{{ $t('departmentLocationPage.form.area') }}</template>
+                      <template #unchecked>{{ $t('departmentLocationPage.form.coordinate') }}</template>
+                    </n-switch>
+                  </div>
+                </div>
+
+                <!-- Polygon status banner (when geo_type = true) -->
+                <template v-if="store.payload.geo_type">
+                  <div
+                    class="rounded-xl border p-3 transition-all"
+                    :class="{
+                      'bg-success/10 border-success/30': store.payload.polygon.length >= 3,
+                      'bg-warning/10 border-warning/30': store.payload.polygon.length > 0 && store.payload.polygon.length < 3,
+                      'bg-danger/10 border-danger/30': store.payload.polygon.length === 0
+                    }"
+                  >
+                    <div class="flex items-center justify-between gap-2">
+                      <div class="flex items-center gap-2.5 min-w-0">
+                        <div
+                          class="flex size-8 shrink-0 items-center justify-center rounded-lg"
+                          :class="{
+                            'bg-success/20 text-success': store.payload.polygon.length >= 3,
+                            'bg-warning/20 text-warning': store.payload.polygon.length > 0 && store.payload.polygon.length < 3,
+                            'bg-danger/20 text-danger': store.payload.polygon.length === 0
+                          }"
+                        >
+                          <n-icon size="16">
+                            <CheckmarkCircle20Regular v-if="store.payload.polygon.length >= 3" />
+                            <Warning20Regular v-else-if="store.payload.polygon.length > 0" />
+                            <Map20Filled v-else />
+                          </n-icon>
+                        </div>
+                        <div class="flex flex-col min-w-0">
+                          <span class="text-xs font-semibold text-textColor0">{{ $t('departmentLocationPage.form.area') }}</span>
+                          <span class="text-xs text-textColor3 truncate">
+                            <template v-if="store.payload.polygon.length === 0">
+                              {{ $t('departmentLocationPage.form.noPolygon') }}
+                            </template>
+                            <template v-else-if="store.payload.polygon.length < 3">
+                              {{ $t('departmentLocationPage.validation.minPoints') }}
+                            </template>
+                            <template v-else>
+                              {{ $t('departmentLocationPage.form.polygonReady') }} ({{ store.payload.polygon.length }})
+                            </template>
+                          </span>
+                        </div>
+                      </div>
+                      <n-button
+                        v-if="store.payload.polygon.length > 0"
+                        size="tiny"
+                        secondary
+                        type="error"
+                        round
+                        @click="clearPolygon"
+                      >
+                        <template #icon>
+                          <n-icon size="14">
+                            <Dismiss16Regular />
+                          </n-icon>
                         </template>
-                        <template v-else-if="store.payload.polygon.length < 3">
-                          {{ $t('departmentLocationPage.validation.minPoints') }}
-                        </template>
-                        <template v-else>
-                          {{ $t('departmentLocationPage.form.polygonReady') }}
-                        </template>
-                      </span>
+                      </n-button>
                     </div>
                   </div>
-                  <n-button
-                    v-if="store.payload.polygon.length > 0"
-                    size="tiny"
-                    secondary
-                    type="error"
-                    @click="clearPolygon"
+                </template>
+
+                <!-- Radius (only for marker mode) -->
+                <n-form-item
+                  v-if="!store.payload.geo_type"
+                  :label="$t('departmentLocationPage.form.radius')"
+                  path="radius"
+                  class="!mb-1"
+                >
+                  <n-input-number
+                    v-model:value="store.payload.radius"
+                    :min="1"
+                    :max="5000"
+                    class="w-full"
+                    size="large"
                   >
-                    <template #icon>
-                      <n-icon size="14">
-                        <Dismiss16Regular />
-                      </n-icon>
-                    </template>
-                  </n-button>
+                    <template #suffix>m</template>
+                  </n-input-number>
+                </n-form-item>
+
+                <!-- Lat/Lng fields (both modes) -->
+                <div class="rounded-xl border border-surface-line bg-surface-section p-3">
+                  <div class="text-xs font-medium text-textColor3 mb-2 flex items-center gap-1.5">
+                    <n-icon size="14" class="text-primary"><Location20Filled /></n-icon>
+                    <span>{{ $t('departmentLocationPage.form.coordinate') }}</span>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2">
+                    <n-form-item :label="$t('departmentLocationPage.form.lat')" path="lat" :show-feedback="false" class="!mb-0">
+                      <n-input-number
+                        v-model:value="store.payload.lat"
+                        :precision="6"
+                        :step="0.000001"
+                        class="w-full"
+                        size="medium"
+                      />
+                    </n-form-item>
+
+                    <n-form-item :label="$t('departmentLocationPage.form.lng')" path="lng" :show-feedback="false" class="!mb-0">
+                      <n-input-number
+                        v-model:value="store.payload.lng"
+                        :precision="6"
+                        :step="0.000001"
+                        class="w-full"
+                        size="medium"
+                      />
+                    </n-form-item>
+                  </div>
                 </div>
-              </div>
-            </template>
 
-            <!-- Radius (only for marker mode) -->
-            <n-form-item v-if="!store.payload.geo_type" :label="$t('departmentLocationPage.form.radius')" path="radius">
-              <n-input-number
-                v-model:value="store.payload.radius"
-                :min="1"
-                :max="5000"
-                class="w-full"
-                size="large"
-              >
-                <template #suffix>m</template>
-              </n-input-number>
-            </n-form-item>
-
-            <!-- Lat/Lng fields (both modes) -->
-            <div class="coordinates-card">
-              <div class="grid grid-cols-2 gap-2">
-                <n-form-item :label="$t('departmentLocationPage.form.lat')" path="lat" :show-feedback="false">
+                <!-- Accuracy limit -->
+                <n-form-item
+                  v-if="!isWorker"
+                  :label="$t('departmentLocationPage.form.accuracy')"
+                  path="accuracy_limit"
+                  class="!mb-1"
+                >
                   <n-input-number
-                    v-model:value="store.payload.lat"
-                    :precision="6"
-                    :step="0.000001"
+                    v-model:value="store.payload.accuracy_limit"
+                    :min="1"
+                    :max="100"
                     class="w-full"
-                    size="medium"
-                  />
+                    size="large"
+                  >
+                    <template #suffix>m</template>
+                  </n-input-number>
                 </n-form-item>
+              </template>
+            </n-form>
+          </div>
 
-                <n-form-item :label="$t('departmentLocationPage.form.lng')" path="lng" :show-feedback="false">
-                  <n-input-number
-                    v-model:value="store.payload.lng"
-                    :precision="6"
-                    :step="0.000001"
-                    class="w-full"
-                    size="medium"
-                  />
-                </n-form-item>
-              </div>
-            </div>
-
-            </template>
-
-            <n-form-item
-              v-if="!isFree && !isWorker"
-              :label="$t('departmentLocationPage.form.accuracy')"
-              path="accuracy_limit"
-            >
-              <n-input-number
-                v-model:value="store.payload.accuracy_limit"
-                :min="1"
-                :max="100"
-                class="w-full"
-                size="large"
-              />
-            </n-form-item>
-          </n-form>
-
-          <!-- Action buttons -->
-          <div class="flex gap-3 mt-auto pt-4">
-            <n-button size="large" class="flex-1" @click="onCancel">
+          <!-- Pinned Action buttons (always visible) -->
+          <div class="flex items-center gap-3 pt-3 border-t border-surface-line shrink-0 mt-2 bg-surface-section">
+            <n-button size="large" class="flex-1" round @click="onCancel">
               {{ $t('content.cancel') }}
             </n-button>
-            <n-button type="primary" size="large" class="flex-1" :loading="store.saveLoading" @click="onSubmit">
+            <n-button type="primary" size="large" class="flex-1 shadow-sm" round :loading="store.saveLoading" @click="onSubmit">
               {{ $t('content.save') }}
             </n-button>
           </div>
         </div>
 
         <!-- Right side - Map -->
-        <div class="flex-1 min-h-[400px] lg:min-h-0">
+        <div class="flex-1 h-full min-h-[420px] rounded-2xl overflow-hidden border border-surface-line bg-surface-ground">
           <div
             v-if="isFree"
-            class="h-full flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-surface-line text-center p-6"
+            class="h-full flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-surface-line bg-surface-section text-center p-8 m-3"
           >
-            <n-icon size="36" class="text-primary"><Location20Filled /></n-icon>
-            <span class="font-medium text-textColor1">{{ $t('departmentLocationPage.form.freeMode') }}</span>
-            <span class="text-sm text-textColor3 max-w-[420px]">{{ $t('departmentLocationPage.form.freeModeHint') }}</span>
+            <div class="flex size-16 items-center justify-center rounded-2xl bg-success/10 text-success">
+              <n-icon size="36"><Location20Filled /></n-icon>
+            </div>
+            <span class="text-base font-semibold text-textColor0">{{ $t('departmentLocationPage.form.freeMode') }}</span>
+            <span class="text-sm text-textColor3 max-w-[420px] leading-relaxed">{{ $t('departmentLocationPage.form.freeModeHint') }}</span>
           </div>
           <LocationMap
             v-else-if="!store.showLoading"
@@ -380,172 +420,3 @@
     </n-spin>
   </UIModal>
 </template>
-
-<style scoped>
-.department-card {
-  padding: 12px 14px;
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-  border: 1px solid #bae6fd;
-  border-radius: 8px;
-  margin-bottom: 12px;
-}
-
-.department-card__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: #0ea5e9;
-  color: white;
-}
-
-.department-card__title {
-  font-weight: 600;
-  font-size: 14px;
-  color: #0c4a6e;
-  line-height: 1.3;
-}
-
-.department-card__subtitle {
-  font-size: 12px;
-  color: #0369a1;
-  line-height: 1.3;
-}
-
-.geo-type-card {
-  padding: 10px 12px;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  margin-bottom: 12px;
-}
-
-.coordinates-card {
-  padding: 10px 12px;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  margin-bottom: 8px;
-}
-
-.polygon-card {
-  padding: 8px 10px;
-  border-radius: 6px;
-  border: 1px solid;
-  margin-bottom: 8px;
-}
-
-.polygon-card--success {
-  background: #f0fdf4;
-  border-color: #86efac;
-}
-
-.polygon-card--warning {
-  background: #fffbeb;
-  border-color: #fcd34d;
-}
-
-.polygon-card--error {
-  background: #fef2f2;
-  border-color: #fca5a5;
-}
-
-.polygon-card__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-}
-
-.polygon-card--success .polygon-card__icon {
-  background: #dcfce7;
-  color: #16a34a;
-}
-
-.polygon-card--warning .polygon-card__icon {
-  background: #fef3c7;
-  color: #d97706;
-}
-
-.polygon-card--error .polygon-card__icon {
-  background: #fee2e2;
-  color: #dc2626;
-}
-
-.polygon-card__title {
-  font-weight: 600;
-  font-size: 13px;
-  color: #475569;
-  line-height: 1.2;
-}
-
-.polygon-card__subtitle {
-  font-size: 11px;
-  color: #6b7280;
-  line-height: 1.2;
-}
-
-[data-theme='dark'] {
-  .department-card {
-    background: var(--surface-section);
-    border-color: var(--surface-line);
-  }
-
-  .department-card__icon {
-    background: var(--primary-color);
-  }
-
-  .department-card__title {
-    color: var(--textColor0);
-  }
-
-  .department-card__subtitle {
-    color: var(--textColor2);
-  }
-
-  .geo-type-card,
-  .coordinates-card {
-    border-color: var(--surface-line);
-  }
-
-  .polygon-card--success {
-    background: rgba(45, 203, 115, 0.08);
-    border-color: rgba(45, 203, 115, 0.4);
-  }
-
-  .polygon-card--warning {
-    background: rgba(253, 199, 0, 0.08);
-    border-color: rgba(253, 199, 0, 0.4);
-  }
-
-  .polygon-card--error {
-    background: rgba(231, 0, 10, 0.08);
-    border-color: rgba(231, 0, 10, 0.4);
-  }
-
-  .polygon-card--success .polygon-card__icon {
-    background: rgba(45, 203, 115, 0.16);
-    color: var(--success-color);
-  }
-
-  .polygon-card--warning .polygon-card__icon {
-    background: rgba(253, 199, 0, 0.16);
-    color: var(--warning-color);
-  }
-
-  .polygon-card--error .polygon-card__icon {
-    background: rgba(231, 0, 10, 0.16);
-    color: var(--danger-color);
-  }
-
-  .polygon-card__title {
-    color: var(--textColor0);
-  }
-
-  .polygon-card__subtitle {
-    color: var(--textColor3);
-  }
-}
-</style>

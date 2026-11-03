@@ -1,11 +1,15 @@
 <script setup>
+  import { computed } from 'vue'
   import { UITable } from '@/components/index.js'
   import { useDepartmentLocationStore } from '@/store/modules/index.js'
   import { useAccountStore } from '@/store/modules/app/accountStore.js'
-  import { Add16Filled, Eye16Regular, Delete20Regular } from '@vicons/fluent'
+  import { Add16Filled, Eye16Regular, Delete20Regular, Location20Filled, Building20Regular } from '@vicons/fluent'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
+
+  // Nuqtali ustun kalitlari uchun slot nomi — `#cell-a\.b` modifikator deb o'qiladi.
+  const SLOT_ORGANIZATION = 'cell-organization.name'
 
   const { t } = i18n.global
 
@@ -52,7 +56,7 @@
     {
       key: 'name',
       title: t('departmentLocationPage.table.department'),
-      minWidth: 200
+      minWidth: 220
     },
     {
       key: 'organization.name',
@@ -103,40 +107,42 @@
     permission-prefix="department-location"
     @change-page="changePage"
   >
+    <template #cell-name="{ row }">
+      <div class="flex items-center gap-2.5">
+        <div class="flex size-7 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <n-icon size="15"><Building20Regular /></n-icon>
+        </div>
+        <span class="font-medium text-textColor0 leading-5">{{ row.name }}</span>
+      </div>
+    </template>
+
+    <template #[SLOT_ORGANIZATION]="{ row }">
+      <span class="text-textColor1 text-xs">{{ row.organization?.name || '—' }}</span>
+    </template>
+
     <template #cell-locations="{ row }">
-      <button
+      <n-tag
         v-if="locationCount(row) > 0"
-        type="button"
-        class="dl-locations-link"
+        type="info"
+        round
+        size="small"
+        class="cursor-pointer transition-all hover:opacity-85 font-medium select-none shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
         @click.stop="onOpenLocation(row)"
       >
+        <template #icon>
+          <n-icon size="13"><Location20Filled /></n-icon>
+        </template>
         {{ $t('departmentLocationPage.locationCount', { n: locationCount(row) }) }}
-      </button>
-      <span v-else class="dl-locations-empty">
+      </n-tag>
+      <n-tag
+        v-else
+        size="small"
+        round
+        :bordered="false"
+        class="bg-surface-ground text-textColor3 text-xs select-none"
+      >
         {{ $t('departmentLocationPage.noLocation') }}
-      </span>
+      </n-tag>
     </template>
   </UITable>
 </template>
-
-<style scoped>
-  .dl-locations-link {
-    color: var(--primary-color);
-    font-size: 14px;
-    line-height: 20px;
-    cursor: pointer;
-    background: none;
-    border: 0;
-    padding: 0;
-  }
-
-  .dl-locations-link:hover {
-    text-decoration: underline;
-  }
-
-  .dl-locations-empty {
-    color: var(--textColor2);
-    font-size: 14px;
-    line-height: 20px;
-  }
-</style>

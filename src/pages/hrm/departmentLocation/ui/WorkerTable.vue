@@ -1,12 +1,17 @@
 <script setup>
   // Mobile face: xodimga bittalab o'tish joyi berish (org-scope backendda).
+  import { computed } from 'vue'
   import { UITable } from '@/components/index.js'
   import { useDepartmentLocationStore } from '@/store/modules/index.js'
   import { useAccountStore } from '@/store/modules/app/accountStore.js'
-  import { Add16Filled, Eye16Regular } from '@vicons/fluent'
+  import { Add16Filled, Eye16Regular, Location20Filled, Person20Filled, CheckmarkCircle20Regular } from '@vicons/fluent'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
+
+  // Nuqtali ustun kalitlari uchun slot nomi — `#cell-a\.b` modifikator deb o'qiladi.
+  const SLOT_DEPARTMENT = 'cell-department.name'
+  const SLOT_ORGANIZATION = 'cell-organization.name'
 
   const { t } = i18n.global
   const store = useDepartmentLocationStore()
@@ -22,10 +27,10 @@
   }
 
   const columns = computed(() => [
-    { key: 'worker', title: t('content.worker'), minWidth: 220 },
-    { key: 'department.name', title: t('departmentLocationPage.table.department'), minWidth: 180 },
+    { key: 'worker', title: t('content.worker'), minWidth: 240 },
+    { key: 'department.name', title: t('departmentLocationPage.table.department'), minWidth: 190 },
     { key: 'organization.name', title: t('departmentLocationPage.table.organization'), minWidth: 180 },
-    { key: 'locations', title: t('departmentLocationPage.table.hasLocation'), minWidth: 160 }
+    { key: 'locations', title: t('departmentLocationPage.table.hasLocation'), minWidth: 180 }
   ])
 
   const actions = computed(() => [
@@ -59,43 +64,60 @@
     @change-page="changePage"
   >
     <template #cell-worker="{ row }">
-      <span class="text-textColor0">{{ fullName(row) }}</span>
+      <div class="flex items-center gap-2.5">
+        <div class="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold text-xs">
+          <n-icon size="16"><Person20Filled /></n-icon>
+        </div>
+        <div class="flex flex-col min-w-0">
+          <span class="font-medium text-textColor0 leading-5 truncate">{{ fullName(row) }}</span>
+          <span v-if="row.post_name" class="text-xs text-textColor3 leading-4 truncate">{{ row.post_name }}</span>
+        </div>
+      </div>
     </template>
+
+    <template #[SLOT_DEPARTMENT]="{ row }">
+      <span class="text-textColor1 text-xs">{{ row.department?.name || '—' }}</span>
+    </template>
+
+    <template #[SLOT_ORGANIZATION]="{ row }">
+      <span class="text-textColor1 text-xs">{{ row.organization?.name || '—' }}</span>
+    </template>
+
     <template #cell-locations="{ row }">
-      <div class="flex items-center gap-2">
-        <button
+      <div class="flex items-center gap-2 flex-wrap">
+        <n-tag
           v-if="row.locations_count > 0"
-          type="button"
-          class="dl-locations-link"
+          type="info"
+          round
+          size="small"
+          class="cursor-pointer transition-all hover:opacity-85 font-medium select-none shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
           @click.stop="store.openWorkerLocations(row)"
         >
+          <template #icon>
+            <n-icon size="13"><Location20Filled /></n-icon>
+          </template>
           {{ $t('departmentLocationPage.locationCount', { n: row.locations_count }) }}
-        </button>
-        <span v-else class="dl-locations-empty">{{ $t('departmentLocationPage.noLocation') }}</span>
-        <n-tag v-if="row.free" size="small" round type="success">
+        </n-tag>
+        <n-tag
+          v-if="row.free"
+          size="small"
+          round
+          type="success"
+          class="gap-1 font-medium select-none"
+        >
+          <template #icon><n-icon size="13"><CheckmarkCircle20Regular /></n-icon></template>
           {{ $t('departmentLocationPage.freeBadge') }}
+        </n-tag>
+        <n-tag
+          v-if="row.locations_count === 0 && !row.free"
+          size="small"
+          round
+          :bordered="false"
+          class="bg-surface-ground text-textColor3 text-xs select-none"
+        >
+          {{ $t('departmentLocationPage.noLocation') }}
         </n-tag>
       </div>
     </template>
   </UITable>
 </template>
-
-<style scoped>
-  .dl-locations-link {
-    color: var(--primary-color);
-    font-size: 14px;
-    line-height: 20px;
-    cursor: pointer;
-    background: none;
-    border: 0;
-    padding: 0;
-  }
-  .dl-locations-link:hover {
-    text-decoration: underline;
-  }
-  .dl-locations-empty {
-    color: var(--textColor2);
-    font-size: 14px;
-    line-height: 20px;
-  }
-</style>
