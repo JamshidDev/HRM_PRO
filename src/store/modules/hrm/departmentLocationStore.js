@@ -44,6 +44,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     workerLocVisible: false,
     workerLocations: [],
     workerLocationsLoading: false,
+    deletingLocationId: null,
     payload: {
       department_id: null,
       worker_id: null,
@@ -398,6 +399,8 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.visible = true
     },
     _deleteWorkerLocation(id) {
+      // Qaysi joy o'chirilayotgani — oynada faqat o'sha qatorda loader aylanadi.
+      this.deletingLocationId = id
       this.deleteLoading = true
       $ApiService.departmentLocationService
         ._deleteWorkerLocation({ id })
@@ -408,6 +411,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
         })
         .finally(() => {
           this.deleteLoading = false
+          this.deletingLocationId = null
         })
     },
     // «Joy holati» filtri: 'areas' — joyi bor, 'unassigned' — joysiz, 'free' — erkin rejim,

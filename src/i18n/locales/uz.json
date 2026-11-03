@@ -6140,6 +6140,9 @@
     "emptyDepartment": "Bu bo'limga hali joylashuv belgilanmagan",
     "emptyDepartmentHint": "Xodimlar mobil ilovada qayerdan o'tishi mumkinligini xaritada belgilang.",
     "emptyFiltered": "Tanlangan filtr bo'yicha joylashuv topilmadi",
+    "showMap": "Xaritada ko'rish",
+    "hideMap": "Xaritani yopish",
+    "emptyWorker": "Xodimga hali alohida joylashuv berilmagan",
     "copyCoords": "Koordinatani nusxalash",
     "stats": {
       "organizations": "Korxonalar",

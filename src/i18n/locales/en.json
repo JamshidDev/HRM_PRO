@@ -6079,6 +6079,9 @@
     "emptyDepartment": "No entry point set for this department yet",
     "emptyDepartmentHint": "Mark on the map where employees can check in from the mobile app.",
     "emptyFiltered": "No places match the selected filter",
+    "showMap": "Show on map",
+    "hideMap": "Hide map",
+    "emptyWorker": "No personal entry point assigned yet",
     "copyCoords": "Copy coordinates",
     "stats": {
       "organizations": "Organizations",
