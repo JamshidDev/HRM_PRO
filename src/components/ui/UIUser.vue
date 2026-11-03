@@ -57,7 +57,10 @@
     () => `${props.data?.lastName}.${props.data?.firstName?.[0]}.${props.data?.middleName?.[0]} `
   )
 
+  // Rasm yo'q bo'lsa (placeholder ko'rinadi) yoki `avatarClickable` o'chiq bo'lsa — ko'ruvchi ochilmaydi,
+  // aks holda bo'sh rasm bilan ochilardi.
   const onOpen = () => {
+    if (!props.avatarClickable || !props.data?.photo) return
     window.$openViewer(props.data.photo)
   }
 </script>
