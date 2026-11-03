@@ -502,7 +502,9 @@ const commandStoreOptions = {
       if (this.recipientType === 'pensioner') return this._pensioners(infinity)
       this.workerLoading = true
       let params = {
-        ...this.workerParams
+        ...this.workerParams,
+        // 80 — FXSH bekor qilish: faqat FXSH lavozimidagi xodimlar.
+        ...(this.payload.command_type === 80 ? { position_type: 2 } : {})
       }
       // 🔴 POYGA HIMOYASI: qidiruv (har harfda), ochilish (search=null) va scroll
       // so'rovlari ketma-ket ketadi, javoblar istalgan tartibda qaytadi —

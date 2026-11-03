@@ -438,8 +438,20 @@
       if (v.length > 0) store._cancelCommands()
     }
   }
+  // 80 (faqat FXSH) ga kirish/chiqishda xodim ro'yxati boshqa filtr bilan qayta yuklanadi.
+  let prevCommandType = store.payload.command_type ?? null
+  const CIVIL_CANCEL_TYPE = 80
   const onChangeCommandType = () => {
     const commandId = store.payload.command_type
+    const civilSwitched = (prevCommandType === CIVIL_CANCEL_TYPE) !== (commandId === CIVIL_CANCEL_TYPE)
+    prevCommandType = commandId
+    if (civilSwitched) {
+      store.payload.worker = null
+      store.payload.workers = []
+      store.workerParams.page = 1
+      store.workerParams.search = null
+      if (store.workerParams.organization_id) store._workers()
+    }
     // Pensioner rejimi FAQAT 73 uchun. Boshqa turga o'tilsa xodimga qaytariladi,
     // aks holda select pensionerlarni yuklashda davom etardi.
     if (commandId !== 73 && store.recipientType !== 'worker') {
