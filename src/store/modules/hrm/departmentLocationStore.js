@@ -15,6 +15,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     visibleType: true,
     viewVisible: false,
     viewData: null,
+    viewRow: null,
     viewLoading: false,
     elementId: null,
     totalItems: 0,
@@ -219,8 +220,10 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.deleteLoading = true
       $ApiService.departmentLocationService
         ._delete({ id: this.elementId })
-        .then((res) => {
+        .then(() => {
           this.visible = false
+          // Ko'rish oynasidan o'chirilganda — u ham yopiladi.
+          this.viewVisible = false
           this._stats()
           if (this.activeTab === 'departments') {
             this._index()
@@ -256,6 +259,9 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.visible = true
     },
     openViewModal(item) {
+      // Jadval qatori: `_show` javobida bo'lim/tashkilot yo'q — ular shu yerdan olinadi,
+      // «Tahrirlash» ham shu qator bilan ochiladi.
+      this.viewRow = item
       this.viewData = null
       this.viewVisible = true
       this.viewLoading = true

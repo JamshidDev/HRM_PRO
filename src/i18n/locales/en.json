@@ -6067,6 +6067,7 @@
     "createTitle": "Add Location",
     "updateTitle": "Edit Location",
     "attachTitle": "Attach Location",
+    "viewTitle": "View location",
     "addLocation": "Add Location",
     "locationExists": "Yes",
     "locationNotExists": "No",
