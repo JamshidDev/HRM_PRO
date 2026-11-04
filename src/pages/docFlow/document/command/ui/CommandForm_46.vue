@@ -13,6 +13,22 @@
   const formRef = ref(null)
   const lastVacationRef = ref(null)
   const { t } = i18n.global
+
+  // «Qo'shimcha ta'til kuni» alohida input emas — «Qo'shimchalar» ro'yxatidan tanlanadi (41-buyruqdagidek).
+  const SECOND_DAY_ID = 'second_day'
+  const additionalOptions = computed(() => [
+    { id: SECOND_DAY_ID, name: t('documentPage.command.form.second_day') },
+    ...componentStore.vacationAdditional
+  ])
+  const secondDay = () =>
+    store.form_46.addList.find((v) => v.id === SECOND_DAY_ID)?.day ?? 0
+  const additionalItems = () =>
+    store.form_46.addList
+      .filter((v) => v.id !== SECOND_DAY_ID)
+      .map((v) => ({ id: v.id, value: v.day }))
+  const itemName = (item) =>
+    item.id === SECOND_DAY_ID ? t('documentPage.command.form.second_day') : item.name
+
   const onSubmit = async (mainData) => {
     let data = null
     await formRef.value?.validate(async (error) => {
@@ -34,8 +50,8 @@
 
           from: Utils.timeToZone(store.form_46.from),
           main_day: store.form_46.main_day,
-          second_day: store.form_46.second_day,
-          additional: store.form_46.addList.map((x) => ({ id: x.id, value: x.day })),
+          second_day: secondDay(),
+          additional: additionalItems(),
 
           half_one_day: store.form_46.half_one_day,
           half_two_base: store.form_46.half_two_base === 2,
@@ -61,11 +77,12 @@
 
   const onChange = (id) => {
     if (!id) return
-    const item = componentStore.vacationAdditional.filter((x) => x.id === id)[0]
-    store.form_46.addList.push({
-      ...item,
-      day: 0
-    })
+    if (!store.form_46.addList.some((x) => x.id === id)) {
+      const item = additionalOptions.value.find((x) => x.id === id)
+      store.form_46.addList.push({ ...item, day: 0 })
+    }
+    // Select faqat qo'shish uchun — tanlov tozalanadi, o'chirilgan band qayta tanlanadi.
+    nextTick(() => (store.form_46.additional = null))
   }
 
   const onCalculate = () => {
@@ -78,11 +95,8 @@
       id: store.payload.worker,
       from: Utils.timeToZone(store.form_46.from),
       main_day: store.form_46.main_day,
-      second_day: store.form_46.second_day,
-      additional: store.form_46.addList.map((v) => ({
-        id: v.id,
-        value: v.day
-      }))
+      second_day: secondDay(),
+      additional: additionalItems()
     }
     store.calculateLoading = true
     $ApiService.vacationService
@@ -155,6 +169,11 @@
 
   onMounted(() => {
     componentStore._enums()
+    // Eski holatda (alohida input) kiritilgan qo'shimcha kun ro'yxatga o'tkaziladi.
+    const legacy = Number(store.form_46.second_day) || 0
+    if (legacy > 0 && !store.form_46.addList.some((x) => x.id === SECOND_DAY_ID)) {
+      store.form_46.addList.unshift({ id: SECOND_DAY_ID, day: legacy })
+    }
   })
 </script>
 
@@ -194,17 +213,7 @@
         <n-input-number class="w-full" min="0" max="100" v-model:value="store.form_46.main_day" />
       </n-form-item>
     </div>
-    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
-      <n-form-item
-        :show-feedback="false"
-        :label="$t(`documentPage.command.form.second_day`)"
-        path="second_day"
-        :rule-path="validationRules.rulesNames.requiredNumberField"
-      >
-        <n-input-number class="w-full" min="0" max="100" v-model:value="store.form_46.second_day" />
-      </n-form-item>
-    </div>
-    <div class="col-span-12 @xl:col-span-6 @4xl:col-span-6">
+    <div class="col-span-12 @xl:col-span-12 @4xl:col-span-8">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.additional`)"
@@ -213,7 +222,7 @@
         <n-select
           v-model:value="store.form_46.additional"
           filterable
-          :options="componentStore.vacationAdditional"
+          :options="additionalOptions"
           label-field="name"
           value-field="id"
           :loading="componentStore.enumLoading"
@@ -226,9 +235,9 @@
         <div
           class="flex justify-between items-center w-full bg-surface-section border border-surface-line mt-2 px-2 py-1 rounded-md"
         >
-          <span class="text-xs font-semibold">{{ subItem.name }}</span>
+          <span class="text-xs font-semibold">{{ itemName(subItem) }}</span>
           <span class="w-[150px] min-w-[120px] flex gap-4">
-            <n-input-number v-model:value="subItem.day"></n-input-number>
+            <n-input-number v-model:value="subItem.day" :min="0" :precision="0"></n-input-number>
             <n-button @click="onRemove(subItem.id)" circle type="error" secondary>
               <template #icon>
                 <DismissCircle20Filled />
