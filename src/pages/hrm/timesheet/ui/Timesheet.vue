@@ -100,6 +100,28 @@
 
   onBeforeUnmount(() => clearTimeout(searchTimer))
 
+  /* «Tabel» ustuni: tabel raqami joyida tahrirlanadi, 600 ms debounce bilan saqlanadi. */
+  const tableDraft = ref({})
+  const tableSaving = ref({})
+  const tableTimers = {}
+  const onlyDigits = (v) => /^\d*$/.test(v)
+  const tableValue = (item) => tableDraft.value[item.id] ?? item.table ?? ''
+  const onTableInput = (item, value) => {
+    tableDraft.value[item.id] = value
+    clearTimeout(tableTimers[item.id])
+    tableTimers[item.id] = setTimeout(async () => {
+      if ((value || null) === (item.table || null)) return
+      tableSaving.value[item.id] = true
+      try {
+        await store.updateTableNumber(item.id, value)
+        // Saqlash davomida yana yozilgan bo'lsa qoralama qoladi — keyingi saqlashni kutadi.
+        if (tableDraft.value[item.id] === value) delete tableDraft.value[item.id]
+      } finally {
+        tableSaving.value[item.id] = false
+      }
+    }, 600)
+  }
+  onBeforeUnmount(() => Object.values(tableTimers).forEach(clearTimeout))
 
   /* ------------------------------------------------------------------------
    * Qator amallari (3 nuqta) va «Auto hisoblash».
@@ -1309,8 +1331,17 @@
                 </n-dropdown>
               </div>
 
-              <div class="ts-c-table no-selectable-item">
-                <span class="ts-table-no">{{ item.table }}</span>
+              <div class="ts-c-table no-selectable-item" @mousedown.stop>
+                <n-input
+                  :allow-input="onlyDigits"
+                  :loading="tableSaving[item.id]"
+                  :maxlength="20"
+                  :placeholder="$t('timesheetPage.tableNoPh')"
+                  :value="tableValue(item)"
+                  class="ts-table-input"
+                  size="small"
+                  @update:value="(v) => onTableInput(item, v)"
+                />
               </div>
 
               <div
@@ -2617,6 +2648,10 @@
   .ts-table-no {
     font-size: 12px;
     color: var(--fig-text-secondary);
+  }
+  .ts-table-input {
+    width: 100%;
+    font-variant-numeric: tabular-nums;
   }
 
   /* Katakcha burchagidagi tafsilot tugmasi.

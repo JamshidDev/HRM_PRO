@@ -481,6 +481,19 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
       }
     },
 
+    // Tabel raqamini saqlaydi; muvaffaqiyatli bo'lsa qatordagi qiymat ham yangilanadi.
+    async updateTableNumber(workerPositionId, value) {
+      const res = await $ApiService.timesheetWorkerService._update_table_number({
+        id: this.elementId,
+        workerPositionId,
+        data: { table_number: value || null }
+      })
+      const table = res.data?.data?.table ?? null
+      const row = this.list.find((w) => w.id === workerPositionId)
+      if (row) row.table = table
+      return table
+    },
+
     async dayDetail(workerPositionId, date) {
       const res = await $ApiService.timesheetWorkerService._day_detail({
         id: this.elementId,
