@@ -53,11 +53,14 @@
   /* --- Ma'lumot ----------------------------------------------------------- */
   const detail = ref(null)
   const loading = ref(false)
+  // Tungi smena: chizmada qaysi kun ko'rsatiladi (0 — boshlangan kun, 1 — ertasi).
+  const partIdx = ref(0)
 
   const load = async () => {
     if (!props.visible || !props.worker?.id || !props.date) return
     loading.value = true
     detail.value = null
+    partIdx.value = 0
     try {
       detail.value = props.loader
         ? await props.loader(props.worker.id, props.date)
@@ -161,6 +164,67 @@
   }
   const isMobileEvent = (e) => String(e?.auth_type || '').toLowerCase().includes('mobile')
 
+  /* --- Tungi smena: ikki kun alohida ------------------------------------- */
+  const nightParts = computed(() => detail.value?.night?.parts ?? null)
+  // Vaqtni [kun 00:00, kun 24:00] ga qirqish ('YYYY-MM-DD 24:00:00' — kun oxiri).
+  const clipToDay = (v, date, isEnd) => {
+    const s = String(v)
+    if (s.slice(0, 10) < date) return `${date} 00:00:00`
+    if (s.slice(0, 10) > date) return isEnd ? `${date} 24:00:00` : null
+    return s
+  }
+  // Chizma va jadval uchun kun: oddiy kunda — o'zi, tungi smenada — tanlangan qismi.
+  const shown = computed(() => {
+    const d = detail.value
+    const p = nightParts.value?.[partIdx.value]
+    if (!d || !p) return d
+    const segments = (d.segments ?? [])
+      .map((sg) => {
+        if (!sg.to) return String(sg.from).slice(0, 10) === p.date ? sg : null
+        const from = clipToDay(sg.from, p.date, false)
+        const to = clipToDay(sg.to, p.date, true)
+        if (!from || !to || to <= from) return null
+        return { ...sg, from, to, minutes: minOfDay(to) - minOfDay(from) }
+      })
+      .filter(Boolean)
+    return {
+      ...d,
+      schedule: { ...d.schedule, start_time: p.from, end_time: p.to === '24:00' ? '00:00' : p.to },
+      // Shu kun qismining tanaffusi (grafikda ko'rsatilmagan bo'lsa null).
+      planned_break: p.break ?? null,
+      segments,
+      events: (d.events ?? []).filter((e) => String(e.at).startsWith(p.date)),
+      plan_minutes: p.plan_minutes,
+      counted_minutes: p.counted_minutes,
+      outside_minutes: p.outside_minutes,
+      fact_minutes: segments
+        .filter((sg) => sg.type === 'work' && sg.to)
+        .reduce((a, sg) => a + (sg.minutes ?? 0), 0)
+    }
+  })
+  const nightChips = computed(() =>
+    (nightParts.value ?? []).map((p, i) => ({
+      i,
+      date: dayjs(p.date).format('DD.MM'),
+      range: `${p.from} – ${p.to}`,
+      counted: minutesToWords(p.counted_minutes)
+    }))
+  )
+  const nightTotal = computed(() =>
+    detail.value?.night
+      ? {
+          hours: minutesToWords(detail.value.counted_minutes),
+          date: dayjs(detail.value.date).format('DD.MM')
+        }
+      : null
+  )
+  const evDayStarts = (i) => {
+    const list = detail.value?.events ?? []
+    return i === 0 || String(list[i].at).slice(0, 10) !== String(list[i - 1].at).slice(0, 10)
+  }
+  const continuationOf = computed(() => detail.value?.continuation_of ?? null)
+  const openContinuation = () => emit('update:date', continuationOf.value)
+
   /* --- Chizma geometriyasi ------------------------------------------------
    * Maketda soat kengligi 64px. Chetki otstup maketdagi 16px dan 24px ga
    * kattalashtirildi: soat yorlig'i o'z chizig'ida MARKAZLASHADI, ya'ni
@@ -180,7 +244,7 @@
   )
 
   const workWindow = computed(() => {
-    const sch = detail.value?.schedule
+    const sch = shown.value?.schedule
     if (!sch?.start_time) return null
     const a = hhmmToMin(sch.start_time)
     let b = hhmmToMin(sch.end_time, true) ?? 1440
@@ -188,7 +252,7 @@
     return [a, b]
   })
   const lunchWindow = computed(() => {
-    const br = detail.value?.planned_break
+    const br = shown.value?.planned_break
     if (!br) return null
     const a = hhmmToMin(br.start_time)
     const b = hhmmToMin(br.end_time, true)
@@ -230,7 +294,7 @@
    * Qoida eski oynadagi bilan bir xil: grafik oynasiga tushgan, tushlikdan
    * tashqari qism. Farqi — foizlar emas, piksellar (o'q gorizontal). */
   const intervals = computed(() =>
-    (detail.value?.segments ?? [])
+    (shown.value?.segments ?? [])
       .filter((sg) => sg.type === 'work' && sg.to)
       .map((sg) => {
         const a = minOfDay(sg.from)
@@ -310,7 +374,7 @@
 
   const marks = computed(() => {
     const used = usedAt.value
-    const raw = (detail.value?.events ?? [])
+    const raw = (shown.value?.events ?? [])
       .map((e) => ({
         at: String(e.at),
         s: secOfDay(e.at),
@@ -609,15 +673,24 @@
       {
         key: 'time',
         label: t('timesheetPage.planTime'),
-        value:
-          sch?.start_time && sch?.end_time
+        // Tungi smenada butun smena: 20:00 – 08:00 (ertasi).
+        value: d?.night
+          ? `${hm(d.night.start_at)} – ${hm(d.night.end_at)} (${dayjs(d.night.end_at).format('DD.MM')})`
+          : sch?.start_time && sch?.end_time
             ? `${sch.start_time.slice(0, 5)} – ${sch.end_time.slice(0, 5)}`
             : t('timesheetPage.notSet')
       },
       {
         key: 'lunch',
         label: t('timesheetPage.lgLunch'),
-        value: br ? `${br.start_time.slice(0, 5)} – ${br.end_time.slice(0, 5)}` : t('timesheetPage.notSet')
+        value: d?.night
+          ? d.night.parts
+              .filter((p) => p.break)
+              .map((p) => `${p.break.start_time} – ${p.break.end_time}`)
+              .join(', ') || t('timesheetPage.notSet')
+          : br
+            ? `${br.start_time.slice(0, 5)} – ${br.end_time.slice(0, 5)}`
+            : t('timesheetPage.notSet')
       },
       {
         key: 'plan',
@@ -953,6 +1026,35 @@
               </div>
             </div>
 
+            <!-- Tungi smena: ikki kun alohida, jami boshlangan kunga yoziladi -->
+            <div v-if="continuationOf" class="tsd-night-note">
+              <span>
+                {{ $t('timesheetPage.nightContinuation', { date: dayjs(continuationOf).format('DD.MM.YYYY') }) }}
+              </span>
+              <button class="tsd-night-link" type="button" @click="openContinuation">
+                {{ $t('timesheetPage.openShiftStart') }}
+              </button>
+            </div>
+            <div v-if="nightParts" class="tsd-night">
+              <span class="tsd-night-label">{{ $t('timesheetPage.nightShift') }}</span>
+              <div class="tsd-view">
+                <button
+                  v-for="c in nightChips"
+                  :key="c.i"
+                  :class="{ 'is-on': partIdx === c.i }"
+                  class="tsd-view-btn"
+                  type="button"
+                  @click="partIdx = c.i"
+                >
+                  <b>{{ c.date }}</b> · {{ c.range }} · {{ c.counted }}
+                </button>
+              </div>
+              <span class="tsd-night-total">{{ $t('timesheetPage.nightTotal', nightTotal) }}</span>
+            </div>
+            <div v-if="detail?.night?.needs_check" class="tsd-night-note is-warn">
+              {{ $t('timesheetPage.needsCheckNote') }}
+            </div>
+
             <!-- ② Kun bo'ylab — gorizontal vaqt o'qi -->
             <section class="tsd-card">
               <div class="tsd-card-head">
@@ -1244,11 +1346,11 @@
                   <span class="tsd-calc-ranges">{{ $t('content.count') }}</span>
                   <span class="tsd-calc-n">
                     <em>{{ $t('timesheetPage.inside') }}</em>
-                    {{ minutesToWords(detail?.fact_minutes) }}
+                    {{ minutesToWords(shown?.fact_minutes) }}
                   </span>
                   <span class="tsd-calc-n is-counted">
                     <em>{{ $t('timesheetPage.countedShort') }}</em>
-                    {{ minutesToWords(detail?.counted_minutes) }}
+                    {{ minutesToWords(shown?.counted_minutes) }}
                   </span>
                 </div>
               </div>
@@ -1300,22 +1402,26 @@
                 <div v-if="!detail?.events?.length" class="tsd-calc-empty">
                   {{ $t('timesheetPage.noEvents') }}
                 </div>
-                <div
-                  v-for="(e, i) in detail?.events ?? []"
-                  :key="`e-${i}`"
-                  :class="{ 'is-marked': markedAt.has(String(e.at)) }"
-                  class="tsd-ev-row"
-                >
-                  <span class="tsd-ev-time">{{ exact(e.at) }}</span>
-                  <span :class="e.direction ? 'is-in' : 'is-out'" class="tsd-ev-dir">
-                    <i class="tsd-ev-dot"></i>
-                    {{ e.direction ? $t('timesheetPage.enter') : $t('timesheetPage.exit') }}
-                  </span>
-                  <span class="tsd-ev-dev">
-                    {{ e.device_name || '—' }}
-                    <em v-if="isMobileEvent(e)">{{ $t('timesheetPage.srcMobile') }}</em>
-                  </span>
-                </div>
+                <template v-for="(e, i) in detail?.events ?? []" :key="`e-${i}`">
+                  <!-- Tungi smenada hodisalar kun sarlavhasi bilan ajratiladi -->
+                  <div v-if="nightParts && evDayStarts(i)" class="tsd-ev-day">
+                    {{ dayjs(e.at).format('DD.MM.YYYY') }}
+                  </div>
+                  <div
+                    :class="{ 'is-marked': markedAt.has(String(e.at)) }"
+                    class="tsd-ev-row"
+                  >
+                    <span class="tsd-ev-time">{{ exact(e.at) }}</span>
+                    <span :class="e.direction ? 'is-in' : 'is-out'" class="tsd-ev-dir">
+                      <i class="tsd-ev-dot"></i>
+                      {{ e.direction ? $t('timesheetPage.enter') : $t('timesheetPage.exit') }}
+                    </span>
+                    <span class="tsd-ev-dev">
+                      {{ e.device_name || '—' }}
+                      <em v-if="isMobileEvent(e)">{{ $t('timesheetPage.srcMobile') }}</em>
+                    </span>
+                  </div>
+                </template>
               </div>
             </section>
           </aside>
@@ -2616,6 +2722,73 @@
       color: var(--fig-text-tertiary);
       background: var(--fig-bg-tertiary);
     }
+  }
+
+  /* ── Tungi smena: kunlar tanlovi va izohlar ──────────────────────────── */
+  .tsd-night {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    align-items: center;
+
+    .tsd-view {
+      flex-wrap: wrap;
+      flex-shrink: 1;
+    }
+
+    .tsd-view-btn b {
+      color: var(--fig-text-primary);
+    }
+  }
+
+  .tsd-night-label,
+  .tsd-night-total {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    color: var(--fig-text-tertiary);
+  }
+
+  .tsd-night-total {
+    margin-left: auto;
+    color: var(--fig-text-primary);
+  }
+
+  .tsd-night-note {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    align-items: center;
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--fig-text-primary);
+    background: var(--fig-bg-tertiary);
+    border-radius: 10px;
+
+    &.is-warn {
+      color: var(--fig-chip-amber-text);
+      background: var(--fig-amber-100);
+    }
+  }
+
+  .tsd-night-link {
+    padding: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fig-text-brand);
+    text-decoration: underline;
+    cursor: pointer;
+    background: none;
+    border: 0;
+  }
+
+  .tsd-ev-day {
+    min-width: 264px;
+    padding: 8px 0 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--fig-text-tertiary);
   }
 
   /* ── Hodisalar jadvali ───────────────────────────────────────────────── */
