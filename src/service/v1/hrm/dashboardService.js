@@ -90,9 +90,19 @@ const _activity = async (payload) => {
   return await axios.get(`/v1/hr/dashboard/activity`, { params: payload?.params })
 }
 
+// Hujjatlar holati: organizations filtri.
+const _documents = async (payload) => {
+  return await axios.get(`/v1/hr/dashboard/documents`, { params: payload?.params })
+}
+
 // Top korxonalar reytingi: period=7|30|all + organizations.
 const _activityOrganizations = async (payload) => {
   return await axios.get(`/v1/hr/dashboard/activity/organizations`, { params: payload?.params })
+}
+
+// Top korxonalar reytingini Excel'ga eksport (fon topshirig'i).
+const _activityOrganizationsExport = async (payload) => {
+  return await axios.post(`/v1/hr/dashboard/activity/organizations-export`, payload?.data)
 }
 
 // Bitta korxona: so'nggi 30 kun va oxirgi amallar.
@@ -104,7 +114,9 @@ export default {
   _overview,
   _orgRating,
   _activity,
+  _documents,
   _activityOrganizations,
+  _activityOrganizationsExport,
   _activityOrganization,
   _auditCounts,
   _auditPreview,

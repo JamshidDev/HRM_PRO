@@ -1865,6 +1865,17 @@
       "reference_date": "Ma’lumotnoma sanasi",
       "reference_number": "Ma’lumotnoma raqami"
     },
+    "form_80": {
+      "civil_contract_number": "Shartnoma raqami",
+      "civil_contract_date": "Shartnoma tuzilgan sana",
+      "civil_contract_kind": "Shartnoma turi",
+      "kind_contract": "Pudrat",
+      "kind_service": "Xizmat ko‘rsatish",
+      "civil_cancel_date": "Bekor qilish sanasi",
+      "hr_worker": "Kadrlar bo‘limi mas’ul xodimi",
+      "contract_found": "Xodimning FXSH shartnomasi topildi — raqam va sana to‘ldirildi",
+      "contract_not_found": "Xodimda FXSH shartnomasi topilmadi — raqam va sanani qo‘lda kiriting"
+    },
     "form_79": {
       "mentor": "Murabbiy",
       "mentor_date": "Murabbiy biriktirilgan sana",
@@ -3017,8 +3028,6 @@
       }
     },
     "activity": {
-      "title": "Korxonalar faolligi",
-      "subtitle": "Korxonalardagi o'zgarishlar tahlili — oy kesimida",
       "export": "Yuklash",
       "totalActions": "Jami amallar",
       "activeUsers": "Faol ma’sullar",
@@ -3179,6 +3188,15 @@
         "score": "Ball",
         "logs": "Loglar"
       }
+    },
+    "documents": {
+      "commands": "Buyruqlar",
+      "contracts": "Mehnat shartnomalari",
+      "contract_additional": "Qo'shimcha kelishuvlar",
+      "worker_applications": "Arizalar",
+      "process": "Jarayonda",
+      "rejected": "Rad etilgan",
+      "problem": "Muammoli"
     }
   },
   "applicationPage": {

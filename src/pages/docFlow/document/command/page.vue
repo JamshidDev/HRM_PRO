@@ -1,4 +1,5 @@
 <script setup>
+  import { useRoute } from 'vue-router'
   import {
     useAccountStore,
     useCommandStore,
@@ -17,6 +18,7 @@
   import Filter from './ui/Filter.vue'
   import { Events, eventBus } from '@utils'
 
+  const route = useRoute()
   const officeAppRef = ref(null)
   const store = useCommandStore()
   const componentStore = useComponentStore()
@@ -62,6 +64,9 @@
   onMounted(() => {
     eventBus.on(Events.COMMAND_GENERATED, updateDocument)
     if (!accStore.checkAction(accStore.pn.hrCommandsRead)) return
+    if (route.query.confirmation) {
+      store.params.confirmation = Number(route.query.confirmation)
+    }
     store._index()
   })
 

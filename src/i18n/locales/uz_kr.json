@@ -1723,6 +1723,17 @@
       "orgType": "Ташкилот тури",
       "to_organization": "Ташкилот номи"
     },
+    "form_80": {
+      "civil_contract_number": "Шартнома рақами",
+      "civil_contract_date": "Шартнома тузилган сана",
+      "civil_contract_kind": "Шартнома тури",
+      "kind_contract": "Пудрат",
+      "kind_service": "Хизмат кўрсатиш",
+      "civil_cancel_date": "Бекор қилиш санаси",
+      "hr_worker": "Кадрлар бўлими масъул ходими",
+      "contract_found": "Ходимнинг ФҲШ шартномаси топилди — рақам ва сана тўлдирилди",
+      "contract_not_found": "Ходимда ФҲШ шартномаси топилмади — рақам ва санани қўлда киритинг"
+    },
     "form_8": {
       "pin": "Бўшатилган ходим ЖШШИР (ПИНФЛ)",
       "pinPlaceholder": "14 хонали ЖШШИР",
@@ -2744,8 +2755,6 @@
       }
     },
     "activity": {
-      "title": "Корхоналар фаоллиги",
-      "subtitle": "Корхоналардаги ўзгаришлар таҳлили — ой кесимида",
       "export": "Юклаш",
       "totalActions": "Жами амаллар",
       "activeUsers": "Фаол масъуллар",
@@ -2906,6 +2915,15 @@
         "score": "Балл",
         "logs": "Логлар"
       }
+    },
+    "documents": {
+      "commands": "Буйруқлар",
+      "contracts": "Меҳнат шартномалари",
+      "contract_additional": "Қўшимча келишувлар",
+      "worker_applications": "Аризалар",
+      "process": "Жараёнда",
+      "rejected": "Рад этилган",
+      "problem": "Муаммоли"
     }
   },
   "applicationPage": {

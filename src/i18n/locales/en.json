@@ -1849,6 +1849,17 @@
       "reference_date": "Certificate date",
       "reference_number": "Certificate number"
     },
+    "form_80": {
+      "civil_contract_number": "Contract number",
+      "civil_contract_date": "Contract date",
+      "civil_contract_kind": "Contract kind",
+      "kind_contract": "Work contract",
+      "kind_service": "Service contract",
+      "civil_cancel_date": "Cancellation date",
+      "hr_worker": "HR responsible employee",
+      "contract_found": "Employee's civil-law contract found — number and date filled in",
+      "contract_not_found": "No civil-law contract found — enter the number and date manually"
+    },
     "form_79": {
       "mentor": "Mentor",
       "mentor_date": "Mentor assignment date",
@@ -2997,8 +3008,6 @@
       }
     },
     "activity": {
-      "title": "Organization activity",
-      "subtitle": "Analysis of changes in organizations — by month",
       "export": "Download",
       "totalActions": "Total actions",
       "activeUsers": "Active users",
@@ -3159,6 +3168,15 @@
         "score": "Score",
         "logs": "Logs"
       }
+    },
+    "documents": {
+      "commands": "Orders",
+      "contracts": "Employment contracts",
+      "contract_additional": "Additional agreements",
+      "worker_applications": "Applications",
+      "process": "In progress",
+      "rejected": "Rejected",
+      "problem": "Problematic"
     }
   },
   "applicationPage": {

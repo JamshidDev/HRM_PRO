@@ -1,4 +1,5 @@
 <script setup>
+  import { useRoute } from 'vue-router'
   import Table from './Table.vue'
   import adContractForm from './adContractForm.vue'
   import {
@@ -25,6 +26,7 @@
   import Filter from './ui/Filter.vue'
   import ResendSignersModal from '@/pages/docFlow/document/command/ResendSignersModal.vue'
 
+  const route = useRoute()
   const componentStore = useComponentStore()
   const store = useAdContractStore()
   const accStore = useAccountStore()
@@ -84,6 +86,9 @@
 
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.hrContractAdditionalRead)) return
+    if (route.query.confirmation) {
+      store.params.confirmation = Number(route.query.confirmation)
+    }
     store._index()
   })
 
