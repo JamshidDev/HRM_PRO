@@ -111,6 +111,7 @@
     const res = await store.autoCalc([item.id])
     if (!res) return
     message.success(t('timesheetPage.autoCalcDone'))
+    if (res.checks) message.warning(t('timesheetPage.needsCheckCount', { n: res.checks }))
   }
 
   /* ------------------------------------------------------------------------
@@ -284,6 +285,7 @@
     const res = await store.autoCalc()
     if (!res) return
     message.success(t('timesheetPage.autoCalcDone'))
+    if (res.checks) message.warning(t('timesheetPage.needsCheckCount', { n: res.checks }))
   }
 
   // Qoidalar modali — hisoblash qanday ishlashini ko'rsatadi.
@@ -1316,7 +1318,8 @@
                 :class="{
                   'is-rest': !dayDetails(item, day)?.length && isWeekend(day),
                   'is-empty': !dayDetails(item, day)?.length && !isWeekend(day),
-                  'is-edited': cellDiff(item, day)
+                  'is-edited': cellDiff(item, day),
+                  'is-check': store.calcBase[`${item.id}|${day.day}`]?.needs_check
                 }"
                 :data-col="col"
                 :data-row="row"
@@ -1354,6 +1357,13 @@
                     </template>
                   </span>
                 </template>
+                <span
+                  v-if="!dayDetails(item, day)?.length && store.nightCont[`${item.id}|${day.day}`]"
+                  :title="$t('timesheetPage.nightContCell')"
+                  class="ts-cell-cont"
+                >
+                  ↳
+                </span>
                 <template v-if="cellDiff(item, day)">
                   <span
                     v-if="cellDiff(item, day).diff"
@@ -3805,6 +3815,17 @@
     }
     &.is-empty {
       color: var(--fig-text-disable);
+    }
+    /* Tungi smena davomi — soat oldingi kunga yozilgan. */
+    .ts-cell-cont {
+      font-size: 13px;
+      line-height: 16px;
+      color: var(--fig-text-tertiary);
+    }
+    /* Tungi smenada kirish/chiqish yo'q — tabelchi tekshirishi kerak. */
+    &.is-check {
+      background: rgba(245, 158, 11, 0.14);
+      box-shadow: inset 0 0 0 1.5px rgba(245, 158, 11, 0.85);
     }
     /* Saqlanmagan katakcha ALOHIDA belgilanmaydi — rangsiz tur to'q qora
        bo'lib qolishi kerak. Nechta katak kutayotgani pastki paneldagi
