@@ -1500,7 +1500,8 @@
       "command_type": "Буйруқ тури",
       "worker": "Ходимни танланг",
       "command_status": "Шартнома асосида буйруқ яратиш учун белгиланг",
-      "organization": "Корхона"
+      "organization": "Корхона",
+      "cancel_reason": "Бекор қилиш сабаби"
     },
     "signature": {
       "history": "Ўзгаришлар тарихини кўриш",

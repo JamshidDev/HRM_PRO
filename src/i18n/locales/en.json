@@ -1614,7 +1614,8 @@
       "worker": "Select employee",
       "pensioner": "Select pensioner",
       "command_status": "Mark to create order based on contract",
-      "organization": "Organization"
+      "organization": "Organization",
+      "cancel_reason": "Cancellation reason"
     },
     "signature": {
       "history": "View change history",

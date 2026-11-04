@@ -1630,7 +1630,8 @@
       "worker": "Xodimni tanlang",
       "pensioner": "Pensionerni tanlang",
       "command_status": "Shartnoma asosida buyruq yaratish uchun belgilang",
-      "organization": "Korxona"
+      "organization": "Korxona",
+      "cancel_reason": "Bekor qilish sababi"
     },
     "signature": {
       "history": "O'zgarishlar tarixini ko'rish",
