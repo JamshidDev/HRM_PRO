@@ -29,6 +29,11 @@ const _delete = async (payload) => {
   return await axios.delete(`/v1/timesheet/${payload.id}`)
 }
 
+// HR tabelni yopadi/ochadi — yopiqda tabelchilar faqat ko'radi.
+const _lock = async (payload) => {
+  return await axios.put(`/v1/timesheet/${payload.id}/lock`, payload.data)
+}
+
 const _send = async (payload) => {
   return await axios.post(`/v1/timesheet/${payload.id}/send`)
 }
@@ -52,6 +57,7 @@ export default {
   _create,
   _update,
   _delete,
+  _lock,
   _send,
   _decide,
   _index_departments,

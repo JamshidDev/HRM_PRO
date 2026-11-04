@@ -13,6 +13,8 @@
   import UIDepartment from '@/components/ui/UIDepartment.vue'
   import { useAppSetting } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
+  import ApiService from '@/service/ApiService.js'
+  import { SuperSelect } from '@/components/index.js'
 
   const store = useAdContractFormStore()
   const componentStore = useComponentStore()
@@ -139,15 +141,6 @@
     store.payload.salary = worker?.salary?.toString()
   }
 
-  // 🔴 Tur 14 (FXSH shartnomasini muddatidan avval bekor qilish) — buyruq YO'Q.
-  // Sabab: bu turda xodimni ishdan bo'shatish kelishuvning O'Z tasdig'ida
-  // bajariladi (`AD_TYPE_FINISH = [12,13,14]`). Buyruq belgilansa esa
-  // `command_status = 2` bo'ladi va backend yon ta'sirni O'TKAZIB YUBORADI
-  // (`applyContractAdditionalConfirmation` boshidagi NOT_MANDATORY sharti) —
-  // bo'shatish buyruqqa qolardi, buyruq ro'yxati esa 14 uchun filtrlanmagan
-  // (32 ta variant: ta'til, xizmat safari...). Ta'til buyrug'i tanlansa hujjat
-  // yaratilar, lekin xodim ishlayotgan bo'lib qolaverardi.
-  // FXSH uchun alohida buyruq turi va shabloni ham mavjud emas.
   // Tahrirda tiklangan xodim uchun «lavozim holati» belgisi (yaratishdagidek).
   watch(
     () => store.editId,
@@ -156,24 +149,123 @@
     },
     { immediate: true }
   )
+  // 14 — FXSH bekor qilish kelishuvi; buyruq bilan tuzilsa 80-buyruq yaratiladi.
   const AD_TYPE_CIVIL_CANCEL = 14
-  const commandAllowed = computed(() => store.payload.type !== AD_TYPE_CIVIL_CANCEL)
+  const isCivilCancel = computed(() => store.payload.type === AD_TYPE_CIVIL_CANCEL)
+  const kindOptions = computed(() => [
+    { label: i18n.global.t('commandPage.form_80.kind_contract'), value: 1 },
+    { label: i18n.global.t('commandPage.form_80.kind_service'), value: 2 }
+  ])
 
+  // Sabab ro'yxati — reason-types?type=80.
+  const reasonFor = ref(null)
+  const loadReasons = () => {
+    reasonFor.value = 80
+    componentStore._reasonTypes(80)
+  }
+
+  // Shartnoma rekvizitlari FXSH shartnomasidan to'ldiriladi, foydalanuvchi o'zgartira oladi.
+  const contractLoading = ref(false)
+  const contractFound = ref(null)
+  const fillCivilContract = (wpId) => {
+    contractLoading.value = true
+    ApiService.commandService
+      ._civilContract({ params: { worker_position_id: wpId } })
+      .then((res) => {
+        if (store.payload.worker_position_id !== wpId || !isCivilCancel.value) return
+        const c = res.data.data
+        contractFound.value = Boolean(c)
+        const toTime = (v) => (v ? new Date(v).getTime() : null)
+        store.payload.civil_contract_number = c?.number ?? null
+        store.payload.civil_contract_date = toTime(c?.contract_date)
+        store.payload.contract_to_date = toTime(c?.contract_to_date) ?? store.payload.contract_to_date
+      })
+      .catch(() => {
+        contractFound.value = false
+      })
+      .finally(() => {
+        contractLoading.value = false
+      })
+  }
   watch(
-    () => store.payload.type,
-    (type) => {
-      if (type === AD_TYPE_CIVIL_CANCEL) {
-        store.payload.command_status = false
-        store.payload.command_type = null
+    () => [store.payload.type, store.payload.worker_position_id],
+    ([type, wpId], old) => {
+      if (type !== AD_TYPE_CIVIL_CANCEL || !wpId) {
+        contractFound.value = null
+        return
       }
-    }
+      if (reasonFor.value !== 80) loadReasons()
+      // Tahrirda tiklangan qiymatlar birinchi yuklashda ustidan yozilmaydi.
+      if (!old && store.editId && store.payload.civil_contract_number) return
+      fillCivilContract(wpId)
+    },
+    { immediate: true }
+  )
+
+  // Kadrlar mas'uli — kelishuv korxonasi xodimlaridan (80-buyruq formasidagidek).
+  const hrList = reactive({ list: [], total: 0, loading: false, search: null, page: 1, reqId: 0 })
+  const hrPerPage = 100
+  const hrOrgId = computed(() => store.organization?.[0]?.id ?? null)
+  const hrOptions = computed(() => {
+    const picked = store.payload.hr_option
+    const list = picked ? [picked, ...hrList.list.filter((v) => v.id !== picked.id)] : hrList.list
+    return list.filter((v) => v.id !== store.payload.worker_position_id)
+  })
+  const loadHr = (infinity = false) => {
+    if (!hrOrgId.value) return
+    const reqId = ++hrList.reqId
+    hrList.loading = true
+    ApiService.workerService
+      ._search({
+        params: { organization_id: hrOrgId.value, page: hrList.page, per_page: hrPerPage, search: hrList.search }
+      })
+      .then((res) => {
+        if (reqId !== hrList.reqId) return
+        const data = res.data.data.data.map((v) => ({
+          id: v.id,
+          name: `${v.worker.last_name} ${v.worker.first_name} ${v.worker.middle_name}`,
+          position: v.position?.name || v?.post_name,
+          photo: v.worker?.photo
+        }))
+        hrList.total = res.data.data.total
+        hrList.list = infinity ? [...hrList.list, ...data] : data
+      })
+      .finally(() => {
+        if (reqId === hrList.reqId) hrList.loading = false
+      })
+  }
+  const onSearchHr = (v) => {
+    hrList.page = 1
+    hrList.search = v
+    loadHr()
+  }
+  const onScrollHr = () => {
+    hrList.page += 1
+    loadHr(true)
+  }
+  const onChangeHr = (id) => {
+    store.payload.hr_option = hrOptions.value.find((v) => v.id === id) ?? null
+  }
+  watch(
+    () => [isCivilCancel.value && store.payload.command_status, hrOrgId.value],
+    ([need, org], old) => {
+      if (old && old[1] && org !== old[1]) {
+        store.payload.hr_worker_position_id = null
+        store.payload.hr_option = null
+      }
+      if (!need) return
+      hrList.page = 1
+      hrList.search = null
+      loadHr()
+    },
+    { immediate: true }
   )
 
   // Buyruq turlari ro'yxati. Forma ochilganda (yangi yoki tahrir) tanlangan/tiklangan buyruq
   // turi saqlanadi; faqat kelishuv turi o'zgarganda tozalanadi. Tahrirda tiklangan qiymat
   // `editCommandType` da keladi. Ro'yxatda bitta tur bo'lsa — o'zi tanlanadi.
   const loadCommandTypes = (reset) => {
-    if (!store.payload.type || !commandAllowed.value) return
+    if (!store.payload.type) return
     store.payload.command_type = store.editCommandType ?? (reset ? null : store.payload.command_type)
     store.editCommandType = null
     const data = {
@@ -229,6 +321,11 @@
     { id: 'parallel', name: i18n.global.t('documentPage.command.form.route.parallel') },
     { id: 'sequential', name: i18n.global.t('documentPage.command.form.route.sequential') }
   ])
+  // Imzolovchilar ro'yxati keyin yuklansa (sahifa yangilanganda) — buxgalter/kelishuvchi ro'yxatlari qayta quriladi.
+  watch(
+    () => componentStore.confirmationList,
+    () => syncConfirmationEv()
+  )
   const fetchConfirmation = () => {
     if (componentStore.confirmationList.length > 0) return
     componentStore._confirmations()
@@ -418,7 +515,9 @@
           </div>
         </div>
 
+        <!-- Lavozim shartlari (1/8) va bekor qilish sanasi (12/13); boshqa turda bo'sh blok chiqmasin -->
         <div
+          v-if="showForm || [12, 13].includes(store.payload.type)"
           class="col-span-12 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground mt-4"
         >
           <div class="grid grid-cols-12 gap-x-4">
@@ -583,7 +682,7 @@
               foydalanuvchi ko'rmagan BUGUNGI sana tushib qoladi.
             -->
             <div
-              v-if="[12, 13, 14].includes(store.payload.type)"
+              v-if="[12, 13].includes(store.payload.type)"
               class="col-span-12 md:col-span-6 lg:col-span-4"
             >
               <n-form-item
@@ -595,6 +694,80 @@
                   v-model:value="store.payload.contract_to_date"
                   type="date"
                   :format="useAppSetting.datePicketFormat"
+                />
+              </n-form-item>
+            </div>
+          </div>
+        </div>
+        <!-- 14: bekor qilinayotgan FXSH shartnomasi — qiymatlar shartnomadan, o'zgartirish mumkin -->
+        <div
+          v-if="isCivilCancel"
+          class="col-span-12 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground mt-4"
+        >
+          <div
+            v-if="store.payload.worker_position_id && contractFound !== null && !contractLoading"
+            class="mb-3 rounded-lg border px-3 py-2 text-sm"
+            :class="
+              contractFound
+                ? 'border-success/40 bg-success/10 text-success'
+                : 'border-warning/40 bg-warning/10 text-warning'
+            "
+          >
+            {{
+              $t(
+                contractFound
+                  ? 'commandPage.form_80.contract_found'
+                  : 'commandPage.form_80.contract_not_found'
+              )
+            }}
+          </div>
+          <div class="grid grid-cols-12 gap-x-4">
+            <div class="col-span-12 md:col-span-4">
+              <n-form-item
+                :label="$t(`commandPage.form_80.civil_contract_number`)"
+                path="civil_contract_number"
+              >
+                <n-input
+                  v-model:value="store.payload.civil_contract_number"
+                  :loading="contractLoading"
+                  :placeholder="$t(`commandPage.form_80.civil_contract_number`)"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-12 md:col-span-4">
+              <n-form-item
+                :label="$t(`commandPage.form_80.civil_contract_date`)"
+                path="civil_contract_date"
+              >
+                <n-date-picker
+                  class="w-full"
+                  v-model:value="store.payload.civil_contract_date"
+                  type="date"
+                  :format="useAppSetting.datePicketFormat"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-12 md:col-span-4">
+              <n-form-item
+                :label="$t(`commandPage.form_80.civil_cancel_date`)"
+                path="contract_to_date"
+              >
+                <n-date-picker
+                  class="w-full"
+                  v-model:value="store.payload.contract_to_date"
+                  type="date"
+                  :format="useAppSetting.datePicketFormat"
+                />
+              </n-form-item>
+            </div>
+            <div class="col-span-12">
+              <n-form-item :label="$t(`documentPage.form.cancel_reason`)" path="cancel_reason">
+                <n-select
+                  v-model:value="store.payload.cancel_reason"
+                  :options="componentStore.reasonTypes"
+                  :loading="componentStore.reasonTypeLoading"
+                  label-field="name"
+                  value-field="id"
                 />
               </n-form-item>
             </div>
@@ -617,9 +790,7 @@
             />
           </n-form-item>
         </div>
-        <!-- Tur 14 da buyruq YO'Q — bo'shatish kelishuvning o'z tasdig'ida bajariladi -->
         <div
-          v-if="commandAllowed"
           class="col-span-12 pt-4 flex justify-center gap-2 items-center relative"
         >
           <n-divider dashed title-placement="left" class="w-full mt-1!">
@@ -635,7 +806,7 @@
           </n-divider>
         </div>
         <div
-          v-if="commandAllowed && store.payload.command_status"
+          v-if="store.payload.command_status"
           class="col-span-12 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground mt-4"
         >
           <div class="grid grid-cols-12 gap-x-4">
@@ -676,6 +847,36 @@
                 />
               </n-form-item>
             </div>
+            <template v-if="isCivilCancel">
+              <div class="col-span-12 md:col-span-6 lg:col-span-4">
+                <n-form-item
+                  :label="$t(`commandPage.form_80.civil_contract_kind`)"
+                  path="civil_contract_kind"
+                >
+                  <n-select v-model:value="store.payload.civil_contract_kind" :options="kindOptions" />
+                </n-form-item>
+              </div>
+              <div class="col-span-12 md:col-span-6 lg:col-span-8">
+                <n-form-item
+                  :label="$t(`commandPage.form_80.hr_worker`)"
+                  path="hr_worker_position_id"
+                >
+                  <SuperSelect
+                    :disabled="!hrOrgId"
+                    :options="hrOptions"
+                    :loading="hrList.loading"
+                    :total-count="hrList.total"
+                    :per-page="hrPerPage"
+                    v-model:value="store.payload.hr_worker_position_id"
+                    v-model:search="hrList.search"
+                    value-field="id"
+                    @update:value="onChangeHr"
+                    @onSearch="onSearchHr"
+                    @onScrollEv="onScrollHr"
+                  />
+                </n-form-item>
+              </div>
+            </template>
             <div class="col-span-12">
               <n-form-item :label="$t(`documentPage.command.form.finance_id`)">
                 <n-select

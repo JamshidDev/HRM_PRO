@@ -1123,6 +1123,12 @@ export default {
     }
   },
   adContractFrom: {
+    // 14 — FXSH bekor qilish kelishuvi (maydonlar faqat shu turda ko'rinadi).
+    civil_contract_number: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    civil_contract_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    cancel_reason: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
+    civil_contract_kind: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
+    hr_worker_position_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
     number: {
       required: true,
       message: t(`rules.requiredField`),
@@ -1573,6 +1579,21 @@ export default {
     from: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     to: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     mentor_percent: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents }
+  },
+  // 80 — FXSH bekor qilish.
+  form_80: {
+    civil_contract_number: { required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    civil_contract_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    civil_contract_kind: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
+    civil_cancel_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    hr_worker_position_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] }
+  },
+  // 26 — shtati bilan boshqa korxonaga o'tkazish.
+  form_26: {
+    target_organization_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
+    reason: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
+    transfer_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    hr_worker_position_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] }
   },
   // 75 — Buyruqni bekor qilish.
   form_75: {

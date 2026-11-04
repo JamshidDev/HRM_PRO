@@ -715,6 +715,8 @@
   "confirmation": {
     "name": "Contracts",
     "contract": {
+      "empty": "No contracts to approve",
+      "emptyHint": "Contracts waiting for your signature or approval will appear here",
       "form": {
         "number": "Number",
         "type": "Type",
@@ -1410,7 +1412,7 @@
         "half_one_day": "Vacation day (first half)",
         "half_two_day": "Vacation day (second half)",
         "half_two_date": "Vacation date (second half)",
-        "second_day": "Additional vacation days",
+        "second_day": "Under the sectoral collective agreement (collective or employment contract)",
         "additional": "Attachments",
         "calculateVacation": "Calculate vacation",
         "no-calculate": "Vacation days not calculated!",
@@ -1614,7 +1616,8 @@
       "worker": "Select employee",
       "pensioner": "Select pensioner",
       "command_status": "Mark to create order based on contract",
-      "organization": "Organization"
+      "organization": "Organization",
+      "cancel_reason": "Cancellation reason"
     },
     "signature": {
       "history": "View change history",
@@ -1847,6 +1850,17 @@
       "reference_date": "Certificate date",
       "reference_number": "Certificate number"
     },
+    "form_80": {
+      "civil_contract_number": "Contract number",
+      "civil_contract_date": "Contract date",
+      "civil_contract_kind": "Contract kind",
+      "kind_contract": "Work contract",
+      "kind_service": "Service contract",
+      "civil_cancel_date": "Cancellation date",
+      "hr_worker": "HR responsible employee",
+      "contract_found": "Employee's civil-law contract found — number and date filled in",
+      "contract_not_found": "No civil-law contract found — enter the number and date manually"
+    },
     "form_79": {
       "mentor": "Mentor",
       "mentor_date": "Mentor assignment date",
@@ -1943,6 +1957,25 @@
       "position_date": "Date of taking office",
       "contract_date": "Employment contract date",
       "number": "Employment contract number"
+    },
+    "form_26": {
+      "target_organization": "Target organization",
+      "target_organization_ph": "Select organization",
+      "target_department": "Under which department in the new organization",
+      "target_department_ph": "If empty — top level of the organization",
+      "reason": "Reason (Labour Code art. 156)",
+      "transfer_date": "Contracts continue from",
+      "hr_worker": "HR department responsible",
+      "selected": "Selected employees",
+      "empty": "Pick employees one by one in the «Employee» field above",
+      "max_workers": "One order may include at most {max} employees",
+      "on_vacation": "On leave: {type}, {from} – {to}",
+      "on_sick_leave": "On sick leave: {from} – {to}",
+      "pending_command": "Has a pending order",
+      "blocked_info": "{count} employees cannot be transferred — remove them or change the date",
+      "blocked_save": "Cannot save: {count} employees are on leave, sick leave or have a pending order",
+      "no_workers": "Select at least one employee",
+      "pick_date_hint": "Pick the date to check leave and sick leave"
     }
   },
   "confirmationPage": {
@@ -2995,8 +3028,6 @@
       }
     },
     "activity": {
-      "title": "Organization activity",
-      "subtitle": "Analysis of changes in organizations — by month",
       "export": "Download",
       "totalActions": "Total actions",
       "activeUsers": "Active users",
@@ -3157,6 +3188,15 @@
         "score": "Score",
         "logs": "Logs"
       }
+    },
+    "documents": {
+      "commands": "Orders",
+      "contracts": "Employment contracts",
+      "contract_additional": "Additional agreements",
+      "worker_applications": "Applications",
+      "process": "In progress",
+      "rejected": "Rejected",
+      "problem": "Problematic"
     }
   },
   "applicationPage": {
@@ -3432,6 +3472,17 @@
     "zero_rest_day": "Rest day",
     "zero_no_events": "No turnstile events — 0 hours recorded",
     "zero_outside_schedule": "Events fall outside the schedule window — 0 hours",
+    "zero_needs_check": "Night shift has no entry or exit recorded — check and enter hours manually",
+    "zero_night_continuation": "Continuation of the previous day's night shift — hours are recorded on that day",
+    "nightShift": "Night shift",
+    "nightTotal": "Total {hours} → recorded on {date}",
+    "nightContinuation": "This day continues the night shift of {date}. Hours are recorded on that day.",
+    "openShiftStart": "Open the shift start day",
+    "needsCheckNote": "Entry or exit is missing — check and enter hours manually.",
+    "needsCheckCount": "{n} night-shift cells have a missing entry/exit — check the yellow cells",
+    "nightContCell": "Night shift continuation — hours are recorded on the previous day",
+    "unpairedIn": "Unpaired entry — no exit recorded, not counted",
+    "tableNoPh": "Table number",
     "commandNo": "Order No.",
     "reasonHead": "Reason",
     "notSet": "Not set",
@@ -3478,7 +3529,11 @@
       "less": "{n} h less",
       "typeOnly": "same hours, type changed",
       "empty": "empty (0 h)"
-    }
+    },
+    "lockClose": "Close timesheet",
+    "lockOpen": "Open timesheet",
+    "lockedTag": "Closed",
+    "lockedByHr": "Closed by HR — view only"
   },
   "turnstile": {
     "title": "Turnstile",
@@ -6076,18 +6131,41 @@
     "createTitle": "Add Location",
     "updateTitle": "Edit Location",
     "attachTitle": "Attach Location",
+    "viewTitle": "View location",
     "addLocation": "Add Location",
     "locationExists": "Yes",
     "locationNotExists": "No",
     "locationCount": "{n} location(s)",
-    "noLocation": "No location",
+    "noLocation": "Not assigned",
     "freeBadge": "Free",
+    "locationExistsShort": "Assigned",
+    "unnamed": "Unnamed place",
+    "pointsCount": "{n} points",
+    "emptyDepartment": "No entry point set for this department yet",
+    "emptyDepartmentHint": "Mark on the map where employees can check in from the mobile app.",
+    "emptyFiltered": "No places match the selected filter",
+    "showMap": "Show on map",
+    "hideMap": "Hide map",
+    "emptyWorker": "No personal entry point assigned yet",
+    "copyCoords": "Copy coordinates",
     "stats": {
       "organizations": "Organizations",
       "areas": "Areas",
       "free": "Free mode",
       "unassignedDepartments": "Departments without a place",
       "unassignedWorkers": "Employees without a place"
+    },
+    "statsHint": {
+      "organizations": "Organizations with assigned places",
+      "areas": "Configured entry points",
+      "free": "Entry without area limits",
+      "unassigned": "No entry point assigned yet"
+    },
+    "filter": {
+      "all": "All",
+      "locationState": "Place status",
+      "hasLocation": "Assigned",
+      "noLocation": "Not assigned"
     },
     "source": {
       "department": "Department place",
@@ -6108,8 +6186,23 @@
       "detailTitle": "Mobile pass",
       "info": "Details",
       "placeTitle": "Pass location",
-      "livePhoto": "Verified frame",
-      "refPhoto": "Photo on file",
+      "livePhoto": "Verified photo",
+      "refPhoto": "Official photo",
+      "appName": "HR Rail app",
+      "matchHigh": "Face matches",
+      "matchMid": "Partial match — compare the photos",
+      "matchLow": "Low match — may be another person",
+      "matchUnknown": "Similarity not available",
+      "placeUnknown": "Location unknown",
+      "accuracyGood": "precise",
+      "accuracyMid": "moderate",
+      "accuracyLow": "low — position is approximate",
+      "accuracyHint": "The circle on the map is the phone's location error range",
+      "placeHint": {
+        "free": "No location limit — the employee can check in from anywhere",
+        "department": "Within the department's location",
+        "worker": "Within the location assigned to the employee"
+      },
       "in": "Entry"
     },
     "tabs": {
@@ -6127,7 +6220,9 @@
       "radius": "Radius",
       "accuracy": "Accuracy",
       "hasLocation": "Locations",
-      "location": "Location"
+      "location": "Location",
+      "zone": "Zone",
+      "coords": "Coordinates"
     },
     "form": {
       "freeMode": "Free mode",
@@ -6142,20 +6237,23 @@
       "accuracy": "Accuracy Limit",
       "polygon": "Polygon",
       "points": "points",
-      "noPolygon": "No polygon set",
+      "noPolygon": "Area not drawn yet",
       "polygonReady": "Area ready",
       "markerInfoFull": "Click on the map to set the location. Drag the marker to the desired position or click on another location on the map. Use the radius settings to define the distance around the marked point.",
       "polygonInfoFull": "In polygon mode, employees can only mark attendance when inside the designated area. Click \"Add Polygon\" on the map and mark points sequentially (minimum 3, maximum 12 points).",
       "autoCalculated": "Auto",
       "centerMarkerInfo": "Drag the marker to change the center point",
-      "coordinate": "Coordinate",
-      "area": "Area"
+      "coordinate": "Circle",
+      "area": "Area",
+      "modeHintCircle": "Click the map to place a point — the employee can check in within the radius around it.",
+      "modeHintArea": "Draw the area on the map — the employee can check in only inside it.",
+      "polygonSteps": "«Draw area» → place at least 3 points on the map → «Finish»."
     },
     "validation": {
       "departmentRequired": "Select a department",
       "nameRequired": "Enter the passage point name",
       "markerRequired": "Mark the location on the map",
-      "polygonRequired": "Draw a polygon on the map (minimum 3 points)",
+      "polygonRequired": "Draw the area on the map (at least 3 points)",
       "radiusRequired": "Enter the radius",
       "accuracyRequired": "Enter the accuracy limit",
       "minPoints": "minimum 3"
@@ -6163,12 +6261,12 @@
     "map": {
       "title": "Mark on Map",
       "clearMarker": "Clear Marker",
-      "clearPolygon": "Clear Polygon",
+      "clearPolygon": "Clear area",
       "myLocation": "My Location",
       "myLocationTooltip": "Get current location",
       "clickToMark": "Click on map to place marker",
       "setLocation": "Set Location",
-      "addPolygon": "Add Polygon",
+      "addPolygon": "Draw area",
       "polygonMode": "Polygon mode",
       "markerMode": "Marker mode",
       "finishPolygon": "Finish",
@@ -6176,7 +6274,16 @@
       "undo": "Undo",
       "save": "Save",
       "done": "Done",
-      "points": "points"
+      "points": "points",
+      "redrawPolygon": "Redraw area",
+      "drawHint": "Click the map to add a point (at least 3)",
+      "drawHintDone": "Add more points or click «Finish»",
+      "layerSwitch": "Map type",
+      "layerOsm": "OSM",
+      "layerYandex": "Yandex",
+      "yandexFailed": "Yandex map failed to load, showing OpenStreetMap",
+      "polygonSaved": "Area drawn. Drag the marker to change the center point.",
+      "geoError": "Could not detect your location"
     }
   },
   "integrationLog": {
@@ -7106,6 +7213,55 @@
     "electronicNumber": "Electronic number",
     "searchPlaceholder": "Name or number"
   },
+  "employeeDocumentsPage": {
+    "types": {
+      "bitim": "Confidentiality agreement",
+      "declaration": "Conflict of interest declaration"
+    },
+    "bitim": {
+      "basis": "Director acts on the basis of",
+      "basisCharter": "Charter",
+      "basisPowerOfAttorney": "Power of attorney",
+      "extraConditions": "Additional confidential information (clause 1.2)"
+    },
+    "declaration": {
+      "reason": "Reason",
+      "reasons": {
+        "annual": "Annual",
+        "hiring": "On hiring",
+        "transfer": "On transfer"
+      },
+      "workerPassport": "Employee passport (series, number, date)",
+      "workerPin": "Employee PINFL",
+      "fromProfile": "Taken from profile if empty",
+      "relatives": "Close relatives (if working in the railway system)",
+      "workerCompanies": "Legal entities with employee's share/management (2.1)",
+      "relativeCompanies": "Relatives' legal entities (2.2)",
+      "fullName": "Full name",
+      "passport": "Passport (series, number, date)",
+      "pin": "PINFL",
+      "companyName": "Legal entity name",
+      "stir": "TIN",
+      "emptyList": "None — the document shows «—»",
+      "conflictInfo": "Potential conflict of interest information",
+      "additionalInfo": "Additional information (if any)",
+      "noneHint": "If empty, «Mavjud emas» is written",
+      "registryDate": "Registry date",
+      "registryNumber": "Registry number"
+    },
+    "name": "Employee documents",
+    "createTitle": "New document",
+    "updateTitle": "Edit document",
+    "form": {
+      "type": "Document type",
+      "number": "Document number",
+      "date": "Document date",
+      "approversHint": "Optional — one or more approvers"
+    },
+    "locked": {
+      "approved": "The document is approved and can't be edited"
+    }
+  },
   "materialLiabilityPage": {
     "name": "Material liability",
     "createTitle": "New material liability contract",
@@ -7154,5 +7310,9 @@
     "revokeOthersConfirm": "End all sessions except the current one?",
     "revoked": "Session ended",
     "protected": "This is a new session: you can end older sessions in {min} min (60 minutes for security)."
+  },
+  "onlyOfficeEditor": {
+    "tokenError": "Could not open the document editor",
+    "tokenErrorHint": "The server did not issue a security token for this document. Try again later or contact the administrator."
   }
 }

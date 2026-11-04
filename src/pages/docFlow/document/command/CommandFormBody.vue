@@ -32,6 +32,8 @@
   import CommandForm_60 from './ui/CommandForm_60.vue'
   import CommandForm_76 from './ui/CommandForm_76.vue'
   import CommandForm_79 from './ui/CommandForm_79.vue'
+  import CommandForm_80 from './ui/CommandForm_80.vue'
+  import CommandForm_26 from './ui/CommandForm_26.vue'
   import CommandForm_75 from './ui/CommandForm_75.vue'
   import CommandForm_5 from './ui/CommandForm_5.vue'
   import CommandForm_8 from './ui/CommandForm_8.vue'
@@ -69,7 +71,7 @@
   const commandIdList = [32, 33, 34, 35, 36, 37, 38, 39]
   const singleSelectCommands = [
     32, 33, 34, 35, 36, 37, 38, 39, 44, 43, 45, 46, 47, 49, 48, 50, 51, 52, 53, 54, 74, 56, 57, 58,
-    59, 60, 76, 77, 78, 79
+    59, 60, 76, 77, 78, 79, 80
   ]
 
   // 75 da xodim select'i ko'rsatilmaydi — xodim bekor qilinayotgan buyruqdan olinadi.
@@ -121,6 +123,7 @@
   const vacationForm_62 = ref(null)
   const vacationForm_51 = ref(null)
   const vacationForm_71 = ref(null)
+  const commandForm_26 = ref(null)
   const vacationForm_72 = ref(null)
   const vacationForm_73 = ref(null)
   const commandForm_74 = ref(null)
@@ -131,6 +134,7 @@
   const commandForm_60 = ref(null)
   const commandForm_76 = ref(null)
   const commandForm_79 = ref(null)
+  const commandForm_80 = ref(null)
   const commandForm_75 = ref(null)
   const commandForm_5 = ref(null)
   const commandForm_8 = ref(null)
@@ -327,6 +331,8 @@
             validate = await vacationForm_62.value?.onSubmit(mainData)
           } else if ([51, 52, 53, 54].includes(store.payload.command_type)) {
             validate = await vacationForm_51.value?.onSubmit(mainData)
+          } else if (store.payload.command_type === 26) {
+            validate = await commandForm_26.value?.onSubmit(mainData)
           } else if (store.payload.command_type === 71) {
             validate = await vacationForm_71.value?.onSubmit(mainData)
           } else if (store.payload.command_type === 72) {
@@ -349,6 +355,8 @@
             validate = await commandForm_76.value?.onSubmit(mainData)
           } else if (store.payload.command_type === 79) {
             validate = await commandForm_79.value?.onSubmit(mainData)
+          } else if (store.payload.command_type === 80) {
+            validate = await commandForm_80.value?.onSubmit(mainData)
           } else if (store.payload.command_type === CANCEL_COMMAND_TYPE) {
             validate = await commandForm_75.value?.onSubmit(mainData)
           } else if (isPositionCommencement.value) {
@@ -396,6 +404,8 @@
       commandForm_76.value?.validateForm()
     } else if (store.payload.command_type === 79) {
       commandForm_79.value?.validateForm()
+    } else if (store.payload.command_type === 80) {
+      commandForm_80.value?.validateForm()
     } else if (store.payload.command_type === CANCEL_COMMAND_TYPE) {
       commandForm_75.value?.validateForm()
     } else if (isPositionCommencement.value) {
@@ -432,8 +442,20 @@
       if (v.length > 0) store._cancelCommands()
     }
   }
+  // 80 (faqat FXSH) ga kirish/chiqishda xodim ro'yxati boshqa filtr bilan qayta yuklanadi.
+  let prevCommandType = store.payload.command_type ?? null
+  const CIVIL_CANCEL_TYPE = 80
   const onChangeCommandType = () => {
     const commandId = store.payload.command_type
+    const civilSwitched = (prevCommandType === CIVIL_CANCEL_TYPE) !== (commandId === CIVIL_CANCEL_TYPE)
+    prevCommandType = commandId
+    if (civilSwitched) {
+      store.payload.worker = null
+      store.payload.workers = []
+      store.workerParams.page = 1
+      store.workerParams.search = null
+      if (store.workerParams.organization_id) store._workers()
+    }
     // Pensioner rejimi FAQAT 73 uchun. Boshqa turga o'tilsa xodimga qaytariladi,
     // aks holda select pensionerlarni yuklashda davom etardi.
     if (commandId !== 73 && store.recipientType !== 'worker') {
@@ -969,6 +991,9 @@
           <template v-else-if="[51, 52, 53, 54].includes(store.payload.command_type)">
             <CommandFrom_51 ref="vacationForm_51" />
           </template>
+          <template v-else-if="store.payload.command_type === 26">
+            <CommandForm_26 ref="commandForm_26" />
+          </template>
           <template v-else-if="store.payload.command_type === 71">
             <CommandForm_71 ref="vacationForm_71" />
           </template>
@@ -1001,6 +1026,9 @@
           </template>
           <template v-else-if="store.payload.command_type === 79">
             <CommandForm_79 ref="commandForm_79" />
+          </template>
+          <template v-else-if="store.payload.command_type === 80">
+            <CommandForm_80 ref="commandForm_80" />
           </template>
           <template v-else-if="isCancelCommand">
             <CommandForm_75 ref="commandForm_75" />

@@ -730,6 +730,8 @@
   "confirmation": {
     "name": "Shartnomalar",
     "contract": {
+      "empty": "Tasdiqlash uchun shartnoma yo'q",
+      "emptyHint": "Imzoingiz yoki kelishuvingizni kutayotgan shartnomalar shu yerda chiqadi",
       "form": {
         "number": "Raqami",
         "type": "Turi",
@@ -1426,7 +1428,7 @@
         "half_one_day": "Ta'til kuni (Birinchi yarmi)",
         "half_two_day": "Ta'til kuni (Ikkinchi yarmi)",
         "half_two_date": "Ta'til sanasi (Ikkinchi yarmi)",
-        "second_day": "Qo'shimcha ta'til kuni",
+        "second_day": "Tarmoq jamoa kelishuvi (jamoa yoki mehnat shartnomasi)ga muvofiq",
         "additional": "Qo'shimchalar",
         "calculateVacation": "Ta'tilni hisoblash",
         "no-calculate": "Ta'til kuni hisoblanmagan!",
@@ -1630,7 +1632,8 @@
       "worker": "Xodimni tanlang",
       "pensioner": "Pensionerni tanlang",
       "command_status": "Shartnoma asosida buyruq yaratish uchun belgilang",
-      "organization": "Korxona"
+      "organization": "Korxona",
+      "cancel_reason": "Bekor qilish sababi"
     },
     "signature": {
       "history": "O'zgarishlar tarixini ko'rish",
@@ -1863,6 +1866,17 @@
       "reference_date": "Ma’lumotnoma sanasi",
       "reference_number": "Ma’lumotnoma raqami"
     },
+    "form_80": {
+      "civil_contract_number": "Shartnoma raqami",
+      "civil_contract_date": "Shartnoma tuzilgan sana",
+      "civil_contract_kind": "Shartnoma turi",
+      "kind_contract": "Pudrat",
+      "kind_service": "Xizmat ko‘rsatish",
+      "civil_cancel_date": "Bekor qilish sanasi",
+      "hr_worker": "Kadrlar bo‘limi mas’ul xodimi",
+      "contract_found": "Xodimning FXSH shartnomasi topildi — raqam va sana to‘ldirildi",
+      "contract_not_found": "Xodimda FXSH shartnomasi topilmadi — raqam va sanani qo‘lda kiriting"
+    },
     "form_79": {
       "mentor": "Murabbiy",
       "mentor_date": "Murabbiy biriktirilgan sana",
@@ -1959,6 +1973,25 @@
       "position_date": "Lavozimga kirishgan sana",
       "contract_date": "Mehnat shartnomasi sanasi",
       "number": "Mehnat shartnomasi raqami"
+    },
+    "form_26": {
+      "target_organization": "Qaysi korxonaga o‘tkaziladi",
+      "target_organization_ph": "Korxonani tanlang",
+      "target_department": "Yangi korxonada qaysi bo‘lim ostiga",
+      "target_department_ph": "Tanlanmasa — korxonaning yuqori darajasiga",
+      "reason": "Sabab (MK 156-modda)",
+      "transfer_date": "Shartnomalar davom etadigan sana",
+      "hr_worker": "Kadrlar bo‘limi mas’uli",
+      "selected": "Tanlangan xodimlar",
+      "empty": "Yuqoridagi «Xodim» maydonidan xodimlarni bittalab tanlang",
+      "max_workers": "Bitta buyruqda ko‘pi bilan {max} ta xodim bo‘ladi",
+      "on_vacation": "Ta’tilda: {type}, {from} – {to}",
+      "on_sick_leave": "Kasallik varaqasida: {from} – {to}",
+      "pending_command": "Tasdiqlanmagan buyrug‘i bor",
+      "blocked_info": "{count} ta xodimni o‘tkazib bo‘lmaydi — ro‘yxatdan olib tashlang yoki sanani o‘zgartiring",
+      "blocked_save": "Saqlab bo‘lmaydi: {count} ta xodim ta’til, kasallik yoki tasdiqlanmagan buyruqda",
+      "no_workers": "Kamida bitta xodim tanlang",
+      "pick_date_hint": "Ta’til va kasallikni tekshirish uchun sanani tanlang"
     }
   },
   "confirmationPage": {
@@ -3015,8 +3048,6 @@
       }
     },
     "activity": {
-      "title": "Korxonalar faolligi",
-      "subtitle": "Korxonalardagi o'zgarishlar tahlili — oy kesimida",
       "export": "Yuklash",
       "totalActions": "Jami amallar",
       "activeUsers": "Faol ma’sullar",
@@ -3177,6 +3208,15 @@
         "score": "Ball",
         "logs": "Loglar"
       }
+    },
+    "documents": {
+      "commands": "Buyruqlar",
+      "contracts": "Mehnat shartnomalari",
+      "contract_additional": "Qo'shimcha kelishuvlar",
+      "worker_applications": "Arizalar",
+      "process": "Jarayonda",
+      "rejected": "Rad etilgan",
+      "problem": "Muammoli"
     }
   },
   "applicationPage": {
@@ -3452,6 +3492,17 @@
     "zero_rest_day": "Dam olish kuni",
     "zero_no_events": "Turniket hodisasi yo'q — soat 0 yoziladi",
     "zero_outside_schedule": "Hodisalar ish grafigi oynasidan tashqarida — soat 0",
+    "zero_needs_check": "Tungi smenada kirish yoki chiqish qayd etilmagan — soatni tekshirib, qo'lda kiriting",
+    "zero_night_continuation": "Oldingi kun tungi smenasining davomi — soat o'sha kunga yozilgan",
+    "nightShift": "Tungi smena",
+    "nightTotal": "Jami {hours} → {date} kuniga",
+    "nightContinuation": "Bu kun {date} dagi tungi smenaning davomi. Soat o'sha kunga yozilgan.",
+    "openShiftStart": "Smena boshlangan kunni ochish",
+    "needsCheckNote": "Kirish yoki chiqish qayd etilmagan — soatni tekshirib, qo'lda kiriting.",
+    "needsCheckCount": "{n} ta katakda tungi smena kirish/chiqishi to'liq emas — sariq kataklarni tekshiring",
+    "nightContCell": "Tungi smena davomi — soat oldingi kunga yozilgan",
+    "unpairedIn": "Juftsiz kirish — chiqish qayd etilmagan, hisobga olinmadi",
+    "tableNoPh": "Tabel raqam",
     "commandNo": "Buyruq №",
     "reasonHead": "Sabab",
     "notSet": "Belgilanmagan",
@@ -3498,7 +3549,11 @@
       "less": "{n} soat kam",
       "typeOnly": "soat bir xil, tur o‘zgargan",
       "empty": "bo‘sh (0 soat)"
-    }
+    },
+    "lockClose": "Tabelni yopish",
+    "lockOpen": "Tabelni ochish",
+    "lockedTag": "Yopilgan",
+    "lockedByHr": "HR yopgan — faqat ko'rish"
   },
   "turnstile": {
     "title": "Turniket",
@@ -6141,14 +6196,36 @@
     "locationExists": "Bor",
     "locationNotExists": "Yo'q",
     "locationCount": "{n} ta joylashuv",
-    "noLocation": "Joylashuv yo'q",
+    "noLocation": "Belgilanmagan",
     "freeBadge": "Erkin",
+    "locationExistsShort": "Belgilangan",
+    "unnamed": "Nomsiz joylashuv",
+    "pointsCount": "{n} ta nuqta",
+    "emptyDepartment": "Bu bo'limga hali joylashuv belgilanmagan",
+    "emptyDepartmentHint": "Xodimlar mobil ilovada qayerdan o'tishi mumkinligini xaritada belgilang.",
+    "emptyFiltered": "Tanlangan filtr bo'yicha joylashuv topilmadi",
+    "showMap": "Xaritada ko'rish",
+    "hideMap": "Xaritani yopish",
+    "emptyWorker": "Xodimga hali alohida joylashuv berilmagan",
+    "copyCoords": "Koordinatani nusxalash",
     "stats": {
       "organizations": "Korxonalar",
       "areas": "Hududlar",
       "free": "Erkin rejim",
-      "unassignedDepartments": "Joy belgilanmagan bo'limlar",
-      "unassignedWorkers": "Joy belgilanmagan xodimlar"
+      "unassignedDepartments": "Joylashuv belgilanmagan bo'limlar",
+      "unassignedWorkers": "Joylashuv belgilanmagan xodimlar"
+    },
+    "statsHint": {
+      "organizations": "Joylashuv biriktirilgan korxonalar",
+      "areas": "Belgilangan joylashuvlar",
+      "free": "Hudud cheklovisiz o'tadi",
+      "unassigned": "Hali joylashuv berilmagan"
+    },
+    "filter": {
+      "all": "Hammasi",
+      "locationState": "Joylashuv holati",
+      "hasLocation": "Belgilangan",
+      "noLocation": "Belgilanmagan"
     },
     "source": {
       "department": "Bo'lim joyi",
@@ -6169,8 +6246,23 @@
       "detailTitle": "Mobil o'tish",
       "info": "Ma'lumotlar",
       "placeTitle": "O'tish joyi",
-      "livePhoto": "Tasdiqlangan kadr",
-      "refPhoto": "Bazadagi rasm",
+      "livePhoto": "Tasdiqlangan rasm",
+      "refPhoto": "Rasmiy rasm",
+      "appName": "HR Rail ilovasi",
+      "matchHigh": "Yuz mos keldi",
+      "matchMid": "O'rtacha moslik — rasmlarni solishtiring",
+      "matchLow": "Past moslik — boshqa odam bo'lishi mumkin",
+      "matchUnknown": "O'xshashlik aniqlanmagan",
+      "placeUnknown": "Joylashuv aniqlanmagan",
+      "accuracyGood": "aniq",
+      "accuracyMid": "o'rtacha",
+      "accuracyLow": "past — joy taxminiy",
+      "accuracyHint": "Xaritadagi aylana — telefon joylashuvining xatolik chegarasi",
+      "placeHint": {
+        "free": "Joylashuv cheklanmagan — xodim istalgan joydan o'tishi mumkin",
+        "department": "Bo'limga belgilangan joylashuv ichida",
+        "worker": "Xodimga alohida belgilangan joylashuv ichida"
+      },
       "in": "Kirish"
     },
     "tabs": {
@@ -6188,7 +6280,9 @@
       "radius": "Radius",
       "accuracy": "Aniqlik",
       "hasLocation": "Joylashuvlar",
-      "location": "Joylashuv"
+      "location": "Joylashuv",
+      "zone": "Hudud",
+      "coords": "Koordinata"
     },
     "form": {
       "freeMode": "Erkin rejim",
@@ -6203,20 +6297,23 @@
       "accuracy": "Aniqlik limiti",
       "polygon": "Polygon",
       "points": "ta nuqta",
-      "noPolygon": "Polygon belgilanmagan",
+      "noPolygon": "Hudud hali chizilmagan",
       "polygonReady": "Hudud tayyor",
       "markerInfoFull": "Xaritaga bosib joylashuvni belgilang. Markerni kerakli joyga suring yoki xaritaning boshqa joyiga bosing. Radius sozlamalari orqali belgilangan nuqta atrofidagi masofani aniqlashingiz mumkin.",
       "polygonInfoFull": "Polygon rejimida xodimlar faqat belgilangan hudud ichida bo'lganda davomat belgilashi mumkin. Xaritada \"Polygon qo'shish\" tugmasini bosib, ketma-ket nuqtalarni belgilang (kamida 3, maksimal 12 ta nuqta).",
       "autoCalculated": "Avtomatik",
       "centerMarkerInfo": "Markerni surib markaziy nuqtani o'zgartirishingiz mumkin",
-      "coordinate": "Koordinata",
-      "area": "Hudud"
+      "coordinate": "Aylana",
+      "area": "Hudud",
+      "modeHintCircle": "Xaritaga bosib nuqta qo'ying — xodim shu nuqta atrofidagi radius ichida o'tadi.",
+      "modeHintArea": "Xaritada hududni chizing — xodim faqat shu hudud ichida o'tadi.",
+      "polygonSteps": "«Hududni chizish» → xaritaga kamida 3 ta nuqta qo'ying → «Tugatish»."
     },
     "validation": {
       "departmentRequired": "Bo'limni tanlang",
       "nameRequired": "O'tish joyi nomini kiriting",
       "markerRequired": "Xaritada joylashuvni belgilang",
-      "polygonRequired": "Xaritada polygon belgilang (kamida 3 ta nuqta)",
+      "polygonRequired": "Xaritada hududni chizing (kamida 3 ta nuqta)",
       "radiusRequired": "Radiusni kiriting",
       "accuracyRequired": "Aniqlik limitini kiriting",
       "minPoints": "kamida 3 ta kerak"
@@ -6224,12 +6321,12 @@
     "map": {
       "title": "Xaritada belgilash",
       "clearMarker": "Markerni tozalash",
-      "clearPolygon": "Polygonni tozalash",
+      "clearPolygon": "Hududni tozalash",
       "myLocation": "Mening joylashuvim",
       "myLocationTooltip": "Joriy joylashuvni aniqlash",
       "clickToMark": "Xaritaga bosib marker qo'ying",
       "setLocation": "Joylashuvni belgilash",
-      "addPolygon": "Polygon qo'shish",
+      "addPolygon": "Hududni chizish",
       "polygonMode": "Polygon rejimi",
       "markerMode": "Marker rejimi",
       "finishPolygon": "Tugatish",
@@ -6237,7 +6334,16 @@
       "undo": "Ortga",
       "save": "Saqlash",
       "done": "Tayyor",
-      "points": "nuqta"
+      "points": "nuqta",
+      "redrawPolygon": "Hududni qayta chizish",
+      "drawHint": "Nuqta qo'shish uchun xaritaga bosing (kamida 3 ta)",
+      "drawHintDone": "Yana nuqta qo'shing yoki «Tugatish»ni bosing",
+      "layerSwitch": "Xarita turi",
+      "layerOsm": "OSM",
+      "layerYandex": "Yandex",
+      "yandexFailed": "Yandex xaritasi yuklanmadi, OpenStreetMap ko'rsatilmoqda",
+      "polygonSaved": "Hudud chizildi. Markaziy nuqtani markerni surib o'zgartirish mumkin.",
+      "geoError": "Joylashuvni aniqlab bo'lmadi"
     }
   },
   "integrationLog": {
@@ -7304,6 +7410,55 @@
     "electronicNumber": "Elektron raqam",
     "searchPlaceholder": "F.I.Sh. yoki raqam"
   },
+  "employeeDocumentsPage": {
+    "types": {
+      "bitim": "Konfidensiallik bitimi",
+      "declaration": "Manfaatlar to‘qnashuvi deklaratsiyasi"
+    },
+    "bitim": {
+      "basis": "Rahbar faoliyat asosi",
+      "basisCharter": "Ustav",
+      "basisPowerOfAttorney": "Ishonchnoma",
+      "extraConditions": "Qo‘shimcha konfidensial ma’lumotlar (1.2-band)"
+    },
+    "declaration": {
+      "reason": "To‘ldirish sababi",
+      "reasons": {
+        "annual": "Yillik",
+        "hiring": "Ishga qabul qilinayotganda",
+        "transfer": "Boshqa ishga o‘tkazilayotganda"
+      },
+      "workerPassport": "Xodim pasporti (seriya, raqam, sana)",
+      "workerPin": "Xodim JShShIR",
+      "fromProfile": "Bo‘sh qolsa profildan olinadi",
+      "relatives": "Yaqin qarindoshlar (temir yo‘l tizimida ishlasa)",
+      "workerCompanies": "Xodim ulushi/rahbarligi bor yuridik shaxslar (2.1)",
+      "relativeCompanies": "Qarindoshlarining yuridik shaxslari (2.2)",
+      "fullName": "F.I.Sh.",
+      "passport": "Pasport (seriya, raqam, sana)",
+      "pin": "JShShIR",
+      "companyName": "Yuridik shaxs nomi",
+      "stir": "STIR",
+      "emptyList": "Yo‘q — hujjatda «—» chiqadi",
+      "conflictInfo": "Ehtimoliy manfaatlar to‘qnashuvi to‘g‘risida ma’lumot",
+      "additionalInfo": "Qo‘shimcha ma’lumotlar (agar mavjud bo‘lsa)",
+      "noneHint": "Bo‘sh qolsa «Mavjud emas» deb yoziladi",
+      "registryDate": "Reyestrga olingan sana",
+      "registryNumber": "Reyestr raqami"
+    },
+    "name": "Xodim hujjatlari",
+    "createTitle": "Hujjat tuzish",
+    "updateTitle": "Hujjatni tahrirlash",
+    "form": {
+      "type": "Hujjat turi",
+      "number": "Hujjat raqami",
+      "date": "Hujjat sanasi",
+      "approversHint": "Ixtiyoriy — bir yoki bir nechta kelishuvchi"
+    },
+    "locked": {
+      "approved": "Hujjat tasdiqlangan — tahrirlab bo‘lmaydi"
+    }
+  },
   "materialLiabilityPage": {
     "name": "Moddiy javobgarlik",
     "createTitle": "Moddiy javobgarlik shartnomasi tuzish",
@@ -7352,5 +7507,9 @@
     "revokeOthersConfirm": "Joriy seansdan boshqa barcha seanslar yakunlansinmi?",
     "revoked": "Seans yakunlandi",
     "protected": "Bu yangi seans: eski seanslarni {min} daqiqadan keyin yakunlay olasiz (xavfsizlik uchun 60 daqiqa)."
+  },
+  "onlyOfficeEditor": {
+    "tokenError": "Hujjat muharririni ochib bo'lmadi",
+    "tokenErrorHint": "Server hujjat uchun xavfsizlik tokenini bermadi. Birozdan so'ng qayta urinib ko'ring yoki administratorga murojaat qiling."
   }
 }

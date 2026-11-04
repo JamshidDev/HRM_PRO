@@ -1,4 +1,5 @@
 <script setup>
+  import { TIMESHEET_APPROVAL_ENABLED } from '../approval.js'
   import { h, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
   import { useDialog, useMessage } from 'naive-ui'
   import {
@@ -100,6 +101,29 @@
 
   onBeforeUnmount(() => clearTimeout(searchTimer))
 
+  /* «Tabel» ustuni: tabel raqami joyida tahrirlanadi, 1 soniya debounce bilan saqlanadi. */
+  const tableDraft = ref({})
+  const tableSaving = ref({})
+  const tableTimers = {}
+  const onlyDigits = (v) => /^\d*$/.test(v)
+  const tableValue = (item) => tableDraft.value[item.id] ?? item.table ?? ''
+  const onTableInput = (item, value) => {
+    tableDraft.value[item.id] = value
+    clearTimeout(tableTimers[item.id])
+    tableTimers[item.id] = setTimeout(async () => {
+      if ((value || null) === (item.table || null)) return
+      tableSaving.value[item.id] = true
+      try {
+        await store.updateTableNumber(item.id, value)
+        // Saqlash davomida yana yozilgan bo'lsa qoralama qoladi — keyingi saqlashni kutadi.
+        if (tableDraft.value[item.id] === value) delete tableDraft.value[item.id]
+      } finally {
+        tableSaving.value[item.id] = false
+      }
+    }, 1000)
+  }
+  onBeforeUnmount(() => Object.values(tableTimers).forEach(clearTimeout))
+
   /* ------------------------------------------------------------------------
    * Qator amallari (3 nuqta) va «Auto hisoblash».
    * ---------------------------------------------------------------------- */
@@ -111,6 +135,7 @@
     const res = await store.autoCalc([item.id])
     if (!res) return
     message.success(t('timesheetPage.autoCalcDone'))
+    if (res.checks) message.warning(t('timesheetPage.needsCheckCount', { n: res.checks }))
   }
 
   /* ------------------------------------------------------------------------
@@ -194,7 +219,7 @@
   const onTabChange = (v) => {
     if (v === 'timekeepers') {
       store._timekeepers()
-      onApproverTab(approverTab.value)
+      if (TIMESHEET_APPROVAL_ENABLED) onApproverTab(approverTab.value)
     }
     else store._index()
   }
@@ -231,6 +256,9 @@
     if (store.lock.sent_at && store.lock.confirmation !== 4) {
       return { text: t('timesheetPage.accessSent'), type: 'warning' }
     }
+    if (store.lock.locked) {
+      return { text: t('timesheetPage.lockedTag'), type: 'warning' }
+    }
     return { text: t('timesheetPage.statusOpen'), type: 'success' }
   })
 
@@ -262,14 +290,23 @@
   }
 
   // Tabelning O'ZI yopiq bo'lsa hech kim yozolmaydi — switch ham bloklanadi.
+  // HR yopgan tabelda tabelchi (bo'lim boshlig'i) faqat ko'radi.
+  const lockedByHr = computed(() => Boolean(store.lock.locked && store.timekeeperMode))
   const timesheetLocked = computed(
-    () => store.lock.status || (store.lock.sent_at && store.lock.confirmation !== 4)
+    () =>
+      store.lock.status ||
+      (store.lock.sent_at && store.lock.confirmation !== 4) ||
+      lockedByHr.value
   )
 
   // Yopiq tabelda «Saqlash» o'rnida sabab ko'rsatiladi — tabelchi nega
   // yozolmayotganini tugmaning o'zidan biladi.
   const lockedActionLabel = computed(() =>
-    store.lock.status ? t('timesheetPage.accessFinished') : t('timesheetPage.inApproval')
+    store.lock.status
+      ? t('timesheetPage.accessFinished')
+      : lockedByHr.value
+        ? t('timesheetPage.lockedByHr')
+        : t('timesheetPage.inApproval')
   )
 
   // Ruxsat switch'i. Default — OCHIQ; qulflansa tabelchi SHU OY tabelini
@@ -284,6 +321,7 @@
     const res = await store.autoCalc()
     if (!res) return
     message.success(t('timesheetPage.autoCalcDone'))
+    if (res.checks) message.warning(t('timesheetPage.needsCheckCount', { n: res.checks }))
   }
 
   // Qoidalar modali — hisoblash qanday ishlashini ko'rsatadi.
@@ -1055,7 +1093,7 @@
         </div>
 
         <!-- Kelishuvchilar / Tarix — ichki tabli kartochka. -->
-        <div class="ts-info-card ts-approvers-card">
+        <div v-if="TIMESHEET_APPROVAL_ENABLED" class="ts-info-card ts-approvers-card">
           <div class="ts-info-head">
             <UISegmentTabs
               v-model="approverTab"
@@ -1282,10 +1320,6 @@
                   <div class="ts-worker-text">
                     <span class="ts-worker-name">{{ item.name }}</span>
                     <span class="ts-worker-sub">
-                      <!-- Tabel raqami (workers.card) — lavozim oldida. -->
-                      <span v-if="item?.table" class="ts-worker-badge">
-                        {{ item.table }}
-                      </span>
                       <span class="ts-worker-post">
                         {{ item?.position || $t('content.noAvailable') }}
                       </span>
@@ -1306,8 +1340,18 @@
                 </n-dropdown>
               </div>
 
-              <div class="ts-c-table no-selectable-item">
-                <span class="ts-table-no">{{ item.table }}</span>
+              <div class="ts-c-table ts-c-table-edit no-selectable-item" @mousedown.stop>
+                <n-input
+                  :allow-input="onlyDigits"
+                  :disabled="timesheetLocked"
+                  :loading="tableSaving[item.id]"
+                  :maxlength="20"
+                  :placeholder="$t('timesheetPage.tableNoPh')"
+                  :value="tableValue(item)"
+                  class="ts-table-input"
+                  size="small"
+                  @update:value="(v) => onTableInput(item, v)"
+                />
               </div>
 
               <div
@@ -1316,7 +1360,8 @@
                 :class="{
                   'is-rest': !dayDetails(item, day)?.length && isWeekend(day),
                   'is-empty': !dayDetails(item, day)?.length && !isWeekend(day),
-                  'is-edited': cellDiff(item, day)
+                  'is-edited': cellDiff(item, day),
+                  'is-check': store.calcBase[`${item.id}|${day.day}`]?.needs_check
                 }"
                 :data-col="col"
                 :data-row="row"
@@ -1354,6 +1399,13 @@
                     </template>
                   </span>
                 </template>
+                <span
+                  v-if="store.nightCont[`${item.id}|${day.day}`]"
+                  :title="$t('timesheetPage.nightContCell')"
+                  class="ts-cell-cont"
+                >
+                  ↳
+                </span>
                 <template v-if="cellDiff(item, day)">
                   <span
                     v-if="cellDiff(item, day).diff"
@@ -2533,17 +2585,6 @@
     gap: 4px;
     min-width: 0;
   }
-  .ts-worker-badge {
-    flex-shrink: 0;
-    padding: 0 4px;
-    border-radius: 4px;
-    font-size: 10px;
-    line-height: 14px;
-    font-weight: 500;
-    color: var(--primaryColor);
-    background: var(--primaryColorHover, rgba(51, 102, 255, 0.1));
-    user-select: all;
-  }
   .ts-worker-post {
     font-size: 10px;
     line-height: 15px;
@@ -2606,6 +2647,19 @@
   .ts-table-no {
     font-size: 12px;
     color: var(--fig-text-secondary);
+  }
+  // Input ustunga sig'sin: o'ngdan ham chegara, o'lcham kichik.
+  .ts-c-table-edit {
+    display: flex;
+    align-items: center;
+    padding-right: 12px;
+  }
+  .ts-table-input {
+    width: 120px;
+    max-width: 100%;
+    font-variant-numeric: tabular-nums;
+    // Doira emas — oddiy yumaloq burchak.
+    --n-border-radius: 8px !important;
   }
 
   /* Katakcha burchagidagi tafsilot tugmasi.
@@ -3805,6 +3859,20 @@
     }
     &.is-empty {
       color: var(--fig-text-disable);
+    }
+    /* Tungi smena davomi — soat oldingi kunga yozilgan. */
+    .ts-cell-cont {
+      position: absolute;
+      bottom: 1px;
+      left: 3px;
+      font-size: 10px;
+      line-height: 10px;
+      color: var(--fig-text-tertiary);
+    }
+    /* Tungi smenada kirish/chiqish yo'q — tabelchi tekshirishi kerak. */
+    &.is-check {
+      background: rgba(245, 158, 11, 0.14);
+      box-shadow: inset 0 0 0 1.5px rgba(245, 158, 11, 0.85);
     }
     /* Saqlanmagan katakcha ALOHIDA belgilanmaydi — rangsiz tur to'q qora
        bo'lib qolishi kerak. Nechta katak kutayotgani pastki paneldagi

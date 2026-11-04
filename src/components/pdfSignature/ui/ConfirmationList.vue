@@ -86,7 +86,7 @@
   // Tasdiqlangan yoki rahbar rad etib yopgan hujjatga link berilmaydi — tugma bosilsa sababi aytiladi.
   const linkBlockedReason = (item) => {
     const docStatus = store.document?.document?.confirmation?.id
-    const afterApproval = store.model === Utils.documentModels.materialLiability && item.type === 'w'
+    const afterApproval = store.model === Utils.documentModels.documents && item.type === 'w'
     if (docStatus === 3 && !afterApproval) return t('signature.linkDocApproved')
     const directorRejected = (store.confirmations || []).some(
       (c) => c.type === 'd' && c.status?.id === STATUS.rejected

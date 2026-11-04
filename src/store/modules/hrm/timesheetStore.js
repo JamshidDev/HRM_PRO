@@ -31,16 +31,21 @@ export const useTimesheetStore = defineStore('timesheetStore', {
       page: 1,
       per_page: 15,
       search: null,
-      organizations: []
+      organizations: [],
+      period: null
     },
-    structureCheck2: []
+    structureCheck2: [],
+    lockLoadingId: null
   }),
   actions: {
     _index() {
       this.loading = true
       const params = {
         ...this.params,
-        organizations: this.params.organizations.map((v) => v.id).toString() || undefined
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
+        period: undefined,
+        year: this.params.period ? dayjs(this.params.period).year() : undefined,
+        month: this.params.period ? dayjs(this.params.period).month() + 1 : undefined
       }
       $ApiService.timesheetService
         ._index({ params })
@@ -101,6 +106,15 @@ export const useTimesheetStore = defineStore('timesheetStore', {
         })
         .finally(() => {
           this.deleteLoading = false
+        })
+    },
+    _setLock(row, locked) {
+      this.lockLoadingId = row.id
+      return $ApiService.timesheetService
+        ._lock({ id: row.id, data: { locked } })
+        .then(() => this._index())
+        .finally(() => {
+          this.lockLoadingId = null
         })
     },
     _closeTimesheet() {

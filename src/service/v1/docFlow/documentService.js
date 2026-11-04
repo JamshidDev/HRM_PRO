@@ -22,8 +22,8 @@ const _confirmationAdContract = async (payload) => {
   return await axios.get(`/v1/confirmation/contract-additional`, { params: payload.params })
 }
 
-const _confirmationMaterialLiability = async (payload) => {
-  return await axios.get(`/v1/confirmation/material-liability`, { params: payload.params })
+const _confirmationEmployeeDocuments = async (payload) => {
+  return await axios.get(`/v1/confirmation/documents`, { params: payload.params })
 }
 const _addQRCode = async (payload) => {
   return await axios.get(`/v1/confirmation/document/base64`, { params: payload.params })
@@ -131,7 +131,7 @@ export default {
   _confirmationContract,
   _confirmationCommand,
   _confirmationAdContract,
-  _confirmationMaterialLiability,
+  _confirmationEmployeeDocuments,
   _generateLink,
   _officeConfigToken,
   _signature,

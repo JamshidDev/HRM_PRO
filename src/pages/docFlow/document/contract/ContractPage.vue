@@ -1,4 +1,5 @@
 <script setup>
+  import { useRoute } from 'vue-router'
   import ContractModal from './ContractModal.vue'
   import ContractList from './ContractList.vue'
   import { UIPageContent, UIOfficeApp } from '@/components/index.js'
@@ -6,6 +7,7 @@
   import Utils from '@/utils/Utils.js'
   import Filter from './ui/Filter.vue'
   import ResendSignersModal from '@/pages/docFlow/document/command/ResendSignersModal.vue'
+  const route = useRoute()
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
   const store = useContractStore()
@@ -30,6 +32,9 @@
 
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.hrContractsRead)) return
+    if (route.query.confirmation) {
+      store.params.confirmation = Number(route.query.confirmation)
+    }
     store._index()
   })
 

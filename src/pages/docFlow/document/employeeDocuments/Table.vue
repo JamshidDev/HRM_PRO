@@ -8,14 +8,14 @@
     UIUser
   } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
-  import { useAccountStore, useMaterialLiabilityStore } from '@/store/modules/index.js'
+  import { useAccountStore, useEmployeeDocumentStore } from '@/store/modules/index.js'
   import { useNotify } from '@/composables/useNotify'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import { Delete20Regular, Edit32Regular, Eye16Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
-  const store = useMaterialLiabilityStore()
+  const store = useEmployeeDocumentStore()
   const accStore = useAccountStore()
   const notify = useNotify()
   const emits = defineEmits(['openOffice'])
@@ -27,7 +27,7 @@
 
   const onEdit = (row) => {
     if (!accStore.checkAction(accStore.pn.hrContractsWrite)) return
-    store._openEdit(row.id, (block) => notify.warning(t(`materialLiabilityPage.locked.${block}`)))
+    store._openEdit(row.id, (block) => notify.warning(t(`employeeDocumentsPage.locked.${block}`)))
   }
 
   const onDelete = (row) => {
@@ -45,11 +45,11 @@
     { key: 'worker', title: t('contractPage.table.worker'), minWidth: 220 },
     { key: 'number', title: t('contractPage.table.number'), width: 120, align: 'center' },
     { key: 'electronic_number', title: t('documentSettings.electronicNumber'), width: 130 },
-    { key: 'assets', title: t('materialLiabilityPage.form.assets'), minWidth: 260 },
+    { key: 'type', title: t('employeeDocumentsPage.form.type'), minWidth: 260 },
     { key: 'organization.name', title: t('contractPage.table.organization'), minWidth: 200 },
     { key: 'confirmation', title: t('contractPage.table.status'), width: 140 },
     { key: 'generate', title: t('content.document'), width: 120 },
-    { key: 'contract_date', title: t('contractPage.table.date'), width: 120 }
+    { key: 'document_date', title: t('contractPage.table.date'), width: 120 }
   ])
 
   const actions = computed(() => [
@@ -84,7 +84,7 @@
     :page="store.params.page"
     :per-page="store.params.per_page"
     :total="store.totalItems"
-    storage-key="hrm-material-liability"
+    storage-key="hrm-employee-documents"
     @change-page="changePage"
   >
     <template #cell-worker="{ row }">
@@ -111,8 +111,11 @@
       <UIElectronicNumber :value="row?.electronic_number" />
     </template>
 
-    <template #cell-assets="{ row }">
-      <UITableNameCell :name="row?.assets" :created-at="row.created_at" @click="onView(row)" />
+    <template #cell-type="{ row }">
+      <div class="cursor-pointer" @click="onView(row)">
+        <UITableNameCell :name="row?.type?.name" :created-at="row.created_at" />
+        <div v-if="row?.summary" class="text-xs text-textColor3 line-clamp-1">{{ row.summary }}</div>
+      </div>
     </template>
 
     <template #cell-confirmation="{ row }">
@@ -123,8 +126,8 @@
       <UIStatus :status="Utils.documentStatus[row?.generate]" />
     </template>
 
-    <template #cell-contract_date="{ row }">
-      {{ Utils.timeOnlyDate(row?.contract_date) }}
+    <template #cell-document_date="{ row }">
+      {{ Utils.timeOnlyDate(row?.document_date) }}
     </template>
   </UITable>
 </template>

@@ -483,7 +483,7 @@
       Utils.documentModels.command,
       Utils.documentModels.contract,
       Utils.documentModels.adContract,
-      Utils.documentModels.materialLiability
+      Utils.documentModels.documents
     ].includes(store.model)
   )
   // Marshrutni faqat hujjat turining yozish ruxsati bor (HR) o'zgartiradi — computed'da checkPermission (checkAction modal chiqaradi).
@@ -491,7 +491,7 @@
     [Utils.documentModels.command]: accountStore.pn.hrCommandsWrite,
     [Utils.documentModels.contract]: accountStore.pn.hrContractsWrite,
     [Utils.documentModels.adContract]: accountStore.pn.hrContractAdditionalWrite,
-    [Utils.documentModels.materialLiability]: accountStore.pn.hrContractsWrite
+    [Utils.documentModels.documents]: accountStore.pn.hrContractsWrite
   }
   const canRoute = computed(
     () =>
@@ -574,8 +574,9 @@
               <div v-else class="hidden min-[1200px]:block min-w-0">
                 <div
                   class="text-sm font-semibold text-textColor1 leading-tight truncate max-w-[280px]"
+                  :title="store.title || store.document?.document?.file_name"
                 >
-                  {{ store.document?.document?.file_name }}
+                  {{ store.title || store.document?.document?.file_name }}
                 </div>
                 <div class="text-xs text-gray-400 tabular-nums">
                   {{ Utils.timeOnlyDate(store?.document?.document?.created) }}

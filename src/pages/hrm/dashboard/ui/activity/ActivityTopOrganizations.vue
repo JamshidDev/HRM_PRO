@@ -4,9 +4,10 @@
   import i18n from '@/i18n/index.js'
   import HeadUsers from '@/assets/icons/hrmDashboard/activity/head-users.svg?url'
   import ChevronRight from '@/assets/icons/hrmDashboard/activity/chevron-right.svg?url'
+  import DownloadIcon from '@/assets/icons/hrmDashboard/activity/download.svg?url'
   import ApiService from '@/service/ApiService.js'
   import { useDashboardStore } from '@/store/modules/index.js'
-  import { NIcon } from 'naive-ui'
+  import { NIcon, NSpin } from 'naive-ui'
   import { Building20Regular, Search20Regular } from '@vicons/fluent'
   import { naiveIcons } from '@/assets/theme/theme.js'
   import { actionTypes, formatCount } from './utils.js'
@@ -98,6 +99,19 @@
     search.value = ''
     expanded.value = true
   }
+
+  const exportLoading = ref(false)
+
+  const onExport = async () => {
+    if (exportLoading.value) return
+    exportLoading.value = true
+    try {
+      const data = store.appendParams({ period: period.value })
+      await ApiService.dashboardService._activityOrganizationsExport({ data })
+    } finally {
+      exportLoading.value = false
+    }
+  }
 </script>
 
 <template>
@@ -140,6 +154,19 @@
           </button>
         </label>
         <UISegmentTabs v-model="period" :tabs="periodTabs" />
+        <button
+          v-fly-upload="{ icon: 'download', colors: ['#008838', '#008838'] }"
+          type="button"
+          :disabled="exportLoading"
+          class="flex h-9 cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#008838] px-4 transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+          @click="onExport"
+        >
+          <n-spin v-if="exportLoading" :size="16" stroke="#ffffff" />
+          <img v-else :src="DownloadIcon" alt="" width="18" height="18" class="block shrink-0" />
+          <span class="text-[14px] leading-[18px] font-medium whitespace-nowrap text-white">
+            {{ $t('dashboardPage.activity.export') }}
+          </span>
+        </button>
       </div>
     </div>
 

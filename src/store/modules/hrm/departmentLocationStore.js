@@ -15,6 +15,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     visibleType: true,
     viewVisible: false,
     viewData: null,
+    viewRow: null,
     viewLoading: false,
     elementId: null,
     totalItems: 0,
@@ -26,17 +27,25 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     workerList: [],
     workerLoading: false,
     workerTotal: 0,
+    // BACKEND: GET /v1/extra/mobile-face/workers — `has_location=false` hozir 0 ta qaytaradi
+    // (joysiz xodimlar 63 mingdan ortiq), ya'ni "false" satri true deb o'qilyapti. Shuningdek
+    // `is_free=true` (erkin rejimdagi xodimlar) parametri yo'q. Ikkalasi «Joy holati» filtri uchun kerak.
     workerParams: {
       page: 1,
       per_page: 15,
       search: null,
-      organizations: []
+      organizations: [],
+      // Swagger'da bor: `department_id`.
+      department_id: null,
+      has_location: null,
+      is_free: null
     },
     stats: null,
     statsLoading: false,
     workerLocVisible: false,
     workerLocations: [],
     workerLocationsLoading: false,
+    deletingLocationId: null,
     payload: {
       department_id: null,
       worker_id: null,
@@ -49,20 +58,40 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       polygon: [],
       accuracy_limit: 3
     },
+    // BACKEND: GET /v1/extra/department/list hozir `has_location` (true — joyi bor, false — joysiz)
+    // va `is_free` (true — erkin rejimdagi bo'limlar) parametrlarini e'tiborsiz qoldiradi.
+    // «Filterlar» → «Joy holati» tanlanganda ro'yxat shular bilan filtrlanadi.
     params: {
       page: 1,
       per_page: 15,
       search: null,
-      organizations: []
+      organizations: [],
+      has_location: null,
+      is_free: null
     },
+    // BACKEND: GET /v1/extra/department/locations — joylashuv turi bo'yicha filtr kerak:
+    // `geo_type` (false — nuqta+radius, true — hudud/polygon) va `is_free=true` (erkin rejim).
+    // Hozir swagger'da faqat page, per_page, search, organization_id, department_id bor.
     locationParams: {
       page: 1,
       per_page: 15,
       search: null,
       organizations: [],
-      department_id: null
+      department_id: null,
+      geo_type: null,
+      is_free: null
     }
   }),
+  getters: {
+    // Joriy ko'rinishda «Joy holati» filtrining qiymati (`applyLocationState` ga qarang; yo'q — null).
+    locationState(state) {
+      const p = state.activeTab === 'workers' ? state.workerParams : state.params
+      if (p.is_free === true) return 'free'
+      if (p.has_location === true) return 'areas'
+      if (p.has_location === false) return 'unassigned'
+      return null
+    }
+  },
   actions: {
     _index() {
       this.loading = true
@@ -191,8 +220,10 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.deleteLoading = true
       $ApiService.departmentLocationService
         ._delete({ id: this.elementId })
-        .then((res) => {
+        .then(() => {
           this.visible = false
+          // Ko'rish oynasidan o'chirilganda — u ham yopiladi.
+          this.viewVisible = false
           this._stats()
           if (this.activeTab === 'departments') {
             this._index()
@@ -211,6 +242,13 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.selectedDepartment = department
       this._locationIndex()
     },
+    // Bo'lim joylari ro'yxatidan bo'limlar ro'yxatiga qaytish (breadcrumb). Bo'limlar ro'yxatining
+    // sahifasi va filtrlari o'zgarmaydi — foydalanuvchi qaerda bo'lsa, o'sha yerga qaytadi.
+    backToDepartments() {
+      this.activeTab = 'departments'
+      this.resetLocationParams()
+      this._index()
+    },
     // `department` null bo'lishi mumkin — jadval sarlavhasidagi "+" orqali
     // ochilganda bo'lim formaning o'zida tanlanadi.
     openLocationModal(department = null) {
@@ -221,6 +259,9 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.visible = true
     },
     openViewModal(item) {
+      // Jadval qatori: `_show` javobida bo'lim/tashkilot yo'q — ular shu yerdan olinadi,
+      // «Tahrirlash» ham shu qator bilan ochiladi.
+      this.viewRow = item
       this.viewData = null
       this.viewVisible = true
       this.viewLoading = true
@@ -235,7 +276,16 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     },
     openEditModal(item) {
       this.resetForm()
-      this.payload.department_id = item.department_id
+      // Tahrirlashda qaysi bo'lim ekani ko'rinsin: `_show` javobida `department` yo'q, shuning uchun
+      // jadval qatoridan (`department`, `organization`) olinadi.
+      if (item.department) {
+        this.selectedDepartment = {
+          id: item.department.id,
+          name: item.department.name,
+          organization: { name: item.organization?.name ?? item.department.organization_name }
+        }
+      }
+      this.payload.department_id = item.department_id ?? item.department?.id ?? null
       this.elementId = item.id
       this.visibleType = false
       this.visible = true
@@ -364,6 +414,8 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.visible = true
     },
     _deleteWorkerLocation(id) {
+      // Qaysi joy o'chirilayotgani — oynada faqat o'sha qatorda loader aylanadi.
+      this.deletingLocationId = id
       this.deleteLoading = true
       $ApiService.departmentLocationService
         ._deleteWorkerLocation({ id })
@@ -374,7 +426,14 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
         })
         .finally(() => {
           this.deleteLoading = false
+          this.deletingLocationId = null
         })
+    },
+    // «Joy holati» filtri: 'areas' — joyi bor, 'unassigned' — joysiz, 'free' — erkin rejim,
+    // null — hammasi. Param'larga `has_location` / `is_free` bo'lib yoziladi.
+    applyLocationState(p, key) {
+      p.has_location = key === 'areas' ? true : key === 'unassigned' ? false : null
+      p.is_free = key === 'free' ? true : null
     },
     resetParams() {
       this.params.page = 1
@@ -386,6 +445,8 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.locationParams.search = null
       this.locationParams.organizations = []
       this.locationParams.department_id = null
+      this.locationParams.geo_type = null
+      this.locationParams.is_free = null
       this.selectedDepartment = null
     }
   }

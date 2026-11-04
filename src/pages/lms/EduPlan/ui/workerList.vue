@@ -24,14 +24,21 @@
     <div v-if="store.workerList.length > 0">
       <!-- >= md (768px): to'liq jadval -->
       <div class="w-full overflow-x-auto hidden md:block">
-        <n-table class="mt-5" :single-line="false" size="small">
+        <n-table class="mt-5 min-w-[860px] table-fixed" :single-line="false" size="small">
+          <colgroup>
+            <col class="w-[52px]" />
+            <col />
+            <col class="w-[34%]" />
+            <col class="w-[170px]" />
+            <col class="w-[64px]" />
+          </colgroup>
           <thead>
             <tr>
-              <th class="text-center! min-w-[40px] w-[40px]">{{ $t('content.number') }}</th>
-              <th class="min-w-[200px]">{{ $t('content.name') }}</th>
-              <th class="w-[300px]">{{ $t('content.organization') }}</th>
-              <th class="w-[200px]">{{ $t('content.phone') }}</th>
-              <th class="w-[60px]"></th>
+              <th class="text-center!">{{ $t('content.number') }}</th>
+              <th>{{ $t('content.name') }}</th>
+              <th>{{ $t('content.organization') }}</th>
+              <th class="text-center!">{{ $t('content.phone') }}</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -41,7 +48,7 @@
                   (store.workerParams.page - 1) * store.workerParams.per_page + idx + 1
                 }}</span>
               </td>
-              <td>
+              <td class="overflow-hidden">
                 <UIUser
                   :hide-tooltip="true"
                   :short="false"
@@ -54,11 +61,22 @@
                   }"
                 />
               </td>
-              <td class="!text-center">
-                {{ item.worker_position?.organization?.name }}
+              <td>
+                <span
+                  class="line-clamp-2 break-words"
+                  :title="item.worker_position?.organization?.name"
+                >
+                  {{ item.worker_position?.organization?.name }}
+                </span>
               </td>
               <td class="!text-center">
-                {{ item.worker_position?.phones.toString() }}
+                <div
+                  v-for="phone in item.worker_position?.phones || []"
+                  :key="phone"
+                  class="whitespace-nowrap"
+                >
+                  {{ phone }}
+                </div>
               </td>
               <td class="!text-center">
                 <n-button
@@ -114,7 +132,7 @@
             </div>
             <div v-if="item.worker_position?.phones?.length" class="flex gap-1">
               <span class="text-textColor3 shrink-0">{{ $t('content.phone') }}:</span>
-              <span class="truncate">{{ item.worker_position.phones.toString() }}</span>
+              <span class="truncate">{{ item.worker_position.phones.join(', ') }}</span>
             </div>
           </div>
 
