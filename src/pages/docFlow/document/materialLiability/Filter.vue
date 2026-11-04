@@ -52,7 +52,7 @@
 
   const router = useRouter()
   const onHistory = () => {
-    router.push({ path: AppPaths.Audit, query: { trigger_name: 'hr.material-liability' } })
+    router.push({ path: AppPaths.Audit, query: { trigger_name: 'hr.documents' } })
   }
 </script>
 
