@@ -27,8 +27,16 @@
 
   const docxEditorStore = useDocxEditorStore()
 
+  // Ko'rish oynasi sarlavhasi: «№45 — Mehnat ta'tilini berish» (raqam bo'lmasa faqat turi).
+  // Fayl nomi UUID bo'lgani uchun sarlavha ro'yxatdagi qatordan olinadi (DAS-14196).
+  const commandTitle = (row) => {
+    const number = row?.command_number ? `№${row.command_number}` : null
+    return [number, row?.type?.name].filter(Boolean).join(' — ') || undefined
+  }
+
   const openCommand = (id) => {
-    officeAppRef.value.openPdf(id, Utils.documentModels.command)
+    const row = store.list.find((x) => x.id === id)
+    officeAppRef.value.openPdf(id, Utils.documentModels.command, undefined, commandTitle(row))
   }
 
   // Tahrirlash v2 (docx-editor.dev) — OnlyOffice oqimiga tegmaydi, yonma-yon.

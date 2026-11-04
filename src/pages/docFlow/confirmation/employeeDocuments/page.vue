@@ -2,17 +2,17 @@
   import { UIOfficeApp, UIPageContent, UIPageFilter } from '@/components/index.js'
   import {
     useAccountStore,
-    useConfirmationMaterialLiabilityStore
+    useConfirmationEmployeeDocumentStore
   } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import Table from './Table.vue'
 
-  const store = useConfirmationMaterialLiabilityStore()
+  const store = useConfirmationEmployeeDocumentStore()
   const accStore = useAccountStore()
   const officeAppRef = ref(null)
 
   const openOffice = (v) => {
-    officeAppRef.value.openPdf(v.documentId, Utils.documentModels.materialLiability, v.signatureId)
+    officeAppRef.value.openPdf(v.documentId, Utils.documentModels.documents, v.signatureId)
   }
 
   const onSearch = () => {

@@ -24,8 +24,8 @@ export const docFlowRoutes = [
     }
   },
   {
-    path: Utils.routeDocFlowPathMaker(AppPaths.ConfMaterialLiability),
-    component: () => import('@/pages/docFlow/confirmation/materialLiability/page.vue'),
+    path: Utils.routeDocFlowPathMaker(AppPaths.ConfEmployeeDocuments),
+    component: () => import('@/pages/docFlow/confirmation/employeeDocuments/page.vue'),
     meta: {
       layout: AppLayouts.main
     }

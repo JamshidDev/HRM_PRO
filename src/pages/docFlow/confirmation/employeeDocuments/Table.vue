@@ -8,13 +8,13 @@
     UIUser
   } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
-  import { useConfirmationMaterialLiabilityStore } from '@/store/modules/index.js'
+  import { useConfirmationEmployeeDocumentStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import { Eye16Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
-  const store = useConfirmationMaterialLiabilityStore()
+  const store = useConfirmationEmployeeDocumentStore()
   const emits = defineEmits(['openOffice'])
 
   const onPreview = (row) => {
@@ -28,7 +28,7 @@
   }
 
   const columns = computed(() => [
-    { key: 'assets', title: t('materialLiabilityPage.form.assets'), minWidth: 240 },
+    { key: 'type', title: t('employeeDocumentsPage.form.type'), minWidth: 240 },
     { key: 'worker', title: t('confirmation.contract.form.worker'), minWidth: 220 },
     { key: 'number', title: t('confirmation.contract.form.number'), width: 100, align: 'center' },
     { key: 'electronic_number', title: t('documentSettings.electronicNumber'), width: 130 },
@@ -55,11 +55,11 @@
     :page="store.params.page"
     :per-page="store.params.per_page"
     :total="store.totalItems"
-    storage-key="docflow-confirmation-material-liability"
+    storage-key="docflow-confirmation-employee-documents"
     @change-page="changePage"
   >
-    <template #cell-assets="{ row }">
-      <UITableNameCell :name="row.document?.assets" @click="onPreview(row)" />
+    <template #cell-type="{ row }">
+      <UITableNameCell :name="row.document?.type_name" @click="onPreview(row)" />
     </template>
 
     <template #cell-worker="{ row }">

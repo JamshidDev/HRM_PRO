@@ -121,6 +121,7 @@ const FORM_STATE_KEYS = [
   'form_76',
   'form_79',
   'form_80',
+  'form_26',
   'form_74',
   'form_75',
   'vacations',
@@ -330,6 +331,15 @@ const commandStoreOptions = {
       civil_contract_date: null,
       civil_contract_kind: null,
       civil_cancel_date: null,
+      hr_worker_position_id: null,
+      hr_option: null
+    },
+    // 26 — shtati bilan boshqa korxonaga o'tkazish; `hr_option` — mas'ul yorlig'i.
+    form_26: {
+      target_organization_id: null,
+      target_department_id: null,
+      reason: null,
+      transfer_date: null,
       hr_worker_position_id: null,
       hr_option: null
     },
@@ -616,6 +626,14 @@ const commandStoreOptions = {
       this.workerParams.page = 1
       this.workerParams.search = null
       this.cancelCommandParams.organization_id = orgId
+      // BACKEND: GET /v1/hr/commands/{id}/form — eski buyruqlar uchun yasalgan `form_state` (`legacy: true`) da
+      // xodim noto'g'ri (QA, DAS-14197). Dev'da UTY-053995 (id 92663, №45, ta'til) aslida Raximov Jamshid
+      // Shuxrat o'g'li (worker 12703) ga, lekin `payload.worker` / `payload.workers` / `workerList` = 46500
+      // «Saidov Ravshan Urinbayevich». Boshqa №45 buyruq (UTY-768425, id 92667) ham xuddi shu 46500 ni oladi —
+      // xodim buyruqning o'zidan emas, boshqa (bir xil raqamli?) buyruqdan olinayotganga o'xshaydi.
+      // Kerak: legacy `form_state` dagi xodim(lar) aynan shu buyruqning xodimlaridan (ro'yxatdagi `workers[]`
+      // bilan bir xil) olinsin. Frontend `form_state` ni o'zgartirmay ko'rsatadi, shuning uchun «Ma'lumotlar»
+      // tabidagi xodim hujjat matnidagi xodimdan farq qiladi.
       if (state?.legacy) this.fillLegacyForm(state.data || {})
       // Eski saqlangan formalarda «Asos» yo'q edi — buyruq ma'lumotidan olinadi.
       if (this.commandBase == null && [71, 73].includes(this.payload.command_type)) {
@@ -860,6 +878,15 @@ const commandStoreOptions = {
         civil_contract_date: null,
         civil_contract_kind: null,
         civil_cancel_date: null,
+        hr_worker_position_id: null,
+        hr_option: null
+      }
+
+      this.form_26 = {
+        target_organization_id: null,
+        target_department_id: null,
+        reason: null,
+        transfer_date: null,
         hr_worker_position_id: null,
         hr_option: null
       }

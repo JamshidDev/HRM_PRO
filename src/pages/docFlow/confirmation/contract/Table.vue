@@ -5,7 +5,8 @@
     UITableBadgeCell,
     UITableNameCell,
     UIUser,
-    UIElectronicNumber
+    UIElectronicNumber,
+    NoDataPicture
   } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useConfirmationContractStore } from '@/store/modules/index.js'
@@ -99,6 +100,14 @@
     storage-key="docflow-confirmation-contract"
     @change-page="changePage"
   >
+    <!-- Ro'yxat — imzo/kelishuvni kutayotgan shartnomalar; qidiruvsiz bo'sh bo'lsa «topilmadi» emas -->
+    <template #empty>
+      <NoDataPicture
+        :title="store.searched ? null : $t('confirmation.contract.empty')"
+        :hint="store.searched ? null : $t('confirmation.contract.emptyHint')"
+      />
+    </template>
+
     <template #[`cell-contract.type.name`]="{ row }">
       <UITableNameCell :name="row?.contract?.type.name" @click="onPreview(row)" />
     </template>
