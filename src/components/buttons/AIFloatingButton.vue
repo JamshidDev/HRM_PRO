@@ -7,6 +7,9 @@
 
   const STORAGE_KEY = 'aiFloatingButtonPositionRatio'
   const MARGIN = 16
+  // Boshlang'ich joy: o'ng pastki burchak, lekin jadval pastidagi sahifalash qatori
+  // («N tadan ko'rsatish», pastdan ~64px) ustida — uni to'sib qo'ymasin (DAS-14194).
+  const DEFAULT_BOTTOM_GAP = 80
   const DRAG_THRESHOLD = 4
   const VELOCITY_SAMPLE_WINDOW = 100 // ms, window used to estimate release velocity
   const FLING_THRESHOLD = 500 // px/s, below this a release is treated as a plain drop (no fling)
@@ -191,7 +194,10 @@
         y: Math.min(Math.max(savedY, 0), 1)
       }
     } else {
-      ratio.value = { x: 1, y: 1 }
+      const { maxY } = getBounds()
+      const rangeY = maxY - MARGIN
+      const targetY = maxY - (DEFAULT_BOTTOM_GAP - MARGIN)
+      ratio.value = { x: 1, y: rangeY > 0 ? Math.min(Math.max((targetY - MARGIN) / rangeY, 0), 1) : 1 }
     }
     applyRatio()
   }

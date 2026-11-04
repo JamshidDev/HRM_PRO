@@ -36,6 +36,9 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     model: null,
     document_id: null,
     signatureId: null,
+    // Sarlavhada fayl nomi (UUID) o'rniga ko'rsatiladigan nom, masalan «№45 — Mehnat ta'tili».
+    // Ochgan sahifa beradi (`/v1/document/show` da hujjat turi/raqami yo'q) — DAS-14196.
+    title: null,
 
     historyLoading: false,
     historyList: [],

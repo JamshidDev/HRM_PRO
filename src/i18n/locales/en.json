@@ -715,6 +715,8 @@
   "confirmation": {
     "name": "Contracts",
     "contract": {
+      "empty": "No contracts to approve",
+      "emptyHint": "Contracts waiting for your signature or approval will appear here",
       "form": {
         "number": "Number",
         "type": "Type",
@@ -6097,18 +6099,41 @@
     "createTitle": "Add Location",
     "updateTitle": "Edit Location",
     "attachTitle": "Attach Location",
+    "viewTitle": "View location",
     "addLocation": "Add Location",
     "locationExists": "Yes",
     "locationNotExists": "No",
     "locationCount": "{n} location(s)",
-    "noLocation": "No location",
+    "noLocation": "Not assigned",
     "freeBadge": "Free",
+    "locationExistsShort": "Assigned",
+    "unnamed": "Unnamed place",
+    "pointsCount": "{n} points",
+    "emptyDepartment": "No entry point set for this department yet",
+    "emptyDepartmentHint": "Mark on the map where employees can check in from the mobile app.",
+    "emptyFiltered": "No places match the selected filter",
+    "showMap": "Show on map",
+    "hideMap": "Hide map",
+    "emptyWorker": "No personal entry point assigned yet",
+    "copyCoords": "Copy coordinates",
     "stats": {
       "organizations": "Organizations",
       "areas": "Areas",
       "free": "Free mode",
       "unassignedDepartments": "Departments without a place",
       "unassignedWorkers": "Employees without a place"
+    },
+    "statsHint": {
+      "organizations": "Organizations with assigned places",
+      "areas": "Configured entry points",
+      "free": "Entry without area limits",
+      "unassigned": "No entry point assigned yet"
+    },
+    "filter": {
+      "all": "All",
+      "locationState": "Place status",
+      "hasLocation": "Assigned",
+      "noLocation": "Not assigned"
     },
     "source": {
       "department": "Department place",
@@ -6129,8 +6154,23 @@
       "detailTitle": "Mobile pass",
       "info": "Details",
       "placeTitle": "Pass location",
-      "livePhoto": "Verified frame",
-      "refPhoto": "Photo on file",
+      "livePhoto": "Verified photo",
+      "refPhoto": "Official photo",
+      "appName": "HR Rail app",
+      "matchHigh": "Face matches",
+      "matchMid": "Partial match — compare the photos",
+      "matchLow": "Low match — may be another person",
+      "matchUnknown": "Similarity not available",
+      "placeUnknown": "Location unknown",
+      "accuracyGood": "precise",
+      "accuracyMid": "moderate",
+      "accuracyLow": "low — position is approximate",
+      "accuracyHint": "The circle on the map is the phone's location error range",
+      "placeHint": {
+        "free": "No location limit — the employee can check in from anywhere",
+        "department": "Within the department's location",
+        "worker": "Within the location assigned to the employee"
+      },
       "in": "Entry"
     },
     "tabs": {
@@ -6148,7 +6188,9 @@
       "radius": "Radius",
       "accuracy": "Accuracy",
       "hasLocation": "Locations",
-      "location": "Location"
+      "location": "Location",
+      "zone": "Zone",
+      "coords": "Coordinates"
     },
     "form": {
       "freeMode": "Free mode",
@@ -6163,20 +6205,23 @@
       "accuracy": "Accuracy Limit",
       "polygon": "Polygon",
       "points": "points",
-      "noPolygon": "No polygon set",
+      "noPolygon": "Area not drawn yet",
       "polygonReady": "Area ready",
       "markerInfoFull": "Click on the map to set the location. Drag the marker to the desired position or click on another location on the map. Use the radius settings to define the distance around the marked point.",
       "polygonInfoFull": "In polygon mode, employees can only mark attendance when inside the designated area. Click \"Add Polygon\" on the map and mark points sequentially (minimum 3, maximum 12 points).",
       "autoCalculated": "Auto",
       "centerMarkerInfo": "Drag the marker to change the center point",
-      "coordinate": "Coordinate",
-      "area": "Area"
+      "coordinate": "Circle",
+      "area": "Area",
+      "modeHintCircle": "Click the map to place a point — the employee can check in within the radius around it.",
+      "modeHintArea": "Draw the area on the map — the employee can check in only inside it.",
+      "polygonSteps": "«Draw area» → place at least 3 points on the map → «Finish»."
     },
     "validation": {
       "departmentRequired": "Select a department",
       "nameRequired": "Enter the passage point name",
       "markerRequired": "Mark the location on the map",
-      "polygonRequired": "Draw a polygon on the map (minimum 3 points)",
+      "polygonRequired": "Draw the area on the map (at least 3 points)",
       "radiusRequired": "Enter the radius",
       "accuracyRequired": "Enter the accuracy limit",
       "minPoints": "minimum 3"
@@ -6184,12 +6229,12 @@
     "map": {
       "title": "Mark on Map",
       "clearMarker": "Clear Marker",
-      "clearPolygon": "Clear Polygon",
+      "clearPolygon": "Clear area",
       "myLocation": "My Location",
       "myLocationTooltip": "Get current location",
       "clickToMark": "Click on map to place marker",
       "setLocation": "Set Location",
-      "addPolygon": "Add Polygon",
+      "addPolygon": "Draw area",
       "polygonMode": "Polygon mode",
       "markerMode": "Marker mode",
       "finishPolygon": "Finish",
@@ -6197,7 +6242,16 @@
       "undo": "Undo",
       "save": "Save",
       "done": "Done",
-      "points": "points"
+      "points": "points",
+      "redrawPolygon": "Redraw area",
+      "drawHint": "Click the map to add a point (at least 3)",
+      "drawHintDone": "Add more points or click «Finish»",
+      "layerSwitch": "Map type",
+      "layerOsm": "OSM",
+      "layerYandex": "Yandex",
+      "yandexFailed": "Yandex map failed to load, showing OpenStreetMap",
+      "polygonSaved": "Area drawn. Drag the marker to change the center point.",
+      "geoError": "Could not detect your location"
     }
   },
   "integrationLog": {
@@ -7171,5 +7225,9 @@
     "revokeOthersConfirm": "End all sessions except the current one?",
     "revoked": "Session ended",
     "protected": "This is a new session: you can end older sessions in {min} min (60 minutes for security)."
+  },
+  "onlyOfficeEditor": {
+    "tokenError": "Could not open the document editor",
+    "tokenErrorHint": "The server did not issue a security token for this document. Try again later or contact the administrator."
   }
 }

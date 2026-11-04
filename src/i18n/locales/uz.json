@@ -730,6 +730,8 @@
   "confirmation": {
     "name": "Shartnomalar",
     "contract": {
+      "empty": "Tasdiqlash uchun shartnoma yo'q",
+      "emptyHint": "Imzoingiz yoki kelishuvingizni kutayotgan shartnomalar shu yerda chiqadi",
       "form": {
         "number": "Raqami",
         "type": "Turi",
@@ -6162,14 +6164,36 @@
     "locationExists": "Bor",
     "locationNotExists": "Yo'q",
     "locationCount": "{n} ta joylashuv",
-    "noLocation": "Joylashuv yo'q",
+    "noLocation": "Belgilanmagan",
     "freeBadge": "Erkin",
+    "locationExistsShort": "Belgilangan",
+    "unnamed": "Nomsiz joylashuv",
+    "pointsCount": "{n} ta nuqta",
+    "emptyDepartment": "Bu bo'limga hali joylashuv belgilanmagan",
+    "emptyDepartmentHint": "Xodimlar mobil ilovada qayerdan o'tishi mumkinligini xaritada belgilang.",
+    "emptyFiltered": "Tanlangan filtr bo'yicha joylashuv topilmadi",
+    "showMap": "Xaritada ko'rish",
+    "hideMap": "Xaritani yopish",
+    "emptyWorker": "Xodimga hali alohida joylashuv berilmagan",
+    "copyCoords": "Koordinatani nusxalash",
     "stats": {
       "organizations": "Korxonalar",
       "areas": "Hududlar",
       "free": "Erkin rejim",
-      "unassignedDepartments": "Joy belgilanmagan bo'limlar",
-      "unassignedWorkers": "Joy belgilanmagan xodimlar"
+      "unassignedDepartments": "Joylashuv belgilanmagan bo'limlar",
+      "unassignedWorkers": "Joylashuv belgilanmagan xodimlar"
+    },
+    "statsHint": {
+      "organizations": "Joylashuv biriktirilgan korxonalar",
+      "areas": "Belgilangan joylashuvlar",
+      "free": "Hudud cheklovisiz o'tadi",
+      "unassigned": "Hali joylashuv berilmagan"
+    },
+    "filter": {
+      "all": "Hammasi",
+      "locationState": "Joylashuv holati",
+      "hasLocation": "Belgilangan",
+      "noLocation": "Belgilanmagan"
     },
     "source": {
       "department": "Bo'lim joyi",
@@ -6190,8 +6214,23 @@
       "detailTitle": "Mobil o'tish",
       "info": "Ma'lumotlar",
       "placeTitle": "O'tish joyi",
-      "livePhoto": "Tasdiqlangan kadr",
-      "refPhoto": "Bazadagi rasm",
+      "livePhoto": "Tasdiqlangan rasm",
+      "refPhoto": "Rasmiy rasm",
+      "appName": "HR Rail ilovasi",
+      "matchHigh": "Yuz mos keldi",
+      "matchMid": "O'rtacha moslik — rasmlarni solishtiring",
+      "matchLow": "Past moslik — boshqa odam bo'lishi mumkin",
+      "matchUnknown": "O'xshashlik aniqlanmagan",
+      "placeUnknown": "Joylashuv aniqlanmagan",
+      "accuracyGood": "aniq",
+      "accuracyMid": "o'rtacha",
+      "accuracyLow": "past — joy taxminiy",
+      "accuracyHint": "Xaritadagi aylana — telefon joylashuvining xatolik chegarasi",
+      "placeHint": {
+        "free": "Joylashuv cheklanmagan — xodim istalgan joydan o'tishi mumkin",
+        "department": "Bo'limga belgilangan joylashuv ichida",
+        "worker": "Xodimga alohida belgilangan joylashuv ichida"
+      },
       "in": "Kirish"
     },
     "tabs": {
@@ -6209,7 +6248,9 @@
       "radius": "Radius",
       "accuracy": "Aniqlik",
       "hasLocation": "Joylashuvlar",
-      "location": "Joylashuv"
+      "location": "Joylashuv",
+      "zone": "Hudud",
+      "coords": "Koordinata"
     },
     "form": {
       "freeMode": "Erkin rejim",
@@ -6224,20 +6265,23 @@
       "accuracy": "Aniqlik limiti",
       "polygon": "Polygon",
       "points": "ta nuqta",
-      "noPolygon": "Polygon belgilanmagan",
+      "noPolygon": "Hudud hali chizilmagan",
       "polygonReady": "Hudud tayyor",
       "markerInfoFull": "Xaritaga bosib joylashuvni belgilang. Markerni kerakli joyga suring yoki xaritaning boshqa joyiga bosing. Radius sozlamalari orqali belgilangan nuqta atrofidagi masofani aniqlashingiz mumkin.",
       "polygonInfoFull": "Polygon rejimida xodimlar faqat belgilangan hudud ichida bo'lganda davomat belgilashi mumkin. Xaritada \"Polygon qo'shish\" tugmasini bosib, ketma-ket nuqtalarni belgilang (kamida 3, maksimal 12 ta nuqta).",
       "autoCalculated": "Avtomatik",
       "centerMarkerInfo": "Markerni surib markaziy nuqtani o'zgartirishingiz mumkin",
-      "coordinate": "Koordinata",
-      "area": "Hudud"
+      "coordinate": "Aylana",
+      "area": "Hudud",
+      "modeHintCircle": "Xaritaga bosib nuqta qo'ying — xodim shu nuqta atrofidagi radius ichida o'tadi.",
+      "modeHintArea": "Xaritada hududni chizing — xodim faqat shu hudud ichida o'tadi.",
+      "polygonSteps": "«Hududni chizish» → xaritaga kamida 3 ta nuqta qo'ying → «Tugatish»."
     },
     "validation": {
       "departmentRequired": "Bo'limni tanlang",
       "nameRequired": "O'tish joyi nomini kiriting",
       "markerRequired": "Xaritada joylashuvni belgilang",
-      "polygonRequired": "Xaritada polygon belgilang (kamida 3 ta nuqta)",
+      "polygonRequired": "Xaritada hududni chizing (kamida 3 ta nuqta)",
       "radiusRequired": "Radiusni kiriting",
       "accuracyRequired": "Aniqlik limitini kiriting",
       "minPoints": "kamida 3 ta kerak"
@@ -6245,12 +6289,12 @@
     "map": {
       "title": "Xaritada belgilash",
       "clearMarker": "Markerni tozalash",
-      "clearPolygon": "Polygonni tozalash",
+      "clearPolygon": "Hududni tozalash",
       "myLocation": "Mening joylashuvim",
       "myLocationTooltip": "Joriy joylashuvni aniqlash",
       "clickToMark": "Xaritaga bosib marker qo'ying",
       "setLocation": "Joylashuvni belgilash",
-      "addPolygon": "Polygon qo'shish",
+      "addPolygon": "Hududni chizish",
       "polygonMode": "Polygon rejimi",
       "markerMode": "Marker rejimi",
       "finishPolygon": "Tugatish",
@@ -6258,7 +6302,16 @@
       "undo": "Ortga",
       "save": "Saqlash",
       "done": "Tayyor",
-      "points": "nuqta"
+      "points": "nuqta",
+      "redrawPolygon": "Hududni qayta chizish",
+      "drawHint": "Nuqta qo'shish uchun xaritaga bosing (kamida 3 ta)",
+      "drawHintDone": "Yana nuqta qo'shing yoki «Tugatish»ni bosing",
+      "layerSwitch": "Xarita turi",
+      "layerOsm": "OSM",
+      "layerYandex": "Yandex",
+      "yandexFailed": "Yandex xaritasi yuklanmadi, OpenStreetMap ko'rsatilmoqda",
+      "polygonSaved": "Hudud chizildi. Markaziy nuqtani markerni surib o'zgartirish mumkin.",
+      "geoError": "Joylashuvni aniqlab bo'lmadi"
     }
   },
   "integrationLog": {
@@ -7369,5 +7422,9 @@
     "revokeOthersConfirm": "Joriy seansdan boshqa barcha seanslar yakunlansinmi?",
     "revoked": "Seans yakunlandi",
     "protected": "Bu yangi seans: eski seanslarni {min} daqiqadan keyin yakunlay olasiz (xavfsizlik uchun 60 daqiqa)."
+  },
+  "onlyOfficeEditor": {
+    "tokenError": "Hujjat muharririni ochib bo'lmadi",
+    "tokenErrorHint": "Server hujjat uchun xavfsizlik tokenini bermadi. Birozdan so'ng qayta urinib ko'ring yoki administratorga murojaat qiling."
   }
 }

@@ -1,5 +1,11 @@
 <script setup>
   import NoDataIllustration from './NoDataIllustration.vue'
+
+  // Ixtiyoriy: sahifaga mos matn (berilmasa — umumiy «Ma'lumot topilmadi»).
+  defineProps({
+    title: { type: String, default: null },
+    hint: { type: String, default: null }
+  })
 </script>
 
 <template>
@@ -7,11 +13,11 @@
     <NoDataIllustration />
 
     <span class="text-textColor2 text-center font-medium pt-4 text-lg">
-      {{ $t('content.notFoundData') }}
+      {{ title ?? $t('content.notFoundData') }}
     </span>
 
     <span class="text-textColor3 text-center font-normal pt-2 text-sm">
-      {{ $t('content.noResultYourRequest') }}
+      {{ hint ?? $t('content.noResultYourRequest') }}
     </span>
   </div>
 </template>

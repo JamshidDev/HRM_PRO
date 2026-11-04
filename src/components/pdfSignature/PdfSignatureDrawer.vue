@@ -574,8 +574,9 @@
               <div v-else class="hidden min-[1200px]:block min-w-0">
                 <div
                   class="text-sm font-semibold text-textColor1 leading-tight truncate max-w-[280px]"
+                  :title="store.title || store.document?.document?.file_name"
                 >
-                  {{ store.document?.document?.file_name }}
+                  {{ store.title || store.document?.document?.file_name }}
                 </div>
                 <div class="text-xs text-gray-400 tabular-nums">
                   {{ Utils.timeOnlyDate(store?.document?.document?.created) }}
