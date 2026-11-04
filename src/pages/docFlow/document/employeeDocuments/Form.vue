@@ -224,7 +224,7 @@
               :loading="componentStore.confirmationLoading"
               :render-label="renderPerson"
               :render-tag="renderPersonValue"
-              :placeholder="$t('materialLiabilityPage.form.optionalHint')"
+              :placeholder="$t('employeeDocumentsPage.form.approversHint')"
               @update:value="onChangeApprovers"
             />
           </n-form-item>

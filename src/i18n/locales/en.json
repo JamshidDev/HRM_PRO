@@ -7188,7 +7188,8 @@
     "form": {
       "type": "Document type",
       "number": "Document number",
-      "date": "Document date"
+      "date": "Document date",
+      "approversHint": "Optional — one or more approvers"
     },
     "locked": {
       "approved": "The document is approved and can't be edited"

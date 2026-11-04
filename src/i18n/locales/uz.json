@@ -7385,7 +7385,8 @@
     "form": {
       "type": "Hujjat turi",
       "number": "Hujjat raqami",
-      "date": "Hujjat sanasi"
+      "date": "Hujjat sanasi",
+      "approversHint": "Ixtiyoriy — bir yoki bir nechta kelishuvchi"
     },
     "locked": {
       "approved": "Hujjat tasdiqlangan — tahrirlab bo‘lmaydi"
