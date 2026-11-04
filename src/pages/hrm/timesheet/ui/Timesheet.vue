@@ -2652,6 +2652,8 @@
   .ts-table-input {
     width: 100%;
     font-variant-numeric: tabular-nums;
+    // Doira emas — oddiy yumaloq burchak.
+    --n-border-radius: 8px !important;
   }
 
   /* Katakcha burchagidagi tafsilot tugmasi.

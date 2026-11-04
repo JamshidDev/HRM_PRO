@@ -3461,7 +3461,7 @@
     "needsCheckCount": "{n} night-shift cells have a missing entry/exit — check the yellow cells",
     "nightContCell": "Night shift continuation — hours are recorded on the previous day",
     "unpairedIn": "Unpaired entry — no exit recorded, not counted",
-    "tableNoPh": "Timesheet №",
+    "tableNoPh": "Table number",
     "commandNo": "Order No.",
     "reasonHead": "Reason",
     "notSet": "Not set",
