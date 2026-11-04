@@ -6259,6 +6259,10 @@
       "redrawPolygon": "Hududni qayta chizish",
       "drawHint": "Nuqta qo'shish uchun xaritaga bosing (kamida 3 ta)",
       "drawHintDone": "Yana nuqta qo'shing yoki «Tugatish»ni bosing",
+      "layerSwitch": "Xarita turi",
+      "layerOsm": "OSM",
+      "layerYandex": "Yandex",
+      "yandexFailed": "Yandex xaritasi yuklanmadi, OpenStreetMap ko'rsatilmoqda",
       "polygonSaved": "Hudud chizildi. Markaziy nuqtani markerni surib o'zgartirish mumkin.",
       "geoError": "Joylashuvni aniqlab bo'lmadi"
     }

@@ -6199,6 +6199,10 @@
       "redrawPolygon": "Redraw area",
       "drawHint": "Click the map to add a point (at least 3)",
       "drawHintDone": "Add more points or click «Finish»",
+      "layerSwitch": "Map type",
+      "layerOsm": "OSM",
+      "layerYandex": "Yandex",
+      "yandexFailed": "Yandex map failed to load, showing OpenStreetMap",
       "polygonSaved": "Area drawn. Drag the marker to change the center point.",
       "geoError": "Could not detect your location"
     }
