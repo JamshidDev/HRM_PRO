@@ -6182,8 +6182,23 @@
       "detailTitle": "Mobil o'tish",
       "info": "Ma'lumotlar",
       "placeTitle": "O'tish joyi",
-      "livePhoto": "Tasdiqlangan kadr",
-      "refPhoto": "Bazadagi rasm",
+      "livePhoto": "Tasdiqlangan rasm",
+      "refPhoto": "Rasmiy rasm",
+      "appName": "HR Rail ilovasi",
+      "matchHigh": "Yuz mos keldi",
+      "matchMid": "O'rtacha moslik — rasmlarni solishtiring",
+      "matchLow": "Past moslik — boshqa odam bo'lishi mumkin",
+      "matchUnknown": "O'xshashlik aniqlanmagan",
+      "placeUnknown": "Joylashuv aniqlanmagan",
+      "accuracyGood": "aniq",
+      "accuracyMid": "o'rtacha",
+      "accuracyLow": "past — joy taxminiy",
+      "accuracyHint": "Xaritadagi aylana — telefon joylashuvining xatolik chegarasi",
+      "placeHint": {
+        "free": "Joylashuv cheklanmagan — xodim istalgan joydan o'tishi mumkin",
+        "department": "Bo'limga belgilangan joylashuv ichida",
+        "worker": "Xodimga alohida belgilangan joylashuv ichida"
+      },
       "in": "Kirish"
     },
     "tabs": {

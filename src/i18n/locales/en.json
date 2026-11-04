@@ -6122,8 +6122,23 @@
       "detailTitle": "Mobile pass",
       "info": "Details",
       "placeTitle": "Pass location",
-      "livePhoto": "Verified frame",
-      "refPhoto": "Photo on file",
+      "livePhoto": "Verified photo",
+      "refPhoto": "Official photo",
+      "appName": "HR Rail app",
+      "matchHigh": "Face matches",
+      "matchMid": "Partial match — compare the photos",
+      "matchLow": "Low match — may be another person",
+      "matchUnknown": "Similarity not available",
+      "placeUnknown": "Location unknown",
+      "accuracyGood": "precise",
+      "accuracyMid": "moderate",
+      "accuracyLow": "low — position is approximate",
+      "accuracyHint": "The circle on the map is the phone's location error range",
+      "placeHint": {
+        "free": "No location limit — the employee can check in from anywhere",
+        "department": "Within the department's location",
+        "worker": "Within the location assigned to the employee"
+      },
       "in": "Entry"
     },
     "tabs": {

@@ -567,7 +567,8 @@
   const fitToCircle = (lat, lng, radius) => {
     if (!map) return
     const tempCircle = L.circle([lat, lng], { radius }).addTo(map)
-    map.fitBounds(tempCircle.getBounds(), { padding: [40, 40] })
+    // Kichik aylanada (masalan GPS ±6 m) xarita tom ustigacha yaqinlashmasin — ko'cha darajasida to'xtaydi.
+    map.fitBounds(tempCircle.getBounds(), { padding: [40, 40], maxZoom: 17 })
     map.removeLayer(tempCircle)
   }
 
