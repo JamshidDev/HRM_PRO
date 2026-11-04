@@ -9,6 +9,9 @@ const TIMESHEET_KEY_BY_ID = {
   25: 'Б', 26: 'Т', 27: 'ЛЧ', 28: 'ВП', 29: 'Г', 31: 'ПР', 32: 'НС',
   33: 'D', 34: 'ЗБ', 35: 'НН'
 }
+// «D» — dam olish va bayram kunlari: ish kuniga sanalmaydi.
+const REST_DAY_ID = 33
+const isWorkDay = (details) => (details ?? []).some((d) => Number(d.status_id) !== REST_DAY_ID)
 // Soat yuritiladigan turlar (backend TIMESHEET_TYPE_HOURS).
 const TIMESHEET_TYPES_WITH_HOURS = new Set([1, 2, 3, 5, 17, 27, 32])
 const { t } = i18n.global
@@ -226,7 +229,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
             ...i,
             days: Object.fromEntries(i.days.map((i) => [i.day, i.details])),
             halfMonth: {
-              days: i.days.filter((i) => i.day <= 15).length,
+              days: i.days.filter((i) => i.day <= 15 && isWorkDay(i.details)).length,
               hours: i.days
                 .filter((i) => i.day <= 15)
                 .reduce((sum, day) => {
@@ -237,7 +240,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
                 }, 0)
             },
             allMonth: {
-              days: i.days.length,
+              days: i.days.filter((i) => isWorkDay(i.details)).length,
               hours: i.days.reduce((sum, day) => {
                 const dayHours = day.details.reduce((daySum, detail) => {
                   return daySum + detail.hours
@@ -284,7 +287,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
             ...i,
             days: Object.fromEntries(i.days.map((i) => [i.day, i.details])),
             halfMonth: {
-              days: i.days.filter((i) => i.day <= 15).length,
+              days: i.days.filter((i) => i.day <= 15 && isWorkDay(i.details)).length,
               hours: i.days
                 .filter((i) => i.day <= 15)
                 .reduce((sum, day) => {
@@ -295,7 +298,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
                 }, 0)
             },
             allMonth: {
-              days: i.days.length,
+              days: i.days.filter((i) => isWorkDay(i.details)).length,
               hours: i.days.reduce((sum, day) => {
                 const dayHours = day.details.reduce((daySum, detail) => {
                   return daySum + detail.hours
@@ -390,8 +393,8 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
       const sum = (list) =>
         list.reduce((total, [, details]) => total + details.reduce((a, d) => a + (d.hours || 0), 0), 0)
       const half = entries.filter(([day]) => Number(day) <= 15)
-      worker.allMonth = { days: entries.length, hours: sum(entries) }
-      worker.halfMonth = { days: half.length, hours: sum(half) }
+      worker.allMonth = { days: entries.filter(([, d]) => isWorkDay(d)).length, hours: sum(entries) }
+      worker.halfMonth = { days: half.filter(([, d]) => isWorkDay(d)).length, hours: sum(half) }
     },
 
     // Har katak O'Z qiymati bilan bitta so'rovda; xato bo'lsa kutilayotganlar saqlanib qoladi.
@@ -450,11 +453,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
             delete this.calcBase[`${item.id}|${day}`]
             delete this.nightCont[`${item.id}|${day}`]
           }
-          for (const day of item.continuation_days ?? []) {
-            this.nightCont[`${item.id}|${day}`] = true
-            // Davomi kunida eski qiymat (masalan «K 0») qolmasin — soat oldingi kunda.
-            if (this.list[row].days?.[day]?.length) this.applyLocalCell(row, day - 1, [])
-          }
+          for (const day of item.continuation_days ?? []) this.nightCont[`${item.id}|${day}`] = true
           for (const d of item.days ?? []) {
             this.calcBase[`${item.id}|${d.day}`] = {
               status: TIMESHEET_KEY_BY_ID[d.status] ?? null,

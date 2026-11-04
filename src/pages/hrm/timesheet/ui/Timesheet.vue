@@ -100,6 +100,7 @@
 
   onBeforeUnmount(() => clearTimeout(searchTimer))
 
+
   /* ------------------------------------------------------------------------
    * Qator amallari (3 nuqta) va «Auto hisoblash».
    * ---------------------------------------------------------------------- */
@@ -1358,7 +1359,7 @@
                   </span>
                 </template>
                 <span
-                  v-if="!dayDetails(item, day)?.length && store.nightCont[`${item.id}|${day.day}`]"
+                  v-if="store.nightCont[`${item.id}|${day.day}`]"
                   :title="$t('timesheetPage.nightContCell')"
                   class="ts-cell-cont"
                 >
@@ -3818,8 +3819,11 @@
     }
     /* Tungi smena davomi — soat oldingi kunga yozilgan. */
     .ts-cell-cont {
-      font-size: 13px;
-      line-height: 16px;
+      position: absolute;
+      bottom: 1px;
+      left: 3px;
+      font-size: 10px;
+      line-height: 10px;
       color: var(--fig-text-tertiary);
     }
     /* Tungi smenada kirish/chiqish yo'q — tabelchi tekshirishi kerak. */
