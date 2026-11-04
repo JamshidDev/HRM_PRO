@@ -3510,7 +3510,11 @@
       "less": "{n} h less",
       "typeOnly": "same hours, type changed",
       "empty": "empty (0 h)"
-    }
+    },
+    "lockClose": "Close timesheet",
+    "lockOpen": "Open timesheet",
+    "lockedTag": "Closed",
+    "lockedByHr": "Closed by HR — view only"
   },
   "turnstile": {
     "title": "Turnstile",

@@ -11,6 +11,8 @@
     Eye16Regular
   } from '@vicons/fluent'
   import dayjs from 'dayjs'
+  import { LockClosed20Regular } from '@vicons/fluent'
+  import { TIMESHEET_APPROVAL_ENABLED } from '@/pages/hrm/timesheet/approval.js'
 
   const { t } = i18n.global
 
@@ -20,8 +22,10 @@
   const emits = defineEmits(['openOffice'])
 
   // Imzo qatori faqat men uchun keladi (`my_confirmation`), qaror kutilayotganda ko'rinadi.
-  const isPending = (row) => row?.my_confirmation?.status === 1 || row?.my_confirmation?.status === 2
-  const hasConfirmation = (row) => Boolean(row?.my_confirmation)
+  const isPending = (row) =>
+    TIMESHEET_APPROVAL_ENABLED &&
+    (row?.my_confirmation?.status === 1 || row?.my_confirmation?.status === 2)
+  const hasConfirmation = (row) => TIMESHEET_APPROVAL_ENABLED && Boolean(row?.my_confirmation)
 
   const onPreview = (row) => {
     emits('openOffice', { documentId: row.id, signatureId: row?.my_confirmation?.id })
@@ -37,6 +41,13 @@
     timesheetWorkerStore.params.department_id = null
     timesheetWorkerStore.params.search = null
     timesheetWorkerStore.elementId = row.id
+    // HR yopgan tabel tabelchiga faqat ko'rish uchun ochiladi.
+    timesheetWorkerStore.lock = {
+      status: Boolean(row?.status),
+      sent_at: row?.sent_at ?? null,
+      confirmation: row?.confirmation?.id ?? null,
+      locked: Boolean(row?.locked)
+    }
     timesheetWorkerStore.visible = true
     timesheetWorkerStore._index()
   }
@@ -76,17 +87,14 @@
       width: 140,
       align: 'center'
     },
-    {
-      key: 'confirmation',
-      title: t('content.status'),
-      width: 140,
-      align: 'center'
-    }
+    ...(TIMESHEET_APPROVAL_ENABLED
+      ? [{ key: 'confirmation', title: t('content.status'), width: 140, align: 'center' }]
+      : [])
   ])
 
   const actions = computed(() => [
     {
-      label: t('timesheetPage.fill'),
+      label: (row) => (row?.locked ? t('content.view') : t('timesheetPage.fill')),
       key: Utils.ActionTypes.edit,
       icon: UIHelper.renderIcon(CalendarClock24Regular),
       visible: (row) => Boolean(row?.can_fill),
@@ -152,6 +160,12 @@
         </template>
         {{ $t('timesheet.finished') }}
       </n-button>
+      <n-tag v-else-if="row?.locked" type="warning" size="small" round :bordered="false">
+        <template #icon>
+          <n-icon :component="LockClosed20Regular" />
+        </template>
+        {{ $t('timesheetPage.lockedTag') }}
+      </n-tag>
     </template>
 
     <template #cell-confirmation="{ row }">

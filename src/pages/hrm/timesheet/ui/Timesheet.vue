@@ -1,4 +1,5 @@
 <script setup>
+  import { TIMESHEET_APPROVAL_ENABLED } from '../approval.js'
   import { h, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
   import { useDialog, useMessage } from 'naive-ui'
   import {
@@ -218,7 +219,7 @@
   const onTabChange = (v) => {
     if (v === 'timekeepers') {
       store._timekeepers()
-      onApproverTab(approverTab.value)
+      if (TIMESHEET_APPROVAL_ENABLED) onApproverTab(approverTab.value)
     }
     else store._index()
   }
@@ -255,6 +256,9 @@
     if (store.lock.sent_at && store.lock.confirmation !== 4) {
       return { text: t('timesheetPage.accessSent'), type: 'warning' }
     }
+    if (store.lock.locked) {
+      return { text: t('timesheetPage.lockedTag'), type: 'warning' }
+    }
     return { text: t('timesheetPage.statusOpen'), type: 'success' }
   })
 
@@ -286,14 +290,23 @@
   }
 
   // Tabelning O'ZI yopiq bo'lsa hech kim yozolmaydi — switch ham bloklanadi.
+  // HR yopgan tabelda tabelchi (bo'lim boshlig'i) faqat ko'radi.
+  const lockedByHr = computed(() => Boolean(store.lock.locked && store.timekeeperMode))
   const timesheetLocked = computed(
-    () => store.lock.status || (store.lock.sent_at && store.lock.confirmation !== 4)
+    () =>
+      store.lock.status ||
+      (store.lock.sent_at && store.lock.confirmation !== 4) ||
+      lockedByHr.value
   )
 
   // Yopiq tabelda «Saqlash» o'rnida sabab ko'rsatiladi — tabelchi nega
   // yozolmayotganini tugmaning o'zidan biladi.
   const lockedActionLabel = computed(() =>
-    store.lock.status ? t('timesheetPage.accessFinished') : t('timesheetPage.inApproval')
+    store.lock.status
+      ? t('timesheetPage.accessFinished')
+      : lockedByHr.value
+        ? t('timesheetPage.lockedByHr')
+        : t('timesheetPage.inApproval')
   )
 
   // Ruxsat switch'i. Default — OCHIQ; qulflansa tabelchi SHU OY tabelini
@@ -1080,7 +1093,7 @@
         </div>
 
         <!-- Kelishuvchilar / Tarix — ichki tabli kartochka. -->
-        <div class="ts-info-card ts-approvers-card">
+        <div v-if="TIMESHEET_APPROVAL_ENABLED" class="ts-info-card ts-approvers-card">
           <div class="ts-info-head">
             <UISegmentTabs
               v-model="approverTab"
@@ -1330,6 +1343,7 @@
               <div class="ts-c-table ts-c-table-edit no-selectable-item" @mousedown.stop>
                 <n-input
                   :allow-input="onlyDigits"
+                  :disabled="timesheetLocked"
                   :loading="tableSaving[item.id]"
                   :maxlength="20"
                   :placeholder="$t('timesheetPage.tableNoPh')"

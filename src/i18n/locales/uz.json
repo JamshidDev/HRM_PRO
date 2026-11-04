@@ -3530,7 +3530,11 @@
       "less": "{n} soat kam",
       "typeOnly": "soat bir xil, tur o‘zgargan",
       "empty": "bo‘sh (0 soat)"
-    }
+    },
+    "lockClose": "Tabelni yopish",
+    "lockOpen": "Tabelni ochish",
+    "lockedTag": "Yopilgan",
+    "lockedByHr": "HR yopgan — faqat ko'rish"
   },
   "turnstile": {
     "title": "Turniket",

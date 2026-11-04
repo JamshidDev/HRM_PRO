@@ -90,7 +90,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     historyList: [],
     historyLoading: false,
     // Ro'yxatdan kelgan qulf holati: yakunlangan / yuborilgan tabel yozilmaydi.
-    lock: { status: false, sent_at: null, confirmation: null }
+    lock: { status: false, sent_at: null, confirmation: null, locked: false }
   }),
   actions: {
     _confirmations() {
