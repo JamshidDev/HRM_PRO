@@ -100,7 +100,7 @@
 
   onBeforeUnmount(() => clearTimeout(searchTimer))
 
-  /* «Tabel» ustuni: tabel raqami joyida tahrirlanadi, 600 ms debounce bilan saqlanadi. */
+  /* «Tabel» ustuni: tabel raqami joyida tahrirlanadi, 1 soniya debounce bilan saqlanadi. */
   const tableDraft = ref({})
   const tableSaving = ref({})
   const tableTimers = {}
@@ -119,7 +119,7 @@
       } finally {
         tableSaving.value[item.id] = false
       }
-    }, 600)
+    }, 1000)
   }
   onBeforeUnmount(() => Object.values(tableTimers).forEach(clearTimeout))
 
@@ -1307,10 +1307,6 @@
                   <div class="ts-worker-text">
                     <span class="ts-worker-name">{{ item.name }}</span>
                     <span class="ts-worker-sub">
-                      <!-- Tabel raqami (workers.card) — lavozim oldida. -->
-                      <span v-if="item?.table" class="ts-worker-badge">
-                        {{ item.table }}
-                      </span>
                       <span class="ts-worker-post">
                         {{ item?.position || $t('content.noAvailable') }}
                       </span>
@@ -1331,7 +1327,7 @@
                 </n-dropdown>
               </div>
 
-              <div class="ts-c-table no-selectable-item" @mousedown.stop>
+              <div class="ts-c-table ts-c-table-edit no-selectable-item" @mousedown.stop>
                 <n-input
                   :allow-input="onlyDigits"
                   :loading="tableSaving[item.id]"
@@ -2575,17 +2571,6 @@
     gap: 4px;
     min-width: 0;
   }
-  .ts-worker-badge {
-    flex-shrink: 0;
-    padding: 0 4px;
-    border-radius: 4px;
-    font-size: 10px;
-    line-height: 14px;
-    font-weight: 500;
-    color: var(--primaryColor);
-    background: var(--primaryColorHover, rgba(51, 102, 255, 0.1));
-    user-select: all;
-  }
   .ts-worker-post {
     font-size: 10px;
     line-height: 15px;
@@ -2649,8 +2634,15 @@
     font-size: 12px;
     color: var(--fig-text-secondary);
   }
+  // Input ustunga sig'sin: o'ngdan ham chegara, o'lcham kichik.
+  .ts-c-table-edit {
+    display: flex;
+    align-items: center;
+    padding-right: 12px;
+  }
   .ts-table-input {
-    width: 100%;
+    width: 120px;
+    max-width: 100%;
     font-variant-numeric: tabular-nums;
     // Doira emas — oddiy yumaloq burchak.
     --n-border-radius: 8px !important;
