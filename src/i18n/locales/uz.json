@@ -7392,5 +7392,9 @@
     "revokeOthersConfirm": "Joriy seansdan boshqa barcha seanslar yakunlansinmi?",
     "revoked": "Seans yakunlandi",
     "protected": "Bu yangi seans: eski seanslarni {min} daqiqadan keyin yakunlay olasiz (xavfsizlik uchun 60 daqiqa)."
+  },
+  "onlyOfficeEditor": {
+    "tokenError": "Hujjat muharririni ochib bo'lmadi",
+    "tokenErrorHint": "Server hujjat uchun xavfsizlik tokenini bermadi. Birozdan so'ng qayta urinib ko'ring yoki administratorga murojaat qiling."
   }
 }

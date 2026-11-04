@@ -7195,5 +7195,9 @@
     "revokeOthersConfirm": "End all sessions except the current one?",
     "revoked": "Session ended",
     "protected": "This is a new session: you can end older sessions in {min} min (60 minutes for security)."
+  },
+  "onlyOfficeEditor": {
+    "tokenError": "Could not open the document editor",
+    "tokenErrorHint": "The server did not issue a security token for this document. Try again later or contact the administrator."
   }
 }
