@@ -730,6 +730,8 @@
   "confirmation": {
     "name": "Shartnomalar",
     "contract": {
+      "empty": "Tasdiqlash uchun shartnoma yo'q",
+      "emptyHint": "Imzoingiz yoki kelishuvingizni kutayotgan shartnomalar shu yerda chiqadi",
       "form": {
         "number": "Raqami",
         "type": "Turi",

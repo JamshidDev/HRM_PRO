@@ -715,6 +715,8 @@
   "confirmation": {
     "name": "Contracts",
     "contract": {
+      "empty": "No contracts to approve",
+      "emptyHint": "Contracts waiting for your signature or approval will appear here",
       "form": {
         "number": "Number",
         "type": "Type",
