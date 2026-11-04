@@ -1,4 +1,5 @@
 <script setup>
+  import { TIMESHEET_APPROVAL_ENABLED } from '../approval.js'
   import { UIStatus, UITable } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import {
@@ -12,7 +13,9 @@
     CheckmarkCircle24Filled,
     Delete16Regular,
     Send24Regular,
-    Eye16Regular
+    Eye16Regular,
+    LockClosed20Regular,
+    LockOpen20Regular
   } from '@vicons/fluent'
 
   const { t } = i18n.global
@@ -28,13 +31,15 @@
     // Har tabel toza filtr bilan ochiladi — bo'lim tanlovi oldingi korxonadan
     // qolib ketmasin.
     timesheetWorkerStore.resetForTimesheet()
+    timesheetWorkerStore.timekeeperMode = false
     timesheetWorkerStore.elementId = row.id
     // Qulf holati ro'yxatdan olinadi — «Tabelchilar» tabida ruxsat shunga qarab
     // ko'rsatiladi (yakunlangan yoki yuborilgan tabel to'ldirilmaydi).
     timesheetWorkerStore.lock = {
       status: Boolean(row?.status),
       sent_at: row?.sent_at ?? null,
-      confirmation: row?.confirmation?.id ?? null
+      confirmation: row?.confirmation?.id ?? null,
+      locked: Boolean(row?.locked)
     }
     timesheetWorkerStore.visible = true
     timesheetWorkerStore._index()
@@ -67,6 +72,11 @@
     store.sendVisible = true
   }
 
+  // Yopish/ochish faqat `hr-table-lock` ruxsati bor HR'ga; tabelchi ko'rmaydi.
+  const canLock = (row) =>
+    Boolean(row?.can_lock) && accStore.checkPermission(accStore.pn.hrTableLock) && !row?.status
+  const onLock = (row) => store._setLock(row, !row.locked)
+
   const changePage = (v) => {
     store.params.page = v.page
     store.params.per_page = v.per_page
@@ -97,12 +107,9 @@
       width: 140,
       align: 'center'
     },
-    {
-      key: 'confirmation',
-      title: t('content.status'),
-      width: 140,
-      align: 'center'
-    }
+    ...(TIMESHEET_APPROVAL_ENABLED
+      ? [{ key: 'confirmation', title: t('content.status'), width: 140, align: 'center' }]
+      : [])
   ])
 
   // Uch amal yetarli: ko'rish, o'chirish va HR tasdig'i (tasdiqlashga yuborish).
@@ -127,8 +134,22 @@
       label: t('content.confirm'),
       key: Utils.ActionTypes.send,
       icon: UIHelper.renderIcon(Send24Regular),
-      visible: (row) => !isSent(row) && !isConfirmed(row),
+      visible: (row) => TIMESHEET_APPROVAL_ENABLED && !isSent(row) && !isConfirmed(row),
       action: onSend
+    },
+    {
+      label: t('timesheetPage.lockClose'),
+      key: Utils.ActionTypes.finish,
+      icon: UIHelper.renderIcon(LockClosed20Regular),
+      visible: (row) => canLock(row) && !row.locked,
+      action: onLock
+    },
+    {
+      label: t('timesheetPage.lockOpen'),
+      key: Utils.ActionTypes.open,
+      icon: UIHelper.renderIcon(LockOpen20Regular),
+      visible: (row) => canLock(row) && row.locked,
+      action: onLock
     }
   ])
 </script>
@@ -166,6 +187,12 @@
         </template>
         {{ $t('timesheet.finished') }}
       </n-button>
+      <n-tag v-else-if="row?.locked" type="warning" size="small" round :bordered="false">
+        <template #icon>
+          <n-icon :component="LockClosed20Regular" />
+        </template>
+        {{ $t('timesheetPage.lockedTag') }}
+      </n-tag>
     </template>
 
     <template #cell-confirmation="{ row }">

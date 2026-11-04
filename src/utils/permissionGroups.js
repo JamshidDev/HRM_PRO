@@ -135,6 +135,7 @@ export const ENFORCED = new Set([
   'hr-report-delete',
   'hr-report-export-delete',
   'hr-table-delete',
+  'hr-table-lock',
   'hr-table-read',
   'hr-table-write',
   'hr-users-active-role',
@@ -533,6 +534,7 @@ export const MEANINGFUL = new Set([
   'hr-report-write',
   'hr-table',
   'hr-table-delete',
+  'hr-table-lock',
   'hr-table-read',
   'hr-table-workers',
   'hr-table-workers-read',
@@ -830,7 +832,16 @@ export const PERMISSION_GROUPS = [
       { prefix: 'hr-confirmations', label: 'confirmationPage.name' },
       { prefix: 'hr-vacations', label: 'vacationPage.name' },
       { prefix: 'hr-table-workers', label: 'timesheetWorkerPage.name' },
-      { prefix: 'hr-table', label: 'timesheetPage.name' },
+      {
+        prefix: 'hr-table',
+        label: 'timesheetPage.name',
+        actions: [
+          { slug: 'hr-table-read', label: "Ko'rish" },
+          { slug: 'hr-table-write', label: 'Yaratish / Tahrirlash' },
+          { slug: 'hr-table-delete', label: "O'chirish" },
+          { slug: 'hr-table-lock', label: 'Yopish / Ochish' }
+        ]
+      },
       { prefix: 'hr-med', label: 'medPage.name' },
       {
         prefix: 'hr-sick-leave',

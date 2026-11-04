@@ -97,7 +97,7 @@ import commandService from '@/service/v1/docFlow/commandService.js'
 import documentChatService from '@/service/v1/docFlow/documentChatService.js'
 import documentFileService from '@/service/v1/docFlow/documentFileService.js'
 import adContractService from '@/service/v1/docFlow/adContractService.js'
-import materialLiabilityService from '@/service/v1/docFlow/materialLiabilityService.js'
+import employeeDocumentService from '@/service/v1/docFlow/employeeDocumentService.js'
 import applicationService from '@/service/v1/docFlow/applicationService.js'
 import confVacationScheduleService from '@/service/v1/docFlow/vacationScheduleService.js'
 import confCertificateService from '@/service/v1/docFlow/confCertificateService.js'
@@ -243,7 +243,7 @@ export default {
   universityService,
   documentFileService,
   adContractService,
-  materialLiabilityService,
+  employeeDocumentService,
   olCareerService,
   partyService,
   militaryService,

@@ -1412,7 +1412,7 @@
         "half_one_day": "Vacation day (first half)",
         "half_two_day": "Vacation day (second half)",
         "half_two_date": "Vacation date (second half)",
-        "second_day": "Additional vacation days",
+        "second_day": "Under the sectoral collective agreement (collective or employment contract)",
         "additional": "Attachments",
         "calculateVacation": "Calculate vacation",
         "no-calculate": "Vacation days not calculated!",
@@ -1957,6 +1957,25 @@
       "position_date": "Date of taking office",
       "contract_date": "Employment contract date",
       "number": "Employment contract number"
+    },
+    "form_26": {
+      "target_organization": "Target organization",
+      "target_organization_ph": "Select organization",
+      "target_department": "Under which department in the new organization",
+      "target_department_ph": "If empty — top level of the organization",
+      "reason": "Reason (Labour Code art. 156)",
+      "transfer_date": "Contracts continue from",
+      "hr_worker": "HR department responsible",
+      "selected": "Selected employees",
+      "empty": "Pick employees one by one in the «Employee» field above",
+      "max_workers": "One order may include at most {max} employees",
+      "on_vacation": "On leave: {type}, {from} – {to}",
+      "on_sick_leave": "On sick leave: {from} – {to}",
+      "pending_command": "Has a pending order",
+      "blocked_info": "{count} employees cannot be transferred — remove them or change the date",
+      "blocked_save": "Cannot save: {count} employees are on leave, sick leave or have a pending order",
+      "no_workers": "Select at least one employee",
+      "pick_date_hint": "Pick the date to check leave and sick leave"
     }
   },
   "confirmationPage": {
@@ -3510,7 +3529,11 @@
       "less": "{n} h less",
       "typeOnly": "same hours, type changed",
       "empty": "empty (0 h)"
-    }
+    },
+    "lockClose": "Close timesheet",
+    "lockOpen": "Open timesheet",
+    "lockedTag": "Closed",
+    "lockedByHr": "Closed by HR — view only"
   },
   "turnstile": {
     "title": "Turnstile",
@@ -7176,6 +7199,55 @@
     "saved": "Deadline and number settings saved",
     "electronicNumber": "Electronic number",
     "searchPlaceholder": "Name or number"
+  },
+  "employeeDocumentsPage": {
+    "types": {
+      "bitim": "Confidentiality agreement",
+      "declaration": "Conflict of interest declaration"
+    },
+    "bitim": {
+      "basis": "Director acts on the basis of",
+      "basisCharter": "Charter",
+      "basisPowerOfAttorney": "Power of attorney",
+      "extraConditions": "Additional confidential information (clause 1.2)"
+    },
+    "declaration": {
+      "reason": "Reason",
+      "reasons": {
+        "annual": "Annual",
+        "hiring": "On hiring",
+        "transfer": "On transfer"
+      },
+      "workerPassport": "Employee passport (series, number, date)",
+      "workerPin": "Employee PINFL",
+      "fromProfile": "Taken from profile if empty",
+      "relatives": "Close relatives (if working in the railway system)",
+      "workerCompanies": "Legal entities with employee's share/management (2.1)",
+      "relativeCompanies": "Relatives' legal entities (2.2)",
+      "fullName": "Full name",
+      "passport": "Passport (series, number, date)",
+      "pin": "PINFL",
+      "companyName": "Legal entity name",
+      "stir": "TIN",
+      "emptyList": "None — the document shows «—»",
+      "conflictInfo": "Potential conflict of interest information",
+      "additionalInfo": "Additional information (if any)",
+      "noneHint": "If empty, «Mavjud emas» is written",
+      "registryDate": "Registry date",
+      "registryNumber": "Registry number"
+    },
+    "name": "Employee documents",
+    "createTitle": "New document",
+    "updateTitle": "Edit document",
+    "form": {
+      "type": "Document type",
+      "number": "Document number",
+      "date": "Document date",
+      "approversHint": "Optional — one or more approvers"
+    },
+    "locked": {
+      "approved": "The document is approved and can't be edited"
+    }
   },
   "materialLiabilityPage": {
     "name": "Material liability",

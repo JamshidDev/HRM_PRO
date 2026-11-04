@@ -24,6 +24,9 @@
     { id: SECOND_DAY_ID, name: t('documentPage.command.form.second_day') },
     ...componentStore.vacationAdditional
   ])
+  // Qo'shimcha kun yorlig'i doim joriy tarjimadan (eski qoralamada saqlangan nom emas).
+  const itemName = (item) =>
+    item.id === SECOND_DAY_ID ? t('documentPage.command.form.second_day') : item.name
   const getSecondDay = (details) =>
     details.addList.find((v) => v.id === SECOND_DAY_ID)?.day ?? 0
   const getAdditional = (details) =>
@@ -183,7 +186,7 @@
         <div
           class="flex justify-between items-center w-full bg-surface-section border border-surface-line mt-2 px-2 py-1 rounded-md"
         >
-          <span class="text-xs font-semibold">{{ subItem.name }}</span>
+          <span class="text-xs font-semibold">{{ itemName(subItem) }}</span>
           <span class="w-[150px] min-w-[120px] flex gap-4">
             <n-input-number v-model:value="subItem.day" :min="0" :precision="0"></n-input-number>
             <n-button @click="onRemove(subItem.id, idx)" circle type="error" secondary>

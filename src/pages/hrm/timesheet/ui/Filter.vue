@@ -23,7 +23,9 @@
     store._index()
   }
 
-  const filterCount = computed(() => Number(Boolean(store.params.organizations.length)))
+  const filterCount = computed(
+    () => Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.period))
+  )
 
   const beforeShow = (v) => {
     if (componentStore.structureList.length === 0) {
@@ -38,6 +40,7 @@
 
   const resetFilter = () => {
     store.params.organizations = []
+    store.params.period = null
     filterEvent()
   }
 </script>
@@ -68,6 +71,14 @@
         v-model:search="componentStore.structureParams.search"
         @onSearch="componentStore._structures"
         @onSubmit="filterEvent"
+      />
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.month') }}</label>
+      <n-date-picker
+        v-model:value="store.params.period"
+        type="month"
+        clearable
+        class="w-full"
+        @update:value="onSearch"
       />
     </template>
   </UIPageFilter>

@@ -62,7 +62,13 @@ const _delete = async (payload) => {
   return await axios.delete(`/v1/hr/commands/${payload.id}`)
 }
 
+// 26: tanlangan xodimlar o'tkazish sanasida ta'til/kasallik/tasdiqlanmagan buyruqdami.
+const _orgTransferAvailability = async (payload) => {
+  return await axios.get(`/v1/hr/commands/org-transfer/availability`, { params: payload.params })
+}
+
 export default {
+  _orgTransferAvailability,
   _index,
   _create,
   _delete,

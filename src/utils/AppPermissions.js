@@ -171,6 +171,7 @@ export const appPermissions = {
 
   hrTable: 'hr-table',
   hrTableWrite: 'hr-table-write',
+  hrTableLock: 'hr-table-lock',
   hrTableRead: 'hr-table-read',
 
   hrMed: 'hr-med',
