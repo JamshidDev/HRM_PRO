@@ -4,11 +4,14 @@
   import {
     useAccountStore,
     useComponentStore,
-    useMaterialLiabilityStore
+    useEmployeeDocumentStore
   } from '@/store/modules/index.js'
   import { AppPaths } from '@/utils/index.js'
+  import i18n from '@/i18n/index.js'
+  import { documentTypeOptions } from './documentTypes.js'
 
-  const store = useMaterialLiabilityStore()
+  const store = useEmployeeDocumentStore()
+  const typeOptions = computed(() => documentTypeOptions(i18n.global.t))
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
   const structureCheck = ref([])
@@ -21,7 +24,8 @@
   const filterCount = computed(
     () =>
       Number(Boolean(store.params.organizations.length)) +
-      Number(Boolean(store.params.confirmation))
+      Number(Boolean(store.params.confirmation)) +
+      Number(Boolean(store.params.type))
   )
 
   const filterEvent = () => {
@@ -37,6 +41,7 @@
   const resetFilter = () => {
     store.params.organizations = []
     store.params.confirmation = null
+    store.params.type = null
     filterEvent()
   }
 
@@ -85,6 +90,17 @@
             @onSearch="componentStore._structures"
             :loading="componentStore.structureLoading"
             @onSubmit="filterEvent"
+          />
+        </div>
+        <div class="col-span-12">
+          <label>{{ $t('employeeDocumentsPage.form.type') }}</label>
+          <n-select
+            v-model:value="store.params.type"
+            :options="typeOptions"
+            label-field="name"
+            value-field="id"
+            clearable
+            @update:value="filterEvent"
           />
         </div>
         <div class="col-span-12 md:col-span-6">

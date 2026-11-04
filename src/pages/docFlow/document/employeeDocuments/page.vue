@@ -3,7 +3,7 @@
   import {
     useAccountStore,
     useComponentStore,
-    useMaterialLiabilityStore
+    useEmployeeDocumentStore
   } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import ResendSignersModal from '@/pages/docFlow/document/command/ResendSignersModal.vue'
@@ -11,13 +11,13 @@
   import Table from './Table.vue'
   import Form from './Form.vue'
 
-  const store = useMaterialLiabilityStore()
+  const store = useEmployeeDocumentStore()
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
   const officeAppRef = ref(null)
 
   const openDocument = (id) => {
-    officeAppRef.value.openPdf(id, Utils.documentModels.materialLiability)
+    officeAppRef.value.openPdf(id, Utils.documentModels.documents)
   }
 
   onMounted(() => {
@@ -35,7 +35,7 @@
     <Filter />
     <Table @openOffice="openDocument" />
     <UIModal
-      :title="store.editId ? $t('materialLiabilityPage.updateTitle') : $t('materialLiabilityPage.createTitle')"
+      :title="store.editId ? $t('employeeDocumentsPage.updateTitle') : $t('employeeDocumentsPage.createTitle')"
       :width="1000"
       v-model:visible="store.visible"
     >

@@ -7181,6 +7181,19 @@
     "electronicNumber": "Electronic number",
     "searchPlaceholder": "Name or number"
   },
+  "employeeDocumentsPage": {
+    "name": "Employee documents",
+    "createTitle": "New document",
+    "updateTitle": "Edit document",
+    "form": {
+      "type": "Document type",
+      "number": "Document number",
+      "date": "Document date"
+    },
+    "locked": {
+      "approved": "The document is approved and can't be edited"
+    }
+  },
   "materialLiabilityPage": {
     "name": "Material liability",
     "createTitle": "New material liability contract",

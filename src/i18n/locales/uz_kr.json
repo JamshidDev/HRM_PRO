@@ -6814,6 +6814,19 @@
     "electronicNumber": "Электрон рақам",
     "searchPlaceholder": "Ф.И.Ш. ёки рақам"
   },
+  "employeeDocumentsPage": {
+    "name": "Ходим ҳужжатлари",
+    "createTitle": "Ҳужжат тузиш",
+    "updateTitle": "Ҳужжатни таҳрирлаш",
+    "form": {
+      "type": "Ҳужжат тури",
+      "number": "Ҳужжат рақами",
+      "date": "Ҳужжат санаси"
+    },
+    "locked": {
+      "approved": "Ҳужжат тасдиқланган — таҳрирлаб бўлмайди"
+    }
+  },
   "materialLiabilityPage": {
     "name": "Моддий жавобгарлик",
     "createTitle": "Моддий жавобгарлик шартномаси тузиш",

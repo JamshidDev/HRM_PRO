@@ -146,9 +146,9 @@ export const hrmRoutes = [
     meta: { layout: AppLayouts.main }
   },
   {
-    path: Utils.routeHrmPathMaker(AppPaths.MaterialLiability),
-    name: AppPaths.MaterialLiability.substring(1),
-    component: () => import('@pages/docFlow/document/materialLiability/page.vue'),
+    path: Utils.routeHrmPathMaker(AppPaths.EmployeeDocuments),
+    name: AppPaths.EmployeeDocuments.substring(1),
+    component: () => import('@pages/docFlow/document/employeeDocuments/page.vue'),
     meta: { layout: AppLayouts.main }
   },
   {

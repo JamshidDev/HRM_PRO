@@ -7378,6 +7378,19 @@
     "electronicNumber": "Elektron raqam",
     "searchPlaceholder": "F.I.Sh. yoki raqam"
   },
+  "employeeDocumentsPage": {
+    "name": "Xodim hujjatlari",
+    "createTitle": "Hujjat tuzish",
+    "updateTitle": "Hujjatni tahrirlash",
+    "form": {
+      "type": "Hujjat turi",
+      "number": "Hujjat raqami",
+      "date": "Hujjat sanasi"
+    },
+    "locked": {
+      "approved": "Hujjat tasdiqlangan — tahrirlab bo‘lmaydi"
+    }
+  },
   "materialLiabilityPage": {
     "name": "Moddiy javobgarlik",
     "createTitle": "Moddiy javobgarlik shartnomasi tuzish",
