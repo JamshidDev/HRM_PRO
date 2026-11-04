@@ -133,7 +133,8 @@
 
 <template>
   <n-form ref="formRef" :rules="rules" :model="store.payload">
-    <div style="max-height: calc(100vh - 180px)" class="overflow-y-auto overflow-x-hidden pb-4">
+    <!-- Balandlik qat'iy: tur almashganda oyna sakramaydi, ichi aylanadi. -->
+    <div style="height: calc(100vh - 220px)" class="overflow-y-auto overflow-x-hidden pb-4 pr-1">
       <!-- 1. Hujjat turi -->
       <div class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground mt-2 mb-4">
         <div class="col-span-12">
