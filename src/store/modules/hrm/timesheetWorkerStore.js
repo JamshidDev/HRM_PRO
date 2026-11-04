@@ -9,6 +9,9 @@ const TIMESHEET_KEY_BY_ID = {
   25: 'Б', 26: 'Т', 27: 'ЛЧ', 28: 'ВП', 29: 'Г', 31: 'ПР', 32: 'НС',
   33: 'D', 34: 'ЗБ', 35: 'НН'
 }
+// «D» — dam olish va bayram kunlari: ish kuniga sanalmaydi.
+const REST_DAY_ID = 33
+const isWorkDay = (details) => (details ?? []).some((d) => Number(d.status_id) !== REST_DAY_ID)
 // Soat yuritiladigan turlar (backend TIMESHEET_TYPE_HOURS).
 const TIMESHEET_TYPES_WITH_HOURS = new Set([1, 2, 3, 5, 17, 27, 32])
 const { t } = i18n.global
@@ -31,6 +34,8 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     saved: {},
     // PROTOTIP: tizim hisobi (auto natijasi) — `${wpId}|${day}` → { status, status_id, hours }; hozircha faqat xotirada.
     calcBase: {},
+    // Tungi smena davomi kunlari (`${wpId}|${day}` → true) — katakda «↳» belgisi.
+    nightCont: {},
     calcWorkers: {},
     loading: false,
     saveLoading: false,
@@ -158,6 +163,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
       this.pending = {}
       this.saved = {}
       this.calcBase = {}
+      this.nightCont = {}
       this.calcWorkers = {}
     },
     // Yuklangan qatorlarning bazadagi holati eslab qolinadi (kutilayotganlar qo'yilishidan oldin).
@@ -223,7 +229,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
             ...i,
             days: Object.fromEntries(i.days.map((i) => [i.day, i.details])),
             halfMonth: {
-              days: i.days.filter((i) => i.day <= 15).length,
+              days: i.days.filter((i) => i.day <= 15 && isWorkDay(i.details)).length,
               hours: i.days
                 .filter((i) => i.day <= 15)
                 .reduce((sum, day) => {
@@ -234,7 +240,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
                 }, 0)
             },
             allMonth: {
-              days: i.days.length,
+              days: i.days.filter((i) => isWorkDay(i.details)).length,
               hours: i.days.reduce((sum, day) => {
                 const dayHours = day.details.reduce((daySum, detail) => {
                   return daySum + detail.hours
@@ -281,7 +287,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
             ...i,
             days: Object.fromEntries(i.days.map((i) => [i.day, i.details])),
             halfMonth: {
-              days: i.days.filter((i) => i.day <= 15).length,
+              days: i.days.filter((i) => i.day <= 15 && isWorkDay(i.details)).length,
               hours: i.days
                 .filter((i) => i.day <= 15)
                 .reduce((sum, day) => {
@@ -292,7 +298,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
                 }, 0)
             },
             allMonth: {
-              days: i.days.length,
+              days: i.days.filter((i) => isWorkDay(i.details)).length,
               hours: i.days.reduce((sum, day) => {
                 const dayHours = day.details.reduce((daySum, detail) => {
                   return daySum + detail.hours
@@ -387,8 +393,8 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
       const sum = (list) =>
         list.reduce((total, [, details]) => total + details.reduce((a, d) => a + (d.hours || 0), 0), 0)
       const half = entries.filter(([day]) => Number(day) <= 15)
-      worker.allMonth = { days: entries.length, hours: sum(entries) }
-      worker.halfMonth = { days: half.length, hours: sum(half) }
+      worker.allMonth = { days: entries.filter(([, d]) => isWorkDay(d)).length, hours: sum(entries) }
+      worker.halfMonth = { days: half.filter(([, d]) => isWorkDay(d)).length, hours: sum(half) }
     },
 
     // Har katak O'Z qiymati bilan bitta so'rovda; xato bo'lsa kutilayotganlar saqlanib qoladi.
@@ -443,12 +449,18 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
           if (row < 0) continue
           // Tizim hisobi eslab qolinadi: qaytmagan kunlar bo'sh (0 soat).
           this.calcWorkers[item.id] = true
-          for (let day = 1; day <= this.days.length; day++) delete this.calcBase[`${item.id}|${day}`]
+          for (let day = 1; day <= this.days.length; day++) {
+            delete this.calcBase[`${item.id}|${day}`]
+            delete this.nightCont[`${item.id}|${day}`]
+          }
+          for (const day of item.continuation_days ?? []) this.nightCont[`${item.id}|${day}`] = true
           for (const d of item.days ?? []) {
             this.calcBase[`${item.id}|${d.day}`] = {
               status: TIMESHEET_KEY_BY_ID[d.status] ?? null,
               status_id: d.status,
-              hours: TIMESHEET_TYPES_WITH_HOURS.has(d.status) ? (d.hours ?? 0) : null
+              hours: TIMESHEET_TYPES_WITH_HOURS.has(d.status) ? (d.hours ?? 0) : null,
+              // Tungi smenada kirish/chiqish yo'q — katak sariq belgilanadi.
+              needs_check: Boolean(d.needs_check)
             }
           }
           for (const d of item.days ?? []) {
@@ -462,10 +474,24 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
             filled++
           }
         }
-        return { workers: items.length, cells: filled }
+        const checks = items.reduce((n, it) => n + (it.days ?? []).filter((d) => d.needs_check).length, 0)
+        return { workers: items.length, cells: filled, checks }
       } finally {
         this.autoLoading = false
       }
+    },
+
+    // Tabel raqamini saqlaydi; muvaffaqiyatli bo'lsa qatordagi qiymat ham yangilanadi.
+    async updateTableNumber(workerPositionId, value) {
+      const res = await $ApiService.timesheetWorkerService._update_table_number({
+        id: this.elementId,
+        workerPositionId,
+        data: { table_number: value || null }
+      })
+      const table = res.data?.data?.table ?? null
+      const row = this.list.find((w) => w.id === workerPositionId)
+      if (row) row.table = table
+      return table
     },
 
     async dayDetail(workerPositionId, date) {

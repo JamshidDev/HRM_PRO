@@ -48,7 +48,14 @@ const storeOptions = {
       position_date: null,
       contract_to_date: null,
       // 1-tur: o'zgartirish bandlari (ixtiyoriy)
-      changes: null
+      changes: null,
+      // 14-tur: FXSH shartnoma rekvizitlari, sabab; buyruq 80 uchun shartnoma turi va kadrlar mas'uli.
+      civil_contract_number: null,
+      civil_contract_date: null,
+      cancel_reason: null,
+      civil_contract_kind: null,
+      hr_worker_position_id: null,
+      hr_option: null
     },
     params: {
       page: 1,
@@ -105,6 +112,27 @@ const storeOptions = {
           this.loading = false
         })
     },
+    // 14-tur maydonlari faqat shu turda yuboriladi; 80 maydonlari faqat buyruq bilan.
+    civilCancelData() {
+      const p = this.payload
+      if (p.type !== 14) {
+        return {
+          civil_contract_number: undefined,
+          civil_contract_date: undefined,
+          cancel_reason: undefined,
+          civil_contract_kind: undefined,
+          hr_worker_position_id: undefined
+        }
+      }
+      const withCommand = Boolean(p.command_status)
+      return {
+        civil_contract_number: p.civil_contract_number?.trim() || undefined,
+        civil_contract_date: Utils.timeToZone(p.civil_contract_date) || undefined,
+        cancel_reason: p.cancel_reason || undefined,
+        civil_contract_kind: withCommand ? p.civil_contract_kind || undefined : undefined,
+        hr_worker_position_id: withCommand ? p.hr_worker_position_id || undefined : undefined
+      }
+    },
     // Yaratish va tahrir uchun bir xil so'rov ma'lumoti.
     buildData() {
       const data = {
@@ -115,6 +143,8 @@ const storeOptions = {
           contract_date: Utils.timeToZone(this.payload.contract_date) || undefined,
           contract_to_date: Utils.timeToZone(this.payload.contract_to_date) || undefined,
           changes: this.payload.type === 1 ? this.payload.changes?.trim() || undefined : undefined,
+          ...this.civilCancelData(),
+          hr_option: undefined,
           organization_id:
             this.payload.organization_id.length > 0
               ? this.payload.organization_id[0].id
@@ -337,6 +367,12 @@ const storeOptions = {
       this.payload.position_date = null
       this.payload.contract_to_date = new Date().getTime()
       this.payload.changes = null
+      this.payload.civil_contract_number = null
+      this.payload.civil_contract_date = null
+      this.payload.cancel_reason = null
+      this.payload.civil_contract_kind = null
+      this.payload.hr_worker_position_id = null
+      this.payload.hr_option = null
     }
   }
 }

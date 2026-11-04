@@ -32,6 +32,11 @@ const _day_detail = async (payload) => {
   return await axios.get(`/v1/timesheet/${payload.id}/day-detail`, { params: payload.params })
 }
 
+// Xodimning tabel raqami (workers.table_number) — panjaradagi «Tabel» ustunidan.
+const _update_table_number = async (payload) => {
+  return await axios.put(`/v1/timesheet/${payload.id}/workers/${payload.workerPositionId}/table-number`, payload.data)
+}
+
 // Hisoblash qoidalari — «Auto» yonidagi tugma modalidagi jadval uchun.
 const _auto_calc_rules = async () => {
   return await axios.get(`/v1/timesheet/auto-calc-rules`)
@@ -71,6 +76,7 @@ export default {
   _auto_calc,
   _day_detail,
   _auto_calc_rules,
+  _update_table_number,
   _timekeepers,
   _timekeeper_locks,
   _set_timekeeper_lock
