@@ -354,6 +354,11 @@
       })
   )
 
+  // Chiqishi yo'q kirishlar — «Qanday hisoblandi» da alohida qator (hisobga olinmaydi).
+  const openIns = computed(() =>
+    (shown.value?.segments ?? []).filter((sg) => sg.type === 'open').map((sg) => hm(sg.from))
+  )
+
   /* Hodisa nuqtalari.
    *
    * Manba — XOM `events`, segment chegaralari EMAS. Backend ketma-ket bir xil
@@ -1321,7 +1326,7 @@
                   <span class="tsd-calc-n">{{ $t('timesheetPage.countedShort') }}</span>
                 </div>
 
-                <div v-if="!intervals.length" class="tsd-calc-empty">
+                <div v-if="!intervals.length && !openIns.length" class="tsd-calc-empty">
                   {{ $t('timesheetPage.noEvents') }}
                 </div>
 
@@ -1346,6 +1351,21 @@
                   </span>
                   <span class="tsd-calc-n is-counted">
                     <em>{{ $t('timesheetPage.countedShort') }}</em>{{ iv.countedText }}
+                  </span>
+                </div>
+
+                <div v-for="(at, i) in openIns" :key="`o-${i}`" class="tsd-calc-row">
+                  <div class="tsd-calc-ranges">
+                    <span class="tsd-calc-range">
+                      <i class="tsd-sw is-raw"></i>{{ at }} → —
+                    </span>
+                    <span class="tsd-calc-range is-none">
+                      <i class="tsd-sw is-none"></i>{{ $t('timesheetPage.unpairedIn') }}
+                    </span>
+                  </div>
+                  <span class="tsd-calc-n"><em>{{ $t('timesheetPage.inside') }}</em>—</span>
+                  <span class="tsd-calc-n is-counted">
+                    <em>{{ $t('timesheetPage.countedShort') }}</em>{{ minutesToWords(0) }}
                   </span>
                 </div>
 

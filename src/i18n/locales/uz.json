@@ -3479,6 +3479,7 @@
     "needsCheckNote": "Kirish yoki chiqish qayd etilmagan — soatni tekshirib, qo'lda kiriting.",
     "needsCheckCount": "{n} ta katakda tungi smena kirish/chiqishi to'liq emas — sariq kataklarni tekshiring",
     "nightContCell": "Tungi smena davomi — soat oldingi kunga yozilgan",
+    "unpairedIn": "Juftsiz kirish — chiqish qayd etilmagan, hisobga olinmadi",
     "commandNo": "Buyruq №",
     "reasonHead": "Sabab",
     "notSet": "Belgilanmagan",
