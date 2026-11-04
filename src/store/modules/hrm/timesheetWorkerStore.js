@@ -450,7 +450,11 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
             delete this.calcBase[`${item.id}|${day}`]
             delete this.nightCont[`${item.id}|${day}`]
           }
-          for (const day of item.continuation_days ?? []) this.nightCont[`${item.id}|${day}`] = true
+          for (const day of item.continuation_days ?? []) {
+            this.nightCont[`${item.id}|${day}`] = true
+            // Davomi kunida eski qiymat (masalan «K 0») qolmasin — soat oldingi kunda.
+            if (this.list[row].days?.[day]?.length) this.applyLocalCell(row, day - 1, [])
+          }
           for (const d of item.days ?? []) {
             this.calcBase[`${item.id}|${d.day}`] = {
               status: TIMESHEET_KEY_BY_ID[d.status] ?? null,

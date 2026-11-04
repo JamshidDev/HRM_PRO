@@ -74,6 +74,12 @@
   }
 
   watch(() => [props.visible, props.worker?.id, props.date], load, { immediate: true })
+  // Tungi smenada boshqa kun tanlansa chizma o'sha kunning smenasiga siljiydi.
+  watch(partIdx, async () => {
+    await nextTick()
+    centerOnPlan()
+    syncThumb()
+  })
 
   /* --- Sarlavha ----------------------------------------------------------- */
   const longWeek = {
@@ -559,7 +565,8 @@
       }
     }
 
-    if (win) {
+    // Tungi smena davomi kunida «ishlanmagan» chizilmaydi — soat oldingi kunda hisoblangan.
+    if (win && !continuationOf.value) {
       let gaps = subtractRanges([[win[0], win[1]]], counted)
       if (lunch) {
         gaps = subtractRanges(gaps, [lunch])
