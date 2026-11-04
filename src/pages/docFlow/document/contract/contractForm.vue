@@ -112,19 +112,25 @@
     border-radius: 0 !important;
   }
 
+  // Modal balandligi QAT'IY — `ContractModal` da `calc(100dvh - 20px)` (tepa-pastda 10px).
+  // Ilgari modal kontentga qarab o'sib-qisqarardi — xodim tanlanganda, shartnoma turi
+  // o'zgarganda, qadamlar almashganda "sakrardi" (DAS-14284). Forma shu balandlikni to'liq
+  // egallaydi, skroll faqat ichkarida — sarlavha (nom, qadamlar, tugmalar) joyida turadi.
   .contract-form {
     display: flex;
     flex-direction: column;
     gap: 16px;
     width: 100%;
+    height: 100%;
   }
 
-  // 200 = modal sarlavhasi tugmalar va qadamlar bilan (110) + tana chetlari (32) +
-  // sahifa chetlari (58). Tugmalar endi sarlavhada — pastda alohida qator yo'q.
   .contract-form__body {
-    max-height: calc(100dvh - 200px);
+    flex: 1;
+    min-height: 0;
     overflow-x: hidden;
     overflow-y: auto;
+    // Skroll paneli paydo bo'lib/yo'qolganda maydonlar kengligi o'zgarmasin
+    scrollbar-gutter: stable;
     // Skroll paneli maydon soyasi/fokus halqasini qirqmasin.
     padding-right: 4px;
   }

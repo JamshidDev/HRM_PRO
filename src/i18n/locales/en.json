@@ -715,6 +715,8 @@
   "confirmation": {
     "name": "Contracts",
     "contract": {
+      "empty": "No contracts to approve",
+      "emptyHint": "Contracts waiting for your signature or approval will appear here",
       "form": {
         "number": "Number",
         "type": "Type",
@@ -6140,8 +6142,23 @@
       "detailTitle": "Mobile pass",
       "info": "Details",
       "placeTitle": "Pass location",
-      "livePhoto": "Verified frame",
-      "refPhoto": "Photo on file",
+      "livePhoto": "Verified photo",
+      "refPhoto": "Official photo",
+      "appName": "HR Rail app",
+      "matchHigh": "Face matches",
+      "matchMid": "Partial match — compare the photos",
+      "matchLow": "Low match — may be another person",
+      "matchUnknown": "Similarity not available",
+      "placeUnknown": "Location unknown",
+      "accuracyGood": "precise",
+      "accuracyMid": "moderate",
+      "accuracyLow": "low — position is approximate",
+      "accuracyHint": "The circle on the map is the phone's location error range",
+      "placeHint": {
+        "free": "No location limit — the employee can check in from anywhere",
+        "department": "Within the department's location",
+        "worker": "Within the location assigned to the employee"
+      },
       "in": "Entry"
     },
     "tabs": {
@@ -6217,6 +6234,10 @@
       "redrawPolygon": "Redraw area",
       "drawHint": "Click the map to add a point (at least 3)",
       "drawHintDone": "Add more points or click «Finish»",
+      "layerSwitch": "Map type",
+      "layerOsm": "OSM",
+      "layerYandex": "Yandex",
+      "yandexFailed": "Yandex map failed to load, showing OpenStreetMap",
       "polygonSaved": "Area drawn. Drag the marker to change the center point.",
       "geoError": "Could not detect your location"
     }
@@ -7192,5 +7213,9 @@
     "revokeOthersConfirm": "End all sessions except the current one?",
     "revoked": "Session ended",
     "protected": "This is a new session: you can end older sessions in {min} min (60 minutes for security)."
+  },
+  "onlyOfficeEditor": {
+    "tokenError": "Could not open the document editor",
+    "tokenErrorHint": "The server did not issue a security token for this document. Try again later or contact the administrator."
   }
 }

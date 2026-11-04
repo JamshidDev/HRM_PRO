@@ -12,7 +12,10 @@
   const payload = ref(null)
   const emits = defineEmits(['signatureEv'])
 
-  const openPdf = (document_id, model, signatureId) => {
+  // `title` — ixtiyoriy sarlavha. Berilmasa: shu hujjat qayta ochilsa eskisi qoladi, boshqasida tozalanadi.
+  const openPdf = (document_id, model, signatureId, title) => {
+    pdfViewerStore.title =
+      title ?? (pdfViewerStore.document_id === document_id ? pdfViewerStore.title : null)
     pdfViewerStore.model = model
     pdfViewerStore.signatureId = signatureId
     payload.value = { document_id, model }

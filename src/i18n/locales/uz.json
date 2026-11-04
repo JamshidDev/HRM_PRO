@@ -730,6 +730,8 @@
   "confirmation": {
     "name": "Shartnomalar",
     "contract": {
+      "empty": "Tasdiqlash uchun shartnoma yo'q",
+      "emptyHint": "Imzoingiz yoki kelishuvingizni kutayotgan shartnomalar shu yerda chiqadi",
       "form": {
         "number": "Raqami",
         "type": "Turi",
@@ -6200,8 +6202,23 @@
       "detailTitle": "Mobil o'tish",
       "info": "Ma'lumotlar",
       "placeTitle": "O'tish joyi",
-      "livePhoto": "Tasdiqlangan kadr",
-      "refPhoto": "Bazadagi rasm",
+      "livePhoto": "Tasdiqlangan rasm",
+      "refPhoto": "Rasmiy rasm",
+      "appName": "HR Rail ilovasi",
+      "matchHigh": "Yuz mos keldi",
+      "matchMid": "O'rtacha moslik — rasmlarni solishtiring",
+      "matchLow": "Past moslik — boshqa odam bo'lishi mumkin",
+      "matchUnknown": "O'xshashlik aniqlanmagan",
+      "placeUnknown": "Joylashuv aniqlanmagan",
+      "accuracyGood": "aniq",
+      "accuracyMid": "o'rtacha",
+      "accuracyLow": "past — joy taxminiy",
+      "accuracyHint": "Xaritadagi aylana — telefon joylashuvining xatolik chegarasi",
+      "placeHint": {
+        "free": "Joylashuv cheklanmagan — xodim istalgan joydan o'tishi mumkin",
+        "department": "Bo'limga belgilangan joylashuv ichida",
+        "worker": "Xodimga alohida belgilangan joylashuv ichida"
+      },
       "in": "Kirish"
     },
     "tabs": {
@@ -6277,6 +6294,10 @@
       "redrawPolygon": "Hududni qayta chizish",
       "drawHint": "Nuqta qo'shish uchun xaritaga bosing (kamida 3 ta)",
       "drawHintDone": "Yana nuqta qo'shing yoki «Tugatish»ni bosing",
+      "layerSwitch": "Xarita turi",
+      "layerOsm": "OSM",
+      "layerYandex": "Yandex",
+      "yandexFailed": "Yandex xaritasi yuklanmadi, OpenStreetMap ko'rsatilmoqda",
       "polygonSaved": "Hudud chizildi. Markaziy nuqtani markerni surib o'zgartirish mumkin.",
       "geoError": "Joylashuvni aniqlab bo'lmadi"
     }
@@ -7389,5 +7410,9 @@
     "revokeOthersConfirm": "Joriy seansdan boshqa barcha seanslar yakunlansinmi?",
     "revoked": "Seans yakunlandi",
     "protected": "Bu yangi seans: eski seanslarni {min} daqiqadan keyin yakunlay olasiz (xavfsizlik uchun 60 daqiqa)."
+  },
+  "onlyOfficeEditor": {
+    "tokenError": "Hujjat muharririni ochib bo'lmadi",
+    "tokenErrorHint": "Server hujjat uchun xavfsizlik tokenini bermadi. Birozdan so'ng qayta urinib ko'ring yoki administratorga murojaat qiling."
   }
 }

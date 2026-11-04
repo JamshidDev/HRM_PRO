@@ -4,8 +4,18 @@
   import 'leaflet/dist/leaflet.css'
   import { Location24Regular, Checkmark24Regular, ArrowUndo24Regular, Map20Filled } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
+  import { useAppStore } from '@/store/modules/index.js'
+  import {
+    MAP_PROVIDERS,
+    hasYandexKey,
+    getSavedProvider,
+    saveProvider,
+    createOsmLayer,
+    createYandexLayer
+  } from '@/utils/mapLayers.js'
 
   const { t } = i18n.global
+  const appStore = useAppStore()
 
   const props = defineProps({
     lat: {
@@ -47,6 +57,53 @@
   let polygonCircles = []
   let polygonLines = null
   let resizeObserver = null
+  let baseLayer = null
+  let leafletPrefix = false
+
+  // Xarita turi: OSM yoki Yandex (tanlov localStorage'da). Kalit bo'lmasa — faqat OSM, tugma yo'q.
+  const provider = ref(getSavedProvider())
+  const providerOptions = [
+    { value: MAP_PROVIDERS.OSM, label: () => t('departmentLocationPage.map.layerOsm') },
+    { value: MAP_PROVIDERS.YANDEX, label: () => t('departmentLocationPage.map.layerYandex') }
+  ]
+
+  // Yandex yuklanmasa — OSM'ga o'tiladi. Saqlangan tanlov o'zgarmaydi: keyingi safar yana Yandex sinaladi.
+  const onYandexFail = () => {
+    setTimeout(() => {
+      if (!map || provider.value !== MAP_PROVIDERS.YANDEX) return
+      provider.value = MAP_PROVIDERS.OSM
+      applyBaseLayer()
+      window.$message?.warning(t('departmentLocationPage.map.yandexFailed'))
+    })
+  }
+
+  // Faqat qatlam almashadi — joy, zum va chizilgan shakllar o'z joyida qoladi.
+  const applyBaseLayer = () => {
+    if (!map) return
+    if (baseLayer) map.removeLayer(baseLayer)
+    baseLayer =
+      provider.value === MAP_PROVIDERS.YANDEX
+        ? createYandexLayer({ dark: appStore.isDark, onFail: onYandexFail })
+        : createOsmLayer()
+    // Imzo: OSM'da «🇺🇦 Leaflet | © OpenStreetMap», Yandex'da faqat «© Яндекс · Условия»
+    map.attributionControl.setPrefix(provider.value === MAP_PROVIDERS.YANDEX ? false : leafletPrefix)
+    baseLayer.addTo(map)
+  }
+
+  const setProvider = (value) => {
+    if (value === provider.value) return
+    provider.value = value
+    saveProvider(value)
+    applyBaseLayer()
+  }
+
+  // Yandex'ning o'z tungi rejimi bor — ilova temasi almashsa qatlam yangilanadi
+  watch(
+    () => appStore.isDark,
+    () => {
+      if (provider.value === MAP_PROVIDERS.YANDEX) applyBaseLayer()
+    }
+  )
 
   // Default center - Tashkent
   const defaultCenter = { lat: 41.311081, lng: 69.240562 }
@@ -66,11 +123,10 @@
     const initialLng = props.lng || defaultCenter.lng
 
     map = L.map(mapContainer.value).setView([initialLat, initialLng], 16)
+    // Leaflet'ning o'z «🇺🇦 Leaflet» prefiksi — faqat OSM'da ko'rsatiladi (applyBaseLayer)
+    leafletPrefix = map.attributionControl.options.prefix
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors',
-      maxZoom: 19
-    }).addTo(map)
+    applyBaseLayer()
 
     // Xarita oyna ochilish animatsiyasi paytida yaratiladi — o'lchami noto'g'ri o'lchanib, tile'larning
     // bir qismi kulrang qolardi. Konteyner o'lchami o'zgarganda Leaflet qayta o'lchaydi.
@@ -511,7 +567,8 @@
   const fitToCircle = (lat, lng, radius) => {
     if (!map) return
     const tempCircle = L.circle([lat, lng], { radius }).addTo(map)
-    map.fitBounds(tempCircle.getBounds(), { padding: [40, 40] })
+    // Kichik aylanada (masalan GPS ±6 m) xarita tom ustigacha yaqinlashmasin — ko'cha darajasida to'xtaydi.
+    map.fitBounds(tempCircle.getBounds(), { padding: [40, 40], maxZoom: 17 })
     map.removeLayer(tempCircle)
   }
 
@@ -530,6 +587,7 @@
       map.remove()
       map = null
     }
+    baseLayer = null
   })
 </script>
 
@@ -622,6 +680,26 @@
     <!-- Map container -->
     <div class="relative flex-1 flex flex-col min-h-0">
       <div ref="mapContainer" class="map-container"></div>
+      <!-- Xarita turini almashtirish (o'ng yuqori burchak) -->
+      <div
+        v-if="hasYandexKey"
+        class="map-layer-switch"
+        role="radiogroup"
+        :aria-label="$t('departmentLocationPage.map.layerSwitch')"
+      >
+        <button
+          v-for="opt in providerOptions"
+          :key="opt.value"
+          type="button"
+          role="radio"
+          :aria-checked="provider === opt.value"
+          class="map-layer-switch__btn"
+          :class="{ 'is-active': provider === opt.value }"
+          @click="setProvider(opt.value)"
+        >
+          {{ opt.label() }}
+        </button>
+      </div>
       <!-- Chizish paytida xarita ustida qisqa ko'rsatma -->
       <div v-if="isDrawingPolygon && !readonly" class="map-draw-hint">
         {{ polygonPoints.length < 3 ? $t('departmentLocationPage.map.drawHint') : $t('departmentLocationPage.map.drawHintDone') }}
@@ -690,14 +768,51 @@
   color: var(--warning-color, #f0a020);
 }
 
-/* Chizish ko'rsatmasi — xarita ustida, tepada markazda (Leaflet boshqaruvlaridan yuqori) */
+/* Xarita turi almashtirgichi — o'ng yuqori burchakda, Leaflet boshqaruvlari bilan bir qatlamda */
+.map-layer-switch {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 9999px;
+  background: var(--surface-section);
+  border: 1px solid var(--surface-line);
+  box-shadow: var(--card-shadow);
+}
+
+.map-layer-switch__btn {
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--textColor2);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.map-layer-switch__btn:hover:not(.is-active) {
+  color: var(--textColor0);
+}
+
+.map-layer-switch__btn.is-active {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+/* Chizish ko'rsatmasi — xarita ustida, pastda markazda (tepada o'ngda xarita turi tugmasi, chapda zum).
+   Pastdan 28px — o'ng pastdagi xarita imzosi (attribution) ustiga tushmasin. */
 .map-draw-hint {
   position: absolute;
-  top: 12px;
+  bottom: 28px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  max-width: calc(100% - 120px);
+  max-width: calc(100% - 24px);
   padding: 6px 14px;
   border-radius: 9999px;
   background: var(--surface-section);

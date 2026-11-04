@@ -39,6 +39,12 @@
     emits('openEditorV2', row.id)
   }
 
+  // BACKEND: «Ko'rish» — PDF'ni backend yaratadi, frontend uni faqat ko'rsatadi (`${…}` frontendda almashtirilmaydi).
+  // Dev'da UTY-053995 buyrug'ida imzo joyida `${signature_director}` xom holda chiqyapti (QA, DAS-14195).
+  // Kerak: 1) `${signature_*}` har doim almashtirilsin — imzolangan bo'lsa imzo / rahbar F.I.Sh., hali imzolanmagan
+  // bo'lsa bo'sh satr; 2) almashtirishdan keyin qolgan har qanday `${…}` bo'sh satrga aylansin (xom matn PDF'ga
+  // tushmasin); 3) `signature_director` GET /v1/admin/document-templates/variables ro'yxatida bormi — yo'q bo'lsa
+  // shablonda noto'g'ri nom yozilgan, shablonni tuzatish kerak.
   const onView = (row) => {
     if (!accStore.checkAction(accStore.pn.hrCommandsRead)) return
     onOpenFile(row.id)
