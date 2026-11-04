@@ -62,7 +62,7 @@
     v-model:visible="visible"
     :width="isFullscreen ? '100vw' : 1200"
     :max-width="isFullscreen ? '100vw' : undefined"
-    :height="isFullscreen ? '100dvh' : null"
+    :height="isFullscreen ? '100dvh' : 'calc(100dvh - 20px)'"
     :card-class="['contract-modal-card', isFullscreen && 'contract-modal-card--fullscreen']"
     fullscreen-on-mobile
   >
