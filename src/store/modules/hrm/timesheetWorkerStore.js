@@ -31,6 +31,8 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     saved: {},
     // PROTOTIP: tizim hisobi (auto natijasi) — `${wpId}|${day}` → { status, status_id, hours }; hozircha faqat xotirada.
     calcBase: {},
+    // Tungi smena davomi kunlari (`${wpId}|${day}` → true) — katakda «↳» belgisi.
+    nightCont: {},
     calcWorkers: {},
     loading: false,
     saveLoading: false,
@@ -158,6 +160,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
       this.pending = {}
       this.saved = {}
       this.calcBase = {}
+      this.nightCont = {}
       this.calcWorkers = {}
     },
     // Yuklangan qatorlarning bazadagi holati eslab qolinadi (kutilayotganlar qo'yilishidan oldin).
@@ -443,12 +446,18 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
           if (row < 0) continue
           // Tizim hisobi eslab qolinadi: qaytmagan kunlar bo'sh (0 soat).
           this.calcWorkers[item.id] = true
-          for (let day = 1; day <= this.days.length; day++) delete this.calcBase[`${item.id}|${day}`]
+          for (let day = 1; day <= this.days.length; day++) {
+            delete this.calcBase[`${item.id}|${day}`]
+            delete this.nightCont[`${item.id}|${day}`]
+          }
+          for (const day of item.continuation_days ?? []) this.nightCont[`${item.id}|${day}`] = true
           for (const d of item.days ?? []) {
             this.calcBase[`${item.id}|${d.day}`] = {
               status: TIMESHEET_KEY_BY_ID[d.status] ?? null,
               status_id: d.status,
-              hours: TIMESHEET_TYPES_WITH_HOURS.has(d.status) ? (d.hours ?? 0) : null
+              hours: TIMESHEET_TYPES_WITH_HOURS.has(d.status) ? (d.hours ?? 0) : null,
+              // Tungi smenada kirish/chiqish yo'q — katak sariq belgilanadi.
+              needs_check: Boolean(d.needs_check)
             }
           }
           for (const d of item.days ?? []) {
@@ -462,7 +471,8 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
             filled++
           }
         }
-        return { workers: items.length, cells: filled }
+        const checks = items.reduce((n, it) => n + (it.days ?? []).filter((d) => d.needs_check).length, 0)
+        return { workers: items.length, cells: filled, checks }
       } finally {
         this.autoLoading = false
       }
