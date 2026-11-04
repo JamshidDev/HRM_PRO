@@ -65,6 +65,7 @@ export const useEmployeeDocumentStore = defineStore('employeeDocumentStore', {
         number: this.payload.number?.trim() || undefined,
         document_date: Utils.timeToZone(this.payload.document_date) || undefined,
         organization_id: this.organization?.[0]?.id ?? undefined,
+        data: DOCUMENT_TYPES[this.payload.type]?.toPayload?.(this.payload.data) ?? this.payload.data,
         confirmations: this.sortableConfirmations.map((v, idx) => ({
           id: v.id,
           order: this.oneByOne ? idx + 1 : 1
@@ -111,7 +112,10 @@ export const useEmployeeDocumentStore = defineStore('employeeDocumentStore', {
           number: f.number,
           director_id: f.director_id,
           document_date: f.document_date ? new Date(f.document_date).getTime() : null,
-          data: { ...(DOCUMENT_TYPES[f.type]?.emptyData() ?? {}), ...(f.data ?? {}) }
+          data: (DOCUMENT_TYPES[f.type]?.fromForm ?? ((d) => d))({
+            ...(DOCUMENT_TYPES[f.type]?.emptyData() ?? {}),
+            ...(f.data ?? {})
+          })
         })
         this.organization = form.organization_option ? [form.organization_option] : []
         compStore.workerParams.organization_id = form.organization_option?.id ?? null

@@ -8,6 +8,8 @@
   import i18n from '@/i18n/index.js'
   import { DOCUMENT_TYPES, documentTypeOptions } from './documentTypes.js'
   import MaterialLiabilityFields from './types/MaterialLiabilityFields.vue'
+  import BitimFields from './types/BitimFields.vue'
+  import DeclarationFields from './types/DeclarationFields.vue'
 
   const { t } = i18n.global
   const store = useEmployeeDocumentStore()
@@ -16,7 +18,9 @@
 
   // Tanlangan turga xos forma bloki.
   const TYPE_FIELDS = {
-    'material-liability': MaterialLiabilityFields
+    'material-liability': MaterialLiabilityFields,
+    bitim: BitimFields,
+    declaration: DeclarationFields
   }
   const typeDef = computed(() => DOCUMENT_TYPES[store.payload.type])
   const typeOptions = computed(() => documentTypeOptions(t))

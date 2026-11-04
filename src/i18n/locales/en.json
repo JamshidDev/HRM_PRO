@@ -7182,6 +7182,41 @@
     "searchPlaceholder": "Name or number"
   },
   "employeeDocumentsPage": {
+    "types": {
+      "bitim": "Confidentiality agreement",
+      "declaration": "Conflict of interest declaration"
+    },
+    "bitim": {
+      "basis": "Director acts on the basis of",
+      "basisCharter": "Charter",
+      "basisPowerOfAttorney": "Power of attorney",
+      "extraConditions": "Additional confidential information (clause 1.2)"
+    },
+    "declaration": {
+      "reason": "Reason",
+      "reasons": {
+        "annual": "Annual",
+        "hiring": "On hiring",
+        "transfer": "On transfer"
+      },
+      "workerPassport": "Employee passport (series, number, date)",
+      "workerPin": "Employee PINFL",
+      "fromProfile": "Taken from profile if empty",
+      "relatives": "Close relatives (if working in the railway system)",
+      "workerCompanies": "Legal entities with employee's share/management (2.1)",
+      "relativeCompanies": "Relatives' legal entities (2.2)",
+      "fullName": "Full name",
+      "passport": "Passport (series, number, date)",
+      "pin": "PINFL",
+      "companyName": "Legal entity name",
+      "stir": "TIN",
+      "emptyList": "None — the document shows «—»",
+      "conflictInfo": "Potential conflict of interest information",
+      "additionalInfo": "Additional information (if any)",
+      "noneHint": "If empty, «Mavjud emas» is written",
+      "registryDate": "Registry date",
+      "registryNumber": "Registry number"
+    },
     "name": "Employee documents",
     "createTitle": "New document",
     "updateTitle": "Edit document",

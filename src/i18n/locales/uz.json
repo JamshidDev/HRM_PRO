@@ -7379,6 +7379,41 @@
     "searchPlaceholder": "F.I.Sh. yoki raqam"
   },
   "employeeDocumentsPage": {
+    "types": {
+      "bitim": "Konfidensiallik bitimi",
+      "declaration": "Manfaatlar to‘qnashuvi deklaratsiyasi"
+    },
+    "bitim": {
+      "basis": "Rahbar faoliyat asosi",
+      "basisCharter": "Ustav",
+      "basisPowerOfAttorney": "Ishonchnoma",
+      "extraConditions": "Qo‘shimcha konfidensial ma’lumotlar (1.2-band)"
+    },
+    "declaration": {
+      "reason": "To‘ldirish sababi",
+      "reasons": {
+        "annual": "Yillik",
+        "hiring": "Ishga qabul qilinayotganda",
+        "transfer": "Boshqa ishga o‘tkazilayotganda"
+      },
+      "workerPassport": "Xodim pasporti (seriya, raqam, sana)",
+      "workerPin": "Xodim JShShIR",
+      "fromProfile": "Bo‘sh qolsa profildan olinadi",
+      "relatives": "Yaqin qarindoshlar (temir yo‘l tizimida ishlasa)",
+      "workerCompanies": "Xodim ulushi/rahbarligi bor yuridik shaxslar (2.1)",
+      "relativeCompanies": "Qarindoshlarining yuridik shaxslari (2.2)",
+      "fullName": "F.I.Sh.",
+      "passport": "Pasport (seriya, raqam, sana)",
+      "pin": "JShShIR",
+      "companyName": "Yuridik shaxs nomi",
+      "stir": "STIR",
+      "emptyList": "Yo‘q — hujjatda «—» chiqadi",
+      "conflictInfo": "Ehtimoliy manfaatlar to‘qnashuvi to‘g‘risida ma’lumot",
+      "additionalInfo": "Qo‘shimcha ma’lumotlar (agar mavjud bo‘lsa)",
+      "noneHint": "Bo‘sh qolsa «Mavjud emas» deb yoziladi",
+      "registryDate": "Reyestrga olingan sana",
+      "registryNumber": "Reyestr raqami"
+    },
     "name": "Xodim hujjatlari",
     "createTitle": "Hujjat tuzish",
     "updateTitle": "Hujjatni tahrirlash",
