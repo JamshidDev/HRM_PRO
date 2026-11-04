@@ -33,6 +33,7 @@
   import CommandForm_76 from './ui/CommandForm_76.vue'
   import CommandForm_79 from './ui/CommandForm_79.vue'
   import CommandForm_80 from './ui/CommandForm_80.vue'
+  import CommandForm_26 from './ui/CommandForm_26.vue'
   import CommandForm_75 from './ui/CommandForm_75.vue'
   import CommandForm_5 from './ui/CommandForm_5.vue'
   import CommandForm_8 from './ui/CommandForm_8.vue'
@@ -122,6 +123,7 @@
   const vacationForm_62 = ref(null)
   const vacationForm_51 = ref(null)
   const vacationForm_71 = ref(null)
+  const commandForm_26 = ref(null)
   const vacationForm_72 = ref(null)
   const vacationForm_73 = ref(null)
   const commandForm_74 = ref(null)
@@ -329,6 +331,8 @@
             validate = await vacationForm_62.value?.onSubmit(mainData)
           } else if ([51, 52, 53, 54].includes(store.payload.command_type)) {
             validate = await vacationForm_51.value?.onSubmit(mainData)
+          } else if (store.payload.command_type === 26) {
+            validate = await commandForm_26.value?.onSubmit(mainData)
           } else if (store.payload.command_type === 71) {
             validate = await vacationForm_71.value?.onSubmit(mainData)
           } else if (store.payload.command_type === 72) {
@@ -986,6 +990,9 @@
 
           <template v-else-if="[51, 52, 53, 54].includes(store.payload.command_type)">
             <CommandFrom_51 ref="vacationForm_51" />
+          </template>
+          <template v-else-if="store.payload.command_type === 26">
+            <CommandForm_26 ref="commandForm_26" />
           </template>
           <template v-else-if="store.payload.command_type === 71">
             <CommandForm_71 ref="vacationForm_71" />

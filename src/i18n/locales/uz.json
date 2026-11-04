@@ -1973,6 +1973,25 @@
       "position_date": "Lavozimga kirishgan sana",
       "contract_date": "Mehnat shartnomasi sanasi",
       "number": "Mehnat shartnomasi raqami"
+    },
+    "form_26": {
+      "target_organization": "Qaysi korxonaga o‘tkaziladi",
+      "target_organization_ph": "Korxonani tanlang",
+      "target_department": "Yangi korxonada qaysi bo‘lim ostiga",
+      "target_department_ph": "Tanlanmasa — korxonaning yuqori darajasiga",
+      "reason": "Sabab (MK 156-modda)",
+      "transfer_date": "Shartnomalar davom etadigan sana",
+      "hr_worker": "Kadrlar bo‘limi mas’uli",
+      "selected": "Tanlangan xodimlar",
+      "empty": "Yuqoridagi «Xodim» maydonidan xodimlarni bittalab tanlang",
+      "max_workers": "Bitta buyruqda ko‘pi bilan {max} ta xodim bo‘ladi",
+      "on_vacation": "Ta’tilda: {type}, {from} – {to}",
+      "on_sick_leave": "Kasallik varaqasida: {from} – {to}",
+      "pending_command": "Tasdiqlanmagan buyrug‘i bor",
+      "blocked_info": "{count} ta xodimni o‘tkazib bo‘lmaydi — ro‘yxatdan olib tashlang yoki sanani o‘zgartiring",
+      "blocked_save": "Saqlab bo‘lmaydi: {count} ta xodim ta’til, kasallik yoki tasdiqlanmagan buyruqda",
+      "no_workers": "Kamida bitta xodim tanlang",
+      "pick_date_hint": "Ta’til va kasallikni tekshirish uchun sanani tanlang"
     }
   },
   "confirmationPage": {

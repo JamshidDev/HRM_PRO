@@ -121,6 +121,7 @@ const FORM_STATE_KEYS = [
   'form_76',
   'form_79',
   'form_80',
+  'form_26',
   'form_74',
   'form_75',
   'vacations',
@@ -330,6 +331,15 @@ const commandStoreOptions = {
       civil_contract_date: null,
       civil_contract_kind: null,
       civil_cancel_date: null,
+      hr_worker_position_id: null,
+      hr_option: null
+    },
+    // 26 — shtati bilan boshqa korxonaga o'tkazish; `hr_option` — mas'ul yorlig'i.
+    form_26: {
+      target_organization_id: null,
+      target_department_id: null,
+      reason: null,
+      transfer_date: null,
       hr_worker_position_id: null,
       hr_option: null
     },
@@ -868,6 +878,15 @@ const commandStoreOptions = {
         civil_contract_date: null,
         civil_contract_kind: null,
         civil_cancel_date: null,
+        hr_worker_position_id: null,
+        hr_option: null
+      }
+
+      this.form_26 = {
+        target_organization_id: null,
+        target_department_id: null,
+        reason: null,
+        transfer_date: null,
         hr_worker_position_id: null,
         hr_option: null
       }

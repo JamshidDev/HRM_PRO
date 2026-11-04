@@ -1957,6 +1957,25 @@
       "position_date": "Date of taking office",
       "contract_date": "Employment contract date",
       "number": "Employment contract number"
+    },
+    "form_26": {
+      "target_organization": "Target organization",
+      "target_organization_ph": "Select organization",
+      "target_department": "Under which department in the new organization",
+      "target_department_ph": "If empty — top level of the organization",
+      "reason": "Reason (Labour Code art. 156)",
+      "transfer_date": "Contracts continue from",
+      "hr_worker": "HR department responsible",
+      "selected": "Selected employees",
+      "empty": "Pick employees one by one in the «Employee» field above",
+      "max_workers": "One order may include at most {max} employees",
+      "on_vacation": "On leave: {type}, {from} – {to}",
+      "on_sick_leave": "On sick leave: {from} – {to}",
+      "pending_command": "Has a pending order",
+      "blocked_info": "{count} employees cannot be transferred — remove them or change the date",
+      "blocked_save": "Cannot save: {count} employees are on leave, sick leave or have a pending order",
+      "no_workers": "Select at least one employee",
+      "pick_date_hint": "Pick the date to check leave and sick leave"
     }
   },
   "confirmationPage": {

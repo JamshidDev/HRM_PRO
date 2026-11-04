@@ -1588,6 +1588,13 @@ export default {
     civil_cancel_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
     hr_worker_position_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] }
   },
+  // 26 — shtati bilan boshqa korxonaga o'tkazish.
+  form_26: {
+    target_organization_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
+    reason: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] },
+    transfer_date: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: triggerEvents },
+    hr_worker_position_id: { type: 'number', required: true, message: t(`rules.requiredField`), trigger: [...triggerEvents, 'change'] }
+  },
   // 75 — Buyruqni bekor qilish.
   form_75: {
     cancel_reason: {
