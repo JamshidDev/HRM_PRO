@@ -34,6 +34,7 @@
     <UIPageFilter
       :placeholder="$t('documentSettings.searchPlaceholder')"
       :show-add-button="false"
+      :show-filter-button="false"
       v-model:search="store.params.search"
       @onSearch="onSearch"
       :search-loading="store.loading"

@@ -1,5 +1,6 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
+  import i18n from '@/i18n/index.js'
   import {
     ArrowCircleRight20Regular,
     ArrowCircleLeft28Regular,
@@ -25,6 +26,43 @@
 
   const store = useConfApplicationStore()
   const componentStore = useComponentStore()
+
+  // Tugash sanasi boshlanishdan oldin bo'lmasin. Kalendar `is-date-disabled` bilan buni faqat
+  // bosishda to'sadi — klaviaturadan yozilgan sana (masalan 01.10.2026) to'g'ridan-to'g'ri
+  // modelga tushadi va backend'ga borardi (DAS-14201).
+  // BACKEND: POST /v1/worker-application/applications 422 xatosida `to` maydoni «Tugash sanasi»
+  // deb ataladi, formada esa «Ta'tildan qaytish sanasi» — xato matnidagi nomni label bilan bir xil qiling.
+  const notBefore = (startKey) => ({
+    key: 'range',
+    trigger: ['input', 'blur'],
+    validator: (_rule, value) => {
+      const start = store.payload[startKey]
+      // O'tgan kun bo'lsa — `notPast` xabari yetarli, ikkita xato ustma-ust chiqmasin.
+      if (!value || !start || value >= start || store.isPastDay(value)) return true
+      return new Error(i18n.global.t('rules.endBeforeStart'))
+    }
+  })
+  // O'tgan kun — kalendarda yopiq (`store.isPastDay`), yozib kiritilsa shu qoida to'sadi.
+  const notPast = {
+    trigger: ['input', 'blur'],
+    validator: (_rule, value) =>
+      !value || !store.isPastDay(value) || new Error(i18n.global.t('rules.pastDate'))
+  }
+  const rules = {
+    ...validationRules.applicationPage,
+    from: [validationRules.applicationPage.from, notPast],
+    to: [validationRules.applicationPage.to, notPast, notBefore('from')],
+    period_to: [validationRules.applicationPage.period_to, notBefore('period_from')]
+  }
+  // Boshlanish sanasi keyin o'zgarsa, allaqachon tanlangan tugash sanasi qayta tekshiriladi.
+  watch(
+    () => [store.payload.from, store.payload.period_from],
+    () => {
+      if (!store.payload.to && !store.payload.period_to) return
+      formRef.value?.validate(undefined, (rule) => rule?.key === 'range').catch(() => {})
+    }
+  )
+
   const onSubmit = () => {
     formRef.value?.validate((error) => {
       if (!error) {
@@ -66,7 +104,7 @@
 </script>
 
 <template>
-  <n-form ref="formRef" :rules="validationRules.applicationPage" :model="store.payload">
+  <n-form ref="formRef" :rules="rules" :model="store.payload">
     <n-space vertical class="w-full mb-4 hidden! md:inline-block!">
       <n-steps :status="store.stepStatus" :current="store.stepNumber">
         <template #finish-icon>
