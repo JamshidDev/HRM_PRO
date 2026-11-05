@@ -4309,6 +4309,15 @@
       "outTable": "Deductions",
       "oneSideEmpty": "No data for one of the selected months"
     },
+    "hoursCmp": {
+      "label": "Hours comparison",
+      "eq": "Equal (work = system)",
+      "neq": "Not equal",
+      "gt": "Work hours > System hours",
+      "lt": "Work hours < System hours",
+      "noWork": "No work hours",
+      "noSystem": "No system hours"
+    },
     "systemHours": {
       "column": "System hours",
       "title": "Work hours by system",
@@ -7057,7 +7066,11 @@
         "position": "Position",
         "detail": "Note",
         "summa": "Amount"
-      }
+      },
+      "viewList": "{count} employees — view list",
+      "listTotal": "{count} employees",
+      "searchPlaceholder": "Search by name or position",
+      "noMatch": "Nothing found"
     },
     "comingSoon": "Coming soon"
   },
