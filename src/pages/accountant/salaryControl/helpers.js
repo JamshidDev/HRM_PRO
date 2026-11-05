@@ -38,6 +38,16 @@ export function formatMoney(value, { unit = 'full', digits } = {}) {
   const n = Number(value) || 0
   if (unit === 'mln') {
     const m = n / 1e6
+    // ≥ 1000 mln → mlrd (masalan "4,92 mlrd so‘m"); aks holda "566 mln so‘m".
+    if (Math.abs(m) >= 1000) {
+      const b = m / 1000
+      return (
+        b.toLocaleString('ru-RU', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }) + ' mlrd so‘m'
+      )
+    }
     const d = digits ?? (Math.abs(m) >= 100 ? 0 : 1)
     return (
       m.toLocaleString('ru-RU', {

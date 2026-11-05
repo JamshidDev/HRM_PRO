@@ -7071,6 +7071,10 @@
       "reports": "Hisobotlar",
       "employees": "Xodimlar"
     },
+    "emptyOrg": {
+      "title": "Ma'lumotni ko'rish uchun tashkilotni tanlang",
+      "btn": "Tashkilot tanlash"
+    },
     "kpi": {
       "employees": "Xodimlar soni",
       "accrued": "Jami hisoblangan",
@@ -7208,7 +7212,7 @@
       "proportional": "Mutanosib (100%)",
       "overLimit": "Chegaradan oshgan",
       "bonusToWork": "Mukofot/vaqtbay (011/004)",
-      "scatterRule": "Qizil: mukofot ulushi (011/oklad) ishlangan haq ulushidan (004/oklad) yuqori — nomutanosib taqsimot. Chegaradan (120%/150%) oshganlar ▲ bilan.",
+      "scatterRule": "Qizil: mukofot ulushi (011/oklad) ishlangan haq ulushidan (004/oklad) yuqori — nomutanosib taqsimot. O‘q chegarasidan oshganlar ▲ bilan.",
       "colDep": "Bo‘lim",
       "colDelta": "Δ% o‘tgan oy",
       "kpiDelta": "Δ% o‘tgan oyga"

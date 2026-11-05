@@ -3,6 +3,8 @@
   // ishlangan vaqt (scatter) va mukofot foizi strip-plot (lavozim guruhlari).
   // Manba: store.vids + store.emps + store.scFindings. Maketning echarts ko'chirmasi.
   import { computed, ref, h, onMounted } from 'vue'
+  import { NIcon } from 'naive-ui'
+  import { ChevronRight16Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore, useAppStore } from '@/store/modules/index.js'
   import {
@@ -138,13 +140,14 @@
     ]
   })
 
-  // Jadval ustunlari (n-data-table).
+  // Jadval ustunlari (n-data-table) — 6 asosiy ustun gorizontal scroll'siz sig'adi.
+  // (O'rtacha va Δ% — qator bosilganda ochiladigan drawer'da; bu yerda olib tashlandi.)
   const columns = computed(() => [
-    { title: t('salaryControl.vids.colCode'), key: 'k', width: 68 },
+    { title: t('salaryControl.vids.colCode'), key: 'k', width: 64 },
     {
       title: t('salaryControl.vids.colName'),
       key: 'name',
-      minWidth: 200,
+      minWidth: 220,
       ellipsis: { tooltip: true },
       render: (r) => h('span', { title: r.full || r.name }, r.name)
     },
@@ -184,7 +187,8 @@
       title: t('salaryControl.vids.colShare'),
       key: 'sharePct',
       align: 'right',
-      width: 92,
+      width: 72,
+      className: 'vid-num',
       sorter: (a, b) => a.sharePct - b.sharePct,
       render: (r) => `${r.sharePct.toFixed(1)}%`
     },
@@ -193,35 +197,22 @@
       key: 'c',
       align: 'right',
       width: 118,
+      className: 'vid-num',
       sorter: (a, b) => a.c - b.c,
       render: (r) => (r.c || 0).toLocaleString('ru-RU')
     },
     {
-      title: t('salaryControl.vids.colAvg'),
-      key: 'avg',
-      align: 'right',
-      width: 150,
-      sorter: (a, b) => a.avg - b.avg,
-      render: (r) => formatMoney(r.avg, { unit: 'full' })
-    },
-    {
-      title: t('salaryControl.vids.colDelta'),
-      key: 'delta',
-      align: 'right',
-      width: 100,
-      sorter: (a, b) => (a.delta ?? -Infinity) - (b.delta ?? -Infinity),
+      title: '',
+      key: '_chevron',
+      width: 40,
+      align: 'center',
       render: (r) =>
-        r.delta == null
-          ? h('span', { style: { color: 'var(--fig-text-tertiary)' } }, '—')
+        r._isOther
+          ? ''
           : h(
-              'span',
-              {
-                style: {
-                  color: r.delta >= 0 ? 'var(--fig-icon-green)' : 'var(--fig-icon-red)',
-                  fontVariantNumeric: 'tabular-nums'
-                }
-              },
-              `${r.delta >= 0 ? '+' : ''}${r.delta.toFixed(0)}%`
+              NIcon,
+              { size: 15, class: 'vid-chevron' },
+              { default: () => h(ChevronRight16Regular) }
             )
     }
   ])
@@ -287,8 +278,18 @@
   // —— Mukofot / ishlangan vaqt: scatter (x=004/ok, y=011/ok) ————————————————————
   // «Tekshirilishi kerak» qoidasi: mukofot ulushi (011/oklad) ishlangan haq
   // ulushidan (004/oklad) yuqori — diagonal chiziq ustida (qizil).
-  const XM = 1.2 // x o'q chegarasi (120%)
-  const YM = 1.5 // y o'q chegarasi (150%) — tekis qadam 0/30/60/90/120/150
+  // O'q chegaralari DINAMIK: ma'lumotdagi eng katta nisbatning +10% i (lekin 300% cap —
+  // bitta chetdagi nuqta grafikni buzmasin), eng kam -5% (0 dagi nuqtalar o'q chizig'iga
+  // tegib ketmasin). X va Y bir xil kvadrat domen — diagonal 45°.
+  const scatterDomain = computed(() => {
+    let mx = 0
+    for (const e of store.emps) {
+      if (!(e.ok > 0 && (e.v?.['004'] || e.v?.['011']))) continue
+      mx = Math.max(mx, (e.v?.['004'] || 0) / e.ok, (e.v?.['011'] || 0) / e.ok)
+    }
+    const max = Math.min(3, Math.max(1.2, mx * 1.1))
+    return { min: -0.05, max }
+  })
   const scatterRedCount = computed(() => {
     let n = 0
     for (const e of store.emps) {
@@ -302,15 +303,16 @@
     const th = chartTheme()
     const brand = tokenColor('--fig-icon-brand')
     const red = tokenColor('--fig-icon-red')
+    const { min: DMIN, max: DMAX } = scatterDomain.value
     const norm = []
     const risk = []
     for (const e of store.emps) {
       if (!(e.ok > 0 && (e.v?.['004'] || e.v?.['011']))) continue
       const wr = (e.v?.['004'] || 0) / e.ok
       const br = (e.v?.['011'] || 0) / e.ok
-      const w = Math.min(Math.max(wr, 0), XM)
-      const b = Math.min(Math.max(br, 0), YM)
-      const clamped = wr > XM || br > YM // chegaradan oshgan — ▲ bilan
+      const w = Math.min(Math.max(wr, 0), DMAX)
+      const b = Math.min(Math.max(br, 0), DMAX)
+      const clamped = wr > DMAX || br > DMAX // chegaradan oshgan — ▲ bilan
       const bad = br > wr
       const pt = {
         value: [w, b],
@@ -330,12 +332,13 @@
       )
     }
     return {
-      grid: { top: 16, left: 8, right: 18, bottom: 36, containLabel: true },
+      // right: 'Mutanosib' yorlig'i va ▲ markerlar kesilmasligi uchun kengroq.
+      grid: { top: 24, left: 8, right: 40, bottom: 36, containLabel: true },
       tooltip: { trigger: 'item', confine: true, formatter: (p) => (p?.data?.raw ? tip(p.data.raw) : '') },
       xAxis: {
         type: 'value',
-        min: 0,
-        max: XM,
+        min: DMIN,
+        max: DMAX,
         interval: 0.3,
         name: '004 / oklad',
         nameLocation: 'middle',
@@ -346,8 +349,8 @@
       },
       yAxis: {
         type: 'value',
-        min: 0,
-        max: YM,
+        min: DMIN,
+        max: DMAX,
         interval: 0.3,
         name: '011 / oklad',
         nameTextStyle: { color: th.text, fontSize: 11, align: 'left' },
@@ -368,10 +371,12 @@
               formatter: t('salaryControl.vids.proportional'),
               color: th.text,
               fontSize: 10,
-              position: 'end'
+              // 'insideEndTop': yorliq diagonal chizig'ining ichki yuqori uchida —
+              // grid chetidan tashqariga chiqib kesilmaydi ('end' da kesilardi).
+              position: 'insideEndTop'
             },
             lineStyle: { type: 'dashed', color: tokenColor('--fig-text-tertiary'), width: 1.5 },
-            data: [[{ coord: [0, 0] }, { coord: [XM, XM] }]]
+            data: [[{ coord: [0, 0] }, { coord: [DMAX, DMAX] }]]
           }
         },
         { type: 'scatter', data: risk, z: 3, itemStyle: { color: red, opacity: 0.9 } }
@@ -400,38 +405,59 @@
       return { g, n: items.length, med: Math.round(median(items.map((p) => p.r)) * 100), red: redN }
     })
   )
-  const STRIP_XMAX = 6 // 600% cap
+  // x-o'q maksimumi DINAMIK: max(120%, eng katta nisbat × 1.1). Avvalgi qattiq 600%
+  // (STRIP_XMAX=6) olib tashlandi — ko'p ma'lumot chapga siqilib qolardi.
+  const stripXMax = computed(() => {
+    let mx = 0
+    for (const p of stripData.value) mx = Math.max(mx, p.r)
+    return Math.max(1.2, mx * 1.1)
+  })
   const stripOption = computed(() => {
     appStore.isDark
     const th = chartTheme()
     const brand = tokenColor('--fig-icon-brand')
     const red = tokenColor('--fig-icon-red')
     const groups = stripGroups.value
+    const XMAX = stripXMax.value
     const norm = []
     const risk = []
     stripData.value.forEach((p, i) => {
       const gi = groups.indexOf(p.g)
+      // beeswarm'simon vertikal jitter — ko'p nuqtali guruhlar (masalan "Boshqa") yoyiladi.
       const jitter = (((i * 37) % 17) / 16 - 0.5) * 0.6
-      const clamped = p.r > STRIP_XMAX
+      const clamped = p.r > XMAX
       const bad = flagged.value.has(p.e.fio) && p.r > 1.05
       const pt = {
-        value: [Math.min(p.r, STRIP_XMAX), gi + jitter],
+        value: [Math.min(p.r, XMAX), gi + jitter],
         raw: p,
         symbol: clamped ? 'triangle' : 'circle',
         symbolSize: bad ? 10 : 8
       }
       ;(bad ? risk : norm).push(pt)
     })
+    // Har guruh qatorining o'ng chetiga statistika (n, mediana %) — o'ng padding ichida.
+    const statPts = stripStats.value.map((s) => ({
+      value: [XMAX, groups.indexOf(s.g)],
+      label: {
+        show: true,
+        position: 'right',
+        color: th.text,
+        fontSize: 10,
+        formatter: `n=${s.n} · med ${s.med}%${s.red ? ` · {r|⚠${s.red}}` : ''}`,
+        rich: { r: { color: red, fontSize: 10 } }
+      }
+    }))
     const tip = (p) =>
       `<b>${normText(p.e.fio) || '—'}</b><br/>${normText(p.e.lav) || ''}<br/>` +
       `011/004: ${Math.round(p.r * 100)}%<br/>011: ${money(p.e.v['011'])} · 004: ${money(p.e.v['004'])}`
     return {
-      grid: { top: 12, left: 8, right: 22, bottom: 30, containLabel: true },
+      // top: "100%" chiziq yorlig'i kesilmasin; right: o'ngdagi statistika uchun joy.
+      grid: { top: 22, left: 8, right: 96, bottom: 30, containLabel: true },
       tooltip: { trigger: 'item', confine: true, formatter: (d) => (d?.data?.raw ? tip(d.data.raw) : '') },
       xAxis: {
         type: 'value',
         min: 0,
-        max: STRIP_XMAX,
+        max: XMAX,
         axisLabel: { color: th.text, formatter: (v) => Math.round(v * 100) + '%' },
         splitLine: { lineStyle: { color: th.line } }
       },
@@ -447,16 +473,18 @@
           type: 'scatter',
           data: norm,
           z: 1,
-          itemStyle: { color: brand, opacity: 0.45 },
+          itemStyle: { color: brand, opacity: 0.6 },
           markLine: {
             silent: true,
             symbol: 'none',
-            label: { show: true, formatter: '100%', color: th.text, fontSize: 10 },
+            label: { show: true, formatter: '100%', color: th.text, fontSize: 10, position: 'start' },
             lineStyle: { type: 'dashed', color: tokenColor('--fig-text-tertiary'), width: 1.5 },
             data: [{ xAxis: 1 }]
           }
         },
-        { type: 'scatter', data: risk, z: 3, itemStyle: { color: red, opacity: 0.95 } }
+        { type: 'scatter', data: risk, z: 3, itemStyle: { color: red, opacity: 0.95 } },
+        // Statistika yorliqlari — ko'rinmas nuqtalar (symbolSize 0), faqat label.
+        { type: 'scatter', data: statPts, z: 2, symbolSize: 0, silent: true }
       ]
     }
   })
@@ -472,26 +500,84 @@
   ]
   const flaggedStk = computed(() => new Set(store.scFindings.map((f) => f.fio)))
   const stkRows = computed(() => [...store.people].sort((a, b) => (b.tot || 0) - (a.tot || 0)).slice(0, 20))
+  // Tanlangan davr oyining nomi (subtitle va eksportlar uchun) — yagona manba store.params.
+  const MONTHS_UZ = [
+    'Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun',
+    'Iyul', 'Avgust', 'Sentyabr', 'Oktyabr', 'Noyabr', 'Dekabr'
+  ]
+  const periodMonthName = computed(() => MONTHS_UZ[(store.params.month || 1) - 1] || '')
+  // stk kartasi subtitle — oyni dinamik qo'yamiz (CHART.stk.sub dagi "Avgust" o'rniga).
+  const stkSub = computed(() =>
+    `${periodMonthName.value}, jami hisoblangan summa to‘lov guruhlari (vaqtbay, mukofot, ustama, ta’til, oziq-ovqat, moddiy yordam) bo‘yicha.`
+  )
+  // FIO → "Familiya I." (Title Case, ism bosh harfi). Uzun bo'lsa axisLabel truncate qiladi.
+  const fmtFioShort = (fio) => {
+    const parts = (normText(fio) || '').trim().split(/\s+/).filter(Boolean)
+    if (!parts.length) return '—'
+    const tc = (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
+    const last = tc(parts[0])
+    const init = parts[1] ? parts[1].charAt(0).toUpperCase() + '.' : ''
+    return (last + ' ' + init).trim()
+  }
   const stkOption = computed(() => {
     appStore.isDark
     const th = chartTheme()
+    const red = tokenColor('--fig-icon-red')
     const rows = stkRows.value
     const sumCodes = (p, codes) => codes.reduce((a, k) => a + (p.v?.[k] || 0), 0)
-    const label = (p) => (flaggedStk.value.has(p.fio) ? '⚠ ' : '') + normText(p.fio).split(' ').slice(0, 2).join(' ')
+    // Belgilangan xodim oldiga qizil nuqta (rich text) — ⚠ emoji o'rniga.
+    const label = (p) =>
+      (flaggedStk.value.has(p.fio) ? '{r|●} ' : '') + fmtFioShort(p.fio)
     return {
-      grid: { top: 8, left: 4, right: 16, bottom: 4, containLabel: true },
-      legend: { show: true, bottom: 0, type: 'scroll', textStyle: { color: th.text, fontSize: 11 } },
+      // bottom: o'q nomi ("mln so‘m") + legend 2 qatorgacha o'ralishi uchun joy.
+      grid: { top: 8, left: 4, right: 16, bottom: 84, containLabel: true },
+      legend: {
+        show: true,
+        bottom: 0,
+        type: 'plain',
+        itemGap: 14,
+        padding: [16, 0, 0, 0],
+        textStyle: { color: th.text, fontSize: 11 }
+      },
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
-        valueFormatter: (v) => (v ? formatMoney(v, { unit: 'mln' }) : '0')
+        confine: true,
+        // Har segment: guruh nomi, summa va qatordagi ulushi (%).
+        formatter: (ps) => {
+          if (!ps?.length) return ''
+          const total = ps.reduce((a, p) => a + (p.value || 0), 0)
+          const head = `<b>${(ps[0].axisValueLabel || '').replace(/\{r\|●\}\s*/, '')}</b>`
+          const lines = ps
+            .filter((p) => p.value > 0)
+            .map(
+              (p) =>
+                `${p.marker}${p.seriesName}: ${formatMoney(p.value, { unit: 'mln' })} · ` +
+                `${total ? Math.round((p.value / total) * 100) : 0}%`
+            )
+          return [head, ...lines].join('<br/>')
+        }
       },
-      xAxis: { type: 'value', axisLabel: { color: th.text, formatter: (v) => (v / 1e6).toFixed(0) }, splitLine: { lineStyle: { color: th.line } } },
+      xAxis: {
+        type: 'value',
+        name: 'mln so‘m',
+        nameLocation: 'middle',
+        nameGap: 26,
+        nameTextStyle: { color: th.text, fontSize: 10 },
+        axisLabel: { color: th.text, formatter: (v) => (v / 1e6).toFixed(0) },
+        splitLine: { lineStyle: { color: th.line } }
+      },
       yAxis: {
         type: 'category',
         inverse: true,
         data: rows.map(label),
-        axisLabel: { color: th.textStrong, width: 150, overflow: 'truncate', fontSize: 11 },
+        axisLabel: {
+          color: th.textStrong,
+          width: 150,
+          overflow: 'truncate',
+          fontSize: 11,
+          rich: { r: { color: red, fontSize: 10, padding: [0, 2, 0, 0] } }
+        },
         axisLine: { lineStyle: { color: th.line } }
       },
       series: STK_GROUPS.map((g) => ({
@@ -606,19 +692,19 @@
         </div>
 
         <n-data-table
+          class="vid-table"
           :columns="columns"
           :data="displayedRows"
           :row-props="rowProps"
           :pagination="showAll || search ? tablePagination : false"
           :bordered="false"
           size="small"
-          :scroll-x="1120"
         />
         <p class="vid-hint">{{ $t('salaryControl.vids.rowHint') }}</p>
       </Card>
 
       <!-- Top 20 xodim oyligi tarkibi (stacked) -->
-      <Card :title="CHART.stk.title" :sub="CHART.stk.sub" :info="CHART.stk.sub">
+      <Card :title="CHART.stk.title" :sub="stkSub" :info="CHART.stk.sub">
         <EChart :option="stkOption" height="520px" />
       </Card>
 
@@ -645,15 +731,6 @@
         </Card>
         <Card :title="$t('salaryControl.vids.strip')" :sub="$t('salaryControl.vids.stripSub')" :info="CHART.strip.sub">
           <EChart :option="stripOption" height="340px" @chart-click="onPointClick" />
-          <div class="vid-stripstats">
-            <span v-for="s in stripStats" :key="s.g" class="vid-stripstat">
-              <b>{{ s.g }}</b> · n={{ s.n }} · med {{ s.med }}%<span
-                v-if="s.red"
-                class="vid-red"
-              >
-                · qizil {{ s.red }}</span>
-            </span>
-          </div>
           <div class="sc-legend">
             <span><i class="sw" :style="{ background: 'var(--fig-icon-brand)' }"></i>Me'yorda</span>
             <span><i class="sw" :style="{ background: 'var(--fig-icon-red)' }"></i>Tekshirilishi kerak</span>
@@ -745,7 +822,7 @@
   /* —— KPI qatori —— */
   .vids-kpi {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 12px;
   }
   .vids-kpi-card {
@@ -895,6 +972,22 @@
     background: var(--fig-icon-brand);
     border-radius: 2px;
   }
+  /* Raqamli ustunlar (Ulush, Oluvchilar) — tabular-nums bilan o'ngga tekis. */
+  :deep(.vid-num .n-data-table-td__ellipsis),
+  :deep(td.vid-num) {
+    font-variant-numeric: tabular-nums;
+  }
+  /* Chevron — qator bosiladigan ekanini bildiradi; hover'da yorqinlashadi. */
+  :deep(.vid-chevron) {
+    color: var(--fig-text-tertiary);
+    opacity: 0.45;
+    transition: opacity 0.12s ease, transform 0.12s ease;
+  }
+  :deep(.vid-table .n-data-table-tr:hover .vid-chevron) {
+    opacity: 1;
+    color: var(--fig-icon-brand);
+    transform: translateX(2px);
+  }
 
   /* —— Drawer —— */
   .vid-dh {
@@ -941,11 +1034,12 @@
   }
 
   /* —— Scatter/strip qo'shimcha —— */
+  /* WCAG AA (≥4.5:1): to'q qizil fon + oq matn — yorug'/tungi rejimda ham o'qiladi. */
   .vid-badge {
     display: inline-flex;
     align-items: center;
-    background: var(--fig-bg-red-fill);
-    color: var(--fig-text-red);
+    background: #dc2626;
+    color: #fff;
     border-radius: 999px;
     padding: 3px 10px;
     font-size: 12px;
@@ -967,22 +1061,6 @@
     color: var(--fig-text-tertiary);
     line-height: 16px;
   }
-  .vid-stripstats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 14px;
-    margin-top: 8px;
-    font-size: 12px;
-    color: var(--fig-text-secondary);
-  }
-  .vid-stripstat b {
-    color: var(--fig-text-primary);
-  }
-  .vid-red {
-    color: var(--fig-text-red);
-    font-weight: 600;
-  }
-
   /* —— Xodim kartochkasi (drawer) —— */
   .vid-emp {
     list-style: none;

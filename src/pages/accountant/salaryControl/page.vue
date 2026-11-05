@@ -84,6 +84,13 @@
     router.replace({ query: { ...route.query, tab: v } }).catch(() => {})
   }
 
+  // Bo'sh holatdagi «Tashkilot tanlash» tugmasi — filtr panelini ochadi (UIPageFilter
+  // ochilishini tashqariga chiqarmaydi, shu bois trigger tugmasini DOM orqali bosamiz).
+  const openFilter = () => {
+    const btn = document.querySelector('.ui-page-filter-button')
+    if (btn) btn.click()
+  }
+
   // Lazy-chunk preload xatosi (yangi deploy, eski hash): bir martalik avtomatik reload
   // (sessionStorage flag bilan cheksiz loop oldini olamiz).
   const CHUNK_FLAG = 'sc-chunk-reloaded'
@@ -106,6 +113,14 @@
     }
     window.addEventListener('vite:preloadError', onPreloadError)
 
+    // Davr YAGONA manbasi: store.params (title va DatePicker ikkalasi shundan o'qiydi).
+    // URL'dagi ?period=YYYY-MM bo'lsa — reload/ulashishda davr saqlanadi (default
+    // «ma'lumot bor oxirgi oy» o'rniga). _initPeriod params to'lgan bo'lsa tegmaydi.
+    const pq = /^(\d{4})-(\d{1,2})$/.exec(String(route.query.period || ''))
+    if (pq) {
+      store.params.year = Number(pq[1])
+      store.params.month = Number(pq[2])
+    }
     // Default davrni (ma'lumot bor oxirgi oy) aniqlaymiz, SO'NG aktiv tabni yuklaymiz.
     await store._initPeriod()
     store.mainView = activeTab.value
@@ -151,6 +166,18 @@
     if (!year || !month) return ''
     return `${year} · ${String(month).padStart(2, '0')}`
   })
+
+  // Davr o'zgarsa (filtr DatePicker) — URL query'ni yangilab turamiz (yagona manba
+  // bilan sinxron). Filtr panelini ochish/yopish params'ga tegmaydi — davr o'zgarmaydi.
+  watch(
+    () => [store.params.year, store.params.month],
+    ([y, mo]) => {
+      if (!y || !mo) return
+      const period = `${y}-${String(mo).padStart(2, '0')}`
+      if (route.query.period === period) return
+      router.replace({ query: { ...route.query, period } }).catch(() => {})
+    }
+  )
 </script>
 
 <template>
@@ -196,7 +223,12 @@
     <Filter />
 
     <ErrorState v-if="viewError" @retry="store._retryView(activeTab)" />
-    <EmptyState v-else-if="showOrgPrompt" :text="$t('salary1c.selectOrg')" />
+    <EmptyState
+      v-else-if="showOrgPrompt"
+      :text="$t('salaryControl.emptyOrg.title')"
+      :cta-label="$t('salaryControl.emptyOrg.btn')"
+      @cta="openFilter"
+    />
     <!-- keep-alive: tab komponentlari bir marta chiziladi va keshlanadi — tez almashish. -->
     <keep-alive v-else>
       <component :is="currentTab" :key="activeTab" />

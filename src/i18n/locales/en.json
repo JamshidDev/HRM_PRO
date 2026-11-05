@@ -7011,6 +7011,10 @@
       "reports": "Reports",
       "employees": "Employees"
     },
+    "emptyOrg": {
+      "title": "Select an organization to view the data",
+      "btn": "Select organization"
+    },
     "kpi": {
       "employees": "Employee count",
       "accrued": "Total accrued",
