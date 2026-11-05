@@ -110,12 +110,14 @@ export const useWorkerStore = defineStore('workerStore', {
     // korxonadagi mavjud rolni almashtiradi, shu sabab ro'yxat o'smasdi.
     // ⚠️ `componentStore.roles` da `id` — rolning NOMI ('Finance'), `name` —
     // tarjima ('Buxgalter'); shuning uchun `role` (nom) yuboriladi.
-    _attachWorkerRole() {
+    _attachWorkerRole(extra = {}) {
       this.rolesSaving = true
       const data = {
         uuid: this.rolesUserUuid,
         role: this.rolePayload.role,
-        organization_id: Number(this.rolePayload.organization_id?.[0]?.id)
+        organization_id: Number(this.rolePayload.organization_id?.[0]?.id),
+        // HR yordamchisi / tabelchi bo'limlari va ko'chirish roziligi.
+        ...extra
       }
       $ApiService.workerService
         ._attachUserRole({ data })

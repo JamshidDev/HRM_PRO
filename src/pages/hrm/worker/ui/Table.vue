@@ -13,7 +13,6 @@
     useAccountStore,
     useComponentStore,
     useExportStore,
-    useTimesheetDepartmentStore,
     useWorkerStore
   } from '@/store/modules/index.js'
   import { AppPaths } from '@/utils/index.js'
@@ -23,7 +22,6 @@
   import WorkerRolesModal from '@pages/hrm/worker/ui/WorkerRolesModal.vue'
   import EyeIcon from '@/assets/icons/eyeAlt.svg'
   import PenSquareIcon from '@/assets/icons/penSquareAlt.svg'
-  import TableListIcon from '@/assets/icons/tableListAlt.svg'
   import AwardIcon from '@/assets/icons/awardIcon.svg'
   import LockAltIcon from '@/assets/icons/lockAlt.svg'
 
@@ -35,7 +33,6 @@
   const store = useWorkerStore()
   const accStore = useAccountStore()
   const exportStore = useExportStore()
-  const timesheetDepartmentStore = useTimesheetDepartmentStore()
   const componentStore = useComponentStore()
 
   onMounted(() => {
@@ -73,12 +70,6 @@
     if (!accStore.checkAction(accStore.pn.hrWorkersPassword)) return
     store.passwordWorkerUuid = row.worker?.uuid
     store.passwordVisible = true
-  }
-
-  const onAssignTimesheet = (row) => {
-    if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
-    timesheetDepartmentStore.payload.worker_position_id = row.id
-    timesheetDepartmentStore.visible = true
   }
 
   const changePage = (v) => {
@@ -260,12 +251,6 @@
       key: Utils.ActionTypes.edit,
       icon: UIHelper.renderIcon(PenSquareIcon),
       action: onEdit
-    },
-    {
-      label: t('timesheet.assignUser'),
-      key: Utils.ActionTypes.timesheet,
-      icon: UIHelper.renderIcon(TableListIcon),
-      action: onAssignTimesheet
     },
     {
       label: t('workerRole.attachRole'),

@@ -3898,7 +3898,21 @@
     "accountWith": "With account",
     "accountWithout": "Without account",
     "createAccountInfo": "The employee's personal phone number becomes the login. If no password is given, a random strong one is set.",
-    "loginPhone": "Login phone"
+    "loginPhone": "Login phone",
+    "dept": {
+      "title": "Departments",
+      "whole": "Whole organization",
+      "partial": "Partial",
+      "none": "Not selected",
+      "count": "{n} departments",
+      "assistantHint": "Works with employees of the selected departments and their sub-departments.",
+      "timekeeperHint": "The timekeeper maintains timesheets only for the selected departments.",
+      "editTitle": "Edit departments",
+      "detachWarn": "Removing the role also detaches its departments automatically.",
+      "transferTitle": "Department is assigned to another timekeeper",
+      "transferHint": "If you confirm, these departments will be taken from the previous timekeeper and assigned to this employee.",
+      "transferConfirm": "Transfer and save"
+    }
   },
   "telegramPopup": {
     "header": "Join our Telegram bot and enjoy these benefits:",

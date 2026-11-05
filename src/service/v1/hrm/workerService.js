@@ -91,6 +91,16 @@ const _attachUserRole = async (payload) => {
   return await axios.post(`/v1/extra/users/attach-role`, payload.data)
 }
 
+// HR yordamchisi / tabelchi bo'limlarini rolni qayta bermasdan almashtirish.
+const _userRoleDepartments = async (payload) => {
+  return await axios.post(`/v1/extra/users/role-departments`, payload.data)
+}
+
+// Korxona bo'limlarining joriy tabelchilari (band bo'lim ogohlantirishi).
+const _timekeepers = async (payload) => {
+  return await axios.get(`/v1/extra/users/timekeepers`, { params: payload.params })
+}
+
 const _updateUserPassword = async (payload) => {
   return await axios.post(`/v1/extra/users/update-password`, payload.data)
 }
@@ -113,6 +123,8 @@ export default {
   _setActiveRole,
   _userRole,
   _attachUserRole,
+  _userRoleDepartments,
+  _timekeepers,
   _createUser,
   _detachUserRole,
   _updateUserPassword,

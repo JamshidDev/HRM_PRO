@@ -11,6 +11,8 @@
     RibbonStar24Filled
   } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
+  import RoleDepartmentsModal from '@pages/hrm/worker/ui/RoleDepartmentsModal.vue'
+  import { departmentsCount, departmentsLabel } from '@pages/hrm/worker/ui/roleDepartments.js'
 
   const { t } = i18n.global
   const store = useWorkerProfileStore()
@@ -94,7 +96,14 @@
     store._createUser()
   }
 
+  // HR yordamchisi / tabelchi bo'limlari: qisqa yorliq va tahrirlash oynasi.
+  const deptShort = (v) =>
+    v?.whole ? t('workerRole.dept.whole') : t('workerRole.dept.count', { n: departmentsCount(v) })
+  const edit = ref({ visible: false, row: null, role: null, org: null })
+  const onEditDepartments = (row, role, org) => (edit.value = { visible: true, row, role, org })
+
   const onAttachRole = (row) => {
+    store.roleSelfWorkerUuid = row?.worker?.uuid ?? null
     store.roleWorkerPositionId = row.uuid
     store.rolePayload.role = null
     store.rolePayload.organization_id = []
@@ -206,6 +215,16 @@
               </n-icon>
             </template>
           </UIBadge>
+          <template v-for="org in role.organizations" :key="`${role.id}-${org.id}`">
+            <n-tooltip v-if="org.departments" trigger="hover">
+              <template #trigger>
+                <n-button size="tiny" secondary type="warning" round @click="onEditDepartments(row, role, org)">
+                  {{ deptShort(org.departments) }}
+                </n-button>
+              </template>
+              {{ org.name }}: {{ departmentsLabel(org.departments) }}
+            </n-tooltip>
+          </template>
         </template>
       </div>
     </template>
@@ -307,6 +326,9 @@
             <div v-if="role.organizations?.length" class="text-xs text-textColor2 truncate mt-0.5">
               {{ role.organizations.map((o) => o.name).join(', ') }}
             </div>
+            <div v-if="role.organizations?.[0]?.departments" class="text-xs text-warning mt-1">
+              {{ $t('workerRole.dept.detachWarn') }}
+            </div>
           </div>
         </div>
       </div>
@@ -319,6 +341,17 @@
       </n-button>
     </div>
   </UIModal>
+
+  <RoleDepartmentsModal
+    v-model:visible="edit.visible"
+    :user-uuid="edit.row?.uuid"
+    :self-worker-uuid="edit.row?.worker?.uuid"
+    :role="edit.role?.key"
+    :role-label="edit.role?.name"
+    :organization="edit.org"
+    :value="edit.org?.departments"
+    @saved="store._userRole()"
+  />
 </template>
 
 <style scoped>

@@ -99,6 +99,8 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
     },
     roleVisible: false,
     roleWorkerPositionId: null,
+    // «Foydalanuvchilar» dan ochilganda — xodim uuid (band bo'lim tekshiruvida o'zini chiqarish).
+    roleSelfWorkerUuid: null,
     structureCheck: [],
     roleLoading: false,
 
@@ -232,7 +234,8 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
               const roles = role.organizations.map((x) => ({
                 ...x,
                 roleName: role?.name,
-                roleId: role?.id
+                roleId: role?.id,
+                roleKey: role?.key
               }))
               this.rolesList = [...this.rolesList, ...roles]
             }

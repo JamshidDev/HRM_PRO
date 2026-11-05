@@ -3920,7 +3920,21 @@
     "accountWith": "Hisobi bor",
     "accountWithout": "Hisobi yo'q",
     "createAccountInfo": "Xodimning shaxsiy telefon raqami tizimga kirish uchun login bo'ladi. Parol berilmasa, tasodifiy kuchli parol o'rnatiladi.",
-    "loginPhone": "Login raqami"
+    "loginPhone": "Login raqami",
+    "dept": {
+      "title": "Bo'limlar",
+      "whole": "Butun korxona",
+      "partial": "Qisman",
+      "none": "Tanlanmagan",
+      "count": "{n} ta bo'lim",
+      "assistantHint": "Tanlangan bo'limlar va ularning pastki bo'limlari xodimlari bilan ishlaydi.",
+      "timekeeperHint": "Tabelchi faqat tanlangan bo'limlar tabelini yuritadi.",
+      "editTitle": "Bo'limlarni tahrirlash",
+      "detachWarn": "Rol olinsa, unga biriktirilgan bo'limlar ham avtomatik ajratiladi.",
+      "transferTitle": "Bo'lim boshqa tabelchiga biriktirilgan",
+      "transferHint": "Tasdiqlasangiz, bu bo'limlar avvalgi tabelchidan olinib, shu xodimga biriktiriladi.",
+      "transferConfirm": "Ko'chirish va saqlash"
+    }
   },
   "telegramPopup": {
     "header": "Telegram botimizga ulaning va quyidagi qulayliklardan bahramand bo'ling:",
