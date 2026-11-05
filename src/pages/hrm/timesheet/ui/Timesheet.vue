@@ -773,6 +773,11 @@
 
   // Dam olish VA bayram kuni — ikkalasi ham qizil ko'rsatiladi.
   const isWeekend = (day) => day.weekDay === 0 || day.weekDay === 6 || Boolean(day.is_holiday)
+  // Bugungi kun sarlavhada belgilanadi — uzun oyda qayerdaligini topish oson bo'lsin.
+  const isToday = (day) => {
+    const now = dayjs()
+    return now.year() === store.year && now.month() === store.month && now.date() === day.day
+  }
 
   const dayDetails = (item, day) => item.days[day.day]
 
@@ -1285,7 +1290,7 @@
               <div
                 v-for="day in store.days"
                 :key="`h-${day.day}`"
-                :class="{ 'is-weekend': isWeekend(day) }"
+                :class="{ 'is-weekend': isWeekend(day), 'is-today': isToday(day) }"
                 class="ts-head ts-c-day ts-day-head"
               >
                 <span class="ts-day-num">{{ day.day }}</span>
@@ -1312,7 +1317,7 @@
                     circle
                   />
                   <div class="ts-worker-text">
-                    <span class="ts-worker-name">{{ item.name }}</span>
+                    <span :title="item.full_name || item.name" class="ts-worker-name">{{ item.name }}</span>
                     <span class="ts-worker-sub">
                       <span class="ts-worker-post">
                         {{ item?.position || $t('content.noAvailable') }}
@@ -1441,6 +1446,16 @@
               </div>
             </div>
           </div>
+          <!-- Bo'sh holat: bo'limda xodim yo'q yoki qidiruv hech narsa topmadi. -->
+          <n-empty
+            v-if="!store.loading && !store.list.length"
+            :description="$t('timesheetPage.gridEmpty')"
+            class="ts-grid-empty no-selectable-item"
+          >
+            <template #extra>
+              <span class="text-xs text-textColor3">{{ $t('timesheetPage.gridEmptyHint') }}</span>
+            </template>
+          </n-empty>
         </UIDragSelector>
       </div>
     </n-spin>
@@ -2413,6 +2428,13 @@
     min-width: 100%;
     user-select: none;
   }
+  /* Bo'sh holat keng panjara ostida chapga yopishadi — gorizontal skrollda ham ko'rinadi. */
+  .ts-grid-empty {
+    position: sticky;
+    left: 0;
+    width: 100%;
+    padding: 48px 16px;
+  }
   /* Qatorlar flex — `position: sticky` ustunlar uchun jadval emas, oqim kerak
      (grafik sahifasidagi panjara bilan bir xil yondashuv). */
   .ts-hrow,
@@ -2484,6 +2506,14 @@
     &.is-weekend .ts-day-num,
     &.is-weekend .ts-day-week {
       color: var(--fig-text-red);
+    }
+    /* Bugun — raqam asosiy rangda, ostida chiziq. */
+    &.is-today {
+      box-shadow: inset 0 -2px 0 var(--fig-icon-brand);
+    }
+    &.is-today .ts-day-num {
+      color: var(--fig-icon-brand);
+      font-weight: 700;
     }
   }
 
@@ -2610,7 +2640,7 @@
     min-width: 0;
   }
   .ts-worker-post {
-    font-size: 10px;
+    font-size: 11px;
     line-height: 15px;
     letter-spacing: 0.2px;
     color: var(--fig-text-secondary);

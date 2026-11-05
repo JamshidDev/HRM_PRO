@@ -3364,6 +3364,8 @@
     "statusOpen": "Открыт",
     "allDepartments": "Все отделы",
     "saveHint": "Изменений пока нет — сначала заполните ячейки",
+    "gridEmpty": "Сотрудники не найдены",
+    "gridEmptyHint": "Выберите другой отдел или очистите поиск.",
     "filledWorkers": "Заполнено",
     "filledCount": "{count} сотр.",
     "notFilled": "Не заполнен",

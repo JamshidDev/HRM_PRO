@@ -3356,6 +3356,8 @@
     "statusOpen": "Open",
     "allDepartments": "All departments",
     "saveHint": "No changes yet — fill in some cells first",
+    "gridEmpty": "No employees found",
+    "gridEmptyHint": "Choose another department or clear the search.",
     "filledWorkers": "Filled",
     "filledCount": "{count} employees",
     "notFilled": "Not filled",
