@@ -3612,6 +3612,15 @@
       "who": "Ким томонидан",
       "reason": "Сабаб",
       "giftType": "Сана"
+    },
+    "status": {
+      "title": "Ҳолати",
+      "active": "Амалда",
+      "expired": "Муддати тугаган",
+      "cancelled": "Бекор қилинган",
+      "until": "{date} гача",
+      "ended": "Тугаган: {date}",
+      "cancelledAt": "Бекор қилинди: {date}"
     }
   },
   "task": {

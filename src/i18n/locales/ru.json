@@ -3934,6 +3934,15 @@
       "who": "Кем",
       "reason": "Причина",
       "giftType": "Дата"
+    },
+    "status": {
+      "title": "Статус",
+      "active": "Действует",
+      "expired": "Срок истёк",
+      "cancelled": "Отменено",
+      "until": "до {date}",
+      "ended": "Завершено: {date}",
+      "cancelledAt": "Отменено: {date}"
     }
   },
   "task": {

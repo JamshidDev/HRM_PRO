@@ -3948,6 +3948,15 @@
       "who": "Kim tomonidan",
       "reason": "Sabab",
       "giftType": "Sovg'a turi"
+    },
+    "status": {
+      "title": "Holati",
+      "active": "Amalda",
+      "expired": "Muddati tugagan",
+      "cancelled": "Bekor qilingan",
+      "until": "{date} gacha",
+      "ended": "Tugagan: {date}",
+      "cancelledAt": "Bekor qilindi: {date}"
     }
   },
   "task": {

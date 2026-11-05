@@ -3926,6 +3926,15 @@
       "who": "By whom",
       "reason": "Reason",
       "giftType": "Date"
+    },
+    "status": {
+      "title": "Status",
+      "active": "Active",
+      "expired": "Expired",
+      "cancelled": "Cancelled",
+      "until": "until {date}",
+      "ended": "Ended: {date}",
+      "cancelledAt": "Cancelled: {date}"
     }
   },
   "task": {
