@@ -2,12 +2,7 @@ import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
 import { useAccountStore } from '@/store/modules/app/accountStore.js'
-import { money } from '@/pages/accountant/salaryControl/helpers.js'
-import {
-  buildPeople,
-  computeFindings,
-  computeRisks
-} from '@/pages/accountant/salaryControl/engine.js'
+import { computeDashboard } from '@/pages/accountant/salaryControl/engine-client.js'
 
 const { t } = i18n.global
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -53,7 +48,12 @@ export const useSalaryControlStore = defineStore('salaryControl', {
     dashboard: {},
     dashboardLoading: false,
     dashboardError: false,
-    exporting: ''
+    exporting: '',
+    // Og'ir engine derivatsiyasi — getter EMAS, state (Web Worker'da hisoblanadi,
+    // asosiy thread qotmasin). _deriveDashboard to'ldiradi.
+    people: [],
+    scFindings: [],
+    scRisks: { cards: [], registry: [], derived: {} }
   }),
   getters: {
     emps: (s) => s.dashboard.emps ?? [],
@@ -68,20 +68,9 @@ export const useSalaryControlStore = defineStore('salaryControl', {
         registry: []
       },
     dashKpi: (s) => s.dashboard.kpi ?? {},
-    dashNorm: (s) => s.dashboard.norm ?? null,
-    // Xodimlar JSHSHIR (j) bo'yicha birlashtirilgan + boyitilgan (b004/b011/oth/g/cat).
-    // Engine (maket) mantig'i — barcha bo'limlar shu yagona manbadan foydalanadi.
-    people: (s) => buildPeople(s.dashboard.emps ?? []),
-    // 14 avtomatik tekshiruv natijasi (D.F) — maketning `yigish()` ko'chirmasi.
-    // Backend heuristikasi (store.findings) o'rniga dashboard ko'rinishi shuni ishlatadi.
-    scFindings: (s) => computeFindings(s.dashboard.emps ?? [], { fmt: money }),
-    // 14 risk kartalari + reestr — maketning `R` massivi ko'chirmasi.
-    scRisks: (s) =>
-      computeRisks(
-        s.dashboard.emps ?? [],
-        { ...(s.dashboard.kpi ?? {}), norm: s.dashboard.norm },
-        { year: s.params.year, month: s.params.month, fmt: money }
-      )
+    dashNorm: (s) => s.dashboard.norm ?? null
+    // people / scFindings / scRisks — endi STATE (Web Worker'da hisoblanadi,
+    // _deriveDashboard orqali). Sinxron getter emas — UI qotmaydi.
   },
   actions: {
     // Joriy filtr kaliti — kesh va race guard uchun.
@@ -205,19 +194,25 @@ export const useSalaryControlStore = defineStore('salaryControl', {
     },
 
     // Og'ir derivatsiya (buildPeople / computeFindings / computeRisks — minglab
-    // xodim ustida sinxron) ni skeleton KO'RINGANDAN keyin (setTimeout = bir tick
-    // yield → skeleton bo'yaladi) bajaramiz va getterlarni OLDINDAN keshlaymiz.
-    // Shunda komponent render bo'lganda qayta hisob yo'q — UI qotmaydi. loading
-    // derivatsiya tugaguncha `true` qoladi (foydalanuvchi doimo loader ko'radi).
+    // xodim ustida) WEB WORKER'da bajariladi → ASOSIY THREAD QOTMAYDI. Natija
+    // tayyor bo'lgach state'ga yoziladi va loading o'chadi (shu paytgacha skeleton
+    // ko'rinadi). Worker ishlamasa — klient sinxron fallback'ga o'tadi.
     _deriveDashboard(reqId) {
-      setTimeout(() => {
-        if (reqId !== dashReq) return
-        // Getterlar Pinia'da keshlanadi — bu yerda bir marta hisoblab qo'yamiz.
-        void this.people
-        void this.scFindings
-        void this.scRisks
-        if (reqId === dashReq) this.dashboardLoading = false
-      }, 0)
+      computeDashboard({
+        emps: this.dashboard.emps ?? [],
+        kpi: { ...(this.dashboard.kpi ?? {}), norm: this.dashboard.norm },
+        year: this.params.year,
+        month: this.params.month
+      })
+        .then((d) => {
+          if (reqId !== dashReq) return
+          this.people = d.people
+          this.scFindings = d.findings
+          this.scRisks = d.risks
+        })
+        .finally(() => {
+          if (reqId === dashReq) this.dashboardLoading = false
+        })
     },
 
     // Reestr eksporti (.xlsx) — type: rules | findings | employees | all.

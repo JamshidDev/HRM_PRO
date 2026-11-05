@@ -49,57 +49,15 @@ export function formatMoney(value, { unit = 'full', digits } = {}) {
   return Math.round(n).toLocaleString('ru-RU') + ' so‘m'
 }
 
-// Matndagi turli apostrof/qo'shtirnoq belgilarini oddiy «'» ga keltirish (spec 0.9).
-// ECharts canvas shriftida `ʻ ‘ ’` buzilib (bo'sh joy bilan) chiqadi — chartga
-// berishdan oldin normalizatsiya qilamiz. Kirill ИНПС → INPS (spec 0.10).
-export const normText = (s) =>
-  String(s ?? '')
-    .replace(/[ʻʼ‘’`´]/g, "'")
-    .replace(/ИНПС/g, 'INPS')
-
-// Lavozim matnini moslashtirish uchun normallash: apostrof variantlari (ʻ ‘ ’ ` ´)
-// → ' va kichik harf. 1C erkin matni `ʻ` (U+02BB) ishlatadi — ilgari regex uni
-// qamramay, rahbar/kadr lavozimlari noto'g'ri toifalanardi.
-const normLav = (lav) => normText(lav).toLowerCase()
-
-// —— Lavozim guruhlari (maket grpOf) ———————————————————————————————————
-export function positionGroup(lav) {
-  const l = normLav(lav)
-  if (/boshli|o'rinbos|bosh muh|bosh his|rais|direktor|mudir/.test(l)) return 'Rahbarlar'
-  if (/kuzatuvchi/.test(l)) return 'Vagon kuzatuvchilar'
-  if (/hisobchi|iqtisod|kadrlar|xodimlar bo/.test(l)) return 'Hisob va kadrlar'
-  if (/muhandis|muxandis/.test(l)) return 'Muhandislar'
-  if (/mutaxassis/.test(l)) return 'Mutaxassislar'
-  if (/elektro|mexanik/.test(l)) return 'Elektromontyor/mexanik'
-  return 'Boshqa'
-}
-
-// —— Lavozim toifasi (maket cat) — 011/012 mukofot mezoni uchun ——————————
-export function positionCategory(lav) {
-  const l = normLav(lav)
-  if (/boshli|o'rinbos|bosh muh|bosh his|rais|direktor|mudir/.test(l)) return 'Rahbar'
-  if (/muhandis|muxandis|mutaxassis|iqtisod|hisobchi|kadrlar|inspektor|yo'riqchi|metrolog/.test(l))
-    return 'Mutaxassis'
-  if (/kuzatuvchi|elektromon|elektromex|farrosh|ishchi|slesar|haydovchi|mashinist|montyor|payvandchi|operator/.test(l))
-    return 'Ishchi'
-  return 'Aniqlanmagan'
-}
-
-// —— JSHSHIR (pin) → yosh + jins (maket age). Sanaga nisbatan (davr oxiri) ——
-export function pinAgeSex(pin, refYear = 2026, refMonthIndex = 7, refDay = 31) {
-  const j = String(pin || '')
-  if (j.length < 7) return { age: null, sex: null }
-  const g = +j[0]
-  const d = +j.slice(1, 3)
-  const m = +j.slice(3, 5)
-  const y = +j.slice(5, 7)
-  const century = g <= 2 ? 1800 : g <= 4 ? 1900 : 2000
-  const birth = new Date(century + y, m - 1, d)
-  const ref = new Date(refYear, refMonthIndex, refDay)
-  let age = ref.getFullYear() - birth.getFullYear()
-  if (ref < new Date(ref.getFullYear(), m - 1, d)) age--
-  return { age, sex: g % 2 ? 'Erkak' : 'Ayol' }
-}
+// SOF yordamchilar (normText, positionGroup, positionCategory, pinAgeSex) endi
+// `engine-helpers.js` da — Vue/Utils'ga bog'liq emas, Web Worker'da ishlaydi.
+// Mavjud importlar buzilmasligi uchun shu yerdan RE-EXPORT qilamiz.
+export {
+  normText,
+  positionGroup,
+  positionCategory,
+  pinAgeSex
+} from './engine-helpers.js'
 
 // —— Xavf darajasi → fig rang tokeni ————————————————————————————————————
 export const SEV_TOKENS = {
