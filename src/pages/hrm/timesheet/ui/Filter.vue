@@ -1,6 +1,7 @@
 <script setup>
   import { UIPageFilter, UISelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useTimesheetStore } from '@/store/modules/index.js'
+  import Utils from '@/utils/Utils.js'
 
   const store = useTimesheetStore()
   const accStore = useAccountStore()
@@ -13,21 +14,21 @@
     store.visible = true
   }
 
-  const onSearch = () => {
+  // Har filter o'zgarishi natijani 1-sahifadan ko'rsatadi (ilgari korxona tanlansa sahifa joyida qolardi).
+  const filterEvent = () => {
     if (!accStore.checkAction(accStore.pn.hrTableRead)) return
     store.params.page = 1
     store._index()
   }
 
-  const filterEvent = () => {
-    store._index()
-  }
-
   const filterCount = computed(
-    () => Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.period))
+    () =>
+      Number(Boolean(store.params.organizations.length)) +
+      Number(Boolean(store.params.year)) +
+      Number(Boolean(store.params.month))
   )
 
-  const beforeShow = (v) => {
+  const beforeShow = () => {
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
     }
@@ -40,7 +41,9 @@
 
   const resetFilter = () => {
     store.params.organizations = []
-    store.params.period = null
+    store.structureCheck2 = []
+    store.params.year = null
+    store.params.month = null
     filterEvent()
   }
 </script>
@@ -49,7 +52,7 @@
   <UIPageFilter
     :add-permission="accStore.pn.hrTableWrite"
     v-model:search="store.params.search"
-    @onSearch="onSearch"
+    @onSearch="filterEvent"
     @onAdd="onAdd"
     @show="beforeShow"
     @onClear="resetFilter"
@@ -57,29 +60,48 @@
     :search-loading="store.loading"
   >
     <template #filterContent>
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
-        $t('actionLog.table.structure')
-      }}</label>
-      <UISelect
-        :options="componentStore.structureList"
-        :modelV="store.params.organizations"
-        @defaultValue="(v) => (store.params.organizations = v)"
-        @updateModel="onChangeStructure"
-        :checkedVal="store.structureCheck2"
-        @updateCheck="(v) => (store.structureCheck2 = v)"
-        :loading="componentStore.structureLoading"
-        v-model:search="componentStore.structureParams.search"
-        @onSearch="componentStore._structures"
-        @onSubmit="filterEvent"
-      />
-      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.month') }}</label>
-      <n-date-picker
-        v-model:value="store.params.period"
-        type="month"
-        clearable
-        class="w-full"
-        @update:value="onSearch"
-      />
+      <!-- Tashkilot + davr (yil / oy alohida — faqat yil tanlab ham qidirsa bo'ladi). -->
+      <div class="ui-filter-grid grid grid-cols-12 gap-x-5 gap-y-4">
+        <div class="col-span-12">
+          <label>{{ $t('actionLog.table.structure') }}</label>
+          <UISelect
+            :options="componentStore.structureList"
+            :model-v="store.params.organizations"
+            @defaultValue="(v) => (store.params.organizations = v)"
+            @updateModel="onChangeStructure"
+            :checked-val="store.structureCheck2"
+            @updateCheck="(v) => (store.structureCheck2 = v)"
+            :loading="componentStore.structureLoading"
+            v-model:search="componentStore.structureParams.search"
+            @onSearch="componentStore._structures"
+            @onSubmit="filterEvent"
+          />
+        </div>
+        <div class="col-span-6">
+          <label>{{ $t('content.year') }}</label>
+          <n-select
+            v-model:value="store.params.year"
+            :options="Utils.yearList"
+            :placeholder="$t('content.all')"
+            label-field="name"
+            value-field="id"
+            clearable
+            @update:value="filterEvent"
+          />
+        </div>
+        <div class="col-span-6">
+          <label>{{ $t('content.month') }}</label>
+          <n-select
+            v-model:value="store.params.month"
+            :options="Utils.monthList"
+            :placeholder="$t('content.all')"
+            label-field="name"
+            value-field="id"
+            clearable
+            @update:value="filterEvent"
+          />
+        </div>
+      </div>
     </template>
   </UIPageFilter>
 </template>
