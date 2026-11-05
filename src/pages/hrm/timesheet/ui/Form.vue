@@ -70,8 +70,15 @@
       </n-form-item>
     </div>
 
-    <div class="pt-2">
-      <n-button block @click="onSubmit" :loading="store.saveLoading" type="primary">
+    <!-- Bo'limlar bu yerda tanlanmaydi — foydalanuvchi buni bilsin. -->
+    <p class="text-xs leading-snug text-textColor3">{{ $t('timesheetPage.createHint') }}</p>
+
+    <!-- Boshqa forma oynalari kabi: «Bekor qilish | Saqlash». -->
+    <div class="flex gap-3 pt-4">
+      <n-button class="flex-1" @click="store.visible = false">
+        {{ $t('content.cancel') }}
+      </n-button>
+      <n-button class="flex-1" type="primary" :loading="store.saveLoading" @click="onSubmit">
         {{ $t('content.save') }}
       </n-button>
     </div>

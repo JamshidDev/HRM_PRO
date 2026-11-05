@@ -3377,6 +3377,7 @@
     "filledWorkers": "To'ldirilgan",
     "filledCount": "{count} ta xodim",
     "notFilled": "To'ldirilmagan",
+    "createHint": "Tabel tashkilot bo'yicha bir oyga yaratiladi. Bo'limlar tabel ichida tanlanadi.",
     "accessColumn": "Ruxsat",
     "timekeeperEmpty": "Bu korxonaga tabelchi biriktirilmagan",
     "accessEditable": "O'zgartirishi mumkin",
