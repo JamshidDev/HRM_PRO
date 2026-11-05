@@ -3,6 +3,7 @@ import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
 import { useAccountStore } from '@/store/modules/app/accountStore.js'
 import { computeDashboard } from '@/pages/accountant/salaryControl/engine-client.js'
+import { getOneMonthAgoYearMonth } from '@utils'
 
 const { t } = i18n.global
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -93,6 +94,29 @@ export const useSalaryControlStore = defineStore('salaryControl', {
     _canRead() {
       const accStore = useAccountStore()
       return accStore.checkPermission(accStore.pn.economistSalaryControlRead)
+    },
+
+    // Default davr — ma'lumot bor OXIRGI oy (backenddan). Topilmasa — bir oy oldin
+    // (fallback). Allaqachon o'rnatilgan bo'lsa tegmaydi. Sahifa yuklashdan OLDIN
+    // chaqiriladi (aks holda default oyда ma'lumot bo'lmay, bo'sh ko'rinardi).
+    async _initPeriod() {
+      if (this.params.year && this.params.month) return
+      if (this._canRead()) {
+        try {
+          const res = await $ApiService.salaryControlService._salaryControlLatestPeriod()
+          const d = res.data?.data
+          if (d?.year && d?.month) {
+            this.params.year = d.year
+            this.params.month = d.month
+            return
+          }
+        } catch {
+          /* fallback pastda */
+        }
+      }
+      const ago = getOneMonthAgoYearMonth()
+      this.params.year = ago.year
+      this.params.month = ago.month
     },
 
     // «Umumiy» KPI xulosasi (kesh + race guard).
