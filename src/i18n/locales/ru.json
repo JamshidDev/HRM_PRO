@@ -480,7 +480,9 @@
     "enterOverNumber": "Введите число больше {n}",
     "requiredHoursField": "Неверный формат времени (ЧЧ:ММ)",
     "captchaRequired": "Введите ответ на капчу!",
-    "passwordsNotMatch": "Пароли не совпадают!"
+    "passwordsNotMatch": "Пароли не совпадают!",
+    "endBeforeStart": "Дата не может быть раньше даты начала",
+    "pastDate": "Нельзя выбрать прошедшую дату"
   },
   "message": {
     "successDone": "Успешно выполнено",

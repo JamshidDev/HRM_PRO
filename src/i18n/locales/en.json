@@ -478,7 +478,9 @@
     "enterOverNumber": "Enter a number greater than {n}",
     "requiredHoursField": "Invalid time format (HH:MM)",
     "captchaRequired": "Please enter the captcha answer!",
-    "passwordsNotMatch": "Passwords do not match!"
+    "passwordsNotMatch": "Passwords do not match!",
+    "endBeforeStart": "This date can't be before the start date",
+    "pastDate": "A past date can't be selected"
   },
   "message": {
     "successDone": "Successfully completed",

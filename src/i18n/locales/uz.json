@@ -491,7 +491,9 @@
     "enterOverNumber": "{n}dan katta son kiriting",
     "requiredHoursField": "Vaqt formati noto'g'ri (HH:MM)",
     "captchaRequired": "Captcha javobini kiriting!",
-    "passwordsNotMatch": "Parollar mos kelmadi!"
+    "passwordsNotMatch": "Parollar mos kelmadi!",
+    "endBeforeStart": "Bu sana boshlanish sanasidan oldin bo'lmasligi kerak",
+    "pastDate": "O'tgan sanani tanlab bo'lmaydi"
   },
   "message": {
     "successDone": "Muvaffaqiyatli bajarildi",

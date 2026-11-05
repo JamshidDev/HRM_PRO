@@ -137,6 +137,15 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
     directorList: []
   }),
   actions: {
+    // Ta'tilga chiqish / qaytish sanasi: o'tgan kunlar tanlanmaydi (3, 4, 5-turdagi arizalar).
+    isPastDay(ts) {
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      return ts < today.getTime()
+    },
+    isToDateDisabled(ts) {
+      return this.isPastDay(ts) || (!!this.payload.from && ts < this.payload.from)
+    },
     _directors(id = undefined, callback) {
       this.directorLoading = true
       $ApiService.componentService
