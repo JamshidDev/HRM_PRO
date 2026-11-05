@@ -196,9 +196,11 @@
                 {{ $t('workerRole.detachRole') }}
               </n-tooltip>
             </template>
-            {{ $t('content.confirmDelete') }}
-            <div v-if="row.departments" class="text-xs text-warning mt-1 max-w-[260px]">
-              {{ $t('workerRole.dept.detachWarn') }}
+            <div class="flex flex-col max-w-[260px]">
+              <span>{{ $t('content.confirmDelete') }}</span>
+              <span v-if="row.departments" class="text-xs text-warning mt-1">
+                {{ $t('workerRole.dept.detachWarn') }}
+              </span>
             </div>
           </n-popconfirm>
         </div>
