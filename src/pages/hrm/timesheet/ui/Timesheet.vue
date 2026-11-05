@@ -1479,9 +1479,14 @@
       />
     </div>
     <div v-show="activeTab === 'grid'" class="ts-bottom">
+      <!-- Qanday to'ldiriladi — bir qator izoh; yopiq tabelda o'rniga sabab. -->
+      <p class="ts-bottom-hint">
+        <n-icon :component="timesheetLocked ? LockClosed20Filled : Info16Regular" size="14" />
+        {{ timesheetLocked ? lockedActionLabel : $t('timesheetPage.fillHint') }}
+      </p>
       <n-form ref="form" class="ts-bottom-row">
         <div class="ts-field ts-field-type">
-          <label class="ts-field-label">{{ $t('timesheetPage.workTimeType') }}</label>
+          <label class="ts-field-label">{{ $t('timesheetPage.mainType') }}</label>
           <n-select
             v-model:value="store.payload.status"
             :consistent-menu-width="false"
@@ -1508,8 +1513,10 @@
             :precision="0"
           />
         </div>
+        <!-- Ikkinchi juftlik ixtiyoriy: katakda ikki kod bo'ladi (masalan «Я/Н»). -->
+        <span class="ts-bottom-divider" />
         <div class="ts-field ts-field-type">
-          <label class="ts-field-label">{{ $t('timesheetPage.workTimeType') }}</label>
+          <label class="ts-field-label">{{ $t('timesheetPage.extraType') }}</label>
           <n-select
             v-model:value="store.payload.status2"
             :consistent-menu-width="false"
@@ -1540,28 +1547,34 @@
 
         <!-- Natija namunasi — shu qatorning davomi. -->
         <div class="ts-field ts-field-preview">
-          <div
-            :class="{
-              'ts-preview-off': !previewActive,
-              'ts-preview-on': previewActive && previewDetails.length
-            }"
-            :title="previewActive ? $t('content.active') : $t('content.noActive')"
-            class="ts-cell ts-preview-cell"
-            @click="togglePreview"
-          >
-            <template v-if="previewDetails.length">
-              <span class="ts-cell-status">
-                <template v-for="(part, i) in partsOf(previewDetails, 'status')" :key="`ps-${i}`">
-                  <span v-if="i" class="ts-sep">/</span><span :style="{ color: part.color }">{{ part.value }}</span>
+          <label class="ts-field-label">{{ $t('timesheetPage.previewLabel') }}</label>
+          <n-tooltip>
+            <template #trigger>
+              <div
+                :class="{
+                  'ts-preview-off': !previewActive,
+                  'ts-preview-on': previewActive && previewDetails.length
+                }"
+                class="ts-cell ts-preview-cell"
+                @click="togglePreview"
+              >
+                <template v-if="previewDetails.length">
+                  <span class="ts-cell-status">
+                    <template v-for="(part, i) in partsOf(previewDetails, 'status')" :key="`ps-${i}`">
+                      <span v-if="i" class="ts-sep">/</span><span :style="{ color: part.color }">{{ part.value }}</span>
+                    </template>
+                  </span>
+                  <span class="ts-cell-hours">
+                    <template v-for="(part, i) in partsOf(previewDetails, 'hours')" :key="`ph-${i}`">
+                      <span v-if="i" class="ts-sep">/</span><span :style="{ color: part.color }">{{ part.value }}</span>
+                    </template>
+                  </span>
                 </template>
-              </span>
-              <span class="ts-cell-hours">
-                <template v-for="(part, i) in partsOf(previewDetails, 'hours')" :key="`ph-${i}`">
-                  <span v-if="i" class="ts-sep">/</span><span :style="{ color: part.color }">{{ part.value }}</span>
-                </template>
-              </span>
+                <span v-else class="ts-preview-empty">—</span>
+              </div>
             </template>
-          </div>
+            {{ $t('timesheetPage.previewHint') }}
+          </n-tooltip>
         </div>
 
         <!-- «Tozalash / Auto / qoidalar» — tepadagi filtr qatoridan shu yerga
@@ -1582,6 +1595,7 @@
           <n-button
             :disabled="timesheetLocked"
             :loading="store.autoLoading"
+            secondary
             type="primary"
             @click="onAutoCalc"
           >
@@ -1590,23 +1604,14 @@
             </template>
             {{ $t('timesheetPage.autoCalcShort') }}
           </n-button>
-          <n-button
-            :title="$t('timesheetPage.autoRulesTitle')"
-            round
-            secondary
-            type="info"
-            @click="openRules"
-          >
+          <span class="ts-bottom-divider" />
+          <n-button :title="$t('timesheetPage.autoRulesTitle')" secondary @click="openRules">
             <template #icon>
               <n-icon :component="Info20Filled" />
             </template>
             {{ $t('timesheetPage.infoShort') }}
           </n-button>
-          <n-button
-            secondary
-            type="success"
-            @click="onDownload"
-          >
+          <n-button secondary @click="onDownload">
             <template #icon>
               <n-icon :component="ArrowDownload20Filled" />
             </template>
@@ -4040,6 +4045,26 @@
     }
   }
 
+  .ts-bottom-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 2px 0 6px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--fig-text-tertiary);
+  }
+  /* Maydon guruhlari va tugma guruhlari orasidagi ingichka chiziq. */
+  .ts-bottom-divider {
+    align-self: stretch;
+    width: 1px;
+    margin: 4px 0;
+    background: var(--table-border);
+  }
+  .ts-preview-empty {
+    color: var(--fig-text-tertiary);
+  }
+
   /* Pastki panel — hamma element BITTA qatorda, kengliklar taqsimlangan. */
   .ts-bottom-row {
     display: flex;
@@ -4059,6 +4084,9 @@
   .ts-field-preview {
     flex: 0 0 auto;
     margin-right: auto;
+    /* Katakcha inputlardan baland — o'rtasi inputlar bilan bir chiziqda tursin, yorlig'i yuqoriga qochmasin. */
+    gap: 2px;
+    margin-bottom: -5px;
   }
   /* Amal tugmalari pastki panelning O'NG chetida. */
   .ts-bottom-actions {
