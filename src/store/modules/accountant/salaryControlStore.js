@@ -172,9 +172,13 @@ export const useSalaryControlStore = defineStore('salaryControl', {
       if (!this._canRead()) return
       const key = this._key()
       if (dashCache.has(key)) {
+        // Kesh hit — lekin OG'IR derivatsiya (people/findings/risks) getterlari
+        // hali hisoblanmagan. Shu bois darhol `false` emas: skeleton ko'rsinib,
+        // derivatsiya yield'dan keyin bajarilib, so'ng loading o'chadi (UI qotmaydi).
         this.dashboard = dashCache.get(key)
         this.dashboardError = false
-        this.dashboardLoading = false
+        this.dashboardLoading = true
+        this._deriveDashboard(++dashReq)
         return
       }
       const reqId = ++dashReq
@@ -185,14 +189,35 @@ export const useSalaryControlStore = defineStore('salaryControl', {
         .then((res) => {
           const data = res.data.data ?? {}
           dashCache.set(key, data)
-          if (reqId === dashReq && key === this._key()) this.dashboard = data
+          if (reqId === dashReq && key === this._key()) {
+            this.dashboard = data
+            this._deriveDashboard(reqId)
+          } else if (reqId === dashReq) {
+            this.dashboardLoading = false
+          }
         })
         .catch(() => {
-          if (reqId === dashReq) this.dashboardError = true
+          if (reqId === dashReq) {
+            this.dashboardError = true
+            this.dashboardLoading = false
+          }
         })
-        .finally(() => {
-          if (reqId === dashReq) this.dashboardLoading = false
-        })
+    },
+
+    // Og'ir derivatsiya (buildPeople / computeFindings / computeRisks — minglab
+    // xodim ustida sinxron) ni skeleton KO'RINGANDAN keyin (setTimeout = bir tick
+    // yield → skeleton bo'yaladi) bajaramiz va getterlarni OLDINDAN keshlaymiz.
+    // Shunda komponent render bo'lganda qayta hisob yo'q — UI qotmaydi. loading
+    // derivatsiya tugaguncha `true` qoladi (foydalanuvchi doimo loader ko'radi).
+    _deriveDashboard(reqId) {
+      setTimeout(() => {
+        if (reqId !== dashReq) return
+        // Getterlar Pinia'da keshlanadi — bu yerda bir marta hisoblab qo'yamiz.
+        void this.people
+        void this.scFindings
+        void this.scRisks
+        if (reqId === dashReq) this.dashboardLoading = false
+      }, 0)
     },
 
     // Reestr eksporti (.xlsx) — type: rules | findings | employees | all.
