@@ -8,8 +8,11 @@
     Delete20Regular,
     Dismiss20Regular,
     Eraser20Filled,
+    CheckmarkCircle16Filled,
     LockClosed20Filled,
     LockOpen20Filled,
+    LockOpen16Regular,
+    Send16Regular,
     Eye16Filled,
     Info16Regular,
     Info20Filled,
@@ -26,6 +29,7 @@
   import {
     UIDConfirm,
     UIDragSelector,
+    UIModal,
     UIPagination,
     UISegmentTabs,
     UITable,
@@ -223,16 +227,18 @@
     }
     else store._index()
   }
+  // «Aprel 2026» — `store.month` 0 dan boshlanadi.
+  const periodText = computed(() =>
+    `${Utils.monthList.find((m) => m.id - 1 === store.month)?.name ?? ''} ${store.year ?? ''}`.trim()
+  )
+
   // O'ng kartochkadagi tabel ma'lumotlari — hammasi mavjud store holatidan.
   const timesheetInfo = computed(() => {
     const holidays = store.days.filter((d) => d.is_holiday).length
     const locked = Object.keys(store.timekeeperLocks).length
     return [
       { label: t('content.organization'), value: store.organization?.name ?? '—' },
-      {
-        label: t('timesheetPage.periodLabel'),
-        value: `${Utils.monthList.find((m) => m.id - 1 === store.month)?.name ?? ''} ${store.year ?? ''}`.trim()
-      },
+      { label: t('timesheetPage.periodLabel'), value: periodText.value },
       { label: t('timesheetPage.daysCount'), value: store.days.length },
       { label: t('timesheetPage.holidaysCount'), value: holidays },
       { label: t('timesheetPage.workersCount'), value: store.totalItems },
@@ -249,18 +255,25 @@
   const confirmationTagType = (id) =>
     id === 3 ? 'success' : id === 4 ? 'error' : id === 2 ? 'info' : 'warning'
 
+  // Holat chipi — ro'yxatdagi «Tabel holati» ustuni bilan bir xil rang va ikonka (`Table.vue` `STATE`).
   const timesheetStatus = computed(() => {
     if (store.lock.status) {
-      return { text: t('timesheetPage.accessFinished'), type: 'error' }
+      return { text: t('timesheetPage.accessFinished'), type: 'success', tone: 'green', icon: CheckmarkCircle16Filled }
     }
     if (store.lock.sent_at && store.lock.confirmation !== 4) {
-      return { text: t('timesheetPage.accessSent'), type: 'warning' }
+      return { text: t('timesheetPage.accessSent'), type: 'info', tone: 'brand', icon: Send16Regular }
     }
     if (store.lock.locked) {
-      return { text: t('timesheetPage.lockedTag'), type: 'warning' }
+      return { text: t('timesheetPage.lockedTag'), type: 'warning', tone: 'amber', icon: LockClosed20Filled }
     }
-    return { text: t('timesheetPage.statusOpen'), type: 'success' }
+    return { text: t('timesheetPage.statusOpen'), type: 'default', tone: 'neutral', icon: LockOpen16Regular }
   })
+  const TONE_CLASS = {
+    green: 'bg-fig-chip-green text-fig-chip-green-text',
+    brand: 'bg-fig-chip-brand text-fig-chip-brand-text',
+    amber: 'bg-fig-chip-amber text-fig-chip-amber-text',
+    neutral: 'bg-fig-bg-disable text-fig-text-tertiary'
+  }
 
   const departmentNames = (row) =>
     (row.departments ?? [])
@@ -270,17 +283,11 @@
 
   const timekeeperColumns = computed(() => [
     { key: 'worker', title: t('content.worker'), minWidth: 260 },
-    {
-      key: 'departments',
-      title: t('content.departments'),
-      // Ichida faqat kichkina badge — keng ustun bo'sh joy bo'lib qolardi.
-      width: 110,
-      align: 'center'
-    },
+    { key: 'departments', title: t('content.departments'), minWidth: 220 },
     // OXIRGI ustun = amal ustuni: faqat switch. `storage-key` berilmagani uchun
     // `UITable` o'zining `__actions` ustunini qo'shmaydi, ya'ni ortiqcha bo'sh
     // ustun chiqmaydi.
-    { key: 'access', title: '', width: 96, align: 'center' }
+    { key: 'access', title: t('timesheetPage.accessColumn'), minWidth: 96, align: 'center' }
   ])
 
   const changeTimekeeperPage = (v) => {
@@ -327,9 +334,29 @@
   // Qoidalar modali — hisoblash qanday ishlashini ko'rsatadi.
   const rulesOpen = ref(false)
   const rules = ref(null)
+  const rulesSearch = ref('')
   const openRules = async () => {
+    rulesSearch.value = ''
     rulesOpen.value = true
     if (!rules.value) rules.value = await store.autoCalcRules()
+  }
+  // Qidiruv: shart / buyruq turi / kod / nomi bo'yicha, katta-kichik harf farqsiz.
+  const rulesMatch = (...parts) => {
+    const q = rulesSearch.value.trim().toLowerCase()
+    return !q || parts.some((p) => String(p ?? '').toLowerCase().includes(q))
+  }
+  const scheduleRules = computed(() =>
+    (rules.value?.schedule_rules ?? []).filter((r) => rulesMatch(r.condition, r.timesheet_key))
+  )
+  const vacationRules = computed(() =>
+    (rules.value?.vacation_rules ?? []).filter((r) =>
+      rulesMatch(r.command_label, r.timesheet_key, r.timesheet_label)
+    )
+  )
+  // Kod chipi — jadvaldagi rang bilan, foni shu rangning och varianti (light + dark).
+  const ruleKeyStyle = (typeId) => {
+    const color = colorOfDetail({ status_id: typeId })
+    return { color, background: `color-mix(in srgb, ${color} 14%, transparent)` }
   }
 
   /* Kun tafsiloti oynasi — katakcha burchagidagi tugma ochadi.
@@ -761,6 +788,11 @@
 
   // Dam olish VA bayram kuni — ikkalasi ham qizil ko'rsatiladi.
   const isWeekend = (day) => day.weekDay === 0 || day.weekDay === 6 || Boolean(day.is_holiday)
+  // Bugungi kun sarlavhada belgilanadi — uzun oyda qayerdaligini topish oson bo'lsin.
+  const isToday = (day) => {
+    const now = dayjs()
+    return now.year() === store.year && now.month() === store.month && now.date() === day.day
+  }
 
   const dayDetails = (item, day) => item.days[day.day]
 
@@ -918,24 +950,27 @@
     if (previewActive.value) store.payload.isClearing = false
   }
 
-  const orgOptions = computed(() =>
-    store.organization ? [{ id: store.organization.id, name: store.organization.name }] : []
-  )
-  const yearOptions = computed(() => {
-    const y = store.year || dayjs().year()
-    return [y - 1, y, y + 1].map((v) => ({ label: String(v), value: v }))
-  })
-  const monthOptions = computed(() =>
-    Utils.monthList.map((m) => ({ label: m.name, value: m.id - 1 }))
-  )
 </script>
 
 <template>
   <div class="ts-root">
-    <!-- ── Filtrlar: maketda yorliq maydon USTIDA ─────────────────────────── -->
+    <!-- ── Yuqori panel: sarlavha (qaysi tabel) → tablar → bo'lim → amallar ── -->
+    <!-- Tashkilot / yil / oy ilgari o'chiq selectlar edi (o'zgartirib bo'lmaydi) —
+         endi oddiy sarlavha: tashkilot nomi, davr va holat chipi. -->
     <div class="ts-filters">
-      <!-- Tablar korxona tanlovidan OLDIN, SHU qatorda. `segment` — tugma
-           ko'rinishidagi tab; yorliqli maydonlar bilan pastdan tekislanadi. -->
+      <div class="ts-title">
+        <span :title="store.organization?.name" class="ts-title-name">
+          {{ store.organization?.name || '—' }}
+        </span>
+        <span class="ts-title-meta">
+          <span>{{ periodText }}</span>
+          <span :class="TONE_CLASS[timesheetStatus.tone]" class="ts-state-chip">
+            <n-icon :component="timesheetStatus.icon" size="14" />
+            {{ timesheetStatus.text }}
+          </span>
+        </span>
+      </div>
+
       <UISegmentTabs
         v-model="activeTab"
         :tabs="mainTabs"
@@ -943,25 +978,13 @@
         @update:model-value="onTabChange"
       />
 
-      <div class="ts-field">
-        <n-select
-          :options="orgOptions"
-          :placeholder="$t('content.workplace')"
-          :value="store.organizationId"
-          class="ts-org-select"
-          disabled
-          label-field="name"
-          value-field="id"
-        />
-      </div>
-      <div class="ts-field">
+      <div v-show="activeTab === 'grid'" class="ts-field">
         <n-select
           v-model:value="store.params.department_id"
-          :disabled="activeTab === 'timekeepers'"
           :loading="store.departmentLoading"
           :menu-props="{ class: 'ts-dep-menu' }"
           :options="store.departmentOptions"
-          :placeholder="$t('documentPage.form.department')"
+          :placeholder="$t('timesheetPage.allDepartments')"
           :virtual-scroll="false"
           class="ts-department-select"
           clearable
@@ -971,25 +994,9 @@
           @update:value="store.applyFilters"
         />
       </div>
-      <div class="ts-field">
-        <n-select
-          :options="yearOptions"
-          :placeholder="$t('content.year')"
-          :value="store.year"
-          disabled
-        />
-      </div>
-      <div class="ts-field">
-        <n-select
-          :options="monthOptions"
-          :placeholder="$t('content.month')"
-          :value="store.month"
-          disabled
-        />
-      </div>
 
       <div class="ts-filters-actions">
-        <n-button secondary type="error" @click="onClose">
+        <n-button secondary @click="onClose">
           <template #icon>
             <n-icon :component="Dismiss20Regular" />
           </template>
@@ -1006,24 +1013,36 @@
           </template>
           {{ lockedActionLabel }}
         </n-button>
-        <n-button
-          v-else-if="activeTab === 'grid'"
-          :loading="store.saveLoading"
-          :disabled="!pendingCount"
-          type="primary"
-          @click="onSave"
-        >
-          <template #icon>
-            <n-icon :component="Save20Filled" />
+        <!-- O'chiq «Saqlash» sababini tooltip aytadi (o'chiq tugma hover'ni ushlamaydi — span ichida). -->
+        <n-tooltip v-else-if="activeTab === 'grid'" :disabled="Boolean(pendingCount)">
+          <template #trigger>
+            <span class="inline-flex">
+              <n-button
+                :loading="store.saveLoading"
+                :disabled="!pendingCount"
+                type="primary"
+                @click="onSave"
+              >
+                <template #icon>
+                  <n-icon :component="Save20Filled" />
+                </template>
+                {{ $t('content.save') }}{{ pendingCount ? ` (${pendingCount})` : '' }}
+              </n-button>
+            </span>
           </template>
-          {{ $t('content.save') }}{{ pendingCount ? ` (${pendingCount})` : '' }}
-        </n-button>
+          {{ $t('timesheetPage.saveHint') }}
+        </n-tooltip>
       </div>
     </div>
 
     <!-- ── Tabelchilar: boshqa sahifalardagi kabi `UITable` ─────────────── -->
     <div v-if="activeTab === 'timekeepers'" class="ts-body ts-keepers">
       <div class="ts-keepers-table">
+        <!-- Switch nima qilishi — jadval ustida bir qator izoh. -->
+        <p class="ts-keepers-hint">
+          <n-icon :component="Info16Regular" size="16" />
+          {{ $t('timesheetPage.accessHint') }}
+        </p>
         <UITable
           :columns="timekeeperColumns"
           :data="store.timekeeperList"
@@ -1046,33 +1065,40 @@
             />
           </template>
 
-          <!-- Faqat SONI — ro'yxat uzun bo'lsa jadvalni cho'zib yuborardi.
-             To'liq ro'yxat tooltipda qoladi. -->
+          <!-- Bo'lim nomlari matn bo'lib (ilgari faqat son badge'i edi); uzun bo'lsa kesiladi, to'liq — title'da. -->
           <template #cell-departments="{ row }">
-            <n-badge
-              :show-zero="true"
-              :title="departmentNames(row)"
-              :value="row.departments?.length ?? 0"
-              class="ts-dep-badge"
-            />
+            <span v-if="row.departments?.length" :title="departmentNames(row)" class="ts-keeper-deps">
+              {{ departmentNames(row) }}
+            </span>
+            <span v-else class="text-textColor3">{{ $t('timesheetPage.noDepartments') }}</span>
+          </template>
+
+          <template #empty>
+            <n-empty :description="$t('timesheetPage.timekeeperEmpty')" class="py-10" />
           </template>
 
           <template #cell-access="{ row }">
-            <n-switch
-              :class="['ts-access-switch', isOpen(row) ? 'is-open' : 'is-locked']"
-              :disabled="timesheetLocked"
-              :title="$t('timesheetPage.accessColumn')"
-              :value="isOpen(row)"
-              size="large"
-              @update:value="(v) => onToggleAccess(row, v)"
-            >
-              <template #checked-icon>
-                <n-icon :component="LockOpen20Filled" />
+            <n-tooltip>
+              <template #trigger>
+                <span class="inline-flex">
+                  <n-switch
+                    :class="['ts-access-switch', isOpen(row) ? 'is-open' : 'is-locked']"
+                    :disabled="timesheetLocked"
+                    :value="isOpen(row)"
+                    size="large"
+                    @update:value="(v) => onToggleAccess(row, v)"
+                  >
+                    <template #checked-icon>
+                      <n-icon :component="LockOpen20Filled" />
+                    </template>
+                    <template #unchecked-icon>
+                      <n-icon :component="LockClosed20Filled" />
+                    </template>
+                  </n-switch>
+                </span>
               </template>
-              <template #unchecked-icon>
-                <n-icon :component="LockClosed20Filled" />
-              </template>
-            </n-switch>
+              {{ $t('timesheetPage.accessHint') }}
+            </n-tooltip>
           </template>
         </UITable>
       </div>
@@ -1082,9 +1108,10 @@
         <div class="ts-info-card">
           <div class="ts-info-head">
             <span class="ts-info-title">{{ $t('timesheetPage.timesheetInfo') }}</span>
-            <n-tag :bordered="false" :type="timesheetStatus.type" round size="small">
+            <span :class="TONE_CLASS[timesheetStatus.tone]" class="ts-state-chip">
+              <n-icon :component="timesheetStatus.icon" size="14" />
               {{ timesheetStatus.text }}
-            </n-tag>
+            </span>
           </div>
           <div v-for="row in timesheetInfo" :key="row.label" class="ts-info-row">
             <span class="ts-info-label">{{ row.label }}</span>
@@ -1291,7 +1318,7 @@
               <div
                 v-for="day in store.days"
                 :key="`h-${day.day}`"
-                :class="{ 'is-weekend': isWeekend(day) }"
+                :class="{ 'is-weekend': isWeekend(day), 'is-today': isToday(day) }"
                 class="ts-head ts-c-day ts-day-head"
               >
                 <span class="ts-day-num">{{ day.day }}</span>
@@ -1318,7 +1345,7 @@
                     circle
                   />
                   <div class="ts-worker-text">
-                    <span class="ts-worker-name">{{ item.name }}</span>
+                    <span :title="item.full_name || item.name" class="ts-worker-name">{{ item.name }}</span>
                     <span class="ts-worker-sub">
                       <span class="ts-worker-post">
                         {{ item?.position || $t('content.noAvailable') }}
@@ -1447,6 +1474,16 @@
               </div>
             </div>
           </div>
+          <!-- Bo'sh holat: bo'limda xodim yo'q yoki qidiruv hech narsa topmadi. -->
+          <n-empty
+            v-if="!store.loading && !store.list.length"
+            :description="$t('timesheetPage.gridEmpty')"
+            class="ts-grid-empty no-selectable-item"
+          >
+            <template #extra>
+              <span class="text-xs text-textColor3">{{ $t('timesheetPage.gridEmptyHint') }}</span>
+            </template>
+          </n-empty>
         </UIDragSelector>
       </div>
     </n-spin>
@@ -1470,9 +1507,14 @@
       />
     </div>
     <div v-show="activeTab === 'grid'" class="ts-bottom">
+      <!-- Qanday to'ldiriladi — bir qator izoh; yopiq tabelda o'rniga sabab. -->
+      <p class="ts-bottom-hint">
+        <n-icon :component="timesheetLocked ? LockClosed20Filled : Info16Regular" size="14" />
+        {{ timesheetLocked ? lockedActionLabel : $t('timesheetPage.fillHint') }}
+      </p>
       <n-form ref="form" class="ts-bottom-row">
         <div class="ts-field ts-field-type">
-          <label class="ts-field-label">{{ $t('timesheetPage.workTimeType') }}</label>
+          <label class="ts-field-label">{{ $t('timesheetPage.mainType') }}</label>
           <n-select
             v-model:value="store.payload.status"
             :consistent-menu-width="false"
@@ -1499,8 +1541,10 @@
             :precision="0"
           />
         </div>
+        <!-- Ikkinchi juftlik ixtiyoriy: katakda ikki kod bo'ladi (masalan «Я/Н»). -->
+        <span class="ts-bottom-divider" />
         <div class="ts-field ts-field-type">
-          <label class="ts-field-label">{{ $t('timesheetPage.workTimeType') }}</label>
+          <label class="ts-field-label">{{ $t('timesheetPage.extraType') }}</label>
           <n-select
             v-model:value="store.payload.status2"
             :consistent-menu-width="false"
@@ -1531,28 +1575,34 @@
 
         <!-- Natija namunasi — shu qatorning davomi. -->
         <div class="ts-field ts-field-preview">
-          <div
-            :class="{
-              'ts-preview-off': !previewActive,
-              'ts-preview-on': previewActive && previewDetails.length
-            }"
-            :title="previewActive ? $t('content.active') : $t('content.noActive')"
-            class="ts-cell ts-preview-cell"
-            @click="togglePreview"
-          >
-            <template v-if="previewDetails.length">
-              <span class="ts-cell-status">
-                <template v-for="(part, i) in partsOf(previewDetails, 'status')" :key="`ps-${i}`">
-                  <span v-if="i" class="ts-sep">/</span><span :style="{ color: part.color }">{{ part.value }}</span>
+          <label class="ts-field-label">{{ $t('timesheetPage.previewLabel') }}</label>
+          <n-tooltip>
+            <template #trigger>
+              <div
+                :class="{
+                  'ts-preview-off': !previewActive,
+                  'ts-preview-on': previewActive && previewDetails.length
+                }"
+                class="ts-cell ts-preview-cell"
+                @click="togglePreview"
+              >
+                <template v-if="previewDetails.length">
+                  <span class="ts-cell-status">
+                    <template v-for="(part, i) in partsOf(previewDetails, 'status')" :key="`ps-${i}`">
+                      <span v-if="i" class="ts-sep">/</span><span :style="{ color: part.color }">{{ part.value }}</span>
+                    </template>
+                  </span>
+                  <span class="ts-cell-hours">
+                    <template v-for="(part, i) in partsOf(previewDetails, 'hours')" :key="`ph-${i}`">
+                      <span v-if="i" class="ts-sep">/</span><span :style="{ color: part.color }">{{ part.value }}</span>
+                    </template>
+                  </span>
                 </template>
-              </span>
-              <span class="ts-cell-hours">
-                <template v-for="(part, i) in partsOf(previewDetails, 'hours')" :key="`ph-${i}`">
-                  <span v-if="i" class="ts-sep">/</span><span :style="{ color: part.color }">{{ part.value }}</span>
-                </template>
-              </span>
+                <span v-else class="ts-preview-empty">—</span>
+              </div>
             </template>
-          </div>
+            {{ $t('timesheetPage.previewHint') }}
+          </n-tooltip>
         </div>
 
         <!-- «Tozalash / Auto / qoidalar» — tepadagi filtr qatoridan shu yerga
@@ -1573,6 +1623,7 @@
           <n-button
             :disabled="timesheetLocked"
             :loading="store.autoLoading"
+            secondary
             type="primary"
             @click="onAutoCalc"
           >
@@ -1581,23 +1632,14 @@
             </template>
             {{ $t('timesheetPage.autoCalcShort') }}
           </n-button>
-          <n-button
-            :title="$t('timesheetPage.autoRulesTitle')"
-            round
-            secondary
-            type="info"
-            @click="openRules"
-          >
+          <span class="ts-bottom-divider" />
+          <n-button :title="$t('timesheetPage.autoRulesTitle')" secondary @click="openRules">
             <template #icon>
               <n-icon :component="Info20Filled" />
             </template>
             {{ $t('timesheetPage.infoShort') }}
           </n-button>
-          <n-button
-            secondary
-            type="success"
-            @click="onDownload"
-          >
+          <n-button secondary @click="onDownload">
             <template #icon>
               <n-icon :component="ArrowDownload20Filled" />
             </template>
@@ -2037,70 +2079,86 @@
 
     <!-- Hisoblash qoidalari. Balandligi QAT'IY — ichki qism skrollanadi,
          aks holda ta'til jadvali 13 qator bo'lib modalni cho'zib yuborardi. -->
-    <n-modal
-      v-model:show="rulesOpen"
+    <UIModal
+      v-model:visible="rulesOpen"
       :title="$t('timesheetPage.autoRulesTitle')"
-      class="ts-rules-modal"
-      preset="card"
-      size="medium"
-      style="width: 900px; max-width: 94vw"
+      :width="900"
     >
-      <div class="ts-rules-scroll">
-        <h4 class="ts-rules-head">{{ $t('timesheetPage.tabWorkTime') }}</h4>
-        <div class="ts-rules-table-wrap">
-          <table class="ts-rules-table">
-            <thead>
-              <tr>
-                <th>{{ $t('timesheetPage.condition') }}</th>
-                <th style="width: 160px">{{ $t('timesheetPage.workTimeType') }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(r, i) in rules?.schedule_rules ?? []" :key="`s-${i}`">
-                <td>{{ r.condition }}</td>
-                <td>
-                  <span
-                    v-if="r.timesheet_key"
-                    :style="{ color: colorOfDetail({ status_id: r.timesheet_type }) }"
-                    class="ts-rules-key"
-                  >
-                    {{ r.timesheet_key }}
-                  </span>
-                  <span v-else class="ts-rules-dash">—</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <n-input
+        v-model:value="rulesSearch"
+        :placeholder="$t('timesheetPage.rulesSearch')"
+        class="mb-3"
+        clearable
+        round
+      >
+        <template #prefix>
+          <n-icon :component="Search20Regular" />
+        </template>
+      </n-input>
+      <n-spin :show="!rules" class="ts-rules-scroll">
+        <template v-if="scheduleRules.length">
+          <h4 class="ts-rules-head">{{ $t('timesheetPage.tabWorkTime') }}</h4>
+          <div class="ts-rules-table-wrap">
+            <table class="ts-rules-table">
+              <thead>
+                <tr>
+                  <th>{{ $t('timesheetPage.condition') }}</th>
+                  <th style="width: 160px">{{ $t('timesheetPage.workTimeType') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(r, i) in scheduleRules" :key="`s-${i}`">
+                  <td>{{ r.condition }}</td>
+                  <td>
+                    <span
+                      v-if="r.timesheet_key"
+                      :style="ruleKeyStyle(r.timesheet_type)"
+                      class="ts-rules-key"
+                    >
+                      {{ r.timesheet_key }}
+                    </span>
+                    <span v-else class="ts-rules-dash">—</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </template>
 
-        <h4 class="ts-rules-head">{{ $t('timesheetPage.vacationRules') }}</h4>
-        <div class="ts-rules-table-wrap">
-          <table class="ts-rules-table">
-            <thead>
-              <tr>
-                <th>{{ $t('timesheetPage.commandType') }}</th>
-                <th style="width: 100px">{{ $t('timesheetPage.workTimeType') }}</th>
-                <th style="width: 260px">{{ $t('content.name') }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="r in rules?.vacation_rules ?? []" :key="r.command_type">
-                <td>{{ r.command_label }}</td>
-                <td>
-                  <span
-                    :style="{ color: colorOfDetail({ status_id: r.timesheet_type }) }"
-                    class="ts-rules-key"
-                  >
-                    {{ r.timesheet_key }}
-                  </span>
-                </td>
-                <td class="ts-rules-label">{{ r.timesheet_label }}</td>
-              </tr>
-            </tbody>
-          </table>
+        <template v-if="vacationRules.length">
+          <h4 class="ts-rules-head">{{ $t('timesheetPage.vacationRules') }}</h4>
+          <div class="ts-rules-table-wrap">
+            <table class="ts-rules-table">
+              <thead>
+                <tr>
+                  <th>{{ $t('timesheetPage.commandType') }}</th>
+                  <th style="width: 100px">{{ $t('timesheetPage.workTimeType') }}</th>
+                  <th style="width: 260px">{{ $t('content.name') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="r in vacationRules" :key="r.command_type">
+                  <td>{{ r.command_label }}</td>
+                  <td>
+                    <span :style="ruleKeyStyle(r.timesheet_type)" class="ts-rules-key">
+                      {{ r.timesheet_key }}
+                    </span>
+                  </td>
+                  <td class="ts-rules-label">{{ r.timesheet_label }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </template>
+
+        <div
+          v-if="rules && !scheduleRules.length && !vacationRules.length"
+          class="py-10 text-center text-sm text-textColor3"
+        >
+          {{ $t('timesheetPage.rulesNotFound') }}
         </div>
-      </div>
-    </n-modal>
+      </n-spin>
+    </UIModal>
   </div>
 </template>
 
@@ -2150,13 +2208,14 @@
   .ts-keepers-table {
     display: flex;
     flex-direction: column;
-    flex: 1 1 50%;
+    flex: 1 1 auto;
     min-width: 0;
     min-height: 0;
   }
   .ts-keepers-side {
     display: flex;
-    flex: 1 1 50%;
+    /* Ma'lumot kartochkasi ixcham — jadval qolgan kenglikni oladi (ilgari 50/50, o'ng tomon bo'sh qolardi). */
+    flex: 0 0 380px;
     flex-direction: column;
     gap: 16px;
     min-width: 0;
@@ -2281,13 +2340,21 @@
   .ts-approver:last-child {
     border-bottom: none;
   }
-  /* Bo'limlar soni — rangsiz, faqat chegara; raqam qalin. */
-  .ts-dep-badge :deep(.n-badge-sup) {
-    border: 1px solid var(--table-border);
-    background-color: transparent;
-    box-shadow: none;
-    color: var(--fig-text-primary);
-    font-weight: 600;
+  /* Tabelchi bo'limlari — bir qatorda, uzun bo'lsa kesiladi. */
+  .ts-keeper-deps {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ts-keepers-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    margin: 0 0 12px;
+    font-size: 13px;
+    color: var(--fig-text-tertiary);
   }
   /* Ruxsat switch'i: rail — xira ton, tugmacha — to'q rang, qulf ikonkasi OQ.
      Standart holatda ikonka oq tugmacha ichida qora bo'lib chiqardi. */
@@ -2321,18 +2388,48 @@
   }
   .ts-filters {
     display: flex;
-    /* Maydonlarda yorliq USTIDA — tablar ular bilan pastdan tekislanadi. */
-    align-items: flex-end;
+    align-items: center;
     gap: 16px;
     flex-shrink: 0;
+    /* Bo'lim nomlari uzun — keng maydon. */
     .ts-field {
-      width: 180px;
-    }
-    /* Korxona va bo'lim nomlari uzun — kengroq maydon. */
-    .ts-field:has(.ts-org-select),
-    .ts-field:has(.ts-department-select) {
       width: 300px;
     }
+  }
+  /* Sarlavha: tashkilot nomi (qalin) + ostida davr va holat chipi. */
+  .ts-title {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    max-width: 420px;
+  }
+  .ts-title-name {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24px;
+    color: var(--fig-text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ts-title-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--fig-text-secondary);
+  }
+  .ts-state-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    white-space: nowrap;
   }
 
   /* ── Panjara kartasi ──────────────────────────────────────────────────── */
@@ -2388,6 +2485,13 @@
     width: max-content;
     min-width: 100%;
     user-select: none;
+  }
+  /* Bo'sh holat keng panjara ostida chapga yopishadi — gorizontal skrollda ham ko'rinadi. */
+  .ts-grid-empty {
+    position: sticky;
+    left: 0;
+    width: 100%;
+    padding: 48px 16px;
   }
   /* Qatorlar flex — `position: sticky` ustunlar uchun jadval emas, oqim kerak
      (grafik sahifasidagi panjara bilan bir xil yondashuv). */
@@ -2460,6 +2564,14 @@
     &.is-weekend .ts-day-num,
     &.is-weekend .ts-day-week {
       color: var(--fig-text-red);
+    }
+    /* Bugun — raqam asosiy rangda, ostida chiziq. */
+    &.is-today {
+      box-shadow: inset 0 -2px 0 var(--fig-icon-brand);
+    }
+    &.is-today .ts-day-num {
+      color: var(--fig-icon-brand);
+      font-weight: 700;
     }
   }
 
@@ -2586,7 +2698,7 @@
     min-width: 0;
   }
   .ts-worker-post {
-    font-size: 10px;
+    font-size: 11px;
     line-height: 15px;
     letter-spacing: 0.2px;
     color: var(--fig-text-secondary);
@@ -3825,9 +3937,15 @@
   .ts-rules-table tbody tr:hover td {
     background: var(--fig-block-bg);
   }
+  /* Kod — rangli chip (rang + foni `ruleKeyStyle` dan). */
   .ts-rules-key {
+    display: inline-block;
+    min-width: 28px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    text-align: center;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
   }
   .ts-rules-dash {
     color: var(--fig-text-tertiary);
@@ -3986,6 +4104,26 @@
     }
   }
 
+  .ts-bottom-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 2px 0 6px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--fig-text-tertiary);
+  }
+  /* Maydon guruhlari va tugma guruhlari orasidagi ingichka chiziq. */
+  .ts-bottom-divider {
+    align-self: stretch;
+    width: 1px;
+    margin: 4px 0;
+    background: var(--table-border);
+  }
+  .ts-preview-empty {
+    color: var(--fig-text-tertiary);
+  }
+
   /* Pastki panel — hamma element BITTA qatorda, kengliklar taqsimlangan. */
   .ts-bottom-row {
     display: flex;
@@ -4005,6 +4143,9 @@
   .ts-field-preview {
     flex: 0 0 auto;
     margin-right: auto;
+    /* Katakcha inputlardan baland — o'rtasi inputlar bilan bir chiziqda tursin, yorlig'i yuqoriga qochmasin. */
+    gap: 2px;
+    margin-bottom: -5px;
   }
   /* Amal tugmalari pastki panelning O'NG chetida. */
   .ts-bottom-actions {
