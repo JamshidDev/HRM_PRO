@@ -210,6 +210,9 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
           this.payload.temporarily_absent = null
         }
       }
+      // BACKEND (DAS-14203): `reason` (Sabab) shu payload bilan yuboriladi va saqlanadi — dev'da ariza 626
+      // `/edit` da QA kiritgan matnni qaytaradi. Lekin ariza PDF'ida u chiqmaydi: shablon doim
+      // «oilaviy zaruriyatim sababli» deb yozadi. PDF'ga saqlangan `reason` ni (ekranlab) qo'ying.
       let data = {
         ...this.payload,
         period_from: Utils.timeToZone(this.payload.period_from),
