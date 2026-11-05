@@ -13,6 +13,7 @@
     MarkAreaComponent
   } from 'echarts/components'
   import { CanvasRenderer } from 'echarts/renderers'
+  import { enqueueRender } from '../chart-render-queue.js'
 
   use([
     BarChart,
@@ -49,11 +50,14 @@
     io = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
-          render.value = true
           if (io) {
             io.disconnect()
             io = null
           }
+          // Navbatga qo'yamiz — grafiklar bir vaqtda emas, frame'ma-frame render bo'ladi.
+          enqueueRender(() => {
+            render.value = true
+          })
         }
       },
       { rootMargin: '250px' }

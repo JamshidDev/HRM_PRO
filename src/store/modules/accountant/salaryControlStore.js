@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { toRaw } from 'vue'
 import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
 import { useAccountStore } from '@/store/modules/app/accountStore.js'
@@ -21,6 +22,10 @@ const dashCache = new Map()
 let summaryReq = 0
 let risksReq = 0
 let dashReq = 0
+// Oxirgi DERIVE qilingan filtr kaliti — tab almashishda (kalit o'zgarmaganda) og'ir
+// derivatsiya + state reassign QAYTA bajarilmasin (aks holda keep-alive grafiklar
+// qayta render bo'lib, har tabda qotish jamg'ariladi).
+let derivedKey = null
 // Filtr/qidiruv debounce taymeri.
 let filterTimer = null
 
@@ -185,13 +190,17 @@ export const useSalaryControlStore = defineStore('salaryControl', {
       if (!this._canRead()) return
       const key = this._key()
       if (dashCache.has(key)) {
-        // Kesh hit — lekin OG'IR derivatsiya (people/findings/risks) getterlari
-        // hali hisoblanmagan. Shu bois darhol `false` emas: skeleton ko'rsinib,
-        // derivatsiya yield'dan keyin bajarilib, so'ng loading o'chadi (UI qotmaydi).
         this.dashboard = dashCache.get(key)
         this.dashboardError = false
+        // Shu kalit uchun derive allaqachon bajarilган (tab almashish) — qayta hisob
+        // va state reassign QILMAYMIZ (keep-alive grafiklar qayta render bo'lmasin).
+        if (derivedKey === key) {
+          this.dashboardLoading = false
+          return
+        }
+        // Yangi kalit (filtr/davr) — og'ir derivatsiya worker'da; skeleton ko'rinib turadi.
         this.dashboardLoading = true
-        this._deriveDashboard(++dashReq)
+        this._deriveDashboard(++dashReq, key)
         return
       }
       const reqId = ++dashReq
@@ -204,7 +213,7 @@ export const useSalaryControlStore = defineStore('salaryControl', {
           dashCache.set(key, data)
           if (reqId === dashReq && key === this._key()) {
             this.dashboard = data
-            this._deriveDashboard(reqId)
+            this._deriveDashboard(reqId, key)
           } else if (reqId === dashReq) {
             this.dashboardLoading = false
           }
@@ -221,10 +230,14 @@ export const useSalaryControlStore = defineStore('salaryControl', {
     // xodim ustida) WEB WORKER'da bajariladi → ASOSIY THREAD QOTMAYDI. Natija
     // tayyor bo'lgach state'ga yoziladi va loading o'chadi (shu paytgacha skeleton
     // ko'rinadi). Worker ishlamasa — klient sinxron fallback'ga o'tadi.
-    _deriveDashboard(reqId) {
+    _deriveDashboard(reqId, key) {
+      // Worker'ga XOM (plain) ma'lumot uzatamiz: Pinia reactive proxy'si strukturaviy
+      // klon bo'lmaydi (postMessage DataCloneError → sync fallback). dashCache plain
+      // (axios javobi); toRaw qo'shimcha kafolat.
+      const raw = toRaw(dashCache.get(key) || this.dashboard) || {}
       computeDashboard({
-        emps: this.dashboard.emps ?? [],
-        kpi: { ...(this.dashboard.kpi ?? {}), norm: this.dashboard.norm },
+        emps: toRaw(raw.emps) ?? [],
+        kpi: { ...(raw.kpi ?? {}), norm: raw.norm },
         year: this.params.year,
         month: this.params.month
       })
@@ -233,6 +246,7 @@ export const useSalaryControlStore = defineStore('salaryControl', {
           this.people = d.people
           this.scFindings = d.findings
           this.scRisks = d.risks
+          derivedKey = key // shu kalit uchun derive bajarildi — tab almashishda takror yo'q
         })
         .finally(() => {
           if (reqId === dashReq) this.dashboardLoading = false
