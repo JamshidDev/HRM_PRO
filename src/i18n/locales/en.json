@@ -3367,6 +3367,8 @@
     "filledCount": "{count} employees",
     "notFilled": "Not filled",
     "createHint": "A timesheet is created per organisation for one month. Departments are chosen inside the timesheet.",
+    "rulesSearch": "Search by condition, order type or code",
+    "rulesNotFound": "Nothing found",
     "accessColumn": "Access",
     "timekeeperEmpty": "No timekeeper assigned to this organization",
     "accessEditable": "Can edit",

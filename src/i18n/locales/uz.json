@@ -3387,6 +3387,8 @@
     "filledCount": "{count} ta xodim",
     "notFilled": "To'ldirilmagan",
     "createHint": "Tabel tashkilot bo'yicha bir oyga yaratiladi. Bo'limlar tabel ichida tanlanadi.",
+    "rulesSearch": "Shart, buyruq turi yoki kod bo'yicha qidirish",
+    "rulesNotFound": "Hech narsa topilmadi",
     "accessColumn": "Ruxsat",
     "timekeeperEmpty": "Bu korxonaga tabelchi biriktirilmagan",
     "accessEditable": "O'zgartirishi mumkin",

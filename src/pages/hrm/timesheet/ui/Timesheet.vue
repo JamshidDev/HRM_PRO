@@ -29,6 +29,7 @@
   import {
     UIDConfirm,
     UIDragSelector,
+    UIModal,
     UIPagination,
     UISegmentTabs,
     UITable,
@@ -339,9 +340,29 @@
   // Qoidalar modali — hisoblash qanday ishlashini ko'rsatadi.
   const rulesOpen = ref(false)
   const rules = ref(null)
+  const rulesSearch = ref('')
   const openRules = async () => {
+    rulesSearch.value = ''
     rulesOpen.value = true
     if (!rules.value) rules.value = await store.autoCalcRules()
+  }
+  // Qidiruv: shart / buyruq turi / kod / nomi bo'yicha, katta-kichik harf farqsiz.
+  const rulesMatch = (...parts) => {
+    const q = rulesSearch.value.trim().toLowerCase()
+    return !q || parts.some((p) => String(p ?? '').toLowerCase().includes(q))
+  }
+  const scheduleRules = computed(() =>
+    (rules.value?.schedule_rules ?? []).filter((r) => rulesMatch(r.condition, r.timesheet_key))
+  )
+  const vacationRules = computed(() =>
+    (rules.value?.vacation_rules ?? []).filter((r) =>
+      rulesMatch(r.command_label, r.timesheet_key, r.timesheet_label)
+    )
+  )
+  // Kod chipi — jadvaldagi rang bilan, foni shu rangning och varianti (light + dark).
+  const ruleKeyStyle = (typeId) => {
+    const color = colorOfDetail({ status_id: typeId })
+    return { color, background: `color-mix(in srgb, ${color} 14%, transparent)` }
   }
 
   /* Kun tafsiloti oynasi — katakcha burchagidagi tugma ochadi.
@@ -2051,70 +2072,86 @@
 
     <!-- Hisoblash qoidalari. Balandligi QAT'IY — ichki qism skrollanadi,
          aks holda ta'til jadvali 13 qator bo'lib modalni cho'zib yuborardi. -->
-    <n-modal
-      v-model:show="rulesOpen"
+    <UIModal
+      v-model:visible="rulesOpen"
       :title="$t('timesheetPage.autoRulesTitle')"
-      class="ts-rules-modal"
-      preset="card"
-      size="medium"
-      style="width: 900px; max-width: 94vw"
+      :width="900"
     >
-      <div class="ts-rules-scroll">
-        <h4 class="ts-rules-head">{{ $t('timesheetPage.tabWorkTime') }}</h4>
-        <div class="ts-rules-table-wrap">
-          <table class="ts-rules-table">
-            <thead>
-              <tr>
-                <th>{{ $t('timesheetPage.condition') }}</th>
-                <th style="width: 160px">{{ $t('timesheetPage.workTimeType') }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(r, i) in rules?.schedule_rules ?? []" :key="`s-${i}`">
-                <td>{{ r.condition }}</td>
-                <td>
-                  <span
-                    v-if="r.timesheet_key"
-                    :style="{ color: colorOfDetail({ status_id: r.timesheet_type }) }"
-                    class="ts-rules-key"
-                  >
-                    {{ r.timesheet_key }}
-                  </span>
-                  <span v-else class="ts-rules-dash">—</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <n-input
+        v-model:value="rulesSearch"
+        :placeholder="$t('timesheetPage.rulesSearch')"
+        class="mb-3"
+        clearable
+        round
+      >
+        <template #prefix>
+          <n-icon :component="Search20Regular" />
+        </template>
+      </n-input>
+      <n-spin :show="!rules" class="ts-rules-scroll">
+        <template v-if="scheduleRules.length">
+          <h4 class="ts-rules-head">{{ $t('timesheetPage.tabWorkTime') }}</h4>
+          <div class="ts-rules-table-wrap">
+            <table class="ts-rules-table">
+              <thead>
+                <tr>
+                  <th>{{ $t('timesheetPage.condition') }}</th>
+                  <th style="width: 160px">{{ $t('timesheetPage.workTimeType') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(r, i) in scheduleRules" :key="`s-${i}`">
+                  <td>{{ r.condition }}</td>
+                  <td>
+                    <span
+                      v-if="r.timesheet_key"
+                      :style="ruleKeyStyle(r.timesheet_type)"
+                      class="ts-rules-key"
+                    >
+                      {{ r.timesheet_key }}
+                    </span>
+                    <span v-else class="ts-rules-dash">—</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </template>
 
-        <h4 class="ts-rules-head">{{ $t('timesheetPage.vacationRules') }}</h4>
-        <div class="ts-rules-table-wrap">
-          <table class="ts-rules-table">
-            <thead>
-              <tr>
-                <th>{{ $t('timesheetPage.commandType') }}</th>
-                <th style="width: 100px">{{ $t('timesheetPage.workTimeType') }}</th>
-                <th style="width: 260px">{{ $t('content.name') }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="r in rules?.vacation_rules ?? []" :key="r.command_type">
-                <td>{{ r.command_label }}</td>
-                <td>
-                  <span
-                    :style="{ color: colorOfDetail({ status_id: r.timesheet_type }) }"
-                    class="ts-rules-key"
-                  >
-                    {{ r.timesheet_key }}
-                  </span>
-                </td>
-                <td class="ts-rules-label">{{ r.timesheet_label }}</td>
-              </tr>
-            </tbody>
-          </table>
+        <template v-if="vacationRules.length">
+          <h4 class="ts-rules-head">{{ $t('timesheetPage.vacationRules') }}</h4>
+          <div class="ts-rules-table-wrap">
+            <table class="ts-rules-table">
+              <thead>
+                <tr>
+                  <th>{{ $t('timesheetPage.commandType') }}</th>
+                  <th style="width: 100px">{{ $t('timesheetPage.workTimeType') }}</th>
+                  <th style="width: 260px">{{ $t('content.name') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="r in vacationRules" :key="r.command_type">
+                  <td>{{ r.command_label }}</td>
+                  <td>
+                    <span :style="ruleKeyStyle(r.timesheet_type)" class="ts-rules-key">
+                      {{ r.timesheet_key }}
+                    </span>
+                  </td>
+                  <td class="ts-rules-label">{{ r.timesheet_label }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </template>
+
+        <div
+          v-if="rules && !scheduleRules.length && !vacationRules.length"
+          class="py-10 text-center text-sm text-textColor3"
+        >
+          {{ $t('timesheetPage.rulesNotFound') }}
         </div>
-      </div>
-    </n-modal>
+      </n-spin>
+    </UIModal>
   </div>
 </template>
 
@@ -3884,9 +3921,15 @@
   .ts-rules-table tbody tr:hover td {
     background: var(--fig-block-bg);
   }
+  /* Kod — rangli chip (rang + foni `ruleKeyStyle` dan). */
   .ts-rules-key {
+    display: inline-block;
+    min-width: 28px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    text-align: center;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
   }
   .ts-rules-dash {
     color: var(--fig-text-tertiary);
