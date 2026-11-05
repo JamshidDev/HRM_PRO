@@ -4,6 +4,8 @@
   import { RISK_STATUS } from '../engine.js'
   import { SECTION, RISK_METHOD } from '../explain.js'
   import { normText, money2 } from '../helpers.js'
+  import { People24Regular, Search20Regular, ArrowRight16Filled } from '@vicons/fluent'
+  import { UIModal } from '@/components/index.js'
   import ScSkeleton from './ScSkeleton.vue'
   import StatusBadge from './StatusBadge.vue'
   import EmptyState from './EmptyState.vue'
@@ -42,7 +44,8 @@
         advice: normText(c.a),
         method: RISK_METHOD[c.n] || '',
         count: items.length,
-        affected: items.slice(0, 10).map((x) => ({ fio: x.fio, position: x.lav, detail: normText(x.d), summa: x.s }))
+        // To'liq ro'yxat — modalda ko'rinadi (kartada faqat son). Qidiruv modalda.
+        affected: items.map((x) => ({ fio: x.fio, position: x.lav, detail: normText(x.d), summa: x.s }))
       }
     })
   })
@@ -102,6 +105,40 @@
     openMethods.value = s
   }
   const isMethodOpen = (n) => openMethods.value.has(n)
+
+  // «Ta'sirlangan xodimlar» ro'yxati — kartada son, bosilganda modal (ro'yxat + qidiruv).
+  const listModal = ref(false)
+  const activeRisk = ref(null)
+  const listSearch = ref('')
+  const openList = (risk) => {
+    activeRisk.value = risk
+    listSearch.value = ''
+    listModal.value = true
+  }
+  // F.I.O'dan avatar uchun bosh harflar (ikki so'z) — rasm yo'q, xodimlar ro'yxati uslubi.
+  const initials = (fio) => {
+    const parts = String(fio || '')
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+    if (!parts.length) return '—'
+    const a = parts[0]?.[0] ?? ''
+    const b = parts[1]?.[0] ?? ''
+    return (a + b).toUpperCase()
+  }
+
+  // Modal ichidagi qidiruv — F.I.O yoki lavozim bo'yicha.
+  const filteredAffected = computed(() => {
+    const risk = activeRisk.value
+    if (!risk) return []
+    const q = listSearch.value.trim().toLowerCase()
+    if (!q) return risk.affected
+    return risk.affected.filter(
+      (e) =>
+        String(e.fio || '').toLowerCase().includes(q) ||
+        String(e.position || '').toLowerCase().includes(q)
+    )
+  })
 </script>
 
 <template>
@@ -207,50 +244,81 @@
               {{ risk.method }}
             </div>
 
-            <!-- Ta'sirlangan xodimlar (status na bo'lmaganda va ro'yxat bor bo'lsa). -->
-            <n-collapse
+            <!-- Ta'sirlangan xodimlar — kartada faqat SON (chip). Bosilganda modal
+                 ichida to'liq ro'yxat + qidiruv ochiladi (uzun ro'yxat kartani
+                 shishirmaydi). -->
+            <button
               v-if="risk.status !== 'na' && risk.count > 0 && risk.affected?.length"
-              class="sc-collapse"
+              type="button"
+              class="sc-list-chip"
+              :class="`sc-list-chip--${statusTone(risk.status)}`"
+              @click="openList(risk)"
             >
-              <n-collapse-item
-                :title="$t('salaryControl.risk.affected', { count: risk.count })"
-                name="affected"
-              >
-                <n-table :bordered="false" :single-line="false" size="small">
-                  <thead>
-                    <tr>
-                      <th>{{ $t('salaryControl.risk.table.fio') }}</th>
-                      <th>{{ $t('salaryControl.risk.table.position') }}</th>
-                      <th>{{ $t('salaryControl.risk.table.detail') }}</th>
-                      <th class="text-right">{{ $t('salaryControl.risk.table.summa') }}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(emp, idx) in risk.affected" :key="idx">
-                      <td>{{ emp.fio }}</td>
-                      <td>{{ emp.position }}</td>
-                      <td>{{ emp.detail }}</td>
-                      <td class="text-right">
-                        {{ emp.summa != null ? money2(emp.summa) : '—' }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </n-table>
-                <p v-if="risk.affected.length < risk.count" class="sc-affected-note">
-                  {{
-                    $t('salaryControl.risk.affectedCapped', {
-                      count: risk.count,
-                      shown: risk.affected.length
-                    })
-                  }}
-                </p>
-              </n-collapse-item>
-            </n-collapse>
+              <span class="sc-list-chip-ico">
+                <n-icon :size="15"><People24Regular /></n-icon>
+              </span>
+              <span class="sc-list-chip-text">
+                {{ $t('salaryControl.risk.viewList', { count: risk.count }) }}
+              </span>
+              <span class="sc-list-chip-arrow">
+                <n-icon :size="14"><ArrowRight16Filled /></n-icon>
+              </span>
+            </button>
           </div>
         </div>
       </div>
     </template>
   </template>
+
+  <!-- Ta'sirlangan xodimlar ro'yxati — modal (son chip bosilganda). -->
+  <UIModal
+    v-model:visible="listModal"
+    :title="activeRisk?.title || ''"
+    :width="640"
+    :height="640"
+    fullscreen-on-mobile
+    @click:close="listModal = false"
+  >
+    <template #header-actions>
+      <span class="sc-list-total">
+        {{ $t('salaryControl.risk.listTotal', { count: activeRisk?.count || 0 }) }}
+      </span>
+    </template>
+
+    <div class="sc-list-wrap">
+      <n-input
+        v-model:value="listSearch"
+        clearable
+        class="sc-list-search"
+        :placeholder="$t('salaryControl.risk.searchPlaceholder')"
+      >
+        <template #prefix>
+          <n-icon :size="16"><Search20Regular /></n-icon>
+        </template>
+      </n-input>
+
+      <div class="sc-list-rows">
+        <div v-for="(emp, idx) in filteredAffected" :key="idx" class="sc-list-row">
+          <span class="sc-list-idx">{{ idx + 1 }}</span>
+          <span class="sc-list-avatar" :class="`sc-list-avatar--${activeRisk ? statusTone(activeRisk.status) : 'indigo'}`">
+            {{ initials(emp.fio) }}
+          </span>
+          <div class="sc-list-main">
+            <div class="sc-list-fio">{{ emp.fio }}</div>
+            <div v-if="emp.position" class="sc-list-pos">{{ emp.position }}</div>
+            <div v-if="emp.detail" class="sc-list-detail">{{ emp.detail }}</div>
+          </div>
+          <span v-if="emp.summa != null && emp.summa !== 0" class="sc-list-summa">
+            {{ money2(emp.summa) }}
+          </span>
+        </div>
+
+        <p v-if="!filteredAffected.length" class="sc-list-empty">
+          {{ $t('salaryControl.risk.noMatch') }}
+        </p>
+      </div>
+    </div>
+  </UIModal>
 </template>
 
 <style scoped>
@@ -324,15 +392,6 @@
     display: flex;
     align-items: center;
     gap: 8px;
-  }
-
-  /* «N tadan K tasi ko'rsatilgan» — affected jadval ostidagi eslatma. */
-  .sc-affected-note {
-    margin-top: 6px;
-    font-size: 11.5px;
-    line-height: 16px;
-    color: var(--fig-text-tertiary);
-    font-style: italic;
   }
 
   .sc-kpi-value {
@@ -570,13 +629,186 @@
     white-space: pre-line;
   }
 
-  .sc-collapse {
-    margin-top: 2px;
+  /* ---- Ta'sirlangan xodimlar: SON chip (kartada) ---- */
+  .sc-list-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    margin-top: 4px;
+    padding: 6px 10px 6px 8px;
+    border: 0.8px solid var(--fig-blue-300);
+    border-radius: 999px;
+    background: var(--fig-bg-secondary);
+    cursor: pointer;
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--fig-text-secondary);
+    transition:
+      border-color 0.15s ease,
+      background 0.15s ease,
+      transform 0.05s ease;
+    outline: none;
+  }
+  .sc-list-chip:hover {
+    border-color: var(--fig-icon-brand);
+    background: var(--fig-block-bg);
+  }
+  .sc-list-chip:focus-visible {
+    border-color: var(--fig-icon-brand);
+    box-shadow: 0 0 0 2px var(--fig-icon-brand);
+  }
+  .sc-list-chip:active {
+    transform: translateY(1px);
+  }
+  .sc-list-chip-ico {
+    display: inline-grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    color: #fff;
+    flex: none;
+  }
+  .sc-list-chip-text {
+    white-space: nowrap;
+  }
+  .sc-list-chip-arrow {
+    display: inline-grid;
+    place-items: center;
+    color: var(--fig-text-tertiary);
+    transition: transform 0.15s ease;
+  }
+  .sc-list-chip:hover .sc-list-chip-arrow {
+    transform: translateX(2px);
+    color: var(--fig-icon-brand);
+  }
+  /* chip ikonka doirasi — risk holati rangida (aksent bilan uyg'un) */
+  .sc-list-chip--red .sc-list-chip-ico {
+    background: var(--fig-icon-red);
+  }
+  .sc-list-chip--amber .sc-list-chip-ico {
+    background: var(--fig-icon-amber);
+  }
+  .sc-list-chip--green .sc-list-chip-ico {
+    background: var(--fig-icon-green);
+  }
+  .sc-list-chip--indigo .sc-list-chip-ico {
+    background: var(--fig-icon-indigo);
   }
 
-  /* n-collapse trigger'ini nozik havola ko'rinishiga keltiramiz */
-  .sc-collapse :deep(.n-collapse-item__header) {
+  /* ---- Modal: xodimlar ro'yxati ---- */
+  .sc-list-total {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--fig-text-tertiary);
+    white-space: nowrap;
+  }
+  .sc-list-wrap {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 12px;
+  }
+  .sc-list-search {
+    flex: none;
+  }
+  .sc-list-rows {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    margin: 0 -4px;
+  }
+  .sc-list-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 8px;
+    border-radius: 10px;
+    border-bottom: 0.8px solid var(--fig-surface-line, var(--fig-blue-300));
+    transition: background 0.12s ease;
+  }
+  .sc-list-row:last-child {
+    border-bottom: 0;
+  }
+  .sc-list-row:hover {
+    background: var(--fig-bg-secondary);
+  }
+  .sc-list-idx {
+    flex: none;
+    min-width: 22px;
+    padding-top: 9px;
     font-size: 12px;
-    color: var(--fig-text-brand);
+    font-variant-numeric: tabular-nums;
+    color: var(--fig-text-tertiary);
+    text-align: right;
+  }
+  /* Avatar — rasm o'rniga bosh harflar (xodimlar ro'yxati uslubi). */
+  .sc-list-avatar {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    color: #fff;
+    user-select: none;
+  }
+  .sc-list-avatar--red {
+    background: var(--fig-icon-red);
+  }
+  .sc-list-avatar--amber {
+    background: var(--fig-icon-amber);
+  }
+  .sc-list-avatar--green {
+    background: var(--fig-icon-green);
+  }
+  .sc-list-avatar--indigo {
+    background: var(--fig-icon-indigo);
+  }
+  .sc-list-main {
+    flex: 1;
+    min-width: 0;
+    padding-top: 1px;
+  }
+  .sc-list-fio {
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 18px;
+    color: var(--fig-text-primary);
+  }
+  .sc-list-pos {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--fig-text-tertiary);
+    margin-top: 1px;
+  }
+  .sc-list-detail {
+    font-size: 11.5px;
+    line-height: 16px;
+    color: var(--fig-text-secondary);
+    margin-top: 3px;
+  }
+  .sc-list-summa {
+    flex: none;
+    padding-top: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--fig-text-primary);
+    white-space: nowrap;
+    text-align: right;
+  }
+  .sc-list-empty {
+    padding: 40px 16px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--fig-text-tertiary);
   }
 </style>

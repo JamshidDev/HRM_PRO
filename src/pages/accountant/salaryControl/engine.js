@@ -14,18 +14,35 @@
 import { positionCategory, positionGroup, pinAgeSex } from './helpers.js'
 
 // —— Konstantalar (HUJJAT §12/§14) ————————————————————————————————————————
+// 🔧 BUXGALTERIYA: bu qiymatlar auditlik uchun markazda. Rasmiy hujjat/sana bilan
+// davriy tasdiqlang (MHTEKM, tarmoq o'rtachasi vaqt bilan o'zgaradi).
 export const CONST = {
-  MW_AUG: 1271000, // MHTEKM 2025-08-01 dan
-  MW_SEP: 1360000, // MHTEKM 2026-09-01 dan
-  SECTOR: 11070000, // "Transport va saqlash" tarmog'i o'rtacha (2026 1-yarim yil)
-  IMTIYOZ_278: 5363617, // 278 moddiy yordamning soliqdan ozod chegarasi
-  TAX_RATE: 0.12, // JShDS + INPS
+  MW_AUG: 1271000, // MHTEKM — 2025-09-01 dan amalda (2026-09 gacha). Manba: tasdiqlanadi.
+  MW_SEP: 1360000, // MHTEKM — 2026-09-01 dan amalda. Manba: tasdiqlanadi.
+  SECTOR: 11070000, // "Transport va saqlash" tarmog'i o'rtacha ish haqi (2026 1-yarim yil). Manba: Stat. qo'mita — davriy yangilang.
+  IMTIYOZ_278: 5363617, // 278 moddiy yordamning soliqdan ozod chegarasi (BHM×N). Yil bilan o'zgaradi.
+  TAX_RATE: 0.12, // JShDS 12% (asosiy stavka). INPS alohida — 10-tekshiruv izohiga qarang.
   BONUS_NORM_INSPECTOR: 0.6, // vagon kuzatuvchi mukofot me'yori
   BONUS_NORM_OTHER: 1.0, // qolganlar mukofot me'yori
-  DED_LIMIT: 0.5, // ushlanmalar standart chegarasi
+  DED_LIMIT: 0.5, // ushlanmalar standart chegarasi (MK 164-modda)
   DED_LIMIT_ALIMENT: 0.7, // aliment/ijro hujjati bo'lsa
   RETIRE_F: 54, // ayollar pensiya yoshi
   RETIRE_M: 60 // erkaklar pensiya yoshi
+}
+
+// —— Tekshiruv bo'sag'alari (computeFindings) — markazda, izohli (auditlik). ———
+// 🔧 BUXGALTERIYA bilan kelishilib sozlanadi (ilgari funksiya ichida tarqoq edi).
+export const CHK = {
+  BONUS_TOLERANCE: 1.05, // 1-t: mukofot me'yordan necha barobar oshsa belgilanadi
+  BONUS_MIN_DIFF: 300000, // 1/3-t: e'tiborli minimal farq (so'm) — shovqin filtri
+  BONUS_HIGH_DIFF: 1000000, // 1-t: "Yuqori" darajaga o'tish farqi
+  OKLAD_OVER_RATIO: 1.25, // 3-t: vaqtbay haq (004) oklad ustidan necha barobar
+  COMBINE_RATIO: 0.45, // 4-t: o'rindoshlik (007) / oklad ulushi
+  AID_FULL_RATIO: 0.99, // 8-t: moddiy yordam (278) / oklad ("to'liq oklad miqdorida")
+  UNION_RATE: 0.01, // 9-t: kasaba badali (902) — MHTF ning 1% i (1C: "взносов 1%")
+  UNION_MIN_DIFF: 100, // 9-t: badal farqi bardoshi (so'm)
+  TAX_MIN_DIFF: 1000, // 10-t: soliq kam ushlangani bardoshi (so'm)
+  DED_OVER_SHARE: 0.505 // 11-t: soliqdan keyin ushlanmalar ulushi chegarasi (50% + bardosh)
 }
 
 // Davr uchun MHTEKM (2026-09 dan 1 360 000).
@@ -110,7 +127,9 @@ export function buildPeople(emps = []) {
     p.b011 = V(p, '011')
     p.oth = num(p.tot) - p.b004 - p.b011
     p.g = positionGroup(p.lav)
-    p.cat = positionCategory(p.lav)
+    // Ishonchli toifa backenddan (positions.category) kelsa — o'shani, aks holda
+    // erkin matndan (fallback). seed() `e.cat`ni ko'chiradi.
+    p.cat = p.cat || positionCategory(p.lav)
   }
   return people
 }
@@ -187,7 +206,7 @@ export function evalRules(emps = [], { lists = {}, cap = null, fmt } = {}) {
     for (const rule of RULES) {
       const s = V(e, rule.k)
       if (!s) continue
-      const c = positionCategory(e.lav)
+      const c = e.cat || positionCategory(e.lav)
       let res
       let why
       if (rule.r === 'list') {
@@ -232,12 +251,16 @@ export function evalRules(emps = [], { lists = {}, cap = null, fmt } = {}) {
           why = 'Boshqaruv/mutaxassis toifasiga kirmaydi'
         }
       } else if (rule.r === 'cap') {
+        // ⚠️ Backend `e.fot = e.tot` (jami hisoblangan, mukofot/yordam bilan) — bu
+        // «oylik ish haqi» EMAS. Tarif-setka chegarasi bilan solishtirish uchun REAL
+        // MHTF (mhtfFot: jami − MHTFga kirmaydiganlar) ishlatiladi.
+        const fotReal = mhtfFot(e)
         if (!cap) {
           res = 'Qo‘shimcha tekshirish'
           why = 'Tarif setkasi chegarasi kiritilmagan'
-        } else if (num(e.fot) > cap) {
+        } else if (fotReal > cap) {
           res = 'Asossiz'
-          why = `Oylik ${f(e.fot)} > chegara ${f(cap)}`
+          why = `Oylik (MHTF) ${f(fotReal)} > chegara ${f(cap)}`
         } else {
           res = 'Asosli'
           why = 'Chegara doirasida'
@@ -287,7 +310,7 @@ export function computeFindings(emps = [], { fmt } = {}) {
     const v004 = V(e, '004')
     const v011 = V(e, '011')
     const v032 = V(e, '032')
-    const cat = positionCategory(e.lav)
+    const cat = e.cat || positionCategory(e.lav)
     const isInspector = /kuzatuvchi/i.test(e.lav || '')
 
     // 1. Mukofot ishlangan vaqtga mos emas: 011 > 004×me'yor×1.05 & farq>300k.
@@ -295,9 +318,9 @@ export function computeFindings(emps = [], { fmt } = {}) {
       const norm = isInspector ? CONST.BONUS_NORM_INSPECTOR : CONST.BONUS_NORM_OTHER
       const expected = v004 * norm
       const farq = v011 - expected
-      if (v011 > expected * 1.05 && farq > 300000) {
+      if (v011 > expected * CHK.BONUS_TOLERANCE && farq > CHK.BONUS_MIN_DIFF) {
         add(
-          farq > 1000000 ? 'Yuqori' : 'O‘rta',
+          farq > CHK.BONUS_HIGH_DIFF ? 'Yuqori' : 'O‘rta',
           'Mukofot ishlangan vaqtga mos emas',
           e,
           v011,
@@ -324,13 +347,13 @@ export function computeFindings(emps = [], { fmt } = {}) {
     //    koeffitsientini (~1.1) o'z ichiga oladi (median 004/oklad≈1.07) — ×1.001 bilan
     //    xodimlarning yarmi yonib ketardi. Shuning uchun sezilarli chetlanish (25% + 300k
     //    farq) olinadi. 🔧 Buxgalteriya bilan aniq koeffitsientni kelishib sozlang.
-    if (ok > 0 && v004 > ok * 1.25 && v004 - ok > 300000) {
+    if (ok > 0 && v004 > ok * CHK.OKLAD_OVER_RATIO && v004 - ok > CHK.BONUS_MIN_DIFF) {
       add('O‘rta', 'Vaqtbay haq okladdan sezilarli ortiq', e, v004 - ok, `Vaqtbay haq (004) ${f(v004)} — oklad ${f(ok)} ning ${Math.round((v004 / ok) * 100)}% i (farq ${f(v004 - ok)}).`, "Tabel soatlari, tarif koeffitsienti va qo‘shimcha haqlarni tekshiring.")
     }
 
     // 4. O'rindoshlik/qo'shimcha ish (007) yuqori: 007 ≥ oklad×0.45.
     const v007 = V(e, '007')
-    if (ok > 0 && v007 >= ok * 0.45) {
+    if (ok > 0 && v007 >= ok * CHK.COMBINE_RATIO) {
       add('O‘rta', "O'rindoshlik (007) yuqori", e, v007, `Qo‘shimcha ish haqi (007) ${f(v007)} — okladning ${Math.round((v007 / ok) * 100)}% i.`, "O‘rindoshlik shartnomasi va hajmini tekshiring.")
     }
 
@@ -354,7 +377,7 @@ export function computeFindings(emps = [], { fmt } = {}) {
 
     // 8. Moddiy yordam to'liq oklad miqdorida: 278 ≥ oklad×0.99.
     const v278 = V(e, '278')
-    if (ok > 0 && v278 >= ok * 0.99) {
+    if (ok > 0 && v278 >= ok * CHK.AID_FULL_RATIO) {
       add('Past', 'Moddiy yordam (278) — to‘liq oklad miqdorida', e, v278, `Moddiy yordam (278) ${f(v278)} — oklad ${f(ok)} ning ${Math.round((v278 / ok) * 100)}% i.`, "278 asosini (ariza/buyruq) va imtiyoz chegarasini tekshiring.")
     }
 
@@ -365,8 +388,8 @@ export function computeFindings(emps = [], { fmt } = {}) {
     const v902 = D(e, '902')
     const mhtf = mhtfFot(e)
     if (v902 > 0 && mhtf > 0) {
-      const expected = mhtf * 0.01
-      if (Math.abs(v902 - expected) > 100) {
+      const expected = mhtf * CHK.UNION_RATE
+      if (Math.abs(v902 - expected) > CHK.UNION_MIN_DIFF) {
         add('O‘rta', 'Kasaba badali xato (902)', e, v902, `Kasaba uyushma badali (902) ${f(v902)} — MHTF (${f(mhtf)}) ning 1% i (${f(expected)}) bilan mos emas.`, "Badal bazasi va foizini tekshiring.")
       }
     }
@@ -380,7 +403,7 @@ export function computeFindings(emps = [], { fmt } = {}) {
     if (base > 0) {
       const expected = base * CONST.TAX_RATE
       const farq = expected - taxInps
-      if (farq > 1000) {
+      if (farq > CHK.TAX_MIN_DIFF) {
         add('Yuqori', "Daromad solig'i kam ushlangan", e, farq, `Soliq+INPS ${f(taxInps)} — soliqqa tortiladigan (${f(base)}) ning 12% i (${f(expected)}) dan ${f(farq)} kam.`, "Imtiyozlar va soliq bazasini qayta hisoblang.")
       }
     }
@@ -390,15 +413,16 @@ export function computeFindings(emps = [], { fmt } = {}) {
     const afterTax = num(e.tot) - taxInps
     if (otherDed > 0 && afterTax > 0) {
       const share = otherDed / afterTax
-      if (share > 0.505) {
+      if (share > CHK.DED_OVER_SHARE) {
         add('O‘rta', 'Ushlanmalar 50% dan oshgan', e, otherDed, `Soliqdan keyingi summadan ushlanmalar (aliment, ijro, kredit, 875) ${Math.round(share * 100)}% i.`, "Ushlanma asos hujjatlarini va chegarani tekshiring.")
       }
     }
 
-    // 12. Bitta JSHSHIR — bir necha qator.
+    // 12. Bitta JSHSHIR — bir necha qator. summa=0: bu STRUKTURAVIY belgi (dubl/ikki
+    //     lavozim), pul «buzilish miqdori» EMAS — «shubhali summa» KPI'ни shishirmasin.
     if (e.j && (pinCount.get(e.j) || 0) > 1 && !dupReported.has(e.j)) {
       dupReported.add(e.j)
-      add('Yuqori', 'Bitta JSHSHIR — bir necha qator', e, e.tot, `Bitta JSHSHIR vedomostda ${pinCount.get(e.j)} marta uchraydi.`, "Ikki lavozim/korxona yoki dubl yozuv ekanini aniqlang.")
+      add('Yuqori', 'Bitta JSHSHIR — bir necha qator', e, 0, `Bitta JSHSHIR vedomostda ${pinCount.get(e.j)} marta uchraydi.`, "Ikki lavozim/korxona yoki dubl yozuv ekanini aniqlang.")
     }
 
     // 13 va 14 — NDFL-4/5 va INPS hisoboti kerak (rc ulanganda qo'shiladi).
@@ -488,7 +512,7 @@ export function computeRisks(emps = [], kpi = {}, { year, month, fmt } = {}) {
     { b: "1-blok: To‘lov muddatlari va davriyligi", n: 3, t: "Dam olish kuni arafasida to‘lanmaslik", st: 'na', f: "To‘lov sanalari ma’lumoti yo‘q.", a: "To‘lov kuni dam olish/bayramga to‘g‘ri kelsa, oldingi ish kunida to‘lash. To‘lov kalendarini yuriting." },
     { b: "2-blok: Kamsitish va tariflarga nomuvofiqlik", n: 4, t: "Bir xil lavozimga turlicha maosh", st: g4.length ? 'chk' : 'ok', f: g4.length ? `${g4.length} ta lavozimda turlicha oklad: ` + g4.slice(0, 4).map((g) => `${g.n} — ${g.ok.length} xil (${mlnf(g.ok[0])}–${mlnf(g.ok[g.ok.length - 1])})`).join('; ') + '.' : "Bir xil lavozimlarda oklad bir xil.", a: "Farq razryad, toifa yoki staj bilan asoslanganini shtat jadvali va buyruqlar bilan tekshiring." },
     { b: "2-blok: Kamsitish va tariflarga nomuvofiqlik", n: 5, t: "MHTEKMdan kam to‘lanishi", st: low5.length ? 'bad' : 'ok', f: low5.length ? `${low5.length} xodim oklad MHTEKM (${f(MW)} so‘m) dan kam.` : `Eng kichik oklad ${mlnf(minOk)} — MHTEKM (${f(MW)} so‘m) dan ${minOk ? (minOk / MW).toFixed(1) : 0} barobar.`, a: "2026-yil 1-sentyabrdan MHTEKM 1 360 000 so‘m — sentyabr hisobida ham tekshiring." },
-    { b: "2-blok: Kamsitish va tariflarga nomuvofiqlik", n: 6, t: "Shtat jadvalidan kam to‘lanishi", st: r6.length ? 'chk' : 'ok', f: r6.length ? `${r6.length} xodim 160+ soat ishlagan, lekin vaqtbay haqi okladdan kam (${r6.map((e) => short(e.fio)).join(', ')}).` : "Topilmadi.", a: "Shtat jadvali bilan solishtiring; tabeldagi soatlarni tekshiring." },
+    { b: "2-blok: Kamsitish va tariflarga nomuvofiqlik", n: 6, t: "Shtat jadvalidan kam to‘lanishi", st: r6.length ? 'chk' : 'ok', f: r6.length ? `${r6.length} xodim 160+ soat ishlagan, lekin vaqtbay haqi okladdan kam.` : "Topilmadi.", a: "Shtat jadvali bilan solishtiring; tabeldagi soatlarni tekshiring." },
     { b: "3-blok: Bandlikning yashirin shakllari", n: 7, t: "Ish haqining yashirin to‘lanishi", st: avg >= CONST.SECTOR * 0.8 ? 'ok' : 'chk', f: `O‘rtacha hisoblangan ${mlnf(avg)} — “Transport va saqlash” tarmog‘ida o‘rtacha ${mlnf(CONST.SECTOR)} dan ${avg >= CONST.SECTOR ? 'yuqori' : 'past'}.`, a: "Soliq qo‘mitasi mezoni: o‘rtacha ish haqi tarmoqdan ancha past bo‘lmasligi. Oylar kesimida kuzating." },
     { b: "3-blok: Bandlikning yashirin shakllari", n: 8, t: "Mehnat shartnomasini FHSh bilan almashtirish", st: 'na', f: "NDFL-4 shartnoma turi va 047-tur to‘lovi kerak (hisobot ulangach aniqlanadi).", a: "Barcha shartnomalar Yagona milliy mehnat tizimida ro‘yxatdan o‘tganini tekshiring." },
     { b: "4-blok: Ish vaqti hisobi va ushlanmalar", n: 9, t: "Ish vaqtidan tashqari ish uchun oshirilgan haq", st: r9.length ? 'chk' : 'ok', f: r9.length ? `${r9.length} xodim me’yordan (${NORM} soat) ko‘p ishlagan, 072/073-turlar bo‘yicha to‘lov yo‘q.` : "Topilmadi.", a: "Jamlangan ish vaqti hisobi qo‘llanmagan bo‘lsa, ortiqcha soatlar ikki hissa to‘lanadi. Grafik va tabelni tekshiring." },

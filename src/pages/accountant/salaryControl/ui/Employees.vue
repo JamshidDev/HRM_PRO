@@ -5,12 +5,24 @@
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore } from '@/store/modules/index.js'
   import { money, normText } from '../helpers.js'
-  import { SECTION } from '../explain.js'
+  import { SECTION, COLUMN } from '../explain.js'
   import Card from './Card.vue'
   import ScSkeleton from './ScSkeleton.vue'
+  import InfoHint from './InfoHint.vue'
 
   const { t } = i18n.global
   const store = useSalaryControlStore()
+
+  // Ustun sarlavhasi + (i) izoh (COLUMN dan) — har ustun "qanday hisoblangani" tushunarli.
+  const th = (label, key) =>
+    COLUMN[key]
+      ? () =>
+          h(
+            'span',
+            { style: 'display:inline-flex;align-items:center;gap:4px' },
+            [label, h(InfoHint, { text: COLUMN[key] })]
+          )
+      : label
 
   // —— Qidiruv ——————————————————————————————————————————————————————————
   const q = ref('')
@@ -45,7 +57,7 @@
 
   const columns = computed(() => [
     {
-      title: t('salaryControl.risk.table.fio'),
+      title: th(t('salaryControl.risk.table.fio'), 'fio'),
       key: 'fio',
       minWidth: 240,
       fixed: 'left',
@@ -57,14 +69,14 @@
           : normText(row.fio)
     },
     {
-      title: t('salaryControl.risk.table.position'),
+      title: th(t('salaryControl.risk.table.position'), 'lav'),
       key: 'lav',
       minWidth: 200,
       ellipsis: { tooltip: true },
       render: (row) => row.lav || t('salaryControl.common.notSet')
     },
     {
-      title: t('salaryControl.employees.oklad'),
+      title: th(t('salaryControl.employees.oklad'), 'ok'),
       key: 'ok',
       align: 'right',
       minWidth: 120,
@@ -73,7 +85,7 @@
       render: moneyCell('ok')
     },
     {
-      title: t('salaryControl.employees.hours'),
+      title: th(t('salaryControl.employees.hours'), 't'),
       key: 't',
       align: 'right',
       minWidth: 120,
@@ -82,7 +94,7 @@
       render: (row) => (row.t ? row.t : '—')
     },
     {
-      title: t('salaryControl.employees.b004'),
+      title: th(t('salaryControl.employees.b004'), 'b004'),
       key: 'b004',
       align: 'right',
       minWidth: 120,
@@ -91,7 +103,7 @@
       render: moneyCell('b004')
     },
     {
-      title: t('salaryControl.employees.b011'),
+      title: th(t('salaryControl.employees.b011'), 'b011'),
       key: 'b011',
       align: 'right',
       minWidth: 120,
@@ -100,7 +112,7 @@
       render: moneyCell('b011')
     },
     {
-      title: t('salaryControl.employees.other'),
+      title: th(t('salaryControl.employees.other'), 'oth'),
       key: 'other',
       align: 'right',
       minWidth: 120,
@@ -108,7 +120,7 @@
       render: (row) => (row.other ? money(row.other) : '—')
     },
     {
-      title: t('salaryControl.common.total'),
+      title: th(t('salaryControl.common.total'), 'tot'),
       key: 'tot',
       align: 'right',
       minWidth: 140,
@@ -117,7 +129,7 @@
       render: (row) => h('b', money(row.tot))
     },
     {
-      title: t('salaryControl.employees.card'),
+      title: th(t('salaryControl.employees.card'), 'card'),
       key: 'card',
       align: 'right',
       minWidth: 120,
@@ -125,7 +137,7 @@
       render: moneyCell('card')
     },
     {
-      title: t('salaryControl.employees.ytd'),
+      title: th(t('salaryControl.employees.ytd'), 'ytd'),
       key: 'ytd',
       align: 'right',
       minWidth: 120,
