@@ -3362,6 +3362,8 @@
     "holidaysCount": "Праздничные дни",
     "daysCount": "Дней в месяце",
     "statusOpen": "Открыт",
+    "allDepartments": "Все отделы",
+    "saveHint": "Изменений пока нет — сначала заполните ячейки",
     "filledWorkers": "Заполнено",
     "filledCount": "{count} сотр.",
     "notFilled": "Не заполнен",

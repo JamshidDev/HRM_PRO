@@ -8,8 +8,11 @@
     Delete20Regular,
     Dismiss20Regular,
     Eraser20Filled,
+    CheckmarkCircle16Filled,
     LockClosed20Filled,
     LockOpen20Filled,
+    LockOpen16Regular,
+    Send16Regular,
     Eye16Filled,
     Info16Regular,
     Info20Filled,
@@ -223,16 +226,18 @@
     }
     else store._index()
   }
+  // «Aprel 2026» — `store.month` 0 dan boshlanadi.
+  const periodText = computed(() =>
+    `${Utils.monthList.find((m) => m.id - 1 === store.month)?.name ?? ''} ${store.year ?? ''}`.trim()
+  )
+
   // O'ng kartochkadagi tabel ma'lumotlari — hammasi mavjud store holatidan.
   const timesheetInfo = computed(() => {
     const holidays = store.days.filter((d) => d.is_holiday).length
     const locked = Object.keys(store.timekeeperLocks).length
     return [
       { label: t('content.organization'), value: store.organization?.name ?? '—' },
-      {
-        label: t('timesheetPage.periodLabel'),
-        value: `${Utils.monthList.find((m) => m.id - 1 === store.month)?.name ?? ''} ${store.year ?? ''}`.trim()
-      },
+      { label: t('timesheetPage.periodLabel'), value: periodText.value },
       { label: t('timesheetPage.daysCount'), value: store.days.length },
       { label: t('timesheetPage.holidaysCount'), value: holidays },
       { label: t('timesheetPage.workersCount'), value: store.totalItems },
@@ -249,18 +254,25 @@
   const confirmationTagType = (id) =>
     id === 3 ? 'success' : id === 4 ? 'error' : id === 2 ? 'info' : 'warning'
 
+  // Holat chipi — ro'yxatdagi «Tabel holati» ustuni bilan bir xil rang va ikonka (`Table.vue` `STATE`).
   const timesheetStatus = computed(() => {
     if (store.lock.status) {
-      return { text: t('timesheetPage.accessFinished'), type: 'error' }
+      return { text: t('timesheetPage.accessFinished'), type: 'success', tone: 'green', icon: CheckmarkCircle16Filled }
     }
     if (store.lock.sent_at && store.lock.confirmation !== 4) {
-      return { text: t('timesheetPage.accessSent'), type: 'warning' }
+      return { text: t('timesheetPage.accessSent'), type: 'info', tone: 'brand', icon: Send16Regular }
     }
     if (store.lock.locked) {
-      return { text: t('timesheetPage.lockedTag'), type: 'warning' }
+      return { text: t('timesheetPage.lockedTag'), type: 'warning', tone: 'amber', icon: LockClosed20Filled }
     }
-    return { text: t('timesheetPage.statusOpen'), type: 'success' }
+    return { text: t('timesheetPage.statusOpen'), type: 'default', tone: 'neutral', icon: LockOpen16Regular }
   })
+  const TONE_CLASS = {
+    green: 'bg-fig-chip-green text-fig-chip-green-text',
+    brand: 'bg-fig-chip-brand text-fig-chip-brand-text',
+    amber: 'bg-fig-chip-amber text-fig-chip-amber-text',
+    neutral: 'bg-fig-bg-disable text-fig-text-tertiary'
+  }
 
   const departmentNames = (row) =>
     (row.departments ?? [])
@@ -918,24 +930,27 @@
     if (previewActive.value) store.payload.isClearing = false
   }
 
-  const orgOptions = computed(() =>
-    store.organization ? [{ id: store.organization.id, name: store.organization.name }] : []
-  )
-  const yearOptions = computed(() => {
-    const y = store.year || dayjs().year()
-    return [y - 1, y, y + 1].map((v) => ({ label: String(v), value: v }))
-  })
-  const monthOptions = computed(() =>
-    Utils.monthList.map((m) => ({ label: m.name, value: m.id - 1 }))
-  )
 </script>
 
 <template>
   <div class="ts-root">
-    <!-- ── Filtrlar: maketda yorliq maydon USTIDA ─────────────────────────── -->
+    <!-- ── Yuqori panel: sarlavha (qaysi tabel) → tablar → bo'lim → amallar ── -->
+    <!-- Tashkilot / yil / oy ilgari o'chiq selectlar edi (o'zgartirib bo'lmaydi) —
+         endi oddiy sarlavha: tashkilot nomi, davr va holat chipi. -->
     <div class="ts-filters">
-      <!-- Tablar korxona tanlovidan OLDIN, SHU qatorda. `segment` — tugma
-           ko'rinishidagi tab; yorliqli maydonlar bilan pastdan tekislanadi. -->
+      <div class="ts-title">
+        <span :title="store.organization?.name" class="ts-title-name">
+          {{ store.organization?.name || '—' }}
+        </span>
+        <span class="ts-title-meta">
+          <span>{{ periodText }}</span>
+          <span :class="TONE_CLASS[timesheetStatus.tone]" class="ts-state-chip">
+            <n-icon :component="timesheetStatus.icon" size="14" />
+            {{ timesheetStatus.text }}
+          </span>
+        </span>
+      </div>
+
       <UISegmentTabs
         v-model="activeTab"
         :tabs="mainTabs"
@@ -943,25 +958,13 @@
         @update:model-value="onTabChange"
       />
 
-      <div class="ts-field">
-        <n-select
-          :options="orgOptions"
-          :placeholder="$t('content.workplace')"
-          :value="store.organizationId"
-          class="ts-org-select"
-          disabled
-          label-field="name"
-          value-field="id"
-        />
-      </div>
-      <div class="ts-field">
+      <div v-show="activeTab === 'grid'" class="ts-field">
         <n-select
           v-model:value="store.params.department_id"
-          :disabled="activeTab === 'timekeepers'"
           :loading="store.departmentLoading"
           :menu-props="{ class: 'ts-dep-menu' }"
           :options="store.departmentOptions"
-          :placeholder="$t('documentPage.form.department')"
+          :placeholder="$t('timesheetPage.allDepartments')"
           :virtual-scroll="false"
           class="ts-department-select"
           clearable
@@ -971,25 +974,9 @@
           @update:value="store.applyFilters"
         />
       </div>
-      <div class="ts-field">
-        <n-select
-          :options="yearOptions"
-          :placeholder="$t('content.year')"
-          :value="store.year"
-          disabled
-        />
-      </div>
-      <div class="ts-field">
-        <n-select
-          :options="monthOptions"
-          :placeholder="$t('content.month')"
-          :value="store.month"
-          disabled
-        />
-      </div>
 
       <div class="ts-filters-actions">
-        <n-button secondary type="error" @click="onClose">
+        <n-button secondary @click="onClose">
           <template #icon>
             <n-icon :component="Dismiss20Regular" />
           </template>
@@ -1006,18 +993,25 @@
           </template>
           {{ lockedActionLabel }}
         </n-button>
-        <n-button
-          v-else-if="activeTab === 'grid'"
-          :loading="store.saveLoading"
-          :disabled="!pendingCount"
-          type="primary"
-          @click="onSave"
-        >
-          <template #icon>
-            <n-icon :component="Save20Filled" />
+        <!-- O'chiq «Saqlash» sababini tooltip aytadi (o'chiq tugma hover'ni ushlamaydi — span ichida). -->
+        <n-tooltip v-else-if="activeTab === 'grid'" :disabled="Boolean(pendingCount)">
+          <template #trigger>
+            <span class="inline-flex">
+              <n-button
+                :loading="store.saveLoading"
+                :disabled="!pendingCount"
+                type="primary"
+                @click="onSave"
+              >
+                <template #icon>
+                  <n-icon :component="Save20Filled" />
+                </template>
+                {{ $t('content.save') }}{{ pendingCount ? ` (${pendingCount})` : '' }}
+              </n-button>
+            </span>
           </template>
-          {{ $t('content.save') }}{{ pendingCount ? ` (${pendingCount})` : '' }}
-        </n-button>
+          {{ $t('timesheetPage.saveHint') }}
+        </n-tooltip>
       </div>
     </div>
 
@@ -2321,18 +2315,48 @@
   }
   .ts-filters {
     display: flex;
-    /* Maydonlarda yorliq USTIDA — tablar ular bilan pastdan tekislanadi. */
-    align-items: flex-end;
+    align-items: center;
     gap: 16px;
     flex-shrink: 0;
+    /* Bo'lim nomlari uzun — keng maydon. */
     .ts-field {
-      width: 180px;
-    }
-    /* Korxona va bo'lim nomlari uzun — kengroq maydon. */
-    .ts-field:has(.ts-org-select),
-    .ts-field:has(.ts-department-select) {
       width: 300px;
     }
+  }
+  /* Sarlavha: tashkilot nomi (qalin) + ostida davr va holat chipi. */
+  .ts-title {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    max-width: 420px;
+  }
+  .ts-title-name {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24px;
+    color: var(--fig-text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ts-title-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--fig-text-secondary);
+  }
+  .ts-state-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    white-space: nowrap;
   }
 
   /* ── Panjara kartasi ──────────────────────────────────────────────────── */

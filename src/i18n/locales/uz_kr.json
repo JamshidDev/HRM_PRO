@@ -3097,6 +3097,8 @@
     "holidaysCount": "Байрам кунлари",
     "daysCount": "Ой кунлари",
     "statusOpen": "Очиқ",
+    "allDepartments": "Барча бўлимлар",
+    "saveHint": "Ҳали ўзгариш йўқ — аввал катакларни тўлдиринг",
     "filledWorkers": "Тўлдирилган",
     "filledCount": "{count} та ходим",
     "notFilled": "Тўлдирилмаган",

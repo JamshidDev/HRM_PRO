@@ -3374,6 +3374,8 @@
     "holidaysCount": "Bayram kunlari",
     "daysCount": "Oy kunlari",
     "statusOpen": "Ochiq",
+    "allDepartments": "Barcha bo'limlar",
+    "saveHint": "Hali o'zgarish yo'q — avval kataklarni to'ldiring",
     "filledWorkers": "To'ldirilgan",
     "filledCount": "{count} ta xodim",
     "notFilled": "To'ldirilmagan",

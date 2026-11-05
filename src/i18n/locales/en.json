@@ -3354,6 +3354,8 @@
     "holidaysCount": "Holidays",
     "daysCount": "Days in month",
     "statusOpen": "Open",
+    "allDepartments": "All departments",
+    "saveHint": "No changes yet — fill in some cells first",
     "filledWorkers": "Filled",
     "filledCount": "{count} employees",
     "notFilled": "Not filled",
