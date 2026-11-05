@@ -33,6 +33,14 @@
     store.params.search = null
     store._index()
   })
+
+  // Tabel oynasi yopilganda ro'yxat yangilanadi — «To'ldirilgan» soni va holat eskirib qolmasin.
+  watch(
+    () => timesheetDepartmentStore.visible,
+    (v, prev) => {
+      if (prev && !v) store._index()
+    }
+  )
 </script>
 
 <template>
