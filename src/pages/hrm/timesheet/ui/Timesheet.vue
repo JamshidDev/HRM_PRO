@@ -283,17 +283,11 @@
 
   const timekeeperColumns = computed(() => [
     { key: 'worker', title: t('content.worker'), minWidth: 260 },
-    {
-      key: 'departments',
-      title: t('content.departments'),
-      // Ichida faqat kichkina badge — keng ustun bo'sh joy bo'lib qolardi.
-      width: 110,
-      align: 'center'
-    },
+    { key: 'departments', title: t('content.departments'), minWidth: 220 },
     // OXIRGI ustun = amal ustuni: faqat switch. `storage-key` berilmagani uchun
     // `UITable` o'zining `__actions` ustunini qo'shmaydi, ya'ni ortiqcha bo'sh
     // ustun chiqmaydi.
-    { key: 'access', title: '', width: 96, align: 'center' }
+    { key: 'access', title: t('timesheetPage.accessColumn'), minWidth: 96, align: 'center' }
   ])
 
   const changeTimekeeperPage = (v) => {
@@ -1044,6 +1038,11 @@
     <!-- ── Tabelchilar: boshqa sahifalardagi kabi `UITable` ─────────────── -->
     <div v-if="activeTab === 'timekeepers'" class="ts-body ts-keepers">
       <div class="ts-keepers-table">
+        <!-- Switch nima qilishi — jadval ustida bir qator izoh. -->
+        <p class="ts-keepers-hint">
+          <n-icon :component="Info16Regular" size="16" />
+          {{ $t('timesheetPage.accessHint') }}
+        </p>
         <UITable
           :columns="timekeeperColumns"
           :data="store.timekeeperList"
@@ -1066,33 +1065,40 @@
             />
           </template>
 
-          <!-- Faqat SONI — ro'yxat uzun bo'lsa jadvalni cho'zib yuborardi.
-             To'liq ro'yxat tooltipda qoladi. -->
+          <!-- Bo'lim nomlari matn bo'lib (ilgari faqat son badge'i edi); uzun bo'lsa kesiladi, to'liq — title'da. -->
           <template #cell-departments="{ row }">
-            <n-badge
-              :show-zero="true"
-              :title="departmentNames(row)"
-              :value="row.departments?.length ?? 0"
-              class="ts-dep-badge"
-            />
+            <span v-if="row.departments?.length" :title="departmentNames(row)" class="ts-keeper-deps">
+              {{ departmentNames(row) }}
+            </span>
+            <span v-else class="text-textColor3">{{ $t('timesheetPage.noDepartments') }}</span>
+          </template>
+
+          <template #empty>
+            <n-empty :description="$t('timesheetPage.timekeeperEmpty')" class="py-10" />
           </template>
 
           <template #cell-access="{ row }">
-            <n-switch
-              :class="['ts-access-switch', isOpen(row) ? 'is-open' : 'is-locked']"
-              :disabled="timesheetLocked"
-              :title="$t('timesheetPage.accessColumn')"
-              :value="isOpen(row)"
-              size="large"
-              @update:value="(v) => onToggleAccess(row, v)"
-            >
-              <template #checked-icon>
-                <n-icon :component="LockOpen20Filled" />
+            <n-tooltip>
+              <template #trigger>
+                <span class="inline-flex">
+                  <n-switch
+                    :class="['ts-access-switch', isOpen(row) ? 'is-open' : 'is-locked']"
+                    :disabled="timesheetLocked"
+                    :value="isOpen(row)"
+                    size="large"
+                    @update:value="(v) => onToggleAccess(row, v)"
+                  >
+                    <template #checked-icon>
+                      <n-icon :component="LockOpen20Filled" />
+                    </template>
+                    <template #unchecked-icon>
+                      <n-icon :component="LockClosed20Filled" />
+                    </template>
+                  </n-switch>
+                </span>
               </template>
-              <template #unchecked-icon>
-                <n-icon :component="LockClosed20Filled" />
-              </template>
-            </n-switch>
+              {{ $t('timesheetPage.accessHint') }}
+            </n-tooltip>
           </template>
         </UITable>
       </div>
@@ -1102,9 +1108,10 @@
         <div class="ts-info-card">
           <div class="ts-info-head">
             <span class="ts-info-title">{{ $t('timesheetPage.timesheetInfo') }}</span>
-            <n-tag :bordered="false" :type="timesheetStatus.type" round size="small">
+            <span :class="TONE_CLASS[timesheetStatus.tone]" class="ts-state-chip">
+              <n-icon :component="timesheetStatus.icon" size="14" />
               {{ timesheetStatus.text }}
-            </n-tag>
+            </span>
           </div>
           <div v-for="row in timesheetInfo" :key="row.label" class="ts-info-row">
             <span class="ts-info-label">{{ row.label }}</span>
@@ -2201,13 +2208,14 @@
   .ts-keepers-table {
     display: flex;
     flex-direction: column;
-    flex: 1 1 50%;
+    flex: 1 1 auto;
     min-width: 0;
     min-height: 0;
   }
   .ts-keepers-side {
     display: flex;
-    flex: 1 1 50%;
+    /* Ma'lumot kartochkasi ixcham — jadval qolgan kenglikni oladi (ilgari 50/50, o'ng tomon bo'sh qolardi). */
+    flex: 0 0 380px;
     flex-direction: column;
     gap: 16px;
     min-width: 0;
@@ -2332,13 +2340,21 @@
   .ts-approver:last-child {
     border-bottom: none;
   }
-  /* Bo'limlar soni — rangsiz, faqat chegara; raqam qalin. */
-  .ts-dep-badge :deep(.n-badge-sup) {
-    border: 1px solid var(--table-border);
-    background-color: transparent;
-    box-shadow: none;
-    color: var(--fig-text-primary);
-    font-weight: 600;
+  /* Tabelchi bo'limlari — bir qatorda, uzun bo'lsa kesiladi. */
+  .ts-keeper-deps {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ts-keepers-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    margin: 0 0 12px;
+    font-size: 13px;
+    color: var(--fig-text-tertiary);
   }
   /* Ruxsat switch'i: rail — xira ton, tugmacha — to'q rang, qulf ikonkasi OQ.
      Standart holatda ikonka oq tugmacha ichida qora bo'lib chiqardi. */
