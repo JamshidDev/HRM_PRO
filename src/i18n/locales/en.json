@@ -7234,7 +7234,10 @@
       "additionalInfo": "Additional information (if any)",
       "noneHint": "If empty, «Mavjud emas» is written",
       "registryDate": "Registry date",
-      "registryNumber": "Registry number"
+      "registryNumber": "Registry number",
+      "pinInvalid": "PINFL must be 14 digits with a valid check digit",
+      "stirInvalid": "TIN must be 9 digits",
+      "workerPinHint": "Taken from the profile if present"
     },
     "name": "Employee documents",
     "createTitle": "New document",

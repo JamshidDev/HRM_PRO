@@ -7431,7 +7431,10 @@
       "additionalInfo": "Qo‘shimcha ma’lumotlar (agar mavjud bo‘lsa)",
       "noneHint": "Bo‘sh qolsa «Mavjud emas» deb yoziladi",
       "registryDate": "Reyestrga olingan sana",
-      "registryNumber": "Reyestr raqami"
+      "registryNumber": "Reyestr raqami",
+      "pinInvalid": "JShShIR 14 ta raqam va to‘g‘ri nazorat raqamidan iborat bo‘lishi kerak",
+      "stirInvalid": "STIR 9 ta raqamdan iborat bo‘lishi kerak",
+      "workerPinHint": "Profilda bo‘lsa avtomatik olinadi"
     },
     "name": "Xodim hujjatlari",
     "createTitle": "Hujjat tuzish",

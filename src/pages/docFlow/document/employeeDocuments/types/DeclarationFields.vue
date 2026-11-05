@@ -3,6 +3,7 @@
   import { useEmployeeDocumentStore } from '@/store/modules/index.js'
   import { useAppSetting } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
+  import { isValidPinfl, isValidStir, onlyDigits } from '@/utils/pinfl.js'
 
   // Manfaatlar to'qnashuvi deklaratsiyasiga xos maydonlar (`payload.data`); ro'yxatlar qator qo'shib to'ldiriladi.
   const store = useEmployeeDocumentStore()
@@ -20,26 +21,42 @@
     relatives: {
       title: 'employeeDocumentsPage.declaration.relatives',
       fields: [
-        { key: 'full_name', label: 'employeeDocumentsPage.declaration.fullName' },
+        { key: 'full_name', label: 'employeeDocumentsPage.declaration.fullName', required: true },
         { key: 'passport', label: 'employeeDocumentsPage.declaration.passport' },
-        { key: 'pin', label: 'employeeDocumentsPage.declaration.pin' }
+        { key: 'pin', label: 'employeeDocumentsPage.declaration.pin', check: 'pin' }
       ]
     },
     worker_companies: {
       title: 'employeeDocumentsPage.declaration.workerCompanies',
       fields: [
-        { key: 'name', label: 'employeeDocumentsPage.declaration.companyName' },
-        { key: 'stir', label: 'employeeDocumentsPage.declaration.stir' }
+        { key: 'name', label: 'employeeDocumentsPage.declaration.companyName', required: true },
+        { key: 'stir', label: 'employeeDocumentsPage.declaration.stir', check: 'stir' }
       ]
     },
     relative_companies: {
       title: 'employeeDocumentsPage.declaration.relativeCompanies',
       fields: [
-        { key: 'name', label: 'employeeDocumentsPage.declaration.companyName' },
-        { key: 'stir', label: 'employeeDocumentsPage.declaration.stir' }
+        { key: 'name', label: 'employeeDocumentsPage.declaration.companyName', required: true },
+        { key: 'stir', label: 'employeeDocumentsPage.declaration.stir', check: 'stir' }
       ]
     }
   }
+
+  // JSHSHIR/STIR ixtiyoriy, lekin kiritilsa — format tekshiriladi; nom/F.I.Sh. majburiy.
+  const CHECKS = {
+    pin: { test: isValidPinfl, max: 14, msg: 'employeeDocumentsPage.declaration.pinInvalid' },
+    stir: { test: isValidStir, max: 9, msg: 'employeeDocumentsPage.declaration.stirInvalid' }
+  }
+  const fieldRule = (f) => {
+    if (f.required) return { required: true, trigger: ['blur', 'input'], message: t('rules.requiredField') }
+    const c = CHECKS[f.check]
+    if (!c) return undefined
+    return {
+      trigger: ['blur', 'input'],
+      validator: (_, v) => !v || c.test(v) || new Error(t(c.msg))
+    }
+  }
+  const workerPinRule = fieldRule({ check: 'pin' })
 
   const addRow = (key) => {
     const row = Object.fromEntries(LISTS[key].fields.map((f) => [f.key, null]))
@@ -71,11 +88,16 @@
     </n-form-item>
   </div>
   <div class="col-span-12 md:col-span-4">
-    <n-form-item :label="$t('employeeDocumentsPage.declaration.workerPin')">
+    <n-form-item
+      :label="$t('employeeDocumentsPage.declaration.workerPin')"
+      path="data.worker_pin"
+      :rule="workerPinRule"
+    >
       <n-input
         v-model:value="store.payload.data.worker_pin"
-        :maxlength="255"
-        :placeholder="$t('employeeDocumentsPage.declaration.fromProfile')"
+        :maxlength="14"
+        :allow-input="onlyDigits"
+        :placeholder="$t('employeeDocumentsPage.declaration.workerPinHint')"
       />
     </n-form-item>
   </div>
@@ -96,14 +118,21 @@
     <div v-for="(row, idx) in data[key]" :key="idx" class="flex gap-2 items-start mb-2">
       <div class="w-6 pt-2 text-xs text-textColor3 text-center">{{ idx + 1 }}</div>
       <div class="grid grid-cols-12 gap-2 flex-1">
-        <n-input
+        <n-form-item
           v-for="f in list.fields"
           :key="f.key"
-          v-model:value="row[f.key]"
           :class="list.fields.length === 3 ? 'col-span-12 md:col-span-4' : 'col-span-12 md:col-span-6'"
-          :maxlength="f.key === 'name' ? 500 : 255"
-          :placeholder="$t(f.label)"
-        />
+          :show-label="false"
+          :path="`data.${key}[${idx}].${f.key}`"
+          :rule="fieldRule(f)"
+        >
+          <n-input
+            v-model:value="row[f.key]"
+            :maxlength="CHECKS[f.check]?.max ?? (f.key === 'name' ? 500 : 255)"
+            :allow-input="f.check ? onlyDigits : undefined"
+            :placeholder="$t(f.label)"
+          />
+        </n-form-item>
       </div>
       <n-button quaternary circle type="error" @click="removeRow(key, idx)">
         <template #icon>
