@@ -12,7 +12,7 @@
       store.previewList.forEach((item) => {
         if (item.event_date) {
           data[item.event_date] = {
-            minute: Math.ceil(item.daily_minutes || 0),
+            count: Number(item.events_count || 0),
             date: item.event_date,
             id: item.worker_id
           }
@@ -24,7 +24,7 @@
 
   const getItemByDate = (year, month, day) => {
     const date = `${year}-${month.toString().length > 1 ? month : '0' + month}-${day.toString().length > 1 ? day : '0' + day}`
-    return calendarItemData.value[date] || { minute: 0, date }
+    return calendarItemData.value[date] || { count: 0, date }
   }
 
   const onChangeMonth = ({ month, year }) => {
@@ -36,12 +36,15 @@
   }
 
   const onViewDetail = (v) => {
-    if (!v.minute) return
+    if (!v.count) return
     store._showEventsInDay(v.date, v.id)
   }
 </script>
 
 <template>
+  <n-alert type="info" class="mb-3">
+    {{ $t('turnstile.workDurationPage.eventsCalendarInfo') }}
+  </n-alert>
   <n-calendar
     :key="`${store.params.year}-${store.params.month}`"
     class="w-full min-h-[700px]! h-auto! custom-calendar"
@@ -77,9 +80,9 @@
         @click="onViewDetail(getItemByDate(year, month, date))"
       >
         <div>
-          <template v-if="getItemByDate(year, month, date)?.minute">
-            <n-button circle type="primary" size="large">
-              {{ Math.ceil(getItemByDate(year, month, date)?.minute / 60) }}
+          <template v-if="getItemByDate(year, month, date)?.count">
+            <n-button round type="primary" size="small">
+              {{ getItemByDate(year, month, date).count }} {{ $t('turnstile.workDurationPage.eventsCount') }}
             </n-button>
           </template>
         </div>

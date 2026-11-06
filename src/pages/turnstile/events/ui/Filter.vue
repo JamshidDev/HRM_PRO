@@ -45,6 +45,17 @@
     departmentAction.fetch()
   }
 
+  // Sukut korxona — bo'lim tanlovi ham shu korxona bo'yicha yuklanadi.
+  const onDefaultEv = (v) => {
+    store.params.organizations = v
+    store.department.params.organizations = v.map((x) => x.id)
+    store.department.list = []
+    if (v.length === 0) return
+    store.department.params.page = 1
+    store.department.params.search = null
+    departmentAction.fetch()
+  }
+
   const departmentAction = {
     fetch: () => store._department(),
     onSearch: () => {
@@ -144,7 +155,7 @@
       <UISelect
         :options="componentStore.structureList"
         :model-v="store.params.organizations"
-        @defaultValue="(v) => (store.params.organizations = v)"
+        @defaultValue="onDefaultEv"
         @updateModel="onChangeStructure"
         :checked-val="store.structureCheck2"
         @updateCheck="(v) => (store.structureCheck2 = v)"

@@ -3624,7 +3624,9 @@
       "calendarTitle": "Work time chart",
       "latecomers": "Late employees",
       "startTime": "Work start time",
-      "lateTitle": "Late employees list"
+      "lateTitle": "Late employees list",
+      "eventsCalendarInfo": "Work hours are not calculated in this calendar — it only shows the days and number of the employee's passes through all devices (including head organization devices). Worked hours per timesheet are in the employee profile.",
+      "eventsCount": "events"
     },
     "diagnose": {
       "title": "Diagnostics",
