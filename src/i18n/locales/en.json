@@ -478,7 +478,9 @@
     "enterOverNumber": "Enter a number greater than {n}",
     "requiredHoursField": "Invalid time format (HH:MM)",
     "captchaRequired": "Please enter the captcha answer!",
-    "passwordsNotMatch": "Passwords do not match!"
+    "passwordsNotMatch": "Passwords do not match!",
+    "endBeforeStart": "This date can't be before the start date",
+    "pastDate": "A past date can't be selected"
   },
   "message": {
     "successDone": "Successfully completed",
@@ -3352,6 +3354,23 @@
     "holidaysCount": "Holidays",
     "daysCount": "Days in month",
     "statusOpen": "Open",
+    "allDepartments": "All departments",
+    "saveHint": "No changes yet — fill in some cells first",
+    "mainType": "Main type",
+    "extraType": "Extra type (optional)",
+    "previewLabel": "Preview",
+    "previewHint": "Exactly this is written to the selected cells. Click to turn it off or on for a while.",
+    "fillHint": "Choose the type and hours, then select cells with the mouse. Finally press «Save».",
+    "accessHint": "On — the timekeeper can fill in this month. Off — view only.",
+    "gridEmpty": "No employees found",
+    "gridEmptyHint": "Choose another department or clear the search.",
+    "noDepartments": "No department assigned",
+    "filledWorkers": "Filled",
+    "filledCount": "{count} employees",
+    "notFilled": "Not filled",
+    "createHint": "A timesheet is created per organisation for one month. Departments are chosen inside the timesheet.",
+    "rulesSearch": "Search by condition, order type or code",
+    "rulesNotFound": "Nothing found",
     "accessColumn": "Access",
     "timekeeperEmpty": "No timekeeper assigned to this organization",
     "accessEditable": "Can edit",
@@ -3898,7 +3917,21 @@
     "accountWith": "With account",
     "accountWithout": "Without account",
     "createAccountInfo": "The employee's personal phone number becomes the login. If no password is given, a random strong one is set.",
-    "loginPhone": "Login phone"
+    "loginPhone": "Login phone",
+    "dept": {
+      "title": "Departments",
+      "whole": "Whole organization",
+      "partial": "Partial",
+      "none": "Not selected",
+      "count": "{n} departments",
+      "assistantHint": "Works with employees of the selected departments and their sub-departments.",
+      "timekeeperHint": "The timekeeper maintains timesheets only for the selected departments.",
+      "editTitle": "Edit departments",
+      "detachWarn": "Removing the role also detaches its departments automatically.",
+      "transferTitle": "Department is assigned to another timekeeper",
+      "transferHint": "If you confirm, these departments will be taken from the previous timekeeper and assigned to this employee.",
+      "transferConfirm": "Transfer and save"
+    }
   },
   "telegramPopup": {
     "header": "Join our Telegram bot and enjoy these benefits:",
@@ -3926,6 +3959,15 @@
       "who": "By whom",
       "reason": "Reason",
       "giftType": "Date"
+    },
+    "status": {
+      "title": "Status",
+      "active": "Active",
+      "expired": "Expired",
+      "cancelled": "Cancelled",
+      "until": "until {date}",
+      "ended": "Ended: {date}",
+      "cancelledAt": "Cancelled: {date}"
     }
   },
   "task": {
@@ -4289,6 +4331,15 @@
       "inTable": "Accruals",
       "outTable": "Deductions",
       "oneSideEmpty": "No data for one of the selected months"
+    },
+    "hoursCmp": {
+      "label": "Hours comparison",
+      "eq": "Equal (work = system)",
+      "neq": "Not equal",
+      "gt": "Work hours > System hours",
+      "lt": "Work hours < System hours",
+      "noWork": "No work hours",
+      "noSystem": "No system hours"
     },
     "systemHours": {
       "column": "System hours",
@@ -7038,7 +7089,11 @@
         "position": "Position",
         "detail": "Note",
         "summa": "Amount"
-      }
+      },
+      "viewList": "{count} employees — view list",
+      "listTotal": "{count} employees",
+      "searchPlaceholder": "Search by name or position",
+      "noMatch": "Nothing found"
     },
     "comingSoon": "Coming soon"
   },
@@ -7234,7 +7289,10 @@
       "additionalInfo": "Additional information (if any)",
       "noneHint": "If empty, «Mavjud emas» is written",
       "registryDate": "Registry date",
-      "registryNumber": "Registry number"
+      "registryNumber": "Registry number",
+      "pinInvalid": "PINFL must be 14 digits with a valid check digit",
+      "stirInvalid": "TIN must be 9 digits",
+      "workerPinHint": "Taken from the profile if present"
     },
     "name": "Employee documents",
     "createTitle": "New document",

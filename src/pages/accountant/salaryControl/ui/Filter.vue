@@ -32,7 +32,9 @@
   )
 
   const filterCount = computed(
-    () => Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.ones_code))
+    () =>
+      Number(Boolean(store.params.organizations.length)) +
+      Number(Boolean(store.params.ones_code))
   )
 
   const resetFilter = () => {
@@ -46,6 +48,11 @@
     if (!v) return
     if (componentStore.structureList.length === 0) componentStore._structures()
   }
+
+  // Strukturani OLDINDAN yuklaymiz — korxona dropdown'i darhol to'la ochilsin.
+  onMounted(() => {
+    if (componentStore.structureList.length === 0) componentStore._structures()
+  })
 </script>
 
 <template>

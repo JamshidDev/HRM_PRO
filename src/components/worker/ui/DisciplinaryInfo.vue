@@ -5,6 +5,7 @@
   import Utils from '../../../utils/Utils.js'
   import CalendarIcon from '@/assets/icons/calendarIcon.svg'
   import DepartmentIcon from '@/assets/icons/departmentIcon.svg'
+  import RecordStatusBadge from '@/pages/hrm/_shared/RecordStatusBadge.vue'
 
   const store = useComponentStore()
 </script>
@@ -18,14 +19,22 @@
           :key="idx"
           class="bg-surface-section rounded-3xl p-4"
         >
-          <n-tooltip trigger="hover" :style="{ maxWidth: '300px' }">
-            <template #trigger>
-              <div class="font-semibold text-lg text-primary truncate-text cursor-pointer mb-3">
-                {{ item.fine }}
-              </div>
-            </template>
-            {{ item.fine }}
-          </n-tooltip>
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <n-tooltip trigger="hover" :style="{ maxWidth: '300px' }">
+              <template #trigger>
+                <div class="font-semibold text-lg text-primary truncate-text cursor-pointer">
+                  {{ item.fine }}
+                </div>
+              </template>
+              {{ item.fine }}
+            </n-tooltip>
+            <RecordStatusBadge
+              :status="item.status"
+              :expires-at="item.expires_at"
+              :ended-at="item.ended_at"
+              :reason="item.cancel_reason"
+            />
+          </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div class="bg-surface-section rounded-3xl px-4 py-3">
               <div class="flex items-center gap-1.5 text-textColor3 text-sm mb-1">

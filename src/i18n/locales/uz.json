@@ -491,7 +491,9 @@
     "enterOverNumber": "{n}dan katta son kiriting",
     "requiredHoursField": "Vaqt formati noto'g'ri (HH:MM)",
     "captchaRequired": "Captcha javobini kiriting!",
-    "passwordsNotMatch": "Parollar mos kelmadi!"
+    "passwordsNotMatch": "Parollar mos kelmadi!",
+    "endBeforeStart": "Bu sana boshlanish sanasidan oldin bo'lmasligi kerak",
+    "pastDate": "O'tgan sanani tanlab bo'lmaydi"
   },
   "message": {
     "successDone": "Muvaffaqiyatli bajarildi",
@@ -3372,6 +3374,23 @@
     "holidaysCount": "Bayram kunlari",
     "daysCount": "Oy kunlari",
     "statusOpen": "Ochiq",
+    "allDepartments": "Barcha bo'limlar",
+    "saveHint": "Hali o'zgarish yo'q — avval kataklarni to'ldiring",
+    "mainType": "Asosiy tur",
+    "extraType": "Qo'shimcha tur (ixtiyoriy)",
+    "previewLabel": "Namuna",
+    "previewHint": "Belgilangan kataklarga aynan shu yoziladi. Bosib vaqtincha o'chirish yoki yoqish mumkin.",
+    "fillHint": "Tur va soatni tanlang, so'ng kataklarni sichqoncha bilan belgilang. Oxirida «Saqlash» ni bosing.",
+    "accessHint": "Yoqilgan — tabelchi shu oy tabelini to'ldira oladi. O'chirilgan — faqat ko'radi.",
+    "gridEmpty": "Xodimlar topilmadi",
+    "gridEmptyHint": "Boshqa bo'limni tanlang yoki qidiruvni tozalang.",
+    "noDepartments": "Bo'lim biriktirilmagan",
+    "filledWorkers": "To'ldirilgan",
+    "filledCount": "{count} ta xodim",
+    "notFilled": "To'ldirilmagan",
+    "createHint": "Tabel tashkilot bo'yicha bir oyga yaratiladi. Bo'limlar tabel ichida tanlanadi.",
+    "rulesSearch": "Shart, buyruq turi yoki kod bo'yicha qidirish",
+    "rulesNotFound": "Hech narsa topilmadi",
     "accessColumn": "Ruxsat",
     "timekeeperEmpty": "Bu korxonaga tabelchi biriktirilmagan",
     "accessEditable": "O'zgartirishi mumkin",
@@ -3920,7 +3939,21 @@
     "accountWith": "Hisobi bor",
     "accountWithout": "Hisobi yo'q",
     "createAccountInfo": "Xodimning shaxsiy telefon raqami tizimga kirish uchun login bo'ladi. Parol berilmasa, tasodifiy kuchli parol o'rnatiladi.",
-    "loginPhone": "Login raqami"
+    "loginPhone": "Login raqami",
+    "dept": {
+      "title": "Bo'limlar",
+      "whole": "Butun korxona",
+      "partial": "Qisman",
+      "none": "Tanlanmagan",
+      "count": "{n} ta bo'lim",
+      "assistantHint": "Tanlangan bo'limlar va ularning pastki bo'limlari xodimlari bilan ishlaydi.",
+      "timekeeperHint": "Tabelchi faqat tanlangan bo'limlar tabelini yuritadi.",
+      "editTitle": "Bo'limlarni tahrirlash",
+      "detachWarn": "Rol olinsa, unga biriktirilgan bo'limlar ham avtomatik ajratiladi.",
+      "transferTitle": "Bo'lim boshqa tabelchiga biriktirilgan",
+      "transferHint": "Tasdiqlasangiz, bu bo'limlar avvalgi tabelchidan olinib, shu xodimga biriktiriladi.",
+      "transferConfirm": "Ko'chirish va saqlash"
+    }
   },
   "telegramPopup": {
     "header": "Telegram botimizga ulaning va quyidagi qulayliklardan bahramand bo'ling:",
@@ -3948,6 +3981,15 @@
       "who": "Kim tomonidan",
       "reason": "Sabab",
       "giftType": "Sovg'a turi"
+    },
+    "status": {
+      "title": "Holati",
+      "active": "Amalda",
+      "expired": "Muddati tugagan",
+      "cancelled": "Bekor qilingan",
+      "until": "{date} gacha",
+      "ended": "Tugagan: {date}",
+      "cancelledAt": "Bekor qilindi: {date}"
     }
   },
   "task": {
@@ -4336,6 +4378,15 @@
       "inTable": "Hisoblangan to'lovlar",
       "outTable": "Ushlanmalar",
       "oneSideEmpty": "Tanlangan oylardan birida ma'lumot yo'q"
+    },
+    "hoursCmp": {
+      "label": "Soat solishtiruvi",
+      "eq": "Teng (ish = tizim)",
+      "neq": "Teng emas",
+      "gt": "Ish soati > Tizim soati",
+      "lt": "Ish soati < Tizim soati",
+      "noWork": "Ish soati yo'q",
+      "noSystem": "Tizim soati yo'q"
     },
     "systemHours": {
       "column": "Tizim soati",
@@ -7098,7 +7149,11 @@
         "position": "Lavozim",
         "detail": "Izoh",
         "summa": "Summa"
-      }
+      },
+      "viewList": "{count} ta xodim — ro‘yxatni ko‘rish",
+      "listTotal": "{count} ta xodim",
+      "searchPlaceholder": "Ism yoki lavozim bo‘yicha qidirish",
+      "noMatch": "Qidiruv bo‘yicha hech narsa topilmadi"
     },
     "common": {
       "sum": "Summa, so'm",
@@ -7431,7 +7486,10 @@
       "additionalInfo": "Qo‘shimcha ma’lumotlar (agar mavjud bo‘lsa)",
       "noneHint": "Bo‘sh qolsa «Mavjud emas» deb yoziladi",
       "registryDate": "Reyestrga olingan sana",
-      "registryNumber": "Reyestr raqami"
+      "registryNumber": "Reyestr raqami",
+      "pinInvalid": "JShShIR 14 ta raqam va to‘g‘ri nazorat raqamidan iborat bo‘lishi kerak",
+      "stirInvalid": "STIR 9 ta raqamdan iborat bo‘lishi kerak",
+      "workerPinHint": "Profilda bo‘lsa avtomatik olinadi"
     },
     "name": "Xodim hujjatlari",
     "createTitle": "Hujjat tuzish",

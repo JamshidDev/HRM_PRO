@@ -28,6 +28,12 @@
     store._index()
   }
 
+  // BACKEND: ariza PDF'ini backend yaratadi, frontend uni faqat ko'rsatadi (`${…}` frontendda almashtirilmaydi).
+  // Dev'da yangi ariza (4-tur) PDF'ida tepada `${signature_director}`, pastda `${signature_worker}` xom chiqyapti
+  // (QA, DAS-14202; buyruqda ham xuddi shu — DAS-14195). Kerak: 1) `${signature_*}` har doim almashtirilsin —
+  // imzolangan bo'lsa imzo / F.I.Sh., hali imzolanmagan bo'lsa bo'sh satr; 2) almashtirishdan keyin qolgan har qanday
+  // `${…}` bo'sh satrga aylansin; 3) ikkala nom GET /v1/admin/document-templates/variables ro'yxatida bormi —
+  // yo'q bo'lsa ariza shablonidagi nom noto'g'ri.
   const openOffice = (v) => {
     officeAppRef.value.openPdf(v.documentId, Utils.documentModels.workerApplication, v.signatureId)
   }

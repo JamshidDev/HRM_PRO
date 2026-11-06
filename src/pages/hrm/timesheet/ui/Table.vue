@@ -77,38 +77,59 @@
     Boolean(row?.can_lock) && accStore.checkPermission(accStore.pn.hrTableLock) && !row?.status
   const onLock = (row) => store._setLock(row, !row.locked)
 
+  // Tabel holati — tabel oynasidagi chip bilan bir xil tartib (`Timesheet.vue` `timesheetStatus`):
+  // yakunlangan → tasdiqlashga yuborilgan → yopilgan → ochiq. Ilgari ochiq tabelda katak bo'sh qolardi.
+  const STATE = {
+    finished: { label: 'timesheetPage.accessFinished', tone: 'green', icon: CheckmarkCircle24Filled },
+    sent: { label: 'timesheetPage.accessSent', tone: 'brand', icon: Send24Regular },
+    locked: { label: 'timesheetPage.lockedTag', tone: 'amber', icon: LockClosed20Regular },
+    open: { label: 'timesheetPage.statusOpen', tone: 'neutral', icon: LockOpen20Regular }
+  }
+  const TONE_CLASS = {
+    green: 'bg-fig-chip-green text-fig-chip-green-text',
+    brand: 'bg-fig-chip-brand text-fig-chip-brand-text',
+    amber: 'bg-fig-chip-amber text-fig-chip-amber-text',
+    neutral: 'bg-fig-bg-disable text-fig-text-tertiary'
+  }
+  const stateOf = (row) => {
+    if (row?.status) return STATE.finished
+    if (isSent(row)) return STATE.sent
+    if (row?.locked) return STATE.locked
+    return STATE.open
+  }
+
   const changePage = (v) => {
     store.params.page = v.page
     store.params.per_page = v.per_page
     store._index()
   }
 
+  // Hamma ustun `minWidth` — bo'sh joy ustunlar orasida teng bo'linadi.
+  // Yil + Oy bitta «Davr» ustuniga birlashdi («Aprel 2026»).
   const columns = computed(() => [
     {
       key: 'work_place',
       title: t('timesheetWorkerPage.work_place'),
-      minWidth: 500,
+      minWidth: 320
     },
     {
-      key: 'year',
-      title: t('content.year'),
-      width: 100,
-      align: 'center'
+      key: 'period',
+      title: t('timesheetPage.periodLabel'),
+      minWidth: 150
     },
     {
-      key: 'month',
-      title: t('content.month'),
-      width: 140,
-      align: 'left'
+      // `workers_count` — shu oyda kunlari to'ldirilgan xodimlar soni (o'chirish ogohlantirishi ham shuni oladi).
+      key: 'workers_count',
+      title: t('timesheetPage.filledWorkers'),
+      minWidth: 150
     },
     {
       key: 'status',
       title: t('timesheet.status'),
-      width: 140,
-      align: 'center'
+      minWidth: 200
     },
     ...(TIMESHEET_APPROVAL_ENABLED
-      ? [{ key: 'confirmation', title: t('content.status'), width: 140, align: 'center' }]
+      ? [{ key: 'confirmation', title: t('content.status'), minWidth: 140, align: 'center' }]
       : [])
   ])
 
@@ -165,34 +186,32 @@
     :page="store.params.page"
     :per-page="store.params.per_page"
     :total="store.totalItems"
-    storage-key="hrm-timesheet-department"
+    storage-key="hrm-timesheet-list"
     @change-page="changePage"
   >
     <template #cell-work_place="{ row }">
       {{ row.department?.name || row.work_place?.name }}
     </template>
 
-    <template #cell-year="{ row }">
-      {{ row.year }}
+    <template #cell-period="{ row }">
+      {{ monthName(row.month) }} {{ row.year }}
     </template>
 
-    <template #cell-month="{ row }">
-      {{ monthName(row.month) }}
+    <template #cell-workers_count="{ row }">
+      <span v-if="row.workers_count">
+        {{ $t('timesheetPage.filledCount', { count: row.workers_count }) }}
+      </span>
+      <span v-else class="text-textColor3">{{ $t('timesheetPage.notFilled') }}</span>
     </template>
 
     <template #cell-status="{ row }">
-      <n-button v-if="!!row?.status" type="primary" size="tiny" dashed>
-        <template #icon>
-          <n-icon :component="CheckmarkCircle24Filled" />
-        </template>
-        {{ $t('timesheet.finished') }}
-      </n-button>
-      <n-tag v-else-if="row?.locked" type="warning" size="small" round :bordered="false">
-        <template #icon>
-          <n-icon :component="LockClosed20Regular" />
-        </template>
-        {{ $t('timesheetPage.lockedTag') }}
-      </n-tag>
+      <span
+        class="inline-flex max-w-full items-center gap-1 rounded-full px-3 py-1 text-[12px] font-semibold leading-4"
+        :class="TONE_CLASS[stateOf(row).tone]"
+      >
+        <n-icon :component="stateOf(row).icon" size="14" class="shrink-0" />
+        <span class="truncate">{{ $t(stateOf(row).label) }}</span>
+      </span>
     </template>
 
     <template #cell-confirmation="{ row }">

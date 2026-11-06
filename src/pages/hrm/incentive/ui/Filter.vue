@@ -1,4 +1,6 @@
 <script setup>
+  import i18n from '@/i18n/index.js'
+  import { recordStatusOptions } from '@/pages/hrm/_shared/recordStatus.js'
   import { UIPageFilter, UISelect } from '@/components/index.js'
   import {
     useAccountStore,
@@ -12,6 +14,7 @@
   const store = useIncentiveStore()
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
+  const statusOptions = computed(() => recordStatusOptions(i18n.global.t, false))
 
   const onSearch = () => {
     if (!accStore.checkAction(accStore.pn.hrIncentivesRead)) return
@@ -28,7 +31,8 @@
       Number(Boolean(store.params.organizations.length)) +
       Number(Boolean(store.params.created)) +
       Number(Boolean(store.params.year)) +
-      Number(Boolean(store.params.month))
+      Number(Boolean(store.params.month)) +
+      Number(Boolean(store.params.status))
   )
 
   const beforeShow = (v) => {
@@ -51,6 +55,7 @@
     store.params.created = null
     store.params.year = null
     store.params.month = null
+    store.params.status = null
     filterEvent()
   }
 </script>
@@ -124,6 +129,17 @@
           <n-select
             v-model:value="store.params.month"
             :options="Utils.monthList"
+            label-field="name"
+            value-field="id"
+            clearable
+            @update:value="filterEvent"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('incentive.status.title') }}</label>
+          <n-select
+            v-model:value="store.params.status"
+            :options="statusOptions"
             label-field="name"
             value-field="id"
             clearable
