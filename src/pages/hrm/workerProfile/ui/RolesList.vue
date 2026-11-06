@@ -5,6 +5,8 @@
   import { RibbonStar24Filled, AddCircle20Regular } from '@vicons/fluent'
   import { useRoute } from 'vue-router'
   import RoleForm from './RoleForm.vue'
+  import RoleDepartmentsModal from '@/pages/hrm/worker/ui/RoleDepartmentsModal.vue'
+  import { departmentsLabel } from '@/pages/hrm/worker/ui/roleDepartments.js'
   const route = useRoute()
 
   const store = useWorkerProfileStore()
@@ -33,7 +35,12 @@
     store._setActiveRole(data, id)
   }
 
+  // HR yordamchisi / tabelchi bo'limlarini tahrirlash.
+  const edit = ref({ visible: false, item: null })
+  const onEditDepartments = (item) => (edit.value = { visible: true, item })
+
   const onAdd = () => {
+    store.roleSelfWorkerUuid = null
     store.rolePayload.role = null
     store.rolePayload.organization_id = []
     store.roleVisible = true
@@ -79,6 +86,12 @@
             </td>
             <td>
               <UIBadge :show-icon="false" :label="item?.name" :type="Utils.colorTypes.success" />
+              <div v-if="item?.departments" class="mt-1 flex items-center gap-2 text-xs text-textColor2">
+                <span class="line-clamp-2">{{ $t('workerRole.dept.title') }}: {{ departmentsLabel(item.departments) }}</span>
+                <n-button size="tiny" quaternary type="primary" @click="onEditDepartments(item)">
+                  {{ $t('content.edit') }}
+                </n-button>
+              </div>
             </td>
             <td class="w-[120px] min-w-[120px] text-right">
               <n-button
@@ -111,6 +124,16 @@
       >
         <RoleForm />
       </UIModal>
+      <RoleDepartmentsModal
+        v-model:visible="edit.visible"
+        :user-uuid="store.data?.profile?.uuid"
+        :self-worker-uuid="route.query.id"
+        :role="edit.item?.roleKey"
+        :role-label="edit.item?.roleName"
+        :organization="edit.item ? { id: edit.item.id, name: edit.item.name } : null"
+        :value="edit.item?.departments"
+        @saved="store._index()"
+      />
     </div>
   </div>
 </template>

@@ -3,6 +3,7 @@
   import i18n from '@/i18n/index.js'
   import { useIncentiveStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
+  import RecordStatusBadge from '@/pages/hrm/_shared/RecordStatusBadge.vue'
 
   const { t } = i18n.global
 
@@ -44,6 +45,11 @@
       key: 'date',
       title: t('content.date'),
       width: 120
+    },
+    {
+      key: 'status',
+      title: t('incentive.status.title'),
+      width: 150
     }
   ])
 </script>
@@ -81,6 +87,15 @@
         :type="Utils.colorTypes.dark"
         :show-icon="false"
         :label="Utils.timeOnlyDate(row.date)"
+      />
+    </template>
+
+    <template #cell-status="{ row }">
+      <RecordStatusBadge
+        :status="row.status"
+        :expires-at="row.expires_at"
+        :ended-at="row.ended_at"
+        :reason="row.cancel_reason"
       />
     </template>
   </UITable>

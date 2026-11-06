@@ -10,7 +10,17 @@
    */
   import { UIModal, UISelect } from '@components'
   import { useAccountStore, useComponentStore, useWorkerStore } from '@stores'
-  import { Delete20Regular } from '@vicons/fluent'
+  import { Delete20Regular, Edit20Regular } from '@vicons/fluent'
+  import RoleDepartmentsField from './RoleDepartmentsField.vue'
+  import RoleDepartmentsModal from './RoleDepartmentsModal.vue'
+  import {
+    confirmTransfer,
+    departmentsLabel,
+    departmentsPayload,
+    departmentsValid,
+    emptyDepartments,
+    isDepartmentRole
+  } from './roleDepartments.js'
 
   const store = useWorkerStore()
   const componentStore = useComponentStore()
@@ -33,14 +43,32 @@
     }
   )
 
+  // HR yordamchisi / tabelchi — bo'limlar rol bilan birga tanlanadi.
+  const dept = ref(emptyDepartments())
+  const conflicts = ref([])
+  const orgId = computed(() => Number(store.rolePayload.organization_id?.[0]?.id) || null)
+  watch(
+    () => [store.rolePayload.role, orgId.value],
+    () => (dept.value = emptyDepartments())
+  )
+
   const canAttach = computed(
-    () => !!store.rolePayload.role && store.rolePayload.organization_id.length > 0
+    () =>
+      !!store.rolePayload.role &&
+      store.rolePayload.organization_id.length > 0 &&
+      departmentsValid(store.rolePayload.role, dept.value)
   )
 
   const onAttach = () => {
     if (!canAttach.value) return
-    store._attachWorkerRole()
+    confirmTransfer(conflicts.value, (transfer) =>
+      store._attachWorkerRole({ ...departmentsPayload(store.rolePayload.role, dept.value), transfer })
+    )
   }
+
+  // Bo'limlarni tahrirlash oynasi.
+  const edit = ref({ visible: false, row: null })
+  const onEditDepartments = (row) => (edit.value = { visible: true, row })
 
   // Backend rolning XOM nomini qaytaradi ('Finance'), ro'yxatda esa tarjima
   // ko'rsatiladi ('Buxgalter') — dropdown bilan bir xil ko'rinsin.
@@ -85,6 +113,15 @@
           @onSearch="componentStore._structures"
         />
       </div>
+      <div v-if="isDepartmentRole(store.rolePayload.role)" class="col-span-12 order-last">
+        <RoleDepartmentsField
+          v-model="dept"
+          :role="store.rolePayload.role"
+          :organization-id="orgId"
+          :self-worker-uuid="store.rolesWorkerUuid"
+          @conflicts="(v) => (conflicts = v)"
+        />
+      </div>
       <div class="col-span-12 md:col-span-2">
         <n-button
           class="w-full"
@@ -119,7 +156,20 @@
             <span class="truncate text-xs text-textColor3">
               {{ row.organization?.name || '—' }}
             </span>
+            <span v-if="row.departments" class="text-xs text-textColor2 line-clamp-2">
+              {{ $t('workerRole.dept.title') }}: {{ departmentsLabel(row.departments) }}
+            </span>
           </div>
+          <n-tooltip v-if="row.departments" trigger="hover">
+            <template #trigger>
+              <n-button size="small" ghost :aria-label="$t('workerRole.dept.editTitle')" @click="onEditDepartments(row)">
+                <template #icon>
+                  <n-icon><Edit20Regular /></n-icon>
+                </template>
+              </n-button>
+            </template>
+            {{ $t('workerRole.dept.editTitle') }}
+          </n-tooltip>
           <!-- Faol rol — effektiv ruxsat manbai (har userda bittasi). -->
           <n-tag v-if="row.is_active" type="success" size="small" round>
             {{ $t('content.active') }}
@@ -146,7 +196,12 @@
                 {{ $t('workerRole.detachRole') }}
               </n-tooltip>
             </template>
-            {{ $t('content.confirmDelete') }}
+            <div class="flex flex-col max-w-[260px]">
+              <span>{{ $t('content.confirmDelete') }}</span>
+              <span v-if="row.departments" class="text-xs text-warning mt-1">
+                {{ $t('workerRole.dept.detachWarn') }}
+              </span>
+            </div>
           </n-popconfirm>
         </div>
       </div>
@@ -158,4 +213,14 @@
       </n-button>
     </div>
   </UIModal>
+  <RoleDepartmentsModal
+    v-model:visible="edit.visible"
+    :user-uuid="store.rolesUserUuid"
+    :self-worker-uuid="store.rolesWorkerUuid"
+    :role="edit.row?.name"
+    :role-label="roleLabel(edit.row?.name)"
+    :organization="edit.row?.organization"
+    :value="edit.row?.departments"
+    @saved="store._workerRoles()"
+  />
 </template>
