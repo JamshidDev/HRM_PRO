@@ -66,14 +66,16 @@ import FileIcon from '@/assets/icons/figFile.svg'
     store.payload.name_en = row.name_en
     store.payload.comment = row.comment
     store.payload.level = row.level.id
-    store.showParent = Boolean(row.parent?.id)
-    store.payload.parent_id = row.parent?.id
+    // Daraxtdan ochilgan ichki bo'limda `parent` yo'q — ota daraxt tugunidan olinadi.
+    const parent = row.parent ?? (row.__parent ? { id: row.__parent.id, name: row.__parent.name } : null)
+    store.showParent = Boolean(parent?.id)
+    store.payload.parent_id = parent?.id ?? null
     store.payload.region_id = row.region?.id ?? row.region_id ?? null
     store.payload.city_id = row.city?.id ?? row.city_id ?? null
     if (store.payload.region_id) {
       store._districts(store.payload.region_id)
     }
-    componentStore.departmentList = [row.parent]
+    componentStore.departmentList = parent ? [parent] : []
     store.refreshTarget = row.__parent
     store.visibleType = false
     store.visible = true
