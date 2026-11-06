@@ -3643,7 +3643,9 @@
       "calendarTitle": "Ish vaqti grafigi",
       "latecomers": "Kechikkan xodimlar",
       "startTime": "Ish boshlanish vaqti",
-      "lateTitle": "Kechikkan xodimlar ro'yxati"
+      "lateTitle": "Kechikkan xodimlar ro'yxati",
+      "eventsCalendarInfo": "Bu kalendarda ish soati hisoblanmaydi — faqat xodimning barcha qurilmalaridan (bosh korxona qurilmalari ham) o'tgan kunlari va hodisalar soni ko'rsatiladi. Ishlagan soat tabel bo'yicha xodim profilida.",
+      "eventsCount": "ta hodisa"
     },
     "diagnose": {
       "title": "Diagnostika",
