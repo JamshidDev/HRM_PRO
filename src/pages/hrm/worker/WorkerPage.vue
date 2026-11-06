@@ -1,5 +1,5 @@
 <script setup>
-  import { UIModal, UIPageContent, UIDrawer } from '@/components/index.js'
+  import { UIModal, UIPageContent } from '@/components/index.js'
   import {
     ArrowLeft24Regular,
     ArrowRight24Regular,
@@ -13,19 +13,16 @@
   import Filter from './ui/Filter.vue'
   import CheckWorker from './ui/CheckWorker.vue'
   import {
-    useTimesheetDepartmentStore,
     useWorkerStore,
     useExportStore,
     useAccountStore
   } from '@/store/modules/index.js'
-  import TimesheetAssignForm from '../timesheetDepartment/ui/timesheetDepartmentForm.vue'
   import router from '@/router/index.js'
   import { AppPaths } from '@/utils/index.js'
 
   const store = useWorkerStore()
   const accStore = useAccountStore()
   const exportStore = useExportStore()
-  const timesheetDepartmentStore = useTimesheetDepartmentStore()
 
   const onSuccessEv = (id) => {
     store.visible = false
@@ -52,15 +49,6 @@
     <Filter />
     <Table />
     <CheckWorker />
-    <UIDrawer
-      :title="$t('timesheet.assignUser')"
-      :width="450"
-      v-model:visible="timesheetDepartmentStore.visible"
-    >
-      <template #content>
-        <TimesheetAssignForm />
-      </template>
-    </UIDrawer>
     <ContractModal
       v-model:visible="store.visible"
       :title="store.visibleType ? $t('documentPage.createTitle') : $t('documentPage.updateTitle')"

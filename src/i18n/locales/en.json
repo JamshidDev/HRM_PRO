@@ -3917,7 +3917,21 @@
     "accountWith": "With account",
     "accountWithout": "Without account",
     "createAccountInfo": "The employee's personal phone number becomes the login. If no password is given, a random strong one is set.",
-    "loginPhone": "Login phone"
+    "loginPhone": "Login phone",
+    "dept": {
+      "title": "Departments",
+      "whole": "Whole organization",
+      "partial": "Partial",
+      "none": "Not selected",
+      "count": "{n} departments",
+      "assistantHint": "Works with employees of the selected departments and their sub-departments.",
+      "timekeeperHint": "The timekeeper maintains timesheets only for the selected departments.",
+      "editTitle": "Edit departments",
+      "detachWarn": "Removing the role also detaches its departments automatically.",
+      "transferTitle": "Department is assigned to another timekeeper",
+      "transferHint": "If you confirm, these departments will be taken from the previous timekeeper and assigned to this employee.",
+      "transferConfirm": "Transfer and save"
+    }
   },
   "telegramPopup": {
     "header": "Join our Telegram bot and enjoy these benefits:",
@@ -3945,6 +3959,15 @@
       "who": "By whom",
       "reason": "Reason",
       "giftType": "Date"
+    },
+    "status": {
+      "title": "Status",
+      "active": "Active",
+      "expired": "Expired",
+      "cancelled": "Cancelled",
+      "until": "until {date}",
+      "ended": "Ended: {date}",
+      "cancelledAt": "Cancelled: {date}"
     }
   },
   "task": {
@@ -7270,7 +7293,10 @@
       "additionalInfo": "Additional information (if any)",
       "noneHint": "If empty, «Mavjud emas» is written",
       "registryDate": "Registry date",
-      "registryNumber": "Registry number"
+      "registryNumber": "Registry number",
+      "pinInvalid": "PINFL must be 14 digits with a valid check digit",
+      "stirInvalid": "TIN must be 9 digits",
+      "workerPinHint": "Taken from the profile if present"
     },
     "name": "Employee documents",
     "createTitle": "New document",
