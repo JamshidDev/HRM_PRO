@@ -45,12 +45,15 @@
     departmentAction.fetch()
   }
 
+  // Sukut korxona — bo'limlar select ko'rsatadigan store.department ga yuklanadi.
   const onDefaultEv = (v) => {
     store.params.organizations = v
-    componentStore.depParams.organizations = v.map((x) => x.id)
-    componentStore.departmentList = []
+    store.department.params.organizations = v.map((x) => x.id)
+    store.department.list = []
     if (v.length === 0) return
-    componentStore._departments()
+    store.department.params.page = 1
+    store.department.params.search = null
+    departmentAction.fetch()
   }
 
   const onChangeDepartment = () => {
