@@ -1,8 +1,9 @@
 <script setup>
-  import { AppStore24Filled } from '@vicons/fluent'
-  import playMarketSvg from '@/assets/images/svg/playMarket.svg?url'
+  // Figma «Mobile App Links» (node 4821:46374): rasmiy nishonlar, 132×44, orasi 20px
+  import appStoreBadge from '@/assets/images/login/app-store.png'
+  import googlePlayBadge from '@/assets/images/login/google-play.png'
 
-  // glass prop eski chaqiruvlar uchun qabul qilinadi — ikkala variant ham bitta badge ko'rinishga keladi
+  // glass prop eski chaqiruvlar uchun qabul qilinadi — ko'rinishga ta'sir qilmaydi
   defineProps({
     glass: { type: Boolean, default: false }
   })
@@ -12,38 +13,24 @@
 </script>
 
 <template>
-  <div class="grid grid-cols-2 gap-2.5">
+  <div class="flex items-center justify-center gap-5">
     <a
       :href="appStoreUrl"
       target="_blank"
-      class="login-new__store-card store-badge flex items-center justify-center gap-2 px-3 h-[46px] rounded-[9px] border"
+      rel="noopener noreferrer"
+      class="login-new__store-card block rounded-[9px]"
+      aria-label="App Store"
     >
-      <n-icon size="22">
-        <AppStore24Filled />
-      </n-icon>
-      <span class="flex flex-col items-start leading-tight text-left">
-        <span class="text-[10px] opacity-80">Download on the</span>
-        <span class="text-xs font-semibold">App Store</span>
-      </span>
+      <img :src="appStoreBadge" alt="Download on the App Store" class="block h-11 w-[132px]" />
     </a>
     <a
-      target="_blank"
       :href="playMarketUrl"
-      class="login-new__store-card store-badge flex items-center justify-center gap-2 px-3 h-[46px] rounded-[9px] border"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="login-new__store-card block rounded-[9px]"
+      aria-label="Google Play"
     >
-      <img class="h-[18px]" :src="playMarketSvg" alt="" />
-      <span class="flex flex-col items-start leading-tight text-left">
-        <span class="text-[10px] uppercase opacity-80">Get it on</span>
-        <span class="text-xs font-semibold">Google Play</span>
-      </span>
+      <img :src="googlePlayBadge" alt="Get it on Google Play" class="block h-11 w-[132px]" />
     </a>
   </div>
 </template>
-
-<style scoped>
-  .store-badge {
-    background-color: var(--login-badge-bg);
-    border-color: var(--login-badge-border);
-    color: #ffffff;
-  }
-</style>

@@ -150,22 +150,29 @@
   --surface: #0f172a;
   --scrollbar-thumb: #00000040;
 
-  // login sahifasi (Claude Design "Login Page") ranglari
-  --login-page-bg: #eef1f6;
-  --login-form-bg: #ffffff;
-  --login-form-border: #e5eaf2;
-  --login-ink: #0f1114;
-  --login-body: #74788d;
-  --login-label: #0f1114;
-  --login-field-bg: transparent;
-  --login-field-border: #dde4ee;
-  --login-field-ink: #0f1114;
-  --login-ph: #b9c0cc;
-  --login-captcha-bg: #f6f8fb;
-  --login-muted: #74788d;
-  --login-divider: #e5eaf2;
-  --login-link: #1279f0;
-  --login-link-hover: #0e5fc0;
+  // login sahifasi ranglari — Figma «HRM PRO» → «↪ Login» (Login - Light, node 4821:46317)
+  --login-page-bg: #f9fafb; // bg-secondary
+  --login-form-bg: #ffffff; // bg-primary
+  --login-form-border: #f2f4f7; // br-tertiary
+  --login-ink: #101828; // text-primary
+  --login-body: #667085; // text-tertiary
+  --login-label: #344054; // text-secondary
+  --login-field-bg: #f9fafb; // bg-secondary
+  --login-field-border: #f2f4f7; // br-tertiary
+  --login-field-ink: #101828;
+  --login-ph: #667085;
+  --login-captcha-bg: #f9fafb;
+  --login-muted: #667085;
+  --login-divider: #eaecf0;
+  --login-link: #1570ef; // text-brand
+  --login-link-hover: #175cd3;
+  --login-brand: #1570ef; // bg-brand-fill — «Kirish» tugmasi
+  --login-brand-hover: #175cd3;
+  --login-icon: #667085; // icon-secondary (telefon, qulf)
+  --login-icon-muted: #98a2b3; // icon-tertiary (ko'z)
+  --login-mandala: rgba(21, 112, 239, 0.03); // karta ichidagi naqsh
+  --login-mandala-page: rgba(21, 112, 239, 0.04); // sahifa chetidagi naqsh
+  --login-grid: rgba(89, 89, 89, 0.03); // sahifa fonidagi uchburchak to'r
   --login-star: #e7000a;
   --login-eimzo-bg: #e7f1fe;
   --login-eimzo-border: #a0cdf9;
@@ -318,22 +325,29 @@
   --surface: #bfc5d1;
   --scrollbar-thumb: #ffffff40;
 
-  // login sahifasi (Claude Design "Login Page") ranglari
-  --login-page-bg: #0b1220;
-  --login-form-bg: #10182a;
-  --login-form-border: rgba(255, 255, 255, 0.06);
-  --login-ink: #ffffff;
-  --login-body: rgba(255, 255, 255, 0.6);
-  --login-label: rgba(255, 255, 255, 0.8);
-  --login-field-bg: rgba(255, 255, 255, 0.06);
-  --login-field-border: rgba(255, 255, 255, 0.12);
-  --login-field-ink: #ffffff;
-  --login-ph: rgba(255, 255, 255, 0.35);
-  --login-captcha-bg: rgba(255, 255, 255, 0.1);
-  --login-muted: rgba(255, 255, 255, 0.45);
-  --login-divider: rgba(255, 255, 255, 0.1);
-  --login-link: #4a9af5;
-  --login-link-hover: #7ab4f7;
+  // login sahifasi ranglari — Figma «Login - Dark» (node 4821:148290)
+  --login-page-bg: #1d2939; // bg-secondary
+  --login-form-bg: #101828; // bg-primary
+  --login-form-border: #1d2939; // br-tertiary
+  --login-ink: #fcfcfd; // text-primary
+  --login-body: #98a2b3; // text-tertiary
+  --login-label: #d0d5dd; // text-secondary
+  --login-field-bg: #1d2939; // bg-secondary
+  --login-field-border: #1d2939; // br-tertiary
+  --login-field-ink: #fcfcfd;
+  --login-ph: #98a2b3;
+  --login-captcha-bg: #1d2939;
+  --login-muted: #98a2b3;
+  --login-divider: #344054;
+  --login-link: #175cd3; // text-brand
+  --login-link-hover: #1570ef;
+  --login-brand: #1570ef;
+  --login-brand-hover: #175cd3;
+  --login-icon: #98a2b3;
+  --login-icon-muted: #667085;
+  --login-mandala: rgba(255, 255, 255, 0.014);
+  --login-mandala-page: rgba(255, 255, 255, 0.014);
+  --login-grid: rgba(89, 89, 89, 0.03);
   --login-star: #ff6066;
   --login-eimzo-bg: transparent;
   --login-eimzo-border: rgba(74, 154, 245, 0.45);

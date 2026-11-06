@@ -17,14 +17,20 @@ import TwoFactorForm from './ui/TwoFactorForm.vue'
 import ResetForm from './ui/ResetForm.vue'
 import ExpiredForm from './ui/ExpiredForm.vue'
 import StoreLinks from './ui/StoreLinks.vue'
+import LoginBanner from './ui/LoginBanner.vue'
 import SeasonEffect from './ui/SeasonEffect.vue'
 import OfferModal from '@/components/OfferModal.vue'
 import SsoRedirectOverlay from './ui/SsoRedirectOverlay.vue'
 import AppChooser from './ui/AppChooser.vue'
 import { useRoute } from 'vue-router'
-import loginPatternUrl from '@/assets/images/svg/login-pattern.png?url'
-import loginPatternBottomUrl from '@/assets/images/svg/pattern-bottom.png?url'
-import banner from '@/assets/images/content/banner.png?url'
+import mandalaUrl from '@/assets/images/login/mandala.svg?url'
+import gridTileUrl from '@/assets/images/login/grid-tile.svg?url'
+
+// Fon naqshlari CSS maska sifatida — rangi token'dan (yorug'/qorong'i mavzu)
+const patternVars = {
+  '--login-mandala-url': `url(${mandalaUrl})`,
+  '--login-grid-url': `url(${gridTileUrl})`
+}
 
 
 const appStore = useAppStore()
@@ -212,93 +218,68 @@ const onDone = () => {
 </script>
 
 <template>
-  <div class="login-new min-h-screen w-full flex items-stretch text-login-ink bg-login-page gap-4 lg:gap-8">
-    <!-- Left brand / hero panel -->
-    <div class="login-new__hero relative hidden lg:flex flex-col overflow-hidden p-12 xl:px-14">
-      <div
-        class="login-new__hero-pattern absolute inset-0 pointer-events-none"
-        :style="{ '--login-hero-pattern': `url(${loginPatternUrl})` }" aria-hidden="true"
-      ></div>
+  <!-- Figma «HRM PRO» → «↪ Login»: chapda banner (slayd-shou), o'ngda kirish kartasi.
+       1440×800 maketda: sahifa chetidan 24px, banner va karta orasi 48px. -->
+  <div
+    class="login-new relative min-h-screen w-full flex items-stretch gap-12 p-3 sm:p-6 text-login-ink bg-login-page overflow-hidden"
+    :style="patternVars"
+  >
+    <!-- Fon naqshlari: uchburchak to'r (3%) va chap chetdagi mandala -->
+    <div class="login-new__grid absolute inset-0 pointer-events-none" aria-hidden="true"></div>
+    <div class="login-new__page-mandala absolute pointer-events-none" aria-hidden="true"></div>
+
+    <!-- Chap banner — faqat keng ekranda -->
+    <div class="login-new__hero relative hidden lg:flex overflow-hidden rounded-2xl">
+      <LoginBanner class="w-full" />
       <SeasonEffect :season="useAppSetting.loginSeason" />
-
-      <div class="relative z-10 flex-1 flex flex-col items-center justify-center text-center max-w-[560px] mx-auto">
-        <img src="/logo-new.png" alt=" " class="h-20 w-auto mb-6 login-new__fade-in animation-logo" />
-        <h1
-          class="login-new__shiny-text login-new__fade-in login-new__fade-in-delay-1 font-grotesk text-4xl xl:text-[46px] font-bold text-login-ink leading-[1.15]"
-        >
-          {{ $t('loginPage.description.subtitle') }}
-        </h1>
-        <p
-          class="login-new__fade-in login-new__fade-in-delay-2 text-login-body text-[15px] leading-[1.65] mt-4 max-w-[480px]"
-        >
-          {{ $t('loginPage.description.text') }}
-        </p>
-        <img
-          :src="banner"
-          alt=""
-          class="login-new__fade-in login-new__fade-in-delay-2 w-full max-w-[1020px] rounded-2xl mt-6 shadow-md"
-        />
-      </div>
-
-      <!-- Mobil ilovani yuklab olish — hero pastida (faqat desktop) -->
-      <div v-if="appStore.appConfig.signatureLogin" class="relative z-10 flex flex-col items-center text-center">
-        <p class="text-login-body text-xs font-medium mb-2.5">
-          {{ $t('content.downloadApp') }}
-        </p>
-        <div class="max-w-[340px]">
-          <StoreLinks />
-        </div>
-      </div>
     </div>
 
-    <!-- Right form panel -->
-    <div class="login-new__form-side relative flex-1 flex items-center justify-center px-4 py-6">
-      <div
-        class="login-new__card relative w-full max-w-[520px] flex flex-col items-center px-6 sm:px-9 pt-20 lg:pt-7 pb-9 overflow-hidden"
-      >
-        <div
-          class="login-new__card-pattern absolute inset-0 pointer-events-none"
-          :style="{ '--login-hero-pattern': `url(${loginPatternBottomUrl})` }" aria-hidden="true"
-        ></div>
+    <!-- O'ng: kirish kartasi -->
+    <div
+      class="login-new__card relative flex-1 min-w-0 flex flex-col items-center overflow-hidden px-5 sm:px-10 xl:px-[100px] pt-6 sm:pt-8 pb-8"
+    >
+      <!-- Kartaning yuqori va pastki chetidagi yarim mandalalar -->
+      <div class="login-new__mandala login-new__mandala--top" aria-hidden="true"></div>
+      <div class="login-new__mandala login-new__mandala--bottom" aria-hidden="true"></div>
 
-        <!-- Mobile logo — lang-select bilan bir qatorda (faqat mobile).
-             Gorizontal chetlash kartaning `px-6 sm:px-9` padding'i bilan bir xil
-             bo'lishi shart, aks holda absolyut joylashgan elementlar tab qatori
-             va forma chegarasidan chiqib ketadi. -->
-        <div class="absolute top-6 left-6 sm:left-9 z-20 flex lg:hidden items-center gap-3">
-          <img :src="useAppSetting.appLogoUrl" alt=" " class="h-10 object-center" />
-          <span class="form-title text-xl font-bold uppercase">
-            {{ $t('loginPage.description.title') }}
-          </span>
+      <!-- Telefon/planshet: banner yo'q — logo shu yerda -->
+      <div class="relative z-10 w-full max-w-[472px] flex lg:hidden items-center gap-3 mb-6">
+        <img :src="useAppSetting.appLogoUrl" alt=" " class="h-10 object-center" />
+        <span class="text-xl font-bold uppercase">HRM PRO</span>
+      </div>
+
+      <div class="relative z-10 w-full max-w-[472px] my-auto py-4 login-new__fade-in">
+        <!-- Sarlavha + mavzu / til (Figma «Header Container», node 4821:46328) -->
+        <div class="flex items-center gap-4 mb-6">
+          <h1 class="flex-1 min-w-0 m-0 text-2xl leading-[30px] font-semibold text-login-ink">
+            {{ $t('loginPage.title') }}
+          </h1>
+          <div class="flex items-center gap-3 shrink-0">
+            <UIThemeSwitch class="bg-login-field!" />
+            <div class="login-new__lang flex">
+              <LangDropdown pill />
+            </div>
+          </div>
         </div>
 
-        <!-- Maketda (node 2646:184433) boshqaruvlar orasi 12px.
-             `right-*` kartaning `px-6 sm:px-9` padding'ini takrorlaydi —
-             shunda o'ng cheti tab qatori va forma bilan bir tekisda turadi. -->
-        <div class="absolute top-6 right-6 sm:right-9 z-20 flex items-center gap-3">
-          <UIThemeSwitch />
-          <LangDropdown pill />
-        </div>
-
-        <div class="relative z-10 w-full login-new__fade-in login-new__fade-in-delay-1">
-          <!-- Telefonda tashqi tizimdan kelinganda — avval HR Rail ilovasi tavsiya qilinadi -->
-          <div v-if="ssoChecking" class="h-[360px]"></div>
-          <AppChooser v-else-if="showAppChooser" class="mt-10 lg:mt-9" @browser="appChooserDismissed = true" />
-          <template v-else>
-          <!-- Kirish usuli: Login / ERI / QR-kod.
+        <!-- Telefonda tashqi tizimdan kelinganda — avval HR Rail ilovasi tavsiya qilinadi -->
+        <div v-if="ssoChecking" class="h-[360px]"></div>
+        <AppChooser v-else-if="showAppChooser" @browser="appChooserDismissed = true" />
+        <template v-else>
+          <!-- Kirish usuli: Login / ERI / QR-kod (Figma «Status Toggle», node 4821:46339).
                ⚠️ Tab qatori BARCHA qadamlarda ko'rinadi (2FA / parol tiklashda ham):
                yashirilsa yo joyi yo'qolib karta ~100px sakrardi, yo `invisible`
                qilinganda tepada bo'sh oraliq qolardi. Ko'rinib turgani ham qulay —
                parol tiklashdan tab bosib chiqib ketish mumkin. -->
           <div
-            class="login-new__tabs mb-5 lg:mt-9 grid gap-1 p-1 rounded-xl"
+            class="login-new__tabs mb-6 grid p-0.5 rounded-xl"
             :style="{ gridTemplateColumns: `repeat(${tabList.length}, minmax(0, 1fr))` }"
           >
             <button
               v-for="t in tabList"
               :key="t.key"
               type="button"
-              class="login-new__tab h-9 rounded-lg text-[13px] font-semibold transition-colors"
+              class="login-new__tab h-8 rounded-[10px] px-4 text-sm leading-[18px] font-medium transition-colors"
               :class="tab === t.key ? 'login-new__tab--active' : ''"
               @click="selectTab(t.key)"
             >
@@ -342,14 +323,24 @@ const onDone = () => {
               </div>
             </Transition>
           </div>
-          </template>
-        </div>
-
-        <!-- Mualliflik huquqi -->
-        <p class="relative z-10 w-full mt-8 px-2 text-center text-xs text-login-foot">
-          {{ $t('loginPage.copyright') }}
-        </p>
+        </template>
       </div>
+
+      <!-- Mobil ilova (Figma «Mobile App Section», node 4821:46372) -->
+      <div
+        v-if="appStore.appConfig.signatureLogin"
+        class="relative z-10 w-full max-w-[472px] flex flex-col items-center gap-2.5 mt-6"
+      >
+        <p class="m-0 text-sm leading-5 text-login-body text-center">
+          {{ $t('loginPage.mobileApp') }}
+        </p>
+        <StoreLinks />
+      </div>
+
+      <!-- Mualliflik huquqi — keng ekranda banner ichida, bu yerda faqat telefon/planshetda -->
+      <p class="relative z-10 lg:hidden w-full mt-6 px-2 text-center text-xs text-login-foot">
+        {{ $t('loginPage.banner.copyright') }}
+      </p>
     </div>
 
     <!-- Offerta modali — login javobida `offer:true` kelsa ochiladi (teleport) -->
@@ -359,90 +350,56 @@ const onDone = () => {
 </template>
 
 <style scoped>
+/* Banner va karta teng bo'linadi (maketda 672 + 672) */
 .login-new__hero {
-  width: 52%;
-  /* background: radial-gradient(800px 600px at 30% 40%, var(--login-glow), transparent); */
-  transition: background 0.25s;
+  flex: 1 1 0;
+  min-width: 0;
 }
 
-/* h1 sarlavhaga sirpanib o'tuvchi yaltiroq (shiny) effekt — main branchdagi bilan bir xil texnika, light/dark ranglarga moslashtirilgan */
-.login-new__shiny-text {
-  background-image: linear-gradient(
-    100deg,
-    var(--login-ink) 0%,
-    var(--login-ink) 35%,
-    var(--login-link) 47%,
-    var(--login-link) 53%,
-    var(--login-ink) 65%,
-    var(--login-ink) 100%
-  );
-  background-size: 200% 100%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: login-new-shiny 4s linear infinite;
+/* Sahifa fonidagi uchburchak to'r (Figma «PATTERN», 3%) — bitta katak takrorlanadi */
+.login-new__grid {
+  background-color: var(--login-grid);
+  -webkit-mask: var(--login-grid-url) 0 0 / 279.5px 379.4px repeat;
+  mask: var(--login-grid-url) 0 0 / 279.5px 379.4px repeat;
 }
 
-[data-theme='dark'] .login-new__shiny-text {
-  background-image: linear-gradient(
-    100deg,
-    rgba(255, 255, 255, 0.35) 0%,
-    rgba(255, 255, 255, 0.35) 35%,
-    #ffffff 47%,
-    #ffffff 53%,
-    rgba(255, 255, 255, 0.35) 65%,
-    rgba(255, 255, 255, 0.35) 100%
-  );
+/* Naqsh SVG'si tik yarim mandala (tekis tomoni chapda, 325×622).
+   Rang `background-color` (token), shakl — maska. */
+.login-new__page-mandala,
+.login-new__mandala {
+  -webkit-mask: var(--login-mandala-url) center / 100% 100% no-repeat;
+  mask: var(--login-mandala-url) center / 100% 100% no-repeat;
 }
 
-@keyframes login-new-shiny {
-  0% {
-    background-position: 100% 0;
-  }
-  100% {
-    background-position: -100% 0;
-  }
+/* Sahifaning chap chetida (asosan banner ortida) */
+.login-new__page-mandala {
+  left: 0;
+  top: -3px;
+  width: 423px;
+  height: 807px;
+  background-color: var(--login-mandala-page);
 }
 
-/* h1'da fade-in va shiny animatsiyalari bir vaqtda ishlashi uchun — .login-new__fade-in'ning */
-/* animation shorthand'i shiny'nikini bekor qilib qo'ymasligi kerak, shu sabab ikkalasini birga birlashtiramiz */
-.login-new__shiny-text.login-new__fade-in {
-  animation:
-    login-new-fade-in 0.7s ease-out both,
-    login-new-shiny 4s linear infinite;
+/* Karta: 622×325 yarim doira — burilgan holda, gorizontal markazda.
+   Element tik (325×622) chiziladi va 90° buriladi: markaz o'zgarmaydi,
+   shuning uchun `bottom/top: -148.5px` = (325 − 622) / 2. */
+.login-new__mandala {
+  position: absolute;
+  left: 50%;
+  width: 325px;
+  height: 622px;
+  background-color: var(--login-mandala);
+  pointer-events: none;
 }
 
-/* Hero fonidagi mandala naqshi — chap chetga tiqilgan, kattalashtirilgan, o'ngga qarab so'nadi */
-.login-new__hero-pattern {
-  background-image: var(--login-hero-pattern);
-  background-repeat: no-repeat;
-  background-position: left center;
-  background-size: auto 105%;
-  opacity: 1;
-  -webkit-mask-image: linear-gradient(to right, #000 45%, transparent 85%);
-  mask-image: linear-gradient(to right, #000 45%, transparent 85%);
-  transition: opacity 0.25s;
+.login-new__mandala--bottom {
+  bottom: -148.5px;
+  transform: translateX(-50%) rotate(-90deg);
 }
 
-[data-theme='dark'] .login-new__hero-pattern {
-  opacity: 1;
-}
-
-/* Karta pastki qismidagi mandala naqshi — pastga tiqilgan, tepaga qarab so'nadi */
-.login-new__card-pattern {
-  background-image: var(--login-hero-pattern);
-  background-repeat: no-repeat;
-  background-position: center bottom;
-  background-size: 100% auto;
-  opacity: 1;
-  -webkit-mask-image: linear-gradient(to top, #000 22%, transparent 50%);
-  mask-image: linear-gradient(to top, #000 22%, transparent 50%);
-  transition: opacity 0.25s;
-  transform: rotate(0deg);
-}
-
-[data-theme='dark'] .login-new__card-pattern {
-  opacity: 1;
+.login-new__mandala--top {
+  top: -148.5px;
+  transform: translateX(-50%) rotate(90deg);
 }
 
 /* Karta balandligi SAKRAMASIN. Chegara `viewport`ga INLINE `min-height` bo'lib
@@ -479,36 +436,36 @@ const onDone = () => {
   pointer-events: none;
 }
 
-/* Kirish usuli tab'lari (Login / ERI / QR-kod) — segmentli boshqaruv */
+/* Kirish usuli tab'lari (Login / ERI / QR-kod) — Figma «Status Toggle»:
+   36px qator, `bg-secondary` fon, faol tab — karta rangida, qalinroq matn */
 .login-new__tabs {
-  background-color: color-mix(in srgb, var(--login-body) 10%, transparent);
-  border: 1px solid var(--login-form-border);
+  background-color: var(--login-field-bg);
 }
 
 .login-new__tab {
-  color: var(--login-body);
+  color: var(--login-ink);
   background-color: transparent;
   cursor: pointer;
 }
 
-.login-new__tab:hover {
-  color: var(--login-ink);
+.login-new__tab:hover:not(.login-new__tab--active) {
+  color: var(--login-link);
 }
 
 .login-new__tab--active {
   background-color: var(--login-form-bg);
-  color: var(--login-ink);
-  box-shadow: var(--shadow-sm);
+  font-weight: 600;
 }
 
 .login-new__card {
   background-color: var(--login-form-bg);
-  border: 1px solid var(--login-form-border);
-  box-shadow: var(--shadow-sm);
-  border-radius: 1.25rem;
-  transition:
-    background-color 0.25s,
-    box-shadow 0.25s;
+  border-radius: 16px;
+  transition: background-color 0.25s;
+}
+
+/* Til tanlagich «tabletkasi» — Figma'da tema tugmasi bilan bir xil `bg-secondary` */
+.login-new__lang :deep(.bg-fig-bg-tertiary) {
+  background-color: var(--login-field-bg);
 }
 
 /* yo'nalishli slide o'tishlari (tez) */
@@ -571,7 +528,7 @@ const onDone = () => {
 
 <style>
 .login-new__submit {
-  background: var(--primary-color) !important;
+  background: var(--login-brand) !important;
   color: #ffffff !important;
   transition:
     transform 0.15s ease,
@@ -580,7 +537,7 @@ const onDone = () => {
 }
 
 .login-new__submit:not(.n-button--disabled):hover {
-  background: var(--login-link-hover) !important;
+  background: var(--login-brand-hover) !important;
   transform: translateY(-1px);
 }
 
@@ -647,10 +604,14 @@ const onDone = () => {
   -webkit-text-fill-color: var(--login-field-ink) !important;
 }
 
-/* Forma label'lari va majburiylik yulduzchasi — dizayn ranglarida */
+/* Forma label'lari — Figma: 14/20, oddiy qalinlik, `text-secondary`, chapdan 4px */
 .login-new .n-form-item .n-form-item-label {
   color: var(--login-label) !important;
-  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  min-height: 0;
+  padding: 0 0 8px 4px;
 }
 
 .login-new .n-form-item .n-form-item-label__asterisk {
@@ -668,31 +629,35 @@ const onDone = () => {
   font-weight: 500;
 }
 
-/* === Login oqimidagi n-input'lar uchun yagona uslub — dizayn ranglarida === */
+/* === Login oqimidagi n-input'lar — Figma «Input»: 48px, `bg-secondary`, 8px radius,
+   chegarasiz (faqat hover/focus'da brend rang), ichki chekka 16px, matn 14px medium === */
 .login-new__input {
-  --n-border-radius: 10px !important;
+  --n-border-radius: 8px !important;
   --n-height: 48px !important;
   --n-padding-left: 16px !important;
   --n-padding-right: 16px !important;
+  --n-font-size: 14px !important;
   --n-color: var(--login-field-bg) !important;
   --n-color-focus: var(--login-field-bg) !important;
   --n-text-color: var(--login-field-ink) !important;
   --n-placeholder-color: var(--login-ph) !important;
-  --n-border: 1px solid var(--login-field-border) !important;
+  --n-border: 1px solid transparent !important;
   --n-border-hover: 1px solid var(--login-link) !important;
   --n-border-focus: 1px solid var(--login-link) !important;
   --n-box-shadow-focus: 0 0 0 4px color-mix(in srgb, var(--login-link) 16%, transparent) !important;
   --n-caret-color: var(--login-link) !important;
-}
-
-@media (min-width: 1024px) {
-  .login-new__input {
-    --n-height: 52px !important;
-  }
+  --n-icon-color: var(--login-icon-muted) !important;
+  --n-icon-color-hover: var(--login-icon) !important;
 }
 
 .login-new__input .n-input__input-el,
 .login-new__input .n-input__textarea-el {
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ikonka va matn orasi 8px (Figma «Language title» gap) */
+.login-new__input .n-input__prefix {
+  margin-right: 8px;
 }
 </style>

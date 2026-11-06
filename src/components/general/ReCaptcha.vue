@@ -1,6 +1,6 @@
 <script setup>
   import { ref, onMounted, onBeforeUnmount } from 'vue'
-  import { ArrowClockwise20Filled } from '@vicons/fluent'
+  import RefreshIcon from '@/assets/icons/figRefresh.svg'
 
   const emit = defineEmits(['update:answer', 'update:key', 'update:enabled', 'submit'])
 
@@ -59,9 +59,8 @@
 
 <template>
   <div class="captcha-block w-full flex items-center gap-2">
-    <div
-      class="captcha-card flex items-stretch rounded-[10px] overflow-hidden border border-surface-line shrink-0"
-    >
+    <!-- Figma «Container» (node 4821:46349): 216×56, 16px radius, rasm 174px + 40px tugma -->
+    <div class="captcha-card flex items-stretch rounded-2xl overflow-hidden border shrink-0">
       <div class="captcha-image flex items-center justify-center">
         <n-spin v-if="loading" :size="20" />
         <img v-else-if="imgSrc" :src="imgSrc" alt="captcha" class="captcha-img object-contain" />
@@ -79,7 +78,7 @@
             :disabled="loading"
             @click="reset"
           >
-            <n-icon :size="18" :component="ArrowClockwise20Filled" />
+            <n-icon :size="18"><RefreshIcon /></n-icon>
           </button>
         </template>
         <span>{{ $t('loginPage.captchaRefresh') }}</span>
@@ -88,7 +87,7 @@
 
     <n-input
       size="large"
-      class="grow login-new__input"
+      class="grow login-new__input captcha-input"
       :value="answer"
       :placeholder="$t('loginPage.captchaPlaceholder')"
       :maxlength="10"
@@ -100,20 +99,21 @@
 
 <style scoped>
   .captcha-card {
-    height: 48px;
+    height: 56px;
     background-color: var(--login-captcha-bg, var(--color-surface-section));
     border-color: var(--login-field-border, var(--color-surface-line));
   }
 
-  @media (min-width: 1024px) {
-    .captcha-card {
-      height: 52px;
-    }
-  }
-
   .captcha-image {
     height: 100%;
-    aspect-ratio: 160 / 46;
+    width: 174px;
+    padding: 3px 0;
+  }
+
+  /* Javob maydoni captcha bilan bir balandlikda (Figma: 56px, 12px radius) */
+  .captcha-input {
+    --n-height: 56px !important;
+    --n-border-radius: 12px !important;
   }
 
   .captcha-img {
@@ -131,7 +131,7 @@
     height: 100%;
     border-left: 1px solid var(--login-field-border, var(--color-surface-line));
     background-color: transparent;
-    color: var(--login-muted, var(--color-textColor2));
+    color: var(--login-ink, var(--color-textColor0));
     cursor: pointer;
     transition: background-color 0.2s ease;
   }

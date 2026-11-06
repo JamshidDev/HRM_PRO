@@ -103,6 +103,8 @@
   --color-login-muted: var(--login-muted);
   --color-login-foot: var(--login-foot);
   --color-login-link: var(--login-link);
+  --color-login-field: var(--login-field-bg);
+  --color-login-label: var(--login-label);
 
   --shadow-*: initial;
   --shadow-3d:

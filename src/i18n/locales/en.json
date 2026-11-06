@@ -535,6 +535,17 @@
     "decline": "Decline"
   },
   "loginPage": {
+    "passwordLabel": "Your password",
+    "mobileApp": "Download the mobile app",
+    "banner": {
+      "copyright": "© DASUTY. All rights reserved.",
+      "slide1Title": "Every employee is part\nof a great journey",
+      "slide1Text": "Staff, work time and documents in one system",
+      "slide2Title": "A reliable path\nfrom past to future",
+      "slide2Text": "Modern HR management in every region",
+      "slide3Title": "Our strength\nis our team",
+      "slide3Text": "A convenient and transparent system for every employee"
+    },
     "copyright": "© DASUTY. All rights reserved. Developed by \"DAS UTY\" LLC.",
     "name": "Welcome",
     "title": "Login",

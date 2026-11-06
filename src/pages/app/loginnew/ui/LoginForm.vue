@@ -1,14 +1,16 @@
 <script setup>
-  import { useAppStore, useLoginNewStore } from '@/store/modules/index.js'
+  import { useLoginNewStore } from '@/store/modules/index.js'
   import validationRules from '@/utils/validationRules.js'
-  import { Call24Regular, Eye24Regular, EyeOff24Regular, LockClosed24Regular } from '@vicons/fluent'
   import ReCaptcha from '@/components/general/ReCaptcha.vue'
-  import StoreLinks from './StoreLinks.vue'
+  // Figma «Input and dropdown» ikonkalari (phone-alt, lock-alt, eye-slash / eye)
+  import PhoneIcon from '@/assets/icons/figPhoneAlt.svg'
+  import LockIcon from '@/assets/icons/lockAlt.svg'
+  import EyeSlashIcon from '@/assets/icons/figEyeSlash.svg'
+  import EyeIcon from '@/assets/icons/eyeAlt.svg'
 
   const emit = defineEmits(['forgot'])
 
   const store = useLoginNewStore()
-  const appStore = useAppStore()
 
   const formRef = ref(null)
   const captchaRef = ref(null)
@@ -76,10 +78,11 @@
       ref="formRef"
       :rules="validationRules.login"
       :model="store"
-      class="flex flex-col login-new__form-compact"
+      :show-require-mark="false"
+      class="flex flex-col"
       @submit="onFormSubmit"
     >
-      <n-form-item class="text-textColor2!" :label="$t(`loginPage.phone`)" path="phone">
+      <n-form-item :label="$t(`loginPage.phone`)" path="phone">
         <n-input
           size="large"
           class="login-new__input"
@@ -95,11 +98,11 @@
           v-model:value="store.phone"
         >
           <template #prefix>
-            <n-icon class="text-textColor3!" size="24" :component="Call24Regular" />
+            <n-icon class="login-form__icon" :size="20"><PhoneIcon /></n-icon>
           </template>
         </n-input>
       </n-form-item>
-      <n-form-item :label="$t(`loginPage.password`)" path="password" class="text-textColor2!">
+      <n-form-item :label="$t(`loginPage.passwordLabel`)" path="password">
         <n-input
           size="large"
           class="login-new__input"
@@ -110,26 +113,33 @@
           v-model:value="store.password"
         >
           <template #prefix>
-            <n-icon class="text-textColor3!" size="24" :component="LockClosed24Regular" />
+            <n-icon class="login-form__icon" :size="20"><LockIcon /></n-icon>
           </template>
 
-          <template #password-visible-icon>
-            <n-icon :size="20" :component="EyeOff24Regular" />
-          </template>
+          <!-- Figma: parol yashirin turganda — «eye-slash» -->
           <template #password-invisible-icon>
-            <n-icon :size="20" :component="Eye24Regular" />
+            <n-icon :size="20"><EyeSlashIcon /></n-icon>
+          </template>
+          <template #password-visible-icon>
+            <n-icon :size="20"><EyeIcon /></n-icon>
           </template>
         </n-input>
       </n-form-item>
 
+      <!-- Inputdan 8px pastda (24px feedback joyi − 16px) -->
       <div class="flex justify-end -mt-4">
-        <n-button text class="text-login-link! font-semibold! hover:opacity-80!" @click="onForgot">
+        <n-button
+          text
+          class="text-login-link! text-sm! leading-[18px]! font-medium! hover:opacity-80!"
+          @click="onForgot"
+        >
           {{ $t('loginPage.forgotPassword') }}
         </n-button>
       </div>
 
       <n-form-item
         v-show="captchaEnabled"
+        class="mt-6"
         :validation-status="captchaError ? 'error' : undefined"
         :feedback="captchaError ? $t('rules.captchaRequired') : undefined"
         style="--n-blank-height: 0px; --n-item-padding-bottom: 4px"
@@ -143,10 +153,11 @@
         />
       </n-form-item>
 
-      <div class="grid mt-4 lg:mt-16">
+      <!-- Figma «Button»: 48px, 10px radius, 16px medium -->
+      <div class="grid mt-6">
         <n-button
           attr-type="submit"
-          class="login-new__submit h-[48px]! lg:h-[52px]! rounded-[10px]! overflow-hidden! font-semibold!"
+          class="login-new__submit h-12! rounded-[10px]! overflow-hidden! text-base! font-medium!"
           size="large"
           :loading="store.loading"
           :disabled="store.loading"
@@ -154,25 +165,15 @@
           {{ $t(`loginPage.login`) }}
         </n-button>
 
-        <!-- E-IMZO tugmasi "ERI" tabiga ko'chirildi (EriForm.vue) -->
-
-        <!-- Mobil ilovani yuklab olish — faqat mobile'da (desktop'da hero panelda ko'rsatiladi) -->
-        <div v-if="appStore.appConfig.signatureLogin" class="mt-3 lg:hidden">
-          <p class="text-login-body text-sm font-medium text-center mb-2">
-            {{ $t('content.downloadApp') }}
-          </p>
-          <StoreLinks />
-        </div>
+        <!-- E-IMZO tugmasi "ERI" tabiga ko'chirildi (EriForm.vue).
+             Mobil ilova havolalari endi kartaning pastida (page.vue). -->
       </div>
     </n-form>
   </div>
 </template>
 
 <style scoped>
-  /* faqat mobilda input'lar orasini zichlashtiramiz; desktop Naive default'ida qoladi */
-  @media (max-width: 1023px) {
-    .login-new__form-compact {
-      --n-item-padding-bottom: 8px;
-    }
+  .login-form__icon {
+    color: var(--login-icon);
   }
 </style>

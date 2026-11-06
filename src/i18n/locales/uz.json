@@ -550,6 +550,17 @@
     "decline": "Rad etish"
   },
   "loginPage": {
+    "passwordLabel": "Parolingiz",
+    "mobileApp": "Mobil ilovani yuklash",
+    "banner": {
+      "copyright": "© DASUTY. Barcha huquqlar himoyalangan.",
+      "slide1Title": "Har bir xodim\nkatta yoʻlning bir qismi",
+      "slide1Text": "Kadrlar, ish vaqti va hujjatlar bir tizimda",
+      "slide2Title": "Tarixdan kelajakka\nishonchli yoʻl",
+      "slide2Text": "Zamonaviy kadrlar boshqaruvi har bir hududda",
+      "slide3Title": "Kuchimiz\njamoamizda",
+      "slide3Text": "Har bir xodim uchun qulay va shaffof tizim"
+    },
     "copyright": "© DASUTY. Barcha huquqlar himoyalangan. \"DAS UTY\" MCHJ tomonidan ishlab chiqilgan.",
     "name": "Xush kelibsiz",
     "title": "Kirish",
