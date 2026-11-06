@@ -48,6 +48,10 @@
     permissionPrefix: { type: String, default: null },
     storageKey: { type: String, default: null }, // persists column visibility/order/width
     onLoad: { type: Function, default: null }, // async tree children loader: (row) => Promise<void>
+    // Daraxt: ochish strelkasi o'rniga o'z ikonkasi ({ expanded, rowData }) => VNode va
+    // har daraja uchun surilish (px). Berilmasa Naive default'i (strelka, 16px).
+    renderExpandIcon: { type: Function, default: undefined },
+    indent: { type: Number, default: 16 },
     rowClassName: { type: Function, default: null }, // (row, index) => string
     sortBy: { type: String, default: null }, // current sort field, paired with a column's { sortable: true }
     sortOrder: { type: Number, default: 1 }, // 1 | -1
@@ -212,10 +216,19 @@
 
   const rowKeyFn = (row) => row[props.rowKey]
 
-  // Daraxt jadvali: Naive ichki qatorlarni animatsiyasiz qo'yadi va olib tashlaydi.
-  // Ochilganda ular silliq kirib keladi (CSS), yopilganda esa avval so'nib, keyin
-  // olib tashlanadi — shuning uchun ochiq qatorlar ro'yxatini o'zimiz boshqaramiz.
-  const COLLAPSE_MS = 280
+  // Daraxt jadvali — AKKORDEON. Naive ichki qatorlarni animatsiyasiz qo'yadi/olib
+  // tashlaydi, jadval qatori balandligini esa CSS bilan silliq o'zgartirib bo'lmaydi.
+  // Shuning uchun FLIP usuli: o'zgarishdan oldin qatorlar o'rni o'lchanadi, keyin
+  // PASTDAGI qatorlar eski joyidan yangi joyiga silliq suriladi (`transform`).
+  //  • Ochish: pastdagilar pastga suriladi va yangi ichki qatorlarni «ochib» beradi,
+  //    yangilar shu vaqtda so'nib chiqadi.
+  //  • Yopish: ketayotgan qatorlar so'nadi, pastdagilar shu vaqtda yuqoriga chiqib
+  //    ularni yopadi; tugagach qatorlar haqiqatan olib tashlanadi.
+  // Ikkala tomon bir xil tezlikda. Davomiyligi CSS'dagi 0.25s bilan bir xil.
+  // Katak foni to'liq (`tdColor` = `--surface-section`), shuning uchun suriladigan
+  // qatorlar ketayotganlarini to'liq yopadi.
+  const ACCORDION_MS = 250
+  const ACCORDION_EASE = 'cubic-bezier(0.4, 0, 0.2, 1)'
   const expandedKeys = ref([])
   const leavingKeys = ref(new Set())
   const topRows = computed(() => new Set(props.data))
@@ -235,18 +248,63 @@
     return out
   }
   const reduceMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-  const onUpdateExpanded = (keys) => {
-    const closed = expandedKeys.value.filter((k) => !keys.includes(k))
-    if (!closed.length || reduceMotion()) {
-      expandedKeys.value = keys
-      return
+
+  // `rowProps` har qatorga `data-row-key` qo'yadi — DOM'dagi qatorni kalit bo'yicha topish uchun.
+  const bodyRows = () =>
+    Array.from(tableWrapperRef.value?.querySelectorAll('.n-data-table-tbody tr[data-row-key]') ?? [])
+  const slideCells = (tr, from, to, fill) =>
+    Array.from(tr.children).map((td) =>
+      td.animate([{ transform: `translateY(${from}px)` }, { transform: `translateY(${to}px)` }], {
+        duration: ACCORDION_MS,
+        easing: ACCORDION_EASE,
+        fill
+      })
+    )
+
+  const expandWithSlide = (keys) => {
+    const before = new Map(bodyRows().map((tr) => [tr.dataset.rowKey, tr.getBoundingClientRect().top]))
+    expandedKeys.value = keys
+    nextTick(() => {
+      for (const tr of bodyRows()) {
+        const prev = before.get(tr.dataset.rowKey)
+        if (prev === undefined) continue // yangi qator — CSS bilan so'nib chiqadi
+        const dy = prev - tr.getBoundingClientRect().top
+        if (Math.abs(dy) >= 1) slideCells(tr, dy, 0)
+      }
+    })
+  }
+
+  const collapseWithSlide = (closed) => {
+    const leaving = closed.flatMap((k) => descendantKeys(findRow(k)))
+    const leavingDom = new Set(leaving.map(String))
+    // Har bir qolayotgan qator o'zidan YUQORIDAGI ketayotgan qatorlar balandligicha ko'tariladi.
+    const movers = []
+    let removed = 0
+    for (const tr of bodyRows()) {
+      if (leavingDom.has(tr.dataset.rowKey)) removed += tr.getBoundingClientRect().height
+      else if (removed) movers.push({ tr, shift: removed })
     }
-    // Yopilayotgan qatorning barcha ichki qatorlari so'nadi, keyin haqiqatan yopiladi.
-    leavingKeys.value = new Set(closed.flatMap((k) => descendantKeys(findRow(k))))
+    leavingKeys.value = new Set(leaving)
+    const anims = movers.flatMap(({ tr, shift }) => slideCells(tr, 0, -shift, 'forwards'))
     setTimeout(() => {
       expandedKeys.value = expandedKeys.value.filter((k) => !closed.includes(k))
       leavingKeys.value = new Set()
-    }, COLLAPSE_MS)
+      // Qatorlar olib tashlangach pastdagilar o'z-o'zidan shu joyda turadi — siljishni bekor qilamiz.
+      nextTick(() => anims.forEach((a) => a.cancel()))
+    }, ACCORDION_MS)
+  }
+
+  const onUpdateExpanded = (keys) => {
+    // Yopilish animatsiyasi tugamaguncha yangi bosish e'tiborga olinmaydi (aks holda ikki marta yopiladi).
+    if (leavingKeys.value.size) return
+    const closed = expandedKeys.value.filter((k) => !keys.includes(k))
+    const opened = keys.filter((k) => !expandedKeys.value.includes(k))
+    if (reduceMotion() || (!closed.length && !opened.length)) {
+      expandedKeys.value = keys
+      return
+    }
+    if (closed.length) collapseWithSlide(closed)
+    else expandWithSlide(keys)
   }
   // Naive ichki qatorlarni hech qachon «zebra» qilmaydi va tashqi qatorlarni o'z
   // indeksi bo'yicha bo'yaydi. Daraxtda zebrani o'zimiz hisoblaymiz: ko'rinib turgan
@@ -391,6 +449,7 @@
   }
 
   const rowProps = (row, index) => ({
+    'data-row-key': isTreeTable.value ? rowKeyFn(row) : undefined,
     onClick: () => emit('row-click', row, index),
     onContextmenu: (e) => onRowContextmenu(e, row, index),
     style: instance.vnode.props?.onRowClick ? 'cursor: pointer' : undefined
@@ -511,6 +570,8 @@
         :row-class-name="mergedRowClassName"
         :expanded-row-keys="expandedKeys"
         :on-load="onLoad"
+        :render-expand-icon="renderExpandIcon"
+        :indent="indent"
         :children-key="childrenKey"
         @unstable-column-resize="onUnstableColumnResize"
         @update:expanded-row-keys="onUpdateExpanded"
@@ -596,28 +657,26 @@
     border-bottom-right-radius: 16px;
   }
 
-  /* Daraxt: ochilgan ichki qatorlar yuqoridan sirpanib, so'nib kirib keladi;
-     yopilganda teskarisi (keyin JS ularni olib tashlaydi). */
+  /* Daraxt (akkordeon): yangi ichki qatorlar so'nib chiqadi, ketayotganlari so'nadi —
+     pastdagi qatorlarni JS surib beradi. Davomiyligi JS'dagi `ACCORDION_MS` (250ms)
+     bilan bir xil bo'lishi kerak. */
   .ui-table__table :deep(.ui-table__row--child > .n-data-table-td) {
-    animation: ui-table-row-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: ui-table-row-in 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
   }
 
-  /* Davomiyligi JS'dagi `COLLAPSE_MS` (280ms) bilan bir xil bo'lishi kerak. */
   .ui-table__table :deep(.ui-table__row--leaving > .n-data-table-td) {
-    animation: ui-table-row-out 0.28s ease-in both;
+    animation: ui-table-row-out 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
   }
 
   @keyframes ui-table-row-in {
     from {
       opacity: 0;
-      transform: translateY(-8px);
     }
   }
 
   @keyframes ui-table-row-out {
     to {
       opacity: 0;
-      transform: translateY(-8px);
     }
   }
 
