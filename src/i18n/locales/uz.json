@@ -12,7 +12,8 @@
       "dismissedAt": "Bo'shagan sana",
       "resume": "Rezyume yuklash",
       "currentOrg": "Hozirgi ish joyi",
-      "notEmployed": "Tarmoqda emas"
+      "notEmployed": "Aniqlanmadi",
+      "dismissalCommand": "Bo'shatish buyrug'i"
     }
   },
   "lateWorkersReport": {

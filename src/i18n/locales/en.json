@@ -12,7 +12,8 @@
       "dismissedAt": "Dismissal date",
       "resume": "Download resume",
       "currentOrg": "Current workplace",
-      "notEmployed": "Not in the network"
+      "notEmployed": "Not determined",
+      "dismissalCommand": "Dismissal order"
     }
   },
   "lateWorkersReport": {

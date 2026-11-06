@@ -12,7 +12,8 @@
       "dismissedAt": "Дата увольнения",
       "resume": "Скачать резюме",
       "currentOrg": "Текущее место работы",
-      "notEmployed": "Вне сети"
+      "notEmployed": "Не определено",
+      "dismissalCommand": "Приказ об увольнении"
     }
   },
   "lateWorkersReport": {

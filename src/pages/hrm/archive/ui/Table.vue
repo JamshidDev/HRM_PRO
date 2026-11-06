@@ -25,10 +25,18 @@
     { key: 'worker', title: t('confirmationPage.table.worker'), minWidth: 200 },
     { key: 'pin', title: t('pensioner.form.pin'), width: 140 },
     { key: 'organization', title: t('archive.table.currentOrg'), minWidth: 200 },
-    { key: 'contract_type', title: t('archive.table.contractType'), minWidth: 220 },
-    { key: 'start_date', title: t('archive.table.startDate'), minWidth: 180 },
-    { key: 'dismissed_at', title: t('archive.table.dismissedAt'), width: 130 }
+    // Shartnoma: turi ustida, tuzilgan sanasi ostida; bo'shash: sana va buyruq.
+    { key: 'contract_type', title: t('archive.table.contractType'), minWidth: 240 },
+    { key: 'dismissed_at', title: t('archive.table.dismissedAt'), width: 170 }
   ])
+
+  const emits = defineEmits(['openCommand'])
+
+  // Buyruq raqami bosilsa — buyruq PDF'i ochiladi (buyruqlar sahifasidagi kabi).
+  const onOpenCommand = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrCommandsRead)) return
+    emits('openCommand', row.dismissal_command)
+  }
 
   /**
    * Maketdagi ism ko'rinishi: familiya + ism/otasining ismi bosh harflari
@@ -127,15 +135,35 @@
       </span>
     </template>
 
-    <template #cell-contract_type="{ row }">{{ row?.contract_type?.name || '—' }}</template>
-
-    <!-- Sana formati boshqa sahifalar bilan bir xil: DD.MM.YYYY. -->
-    <template #cell-start_date="{ row }">
-      {{ Utils.timeOnlyDate(row?.start_date) || '—' }}
+    <template #cell-contract_type="{ row }">
+      <div class="flex min-w-0 flex-col gap-0.5 leading-tight">
+        <n-tooltip trigger="hover" :disabled="!row?.contract_type?.name">
+          <template #trigger>
+            <span class="truncate text-sm text-textColor2">{{ row?.contract_type?.name || '—' }}</span>
+          </template>
+          {{ row?.contract_type?.name }}
+        </n-tooltip>
+        <span class="text-xs text-secondary">
+          {{ $t('archive.table.startDate') }}: {{ Utils.timeOnlyDate(row?.start_date) || '—' }}
+        </span>
+      </div>
     </template>
 
+    <!-- Bo'shagan sana va bo'shatish buyrug'i (bosilsa buyruq PDF'i ochiladi). -->
     <template #cell-dismissed_at="{ row }">
-      {{ Utils.timeOnlyDate(row?.dismissed_at) || '—' }}
+      <div class="flex flex-col gap-0.5 leading-tight">
+        <span class="text-sm text-textColor2">{{ Utils.timeOnlyDate(row?.dismissed_at) || '—' }}</span>
+        <n-button
+          v-if="row?.dismissal_command"
+          text
+          size="tiny"
+          type="primary"
+          class="!justify-start"
+          @click="onOpenCommand(row)"
+        >
+          {{ $t('archive.table.dismissalCommand') }} №{{ row.dismissal_command.command_number || row.dismissal_command.id }}
+        </n-button>
+      </div>
     </template>
   </UITable>
 </template>

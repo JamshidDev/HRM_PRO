@@ -12,7 +12,8 @@
       "dismissedAt": "Бўшаган сана",
       "resume": "Резюме юклаш",
       "currentOrg": "Ҳозирги иш жойи",
-      "notEmployed": "Тармоқда эмас"
+      "notEmployed": "Аниқланмади",
+      "dismissalCommand": "Бўшатиш буйруғи"
     }
   },
   "lateWorkersReport": {
