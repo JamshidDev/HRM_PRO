@@ -178,6 +178,16 @@
           aria-hidden="true"
         ></span>
 
+        <!-- Ochiq ota: strelkasi tagidan qator oxirigacha chiziq — birinchi bolaning
+             chizig'iga ulanadi (ilgari bu joyda uzilish bor edi). -->
+        <span
+          v-if="hasChildren(item)"
+          class="tso-stem"
+          :class="isExpanded(item) && 'tso-stem--open'"
+          :style="{ '--tso-depth': deep - 1 }"
+          aria-hidden="true"
+        ></span>
+
         <button
           v-if="hasChildren(item)"
           type="button"
@@ -330,26 +340,55 @@
     background: var(--tso-line);
   }
 
-  /* «└» — oxirgi bolada chiziq qator markazida tugaydi. */
-  .tso-guide--end::before {
-    bottom: auto;
-    height: 14px;
-  }
-
-  /* Gorizontal tarmoq — strelkagacha (barg bo'lsa, uning o'rniga qadar). */
-  .tso-guide--tee::after,
-  .tso-guide--end::after {
+  /* Ustunlar orasida flex `gap` (6px) bor: bir daraja = 20 + 6 = 26px.
+     Gorizontal tarmoq strelka tugmasigacha (9.5 → 26px) yetadi; barg qatorida
+     strelka o'rni bo'sh — checkbox oldigacha (→ 48px) cho'ziladi. */
+  .tso-guide--tee::after {
     content: '';
     position: absolute;
     left: 9.5px;
     top: 14px;
-    width: 14px;
+    width: 16.5px;
     height: 1px;
     background: var(--tso-line);
   }
 
-  .tso-guide--leaf::after {
-    width: 22px;
+  .tso-guide--tee.tso-guide--leaf::after {
+    width: 38.5px;
+  }
+
+  /* «└» — oxirgi bola: tik chiziq qator markazida yumaloq burchak bilan
+     gorizontalga buriladi (bitta element — uzilish yo'q). */
+  .tso-guide--end::before {
+    bottom: auto;
+    height: 15px;
+    width: 16.5px;
+    background: none;
+    border-left: 1px solid var(--tso-line);
+    border-bottom: 1px solid var(--tso-line);
+    border-bottom-left-radius: 6px;
+  }
+
+  .tso-guide--end.tso-guide--leaf::before {
+    width: 38.5px;
+  }
+
+  /* Ochiq ota qatori: strelka tagidan (4px chekka + 20px strelka) qator tubigacha.
+     Chap: 4px chekka + ajdod ustunlari (har biri 26px) + strelka markazi (9.5px). */
+  .tso-stem {
+    position: absolute;
+    top: 24px;
+    bottom: 0;
+    left: calc(4px + var(--tso-depth, 0) * 26px + 9.5px);
+    width: 1px;
+    background: var(--tso-line);
+    opacity: 0;
+    transition: opacity 0.18s ease;
+    pointer-events: none;
+  }
+
+  .tso-stem--open {
+    opacity: 1;
   }
 
   /* Ochish/yopish: balandlik (grid 0fr→1fr) va shaffoflik birga — silliq. */
