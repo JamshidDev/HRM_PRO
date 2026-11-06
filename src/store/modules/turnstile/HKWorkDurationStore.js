@@ -57,7 +57,8 @@ export const useHKWorkDurationStore = defineStore('HKWorkDurationStore', {
     _show() {
       this.previewLoading = true
       const params = {
-        ...this.previewParams
+        ...this.previewParams,
+        mode: 'events' // faqat hodisalardan, tabelga qaramaydi
       }
       $ApiService.turnstileWorkDurationService
         ._HKShow({ params, id: this.elementId })

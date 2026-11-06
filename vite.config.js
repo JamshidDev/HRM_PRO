@@ -68,7 +68,7 @@ export default defineConfig({
     watch: {
       ignored: ['dist/**', 'auto-imports.d.ts']
     },
-    allowedHosts: ['jamcoder-mac.local', 'calculate-aloof-slot.ngrok-free.dev'],
+    allowedHosts: ['jamcoder-mac.local', 'calculate-aloof-slot.ngrok-free.dev', 'hrm.test'],
     // Worktree'da node_modules symlink — haqiqiy yo'lidagi shriftlar 403 bermasin.
     fs: {
       allow: [

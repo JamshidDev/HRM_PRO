@@ -17,6 +17,10 @@
   const FRICTION_PER_MS = 0.99 // exponential velocity decay per ms - decays fast, short travel distance
   const BOUNCE_DAMPING = 0.4 // velocity kept (reversed) after bouncing off an edge
   const MIN_VELOCITY = 30 // px/s, below this the fling animation stops
+  // Tugma ostida shu elementlardan biri bo'lsa va sichqoncha ustiga kelsa — tugma
+  // xiralashib, bosishni ostidagi elementga o'tkazadi (masalan, input'dagi «ko'rish» ko'zi).
+  const INTERACTIVE_BELOW =
+    'input, textarea, select, button, a[href], [role="button"], [role="checkbox"], .n-input, .n-base-selection, .n-button'
 
   const route = useRoute()
   const store = useAIConversationStore()
@@ -159,11 +163,52 @@
     inertiaFrame = requestAnimationFrame(step)
   }
 
+  // --- Ostidagi elementga yo'l berish ---
+  // Sichqoncha tugma ustida, lekin tugma ostida bosiladigan narsa (input, tugma, havola)
+  // bo'lsa — tugma deyarli shaffof bo'lib, bosishlarni o'tkazib yuboradi. Sichqoncha
+  // tugma doirasidan chiqqach yoki ostida bosiladigan narsa qolmagach — qaytadi.
+  // Faqat sichqoncha uchun: telefonda «hover» yo'q, u yerda tugmani surish mumkin.
+  const yielding = ref(false)
+  let dragging = false
+  let lastPointer = null
+  let pointerFrame = null
+
+  const checkYield = () => {
+    pointerFrame = null
+    const node = el.value
+    if (!node || !lastPointer || dragging || inertiaFrame) {
+      yielding.value = false
+      return
+    }
+    const { clientX, clientY } = lastPointer
+    const r = node.getBoundingClientRect()
+    const inside = clientX >= r.left && clientX <= r.right && clientY >= r.top && clientY <= r.bottom
+    if (!inside) {
+      yielding.value = false
+      return
+    }
+    const below = document.elementsFromPoint(clientX, clientY).find((n) => !node.contains(n))
+    yielding.value = !!below?.closest(INTERACTIVE_BELOW)
+  }
+
+  const onPointerMove = (e) => {
+    if (e.pointerType !== 'mouse') return
+    lastPointer = { clientX: e.clientX, clientY: e.clientY }
+    if (!pointerFrame) pointerFrame = requestAnimationFrame(checkYield)
+  }
+
+  onMounted(() => window.addEventListener('pointermove', onPointerMove, { passive: true }))
+  onBeforeUnmount(() => {
+    window.removeEventListener('pointermove', onPointerMove)
+    if (pointerFrame) cancelAnimationFrame(pointerFrame)
+  })
+
   const { x, y, style } = useDraggable(el, {
     initialValue: { x: 0, y: 0 },
     preventDefault: true,
     onStart: () => {
       stopInertia()
+      dragging = true
       dragged.value = false
       moveHistory = []
       startPosition = { x: x.value, y: y.value }
@@ -176,6 +221,7 @@
       recordMove()
     },
     onEnd: () => {
+      dragging = false
       velocity = computeReleaseVelocity()
       if (Math.hypot(velocity.x, velocity.y) > FLING_THRESHOLD) {
         runInertia()
@@ -223,6 +269,7 @@
     v-if="isVisible"
     ref="el"
     class="ai-floating-button fixed z-[200] touch-none select-none"
+    :class="{ 'is-yielding': yielding }"
     :style="style"
     @click="handleClick"
   >
@@ -233,6 +280,13 @@
 <style scoped>
   .ai-floating-button {
     cursor: grab;
+    transition: opacity 0.15s ease;
+  }
+
+  /* Ostidagi input/tugmaga yo'l beradi — bosishlar tugmadan o'tib ketadi */
+  .ai-floating-button.is-yielding {
+    opacity: 0.15;
+    pointer-events: none;
   }
 
   .ai-floating-button:active {

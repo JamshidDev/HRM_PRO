@@ -395,7 +395,8 @@ export const useEventV2Store = defineStore('eventV2Store', {
     _calendar() {
       this.calendarLoading = true
       const params = {
-        ...this.calendarParams
+        ...this.calendarParams,
+        mode: 'events' // faqat hodisalardan, tabelga qaramaydi
       }
       $ApiService.turnstileWorkDurationService
         ._HKShow({ params, id: this.elementId })
