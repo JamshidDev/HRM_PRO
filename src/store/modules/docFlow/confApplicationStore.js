@@ -137,6 +137,15 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
     directorList: []
   }),
   actions: {
+    // Ta'tilga chiqish / qaytish sanasi: o'tgan kunlar tanlanmaydi (3, 4, 5-turdagi arizalar).
+    isPastDay(ts) {
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      return ts < today.getTime()
+    },
+    isToDateDisabled(ts) {
+      return this.isPastDay(ts) || (!!this.payload.from && ts < this.payload.from)
+    },
     _directors(id = undefined, callback) {
       this.directorLoading = true
       $ApiService.componentService
@@ -201,6 +210,9 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
           this.payload.temporarily_absent = null
         }
       }
+      // BACKEND (DAS-14203): `reason` (Sabab) shu payload bilan yuboriladi va saqlanadi — dev'da ariza 626
+      // `/edit` da QA kiritgan matnni qaytaradi. Lekin ariza PDF'ida u chiqmaydi: shablon doim
+      // «oilaviy zaruriyatim sababli» deb yozadi. PDF'ga saqlangan `reason` ni (ekranlab) qo'ying.
       let data = {
         ...this.payload,
         period_from: Utils.timeToZone(this.payload.period_from),

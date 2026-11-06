@@ -2,7 +2,7 @@
   import { computed, defineAsyncComponent, watch, onMounted, onBeforeUnmount } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { Beaker24Filled } from '@vicons/fluent'
-  import { UIPageContent } from '@/components/index.js'
+  import { UIPageContent, UITabs } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useSalaryControlStore } from '@/store/modules/index.js'
   import { getOneMonthAgoYearMonth } from '@utils'
@@ -177,11 +177,10 @@
       </div>
     </div>
 
-    <n-tabs
+    <UITabs
       :value="activeTab"
       @update:value="onTabChange"
       type="line"
-      animated
       class="mb-2"
     >
       <n-tab-pane name="summary" :tab="$t('salaryControl.tabs.summary')" />
@@ -192,7 +191,7 @@
       <n-tab-pane name="deductions" :tab="$t('salaryControl.tabs.deductions')" />
       <n-tab-pane name="reports" :tab="$t('salaryControl.tabs.reports')" />
       <n-tab-pane name="employees" :tab="$t('salaryControl.tabs.employees')" />
-    </n-tabs>
+    </UITabs>
 
     <Filter />
 

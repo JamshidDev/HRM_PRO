@@ -578,6 +578,10 @@
                 >
                   {{ store.title || store.document?.document?.file_name }}
                 </div>
+                <!-- BACKEND: GET /v1/document/show `document.created` ariza uchun Toshkent vaqtini `Z` (UTC) bilan
+                     qaytaradi: dev'da UTY-416011 — `created: 2026-11-03T16:03:40Z`, ro'yxatdagi
+                     `worker_application.created_at: 2026-11-03T11:03:40Z` (to'g'ri). Brauzer +5 qo'shadi → 21:03
+                     (QA, DAS-14204). `created` haqiqiy UTC bo'lsin (yoki `+05:00` offset bilan) — frontend o'zgarmaydi. -->
                 <div class="text-xs text-gray-400 tabular-nums">
                   {{ Utils.timeOnlyDate(store?.document?.document?.created) }}
                   {{ Utils.timeOnlyHour(store?.document?.document?.created) }}

@@ -57,12 +57,17 @@ export const normText = (s) =>
     .replace(/[ʻʼ‘’`´]/g, "'")
     .replace(/ИНПС/g, 'INPS')
 
+// Lavozim matnini moslashtirish uchun normallash: apostrof variantlari (ʻ ‘ ’ ` ´)
+// → ' va kichik harf. 1C erkin matni `ʻ` (U+02BB) ishlatadi — ilgari regex uni
+// qamramay, rahbar/kadr lavozimlari noto'g'ri toifalanardi.
+const normLav = (lav) => normText(lav).toLowerCase()
+
 // —— Lavozim guruhlari (maket grpOf) ———————————————————————————————————
 export function positionGroup(lav) {
-  const l = (lav || '').toLowerCase()
-  if (/boshli|boshlig|bosh muh|bosh his|o‘rinbos|o'rinbos/.test(l)) return 'Rahbarlar'
+  const l = normLav(lav)
+  if (/boshli|o'rinbos|bosh muh|bosh his|rais|direktor|mudir/.test(l)) return 'Rahbarlar'
   if (/kuzatuvchi/.test(l)) return 'Vagon kuzatuvchilar'
-  if (/hisobchi|iqtisod|xodimlar bo/.test(l)) return 'Hisob va kadrlar'
+  if (/hisobchi|iqtisod|kadrlar|xodimlar bo/.test(l)) return 'Hisob va kadrlar'
   if (/muhandis|muxandis/.test(l)) return 'Muhandislar'
   if (/mutaxassis/.test(l)) return 'Mutaxassislar'
   if (/elektro|mexanik/.test(l)) return 'Elektromontyor/mexanik'
@@ -71,11 +76,11 @@ export function positionGroup(lav) {
 
 // —— Lavozim toifasi (maket cat) — 011/012 mukofot mezoni uchun ——————————
 export function positionCategory(lav) {
-  const l = (lav || '').toLowerCase()
-  if (/boshli|boshlig|o‘rinbos|o'rinbos|bosh muh|bosh his/.test(l)) return 'Rahbar'
-  if (/muhandis|muxandis|mutaxassis|iqtisod|hisobchi|yo‘riqchi|yo'riqchi|metrolog/.test(l))
+  const l = normLav(lav)
+  if (/boshli|o'rinbos|bosh muh|bosh his|rais|direktor|mudir/.test(l)) return 'Rahbar'
+  if (/muhandis|muxandis|mutaxassis|iqtisod|hisobchi|kadrlar|inspektor|yo'riqchi|metrolog/.test(l))
     return 'Mutaxassis'
-  if (/kuzatuvchi|elektromon|elektromex|farrosh|ishchi|slesar|haydovchi|mashinist/.test(l))
+  if (/kuzatuvchi|elektromon|elektromex|farrosh|ishchi|slesar|haydovchi|mashinist|montyor|payvandchi|operator/.test(l))
     return 'Ishchi'
   return 'Aniqlanmagan'
 }

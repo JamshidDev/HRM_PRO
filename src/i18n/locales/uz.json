@@ -491,7 +491,9 @@
     "enterOverNumber": "{n}dan katta son kiriting",
     "requiredHoursField": "Vaqt formati noto'g'ri (HH:MM)",
     "captchaRequired": "Captcha javobini kiriting!",
-    "passwordsNotMatch": "Parollar mos kelmadi!"
+    "passwordsNotMatch": "Parollar mos kelmadi!",
+    "endBeforeStart": "Bu sana boshlanish sanasidan oldin bo'lmasligi kerak",
+    "pastDate": "O'tgan sanani tanlab bo'lmaydi"
   },
   "message": {
     "successDone": "Muvaffaqiyatli bajarildi",
@@ -3372,6 +3374,23 @@
     "holidaysCount": "Bayram kunlari",
     "daysCount": "Oy kunlari",
     "statusOpen": "Ochiq",
+    "allDepartments": "Barcha bo'limlar",
+    "saveHint": "Hali o'zgarish yo'q — avval kataklarni to'ldiring",
+    "mainType": "Asosiy tur",
+    "extraType": "Qo'shimcha tur (ixtiyoriy)",
+    "previewLabel": "Namuna",
+    "previewHint": "Belgilangan kataklarga aynan shu yoziladi. Bosib vaqtincha o'chirish yoki yoqish mumkin.",
+    "fillHint": "Tur va soatni tanlang, so'ng kataklarni sichqoncha bilan belgilang. Oxirida «Saqlash» ni bosing.",
+    "accessHint": "Yoqilgan — tabelchi shu oy tabelini to'ldira oladi. O'chirilgan — faqat ko'radi.",
+    "gridEmpty": "Xodimlar topilmadi",
+    "gridEmptyHint": "Boshqa bo'limni tanlang yoki qidiruvni tozalang.",
+    "noDepartments": "Bo'lim biriktirilmagan",
+    "filledWorkers": "To'ldirilgan",
+    "filledCount": "{count} ta xodim",
+    "notFilled": "To'ldirilmagan",
+    "createHint": "Tabel tashkilot bo'yicha bir oyga yaratiladi. Bo'limlar tabel ichida tanlanadi.",
+    "rulesSearch": "Shart, buyruq turi yoki kod bo'yicha qidirish",
+    "rulesNotFound": "Hech narsa topilmadi",
     "accessColumn": "Ruxsat",
     "timekeeperEmpty": "Bu korxonaga tabelchi biriktirilmagan",
     "accessEditable": "O'zgartirishi mumkin",
@@ -4359,6 +4378,15 @@
       "inTable": "Hisoblangan to'lovlar",
       "outTable": "Ushlanmalar",
       "oneSideEmpty": "Tanlangan oylardan birida ma'lumot yo'q"
+    },
+    "hoursCmp": {
+      "label": "Soat solishtiruvi",
+      "eq": "Teng (ish = tizim)",
+      "neq": "Teng emas",
+      "gt": "Ish soati > Tizim soati",
+      "lt": "Ish soati < Tizim soati",
+      "noWork": "Ish soati yo'q",
+      "noSystem": "Tizim soati yo'q"
     },
     "systemHours": {
       "column": "Tizim soati",
@@ -7121,7 +7149,11 @@
         "position": "Lavozim",
         "detail": "Izoh",
         "summa": "Summa"
-      }
+      },
+      "viewList": "{count} ta xodim — ro‘yxatni ko‘rish",
+      "listTotal": "{count} ta xodim",
+      "searchPlaceholder": "Ism yoki lavozim bo‘yicha qidirish",
+      "noMatch": "Qidiruv bo‘yicha hech narsa topilmadi"
     },
     "common": {
       "sum": "Summa, so'm",
