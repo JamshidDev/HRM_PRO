@@ -1645,6 +1645,7 @@
         "viewers": "Танишувчилар"
       },
       "rejectReasonSelect": "Рад этиш сабабини танланг",
+      "rejectCommentRequired": "Изоҳ ёзинг — бу сабаб учун мажбурий",
       "optional": "ихтиёрий",
       "rejectedPanel": {
         "title": "Ариза рад этилди",

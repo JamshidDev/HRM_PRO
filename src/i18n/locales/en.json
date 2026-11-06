@@ -1759,6 +1759,7 @@
         "viewers": "Reviewers"
       },
       "rejectReasonSelect": "Select a rejection reason",
+      "rejectCommentRequired": "Write a comment — it is required for this reason",
       "optional": "optional",
       "rejectedPanel": {
         "title": "Application rejected",
