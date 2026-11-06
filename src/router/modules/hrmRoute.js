@@ -114,9 +114,7 @@ export const hrmRoutes = [
       layout: AppLayouts.main,
       permission: [
         appPermissions.hrConfirmationsRead,
-        appPermissions.hrLeadersRead,
-        appPermissions.hrTableWorkersRead,
-        appPermissions.hrAssistantsRead
+        appPermissions.hrLeadersRead
       ]
     }
   },
@@ -167,19 +165,6 @@ export const hrmRoutes = [
     path: Utils.routeHrmPathMaker(AppPaths.Dashboard),
     name: AppPaths.Dashboard.substring(1),
     component: () => import('@/pages/hrm/dashboard/page.vue'),
-    meta: { layout: AppLayouts.main }
-  },
-  {
-    path: Utils.routeHrmPathMaker(AppPaths.TimesheetDepartment),
-    name: AppPaths.TimesheetDepartment.substring(1),
-    component: () => import('@/pages/hrm/timesheetDepartment/TimesheetDepartmentPage.vue'),
-    meta: { layout: AppLayouts.main }
-  },
-  {
-    // «HR yordamchilari» — «Mas'ul xodimlar» menyusidagi alohida band.
-    path: Utils.routeHrmPathMaker(AppPaths.HrAssistant),
-    name: AppPaths.HrAssistant.substring(1),
-    component: () => import('@/pages/hrm/hrAssistant/HrAssistantPage.vue'),
     meta: { layout: AppLayouts.main }
   },
   {

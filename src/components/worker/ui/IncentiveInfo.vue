@@ -6,6 +6,7 @@
   import AwardIcon from '@/assets/icons/awardIcon.svg'
   import DepartmentIcon from '@/assets/icons/departmentIcon.svg'
   import CalendarIcon from '@/assets/icons/calendarIcon.svg'
+  import RecordStatusBadge from '@/pages/hrm/_shared/RecordStatusBadge.vue'
 
   const store = useComponentStore()
 
@@ -72,6 +73,12 @@
             >
               {{ $t(giftMeta(item.gift).categoryKey) }}
             </span>
+            <RecordStatusBadge
+              class="ml-auto"
+              :status="item.status"
+              :ended-at="item.ended_at"
+              :reason="item.cancel_reason"
+            />
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3">

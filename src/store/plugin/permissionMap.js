@@ -55,7 +55,6 @@ export const STORE_PERMISSIONS = {
   pensionerStore: 'hr-pensioners',
   vacancyStore: 'hr-public-vacancy',
   report2Store: 'hr-report',
-  timesheetDepartmentStore: 'hr-table',
 
   // ── Hujjat aylanishi (nomlari bir ma'noli)
   contractStore: 'hr-contracts',

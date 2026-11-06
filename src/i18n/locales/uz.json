@@ -3940,7 +3940,21 @@
     "accountWith": "Hisobi bor",
     "accountWithout": "Hisobi yo'q",
     "createAccountInfo": "Xodimning shaxsiy telefon raqami tizimga kirish uchun login bo'ladi. Parol berilmasa, tasodifiy kuchli parol o'rnatiladi.",
-    "loginPhone": "Login raqami"
+    "loginPhone": "Login raqami",
+    "dept": {
+      "title": "Bo'limlar",
+      "whole": "Butun korxona",
+      "partial": "Qisman",
+      "none": "Tanlanmagan",
+      "count": "{n} ta bo'lim",
+      "assistantHint": "Tanlangan bo'limlar va ularning pastki bo'limlari xodimlari bilan ishlaydi.",
+      "timekeeperHint": "Tabelchi faqat tanlangan bo'limlar tabelini yuritadi.",
+      "editTitle": "Bo'limlarni tahrirlash",
+      "detachWarn": "Rol olinsa, unga biriktirilgan bo'limlar ham avtomatik ajratiladi.",
+      "transferTitle": "Bo'lim boshqa tabelchiga biriktirilgan",
+      "transferHint": "Tasdiqlasangiz, bu bo'limlar avvalgi tabelchidan olinib, shu xodimga biriktiriladi.",
+      "transferConfirm": "Ko'chirish va saqlash"
+    }
   },
   "telegramPopup": {
     "header": "Telegram botimizga ulaning va quyidagi qulayliklardan bahramand bo'ling:",
@@ -3968,6 +3982,15 @@
       "who": "Kim tomonidan",
       "reason": "Sabab",
       "giftType": "Sovg'a turi"
+    },
+    "status": {
+      "title": "Holati",
+      "active": "Amalda",
+      "expired": "Muddati tugagan",
+      "cancelled": "Bekor qilingan",
+      "until": "{date} gacha",
+      "ended": "Tugagan: {date}",
+      "cancelledAt": "Bekor qilindi: {date}"
     }
   },
   "task": {
@@ -7464,7 +7487,10 @@
       "additionalInfo": "Qo‘shimcha ma’lumotlar (agar mavjud bo‘lsa)",
       "noneHint": "Bo‘sh qolsa «Mavjud emas» deb yoziladi",
       "registryDate": "Reyestrga olingan sana",
-      "registryNumber": "Reyestr raqami"
+      "registryNumber": "Reyestr raqami",
+      "pinInvalid": "JShShIR 14 ta raqam va to‘g‘ri nazorat raqamidan iborat bo‘lishi kerak",
+      "stirInvalid": "STIR 9 ta raqamdan iborat bo‘lishi kerak",
+      "workerPinHint": "Profilda bo‘lsa avtomatik olinadi"
     },
     "name": "Xodim hujjatlari",
     "createTitle": "Hujjat tuzish",

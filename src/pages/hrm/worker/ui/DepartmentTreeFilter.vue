@@ -26,7 +26,7 @@
     loading.value = true
     try {
       const res = await $ApiService.componentService._departmentTree({
-        params: { organization_id: props.organizationId, search: search.value || undefined }
+        params: { organization_id: props.organizationId, search: search.value || undefined, own: 1 }
       })
       tree.value = res.data.data ?? []
     } finally {

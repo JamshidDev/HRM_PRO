@@ -45,8 +45,6 @@ export const AppPaths = {
   Audit: '/audit',
   Department: '/department',
   TimeSheet: '/timesheet',
-  TimesheetDepartment: '/timesheet-department',
-  HrAssistant: '/hr-assistant',
   DepartmentPosition: '/department-position',
   WorkerCertificate: '/worker-certificate',
   Kpi: '/kpi',
