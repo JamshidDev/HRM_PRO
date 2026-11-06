@@ -89,6 +89,12 @@ import FileIcon from '@/assets/icons/figFile.svg'
     store.elementId = row.id
     store.parentElement = { name: row.name, id: row.id }
     store.payload.parent_id = row.id
+    // `_create` `parent_id` ni faqat `showParent` yoqilganda yuboradi. Ilgari bu yerda
+    // yoqilmagani uchun «Biriktirish» bilan qo'shilgan bo'lim ota-bo'limsiz (ildiz) saqlanardi.
+    store.showParent = true
+    // Backend: «Yuqori bo'lim shu tashkilotga tegishli bo'lishi kerak» — tashkilot otasidan olinadi
+    // (formada «Tashkilot» maydoni bu holatda yashirin).
+    store.payload.organization_id = row.organization?.id ?? null
     store.refreshTarget = row
     store.visibleType = true
     store.visible = true

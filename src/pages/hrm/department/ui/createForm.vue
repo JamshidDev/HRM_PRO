@@ -80,7 +80,12 @@
         <span class="text-xs text-gray-500">{{ $t(`organizationPage.selectedOrg`) }}</span>
         <span class="text-primary font-bold">{{ store.parentElement?.name }}</span>
       </div>
-      <n-form-item v-if="store.visibleType" :label="$t('content.organization')" path="organization_id">
+      <!-- Ichki bo'lim qo'shishda tashkilot ota-bo'limniki bo'lishi shart — tanlab bo'lmaydi -->
+      <n-form-item
+        v-if="store.visibleType && !store.parentElement"
+        :label="$t('content.organization')"
+        path="organization_id"
+      >
         <UISelect
           :multiple="false"
           :options="componentStore.structureList"
