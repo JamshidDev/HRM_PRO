@@ -243,7 +243,8 @@
       '/hrm/command',
       '/hrm/ad-contract',
       '/hrm/application',
-      '/hrm/structure-report'
+      '/hrm/structure-report',
+      '/hrm/archive'
     ]
     return !rejects.includes(route.path)
   })

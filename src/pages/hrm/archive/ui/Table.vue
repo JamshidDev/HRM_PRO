@@ -126,7 +126,7 @@
         :class="
           row?.organization
             ? 'bg-fig-bg-brand-surface text-fig-text-brand'
-            : 'bg-fig-bg-disable text-fig-text-tertiary'
+            : 'border border-fig-br-secondary bg-fig-bg-disable text-fig-text-tertiary'
         "
       >
         <span class="truncate">

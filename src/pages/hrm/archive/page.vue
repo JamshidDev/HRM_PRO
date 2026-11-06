@@ -8,10 +8,11 @@
   const store = useArchiveStore()
   const officeAppRef = ref(null)
 
-  // Bo'shatish buyrug'i — sarlavha «№45», fayl nomi UUID bo'lgani uchun.
+  // Bo'shatish buyrug'i — sarlavha «№45 — turi» (buyruqlar sahifasidagi kabi).
   const openCommand = (cmd) => {
     if (!cmd?.id) return
-    const title = cmd.command_number ? `№${cmd.command_number}` : undefined
+    const number = cmd.command_number ? `№${cmd.command_number}` : null
+    const title = [number, cmd.type_name].filter(Boolean).join(' — ') || undefined
     officeAppRef.value?.openPdf(cmd.id, Utils.documentModels.command, undefined, title)
   }
 
