@@ -1,4 +1,11 @@
 {
+  "mainPhone": {
+    "title": "Asosiy telefon raqamini o'zgartirish",
+    "label": "Asosiy telefon raqami",
+    "hint": "Kirish (login) raqami va xodim kartochkasidagi raqam birga o'zgaradi.",
+    "invalid": "9 ta raqam bo'lishi kerak",
+    "action": "Asosiy raqamni o'zgartirish"
+  },
   "archive": {
     "name": "Arxiv",
     "filter": {

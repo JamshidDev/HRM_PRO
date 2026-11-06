@@ -6,7 +6,7 @@
   import i18n from '@/i18n/index.js'
   import icons from '@/assets/icons'
   import { useTurnstileDownload } from '@/composables/useTurnstileDownload.js'
-  import { ArrowDownload20Regular } from '@vicons/fluent'
+  import { ArrowDownload20Regular, Phone20Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
   const store = useArchiveStore()
@@ -59,6 +59,11 @@
     openTurnstileDownload(row?.worker, { archive: true })
   }
 
+  const onChangePhone = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrArchivePhone)) return
+    store.openPhoneEdit(row)
+  }
+
   // Har bir amal o'z ruxsatiga bog'liq — biri yo'q bo'lsa ikkinchisi baribir ko'rinadi.
   const actions = computed(() => [
     {
@@ -76,6 +81,14 @@
       visible: (row) =>
         !!row?.worker?.id && accStore.checkPermission(accStore.pn.turnstileHikCentralEventsRead),
       action: onTurnstileDownload
+    },
+    // Faqat hech qayerda ishlamayotgan xodim — ishlayotganinikini o'sha korxona HR'i o'zgartiradi.
+    {
+      label: t('mainPhone.action'),
+      key: 'changePhone',
+      icon: UIHelper.renderIcon(Phone20Regular),
+      visible: (row) => !row?.organization && accStore.checkPermission(accStore.pn.hrArchivePhone),
+      action: onChangePhone
     }
   ])
 </script>

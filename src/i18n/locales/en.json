@@ -1,4 +1,11 @@
 {
+  "mainPhone": {
+    "title": "Change main phone number",
+    "label": "Main phone number",
+    "hint": "The login number and the number on the employee card change together.",
+    "invalid": "Must be 9 digits",
+    "action": "Change main number"
+  },
   "archive": {
     "name": "Archive",
     "filter": {

@@ -1,5 +1,6 @@
 <script setup>
-  import { TurnstileDownloadModal, UIOfficeApp, UIPageContent } from '@/components/index.js'
+  import { TurnstileDownloadModal, UIModal, UIOfficeApp, UIPageContent } from '@/components/index.js'
+  import MainPhoneForm from '@/components/worker/ui/MainPhoneForm.vue'
   import { useArchiveStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import Filter from './ui/Filter.vue'
@@ -33,5 +34,16 @@
     <Table @openCommand="openCommand" />
     <TurnstileDownloadModal />
     <UIOfficeApp ref="officeAppRef" />
+    <UIModal v-model:visible="store.phoneVisible" :width="460" :title="$t('mainPhone.title')">
+      <MainPhoneForm
+        v-if="store.phoneVisible"
+        :worker="store.phoneRow?.worker"
+        :subtitle="store.phoneRow?.previous_organization?.name"
+        :phone="store.phoneRow?.worker?.phone"
+        :loading="store.phoneLoading"
+        @save="store._changePhone"
+        @cancel="store.phoneVisible = false"
+      />
+    </UIModal>
   </UIPageContent>
 </template>
