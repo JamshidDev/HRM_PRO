@@ -17,6 +17,14 @@
     () => !!reasonCode.value && (!commentRequired.value || !!store.documentComment?.trim())
   )
 
+  // «Rad etish» tugmasi doim faol: bosilganda nima yetishmasa — o'sha joyda xato chiqadi
+  // (ilgari tugma o'chirilgan edi va bosganda hech narsa bo'lmasdi — DAS-14206).
+  const tried = ref(false)
+  const reasonError = computed(() => tried.value && !reasonCode.value)
+  const commentError = computed(
+    () => tried.value && commentRequired.value && !store.documentComment?.trim()
+  )
+
   const loadReasons = () => {
     if (reasons.value.length) return
     reasonsLoading.value = true
@@ -35,12 +43,16 @@
     (v) => {
       if (!v) return
       reasonCode.value = null
+      tried.value = false
       loadReasons()
     }
   )
 
   const onSubmit = () => {
-    if (!canSubmit.value) return
+    if (!canSubmit.value) {
+      tried.value = true
+      return
+    }
     const data = {
       status: 4,
       reason_code: reasonCode.value,
@@ -79,7 +91,9 @@
                   :class="
                     reasonCode === r.code
                       ? 'border-fig-red bg-fig-red-50'
-                      : 'border-surface-line bg-surface-section hover:bg-surface-ground'
+                      : reasonError
+                        ? 'border-fig-br-error bg-surface-section hover:bg-surface-ground'
+                        : 'border-surface-line bg-surface-section hover:bg-surface-ground'
                   "
                 >
                   <n-radio :value="r.code" />
@@ -88,6 +102,9 @@
               </div>
             </n-radio-group>
           </n-spin>
+          <div v-if="reasonError" class="mt-1.5 text-xs text-fig-text-red">
+            {{ $t('documentPage.signature.rejectReasonSelect') }}
+          </div>
         </div>
 
         <div>
@@ -104,10 +121,15 @@
             :rows="3"
             :maxlength="500"
             show-count
-            :status="commentRequired && !store.documentComment?.trim() ? 'warning' : undefined"
+            :status="
+              commentError ? 'error' : commentRequired && !store.documentComment?.trim() ? 'warning' : undefined
+            "
             :placeholder="$t('documentPage.signature.rejectReasonPlaceholder')"
             v-model:value="store.documentComment"
           />
+          <div v-if="commentError" class="mt-1.5 text-xs text-fig-text-red">
+            {{ $t('documentPage.signature.rejectCommentRequired') }}
+          </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
@@ -121,7 +143,6 @@
           <n-button
             type="error"
             :loading="signatureStore.rejectLoading"
-            :disabled="!canSubmit"
             @click="onSubmit"
           >
             {{ $t('documentPage.signature.rejectSubmit') }}
