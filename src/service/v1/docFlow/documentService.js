@@ -2,7 +2,8 @@ import axios from '@/service/index.js'
 
 const _confirmationDocument = async (payload) => {
   return await axios.post(`/v1/confirmation/document/signature`, payload.data, {
-    silentError: payload.silentError
+    silentError: payload.silentError,
+    silentSuccess: payload.silentSuccess
   })
 }
 // Rad etish sabablari (so'rov tilida) — web va mobil uchun umumiy ro'yxat.
