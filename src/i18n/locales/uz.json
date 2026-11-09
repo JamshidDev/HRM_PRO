@@ -493,7 +493,8 @@
     "captchaRequired": "Captcha javobini kiriting!",
     "passwordsNotMatch": "Parollar mos kelmadi!",
     "endBeforeStart": "Bu sana boshlanish sanasidan oldin bo'lmasligi kerak",
-    "pastDate": "O'tgan sanani tanlab bo'lmaydi"
+    "pastDate": "O'tgan sanani tanlab bo'lmaydi",
+    "futureDate": "Kelajakdagi sanani tanlab bo'lmaydi"
   },
   "message": {
     "successDone": "Muvaffaqiyatli bajarildi",

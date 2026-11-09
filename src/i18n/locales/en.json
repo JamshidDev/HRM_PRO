@@ -480,7 +480,8 @@
     "captchaRequired": "Please enter the captcha answer!",
     "passwordsNotMatch": "Passwords do not match!",
     "endBeforeStart": "This date can't be before the start date",
-    "pastDate": "A past date can't be selected"
+    "pastDate": "A past date can't be selected",
+    "futureDate": "A future date can't be selected"
   },
   "message": {
     "successDone": "Successfully completed",
