@@ -318,7 +318,8 @@
       for (const r of rows) {
         s = !s
         map.set(r, s)
-        if (open.has(rowKeyFn(r))) walk(r.children || [])
+        // `children` ro'yxat yuklanmaguncha `true` (bayroq) bo'lishi mumkin — faqat massivni aylanamiz
+        if (open.has(rowKeyFn(r)) && Array.isArray(r.children)) walk(r.children)
       }
     }
     walk(props.data)
