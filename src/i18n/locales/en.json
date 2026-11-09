@@ -3308,7 +3308,8 @@
     "hrCheck": {
       "new": "New",
       "forwarded": "Forwarded",
-      "closed": "Closed"
+      "closed": "Closed",
+      "awaiting": "Awaiting decision"
     }
   },
   "userDepartmentPage": {

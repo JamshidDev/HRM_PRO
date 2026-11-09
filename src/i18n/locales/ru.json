@@ -3316,7 +3316,8 @@
     "hrCheck": {
       "new": "Новое",
       "forwarded": "Направлено",
-      "closed": "Закрыто"
+      "closed": "Закрыто",
+      "awaiting": "Ожидает решения"
     }
   },
   "userDepartmentPage": {

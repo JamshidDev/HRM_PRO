@@ -3051,7 +3051,8 @@
     "hrCheck": {
       "new": "Янги",
       "forwarded": "Йўналтирилган",
-      "closed": "Ёпилган"
+      "closed": "Ёпилган",
+      "awaiting": "Қарор кутилмоқда"
     }
   },
   "userDepartmentPage": {

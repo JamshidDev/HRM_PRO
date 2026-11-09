@@ -3328,7 +3328,8 @@
     "hrCheck": {
       "new": "Yangi",
       "forwarded": "Yo'naltirilgan",
-      "closed": "Yopilgan"
+      "closed": "Yopilgan",
+      "awaiting": "Qaror kutilmoqda"
     }
   },
   "userDepartmentPage": {
