@@ -1669,6 +1669,8 @@
       "rejectReasonPlaceholder": "E.g.: the amount stated in clause 4 doesn't match the contract, please review.",
       "rejectReasonRequired": "Enter a rejection reason — at least 10 characters.",
       "rejectSubmit": "Reject",
+      "generateFailed": "The document could not be generated, so it can't be opened. Generate it again or contact an administrator.",
+      "notGenerated": "The document hasn't been generated yet — wait a moment and try again.",
       "link": "Link",
       "keySelectTitle": "Select e-signature key",
       "keySelectDesc": "Select a digital signature (ERI) key to sign the document.",

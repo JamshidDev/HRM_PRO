@@ -1685,6 +1685,8 @@
       "rejectReasonPlaceholder": "Masalan: 4-bandda ko'rsatilgan summa shartnomaga mos kelmaydi, qayta ko'rib chiqish so'raladi.",
       "rejectReasonRequired": "Rad etish sababini kiriting — kamida 10 belgi.",
       "rejectSubmit": "Rad etish",
+      "generateFailed": "Hujjatni yaratishda xatolik yuz berdi — ko'rib bo'lmaydi. Hujjatni qayta yaratib ko'ring yoki administratorga murojaat qiling.",
+      "notGenerated": "Hujjat hali yaratilmagan — biroz kutib, qayta urinib ko'ring.",
       "link": "Havola",
       "keySelectTitle": "E-imzo kalitini tanlash",
       "keySelectDesc": "Hujjatni imzolash uchun ERI (elektron raqamli imzo) kalitini tanlang.",

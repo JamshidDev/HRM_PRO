@@ -379,6 +379,14 @@
 
         if ([1, 4].includes(key)) {
           store.permissions.canSignature = false
+          // Ilgari oyna indamay yopilardi — «Ko'rish» ishlamayotgandek tuyulardi (DAS-14209).
+          notify.warning(
+            t(
+              key === 4
+                ? 'documentPage.signature.generateFailed'
+                : 'documentPage.signature.notGenerated'
+            )
+          )
           autoClose()
         } else if (key === 2 || !store.pdfUrl) {
           store.viewerLoading = true

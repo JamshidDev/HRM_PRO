@@ -124,7 +124,18 @@
             </td>
             <td>{{ item.organization?.name }}</td>
             <td><UIStatus :status="item?.confirmation" /></td>
-            <td><UIStatus :status="Utils.documentStatus[item?.generate]" /></td>
+            <td>
+              <!-- «Xatolik» nima ekani tooltip'da (DAS-14209) -->
+              <n-tooltip v-if="item?.generate === 4">
+                <template #trigger>
+                  <span class="inline-flex">
+                    <UIStatus :status="Utils.documentStatus[item?.generate]" />
+                  </span>
+                </template>
+                {{ $t('documentPage.signature.generateFailed') }}
+              </n-tooltip>
+              <UIStatus v-else :status="Utils.documentStatus[item?.generate]" />
+            </td>
             <td>
               <UIMenuButton :data="item" show-edit show-view @selectEv="onSelectEv" />
             </td>
