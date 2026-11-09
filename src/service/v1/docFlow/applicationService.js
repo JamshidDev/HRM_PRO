@@ -74,6 +74,11 @@ const _documentApplication = async (payload) => {
   return await axios.get(`/v1/document/applications`, { params: payload?.params })
 }
 
+// Arizadan buyruq formasi uchun ma'lumot (tasdiqlangan, bog'lanmagan ariza).
+const _commandPrefill = async (payload) => {
+  return await axios.get(`/v1/hr/applications/${payload.id}/command-prefill`)
+}
+
 const _statistic = async (payload) => {
   return await axios.get(`/v1/worker-application/statistics`, { params: payload?.params })
 }
@@ -99,5 +104,6 @@ export default {
   _forward,
   _documentApplication,
   _statistic,
+  _commandPrefill,
   _deleteWorkerApplication
 }

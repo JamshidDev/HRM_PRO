@@ -1,4 +1,11 @@
 {
+  "applicationCommand": {
+    "column": "Buyruq",
+    "create": "Buyruq",
+    "basedOn": "Ariza asosida: №{number} ({electronic}) — {type}",
+    "locked": "Korxona, buyruq turi va xodim arizadan olingan, o'zgartirib bo'lmaydi.",
+    "openCommand": "Buyruqni ochish"
+  },
   "mainPhone": {
     "title": "Asosiy telefon raqamini o'zgartirish",
     "label": "Asosiy telefon raqami",

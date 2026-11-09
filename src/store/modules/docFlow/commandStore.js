@@ -133,7 +133,8 @@ const FORM_STATE_KEYS = [
   'isSingleSelect',
   'sortableConfirmations',
   'oneByOne',
-  'commandBase'
+  'commandBase',
+  'fromApplication'
 ]
 
 const clone = (v) => JSON.parse(JSON.stringify(v ?? null))
@@ -420,6 +421,10 @@ const commandStoreOptions = {
     oneByOne: false,
     // 71/73 — «Asos» matni (forma holati bilan saqlanadi).
     commandBase: null,
+    // Ariza asosidagi buyruq: { id, number, electronic_number } — korxona/tur/xodim qulflanadi.
+    fromApplication: null,
+    // Arizadan buyruq yaratilgach o'zgaradi — arizalar ro'yxati yangilanadi.
+    applicationLinkedAt: 0,
     workerVacations: [],
     workerVacationLoading: false
   }),
@@ -565,12 +570,18 @@ const commandStoreOptions = {
     },
     _create(data) {
       this.saveLoading = true
+      const applicationId = this.fromApplication?.id
 
       $ApiService.commandService
-        ._create({ data })
+        ._create({ data: applicationId ? { ...data, worker_application_id: applicationId } : data })
         .then((res) => {
           this.visible = false
-          this._index()
+          if (applicationId) {
+            this.fromApplication = null
+            this.applicationLinkedAt = Date.now()
+          } else {
+            this._index()
+          }
         })
         .finally(() => {
           this.saveLoading = false
@@ -758,6 +769,40 @@ const commandStoreOptions = {
     },
     openVisible(data) {
       this.visible = data
+    },
+    // Tasdiqlangan arizadan buyruq: forma tozalanib, korxona/tur/xodim arizadan to'ldiriladi.
+    openFromApplication(prefill) {
+      this.resetForm()
+      const wp = prefill.worker_position
+      const worker = wp.worker || {}
+      const option = {
+        id: wp.id,
+        name: [worker.last_name, worker.first_name, worker.middle_name].filter(Boolean).join(' '),
+        position: wp.position,
+        photo: worker.photo,
+        worker
+      }
+      const type = prefill.command_types?.[0] ?? null
+      this.fromApplication = {
+        id: prefill.application.id,
+        number: prefill.application.number,
+        electronic_number: prefill.application.electronic_number,
+        type_name: prefill.application.type?.name ?? null
+      }
+      this.payload.organization_id = [prefill.organization]
+      this.structureCheck = [prefill.organization.id]
+      this.workerParams.organization_id = prefill.organization.id
+      this.payload.command_type = type
+      this.recipientType = 'worker'
+      this.workerList = [option]
+      this.totalWorker = 1
+      this.payload.workers = [wp.id]
+      if (type === 73) {
+        this.workerData = [
+          { worker: option, id: wp.id, reason: prefill.reason ?? null, type: null, amount: null, base: null }
+        ]
+      }
+      this.visible = true
     },
 
     resetForm() {

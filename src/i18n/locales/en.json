@@ -1,4 +1,11 @@
 {
+  "applicationCommand": {
+    "column": "Command",
+    "create": "Command",
+    "basedOn": "Based on application: №{number} ({electronic}) — {type}",
+    "locked": "Organization, command type and employee come from the application and cannot be changed.",
+    "openCommand": "Open command"
+  },
   "mainPhone": {
     "title": "Change main phone number",
     "label": "Main phone number",
