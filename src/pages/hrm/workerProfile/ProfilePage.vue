@@ -98,7 +98,9 @@
   .profile-page {
     flex: 1 0 auto;
     width: 100%;
-    padding: 0 16px 88px;
+    // Pastki joy AI tugmasidan (64px, pastdan 80px yuqorida → 144px) baland bo'lsin —
+    // oxirgi blokning «Saqlash» tugmasi uning ostida qolmasin (QA-20)
+    padding: 0 16px 160px;
     background: var(--surface-ground);
   }
 

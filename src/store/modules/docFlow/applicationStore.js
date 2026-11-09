@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import Utils from '@/utils/Utils.js'
+import i18n from '@/i18n/index.js'
 import { usePdfViewerStore } from '@/store/modules/index.js'
 
 export const useApplicationStore = defineStore('applicationStore', {
@@ -238,12 +239,18 @@ export const useApplicationStore = defineStore('applicationStore', {
           ...data,
           status: data.status ? 1 : 2
         },
-        id
+        id,
+        // Rad etishda backend «Hujjat muvaffaqiyatli bekor qilindi» deydi — sahifadagi «rad etildi»
+        // bilan zid (DAS-14207). O'z xabarimizni chiqaramiz.
+        silentSuccess: !data.status
       }
 
       $ApiService.applicationService
         ._accept(payload)
-        .then(() => callback?.())
+        .then(() => {
+          if (!data.status) $Toast.success(i18n.global.t('documentPage.signature.rejectedPanel.title'))
+          callback?.()
+        })
         .finally(() => {
           this[loadingKey] = false
         })

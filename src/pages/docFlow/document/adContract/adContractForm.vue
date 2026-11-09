@@ -109,7 +109,7 @@
             h(
               'div',
               { class: 'text-xs font-medium text-gray-500' },
-              `${option.last_name}.${option.last_name[0]}.${option.middle_name[0]}`
+              [option.last_name, option.first_name?.[0], option.middle_name?.[0]].filter(Boolean).join('.')
             ),
             h('div', { class: 'text-xs text-gray-400' }, option.position)
           ])
@@ -124,7 +124,7 @@
         {
           class: 'flex gap-2 my-1 items-center'
         },
-        `${option?.last_name} ${option?.first_name} ${option?.middle_name}`
+        [option?.last_name, option?.first_name, option?.middle_name].filter(Boolean).join(' ')
       )
     ]
   }

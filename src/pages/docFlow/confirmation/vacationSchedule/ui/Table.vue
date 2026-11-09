@@ -1,40 +1,11 @@
 <script setup>
   import { NoDataPicture, UIPagination, UIMenuButton, UIUser, UIBadge, UIStatus } from '@components'
-  import { useAccountStore, useConfVacationScheduleStore } from '@stores'
+  import { useConfVacationScheduleStore } from '@stores'
   import Utils from '@/utils/Utils.js'
-  import i18n from '@/i18n'
 
-  const accStore = useAccountStore()
-  const t = i18n.global.t
   const store = useConfVacationScheduleStore()
 
   const emits = defineEmits(['openOffice'])
-
-  const onEdit = (v) => {
-    store.creator.list = [
-      {
-        id: v.creator.id,
-        name: Utils.combineFullName(v.creator.worker),
-        photo: v.creator.worker?.photo,
-        position: v.creator.position
-      }
-    ]
-
-    store.payload.year = v.year
-    store.payload.date = Utils.datePickerFormatter(v.date)
-    store.payload.director_id = v?.director?.id
-    store.payload.trade_union_id = v?.tradeUnion?.id
-    store.payload.creator_id = v?.creator?.id
-    store.worker.params.year = v.year
-    store.worker.params.page = 1
-    store.visibleType = false
-    store.visible = true
-  }
-
-  const onDelete = (v) => {
-    store.elementId = v.id
-    store._delete()
-  }
 
   const changePage = (v) => {
     store.params.page = v.page
@@ -46,13 +17,11 @@
     emits('openOffice', v.id)
   }
 
+  // Bu — imzolash (tasdiqlash) ro'yxati: faqat «Ko'rish». Tahrirlash/o'chirish Kadrlar > Ta'tillar
+  // grafigi sahifasida. Ilgari menyuda «O'chirish» (ishlamasdi) va «Tahrirlash» (bu store'da forma yo'q,
+  // TypeError) chiqardi — DAS-14211.
   const onSelectEv = (v) => {
-    if (!accStore.checkAction(accStore.pn.hrVacationScheduleWrite)) return
-    if (Utils.ActionTypes.edit === v.key) {
-      onEdit(v.data)
-    } else if (Utils.ActionTypes.view === v.key) {
-      onShow(v.data)
-    }
+    if (Utils.ActionTypes.view === v.key) onShow(v.data)
   }
 </script>
 
@@ -124,9 +93,20 @@
             </td>
             <td>{{ item.organization?.name }}</td>
             <td><UIStatus :status="item?.confirmation" /></td>
-            <td><UIStatus :status="Utils.documentStatus[item?.generate]" /></td>
             <td>
-              <UIMenuButton :data="item" show-edit show-view @selectEv="onSelectEv" />
+              <!-- «Xatolik» nima ekani tooltip'da (DAS-14209) -->
+              <n-tooltip v-if="item?.generate === 4">
+                <template #trigger>
+                  <span class="inline-flex">
+                    <UIStatus :status="Utils.documentStatus[item?.generate]" />
+                  </span>
+                </template>
+                {{ $t('documentPage.signature.generateFailed') }}
+              </n-tooltip>
+              <UIStatus v-else :status="Utils.documentStatus[item?.generate]" />
+            </td>
+            <td>
+              <UIMenuButton :data="item" show-view :show-delete="false" @selectEv="onSelectEv" />
             </td>
           </tr>
         </tbody>

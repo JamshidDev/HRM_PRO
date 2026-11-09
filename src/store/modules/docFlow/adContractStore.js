@@ -258,7 +258,21 @@ const storeOptions = {
       this.structureCheck = state.structureCheck || []
       this.structureCheck2 = state.structureCheck2 || []
       this.departmentCheck = state.departmentCheck || []
-      this.sortableConfirmations = state.sortableConfirmations || []
+      // Backend tuzgan eski formalarda kelishuvchi maydonlari boshqa nomda (snake_case yoki `data`siz)
+      // kelishi mumkin — ro'yxatda «undefined» chiqmasligi uchun bir xil shaklga keltiriladi.
+      this.sortableConfirmations = (state.sortableConfirmations || []).map((v) => {
+        const d = v?.data || v || {}
+        return {
+          ...v,
+          data: {
+            firstName: d.firstName ?? d.first_name ?? '',
+            lastName: d.lastName ?? d.last_name ?? '',
+            middleName: d.middleName ?? d.middle_name ?? '',
+            photo: d.photo ?? null,
+            position: (typeof d.position === 'object' ? d.position?.name : d.position) ?? d.post_name ?? ''
+          }
+        }
+      })
       // Tartib saqlanmagan bo'lsa — yangi hujjatdagidek parallel (ilgari ketma-ket edi va parallel
       // hujjat tahrirdan keyin ketma-ketga aylanib qolardi). Joriy tartib keyin `_syncRouteMode` da olinadi.
       this.oneByOne = state.oneByOne ?? false

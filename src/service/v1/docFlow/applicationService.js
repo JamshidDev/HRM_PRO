@@ -47,7 +47,9 @@ const _details = async (payload) => {
 }
 
 const _accept = async (payload) => {
-  return await axios.put(`/v1/hr/applications/${payload.id}/accept`, payload.data)
+  return await axios.put(`/v1/hr/applications/${payload.id}/accept`, payload.data, {
+    silentSuccess: payload.silentSuccess
+  })
 }
 
 // HR imzo qatorini oladi (yo'q bo'lsa yaratiladi) va kelishuvchilarga yo'naltiradi.

@@ -78,6 +78,10 @@
     store._index()
   }
 
+  // Uzun bo'lim/lavozim/tashkilot nomlari ikki qatorgacha ko'rinadi, undan uzuni
+  // kesiladi va sichqoncha ustiga kelganda to'liq matn chiqadi (QA-21)
+  const TWO_LINES = { lineClamp: 2, tooltip: { style: { maxWidth: '300px' } } }
+
   const columns = computed(() => [
     {
       key: 'worker',
@@ -87,37 +91,37 @@
     {
       key: 'department.name',
       title: t('workerPage.table.department'),
-      minWidth: 200
+      minWidth: 200,
+      ellipsis: TWO_LINES
     },
     {
       key: 'position.name',
       title: t('workerPage.table.position'),
-      minWidth: 200
+      minWidth: 200,
+      ellipsis: TWO_LINES
     },
     {
       key: 'organization.name',
       title: t('workerPage.table.organization'),
-      minWidth: 200
+      minWidth: 200,
+      ellipsis: TWO_LINES
     },
     {
       key: 'group',
-      title: t('workerPage.table.group'),
-      fullTitle: t('workerPage.table.groupFull'),
-      width: 64,
+      title: t('workerPage.table.groupFull'),
+      minWidth: 88,
       align: 'center'
     },
     {
       key: 'rank',
-      title: t('workerPage.table.rank'),
-      fullTitle: t('workerPage.table.rankFull'),
-      width: 64,
+      title: t('workerPage.table.rankFull'),
+      minWidth: 88,
       align: 'center'
     },
     {
       key: 'rate',
-      title: t('workerPage.table.rate'),
-      fullTitle: t('workerPage.table.rateFull'),
-      width: 64,
+      title: t('workerPage.table.rateFull'),
+      minWidth: 88,
       align: 'center'
     },
     {

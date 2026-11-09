@@ -24,6 +24,34 @@
 
   const editing = ref(!row.value.exist) // yangi qo'shilgan yozuv darrov tahrirda ochiladi
   const fileRef = ref(null)
+  const formRef = ref(null)
+
+  // Majburiy maydonlar — bo'sh qolsa har biri ostida o'z xatosi chiqadi
+  // (avval faqat umumiy «Ma'lumotlar yetarli emas!» oynasi chiqardi).
+  const TRIGGER = ['input', 'blur', 'change']
+  const required = (type) => ({
+    required: true,
+    type,
+    message: t('rules.requiredField'),
+    trigger: TRIGGER
+  })
+  const rules = computed(() => ({
+    serial_number: required('string'),
+    given_place: required('string'),
+    address: required('string'),
+    from_date: required('number'),
+    to_date: [
+      required('number'),
+      {
+        validator: (_, value) =>
+          !value || !row.value.from_date || value >= row.value.from_date
+            ? true
+            : new Error(t('rules.endBeforeStart')),
+        key: 'endDate',
+        trigger: TRIGGER
+      }
+    ]
+  }))
   const deleteVisible = ref(false)
 
   const loading = computed(() =>
@@ -74,20 +102,28 @@
     props.foreign ? store._deleteForeignPassport(row.value.id) : store._deletePassport(row.value.id)
   }
 
+  // Boshlanish sanasi o'zgarsa tugash sanasi qoidasi qayta tekshiriladi
+  const onFromDateChange = () => {
+    if (!row.value.to_date) return
+    nextTick(() => formRef.value?.validate(undefined, (r) => r.key === 'endDate').catch(() => {}))
+  }
+
   const onCancel = () => {
+    formRef.value?.restoreValidation()
     editing.value = false
     fileRemoved.value = false
     props.foreign ? store._indexForeignPassport() : store._indexPassport()
   }
 
-  const onSave = () => {
-    const { serial_number, from_date, to_date, address, given_place, file, exist, id } = row.value
-    const secondField = props.foreign ? given_place : address
-
-    if (!serial_number || !from_date || !to_date || !secondField) {
-      $Alert.validation(t('message.warning-data'))
+  const onSave = async () => {
+    try {
+      await formRef.value?.validate()
+    } catch {
       return
     }
+
+    const { serial_number, from_date, to_date, address, given_place, file, exist, id } = row.value
+    const secondField = props.foreign ? given_place : address
 
     const formData = new FormData()
     formData.append('worker_id', store.workerId)
@@ -117,9 +153,11 @@
     "
     :icon="icons.figIdCard"
   >
-    <div class="profile-grid">
+    <n-form ref="formRef" :model="row" :rules="rules" :show-label="false" class="profile-grid">
       <UIFigField
         :label="$t('createWorkerPage.form.serial_number')"
+        path="serial_number"
+        required
         :value="row.serial_number"
         :editing="editing"
       >
@@ -129,6 +167,8 @@
       <UIFigField
         v-if="foreign"
         :label="$t('createWorkerPage.form.given_place')"
+        path="given_place"
+        required
         :value="row.given_place"
         :editing="editing"
       >
@@ -137,12 +177,15 @@
 
       <UIFigField
         :label="$t('createWorkerPage.form.from_date')"
+        path="from_date"
+        required
         :value="Utils.timeOnlyDate(row.from_date)"
         :editing="editing"
       >
         <n-date-picker
           v-model:value="row.from_date"
           class="w-full"
+          @update:value="onFromDateChange"
           type="date"
           :format="useAppSetting.datePicketFormat"
         />
@@ -150,6 +193,8 @@
 
       <UIFigField
         :label="$t('createWorkerPage.form.to_date')"
+        path="to_date"
+        required
         :value="Utils.timeOnlyDate(row.to_date)"
         :editing="editing"
       >
@@ -164,6 +209,8 @@
       <UIFigField
         v-if="!foreign"
         :label="$t('createWorkerPage.form.citizenship')"
+        path="address"
+        required
         :value="row.address"
         :editing="editing"
       >
@@ -171,7 +218,8 @@
       </UIFigField>
 
       <!-- Maketda oxirgi katak — punktir chegarali fayl qutisi -->
-      <div class="relative flex items-end">
+      <!-- Tahrirda maydonlar ostida xato uchun joy (18px) bor — quti inputlar bilan bir qatorda turishi uchun -->
+      <div class="relative flex items-end" :class="{ 'pb-[18px]': editing }">
         <button
           type="button"
           class="file-box"
@@ -204,11 +252,17 @@
         </button>
         <input ref="fileRef" type="file" accept=".pdf" class="hidden" @change="onFileChange" />
       </div>
-    </div>
+    </n-form>
 
     <template #actions>
       <template v-if="editing">
-        <UIProfileButton variant="danger" :icon="icons.figTrash" @click="deleteVisible = true">
+        <!-- Saqlanmagan yozuvni o'chirishga hojat yo'q — «Bekor qilish» uni olib tashlaydi -->
+        <UIProfileButton
+          v-if="row.exist"
+          variant="danger"
+          :icon="icons.figTrash"
+          @click="deleteVisible = true"
+        >
           {{ $t('content.delete') }}
         </UIProfileButton>
         <UIProfileButton variant="danger" @click="onCancel">
