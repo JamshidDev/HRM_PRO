@@ -2338,6 +2338,8 @@
     "sortNewestFirst": "Oxiridan boshigacha",
     "experienceMonth": "Staj (oy)",
     "continuousExperience": "Uzluksiz ish staji",
+    "totalExperience": "Umumiy staj: {n} oy",
+    "continuousSince": "Uzluksiz ish staji: {date} dan",
     "period": "Qachondan-qachongacha"
   },
   "workerPositionCertificatePage": {

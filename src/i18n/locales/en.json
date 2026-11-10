@@ -2315,6 +2315,8 @@
     "sortNewestFirst": "Newest to oldest",
     "experienceMonth": "Experience (mo.)",
     "continuousExperience": "Continuous experience",
+    "totalExperience": "Total experience: {n} mo.",
+    "continuousSince": "Continuous experience since {date}",
     "period": "From - to"
   },
   "workerPositionCertificatePage": {
