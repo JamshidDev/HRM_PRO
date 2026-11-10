@@ -2242,6 +2242,8 @@
     "title": "Close relatives",
     "no-data": "No relatives added!",
     "disability": {
+      "addAction": "Add disability",
+      "editAction": "Edit disability ({level})",
       "createTitle": "Add disability information",
       "updateTitle": "Edit disability information",
       "number": "Medical certificate number",

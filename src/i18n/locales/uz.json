@@ -2265,6 +2265,8 @@
     "title": "Yaqin qarindosh ma'lumotlari",
     "no-data": "Yaqin qarindoshlar qo'shilmagan!",
     "disability": {
+      "addAction": "Nogironlik qo'shish",
+      "editAction": "Nogironlikni tahrirlash ({level})",
       "createTitle": "Nogironlik ma'lumotini qo'shish",
       "updateTitle": "Nogironlik ma'lumotini tahrirlash",
       "number": "Hujjat raqami",
