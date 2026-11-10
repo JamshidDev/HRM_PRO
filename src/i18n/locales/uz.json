@@ -2265,6 +2265,8 @@
     "title": "Yaqin qarindosh ma'lumotlari",
     "no-data": "Yaqin qarindoshlar qo'shilmagan!",
     "disability": {
+      "addAction": "Nogironlik qo'shish",
+      "editAction": "Nogironlikni tahrirlash ({level})",
       "createTitle": "Nogironlik ma'lumotini qo'shish",
       "updateTitle": "Nogironlik ma'lumotini tahrirlash",
       "number": "Hujjat raqami",
@@ -2338,6 +2340,8 @@
     "sortNewestFirst": "Oxiridan boshigacha",
     "experienceMonth": "Staj (oy)",
     "continuousExperience": "Uzluksiz ish staji",
+    "totalExperience": "Umumiy staj: {n} oy",
+    "continuousSince": "Uzluksiz ish staji: {date} dan",
     "period": "Qachondan-qachongacha"
   },
   "workerPositionCertificatePage": {

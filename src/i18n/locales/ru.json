@@ -2250,6 +2250,8 @@
     "title": "Близкие родственники",
     "no-data": "Родственники не добавлены!",
     "disability": {
+      "addAction": "Добавить инвалидность",
+      "editAction": "Изменить инвалидность ({level})",
       "createTitle": "Добавить информацию об инвалидности",
       "updateTitle": "Редактировать информацию об инвалидности",
       "number": "Номер документа ВТЭК",
@@ -2323,6 +2325,8 @@
     "sortNewestFirst": "От конца к началу",
     "experienceMonth": "Стаж (мес.)",
     "continuousExperience": "Непрерывный стаж",
+    "totalExperience": "Общий стаж: {n} мес.",
+    "continuousSince": "Непрерывный стаж: с {date}",
     "period": "С какого по какое"
   },
   "workerPositionCertificatePage": {
