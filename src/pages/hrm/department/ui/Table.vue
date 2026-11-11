@@ -70,6 +70,7 @@ import FileIcon from '@/assets/icons/figFile.svg'
     store.payload.parent_id = row.parent?.id
     store.payload.region_id = row.region?.id ?? row.region_id ?? null
     store.payload.city_id = row.city?.id ?? row.city_id ?? null
+    store.fixedOrganization = row.organization ?? null
     if (store.payload.region_id) {
       store._districts(store.payload.region_id)
     }

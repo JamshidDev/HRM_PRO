@@ -33,6 +33,9 @@ export const useDepartmentStore = defineStore('departmentStore', {
     levelLoading: false,
     levelList: [],
     parentElement: null,
+    // Tahrirlashda faqat ko'rsatish uchun ({id, name}) — backend `UpdateDepartmentDto` da
+    // `organization_id` yo'q, tashkilotni o'zgartirib bo'lmaydi.
+    fixedOrganization: null,
     refreshTarget: null,
 
     previewVisible: false,
@@ -197,6 +200,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
     },
     resetForm() {
       this.elementId = null
+      this.fixedOrganization = null
       this.payload.organization_id = null
       this.payload.name = null
       this.payload.name_en = null
