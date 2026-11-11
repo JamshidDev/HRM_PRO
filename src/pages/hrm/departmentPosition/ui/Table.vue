@@ -66,6 +66,9 @@ import { Delete24Regular, Edit32Regular, Eye16Regular, History16Regular } from '
     store._index()
   }
 
+  // Hamma ustun `minWidth` — bo'sh joy teng bo'linadi; sig'masa jadval gorizontal
+  // suriladi, amallar (⋮) ustuni o'ngda yopishib turadi (UITable `fixed: 'right'`).
+  // «Tajriba» 80px da «Tajrib...» bo'lib kesilardi (DAS-14224).
   const columns = computed(() => [
     {
       key: 'position.name',
@@ -80,50 +83,52 @@ import { Delete24Regular, Edit32Regular, Eye16Regular, History16Regular } from '
     {
       key: 'organization.name',
       title: t('departmentPositionPage.table.organization'),
-      minWidth: 300
+      minWidth: 240
     },
     {
       key: 'education.name',
       title: t('departmentPositionPage.table.education'),
-      width: 120
+      minWidth: 120
     },
     {
       key: 'group',
       title: t('departmentPositionPage.table.group'),
       fullTitle: t('departmentPositionPage.form.group'),
-      width: 60,
+      minWidth: 60,
       align: 'center'
     },
     {
       key: 'rank',
       title: t('departmentPositionPage.table.rank'),
       fullTitle: t('departmentPositionPage.form.rank'),
-      width: 60,
+      minWidth: 60,
       align: 'center'
     },
     {
       key: 'rate',
       title: t('departmentPositionPage.table.rate'),
       fullTitle: t('departmentPositionPage.form.rate'),
-      width: 60,
+      minWidth: 60,
       align: 'center'
     },
     {
       key: 'worker_rate',
       title: t('departmentPositionPage.table.fact'),
       fullTitle: t('departmentPositionPage.form.fact'),
-      width: 60,
+      minWidth: 60,
       align: 'center'
     },
     {
       key: 'experience',
       title: t('departmentPositionPage.table.experience'),
-      width: 80
+      fullTitle: t('departmentPositionPage.form.experience'),
+      minWidth: 110,
+      align: 'center'
     },
     {
       key: 'salary',
       title: t('departmentPositionPage.table.salary'),
-      width: 150
+      minWidth: 150
     },
     {
       key: 'total_salary',
