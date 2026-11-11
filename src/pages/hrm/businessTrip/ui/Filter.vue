@@ -1,5 +1,6 @@
 <script setup>
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIPageFilter, UISegmentTabs, UISelect } from '@/components/index.js'
+  import i18n from '@/i18n/index.js'
   import {
     useAccountStore,
     useBusinessTripStore,
@@ -9,6 +10,20 @@
   const store = useBusinessTripStore()
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
+  const { t } = i18n.global
+
+  const directionTabs = computed(() => [
+    { id: 'sent', name: t('businessTrip.sent') },
+    { id: 'incoming', name: t('businessTrip.incoming') }
+  ])
+
+  const onChangeDirection = (v) => {
+    if (store.params.direction === v) return
+    store.params.direction = v
+    store.params.page = 1
+    store.list = []
+    store._index()
+  }
 
   const onSearch = () => {
     if (!accStore.checkAction(accStore.pn.hrBusinessTripRead)) return
@@ -51,6 +66,13 @@
     :search-loading="store.loading"
     :show-add-button="false"
   >
+    <template #filterAction>
+      <UISegmentTabs
+        :tabs="directionTabs"
+        :model-value="store.params.direction"
+        @update:model-value="onChangeDirection"
+      />
+    </template>
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
         $t('actionLog.table.structure')

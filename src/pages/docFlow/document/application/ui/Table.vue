@@ -12,11 +12,7 @@
   import { useAccountStore, useApplicationStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import {
-    ArrowDownload20Regular,
-    Delete20Regular,
-    Eye16Regular
-  } from '@vicons/fluent'
+  import { Add16Regular, ArrowDownload20Regular, Eye16Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
 
@@ -24,7 +20,14 @@
   const accStore = useAccountStore()
   const { open: openTurnstileDownload } = useTurnstileDownload()
 
-  const emits = defineEmits(['openOffice'])
+  const emits = defineEmits(['openOffice', 'openCommand', 'createCommand'])
+
+  // Tasdiqlangan, buyruqqa mos turdagi va hali buyruqsiz ariza — «Buyruq +».
+  const canCreateCommand = (row) =>
+    !row?.command &&
+    row?.confirmation?.id === 3 &&
+    row?.command_types?.length > 0 &&
+    accStore.checkPermission(accStore.pn.hrCommandsWrite)
 
   // HR holati (worker_applications.status): 0 yangi, 1 kelishuvchilarga yo'naltirilgan, 2 HR yopgan.
   const checkingStatus = computed(() => ({
@@ -50,12 +53,6 @@
   //   store.payload.name = v.name
   //   store.visible = true
   // }
-
-  const onDelete = (row) => {
-    if (!accStore.checkAction(accStore.pn.hrWorkerApplicationsWrite)) return
-    store.elementId = row.id
-    store._delete()
-  }
 
   // Turniket eksporti — backend `turnstile-hik-central-events-read` talab qiladi.
   const onTurnstileDownload = (row) => {
@@ -102,6 +99,11 @@
       width: 120
     },
     {
+      key: 'command',
+      title: t('applicationCommand.column'),
+      width: 150
+    },
+    {
       key: 'generate',
       title: t('content.document'),
       width: 120
@@ -127,12 +129,6 @@
       visible: (row) =>
         !!row?.worker?.id && accStore.checkPermission(accStore.pn.turnstileHikCentralEventsRead),
       action: onTurnstileDownload
-    },
-    {
-      label: t('content.delete'),
-      key: Utils.ActionTypes.delete,
-      icon: UIHelper.renderIcon(Delete20Regular),
-      action: onDelete
     }
   ])
 </script>
@@ -184,6 +180,34 @@
 
     <template #cell-confirmation="{ row }">
       <UIStatus :status="row.confirmation" />
+    </template>
+
+    <template #cell-command="{ row }">
+      <button
+        v-if="row?.command"
+        type="button"
+        class="flex flex-col items-start text-left"
+        :title="$t('applicationCommand.openCommand')"
+        @click="emits('openCommand', row.command)"
+      >
+        <span class="text-sm font-medium text-primary hover:underline">
+          №{{ row.command.command_number || row.command.id }}
+        </span>
+        <span class="text-xs text-secondary">{{ row.command.confirmation?.name }}</span>
+      </button>
+      <n-button
+        v-else-if="canCreateCommand(row)"
+        size="small"
+        secondary
+        type="primary"
+        @click="emits('createCommand', row)"
+      >
+        <template #icon>
+          <Add16Regular />
+        </template>
+        {{ $t('applicationCommand.create') }}
+      </n-button>
+      <span v-else class="text-secondary">—</span>
     </template>
 
     <template #cell-generate="{ row }">

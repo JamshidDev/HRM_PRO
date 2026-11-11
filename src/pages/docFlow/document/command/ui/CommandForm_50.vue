@@ -56,11 +56,25 @@
     () => store.payload.worker,
     (v) => {
       // Tiklashda saqlangan tanlov qoladi, faqat ro'yxat qayta yuklanadi.
-      if (!store.restoring) store.form_50.vacation_id = null
+      if (!store.restoring) {
+        store.form_50.vacation_id = null
+        store.form_50.to = null
+        store.form_50.work_day = null
+      }
       if (!v) return
-      store._getWorkerVacation(3)
+      store._getWorkerVacation(3, true)
     },
     { immediate: true }
+  )
+
+  // Yagona (oxirgi) parvarish ta'tili avtomatik tanlanadi.
+  watch(
+    () => store.workerVacations,
+    (list) => {
+      if (store.restoring || store.form_50.vacation_id || list?.length !== 1) return
+      store.form_50.vacation_id = list[0].id
+      onSelectVacation(list[0].id)
+    }
   )
 
   const workTypeOptions = [
@@ -152,7 +166,7 @@
 
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-6">
       <n-form-item
-        :label="$t(`content.workTime`)"
+        :label="$t(`commandPage.form_50.finish_status`)"
         path="vacation_finish_status"
         :rule-path="validationRules.rulesNames.requiredNumberField"
       >

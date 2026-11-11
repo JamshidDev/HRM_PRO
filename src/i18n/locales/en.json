@@ -1,4 +1,18 @@
 {
+  "applicationCommand": {
+    "column": "Command",
+    "create": "Command",
+    "basedOn": "Based on application: №{number} ({electronic}) — {type}",
+    "locked": "Organization, command type and employee come from the application and cannot be changed.",
+    "openCommand": "Open command"
+  },
+  "mainPhone": {
+    "title": "Change main phone number",
+    "label": "Main phone number",
+    "hint": "The login number and the number on the employee card change together.",
+    "invalid": "Must be 9 digits",
+    "action": "Change main number"
+  },
   "archive": {
     "name": "Archive",
     "filter": {
@@ -12,7 +26,8 @@
       "dismissedAt": "Dismissal date",
       "resume": "Download resume",
       "currentOrg": "Current workplace",
-      "notEmployed": "Not in the network"
+      "notEmployed": "Not determined",
+      "dismissalCommand": "Dismissal order"
     }
   },
   "lateWorkersReport": {
@@ -1902,6 +1917,7 @@
       "base_reason": "Basis"
     },
     "form_50": {
+      "finish_status": "Return basis",
       "to": "Vacation end date",
       "from": "Vacation start date",
       "vacation_id": "Vacation"
@@ -3872,7 +3888,12 @@
     }
   },
   "businessTrip": {
-    "name": "Business trip"
+    "name": "Business trip",
+    "sent": "Sent",
+    "incoming": "Incoming",
+    "toOrganization": "Destination",
+    "fromOrganization": "From",
+    "toDepartment": "Receiving department"
   },
   "documentArchive": {
     "name": "Document archive",

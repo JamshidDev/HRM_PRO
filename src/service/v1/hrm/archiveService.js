@@ -12,7 +12,13 @@ const _resume = async (payload) => {
   })
 }
 
+// Asosiy (login) raqam — faqat hech qayerda ishlamayotgan arxiv xodimi (`hr-archive-phone`).
+const _changePhone = async (payload) => {
+  return await axios.put(`/v1/hr/archive/${payload.uuid}/phone`, payload.data)
+}
+
 export default {
   _index,
-  _resume
+  _resume,
+  _changePhone
 }

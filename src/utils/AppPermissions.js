@@ -106,6 +106,7 @@ export const appPermissions = {
 
   hrArchiveRead: 'hr-archive-read',
   hrArchiveResume: 'hr-archive-resume',
+  hrArchivePhone: 'hr-archive-phone',
   hrWorkers: 'hr-workers',
   hrWorkersWrite: 'hr-workers-write',
   hrWorkersPassword: 'hr-workers-password',

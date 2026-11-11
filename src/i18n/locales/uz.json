@@ -1,4 +1,18 @@
 {
+  "applicationCommand": {
+    "column": "Buyruq",
+    "create": "Buyruq",
+    "basedOn": "Ariza asosida: №{number} ({electronic}) — {type}",
+    "locked": "Korxona, buyruq turi va xodim arizadan olingan, o'zgartirib bo'lmaydi.",
+    "openCommand": "Buyruqni ochish"
+  },
+  "mainPhone": {
+    "title": "Asosiy telefon raqamini o'zgartirish",
+    "label": "Asosiy telefon raqami",
+    "hint": "Kirish (login) raqami va xodim kartochkasidagi raqam birga o'zgaradi.",
+    "invalid": "9 ta raqam bo'lishi kerak",
+    "action": "Asosiy raqamni o'zgartirish"
+  },
   "archive": {
     "name": "Arxiv",
     "filter": {
@@ -12,7 +26,8 @@
       "dismissedAt": "Bo'shagan sana",
       "resume": "Rezyume yuklash",
       "currentOrg": "Hozirgi ish joyi",
-      "notEmployed": "Tarmoqda emas"
+      "notEmployed": "Aniqlanmadi",
+      "dismissalCommand": "Bo'shatish buyrug'i"
     }
   },
   "lateWorkersReport": {
@@ -1918,6 +1933,7 @@
       "base_reason": "Asos"
     },
     "form_50": {
+      "finish_status": "Ishga chiqish holati",
       "to": "Ta'til tugash sanasi",
       "from": "Ta'tilga chiqish sanasi",
       "vacation_id": "Ta'til"
@@ -3894,7 +3910,12 @@
     }
   },
   "businessTrip": {
-    "name": "Xizmat safari"
+    "name": "Xizmat safari",
+    "sent": "Yuborilgan",
+    "incoming": "Kelgan",
+    "toOrganization": "Qayerga",
+    "fromOrganization": "Qayerdan",
+    "toDepartment": "Qabul qilgan bo'lim"
   },
   "documentArchive": {
     "name": "Hujjatlar bazasi",

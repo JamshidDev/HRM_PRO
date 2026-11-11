@@ -22,7 +22,9 @@ export const useBusinessTripStore = defineStore('businessTripStore', {
       page: 1,
       per_page: 15,
       search: null,
-      organizations: []
+      organizations: [],
+      // sent — yuborilgan, incoming — boshqa korxonadan kelgan.
+      direction: 'sent'
     }
   }),
   actions: {

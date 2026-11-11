@@ -115,7 +115,13 @@
         </template>
         {{ Utils.combineFullName(item.worker.worker) }}
       </n-button>
-      <n-button type="error" secondary size="tiny" @click="onRemoveWorker(item.id)">
+      <n-button
+        v-if="!store.fromApplication"
+        type="error"
+        secondary
+        size="tiny"
+        @click="onRemoveWorker(item.id)"
+      >
         <template #icon>
           <DismissCircle16Regular />
         </template>

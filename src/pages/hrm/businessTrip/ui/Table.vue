@@ -1,14 +1,14 @@
 <script setup>
   import { UIStatus, UITable, UIUser } from '@/components/index.js'
-import i18n from '@/i18n/index.js'
-import {
+  import i18n from '@/i18n/index.js'
+  import {
     useAccountStore,
     useBusinessTripStore,
     useComponentStore
-} from '@/store/modules/index.js'
-import UIHelper from '@/utils/UIHelper.js'
-import Utils from '@/utils/Utils.js'
-import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
+  } from '@/store/modules/index.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import Utils from '@/utils/Utils.js'
+  import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
 
@@ -40,21 +40,26 @@ import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
     store._index()
   }
 
+  const isIncoming = computed(() => store.params.direction === 'incoming')
+
   const columns = computed(() => [
     {
       key: 'worker',
       title: t('content.worker'),
       minWidth: 200
     },
-    {
-      key: 'to_organization',
-      title: t('content.organization'),
-      minWidth: 200
-    },
+    ...(isIncoming.value
+      ? [
+          { key: 'source_organization', title: t('businessTrip.fromOrganization'), minWidth: 200 },
+          { key: 'destination_department', title: t('businessTrip.toDepartment'), minWidth: 180 }
+        ]
+      : [{ key: 'to_organization', title: t('businessTrip.toOrganization'), minWidth: 200 }]),
     {
       key: 'type',
       title: t('content.type'),
-      minWidth: 200
+      // «…(boshqa ish beruvchiga)» yorlig'i sana ustuniga chiqmasin.
+      width: 330,
+      minWidth: 330
     },
     {
       key: 'from',
@@ -105,7 +110,8 @@ import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
     :page="store.params.page"
     :per-page="store.params.per_page"
     :total="store.totalItems"
-    storage-key="hrm-business-trip"
+    :key="store.params.direction"
+    :storage-key="isIncoming ? 'hrm-business-trip-incoming' : 'hrm-business-trip'"
     @change-page="changePage"
   >
     <template #cell-worker="{ row }">
@@ -119,6 +125,14 @@ import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
           position: row?.worker_position?.post_short_name
         }"
       />
+    </template>
+
+    <template #cell-source_organization="{ row }">
+      {{ row.source_organization?.name ?? '—' }}
+    </template>
+
+    <template #cell-destination_department="{ row }">
+      {{ row.destination_department?.name ?? '—' }}
     </template>
 
     <template #cell-type="{ row }">

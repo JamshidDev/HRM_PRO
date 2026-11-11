@@ -67,6 +67,9 @@
   }
 
   // Bo'limlarni tahrirlash oynasi.
+  // Tasdiq oynasi ochiq qator — tooltip «Bekor qilish» tugmasini yopmasin.
+  const confirmRow = ref(null)
+
   const edit = ref({ visible: false, row: null })
   const onEditDepartments = (row) => (edit.value = { visible: true, row })
 
@@ -174,11 +177,14 @@
           <n-tag v-if="row.is_active" type="success" size="small" round>
             {{ $t('content.active') }}
           </n-tag>
-          <n-popconfirm @positive-click="store._detachWorkerRole(row)">
+          <n-popconfirm
+            @positive-click="store._detachWorkerRole(row)"
+            @update:show="(v) => (confirmRow = v ? row : null)"
+          >
             <template #trigger>
               <!-- Tooltip popconfirm trigger'i ICHIDA: aks holda popconfirm
                    ochilishi bilan tooltip ustidan tushib qolardi. -->
-              <n-tooltip trigger="hover">
+              <n-tooltip trigger="hover" :disabled="confirmRow === row">
                 <template #trigger>
                   <n-button
                     size="small"
