@@ -1,4 +1,5 @@
 <script setup>
+  import i18n from '@/i18n/index.js'
   import { validationRules } from '@utils'
   import { useDepartmentStore, useComponentStore } from '@stores'
   import { SuperSelect, UIMultipleLangItems, UISelect } from '@components'
@@ -7,12 +8,25 @@
   const store = useDepartmentStore()
   const componentStore = useComponentStore()
   const formRef = ref(null)
+  // i18n `legacy: true` — `useI18n()` bu yerda ishlamaydi («Not available in legacy mode»)
+  const { t } = i18n.global
 
   const selectedOrg = ref([])
   const structureCheck = ref([])
+  const orgItemRef = ref(null)
 
   // Bo'linma nomi — backend 255 belgidan uzunini 422 bilan qaytaradi
   const NAME_MAX = 255
+
+  // Tashkilot majburiy: tanlanmasa backend bo'linmani bosh tashkilotga («O'zbekiston temir
+  // yo'llari» AJ) biriktirib yuboradi (DAS-14220). UISelect Naive input emas — shuning uchun
+  // tanlangach xato matnini qo'lda qayta tekshiramiz.
+  const orgRule = {
+    type: 'number',
+    required: true,
+    message: t('rules.requiredField'),
+    trigger: ['change']
+  }
 
   const onDefaultOrg = (v) => {
     selectedOrg.value = v
@@ -22,6 +36,7 @@
   const onChangeOrg = (v) => {
     selectedOrg.value = v
     store.payload.organization_id = v[0]?.id ?? null
+    orgItemRef.value?.validate({ trigger: 'change' }).catch(() => {})
   }
 
   watch(
@@ -85,9 +100,11 @@
       </div>
       <!-- Ichki bo'lim qo'shishda tashkilot ota-bo'limniki bo'lishi shart — tanlab bo'lmaydi -->
       <n-form-item
-        v-if="store.visibleType && !store.parentElement"
+        v-if="store.visibleType && !store.parentElement && !store.fixedOrganization"
+        ref="orgItemRef"
         :label="$t('content.organization')"
         path="organization_id"
+        :rule="orgRule"
       >
         <UISelect
           :multiple="false"
@@ -105,7 +122,7 @@
       <!-- BACKEND: `PUT /v1/hr/departments/{id}` (`UpdateDepartmentDto`) da `organization_id` yo'q —
            noto'g'ri tashkilotga biriktirilgan bo'linmani to'g'rilab bo'lmaydi (DAS-14221). Qo'shilsa,
            shu maydonni UISelect qilib, `_update` da `organization_id` ni yuborish kerak. Hozircha
-           faqat ko'rsatiladi. -->
+           faqat ko'rsatiladi. Hisobot sahifasidan qo'shishda ham shu — tashkilot sahifadan olinadi. -->
       <n-form-item
         v-else-if="store.fixedOrganization"
         :label="$t('content.organization')"
