@@ -56,9 +56,13 @@
     () => store.payload.worker,
     (v) => {
       // Tiklashda saqlangan tanlov qoladi, faqat ro'yxat qayta yuklanadi.
-      if (!store.restoring) store.form_50.vacation_id = null
+      if (!store.restoring) {
+        store.form_50.vacation_id = null
+        store.form_50.to = null
+        store.form_50.work_day = null
+      }
       if (!v) return
-      store._getWorkerVacation(3)
+      store._getWorkerVacation(3, true)
     },
     { immediate: true }
   )
