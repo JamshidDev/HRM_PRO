@@ -26,7 +26,7 @@
 
   const onSearchEv = () => {
     let query = store.query?.toString()?.trim()?.toLowerCase()
-    if (!Boolean(query)) {
+    if (!query) {
       store.accessLevels = store.originAccessLevels
     } else {
       store.accessLevels = store.originAccessLevels.filter((v) =>
