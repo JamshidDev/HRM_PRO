@@ -1,26 +1,27 @@
 <script setup>
   /*
    * Belgilangan kataklarga nima yozilishi: tez tur chiplari, «Boshqa tur»,
-   * soat, ixtiyoriy 2-tur, natija namunasi va «Qo'llash» / «Tozalash».
+   * soat, ixtiyoriy 2-tur, natija namunasi va «Tozalash».
+   * Tanlangan harf — «cho'tka»: keyin bosilgan / belgilangan kataklarga yoziladi.
+   * Kataklar oldin belgilangan bo'lsa — harf bosilishi bilan darhol yoziladi.
+   * «Tozalash» ham cho'tka (o'chirg'ich). Har tanlovda `pick` chiqadi.
    *
    * Ikki joyda ishlatiladi (`Timesheet.vue`): suzuvchi tanlov paneli (C) va
    * panjara ustidagi asboblar qatori (A). Tanlangan tur `store.payload` da —
    * ikkala joy bitta qiymatni ko'radi.
    */
-  import { Add20Filled, Checkmark20Filled, Eraser20Filled, Subtract20Regular } from '@vicons/fluent'
+  import { Add20Filled, Eraser20Filled, Subtract20Regular } from '@vicons/fluent'
   import { h } from 'vue'
   import { useComponentStore, useTimesheetWorkerStore } from '@/store/modules/index.js'
   import { colorOfDetail } from './timesheetGrid.js'
   import { quickTypeIds } from './quickTypes.js'
 
   defineProps({
-    // Tanlov bor va tur/soat to'liq — «Qo'llash» faol.
-    canApply: { type: Boolean, default: false },
     // Tanlov bor — «Tozalash» faol.
     hasSelection: { type: Boolean, default: false },
     previewDetails: { type: Array, default: () => [] }
   })
-  const emit = defineEmits(['apply', 'clear'])
+  const emit = defineEmits(['pick'])
 
   const store = useTimesheetWorkerStore()
   const compStore = useComponentStore()
@@ -32,15 +33,31 @@
   const DEFAULT_HOURS = 8
   const quickTypes = computed(() => quickTypeIds.value.map(typeByIdOrNull).filter(Boolean))
 
+  // Faol harfni qayta bosish (tanlov yo'q paytda) — cho'tkani o'chiradi.
+  const onChip = (type, hasSelection) => {
+    if (!hasSelection && !store.payload.isClearing && store.payload.status === type.id) {
+      store.payload.status = null
+      return
+    }
+    setMainType(type)
+  }
+  const toggleEraser = () => {
+    store.payload.isClearing = !store.payload.isClearing
+    if (store.payload.isClearing) emit('pick')
+  }
+
   const setMainType = (type) => {
+    store.payload.isClearing = false
     store.payload.status = type?.id ?? null
     if (!type?.hours) store.payload.hours = null
     else if (store.payload.hours == null) store.payload.hours = DEFAULT_HOURS
+    emit('pick')
   }
   const setExtraType = (type) => {
     store.payload.status2 = type?.id ?? null
     if (!type?.hours) store.payload.hours2 = null
     else if (store.payload.hours2 == null) store.payload.hours2 = DEFAULT_HOURS
+    emit('pick')
   }
   // Ikkinchi juftlik ixtiyoriy (katakda ikki kod: masalan «K/T 6/2»).
   const extraOpen = ref(Boolean(store.payload.status2))
@@ -65,11 +82,11 @@
       <n-tooltip v-for="type in quickTypes" :key="type.id" :delay="300">
         <template #trigger>
           <button
-            :class="{ 'is-active': store.payload.status === type.id }"
+            :class="{ 'is-active': !store.payload.isClearing && store.payload.status === type.id }"
             :style="{ color: colorOfDetail({ status_id: type.id }) }"
             class="fc-chip"
             type="button"
-            @click="setMainType(type)"
+            @click="onChip(type, hasSelection)"
           >
             {{ type.key }}
           </button>
@@ -82,7 +99,7 @@
         :options="compStore.timesheetTypes"
         :placeholder="$t('timesheetPage.otherType')"
         :render-label="renderLabel"
-        :value="store.payload.status"
+        :value="store.payload.isClearing ? null : store.payload.status"
         class="fc-select"
         filterable
         label-field="name"
@@ -90,13 +107,16 @@
         @update:value="(_, type) => setMainType(type)"
       />
       <!-- «soat» — −/+ tugmalaridan keyin, maydon tashqarisida: «8 − + soat» -->
-      <label v-if="typeByIdOrNull(store.payload.status)?.hours" class="fc-hours">
+      <!-- Soat maydoni DOIM joyida (kenglik o'zgarmasin); tur soatsiz bo'lsa — o'chiq. -->
+      <label class="fc-hours">
         <n-input-number
           v-model:value="store.payload.hours"
+          :disabled="store.payload.isClearing || !typeByIdOrNull(store.payload.status)?.hours"
           :max="24"
           :min="0"
           :precision="0"
           class="fc-hours-input"
+          @update:value="emit('pick')"
         />
         <span class="fc-hours-unit">{{ $t('timesheetPage.hoursShort') }}</span>
       </label>
@@ -119,13 +139,15 @@
         @update:value="(_, type) => setExtraType(type)"
       />
       <!-- «soat» — −/+ tugmalaridan keyin, maydon tashqarisida: «8 − + soat» -->
-      <label v-if="typeByIdOrNull(store.payload.status2)?.hours" class="fc-hours">
+      <label class="fc-hours">
         <n-input-number
           v-model:value="store.payload.hours2"
+          :disabled="store.payload.isClearing || !typeByIdOrNull(store.payload.status2)?.hours"
           :max="24"
           :min="0"
           :precision="0"
           class="fc-hours-input"
+          @update:value="emit('pick')"
         />
         <span class="fc-hours-unit">{{ $t('timesheetPage.hoursShort') }}</span>
       </label>
@@ -159,13 +181,7 @@
       </template>
       <span v-else class="fc-sample-empty">—</span>
     </div>
-    <n-button :disabled="!canApply" type="primary" @click="emit('apply')">
-      <template #icon>
-        <n-icon :component="Checkmark20Filled" />
-      </template>
-      {{ $t('timesheetPage.apply') }}
-    </n-button>
-    <n-button :disabled="!hasSelection" secondary type="error" @click="emit('clear')">
+    <n-button :secondary="!store.payload.isClearing" type="error" @click="toggleEraser">
       <template #icon>
         <n-icon :component="Eraser20Filled" />
       </template>
@@ -210,7 +226,9 @@
     background: color-mix(in srgb, var(--primary-color) 12%, var(--surface-section));
     box-shadow: inset 0 0 0 1px var(--primary-color);
   }
+  /* Qat'iy kenglik — tanlangan nom uzunligiga qarab panel «sakramasin». */
   .fc-select {
+    flex: 0 0 170px;
     width: 170px;
   }
   .fc-hours {
@@ -219,7 +237,18 @@
     gap: 6px;
   }
   .fc-hours-input {
+    flex: 0 0 92px;
     width: 92px;
+  }
+  /* O'chiq maydon (soatsiz tur, 2-tur tanlanmagan) — QIZIL «taqiqlangan» kursor.
+     Kursor rangini CSS bilan o'zgartirib bo'lmaydi — shuning uchun kichik SVG rasm. */
+  .fc :deep(.n-input--disabled),
+  .fc :deep(.n-input--disabled *),
+  .fc :deep(.n-base-selection--disabled),
+  .fc :deep(.n-base-selection--disabled *) {
+    cursor:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='7.5' fill='white' stroke='%23e5383b' stroke-width='2.5'/%3E%3Cpath d='M5 15 15 5' stroke='%23e5383b' stroke-width='2.5'/%3E%3C/svg%3E") 10 10,
+      not-allowed !important;
   }
   .fc-hours-unit {
     font-size: 13px;

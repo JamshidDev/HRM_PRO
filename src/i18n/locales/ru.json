@@ -3391,7 +3391,7 @@
     "addExtra": "Добавить доп. тип",
     "removeExtra": "Убрать доп. тип",
     "apply": "Применить",
-    "selectionKeys": "Отменить (Esc). Enter — применить, Delete — очистить",
+    "selectionKeys": "Отменить (Esc). Delete — очистить",
     "legendTitle": "Обозначения",
     "selectHint": "Выделите ячейки мышью — появится панель выбора типа. С Shift можно добавить к выделению.",
     "quickTypesTitle": "Быстрый выбор",

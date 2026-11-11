@@ -3403,7 +3403,7 @@
     "addExtra": "Qo'shimcha tur qo'shish",
     "removeExtra": "Qo'shimcha turni olib tashlash",
     "apply": "Qo'llash",
-    "selectionKeys": "Bekor qilish (Esc). Enter — qo'llash, Delete — tozalash",
+    "selectionKeys": "Bekor qilish (Esc). Delete — tozalash",
     "legendTitle": "Belgilar",
     "selectHint": "Kataklarni sichqoncha bilan belgilang — tur tanlash paneli chiqadi. Shift bilan qo'shib belgilash mumkin.",
     "quickTypesTitle": "Tez tanlov",

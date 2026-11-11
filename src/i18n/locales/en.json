@@ -3383,7 +3383,7 @@
     "addExtra": "Add an extra type",
     "removeExtra": "Remove the extra type",
     "apply": "Apply",
-    "selectionKeys": "Cancel (Esc). Enter — apply, Delete — clear",
+    "selectionKeys": "Cancel (Esc). Delete — clear",
     "legendTitle": "Codes",
     "selectHint": "Select cells with the mouse — a type panel appears. Hold Shift to add to the selection.",
     "quickTypesTitle": "Quick types",
