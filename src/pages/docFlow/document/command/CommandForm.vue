@@ -7,11 +7,25 @@
     FullScreenMinimize24Regular
   } from '@vicons/fluent'
   import { useCommandStore } from '@/store/modules/index.js'
-  import { UIModal } from '@/components/index.js'
+  import { UIModal, UISegmentTabs } from '@/components/index.js'
   import CommandFormBody from './CommandFormBody.vue'
+  import LegacyCommandBody from './LegacyCommandBody.vue'
+  import i18n from '@/i18n/index.js'
 
   const store = useCommandStore()
   const bodyRef = ref(null)
+  const legacyRef = ref(null)
+  const { t } = i18n.global
+
+  // Header tablari: yaratish (default) yoki eski buyruqni ro'yxatdan o'tkazish.
+  const isLegacy = computed(() => store.formMode === 'legacy')
+  // Bir marta ochilgach saqlanadi — tab almashganda kiritilganlar yo'qolmaydi.
+  const legacyMounted = ref(false)
+  watch(isLegacy, (v) => v && (legacyMounted.value = true))
+  const modeTabs = computed(() => [
+    { id: 'create', name: t('commandPage.legacy.tabCreate') },
+    { id: 'legacy', name: t('commandPage.legacy.tabRegister') }
+  ])
 
   // To'liq ekran — sahifa ochiq turguncha eslab qolinadi (modal qayta ochilganda ham).
   const isFullscreen = ref(false)
@@ -33,6 +47,7 @@
 
   // status=true — PDF ko'rish, aks holda yaratish (forma holati «Ma'lumotlar» tabi uchun saqlanadi).
   const onSubmit = async (status) => {
+    if (isLegacy.value) return legacyRef.value?.submit()
     const res = await bodyRef.value?.submit()
     if (!res?.isValid) return
     if (status) {
@@ -79,7 +94,14 @@
               <FullScreenMaximize24Regular v-else />
             </template>
           </n-button>
-          <h3 class="text-lg font-medium truncate">
+          <UISegmentTabs
+            v-if="!store.fromApplication"
+            v-model="store.formMode"
+            :tabs="modeTabs"
+            size="sm"
+            class="shrink-0"
+          />
+          <h3 v-else class="text-lg font-medium truncate">
             {{ $t('documentPage.command.createTitle') }}
           </h3>
         </div>
@@ -91,7 +113,13 @@
             </template>
             {{ $t('content.cancel') }}
           </n-button>
-          <n-button class="no-scale" ghost :loading="store.viewLoading" @click="onSubmit(true)">
+          <n-button
+            v-if="!isLegacy"
+            class="no-scale"
+            ghost
+            :loading="store.viewLoading"
+            @click="onSubmit(true)"
+          >
             <template #icon>
               <Eye20Regular />
             </template>
@@ -101,7 +129,7 @@
             class="no-scale"
             type="primary"
             data-modal-submit
-            :loading="store.saveLoading"
+            :loading="isLegacy ? store.legacySaving : store.saveLoading"
             @click="onSubmit(false)"
           >
             <template #icon>
@@ -120,7 +148,8 @@
       class="px-1"
       :class="isFullscreen ? 'max-w-[1760px] mx-auto' : 'overflow-y-auto overflow-x-hidden'"
     >
-      <CommandFormBody ref="bodyRef" mode="create" :wide="isFullscreen" />
+      <CommandFormBody v-show="!isLegacy" ref="bodyRef" mode="create" :wide="isFullscreen" />
+      <LegacyCommandBody v-if="legacyMounted" v-show="isLegacy" ref="legacyRef" />
     </div>
   </UIModal>
 </template>

@@ -2014,6 +2014,30 @@
       "blocked_save": "Saqlab bo‘lmaydi: {count} ta xodim ta’til, kasallik yoki tasdiqlanmagan buyruqda",
       "no_workers": "Kamida bitta xodim tanlang",
       "pick_date_hint": "Ta’til va kasallikni tekshirish uchun sanani tanlang"
+    },
+    "legacy": {
+      "tabCreate": "Yaratish",
+      "award": "Mukofot turi",
+      "awardGroups": {
+        "title": "Oliy unvon",
+        "order": "Ordenlar",
+        "medal": "Medallar",
+        "honorary": "Faxriy unvonlar",
+        "other": "Boshqa rag‘batlar"
+      },
+      "viewerTitle": "Ro'yxatga olingan",
+      "viewerSub": "Qog'ozdagi buyruq — tizimda imzolanmagan",
+      "tabRegister": "Ro'yxatdan o'tkazish",
+      "notice": "Faqat 2024-yil 31-dekabrgacha bo'lgan buyruqlarni ro'yxatdan o'tkazish mumkin",
+      "file": "Buyruq fayli (PDF)",
+      "fileRequired": "Buyruq faylini PDF formatida yuklang",
+      "fileSize": "Fayl hajmi {mb} MB dan oshmasligi kerak",
+      "attachments": "Ilovalar (ixtiyoriy)",
+      "attachmentsMax": "Ko'pi bilan {max} ta ilova biriktirish mumkin",
+      "attachmentsSize": "Har bir ilova {mb} MB dan oshmasligi kerak",
+      "source": "Manba",
+      "sourceSystem": "Tizimda yaratilgan",
+      "sourceLegacy": "Ro'yxatdan o'tkazilgan (qog'oz)"
     }
   },
   "confirmationPage": {
