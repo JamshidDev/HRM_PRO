@@ -1914,6 +1914,7 @@
       "base_reason": "Basis"
     },
     "form_50": {
+      "finish_status": "Return basis",
       "to": "Vacation end date",
       "from": "Vacation start date",
       "vacation_id": "Vacation"

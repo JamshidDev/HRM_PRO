@@ -166,7 +166,7 @@
 
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-6">
       <n-form-item
-        :label="$t(`content.workTime`)"
+        :label="$t(`commandPage.form_50.finish_status`)"
         path="vacation_finish_status"
         :rule-path="validationRules.rulesNames.requiredNumberField"
       >

@@ -1930,6 +1930,7 @@
       "base_reason": "Asos"
     },
     "form_50": {
+      "finish_status": "Ishga chiqish holati",
       "to": "Ta'til tugash sanasi",
       "from": "Ta'tilga chiqish sanasi",
       "vacation_id": "Ta'til"
