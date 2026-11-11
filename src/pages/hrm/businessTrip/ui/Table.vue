@@ -57,7 +57,9 @@
     {
       key: 'type',
       title: t('content.type'),
-      minWidth: 200
+      // «…(boshqa ish beruvchiga)» yorlig'i sana ustuniga chiqmasin.
+      width: 330,
+      minWidth: 330
     },
     {
       key: 'from',
