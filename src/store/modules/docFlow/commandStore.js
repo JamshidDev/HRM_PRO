@@ -447,7 +447,7 @@ const commandStoreOptions = {
         .then((res) => {
           this.workerVacations = res.data.data.data.map((v) => ({
             id: v.id,
-            name: `${v.type.name} (${Utils.timeOnlyDate(v.from)}  ${Utils.timeOnlyDate(v.to)})`,
+            name: `${v.type.name} (${Utils.timeOnlyDate(v.from)} – ${Utils.timeOnlyDate(v.to)})`,
             to: v.to
           }))
         })
