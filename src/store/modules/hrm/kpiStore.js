@@ -27,7 +27,10 @@ export const useKpiStore = defineStore('kpiStore', {
     // Xodim KPI tizimiga ulanganmi — `false` bo'lsa bu XATO emas, "ma'lumot yo'q".
     showOnboarded: true,
     // Jadval qaysi davr bo'yicha chizilyapti (masalan "3-2026").
-    selectedPeriod: null
+    selectedPeriod: null,
+    // Yuklash xatosi: null | { type: 'unavailable' } (5xx / tarmoq) | { type: 'failed', message }.
+    // Ilgari xatoda modal butunlay bo'sh qolardi (DAS-14223).
+    showError: null
   }),
   actions: {
     _index() {
@@ -48,6 +51,7 @@ export const useKpiStore = defineStore('kpiStore', {
       this.showData = null
       this.showOnboarded = true
       this.selectedPeriod = null
+      this.showError = null
       this.showVisible = true
       this.showLoading = true
       // 🔑 KPI tizimi lavozim id'sini kutadi (`eUserId` = worker_positions.id).
@@ -58,6 +62,16 @@ export const useKpiStore = defineStore('kpiStore', {
           this.showOnboarded = d.onboarded
           this.showData = d.kpi
           this.selectedPeriod = this.pickInitialPeriod(d.kpi)
+        })
+        .catch((e) => {
+          // BACKEND: tashqi KPI tizimi (kpi.das-uty.uz) javob bermasa `GET /v1/hr/kpi/positions/{id}`
+          // 503 qaytaradi (dev'da 13521 uchun, QA 03.11.2026). Bu backend/KPI tomonining holati —
+          // frontend faqat foydalanuvchiga tushunarli xabar va «Qayta urinish» ko'rsatadi.
+          const status = e?.response?.status
+          this.showError =
+            !status || status >= 500
+              ? { type: 'unavailable' }
+              : { type: 'failed', message: e?.response?.data?.message || null }
         })
         .finally(() => {
           this.showLoading = false
