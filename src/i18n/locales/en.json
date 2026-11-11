@@ -3399,7 +3399,7 @@
     "addExtra": "Add an extra type",
     "removeExtra": "Remove the extra type",
     "apply": "Apply",
-    "selectionKeys": "Cancel (Esc). Enter — apply, Delete — clear",
+    "selectionKeys": "Cancel (Esc). Delete — clear",
     "legendTitle": "Codes",
     "selectHint": "Select cells with the mouse — a type panel appears. Hold Shift to add to the selection.",
     "quickTypesTitle": "Quick types",
@@ -6653,7 +6653,10 @@
       "calculating": "KPI results are being calculated",
       "calculatingDesc": "Indicators for this employee are not finalized yet. Once the period closes and results are approved, they will appear here automatically.",
       "notOnboarded": "This employee is not onboarded into the KPI system — no indicators.",
-      "noIndicators": "No indicators for the selected period."
+      "noIndicators": "No indicators for the selected period.",
+      "unavailable": "Service temporarily unavailable",
+      "unavailableDesc": "The KPI system is not responding right now. Please try again a little later.",
+      "loadFailed": "Could not load KPI data"
     },
     "showPending": "Indicators come from an external system — data will appear once the integration is connected."
   },

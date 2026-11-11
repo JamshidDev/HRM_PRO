@@ -36,6 +36,8 @@ export const useReportActions = () => {
     dpStore.payload.parent_id = v.parent_id
     dpStore.payload.region_id = v.region_id ?? null
     dpStore.payload.city_id = v.city_id ?? null
+    // Hisobot sahifasida bo'linmalar tanlangan tashkilot bo'yicha keladi
+    dpStore.fixedOrganization = v.organization ?? store.department.params.organization_id?.[0] ?? null
     dpStore.districtList = []
     if (dpStore.payload.region_id) dpStore._districts(dpStore.payload.region_id)
     dpStore._level()

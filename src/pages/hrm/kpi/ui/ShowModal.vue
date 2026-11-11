@@ -112,9 +112,32 @@
     :persistent="false"
   >
     <n-spin :show="store.showLoading" class="h-full">
+      <!-- Server xatosi (masalan KPI tizimi 503) — bo'sh modal o'rniga xabar + qayta urinish -->
+      <div v-if="!store.showLoading && store.showError" class="kpi-error">
+        <n-result
+          :status="store.showError.type === 'unavailable' ? '500' : 'error'"
+          :title="
+            store.showError.type === 'unavailable'
+              ? $t('kpiPage.show.unavailable')
+              : $t('kpiPage.show.loadFailed')
+          "
+          :description="
+            store.showError.type === 'unavailable'
+              ? $t('kpiPage.show.unavailableDesc')
+              : store.showError.message || ''
+          "
+        >
+          <template #footer>
+            <n-button type="primary" @click="store._show(store.showWorker)">
+              {{ $t('content.retry') }}
+            </n-button>
+          </template>
+        </n-result>
+      </div>
+
       <!-- Ma'lumot yo'q — xato emas, KUTISH holati (animatsiyali). -->
       <KpiPending
-        v-if="!store.showLoading && !store.showOnboarded"
+        v-else-if="!store.showLoading && !store.showOnboarded"
         :title="$t('kpiPage.show.calculating')"
         :description="$t('kpiPage.show.calculatingDesc')"
       />
@@ -260,6 +283,13 @@
 </template>
 
 <style scoped>
+  .kpi-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 600px;
+  }
+
   .kpi-detail {
     display: flex;
     flex-direction: column;

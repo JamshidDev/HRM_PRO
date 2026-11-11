@@ -25,7 +25,9 @@
     :icons="naiveIcons"
   >
     <n-notification-provider>
-      <n-message-provider placement="top-right" :container-style="{ zIndex: 10000 }">
+      <!-- Toast tepada o'rtada: o'ng yuqorida sahifa sarlavhasining tugmalari («Tarix»,
+           «Hisobot olish»…) turadi — toast ularni to'sib qo'yardi (DAS-14222). -->
+      <n-message-provider placement="top" :container-style="{ zIndex: 10000 }">
         <n-dialog-provider>
           <AppLayout />
           <ToastProvider />
