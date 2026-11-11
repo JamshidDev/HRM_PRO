@@ -368,8 +368,14 @@ const commandStoreOptions = {
       organizations: [],
       confirmation: null,
       type: null,
-      created: null
+      created: null,
+      // null — hammasi, 1 — eski (ro'yxatga olingan), 0 — tizimda yaratilgan.
+      legacy: null
     },
+    // Eski buyruqni kiritish oynasi.
+    // «Qo'shish» oynasi rejimi: create — yaratish, legacy — eski buyruqni ro'yxatdan o'tkazish.
+    formMode: 'create',
+    legacySaving: false,
     vacations: [],
     vacations55: [],
     vacations62: [],
@@ -589,7 +595,20 @@ const commandStoreOptions = {
           this.saveLoading = false
         })
     },
-    _viewCommand(data) {
+    // Eski buyruqni ro'yxatga olish (PDF yuklanadi, generatsiya yo'q).
+    _createLegacy(formData) {
+      this.legacySaving = true
+      return $ApiService.commandService
+        ._createLegacy({ data: formData })
+        .then(() => {
+          this.visible = false
+          this._index()
+        })
+        .finally(() => {
+          this.legacySaving = false
+        })
+    },
+        _viewCommand(data) {
       this.viewLoading = true
       $ApiService.commandService
         ._viewFile({ data: { ...data, status: 'view' } })
@@ -804,6 +823,7 @@ const commandStoreOptions = {
           { worker: option, id: wp.id, reason: prefill.reason ?? null, type: null, amount: null, base: null }
         ]
       }
+      this.formMode = 'create'
       this.visible = true
     },
 
