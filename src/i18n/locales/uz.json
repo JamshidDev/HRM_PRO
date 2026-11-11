@@ -508,7 +508,8 @@
     "captchaRequired": "Captcha javobini kiriting!",
     "passwordsNotMatch": "Parollar mos kelmadi!",
     "endBeforeStart": "Bu sana boshlanish sanasidan oldin bo'lmasligi kerak",
-    "pastDate": "O'tgan sanani tanlab bo'lmaydi"
+    "pastDate": "O'tgan sanani tanlab bo'lmaydi",
+    "futureDate": "Kelajakdagi sanani tanlab bo'lmaydi"
   },
   "message": {
     "successDone": "Muvaffaqiyatli bajarildi",
@@ -1700,6 +1701,8 @@
       "rejectReasonPlaceholder": "Masalan: 4-bandda ko'rsatilgan summa shartnomaga mos kelmaydi, qayta ko'rib chiqish so'raladi.",
       "rejectReasonRequired": "Rad etish sababini kiriting — kamida 10 belgi.",
       "rejectSubmit": "Rad etish",
+      "generateFailed": "Hujjatni yaratishda xatolik yuz berdi — ko'rib bo'lmaydi. Hujjatni qayta yaratib ko'ring yoki administratorga murojaat qiling.",
+      "notGenerated": "Hujjat hali yaratilmagan — biroz kutib, qayta urinib ko'ring.",
       "link": "Havola",
       "keySelectTitle": "E-imzo kalitini tanlash",
       "keySelectDesc": "Hujjatni imzolash uchun ERI (elektron raqamli imzo) kalitini tanlang.",
@@ -2278,6 +2281,8 @@
     "title": "Yaqin qarindosh ma'lumotlari",
     "no-data": "Yaqin qarindoshlar qo'shilmagan!",
     "disability": {
+      "addAction": "Nogironlik qo'shish",
+      "editAction": "Nogironlikni tahrirlash ({level})",
       "createTitle": "Nogironlik ma'lumotini qo'shish",
       "updateTitle": "Nogironlik ma'lumotini tahrirlash",
       "number": "Hujjat raqami",
@@ -2351,6 +2356,8 @@
     "sortNewestFirst": "Oxiridan boshigacha",
     "experienceMonth": "Staj (oy)",
     "continuousExperience": "Uzluksiz ish staji",
+    "totalExperience": "Umumiy staj: {n} oy",
+    "continuousSince": "Uzluksiz ish staji: {date} dan",
     "period": "Qachondan-qachongacha"
   },
   "workerPositionCertificatePage": {
@@ -3344,7 +3351,8 @@
     "hrCheck": {
       "new": "Yangi",
       "forwarded": "Yo'naltirilgan",
-      "closed": "Yopilgan"
+      "closed": "Yopilgan",
+      "awaiting": "Qaror kutilmoqda"
     }
   },
   "userDepartmentPage": {
@@ -3401,6 +3409,22 @@
     "accessHint": "Yoqilgan — tabelchi shu oy tabelini to'ldira oladi. O'chirilgan — faqat ko'radi.",
     "gridEmpty": "Xodimlar topilmadi",
     "gridEmptyHint": "Boshqa bo'limni tanlang yoki qidiruvni tozalang.",
+    "statWorkers": "{n} xodim",
+    "statDays": "{n} kun ({rest} dam olish)",
+    "statUnsaved": "{n} ta saqlanmagan o'zgarish",
+    "statSaved": "Hammasi saqlangan",
+    "selectedLabel": "ta katak",
+    "otherType": "Boshqa tur",
+    "hoursShort": "soat",
+    "addExtra": "Qo'shimcha tur qo'shish",
+    "removeExtra": "Qo'shimcha turni olib tashlash",
+    "apply": "Qo'llash",
+    "selectionKeys": "Bekor qilish (Esc). Enter — qo'llash, Delete — tozalash",
+    "legendTitle": "Belgilar",
+    "selectHint": "Kataklarni sichqoncha bilan belgilang — tur tanlash paneli chiqadi. Shift bilan qo'shib belgilash mumkin.",
+    "quickTypesTitle": "Tez tanlov",
+    "quickTypesHint": "Tanlov panelida tez tugma bo'lib turadigan turlar — qo'shish yoki olib tashlash uchun bosing ({max} tagacha).",
+    "quickTypesReset": "Standartga qaytarish",
     "noDepartments": "Bo'lim biriktirilmagan",
     "filledWorkers": "To'ldirilgan",
     "filledCount": "{count} ta xodim",

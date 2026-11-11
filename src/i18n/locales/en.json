@@ -495,7 +495,8 @@
     "captchaRequired": "Please enter the captcha answer!",
     "passwordsNotMatch": "Passwords do not match!",
     "endBeforeStart": "This date can't be before the start date",
-    "pastDate": "A past date can't be selected"
+    "pastDate": "A past date can't be selected",
+    "futureDate": "A future date can't be selected"
   },
   "message": {
     "successDone": "Successfully completed",
@@ -1684,6 +1685,8 @@
       "rejectReasonPlaceholder": "E.g.: the amount stated in clause 4 doesn't match the contract, please review.",
       "rejectReasonRequired": "Enter a rejection reason — at least 10 characters.",
       "rejectSubmit": "Reject",
+      "generateFailed": "The document could not be generated, so it can't be opened. Generate it again or contact an administrator.",
+      "notGenerated": "The document hasn't been generated yet — wait a moment and try again.",
       "link": "Link",
       "keySelectTitle": "Select e-signature key",
       "keySelectDesc": "Select a digital signature (ERI) key to sign the document.",
@@ -2255,6 +2258,8 @@
     "title": "Close relatives",
     "no-data": "No relatives added!",
     "disability": {
+      "addAction": "Add disability",
+      "editAction": "Edit disability ({level})",
       "createTitle": "Add disability information",
       "updateTitle": "Edit disability information",
       "number": "Medical certificate number",
@@ -2328,6 +2333,8 @@
     "sortNewestFirst": "Newest to oldest",
     "experienceMonth": "Experience (mo.)",
     "continuousExperience": "Continuous experience",
+    "totalExperience": "Total experience: {n} mo.",
+    "continuousSince": "Continuous experience since {date}",
     "period": "From - to"
   },
   "workerPositionCertificatePage": {
@@ -3324,7 +3331,8 @@
     "hrCheck": {
       "new": "New",
       "forwarded": "Forwarded",
-      "closed": "Closed"
+      "closed": "Closed",
+      "awaiting": "Awaiting decision"
     }
   },
   "userDepartmentPage": {
@@ -3381,6 +3389,22 @@
     "accessHint": "On — the timekeeper can fill in this month. Off — view only.",
     "gridEmpty": "No employees found",
     "gridEmptyHint": "Choose another department or clear the search.",
+    "statWorkers": "{n} employees",
+    "statDays": "{n} days ({rest} days off)",
+    "statUnsaved": "{n} unsaved changes",
+    "statSaved": "All saved",
+    "selectedLabel": "cells",
+    "otherType": "Other type",
+    "hoursShort": "h",
+    "addExtra": "Add an extra type",
+    "removeExtra": "Remove the extra type",
+    "apply": "Apply",
+    "selectionKeys": "Cancel (Esc). Enter — apply, Delete — clear",
+    "legendTitle": "Codes",
+    "selectHint": "Select cells with the mouse — a type panel appears. Hold Shift to add to the selection.",
+    "quickTypesTitle": "Quick types",
+    "quickTypesHint": "Types shown as quick buttons in the selection bar — click to add or remove (up to {max}).",
+    "quickTypesReset": "Reset to default",
     "noDepartments": "No department assigned",
     "filledWorkers": "Filled",
     "filledCount": "{count} employees",

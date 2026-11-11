@@ -121,6 +121,17 @@
     }
   }
 
+  // Kelishuvchi rad etgan, HR hali yopmagan/qayta yubormagan ariza — «Jarayonda» emas,
+  // HR qarori kutilmoqda (DAS-14208). HR yopsa status 2 → «Yopilgan».
+  const REJECTED_CONFIRMATION = 4
+  const awaitingDecision = { id: 2, name: t('applicationPage.hrCheck.awaiting') }
+  const checkStatus = (app) => {
+    if (app?.confirmation?.id === 3) return closedApproved
+    if (app?.confirmation?.id === REJECTED_CONFIRMATION && Number(app?.status) === 0)
+      return awaitingDecision
+    return checkingStatus[Number(app?.status)]
+  }
+
   const columns = computed(() => [
     {
       key: 'worker_application.type.name',
@@ -209,6 +220,8 @@
       <UITableNameCell :name="row?.worker_application?.type.name" @click="onPreview(row)" />
     </template>
 
+    <!-- BACKEND: `worker_application.number` takrorlanadi (dev'da ikki ariza ham №1, DAS-14208).
+         Raqam serverda beriladi — har ariza uchun noyob/ketma-ket raqam kerak. -->
     <template #[`cell-worker_application.number`]="{ row }">
       <UITableBadgeCell :number="row?.worker_application?.number" type="primary" />
     </template>
@@ -226,13 +239,7 @@
     </template>
 
     <template #[`cell-worker_application.status`]="{ row }">
-      <UIStatus
-        :status="
-          row?.worker_application.confirmation?.id === 3
-            ? closedApproved
-            : checkingStatus[Number(row?.worker_application.status)]
-        "
-      />
+      <UIStatus :status="checkStatus(row?.worker_application)" />
     </template>
 
     <template #[`cell-worker_application.confirmation`]="{ row }">

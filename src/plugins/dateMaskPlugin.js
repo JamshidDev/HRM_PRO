@@ -74,6 +74,8 @@ const dateMaskPlugin = {
                   if (!isValid) {
                     event.target.value = previousValue
                     event.target.dispatchEvent(new Event('input', { bubbles: true }))
+                  } else if (formattedValue !== previousValue) {
+                    closeCalendarAfterTyping(event.target)
                   }
                 }
 
@@ -96,6 +98,20 @@ const dateMaskPlugin = {
       }
     })
   }
+}
+
+// Sana to'liq yozilgach kalendar yopiladi (QA-23). Ochiq kalendar keyingi maydonlar ustida turadi —
+// foydalanuvchi keyingi maydonni bosganda aslida kalendardagi kunni bosardi (01.01.2030 → 13.01.2030)
+// va fokus sana maydonida qolardi. Yopish Enter bilan bir xil (Naive o'zi shunday yopadi).
+// Faqat bitta maydonli (oddiy sana) tanlagichlarda — oraliq tanlagichda ikkinchi sana hali kiritiladi.
+function closeCalendarAfterTyping(input) {
+  const picker = input.closest('.n-date-picker')
+  if (!picker || picker.querySelectorAll('.n-input__input-el').length !== 1) return
+  // Naive qiymatni o'zining `input` tinglovchisida oladi — undan keyin yopamiz
+  setTimeout(() => {
+    if (document.activeElement !== input) return
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
+  })
 }
 
 function validateDate(day, month, year) {

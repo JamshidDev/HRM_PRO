@@ -1,5 +1,6 @@
 <script setup>
   import { useRoute } from 'vue-router'
+  import dayjs from 'dayjs'
   import { Edit24Regular, Delete24Regular } from '@vicons/fluent'
   import {
     UITable,
@@ -34,9 +35,30 @@
   const careerColumns = computed(() => [
     { key: 'post_name', title: t('oldCareerPage.form.post_name'), minWidth: 260 },
     { key: 'experience', title: t('oldCareerPage.experienceMonth'), width: 120 },
-    { key: 'experience_date', title: t('oldCareerPage.continuousExperience'), width: 170 },
     { key: 'period', title: t('oldCareerPage.period'), width: 220 }
   ])
+
+  // Har bir qatorning o'z staji — shu davrdagi to'liq oylar (QA-24). Ilgari har qatorda
+  // xodimning umumiy staji (`work_experience`) takrorlanardi.
+  const rowMonths = (row) => {
+    if (!row.from_date || !row.to_date) return '—'
+    const months = dayjs(row.to_date).diff(dayjs(row.from_date), 'month')
+    return months >= 0 ? months : '—'
+  }
+
+  // Xodim darajasidagi qiymatlar — jadval ustida, sarlavha yonida bir marta
+  const experienceSummary = computed(() => {
+    const parts = []
+    if (store.data?.work_experience != null) {
+      parts.push(t('oldCareerPage.totalExperience', { n: store.data.work_experience }))
+    }
+    if (store.data?.experience_date) {
+      parts.push(
+        t('oldCareerPage.continuousSince', { date: Utils.timeOnlyDate(store.data.experience_date) })
+      )
+    }
+    return parts.join(' · ')
+  })
 
   const onAdd = () => {
     careerStore.visibleType = true
@@ -114,6 +136,9 @@
     </UIProfileSection>
 
     <UIProfileSection :title="$t('oldCareerPage.title')" @add="onAdd">
+      <template v-if="experienceSummary" #trailing>
+        <span class="text-sm text-fig-text-secondary">{{ experienceSummary }}</span>
+      </template>
       <UITable
         auto-height
         :columns="careerColumns"
@@ -123,11 +148,7 @@
         :per-page="careerStore.list.length || 1"
       >
         <template #empty><UIProfileEmpty /></template>
-        <!-- Staj va uzluksiz ish staji xodim darajasidagi qiymatlar (maketda ham har qatorda bir xil) -->
-        <template #cell-experience>{{ store.data?.work_experience ?? '—' }}</template>
-        <template #cell-experience_date>
-          {{ Utils.timeOnlyDate(store.data?.experience_date) ?? '—' }}
-        </template>
+        <template #cell-experience="{ row }">{{ rowMonths(row) }}</template>
         <template #cell-period="{ row }">
           {{ Utils.timeOnlyDate(row.from_date) }} - {{ Utils.timeOnlyDate(row.to_date) }}
         </template>

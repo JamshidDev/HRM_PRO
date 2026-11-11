@@ -613,3 +613,9 @@ html .n-input--tiny-size {
     background: var(--fig-bg-tertiary);
   }
 }
+
+// Yopilayotgan (so'nayotgan) sana kalendari bosishlarni ushlamasin — aks holda sana yozilib kalendar
+// yopilayotgan paytda keyingi maydon bosilsa, kalendardagi kun tanlanib qolardi (QA-23).
+.n-date-panel.fade-in-scale-up-transition-leave-active {
+  pointer-events: none;
+}
