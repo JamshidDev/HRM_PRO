@@ -432,12 +432,14 @@ const commandStoreOptions = {
     // `vacationType` — VacationTypeEnum (3 = bola parvarish ta'tili, 45/49).
     // Buyruq 50 faqat shu turdagi faol ta'tilni yakunlaydi, shuning uchun
     // selectda ham boshqa ta'tillar ko'rsatilmaydi (xato tanlash imkonsiz).
-    _getWorkerVacation(vacationType = null) {
+    _getWorkerVacation(vacationType = null, latestChildcare = false) {
       const params = {
         page: 1,
         per_page: 100,
         worker_position_id: this.payload.worker,
-        vacation_type: vacationType || undefined
+        vacation_type: vacationType || undefined,
+        // Buyruq 50: oxirgi parvarish ta'tili, muddati o'tgan bo'lsa ham.
+        latest_childcare: latestChildcare ? 1 : undefined
       }
       this.workerVacationLoading = true
       $ApiService.vacationService
