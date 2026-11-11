@@ -67,6 +67,16 @@
     { immediate: true }
   )
 
+  // Yagona (oxirgi) parvarish ta'tili avtomatik tanlanadi.
+  watch(
+    () => store.workerVacations,
+    (list) => {
+      if (store.restoring || store.form_50.vacation_id || list?.length !== 1) return
+      store.form_50.vacation_id = list[0].id
+      onSelectVacation(list[0].id)
+    }
+  )
+
   const workTypeOptions = [
     {
       id: 1,
