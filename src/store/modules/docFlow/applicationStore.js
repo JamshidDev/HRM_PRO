@@ -270,8 +270,9 @@ export const useApplicationStore = defineStore('applicationStore', {
     },
     _delete() {
       this.deleteLoading = true
-      $ApiService.commandService
-        ._delete({ id: this.elementId })
+      // Ilgari commandService._delete edi — ariza id'si bilan begona buyruq o'chardi.
+      $ApiService.applicationService
+        ._deleteWorkerApplication({ id: this.elementId })
         .then((res) => {
           this._index()
         })

@@ -39,6 +39,21 @@
     onSearchEv()
   }
 
+  // «Barchasini tanlash» — qidiruv bo'lsa faqat ko'rinayotgan ro'yxatga ta'sir qiladi.
+  const visibleIds = computed(() => store.accessLevels.map((i) => i.id))
+  const checkedVisible = computed(
+    () => visibleIds.value.filter((id) => store.payload.access_levels.includes(id)).length
+  )
+  const allChecked = computed(
+    () => visibleIds.value.length > 0 && checkedVisible.value === visibleIds.value.length
+  )
+  const toggleAll = () => {
+    const ids = visibleIds.value
+    store.payload.access_levels = allChecked.value
+      ? store.payload.access_levels.filter((id) => !ids.includes(id))
+      : [...new Set([...store.payload.access_levels, ...ids])]
+  }
+
   const cancelChanges = () => {
     store.payload.access_levels = [...currOrgLevels.value]
   }
@@ -81,7 +96,17 @@
         </n-button>
       </div>
     </div>
-    <div class="h-[calc(100vh-244px)] overflow-auto">
+    <div class="px-3">
+      <n-checkbox
+        :checked="allChecked"
+        :indeterminate="checkedVisible > 0 && !allChecked"
+        :disabled="store.payload.organization.length === 0 || visibleIds.length === 0"
+        @update:checked="toggleAll"
+      >
+        {{ allChecked ? $t('content.unSelectAll') : $t('content.selectAll') }}
+      </n-checkbox>
+    </div>
+    <div class="h-[calc(100vh-276px)] overflow-auto">
       <div class="grid grid-cols-12 gap-2 overflow-auto p-1">
         <div
           v-for="(item, idx) in store.accessLevels"

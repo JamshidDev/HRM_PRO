@@ -243,7 +243,8 @@
       '/hrm/command',
       '/hrm/ad-contract',
       '/hrm/application',
-      '/hrm/structure-report'
+      '/hrm/structure-report',
+      '/hrm/archive'
     ]
     return !rejects.includes(route.path)
   })
@@ -261,7 +262,8 @@
   // HR paneli: yangi (imzolash) / jarayonda (o'zgartirish) / rad etilgan (qayta yuborish) — HR yopmagan bo'lsa.
   const docConfirmation = computed(() => store.document?.document?.confirmation?.id)
   const hrStage = computed(() => {
-    if (route.path !== '/hrm/application' || store.document?.document?.closed) return null
+    // Arizalar sahifasida buyruq PDF'i ham ochiladi — HR paneli faqat arizaga.
+    if (route.path !== '/hrm/application' || !isApplication.value || store.document?.document?.closed) return null
     if (isLegacy.value && [1, 4].includes(docConfirmation.value)) return 'legacy'
     if (docConfirmation.value === 1) return isForwarded.value ? 'process' : 'new'
     if (docConfirmation.value === 4 && isForwarded.value) return 'rejected'

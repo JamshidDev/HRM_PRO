@@ -76,6 +76,7 @@ export const ENFORCED = new Set([
   'hr-business-trip-read',
   'hr-archive-read',
   'hr-archive-resume',
+  'hr-archive-phone',
   'hr-check-worker',
   'hr-commands-delete',
   'hr-commands-read',
@@ -442,6 +443,7 @@ export const MEANINGFUL = new Set([
   'hr',
   'hr-archive-read',
   'hr-archive-resume',
+  'hr-archive-phone',
   'hr-business-trip',
   'hr-business-trip-read',
   'hr-business-trip-write',
@@ -812,13 +814,14 @@ export const PERMISSION_GROUPS = [
           { slug: 'hr-contracts-write', label: 'Shartnoma tuzish' }
         ]
       },
-      // Arxiv — bo'shab ketgan xodimlar (faqat ko'rish; write/delete slug yo'q).
+      // Arxiv — bo'shab ketgan xodimlar (ko'rish, rezyume, asosiy raqam).
       {
         prefix: 'hr-archive',
         label: 'archive.name',
         actions: [
           { slug: 'hr-archive-read', label: "Ko'rish" },
-          { slug: 'hr-archive-resume', label: 'Rezyume yuklash' }
+          { slug: 'hr-archive-resume', label: 'Rezyume yuklash' },
+          { slug: 'hr-archive-phone', label: "Asosiy raqamni o'zgartirish" }
         ]
       },
       { prefix: 'hr-certificates', label: 'workerCertificatePage.name' },

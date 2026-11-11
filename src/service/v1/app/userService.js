@@ -28,6 +28,11 @@ const _accessForAdmin = async (payload) => {
   return await axios.post(`/v1/user/access-for-admin`, payload?.data)
 }
 
+// Asosiy (login) telefon raqami — xodim kartochkasidagi mos raqam ham almashadi.
+const _updatePhone = async (payload) => {
+  return await axios.put(`/v1/admin/users/${payload?.id}/phone`, payload.data)
+}
+
 const _updatePin = async (payload) => {
   return await axios.put(`/v1/admin/users/${payload?.id}/pin`, payload.data)
 }
@@ -63,6 +68,7 @@ export default {
   _accessForAdmin,
   _onSpam,
   _updatePin,
+  _updatePhone,
   _userPermissions,
   _attachPermissions,
   _detachPermissions,

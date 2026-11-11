@@ -54,6 +54,8 @@
     canEditSigners: { type: Boolean, default: false }
   })
   const isEdit = computed(() => props.mode === 'edit')
+  // Ariza asosidagi buyruq: korxona, tur va xodim arizadan — o'zgartirilmaydi.
+  const lockedByApplication = computed(() => !!store.fromApplication)
   // «Ma'lumotlar»da kelishuvchilar odatda faqat ko'rinadi; qalam bosilganda shu joyning o'zida
   // yaratishdagi muharrir ochiladi. O'zgarishlar tabning «Saqlash» tugmasi bilan yuboriladi.
   const editingSigners = ref(false)
@@ -803,6 +805,20 @@
         class="col-span-12 grid grid-cols-12 gap-x-4 content-start"
         :class="{ '@7xl:col-span-7': isWide }"
       >
+        <div v-if="store.fromApplication" class="col-span-12 mb-4">
+          <n-alert type="info" :show-icon="true">
+            <template #header>
+              {{
+                $t('applicationCommand.basedOn', {
+                  number: store.fromApplication.number,
+                  electronic: store.fromApplication.electronic_number,
+                  type: store.fromApplication.type_name
+                })
+              }}
+            </template>
+            {{ $t('applicationCommand.locked') }}
+          </n-alert>
+        </div>
         <!--      Command header-->
         <div class="col-span-12">
           <div
@@ -832,7 +848,7 @@
               <n-form-item :label="$t(`documentPage.command.form.type`)" path="command_type">
                 <n-select
                   v-model:value="store.payload.command_type"
-                  :disabled="isEdit"
+                  :disabled="isEdit || lockedByApplication"
                   filterable
                   :options="componentStore.commandTypeList"
                   label-field="name"
@@ -849,7 +865,11 @@
           <div
             class="mt-6 grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
           >
-            <div class="col-span-12 @xl:col-span-6 flex">
+            <div
+              class="col-span-12 @xl:col-span-6 flex"
+              :class="{ 'pointer-events-none opacity-70': lockedByApplication }"
+              :aria-disabled="lockedByApplication || undefined"
+            >
               <n-form-item
                 class="w-full"
                 :label="$t(`documentPage.form.organization`)"
@@ -916,7 +936,7 @@
                     <SuperSelect
                       class="flex-1 min-w-0"
                       multiple
-                      :disabled="store.payload.organization_id.length === 0"
+                      :disabled="store.payload.organization_id.length === 0 || lockedByApplication"
                       :max-tag-count="1"
                       :options="store.workerList"
                       :loading="store.workerLoading"
@@ -934,7 +954,7 @@
                            Matnsiz — joriy rejim select LABELIDA ko'rinadi.
                            Pensionerda foto yo'q — render fallback avatar qo'yadi. -->
                     <n-switch
-                      v-if="store.payload.command_type === 73"
+                      v-if="store.payload.command_type === 73 && !lockedByApplication"
                       :value="store.recipientType === 'pensioner'"
                       :disabled="store.payload.organization_id.length === 0"
                       @update:value="onToggleRecipient"

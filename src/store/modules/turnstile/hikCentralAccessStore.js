@@ -184,7 +184,7 @@ export const useTurnstileHikCentralStore = defineStore('turnstileHikCentralStore
       $ApiService.turnstileHikCentralAccessService
         ._attach_org_access_levels(data)
         .then((res) => {
-          this.payload.organization[0].access_levels = this.accessLevels.filter((i) =>
+          this.payload.organization[0].access_levels = this.originAccessLevels.filter((i) =>
             data.access_levels.includes(i.id)
           )
         })

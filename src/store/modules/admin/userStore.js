@@ -41,7 +41,11 @@ export const useUserStore = defineStore('user', {
     pinVisible: false,
     pinSaveLoading: false,
     pinRow: null,
-    pinValue: null
+    pinValue: null,
+    // Asosiy telefon raqami tahriri (modal).
+    phoneVisible: false,
+    phoneSaveLoading: false,
+    phoneRow: null
   }),
   actions: {
     _onSpam() {
@@ -59,6 +63,22 @@ export const useUserStore = defineStore('user', {
       this.pinRow = row
       this.pinValue = row?.worker?.pin ?? null
       this.pinVisible = true
+    },
+    openPhoneEdit(row) {
+      this.phoneRow = row
+      this.phoneVisible = true
+    },
+    _updatePhone(phone) {
+      this.phoneSaveLoading = true
+      $ApiService.userService
+        ._updatePhone({ id: this.phoneRow?.uuid, data: { phone } })
+        .then(() => {
+          this.phoneVisible = false
+          this._index()
+        })
+        .finally(() => {
+          this.phoneSaveLoading = false
+        })
     },
     _updatePin(callback) {
       this.pinSaveLoading = true

@@ -53,6 +53,7 @@
           // Tabel bilan bir xil: grafik ichidagi, tushliksiz vaqt.
           minute: item.daily_minutes || 0,
           fact: item.fact_minutes || 0,
+          hasEvents: Boolean(item.has_events),
           date: item.event_date
         }
       }
@@ -62,7 +63,7 @@
 
   const getItemByDate = (year, month, day) => {
     const date = `${year}-${month.toString().length > 1 ? month : '0' + month}-${day.toString().length > 1 ? day : '0' + day}`
-    return calendarItemData.value[date] || { minute: 0, fact: 0, date }
+    return calendarItemData.value[date] || { minute: 0, fact: 0, hasEvents: false, date }
   }
 
   // Fixed Mon-Sun short labels matching the design — this widget has no
@@ -82,6 +83,8 @@
       return {
         date,
         inMonth,
+        // Bugungacha bo'lgan kunlar uchun soat doim ko'rinadi (0 bo'lsa ham), keyingilari bo'sh.
+        showHours: inMonth && !date.isAfter(today, 'day'),
         isToday: inMonth && date.isSame(today, 'day'),
         item: inMonth ? getItemByDate(date.year(), date.month() + 1, date.date()) : null
       }
@@ -126,8 +129,10 @@
     _calendar()
   }
 
+  const isClickable = (v) => Boolean(v?.minute || v?.fact || v?.hasEvents)
+
   const onViewDetail = (v) => {
-    if (!v?.minute && !v?.fact) return
+    if (!isClickable(v)) return
     _showEventsInDay(v.date)
   }
 
@@ -211,20 +216,20 @@
                     :class="{
                       'turnstile-calendar__cell--empty': !day.inMonth,
                       'turnstile-calendar__cell--today': day.isToday,
-                      'turnstile-calendar__cell--clickable':
-                        day.inMonth && (day.item?.minute || day.item?.fact)
+                      'turnstile-calendar__cell--clickable': day.inMonth && isClickable(day.item)
                     }"
                     @click="day.inMonth && onViewDetail(day.item)"
                   >
                     <template v-if="day.inMonth">
                       <span class="turnstile-calendar__date">{{ day.date.date() }}</span>
                       <n-button
-                        v-if="day.item?.minute"
-                        type="primary"
+                        v-if="day.showHours"
+                        :type="day.item?.minute ? 'primary' : 'default'"
+                        :secondary="!day.item?.minute"
                         size="tiny"
                         class="turnstile-calendar__badge"
                       >
-                        {{ Math.round(day.item.minute / 60) }}
+                        {{ Math.round((day.item?.minute || 0) / 60) }}
                       </n-button>
                     </template>
                   </div>
