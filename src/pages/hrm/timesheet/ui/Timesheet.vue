@@ -982,12 +982,9 @@
 <template>
   <div class="ts-root">
     <!-- ── Sarlavha kartasi (bitta qator) ──────────────────────────────────
-         Chap: tashkilot nomi, ostida tab, bo'lim, qidiruv. O'ng: barcha amallar. -->
+         Chap: tab, bo'lim, qidiruv. O'ng: barcha amallar. Tashkilot nomi — pastki qatorda. -->
     <div class="ts-header">
       <div class="ts-header-main">
-        <span :title="store.organization?.name" class="ts-title-name">
-          {{ store.organization?.name || '—' }}
-        </span>
         <div class="ts-toolbar">
           <UISegmentTabs
             v-model="activeTab"
@@ -1541,8 +1538,11 @@
       </div>
     </n-spin>
 
-    <!-- ── Pastki qator: faqat sahifalash (o'ngda) ── -->
+    <!-- ── Pastki qator: chapda tashkilot nomi, o'ngda sahifalash ── -->
     <div v-show="activeTab === 'grid'" class="ts-footer">
+      <span :title="store.organization?.name" class="ts-title-name">
+        {{ store.organization?.name || '—' }}
+      </span>
       <div class="ts-footer-pages">
         <span class="ts-footer-range">
           <b>{{ pageRange }}</b> / {{ store.totalItems }}
@@ -2333,12 +2333,13 @@
     line-height: 16px;
     color: var(--fig-text-tertiary);
   }
-  /* Sarlavha: tashkilot nomi (qalin). */
+  /* Pastki qatordagi tashkilot nomi. */
   .ts-title-name {
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 24px;
-    color: var(--fig-text-primary);
+    min-width: 0;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 18px;
+    color: var(--fig-text-secondary);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -2428,6 +2429,9 @@
     position: sticky;
     top: 0;
     z-index: 6;
+    /* Chetki kataklar yumaloq (16px) — burchak tashqarisi karta rangida bo'lsin,
+       aks holda tik skrollda ostidagi qatorlar o'sha joydan ko'rinib qoladi. */
+    background: var(--fig-block-bg);
   }
 
   /* ── Sarlavha qatori ──────────────────────────────────────────────────── */
@@ -4029,11 +4033,8 @@
     background: var(--fig-block-bg);
     border-radius: 20px;
   }
-  /* Chap ustun: nom, ostida asboblar qatori. */
+  /* Chap tomon: tab, bo'lim, qidiruv — amallar bilan bitta qatorda. */
   .ts-header-main {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
     flex: 1 1 auto;
     min-width: 0;
   }
@@ -4133,7 +4134,7 @@
     align-items: center;
     gap: 16px;
     min-height: 52px;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding: 4px 8px 4px 16px;
     background: var(--fig-block-bg);
     border-radius: 16px;
@@ -4143,6 +4144,7 @@
     align-items: center;
     gap: 12px;
     flex-shrink: 0;
+    margin-left: auto;
   }
   .ts-footer-range {
     font-size: 13px;
