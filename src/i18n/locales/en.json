@@ -3864,7 +3864,12 @@
     }
   },
   "businessTrip": {
-    "name": "Business trip"
+    "name": "Business trip",
+    "sent": "Sent",
+    "incoming": "Incoming",
+    "toOrganization": "Destination",
+    "fromOrganization": "From",
+    "toDepartment": "Receiving department"
   },
   "documentArchive": {
     "name": "Document archive",

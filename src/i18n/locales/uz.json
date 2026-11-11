@@ -3886,7 +3886,12 @@
     }
   },
   "businessTrip": {
-    "name": "Xizmat safari"
+    "name": "Xizmat safari",
+    "sent": "Yuborilgan",
+    "incoming": "Kelgan",
+    "toOrganization": "Qayerga",
+    "fromOrganization": "Qayerdan",
+    "toDepartment": "Qabul qilgan bo'lim"
   },
   "documentArchive": {
     "name": "Hujjatlar bazasi",

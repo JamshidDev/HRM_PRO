@@ -3872,7 +3872,12 @@
     }
   },
   "businessTrip": {
-    "name": "Командировка"
+    "name": "Командировка",
+    "sent": "Направленные",
+    "incoming": "Прибывшие",
+    "toOrganization": "Куда",
+    "fromOrganization": "Откуда",
+    "toDepartment": "Принимающее подразделение"
   },
   "documentArchive": {
     "name": "Архив документов",

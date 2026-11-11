@@ -3550,7 +3550,12 @@
     }
   },
   "businessTrip": {
-    "name": "Хизмат сафари"
+    "name": "Хизмат сафари",
+    "sent": "Юборилган",
+    "incoming": "Келган",
+    "toOrganization": "Қаерга",
+    "fromOrganization": "Қаердан",
+    "toDepartment": "Қабул қилган бўлим"
   },
   "documentArchive": {
     "name": "Ҳужжатлар базаси",
