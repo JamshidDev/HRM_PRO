@@ -5719,7 +5719,7 @@
       "goToSchedule": "Open duty schedule",
       "customShiftHint": "Custom shifts have no groups — they are filled directly in the duty schedule.",
       "noShiftTypes": "No shift types found",
-      "searchByShiftName": "Search by shift name",
+      "searchByShiftName": "Search by shift name or employee name",
       "duplicateWorker": "The same employee is selected in more than one row",
       "groupEndDate": "Group end date"
     },

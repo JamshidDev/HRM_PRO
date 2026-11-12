@@ -66,8 +66,7 @@
 
   const onSelectType = (item) => {
     store.groupParams.schedule_type = item?.id ?? null
-    // Guruhlar qidiruvi backendda faqat smena turi NOMI bo'yicha ishlaydi — tur tanlanganda
-    // u ma'nosiz (va yashiriladi), eski matn esa natijani bo'shatib qo'ymasin.
+    // Boshqa tur tanlanganda eski qidiruv matni natijani bo'shatib qo'ymasin.
     store.groupParams.search = null
     store.groupParams.page = 1
     router.replace({ query: { ...route.query, type: item?.id ?? undefined } })
@@ -93,7 +92,6 @@
 
   onMounted(() => {
     store.groupParams.schedule_type = Number(route.query.type) || null
-    if (store.groupParams.schedule_type) store.groupParams.search = null
     if (canSeeTypes) {
       store.params.page = 1
       store._index()

@@ -5768,7 +5768,7 @@
       "goToSchedule": "Navbatchilik grafigini ochish",
       "customShiftHint": "Maxsus smenada guruh bo'lmaydi — u to'g'ridan-to'g'ri Navbatchilik grafigida to'ldiriladi.",
       "noShiftTypes": "Smena turlari topilmadi",
-      "searchByShiftName": "Smena nomi bo'yicha qidirish",
+      "searchByShiftName": "Smena nomi yoki xodim F.I.O. bo'yicha qidirish",
       "duplicateWorker": "Bitta xodim bir nechta qatorda tanlangan",
       "groupEndDate": "Guruh tugash sanasi"
     },
