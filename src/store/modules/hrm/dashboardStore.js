@@ -150,6 +150,11 @@ export const useDashboardStore = defineStore('dashboardStore', {
           this.loadingPassport = false
         })
     },
+    // BACKEND: «Xodimlar soni» (`kpi.workers`) boshqa sahifalar bilan mos emas (DAS-14229, 2026-11-12):
+    // dashboard 63 266; Xodimlar ro'yxati (GET /v1/hr/worker-positions) 63 725 — bu LAVOZIMLAR soni
+    // (o'rindoshlar alohida qator); `count_by=worker` bilan 63 637. Ta'tildagilar ham farq qiladi
+    // (771 / 786). Har bir son nimani sanashini (shaxs / lavozim, o'rindoshlik, FXSH, holatlar)
+    // bir xil qoidaga keltirish yoki javobda izoh berish kerak — frontend sonlarni o'zi hisoblamaydi.
     async _dashboard(isUpdateCache) {
       this.loading = true
       let params = {}
