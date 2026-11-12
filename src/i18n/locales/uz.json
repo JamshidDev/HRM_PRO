@@ -426,8 +426,8 @@
     "detail": "Batafsil",
     "users": "Foydalanuvchilar",
     "image": "Rasm",
-    "spam": "Spam qilish",
-    "noSpam": "Spamdan chiqarish",
+    "spam": "Blok qilish",
+    "noSpam": "Blokdan chiqarish",
     "noImage": "Rasm mavjud emas",
     "waitResponse": "Iltimos javobni kuting!",
     "untilNow": "hozirgacha",
@@ -735,8 +735,8 @@
     "attachedPermissions": "Biriktirilgan huquqlar",
     "form": {
       "role": "Rollar",
-      "confirmSpam": "Haqiqatan ham spam qilmoqchimisiz?",
-      "cancelSpam": "Haqiqatan ham spamdan chiqarilmoqchimisiz?"
+      "confirmSpam": "Haqiqatan ham blok qilmoqchimisiz?",
+      "cancelSpam": "Haqiqatan ham blokdan chiqarmoqchimisiz?"
     },
     "no-roles": "Biriktirilgan rollar yo'q!",
     "passwordChangedAt": "Parol yangilangan",
@@ -744,10 +744,13 @@
     "eimzoSkipDirect": "Shaxsan E-IMZO tasdig'idan ozod",
     "eimzoSkipByRole": "Roli orqali ozod (Admin yoki rolda «Tasdiqdan ozod»)",
     "eimzoSkipAdminOnly": "Faqat Admin o'zgartira oladi",
+    "eimzoFilter": "E-IMZO tasdig'idan ozod (imtiyozli)",
+    "eimzoFilterAny": "Barcha ozod qilinganlar",
     "daysAgo": "kun oldin",
     "pinTitle": "JSHSHIR tahriri",
     "pin": "JSHSHIR",
-    "editPin": "JSHSHIR tahrirlash"
+    "editPhone": "Telefon tahrirlash",
+    "editPin": "PIN tahrirlash"
   },
   "confirmation": {
     "name": "Shartnomalar",
@@ -1073,7 +1076,8 @@
     "referenceHint": "Har bir xodim uchun ma'lumotnoma (.docx) tayyorlanadi va ular bitta ZIP arxivga to'planadi.",
     "optPassport": "Pasport ma'lumotlarini yuklash",
     "optForeignPassport": "Xorij pasporti ma'lumotlarini yuklash",
-    "optionsHint": "Pasport nusxalari arxivga qo'shilishi uchun quyidagilardan kerakligini belgilang"
+    "optPositionCertificate": "Lavozim guvohnomasini yuklash",
+    "optionsHint": "Hujjat nusxalari (pasport, lavozim guvohnomasi) arxivga qo'shilishi uchun kerakligini belgilang. Fayli yuklanmagan hujjat qo'shilmaydi"
   },
   "contactPage": {
     "name": "Kontaktlar",
@@ -1721,6 +1725,8 @@
       "continue": "Davom etish",
       "emptyFilesTitle": "Hujjat biriktirilmagan",
       "emptyFilesDesc": "Bu hujjatga hali fayl biriktirilmagan. Tasdiqlash uchun kamida bitta fayl biriktirilishi kerak.",
+      "noFileTitle": "Hujjat fayli yuklanmagan",
+      "noFileDesc": "Buyruq ro'yxatga olinganda asoslantiruvchi hujjat biriktirilmagan.",
       "loadErrorTitle": "Hujjatni yuklab bo'lmadi",
       "loadErrorDesc": "Hujjatni yuklashda xatolik yuz berdi. Yangilashga urinib ko'ring.",
       "fileOpenError": "Faylni ochib bo'lmadi",
@@ -2041,8 +2047,8 @@
       "viewerSub": "Qog'ozdagi buyruq — tizimda imzolanmagan",
       "tabRegister": "Ro'yxatdan o'tkazish",
       "notice": "Faqat 2024-yil 31-dekabrgacha bo'lgan buyruqlarni ro'yxatdan o'tkazish mumkin",
-      "file": "Buyruq fayli (PDF)",
-      "fileRequired": "Buyruq faylini PDF formatida yuklang",
+      "file": "Asoslantiruvchi hujjat (ixtiyoriy)",
+      "fileRequired": "Asoslantiruvchi hujjatni PDF formatida yuklang",
       "fileSize": "Fayl hajmi {mb} MB dan oshmasligi kerak",
       "attachments": "Ilovalar (ixtiyoriy)",
       "attachmentsMax": "Ko'pi bilan {max} ta ilova biriktirish mumkin",
@@ -5772,7 +5778,7 @@
       "goToSchedule": "Navbatchilik grafigini ochish",
       "customShiftHint": "Maxsus smenada guruh bo'lmaydi — u to'g'ridan-to'g'ri Navbatchilik grafigida to'ldiriladi.",
       "noShiftTypes": "Smena turlari topilmadi",
-      "searchByShiftName": "Smena nomi bo'yicha qidirish",
+      "searchByShiftName": "Smena nomi yoki xodim F.I.O. bo'yicha qidirish",
       "duplicateWorker": "Bitta xodim bir nechta qatorda tanlangan",
       "groupEndDate": "Guruh tugash sanasi"
     },

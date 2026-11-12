@@ -16,6 +16,8 @@ export const useExportStore = defineStore('exportStore', {
       passport: false,
       // Xorijga chiqish pasporti nusxalari (backend: `foreign_passport`).
       foreign_passport: false,
+      // Lavozim guvohnomasi nusxalari (backend: `position_certificate`).
+      position_certificate: false,
       all: false,
       worker_ids: []
     },
@@ -145,6 +147,7 @@ export const useExportStore = defineStore('exportStore', {
         organizations: null,
         passport: false,
         foreign_passport: false,
+        position_certificate: false,
         all: false,
         worker_ids: []
       }
