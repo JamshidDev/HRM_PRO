@@ -3443,7 +3443,7 @@
     "addExtra": "Qo'shimcha tur qo'shish",
     "removeExtra": "Qo'shimcha turni olib tashlash",
     "apply": "Qo'llash",
-    "selectionKeys": "Bekor qilish (Esc). Enter — qo'llash, Delete — tozalash",
+    "selectionKeys": "Bekor qilish (Esc). Delete — tozalash",
     "legendTitle": "Belgilar",
     "selectHint": "Kataklarni sichqoncha bilan belgilang — tur tanlash paneli chiqadi. Shift bilan qo'shib belgilash mumkin.",
     "quickTypesTitle": "Tez tanlov",
@@ -6737,7 +6737,10 @@
       "calculating": "KPI ma'lumotlari hisoblanmoqda",
       "calculatingDesc": "Bu xodim uchun ko'rsatkichlar hali yakunlanmagan. Davr yopilib, natijalar tasdiqlangach ular shu yerda avtomatik paydo bo'ladi.",
       "notOnboarded": "Bu xodim KPI tizimiga ulanmagan — ko'rsatkichlar mavjud emas.",
-      "noIndicators": "Tanlangan davr uchun ko'rsatkichlar yo'q."
+      "noIndicators": "Tanlangan davr uchun ko'rsatkichlar yo'q.",
+      "unavailable": "Xizmat vaqtincha ishlamayapti",
+      "unavailableDesc": "KPI tizimi hozir javob bermayapti. Birozdan keyin qayta urinib ko'ring.",
+      "loadFailed": "KPI ma'lumotini yuklab bo'lmadi"
     },
     "showPending": "Ko'rsatkichlar tashqi tizimdan olinadi — integratsiya ulanmaguncha ma'lumot ko'rsatilmaydi."
   },
