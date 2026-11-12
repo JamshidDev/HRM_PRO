@@ -16,6 +16,19 @@
   const componentStore = useComponentStore()
   const statusOptions = computed(() => recordStatusOptions(i18n.global.t, false))
 
+  // Mukofotlar guruhlab: boshqa rag'batlar, oliy unvon, ordenlar, medallar, faxriy unvonlar.
+  const AWARD_GROUPS = ['other', 'title', 'order', 'medal', 'honorary']
+  const awardOptions = computed(() =>
+    AWARD_GROUPS.map((g) => ({
+      type: 'group',
+      key: g,
+      label: i18n.global.t(`commandPage.legacy.awardGroups.${g}`),
+      children: store.awards
+        .filter((a) => a.group === g)
+        .map((a) => ({ label: a.name, value: a.id }))
+    })).filter((g) => g.children.length)
+  )
+
   const onSearch = () => {
     if (!accStore.checkAction(accStore.pn.hrIncentivesRead)) return
     store.params.page = 1
@@ -32,7 +45,8 @@
       Number(Boolean(store.params.created)) +
       Number(Boolean(store.params.year)) +
       Number(Boolean(store.params.month)) +
-      Number(Boolean(store.params.status))
+      Number(Boolean(store.params.status)) +
+      Number(Boolean(store.params.award_id))
   )
 
   const beforeShow = (v) => {
@@ -42,6 +56,7 @@
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
     }
+    if (v) store._awards()
   }
 
   const onChangeStructure = (v) => {
@@ -56,6 +71,7 @@
     store.params.year = null
     store.params.month = null
     store.params.status = null
+    store.params.award_id = null
     filterEvent()
   }
 </script>
@@ -142,6 +158,18 @@
             :options="statusOptions"
             label-field="name"
             value-field="id"
+            clearable
+            @update:value="filterEvent"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('incentive.giftType') }}</label>
+          <n-select
+            v-model:value="store.params.award_id"
+            :options="awardOptions"
+            :loading="store.awardsLoading"
+            :consistent-menu-width="false"
+            filterable
             clearable
             @update:value="filterEvent"
           />

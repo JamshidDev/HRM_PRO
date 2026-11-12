@@ -4043,6 +4043,7 @@
   },
   "incentive": {
     "name": "Incentives",
+    "giftType": "Award type",
     "form": {
       "type": "Type",
       "who": "By whom",

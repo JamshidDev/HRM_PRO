@@ -4065,6 +4065,7 @@
   },
   "incentive": {
     "name": "Rag'batlantirishlar",
+    "giftType": "Mukofot turi",
     "form": {
       "type": "Turi",
       "who": "Kim tomonidan",
