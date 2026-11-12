@@ -744,6 +744,8 @@
     "eimzoSkipDirect": "Shaxsan E-IMZO tasdig'idan ozod",
     "eimzoSkipByRole": "Roli orqali ozod (Admin yoki rolda «Tasdiqdan ozod»)",
     "eimzoSkipAdminOnly": "Faqat Admin o'zgartira oladi",
+    "eimzoFilter": "E-IMZO tasdig'idan ozod (imtiyozli)",
+    "eimzoFilterAny": "Barcha ozod qilinganlar",
     "daysAgo": "kun oldin",
     "pinTitle": "JSHSHIR tahriri",
     "pin": "JSHSHIR",

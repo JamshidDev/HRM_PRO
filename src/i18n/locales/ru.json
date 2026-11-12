@@ -731,6 +731,8 @@
     "eimzoSkipDirect": "Лично освобождён от проверки E-IMZO",
     "eimzoSkipByRole": "Освобождён через роль (Admin или право в роли)",
     "eimzoSkipAdminOnly": "Изменять может только Admin",
+    "eimzoFilter": "Освобождены от подтверждения E-IMZO",
+    "eimzoFilterAny": "Все освобождённые",
     "daysAgo": "дн. назад",
     "pinTitle": "Изменение ЖШШИР",
     "pin": "ЖШШИР",

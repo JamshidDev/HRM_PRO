@@ -729,6 +729,8 @@
     "eimzoSkipDirect": "Personally exempt from E-IMZO verification",
     "eimzoSkipByRole": "Exempt via role (Admin or role permission)",
     "eimzoSkipAdminOnly": "Only Admin can change",
+    "eimzoFilter": "Exempt from E-IMZO confirmation",
+    "eimzoFilterAny": "All exempt users",
     "daysAgo": "days ago",
     "pinTitle": "Edit PINFL",
     "pin": "PINFL",

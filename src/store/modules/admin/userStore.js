@@ -25,7 +25,9 @@ export const useUserStore = defineStore('user', {
       per_page: 15,
       search: null,
       organizations: [],
-      role: null
+      role: null,
+      // E-IMZO'dan ozodlar: any | direct | role
+      eimzo_skip: null
     },
     roleList: [],
     roleLoading: false,
