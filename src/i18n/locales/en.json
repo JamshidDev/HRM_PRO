@@ -2747,6 +2747,7 @@
   },
   "dashboardPage": {
     "comingSoon": "Coming soon",
+    "comingSoonHint": "This metric is being developed",
     "name": "Dashboard",
     "card": {
       "type": "Vacation type",

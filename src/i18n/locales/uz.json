@@ -2767,6 +2767,7 @@
   },
   "dashboardPage": {
     "comingSoon": "Tez orada",
+    "comingSoonHint": "Bu ko'rsatkich ishlab chiqilmoqda",
     "name": "Dashboard",
     "card": {
       "type": "Ta'til turi",

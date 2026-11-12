@@ -2497,6 +2497,7 @@
   },
   "dashboardPage": {
     "comingSoon": "Тез орада",
+    "comingSoonHint": "Бу кўрсаткич ишлаб чиқилмоқда",
     "name": "Дашбоард",
     "card": {
       "type": "Таътил тури",

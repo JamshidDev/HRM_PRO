@@ -2755,6 +2755,7 @@
   },
   "dashboardPage": {
     "comingSoon": "Скоро",
+    "comingSoonHint": "Этот показатель в разработке",
     "name": "Дашборд",
     "card": {
       "type": "Тип отпуска",
