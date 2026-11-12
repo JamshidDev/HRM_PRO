@@ -251,7 +251,7 @@
         </n-form-item>
 
         <n-form-item
-          class="col-span-6 md:col-span-3"
+          class="col-span-6 md:col-span-2"
           :label="$t('documentPage.command.form.command_date')"
           path="command_date"
         >
