@@ -1,8 +1,10 @@
 <script setup>
   import { UIPageFilter, UISelect } from '@/components/index.js'
   import { useComponentStore, useUserStore } from '@/store/modules/index.js'
+  import i18n from '@/i18n/index.js'
 
   const store = useUserStore()
+  const { t } = i18n.global
   const componentStore = useComponentStore()
 
   const filterEvent = () => {
@@ -28,11 +30,23 @@
   const onClear = () => {
     store.params.organizations = []
     store.params.role = null
+    store.params.eimzo_skip = null
     filterEvent()
   }
 
+  // E-IMZO tasdig'idan ozod qilinganlar (imtiyozlilar) filtri.
+  const eimzoOptions = computed(() => [
+    { name: t('userPage.eimzoFilterAny'), id: 'any' },
+    { name: t('userPage.eimzoSkipDirect'), id: 'direct' },
+    { name: t('userPage.eimzoSkipByRole'), id: 'role' }
+  ])
+
   const filterCount = computed(() => {
-    return Number(Boolean(store.params.organizations.length)) + Number(Boolean(store.params.role))
+    return (
+      Number(Boolean(store.params.organizations.length)) +
+      Number(Boolean(store.params.role)) +
+      Number(Boolean(store.params.eimzo_skip))
+    )
   })
 </script>
 
@@ -70,6 +84,18 @@
         clearable
         @update:value="filterEvent"
         :loading="store.roleLoading"
+      />
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
+        $t('userPage.eimzoFilter')
+      }}</label>
+      <n-select
+        v-model:value="store.params.eimzo_skip"
+        :options="eimzoOptions"
+        :consistent-menu-width="false"
+        label-field="name"
+        value-field="id"
+        clearable
+        @update:value="filterEvent"
       />
     </template>
   </UIPageFilter>

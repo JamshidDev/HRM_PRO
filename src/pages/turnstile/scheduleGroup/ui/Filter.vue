@@ -79,7 +79,6 @@
 <template>
   <UIPageFilter
     v-model:search="store.groupParams.search"
-    :show-search-input="!store.groupParams.schedule_type"
     :placeholder="$t('shiftType.form.searchByShiftName')"
     :search-loading="store.groupLoading"
     :show-add-button="false"

@@ -64,7 +64,8 @@
     ones_org_code: () => t('organizationPage.form.ones_org_code'),
     inn: () => t('organizationPage.form.inn'),
     gateway_id: () => t('organizationPage.form.gateway_id'),
-    group: () => t('organizationPage.form.group')
+    group: () => t('organizationPage.form.group'),
+    reports_enabled: () => t('organizationPage.form.reportsEnabled')
   }
   const norm = (v) => (v === '' || v === undefined ? null : typeof v === 'boolean' ? Number(v) : v)
   const changedFields = computed(() => {
@@ -248,6 +249,20 @@
           <div class="flex items-start gap-1.5 text-xs leading-4 text-textColor2">
             <n-icon size="14" class="mt-px shrink-0 text-primary"><Info16Regular /></n-icon>
             <span>{{ $t('organizationPage.form.groupInfo') }}</span>
+          </div>
+        </div>
+      </n-form-item>
+      <!-- Hisobot yuklaydimi: false → ota/guruh korxona yuklaydi; «Hisobot holati»dan chiqadi.
+           Guruh (parent) korxonalarda ham ko'rinadi — ular ko'pincha hisobot yuklamaydi. -->
+      <n-form-item :show-feedback="false" class="mb-4">
+        <div class="flex flex-col gap-1.5">
+          <n-checkbox
+            :label="$t(`organizationPage.form.reportsEnabled`)"
+            v-model:checked="store.payload.reports_enabled"
+          />
+          <div class="flex items-start gap-1.5 text-xs leading-4 text-textColor2">
+            <n-icon size="14" class="mt-px shrink-0 text-primary"><Info16Regular /></n-icon>
+            <span>{{ $t('organizationPage.form.reportsEnabledInfo') }}</span>
           </div>
         </div>
       </n-form-item>

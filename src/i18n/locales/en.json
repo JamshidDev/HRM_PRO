@@ -415,8 +415,8 @@
     "detail": "Details",
     "users": "Users",
     "image": "Image",
-    "spam": "Mark as spam",
-    "noSpam": "Remove from spam",
+    "spam": "Block",
+    "noSpam": "Unblock",
     "noImage": "No image",
     "waitResponse": "Please wait for response!",
     "untilNow": "so far",
@@ -720,8 +720,8 @@
     "attachedPermissions": "Attached Permissions",
     "form": {
       "role": "Roles",
-      "confirmSpam": "Mark as spam?",
-      "cancelSpam": "Remove from spam?"
+      "confirmSpam": "Are you sure you want to block?",
+      "cancelSpam": "Are you sure you want to unblock?"
     },
     "no-roles": "No roles assigned!",
     "passwordChangedAt": "Password changed",
@@ -729,10 +729,13 @@
     "eimzoSkipDirect": "Personally exempt from E-IMZO verification",
     "eimzoSkipByRole": "Exempt via role (Admin or role permission)",
     "eimzoSkipAdminOnly": "Only Admin can change",
+    "eimzoFilter": "Exempt from E-IMZO confirmation",
+    "eimzoFilterAny": "All exempt users",
     "daysAgo": "days ago",
     "pinTitle": "Edit PINFL",
     "pin": "PINFL",
-    "editPin": "Edit PINFL"
+    "editPhone": "Edit phone",
+    "editPin": "Edit PIN"
   },
   "confirmation": {
     "name": "Contracts",
@@ -888,6 +891,8 @@
       "full_name": "Full organization name",
       "group": "Group",
       "groupInfo": "A group is not a separate enterprise but a node that unites other organizations (e.g. “Central office”). It cannot be selected on its own in organization pickers and is not counted as an enterprise.",
+      "reportsEnabled": "Submits report",
+      "reportsEnabledInfo": "If unchecked, the enterprise does not submit the monthly/INPS report (the parent organization submits it instead): it is hidden from Report status and marked in the upload tree.",
       "hrPin": "HR PINFL",
       "directorPin": "Director PINFL",
       "startStaffInfo": "Together with the organization, a \"Management office\" department and a \"management employee\" staff position (5 units) are created. HR and the director are recorded in it: with no main job elsewhere — main position, 1 unit; with a main job elsewhere — part-time, 0.5 unit. HR then adjusts the staff and approvers.",
@@ -1055,7 +1060,8 @@
     "referenceHint": "A reference (.docx) is generated for each employee and all files are collected into one ZIP archive.",
     "optPassport": "Include passport data",
     "optForeignPassport": "Include foreign passport data",
-    "optionsHint": "Tick what you need below so passport copies are included in the archive"
+    "optPositionCertificate": "Download position certificate",
+    "optionsHint": "Tick which document copies (passport, position certificate) to include in the archive. Documents without an uploaded file are skipped"
   },
   "contactPage": {
     "name": "Contacts",
@@ -1703,6 +1709,8 @@
       "continue": "Continue",
       "emptyFilesTitle": "No document attached",
       "emptyFilesDesc": "No file has been attached to this document yet. At least one file must be attached to confirm it.",
+      "noFileTitle": "Document file not uploaded",
+      "noFileDesc": "No supporting document was attached when the command was registered.",
       "loadErrorTitle": "Failed to load document",
       "loadErrorDesc": "The document could not be loaded. Please try refreshing.",
       "fileOpenError": "Couldn't open the file",
@@ -2023,8 +2031,8 @@
       "viewerSub": "Paper command — not signed in the system",
       "tabRegister": "Register",
       "notice": "Only commands dated up to 31 December 2024 can be registered",
-      "file": "Command file (PDF)",
-      "fileRequired": "Upload the command file as a PDF",
+      "file": "Supporting document (optional)",
+      "fileRequired": "Upload the supporting document as a PDF",
       "fileSize": "File size must not exceed {mb} MB",
       "attachments": "Attachments (optional)",
       "attachmentsMax": "At most {max} attachments can be added",
@@ -4322,7 +4330,17 @@
     "cancelConfirmQuestion": "Cancel confirmation? Re-upload will be enabled.",
     "cancelConfirm": "Cancel confirmation",
     "bulkSelected": "{n} organizations selected",
-    "bulkSkipped": "{n} organizations skipped (error or no data)"
+    "bulkSkipped": "{n} organizations skipped (error or no data)",
+    "openAll": "Open all",
+    "closeAll": "Close all",
+    "participation": {
+      "markOn": "Submits report",
+      "markOff": "Does not submit",
+      "markOnQuestion": "Mark the selected organization(s) as submitting reports?",
+      "markOffQuestion": "Mark the selected organization(s) as not submitting reports? They will be excluded from Report status.",
+      "badge": "No report",
+      "badgeTooltip": "This organization does not submit reports (the parent organization does) — hidden from Report status"
+    }
   },
   "instructionPage": {
     "name": "Instructions",
@@ -5713,7 +5731,7 @@
       "goToSchedule": "Open duty schedule",
       "customShiftHint": "Custom shifts have no groups — they are filled directly in the duty schedule.",
       "noShiftTypes": "No shift types found",
-      "searchByShiftName": "Search by shift name",
+      "searchByShiftName": "Search by shift name or employee name",
       "duplicateWorker": "The same employee is selected in more than one row",
       "groupEndDate": "Group end date"
     },

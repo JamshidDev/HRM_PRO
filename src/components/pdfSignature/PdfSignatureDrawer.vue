@@ -404,6 +404,10 @@
             )
           )
           autoClose()
+        } else if (v.document.is_legacy && !store.pdfUrl) {
+          // Ro'yxatga olingan buyruq hujjatsiz saqlangan — «Hujjat fayli yuklanmagan» ko'rinadi.
+          store.permissions.canSignature = false
+          store.permissions.canEdit = false
         } else if (key === 2 || !store.pdfUrl) {
           store.viewerLoading = true
           store.permissions.canSignature = false
@@ -889,14 +893,18 @@
                           {{
                             store.loadError
                               ? $t('documentPage.signature.loadErrorTitle')
-                              : $t('documentPage.signature.emptyFilesTitle')
+                              : isLegacyDoc
+                                ? $t('documentPage.signature.noFileTitle')
+                                : $t('documentPage.signature.emptyFilesTitle')
                           }}
                         </h3>
                         <p class="text-sm text-gray-400 max-w-[360px] mb-3 text-pretty">
                           {{
                             store.loadError
                               ? $t('documentPage.signature.loadErrorDesc')
-                              : $t('documentPage.signature.emptyFilesDesc')
+                              : isLegacyDoc
+                                ? $t('documentPage.signature.noFileDesc')
+                                : $t('documentPage.signature.emptyFilesDesc')
                           }}
                         </p>
                         <n-button v-if="store.loadError" @click="onRefresh" tertiary size="small">

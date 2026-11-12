@@ -192,6 +192,17 @@
                     </template>
                     {{ $t('uploadReport.hasOnesCode') }}
                   </n-tooltip>
+                  <!-- Hisobot yuklamaydigan korxona — ota korxona yuklaydi (belgi) -->
+                  <n-tooltip v-if="item.reports_enabled === false">
+                    <template #trigger>
+                      <span
+                        class="flex-shrink-0 ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-semibold leading-none bg-warning/15 text-warning"
+                      >
+                        {{ $t('uploadReport.participation.badge') }}
+                      </span>
+                    </template>
+                    {{ $t('uploadReport.participation.badgeTooltip') }}
+                  </n-tooltip>
                   <!-- Radio: parent korxonalar uchun — childlar bilan birga tanlash -->
                   <n-radio
                     v-if="item.isHasChildren"
