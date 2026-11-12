@@ -266,7 +266,7 @@
         </n-form-item>
 
         <n-form-item
-          class="col-span-12 md:col-span-6"
+          class="col-span-12 md:col-span-8"
           :label="$t('documentPage.command.form.type')"
           path="command_type"
         >
