@@ -426,8 +426,8 @@
     "detail": "Batafsil",
     "users": "Foydalanuvchilar",
     "image": "Rasm",
-    "spam": "Spam qilish",
-    "noSpam": "Spamdan chiqarish",
+    "spam": "Blok qilish",
+    "noSpam": "Blokdan chiqarish",
     "noImage": "Rasm mavjud emas",
     "waitResponse": "Iltimos javobni kuting!",
     "untilNow": "hozirgacha",
@@ -735,8 +735,8 @@
     "attachedPermissions": "Biriktirilgan huquqlar",
     "form": {
       "role": "Rollar",
-      "confirmSpam": "Haqiqatan ham spam qilmoqchimisiz?",
-      "cancelSpam": "Haqiqatan ham spamdan chiqarilmoqchimisiz?"
+      "confirmSpam": "Haqiqatan ham blok qilmoqchimisiz?",
+      "cancelSpam": "Haqiqatan ham blokdan chiqarmoqchimisiz?"
     },
     "no-roles": "Biriktirilgan rollar yo'q!",
     "passwordChangedAt": "Parol yangilangan",
@@ -747,7 +747,8 @@
     "daysAgo": "kun oldin",
     "pinTitle": "JSHSHIR tahriri",
     "pin": "JSHSHIR",
-    "editPin": "JSHSHIR tahrirlash"
+    "editPhone": "Telefon tahrirlash",
+    "editPin": "PIN tahrirlash"
   },
   "confirmation": {
     "name": "Shartnomalar",

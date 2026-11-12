@@ -415,8 +415,8 @@
     "detail": "Details",
     "users": "Users",
     "image": "Image",
-    "spam": "Mark as spam",
-    "noSpam": "Remove from spam",
+    "spam": "Block",
+    "noSpam": "Unblock",
     "noImage": "No image",
     "waitResponse": "Please wait for response!",
     "untilNow": "so far",
@@ -720,8 +720,8 @@
     "attachedPermissions": "Attached Permissions",
     "form": {
       "role": "Roles",
-      "confirmSpam": "Mark as spam?",
-      "cancelSpam": "Remove from spam?"
+      "confirmSpam": "Are you sure you want to block?",
+      "cancelSpam": "Are you sure you want to unblock?"
     },
     "no-roles": "No roles assigned!",
     "passwordChangedAt": "Password changed",
@@ -732,7 +732,8 @@
     "daysAgo": "days ago",
     "pinTitle": "Edit PINFL",
     "pin": "PINFL",
-    "editPin": "Edit PINFL"
+    "editPhone": "Edit phone",
+    "editPin": "Edit PIN"
   },
   "confirmation": {
     "name": "Contracts",

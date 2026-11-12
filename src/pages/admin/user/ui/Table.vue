@@ -152,16 +152,16 @@
       action: onAttachment
     },
     {
+      label: t('userPage.editPhone'),
+      key: 'edit-phone',
+      icon: UIHelper.renderIcon(Phone20Regular),
+      action: onEditPhone
+    },
+    {
       label: t('userPage.editPin'),
       key: 'edit-pin',
       icon: UIHelper.renderIcon(Edit20Regular),
       action: onEditPin
-    },
-    {
-      label: t('mainPhone.action'),
-      key: 'edit-phone',
-      icon: UIHelper.renderIcon(Phone20Regular),
-      action: onEditPhone
     },
     {
       label: t('content.delete'),
