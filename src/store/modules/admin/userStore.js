@@ -109,6 +109,18 @@ export const useUserStore = defineStore('user', {
           this.loading = false
         })
     },
+    // E-IMZO ozodligi switch'i — muvaffaqiyatda qator joyida yangilanadi.
+    _eimzoSkip(row, enabled) {
+      row.eimzoLoading = true
+      return $ApiService.userService
+        ._eimzoSkip({ id: row.uuid, data: { enabled } })
+        .then(() => {
+          row.eimzo_skip = enabled
+        })
+        .finally(() => {
+          row.eimzoLoading = false
+        })
+    },
     _loginById(id, callback) {
       this.loginLoading = true
       $ApiService.userService
