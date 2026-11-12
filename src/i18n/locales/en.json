@@ -3679,7 +3679,12 @@
       "department": "Department",
       "added": "Attached employees",
       "no-added": "Not attached employees",
-      "device": "Devices"
+      "device": "Devices",
+      "membership": "Employee type",
+      "membershipOwn": "Organization employees",
+      "membershipGuest": "Guests (other organization)",
+      "membershipNotWorking": "Not employed",
+      "notWorking": "Not employed"
     },
     "workDurationPage": {
       "name": "Work time",

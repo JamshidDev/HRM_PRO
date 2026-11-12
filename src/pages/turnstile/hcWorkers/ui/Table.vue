@@ -198,8 +198,16 @@
               {{ row.card }}
             </n-button>
 
+            <n-tag
+              v-if="store.params.membership && !row.organization"
+              size="tiny"
+              type="error"
+              :bordered="false"
+            >
+              {{ $t('turnstile.hcWorkersPage.notWorking') }}
+            </n-tag>
             <n-ellipsis tooltip>
-              {{ row.post_name }}
+              {{ store.params.membership && row.organization ? `${row.organization.name} — ${row.post_name}` : row.post_name }}
             </n-ellipsis>
           </div>
         </template>

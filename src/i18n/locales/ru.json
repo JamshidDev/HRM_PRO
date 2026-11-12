@@ -3687,7 +3687,12 @@
       "department": "Подразделение",
       "added": "Прикреплённые сотрудники",
       "no-added": "Неприкреплённые сотрудники",
-      "device": "Устройства"
+      "device": "Устройства",
+      "membership": "Тип сотрудника",
+      "membershipOwn": "Сотрудники организации",
+      "membershipGuest": "Гости (другая организация)",
+      "membershipNotWorking": "Не работающие",
+      "notWorking": "Не работает"
     },
     "workDurationPage": {
       "name": "Рабочее время",

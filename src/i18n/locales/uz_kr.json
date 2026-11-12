@@ -3381,7 +3381,12 @@
       "department": "Бўлинма",
       "added": "Бириктирилган ходимлар",
       "no-added": "Бириктирилмаган ходимлар",
-      "device": "Қурилмалар"
+      "device": "Қурилмалар",
+      "membership": "Ходим тури",
+      "membershipOwn": "Корхона ходимлари",
+      "membershipGuest": "Меҳмонлар (бошқа корхона)",
+      "membershipNotWorking": "Ишламайдиганлар",
+      "notWorking": "Ишламайди"
     },
     "workDurationPage": {
       "name": "Иш вақти",

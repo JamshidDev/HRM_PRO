@@ -3699,7 +3699,12 @@
       "department": "Bo'linma",
       "added": "Biriktirilgan xodimlar",
       "no-added": "Biriktirilmagan xodimlar",
-      "device": "Qurilmalar"
+      "device": "Qurilmalar",
+      "membership": "Xodim turi",
+      "membershipOwn": "Korxona xodimlari",
+      "membershipGuest": "Mehmonlar (boshqa korxona)",
+      "membershipNotWorking": "Ishlamaydiganlar",
+      "notWorking": "Ishlamaydi"
     },
     "workDurationPage": {
       "name": "Ish vaqti",

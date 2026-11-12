@@ -74,8 +74,19 @@
     store.params.added = 'all'
     store.params.departments = []
     store.params.status = null
+    store.params.membership = null
     filterEvent()
   }
+
+  // Mehmonlar filtri faqat alohida ruxsat bilan (turnstile-hik-central-workers-guests).
+  const canSeeGuests = computed(() =>
+    accStore.checkPermission(accStore.pn.turnstileHikCentralWorkersGuests)
+  )
+  const membershipOption = [
+    { name: t('turnstile.hcWorkersPage.membershipOwn'), id: null },
+    { name: t('turnstile.hcWorkersPage.membershipGuest'), id: 'guest' },
+    { name: t('turnstile.hcWorkersPage.membershipNotWorking'), id: 'not_working' }
+  ]
 
   const statusOption = [
     {
@@ -113,7 +124,8 @@
       Boolean(store.params.access_level_id) +
       Boolean(store.params.departments.length) +
       Boolean(store.params.status) +
-      Boolean(store.params.added)
+      Boolean(store.params.added) +
+      Boolean(store.params.membership)
   )
 
   const departmentAction = {
@@ -204,6 +216,16 @@
             filterable
             v-model:value="store.params.added"
             :options="workerOption"
+            label-field="name"
+            value-field="id"
+            @update:value="filterEvent"
+          />
+        </div>
+        <div v-if="canSeeGuests" class="col-span-12 md:col-span-6">
+          <label>{{ $t('turnstile.hcWorkersPage.membership') }}</label>
+          <n-select
+            v-model:value="store.params.membership"
+            :options="membershipOption"
             label-field="name"
             value-field="id"
             @update:value="filterEvent"
