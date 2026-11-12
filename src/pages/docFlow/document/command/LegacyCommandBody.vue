@@ -243,7 +243,7 @@
         class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
       >
         <n-form-item
-          class="col-span-6 md:col-span-3"
+          class="col-span-6 md:col-span-2"
           :label="$t('documentPage.command.form.command_number')"
           path="command_number"
         >
