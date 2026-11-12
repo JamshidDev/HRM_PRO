@@ -66,11 +66,10 @@
 </script>
 
 <template>
-  <!-- `mock` — ko'rsatkich hali `mock.js` dan olinmoqda: plita blur qilinadi va
-       ustiga «Tez orada» yozuvi chiqadi (grafik kartalaridagi bilan bir xil
-       qatlam, uslubi `assets/scss/component.scss` da). Backend qiymatni bergan
-       zahoti `store.isMock(...)` `false` qaytaradi va qatlam o'zi yo'qoladi. -->
-  <div class="fig-soon" :class="mock && 'fig-soon--on'">
+  <!-- `mock` — ko'rsatkich hali `mock.js` dan olinmoqda: soxta qiymat va qatorlar
+       chizilmaydi, o'rnida oddiy «Tez orada» bloki (FigPanel bilan bir xil, DAS-14231).
+       Backend qiymatni bergan zahoti `store.isMock(...)` `false` qaytaradi. -->
+  <div class="fig-soon">
     <div
       class="fig-soon__card relative flex flex-col gap-2 overflow-hidden rounded-2xl bg-fig-block shadow-card px-1 pt-1.5 pb-1"
     >
@@ -85,22 +84,29 @@
         >
           {{ $t(card.titleKey) }}
         </p>
-        <span
-          v-if="mock"
-          class="shrink-0 rounded bg-fig-bg-tertiary px-1.5 py-0.5 text-[10px] leading-3 font-medium tracking-wide uppercase text-fig-text-disable"
-        >
-          mock
+      </div>
+
+      <div
+        v-if="mock"
+        class="mt-auto flex flex-1 flex-col items-center justify-center gap-1 rounded-xl bg-fig-bg-secondary px-3 py-3 text-center"
+      >
+        <span class="text-[14px] leading-5 font-semibold text-fig-text-secondary">
+          {{ $t('dashboardPage.comingSoon') }}
+        </span>
+        <span class="text-[12px] leading-4 text-fig-text-tertiary">
+          {{ $t('dashboardPage.comingSoonHint') }}
         </span>
       </div>
 
       <p
+        v-if="!mock"
         class="relative px-2 text-[20px] leading-6 font-semibold whitespace-nowrap text-fig-text-primary"
       >
         <UICountUp :value="card.value" /><template v-if="card.unitKey"> {{ $t(card.unitKey) }}</template>
       </p>
 
       <!-- `mt-auto` — qo'shni karta balandroq bo'lsa ham panel pastda qoladi -->
-      <div class="mt-auto flex flex-col gap-1.5 rounded-xl bg-fig-bg-secondary px-3 py-1.5">
+      <div v-if="!mock" class="mt-auto flex flex-col gap-1.5 rounded-xl bg-fig-bg-secondary px-3 py-1.5">
         <template v-for="(row, idx) in rows" :key="idx">
           <span v-if="idx" class="h-px w-full rounded-full bg-fig-br-disable"></span>
           <div class="flex items-start justify-between gap-2">
@@ -122,8 +128,5 @@
       </div>
     </div>
 
-    <div v-if="mock" class="fig-soon__veil">
-      <span class="fig-soon__badge">{{ $t('dashboardPage.comingSoon') }}</span>
-    </div>
   </div>
 </template>

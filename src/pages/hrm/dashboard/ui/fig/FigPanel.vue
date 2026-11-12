@@ -63,12 +63,11 @@
 </script>
 
 <template>
-  <!-- `mock` — backend bu kesimni hali bermayapti. Karta blur qilinadi va ustiga
-       «Tez orada» yozuvi chiqadi: foydalanuvchi soxta raqamlarni o'qiy olmaydi,
-       lekin kartaning o'zi (o'lchami, o'rni) maketdagidek turaveradi. Backend
-       maydonni bergan zahoti `store.isMock(...)` `false` qaytaradi va blur ham,
-       yozuv ham o'zi yo'qoladi. -->
-  <div class="fig-soon" :class="mock && 'fig-soon--on'">
+  <!-- `mock` — backend bu kesimni hali bermayapti. Soxta (mock.js) raqamlar umuman
+       chizilmaydi: sarlavha qoladi, kontent o'rnida oddiy «Tez orada» bloki (DAS-14231;
+       avval blur ostida namunaviy sonlar ko'rinib turardi). Backend maydonni bergan
+       zahoti `store.isMock(...)` `false` qaytaradi va karta o'zi haqiqiy holatiga o'tadi. -->
+  <div class="fig-soon">
     <!-- Chegara yo'q — kartani `shadow-card` soyasi ajratib turadi. -->
     <div class="fig-soon__card flex flex-col rounded-2xl bg-fig-block shadow-card px-1 pb-1">
       <div class="flex w-full items-center gap-1 py-3 pr-1 pl-2">
@@ -89,20 +88,13 @@
           {{ title }}
         </p>
 
-        <span
-          v-if="mock"
-          class="shrink-0 rounded bg-fig-bg-tertiary px-1.5 py-0.5 text-[10px] leading-3 font-medium tracking-wide uppercase text-fig-text-disable"
-        >
-          mock
-        </span>
-
         <!-- Sarlavha o'ng tomonidagi qo'shimcha boshqaruv (masalan, davr tanlovi). -->
-        <div v-if="$slots['header-extra']" class="shrink-0">
+        <div v-if="$slots['header-extra'] && !mock" class="shrink-0">
           <slot name="header-extra" />
         </div>
 
         <button
-          v-if="actionText"
+          v-if="actionText && !mock"
           type="button"
           class="shrink-0 cursor-pointer pr-1 pl-2 text-[12px] leading-4 whitespace-nowrap text-fig-text-brand transition-opacity hover:opacity-80"
           @click="$emit('action')"
@@ -112,7 +104,18 @@
       </div>
 
       <div
-        v-if="inner"
+        v-if="mock"
+        class="fig-soon__empty flex flex-1 flex-col items-center justify-center gap-1 rounded-xl bg-fig-bg-secondary px-4 py-6 text-center"
+      >
+        <span class="text-[14px] leading-5 font-semibold text-fig-text-secondary">
+          {{ $t('dashboardPage.comingSoon') }}
+        </span>
+        <span class="text-[12px] leading-4 text-fig-text-tertiary">
+          {{ $t('dashboardPage.comingSoonHint') }}
+        </span>
+      </div>
+      <div
+        v-else-if="inner"
         class="flex min-h-px flex-1 flex-col rounded-xl bg-fig-bg-secondary"
         :class="innerClass"
       >
@@ -123,8 +126,5 @@
       </template>
     </div>
 
-    <div v-if="mock" class="fig-soon__veil">
-      <span class="fig-soon__badge">{{ $t('dashboardPage.comingSoon') }}</span>
-    </div>
   </div>
 </template>

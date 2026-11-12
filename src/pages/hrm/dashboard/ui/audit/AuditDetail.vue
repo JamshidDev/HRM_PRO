@@ -36,7 +36,7 @@
       cols.push({
         key: 'reasons',
         title: t('dashboardPage.audit.reasons'),
-        minWidth: 220
+        minWidth: 280
       })
     }
     return cols
@@ -119,17 +119,16 @@
     </template>
 
     <template #cell-reasons="{ row }">
-      <div class="flex flex-wrap gap-1">
-        <n-tag
+      <!-- n-tag matnni bir qatorda kesadi («…») — xato matni to'liq o'qilishi uchun
+           o'ralib ketadigan chip (DAS-14230). -->
+      <div class="flex flex-col items-start gap-1">
+        <span
           v-for="(reason, idx) in row?.reasons || []"
           :key="idx"
-          size="small"
-          round
-          type="error"
-          :bordered="false"
+          class="max-w-full rounded-xl px-2.5 py-0.5 text-xs leading-snug text-danger bg-danger/10 whitespace-normal break-words"
         >
           {{ reason }}
-        </n-tag>
+        </span>
       </div>
     </template>
   </UITable>

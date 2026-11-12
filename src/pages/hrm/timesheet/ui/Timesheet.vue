@@ -1,7 +1,8 @@
 <script setup>
   import { TIMESHEET_APPROVAL_ENABLED } from '../approval.js'
   import { onBeforeUnmount, onMounted, ref } from 'vue'
-  import { useDialog, useMessage } from 'naive-ui'
+  import { useMessage } from 'naive-ui'
+  import { showAlert } from '@/components/notify/alertDialog.js'
   import {
     Add20Filled,
     ArrowDownload20Filled,
@@ -53,7 +54,6 @@
   const { t } = i18n.global
 
   const message = useMessage()
-  const dialog = useDialog()
   const store = useTimesheetWorkerStore()
   const compStore = useComponentStore()
   const confirmStore = useTimesheetConfirmStore()
@@ -938,21 +938,29 @@
   })
 
   // Saqlanmagan kataklar bo'lsa yopishdan oldin so'raladi — jimgina yo'qolmasin.
+  // Loyihaning umumiy ogohlantirish oynasi (`$Alert`), Naive dialog emas.
+  // Fon / Esc / ✕ — tabelga qaytish (hech narsa o'zgarmaydi).
   const onClose = () => {
     if (!pendingCount.value) {
       store.visible = false
       return
     }
-    dialog.warning({
+    showAlert({
+      type: 'warning',
       title: t('timesheetPage.unsaved.title'),
-      content: t('timesheetPage.unsaved.content', { count: pendingCount.value }),
-      positiveText: t('content.save'),
-      negativeText: t('timesheetPage.unsaved.discard'),
-      onPositiveClick: async () => {
-        await store._save()
+      message: t('timesheetPage.unsaved.content', { count: pendingCount.value }),
+      confirmText: t('content.save'),
+      cancelText: t('timesheetPage.unsaved.discard'),
+      // Saqlash xato bersa tabel ochiq qoladi — kataklar yo'qolmaydi.
+      onConfirm: async () => {
+        try {
+          await store._save()
+        } catch {
+          return
+        }
         store.visible = false
       },
-      onNegativeClick: () => {
+      onCancel: () => {
         store.pending = {}
         store.visible = false
       }
@@ -1579,12 +1587,10 @@
     <!-- Kun tafsiloti.
          Tuzilishi ATAYLAB «javobdan tushuntirishga» qarab boradi:
          sarlavha (kim/qachon) → natija → ko'rsatkichlar → grafik → vaqt o'qi. -->
-    <n-modal
-      v-model:show="exportVisible"
+    <UIModal
+      v-model:visible="exportVisible"
       :title="$t('timesheetPage.exportTitle')"
-      preset="card"
-      size="small"
-      style="width: 420px; max-width: 96vw"
+      :width="420"
     >
       <n-form-item :label="$t('documentPage.form.department')" :show-feedback="false">
         <n-select
@@ -1598,23 +1604,23 @@
           value-field="id"
         />
       </n-form-item>
-      <template #footer>
-        <div class="flex justify-end gap-2">
-          <n-button @click="exportVisible = false">{{ $t('content.cancel') }}</n-button>
-          <n-button
-            :disabled="!exportDepartmentId"
-            :loading="store.exportLoading"
-            type="primary"
-            @click="onExportConfirm"
-          >
-            <template #icon>
-              <n-icon :component="ArrowDownload20Filled" />
-            </template>
-            {{ $t('content.download') }}
-          </n-button>
-        </div>
-      </template>
-    </n-modal>
+      <!-- Boshqa forma oynalari kabi: «Bekor qilish | Yuklash». -->
+      <div class="flex gap-3 pt-4">
+        <n-button class="flex-1" @click="exportVisible = false">{{ $t('content.cancel') }}</n-button>
+        <n-button
+          :disabled="!exportDepartmentId"
+          :loading="store.exportLoading"
+          class="flex-1"
+          type="primary"
+          @click="onExportConfirm"
+        >
+          <template #icon>
+            <n-icon :component="ArrowDownload20Filled" />
+          </template>
+          {{ $t('content.download') }}
+        </n-button>
+      </div>
+    </UIModal>
 
     <DayDetailModal
       v-if="USE_NEW_DAY_DETAIL"

@@ -2394,7 +2394,7 @@
     "attempts": "Уринишлар",
     "viewResult": "Натижани кўриш",
     "attemptsCount": "Мавжуд уринишлар",
-    "nAttempts": "{n} та уриниш",
+    "nAttempts": "{n} та уриниш қолди",
     "question_count": "Саволлар",
     "nQuestions": "{n} та савол",
     "examName": "Номи: {n}",
@@ -2527,6 +2527,7 @@
   },
   "dashboardPage": {
     "comingSoon": "Тез орада",
+    "comingSoonHint": "Бу кўрсаткич ишлаб чиқилмоқда",
     "name": "Дашбоард",
     "card": {
       "type": "Таътил тури",
