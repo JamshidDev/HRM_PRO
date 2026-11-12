@@ -1056,7 +1056,8 @@
     "referenceHint": "A reference (.docx) is generated for each employee and all files are collected into one ZIP archive.",
     "optPassport": "Include passport data",
     "optForeignPassport": "Include foreign passport data",
-    "optionsHint": "Tick what you need below so passport copies are included in the archive"
+    "optPositionCertificate": "Download position certificate",
+    "optionsHint": "Tick which document copies (passport, position certificate) to include in the archive. Documents without an uploaded file are skipped"
   },
   "contactPage": {
     "name": "Contacts",

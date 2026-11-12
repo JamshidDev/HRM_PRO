@@ -5,6 +5,7 @@
   import {
     Airplane24Regular,
     ArrowDownload24Regular,
+    Certificate24Regular,
     ContactCard24Regular,
     DocumentBulletList24Regular,
     DocumentTable24Regular,
@@ -375,6 +376,16 @@
             />
           </g>
 
+          <!-- lavozim guvohnomasi nusxasi -->
+          <g
+            class="export-zip__pass"
+            :class="{ 'export-zip__pass--off': !store.resumePayload.position_certificate }"
+          >
+            <rect x="92" y="40" width="40" height="34" rx="6" fill="#d9822b" />
+            <circle cx="112" cy="54" r="7" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.9" />
+            <path d="M108 60l-2 8 6-3 6 3-2-8" fill="#ffffff" opacity="0.85" />
+          </g>
+
           <!-- papkaning oldingi qismi -->
           <path
             class="export-zip__folder-front"
@@ -424,6 +435,25 @@
           <n-checkbox
             class="export-option__check"
             :checked="store.resumePayload.foreign_passport"
+          />
+        </button>
+
+        <button
+          type="button"
+          class="export-option"
+          :class="{ 'export-option--on': store.resumePayload.position_certificate }"
+          :aria-pressed="store.resumePayload.position_certificate"
+          @click="
+            store.resumePayload.position_certificate = !store.resumePayload.position_certificate
+          "
+        >
+          <span class="export-option__icon">
+            <n-icon size="26"><Certificate24Regular /></n-icon>
+          </span>
+          <span class="export-option__text">{{ $t('exportPage.optPositionCertificate') }}</span>
+          <n-checkbox
+            class="export-option__check"
+            :checked="store.resumePayload.position_certificate"
           />
         </button>
       </div>

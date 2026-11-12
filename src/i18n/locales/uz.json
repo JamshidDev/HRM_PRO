@@ -1072,7 +1072,8 @@
     "referenceHint": "Har bir xodim uchun ma'lumotnoma (.docx) tayyorlanadi va ular bitta ZIP arxivga to'planadi.",
     "optPassport": "Pasport ma'lumotlarini yuklash",
     "optForeignPassport": "Xorij pasporti ma'lumotlarini yuklash",
-    "optionsHint": "Pasport nusxalari arxivga qo'shilishi uchun quyidagilardan kerakligini belgilang"
+    "optPositionCertificate": "Lavozim guvohnomasini yuklash",
+    "optionsHint": "Hujjat nusxalari (pasport, lavozim guvohnomasi) arxivga qo'shilishi uchun kerakligini belgilang. Fayli yuklanmagan hujjat qo'shilmaydi"
   },
   "contactPage": {
     "name": "Kontaktlar",
