@@ -425,7 +425,7 @@ const commandStoreOptions = {
     extraConfirmations: [],
     // Yangi buyruqda kelishuvchilar sukut bo'yicha parallel imzolaydi.
     oneByOne: false,
-    // 71/73 — «Asos» matni (forma holati bilan saqlanadi).
+    // 71/73/81 — «Asos» matni (forma holati bilan saqlanadi).
     commandBase: null,
     // Ariza asosidagi buyruq: { id, number, electronic_number } — korxona/tur/xodim qulflanadi.
     fromApplication: null,
@@ -668,7 +668,7 @@ const commandStoreOptions = {
       // tabidagi xodim hujjat matnidagi xodimdan farq qiladi.
       if (state?.legacy) this.fillLegacyForm(state.data || {})
       // Eski saqlangan formalarda «Asos» yo'q edi — buyruq ma'lumotidan olinadi.
-      if (this.commandBase == null && [71, 73].includes(this.payload.command_type)) {
+      if (this.commandBase == null && [71, 73, 81].includes(this.payload.command_type)) {
         this.commandBase = state?.data?.base ?? state?.data?.command_additional?.base ?? null
       }
     },
