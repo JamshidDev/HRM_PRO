@@ -3,6 +3,7 @@
   import { Info16Regular } from '@vicons/fluent'
   import { UISelect, SuperSelect } from '@/components/index.js'
   import FileTiles from './ui/FileTiles.vue'
+  import { OTHER_AWARD_ID, useIncentiveAwards } from './useIncentiveAwards.js'
   import { useCommandStore, useComponentStore } from '@/store/modules/index.js'
   import { useAppSetting } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
@@ -14,8 +15,10 @@
   const formRef = ref(null)
   const emptyForm = () => ({
     organization: [],
-    command_type: null,
+    // Hozircha yagona tur — sukut bo'yicha tanlangan.
+    command_type: 71,
     legacy_award: null,
+    legacy_award_text: '',
     command_number: '',
     command_date: null,
     workers: [],
@@ -33,36 +36,24 @@
   let workerReqId = 0
 
   // Hozircha faqat shu turlar ro'yxatdan o'tkaziladi (backend ham tekshiradi).
-  const LEGACY_TYPES = [71, 72, 73]
+  const LEGACY_TYPES = [71]
   const typeOptions = computed(() =>
     componentStore.commandTypes.filter((v) => LEGACY_TYPES.includes(v.id))
   )
 
-  // Rag'batlantirish (71) — mukofot turi majburiy; ro'yxat guruhlab ko'rsatiladi.
+  // Rag'batlantirish (71) — mukofot turi majburiy (71 yaratish formasi bilan bir ro'yxat).
   const INCENTIVE_TYPE = 71
-  const AWARD_GROUPS = ['title', 'order', 'medal', 'honorary', 'other']
-  const awards = ref([])
-  const awardLoading = ref(false)
+  const awardsApi = useIncentiveAwards()
   const isIncentive = computed(() => form.value.command_type === INCENTIVE_TYPE)
-  const awardOptions = computed(() =>
-    AWARD_GROUPS.map((g) => ({
-      type: 'group',
-      key: g,
-      label: t(`commandPage.legacy.awardGroups.${g}`),
-      children: awards.value
-        .filter((a) => a.group === g)
-        .map((a) => ({ label: a.name, value: a.id }))
-    })).filter((g) => g.children.length)
+  const isOtherAward = computed(() => form.value.legacy_award === OTHER_AWARD_ID)
+  watch(
+    isIncentive,
+    (v) => {
+      if (!v) form.value.legacy_award = null
+      else awardsApi.load()
+    },
+    { immediate: true }
   )
-  watch(isIncentive, (v) => {
-    if (!v) form.value.legacy_award = null
-    if (!v || awards.value.length || awardLoading.value) return
-    awardLoading.value = true
-    $ApiService.commandService
-      ._legacyAwards()
-      .then((res) => (awards.value = res.data.data || []))
-      .finally(() => (awardLoading.value = false))
-  })
 
   const organizationId = computed(() => form.value.organization?.[0]?.id ?? null)
 
@@ -156,6 +147,13 @@
         !isIncentive.value || form.value.legacy_award ? true : new Error(t('rules.requiredField')),
       trigger: 'change'
     },
+    legacy_award_text: {
+      validator: () =>
+        !isOtherAward.value || form.value.legacy_award_text.trim()
+          ? true
+          : new Error(t('rules.requiredField')),
+      trigger: 'blur'
+    },
     workers: {
       required: true,
       type: 'array',
@@ -163,7 +161,9 @@
       message: t('rules.requiredField'),
       trigger: 'change'
     },
+    // `key` — fayl tanlanganda faqat shu rule qayta tekshiriladi (FileTiles @update:files).
     files: {
+      key: 'files',
       required: true,
       validator: () => {
         if (!form.value.files.length) return new Error(t('commandPage.legacy.fileRequired'))
@@ -174,6 +174,7 @@
       trigger: 'change'
     },
     attachments: {
+      key: 'attachments',
       validator: () => {
         const list = form.value.attachments
         if (list.length > ATTACH_MAX)
@@ -202,6 +203,7 @@
       fd.append('organization_id', organizationId.value)
       fd.append('command_type', form.value.command_type)
       if (isIncentive.value) fd.append('legacy_award', form.value.legacy_award)
+      if (isOtherAward.value) fd.append('legacy_award_text', form.value.legacy_award_text.trim())
       fd.append('command_number', form.value.command_number.trim())
       fd.append('command_date', toYmd(form.value.command_date))
       form.value.workers.forEach((id) => fd.append('workers[]', id))
@@ -283,17 +285,27 @@
 
         <n-form-item
           v-if="isIncentive"
-          class="col-span-12"
+          :class="isOtherAward ? 'col-span-12 md:col-span-6' : 'col-span-12'"
           :label="$t('commandPage.legacy.award')"
           path="legacy_award"
           required
         >
           <n-select
             v-model:value="form.legacy_award"
-            :options="awardOptions"
-            :loading="awardLoading"
+            :options="awardsApi.options.value"
+            :loading="awardsApi.loading.value"
             filterable
           />
+        </n-form-item>
+
+        <n-form-item
+          v-if="isIncentive && isOtherAward"
+          class="col-span-12 md:col-span-6"
+          :label="$t('documentPage.command.form.gift')"
+          path="legacy_award_text"
+          required
+        >
+          <n-input v-model:value="form.legacy_award_text" :maxlength="255" />
         </n-form-item>
       </div>
 
