@@ -1,13 +1,33 @@
 <script setup>
   import { UIBadge, UITable, UIUser } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
-  import { useIncentiveStore } from '@/store/modules/index.js'
+  import { useAccountStore, useIncentiveStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
+  import UIHelper from '@/utils/UIHelper.js'
+  import { Eye16Regular } from '@vicons/fluent'
   import RecordStatusBadge from '@/pages/hrm/_shared/RecordStatusBadge.vue'
 
   const { t } = i18n.global
 
   const store = useIncentiveStore()
+  const accStore = useAccountStore()
+  const emits = defineEmits(['openCommand'])
+
+  const onView = (row) => {
+    if (!accStore.checkAction(accStore.pn.hrCommandsRead)) return
+    emits('openCommand', row)
+  }
+
+  // Buyruqsiz (qo'lda kiritilgan) yozuvda ko'rish o'chiq.
+  const actions = computed(() => [
+    {
+      label: t('content.view'),
+      key: Utils.ActionTypes.view,
+      icon: UIHelper.renderIcon(Eye16Regular),
+      disabled: (row) => !row?.command_id,
+      action: onView
+    }
+  ])
 
   const changePage = (v) => {
     store.params.page = v.page
@@ -63,6 +83,7 @@
     :per-page="store.params.per_page"
     :total="store.totalItems"
     storage-key="hrm-incentive"
+    :actions="actions"
     @change-page="changePage"
   >
     <template #cell-worker="{ row }">
@@ -79,7 +100,7 @@
     </template>
 
     <template #cell-gift="{ row }">
-      <UIBadge :show-icon="false" :label="row.gift" :type="Utils.colorTypes.success" />
+      <UIBadge :show-icon="false" :label="row.gift" :type="Utils.colorTypes.primary" />
     </template>
 
     <template #cell-date="{ row }">

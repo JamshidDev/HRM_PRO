@@ -740,6 +740,10 @@
     },
     "no-roles": "Biriktirilgan rollar yo'q!",
     "passwordChangedAt": "Parol yangilangan",
+    "eimzoSkip": "E-IMZO",
+    "eimzoSkipDirect": "Shaxsan E-IMZO tasdig'idan ozod",
+    "eimzoSkipByRole": "Roli orqali ozod (Admin yoki rolda «Tasdiqdan ozod»)",
+    "eimzoSkipAdminOnly": "Faqat Admin o'zgartira oladi",
     "daysAgo": "kun oldin",
     "pinTitle": "JSHSHIR tahriri",
     "pin": "JSHSHIR",
@@ -3702,9 +3706,8 @@
       "no-added": "Biriktirilmagan xodimlar",
       "device": "Qurilmalar",
       "membership": "Xodim turi",
-      "membershipOwn": "Korxona xodimlari",
-      "membershipGuest": "Mehmonlar (boshqa korxona)",
-      "membershipNotWorking": "Ishlamaydiganlar",
+      "membershipOwn": "Ishchi xodimlar",
+      "membershipGuest": "Mehmon",
       "notWorking": "Ishlamaydi"
     },
     "workDurationPage": {
@@ -4067,6 +4070,7 @@
   },
   "incentive": {
     "name": "Rag'batlantirishlar",
+    "giftType": "Mukofot turi",
     "form": {
       "type": "Turi",
       "who": "Kim tomonidan",

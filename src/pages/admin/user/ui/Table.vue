@@ -86,6 +86,12 @@
     store.isPermissionsVisible = true
   }
 
+  // Shaxsan ozod qilish; rol orqali ozod bo'lsa switch qulflangan (yoqilgan holda).
+  const onEimzoSkip = (row, value) => {
+    if (!accStore.checkAction(accStore.pn.usersWrite)) return
+    store._eimzoSkip(row, value)
+  }
+
   const daysSince = (row) =>
     row?.password_changed_at
       ? Math.floor((Date.now() - new Date(row.password_changed_at)) / 86400000)
@@ -118,6 +124,12 @@
       key: 'permissions',
       title: t('userPage.permissions'),
       width: 120,
+      align: 'center'
+    },
+    {
+      key: 'eimzo',
+      title: t('userPage.eimzoSkip'),
+      width: 90,
       align: 'center'
     },
     {
@@ -254,6 +266,27 @@
             </n-icon>
           </template>
         </n-button>
+      </div>
+    </template>
+
+    <template #cell-eimzo="{ row }">
+      <div class="flex justify-center">
+        <n-tooltip placement="top">
+          <template #trigger>
+            <n-switch
+              size="small"
+              :value="Boolean(row?.eimzo_skip || row?.eimzo_skip_by_role)"
+              :disabled="Boolean(row?.eimzo_skip_by_role)"
+              :loading="Boolean(row?.eimzoLoading)"
+              @update:value="(v) => onEimzoSkip(row, v)"
+            />
+          </template>
+          {{
+            row?.eimzo_skip_by_role
+              ? $t('userPage.eimzoSkipByRole')
+              : `${$t('userPage.eimzoSkipDirect')} · ${$t('userPage.eimzoSkipAdminOnly')}`
+          }}
+        </n-tooltip>
       </div>
     </template>
 

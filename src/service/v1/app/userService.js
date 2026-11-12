@@ -53,6 +53,11 @@ const _detachPermissions = async (payload) => {
   return await axios.put(`/v1/admin/users/${payload.id}/permissions/detach`, payload.data)
 }
 
+// Bitta foydalanuvchini E-IMZO tasdig'idan ozod qilish (faqat Admin).
+const _eimzoSkip = async (payload) => {
+  return await axios.put(`/v1/admin/users/${payload.id}/eimzo-skip`, payload.data)
+}
+
 // Soft-delete user (backend: DELETE /v1/admin/users/:id — deleted_at=NOW()).
 const _delete = async (payload) => {
   return await axios.delete(`/v1/admin/users/${payload?.id}`)
@@ -72,5 +77,6 @@ export default {
   _userPermissions,
   _attachPermissions,
   _detachPermissions,
+  _eimzoSkip,
   _delete
 }

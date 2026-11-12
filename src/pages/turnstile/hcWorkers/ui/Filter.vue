@@ -71,10 +71,9 @@
   const resetFilter = () => {
     store.params.organizations = []
     store.params.access_level_id = null
-    store.params.added = 'all'
     store.params.departments = []
     store.params.status = null
-    store.params.membership = null
+    store.params.workerType = 'own'
     filterEvent()
   }
 
@@ -82,11 +81,19 @@
   const canSeeGuests = computed(() =>
     accStore.checkPermission(accStore.pn.turnstileHikCentralWorkersGuests)
   )
-  const membershipOption = [
-    { name: t('turnstile.hcWorkersPage.membershipOwn'), id: null },
-    { name: t('turnstile.hcWorkersPage.membershipGuest'), id: 'guest' },
-    { name: t('turnstile.hcWorkersPage.membershipNotWorking'), id: 'not_working' }
-  ]
+  const workerTypeOption = computed(() => [
+    { name: t('turnstile.hcWorkersPage.membershipOwn'), id: 'own' },
+    { name: t('turnstile.hcWorkersPage.no-added'), id: 'not_added' },
+    ...(canSeeGuests.value
+      ? [{ name: t('turnstile.hcWorkersPage.membershipGuest'), id: 'guest' }]
+      : [])
+  ])
+
+  // Mehmonlarning bizda bo'linmasi yo'q — bo'linma filtri qo'llanmaydi.
+  const onChangeWorkerType = (v) => {
+    if (v === 'guest') store.params.departments = []
+    filterEvent()
+  }
 
   const statusOption = [
     {
@@ -103,29 +110,13 @@
     }
   ]
 
-  const workerOption = [
-    {
-      name: t('content.all'),
-      id: 'all'
-    },
-    {
-      name: t('turnstile.hcWorkersPage.added'),
-      id: 'yes'
-    },
-    {
-      name: t('turnstile.hcWorkersPage.no-added'),
-      id: 'no'
-    }
-  ]
-
   const filterCount = computed(
     () =>
       Number(Boolean(store.params.organizations.length)) +
       Boolean(store.params.access_level_id) +
       Boolean(store.params.departments.length) +
       Boolean(store.params.status) +
-      Boolean(store.params.added) +
-      Boolean(store.params.membership)
+      Number(store.params.workerType !== 'own')
   )
 
   const departmentAction = {
@@ -173,7 +164,7 @@
         <div class="col-span-12 md:col-span-6">
           <label>{{ $t('workerPage.filter.department') }}</label>
           <SuperSelect
-            :disabled="store.params.organizations.length === 0"
+            :disabled="store.params.organizations.length === 0 || store.params.workerType === 'guest'"
             v-model:value="store.params.departments"
             v-model:search="store.department.params.search"
             :options="store.department.list"
@@ -211,24 +202,14 @@
           />
         </div>
         <div class="col-span-12 md:col-span-6">
-          <label>{{ $t('content.status') }}</label>
-          <n-select
-            filterable
-            v-model:value="store.params.added"
-            :options="workerOption"
-            label-field="name"
-            value-field="id"
-            @update:value="filterEvent"
-          />
-        </div>
-        <div v-if="canSeeGuests" class="col-span-12 md:col-span-6">
           <label>{{ $t('turnstile.hcWorkersPage.membership') }}</label>
           <n-select
-            v-model:value="store.params.membership"
-            :options="membershipOption"
+            v-model:value="store.params.workerType"
+            :options="workerTypeOption"
+            :consistent-menu-width="false"
             label-field="name"
             value-field="id"
-            @update:value="filterEvent"
+            @update:value="onChangeWorkerType"
           />
         </div>
       </div>
