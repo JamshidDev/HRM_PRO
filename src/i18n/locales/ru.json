@@ -2622,7 +2622,7 @@
     "attempts": "Попытки",
     "viewResult": "Посмотреть результат",
     "attemptsCount": "Доступные попытки",
-    "nAttempts": "{n} попыток",
+    "nAttempts": "осталось попыток: {n}",
     "question_count": "Вопросы",
     "nQuestions": "{n} вопросов",
     "examName": "Название: {n}",

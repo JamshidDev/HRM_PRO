@@ -2614,7 +2614,7 @@
     "attempts": "Attempts",
     "viewResult": "View result",
     "attemptsCount": "Available attempts",
-    "nAttempts": "{n} attempts",
+    "nAttempts": "{n} attempts left",
     "question_count": "Questions",
     "nQuestions": "{n} questions",
     "examName": "Name: {n}",

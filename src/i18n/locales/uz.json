@@ -2634,7 +2634,7 @@
     "attempts": "Urinishlar",
     "viewResult": "Natijani ko'rish",
     "attemptsCount": "Mavjud urinishlar",
-    "nAttempts": "{n} ta urinish",
+    "nAttempts": "{n} ta urinish qoldi",
     "question_count": "Savollar",
     "nQuestions": "{n} ta savol",
     "examName": "Nomi: {n}",
