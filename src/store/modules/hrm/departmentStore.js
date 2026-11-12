@@ -33,9 +33,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
     levelLoading: false,
     levelList: [],
     parentElement: null,
-    // Formada o'zgartirib bo'lmaydigan tashkilot ({id, name}), faqat ko'rsatiladi:
-    //  - tahrirlashda — backend `UpdateDepartmentDto` da `organization_id` yo'q;
-    //  - Hisobot sahifasidan qo'shishda — sahifada tanlangan tashkilot (ro'yxat shu bo'yicha).
+    // Joriy tashkilot ({id, name}): tahrirlashda select boshlang'ich qiymati, Hisobot sahifasidan qo'shishda faqat ko'rsatiladi.
     fixedOrganization: null,
     refreshTarget: null,
 

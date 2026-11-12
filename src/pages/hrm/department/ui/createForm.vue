@@ -33,21 +33,53 @@
     store.payload.organization_id = v[0]?.id ?? null
   }
 
+  // Tahrirlashda tashkilotni almashtirish mumkin (DAS-14221); backend lavozimli bo'limni rad etadi.
+  const isEdit = computed(() => !store.visibleType && !store.parentElement)
+  const originalOrgId = ref(null)
+
+  const loadParents = (orgId) => {
+    componentStore.depParams.organizations = orgId ? [orgId] : null
+    componentStore.depParams.page = 1
+    componentStore._departments()
+  }
+
   const onChangeOrg = (v) => {
     selectedOrg.value = v
     store.payload.organization_id = v[0]?.id ?? null
     orgItemRef.value?.validate({ trigger: 'change' }).catch(() => {})
+    if (!isEdit.value) return
+    // Ota-bo'lim yangi tashkilotdan bo'lishi shart — eski tanlov tozalanadi.
+    if (store.payload.organization_id !== originalOrgId.value) {
+      store.showParent = false
+      store.payload.parent_id = null
+    }
+    loadParents(store.payload.organization_id)
   }
 
+  const initEditOrg = () => {
+    const org = store.fixedOrganization
+    if (!isEdit.value || !org?.id) return
+    originalOrgId.value = org.id
+    selectedOrg.value = [org]
+    store.payload.organization_id = org.id
+    componentStore._structures()
+    loadParents(org.id)
+  }
+
+  const resetOrg = () => {
+    selectedOrg.value = []
+    structureCheck.value = []
+    originalOrgId.value = null
+    componentStore.depParams.organizations = null
+  }
+
+  // Bo'limlar sahifasi `store.visible`, Hisobot sahifasi o'z modalini ishlatadi — elementId bo'yicha ham kuzatiladi.
+  watch(() => [store.elementId, store.fixedOrganization?.id], initEditOrg, { immediate: true })
   watch(
     () => store.visible,
-    (v) => {
-      if (!v) {
-        selectedOrg.value = []
-        structureCheck.value = []
-      }
-    }
+    (v) => (v ? initEditOrg() : resetOrg())
   )
+  onBeforeUnmount(resetOrg)
 
   const props = defineProps({
     callback: {
@@ -100,7 +132,7 @@
       </div>
       <!-- Ichki bo'lim qo'shishda tashkilot ota-bo'limniki bo'lishi shart — tanlab bo'lmaydi -->
       <n-form-item
-        v-if="store.visibleType && !store.parentElement && !store.fixedOrganization"
+        v-if="isEdit || (store.visibleType && !store.parentElement && !store.fixedOrganization)"
         ref="orgItemRef"
         :label="$t('content.organization')"
         path="organization_id"
@@ -119,10 +151,7 @@
           @onSearch="componentStore._structures"
         />
       </n-form-item>
-      <!-- BACKEND: `PUT /v1/hr/departments/{id}` (`UpdateDepartmentDto`) da `organization_id` yo'q —
-           noto'g'ri tashkilotga biriktirilgan bo'linmani to'g'rilab bo'lmaydi (DAS-14221). Qo'shilsa,
-           shu maydonni UISelect qilib, `_update` da `organization_id` ni yuborish kerak. Hozircha
-           faqat ko'rsatiladi. Hisobot sahifasidan qo'shishda ham shu — tashkilot sahifadan olinadi. -->
+      <!-- Hisobot sahifasidan qo'shishda tashkilot sahifadan olinadi — faqat ko'rsatiladi -->
       <n-form-item
         v-else-if="store.fixedOrganization"
         :label="$t('content.organization')"
