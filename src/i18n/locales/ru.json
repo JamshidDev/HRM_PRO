@@ -3689,9 +3689,8 @@
       "no-added": "Неприкреплённые сотрудники",
       "device": "Устройства",
       "membership": "Тип сотрудника",
-      "membershipOwn": "Сотрудники организации",
-      "membershipGuest": "Гости (другая организация)",
-      "membershipNotWorking": "Не работающие",
+      "membershipOwn": "Работники",
+      "membershipGuest": "Гости",
       "notWorking": "Не работает"
     },
     "workDurationPage": {

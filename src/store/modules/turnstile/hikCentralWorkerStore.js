@@ -37,10 +37,9 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
       organizations: [],
       departments: [],
       access_level_id: null,
-      added: 'all',
       status: null,
-      // null — korxona xodimlari; guest — boshqa korxonadan; not_working — hech qayerda ishlamaydi
-      membership: null
+      // own — ishchi xodimlar; not_added — turniketga biriktirilmagan; guest — korxonada ishlamaydigan mehmonlar
+      workerType: 'own'
     },
     payload: {
       level_org_id: [],
@@ -196,8 +195,9 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
         ...this.params,
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
         departments: this.params.departments.toString() || undefined,
-        added: this.params.added === 'all' ? undefined : this.params.added,
-        membership: this.params.membership || undefined
+        workerType: undefined,
+        added: this.params.workerType === 'not_added' ? 'no' : undefined,
+        membership: this.params.workerType === 'guest' ? 'guest' : undefined
       }
       $ApiService.turnstileHikCentralWorkerService
         ._index({ params })

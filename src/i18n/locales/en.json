@@ -3681,9 +3681,8 @@
       "no-added": "Not attached employees",
       "device": "Devices",
       "membership": "Employee type",
-      "membershipOwn": "Organization employees",
-      "membershipGuest": "Guests (other organization)",
-      "membershipNotWorking": "Not employed",
+      "membershipOwn": "Employees",
+      "membershipGuest": "Guests",
       "notWorking": "Not employed"
     },
     "workDurationPage": {

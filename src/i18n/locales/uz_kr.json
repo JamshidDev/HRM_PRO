@@ -3383,9 +3383,8 @@
       "no-added": "Бириктирилмаган ходимлар",
       "device": "Қурилмалар",
       "membership": "Ходим тури",
-      "membershipOwn": "Корхона ходимлари",
-      "membershipGuest": "Меҳмонлар (бошқа корхона)",
-      "membershipNotWorking": "Ишламайдиганлар",
+      "membershipOwn": "Ишчи ходимлар",
+      "membershipGuest": "Меҳмон",
       "notWorking": "Ишламайди"
     },
     "workDurationPage": {
