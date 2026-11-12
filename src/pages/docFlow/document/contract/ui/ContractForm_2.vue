@@ -28,8 +28,8 @@
 
     if (v.length === 0) return
     componentStore.depParams.organizations = v[0].id
-    // Shartnoma faqat yordamchining o'z bo'limlariga (HR uchun o'zgarishsiz).
-    componentStore._departmentTree({ own: 1 })
+    // Butun korxona bo'limlari (HR yordamchisi ham).
+    componentStore._departmentTree()
   }
 
   onMounted(() => {

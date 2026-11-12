@@ -151,7 +151,7 @@
     componentStore.departmentPositionList = []
     if (!orgId) return
     componentStore.depParams.organizations = orgId
-    componentStore._departmentTree({ own: 1 })
+    componentStore._departmentTree()
     const dep = form.value.department_id?.[0]?.id
     if (dep) componentStore._departmentPosition(dep)
   }

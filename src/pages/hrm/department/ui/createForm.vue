@@ -1,4 +1,5 @@
 <script setup>
+  import i18n from '@/i18n/index.js'
   import { validationRules } from '@utils'
   import { useDepartmentStore, useComponentStore } from '@stores'
   import { SuperSelect, UIMultipleLangItems, UISelect } from '@components'
@@ -7,29 +8,78 @@
   const store = useDepartmentStore()
   const componentStore = useComponentStore()
   const formRef = ref(null)
+  // i18n `legacy: true` — `useI18n()` bu yerda ishlamaydi («Not available in legacy mode»)
+  const { t } = i18n.global
 
   const selectedOrg = ref([])
   const structureCheck = ref([])
+  const orgItemRef = ref(null)
+
+  // Bo'linma nomi — backend 255 belgidan uzunini 422 bilan qaytaradi
+  const NAME_MAX = 255
+
+  // Tashkilot majburiy: tanlanmasa backend bo'linmani bosh tashkilotga («O'zbekiston temir
+  // yo'llari» AJ) biriktirib yuboradi (DAS-14220). UISelect Naive input emas — shuning uchun
+  // tanlangach xato matnini qo'lda qayta tekshiramiz.
+  const orgRule = {
+    type: 'number',
+    required: true,
+    message: t('rules.requiredField'),
+    trigger: ['change']
+  }
 
   const onDefaultOrg = (v) => {
     selectedOrg.value = v
     store.payload.organization_id = v[0]?.id ?? null
   }
 
+  // Tahrirlashda tashkilotni almashtirish mumkin (DAS-14221); backend lavozimli bo'limni rad etadi.
+  const isEdit = computed(() => !store.visibleType && !store.parentElement)
+  const originalOrgId = ref(null)
+
+  const loadParents = (orgId) => {
+    componentStore.depParams.organizations = orgId ? [orgId] : null
+    componentStore.depParams.page = 1
+    componentStore._departments()
+  }
+
   const onChangeOrg = (v) => {
     selectedOrg.value = v
     store.payload.organization_id = v[0]?.id ?? null
+    orgItemRef.value?.validate({ trigger: 'change' }).catch(() => {})
+    if (!isEdit.value) return
+    // Ota-bo'lim yangi tashkilotdan bo'lishi shart — eski tanlov tozalanadi.
+    if (store.payload.organization_id !== originalOrgId.value) {
+      store.showParent = false
+      store.payload.parent_id = null
+    }
+    loadParents(store.payload.organization_id)
   }
 
+  const initEditOrg = () => {
+    const org = store.fixedOrganization
+    if (!isEdit.value || !org?.id) return
+    originalOrgId.value = org.id
+    selectedOrg.value = [org]
+    store.payload.organization_id = org.id
+    componentStore._structures()
+    loadParents(org.id)
+  }
+
+  const resetOrg = () => {
+    selectedOrg.value = []
+    structureCheck.value = []
+    originalOrgId.value = null
+    componentStore.depParams.organizations = null
+  }
+
+  // Bo'limlar sahifasi `store.visible`, Hisobot sahifasi o'z modalini ishlatadi — elementId bo'yicha ham kuzatiladi.
+  watch(() => [store.elementId, store.fixedOrganization?.id], initEditOrg, { immediate: true })
   watch(
     () => store.visible,
-    (v) => {
-      if (!v) {
-        selectedOrg.value = []
-        structureCheck.value = []
-      }
-    }
+    (v) => (v ? initEditOrg() : resetOrg())
   )
+  onBeforeUnmount(resetOrg)
 
   const props = defineProps({
     callback: {
@@ -80,7 +130,14 @@
         <span class="text-xs text-gray-500">{{ $t(`organizationPage.selectedOrg`) }}</span>
         <span class="text-primary font-bold">{{ store.parentElement?.name }}</span>
       </div>
-      <n-form-item v-if="store.visibleType" :label="$t('content.organization')" path="organization_id">
+      <!-- Ichki bo'lim qo'shishda tashkilot ota-bo'limniki bo'lishi shart — tanlab bo'lmaydi -->
+      <n-form-item
+        v-if="isEdit || (store.visibleType && !store.parentElement && !store.fixedOrganization)"
+        ref="orgItemRef"
+        :label="$t('content.organization')"
+        path="organization_id"
+        :rule="orgRule"
+      >
         <UISelect
           :multiple="false"
           :options="componentStore.structureList"
@@ -94,6 +151,13 @@
           @onSearch="componentStore._structures"
         />
       </n-form-item>
+      <!-- Hisobot sahifasidan qo'shishda tashkilot sahifadan olinadi — faqat ko'rsatiladi -->
+      <n-form-item
+        v-else-if="store.fixedOrganization"
+        :label="$t('content.organization')"
+      >
+        <n-input :value="store.fixedOrganization?.name ?? ''" disabled />
+      </n-form-item>
 
       <n-form-item
         :label="$t(`departmentPage.form.name`)"
@@ -102,13 +166,13 @@
       >
         <UIMultipleLangItems>
           <template #uz-content>
-            <n-input type="text" v-model:value="store.payload.name" />
+            <n-input type="text" v-model:value="store.payload.name" :maxlength="NAME_MAX" />
           </template>
           <template #ru-content>
-            <n-input class="skip-format" type="text" v-model:value="store.payload.name_ru" />
+            <n-input class="skip-format" type="text" v-model:value="store.payload.name_ru" :maxlength="NAME_MAX" />
           </template>
           <template #en-content>
-            <n-input type="text" v-model:value="store.payload.name_en" />
+            <n-input type="text" v-model:value="store.payload.name_en" :maxlength="NAME_MAX" />
           </template>
         </UIMultipleLangItems>
       </n-form-item>

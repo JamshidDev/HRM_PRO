@@ -80,6 +80,31 @@
     { key: 'disabilities', title: t('relativePage.form.disability'), width: 160 }
   ])
 
+  // Nogironlik amallari qator menyusida (jadval qoidasi: katakda tugma/bosiladigan chip yo'q, QA-25).
+  // Har bir nogironlik yozuvi uchun alohida «tahrirlash» bandi — ro'yxatdagi eng ko'p yozuv soniga qarab.
+  const maxDisabilities = computed(() =>
+    Math.max(0, ...(store.list ?? []).map((row) => row.disabilities?.length ?? 0))
+  )
+
+  const disabilityActions = computed(() => [
+    {
+      label: t('relativePage.disability.addAction'),
+      key: 'disability-add',
+      icon: UIHelper.renderIcon(icons.figPlus),
+      action: onAddDisability
+    },
+    ...Array.from({ length: maxDisabilities.value }, (_, i) => ({
+      label: (row) =>
+        t('relativePage.disability.editAction', {
+          level: getLevelLabel(row.disabilities?.[i]?.level)
+        }),
+      key: `disability-edit-${i}`,
+      icon: UIHelper.renderIcon(Edit32Regular),
+      visible: (row) => Boolean(row.disabilities?.[i]),
+      action: (row) => onEditDisability(row, row.disabilities[i])
+    }))
+  ])
+
   const actions = computed(() => [
     {
       label: t('content.edit'),
@@ -87,6 +112,7 @@
       icon: UIHelper.renderIcon(Edit32Regular),
       action: onEdit
     },
+    ...disabilityActions.value,
     {
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
@@ -108,26 +134,19 @@
       <template #empty><UIProfileEmpty /></template>
 
       <template #cell-fullName="{ row }">{{ fullNameOf(row) }}</template>
-      <template #cell-birthday="{ row }">{{ Utils.timeOnlyDate(row.birthday) }}</template>
+      <!-- BACKEND: QA-25 — ko'chirilgan (migratsiya) qarindoshlarda `birthday` bo'sh, tug'ilgan yil esa
+           `birth_place` matni ichida («1933-yil, Sirdaryo viloyati, …»). Ma'lumotni ajratib, yilni
+           `birthday` ga yozish kerak — frontend ikkalasini ham kelganicha ko'rsatadi. -->
+      <template #cell-birthday="{ row }">{{ Utils.timeOnlyDate(row.birthday) ?? '—' }}</template>
 
-      <!-- Maketda nogironlik katagida mavjud toifalar va "Qo'shish" havolasi turadi -->
+      <!-- Faqat qiymat: toifalar. Qo'shish/tahrirlash — qator menyusida -->
       <template #cell-disabilities="{ row }">
-        <div class="flex flex-wrap items-center gap-1">
-          <span
-            v-for="disability in row.disabilities"
-            :key="disability.id"
-            class="relative-disability"
-            @click.stop="onEditDisability(row, disability)"
-          >
+        <div v-if="row.disabilities?.length" class="flex flex-wrap items-center gap-1">
+          <span v-for="disability in row.disabilities" :key="disability.id" class="relative-disability">
             {{ getLevelLabel(disability.level) }}
           </span>
-          <button type="button" class="relative-add" @click.stop="onAddDisability(row)">
-            <n-icon :size="16">
-              <component :is="icons.figPlus" />
-            </n-icon>
-            {{ $t('content.add') }}
-          </button>
         </div>
+        <span v-else>—</span>
       </template>
     </UITable>
   </UIProfileSection>
@@ -144,23 +163,5 @@
     font-size: 12px;
     font-weight: 600;
     line-height: 20px;
-    cursor: pointer;
-  }
-
-  .relative-add {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 0;
-    border: none;
-    background: transparent;
-    color: var(--fig-text-brand);
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-
-    &:hover {
-      opacity: 0.8;
-    }
   }
 </style>

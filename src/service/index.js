@@ -80,6 +80,15 @@ instance.interceptors.response.use(
     return Promise.resolve(response)
   },
   async (error) => {
+    // responseType 'blob' so'rovlarda (PDF ko'rish) xato JSON blob ichida keladi — alert matni uchun o'qiladi.
+    const errData = error.response?.data
+    if (errData instanceof Blob && errData.type?.includes('json')) {
+      try {
+        error.response.data = JSON.parse(await errData.text())
+      } catch {
+        // JSON emas — o'z holicha qoladi.
+      }
+    }
     // DPoP vaqtinchalik rad etishi (soat farqi yoki tarmoq qayta yuborgan nusxa) — seans tugamaydi, yangi imzo bilan bir marta qayta.
     // Kodlar: 4171 — soat farqi, 4108 — takroriy nusxa (super-power/api-security-dpop.md); eski `reason` ham tushuniladi.
     const data = error.response?.status === 401 ? error.response?.data || {} : {}

@@ -22,6 +22,7 @@
   import CommandForm_71 from './ui/CommandForm_71.vue'
   import CommandForm_72 from './ui/CommandForm_72.vue'
   import CommandForm_73 from './ui/CommandForm_73.vue'
+  import CommandForm_81 from './ui/CommandForm_81.vue'
   import CommandForm_50 from './ui/CommandForm_50.vue'
   import CommandForm_47 from './ui/CommandForm_47.vue'
   import CommandForm_74 from './ui/CommandForm_74.vue'
@@ -54,6 +55,8 @@
     canEditSigners: { type: Boolean, default: false }
   })
   const isEdit = computed(() => props.mode === 'edit')
+  // Ariza asosidagi buyruq: korxona, tur va xodim arizadan — o'zgartirilmaydi.
+  const lockedByApplication = computed(() => !!store.fromApplication)
   // «Ma'lumotlar»da kelishuvchilar odatda faqat ko'rinadi; qalam bosilganda shu joyning o'zida
   // yaratishdagi muharrir ochiladi. O'zgarishlar tabning «Saqlash» tugmasi bilan yuboriladi.
   const editingSigners = ref(false)
@@ -126,6 +129,7 @@
   const commandForm_26 = ref(null)
   const vacationForm_72 = ref(null)
   const vacationForm_73 = ref(null)
+  const commandForm_81 = ref(null)
   const commandForm_74 = ref(null)
   const commandForm_56 = ref(null)
   const commandForm_57 = ref(null)
@@ -339,6 +343,8 @@
             validate = await vacationForm_72.value?.onSubmit(mainData)
           } else if (store.payload.command_type === 73) {
             validate = await vacationForm_73.value?.onSubmit(mainData)
+          } else if (store.payload.command_type === 81) {
+            validate = await commandForm_81.value?.onSubmit(mainData)
           } else if (store.payload.command_type === 74) {
             validate = await commandForm_74.value?.onSubmit(mainData)
           } else if (store.payload.command_type === 56) {
@@ -481,7 +487,7 @@
       fillVacation55()
     } else if (store.payload.command_type === 62) {
       fillVacation62()
-    } else if ([71, 72, 73].includes(store.payload.command_type)) {
+    } else if ([71, 72, 73, 81].includes(store.payload.command_type)) {
       generationData(true)
     }
 
@@ -647,7 +653,8 @@
         by_whom: null,
         reason: 'Ishdagi yutuqlari uchun',
         gift: null,
-        gift_type: null
+        gift_type: null,
+        award_id: null
       },
       72: {
         reason: null,
@@ -659,6 +666,10 @@
         type: null,
         amount: null,
         base: null
+      },
+      81: {
+        experience_year: null,
+        experience_month: null
       }
     }
 
@@ -803,6 +814,20 @@
         class="col-span-12 grid grid-cols-12 gap-x-4 content-start"
         :class="{ '@7xl:col-span-7': isWide }"
       >
+        <div v-if="store.fromApplication" class="col-span-12 mb-4">
+          <n-alert type="info" :show-icon="true">
+            <template #header>
+              {{
+                $t('applicationCommand.basedOn', {
+                  number: store.fromApplication.number,
+                  electronic: store.fromApplication.electronic_number,
+                  type: store.fromApplication.type_name
+                })
+              }}
+            </template>
+            {{ $t('applicationCommand.locked') }}
+          </n-alert>
+        </div>
         <!--      Command header-->
         <div class="col-span-12">
           <div
@@ -832,7 +857,7 @@
               <n-form-item :label="$t(`documentPage.command.form.type`)" path="command_type">
                 <n-select
                   v-model:value="store.payload.command_type"
-                  :disabled="isEdit"
+                  :disabled="isEdit || lockedByApplication"
                   filterable
                   :options="componentStore.commandTypeList"
                   label-field="name"
@@ -849,7 +874,11 @@
           <div
             class="mt-6 grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground"
           >
-            <div class="col-span-12 @xl:col-span-6 flex">
+            <div
+              class="col-span-12 @xl:col-span-6 flex"
+              :class="{ 'pointer-events-none opacity-70': lockedByApplication }"
+              :aria-disabled="lockedByApplication || undefined"
+            >
               <n-form-item
                 class="w-full"
                 :label="$t(`documentPage.form.organization`)"
@@ -916,7 +945,7 @@
                     <SuperSelect
                       class="flex-1 min-w-0"
                       multiple
-                      :disabled="store.payload.organization_id.length === 0"
+                      :disabled="store.payload.organization_id.length === 0 || lockedByApplication"
                       :max-tag-count="1"
                       :options="store.workerList"
                       :loading="store.workerLoading"
@@ -934,7 +963,7 @@
                            Matnsiz — joriy rejim select LABELIDA ko'rinadi.
                            Pensionerda foto yo'q — render fallback avatar qo'yadi. -->
                     <n-switch
-                      v-if="store.payload.command_type === 73"
+                      v-if="store.payload.command_type === 73 && !lockedByApplication"
                       :value="store.recipientType === 'pensioner'"
                       :disabled="store.payload.organization_id.length === 0"
                       @update:value="onToggleRecipient"
@@ -1002,6 +1031,9 @@
           </template>
           <template v-else-if="store.payload.command_type === 73">
             <CommandForm_73 ref="vacationForm_73" />
+          </template>
+          <template v-else-if="store.payload.command_type === 81">
+            <CommandForm_81 ref="commandForm_81" />
           </template>
           <template v-else-if="store.payload.command_type === 74">
             <CommandForm_74 ref="commandForm_74" />

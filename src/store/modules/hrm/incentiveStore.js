@@ -32,6 +32,11 @@ export const useIncentiveStore = defineStore('incentiveStore', {
         month: this.params.month || undefined,
         status: this.params.status || undefined
       }
+      // BACKEND: GET /v1/hr/incentives ro'yxatni `id` bo'yicha (yaratilish tartibi) qaytaradi —
+      // sanalar aralash chiqadi (07.07, 22.06, 15.12.2025, 24.12.2025…). `date` bo'yicha kamayish
+      // tartibida saralash kerak (yoki `sort` parametri); sahifalangan ro'yxatni frontend o'zi
+      // to'g'ri saralay olmaydi. Dev bazadagi test yozuvlari («boshliq») — ma'lumot masalasi,
+      // kod emas (DAS-14227).
       $ApiService.incentiveService
         ._index({ params })
         .then((res) => {

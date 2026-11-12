@@ -106,6 +106,7 @@ export const appPermissions = {
 
   hrArchiveRead: 'hr-archive-read',
   hrArchiveResume: 'hr-archive-resume',
+  hrArchivePhone: 'hr-archive-phone',
   hrWorkers: 'hr-workers',
   hrWorkersWrite: 'hr-workers-write',
   hrWorkersPassword: 'hr-workers-password',
@@ -285,6 +286,7 @@ export const appPermissions = {
   turnstileHikCentralWorkers: 'turnstile-hik-central-workers',
   turnstileHikCentralWorkersRead: 'turnstile-hik-central-workers-read',
   turnstileHikCentralWorkersWrite: 'turnstile-hik-central-workers-write',
+  turnstileHikCentralWorkersGuests: 'turnstile-hik-central-workers-guests',
   turnstileHikCentralJob: 'turnstile-hik-central-job',
   turnstileHikCentralJobWrite: 'turnstile-hik-central-job-write',
   turnstileHikCentralJobRead: 'turnstile-hik-central-job-read',

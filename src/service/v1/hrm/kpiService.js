@@ -11,8 +11,10 @@ const _index = async (payload) => {
 // server-to-server chiqadi — kalitlar brauzerga TUSHMAYDI.
 // 🔑 Kalit — `worker_position_id` (KPI tomonida `eUserId`), xodim id'si EMAS.
 const _employee = async (payload) => {
+  // Xato modal ichida ko'rsatiladi (`kpiStore.showError`) — toast takrorlanmasin
   return await axios.get(`/v1/hr/kpi/positions/${payload.id}`, {
-    params: payload?.params
+    params: payload?.params,
+    silentError: true
   })
 }
 

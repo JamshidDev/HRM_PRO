@@ -1,4 +1,18 @@
 {
+  "applicationCommand": {
+    "column": "Buyruq",
+    "create": "Buyruq",
+    "basedOn": "Ariza asosida: №{number} ({electronic}) — {type}",
+    "locked": "Korxona, buyruq turi va xodim arizadan olingan, o'zgartirib bo'lmaydi.",
+    "openCommand": "Buyruqni ochish"
+  },
+  "mainPhone": {
+    "title": "Asosiy telefon raqamini o'zgartirish",
+    "label": "Asosiy telefon raqami",
+    "hint": "Kirish (login) raqami va xodim kartochkasidagi raqam birga o'zgaradi.",
+    "invalid": "9 ta raqam bo'lishi kerak",
+    "action": "Asosiy raqamni o'zgartirish"
+  },
   "archive": {
     "name": "Arxiv",
     "filter": {
@@ -12,7 +26,8 @@
       "dismissedAt": "Bo'shagan sana",
       "resume": "Rezyume yuklash",
       "currentOrg": "Hozirgi ish joyi",
-      "notEmployed": "Tarmoqda emas"
+      "notEmployed": "Aniqlanmadi",
+      "dismissalCommand": "Bo'shatish buyrug'i"
     }
   },
   "lateWorkersReport": {
@@ -493,7 +508,8 @@
     "captchaRequired": "Captcha javobini kiriting!",
     "passwordsNotMatch": "Parollar mos kelmadi!",
     "endBeforeStart": "Bu sana boshlanish sanasidan oldin bo'lmasligi kerak",
-    "pastDate": "O'tgan sanani tanlab bo'lmaydi"
+    "pastDate": "O'tgan sanani tanlab bo'lmaydi",
+    "futureDate": "Kelajakdagi sanani tanlab bo'lmaydi"
   },
   "message": {
     "successDone": "Muvaffaqiyatli bajarildi",
@@ -1455,6 +1471,12 @@
         "count": "Pul mukofot baravari",
         "coefficient": "Foiz",
         "financeType": "Moddiy yordam turi",
+        "experienceYear": "Staj (yil)",
+        "experienceMonth": "Staj (oy)",
+        "experienceZero": "Staj yil yoki oydan kamida bittasini kiriting",
+        "experienceYearUnit": "yil",
+        "experienceMonthUnit": "oy",
+        "selectedWorkers": "Tanlangan xodimlar",
         "warning_date": "Ogohlantirish xati sanasi",
         "warning_number": "Ogohlantirish xati raqami",
         "med_date": "Tibbiy ko'rik xulosasi sanasi",
@@ -1685,6 +1707,8 @@
       "rejectReasonPlaceholder": "Masalan: 4-bandda ko'rsatilgan summa shartnomaga mos kelmaydi, qayta ko'rib chiqish so'raladi.",
       "rejectReasonRequired": "Rad etish sababini kiriting — kamida 10 belgi.",
       "rejectSubmit": "Rad etish",
+      "generateFailed": "Hujjatni yaratishda xatolik yuz berdi — ko'rib bo'lmaydi. Hujjatni qayta yaratib ko'ring yoki administratorga murojaat qiling.",
+      "notGenerated": "Hujjat hali yaratilmagan — biroz kutib, qayta urinib ko'ring.",
       "link": "Havola",
       "keySelectTitle": "E-imzo kalitini tanlash",
       "keySelectDesc": "Hujjatni imzolash uchun ERI (elektron raqamli imzo) kalitini tanlang.",
@@ -1915,6 +1939,7 @@
       "base_reason": "Asos"
     },
     "form_50": {
+      "finish_status": "Ishga chiqish holati",
       "to": "Ta'til tugash sanasi",
       "from": "Ta'tilga chiqish sanasi",
       "vacation_id": "Ta'til"
@@ -1995,6 +2020,30 @@
       "blocked_save": "Saqlab bo‘lmaydi: {count} ta xodim ta’til, kasallik yoki tasdiqlanmagan buyruqda",
       "no_workers": "Kamida bitta xodim tanlang",
       "pick_date_hint": "Ta’til va kasallikni tekshirish uchun sanani tanlang"
+    },
+    "legacy": {
+      "tabCreate": "Yaratish",
+      "award": "Mukofot turi",
+      "awardGroups": {
+        "title": "Oliy unvon",
+        "order": "Ordenlar",
+        "medal": "Medallar",
+        "honorary": "Faxriy unvonlar",
+        "other": "Boshqa rag‘batlar"
+      },
+      "viewerTitle": "Ro'yxatga olingan",
+      "viewerSub": "Qog'ozdagi buyruq — tizimda imzolanmagan",
+      "tabRegister": "Ro'yxatdan o'tkazish",
+      "notice": "Faqat 2024-yil 31-dekabrgacha bo'lgan buyruqlarni ro'yxatdan o'tkazish mumkin",
+      "file": "Buyruq fayli (PDF)",
+      "fileRequired": "Buyruq faylini PDF formatida yuklang",
+      "fileSize": "Fayl hajmi {mb} MB dan oshmasligi kerak",
+      "attachments": "Ilovalar (ixtiyoriy)",
+      "attachmentsMax": "Ko'pi bilan {max} ta ilova biriktirish mumkin",
+      "attachmentsSize": "Har bir ilova {mb} MB dan oshmasligi kerak",
+      "source": "Manba",
+      "sourceSystem": "Tizimda yaratilgan",
+      "sourceLegacy": "Ro'yxatdan o'tkazilgan (qog'oz)"
     }
   },
   "confirmationPage": {
@@ -2262,6 +2311,8 @@
     "title": "Yaqin qarindosh ma'lumotlari",
     "no-data": "Yaqin qarindoshlar qo'shilmagan!",
     "disability": {
+      "addAction": "Nogironlik qo'shish",
+      "editAction": "Nogironlikni tahrirlash ({level})",
       "createTitle": "Nogironlik ma'lumotini qo'shish",
       "updateTitle": "Nogironlik ma'lumotini tahrirlash",
       "number": "Hujjat raqami",
@@ -2335,6 +2386,8 @@
     "sortNewestFirst": "Oxiridan boshigacha",
     "experienceMonth": "Staj (oy)",
     "continuousExperience": "Uzluksiz ish staji",
+    "totalExperience": "Umumiy staj: {n} oy",
+    "continuousSince": "Uzluksiz ish staji: {date} dan",
     "period": "Qachondan-qachongacha"
   },
   "workerPositionCertificatePage": {
@@ -2611,7 +2664,7 @@
     "attempts": "Urinishlar",
     "viewResult": "Natijani ko'rish",
     "attemptsCount": "Mavjud urinishlar",
-    "nAttempts": "{n} ta urinish",
+    "nAttempts": "{n} ta urinish qoldi",
     "question_count": "Savollar",
     "nQuestions": "{n} ta savol",
     "examName": "Nomi: {n}",
@@ -2744,6 +2797,7 @@
   },
   "dashboardPage": {
     "comingSoon": "Tez orada",
+    "comingSoonHint": "Bu ko'rsatkich ishlab chiqilmoqda",
     "name": "Dashboard",
     "card": {
       "type": "Ta'til turi",
@@ -3328,7 +3382,8 @@
     "hrCheck": {
       "new": "Yangi",
       "forwarded": "Yo'naltirilgan",
-      "closed": "Yopilgan"
+      "closed": "Yopilgan",
+      "awaiting": "Qaror kutilmoqda"
     }
   },
   "userDepartmentPage": {
@@ -3385,6 +3440,22 @@
     "accessHint": "Yoqilgan — tabelchi shu oy tabelini to'ldira oladi. O'chirilgan — faqat ko'radi.",
     "gridEmpty": "Xodimlar topilmadi",
     "gridEmptyHint": "Boshqa bo'limni tanlang yoki qidiruvni tozalang.",
+    "statWorkers": "{n} xodim",
+    "statDays": "{n} kun ({rest} dam olish)",
+    "statUnsaved": "{n} ta saqlanmagan o'zgarish",
+    "statSaved": "Hammasi saqlangan",
+    "selectedLabel": "ta katak",
+    "otherType": "Boshqa tur",
+    "hoursShort": "soat",
+    "addExtra": "Qo'shimcha tur qo'shish",
+    "removeExtra": "Qo'shimcha turni olib tashlash",
+    "apply": "Qo'llash",
+    "selectionKeys": "Bekor qilish (Esc). Delete — tozalash",
+    "legendTitle": "Belgilar",
+    "selectHint": "Kataklarni sichqoncha bilan belgilang — tur tanlash paneli chiqadi. Shift bilan qo'shib belgilash mumkin.",
+    "quickTypesTitle": "Tez tanlov",
+    "quickTypesHint": "Tanlov panelida tez tugma bo'lib turadigan turlar — qo'shish yoki olib tashlash uchun bosing ({max} tagacha).",
+    "quickTypesReset": "Standartga qaytarish",
     "noDepartments": "Bo'lim biriktirilmagan",
     "filledWorkers": "To'ldirilgan",
     "filledCount": "{count} ta xodim",
@@ -3629,7 +3700,12 @@
       "department": "Bo'linma",
       "added": "Biriktirilgan xodimlar",
       "no-added": "Biriktirilmagan xodimlar",
-      "device": "Qurilmalar"
+      "device": "Qurilmalar",
+      "membership": "Xodim turi",
+      "membershipOwn": "Korxona xodimlari",
+      "membershipGuest": "Mehmonlar (boshqa korxona)",
+      "membershipNotWorking": "Ishlamaydiganlar",
+      "notWorking": "Ishlamaydi"
     },
     "workDurationPage": {
       "name": "Ish vaqti",
@@ -3679,6 +3755,10 @@
       "status": "Holati",
       "organization": "Korxona",
       "onVacation": "gacha ta'tilda",
+      "expired": "Muddati o'tgan",
+      "daysOverdue": "{n} kun o'tgan",
+      "daysLeft": "{n} kun qoldi",
+      "conclusion": "Xulosa: {name}",
       "file": "Fayllar"
     }
   },
@@ -3870,7 +3950,12 @@
     }
   },
   "businessTrip": {
-    "name": "Xizmat safari"
+    "name": "Xizmat safari",
+    "sent": "Yuborilgan",
+    "incoming": "Kelgan",
+    "toOrganization": "Qayerga",
+    "fromOrganization": "Qayerdan",
+    "toDepartment": "Qabul qilgan bo'lim"
   },
   "documentArchive": {
     "name": "Hujjatlar bazasi",
@@ -3895,6 +3980,9 @@
     "createTitle": "Xodim biriktirish",
     "updateTitle": "Tahrirlash",
     "autoGenerate": "Avtomatik hisoblash",
+    "autoGenerateDone": "Ta'til sanalari hisoblandi",
+    "autoGenerateEmpty": "Avtomatik hisoblash sanalarni qaytarmadi — ularni qo'lda kiriting",
+    "selectOrganizationFirst": "Xodimlarni ko'rish uchun tashkilotni tanlang",
     "requiredMonth": "Xodimning ta'tilga chiqish oyini tanlang",
     "form": {
       "period_from": "Qachondan (Ta'til davri)",
@@ -6668,7 +6756,10 @@
       "calculating": "KPI ma'lumotlari hisoblanmoqda",
       "calculatingDesc": "Bu xodim uchun ko'rsatkichlar hali yakunlanmagan. Davr yopilib, natijalar tasdiqlangach ular shu yerda avtomatik paydo bo'ladi.",
       "notOnboarded": "Bu xodim KPI tizimiga ulanmagan — ko'rsatkichlar mavjud emas.",
-      "noIndicators": "Tanlangan davr uchun ko'rsatkichlar yo'q."
+      "noIndicators": "Tanlangan davr uchun ko'rsatkichlar yo'q.",
+      "unavailable": "Xizmat vaqtincha ishlamayapti",
+      "unavailableDesc": "KPI tizimi hozir javob bermayapti. Birozdan keyin qayta urinib ko'ring.",
+      "loadFailed": "KPI ma'lumotini yuklab bo'lmadi"
     },
     "showPending": "Ko'rsatkichlar tashqi tizimdan olinadi — integratsiya ulanmaguncha ma'lumot ko'rsatilmaydi."
   },

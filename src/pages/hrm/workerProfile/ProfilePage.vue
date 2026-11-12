@@ -38,6 +38,11 @@
   // lentada (backendda barcha jadvallarda `trigger_id` = xodim id).
   // `store.workerId` profil yuklangach to'ladi, shu sababli tugma shu paytgacha
   // o'chirilgan turadi.
+  // BACKEND: QA-26 — «Tarix» faqat `hr.workers` jadvalidagi (trigger_id = xodim id) o'zgarishlarni oladi.
+  // Ish faoliyati (`/v1/hr/worker-old-careers`), qarindoshlar, ta'lim va h.k. alohida jadvallarda —
+  // ular xodim tarixiga tushmaydi (yoki umuman audit yozilmaydi). `GET /v1/audit` da xodimga tegishli
+  // barcha bog'liq yozuvlarni bitta filtrda olish kerak (masalan `worker_id=<id>`), yoki bog'liq
+  // jadvallar o'zgarishi `hr.workers` / trigger_id = xodim id ostida yozilsin.
   const onHistory = () => {
     if (!store.workerId) return
     router.push({
@@ -98,7 +103,9 @@
   .profile-page {
     flex: 1 0 auto;
     width: 100%;
-    padding: 0 16px 88px;
+    // Pastki joy AI tugmasidan (64px, pastdan 80px yuqorida → 144px) baland bo'lsin —
+    // oxirgi blokning «Saqlash» tugmasi uning ostida qolmasin (QA-20)
+    padding: 0 16px 160px;
     background: var(--surface-ground);
   }
 

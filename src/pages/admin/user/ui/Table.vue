@@ -9,7 +9,8 @@
     Add20Regular,
     OpenFolder24Filled,
     Delete20Regular,
-    Edit20Regular
+    Edit20Regular,
+    Phone20Regular
   } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -35,6 +36,11 @@
   const onEditPin = (row) => {
     if (!accStore.checkAction(accStore.pn.usersWrite)) return
     store.openPinEdit(row)
+  }
+
+  const onEditPhone = (row) => {
+    if (!accStore.checkAction(accStore.pn.usersWrite)) return
+    store.openPhoneEdit(row)
   }
 
   const onDelete = (row) => {
@@ -138,6 +144,12 @@
       key: 'edit-pin',
       icon: UIHelper.renderIcon(Edit20Regular),
       action: onEditPin
+    },
+    {
+      label: t('mainPhone.action'),
+      key: 'edit-phone',
+      icon: UIHelper.renderIcon(Phone20Regular),
+      action: onEditPhone
     },
     {
       label: t('content.delete'),

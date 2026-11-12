@@ -247,7 +247,7 @@
 
   /* Karta grid katakchasini to'liq egallashi uchun. Mock kartalardagi
      blur + «Tez orada» qatlami `FigPanel` / `FigKpiCard` ichiga ko'chirilgan
-     (uslubi `assets/scss/component.scss` dagi `.fig-soon`). */
+     (DAS-14231: blur o'rniga soxta raqamsiz «Tez orada» bloki). */
   .dash-card-wrap {
     position: relative;
     height: 100%;

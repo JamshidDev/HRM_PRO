@@ -44,6 +44,14 @@
     componentStore._departments()
     componentStore._regions()
     dpStore.resetForm()
+    // Bo'linmalar sahifasidagi «Biriktirish» dan qolgan ota-bo'lim banneri chiqmasin
+    dpStore.parentElement = null
+    // Bo'linma sahifada tanlangan tashkilotga qo'shiladi — ro'yxat shu tashkilot bo'yicha,
+    // boshqasini tanlasa saqlangan bo'linma ro'yxatda ko'rinmay qolardi (DAS-14220).
+    dpStore.payload.organization_id = selectedOrg.value?.id ?? null
+    dpStore.fixedOrganization = selectedOrg.value
+      ? { id: selectedOrg.value.id, name: selectedOrg.value.name }
+      : null
   }
 
   const exportStaffing = () => {

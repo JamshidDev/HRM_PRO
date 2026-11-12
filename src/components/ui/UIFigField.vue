@@ -10,6 +10,8 @@
    *
    * `path` berilsa slot `n-form-item` ichiga o'raladi — yorliq maydonning o'zida
    * turgani uchun `show-label` o'chirilgan holda. `path`siz xulq o'zgarmaydi.
+   *
+   * `required` — tahrirlash rejimida yorliq yonida qizil yulduzcha (*).
    */
   defineProps({
     label: {
@@ -39,13 +41,19 @@
     rulePath: {
       type: String,
       default: null
+    },
+    required: {
+      type: Boolean,
+      default: false
     }
   })
 </script>
 
 <template>
   <div class="fig-field" :class="[`fig-field--${variant}`, editing && 'fig-field--edit']">
-    <span v-if="label" class="fig-field__label">{{ label }}</span>
+    <span v-if="label" class="fig-field__label">
+      {{ label }}<span v-if="required && editing" class="fig-field__required">*</span>
+    </span>
 
     <template v-if="editing">
       <n-form-item
@@ -105,6 +113,11 @@
       line-height: 16px;
       color: var(--fig-text-tertiary);
     }
+  }
+
+  .fig-field__required {
+    margin-left: 2px;
+    color: var(--danger-color);
   }
 
   .fig-field__plain-value {

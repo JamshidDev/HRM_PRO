@@ -49,12 +49,16 @@
 
   const emits = defineEmits(['onClickFullName'])
 
-  const fullName = computed(
-    () => `${props.data?.lastName} ${props.data?.firstName} ${props.data?.middleName} `
+  // Bo'sh qismlar tashlab yuboriladi — aks holda ism o'rnida «undefined» chiqardi
+  // (masalan, otasining ismi yo'q xodim yoki backend tuzgan eski forma).
+  const fullName = computed(() =>
+    [props.data?.lastName, props.data?.firstName, props.data?.middleName].filter(Boolean).join(' ')
   )
 
-  const shortName = computed(
-    () => `${props.data?.lastName}.${props.data?.firstName?.[0]}.${props.data?.middleName?.[0]} `
+  const shortName = computed(() =>
+    [props.data?.lastName, props.data?.firstName?.[0], props.data?.middleName?.[0]]
+      .filter(Boolean)
+      .join('.')
   )
 
   // Rasm yo'q bo'lsa (placeholder ko'rinadi) yoki `avatarClickable` o'chiq bo'lsa — ko'ruvchi ochilmaydi,

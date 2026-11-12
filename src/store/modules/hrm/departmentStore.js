@@ -33,6 +33,8 @@ export const useDepartmentStore = defineStore('departmentStore', {
     levelLoading: false,
     levelList: [],
     parentElement: null,
+    // Joriy tashkilot ({id, name}): tahrirlashda select boshlang'ich qiymati, Hisobot sahifasidan qo'shishda faqat ko'rsatiladi.
+    fixedOrganization: null,
     refreshTarget: null,
 
     previewVisible: false,
@@ -66,6 +68,9 @@ export const useDepartmentStore = defineStore('departmentStore', {
     mapNode(v, parent) {
       return {
         ...v,
+        // Ichki bo'limlarda (`_show` → `children`) `parent` kelmaydi — daraxtdagi otasidan olinadi.
+        // Busiz tahrirlashda ota-bo'lim yo'qolib, `parent_id` yuborilmasdi.
+        parent: v.parent ?? (parent ? { id: parent.id, name: parent.name } : null),
         uz: v.name,
         ru: v.name_ru,
         en: v.name_en,
@@ -89,6 +94,14 @@ export const useDepartmentStore = defineStore('departmentStore', {
           this.loading = false
         })
     },
+    // BACKEND: `GET /v1/hr/departments/{id}` → `children[]` faqat id, name, level, name_ru, name_en,
+    // comment, organization qaytaradi. Ro'yxatdagi (`GET /v1/hr/departments`) kabi quyidagilar ham kerak:
+    //   - `worker_rate` — jadvaldagi «F» (fakt) ustuni ichki bo'limlarda bo'sh qolyapti;
+    //   - `children` (true/false) — ichki bo'limning o'z bolalari bormi; busiz 3-darajali
+    //     bo'limlar ochilmaydi (strelka chiqmaydi);
+    //   - `region`, `city` — tahrirlash oynasida viloyat/tuman bo'sh ochiladi;
+    //   - `parent` ({id, name}) — hozircha frontend daraxtdan to'ldiradi (`mapNode`).
+    // Tekshirildi dev'da (2026-11-06): bo'lim 3508 → bolalari 3510, 16, 17.
     _loadChildren(row) {
       return $ApiService.departmentService._show({ id: row.id }).then((res) => {
         row.children = res.data.data.children.map((v) => this.mapNode(v, row))
@@ -186,12 +199,14 @@ export const useDepartmentStore = defineStore('departmentStore', {
     },
     resetForm() {
       this.elementId = null
+      this.fixedOrganization = null
       this.payload.organization_id = null
       this.payload.name = null
       this.payload.name_en = null
       this.payload.name_ru = null
       this.payload.comment = null
       this.payload.parent_id = null
+      this.showParent = false
       this.payload.level = null
       this.payload.region_id = null
       this.payload.city_id = null

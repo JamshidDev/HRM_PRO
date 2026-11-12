@@ -47,7 +47,9 @@ const _details = async (payload) => {
 }
 
 const _accept = async (payload) => {
-  return await axios.put(`/v1/hr/applications/${payload.id}/accept`, payload.data)
+  return await axios.put(`/v1/hr/applications/${payload.id}/accept`, payload.data, {
+    silentSuccess: payload.silentSuccess
+  })
 }
 
 // HR imzo qatorini oladi (yo'q bo'lsa yaratiladi) va kelishuvchilarga yo'naltiradi.
@@ -72,6 +74,11 @@ const _forward = async (payload) => {
 
 const _documentApplication = async (payload) => {
   return await axios.get(`/v1/document/applications`, { params: payload?.params })
+}
+
+// Arizadan buyruq formasi uchun ma'lumot (tasdiqlangan, bog'lanmagan ariza).
+const _commandPrefill = async (payload) => {
+  return await axios.get(`/v1/hr/applications/${payload.id}/command-prefill`)
 }
 
 const _statistic = async (payload) => {
@@ -99,5 +106,6 @@ export default {
   _forward,
   _documentApplication,
   _statistic,
+  _commandPrefill,
   _deleteWorkerApplication
 }

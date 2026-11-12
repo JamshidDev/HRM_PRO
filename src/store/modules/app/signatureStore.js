@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
 import { useAppSetting } from '@/utils/index.js'
+import Utils from '@/utils/Utils.js'
 import { usePdfViewerStore } from '@/store/modules/app/pdfViewerStore.js'
 import { isToastOnlyPage } from '@/components/notify/alertDialog.js'
 const apiUrl = import.meta.env.VITE_API_URL
@@ -427,9 +428,15 @@ export const useSignatureStore = defineStore('signatureStore', {
     },
     _rejectDocument(data, callBack) {
       this.rejectLoading = true
+      // Backend xabari «bekor qilindi» deydi — rad etish uchun bir xil atama: «rad etildi» (DAS-14207).
+      const key =
+        data.model === Utils.documentModels.workerApplication
+          ? 'documentPage.signature.rejectedPanel.title'
+          : 'documentPage.signature.rejected'
       $ApiService.documentService
-        ._confirmationDocument({ data })
+        ._confirmationDocument({ data, silentSuccess: true })
         .then((res) => {
+          $Toast.success(t(key))
           callBack?.()
         })
         .finally(() => {

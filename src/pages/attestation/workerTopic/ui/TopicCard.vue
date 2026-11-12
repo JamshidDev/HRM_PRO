@@ -227,8 +227,10 @@
         >
           {{ $t('content.start') }}
         </n-button>
+        <!-- Urinish bo'lmasa ko'rsatadigan natija yo'q — tugma nofaol (DAS-14232). -->
         <n-button
           v-else
+          :disabled="!item.results?.length"
           @click="emit('toggle', idx)"
           size="small"
           class="shrink-0 w-full sm:w-auto !rounded-lg !h-auto !px-5 !py-2 !border-none !bg-[var(--exam-result-btn-bg)] !text-[var(--exam-result-btn-text)]"

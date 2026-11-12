@@ -102,6 +102,8 @@
   const onDefaultEv = (v) => {
     store.worker.params.organizations = v
     store._fetchDepartment()
+    // Bitta tashkilotli foydalanuvchida ro'yxat shu yerda yuklanadi (DAS-14225).
+    filterEventWorker()
   }
 
   onMounted(() => {
@@ -217,6 +219,7 @@
           type="primary"
           @click="store._fetchAutoGenerate()"
           :loading="store.worker.loading"
+          :disabled="store.worker.params.organizations.length === 0"
         >
           <template #icon>
             <n-icon>
@@ -287,6 +290,17 @@
           <div class="col-span-2 pl-2 line-clamp-1">
             {{ $t('vacationSchedule.form.all_days') }}
           </div>
+        </div>
+        <!-- Tashkilot tanlanmaguncha xodimlar yuklanmaydi (DAS-14225). -->
+        <div
+          v-if="!store.worker.loading && store.worker.list.length === 0"
+          class="py-16 text-center text-sm text-textColor3"
+        >
+          {{
+            store.worker.params.organizations.length === 0
+              ? $t('vacationSchedule.selectOrganizationFirst')
+              : $t('content.no-data')
+          }}
         </div>
         <template v-for="(item, idx) in store.worker.list" :key="item">
           <div
@@ -373,8 +387,8 @@
       <UIPagination
         :short="false"
         :show-size-picker="false"
-        :page="store.worker.page"
-        :per_page="store.worker.per_page"
+        :page="store.worker.params.page"
+        :per_page="store.worker.params.per_page"
         :total="store.worker.total"
         @change-page="onChangePage"
       />

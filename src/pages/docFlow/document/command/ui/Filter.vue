@@ -3,6 +3,9 @@
   import { UIPageFilter, UISelect } from '@/components/index.js'
   import { useAccountStore, useCommandStore, useComponentStore } from '@/store/modules/index.js'
   import { AppPaths, useAppSetting } from '@/utils/index.js'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   const store = useCommandStore()
   const accStore = useAccountStore()
@@ -12,11 +15,19 @@
     if (!accStore.checkAction(accStore.pn.hrCommandsWrite)) return
     store.visibleType = true
     store.resetForm()
+    store.formMode = 'create'
     store.visible = true
   }
 
+  // Manba: tizimda yaratilgan (0) yoki eski — ro'yxatga olingan (1).
+  const sourceOptions = computed(() => [
+    { id: 0, name: t('commandPage.legacy.sourceSystem') },
+    { id: 1, name: t('commandPage.legacy.sourceLegacy') }
+  ])
+
   const filterCount = computed(
     () =>
+      Number(store.params.legacy != null) +
       Number(Boolean(store.params.confirmation)) +
       Number(Boolean(store.params.type)) +
       Number(Boolean(store.params.created)) +
@@ -40,6 +51,7 @@
     store.params.confirmation = null
     store.params.type = null
     store.params.created = null
+    store.params.legacy = null
     filterEvent()
   }
 
@@ -134,6 +146,17 @@
             filterable
             @update:value="filterEvent"
             :loading="componentStore.enumAdminLoading"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('commandPage.legacy.source') }}</label>
+          <n-select
+            v-model:value="store.params.legacy"
+            :options="sourceOptions"
+            label-field="name"
+            value-field="id"
+            clearable
+            @update:value="filterEvent"
           />
         </div>
         <div class="col-span-12 md:col-span-6">

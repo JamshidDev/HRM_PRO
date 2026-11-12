@@ -9,6 +9,10 @@ export const useArchiveStore = defineStore('archiveStore', {
     loading: false,
     resumeLoading: null,
     totalItems: 0,
+    // Asosiy raqam tahriri (modal).
+    phoneVisible: false,
+    phoneRow: null,
+    phoneLoading: false,
     params: {
       page: 1,
       per_page: 15,
@@ -37,6 +41,22 @@ export const useArchiveStore = defineStore('archiveStore', {
         })
         .finally(() => {
           this.loading = false
+        })
+    },
+    openPhoneEdit(row) {
+      this.phoneRow = row
+      this.phoneVisible = true
+    },
+    _changePhone(phone) {
+      this.phoneLoading = true
+      $ApiService.archiveService
+        ._changePhone({ uuid: this.phoneRow?.uuid, data: { phone } })
+        .then(() => {
+          this.phoneVisible = false
+          this._index()
+        })
+        .finally(() => {
+          this.phoneLoading = false
         })
     },
     // Rezyume DOCX — arxivning alohida endpointi (`hr-archive-resume`).

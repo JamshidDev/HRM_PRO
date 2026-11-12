@@ -7,6 +7,7 @@
   import Filter from './ui/Filter.vue'
   import PermissionForm from './ui/permissionForm.vue'
   import EditPinForm from './ui/editPinForm.vue'
+  import MainPhoneForm from '@/components/worker/ui/MainPhoneForm.vue'
 
   const store = useUserStore()
   const accStore = useAccountStore()
@@ -35,6 +36,17 @@
       :title="$t('userPage.pinTitle')"
     >
       <EditPinForm v-if="store.pinVisible" />
+    </UIModal>
+    <UIModal v-model:visible="store.phoneVisible" :width="460" :title="$t('mainPhone.title')">
+      <MainPhoneForm
+        v-if="store.phoneVisible"
+        :worker="store.phoneRow?.worker"
+        :subtitle="store.phoneRow?.organization?.name"
+        :phone="store.phoneRow?.phone"
+        :loading="store.phoneSaveLoading"
+        @save="store._updatePhone"
+        @cancel="store.phoneVisible = false"
+      />
     </UIModal>
     <UIDrawer
       :visible="store.visible"

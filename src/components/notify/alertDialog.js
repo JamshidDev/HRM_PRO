@@ -15,6 +15,8 @@ export const isToastOnlyPage = () =>
   TOAST_ONLY_PATHS.some((p) => window.location.pathname.startsWith(p))
 
 // onConfirm berilsa — ikki tugmali tasdiqlash (bekor / tasdiqlash), o'zi yopilmaydi.
+// onCancel — ixtiyoriy: faqat chap tugma bosilganda (masalan «Saqlamasdan yopish»);
+// fon / Esc / ✕ bilan yopilganda chaqirilmaydi — bu «ortga qaytish».
 export function showAlert({
   type = 'warning',
   title = null,
@@ -23,6 +25,7 @@ export function showAlert({
   duration,
   listHint,
   onConfirm,
+  onCancel,
   confirmText,
   cancelText
 } = {}) {
@@ -38,6 +41,7 @@ export function showAlert({
     errors: items,
     listHint,
     onConfirm,
+    onCancel,
     confirmText,
     cancelText,
     duration: onConfirm ? 0 : (duration ?? AUTO_CLOSE[kind] ?? 0)
@@ -46,6 +50,12 @@ export function showAlert({
 
 export function confirmAlert() {
   const cb = alertState.queue[0]?.onConfirm
+  alertState.queue.shift()
+  cb?.()
+}
+
+export function cancelAlert() {
+  const cb = alertState.queue[0]?.onCancel
   alertState.queue.shift()
   cb?.()
 }

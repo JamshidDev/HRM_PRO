@@ -76,6 +76,7 @@ export const ENFORCED = new Set([
   'hr-business-trip-read',
   'hr-archive-read',
   'hr-archive-resume',
+  'hr-archive-phone',
   'hr-check-worker',
   'hr-commands-delete',
   'hr-commands-read',
@@ -251,6 +252,7 @@ export const ENFORCED = new Set([
   'turnstile-hik-central-workers-delete',
   'turnstile-hik-central-workers-read',
   'turnstile-hik-central-workers-write',
+  'turnstile-hik-central-workers-guests',
   'turnstile-sheets-delete',
   'turnstile-sheets-groups-delete',
   'turnstile-sheets-groups-read',
@@ -442,6 +444,7 @@ export const MEANINGFUL = new Set([
   'hr',
   'hr-archive-read',
   'hr-archive-resume',
+  'hr-archive-phone',
   'hr-business-trip',
   'hr-business-trip-read',
   'hr-business-trip-write',
@@ -704,6 +707,7 @@ export const MEANINGFUL = new Set([
   'turnstile-hik-central-workers-delete',
   'turnstile-hik-central-workers-read',
   'turnstile-hik-central-workers-write',
+  'turnstile-hik-central-workers-guests',
   'turnstile-organization',
   'turnstile-organization-access-levels',
   'turnstile-organization-access-levels-read',
@@ -812,13 +816,14 @@ export const PERMISSION_GROUPS = [
           { slug: 'hr-contracts-write', label: 'Shartnoma tuzish' }
         ]
       },
-      // Arxiv — bo'shab ketgan xodimlar (faqat ko'rish; write/delete slug yo'q).
+      // Arxiv — bo'shab ketgan xodimlar (ko'rish, rezyume, asosiy raqam).
       {
         prefix: 'hr-archive',
         label: 'archive.name',
         actions: [
           { slug: 'hr-archive-read', label: "Ko'rish" },
-          { slug: 'hr-archive-resume', label: 'Rezyume yuklash' }
+          { slug: 'hr-archive-resume', label: 'Rezyume yuklash' },
+          { slug: 'hr-archive-phone', label: "Asosiy raqamni o'zgartirish" }
         ]
       },
       { prefix: 'hr-certificates', label: 'workerCertificatePage.name' },
@@ -940,7 +945,16 @@ export const PERMISSION_GROUPS = [
           { slug: 'turnstile-organization-access-levels-write', label: 'Biriktirish / Tahrirlash' }
         ]
       },
-      { prefix: 'turnstile-hik-central-workers', label: 'turnstile.hcWorkersPage.name' },
+      {
+        prefix: 'turnstile-hik-central-workers',
+        label: 'turnstile.hcWorkersPage.name',
+        actions: [
+          { slug: 'turnstile-hik-central-workers-read', label: "Ko'rish" },
+          { slug: 'turnstile-hik-central-workers-write', label: 'Yaratish / Tahrirlash' },
+          { slug: 'turnstile-hik-central-workers-delete', label: "O'chirish" },
+          { slug: 'turnstile-hik-central-workers-guests', label: 'Mehmonlar (korxonada ishlamaydiganlar)' }
+        ]
+      },
       {
         prefix: 'turnstile-hik-central-events',
         label: 'hcEvent.name',
