@@ -162,11 +162,11 @@
       trigger: 'change'
     },
     // `key` — fayl tanlanganda faqat shu rule qayta tekshiriladi (FileTiles @update:files).
+    // Asoslantiruvchi hujjat ixtiyoriy — faqat hajmi tekshiriladi.
     files: {
       key: 'files',
-      required: true,
       validator: () => {
-        if (!form.value.files.length) return new Error(t('commandPage.legacy.fileRequired'))
+        if (!form.value.files.length) return true
         if (form.value.files[0].file?.size > ATTACH_MAX_MB * 1024 * 1024)
           return new Error(t('commandPage.legacy.fileSize', { mb: ATTACH_MAX_MB }))
         return true
@@ -207,7 +207,7 @@
       fd.append('command_number', form.value.command_number.trim())
       fd.append('command_date', toYmd(form.value.command_date))
       form.value.workers.forEach((id) => fd.append('workers[]', id))
-      fd.append('file', form.value.files[0].file)
+      if (form.value.files.length) fd.append('file', form.value.files[0].file)
       form.value.attachments.forEach((f) => fd.append('attachments', f.file))
       store._createLegacy(fd)
     })
