@@ -30,6 +30,11 @@ export const usePunishmentStore = defineStore('punishmentStore', {
         month: this.params.month || undefined,
         status: this.params.status || undefined
       }
+      // BACKEND: GET /v1/hr/discips ro'yxatni `id` bo'yicha (yaratilish tartibi) qaytaradi — sanalar
+      // aralash chiqadi (07.07, 26.06, 04.06, 18.06…). `date` bo'yicha kamayish tartibida
+      // saralash kerak (yoki `sort` parametri); sahifalangan ro'yxatni frontend o'zi
+      // to'g'ri saralay olmaydi. Dev bazadagi test yozuvlari («test demo», «boshliq») —
+      // ma'lumot masalasi, kod emas (DAS-14227).
       $ApiService.punishmentService
         ._index({ params })
         .then((res) => {
