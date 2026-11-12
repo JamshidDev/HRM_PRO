@@ -1455,6 +1455,12 @@
         "count": "Bonus equivalent",
         "coefficient": "Percentage",
         "financeType": "Financial aid type",
+        "experienceYear": "Exp. (years)",
+        "experienceMonth": "Exp. (months)",
+        "experienceZero": "Enter experience: years or months",
+        "experienceYearUnit": "yrs",
+        "experienceMonthUnit": "mo",
+        "selectedWorkers": "Selected employees",
         "warning_date": "Warning letter date",
         "warning_number": "Warning letter number",
         "med_date": "Medical exam conclusion date",
@@ -1998,6 +2004,30 @@
       "blocked_save": "Cannot save: {count} employees are on leave, sick leave or have a pending order",
       "no_workers": "Select at least one employee",
       "pick_date_hint": "Pick the date to check leave and sick leave"
+    },
+    "legacy": {
+      "tabCreate": "Create",
+      "award": "Award type",
+      "awardGroups": {
+        "title": "Highest title",
+        "order": "Orders",
+        "medal": "Medals",
+        "honorary": "Honorary titles",
+        "other": "Other incentives"
+      },
+      "viewerTitle": "Registered",
+      "viewerSub": "Paper command — not signed in the system",
+      "tabRegister": "Register",
+      "notice": "Only commands dated up to 31 December 2024 can be registered",
+      "file": "Command file (PDF)",
+      "fileRequired": "Upload the command file as a PDF",
+      "fileSize": "File size must not exceed {mb} MB",
+      "attachments": "Attachments (optional)",
+      "attachmentsMax": "At most {max} attachments can be added",
+      "attachmentsSize": "Each attachment must not exceed {mb} MB",
+      "source": "Source",
+      "sourceSystem": "Created in the system",
+      "sourceLegacy": "Registered (paper)"
     }
   },
   "confirmationPage": {
@@ -3649,7 +3679,12 @@
       "department": "Department",
       "added": "Attached employees",
       "no-added": "Not attached employees",
-      "device": "Devices"
+      "device": "Devices",
+      "membership": "Employee type",
+      "membershipOwn": "Organization employees",
+      "membershipGuest": "Guests (other organization)",
+      "membershipNotWorking": "Not employed",
+      "notWorking": "Not employed"
     },
     "workDurationPage": {
       "name": "Work time",

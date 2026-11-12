@@ -368,8 +368,14 @@ const commandStoreOptions = {
       organizations: [],
       confirmation: null,
       type: null,
-      created: null
+      created: null,
+      // null — hammasi, 1 — eski (ro'yxatga olingan), 0 — tizimda yaratilgan.
+      legacy: null
     },
+    // Eski buyruqni kiritish oynasi.
+    // «Qo'shish» oynasi rejimi: create — yaratish, legacy — eski buyruqni ro'yxatdan o'tkazish.
+    formMode: 'create',
+    legacySaving: false,
     vacations: [],
     vacations55: [],
     vacations62: [],
@@ -419,7 +425,7 @@ const commandStoreOptions = {
     extraConfirmations: [],
     // Yangi buyruqda kelishuvchilar sukut bo'yicha parallel imzolaydi.
     oneByOne: false,
-    // 71/73 — «Asos» matni (forma holati bilan saqlanadi).
+    // 71/73/81 — «Asos» matni (forma holati bilan saqlanadi).
     commandBase: null,
     // Ariza asosidagi buyruq: { id, number, electronic_number } — korxona/tur/xodim qulflanadi.
     fromApplication: null,
@@ -521,7 +527,9 @@ const commandStoreOptions = {
       let params = {
         ...this.workerParams,
         // 80 — FXSH bekor qilish: faqat FXSH lavozimidagi xodimlar.
-        ...(this.payload.command_type === 80 ? { position_type: 2 } : {})
+        ...(this.payload.command_type === 80 ? { position_type: 2 } : {}),
+        // Moddiy yordam (73, 81) — faqat shtatdagi xodimlar (FXSH emas).
+        ...([73, 81].includes(this.payload.command_type) ? { staff_only: 1 } : {})
       }
       // 🔴 POYGA HIMOYASI: qidiruv (har harfda), ochilish (search=null) va scroll
       // so'rovlari ketma-ket ketadi, javoblar istalgan tartibda qaytadi —
@@ -589,7 +597,20 @@ const commandStoreOptions = {
           this.saveLoading = false
         })
     },
-    _viewCommand(data) {
+    // Eski buyruqni ro'yxatga olish (PDF yuklanadi, generatsiya yo'q).
+    _createLegacy(formData) {
+      this.legacySaving = true
+      return $ApiService.commandService
+        ._createLegacy({ data: formData })
+        .then(() => {
+          this.visible = false
+          this._index()
+        })
+        .finally(() => {
+          this.legacySaving = false
+        })
+    },
+        _viewCommand(data) {
       this.viewLoading = true
       $ApiService.commandService
         ._viewFile({ data: { ...data, status: 'view' } })
@@ -649,7 +670,7 @@ const commandStoreOptions = {
       // tabidagi xodim hujjat matnidagi xodimdan farq qiladi.
       if (state?.legacy) this.fillLegacyForm(state.data || {})
       // Eski saqlangan formalarda «Asos» yo'q edi — buyruq ma'lumotidan olinadi.
-      if (this.commandBase == null && [71, 73].includes(this.payload.command_type)) {
+      if (this.commandBase == null && [71, 73, 81].includes(this.payload.command_type)) {
         this.commandBase = state?.data?.base ?? state?.data?.command_additional?.base ?? null
       }
     },
@@ -804,6 +825,7 @@ const commandStoreOptions = {
           { worker: option, id: wp.id, reason: prefill.reason ?? null, type: null, amount: null, base: null }
         ]
       }
+      this.formMode = 'create'
       this.visible = true
     },
 
