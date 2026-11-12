@@ -1,5 +1,4 @@
 <script setup>
-  import { openSafeUrl } from '@/utils/sanitize.js'
   import { computed, h, onMounted } from 'vue'
   import { NTag, NIcon, NTooltip, NButton } from 'naive-ui'
   import dayjs from 'dayjs'
@@ -151,7 +150,11 @@
                 size: 'small',
                 quaternary: true,
                 circle: true,
-                onClick: () => openSafeUrl(row.file)
+                onClick: () =>
+                  store._downloadUploadFile(
+                    row.id,
+                    `${row.organization || 'hisobot'}_${row.year}-${String(row.month).padStart(2, '0')}.xlsx`
+                  )
               },
               () => h(NIcon, { size: 18 }, () => h(ArrowDownload20Regular))
             )

@@ -1,5 +1,4 @@
 <script setup>
-  import { openSafeUrl } from '@/utils/sanitize.js'
   import { UIStatus } from '@/components/index.js'
   import { useUploadReportStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
@@ -37,8 +36,15 @@
     () => [1, 2, 3, 4].includes(reportType.value) && onesCodeOptions.value.length > 1
   )
 
-  const onDownload = (url) => {
-    openSafeUrl(url)
+  // Saqlangan faylni backend orqali yuklab olamiz (yashirilgan xodim F.I.O «xxx»
+  // maskalangan) — presigned URL o'rniga blob. Fayl nomi: korxona _ davr.
+  const onDownload = (item) => {
+    if (!item?.id) return
+    const org = String(store.selectedOrgName || 'hisobot')
+      .replace(/[\\/:*?"<>|]+/g, '')
+      .trim()
+    const ym = `${item.year}-${String(item.month).padStart(2, '0')}`
+    store._downloadUploadFile(item.id, `${org}_${ym}.xlsx`)
   }
 
   const showComment = (v) => {
@@ -148,7 +154,7 @@
               size="small"
               secondary
               circle
-              @click="onDownload(latest.file)"
+              @click="onDownload(latest)"
             >
               <template #icon><ArrowCircleDown12Regular /></template>
             </n-button>
@@ -269,7 +275,7 @@
                     size="small"
                     secondary
                     circle
-                    @click="onDownload(item.file)"
+                    @click="onDownload(item)"
                   >
                     <template #icon><ArrowCircleDown12Regular /></template>
                   </n-button>

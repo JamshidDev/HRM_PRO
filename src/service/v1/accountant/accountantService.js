@@ -59,6 +59,14 @@ const _deleteUpload = async (payload) => {
   return await axios.delete(`/v1/economist/upload/${payload.id}`, { silentSuccess: true })
 }
 
+// Saqlangan hisobot faylini yuklab olish (upload id) — yashirilgan xodim F.I.O «xxx»
+// maskalangan holda (backend). Presigned URL o'rniga blob (maska qo'llanishi uchun).
+const _downloadUploadFile = async (payload) => {
+  return await axios.get(`/v1/economist/upload/${payload.id}/download`, {
+    responseType: 'blob'
+  })
+}
+
 // Hisobot yuklash holati — tanlangan oy uchun korxonalar kesimida (yuklagan/yuklamagan).
 const _reportStatus = async (payload) => {
   return await axios.get(`/v1/economist/upload-report-status`, { params: payload?.params })
@@ -172,6 +180,7 @@ export default {
   _cancelConfirm,
   _updateStatus,
   _deleteUpload,
+  _downloadUploadFile,
   _reportStatus,
   _reportStatusExport,
   _reportsZip,

@@ -62,6 +62,8 @@ export const useOrganizationStore = defineStore('organizationStore', {
       lat: null,
       long: null,
       group: false,
+      // Korxona oylik/INPS hisobot yuklaydimi (false → ota korxona yuklaydi). Default true.
+      reports_enabled: true,
       code: null,
       ones_org_code: null,
       inn: null,
@@ -330,6 +332,8 @@ export const useOrganizationStore = defineStore('organizationStore', {
       this.originalParentId = org.parent_id ?? null
       this.payload.city_id = org?.city?.id || null
       this.payload.group = Boolean(org.group)
+      // Hisobot yuklaydimi (default true — config yo'q korxonalar uchun).
+      this.payload.reports_enabled = org.reports_enabled ?? true
       this.payload.code = org.code
       this.payload.ones_org_code = org.ones_org_code ?? null
       this.payload.inn = org.inn ?? null

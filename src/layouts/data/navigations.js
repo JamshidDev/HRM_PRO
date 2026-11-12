@@ -1,6 +1,5 @@
 import { AppPaths } from '@/utils/index.js'
 import Utils from '@/utils/Utils.js'
-import { isSalaryControlEnabled } from '@/utils/featureFlags.js'
 import icons from '@assets/icons'
 import HrSidebarIcon from '@assets/icons/HrManagement.svg'
 import DocFlowSidebarIcon from '@assets/icons/DocumentFlow.svg'
@@ -833,18 +832,14 @@ export const navigations = withRawIcons([
         color: 'bg-error',
         permission: appPermissions.economistPaymentAnalysisRead
       },
-      // Oylik nazorati — HOZIRCHA FAQAT DEV (prodda menyuda ko'rinmaydi, featureFlags).
-      ...(isSalaryControlEnabled
-        ? [
-            {
-              label: 'salaryControl.title', // Oylik nazorati
-              path: Utils.routeAccountantPathMaker(AppPaths.SalaryControl),
-              icon: Calculator24Regular,
-              color: 'bg-info',
-              permission: appPermissions.economistSalaryControlRead
-            }
-          ]
-        : []),
+      // Oylik nazorati — permission (economist-salary-control-read) + org-scope bilan.
+      {
+        label: 'salaryControl.title', // Oylik nazorati
+        path: Utils.routeAccountantPathMaker(AppPaths.SalaryControl),
+        icon: Calculator24Regular,
+        color: 'bg-info',
+        permission: appPermissions.economistSalaryControlRead
+      },
       {
         label: 'monthReport.name', // Oylik hisobot
         path: Utils.routeAccountantPathMaker(AppPaths.MonthReport),
