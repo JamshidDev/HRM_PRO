@@ -653,7 +653,8 @@
         by_whom: null,
         reason: 'Ishdagi yutuqlari uchun',
         gift: null,
-        gift_type: null
+        gift_type: null,
+        award_id: null
       },
       72: {
         reason: null,
