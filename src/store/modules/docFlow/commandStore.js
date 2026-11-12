@@ -527,7 +527,9 @@ const commandStoreOptions = {
       let params = {
         ...this.workerParams,
         // 80 — FXSH bekor qilish: faqat FXSH lavozimidagi xodimlar.
-        ...(this.payload.command_type === 80 ? { position_type: 2 } : {})
+        ...(this.payload.command_type === 80 ? { position_type: 2 } : {}),
+        // Moddiy yordam (73, 81) — faqat shtatdagi xodimlar (FXSH emas).
+        ...([73, 81].includes(this.payload.command_type) ? { staff_only: 1 } : {})
       }
       // 🔴 POYGA HIMOYASI: qidiruv (har harfda), ochilish (search=null) va scroll
       // so'rovlari ketma-ket ketadi, javoblar istalgan tartibda qaytadi —
