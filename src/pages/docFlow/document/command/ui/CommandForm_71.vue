@@ -1,13 +1,12 @@
 <script setup>
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
-  import { useComponentStore } from '@/store/modules/index.js'
   import { PersonNote20Regular, DismissCircle16Regular, Eye24Regular } from '@vicons/fluent'
   import Utils from '../../../../../utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import { isEmptyValue, useEmptyFieldMarks } from '../useEmptyFieldMarks.js'
+  import { OTHER_AWARD_ID, awardIdFromGiftType, useIncentiveAwards } from '../useIncentiveAwards.js'
 
   const store = useCommandFormStore()
-  const componentStore = useComponentStore()
   const { t } = i18n.global
   const { showErrors, status } = useEmptyFieldMarks()
 
@@ -15,13 +14,15 @@
     store.workerData = store.workerData.filter((v) => v.id !== id)
     store.payload.workers = store.payload.workers.filter((workerId) => workerId !== id)
   }
+  const awardsApi = useIncentiveAwards()
+
   const onSubmit = (mainData) => {
     const checkForm = store.workerData.every(
       (v) =>
         !isEmptyValue(v.by_whom) &&
         !isEmptyValue(v.reason) &&
-        !isEmptyValue(v.gift_type) &&
-        (v.gift_type === 5 ? !isEmptyValue(v.gift) : true)
+        !isEmptyValue(v.award_id) &&
+        (v.award_id === OTHER_AWARD_ID ? !isEmptyValue(v.gift) : true)
     )
     showErrors.value = !checkForm
     if (checkForm) {
@@ -29,8 +30,7 @@
         id: v.id,
         by_whom: v.by_whom,
         reason: v.reason,
-        gift_type: v.gift_type,
-        gift: v.gift_type === 5 ? v.gift : componentStore.giftTypes[v.gift_type - 1]?.name
+        ...awardsApi.fieldsOf(v.award_id, v.gift)
       }))
 
       return {
@@ -54,8 +54,15 @@
     onSubmit
   })
 
+  // Eski qoralama/tahrirda faqat gift_type bo'lsa — mukofot id'ga o'tkaziladi.
+  watchEffect(() => {
+    store.workerData.forEach((v) => {
+      if (v.award_id == null && v.gift_type != null) v.award_id = awardIdFromGiftType(v.gift_type)
+    })
+  })
+
   onMounted(() => {
-    componentStore._enums()
+    awardsApi.load()
   })
 </script>
 
@@ -102,21 +109,20 @@
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
       <n-form-item
         :show-feedback="false"
-        :label="$t(`documentPage.command.form.gift_type`)"
-        path="gift_type"
-        :validation-status="status(item.gift_type)"
+        :label="$t('commandPage.legacy.award')"
+        path="award_id"
+        :validation-status="status(item.award_id)"
       >
         <n-select
-          v-model:value="item.gift_type"
+          v-model:value="item.award_id"
           filterable
-          :options="componentStore.giftTypes"
-          label-field="name"
-          value-field="id"
-          :loading="componentStore.enumLoading"
+          :options="awardsApi.options.value"
+          :loading="awardsApi.loading.value"
+          :consistent-menu-width="false"
         />
       </n-form-item>
     </div>
-    <div v-if="item.gift_type === 5" class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
+    <div v-if="item.award_id === OTHER_AWARD_ID" class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
       <n-form-item
         :show-feedback="false"
         :label="$t(`documentPage.command.form.gift`)"

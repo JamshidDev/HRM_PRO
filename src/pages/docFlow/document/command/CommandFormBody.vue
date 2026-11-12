@@ -22,6 +22,7 @@
   import CommandForm_71 from './ui/CommandForm_71.vue'
   import CommandForm_72 from './ui/CommandForm_72.vue'
   import CommandForm_73 from './ui/CommandForm_73.vue'
+  import CommandForm_81 from './ui/CommandForm_81.vue'
   import CommandForm_50 from './ui/CommandForm_50.vue'
   import CommandForm_47 from './ui/CommandForm_47.vue'
   import CommandForm_74 from './ui/CommandForm_74.vue'
@@ -128,6 +129,7 @@
   const commandForm_26 = ref(null)
   const vacationForm_72 = ref(null)
   const vacationForm_73 = ref(null)
+  const commandForm_81 = ref(null)
   const commandForm_74 = ref(null)
   const commandForm_56 = ref(null)
   const commandForm_57 = ref(null)
@@ -341,6 +343,8 @@
             validate = await vacationForm_72.value?.onSubmit(mainData)
           } else if (store.payload.command_type === 73) {
             validate = await vacationForm_73.value?.onSubmit(mainData)
+          } else if (store.payload.command_type === 81) {
+            validate = await commandForm_81.value?.onSubmit(mainData)
           } else if (store.payload.command_type === 74) {
             validate = await commandForm_74.value?.onSubmit(mainData)
           } else if (store.payload.command_type === 56) {
@@ -483,7 +487,7 @@
       fillVacation55()
     } else if (store.payload.command_type === 62) {
       fillVacation62()
-    } else if ([71, 72, 73].includes(store.payload.command_type)) {
+    } else if ([71, 72, 73, 81].includes(store.payload.command_type)) {
       generationData(true)
     }
 
@@ -649,7 +653,8 @@
         by_whom: null,
         reason: 'Ishdagi yutuqlari uchun',
         gift: null,
-        gift_type: null
+        gift_type: null,
+        award_id: null
       },
       72: {
         reason: null,
@@ -661,6 +666,10 @@
         type: null,
         amount: null,
         base: null
+      },
+      81: {
+        experience_year: null,
+        experience_month: null
       }
     }
 
@@ -1022,6 +1031,9 @@
           </template>
           <template v-else-if="store.payload.command_type === 73">
             <CommandForm_73 ref="vacationForm_73" />
+          </template>
+          <template v-else-if="store.payload.command_type === 81">
+            <CommandForm_81 ref="commandForm_81" />
           </template>
           <template v-else-if="store.payload.command_type === 74">
             <CommandForm_74 ref="commandForm_74" />

@@ -12,6 +12,15 @@ const _create = async (payload) => {
   return await axios.post(`/v1/hr/commands`, payload?.data)
 }
 
+// Eski (qog'oz) buyruqni ro'yxatga olish — multipart: file (PDF), organization_id, command_type, command_number, command_date, workers[].
+const _createLegacy = async (payload) => {
+  return await axios.post(`/v1/hr/commands/legacy`, payload.data)
+}
+
+const _legacyAwards = async () => {
+  return await axios.get(`/v1/hr/commands/legacy/awards`)
+}
+
 const _viewFile = async (payload) => {
   return await axios.post(`/v1/hr/commands`, payload.data, { responseType: 'blob' })
 }
@@ -71,6 +80,8 @@ export default {
   _orgTransferAvailability,
   _index,
   _create,
+  _createLegacy,
+  _legacyAwards,
   _delete,
   _viewFile,
   _additionalData,

@@ -6,6 +6,7 @@
     CheckmarkCircle20Filled,
     DismissCircle20Filled,
     Eye20Regular,
+    DocumentCheckmark20Regular,
     Attach20Regular,
     People20Regular
   } from '@vicons/fluent'
@@ -13,6 +14,7 @@
   import { useAppBreakpoints } from '@/composables/useBreakpoint.js'
   import { UIUser, UILottieReader, UISegmentTabs } from '@/components/index.js'
   import CommandDataTab from '@/pages/docFlow/document/command/CommandDataTab.vue'
+  import LegacyCommandDataTab from '@/pages/docFlow/document/command/LegacyCommandDataTab.vue'
   import DocumentFormDataTab from '@/pages/docFlow/document/DocumentFormDataTab.vue'
   import AttachmentPreview from './ui/AttachmentPreview.vue'
   import EditRefreshIcon from '@/assets/icons/editRefreshIcon.svg'
@@ -133,7 +135,10 @@
   const selfConfirmation = computed(() =>
     store.confirmations?.find((v) => v.worker?.id === accountStore.account?.worker?.id)
   )
+  // Ro'yxatdan o'tkazilgan (qog'ozdagi) buyruq — tizimda imzolanmagan.
+  const isLegacyDoc = computed(() => !!store.document?.document?.is_legacy)
   const signState = computed(() => {
+    if (isLegacyDoc.value) return 'registered'
     if (store.permissions?.canSignature && !isSigned.value) return 'sign'
     if (selfConfirmation.value?.status?.id === 3) return 'signed'
     if (selfConfirmation.value?.status?.id === 4) return 'rejected'
@@ -164,6 +169,14 @@
           text: 'text-fig-text-red',
           badge: 'bg-fig-red-100 text-fig-text-red',
           border: 'border-fig-red-100'
+        },
+        registered: {
+          icon: DocumentCheckmark20Regular,
+          label: 'commandPage.legacy.viewerTitle',
+          sub: 'commandPage.legacy.viewerSub',
+          text: 'text-fig-chip-brand-text',
+          badge: 'bg-fig-chip-brand text-fig-chip-brand-text',
+          border: 'border-fig-blue-100'
         },
         none: {
           icon: Eye20Regular,
@@ -356,6 +369,7 @@
         const documentOrgId = v.document.organization_id
 
         store.permissions.canEdit =
+          !v.document.is_legacy &&
           v.document.confirmation.id !== 3 &&
           (accountRoleName === 'Admin' || accountOrgId === documentOrgId)
         store.permissions.canSignature = v.signature.signature
@@ -719,8 +733,9 @@
                   key="data"
                   class="h-full flex flex-col"
                 >
+                  <LegacyCommandDataTab v-if="isLegacyDoc" />
                   <CommandDataTab
-                    v-if="isCommand"
+                    v-else-if="isCommand"
                     :command-id="store.document_id"
                     :can-edit-signers="canRoute && showEditButton"
                     @saved="onDataSaved"

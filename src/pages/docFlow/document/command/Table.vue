@@ -110,12 +110,12 @@
     {
       key: 'confirmation',
       title: t('content.status'),
-      minWidth: 160
+      width: 172
     },
     {
       key: 'generate',
       title: t('content.document'),
-      minWidth: 160
+      width: 120
     },
     {
       key: 'command_date',
@@ -134,13 +134,17 @@
     {
       label: t('content.edit'),
       key: Utils.ActionTypes.edit,
-      icon: UIHelper.renderIcon(Edit32Regular)
+      icon: UIHelper.renderIcon(Edit32Regular),
+      // Eski (ro'yxatga olingan) buyruq tahrirlanmaydi; aniq `disabled` avtomatik ruxsat tekshiruvini almashtiradi.
+      disabled: (row) =>
+        Boolean(row?.is_legacy) || !accStore.checkPermission(accStore.pn.hrCommandsWrite)
     },
     {
       label: t('docxEditor.title'),
       key: Utils.ActionTypes.editV2,
       icon: UIHelper.renderIcon(DocumentEdit20Regular),
-      disabled: (row) => isApproved(row) || !accStore.checkPermission(accStore.pn.hrCommandsWrite),
+      disabled: (row) =>
+        isApproved(row) || row?.is_legacy || !accStore.checkPermission(accStore.pn.hrCommandsWrite),
       action: onEditV2
     },
     {
@@ -167,11 +171,14 @@
   >
     <!-- Tur nomi ostida yaratilgan sana — shartnoma/qo'sh.kelishuv/ariza jadvallari bilan bir xil. -->
     <template #cell-type="{ row }">
-      <UITableNameCell
-        :name="row?.type?.name"
-        :created-at="row.created_at"
-        @click="onOpenFile(row.id)"
-      />
+      <div class="flex items-start gap-2 min-w-0">
+        <UITableNameCell
+          class="min-w-0"
+          :name="row?.type?.name"
+          :created-at="row.created_at"
+          @click="onOpenFile(row.id)"
+        />
+      </div>
     </template>
 
     <!-- Maketda raqam chip'siz, oddiy matn ko'rinishida va chapga tekislangan. -->
@@ -218,7 +225,11 @@
     <template #cell-confirmation="{ row }">
       <!-- UIStatus'ning umumiy ro'yxatida id 6 = «Active» (yashil) — bekor qilingan
            buyruq yashil chiqmasligi uchun rang majburlanadi. -->
-      <UIStatus :status="row?.confirmation" fig :tone="row?.is_cancelled ? 'red' : null" />
+      <UIStatus
+        :status="row?.confirmation"
+        fig
+        :tone="row?.is_cancelled ? 'red' : row?.is_legacy ? 'brand' : null"
+      />
     </template>
 
     <!-- Maketda tayyor hujjat BREND (ko'k) chipda, semantik yashilda emas —
