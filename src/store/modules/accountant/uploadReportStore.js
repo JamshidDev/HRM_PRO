@@ -565,6 +565,32 @@ export const useUploadReportStore = defineStore('uploadReport', {
           this.deleteLoading = false
         })
     },
+    // Saqlangan hisobot faylini yuklab olish (upload id) — yashirilgan xodim F.I.O «xxx»
+    // maskalangan holda (backend). Presigned URL o'rniga blob. `name` — fayl nomi (ixtiyoriy).
+    _downloadUploadFile(id, name) {
+      if (!id) return
+      $ApiService.accountantService
+        ._downloadUploadFile({ id })
+        .then(async (res) => {
+          const blob = res?.data
+          // Biznes-xato HTTP 200 + JSON (blob) qaytarishi mumkin — fayl emas, xato.
+          if (blob && blob.type && blob.type.includes('application/json')) {
+            let msg = t('content.error')
+            try {
+              const parsed = JSON.parse(await blob.text())
+              if (typeof parsed?.message === 'string') msg = parsed.message
+            } catch {
+              // JSON emas — standart xato xabari qoladi.
+            }
+            $Toast.error(msg)
+            return
+          }
+          Utils.blobFileDownload(blob, XLSX_MIME, name || 'hisobot.xlsx')
+        })
+        .catch(() => {
+          $Toast.error(t('content.error'))
+        })
+    },
     openVisible(data) {
       this.visible = data
     },

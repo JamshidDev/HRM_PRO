@@ -315,6 +315,10 @@ export const ENFORCED = new Set([
   // tab) grantable bo'lishi uchun. read = ko'rish; write = yashirish/qaytarish.
   'salary-hidden-read',
   'salary-hidden-write',
+  // 2026-11-12 — Oylik nazorati (salary-control, migr 0185). Rol formasidan grantable:
+  // read = ko'rish (menyu); export = Excel eksport. Org-scope rolga bog'liq (backend).
+  'economist-salary-control-read',
+  'economist-salary-control-export',
   'chat-news-read',
   'chat-news-write',
   'chat-news-categories-read',
@@ -770,6 +774,9 @@ export const MEANINGFUL = new Set([
   // 2026-10-14 — Oylik yashirish (salary_hidden, migr 0160).
   'salary-hidden-read',
   'salary-hidden-write',
+  // 2026-11-12 — Oylik nazorati (salary-control, migr 0185).
+  'economist-salary-control-read',
+  'economist-salary-control-export',
   'chat-news-read',
   'chat-news-write',
   'chat-news-categories-read',
@@ -1093,6 +1100,16 @@ export const PERMISSION_GROUPS = [
       { prefix: 'economist-tax-four', label: 'taxFour.name' },
       { prefix: 'economist-tax-five', label: 'taxFive.name' },
       { prefix: 'economist-pension-payments', label: 'pensionPayment.name' },
+      // Oylik nazorati (salary-control) — 1C oylik hisobotidan analitika dashboardi.
+      // read = ko'rish (menyu); export = Excel. Org-scope rolga bog'liq (backend childIds).
+      {
+        prefix: 'economist-salary-control',
+        label: 'salaryControl.title',
+        actions: [
+          { slug: 'economist-salary-control-read', label: "Ko'rish" },
+          { slug: 'economist-salary-control-export', label: 'Eksport (Excel)' }
+        ]
+      },
       // Tarif setkasi — TOR ruxsat (migr 0080/0081). Read/write/delete; bazaviy
       // `tariff-grid-access` (menyu) o'rniga frontend/route `-read` tekshiradi.
       { prefix: 'tariff-grid-access', label: 'tariffGrid.name' },

@@ -1,6 +1,5 @@
 import Utils from '@/utils/Utils.js'
 import { AppLayouts, AppPaths } from '@/utils/index.js'
-import { isSalaryControlEnabled } from '@/utils/featureFlags.js'
 
 export const accountantRoutes = [
   {
@@ -17,18 +16,14 @@ export const accountantRoutes = [
       layout: AppLayouts.main
     }
   },
-  // Oylik nazorati — HOZIRCHA FAQAT DEV (prodda route ro'yxatdan o'tmaydi, featureFlags).
-  ...(isSalaryControlEnabled
-    ? [
-        {
-          path: Utils.routeAccountantPathMaker(AppPaths.SalaryControl),
-          component: () => import('@/pages/accountant/salaryControl/page.vue'),
-          meta: {
-            layout: AppLayouts.main
-          }
-        }
-      ]
-    : []),
+  // Oylik nazorati — permission (economist-salary-control-read) + org-scope bilan boshqariladi.
+  {
+    path: Utils.routeAccountantPathMaker(AppPaths.SalaryControl),
+    component: () => import('@/pages/accountant/salaryControl/page.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
   {
     path: Utils.routeAccountantPathMaker(AppPaths.MonthReport),
     component: () => import('@/pages/accountant/monthReport/page.vue'),
