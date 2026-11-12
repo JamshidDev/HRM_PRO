@@ -4,7 +4,7 @@
   import { PersonNote20Regular, DismissCircle16Regular, Eye24Regular, Copy16Regular, ClipboardPaste20Regular } from '@vicons/fluent'
   import Utils from '../../../../../utils/Utils.js'
   import i18n from '@/i18n/index.js'
-  import { UISelect } from '@/components/index.js'
+  import { UISelect, UIDepartmentSelect } from '@/components/index.js'
   import { useAppSetting } from '@/utils/index.js'
   import validationRules from '@/utils/validationRules.js'
 
@@ -91,16 +91,8 @@
   const onChangeStructure = (v, workerId) => {
     const index = store.vacations62.findIndex((a) => a.id === workerId)
     store.vacations62[index].work_place_id = v
-    store.vacations62[index].departmentList = []
+    // Bo'lim daraxtini UIDepartmentSelect o'zi yuklaydi (source=all — begona korxona ham).
     store.vacations62[index].department_id = []
-    store.vacations62[index].loading = true
-    if (v.length > 0) {
-      // Begona korxona bo'limlari ham kerak — kesimsiz daraxt.
-      componentStore._allDepartmentTree(v[0].id, (x) => {
-        store.vacations62[index].departmentList = x
-        store.vacations62[index].loading = false
-      })
-    }
   }
 
   const getLastVacation = (v) => {
@@ -277,14 +269,11 @@
           :label="$t(`commandPage.form_62.department_id`)"
           path="department_id"
         >
-          <UISelect
-            :options="item.departmentList"
-            :model-v="item.department_id"
-            @updateModel="(v) => (item.department_id = v)"
-            :checked-val="item.depCheck"
-            @updateCheck="(v) => (item.depCheck = v)"
-            :multiple="false"
-            :loading="item.loading"
+          <UIDepartmentSelect
+            v-model="item.department_id"
+            :organization="item.work_place_id"
+            source="all"
+            return-object
           />
         </n-form-item>
       </div>

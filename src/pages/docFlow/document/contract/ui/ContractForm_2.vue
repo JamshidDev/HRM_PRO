@@ -2,7 +2,7 @@
   import { useContractFormStore } from '../contractFormStore.js'
   import Utils from '@/utils/Utils.js'
   import { UISelect, UIFigField } from '@/components/index.js'
-  import UIDepartment from '@/components/ui/UIDepartment.vue'
+  import UIDepartmentSelect from '@/components/ui/UIDepartmentSelect.vue'
   import { useComponentStore } from '@/store/modules/index.js'
   import UIHelper from '@utils/UIHelper.js'
 
@@ -21,15 +21,12 @@
     store.payload.organization_id = v
     store.payload.department_id = []
     componentStore.depParams.search = null
-    componentStore.departmentList = []
 
     componentStore.departmentPositionList = []
     store.payload.department_position_id = null
 
     if (v.length === 0) return
     componentStore.depParams.organizations = v[0].id
-    // Butun korxona bo'limlari (HR yordamchisi ham).
-    componentStore._departmentTree()
   }
 
   onMounted(() => {
@@ -69,13 +66,11 @@
         :label="$t('documentPage.form.department')"
         path="department_id"
       >
-        <UIDepartment
-          v-model:search="componentStore.depParams.search"
-          :model-v="store.payload.department_id"
-          @updateModel="onChangeDepartment"
-          :checked-val="store.departmentCheck"
-          @updateCheck="(v) => (store.departmentCheck = v)"
-          :multiple="false"
+        <UIDepartmentSelect
+          :model-value="store.payload.department_id"
+          @update:model-value="onChangeDepartment"
+          :organization="store.payload.organization_id"
+          return-object
         />
       </UIFigField>
 
