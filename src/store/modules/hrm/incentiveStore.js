@@ -18,7 +18,8 @@ export const useIncentiveStore = defineStore('incentiveStore', {
       year: null,
       month: null,
       status: null,
-      award_id: null
+      award_id: null,
+      departments: []
     },
     awards: [],
     awardsLoading: false,
@@ -34,7 +35,8 @@ export const useIncentiveStore = defineStore('incentiveStore', {
         year: this.params.year || undefined,
         month: this.params.month || undefined,
         status: this.params.status || undefined,
-        award_id: this.params.award_id || undefined
+        award_id: this.params.award_id || undefined,
+        departments: this.params.departments.toString() || undefined
       }
       // BACKEND: GET /v1/hr/incentives ro'yxatni `id` bo'yicha (yaratilish tartibi) qaytaradi —
       // sanalar aralash chiqadi (07.07, 22.06, 15.12.2025, 24.12.2025…). `date` bo'yicha kamayish
@@ -70,6 +72,7 @@ export const useIncentiveStore = defineStore('incentiveStore', {
         month: this.params.month || undefined,
         status: this.params.status || undefined,
         award_id: this.params.award_id || undefined,
+        departments: this.params.departments.toString() || undefined,
         download: true
       }
       $ApiService.incentiveService
