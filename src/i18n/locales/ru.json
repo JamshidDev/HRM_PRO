@@ -3707,6 +3707,10 @@
       "status": "Статус",
       "organization": "Организация",
       "onVacation": "в отпуске до",
+      "expired": "Просрочен",
+      "daysOverdue": "просрочен на {n} дн.",
+      "daysLeft": "осталось {n} дн.",
+      "conclusion": "Заключение: {name}",
       "file": "Файлы"
     }
   },

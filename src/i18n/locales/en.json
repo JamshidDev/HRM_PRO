@@ -3699,6 +3699,10 @@
       "status": "Status",
       "organization": "Organization",
       "onVacation": "on vacation until",
+      "expired": "Expired",
+      "daysOverdue": "{n} days overdue",
+      "daysLeft": "{n} days left",
+      "conclusion": "Conclusion: {name}",
       "file": "Files"
     }
   },

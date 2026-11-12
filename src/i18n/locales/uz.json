@@ -3719,6 +3719,10 @@
       "status": "Holati",
       "organization": "Korxona",
       "onVacation": "gacha ta'tilda",
+      "expired": "Muddati o'tgan",
+      "daysOverdue": "{n} kun o'tgan",
+      "daysLeft": "{n} kun qoldi",
+      "conclusion": "Xulosa: {name}",
       "file": "Fayllar"
     }
   },

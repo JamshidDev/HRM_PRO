@@ -54,6 +54,18 @@ import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
     store._index()
   }
 
+  // `days` — backend hisoblaydi: manfiy = ko'rik muddati o'tgan, musbat = qolgan kunlar.
+  const SOON_DAYS = 30
+  const isExpired = (row) => Number(row?.days) < 0
+  const daysLabel = (row) => {
+    const n = Math.abs(Number(row?.days) || 0)
+    return isExpired(row) ? t('medPage.form.daysOverdue', { n }) : t('medPage.form.daysLeft', { n })
+  }
+  const daysType = (row) => {
+    if (isExpired(row)) return Utils.colorTypes.error
+    return Number(row?.days) <= SOON_DAYS ? Utils.colorTypes.warning : Utils.colorTypes.success
+  }
+
   const columns = computed(() => [
     {
       key: 'worker',
@@ -63,7 +75,7 @@ import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
     {
       key: 'status',
       title: t('medPage.form.status'),
-      width: 120
+      width: 150
     },
     {
       key: 'days',
@@ -141,7 +153,15 @@ import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
     </template>
 
     <template #cell-status="{ row }">
-      <div>
+      <!-- Muddati o'tgan ko'rik: shifokor xulosasi (masalan «Sog'lom») endi amal qilmaydi —
+           holat «Muddati o'tgan», xulosa ostida kichik kulrang matn bo'lib qoladi (DAS-14226). -->
+      <div v-if="isExpired(row)" class="flex flex-col gap-0.5">
+        <UIStatus :status="{ name: $t('medPage.form.expired'), id: 7 }" />
+        <span class="text-xs text-textColor3 leading-tight">
+          {{ $t('medPage.form.conclusion', { name: row.status?.name }) }}
+        </span>
+      </div>
+      <div v-else>
         <UIStatus
           :status="{
             name: row.status.name,
@@ -163,8 +183,8 @@ import { Delete20Regular, Edit32Regular } from '@vicons/fluent'
         <UIBadge
           :class="[row.vacation && '!text-xs']"
           :show-icon="false"
-          :label="Math.abs(row.days) + ' ' + $t('date.day')"
-          :type="row.days < 0 ? Utils.colorTypes.error : Utils.colorTypes.success"
+          :label="daysLabel(row)"
+          :type="daysType(row)"
         />
       </div>
     </template>

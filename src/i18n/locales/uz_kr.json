@@ -3386,6 +3386,10 @@
       "status": "Ҳолати",
       "organization": "Корхона",
       "onVacation": "гача таътилда",
+      "expired": "Муддати ўтган",
+      "daysOverdue": "{n} кун ўтган",
+      "daysLeft": "{n} кун қолди",
+      "conclusion": "Хулоса: {name}",
       "file": "Файллар"
     }
   },
