@@ -7,6 +7,7 @@
     ArrowDownload20Filled,
     Checkmark20Filled,
     Delete20Regular,
+    ArrowReset20Regular,
     Dismiss20Regular,
     CheckmarkCircle16Filled,
     LockClosed20Filled,
@@ -842,6 +843,14 @@
    * bo'lim yoki qidiruv o'zgarsa ro'yxat yangilanadi va tanlov tozalanadi.
    * ---------------------------------------------------------------------- */
   const selectedCells = ref(new Set())
+  // Yopilish animatsiyasida «0» ko'rinmasin — oxirgi son saqlanadi.
+  const shownSelectedCount = ref(0)
+  watch(
+    () => selectedCells.value.size,
+    (n) => {
+      if (n) shownSelectedCount.value = n
+    }
+  )
   const selectionAdd = ref(false)
   const isSelected = (row, col) => selectedCells.value.has(`${row}|${col}`)
   const clearSelection = () => {
@@ -889,7 +898,11 @@
     else return
     clearSelection()
   }
-  // ✕ / Esc — tanlov ham, cho'tka ham bekor.
+  // Bekor qiladigan narsa bormi — tanlov, harf yoki o'chirg'ich.
+  const canResetFill = computed(
+    () => Boolean(selectedCells.value.size || store.payload.status || store.payload.isClearing)
+  )
+  // «Bekor qilish» / Esc — tanlov ham, cho'tka ham bekor.
   const resetFill = () => {
     clearSelection()
     store.payload.status = null
@@ -1508,25 +1521,30 @@
              Doim ko'rinadi (ochiq tabelda): harf → katak yoki katak → harf. -->
         <Transition name="ts-selbar">
           <div v-if="!timesheetLocked" class="ts-selbar no-selectable-item">
-            <template v-if="selectedCells.size">
-              <div class="ts-selbar-count">
-                <b>{{ selectedCells.size }}</b>
-                <span>{{ $t('timesheetPage.selectedLabel') }}</span>
+            <!-- Hisoblagich silliq ochiladi / yopiladi — panel kengligi sakramasin. -->
+            <Transition name="ts-selbar-lead">
+              <div v-if="selectedCells.size" class="ts-selbar-lead">
+                <div class="ts-selbar-count">
+                  <b>{{ shownSelectedCount }}</b>
+                  <span>{{ $t('timesheetPage.selectedLabel') }}</span>
+                </div>
+                <span class="ts-selbar-divider" />
               </div>
-              <span class="ts-selbar-divider" />
-            </template>
+            </Transition>
             <FillControls
               :has-selection="Boolean(selectedCells.size)"
               :preview-details="previewDetails"
               @pick="applySelection"
             >
               <template #end>
+                <!-- ✕ «yopish»ga o'xshardi — endi matnli «Bekor qilish» (tanlov + harf + o'chirg'ich). -->
                 <n-tooltip :delay="300">
                   <template #trigger>
-                    <n-button circle quaternary @click="resetFill">
+                    <n-button :disabled="!canResetFill" tertiary @click="resetFill">
                       <template #icon>
-                        <n-icon :component="Dismiss20Regular" />
+                        <n-icon :component="ArrowReset20Regular" />
                       </template>
+                      {{ $t('content.cancel') }}
                     </n-button>
                   </template>
                   {{ $t('timesheetPage.selectionKeys') }}
@@ -4109,6 +4127,33 @@
   .ts-selbar-leave-to {
     opacity: 0;
     transform: translate(-50%, 12px);
+  }
+  .ts-selbar-lead {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: 8px;
+    max-width: 240px;
+    overflow: hidden;
+  }
+  .ts-selbar-lead-enter-active,
+  .ts-selbar-lead-leave-active {
+    transition:
+      max-width 0.25s ease,
+      margin 0.25s ease,
+      opacity 0.18s ease;
+  }
+  .ts-selbar-lead-enter-from,
+  .ts-selbar-lead-leave-to {
+    max-width: 0;
+    margin-right: -8px;
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ts-selbar-lead-enter-active,
+    .ts-selbar-lead-leave-active {
+      transition: none;
+    }
   }
   .ts-selbar-count {
     display: flex;
