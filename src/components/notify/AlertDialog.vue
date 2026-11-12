@@ -1,5 +1,5 @@
 <script setup>
-  import { alertState, closeAlert, confirmAlert } from './alertDialog.js'
+  import { alertState, cancelAlert, closeAlert, confirmAlert } from './alertDialog.js'
   import { useAppStore } from '@stores'
   import i18n from '@/i18n/index.js'
   import { useNotificationSound } from '@/composables/useNotificationSound.js'
@@ -103,7 +103,7 @@
       </template>
 
       <div v-if="current.onConfirm" class="mt-6 grid grid-cols-2 gap-3">
-        <n-button secondary size="large" class="!rounded-xl" @click="closeAlert">
+        <n-button secondary size="large" class="!rounded-xl" @click="cancelAlert">
           {{ current.cancelText || $t('content.cancel') }}
         </n-button>
         <n-button type="primary" size="large" class="!rounded-xl" @click="confirmAlert">

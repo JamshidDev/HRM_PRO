@@ -20,6 +20,17 @@
     }
   })
   const show = ref(false)
+
+  // Muddati o'tgan imtihonni boshlab bo'lmaydi (TopicCard bilan bir xil qoida, DAS-14232).
+  const isExpired = (deadline) => {
+    if (!deadline) return false
+    const d = new Date(deadline)
+    if (Number.isNaN(d.getTime())) return false
+    d.setHours(0, 0, 0, 0)
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    return d < today
+  }
 </script>
 <template>
   <div class="rounded-md overflow-hidden">
@@ -65,7 +76,8 @@
             :disabled="
               (exam.results.findIndex((i) => typeof i.result != 'number') !== -1 &&
                 !examStore.exam_storage?.[exam.id]) ||
-              exam.results.length >= exam.chances
+              exam.results.length >= exam.chances ||
+              isExpired(exam.deadline)
             "
             @click="$emit('start')"
           >

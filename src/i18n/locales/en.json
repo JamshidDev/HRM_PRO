@@ -2644,7 +2644,7 @@
     "attempts": "Attempts",
     "viewResult": "View result",
     "attemptsCount": "Available attempts",
-    "nAttempts": "{n} attempts",
+    "nAttempts": "{n} attempts left",
     "question_count": "Questions",
     "nQuestions": "{n} questions",
     "examName": "Name: {n}",
@@ -2777,6 +2777,7 @@
   },
   "dashboardPage": {
     "comingSoon": "Coming soon",
+    "comingSoonHint": "This metric is being developed",
     "name": "Dashboard",
     "card": {
       "type": "Vacation type",

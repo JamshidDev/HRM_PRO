@@ -2664,7 +2664,7 @@
     "attempts": "Urinishlar",
     "viewResult": "Natijani ko'rish",
     "attemptsCount": "Mavjud urinishlar",
-    "nAttempts": "{n} ta urinish",
+    "nAttempts": "{n} ta urinish qoldi",
     "question_count": "Savollar",
     "nQuestions": "{n} ta savol",
     "examName": "Nomi: {n}",
@@ -2797,6 +2797,7 @@
   },
   "dashboardPage": {
     "comingSoon": "Tez orada",
+    "comingSoonHint": "Bu ko'rsatkich ishlab chiqilmoqda",
     "name": "Dashboard",
     "card": {
       "type": "Ta'til turi",
