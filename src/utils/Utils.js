@@ -360,7 +360,8 @@ const colorTypes = {
   error: 'Error',
   success: 'Success',
   dark: 'Dark',
-  secondary: 'Secondary'
+  secondary: 'Secondary',
+  primary: 'Primary'
 }
 
 const blobFileDownload = (file, contentType, fileName) => {

@@ -644,6 +644,10 @@
     },
     "no-roles": "Бириктирилган роллар йўқ!",
     "passwordChangedAt": "Парол янгиланган",
+    "eimzoSkip": "E-IMZO",
+    "eimzoSkipDirect": "Шахсан E-IMZO тасдиғидан озод",
+    "eimzoSkipByRole": "Роли орқали озод (Admin ёки ролда «Тасдиқдан озод»)",
+    "eimzoSkipAdminOnly": "Фақат Admin ўзгартира олади",
     "daysAgo": "кун олдин",
     "pinTitle": "ЖШШИР таҳрири",
     "pin": "ЖШШИР",
@@ -3384,9 +3388,8 @@
       "no-added": "Бириктирилмаган ходимлар",
       "device": "Қурилмалар",
       "membership": "Ходим тури",
-      "membershipOwn": "Корхона ходимлари",
-      "membershipGuest": "Меҳмонлар (бошқа корхона)",
-      "membershipNotWorking": "Ишламайдиганлар",
+      "membershipOwn": "Ишчи ходимлар",
+      "membershipGuest": "Меҳмон",
       "notWorking": "Ишламайди"
     },
     "workDurationPage": {
@@ -3734,6 +3737,7 @@
   },
   "incentive": {
     "name": "Рағбатлантиришлар",
+    "giftType": "Мукофот тури",
     "form": {
       "type": "Тури",
       "who": "Ким томонидан",

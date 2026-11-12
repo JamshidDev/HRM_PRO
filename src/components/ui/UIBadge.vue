@@ -60,6 +60,11 @@
       id: Utils.colorTypes.secondary,
       type: 'ui--badge-secondary',
       icon: Circle48Filled
+    },
+    {
+      id: Utils.colorTypes.primary,
+      type: 'ui--badge-primary',
+      icon: Circle48Filled
     }
   ]
 
@@ -150,6 +155,16 @@
     }
     .ui--badge-icon {
       color: var(--secondary-color) !important;
+    }
+  }
+  .ui--badge-primary {
+    border-color: rgba(18, 121, 240, 0.08);
+    background-color: rgba(18, 121, 240, 0.08);
+    .ui--badge-label {
+      color: var(--primary-color);
+    }
+    .ui--badge-icon {
+      color: var(--primary-color) !important;
     }
   }
 </style>

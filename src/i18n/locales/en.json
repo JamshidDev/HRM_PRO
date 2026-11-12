@@ -725,6 +725,10 @@
     },
     "no-roles": "No roles assigned!",
     "passwordChangedAt": "Password changed",
+    "eimzoSkip": "E-IMZO",
+    "eimzoSkipDirect": "Personally exempt from E-IMZO verification",
+    "eimzoSkipByRole": "Exempt via role (Admin or role permission)",
+    "eimzoSkipAdminOnly": "Only Admin can change",
     "daysAgo": "days ago",
     "pinTitle": "Edit PINFL",
     "pin": "PINFL",
@@ -3682,9 +3686,8 @@
       "no-added": "Not attached employees",
       "device": "Devices",
       "membership": "Employee type",
-      "membershipOwn": "Organization employees",
-      "membershipGuest": "Guests (other organization)",
-      "membershipNotWorking": "Not employed",
+      "membershipOwn": "Employees",
+      "membershipGuest": "Guests",
       "notWorking": "Not employed"
     },
     "workDurationPage": {
@@ -4045,6 +4048,7 @@
   },
   "incentive": {
     "name": "Incentives",
+    "giftType": "Award type",
     "form": {
       "type": "Type",
       "who": "By whom",
