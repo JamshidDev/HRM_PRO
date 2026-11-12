@@ -58,7 +58,6 @@ import FileIcon from '@/assets/icons/figFile.svg'
     // osilib turardi — foydalanuvchi ota-bo'limni na ko'rardi, na o'zgartirardi.
     store.parentElement = null
     store.elementId = row.id
-    componentStore._departments()
     componentStore._regions()
     store._level()
     store.payload.name = row.name
@@ -76,7 +75,6 @@ import FileIcon from '@/assets/icons/figFile.svg'
     if (store.payload.region_id) {
       store._districts(store.payload.region_id)
     }
-    componentStore.departmentList = parent ? [parent] : []
     store.refreshTarget = row.__parent
     store.visibleType = false
     store.visible = true
@@ -84,7 +82,6 @@ import FileIcon from '@/assets/icons/figFile.svg'
 
   const onAddChild = (row) => {
     if (!accStore.checkAction(accStore.pn.hrDepartmentsWrite)) return
-    componentStore._departments()
     componentStore._structures()
     componentStore._regions()
     store._level()

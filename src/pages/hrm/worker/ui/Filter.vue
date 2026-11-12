@@ -5,7 +5,7 @@
     useExportStore,
     useAccountStore
   } from '@/store/modules/index.js'
-  import { UINSelect, UIPageFilter, UISelect, UIToggleTag } from '@/components/index.js'
+  import { UINSelect, UIPageFilter, UISelect, UIToggleTag, UIDepartmentSelect } from '@/components/index.js'
   import { useAppBreakpoints } from '@/composables/index.js'
   import {
     ArrowCounterclockwise20Regular,
@@ -17,7 +17,6 @@
   import { AppPaths, appPermissions, useDebounce } from '@/utils/index.js'
   import contractIcon from '@/assets/icons/contract.svg?url'
   import ReportMorphButton from './ReportMorphButton.vue'
-  import DepartmentTreeFilter from './DepartmentTreeFilter.vue'
   import { onBeforeRouteLeave, useRouter } from 'vue-router'
 
   const store = useWorkerStore()
@@ -34,12 +33,6 @@
   const onSearchPositionEv = (v) => {
     store.filterPosParams.search = v
     store._getFilterPositions()
-  }
-
-  const fetchDepartment = useDebounce(store._getFilterDepartments)
-  const onSearchDepartmentEv = (v) => {
-    store.filterDepParams.search = v
-    store._getFilterDepartments()
   }
 
   // [↺ Tarix] — barcha xodimlar bo'yicha o'zgarishlar tarixi. Bitta xodimniki
@@ -76,14 +69,10 @@
     store.params.positions = []
 
     store.filterPositionList = []
-    store.filterDepartmentList = []
 
     filterEvent()
 
     if (v.length === 0) return
-
-    store.filterDepParams.page = 1
-    fetchDepartment()
 
     store.filterPosParams.page = 1
     fetchPosition()
@@ -184,30 +173,6 @@
     filterEvent()
   }
 
-  // Bo'lim tanlovi: ro'yxat (standart) yoki daraxt — daraxt faqat bitta korxonada.
-  const singleOrgId = computed(() =>
-    store.params.organizations.length === 1 ? store.params.organizations[0].id : null
-  )
-  watch(singleOrgId, (id) => {
-    if (!id && store.deptView === 'tree') {
-      store.deptView = 'list'
-      store.params.departments = []
-    }
-  })
-
-  const treeNodes = ref([])
-  const onChangeDeptView = (v) => {
-    // Daraxtda tanlanganlar ro'yxatda ham nomi bilan ko'rinsin.
-    if (v === 'list' && treeNodes.value.length) {
-      const orgName = store.params.organizations[0]?.name
-      const extra = treeNodes.value.map((n) => ({ id: n.id, name: n.name, position: orgName }))
-      store.filterDepartmentList = [
-        ...new Map([...extra, ...store.filterDepartmentList].map((x) => [x.id, x])).values()
-      ]
-    }
-    store.deptView = v
-  }
-
   const onChangeDepartment = () => {
     componentStore.filterPositionParams.departments = store.params.departments.toString()
     store.params.positions = []
@@ -301,7 +266,6 @@
 
   const defaultEv = (v) => {
     store.params.organizations = v
-    fetchDepartment()
     fetchPosition()
   }
 
@@ -375,42 +339,13 @@
           </div>
 
           <div class="col-span-12 sm:col-span-6">
-            <div class="dept-view-head">
-              <label>{{ $t('workerPage.filter.department') }}</label>
-              <n-tooltip :disabled="!!singleOrgId">
-                <template #trigger>
-                  <n-radio-group
-                    class="age-mode-group dept-view-group"
-                    :value="store.deptView"
-                    :disabled="!singleOrgId"
-                    @update:value="onChangeDeptView"
-                  >
-                    <n-radio-button value="list">{{ $t('workerPage.filter.deptList') }}</n-radio-button>
-                    <n-radio-button value="tree">{{ $t('workerPage.filter.deptTree') }}</n-radio-button>
-                  </n-radio-group>
-                </template>
-                {{ $t('workerPage.filter.deptTreeHint') }}
-              </n-tooltip>
-            </div>
-            <DepartmentTreeFilter
-              v-if="store.deptView === 'tree' && singleOrgId"
-              :organization-id="singleOrgId"
+            <label>{{ $t('workerPage.filter.department') }}</label>
+            <UIDepartmentSelect
               v-model="store.params.departments"
-              @nodes="(n) => (treeNodes = n)"
-              @change="onChangeDepartment"
-            />
-            <UINSelect
-              v-else
+              :organization="store.params.organizations"
               multiple
-              clearable
-              :disabled="store.params.organizations.length === 0"
-              :loading="store.filterDepartmentLoading"
-              :options="store.filterDepartmentList"
-              :total-count="store.filterDepartmentTotal"
-              v-model:value="store.params.departments"
-              @update:value="onChangeDepartment"
-              :query="store.filterDepParams.search"
-              @onSearch="onSearchDepartmentEv"
+              own
+              @update:model-value="onChangeDepartment"
             />
           </div>
 
@@ -845,39 +780,6 @@
     border: 3px solid var(--surface-line);
     border-radius: 12px;
     background: #eaecf0;
-  }
-
-  /* Bo'lim filtri: Ro'yxat | Daraxt — yorliq qatoriga sig'adigan ixcham variant. */
-  .dept-view-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 6px;
-  }
-
-  .worker-filter-panel .dept-view-head > label {
-    margin-bottom: 0;
-  }
-
-  .age-mode-group.dept-view-group {
-    width: auto;
-    height: 24px;
-    border-width: 2px;
-    border-radius: 8px;
-  }
-
-  .worker-filter-panel .dept-view-group :deep(label) {
-    display: flex;
-    margin-bottom: 0;
-  }
-
-  .dept-view-group :deep(.n-radio-button) {
-    padding: 0 8px;
-  }
-
-  .dept-view-group :deep(.n-radio-button__label) {
-    font-size: 12px;
   }
 
   .age-mode-group :deep(.n-radio-button) {

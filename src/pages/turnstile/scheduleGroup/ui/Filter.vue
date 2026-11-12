@@ -1,6 +1,6 @@
 <script setup>
   import { useAccountStore, useComponentStore, useShiftTypeStore } from '@/store/modules/index.js'
-  import { UINSelect, UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIPageFilter, UISelect, UIDepartmentSelect } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
 
   const store = useShiftTypeStore()
@@ -129,13 +129,12 @@
         </div>
         <div class="col-span-12">
           <label>{{ $t('content.department') }}</label>
-          <UINSelect
+          <UIDepartmentSelect
+            v-model="store.groupParams.departments"
+            :organization="store.groupParams.organizations"
+            source="schedule"
             multiple
-            clearable
-            :loading="store.departmentGroupLoading"
-            :options="store.departmentGroupList"
-            v-model:value="store.groupParams.departments"
-            @update:value="filterEvent"
+            @update:model-value="filterEvent"
           />
         </div>
       </div>

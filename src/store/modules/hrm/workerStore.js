@@ -87,8 +87,6 @@ export const useWorkerStore = defineStore('workerStore', {
     filterDepartmentList: [],
     filterDepartmentLoading: false,
     filterDepartmentTotal: 0,
-    // Bo'lim filtri ko'rinishi: 'list' (standart) yoki 'tree' (faqat bitta korxonada).
-    deptView: 'list'
   }),
   actions: {
     _workerRoles() {

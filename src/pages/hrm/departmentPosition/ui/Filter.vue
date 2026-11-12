@@ -5,7 +5,7 @@
     useComponentStore,
     useAccountStore
   } from '@/store/modules/index.js'
-  import { UINSelect, UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIPageFilter, UISelect, UIDepartmentSelect } from '@/components/index.js'
   import { AppPaths, useDebounce, generateUUIDKey } from '@/utils/index.js'
   const accStore = useAccountStore()
   const store = useDepartmentPositionStore()
@@ -19,17 +19,7 @@
     key: undefined
   }))
   const detectKey = (store.filterDepParams.key ||= generateUUIDKey())
-  const departmentState = computed(() => componentStore.getDepartmentState(detectKey))
   const fetchDepartment = useDebounce(componentStore.createDepartmentFetcher(detectKey))
-  const onSearchDepartment = (v) => {
-    store.filterDepParams.page = 1
-    store.filterDepParams.search = v
-    fetchDepartment(depParams.value)
-  }
-  const onScrollDepartment = () => {
-    store.filterDepParams.page++
-    fetchDepartment(depParams.value, true)
-  }
 
   const onSearch = () => {
     if (!accStore.checkAction(accStore.pn.hrPositionsRead)) return
@@ -156,17 +146,11 @@
         </div>
         <div class="col-span-12 md:col-span-6">
           <label>{{ $t('workerPage.filter.department') }}</label>
-          <UINSelect
+          <UIDepartmentSelect
+            v-model="store.params.departments"
+            :organization="store.params.organizations"
             multiple
-            clearable
-            :disabled="store.params.organizations.length === 0"
-            :loading="departmentState.loading"
-            :options="departmentState.list"
-            :total-count="departmentState.total"
-            v-model:value="store.params.departments"
-            @update:value="onChangeDepartment"
-            @onSearch="onSearchDepartment"
-            @onScrollEv="onScrollDepartment"
+            @update:model-value="onChangeDepartment"
           />
         </div>
       </div>

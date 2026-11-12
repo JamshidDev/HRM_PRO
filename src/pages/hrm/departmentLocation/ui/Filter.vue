@@ -1,5 +1,5 @@
 <script setup>
-  import { UIPageFilter, UISegmentTabs, UISelect } from '@/components/index.js'
+  import { UIPageFilter, UISegmentTabs, UISelect, UIDepartmentSelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useComponentStore, useDepartmentLocationStore } from '@/store/modules/index.js'
 
@@ -78,21 +78,6 @@
     }
   })
 
-  // Tanlangan bo'lim ro'yxat qayta yuklanganda (qidiruv, sahifa) ham nomi bilan ko'rinsin.
-  const pickedDepartment = ref(null)
-  const departmentOptions = computed(() => {
-    const list = componentStore.departmentList
-    const picked = pickedDepartment.value
-    if (!picked || store.workerParams.department_id !== picked.id) return list
-    return list.some((d) => d.id === picked.id) ? list : [picked, ...list]
-  })
-
-  const onDepartmentChange = (v, option) => {
-    pickedDepartment.value = option ?? null
-    store.workerParams.department_id = v ?? null
-    filterEvent()
-  }
-
   const filterCount = computed(() => {
     const p = currentParams.value
     if (isLocationsTab.value) return Number(locationType.value !== null)
@@ -108,13 +93,11 @@
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
     }
-    if (isWorkersTab.value && componentStore.departmentList.length === 0) {
-      componentStore._departments()
-    }
   }
 
   const onChangeStructure = (v) => {
     currentParams.value.organizations = v
+    if (isWorkersTab.value) store.workerParams.department_id = null
     filterEvent()
   }
 
@@ -186,20 +169,11 @@
         </div>
         <div v-if="isWorkersTab" class="col-span-12 md:col-span-6">
           <label>{{ $t('departmentLocationPage.table.department') }}</label>
-          <n-select
-            :value="store.workerParams.department_id"
-            :options="departmentOptions"
-            :loading="componentStore.departmentLoading"
+          <UIDepartmentSelect
+            v-model="store.workerParams.department_id"
+            :organization="store.workerParams.organizations"
             :placeholder="$t('departmentLocationPage.filter.all')"
-            label-field="name"
-            value-field="id"
-            filterable
-            remote
-            clearable
-            @search="componentStore._onSearchDepartment"
-            @scroll="componentStore._onScrollDepartment"
-            @update:show="componentStore.onOpenDepartmentEv"
-            @update:value="onDepartmentChange"
+            @update:model-value="filterEvent"
           />
         </div>
         <div class="col-span-12">

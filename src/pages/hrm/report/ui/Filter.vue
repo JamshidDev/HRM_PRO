@@ -41,7 +41,6 @@
     store.department.visible = true
     dpStore.visibleType = true
     dpStore._level()
-    componentStore._departments()
     componentStore._regions()
     dpStore.resetForm()
     // Bo'linmalar sahifasidagi «Biriktirish» dan qolgan ota-bo'lim banneri chiqmasin

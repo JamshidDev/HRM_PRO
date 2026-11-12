@@ -1,8 +1,7 @@
 <script setup>
   import i18n from '@/i18n/index.js'
-  import ApiService from '@/service/ApiService.js'
   import { recordStatusOptions } from '@/pages/hrm/_shared/recordStatus.js'
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIPageFilter, UISelect, UIDepartmentSelect } from '@/components/index.js'
   import {
     useAccountStore,
     useComponentStore,
@@ -64,22 +63,7 @@
   const onChangeStructure = (v) => {
     store.params.organizations = v
     store.params.departments = []
-    loadDepartments()
     filterEvent()
-  }
-
-  // Bo'limlar daraxti — tanlangan korxona(lar) bo'yicha; tanlangan bo'lim quyi bo'limlari bilan filtrlanadi.
-  const deptTree = ref([])
-  const deptLoading = ref(false)
-  const loadDepartments = () => {
-    deptTree.value = []
-    const ids = store.params.organizations.map((v) => v.id)
-    if (!ids.length) return
-    deptLoading.value = true
-    ApiService.componentService
-      ._allDepartmentTree({ params: { organization_id: ids[0], organizations: ids.toString() } })
-      .then((res) => (deptTree.value = res.data.data ?? []))
-      .finally(() => (deptLoading.value = false))
   }
 
   const resetFilter = () => {
@@ -91,7 +75,6 @@
     store.params.status = null
     store.params.award_id = null
     store.params.departments = []
-    deptTree.value = []
     filterEvent()
   }
 </script>
@@ -141,20 +124,12 @@
         </div>
         <div class="col-span-12 md:col-span-6">
           <label>{{ $t('workerPage.filter.department') }}</label>
-          <n-tree-select
-            v-model:value="store.params.departments"
-            :options="deptTree"
-            :loading="deptLoading"
-            :disabled="!store.params.organizations.length"
-            key-field="id"
-            label-field="name"
-            children-field="children"
-            :consistent-menu-width="false"
+          <UIDepartmentSelect
+            v-model="store.params.departments"
+            :organization="store.params.organizations"
+            source="all"
             multiple
-            filterable
-            clearable
-            max-tag-count="responsive"
-            @update:value="filterEvent"
+            @update:model-value="filterEvent"
           />
         </div>
         <div class="col-span-12 md:col-span-6">

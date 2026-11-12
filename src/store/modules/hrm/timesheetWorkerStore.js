@@ -67,8 +67,6 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     // Modal ichidagi bo'lim filtri uchun (tabel korxonasi bo'yicha).
     organizationId: null,
     organization: null,
-    departmentOptions: [],
-    departmentLoading: false,
     // Tabelchi rejimi — hujjat aylanishidagi «Tabellar» sahifasidan ochilganda.
     // Bo'lim filtri korxonaning HAMMA bo'limi emas, faqat biriktirilganlari.
     timekeeperMode: false,
@@ -141,14 +139,11 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         })
     },
     // Optimistik: switch darhol o'zgaradi, so'rov yiqilsa holat qaytariladi.
-    // Boshqa tabel ochilganda filtrlarni tozalaydi. Ilgari `department_id` va
-    // `departmentOptions` eski korxonanikidan qolib ketardi — natijada yangi
-    // tabel begona bo'lim bo'yicha filtrlanardi.
+    // Boshqa tabel ochilganda filtrlarni tozalaydi (eski korxona bo'limi qolmasin).
     resetForTimesheet() {
       this.params.page = 1
       this.params.search = null
       this.params.department_id = null
-      this.departmentOptions = []
       this.organizationId = null
       this.organization = null
       this.list = []
@@ -262,13 +257,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
           this.year = res.data.data.year
           this.department = res.data.data.department
           this.organization = res.data.data.organization ?? null
-          if (
-            res.data.data.organization_id &&
-            this.organizationId !== res.data.data.organization_id
-          ) {
-            this.organizationId = res.data.data.organization_id
-            this._departments()
-          }
+          if (res.data.data.organization_id) this.organizationId = res.data.data.organization_id
         })
       )
       Promise.all(promises).then(() => {
@@ -314,38 +303,6 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         })
         .finally(() => {
           this.loading = false
-        })
-    },
-    // Bo'lim filtri select'i — tabel korxonasining bo'limlari.
-    // Tabelchi rejimida faqat O'ZIGA biriktirilgan bo'limlar (backend doirasi
-    // bilan bir xil, aks holda tanlagan bo'limi bo'sh chiqardi).
-    _departments() {
-      if (this.timekeeperMode) return this._assignedDepartments()
-      if (!this.organizationId) return
-      this.departmentLoading = true
-      $ApiService.componentService
-        ._departmentByOrganizations({
-          params: { page: 1, per_page: 200, organizations: String(this.organizationId) }
-        })
-        .then((res) => {
-          this.departmentOptions = res.data.data.data.map((v) => ({ id: v.id, name: v.name }))
-        })
-        .finally(() => {
-          this.departmentLoading = false
-        })
-    },
-    _assignedDepartments() {
-      this.departmentLoading = true
-      return $ApiService.timesheetService
-        ._index_departments()
-        .then((res) => {
-          this.departmentOptions = (res.data.data.departments ?? []).map((v) => ({
-            id: v.id,
-            name: v.name
-          }))
-        })
-        .finally(() => {
-          this.departmentLoading = false
         })
     },
     // Filtr o'zgarganda ro'yxat birinchi sahifadan qayta yuklanadi.

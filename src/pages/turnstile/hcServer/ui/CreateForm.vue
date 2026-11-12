@@ -1,6 +1,6 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
-  import { UISelect } from '@/components/index.js'
+  import { UISelect, UIDepartmentSelect } from '@/components/index.js'
   import { useComponentStore, useHcServerStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
 
@@ -25,13 +25,11 @@
     store.payload.organization_id = v
     store.payload.departments = []
     store.workerList = []
-    componentStore.departmentList = []
     store.payload.workers = []
 
     if (v.length > 0) {
       componentStore.workerList = []
       store.workerParams.organization_id = v[0].id
-      componentStore.depParams.organizations = v[0].id
       store._workers()
       store._department()
     }
@@ -56,13 +54,6 @@
       store.workerParams.search = null
       store.workerParams.page = 1
       store._workers()
-    }
-  }
-
-  const onPanelEv = (v) => {
-    if (!v) return
-    if (store.payload.departments.length === 0) {
-      componentStore.onOpenDepartmentEv(v)
     }
   }
 
@@ -116,24 +107,11 @@
           />
         </n-form-item>
         <n-form-item :label="$t(`departmentPositionPage.form.department_id`)">
-          <n-select
-            :disabled="store.payload.organization_id.length === 0"
-            v-model:value="store.payload.departments"
+          <UIDepartmentSelect
+            v-model="store.payload.departments"
+            :organization="store.payload.organization_id"
             multiple
-            filterable
-            :filter="() => true"
-            clearable
-            :options="componentStore.departmentList"
-            :render-label="UIHelper.selectRender.label"
-            :render-tag="UIHelper.selectRender.value"
-            value-field="id"
-            :loading="componentStore.departmentLoading"
-            @search="componentStore._onSearchDepartment"
-            @scroll="componentStore._onScrollDepartment"
-            @update:show="onPanelEv"
-            @update:value="onChangeDepartment"
-            :ignore-composition="false"
-            :max-tag-count="1"
+            @update:model-value="onChangeDepartment"
           />
         </n-form-item>
 
