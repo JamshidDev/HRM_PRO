@@ -247,7 +247,7 @@
           :label="$t('documentPage.command.form.command_number')"
           path="command_number"
         >
-          <n-input v-model:value="form.command_number" :maxlength="15" show-count clearable />
+          <n-input class="w-full" type="text" v-model:value="form.command_number" :maxlength="15" />
         </n-form-item>
 
         <n-form-item
