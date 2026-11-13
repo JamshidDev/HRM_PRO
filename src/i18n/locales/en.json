@@ -3631,12 +3631,26 @@
     },
     "calcDiff": {
       "system": "System",
-      "entered": "Entered",
+      "entered": "Employee",
       "diff": "Difference",
-      "more": "{n} h more",
-      "less": "{n} h less",
-      "typeOnly": "same hours, type changed",
-      "empty": "empty (0 h)"
+      "more": "+{n} h",
+      "less": "−{n} h",
+      "typeOnly": "type changed",
+      "empty": "empty",
+      "typeAlso": "type changed"
+    },
+    "changes": {
+      "title": "Change history",
+      "short": "History",
+      "at": "Time",
+      "worker": "Employee",
+      "day": "Day",
+      "before": "Before",
+      "after": "After",
+      "user": "Changed by",
+      "allWorkers": "All employees",
+      "allDays": "All days",
+      "rowDiff": "Differs from system calculation: {cells} day(s) changed. Click to view history"
     },
     "lockClose": "Close timesheet",
     "lockOpen": "Open timesheet",

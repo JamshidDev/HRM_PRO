@@ -1,6 +1,6 @@
 <script setup>
   import { TIMESHEET_APPROVAL_ENABLED } from '../approval.js'
-  import { onBeforeUnmount, onMounted, ref } from 'vue'
+  import { h, onBeforeUnmount, onMounted, ref } from 'vue'
   import { useMessage } from 'naive-ui'
   import { showAlert } from '@/components/notify/alertDialog.js'
   import {
@@ -17,6 +17,7 @@
     Send16Regular,
     Eye16Filled,
     Info16Regular,
+    History20Regular,
     Info20Filled,
     MoreVertical20Filled,
     Save20Filled,
@@ -123,10 +124,14 @@
   /* ------------------------------------------------------------------------
    * Qator amallari (3 nuqta) va «Auto hisoblash».
    * ---------------------------------------------------------------------- */
-  const rowMenuOptions = computed(() => [{ key: 'recalc', label: t('timesheetPage.recalc') }])
+  const rowMenuOptions = computed(() => [
+    { key: 'recalc', label: t('timesheetPage.recalc') },
+    { key: 'history', label: t('timesheetPage.changes.title') }
+  ])
 
   // «Auto» tugmasi bilan bir mantiq — faqat bitta xodim uchun.
   const onRowMenu = async (key, item) => {
+    if (key === 'history' && item?.id) return openHistory(item.id)
     if (key !== 'recalc' || !item?.id) return
     const res = await store.autoCalc([item.id])
     if (!res) return
@@ -322,6 +327,71 @@
     message.success(t('timesheetPage.autoCalcDone'))
     if (res.checks) message.warning(t('timesheetPage.needsCheckCount', { n: res.checks }))
   }
+
+  // O'zgarishlar tarixi (audit_logs): kim, qachon, qaysi katakni o'zgartirgan.
+  const historyOpen = ref(false)
+  const historyLoading = ref(false)
+  const historyRows = ref([])
+  const historyFilter = ref({ worker_position_id: null, day: null })
+  const historyPage = ref({ page: 1, pageSize: 20, itemCount: 0 })
+  const loadHistory = async () => {
+    historyLoading.value = true
+    try {
+      const res = await store.fetchChanges({
+        ...historyFilter.value,
+        page: historyPage.value.page,
+        per_page: historyPage.value.pageSize
+      })
+      historyRows.value = res.data
+      historyPage.value.itemCount = res.total
+    } finally {
+      historyLoading.value = false
+    }
+  }
+  const openHistory = (workerPositionId = null, day = null) => {
+    historyFilter.value = { worker_position_id: workerPositionId, day }
+    historyPage.value.page = 1
+    historyOpen.value = true
+    loadHistory()
+  }
+  const onHistoryFilter = () => {
+    historyPage.value.page = 1
+    loadHistory()
+  }
+  const onHistoryPage = (page) => {
+    historyPage.value.page = page
+    loadHistory()
+  }
+  const historyWorkerOptions = computed(() => store.list.map((w) => ({ label: w.name, value: w.id })))
+  const historyDayOptions = computed(() => store.days.map((d) => ({ label: String(d.day), value: d.day })))
+  const historyCell = (list) =>
+    list.length
+      ? list.map((c) =>
+          h('span', { class: 'ts-hist-chip', style: ruleKeyStyle(c.status) }, `${c.type ?? '—'} · ${c.hours ?? 0}`)
+        )
+      : h('span', { class: 'ts-hist-empty' }, t('timesheetPage.calcDiff.empty'))
+  const historyColumns = computed(() => [
+    { title: t('timesheetPage.changes.at'), key: 'at', width: 140, render: (r) => dayjs(r.at).format('DD.MM.YYYY HH:mm') },
+    { title: t('timesheetPage.changes.worker'), key: 'worker', render: (r) => r.worker?.name ?? '—' },
+    { title: t('timesheetPage.changes.day'), key: 'work_date', width: 90, render: (r) => dayjs(r.work_date).format('DD.MM') },
+    { title: t('timesheetPage.changes.before'), key: 'before', render: (r) => historyCell(r.before) },
+    { title: t('timesheetPage.changes.after'), key: 'after', render: (r) => historyCell(r.after) },
+    {
+      title: t('timesheetPage.calcDiff.diff'),
+      key: 'diff',
+      width: 70,
+      render: (r) => {
+        const diff = hoursOf(r.after) - hoursOf(r.before)
+        if (!diff) return '—'
+        return h('b', { class: diff > 0 ? 'ts-hist-more' : 'ts-hist-less' }, `${diff > 0 ? '+' : ''}${diff}`)
+      }
+    },
+    {
+      title: t('timesheetPage.changes.user'),
+      key: 'user',
+      render: (r) => (r.user ? `${r.user.name}${r.user.role ? ` (${r.user.role})` : ''}` : '—')
+    }
+  ])
 
   // Qoidalar modali — hisoblash qanday ishlashini ko'rsatadi.
   const rulesOpen = ref(false)
@@ -803,17 +873,36 @@
     const actual = dayDetails(item, day)
     const diff = hoursOf(actual) - hoursOf(baseDetails)
     if (!diff && typeOf(actual) === typeOf(baseDetails)) return null
-    // Harf emas, tur nomi: «K» (lotin) va «К» (kirill) ekranda bir xil ko'rinadi.
-    const name = (d) => {
-      const type = typeByIdOrNull(d.status_id)
-      return type ? `${type.name} (${type.key})` : d.status
-    }
+    // Qisqa ko'rinish: «K-7», bir nechta yozuv «K-7 / T-1».
     const label = (list) =>
       list.length
-        ? list.map((d) => name(d) + (d.hours != null ? ` — ${d.hours} soat` : ' — 0 soat')).join(' / ')
+        ? list.map((d) => `${typeByIdOrNull(d.status_id)?.key ?? d.status}-${d.hours ?? 0}`).join(' / ')
         : t('timesheetPage.calcDiff.empty')
-    return { diff, system: label(baseDetails), entered: label(actual ?? []) }
+    const typeChanged = typeOf(actual) !== typeOf(baseDetails)
+    const text = diff
+      ? t(diff > 0 ? 'timesheetPage.calcDiff.more' : 'timesheetPage.calcDiff.less', { n: Math.abs(diff) }) +
+        (typeChanged ? `, ${t('timesheetPage.calcDiff.typeAlso')}` : '')
+      : t('timesheetPage.calcDiff.typeOnly')
+    return { diff, text, system: label(baseDetails), entered: label(actual ?? []) }
   }
+  // Xodim bo'yicha tizimdan jami farq: soat, ish kuni («D» sanalmaydi) va o'zgargan kataklar soni.
+  const isWorkDetails = (list) => (list ?? []).some((d) => Number(d?.status_id) !== 33)
+  const rowDiff = (item) => {
+    if (!store.calcWorkers[item.id]) return null
+    let hours = 0
+    let days = 0
+    let cells = 0
+    for (const day of store.days) {
+      const d = cellDiff(item, day)
+      if (!d) continue
+      const base = store.calcBase[`${item.id}|${day.day}`]
+      hours += d.diff
+      days += Number(isWorkDetails(dayDetails(item, day))) - Number(isWorkDetails(base ? [base] : []))
+      cells++
+    }
+    return cells ? { hours, days, cells } : null
+  }
+  const signed = (n) => (n > 0 ? `+${n}` : String(n))
 
   /**
    * Bir kunda bir nechta yozuv bo'lishi mumkin — har biri O'Z rangida chiziladi,
@@ -1065,6 +1154,12 @@
             <n-icon :component="Info20Filled" />
           </template>
           {{ $t('timesheetPage.infoShort') }}
+        </n-button>
+        <n-button secondary @click="openHistory()">
+          <template #icon>
+            <n-icon :component="History20Regular" />
+          </template>
+          {{ $t('timesheetPage.changes.short') }}
         </n-button>
         <n-button secondary type="success" @click="onDownload">
           <template #icon>
@@ -1449,13 +1544,7 @@
                   ↳
                 </span>
                 <template v-if="cellDiff(item, day)">
-                  <span
-                    v-if="cellDiff(item, day).diff"
-                    :class="cellDiff(item, day).diff > 0 ? 'is-more' : 'is-less'"
-                    class="ts-diff-badge no-selectable-item"
-                  >
-                    {{ Math.abs(cellDiff(item, day).diff) }}
-                  </span>
+                  <span class="ts-edit-mark" />
                   <span
                     :class="{
                       'is-start': col < 3,
@@ -1466,26 +1555,34 @@
                   >
                     <b>{{ $t('timesheetPage.calcDiff.system') }}:</b> {{ cellDiff(item, day).system }}<br />
                     <b>{{ $t('timesheetPage.calcDiff.entered') }}:</b> {{ cellDiff(item, day).entered }}<br />
-                    <b>{{ $t('timesheetPage.calcDiff.diff') }}:</b>
-                    {{
-                      cellDiff(item, day).diff
-                        ? $t(
-                            cellDiff(item, day).diff > 0
-                              ? 'timesheetPage.calcDiff.more'
-                              : 'timesheetPage.calcDiff.less',
-                            { n: Math.abs(cellDiff(item, day).diff) }
-                          )
-                        : $t('timesheetPage.calcDiff.typeOnly')
-                    }}
+                    <b>{{ $t('timesheetPage.calcDiff.diff') }}:</b> {{ cellDiff(item, day).text }}
                   </span>
                 </template>
               </div>
 
               <div class="ts-c-total ts-c-days no-selectable-item">
                 {{ item.allMonth.days || 0 }}
+                <span
+                  v-if="rowDiff(item)?.days"
+                  :class="rowDiff(item).days > 0 ? 'is-more' : 'is-less'"
+                  :title="$t('timesheetPage.changes.rowDiff', { cells: rowDiff(item).cells })"
+                  class="ts-total-diff"
+                  @click.stop="openHistory(item.id)"
+                >
+                  {{ signed(rowDiff(item).days) }}
+                </span>
               </div>
               <div class="ts-c-total ts-c-hours no-selectable-item">
                 {{ item.allMonth.hours || 0 }}
+                <span
+                  v-if="rowDiff(item)?.hours"
+                  :class="rowDiff(item).hours > 0 ? 'is-more' : 'is-less'"
+                  :title="$t('timesheetPage.changes.rowDiff', { cells: rowDiff(item).cells })"
+                  class="ts-total-diff"
+                  @click.stop="openHistory(item.id)"
+                >
+                  {{ signed(rowDiff(item).hours) }}
+                </span>
               </div>
             </div>
           </div>
@@ -1984,6 +2081,38 @@
 
     <!-- Hisoblash qoidalari. Balandligi QAT'IY — ichki qism skrollanadi,
          aks holda ta'til jadvali 13 qator bo'lib modalni cho'zib yuborardi. -->
+    <UIModal v-model:visible="historyOpen" :title="$t('timesheetPage.changes.title')" :width="1100">
+      <div class="ts-hist-filters">
+        <n-select
+          v-model:value="historyFilter.worker_position_id"
+          :options="historyWorkerOptions"
+          :placeholder="$t('timesheetPage.changes.allWorkers')"
+          clearable
+          filterable
+          @update:value="onHistoryFilter"
+        />
+        <n-select
+          v-model:value="historyFilter.day"
+          :options="historyDayOptions"
+          :placeholder="$t('timesheetPage.changes.allDays')"
+          clearable
+          style="width: 170px"
+          @update:value="onHistoryFilter"
+        />
+      </div>
+      <n-data-table
+        :columns="historyColumns"
+        :data="historyRows"
+        :loading="historyLoading"
+        :max-height="520"
+        :pagination="historyPage"
+        :row-key="(r) => `${r.at}|${r.worker?.id}|${r.work_date}`"
+        remote
+        size="small"
+        @update:page="onHistoryPage"
+      />
+    </UIModal>
+
     <UIModal
       v-model:visible="rulesOpen"
       :title="$t('timesheetPage.autoRulesTitle')"
@@ -2756,38 +2885,57 @@
     outline: 2px solid var(--fig-text-brand);
     outline-offset: 1px;
   }
-  /* Tizim hisobidan o'zgartirilgan katak: sariq fon, xira matn; farq va izoh faqat hover'da. */
-  .ts-cell.is-edited {
-    background: var(--fig-amber-100);
-  }
-  .ts-cell.is-edited > .ts-cell-status,
-  .ts-cell.is-edited > .ts-cell-hours {
-    opacity: 0.55;
-  }
-  .ts-diff-badge {
+  /* Tizim hisobidan o'zgartirilgan katak: faqat burchak belgisi; farq va izoh hover'da. */
+  /* O'zgartirilgan katak belgisi — yuqori chap burchakda doim ko'rinadi. */
+  .ts-edit-mark {
     position: absolute;
-    right: 2px;
-    bottom: 2px;
-    min-width: 16px;
-    height: 15px;
-    padding: 0 4px;
-    border-radius: 4px;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 8px 0 0;
+    border-color: var(--fig-text-red) transparent transparent transparent;
+    pointer-events: none;
+  }
+  /* Jami ustunlarda tizim hisobidan farq — mayda, sonning ostida. */
+  .ts-brow .ts-c-total {
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .ts-total-diff {
     font-size: 10px;
     font-weight: 700;
-    line-height: 15px;
-    color: #fff;
-    opacity: 0;
-    transform: scale(0.8);
-    pointer-events: none;
-    transition:
-      opacity 0.12s ease,
-      transform 0.12s ease;
+    cursor: pointer;
   }
-  .ts-diff-badge.is-more {
-    background: var(--fig-icon-green);
+  .ts-total-diff.is-more {
+    color: var(--fig-icon-green);
   }
-  .ts-diff-badge.is-less {
-    background: var(--fig-text-red);
+  .ts-total-diff.is-less {
+    color: var(--fig-text-red);
+  }
+  .ts-hist-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  :deep(.ts-hist-chip) {
+    display: inline-block;
+    margin-right: 4px;
+    padding: 0 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  :deep(.ts-hist-empty) {
+    color: var(--fig-text-tertiary);
+    font-size: 12px;
+  }
+  :deep(.ts-hist-more) {
+    color: var(--fig-icon-green);
+  }
+  :deep(.ts-hist-less) {
+    color: var(--fig-text-red);
   }
   .ts-diff-tip {
     position: absolute;
@@ -2822,16 +2970,8 @@
     bottom: auto;
     top: calc(100% + 6px);
   }
-  .ts-cell.is-edited:hover .ts-diff-badge {
-    opacity: 1;
-    transform: none;
-  }
   .ts-cell.is-edited:hover .ts-diff-tip {
     display: block;
-  }
-  .ts-cell.is-edited:hover > .ts-cell-status,
-  .ts-cell.is-edited:hover > .ts-cell-hours {
-    opacity: 0.85;
   }
   .ts-dragging .ts-cell.is-edited:hover .ts-diff-tip {
     display: none;

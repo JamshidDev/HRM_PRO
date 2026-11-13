@@ -3651,12 +3651,26 @@
     },
     "calcDiff": {
       "system": "Tizim",
-      "entered": "Kiritilgan",
+      "entered": "Xodim",
       "diff": "Farq",
-      "more": "{n} soat ko‘p",
-      "less": "{n} soat kam",
-      "typeOnly": "soat bir xil, tur o‘zgargan",
-      "empty": "bo‘sh (0 soat)"
+      "more": "+{n} soat",
+      "less": "−{n} soat",
+      "typeOnly": "tur o‘zgardi",
+      "empty": "bo‘sh",
+      "typeAlso": "tur o‘zgardi"
+    },
+    "changes": {
+      "title": "O'zgarishlar tarixi",
+      "short": "Tarix",
+      "at": "Vaqt",
+      "worker": "Xodim",
+      "day": "Kun",
+      "before": "Oldin",
+      "after": "Keyin",
+      "user": "Kim o'zgartirdi",
+      "allWorkers": "Barcha xodimlar",
+      "allDays": "Barcha kunlar",
+      "rowDiff": "Tizim hisobidan farq: {cells} ta kun o'zgartirilgan. Tarixni ko'rish uchun bosing"
     },
     "lockClose": "Tabelni yopish",
     "lockOpen": "Tabelni ochish",
