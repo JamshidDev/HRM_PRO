@@ -20,9 +20,11 @@
       const existCenter = componentStore.lmsLearningCenters?.find(
         (v) => v.id === store.params.learning_center_id
       )
+      // O'quv markazlari ro'yxati bo'sh bo'lishi mumkin — `[0].id` xato berib, client-logs ga yuborilardi (QA-43)
       store.params.learning_center_id = existCenter
         ? store.params.learning_center_id
-        : componentStore.lmsLearningCenters?.[0].id
+        : (componentStore.lmsLearningCenters?.[0]?.id ?? null)
+      if (!store.params.learning_center_id) return
       if (!accStore.checkAction(accStore.pn.lmsLessonsRead)) return
       store._index()
     })

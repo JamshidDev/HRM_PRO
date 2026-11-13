@@ -29,7 +29,7 @@
     useTimesheetWorkerStore
   } from '@/store/modules/index.js'
   import {
-    UIDConfirm,
+    UIDeleteConfirm,
     UIDepartmentSelect,
     UIDragSelector,
     UIModal,
@@ -835,9 +835,9 @@
    * Tanlov → amal.
    *
    * Avval kataklar belgilanadi (drag; Shift/Ctrl bilan qo'shib belgilanadi),
-   * Panel doim ko'rinadi (tur, soat, «Tozalash»). Ikki yo'l, «Qo'llash» yo'q:
-   *  - avval harf, keyin katak bosiladi / belgilanadi → darhol yoziladi;
-   *  - avval kataklar, keyin harf → darhol yoziladi.
+   * Panel doim ko'rinadi (tur, soat, «Tozalash»). «Qo'llash» yo'q:
+   * avval harf (yoki «Tozalash»), keyin katak bosiladi / belgilanadi → darhol yoziladi.
+   * Harf ham, o'chirg'ich ham tanlanmagan bo'lsa kataklar belgilanmaydi (`canSelect`).
    * Yozilgach tanlov tozalanadi (harf almashsa eski kataklar o'zgarmasin). Ilgari teskari edi — avval pastda tur tanlanar,
    * har drag darhol yozardi («cho'tka»), tanlov esa ko'rinmasdi.
    * Kalit — `${row}|${col}` (sahifadagi qator va kun indeksi); sahifa,
@@ -857,6 +857,12 @@
   const clearSelection = () => {
     if (selectedCells.value.size) selectedCells.value = new Set()
   }
+  // Harf ham, o'chirg'ich ham tanlanmagan bo'lsa — kataklar belgilanmaydi
+  // (belgilangan katak bilan qiladigan ish yo'q). Avval harf, keyin kataklar.
+  const canSelect = computed(
+    () => !timesheetLocked.value && Boolean(store.payload.status || store.payload.isClearing)
+  )
+  watch(canSelect, (v) => !v && clearSelection())
   // Drag selector Shift'ni o'zi biladi, lekin bizga aytmaydi — shu yerda ushlanadi.
   const onGridMouseDown = (e) => {
     selectionAdd.value = e.shiftKey || e.ctrlKey || e.metaKey
@@ -1284,40 +1290,13 @@
     </div>
 
     <!-- Kelishuvchini olib tashlash — loyihaning umumiy tasdiq modali. -->
-    <UIDConfirm
+    <UIDeleteConfirm
       v-model:visible="verifierDeleteVisible"
-      :save-loading="verifierDeleteLoading"
-      close-btn-text="content.cancel"
-      submit-btn-text="content.delete"
-      type="warning"
-      @onClose="verifierDeleteVisible = false"
-      @onSave="confirmDeleteVerifier"
-    >
-      <div class="text-center">
-        <p class="text-lg font-medium">{{ verifierDeleteName }}</p>
-        <p class="text-textColor3 mt-1">
-          {{ $t('timesheetPage.verifierDeleteConfirm') }}
-        </p>
-      </div>
-
-      <!-- `type="warning"` standart holatda FAQAT yopish tugmasini beradi
-           (u ogohlantirish uchun) — bu yerda tasdiq kerak, shuning uchun
-           amallar o'zimizniki. -->
-      <template #action>
-        <div class="grid grid-cols-2 gap-2">
-          <n-button ghost type="tertiary" @click="verifierDeleteVisible = false">
-            {{ $t('content.no') }}
-          </n-button>
-          <n-button
-            :loading="verifierDeleteLoading"
-            type="error"
-            @click="confirmDeleteVerifier"
-          >
-            {{ $t('content.yes') }}
-          </n-button>
-        </div>
-      </template>
-    </UIDConfirm>
+      :title="verifierDeleteName"
+      :warning="$t('timesheetPage.verifierDeleteConfirm')"
+      :loading="verifierDeleteLoading"
+      @confirm="confirmDeleteVerifier"
+    />
 
     <n-spin
       v-show="activeTab === 'grid'"
@@ -1329,6 +1308,7 @@
       <div class="ts-card">
         <UIDragSelector
           :class="{ 'ts-dragging': dragging, 'has-selbar': !timesheetLocked }"
+          :disabled="!canSelect"
           class="ts-scroll"
           @mousedown.capture="onGridMouseDown"
           :live-selection="false"

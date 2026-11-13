@@ -3,6 +3,10 @@
   import StoryPreview from './StoryPreview.vue'
   import { useAccountStore, useMobileStoryStore } from '@/store/modules/index.js'
   import { Dismiss12Filled, ImageAdd24Regular, Play24Filled } from '@vicons/fluent'
+  import { confirmDelete } from '@/components/notify/alertDialog.js'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   const store = useMobileStoryStore()
   const accStore = useAccountStore()
@@ -15,6 +19,10 @@
   const isPending = computed(() => !store.elementId)
 
   const triggerUpload = () => fileInput.value?.click()
+
+  // Loyihaning umumiy o'chirish tasdig'i.
+  const onDeleteSlide = (id) =>
+    confirmDelete({ message: t('mobileStoryPage.slideDeleteConfirm'), onConfirm: () => store._deleteSlide(id) })
   // Ketma-ket — siqish async, parallel yuborilsa sort takrorlanadi.
   const onPickFiles = async (e) => {
     const files = Array.from(e.target.files ?? [])
@@ -51,17 +59,13 @@
       <button v-if="s.pending" class="slide-remove" @click.stop="store._removePendingSlide(s.id)">
         <n-icon :component="Dismiss12Filled" :size="12" />
       </button>
-      <n-popconfirm
+      <button
         v-else-if="accStore.checkPermission(accStore.pn.mobileStoriesDelete)"
-        @positive-click="store._deleteSlide(s.id)"
+        class="slide-remove"
+        @click.stop="onDeleteSlide(s.id)"
       >
-        <template #trigger>
-          <button class="slide-remove" @click.stop>
-            <n-icon :component="Dismiss12Filled" :size="12" />
-          </button>
-        </template>
-        {{ $t('mobileStoryPage.slideDeleteConfirm') }}
-      </n-popconfirm>
+        <n-icon :component="Dismiss12Filled" :size="12" />
+      </button>
 
       <div v-if="store.slideDeletingId === s.id" class="slide-loading">
         <n-spin :size="16" />

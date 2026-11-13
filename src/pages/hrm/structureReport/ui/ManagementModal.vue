@@ -2,6 +2,10 @@
   import { UIModal, UIPagination, NoDataPicture, UISelect, UIYearMonth } from '@/components/index.js'
   import { useStructureReportStore, useComponentStore } from '@/store/modules/index.js'
   import { Delete20Regular, Building20Regular, Add20Regular } from '@vicons/fluent'
+  import { confirmDelete } from '@/components/notify/alertDialog.js'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
   const store = useStructureReportStore()
   const componentStore = useComponentStore()
   const deletingId = ref(null)
@@ -23,10 +27,14 @@
 
   const onDelete = (item) => {
     deletingId.value = item.id
-    store._deleteReportsPerMonth(item.id).finally(() => {
+    return store._deleteReportsPerMonth(item.id).finally(() => {
       deletingId.value = null
     })
   }
+
+  // Loyihaning umumiy o'chirish tasdig'i.
+  const askDelete = (item) =>
+    confirmDelete({ message: t('content.confirmDelete'), onConfirm: () => onDelete(item) })
 
   watch(() => store.managementModalVisible, (v) => {
     if (v) {
@@ -131,23 +139,19 @@
                 </n-tag>
               </div>
 
-              <n-popconfirm @positive-click="onDelete(item)" placement="left">
-                <template #trigger>
-                  <n-button
-                    type="error"
-                    size="tiny"
-                    quaternary
-                    :loading="deletingId === item.id"
-                    class="opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <template #icon>
-                      <n-icon><Delete20Regular /></n-icon>
-                    </template>
-                    {{ $t('content.delete') }}
-                  </n-button>
+              <n-button
+                type="error"
+                size="tiny"
+                quaternary
+                :loading="deletingId === item.id"
+                class="opacity-0 group-hover:opacity-100 transition-opacity"
+                @click="askDelete(item)"
+              >
+                <template #icon>
+                  <n-icon><Delete20Regular /></n-icon>
                 </template>
-                {{ $t('content.confirmDelete') }}
-              </n-popconfirm>
+                {{ $t('content.delete') }}
+              </n-button>
             </div>
           </div>
 

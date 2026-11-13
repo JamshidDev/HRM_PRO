@@ -10,6 +10,7 @@
   } from '@vicons/fluent'
   import { useAccountStore, useAppStore, useSidebarMenuStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
+  import { confirmDialog } from '@/components/notify/alertDialog.js'
   import { AppPaths, useAppSetting } from '@/utils/index.js'
   import { MiniMenuBadge, UIProfile, DownloadTask } from '@components'
   import SidebarPanelItem from './SidebarPanelItem.vue'
@@ -489,6 +490,13 @@
   const resetArrangement = () => {
     if (effectiveMenuPath.value) menuStore.resetModule(effectiveMenuPath.value)
   }
+  const askResetArrangement = () =>
+    confirmDialog({
+      message: t('sidebar.resetOrderConfirm'),
+      confirmText: t('content.yes'),
+      cancelText: t('content.no'),
+      onConfirm: resetArrangement
+    })
 
   /**
    * Panel sarlavhasi uchun MAXSUS nomlar: mini-menyudagi qisqa nom ("Xodimlar")
@@ -710,24 +718,15 @@
                     {{ menuName }}
                   </span>
                   <!-- Tiklash qaytarib bo'lmaydi — tasdiqsiz bajarilmaydi -->
-                  <n-popconfirm
+                  <n-icon
                     v-if="isArranged"
-                    placement="bottom-end"
-                    :positive-text="$t('content.yes')"
-                    :negative-text="$t('content.no')"
-                    @positive-click="resetArrangement"
+                    size="16"
+                    class="menu-reset-btn shrink-0"
+                    :title="$t('sidebar.resetOrder')"
+                    @click="askResetArrangement"
                   >
-                    <template #trigger>
-                      <n-icon
-                        size="16"
-                        class="menu-reset-btn shrink-0"
-                        :title="$t('sidebar.resetOrder')"
-                      >
-                        <ArrowReset20Regular />
-                      </n-icon>
-                    </template>
-                    {{ $t('sidebar.resetOrderConfirm') }}
-                  </n-popconfirm>
+                    <ArrowReset20Regular />
+                  </n-icon>
                 </template>
               </div>
               <div class="border-b border-surface-line -mx-1 mb-5"></div>

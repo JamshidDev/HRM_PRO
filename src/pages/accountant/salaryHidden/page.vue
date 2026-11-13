@@ -3,6 +3,7 @@
   import { Delete24Regular, EyeOff24Regular, Eye24Regular } from '@vicons/fluent'
   import { useAccountStore, useSalaryHiddenStore } from '@/store/modules/index.js'
   import { useDebounceFn } from '@vueuse/core'
+  import { confirmDelete as askDelete } from '@/components/notify/alertDialog.js'
 
   const store = useSalaryHiddenStore()
   const accStore = useAccountStore()
@@ -26,25 +27,18 @@
 
   const onSearch = useDebounceFn(() => store._index(1), 350)
 
-  const confirmDelete = (row) => {
-    window.$dialog.warning({
-      title: "O'chirishni tasdiqlang",
-      content: `PINFL ${row.pinfl} ni ro'yxatdan olib tashlaysizmi?`,
-      positiveText: "O'chirish",
-      negativeText: 'Bekor qilish',
-      onPositiveClick: () => store._delete(row.id)
+  // `window.$dialog` hech qayerda o'rnatilmagan edi (o'chirish xato berardi) — umumiy tasdiq oynasi.
+  const confirmDelete = (row) =>
+    askDelete({
+      message: `PINFL ${row.pinfl} ni ro'yxatdan olib tashlaysizmi?`,
+      onConfirm: () => store._delete(row.id)
     })
-  }
 
-  const confirmRemoveViewer = (row) => {
-    window.$dialog.warning({
-      title: "O'chirishni tasdiqlang",
-      content: `${row.fio || row.pinfl} ni ko'ruvchilar ro'yxatidan olib tashlaysizmi?`,
-      positiveText: "O'chirish",
-      negativeText: 'Bekor qilish',
-      onPositiveClick: () => store._removeViewer(row.id)
+  const confirmRemoveViewer = (row) =>
+    askDelete({
+      message: `${row.fio || row.pinfl} ni ko'ruvchilar ro'yxatidan olib tashlaysizmi?`,
+      onConfirm: () => store._removeViewer(row.id)
     })
-  }
 
   // Xodimni ism/PINFL bo'yicha qidirish (yozish o'rniga tanlab yashirish/belgilash).
   const onWorkerSearch = useDebounceFn((q) => store._searchWorkers(q), 300)

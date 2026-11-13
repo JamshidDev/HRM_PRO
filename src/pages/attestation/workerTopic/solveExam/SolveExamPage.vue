@@ -21,6 +21,7 @@
   import { AppPaths, useAppSetting } from '@/utils/index.js'
   import { onBeforeRouteLeave } from 'vue-router'
   import i18n from '@/i18n/index.js'
+  import { confirmDialog } from '@/components/notify/alertDialog.js'
   import tickIconUrl from '@/assets/images/content/tick.png'
   import xIconUrl from '@/assets/images/content/x.png'
 
@@ -109,20 +110,15 @@
   onUnmounted(() => {
     store.result = null
   })
-  onBeforeRouteLeave((to, from, next) => {
-    if (!examVideoStore.workerExamId || examVideoStore.isFinished) {
-      next()
-      return
-    }
-    const answer = window.confirm(t('content.confirmExit'))
-    if (answer) {
-      examVideoStore.isUnMounted = true
-      examVideoStore.stopCanvasRender()
-      examVideoStore._stopCameraAndFinishVideo()
-      next()
-    } else {
-      next(false)
-    }
+  // Imtihondan chiqish — loyihaning umumiy tasdiq oynasi (brauzerning `confirm` emas).
+  onBeforeRouteLeave(async () => {
+    if (!examVideoStore.workerExamId || examVideoStore.isFinished) return true
+    const ok = await confirmDialog({ message: t('content.confirmExit'), danger: true })
+    if (!ok) return false
+    examVideoStore.isUnMounted = true
+    examVideoStore.stopCanvasRender()
+    examVideoStore._stopCameraAndFinishVideo()
+    return true
   })
 </script>
 <template>

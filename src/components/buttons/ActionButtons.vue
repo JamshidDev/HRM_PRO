@@ -5,6 +5,7 @@
     Screenshot20Regular,
     AddCircle32Regular
   } from '@vicons/fluent'
+  import { confirmDelete } from '@/components/notify/alertDialog.js'
 
   const props = defineProps({
     visibleAddBtn: {
@@ -66,6 +67,10 @@
   const handleNegativeClick = () => {
     emits('onNegDelete', props.data)
   }
+
+  // Loyihaning umumiy o'chirish tasdig'i.
+  const onDeleteClick = () =>
+    confirmDelete({ onConfirm: handlePositiveClick, onCancel: handleNegativeClick })
 </script>
 
 <template>
@@ -114,22 +119,11 @@
       </template>
     </n-button>
 
-    <n-popconfirm
-      v-if="visibleDeleteBtn"
-      @positive-click="handlePositiveClick"
-      @negative-click="handleNegativeClick"
-      :negative-text="$t('content.no')"
-      :positive-text="$t('content.yes')"
-    >
-      <template #trigger>
-        <n-button size="small" ref="confirm_btn" :loading="loadingDelete" ghost type="error">
-          <template #icon>
-            <n-icon><Delete28Regular /></n-icon>
-          </template>
-        </n-button>
+    <n-button v-if="visibleDeleteBtn" size="small" :loading="loadingDelete" ghost type="error" @click="onDeleteClick">
+      <template #icon>
+        <n-icon><Delete28Regular /></n-icon>
       </template>
-      {{ $t('content.confirmDelete') }}
-    </n-popconfirm>
+    </n-button>
 
     <slot name="last"></slot>
   </div>

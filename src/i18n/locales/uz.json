@@ -241,6 +241,10 @@
     "langRu": "RUS",
     "langEn": "ENG",
     "langUzKr": "KRIL",
+    "langUzNew": "ÖZB",
+    "langUzNewBadge": "Yangi",
+    "langBeta": "Beta",
+    "langKaa": "QAR",
     "search": "Qidiruv",
     "mln": "mln",
     "today": "Bugun",
@@ -509,7 +513,8 @@
     "passwordsNotMatch": "Parollar mos kelmadi!",
     "endBeforeStart": "Bu sana boshlanish sanasidan oldin bo'lmasligi kerak",
     "pastDate": "O'tgan sanani tanlab bo'lmaydi",
-    "futureDate": "Kelajakdagi sanani tanlab bo'lmaydi"
+    "futureDate": "Kelajakdagi sanani tanlab bo'lmaydi",
+    "noHtml": "Nomda < va > belgilari ishlatilmaydi"
   },
   "message": {
     "successDone": "Muvaffaqiyatli bajarildi",
@@ -7535,6 +7540,12 @@
       "warning": "Amalni bajarib bo'lmaydi",
       "notfound": "Ma'lumot topilmadi",
       "network": "Aloqa uzildi"
+    },
+    "confirmTitles": {
+      "warning": "Ishonchingiz komilmi?",
+      "delete": "O'chirilsinmi?",
+      "confirm": "Tasdiqlaysizmi?",
+      "success": "Muvaffaqiyatli bajarildi"
     },
     "eimzoTitle": "E-IMZO dasturiga ulanib bo'lmadi"
   },

@@ -3,7 +3,7 @@
   import Table from './Table.vue'
   import adContractForm from './adContractForm.vue'
   import {
-    UIDConfirm,
+    UIConfirm,
     UIModal,
     UIPageContent,
     UIOfficeApp
@@ -16,7 +16,6 @@
   } from '@/store/modules/index.js'
   import {
     DismissCircle32Filled,
-    FlowchartCircle20Filled,
     FullScreenMaximize24Regular,
     FullScreenMinimize24Regular,
     Save16Regular
@@ -180,26 +179,16 @@
     >
       <CommandForm :data="contractData" />
     </UIModal>
-    <UIDConfirm
-      @onClose="onClose"
-      @onSave="onSave"
+    <!-- «Yo'q» — buyruqsiz yakunlash (onClose); fon / Esc — shunchaki yopish. -->
+    <UIConfirm
       v-model:visible="store.confirmationVisible"
-      :submit-btn-text="$t('content.yes')"
-      :close-btn-text="$t('content.no')"
-    >
-      <template #icon>
-        <div class="flex justify-center p-4">
-          <n-icon size="86" class="text-primary mx-auto">
-            <FlowchartCircle20Filled />
-          </n-icon>
-        </div>
-      </template>
-      <template #default>
-        <span class="w-full text-xl font-medium text-center py-4 inline-block">{{
-          $t('contractPage.confirmAdText', { n: contractData?.number })
-        }}</span>
-      </template>
-    </UIDConfirm>
+      type="confirm"
+      :title="$t('contractPage.confirmAdText', { n: contractData?.number })"
+      :confirm-text="$t('content.yes')"
+      :cancel-text="$t('content.no')"
+      @confirm="onSave"
+      @cancel="onClose"
+    />
     <UIOfficeApp ref="officeAppRef" />
   </UIPageContent>
 </template>

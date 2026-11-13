@@ -11,16 +11,16 @@
     Edit32Regular,
     Delete20Regular
   } from '@vicons/fluent'
-  import { useMessage, useDialog } from 'naive-ui'
+  import { useMessage } from 'naive-ui'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
   import { useAppSetting } from '@/utils/AppSetting.js'
   import i18n from '@/i18n/index.js'
+  import { confirmDialog } from '@/components/notify/alertDialog.js'
 
   const store = useIntegrationClientsStore()
   const componentStore = useComponentStore()
   const message = useMessage()
-  const dialog = useDialog()
   const { t } = i18n.global
 
   const loadStructure = () => {
@@ -300,12 +300,12 @@
   }
 
   const onChangeKey = () => {
-    dialog.warning({
+    confirmDialog({
       title: t('integrationClients.rotate.title'),
-      content: t('integrationClients.rotate.confirm', { name: keyView.value.name }),
-      positiveText: t('content.yes'),
-      negativeText: t('content.no'),
-      onPositiveClick: () => {
+      message: t('integrationClients.rotate.confirm', { name: keyView.value.name }),
+      confirmText: t('content.yes'),
+      cancelText: t('content.no'),
+      onConfirm: () => {
         return store._rotate(keyView.value.id).then((res) => {
           keyView.value.secret_key = res.secret_key
           keyView.value.revealed = true

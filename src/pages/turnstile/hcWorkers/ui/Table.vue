@@ -104,27 +104,27 @@
     {
       key: 'worker',
       title: t('content.fullName'),
-      width: 400
+      minWidth: 230
     },
     {
       key: 'access_levels',
       title: t('turnstile.hcWorkersPage.access_levels'),
-      minWidth: 500
+      minWidth: 300
     },
     {
       key: 'hcpPerson.to',
       title: t('content.expiryDate'),
-      width: 140
+      width: 120
     },
     {
       key: 'hcpPerson.updated_at',
       title: t('content.updatedAt'),
-      width: 140
+      width: 120
     },
     {
       key: 'errorMessage',
       title: t('content.error'),
-      width: 100
+      width: 120
     }
   ])
 
@@ -173,7 +173,7 @@
     :page="store.params.page"
     :per-page="store.params.per_page"
     :total="store.totalItems"
-    storage-key="turnstile-hc-workers"
+    storage-key="turnstile-hc-workers-v2"
     @change-page="changePage"
   >
     <template #cell-worker="{ row }">

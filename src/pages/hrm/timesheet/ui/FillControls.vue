@@ -253,7 +253,10 @@
     gap: 6px;
   }
   /* Tez tur chipi — kod O'Z rangida (panjaradagi kabi), tanlangani ramkali. */
+  /* Ikki harfli kod («MT») qatorga sig'masa ham ikkiga bo'linmasin. */
   .fc-chip {
+    flex: 0 0 auto;
+    white-space: nowrap;
     min-width: 34px;
     height: 34px;
     padding: 0 8px;

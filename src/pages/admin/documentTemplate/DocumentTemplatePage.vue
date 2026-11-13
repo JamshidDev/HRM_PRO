@@ -7,7 +7,7 @@
    */
   import { h } from 'vue'
   import { DocumentEditor } from '@onlyoffice/document-editor-vue'
-  import { useDialog } from 'naive-ui'
+  import { confirmDialog, showAlert } from '@/components/notify/alertDialog.js'
   import { useRoute, useRouter } from 'vue-router'
   import { UIFigBlock, UIPageContent, UIProfileButton } from '@/components/index.js'
   import { useDocumentTemplateStore, useAccountStore } from '@/store/modules/index.js'
@@ -23,7 +23,6 @@
   const accStore = useAccountStore()
   const route = useRoute()
   const router = useRouter()
-  const dialog = useDialog()
 
   const officeServerUrl = import.meta.env.VITE_OFFICE_SERVER
   const canWrite = computed(() => accStore.checkPermission(accStore.pn.documentTemplatesWrite))
@@ -88,10 +87,10 @@
         $Toast.success(t('documentTemplate.saved'))
         return
       }
-      dialog.error({
+      showAlert({
+        type: 'warning',
         title: t('documentTemplate.saveRejectedTitle'),
-        content: row.message || t('content.error'),
-        positiveText: t('content.close')
+        message: row.message || t('content.error')
       })
     }, 4000)
   }
@@ -104,18 +103,14 @@
     await store._select(key)
   }
 
-  const onReset = () => {
-    const d = dialog.warning({
+  // Loyihaning umumiy tasdiq oynasi (DAS-15706).
+  const onReset = () =>
+    confirmDialog({
       title: t('documentTemplate.resetConfirmTitle'),
-      content: t('documentTemplate.resetConfirmText'),
-      positiveText: t('content.yes'),
-      negativeText: t('content.cancel'),
-      onPositiveClick: async () => {
-        d.destroy()
-        await store._reset()
-      }
+      message: t('documentTemplate.resetConfirmText'),
+      confirmText: t('content.yes'),
+      onConfirm: () => store._reset()
     })
-  }
 
   onMounted(async () => {
     if (!accStore.checkAction(accStore.pn.documentTemplatesRead)) return

@@ -3,10 +3,12 @@
   import { NAvatar, NText } from 'naive-ui'
   import ruFlag from '@/assets/images/content/ru.png'
   import enFlag from '@/assets/images/content/en.png'
+  import kaaFlag from '@/assets/images/content/kaa.png'
   import i18n from '@/i18n/index.js'
   import { ChevronDown24Filled } from '@vicons/fluent'
   import ChevronDownIcon from '@/assets/icons/figChevronDown.svg'
   import { useAppSetting } from '@/utils/index.js'
+  import { renderLangChips } from './langChips.js'
   const { t } = i18n.global
 
   defineProps({
@@ -49,6 +51,97 @@
       props: {
         onClick: () => {
           changeLang('uz')
+        }
+      }
+    },
+    {
+      key: 'header4',
+      type: 'render',
+      render: () => {
+        return h(
+          'div',
+          {
+            class: 'hover:bg-surface-200 p-1 m-1 rounded-sm',
+            style: 'display: flex; align-items: center; cursor:pointer'
+          },
+          [
+            h(NAvatar, {
+              round: true,
+              size: 'small',
+              class: 'w-[24px]! h-[24px]! mr-2',
+              src: uzFlag
+            }),
+            h('div', { class: 'text-[14px] font-medium' }, [
+              h(NText, { depth: 3 }, { default: () => t('content.langUzKr') })
+            ])
+          ]
+        )
+      },
+      props: {
+        onClick: () => {
+          changeLang('uz_kr')
+        }
+      }
+    },
+    {
+      // Takomillashtirilayotgan lotin alifbosi (Ö Ğ Ş Ç) — nom yonida «Yangi» va «Beta» chiplari
+      key: 'header5',
+      type: 'render',
+      render: () => {
+        return h(
+          'div',
+          {
+            class: 'hover:bg-surface-200 p-1 m-1 rounded-sm',
+            style: 'display: flex; align-items: center; cursor:pointer'
+          },
+          [
+            h(NAvatar, {
+              round: true,
+              size: 'small',
+              class: 'w-[24px]! h-[24px]! mr-2',
+              src: uzFlag
+            }),
+            h('div', { class: 'text-[14px] font-medium' }, [
+              h(NText, { depth: 3 }, { default: () => t('content.langUzNew') })
+            ]),
+            ...renderLangChips(['new', 'beta'])
+          ]
+        )
+      },
+      props: {
+        onClick: () => {
+          changeLang('uz_new')
+        }
+      }
+    },
+    {
+      // Qoraqalpoq tili (lotin) — hali beta
+      key: 'header6',
+      type: 'render',
+      render: () => {
+        return h(
+          'div',
+          {
+            class: 'hover:bg-surface-200 p-1 m-1 rounded-sm',
+            style: 'display: flex; align-items: center; cursor:pointer'
+          },
+          [
+            h(NAvatar, {
+              round: true,
+              size: 'small',
+              class: 'w-[24px]! h-[24px]! mr-2',
+              src: kaaFlag
+            }),
+            h('div', { class: 'text-[14px] font-medium' }, [
+              h(NText, { depth: 3 }, { default: () => t('content.langKaa') })
+            ]),
+            ...renderLangChips(['beta'])
+          ]
+        )
+      },
+      props: {
+        onClick: () => {
+          changeLang('kaa')
         }
       }
     },
@@ -109,35 +202,6 @@
           changeLang('en')
         }
       }
-    },
-    {
-      key: 'header4',
-      type: 'render',
-      render: () => {
-        return h(
-          'div',
-          {
-            class: 'hover:bg-surface-200 p-1 m-1 rounded-sm',
-            style: 'display: flex; align-items: center; cursor:pointer'
-          },
-          [
-            h(NAvatar, {
-              round: true,
-              size: 'small',
-              class: 'w-[24px]! h-[24px]! mr-2',
-              src: uzFlag
-            }),
-            h('div', { class: 'text-[14px] font-medium' }, [
-              h(NText, { depth: 3 }, { default: () => t('content.langUzKr') })
-            ])
-          ]
-        )
-      },
-      props: {
-        onClick: () => {
-          changeLang('uz_kr')
-        }
-      }
     }
   ]
 
@@ -151,6 +215,8 @@
     if (currentLang.value === 'en') return { icon: enFlag, text: 'content.langEn' }
     else if (currentLang.value === 'ru') return { icon: ruFlag, text: 'content.langRu' }
     else if (currentLang.value === 'uz_kr') return { icon: uzFlag, text: 'content.langUzKr' }
+    else if (currentLang.value === 'uz_new') return { icon: uzFlag, text: 'content.langUzNew' }
+    else if (currentLang.value === 'kaa') return { icon: kaaFlag, text: 'content.langKaa' }
     else return { icon: uzFlag, text: 'content.langUz' }
   })
 
@@ -182,10 +248,10 @@
     </div>
     <div
       v-else
-      class="flex items-center border-surface-line py-1 px-1 rounded-xl border w-[90px] cursor-pointer h-[34px] overflow-hidden"
+      class="flex items-center border-surface-line py-1 px-1 rounded-xl border min-w-[90px] cursor-pointer h-[34px] overflow-hidden"
     >
       <n-avatar class="w-[20px]! h-[20px]!" round size="small" :src="dropdown.icon" />
-      <span class="text-sm text-textColor3 whitespace-nowrap mx-1 w-[40px]">{{
+      <span class="text-sm text-textColor3 whitespace-nowrap mx-1 min-w-[40px]">{{
         $t(dropdown.text)
       }}</span>
       <n-icon class="text-[12px] text-secondary">

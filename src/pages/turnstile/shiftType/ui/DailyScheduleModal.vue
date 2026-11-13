@@ -1,14 +1,13 @@
 <script setup>
   import { DismissCircle24Filled, Clock12Regular, PersonQuestionMark20Regular } from '@vicons/fluent'
-  import { useDialog } from 'naive-ui'
   import { useAccountStore, useShiftTypeStore } from '@stores'
   import { UIModal, UIUser, UIPagination } from '@components'
   import DailyScheduleFilter from './DailyScheduleFilter.vue'
   import i18n from '@/i18n/index.js'
+  import { confirmDialog } from '@/components/notify/alertDialog.js'
 
   const store = useShiftTypeStore()
   const accStore = useAccountStore()
-  const dialog = useDialog()
   const t = i18n.global.t
 
   // Mavjud guruhga xodim biriktirish (har kunlik smena) — sarlavhada guruh nomi.
@@ -43,12 +42,12 @@
     // Boshqa smenasi bor xodimlar ko'chiriladi — aylanma smenadagi kabi avval so'raymiz.
     const moved = store.selectedWorkers.filter((id) => store.busyWorkerIds.includes(id)).length
     if (!moved) return save()
-    dialog.warning({
+    confirmDialog({
       title: t('shiftType.generate.moveTitle'),
-      content: t('shiftType.generate.moveConfirm', { n: moved }),
-      positiveText: t('content.yes'),
-      negativeText: t('content.no'),
-      onPositiveClick: save
+      message: t('shiftType.generate.moveConfirm', { n: moved }),
+      confirmText: t('content.yes'),
+      cancelText: t('content.no'),
+      onConfirm: save
     })
   }
 
