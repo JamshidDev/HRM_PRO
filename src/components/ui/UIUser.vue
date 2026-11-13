@@ -55,10 +55,9 @@
     [props.data?.lastName, props.data?.firstName, props.data?.middleName].filter(Boolean).join(' ')
   )
 
+  // «Familiya I.O.» — Raximov J.Sh.
   const shortName = computed(() =>
-    [props.data?.lastName, props.data?.firstName?.[0], props.data?.middleName?.[0]]
-      .filter(Boolean)
-      .join('.')
+    Utils.shortFio(props.data?.lastName, props.data?.firstName, props.data?.middleName)
   )
 
   // Rasm yo'q bo'lsa (placeholder ko'rinadi) yoki `avatarClickable` o'chiq bo'lsa — ko'ruvchi ochilmaydi,

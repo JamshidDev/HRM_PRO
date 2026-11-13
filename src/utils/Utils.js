@@ -175,6 +175,25 @@ const routeTurnstilePathMaker = (mainPath) => `${AppPaths.Turnstile}${mainPath}`
 const routeChatPathMaker = (mainPath) => `${AppPaths.Chat}${mainPath}`
 const routeExtraPathMaker = (mainPath) => `${AppPaths.Extra}${mainPath}`
 const routeDocFlowPathMaker = (mainPath) => `${AppPaths.DocFlow}${mainPath}`
+
+// Bosh harf: qo'sh harflar (Sh, Ch, Yu, O', G') to'liq olinadi — backend short-fio bilan bir xil.
+const nameInitial = (name) => {
+  const s = String(name ?? '').trim()
+  if (!s) return ''
+  const m = s.match(/^(sh|ch|yu|[og][‘’'ʻʼ`])/i)
+  const head = m ? m[0] : s[0]
+  return head[0].toUpperCase() + head.slice(1).toLowerCase().replace(/[’'ʻʼ`]/, '‘')
+}
+
+// «Familiya I.O.» — Raximov J.Sh.; otasining ismi bo'lmasa Raximov J.
+const shortFio = (lastName, firstName, middleName) => {
+  const letters = [firstName, middleName]
+    .map(nameInitial)
+    .filter(Boolean)
+    .map((l) => `${l}.`)
+    .join('')
+  return [lastName, letters].filter(Boolean).join(' ')
+}
 const routeTimesheetPathMaker = (mainPath) => `${AppPaths.TimeSheet}${mainPath}`
 
 const documentModels = {
@@ -613,5 +632,6 @@ export default {
   validateTime,
   isValidTimeChar,
   handleTimeKeydown,
-  timeHHMMWithMonth
+  timeHHMMWithMonth,
+  shortFio
 }

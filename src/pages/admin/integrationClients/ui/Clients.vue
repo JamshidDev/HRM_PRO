@@ -9,7 +9,8 @@
     Key20Regular,
     Copy20Regular,
     Edit32Regular,
-    Delete20Regular
+    Delete20Regular,
+    PlugConnected20Regular
   } from '@vicons/fluent'
   import { useMessage } from 'naive-ui'
   import Utils from '@/utils/Utils.js'
@@ -17,6 +18,7 @@
   import { useAppSetting } from '@/utils/AppSetting.js'
   import i18n from '@/i18n/index.js'
   import { confirmDialog } from '@/components/notify/alertDialog.js'
+  import ApiTester from './ApiTester.vue'
 
   const store = useIntegrationClientsStore()
   const componentStore = useComponentStore()
@@ -81,8 +83,22 @@
       key: 'keys',
       icon: UIHelper.renderIcon(Key20Regular),
       action: openKeys
+    },
+    {
+      label: t('integrationClients.tester.button'),
+      key: 'api-test',
+      icon: UIHelper.renderIcon(PlugConnected20Regular),
+      action: (row) => openTester(row)
     }
   ])
+
+  // API test oynasi: qatordan ochilsa — shu mijoz kalitlari bilan.
+  const testerVisible = ref(false)
+  const testerClient = ref(null)
+  const openTester = (row = null) => {
+    testerClient.value = row ? { id: row.id, name: row.name, public_key: row.public_key } : null
+    testerVisible.value = true
+  }
 
   const deleteWarning = (row) => t('integrationClients.delete.confirm', { name: row.name })
 
@@ -341,6 +357,12 @@
       </template>
       {{ $t('content.download') }}
     </n-button>
+    <n-button secondary @click="openTester()">
+      <template #icon>
+        <n-icon><PlugConnected20Regular /></n-icon>
+      </template>
+      {{ $t('integrationClients.tester.button') }}
+    </n-button>
     <n-button type="primary" @click="openCreate">
       <template #icon>
         <n-icon><Add20Filled /></n-icon>
@@ -570,4 +592,5 @@
       </div>
     </template>
   </UIModal>
+  <ApiTester v-model:visible="testerVisible" :client="testerClient" />
 </template>

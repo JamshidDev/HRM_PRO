@@ -3631,12 +3631,26 @@
     },
     "calcDiff": {
       "system": "System",
-      "entered": "Entered",
+      "entered": "Employee",
       "diff": "Difference",
-      "more": "{n} h more",
-      "less": "{n} h less",
-      "typeOnly": "same hours, type changed",
-      "empty": "empty (0 h)"
+      "more": "+{n} h",
+      "less": "−{n} h",
+      "typeOnly": "type changed",
+      "empty": "empty",
+      "typeAlso": "type changed"
+    },
+    "changes": {
+      "title": "Change history",
+      "short": "History",
+      "at": "Time",
+      "worker": "Employee",
+      "day": "Day",
+      "before": "Before",
+      "after": "After",
+      "user": "Changed by",
+      "allWorkers": "All employees",
+      "allDays": "All days",
+      "rowDiff": "Differs from system calculation: {cells} day(s) changed. Click to view history"
     },
     "lockClose": "Close timesheet",
     "lockOpen": "Open timesheet",
@@ -6564,6 +6578,37 @@
       "secretHidden": "The secret key is not stored in readable form — it can only be regenerated via \"Rotate key\".",
       "copyAll": "Copy all",
       "copyHint": "Hidden on screen — pasted as plaintext when you use \"Copy all\"."
+    },
+    "tester": {
+      "button": "API test",
+      "title": "Integration API test",
+      "secretKey": "Secret key",
+      "send": "Send",
+      "permission": "Permission",
+      "needPathParam": "Enter the path parameter",
+      "badJson": "Body JSON is invalid",
+      "params": "Parameters",
+      "checking": "Checking keys…",
+      "keysValid": "Keys are valid",
+      "keysInvalid": "Keys are invalid:",
+      "role": "Role",
+      "permissionsCount": "Permissions: {n}",
+      "scopeAll": "All organizations",
+      "scopeOrgs": "{n} organizations",
+      "inactive": "Inactive",
+      "noPermission": "The role has no access to this API",
+      "check": "Check",
+      "diag": {
+        "ok": "Working",
+        "network": "Couldn't reach the server (network or CORS)",
+        "s400": "Bad request — check the parameters",
+        "s401": "Wrong key, signature or time (or the client is inactive)",
+        "s403": "The client has no access to this API, or an IP/organization restriction",
+        "s404": "Not found — wrong path or parameter value",
+        "s422": "API responded — required parameters are missing or invalid",
+        "s429": "Rate limit exceeded",
+        "server": "Server error"
+      }
     }
   },
   "salaryAccess": {
@@ -6697,7 +6742,9 @@
     "holidayGreetings": "Holiday greetings",
     "workerSchedules": "Duty schedule",
     "workerScheduleSwap": "Schedule swap",
-    "dailyAttendance": "Daily attendance"
+    "dailyAttendance": "Daily attendance",
+    "oneCAttendance": "1C: daily attendance",
+    "businessTripsIncoming": "Incoming business-trip workers"
   },
   "kpiPage": {
     "name": "KPI indicators",
@@ -6877,7 +6924,7 @@
     "name": "Template",
     "subtitle": "Select a template, edit its content, and save it for new documents.",
     "selectPlaceholder": "Select a document template",
-    "empty": "Pick a template above to start editing",
+    "empty": "Select a command type",
     "variables": "Variables",
     "variablesHint": "Click to copy. Do not rename variables.",
     "searchVariables": "Search variables",
@@ -6952,7 +6999,26 @@
     "editedBadge": "Edited",
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom out",
-    "zoomFit": "Fit page width"
+    "zoomFit": "Fit page width",
+    "saveRejectedTitle": "Template was not saved",
+    "tabTemplates": "Templates",
+    "noChanges": "No changes to save",
+    "discardTitle": "Discard changes",
+    "discardText": "Unsaved changes will be removed and the template reopens in its last saved state. Continue?",
+    "stateSaved": "Saved · {time}",
+    "stateRejected": "Not saved — see why",
+    "stateRejectedHint": "Click to see the reason",
+    "updatedBy": "Changed by",
+    "editorError": {
+      "unsupported": "The server doesn't support this yet",
+      "unsupportedHint": "The backend is not updated — template editor endpoints were not found. Contact the administrator.",
+      "unsigned": "OnlyOffice is not configured",
+      "unsignedHint": "The server has no OnlyOffice JWT secret (ONLYOFFICE_JWT_SECRET) — the editor can't open.",
+      "failed": "Couldn't load editor settings",
+      "failedHint": "The server returned an error. Try reloading the page.",
+      "unreachable": "Couldn't connect to the OnlyOffice server",
+      "unreachableHint": "The document server isn't responding or its address is wrong. Try again later."
+    }
   },
   "turnstileDownload": {
     "title": "Download events"

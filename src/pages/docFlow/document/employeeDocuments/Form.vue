@@ -108,7 +108,7 @@
         h(
           'div',
           { class: 'text-xs font-medium text-textColor1' },
-          `${option.last_name} ${option.first_name?.[0] ?? ''}.${option.middle_name?.[0] ?? ''}.`
+          Utils.shortFio(option.last_name, option.first_name, option.middle_name)
         ),
         h('div', { class: 'text-xs text-textColor3' }, option.position)
       ])

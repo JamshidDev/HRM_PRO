@@ -41,7 +41,7 @@
   // --- Director / Tasdiqlovchilar ---
   const mapUser = (v) => ({
     ...v,
-    fullName: `${v.last_name} ${v.first_name?.[0]}.${v.middle_name?.[0]}.`,
+    fullName: Utils.shortFio(v.last_name, v.first_name, v.middle_name),
     name: `${v.last_name} ${v.first_name} ${v.middle_name}`
   })
 

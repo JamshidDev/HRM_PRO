@@ -1261,10 +1261,15 @@ export const PERMISSION_GROUPS = [
       { prefix: 'integration-worker-events-month', label: 'integrationPerm.workerEventsMonth' },
       { prefix: 'integration-worker-events-day', label: 'integrationPerm.workerEventsDay' },
       { prefix: 'integration-worker-business-trip', label: 'integrationPerm.workerBusinessTrip' },
+      {
+        prefix: 'integration-business-trips-incoming',
+        label: 'integrationPerm.businessTripsIncoming'
+      },
       { prefix: 'integration-worker-schedules', label: 'integrationPerm.workerSchedules' },
       { prefix: 'integration-worker-schedule-swap', label: 'integrationPerm.workerScheduleSwap' },
       { prefix: 'integration-turnstile-events', label: 'integrationPerm.turnstileEvents' },
       { prefix: 'integration-daily-attendance', label: 'integrationPerm.dailyAttendance' },
+      { prefix: 'integration-1c-attendance', label: 'integrationPerm.oneCAttendance' },
       { prefix: 'integration-station-workers', label: 'integrationPerm.stationWorkers' },
       { prefix: 'integration-station-worker', label: 'integrationPerm.stationWorker' },
       { prefix: 'integration-station-resume', label: 'integrationPerm.stationResume' },
