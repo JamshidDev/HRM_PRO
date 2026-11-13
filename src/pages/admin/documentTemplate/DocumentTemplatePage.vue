@@ -9,12 +9,16 @@
   import { DocumentEditor } from '@onlyoffice/document-editor-vue'
   import { confirmDialog, showAlert } from '@/components/notify/alertDialog.js'
   import { useRoute, useRouter } from 'vue-router'
-  import { UIFigBlock, UIPageContent, UIProfileButton } from '@/components/index.js'
+  import { UIPageContent, UISegmentTabs } from '@/components/index.js'
   import { useDocumentTemplateStore, useAccountStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
-  import icons from '@/assets/icons'
   import i18n from '@/i18n/index.js'
-  import { ArrowReset20Regular, ErrorCircle20Regular, Info20Regular } from '@vicons/fluent'
+  import {
+    CheckmarkCircle16Filled,
+    ErrorCircle16Filled,
+    ErrorCircle20Regular,
+    Save20Regular
+  } from '@vicons/fluent'
   import VariablePanel from './ui/VariablePanel.vue'
   import DocumentSettingsCard from './ui/DocumentSettingsCard.vue'
 
@@ -24,8 +28,17 @@
   const route = useRoute()
   const router = useRouter()
 
+  // Sahifa tablari: shablonlar (OnlyOffice) | muddatlar va elektron raqam; URL'da saqlanadi.
+  const pageTabs = computed(() => [
+    { id: 'templates', name: t('documentTemplate.tabTemplates') },
+    { id: 'settings', name: t('documentSettings.title') }
+  ])
+  const activeTab = computed(() => (route.query.tab === 'settings' ? 'settings' : 'templates'))
+  const onTabChange = (tab) => {
+    router.replace({ query: { ...route.query, tab: tab === 'settings' ? 'settings' : undefined } })
+  }
+
   const officeServerUrl = import.meta.env.VITE_OFFICE_SERVER
-  const canWrite = computed(() => accStore.checkPermission(accStore.pn.documentTemplatesWrite))
 
   // Select variantlari kategoriya bo'yicha guruhlanadi — 66 shablon bitta ro'yxatda qidirish qiyin.
   const groupedOptions = computed(() => {
@@ -42,8 +55,7 @@
       groups.get(o.category).children.push({
         key: o.key,
         value: o.key,
-        label: `${o.type} · ${o.label.split(' · ').slice(2).join(' · ')} (${o.fileName})`,
-        edited: o.edited
+        label: `${o.type} · ${o.label.split(' · ').slice(2).join(' · ')} (${o.fileName})`
       })
     }
     return [...groups.values()]
@@ -54,9 +66,6 @@
       ? option.label
       : h('span', { class: 'dt-option' }, [
           h('span', { class: 'dt-option__label' }, option.label),
-          option.edited
-            ? h('span', { class: 'dt-option__badge' }, t('documentTemplate.editedBadge'))
-            : null
         ])
 
   // Shablon almashsa yoki qayta yuklansa muharrir qaytadan quriladi.
@@ -96,21 +105,70 @@
   }
   watch(editorKey, (key) => (key ? startPolling() : stopPolling()))
 
+  // OnlyOffice: `data === true` — hujjatda serverga hali saqlanmagan o'zgarish bor.
+  const onDocumentStateChange = (e) => {
+    if (e?.data) store._markDirty()
+  }
+  const onLoadComponentError = () => {
+    store.configError = 'unreachable'
+  }
+
+  // Holat yorlig'i: saqlandi (vaqt) / rad etildi.
+  const statusChip = computed(() => {
+    if (store.saveState === 'saved')
+      return {
+        tone: 'green',
+        icon: CheckmarkCircle16Filled,
+        text: t('documentTemplate.stateSaved', { time: String(store.savedAt ?? '').slice(11, 16) })
+      }
+    if (store.saveState === 'rejected')
+      return { tone: 'red', icon: ErrorCircle16Filled, text: t('documentTemplate.stateRejected') }
+    return null
+  })
+
+  const showRejectReason = () => {
+    if (store.saveState !== 'rejected') return
+    showAlert({
+      type: 'warning',
+      title: t('documentTemplate.saveRejectedTitle'),
+      message: store.rejectMessage || t('content.error')
+    })
+  }
+
+  // Select ustidagi izoh: to'liq nom va kim, qachon o'zgartirgani.
+  const selectTitle = computed(() => {
+    const sel = store.selected
+    if (!sel) return ''
+    const who = sel.updated_by_name
+      ? `\n${t('documentTemplate.updatedBy')}: ${sel.updated_by_name} · ${String(sel.updated_at ?? '').slice(0, 16)}`
+      : ''
+    return `${sel.type} · ${sel.name}${who}`
+  })
+
+  // Loyihaning umumiy tasdiq oynasi (DAS-15706).
+  const onDiscard = () =>
+    confirmDialog({
+      title: t('documentTemplate.discardTitle'),
+      message: t('documentTemplate.discardText'),
+      confirmText: t('content.yes'),
+      onConfirm: () => store._discard()
+    })
+
+  // Muharrir xatosi turi bo'yicha sarlavha va izoh.
+  const errorText = computed(() => {
+    const kind = store.configError ?? 'failed'
+    return {
+      title: t(`documentTemplate.editorError.${kind}`),
+      hint: t(`documentTemplate.editorError.${kind}Hint`)
+    }
+  })
+
   const selectTemplate = async (key) => {
     if (key === store.selectedKey) return
     // URL'da saqlanadi — sahifa yangilansa ham, havola yuborilsa ham shu shablon ochiladi.
     router.replace({ query: { ...route.query, template: key ?? undefined } })
     await store._select(key)
   }
-
-  // Loyihaning umumiy tasdiq oynasi (DAS-15706).
-  const onReset = () =>
-    confirmDialog({
-      title: t('documentTemplate.resetConfirmTitle'),
-      message: t('documentTemplate.resetConfirmText'),
-      confirmText: t('content.yes'),
-      onConfirm: () => store._reset()
-    })
 
   onMounted(async () => {
     if (!accStore.checkAction(accStore.pn.documentTemplatesRead)) return
@@ -129,84 +187,103 @@
 
 <template>
   <UIPageContent class="dt-page">
-    <UIFigBlock class="dt-card" :title="$t('documentTemplate.name')" :icon="icons.figFileArrowDown">
-      <p class="dt-intro">{{ $t('documentTemplate.subtitle') }}</p>
+    <UISegmentTabs
+      class="dt-tabs"
+      :model-value="activeTab"
+      :tabs="pageTabs"
+      @update:model-value="onTabChange"
+    />
 
-      <div class="dt-toolbar">
-        <n-select
-          class="dt-select"
-          size="large"
-          filterable
-          clearable
-          :loading="store.loading"
-          :options="groupedOptions"
-          :render-label="renderOptionLabel"
-          :placeholder="$t('documentTemplate.selectPlaceholder')"
-          :value="store.selectedKey"
-          @update:value="selectTemplate"
-        />
+    <DocumentSettingsCard v-if="activeTab === 'settings'" class="dt-card" />
 
-        <div class="dt-actions">
-          <UIProfileButton
-            v-if="canWrite && store.canReset"
-            :icon="ArrowReset20Regular"
-            :loading="store.resetting"
-            :disabled="store.configLoading"
-            @click="onReset"
-          >
-            {{ $t('documentTemplate.reset') }}
-          </UIProfileButton>
+    <!-- Chapda OnlyOffice + pastda suzuvchi boshqaruv paneli, o'ngda o'zgaruvchilar; tab almashganda sessiya uzilmasin — v-show. -->
+    <div v-show="activeTab === 'templates'" class="dt-workspace">
+      <div class="dt-main">
+        <div class="dt-editor">
+          <n-spin v-if="store.configLoading" class="dt-editor__center" />
+          <div v-else-if="store.selected && store.configError" class="dt-editor__center dt-editor__error">
+            <n-icon size="40" class="text-fig-text-red"><ErrorCircle20Regular /></n-icon>
+            <div class="text-base font-semibold text-textColor1">{{ errorText.title }}</div>
+            <div class="max-w-[420px] text-sm text-textColor3">{{ errorText.hint }}</div>
+          </div>
+          <div v-else-if="store.editorConfig" class="dt-office">
+            <DocumentEditor
+              id="dtOfficeEditor"
+              :key="editorKey"
+              width="100%"
+              height="100%"
+              :document-server-url="officeServerUrl"
+              :config="store.editorConfig"
+              :events_onDocumentStateChange="onDocumentStateChange"
+              :on-load-component-error="onLoadComponentError"
+            />
+          </div>
+          <n-empty v-else :description="$t('documentTemplate.empty')" class="dt-editor__center" />
         </div>
-      </div>
 
-      <div v-if="store.selected" class="dt-context">
-        <div class="dt-context__notice">
-          <n-icon :size="18"><Info20Regular /></n-icon>
-          <span>
-            {{ store.canEdit ? $t('documentTemplate.editHint') : $t('documentTemplate.viewOnly') }}
-            {{ $t('documentTemplate.globalNotice') }}
-          </span>
-        </div>
-      </div>
-    </UIFigBlock>
-
-    <DocumentSettingsCard />
-
-    <!-- OnlyOffice chapda, o'zgaruvchilar paneli o'ngda. -->
-    <div class="dt-workspace">
-      <div class="dt-editor">
-        <n-spin v-if="store.configLoading" class="dt-editor__center" />
-        <div v-else-if="store.selected && store.configError" class="dt-editor__center dt-editor__error">
-          <n-icon size="40" class="text-fig-text-red"><ErrorCircle20Regular /></n-icon>
-          <div class="text-base font-semibold text-textColor1">{{ $t('onlyOfficeEditor.tokenError') }}</div>
-          <div class="max-w-[420px] text-sm text-textColor3">{{ $t('onlyOfficeEditor.tokenErrorHint') }}</div>
-        </div>
-        <div v-else-if="store.editorConfig" class="dt-office">
-          <DocumentEditor
-            id="dtOfficeEditor"
-            :key="editorKey"
-            width="100%"
-            height="100%"
-            :document-server-url="officeServerUrl"
-            :config="store.editorConfig"
+        <!-- Bitta qatorli suzuvchi panel: shablon, holat, bekor qilish, saqlash. -->
+        <div class="dt-bar">
+          <n-select
+            class="dt-bar__select"
+            :title="selectTitle"
+            filterable
+            :consistent-menu-width="false"
+            placement="top-start"
+            :virtual-scroll="false"
+            :menu-props="{ class: 'dt-select-menu' }"
+            :loading="store.loading"
+            :options="groupedOptions"
+            :render-label="renderOptionLabel"
+            :placeholder="$t('documentTemplate.selectPlaceholder')"
+            :value="store.selectedKey"
+            @update:value="selectTemplate"
           />
+          <div class="dt-bar__actions">
+            <button
+              v-if="statusChip"
+              type="button"
+              class="dt-state"
+              :class="[`dt-state--${statusChip.tone}`, { 'dt-state--link': store.saveState === 'rejected' }]"
+              :title="store.saveState === 'rejected' ? $t('documentTemplate.stateRejectedHint') : ''"
+              @click="showRejectReason"
+            >
+              <n-icon :size="14"><component :is="statusChip.icon" /></n-icon>
+              {{ statusChip.text }}
+            </button>
+            <template v-if="store.canEdit && store.editorConfig">
+              <n-button
+                :disabled="!['dirty', 'rejected'].includes(store.saveState) || store.saving"
+                :loading="store.discarding"
+                @click="onDiscard"
+              >
+                {{ $t('content.cancel') }}
+              </n-button>
+              <n-button type="primary" :loading="store.saving" @click="store._forceSave()">
+                <template #icon><n-icon><Save20Regular /></n-icon></template>
+                {{ $t('content.save') }}
+              </n-button>
+            </template>
+          </div>
         </div>
-        <n-empty v-else :description="$t('documentTemplate.empty')" class="dt-editor__center" />
       </div>
 
-      <VariablePanel
-        v-if="store.selected"
-        :selected="store.selected"
-        :variables="store.variables"
-        :flash="flash"
-        @copy="copyVariable"
-      />
+      <aside class="dt-side">
+        <VariablePanel
+          :template-key="store.selectedKey"
+          :variables="store.variables"
+          :flash="flash"
+          @copy="copyVariable"
+        />
+      </aside>
     </div>
   </UIPageContent>
 </template>
 
 <style scoped>
+  /* UIPageContent'ning standart p-4/gap-4 bo'shliqlari bu sahifada kichraytiriladi. */
   .dt-page {
+    gap: 0;
+    padding: 8px;
     min-height: 0;
     overflow: hidden;
   }
@@ -218,59 +295,131 @@
     flex: none;
   }
 
-  .dt-intro {
-    margin: -4px 0 0;
-    color: var(--fig-text-secondary);
-    font-size: 13px;
-    line-height: 20px;
+  .dt-tabs {
+    flex: none;
+    align-self: flex-start;
+    margin-bottom: 8px;
   }
 
-  .dt-toolbar {
-    display: flex;
-    gap: 12px;
+
+
+
+
+
+
+
+  .dt-state {
+    display: inline-flex;
+    flex: none;
     align-items: center;
-    flex-wrap: wrap;
+    gap: 6px;
+    height: 26px;
+    padding: 0 10px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: default;
   }
 
-  .dt-select {
-    flex: 1 1 420px;
-    min-width: 260px;
+
+  .dt-state--green {
+    background: var(--fig-chip-green-bg);
+    color: var(--fig-chip-green-text);
   }
 
-  .dt-actions {
+  .dt-state--red {
+    border-color: var(--fig-br-error);
+    background: var(--fig-red-50);
+    color: var(--fig-text-red);
+  }
+
+  .dt-state--link {
+    cursor: pointer;
+  }
+
+  .dt-state--link:hover {
+    text-decoration: underline;
+  }
+
+  .dt-side {
+    flex: 0 0 340px;
     display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  /* Panel ustunning butun balandligini egallaydi. */
+  .dt-side :deep(.vp) {
+    flex: 1 1 auto;
+  }
+
+  /* Panel muharrir ustida suzadi — joy egallamaydi. */
+  .dt-main {
+    position: relative;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  /* Pastdagi suzuvchi panel — bitta qator. */
+  .dt-bar {
+    position: absolute;
+    left: 50%;
+    bottom: 80px;
+    z-index: 10;
+    width: min(600px, calc(100% - 32px));
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    background: var(--fig-block-bg);
+    border: 1px solid var(--fig-br-disable);
+    border-radius: 12px;
+    box-shadow:
+      0 4px 12px rgb(16 24 40 / 8%),
+      0 12px 32px rgb(16 24 40 / 10%);
+  }
+
+  /* Tanlangan nom karta o'lchamini o'zgartirmasin — bir qator, ortig'i «…». */
+  .dt-bar__select {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .dt-bar__select :deep(.n-base-selection-label),
+  .dt-bar__select :deep(.n-base-selection-input),
+  .dt-bar__select :deep(.n-base-selection-input__content) {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .dt-bar__select :deep(.dt-option),
+  .dt-bar__select :deep(.dt-option__label),
+  .dt-bar__select :deep(.n-base-selection-input__content) {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+
+  .dt-bar__actions {
+    display: flex;
+    flex: none;
+    align-items: center;
     gap: 8px;
     margin-left: auto;
   }
 
-  .dt-context {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding-top: 12px;
-    border-top: 1px solid var(--fig-br-disable);
-  }
-
-  .dt-context__notice {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-width: 0;
-    color: var(--fig-text-secondary);
-    font-size: 12px;
-    line-height: 18px;
-  }
-
-  .dt-context__notice .n-icon {
-    flex: none;
-    color: var(--fig-text-brand);
-  }
-
   .dt-workspace {
     display: flex;
-    gap: 16px;
-    margin-top: 16px;
+    gap: 8px;
     flex: 1 1 auto;
     overflow: hidden;
     min-height: 0;
@@ -281,6 +430,7 @@
   .dt-editor {
     position: relative;
     flex: 1 1 auto;
+    min-height: 0;
     min-width: 0;
     display: flex;
     background: var(--fig-block-bg);
@@ -318,8 +468,20 @@
       overflow: visible;
     }
 
+    .dt-side {
+      flex-basis: auto;
+    }
+
+    .dt-bar {
+      position: static;
+      width: auto;
+      margin-top: 8px;
+      transform: none;
+      flex-wrap: wrap;
+    }
+
     .dt-workspace {
-      flex-direction: column;
+      flex-direction: column-reverse;
       overflow: visible;
     }
 
@@ -333,16 +495,7 @@
       min-height: 520px;
     }
 
-    .dt-actions {
-      width: 100%;
-      margin-left: 0;
-      justify-content: flex-end;
-    }
 
-    .dt-context {
-      align-items: flex-start;
-      flex-direction: column;
-    }
   }
 </style>
 
@@ -350,26 +503,33 @@
 <style>
   .dt-option {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 8px;
     min-width: 0;
   }
 
   .dt-option__label {
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: normal;
+    word-break: break-word;
   }
 
-  .dt-option__badge {
-    flex: none;
-    padding: 0 6px;
-    border-radius: 999px;
-    background: var(--fig-chip-amber-bg);
-    color: var(--fig-chip-amber-text);
-    font-size: 10.5px;
-    font-weight: 600;
-    line-height: 16px;
+  /* Shablon nomlari uzun — menyu kengroq va variantlar qatorga o'raladi. */
+  .dt-select-menu {
+    width: min(560px, calc(100vw - 32px));
   }
+
+  .dt-select-menu.n-base-select-menu .n-base-select-option {
+    height: auto;
+    min-height: 34px;
+    padding-block: 6px;
+  }
+
+  .dt-select-menu.n-base-select-menu .n-base-select-option .n-base-select-option__content {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    line-height: 18px;
+  }
+
 </style>
