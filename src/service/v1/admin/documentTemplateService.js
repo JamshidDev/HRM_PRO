@@ -19,9 +19,14 @@ const _lastSave = async (payload) => {
   return await axios.get(`/v1/admin/document-templates/last-save`, { params: payload.params })
 }
 
-// Standart (git'dagi) shablonga qaytarish — global override o'chadi.
-const _reset = async (payload) => {
-  return await axios.delete(`/v1/admin/document-templates/${payload.category}/${payload.type}`)
+// Sahifadagi «Saqlash» — OnlyOffice sessiyasini majburan saqlash (natija last-save orqali).
+const _forceSave = async (payload) => {
+  return await axios.post(`/v1/admin/document-templates/save`, payload.data)
+}
+
+// «Bekor qilish» — saqlanmagan tahrir tashlab yuboriladi, shablon oxirgi saqlangan holatda qayta ochiladi.
+const _discard = async (payload) => {
+  return await axios.post(`/v1/admin/document-templates/discard`, payload.data)
 }
 
 export default {
@@ -29,5 +34,6 @@ export default {
   _variables,
   _editorConfig,
   _lastSave,
-  _reset
+  _forceSave,
+  _discard
 }

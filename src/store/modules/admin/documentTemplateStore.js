@@ -19,10 +19,18 @@ export const useDocumentTemplateStore = defineStore('documentTemplateStore', {
     editorConfig: null,
     canEdit: false,
     configLoading: false,
-    configError: false,
+    // null | 'unsupported' (server eski) | 'unsigned' (OnlyOffice siri yo'q) | 'failed' | 'unreachable'
+    configError: null,
+
+    // Tahrir holati: 'idle' | 'dirty' (o'zgarish bor) | 'saved' | 'rejected'
+    saveState: 'idle',
+    // «Saqlash» bosildi — OnlyOffice natijasi kelguncha tugma band.
+    saving: false,
+    discarding: false,
+    savedAt: null,
+    rejectMessage: null,
 
     variables: [],
-    resetting: false,
 
     // Sahifa ochilgandan keyingi saqlash natijalari shu id dan keyin kuzatiladi.
     lastSaveId: 0
@@ -41,12 +49,12 @@ export const useDocumentTemplateStore = defineStore('documentTemplateStore', {
         edited: r.edited
       })),
 
-    selected: (state) =>
-      state.list.find((r) => `${r.category}:${r.type}` === state.selectedKey) ?? null,
+    // OnlyOffice hujjat kaliti — saqlash natijalari faqat shu sessiya bo'yicha olinadi.
+    docKey: (state) => state.editorConfig?.document?.key ?? null,
 
-    // Global override bor — «standartga qaytarish» tugmasi shunda faol.
-    canReset: (state) =>
-      Boolean(state.list.find((r) => `${r.category}:${r.type}` === state.selectedKey)?.edited)
+    selected: (state) =>
+      state.list.find((r) => `${r.category}:${r.type}` === state.selectedKey) ?? null
+
   },
 
   actions: {
@@ -65,42 +73,50 @@ export const useDocumentTemplateStore = defineStore('documentTemplateStore', {
       this.selectedKey = key
       this.editorConfig = null
       this.variables = []
+      this._resetSaveState()
       if (!key) return
-      await Promise.all([this._loadEditor(), this._loadVariables(), this._syncLastSave()])
+      await Promise.all([this._loadEditor(), this._loadVariables()])
+      await this._syncLastSave()
     },
 
     async _loadEditor() {
       const sel = this.selected
       if (!sel) return
+      const key = this.selectedKey
       this.configLoading = true
-      this.configError = false
+      this.configError = null
       try {
         const res = await $ApiService.documentTemplateService._editorConfig({
           params: { category: sel.category, type: sel.type }
         })
+        // Shablon almashib ketgan bo'lsa — eskirgan javob tashlanadi.
+        if (key !== this.selectedKey) return
         const data = res.data.data
         this.editorConfig = data?.config ?? null
         this.canEdit = Boolean(data?.can_edit)
         // Imzosiz sozlamani OnlyOffice rad etadi — tushunarli xabar ko'rsatiladi.
-        this.configError = !this.editorConfig?.token
-      } catch {
+        if (!this.editorConfig?.token) this.configError = 'unsigned'
+      } catch (e) {
+        if (key !== this.selectedKey) return
         this.editorConfig = null
-        this.configError = true
+        this.configError = e?.response?.status === 404 ? 'unsupported' : 'failed'
       } finally {
-        this.configLoading = false
+        if (key === this.selectedKey) this.configLoading = false
       }
     },
 
+    // Faqat tanlangan shablonning o'zgaruvchilari — almashgandan keyin kelgan eski javob tashlanadi.
     async _loadVariables() {
       const sel = this.selected
       if (!sel) return
+      const key = this.selectedKey
       try {
         const res = await $ApiService.documentTemplateService._variables({
           params: { category: sel.category, type: sel.type }
         })
-        this.variables = res.data.data?.variables ?? []
+        if (key === this.selectedKey) this.variables = res.data.data?.variables ?? []
       } catch {
-        this.variables = []
+        if (key === this.selectedKey) this.variables = []
       }
     },
 
@@ -112,10 +128,15 @@ export const useDocumentTemplateStore = defineStore('documentTemplateStore', {
 
     async _fetchLastSave(afterId) {
       const sel = this.selected
-      if (!sel) return null
+      if (!sel || !this.docKey) return null
       try {
         const res = await $ApiService.documentTemplateService._lastSave({
-          params: { category: sel.category, type: sel.type, after_id: afterId || undefined }
+          params: {
+            category: sel.category,
+            type: sel.type,
+            key: this.docKey,
+            after_id: afterId || undefined
+          }
         })
         return res.data.data ?? null
       } catch {
@@ -128,31 +149,74 @@ export const useDocumentTemplateStore = defineStore('documentTemplateStore', {
       const row = await this._fetchLastSave(this.lastSaveId)
       if (!row || row.id <= this.lastSaveId) return null
       this.lastSaveId = row.id
+      this.saving = false
       if (row.status === 'saved') {
+        this.saveState = 'saved'
+        this.savedAt = row.created_at
+        this.rejectMessage = null
         await Promise.all([this._index(), this._loadVariables()])
+      } else {
+        this.saveState = 'rejected'
+        this.rejectMessage = row.message
       }
       return row
     },
 
-    // Global override'ni o'chirib, git'dagi standart shablonga qaytadi.
-    async _reset() {
+    // «Saqlash» tugmasi: true — saqlash boshlandi, false — o'zgarish yo'q yoki xato.
+    async _forceSave() {
       const sel = this.selected
-      if (!sel) return false
-      this.resetting = true
+      if (!sel || !this.docKey || this.saving) return false
+      this.saving = true
       try {
-        await $ApiService.documentTemplateService._reset({
-          category: sel.category,
-          type: sel.type
+        const res = await $ApiService.documentTemplateService._forceSave({
+          data: { category: sel.category, type: sel.type, key: this.docKey }
         })
-        $Toast.success(t('documentTemplate.resetDone'))
-        await this._index()
-        await this._select(this.selectedKey)
+        if (res.data.data?.status === 'no_changes') {
+          this.saving = false
+          $Toast.info(t('documentTemplate.noChanges'))
+          return false
+        }
+        // Natija kelmasa tugma abadiy band qolmasin.
+        window.setTimeout(() => (this.saving = false), 30000)
+        return true
+      } catch {
+        this.saving = false
+        return false
+      }
+    },
+
+    // Saqlanmagan tahrirni tashlab, oxirgi saqlangan nusxani yangi sessiyada ochadi.
+    async _discard() {
+      const sel = this.selected
+      if (!sel || !this.docKey) return false
+      this.discarding = true
+      try {
+        await $ApiService.documentTemplateService._discard({
+          data: { category: sel.category, type: sel.type, key: this.docKey }
+        })
+        this._resetSaveState()
+        await this._loadEditor()
+        await this._syncLastSave()
         return true
       } catch {
         return false
       } finally {
-        this.resetting = false
+        this.discarding = false
       }
+    },
+
+    // OnlyOffice: hujjatda saqlanmagan o'zgarish paydo bo'ldi.
+    _markDirty() {
+      if (this.canEdit) this.saveState = 'dirty'
+    },
+
+    _resetSaveState() {
+      this.saveState = 'idle'
+      this.saving = false
+      this.savedAt = null
+      this.rejectMessage = null
+      this.lastSaveId = 0
     }
+
   }
 })
