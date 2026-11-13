@@ -6636,6 +6636,37 @@
       "secretHidden": "Yopiq kalit xavfsizlik uchun ochiq saqlanmaydi — uni faqat \"Kalitni almashtirish\" orqali yangilash mumkin.",
       "copyAll": "Hammasini nusxalash",
       "copyHint": "Ekranda yashirin — \"Hammasini nusxalash\"da ochiq holatda keladi."
+    },
+    "tester": {
+      "button": "API test",
+      "title": "Integratsiya API test",
+      "secretKey": "Yopiq kalit (secret)",
+      "send": "Yuborish",
+      "permission": "Ruxsat",
+      "needPathParam": "Yo'l parametrini kiriting",
+      "badJson": "Body JSON noto'g'ri",
+      "params": "Parametrlar",
+      "checking": "Kalitlar tekshirilmoqda…",
+      "keysValid": "Kalitlar to'g'ri",
+      "keysInvalid": "Kalitlar yaroqsiz:",
+      "role": "Rol",
+      "permissionsCount": "Ruxsatlar: {n}",
+      "scopeAll": "Barcha korxonalar",
+      "scopeOrgs": "{n} ta korxona",
+      "inactive": "Faol emas",
+      "noPermission": "Rolda bu API ruxsati yo'q",
+      "check": "Tekshirish",
+      "diag": {
+        "ok": "Ishlayapti",
+        "network": "Serverga ulanib bo'lmadi (tarmoq yoki CORS)",
+        "s400": "So'rov noto'g'ri — parametrlarni tekshiring",
+        "s401": "Kalit, imzo yoki vaqt noto'g'ri (yoki mijoz faol emas)",
+        "s403": "Mijozda bu API ruxsati yo'q yoki IP/korxona cheklovi",
+        "s404": "Topilmadi — yo'l yoki parametr qiymati noto'g'ri",
+        "s422": "API javob berdi — majburiy parametrlar yetishmaydi yoki noto'g'ri",
+        "s429": "So'rovlar limiti oshdi",
+        "server": "Server xatosi"
+      }
     }
   },
   "salaryAccess": {

@@ -6578,6 +6578,37 @@
       "secretHidden": "The secret key is not stored in readable form — it can only be regenerated via \"Rotate key\".",
       "copyAll": "Copy all",
       "copyHint": "Hidden on screen — pasted as plaintext when you use \"Copy all\"."
+    },
+    "tester": {
+      "button": "API test",
+      "title": "Integration API test",
+      "secretKey": "Secret key",
+      "send": "Send",
+      "permission": "Permission",
+      "needPathParam": "Enter the path parameter",
+      "badJson": "Body JSON is invalid",
+      "params": "Parameters",
+      "checking": "Checking keys…",
+      "keysValid": "Keys are valid",
+      "keysInvalid": "Keys are invalid:",
+      "role": "Role",
+      "permissionsCount": "Permissions: {n}",
+      "scopeAll": "All organizations",
+      "scopeOrgs": "{n} organizations",
+      "inactive": "Inactive",
+      "noPermission": "The role has no access to this API",
+      "check": "Check",
+      "diag": {
+        "ok": "Working",
+        "network": "Couldn't reach the server (network or CORS)",
+        "s400": "Bad request — check the parameters",
+        "s401": "Wrong key, signature or time (or the client is inactive)",
+        "s403": "The client has no access to this API, or an IP/organization restriction",
+        "s404": "Not found — wrong path or parameter value",
+        "s422": "API responded — required parameters are missing or invalid",
+        "s429": "Rate limit exceeded",
+        "server": "Server error"
+      }
     }
   },
   "salaryAccess": {
