@@ -6750,7 +6750,9 @@
     "holidayGreetings": "Bayram tabriklari",
     "workerSchedules": "Navbatchilik grafigi",
     "workerScheduleSwap": "Grafik almashtirish",
-    "dailyAttendance": "Kunlik davomat"
+    "dailyAttendance": "Kunlik davomat",
+    "oneCAttendance": "1C: kunlik davomat",
+    "businessTripsIncoming": "Safar bilan kelgan xodimlar"
   },
   "kpiPage": {
     "name": "KPI ko'rsatgichlar",

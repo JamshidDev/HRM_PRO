@@ -6703,7 +6703,9 @@
     "holidayGreetings": "Праздничные поздравления",
     "workerSchedules": "График дежурства",
     "workerScheduleSwap": "Замена графика",
-    "dailyAttendance": "Ежедневная посещаемость"
+    "dailyAttendance": "Ежедневная посещаемость",
+    "oneCAttendance": "1C: ежедневная посещаемость",
+    "businessTripsIncoming": "Прибывшие в командировку"
   },
   "kpiPage": {
     "name": "Показатели KPI",

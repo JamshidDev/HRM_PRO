@@ -6692,7 +6692,9 @@
     "holidayGreetings": "Holiday greetings",
     "workerSchedules": "Duty schedule",
     "workerScheduleSwap": "Schedule swap",
-    "dailyAttendance": "Daily attendance"
+    "dailyAttendance": "Daily attendance",
+    "oneCAttendance": "1C: daily attendance",
+    "businessTripsIncoming": "Incoming business-trip workers"
   },
   "kpiPage": {
     "name": "KPI indicators",
