@@ -4,39 +4,36 @@ const _index = async (payload) => {
   return await axios.get(`/v1/admin/document-templates`, { params: payload?.params })
 }
 
+// Shablondagi `${...}` o'zgaruvchilar — nomi, tavsifi va namunasi bilan.
 const _variables = async (payload) => {
   return await axios.get(`/v1/admin/document-templates/variables`, { params: payload.params })
 }
 
-/**
- * Muharrir uchun xom DOCX baytlari. `silentError`: xato javobi ham arraybuffer
- * bo'lib keladi, interceptor undan xabarni o'qiy olmaydi — store dekod qiladi.
- * Versiya tokeni javob header'ida: `x-template-version`.
- */
-const _content = async (payload) => {
-  return await axios.get(`/v1/admin/document-templates/content`, {
-    params: payload.params,
-    responseType: 'arraybuffer',
-    silentError: true
-  })
+// OnlyOffice sozlamasi (backend imzolaydi; yozish ruxsati bo'lsa — tahrir rejimi).
+const _editorConfig = async (payload) => {
+  return await axios.get(`/v1/admin/document-templates/editor-config`, { params: payload.params })
 }
 
-// Tahrirlangan shablonni GLOBAL saqlash (multipart: file, category, type, version).
-const _save = async (payload) => {
-  return await axios.post(`/v1/admin/document-templates/save`, payload.data, {
-    headers: { 'Content-Type': 'multipart/form-data' }
-  })
+// OnlyOffice saqlagandan keyingi natija (saqlandi / rad etildi + sabab).
+const _lastSave = async (payload) => {
+  return await axios.get(`/v1/admin/document-templates/last-save`, { params: payload.params })
 }
 
-// Standart (git'dagi) shablonga qaytarish — global override o'chadi.
-const _reset = async (payload) => {
-  return await axios.delete(`/v1/admin/document-templates/${payload.category}/${payload.type}`)
+// Sahifadagi «Saqlash» — OnlyOffice sessiyasini majburan saqlash (natija last-save orqali).
+const _forceSave = async (payload) => {
+  return await axios.post(`/v1/admin/document-templates/save`, payload.data)
+}
+
+// «Bekor qilish» — saqlanmagan tahrir tashlab yuboriladi, shablon oxirgi saqlangan holatda qayta ochiladi.
+const _discard = async (payload) => {
+  return await axios.post(`/v1/admin/document-templates/discard`, payload.data)
 }
 
 export default {
   _index,
   _variables,
-  _content,
-  _save,
-  _reset
+  _editorConfig,
+  _lastSave,
+  _forceSave,
+  _discard
 }

@@ -26,10 +26,10 @@
     <n-form-item :label="$t(`content.nameUz`)" path="name" rule-path="requiredStringField">
       <n-input type="text" v-model:value="store.payload.name" />
     </n-form-item>
-    <n-form-item :label="$t(`content.nameRu`)" path="name" rule-path="requiredStringField">
+    <n-form-item :label="$t(`content.nameRu`)" path="name_ru" rule-path="requiredStringField">
       <n-input class="skip-format" type="text" v-model:value="store.payload.name_ru" />
     </n-form-item>
-    <n-form-item :label="$t(`content.nameEn`)" path="name" rule-path="requiredStringField">
+    <n-form-item :label="$t(`content.nameEn`)" path="name_en" rule-path="requiredStringField">
       <n-input type="text" v-model:value="store.payload.name_en" />
     </n-form-item>
   </n-form>

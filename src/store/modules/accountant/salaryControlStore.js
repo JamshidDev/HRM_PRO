@@ -1,13 +1,10 @@
 import { defineStore } from 'pinia'
+import { toRaw } from 'vue'
 import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
 import { useAccountStore } from '@/store/modules/app/accountStore.js'
-import { money } from '@/pages/accountant/salaryControl/helpers.js'
-import {
-  buildPeople,
-  computeFindings,
-  computeRisks
-} from '@/pages/accountant/salaryControl/engine.js'
+import { computeDashboard } from '@/pages/accountant/salaryControl/engine-client.js'
+import { getOneMonthAgoYearMonth } from '@utils'
 
 const { t } = i18n.global
 const XLSX_MIME = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -25,6 +22,10 @@ const dashCache = new Map()
 let summaryReq = 0
 let risksReq = 0
 let dashReq = 0
+// Oxirgi DERIVE qilingan filtr kaliti — tab almashishda (kalit o'zgarmaganda) og'ir
+// derivatsiya + state reassign QAYTA bajarilmasin (aks holda keep-alive grafiklar
+// qayta render bo'lib, har tabda qotish jamg'ariladi).
+let derivedKey = null
 // Filtr/qidiruv debounce taymeri.
 let filterTimer = null
 
@@ -53,7 +54,12 @@ export const useSalaryControlStore = defineStore('salaryControl', {
     dashboard: {},
     dashboardLoading: false,
     dashboardError: false,
-    exporting: ''
+    exporting: '',
+    // Og'ir engine derivatsiyasi — getter EMAS, state (Web Worker'da hisoblanadi,
+    // asosiy thread qotmasin). _deriveDashboard to'ldiradi.
+    people: [],
+    scFindings: [],
+    scRisks: { cards: [], registry: [], derived: {} }
   }),
   getters: {
     emps: (s) => s.dashboard.emps ?? [],
@@ -68,20 +74,9 @@ export const useSalaryControlStore = defineStore('salaryControl', {
         registry: []
       },
     dashKpi: (s) => s.dashboard.kpi ?? {},
-    dashNorm: (s) => s.dashboard.norm ?? null,
-    // Xodimlar JSHSHIR (j) bo'yicha birlashtirilgan + boyitilgan (b004/b011/oth/g/cat).
-    // Engine (maket) mantig'i — barcha bo'limlar shu yagona manbadan foydalanadi.
-    people: (s) => buildPeople(s.dashboard.emps ?? []),
-    // 14 avtomatik tekshiruv natijasi (D.F) — maketning `yigish()` ko'chirmasi.
-    // Backend heuristikasi (store.findings) o'rniga dashboard ko'rinishi shuni ishlatadi.
-    scFindings: (s) => computeFindings(s.dashboard.emps ?? [], { fmt: money }),
-    // 14 risk kartalari + reestr — maketning `R` massivi ko'chirmasi.
-    scRisks: (s) =>
-      computeRisks(
-        s.dashboard.emps ?? [],
-        { ...(s.dashboard.kpi ?? {}), norm: s.dashboard.norm },
-        { year: s.params.year, month: s.params.month, fmt: money }
-      )
+    dashNorm: (s) => s.dashboard.norm ?? null
+    // people / scFindings / scRisks — endi STATE (Web Worker'da hisoblanadi,
+    // _deriveDashboard orqali). Sinxron getter emas — UI qotmaydi.
   },
   actions: {
     // Joriy filtr kaliti — kesh va race guard uchun.
@@ -104,6 +99,29 @@ export const useSalaryControlStore = defineStore('salaryControl', {
     _canRead() {
       const accStore = useAccountStore()
       return accStore.checkPermission(accStore.pn.economistSalaryControlRead)
+    },
+
+    // Default davr — ma'lumot bor OXIRGI oy (backenddan). Topilmasa — bir oy oldin
+    // (fallback). Allaqachon o'rnatilgan bo'lsa tegmaydi. Sahifa yuklashdan OLDIN
+    // chaqiriladi (aks holda default oyда ma'lumot bo'lmay, bo'sh ko'rinardi).
+    async _initPeriod() {
+      if (this.params.year && this.params.month) return
+      if (this._canRead()) {
+        try {
+          const res = await $ApiService.salaryControlService._salaryControlLatestPeriod()
+          const d = res.data?.data
+          if (d?.year && d?.month) {
+            this.params.year = d.year
+            this.params.month = d.month
+            return
+          }
+        } catch {
+          /* fallback pastda */
+        }
+      }
+      const ago = getOneMonthAgoYearMonth()
+      this.params.year = ago.year
+      this.params.month = ago.month
     },
 
     // «Umumiy» KPI xulosasi (kesh + race guard).
@@ -174,7 +192,15 @@ export const useSalaryControlStore = defineStore('salaryControl', {
       if (dashCache.has(key)) {
         this.dashboard = dashCache.get(key)
         this.dashboardError = false
-        this.dashboardLoading = false
+        // Shu kalit uchun derive allaqachon bajarilган (tab almashish) — qayta hisob
+        // va state reassign QILMAYMIZ (keep-alive grafiklar qayta render bo'lmasin).
+        if (derivedKey === key) {
+          this.dashboardLoading = false
+          return
+        }
+        // Yangi kalit (filtr/davr) — og'ir derivatsiya worker'da; skeleton ko'rinib turadi.
+        this.dashboardLoading = true
+        this._deriveDashboard(++dashReq, key)
         return
       }
       const reqId = ++dashReq
@@ -185,10 +211,42 @@ export const useSalaryControlStore = defineStore('salaryControl', {
         .then((res) => {
           const data = res.data.data ?? {}
           dashCache.set(key, data)
-          if (reqId === dashReq && key === this._key()) this.dashboard = data
+          if (reqId === dashReq && key === this._key()) {
+            this.dashboard = data
+            this._deriveDashboard(reqId, key)
+          } else if (reqId === dashReq) {
+            this.dashboardLoading = false
+          }
         })
         .catch(() => {
-          if (reqId === dashReq) this.dashboardError = true
+          if (reqId === dashReq) {
+            this.dashboardError = true
+            this.dashboardLoading = false
+          }
+        })
+    },
+
+    // Og'ir derivatsiya (buildPeople / computeFindings / computeRisks — minglab
+    // xodim ustida) WEB WORKER'da bajariladi → ASOSIY THREAD QOTMAYDI. Natija
+    // tayyor bo'lgach state'ga yoziladi va loading o'chadi (shu paytgacha skeleton
+    // ko'rinadi). Worker ishlamasa — klient sinxron fallback'ga o'tadi.
+    _deriveDashboard(reqId, key) {
+      // Worker'ga XOM (plain) ma'lumot uzatamiz: Pinia reactive proxy'si strukturaviy
+      // klon bo'lmaydi (postMessage DataCloneError → sync fallback). dashCache plain
+      // (axios javobi); toRaw qo'shimcha kafolat.
+      const raw = toRaw(dashCache.get(key) || this.dashboard) || {}
+      computeDashboard({
+        emps: toRaw(raw.emps) ?? [],
+        kpi: { ...(raw.kpi ?? {}), norm: raw.norm },
+        year: this.params.year,
+        month: this.params.month
+      })
+        .then((d) => {
+          if (reqId !== dashReq) return
+          this.people = d.people
+          this.scFindings = d.findings
+          this.scRisks = d.risks
+          derivedKey = key // shu kalit uchun derive bajarildi — tab almashishda takror yo'q
         })
         .finally(() => {
           if (reqId === dashReq) this.dashboardLoading = false

@@ -241,6 +241,10 @@
     "langRu": "RUS",
     "langEn": "ENG",
     "langUzKr": "KRIL",
+    "langUzNew": "ÖZB",
+    "langUzNewBadge": "Yangi",
+    "langBeta": "Beta",
+    "langKaa": "QAR",
     "search": "Qidiruv",
     "mln": "mln",
     "today": "Bugun",
@@ -509,7 +513,8 @@
     "passwordsNotMatch": "Parollar mos kelmadi!",
     "endBeforeStart": "Bu sana boshlanish sanasidan oldin bo'lmasligi kerak",
     "pastDate": "O'tgan sanani tanlab bo'lmaydi",
-    "futureDate": "Kelajakdagi sanani tanlab bo'lmaydi"
+    "futureDate": "Kelajakdagi sanani tanlab bo'lmaydi",
+    "noHtml": "Nomda < va > belgilari ishlatilmaydi"
   },
   "message": {
     "successDone": "Muvaffaqiyatli bajarildi",
@@ -3646,12 +3651,26 @@
     },
     "calcDiff": {
       "system": "Tizim",
-      "entered": "Kiritilgan",
+      "entered": "Xodim",
       "diff": "Farq",
-      "more": "{n} soat ko‘p",
-      "less": "{n} soat kam",
-      "typeOnly": "soat bir xil, tur o‘zgargan",
-      "empty": "bo‘sh (0 soat)"
+      "more": "+{n} soat",
+      "less": "−{n} soat",
+      "typeOnly": "tur o‘zgardi",
+      "empty": "bo‘sh",
+      "typeAlso": "tur o‘zgardi"
+    },
+    "changes": {
+      "title": "O'zgarishlar tarixi",
+      "short": "Tarix",
+      "at": "Vaqt",
+      "worker": "Xodim",
+      "day": "Kun",
+      "before": "Oldin",
+      "after": "Keyin",
+      "user": "Kim o'zgartirdi",
+      "allWorkers": "Barcha xodimlar",
+      "allDays": "Barcha kunlar",
+      "rowDiff": "Tizim hisobidan farq: {cells} ta kun o'zgartirilgan. Tarixni ko'rish uchun bosing"
     },
     "lockClose": "Tabelni yopish",
     "lockOpen": "Tabelni ochish",
@@ -3715,7 +3734,8 @@
       "device": "Qurilmalar",
       "membership": "Xodim turi",
       "membershipOwn": "Ishchi xodimlar",
-      "membershipGuest": "Mehmon",
+      "membershipGuest": "Mehmonlar",
+      "membershipNotAdded": "Biriktirilmaganlar",
       "notWorking": "Ishlamaydi"
     },
     "workDurationPage": {
@@ -6616,6 +6636,37 @@
       "secretHidden": "Yopiq kalit xavfsizlik uchun ochiq saqlanmaydi — uni faqat \"Kalitni almashtirish\" orqali yangilash mumkin.",
       "copyAll": "Hammasini nusxalash",
       "copyHint": "Ekranda yashirin — \"Hammasini nusxalash\"da ochiq holatda keladi."
+    },
+    "tester": {
+      "button": "API test",
+      "title": "Integratsiya API test",
+      "secretKey": "Yopiq kalit (secret)",
+      "send": "Yuborish",
+      "permission": "Ruxsat",
+      "needPathParam": "Yo'l parametrini kiriting",
+      "badJson": "Body JSON noto'g'ri",
+      "params": "Parametrlar",
+      "checking": "Kalitlar tekshirilmoqda…",
+      "keysValid": "Kalitlar to'g'ri",
+      "keysInvalid": "Kalitlar yaroqsiz:",
+      "role": "Rol",
+      "permissionsCount": "Ruxsatlar: {n}",
+      "scopeAll": "Barcha korxonalar",
+      "scopeOrgs": "{n} ta korxona",
+      "inactive": "Faol emas",
+      "noPermission": "Rolda bu API ruxsati yo'q",
+      "check": "Tekshirish",
+      "diag": {
+        "ok": "Ishlayapti",
+        "network": "Serverga ulanib bo'lmadi (tarmoq yoki CORS)",
+        "s400": "So'rov noto'g'ri — parametrlarni tekshiring",
+        "s401": "Kalit, imzo yoki vaqt noto'g'ri (yoki mijoz faol emas)",
+        "s403": "Mijozda bu API ruxsati yo'q yoki IP/korxona cheklovi",
+        "s404": "Topilmadi — yo'l yoki parametr qiymati noto'g'ri",
+        "s422": "API javob berdi — majburiy parametrlar yetishmaydi yoki noto'g'ri",
+        "s429": "So'rovlar limiti oshdi",
+        "server": "Server xatosi"
+      }
     }
   },
   "salaryAccess": {
@@ -6749,7 +6800,9 @@
     "holidayGreetings": "Bayram tabriklari",
     "workerSchedules": "Navbatchilik grafigi",
     "workerScheduleSwap": "Grafik almashtirish",
-    "dailyAttendance": "Kunlik davomat"
+    "dailyAttendance": "Kunlik davomat",
+    "oneCAttendance": "1C: kunlik davomat",
+    "businessTripsIncoming": "Safar bilan kelgan xodimlar"
   },
   "kpiPage": {
     "name": "KPI ko'rsatgichlar",
@@ -6929,7 +6982,7 @@
     "name": "Shablon",
     "subtitle": "Hujjat shablonini tanlang, matnini tahrirlang va yangi hujjatlar uchun saqlang.",
     "selectPlaceholder": "Hujjat shablonini tanlang",
-    "empty": "Tahrirlash uchun yuqoridan shablon tanlang",
+    "empty": "Buyruq turini tanlang",
     "variables": "O'zgaruvchilar",
     "variablesHint": "Ustiga bosib nusxalang. Nomini o'zgartirmang.",
     "searchVariables": "O'zgaruvchini qidiring",
@@ -7004,7 +7057,26 @@
     "editedBadge": "Tahrirlangan",
     "zoomIn": "Kattalashtirish",
     "zoomOut": "Kichraytirish",
-    "zoomFit": "Sahifa eniga moslash"
+    "zoomFit": "Sahifa eniga moslash",
+    "saveRejectedTitle": "Shablon saqlanmadi",
+    "tabTemplates": "Shablonlar",
+    "noChanges": "Saqlanadigan o'zgarish yo'q",
+    "discardTitle": "Tahrirni bekor qilish",
+    "discardText": "Saqlanmagan o'zgarishlar o'chiriladi va shablon oxirgi saqlangan holatda qayta ochiladi. Davom etasizmi?",
+    "stateSaved": "Saqlandi · {time}",
+    "stateRejected": "Saqlanmadi — sababini ko'rish",
+    "stateRejectedHint": "Bosing — rad etilish sababi",
+    "updatedBy": "O'zgartirgan",
+    "editorError": {
+      "unsupported": "Server bu funksiyani hali qo'llamaydi",
+      "unsupportedHint": "Backend yangilanmagan — shablon muharriri endpointlari topilmadi. Administratorga murojaat qiling.",
+      "unsigned": "OnlyOffice sozlanmagan",
+      "unsignedHint": "Serverda OnlyOffice JWT siri (ONLYOFFICE_JWT_SECRET) yo'q — muharrir ochilmaydi.",
+      "failed": "Muharrir sozlamasini olib bo'lmadi",
+      "failedHint": "Server xato qaytardi. Sahifani yangilab ko'ring.",
+      "unreachable": "OnlyOffice serveriga ulanib bo'lmadi",
+      "unreachableHint": "Hujjat serveri javob bermayapti yoki manzili noto'g'ri. Keyinroq urinib ko'ring."
+    }
   },
   "turnstileDownload": {
     "title": "Hodisalarni yuklash"
@@ -7528,6 +7600,12 @@
       "warning": "Amalni bajarib bo'lmaydi",
       "notfound": "Ma'lumot topilmadi",
       "network": "Aloqa uzildi"
+    },
+    "confirmTitles": {
+      "warning": "Ishonchingiz komilmi?",
+      "delete": "O'chirilsinmi?",
+      "confirm": "Tasdiqlaysizmi?",
+      "success": "Muvaffaqiyatli bajarildi"
     },
     "eimzoTitle": "E-IMZO dasturiga ulanib bo'lmadi"
   },

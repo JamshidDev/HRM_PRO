@@ -1,9 +1,11 @@
-import { reactive } from 'vue'
+import { markRaw, reactive } from 'vue'
 
 // Xato modali holati: bir vaqtda bitta modal, takror xabarlar tashlab yuboriladi.
 export const alertState = reactive({ queue: [] })
 
 export const ALERT_TYPES = ['forbidden', 'validation', 'warning', 'notfound', 'network']
+// Tasdiq turlari — faqat ikki tugmali oynada (confirmDialog / UIConfirm).
+export const CONFIRM_TYPES = ['warning', 'delete', 'confirm', 'success']
 
 // O'zi yopiladigan turlar (ms); qolganlari faqat tugma bilan yopiladi.
 const AUTO_CLOSE = { notfound: 4000, network: 5000 }
@@ -15,8 +17,10 @@ export const isToastOnlyPage = () =>
   TOAST_ONLY_PATHS.some((p) => window.location.pathname.startsWith(p))
 
 // onConfirm berilsa — ikki tugmali tasdiqlash (bekor / tasdiqlash), o'zi yopilmaydi.
+// onConfirm Promise qaytarsa — tugmada loading, bajarilgach yopiladi; xato bersa oyna ochiq qoladi.
 // onCancel — ixtiyoriy: faqat chap tugma bosilganda (masalan «Saqlamasdan yopish»);
 // fon / Esc / ✕ bilan yopilganda chaqirilmaydi — bu «ortga qaytish».
+// onClose — har qanday yopilishda (tasdiqdan tashqari) chaqiriladi.
 export function showAlert({
   type = 'warning',
   title = null,
@@ -24,15 +28,21 @@ export function showAlert({
   errors = [],
   duration,
   listHint,
+  content,
+  danger,
+  extraText,
+  onExtra,
   onConfirm,
   onCancel,
+  onClose,
   confirmText,
   cancelText
 } = {}) {
   const items = errors.filter(Boolean)
-  const key = `${type}|${message}|${items.join('|')}`
-  if (alertState.queue.some((a) => a.key === key)) return
-  const kind = ALERT_TYPES.includes(type) ? type : 'warning'
+  const key = `${type}|${title}|${message}|${items.join('|')}`
+  if (alertState.queue.some((a) => a.key === key)) return false
+  const allowed = onConfirm ? [...ALERT_TYPES, ...CONFIRM_TYPES] : ALERT_TYPES
+  const kind = allowed.includes(type) ? type : 'warning'
   alertState.queue.push({
     key,
     type: kind,
@@ -40,28 +50,96 @@ export function showAlert({
     message,
     errors: items,
     listHint,
+    // Matn ostidagi qo'shimcha kontent: () => VNode (ro'yxat, kodlar va h.k.).
+    content: content ? markRaw(content) : null,
+    // Tasdiq tugmasi qizil — o'chirish / qaytarib bo'lmaydigan amal.
+    danger: danger ?? kind === 'delete',
+    extraText,
+    onExtra,
     onConfirm,
     onCancel,
+    onClose,
     confirmText,
     cancelText,
+    loading: false,
     duration: onConfirm ? 0 : (duration ?? AUTO_CLOSE[kind] ?? 0)
+  })
+  return true
+}
+
+// Universal tasdiq oynasi (loyihadagi barcha «ishonchingiz komilmi?» uchun).
+// Promise<boolean>: true — tasdiqlandi (onConfirm muvaffaqiyatli tugadi), false — bekor / yopildi.
+//   confirmDialog({ type: 'delete', message: t('content.deleteWarning'), onConfirm: () => store._delete(id) })
+//   if (await confirmDialog({ title, message })) save()
+// type: 'warning' (standart) | 'delete' | 'confirm' | 'success'.
+export function confirmDialog({ onConfirm, onCancel, onClose, onExtra, ...opts } = {}) {
+  return new Promise((resolve) => {
+    const added = showAlert({
+      ...opts,
+      onConfirm: async () => {
+        await onConfirm?.()
+        resolve(true)
+      },
+      onCancel: () => {
+        onCancel?.()
+      },
+      onExtra: onExtra
+        ? () => {
+            onExtra()
+          }
+        : undefined,
+      onClose: () => {
+        onClose?.()
+        resolve(false)
+      }
+    })
+    if (!added) resolve(false)
   })
 }
 
-export function confirmAlert() {
-  const cb = alertState.queue[0]?.onConfirm
-  alertState.queue.shift()
-  cb?.()
+// O'chirish tasdig'i — eng ko'p ishlatiladigan holat uchun qisqartma.
+export const confirmDelete = (opts = {}) => confirmDialog({ type: 'delete', ...opts })
+
+const current = () => alertState.queue[0]
+
+export async function confirmAlert() {
+  const item = current()
+  if (!item || item.loading) return
+  const result = item.onConfirm?.()
+  if (result && typeof result.then === 'function') {
+    item.loading = true
+    try {
+      await result
+    } catch {
+      // Xato — oyna ochiq qoladi, foydalanuvchi qayta urinadi yoki bekor qiladi.
+      item.loading = false
+      return
+    }
+  }
+  if (current() === item) alertState.queue.shift()
 }
 
 export function cancelAlert() {
-  const cb = alertState.queue[0]?.onCancel
+  const item = current()
+  if (!item || item.loading) return
   alertState.queue.shift()
-  cb?.()
+  item.onCancel?.()
+  item.onClose?.()
+}
+
+export function extraAlert() {
+  const item = current()
+  if (!item || item.loading) return
+  alertState.queue.shift()
+  item.onExtra?.()
+  item.onClose?.()
 }
 
 export function closeAlert() {
+  const item = current()
+  if (!item || item.loading) return
   alertState.queue.shift()
+  item.onClose?.()
 }
 
 // Axios xatosidan modal turini aniqlaydi; null — toast'da qoladi.

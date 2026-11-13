@@ -1,17 +1,23 @@
 <script setup>
-  import { DismissCircle28Filled } from '@vicons/fluent'
+  import { DismissCircle28Filled, PersonAdd20Regular, Warning24Filled } from '@vicons/fluent'
   import { useDebounceFn } from '@vueuse/core'
   import { vOnClickOutside } from '@vueuse/components'
-  import { useComponentStore } from '@/store/modules/index.js'
+  import { useAccountStore, useComponentStore } from '@/store/modules/index.js'
   import { UIUser } from '@/components/index.js'
   const store = useComponentStore()
+  const accStore = useAccountStore()
 
   const searchModel = ref('')
   const visible = ref(false)
 
   const props = defineProps({
-    searchType: { type: String, default: null }
+    searchType: { type: String, default: null },
+    // Xodim topilmasa «Kandidat qo'shish» tugmasi (Asosiy xodimlardagi CheckWorker kabi).
+    // Opt-in: faqat shartnoma formasida yoqilgan.
+    allowCreate: { type: Boolean, default: false }
   })
+
+  const emit = defineEmits(['create'])
 
   const pin = defineModel('pin', { type: String, default: null })
 
@@ -19,6 +25,9 @@
     store.submitted = false
     if (searchModel.value.length === 17) {
       visible.value = true
+      // Oldingi qidiruv natijasi tozalanadi: «topilmadi» xato bilan keladi va store
+      // `worker` ni o'zi tozalamaydi — aks holda eski xodim yangi JSHSHIR ostida qolardi.
+      store.worker = null
       let pin = searchModel.value.split('-').join('')
       store._checkWorker(pin, props.searchType)
     }
@@ -38,6 +47,18 @@
     store.selectedWorker = null
     pin.value = null
   }
+
+  // Kiritilgan JSHSHIR yaratish sahifasiga o'tadi (CandidatePage `componentStore.pin` ni oladi).
+  const onCreateEv = () => {
+    if (!accStore.checkAction(accStore.pn.hrWorkersWrite)) return
+    store.pin = searchModel.value
+    onClose()
+    emit('create', searchModel.value)
+  }
+
+  const canCreate = computed(
+    () => props.allowCreate && accStore.checkPermission(accStore.pn.hrWorkersWrite)
+  )
 
   const feedback = computed(() => !pin.value)
 </script>
@@ -78,7 +99,7 @@
     <div
       v-on-click-outside="onClose"
       v-if="visible"
-      class="ui__autocomplete-panel shadow bg-surface-section border border-surface-line w-full top-[65px] absolute z-999 h-[60px] p-2 rounded-xl"
+      class="ui__autocomplete-panel shadow bg-surface-section border border-surface-line w-full top-[65px] absolute z-999 min-h-[60px] p-2 rounded-xl"
     >
       <n-spin
         class="w-full h-full flex justify-center items-center"
@@ -96,7 +117,22 @@
           </n-collapse-transition>
         </template>
         <template v-if="!Boolean(store.worker) && store.submitted">
-          <span class="text-gray-500 text-center block"> {{ $t('content.notWorker') }}</span>
+          <div v-if="canCreate" class="flex flex-col items-center gap-1 p-2 text-center">
+            <n-icon size="36" class="text-warning">
+              <Warning24Filled />
+            </n-icon>
+            <span class="font-medium">{{ $t('workerPage.checkWorker.no-worker') }}</span>
+            <span class="text-xs text-textColor3 leading-[1.2]">
+              {{ $t('workerPage.checkWorker.add-worker') }}
+            </span>
+            <n-button class="!mt-2" type="primary" icon-placement="right" @click="onCreateEv">
+              {{ $t('workerPage.checkWorker.addCandidate') }}
+              <template #icon>
+                <PersonAdd20Regular />
+              </template>
+            </n-button>
+          </div>
+          <span v-else class="text-gray-500 text-center block"> {{ $t('content.notWorker') }}</span>
         </template>
       </n-spin>
     </div>

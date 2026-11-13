@@ -1,6 +1,6 @@
 <script setup>
   import { TIMESHEET_APPROVAL_ENABLED } from '../approval.js'
-  import { onBeforeUnmount, onMounted, ref } from 'vue'
+  import { h, onBeforeUnmount, onMounted, ref } from 'vue'
   import { useMessage } from 'naive-ui'
   import { showAlert } from '@/components/notify/alertDialog.js'
   import {
@@ -17,6 +17,7 @@
     Send16Regular,
     Eye16Filled,
     Info16Regular,
+    History20Regular,
     Info20Filled,
     MoreVertical20Filled,
     Save20Filled,
@@ -29,7 +30,8 @@
     useTimesheetWorkerStore
   } from '@/store/modules/index.js'
   import {
-    UIDConfirm,
+    UIDeleteConfirm,
+    UIDepartmentSelect,
     UIDragSelector,
     UIModal,
     UIPagination,
@@ -40,6 +42,7 @@
   import dayjs from 'dayjs'
   import Utils from '@/utils/Utils.js'
   import { colorOfDetail } from './timesheetGrid.js'
+  import { TIMESHEET_TYPES_WITH_HOURS } from '@/store/modules/hrm/timesheetWorkerStore.js'
   import DayDetailModal from './DayDetailModal.vue'
   import FillControls from './FillControls.vue'
   import {
@@ -122,10 +125,14 @@
   /* ------------------------------------------------------------------------
    * Qator amallari (3 nuqta) va «Auto hisoblash».
    * ---------------------------------------------------------------------- */
-  const rowMenuOptions = computed(() => [{ key: 'recalc', label: t('timesheetPage.recalc') }])
+  const rowMenuOptions = computed(() => [
+    { key: 'recalc', label: t('timesheetPage.recalc') },
+    { key: 'history', label: t('timesheetPage.changes.title') }
+  ])
 
   // «Auto» tugmasi bilan bir mantiq — faqat bitta xodim uchun.
   const onRowMenu = async (key, item) => {
+    if (key === 'history' && item?.id) return openHistory(item.id)
     if (key !== 'recalc' || !item?.id) return
     const res = await store.autoCalc([item.id])
     if (!res) return
@@ -321,6 +328,81 @@
     message.success(t('timesheetPage.autoCalcDone'))
     if (res.checks) message.warning(t('timesheetPage.needsCheckCount', { n: res.checks }))
   }
+
+  // O'zgarishlar tarixi (audit_logs): kim, qachon, qaysi katakni o'zgartirgan.
+  const historyOpen = ref(false)
+  const historyLoading = ref(false)
+  const historyRows = ref([])
+  const historyFilter = ref({ worker_position_id: null, day: null })
+  const historyPage = ref({ page: 1, pageSize: 20, itemCount: 0 })
+  const loadHistory = async () => {
+    historyLoading.value = true
+    try {
+      const res = await store.fetchChanges({
+        ...historyFilter.value,
+        page: historyPage.value.page,
+        per_page: historyPage.value.pageSize
+      })
+      historyRows.value = res.data
+      historyPage.value.itemCount = res.total
+    } finally {
+      historyLoading.value = false
+    }
+  }
+  const openHistory = (workerPositionId = null, day = null) => {
+    historyFilter.value = { worker_position_id: workerPositionId, day }
+    historyPage.value.page = 1
+    historyOpen.value = true
+    loadHistory()
+  }
+  const onHistoryFilter = () => {
+    historyPage.value.page = 1
+    loadHistory()
+  }
+  const onHistoryPage = (page) => {
+    historyPage.value.page = page
+    loadHistory()
+  }
+  const historyWorkerOptions = computed(() => store.list.map((w) => ({ label: w.name, value: w.id })))
+  const historyDayOptions = computed(() => store.days.map((d) => ({ label: String(d.day), value: d.day })))
+  const historyCell = (list) =>
+    list.length
+      ? list.map((c) =>
+          h('span', { class: 'ts-hist-chip', style: ruleKeyStyle(c.status) }, cellLabel(c.type ?? '—', c.status, c.hours))
+        )
+      : h('span', { class: 'ts-hist-empty' }, t('timesheetPage.calcDiff.empty'))
+  // Xodim / o'zgartirgan foydalanuvchi — loyihaning UIUser kartochkasi (rasm, F.I.O., lavozim yoki rol).
+  const personCell = (p, position) =>
+    p?.name
+      ? h(UIUser, {
+          short: false,
+          data: {
+            photo: p.photo,
+            lastName: p.last_name,
+            firstName: p.first_name,
+            middleName: p.middle_name,
+            position
+          }
+        })
+      : h('span', { class: 'ts-hist-empty' }, '—')
+  const historyColumns = computed(() => [
+    { title: t('timesheetPage.changes.at'), key: 'at', width: 128, render: (r) => dayjs(r.at).format('DD.MM.YYYY HH:mm') },
+    { title: t('timesheetPage.changes.worker'), key: 'worker', minWidth: 280, render: (r) => personCell(r.worker, r.worker?.position) },
+    { title: t('timesheetPage.changes.day'), key: 'work_date', width: 64, render: (r) => dayjs(r.work_date).format('DD.MM') },
+    { title: t('timesheetPage.changes.before'), key: 'before', width: 120, render: (r) => historyCell(r.before) },
+    { title: t('timesheetPage.changes.after'), key: 'after', width: 120, render: (r) => historyCell(r.after) },
+    {
+      title: t('timesheetPage.calcDiff.diff'),
+      key: 'diff',
+      width: 64,
+      render: (r) => {
+        const diff = hoursOf(r.after) - hoursOf(r.before)
+        if (!diff) return '—'
+        return h('b', { class: diff > 0 ? 'ts-hist-more' : 'ts-hist-less' }, `${diff > 0 ? '+' : ''}${diff}`)
+      }
+    },
+    { title: t('timesheetPage.changes.user'), key: 'user', minWidth: 260, render: (r) => personCell(r.user, r.user?.role) }
+  ])
 
   // Qoidalar modali — hisoblash qanday ishlashini ko'rsatadi.
   const rulesOpen = ref(false)
@@ -795,6 +877,8 @@
   // Tizim hisobidan farq: bo'sh katak va soatsiz tur 0 soat. Auto ishlatilmagan xodimda solishtirilmaydi.
   const hoursOf = (details) => (details ?? []).reduce((a, d) => a + (d?.hours || 0), 0)
   const typeOf = (details) => (details ?? []).map((d) => d?.status_id).filter(Boolean).join('/')
+  const cellLabel = (key, statusId, hours) =>
+    TIMESHEET_TYPES_WITH_HOURS.has(Number(statusId)) ? `${key}-${hours ?? 0}` : key
   const cellDiff = (item, day) => {
     if (!store.calcWorkers[item.id]) return null
     const base = store.calcBase[`${item.id}|${day.day}`]
@@ -802,17 +886,36 @@
     const actual = dayDetails(item, day)
     const diff = hoursOf(actual) - hoursOf(baseDetails)
     if (!diff && typeOf(actual) === typeOf(baseDetails)) return null
-    // Harf emas, tur nomi: «K» (lotin) va «К» (kirill) ekranda bir xil ko'rinadi.
-    const name = (d) => {
-      const type = typeByIdOrNull(d.status_id)
-      return type ? `${type.name} (${type.key})` : d.status
-    }
+    // Qisqa ko'rinish: «K-7», soatsiz tur faqat harf («MT»), ikki tur «K-7 / T-1».
     const label = (list) =>
       list.length
-        ? list.map((d) => name(d) + (d.hours != null ? ` — ${d.hours} soat` : ' — 0 soat')).join(' / ')
+        ? list.map((d) => cellLabel(typeByIdOrNull(d.status_id)?.key ?? d.status, d.status_id, d.hours)).join(' / ')
         : t('timesheetPage.calcDiff.empty')
-    return { diff, system: label(baseDetails), entered: label(actual ?? []) }
+    const typeChanged = typeOf(actual) !== typeOf(baseDetails)
+    const text = diff
+      ? t(diff > 0 ? 'timesheetPage.calcDiff.more' : 'timesheetPage.calcDiff.less', { n: Math.abs(diff) }) +
+        (typeChanged ? `, ${t('timesheetPage.calcDiff.typeAlso')}` : '')
+      : t('timesheetPage.calcDiff.typeOnly')
+    return { diff, text, system: label(baseDetails), entered: label(actual ?? []) }
   }
+  // Xodim bo'yicha tizimdan jami farq: soat, ish kuni («D» sanalmaydi) va o'zgargan kataklar soni.
+  const isWorkDetails = (list) => (list ?? []).some((d) => Number(d?.status_id) !== 33)
+  const rowDiff = (item) => {
+    if (!store.calcWorkers[item.id]) return null
+    let hours = 0
+    let days = 0
+    let cells = 0
+    for (const day of store.days) {
+      const d = cellDiff(item, day)
+      if (!d) continue
+      const base = store.calcBase[`${item.id}|${day.day}`]
+      hours += d.diff
+      days += Number(isWorkDetails(dayDetails(item, day))) - Number(isWorkDetails(base ? [base] : []))
+      cells++
+    }
+    return cells ? { hours, days, cells } : null
+  }
+  const signed = (n) => (n > 0 ? `+${n}` : String(n))
 
   /**
    * Bir kunda bir nechta yozuv bo'lishi mumkin — har biri O'Z rangida chiziladi,
@@ -834,9 +937,9 @@
    * Tanlov → amal.
    *
    * Avval kataklar belgilanadi (drag; Shift/Ctrl bilan qo'shib belgilanadi),
-   * Panel doim ko'rinadi (tur, soat, «Tozalash»). Ikki yo'l, «Qo'llash» yo'q:
-   *  - avval harf, keyin katak bosiladi / belgilanadi → darhol yoziladi;
-   *  - avval kataklar, keyin harf → darhol yoziladi.
+   * Panel doim ko'rinadi (tur, soat, «Tozalash»). «Qo'llash» yo'q:
+   * avval harf (yoki «Tozalash»), keyin katak bosiladi / belgilanadi → darhol yoziladi.
+   * Harf ham, o'chirg'ich ham tanlanmagan bo'lsa kataklar belgilanmaydi (`canSelect`).
    * Yozilgach tanlov tozalanadi (harf almashsa eski kataklar o'zgarmasin). Ilgari teskari edi — avval pastda tur tanlanar,
    * har drag darhol yozardi («cho'tka»), tanlov esa ko'rinmasdi.
    * Kalit — `${row}|${col}` (sahifadagi qator va kun indeksi); sahifa,
@@ -856,6 +959,12 @@
   const clearSelection = () => {
     if (selectedCells.value.size) selectedCells.value = new Set()
   }
+  // Harf ham, o'chirg'ich ham tanlanmagan bo'lsa — kataklar belgilanmaydi
+  // (belgilangan katak bilan qiladigan ish yo'q). Avval harf, keyin kataklar.
+  const canSelect = computed(
+    () => !timesheetLocked.value && Boolean(store.payload.status || store.payload.isClearing)
+  )
+  watch(canSelect, (v) => !v && clearSelection())
   // Drag selector Shift'ni o'zi biladi, lekin bizga aytmaydi — shu yerda ushlanadi.
   const onGridMouseDown = (e) => {
     selectionAdd.value = e.shiftKey || e.ctrlKey || e.metaKey
@@ -1014,20 +1123,15 @@
             @update:model-value="onTabChange"
           />
           <template v-if="activeTab === 'grid'">
-            <n-select
-              v-model:value="store.params.department_id"
-              :loading="store.departmentLoading"
-              :menu-props="{ class: 'ts-dep-menu' }"
-              :options="store.departmentOptions"
-              :placeholder="$t('timesheetPage.allDepartments')"
-              :virtual-scroll="false"
-              class="ts-department-select"
-              clearable
-              filterable
-              label-field="name"
-              value-field="id"
-              @update:value="store.applyFilters"
-            />
+            <div class="ts-department-select">
+              <UIDepartmentSelect
+                v-model="store.params.department_id"
+                :organization="store.organizationId"
+                :source="store.timekeeperMode ? 'timesheet' : 'tree'"
+                :placeholder="$t('timesheetPage.allDepartments')"
+                @update:model-value="store.applyFilters"
+              />
+            </div>
             <n-input
               :loading="searching"
               :placeholder="$t('timesheet.searchWorkerHint')"
@@ -1063,6 +1167,12 @@
             <n-icon :component="Info20Filled" />
           </template>
           {{ $t('timesheetPage.infoShort') }}
+        </n-button>
+        <n-button secondary @click="openHistory()">
+          <template #icon>
+            <n-icon :component="History20Regular" />
+          </template>
+          {{ $t('timesheetPage.changes.short') }}
         </n-button>
         <n-button secondary type="success" @click="onDownload">
           <template #icon>
@@ -1288,40 +1398,13 @@
     </div>
 
     <!-- Kelishuvchini olib tashlash — loyihaning umumiy tasdiq modali. -->
-    <UIDConfirm
+    <UIDeleteConfirm
       v-model:visible="verifierDeleteVisible"
-      :save-loading="verifierDeleteLoading"
-      close-btn-text="content.cancel"
-      submit-btn-text="content.delete"
-      type="warning"
-      @onClose="verifierDeleteVisible = false"
-      @onSave="confirmDeleteVerifier"
-    >
-      <div class="text-center">
-        <p class="text-lg font-medium">{{ verifierDeleteName }}</p>
-        <p class="text-textColor3 mt-1">
-          {{ $t('timesheetPage.verifierDeleteConfirm') }}
-        </p>
-      </div>
-
-      <!-- `type="warning"` standart holatda FAQAT yopish tugmasini beradi
-           (u ogohlantirish uchun) — bu yerda tasdiq kerak, shuning uchun
-           amallar o'zimizniki. -->
-      <template #action>
-        <div class="grid grid-cols-2 gap-2">
-          <n-button ghost type="tertiary" @click="verifierDeleteVisible = false">
-            {{ $t('content.no') }}
-          </n-button>
-          <n-button
-            :loading="verifierDeleteLoading"
-            type="error"
-            @click="confirmDeleteVerifier"
-          >
-            {{ $t('content.yes') }}
-          </n-button>
-        </div>
-      </template>
-    </UIDConfirm>
+      :title="verifierDeleteName"
+      :warning="$t('timesheetPage.verifierDeleteConfirm')"
+      :loading="verifierDeleteLoading"
+      @confirm="confirmDeleteVerifier"
+    />
 
     <n-spin
       v-show="activeTab === 'grid'"
@@ -1333,6 +1416,7 @@
       <div class="ts-card">
         <UIDragSelector
           :class="{ 'ts-dragging': dragging, 'has-selbar': !timesheetLocked }"
+          :disabled="!canSelect"
           class="ts-scroll"
           @mousedown.capture="onGridMouseDown"
           :live-selection="false"
@@ -1473,13 +1557,7 @@
                   ↳
                 </span>
                 <template v-if="cellDiff(item, day)">
-                  <span
-                    v-if="cellDiff(item, day).diff"
-                    :class="cellDiff(item, day).diff > 0 ? 'is-more' : 'is-less'"
-                    class="ts-diff-badge no-selectable-item"
-                  >
-                    {{ Math.abs(cellDiff(item, day).diff) }}
-                  </span>
+                  <span class="ts-edit-mark" />
                   <span
                     :class="{
                       'is-start': col < 3,
@@ -1490,26 +1568,34 @@
                   >
                     <b>{{ $t('timesheetPage.calcDiff.system') }}:</b> {{ cellDiff(item, day).system }}<br />
                     <b>{{ $t('timesheetPage.calcDiff.entered') }}:</b> {{ cellDiff(item, day).entered }}<br />
-                    <b>{{ $t('timesheetPage.calcDiff.diff') }}:</b>
-                    {{
-                      cellDiff(item, day).diff
-                        ? $t(
-                            cellDiff(item, day).diff > 0
-                              ? 'timesheetPage.calcDiff.more'
-                              : 'timesheetPage.calcDiff.less',
-                            { n: Math.abs(cellDiff(item, day).diff) }
-                          )
-                        : $t('timesheetPage.calcDiff.typeOnly')
-                    }}
+                    <b>{{ $t('timesheetPage.calcDiff.diff') }}:</b> {{ cellDiff(item, day).text }}
                   </span>
                 </template>
               </div>
 
               <div class="ts-c-total ts-c-days no-selectable-item">
                 {{ item.allMonth.days || 0 }}
+                <span
+                  v-if="rowDiff(item)?.days"
+                  :class="rowDiff(item).days > 0 ? 'is-more' : 'is-less'"
+                  :title="$t('timesheetPage.changes.rowDiff', { cells: rowDiff(item).cells })"
+                  class="ts-total-diff"
+                  @click.stop="openHistory(item.id)"
+                >
+                  {{ signed(rowDiff(item).days) }}
+                </span>
               </div>
               <div class="ts-c-total ts-c-hours no-selectable-item">
                 {{ item.allMonth.hours || 0 }}
+                <span
+                  v-if="rowDiff(item)?.hours"
+                  :class="rowDiff(item).hours > 0 ? 'is-more' : 'is-less'"
+                  :title="$t('timesheetPage.changes.rowDiff', { cells: rowDiff(item).cells })"
+                  class="ts-total-diff"
+                  @click.stop="openHistory(item.id)"
+                >
+                  {{ signed(rowDiff(item).hours) }}
+                </span>
               </div>
             </div>
           </div>
@@ -1593,15 +1679,11 @@
       :width="420"
     >
       <n-form-item :label="$t('documentPage.form.department')" :show-feedback="false">
-        <n-select
-          v-model:value="exportDepartmentId"
-          :loading="store.departmentLoading"
-          :options="store.departmentOptions"
+        <UIDepartmentSelect
+          v-model="exportDepartmentId"
+          :organization="store.organizationId"
+          :source="store.timekeeperMode ? 'timesheet' : 'tree'"
           :placeholder="$t('timesheetPage.exportNeedDepartment')"
-          clearable
-          filterable
-          label-field="name"
-          value-field="id"
         />
       </n-form-item>
       <!-- Boshqa forma oynalari kabi: «Bekor qilish | Yuklash». -->
@@ -2012,6 +2094,38 @@
 
     <!-- Hisoblash qoidalari. Balandligi QAT'IY — ichki qism skrollanadi,
          aks holda ta'til jadvali 13 qator bo'lib modalni cho'zib yuborardi. -->
+    <UIModal v-model:visible="historyOpen" :title="$t('timesheetPage.changes.title')" :width="1240">
+      <div class="ts-hist-filters">
+        <n-select
+          v-model:value="historyFilter.worker_position_id"
+          :options="historyWorkerOptions"
+          :placeholder="$t('timesheetPage.changes.allWorkers')"
+          clearable
+          filterable
+          @update:value="onHistoryFilter"
+        />
+        <n-select
+          v-model:value="historyFilter.day"
+          :options="historyDayOptions"
+          :placeholder="$t('timesheetPage.changes.allDays')"
+          clearable
+          style="width: 170px"
+          @update:value="onHistoryFilter"
+        />
+      </div>
+      <n-data-table
+        :columns="historyColumns"
+        :data="historyRows"
+        :loading="historyLoading"
+        :max-height="520"
+        :pagination="historyPage"
+        :row-key="(r) => `${r.at}|${r.worker?.id}|${r.work_date}`"
+        remote
+        size="small"
+        @update:page="onHistoryPage"
+      />
+    </UIModal>
+
     <UIModal
       v-model:visible="rulesOpen"
       :title="$t('timesheetPage.autoRulesTitle')"
@@ -2784,38 +2898,57 @@
     outline: 2px solid var(--fig-text-brand);
     outline-offset: 1px;
   }
-  /* Tizim hisobidan o'zgartirilgan katak: sariq fon, xira matn; farq va izoh faqat hover'da. */
-  .ts-cell.is-edited {
-    background: var(--fig-amber-100);
-  }
-  .ts-cell.is-edited > .ts-cell-status,
-  .ts-cell.is-edited > .ts-cell-hours {
-    opacity: 0.55;
-  }
-  .ts-diff-badge {
+  /* Tizim hisobidan o'zgartirilgan katak: faqat burchak belgisi; farq va izoh hover'da. */
+  /* O'zgartirilgan katak belgisi — yuqori chap burchakda doim ko'rinadi. */
+  .ts-edit-mark {
     position: absolute;
-    right: 2px;
-    bottom: 2px;
-    min-width: 16px;
-    height: 15px;
-    padding: 0 4px;
-    border-radius: 4px;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 8px 0 0;
+    border-color: var(--fig-text-red) transparent transparent transparent;
+    pointer-events: none;
+  }
+  /* Jami ustunlarda tizim hisobidan farq — mayda, sonning ostida. */
+  .ts-brow .ts-c-total {
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .ts-total-diff {
     font-size: 10px;
     font-weight: 700;
-    line-height: 15px;
-    color: #fff;
-    opacity: 0;
-    transform: scale(0.8);
-    pointer-events: none;
-    transition:
-      opacity 0.12s ease,
-      transform 0.12s ease;
+    cursor: pointer;
   }
-  .ts-diff-badge.is-more {
-    background: var(--fig-icon-green);
+  .ts-total-diff.is-more {
+    color: var(--fig-icon-green);
   }
-  .ts-diff-badge.is-less {
-    background: var(--fig-text-red);
+  .ts-total-diff.is-less {
+    color: var(--fig-text-red);
+  }
+  .ts-hist-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  :deep(.ts-hist-chip) {
+    display: inline-block;
+    margin-right: 4px;
+    padding: 0 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  :deep(.ts-hist-empty) {
+    color: var(--fig-text-tertiary);
+    font-size: 12px;
+  }
+  :deep(.ts-hist-more) {
+    color: var(--fig-icon-green);
+  }
+  :deep(.ts-hist-less) {
+    color: var(--fig-text-red);
   }
   .ts-diff-tip {
     position: absolute;
@@ -2850,16 +2983,8 @@
     bottom: auto;
     top: calc(100% + 6px);
   }
-  .ts-cell.is-edited:hover .ts-diff-badge {
-    opacity: 1;
-    transform: none;
-  }
   .ts-cell.is-edited:hover .ts-diff-tip {
     display: block;
-  }
-  .ts-cell.is-edited:hover > .ts-cell-status,
-  .ts-cell.is-edited:hover > .ts-cell-hours {
-    opacity: 0.85;
   }
   .ts-dragging .ts-cell.is-edited:hover .ts-diff-tip {
     display: none;
@@ -4034,13 +4159,6 @@
     font-size: 13px;
     font-weight: 700;
   }
-  /* Dam olish / bayram kuni — harf kattaroq (u kunlarda odatda faqat harf yoziladi). */
-  .ts-cell.is-weekend .ts-cell-status {
-    height: 16px;
-    line-height: 16px;
-    font-size: 14px;
-    font-weight: 700;
-  }
   /* Ajratuvchi `/` — harf va soat qatorlarida BIR XIL neytral rangda. */
   .ts-sep {
     color: var(--fig-text-tertiary);
@@ -4225,16 +4343,4 @@
 <style lang="scss">
   /* Bo'lim ro'yxati — uzun nomlar kesilmasin, keyingi qatorga tushsin.
      Menyu `body` ga teleport bo'ladi, shuning uchun global (scoped emas). */
-  .ts-dep-menu.n-base-select-menu .n-base-select-option {
-    height: auto;
-    min-height: 34px;
-    padding-block: 6px;
-  }
-  .ts-dep-menu.n-base-select-menu .n-base-select-option .n-base-select-option__content {
-    white-space: normal;
-    overflow: visible;
-    text-overflow: clip;
-    line-height: 18px;
-    word-break: break-word;
-  }
 </style>

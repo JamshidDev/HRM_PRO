@@ -2,7 +2,7 @@
   import { UIModal } from '@/components/index.js'
   import KpiPending from './KpiPending.vue'
   import { useKpiStore } from '@stores'
-  import { Utils } from '@utils'
+  import { Utils, backendLanguage } from '@utils'
   import i18n from '@/i18n/index.js'
 
   const store = useKpiStore()
@@ -32,7 +32,7 @@
   const nameFor = (names) => {
     if (!Array.isArray(names) || !names.length) return ''
     const current = i18n.global.locale
-    const lang = current === 'uz_kr' ? 'kril' : current
+    const lang = current === 'uz_kr' ? 'kril' : backendLanguage(current)
     return names.find((n) => n.lang === lang)?.data ?? names[0]?.data ?? ''
   }
 

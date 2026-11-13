@@ -24,19 +24,11 @@ export const useDocSettingStore = defineStore('docSettingStore', {
     },
     tabList: [
       {
-        name: 'documentSetting.tabs.contract',
-        id: 1
-      },
-      {
-        name: 'documentSetting.tabs.command',
-        id: 2
-      },
-      {
         name: 'documentSetting.tabs.service',
         id: 3
       }
     ],
-    activeTab: 1,
+    activeTab: 3,
     checkedVal: [],
     selectedFileName: null
   }),

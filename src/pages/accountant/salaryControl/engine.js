@@ -11,7 +11,7 @@
 //   2) Maketdagi `e.kas` = kasaba uyushma badali (902); bizda `emps.kas`=897(omonat).
 //      Kasaba badali kerak bo'lsa xom `ded['902']` o'qiladi.
 
-import { positionCategory, positionGroup, pinAgeSex } from './helpers.js'
+import { positionCategory, positionGroup, pinAgeSex } from './engine-helpers.js'
 
 // —— Konstantalar (HUJJAT §12/§14) ————————————————————————————————————————
 // 🔧 BUXGALTERIYA: bu qiymatlar auditlik uchun markazda. Rasmiy hujjat/sana bilan

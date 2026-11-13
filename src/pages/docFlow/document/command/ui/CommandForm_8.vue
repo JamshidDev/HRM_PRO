@@ -2,7 +2,7 @@
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import { useComponentStore } from '@/store/modules/index.js'
   import { SuperSelect } from '@/components/index.js'
-  import UIDepartment from '@/components/ui/UIDepartment.vue'
+  import UIDepartmentSelect from '@/components/ui/UIDepartmentSelect.vue'
   import UIHelper from '@utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
@@ -136,11 +136,9 @@
       form.value.department_id = []
       form.value.department_position_id = null
     }
-    componentStore.departmentList = []
     componentStore.departmentPositionList = []
     if (!orgId) return
     componentStore.depParams.organizations = orgId
-    componentStore._departmentTree()
     const dep = form.value.department_id?.[0]?.id
     if (dep) componentStore._departmentPosition(dep)
   }
@@ -259,11 +257,11 @@
 
     <div class="col-span-12 @xl:col-span-6">
       <n-form-item :label="$t('documentPage.form.department')" path="department_id">
-        <UIDepartment
-          v-model:search="componentStore.depParams.search"
-          :model-v="store.form_8.department_id"
-          @updateModel="onChangeDepartment"
-          :multiple="false"
+        <UIDepartmentSelect
+          :model-value="store.form_8.department_id"
+          @update:model-value="onChangeDepartment"
+          :organization="store.payload.organization_id"
+          return-object
         />
       </n-form-item>
     </div>

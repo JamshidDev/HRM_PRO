@@ -6,7 +6,7 @@
     useEventV2Store
   } from '@/store/modules/index.js'
   import { ArrowSync24Filled, ArrowCircleDown32Regular } from '@vicons/fluent'
-  import { UIPageFilter, UISelect, SuperSelect } from '@/components/index.js'
+  import { UIPageFilter, UISelect, UIDepartmentSelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAppSetting } from '@utils'
 
@@ -168,19 +168,11 @@
         $t('workerPage.filter.department')
       }}</label>
       <div class="w-full overflow-hidden">
-        <SuperSelect
-          :disabled="store.params.organizations.length === 0"
-          v-model:value="store.params.departments"
-          v-model:search="store.department.params.search"
-          :options="store.department.list"
-          :per-page="store.department.params.per_page"
-          :total-count="store.department.totalItems"
-          @update:value="filterEvent"
-          @onScrollEv="departmentAction.onScroll"
-          @onSearch="departmentAction.onSearch"
-          :loading="store.department.loading"
+        <UIDepartmentSelect
+          v-model="store.params.departments"
+          :organization="store.params.organizations"
           multiple
-          clearable
+          @update:model-value="filterEvent"
         />
       </div>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{

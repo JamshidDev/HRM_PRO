@@ -7,12 +7,14 @@
    * ham shu ma'lumotni ko'rsatardi, faqat ko'rinishi boshqacha edi.
    */
   import { useQuoteStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
+  import { useAppSetting, backendLanguage } from '@/utils/index.js'
   import QuoteLeftIcon from '@/assets/icons/home/quote-left.svg'
 
   const store = useQuoteStore()
 
-  const langKey = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
+  const langKey = backendLanguage(
+    localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
+  )
 
   // `uz_kr` kabi tillar iqtibos jadvalida bo'lmasligi mumkin — birinchi
   // to'ldirilgan tarjimaga qaytamiz.

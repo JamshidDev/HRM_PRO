@@ -10,7 +10,7 @@
   import { useRouter } from 'vue-router'
   import { UITable } from '@/components/index.js'
   import { useAccountStore, useNewsStore } from '@/store/modules/index.js'
-  import { AppPaths } from '@/utils/index.js'
+  import { AppPaths, backendLanguage } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
   import i18n from '@/i18n/index.js'
@@ -28,7 +28,7 @@
   // ── Translation helpers ───────────────────────────────────────────────────
   const translationOf = (row) => {
     const tr = row.translations ?? []
-    return tr.find((x) => x.locale === i18n.global.locale) || tr.find((x) => x.title) || tr[0] || {}
+    return tr.find((x) => x.locale === backendLanguage(i18n.global.locale)) || tr.find((x) => x.title) || tr[0] || {}
   }
   const titleOf = (row) => translationOf(row).title || ''
   const descriptionOf = (row) => translationOf(row).short_description || ''

@@ -15,7 +15,7 @@
    */
   import { useAccountStore, useHomeStore } from '@/store/modules/index.js'
   import HomePanel from './HomePanel.vue'
-  import { AppPaths, Utils, useAppSetting } from '@/utils/index.js'
+  import { AppPaths, Utils, useAppSetting, backendLanguage } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
   import NewsIcon from '@/assets/icons/News.svg'
   import { Eye16Filled } from '@vicons/fluent'
@@ -41,7 +41,7 @@
     if (typeof row.title === 'string' && row.title) return row.title
     // CMS ko'rinishi — `chat/news/ViewPage.vue` dagi tarjima tanlash tartibi.
     const tr = row.translations ?? []
-    const found = tr.find((t) => t.locale === i18n.global.locale) || tr.find((t) => t.title) || {}
+    const found = tr.find((t) => t.locale === backendLanguage(i18n.global.locale)) || tr.find((t) => t.title) || {}
     return found.title || ''
   }
 

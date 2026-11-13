@@ -1,5 +1,5 @@
 <script setup>
-  import DepartmentTreeFilter from './DepartmentTreeFilter.vue'
+  import { UIDepartmentSelect } from '@/components/index.js'
   import { HR_ASSISTANT_ROLE, TIMEKEEPER_ROLE, isDepartmentRole, timekeeperConflicts } from './roleDepartments.js'
 
   // Rolga qarab bo'lim tanlash: HR yordamchisi — butun/qisman, tabelchi — bo'limlar + band ogohlantirishi.
@@ -53,11 +53,13 @@
     </n-radio-group>
 
     <template v-if="role === TIMEKEEPER_ROLE || !modelValue.whole">
-      <DepartmentTreeFilter
+      <UIDepartmentSelect
         :model-value="modelValue.departments ?? []"
-        :organization-id="organizationId"
+        :organization="organizationId"
+        multiple
+        own
         @update:model-value="(v) => set({ departments: v })"
-        @nodes="onNodes"
+        @change="onNodes"
       />
       <div class="text-xs text-textColor3">
         {{ role === HR_ASSISTANT_ROLE ? $t('workerRole.dept.assistantHint') : $t('workerRole.dept.timekeeperHint') }}

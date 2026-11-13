@@ -1,6 +1,6 @@
 <script setup>
   import { useComponentStore, useConfApplicationStore } from '@/store/modules/index.js'
-  import UIDepartment from '@/components/ui/UIDepartment.vue'
+  import UIDepartmentSelect from '@/components/ui/UIDepartmentSelect.vue'
   import { NAvatar } from 'naive-ui'
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
@@ -62,7 +62,6 @@
 
     const orgId = store.organization_id?.[0]?.id ?? store.organization_id?.[0]
     componentStore.depParams.organizations = orgId
-    componentStore._departmentTree()
     store._vacationWorker(orgId)
   })
 </script>
@@ -71,12 +70,11 @@
   <div class="grid grid-cols-12 gap-x-4">
     <div class="col-span-12 pr-3">
       <n-form-item :label="$t(`documentPage.form.department`)">
-        <UIDepartment
-          :modelV="store.department_id"
-          @updateModel="onChangeDepartment"
-          :checkedVal="store.departmentCheck"
-          @updateCheck="(v) => (store.departmentCheck = v)"
-          :multiple="false"
+        <UIDepartmentSelect
+          :model-value="store.department_id"
+          @update:model-value="onChangeDepartment"
+          :organization="store.organization_id"
+          return-object
         />
       </n-form-item>
     </div>

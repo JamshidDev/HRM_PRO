@@ -6,12 +6,11 @@
   import UIHelper from '@utils/UIHelper.js'
   import { Utils } from '@utils'
   import i18n from '@/i18n/index.js'
-  import { useDialog } from 'naive-ui'
+  import { confirmDialog } from '@/components/notify/alertDialog.js'
 
   const store = useLmsCertificateStore()
   const formRef = ref(null)
   const t = i18n.global.t
-  const dialog = useDialog()
 
   const selectedCount = computed(() => store.payload.workers.filter((v) => v.selected).length)
 
@@ -21,12 +20,12 @@
       // Mavjud sertifikatni qayta yaratish — faqat tasdiq bilan.
       const regenerate = store.payload.workers.filter((v) => v.selected && v.certificate).length
       if (!regenerate) return submit()
-      dialog.warning({
+      confirmDialog({
         title: t('lmsCertificate.regenerateTitle'),
-        content: t('lmsCertificate.regenerateText', { count: regenerate }),
-        positiveText: t('content.save'),
-        negativeText: t('content.cancel'),
-        onPositiveClick: submit
+        message: t('lmsCertificate.regenerateText', { count: regenerate }),
+        confirmText: t('content.save'),
+        cancelText: t('content.cancel'),
+        onConfirm: submit
       })
     })
   }

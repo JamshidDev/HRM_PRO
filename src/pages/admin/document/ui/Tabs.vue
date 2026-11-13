@@ -1,8 +1,6 @@
 <script setup>
   import { useDocSettingStore } from '@/store/modules/index.js'
   import ServicePage from '../service/OrgServicePage.vue'
-  import ContractTemplate from '../contractTemplate/ContractTemplate.vue'
-  import CommandTemplate from '../commandTemplate/CommandTemplate.vue'
   const store = useDocSettingStore()
 </script>
 
@@ -16,12 +14,6 @@
   >
     <template v-for="(tab, idx) in store.tabList" :key="idx">
       <n-tab-pane :name="tab.id" :tab="$t(tab.name)" class="!pt-4 flex-1 overflow-auto">
-        <template v-if="tab.id === 1">
-          <ContractTemplate />
-        </template>
-        <template v-if="tab.id === 2">
-          <CommandTemplate />
-        </template>
         <template v-if="tab.id === 3">
           <ServicePage />
         </template>

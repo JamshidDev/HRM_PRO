@@ -8,6 +8,7 @@
   import { UIFigBlock } from '@/components/index.js'
   import { useMobileUserStore, useAccountStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
+  import { confirmDialog } from '@/components/notify/alertDialog.js'
 
   const { t } = i18n.global
 
@@ -75,15 +76,16 @@
       : t('mobileUserPage.optionalHint', { min: row?.min_supported_version })
   }
 
-  // Popconfirm faqat to'g'ri qiymatda ochiladi — aks holda xato darhol ko'rsatiladi.
-  const confirmShow = ref(false)
-  const onConfirmShow = (show) => {
-    confirmShow.value = show ? validate() : false
-  }
-
-  const onSave = () => {
+  // Tasdiq faqat to'g'ri qiymatda ochiladi — aks holda xato darhol ko'rsatiladi.
+  const askSave = () => {
     if (!validate()) return
-    void store._saveVersion()
+    confirmDialog({
+      type: 'confirm',
+      message: minRaised.value
+        ? t('mobileUserPage.confirmMinRaise', { version: draft.value.min })
+        : t('mobileUserPage.confirmSave'),
+      onConfirm: () => store._saveVersion()
+    })
   }
 
   onMounted(() => {
@@ -135,31 +137,15 @@
           >
             <n-icon :size="16"><Dismiss20Regular /></n-icon>
           </button>
-          <n-popconfirm
-            :positive-text="$t('content.confirm')"
-            :negative-text="$t('content.cancel')"
-            :show="confirmShow"
-            @update:show="onConfirmShow"
-            @positive-click="onSave"
+          <button
+            type="button"
+            class="version-icon-btn version-icon-btn--brand"
+            :disabled="store.versionSaving"
+            @click="askSave"
           >
-            <template #trigger>
-              <button
-                type="button"
-                class="version-icon-btn version-icon-btn--brand"
-                :disabled="store.versionSaving"
-              >
-                <n-spin v-if="store.versionSaving" size="12" />
-                <n-icon v-else :size="16"><Checkmark20Regular /></n-icon>
-              </button>
-            </template>
-            <div class="max-w-[300px] text-pretty">
-              {{
-                minRaised
-                  ? $t('mobileUserPage.confirmMinRaise', { version: draft.min })
-                  : $t('mobileUserPage.confirmSave')
-              }}
-            </div>
-          </n-popconfirm>
+            <n-spin v-if="store.versionSaving" size="12" />
+            <n-icon v-else :size="16"><Checkmark20Regular /></n-icon>
+          </button>
         </div>
       </div>
 

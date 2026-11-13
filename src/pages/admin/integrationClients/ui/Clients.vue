@@ -9,18 +9,20 @@
     Key20Regular,
     Copy20Regular,
     Edit32Regular,
-    Delete20Regular
+    Delete20Regular,
+    PlugConnected20Regular
   } from '@vicons/fluent'
-  import { useMessage, useDialog } from 'naive-ui'
+  import { useMessage } from 'naive-ui'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
   import { useAppSetting } from '@/utils/AppSetting.js'
   import i18n from '@/i18n/index.js'
+  import { confirmDialog } from '@/components/notify/alertDialog.js'
+  import ApiTester from './ApiTester.vue'
 
   const store = useIntegrationClientsStore()
   const componentStore = useComponentStore()
   const message = useMessage()
-  const dialog = useDialog()
   const { t } = i18n.global
 
   const loadStructure = () => {
@@ -81,8 +83,22 @@
       key: 'keys',
       icon: UIHelper.renderIcon(Key20Regular),
       action: openKeys
+    },
+    {
+      label: t('integrationClients.tester.button'),
+      key: 'api-test',
+      icon: UIHelper.renderIcon(PlugConnected20Regular),
+      action: (row) => openTester(row)
     }
   ])
+
+  // API test oynasi: qatordan ochilsa — shu mijoz kalitlari bilan.
+  const testerVisible = ref(false)
+  const testerClient = ref(null)
+  const openTester = (row = null) => {
+    testerClient.value = row ? { id: row.id, name: row.name, public_key: row.public_key } : null
+    testerVisible.value = true
+  }
 
   const deleteWarning = (row) => t('integrationClients.delete.confirm', { name: row.name })
 
@@ -300,12 +316,12 @@
   }
 
   const onChangeKey = () => {
-    dialog.warning({
+    confirmDialog({
       title: t('integrationClients.rotate.title'),
-      content: t('integrationClients.rotate.confirm', { name: keyView.value.name }),
-      positiveText: t('content.yes'),
-      negativeText: t('content.no'),
-      onPositiveClick: () => {
+      message: t('integrationClients.rotate.confirm', { name: keyView.value.name }),
+      confirmText: t('content.yes'),
+      cancelText: t('content.no'),
+      onConfirm: () => {
         return store._rotate(keyView.value.id).then((res) => {
           keyView.value.secret_key = res.secret_key
           keyView.value.revealed = true
@@ -340,6 +356,12 @@
         <n-icon><ArrowDownload20Regular /></n-icon>
       </template>
       {{ $t('content.download') }}
+    </n-button>
+    <n-button secondary @click="openTester()">
+      <template #icon>
+        <n-icon><PlugConnected20Regular /></n-icon>
+      </template>
+      {{ $t('integrationClients.tester.button') }}
     </n-button>
     <n-button type="primary" @click="openCreate">
       <template #icon>
@@ -570,4 +592,5 @@
       </div>
     </template>
   </UIModal>
+  <ApiTester v-model:visible="testerVisible" :client="testerClient" />
 </template>

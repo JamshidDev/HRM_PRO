@@ -13,7 +13,6 @@
 
     store.resetForm()
     store._level()
-    componentStore._departments()
     componentStore._structures()
     componentStore._regions()
     store.refreshTarget = null

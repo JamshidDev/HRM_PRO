@@ -1,6 +1,6 @@
 <script setup>
   import { useComponentStore, useConfApplicationStore } from '@/store/modules/index.js'
-  import UIDepartment from '@/components/ui/UIDepartment.vue'
+  import UIDepartmentSelect from '@/components/ui/UIDepartmentSelect.vue'
   import { useAppSetting } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
 
@@ -16,7 +16,6 @@
 
   onMounted(() => {
     componentStore.depParams.organizations = store.confirmParams.organization_id
-    componentStore._departmentTree()
   })
 </script>
 
@@ -24,12 +23,11 @@
   <div class="grid grid-cols-12 gap-x-4">
     <div class="col-span-12 pr-3">
       <n-form-item :label="$t(`documentPage.form.department`)">
-        <UIDepartment
-          :modelV="store.department_id"
-          @updateModel="onChangeDepartment"
-          :checkedVal="store.departmentCheck"
-          @updateCheck="(v) => (store.departmentCheck = v)"
-          :multiple="false"
+        <UIDepartmentSelect
+          :model-value="store.department_id"
+          @update:model-value="onChangeDepartment"
+          :organization="store.confirmParams.organization_id"
+          return-object
         />
       </n-form-item>
     </div>

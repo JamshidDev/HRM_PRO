@@ -13,7 +13,7 @@ const TIMESHEET_KEY_BY_ID = {
 const REST_DAY_ID = 33
 const isWorkDay = (details) => (details ?? []).some((d) => Number(d.status_id) !== REST_DAY_ID)
 // Soat yuritiladigan turlar (backend TIMESHEET_TYPE_HOURS).
-const TIMESHEET_TYPES_WITH_HOURS = new Set([1, 2, 3, 5, 17, 27, 32])
+export const TIMESHEET_TYPES_WITH_HOURS = new Set([1, 2, 3, 5, 17, 27, 32])
 const { t } = i18n.global
 
 // Katak qiymatining solishtiriladigan ko'rinishi: tartib va `null`/`0` soat farqi ahamiyatsiz.
@@ -32,7 +32,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     pending: {},
     // Bazadagi holat: `${workerPositionId}|${day}` → cellKey. Faqat undan farq qilgan katak yuboriladi.
     saved: {},
-    // PROTOTIP: tizim hisobi (auto natijasi) — `${wpId}|${day}` → { status, status_id, hours }; hozircha faqat xotirada.
+    // Tizim hisobi (auto natijasi) — `${wpId}|${day}` → { status, status_id, hours }; bazadan (`auto`) yuklanadi.
     calcBase: {},
     // Tungi smena davomi kunlari (`${wpId}|${day}` → true) — katakda «↳» belgisi.
     nightCont: {},
@@ -67,8 +67,6 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     // Modal ichidagi bo'lim filtri uchun (tabel korxonasi bo'yicha).
     organizationId: null,
     organization: null,
-    departmentOptions: [],
-    departmentLoading: false,
     // Tabelchi rejimi — hujjat aylanishidagi «Tabellar» sahifasidan ochilganda.
     // Bo'lim filtri korxonaning HAMMA bo'limi emas, faqat biriktirilganlari.
     timekeeperMode: false,
@@ -141,14 +139,11 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         })
     },
     // Optimistik: switch darhol o'zgaradi, so'rov yiqilsa holat qaytariladi.
-    // Boshqa tabel ochilganda filtrlarni tozalaydi. Ilgari `department_id` va
-    // `departmentOptions` eski korxonanikidan qolib ketardi — natijada yangi
-    // tabel begona bo'lim bo'yicha filtrlanardi.
+    // Boshqa tabel ochilganda filtrlarni tozalaydi (eski korxona bo'limi qolmasin).
     resetForTimesheet() {
       this.params.page = 1
       this.params.search = null
       this.params.department_id = null
-      this.departmentOptions = []
       this.organizationId = null
       this.organization = null
       this.list = []
@@ -250,6 +245,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
               }, 0)
             }
           }))
+          this.hydrateAuto(res.data.data.data)
           this.totalItems = res.data.data.total
           this.rememberSaved()
           this.reapplyPending()
@@ -262,13 +258,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
           this.year = res.data.data.year
           this.department = res.data.data.department
           this.organization = res.data.data.organization ?? null
-          if (
-            res.data.data.organization_id &&
-            this.organizationId !== res.data.data.organization_id
-          ) {
-            this.organizationId = res.data.data.organization_id
-            this._departments()
-          }
+          if (res.data.data.organization_id) this.organizationId = res.data.data.organization_id
         })
       )
       Promise.all(promises).then(() => {
@@ -308,44 +298,13 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
               }, 0)
             }
           }))
+          this.hydrateAuto(res.data.data.data)
           this.totalItems = res.data.data.total
           this.rememberSaved()
           this.reapplyPending()
         })
         .finally(() => {
           this.loading = false
-        })
-    },
-    // Bo'lim filtri select'i — tabel korxonasining bo'limlari.
-    // Tabelchi rejimida faqat O'ZIGA biriktirilgan bo'limlar (backend doirasi
-    // bilan bir xil, aks holda tanlagan bo'limi bo'sh chiqardi).
-    _departments() {
-      if (this.timekeeperMode) return this._assignedDepartments()
-      if (!this.organizationId) return
-      this.departmentLoading = true
-      $ApiService.componentService
-        ._departmentByOrganizations({
-          params: { page: 1, per_page: 200, organizations: String(this.organizationId) }
-        })
-        .then((res) => {
-          this.departmentOptions = res.data.data.data.map((v) => ({ id: v.id, name: v.name }))
-        })
-        .finally(() => {
-          this.departmentLoading = false
-        })
-    },
-    _assignedDepartments() {
-      this.departmentLoading = true
-      return $ApiService.timesheetService
-        ._index_departments()
-        .then((res) => {
-          this.departmentOptions = (res.data.data.departments ?? []).map((v) => ({
-            id: v.id,
-            name: v.name
-          }))
-        })
-        .finally(() => {
-          this.departmentLoading = false
         })
     },
     // Filtr o'zgarganda ro'yxat birinchi sahifadan qayta yuklanadi.
@@ -433,6 +392,30 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     // qo'yiladi (katakchalar to'ladi), bazaga «Saqlash» bosilganda ketadi.
     // `workerPositionIds` berilsa faqat o'shalar hisoblanadi (qator menyusidagi
     // «Qayta hisoblash»); berilmasa — joriy sahifadagi hamma xodim («Auto»).
+    // Saqlangan tizim hisobi — «tizimdan farq» belgisi qayta ochilganda ham ko'rinsin.
+    hydrateAuto(rows) {
+      for (const w of rows ?? []) {
+        if (w.auto) this.applyAutoBase(w.id, w.auto.days ?? [], w.auto.continuation_days ?? [])
+      }
+    },
+    // Xodimning tizim hisobini (avto) panjara xotirasiga qo'yadi.
+    applyAutoBase(id, days, continuationDays) {
+      this.calcWorkers[id] = true
+      for (let day = 1; day <= (this.days.length || 31); day++) {
+        delete this.calcBase[`${id}|${day}`]
+        delete this.nightCont[`${id}|${day}`]
+      }
+      for (const day of continuationDays) this.nightCont[`${id}|${day}`] = true
+      for (const d of days) {
+        this.calcBase[`${id}|${d.day}`] = {
+          status: TIMESHEET_KEY_BY_ID[d.status] ?? null,
+          status_id: d.status,
+          hours: TIMESHEET_TYPES_WITH_HOURS.has(d.status) ? (d.hours ?? 0) : null,
+          // Tungi smenada kirish/chiqish yo'q — katak sariq belgilanadi.
+          needs_check: Boolean(d.needs_check)
+        }
+      }
+    },
     async autoCalc(workerPositionIds = null) {
       const ids = (workerPositionIds ?? this.list.map((w) => w.id)).filter(Boolean)
       if (!ids.length) return null
@@ -447,22 +430,8 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         for (const item of items) {
           const row = this.list.findIndex((w) => w.id === item.id)
           if (row < 0) continue
-          // Tizim hisobi eslab qolinadi: qaytmagan kunlar bo'sh (0 soat).
-          this.calcWorkers[item.id] = true
-          for (let day = 1; day <= this.days.length; day++) {
-            delete this.calcBase[`${item.id}|${day}`]
-            delete this.nightCont[`${item.id}|${day}`]
-          }
-          for (const day of item.continuation_days ?? []) this.nightCont[`${item.id}|${day}`] = true
-          for (const d of item.days ?? []) {
-            this.calcBase[`${item.id}|${d.day}`] = {
-              status: TIMESHEET_KEY_BY_ID[d.status] ?? null,
-              status_id: d.status,
-              hours: TIMESHEET_TYPES_WITH_HOURS.has(d.status) ? (d.hours ?? 0) : null,
-              // Tungi smenada kirish/chiqish yo'q — katak sariq belgilanadi.
-              needs_check: Boolean(d.needs_check)
-            }
-          }
+          // Tizim hisobi eslab qolinadi (backend ham saqlaydi): qaytmagan kunlar bo'sh (0 soat).
+          this.applyAutoBase(item.id, item.days ?? [], item.continuation_days ?? [])
           for (const d of item.days ?? []) {
             this.applyLocalCell(row, d.day - 1, [
               {
@@ -502,6 +471,12 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
       return res.data.data
     },
 
+    // O'zgarishlar tarixi — `{ current_page, total, data }`.
+    async fetchChanges(params) {
+      const clean = Object.fromEntries(Object.entries(params).filter(([, v]) => v != null))
+      const res = await $ApiService.timesheetWorkerService._changes({ id: this.elementId, params: clean })
+      return res.data.data
+    },
     async autoCalcRules() {
       if (this.autoRules) return this.autoRules
       const res = await $ApiService.timesheetWorkerService._auto_calc_rules()

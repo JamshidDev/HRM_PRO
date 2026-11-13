@@ -7,7 +7,9 @@ const locales = {
   uz: { lang: uzUZ, date: dateUzUZ },
   en: { lang: enUS, date: dateEnUS },
   ru: { lang: ruRU, date: dateRuRU },
-  uz_kr: { lang: uzUZ, date: dateUzUZ }
+  uz_kr: { lang: uzUZ, date: dateUzUZ },
+  uz_new: { lang: uzUZ, date: dateUzUZ },
+  kaa: { lang: uzUZ, date: dateUzUZ }
 }
 
 export const useLocaleProvider = () => {

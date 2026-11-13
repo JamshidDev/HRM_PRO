@@ -4,7 +4,7 @@
     useComponentStore,
     useTurnstileDashboardStore
   } from '@/store/modules/index.js'
-  import { UINSelect, UISelect } from '@/components/index.js'
+  import { UISelect, UIDepartmentSelect } from '@/components/index.js'
   import { generateUUIDKey, useAppSetting, useDebounce } from '@/utils/index.js'
 
   const dashboardStore = useTurnstileDashboardStore()
@@ -20,16 +20,6 @@
   const departmentState = computed(() => componentStore.getDepartmentState(detectKey))
   const fetchDepartment = componentStore.createDepartmentFetcher(detectKey)
   const debounceFetchDepartment = useDebounce(fetchDepartment)
-  const onScrollDepartment = () => {
-    dashboardStore.filterDepParams.page++
-    fetchDepartment(depParams.value, true)
-  }
-
-  const onSearchDepartment = (v) => {
-    dashboardStore.filterDepParams.page = 1
-    dashboardStore.filterDepParams.search = v
-    fetchDepartment(depParams.value)
-  }
 
   let timer = null
   const filterEvent = () => {
@@ -96,18 +86,12 @@
         />
       </div>
       <div class="md:w-[220px] w-full">
-        <UINSelect
+        <UIDepartmentSelect
+          v-model="dashboardStore.dashboardParams.departments"
+          :organization="dashboardStore.dashboardParams.organizations"
           multiple
-          clearable
           :placeholder="$t('turnStileDashboard.filter.departmentPlaceholder')"
-          :loading="departmentState.loading"
-          :options="departmentState.list"
-          :query="dashboardStore.filterDepParams.search"
-          :total-count="departmentState.total"
-          v-model:value="dashboardStore.dashboardParams.departments"
-          @update:value="onChangeDepartment"
-          @onScrollEv="onScrollDepartment"
-          @onSearch="onSearchDepartment"
+          @update:model-value="onChangeDepartment"
         />
       </div>
       <div class="md:w-[160px] w-full">

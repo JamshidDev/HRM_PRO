@@ -3,7 +3,7 @@ import i18n from '@/i18n/index.js'
 const { t } = i18n.global
 import { useAccountStore } from '@/store/modules/index.js'
 import Utils from '@/utils/Utils.js'
-import { useAppSetting } from '@/utils/index.js'
+import { useAppSetting, backendLanguage } from '@/utils/index.js'
 import utils from '@/utils/Utils.js'
 
 // ContractTypeEnum: 2 = fuqarolik-huquqiy shartnoma (FXSH).
@@ -945,7 +945,9 @@ export const useComponentStore = defineStore('componentStore', {
     _workerResume(fileName) {
       this.resumeLoading = true
       const id = this.resumeId
-      const lang = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
+      const lang = backendLanguage(
+        localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
+      )
       const photo = this.workerPreview.worker?.photos.filter((v) => v.current === 1)?.[0]?.id
       $ApiService.workerService
         ._resume({ id, params: { lang, photo } })
@@ -960,7 +962,9 @@ export const useComponentStore = defineStore('componentStore', {
     _workerT2(fileName) {
       this.t2Loading = true
       const id = this.resumeId
-      const lang = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
+      const lang = backendLanguage(
+        localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
+      )
       const photo = this.workerPreview.worker?.photos.filter((v) => v.current === 1)?.[0]?.id
       $ApiService.workerService
         ._t2({ id, params: { lang, photo } })

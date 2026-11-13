@@ -1,6 +1,6 @@
 <script setup>
   import { useEventV2Store, useEventStore, useComponentStore, useAccountStore } from '@stores'
-  import { UIModal, UISelect, SuperSelect } from '@components'
+  import { UIModal, UISelect, SuperSelect, UIDepartmentSelect } from '@components'
   import { useAppSetting, validationRules } from '@utils'
   import { LockClosed20Regular } from '@vicons/fluent'
 
@@ -24,17 +24,6 @@
   const { proxy } = getCurrentInstance()
   const submitBtnRef = ref(null)
   const downloadFormRef = ref(null)
-
-  const departmentAction = {
-    onSearch: () => {
-      store.download.department.params.page = 1
-      store._downloadDepartments()
-    },
-    onScroll: () => {
-      store.download.department.params.page++
-      store._downloadDepartments(true)
-    }
-  }
 
   const workerAction = {
     onSearch: () => {
@@ -103,19 +92,11 @@
         />
       </n-form-item>
       <n-form-item class="col-span-12" :label="$t('content.department')">
-        <SuperSelect
-          :disabled="store.download.payload.organizations.length === 0"
-          v-model:value="store.download.payload.departments"
-          v-model:search="store.download.department.params.search"
-          :options="store.download.department.list"
-          :per-page="store.download.department.params.per_page"
-          :total-count="store.download.department.totalItems"
-          :loading="store.download.department.loading"
-          @update:value="store._onDownloadDepartments"
-          @onScrollEv="departmentAction.onScroll"
-          @onSearch="departmentAction.onSearch"
+        <UIDepartmentSelect
+          v-model="store.download.payload.departments"
+          :organization="store.download.payload.organizations"
           multiple
-          clearable
+          @update:model-value="store._onDownloadDepartments"
         />
       </n-form-item>
       <n-form-item class="col-span-12" :label="$t('content.workers')">
