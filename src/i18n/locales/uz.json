@@ -509,7 +509,8 @@
     "passwordsNotMatch": "Parollar mos kelmadi!",
     "endBeforeStart": "Bu sana boshlanish sanasidan oldin bo'lmasligi kerak",
     "pastDate": "O'tgan sanani tanlab bo'lmaydi",
-    "futureDate": "Kelajakdagi sanani tanlab bo'lmaydi"
+    "futureDate": "Kelajakdagi sanani tanlab bo'lmaydi",
+    "noHtml": "Nomda < va > belgilari ishlatilmaydi"
   },
   "message": {
     "successDone": "Muvaffaqiyatli bajarildi",

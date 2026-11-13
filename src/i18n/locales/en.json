@@ -496,7 +496,8 @@
     "passwordsNotMatch": "Passwords do not match!",
     "endBeforeStart": "This date can't be before the start date",
     "pastDate": "A past date can't be selected",
-    "futureDate": "A future date can't be selected"
+    "futureDate": "A future date can't be selected",
+    "noHtml": "The name can't contain < or >"
   },
   "message": {
     "successDone": "Successfully completed",

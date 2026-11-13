@@ -15,6 +15,19 @@ export default {
       message: t(`rules.requiredField`),
       trigger: [...triggerEvents, 'change']
     },
+    // Nom maydonlari: bo'sh / faqat probel emas va HTML teg (< >) yo'q (QA-40)
+    requiredNameField: [
+      {
+        required: true,
+        whitespace: true,
+        message: t(`rules.requiredField`),
+        trigger: [...triggerEvents, 'change']
+      },
+      {
+        validator: (rule, value) => !/[<>]/.test(value ?? '') || new Error(t(`rules.noHtml`)),
+        trigger: [...triggerEvents, 'change']
+      }
+    ],
     requiredDateTimeField: {
       type: 'number',
       required: true,
@@ -1694,11 +1707,20 @@ export default {
     }
   },
   topicPage: {
-    name: {
-      required: true,
-      message: t(`rules.requiredWorker`),
-      trigger: triggerEvents
-    },
+    // BACKEND: POST /v1/exam/categories va /v1/exam/topics nomida HTML teg (`<script>…`) saqlanadi — serverda ham
+    // `<`/`>` taqiqlansin, dev bazadagi test yozuvlari tozalansin (QA-40, DAS-14233).
+    name: [
+      {
+        required: true,
+        whitespace: true,
+        message: t(`rules.requiredField`),
+        trigger: triggerEvents
+      },
+      {
+        validator: (rule, value) => !/[<>]/.test(value ?? '') || new Error(t(`rules.noHtml`)),
+        trigger: triggerEvents
+      }
+    ],
     type: {
       type: 'number',
       required: true,
