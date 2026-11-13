@@ -1,6 +1,5 @@
 <script setup>
-  import { LockClosed32Filled, LockOpen28Filled } from '@vicons/fluent'
-  import { UIDrawer, UIModal, UIPageContent, UIDConfirm } from '@/components/index.js'
+  import { UIDrawer, UIModal, UIPageContent, UIConfirm } from '@/components/index.js'
   import { useUserStore, useAccountStore, useUserRoleStore } from '@/store/modules/index.js'
   import Table from './ui/Table.vue'
   import createForm from './ui/createForm.vue'
@@ -57,31 +56,13 @@
         <createForm />
       </template>
     </UIDrawer>
-    <UIDConfirm v-model:visible="store.confirmVisible">
-      <template #icon>
-        <div class="flex justify-center w-full pt-4 mb-6">
-          <n-icon size="56" :class="[store.isSpam ? 'text-success' : 'text-danger']">
-            <LockOpen28Filled v-if="store.isSpam" />
-            <LockClosed32Filled v-else />
-          </n-icon>
-        </div>
-      </template>
-      <h2
-        class="text-center font-semibold"
-        :class="[store.isSpam ? 'text-success' : 'text-danger']"
-      >
-        {{ $t(store.isSpam ? 'userPage.form.cancelSpam' : 'userPage.form.confirmSpam') }}
-      </h2>
-      <template #action>
-        <div class="grid grid-cols-2 gap-2">
-          <n-button @click="store.confirmVisible = false" type="error" secondary>{{
-            $t('content.close')
-          }}</n-button>
-          <n-button @click="store._onSpam" type="primary" secondary>{{
-            $t('content.confirm')
-          }}</n-button>
-        </div>
-      </template>
-    </UIDConfirm>
+    <UIConfirm
+      v-model:visible="store.confirmVisible"
+      :type="store.isSpam ? 'confirm' : 'warning'"
+      :danger="!store.isSpam"
+      :title="$t(store.isSpam ? 'userPage.form.cancelSpam' : 'userPage.form.confirmSpam')"
+      :confirm-text="$t('content.confirm')"
+      @confirm="store._onSpam"
+    />
   </UIPageContent>
 </template>

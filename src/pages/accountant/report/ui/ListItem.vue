@@ -1,6 +1,10 @@
 <script setup>
   import { useAccountStore, useUploadReportStore } from '@/store/modules/index.js'
   import { CheckmarkCircle20Filled, ChevronRight20Regular, Timer16Regular } from '@vicons/fluent'
+  import { confirmDialog } from '@/components/notify/alertDialog.js'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   const store = useUploadReportStore()
   const accStore = useAccountStore()
@@ -12,6 +16,16 @@
   }
 
   const canConfirm = computed(() => accStore.checkPermission(accStore.pn.economistUploadsConfirm))
+
+  // Loyihaning umumiy tasdiq oynasi.
+  const askConfirm = (item) =>
+    confirmDialog({
+      type: item.status ? 'warning' : 'confirm',
+      message: t(item.status ? 'uploadReport.cancelConfirmQuestion' : 'uploadReport.confirmQuestion'),
+      confirmText: t('content.yes'),
+      cancelText: t('content.no'),
+      onConfirm: () => (item.status ? store._cancelConfirm(item) : store._confirm(item))
+    })
 </script>
 
 <template>
@@ -49,29 +63,17 @@
           </div>
 
           <div class="flex items-center gap-1" @click.stop>
-            <n-popconfirm
+            <n-button
               v-if="canConfirm"
-              :positive-text="$t('content.yes')"
-              :negative-text="$t('content.no')"
-              @positive-click="item.status ? store._cancelConfirm(item) : store._confirm(item)"
+              size="small"
+              :type="item.status ? 'default' : 'primary'"
+              :secondary="!item.status"
+              :quaternary="item.status"
+              :loading="store.confirmLoading"
+              @click="askConfirm(item)"
             >
-              <template #trigger>
-                <n-button
-                  size="small"
-                  :type="item.status ? 'default' : 'primary'"
-                  :secondary="!item.status"
-                  :quaternary="item.status"
-                  :loading="store.confirmLoading"
-                >
-                  {{ $t(item.status ? 'uploadReport.cancelConfirm' : 'content.confirm') }}
-                </n-button>
-              </template>
-              {{
-                item.status
-                  ? $t('uploadReport.cancelConfirmQuestion')
-                  : $t('uploadReport.confirmQuestion')
-              }}
-            </n-popconfirm>
+              {{ $t(item.status ? 'uploadReport.cancelConfirm' : 'content.confirm') }}
+            </n-button>
             <n-icon
               size="18"
               class="transition-colors"

@@ -1,8 +1,9 @@
 <script setup>
   import i18n from '@/i18n/index.js'
   const { t } = i18n.global
+  import { showAlert } from '@/components/notify/alertDialog.js'
   import {
-    UIDConfirm,
+    UIConfirm,
     UIOfficeApp,
     UIFigSteps,
     UIProfileButton
@@ -97,6 +98,19 @@
     $Toast.info(t('message.clearedFields'))
   }
 
+  // «Tizimda mavjud xodim» — umumiy `$Alert` ogohlantirishi; yopilganda forma tozalanadi.
+  watch(
+    () => store.warningVisible,
+    (v) => {
+      if (!v) return
+      showAlert({
+        type: 'warning',
+        title: t('createWorkerPage.toast.warning.title'),
+        onClose
+      })
+    }
+  )
+
   // Shartnoma sehrgari har safar 1-qadamdan, toza formadan ochiladi
   // (Asosiy xodimlardagi CheckWorker.vue `onContinue` kabi).
   const onSave = () => {
@@ -163,31 +177,16 @@
       </UIProfileButton>
     </div>
 
-    <UIDConfirm v-model:visible="store.warningVisible" type="warning" @onClose="onClose">
-      <div>
-        <h3 class="text-center text-2xl font-semibold uppercase">
-          {{ $t('createWorkerPage.toast.warning.title') }}
-        </h3>
-        <p class="text-gray-400 text-center">{{ $t('createWorkerPage.toast.warning.subtitle') }}</p>
-      </div>
-    </UIDConfirm>
-    <UIDConfirm
+    <UIConfirm
       v-model:visible="store.successVisible"
       type="success"
-      @onClose="onClose"
-      @onSave="onSave"
-      :submit-btn-text="'content.continue'"
-      :close-btn-text="'content.closeAndClear'"
-    >
-      <div>
-        <h3 class="text-center text-2xl font-semibold uppercase">
-          {{ $t('createWorkerPage.toast.success.title') }}
-        </h3>
-        <p class="text-gray-400 text-center mt-2 text-xs leading-3">
-          {{ $t('createWorkerPage.toast.success.subtitle') }}
-        </p>
-      </div>
-    </UIDConfirm>
+      :title="$t('createWorkerPage.toast.success.title')"
+      :message="$t('createWorkerPage.toast.success.subtitle')"
+      :confirm-text="$t('content.continue')"
+      :cancel-text="$t('content.closeAndClear')"
+      @confirm="onSave"
+      @cancel="onClose"
+    />
     <ContractModal
       v-model:visible="store.visible"
       :title="$t('documentPage.createTitle')"

@@ -24,7 +24,7 @@
 
 <template>
   <n-form ref="formRef" :model="store.payload" :rules="validationRules.common">
-    <n-form-item :label="$t(`content.name`)" path="name" rule-path="requiredStringField">
+    <n-form-item :label="$t(`content.name`)" path="name" rule-path="requiredNameField">
       <n-input
         type="text"
         v-model:value="store.payload.name"

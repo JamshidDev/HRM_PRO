@@ -21,10 +21,18 @@
     toAnchored
   } from './navbat.js'
   import i18n from '@/i18n/index.js'
+  import { confirmDelete } from '@/components/notify/alertDialog.js'
 
   const store = useScheduleGroupWorkerStore()
   const accStore = useAccountStore()
   const { t } = i18n.global
+
+  // Brigadani o'chirish — loyihaning umumiy o'chirish tasdig'i.
+  const askDeleteCrew = (sec) =>
+    confirmDelete({
+      message: t('shiftType.groupView.deleteCrewConfirm', { name: sec.title }),
+      onConfirm: () => store._deleteCrew(sec.crew, sec.workers.length)
+    })
 
   const currentScheduleList = ref([])
 
@@ -769,18 +777,15 @@
               <span class="brigade-label text-xs text-secondary whitespace-nowrap">
                 {{ sec.title }}
               </span>
-              <n-popconfirm v-if="sec.deletable && canReplace" @positive-click="store._deleteCrew(sec.crew, sec.workers.length)">
-                <template #trigger>
-                  <button
-                    type="button"
-                    class="mt-2 w-6 h-6 rounded-md flex items-center justify-center text-fig-text-red hover:bg-fig-red-50"
-                    :title="$t('shiftType.groupView.deleteCrew')"
-                  >
-                    <n-icon size="14"><Delete16Regular /></n-icon>
-                  </button>
-                </template>
-                {{ $t('shiftType.groupView.deleteCrewConfirm', { name: sec.title }) }}
-              </n-popconfirm>
+              <button
+                v-if="sec.deletable && canReplace"
+                type="button"
+                class="mt-2 w-6 h-6 rounded-md flex items-center justify-center text-fig-text-red hover:bg-fig-red-50"
+                :title="$t('shiftType.groupView.deleteCrew')"
+                @click="askDeleteCrew(sec)"
+              >
+                <n-icon size="14"><Delete16Regular /></n-icon>
+              </button>
             </div>
             <div class="flex flex-col flex-1 min-w-0">
               <template v-for="(worker, wi) in sec.workers" :key="worker.workerPositionId">

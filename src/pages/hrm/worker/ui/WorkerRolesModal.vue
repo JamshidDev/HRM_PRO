@@ -21,6 +21,10 @@
     emptyDepartments,
     isDepartmentRole
   } from './roleDepartments.js'
+  import { confirmDelete } from '@/components/notify/alertDialog.js'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   const store = useWorkerStore()
   const componentStore = useComponentStore()
@@ -67,8 +71,14 @@
   }
 
   // Bo'limlarni tahrirlash oynasi.
-  // Tasdiq oynasi ochiq qator — tooltip «Bekor qilish» tugmasini yopmasin.
-  const confirmRow = ref(null)
+  // Rolni uzish — loyihaning umumiy o'chirish tasdig'i.
+  const askDetach = (row) =>
+    confirmDelete({
+      message: [t('content.confirmDelete'), row.departments ? t('workerRole.dept.detachWarn') : '']
+        .filter(Boolean)
+        .join('\n'),
+      onConfirm: () => store._detachWorkerRole(row)
+    })
 
   const edit = ref({ visible: false, row: null })
   const onEditDepartments = (row) => (edit.value = { visible: true, row })
@@ -177,38 +187,24 @@
           <n-tag v-if="row.is_active" type="success" size="small" round>
             {{ $t('content.active') }}
           </n-tag>
-          <n-popconfirm
-            @positive-click="store._detachWorkerRole(row)"
-            @update:show="(v) => (confirmRow = v ? row : null)"
-          >
+          <n-tooltip trigger="hover">
             <template #trigger>
-              <!-- Tooltip popconfirm trigger'i ICHIDA: aks holda popconfirm
-                   ochilishi bilan tooltip ustidan tushib qolardi. -->
-              <n-tooltip trigger="hover" :disabled="confirmRow === row">
-                <template #trigger>
-                  <n-button
-                    size="small"
-                    type="error"
-                    ghost
-                    :disabled="!canDetach"
-                    :loading="store.rolesSaving"
-                    :aria-label="$t('workerRole.detachRole')"
-                  >
-                    <template #icon>
-                      <n-icon><Delete20Regular /></n-icon>
-                    </template>
-                  </n-button>
+              <n-button
+                size="small"
+                type="error"
+                ghost
+                :disabled="!canDetach"
+                :loading="store.rolesSaving"
+                :aria-label="$t('workerRole.detachRole')"
+                @click="askDetach(row)"
+              >
+                <template #icon>
+                  <n-icon><Delete20Regular /></n-icon>
                 </template>
-                {{ $t('workerRole.detachRole') }}
-              </n-tooltip>
+              </n-button>
             </template>
-            <div class="flex flex-col max-w-[260px]">
-              <span>{{ $t('content.confirmDelete') }}</span>
-              <span v-if="row.departments" class="text-xs text-warning mt-1">
-                {{ $t('workerRole.dept.detachWarn') }}
-              </span>
-            </div>
-          </n-popconfirm>
+            {{ $t('workerRole.detachRole') }}
+          </n-tooltip>
         </div>
       </div>
     </n-spin>

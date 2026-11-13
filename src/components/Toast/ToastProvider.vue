@@ -3,7 +3,14 @@
   import GlobalNotification from '@/components/notify/GlobalNotification.vue'
   import PushDetailModal from '@/components/notify/PushDetailModal.vue'
   import AlertDialog from '@/components/notify/AlertDialog.vue'
-  import { showAlert, alertValidation, alertWarning, alertError } from '@/components/notify/alertDialog.js'
+  import {
+    showAlert,
+    alertValidation,
+    alertWarning,
+    alertError,
+    confirmDialog,
+    confirmDelete
+  } from '@/components/notify/alertDialog.js'
   import { useAppStore } from '@stores'
   import { useNotificationSound } from '@/composables/useNotificationSound.js'
 
@@ -28,8 +35,15 @@
   })
 
   window.$Toast = message
-  // Global: $Alert(opts), $Alert.validation(msg), $Alert.warning(msg), $Alert.error(e, fallback).
-  window.$Alert = Object.assign(showAlert, { validation: alertValidation, warning: alertWarning, error: alertError })
+  // Global: $Alert(opts), $Alert.validation(msg), $Alert.warning(msg), $Alert.error(e, fallback),
+  // $Alert.confirm(opts) / $Alert.delete(opts) — universal tasdiq (Promise<boolean>).
+  window.$Alert = Object.assign(showAlert, {
+    validation: alertValidation,
+    warning: alertWarning,
+    error: alertError,
+    confirm: confirmDialog,
+    delete: confirmDelete
+  })
 </script>
 
 <template>

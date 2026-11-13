@@ -11,9 +11,14 @@
     Delete24Regular
   } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
+  import { confirmDelete } from '@/components/notify/alertDialog.js'
 
   const { t } = i18n.global
   const store = useUploadReportStore()
+
+  // Loyihaning umumiy o'chirish tasdig'i.
+  const askDelete = (id) =>
+    confirmDelete({ message: t('content.confirmDelete'), onConfirm: () => store._deleteUpload(id) })
 
   // list backend'da id kamayish tartibida keladi → [0] = oxirgi (joriy) yuklama.
   const latest = computed(() => store.list?.[0] ?? null)
@@ -168,23 +173,17 @@
             >
               <template #icon><Info24Regular /></template>
             </n-button>
-            <n-popconfirm
+            <n-button
               v-if="latest.status !== 3"
-              @positive-click="store._deleteUpload(latest.id)"
+              type="error"
+              size="small"
+              secondary
+              circle
+              :loading="store.deleteLoading"
+              @click="askDelete(latest.id)"
             >
-              <template #trigger>
-                <n-button
-                  type="error"
-                  size="small"
-                  secondary
-                  circle
-                  :loading="store.deleteLoading"
-                >
-                  <template #icon><Delete24Regular /></template>
-                </n-button>
-              </template>
-              {{ $t('content.confirmDelete') }}
-            </n-popconfirm>
+              <template #icon><Delete24Regular /></template>
+            </n-button>
           </div>
         </div>
         <div class="grid grid-cols-2 gap-x-2 mt-2">
@@ -289,23 +288,17 @@
                   >
                     <template #icon><Info24Regular /></template>
                   </n-button>
-                  <n-popconfirm
+                  <n-button
                     v-if="item.status !== 3"
-                    @positive-click="store._deleteUpload(item.id)"
+                    type="error"
+                    size="small"
+                    secondary
+                    circle
+                    :loading="store.deleteLoading"
+                    @click="askDelete(item.id)"
                   >
-                    <template #trigger>
-                      <n-button
-                        type="error"
-                        size="small"
-                        secondary
-                        circle
-                        :loading="store.deleteLoading"
-                      >
-                        <template #icon><Delete24Regular /></template>
-                      </n-button>
-                    </template>
-                    {{ $t('content.confirmDelete') }}
-                  </n-popconfirm>
+                    <template #icon><Delete24Regular /></template>
+                  </n-button>
                 </div>
               </div>
               <div class="mt-2">

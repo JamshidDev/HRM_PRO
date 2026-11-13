@@ -1,7 +1,7 @@
 // Backend `{uz, ru, en}` ko'p tilli matnini joriy til bo'yicha tanlaydi.
 // Push/socket payload'idagi title va message shu shaklda keladi.
 
-import { useAppSetting } from '@/utils/AppSetting.js'
+import { useAppSetting, backendLanguage } from '@/utils/AppSetting.js'
 
 const FALLBACK_ORDER = ['uz', 'ru', 'en']
 
@@ -11,8 +11,8 @@ export const pickI18nText = (value) => {
   if (typeof value !== 'object') return String(value)
 
   const lang = localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
-  // uz_kr uchun alohida matn yo'q — o'zbekchaga tushadi.
-  const primary = lang === 'uz_kr' ? 'uz' : lang
+  // uz_kr, uz_new, kaa uchun alohida matn yo'q — o'zbekchaga tushadi.
+  const primary = lang === 'uz_kr' ? 'uz' : backendLanguage(lang)
   if (value[primary]) return value[primary]
   for (const key of FALLBACK_ORDER) {
     if (value[key]) return value[key]

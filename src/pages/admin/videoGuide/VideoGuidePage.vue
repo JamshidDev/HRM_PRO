@@ -2,7 +2,8 @@
   /**
    * Video qo'llanmalarni boshqarish: video va muqova MinIO'ga to'g'ridan-to'g'ri yuklanadi (backend orqali o'tmaydi).
    */
-  import { NButton, NImage, NPopconfirm, NTag } from 'naive-ui'
+  import { NButton, NImage, NTag } from 'naive-ui'
+  import { confirmDelete } from '@/components/notify/alertDialog.js'
   import { UIModal, UIPageContent } from '@/components/index.js'
   import { useAccountStore } from '@/store/modules/index.js'
   import { GUIDE_CATEGORIES, formatDuration } from '@/pages/app/guides/categories.js'
@@ -172,7 +173,17 @@
         h('div', { class: 'flex gap-2' }, [
           h(NButton, { size: 'small', onClick: () => openEdit(r) }, () => t('content.edit')),
           canDelete.value
-            ? h(NPopconfirm, { onPositiveClick: () => remove(r) }, { trigger: () => h(NButton, { size: 'small', type: 'error', ghost: true }, () => t('content.delete')), default: () => t('videoGuidePage.confirmDelete') })
+            ? h(
+                NButton,
+                {
+                  size: 'small',
+                  type: 'error',
+                  ghost: true,
+                  onClick: () =>
+                    confirmDelete({ message: t('videoGuidePage.confirmDelete'), onConfirm: () => remove(r) })
+                },
+                () => t('content.delete')
+              )
             : null
         ])
     }

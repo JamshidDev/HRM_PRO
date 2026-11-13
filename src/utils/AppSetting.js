@@ -46,6 +46,14 @@ export const useAppSetting = {
 }
 
 /**
+ * Backend'ga yuboriladigan til kodi.
+ * `uz_new` (takomillashtirilayotgan lotin alifbosi) va `kaa` (qoraqalpoqcha) faqat frontend
+ * tarjimasi — backend ularni bilmaydi, shuning uchun o'zbekcha (`uz`) so'raladi.
+ */
+const FRONTEND_ONLY_LANGS = ['uz_new', 'kaa']
+export const backendLanguage = (lang) => (FRONTEND_ONLY_LANGS.includes(lang) ? 'uz' : lang)
+
+/**
  * Parolni tiklash Telegram boti.
  *
  * Ikki joyda kerak: login sahifasidagi tiklash formasi (`loginnew/ui/ResetForm.vue`)

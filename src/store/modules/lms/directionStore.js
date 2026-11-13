@@ -40,6 +40,8 @@ export const useDirectionStore = defineStore('directionStore', {
         })
     },
     _create() {
+      // BACKEND: POST/PUT /v1/lms/directions faqat probeldan iborat nomni (name, name_ru, name_en) qabul qiladi —
+      // serverda ham trim + required tekshiruvi kerak (QA-42, DAS-14235). Frontend formada tekshiradi.
       this.saveLoading = true
       let data = {
         ...this.payload
