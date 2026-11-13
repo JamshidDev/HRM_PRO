@@ -2,6 +2,11 @@
   import { ref, reactive, computed, onUnmounted } from 'vue'
 
   const props = defineProps({
+    // true — belgilash umuman boshlanmaydi (ramka ham chizilmaydi).
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     threshold: {
       type: Number,
       default: null
@@ -304,7 +309,7 @@
   }
 
   const handleMouseDown = (e) => {
-    if (e.button !== 0) return
+    if (props.disabled || e.button !== 0) return
 
     if (e.target.closest('.no-selectable-item') && !e.shiftKey) {
       return

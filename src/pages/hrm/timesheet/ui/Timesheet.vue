@@ -834,9 +834,9 @@
    * Tanlov → amal.
    *
    * Avval kataklar belgilanadi (drag; Shift/Ctrl bilan qo'shib belgilanadi),
-   * Panel doim ko'rinadi (tur, soat, «Tozalash»). Ikki yo'l, «Qo'llash» yo'q:
-   *  - avval harf, keyin katak bosiladi / belgilanadi → darhol yoziladi;
-   *  - avval kataklar, keyin harf → darhol yoziladi.
+   * Panel doim ko'rinadi (tur, soat, «Tozalash»). «Qo'llash» yo'q:
+   * avval harf (yoki «Tozalash»), keyin katak bosiladi / belgilanadi → darhol yoziladi.
+   * Harf ham, o'chirg'ich ham tanlanmagan bo'lsa kataklar belgilanmaydi (`canSelect`).
    * Yozilgach tanlov tozalanadi (harf almashsa eski kataklar o'zgarmasin). Ilgari teskari edi — avval pastda tur tanlanar,
    * har drag darhol yozardi («cho'tka»), tanlov esa ko'rinmasdi.
    * Kalit — `${row}|${col}` (sahifadagi qator va kun indeksi); sahifa,
@@ -856,6 +856,12 @@
   const clearSelection = () => {
     if (selectedCells.value.size) selectedCells.value = new Set()
   }
+  // Harf ham, o'chirg'ich ham tanlanmagan bo'lsa — kataklar belgilanmaydi
+  // (belgilangan katak bilan qiladigan ish yo'q). Avval harf, keyin kataklar.
+  const canSelect = computed(
+    () => !timesheetLocked.value && Boolean(store.payload.status || store.payload.isClearing)
+  )
+  watch(canSelect, (v) => !v && clearSelection())
   // Drag selector Shift'ni o'zi biladi, lekin bizga aytmaydi — shu yerda ushlanadi.
   const onGridMouseDown = (e) => {
     selectionAdd.value = e.shiftKey || e.ctrlKey || e.metaKey
@@ -1306,6 +1312,7 @@
       <div class="ts-card">
         <UIDragSelector
           :class="{ 'ts-dragging': dragging, 'has-selbar': !timesheetLocked }"
+          :disabled="!canSelect"
           class="ts-scroll"
           @mousedown.capture="onGridMouseDown"
           :live-selection="false"
