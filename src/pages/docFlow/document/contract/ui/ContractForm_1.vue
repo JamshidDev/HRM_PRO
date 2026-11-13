@@ -3,15 +3,26 @@
   import { useContractFormStore } from '../contractFormStore.js'
   import Utils from '@/utils/Utils.js'
   import { UIAutoComplete, UIUser, UISelect, UIFigField } from '@/components/index.js'
-  import { useComponentStore } from '@/store/modules/index.js'
+  import { useComponentStore, useContractStore } from '@/store/modules/index.js'
+  import { useRouter } from 'vue-router'
   import { NAvatar } from 'naive-ui'
   import UIHelper from '@/utils/UIHelper.js'
-  import { useAppSetting } from '@/utils/index.js'
+  import { AppPaths, useAppSetting } from '@/utils/index.js'
 
   // Hujjat sanasi: yaratishda sozlamadagi oyna, tahrirda o'zgarmaydi.
   const { isDateDisabled } = useDocumentDateLimit()
   const store = useContractFormStore()
   const componentStore = useComponentStore()
+  const contractStore = useContractStore()
+  const router = useRouter()
+
+  // JSHSHIR bo'yicha xodim topilmadi → shartnoma oynasi yopiladi va yangi xodim
+  // (kandidat) yaratish sahifasi ochiladi; u yerda saqlangach «Davom etish» shartnoma
+  // sehrgarini shu xodim bilan ochadi (Asosiy xodimlardagi oqim bilan bir xil).
+  const onCreateWorker = () => {
+    contractStore.visible = false
+    router.push({ name: `${AppPaths.Worker.substring(1)}-${AppPaths.Create.substring(1)}` })
+  }
 
   // Ro'yxat qatori `UIHelper.avatarRender` bilan bir xil qolipda: px-2 chetlar,
   // 1.2 qator balandligi. Ranglar mavzu tokenlaridan — `text-gray-*` dark rejimda
@@ -126,7 +137,12 @@
         <div v-if="componentStore.isSelectedWorker" class="worker-card">
           <UIUser :data="componentStore.worker" :short="false" />
         </div>
-        <UIAutoComplete v-else v-model:pin="store.payload.pin" />
+        <UIAutoComplete
+          v-else
+          v-model:pin="store.payload.pin"
+          allow-create
+          @create="onCreateWorker"
+        />
       </div>
     </section>
 
