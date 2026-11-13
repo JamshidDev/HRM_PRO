@@ -1,7 +1,7 @@
 <script setup>
   import { Utils, validationRules } from '@utils'
   import { useComponentStore, useScheduleTableStore } from '@stores'
-  import { SuperSelect, UIModal, UISelect } from '@components'
+  import { UIModal, UISelect, UIDepartmentSelect } from '@components'
   import { ArrowCircleDown24Regular } from '@vicons/fluent'
 
   const store = useScheduleTableStore()
@@ -26,9 +26,6 @@
   const changeOrg = (v) => {
     store.export.payload.organization_id = v
     store.export.payload.departments = []
-    store.department.list = []
-    if (!v?.length) return
-    store._fetchDepartment()
   }
 
   const fetchOrganization = () => {
@@ -39,19 +36,6 @@
   const onDefaultEv = (v) => {
     store.export.payload.organization_id = v
     store.export.payload.departments = []
-    store.department.list = []
-    store._fetchDepartment()
-  }
-
-  const onSearchDepartment = (v) => {
-    store.department.params.page = 1
-    store.department.params.search = v
-    store._fetchDepartment()
-  }
-
-  const onScrollDepartment = () => {
-    store.department.params.page += 1
-    store._fetchDepartment(true)
   }
 
   onMounted(() => {
@@ -87,18 +71,10 @@
         />
       </n-form-item>
       <n-form-item class="col-span-12" :label="$t(`content.department`)" path="departments">
-        <SuperSelect
-          :max-tag-count="1"
-          :options="store.department.list"
-          :loading="store.department.loading"
-          :total-count="store.department.total"
-          :per-page="store.department.params.per_page"
-          v-model:value="store.export.payload.departments"
-          v-model:search="store.department.params.search"
-          value-field="id"
-          @onSearch="onSearchDepartment"
-          @onScrollEv="onScrollDepartment"
-          :multiple="true"
+        <UIDepartmentSelect
+          v-model="store.export.payload.departments"
+          :organization="store.export.payload.organization_id"
+          multiple
         />
       </n-form-item>
       <n-form-item class="col-span-6" :label="$t(`content.year`)" path="year">

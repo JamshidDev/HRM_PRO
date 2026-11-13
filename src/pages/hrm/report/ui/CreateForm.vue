@@ -1,11 +1,10 @@
 <script setup>
+  import { UIDepartmentSelect } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   const formRef = ref(null)
   import { useReport2Store, useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
-  import UIHelper from '@/utils/UIHelper.js'
-  import { SuperSelect } from '@components'
-
+  
   const store = useReport2Store()
   const componentStore = useComponentStore()
   const defineEmits = defineEmits(['onCloseEv'])
@@ -57,16 +56,9 @@
             path="department_id"
             :rule-path="validationRules.rulesNames.requiredNumberField"
           >
-            <SuperSelect
-              :options="componentStore.departmentList"
-              v-model:value="store.positionPayload.department_id"
-              v-model:search="componentStore.depParams.search"
-              @onSearch="componentStore._onSearchDepartment"
-              @onScroll="componentStore._onScrollDepartment"
-              value-field="id"
-              :loading="componentStore.departmentLoading"
-              :render-label="UIHelper.selectRender.label"
-              :render-tag="UIHelper.selectRender.value"
+            <UIDepartmentSelect
+              v-model="store.positionPayload.department_id"
+              :organization="store.department.params.organization_id"
             />
           </n-form-item>
           <n-form-item

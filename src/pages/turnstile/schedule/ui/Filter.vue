@@ -6,7 +6,7 @@
   } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
-  import { UINSelect, UISelect, UIPageFilter } from '@/components/index.js'
+  import { UISelect, UIPageFilter, UIDepartmentSelect } from '@/components/index.js'
   import { Save16Filled } from '@vicons/fluent'
 
   const store = useScheduleTableStore()
@@ -51,11 +51,8 @@
 
   const onChangeStructure = (v) => {
     store.workerParams.organization_id = v
-    store.departmentList = []
     store.workerParams.department_id = null
     filterEvent()
-    if (v.length === 0) return
-    store._departments()
   }
 
   const onChangeDepartment = () => {
@@ -64,7 +61,6 @@
 
   const defaultEv = (v) => {
     store.workerParams.organization_id = v
-    store._departments()
   }
 
   const openPanel = () => {
@@ -178,12 +174,11 @@
         </div>
         <div class="col-span-12 md:col-span-6">
           <label>{{ $t('content.department') }}</label>
-          <UINSelect
-            clearable
-            :loading="store.departmentLoading"
-            :options="store.departmentList"
-            v-model:value="store.workerParams.department_id"
-            @update:value="onChangeDepartment"
+          <UIDepartmentSelect
+            v-model="store.workerParams.department_id"
+            :organization="store.workerParams.organization_id"
+            source="schedule"
+            @update:model-value="onChangeDepartment"
           />
         </div>
       </div>

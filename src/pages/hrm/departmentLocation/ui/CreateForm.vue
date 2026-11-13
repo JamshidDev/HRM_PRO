@@ -5,7 +5,7 @@
    * parametrlar (radius / hudud) → koordinata → aniqlik. O'ngda xarita.
    */
   import { ref, computed, watch, getCurrentInstance } from 'vue'
-  import { UIModal, UISegmentTabs } from '@/components/index.js'
+  import { UIModal, UISegmentTabs, UISelect, UIDepartmentSelect } from '@/components/index.js'
   import { useComponentStore, useDepartmentLocationStore } from '@/store/modules/index.js'
   import LocationMap from './LocationMap.vue'
   import { Dismiss16Regular, Location20Filled, Map20Filled } from '@vicons/fluent'
@@ -74,12 +74,21 @@
     }
   )
 
+  const formOrg = ref([])
+  const formOrgCheck = ref([])
+  const onChangeFormOrg = (v) => {
+    formOrg.value = v
+    store.payload.department_id = null
+  }
+
   watch(
     () => store.visible,
     (v) => {
-      if (v && needDepartment.value && componentStore.departmentList.length === 0) {
-        componentStore._departments()
-      }
+      if (!v || !needDepartment.value) return
+      // Bo'lim daraxti korxona bo'yicha — filtrdagi korxona oldindan qo'yiladi.
+      formOrg.value = [...(store.params.organizations ?? [])]
+      formOrgCheck.value = []
+      if (componentStore.structureList.length === 0) componentStore._structures()
     }
   )
 
@@ -225,20 +234,25 @@
                 :label="$t('departmentLocationPage.form.department')"
                 path="department_id"
               >
-                <n-select
-                  v-model:value="store.payload.department_id"
-                  :options="componentStore.departmentList"
-                  :loading="componentStore.departmentLoading"
-                  :placeholder="$t('departmentLocationPage.form.department')"
-                  label-field="name"
-                  value-field="id"
-                  filterable
-                  remote
-                  clearable
-                  @search="componentStore._onSearchDepartment"
-                  @scroll="componentStore._onScrollDepartment"
-                  @update:show="componentStore.onOpenDepartmentEv"
-                />
+                <div class="flex w-full flex-col gap-2">
+                  <UISelect
+                    :options="componentStore.structureList"
+                    :modelV="formOrg"
+                    @defaultValue="(v) => (formOrg = v)"
+                    @updateModel="onChangeFormOrg"
+                    :checkedVal="formOrgCheck"
+                    @updateCheck="(v) => (formOrgCheck = v)"
+                    :loading="componentStore.structureLoading"
+                    v-model:search="componentStore.structureParams.search"
+                    @onSearch="componentStore._structures"
+                    :multiple="false"
+                  />
+                  <UIDepartmentSelect
+                    v-model="store.payload.department_id"
+                    :organization="formOrg"
+                    :placeholder="$t('departmentLocationPage.form.department')"
+                  />
+                </div>
               </n-form-item>
 
               <!-- Joylashuv turi: Aylana | Hudud -->

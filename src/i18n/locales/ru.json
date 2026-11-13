@@ -3704,6 +3704,7 @@
       "membership": "Тип сотрудника",
       "membershipOwn": "Работники",
       "membershipGuest": "Гости",
+      "membershipNotAdded": "Не привязанные",
       "notWorking": "Не работает"
     },
     "workDurationPage": {

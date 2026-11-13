@@ -3715,7 +3715,8 @@
       "device": "Qurilmalar",
       "membership": "Xodim turi",
       "membershipOwn": "Ishchi xodimlar",
-      "membershipGuest": "Mehmon",
+      "membershipGuest": "Mehmonlar",
+      "membershipNotAdded": "Biriktirilmaganlar",
       "notWorking": "Ishlamaydi"
     },
     "workDurationPage": {

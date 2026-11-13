@@ -10,7 +10,7 @@
   import { useAdContractFormStore } from './adContractFormStore.js'
   import { NAvatar } from 'naive-ui'
   import Utils from '@/utils/Utils.js'
-  import UIDepartment from '@/components/ui/UIDepartment.vue'
+  import UIDepartmentSelect from '@/components/ui/UIDepartmentSelect.vue'
   import { useAppSetting } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
   import ApiService from '@/service/ApiService.js'
@@ -78,10 +78,8 @@
   const onChangeStructure = (v) => {
     store.payload.organization_id = v
     if (v.length > 0) {
-      componentStore.departmentList = []
       store.payload.department_id = []
       componentStore.depParams.organizations = v[0].id
-      componentStore._departmentTree()
     }
   }
 
@@ -565,12 +563,11 @@
                 <template v-else>
                   <div class="col-span-12 md:col-span-6 lg:col-span-6">
                     <n-form-item :label="$t(`documentPage.form.department`)" path="department_id">
-                      <UIDepartment
-                        :modelV="store.payload.department_id"
-                        @updateModel="onChangeDepartment"
-                        :checkedVal="store.departmentCheck"
-                        @updateCheck="(v) => (store.departmentCheck = v)"
-                        :multiple="false"
+                      <UIDepartmentSelect
+                        :model-value="store.payload.department_id"
+                        @update:model-value="onChangeDepartment"
+                        :organization="store.payload.organization_id"
+                        return-object
                       />
                     </n-form-item>
                   </div>

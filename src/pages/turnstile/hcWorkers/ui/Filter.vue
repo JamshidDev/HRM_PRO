@@ -1,5 +1,5 @@
 <script setup>
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIPageFilter, UISelect, UIDepartmentSelect } from '@/components/index.js'
   import {
     useAccountStore,
     useComponentStore,
@@ -7,8 +7,7 @@
   } from '@/store/modules/index.js'
 
   import i18n from '@/i18n/index.js'
-  import { SuperSelect } from '@components'
-  const t = i18n.global.t
+    const t = i18n.global.t
 
   const store = useTurnstileHikCentralWorkerStore()
   const componentStore = useComponentStore()
@@ -83,14 +82,16 @@
   )
   const workerTypeOption = computed(() => [
     { name: t('turnstile.hcWorkersPage.membershipOwn'), id: 'own' },
-    { name: t('turnstile.hcWorkersPage.no-added'), id: 'not_added' },
+    { name: t('turnstile.hcWorkersPage.membershipNotAdded'), id: 'not_added' },
     ...(canSeeGuests.value
       ? [{ name: t('turnstile.hcWorkersPage.membershipGuest'), id: 'guest' }]
       : [])
   ])
 
   // Mehmonlarning bizda bo'linmasi yo'q — bo'linma filtri qo'llanmaydi.
+  // Tozalansa — standart «Ishchi xodimlar».
   const onChangeWorkerType = (v) => {
+    if (!v) store.params.workerType = 'own'
     if (v === 'guest') store.params.departments = []
     filterEvent()
   }
@@ -163,19 +164,12 @@
         </div>
         <div class="col-span-12 md:col-span-6">
           <label>{{ $t('workerPage.filter.department') }}</label>
-          <SuperSelect
-            :disabled="store.params.organizations.length === 0 || store.params.workerType === 'guest'"
-            v-model:value="store.params.departments"
-            v-model:search="store.department.params.search"
-            :options="store.department.list"
-            :per-page="store.department.params.per_page"
-            :total-count="store.department.totalItems"
-            @update:value="onChangeDepartment"
-            @onScrollEv="departmentAction.onScroll"
-            @onSearch="departmentAction.onSearch"
-            :loading="store.department.loading"
+          <UIDepartmentSelect
+            v-model="store.params.departments"
+            :organization="store.params.organizations"
+            :disabled="store.params.workerType === 'guest'"
             multiple
-            clearable
+            @update:model-value="onChangeDepartment"
           />
         </div>
         <div class="col-span-12 md:col-span-6">
@@ -187,6 +181,7 @@
             :loading="store.levelLoading"
             label-field="name"
             value-field="id"
+            clearable
             @update:value="filterEvent"
           />
         </div>
@@ -198,6 +193,7 @@
             :options="statusOption"
             label-field="name"
             value-field="id"
+            clearable
             @update:value="filterEvent"
           />
         </div>
@@ -209,6 +205,7 @@
             :consistent-menu-width="false"
             label-field="name"
             value-field="id"
+            clearable
             @update:value="onChangeWorkerType"
           />
         </div>

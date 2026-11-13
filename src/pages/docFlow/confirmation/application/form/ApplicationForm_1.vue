@@ -1,7 +1,7 @@
 <script setup>
   import { useComponentStore, useConfApplicationStore } from '@/store/modules/index.js'
   import { useAppSetting } from '@/utils/index.js'
-  import { UISelect } from '@/components/index.js'
+  import { UIDepartmentSelect } from '@/components/index.js'
 
   const store = useConfApplicationStore()
   const componentStore = useComponentStore()
@@ -15,24 +15,18 @@
     }
   }
 
-  onMounted(() => {
-    const id = store.organization_id?.[0]?.id
-    componentStore._allDepartmentTree(id)
-  })
 </script>
 
 <template>
   <div class="grid grid-cols-12 gap-x-4">
     <div class="col-span-12 pr-3">
       <n-form-item :label="$t(`documentPage.form.department`)">
-        <UISelect
-          :options="componentStore.allDepartmentTrees"
-          :modelV="store.department_id"
-          @updateModel="onChangeDepartment"
-          :checkedVal="store.departmentCheck"
-          @updateCheck="(v) => (store.departmentCheck = v)"
-          :multiple="false"
-          :loading="componentStore.allDepartmentLoading"
+        <UIDepartmentSelect
+          :model-value="store.department_id"
+          @update:model-value="onChangeDepartment"
+          :organization="store.organization_id"
+          source="all"
+          return-object
         />
       </n-form-item>
     </div>
