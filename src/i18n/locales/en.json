@@ -6893,7 +6893,7 @@
     "name": "Template",
     "subtitle": "Select a template, edit its content, and save it for new documents.",
     "selectPlaceholder": "Select a document template",
-    "empty": "Pick a template above to start editing",
+    "empty": "Select a command type",
     "variables": "Variables",
     "variablesHint": "Click to copy. Do not rename variables.",
     "searchVariables": "Search variables",
@@ -6969,10 +6969,25 @@
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom out",
     "zoomFit": "Fit page width",
-    "editHint": "Edit the document here and press «Save» in OnlyOffice — variables are checked and the template is updated.",
-    "viewOnly": "View only — you don't have permission to edit.",
     "saveRejectedTitle": "Template was not saved",
-    "example": "Example"
+    "tabTemplates": "Templates",
+    "noChanges": "No changes to save",
+    "discardTitle": "Discard changes",
+    "discardText": "Unsaved changes will be removed and the template reopens in its last saved state. Continue?",
+    "stateSaved": "Saved · {time}",
+    "stateRejected": "Not saved — see why",
+    "stateRejectedHint": "Click to see the reason",
+    "updatedBy": "Changed by",
+    "editorError": {
+      "unsupported": "The server doesn't support this yet",
+      "unsupportedHint": "The backend is not updated — template editor endpoints were not found. Contact the administrator.",
+      "unsigned": "OnlyOffice is not configured",
+      "unsignedHint": "The server has no OnlyOffice JWT secret (ONLYOFFICE_JWT_SECRET) — the editor can't open.",
+      "failed": "Couldn't load editor settings",
+      "failedHint": "The server returned an error. Try reloading the page.",
+      "unreachable": "Couldn't connect to the OnlyOffice server",
+      "unreachableHint": "The document server isn't responding or its address is wrong. Try again later."
+    }
   },
   "turnstileDownload": {
     "title": "Download events"

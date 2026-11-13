@@ -6951,7 +6951,7 @@
     "name": "Shablon",
     "subtitle": "Hujjat shablonini tanlang, matnini tahrirlang va yangi hujjatlar uchun saqlang.",
     "selectPlaceholder": "Hujjat shablonini tanlang",
-    "empty": "Tahrirlash uchun yuqoridan shablon tanlang",
+    "empty": "Buyruq turini tanlang",
     "variables": "O'zgaruvchilar",
     "variablesHint": "Ustiga bosib nusxalang. Nomini o'zgartirmang.",
     "searchVariables": "O'zgaruvchini qidiring",
@@ -7027,10 +7027,25 @@
     "zoomIn": "Kattalashtirish",
     "zoomOut": "Kichraytirish",
     "zoomFit": "Sahifa eniga moslash",
-    "editHint": "Hujjatni shu yerda tahrirlang va OnlyOffice'dagi «Saqlash» tugmasini bosing — o'zgaruvchilar tekshirilib, shablon yangilanadi.",
-    "viewOnly": "Faqat ko'rish rejimi — tahrirlash huquqingiz yo'q.",
     "saveRejectedTitle": "Shablon saqlanmadi",
-    "example": "Namuna"
+    "tabTemplates": "Shablonlar",
+    "noChanges": "Saqlanadigan o'zgarish yo'q",
+    "discardTitle": "Tahrirni bekor qilish",
+    "discardText": "Saqlanmagan o'zgarishlar o'chiriladi va shablon oxirgi saqlangan holatda qayta ochiladi. Davom etasizmi?",
+    "stateSaved": "Saqlandi · {time}",
+    "stateRejected": "Saqlanmadi — sababini ko'rish",
+    "stateRejectedHint": "Bosing — rad etilish sababi",
+    "updatedBy": "O'zgartirgan",
+    "editorError": {
+      "unsupported": "Server bu funksiyani hali qo'llamaydi",
+      "unsupportedHint": "Backend yangilanmagan — shablon muharriri endpointlari topilmadi. Administratorga murojaat qiling.",
+      "unsigned": "OnlyOffice sozlanmagan",
+      "unsignedHint": "Serverda OnlyOffice JWT siri (ONLYOFFICE_JWT_SECRET) yo'q — muharrir ochilmaydi.",
+      "failed": "Muharrir sozlamasini olib bo'lmadi",
+      "failedHint": "Server xato qaytardi. Sahifani yangilab ko'ring.",
+      "unreachable": "OnlyOffice serveriga ulanib bo'lmadi",
+      "unreachableHint": "Hujjat serveri javob bermayapti yoki manzili noto'g'ri. Keyinroq urinib ko'ring."
+    }
   },
   "turnstileDownload": {
     "title": "Hodisalarni yuklash"
