@@ -13,7 +13,7 @@ const TIMESHEET_KEY_BY_ID = {
 const REST_DAY_ID = 33
 const isWorkDay = (details) => (details ?? []).some((d) => Number(d.status_id) !== REST_DAY_ID)
 // Soat yuritiladigan turlar (backend TIMESHEET_TYPE_HOURS).
-const TIMESHEET_TYPES_WITH_HOURS = new Set([1, 2, 3, 5, 17, 27, 32])
+export const TIMESHEET_TYPES_WITH_HOURS = new Set([1, 2, 3, 5, 17, 27, 32])
 const { t } = i18n.global
 
 // Katak qiymatining solishtiriladigan ko'rinishi: tartib va `null`/`0` soat farqi ahamiyatsiz.

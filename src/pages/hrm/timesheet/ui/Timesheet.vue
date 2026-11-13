@@ -42,6 +42,7 @@
   import dayjs from 'dayjs'
   import Utils from '@/utils/Utils.js'
   import { colorOfDetail } from './timesheetGrid.js'
+  import { TIMESHEET_TYPES_WITH_HOURS } from '@/store/modules/hrm/timesheetWorkerStore.js'
   import DayDetailModal from './DayDetailModal.vue'
   import FillControls from './FillControls.vue'
   import {
@@ -367,7 +368,7 @@
   const historyCell = (list) =>
     list.length
       ? list.map((c) =>
-          h('span', { class: 'ts-hist-chip', style: ruleKeyStyle(c.status) }, `${c.type ?? '—'} · ${c.hours ?? 0}`)
+          h('span', { class: 'ts-hist-chip', style: ruleKeyStyle(c.status) }, cellLabel(c.type ?? '—', c.status, c.hours))
         )
       : h('span', { class: 'ts-hist-empty' }, t('timesheetPage.calcDiff.empty'))
   const historyColumns = computed(() => [
@@ -866,6 +867,8 @@
   // Tizim hisobidan farq: bo'sh katak va soatsiz tur 0 soat. Auto ishlatilmagan xodimda solishtirilmaydi.
   const hoursOf = (details) => (details ?? []).reduce((a, d) => a + (d?.hours || 0), 0)
   const typeOf = (details) => (details ?? []).map((d) => d?.status_id).filter(Boolean).join('/')
+  const cellLabel = (key, statusId, hours) =>
+    TIMESHEET_TYPES_WITH_HOURS.has(Number(statusId)) ? `${key}-${hours ?? 0}` : key
   const cellDiff = (item, day) => {
     if (!store.calcWorkers[item.id]) return null
     const base = store.calcBase[`${item.id}|${day.day}`]
@@ -873,10 +876,10 @@
     const actual = dayDetails(item, day)
     const diff = hoursOf(actual) - hoursOf(baseDetails)
     if (!diff && typeOf(actual) === typeOf(baseDetails)) return null
-    // Qisqa ko'rinish: «K-7», bir nechta yozuv «K-7 / T-1».
+    // Qisqa ko'rinish: «K-7», soatsiz tur faqat harf («MT»), ikki tur «K-7 / T-1».
     const label = (list) =>
       list.length
-        ? list.map((d) => `${typeByIdOrNull(d.status_id)?.key ?? d.status}-${d.hours ?? 0}`).join(' / ')
+        ? list.map((d) => cellLabel(typeByIdOrNull(d.status_id)?.key ?? d.status, d.status_id, d.hours)).join(' / ')
         : t('timesheetPage.calcDiff.empty')
     const typeChanged = typeOf(actual) !== typeOf(baseDetails)
     const text = diff
