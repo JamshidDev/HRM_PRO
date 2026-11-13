@@ -7335,6 +7335,12 @@
       "notfound": "Not found",
       "network": "Connection lost"
     },
+    "confirmTitles": {
+      "warning": "Are you sure?",
+      "delete": "Delete this?",
+      "confirm": "Confirm this action?",
+      "success": "Done"
+    },
     "eimzoTitle": "Couldn't connect to E-IMZO"
   },
   "sessionEnded": {

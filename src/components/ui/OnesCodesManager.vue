@@ -7,6 +7,7 @@ import { ref, watch } from 'vue'
 import UIModal from '@/components/ui/UIModal.vue'
 import salary1cService from '@/service/v1/accountant/salary1cService.js'
 import i18n from '@/i18n/index.js'
+import { confirmDelete } from '@/components/notify/alertDialog.js'
 
 const { t } = i18n.global
 
@@ -73,6 +74,10 @@ const onAdd = async () => {
   }
 }
 
+// Loyihaning umumiy o'chirish tasdig'i.
+const askDelete = (row) =>
+  confirmDelete({ message: t('salary1c.onesCode.deleteConfirm'), onConfirm: () => onDelete(row) })
+
 const onDelete = async (row) => {
   deletingId.value = row.id
   try {
@@ -133,14 +138,9 @@ const close = () => emit('update:visible', false)
               <span v-if="i === 0" class="text-[10px] text-primary">({{ $t('salary1c.onesCode.primary') }})</span>
               <span v-if="row.label" class="text-xs text-textColor3">— {{ row.label }}</span>
             </div>
-            <n-popconfirm @positive-click="onDelete(row)">
-              <template #trigger>
-                <n-button text type="error" :loading="deletingId === row.id">
-                  {{ $t('salary1c.onesCode.delete') }}
-                </n-button>
-              </template>
-              {{ $t('salary1c.onesCode.deleteConfirm') }}
-            </n-popconfirm>
+            <n-button text type="error" :loading="deletingId === row.id" @click="askDelete(row)">
+              {{ $t('salary1c.onesCode.delete') }}
+            </n-button>
           </div>
         </div>
         <div v-else class="text-sm text-textColor3 py-3 text-center">

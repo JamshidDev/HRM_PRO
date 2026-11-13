@@ -1,5 +1,5 @@
 <script setup>
-  import { UIPageContent, UIPageFilter, UIModal, UIDrawer, UIDConfirm } from '@/components/index.js'
+  import { UIPageContent, UIPageFilter, UIModal, UIDrawer, UIConfirm } from '@/components/index.js'
   import Table from './ui/Table.vue'
   import Form from './ui/Form.vue'
   import Timesheet from './ui/Timesheet.vue'
@@ -9,8 +9,7 @@
     ArrowUndo20Filled,
     CheckmarkCircle24Filled,
     LockClosed20Filled,
-    PeopleTeam24Filled,
-    Send24Regular
+    PeopleTeam24Filled
   } from '@vicons/fluent'
 
   const confirmationFormRef = ref(null)
@@ -79,17 +78,15 @@
     </UIDrawer>
     <!-- HR tasdig'i — oqibatlari ochiq yozilgan, chunki bu amal tabelni
          to'ldirish uchun yopadi va faqat rad etish orqali qaytariladi. -->
-    <UIDConfirm v-model:visible="store.sendVisible">
-      <template #icon>
-        <div class="ts-send-head">
-          <div class="ts-send-badge">
-            <n-icon :component="Send24Regular" size="30" />
-          </div>
-          <p class="ts-send-title">{{ $t('timesheetPage.sendWarning.title') }}</p>
-          <p class="ts-send-sub">{{ $t('timesheetPage.sendWarning.desc') }}</p>
-        </div>
-      </template>
-
+    <UIConfirm
+      v-model:visible="store.sendVisible"
+      type="confirm"
+      :title="$t('timesheetPage.sendWarning.title')"
+      :message="$t('timesheetPage.sendWarning.desc')"
+      :confirm-text="$t('content.confirm')"
+      :loading="store.saveLoading"
+      @confirm="store._send"
+    >
       <ul class="ts-send-list">
         <li class="ts-send-item is-brand">
           <n-icon :component="PeopleTeam24Filled" size="18" />
@@ -109,59 +106,22 @@
         </li>
       </ul>
       <p class="ts-send-req">{{ $t('timesheetPage.sendWarning.req') }}</p>
-
-      <template #action>
-        <div class="grid grid-cols-2 gap-2 select-none">
-          <n-button secondary type="error" @click="store.sendVisible = false">
-            {{ $t('content.cancel') }}
-          </n-button>
-          <n-button :loading="store.saveLoading" type="primary" @click="store._send">
-            <template #icon>
-              <n-icon :component="Send24Regular" />
-            </template>
-            {{ $t('content.confirm') }}
-          </n-button>
-        </div>
-      </template>
-    </UIDConfirm>
-    <n-drawer height="100vh" v-model:show="timesheetDepartmentStore.visible" placement="bottom">
+    </UIConfirm>
+    <!-- Esc tabel ichida «cho'tkani bekor qilish» — oynani yopmasin (saqlanmagan kataklar
+         ogohlantirishsiz yo'qolardi). Yopish faqat «Yopish» tugmasi orqali (`onClose`). -->
+    <n-drawer
+      v-model:show="timesheetDepartmentStore.visible"
+      :close-on-esc="false"
+      :mask-closable="false"
+      height="100vh"
+      placement="bottom"
+    >
       <Timesheet />
     </n-drawer>
   </UIPageContent>
 </template>
 
 <style lang="scss" scoped>
-  .ts-send-head {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    padding: 24px 24px 4px;
-    text-align: center;
-  }
-
-  .ts-send-badge {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    color: var(--fig-icon-brand);
-    background: color-mix(in srgb, var(--fig-icon-brand) 14%, transparent);
-  }
-
-  .ts-send-title {
-    font-size: 17px;
-    font-weight: 600;
-    color: var(--fig-text-primary);
-  }
-
-  .ts-send-sub {
-    font-size: 13px;
-    color: var(--fig-text-muted);
-  }
-
   .ts-send-req {
     margin-top: 10px;
     font-size: 12px;

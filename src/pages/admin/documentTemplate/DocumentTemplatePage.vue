@@ -16,7 +16,7 @@
    * o'tish, boshqa sahifaga o'tish va brauzer tabini yopish.
    */
   import { h } from 'vue'
-  import { NButton, useDialog } from 'naive-ui'
+  import { confirmDialog } from '@/components/notify/alertDialog.js'
   import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router'
   import { UIFigBlock, UIPageContent, UIProfileButton } from '@/components/index.js'
   import DocxEditorApp from '@/components/docxEditor/DocxEditorApp.vue'
@@ -40,7 +40,6 @@
   const accStore = useAccountStore()
   const route = useRoute()
   const router = useRouter()
-  const dialog = useDialog()
 
   const editorRef = ref(null)
 
@@ -201,63 +200,32 @@
    * Dialog yordamchilari (Promise qaytaradi)
    * ---------------------------------------------------------------------- */
 
-  // `destroy()` ATAYLAB qo'lda: naive-ui `useDialog` positive click'da dialogni
-  // o'zi yopmaydi. `settle` bir marta ishlaydi — yopilish yo'llari ko'p.
+  // Loyihaning umumiy tasdiq oynasi. `content` — matn yoki render funksiya (ro'yxat bilan).
   const confirm = ({ title, content, positiveText, type = 'warning' }) =>
-    new Promise((resolve) => {
-      let settled = false
-      const settle = (value) => {
-        if (settled) return
-        settled = true
-        resolve(value)
-      }
-      const d = dialog[type]({
-        title,
-        content,
-        positiveText,
-        negativeText: t('content.cancel'),
-        onPositiveClick: () => {
-          d.destroy()
-          settle(true)
-        },
-        onNegativeClick: () => settle(false),
-        onClose: () => settle(false),
-        onMaskClick: () => settle(false),
-        onAfterLeave: () => settle(false)
-      })
+    confirmDialog({
+      type: 'warning',
+      title,
+      message: typeof content === 'string' ? content : '',
+      content: typeof content === 'function' ? content : undefined,
+      confirmText: positiveText,
+      danger: type === 'error'
     })
 
-  // Uch tugmali: 'save' | 'discard' | 'cancel'.
-  const askUnsaved = () =>
-    new Promise((resolve) => {
-      let settled = false
-      let d = null
-      const settle = (value) => {
-        if (settled) return
-        settled = true
-        d?.destroy()
-        resolve(value)
-      }
-      d = dialog.warning({
-        title: t('documentTemplate.unsavedTitle'),
-        content: t('documentTemplate.unsavedText', { name: store.selected?.name ?? '' }),
-        onClose: () => settle('cancel'),
-        onMaskClick: () => settle('cancel'),
-        onAfterLeave: () => settle('cancel'),
-        action: () =>
-          h('div', { class: 'dt-dialog-actions' }, [
-            h(NButton, { onClick: () => settle('cancel') }, () => t('content.cancel')),
-            h(
-              NButton,
-              { type: 'error', ghost: true, onClick: () => settle('discard') },
-              () => t('documentTemplate.discard')
-            ),
-            canWrite.value
-              ? h(NButton, { type: 'primary', onClick: () => settle('save') }, () => t('content.save'))
-              : null
-          ])
-      })
+  // Uch tugmali: 'save' | 'discard' | 'cancel'. Yozish huquqi bo'lmasa — faqat bekor / tashlab ketish.
+  const askUnsaved = async () => {
+    let choice = 'cancel'
+    const ok = await confirmDialog({
+      type: 'warning',
+      title: t('documentTemplate.unsavedTitle'),
+      message: t('documentTemplate.unsavedText', { name: store.selected?.name ?? '' }),
+      confirmText: canWrite.value ? t('content.save') : t('documentTemplate.discard'),
+      danger: !canWrite.value,
+      extraText: canWrite.value ? t('documentTemplate.discard') : '',
+      onExtra: () => (choice = 'discard')
     })
+    if (ok) return canWrite.value ? 'save' : 'discard'
+    return choice
+  }
 
   // Saqlash tasdig'i ichida — o'zgaruvchilar muammosi bo'lsa ro'yxati.
   const renderSaveContent = (issues) => () =>
@@ -777,12 +745,6 @@
     font-size: 10.5px;
     font-weight: 600;
     line-height: 16px;
-  }
-
-  .dt-dialog-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
   }
 
   .dt-save-confirm {

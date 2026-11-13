@@ -1,8 +1,11 @@
 <script setup>
-  import { UIDConfirm } from '@/components/index.js'
+  import UIConfirm from './UIConfirm.vue'
 
+  // O'chirish tasdig'i — universal `UIConfirm` ning `delete` ko'rinishi (savat ikonkasi, qizil tugma).
   defineProps({
-    warning: { type: String, default: null }
+    warning: { type: String, default: null },
+    title: { type: String, default: '' },
+    loading: { type: Boolean, default: false }
   })
 
   const visible = defineModel('visible', { type: Boolean, default: false })
@@ -11,24 +14,13 @@
 </script>
 
 <template>
-  <UIDConfirm v-model:visible="visible" type="warning">
-    <div class="text-lg text-center">
-      {{ warning || $t('content.deleteWarning') }}
-    </div>
-
-    <template #action>
-      <div class="grid grid-cols-12 gap-2">
-        <div class="col-span-6">
-          <n-button secondary @click="visible = false" type="error" style="width: 100%">
-            {{ $t('content.no') }}
-          </n-button>
-        </div>
-        <div class="col-span-6">
-          <n-button secondary @click="emit('confirm')" type="primary" style="width: 100%">
-            {{ $t('content.yes') }}
-          </n-button>
-        </div>
-      </div>
-    </template>
-  </UIDConfirm>
+  <UIConfirm
+    v-model:visible="visible"
+    type="delete"
+    :title="title"
+    :message="warning || $t('content.deleteWarning')"
+    :confirm-text="$t('content.delete')"
+    :loading="loading"
+    @confirm="emit('confirm')"
+  />
 </template>

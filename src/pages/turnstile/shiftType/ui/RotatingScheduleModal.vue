@@ -12,8 +12,8 @@
   } from '@/pages/turnstile/scheduleWorker/ui/navbat.js'
   import AssignWorkerModal from './AssignWorkerModal.vue'
   import { CalendarLtr20Regular, Dismiss16Regular, Dismiss24Regular } from '@vicons/fluent'
-  import { useDialog } from 'naive-ui'
   import i18n from '@/i18n/index.js'
+  import { confirmDialog } from '@/components/notify/alertDialog.js'
 
   const { t } = i18n.global
   const DAILY_TYPE = 2
@@ -21,7 +21,6 @@
   // Oy bo'yicha o'rinlar: tizim har o'rinning kunlarini quradi, HR o'rinlarga xodim biriktiradi.
   const store = useShiftTypeStore()
   const accStore = useAccountStore()
-  const dialog = useDialog()
 
   const shiftType = computed(() => store.list.find((v) => v.id === store.elementId) ?? null)
   const daily = computed(() => shiftType.value?.type?.id === DAILY_TYPE)
@@ -167,12 +166,12 @@
       store.rotatingVisible = false
       return
     }
-    dialog.warning({
+    confirmDialog({
       title: t('shiftType.generate.discardTitle'),
-      content: t('shiftType.generate.discardConfirm', { n: filledCount.value }),
-      positiveText: t('content.yes'),
-      negativeText: t('content.no'),
-      onPositiveClick: () => {
+      message: t('shiftType.generate.discardConfirm', { n: filledCount.value }),
+      confirmText: t('content.yes'),
+      cancelText: t('content.no'),
+      onConfirm: () => {
         store.rotatingVisible = false
       }
     })
@@ -185,12 +184,12 @@
   const onSave = () => {
     if (!accStore.checkAction(accStore.pn.turnstileSheetsWorkersWrite)) return
     if (!movedCount.value) return save()
-    dialog.warning({
+    confirmDialog({
       title: t('shiftType.generate.moveTitle'),
-      content: t('shiftType.generate.moveConfirm', { n: movedCount.value }),
-      positiveText: t('content.yes'),
-      negativeText: t('content.no'),
-      onPositiveClick: save
+      message: t('shiftType.generate.moveConfirm', { n: movedCount.value }),
+      confirmText: t('content.yes'),
+      cancelText: t('content.no'),
+      onConfirm: save
     })
   }
 

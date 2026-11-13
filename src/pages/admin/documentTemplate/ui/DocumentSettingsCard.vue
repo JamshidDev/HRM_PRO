@@ -1,15 +1,14 @@
 <script setup>
-  import { useDialog } from 'naive-ui'
   import { Save20Regular, Settings20Regular } from '@vicons/fluent'
   import { UIFigBlock, UIProfileButton } from '@/components/index.js'
   import { useDocumentSettingsStore, useAccountStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
+  import { confirmDialog } from '@/components/notify/alertDialog.js'
 
   // «Hujjat sozlamalari»: orqa sana chegarasi, imzolash muddati va elektron raqam prefiksi (0 — cheklov yo'q).
   const { t } = i18n.global
   const store = useDocumentSettingsStore()
   const accStore = useAccountStore()
-  const dialog = useDialog()
 
   const canWrite = computed(() => accStore.checkPermission(accStore.pn.documentTemplatesWrite))
   const prefixValid = computed(() => /^[A-Z]{2,5}$/.test(store.form.electronic_prefix ?? ''))
@@ -29,12 +28,11 @@
   }
 
   const onSave = () => {
-    dialog.warning({
+    confirmDialog({
       title: t('documentSettings.confirmTitle'),
-      content: t('documentSettings.confirmText'),
-      positiveText: t('content.save'),
-      negativeText: t('content.cancel'),
-      onPositiveClick: () => store._save()
+      message: t('documentSettings.confirmText'),
+      confirmText: t('content.save'),
+      onConfirm: () => store._save()
     })
   }
 

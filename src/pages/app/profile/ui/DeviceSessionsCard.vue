@@ -4,6 +4,7 @@
   import DeviceIcon from '@/assets/icons/figKey.svg'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
+  import { confirmDialog } from '@/components/notify/alertDialog.js'
 
   const { t } = i18n.global
 
@@ -85,6 +86,22 @@
       })
   }
 
+  // Loyihaning umumiy tasdiq oynasi.
+  const askRevoke = (s) =>
+    confirmDialog({
+      message: t('deviceSessions.revokeConfirm'),
+      confirmText: t('deviceSessions.revoke'),
+      danger: true,
+      onConfirm: () => revoke(s)
+    })
+  const askRevokeOthers = () =>
+    confirmDialog({
+      message: t('deviceSessions.revokeOthersConfirm'),
+      confirmText: t('deviceSessions.revoke'),
+      danger: true,
+      onConfirm: revokeOthers
+    })
+
   onMounted(load)
   onUnmounted(() => clearInterval(timer))
 </script>
@@ -129,52 +146,36 @@
               </span>
             </div>
           </div>
-          <n-popconfirm
+          <n-button
             v-if="!s.is_current"
-            :positive-text="$t('deviceSessions.revoke')"
-            :negative-text="$t('content.cancel')"
-            @positive-click="revoke(s)"
+            size="small"
+            type="error"
+            secondary
+            :disabled="!canRevoke(s)"
+            :loading="revoking === s.id"
+            @click="askRevoke(s)"
           >
-            <template #trigger>
-              <n-button
-                size="small"
-                type="error"
-                secondary
-                :disabled="!canRevoke(s)"
-                :loading="revoking === s.id"
-              >
-                <template #icon>
-                  <n-icon><Dismiss16Regular /></n-icon>
-                </template>
-                {{ $t('deviceSessions.revoke') }}
-              </n-button>
+            <template #icon>
+              <n-icon><Dismiss16Regular /></n-icon>
             </template>
-            {{ $t('deviceSessions.revokeConfirm') }}
-          </n-popconfirm>
+            {{ $t('deviceSessions.revoke') }}
+          </n-button>
         </div>
       </div>
       <n-empty v-else-if="!loading" :description="$t('deviceSessions.empty')" class="py-8" />
 
-      <n-popconfirm
+      <n-button
         v-if="others.length > 1"
-        :positive-text="$t('deviceSessions.revoke')"
-        :negative-text="$t('content.cancel')"
-        @positive-click="revokeOthers"
+        class="mt-3"
+        type="error"
+        secondary
+        block
+        :disabled="remaining > 0"
+        :loading="revoking === 'all'"
+        @click="askRevokeOthers"
       >
-        <template #trigger>
-          <n-button
-            class="mt-3"
-            type="error"
-            secondary
-            block
-            :disabled="remaining > 0"
-            :loading="revoking === 'all'"
-          >
-            {{ $t('deviceSessions.revokeOthers') }}
-          </n-button>
-        </template>
-        {{ $t('deviceSessions.revokeOthersConfirm') }}
-      </n-popconfirm>
+        {{ $t('deviceSessions.revokeOthers') }}
+      </n-button>
     </n-spin>
   </SectionHeader>
 </template>

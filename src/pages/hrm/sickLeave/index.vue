@@ -1,5 +1,5 @@
 <script setup>
-  import { UIDConfirm, UIModal } from '@/components/index.js'
+  import { UIDeleteConfirm, UIModal } from '@/components/index.js'
   import { useSickLeaveStore } from '@/store/modules/index.js'
   import Filter from './ui/Filter.vue'
   import Table from './ui/Table.vue'
@@ -86,23 +86,13 @@
       <ViewModal />
     </UIModal>
 
-    <UIDConfirm v-model:visible="store.deleteVisible">
-      <template #icon><span></span></template>
-      <div class="text-center pt-4">
-        <p class="text-xl text-warning">{{ $t('sickLeave.delete.title') }}</p>
-        <p class="text-sm text-secondary">{{ $t('sickLeave.delete.desc') }}</p>
-      </div>
-      <template #action>
-        <div class="grid grid-cols-2 gap-2 select-none">
-          <n-button secondary type="error" @click="store.deleteVisible = false">
-            {{ $t('content.cancel') }}
-          </n-button>
-          <n-button :loading="store.saveLoading" type="primary" @click="store._delete">
-            {{ $t('content.delete') }}
-          </n-button>
-        </div>
-      </template>
-    </UIDConfirm>
+    <UIDeleteConfirm
+      v-model:visible="store.deleteVisible"
+      :title="$t('sickLeave.delete.title')"
+      :warning="$t('sickLeave.delete.desc')"
+      :loading="store.saveLoading"
+      @confirm="store._delete"
+    />
   </div>
 </template>
 

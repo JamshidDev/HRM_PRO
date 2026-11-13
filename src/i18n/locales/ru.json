@@ -7346,6 +7346,12 @@
       "notfound": "Данные не найдены",
       "network": "Нет соединения"
     },
+    "confirmTitles": {
+      "warning": "Вы уверены?",
+      "delete": "Удалить?",
+      "confirm": "Подтвердить действие?",
+      "success": "Успешно выполнено"
+    },
     "eimzoTitle": "Не удалось подключиться к E-IMZO"
   },
   "sessionEnded": {

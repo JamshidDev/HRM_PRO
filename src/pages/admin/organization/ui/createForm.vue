@@ -3,7 +3,7 @@
   const formRef = ref(null)
   import i18n from '@/i18n/index.js'
   const { t } = i18n.global
-  import { UIMultipleLangItems, UIDConfirm, OnesCodesManager } from '@/components/index.js'
+  import { UIMultipleLangItems, UIConfirm, OnesCodesManager } from '@/components/index.js'
   import { useOrganizationStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
   import salary1cService from '@/service/v1/accountant/salary1cService.js'
   import BasisFields from './BasisFields.vue'
@@ -77,7 +77,7 @@
   })
   const hasChanges = computed(() => store.isCreate || changedFields.value.length > 0)
 
-  // Tahrirlashda saqlashdan oldin kichik tasdiq oynasi (UIDConfirm) ochiladi.
+  // Tahrirlashda saqlashdan oldin kichik tasdiq oynasi (UIConfirm) ochiladi.
   const confirming = ref(false)
   watch(changedFields, (v) => {
     if (!v.length) confirming.value = false
@@ -327,19 +327,15 @@
     </div>
 
     <!-- Tahrirlashni saqlash tasdig'i — loyihadagi umumiy kichik oyna -->
-    <UIDConfirm
+    <UIConfirm
       v-model:visible="confirming"
-      type="success"
-      close-btn-text="content.cancel"
-      submit-btn-text="organizationPage.saveConfirm.confirm"
-      :save-loading="store.saveLoading"
-      @on-close="confirming = false"
-      @on-save="store._update()"
+      type="confirm"
+      :title="$t('organizationPage.saveConfirm.title')"
+      :confirm-text="$t('organizationPage.saveConfirm.confirm')"
+      :loading="store.saveLoading"
+      @confirm="store._update()"
     >
-      <div class="text-lg text-center font-medium text-textColor0">
-        {{ $t('organizationPage.saveConfirm.title') }}
-      </div>
-      <div v-if="changedFields.length" class="mt-3 flex flex-wrap justify-center gap-1.5">
+      <div v-if="changedFields.length" class="flex flex-wrap justify-center gap-1.5">
         <span
           v-for="f in changedFields"
           :key="f"
@@ -348,7 +344,7 @@
           {{ f }}
         </span>
       </div>
-    </UIDConfirm>
+    </UIConfirm>
 
     <!-- Ko'p 1C kod boshqaruvi (korxonaga 2+ 1C kod biriktirish) -->
     <OnesCodesManager

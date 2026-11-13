@@ -29,7 +29,7 @@
     useTimesheetWorkerStore
   } from '@/store/modules/index.js'
   import {
-    UIDConfirm,
+    UIDeleteConfirm,
     UIDragSelector,
     UIModal,
     UIPagination,
@@ -1288,40 +1288,13 @@
     </div>
 
     <!-- Kelishuvchini olib tashlash — loyihaning umumiy tasdiq modali. -->
-    <UIDConfirm
+    <UIDeleteConfirm
       v-model:visible="verifierDeleteVisible"
-      :save-loading="verifierDeleteLoading"
-      close-btn-text="content.cancel"
-      submit-btn-text="content.delete"
-      type="warning"
-      @onClose="verifierDeleteVisible = false"
-      @onSave="confirmDeleteVerifier"
-    >
-      <div class="text-center">
-        <p class="text-lg font-medium">{{ verifierDeleteName }}</p>
-        <p class="text-textColor3 mt-1">
-          {{ $t('timesheetPage.verifierDeleteConfirm') }}
-        </p>
-      </div>
-
-      <!-- `type="warning"` standart holatda FAQAT yopish tugmasini beradi
-           (u ogohlantirish uchun) — bu yerda tasdiq kerak, shuning uchun
-           amallar o'zimizniki. -->
-      <template #action>
-        <div class="grid grid-cols-2 gap-2">
-          <n-button ghost type="tertiary" @click="verifierDeleteVisible = false">
-            {{ $t('content.no') }}
-          </n-button>
-          <n-button
-            :loading="verifierDeleteLoading"
-            type="error"
-            @click="confirmDeleteVerifier"
-          >
-            {{ $t('content.yes') }}
-          </n-button>
-        </div>
-      </template>
-    </UIDConfirm>
+      :title="verifierDeleteName"
+      :warning="$t('timesheetPage.verifierDeleteConfirm')"
+      :loading="verifierDeleteLoading"
+      @confirm="confirmDeleteVerifier"
+    />
 
     <n-spin
       v-show="activeTab === 'grid'"
