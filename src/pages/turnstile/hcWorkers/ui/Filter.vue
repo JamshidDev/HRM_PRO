@@ -82,14 +82,16 @@
   )
   const workerTypeOption = computed(() => [
     { name: t('turnstile.hcWorkersPage.membershipOwn'), id: 'own' },
-    { name: t('turnstile.hcWorkersPage.no-added'), id: 'not_added' },
+    { name: t('turnstile.hcWorkersPage.membershipNotAdded'), id: 'not_added' },
     ...(canSeeGuests.value
       ? [{ name: t('turnstile.hcWorkersPage.membershipGuest'), id: 'guest' }]
       : [])
   ])
 
   // Mehmonlarning bizda bo'linmasi yo'q — bo'linma filtri qo'llanmaydi.
+  // Tozalansa — standart «Ishchi xodimlar».
   const onChangeWorkerType = (v) => {
+    if (!v) store.params.workerType = 'own'
     if (v === 'guest') store.params.departments = []
     filterEvent()
   }
@@ -179,6 +181,7 @@
             :loading="store.levelLoading"
             label-field="name"
             value-field="id"
+            clearable
             @update:value="filterEvent"
           />
         </div>
@@ -190,6 +193,7 @@
             :options="statusOption"
             label-field="name"
             value-field="id"
+            clearable
             @update:value="filterEvent"
           />
         </div>
@@ -201,6 +205,7 @@
             :consistent-menu-width="false"
             label-field="name"
             value-field="id"
+            clearable
             @update:value="onChangeWorkerType"
           />
         </div>
