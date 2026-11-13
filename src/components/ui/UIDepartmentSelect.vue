@@ -136,7 +136,9 @@
     }
     if (props.source === 'timesheet') {
       const res = await $ApiService.timesheetService._index_departments()
-      return nest(res.data.data?.departments || [])
+      // Ota bo'limlar daraxt uchun — guruh (tanlanmaydi), tanlov faqat biriktirilganlarda.
+      const ancestors = (res.data.data?.department_ancestors || []).map((d) => ({ ...d, group: true }))
+      return nest([...ancestors, ...(res.data.data?.departments || [])])
     }
     const res = await $ApiService.componentService._departmentTree({
       params: { organizations: orgs, search: search.value || undefined, own: props.own ? 1 : undefined }
@@ -162,8 +164,8 @@
       fullTree = withoutExcluded(data)
       tree.value = !serverSearch.value && search.value ? filterTree(fullTree, search.value) : fullTree
       remember(fullTree)
-      // Qidiruvda topilganlar ota bo'limlari ochiq ko'rinsin.
-      expanded.value = search.value ? parentIds(tree.value) : []
+      // Qidiruvda va tabelchi manbasida (ota guruhlar) daraxt ochiq ko'rinsin.
+      expanded.value = search.value || props.source === 'timesheet' ? parentIds(tree.value) : []
     } finally {
       if (id === reqId) loading.value = false
     }

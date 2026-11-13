@@ -371,27 +371,37 @@
           h('span', { class: 'ts-hist-chip', style: ruleKeyStyle(c.status) }, cellLabel(c.type ?? '—', c.status, c.hours))
         )
       : h('span', { class: 'ts-hist-empty' }, t('timesheetPage.calcDiff.empty'))
+  // Xodim / o'zgartirgan foydalanuvchi — loyihaning UIUser kartochkasi (rasm, F.I.O., lavozim yoki rol).
+  const personCell = (p, position) =>
+    p?.name
+      ? h(UIUser, {
+          short: false,
+          data: {
+            photo: p.photo,
+            lastName: p.last_name,
+            firstName: p.first_name,
+            middleName: p.middle_name,
+            position
+          }
+        })
+      : h('span', { class: 'ts-hist-empty' }, '—')
   const historyColumns = computed(() => [
-    { title: t('timesheetPage.changes.at'), key: 'at', width: 140, render: (r) => dayjs(r.at).format('DD.MM.YYYY HH:mm') },
-    { title: t('timesheetPage.changes.worker'), key: 'worker', render: (r) => r.worker?.name ?? '—' },
-    { title: t('timesheetPage.changes.day'), key: 'work_date', width: 90, render: (r) => dayjs(r.work_date).format('DD.MM') },
-    { title: t('timesheetPage.changes.before'), key: 'before', render: (r) => historyCell(r.before) },
-    { title: t('timesheetPage.changes.after'), key: 'after', render: (r) => historyCell(r.after) },
+    { title: t('timesheetPage.changes.at'), key: 'at', width: 128, render: (r) => dayjs(r.at).format('DD.MM.YYYY HH:mm') },
+    { title: t('timesheetPage.changes.worker'), key: 'worker', minWidth: 280, render: (r) => personCell(r.worker, r.worker?.position) },
+    { title: t('timesheetPage.changes.day'), key: 'work_date', width: 64, render: (r) => dayjs(r.work_date).format('DD.MM') },
+    { title: t('timesheetPage.changes.before'), key: 'before', width: 120, render: (r) => historyCell(r.before) },
+    { title: t('timesheetPage.changes.after'), key: 'after', width: 120, render: (r) => historyCell(r.after) },
     {
       title: t('timesheetPage.calcDiff.diff'),
       key: 'diff',
-      width: 70,
+      width: 64,
       render: (r) => {
         const diff = hoursOf(r.after) - hoursOf(r.before)
         if (!diff) return '—'
         return h('b', { class: diff > 0 ? 'ts-hist-more' : 'ts-hist-less' }, `${diff > 0 ? '+' : ''}${diff}`)
       }
     },
-    {
-      title: t('timesheetPage.changes.user'),
-      key: 'user',
-      render: (r) => (r.user ? `${r.user.name}${r.user.role ? ` (${r.user.role})` : ''}` : '—')
-    }
+    { title: t('timesheetPage.changes.user'), key: 'user', minWidth: 260, render: (r) => personCell(r.user, r.user?.role) }
   ])
 
   // Qoidalar modali — hisoblash qanday ishlashini ko'rsatadi.
@@ -2084,7 +2094,7 @@
 
     <!-- Hisoblash qoidalari. Balandligi QAT'IY — ichki qism skrollanadi,
          aks holda ta'til jadvali 13 qator bo'lib modalni cho'zib yuborardi. -->
-    <UIModal v-model:visible="historyOpen" :title="$t('timesheetPage.changes.title')" :width="1100">
+    <UIModal v-model:visible="historyOpen" :title="$t('timesheetPage.changes.title')" :width="1240">
       <div class="ts-hist-filters">
         <n-select
           v-model:value="historyFilter.worker_position_id"
@@ -4147,13 +4157,6 @@
     height: 16px;
     line-height: 16px;
     font-size: 13px;
-    font-weight: 700;
-  }
-  /* Dam olish / bayram kuni — harf kattaroq (u kunlarda odatda faqat harf yoziladi). */
-  .ts-cell.is-weekend .ts-cell-status {
-    height: 16px;
-    line-height: 16px;
-    font-size: 14px;
     font-weight: 700;
   }
   /* Ajratuvchi `/` — harf va soat qatorlarida BIR XIL neytral rangda. */
