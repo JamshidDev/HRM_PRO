@@ -107,7 +107,7 @@
             h(
               'div',
               { class: 'text-xs font-medium text-gray-500' },
-              [option.last_name, option.first_name?.[0], option.middle_name?.[0]].filter(Boolean).join('.')
+              Utils.shortFio(option.last_name, option.first_name, option.middle_name)
             ),
             h('div', { class: 'text-xs text-gray-400' }, option.position)
           ])
