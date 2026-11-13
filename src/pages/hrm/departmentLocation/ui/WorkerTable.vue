@@ -14,8 +14,7 @@
   const accStore = useAccountStore()
   const canWrite = computed(() => accStore.checkPermission(accStore.pn.departmentLocationWrite))
 
-  // BACKEND: GET /v1/extra/mobile-face/workers qatorida `photo` (rasm URL) va `position` (lavozim nomi) yo'q —
-  // hozir avatarda standart placeholder chiqadi. Qo'shilsa, rasm va ism ostida lavozim avtomatik ko'rinadi.
+  // `photo` (rasm URL) va `position` (asosiy lavozim) — GET /v1/extra/mobile-face/workers javobidan.
   const photoOf = (row) => row?.photo || null
   const positionOf = (row) => row?.position?.name || (typeof row?.position === 'string' ? row.position : '')
 

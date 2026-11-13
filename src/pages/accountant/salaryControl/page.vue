@@ -5,7 +5,6 @@
   import { UIPageContent, UITabs } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useSalaryControlStore } from '@/store/modules/index.js'
-  import { getOneMonthAgoYearMonth } from '@utils'
   import Filter from './ui/Filter.vue'
   import SummaryTab from './ui/SummaryTab.vue'
   import RisksTab from './ui/RisksTab.vue'
@@ -62,12 +61,9 @@
   const route = useRoute()
   const router = useRouter()
 
-  // Davr standart qiymati (bir oy oldin) — yuklashdan OLDIN o'rnatiladi.
-  if (!store.params.year) {
-    const ago = getOneMonthAgoYearMonth()
-    store.params.year = ago.year
-    store.params.month = ago.month
-  }
+  // Davr standart qiymati — ma'lumot bor OXIRGI oy (store._initPeriod, onMounted'da
+  // async o'rnatiladi; topilmasa bir oy oldin). Shu bois dastlabki yuklash
+  // onMounted'da (davr aniqlangach) boshlanadi — watch immediate EMAS.
 
   const activeTab = computed(() => {
     const q = String(route.query.tab || '')
@@ -76,16 +72,13 @@
   const currentTab = computed(() => TAB_COMPONENTS[activeTab.value] ?? SummaryTab)
 
   // URL (tab) o'zgarsa — store.mainView sinxron + faqat shu tab ma'lumotini yukla.
-  watch(
-    activeTab,
-    (v) => {
-      store.mainView = v
-      if (accStore.checkAction(accStore.pn.economistSalaryControlRead)) {
-        store._loadForTab(v)
-      }
-    },
-    { immediate: true }
-  )
+  // immediate EMAS: dastlabki yuklash onMounted'da (davr aniqlangach) boshlanadi.
+  watch(activeTab, (v) => {
+    store.mainView = v
+    if (accStore.checkAction(accStore.pn.economistSalaryControlRead)) {
+      store._loadForTab(v)
+    }
+  })
 
   const onTabChange = (v) => {
     router.replace({ query: { ...route.query, tab: v } }).catch(() => {})
@@ -104,7 +97,7 @@
     if (typeof $Toast !== 'undefined') $Toast.info(t('salaryControl.common.newVersion'))
     window.location.reload()
   }
-  onMounted(() => {
+  onMounted(async () => {
     // Sahifa muvaffaqiyatli yuklandi — keyingi deployда qayta reload mumkin bo'lsin.
     try {
       sessionStorage.removeItem(CHUNK_FLAG)
@@ -112,6 +105,13 @@
       /* noop */
     }
     window.addEventListener('vite:preloadError', onPreloadError)
+
+    // Default davrni (ma'lumot bor oxirgi oy) aniqlaymiz, SO'NG aktiv tabni yuklaymiz.
+    await store._initPeriod()
+    store.mainView = activeTab.value
+    if (accStore.checkAction(accStore.pn.economistSalaryControlRead)) {
+      store._loadForTab(activeTab.value)
+    }
   })
   onBeforeUnmount(() => window.removeEventListener('vite:preloadError', onPreloadError))
 

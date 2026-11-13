@@ -1,6 +1,7 @@
 <script setup>
+  import { UIDepartmentSelect } from '@/components/index.js'
   import { useComponentStore, useShiftTypeStore } from '@stores'
-  import { UINSelect, UIPageFilter, UISelect } from '@components'
+  import { UIPageFilter, UISelect } from '@components'
   import { CheckmarkCircle24Filled, DismissCircle24Filled } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
@@ -42,11 +43,8 @@
 
   const onChangeStructure = (v) => {
     store.notScheduleParams.organizations = v
-    store.departmentList = []
     store.notScheduleParams.department_id = null
     filterEvent()
-    if (v.length === 0) return
-    store._departments()
   }
 
   const onChangeDepartment = () => {
@@ -55,7 +53,6 @@
 
   const defaultEv = (v) => {
     store.notScheduleParams.organizations = v
-    store._departments()
   }
 
   const onShow = (v) => {
@@ -115,12 +112,11 @@
         :multiple="true"
       />
       <label class="mt-3 text-xs mb-1 font-medium">{{ $t('content.department') }}</label>
-      <UINSelect
-        clearable
-        :loading="store.departmentLoading"
-        :options="store.departmentList"
-        v-model:value="store.notScheduleParams.department_id"
-        @update:value="onChangeDepartment"
+      <UIDepartmentSelect
+        v-model="store.notScheduleParams.department_id"
+        :organization="store.notScheduleParams.organizations"
+        source="schedule"
+        @update:model-value="onChangeDepartment"
       />
     </template>
   </UIPageFilter>

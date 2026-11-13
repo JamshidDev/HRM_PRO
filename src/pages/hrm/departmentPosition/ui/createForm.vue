@@ -5,9 +5,8 @@
   import { useDepartmentPositionStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
   import Utils, { generateUUIDKey } from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
-  import { UINSelect, UISelect } from '@/components/index.js'
-  import { useDebounce } from '@/utils/index.js'
-
+  import { UISelect, UIDepartmentSelect } from '@/components/index.js'
+  
   const store = useDepartmentPositionStore()
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
@@ -32,25 +31,6 @@
     }
   })
 
-  const depParams = computed(() => ({
-    ...store.depParams,
-    organizations: store.payload.organization_id.map((v) => v.id).toString(),
-    // Lavozim faqat HR yordamchisining o'z bo'limlariga qo'shiladi (HR uchun o'zgarishsiz).
-    own: 1,
-    key: undefined
-  }))
-  const departmentState = computed(() => componentStore.getDepartmentState(store.depParams.key))
-  const fetchDepartment = useDebounce(componentStore.createDepartmentFetcher(store.depParams.key))
-  const onSearchDepartment = (v) => {
-    store.depParams.page = 1
-    store.depParams.search = v
-    fetchDepartment(depParams.value)
-  }
-  const onScrollDepartment = () => {
-    store.depParams.page++
-    fetchDepartment(depParams.value, true)
-  }
-
   const onSubmit = () => {
     formRef.value?.validate((error) => {
       if (!error) {
@@ -65,12 +45,10 @@
 
   const onChangeStructure = (v) => {
     store.payload.organization_id = v
-    departmentState.value.list = []
     store.payload.department_id = null
     store.payload.tariff_grid_id = null
     store.gridColumns = []
     store.gridOptions = []
-    fetchDepartment(depParams.value)
   }
 
   const fmt = (v) => (v === null || v === undefined || v === '' ? '—' : Number(v).toLocaleString('ru-RU'))
@@ -121,14 +99,6 @@
     }
   )
 
-  const updateShowEv = (v) => {
-    if (!v) return
-    if (!store.visibleType && departmentState.value.list.length === 1) {
-      store.payload.department_id = null
-      fetchDepartment(depParams.value)
-    }
-  }
-
   const showStructureField = computed(() => !props.callback)
 
   // Tashkilot/Bo'lim/Lavozim bitta qatorda turadi. Tashkilot maydoni yashirilganda
@@ -139,10 +109,7 @@
   )
 
   onMounted(() => {
-    store.depParams.search = null
-    if (store.visibleType) {
-      departmentState.value.list = []
-    } else {
+    if (!store.visibleType) {
       // Tahrir: mavjud koeffitsientlar + biriktirilgan setkalar.
       if (store.elementId) store._loadCoefficients(store.elementId)
       if (hasGridAccess.value) store._fetchGrids()
@@ -185,15 +152,10 @@
           path="department_id"
           :rule-path="validationRules.rulesNames.requiredNumberField"
         >
-          <UINSelect
-            clearable
-            :loading="departmentState.loading"
-            :options="departmentState.list"
-            :total-count="departmentState.total"
-            v-model:value="store.payload.department_id"
-            @onSearch="onSearchDepartment"
-            @onScrollEv="onScrollDepartment"
-            @updateShow="updateShowEv"
+          <UIDepartmentSelect
+            v-model="store.payload.department_id"
+            :organization="store.payload.organization_id"
+            own
           />
         </n-form-item>
         <n-form-item

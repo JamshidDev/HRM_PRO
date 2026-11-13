@@ -1,6 +1,10 @@
 import axios from '@/service/index.js'
 
 // Oylik nazorati (salary-control) — umumiy ko'rsatkichlar (KPI) xulosasi.
+const _salaryControlLatestPeriod = () => {
+  return axios.get('/v1/economist/salary-control/latest-period')
+}
+
 const _salaryControlSummary = (payload) => {
   return axios.get('/v1/economist/salary-control/summary', { params: payload?.params })
 }
@@ -26,6 +30,7 @@ const _salaryControlExport = (payload) => {
 }
 
 export default {
+  _salaryControlLatestPeriod,
   _salaryControlSummary,
   _salaryControlRisks,
   _salaryControlDashboard,

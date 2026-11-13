@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { toRaw } from 'vue'
 import i18n from '@/i18n/index.js'
-import { useComponentStore } from '@/store/modules/index.js'
 
 const { t } = i18n.global
 
@@ -368,7 +367,6 @@ export const useReport2Store = defineStore('report2Store', {
       return $ApiService.reportService._worker({ params }).then((res) => res.data.data.data)
     },
     onEdit(v) {
-      const store = useComponentStore()
       this.position.visibleType = false
       this.position.visible = true
       this.showLoading = true
@@ -377,8 +375,6 @@ export const useReport2Store = defineStore('report2Store', {
         ._showPosition({ id: v.id })
         .then((res) => {
           const v = res.data.data
-          store.departmentList = [v.department]
-          store._departments()
           this.positionPayload.position_id = v.position.id
           this.positionPayload.department_id = v.department.id
           this.lastDepartmentId = v.department.id

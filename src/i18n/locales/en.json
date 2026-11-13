@@ -3701,6 +3701,7 @@
       "membership": "Employee type",
       "membershipOwn": "Employees",
       "membershipGuest": "Guests",
+      "membershipNotAdded": "Not assigned",
       "notWorking": "Not employed"
     },
     "workDurationPage": {

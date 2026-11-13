@@ -1,4 +1,5 @@
 <script setup>
+  import { UIDepartmentSelect } from '@/components/index.js'
   import { useComponentStore, useVacationScheduleStore } from '@stores'
   import { useAppSetting, Utils, validationRules } from '@utils'
   import UIHelper from '@utils/UIHelper.js'
@@ -63,7 +64,7 @@
 
   const onChangeStructure = (v) => {
     store.worker.params.organizations = v
-    store._fetchDepartment()
+    store.worker.params.departments = []
     filterEventWorker()
   }
 
@@ -88,20 +89,8 @@
     store._fetchCreator(true)
   }
 
-  const onSearchDepartment = (v) => {
-    store.department.params.page = 1
-    store.department.params.search = v
-    store._fetchDepartment()
-  }
-
-  const onScrollDepartment = () => {
-    store.department.params.page += 1
-    store._fetchDepartment(true)
-  }
-
   const onDefaultEv = (v) => {
     store.worker.params.organizations = v
-    store._fetchDepartment()
     // Bitta tashkilotli foydalanuvchida ro'yxat shu yerda yuklanadi (DAS-14225).
     filterEventWorker()
   }
@@ -244,22 +233,12 @@
           />
         </div>
         <div class="w-[300px]">
-          <SuperSelect
-            :clearable="true"
-            :placeholder="'content.department'"
+          <UIDepartmentSelect
+            v-model="store.worker.params.departments"
+            :organization="store.worker.params.organizations"
             multiple
-            :disabled="store.worker.params.organizations.length === 0"
-            :max-tag-count="1"
-            :options="store.department.list"
-            :loading="store.department.loading"
-            :total-count="store.department.total"
-            :per-page="store.department.params.per_page"
-            v-model:value="store.worker.params.departments"
-            v-model:search="store.department.params.search"
-            value-field="id"
-            @update:value="onChangeDepartment"
-            @onSearch="onSearchDepartment"
-            @onScrollEv="onScrollDepartment"
+            :placeholder="$t('content.department')"
+            @update:model-value="onChangeDepartment"
           />
         </div>
       </template>

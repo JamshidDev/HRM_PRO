@@ -2,8 +2,7 @@
   import i18n from '@/i18n/index.js'
   import { validationRules } from '@utils'
   import { useDepartmentStore, useComponentStore } from '@stores'
-  import { SuperSelect, UIMultipleLangItems, UISelect } from '@components'
-  import UIHelper from '@utils/UIHelper.js'
+  import { UIDepartmentSelect, UIMultipleLangItems, UISelect } from '@components'
 
   const store = useDepartmentStore()
   const componentStore = useComponentStore()
@@ -37,12 +36,6 @@
   const isEdit = computed(() => !store.visibleType && !store.parentElement)
   const originalOrgId = ref(null)
 
-  const loadParents = (orgId) => {
-    componentStore.depParams.organizations = orgId ? [orgId] : null
-    componentStore.depParams.page = 1
-    componentStore._departments()
-  }
-
   const onChangeOrg = (v) => {
     selectedOrg.value = v
     store.payload.organization_id = v[0]?.id ?? null
@@ -53,7 +46,6 @@
       store.showParent = false
       store.payload.parent_id = null
     }
-    loadParents(store.payload.organization_id)
   }
 
   const initEditOrg = () => {
@@ -63,14 +55,12 @@
     selectedOrg.value = [org]
     store.payload.organization_id = org.id
     componentStore._structures()
-    loadParents(org.id)
   }
 
   const resetOrg = () => {
     selectedOrg.value = []
     structureCheck.value = []
     originalOrgId.value = null
-    componentStore.depParams.organizations = null
   }
 
   // Bo'limlar sahifasi `store.visible`, Hisobot sahifasi o'z modalini ishlatadi — elementId bo'yicha ham kuzatiladi.
@@ -87,20 +77,6 @@
       default: null
     }
   })
-
-  // Tahrirlanayotgan bo'limning O'ZI ota-bo'lim ro'yxatida ko'rinmasin.
-  // `componentStore.departmentList` `GET /hr/get-departments` dan to'ladi va
-  // hech qanday chetlashtirish qilmaydi — prod bug (org 66, dep 849): dropdown'da
-  // bo'lim nomi ("Axborot-hisoblash markazi") ostida tashkilot nomi ("Axborot
-  // hisoblash markazi") chiqadi, ikkalasi deyarli bir xil ko'rinadi va foydalanuvchi
-  // o'sha bo'limning o'zini tanlab qo'ygan → `parent_id = id` yozilib, bo'lim
-  // ro'yxatdan ham, daraxtdan ham yo'qolgan.
-  //
-  // Avlodlar bu yerda chetlashtirilmaydi — frontendda daraxt ma'lumoti yo'q;
-  // uni backend `assertParentAllowed` rad etadi.
-  const parentOptions = computed(() =>
-    (componentStore.departmentList ?? []).filter((v) => v && v.id !== store.elementId)
-  )
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {
@@ -198,25 +174,10 @@
         >
         <template v-if="store.showParent">
           <n-form-item :label="$t(`departmentPage.form.parent_id`)" path="parent_id">
-            <!--            <n-select-->
-            <!--                v-model:value="store.payload.parent_id"-->
-            <!--                filterable-->
-            <!--                clearable-->
-            <!--                :options="componentStore.departmentList"-->
-            <!--                label-field="name"-->
-            <!--                value-field="id"-->
-            <!--                :loading="store.levelLoading"-->
-            <!--            />-->
-            <SuperSelect
-              :options="parentOptions"
-              v-model:value="store.payload.parent_id"
-              v-model:search="componentStore.depParams.search"
-              @onSearch="componentStore._onSearchDepartment"
-              @onScroll="componentStore._onScrollDepartment"
-              value-field="id"
-              :loading="store.levelLoading"
-              :render-label="UIHelper.selectRender.label"
-              :render-tag="UIHelper.selectRender.value"
+            <UIDepartmentSelect
+              v-model="store.payload.parent_id"
+              :organization="store.payload.organization_id"
+              :exclude-id="store.elementId"
             />
           </n-form-item>
         </template>

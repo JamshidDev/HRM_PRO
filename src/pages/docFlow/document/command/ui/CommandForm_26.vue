@@ -1,7 +1,7 @@
 <script setup>
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import { useComponentStore } from '@/store/modules/index.js'
-  import { SuperSelect } from '@/components/index.js'
+  import { SuperSelect, UIDepartmentSelect } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
   import ApiService from '@/service/ApiService.js'
@@ -38,24 +38,9 @@
     componentStore.reasonTypes.map((v) => ({ ...v, name: v.name.charAt(0).toUpperCase() + v.name.slice(1) }))
   )
 
-  const deptTree = ref([])
-  const deptLoading = ref(false)
-  const loadDepartments = (orgId) => {
-    deptTree.value = []
-    if (!orgId) return
-    deptLoading.value = true
-    ApiService.componentService
-      ._allDepartmentTree({ params: { organization_id: orgId } })
-      .then((res) => {
-        if (store.form_26.target_organization_id === orgId) deptTree.value = res.data.data ?? []
-      })
-      .finally(() => {
-        deptLoading.value = false
-      })
-  }
-  const onChangeTargetOrg = (id) => {
+  // Bo'limlar daraxtini UIDepartmentSelect o'zi yuklaydi (source=all — boshqa korxona ham).
+  const onChangeTargetOrg = () => {
     store.form_26.target_department_id = null
-    loadDepartments(id)
   }
 
   // Kadrlar bo'limi mas'uli — manba korxona xodimlaridan (80-formadagidek).
@@ -240,7 +225,6 @@
     if (!componentStore.allStructureList.length) componentStore._allStructures()
     componentStore.reasonTypes = []
     componentStore._reasonTypes(26)
-    if (store.form_26.target_organization_id) loadDepartments(store.form_26.target_organization_id)
   })
 </script>
 
@@ -268,16 +252,10 @@
     </div>
     <div class="col-span-12 @xl:col-span-6">
       <n-form-item :label="$t('commandPage.form_26.target_department')" path="target_department_id">
-        <n-tree-select
-          v-model:value="store.form_26.target_department_id"
-          :options="deptTree"
-          key-field="id"
-          label-field="name"
-          children-field="children"
-          filterable
-          clearable
-          :disabled="!store.form_26.target_organization_id"
-          :loading="deptLoading"
+        <UIDepartmentSelect
+          v-model="store.form_26.target_department_id"
+          :organization="store.form_26.target_organization_id"
+          source="all"
           :placeholder="$t('commandPage.form_26.target_department_ph')"
         />
       </n-form-item>

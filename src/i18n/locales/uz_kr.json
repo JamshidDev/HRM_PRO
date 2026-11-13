@@ -3402,7 +3402,8 @@
       "device": "Қурилмалар",
       "membership": "Ходим тури",
       "membershipOwn": "Ишчи ходимлар",
-      "membershipGuest": "Меҳмон",
+      "membershipGuest": "Меҳмонлар",
+      "membershipNotAdded": "Бириктирилмаганлар",
       "notWorking": "Ишламайди"
     },
     "workDurationPage": {

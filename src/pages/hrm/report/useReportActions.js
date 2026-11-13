@@ -41,7 +41,6 @@ export const useReportActions = () => {
     dpStore.districtList = []
     if (dpStore.payload.region_id) dpStore._districts(dpStore.payload.region_id)
     dpStore._level()
-    componentStore._departments()
     componentStore._regions()
   }
 
@@ -51,8 +50,6 @@ export const useReportActions = () => {
     store.position.visibleType = true
     store.resetPositionPayload()
     store.positionPayload.department_id = v.id
-    componentStore.departmentList = [v]
-    componentStore._departments()
   }
 
   const editPosition = (item) => {

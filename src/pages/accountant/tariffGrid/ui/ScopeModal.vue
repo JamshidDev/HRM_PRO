@@ -1,72 +1,33 @@
 <script setup>
   import { DismissCircle20Regular } from '@vicons/fluent'
-  import { UINSelect, UISelect } from '@/components/index.js'
+  import { UISelect, UIDepartmentSelect } from '@/components/index.js'
   import { useTariffGridStore, useComponentStore } from '@/store/modules/index.js'
-  import { useDebounce } from '@/utils/index.js'
 
   const store = useTariffGridStore()
   const componentStore = useComponentStore()
 
-  const DEPT_KEY = 'tariff-grid-scope'
-
   const pickOrg = ref([]) // UISelect (tree) tanlagan korxona [{id,name,...}]
   const orgCheck = ref([]) // tree expanded id'lar
-  const pickDeptIds = ref([]) // tanlangan bo'lim id'lari (joriy korxona bo'yicha)
-  const deptPage = ref(1)
-  const deptSearch = ref(null)
+  const pickDepts = ref([]) // tanlangan bo'limlar [{id,name}] (joriy korxona bo'yicha)
 
-  const departmentState = computed(() => componentStore.getDepartmentState(DEPT_KEY))
-  const fetchDepartment = useDebounce(componentStore.createDepartmentFetcher(DEPT_KEY))
-
-  // Bo'limlar faqat AYNAN bitta korxona tanlanganda yuklanadi (aks holda qaysi org noaniq).
+  // Bo'limlar faqat AYNAN bitta korxona tanlanganda (aks holda qaysi org noaniq).
   const singleOrgId = computed(() => (pickOrg.value.length === 1 ? pickOrg.value[0].id : null))
 
-  const loadDepts = (infinity = false) => {
-    if (!singleOrgId.value) return
-    fetchDepartment(
-      {
-        page: deptPage.value,
-        per_page: 1000,
-        search: deptSearch.value || undefined,
-        organizations: singleOrgId.value
-      },
-      infinity
-    )
-  }
-
-  // Korxona(lar) tanlanganda — aynan BITTA bo'lsa bo'limlari yuklanadi.
   const onPickOrg = (v) => {
     pickOrg.value = v
-    pickDeptIds.value = []
-    deptPage.value = 1
-    deptSearch.value = null
-    componentStore.getDepartmentState(DEPT_KEY).list = []
-    if (v.length === 1) loadDepts()
-  }
-  const onSearchDept = (v) => {
-    deptPage.value = 1
-    deptSearch.value = v
-    loadDepts()
-  }
-  const onScrollDept = () => {
-    deptPage.value++
-    loadDepts(true)
+    pickDepts.value = []
   }
 
   // "+ Qo'shish": bo'lim tanlangan (va bitta korxona) → bo'limlar; aks holda tanlangan BARCHA korxona.
   const onAdd = () => {
     if (!pickOrg.value.length) return
-    if (pickDeptIds.value.length && singleOrgId.value) {
-      const depts = departmentState.value.list
-        .filter((d) => pickDeptIds.value.includes(d.id))
-        .map((d) => ({ id: d.id, name: d.name }))
-      store.addScopeDepts(depts, pickOrg.value[0].name)
-      pickDeptIds.value = []
+    if (pickDepts.value.length && singleOrgId.value) {
+      store.addScopeDepts(pickDepts.value, pickOrg.value[0].name)
+      pickDepts.value = []
     } else {
       for (const o of pickOrg.value) store.addScopeOrg({ id: o.id, name: o.name })
       pickOrg.value = []
-      pickDeptIds.value = []
-      componentStore.getDepartmentState(DEPT_KEY).list = []
+      pickDepts.value = []
     }
   }
 
@@ -97,16 +58,11 @@
       </div>
       <div class="col-span-12 md:col-span-5">
         <label class="ts-label">{{ $t('tariffGrid.scope.departments') }}</label>
-        <UINSelect
+        <UIDepartmentSelect
+          v-model="pickDepts"
+          :organization="singleOrgId"
           multiple
-          clearable
-          :disabled="!singleOrgId"
-          :loading="departmentState.loading"
-          :options="departmentState.list"
-          :total-count="departmentState.total"
-          v-model:value="pickDeptIds"
-          @onSearch="onSearchDept"
-          @onScrollEv="onScrollDept"
+          return-object
         />
       </div>
       <div class="col-span-12 md:col-span-2">

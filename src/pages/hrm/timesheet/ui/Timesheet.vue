@@ -30,6 +30,7 @@
   } from '@/store/modules/index.js'
   import {
     UIDeleteConfirm,
+    UIDepartmentSelect,
     UIDragSelector,
     UIModal,
     UIPagination,
@@ -1020,20 +1021,15 @@
             @update:model-value="onTabChange"
           />
           <template v-if="activeTab === 'grid'">
-            <n-select
-              v-model:value="store.params.department_id"
-              :loading="store.departmentLoading"
-              :menu-props="{ class: 'ts-dep-menu' }"
-              :options="store.departmentOptions"
-              :placeholder="$t('timesheetPage.allDepartments')"
-              :virtual-scroll="false"
-              class="ts-department-select"
-              clearable
-              filterable
-              label-field="name"
-              value-field="id"
-              @update:value="store.applyFilters"
-            />
+            <div class="ts-department-select">
+              <UIDepartmentSelect
+                v-model="store.params.department_id"
+                :organization="store.organizationId"
+                :source="store.timekeeperMode ? 'timesheet' : 'tree'"
+                :placeholder="$t('timesheetPage.allDepartments')"
+                @update:model-value="store.applyFilters"
+              />
+            </div>
             <n-input
               :loading="searching"
               :placeholder="$t('timesheet.searchWorkerHint')"
@@ -1573,15 +1569,11 @@
       :width="420"
     >
       <n-form-item :label="$t('documentPage.form.department')" :show-feedback="false">
-        <n-select
-          v-model:value="exportDepartmentId"
-          :loading="store.departmentLoading"
-          :options="store.departmentOptions"
+        <UIDepartmentSelect
+          v-model="exportDepartmentId"
+          :organization="store.organizationId"
+          :source="store.timekeeperMode ? 'timesheet' : 'tree'"
           :placeholder="$t('timesheetPage.exportNeedDepartment')"
-          clearable
-          filterable
-          label-field="name"
-          value-field="id"
         />
       </n-form-item>
       <!-- Boshqa forma oynalari kabi: «Bekor qilish | Yuklash». -->
@@ -4205,16 +4197,4 @@
 <style lang="scss">
   /* Bo'lim ro'yxati — uzun nomlar kesilmasin, keyingi qatorga tushsin.
      Menyu `body` ga teleport bo'ladi, shuning uchun global (scoped emas). */
-  .ts-dep-menu.n-base-select-menu .n-base-select-option {
-    height: auto;
-    min-height: 34px;
-    padding-block: 6px;
-  }
-  .ts-dep-menu.n-base-select-menu .n-base-select-option .n-base-select-option__content {
-    white-space: normal;
-    overflow: visible;
-    text-overflow: clip;
-    line-height: 18px;
-    word-break: break-word;
-  }
 </style>
