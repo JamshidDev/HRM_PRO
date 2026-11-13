@@ -7005,7 +7005,11 @@
     "editedBadge": "Tahrirlangan",
     "zoomIn": "Kattalashtirish",
     "zoomOut": "Kichraytirish",
-    "zoomFit": "Sahifa eniga moslash"
+    "zoomFit": "Sahifa eniga moslash",
+    "editHint": "Hujjatni shu yerda tahrirlang va OnlyOffice'dagi «Saqlash» tugmasini bosing — o'zgaruvchilar tekshirilib, shablon yangilanadi.",
+    "viewOnly": "Faqat ko'rish rejimi — tahrirlash huquqingiz yo'q.",
+    "saveRejectedTitle": "Shablon saqlanmadi",
+    "example": "Namuna"
   },
   "turnstileDownload": {
     "title": "Hodisalarni yuklash"

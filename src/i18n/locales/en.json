@@ -6947,7 +6947,11 @@
     "editedBadge": "Edited",
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom out",
-    "zoomFit": "Fit page width"
+    "zoomFit": "Fit page width",
+    "editHint": "Edit the document here and press «Save» in OnlyOffice — variables are checked and the template is updated.",
+    "viewOnly": "View only — you don't have permission to edit.",
+    "saveRejectedTitle": "Template was not saved",
+    "example": "Example"
   },
   "turnstileDownload": {
     "title": "Download events"
