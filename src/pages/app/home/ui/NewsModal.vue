@@ -13,7 +13,7 @@
    */
   import { useAccountStore, useHomeStore } from '@/store/modules/index.js'
   import { UIModal } from '@/components/index.js'
-  import { AppPaths, Utils, useAppSetting } from '@/utils/index.js'
+  import { AppPaths, Utils, useAppSetting, backendLanguage } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
   import { Eye16Filled } from '@vicons/fluent'
   import CalendarAltIcon from '@/assets/icons/calendarAlt.svg'
@@ -35,7 +35,7 @@
   // mobil API tayyor matn beradi, CMS ko'rinishi esa `translations[]`.
   const translation = computed(() => {
     const tr = item.value.translations ?? []
-    return tr.find((t) => t.locale === i18n.global.locale) || tr.find((t) => t.title) || {}
+    return tr.find((t) => t.locale === backendLanguage(i18n.global.locale)) || tr.find((t) => t.title) || {}
   })
 
   const title = computed(() =>

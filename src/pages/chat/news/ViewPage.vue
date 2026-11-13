@@ -11,7 +11,7 @@
   } from '@vicons/fluent'
   import { useRoute, useRouter } from 'vue-router'
   import { useNewsStore } from '@/store/modules/index.js'
-  import { AppPaths } from '@/utils/index.js'
+  import { AppPaths, backendLanguage } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import { UIBackButton } from '@/components/index.js'
@@ -24,7 +24,7 @@
   const { t } = i18n.global
 
   const getCategoryName = (cat) =>
-    cat.name?.[i18n.global.locale] || Object.values(cat.name ?? {})[0] || ''
+    cat.name?.[backendLanguage(i18n.global.locale)] || Object.values(cat.name ?? {})[0] || ''
 
   const route = useRoute()
   const router = useRouter()
@@ -48,7 +48,7 @@
 
   const translation = computed(() => {
     const tr = news.value?.translations ?? []
-    return tr.find((t) => t.locale === i18n.global.locale) || tr.find((t) => t.title) || tr[0] || {}
+    return tr.find((t) => t.locale === backendLanguage(i18n.global.locale)) || tr.find((t) => t.title) || tr[0] || {}
   })
 
   const DOC_EXTS = ['pdf', 'doc', 'docx']

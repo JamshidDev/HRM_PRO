@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { AppPaths, useAppSetting, isPasswordExpiredError } from '@/utils/index.js'
+import { AppPaths, useAppSetting, backendLanguage, isPasswordExpiredError } from '@/utils/index.js'
 import router from '../router/index'
 import Utils from '@/utils/Utils.js'
 import i18n from '@/i18n/index.js'
@@ -34,8 +34,9 @@ instance.interceptors.request.use(async function (config) {
   // Token hali saqlanmagan bo'lsa (masalan, offerta) — chaqiruvchi bergan Authorization tokeni imzolanadi.
   const explicit = String(config.headers['Authorization'] || '').replace(/^Bearer\s+/i, '') || null
   let token = localStorage.getItem(useAppSetting.tokenKey) || explicit
-  config.headers['Accept-Language'] =
+  config.headers['Accept-Language'] = backendLanguage(
     localStorage.getItem(useAppSetting.languageKey) || useAppSetting.defaultLanguage
+  )
   config.headers['Access-Control-Allow-Origin'] = '*'
 
   if (token) {
