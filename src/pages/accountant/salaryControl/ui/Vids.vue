@@ -68,22 +68,6 @@
     return cards
   })
 
-  // —— Faol filtr chiplari (o'chiriladigan) ————————————————————————————————————
-  const periodChip = computed(() => {
-    const { year, month } = store.params
-    return year && month ? `${year} · ${String(month).padStart(2, '0')}` : ''
-  })
-  const orgChips = computed(() => store.params.organizations || [])
-  const removeOrg = (id) => {
-    store.params.organizations = (store.params.organizations || []).filter((o) => o.id !== id)
-    store.structureCheck2 = (store.structureCheck2 || []).filter((v) => v !== id)
-    store._filter()
-  }
-  const removeCode = () => {
-    store.params.ones_code = null
-    store._filter()
-  }
-
   // —— 1) Vidlar jadvali (bar o'rniga) — kod/nom/turkum/summa/ulush/oluvchilar ————
   const totalVidSum = computed(() => store.vids.reduce((a, v) => a + (v.s || 0), 0))
   const vidRows = computed(() => {
@@ -586,18 +570,6 @@
         </div>
       </div>
 
-      <!-- Faol filtrlar (o'chiriladigan chip) -->
-      <div v-if="periodChip || orgChips.length || store.params.ones_code" class="vids-chips">
-        <span class="vids-chips-label">{{ $t('salaryControl.vids.activeFilters') }}:</span>
-        <span v-if="periodChip" class="vids-chip vids-chip--static">{{ periodChip }}</span>
-        <button v-for="o in orgChips" :key="o.id" class="vids-chip" @click="removeOrg(o.id)">
-          {{ o.name || o.label || o.id }}<i class="vids-chip-x">×</i>
-        </button>
-        <button v-if="store.params.ones_code" class="vids-chip" @click="removeCode">
-          1C: {{ store.params.ones_code }}<i class="vids-chip-x">×</i>
-        </button>
-      </div>
-
       <!-- Asosiy: Vidlar jadvali + turkum stacked bar -->
       <Card :title="$t('salaryControl.vids.title')" :sub="$t('salaryControl.vids.sub')" :info="CHART.vid.sub">
         <div class="vid-catbar">
@@ -814,41 +786,6 @@
     color: var(--fig-text-primary);
     font-variant-numeric: tabular-nums;
     line-height: 24px;
-  }
-
-  /* —— Faol filtr chiplari —— */
-  .vids-chips {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .vids-chips-label {
-    font-size: 12px;
-    color: var(--fig-text-tertiary);
-  }
-  .vids-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    border: 0.8px solid var(--fig-br-disable);
-    background: var(--fig-bg-tertiary);
-    color: var(--fig-text-secondary);
-    border-radius: 999px;
-    padding: 3px 10px;
-    font-size: 12px;
-    font: inherit;
-    font-size: 12px;
-    cursor: pointer;
-  }
-  .vids-chip--static {
-    cursor: default;
-  }
-  .vids-chip-x {
-    font-size: 14px;
-    line-height: 1;
-    color: var(--fig-text-tertiary);
-    font-style: normal;
   }
 
   /* —— Mukofot tahlili bo'limi —— */
