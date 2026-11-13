@@ -10,6 +10,8 @@ export default {
   common: {
     requiredStringField: {
       required: true,
+      // faqat probellardan iborat qiymat ham bo'sh hisoblanadi (QA-42)
+      whitespace: true,
       message: t(`rules.requiredField`),
       trigger: [...triggerEvents, 'change']
     },
