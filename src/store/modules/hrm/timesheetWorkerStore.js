@@ -9,9 +9,10 @@ const TIMESHEET_KEY_BY_ID = {
   25: 'Б', 26: 'Т', 27: 'ЛЧ', 28: 'ВП', 29: 'Г', 31: 'ПР', 32: 'НС',
   33: 'D', 34: 'ЗБ', 35: 'НН'
 }
-// «D» — dam olish va bayram kunlari: ish kuniga sanalmaydi.
-const REST_DAY_ID = 33
-const isWorkDay = (details) => (details ?? []).some((d) => Number(d.status_id) !== REST_DAY_ID)
+// «Umumiy ish kuni» — Excel'dagi «Форма ФТУ №3» «Haqiqiy ish» ustuni bilan bir xil: kamida bitta
+// turda soat > 0 bo'lgan kun. Ta'til, kasallik, safar, «D» va «K 0 soat» sanalmaydi
+// (2026-11-13 dev'da eksport bilan solishtirildi: Р×5 + K8 + K0 + T8 → 2 kun, 16 soat).
+const isWorkDay = (details) => (details ?? []).some((d) => Number(d.hours) > 0)
 // Soat yuritiladigan turlar (backend TIMESHEET_TYPE_HOURS).
 const TIMESHEET_TYPES_WITH_HOURS = new Set([1, 2, 3, 5, 17, 27, 32])
 const { t } = i18n.global
@@ -32,6 +33,8 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     pending: {},
     // Bazadagi holat: `${workerPositionId}|${day}` → cellKey. Faqat undan farq qilgan katak yuboriladi.
     saved: {},
+    // Bazadagi katak qiymati (details nusxasi) — tahrirlangan katakda «Oldin: …» ko'rsatish uchun.
+    savedCells: {},
     // PROTOTIP: tizim hisobi (auto natijasi) — `${wpId}|${day}` → { status, status_id, hours }; hozircha faqat xotirada.
     calcBase: {},
     // Tungi smena davomi kunlari (`${wpId}|${day}` → true) — katakda «↳» belgisi.
@@ -157,6 +160,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
       this.historyList = []
       this.pending = {}
       this.saved = {}
+      this.savedCells = {}
       this.calcBase = {}
       this.nightCont = {}
       this.calcWorkers = {}
@@ -166,6 +170,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
       for (const w of this.list) {
         for (let day = 1; day <= (this.days.length || 31); day++) {
           this.saved[`${w.id}|${day}`] = cellKey(w.days?.[day])
+          this.savedCells[`${w.id}|${day}`] = (w.days?.[day] ?? []).map((d) => ({ ...d }))
         }
       }
     },
@@ -375,6 +380,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         for (const p of items) {
           const key = `${p.id}|${p.day}`
           this.saved[key] = cellKey(p.details)
+          this.savedCells[key] = p.details.map((d) => ({ ...d }))
           if (this.pending[key] === p) delete this.pending[key]
         }
         // Ikkinchi tur saqlangach tozalanadi — keyingi to'ldirishlarga ergashmasin.

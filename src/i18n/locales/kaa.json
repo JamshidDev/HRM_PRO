@@ -3650,6 +3650,9 @@
       "discard": "Saqlamastan jabıw"
     },
     "calcDiff": {
+      "before": "Aldın",
+      "unsaved": "Ele saqlanbaǵan",
+      "cleared": "katak tazalandı",
       "system": "Sistema",
       "entered": "Kiritilgen",
       "diff": "Parq",
@@ -3661,7 +3664,11 @@
     "lockClose": "Tabeldi jabıw",
     "lockOpen": "Tabeldi ashıw",
     "lockedTag": "Jabılǵan",
-    "lockedByHr": "HR jabqan — tek kóriw"
+    "lockedByHr": "HR jabqan — tek kóriw",
+    "autoOverwrite": {
+      "title": "Kataklar qaytadan jazıladı",
+      "content": "{count} toltırılǵan katak sistema esabı menen almastırıladı (dem alıs, saparlar hám qolda kiritilgenleri de). «Saqlaw» basılmaǵansha bazaǵa jazılmaydı. Dawam etesiz be?"
+    }
   },
   "turnstile": {
     "title": "Turniket",

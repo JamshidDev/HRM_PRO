@@ -3650,6 +3650,9 @@
       "discard": "Saqlamasdan yopiş"
     },
     "calcDiff": {
+      "before": "Oldin",
+      "unsaved": "Hali saqlanmagan",
+      "cleared": "katak tozalandi",
       "system": "Tizim",
       "entered": "Kiritilgan",
       "diff": "Farq",
@@ -3661,7 +3664,11 @@
     "lockClose": "Tabelni yopiş",
     "lockOpen": "Tabelni oçiş",
     "lockedTag": "Yopilgan",
-    "lockedByHr": "HR yopgan — faqat köriş"
+    "lockedByHr": "HR yopgan — faqat köriş",
+    "autoOverwrite": {
+      "title": "Kataklar qayta yoziladi",
+      "content": "{count} ta töldirilgan katak tizim hisobi bilan almaştiriladi (ta'til, safar va qölda kiritilganlari ham). «Saqlaş» bosilmagunça bazaga yozilmaydi. Davom etasizmi?"
+    }
   },
   "turnstile": {
     "title": "Turniket",
@@ -3720,7 +3727,8 @@
       "device": "Qurilmalar",
       "membership": "Xodim turi",
       "membershipOwn": "Işçi xodimlar",
-      "membershipGuest": "Mehmon",
+      "membershipGuest": "Mehmonlar",
+      "membershipNotAdded": "Biriktirilmaganlar",
       "notWorking": "Işlamaydi"
     },
     "workDurationPage": {

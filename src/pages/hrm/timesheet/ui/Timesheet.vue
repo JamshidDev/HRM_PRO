@@ -126,12 +126,35 @@
   const rowMenuOptions = computed(() => [{ key: 'recalc', label: t('timesheetPage.recalc') }])
 
   // «Auto» tugmasi bilan bir mantiq — faqat bitta xodim uchun.
-  const onRowMenu = async (key, item) => {
+  const onRowMenu = (key, item) => {
     if (key !== 'recalc' || !item?.id) return
-    const res = await store.autoCalc([item.id])
+    confirmAutoCalc([item.id])
+  }
+
+  // Auto hisob katakni TO'LIQ almashtiradi — qo'lda kiritilgan ta'til, safar va h.k. ham
+  // «K 0» / «D» bo'lib qolardi (2026-11-13 dev'da ko'rildi). To'ldirilgan katak bo'lsa avval so'raladi;
+  // bo'sh tabelda (yoki bo'sh xodimda) darhol hisoblanadi. `ids` yo'q — joriy sahifadagi hamma xodim.
+  const filledCellsOf = (ids) =>
+    store.list
+      .filter((w) => !ids || ids.includes(w.id))
+      .reduce((n, w) => n + Object.values(w.days || {}).filter((d) => d?.length).length, 0)
+  const runAutoCalc = async (ids = null) => {
+    const res = await store.autoCalc(ids)
     if (!res) return
     message.success(t('timesheetPage.autoCalcDone'))
     if (res.checks) message.warning(t('timesheetPage.needsCheckCount', { n: res.checks }))
+  }
+  const confirmAutoCalc = (ids = null) => {
+    const count = filledCellsOf(ids)
+    if (!count) return runAutoCalc(ids)
+    showAlert({
+      type: 'warning',
+      title: t('timesheetPage.autoOverwrite.title'),
+      message: t('timesheetPage.autoOverwrite.content', { count }),
+      confirmText: t('content.continue'),
+      cancelText: t('content.cancel'),
+      onConfirm: () => runAutoCalc(ids)
+    })
   }
 
   /* ------------------------------------------------------------------------
@@ -316,12 +339,7 @@
   }
 
 
-  const onAutoCalc = async () => {
-    const res = await store.autoCalc()
-    if (!res) return
-    message.success(t('timesheetPage.autoCalcDone'))
-    if (res.checks) message.warning(t('timesheetPage.needsCheckCount', { n: res.checks }))
-  }
+  const onAutoCalc = () => confirmAutoCalc()
 
   // Qoidalar modali — hisoblash qanday ishlashini ko'rsatadi.
   const rulesOpen = ref(false)
@@ -793,13 +811,25 @@
 
   const dayDetails = (item, day) => item.days[day.day]
 
-  // Tizim hisobidan farq: bo'sh katak va soatsiz tur 0 soat. Auto ishlatilmagan xodimda solishtirilmaydi.
+  // Katak nimadan farq qilishi: Auto ishlatilgan xodimda — tizim hisobidan; aks holda — bazadagi
+  // (saqlangan) qiymatdan, faqat oldin TO'LDIRILGAN katak qo'lda o'zgartirilib hali saqlanmagan bo'lsa.
+  // Bo'sh katak va soatsiz tur 0 soat. Saqlangach belgi yo'qoladi (doimiy tarix — backend, docs/api/timesheet-cell-changes.md).
   const hoursOf = (details) => (details ?? []).reduce((a, d) => a + (d?.hours || 0), 0)
   const typeOf = (details) => (details ?? []).map((d) => d?.status_id).filter(Boolean).join('/')
   const cellDiff = (item, day) => {
-    if (!store.calcWorkers[item.id]) return null
-    const base = store.calcBase[`${item.id}|${day.day}`]
-    const baseDetails = base ? [base] : []
+    const key = `${item.id}|${day.day}`
+    let baseDetails
+    let mode
+    if (store.calcWorkers[item.id]) {
+      const base = store.calcBase[key]
+      baseDetails = base ? [base] : []
+      mode = 'calc'
+    } else {
+      const before = store.savedCells[key]
+      if (!before?.length || !store.pending[key]) return null
+      baseDetails = before
+      mode = 'saved'
+    }
     const actual = dayDetails(item, day)
     const diff = hoursOf(actual) - hoursOf(baseDetails)
     if (!diff && typeOf(actual) === typeOf(baseDetails)) return null
@@ -812,7 +842,7 @@
       list.length
         ? list.map((d) => name(d) + (d.hours != null ? ` — ${d.hours} soat` : ' — 0 soat')).join(' / ')
         : t('timesheetPage.calcDiff.empty')
-    return { diff, system: label(baseDetails), entered: label(actual ?? []) }
+    return { mode, diff, cleared: !actual?.length, system: label(baseDetails), entered: label(actual ?? []) }
   }
 
   /**
@@ -936,6 +966,21 @@
   }
   onMounted(() => window.addEventListener('keydown', onKeydown))
   onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
+
+  // Panel balandligi (tor ekranda 2 qatorga o'tadi) — panjara pastida shuncha joy qoladi.
+  const selbarRef = ref(null)
+  const selbarHeight = ref(52)
+  let selbarObserver = null
+  watch(selbarRef, (el) => {
+    selbarObserver?.disconnect()
+    selbarObserver = null
+    if (!el) return
+    selbarObserver = new ResizeObserver(() => {
+      selbarHeight.value = el.offsetHeight
+    })
+    selbarObserver.observe(el)
+  })
+  onBeforeUnmount(() => selbarObserver?.disconnect())
 
   /* Pastki qatordagi sahifa oralig'i. */
   const pageRange = computed(() => {
@@ -1308,6 +1353,7 @@
       <div class="ts-card">
         <UIDragSelector
           :class="{ 'ts-dragging': dragging, 'has-selbar': !timesheetLocked }"
+          :style="{ '--selbar-h': `${selbarHeight}px` }"
           :disabled="!canSelect"
           class="ts-scroll"
           @mousedown.capture="onGridMouseDown"
@@ -1464,7 +1510,12 @@
                     }"
                     class="ts-diff-tip no-selectable-item"
                   >
-                    <b>{{ $t('timesheetPage.calcDiff.system') }}:</b> {{ cellDiff(item, day).system }}<br />
+                    <b>
+                      {{
+                        $t(cellDiff(item, day).mode === 'saved' ? 'timesheetPage.calcDiff.before' : 'timesheetPage.calcDiff.system')
+                      }}:
+                    </b>
+                    {{ cellDiff(item, day).system }}<br />
                     <b>{{ $t('timesheetPage.calcDiff.entered') }}:</b> {{ cellDiff(item, day).entered }}<br />
                     <b>{{ $t('timesheetPage.calcDiff.diff') }}:</b>
                     {{
@@ -1475,8 +1526,11 @@
                               : 'timesheetPage.calcDiff.less',
                             { n: Math.abs(cellDiff(item, day).diff) }
                           )
-                        : $t('timesheetPage.calcDiff.typeOnly')
+                        : $t(cellDiff(item, day).cleared ? 'timesheetPage.calcDiff.cleared' : 'timesheetPage.calcDiff.typeOnly')
                     }}
+                    <template v-if="cellDiff(item, day).mode === 'saved'">
+                      <br /><i class="ts-diff-note">{{ $t('timesheetPage.calcDiff.unsaved') }}</i>
+                    </template>
                   </span>
                 </template>
               </div>
@@ -1504,7 +1558,7 @@
         <!-- ── Tanlov paneli: belgilangan kataklarga nima yozilishi ─────────
              Doim ko'rinadi (ochiq tabelda): harf → katak yoki katak → harf. -->
         <Transition name="ts-selbar">
-          <div v-if="!timesheetLocked" class="ts-selbar no-selectable-item">
+          <div v-if="!timesheetLocked" ref="selbarRef" class="ts-selbar no-selectable-item">
             <!-- Hisoblagich silliq ochiladi / yopiladi — panel kengligi sakramasin. -->
             <Transition name="ts-selbar-lead">
               <div v-if="selectedCells.size" class="ts-selbar-lead">
@@ -2833,6 +2887,9 @@
   .ts-cell.is-edited:hover > .ts-cell-hours {
     opacity: 0.85;
   }
+  .ts-diff-note {
+    opacity: 0.7;
+  }
   .ts-dragging .ts-cell.is-edited:hover .ts-diff-tip {
     display: none;
   }
@@ -4067,25 +4124,30 @@
     background: color-mix(in srgb, var(--primary-color) 12%, var(--surface-section));
     box-shadow: inset 0 0 0 2px var(--primary-color);
   }
-  /* Panel oxirgi qatorlarni yopmasin — pastda joy qoladi. */
+  /* Panel oxirgi qatorlarni yopmasin — pastda panel balandligicha joy qoladi
+     (`--selbar-h` — ResizeObserver; 2 qatorga o'tsa ham). */
   .ts-scroll.has-selbar .ts-grid {
-    padding-bottom: 84px;
+    padding-bottom: calc(var(--selbar-h, 52px) + 32px);
   }
 
   /* ── Tanlov paneli (suzuvchi) ─────────────────────────────────────────── */
   .ts-card {
     position: relative;
   }
+  /* Markazda; sig'masa 2-qatorga o'tadi (`flex-wrap`). `left: 50%` + translate bilan bo'lmaydi —
+     unda panel karta ENINING YARMIDA o'ralib qolardi. */
   .ts-selbar {
     position: absolute;
-    left: 50%;
+    left: 16px;
+    right: 16px;
     bottom: 16px;
     z-index: 20;
-    transform: translateX(-50%);
+    width: fit-content;
+    margin: 0 auto;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 8px;
-    max-width: calc(100% - 32px);
     padding: 8px 8px 8px 16px;
     background: var(--surface-section);
     border: 1px solid var(--surface-line);
@@ -4104,7 +4166,7 @@
   .ts-selbar-enter-from,
   .ts-selbar-leave-to {
     opacity: 0;
-    transform: translate(-50%, 12px);
+    transform: translateY(12px);
   }
   .ts-selbar-lead {
     display: flex;

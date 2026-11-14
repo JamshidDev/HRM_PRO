@@ -3650,6 +3650,9 @@
       "discard": "Saqlamasdan yopish"
     },
     "calcDiff": {
+      "before": "Oldin",
+      "unsaved": "Hali saqlanmagan",
+      "cleared": "katak tozalandi",
       "system": "Tizim",
       "entered": "Kiritilgan",
       "diff": "Farq",
@@ -3661,7 +3664,11 @@
     "lockClose": "Tabelni yopish",
     "lockOpen": "Tabelni ochish",
     "lockedTag": "Yopilgan",
-    "lockedByHr": "HR yopgan — faqat ko'rish"
+    "lockedByHr": "HR yopgan — faqat ko'rish",
+    "autoOverwrite": {
+      "title": "Kataklar qayta yoziladi",
+      "content": "{count} ta to'ldirilgan katak tizim hisobi bilan almashtiriladi (ta'til, safar va qo'lda kiritilganlari ham). «Saqlash» bosilmaguncha bazaga yozilmaydi. Davom etasizmi?"
+    }
   },
   "turnstile": {
     "title": "Turniket",

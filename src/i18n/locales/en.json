@@ -3630,6 +3630,9 @@
       "discard": "Close without saving"
     },
     "calcDiff": {
+      "before": "Before",
+      "unsaved": "Not saved yet",
+      "cleared": "cell cleared",
       "system": "System",
       "entered": "Entered",
       "diff": "Difference",
@@ -3641,7 +3644,11 @@
     "lockClose": "Close timesheet",
     "lockOpen": "Open timesheet",
     "lockedTag": "Closed",
-    "lockedByHr": "Closed by HR — view only"
+    "lockedByHr": "Closed by HR — view only",
+    "autoOverwrite": {
+      "title": "Cells will be overwritten",
+      "content": "{count} filled cells will be replaced by the system calculation, including leave, business trips and manual entries. Nothing is saved until you press «Save». Continue?"
+    }
   },
   "turnstile": {
     "title": "Turnstile",
