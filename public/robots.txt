@@ -4,6 +4,17 @@ Allow: /login
 Allow: /privacy-policy
 Allow: /og-image.jpg
 Allow: /terms/
+# Logotip / favicon — Google qidiruv natijasida ko'rsatishi uchun ochiq bo'lishi shart.
+Allow: /favicon.ico
+Allow: /favicon-48.png
+Allow: /favicon-96.png
+Allow: /icon-192.png
+Allow: /icon-512.png
+Allow: /apple-touch-icon.png
+Allow: /logo-new.png
+Allow: /site.webmanifest
+# Sahifa JS/CSS — Google login sahifasini to'g'ri chizishi uchun.
+Allow: /assets/
 Disallow: /
 
 Sitemap: https://hrm.railway.uz/sitemap.xml

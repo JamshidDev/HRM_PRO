@@ -2,7 +2,11 @@
 <html lang="uz" data-theme="light" translate="no">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/logo-new.png" />
+    <!-- Favicon: kvadrat, 48 ning karralisi — Google qidiruv natijasida logotip shu fayldan olinadi
+         (robots.txt'da ruxsat berilgan bo'lishi shart). -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -53,14 +57,40 @@
       <script type="application/ld+json">
         {
           "@context": "https://schema.org",
-          "@type": "WebApplication",
-          "name": "HRM PRO",
-          "url": "https://hrm.railway.uz/",
-          "image": "https://hrm.railway.uz/og-image.jpg",
-          "description": "«O'zbekiston temir yo'llari» AJ uchun inson resurslarini boshqarish, elektron hujjat aylanishi, attestatsiya va E-IMZO bilan ishlash yagona platformasi.",
-          "applicationCategory": "BusinessApplication",
-          "operatingSystem": "Web",
-          "inLanguage": ["uz", "ru", "en"]
+          "@graph": [
+            {
+              "@type": "WebSite",
+              "@id": "https://hrm.railway.uz/#website",
+              "name": "HRM PRO",
+              "alternateName": ["HRM", "E-xodim"],
+              "url": "https://hrm.railway.uz/",
+              "inLanguage": ["uz", "ru", "en"],
+              "publisher": { "@id": "https://hrm.railway.uz/#organization" }
+            },
+            {
+              "@type": "Organization",
+              "@id": "https://hrm.railway.uz/#organization",
+              "name": "HRM PRO",
+              "url": "https://hrm.railway.uz/",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://hrm.railway.uz/icon-512.png",
+                "width": 512,
+                "height": 512
+              }
+            },
+            {
+              "@type": "WebApplication",
+              "name": "HRM PRO",
+              "url": "https://hrm.railway.uz/",
+              "image": "https://hrm.railway.uz/og-image.jpg",
+              "description": "«O'zbekiston temir yo'llari» AJ uchun inson resurslarini boshqarish, elektron hujjat aylanishi, attestatsiya va E-IMZO bilan ishlash yagona platformasi.",
+              "applicationCategory": "BusinessApplication",
+              "operatingSystem": "Web",
+              "inLanguage": ["uz", "ru", "en"],
+              "publisher": { "@id": "https://hrm.railway.uz/#organization" }
+            }
+          ]
         }
       </script>
 
