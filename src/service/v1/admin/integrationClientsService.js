@@ -25,8 +25,10 @@ const _update = async (id, data) => await axios.put(`/v1/admin/integration-clien
 const _organizations = async (id, data) => await axios.put(`/v1/admin/integration-clients/${id}/organizations`, data)
 const _rotate = async (id) => await axios.post(`/v1/admin/integration-clients/${id}/rotate`)
 const _delete = async (id) => await axios.delete(`/v1/admin/integration-clients/${id}`)
+// API test oynasi: integratsiya endpointlari katalogi.
+const _apiCatalog = async () => await axios.get('/v1/admin/integration-clients/api-catalog')
 
 export default {
   _summary, _timeline, _topClients, _topEndpoints, _methods, _statuses, _logs,
-  _meta, _list, _export, _show, _secret, _create, _update, _organizations, _rotate, _delete
+  _meta, _list, _export, _show, _secret, _create, _update, _organizations, _rotate, _delete, _apiCatalog
 }

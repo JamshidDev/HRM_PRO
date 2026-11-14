@@ -37,6 +37,11 @@ const _update_table_number = async (payload) => {
   return await axios.put(`/v1/timesheet/${payload.id}/workers/${payload.workerPositionId}/table-number`, payload.data)
 }
 
+// Tabel kataklari o'zgarishlar tarixi (audit).
+const _changes = async (payload) => {
+  return await axios.get(`/v1/timesheet/${payload.id}/changes`, { params: payload.params })
+}
+
 // Hisoblash qoidalari — «Auto» yonidagi tugma modalidagi jadval uchun.
 const _auto_calc_rules = async () => {
   return await axios.get(`/v1/timesheet/auto-calc-rules`)
@@ -68,6 +73,7 @@ const _export = async (payload) => {
 
 export default {
   _export,
+  _changes,
   _index,
   _get_days,
   _create,

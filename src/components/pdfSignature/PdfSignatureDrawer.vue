@@ -773,10 +773,14 @@
                         {{ Utils.timeOnlyDate(store.document?.document?.created) }} ·
                         {{ $t('documentPage.signature.confirmedWithSignature') }}
                         <template v-if="store.signatureMan?.lastName">
-                          · {{ store.signatureMan.lastName }}
-                          {{ store.signatureMan.firstName?.[0] }}.{{
-                            store.signatureMan.middleName?.[0]
-                          }}.
+                          ·
+                          {{
+                            Utils.shortFio(
+                              store.signatureMan.lastName,
+                              store.signatureMan.firstName,
+                              store.signatureMan.middleName
+                            )
+                          }}
                         </template>
                       </div>
                     </div>

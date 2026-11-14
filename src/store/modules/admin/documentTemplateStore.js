@@ -1,20 +1,11 @@
 import { defineStore } from 'pinia'
-import { markRaw } from 'vue'
 import i18n from '@/i18n/index.js'
 
 const { t } = i18n.global
 
 /**
- * «Shablon» sahifasi — buyruq/shartnoma/qo'shimcha shartnoma/ariza DOCX
- * shablonlarini brauzerdagi muharrirda (docx-editor.dev) tahrirlash.
- *
- * `docxEditorStore` dan farqi: bu yerda hujjat NUSXASI emas, SHABLONNING O'ZI
- * tahrirlanadi va tahrir GLOBAL — hamma korxonaning yangi hujjatlariga tegadi.
- * Shuning uchun saqlashdan oldin tasdiq so'raladi va backend `${o'zgaruvchi}`
- * yo'qolgan shablonni rad etadi.
- *
- * `version` — optimistik qulf tokeni (backend `updated_at`). Boshqa admin
- * o'zgartirgan bo'lsa backend 409 beradi.
+ * «Shablon» sahifasi — DOCX shablonni OnlyOffice'da ko'rish va tahrirlash.
+ * Saqlashni OnlyOffice backend'ga callback qiladi; natija `last-save` orqali kuzatiladi.
  */
 export const useDocumentTemplateStore = defineStore('documentTemplateStore', {
   state: () => ({
@@ -24,17 +15,25 @@ export const useDocumentTemplateStore = defineStore('documentTemplateStore', {
     // Tanlangan shablon: ro'yxatdagi qator (`category` + `type` kaliti bilan).
     selectedKey: null,
 
-    // Muharrirga beriladigan DOCX baytlari (Uint8Array).
-    bytes: null,
-    fileName: null,
-    version: null,
+    // OnlyOffice sozlamasi (imzolangan) va tahrir huquqi.
+    editorConfig: null,
+    canEdit: false,
+    configLoading: false,
+    // null | 'unsupported' (server eski) | 'unsigned' (OnlyOffice siri yo'q) | 'failed' | 'unreachable'
+    configError: null,
+
+    // Tahrir holati: 'idle' | 'dirty' (o'zgarish bor) | 'saved' | 'rejected'
+    saveState: 'idle',
+    // «Saqlash» bosildi — OnlyOffice natijasi kelguncha tugma band.
+    saving: false,
+    discarding: false,
+    savedAt: null,
+    rejectMessage: null,
+
     variables: [],
 
-    contentLoading: false,
-    saving: false,
-    resetting: false,
-    // Muharrirda saqlanmagan o'zgarish bormi.
-    dirty: false
+    // Sahifa ochilgandan keyingi saqlash natijalari shu id dan keyin kuzatiladi.
+    lastSaveId: 0
   }),
 
   getters: {
@@ -50,12 +49,12 @@ export const useDocumentTemplateStore = defineStore('documentTemplateStore', {
         edited: r.edited
       })),
 
-    selected: (state) =>
-      state.list.find((r) => `${r.category}:${r.type}` === state.selectedKey) ?? null,
+    // OnlyOffice hujjat kaliti — saqlash natijalari faqat shu sessiya bo'yicha olinadi.
+    docKey: (state) => state.editorConfig?.document?.key ?? null,
 
-    // Global override bor — «standartga qaytarish» tugmasi shunda faol.
-    canReset: (state) =>
-      Boolean(state.list.find((r) => `${r.category}:${r.type}` === state.selectedKey)?.edited)
+    selected: (state) =>
+      state.list.find((r) => `${r.category}:${r.type}` === state.selectedKey) ?? null
+
   },
 
   actions: {
@@ -69,120 +68,155 @@ export const useDocumentTemplateStore = defineStore('documentTemplateStore', {
       }
     },
 
-    // Select o'zgardi — shablonni muharrirga yuklaymiz.
+    // Select o'zgardi — OnlyOffice sozlamasi va o'zgaruvchilar yuklanadi.
     async _select(key) {
       this.selectedKey = key
-      this.bytes = null
-      this.version = null
+      this.editorConfig = null
       this.variables = []
-      this.dirty = false
+      this._resetSaveState()
       if (!key) return
-      await Promise.all([this._loadContent(), this._loadVariables()])
+      await Promise.all([this._loadEditor(), this._loadVariables()])
+      await this._syncLastSave()
     },
 
-    async _loadContent() {
+    async _loadEditor() {
       const sel = this.selected
       if (!sel) return
-      this.contentLoading = true
+      const key = this.selectedKey
+      this.configLoading = true
+      this.configError = null
       try {
-        const res = await $ApiService.documentTemplateService._content({
+        const res = await $ApiService.documentTemplateService._editorConfig({
           params: { category: sel.category, type: sel.type }
         })
-        // markRaw — typed array Vue proxy'siga o'ralib qolmasin (muharrir xom
-        // baytlar ustida ishlaydi).
-        this.bytes = markRaw(new Uint8Array(res.data))
-        this.version = res.headers?.['x-template-version'] ?? null
-        this.fileName = res.headers?.['x-template-filename'] ?? sel.file_name
-        this.dirty = false
+        // Shablon almashib ketgan bo'lsa — eskirgan javob tashlanadi.
+        if (key !== this.selectedKey) return
+        const data = res.data.data
+        this.editorConfig = data?.config ?? null
+        this.canEdit = Boolean(data?.can_edit)
+        // Imzosiz sozlamani OnlyOffice rad etadi — tushunarli xabar ko'rsatiladi.
+        if (!this.editorConfig?.token) this.configError = 'unsigned'
       } catch (e) {
-        this.bytes = null
-        $Alert.warning(this._errorMessage(e))
+        if (key !== this.selectedKey) return
+        this.editorConfig = null
+        this.configError = e?.response?.status === 404 ? 'unsupported' : 'failed'
       } finally {
-        this.contentLoading = false
+        if (key === this.selectedKey) this.configLoading = false
       }
     },
 
-    // Shablondagi `${...}` o'zgaruvchilar — muharrir yonidagi chip panel.
+    // Faqat tanlangan shablonning o'zgaruvchilari — almashgandan keyin kelgan eski javob tashlanadi.
     async _loadVariables() {
       const sel = this.selected
       if (!sel) return
+      const key = this.selectedKey
       try {
         const res = await $ApiService.documentTemplateService._variables({
           params: { category: sel.category, type: sel.type }
         })
-        this.variables = res.data.data?.variables ?? []
+        if (key === this.selectedKey) this.variables = res.data.data?.variables ?? []
       } catch {
-        // Panel ikkilamchi — muharrir baribir ochiladi.
-        this.variables = []
+        if (key === this.selectedKey) this.variables = []
       }
     },
 
-    async _save(buffer) {
+    // Joriy oxirgi natija id'si — eski natijalar qayta xabar bo'lib chiqmasin.
+    async _syncLastSave() {
+      const row = await this._fetchLastSave()
+      this.lastSaveId = row?.id ?? 0
+    },
+
+    async _fetchLastSave(afterId) {
       const sel = this.selected
-      if (!buffer || !sel) return false
+      if (!sel || !this.docKey) return null
+      try {
+        const res = await $ApiService.documentTemplateService._lastSave({
+          params: {
+            category: sel.category,
+            type: sel.type,
+            key: this.docKey,
+            after_id: afterId || undefined
+          }
+        })
+        return res.data.data ?? null
+      } catch {
+        return null
+      }
+    },
+
+    // Yangi saqlash natijasi bo'lsa qaytaradi va ro'yxat/o'zgaruvchilarni yangilaydi.
+    async _checkSave() {
+      const row = await this._fetchLastSave(this.lastSaveId)
+      if (!row || row.id <= this.lastSaveId) return null
+      this.lastSaveId = row.id
+      this.saving = false
+      if (row.status === 'saved') {
+        this.saveState = 'saved'
+        this.savedAt = row.created_at
+        this.rejectMessage = null
+        await Promise.all([this._index(), this._loadVariables()])
+      } else {
+        this.saveState = 'rejected'
+        this.rejectMessage = row.message
+      }
+      return row
+    },
+
+    // «Saqlash» tugmasi: true — saqlash boshlandi, false — o'zgarish yo'q yoki xato.
+    async _forceSave() {
+      const sel = this.selected
+      if (!sel || !this.docKey || this.saving) return false
       this.saving = true
       try {
-        const form = new FormData()
-        form.append(
-          'file',
-          new Blob([buffer], {
-            type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-          }),
-          this.fileName ?? `${sel.type}.docx`
-        )
-        form.append('category', sel.category)
-        form.append('type', String(sel.type))
-        if (this.version) form.append('version', this.version)
-
-        const res = await $ApiService.documentTemplateService._save({ data: form })
-        this.version = res.data?.data?.version ?? this.version
-        this.variables = res.data?.data?.variables ?? this.variables
-        this.dirty = false
-        $Toast.success(t('documentTemplate.saved'))
-        // `source`/`edited` o'zgardi — ro'yxatni yangilaymiz.
-        await this._index()
-        return true
-      } catch {
-        // Xabarni axios interceptor ko'rsatadi (409 konflikt, o'zgaruvchi
-        // yo'qolgani va h.k.).
-        return false
-      } finally {
-        this.saving = false
-      }
-    },
-
-    // Global override'ni o'chirib, git'dagi standart shablonga qaytadi.
-    async _reset() {
-      const sel = this.selected
-      if (!sel) return false
-      this.resetting = true
-      try {
-        await $ApiService.documentTemplateService._reset({
-          category: sel.category,
-          type: sel.type
+        const res = await $ApiService.documentTemplateService._forceSave({
+          data: { category: sel.category, type: sel.type, key: this.docKey }
         })
-        $Toast.success(t('documentTemplate.resetDone'))
-        await this._index()
-        await this._select(this.selectedKey)
+        if (res.data.data?.status === 'no_changes') {
+          this.saving = false
+          $Toast.info(t('documentTemplate.noChanges'))
+          return false
+        }
+        // Natija kelmasa tugma abadiy band qolmasin.
+        window.setTimeout(() => (this.saving = false), 30000)
+        return true
+      } catch {
+        this.saving = false
+        return false
+      }
+    },
+
+    // Saqlanmagan tahrirni tashlab, oxirgi saqlangan nusxani yangi sessiyada ochadi.
+    async _discard() {
+      const sel = this.selected
+      if (!sel || !this.docKey) return false
+      this.discarding = true
+      try {
+        await $ApiService.documentTemplateService._discard({
+          data: { category: sel.category, type: sel.type, key: this.docKey }
+        })
+        this._resetSaveState()
+        await this._loadEditor()
+        await this._syncLastSave()
         return true
       } catch {
         return false
       } finally {
-        this.resetting = false
+        this.discarding = false
       }
     },
 
-    // arraybuffer javobidagi `{message}` ni o'qish (interceptor buni qila olmaydi).
-    _errorMessage(e) {
-      const data = e?.response?.data
-      if (data instanceof ArrayBuffer) {
-        try {
-          return JSON.parse(new TextDecoder().decode(data))?.message ?? e.message
-        } catch {
-          return e.message
-        }
-      }
-      return data?.message ?? e?.message ?? t('content.error')
+    // OnlyOffice: hujjatda saqlanmagan o'zgarish paydo bo'ldi.
+    _markDirty() {
+      if (this.canEdit) this.saveState = 'dirty'
+    },
+
+    _resetSaveState() {
+      this.saveState = 'idle'
+      this.saving = false
+      this.savedAt = null
+      this.rejectMessage = null
+      this.lastSaveId = 0
     }
+
   }
 })

@@ -23,10 +23,7 @@
   // Bir vaqtda (bir daqiqada) ko'pchilikka bo'lgan yuborish — bitta qator bo'lib birlashadi.
   const GROUPABLE = [EVENT.sent, EVENT.resent]
 
-  const shortName = (w) =>
-    [w?.last_name, [w?.first_name?.[0], w?.middle_name?.[0]].filter(Boolean).join('.')]
-      .filter(Boolean)
-      .join(' ') + (w?.first_name ? '.' : '')
+  const shortName = (w) => Utils.shortFio(w?.last_name, w?.first_name, w?.middle_name)
 
   const groups = computed(() => {
     // HR yopganda uning qatori ham «rad etilgan» bo'ladi — «Yopildi» yetarli, dublikat chiqmasin.

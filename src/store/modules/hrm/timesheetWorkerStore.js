@@ -14,7 +14,7 @@ const TIMESHEET_KEY_BY_ID = {
 // (2026-11-13 dev'da eksport bilan solishtirildi: Р×5 + K8 + K0 + T8 → 2 kun, 16 soat).
 const isWorkDay = (details) => (details ?? []).some((d) => Number(d.hours) > 0)
 // Soat yuritiladigan turlar (backend TIMESHEET_TYPE_HOURS).
-const TIMESHEET_TYPES_WITH_HOURS = new Set([1, 2, 3, 5, 17, 27, 32])
+export const TIMESHEET_TYPES_WITH_HOURS = new Set([1, 2, 3, 5, 17, 27, 32])
 const { t } = i18n.global
 
 // Katak qiymatining solishtiriladigan ko'rinishi: tartib va `null`/`0` soat farqi ahamiyatsiz.
@@ -35,7 +35,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     saved: {},
     // Bazadagi katak qiymati (details nusxasi) — tahrirlangan katakda «Oldin: …» ko'rsatish uchun.
     savedCells: {},
-    // PROTOTIP: tizim hisobi (auto natijasi) — `${wpId}|${day}` → { status, status_id, hours }; hozircha faqat xotirada.
+    // Tizim hisobi (auto natijasi) — `${wpId}|${day}` → { status, status_id, hours }; bazadan (`auto`) yuklanadi.
     calcBase: {},
     // Tungi smena davomi kunlari (`${wpId}|${day}` → true) — katakda «↳» belgisi.
     nightCont: {},
@@ -250,6 +250,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
               }, 0)
             }
           }))
+          this.hydrateAuto(res.data.data.data)
           this.totalItems = res.data.data.total
           this.rememberSaved()
           this.reapplyPending()
@@ -302,6 +303,7 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
               }, 0)
             }
           }))
+          this.hydrateAuto(res.data.data.data)
           this.totalItems = res.data.data.total
           this.rememberSaved()
           this.reapplyPending()
@@ -396,6 +398,30 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
     // qo'yiladi (katakchalar to'ladi), bazaga «Saqlash» bosilganda ketadi.
     // `workerPositionIds` berilsa faqat o'shalar hisoblanadi (qator menyusidagi
     // «Qayta hisoblash»); berilmasa — joriy sahifadagi hamma xodim («Auto»).
+    // Saqlangan tizim hisobi — «tizimdan farq» belgisi qayta ochilganda ham ko'rinsin.
+    hydrateAuto(rows) {
+      for (const w of rows ?? []) {
+        if (w.auto) this.applyAutoBase(w.id, w.auto.days ?? [], w.auto.continuation_days ?? [])
+      }
+    },
+    // Xodimning tizim hisobini (avto) panjara xotirasiga qo'yadi.
+    applyAutoBase(id, days, continuationDays) {
+      this.calcWorkers[id] = true
+      for (let day = 1; day <= (this.days.length || 31); day++) {
+        delete this.calcBase[`${id}|${day}`]
+        delete this.nightCont[`${id}|${day}`]
+      }
+      for (const day of continuationDays) this.nightCont[`${id}|${day}`] = true
+      for (const d of days) {
+        this.calcBase[`${id}|${d.day}`] = {
+          status: TIMESHEET_KEY_BY_ID[d.status] ?? null,
+          status_id: d.status,
+          hours: TIMESHEET_TYPES_WITH_HOURS.has(d.status) ? (d.hours ?? 0) : null,
+          // Tungi smenada kirish/chiqish yo'q — katak sariq belgilanadi.
+          needs_check: Boolean(d.needs_check)
+        }
+      }
+    },
     async autoCalc(workerPositionIds = null) {
       const ids = (workerPositionIds ?? this.list.map((w) => w.id)).filter(Boolean)
       if (!ids.length) return null
@@ -410,22 +436,8 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
         for (const item of items) {
           const row = this.list.findIndex((w) => w.id === item.id)
           if (row < 0) continue
-          // Tizim hisobi eslab qolinadi: qaytmagan kunlar bo'sh (0 soat).
-          this.calcWorkers[item.id] = true
-          for (let day = 1; day <= this.days.length; day++) {
-            delete this.calcBase[`${item.id}|${day}`]
-            delete this.nightCont[`${item.id}|${day}`]
-          }
-          for (const day of item.continuation_days ?? []) this.nightCont[`${item.id}|${day}`] = true
-          for (const d of item.days ?? []) {
-            this.calcBase[`${item.id}|${d.day}`] = {
-              status: TIMESHEET_KEY_BY_ID[d.status] ?? null,
-              status_id: d.status,
-              hours: TIMESHEET_TYPES_WITH_HOURS.has(d.status) ? (d.hours ?? 0) : null,
-              // Tungi smenada kirish/chiqish yo'q — katak sariq belgilanadi.
-              needs_check: Boolean(d.needs_check)
-            }
-          }
+          // Tizim hisobi eslab qolinadi (backend ham saqlaydi): qaytmagan kunlar bo'sh (0 soat).
+          this.applyAutoBase(item.id, item.days ?? [], item.continuation_days ?? [])
           for (const d of item.days ?? []) {
             this.applyLocalCell(row, d.day - 1, [
               {
@@ -465,6 +477,12 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
       return res.data.data
     },
 
+    // O'zgarishlar tarixi — `{ current_page, total, data }`.
+    async fetchChanges(params) {
+      const clean = Object.fromEntries(Object.entries(params).filter(([, v]) => v != null))
+      const res = await $ApiService.timesheetWorkerService._changes({ id: this.elementId, params: clean })
+      return res.data.data
+    },
     async autoCalcRules() {
       if (this.autoRules) return this.autoRules
       const res = await $ApiService.timesheetWorkerService._auto_calc_rules()

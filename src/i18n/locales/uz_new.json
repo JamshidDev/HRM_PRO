@@ -3654,12 +3654,26 @@
       "unsaved": "Hali saqlanmagan",
       "cleared": "katak tozalandi",
       "system": "Tizim",
-      "entered": "Kiritilgan",
+      "entered": "Xodim",
       "diff": "Farq",
-      "more": "{n} soat köp",
-      "less": "{n} soat kam",
-      "typeOnly": "soat bir xil, tur özgargan",
-      "empty": "böş (0 soat)"
+      "more": "+{n} soat",
+      "less": "−{n} soat",
+      "typeOnly": "tur özgardi",
+      "empty": "böş",
+      "typeAlso": "tur özgardi"
+    },
+    "changes": {
+      "title": "Özgarişlar tarixi",
+      "short": "Tarix",
+      "at": "Vaqt",
+      "worker": "Xodim",
+      "day": "Kun",
+      "before": "Oldin",
+      "after": "Keyin",
+      "user": "Kim özgartirdi",
+      "allWorkers": "Barça xodimlar",
+      "allDays": "Barça kunlar",
+      "rowDiff": "Tizim hisobidan farq: {cells} ta kun özgartirilgan. Tarixni köriş uçun bosing"
     },
     "lockClose": "Tabelni yopiş",
     "lockOpen": "Tabelni oçiş",
@@ -6631,6 +6645,37 @@
       "secretHidden": "Yopiq kalit xavfsizlik uçun oçiq saqlanmaydi — uni faqat \"Kalitni almaştiriş\" orqali yangilaş mumkin.",
       "copyAll": "Hammasini nusxalaş",
       "copyHint": "Ekranda yaşirin — \"Hammasini nusxalaş\"da oçiq holatda keladi."
+    },
+    "tester": {
+      "button": "API test",
+      "title": "Integratsiya API test",
+      "secretKey": "Yopiq kalit (secret)",
+      "send": "Yuboriş",
+      "permission": "Ruxsat",
+      "needPathParam": "Yöl parametrini kiriting",
+      "badJson": "Body JSON notöğri",
+      "params": "Parametrlar",
+      "checking": "Kalitlar tekşirilmoqda…",
+      "keysValid": "Kalitlar töğri",
+      "keysInvalid": "Kalitlar yaroqsiz:",
+      "role": "Rol",
+      "permissionsCount": "Ruxsatlar: {n}",
+      "scopeAll": "Barça korxonalar",
+      "scopeOrgs": "{n} ta korxona",
+      "inactive": "Faol emas",
+      "noPermission": "Rolda bu API ruxsati yöq",
+      "check": "Tekşiriş",
+      "diag": {
+        "ok": "Işlayapti",
+        "network": "Serverga ulanib bölmadi (tarmoq yoki CORS)",
+        "s400": "Sörov notöğri — parametrlarni tekşiring",
+        "s401": "Kalit, imzo yoki vaqt notöğri (yoki mijoz faol emas)",
+        "s403": "Mijozda bu API ruxsati yöq yoki IP/korxona çeklovi",
+        "s404": "Topilmadi — yöl yoki parametr qiymati notöğri",
+        "s422": "API javob berdi — majburiy parametrlar yetişmaydi yoki notöğri",
+        "s429": "Sörovlar limiti oşdi",
+        "server": "Server xatosi"
+      }
     }
   },
   "salaryAccess": {
@@ -6764,7 +6809,9 @@
     "holidayGreetings": "Bayram tabriklari",
     "workerSchedules": "Navbatçilik grafigi",
     "workerScheduleSwap": "Grafik almaştiriş",
-    "dailyAttendance": "Kunlik davomat"
+    "dailyAttendance": "Kunlik davomat",
+    "oneCAttendance": "1C: kunlik davomat",
+    "businessTripsIncoming": "Safar bilan kelgan xodimlar"
   },
   "kpiPage": {
     "name": "KPI körsatgiçlar",
@@ -6944,7 +6991,7 @@
     "name": "Şablon",
     "subtitle": "Hujjat şablonini tanlang, matnini tahrirlang va yangi hujjatlar uçun saqlang.",
     "selectPlaceholder": "Hujjat şablonini tanlang",
-    "empty": "Tahrirlaş uçun yuqoridan şablon tanlang",
+    "empty": "Buyruq turini tanlang",
     "variables": "Özgaruvçilar",
     "variablesHint": "Ustiga bosib nusxalang. Nomini özgartirmang.",
     "searchVariables": "Özgaruvçini qidiring",
@@ -7019,7 +7066,26 @@
     "editedBadge": "Tahrirlangan",
     "zoomIn": "Kattalaştiriş",
     "zoomOut": "Kiçraytiriş",
-    "zoomFit": "Sahifa eniga moslaş"
+    "zoomFit": "Sahifa eniga moslaş",
+    "saveRejectedTitle": "Şablon saqlanmadi",
+    "tabTemplates": "Şablonlar",
+    "noChanges": "Saqlanadigan özgariş yöq",
+    "discardTitle": "Tahrirni bekor qiliş",
+    "discardText": "Saqlanmagan özgarişlar öçiriladi va şablon oxirgi saqlangan holatda qayta oçiladi. Davom etasizmi?",
+    "stateSaved": "Saqlandi · {time}",
+    "stateRejected": "Saqlanmadi — sababini köriş",
+    "stateRejectedHint": "Bosing — rad etiliş sababi",
+    "updatedBy": "Özgartirgan",
+    "editorError": {
+      "unsupported": "Server bu funksiyani hali qöllamaydi",
+      "unsupportedHint": "Backend yangilanmagan — şablon muharriri endpointlari topilmadi. Administratorga murojaat qiling.",
+      "unsigned": "OnlyOffice sozlanmagan",
+      "unsignedHint": "Serverda OnlyOffice JWT siri (ONLYOFFICE_JWT_SECRET) yöq — muharrir oçilmaydi.",
+      "failed": "Muharrir sozlamasini olib bölmadi",
+      "failedHint": "Server xato qaytardi. Sahifani yangilab köring.",
+      "unreachable": "OnlyOffice serveriga ulanib bölmadi",
+      "unreachableHint": "Hujjat serveri javob bermayapti yoki manzili notöğri. Keyinroq urinib köring."
+    }
   },
   "turnstileDownload": {
     "title": "Hodisalarni yuklaş"
