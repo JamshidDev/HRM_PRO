@@ -24,7 +24,10 @@
     {
       key: 'name',
       title: t('documentSetting.form.name'),
-      minWidth: 200
+      minWidth: 200,
+      // Backend andozaga alohida `name` bermaydi — nom hujjat turida (`type.name`). Avval `name`
+      // o'qilardi → qator bo'sh ko'rinardi (QA-48).
+      render: (row) => row.name || row.type?.name || '—'
     }
   ])
 
