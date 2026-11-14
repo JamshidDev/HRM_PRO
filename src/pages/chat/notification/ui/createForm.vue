@@ -231,11 +231,11 @@
           </n-form-item>
           <n-form-item :label="$t('notificationPage.sendTime')">
             <n-date-picker
-              class="w-full"
+              class="w-full disable-mask"
               type="datetime"
               clearable
               :actions="['clear', 'confirm']"
-              format="yyyy-MM-dd HH:mm"
+              format="dd.MM.yyyy HH:mm"
               value-format="yyyy-MM-dd HH:mm:ss"
               v-model:formatted-value="store.payload.scheduled_at"
               :placeholder="$t('notificationPage.sendTimePlaceholder')"
@@ -268,11 +268,11 @@
           </n-form-item>
           <n-form-item class="col-span-2" :label="$t('notificationPage.sendTime')">
             <n-date-picker
-              class="w-full"
+              class="w-full disable-mask"
               type="datetime"
               clearable
               :actions="['clear', 'confirm']"
-              format="yyyy-MM-dd HH:mm"
+              format="dd.MM.yyyy HH:mm"
               value-format="yyyy-MM-dd HH:mm:ss"
               v-model:formatted-value="store.payload.scheduled_at"
               :placeholder="$t('notificationPage.sendTimePlaceholder')"

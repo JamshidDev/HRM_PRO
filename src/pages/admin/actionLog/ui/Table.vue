@@ -115,7 +115,7 @@
     </template>
 
     <template #cell-created_at="{ row }">
-      <div class="w-full text-center">{{ Utils.timeWithMonth(row?.created_at) }}</div>
+      <div class="w-full text-center">{{ Utils.dateTimeLabel(row?.created_at) }}</div>
     </template>
   </UITable>
 </template>

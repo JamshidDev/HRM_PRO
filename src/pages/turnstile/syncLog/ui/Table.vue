@@ -119,7 +119,7 @@
   >
     <template #cell-created_at="{ row }">
       <div class="flex flex-col">
-        <div class="leading-[1.2] font-medium">{{ Utils.timeWithMonth(row.created_at) }}</div>
+        <div class="leading-[1.2] font-medium">{{ Utils.dateTimeLabel(row.created_at) }}</div>
         <div class="text-secondary">
           {{ Utils.timeOnlyDate(row.type.id === 2 ? row.day : null) }}
         </div>
@@ -128,7 +128,7 @@
 
     <template #cell-updated_at="{ row }">
       <div class="flex flex-col">
-        <div class="leading-[1.2] font-medium">{{ Utils.timeWithMonth(row.updated_at) }}</div>
+        <div class="leading-[1.2] font-medium">{{ Utils.dateTimeLabel(row.updated_at) }}</div>
       </div>
       {{ row?.sync_datetime?.split(' ')?.[1] }}
     </template>

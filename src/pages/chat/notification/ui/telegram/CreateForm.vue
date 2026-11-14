@@ -88,11 +88,11 @@
         :feedback="isPastTime ? $t('telegramBroadcast.sendTimeFuture') : undefined"
       >
         <n-date-picker
-          class="w-full"
+          class="w-full disable-mask"
           type="datetime"
           clearable
           :actions="['clear', 'confirm']"
-          format="yyyy-MM-dd HH:mm"
+          format="dd.MM.yyyy HH:mm"
           value-format="yyyy-MM-dd HH:mm:ss"
           :is-date-disabled="disablePastDate"
           v-model:formatted-value="store.payload.scheduled_at"

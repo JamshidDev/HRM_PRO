@@ -30,7 +30,7 @@ const infoItems = computed(() => [
     key: 'face',
     icon: ShieldCheckmark20Filled,
     labelKey: 'mobileUserPage.verificationTime',
-    value: device.value?.face ? Utils.timeWithMonth(device.value.face) : ''
+    value: device.value?.face ? Utils.dateTimeLabel(device.value.face) : ''
   },
   {
     key: 'created',
@@ -134,7 +134,7 @@ const statusChip = (session) => STATUS_CHIP[getTimelineType(session.status, sess
             </template>
             <template #header>
               <div class="flex flex-wrap items-center gap-2">
-                <span class="text-sm font-bold text-textColor0">{{ Utils.timeWithMonth(session.created_at) }}</span>
+                <span class="text-sm font-bold text-textColor0">{{ Utils.dateTimeLabel(session.created_at) }}</span>
                 <span
                   class="rounded-full px-2.5 py-1 text-[11px] font-semibold leading-none"
                   :class="statusChip(session).cls"

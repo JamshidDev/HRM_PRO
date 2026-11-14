@@ -126,7 +126,7 @@
                       <span class="text-[14px]">{{ $t('turnstile.workDurationPage.enter') }}</span>
                     </n-button>
                     <div>
-                      <UIBadge :show-icon="false" :label="Utils.timeWithMonth(item?.event_time)" />
+                      <UIBadge :show-icon="false" :label="Utils.dateTimeLabel(item?.event_time)" />
                     </div>
                   </div>
                 </template>
@@ -143,7 +143,7 @@
                 <template v-if="!item.event_type">
                   <div class="flex items-center gap-2">
                     <div>
-                      <UIBadge :show-icon="false" :label="Utils.timeWithMonth(item?.event_time)" />
+                      <UIBadge :show-icon="false" :label="Utils.dateTimeLabel(item?.event_time)" />
                     </div>
                     <n-button type="success" text size="tiny">
                       <span class="text-[14px]">{{ $t('turnstile.workDurationPage.exit') }}</span>

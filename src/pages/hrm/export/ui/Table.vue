@@ -86,11 +86,11 @@
     </template>
 
     <template #cell-created_at="{ row }">
-      {{ Utils.timeWithMonth(row.created_at) }}
+      {{ Utils.dateTimeLabel(row.created_at) }}
     </template>
 
     <template #cell-updated_at="{ row }">
-      {{ Utils.timeWithMonth(row.updated_at) }}
+      {{ Utils.dateTimeLabel(row.updated_at) }}
     </template>
 
     <template #cell-action="{ row }">

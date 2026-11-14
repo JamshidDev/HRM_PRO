@@ -72,6 +72,13 @@ const timeHHMMWithMonth = (time) => {
   return time ? dayjs(time).format('YYYY.MM.DD HH:mm') : null
 }
 
+/**
+ * Ekranda ko'rsatish uchun yagona sana-vaqt formati: `DD.MM.YYYY HH:mm:ss` / `DD.MM.YYYY HH:mm` (QA-47).
+ * `timeWithMonth` / `timeHHMMWithMonth` (YYYY.MM.DD) API parametrlarida ham ishlatiladi — ularga tegilmaydi.
+ */
+const dateTimeLabel = (time) => (time ? dayjs(time).format('DD.MM.YYYY HH:mm:ss') : null)
+const dateTimeShortLabel = (time) => (time ? dayjs(time).format('DD.MM.YYYY HH:mm') : null)
+
 const timeOnlyDate = (time) => {
   return time ? dayjs(time).format('DD.MM.YYYY') : null
 }
@@ -564,6 +571,8 @@ export default {
   getMyLocation,
   timeToZone,
   timeWithMonth,
+  dateTimeLabel,
+  dateTimeShortLabel,
   timeOnlyDate,
   timeOnlyHour,
   timeOnlySecond,

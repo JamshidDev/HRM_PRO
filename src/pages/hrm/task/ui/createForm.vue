@@ -182,10 +182,10 @@
     <!-- Muddat (ixtiyoriy) -->
     <n-form-item :label="$t('task.table.deadline')" path="deadline">
       <n-date-picker
-        class="w-full"
+        class="w-full disable-mask"
         v-model:value="deadlineTs"
         type="datetime"
-        format="yyyy-MM-dd HH:mm"
+        format="dd.MM.yyyy HH:mm"
         :update-value-on-close="true"
         clearable
       />
