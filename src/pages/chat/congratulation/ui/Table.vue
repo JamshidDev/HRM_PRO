@@ -88,7 +88,7 @@
     </template>
 
     <template #cell-created_at="{ row }">
-      {{ Utils.timeWithMonth(row.created_at) }}
+      {{ Utils.dateTimeLabel(row.created_at) }}
     </template>
 
     <template #footer>

@@ -3650,6 +3650,9 @@
       "discard": "Saqlamastan jabıw"
     },
     "calcDiff": {
+      "before": "Aldın",
+      "unsaved": "Ele saqlanbaǵan",
+      "cleared": "katak tazalandı",
       "system": "Sistema",
       "entered": "Kiritilgen",
       "diff": "Parq",
@@ -3661,7 +3664,11 @@
     "lockClose": "Tabeldi jabıw",
     "lockOpen": "Tabeldi ashıw",
     "lockedTag": "Jabılǵan",
-    "lockedByHr": "HR jabqan — tek kóriw"
+    "lockedByHr": "HR jabqan — tek kóriw",
+    "autoOverwrite": {
+      "title": "Kataklar qaytadan jazıladı",
+      "content": "{count} toltırılǵan katak sistema esabı menen almastırıladı (dem alıs, saparlar hám qolda kiritilgenleri de). «Saqlaw» basılmaǵansha bazaǵa jazılmaydı. Dawam etesiz be?"
+    }
   },
   "turnstile": {
     "title": "Turniket",
@@ -4626,6 +4633,7 @@
       "reported_tax": "Esabat dáwirindegi salıq summası"
     },
     "card": {
+      "noData": "Maǵlıwmat kiritilmegen",
       "salary_fund": "Miynet haqı fondı",
       "tax_four": "Salıq — 4-qosımsha",
       "tax_five": "Salıq — 5-qosımsha",
@@ -4656,6 +4664,7 @@
       "no_alerts": "Eskertiwler joq"
     },
     "alert": {
+      "noData": "Tańlanǵan ay ushın esabat ele júklenbegen — ótken ayǵa salıstırǵanda ózgeris esaplanbaydı",
       "sharpDrop": "{name} {percent}% keskin tómenledi",
       "decline": "{name} {percent}% kemeydi",
       "growth": "{name} {percent}% arttı",

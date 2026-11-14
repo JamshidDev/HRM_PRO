@@ -106,12 +106,12 @@
     </template>
 
     <template #cell-login_at="{ row }">
-      <div class="w-full text-center">{{ Utils.timeWithMonth(row?.login_at) }}</div>
+      <div class="w-full text-center">{{ Utils.dateTimeLabel(row?.login_at) }}</div>
     </template>
 
     <template #cell-logout_at="{ row }">
       <div class="w-full text-center text-sm">
-        {{ row?.logout_at ? Utils.timeWithMonth(row?.logout_at) : '' }}
+        {{ row?.logout_at ? Utils.dateTimeLabel(row?.logout_at) : '' }}
       </div>
     </template>
 

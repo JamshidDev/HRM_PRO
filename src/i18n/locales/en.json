@@ -3630,6 +3630,9 @@
       "discard": "Close without saving"
     },
     "calcDiff": {
+      "before": "Before",
+      "unsaved": "Not saved yet",
+      "cleared": "cell cleared",
       "system": "System",
       "entered": "Employee",
       "diff": "Difference",
@@ -3655,7 +3658,11 @@
     "lockClose": "Close timesheet",
     "lockOpen": "Open timesheet",
     "lockedTag": "Closed",
-    "lockedByHr": "Closed by HR — view only"
+    "lockedByHr": "Closed by HR — view only",
+    "autoOverwrite": {
+      "title": "Cells will be overwritten",
+      "content": "{count} filled cells will be replaced by the system calculation, including leave, business trips and manual entries. Nothing is saved until you press «Save». Continue?"
+    }
   },
   "turnstile": {
     "title": "Turnstile",
@@ -4596,6 +4603,7 @@
       "reported_tax": "Reported tax"
     },
     "card": {
+      "noData": "No data yet",
       "salary_fund": "Payroll fund",
       "tax_four": "Tax — Appendix 4",
       "tax_five": "Tax — Appendix 5",
@@ -4626,6 +4634,7 @@
       "no_alerts": "No alerts"
     },
     "alert": {
+      "noData": "The report for the selected month isn't uploaded yet — change vs last month isn't calculated",
       "sharpDrop": "{name} dropped sharply by {percent}%",
       "decline": "{name} declined by {percent}%",
       "growth": "{name} grew by {percent}%",

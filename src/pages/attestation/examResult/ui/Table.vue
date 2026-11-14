@@ -139,13 +139,13 @@
 
     <template #cell-created="{ row }">
       <n-tag round size="small" type="primary">
-        {{ Utils.timeWithMonth(row?.created) }}
+        {{ Utils.dateTimeLabel(row?.created) }}
       </n-tag>
     </template>
 
     <template #cell-ended="{ row }">
       <n-tag v-if="row?.ended" round size="small" type="error">
-        {{ Utils.timeWithMonth(row?.ended) }}
+        {{ Utils.dateTimeLabel(row?.ended) }}
       </n-tag>
     </template>
 

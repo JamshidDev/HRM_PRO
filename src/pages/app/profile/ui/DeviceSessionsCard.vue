@@ -142,7 +142,7 @@
               <span v-if="s.kind === 'mobile' && s.app_version">v{{ s.app_version }}</span>
               <span v-if="s.ip" class="font-mono">{{ s.ip }}</span>
               <span v-if="s.last_active_at">
-                {{ $t('deviceSessions.lastActive') }}: {{ Utils.timeWithMonth(s.last_active_at) }}
+                {{ $t('deviceSessions.lastActive') }}: {{ Utils.dateTimeLabel(s.last_active_at) }}
               </span>
             </div>
           </div>

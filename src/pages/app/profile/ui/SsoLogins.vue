@@ -137,7 +137,7 @@
           </div>
 
           <span class="text-xs text-textColor2 whitespace-nowrap">
-            {{ Utils.timeWithMonth(item.created_at) }}
+            {{ Utils.dateTimeLabel(item.created_at) }}
           </span>
         </div>
       </div>

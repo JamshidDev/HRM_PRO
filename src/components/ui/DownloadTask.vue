@@ -164,7 +164,7 @@
                   <span>{{ item.type }}</span>
                 </div>
                 <div class="text-[10px] text-textColor3 mt-1.5">
-                  {{ Utils.timeWithMonth(item.created_at) }}
+                  {{ Utils.dateTimeLabel(item.created_at) }}
                 </div>
               </div>
 

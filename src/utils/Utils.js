@@ -21,6 +21,34 @@ const fileToBase64 = (file) => {
 
 export const generateUUIDKey = uuidv4
 
+/**
+ * Ro'yxatlarda shaxsiy ma'lumotni niqoblash (QA-50). Faqat ko'rinish uchun — haqiqiy himoya backend'da
+ * (to'liq qiymat baribir javobda keladi). Tahrirlash formasi to'liq qiymat bilan ishlaydi.
+ */
+// JSHSHIR: 30310012345678 → 3031******5678
+const maskPin = (value) => {
+  const v = String(value ?? '').trim()
+  if (!v) return ''
+  if (v.length <= 8) return v
+  return `${v.slice(0, 4)}${'*'.repeat(v.length - 8)}${v.slice(-4)}`
+}
+// Pasport: AB1234567 → AB*****67 (seriya harflari va oxirgi 2 raqam)
+const maskPassport = (value) => {
+  const v = String(value ?? '').trim()
+  if (!v) return ''
+  const series = (v.match(/^[A-Za-zА-Яа-яЎўҚқҒғҲҳ]+/) || [''])[0]
+  const digits = v.slice(series.length)
+  if (digits.length <= 2) return v
+  return `${series}${'*'.repeat(digits.length - 2)}${digits.slice(-2)}`
+}
+// Manzil: faqat birinchi qism (viloyat) — «Qoraqalpog'iston Respublikasi, …»
+const maskAddress = (value) => {
+  const v = String(value ?? '').trim()
+  if (!v) return ''
+  const cut = v.indexOf(',')
+  return cut > 0 ? `${v.slice(0, cut)}, …` : v.length > 16 ? `${v.slice(0, 16)}…` : v
+}
+
 const onlyAllowNumber = (value) => !value || /^\d+$/.test(value)
 
 // Masklangan JSHSHIR ("1234-5678-9012-34") → raqamli qiymat (12345678901234) yoki null.
@@ -71,6 +99,13 @@ const timeWithMonth = (time) => {
 const timeHHMMWithMonth = (time) => {
   return time ? dayjs(time).format('YYYY.MM.DD HH:mm') : null
 }
+
+/**
+ * Ekranda ko'rsatish uchun yagona sana-vaqt formati: `DD.MM.YYYY HH:mm:ss` / `DD.MM.YYYY HH:mm` (QA-47).
+ * `timeWithMonth` / `timeHHMMWithMonth` (YYYY.MM.DD) API parametrlarida ham ishlatiladi — ularga tegilmaydi.
+ */
+const dateTimeLabel = (time) => (time ? dayjs(time).format('DD.MM.YYYY HH:mm:ss') : null)
+const dateTimeShortLabel = (time) => (time ? dayjs(time).format('DD.MM.YYYY HH:mm') : null)
 
 const timeOnlyDate = (time) => {
   return time ? dayjs(time).format('DD.MM.YYYY') : null
@@ -571,6 +606,9 @@ const handleTimeKeydown = (event) => {
 }
 
 export default {
+  maskPin,
+  maskPassport,
+  maskAddress,
   getMonthRange,
   useDebounce,
   formatToMLN,
@@ -583,6 +621,8 @@ export default {
   getMyLocation,
   timeToZone,
   timeWithMonth,
+  dateTimeLabel,
+  dateTimeShortLabel,
   timeOnlyDate,
   timeOnlyHour,
   timeOnlySecond,

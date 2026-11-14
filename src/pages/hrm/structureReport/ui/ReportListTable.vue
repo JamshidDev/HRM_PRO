@@ -129,7 +129,7 @@
         {{ Utils.getMonthNameById(row.month) }} {{ row.year }}
         <br />
         <span class="opacity-65 text-xs group-hover:!text-primary">
-          {{ Utils.timeHHMMWithMonth(row.created_at) }}
+          {{ Utils.dateTimeShortLabel(row.created_at) }}
         </span>
       </span>
     </template>

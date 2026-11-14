@@ -49,7 +49,7 @@
                 </div>
               </td>
               <td class="!text-center">
-                <UIBadge :show-icon="false" :label="Utils.timeWithMonth(item.updated_at)" />
+                <UIBadge :show-icon="false" :label="Utils.dateTimeLabel(item.updated_at)" />
               </td>
               <td class="!text-center">
                 <UIBadge :show-icon="false" :label="item.sync_time" />

@@ -158,7 +158,7 @@
               </div>
               <div class="flex items-center justify-between gap-2">
                 <span class="text-textColor3 shrink-0">{{ t('mobileUserPage.verificationTime') }}</span>
-                <span class="font-medium text-textColor0 truncate">{{ Utils.timeWithMonth(device.face) || '-' }}</span>
+                <span class="font-medium text-textColor0 truncate">{{ Utils.dateTimeLabel(device.face) || '-' }}</span>
               </div>
               <div class="flex items-center justify-between gap-2">
                 <span class="text-textColor3 shrink-0">{{ t('mobileUserPage.notifications') }}</span>

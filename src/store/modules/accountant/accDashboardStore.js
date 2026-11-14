@@ -27,9 +27,13 @@ const fundAmount = (amount) => {
   return FUND_PARTS.reduce((acc, key) => acc + Number(amount?.[key] || 0), 0)
 }
 
-/** Oylik qatordan bitta ko'rsatkich seriyasini (kalitlar yig'indisi) yig'adi. */
+/**
+ * Oylik qatordan bitta ko'rsatkich seriyasini (kalitlar yig'indisi) yig'adi.
+ * `amount: null` — o'sha oy uchun hisobot yuklanmagan → `null` (0 emas!), aks holda
+ * o'tgan oyga nisbatan yolg'on «-100%» chiqardi (QA-44).
+ */
 const seriesOf = (rows, key) =>
-  (rows || []).map((row) => (key ? Number(row?.amount?.[key] || 0) : 0))
+  (rows || []).map((row) => (row?.amount == null ? null : key ? Number(row.amount[key] || 0) : 0))
 
 /** Ikkita seriyani element-ma-element qo'shadi (uzunligi farq qilsa 0 bilan to'ldiradi). */
 const sumSeries = (a, b) => {
@@ -55,7 +59,11 @@ const rowIndex = (rows, monthIndex) => {
  */
 const deltaOf = (series, monthIndex) => {
   const i = rowIndex(series, monthIndex)
-  if (i < 0 || i + 1 >= series.length) return null
+  if (i < 0) return null
+  // Tanlangan oyga hisobot yuklanmagan — foiz o'rniga «Ma'lumot kiritilmagan».
+  if (series[i] === null) return { noData: true, diff: null, percent: null, dir: 'flat' }
+  if (i + 1 >= series.length) return null
+  // Oldingi oy bo'sh bo'lsa `compareDelta` null qaytaradi — «—».
   return Utils.compareDelta(series[i], series[i + 1])
 }
 
@@ -64,6 +72,13 @@ const valueAt = (series, monthIndex) => {
   const i = rowIndex(series, monthIndex)
   return i < 0 ? 0 : Number(series[i] || 0)
 }
+
+/** Filtrdagi tashkilotlar → `1,2,3`. Element obyekt yoki xom id bo'lishi mumkin (null'lar tashlanadi). */
+const orgIds = (list) =>
+  (list || [])
+    .map((v) => v?.id ?? v)
+    .filter((v) => v !== null && v !== undefined)
+    .toString() || undefined
 
 export const useAccDashboardStore = defineStore('accDashboardStore', {
   state: () => ({
@@ -133,7 +148,7 @@ export const useAccDashboardStore = defineStore('accDashboardStore', {
       if (!data?.last_month) return { fund: [], tax_four: [], tax_five: [], pension: [] }
 
       return {
-        fund: (data.statements || []).map((row) => fundAmount(row.amount)),
+        fund: (data.statements || []).map((row) => (row?.amount == null ? null : fundAmount(row.amount))),
         tax_four: seriesOf(data.tax_four, data.last_month.tax_four?.[0]?.key),
         tax_five: seriesOf(data.tax_five, data.last_month.tax_five?.[0]?.key),
         pension: seriesOf(this.pensionRows, data.last_month.pension_payment?.[0]?.key)
@@ -143,16 +158,18 @@ export const useAccDashboardStore = defineStore('accDashboardStore', {
     /** Maketdagi grafikning uchta chizig'i: fond, JSHDS soliqlari va INPS. */
     trendSeries(state) {
       if (!state.dashboardData?.last_month) return []
+      // Grafikda yuklanmagan oy 0 bo'lib chiziladi (avvalgidek).
+      const zero = (list) => list.map((v) => v ?? 0)
       const series = this.metricSeries
 
       return [
-        { key: 'fund', color: '--fig-icon-green', data: series.fund },
+        { key: 'fund', color: '--fig-icon-green', data: zero(series.fund) },
         {
           key: 'taxes',
           color: '--fig-icon-indigo',
           data: sumSeries(series.tax_four, series.tax_five)
         },
-        { key: 'inps', color: '--fig-icon-amber', data: series.pension }
+        { key: 'inps', color: '--fig-icon-amber', data: zero(series.pension) }
       ]
     },
 
@@ -241,6 +258,11 @@ export const useAccDashboardStore = defineStore('accDashboardStore', {
         }
       })
 
+      // Tanlangan oyga biror hisobot yuklanmagan — bitta tushuntirish (foizlar hisoblanmaydi).
+      if (this.kpiCards.some((card) => card.delta?.noData)) {
+        list.unshift({ type: 'nodata', messageKey: 'accDashboard.alert.noData', card: null })
+      }
+
       // Ish haqi fondi jamisi to'lov turlari yig'indisiga teng bo'lmasa — hisobotda xatolik.
       const statement = state.dashboardData?.last_month?.statement
       if (statement?.length) {
@@ -259,7 +281,7 @@ export const useAccDashboardStore = defineStore('accDashboardStore', {
     _index() {
       const params = {
         ...this.params,
-        organizations: this.params.organizations.map((v) => v.id).toString() || undefined
+        organizations: orgIds(this.params.organizations)
       }
       this.loading = true
       $ApiService.accDashboardService
@@ -280,7 +302,7 @@ export const useAccDashboardStore = defineStore('accDashboardStore', {
       const params = {
         year: this.params.year,
         month: this.params.month,
-        organizations: this.params.organizations.map((v) => v.id).toString() || undefined
+        organizations: orgIds(this.params.organizations)
       }
       this.reportStatusLoading = true
       $ApiService.accountantService

@@ -68,7 +68,7 @@
             </td>
             <td>{{ item.terminal?.name }}</td>
             <td class="!text-center">
-              <UIBadge :show-icon="false" :label="Utils.timeWithMonth(item?.event_time)" />
+              <UIBadge :show-icon="false" :label="Utils.dateTimeLabel(item?.event_time)" />
             </td>
             <td class="!text-center">
               <n-button :type="item.event_type ? 'primary' : 'error'" secondary size="tiny">

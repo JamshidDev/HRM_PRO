@@ -15,6 +15,7 @@
     danger: { icon: AlertChartDown, box: 'bg-fig-red-50', text: 'text-fig-text-red' },
     warning: { icon: AlertTriangle, box: 'bg-fig-chip-amber', text: 'text-fig-chip-amber-text' },
     mismatch: { icon: AlertFile, box: 'bg-fig-chip-amber', text: 'text-fig-chip-amber-text' },
+    nodata: { icon: AlertFile, box: 'bg-fig-chip-amber', text: 'text-fig-chip-amber-text' },
     success: { icon: AlertCheck, box: 'bg-fig-chip-green', text: 'text-fig-text-green' }
   }
 </script>

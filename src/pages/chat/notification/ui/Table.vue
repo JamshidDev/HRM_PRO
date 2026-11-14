@@ -75,11 +75,11 @@
     </template>
 
     <template #cell-created_at="{ row }">
-      {{ Utils.timeHHMMWithMonth(row.created_at) }}
+      {{ Utils.dateTimeShortLabel(row.created_at) }}
     </template>
 
     <template #cell-read_at="{ row }">
-      {{ Utils.timeHHMMWithMonth(row?.read_at) }}
+      {{ Utils.dateTimeShortLabel(row?.read_at) }}
     </template>
 
     <template #cell-alert="{ row }">
