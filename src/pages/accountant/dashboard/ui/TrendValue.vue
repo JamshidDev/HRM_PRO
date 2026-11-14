@@ -41,5 +41,8 @@
       {{ toPercent(delta.percent) }}%
     </p>
   </div>
+  <p v-else-if="delta?.noData" class="shrink-0 text-right text-[12px] leading-4 text-fig-text-tertiary">
+    {{ $t('accDashboard.card.noData') }}
+  </p>
   <p v-else class="shrink-0 text-[12px] leading-4 text-fig-text-tertiary">—</p>
 </template>

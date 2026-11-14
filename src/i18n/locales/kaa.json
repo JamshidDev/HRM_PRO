@@ -4633,6 +4633,7 @@
       "reported_tax": "Esabat dáwirindegi salıq summası"
     },
     "card": {
+      "noData": "Maǵlıwmat kiritilmegen",
       "salary_fund": "Miynet haqı fondı",
       "tax_four": "Salıq — 4-qosımsha",
       "tax_five": "Salıq — 5-qosımsha",
@@ -4663,6 +4664,7 @@
       "no_alerts": "Eskertiwler joq"
     },
     "alert": {
+      "noData": "Tańlanǵan ay ushın esabat ele júklenbegen — ótken ayǵa salıstırǵanda ózgeris esaplanbaydı",
       "sharpDrop": "{name} {percent}% keskin tómenledi",
       "decline": "{name} {percent}% kemeydi",
       "growth": "{name} {percent}% arttı",

@@ -4634,6 +4634,7 @@
       "reported_tax": "Hisobot davridagi soliq summasi"
     },
     "card": {
+      "noData": "Ma'lumot kiritilmagan",
       "salary_fund": "Ish haqi fondi",
       "tax_four": "Soliq — 4-ilova",
       "tax_five": "Soliq — 5-ilova",
@@ -4664,6 +4665,7 @@
       "no_alerts": "Ogohlantirishlar yo'q"
     },
     "alert": {
+      "noData": "Tanlangan oy uchun hisobot hali yuklanmagan — o'tgan oyga nisbatan o'zgarish hisoblanmaydi",
       "sharpDrop": "{name} {percent}% keskin pasaydi",
       "decline": "{name} {percent}% kamaydi",
       "growth": "{name} {percent}% oshdi",
