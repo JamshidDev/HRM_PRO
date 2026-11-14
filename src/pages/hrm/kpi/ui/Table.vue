@@ -53,7 +53,7 @@
           firstName: row?.first_name,
           middleName: row?.middle_name,
           lastName: row?.last_name,
-          position: row?.pin
+          position: Utils.maskPin(row?.pin)
         }"
       />
     </template>
