@@ -77,9 +77,11 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
             photo: v.worker?.photo
           }))
           this.creator.total = res.data.data.total
+          // Tahrirlashda tanlangan tuzuvchi birinchi sahifada bo'lmasa ham nomi yo'qolmasin.
+          const selected = this.creator.list.filter((v) => v.id === this.payload.creator_id)
           this.creator.list = infinity
             ? Array.from(new Map([...this.creator.list, ...data].map((v) => [v.id, v])).values())
-            : Array.from(new Map([...data].map((v) => [v.id, v])).values())
+            : Array.from(new Map([...selected, ...data].map((v) => [v.id, v])).values())
         })
         .finally(() => {
           this.creator.loading = false
