@@ -229,6 +229,10 @@ const shortFio = (lastName, firstName, middleName) => {
     .join('')
   return [lastName, letters].filter(Boolean).join(' ')
 }
+// «Ko'rish» oynasi sarlavhasi: «№12 — Mehnat shartnomasi» (raqam bo'lmasa faqat turi). Fayl nomi UUID
+// bo'lgani uchun ochuvchi sahifa sarlavhani ro'yxat qatoridan beradi (DAS-14196, DAS-15967).
+const documentTitle = (number, typeName) =>
+  [number ? `№${number}` : null, typeName].filter(Boolean).join(' — ') || undefined
 const routeTimesheetPathMaker = (mainPath) => `${AppPaths.TimeSheet}${mainPath}`
 
 const documentModels = {
@@ -643,6 +647,7 @@ export default {
   routeExtraPathMaker,
   fileNameFromUrl,
   documentModels,
+  documentTitle,
   copyToClipboard,
   ActionTypes,
   timeOnlyYear,

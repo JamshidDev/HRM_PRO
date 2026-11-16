@@ -19,8 +19,8 @@
 
   const emits = defineEmits(['openOffice'])
 
-  const onOpenFile = (documentId, signatureId) => {
-    emits('openOffice', { documentId, signatureId })
+  const onOpenFile = (documentId, signatureId, title) => {
+    emits('openOffice', { documentId, signatureId, title })
   }
 
   // API qo'shimcha kelishuvni endi `document` kalitida qaytaradi (oldin
@@ -45,7 +45,7 @@
     doc(row)?.organization?.name ?? store.organizationNames[doc(row)?.organization_id]
 
   const onPreview = (row) => {
-    onOpenFile(doc(row)?.id, row.id)
+    onOpenFile(doc(row)?.id, row.id, Utils.documentTitle(doc(row)?.number, typeName(row)))
   }
 
   const changePage = (v) => {
