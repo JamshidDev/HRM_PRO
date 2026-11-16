@@ -18,6 +18,7 @@
 
   const show = ref(false)
   const mainDay = ref(0)
+  const restDay = ref(0)
   const items = ref([])
   const addId = ref(null)
 
@@ -36,7 +37,7 @@
     Math.max(
       0,
       (Number(mainDay.value) || 0) +
-        (Number(props.row.rest_day) || 0) +
+        (Number(restDay.value) || 0) +
         items.value.reduce((s, i) => s + (Number(i.value) || 0), 0)
     )
   )
@@ -45,6 +46,7 @@
     show.value = v
     if (!v) return
     mainDay.value = props.row.main_day
+    restDay.value = Number(props.row.rest_day) || 0
     items.value = (props.row.additional || []).map((i) => ({ id: i.id, value: i.value }))
     addId.value = null
     if (!componentStore.vacationAdditional?.length) componentStore._enums()
@@ -71,6 +73,7 @@
     if (!canApply.value) return
     emit('save', {
       main_day: Number(mainDay.value) || 0,
+      rest_day: Number(restDay.value) || 0,
       additional: items.value.map((i) => ({ id: i.id, value: Number(i.value) || 0 }))
     })
     show.value = false
@@ -132,9 +135,16 @@
           <span class="days-line__label">{{ $t('vacationSchedule.grid.restDay') }}</span>
           <span class="days-line__hint">{{ $t('vacationSchedule.grid.restDayHint') }}</span>
         </div>
-        <span class="days-line__value">
-          {{ row.rest_day || 0 }} {{ $t('vacationSchedule.grid.dayUnit') }}
-        </span>
+        <n-input-number
+          v-model:value="restDay"
+          class="days-line__input"
+          :min="0"
+          :max="99"
+          :precision="0"
+          :show-button="false"
+        >
+          <template #suffix>{{ $t('vacationSchedule.grid.dayUnit') }}</template>
+        </n-input-number>
       </div>
 
       <div class="days-panel__section">{{ $t('vacationSchedule.grid.additionalTitle') }}</div>
@@ -254,14 +264,6 @@
   .days-line__input {
     width: 90px;
     flex-shrink: 0;
-  }
-  .days-line__value {
-    width: 90px;
-    flex-shrink: 0;
-    padding-right: 10px;
-    text-align: right;
-    font-size: 13px;
-    font-weight: 600;
   }
   .days-cell {
     display: flex;
