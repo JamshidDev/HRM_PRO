@@ -100,6 +100,18 @@ const timeHHMMWithMonth = (time) => {
   return time ? dayjs(time).format('YYYY.MM.DD HH:mm') : null
 }
 
+// Uzluksiz staj: boshlangan sanadan bugungacha to'liq yil + to'liq oy (kun hisobga olinmaydi).
+const experienceSince = (start) => {
+  if (!start) return null
+  const s = new Date(start)
+  if (Number.isNaN(s.getTime())) return null
+  const now = new Date()
+  let months = (now.getFullYear() - s.getFullYear()) * 12 + (now.getMonth() - s.getMonth())
+  if (now.getDate() < s.getDate()) months -= 1
+  months = Math.max(0, months)
+  return { year: Math.trunc(months / 12), month: months % 12 }
+}
+
 /**
  * Ekranda ko'rsatish uchun yagona sana-vaqt formati: `DD.MM.YYYY HH:mm:ss` / `DD.MM.YYYY HH:mm` (QA-47).
  * `timeWithMonth` / `timeHHMMWithMonth` (YYYY.MM.DD) API parametrlarida ham ishlatiladi — ularga tegilmaydi.
@@ -628,6 +640,7 @@ export default {
   dateTimeLabel,
   dateTimeShortLabel,
   timeOnlyDate,
+  experienceSince,
   timeOnlyHour,
   timeOnlySecond,
   timeOnlyMonth,

@@ -58,7 +58,8 @@
     align-items: flex-start;
     padding: 4px;
     border-radius: 32px;
-    overflow: hidden;
+    // clip — watermark kesiladi, lekin fokusda blok gorizontal surilmaydi.
+    overflow: clip;
     background: var(--fig-block-bg);
   }
 
