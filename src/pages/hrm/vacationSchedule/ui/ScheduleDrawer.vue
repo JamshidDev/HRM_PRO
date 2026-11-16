@@ -1,15 +1,32 @@
 <script setup>
-  // Grafik ichi: tepada filtrlar (bo'lim daraxti), sahifalangan xodimlar; har qator o'zgarishi bilan saqlanadi.
-  import { useVacationScheduleStore } from '@stores'
+  // Grafik ichi: tepada filtrlar, sahifalangan xodimlar; har qator o'zining «Saqlash» tugmasi bilan saqlanadi.
+  import { useComponentStore, useVacationScheduleStore } from '@stores'
   import { useAppSetting, Utils } from '@utils'
   import { UIDepartmentSelect, UIPagination, UIUser } from '@components'
-  import { ArrowSync20Regular, Dismiss20Regular, Search20Regular } from '@vicons/fluent'
+  import {
+    ArrowDownload20Regular,
+    ArrowSync20Regular,
+    Dismiss20Regular,
+    Save20Regular,
+    Search20Regular
+  } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
   import DaysEditor from './DaysEditor.vue'
+  import { confirmDialog } from '@/components/notify/alertDialog.js'
 
   const { t } = i18n.global
   const store = useVacationScheduleStore()
   const grid = computed(() => store.grid)
+  const componentStore = useComponentStore()
+  // Kunlar ustunida qo'shimcha ta'til nomlari ko'rinishi uchun ro'yxat bir marta yuklanadi.
+  watch(
+    () => grid.value.visible,
+    (v) => {
+      if (v && !componentStore.vacationAdditional?.length && !componentStore.enumLoading) {
+        componentStore._enums()
+      }
+    }
+  )
 
   const MONTH_KEYS = [
     'january',
@@ -27,21 +44,15 @@
   ]
   const monthOptions = MONTH_KEYS.map((k, i) => ({ label: t(`month.${k}`), value: i + 1 }))
   const stateOptions = computed(() => [
-    { label: t('vacationSchedule.grid.stateUnfilled'), value: 'unfilled' },
+    { label: t('vacationSchedule.grid.stateAll'), value: 'all' },
     { label: t('vacationSchedule.grid.stateFilled'), value: 'filled' },
-    { label: t('vacationSchedule.grid.stateNoTableNumber'), value: 'no_table_number' }
+    { label: t('vacationSchedule.grid.stateUnfilled'), value: 'unfilled' }
   ])
 
   const locked = computed(() => Boolean(grid.value.summary?.locked))
-  const year = computed(() => grid.value.summary?.year)
   const organizationId = computed(() => grid.value.summary?.organization_id ?? null)
-  const isOutOfYear = (ts) => new Date(ts).getFullYear() !== Number(year.value)
-  // Ta'til sanasi kalendari grafik yilidan ochiladi.
-  const yearStart = computed(() =>
-    year.value ? new Date(Number(year.value), 0, 1).getTime() : undefined
-  )
-  const isSaving = (id) => grid.value.savingIds.includes(id)
-  const bulkDate = ref(null)
+  const dirtyCount = computed(() => Object.keys(grid.value.dirty).length)
+  const isInvalid = (row) => grid.value.invalidIds.includes(row.id)
   const syncLoading = ref(false)
 
   const reload = () => {
@@ -59,51 +70,45 @@
     store._gridRows()
   }
 
-  const onPlanDate = (row, ts) => {
-    row.plan_date = ts
-    store._saveRow(row, { plan_date: ts ? Utils.timeToZone(ts) : null })
-  }
+  const onMonth = (row, m) => store.setField(row, { month: m ?? null })
   // Davr boshi o'zgarsa, oxiri +1 yil bo'ladi (41-buyruq qoidasi); oxirini alohida tuzatish mumkin.
   const onPeriodFrom = (row, ts) => {
-    row.period_from = ts
     const data = { period_from: ts ? Utils.timeToZone(ts) : null }
     if (ts) {
       const to = new Date(ts)
       to.setFullYear(to.getFullYear() + 1)
-      row.period_to = to.getTime()
-      data.period_to = Utils.timeToZone(row.period_to)
+      data.period_to = Utils.timeToZone(to.getTime())
     }
-    store._saveRow(row, data)
+    store.setField(row, data)
   }
-  const onPeriodTo = (row, ts) => {
-    row.period_to = ts
-    store._saveRow(row, { period_to: ts ? Utils.timeToZone(ts) : null })
-  }
+  const onPeriodTo = (row, ts) =>
+    store.setField(row, { period_to: ts ? Utils.timeToZone(ts) : null })
   const onTableNumber = (row) => {
     const v = String(row.table_number ?? '').trim()
     if (v && !/^\d{1,20}$/.test(v)) {
       $Alert.validation(t('vacationSchedule.grid.tableNumberDigits'))
       return
     }
-    store._saveRow(row, { table_number: v || null })
+    store.setField(row, { table_number: v || null })
   }
-  const onDays = (row, data) => store._saveRow(row, data)
+  const onDays = (row, data) => store.setField(row, data)
 
-  const allChecked = computed(
-    () => grid.value.rows.length > 0 && grid.value.checked.length === grid.value.rows.length
-  )
-  const toggleAll = (v) => {
-    grid.value.checked = v ? grid.value.rows.map((r) => r.id) : []
+  const isDirty = (row) => Boolean(grid.value.dirty[row.id])
+  const isSaving = (row) => grid.value.savingIds.includes(row.id)
+  // Saqlanmagan o'zgarish bo'lsa — yopish yoki bekor qilishdan oldin so'raladi.
+  const askDiscard = async () =>
+    !dirtyCount.value ||
+    (await confirmDialog({
+      type: 'warning',
+      message: t('vacationSchedule.grid.unsavedConfirm', { n: dirtyCount.value })
+    }))
+  const onClose = async () => {
+    if (await askDiscard()) {
+      store.discardChanges()
+      store.closeGrid()
+    }
   }
-  const toggleRow = (id, v) => {
-    grid.value.checked = v
-      ? [...grid.value.checked, id]
-      : grid.value.checked.filter((x) => x !== id)
-  }
-  const onBulk = async () => {
-    await store._bulkPlanDate(bulkDate.value)
-    bulkDate.value = null
-  }
+
   const onSync = async () => {
     syncLoading.value = true
     try {
@@ -113,10 +118,6 @@
     }
   }
 
-  const progress = computed(() => {
-    const s = grid.value.summary
-    return s?.total ? Math.round((s.filled / s.total) * 100) : 0
-  })
   // Sahifa/filtr almashganda jadval boshiga qaytadi.
   const scrollRef = ref(null)
   watch(
@@ -131,55 +132,14 @@
 <template>
   <n-drawer
     :show="grid.visible"
-    width="100%"
+    placement="bottom"
+    height="100vh"
     :close-on-esc="true"
-    @update:show="(v) => !v && store.closeGrid()"
+    @update:show="(v) => !v && onClose()"
   >
     <n-drawer-content body-content-class="!p-0" :native-scrollbar="false">
       <template #header>
-        <div class="flex w-full flex-wrap items-center gap-x-6 gap-y-2">
-          <div class="flex flex-col">
-            <span class="text-base font-semibold">
-              {{ $t('vacationSchedule.grid.title', { year: year ?? '' }) }}
-            </span>
-            <span v-if="locked" class="text-xs text-fig-text-red">
-              {{ $t('vacationSchedule.grid.locked') }}
-            </span>
-          </div>
-          <div v-if="grid.summary" class="flex min-w-[260px] flex-1 items-center gap-3">
-            <n-progress
-              type="line"
-              :percentage="progress"
-              :show-indicator="false"
-              class="max-w-[220px]"
-            />
-            <span class="whitespace-nowrap text-sm">
-              {{ $t('vacationSchedule.grid.filled') }}: <b>{{ grid.summary.filled }}</b> /
-              {{ grid.summary.total }}
-            </span>
-            <span class="whitespace-nowrap text-xs text-textColor2">
-              {{ $t('vacationSchedule.grid.stateNoTableNumber') }}:
-              {{ grid.summary.no_table_number }}
-            </span>
-          </div>
-          <div class="ml-auto flex items-center gap-2">
-            <n-button v-if="!locked" size="small" :loading="syncLoading" @click="onSync">
-              <template #icon>
-                <n-icon><ArrowSync20Regular /></n-icon>
-              </template>
-              {{ $t('vacationSchedule.grid.sync') }}
-            </n-button>
-            <n-button quaternary circle @click="store.closeGrid()">
-              <template #icon>
-                <n-icon><Dismiss20Regular /></n-icon>
-              </template>
-            </n-button>
-          </div>
-        </div>
-      </template>
-
-      <section class="flex h-[calc(100vh-70px)] min-h-0 flex-col p-3">
-        <div class="mb-2 flex flex-wrap items-center gap-2">
+        <div class="flex w-full flex-wrap items-center gap-2">
           <div class="w-[320px]">
             <UIDepartmentSelect
               v-model="grid.params.department_id"
@@ -203,7 +163,6 @@
           <n-select
             v-model:value="grid.params.state"
             class="!w-[200px]"
-            clearable
             :options="stateOptions"
             :placeholder="$t('content.status')"
             @update:value="reload"
@@ -216,48 +175,46 @@
             :placeholder="$t('vacationSchedule.grid.month')"
             @update:value="reload"
           />
-          <div
-            v-if="grid.checked.length && !locked"
-            class="ml-auto flex items-center gap-2 rounded-lg bg-surface-ground px-2 py-1"
-          >
-            <span class="text-xs">
-              {{ $t('vacationSchedule.grid.selected', { n: grid.checked.length }) }}
-            </span>
-            <n-date-picker
-              v-model:value="bulkDate"
-              type="date"
-              size="small"
-              class="!w-[150px]"
-              :format="useAppSetting.datePicketFormat"
-              :is-date-disabled="isOutOfYear"
-              :default-calendar-start-time="yearStart"
-            />
-            <n-button size="small" type="primary" :disabled="!bulkDate" @click="onBulk">
-              {{ $t('vacationSchedule.grid.bulkApply') }}
+          <span v-if="locked" class="text-xs text-fig-text-red">
+            {{ $t('vacationSchedule.grid.locked') }}
+          </span>
+          <div class="ml-auto flex items-center gap-2">
+            <n-button type="success" :loading="grid.exporting" @click="store._export()">
+              <template #icon>
+                <n-icon><ArrowDownload20Regular /></n-icon>
+              </template>
+              Excel
+            </n-button>
+            <n-button v-if="!locked" type="primary" :loading="syncLoading" @click="onSync">
+              <template #icon>
+                <n-icon><ArrowSync20Regular /></n-icon>
+              </template>
+              {{ $t('vacationSchedule.grid.sync') }}
+            </n-button>
+            <n-button quaternary circle @click="onClose">
+              <template #icon>
+                <n-icon><Dismiss20Regular /></n-icon>
+              </template>
             </n-button>
           </div>
         </div>
+      </template>
 
+      <section class="flex h-[calc(100vh-70px)] min-h-0 flex-col p-3 pt-2">
         <n-spin :show="grid.loading" class="vs-spin min-h-0 flex-1">
           <div ref="scrollRef" class="h-full overflow-auto rounded-lg border border-surface-line">
             <table class="vs-table">
               <thead>
                 <tr>
-                  <th class="w-9">
-                    <n-checkbox
-                      :checked="allChecked"
-                      :disabled="locked"
-                      @update:checked="toggleAll"
-                    />
-                  </th>
                   <th class="w-10">№</th>
-                  <th class="w-[280px] text-left">{{ $t('content.worker') }}</th>
-                  <th class="min-w-[180px] text-left">{{ $t('content.department') }}</th>
-                  <th class="w-[120px]">{{ $t('vacationSchedule.form.table_number') }}</th>
-                  <th class="w-[150px]">{{ $t('vacationSchedule.form.period_from') }}</th>
-                  <th class="w-[150px]">{{ $t('vacationSchedule.form.period_to') }}</th>
-                  <th class="w-[100px]">{{ $t('vacationSchedule.form.all_days') }}</th>
-                  <th class="w-[150px]">{{ $t('vacationSchedule.form.plan_date') }}</th>
+                  <th class="w-[220px] text-left">{{ $t('content.worker') }}</th>
+                  <th class="w-[180px] text-left">{{ $t('content.department') }}</th>
+                  <th class="w-[100px]">{{ $t('vacationSchedule.form.table_number') }}</th>
+                  <th class="w-[130px]">{{ $t('vacationSchedule.form.period_from') }}</th>
+                  <th class="w-[130px]">{{ $t('vacationSchedule.form.period_to') }}</th>
+                  <th class="text-left">{{ $t('vacationSchedule.form.all_days') }}</th>
+                  <th class="w-[130px]">{{ $t('vacationSchedule.grid.vacationMonth') }}</th>
+                  <th class="w-[56px]"></th>
                 </tr>
               </thead>
               <tbody>
@@ -266,14 +223,14 @@
                     {{ $t('content.no-data') }}
                   </td>
                 </tr>
-                <tr v-for="(row, idx) in grid.rows" :key="row.id">
-                  <td class="text-center">
-                    <n-checkbox
-                      :checked="grid.checked.includes(row.id)"
-                      :disabled="locked"
-                      @update:checked="(v) => toggleRow(row.id, v)"
-                    />
-                  </td>
+                <tr
+                  v-for="(row, idx) in grid.rows"
+                  :key="row.id"
+                  :class="{
+                    'vs-row--dirty': grid.dirty[row.id],
+                    'vs-row--invalid': isInvalid(row)
+                  }"
+                >
                   <td class="text-center text-xs text-textColor2">{{ rowNumber(idx) }}</td>
                   <td>
                     <UIUser
@@ -294,7 +251,6 @@
                   <td>
                     <n-input
                       v-model:value="row.table_number"
-                      size="small"
                       :disabled="locked"
                       :allow-input="Utils.onlyAllowNumber"
                       :placeholder="$t('vacationSchedule.grid.tableNumberPh')"
@@ -304,8 +260,8 @@
                   <td>
                     <n-date-picker
                       :value="row.period_from"
+                      :status="isInvalid(row) && !row.period_from ? 'error' : undefined"
                       type="date"
-                      size="small"
                       :disabled="locked"
                       :format="useAppSetting.datePicketFormat"
                       @update:value="(v) => onPeriodFrom(row, v)"
@@ -314,33 +270,42 @@
                   <td>
                     <n-date-picker
                       :value="row.period_to"
+                      :status="isInvalid(row) && !row.period_to ? 'error' : undefined"
                       type="date"
-                      size="small"
                       :disabled="locked"
                       :format="useAppSetting.datePicketFormat"
                       @update:value="(v) => onPeriodTo(row, v)"
                     />
                   </td>
-                  <td class="text-center">
-                    <DaysEditor
-                      :row="row"
-                      :disabled="locked"
-                      :loading="isSaving(row.id)"
-                      @save="(d) => onDays(row, d)"
-                    />
+                  <td>
+                    <DaysEditor :row="row" :disabled="locked" @save="(d) => onDays(row, d)" />
                   </td>
                   <td>
-                    <n-date-picker
-                      :value="row.plan_date"
-                      type="date"
-                      size="small"
+                    <n-select
+                      :value="row.month"
+                      :status="isInvalid(row) && !row.month ? 'error' : undefined"
                       clearable
                       :disabled="locked"
-                      :format="useAppSetting.datePicketFormat"
-                      :is-date-disabled="isOutOfYear"
-                      :default-calendar-start-time="yearStart"
-                      @update:value="(v) => onPlanDate(row, v)"
+                      :options="monthOptions"
+                      :placeholder="$t('vacationSchedule.grid.month')"
+                      @update:value="(v) => onMonth(row, v)"
                     />
+                  </td>
+                  <td class="text-center">
+                    <n-button
+                      v-if="!locked"
+                      circle
+                      :type="isDirty(row) ? 'primary' : 'default'"
+                      :secondary="!isDirty(row)"
+                      :disabled="!isDirty(row)"
+                      :loading="isSaving(row)"
+                      :title="$t('content.save')"
+                      @click="store._saveRow(row)"
+                    >
+                      <template #icon>
+                        <n-icon><Save20Regular /></n-icon>
+                      </template>
+                    </n-button>
                   </td>
                 </tr>
               </tbody>
@@ -368,6 +333,7 @@
   }
   .vs-table {
     width: 100%;
+    table-layout: fixed;
     border-collapse: separate;
     border-spacing: 0;
     font-size: 13px;
@@ -382,6 +348,12 @@
     color: var(--color-textColor2);
     background: var(--color-surface-section);
     border-bottom: 1px solid var(--color-surface-line);
+  }
+  .vs-table tbody tr.vs-row--dirty td:first-child {
+    box-shadow: inset 3px 0 0 var(--color-primary);
+  }
+  .vs-table tbody tr.vs-row--invalid td {
+    background: color-mix(in srgb, var(--color-fig-text-red) 6%, transparent);
   }
   .vs-table tbody td {
     padding: 6px;

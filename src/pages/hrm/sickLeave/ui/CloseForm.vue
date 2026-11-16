@@ -11,11 +11,11 @@
     () => store.closePayload.close_type === SICK_LEAVE_CLOSE_TYPE.withDocument
   )
 
-  // Kalendar: boshlanish sanasidan oldingi va 14 kundan narigi kunlar yopiq.
+  // Kalendar: boshlanish sanasidan oldingi va 126 kundan narigi kunlar yopiq.
   const toDisabled = (ts) => {
     if (!store.closeFrom) return false
     const from = new Date(`${store.closeFrom}T00:00:00`).getTime()
-    return ts < from || ts > from + 13 * 86400000
+    return ts < from || ts > from + 125 * 86400000
   }
 
   const onSubmit = () => {

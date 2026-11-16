@@ -37,11 +37,11 @@
     return store.visibleType ? ts < min.getTime() : false
   }
 
-  // Yopilish sanasi: boshlanishdan oldin ham, 14 kundan narida ham bo'lmaydi.
+  // Yopilish sanasi: boshlanishdan oldin ham, 126 kundan narida ham bo'lmaydi.
   const toDisabled = (ts) => {
     if (!store.payload.from_date) return false
     const from = dayTs(store.payload.from_date)
-    return ts < from || ts > from + 13 * DAY
+    return ts < from || ts > from + 125 * DAY
   }
 
   const issuedDisabled = (ts) => ts > Date.now()

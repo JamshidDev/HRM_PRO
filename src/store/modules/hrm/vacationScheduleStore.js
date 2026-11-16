@@ -20,13 +20,18 @@ const initialGrid = () => ({
   total: 0,
   loading: false,
   savingIds: [],
-  checked: [],
+  exporting: false,
+  // Saqlanmagan o'zgarishlar: { [rowId]: { month, period_from, period_to, table_number, main_day, additional } }.
+  dirty: {},
+  // O'zgargan qatorlarning to'liq holati (sahifa almashsa ham tekshirish uchun) va xato qatorlar.
+  dirtyRows: {},
+  invalidIds: [],
   params: {
     page: 1,
     per_page: 50,
     search: null,
     department_id: null,
-    state: null,
+    state: 'all',
     month: null
   }
 })
@@ -177,20 +182,16 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
     _gridRows() {
       this.grid.loading = true
       const params = Object.fromEntries(
-        Object.entries(this.grid.params).filter(([, v]) => v !== null && v !== '')
+        Object.entries(this.grid.params).filter(([, v]) => v !== null && v !== '' && v !== 'all')
       )
       return $ApiService.vacationScheduleService
         ._rows({ id: this.grid.id, params })
         .then((res) => {
-          this.grid.rows = res.data.data.data.map((v) => ({
-            ...v,
-            plan_date: Utils.datePickerFormatter(v.plan_date),
-            period_from: Utils.datePickerFormatter(v.period_from),
-            period_to: Utils.datePickerFormatter(v.period_to),
-            table_number: v.table_number ?? ''
-          }))
+          // Boshqa sahifada qilingan, hali saqlanmagan o'zgarishlar ham ko'rinadi.
+          this.grid.rows = res.data.data.data.map((v) =>
+            this.viewRow({ ...v, ...(this.grid.dirty[v.id] || {}) })
+          )
           this.grid.total = res.data.data.total
-          this.grid.checked = []
         })
         .finally(() => {
           this.grid.loading = false
@@ -199,40 +200,95 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
     refreshCounters() {
       this._gridSummary()
     },
-    // Bitta qator saqlanadi; xatoda qator qayta yuklanadi.
-    _saveRow(row, data) {
+    // API qiymatlari → jadval ko'rinishi (sana — timestamp, jami kun qayta hisoblanadi).
+    viewRow(v) {
+      const additional = v.additional || []
+      return {
+        ...v,
+        period_from: Utils.datePickerFormatter(v.period_from),
+        period_to: Utils.datePickerFormatter(v.period_to),
+        table_number: v.table_number ?? '',
+        month: v.month || null,
+        all_days: Math.max(
+          0,
+          (Number(v.main_day) || 0) +
+            (Number(v.rest_day) || 0) +
+            additional.reduce((s, a) => s + (Number(a.value) || 0), 0)
+        )
+      }
+    },
+    // O'zgarish darhol yuborilmaydi — «Saqlash» bosilguncha to'planadi.
+    setField(row, patch) {
+      this.grid.dirty[row.id] = { ...(this.grid.dirty[row.id] || {}), ...patch }
+      Object.assign(row, this.viewRow({ ...row, ...this.toApi(row), ...patch }))
+      this.grid.dirtyRows[row.id] = { ...row }
+      this.grid.invalidIds = this.grid.invalidIds.filter(
+        (id) => id !== row.id || !this.isComplete(row)
+      )
+    },
+    // Grafik qatori: davr (dan/gacha) va ta'til oyi majburiy.
+    isComplete(row) {
+      return Boolean(row.period_from && row.period_to && row.month)
+    },
+    toApi(row) {
+      return {
+        period_from: row.period_from ? Utils.timeToZone(row.period_from) : null,
+        period_to: row.period_to ? Utils.timeToZone(row.period_to) : null
+      }
+    },
+    // Faqat shu qator saqlanadi; davr va ta'til oyi majburiy.
+    _saveRow(row) {
+      const patch = this.grid.dirty[row.id]
+      if (!patch) return Promise.resolve()
+      // Davr/oy tegilmagan bo'lsa (faqat kunlar yoki tabel) — majburiylik tekshirilmaydi.
+      const touchesSchedule = ['month', 'period_from', 'period_to'].some((k) => k in patch)
+      if (touchesSchedule && !this.isComplete(row)) {
+        if (!this.grid.invalidIds.includes(row.id)) this.grid.invalidIds.push(row.id)
+        $Alert.validation(t('vacationSchedule.grid.requiredFields', { n: 1 }))
+        return Promise.resolve()
+      }
       this.grid.savingIds.push(row.id)
       return $ApiService.vacationScheduleService
-        ._updateRow({ id: row.id, data })
-        .then((res) => {
-          const d = res.data.data
-          if (d.all_days !== undefined) row.all_days = d.all_days
-          if (d.additional !== undefined) row.additional = d.additional
-          if (d.main_day !== undefined) row.main_day = d.main_day
-          if ('plan_date' in data) row.month = d.month ?? null
+        ._saveRows({ id: this.grid.id, data: { rows: [{ id: row.id, ...patch }] } })
+        .then(() => {
+          delete this.grid.dirty[row.id]
+          delete this.grid.dirtyRows[row.id]
+          this.grid.invalidIds = this.grid.invalidIds.filter((id) => id !== row.id)
+          $Toast.success(t('vacationSchedule.grid.saved', { n: 1 }))
           this.refreshCounters()
         })
-        .catch(() => this._gridRows())
         .finally(() => {
           this.grid.savingIds = this.grid.savingIds.filter((id) => id !== row.id)
         })
     },
-    _bulkPlanDate(planDate) {
-      if (!this.grid.checked.length || !planDate) return
-      this.grid.loading = true
+    gridParams() {
+      return Object.fromEntries(
+        Object.entries(this.grid.params).filter(
+          ([k, v]) => v !== null && v !== '' && v !== 'all' && k !== 'page' && k !== 'per_page'
+        )
+      )
+    },
+    _export() {
+      this.grid.exporting = true
       return $ApiService.vacationScheduleService
-        ._bulkPlanDate({
-          id: this.grid.id,
-          data: { ids: this.grid.checked, plan_date: Utils.timeToZone(planDate) }
-        })
+        ._export({ id: this.grid.id, params: this.gridParams() })
         .then((res) => {
-          $Toast.success(t('vacationSchedule.grid.bulkDone', { n: res.data.data.updated }))
-          this.refreshCounters()
-          return this._gridRows()
+          const url = URL.createObjectURL(new Blob([res.data]))
+          const a = document.createElement('a')
+          a.href = url
+          a.download = `tatillar-grafigi-${this.grid.summary?.year ?? ''}.xlsx`
+          a.click()
+          URL.revokeObjectURL(url)
         })
         .finally(() => {
-          this.grid.loading = false
+          this.grid.exporting = false
         })
+    },
+    discardChanges() {
+      this.grid.dirty = {}
+      this.grid.dirtyRows = {}
+      this.grid.invalidIds = []
+      return this._gridRows()
     },
     _sync() {
       return $ApiService.vacationScheduleService._sync({ id: this.grid.id }).then((res) => {

@@ -48,12 +48,17 @@ const _summary = async (payload) => {
   return await axios.get(`/v1/hr/vacation-schedule/${payload.id}/summary`)
 }
 
-const _updateRow = async (payload) => {
-  return await axios.put(`/v1/hr/vacation-schedule/rows/${payload.id}`, payload.data)
+// Barcha o'zgargan qatorlar bitta so'rovda (bitta tranzaksiya).
+const _saveRows = async (payload) => {
+  return await axios.put(`/v1/hr/vacation-schedule/${payload.id}/rows`, payload.data)
 }
 
-const _bulkPlanDate = async (payload) => {
-  return await axios.put(`/v1/hr/vacation-schedule/${payload.id}/plan-date`, payload.data)
+// Ro'yxat filtrlari bilan Excel fayl.
+const _export = async (payload) => {
+  return await axios.get(`/v1/hr/vacation-schedule/${payload.id}/export`, {
+    params: payload.params,
+    responseType: 'blob'
+  })
 }
 
 const _sync = async (payload) => {
@@ -72,7 +77,7 @@ export default {
   _updateHeader,
   _rows,
   _summary,
-  _updateRow,
-  _bulkPlanDate,
-  _sync
+  _saveRows,
+  _sync,
+  _export
 }
