@@ -4,11 +4,13 @@
   import { useAppSetting } from '@/utils/index.js'
   import icons from '@/assets/icons'
   import { UIProfileButton, UIFigBlock, UIFigField } from '@/components/index.js'
+  import i18n from '@/i18n/index.js'
 
   /** Figma "Shaxsiy ma'lumotlar" bloki (node 2586:200189) */
   const store = useWorkerProfileStore()
   const componentStore = useComponentStore()
   const editing = ref(false)
+  const { t } = i18n.global
 
   const nameOf = (list, id) => list?.find((v) => v.id === id)?.name ?? null
 
@@ -27,6 +29,13 @@
     store.payload.current_city_id = null
     store.currentDistricts = []
   }
+
+  // Tanlangan sanadan bugungacha «X yil Y oy» — ko'rishda ham, tahrirlashda ham jonli.
+  const railwayExperience = computed(() => {
+    const e = Utils.experienceSince(store.payload.experience_date)
+    return e ? t('workerProfile.personal.experienceValue', { year: e.year, month: e.month }) : null
+  })
+  const isFutureDate = (ts) => ts > Date.now()
 
   const onCancel = () => {
     editing.value = false
@@ -150,12 +159,26 @@
           :value="Utils.timeOnlyDate(store.payload.experience_date)"
           :editing="editing"
         >
-          <n-date-picker
-            v-model:value="store.payload.experience_date"
-            class="w-full"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
-          />
+          <template #value>
+            <span class="flex items-center justify-between gap-2">
+              <span>{{ Utils.timeOnlyDate(store.payload.experience_date) || '—' }}</span>
+              <span v-if="railwayExperience" class="text-xs text-textColor2 whitespace-nowrap">
+                {{ railwayExperience }}
+              </span>
+            </span>
+          </template>
+          <div class="flex w-full min-w-0 flex-col gap-1">
+            <n-date-picker
+              v-model:value="store.payload.experience_date"
+              class="w-full"
+              type="date"
+              :format="useAppSetting.datePicketFormat"
+              :is-date-disabled="isFutureDate"
+            />
+            <span v-if="railwayExperience" class="pl-1 text-xs text-textColor2">
+              {{ railwayExperience }}
+            </span>
+          </div>
         </UIFigField>
 
         <!-- Tabel raqami yo'q bo'lsa — bo'sh qoladi (umumiy "—" o'rniga). -->

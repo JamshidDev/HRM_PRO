@@ -72,6 +72,18 @@ const timeHHMMWithMonth = (time) => {
   return time ? dayjs(time).format('YYYY.MM.DD HH:mm') : null
 }
 
+// Uzluksiz staj: boshlangan sanadan bugungacha to'liq yil + to'liq oy (kun hisobga olinmaydi).
+const experienceSince = (start) => {
+  if (!start) return null
+  const s = new Date(start)
+  if (Number.isNaN(s.getTime())) return null
+  const now = new Date()
+  let months = (now.getFullYear() - s.getFullYear()) * 12 + (now.getMonth() - s.getMonth())
+  if (now.getDate() < s.getDate()) months -= 1
+  months = Math.max(0, months)
+  return { year: Math.trunc(months / 12), month: months % 12 }
+}
+
 const timeOnlyDate = (time) => {
   return time ? dayjs(time).format('DD.MM.YYYY') : null
 }
@@ -584,6 +596,7 @@ export default {
   timeToZone,
   timeWithMonth,
   timeOnlyDate,
+  experienceSince,
   timeOnlyHour,
   timeOnlySecond,
   timeOnlyMonth,
