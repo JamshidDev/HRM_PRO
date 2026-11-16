@@ -21,6 +21,9 @@
     ReOrderDotsVertical16Filled
   } from '@vicons/fluent'
   import { useTimesheetWorkerStore } from '@/store/modules/index.js'
+  import { TIMESHEET_TYPES_WITH_HOURS } from '@/store/modules/hrm/timesheetWorkerStore.js'
+  import { UISegmentTabs, UIUser } from '@/components/index.js'
+  import { colorOfDetail } from './timesheetGrid.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import IconPlan from '@/assets/icons/tsCalendarCheck.svg'
@@ -79,6 +82,79 @@
     await nextTick()
     centerOnPlan()
     syncThumb()
+  })
+
+  /* --- Tarix: shu katakning o'zgarishlari -------------------------------------
+   * Faqat tabel ichida (tashqi `loader` — oylik hisobot — bo'lsa tab ko'rinmaydi).
+   * Manba: `GET /v1/timesheet/{id}/changes?worker_position_id=…&day=…`. */
+  const canHistory = computed(() => !props.loader && !props.embedded)
+  const tab = ref('day')
+  const tabs = computed(() => [
+    { id: 'day', name: t('timesheetPage.dayDetail') },
+    { id: 'history', name: t('timesheetPage.changes.short') }
+  ])
+  const historyRows = ref([])
+  const historyLoading = ref(false)
+
+  const loadHistory = async () => {
+    if (!props.visible || tab.value !== 'history' || !props.worker?.id || !props.date) return
+    historyLoading.value = true
+    try {
+      const res = await store.fetchChanges({
+        worker_position_id: props.worker.id,
+        day: dayjs(props.date).date(),
+        page: 1,
+        per_page: 100
+      })
+      historyRows.value = res?.data ?? []
+    } catch {
+      historyRows.value = []
+    } finally {
+      historyLoading.value = false
+    }
+  }
+  // Oyna har ochilganda «Kun tafsiloti» dan boshlanadi; kun almashsa tarix ham o'sha kunniki.
+  watch(
+    () => props.visible,
+    (open) => {
+      if (open) tab.value = 'day'
+    }
+  )
+  watch(() => [tab.value, props.visible, props.worker?.id, props.date], loadHistory)
+
+  const histHours = (list) => (list ?? []).reduce((a, d) => a + (d?.hours || 0), 0)
+  const histTypes = (list) =>
+    (list ?? [])
+      .map((d) => Number(d?.status))
+      .sort((a, b) => a - b)
+      .join('/')
+  // «Farq» ustuni: soat farqi (yashil/qizil) yoki faqat tur o'zgargan bo'lsa kulrang «tur o'zgardi».
+  const histDiff = (r) => {
+    const diff = histHours(r.after) - histHours(r.before)
+    if (diff) {
+      return {
+        tone: diff > 0 ? 'more' : 'less',
+        text: t(diff > 0 ? 'timesheetPage.calcDiff.more' : 'timesheetPage.calcDiff.less', { n: Math.abs(diff) })
+      }
+    }
+    if (r.before?.length && r.after?.length && histTypes(r.before) !== histTypes(r.after)) {
+      return { tone: 'type', text: t('timesheetPage.calcDiff.typeOnly') }
+    }
+    return null
+  }
+  const histChip = (c) => ({
+    text: TIMESHEET_TYPES_WITH_HOURS.has(Number(c.status)) ? `${c.type ?? '—'}-${c.hours ?? 0}` : (c.type ?? '—'),
+    style: (() => {
+      const color = colorOfDetail({ status_id: c.status })
+      return { color, background: `color-mix(in srgb, ${color} 14%, transparent)` }
+    })()
+  })
+  const histUser = (u) => ({
+    photo: u?.photo,
+    lastName: u?.last_name,
+    firstName: u?.first_name,
+    middleName: u?.middle_name,
+    position: u?.role
   })
 
   /* --- Sarlavha ----------------------------------------------------------- */
@@ -968,6 +1044,8 @@
           </div>
         </div>
 
+        <UISegmentTabs v-if="canHistory" v-model="tab" :tabs="tabs" size="sm" variant="elevated" class="tsd-tabs" />
+
         <div class="tsd-nav">
           <button
             :disabled="!hasPrev"
@@ -1001,7 +1079,65 @@
         </button>
       </header>
 
-      <n-spin :show="loading">
+      <!-- ── Tarix: shu katak (xodim + kun) o'zgarishlari ─────────────────── -->
+      <n-spin v-if="canHistory && tab === 'history'" :show="historyLoading">
+        <div class="tsd-body tsd-hist">
+          <div v-if="!historyRows.length && !historyLoading" class="tsd-hist-empty">
+            {{ $t('timesheetPage.changes.cellEmpty') }}
+          </div>
+          <table v-else class="tsd-hist-table">
+            <thead>
+              <tr>
+                <th>{{ $t('timesheetPage.changes.at') }}</th>
+                <th>{{ $t('timesheetPage.changes.before') }}</th>
+                <th>{{ $t('timesheetPage.changes.after') }}</th>
+                <th>{{ $t('timesheetPage.calcDiff.diff') }}</th>
+                <th>{{ $t('timesheetPage.changes.user') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(r, i) in historyRows" :key="`${r.at}-${i}`">
+                <td class="tsd-hist-at">
+                  {{ dayjs(r.at).format('DD.MM.YYYY') }}
+                  <span class="tsd-hist-time">{{ dayjs(r.at).format('HH:mm') }}</span>
+                </td>
+                <td>
+                  <div class="tsd-hist-chips">
+                    <template v-if="r.before?.length">
+                      <span v-for="(c, j) in r.before" :key="j" :style="histChip(c).style" class="tsd-hist-chip">
+                        {{ histChip(c).text }}
+                      </span>
+                    </template>
+                    <span v-else class="tsd-hist-chip is-empty">{{ $t('timesheetPage.calcDiff.empty') }}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="tsd-hist-chips">
+                    <template v-if="r.after?.length">
+                      <span v-for="(c, j) in r.after" :key="j" :style="histChip(c).style" class="tsd-hist-chip">
+                        {{ histChip(c).text }}
+                      </span>
+                    </template>
+                    <span v-else class="tsd-hist-chip is-empty">{{ $t('timesheetPage.calcDiff.empty') }}</span>
+                  </div>
+                </td>
+                <td>
+                  <span v-if="histDiff(r)" :class="`is-${histDiff(r).tone}`" class="tsd-hist-diff">
+                    {{ histDiff(r).text }}
+                  </span>
+                  <span v-else class="tsd-hist-muted">—</span>
+                </td>
+                <td>
+                  <UIUser v-if="r.user?.name" :data="histUser(r.user)" :short="false" />
+                  <span v-else class="tsd-hist-muted">—</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </n-spin>
+
+      <n-spin v-else :show="loading">
         <div class="tsd-body">
           <!-- ── Chap ustun ──────────────────────────────────────────────── -->
           <div class="tsd-main">
@@ -1617,6 +1753,133 @@
     &:hover {
       color: var(--fig-text-red);
     }
+  }
+
+  /* ── Tarix tabi ───────────────────────────────────────────────────────── */
+  // Sarlavha foni kulrang (`--fig-bg-tertiary`) — standart tab yo'lagi ham shu rangda bo'lib, ko'rinmay qolardi.
+  // `elevated`: yo'lak oq (kartochka rangida), faol tab ko'k.
+  .tsd-tabs {
+    flex-shrink: 0;
+  }
+
+  // Oyna balandligi qat'iy: «Kun tafsiloti» ↔ «Tarix» almashganda sakramaydi, ichi o'zi aylanadi.
+  .tsd:not(.tsd--embedded) {
+    height: min(720px, 92vh);
+
+    > :deep(.n-spin-container) {
+      flex: 1 1 0;
+      min-height: 0;
+    }
+
+    > :deep(.n-spin-container) > .n-spin-content {
+      height: 100%;
+    }
+
+    .tsd-body {
+      height: 100%;
+      max-height: none;
+    }
+  }
+
+  // `.tsd-body` (pastda) flex qatorini beradi — tarix uchun oddiy blok kerak, shuning uchun aniqroq selektor.
+  .tsd-body.tsd-hist {
+    display: block;
+    min-height: 240px;
+  }
+
+  .tsd-hist-empty {
+    padding: 48px 0;
+    font-size: 14px;
+    color: var(--fig-text-tertiary);
+    text-align: center;
+  }
+
+  .tsd-hist-table {
+    width: 100%;
+    font-size: 13px;
+    border-collapse: collapse;
+
+    th {
+      padding: 8px 12px;
+      font-weight: 500;
+      color: var(--fig-text-tertiary);
+      text-align: left;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--tsd-line);
+    }
+
+    td {
+      padding: 8px 12px;
+      color: var(--fig-text-primary);
+      vertical-align: middle;
+      border-bottom: 1px solid var(--tsd-line);
+    }
+  }
+
+  .tsd-hist-at {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .tsd-hist-time {
+    margin-left: 8px;
+    font-weight: 400;
+    color: var(--fig-text-tertiary);
+  }
+
+  .tsd-hist-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  // Kod chipi — panjaradagi rang, foni o'sha rangning och varianti (stil skriptdan).
+  .tsd-hist-chip {
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 6px;
+
+    // Bo'sh katak — chiziqli bo'sh chip.
+    &.is-empty {
+      font-weight: 500;
+      color: var(--fig-text-tertiary);
+      border: 1px dashed var(--fig-text-disable);
+    }
+  }
+
+  .tsd-hist-diff {
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    border-radius: 999px;
+
+    &.is-more {
+      color: var(--fig-icon-green);
+      background: color-mix(in srgb, var(--fig-icon-green) 14%, transparent);
+    }
+
+    &.is-less {
+      color: var(--fig-text-red);
+      background: color-mix(in srgb, var(--fig-text-red) 14%, transparent);
+    }
+
+    &.is-type {
+      color: var(--fig-text-secondary);
+      background: var(--fig-bg-tertiary);
+    }
+  }
+
+  .tsd-hist-muted {
+    font-size: 12px;
+    color: var(--fig-text-tertiary);
   }
 
   /* ── Tanasi ───────────────────────────────────────────────────────────── */
