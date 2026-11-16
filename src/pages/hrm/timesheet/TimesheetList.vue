@@ -33,6 +33,16 @@
     store._index()
   })
 
+  // Yaratish oynasi yopilganda forma yo'q qilinmaydi — eski «Maydon to'ldirilishi shart!» qayta ochilganda
+  // ham qolib ketardi (DAS-15966). Har ochilishda yangi forma (key) — eski tekshiruv holati qolmaydi.
+  const formKey = ref(0)
+  watch(
+    () => store.visible,
+    (open) => {
+      if (open) formKey.value++
+    }
+  )
+
   // Tabel oynasi yopilganda ro'yxat yangilanadi — «To'ldirilgan» soni va holat eskirib qolmasin.
   watch(
     () => timesheetDepartmentStore.visible,
@@ -51,7 +61,7 @@
       v-model:visible="store.visible"
       :title="store.visibleType ? $t('timesheetPage.create') : $t('timesheetPage.update')"
     >
-      <Form />
+      <Form :key="formKey" />
     </UIModal>
     <UIDrawer
       :width="400"
