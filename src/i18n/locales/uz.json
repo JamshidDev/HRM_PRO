@@ -1688,6 +1688,7 @@
       "cancel_reason": "Bekor qilish sababi"
     },
     "signature": {
+      "qrPlacementHint": "QR kodni sudrab joylashtiring, burchakdan kattalashtiring",
       "history": "O'zgarishlar tarixini ko'rish",
       "viewer": "Hujjat bilan tanishuvchilar",
       "files": {

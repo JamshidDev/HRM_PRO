@@ -1688,6 +1688,7 @@
       "cancel_reason": "Bekor qiliş sababi"
     },
     "signature": {
+      "qrPlacementHint": "QR kodni sudrab coylaştiring, burçakdan kattalaştiring",
       "history": "Özgarişlar tarixini köriş",
       "viewer": "Hujjat bilan tanişuvçilar",
       "files": {

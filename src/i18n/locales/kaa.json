@@ -1688,6 +1688,7 @@
       "cancel_reason": "Biykar etiw sebebi"
     },
     "signature": {
+      "qrPlacementHint": "QR kodtı súyrep ornalastırıń, múyeshinen úlkeytiń",
       "history": "Ózgerisler tariyxın kóriw",
       "viewer": "Hújjet penen tanısıwshılar",
       "files": {

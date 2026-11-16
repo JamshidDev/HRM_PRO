@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import Utils from '@/utils/Utils.js'
 import i18n from '@/i18n/index.js'
+import { markRaw } from 'vue'
 import { loadPdfDocument, renderPageToCanvas } from '@/utils/pdfjs.js'
 
 export const usePdfViewerStore = defineStore('pdfViewerStore', {
@@ -10,12 +11,12 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     paddingTop: 60,
     pdfHeight: 0,
     pdfWidth: 0,
-    qrCodeUrl: null,
-    qrCodeData: null,
     pdfUrl: null,
-    qrCodeX: 0,
-    qrCodeY: 0,
-    pageIndex: 0,
+    // Rahbar QR joyi: {page, x, y, size} — PDF nuqtalari (chap pastdan); imzo bilan yuboriladi.
+    qrEditable: false,
+    qrPosition: null,
+    pageViewports: {},
+    renderVersion: 0,
     totalPdfPage: 0,
     loading: false,
     confirmations: [],
@@ -137,6 +138,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     async loadPdf() {
       this.totalPdfPage = 0
       this.loadError = false
+      this.pageViewports = {}
       const pdfUrl = this.pdfUrl
       // const pdfUrl = "https://s3.dasuty.com/docflow/documents/timesheets/c4ca4238a0b923820dcc509a6f75849b.pdf"
       try {
@@ -164,10 +166,12 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
       // pdfWidth/pdfHeight — CSS o'lchami (QR overlay shu koordinatalarda ishlaydi).
       this.pdfHeight = viewport.height
       this.pdfWidth = viewport.width
+      this.pageViewports[pageNumber] = markRaw(viewport)
       this.renderTasks[pageNumber] = task
 
       try {
         await task.promise
+        this.renderVersion++
         if (this.isSigned) {
           const context = canvas.getContext('2d')
           context.save()
@@ -365,6 +369,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
           this.signatureWorker = `${d?.worker.last_name} ${d?.worker.first_name} ${d?.worker.middle_name}`
           this.isSigned = d.status === 3
           this.signerType = d.type ?? null
+          this.qrEditable = d.type === 'd' && d.status !== 3
+          this.qrPosition = null
           this.linkRejectReasons = d.reject_reasons || []
           this.rejectedNow = false
           this.signDeadline = Date.now() + (d.expires_in ?? 0) * 1000

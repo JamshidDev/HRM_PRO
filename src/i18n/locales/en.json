@@ -1672,6 +1672,7 @@
       "cancel_reason": "Cancellation reason"
     },
     "signature": {
+      "qrPlacementHint": "Drag the QR code into place, resize from the corner",
       "history": "View change history",
       "viewer": "Document reviewers",
       "files": {
