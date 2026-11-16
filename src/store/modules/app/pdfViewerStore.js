@@ -1,12 +1,7 @@
 import { defineStore } from 'pinia'
-import * as pdfjsLib from 'pdfjs-dist'
-import * as PdfWorker from 'pdfjs-dist/build/pdf.worker.min.js'
 import Utils from '@/utils/Utils.js'
 import i18n from '@/i18n/index.js'
-
-window.pdfjsWorker = PdfWorker
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = PdfWorker
+import { loadPdfDocument, renderPageToCanvas } from '@/utils/pdfjs.js'
 
 export const usePdfViewerStore = defineStore('pdfViewerStore', {
   state: () => ({
@@ -145,8 +140,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
       const pdfUrl = this.pdfUrl
       // const pdfUrl = "https://s3.dasuty.com/docflow/documents/timesheets/c4ca4238a0b923820dcc509a6f75849b.pdf"
       try {
-        this.pdfDocument = await pdfjsLib.getDocument({ url: pdfUrl, isEvalSupported: false })
-          .promise
+        this.pdfDocument = await loadPdfDocument(pdfUrl)
         this.pdfDocumentUrl = pdfUrl
         this.totalPdfPage = this.pdfDocument.numPages
         for (let pageNumber = 1; pageNumber <= this.totalPdfPage; pageNumber++) {
@@ -159,31 +153,28 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     },
     async renderPdf(pageNumber) {
       const page = await this.pdfDocument?.getPage(pageNumber)
-      const scale = this.scale
-      const viewport = page.getViewport({ scale })
       const canvas = document.querySelector(`#pdfCanvas${pageNumber}`)
-      const context = canvas.getContext('2d')
-
-      canvas.height = viewport.height
-      canvas.width = viewport.width
-      this.pdfHeight = viewport.height
-      this.pdfWidth = viewport.width
+      if (!page || !canvas) return
 
       if (this.renderTasks[pageNumber]) {
         this.renderTasks[pageNumber].cancel()
       }
 
-      const renderContext = {
-        canvasContext: context,
-        viewport: viewport
-      }
-
-      const task = page.render(renderContext)
+      const { viewport, task, dpr } = renderPageToCanvas(page, canvas, this.scale)
+      // pdfWidth/pdfHeight — CSS o'lchami (QR overlay shu koordinatalarda ishlaydi).
+      this.pdfHeight = viewport.height
+      this.pdfWidth = viewport.width
       this.renderTasks[pageNumber] = task
 
       try {
         await task.promise
-        if (this.isSigned) this.addWatermark(context, viewport)
+        if (this.isSigned) {
+          const context = canvas.getContext('2d')
+          context.save()
+          context.setTransform(dpr, 0, 0, dpr, 0, 0)
+          this.addWatermark(context, viewport)
+          context.restore()
+        }
       } catch (err) {
         if (err.name === 'RenderingCancelledException') {
           return

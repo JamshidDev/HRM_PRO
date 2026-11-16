@@ -1,7 +1,5 @@
 <script setup>
   import { usePdfViewerStore } from '@/store/modules/index.js'
-  import * as pdfjsLib from 'pdfjs-dist'
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdfjs-dist/build/pdf.worker.min.js'
   const store = usePdfViewerStore()
 
   defineProps({
