@@ -117,6 +117,14 @@
     const s = grid.value.summary
     return s?.total ? Math.round((s.filled / s.total) * 100) : 0
   })
+  // Sahifa/filtr almashganda jadval boshiga qaytadi.
+  const scrollRef = ref(null)
+  watch(
+    () => grid.value.rows,
+    () => {
+      if (scrollRef.value) scrollRef.value.scrollTop = 0
+    }
+  )
   const rowNumber = (idx) => (grid.value.params.page - 1) * grid.value.params.per_page + idx + 1
 </script>
 
@@ -231,7 +239,7 @@
         </div>
 
         <n-spin :show="grid.loading" class="vs-spin min-h-0 flex-1">
-          <div class="h-full overflow-auto rounded-lg border border-surface-line">
+          <div ref="scrollRef" class="h-full overflow-auto rounded-lg border border-surface-line">
             <table class="vs-table">
               <thead>
                 <tr>
