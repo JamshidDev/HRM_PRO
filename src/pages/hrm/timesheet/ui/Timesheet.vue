@@ -17,7 +17,6 @@
     Send16Regular,
     Eye16Filled,
     Info16Regular,
-    History20Regular,
     Info20Filled,
     MoreVertical20Filled,
     Save20Filled,
@@ -1213,12 +1212,6 @@
             <n-icon :component="Info20Filled" />
           </template>
           {{ $t('timesheetPage.infoShort') }}
-        </n-button>
-        <n-button secondary @click="openHistory()">
-          <template #icon>
-            <n-icon :component="History20Regular" />
-          </template>
-          {{ $t('timesheetPage.changes.short') }}
         </n-button>
         <n-button secondary type="success" @click="onDownload">
           <template #icon>
