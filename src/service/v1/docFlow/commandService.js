@@ -4,6 +4,13 @@ const _index = async (payload) => {
   return await axios.get(`/v1/hr/commands`, { params: payload.params })
 }
 
+// 81 — bir nechta lavozimning temir yo'l staji bitta so'rovda.
+const _railwayExperience = async (payload) => {
+  return await axios.get(`/v1/hr/worker-railway-experience`, {
+    params: { ids: payload.ids.join(',') }
+  })
+}
+
 const _additionalData = async (payload) => {
   return await axios.get(`/v1/hr/worker-additional/${payload?.id}`, { params: payload.params })
 }
@@ -85,6 +92,7 @@ export default {
   _delete,
   _viewFile,
   _additionalData,
+  _railwayExperience,
   _selectable,
   _trainingOptions,
   _reinstatementTarget,

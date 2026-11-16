@@ -5,21 +5,35 @@ import { Utils } from '@utils'
 const { t } = i18n.global
 
 const initialPayload = () => ({
-  year: null,
+  year: new Date().getFullYear() + 1,
   director_id: null,
   trade_union_id: null,
   creator_id: null,
-  date: null,
-  worker_position_ids: [
-    {
-      id: 1,
-      table_number: null,
-      period_from: null,
-      period_to: null,
-      plan_date: null,
-      all_days: 0
-    }
-  ]
+  date: new Date().getTime()
+})
+
+const initialGrid = () => ({
+  visible: false,
+  id: null,
+  summary: null,
+  rows: [],
+  total: 0,
+  loading: false,
+  savingIds: [],
+  exporting: false,
+  // Saqlanmagan o'zgarishlar: { [rowId]: { month, period_from, period_to, table_number, main_day, additional } }.
+  dirty: {},
+  // O'zgargan qatorlarning to'liq holati (sahifa almashsa ham tekshirish uchun) va xato qatorlar.
+  dirtyRows: {},
+  invalidIds: [],
+  params: {
+    page: 1,
+    per_page: 50,
+    search: null,
+    department_id: null,
+    state: 'all',
+    month: null
+  }
 })
 
 export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
@@ -32,39 +46,14 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
     visibleType: true,
     elementId: null,
     totalItems: 0,
-    allRegionList: [],
-    allLoading: false,
     structureCheck: [],
+    structureCheck2: [],
     payload: initialPayload(),
     params: {
       page: 1,
       per_page: 15,
       search: null,
       organizations: []
-    },
-    othersList: [],
-    otherLoading: false,
-    otherVisible: false,
-    otherParam: {
-      page: 1,
-      per_page: 30,
-      search: null,
-      organizations: []
-    },
-    otherTotal: 0,
-    structureCheck2: [],
-    worker: {
-      list: [],
-      loading: false,
-      total: 0,
-      params: {
-        page: 1,
-        per_page: 15,
-        search: null,
-        year: null,
-        organizations: [],
-        departments: []
-      }
     },
     creator: {
       list: [],
@@ -76,48 +65,13 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
         search: null
       }
     },
-    department: {
-      list: [],
-      loading: false,
-      total: 0,
-      params: {
-        page: 1,
-        per_page: 15,
-        search: null
-      }
-    }
+    // Grafik ichi (to'liq ekranli drawer).
+    grid: initialGrid()
   }),
   actions: {
-    _fetchDepartment(infinity = false) {
-      const params = {
-        ...this.department.params,
-        organizations: this.worker.params.organizations.map((v) => v.id).toString() || undefined
-      }
-      this.department.loading = true
-      $ApiService.componentService
-        ._departmentByOrganizations({ params })
-        .then((res) => {
-          const data = res.data.data.data.map((v) => ({
-            id: v.id,
-            name: v.name,
-            position: v.organization.name
-          }))
-
-          this.department.list = infinity
-            ? Array.from(new Map([...this.department.list, ...data].map((v) => [v.id, v])).values())
-            : Array.from(new Map([...data].map((v) => [v.id, v])).values())
-          this.department.total = res.data.data.total
-        })
-        .finally(() => {
-          this.department.loading = false
-        })
-    },
-
     _fetchCreator(infinity = false) {
       this.creator.loading = true
-      let params = {
-        ...this.creator.params
-      }
+      const params = { ...this.creator.params }
       $ApiService.workerService
         ._index({ params })
         .then((res) => {
@@ -128,9 +82,11 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
             photo: v.worker?.photo
           }))
           this.creator.total = res.data.data.total
+          // Tahrirlashda tanlangan tuzuvchi birinchi sahifada bo'lmasa ham nomi yo'qolmasin.
+          const selected = this.creator.list.filter((v) => v.id === this.payload.creator_id)
           this.creator.list = infinity
             ? Array.from(new Map([...this.creator.list, ...data].map((v) => [v.id, v])).values())
-            : Array.from(new Map([...data].map((v) => [v.id, v])).values())
+            : Array.from(new Map([...selected, ...data].map((v) => [v.id, v])).values())
         })
         .finally(() => {
           this.creator.loading = false
@@ -152,107 +108,34 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
           this.loading = false
         })
     },
-    _fetchAutoGenerate() {
-      // Tashkilotsiz hisoblash butun tizim bo'yicha ketadi — tugma ham o'chiq (DAS-14225).
-      if (!this.worker.params.organizations.length) return
-      const params = {
-        ...this.worker.params,
-        organizations: this.worker.params.organizations.map((v) => v.id).toString() || undefined
+    headerData() {
+      return {
+        director_id: this.payload.director_id,
+        trade_union_id: this.payload.trade_union_id,
+        creator_id: this.payload.creator_id,
+        date: Utils.timeToZone(this.payload.date)
       }
-      this.worker.loading = true
+    },
+    // Yaratilgach grafik ichi darhol ochiladi.
+    _createSchedule() {
+      this.saveLoading = true
       $ApiService.vacationScheduleService
-        ._autoGenerate({ params })
+        ._createSchedule({ data: { ...this.headerData(), year: this.payload.year } })
         .then((res) => {
-          const data = res.data?.data
-          // BACKEND: GET /v1/hr/vacation-schedule/1/auto-generate faqat `{ generated: true }`
-          // qaytaradi — hisoblangan sanalar yo'q, `/v1/hr/vacation-schedule-workers` ham
-          // `vacation_schedule` / `lastVacation` / `all_days` bermaydi. Natija ro'yxat
-          // (`[{ id, plan_date, period_from, period_to, all_days }]`) ko'rinishida kelishi kerak
-          // yoki workers endpointi saqlangan grafikni qaytarishi kerak (DAS-14225).
-          // Swagger'da bu endpoint faqat `{id}` (grafik id) oladi — tashkilot/yil yo'q, frontend esa
-          // `1` ni qattiq yozib yuboradi. Yangi grafik uchun qaysi id/parametrlar kerakligi aniqlanishi kerak.
-          if (Array.isArray(data)) {
-            this.applyGenerated(data)
-            return
-          }
-          return this._fetchWorkers().then(() => this.notifyGenerated())
+          this.visible = false
+          this._index()
+          const id = res.data?.data?.id
+          if (id) this.openGrid(id)
         })
         .finally(() => {
-          this.worker.loading = false
+          this.saveLoading = false
         })
     },
-    applyGenerated(data) {
-      data.forEach((v) => {
-        const row = this.worker.list.find((w) => w.id === v.id)
-        if (!row) return
-        row.plan_date = Utils.datePickerFormatter(v.plan_date)
-        if (v.period_from) row.period_from = Utils.datePickerFormatter(v.period_from)
-        if (v.period_to) row.period_to = Utils.datePickerFormatter(v.period_to)
-        if (v.all_days != null) row.all_days = v.all_days
-      })
-      this.notifyGenerated()
-    },
-    notifyGenerated() {
-      const filled = this.worker.list.some((v) => v.plan_date)
-      if (filled) $Toast.success(t('vacationSchedule.autoGenerateDone'))
-      else $Toast.warning(t('vacationSchedule.autoGenerateEmpty'))
-    },
-    _fetchWorkers() {
-      // Tashkilot tanlanmaguncha ro'yxat bo'sh: aks holda butun tizimdagi ~63 000 xodim
-      // 4000+ sahifada chiqadi (DAS-14225).
-      // BACKEND: GET /v1/hr/vacation-schedule-workers tashkilot filtrini e'tiborsiz qoldiradi —
-      // `organizations=188`, `organization_id=188` bilan ham total 63 725 (2026-11-12 tekshirildi).
-      // Swagger'da ikkala parametr bor; tanlangan tashkilot (va `departments`) bo'yicha filtrlash kerak.
-      if (!this.worker.params.organizations.length) {
-        this.worker.list = []
-        this.worker.total = 0
-        return Promise.resolve()
-      }
-      const params = {
-        ...this.worker.params,
-        organizations: this.worker.params.organizations.map((v) => v.id).toString() || undefined,
-        departments: this.worker.params.departments.toString() || undefined
-      }
-      this.worker.loading = true
-      return $ApiService.vacationScheduleService
-        ._workers({ params })
-        .then((res) => {
-          this.worker.list = res.data.data.data.map((v) => ({
-            id: v.id,
-            worker: v.worker,
-            position: v.position,
-            table_number: v.vacation_schedule?.table_number?.toString(),
-            period_from: Utils.datePickerFormatter(
-              v?.[v.vacation_schedule ? 'vacation_schedule' : 'lastVacation']?.period_from
-            ),
-            period_to: Utils.datePickerFormatter(
-              v?.[v.vacation_schedule ? 'vacation_schedule' : 'lastVacation']?.period_to
-            ),
-            plan_date: Utils.datePickerFormatter(v.vacation_schedule?.plan_date),
-            all_days: v.vacation_schedule ? v.vacation_schedule?.all_days : v?.all_days || 0
-          }))
-          this.worker.total = res.data.data.total
-        })
-        .finally(() => {
-          this.worker.loading = false
-        })
-    },
-    _create(data) {
+    _updateHeader() {
       this.saveLoading = true
-      $ApiService.vacationScheduleService._create({ data }).finally(() => {
-        this.saveLoading = false
-      })
-    },
-    _update() {
-      this.saveLoading = true
-      const data = {
-        ...this.payload,
-        organization_id: undefined,
-        worker_position_id: undefined
-      }
       $ApiService.vacationScheduleService
-        ._update({ data, id: this.elementId })
-        .then((res) => {
+        ._updateHeader({ id: this.elementId, data: this.headerData() })
+        .then(() => {
           this.visible = false
           this._index()
         })
@@ -264,7 +147,7 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
       this.deleteLoading = true
       $ApiService.vacationScheduleService
         ._delete({ id: this.elementId })
-        .then((res) => {
+        .then(() => {
           this._index()
         })
         .finally(() => {
@@ -275,13 +158,144 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
       this.visible = data
     },
     resetForm() {
-      const today = new Date().getTime()
       this.elementId = null
       this.payload = initialPayload()
-      this.payload.year = 2026
-      this.payload.date = today
-      this.worker.params.year = 2026
-      this.worker.params.page = 1
+    },
+
+    // ---- Grafik ichi ----
+    openGrid(id) {
+      this.grid = initialGrid()
+      this.grid.id = id
+      this.grid.visible = true
+      this._gridSummary()
+      this._gridRows()
+    },
+    closeGrid() {
+      this.grid.visible = false
+      this._index()
+    },
+    _gridSummary() {
+      return $ApiService.vacationScheduleService._summary({ id: this.grid.id }).then((res) => {
+        this.grid.summary = res.data.data
+      })
+    },
+    _gridRows() {
+      this.grid.loading = true
+      const params = Object.fromEntries(
+        Object.entries(this.grid.params).filter(([, v]) => v !== null && v !== '' && v !== 'all')
+      )
+      return $ApiService.vacationScheduleService
+        ._rows({ id: this.grid.id, params })
+        .then((res) => {
+          // Boshqa sahifada qilingan, hali saqlanmagan o'zgarishlar ham ko'rinadi.
+          this.grid.rows = res.data.data.data.map((v) =>
+            this.viewRow({ ...v, ...(this.grid.dirty[v.id] || {}) })
+          )
+          this.grid.total = res.data.data.total
+        })
+        .finally(() => {
+          this.grid.loading = false
+        })
+    },
+    refreshCounters() {
+      this._gridSummary()
+    },
+    // API qiymatlari → jadval ko'rinishi (sana — timestamp, jami kun qayta hisoblanadi).
+    viewRow(v) {
+      const additional = v.additional || []
+      return {
+        ...v,
+        period_from: Utils.datePickerFormatter(v.period_from),
+        period_to: Utils.datePickerFormatter(v.period_to),
+        table_number: v.table_number ?? '',
+        month: v.month || null,
+        all_days: Math.max(
+          0,
+          (Number(v.main_day) || 0) +
+            (Number(v.rest_day) || 0) +
+            additional.reduce((s, a) => s + (Number(a.value) || 0), 0)
+        )
+      }
+    },
+    // O'zgarish darhol yuborilmaydi — «Saqlash» bosilguncha to'planadi.
+    setField(row, patch) {
+      this.grid.dirty[row.id] = { ...(this.grid.dirty[row.id] || {}), ...patch }
+      Object.assign(row, this.viewRow({ ...row, ...this.toApi(row), ...patch }))
+      this.grid.dirtyRows[row.id] = { ...row }
+      this.grid.invalidIds = this.grid.invalidIds.filter(
+        (id) => id !== row.id || !this.isComplete(row)
+      )
+    },
+    // Grafik qatori: davr (dan/gacha) va ta'til oyi majburiy.
+    isComplete(row) {
+      return Boolean(row.period_from && row.period_to && row.month)
+    },
+    toApi(row) {
+      return {
+        period_from: row.period_from ? Utils.timeToZone(row.period_from) : null,
+        period_to: row.period_to ? Utils.timeToZone(row.period_to) : null
+      }
+    },
+    // Faqat shu qator saqlanadi; davr va ta'til oyi majburiy.
+    _saveRow(row) {
+      const patch = this.grid.dirty[row.id]
+      if (!patch) return Promise.resolve()
+      // Davr/oy tegilmagan bo'lsa (faqat kunlar yoki tabel) — majburiylik tekshirilmaydi.
+      const touchesSchedule = ['month', 'period_from', 'period_to'].some((k) => k in patch)
+      if (touchesSchedule && !this.isComplete(row)) {
+        if (!this.grid.invalidIds.includes(row.id)) this.grid.invalidIds.push(row.id)
+        $Alert.validation(t('vacationSchedule.grid.requiredFields', { n: 1 }))
+        return Promise.resolve()
+      }
+      this.grid.savingIds.push(row.id)
+      return $ApiService.vacationScheduleService
+        ._saveRows({ id: this.grid.id, data: { rows: [{ id: row.id, ...patch }] } })
+        .then(() => {
+          delete this.grid.dirty[row.id]
+          delete this.grid.dirtyRows[row.id]
+          this.grid.invalidIds = this.grid.invalidIds.filter((id) => id !== row.id)
+          $Toast.success(t('vacationSchedule.grid.saved', { n: 1 }))
+          this.refreshCounters()
+        })
+        .finally(() => {
+          this.grid.savingIds = this.grid.savingIds.filter((id) => id !== row.id)
+        })
+    },
+    gridParams() {
+      return Object.fromEntries(
+        Object.entries(this.grid.params).filter(
+          ([k, v]) => v !== null && v !== '' && v !== 'all' && k !== 'page' && k !== 'per_page'
+        )
+      )
+    },
+    _export() {
+      this.grid.exporting = true
+      return $ApiService.vacationScheduleService
+        ._export({ id: this.grid.id, params: this.gridParams() })
+        .then((res) => {
+          const url = URL.createObjectURL(new Blob([res.data]))
+          const a = document.createElement('a')
+          a.href = url
+          a.download = `tatillar-grafigi-${this.grid.summary?.year ?? ''}.xlsx`
+          a.click()
+          URL.revokeObjectURL(url)
+        })
+        .finally(() => {
+          this.grid.exporting = false
+        })
+    },
+    discardChanges() {
+      this.grid.dirty = {}
+      this.grid.dirtyRows = {}
+      this.grid.invalidIds = []
+      return this._gridRows()
+    },
+    _sync() {
+      return $ApiService.vacationScheduleService._sync({ id: this.grid.id }).then((res) => {
+        $Toast.success(t('vacationSchedule.grid.syncDone', { n: res.data.data.added }))
+        this.refreshCounters()
+        return this._gridRows()
+      })
     }
   }
 })
