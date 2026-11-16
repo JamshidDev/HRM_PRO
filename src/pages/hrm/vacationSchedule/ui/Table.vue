@@ -9,7 +9,8 @@ import {
     CheckmarkCircle32Regular,
     Delete20Regular,
     Edit32Regular,
-    Eye16Regular
+    Eye16Regular,
+    People20Regular
 } from '@vicons/fluent'
 
   const t = i18n.global.t
@@ -24,8 +25,16 @@ import {
     emits('openOffice', v.id)
   }
 
+  // Grafik ichi — xodimlar ro'yxati (to'liq ekranli drawer).
+  const onOpen = (v) => {
+    if (!accStore.checkAction(accStore.pn.hrVacationScheduleRead)) return
+    store.openGrid(v.id)
+  }
+
+  // Sarlavha: sana, rahbar, kasaba uyushmasi, tuzuvchi.
   const onEdit = (v) => {
     if (!accStore.checkAction(accStore.pn.hrVacationScheduleWrite)) return
+    store.elementId = v.id
     store.creator.list = [
       {
         id: v.creator.id,
@@ -40,8 +49,6 @@ import {
     store.payload.director_id = v?.director?.id
     store.payload.trade_union_id = v?.tradeUnion?.id
     store.payload.creator_id = v?.creator?.id
-    store.worker.params.year = v.year
-    store.worker.params.page = 1
     store.visibleType = false
     store.visible = true
   }
@@ -54,7 +61,7 @@ import {
   }
 
   const onDelete = (v) => {
-    if (!accStore.checkAction(accStore.pn.hrVacationScheduleWrite)) return
+    if (!accStore.checkAction(accStore.pn.hrVacationScheduleDelete)) return
     store.elementId = v.id
     store._delete()
   }
@@ -109,6 +116,12 @@ import {
   ])
 
   const actions = computed(() => [
+    {
+      label: t('vacationSchedule.grid.open'),
+      key: 'open',
+      icon: UIHelper.renderIcon(People20Regular),
+      action: onOpen
+    },
     {
       label: t('content.view'),
       key: Utils.ActionTypes.view,
