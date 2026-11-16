@@ -759,6 +759,14 @@
   },
   "confirmation": {
     "name": "Shártnamalar",
+    "command": {
+      "empty": "Tastıyıqlaw ushın buyrıq joq",
+      "emptyHint": "Qolıńızdı yamasa kelisimińizdi kútip turǵan buyrıqlar usı jerde shıǵadı"
+    },
+    "adContract": {
+      "empty": "Tastıyıqlaw ushın qosımsha kelisim joq",
+      "emptyHint": "Qolıńızdı yamasa kelisimińizdi kútip turǵan qosımsha kelisimler usı jerde shıǵadı"
+    },
     "contract": {
       "empty": "Tastıyıqlaw ushın shártnama joq",
       "emptyHint": "Qolıńızdı yamasa kelisimińizdi kútip turǵan shártnamalar usı jerde shıǵadı",

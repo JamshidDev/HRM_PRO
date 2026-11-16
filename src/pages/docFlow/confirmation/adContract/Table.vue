@@ -5,7 +5,8 @@
     UITableBadgeCell,
     UITableNameCell,
     UIUser,
-    UIElectronicNumber
+    UIElectronicNumber,
+    NoDataPicture
   } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useConfirmationAdContractStore } from '@/store/modules/index.js'
@@ -120,6 +121,14 @@
     storage-key="docflow-confirmation-ad-contract"
     @change-page="changePage"
   >
+    <!-- Ro'yxat — imzo/kelishuvni kutayotgan hujjatlar; qidiruvsiz bo'sh bo'lsa «topilmadi» emas (DAS-15968) -->
+    <template #empty>
+      <NoDataPicture
+        :title="store.searched ? null : $t('confirmation.adContract.empty')"
+        :hint="store.searched ? null : $t('confirmation.adContract.emptyHint')"
+      />
+    </template>
+
     <template #[`cell-contract_additional.electronic_number`]="{ row }">
       <UIElectronicNumber :value="row?.contract_additional?.electronic_number" />
     </template>

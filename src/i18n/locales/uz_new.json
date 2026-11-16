@@ -759,6 +759,14 @@
   },
   "confirmation": {
     "name": "Şartnomalar",
+    "command": {
+      "empty": "Tasdiqlaş uçun buyruq yöq",
+      "emptyHint": "Imzoingiz yoki kelişuvingizni kutayotgan buyruqlar şu yerda çiqadi"
+    },
+    "adContract": {
+      "empty": "Tasdiqlaş uçun qöşimça kelişuv yöq",
+      "emptyHint": "Imzoingiz yoki kelişuvingizni kutayotgan qöşimça kelişuvlar şu yerda çiqadi"
+    },
     "contract": {
       "empty": "Tasdiqlaş uçun şartnoma yöq",
       "emptyHint": "Imzoingiz yoki kelişuvingizni kutayotgan şartnomalar şu yerda çiqadi",
