@@ -1,3 +1,8 @@
+<script>
+  // Forma qayta chizilsa ham so'rov takrorlanmasin — lavozim id bo'yicha kesh.
+  const experienceCache = new Map()
+</script>
+
 <script setup>
   // 81 — tarmoq jamoa kelishuvi asosida moddiy yordam: har xodim uchun temir yo'l staji (yil, oy).
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
@@ -22,21 +27,41 @@
 
   // Profildagi temir yo'l staji sanasidan tavsiya: bo'sh inputlarga qo'yiladi, qo'lda o'zgartirish mumkin.
   const suggestions = reactive({})
+  const applyToRow = (id, d) => {
+    suggestions[id] = d
+    const row = store.workerData.find((v) => v.id === id)
+    if (!row || row.experience_year != null || row.experience_month != null) return
+    if (d.year == null && d.month == null) return
+    row.experience_year = d.year
+    row.experience_month = d.month
+  }
+  // Yangi tanlangan xodimlar 300 ms ichida yig'ilib, bitta so'rov bilan olinadi.
+  const pending = new Set()
+  let timer = null
+  const flush = () => {
+    const ids = [...pending]
+    pending.clear()
+    if (!ids.length) return
+    $ApiService.commandService
+      ._railwayExperience({ ids })
+      .then((res) => {
+        const list = res?.data?.data || []
+        const empty = { year: null, month: null, start: null }
+        ids.forEach((id) => {
+          const d = list.find((v) => v.id === id) || empty
+          experienceCache.set(id, d)
+          applyToRow(id, d)
+        })
+      })
+      .catch(() => ids.forEach((id) => delete suggestions[id]))
+  }
   const fillExperience = (item) => {
     if (suggestions[item.id] !== undefined) return
+    if (experienceCache.has(item.id)) return applyToRow(item.id, experienceCache.get(item.id))
     suggestions[item.id] = null
-    $ApiService.commandService
-      ._additionalData({ id: item.id, params: { type: 'railway_experience' } })
-      .then((res) => {
-        const d = res?.data?.data?.data || {}
-        suggestions[item.id] = d
-        const row = store.workerData.find((v) => v.id === item.id)
-        if (!row || row.experience_year != null || row.experience_month != null) return
-        if (d.year == null && d.month == null) return
-        row.experience_year = d.year
-        row.experience_month = d.month
-      })
-      .catch(() => delete suggestions[item.id])
+    pending.add(item.id)
+    clearTimeout(timer)
+    timer = setTimeout(flush, 300)
   }
   const suggestionText = (id) => {
     const d = suggestions[id]
