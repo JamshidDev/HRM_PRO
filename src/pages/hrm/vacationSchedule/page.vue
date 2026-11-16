@@ -1,7 +1,7 @@
 <script setup>
   import { UIConfirmByFile, UIModal, UIOfficeApp, UIPageContent } from '@components'
   import { useAccountStore, useVacationScheduleStore } from '@stores'
-  import { createForm, Filter, Table } from './ui'
+  import { createForm, Filter, ScheduleDrawer, Table } from './ui'
   import { Utils } from '@utils'
 
   const store = useVacationScheduleStore()
@@ -27,7 +27,7 @@
     <Filter />
     <Table @openOffice="openOffice" />
     <UIModal
-      width="90%"
+      width="640px"
       v-model:visible="store.visible"
       :title="
         store.visibleType ? $t('vacationSchedule.createTitle') : $t('vacationSchedule.updateTitle')
@@ -35,6 +35,7 @@
     >
       <createForm />
     </UIModal>
+    <ScheduleDrawer />
     <UIOfficeApp ref="officeAppRef" />
     <UIConfirmByFile
       :model="Utils.documentModels.vacationSchedule"
