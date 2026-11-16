@@ -744,6 +744,14 @@
   },
   "confirmation": {
     "name": "Contracts",
+    "command": {
+      "empty": "No orders to approve",
+      "emptyHint": "Orders waiting for your signature or approval will appear here"
+    },
+    "adContract": {
+      "empty": "No additional agreements to approve",
+      "emptyHint": "Additional agreements waiting for your signature or approval will appear here"
+    },
     "contract": {
       "empty": "No contracts to approve",
       "emptyHint": "Contracts waiting for your signature or approval will appear here",

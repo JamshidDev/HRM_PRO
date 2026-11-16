@@ -255,7 +255,7 @@
             path="userIds"
             :rule="[
               {
-                trigger: ['input', 'blur-sm'],
+                trigger: ['input', 'blur'],
                 validator() {
                   return !store.payload.all && !store.payload.userIds.length
                     ? new Error(t('rules.requiredField'))

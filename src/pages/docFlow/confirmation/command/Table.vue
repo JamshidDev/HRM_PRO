@@ -4,7 +4,8 @@
     UITable,
     UITableBadgeCell,
     UITableNameCell,
-    UIElectronicNumber
+    UIElectronicNumber,
+    NoDataPicture
   } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useConfirmCommandStore } from '@/store/modules/index.js'
@@ -93,6 +94,14 @@
     storage-key="docflow-confirmation-command"
     @change-page="changePage"
   >
+    <!-- Ro'yxat — imzo/kelishuvni kutayotgan hujjatlar; qidiruvsiz bo'sh bo'lsa «topilmadi» emas (DAS-15968) -->
+    <template #empty>
+      <NoDataPicture
+        :title="store.searched ? null : $t('confirmation.command.empty')"
+        :hint="store.searched ? null : $t('confirmation.command.emptyHint')"
+      />
+    </template>
+
     <template #[`cell-command.type.name`]="{ row }">
       <UITableNameCell :name="row?.command?.type.name" @click="onPreview(row)" />
     </template>

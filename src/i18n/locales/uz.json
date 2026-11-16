@@ -759,6 +759,14 @@
   },
   "confirmation": {
     "name": "Shartnomalar",
+    "command": {
+      "empty": "Tasdiqlash uchun buyruq yo'q",
+      "emptyHint": "Imzoingiz yoki kelishuvingizni kutayotgan buyruqlar shu yerda chiqadi"
+    },
+    "adContract": {
+      "empty": "Tasdiqlash uchun qo'shimcha kelishuv yo'q",
+      "emptyHint": "Imzoingiz yoki kelishuvingizni kutayotgan qo'shimcha kelishuvlar shu yerda chiqadi"
+    },
     "contract": {
       "empty": "Tasdiqlash uchun shartnoma yo'q",
       "emptyHint": "Imzoingiz yoki kelishuvingizni kutayotgan shartnomalar shu yerda chiqadi",

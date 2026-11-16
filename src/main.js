@@ -14,11 +14,15 @@ import dateMaskPlugin from '@/plugins/dateMaskPlugin.js'
 import FlyUploadPlugin from '@/plugins/flyUploadPlugin.js'
 import { useAccountStore } from '@/store/modules/index.js'
 import { initErrorReporter } from '@/utils/errorReporter.js'
+import { ignoreFormValidationRejections } from '@/utils/formValidationRejection.js'
 import { RecycleScroller } from 'vue3-virtual-scroller'
 import 'vue3-virtual-scroller/dist/vue3-virtual-scroller.css'
 import UITabs from '@/components/ui/UITabs.js'
 
 const app = createApp(App)
+
+// Forma validatsiyasi rad etgan promise'lar — kutilgan holat, konsol/log'ga chiqmasin (errorReporter'dan oldin).
+ignoreFormValidationRejections()
 
 // Prod xatolarini Telegram log guruhiga yuborish (window + Vue error handlerlari).
 // Iloji boricha erta — mount'gacha yuz bergan xatolar ham tushsin.

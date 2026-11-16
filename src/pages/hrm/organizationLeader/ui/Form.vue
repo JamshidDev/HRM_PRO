@@ -105,7 +105,7 @@
         path="phones"
         :rule="[
           {
-            trigger: ['blur-sm'],
+            trigger: ['blur'],
             validator() {
               if (store.payload.phones.find((i) => i.length !== 5 && i.length !== 9) !== undefined)
                 return new Error($t('organizationLeaderPage.invalidPhone'))
