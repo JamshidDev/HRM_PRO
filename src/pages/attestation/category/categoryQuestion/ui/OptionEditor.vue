@@ -90,7 +90,7 @@
     :path="path"
     :rule="[
       {
-        trigger: ['input', 'blur-sm'],
+        trigger: ['input', 'blur'],
         validator() {
           return editorRef?.isEmpty() || editorRef?.getText()?.trim() === ''
             ? new Error($t('rules.requiredField'))
