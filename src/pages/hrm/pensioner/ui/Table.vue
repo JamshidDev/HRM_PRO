@@ -48,6 +48,8 @@
     store._index()
   }
 
+  // JSHSHIR, pasport, manzil ro'yxatda niqoblangan (QA-50). BACKEND: ro'yxat javobida to'liq qiymat
+  // kelmasligi kerak (ruxsatga qarab) — frontend niqobi faqat ekranni yopadi.
   const columns = computed(() => [
     {
       key: 'worker',
@@ -62,16 +64,19 @@
     {
       key: 'pin',
       title: t('pensioner.form.pin'),
+      render: (row) => Utils.maskPin(row.pin),
       width: 140
     },
     {
       key: 'passport',
       title: t('pensioner.form.passport'),
+      render: (row) => Utils.maskPassport(row.passport),
       width: 140
     },
     {
       key: 'address',
       title: t('pensioner.form.address'),
+      render: (row) => Utils.maskAddress(row.address),
       minWidth: 200
     },
     {

@@ -5,6 +5,7 @@ export const useConfirmCommandStore = defineStore('confirmCommandStore', {
   state: () => ({
     list: [],
     loading: false,
+    searched: false,
     saveLoading: false,
     deleteLoading: false,
     visible: false,
@@ -20,6 +21,8 @@ export const useConfirmCommandStore = defineStore('confirmCommandStore', {
   actions: {
     _index() {
       this.loading = true
+      // Bo'sh holat matni uchun: ro'yxat qidiruv bilan olinganmi (yozilayotgan matn emas).
+      this.searched = !!this.params.search?.trim()
       $ApiService.documentService
         ._confirmationCommand({ params: this.params })
         .then((res) => {

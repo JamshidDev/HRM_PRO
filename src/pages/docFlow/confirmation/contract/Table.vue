@@ -20,12 +20,13 @@
 
   const emits = defineEmits(['openOffice'])
 
-  const onOpenFile = (documentId, signatureId) => {
-    emits('openOffice', { documentId, signatureId })
+  const onOpenFile = (documentId, signatureId, title) => {
+    emits('openOffice', { documentId, signatureId, title })
   }
 
   const onPreview = (row) => {
-    onOpenFile(row?.contract.id, row.id)
+    const title = Utils.documentTitle(row?.contract?.number, row?.contract?.type?.name)
+    onOpenFile(row?.contract.id, row.id, title)
   }
 
   const changePage = (v) => {

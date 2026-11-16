@@ -1144,7 +1144,8 @@ export const navigations = withRawIcons([
         permission: appPermissions.holidaysRead
       },
       {
-        label: 'othersPage.name', // Boshqalar
+        // «Boshqalar» nomi ma'nosiz edi — ichida oliygohlar / mutaxassisliklar / tillar katalogi (QA-51).
+        label: 'educationDirectory.name', // Ta'lim katalogi
         path: Utils.routePathMaker(AppPaths.AdminOther),
         icon: AdminFolderIcon,
         color: 'bg-dark',

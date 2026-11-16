@@ -759,6 +759,14 @@
   },
   "confirmation": {
     "name": "Shartnomalar",
+    "command": {
+      "empty": "Tasdiqlash uchun buyruq yo'q",
+      "emptyHint": "Imzoingiz yoki kelishuvingizni kutayotgan buyruqlar shu yerda chiqadi"
+    },
+    "adContract": {
+      "empty": "Tasdiqlash uchun qo'shimcha kelishuv yo'q",
+      "emptyHint": "Imzoingiz yoki kelishuvingizni kutayotgan qo'shimcha kelishuvlar shu yerda chiqadi"
+    },
     "contract": {
       "empty": "Tasdiqlash uchun shartnoma yo'q",
       "emptyHint": "Imzoingiz yoki kelishuvingizni kutayotgan shartnomalar shu yerda chiqadi",
@@ -3655,6 +3663,9 @@
       "discard": "Saqlamasdan yopish"
     },
     "calcDiff": {
+      "before": "Oldin",
+      "unsaved": "Hali saqlanmagan",
+      "cleared": "katak tozalandi",
       "system": "Tizim",
       "entered": "Xodim",
       "diff": "Farq",
@@ -3680,7 +3691,11 @@
     "lockClose": "Tabelni yopish",
     "lockOpen": "Tabelni ochish",
     "lockedTag": "Yopilgan",
-    "lockedByHr": "HR yopgan — faqat ko'rish"
+    "lockedByHr": "HR yopgan — faqat ko'rish",
+    "autoOverwrite": {
+      "title": "Kataklar qayta yoziladi",
+      "content": "{count} ta to'ldirilgan katak tizim hisobi bilan almashtiriladi (ta'til, safar va qo'lda kiritilganlari ham). «Saqlash» bosilmaguncha bazaga yozilmaydi. Davom etasizmi?"
+    }
   },
   "turnstile": {
     "title": "Turniket",
@@ -4646,6 +4661,7 @@
       "reported_tax": "Hisobot davridagi soliq summasi"
     },
     "card": {
+      "noData": "Ma'lumot kiritilmagan",
       "salary_fund": "Ish haqi fondi",
       "tax_four": "Soliq — 4-ilova",
       "tax_five": "Soliq — 5-ilova",
@@ -4676,6 +4692,7 @@
       "no_alerts": "Ogohlantirishlar yo'q"
     },
     "alert": {
+      "noData": "Tanlangan oy uchun hisobot hali yuklanmagan — o'tgan oyga nisbatan o'zgarish hisoblanmaydi",
       "sharpDrop": "{name} {percent}% keskin pasaydi",
       "decline": "{name} {percent}% kamaydi",
       "growth": "{name} {percent}% oshdi",

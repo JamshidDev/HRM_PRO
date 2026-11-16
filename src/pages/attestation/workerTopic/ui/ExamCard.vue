@@ -58,7 +58,7 @@
             </p>
             <p>
               {{ $t('solveExamPage.deadline') }}:
-              <span class="font-medium">{{ Utils.timeWithMonth(exam.deadline) }}</span>
+              <span class="font-medium">{{ Utils.dateTimeLabel(exam.deadline) }}</span>
             </p>
             <p>
               {{ $t('examPage.attempts') }}: <span class="font-medium">{{ exam.chances }}</span>
@@ -104,8 +104,8 @@
               >
               <div>
                 <p class="font-bold">
-                  {{ Utils.timeWithMonth(item.created) }} -
-                  {{ item.ended ? Utils.timeWithMonth(item.ended) : '...' }}
+                  {{ Utils.dateTimeLabel(item.created) }} -
+                  {{ item.ended ? Utils.dateTimeLabel(item.ended) : '...' }}
                 </p>
                 <div class="inline-block">
                   <n-button size="tiny" secondary :type="item?.ended ? 'primary' : 'warning'">

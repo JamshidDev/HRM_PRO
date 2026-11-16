@@ -63,7 +63,7 @@
     @changePage="store.changePage"
   >
     <template #[`cell-finished_at`]="{ row }">
-      {{ Utils.timeWithMonth(row.finished_at || row.started_at) }}
+      {{ Utils.dateTimeLabel(row.finished_at || row.started_at) }}
     </template>
 
     <!-- Fayl nomi — serverda aynan shu nom bilan qidiriladi (scp uchun) -->

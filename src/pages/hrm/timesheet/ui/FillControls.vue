@@ -241,8 +241,10 @@
 </template>
 
 <style scoped>
+  /* Tor ekranda (yoki 2-tur ochilganda) sig'masa — 2-qatorga o'tadi, o'ng tomoni kesilmaydi. */
   .fc {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 8px;
     min-width: 0;

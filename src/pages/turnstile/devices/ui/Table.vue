@@ -185,7 +185,7 @@
     </template>
 
     <template #cell-updated_at="{ row }">
-      <p class="leading-[1.2] text-xs">{{ Utils.timeWithMonth(row.updated_at) }}</p>
+      <p class="leading-[1.2] text-xs">{{ Utils.dateTimeLabel(row.updated_at) }}</p>
     </template>
   </UITable>
 </template>

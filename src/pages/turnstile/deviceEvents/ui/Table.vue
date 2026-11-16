@@ -111,7 +111,7 @@
     </template>
 
     <template #cell-event_time="{ row }">
-      <span class="text-xs font-medium">{{ Utils.timeHHMMWithMonth(row?.event_time) }}</span>
+      <span class="text-xs font-medium">{{ Utils.dateTimeShortLabel(row?.event_time) }}</span>
     </template>
   </UITable>
 </template>

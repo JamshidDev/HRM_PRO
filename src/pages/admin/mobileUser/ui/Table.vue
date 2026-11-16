@@ -104,11 +104,11 @@
     </template>
 
     <template #cell-face="{ row }">
-      {{ row?.face ? Utils.timeWithMonth(row?.face) : '' }}
+      {{ row?.face ? Utils.dateTimeLabel(row?.face) : '' }}
     </template>
 
     <template #cell-created_at="{ row }">
-      {{ Utils.timeWithMonth(row?.created_at) }}
+      {{ Utils.dateTimeLabel(row?.created_at) }}
     </template>
   </UITable>
 </template>

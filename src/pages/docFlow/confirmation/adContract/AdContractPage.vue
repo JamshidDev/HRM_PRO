@@ -10,7 +10,7 @@
   const officeAppRef = ref(null)
 
   const openOffice = (v) => {
-    officeAppRef.value.openPdf(v.documentId, Utils.documentModels.adContract, v.signatureId)
+    officeAppRef.value.openPdf(v.documentId, Utils.documentModels.adContract, v.signatureId, v.title)
   }
 
   const onSignatureEv = (v) => {

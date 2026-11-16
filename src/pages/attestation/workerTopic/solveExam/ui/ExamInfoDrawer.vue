@@ -49,7 +49,7 @@
           </tr>
           <tr>
             <th>{{ $t('solveExamPage.startedAt') }}</th>
-            <td>{{ Utils.timeWithMonth(workerDetail.created) }}</td>
+            <td>{{ Utils.dateTimeLabel(workerDetail.created) }}</td>
           </tr>
           <tr>
             <th>{{ $t('solveExamPage.variant') }}</th>
@@ -61,7 +61,7 @@
           </tr>
           <tr>
             <th>{{ $t('solveExamPage.deadline') }}</th>
-            <td>{{ Utils.timeWithMonth(examDetail.deadline) }}</td>
+            <td>{{ Utils.dateTimeLabel(examDetail.deadline) }}</td>
           </tr>
           <tr>
             <th>{{ $t('solveExamPage.attempts') }}</th>

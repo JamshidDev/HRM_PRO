@@ -535,6 +535,8 @@ const onUnhandledRejection = (event) => {
   const reason = event.reason
   // Axios xatolari interceptor orqali allaqachon hisobga olingan.
   if (reason?.isAxiosError) return
+  // Boshqa handler kutilgan deb belgilagan (masalan forma validatsiyasi — formValidationRejection.js).
+  if (event.defaultPrevented) return
 
   const message = reason?.message || (typeof reason === 'string' ? reason : String(reason))
   // Eski deploy belgisi: brauzer hali eski chunk nomlarini so'rayapti.

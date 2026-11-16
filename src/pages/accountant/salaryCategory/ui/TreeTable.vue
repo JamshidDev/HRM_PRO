@@ -48,7 +48,8 @@
 
 <template>
   <n-spin :show="store.loading">
-    <div class="w-full pb-4 mt-4 overflow-y-auto h-[calc(100vh-186px)]">
+    <!-- `max-h` — qisqa ro'yxatda gorizontal skroll jadval ostida turadi (QA-45). -->
+    <div class="w-full mt-4 overflow-auto max-h-[calc(100vh-186px)]">
       <n-table
         class="sticky-table-header sticky-table-body-left sticky-table-body-element table-hover-row"
         style="border-collapse: collapse"
