@@ -3681,6 +3681,7 @@
       "user": "Kim o'zgartirdi",
       "allWorkers": "Barcha xodimlar",
       "allDays": "Barcha kunlar",
+      "cellEmpty": "Bu katak hali o'zgartirilmagan",
       "rowDiff": "Tizim hisobidan farq: {cells} ta kun o'zgartirilgan. Tarixni ko'rish uchun bosing"
     },
     "lockClose": "Tabelni yopish",

@@ -3681,6 +3681,7 @@
       "user": "Kim özgartirdi",
       "allWorkers": "Barça xodimlar",
       "allDays": "Barça kunlar",
+      "cellEmpty": "Bu katak hali özgartirilmagan",
       "rowDiff": "Tizim hisobidan farq: {cells} ta kun özgartirilgan. Tarixni köriş uçun bosing"
     },
     "lockClose": "Tabelni yopiş",

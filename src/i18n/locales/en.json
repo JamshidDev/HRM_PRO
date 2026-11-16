@@ -3661,6 +3661,7 @@
       "user": "Changed by",
       "allWorkers": "All employees",
       "allDays": "All days",
+      "cellEmpty": "This cell has not been changed yet",
       "rowDiff": "Differs from system calculation: {cells} day(s) changed. Click to view history"
     },
     "lockClose": "Close timesheet",
