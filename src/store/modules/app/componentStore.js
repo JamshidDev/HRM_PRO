@@ -63,6 +63,7 @@ export const useComponentStore = defineStore('componentStore', {
     giftTypes: [],
     fineTypes: [],
     financialAssistance: [],
+    agreementTypes: [],
 
     departmentList: [],
     depParams: {
@@ -495,6 +496,7 @@ export const useComponentStore = defineStore('componentStore', {
           this.roles = res.data.data.roles
           this.giftTypes = res.data.data.gift_types
           this.financialAssistance = res.data.data.financial_assistance
+          this.agreementTypes = res.data.data.agreement_types || []
           this.fineTypes = res.data.data.fine_types
           this.vacationTypes = res.data.data.vacation_types
           this.work_Types = res.data.data.work_types

@@ -19,7 +19,7 @@
       v-if="createdAt"
       class="text-xs rounded-2xl text-secondary group-hover:!text-primary"
     >
-      {{ Utils.timeHHMMWithMonth(createdAt) }}
+      {{ Utils.dateTimeShortLabel(createdAt) }}
     </span>
   </div>
 </template>

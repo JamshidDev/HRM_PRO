@@ -19,7 +19,7 @@
     type: 'number',
     required: true,
     message: t('rules.requiredField'),
-    trigger: ['input', 'blur-sm', 'change']
+    trigger: ['input', 'blur', 'change']
   }
   const formRules = computed(() =>
     store.form_57.pay_type === 2

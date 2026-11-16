@@ -70,7 +70,7 @@
           <div class="min-w-0">
             <p class="text-xs text-textColor3">{{ $t('telegramLink.linkedAt') }}</p>
             <p class="text-sm font-medium text-textColor1 truncate">
-              {{ status.linked_at ? Utils.timeWithMonth(status.linked_at) : '—' }}
+              {{ status.linked_at ? Utils.dateTimeLabel(status.linked_at) : '—' }}
             </p>
           </div>
         </div>

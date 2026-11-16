@@ -1,16 +1,85 @@
 <script setup>
   // 81 — tarmoq jamoa kelishuvi asosida moddiy yordam: har xodim uchun temir yo'l staji (yil, oy).
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
+  import { useComponentStore } from '@/store/modules/index.js'
   import { Dismiss16Regular } from '@vicons/fluent'
   import Utils from '../../../../../utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import { useEmptyFieldMarks } from '../useEmptyFieldMarks.js'
 
   const store = useCommandFormStore()
+  const componentStore = useComponentStore()
   const { t } = i18n.global
   const { showErrors } = useEmptyFieldMarks()
 
-  const DEFAULT_BASE = 'Xodimlar arizasi, “Oʻzbekiston temir yoʻllari” AJ tarmoq jamoa kelishuvi'
+  // Kelishuv turiga qarab «Asos» namunasi (1 — tarmoq, 2 — jamoa).
+  const BASE_BY_AGREEMENT = {
+    1: 'Xodimlar arizasi, Tarmoq jamoa kelishuvi',
+    2: 'Xodimlar arizasi, Jamoa kelishuv shartnomasi'
+  }
+  const MONTH_KEYS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
+  const monthOptions = MONTH_KEYS.map((k, i) => ({ label: t(`month.${k}`), value: i + 1 }))
+
+  // Profildagi temir yo'l staji sanasidan tavsiya: bo'sh inputlarga qo'yiladi, qo'lda o'zgartirish mumkin.
+  const suggestions = reactive({})
+  const fillExperience = (item) => {
+    if (suggestions[item.id] !== undefined) return
+    suggestions[item.id] = null
+    $ApiService.commandService
+      ._additionalData({ id: item.id, params: { type: 'railway_experience' } })
+      .then((res) => {
+        const d = res?.data?.data?.data || {}
+        suggestions[item.id] = d
+        const row = store.workerData.find((v) => v.id === item.id)
+        if (!row || row.experience_year != null || row.experience_month != null) return
+        if (d.year == null && d.month == null) return
+        row.experience_year = d.year
+        row.experience_month = d.month
+      })
+      .catch(() => delete suggestions[item.id])
+  }
+  const suggestionText = (id) => {
+    const d = suggestions[id]
+    if (!d) return null
+    if (!d.start) return t('documentPage.command.form.experienceNoDate')
+    return t('documentPage.command.form.experienceSuggest', {
+      date: Utils.timeOnlyDate(d.start),
+      year: d.year,
+      month: d.month
+    })
+  }
+  const isSuggested = (item) => {
+    const d = suggestions[item.id]
+    return d?.start && Number(item.experience_year) === d.year && Number(item.experience_month) === d.month
+  }
+  const applySuggestion = (item) => {
+    const d = suggestions[item.id]
+    if (!d?.start) return
+    item.experience_year = d.year
+    item.experience_month = d.month
+  }
+  // Ko'pi bilan 30 xodim — ortig'i olib tashlanadi (backend ham tekshiradi).
+  const MAX_WORKERS = 30
+  watch(
+    () => store.payload.workers?.length || 0,
+    (n) => {
+      if (n > MAX_WORKERS) {
+        store.payload.workers = store.payload.workers.slice(0, MAX_WORKERS)
+        $Alert.validation(t('commandPage.form_26.max_workers', { max: MAX_WORKERS }))
+      }
+    }
+  )
+  watch(
+    () => store.workerData.map((v) => v.id),
+    () => store.workerData.forEach(fillExperience),
+    { immediate: true }
+  )
+  const defaultBase = (type) => BASE_BY_AGREEMENT[type] || BASE_BY_AGREEMENT[1]
+
+  const onAgreementChange = (type) => {
+    store.agreementType = type
+    store.commandBase = defaultBase(type)
+  }
 
   const onRemoveWorker = (id) => {
     store.workerData = store.workerData.filter((v) => v.id !== id)
@@ -37,7 +106,11 @@
           experience_year: Number(v.experience_year) || 0,
           experience_month: Number(v.experience_month) || 0
         })),
-        command_additional: { base: store.commandBase || null }
+        command_additional: {
+          base: store.commandBase || null,
+          agreement_type: store.agreementType || 1,
+          month: store.aidMonth || null
+        }
       },
       isValid: true
     }
@@ -46,7 +119,10 @@
   defineExpose({ onSubmit })
 
   onMounted(() => {
-    if (!store.commandBase) store.commandBase = DEFAULT_BASE
+    componentStore._enums()
+    if (!store.agreementType) store.agreementType = 1
+    if (!store.aidMonth) store.aidMonth = new Date().getMonth() + 1
+    if (!store.commandBase) store.commandBase = defaultBase(store.agreementType)
   })
 </script>
 
@@ -100,6 +176,16 @@
             >
               {{ item.worker.position }}
             </div>
+            <button
+              v-if="suggestionText(item.id)"
+              type="button"
+              class="block truncate text-left text-xs leading-4"
+              :class="isSuggested(item) || !suggestions[item.id]?.start ? 'text-textColor2 cursor-default' : 'text-primary hover:underline'"
+              :title="suggestionText(item.id)"
+              @click="applySuggestion(item)"
+            >
+              {{ suggestionText(item.id) }}
+            </button>
           </div>
         </div>
         <div class="flex items-center gap-2">
@@ -152,7 +238,28 @@
   <div
     class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line p-2 rounded-md bg-surface-ground"
   >
-    <div class="col-span-12">
+    <div class="col-span-12 @xl:col-span-4">
+      <n-form-item
+        :show-feedback="false"
+        :label="$t('documentPage.command.form.agreementType')"
+        path="agreementType"
+      >
+        <n-select
+          :value="store.agreementType"
+          :options="componentStore.agreementTypes"
+          label-field="name"
+          value-field="id"
+          :loading="componentStore.enumLoading"
+          @update:value="onAgreementChange"
+        />
+      </n-form-item>
+    </div>
+    <div class="col-span-12 @xl:col-span-3">
+      <n-form-item :show-feedback="false" :label="$t('documentPage.command.form.aidMonth')" path="aidMonth">
+        <n-select v-model:value="store.aidMonth" :options="monthOptions" />
+      </n-form-item>
+    </div>
+    <div class="col-span-12 @xl:col-span-5">
       <n-form-item :show-feedback="false" :label="$t(`documentPage.command.form.base`)" path="base">
         <n-input
           class="w-full"

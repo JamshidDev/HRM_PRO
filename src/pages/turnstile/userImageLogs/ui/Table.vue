@@ -87,7 +87,7 @@
                 </div>
               </td>
               <td class="!text-center">
-                <UIBadge :show-icon="false" :label="Utils.timeWithMonth(item.created_at)" />
+                <UIBadge :show-icon="false" :label="Utils.dateTimeLabel(item.created_at)" />
               </td>
             </tr>
           </tbody>

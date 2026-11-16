@@ -33,7 +33,7 @@
         v-model:text="store.payload.ques"
         :extra-rules="[
           {
-            trigger: ['input', 'blur-sm'],
+            trigger: ['input', 'blur'],
             validator() {
               return store.payload.options.length < 3
                 ? new Error($t('questionPage.rules.minOptions'))

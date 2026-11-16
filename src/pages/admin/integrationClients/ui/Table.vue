@@ -188,7 +188,7 @@
     </template>
 
     <template #cell-created_at="{ row }">
-      {{ Utils.timeWithMonth(row?.created_at) }}
+      {{ Utils.dateTimeLabel(row?.created_at) }}
     </template>
   </UITable>
 
@@ -241,7 +241,7 @@
           </div>
           <div class="kv-row">
             <span class="kv-label">{{ $t('content.date') }}</span>
-            <span class="kv-val">{{ Utils.timeWithMonth(selectedItem.created_at) }}</span>
+            <span class="kv-val">{{ Utils.dateTimeLabel(selectedItem.created_at) }}</span>
           </div>
         </div>
       </div>

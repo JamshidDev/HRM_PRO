@@ -21,6 +21,34 @@ const fileToBase64 = (file) => {
 
 export const generateUUIDKey = uuidv4
 
+/**
+ * Ro'yxatlarda shaxsiy ma'lumotni niqoblash (QA-50). Faqat ko'rinish uchun — haqiqiy himoya backend'da
+ * (to'liq qiymat baribir javobda keladi). Tahrirlash formasi to'liq qiymat bilan ishlaydi.
+ */
+// JSHSHIR: 30310012345678 → 3031******5678
+const maskPin = (value) => {
+  const v = String(value ?? '').trim()
+  if (!v) return ''
+  if (v.length <= 8) return v
+  return `${v.slice(0, 4)}${'*'.repeat(v.length - 8)}${v.slice(-4)}`
+}
+// Pasport: AB1234567 → AB*****67 (seriya harflari va oxirgi 2 raqam)
+const maskPassport = (value) => {
+  const v = String(value ?? '').trim()
+  if (!v) return ''
+  const series = (v.match(/^[A-Za-zА-Яа-яЎўҚқҒғҲҳ]+/) || [''])[0]
+  const digits = v.slice(series.length)
+  if (digits.length <= 2) return v
+  return `${series}${'*'.repeat(digits.length - 2)}${digits.slice(-2)}`
+}
+// Manzil: faqat birinchi qism (viloyat) — «Qoraqalpog'iston Respublikasi, …»
+const maskAddress = (value) => {
+  const v = String(value ?? '').trim()
+  if (!v) return ''
+  const cut = v.indexOf(',')
+  return cut > 0 ? `${v.slice(0, cut)}, …` : v.length > 16 ? `${v.slice(0, 16)}…` : v
+}
+
 const onlyAllowNumber = (value) => !value || /^\d+$/.test(value)
 
 // Masklangan JSHSHIR ("1234-5678-9012-34") → raqamli qiymat (12345678901234) yoki null.
@@ -71,6 +99,25 @@ const timeWithMonth = (time) => {
 const timeHHMMWithMonth = (time) => {
   return time ? dayjs(time).format('YYYY.MM.DD HH:mm') : null
 }
+
+// Uzluksiz staj: boshlangan sanadan bugungacha to'liq yil + to'liq oy (kun hisobga olinmaydi).
+const experienceSince = (start) => {
+  if (!start) return null
+  const s = new Date(start)
+  if (Number.isNaN(s.getTime())) return null
+  const now = new Date()
+  let months = (now.getFullYear() - s.getFullYear()) * 12 + (now.getMonth() - s.getMonth())
+  if (now.getDate() < s.getDate()) months -= 1
+  months = Math.max(0, months)
+  return { year: Math.trunc(months / 12), month: months % 12 }
+}
+
+/**
+ * Ekranda ko'rsatish uchun yagona sana-vaqt formati: `DD.MM.YYYY HH:mm:ss` / `DD.MM.YYYY HH:mm` (QA-47).
+ * `timeWithMonth` / `timeHHMMWithMonth` (YYYY.MM.DD) API parametrlarida ham ishlatiladi — ularga tegilmaydi.
+ */
+const dateTimeLabel = (time) => (time ? dayjs(time).format('DD.MM.YYYY HH:mm:ss') : null)
+const dateTimeShortLabel = (time) => (time ? dayjs(time).format('DD.MM.YYYY HH:mm') : null)
 
 const timeOnlyDate = (time) => {
   return time ? dayjs(time).format('DD.MM.YYYY') : null
@@ -194,6 +241,10 @@ const shortFio = (lastName, firstName, middleName) => {
     .join('')
   return [lastName, letters].filter(Boolean).join(' ')
 }
+// «Ko'rish» oynasi sarlavhasi: «№12 — Mehnat shartnomasi» (raqam bo'lmasa faqat turi). Fayl nomi UUID
+// bo'lgani uchun ochuvchi sahifa sarlavhani ro'yxat qatoridan beradi (DAS-14196, DAS-15967).
+const documentTitle = (number, typeName) =>
+  [number ? `№${number}` : null, typeName].filter(Boolean).join(' — ') || undefined
 const routeTimesheetPathMaker = (mainPath) => `${AppPaths.TimeSheet}${mainPath}`
 
 const documentModels = {
@@ -571,6 +622,9 @@ const handleTimeKeydown = (event) => {
 }
 
 export default {
+  maskPin,
+  maskPassport,
+  maskAddress,
   getMonthRange,
   useDebounce,
   formatToMLN,
@@ -583,7 +637,10 @@ export default {
   getMyLocation,
   timeToZone,
   timeWithMonth,
+  dateTimeLabel,
+  dateTimeShortLabel,
   timeOnlyDate,
+  experienceSince,
   timeOnlyHour,
   timeOnlySecond,
   timeOnlyMonth,
@@ -603,6 +660,7 @@ export default {
   routeExtraPathMaker,
   fileNameFromUrl,
   documentModels,
+  documentTitle,
   copyToClipboard,
   ActionTypes,
   timeOnlyYear,

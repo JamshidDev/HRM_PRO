@@ -197,7 +197,7 @@
 
         <template #cell-time="{ row }">
           <span v-if="rowTime(row)" class="whitespace-nowrap text-textColor2">
-            {{ Utils.timeHHMMWithMonth(rowTime(row)) }}
+            {{ Utils.dateTimeShortLabel(rowTime(row)) }}
           </span>
           <span v-else>—</span>
         </template>

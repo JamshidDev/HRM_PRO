@@ -134,6 +134,8 @@ const FORM_STATE_KEYS = [
   'sortableConfirmations',
   'oneByOne',
   'commandBase',
+  'agreementType',
+  'aidMonth',
   'fromApplication'
 ]
 
@@ -427,6 +429,10 @@ const commandStoreOptions = {
     oneByOne: false,
     // 71/73/81 — «Asos» matni (forma holati bilan saqlanadi).
     commandBase: null,
+    // 81 — kelishuv turi: 1 tarmoq (default), 2 jamoa.
+    agreementType: 1,
+    // 81 — moddiy yordam oyi (1–12).
+    aidMonth: null,
     // Ariza asosidagi buyruq: { id, number, electronic_number } — korxona/tur/xodim qulflanadi.
     fromApplication: null,
     // Arizadan buyruq yaratilgach o'zgaradi — arizalar ro'yxati yangilanadi.
@@ -673,6 +679,12 @@ const commandStoreOptions = {
       if (this.commandBase == null && [71, 73, 81].includes(this.payload.command_type)) {
         this.commandBase = state?.data?.base ?? state?.data?.command_additional?.base ?? null
       }
+      if (state?.agreementType === undefined && this.payload.command_type === 81) {
+        this.agreementType = Number(state?.data?.command_additional?.agreement_type) || 1
+      }
+      if (state?.aidMonth === undefined && this.payload.command_type === 81) {
+        this.aidMonth = Number(state?.data?.command_additional?.month) || null
+      }
     },
     // Eski buyruq: saqlangan `data` maydonlari turga mos `form_N` blokiga ko'chiriladi.
     fillLegacyForm(data) {
@@ -849,6 +861,8 @@ const commandStoreOptions = {
 
       this.vacations = []
       this.commandBase = null
+      this.agreementType = 1
+      this.aidMonth = null
 
       this.form_44.vacation_id = null
       this.form_44.new_date = null

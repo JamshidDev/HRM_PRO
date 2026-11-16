@@ -30,7 +30,9 @@
 
 <template>
   <n-spin :show="store.loading">
-    <div class="w-full mt-4 overflow-y-auto h-[calc(100vh-200px)]">
+    <!-- `max-h` (h emas): qatorlar kam bo'lsa quti jadvalga qisqaradi — gorizontal skroll
+         oxirgi qator ostida ko'rinadi, sahifa pastida bo'sh joy ostida yo'qolib qolmaydi (QA-45). -->
+    <div class="w-full mt-4 overflow-auto max-h-[calc(100vh-200px)]">
       <n-table
         class="sticky-table-body-left table-hover-row sticky-table-body-element"
         v-if="store.list.length > 0"

@@ -44,7 +44,7 @@
     type,
     required: true,
     message: t('rules.requiredField'),
-    trigger: ['input', 'blur-sm', 'change']
+    trigger: ['input', 'blur', 'change']
   })
 
   // Fayl ixtiyoriy. extended_date ixtiyoriy.

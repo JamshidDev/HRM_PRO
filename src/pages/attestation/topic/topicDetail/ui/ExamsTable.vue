@@ -21,7 +21,7 @@
   }
 
   const onEdit = (row) => {
-    if (!accStore.checkAction(accStore.pn.examExamsWrite)) return
+    if (!accStore.checkAction(accStore.pn.examTopicsWrite)) return
     selectExam(row)
     store._show()
     store.visibleType = false
@@ -29,13 +29,13 @@
   }
 
   const onDelete = (row) => {
-    if (!accStore.checkAction(accStore.pn.examExamsWrite)) return
+    if (!accStore.checkAction(accStore.pn.examTopicsDelete)) return
     selectExam(row)
     store._delete()
   }
 
   const onAttachQuestion = (row) => {
-    if (!accStore.checkAction(accStore.pn.examExamsWrite)) return
+    if (!accStore.checkAction(accStore.pn.examTopicsWrite)) return
     selectExam(row)
     store.attachCategoryVisible = true
     store.attachCategoryVisibleType = true
@@ -43,7 +43,7 @@
   }
 
   const onToggleActive = (row) => {
-    if (!accStore.checkAction(accStore.pn.examExamsWrite)) return
+    if (!accStore.checkAction(accStore.pn.examTopicsWrite)) return
     selectExam(row)
     store.payload = { active: !row.active }
     store._update()

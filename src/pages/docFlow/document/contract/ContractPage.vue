@@ -27,7 +27,9 @@
   }
 
   const openOffice = (id) => {
-    officeAppRef.value.openPdf(id, Utils.documentModels.contract)
+    const row = store.list.find((x) => x.id === id)
+    const title = Utils.documentTitle(row?.number, row?.type?.name)
+    officeAppRef.value.openPdf(id, Utils.documentModels.contract, undefined, title)
   }
 
   onMounted(() => {

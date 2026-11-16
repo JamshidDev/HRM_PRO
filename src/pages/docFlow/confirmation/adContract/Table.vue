@@ -5,7 +5,8 @@
     UITableBadgeCell,
     UITableNameCell,
     UIUser,
-    UIElectronicNumber
+    UIElectronicNumber,
+    NoDataPicture
   } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useConfirmationAdContractStore } from '@/store/modules/index.js'
@@ -19,8 +20,8 @@
 
   const emits = defineEmits(['openOffice'])
 
-  const onOpenFile = (documentId, signatureId) => {
-    emits('openOffice', { documentId, signatureId })
+  const onOpenFile = (documentId, signatureId, title) => {
+    emits('openOffice', { documentId, signatureId, title })
   }
 
   // API qo'shimcha kelishuvni endi `document` kalitida qaytaradi (oldin
@@ -45,7 +46,7 @@
     doc(row)?.organization?.name ?? store.organizationNames[doc(row)?.organization_id]
 
   const onPreview = (row) => {
-    onOpenFile(doc(row)?.id, row.id)
+    onOpenFile(doc(row)?.id, row.id, Utils.documentTitle(doc(row)?.number, typeName(row)))
   }
 
   const changePage = (v) => {
@@ -120,6 +121,14 @@
     storage-key="docflow-confirmation-ad-contract"
     @change-page="changePage"
   >
+    <!-- Ro'yxat — imzo/kelishuvni kutayotgan hujjatlar; qidiruvsiz bo'sh bo'lsa «topilmadi» emas (DAS-15968) -->
+    <template #empty>
+      <NoDataPicture
+        :title="store.searched ? null : $t('confirmation.adContract.empty')"
+        :hint="store.searched ? null : $t('confirmation.adContract.emptyHint')"
+      />
+    </template>
+
     <template #[`cell-contract_additional.electronic_number`]="{ row }">
       <UIElectronicNumber :value="row?.contract_additional?.electronic_number" />
     </template>
