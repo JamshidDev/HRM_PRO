@@ -89,6 +89,20 @@
     store.params.access_levels = []
     store.params.direction = null
     store.params.date = null
+    store.params.device_type = 'all'
+    filterEvent()
+  }
+
+  // Mobil o'tishda turniket guruhi yo'q — «Mobile face» tanlansa guruh tozalanib o'chiriladi.
+  const deviceTypeList = computed(() => [
+    { id: 'all', name: t('hcEvent.deviceTypeAll') },
+    { id: 'turnstile', name: t('hcEvent.deviceTypeTurnstile') },
+    { id: 'mobile', name: t('hcEvent.deviceTypeMobile') }
+  ])
+  const isMobileOnly = computed(() => store.params.device_type === 'mobile')
+  const onDeviceType = (v) => {
+    store.params.device_type = v || 'all'
+    if (store.params.device_type === 'mobile') store.params.access_levels = []
     filterEvent()
   }
 
@@ -98,7 +112,8 @@
       Number(Boolean(store.params.departments.length)) +
       Number(Boolean(store.params.access_levels.length)) +
       Number(Boolean(store.params.date)) +
-      Number(Boolean(store.params.direction))
+      Number(Boolean(store.params.direction)) +
+      Number(store.params.device_type !== 'all')
   )
 
   const directionList = [
@@ -176,12 +191,23 @@
         />
       </div>
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
+        $t('hcEvent.deviceType')
+      }}</label>
+      <n-select
+        :value="store.params.device_type"
+        :options="deviceTypeList"
+        label-field="name"
+        value-field="id"
+        @update:value="onDeviceType"
+      />
+      <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
         $t('turnstile.hcWorkersPage.access_levels')
       }}</label>
       <n-select
         multiple
         clearable
         filterable
+        :disabled="isMobileOnly"
         v-model:value="store.params.access_levels"
         :options="store.levelList"
         :loading="store.levelLoading"

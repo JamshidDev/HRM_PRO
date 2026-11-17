@@ -3828,6 +3828,7 @@
     "form": {
       "from": "From",
       "to": "To",
+      "dueMonth": "Checkup due month",
       "comment": "Comment",
       "status": "Status",
       "organization": "Organization",
@@ -5438,6 +5439,10 @@
     }
   },
   "hcEvent": {
+    "deviceType": "Device type",
+    "deviceTypeAll": "All",
+    "deviceTypeTurnstile": "Turnstile",
+    "deviceTypeMobile": "Mobile face",
     "name": "Events",
     "nameV2": "Events V2",
     "createTitle": "Upload",

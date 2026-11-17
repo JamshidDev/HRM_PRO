@@ -40,7 +40,8 @@
     Number(
       Boolean(store.params.organizations.length) +
         Number(Boolean(store.params.status)) +
-        Number(Boolean(store.params.departments.length))
+        Number(Boolean(store.params.departments.length)) +
+        Number(Boolean(store.params.month))
     )
   )
 
@@ -64,6 +65,7 @@
     store.params.organizations = []
     store.params.departments = []
     store.params.status = null
+    store.params.month = null
     filterEvent()
   }
 </script>
@@ -137,6 +139,18 @@
             label-field="name"
             value-field="id"
             clearable
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('medPage.form.dueMonth') }}</label>
+          <n-date-picker
+            class="w-full"
+            v-model:formatted-value="store.params.month"
+            value-format="yyyy-MM"
+            type="month"
+            format="MMMM yyyy"
+            clearable
+            @update:formatted-value="filterEvent"
           />
         </div>
       </div>
