@@ -3804,6 +3804,17 @@
       "daysLeft": "{n} days left",
       "conclusion": "Conclusion: {name}",
       "file": "Files"
+    },
+    "schedule": {
+      "button": "Download schedule",
+      "title": "Medical exam schedule",
+      "organization": "Organization",
+      "year": "Year",
+      "total": "Total {n} employees",
+      "empty": "No employees with medical exams expiring this year",
+      "download": "Download Excel",
+      "allOrgs": "All organizations",
+      "departments": "Selected departments: {n}"
     }
   },
   "medInspection": {

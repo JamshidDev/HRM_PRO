@@ -3808,6 +3808,17 @@
       "daysLeft": "{n} kún qaldı",
       "conclusion": "Juwmaq: {name}",
       "file": "Fayllar"
+    },
+    "schedule": {
+      "button": "Grafikti júklep alıw",
+      "title": "Medicinalıq kórik grafigi",
+      "organization": "Kárxana",
+      "year": "Jıl",
+      "total": "Jámi {n} xızmetker",
+      "empty": "Bul jılı medicinalıq kórik múddeti tawsılatuǵın xızmetker joq",
+      "download": "Excel júklep alıw",
+      "allOrgs": "Barlıq kárxanalar",
+      "departments": "Saylanǵan bólimler: {n}"
     }
   },
   "medInspection": {
