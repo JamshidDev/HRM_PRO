@@ -1488,6 +1488,7 @@
         "experienceYearUnit": "yrs",
         "experienceMonthUnit": "mo",
         "agreementType": "Agreement type",
+        "aidMonth": "For month",
         "clauseNumber": "Clause number",
         "clausePlaceholder": "e.g. 53",
         "clauseRequired": "Enter the agreement clause number",

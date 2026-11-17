@@ -1504,6 +1504,7 @@
         "experienceYearUnit": "yil",
         "experienceMonthUnit": "oy",
         "agreementType": "Kelishuv turi",
+        "aidMonth": "Qaysi oy uchun",
         "clauseNumber": "Band raqami",
         "clausePlaceholder": "Masalan: 53",
         "clauseRequired": "Kelishuv bandi raqamini kiriting",
