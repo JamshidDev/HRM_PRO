@@ -2,7 +2,7 @@
   // Ta'til kunlari tarkibi: asosiy + o'tgan davrdan qolgan + 41-buyruqdagi qo'shimchalar.
   import { h } from 'vue'
   import { useComponentStore } from '@stores'
-  import { Delete16Regular } from '@vicons/fluent'
+  import { Delete16Regular, Edit16Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
   const props = defineProps({
@@ -42,6 +42,13 @@
     )
   )
 
+  // Katakda faqat jami kun ko'rinadi (tarkibi — bosilganda ochiladigan oynada).
+  const cellTotal = computed(() => {
+    if (Number(props.row.all_days)) return Number(props.row.all_days)
+    const extra = (props.row.additional || []).reduce((sum, a) => sum + (Number(a.value) || 0), 0)
+    return (Number(props.row.main_day) || 0) + (Number(props.row.rest_day) || 0) + extra
+  })
+
   const onShow = (v) => {
     show.value = v
     if (!v) return
@@ -51,6 +58,11 @@
     addId.value = null
     if (!componentStore.vacationAdditional?.length) componentStore._enums()
   }
+
+  // Asosiy ta'til qonun bo'yicha kamida 21 kun — kam bo'lsa faqat ogohlantiriladi (bloklanmaydi:
+  // ba'zi xodimlarda kun allaqachon ishlatilgan bo'lishi mumkin).
+  const MAIN_MIN = 21
+  const mainLow = computed(() => (Number(mainDay.value) || 0) < MAIN_MIN)
 
   // Qo'shimcha kun 1–19 butun son bo'lmasa «Qo'llash» yopiq.
   const ADD_MIN = 1
@@ -89,55 +101,44 @@
     @update:show="onShow"
   >
     <template #trigger>
-      <button
-        type="button"
-        class="days-cell"
-        :class="{ 'days-cell--disabled': disabled }"
+      <!-- Oddiy maydon emas: ko'k fon + ✏️ — bosilsa kunlar tarkibi oynasi ochiladi; 0 kun — sariq ramka -->
+      <n-input
+        class="days-field"
+        :class="{ 'days-field--empty': !cellTotal }"
+        readonly
+        :value="`${cellTotal} ${$t('vacationSchedule.grid.dayUnit')}`"
         :disabled="disabled"
+        :status="cellTotal ? undefined : 'warning'"
+        :loading="loading || undefined"
       >
-        <span class="days-chip days-chip--main">
-          {{ $t('vacationSchedule.grid.mainDay') }} <b>{{ row.main_day }}</b>
-        </span>
-        <span v-if="row.rest_day" class="days-chip">
-          {{ $t('vacationSchedule.grid.restDay') }} <b>{{ row.rest_day }}</b>
-        </span>
-        <span v-for="a in row.additional || []" :key="a.id" class="days-chip" :title="nameOf(a.id)">
-          <span class="days-chip__name">{{ nameOf(a.id) }}</span> <b>{{ a.value }}</b>
-        </span>
-        <n-spin v-if="loading" :size="12" />
-        <span class="days-total">
-          {{ row.all_days }} {{ $t('vacationSchedule.grid.dayUnit') }}
-        </span>
-      </button>
+        <template #suffix>
+          <n-icon v-if="!disabled" class="days-field__icon"><Edit16Regular /></n-icon>
+        </template>
+      </n-input>
     </template>
-    <div class="days-panel">
-      <div class="days-panel__title">{{ $t('vacationSchedule.grid.daysTitle') }}</div>
 
-      <div class="days-line">
-        <div class="days-line__text">
-          <span class="days-line__label">{{ $t('vacationSchedule.grid.mainDay') }}</span>
-          <span class="days-line__hint">{{ $t('vacationSchedule.grid.mainDayHint') }}</span>
-        </div>
+    <div class="days-panel">
+      <div class="days-row">
+        <span class="days-row__label">{{ $t('vacationSchedule.grid.mainDay') }}</span>
         <n-input-number
           v-model:value="mainDay"
-          class="days-line__input"
+          class="days-row__input"
           :min="0"
           :max="99"
           :precision="0"
           :show-button="false"
+          :status="mainLow ? 'warning' : undefined"
         >
           <template #suffix>{{ $t('vacationSchedule.grid.dayUnit') }}</template>
         </n-input-number>
       </div>
 
-      <div class="days-line">
-        <div class="days-line__text">
-          <span class="days-line__label">{{ $t('vacationSchedule.grid.restDay') }}</span>
-          <span class="days-line__hint">{{ $t('vacationSchedule.grid.restDayHint') }}</span>
-        </div>
+      <div class="days-row">
+        <span class="days-row__label">{{ $t('vacationSchedule.grid.restDay') }}</span>
+        <!-- dev (584e9710): o'tgan davrdan qolgan kunlar ham panelda kiritiladi (standart 0) -->
         <n-input-number
           v-model:value="restDay"
-          class="days-line__input"
+          class="days-row__input"
           :min="0"
           :max="99"
           :precision="0"
@@ -147,16 +148,12 @@
         </n-input-number>
       </div>
 
-      <div class="days-panel__section">{{ $t('vacationSchedule.grid.additionalTitle') }}</div>
-      <div v-if="!items.length" class="days-panel__empty">
-        {{ $t('vacationSchedule.grid.noAdditional') }}
-      </div>
-      <div v-for="item in items" :key="item.id" class="days-line days-line--item">
-        <span class="days-line__label days-line__label--wrap">{{ nameOf(item.id) }}</span>
+      <div v-for="item in items" :key="item.id" class="days-row">
+        <span class="days-row__label days-row__label--wrap">{{ nameOf(item.id) }}</span>
         <span class="flex shrink-0 items-center gap-1">
           <n-input-number
             v-model:value="item.value"
-            class="days-line__input"
+            class="days-row__input"
             :min="ADD_MIN"
             :max="ADD_MAX"
             :status="validValue(item.value) ? undefined : 'error'"
@@ -166,13 +163,20 @@
           >
             <template #suffix>{{ $t('vacationSchedule.grid.dayUnit') }}</template>
           </n-input-number>
-          <n-button secondary type="error" :title="$t('content.delete')" @click="onRemove(item)">
+          <n-button
+            quaternary
+            circle
+            type="error"
+            :title="$t('content.delete')"
+            @click="onRemove(item)"
+          >
             <template #icon>
               <n-icon><Delete16Regular /></n-icon>
             </template>
           </n-button>
         </span>
       </div>
+
       <n-select
         v-if="freeOptions.length"
         v-model:value="addId"
@@ -187,7 +191,7 @@
       <div class="days-panel__footer">
         <span class="text-sm text-textColor2">
           {{ $t('vacationSchedule.grid.total') }}:
-          <b class="text-base text-primary">{{ total }}</b>
+          <b class="text-base text-textColor0">{{ total }}</b>
           {{ $t('vacationSchedule.grid.dayUnit') }}
         </span>
         <span class="flex gap-2">
@@ -204,125 +208,49 @@
 <style scoped>
   .days-panel {
     display: flex;
-    width: 460px;
+    width: 380px;
     max-width: 90vw;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
   }
-  .days-panel__title {
-    padding-bottom: 6px;
-    font-size: 14px;
-    font-weight: 600;
+  .days-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .days-row__label {
+    font-size: 13px;
     color: var(--color-textColor1);
-    border-bottom: 1px solid var(--color-surface-line);
   }
-  .days-panel__section {
-    margin-top: 4px;
+  .days-row__label--wrap {
     font-size: 12px;
-    font-weight: 600;
-    color: var(--color-textColor2);
+    line-height: 1.35;
   }
-  .days-panel__empty {
-    padding: 6px 0;
-    font-size: 12px;
-    color: var(--color-textColor3);
+  .days-row__input {
+    width: 96px;
+    flex-shrink: 0;
   }
   .days-panel__footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 4px;
-    padding-top: 8px;
+    padding-top: 10px;
     border-top: 1px solid var(--color-surface-line);
   }
-  .days-line {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 6px 8px;
-    border-radius: 8px;
-    background: var(--color-surface-ground);
+
+  /* Katak — bosiladigan «maxsus» maydon: och ko'k fon, ko'k matn va qalam belgisi */
+  .days-field:not(.n-input--disabled):not(.days-field--empty) {
+    --n-color: color-mix(in srgb, var(--color-primary) 8%, transparent) !important;
+    --n-color-focus: color-mix(in srgb, var(--color-primary) 12%, transparent) !important;
+    --n-border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent) !important;
+    --n-text-color: var(--color-primary) !important;
   }
-  .days-line__text {
-    display: flex;
-    min-width: 0;
-    flex-direction: column;
-  }
-  .days-line__label {
-    font-size: 13px;
-    color: var(--color-textColor1);
-  }
-  .days-line__label--wrap {
-    font-size: 12px;
-    line-height: 1.35;
-  }
-  .days-line__hint {
-    font-size: 11px;
-    color: var(--color-textColor3);
-  }
-  .days-line__input {
-    width: 90px;
-    flex-shrink: 0;
-  }
-  .days-cell {
-    display: flex;
-    width: 100%;
-    flex-wrap: nowrap;
-    overflow: hidden;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 6px;
-    border: 1px solid var(--color-surface-line);
-    border-radius: 8px;
-    text-align: left;
+  .days-field :deep(input) {
     cursor: pointer;
-  }
-  .days-cell:hover {
-    border-color: var(--color-primary);
-  }
-  .days-cell--disabled {
-    cursor: default;
-  }
-  .days-cell--disabled:hover {
-    border-color: var(--color-surface-line);
-  }
-  .days-chip {
-    display: inline-flex;
-    max-width: 200px;
-    min-width: 0;
-    flex-shrink: 1;
-    align-items: center;
-    white-space: nowrap;
-    line-height: 1.3;
-    gap: 4px;
-    padding: 1px 6px;
-    border-radius: 6px;
-    font-size: 11px;
-    color: var(--color-primary);
-    background: color-mix(in srgb, var(--color-primary) 10%, transparent);
-  }
-  .days-chip__name {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .days-chip b {
-    flex-shrink: 0;
-    color: var(--color-primary);
-  }
-  .days-chip--main,
-  .days-total {
-    flex-shrink: 0;
-  }
-  .days-total {
-    margin-left: auto;
-    padding: 1px 8px;
-    border-radius: 6px;
-    font-size: 12px;
     font-weight: 600;
+  }
+  .days-field__icon {
     color: var(--color-primary);
-    background: var(--color-surface-ground);
   }
 </style>

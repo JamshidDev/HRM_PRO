@@ -312,6 +312,9 @@
     "filterLowBrightness": "Low brightness",
     "filterHighBrightness": "High brightness",
     "textSize": "Text size",
+    "fontFamily": "Font",
+    "fontSystem": "System font",
+    "fontSample": "Aa Bb",
     "resetChanges": "Reset to default",
     "changeAccount": "My accounts",
     "logOutSystem": "Log out",
@@ -4008,6 +4011,9 @@
   },
   "vacationSchedule": {
     "name": "Vacation schedule",
+    "empty": "No vacation schedules yet",
+    "emptyHint": "Create a new schedule with the «Add» button",
+    "deleteConfirm": "Delete the {year} vacation schedule ({organization})? All employee rows in it will be deleted too.",
     "grid": {
       "title": "{year} vacation schedule",
       "open": "Open schedule",
@@ -4016,7 +4022,7 @@
       "createHint": "On creation all employees of the organization are added: vacation period, days and table number are calculated automatically.",
       "filled": "Filled",
       "allDepartments": "All departments",
-      "unsavedConfirm": "There are {n} unsaved changes. Discard them?",
+      "unsavedConfirm": "{n} rows have unsaved changes.",
       "requiredFields": "{n} rows are missing the vacation period or month",
       "applyDays": "Apply",
       "noAdditional": "No additional vacation added",
@@ -7487,6 +7493,11 @@
   },
   "alertDialog": {
     "ok": "Got it",
+    "unsaved": {
+      "title": "Unsaved changes",
+      "discard": "Exit without saving",
+      "save": "Save and exit"
+    },
     "checkFields": "Please check the following and try again:",
     "titles": {
       "forbidden": "Access denied",

@@ -319,6 +319,9 @@
     "filterLowBrightness": "Tómen jaqtılıq",
     "filterHighBrightness": "Joqarı jaqtılıq",
     "textSize": "Tekst ólshemi",
+    "fontFamily": "Shrift",
+    "fontSystem": "Sistema shrifti",
+    "fontSample": "Aa Ǵǵ",
     "resetChanges": "Standartqa qaytarıw",
     "changeAccount": "Akkauntlarım",
     "logOutSystem": "Sistemadan shıǵıw",
@@ -4014,6 +4017,9 @@
   },
   "vacationSchedule": {
     "name": "Dem alıslar grafigi",
+    "empty": "Dem alıs grafigi ele joq",
+    "emptyHint": "Jańa grafikti «Qosıw» túymesi menen jaratıń",
+    "deleteConfirm": "{year} jılǵı dem alıs grafigi ({organization}) óshirilsinbe? Ishindegi barlıq xızmetker qatarları da óshedi.",
     "grid": {
       "title": "{year}-jıl dem alıslar grafigi",
       "open": "Grafikti ashıw",
@@ -4022,7 +4028,7 @@
       "createHint": "Jaratılǵanda kárxananıń barlıq xızmetkerleri grafikke qosıladı: dem alıs dáwiri, kúnler hám tabel nomeri avtomat esaplanadı.",
       "filled": "Toltırılǵan",
       "allDepartments": "Barlıq bólimler",
-      "unsavedConfirm": "Saqlanbaǵan {n} ózgeris bar. Olar biykar etilsin be?",
+      "unsavedConfirm": "{n} qatarda saqlanbaǵan ózgeris bar.",
       "requiredFields": "{n} qatarda dem alıs dáwiri yamasa ayı kiritilmegen",
       "applyDays": "Qollanıw",
       "noAdditional": "Qosımsha dem alıs qosılmaǵan",
@@ -7614,6 +7620,11 @@
   },
   "alertDialog": {
     "ok": "Túsinikli",
+    "unsaved": {
+      "title": "Saqlanbaǵan ózgerisler",
+      "discard": "Saqlamay shıǵıw",
+      "save": "Saqlaw hám shıǵıw"
+    },
     "checkFields": "Tómendegilerdi tekserip, qaytadan urınıp kóriń:",
     "titles": {
       "forbidden": "Ruqsat berilmegen",

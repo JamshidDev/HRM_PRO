@@ -7,6 +7,7 @@ import updateLocale from 'dayjs/plugin/updateLocale'
 import dayjs from 'dayjs'
 import { getActivePinia } from 'pinia'
 import { useAccountStore } from '@/store/modules/app/accountStore.js'
+import { findAppFont, fontStack, loadAppFont } from '@/utils/appFonts.js'
 
 dayjs.extend(updateLocale)
 dayjs.updateLocale('uz', {
@@ -66,6 +67,7 @@ export const useAppStore = defineStore('appStore', {
     soundEnabled: true,
     screenFilter: useAppSetting.defaultScreenFilter,
     fontScale: useAppSetting.defaultFontScale,
+    fontFamily: useAppSetting.defaultFontFamily,
     profileSettingsVisible: false,
     skipReset: true,
     wrongPinsLoading: false,
@@ -168,9 +170,27 @@ export const useAppStore = defineStore('appStore', {
       this.applyFontScale()
     },
 
+    // Tanlangan shrift `--app-font` orqali butun ilovaga beriladi (overwrite.scss)
+    applyFontFamily() {
+      const font = findAppFont(this.fontFamily)
+      const html = document.documentElement
+      if (font.family) {
+        loadAppFont(font)
+        html.style.setProperty('--app-font', fontStack(font))
+      } else {
+        html.style.removeProperty('--app-font')
+      }
+    },
+    setFontFamily(key) {
+      this.fontFamily = findAppFont(key).key
+      localStorage.setItem(useAppSetting.fontFamilyKey, this.fontFamily)
+      this.applyFontFamily()
+    },
+
     resetProfileSettings() {
       this.setScreenFilter(useAppSetting.defaultScreenFilter)
       this.setFontScale(useAppSetting.defaultFontScale)
+      this.setFontFamily(useAppSetting.defaultFontFamily)
       this.setSidebarTheme(useAppSetting.defaultSidebarTheme)
     },
 
@@ -200,6 +220,9 @@ export const useAppStore = defineStore('appStore', {
         parseInt(localStorage.getItem(useAppSetting.fontScaleKey), 10) ||
         useAppSetting.defaultFontScale
       this.applyFontScale()
+
+      this.fontFamily = findAppFont(localStorage.getItem(useAppSetting.fontFamilyKey)).key
+      this.applyFontFamily()
 
       prefersDarkMedia.addEventListener('change', () => {
         if (this.themeMode === 'system') {

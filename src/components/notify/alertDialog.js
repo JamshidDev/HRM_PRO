@@ -1,4 +1,5 @@
 import { markRaw, reactive } from 'vue'
+import i18n from '@/i18n/index.js'
 
 // Xato modali holati: bir vaqtda bitta modal, takror xabarlar tashlab yuboriladi.
 export const alertState = reactive({ queue: [] })
@@ -36,7 +37,9 @@ export function showAlert({
   onCancel,
   onClose,
   confirmText,
-  cancelText
+  cancelText,
+  cancelType,
+  confirmType
 } = {}) {
   const items = errors.filter(Boolean)
   const key = `${type}|${title}|${message}|${items.join('|')}`
@@ -61,6 +64,8 @@ export function showAlert({
     onClose,
     confirmText,
     cancelText,
+    cancelType,
+    confirmType,
     loading: false,
     duration: onConfirm ? 0 : (duration ?? AUTO_CLOSE[kind] ?? 0)
   })
@@ -94,6 +99,34 @@ export function confirmDialog({ onConfirm, onCancel, onClose, onExtra, ...opts }
       }
     })
     if (!added) resolve(false)
+  })
+}
+
+// Saqlanmagan o'zgarishlar bilan chiqish — barcha jadval oynalari uchun bitta ko'rinish:
+// chapda qizil «Saqlamasdan chiqish», o'ngda yashil «Saqlash va chiqish»; fon / Esc — oynada qolish.
+// Promise<'save' | 'discard' | 'stay'>. onSave Promise qaytarsa — tugmada loading; xato bersa oyna ochiq qoladi.
+export function confirmUnsaved({ message = '', onSave, onDiscard } = {}) {
+  const { t } = i18n.global
+  return new Promise((resolve) => {
+    const added = showAlert({
+      type: 'warning',
+      title: t('alertDialog.unsaved.title'),
+      message,
+      cancelText: t('alertDialog.unsaved.discard'),
+      cancelType: 'error',
+      confirmText: t('alertDialog.unsaved.save'),
+      confirmType: 'success',
+      onConfirm: async () => {
+        await onSave?.()
+        resolve('save')
+      },
+      onCancel: () => {
+        onDiscard?.()
+        resolve('discard')
+      },
+      onClose: () => resolve('stay')
+    })
+    if (!added) resolve('stay')
   })
 }
 
