@@ -23,7 +23,9 @@
     filterEvent()
   }
 
+  // Filtr o'zgarsa 1-sahifaga qaytiladi (aks holda 3-sahifada bo'sh ro'yxat chiqishi mumkin).
   const filterEvent = () => {
+    store.params.page = 1
     store._index()
   }
 
@@ -33,12 +35,8 @@
     store._index()
   }
 
-  const filterCount = computed(
-    () =>
-      Number(Boolean(store.params.organizations.length)) +
-      Number(Boolean(store.params.confirmation)) +
-      Number(Boolean(store.params.created))
-  )
+  // Panelda faqat tashkilot bor.
+  const filterCount = computed(() => Number(store.params.organizations.length > 0))
 
   const beforeShow = (v) => {
     if (v && componentStore.confirmationStatusList.length === 0) {
@@ -51,8 +49,7 @@
 
   const resetFilter = () => {
     store.params.organizations = []
-    store.params.confirmation = null
-    store.params.created = null
+    store.structureCheck2 = []
     filterEvent()
   }
 </script>
@@ -62,6 +59,7 @@
     :add-permission="accStore.pn.hrVacationScheduleWrite"
     v-model:search="store.params.search"
     :search-loading="store.loading"
+    :filter-count="filterCount"
     @onAdd="onAdd"
     @onSearch="onSearch"
     @show="beforeShow"

@@ -4032,6 +4032,9 @@
   },
   "vacationSchedule": {
     "name": "Ta'tillar grafigi",
+    "empty": "Ta'tillar grafigi hali yo'q",
+    "emptyHint": "Yangi grafikni «Qo'shish» tugmasi bilan yarating",
+    "deleteConfirm": "{year} yilgi ta'tillar grafigi ({organization}) o'chirilsinmi? Ichidagi barcha xodimlar qatorlari ham o'chadi.",
     "grid": {
       "title": "{year}-yil ta'tillar grafigi",
       "open": "Grafikni ochish",

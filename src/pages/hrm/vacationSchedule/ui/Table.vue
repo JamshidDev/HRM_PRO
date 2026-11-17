@@ -1,5 +1,5 @@
 <script setup>
-  import { UIBadge, UITable, UIUser } from '@/components/index.js'
+  import { NoDataPicture, UIStatus, UITable, UIUser } from '@/components/index.js'
   import i18n from '@/i18n'
   import { useVacationScheduleStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -40,11 +40,28 @@
     store.visible = true
   }
 
+  // Tasdiq oynasini UITable o'zi ko'rsatadi (matni — `deleteWarning`); bu yerga tasdiqlangandan keyin keladi.
   const onDelete = (v) => {
     if (!accStore.checkAction(accStore.pn.hrVacationScheduleDelete)) return
     store.elementId = v.id
     store._delete()
   }
+
+  const deleteWarning = (row) =>
+    row
+      ? t('vacationSchedule.deleteConfirm', {
+          year: row.year,
+          organization: row.organization?.name || ''
+        })
+      : null
+
+  // Ism qismlari — `undefined` matn bo'lib chiqmasligi uchun bo'sh qator.
+  const person = (p) => ({
+    photo: p?.worker?.photo,
+    firstName: p?.worker?.first_name ?? '',
+    middleName: p?.worker?.middle_name ?? '',
+    lastName: p?.worker?.last_name ?? ''
+  })
 
   const changePage = (v) => {
     store.params.page = v.page
@@ -52,37 +69,15 @@
     store._index()
   }
 
+  // Muhimlik tartibida: qaysi yil, qaysi tashkilot, qachon, qaysi holatda — keyin imzolovchilar.
   const columns = computed(() => [
-    {
-      key: 'year',
-      title: t('content.year'),
-      width: 120
-    },
-    {
-      key: 'date',
-      title: t('vacationSchedule.form.to_date'),
-      width: 120
-    },
-    {
-      key: 'director',
-      title: t('documentPage.command.form.director_id'),
-      minWidth: 160
-    },
-    {
-      key: 'tradeUnion',
-      title: t('vacationSchedule.form.tradeUnion'),
-      minWidth: 160
-    },
-    {
-      key: 'creator',
-      title: t('vacationSchedule.grid.creator'),
-      minWidth: 160
-    },
-    {
-      key: 'organization.name',
-      title: t('content.organization'),
-      minWidth: 200
-    }
+    { key: 'year', title: t('content.year'), minWidth: 80 },
+    { key: 'organization.name', title: t('content.organization'), minWidth: 240 },
+    { key: 'date', title: t('vacationSchedule.form.to_date'), minWidth: 120 },
+    { key: 'confirmation', title: t('content.status'), minWidth: 140 },
+    { key: 'director', title: t('documentPage.command.form.director_id'), minWidth: 180 },
+    { key: 'tradeUnion', title: t('vacationSchedule.form.tradeUnion'), minWidth: 180 },
+    { key: 'creator', title: t('vacationSchedule.grid.creator'), minWidth: 180 }
   ])
 
   const actions = computed(() => [
@@ -112,56 +107,50 @@
     permission-prefix="hr-vacation-schedule"
     :columns="columns"
     :actions="actions"
+    :delete-warning="deleteWarning"
     :data="store.list"
     :loading="store.loading"
     :page="store.params.page"
     :per-page="store.params.per_page"
     :total="store.totalItems"
-    storage-key="hrm-vacation-schedule"
+    storage-key="hrm-vacation-schedule-v2"
     @change-page="changePage"
   >
+    <!-- Qidiruv/filtrsiz bo'sh bo'lsa — «topilmadi» emas, «hali yaratilmagan» -->
+    <template #empty>
+      <NoDataPicture
+        :title="store.searched ? null : $t('vacationSchedule.empty')"
+        :hint="store.searched ? null : $t('vacationSchedule.emptyHint')"
+      />
+    </template>
+
     <template #cell-year="{ row }">
-      <UIBadge :label="row.year" :show-icon="false" />
+      <span class="font-semibold text-textColor0">{{ row.year }}</span>
+    </template>
+
+    <template #[`cell-organization.name`]="{ row }">
+      <span class="text-textColor1">{{ row.organization?.name || '—' }}</span>
     </template>
 
     <template #cell-date="{ row }">
-      <UIBadge :label="Utils.timeOnlyDate(row.date)" :show-icon="false" />
+      <span class="tabular-nums text-textColor1">{{ Utils.timeOnlyDate(row.date) || '—' }}</span>
+    </template>
+
+    <template #cell-confirmation="{ row }">
+      <UIStatus v-if="row.confirmation" fig :tooltip="false" :status="row.confirmation" />
+      <span v-else class="text-textColor3">—</span>
     </template>
 
     <template #cell-director="{ row }">
-      <UIUser
-        :data="{
-          photo: row?.director?.worker.photo,
-          firstName: row?.director?.worker.first_name,
-          middleName: row?.director?.worker.middle_name,
-          lastName: row?.director?.worker.last_name
-        }"
-        short
-      />
+      <UIUser :data="person(row.director)" short />
     </template>
 
     <template #cell-tradeUnion="{ row }">
-      <UIUser
-        :data="{
-          photo: row?.tradeUnion?.worker.photo,
-          firstName: row?.tradeUnion?.worker.first_name,
-          middleName: row?.tradeUnion?.worker.middle_name,
-          lastName: row?.tradeUnion?.worker.last_name
-        }"
-        short
-      />
+      <UIUser :data="person(row.tradeUnion)" short />
     </template>
 
     <template #cell-creator="{ row }">
-      <UIUser
-        :data="{
-          photo: row?.creator?.worker.photo,
-          firstName: row?.creator?.worker.first_name,
-          middleName: row?.creator?.worker.middle_name,
-          lastName: row?.creator?.worker.last_name
-        }"
-        short
-      />
+      <UIUser :data="person(row.creator)" short />
     </template>
   </UITable>
 </template>

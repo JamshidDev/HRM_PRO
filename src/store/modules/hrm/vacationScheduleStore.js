@@ -46,6 +46,8 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
     visibleType: true,
     elementId: null,
     totalItems: 0,
+    // Oxirgi so'rovda qidiruv yoki filtr bo'lganmi — bo'sh holat matni shunga qarab.
+    searched: false,
     structureCheck: [],
     structureCheck2: [],
     payload: initialPayload(),
@@ -95,8 +97,12 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
     _index() {
       this.loading = true
       const params = {
+    // BACKEND: GET /v1/hr/vacation-schedule `search` ni e'tiborsiz qoldiradi (2026-11-17, dev: «zzzzqq» bilan ham
+    // hamma 4 ta grafik qaytdi; `year` ham ishlamaydi). Faqat `organizations` filtri ishlaydi. Kerak: `search` —
+    // tashkilot nomi / rahbar / tuzuvchi F.I.Sh. bo'yicha; `year` filtri (grafiklar yil bo'yicha qidiriladi).
         ...this.params,
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined
+      this.searched = !!this.params.search?.trim() || this.params.organizations.length > 0
       }
       $ApiService.vacationScheduleService
         ._index({ params })

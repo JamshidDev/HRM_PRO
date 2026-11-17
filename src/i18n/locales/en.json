@@ -4010,6 +4010,9 @@
   },
   "vacationSchedule": {
     "name": "Vacation schedule",
+    "empty": "No vacation schedules yet",
+    "emptyHint": "Create a new schedule with the «Add» button",
+    "deleteConfirm": "Delete the {year} vacation schedule ({organization})? All employee rows in it will be deleted too.",
     "grid": {
       "title": "{year} vacation schedule",
       "open": "Open schedule",
