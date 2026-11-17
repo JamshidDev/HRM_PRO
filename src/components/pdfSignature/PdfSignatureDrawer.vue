@@ -31,6 +31,7 @@
   } from '@/store/modules/index.js'
   import { useNotify } from '@/composables/useNotify'
   import i18n from '@/i18n/index.js'
+  import { QR_PLACEMENT_ENABLED } from '@/store/modules/app/pdfViewerStore.js'
   const { t } = i18n.global
   import ConfirmationList from './ui/ConfirmationList.vue'
   import { buildApprovalHistory, lastActionDate } from './utils/approvalHistory.js'
@@ -417,7 +418,10 @@
         // Rahbar (d) imzolashdan oldin QR joyini preview'da tanlaydi.
         const myConf = v.confirmations?.find((c) => c.id === store.signatureId)
         store.qrEditable =
-          !!store.permissions.canSignature && myConf?.type === 'd' && myConf?.status?.id !== 3
+          QR_PLACEMENT_ENABLED &&
+          !!store.permissions.canSignature &&
+          myConf?.type === 'd' &&
+          myConf?.status?.id !== 3
         store.qrPosition = null
       })
       .catch((e) => {
