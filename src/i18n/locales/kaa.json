@@ -1688,6 +1688,7 @@
       "cancel_reason": "Biykar etiw sebebi"
     },
     "signature": {
+      "qrPlacementHint": "QR kodtı súyrep ornalastırıń, múyeshinen úlkeytiń",
       "history": "Ózgerisler tariyxın kóriw",
       "viewer": "Hújjet penen tanısıwshılar",
       "files": {
@@ -6406,6 +6407,22 @@
     "langEn": "Inglis"
   },
   "departmentLocationPage": {
+    "places": {
+      "createTitle": "Turniket lokaciyasın qosıw",
+      "updateTitle": "Turniket lokaciyasın ózgertiw",
+      "viewTitle": "Turniket lokaciyası",
+      "organization": "Kárxana",
+      "name": "Ótiw ornınıń atı",
+      "attached": "Biriktirilgen",
+      "attachedCount": "{d} bólim · {w} xızmetker",
+      "notAttached": "Biriktirilmegen",
+      "owner": "Jaratqan",
+      "add": "Lokaciya qosıw",
+      "hint": "Bir ret belgilengen orındı bir neshe bólim hám xızmetkerge beriw múmkin. Tek jaratqan paydalanıwshı ózgerte aladı.",
+      "empty": "Turniket lokaciyaları ele joq",
+      "departments": "Bólimler",
+      "workers": "Xızmetkerler"
+    },
     "name": "Mobile face",
     "createTitle": "Jaylasıw qosıw",
     "updateTitle": "Jaylasıwdı ózgertiw",
@@ -6485,6 +6502,7 @@
       "in": "Kiriw"
     },
     "tabs": {
+      "places": "Turniket lokaciyaları",
       "workers": "Xızmetkerler",
       "departments": "Bólimler",
       "locations": "Jaylasıwlar"
@@ -6504,6 +6522,13 @@
       "coords": "Koordinata"
     },
     "form": {
+      "source": "Ótiw orni",
+      "sourceExisting": "Diziminen saylaw",
+      "sourceNew": "Jańa orın",
+      "sourceExistingHint": "Turniket lokaciyaları dizimindegi orın biriktiriledi — forması sol orınnan alınadı.",
+      "sourceNewHint": "Kartada jańa orın belgileń — ol turniket lokaciyaları dizimine de qosıladı.",
+      "place": "Turniket lokaciyası",
+      "placePlaceholder": "Atı boyınsha izleń",
       "freeMode": "Erkin rejim",
       "freeModeHint": "Aymaq sheklewi joq — xızmetker qálegen jerden ótedi, tek koordinatası hám júz súwreti jazıladı.",
       "department": "Bólim",
@@ -6529,6 +6554,8 @@
       "polygonSteps": "«Aymaqtı sızıw» → kartaǵa keminde 3 noqat qoyıń → «Juwmaqlaw»."
     },
     "validation": {
+      "placeRequired": "Turniket lokaciyasın saylań",
+      "organizationRequired": "Kárxananı saylań",
       "departmentRequired": "Bólimdi tańlań",
       "nameRequired": "Ótiw ornınıń atın kiritiń",
       "markerRequired": "Kartada jaylasıwdı belgileń",

@@ -49,7 +49,33 @@ const _deleteWorkerLocation = async (payload) => {
   return await axios.delete(`/v1/extra/mobile-face/worker-locations/${payload.id}`)
 }
 
+// Turniket lokatsiyalari — qayta ishlatiladigan o'tish joylari.
+const _places = async (payload) => {
+  return await axios.get(`/v1/extra/mobile-face/places`, { params: payload?.params })
+}
+
+const _showPlace = async (payload) => {
+  return await axios.get(`/v1/extra/mobile-face/places/${payload.id}`)
+}
+
+const _createPlace = async (payload) => {
+  return await axios.post(`/v1/extra/mobile-face/places`, payload.data)
+}
+
+const _updatePlace = async (payload) => {
+  return await axios.put(`/v1/extra/mobile-face/places/${payload.id}`, payload.data)
+}
+
+const _deletePlace = async (payload) => {
+  return await axios.delete(`/v1/extra/mobile-face/places/${payload.id}`)
+}
+
 export default {
+  _places,
+  _showPlace,
+  _createPlace,
+  _updatePlace,
+  _deletePlace,
   _faceStats,
   _faceWorkers,
   _workerLocations,

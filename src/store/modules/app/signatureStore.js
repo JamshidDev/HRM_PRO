@@ -6,6 +6,12 @@ import { usePdfViewerStore } from '@/store/modules/app/pdfViewerStore.js'
 import { isToastOnlyPage } from '@/components/notify/alertDialog.js'
 const apiUrl = import.meta.env.VITE_API_URL
 
+// Rahbar preview'da QR joyini belgilagan bo'lsa — imzo bilan yuboriladi (aks holda shablon joyi).
+const qrPositionForSign = () => {
+  const pdf = usePdfViewerStore()
+  return pdf.qrEditable && pdf.qrPosition ? pdf.qrPosition : undefined
+}
+
 const { t } = i18n.global
 
 // Chrome 142+ (Local Network Access): ommaviy saytdan 127.0.0.1 dagi E-IMZO
@@ -182,7 +188,10 @@ export const useSignatureStore = defineStore('signatureStore', {
         null,
         (pkcs7) => {
           $ApiService.documentService
-            ._linkEimzo({ params: { token: this.linkToken }, data: { code: pkcs7 } })
+            ._linkEimzo({
+              params: { token: this.linkToken },
+              data: { code: pkcs7, qr_position: qrPositionForSign() }
+            })
             .then(() => {
               this.loading = false
               this.visible = false
@@ -389,7 +398,8 @@ export const useSignatureStore = defineStore('signatureStore', {
         code: pkcs7,
         confirmation_id: this.confirmationId,
         model: this.documentType,
-        pin: this.workerPin
+        pin: this.workerPin,
+        qr_position: qrPositionForSign()
       }
       $ApiService.documentService
         ._confirmationDocument({ data, silentError: true })

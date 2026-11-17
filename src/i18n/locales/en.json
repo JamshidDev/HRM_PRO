@@ -1672,6 +1672,7 @@
       "cancel_reason": "Cancellation reason"
     },
     "signature": {
+      "qrPlacementHint": "Drag the QR code into place, resize from the corner",
       "history": "View change history",
       "viewer": "Document reviewers",
       "files": {
@@ -6364,6 +6365,22 @@
     "langEn": "English"
   },
   "departmentLocationPage": {
+    "places": {
+      "createTitle": "Add turnstile location",
+      "updateTitle": "Edit turnstile location",
+      "viewTitle": "Turnstile location",
+      "organization": "Organization",
+      "name": "Passage point name",
+      "attached": "Assigned",
+      "attachedCount": "{d} dept. · {w} empl.",
+      "notAttached": "Not assigned",
+      "owner": "Created by",
+      "add": "Add location",
+      "hint": "One marked place can be assigned to several departments and employees. Only its creator can edit it.",
+      "empty": "No turnstile locations yet",
+      "departments": "Departments",
+      "workers": "Employees"
+    },
     "name": "Mobile face",
     "createTitle": "Add Location",
     "updateTitle": "Edit Location",
@@ -6443,6 +6460,7 @@
       "in": "Entry"
     },
     "tabs": {
+      "places": "Turnstile locations",
       "workers": "Employees",
       "departments": "Departments",
       "locations": "Locations"
@@ -6462,6 +6480,13 @@
       "coords": "Coordinates"
     },
     "form": {
+      "source": "Passage point",
+      "sourceExisting": "Pick from list",
+      "sourceNew": "New place",
+      "sourceExistingHint": "A place from the turnstile locations list is assigned — its shape is taken from there.",
+      "sourceNewHint": "Mark a new place on the map — it is also added to the turnstile locations list.",
+      "place": "Turnstile location",
+      "placePlaceholder": "Search by name",
       "freeMode": "Free mode",
       "freeModeHint": "No area restriction — the employee can pass from anywhere; only coordinates and the face photo are recorded.",
       "department": "Department",
@@ -6487,6 +6512,8 @@
       "polygonSteps": "«Draw area» → place at least 3 points on the map → «Finish»."
     },
     "validation": {
+      "placeRequired": "Select a turnstile location",
+      "organizationRequired": "Select an organization",
       "departmentRequired": "Select a department",
       "nameRequired": "Enter the passage point name",
       "markerRequired": "Mark the location on the map",
