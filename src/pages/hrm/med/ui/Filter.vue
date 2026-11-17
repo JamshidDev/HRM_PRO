@@ -1,8 +1,11 @@
 <script setup>
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIPageFilter, UISelect, UIDepartmentSelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useMedStore } from '@/store/modules/index.js'
+  import { ArrowDownload24Regular } from '@vicons/fluent'
+  import ScheduleExport from './ScheduleExport.vue'
 
   const store = useMedStore()
+  const scheduleVisible = ref(false)
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
 
@@ -28,7 +31,11 @@
   }
 
   const filterCount = computed(() =>
-    Number(Boolean(store.params.organizations.length) + Number(Boolean(store.params.status)))
+    Number(
+      Boolean(store.params.organizations.length) +
+        Number(Boolean(store.params.status)) +
+        Number(Boolean(store.params.departments.length))
+    )
   )
 
   const beforeShow = () => {
@@ -43,11 +50,13 @@
 
   const onChangeStructure = (v) => {
     store.params.organizations = v
+    store.params.departments = []
     filterEvent()
   }
 
   const resetFilter = () => {
     store.params.organizations = []
+    store.params.departments = []
     store.params.status = null
     filterEvent()
   }
@@ -64,8 +73,26 @@
     :search-loading="store.loading"
     @onAdd="onAdd"
     filter-placement="bottom-end"
-    :popover-style="{ width: '560px', maxWidth: 'calc(100vw - 32px)', padding: '0', borderRadius: '20px' }"
+    :popover-style="{
+      width: '560px',
+      maxWidth: 'calc(100vw - 32px)',
+      padding: '0',
+      borderRadius: '20px'
+    }"
   >
+    <template #filterAction>
+      <n-button
+        v-if="accStore.checkPermission(accStore.pn.hrMedRead)"
+        type="primary"
+        ghost
+        @click="scheduleVisible = true"
+      >
+        {{ $t('medPage.schedule.button') }}
+        <template #icon>
+          <n-icon><ArrowDownload24Regular /></n-icon>
+        </template>
+      </n-button>
+    </template>
     <template #filterContent>
       <div class="ui-filter-grid grid grid-cols-12 gap-x-5 gap-y-4">
         <div class="col-span-12 md:col-span-6">
@@ -84,6 +111,16 @@
           />
         </div>
         <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('workerPage.filter.department') }}</label>
+          <UIDepartmentSelect
+            v-model="store.params.departments"
+            :organization="store.params.organizations"
+            source="all"
+            multiple
+            @update:model-value="filterEvent"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
           <label>{{ $t('medPage.form.status') }}</label>
           <n-select
             v-model:value="store.params.status"
@@ -98,6 +135,7 @@
       </div>
     </template>
   </UIPageFilter>
+  <ScheduleExport v-model:visible="scheduleVisible" />
 </template>
 
 <style scoped></style>
