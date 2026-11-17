@@ -45,7 +45,22 @@
       "approved": "Tasdiqlangan",
       "view": "Ko'rish",
       "empty": "Tasdiqlangan hujjat topilmadi",
-      "total": "Jami {n} ta hujjat"
+      "total": "Jami {n} ta hujjat",
+      "date": "Sana",
+      "download": "PDF yuklash",
+      "noFile": "Hujjat fayli topilmadi",
+      "searchPh": "Xodim F.I.Sh, JSHSHIR yoki hujjat raqami",
+      "groups": {
+        "employment": "Ishga qabul",
+        "termination": "Mehnat munosabatini tugatish",
+        "transfer": "Boshqa ishga o'tkazish",
+        "vacation": "Ta'til",
+        "business_trip": "Xizmat safari",
+        "others": "Boshqa buyruqlar",
+        "contracts": "Mehnat shartnomasi",
+        "contract_additional": "Qo'shimcha kelishuv",
+        "applications": "Ariza"
+      }
     }
   },
   "lateWorkersReport": {

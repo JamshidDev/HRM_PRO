@@ -45,7 +45,22 @@
       "approved": "Approved",
       "view": "View",
       "empty": "No approved documents found",
-      "total": "Total {n} documents"
+      "total": "Total {n} documents",
+      "date": "Date",
+      "download": "Download PDF",
+      "noFile": "Document file not found",
+      "searchPh": "Employee name, PINFL or document number",
+      "groups": {
+        "employment": "Hiring",
+        "termination": "Termination",
+        "transfer": "Transfer",
+        "vacation": "Vacation",
+        "business_trip": "Business trip",
+        "others": "Other orders",
+        "contracts": "Employment contract",
+        "contract_additional": "Additional agreement",
+        "applications": "Application"
+      }
     }
   },
   "lateWorkersReport": {

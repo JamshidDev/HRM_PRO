@@ -45,7 +45,22 @@
       "approved": "Тасдиқланган",
       "view": "Кўриш",
       "empty": "Тасдиқланган ҳужжат топилмади",
-      "total": "Жами {n} та ҳужжат"
+      "total": "Жами {n} та ҳужжат",
+      "date": "Сана",
+      "download": "PDF юклаш",
+      "noFile": "Ҳужжат файли топилмади",
+      "searchPh": "Ходим Ф.И.Ш, ЖШШИР ёки ҳужжат рақами",
+      "groups": {
+        "employment": "Ишга қабул",
+        "termination": "Меҳнат муносабатини тугатиш",
+        "transfer": "Бошқа ишга ўтказиш",
+        "vacation": "Таътил",
+        "business_trip": "Хизмат сафари",
+        "others": "Бошқа буйруқлар",
+        "contracts": "Меҳнат шартномаси",
+        "contract_additional": "Қўшимча келишув",
+        "applications": "Ариза"
+      }
     }
   },
   "lateWorkersReport": {
