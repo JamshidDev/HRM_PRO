@@ -11,6 +11,12 @@
     "macros": false,
     "comments": false,
     "mentionShare": false,
+    "features": {
+      "spellcheck": {
+        "mode": false,
+        "change": false
+      }
+    },
     "layout": {
       "header": false,
       "leftMenu": false,
