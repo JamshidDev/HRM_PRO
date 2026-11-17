@@ -11,16 +11,21 @@
   const notificationSound = useNotificationSound()
 
   const current = computed(() => alertState.queue[0] ?? null)
+  // Ko'rsatiladigan alert: oxirgi bo'sh bo'lmagan element. Yopilganda ham saqlanadi — aks holda oyna yopilish
+  // animatsiyasida bo'sh qoladi va naive «default slot is empty» deydi (DAS-15970). `@after-leave` da
+  // tozalash ham shu ogohlantirishni beradi (modal hali o'chirilmagan) — ataylab tozalanmaydi.
+  const shown = shallowRef(null)
+  watch(current, (item) => item && (shown.value = item), { immediate: true })
   const paused = ref(false)
-  const isConfirm = computed(() => Boolean(current.value?.onConfirm))
+  const isConfirm = computed(() => Boolean(shown.value?.onConfirm))
   // Tasdiqda sarlavha «Ishonchingiz komilmi?» kabi, xatoda — «Amalni bajarib bo'lmaydi» kabi.
   const title = computed(
     () =>
-      current.value?.title ||
-      t(`alertDialog.${isConfirm.value ? 'confirmTitles' : 'titles'}.${current.value?.type}`)
+      shown.value?.title ||
+      t(`alertDialog.${isConfirm.value ? 'confirmTitles' : 'titles'}.${shown.value?.type}`)
   )
   // Ro'yxat ustidagi izoh: berilmasa — forma xatolari matni, bo'sh satr — yashiriladi.
-  const listHint = computed(() => current.value?.listHint ?? t('alertDialog.checkFields'))
+  const listHint = computed(() => shown.value?.listHint ?? t('alertDialog.checkFields'))
   // Bajarilayotganda (loading) fon / Esc oynani yopmaydi.
   const show = computed({
     get: () => Boolean(current.value),
@@ -36,7 +41,7 @@
       playKey.value++
       paused.value = false
       // Ovoz — faqat xato / ogohlantirishda; foydalanuvchi o'zi so'ragan tasdiqda jim.
-      if (appStore.soundEnabled && !isConfirm.value) {
+      if (appStore.soundEnabled && !current.value.onConfirm) {
         notificationSound.play(`alert-${current.value.type}`)
       }
     }
@@ -51,27 +56,27 @@
 <template>
   <n-modal v-model:show="show" :auto-focus="true" :mask-closable="true" :close-on-esc="true">
     <AlertCard
-      v-if="current"
+      v-if="shown"
       :key="playKey"
-      :type="current.type"
+      :type="shown.type"
       :title="title"
-      :message="current.message"
-      :errors="current.errors"
+      :message="shown.message"
+      :errors="shown.errors"
       :list-hint="listHint"
       :confirm="isConfirm"
-      :confirm-text="current.confirmText"
-      :cancel-text="current.cancelText"
-      :extra-text="current.extraText"
-      :danger="current.danger"
-      :cancel-type="current.cancelType"
-      :confirm-type="current.confirmType"
-      :loading="current.loading"
+      :confirm-text="shown.confirmText"
+      :cancel-text="shown.cancelText"
+      :extra-text="shown.extraText"
+      :danger="shown.danger"
+      :cancel-type="shown.cancelType"
+      :confirm-type="shown.confirmType"
+      :loading="shown.loading"
       @confirm="confirmAlert"
       @cancel="cancelAlert"
       @extra="extraAlert"
       @hover="(v) => (paused = v)"
     >
-      <component :is="current.content" v-if="current.content" />
+      <component :is="shown.content" v-if="shown.content" />
       <template #actions>
         <div class="relative mt-6 overflow-hidden rounded-xl">
           <n-button type="primary" block size="large" class="!rounded-xl" @click="closeAlert">
@@ -79,9 +84,9 @@
           </n-button>
           <!-- Vaqt tugasa yopiladi; sichqoncha modal ustida bo'lsa to'xtab turadi. -->
           <span
-            v-if="current.duration"
+            v-if="shown.duration"
             class="alert-dialog__countdown"
-            :style="{ animationDuration: `${current.duration}ms`, animationPlayState: paused ? 'paused' : 'running' }"
+            :style="{ animationDuration: `${shown.duration}ms`, animationPlayState: paused ? 'paused' : 'running' }"
             @animationend="closeAlert"
           ></span>
         </div>
