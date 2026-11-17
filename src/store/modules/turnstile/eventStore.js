@@ -32,7 +32,9 @@ export const useEventStore = defineStore('eventStore', {
       departments: [],
       direction: null,
       date: null,
-      access_levels: []
+      access_levels: [],
+      // Qurilma turi: all | turnstile | mobile (HR Rail).
+      device_type: 'all'
     },
     department: {
       list: [],
@@ -192,7 +194,8 @@ export const useEventStore = defineStore('eventStore', {
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
         departments: this.params.departments.toString() || undefined,
         access_levels: this.params.access_levels.toString() || undefined,
-        date: Utils.timeToZone(this.params.date) || undefined
+        date: Utils.timeToZone(this.params.date) || undefined,
+        device_type: this.params.device_type === 'all' ? undefined : this.params.device_type
       }
     },
     _department(infinity = false) {

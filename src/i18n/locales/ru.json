@@ -3848,6 +3848,7 @@
     "form": {
       "from": "С",
       "to": "По",
+      "dueMonth": "Месяц срока осмотра",
       "comment": "Комментарий",
       "status": "Статус",
       "organization": "Организация",
@@ -5461,6 +5462,10 @@
     }
   },
   "hcEvent": {
+    "deviceType": "Тип устройства",
+    "deviceTypeAll": "Все",
+    "deviceTypeTurnstile": "Турникет",
+    "deviceTypeMobile": "Mobile face",
     "name": "События",
     "nameV2": "События V2",
     "createTitle": "Загрузить",

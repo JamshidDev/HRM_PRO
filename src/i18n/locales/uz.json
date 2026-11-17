@@ -3860,6 +3860,7 @@
     "form": {
       "from": "Qachondan",
       "to": "Qachongacha",
+      "dueMonth": "Ko'rik muddati oyi",
       "comment": "Izoh",
       "status": "Holati",
       "organization": "Korxona",
@@ -5495,6 +5496,10 @@
     }
   },
   "hcEvent": {
+    "deviceType": "Qurilma turi",
+    "deviceTypeAll": "Barchasi",
+    "deviceTypeTurnstile": "Turniket",
+    "deviceTypeMobile": "Mobile face",
     "name": "Hodisalar",
     "nameV2": "Hodisalar V2",
     "createTitle": "Yuklash",

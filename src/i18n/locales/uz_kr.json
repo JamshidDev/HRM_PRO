@@ -3578,6 +3578,7 @@
     "form": {
       "from": "Қачондан",
       "to": "Қачонгача",
+      "dueMonth": "Кўрик муддати ойи",
       "comment": "Изоҳ",
       "status": "Ҳолати",
       "organization": "Корхона",
@@ -5193,6 +5194,10 @@
     }
   },
   "hcEvent": {
+    "deviceType": "Қурилма тури",
+    "deviceTypeAll": "Барчаси",
+    "deviceTypeTurnstile": "Турникет",
+    "deviceTypeMobile": "Mobile face",
     "name": "Ҳодисалар",
     "nameV2": "Ҳодисалар V2",
     "createTitle": "Юклаш",
