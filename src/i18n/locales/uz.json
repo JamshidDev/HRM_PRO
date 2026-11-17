@@ -3824,17 +3824,6 @@
       "daysLeft": "{n} kun qoldi",
       "conclusion": "Xulosa: {name}",
       "file": "Fayllar"
-    },
-    "schedule": {
-      "button": "Grafik yuklab olish",
-      "title": "Tibbiy ko'rik grafigi",
-      "organization": "Korxona",
-      "year": "Yil",
-      "total": "Jami {n} xodim",
-      "empty": "Bu yilda tibbiy ko'rik muddati tugaydigan xodim yo'q",
-      "download": "Excel yuklab olish",
-      "allOrgs": "Barcha korxonalar",
-      "departments": "Tanlangan bo'limlar: {n}"
     }
   },
   "medInspection": {
