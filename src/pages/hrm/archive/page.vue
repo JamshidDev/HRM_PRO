@@ -64,7 +64,19 @@
       class="ui-pill-tabs ui-pill-tabs--inline"
       @update:value="onTab"
     >
-      <n-tab-pane name="dismissed" :tab="$t('archive.tabs.dismissed')" />
+      <n-tab-pane name="dismissed">
+        <template #tab>
+          <span class="flex items-center gap-1.5">
+            {{ $t('archive.tabs.dismissed') }}
+            <n-badge
+              :value="store.totalItems"
+              :show-zero="true"
+              type="info"
+              :processing="store.loading"
+            />
+          </span>
+        </template>
+      </n-tab-pane>
       <n-tab-pane v-for="t in DOC_TABS" :key="t.name" :name="t.name">
         <template #tab>
           <span class="flex items-center gap-1.5">

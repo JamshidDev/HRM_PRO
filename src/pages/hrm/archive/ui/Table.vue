@@ -52,6 +52,13 @@
     return [worker?.last_name, initials].filter(Boolean).join(' ') || '—'
   }
 
+  // Login raqami (users.phone, 9 raqam) → «+998 90 123 45 67».
+  const formatPhone = (phone) => {
+    const d = String(phone || '').replace(/\D/g, '').slice(-9)
+    if (d.length !== 9) return phone || ''
+    return `+998 ${d.slice(0, 2)} ${d.slice(2, 5)} ${d.slice(5, 7)} ${d.slice(7)}`
+  }
+
   // Turniket eksporti — backend `turnstile-hik-central-events-read` talab qiladi.
   const onTurnstileDownload = (row) => {
     if (!accStore.checkAction(accStore.pn.turnstileHikCentralEventsRead)) return
@@ -121,8 +128,13 @@
             <span>{{ Utils.combineFullName(row?.worker) }}</span>
           </n-tooltip>
         </template>
-        <!-- Maketda ism ostida ikkinchi qator yo'q -->
-        <template #position><span></span></template>
+        <!-- Ism ostida tizimga kirish (login) raqami. -->
+        <template #position>
+          <span v-if="row?.worker?.user_phone" class="text-xs text-textColor3">
+            {{ formatPhone(row.worker.user_phone) }}
+          </span>
+          <span v-else></span>
+        </template>
       </UIUser>
     </template>
 
