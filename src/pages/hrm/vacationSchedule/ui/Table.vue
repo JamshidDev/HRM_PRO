@@ -31,6 +31,16 @@
       }
     ]
 
+    // Rahbar va kasaba raisi select'da nomi bilan ko'rinsin (ro'yxatda bo'lmasa ham).
+    store.headerPeople = [v.director, v.tradeUnion].filter(Boolean).map((p) => ({
+      id: p.id,
+      photo: p.worker?.photo,
+      last_name: p.worker?.last_name ?? '',
+      first_name: p.worker?.first_name ?? '',
+      middle_name: p.worker?.middle_name ?? '',
+      fullName: Utils.combineFullName(p.worker),
+      position: p.position
+    }))
     store.payload.year = v.year
     store.payload.date = Utils.datePickerFormatter(v.date)
     store.payload.director_id = v?.director?.id

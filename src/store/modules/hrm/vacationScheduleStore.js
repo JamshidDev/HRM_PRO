@@ -57,6 +57,9 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
       search: null,
       organizations: []
     },
+    // Tahrirlashda grafikning o'z rahbari va kasaba raisi — ular joriy foydalanuvchining kelishuvchilar
+    // ro'yxatida bo'lmasligi mumkin (boshqa tashkilot), aks holda select bo'sh ko'rinadi.
+    headerPeople: [],
     creator: {
       list: [],
       loading: false,
@@ -165,6 +168,7 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
     },
     resetForm() {
       this.elementId = null
+      this.headerPeople = []
       this.payload = initialPayload()
     },
 
