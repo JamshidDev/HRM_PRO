@@ -3848,6 +3848,7 @@
     "form": {
       "from": "Qachondan",
       "to": "Qachongacha",
+      "dueMonth": "Ko'rik muddati oyi",
       "comment": "Izoh",
       "status": "Holati",
       "organization": "Korxona",

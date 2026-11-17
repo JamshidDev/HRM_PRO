@@ -3848,6 +3848,7 @@
     "form": {
       "from": "Qaçondan",
       "to": "Qaçongaça",
+      "dueMonth": "Körik muddati oyi",
       "comment": "Izoh",
       "status": "Holati",
       "organization": "Korxona",

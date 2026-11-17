@@ -3828,6 +3828,7 @@
     "form": {
       "from": "From",
       "to": "To",
+      "dueMonth": "Checkup due month",
       "comment": "Comment",
       "status": "Status",
       "organization": "Organization",
