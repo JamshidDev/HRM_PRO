@@ -5484,6 +5484,10 @@
     }
   },
   "hcEvent": {
+    "deviceType": "Qurilma turi",
+    "deviceTypeAll": "Barchasi",
+    "deviceTypeTurnstile": "Turniket",
+    "deviceTypeMobile": "Mobile face",
     "name": "Hodisalar",
     "nameV2": "Hodisalar V2",
     "createTitle": "Yuklash",

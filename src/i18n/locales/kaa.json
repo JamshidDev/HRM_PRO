@@ -5468,6 +5468,10 @@
     }
   },
   "hcEvent": {
+    "deviceType": "Qurılma túri",
+    "deviceTypeAll": "Barlıǵı",
+    "deviceTypeTurnstile": "Turniket",
+    "deviceTypeMobile": "Mobile face",
     "name": "Hádiyseler",
     "nameV2": "Hádiyseler V2",
     "createTitle": "Júklew",

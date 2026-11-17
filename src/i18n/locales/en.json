@@ -5439,6 +5439,10 @@
     }
   },
   "hcEvent": {
+    "deviceType": "Device type",
+    "deviceTypeAll": "All",
+    "deviceTypeTurnstile": "Turnstile",
+    "deviceTypeMobile": "Mobile face",
     "name": "Events",
     "nameV2": "Events V2",
     "createTitle": "Upload",
