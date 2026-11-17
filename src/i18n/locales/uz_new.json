@@ -28,6 +28,39 @@
       "currentOrg": "Hozirgi iş joyi",
       "notEmployed": "Aniqlanmadi",
       "dismissalCommand": "Böşatiş buyruği"
+    },
+    "tabs": {
+      "dismissed": "Ishdan ketganlar",
+      "applications": "Arizalar",
+      "commands": "Buyruqlar",
+      "contracts": "Shartnomalar",
+      "contractAdditional": "Qo'shimcha kelishuvlar"
+    },
+    "documents": {
+      "type": "Hujjat turi",
+      "number": "Hujjat raqami",
+      "numberPh": "Raqam yoki elektron raqam",
+      "period": "Sana oralig'i",
+      "cancelled": "Bekor qilingan",
+      "approved": "Tasdiqlangan",
+      "view": "Ko'rish",
+      "empty": "Tasdiqlangan hujjat topilmadi",
+      "total": "Jami {n} ta hujjat",
+      "date": "Sana",
+      "download": "PDF yuklash",
+      "noFile": "Hujjat fayli topilmadi",
+      "searchPh": "Xodim F.I.Sh, JSHSHIR yoki hujjat raqami",
+      "groups": {
+        "employment": "Ishga qabul",
+        "termination": "Mehnat munosabatini tugatish",
+        "transfer": "Boshqa ishga o'tkazish",
+        "vacation": "Ta'til",
+        "business_trip": "Xizmat safari",
+        "others": "Boshqa buyruqlar",
+        "contracts": "Mehnat shartnomasi",
+        "contract_additional": "Qo'shimcha kelishuv",
+        "applications": "Ariza"
+      }
     }
   },
   "lateWorkersReport": {
@@ -1517,6 +1550,9 @@
         "experienceMonthUnit": "oy",
         "agreementType": "Kelişuv turi",
         "aidMonth": "Qaysi oy uçun",
+        "clauseNumber": "Band raqami",
+        "clausePlaceholder": "Masalan: 53 yoki 13.4",
+        "clauseRequired": "Kelişuv bandi raqamini kiriting",
         "experienceSuggest": "Profil: {date} dan · {year} yil {month} oy",
         "experienceNoDate": "Profilda temir yöl staji sanasi kiritilmagan",
         "selectedWorkers": "Tanlangan xodimlar",
@@ -3352,6 +3388,9 @@
       "to": "Ta'tildan qaytiş sanasi",
       "temporarily_absent": "Ta'tildagi xodimlar",
       "reason": "Sabab",
+      "reasonType": "Sabab turi",
+      "reasonTypePlaceholder": "Röyxatdan tanlang yoki «Boşqa»",
+      "reasonOther": "Boşqa",
       "from_time": "Vaqt (dan)",
       "to_time": "Vaqt (gaça)",
       "education_type": "Ta'lim şakli",
@@ -3761,6 +3800,8 @@
     },
     "hcWorkersPage": {
       "access_levels": "Guruhlar",
+      "locked_access_level_hint": "Bu guruh qurilmalari korxonangizga biriktirilmagan, shuning uchun uni olib tashlay olmaysiz. O‘zgartirishi mumkin: {orgs}",
+      "locked_access_levels_alert": "{count} ta guruh boshqa korxonaga tegishli — ularni o‘zgartira olmaysiz.",
       "name": "Xodimlar",
       "create": "Xodim qöşiş",
       "edit": "Xodimni tahrirlaş",

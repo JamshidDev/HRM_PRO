@@ -28,6 +28,39 @@
       "currentOrg": "Текущее место работы",
       "notEmployed": "Не определено",
       "dismissalCommand": "Приказ об увольнении"
+    },
+    "tabs": {
+      "dismissed": "Уволенные",
+      "applications": "Заявления",
+      "commands": "Приказы",
+      "contracts": "Договоры",
+      "contractAdditional": "Доп. соглашения"
+    },
+    "documents": {
+      "type": "Тип документа",
+      "number": "Номер документа",
+      "numberPh": "Номер или электронный номер",
+      "period": "Период",
+      "cancelled": "Отменён",
+      "approved": "Утверждён",
+      "view": "Просмотр",
+      "empty": "Утверждённые документы не найдены",
+      "total": "Всего документов: {n}",
+      "date": "Дата",
+      "download": "Скачать PDF",
+      "noFile": "Файл документа не найден",
+      "searchPh": "Ф.И.О. сотрудника, ПИНФЛ или номер документа",
+      "groups": {
+        "employment": "Приём на работу",
+        "termination": "Прекращение трудовых отношений",
+        "transfer": "Перевод",
+        "vacation": "Отпуск",
+        "business_trip": "Командировка",
+        "others": "Прочие приказы",
+        "contracts": "Трудовой договор",
+        "contract_additional": "Доп. соглашение",
+        "applications": "Заявление"
+      }
     }
   },
   "lateWorkersReport": {
@@ -1503,6 +1536,9 @@
         "experienceMonthUnit": "мес.",
         "agreementType": "Вид соглашения",
         "aidMonth": "За какой месяц",
+        "clauseNumber": "Номер пункта",
+        "clausePlaceholder": "Например: 53 или 13.4",
+        "clauseRequired": "Укажите номер пункта соглашения",
         "experienceSuggest": "Профиль: с {date} · {year} лет {month} мес.",
         "experienceNoDate": "В профиле не указана дата начала ж/д стажа",
         "selectedWorkers": "Выбранные сотрудники",
@@ -3340,6 +3376,9 @@
       "to": "Дата возвращения из отпуска",
       "temporarily_absent": "Сотрудники в отпуске",
       "reason": "Причина",
+      "reasonType": "Тип причины",
+      "reasonTypePlaceholder": "Выберите из списка или «Другое»",
+      "reasonOther": "Другое",
       "from_time": "Время (с)",
       "to_time": "Время (по)",
       "education_type": "Форма обучения",
@@ -3749,6 +3788,8 @@
     },
     "hcWorkersPage": {
       "access_levels": "Группы",
+      "locked_access_level_hint": "Устройства этой группы не привязаны к вашей организации, поэтому вы не можете её убрать. Изменить могут: {orgs}",
+      "locked_access_levels_alert": "Групп другой организации: {count} — изменить их нельзя.",
       "name": "Сотрудники",
       "create": "Добавить сотрудника",
       "edit": "Редактировать сотрудника",

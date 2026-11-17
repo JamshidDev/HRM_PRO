@@ -1,4 +1,5 @@
 <script setup>
+  import { financialAidReasons } from '@/utils/financialAidReasons.js'
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import { useComponentStore } from '@/store/modules/index.js'
   import {
@@ -57,16 +58,7 @@
     }
   }
 
-  const options = [
-    { id: 1, name: t('documentPage.command.form.reason_one') },
-    { id: 2, name: t('documentPage.command.form.reason_two') },
-    { id: 3, name: t('documentPage.command.form.reason_three') },
-    { id: 4, name: t('documentPage.command.form.reason_four') },
-    { id: 5, name: t('documentPage.command.form.reason_five') },
-    { id: 6, name: t('documentPage.command.form.reason_six') },
-    { id: 7, name: t('documentPage.command.form.reason_seven') },
-    { id: 9, name: t('documentPage.command.form.reason_eight') }
-  ]
+  const options = financialAidReasons(t)
 
   const onSelectReason = (index, v) => {
     store.workerData[index].reason = v
@@ -158,7 +150,7 @@
                 v-for="item in options"
                 :key="item.id"
                 class="leading-[1.2] mb-1 text-[14px] text-secondary cursor-pointer p-2 bg-transparent hover:bg-primary/10 rounded-xl"
-                @click="onSelectReason(idx, item.name)"
+                @click="onSelectReason(idx, item.text)"
               >
                 {{ item.id }}. {{ item.name }}
               </div>

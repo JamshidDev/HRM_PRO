@@ -135,6 +135,7 @@ const FORM_STATE_KEYS = [
   'oneByOne',
   'commandBase',
   'agreementType',
+  'clauseNumber',
   'aidMonth',
   'fromApplication'
 ]
@@ -431,6 +432,8 @@ const commandStoreOptions = {
     commandBase: null,
     // 81 — kelishuv turi: 1 tarmoq (default), 2 jamoa.
     agreementType: 1,
+    // 81 — kelishuv bandi raqami.
+    clauseNumber: null,
     // 81 — moddiy yordam oyi (1–12).
     aidMonth: null,
     // Ariza asosidagi buyruq: { id, number, electronic_number } — korxona/tur/xodim qulflanadi.
@@ -685,6 +688,9 @@ const commandStoreOptions = {
       if (state?.aidMonth === undefined && this.payload.command_type === 81) {
         this.aidMonth = Number(state?.data?.command_additional?.month) || null
       }
+      if (state?.clauseNumber === undefined && this.payload.command_type === 81) {
+        this.clauseNumber = String(state?.data?.command_additional?.clause_number ?? '').trim() || null
+      }
     },
     // Eski buyruq: saqlangan `data` maydonlari turga mos `form_N` blokiga ko'chiriladi.
     fillLegacyForm(data) {
@@ -862,6 +868,7 @@ const commandStoreOptions = {
       this.vacations = []
       this.commandBase = null
       this.agreementType = 1
+      this.clauseNumber = null
       this.aidMonth = null
 
       this.form_44.vacation_id = null

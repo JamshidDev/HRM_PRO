@@ -28,6 +28,39 @@
       "currentOrg": "Ҳозирги иш жойи",
       "notEmployed": "Аниқланмади",
       "dismissalCommand": "Бўшатиш буйруғи"
+    },
+    "tabs": {
+      "dismissed": "Ишдан кетганлар",
+      "applications": "Аризалар",
+      "commands": "Буйруқлар",
+      "contracts": "Шартномалар",
+      "contractAdditional": "Қўшимча келишувлар"
+    },
+    "documents": {
+      "type": "Ҳужжат тури",
+      "number": "Ҳужжат рақами",
+      "numberPh": "Рақам ёки электрон рақам",
+      "period": "Сана оралиғи",
+      "cancelled": "Бекор қилинган",
+      "approved": "Тасдиқланган",
+      "view": "Кўриш",
+      "empty": "Тасдиқланган ҳужжат топилмади",
+      "total": "Жами {n} та ҳужжат",
+      "date": "Сана",
+      "download": "PDF юклаш",
+      "noFile": "Ҳужжат файли топилмади",
+      "searchPh": "Ходим Ф.И.Ш, ЖШШИР ёки ҳужжат рақами",
+      "groups": {
+        "employment": "Ишга қабул",
+        "termination": "Меҳнат муносабатини тугатиш",
+        "transfer": "Бошқа ишга ўтказиш",
+        "vacation": "Таътил",
+        "business_trip": "Хизмат сафари",
+        "others": "Бошқа буйруқлар",
+        "contracts": "Меҳнат шартномаси",
+        "contract_additional": "Қўшимча келишув",
+        "applications": "Ариза"
+      }
     }
   },
   "lateWorkersReport": {
@@ -1413,6 +1446,9 @@
         "experienceMonthUnit": "ой",
         "agreementType": "Келишув тури",
         "aidMonth": "Қайси ой учун",
+        "clauseNumber": "Банд рақами",
+        "clausePlaceholder": "Масалан: 53 ёки 13.4",
+        "clauseRequired": "Келишув банди рақамини киритинг",
         "experienceSuggest": "Профиль: {date} дан · {year} йил {month} ой",
         "experienceNoDate": "Профилда темир йўл стажи санаси киритилмаган",
         "selectedWorkers": "Танланган ходимлар",
@@ -3085,6 +3121,9 @@
       "to": "Таътилдан қайтиш санаси",
       "temporarily_absent": "Таътилдаги ходимлар",
       "reason": "Сабаб",
+      "reasonType": "Сабаб тури",
+      "reasonTypePlaceholder": "Рўйхатдан танланг ёки «Бошқа»",
+      "reasonOther": "Бошқа",
       "from_time": "Вақт (дан)",
       "to_time": "Вақт (гача)",
       "education_type": "Таълим шакли",
@@ -3494,6 +3533,8 @@
     },
     "hcWorkersPage": {
       "access_levels": "Гуруҳлар",
+      "locked_access_level_hint": "Бу гуруҳ қурилмалари корхонангизга бириктирилмаган, шунинг учун уни олиб ташлай олмайсиз. Ўзгартириши мумкин: {orgs}",
+      "locked_access_levels_alert": "{count} та гуруҳ бошқа корхонага тегишли — уларни ўзгартира олмайсиз.",
       "name": "Ходимлар",
       "create": "Ходим қўшиш",
       "edit": "Ходимни таҳрирлаш",

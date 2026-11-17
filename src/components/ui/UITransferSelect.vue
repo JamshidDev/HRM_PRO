@@ -1,6 +1,7 @@
 <script setup>
   import UIHelper from '@/utils/UIHelper.js'
-  import { NCheckbox } from 'naive-ui'
+  import { NCheckbox, NIcon, NTooltip } from 'naive-ui'
+  import { LockClosed16Filled } from '@vicons/fluent'
 
   const searchModel = ref('')
   const selectAll = ref(false)
@@ -49,7 +50,7 @@
       default: false
     },
     maxTagCount: {
-      type: Number,
+      type: [Number, String],
       default: 1
     },
     query: {
@@ -146,20 +147,25 @@
   const onUpdateValue = () => {}
 
   const targetLabel = function ({ option }) {
-    return h(
+    const row = h(
       'div',
       {
         style: {
           display: 'flex',
           alignItems: 'center',
-          margin: '6px 0'
+          margin: '6px 0',
+          opacity: option.locked ? 0.6 : 1,
+          cursor: option.locked ? 'not-allowed' : undefined
         }
       },
       {
         default: () => [
-          h(NCheckbox, {
-            checked: true
-          }),
+          // Qulflangan (o'zgartirib bo'lmaydigan) tanlov — checkbox o'rniga qulf.
+          option.locked
+            ? h(NIcon, { size: 16, component: LockClosed16Filled })
+            : h(NCheckbox, {
+                checked: true
+              }),
           h(
             'div',
             {
@@ -174,6 +180,10 @@
         ]
       }
     )
+    // Qulf sababini (hint) tooltip'da ko'rsatadi.
+    return option.locked && option.hint
+      ? h(NTooltip, {}, { trigger: () => row, default: () => option.hint })
+      : row
   }
   const sourceLabel = function ({ option }) {
     return h(

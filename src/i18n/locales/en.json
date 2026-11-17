@@ -28,6 +28,39 @@
       "currentOrg": "Current workplace",
       "notEmployed": "Not determined",
       "dismissalCommand": "Dismissal order"
+    },
+    "tabs": {
+      "dismissed": "Dismissed",
+      "applications": "Applications",
+      "commands": "Orders",
+      "contracts": "Contracts",
+      "contractAdditional": "Additional agreements"
+    },
+    "documents": {
+      "type": "Document type",
+      "number": "Document number",
+      "numberPh": "Number or electronic number",
+      "period": "Date range",
+      "cancelled": "Cancelled",
+      "approved": "Approved",
+      "view": "View",
+      "empty": "No approved documents found",
+      "total": "Total {n} documents",
+      "date": "Date",
+      "download": "Download PDF",
+      "noFile": "Document file not found",
+      "searchPh": "Employee name, PINFL or document number",
+      "groups": {
+        "employment": "Hiring",
+        "termination": "Termination",
+        "transfer": "Transfer",
+        "vacation": "Vacation",
+        "business_trip": "Business trip",
+        "others": "Other orders",
+        "contracts": "Employment contract",
+        "contract_additional": "Additional agreement",
+        "applications": "Application"
+      }
     }
   },
   "lateWorkersReport": {
@@ -1501,6 +1534,9 @@
         "experienceMonthUnit": "mo",
         "agreementType": "Agreement type",
         "aidMonth": "For month",
+        "clauseNumber": "Clause number",
+        "clausePlaceholder": "e.g. 53 or 13.4",
+        "clauseRequired": "Enter the agreement clause number",
         "experienceSuggest": "Profile: since {date} · {year} yr {month} mo",
         "experienceNoDate": "Railway service start date is not set in profile",
         "selectedWorkers": "Selected employees",
@@ -3332,6 +3368,9 @@
       "to": "Vacation end date",
       "temporarily_absent": "Employees on vacation",
       "reason": "Reason",
+      "reasonType": "Reason type",
+      "reasonTypePlaceholder": "Choose from the list or «Other»",
+      "reasonOther": "Other",
       "from_time": "Time (from)",
       "to_time": "Time (to)",
       "education_type": "Education form",
@@ -3741,6 +3780,8 @@
     },
     "hcWorkersPage": {
       "access_levels": "Groups",
+      "locked_access_level_hint": "This group's devices are not assigned to your organization, so you cannot remove it. Can be changed by: {orgs}",
+      "locked_access_levels_alert": "{count} group(s) belong to another organization — you can't change them.",
       "name": "Employees",
       "create": "Add employee",
       "edit": "Edit employee",

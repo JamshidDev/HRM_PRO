@@ -20,6 +20,8 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
     loading: false,
     accessLevels: [],
     accessLevelsLoading: false,
+    // Boshqa korxonalar bergan guruhlar — formada qulf, backend o'zi saqlaydi.
+    lockedAccessLevels: [],
     saveLoading: false,
     deleteLoading: false,
     accessLevelModalVisible: false,
@@ -355,6 +357,7 @@ export const useTurnstileHikCentralWorkerStore = defineStore('turnstileHikCentra
       this.payload.photo = null
       this.payload.end_time = defaultDeadline()
       this.photos = []
+      this.lockedAccessLevels = []
     },
     resetEditPayload() {
       this.editPayload.id = null
