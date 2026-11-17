@@ -8,6 +8,7 @@
   import ColorlessIcon from '@/assets/icons/colorlessIcon.svg'
   import HalfBrightnessIcon from '@/assets/icons/halfBrightnessIcon.svg'
   import FullBrightnessIcon from '@/assets/icons/fullBrightnessIcon.svg'
+  import { appFonts, fontStack, loadAppFont } from '@/utils/appFonts.js'
 
   const { t } = i18n.global
   const store = useAppStore()
@@ -79,6 +80,15 @@
       store.profileSettingsVisible = v
     }
   })
+
+  // Kartochkalardagi namuna o'z shriftida ko'rinsin — shriftlar panel ochilgandagina yuklanadi
+  watch(
+    visible,
+    (v) => {
+      if (v) appFonts.forEach(loadAppFont)
+    },
+    { immediate: true }
+  )
 
   const notificationSound = useNotificationSound()
 
@@ -216,6 +226,36 @@
               <span class="text-xl font-semibold text-primary">A</span>
             </div>
           </div>
+
+          <n-divider class="!my-0" />
+
+          <div class="flex flex-col gap-3">
+            <span class="text-sm text-textColor0 font-medium">{{ t('content.fontFamily') }}</span>
+            <div class="grid grid-cols-2 gap-3">
+              <button
+                v-for="item in appFonts"
+                :key="item.key"
+                type="button"
+                class="flex flex-col items-center gap-1 py-3 px-2 rounded-xl border transition-all cursor-pointer"
+                :class="
+                  store.fontFamily === item.key
+                    ? 'border-primary bg-primary/10 text-primary'
+                    : 'border-surface-line text-textColor2'
+                "
+                @click="store.setFontFamily(item.key)"
+              >
+                <!-- overwrite.scss `!important` bilan beradi — namunaga o'z shrifti ham `!important` -->
+                <span
+                  class="font-preview text-2xl font-semibold leading-tight"
+                  :style="{ '--preview-font': fontStack(item) }"
+                >{{ t('content.fontSample') }}</span>
+                <span
+                  class="font-preview text-xs font-medium text-center"
+                  :style="{ '--preview-font': fontStack(item) }"
+                >{{ item.name || t(item.labelKey) }}</span>
+              </button>
+            </div>
+          </div>
         </div>
 
         <div class="shrink-0 px-5 py-4 border-t border-surface-line">
@@ -229,6 +269,10 @@
 </template>
 
 <style scoped>
+  .font-preview {
+    font-family: var(--preview-font) !important;
+  }
+
   :deep(.ios-switch.n-switch) {
     --n-rail-color-active: #34c759 !important;
   }
