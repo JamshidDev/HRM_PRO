@@ -3,13 +3,10 @@
     "print": false,
     "chat": false
   },
-  "customization":{
+  "customization": {
     "about": false,
-    "features": {
-      "spellcheck": {
-        "change": false
-      }
-    },
+    "help": false,
+    "feedback": false,
     "layout": {
       "header": false,
       "leftMenu": false,
@@ -19,23 +16,9 @@
     },
     "compactHeader": true,
     "compactToolbar": false,
+    "suggestFeature": false,
     "compatibleFeatures": true,
     "autosave": false,
-    "comments": false,
-    "forcesave": true,
-    "plugins": false
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
+    "forcesave": true
+  }
 }
