@@ -1490,7 +1490,7 @@
         "agreementType": "Agreement type",
         "aidMonth": "For month",
         "clauseNumber": "Clause number",
-        "clausePlaceholder": "e.g. 53",
+        "clausePlaceholder": "e.g. 53 or 13.4",
         "clauseRequired": "Enter the agreement clause number",
         "experienceSuggest": "Profile: since {date} · {year} yr {month} mo",
         "experienceNoDate": "Railway service start date is not set in profile",

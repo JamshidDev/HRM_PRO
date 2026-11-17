@@ -1,9 +1,10 @@
 // pdf.js yagona ulanishi: legacy build (eski brauzerlar uchun polyfill'lar bilan) va HiDPI chizish.
 import { markRaw } from 'vue'
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf.mjs'
-import workerUrl from 'pdfjs-dist/legacy/build/pdf.worker.min.mjs?url'
+// ?worker — build worker'ni .js qilib chiqaradi: server .mjs ni octet-stream bersa ham yuklanadi.
+import PdfWorker from 'pdfjs-dist/legacy/build/pdf.worker.min.mjs?worker'
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = workerUrl
+pdfjsLib.GlobalWorkerOptions.workerPort = new PdfWorker()
 
 export { pdfjsLib }
 
