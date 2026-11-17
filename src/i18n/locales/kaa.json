@@ -4027,7 +4027,7 @@
       "createHint": "Jaratılǵanda kárxananıń barlıq xızmetkerleri grafikke qosıladı: dem alıs dáwiri, kúnler hám tabel nomeri avtomat esaplanadı.",
       "filled": "Toltırılǵan",
       "allDepartments": "Barlıq bólimler",
-      "unsavedConfirm": "Saqlanbaǵan {n} ózgeris bar. Olar biykar etilsin be?",
+      "unsavedConfirm": "{n} qatarda saqlanbaǵan ózgeris bar.",
       "requiredFields": "{n} qatarda dem alıs dáwiri yamasa ayı kiritilmegen",
       "applyDays": "Qollanıw",
       "noAdditional": "Qosımsha dem alıs qosılmaǵan",
@@ -7593,6 +7593,11 @@
   },
   "alertDialog": {
     "ok": "Túsinikli",
+    "unsaved": {
+      "title": "Saqlanbaǵan ózgerisler",
+      "discard": "Saqlamay shıǵıw",
+      "save": "Saqlaw hám shıǵıw"
+    },
     "checkFields": "Tómendegilerdi tekserip, qaytadan urınıp kóriń:",
     "titles": {
       "forbidden": "Ruqsat berilmegen",

@@ -2,7 +2,7 @@
   import { TIMESHEET_APPROVAL_ENABLED } from '../approval.js'
   import { h, onBeforeUnmount, onMounted, ref } from 'vue'
   import { useMessage } from 'naive-ui'
-  import { showAlert } from '@/components/notify/alertDialog.js'
+  import { confirmUnsaved, showAlert } from '@/components/notify/alertDialog.js'
   import {
     Add20Filled,
     ArrowDownload20Filled,
@@ -1099,14 +1099,11 @@
       store.visible = false
       return
     }
-    showAlert({
-      type: 'warning',
-      title: t('timesheetPage.unsaved.title'),
+    // Umumiy oyna (Ta'tillar grafigi bilan bir xil): qizil «Saqlamasdan chiqish» | yashil «Saqlash va chiqish».
+    confirmUnsaved({
       message: t('timesheetPage.unsaved.content', { count: pendingCount.value }),
-      confirmText: t('content.save'),
-      cancelText: t('timesheetPage.unsaved.discard'),
       // Saqlash xato bersa tabel ochiq qoladi — kataklar yo'qolmaydi.
-      onConfirm: async () => {
+      onSave: async () => {
         try {
           await store._save()
         } catch {
@@ -1114,7 +1111,7 @@
         }
         store.visible = false
       },
-      onCancel: () => {
+      onDiscard: () => {
         store.pending = {}
         store.visible = false
       }

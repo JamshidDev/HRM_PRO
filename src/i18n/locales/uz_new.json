@@ -4043,7 +4043,7 @@
       "createHint": "Yaratilganda korxonaning barça xodimlari grafikka qöşiladi: ta'til davri, kunlar va tabel raqami avtomatik hisoblanadi.",
       "filled": "Töldirilgan",
       "allDepartments": "Barça bölimlar",
-      "unsavedConfirm": "Saqlanmagan {n} ta özgariş bor. Ular bekor qilinsinmi?",
+      "unsavedConfirm": "{n} ta qatorda saqlanmagan özgariş bor.",
       "requiredFields": "{n} ta qatorda ta'til davri yoki oyi kiritilmagan",
       "applyDays": "Qöllaş",
       "noAdditional": "Qöşimça ta'til qöşilmagan",
@@ -7661,6 +7661,11 @@
   },
   "alertDialog": {
     "ok": "Tuşunarli",
+    "unsaved": {
+      "title": "Saqlanmagan özgarişlar",
+      "discard": "Saqlamasdan çiqiş",
+      "save": "Saqlaş va çiqiş"
+    },
     "checkFields": "Quyidagilarni tekşirib, qayta urinib köring:",
     "titles": {
       "forbidden": "Ruxsat berilmagan",

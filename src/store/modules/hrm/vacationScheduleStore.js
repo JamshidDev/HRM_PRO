@@ -19,13 +19,13 @@ const initialGrid = () => ({
   rows: [],
   total: 0,
   loading: false,
-  savingIds: [],
   exporting: false,
   // Saqlanmagan o'zgarishlar: { [rowId]: { month, period_from, period_to, table_number, main_day, additional } }.
   dirty: {},
   // O'zgargan qatorlarning to'liq holati (sahifa almashsa ham tekshirish uchun) va xato qatorlar.
   dirtyRows: {},
   invalidIds: [],
+  saving: false,
   params: {
     page: 1,
     per_page: 50,
@@ -97,15 +97,15 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
           this.creator.loading = false
         })
     },
-    _index() {
-      this.loading = true
-      const params = {
     // BACKEND: GET /v1/hr/vacation-schedule `search` ni e'tiborsiz qoldiradi (2026-11-17, dev: «zzzzqq» bilan ham
     // hamma 4 ta grafik qaytdi; `year` ham ishlamaydi). Faqat `organizations` filtri ishlaydi. Kerak: `search` —
     // tashkilot nomi / rahbar / tuzuvchi F.I.Sh. bo'yicha; `year` filtri (grafiklar yil bo'yicha qidiriladi).
+    _index() {
+      this.loading = true
+      this.searched = !!this.params.search?.trim() || this.params.organizations.length > 0
+      const params = {
         ...this.params,
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined
-      this.searched = !!this.params.search?.trim() || this.params.organizations.length > 0
       }
       $ApiService.vacationScheduleService
         ._index({ params })
@@ -189,6 +189,9 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
         this.grid.summary = res.data.data
       })
     },
+    // BACKEND: grafik xodimlari `search` i juda «yumshoq» (2026-11-17, dev, grafik 2): «Bobo» → Begaliyev, Buriyev,
+    // Majidov… ham qaytadi; «zzzz» → Zuvayitov. To'liq familiya to'g'ri ishlaydi. Kerak: F.I.Sh. boshidan / ichidan
+    // aniq moslik (ILIKE '%…%'), noaniq (trigram) qidiruv emas.
     _gridRows() {
       this.grid.loading = true
       const params = Object.fromEntries(
@@ -246,29 +249,34 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
         period_to: row.period_to ? Utils.timeToZone(row.period_to) : null
       }
     },
-    // Faqat shu qator saqlanadi; davr va ta'til oyi majburiy.
-    _saveRow(row) {
-      const patch = this.grid.dirty[row.id]
-      if (!patch) return Promise.resolve()
-      // Davr/oy tegilmagan bo'lsa (faqat kunlar yoki tabel) — majburiylik tekshirilmaydi.
-      const touchesSchedule = ['month', 'period_from', 'period_to'].some((k) => k in patch)
-      if (touchesSchedule && !this.isComplete(row)) {
-        if (!this.grid.invalidIds.includes(row.id)) this.grid.invalidIds.push(row.id)
-        $Alert.validation(t('vacationSchedule.grid.requiredFields', { n: 1 }))
+    // Barcha o'zgargan qatorlar bitta so'rovda saqlanadi (boshqa sahifadagilar ham). Davr yoki oy o'zgargan
+    // qatorda davr (dan/gacha) va oy majburiy — bittasi to'liq bo'lmasa hech narsa yuborilmaydi, qatorlar qizaradi.
+    _saveAll() {
+      const ids = Object.keys(this.grid.dirty)
+      if (!ids.length || this.grid.saving) return Promise.resolve()
+      const invalid = ids.filter((id) => {
+        const patch = this.grid.dirty[id]
+        const touchesSchedule = ['month', 'period_from', 'period_to'].some((k) => k in patch)
+        return touchesSchedule && !this.isComplete(this.grid.dirtyRows[id] || {})
+      })
+      if (invalid.length) {
+        this.grid.invalidIds = invalid.map(Number)
+        $Alert.validation(t('vacationSchedule.grid.requiredFields', { n: invalid.length }))
         return Promise.resolve()
       }
-      this.grid.savingIds.push(row.id)
+      const rows = ids.map((id) => ({ id: Number(id), ...this.grid.dirty[id] }))
+      this.grid.saving = true
       return $ApiService.vacationScheduleService
-        ._saveRows({ id: this.grid.id, data: { rows: [{ id: row.id, ...patch }] } })
+        ._saveRows({ id: this.grid.id, data: { rows } })
         .then(() => {
-          delete this.grid.dirty[row.id]
-          delete this.grid.dirtyRows[row.id]
-          this.grid.invalidIds = this.grid.invalidIds.filter((id) => id !== row.id)
-          $Toast.success(t('vacationSchedule.grid.saved', { n: 1 }))
+          this.grid.dirty = {}
+          this.grid.dirtyRows = {}
+          this.grid.invalidIds = []
+          $Toast.success(t('vacationSchedule.grid.saved', { n: rows.length }))
           this.refreshCounters()
         })
         .finally(() => {
-          this.grid.savingIds = this.grid.savingIds.filter((id) => id !== row.id)
+          this.grid.saving = false
         })
     },
     gridParams() {

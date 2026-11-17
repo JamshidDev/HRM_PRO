@@ -4043,7 +4043,7 @@
       "createHint": "Yaratilganda korxonaning barcha xodimlari grafikka qo'shiladi: ta'til davri, kunlar va tabel raqami avtomatik hisoblanadi.",
       "filled": "To'ldirilgan",
       "allDepartments": "Barcha bo'limlar",
-      "unsavedConfirm": "Saqlanmagan {n} ta o'zgarish bor. Ular bekor qilinsinmi?",
+      "unsavedConfirm": "{n} ta qatorda saqlanmagan o'zgarish bor.",
       "requiredFields": "{n} ta qatorda ta'til davri yoki oyi kiritilmagan",
       "applyDays": "Qo'llash",
       "noAdditional": "Qo'shimcha ta'til qo'shilmagan",
@@ -7661,6 +7661,11 @@
   },
   "alertDialog": {
     "ok": "Tushunarli",
+    "unsaved": {
+      "title": "Saqlanmagan o'zgarishlar",
+      "discard": "Saqlamasdan chiqish",
+      "save": "Saqlash va chiqish"
+    },
     "checkFields": "Quyidagilarni tekshirib, qayta urinib ko'ring:",
     "titles": {
       "forbidden": "Ruxsat berilmagan",

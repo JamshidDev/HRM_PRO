@@ -63,6 +63,8 @@
       :cancel-text="current.cancelText"
       :extra-text="current.extraText"
       :danger="current.danger"
+      :cancel-type="current.cancelType"
+      :confirm-type="current.confirmType"
       :loading="current.loading"
       @confirm="confirmAlert"
       @cancel="cancelAlert"
