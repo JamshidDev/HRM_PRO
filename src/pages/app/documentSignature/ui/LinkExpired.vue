@@ -5,17 +5,32 @@
 </script>
 
 <template>
-  <div id="draw-signature" class="w-full max-w-[800px] mx-auto px-4 pt-10 mb-[160px]">
-    <div
-      class="flex flex-col items-center text-center rounded-xl border border-dashed border-surface-line bg-surface-section px-6 py-8"
-    >
-      <span class="flex items-center justify-center size-12 rounded-full bg-danger/10 text-danger">
-        <n-icon size="26"><Timer24Regular /></n-icon>
-      </span>
-      <h3 class="mt-3 text-lg font-semibold text-textColor1">
-        {{ $t('signature.linkExpiredTitle') }}
-      </h3>
-      <p class="mt-1 text-sm text-textColor3">{{ $t('signature.linkExpiredHint') }}</p>
-    </div>
+  <div
+    id="draw-signature"
+    class="sign-card flex w-full scroll-mt-24 flex-col items-center px-6 py-10 text-center"
+  >
+    <span class="expired-icon">
+      <n-icon size="36"><Timer24Regular /></n-icon>
+    </span>
+    <h3 class="mt-4 text-xl font-semibold text-textColor0">
+      {{ $t('signature.linkExpiredTitle') }}
+    </h3>
+    <p class="mt-1.5 max-w-[300px] text-sm text-textColor2">
+      {{ $t('signature.linkExpiredHint') }}
+    </p>
   </div>
 </template>
+
+<style scoped>
+  .expired-icon {
+    display: flex;
+    width: 76px;
+    height: 76px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    color: var(--fig-chip-amber-text);
+    background: var(--fig-chip-amber-bg);
+    box-shadow: 0 0 0 10px color-mix(in srgb, var(--fig-chip-amber-bg) 50%, transparent);
+  }
+</style>

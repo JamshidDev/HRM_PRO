@@ -158,8 +158,8 @@ export const useWorkerStore = defineStore('workerStore', {
           uuid: this.passwordWorkerUuid,
           data: { password }
         })
-        .then((res) => {
-          window.$message?.success(res.data?.message)
+        // Backend xabari interceptor'da bir marta chiqadi — bu yerda takrorlanmaydi.
+        .then(() => {
           this.passwordVisible = false
           this.passwordWorkerUuid = null
         })

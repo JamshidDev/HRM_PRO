@@ -100,7 +100,7 @@
     }
     store.calculateLoading = true
     $ApiService.vacationService
-      ._vacationCalculate({ data: { worker_positions: [data] } })
+      ._vacationCalculate({ data: { worker_positions: [data] }, silent: true })
       .then((res) => {
         $Toast.success(t('message.successDone'))
         if (res.data.data?.[0]) {

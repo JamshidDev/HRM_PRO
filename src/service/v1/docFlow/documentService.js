@@ -107,6 +107,7 @@ const _editorContent = async (payload) => {
 // Tahrirlash v2 — muharrir bergan DOCX'ni saqlash (multipart: file, model, document_id, version).
 const _editorSave = async (payload) => {
   return await axios.post(`/v1/document/editor/save`, payload.data, {
+    silentSuccess: true,
     headers: { 'Content-Type': 'multipart/form-data' }
   })
 }

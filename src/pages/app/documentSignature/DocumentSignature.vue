@@ -19,7 +19,7 @@
 </script>
 
 <template>
-  <div class="w-full flex-col bg-blue-50 pt-[64px] min-h-screen">
+  <div class="sign-bg w-full flex-col pt-[64px] min-h-screen">
     <n-spin class="w-full min-h-[400px]" :show="store.checkLoading">
       <ToolBar />
       <template v-if="store.viewerStatus === Utils.viewerStatus.signatureDocument">
@@ -38,3 +38,16 @@
     </n-spin>
   </div>
 </template>
+
+<style scoped>
+  /* Ommaviy sahifa — tepada brend rangidagi yumshoq «tuman», pastga qarab sahifa fonida yo'qoladi */
+  .sign-bg {
+    background:
+      radial-gradient(
+        1200px 380px at 50% -60px,
+        color-mix(in srgb, var(--color-primary) 16%, transparent),
+        transparent 70%
+      ),
+      var(--color-surface-ground);
+  }
+</style>

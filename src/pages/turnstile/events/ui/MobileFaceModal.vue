@@ -6,6 +6,7 @@
     ArrowCircleDownRight20Regular,
     ArrowCircleUpLeft20Regular,
     CheckmarkCircle20Filled,
+    Eye20Regular,
     ErrorCircle20Filled,
     ImageOff20Regular,
     Info20Filled,
@@ -39,6 +40,11 @@
       { key: 'ref_photo', label: t('departmentLocationPage.events.refPhoto') }
     ].map((p) => ({ ...p, src: broken[p.key] ? null : face.value?.[p.key] || null }))
   )
+
+  // Xodim o'zi olgan rasm (shaxsiy) avval «vjir-vjir» shovqin ostida yopiq turadi — bosilganda ochiladi.
+  // Har oyna ochilganda yana yopiladi.
+  const revealed = ref(false)
+  const isVeiled = (p) => p.key === 'photo' && Boolean(p.src) && !revealed.value
 
   // O'xshashlik chegaralari: 90%+ mos, 70–89% solishtirib ko'rish kerak, <70% boshqa odam bo'lishi mumkin.
   // Frontend tanlovi — backend jamoasi hozircha muhim emas dedi (2026-11-04); kerak bo'lsa shu yerda o'zgartiriladi.
@@ -86,6 +92,7 @@
     ([open]) => {
       broken.photo = false
       broken.ref_photo = false
+      revealed.value = false
       mapReady.value = false
       if (open) setTimeout(() => (mapReady.value = true), 300)
     },
@@ -116,7 +123,10 @@
       <!-- Rasmlarni solishtirish: tasdiqlangan rasm | rasmiy rasm -->
       <div class="grid grid-cols-2 gap-3">
         <div v-for="p in photos" :key="p.key" class="flex flex-col gap-1.5">
-          <div class="mf-photo aspect-square rounded-2xl overflow-hidden border border-surface-line bg-surface-ground">
+          <div
+            class="mf-photo relative aspect-square rounded-2xl overflow-hidden border border-surface-line bg-surface-ground"
+            :class="{ 'is-veiled': isVeiled(p) }"
+          >
             <n-image
               v-if="p.src"
               :src="p.src"
@@ -129,6 +139,15 @@
               <n-icon size="28"><ImageOff20Regular /></n-icon>
               <span class="text-xs">{{ $t('departmentLocationPage.events.noPhoto') }}</span>
             </div>
+            <Transition name="mf-veil">
+              <button v-if="isVeiled(p)" type="button" class="mf-veil" @click="revealed = true">
+                <span class="mf-veil__noise" />
+                <span class="mf-veil__label">
+                  <n-icon size="16"><Eye20Regular /></n-icon>
+                  {{ $t('departmentLocationPage.events.tapToReveal') }}
+                </span>
+              </button>
+            </Transition>
           </div>
           <span class="text-xs text-textColor3 text-center">{{ p.label }}</span>
         </div>
@@ -229,6 +248,81 @@
     display: block;
     width: 100%;
     height: 100%;
+  }
+  /* Yopiq rasm: ostida kuchli xira, ustida televizor shovqini («vjir-vjir»). */
+  .mf-photo :deep(img) {
+    transition:
+      filter 0.3s ease,
+      transform 0.3s ease;
+  }
+  .mf-photo.is-veiled :deep(img) {
+    filter: blur(24px);
+    transform: scale(1.2);
+  }
+  .mf-veil {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+    border: 0;
+    padding: 0;
+    background: #6b7280;
+  }
+  .mf-veil__noise {
+    position: absolute;
+    inset: -50%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.9;
+    animation: mf-static 0.4s steps(4) infinite;
+  }
+  .mf-veil__label {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+  .mf-veil:hover .mf-veil__label {
+    background: rgba(0, 0, 0, 0.75);
+  }
+  /* Shovqin qatlami sakrab siljiydi — televizordagi «vjir-vjir» kabi jonli ko'rinadi. */
+  @keyframes mf-static {
+    0% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(-12%, 8%);
+    }
+    50% {
+      transform: translate(9%, -14%);
+    }
+    75% {
+      transform: translate(-6%, -9%);
+    }
+    100% {
+      transform: translate(13%, 11%);
+    }
+  }
+  .mf-veil-leave-active {
+    transition: opacity 0.3s ease;
+  }
+  .mf-veil-leave-to {
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mf-veil__noise {
+      animation: none;
+    }
   }
   /* Kichik kartada xarita o'z balandligida — marker markazda turadi. */
   .mf-map :deep(.map-container) {

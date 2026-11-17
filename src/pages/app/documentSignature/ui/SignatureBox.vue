@@ -42,11 +42,12 @@
 </script>
 
 <template>
-  <div class="relative">
+  <!-- Telefonda 260px; kompyuterda panelda qolgan butun joy (oyna o'lchami o'zgarsa kanvas o'zi moslashadi) -->
+  <div class="relative h-[260px] lg:h-auto lg:min-h-[120px] lg:flex-1">
     <UIDrawSignature
       ref="signatureRef"
       class="border-dashed"
-      height="220px"
+      height="100%"
       @change="onChange"
     />
 
