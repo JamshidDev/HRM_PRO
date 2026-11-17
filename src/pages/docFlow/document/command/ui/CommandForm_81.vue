@@ -4,7 +4,7 @@
 </script>
 
 <script setup>
-  // 81 — tarmoq jamoa kelishuvi asosida moddiy yordam: har xodim uchun temir yo'l staji (yil, oy).
+  // 81 — kelishuv asosida moddiy yordam: har xodim uchun uzluksiz staji (yil, oy), kelishuv bandi.
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import { useComponentStore } from '@/store/modules/index.js'
   import { Dismiss16Regular } from '@vicons/fluent'
@@ -17,13 +17,10 @@
   const { t } = i18n.global
   const { showErrors } = useEmptyFieldMarks()
 
-  // Kelishuv turiga qarab «Asos» namunasi (1 — tarmoq, 2 — jamoa).
-  const BASE_BY_AGREEMENT = {
-    1: 'Xodimlar arizasi, Tarmoq jamoa kelishuvi',
-    2: 'Xodimlar arizasi, Jamoa kelishuv shartnomasi'
-  }
-  const MONTH_KEYS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
-  const monthOptions = MONTH_KEYS.map((k, i) => ({ label: t(`month.${k}`), value: i + 1 }))
+  // Hujjatdagi kelishuv nomi (1 — tarmoq, 2 — jamoa); «Asos» namunasi shundan tuziladi.
+  const AGREEMENT_NAME = { 1: 'Tarmoq jamoa kelishuvi', 2: 'Jamoa shartnomasi' }
+  const autoBase = (type, clause) =>
+    `Xodimning arizasi, ${AGREEMENT_NAME[type] || AGREEMENT_NAME[1]}ning ${clause || '___'}-bandi`
 
   // Profildagi temir yo'l staji sanasidan tavsiya: bo'sh inputlarga qo'yiladi, qo'lda o'zgartirish mumkin.
   const suggestions = reactive({})
@@ -99,12 +96,24 @@
     () => store.workerData.forEach(fillExperience),
     { immediate: true }
   )
-  const defaultBase = (type) => BASE_BY_AGREEMENT[type] || BASE_BY_AGREEMENT[1]
-
-  const onAgreementChange = (type) => {
-    store.agreementType = type
-    store.commandBase = defaultBase(type)
+  // «Asos» qo'lda o'zgartirilmagan bo'lsa — kelishuv/band o'zgarganda namuna yangilanadi.
+  const syncBase = (prevType, prevClause) => {
+    const prev = autoBase(prevType, prevClause)
+    if (!store.commandBase || store.commandBase === prev) {
+      store.commandBase = autoBase(store.agreementType, store.clauseNumber)
+    }
   }
+  const onAgreementChange = (type) => {
+    const prev = store.agreementType
+    store.agreementType = type
+    syncBase(prev, store.clauseNumber)
+  }
+  const onClauseChange = (v) => {
+    const prev = store.clauseNumber
+    store.clauseNumber = v
+    syncBase(store.agreementType, prev)
+  }
+  const clauseInvalid = computed(() => showErrors.value && !store.clauseNumber)
 
   const onRemoveWorker = (id) => {
     store.workerData = store.workerData.filter((v) => v.id !== id)
@@ -118,9 +127,13 @@
 
   const onSubmit = (mainData) => {
     const valid = store.workerData.every(hasExperience)
-    showErrors.value = !valid
+    showErrors.value = !valid || !store.clauseNumber
     if (!valid) {
       $Alert.validation(t('documentPage.command.form.experienceZero'))
+      return { data: null, isValid: false }
+    }
+    if (!store.clauseNumber) {
+      $Alert.validation(t('documentPage.command.form.clauseRequired'))
       return { data: null, isValid: false }
     }
     return {
@@ -134,7 +147,7 @@
         command_additional: {
           base: store.commandBase || null,
           agreement_type: store.agreementType || 1,
-          month: store.aidMonth || null
+          clause_number: store.clauseNumber
         }
       },
       isValid: true
@@ -146,8 +159,7 @@
   onMounted(() => {
     componentStore._enums()
     if (!store.agreementType) store.agreementType = 1
-    if (!store.aidMonth) store.aidMonth = new Date().getMonth() + 1
-    if (!store.commandBase) store.commandBase = defaultBase(store.agreementType)
+    if (!store.commandBase) store.commandBase = autoBase(store.agreementType, store.clauseNumber)
   })
 </script>
 
@@ -280,8 +292,18 @@
       </n-form-item>
     </div>
     <div class="col-span-12 @xl:col-span-3">
-      <n-form-item :show-feedback="false" :label="$t('documentPage.command.form.aidMonth')" path="aidMonth">
-        <n-select v-model:value="store.aidMonth" :options="monthOptions" />
+      <n-form-item :show-feedback="false" :label="$t('documentPage.command.form.clauseNumber')" path="clauseNumber">
+        <n-input-number
+          class="w-full"
+          :value="store.clauseNumber"
+          :min="1"
+          :max="999"
+          :precision="0"
+          :show-button="false"
+          :status="clauseInvalid ? 'error' : undefined"
+          :placeholder="$t('documentPage.command.form.clausePlaceholder')"
+          @update:value="onClauseChange"
+        />
       </n-form-item>
     </div>
     <div class="col-span-12 @xl:col-span-5">
