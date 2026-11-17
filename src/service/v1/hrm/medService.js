@@ -22,21 +22,15 @@ const _delete = async (payload) => {
   return await axios.delete(`/v1/hr/worker-meds/${payload.id}`)
 }
 
-// Tibbiy ko'rik grafigi: oylar bo'yicha sonlar va Excel fayl.
-const _scheduleMeta = async (payload) => {
-  return await axios.get(`/v1/hr/worker-meds/schedule/meta`, { params: payload.params })
-}
-
+// Tibbiy ko'rik grafigi Excel'i — fon vazifasi (Yuklashlar tarixi).
 const _scheduleExport = async (payload) => {
   return await axios.get(`/v1/hr/worker-meds/schedule/export`, {
-    params: payload.params,
-    responseType: 'blob'
+    params: payload.params
   })
 }
 
 export default {
   _index,
-  _scheduleMeta,
   _scheduleExport,
   _create,
   _update,

@@ -3,6 +3,7 @@ export const useMedStore = defineStore('medStore', {
   state: () => ({
     list: [],
     loading: false,
+    exportLoading: false,
     saveLoading: false,
     deleteLoading: false,
     showLoading: false,
@@ -41,6 +42,25 @@ export const useMedStore = defineStore('medStore', {
     activeTab: 1
   }),
   actions: {
+    // Grafik Excel'i joriy filtr bo'yicha — fon vazifasi.
+    _scheduleExport(onSuccess) {
+      this.exportLoading = true
+      const params = {
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
+        departments: this.params.departments.toString() || undefined,
+        status: this.params.status || undefined,
+        search: this.params.search || undefined
+      }
+      $ApiService.medService
+        ._scheduleExport({ params })
+        .then((res) => {
+          onSuccess?.()
+          window.$message?.success(res.data?.message)
+        })
+        .finally(() => {
+          this.exportLoading = false
+        })
+    },
     _index() {
       this.loading = true
       const params = {

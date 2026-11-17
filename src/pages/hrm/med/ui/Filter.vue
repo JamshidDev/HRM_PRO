@@ -2,12 +2,18 @@
   import { UIPageFilter, UISelect, UIDepartmentSelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useMedStore } from '@/store/modules/index.js'
   import { ArrowDownload24Regular } from '@vicons/fluent'
-  import ScheduleExport from './ScheduleExport.vue'
 
   const store = useMedStore()
-  const scheduleVisible = ref(false)
+  const { proxy } = getCurrentInstance()
+  const exportBtnRef = ref(null)
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
+
+  const onExport = () => {
+    if (!accStore.checkAction(accStore.pn.hrMedRead)) return
+    const btnEl = exportBtnRef.value?.$el || exportBtnRef.value
+    store._scheduleExport(() => proxy.$flyUpload?.(btnEl))
+  }
 
   const onSearch = () => {
     if (!accStore.checkAction(accStore.pn.hrTableRead)) return
@@ -83,11 +89,12 @@
     <template #filterAction>
       <n-button
         v-if="accStore.checkPermission(accStore.pn.hrMedRead)"
-        type="primary"
-        ghost
-        @click="scheduleVisible = true"
+        ref="exportBtnRef"
+        type="success"
+        :loading="store.exportLoading"
+        @click="onExport"
       >
-        {{ $t('medPage.schedule.button') }}
+        {{ $t('content.download') }}
         <template #icon>
           <n-icon><ArrowDownload24Regular /></n-icon>
         </template>
@@ -135,7 +142,6 @@
       </div>
     </template>
   </UIPageFilter>
-  <ScheduleExport v-model:visible="scheduleVisible" />
 </template>
 
 <style scoped></style>
