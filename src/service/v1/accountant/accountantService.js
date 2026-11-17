@@ -140,7 +140,7 @@ const _paymentAnalysisIndex = async (payload) => {
 }
 // Tasdiqlangan xodimlar whitelist yuklash (multipart) — kodlar 47/50/55/270.
 const _paymentWhitelistUpload = async (payload) => {
-  return await axios.post(`/v1/economist/payment-whitelist`, payload.data)
+  return await axios.post(`/v1/economist/payment-whitelist`, payload.data, { silentSuccess: true })
 }
 // Yuklangan whitelist (imtiyozli xodimlar) ro'yxati — server paginatsiyasi.
 const _paymentWhitelistIndex = (payload) => {
@@ -148,7 +148,7 @@ const _paymentWhitelistIndex = (payload) => {
 }
 // Qoidalar dvigatelini qayta ishga tushirish (JSON).
 const _paymentAnalysisAnalyze = async (payload) => {
-  return await axios.post(`/v1/economist/payment-analysis/analyze`, payload.data)
+  return await axios.post(`/v1/economist/payment-analysis/analyze`, payload.data, { silentSuccess: true })
 }
 // Tahlil natijalarini Excel'ga yuklash (blob).
 const _paymentAnalysisExport = async (payload) => {

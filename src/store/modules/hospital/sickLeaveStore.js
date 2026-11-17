@@ -99,7 +99,7 @@ export const useSickLeaveStore = defineStore('sickLeaveStore', {
         ._create({ data: this._buildBody() })
         .then((res) => {
           if (res.data.error) return
-          $Toast.success(res.data.message)
+          // Backend xabari (`message`) interceptor'da bir marta chiqadi — bu yerda takrorlanmaydi.
           this.visible = false
           this._index()
         })
@@ -113,7 +113,7 @@ export const useSickLeaveStore = defineStore('sickLeaveStore', {
         ._update({ id: this.elementId, data: this._buildBody() })
         .then((res) => {
           if (res.data.error) return
-          $Toast.success(res.data.message)
+          // Backend xabari (`message`) interceptor'da bir marta chiqadi — bu yerda takrorlanmaydi.
           this.visible = false
           this._index()
         })
@@ -139,7 +139,7 @@ export const useSickLeaveStore = defineStore('sickLeaveStore', {
         ._close({ id: this.elementId, data: form })
         .then((res) => {
           if (res.data.error) return
-          $Toast.success(res.data.message)
+          // Backend xabari (`message`) interceptor'da bir marta chiqadi — bu yerda takrorlanmaydi.
           this.closeVisible = false
           this._index()
         })
@@ -153,7 +153,7 @@ export const useSickLeaveStore = defineStore('sickLeaveStore', {
         ._delete({ id: this.elementId })
         .then((res) => {
           if (res.data.error) return
-          $Toast.success(res.data.message)
+          // Backend xabari (`message`) interceptor'da bir marta chiqadi — bu yerda takrorlanmaydi.
           this.deleteVisible = false
           this._index()
         })

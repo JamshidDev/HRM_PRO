@@ -54,13 +54,13 @@ const _unsignedCount = async (payload) => {
 // Filtrdagi barcha imzolanmagan sertifikatlarni imzolash — fon jobi,
 // natijasi "Eksport" bo'limida xulosa fayli bo'lib chiqadi.
 const _signAllCertificates = async (payload) => {
-  return await axios.post(`/v1/lms/certificates/sign`, null, { params: payload?.params })
+  return await axios.post(`/v1/lms/certificates/sign`, null, { silentSuccess: true, params: payload?.params })
 }
 
 // Bitta sertifikatni imzolash: QR bosiladi + holat "Tasdiqlangan" bo'ladi.
 // Tasdiqlovchilar (imzo navbati) statusiga tegmaydi.
 const _signCertificate = async (payload) => {
-  return await axios.post(`/v1/lms/certificates/${payload.id}/sign`)
+  return await axios.post(`/v1/lms/certificates/${payload.id}/sign`, undefined, { silentSuccess: true })
 }
 
 export default {
