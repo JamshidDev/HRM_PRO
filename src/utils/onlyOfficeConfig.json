@@ -20,7 +20,11 @@
     },
     "compactHeader": true,
     "compactToolbar": false,
+    "toolbarHideFileName": true,
+    "hideRightMenu": true,
+    "hideRulers": true,
     "suggestFeature": false,
+    "uiTheme": "theme-light",
     "compatibleFeatures": true,
     "autosave": false,
     "forcesave": true
