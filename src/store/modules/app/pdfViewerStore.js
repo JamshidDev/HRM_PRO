@@ -4,6 +4,9 @@ import i18n from '@/i18n/index.js'
 import { markRaw } from 'vue'
 import { loadPdfDocument, renderPageToCanvas } from '@/utils/pdfjs.js'
 
+// Rahbar QR'ini preview'da sudrab joylash — o'chiq: QR shablondagi joyiga tushadi (avvalgidek).
+export const QR_PLACEMENT_ENABLED = false
+
 export const usePdfViewerStore = defineStore('pdfViewerStore', {
   state: () => ({
     visible: false,
@@ -369,7 +372,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
           this.signatureWorker = `${d?.worker.last_name} ${d?.worker.first_name} ${d?.worker.middle_name}`
           this.isSigned = d.status === 3
           this.signerType = d.type ?? null
-          this.qrEditable = d.type === 'd' && d.status !== 3
+          this.qrEditable = QR_PLACEMENT_ENABLED && d.type === 'd' && d.status !== 3
           this.qrPosition = null
           this.linkRejectReasons = d.reject_reasons || []
           this.rejectedNow = false
