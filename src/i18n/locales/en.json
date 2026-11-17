@@ -6491,6 +6491,7 @@
       "place": "Place",
       "coords": "Coordinates",
       "noPhoto": "No photo",
+      "tapToReveal": "Click to show",
       "noCoords": "No coordinates",
       "out": "Exit",
       "source": "Place type",
