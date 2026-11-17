@@ -312,6 +312,9 @@
     "filterLowBrightness": "Low brightness",
     "filterHighBrightness": "High brightness",
     "textSize": "Text size",
+    "fontFamily": "Font",
+    "fontSystem": "System font",
+    "fontSample": "Aa Bb",
     "resetChanges": "Reset to default",
     "changeAccount": "My accounts",
     "logOutSystem": "Log out",
@@ -1485,7 +1488,9 @@
         "experienceYearUnit": "yrs",
         "experienceMonthUnit": "mo",
         "agreementType": "Agreement type",
-        "aidMonth": "For month",
+        "clauseNumber": "Clause number",
+        "clausePlaceholder": "e.g. 53",
+        "clauseRequired": "Enter the agreement clause number",
         "experienceSuggest": "Profile: since {date} · {year} yr {month} mo",
         "experienceNoDate": "Railway service start date is not set in profile",
         "selectedWorkers": "Selected employees",
@@ -1672,6 +1677,7 @@
       "cancel_reason": "Cancellation reason"
     },
     "signature": {
+      "qrPlacementHint": "Drag the QR code into place, resize from the corner",
       "history": "View change history",
       "viewer": "Document reviewers",
       "files": {
@@ -3725,6 +3731,8 @@
     },
     "hcWorkersPage": {
       "access_levels": "Groups",
+      "locked_access_level_hint": "This group's devices are not assigned to your organization, so you cannot remove it. Can be changed by: {orgs}",
+      "locked_access_levels_alert": "{count} group(s) belong to another organization — you can't change them.",
       "name": "Employees",
       "create": "Add employee",
       "edit": "Edit employee",
@@ -4007,6 +4015,9 @@
   },
   "vacationSchedule": {
     "name": "Vacation schedule",
+    "empty": "No vacation schedules yet",
+    "emptyHint": "Create a new schedule with the «Add» button",
+    "deleteConfirm": "Delete the {year} vacation schedule ({organization})? All employee rows in it will be deleted too.",
     "grid": {
       "title": "{year} vacation schedule",
       "open": "Open schedule",
@@ -4015,7 +4026,7 @@
       "createHint": "On creation all employees of the organization are added: vacation period, days and table number are calculated automatically.",
       "filled": "Filled",
       "allDepartments": "All departments",
-      "unsavedConfirm": "There are {n} unsaved changes. Discard them?",
+      "unsavedConfirm": "{n} rows have unsaved changes.",
       "requiredFields": "{n} rows are missing the vacation period or month",
       "applyDays": "Apply",
       "noAdditional": "No additional vacation added",
@@ -6364,6 +6375,22 @@
     "langEn": "English"
   },
   "departmentLocationPage": {
+    "places": {
+      "createTitle": "Add turnstile location",
+      "updateTitle": "Edit turnstile location",
+      "viewTitle": "Turnstile location",
+      "organization": "Organization",
+      "name": "Passage point name",
+      "attached": "Assigned",
+      "attachedCount": "{d} dept. · {w} empl.",
+      "notAttached": "Not assigned",
+      "owner": "Created by",
+      "add": "Add location",
+      "hint": "One marked place can be assigned to several departments and employees. Only its creator can edit it.",
+      "empty": "No turnstile locations yet",
+      "departments": "Departments",
+      "workers": "Employees"
+    },
     "name": "Mobile face",
     "createTitle": "Add Location",
     "updateTitle": "Edit Location",
@@ -6443,6 +6470,7 @@
       "in": "Entry"
     },
     "tabs": {
+      "places": "Turnstile locations",
       "workers": "Employees",
       "departments": "Departments",
       "locations": "Locations"
@@ -6462,6 +6490,13 @@
       "coords": "Coordinates"
     },
     "form": {
+      "source": "Passage point",
+      "sourceExisting": "Pick from list",
+      "sourceNew": "New place",
+      "sourceExistingHint": "A place from the turnstile locations list is assigned — its shape is taken from there.",
+      "sourceNewHint": "Mark a new place on the map — it is also added to the turnstile locations list.",
+      "place": "Turnstile location",
+      "placePlaceholder": "Search by name",
       "freeMode": "Free mode",
       "freeModeHint": "No area restriction — the employee can pass from anywhere; only coordinates and the face photo are recorded.",
       "department": "Department",
@@ -6487,6 +6522,8 @@
       "polygonSteps": "«Draw area» → place at least 3 points on the map → «Finish»."
     },
     "validation": {
+      "placeRequired": "Select a turnstile location",
+      "organizationRequired": "Select an organization",
       "departmentRequired": "Select a department",
       "nameRequired": "Enter the passage point name",
       "markerRequired": "Mark the location on the map",
@@ -7460,6 +7497,11 @@
   },
   "alertDialog": {
     "ok": "Got it",
+    "unsaved": {
+      "title": "Unsaved changes",
+      "discard": "Exit without saving",
+      "save": "Save and exit"
+    },
     "checkFields": "Please check the following and try again:",
     "titles": {
       "forbidden": "Access denied",

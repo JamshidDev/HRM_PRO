@@ -1,4 +1,4 @@
-import { defineConfig, searchForWorkspaceRoot } from 'vite'
+import { defineConfig, loadEnv, searchForWorkspaceRoot } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import tailwindcss from '@tailwindcss/vite'
@@ -6,75 +6,89 @@ import svgLoader from 'vite-svg-loader'
 import path from 'path'
 import fs from 'fs'
 
-export default defineConfig({
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@assets': path.resolve(__dirname, './src/assets'),
-      '@utils': path.resolve(__dirname, './src/utils'),
-      '@stores': path.resolve(__dirname, './src/store/modules'),
-      '@components': path.resolve(__dirname, './src/components'),
-      '@pages': path.resolve(__dirname, './src/pages'),
+// Lokal proksi: `.env` da `API_PROXY_TARGET=https://dev-hrm-api…` va `VITE_API_URL=` (bo'sh) bo'lsa,
+// brauzer `/api` va `/socket.io` ni o'z originiga yuboradi, Vite esa backend'ga uzatadi — backend CORS
+// ro'yxatida localhost bo'lmasa ham ishlaydi. DPoP faqat yo'lni (`/api/...`) imzolaydi, host emas.
+// O'zgaruvchi qo'yilmasa proksi o'chiq (hech narsa o'zgarmaydi).
+export default defineConfig(({ mode }) => {
+  const proxyTarget = loadEnv(mode, process.cwd(), '').API_PROXY_TARGET
+  const proxy = proxyTarget
+    ? {
+        '/api': { target: proxyTarget, changeOrigin: true, secure: true },
+        '/socket.io': { target: proxyTarget, changeOrigin: true, secure: true, ws: true }
+      }
+    : undefined
+  return {
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+        '@assets': path.resolve(__dirname, './src/assets'),
+        '@utils': path.resolve(__dirname, './src/utils'),
+        '@stores': path.resolve(__dirname, './src/store/modules'),
+        '@components': path.resolve(__dirname, './src/components'),
+        '@pages': path.resolve(__dirname, './src/pages'),
 
-      // page modules
-      '@turnstile': path.resolve(__dirname, './src/pages/turnstile')
-    }
-  },
-  plugins: [
-    tailwindcss(),
-    vue({
-      template: {
-        compilerOptions: {
-          isCustomElement: (tag) => ['media-theme-tailwind-audio', 'media-theme-yt'].includes(tag)
-        }
+        // page modules
+        '@turnstile': path.resolve(__dirname, './src/pages/turnstile')
       }
-    }),
-    AutoImport({
-      imports: [
-        'vue',
-        'vue-router',
-        {
-          pinia: ['defineStore']
-        }
-      ],
-      dts: 'auto-imports.d.ts',
-      eslintrc: {
-        enabled: true,
-        filepath: './.eslintrc-auto-import.json',
-        globalsPropValue: true
-      }
-    }),
-    svgLoader({ svgo: false })
-  ],
-  build: {
-    // `es2022` — tahrirlash v2 (docx-editor.dev) matn shaping uchun `harfbuzzjs`
-    // ishlatadi, u esa **top-level await** bilan yozilgan. Vite'ning standart
-    // baseline'i (chrome87/safari14) TLA'ni qo'llab-quvvatlamaydi → build yiqiladi.
-    // Talab qilinadigan minimal brauzerlar: Chrome 89+, Safari 15+, Firefox 89+.
-    target: 'es2022'
-  },
-  optimizeDeps: {
-    // ⚠️ `build.target` FAQAT production build'ga tegishli. Dev serverda paketlar
-    // esbuild bilan alohida pre-bundle qilinadi va u o'z (standart) target'ini
-    // oladi → `harfbuzzjs` TLA'si tufayli dev'da muharrir moduli yuklanmaydi.
-    // Shuning uchun target bu yerda ham qo'yiladi.
-    esbuildOptions: { target: 'es2022' },
-    // Pre-bundle shrift URL'larini (.vite/deps/../assets) buzadi — dev'da muharrir Word shriftisiz chizardi.
-    exclude: ['@docx-editor.dev/fonts']
-  },
-  server: {
-    port: 8000,
-    host: '0.0.0.0',
-    watch: {
-      ignored: ['dist/**', 'auto-imports.d.ts']
     },
-    allowedHosts: ['jamcoder-mac.local', 'calculate-aloof-slot.ngrok-free.dev', 'hrm.test'],
-    // Worktree'da node_modules symlink — haqiqiy yo'lidagi shriftlar 403 bermasin.
-    fs: {
-      allow: [
-        searchForWorkspaceRoot(process.cwd()),
-        fs.realpathSync(path.resolve(__dirname, 'node_modules'))
-      ]
+    plugins: [
+      tailwindcss(),
+      vue({
+        template: {
+          compilerOptions: {
+            isCustomElement: (tag) => ['media-theme-tailwind-audio', 'media-theme-yt'].includes(tag)
+          }
+        }
+      }),
+      AutoImport({
+        imports: [
+          'vue',
+          'vue-router',
+          {
+            pinia: ['defineStore']
+          }
+        ],
+        dts: 'auto-imports.d.ts',
+        eslintrc: {
+          enabled: true,
+          filepath: './.eslintrc-auto-import.json',
+          globalsPropValue: true
+        }
+      }),
+      svgLoader({ svgo: false })
+    ],
+    build: {
+      // `es2022` — tahrirlash v2 (docx-editor.dev) matn shaping uchun `harfbuzzjs`
+      // ishlatadi, u esa **top-level await** bilan yozilgan. Vite'ning standart
+      // baseline'i (chrome87/safari14) TLA'ni qo'llab-quvvatlamaydi → build yiqiladi.
+      // Talab qilinadigan minimal brauzerlar: Chrome 89+, Safari 15+, Firefox 89+.
+      target: 'es2022'
+    },
+    optimizeDeps: {
+      // ⚠️ `build.target` FAQAT production build'ga tegishli. Dev serverda paketlar
+      // esbuild bilan alohida pre-bundle qilinadi va u o'z (standart) target'ini
+      // oladi → `harfbuzzjs` TLA'si tufayli dev'da muharrir moduli yuklanmaydi.
+      // Shuning uchun target bu yerda ham qo'yiladi.
+      esbuildOptions: { target: 'es2022' },
+      // Pre-bundle shrift URL'larini (.vite/deps/../assets) buzadi — dev'da muharrir Word shriftisiz chizardi.
+      exclude: ['@docx-editor.dev/fonts']
+    },
+    server: {
+      port: 8000,
+      proxy,
+      host: '0.0.0.0',
+      watch: {
+        ignored: ['dist/**', 'auto-imports.d.ts']
+      },
+      allowedHosts: ['jamcoder-mac.local', 'calculate-aloof-slot.ngrok-free.dev', 'hrm.test'],
+      // Worktree'da node_modules symlink — haqiqiy yo'lidagi shriftlar 403 bermasin.
+      fs: {
+        allow: [
+          searchForWorkspaceRoot(process.cwd()),
+          fs.realpathSync(path.resolve(__dirname, 'node_modules'))
+        ]
+      }
     }
   }
 })

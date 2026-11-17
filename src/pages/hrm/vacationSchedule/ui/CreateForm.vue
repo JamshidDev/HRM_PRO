@@ -18,6 +18,14 @@
     })
   }
 
+  // Kelishuvchilar ro'yxati + tahrirlanayotgan grafikning o'z odamlari (takrorlanmasin).
+  const peopleOptions = computed(() => {
+    const seen = new Set()
+    return [...store.headerPeople, ...(componentStore.confirmationList || [])].filter(
+      (p) => !seen.has(p.id) && seen.add(p.id)
+    )
+  })
+
   const onSearchCreator = (v) => {
     store.creator.params.page = 1
     store.creator.params.search = v
@@ -43,7 +51,7 @@
     class="grid grid-cols-12 gap-x-4"
   >
     <n-form-item
-      class="col-span-12 @xl:col-span-6"
+      class="col-span-12 sm:col-span-6"
       :label="$t(`content.year`)"
       path="year"
       :rule-path="validationRules.rulesNames.requiredNumberField"
@@ -57,7 +65,7 @@
       />
     </n-form-item>
     <n-form-item
-      class="col-span-12 @xl:col-span-6"
+      class="col-span-12 sm:col-span-6"
       :label="$t(`vacationSchedule.form.to_date`)"
       path="date"
       :rule-path="validationRules.rulesNames.requiredNumberField"
@@ -70,7 +78,7 @@
       />
     </n-form-item>
     <n-form-item
-      class="col-span-12 @xl:col-span-6"
+      class="col-span-12 sm:col-span-6"
       :label="$t(`documentPage.command.form.director_id`)"
       path="director_id"
       :rule-path="validationRules.rulesNames.requiredNumberField"
@@ -79,14 +87,14 @@
         value-field="id"
         label-field="last_name"
         v-model:value="store.payload.director_id"
-        :options="componentStore.confirmationList"
+        :options="peopleOptions"
         :loading="componentStore.confirmationLoading"
         :render-label="UIHelper.avatarRender.label"
         :render-tag="UIHelper.avatarRender.value"
       />
     </n-form-item>
     <n-form-item
-      class="col-span-12 @xl:col-span-6"
+      class="col-span-12 sm:col-span-6"
       :label="$t(`vacationSchedule.form.tradeUnion`)"
       path="trade_union_id"
       :rule-path="validationRules.rulesNames.requiredNumberField"
@@ -95,7 +103,7 @@
         value-field="id"
         label-field="last_name"
         v-model:value="store.payload.trade_union_id"
-        :options="componentStore.confirmationList"
+        :options="peopleOptions"
         :loading="componentStore.confirmationLoading"
         :render-label="UIHelper.avatarRender.label"
         :render-tag="UIHelper.avatarRender.value"

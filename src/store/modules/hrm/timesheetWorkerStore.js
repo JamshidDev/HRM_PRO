@@ -57,6 +57,8 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
       hours: null,
       status2: null,
       hours2: null,
+      // Pastki paneldagi 2-tur juftligi ochiqmi («+» / «−») — 2-tur tozalanganda u ham yopiladi.
+      extraOpen: false,
       start: null,
       end: null,
       isClearing: false
@@ -386,8 +388,10 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
           if (this.pending[key] === p) delete this.pending[key]
         }
         // Ikkinchi tur saqlangach tozalanadi — keyingi to'ldirishlarga ergashmasin.
+        // Juftlik ham yopiladi, aks holda panelda bo'sh «Qo'shimcha tur» qolib ketadi.
         this.payload.status2 = null
         this.payload.hours2 = null
+        this.payload.extraOpen = false
         this._index_workers()
         return true
       } finally {
@@ -528,12 +532,14 @@ export const useTimesheetWorkerStore = defineStore('timesheetWorkerStore', {
       this.payload.hours = null
       this.payload.status2 = null
       this.payload.hours2 = null
+      this.payload.extraOpen = false
     },
     resetAll() {
       this.payload.status = null
       this.payload.hours = null
       this.payload.status2 = null
       this.payload.hours2 = null
+      this.payload.extraOpen = false
       this.payload.start = null
       this.payload.end = null
       this.payload.isClearing = false

@@ -319,6 +319,9 @@
     "filterLowBrightness": "Past yorug'lik",
     "filterHighBrightness": "Baland yorug'lik",
     "textSize": "Matn hajmi",
+    "fontFamily": "Shrift",
+    "fontSystem": "Tizim shrifti",
+    "fontSample": "Aa Gʻgʻ",
     "resetChanges": "Standartga qaytarish",
     "changeAccount": "Hisoblarim",
     "logOutSystem": "Tizimdan chiqish",
@@ -1501,7 +1504,9 @@
         "experienceYearUnit": "yil",
         "experienceMonthUnit": "oy",
         "agreementType": "Kelishuv turi",
-        "aidMonth": "Qaysi oy uchun",
+        "clauseNumber": "Band raqami",
+        "clausePlaceholder": "Masalan: 53",
+        "clauseRequired": "Kelishuv bandi raqamini kiriting",
         "experienceSuggest": "Profil: {date} dan · {year} yil {month} oy",
         "experienceNoDate": "Profilda temir yoʻl staji sanasi kiritilmagan",
         "selectedWorkers": "Tanlangan xodimlar",
@@ -1688,6 +1693,7 @@
       "cancel_reason": "Bekor qilish sababi"
     },
     "signature": {
+      "qrPlacementHint": "QR kodni sudrab joylashtiring, burchakdan kattalashtiring",
       "history": "O'zgarishlar tarixini ko'rish",
       "viewer": "Hujjat bilan tanishuvchilar",
       "files": {
@@ -3745,6 +3751,8 @@
     },
     "hcWorkersPage": {
       "access_levels": "Guruhlar",
+      "locked_access_level_hint": "Bu guruh qurilmalari korxonangizga biriktirilmagan, shuning uchun uni olib tashlay olmaysiz. O‘zgartirishi mumkin: {orgs}",
+      "locked_access_levels_alert": "{count} ta guruh boshqa korxonaga tegishli — ularni o‘zgartira olmaysiz.",
       "name": "Xodimlar",
       "create": "Xodim qo'shish",
       "edit": "Xodimni tahrirlash",
@@ -4029,6 +4037,9 @@
   },
   "vacationSchedule": {
     "name": "Ta'tillar grafigi",
+    "empty": "Ta'tillar grafigi hali yo'q",
+    "emptyHint": "Yangi grafikni «Qo'shish» tugmasi bilan yarating",
+    "deleteConfirm": "{year} yilgi ta'tillar grafigi ({organization}) o'chirilsinmi? Ichidagi barcha xodimlar qatorlari ham o'chadi.",
     "grid": {
       "title": "{year}-yil ta'tillar grafigi",
       "open": "Grafikni ochish",
@@ -4037,7 +4048,7 @@
       "createHint": "Yaratilganda korxonaning barcha xodimlari grafikka qo'shiladi: ta'til davri, kunlar va tabel raqami avtomatik hisoblanadi.",
       "filled": "To'ldirilgan",
       "allDepartments": "Barcha bo'limlar",
-      "unsavedConfirm": "Saqlanmagan {n} ta o'zgarish bor. Ular bekor qilinsinmi?",
+      "unsavedConfirm": "{n} ta qatorda saqlanmagan o'zgarish bor.",
       "requiredFields": "{n} ta qatorda ta'til davri yoki oyi kiritilmagan",
       "applyDays": "Qo'llash",
       "noAdditional": "Qo'shimcha ta'til qo'shilmagan",
@@ -6422,6 +6433,22 @@
     "langEn": "Ingliz"
   },
   "departmentLocationPage": {
+    "places": {
+      "createTitle": "Turniket lokatsiyasini qo'shish",
+      "updateTitle": "Turniket lokatsiyasini tahrirlash",
+      "viewTitle": "Turniket lokatsiyasi",
+      "organization": "Korxona",
+      "name": "O'tish joyi nomi",
+      "attached": "Biriktirilgan",
+      "attachedCount": "{d} bo'lim · {w} xodim",
+      "notAttached": "Biriktirilmagan",
+      "owner": "Yaratgan",
+      "add": "Lokatsiya qo'shish",
+      "hint": "Bir marta belgilangan joyni bir nechta bo'lim va xodimga berish mumkin. Faqat yaratgan foydalanuvchi tahrirlaydi.",
+      "empty": "Turniket lokatsiyalari hali yo'q",
+      "departments": "Bo'limlar",
+      "workers": "Xodimlar"
+    },
     "name": "Mobile face",
     "createTitle": "Joylashuv qo'shish",
     "updateTitle": "Joylashuvni tahrirlash",
@@ -6501,6 +6528,7 @@
       "in": "Kirish"
     },
     "tabs": {
+      "places": "Turniket lokatsiyalari",
       "workers": "Xodimlar",
       "departments": "Bo'limlar",
       "locations": "Joylashuvlar"
@@ -6520,6 +6548,13 @@
       "coords": "Koordinata"
     },
     "form": {
+      "source": "O'tish joyi",
+      "sourceExisting": "Ro'yxatdan tanlash",
+      "sourceNew": "Yangi joy",
+      "sourceExistingHint": "Turniket lokatsiyalari ro'yxatidagi joy biriktiriladi — shakli o'sha joydan olinadi.",
+      "sourceNewHint": "Xaritada yangi joy belgilang — u turniket lokatsiyalari ro'yxatiga ham qo'shiladi.",
+      "place": "Turniket lokatsiyasi",
+      "placePlaceholder": "Nomi bo'yicha qidiring",
       "freeMode": "Erkin rejim",
       "freeModeHint": "Hudud cheklovi yo'q — xodim istalgan joydan o'tadi, faqat koordinatasi va yuz rasmi yoziladi.",
       "department": "Bo'lim",
@@ -6545,6 +6580,8 @@
       "polygonSteps": "«Hududni chizish» → xaritaga kamida 3 ta nuqta qo'ying → «Tugatish»."
     },
     "validation": {
+      "placeRequired": "Turniket lokatsiyasini tanlang",
+      "organizationRequired": "Korxonani tanlang",
       "departmentRequired": "Bo'limni tanlang",
       "nameRequired": "O'tish joyi nomini kiriting",
       "markerRequired": "Xaritada joylashuvni belgilang",
@@ -7655,6 +7692,11 @@
   },
   "alertDialog": {
     "ok": "Tushunarli",
+    "unsaved": {
+      "title": "Saqlanmagan o'zgarishlar",
+      "discard": "Saqlamasdan chiqish",
+      "save": "Saqlash va chiqish"
+    },
     "checkFields": "Quyidagilarni tekshirib, qayta urinib ko'ring:",
     "titles": {
       "forbidden": "Ruxsat berilmagan",

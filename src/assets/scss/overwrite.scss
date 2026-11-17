@@ -1,9 +1,11 @@
 // DOCX muharriri hujjat matni bundan mustasno — Word shriftlari inline beriladi, aks holda matn chetdan chiqadi.
 :where(*:not(.docx-editor__scroll-container *)) {
   //font-family:"Poppins", sans-serif !important;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Segoe UI', Roboto,
-    sans-serif !important;
+  // --app-font: Sozlamalar → «Shrift» (appStore.applyFontFamily); yo'q bo'lsa tizim shrifti
+  font-family: var(
+    --app-font,
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Segoe UI', Roboto, sans-serif
+  ) !important;
 }
 
 * {

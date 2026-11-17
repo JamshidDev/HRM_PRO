@@ -1,6 +1,5 @@
 <script setup>
-  import * as pdfjsLib from 'pdfjs-dist'
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdfjs-dist/build/pdf.worker.min.js'
+  import { loadPdfDocument, renderPageToCanvas } from '@/utils/pdfjs.js'
 
   const props = defineProps({
     url: {
@@ -29,13 +28,9 @@
     const page = await pdfDocument.getPage(pageNumber)
     const baseWidth = page.getViewport({ scale: 1 }).width
     const scale = props.targetWidth ? props.targetWidth / baseWidth : 1.2
-    const viewport = page.getViewport({ scale })
     const canvas = canvasRefs.value[pageNumber - 1]
     if (!canvas) return
-    const context = canvas.getContext('2d')
-    canvas.height = viewport.height
-    canvas.width = viewport.width
-    await page.render({ canvasContext: context, viewport }).promise
+    await renderPageToCanvas(page, canvas, scale).task.promise
   }
 
   const load = async () => {
@@ -43,7 +38,7 @@
     canvasRefs.value = []
     if (!props.url) return
     try {
-      pdfDocument = await pdfjsLib.getDocument({ url: props.url, isEvalSupported: false }).promise
+      pdfDocument = await loadPdfDocument(props.url)
       totalPages.value = pdfDocument.numPages
       await nextTick()
       for (let pageNumber = 1; pageNumber <= totalPages.value; pageNumber++) {

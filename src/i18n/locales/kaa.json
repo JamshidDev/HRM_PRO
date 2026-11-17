@@ -319,6 +319,9 @@
     "filterLowBrightness": "Tómen jaqtılıq",
     "filterHighBrightness": "Joqarı jaqtılıq",
     "textSize": "Tekst ólshemi",
+    "fontFamily": "Shrift",
+    "fontSystem": "Sistema shrifti",
+    "fontSample": "Aa Ǵǵ",
     "resetChanges": "Standartqa qaytarıw",
     "changeAccount": "Akkauntlarım",
     "logOutSystem": "Sistemadan shıǵıw",
@@ -1501,7 +1504,9 @@
         "experienceYearUnit": "jıl",
         "experienceMonthUnit": "ay",
         "agreementType": "Kelisiw túri",
-        "aidMonth": "Qaysı ay ushın",
+        "clauseNumber": "Bánt nomeri",
+        "clausePlaceholder": "Mısalı: 53",
+        "clauseRequired": "Kelisim bántiniń nomerin kiritiń",
         "experienceSuggest": "Profil: {date} dan · {year} jıl {month} ay",
         "experienceNoDate": "Profilde temir jol staji sánesi kiritilmegen",
         "selectedWorkers": "Tańlanǵan xızmetkerler",
@@ -1688,6 +1693,7 @@
       "cancel_reason": "Biykar etiw sebebi"
     },
     "signature": {
+      "qrPlacementHint": "QR kodtı súyrep ornalastırıń, múyeshinen úlkeytiń",
       "history": "Ózgerisler tariyxın kóriw",
       "viewer": "Hújjet penen tanısıwshılar",
       "files": {
@@ -3730,6 +3736,8 @@
     },
     "hcWorkersPage": {
       "access_levels": "Toparlar",
+      "locked_access_level_hint": "Bul topar qurılmaları kárxanańızǵa biriktirilmegen, sonıń ushın onı alıp taslay almaysız. Ózgerte aladı: {orgs}",
+      "locked_access_levels_alert": "{count} topar basqa kárxanaǵa tiyisli — olardı ózgerte almaysız.",
       "name": "Xızmetkerler",
       "create": "Xızmetker qosıw",
       "edit": "Xızmetkerdi ózgertiw",
@@ -4013,6 +4021,9 @@
   },
   "vacationSchedule": {
     "name": "Dem alıslar grafigi",
+    "empty": "Dem alıs grafigi ele joq",
+    "emptyHint": "Jańa grafikti «Qosıw» túymesi menen jaratıń",
+    "deleteConfirm": "{year} jılǵı dem alıs grafigi ({organization}) óshirilsinbe? Ishindegi barlıq xızmetker qatarları da óshedi.",
     "grid": {
       "title": "{year}-jıl dem alıslar grafigi",
       "open": "Grafikti ashıw",
@@ -4021,7 +4032,7 @@
       "createHint": "Jaratılǵanda kárxananıń barlıq xızmetkerleri grafikke qosıladı: dem alıs dáwiri, kúnler hám tabel nomeri avtomat esaplanadı.",
       "filled": "Toltırılǵan",
       "allDepartments": "Barlıq bólimler",
-      "unsavedConfirm": "Saqlanbaǵan {n} ózgeris bar. Olar biykar etilsin be?",
+      "unsavedConfirm": "{n} qatarda saqlanbaǵan ózgeris bar.",
       "requiredFields": "{n} qatarda dem alıs dáwiri yamasa ayı kiritilmegen",
       "applyDays": "Qollanıw",
       "noAdditional": "Qosımsha dem alıs qosılmaǵan",
@@ -6406,6 +6417,22 @@
     "langEn": "Inglis"
   },
   "departmentLocationPage": {
+    "places": {
+      "createTitle": "Turniket lokaciyasın qosıw",
+      "updateTitle": "Turniket lokaciyasın ózgertiw",
+      "viewTitle": "Turniket lokaciyası",
+      "organization": "Kárxana",
+      "name": "Ótiw ornınıń atı",
+      "attached": "Biriktirilgen",
+      "attachedCount": "{d} bólim · {w} xızmetker",
+      "notAttached": "Biriktirilmegen",
+      "owner": "Jaratqan",
+      "add": "Lokaciya qosıw",
+      "hint": "Bir ret belgilengen orındı bir neshe bólim hám xızmetkerge beriw múmkin. Tek jaratqan paydalanıwshı ózgerte aladı.",
+      "empty": "Turniket lokaciyaları ele joq",
+      "departments": "Bólimler",
+      "workers": "Xızmetkerler"
+    },
     "name": "Mobile face",
     "createTitle": "Jaylasıw qosıw",
     "updateTitle": "Jaylasıwdı ózgertiw",
@@ -6485,6 +6512,7 @@
       "in": "Kiriw"
     },
     "tabs": {
+      "places": "Turniket lokaciyaları",
       "workers": "Xızmetkerler",
       "departments": "Bólimler",
       "locations": "Jaylasıwlar"
@@ -6504,6 +6532,13 @@
       "coords": "Koordinata"
     },
     "form": {
+      "source": "Ótiw orni",
+      "sourceExisting": "Diziminen saylaw",
+      "sourceNew": "Jańa orın",
+      "sourceExistingHint": "Turniket lokaciyaları dizimindegi orın biriktiriledi — forması sol orınnan alınadı.",
+      "sourceNewHint": "Kartada jańa orın belgileń — ol turniket lokaciyaları dizimine de qosıladı.",
+      "place": "Turniket lokaciyası",
+      "placePlaceholder": "Atı boyınsha izleń",
       "freeMode": "Erkin rejim",
       "freeModeHint": "Aymaq sheklewi joq — xızmetker qálegen jerden ótedi, tek koordinatası hám júz súwreti jazıladı.",
       "department": "Bólim",
@@ -6529,6 +6564,8 @@
       "polygonSteps": "«Aymaqtı sızıw» → kartaǵa keminde 3 noqat qoyıń → «Juwmaqlaw»."
     },
     "validation": {
+      "placeRequired": "Turniket lokaciyasın saylań",
+      "organizationRequired": "Kárxananı saylań",
       "departmentRequired": "Bólimdi tańlań",
       "nameRequired": "Ótiw ornınıń atın kiritiń",
       "markerRequired": "Kartada jaylasıwdı belgileń",
@@ -7587,6 +7624,11 @@
   },
   "alertDialog": {
     "ok": "Túsinikli",
+    "unsaved": {
+      "title": "Saqlanbaǵan ózgerisler",
+      "discard": "Saqlamay shıǵıw",
+      "save": "Saqlaw hám shıǵıw"
+    },
     "checkFields": "Tómendegilerdi tekserip, qaytadan urınıp kóriń:",
     "titles": {
       "forbidden": "Ruqsat berilmegen",

@@ -3,10 +3,17 @@
     "print": false,
     "chat": false
   },
-  "customization":{
+  "customization": {
     "about": false,
+    "help": false,
+    "feedback": false,
+    "plugins": false,
+    "macros": false,
+    "comments": false,
+    "mentionShare": false,
     "features": {
       "spellcheck": {
+        "mode": false,
         "change": false
       }
     },
@@ -19,23 +26,13 @@
     },
     "compactHeader": true,
     "compactToolbar": false,
+    "toolbarHideFileName": true,
+    "hideRightMenu": true,
+    "hideRulers": true,
+    "suggestFeature": false,
+    "uiTheme": "theme-light",
     "compatibleFeatures": true,
     "autosave": false,
-    "comments": false,
-    "forcesave": true,
-    "plugins": false
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
+    "forcesave": true
+  }
 }

@@ -391,7 +391,6 @@
           middleName: worker?.middle_name,
           position: signer?.position
         }
-        store.permissions.qrcode = false
 
         if ([1, 4].includes(key)) {
           store.permissions.canSignature = false
@@ -415,6 +414,11 @@
         } else {
           shouldLoadPdf = true
         }
+        // Rahbar (d) imzolashdan oldin QR joyini preview'da tanlaydi.
+        const myConf = v.confirmations?.find((c) => c.id === store.signatureId)
+        store.qrEditable =
+          !!store.permissions.canSignature && myConf?.type === 'd' && myConf?.status?.id !== 3
+        store.qrPosition = null
       })
       .catch((e) => {
         console.error('[pdfSignature] getDocument', e)
@@ -723,10 +727,6 @@
               <div class="w-full flex-1 min-h-0">
                 <LeftContent />
               </div>
-              <div
-                v-if="store.permissions?.qrcode"
-                class="shrink-0 bg-gray-300 rounded-xl border border-gray-400 h-[100px]"
-              ></div>
             </div>
 
             <!-- Faqat markaziy qism almashadi; yon panellar joyida qoladi -->

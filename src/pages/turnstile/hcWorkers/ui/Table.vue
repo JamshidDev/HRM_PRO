@@ -49,7 +49,10 @@
     store._access_levels()
 
     store._workerAccessLevels(row.id, (data) => {
-      store.payload.access_level_ids = data.map((level) => level.access_level_id) || []
+      store.lockedAccessLevels = data.filter((level) => level.locked)
+      store.payload.access_level_ids = data
+        .filter((level) => !level.locked)
+        .map((level) => level.access_level_id)
     })
 
     store._worker_photos(() => {

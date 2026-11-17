@@ -38,6 +38,9 @@
     // Uchinchi tugma (masalan «Saqlamasdan chiqish») — o'rtada, qizil ghost.
     extraText: { type: String, default: '' },
     danger: { type: Boolean, default: false },
+    // Tugma ranglari (ixtiyoriy): masalan «Saqlamasdan chiqish» — 'error', «Saqlash» — 'success'.
+    cancelType: { type: String, default: '' },
+    confirmType: { type: String, default: '' },
     loading: { type: Boolean, default: false },
     confirmDisabled: { type: Boolean, default: false }
   })
@@ -55,7 +58,7 @@
   <div
     role="alertdialog"
     aria-modal="true"
-    class="alert-dialog w-[380px] max-w-[calc(100vw-32px)] rounded-3xl bg-surface-section px-6 pb-6 pt-8 text-center shadow-2xl"
+    class="alert-dialog w-[400px] max-w-[calc(100vw-32px)] rounded-3xl bg-surface-section px-6 pb-6 pt-8 text-center shadow-2xl"
     :class="`alert-dialog--${type}`"
     @mouseenter="emit('hover', true)"
     @mouseleave="emit('hover', false)"
@@ -100,8 +103,15 @@
     </div>
 
     <!-- Uchinchi tugma bo'lsa: tasdiq tepada to'liq kenglikda, ostida bekor | qo'shimcha. -->
-    <div v-if="confirm" class="mt-6 grid grid-cols-2 gap-3">
-      <n-button secondary size="large" class="!rounded-xl" :disabled="loading" @click="emit('cancel')">
+    <div v-if="confirm" class="alert-dialog__actions mt-6 grid grid-cols-2 gap-3">
+      <n-button
+        secondary
+        :type="cancelType || 'default'"
+        size="large"
+        class="!rounded-xl"
+        :disabled="loading"
+        @click="emit('cancel')"
+      >
         {{ cancelText || $t('content.cancel') }}
       </n-button>
       <n-button
@@ -116,7 +126,7 @@
         {{ extraText }}
       </n-button>
       <n-button
-        :type="danger ? 'error' : 'primary'"
+        :type="danger ? 'error' : confirmType || 'primary'"
         size="large"
         class="!rounded-xl"
         :class="{ 'col-span-2 order-first': extraText }"
@@ -132,6 +142,15 @@
 </template>
 
 <style scoped>
+  /* Ikki tugma yonma-yon — uzun matn («Saqlamasdan chiqish») tugmadan chiqib ketmasin: yon bo'shliq kichikroq,
+     matn markazda. */
+  .alert-dialog__actions :deep(.n-button) {
+    padding: 0 12px;
+  }
+  .alert-dialog__actions :deep(.n-button__content) {
+    justify-content: center;
+    min-width: 0;
+  }
   .alert-dialog {
     --alert-glow: var(--color-fig-red-100);
   }
