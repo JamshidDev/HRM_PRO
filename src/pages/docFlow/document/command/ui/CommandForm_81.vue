@@ -115,7 +115,11 @@
     store.clauseNumber = v
     syncBase(store.agreementType, prev)
   }
-  const clauseInvalid = computed(() => showErrors.value && !store.clauseNumber)
+  // Band raqami: 53, 13.4, 13.4.2 — faqat raqam va nuqta.
+  const CLAUSE_RE = /^\d+(\.\d+)*$/
+  const allowClauseInput = (v) => /^[\d.]*$/.test(v)
+  const clauseValid = () => CLAUSE_RE.test(String(store.clauseNumber ?? '').trim())
+  const clauseInvalid = computed(() => showErrors.value && !clauseValid())
 
   const onRemoveWorker = (id) => {
     store.workerData = store.workerData.filter((v) => v.id !== id)
@@ -129,12 +133,12 @@
 
   const onSubmit = (mainData) => {
     const valid = store.workerData.every(hasExperience)
-    showErrors.value = !valid || !store.clauseNumber
+    showErrors.value = !valid || !clauseValid()
     if (!valid) {
       $Alert.validation(t('documentPage.command.form.experienceZero'))
       return { data: null, isValid: false }
     }
-    if (!store.clauseNumber) {
+    if (!clauseValid()) {
       $Alert.validation(t('documentPage.command.form.clauseRequired'))
       return { data: null, isValid: false }
     }
@@ -150,7 +154,7 @@
           base: store.commandBase || null,
           agreement_type: store.agreementType || 1,
           month: store.aidMonth || null,
-          clause_number: store.clauseNumber
+          clause_number: String(store.clauseNumber).trim()
         }
       },
       isValid: true
@@ -302,13 +306,11 @@
     </div>
     <div class="col-span-12 @xl:col-span-2">
       <n-form-item :show-feedback="false" :label="$t('documentPage.command.form.clauseNumber')" path="clauseNumber">
-        <n-input-number
+        <n-input
           class="w-full"
           :value="store.clauseNumber"
-          :min="1"
-          :max="999"
-          :precision="0"
-          :show-button="false"
+          :allow-input="allowClauseInput"
+          :maxlength="20"
           :status="clauseInvalid ? 'error' : undefined"
           :placeholder="$t('documentPage.command.form.clausePlaceholder')"
           @update:value="onClauseChange"

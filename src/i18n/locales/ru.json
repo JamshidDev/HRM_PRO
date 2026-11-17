@@ -1492,7 +1492,7 @@
         "agreementType": "Вид соглашения",
         "aidMonth": "За какой месяц",
         "clauseNumber": "Номер пункта",
-        "clausePlaceholder": "Например: 53",
+        "clausePlaceholder": "Например: 53 или 13.4",
         "clauseRequired": "Укажите номер пункта соглашения",
         "experienceSuggest": "Профиль: с {date} · {year} лет {month} мес.",
         "experienceNoDate": "В профиле не указана дата начала ж/д стажа",

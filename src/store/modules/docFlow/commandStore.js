@@ -689,7 +689,7 @@ const commandStoreOptions = {
         this.aidMonth = Number(state?.data?.command_additional?.month) || null
       }
       if (state?.clauseNumber === undefined && this.payload.command_type === 81) {
-        this.clauseNumber = Number(state?.data?.command_additional?.clause_number) || null
+        this.clauseNumber = String(state?.data?.command_additional?.clause_number ?? '').trim() || null
       }
     },
     // Eski buyruq: saqlangan `data` maydonlari turga mos `form_N` blokiga ko'chiriladi.
