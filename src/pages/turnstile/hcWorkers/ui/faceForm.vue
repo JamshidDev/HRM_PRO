@@ -2,12 +2,15 @@
   import validationRules from '@/utils/validationRules.js'
   import { useComponentStore, useTurnstileHikCentralWorkerStore } from '@/store/modules/index.js'
   import { NoDataIllustration, UITransferSelect } from '@/components/index.js'
-  import { Checkmark16Filled, AddCircle16Filled } from '@vicons/fluent'
+  import { Checkmark16Filled, AddCircle16Filled, LockClosed16Filled } from '@vicons/fluent'
   import { UICropper } from '@/components/index.js'
   import { useAppSetting } from '@/utils/index.js'
   import Utils from '@/utils/Utils'
+  import { NIcon, NTag } from 'naive-ui'
+  import i18n from '@/i18n/index.js'
 
   const formRef = ref(null)
+  const { t } = i18n.global
   const store = useTurnstileHikCentralWorkerStore()
   const componentStore = useComponentStore()
 
@@ -25,6 +28,35 @@
         store._updateFace()
       }
     })
+  }
+
+  // Boshqa korxona guruhlari select'da qulf bilan turadi, olib tashlanmaydi; yuboriladigani faqat o'zimiznikilar.
+  const lockedIds = computed(() => store.lockedAccessLevels.map((l) => l.access_level_id))
+
+  const accessLevelOptions = computed(() => [
+    ...store.lockedAccessLevels.map((l) => ({
+      id: l.access_level_id,
+      name: l.name,
+      disabled: true,
+      locked: true,
+      hint: t('turnstile.hcWorkersPage.locked_access_level_hint', {
+        orgs: l.owner_orgs?.join(', ') || '—'
+      })
+    })),
+    ...store.accessLevels.filter((o) => !lockedIds.value.includes(o.id))
+  ])
+
+  const accessLevelValue = computed({
+    get: () => [...lockedIds.value, ...store.payload.access_level_ids],
+    set: (v) => {
+      store.payload.access_level_ids = (v || []).filter((id) => !lockedIds.value.includes(id))
+    }
+  })
+
+  // Inputda faqat o'z guruhlari teg bo'ladi; qulflilar faqat ro'yxatning tanlanganlar panelida.
+  const renderAccessLevelTag = ({ option }) => {
+    if (option?.locked) return h('span', { class: 'locked-access-tag' })
+    return h(NTag, { size: 'small', type: 'info', bordered: false }, () => option?.name)
   }
 
   const toggleImage = (v) => {
@@ -69,16 +101,37 @@
         :rules="validationRules.common"
         class="flex flex-col"
       >
+        <n-alert
+          v-if="store.lockedAccessLevels.length"
+          type="warning"
+          :show-icon="false"
+          class="mb-4"
+        >
+          <div class="flex items-center gap-2 text-xs font-medium">
+            <n-icon :size="16" :component="LockClosed16Filled" class="shrink-0" />
+            <span>
+              {{
+                $t('turnstile.hcWorkersPage.locked_access_levels_alert', {
+                  count: store.lockedAccessLevels.length
+                })
+              }}
+            </span>
+          </div>
+        </n-alert>
+
+        <!-- Qulflangan guruhlar bo'lsa, o'z guruhini tanlash majburiy emas. -->
         <n-form-item
           :label="$t(`turnstile.hcWorkersPage.access_levels`)"
           path="access_level_ids"
-          rule-path="requiredMultiSelectField"
+          :rule-path="store.lockedAccessLevels.length ? undefined : 'requiredMultiSelectField'"
         >
           <UITransferSelect
             multiple
             :loading="store.accessLevelsLoading || store.moreAccessLevelsLoading"
-            v-model:value="store.payload.access_level_ids"
-            :options="store.accessLevels"
+            v-model:value="accessLevelValue"
+            :options="accessLevelOptions"
+            :render-tag="renderAccessLevelTag"
+            max-tag-count="responsive"
             value-field="id"
           />
         </n-form-item>
@@ -166,3 +219,9 @@
     </div>
   </n-spin>
 </template>
+
+<style lang="scss">
+  .n-base-selection-tag-wrapper:has(> .locked-access-tag) {
+    display: none;
+  }
+</style>

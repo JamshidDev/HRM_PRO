@@ -3728,6 +3728,8 @@
     },
     "hcWorkersPage": {
       "access_levels": "Groups",
+      "locked_access_level_hint": "This group's devices are not assigned to your organization, so you cannot remove it. Can be changed by: {orgs}",
+      "locked_access_levels_alert": "{count} group(s) belong to another organization — you can't change them.",
       "name": "Employees",
       "create": "Add employee",
       "edit": "Edit employee",

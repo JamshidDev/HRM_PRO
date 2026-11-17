@@ -3733,6 +3733,8 @@
     },
     "hcWorkersPage": {
       "access_levels": "Toparlar",
+      "locked_access_level_hint": "Bul topar qurılmaları kárxanańızǵa biriktirilmegen, sonıń ushın onı alıp taslay almaysız. Ózgerte aladı: {orgs}",
+      "locked_access_levels_alert": "{count} topar basqa kárxanaǵa tiyisli — olardı ózgerte almaysız.",
       "name": "Xızmetkerler",
       "create": "Xızmetker qosıw",
       "edit": "Xızmetkerdi ózgertiw",

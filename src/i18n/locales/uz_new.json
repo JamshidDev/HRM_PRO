@@ -3748,6 +3748,8 @@
     },
     "hcWorkersPage": {
       "access_levels": "Guruhlar",
+      "locked_access_level_hint": "Bu guruh qurilmalari korxonangizga biriktirilmagan, shuning uchun uni olib tashlay olmaysiz. O‘zgartirishi mumkin: {orgs}",
+      "locked_access_levels_alert": "{count} ta guruh boshqa korxonaga tegishli — ularni o‘zgartira olmaysiz.",
       "name": "Xodimlar",
       "create": "Xodim qöşiş",
       "edit": "Xodimni tahrirlaş",
