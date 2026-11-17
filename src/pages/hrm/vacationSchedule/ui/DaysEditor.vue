@@ -18,6 +18,7 @@
 
   const show = ref(false)
   const mainDay = ref(0)
+  const restDay = ref(0)
   const items = ref([])
   const addId = ref(null)
 
@@ -36,7 +37,7 @@
     Math.max(
       0,
       (Number(mainDay.value) || 0) +
-        (Number(props.row.rest_day) || 0) +
+        (Number(restDay.value) || 0) +
         items.value.reduce((s, i) => s + (Number(i.value) || 0), 0)
     )
   )
@@ -52,6 +53,7 @@
     show.value = v
     if (!v) return
     mainDay.value = props.row.main_day
+    restDay.value = Number(props.row.rest_day) || 0
     items.value = (props.row.additional || []).map((i) => ({ id: i.id, value: i.value }))
     addId.value = null
     if (!componentStore.vacationAdditional?.length) componentStore._enums()
@@ -83,6 +85,7 @@
     if (!canApply.value) return
     emit('save', {
       main_day: Number(mainDay.value) || 0,
+      rest_day: Number(restDay.value) || 0,
       additional: items.value.map((i) => ({ id: i.id, value: Number(i.value) || 0 }))
     })
     show.value = false
@@ -132,9 +135,17 @@
 
       <div class="days-row">
         <span class="days-row__label">{{ $t('vacationSchedule.grid.restDay') }}</span>
-        <span class="days-row__value">
-          {{ row.rest_day || 0 }} {{ $t('vacationSchedule.grid.dayUnit') }}
-        </span>
+        <!-- dev (584e9710): o'tgan davrdan qolgan kunlar ham panelda kiritiladi (standart 0) -->
+        <n-input-number
+          v-model:value="restDay"
+          class="days-row__input"
+          :min="0"
+          :max="99"
+          :precision="0"
+          :show-button="false"
+        >
+          <template #suffix>{{ $t('vacationSchedule.grid.dayUnit') }}</template>
+        </n-input-number>
       </div>
 
       <div v-for="item in items" :key="item.id" class="days-row">
@@ -219,14 +230,6 @@
   .days-row__input {
     width: 96px;
     flex-shrink: 0;
-  }
-  .days-row__value {
-    width: 96px;
-    flex-shrink: 0;
-    padding-right: 12px;
-    text-align: right;
-    font-size: 13px;
-    color: var(--color-textColor2);
   }
   .days-panel__footer {
     display: flex;

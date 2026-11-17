@@ -3,8 +3,7 @@
   import { useLoginNewStore } from '@/store/modules/index.js'
   import { useAppSetting } from '@/utils/index.js'
   import PublicOffer from '@/assets/icons/PublicOffer.svg'
-  import * as pdfjsLib from 'pdfjs-dist'
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdfjs-dist/build/pdf.worker.min.js'
+  import { loadPdfDocument, renderPageToCanvas } from '@/utils/pdfjs.js'
 
   const store = useLoginNewStore()
 
@@ -33,12 +32,9 @@
 
   const renderPage = async (pdfDocument, key, pageNumber) => {
     const page = await pdfDocument.getPage(pageNumber)
-    const viewport = page.getViewport({ scale: 1.2 })
     const canvas = document.querySelector(`#pdfCanvas-${key}-${pageNumber}`)
     if (!canvas) return
-    canvas.height = viewport.height
-    canvas.width = viewport.width
-    await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise
+    await renderPageToCanvas(page, canvas, 1.2).task.promise
   }
 
   const loadDoc = async (key) => {
@@ -47,7 +43,7 @@
     state.loadError = false
     state.totalPages = 0
     try {
-      const pdfDocument = await pdfjsLib.getDocument({ url: urlFor(key), isEvalSupported: false }).promise
+      const pdfDocument = await loadPdfDocument(urlFor(key))
       state.totalPages = pdfDocument.numPages
       await nextTick()
       for (let pageNumber = 1; pageNumber <= state.totalPages; pageNumber++) {

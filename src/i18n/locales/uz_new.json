@@ -1691,6 +1691,7 @@
       "cancel_reason": "Bekor qiliş sababi"
     },
     "signature": {
+      "qrPlacementHint": "QR kodni sudrab joylaştiring, burçakdan kattalaştiring",
       "history": "Özgarişlar tarixini köriş",
       "viewer": "Hujjat bilan tanişuvçilar",
       "files": {
@@ -6428,6 +6429,22 @@
     "langEn": "Ingliz"
   },
   "departmentLocationPage": {
+    "places": {
+      "createTitle": "Turniket lokatsiyasini qöşiş",
+      "updateTitle": "Turniket lokatsiyasini tahrirlaş",
+      "viewTitle": "Turniket lokatsiyasi",
+      "organization": "Korxona",
+      "name": "Ötiş joyi nomi",
+      "attached": "Biriktirilgan",
+      "attachedCount": "{d} bölim · {w} xodim",
+      "notAttached": "Biriktirilmagan",
+      "owner": "Yaratgan",
+      "add": "Lokatsiya qöşiş",
+      "hint": "Bir marta belgilangan joyni bir neçta bölim va xodimga beriş mumkin. Faqat yaratgan foydalanuvçi tahrirlaydi.",
+      "empty": "Turniket lokatsiyalari hali yöq",
+      "departments": "Bölimlar",
+      "workers": "Xodimlar"
+    },
     "name": "Mobile face",
     "createTitle": "Joylaşuv qöşiş",
     "updateTitle": "Joylaşuvni tahrirlaş",
@@ -6507,6 +6524,7 @@
       "in": "Kiriş"
     },
     "tabs": {
+      "places": "Turniket lokatsiyalari",
       "workers": "Xodimlar",
       "departments": "Bölimlar",
       "locations": "Joylaşuvlar"
@@ -6526,6 +6544,13 @@
       "coords": "Koordinata"
     },
     "form": {
+      "source": "Ötiş joyi",
+      "sourceExisting": "Röyxatdan tanlaş",
+      "sourceNew": "Yangi joy",
+      "sourceExistingHint": "Turniket lokatsiyalari röyxatidagi joy biriktiriladi — şakli öşa joydan olinadi.",
+      "sourceNewHint": "Xaritada yangi joy belgilang — u turniket lokatsiyalari röyxatiga ham qöşiladi.",
+      "place": "Turniket lokatsiyasi",
+      "placePlaceholder": "Nomi böyiça qidiring",
       "freeMode": "Erkin rejim",
       "freeModeHint": "Hudud çeklovi yöq — xodim istalgan joydan ötadi, faqat koordinatasi va yuz rasmi yoziladi.",
       "department": "Bölim",
@@ -6551,6 +6576,8 @@
       "polygonSteps": "«Hududni çiziş» → xaritaga kamida 3 ta nuqta qöying → «Tugatiş»."
     },
     "validation": {
+      "placeRequired": "Turniket lokatsiyasini tanlang",
+      "organizationRequired": "Korxonani tanlang",
       "departmentRequired": "Bölimni tanlang",
       "nameRequired": "Ötiş joyi nomini kiriting",
       "markerRequired": "Xaritada joylaşuvni belgilang",

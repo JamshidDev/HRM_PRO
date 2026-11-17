@@ -12,17 +12,21 @@
   // Bo'lim joylari ro'yxati — «Bo'limlar» tabining ichki ko'rinishi.
   const viewTabs = computed(() => [
     { id: 'departments', name: t('departmentLocationPage.tabs.departments') },
-    { id: 'workers', name: t('departmentLocationPage.tabs.workers') }
+    { id: 'workers', name: t('departmentLocationPage.tabs.workers') },
+    { id: 'places', name: t('departmentLocationPage.tabs.places') }
   ])
   const viewTab = computed(() => (store.activeTab === 'locations' ? 'departments' : store.activeTab))
 
   const isLocationsTab = computed(() => store.activeTab === 'locations')
   const isWorkersTab = computed(() => store.activeTab === 'workers')
+  // Turniket lokatsiyalari: faqat korxona bo'yicha filtr.
+  const isPlacesTab = computed(() => store.activeTab === 'places')
 
   const byTab = {
     departments: { params: () => store.params, loading: () => store.loading, load: () => store._index() },
     locations: { params: () => store.locationParams, loading: () => store.locationLoading, load: () => store._locationIndex() },
-    workers: { params: () => store.workerParams, loading: () => store.workerLoading, load: () => store._workerIndex() }
+    workers: { params: () => store.workerParams, loading: () => store.workerLoading, load: () => store._workerIndex() },
+    places: { params: () => store.placeParams, loading: () => store.placeLoading, load: () => store._placeIndex() }
   }
   const tab = computed(() => byTab[store.activeTab] ?? byTab.departments)
 
@@ -81,6 +85,7 @@
   const filterCount = computed(() => {
     const p = currentParams.value
     if (isLocationsTab.value) return Number(locationType.value !== null)
+    if (isPlacesTab.value) return Number(Boolean(p.organizations.length))
     return (
       Number(Boolean(p.organizations.length)) +
       Number(store.locationState !== null) +
@@ -106,6 +111,9 @@
     if (isLocationsTab.value) {
       p.geo_type = null
       p.is_free = null
+    } else if (isPlacesTab.value) {
+      p.organizations = []
+      store.structureCheck = []
     } else {
       p.organizations = []
       store.structureCheck = []
@@ -176,7 +184,7 @@
             @update:model-value="filterEvent"
           />
         </div>
-        <div class="col-span-12">
+        <div v-if="!isPlacesTab" class="col-span-12">
           <label>{{ $t('departmentLocationPage.filter.locationState') }}</label>
           <n-select
             v-model:value="locationState"

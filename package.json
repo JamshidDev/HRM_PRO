@@ -56,7 +56,7 @@
     "naive-ui": "2.44.1",
     "numeral": "^2.0.6",
     "pdf-lib": "^1.17.1",
-    "pdfjs-dist": "2.9.359",
+    "pdfjs-dist": "6.5.438",
     "pinia": "^2.2.2",
     "player.style": "^0.1.4",
     "qrcode": "^1.5.4",
