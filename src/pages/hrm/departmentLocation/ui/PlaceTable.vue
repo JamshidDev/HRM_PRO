@@ -44,17 +44,17 @@
     Utils.copyToClipboard(coordsText(row), () => $Toast.success(t('content.copied')))
 
   const columns = computed(() => [
-    { key: 'name', title: t('departmentLocationPage.places.name'), minWidth: 200 },
-    { key: 'geo_type', title: t('departmentLocationPage.table.geoType'), minWidth: 120 },
-    { key: 'zone', title: t('departmentLocationPage.table.zone'), minWidth: 100 },
-    { key: 'coords', title: t('departmentLocationPage.table.coords'), minWidth: 200 },
+    { key: 'name', title: t('departmentLocationPage.places.name'), minWidth: 170 },
+    { key: 'geo_type', title: t('departmentLocationPage.table.geoType'), minWidth: 100 },
+    { key: 'zone', title: t('departmentLocationPage.table.zone'), minWidth: 90 },
+    { key: 'coords', title: t('departmentLocationPage.table.coords'), minWidth: 190 },
     {
       key: 'organization.name',
       title: t('departmentLocationPage.table.organization'),
-      minWidth: 180
+      minWidth: 150
     },
-    { key: 'attached', title: t('departmentLocationPage.places.attached'), minWidth: 160 },
-    { key: 'owner', title: t('departmentLocationPage.places.owner'), minWidth: 160 }
+    { key: 'attached', title: t('departmentLocationPage.places.attached'), minWidth: 130 },
+    { key: 'owner', title: t('departmentLocationPage.places.owner'), minWidth: 130 }
   ])
 
   const actions = computed(() => [

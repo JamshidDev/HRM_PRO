@@ -145,7 +145,9 @@
     () => store.visible,
     (v) => {
       if (v && isPlace.value) {
-        placeOrg.value = store.payload.organization_id ? [{ id: store.payload.organization_id }] : []
+        placeOrg.value = store.payload.organization_id
+          ? [{ id: store.payload.organization_id, name: store.payload.organization_name }]
+          : []
         placeOrgCheck.value = []
         if (componentStore.structureList.length === 0) componentStore._structures()
       }

@@ -450,6 +450,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       if (place) {
         this.elementId = place.id
         this.payload.organization_id = place.organization_id
+        this.payload.organization_name = place.organization?.name ?? null
         this.payload.name = place.name
         this.payload.geo_type = place.geo_type === true
         this.payload.lat = place.lat
@@ -458,6 +459,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
         this.payload.polygon = place.polygon || []
       } else if (this.placeParams.organizations.length === 1) {
         this.payload.organization_id = this.placeParams.organizations[0].id
+        this.payload.organization_name = this.placeParams.organizations[0].name ?? null
       }
       this.visibleType = !place
       this.visible = true
@@ -478,6 +480,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.selectedWorker = null
       this.payload.worker_id = null
       this.payload.organization_id = null
+      this.payload.organization_name = null
       this.payload.source = 'existing'
       this.payload.place_id = null
       this.placeOptions = []
