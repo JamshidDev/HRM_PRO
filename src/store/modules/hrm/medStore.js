@@ -27,7 +27,9 @@ export const useMedStore = defineStore('medStore', {
       search: null,
       organizations: [],
       departments: [],
-      status: null
+      status: null,
+      // Tibbiy ko'rikdan o'tish muddati oyi: YYYY-MM.
+      month: null
     },
     tabs: [
       {
@@ -49,7 +51,8 @@ export const useMedStore = defineStore('medStore', {
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
         departments: this.params.departments.toString() || undefined,
         status: this.params.status || undefined,
-        search: this.params.search || undefined
+        search: this.params.search || undefined,
+        month: this.params.month || undefined
       }
       $ApiService.medService
         ._scheduleExport({ params })
@@ -66,7 +69,8 @@ export const useMedStore = defineStore('medStore', {
       const params = {
         ...this.params,
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
-        departments: this.params.departments.toString() || undefined
+        departments: this.params.departments.toString() || undefined,
+        month: this.params.month || undefined
       }
       $ApiService.medService
         ._index({ params })
