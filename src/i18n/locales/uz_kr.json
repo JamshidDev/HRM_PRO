@@ -28,6 +28,39 @@
       "currentOrg": "Ҳозирги иш жойи",
       "notEmployed": "Аниқланмади",
       "dismissalCommand": "Бўшатиш буйруғи"
+    },
+    "tabs": {
+      "dismissed": "Ишдан кетганлар",
+      "applications": "Аризалар",
+      "commands": "Буйруқлар",
+      "contracts": "Шартномалар",
+      "contractAdditional": "Қўшимча келишувлар"
+    },
+    "documents": {
+      "type": "Ҳужжат тури",
+      "number": "Ҳужжат рақами",
+      "numberPh": "Рақам ёки электрон рақам",
+      "period": "Сана оралиғи",
+      "cancelled": "Бекор қилинган",
+      "approved": "Тасдиқланган",
+      "view": "Кўриш",
+      "empty": "Тасдиқланган ҳужжат топилмади",
+      "total": "Жами {n} та ҳужжат",
+      "date": "Сана",
+      "download": "PDF юклаш",
+      "noFile": "Ҳужжат файли топилмади",
+      "searchPh": "Ходим Ф.И.Ш, ЖШШИР ёки ҳужжат рақами",
+      "groups": {
+        "employment": "Ишга қабул",
+        "termination": "Меҳнат муносабатини тугатиш",
+        "transfer": "Бошқа ишга ўтказиш",
+        "vacation": "Таътил",
+        "business_trip": "Хизмат сафари",
+        "others": "Бошқа буйруқлар",
+        "contracts": "Меҳнат шартномаси",
+        "contract_additional": "Қўшимча келишув",
+        "applications": "Ариза"
+      }
     }
   },
   "lateWorkersReport": {
