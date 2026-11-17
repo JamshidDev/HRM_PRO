@@ -86,6 +86,7 @@ export * from './hrm/report2Store.js'
 export * from './hrm/vacancyStore.js'
 export * from './hrm/pensionerStore.js'
 export * from './hrm/archiveStore.js'
+export * from './hrm/archiveDocumentStore.js'
 export * from './hrm/structureReportStore.js'
 export * from './hrm/departmentLocationStore.js'
 

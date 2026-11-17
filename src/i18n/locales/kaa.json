@@ -28,6 +28,39 @@
       "currentOrg": "Házirgi jumıs ornı",
       "notEmployed": "Anıqlanbadı",
       "dismissalCommand": "Jumıstan bosatıw buyrıǵı"
+    },
+    "tabs": {
+      "dismissed": "Jumıstan ketkenler",
+      "applications": "Arzalar",
+      "commands": "Buyrıqlar",
+      "contracts": "Shártnamalar",
+      "contractAdditional": "Qosımsha kelisimler"
+    },
+    "documents": {
+      "type": "Hújjet túri",
+      "number": "Hújjet nomeri",
+      "numberPh": "Nomer yamasa elektron nomer",
+      "period": "Sáne aralıǵı",
+      "cancelled": "Biykar etilgen",
+      "approved": "Tastıyıqlanǵan",
+      "view": "Kóriw",
+      "empty": "Tastıyıqlanǵan hújjet tabılmadı",
+      "total": "Jámi {n} hújjet",
+      "date": "Sáne",
+      "download": "PDF júklew",
+      "noFile": "Hújjet faylı tabılmadı",
+      "searchPh": "Xızmetker F.A.Á., JShShIR yamasa hújjet nomeri",
+      "groups": {
+        "employment": "Jumısqa qabıllaw",
+        "termination": "Miynet qatnasıǵın tamamlaw",
+        "transfer": "Basqa jumısqa ótkeriw",
+        "vacation": "Dem alıs",
+        "business_trip": "Xızmet saparı",
+        "others": "Basqa buyrıqlar",
+        "contracts": "Miynet shártnaması",
+        "contract_additional": "Qosımsha kelisim",
+        "applications": "Arza"
+      }
     }
   },
   "lateWorkersReport": {

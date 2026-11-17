@@ -1,13 +1,40 @@
 <script setup>
-  import { TurnstileDownloadModal, UIModal, UIOfficeApp, UIPageContent } from '@/components/index.js'
+  import {
+    TurnstileDownloadModal,
+    UIModal,
+    UIOfficeApp,
+    UIPageContent
+  } from '@/components/index.js'
   import MainPhoneForm from '@/components/worker/ui/MainPhoneForm.vue'
-  import { useArchiveStore } from '@/store/modules/index.js'
+  import { useArchiveDocumentStore, useArchiveStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import Filter from './ui/Filter.vue'
   import Table from './ui/Table.vue'
+  import DocumentFilter from './ui/DocumentFilter.vue'
+  import DocumentGrid from './ui/DocumentGrid.vue'
 
   const store = useArchiveStore()
+  const docStore = useArchiveDocumentStore()
   const officeAppRef = ref(null)
+  const activeTab = ref('dismissed')
+
+  const DOC_TABS = [
+    { name: 'applications', label: 'archive.tabs.applications' },
+    { name: 'commands', label: 'archive.tabs.commands' },
+    { name: 'contracts', label: 'archive.tabs.contracts' },
+    { name: 'contract_additional', label: 'archive.tabs.contractAdditional' }
+  ]
+
+  const onTab = (name) => {
+    if (name !== 'dismissed') docStore.setKind(name)
+  }
+
+  // Hujjat kartasi — PDF ko'rish (sarlavha «№12 — turi»).
+  const openDocument = (doc) => {
+    const number = doc.number ? `№${doc.number}` : doc.electronic_number
+    const title = [number, doc.type?.name].filter(Boolean).join(' — ') || undefined
+    officeAppRef.value?.openPdf(doc.id, doc.model, undefined, title)
+  }
 
   // Bo'shatish buyrug'i — sarlavha «№45 — turi» (buyruqlar sahifasidagi kabi).
   const openCommand = (cmd) => {
@@ -19,6 +46,7 @@
 
   onMounted(() => {
     store._index()
+    docStore._counts()
   })
 </script>
 
@@ -30,8 +58,48 @@
 
          Maketda (node 3332:65659) sahifa cheti 16px, qidiruv qatori bilan
          jadval orasi esa 24px (`UIPageContent` ning standart oralig'i 16px). -->
-    <Filter />
-    <Table @openCommand="openCommand" />
+    <UITabs
+      v-model:value="activeTab"
+      type="line"
+      class="ui-pill-tabs ui-pill-tabs--inline"
+      @update:value="onTab"
+    >
+      <n-tab-pane name="dismissed">
+        <template #tab>
+          <span class="flex items-center gap-1.5">
+            {{ $t('archive.tabs.dismissed') }}
+            <n-badge
+              :value="store.totalItems"
+              :show-zero="true"
+              type="info"
+              :processing="store.loading"
+            />
+          </span>
+        </template>
+      </n-tab-pane>
+      <n-tab-pane v-for="t in DOC_TABS" :key="t.name" :name="t.name">
+        <template #tab>
+          <span class="flex items-center gap-1.5">
+            {{ $t(t.label) }}
+            <n-badge
+              :value="docStore.counts[t.name]"
+              :show-zero="true"
+              type="info"
+              :processing="docStore.countsLoading"
+            />
+          </span>
+        </template>
+      </n-tab-pane>
+    </UITabs>
+
+    <template v-if="activeTab === 'dismissed'">
+      <Filter />
+      <Table @openCommand="openCommand" />
+    </template>
+    <template v-else>
+      <DocumentFilter />
+      <DocumentGrid @open="openDocument" />
+    </template>
     <TurnstileDownloadModal />
     <UIOfficeApp ref="officeAppRef" />
     <UIModal v-model:visible="store.phoneVisible" :width="460" :title="$t('mainPhone.title')">
