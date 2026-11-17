@@ -73,10 +73,12 @@
     emit('pick')
   }
   // Ikkinchi juftlik ixtiyoriy (katakda ikki kod: masalan «K/T 6/2»).
-  const extraOpen = ref(Boolean(store.payload.status2))
+  // Ochiq/yopiqligi store'da — saqlashdan keyin store 2-turni tozalab, juftlikni ham yopadi.
+  const extraOpen = computed(() => store.payload.extraOpen || Boolean(store.payload.status2))
   const toggleExtra = () => {
-    extraOpen.value = !extraOpen.value
-    if (!extraOpen.value) setExtraType(null)
+    const open = !extraOpen.value
+    store.payload.extraOpen = open
+    if (!open) setExtraType(null)
   }
 
   const renderLabel = (option) => [
