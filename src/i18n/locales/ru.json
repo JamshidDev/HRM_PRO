@@ -28,6 +28,24 @@
       "currentOrg": "Текущее место работы",
       "notEmployed": "Не определено",
       "dismissalCommand": "Приказ об увольнении"
+    },
+    "tabs": {
+      "dismissed": "Уволенные",
+      "applications": "Заявления",
+      "commands": "Приказы",
+      "contracts": "Договоры",
+      "contractAdditional": "Доп. соглашения"
+    },
+    "documents": {
+      "type": "Тип документа",
+      "number": "Номер документа",
+      "numberPh": "Номер или электронный номер",
+      "period": "Период",
+      "cancelled": "Отменён",
+      "approved": "Утверждён",
+      "view": "Просмотр",
+      "empty": "Утверждённые документы не найдены",
+      "total": "Всего документов: {n}"
     }
   },
   "lateWorkersReport": {

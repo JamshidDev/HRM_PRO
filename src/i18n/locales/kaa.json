@@ -28,6 +28,24 @@
       "currentOrg": "Házirgi jumıs ornı",
       "notEmployed": "Anıqlanbadı",
       "dismissalCommand": "Jumıstan bosatıw buyrıǵı"
+    },
+    "tabs": {
+      "dismissed": "Jumıstan ketkenler",
+      "applications": "Arzalar",
+      "commands": "Buyrıqlar",
+      "contracts": "Shártnamalar",
+      "contractAdditional": "Qosımsha kelisimler"
+    },
+    "documents": {
+      "type": "Hújjet túri",
+      "number": "Hújjet nomeri",
+      "numberPh": "Nomer yamasa elektron nomer",
+      "period": "Sáne aralıǵı",
+      "cancelled": "Biykar etilgen",
+      "approved": "Tastıyıqlanǵan",
+      "view": "Kóriw",
+      "empty": "Tastıyıqlanǵan hújjet tabılmadı",
+      "total": "Jámi {n} hújjet"
     }
   },
   "lateWorkersReport": {

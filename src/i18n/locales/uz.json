@@ -28,6 +28,24 @@
       "currentOrg": "Hozirgi ish joyi",
       "notEmployed": "Aniqlanmadi",
       "dismissalCommand": "Bo'shatish buyrug'i"
+    },
+    "tabs": {
+      "dismissed": "Ishdan ketganlar",
+      "applications": "Arizalar",
+      "commands": "Buyruqlar",
+      "contracts": "Shartnomalar",
+      "contractAdditional": "Qo'shimcha kelishuvlar"
+    },
+    "documents": {
+      "type": "Hujjat turi",
+      "number": "Hujjat raqami",
+      "numberPh": "Raqam yoki elektron raqam",
+      "period": "Sana oralig'i",
+      "cancelled": "Bekor qilingan",
+      "approved": "Tasdiqlangan",
+      "view": "Ko'rish",
+      "empty": "Tasdiqlangan hujjat topilmadi",
+      "total": "Jami {n} ta hujjat"
     }
   },
   "lateWorkersReport": {

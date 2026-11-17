@@ -28,6 +28,24 @@
       "currentOrg": "Current workplace",
       "notEmployed": "Not determined",
       "dismissalCommand": "Dismissal order"
+    },
+    "tabs": {
+      "dismissed": "Dismissed",
+      "applications": "Applications",
+      "commands": "Orders",
+      "contracts": "Contracts",
+      "contractAdditional": "Additional agreements"
+    },
+    "documents": {
+      "type": "Document type",
+      "number": "Document number",
+      "numberPh": "Number or electronic number",
+      "period": "Date range",
+      "cancelled": "Cancelled",
+      "approved": "Approved",
+      "view": "View",
+      "empty": "No approved documents found",
+      "total": "Total {n} documents"
     }
   },
   "lateWorkersReport": {
