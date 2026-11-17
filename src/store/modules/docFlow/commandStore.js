@@ -136,6 +136,7 @@ const FORM_STATE_KEYS = [
   'commandBase',
   'agreementType',
   'clauseNumber',
+  'aidMonth',
   'fromApplication'
 ]
 
@@ -433,6 +434,8 @@ const commandStoreOptions = {
     agreementType: 1,
     // 81 — kelishuv bandi raqami.
     clauseNumber: null,
+    // 81 — moddiy yordam oyi (1–12).
+    aidMonth: null,
     // Ariza asosidagi buyruq: { id, number, electronic_number } — korxona/tur/xodim qulflanadi.
     fromApplication: null,
     // Arizadan buyruq yaratilgach o'zgaradi — arizalar ro'yxati yangilanadi.
@@ -682,6 +685,9 @@ const commandStoreOptions = {
       if (state?.agreementType === undefined && this.payload.command_type === 81) {
         this.agreementType = Number(state?.data?.command_additional?.agreement_type) || 1
       }
+      if (state?.aidMonth === undefined && this.payload.command_type === 81) {
+        this.aidMonth = Number(state?.data?.command_additional?.month) || null
+      }
       if (state?.clauseNumber === undefined && this.payload.command_type === 81) {
         this.clauseNumber = Number(state?.data?.command_additional?.clause_number) || null
       }
@@ -863,6 +869,7 @@ const commandStoreOptions = {
       this.commandBase = null
       this.agreementType = 1
       this.clauseNumber = null
+      this.aidMonth = null
 
       this.form_44.vacation_id = null
       this.form_44.new_date = null
