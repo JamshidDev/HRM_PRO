@@ -4,7 +4,7 @@
    * Chapda forma: kim uchun → joylashuv turi (Aylana | Hudud | Erkin rejim) → nomi → turiga oid
    * parametrlar (radius / hudud) → koordinata → aniqlik. O'ngda xarita.
    */
-  import { ref, computed, watch, getCurrentInstance } from 'vue'
+  import { ref, computed, watch, getCurrentInstance, h } from 'vue'
   import { UIModal, UISegmentTabs, UISelect, UIDepartmentSelect } from '@/components/index.js'
   import { useComponentStore, useDepartmentLocationStore } from '@/store/modules/index.js'
   import LocationMap from './LocationMap.vue'
@@ -20,8 +20,64 @@
     () => store.target === 'department' && store.visibleType && !store.selectedDepartment
   )
   const isWorker = computed(() => store.target === 'worker')
-  const isFree = computed(() => store.payload.is_free === true)
+  // Turniket lokatsiyasining o'zi (ro'yxat tabi) — erkin rejim va aniqlik yo'q, korxona tanlanadi.
+  const isPlace = computed(() => store.target === 'place')
+  const isFree = computed(() => !isPlace.value && store.payload.is_free === true)
+  // Ro'yxatdan tanlangan joy — shakl o'zgartirilmaydi, xaritada faqat ko'rinadi.
+  const isExisting = computed(() => !isPlace.value && !isFree.value && store.payload.source === 'existing')
   const isArea = computed(() => !isFree.value && store.payload.geo_type === true)
+  const sourceTabs = computed(() => [
+    { id: 'existing', name: proxy.$t('departmentLocationPage.form.sourceExisting') },
+    { id: 'new', name: proxy.$t('departmentLocationPage.form.sourceNew') }
+  ])
+  const source = computed({
+    get: () => store.payload.source,
+    set: (v) => {
+      store.payload.source = v
+      // Yangi joy bo'sh boshlanadi — tanlangan joy nomi takrorlanmasin.
+      if (v === 'new') {
+        store.payload.name = null
+        store.payload.lat = null
+        store.payload.lng = null
+        store.payload.polygon = []
+        store.payload.geo_type = false
+      } else if (store.payload.place_id) {
+        store.selectPlace(store.payload.place_id)
+      }
+    }
+  })
+  const placeSelectOptions = computed(() =>
+    store.placeOptions.map((p) => ({
+      label: p.name,
+      value: p.id,
+      hint: p.geo_type
+        ? proxy.$t('departmentLocationPage.pointsCount', { n: p.polygon?.length ?? 0 })
+        : `${p.radius} m`
+    }))
+  )
+  const renderPlaceLabel = (o) =>
+    h('div', { class: 'flex items-center justify-between gap-3 w-full py-0.5' }, [
+      h('span', { class: 'truncate' }, o.label),
+      h('span', { class: 'shrink-0 text-xs text-textColor3' }, o.hint)
+    ])
+  let placeTimer = null
+  const onPlaceSearch = (q) => {
+    clearTimeout(placeTimer)
+    placeTimer = setTimeout(() => store._placeOptions(q), 350)
+  }
+  // Bo'lim formaning o'zida tanlanganda — shu korxona joylari.
+  watch(
+    () => store.payload.department_id,
+    (v, old) => {
+      if (store.visible && store.target === 'department' && v !== old) store._placeOptions()
+    }
+  )
+  const placeOrg = ref([])
+  const placeOrgCheck = ref([])
+  const onChangePlaceOrg = (v) => {
+    placeOrg.value = v
+    store.payload.organization_id = v?.[0]?.id ?? null
+  }
   const workerName = computed(() =>
     [store.selectedWorker?.last_name, store.selectedWorker?.first_name, store.selectedWorker?.middle_name]
       .filter(Boolean)
@@ -65,7 +121,11 @@
   // Koordinata xatosi Lat va Lng ostida bitta qator bo'lib chiqadi (saqlashga urinilgandan keyin).
   const submitTried = ref(false)
   const coordsError = computed(
-    () => submitTried.value && !isFree.value && (store.payload.lat == null || store.payload.lng == null)
+    () =>
+      submitTried.value &&
+      !isFree.value &&
+      !isExisting.value &&
+      (store.payload.lat == null || store.payload.lng == null)
   )
   watch(
     () => store.visible,
@@ -84,6 +144,11 @@
   watch(
     () => store.visible,
     (v) => {
+      if (v && isPlace.value) {
+        placeOrg.value = store.payload.organization_id ? [{ id: store.payload.organization_id }] : []
+        placeOrgCheck.value = []
+        if (componentStore.structureList.length === 0) componentStore._structures()
+      }
       if (!v || !needDepartment.value) return
       // Bo'lim daraxti korxona bo'yicha — filtrdagi korxona oldindan qo'yiladi.
       formOrg.value = [...(store.params.organizations ?? [])]
@@ -97,7 +162,7 @@
 
   // Rejim almashganda eski (endi majburiy bo'lmagan) maydon xatolari qolmasin.
   watch(
-    () => [store.payload.is_free, store.payload.geo_type],
+    () => [store.payload.is_free, store.payload.geo_type, store.payload.source],
     () => formRef.value?.restoreValidation()
   )
 
@@ -114,26 +179,38 @@
       message: proxy.$t('departmentLocationPage.validation.departmentRequired'),
       trigger: ['blur', 'change']
     },
+    organization_id: {
+      required: isPlace.value,
+      validator: (_rule, value) => !isPlace.value || !!value,
+      message: proxy.$t('departmentLocationPage.validation.organizationRequired'),
+      trigger: ['blur', 'change']
+    },
+    place_id: {
+      required: isExisting.value,
+      validator: (_rule, value) => !isExisting.value || !!value,
+      message: proxy.$t('departmentLocationPage.validation.placeRequired'),
+      trigger: ['blur', 'change']
+    },
     name: {
-      required: !isFree.value,
-      validator: (_rule, value) => isFree.value || !!value?.trim(),
+      required: !isFree.value && !isExisting.value,
+      validator: (_rule, value) => isFree.value || isExisting.value || !!value?.trim(),
       message: proxy.$t('departmentLocationPage.validation.nameRequired'),
       trigger: ['blur', 'input']
     },
     lat: {
-      required: !isFree.value,
+      required: !isFree.value && !isExisting.value,
       type: 'number',
       message: proxy.$t('departmentLocationPage.validation.markerRequired'),
       trigger: ['blur', 'change']
     },
     lng: {
-      required: !isFree.value,
+      required: !isFree.value && !isExisting.value,
       type: 'number',
       message: proxy.$t('departmentLocationPage.validation.markerRequired'),
       trigger: ['blur', 'change']
     },
     radius: {
-      required: !isFree.value && !isArea.value,
+      required: !isFree.value && !isExisting.value && !isArea.value,
       type: 'number',
       message: proxy.$t('departmentLocationPage.validation.radiusRequired'),
       trigger: ['blur', 'change']
@@ -141,13 +218,13 @@
     // Hudud kamida 3 nuqta — xato endi forma ichida (ilgari tepada qalqib chiquvchi xabar edi).
     polygon: {
       key: 'polygon',
-      required: isArea.value,
-      validator: () => !isArea.value || polygonCount.value >= 3,
+      required: isArea.value && !isExisting.value,
+      validator: () => !isArea.value || isExisting.value || polygonCount.value >= 3,
       message: proxy.$t('departmentLocationPage.validation.polygonRequired'),
       trigger: ['change']
     },
     accuracy_limit: {
-      required: !isFree.value && !isWorker.value,
+      required: !isFree.value && !isWorker.value && !isPlace.value,
       type: 'number',
       message: proxy.$t('departmentLocationPage.validation.accuracyRequired'),
       trigger: ['blur', 'change']
@@ -173,14 +250,17 @@
   }
 
   const updateLat = (val) => {
+    if (isExisting.value) return
     store.payload.lat = val
   }
 
   const updateLng = (val) => {
+    if (isExisting.value) return
     store.payload.lng = val
   }
 
   const updatePolygon = (val) => {
+    if (isExisting.value) return
     store.payload.polygon = val
   }
 
@@ -200,9 +280,13 @@
   <UIModal
     v-model:visible="store.visible"
     :title="
-      store.visibleType
-        ? $t('departmentLocationPage.createTitle')
-        : $t('departmentLocationPage.updateTitle')
+      isPlace
+        ? store.visibleType
+          ? $t('departmentLocationPage.places.createTitle')
+          : $t('departmentLocationPage.places.updateTitle')
+        : store.visibleType
+          ? $t('departmentLocationPage.createTitle')
+          : $t('departmentLocationPage.updateTitle')
     "
     width="95%"
     height="90vh"
@@ -255,16 +339,29 @@
                 </div>
               </n-form-item>
 
-              <!-- Joylashuv turi: Aylana | Hudud -->
-              <n-form-item :label="$t('departmentLocationPage.form.geoType')" :show-feedback="false">
-                <div class="flex w-full flex-col gap-2" :class="isFree && 'opacity-50'">
-                  <UISegmentTabs v-model="geoMode" :tabs="modeTabs" />
-                  <span class="text-xs leading-4 text-textColor3">{{ modeHint }}</span>
-                </div>
+              <!-- Turniket lokatsiyasi korxonasi (ro'yxat tabidan yaratilganda) -->
+              <n-form-item
+                v-if="isPlace"
+                :label="$t('departmentLocationPage.places.organization')"
+                path="organization_id"
+              >
+                <UISelect
+                  :options="componentStore.structureList"
+                  :modelV="placeOrg"
+                  @defaultValue="(v) => (placeOrg = v)"
+                  @updateModel="onChangePlaceOrg"
+                  :checkedVal="placeOrgCheck"
+                  @updateCheck="(v) => (placeOrgCheck = v)"
+                  :loading="componentStore.structureLoading"
+                  v-model:search="componentStore.structureParams.search"
+                  @onSearch="componentStore._structures"
+                  :multiple="false"
+                  :disabled="!store.visibleType"
+                />
               </n-form-item>
 
               <!-- Erkin rejim: hudud cheklovi yo'q, faqat koordinata va yuz rasmi yoziladi -->
-              <div class="dl-free mt-4">
+              <div v-if="!isPlace" class="dl-free mb-4">
                 <div class="flex min-w-0 flex-col">
                   <span class="font-medium text-textColor1">{{ $t('departmentLocationPage.form.freeMode') }}</span>
                   <span class="text-xs leading-4 text-textColor3">{{ $t('departmentLocationPage.form.freeModeHint') }}</span>
@@ -272,8 +369,64 @@
                 <n-switch v-model:value="store.payload.is_free" />
               </div>
 
+              <!-- Joy: turniket lokatsiyalari ro'yxatidan yoki yangi (ro'yxatga ham qo'shiladi) -->
+              <n-form-item
+                v-if="!isPlace && !isFree"
+                :label="$t('departmentLocationPage.form.source')"
+                :show-feedback="false"
+              >
+                <div class="flex w-full flex-col gap-2">
+                  <UISegmentTabs v-model="source" :tabs="sourceTabs" />
+                  <span class="text-xs leading-4 text-textColor3">
+                    {{
+                      isExisting
+                        ? $t('departmentLocationPage.form.sourceExistingHint')
+                        : $t('departmentLocationPage.form.sourceNewHint')
+                    }}
+                  </span>
+                </div>
+              </n-form-item>
+
+              <n-form-item
+                v-if="isExisting"
+                class="mt-4"
+                :label="$t('departmentLocationPage.form.place')"
+                path="place_id"
+              >
+                <n-select
+                  :value="store.payload.place_id"
+                  :options="placeSelectOptions"
+                  :loading="store.placeOptionsLoading"
+                  :render-label="renderPlaceLabel"
+                  :placeholder="$t('departmentLocationPage.form.placePlaceholder')"
+                  filterable
+                  remote
+                  clearable
+                  @search="onPlaceSearch"
+                  @update:value="(v) => store.selectPlace(v)"
+                />
+              </n-form-item>
+
+              <!-- Joylashuv turi: Aylana | Hudud -->
+              <n-form-item
+                v-if="!isFree && !isExisting"
+                :class="!isPlace && 'mt-4'"
+                :label="$t('departmentLocationPage.form.geoType')"
+                :show-feedback="false"
+              >
+                <div class="flex w-full flex-col gap-2">
+                  <UISegmentTabs v-model="geoMode" :tabs="modeTabs" />
+                  <span class="text-xs leading-4 text-textColor3">{{ modeHint }}</span>
+                </div>
+              </n-form-item>
+
               <!-- O'tish joyi nomi: mobil ilovada shu nom bilan chiqadi -->
-              <n-form-item v-if="!isFree" class="mt-4" :label="$t('departmentLocationPage.form.name')" path="name">
+              <n-form-item
+                v-if="!isFree && !isExisting"
+                class="mt-4"
+                :label="$t('departmentLocationPage.form.name')"
+                path="name"
+              >
                 <n-input
                   v-model:value="store.payload.name"
                   :placeholder="$t('departmentLocationPage.form.namePlaceholder')"
@@ -284,7 +437,7 @@
 
               <!-- Aylana: radius (slayder + son) -->
               <n-form-item
-                v-if="mode === 'circle'"
+                v-if="mode === 'circle' && !isExisting"
                 :label="$t('departmentLocationPage.form.radius')"
                 path="radius"
               >
@@ -311,7 +464,7 @@
               </n-form-item>
 
               <!-- Hudud: holati va qanday chiziladi -->
-              <n-form-item v-if="mode === 'area'" :label="$t('departmentLocationPage.form.area')" path="polygon">
+              <n-form-item v-if="mode === 'area' && !isExisting" :label="$t('departmentLocationPage.form.area')" path="polygon">
                 <div class="flex w-full flex-col gap-2">
                   <div class="dl-polygon" :class="`dl-polygon--${polygonState}`">
                     <span class="dl-polygon__icon">
@@ -345,7 +498,7 @@
               </n-form-item>
 
               <!-- Koordinata: aylanada — markaz nuqtasi, hududda — avtomatik markaz (markerni surish mumkin) -->
-              <template v-if="!isFree">
+              <template v-if="!isFree && !isExisting">
                 <!-- Ikkalasi ham `show-feedback=false` (bir xil balandlik, yonma-yon tekis turadi);
                      xato matni pastda bitta qator bo'lib chiqadi -->
                 <div class="grid grid-cols-2 items-start gap-3">
@@ -375,7 +528,7 @@
               </template>
 
               <n-form-item
-                v-if="!isFree && !isWorker"
+                v-if="!isFree && !isWorker && !isPlace"
                 :label="$t('departmentLocationPage.form.accuracy')"
                 path="accuracy_limit"
               >
@@ -413,7 +566,8 @@
           <LocationMap
             v-else-if="!store.showLoading"
             ref="mapRef"
-            :key="store.elementId"
+            :key="`${store.elementId}-${isExisting ? store.payload.place_id : 'edit'}`"
+            :readonly="isExisting"
             :lat="store.payload.lat"
             :lng="store.payload.lng"
             :radius="store.payload.radius"

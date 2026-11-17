@@ -5,6 +5,7 @@
   import WorkerTable from './ui/WorkerTable.vue'
   import StatsCards from './ui/StatsCards.vue'
   import WorkerLocationsModal from './ui/WorkerLocationsModal.vue'
+  import PlaceTable from './ui/PlaceTable.vue'
   import { useDepartmentLocationStore } from '@/store/modules/index.js'
 
   const store = useDepartmentLocationStore()
@@ -12,7 +13,8 @@
   const loaders = {
     departments: () => store._index(),
     locations: () => store._locationIndex(),
-    workers: () => store._workerIndex()
+    workers: () => store._workerIndex(),
+    places: () => store._placeIndex()
   }
 
   const onTabChange = (tab) => {
@@ -55,6 +57,9 @@
       </n-tab-pane>
       <n-tab-pane name="workers" :tab="$t('departmentLocationPage.tabs.workers')" class="!pt-0 flex-1 flex flex-col">
         <WorkerTable />
+      </n-tab-pane>
+      <n-tab-pane name="places" :tab="$t('departmentLocationPage.tabs.places')" class="!pt-0 flex-1 flex flex-col">
+        <PlaceTable />
       </n-tab-pane>
     </n-tabs>
     <CreateForm />

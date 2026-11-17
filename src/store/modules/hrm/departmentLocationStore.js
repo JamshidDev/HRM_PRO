@@ -46,9 +46,26 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     workerLocations: [],
     workerLocationsLoading: false,
     deletingLocationId: null,
+    // Turniket lokatsiyalari tabi va biriktirish formasidagi tanlov ro'yxati.
+    placeList: [],
+    placeLoading: false,
+    placeTotal: 0,
+    placeParams: {
+      page: 1,
+      per_page: 15,
+      search: null,
+      organizations: []
+    },
+    placeOptions: [],
+    placeOptionsLoading: false,
+    deletingPlaceId: null,
     payload: {
       department_id: null,
       worker_id: null,
+      organization_id: null,
+      // existing — ro'yxatdan tanlanadi, new — yangi joy (ro'yxatga ham qo'shiladi).
+      source: 'existing',
+      place_id: null,
       name: null,
       is_free: false,
       geo_type: false,
@@ -129,7 +146,23 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     // Erkin rejimda koordinata yuborilmaydi.
     buildData() {
       const free = this.payload.is_free
+      if (this.target === 'place') {
+        return {
+          organization_id: this.payload.organization_id,
+          name: this.payload.name?.trim() || null,
+          geo_type: this.payload.geo_type,
+          lat: this.payload.lat,
+          lng: this.payload.lng,
+          radius: this.payload.radius,
+          polygon: this.payload.geo_type ? this.payload.polygon : null
+        }
+      }
+      if (!free && this.payload.source === 'existing') {
+        return { is_free: false, place_id: this.payload.place_id }
+      }
       return {
+        // «Yangi joy» — backend joyni ro'yxatga ham qo'shadi.
+        place_id: null,
         // Erkin rejimda joy nomi bo'lmaydi.
         name: free ? null : this.payload.name?.trim() || null,
         is_free: free,
@@ -143,16 +176,30 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     afterSave() {
       this.visible = false
       this._stats()
-      if (this.target === 'worker') {
+      if (this.target === 'place') {
+        this._placeIndex()
+      } else if (this.target === 'worker') {
         this._workerIndex()
         if (this.workerLocVisible) this._workerLocationsIndex()
       } else if (this.activeTab === 'departments') {
         this._index()
+      } else if (this.activeTab === 'places') {
+        this._placeIndex()
       } else {
         this._locationIndex()
       }
     },
     _create() {
+      if (this.target === 'place') {
+        this.saveLoading = true
+        $ApiService.departmentLocationService
+          ._createPlace({ data: this.buildData() })
+          .then(() => this.afterSave())
+          .finally(() => {
+            this.saveLoading = false
+          })
+        return
+      }
       if (this.target === 'worker') {
         this.saveLoading = true
         $ApiService.departmentLocationService
@@ -176,6 +223,8 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
           this._stats()
           if (this.activeTab === 'departments') {
             this._index()
+          } else if (this.activeTab === 'places') {
+            this._placeIndex()
           } else {
             this._locationIndex()
           }
@@ -185,6 +234,16 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
         })
     },
     _update() {
+      if (this.target === 'place') {
+        this.saveLoading = true
+        $ApiService.departmentLocationService
+          ._updatePlace({ data: this.buildData(), id: this.elementId })
+          .then(() => this.afterSave())
+          .finally(() => {
+            this.saveLoading = false
+          })
+        return
+      }
       if (this.target === 'worker') {
         this.saveLoading = true
         $ApiService.departmentLocationService
@@ -208,6 +267,8 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
           this._stats()
           if (this.activeTab === 'departments') {
             this._index()
+          } else if (this.activeTab === 'places') {
+            this._placeIndex()
           } else {
             this._locationIndex()
           }
@@ -257,6 +318,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.payload.department_id = department?.id ?? null
       this.visibleType = true
       this.visible = true
+      this._placeOptions()
     },
     openViewModal(item) {
       // Jadval qatori: `_show` javobida bo'lim/tashkilot yo'q — ular shu yerdan olinadi,
@@ -307,6 +369,9 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
             this.payload.radius = data.radius || 500
             this.payload.polygon = data.polygon || []
             this.payload.accuracy_limit = data.accuracy_limit || 3
+            this.payload.place_id = data.place_id ?? null
+            this.payload.source = data.place_id ? 'existing' : 'new'
+            this._placeOptions()
             // Department ma'lumotlarini set qilish
             if (data.department) {
               this.selectedDepartment = {
@@ -323,12 +388,99 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
           this.showLoading = false
         })
     },
+    // --- Turniket lokatsiyalari ---
+    _placeIndex() {
+      this.placeLoading = true
+      const params = {
+        ...this.placeParams,
+        organizations: this.placeParams.organizations.map((v) => v.id).toString() || undefined
+      }
+      $ApiService.departmentLocationService
+        ._places({ params })
+        .then((res) => {
+          this.placeList = res.data.data.data
+          this.placeTotal = res.data.data.total
+        })
+        .finally(() => {
+          this.placeLoading = false
+        })
+    },
+    // Biriktirish formasi: bo'lim/xodim korxonasining joylari; tanlangani ro'yxatda bo'lmasa qo'shiladi.
+    _placeOptions(search = null) {
+      const params = { per_page: 50, search: search || undefined }
+      if (this.target === 'worker') params.worker_id = this.payload.worker_id
+      else params.department_id = this.payload.department_id
+      if (!params.worker_id && !params.department_id) {
+        this.placeOptions = []
+        return Promise.resolve()
+      }
+      this.placeOptionsLoading = true
+      const api = $ApiService.departmentLocationService
+      return api
+        ._places({ params })
+        .then(async (res) => {
+          const list = res.data.data.data
+          const id = this.payload.place_id
+          if (id && !list.some((p) => p.id === id)) {
+            const one = await api._showPlace({ id }).catch(() => null)
+            if (one?.data?.data) list.unshift(one.data.data)
+          }
+          this.placeOptions = list
+        })
+        .finally(() => {
+          this.placeOptionsLoading = false
+        })
+    },
+    // Tanlangan joy shakli xaritada ko'rinadi (faqat ko'rish).
+    selectPlace(id) {
+      this.payload.place_id = id
+      const p = this.placeOptions.find((v) => v.id === id)
+      if (!p) return
+      this.payload.name = p.name
+      this.payload.geo_type = p.geo_type === true
+      this.payload.lat = p.lat
+      this.payload.lng = p.lng
+      this.payload.radius = p.radius
+      this.payload.polygon = p.polygon || []
+    },
+    openPlaceModal(place = null) {
+      this.resetForm()
+      this.target = 'place'
+      this.payload.source = 'new'
+      if (place) {
+        this.elementId = place.id
+        this.payload.organization_id = place.organization_id
+        this.payload.name = place.name
+        this.payload.geo_type = place.geo_type === true
+        this.payload.lat = place.lat
+        this.payload.lng = place.lng
+        this.payload.radius = place.radius
+        this.payload.polygon = place.polygon || []
+      } else if (this.placeParams.organizations.length === 1) {
+        this.payload.organization_id = this.placeParams.organizations[0].id
+      }
+      this.visibleType = !place
+      this.visible = true
+    },
+    _deletePlace(id) {
+      this.deletingPlaceId = id
+      $ApiService.departmentLocationService
+        ._deletePlace({ id })
+        .then(() => this._placeIndex())
+        .finally(() => {
+          this.deletingPlaceId = null
+        })
+    },
     resetForm() {
       this.elementId = null
       this.selectedDepartment = null
       this.target = 'department'
       this.selectedWorker = null
       this.payload.worker_id = null
+      this.payload.organization_id = null
+      this.payload.source = 'existing'
+      this.payload.place_id = null
+      this.placeOptions = []
       this.payload.is_free = false
       this.payload.department_id = null
       this.payload.name = null
@@ -395,6 +547,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.payload.worker_id = worker.id
       this.visibleType = true
       this.visible = true
+      this._placeOptions()
     },
     openWorkerEditModal(item) {
       const worker = this.selectedWorker
@@ -410,8 +563,11 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.payload.lng = item.lng
       this.payload.radius = item.radius || 500
       this.payload.polygon = item.polygon || []
+      this.payload.place_id = item.place_id ?? null
+      this.payload.source = item.place_id || item.is_free ? 'existing' : 'new'
       this.visibleType = false
       this.visible = true
+      this._placeOptions()
     },
     _deleteWorkerLocation(id) {
       // Qaysi joy o'chirilayotgani — oynada faqat o'sha qatorda loader aylanadi.

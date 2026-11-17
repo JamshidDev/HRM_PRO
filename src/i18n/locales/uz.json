@@ -6423,6 +6423,22 @@
     "langEn": "Ingliz"
   },
   "departmentLocationPage": {
+    "places": {
+      "createTitle": "Turniket lokatsiyasini qo'shish",
+      "updateTitle": "Turniket lokatsiyasini tahrirlash",
+      "viewTitle": "Turniket lokatsiyasi",
+      "organization": "Korxona",
+      "name": "O'tish joyi nomi",
+      "attached": "Biriktirilgan",
+      "attachedCount": "{d} bo'lim · {w} xodim",
+      "notAttached": "Biriktirilmagan",
+      "owner": "Yaratgan",
+      "add": "Lokatsiya qo'shish",
+      "hint": "Bir marta belgilangan joyni bir nechta bo'lim va xodimga berish mumkin. Faqat yaratgan foydalanuvchi tahrirlaydi.",
+      "empty": "Turniket lokatsiyalari hali yo'q",
+      "departments": "Bo'limlar",
+      "workers": "Xodimlar"
+    },
     "name": "Mobile face",
     "createTitle": "Joylashuv qo'shish",
     "updateTitle": "Joylashuvni tahrirlash",
@@ -6502,6 +6518,7 @@
       "in": "Kirish"
     },
     "tabs": {
+      "places": "Turniket lokatsiyalari",
       "workers": "Xodimlar",
       "departments": "Bo'limlar",
       "locations": "Joylashuvlar"
@@ -6521,6 +6538,13 @@
       "coords": "Koordinata"
     },
     "form": {
+      "source": "O'tish joyi",
+      "sourceExisting": "Ro'yxatdan tanlash",
+      "sourceNew": "Yangi joy",
+      "sourceExistingHint": "Turniket lokatsiyalari ro'yxatidagi joy biriktiriladi — shakli o'sha joydan olinadi.",
+      "sourceNewHint": "Xaritada yangi joy belgilang — u turniket lokatsiyalari ro'yxatiga ham qo'shiladi.",
+      "place": "Turniket lokatsiyasi",
+      "placePlaceholder": "Nomi bo'yicha qidiring",
       "freeMode": "Erkin rejim",
       "freeModeHint": "Hudud cheklovi yo'q — xodim istalgan joydan o'tadi, faqat koordinatasi va yuz rasmi yoziladi.",
       "department": "Bo'lim",
@@ -6546,6 +6570,8 @@
       "polygonSteps": "«Hududni chizish» → xaritaga kamida 3 ta nuqta qo'ying → «Tugatish»."
     },
     "validation": {
+      "placeRequired": "Turniket lokatsiyasini tanlang",
+      "organizationRequired": "Korxonani tanlang",
       "departmentRequired": "Bo'limni tanlang",
       "nameRequired": "O'tish joyi nomini kiriting",
       "markerRequired": "Xaritada joylashuvni belgilang",
