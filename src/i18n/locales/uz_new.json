@@ -1349,6 +1349,18 @@
     }
   },
   "signature": {
+    "portalLabel": "Elektron imzo",
+    "secureFooter": "Havola faqat siz uçun yaratilgan va qisqa muddat amal qiladi.",
+    "methodTitle": "Imzolaş usuli",
+    "rejectReason": "Sabab",
+    "rejectReasonRequired": "Sababni tanlang",
+    "doneHint": "Sahifani yopişingiz mumkin.",
+    "rejectedTitle": "Hujjat rad etildi",
+    "rejectedHint": "Sabab HR bölimiga yuborildi. Sahifani yopişingiz mumkin.",
+    "alreadySigned": "Hujjat allaqaçon imzolangan",
+    "linkErrorTitle": "Havolani oçib bölmadi",
+    "docLoadError": "Hujjatni yuklab bölmadi",
+    "docLoadErrorHint": "Internet aloqasini tekşirib, qayta urinib köring.",
     "keyType": "Foydalanuvçi turi",
     "inn": "STIR",
     "undo": "Orqaga",
