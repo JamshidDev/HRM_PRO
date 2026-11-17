@@ -19,6 +19,8 @@
 
   // Hujjatdagi kelishuv nomi (1 — tarmoq, 2 — jamoa); «Asos» namunasi shundan tuziladi.
   const AGREEMENT_NAME = { 1: 'Tarmoq jamoa kelishuvi', 2: 'Jamoa shartnomasi' }
+  const MONTH_KEYS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
+  const monthOptions = computed(() => MONTH_KEYS.map((k, i) => ({ label: t(`month.${k}`), value: i + 1 })))
   const autoBase = (type, clause) =>
     `Xodimning arizasi, ${AGREEMENT_NAME[type] || AGREEMENT_NAME[1]}ning ${clause || '___'}-bandi`
 
@@ -147,6 +149,7 @@
         command_additional: {
           base: store.commandBase || null,
           agreement_type: store.agreementType || 1,
+          month: store.aidMonth || null,
           clause_number: store.clauseNumber
         }
       },
@@ -159,6 +162,7 @@
   onMounted(() => {
     componentStore._enums()
     if (!store.agreementType) store.agreementType = 1
+    if (!store.aidMonth) store.aidMonth = new Date().getMonth() + 1
     if (!store.commandBase) store.commandBase = autoBase(store.agreementType, store.clauseNumber)
   })
 </script>
@@ -275,7 +279,7 @@
   <div
     class="grid grid-cols-12 mb-8 gap-x-4 border border-surface-line p-2 rounded-md bg-surface-ground"
   >
-    <div class="col-span-12 @xl:col-span-4">
+    <div class="col-span-12 @xl:col-span-3">
       <n-form-item
         :show-feedback="false"
         :label="$t('documentPage.command.form.agreementType')"
@@ -291,7 +295,12 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 @xl:col-span-3">
+    <div class="col-span-12 @xl:col-span-2">
+      <n-form-item :show-feedback="false" :label="$t('documentPage.command.form.aidMonth')" path="aidMonth">
+        <n-select v-model:value="store.aidMonth" :options="monthOptions" />
+      </n-form-item>
+    </div>
+    <div class="col-span-12 @xl:col-span-2">
       <n-form-item :show-feedback="false" :label="$t('documentPage.command.form.clauseNumber')" path="clauseNumber">
         <n-input-number
           class="w-full"
