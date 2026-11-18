@@ -255,6 +255,10 @@ export const useUserStore = defineStore('user', {
       $ApiService.userService
         ._update({ data, id: this.elementId })
         .then((res) => {
+          // Olib tashlangandan keyin forma bo'sh qoladi.
+          this.payload.role_id = null
+          this.payload.organization_id = []
+          this.payload.is_global = false
           this._myRoles()
         })
         .finally(() => {
