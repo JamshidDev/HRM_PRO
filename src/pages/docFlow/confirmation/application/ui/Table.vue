@@ -43,6 +43,8 @@
   const emits = defineEmits(['openOffice'])
 
   const editResponse = (v) => {
+    // Tavsifli tur maydonlari (bo'lmasa — eski ariza).
+    store.payload.data = v.data && typeof v.data === 'object' ? { ...v.data } : {}
     store.payload.director_id = v.director_id
     store.payload.worker_position_id = v.worker_position_id
     store.payload.type = v.type
