@@ -1,4 +1,5 @@
 <script setup>
+  import { selectWrap } from '@/utils/selectWrap.js'
   // Ariza turi tavsifidan (backend application_schema) chiziladigan umumiy forma.
   import { useComponentStore, useConfApplicationStore } from '@/store/modules/index.js'
   import { UIDepartmentSelect, UISelect } from '@/components/index.js'
@@ -74,15 +75,25 @@
       })
       .finally(() => (positionsLoading.value = false))
   }
+  // Lavozim nomi ham saqlanadi — ro'yxat yuklanguncha (tahrir, qadam almashishi) ID emas, nom ko'rinadi.
+  const onPosition = (f, v, o) => {
+    data.value[f.key] = v
+    data.value.department_position_name = o?.name ?? null
+  }
+  const positionFallback = (v) => ({ id: v, name: data.value.department_position_name || '' })
   const onDepartment = (id) => {
     data.value.department_id = id ?? null
     delete data.value.department_position_id
+    delete data.value.department_position_name
     loadPositions(id)
   }
 
   // ---- Farzand: ro'yxatdan yoki qo'lda ----
   const children = ref([])
-  const childMode = ref('list')
+  // Qadam almashsa yoki tahrirda — rejim saqlangan ma'lumotdan tiklanadi.
+  const childMode = ref(
+    data.value.child_full_name && !data.value.child_relative_id ? 'manual' : 'list'
+  )
   const loadChildren = () => {
     $ApiService.applicationService._myChildren().then((res) => {
       children.value = res.data.data ?? []
@@ -101,6 +112,7 @@
     return !!c?.birthday
   })
   const onChildMode = (mode) => {
+    if (childMode.value === mode) return
     childMode.value = mode
     data.value.child_relative_id = null
     data.value.child_full_name = null
@@ -145,7 +157,11 @@
       if (!f.required) continue
       const keys = f.keys ?? [f.key]
       if (keys.some((k) => isBlank(data.value[k]))) e[f.key] = true
-      else if ((f.kind === 'select' || f.kind === 'organization') && f.other && Number(data.value[f.key]) === OTHER) {
+      else if (
+        (f.kind === 'select' || f.kind === 'organization') &&
+        f.other &&
+        Number(data.value[f.key]) === OTHER
+      ) {
         if (isBlank(data.value[`${f.key}_text`])) e[`${f.key}_text`] = true
       }
     }
@@ -185,7 +201,12 @@
     <template v-for="f in fields" :key="f.key">
       <!-- Korxona (daraxt), «Boshqa» bo'lsa — matn -->
       <div class="col-span-12 pr-3" v-if="f.kind === 'organization'">
-        <n-form-item :label="f.label" :show-require-mark="f.required" :validation-status="status(f.key)" :feedback="feedback(f.key)">
+        <n-form-item
+          :label="f.label"
+          :show-require-mark="f.required"
+          :validation-status="status(f.key)"
+          :feedback="feedback(f.key)"
+        >
           <div class="w-full flex flex-col gap-2">
             <UISelect
               v-if="Number(data[f.key]) !== OTHER || !f.other"
@@ -220,7 +241,12 @@
 
       <!-- Bo'lim (daraxt) -->
       <div class="col-span-12 pr-3" v-else-if="f.kind === 'department'">
-        <n-form-item :label="f.label" :show-require-mark="f.required" :validation-status="status(f.key)" :feedback="feedback(f.key)">
+        <n-form-item
+          :label="f.label"
+          :show-require-mark="f.required"
+          :validation-status="status(f.key)"
+          :feedback="feedback(f.key)"
+        >
           <UIDepartmentSelect
             :model-value="data.department_id ?? null"
             @update:model-value="onDepartment"
@@ -233,9 +259,17 @@
 
       <!-- Bo'lim lavozimlari -->
       <div class="col-span-12" v-else-if="f.kind === 'department_position'">
-        <n-form-item :label="f.label" :show-require-mark="f.required" :validation-status="status(f.key)" :feedback="feedback(f.key)">
+        <n-form-item
+          :label="f.label"
+          :show-require-mark="f.required"
+          :validation-status="status(f.key)"
+          :feedback="feedback(f.key)"
+        >
           <n-select
-            v-model:value="data[f.key]"
+            v-bind="selectWrap"
+            :value="data[f.key] ?? null"
+            @update:value="(v, o) => onPosition(f, v, o)"
+            :fallback-option="positionFallback"
             :disabled="!data.department_id"
             filterable
             :options="positions"
@@ -250,7 +284,9 @@
       <div class="col-span-12" v-else-if="f.kind === 'child'">
         <n-form-item :label="f.label" :show-require-mark="true">
           <n-radio-group :value="childMode" @update:value="onChildMode">
-            <n-radio value="list" :disabled="!children.length">{{ $t('applicationPage.schema.childFromList') }}</n-radio>
+            <n-radio value="list" :disabled="!children.length">{{
+              $t('applicationPage.schema.childFromList')
+            }}</n-radio>
             <n-radio value="manual">{{ $t('applicationPage.schema.childManual') }}</n-radio>
           </n-radio-group>
         </n-form-item>
@@ -262,9 +298,15 @@
           :feedback="feedback('child_full_name')"
         >
           <n-select
+            v-bind="selectWrap"
             :value="data.child_relative_id ?? null"
             @update:value="onChild"
-            :options="children.map((c) => ({ value: c.id, label: c.full_name + (c.birthday ? ' · ' + String(c.birthday).slice(0, 10) : '') }))"
+            :options="
+              children.map((c) => ({
+                value: c.id,
+                label: c.full_name + (c.birthday ? ' · ' + String(c.birthday).slice(0, 10) : '')
+              }))
+            "
           />
         </n-form-item>
         <n-form-item
@@ -295,7 +337,12 @@
 
       <!-- Sana oralig'i (+ kunlar/oylar soni) -->
       <div class="col-span-12" v-else-if="f.kind === 'daterange'">
-        <n-form-item :label="f.label" :show-require-mark="f.required" :validation-status="status(f.key)" :feedback="feedback(f.key)">
+        <n-form-item
+          :label="f.label"
+          :show-require-mark="f.required"
+          :validation-status="status(f.key)"
+          :feedback="feedback(f.key)"
+        >
           <div class="w-full flex flex-col gap-1">
             <n-date-picker
               class="w-full"
@@ -306,7 +353,11 @@
               :format="useAppSetting.datePicketFormat"
             />
             <span v-if="(f.days_key || f.months_key) && countOf(f)" class="text-xs text-gray-500">
-              {{ f.days_key ? $t('applicationPage.schema.days', { n: countOf(f) }) : $t('applicationPage.schema.months', { n: countOf(f) }) }}
+              {{
+                f.days_key
+                  ? $t('applicationPage.schema.days', { n: countOf(f) })
+                  : $t('applicationPage.schema.months', { n: countOf(f) })
+              }}
             </span>
           </div>
         </n-form-item>
@@ -314,16 +365,33 @@
 
       <!-- Vaqt oralig'i -->
       <div class="col-span-12" v-else-if="f.kind === 'timerange'">
-        <n-form-item :label="f.label" :show-require-mark="f.required" :validation-status="status(f.key)" :feedback="feedback(f.key)">
+        <n-form-item
+          :label="f.label"
+          :show-require-mark="f.required"
+          :validation-status="status(f.key)"
+          :feedback="feedback(f.key)"
+        >
           <div class="w-full grid grid-cols-2 gap-2">
-            <n-time-picker v-for="k in f.keys" :key="k" class="w-full" v-model:formatted-value="data[k]" value-format="HH:mm" format="HH:mm" />
+            <n-time-picker
+              v-for="k in f.keys"
+              :key="k"
+              class="w-full"
+              v-model:formatted-value="data[k]"
+              value-format="HH:mm"
+              format="HH:mm"
+            />
           </div>
         </n-form-item>
       </div>
 
       <!-- Sana -->
       <div class="col-span-12" v-else-if="f.kind === 'date'">
-        <n-form-item :label="f.label" :show-require-mark="f.required" :validation-status="status(f.key)" :feedback="feedback(f.key)">
+        <n-form-item
+          :label="f.label"
+          :show-require-mark="f.required"
+          :validation-status="status(f.key)"
+          :feedback="feedback(f.key)"
+        >
           <n-date-picker
             class="w-full"
             type="date"
@@ -336,9 +404,14 @@
 
       <!-- Variantlar (+ «Boshqa» → matn) -->
       <div class="col-span-12" v-else-if="f.kind === 'select'">
-        <n-form-item :label="f.label" :show-require-mark="f.required" :validation-status="status(f.key)" :feedback="feedback(f.key)">
+        <n-form-item
+          :label="f.label"
+          :show-require-mark="f.required"
+          :validation-status="status(f.key)"
+          :feedback="feedback(f.key)"
+        >
           <div class="w-full flex flex-col gap-2">
-            <n-select v-model:value="data[f.key]" :options="selectOptions(f)" />
+            <n-select v-bind="selectWrap" v-model:value="data[f.key]" :options="selectOptions(f)" />
             <n-input
               v-if="f.other && data[f.key] === OTHER"
               v-model:value="data[`${f.key}_text`]"
@@ -353,14 +426,29 @@
 
       <!-- Son -->
       <div class="col-span-12" v-else-if="f.kind === 'number'">
-        <n-form-item :label="f.label" :show-require-mark="f.required" :validation-status="status(f.key)" :feedback="feedback(f.key)">
-          <n-input-number class="w-full" v-model:value="data[f.key]" :min="1" :show-button="false" />
+        <n-form-item
+          :label="f.label"
+          :show-require-mark="f.required"
+          :validation-status="status(f.key)"
+          :feedback="feedback(f.key)"
+        >
+          <n-input-number
+            class="w-full"
+            v-model:value="data[f.key]"
+            :min="1"
+            :show-button="false"
+          />
         </n-form-item>
       </div>
 
       <!-- Matn -->
       <div class="col-span-12" v-else>
-        <n-form-item :label="f.label" :show-require-mark="f.required" :validation-status="status(f.key)" :feedback="feedback(f.key)">
+        <n-form-item
+          :label="f.label"
+          :show-require-mark="f.required"
+          :validation-status="status(f.key)"
+          :feedback="feedback(f.key)"
+        >
           <n-input
             v-model:value="data[f.key]"
             :type="f.kind === 'textarea' ? 'textarea' : 'text'"

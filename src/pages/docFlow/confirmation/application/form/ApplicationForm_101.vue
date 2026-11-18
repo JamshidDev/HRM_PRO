@@ -1,4 +1,5 @@
 <script setup>
+  import { selectWrap } from '@/utils/selectWrap.js'
   import { useComponentStore, useConfApplicationStore } from '@/store/modules/index.js'
   import { UISelect } from '@/components/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -79,6 +80,7 @@
     <div class="col-span-12">
       <n-form-item :label="$t(`applicationPage.form.type`)" path="type">
         <n-select
+          v-bind="selectWrap"
           v-model:value="store.payload.type"
           filterable
           :options="typeOptions"
@@ -92,8 +94,10 @@
     <div class="col-span-12" v-if="isPosition && store.payload.type">
       <n-form-item :label="$t(`applicationPage.form.worker_position_id`)" path="worker_position_id">
         <n-select
+          v-bind="selectWrap"
           @focus="onFocusPosition"
           v-model:value="store.payload.worker_position_id"
+          :fallback-option="(v) => ({ id: v, name: '' })"
           :options="store.myPositionList"
           :loading="store.positionLoading"
           :render-label="UIHelper.selectRender.label"
