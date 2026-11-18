@@ -40,6 +40,7 @@
 <template>
   <UIPageFilter
     v-model:search="store.params.search"
+    auto-width-search
     :search-loading="store.loading"
     :show-add-button="false"
     :filter-count="filterCount"

@@ -14,7 +14,7 @@ const _versions = async () => {
 }
 
 const _updateVersion = async (payload) => {
-  return await axios.put(`/v1/admin/mobile/users/versions`, payload.data)
+  return await axios.put(`/v1/admin/mobile/users/versions`, payload.data, { silentSuccess: true })
 }
 
 export default {

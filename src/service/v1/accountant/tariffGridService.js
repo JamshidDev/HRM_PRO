@@ -8,18 +8,20 @@ const _pdf = async (payload) => axios.get(`/v1/tariff-grids/${payload.id}/pdf`, 
 const _excel = async (payload) => axios.get(`/v1/tariff-grids/${payload.id}/xlsx`, { responseType: 'blob' })
 const _store = async (payload) => axios.post(`/v1/tariff-grids`, payload.data)
 const _update = async (payload) => axios.put(`/v1/tariff-grids/${payload.id}`, payload.data)
-const _delete = async (payload) => axios.delete(`/v1/tariff-grids/${payload.id}`)
+// silentSuccess: xabarni store o'zi ko'rsatadi (zaxira matn bilan) — ikki toast chiqmasin.
+const _delete = async (payload) => axios.delete(`/v1/tariff-grids/${payload.id}`, { silentSuccess: true })
 const _versions = async (payload) => axios.get(`/v1/tariff-grids/${payload.id}/versions`, { params: payload?.params })
 const _version = async (payload) => axios.get(`/v1/tariff-grids/${payload.id}/versions/${payload.versionId}`)
 const _compareVersions = async (payload) =>
   axios.get(`/v1/tariff-grids/${payload.id}/versions/compare`, { params: payload?.params })
 const _storeVersion = async (payload) => axios.post(`/v1/tariff-grids/${payload.id}/versions`, payload.data)
 const _confirmVersion = async (payload) =>
-  axios.post(`/v1/tariff-grids/${payload.id}/versions/${payload.versionId}/confirm`)
+  axios.post(`/v1/tariff-grids/${payload.id}/versions/${payload.versionId}/confirm`, undefined, { silentSuccess: true })
 
 // Setka ↔ korxona/bo'lim biriktiruvi (scope).
 const _scope = async (payload) => axios.get(`/v1/tariff-grids/${payload.id}/scope`)
-const _setScope = async (payload) => axios.put(`/v1/tariff-grids/${payload.id}/scope`, payload.data)
+const _setScope = async (payload) =>
+  axios.put(`/v1/tariff-grids/${payload.id}/scope`, payload.data, { silentSuccess: true })
 
 // department-position formasi uchun: biriktirilgan setkalar (union+fallback) + asosiy oklad.
 const _forPosition = async (payload) => axios.get(`/v1/tariff-grids/for-position`, { params: payload?.params })
@@ -27,7 +29,8 @@ const _amount = async (payload) => axios.get(`/v1/tariff-grids/${payload.id}/amo
 
 // Setkani lavozimlarga qo'llash: ta'sir preview + qo'llash (sabab + hujjat) + qo'llash tarixi.
 const _affectedPositions = async (payload) => axios.get(`/v1/tariff-grids/${payload.id}/affected-positions`)
-const _applyToPositions = async (payload) => axios.post(`/v1/tariff-grids/${payload.id}/apply-to-positions`, payload.data)
+const _applyToPositions = async (payload) =>
+  axios.post(`/v1/tariff-grids/${payload.id}/apply-to-positions`, payload.data, { silentSuccess: true })
 const _applyLogs = async (payload) =>
   axios.get(`/v1/tariff-grids/${payload.id}/apply-logs`, { params: payload?.params })
 

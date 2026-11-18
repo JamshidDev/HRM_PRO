@@ -27,7 +27,7 @@ const _viewers = async (params) => {
 }
 
 const _addViewer = async (payload) => {
-  return await axios.post('/v1/economist/salary-hidden/viewers', payload)
+  return await axios.post('/v1/economist/salary-hidden/viewers', payload, { silentSuccess: true })
 }
 
 const _removeViewer = async (id) => {

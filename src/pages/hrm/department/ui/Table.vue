@@ -5,9 +5,10 @@ import { useAccountStore, useComponentStore, useDepartmentStore } from '@/store/
 import UIHelper from '@/utils/UIHelper.js'
 import Utils from '@/utils/Utils.js'
 import { Delete20Regular, Edit32Regular, Eye16Regular, OpenFolder24Filled } from '@vicons/fluent'
-import FolderIcon from '@/assets/icons/figFolder.svg'
+import FolderIcon from '@/assets/icons/figFolderFilled.svg'
 import ChevronIcon from '@/assets/icons/figChevronDown.svg'
-import FileIcon from '@/assets/icons/figFile.svg'
+import FileIcon from '@/assets/icons/figDocumentListFilled.svg'
+import FolderOpenIcon from '@/assets/icons/figFolderOpenFilled.svg'
 
   const { t } = i18n.global
 
@@ -29,6 +30,13 @@ import FileIcon from '@/assets/icons/figFile.svg'
   // Ichki bo'limi yo'q bo'linma — papka emas, fayl ikonkasi. Qoida Naive (treemate) bilan bir xil:
   // `isLeaf`, bo'lmasa `children` yo'qligi — ya'ni strelkasi yo'q qatorlar.
   const isLeafRow = (row) => row.isLeaf ?? !row.children
+
+  // Papka ikonkasi bosilsa — shu katakdagi strelkani bosamiz: yuklash va ochilish
+  // animatsiyasi (UITable akkordeoni) strelka bilan aynan bir xil ishlaydi.
+  const toggleFolder = (e) => {
+    e.stopPropagation()
+    e.currentTarget.closest('td')?.querySelector('.n-data-table-expand-trigger')?.click()
+  }
 
   const renderExpandIcon = ({ expanded }) =>
     h(
@@ -218,13 +226,22 @@ import FileIcon from '@/assets/icons/figFile.svg'
     </template>
 
     <template #cell-name="{ row }">
-      <span class="department-tree__folder">
+      <span
+        class="department-tree__folder"
+        :class="isLeafRow(row) ? 'department-tree__folder--file' : 'department-tree__folder--dir'"
+        @click="!isLeafRow(row) && toggleFolder($event)"
+      >
         <FileIcon v-if="isLeafRow(row)" />
-        <FolderIcon v-else />
+        <template v-else>
+          <!-- Ochiq/yopiq holat CSS'da: shu katakdagi strelka `--expanded` bo'lsa ochiq papka -->
+          <FolderIcon class="department-tree__icon-closed" />
+          <FolderOpenIcon class="department-tree__icon-open" />
+        </template>
       </span>
-      <span class="department-tree__name" :class="row.__parent ? 'text-textColor1' : 'font-medium'">
+      <!-- Nom bir qatorda; sig'maganini «...» bilan kesamiz, to'liq nom — hover'da -->
+      <n-ellipsis class="department-tree__name" :class="row.__parent ? 'text-textColor1' : 'font-medium'">
         {{ row[store.headerLang] }}
-      </span>
+      </n-ellipsis>
     </template>
 
     <template #cell-worker_rate="{ row }">
@@ -304,22 +321,43 @@ import FileIcon from '@/assets/icons/figFile.svg'
 
   .department-tree__folder {
     display: inline-flex;
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     margin-right: 6px;
-    vertical-align: -0.25em;
+    vertical-align: -0.3em;
     color: var(--fig-text-tertiary);
   }
 
   .department-tree__folder svg {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
   }
 
-  /* Uzun nom papka ostiga emas, o'z ustunida o'raladi (daraja + strelka 20 + papka 24px) */
-  .department-tree__name {
-    display: inline-block;
-    max-width: calc(100% - var(--indent-offset, 0) * 20px - 44px);
+  /* Papka ochilganda — ochiq papka ikonkasi */
+  .department-tree__icon-open,
+  .department-tree__cell:has(.n-data-table-expand-trigger--expanded) .department-tree__icon-closed {
+    display: none;
+  }
+
+  .department-tree__cell:has(.n-data-table-expand-trigger--expanded) .department-tree__icon-open {
+    display: block;
+  }
+
+  /* Ranglar «Hisobot yuklash» sahifasidagi daraxt bilan bir xil:
+     papka — binafsha, fayl (ichki bo'limi yo'q) — asosiy ko'k. */
+  .department-tree__folder--dir {
+    color: var(--fig-icon-purple);
+    cursor: pointer;
+  }
+
+  .department-tree__folder--file {
+    color: var(--primary-color);
+  }
+
+  /* Nom bir qatorda qoladi va «...» bilan kesiladi. Joy: daraja × 20 + strelka 20 + papka 26 +
+     elementlar orasidagi bo'shliqlar (~6px). `.n-ellipsis` bilan — Naive'ning `max-width: 100%` idan ustun. */
+  .department-tree__name.n-ellipsis {
+    max-width: calc(100% - var(--indent-offset, 0) * 20px - 52px);
     vertical-align: top;
   }
 </style>

@@ -49,8 +49,11 @@ const _summary = async (payload) => {
 }
 
 // Barcha o'zgargan qatorlar bitta so'rovda (bitta tranzaksiya).
+// silentSuccess: «N ta qator saqlandi» xabarini store o'zi ko'rsatadi — backend xabari bilan ikki toast chiqmasin.
 const _saveRows = async (payload) => {
-  return await axios.put(`/v1/hr/vacation-schedule/${payload.id}/rows`, payload.data)
+  return await axios.put(`/v1/hr/vacation-schedule/${payload.id}/rows`, payload.data, {
+    silentSuccess: true
+  })
 }
 
 // Ro'yxat filtrlari bilan Excel fayl.
@@ -61,8 +64,11 @@ const _export = async (payload) => {
   })
 }
 
+// silentSuccess: «N ta xodim qo'shildi» xabarini store o'zi ko'rsatadi.
 const _sync = async (payload) => {
-  return await axios.post(`/v1/hr/vacation-schedule/${payload.id}/sync`)
+  return await axios.post(`/v1/hr/vacation-schedule/${payload.id}/sync`, undefined, {
+    silentSuccess: true
+  })
 }
 
 export default {
