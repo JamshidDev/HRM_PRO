@@ -144,6 +144,15 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
     isToDateDisabled(ts) {
       return this.isPastDay(ts) || (!!this.payload.from && ts < this.payload.from)
     },
+    // Korxona/lavozim/tur almashsa — eski korxonaning bo'lim va lavozimi qolib ketmasin.
+    resetPlace() {
+      this.department_id = []
+      this.departmentCheck = []
+      this.allPositions = []
+      this.payload.department_position_id = null
+      this.payload.temporarily_absent = null
+      useComponentStore().departmentPositionList = []
+    },
     _directors(id = undefined, callback) {
       this.directorLoading = true
       $ApiService.componentService

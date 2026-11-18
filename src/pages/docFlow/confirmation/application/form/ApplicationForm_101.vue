@@ -25,6 +25,7 @@
 
   // Rahbar va kelishuvchilarni xodim tanlamaydi: rahbar backendda lavozimdan, kelishuvchilarni HR belgilaydi.
   const onSelectApplication = (v) => {
+    store.resetPlace()
     if (isPosition.value) {
       onFocusPosition()
     } else {
@@ -34,6 +35,7 @@
   }
 
   const onChangeStructure = (v) => {
+    if (v?.[0]?.id !== store.confirmParams.organization_id) store.resetPlace()
     store.organization_id = v
     store.orgError = false
     if (v.length > 0) store.confirmParams.organization_id = v[0].id
@@ -43,6 +45,7 @@
     let index = store.myPositionList.findIndex((v) => v.id === id)
     if (index !== -1) {
       const org = store.myPositionList[index]?.organization  // org - to'liq object
+      if (org?.id !== store.confirmParams.organization_id) store.resetPlace()
       store.organization_id = org ? [org] : []
       store.confirmParams.organization_id = org?.id
     }
