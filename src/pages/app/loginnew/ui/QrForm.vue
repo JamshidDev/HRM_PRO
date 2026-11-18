@@ -1,5 +1,5 @@
 <script setup>
-  import { QrCode24Regular, ArrowClockwise24Regular } from '@vicons/fluent'
+  import { QrCode24Regular, ArrowClockwise24Regular, Phone24Regular } from '@vicons/fluent'
   import { useQrLoginStore } from '@/store/modules/index.js'
 
   const store = useQrLoginStore()
@@ -42,7 +42,9 @@
           <n-icon :size="30" class="text-gray-500" :component="QrCode24Regular" />
           <p class="text-sm font-medium text-gray-700">
             {{
-              store.status === 'error' ? $t('loginPage.qr.connectionError') : $t('loginPage.qr.expired')
+              store.status === 'error'
+                ? $t('loginPage.qr.connectionError')
+                : $t('loginPage.qr.expired')
             }}
           </p>
           <n-button size="small" secondary class="rounded-lg!" @click="store.refresh()">
@@ -51,6 +53,19 @@
             </template>
             {{ $t('loginPage.qr.refresh') }}
           </n-button>
+        </div>
+
+        <!-- Telefon jonli tekshiruvdan o'tdi — tasdiq kutilmoqda -->
+        <div
+          v-if="store.status === 'claimed'"
+          class="absolute inset-0 bg-white/95 flex flex-col items-center justify-center gap-3 px-4 text-center"
+        >
+          <n-icon
+            :size="30"
+            class="text-[var(--login-link)] qr-pulse"
+            :component="Phone24Regular"
+          />
+          <p class="text-sm font-medium text-gray-700">{{ $t('loginPage.qr.claimed') }}</p>
         </div>
 
         <!-- Tasdiqlandi — brauzer kirmoqda -->
@@ -80,6 +95,16 @@
     border: 3px solid rgba(18, 121, 240, 0.18);
     border-top-color: var(--login-link);
     animation: qr-loader-spin 0.8s linear infinite;
+  }
+
+  @keyframes qr-live-blink {
+    50% {
+      opacity: 0.25;
+    }
+  }
+
+  .qr-pulse {
+    animation: qr-live-blink 1.4s ease-in-out infinite;
   }
 
   @keyframes qr-loader-spin {

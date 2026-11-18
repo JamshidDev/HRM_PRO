@@ -33,11 +33,11 @@ const _deleteConfirmation = async (payload) => {
 }
 
 const _updateDetail = async (payload) => {
-  return await axios.put(`/v1/structure/reports-detail/${payload.id}`, payload.data)
+  return await axios.put(`/v1/structure/reports-detail/${payload.id}`, payload.data, { silentSuccess: true })
 }
 
 const _deleteDetail = async (payload) => {
-  return await axios.delete(`/v1/structure/reports-detail/${payload.id}`)
+  return await axios.delete(`/v1/structure/reports-detail/${payload.id}`, { silentSuccess: true })
 }
 
 const _excel = async (payload) => {

@@ -102,7 +102,7 @@ const _timekeepers = async (payload) => {
 }
 
 const _updateUserPassword = async (payload) => {
-  return await axios.post(`/v1/extra/users/update-password`, payload.data)
+  return await axios.post(`/v1/extra/users/update-password`, payload.data, { silentSuccess: true })
 }
 
 

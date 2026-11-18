@@ -5,7 +5,11 @@ const _index = async (payload) => {
 }
 
 const _vacationCalculate = async (payload) => {
-  return await axios.post(`/v1/hr/vacations/calculate`, payload.data, { params: payload.params })
+  return await axios.post(`/v1/hr/vacations/calculate`, payload.data, {
+    // silent: chaqiruvchi o'z xabarini ko'rsatadi (ikki toast chiqmasin)
+    silentSuccess: payload.silent,
+    params: payload.params
+  })
 }
 
 const _reasonTypes = async (payload) => {

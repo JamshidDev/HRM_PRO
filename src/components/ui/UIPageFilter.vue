@@ -80,6 +80,14 @@
     inlineActions: {
       type: Boolean,
       default: false
+    },
+    /**
+     * Qidiruv kengligi o'z matniga moslashadi (desktop): placeholder yoki yozilgan matn
+     * to'liq ko'rinsin. Eng kami — odatiy 264px. Default `false` — boshqa sahifalar o'zgarmaydi.
+     */
+    autoWidthSearch: {
+      type: Boolean,
+      default: false
     }
   })
 
@@ -139,9 +147,34 @@
   watch(filterOpen, (v) => onFilterShow(v))
 
   onMounted(() => {
+    measureSearch()
     if (!props.autoFocusInput) return
     searchInputRef.value?.focus()
   })
+
+  // `autoWidthSearch`: matn kengligi canvas'da o'lchanadi (inputning o'z shrifti bilan).
+  // Naive `autosize` faqat yozilgan qiymatni o'lchaydi, placeholder'ni emas — shuning uchun o'zimiz.
+  const SEARCH_MIN_W = 264
+  // Chap/o'ng padding 16+16, lupa 13.5 + 8, o'ngdagi ✕ / spinner 16 + 8, chegara 2.
+  const SEARCH_CHROME_W = 84
+  const searchAutoW = ref(SEARCH_MIN_W)
+  let measureCtx = null
+  const measureSearch = () => {
+    if (!props.autoWidthSearch) return
+    const el = searchInputRef.value?.inputElRef
+    if (!el) return
+    measureCtx ||= document.createElement('canvas').getContext('2d')
+    measureCtx.font = getComputedStyle(el).font
+    const text = searchModel.value || props.placeholder || ''
+    const w = Math.ceil(measureCtx.measureText(text).width) + SEARCH_CHROME_W
+    searchAutoW.value = Math.max(SEARCH_MIN_W, w)
+  }
+  watch([searchModel, () => props.placeholder], () => nextTick(measureSearch))
+  const searchAutoStyle = computed(() =>
+    props.autoWidthSearch && !isMobile.value
+      ? { width: `${searchAutoW.value}px`, maxWidth: '100%' }
+      : null
+  )
 
   onUnmounted(() => {
     window.removeEventListener('resize', updateFilterMaxHeight)
@@ -158,13 +191,17 @@
          flex qatori. -->
     <div class="ui-filter-bar flex flex-col items-center md:flex-row gap-4">
       <div
-        :class="[slots.filterSearch || slots.filterBefore ? 'md:max-w-full' : 'md:max-w-[264px]!']"
+        :class="[
+          slots.filterSearch || slots.filterBefore || autoWidthSearch ? 'md:max-w-full' : 'md:max-w-[264px]!'
+        ]"
         class="ui-filter-bar__search w-full md:min-w-0 flex items-center gap-2"
       >
         <slot name="filterBefore"></slot>
         <n-input
           ref="searchInputRef"
-          class="ui-page-search skip-format w-full md:max-w-[264px]! md:w-full!"
+          class="ui-page-search skip-format w-full"
+          :class="{ 'md:max-w-[264px]! md:w-full!': !autoWidthSearch }"
+          :style="searchAutoStyle"
           v-if="showSearchInput"
           v-model:value="searchModel"
           type="text"

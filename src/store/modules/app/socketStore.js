@@ -21,6 +21,17 @@ const allowedEvents = [
 ]
 const allowedAlertTypes = ['success', 'error', 'info', 'warning']
 
+// Hozir ochiq socket — store'dan TASHQARIDA saqlanadi. `getActivePinia().reset()` (login, rol almashtirish,
+// «admin sifatida kirish») store'dagi `socket` ni null qiladi, lekin ulanishni uzmaydi — eski socket
+// «yetim» bo'lib ishlayverardi va keyingi `initSocket` dan so'ng har bildirishnoma IKKI marta kelardi.
+let liveSocket = null
+const closeLiveSocket = () => {
+  if (!liveSocket) return
+  liveSocket.removeAllListeners()
+  liveSocket.disconnect()
+  liveSocket = null
+}
+
 export const useSocketStore = defineStore('useSocketStore', {
   state: () => ({
     socket: null,
@@ -51,6 +62,8 @@ export const useSocketStore = defineStore('useSocketStore', {
       const notificationSound = useNotificationSound()
       const notificationStore = useNotificationStore()
 
+      // Bir vaqtda faqat bitta ulanish: eskisi (yetim bo'lsa ham) yopiladi.
+      closeLiveSocket()
       this.currentUserId = userId
       this.socket = io(socketUrl, {
         // Har (qayta) ulanishda yangi DPoP imzo — token brauzer kalitiga bog'langan.
@@ -70,6 +83,7 @@ export const useSocketStore = defineStore('useSocketStore', {
       // Server rad etsa socket.io o'zi qayta ulanmaydi — soat HTTP javobidan moslangach yangi imzo bilan qayta (≤3).
       let deniedRetries = 0
       const socket = this.socket
+      liveSocket = socket
       socket.on('connect_error', () => {
         if (socket.active || deniedRetries >= 3) return
         deniedRetries += 1
@@ -245,10 +259,9 @@ export const useSocketStore = defineStore('useSocketStore', {
       }, 3000)
     },
     disconnect() {
-      if (this.socket) {
-        this.socket.disconnect()
-        this.socket = null
-      }
+      if (this.socket && this.socket !== liveSocket) this.socket.disconnect()
+      closeLiveSocket()
+      this.socket = null
     }
   }
 })

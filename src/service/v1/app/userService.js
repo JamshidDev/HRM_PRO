@@ -37,6 +37,11 @@ const _updatePin = async (payload) => {
   return await axios.put(`/v1/admin/users/${payload?.id}/pin`, payload.data)
 }
 
+// Foydalanuvchilar ro'yxati Excel'i — fon vazifasi (Yuklashlar tarixi).
+const _export = async (payload) => {
+  return await axios.get(`/v1/admin/users/export`, { params: payload.params })
+}
+
 const _onSpam = async (payload) => {
   return await axios.post(`/v1/admin/users/${payload.id}/block`, payload?.data)
 }
@@ -64,6 +69,7 @@ const _delete = async (payload) => {
 }
 
 export default {
+  _export,
   _index,
   _create,
   _myRoles,

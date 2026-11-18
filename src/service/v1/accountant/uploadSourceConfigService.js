@@ -5,7 +5,7 @@ const _index = async () => {
 }
 
 const _upsert = async (payload) => {
-  return await axios.post('/v1/economist/upload-source-config', payload)
+  return await axios.post('/v1/economist/upload-source-config', payload, { silentSuccess: true })
 }
 
 const _delete = async (org_id) => {

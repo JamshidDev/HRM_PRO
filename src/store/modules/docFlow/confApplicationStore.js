@@ -127,8 +127,6 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
     ],
     activeTab: 101,
 
-    statisticData: [],
-    statisticLoading: false,
 
     allPositions: [],
     allPositionLoading: false,
@@ -187,17 +185,6 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
         .finally(() => {
           this.loading = false
           this._index()
-        })
-    },
-    _statistic() {
-      this.statisticLoading = true
-      $ApiService.applicationService
-        ._statistic()
-        .then((res) => {
-          this.statisticData = res.data
-        })
-        .finally(() => {
-          this.statisticLoading = false
         })
     },
     _create() {

@@ -39,7 +39,7 @@ const _acceptOffer = async (payload) => {
 // Profil > Xavfsizlik: kirish usulini yoqish/o'chirish (joriy parol bilan tasdiqlanadi).
 // FAQAT web — mobil ilova bu sozlamani o'zgartira olmaydi.
 const _updateLoginMethod = async (payload) => {
-  return await axios.put(`/v1/user/security/login-methods`, payload.data)
+  return await axios.put(`/v1/user/security/login-methods`, payload.data, { silentSuccess: true })
 }
 
 const _ssoLogins = async (payload) => {
@@ -70,7 +70,7 @@ const _sessions = async () => {
 }
 // Seansni yakunlash (60 daqiqalik himoya backendda tekshiriladi).
 const _revokeSession = async (payload) => {
-  return await axios.delete(`/v1/user/sessions/${payload.id}`)
+  return await axios.delete(`/v1/user/sessions/${payload.id}`, { silentSuccess: true })
 }
 const _revokeOtherSessions = async () => {
   return await axios.post(`/v1/user/sessions/revoke-others`)

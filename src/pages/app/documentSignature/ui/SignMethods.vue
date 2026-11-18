@@ -32,14 +32,31 @@
   const rejectRef = ref(null)
 
   const methods = [
-    { key: 'draw', icon: Signature20Regular, label: 'signature.methodDraw', hint: 'signature.methodDrawHint' },
-    { key: 'eimzo', icon: Key20Regular, label: 'signature.methodEimzo', hint: 'signature.methodEimzoHint' },
-    { key: 'mobile', icon: Phone20Regular, label: 'signature.methodMobile', hint: 'signature.methodMobileHint' }
+    {
+      key: 'draw',
+      icon: Signature20Regular,
+      label: 'signature.methodDraw',
+      hint: 'signature.methodDrawHint'
+    },
+    {
+      key: 'eimzo',
+      icon: Key20Regular,
+      label: 'signature.methodEimzo',
+      hint: 'signature.methodEimzoHint'
+    },
+    {
+      key: 'mobile',
+      icon: Phone20Regular,
+      label: 'signature.methodMobile',
+      hint: 'signature.methodMobileHint'
+    }
   ]
 
   const onEimzo = () => {
     signStore._signatureLink(route.query.token, () => store.markLinkSigned())
   }
+
+  const current = computed(() => methods.find((m) => m.key === tab.value))
 
   // Pastki qatordagi asosiy tugma — tanlangan usulga mos matn, holat va amal.
   const action = computed(() => {
@@ -64,85 +81,134 @@
 </script>
 
 <template>
-  <div id="draw-signature" class="w-full max-w-[800px] mx-auto px-4 pt-10 mb-[160px]">
-    <div class="rounded-xl border border-surface-line bg-surface-section p-4 sm:p-5">
-      <h3 class="text-lg font-semibold text-textColor1">{{ $t('signature.signTitle') }}</h3>
+  <div id="draw-signature" class="sign-card flex w-full scroll-mt-24 flex-col p-5 sm:p-6">
+    <h3 class="text-lg font-semibold text-textColor0">{{ $t('signature.signTitle') }}</h3>
+    <!-- Havola kim uchun ekanligi -->
+    <p class="sign-short-hide mt-1 flex gap-1.5 text-[13px] leading-5 text-textColor2">
+      <n-icon size="16" class="mt-0.5 shrink-0 text-primary"><Info16Regular /></n-icon>
+      <span>{{ $t('signature.signatureWorker', { name: store.signatureWorker }) }}</span>
+    </p>
 
-      <!-- Havola kim uchun ekanligi -->
-      <div
-        class="mt-3 flex gap-2 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2 text-sm text-textColor2"
+    <!-- Usul tanlash: katta plitkalar (ikonka tepada, nomi ostida) -->
+    <div class="sign-short-hide mt-5 text-xs font-semibold uppercase tracking-wide text-textColor3">
+      {{ $t('signature.methodTitle') }}
+    </div>
+    <div class="mt-2 grid grid-cols-3 gap-2" role="radiogroup">
+      <button
+        v-for="m in methods"
+        :key="m.key"
+        type="button"
+        role="radio"
+        :aria-checked="tab === m.key"
+        class="sign-tile"
+        :class="{ 'is-active': tab === m.key }"
+        @click="tab = m.key"
       >
-        <n-icon size="16" class="mt-0.5 shrink-0 text-primary"><Info16Regular /></n-icon>
-        <span>{{ $t('signature.signatureWorker', { name: store.signatureWorker }) }}</span>
-      </div>
+        <span class="sign-tile__icon">
+          <n-icon size="20"><component :is="m.icon" /></n-icon>
+        </span>
+        <span class="sign-tile__label">{{ $t(m.label) }}</span>
+      </button>
+    </div>
+    <p class="sign-short-hide mt-2 text-xs text-textColor3">{{ $t(current.hint) }}</p>
 
-      <!-- Usul tanlash -->
-      <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2" role="radiogroup">
-        <button
-          v-for="m in methods"
-          :key="m.key"
-          type="button"
-          role="radio"
-          :aria-checked="tab === m.key"
-          class="flex items-center gap-2.5 rounded-lg border px-3 py-2.5 text-left transition-colors"
-          :class="
-            tab === m.key
-              ? 'border-primary bg-primary/5'
-              : 'border-surface-line hover:bg-surface-ground'
-          "
-          @click="tab = m.key"
-        >
-          <span
-            class="flex size-8 shrink-0 items-center justify-center rounded-full"
-            :class="tab === m.key ? 'bg-primary text-white' : 'bg-surface-ground text-textColor2'"
-          >
-            <n-icon size="18"><component :is="m.icon" /></n-icon>
-          </span>
-          <span class="min-w-0">
-            <span
-              class="block text-sm font-medium"
-              :class="tab === m.key ? 'text-primary' : 'text-textColor1'"
-            >
-              {{ $t(m.label) }}
-            </span>
-            <span class="block truncate text-xs text-textColor3">{{ $t(m.hint) }}</span>
-          </span>
-        </button>
-      </div>
-
-      <!-- Tanlangan usul maydoni -->
-      <div class="mt-4">
-        <SignatureBox v-if="tab === 'draw'" ref="boxRef" />
-        <div
-          v-else-if="tab === 'eimzo'"
-          class="rounded-xl border border-dashed border-surface-line bg-surface-ground p-6 text-center"
-        >
-          <n-icon size="36" class="text-primary"><Key24Regular /></n-icon>
-          <p class="text-sm text-textColor2 mt-2">{{ $t('signature.eimzoHint') }}</p>
-        </div>
-        <MobileEimzo v-else ref="mobileRef" :is-phone="isPhone" />
-      </div>
-
-      <!-- Qaror qatori: rad etish va imzolash -->
+    <!-- Tanlangan usul maydoni -->
+    <!-- Kompyuterda maydon panelda qolgan joyni egallaydi — panel oyna balandligiga sig'adi, aylantirilmaydi -->
+    <div class="mt-3 flex flex-col lg:min-h-0 lg:flex-1">
+      <SignatureBox v-if="tab === 'draw'" ref="boxRef" />
       <div
-        class="mt-5 pt-4 border-t border-surface-line flex flex-wrap items-center justify-between gap-2"
+        v-else-if="tab === 'eimzo'"
+        class="rounded-2xl border border-dashed border-surface-line bg-surface-ground p-6 text-center"
       >
-        <n-button secondary type="error" @click="rejectRef?.open()">
-          <template #icon><DismissCircle20Regular /></template>
-          {{ $t('documentPage.signature.rejectTitle') }}
-        </n-button>
-        <n-button
-          v-if="action"
-          type="primary"
-          :loading="action.loading"
-          :disabled="action.disabled"
-          @click="action.run"
-        >
-          <template #icon><Checkmark20Filled /></template>
-          {{ $t(action.label) }}
-        </n-button>
+        <n-icon size="36" class="text-primary"><Key24Regular /></n-icon>
+        <p class="mt-2 text-sm text-textColor2">{{ $t('signature.eimzoHint') }}</p>
       </div>
+      <MobileEimzo v-else ref="mobileRef" :is-phone="isPhone" />
+    </div>
+
+    <!-- Asosiy amal — katta, to'liq kenglikda; rad etish — ostida sokin havola -->
+    <!-- n-button `block` margin'ni yutadi — oraliq o'rovchi div'da -->
+    <div v-if="action" class="mt-4">
+      <n-button
+        type="primary"
+        size="large"
+        block
+        :loading="action.loading"
+        :disabled="action.disabled"
+        @click="action.run"
+      >
+        <template #icon><Checkmark20Filled /></template>
+        {{ $t(action.label) }}
+      </n-button>
+    </div>
+    <!-- Rad etish — aniq tugma (havola emas): asosiy tugma ostida, qizil chiziqli -->
+    <div class="mt-3">
+      <n-button type="error" secondary size="large" block @click="rejectRef?.open()">
+        <template #icon><DismissCircle20Regular /></template>
+        {{ $t('documentPage.signature.rejectTitle') }}
+      </n-button>
     </div>
     <LinkReject ref="rejectRef" />
   </div>
 </template>
+
+<style scoped>
+  /* Past ekranli kompyuterda (oyna < 760px) ikkinchi darajali yozuvlar yashiriladi — panel aylantirilmasdan sig'adi */
+  @media (min-width: 976px) and (max-height: 760px) {
+    .sign-short-hide {
+      display: none;
+    }
+    .sign-short-hide + .grid {
+      margin-top: 16px;
+    }
+  }
+  .sign-tile {
+    display: flex;
+    min-height: 92px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 6px;
+    border: 1.5px solid var(--color-surface-line);
+    border-radius: 16px;
+    text-align: center;
+    background: var(--color-surface-section);
+    cursor: pointer;
+    transition:
+      border-color 0.15s,
+      background-color 0.15s,
+      box-shadow 0.15s;
+  }
+  .sign-tile:hover {
+    border-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
+  }
+  .sign-tile.is-active {
+    border-color: var(--color-primary);
+    background: color-mix(in srgb, var(--color-primary) 6%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 14%, transparent);
+  }
+  .sign-tile__icon {
+    display: flex;
+    width: 38px;
+    height: 38px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    color: var(--color-textColor2);
+    background: var(--color-surface-ground);
+  }
+  .sign-tile.is-active .sign-tile__icon {
+    color: #fff;
+    background: var(--color-primary);
+  }
+  .sign-tile__label {
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--color-textColor1);
+  }
+  .sign-tile.is-active .sign-tile__label {
+    color: var(--color-primary);
+  }
+</style>
