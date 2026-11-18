@@ -10,7 +10,6 @@
   import i18n from '@/i18n'
 
   const t = i18n.global.t
-  const DRAFT_CONFIRMATION = 6
 
   const accStore = useAccountStore()
 
@@ -38,13 +37,14 @@
     officeAppRef.value.openPdf(v.documentId, Utils.documentModels.workerApplication, v.signatureId)
   }
 
-  // Ariza holati tablari: 0 Hammasi (standart), 1 Jarayonda, 6 Qoralama, 3 Tasdiqlangan, 4 Rad etilgan.
+  // Yagona holat tablari (jadvaldagi «Holati» bilan bir xil).
   const statusTabs = computed(() => [
-    { id: 0, name: t('applicationPage.hrTabs.all') },
-    { id: 1, name: t('content.Process') },
-    { id: DRAFT_CONFIRMATION, name: t('applicationPage.draft') },
-    { id: 3, name: t('applicationPage.approved') },
-    { id: 4, name: t('content.Rejected') }
+    { id: 'all', name: t('applicationPage.hrTabs.all') },
+    { id: 'draft', name: t('applicationPage.statuses.draft') },
+    { id: 'checking', name: t('applicationPage.statuses.checking') },
+    { id: 'process', name: t('applicationPage.statuses.process') },
+    { id: 'approved', name: t('applicationPage.statuses.approved') },
+    { id: 'rejected', name: t('applicationPage.statuses.rejected') }
   ])
   const onFilterChange = () => {
     store.params.page = 1
@@ -107,7 +107,7 @@
       </template>
     </UIModal>
     <UISegmentTabs
-      v-model="store.params.application_confirmation"
+      v-model="store.params.app_state"
       :tabs="statusTabs"
       @update:model-value="onFilterChange"
     />

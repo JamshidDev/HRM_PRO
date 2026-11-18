@@ -66,7 +66,9 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
       page: 1,
       per_page: 15,
       search: null,
-      application_confirmation: 0
+      application_confirmation: 0,
+      // Yagona holat tabi: all | draft | checking | process | approved | rejected.
+      app_state: 'all'
     },
     // Yangi yaratilgan qoralama qatori — sahifa uni ochib imzolashni so'raydi.
     signPromptRow: null,
@@ -207,7 +209,12 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
     _index(callback) {
       this.loading = true
       $ApiService.applicationService
-        ._confIndex({ params: this.params })
+        ._confIndex({
+          params: {
+            ...this.params,
+            app_state: this.params.app_state === 'all' ? undefined : this.params.app_state
+          }
+        })
         .then((res) => {
           this.list = res.data.data.data
           this.totalItems = res.data.data.total
@@ -268,7 +275,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
           // Qoralama: modal yopiladi, hujjat ochilib imzolash so'raladi.
           this.visible = false
           this.params.page = 1
-          this.params.application_confirmation = 6
+          this.params.app_state = 'draft'
           this._index(() => {
             this.signPromptRow =
               this.list.find((v) => v.worker_application?.id === createdId) ?? null
