@@ -7,6 +7,7 @@ export const useUserStore = defineStore('user', {
   state: () => ({
     list: [],
     loading: false,
+    exportLoading: false,
     saveLoading: false,
     deleteLoading: false,
     visible: false,
@@ -93,6 +94,25 @@ export const useUserStore = defineStore('user', {
         })
         .finally(() => {
           this.pinSaveLoading = false
+        })
+    },
+    // Ro'yxat Excel'i joriy filtr bo'yicha — fon vazifasi.
+    _export(onSuccess) {
+      this.exportLoading = true
+      const params = {
+        search: this.params.search || undefined,
+        role: this.params.role || undefined,
+        eimzo_skip: this.params.eimzo_skip || undefined,
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined
+      }
+      $ApiService.userService
+        ._export({ params })
+        .then((res) => {
+          onSuccess?.()
+          window.$message?.success(res.data?.message)
+        })
+        .finally(() => {
+          this.exportLoading = false
         })
     },
     _index() {
