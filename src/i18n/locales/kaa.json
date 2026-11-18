@@ -3707,7 +3707,22 @@
       "more": "{n} saat kóp",
       "less": "{n} saat kem",
       "typeOnly": "saat birdey, túr ózgergen",
-      "empty": "bos (0 saat)"
+      "empty": "bos (0 saat)",
+      "typeAlso": "túr ózgerdi"
+    },
+    "changes": {
+      "title": "Ózgerisler tariyxı",
+      "short": "Tariyx",
+      "at": "Waqıt",
+      "worker": "Xızmetker",
+      "day": "Kún",
+      "before": "Aldın",
+      "after": "Keyin",
+      "user": "Kim ózgertti",
+      "allWorkers": "Barlıq xızmetkerler",
+      "allDays": "Barlıq kúnler",
+      "cellEmpty": "Bul katak ele ózgertilmegen",
+      "rowDiff": "Sistema esabınan parq: {cells} kún ózgertilgen. Tariyxtı kóriw ushın basıń"
     },
     "lockClose": "Tabeldi jabıw",
     "lockOpen": "Tabeldi ashıw",
@@ -3778,6 +3793,7 @@
       "membership": "Xızmetker túri",
       "membershipOwn": "Jumısshı xızmetkerler",
       "membershipGuest": "Miyman",
+      "membershipNotAdded": "Biriktirilmegenler",
       "notWorking": "Islemeydi"
     },
     "workDurationPage": {
@@ -6754,6 +6770,37 @@
       "secretHidden": "Jabıq gilt qáwipsizlik ushın ashıq saqlanbaydı — onı tek \"Giltti almastırıw\" arqalı jańalaw múmkin.",
       "copyAll": "Barlıǵın kóshirip alıw",
       "copyHint": "Ekranda jasırın — \"Barlıǵın kóshirip alıw\"da ashıq halında keledi."
+    },
+    "tester": {
+      "button": "API test",
+      "title": "Integraciya API test",
+      "secretKey": "Jabıq gilt (secret)",
+      "send": "Jiberiw",
+      "permission": "Ruqsat",
+      "needPathParam": "Jol parametrin kiritiń",
+      "badJson": "Body JSON nadurıs",
+      "params": "Parametrler",
+      "checking": "Giltler tekserilmekte…",
+      "keysValid": "Giltler durıs",
+      "keysInvalid": "Giltler jaramsız:",
+      "role": "Rol",
+      "permissionsCount": "Ruqsatlar: {n}",
+      "scopeAll": "Barlıq kárxanalar",
+      "scopeOrgs": "{n} kárxana",
+      "inactive": "Aktiv emes",
+      "noPermission": "Rolde bul API ruqsatı joq",
+      "check": "Tekseriw",
+      "diag": {
+        "ok": "Islep atır",
+        "network": "Serverge jalǵanıp bolmadı (tarmaq yamasa CORS)",
+        "s400": "Soraw nadurıs — parametrlerdi tekseriń",
+        "s401": "Gilt, qol yamasa waqıt nadurıs (yamasa client aktiv emes)",
+        "s403": "Clientte bul API ruqsatı joq yamasa IP/kárxana sheklewi bar",
+        "s404": "Tabılmadı — jol yamasa parametr mánisi nadurıs",
+        "s422": "API juwap berdi — májbúriy parametrler jetispeydi yamasa nadurıs",
+        "s429": "Sorawlar limitinen asıp ketti",
+        "server": "Server qátesi"
+      }
     }
   },
   "salaryAccess": {
@@ -6887,7 +6934,9 @@
     "holidayGreetings": "Bayram qutlıqlawları",
     "workerSchedules": "Nawbetshilik grafigi",
     "workerScheduleSwap": "Grafikti almastırıw",
-    "dailyAttendance": "Kúnlik qatnasıq"
+    "dailyAttendance": "Kúnlik qatnasıq",
+    "oneCAttendance": "1C: kúnlik qatnasıq",
+    "businessTripsIncoming": "Sapar menen kelgen xızmetkerler"
   },
   "kpiPage": {
     "name": "KPI kórsetkishler",
@@ -7142,7 +7191,26 @@
     "editedBadge": "Ózgertilgen",
     "zoomIn": "Úlkeytiw",
     "zoomOut": "Kishireytiw",
-    "zoomFit": "Bet enine sáykeslew"
+    "zoomFit": "Bet enine sáykeslew",
+    "saveRejectedTitle": "Shablon saqlanbadı",
+    "tabTemplates": "Shablonlar",
+    "noChanges": "Saqlanatuǵın ózgeris joq",
+    "discardTitle": "Ózgertiwdi biykarlaw",
+    "discardText": "Saqlanbaǵan ózgerisler óshiriledi hám shablon aqırǵı saqlanǵan halında qayta ashıladı. Dawam etesiz be?",
+    "stateSaved": "Saqlandı · {time}",
+    "stateRejected": "Saqlanbadı — sebebin kóriw",
+    "stateRejectedHint": "Basıń — biykarlanıw sebebi",
+    "updatedBy": "Ózgertken",
+    "editorError": {
+      "unsupported": "Server bul funkciyanı ele qollamaydı",
+      "unsupportedHint": "Backend jańalanbaǵan — shablon redaktorınıń endpointleri tabılmadı. Administratorǵa múrájáát etiń.",
+      "unsigned": "OnlyOffice sazlanbaǵan",
+      "unsignedHint": "Serverde OnlyOffice JWT sırı (ONLYOFFICE_JWT_SECRET) joq — redaktor ashılmaydı.",
+      "failed": "Redaktor sazlawların alıp bolmadı",
+      "failedHint": "Server qáte qaytardı. Betti jańalap kóriń.",
+      "unreachable": "OnlyOffice serverine jalǵanıp bolmadı",
+      "unreachableHint": "Hújjet serveri juwap bermey atır yamasa mánzili nadurıs. Keyinirek urınıp kóriń."
+    }
   },
   "turnstileDownload": {
     "title": "Hádiyselerdi júklew"
