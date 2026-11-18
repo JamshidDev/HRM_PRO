@@ -6467,7 +6467,8 @@
       "all": "All",
       "locationState": "Place status",
       "hasLocation": "Assigned",
-      "noLocation": "Not assigned"
+      "noLocation": "Not assigned",
+      "place": "Turnstile location"
     },
     "source": {
       "department": "Department place",

@@ -6525,7 +6525,8 @@
       "all": "Hammasi",
       "locationState": "Joylashuv holati",
       "hasLocation": "Belgilangan",
-      "noLocation": "Belgilanmagan"
+      "noLocation": "Belgilanmagan",
+      "place": "Turniket lokatsiyasi"
     },
     "source": {
       "department": "Bo'lim joyi",

@@ -6179,7 +6179,8 @@
       "all": "Ҳаммаси",
       "locationState": "Жойлашув ҳолати",
       "hasLocation": "Белгиланган",
-      "noLocation": "Белгиланмаган"
+      "noLocation": "Белгиланмаган",
+      "place": "Турникет локацияси"
     },
     "source": {
       "department": "Бўлим жойи",

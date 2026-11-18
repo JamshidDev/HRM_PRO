@@ -6525,7 +6525,8 @@
       "all": "Hammasi",
       "locationState": "Joylaşuv holati",
       "hasLocation": "Belgilangan",
-      "noLocation": "Belgilanmagan"
+      "noLocation": "Belgilanmagan",
+      "place": "Turniket lokatsiyasi"
     },
     "source": {
       "department": "Bölim joyi",

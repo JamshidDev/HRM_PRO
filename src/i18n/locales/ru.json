@@ -6478,7 +6478,8 @@
       "all": "Все",
       "locationState": "Наличие места",
       "hasLocation": "Задано",
-      "noLocation": "Не задано"
+      "noLocation": "Не задано",
+      "place": "Локация турникета"
     },
     "source": {
       "department": "Место отдела",
