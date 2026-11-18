@@ -6991,7 +6991,9 @@
       "status": "Guvohnoma holati",
       "issued": "Berilgan",
       "verify": "Tasdiqlangan",
-      "returned": "Qaytarib olingan"
+      "returned": "Qaytarib olingan",
+      "notIssued": "Berilmagan",
+      "expired": "Muddati o'tgan"
     },
     "modal": {
       "notVerified": "Tasdiqlanmagan"

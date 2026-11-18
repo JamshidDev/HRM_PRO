@@ -6991,7 +6991,9 @@
       "status": "Gúwalıq jaǵdayı",
       "issued": "Berilgen",
       "verify": "Tastıyıqlanǵan",
-      "returned": "Qaytarıp alınǵan"
+      "returned": "Qaytarıp alınǵan",
+      "notIssued": "Berilmegen",
+      "expired": "Múddeti ótken"
     },
     "modal": {
       "notVerified": "Tastıyıqlanbaǵan"

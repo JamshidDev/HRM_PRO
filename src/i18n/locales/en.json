@@ -6933,7 +6933,9 @@
       "status": "Certificate status",
       "issued": "Issued",
       "verify": "Verified",
-      "returned": "Returned"
+      "returned": "Returned",
+      "notIssued": "Not issued",
+      "expired": "Expired"
     },
     "modal": {
       "notVerified": "Not verified"
