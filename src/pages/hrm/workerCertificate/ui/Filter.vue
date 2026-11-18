@@ -34,8 +34,11 @@
     store.params.organizations = v
   }
 
-  // Guvohnoma holati: berilmagan yoki oxirgi guvohnoma muddati o'tgan.
+  // Guvohnoma holati — oxirgi guvohnoma bo'yicha; tanlanmasa barchasi.
   const statusOptions = computed(() => [
+    { id: 'issued', name: t('workerCertificatePage.filter.issued') },
+    { id: 'verify', name: t('workerCertificatePage.filter.verify') },
+    { id: 'returned', name: t('workerCertificatePage.filter.returned') },
     { id: 'not_issued', name: t('workerCertificatePage.filter.notIssued') },
     { id: 'expired', name: t('workerCertificatePage.filter.expired') }
   ])
@@ -129,7 +132,7 @@
             :options="statusOptions"
             label-field="name"
             value-field="id"
-            :placeholder="$t('workerCertificatePage.filter.status')"
+            :placeholder="$t('content.all')"
             @update:value="filterEvent"
           />
         </div>

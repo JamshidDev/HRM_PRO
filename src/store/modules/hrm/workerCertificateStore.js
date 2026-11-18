@@ -10,7 +10,7 @@ const initialParams = () => ({
   per_page: 15,
   search: null,
   organizations: [],
-  // 'not_issued' | 'expired' | null — OXIRGI guvohnoma holati bo'yicha filtr.
+  // issued | verify | returned | not_issued | expired | null — guvohnoma holati filtri.
   certificate_status: null
 })
 
