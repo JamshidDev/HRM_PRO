@@ -771,6 +771,7 @@
     "assignGlobal": "Make global",
     "globalHint": "Sees all organizations",
     "globalBadge": "Global — all organizations",
+    "assignedRoles": "Assigned roles",
     "passwordChangedAt": "Password changed",
     "eimzoSkip": "E-IMZO",
     "eimzoSkipDirect": "Personally exempt from E-IMZO verification",
