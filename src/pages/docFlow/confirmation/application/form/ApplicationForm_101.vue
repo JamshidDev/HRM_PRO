@@ -7,7 +7,19 @@
   const store = useConfApplicationStore()
   const componentStore = useComponentStore()
 
-  const isPosition = computed(() => ![1, 2].includes(store.payload.type))
+  const isPosition = computed(() => !store.isOrgPlace())
+
+  // Tavsif bo'lsa — turlar guruhlab (5 guruh), aks holda eski tekis ro'yxat.
+  const typeOptions = computed(() => {
+    const schema = componentStore.workerApplicationSchema
+    if (!schema) return componentStore.workerApplicationTypes
+    return schema.groups.map((g) => ({
+      type: 'group',
+      key: `g${g.id}`,
+      name: g.name,
+      children: componentStore.workerApplicationTypes.filter((v) => v.group === g.id)
+    }))
+  })
 
   const onFocusPosition = () => {
     if (store.myPositionList.length === 0) {
@@ -26,6 +38,7 @@
   // Rahbar va kelishuvchilarni xodim tanlamaydi: rahbar backendda lavozimdan, kelishuvchilarni HR belgilaydi.
   const onSelectApplication = (v) => {
     store.resetPlace()
+    store.payload.data = {}
     if (isPosition.value) {
       onFocusPosition()
     } else {
@@ -68,7 +81,7 @@
         <n-select
           v-model:value="store.payload.type"
           filterable
-          :options="componentStore.workerApplicationTypes"
+          :options="typeOptions"
           label-field="name"
           value-field="id"
           :loading="componentStore.workerApplicationLoading"

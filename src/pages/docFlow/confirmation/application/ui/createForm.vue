@@ -23,6 +23,8 @@
   import ApplicationForm_9 from '@/pages/docFlow/confirmation/application/form/ApplicationForm_9.vue'
   import ApplicationForm_10 from '@/pages/docFlow/confirmation/application/form/ApplicationForm_10.vue'
   import ApplicationForm_8 from '@/pages/docFlow/confirmation/application/form/ApplicationForm_8.vue'
+  import ApplicationSchemaForm from '@/pages/docFlow/confirmation/application/form/ApplicationSchemaForm.vue'
+  const schemaFormRef = ref(null)
 
   const store = useConfApplicationStore()
   const componentStore = useComponentStore()
@@ -68,15 +70,16 @@
       if (!error) {
         if (store.activeTab === 101) {
           // Ishga kirish (1, 2): korxona majburiy — rahbar va HR shu korxonadan aniqlanadi.
-          store.orgError =
-            store.typeList.includes(store.payload.type) && !store.organization_id?.length
+          store.orgError = store.isOrgPlace() && !store.organization_id?.length
           if (store.orgError) return
-          store.activeTab = store.payload.type
+          // Tavsifli tur — umumiy forma; eski 2, 3, 5, 7 — o'z formasi.
+          store.activeTab = store.schemaDef() ? 'schema' : store.payload.type
           if (store.typeList.includes(store.payload.type) && !store.visibleType) {
             componentStore._departmentPosition(store.department_id?.[0]?.id)
           }
           store.stepNumber = 2
         } else {
+          if (store.activeTab === 'schema' && !schemaFormRef.value?.validate()) return
           if (store.visibleType) {
             store._create()
           } else {
@@ -97,7 +100,7 @@
       store.activeTab = 101
       store.stepNumber = 1
     } else {
-      store.activeTab = store.payload.type
+      store.activeTab = store.schemaDef() ? 'schema' : store.payload.type
       store.stepNumber = 2
     }
   }
@@ -165,6 +168,9 @@
       </n-tab-pane>
       <n-tab-pane :name="store.tabList[11].id">
         <ApplicationForm_8 />
+      </n-tab-pane>
+      <n-tab-pane name="schema">
+        <ApplicationSchemaForm ref="schemaFormRef" />
       </n-tab-pane>
     </n-tabs>
     <div class="col-span-12 flex justify-center mb-4 mt-10">
