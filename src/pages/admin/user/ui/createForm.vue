@@ -2,7 +2,9 @@
   import validationRules from '@/utils/validationRules.js'
   const formRef = ref(null)
   import { useUserStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
-  import { UIMenuButton, UISelect } from '@/components/index.js'
+  import { UIMenuButton, UISelect, UISegmentTabs } from '@/components/index.js'
+  import { Globe16Regular } from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
   import Utils from '@/utils/Utils.js'
 
   const componentStore = useComponentStore()
@@ -18,6 +20,16 @@
   )
   watch(canGlobal, (v) => {
     if (!v) store.payload.is_global = false
+  })
+
+  const { t } = i18n.global
+  const modeTabs = computed(() => [
+    { id: 'org', name: t('userPage.assignToOrg') },
+    { id: 'global', name: t('userPage.assignGlobal') }
+  ])
+  const mode = computed({
+    get: () => (store.payload.is_global ? 'global' : 'org'),
+    set: (v) => (store.payload.is_global = v === 'global')
   })
 
   // Global tanlansa korxona majburiy emas.
@@ -64,7 +76,8 @@
 
 <template>
   <n-form ref="formRef" :rules="rules" :model="store.payload">
-    <div style="min-height: calc(100vh - 120px)">
+    <!-- Tugmalar drawer pastida turishi uchun kontent kamida ekran balandligida. -->
+    <div style="min-height: calc(100vh - 150px)">
       <n-form-item :label="$t(`userRole.form.name`)" path="role_id">
         <n-select
           v-model:value="store.payload.role_id"
@@ -77,22 +90,13 @@
         />
       </n-form-item>
 
-      <n-form-item v-if="canGlobal" :label="$t('userPage.assignMode')">
-        <n-radio-group v-model:value="store.payload.is_global" class="w-full">
-          <div class="grid w-full grid-cols-2 gap-2">
-            <n-radio-button :value="false" class="text-center">
-              {{ $t('userPage.assignToOrg') }}
-            </n-radio-button>
-            <n-radio-button :value="true" class="text-center">
-              {{ $t('userPage.assignGlobal') }}
-            </n-radio-button>
-          </div>
-        </n-radio-group>
+      <n-form-item v-if="canGlobal" :label="$t('userPage.assignMode')" :show-feedback="false" class="mb-5">
+        <UISegmentTabs v-model="mode" :tabs="modeTabs" />
       </n-form-item>
 
       <n-form-item
         v-if="!store.payload.is_global"
-        class="w-full mr-4"
+        class="w-full"
         :label="$t(`documentPage.form.organization`)"
         path="organization_id"
       >
@@ -109,9 +113,13 @@
           :multiple="false"
         />
       </n-form-item>
-      <n-alert v-else type="info" :show-icon="true" class="mb-4">
+      <div
+        v-else
+        class="mb-6 flex items-center gap-2 rounded-xl bg-fig-chip-brand px-3 py-2.5 text-sm text-fig-chip-brand-text"
+      >
+        <n-icon size="16"><Globe16Regular /></n-icon>
         {{ $t('userPage.globalHint') }}
-      </n-alert>
+      </div>
 
       <n-spin class="w-full min-h-[200px]" :show="store.myRoleLoading">
         <div
@@ -138,7 +146,9 @@
       </n-spin>
     </div>
 
-    <div class="grid grid-cols-2 gap-2">
+    <div
+      class="sticky bottom-0 -mx-4 -mb-3 mt-4 grid grid-cols-2 gap-2 border-t border-surface-line bg-surface-section px-4 py-3"
+    >
       <n-button @click="store.openVisible(false)" type="error" ghost>
         {{ $t('content.cancel') }}
       </n-button>

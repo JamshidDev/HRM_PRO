@@ -3367,6 +3367,17 @@
     }
   },
   "applicationPage": {
+    "schema": {
+      "other": "Basqa",
+      "otherText": "Tekstti kiritiń",
+      "otherOrganization": "Dizimde joq (qolda jazıw)",
+      "childFromList": "Dizimnen",
+      "childManual": "Qolda kiritiw",
+      "childName": "Perzenttiń F.A.Á.",
+      "childBirthday": "Tuwılǵan sánesi",
+      "days": "Kúnler sanı: {n}",
+      "months": "Aylar sanı: {n}"
+    },
     "draft": "Qaralama",
     "draftSignTitle": "Arza qaralama jaǵdayında",
     "draftSignBody": "Qol qoyǵanıńızdan keyin arza HR ǵa jiberiledi.",

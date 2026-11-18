@@ -3104,6 +3104,17 @@
     }
   },
   "applicationPage": {
+    "schema": {
+      "other": "Бошқа",
+      "otherText": "Матнни киритинг",
+      "otherOrganization": "Рўйхатда йўқ (қўлда ёзиш)",
+      "childFromList": "Рўйхатдан",
+      "childManual": "Қўлда киритиш",
+      "childName": "Фарзанднинг Ф.И.Ш.",
+      "childBirthday": "Туғилган санаси",
+      "days": "Кунлар сони: {n}",
+      "months": "Ойлар сони: {n}"
+    },
     "name": "Аризалар",
     "addApp": "Ариза юбориш",
     "createWorkerApplication": "Ариза яратиш",

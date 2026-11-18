@@ -3367,6 +3367,17 @@
     }
   },
   "applicationPage": {
+    "schema": {
+      "other": "Boshqa",
+      "otherText": "Matnni kiriting",
+      "otherOrganization": "Ro'yxatda yo'q (qo'lda yozish)",
+      "childFromList": "Ro'yxatdan",
+      "childManual": "Qo'lda kiritish",
+      "childName": "Farzandning F.I.Sh.",
+      "childBirthday": "Tug'ilgan sanasi",
+      "days": "Kunlar soni: {n}",
+      "months": "Oylar soni: {n}"
+    },
     "draft": "Qoralama",
     "draftSignTitle": "Ariza qoralama holatida",
     "draftSignBody": "Imzolaganingizdan keyin ariza HR ga yuboriladi.",

@@ -3355,6 +3355,17 @@
     }
   },
   "applicationPage": {
+    "schema": {
+      "other": "Другое",
+      "otherText": "Введите текст",
+      "otherOrganization": "Нет в списке (ввести вручную)",
+      "childFromList": "Из списка",
+      "childManual": "Ввести вручную",
+      "childName": "Ф.И.О. ребёнка",
+      "childBirthday": "Дата рождения",
+      "days": "Количество дней: {n}",
+      "months": "Количество месяцев: {n}"
+    },
     "draft": "Черновик",
     "draftSignTitle": "Заявление в черновике",
     "draftSignBody": "После подписания заявление будет отправлено в HR.",

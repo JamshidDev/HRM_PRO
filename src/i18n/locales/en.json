@@ -3347,6 +3347,17 @@
     }
   },
   "applicationPage": {
+    "schema": {
+      "other": "Other",
+      "otherText": "Enter text",
+      "otherOrganization": "Not in the list (type manually)",
+      "childFromList": "From the list",
+      "childManual": "Enter manually",
+      "childName": "Child's full name",
+      "childBirthday": "Date of birth",
+      "days": "Days: {n}",
+      "months": "Months: {n}"
+    },
     "draft": "Draft",
     "draftSignTitle": "Application is a draft",
     "draftSignBody": "After you sign it, the application is sent to HR.",
