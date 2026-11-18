@@ -3,7 +3,7 @@
   const formRef = ref(null)
   import { useUserStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
   import { UIMenuButton, UISelect, UISegmentTabs } from '@/components/index.js'
-  import { Globe16Regular } from '@vicons/fluent'
+  import { Globe16Regular, Building16Regular, ShieldKeyhole16Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
   import Utils from '@/utils/Utils.js'
 
@@ -121,28 +121,56 @@
         {{ $t('userPage.globalHint') }}
       </div>
 
-      <n-spin class="w-full min-h-[200px]" :show="store.myRoleLoading">
-        <div
-          v-for="(item, idx) in store.myRoleList"
-          :key="idx"
-          class="px-3 py-2 border border-surface-line rounded-md mb-2 flex"
+      <div class="mb-2 flex items-center gap-1.5">
+        <span class="text-[11px] font-medium uppercase text-textColor2">
+          {{ $t('userPage.assignedRoles') }}
+        </span>
+        <span
+          v-if="store.myRoleList.length"
+          class="rounded-full bg-surface-ground px-1.5 text-[11px] font-medium text-textColor1"
         >
-          <div class="flex flex-col" style="width: calc(100% - 40px)">
-            <div class="font-semibold">
-              <span v-if="item.is_global" class="text-primary">{{ $t('userPage.globalBadge') }}</span>
-              <template v-else>{{ item.organization.name }}</template>
+          {{ store.myRoleList.length }}
+        </span>
+      </div>
+      <n-spin class="min-h-[120px] w-full" :show="store.myRoleLoading">
+        <div class="flex flex-col gap-2">
+          <div
+            v-for="(item, idx) in store.myRoleList"
+            :key="idx"
+            class="flex items-center gap-3 rounded-xl border border-surface-line px-3 py-2.5 transition-colors hover:bg-surface-ground"
+          >
+            <span
+              class="flex size-9 shrink-0 items-center justify-center rounded-lg"
+              :class="
+                item.is_global
+                  ? 'bg-fig-chip-brand text-fig-chip-brand-text'
+                  : 'bg-fig-chip-indigo text-fig-chip-indigo-text'
+              "
+            >
+              <n-icon size="18">
+                <Globe16Regular v-if="item.is_global" />
+                <ShieldKeyhole16Regular v-else />
+              </n-icon>
+            </span>
+            <div class="flex min-w-0 flex-1 flex-col gap-0.5">
+              <span class="truncate text-sm font-semibold text-textColor0">{{ item.name }}</span>
+              <span v-if="item.is_global" class="text-xs font-medium text-fig-chip-brand-text">
+                {{ $t('userPage.globalBadge') }}
+              </span>
+              <span v-else class="flex min-w-0 items-center gap-1 text-xs text-textColor2">
+                <n-icon size="12" class="shrink-0"><Building16Regular /></n-icon>
+                <n-ellipsis>{{ item.organization.name }}</n-ellipsis>
+              </span>
             </div>
-            <div class="text-textColor1">{{ item.name }}</div>
-          </div>
-          <div class="w-[40px] flex justify-center items-center">
             <UIMenuButton :data="item" @selectEv="onSelect" />
           </div>
         </div>
-        <span
+        <div
           v-if="store.myRoleList.length === 0 && !store.myRoleLoading"
-          class="block text-center text-xs text-textColor1"
-          >{{ $t('userPage.no-roles') }}</span
+          class="rounded-xl border border-dashed border-surface-line py-6 text-center text-xs text-textColor2"
         >
+          {{ $t('userPage.no-roles') }}
+        </div>
       </n-spin>
     </div>
 
