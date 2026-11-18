@@ -677,7 +677,8 @@
       "expired": "Kodtıń múddeti tamamlandı",
       "refresh": "Jańalaw",
       "connectionError": "Baylanısıwda qátelik",
-      "signingIn": "Sistemaǵa kirilmekte…"
+      "signingIn": "Sistemaǵa kirilmekte…",
+      "claimed": "Telefonıńızda kiriwdi tastıyıqlań"
     },
     "sso": {
       "title": "{name} sistemasına ótpektesiz",
@@ -1553,6 +1554,7 @@
         "clauseNumber": "Bánt nomeri",
         "clausePlaceholder": "Mısalı: 53 yamasa 13.4",
         "clauseRequired": "Kelisim bántiniń nomerin kiritiń",
+        "aidMonthRequired": "Ay tańlań",
         "experienceSuggest": "Profil: {date} dan · {year} jıl {month} ay",
         "experienceNoDate": "Profilde temir jol staji sánesi kiritilmegen",
         "selectedWorkers": "Tańlanǵan xızmetkerler",
@@ -3846,6 +3848,8 @@
       "organization": "Kárxana",
       "onVacation": "shekem dem alısta",
       "expired": "Múddeti ótken",
+      "notExpired": "Múddeti ótpegen",
+      "expiry": "Múddeti",
       "daysOverdue": "{n} kún ótken",
       "daysLeft": "{n} kún qaldı",
       "conclusion": "Juwmaq: {name}",

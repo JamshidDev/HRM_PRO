@@ -120,6 +120,8 @@
   const allowClauseInput = (v) => /^[\d.]*$/.test(v)
   const clauseValid = () => CLAUSE_RE.test(String(store.clauseNumber ?? '').trim())
   const clauseInvalid = computed(() => showErrors.value && !clauseValid())
+  const monthValid = () => Number(store.aidMonth) >= 1 && Number(store.aidMonth) <= 12
+  const monthInvalid = computed(() => showErrors.value && !monthValid())
 
   const onRemoveWorker = (id) => {
     store.workerData = store.workerData.filter((v) => v.id !== id)
@@ -133,9 +135,13 @@
 
   const onSubmit = (mainData) => {
     const valid = store.workerData.every(hasExperience)
-    showErrors.value = !valid || !clauseValid()
+    showErrors.value = !valid || !clauseValid() || !monthValid()
     if (!valid) {
       $Alert.validation(t('documentPage.command.form.experienceZero'))
+      return { data: null, isValid: false }
+    }
+    if (!monthValid()) {
+      $Alert.validation(t('documentPage.command.form.aidMonthRequired'))
       return { data: null, isValid: false }
     }
     if (!clauseValid()) {
@@ -153,7 +159,7 @@
         command_additional: {
           base: store.commandBase || null,
           agreement_type: store.agreementType || 1,
-          month: store.aidMonth || null,
+          month: Number(store.aidMonth),
           clause_number: String(store.clauseNumber).trim()
         }
       },
@@ -301,7 +307,7 @@
     </div>
     <div class="col-span-12 @xl:col-span-2">
       <n-form-item :show-feedback="false" :label="$t('documentPage.command.form.aidMonth')" path="aidMonth">
-        <n-select v-model:value="store.aidMonth" :options="monthOptions" />
+        <n-select v-model:value="store.aidMonth" :options="monthOptions" :status="monthInvalid ? 'error' : undefined" />
       </n-form-item>
     </div>
     <div class="col-span-12 @xl:col-span-2">

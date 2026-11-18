@@ -677,7 +677,8 @@
       "expired": "Kod muddati tugadi",
       "refresh": "Yangilaş",
       "connectionError": "Ulanişda xatolik",
-      "signingIn": "Tizimga kirilmoqda…"
+      "signingIn": "Tizimga kirilmoqda…",
+      "claimed": "Telefoningizda kirişni tasdiqlang"
     },
     "sso": {
       "title": "{name} tizimiga ötmoqdasiz",
@@ -1553,6 +1554,7 @@
         "clauseNumber": "Band raqami",
         "clausePlaceholder": "Masalan: 53 yoki 13.4",
         "clauseRequired": "Kelişuv bandi raqamini kiriting",
+        "aidMonthRequired": "Oyni tanlang",
         "experienceSuggest": "Profil: {date} dan · {year} yil {month} oy",
         "experienceNoDate": "Profilda temir yöl staji sanasi kiritilmagan",
         "selectedWorkers": "Tanlangan xodimlar",
@@ -3846,6 +3848,8 @@
       "organization": "Korxona",
       "onVacation": "gaça ta'tilda",
       "expired": "Muddati ötgan",
+      "notExpired": "Muddati ötmagan",
+      "expiry": "Muddati",
       "daysOverdue": "{n} kun ötgan",
       "daysLeft": "{n} kun qoldi",
       "conclusion": "Xulosa: {name}",

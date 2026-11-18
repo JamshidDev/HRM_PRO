@@ -664,7 +664,8 @@
       "expired": "Срок действия кода истёк",
       "refresh": "Обновить",
       "connectionError": "Ошибка соединения",
-      "signingIn": "Выполняется вход…"
+      "signingIn": "Выполняется вход…",
+      "claimed": "Подтвердите вход на телефоне"
     },
     "sso": {
       "title": "Вы переходите в {name}",
@@ -1539,6 +1540,7 @@
         "clauseNumber": "Номер пункта",
         "clausePlaceholder": "Например: 53 или 13.4",
         "clauseRequired": "Укажите номер пункта соглашения",
+        "aidMonthRequired": "Выберите месяц",
         "experienceSuggest": "Профиль: с {date} · {year} лет {month} мес.",
         "experienceNoDate": "В профиле не указана дата начала ж/д стажа",
         "selectedWorkers": "Выбранные сотрудники",
@@ -3834,6 +3836,8 @@
       "organization": "Организация",
       "onVacation": "в отпуске до",
       "expired": "Просрочен",
+      "notExpired": "Не просрочен",
+      "expiry": "Срок",
       "daysOverdue": "просрочен на {n} дн.",
       "daysLeft": "осталось {n} дн.",
       "conclusion": "Заключение: {name}",

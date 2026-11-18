@@ -585,7 +585,8 @@
       "expired": "Код муддати тугади",
       "refresh": "Янгилаш",
       "connectionError": "Уланишда хатолик",
-      "signingIn": "Тизимга кирилмоқда…"
+      "signingIn": "Тизимга кирилмоқда…",
+      "claimed": "Телефонингизда киришни тасдиқланг"
     },
     "sso": {
       "title": "{name} тизимига ўтмоқдасиз",
@@ -1449,6 +1450,7 @@
         "clauseNumber": "Банд рақами",
         "clausePlaceholder": "Масалан: 53 ёки 13.4",
         "clauseRequired": "Келишув банди рақамини киритинг",
+        "aidMonthRequired": "Ойни танланг",
         "experienceSuggest": "Профиль: {date} дан · {year} йил {month} ой",
         "experienceNoDate": "Профилда темир йўл стажи санаси киритилмаган",
         "selectedWorkers": "Танланган ходимлар",
@@ -3564,6 +3566,8 @@
       "organization": "Корхона",
       "onVacation": "гача таътилда",
       "expired": "Муддати ўтган",
+      "notExpired": "Муддати ўтмаган",
+      "expiry": "Муддати",
       "daysOverdue": "{n} кун ўтган",
       "daysLeft": "{n} кун қолди",
       "conclusion": "Хулоса: {name}",

@@ -1,11 +1,21 @@
 <script setup>
   import { UIPageFilter, UISelect } from '@/components/index.js'
-  import { useComponentStore, useUserStore } from '@/store/modules/index.js'
+  import { useAccountStore, useComponentStore, useUserStore } from '@/store/modules/index.js'
+  import { ArrowDownload24Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
   const store = useUserStore()
   const { t } = i18n.global
   const componentStore = useComponentStore()
+  const accStore = useAccountStore()
+  const { proxy } = getCurrentInstance()
+  const exportBtnRef = ref(null)
+
+  const onExport = () => {
+    if (!accStore.checkAction(accStore.pn.usersRead)) return
+    const btnEl = exportBtnRef.value?.$el || exportBtnRef.value
+    store._export(() => proxy.$flyUpload?.(btnEl))
+  }
 
   const filterEvent = () => {
     store.params.page = 1
@@ -60,6 +70,20 @@
     @onSearch="filterEvent"
     @onClear="onClear"
   >
+    <template #filterAction>
+      <n-button
+        v-if="accStore.checkPermission(accStore.pn.usersRead)"
+        ref="exportBtnRef"
+        type="success"
+        :loading="store.exportLoading"
+        @click="onExport"
+      >
+        {{ $t('content.download') }}
+        <template #icon>
+          <n-icon><ArrowDownload24Regular /></n-icon>
+        </template>
+      </n-button>
+    </template>
     <template #filterContent>
       <label class="mt-3 text-xs text-gray-500">{{ $t('workerPage.filter.organization') }}</label>
       <UISelect

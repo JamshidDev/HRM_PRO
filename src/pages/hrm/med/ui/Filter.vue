@@ -2,12 +2,20 @@
   import { UIPageFilter, UISelect, UIDepartmentSelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useMedStore } from '@/store/modules/index.js'
   import { ArrowDownload24Regular } from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
 
   const store = useMedStore()
   const { proxy } = getCurrentInstance()
   const exportBtnRef = ref(null)
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
+  const { t } = i18n.global
+
+  // Ko'rik muddati: tanlanmasa — barchasi.
+  const expiryOptions = computed(() => [
+    { label: t('medPage.form.expired'), value: 'expired' },
+    { label: t('medPage.form.notExpired'), value: 'valid' }
+  ])
 
   const onExport = () => {
     if (!accStore.checkAction(accStore.pn.hrMedRead)) return
@@ -39,7 +47,7 @@
   const filterCount = computed(() =>
     Number(
       Boolean(store.params.organizations.length) +
-        Number(Boolean(store.params.status)) +
+        Number(Boolean(store.params.expiry)) +
         Number(Boolean(store.params.departments.length)) +
         Number(Boolean(store.params.month))
     )
@@ -48,10 +56,6 @@
   const beforeShow = () => {
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
-    }
-
-    if (componentStore.medStatus.length === 0) {
-      componentStore._enums()
     }
   }
 
@@ -64,7 +68,7 @@
   const resetFilter = () => {
     store.params.organizations = []
     store.params.departments = []
-    store.params.status = null
+    store.params.expiry = null
     store.params.month = null
     filterEvent()
   }
@@ -130,14 +134,12 @@
           />
         </div>
         <div class="col-span-12 md:col-span-6">
-          <label>{{ $t('medPage.form.status') }}</label>
+          <label>{{ $t('medPage.form.expiry') }}</label>
           <n-select
-            v-model:value="store.params.status"
-            :options="componentStore.medStatus"
-            :loading="componentStore.enumExamLoading"
+            v-model:value="store.params.expiry"
+            :options="expiryOptions"
+            :placeholder="$t('content.all')"
             @update:value="filterEvent"
-            label-field="name"
-            value-field="id"
             clearable
           />
         </div>
