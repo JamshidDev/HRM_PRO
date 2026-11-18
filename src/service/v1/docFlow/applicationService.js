@@ -81,10 +81,6 @@ const _commandPrefill = async (payload) => {
   return await axios.get(`/v1/hr/applications/${payload.id}/command-prefill`)
 }
 
-const _statistic = async (payload) => {
-  return await axios.get(`/v1/worker-application/statistics`, { params: payload?.params })
-}
-
 export default {
   _index,
   _generateUrl,
@@ -105,7 +101,6 @@ export default {
   _resend,
   _forward,
   _documentApplication,
-  _statistic,
   _commandPrefill,
   _deleteWorkerApplication
 }
