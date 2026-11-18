@@ -19,7 +19,9 @@ export const useUserStore = defineStore('user', {
     savePermissionLoading: false,
     payload: {
       role_id: null,
-      organization_id: []
+      organization_id: [],
+      // Global — barcha korxonalar (faqat global darajali rol, faqat Admin).
+      is_global: false
     },
     params: {
       page: 1,
@@ -224,16 +226,19 @@ export const useUserStore = defineStore('user', {
     },
     _create() {
       this.saveLoading = true
+      const isGlobal = this.payload.is_global === true
       const data = {
-        ...this.payload,
         uuid: this.elementId,
-        organization_id: this.payload.organization_id[0].id
+        role_id: this.payload.role_id,
+        is_global: isGlobal,
+        organization_id: isGlobal ? undefined : this.payload.organization_id[0].id
       }
       $ApiService.userService
         ._create({ data })
         .then((res) => {
           this.payload.role_id = null
           this.payload.organization_id = []
+          this.payload.is_global = false
           this._myRoles()
         })
         .finally(() => {
@@ -243,8 +248,8 @@ export const useUserStore = defineStore('user', {
     _update() {
       this.saveLoading = true
       const data = {
-        ...this.payload,
         uuid: this.elementId,
+        role_id: this.payload.role_id,
         organization_id: this.payload.organization_id[0].id
       }
       $ApiService.userService

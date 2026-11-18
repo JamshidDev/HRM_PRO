@@ -781,6 +781,11 @@
       "cancelSpam": "Haqıyqattan da bloktan shıǵarmaqshısız ba?"
     },
     "no-roles": "Biriktirilgen roller joq!",
+    "assignMode": "Beriw túri",
+    "assignToOrg": "Kárxanaǵa beriw",
+    "assignGlobal": "Global etiw",
+    "globalHint": "Barlıq kárxanalardı kóredi",
+    "globalBadge": "Global — barlıq kárxanalar",
     "passwordChangedAt": "Parol jańalanǵan",
     "eimzoSkip": "E-IMZO",
     "eimzoSkipDirect": "Jeke ózi E-IMZO tastıyıǵınan azat",

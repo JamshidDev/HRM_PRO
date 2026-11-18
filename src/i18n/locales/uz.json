@@ -781,6 +781,11 @@
       "cancelSpam": "Haqiqatan ham blokdan chiqarmoqchimisiz?"
     },
     "no-roles": "Biriktirilgan rollar yo'q!",
+    "assignMode": "Berish turi",
+    "assignToOrg": "Korxonaga berish",
+    "assignGlobal": "Global qilish",
+    "globalHint": "Barcha korxonalarni ko'radi",
+    "globalBadge": "Global — barcha korxonalar",
     "passwordChangedAt": "Parol yangilangan",
     "eimzoSkip": "E-IMZO",
     "eimzoSkipDirect": "Shaxsan E-IMZO tasdig'idan ozod",

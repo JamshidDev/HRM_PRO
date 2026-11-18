@@ -766,6 +766,11 @@
       "cancelSpam": "Are you sure you want to unblock?"
     },
     "no-roles": "No roles assigned!",
+    "assignMode": "Assignment type",
+    "assignToOrg": "Assign to organization",
+    "assignGlobal": "Make global",
+    "globalHint": "Sees all organizations",
+    "globalBadge": "Global — all organizations",
     "passwordChangedAt": "Password changed",
     "eimzoSkip": "E-IMZO",
     "eimzoSkipDirect": "Personally exempt from E-IMZO verification",

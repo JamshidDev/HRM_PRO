@@ -768,6 +768,11 @@
       "cancelSpam": "Вы действительно хотите разблокировать?"
     },
     "no-roles": "Нет назначенных ролей!",
+    "assignMode": "Тип назначения",
+    "assignToOrg": "Назначить на организацию",
+    "assignGlobal": "Сделать глобальной",
+    "globalHint": "Видит все организации",
+    "globalBadge": "Глобально — все организации",
     "passwordChangedAt": "Пароль обновлён",
     "eimzoSkip": "E-IMZO",
     "eimzoSkipDirect": "Лично освобождён от проверки E-IMZO",

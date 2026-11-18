@@ -685,6 +685,11 @@
       "cancelSpam": "Ҳақиқатан ҳам блокдан чиқармоқчимисиз?"
     },
     "no-roles": "Бириктирилган роллар йўқ!",
+    "assignMode": "Бериш тури",
+    "assignToOrg": "Корхонага бериш",
+    "assignGlobal": "Глобал қилиш",
+    "globalHint": "Барча корхоналарни кўради",
+    "globalBadge": "Глобал — барча корхоналар",
     "passwordChangedAt": "Парол янгиланган",
     "eimzoSkip": "E-IMZO",
     "eimzoSkipDirect": "Шахсан E-IMZO тасдиғидан озод",
