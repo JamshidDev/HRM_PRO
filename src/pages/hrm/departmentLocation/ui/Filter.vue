@@ -82,6 +82,10 @@
     }
   })
 
+  // Uzun nom (joy — korxona) menyuda qirqilmaydi, qatorga o'raladi.
+  const renderPlaceLabel = (option) =>
+    h('div', { style: 'white-space: normal; line-height: 1.35; padding: 6px 0' }, option.label)
+
   const filterCount = computed(() => {
     const p = currentParams.value
     if (isLocationsTab.value) return Number(locationType.value !== null)
@@ -195,6 +199,7 @@
             v-model:value="currentParams.place_id"
             :options="store.placeFilterOptions"
             :loading="store.placeFilterLoading"
+            :render-label="renderPlaceLabel"
             :placeholder="$t('departmentLocationPage.filter.all')"
             filterable
             clearable
