@@ -89,6 +89,7 @@
     return (
       Number(Boolean(p.organizations.length)) +
       Number(store.locationState !== null) +
+      Number(Boolean(p.place_id)) +
       Number(isWorkersTab.value && Boolean(p.department_id))
     )
   })
@@ -98,11 +99,14 @@
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
     }
+    if (!isPlacesTab.value) store._placeFilterIndex(currentParams.value.organizations)
   }
 
   const onChangeStructure = (v) => {
     currentParams.value.organizations = v
     if (isWorkersTab.value) store.workerParams.department_id = null
+    currentParams.value.place_id = null
+    store._placeFilterIndex(v)
     filterEvent()
   }
 
@@ -118,6 +122,7 @@
       p.organizations = []
       store.structureCheck = []
       store.applyLocationState(p, null)
+      p.place_id = null
       if (isWorkersTab.value) p.department_id = null
     }
     filterEvent()
@@ -182,6 +187,18 @@
             :organization="store.workerParams.organizations"
             :placeholder="$t('departmentLocationPage.filter.all')"
             @update:model-value="filterEvent"
+          />
+        </div>
+        <div v-if="!isPlacesTab" class="col-span-12">
+          <label>{{ $t('departmentLocationPage.filter.place') }}</label>
+          <n-select
+            v-model:value="currentParams.place_id"
+            :options="store.placeFilterOptions"
+            :loading="store.placeFilterLoading"
+            :placeholder="$t('departmentLocationPage.filter.all')"
+            filterable
+            clearable
+            @update:value="filterEvent"
           />
         </div>
         <div v-if="!isPlacesTab" class="col-span-12">
