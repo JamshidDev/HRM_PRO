@@ -677,7 +677,8 @@
       "expired": "Kod muddati tugadi",
       "refresh": "Yangilaş",
       "connectionError": "Ulanişda xatolik",
-      "signingIn": "Tizimga kirilmoqda…"
+      "signingIn": "Tizimga kirilmoqda…",
+      "claimed": "Telefoningizda kirişni tasdiqlang"
     },
     "sso": {
       "title": "{name} tizimiga ötmoqdasiz",

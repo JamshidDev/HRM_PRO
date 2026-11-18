@@ -677,7 +677,8 @@
       "expired": "Kodtıń múddeti tamamlandı",
       "refresh": "Jańalaw",
       "connectionError": "Baylanısıwda qátelik",
-      "signingIn": "Sistemaǵa kirilmekte…"
+      "signingIn": "Sistemaǵa kirilmekte…",
+      "claimed": "Telefonıńızda kiriwdi tastıyıqlań"
     },
     "sso": {
       "title": "{name} sistemasına ótpektesiz",

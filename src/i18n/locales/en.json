@@ -662,7 +662,8 @@
       "expired": "The code has expired",
       "refresh": "Refresh",
       "connectionError": "Connection error",
-      "signingIn": "Signing in…"
+      "signingIn": "Signing in…",
+      "claimed": "Confirm the sign-in on your phone"
     },
     "sso": {
       "title": "You're going to {name}",
