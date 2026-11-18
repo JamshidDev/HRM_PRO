@@ -132,48 +132,51 @@
       <span class="text-gray-400">{{ $t('applicationPage.form.type') }}:</span>
       <span class="font-medium text-gray-500">{{ applicationName }}</span>
     </div>
-    <n-tabs animated v-model:value="store.activeTab" class="hidden-tab-header" type="segment">
-      <n-tab-pane :name="store.tabList[0].id">
-        <ApplicationForm_101 />
-      </n-tab-pane>
-      <n-tab-pane :name="store.tabList[1].id">
-        <ApplicationFinish />
-      </n-tab-pane>
-      <n-tab-pane :name="store.tabList[2].id">
-        <ApplicationForm_3 />
-      </n-tab-pane>
-      <n-tab-pane :name="store.tabList[3].id">
-        <ApplicationForm_4 />
-      </n-tab-pane>
-      <n-tab-pane :name="store.tabList[4].id">
-        <ApplicationForm_1 />
-      </n-tab-pane>
-      <n-tab-pane :name="store.tabList[5].id">
-        <ApplicationForm_2 />
-      </n-tab-pane>
-      <n-tab-pane :name="store.tabList[6].id">
-        <ApplicationForm_5 />
-      </n-tab-pane>
-      <n-tab-pane :name="store.tabList[7].id">
-        <ApplicationForm_6 />
-      </n-tab-pane>
-      <n-tab-pane :name="store.tabList[8].id">
-        <ApplicationForm_7 />
-      </n-tab-pane>
-      <n-tab-pane :name="store.tabList[9].id">
-        <ApplicationForm_9 />
-      </n-tab-pane>
-      <n-tab-pane :name="store.tabList[10].id">
-        <ApplicationForm_10 />
-      </n-tab-pane>
-      <n-tab-pane :name="store.tabList[11].id">
-        <ApplicationForm_8 />
-      </n-tab-pane>
-      <n-tab-pane name="schema">
-        <ApplicationSchemaForm ref="schemaFormRef" />
-      </n-tab-pane>
-    </n-tabs>
-    <div class="col-span-12 flex justify-center mb-4 mt-10">
+    <!-- Qadamlar almashganda oyna balandligi o'zgarmaydi — ichki qism aylantiriladi. -->
+    <div class="app-application-body">
+      <n-tabs animated v-model:value="store.activeTab" class="hidden-tab-header" type="segment">
+        <n-tab-pane :name="store.tabList[0].id">
+          <ApplicationForm_101 />
+        </n-tab-pane>
+        <n-tab-pane :name="store.tabList[1].id">
+          <ApplicationFinish />
+        </n-tab-pane>
+        <n-tab-pane :name="store.tabList[2].id">
+          <ApplicationForm_3 />
+        </n-tab-pane>
+        <n-tab-pane :name="store.tabList[3].id">
+          <ApplicationForm_4 />
+        </n-tab-pane>
+        <n-tab-pane :name="store.tabList[4].id">
+          <ApplicationForm_1 />
+        </n-tab-pane>
+        <n-tab-pane :name="store.tabList[5].id">
+          <ApplicationForm_2 />
+        </n-tab-pane>
+        <n-tab-pane :name="store.tabList[6].id">
+          <ApplicationForm_5 />
+        </n-tab-pane>
+        <n-tab-pane :name="store.tabList[7].id">
+          <ApplicationForm_6 />
+        </n-tab-pane>
+        <n-tab-pane :name="store.tabList[8].id">
+          <ApplicationForm_7 />
+        </n-tab-pane>
+        <n-tab-pane :name="store.tabList[9].id">
+          <ApplicationForm_9 />
+        </n-tab-pane>
+        <n-tab-pane :name="store.tabList[10].id">
+          <ApplicationForm_10 />
+        </n-tab-pane>
+        <n-tab-pane :name="store.tabList[11].id">
+          <ApplicationForm_8 />
+        </n-tab-pane>
+        <n-tab-pane name="schema">
+          <ApplicationSchemaForm ref="schemaFormRef" />
+        </n-tab-pane>
+      </n-tabs>
+    </div>
+    <div class="col-span-12 flex justify-center mb-4 mt-6">
       <div class="grid grid-cols-2 w-full gap-4">
         <div>
           <n-button
@@ -223,4 +226,27 @@
   </n-form>
 </template>
 
-<style scoped></style>
+<style scoped>
+  .app-application-body {
+    height: min(480px, calc(100vh - 320px));
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 6px;
+  }
+</style>
+
+<style>
+  /* Select menyusi body'ga chiqadi — scoped emas. Uzun variant o'raladi va to'liq ko'rinadi. */
+  .app-select-wrap .n-base-select-option {
+    height: auto !important;
+    min-height: 34px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+  .app-select-wrap .n-base-select-option__content {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    line-height: 1.35;
+  }
+</style>
