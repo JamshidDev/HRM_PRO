@@ -1,20 +1,11 @@
 <script setup>
   import { useArchiveDocumentStore, useComponentStore } from '@/store/modules/index.js'
   import { UIPageFilter, UISelect } from '@/components/index.js'
-  import { Search16Regular } from '@vicons/fluent'
 
   const store = useArchiveDocumentStore()
   const componentStore = useComponentStore()
 
   const filterEvent = () => store._filterEvent()
-
-  // Yozish to'xtagach 500ms — har harfga so'rov ketmasin.
-  let searchTimer = null
-  const onSearchInput = () => {
-    clearTimeout(searchTimer)
-    searchTimer = setTimeout(filterEvent, 500)
-  }
-  onBeforeUnmount(() => clearTimeout(searchTimer))
 
   // Tur faqat joriy tab ro'yxatiga ta'sir qiladi — badge sonlari o'zgarmaydi.
   const typeEvent = () => {
@@ -52,7 +43,10 @@
 
 <template>
   <UIPageFilter
-    :show-search-input="false"
+    v-model:search="store.params.search"
+    auto-width-search
+    :search-loading="store.loading"
+    :placeholder="$t('archive.documents.searchPh')"
     :show-add-button="false"
     :filter-count="filterCount"
     filter-placement="bottom-end"
@@ -62,28 +56,10 @@
       padding: '0',
       borderRadius: '20px'
     }"
+    @onSearch="filterEvent"
     @show="beforeShow"
     @onClear="resetFilter"
   >
-    <template #filterBefore>
-      <n-input
-        v-model:value="store.params.search"
-        class="ui-page-search w-full md:w-[460px]!"
-        clearable
-        :placeholder="$t('archive.documents.searchPh')"
-        @input="onSearchInput"
-        @keyup.enter="filterEvent"
-        @clear="filterEvent"
-      >
-        <template #prefix>
-          <n-icon size="16" class="text-textColor3"><Search16Regular /></n-icon>
-        </template>
-        <template #suffix>
-          <n-spin v-if="store.loading" :size="14" />
-        </template>
-      </n-input>
-    </template>
-
     <template #filterContent>
       <div class="ui-filter-grid grid grid-cols-12 gap-x-5 gap-y-4">
         <div class="col-span-12 md:col-span-6">
