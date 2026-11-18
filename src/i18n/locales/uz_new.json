@@ -3856,6 +3856,8 @@
       "organization": "Korxona",
       "onVacation": "gaça ta'tilda",
       "expired": "Muddati ötgan",
+      "notExpired": "Muddati ötmagan",
+      "expiry": "Muddati",
       "daysOverdue": "{n} kun ötgan",
       "daysLeft": "{n} kun qoldi",
       "conclusion": "Xulosa: {name}",

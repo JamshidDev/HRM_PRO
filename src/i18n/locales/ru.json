@@ -3844,6 +3844,8 @@
       "organization": "Организация",
       "onVacation": "в отпуске до",
       "expired": "Просрочен",
+      "notExpired": "Не просрочен",
+      "expiry": "Срок",
       "daysOverdue": "просрочен на {n} дн.",
       "daysLeft": "осталось {n} дн.",
       "conclusion": "Заключение: {name}",

@@ -3836,6 +3836,8 @@
       "organization": "Organization",
       "onVacation": "on vacation until",
       "expired": "Expired",
+      "notExpired": "Not expired",
+      "expiry": "Due date",
       "daysOverdue": "{n} days overdue",
       "daysLeft": "{n} days left",
       "conclusion": "Conclusion: {name}",

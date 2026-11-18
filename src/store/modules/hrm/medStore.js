@@ -27,7 +27,8 @@ export const useMedStore = defineStore('medStore', {
       search: null,
       organizations: [],
       departments: [],
-      status: null,
+      // Ko'rik muddati: expired | valid, null — barchasi.
+      expiry: null,
       // Tibbiy ko'rikdan o'tish muddati oyi: YYYY-MM.
       month: null
     },
@@ -50,7 +51,7 @@ export const useMedStore = defineStore('medStore', {
       const params = {
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
         departments: this.params.departments.toString() || undefined,
-        status: this.params.status || undefined,
+        expiry: this.params.expiry || undefined,
         search: this.params.search || undefined,
         month: this.params.month || undefined
       }

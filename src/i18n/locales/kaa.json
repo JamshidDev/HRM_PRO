@@ -3840,6 +3840,8 @@
       "organization": "Kárxana",
       "onVacation": "shekem dem alısta",
       "expired": "Múddeti ótken",
+      "notExpired": "Múddeti ótpegen",
+      "expiry": "Múddeti",
       "daysOverdue": "{n} kún ótken",
       "daysLeft": "{n} kún qaldı",
       "conclusion": "Juwmaq: {name}",

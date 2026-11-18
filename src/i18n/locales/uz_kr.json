@@ -3574,6 +3574,8 @@
       "organization": "Корхона",
       "onVacation": "гача таътилда",
       "expired": "Муддати ўтган",
+      "notExpired": "Муддати ўтмаган",
+      "expiry": "Муддати",
       "daysOverdue": "{n} кун ўтган",
       "daysLeft": "{n} кун қолди",
       "conclusion": "Хулоса: {name}",
