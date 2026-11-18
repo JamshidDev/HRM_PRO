@@ -1831,6 +1831,8 @@
           "pending": "Kutilmoqda"
         },
         "events": {
+          "submitted": "Tasdiqladi",
+          "created": "Arizani yaratdi",
           "sent": "Hujjat yuborildi",
           "viewed": "Hujjatni körib çiqdi",
           "approved": "Tasdiqladi",
@@ -1847,6 +1849,7 @@
         "yourTurnSub": "Hujjat E-IMZO orqali tasdiqlanadi",
         "notForYouSub": "Siz hujjatni faqat körib çiqişingiz mumkin",
         "roles": {
+          "hr": "Kadrlar bölimi",
           "w": "Xodim",
           "s": "Kelişuvçi",
           "d": "Rahbar"
@@ -1856,6 +1859,8 @@
           "resent": "{count} kişiga qayta yuborildi"
         },
         "verbs": {
+          "submitted": "tasdiqladi — ariza kadrlar bölimiga yuborildi",
+          "created": "arizani yaratdi (qoralama)",
           "sent": "— imzolaşga yuborildi",
           "viewed": "körib çiqdi",
           "approved": "tasdiqladi",
@@ -1869,6 +1874,8 @@
           "route_closed": "arizani yopdi"
         },
         "badges": {
+          "submitted": "Tasdiqladi",
+          "created": "Yaratdi",
           "sent": "Yuborildi",
           "viewed": "Kördi",
           "approved": "Tasdiqladi",
@@ -3367,6 +3374,17 @@
     }
   },
   "applicationPage": {
+    "statuses": {
+      "draft": "Qoralama",
+      "checking": "Tekshiruvda",
+      "process": "Jarayonda",
+      "rejected": "Rad etilgan",
+      "approved": "Tasdiqlangan"
+    },
+    "draftBarTitle": "Arizani tasdiqlang",
+    "draftBarSub": "Imzolaganingizdan keyin ariza kadrlar bölimiga yuboriladi",
+    "ownRejectTitle": "Haqiqatan ham rad etmoqchimisiz?",
+    "ownRejectDesc": "Ariza rad etiladi va kadrlar bölimiga yuborilmaydi.",
     "schema": {
       "other": "Boshqa",
       "otherText": "Matnni kiriting",

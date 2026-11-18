@@ -1815,6 +1815,8 @@
           "pending": "Pending"
         },
         "events": {
+          "submitted": "Confirmed",
+          "created": "Created the application",
           "sent": "Document sent",
           "viewed": "Viewed the document",
           "approved": "Approved",
@@ -1831,6 +1833,7 @@
         "yourTurnSub": "The document is approved via E-IMZO",
         "notForYouSub": "You can only view this document",
         "roles": {
+          "hr": "HR",
           "w": "Employee",
           "s": "Approver",
           "d": "Director"
@@ -1840,6 +1843,8 @@
           "resent": "Resent to {count}"
         },
         "verbs": {
+          "submitted": "confirmed — the application was sent to HR",
+          "created": "created the application (draft)",
           "sent": "— sent for signing",
           "viewed": "viewed",
           "approved": "approved",
@@ -1853,6 +1858,8 @@
           "route_closed": "closed the application"
         },
         "badges": {
+          "submitted": "Confirmed",
+          "created": "Created",
           "sent": "Sent",
           "viewed": "Viewed",
           "approved": "Approved",
@@ -3347,6 +3354,17 @@
     }
   },
   "applicationPage": {
+    "statuses": {
+      "draft": "Draft",
+      "checking": "Under review",
+      "process": "In progress",
+      "rejected": "Rejected",
+      "approved": "Approved"
+    },
+    "draftBarTitle": "Confirm the application",
+    "draftBarSub": "After you sign, the application is sent to HR",
+    "ownRejectTitle": "Do you really want to reject it?",
+    "ownRejectDesc": "The application will be rejected and not sent to HR.",
     "schema": {
       "other": "Other",
       "otherText": "Enter text",

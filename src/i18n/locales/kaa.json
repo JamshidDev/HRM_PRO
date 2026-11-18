@@ -1831,6 +1831,8 @@
           "pending": "Kútilmekte"
         },
         "events": {
+          "submitted": "Tastıyıqladı",
+          "created": "Arzanı jarattı",
           "sent": "Hújjet jiberildi",
           "viewed": "Hújjetti kórip shıqtı",
           "approved": "Tastıyıqladı",
@@ -1847,6 +1849,7 @@
         "yourTurnSub": "Hújjet E-IMZO arqalı tastıyıqlanadı",
         "notForYouSub": "Siz hújjetti tek kórip shıǵıwıńız múmkin",
         "roles": {
+          "hr": "Kadrlar bólimi",
           "w": "Xızmetker",
           "s": "Kelisiwshi",
           "d": "Basshı"
@@ -1856,6 +1859,8 @@
           "resent": "{count} adamǵa qayta jiberildi"
         },
         "verbs": {
+          "submitted": "tastıyıqladı — arza kadrlar bólimine jiberildi",
+          "created": "arzanı jarattı (qaralama)",
           "sent": "— qol qoyıwǵa jiberildi",
           "viewed": "kórip shıqtı",
           "approved": "tastıyıqladı",
@@ -1869,6 +1874,8 @@
           "route_closed": "arzanı japtı"
         },
         "badges": {
+          "submitted": "Tastıyıqladı",
+          "created": "Jarattı",
           "sent": "Jiberildi",
           "viewed": "Kórdi",
           "approved": "Tastıyıqladı",
@@ -3367,6 +3374,17 @@
     }
   },
   "applicationPage": {
+    "statuses": {
+      "draft": "Qaralama",
+      "checking": "Tekseriwde",
+      "process": "Processte",
+      "rejected": "Biykarlanǵan",
+      "approved": "Tastıyıqlanǵan"
+    },
+    "draftBarTitle": "Arzanı tastıyıqlań",
+    "draftBarSub": "Qol qoyǵannan keyin arza kadrlar bólimine jiberiledi",
+    "ownRejectTitle": "Haqıyqatında da biykarlamaqshısız ba?",
+    "ownRejectDesc": "Arza biykarlanadı hám kadrlar bólimine jiberilmeydi.",
     "schema": {
       "other": "Basqa",
       "otherText": "Tekstti kiritiń",
