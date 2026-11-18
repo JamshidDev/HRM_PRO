@@ -1541,6 +1541,7 @@
         "clauseNumber": "Band raqami",
         "clausePlaceholder": "Masalan: 53 yoki 13.4",
         "clauseRequired": "Kelişuv bandi raqamini kiriting",
+        "aidMonthRequired": "Oyni tanlang",
         "experienceSuggest": "Profil: {date} dan · {year} yil {month} oy",
         "experienceNoDate": "Profilda temir yöl staji sanasi kiritilmagan",
         "selectedWorkers": "Tanlangan xodimlar",

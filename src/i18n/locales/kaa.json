@@ -1541,6 +1541,7 @@
         "clauseNumber": "Bánt nomeri",
         "clausePlaceholder": "Mısalı: 53 yamasa 13.4",
         "clauseRequired": "Kelisim bántiniń nomerin kiritiń",
+        "aidMonthRequired": "Ay tańlań",
         "experienceSuggest": "Profil: {date} dan · {year} jıl {month} ay",
         "experienceNoDate": "Profilde temir jol staji sánesi kiritilmegen",
         "selectedWorkers": "Tańlanǵan xızmetkerler",

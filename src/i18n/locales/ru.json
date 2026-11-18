@@ -1527,6 +1527,7 @@
         "clauseNumber": "Номер пункта",
         "clausePlaceholder": "Например: 53 или 13.4",
         "clauseRequired": "Укажите номер пункта соглашения",
+        "aidMonthRequired": "Выберите месяц",
         "experienceSuggest": "Профиль: с {date} · {year} лет {month} мес.",
         "experienceNoDate": "В профиле не указана дата начала ж/д стажа",
         "selectedWorkers": "Выбранные сотрудники",

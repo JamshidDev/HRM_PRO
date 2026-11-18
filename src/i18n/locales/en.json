@@ -1525,6 +1525,7 @@
         "clauseNumber": "Clause number",
         "clausePlaceholder": "e.g. 53 or 13.4",
         "clauseRequired": "Enter the agreement clause number",
+        "aidMonthRequired": "Select the month",
         "experienceSuggest": "Profile: since {date} · {year} yr {month} mo",
         "experienceNoDate": "Railway service start date is not set in profile",
         "selectedWorkers": "Selected employees",
