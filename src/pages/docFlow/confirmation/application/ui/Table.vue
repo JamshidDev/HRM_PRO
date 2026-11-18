@@ -58,7 +58,8 @@
     store.payload.univer_date = Utils.datePickerFormatter(v.univer_date)
     store.payload.application_date = Utils.datePickerFormatter(v.application_date)
     store.payload.reason = v.reason
-    store.payload.rate = v.rate
+    // Select qiymati son — backend JSON'idan "0.5" satr kelishi mumkin.
+    store.payload.rate = v.rate != null && v.rate !== '' ? Number(v.rate) : 1
     store.payload.department_position_id = v.department_position_id
     store.payload.temporarily_absent = v.temporarily_absent
     store.payload.education_type = v.education_type

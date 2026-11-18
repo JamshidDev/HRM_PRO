@@ -2,7 +2,7 @@
   import { useComponentStore, useConfApplicationStore } from '@/store/modules/index.js'
   import UIDepartmentSelect from '@/components/ui/UIDepartmentSelect.vue'
   import { useAppSetting } from '@/utils/index.js'
-  import Utils from '@/utils/Utils.js'
+  import { rateOptions } from '@/utils/rateOptions.js'
 
   const store = useConfApplicationStore()
   const componentStore = useComponentStore()
@@ -46,16 +46,7 @@
     </div>
     <div class="col-span-12">
       <n-form-item :label="$t(`documentPage.form.rate`)" path="rate">
-        <n-input-number
-          :max="1"
-          :min="0.1"
-          :step="0.1"
-          :show-button="false"
-          class="w-full"
-          type="text"
-          :allow-input="Utils.onlyAllowNumber"
-          v-model:value="store.payload.rate"
-        />
+        <n-select v-model:value="store.payload.rate" :options="rateOptions" />
       </n-form-item>
     </div>
 
