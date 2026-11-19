@@ -1,4 +1,5 @@
 <script setup>
+  import { selectWrap } from '@/utils/selectWrap.js'
   import { useComponentStore, useConfApplicationStore } from '@/store/modules/index.js'
   import UIDepartmentSelect from '@/components/ui/UIDepartmentSelect.vue'
   import { NAvatar } from 'naive-ui'
@@ -81,6 +82,7 @@
     <div class="col-span-12">
       <n-form-item :label="$t(`documentPage.form.position`)" path="department_position_id">
         <n-select
+          v-bind="selectWrap"
           :disabled="!Boolean(store.department_id)"
           v-model:value="store.payload.department_position_id"
           filterable
@@ -106,6 +108,7 @@
         <n-tab-pane :name="1" :tab="$t('applicationPage.form.temporarily_option')">
           <n-form-item :label="$t(`applicationPage.form.temporarily_absent`)" path="temporarily_absent">
             <n-select
+              v-bind="selectWrap"
               v-model:value="store.payload.temporarily_absent"
               :options="store.vacationWorkerList"
               :loading="store.vacationWorkerLoading"

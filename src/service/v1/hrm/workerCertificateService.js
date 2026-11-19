@@ -9,6 +9,12 @@ const _index = async (payload) => {
   return await axios.get(`/v1/hr/worker-certificates`, { params: payload.params })
 }
 
+// Ro'yxat Excel'i joriy filtr bo'yicha — fon vazifasi (Yuklashlar tarixi).
+const _export = async (payload) => {
+  return await axios.get(`/v1/hr/worker-certificates/export`, { params: payload.params })
+}
+
 export default {
-  _index
+  _index,
+  _export
 }

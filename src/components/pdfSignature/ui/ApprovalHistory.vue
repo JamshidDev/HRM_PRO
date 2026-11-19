@@ -7,6 +7,7 @@
     Link16Regular
   } from '@vicons/fluent'
   import { UIUserGroup } from '@/components/index.js'
+  import { usePdfViewerStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import PdfFileIcon from '@/assets/icons/pdfFileIcon.svg'
   import ImageFileIcon from '@/assets/icons/figImageSquare.svg'
@@ -86,7 +87,15 @@
     return null
   }
 
-  const roleLabel = (type) => `documentPage.signature.approval.roles.${type || 's'}`
+  const pdfStore = usePdfViewerStore()
+  // Arizada `s` + order 2 — kadrlar bo'limi (HR), qolgan `s` — kelishuvchi.
+  const roleLabel = (signer) => {
+    const isHr =
+      pdfStore.model === Utils.documentModels.workerApplication &&
+      signer?.type === 's' &&
+      signer?.order === 2
+    return `documentPage.signature.approval.roles.${isHr ? 'hr' : signer?.type || 's'}`
+  }
 
   const expanded = ref(new Set())
   const rowId = (row) => `${row.type}-${row.date.valueOf()}-${row.file || ''}`
@@ -202,7 +211,7 @@
                 <span
                   class="shrink-0 text-[10px] font-medium rounded-full px-1.5 py-px bg-surface-ground text-textColor2"
                 >
-                  {{ $t(roleLabel(row.signers[0]?.type)) }}
+                  {{ $t(roleLabel(row.signers[0])) }}
                 </span>
                 <n-ellipsis
                   v-if="row.signers[0]?.type !== 'w' && row.signers[0]?.position"
@@ -278,7 +287,7 @@
                     <span
                       class="shrink-0 text-[10px] font-medium rounded-full px-1.5 py-px bg-surface-section text-textColor3"
                     >
-                      {{ $t(roleLabel(s?.type)) }}
+                      {{ $t(roleLabel(s)) }}
                     </span>
                   </div>
                 </div>

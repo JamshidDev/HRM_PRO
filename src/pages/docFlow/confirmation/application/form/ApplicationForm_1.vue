@@ -2,6 +2,7 @@
   import { useComponentStore, useConfApplicationStore } from '@/store/modules/index.js'
   import { useAppSetting } from '@/utils/index.js'
   import { UIDepartmentSelect } from '@/components/index.js'
+  import { rateOptions } from '@/utils/rateOptions.js'
 
   const store = useConfApplicationStore()
   const componentStore = useComponentStore()
@@ -41,6 +42,11 @@
           value-field="id"
           :loading="store.allPositionLoading"
         />
+      </n-form-item>
+    </div>
+    <div class="col-span-12">
+      <n-form-item :label="$t(`documentPage.form.rate`)" path="rate">
+        <n-select v-model:value="store.payload.rate" :options="rateOptions" />
       </n-form-item>
     </div>
     <div class="col-span-12">
