@@ -6985,17 +6985,25 @@
       "expiryDate": "Muddat",
       "verify": "Tasdiqlangan",
       "returned": "Qaytarib olingan",
-      "noCertificate": "Berilmagan"
+      "noCertificate": "Berilmagan",
+      "status": "Holati",
+      "expired": "Muddati ötgan",
+      "extended": "uzaytirilgan"
     },
     "filter": {
       "status": "Guvohnoma holati",
       "issued": "Berilgan",
       "verify": "Tasdiqlangan",
-      "returned": "Qaytarib olingan"
+      "returned": "Qaytarib olingan",
+      "searchPlaceholder": "F.I.Ş, JŞŞIR yoki guvohnoma raqami"
     },
     "modal": {
-      "notVerified": "Tasdiqlanmagan"
-    }
+      "notVerified": "Tasdiqlanmagan",
+      "latest": "Joriy",
+      "kind": "Guvohnoma"
+    },
+    "empty": "Xodimlar röyxati böş",
+    "emptyHint": "Sizga biriktirilgan taşkilotlarda ştatdagi faol xodim yöq"
   },
   "dbBackup": {
     "name": "Baza zaxiralari",

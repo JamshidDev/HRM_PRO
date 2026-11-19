@@ -432,6 +432,11 @@
       background-color 0.12s ease;
   }
 
+  /* Strelka — tugma: brauzer unga o'q kursor beradi (guruh qatorida qator ham `default`) → qo'l kursor. */
+  button.tso-chevron {
+    cursor: pointer;
+  }
+
   button.tso-chevron:hover {
     color: var(--primary-color);
     background: color-mix(in srgb, var(--primary-color) 12%, transparent);

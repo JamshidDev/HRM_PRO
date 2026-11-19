@@ -72,6 +72,8 @@
     @onSearch="onSearch"
     @onClear="clearFilter"
     :show-add-button="false"
+    :placeholder="$t('workerCertificatePage.filter.searchPlaceholder')"
+    auto-width-search
     filter-placement="bottom-end"
     :popover-style="{
       width: '460px',

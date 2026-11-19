@@ -6985,17 +6985,25 @@
       "expiryDate": "Múddet",
       "verify": "Tastıyıqlanǵan",
       "returned": "Qaytarıp alınǵan",
-      "noCertificate": "Berilmegen"
+      "noCertificate": "Berilmegen",
+      "status": "Jaǵdayı",
+      "expired": "Múddeti ótken",
+      "extended": "uzartılǵan"
     },
     "filter": {
       "status": "Gúwalıq jaǵdayı",
       "issued": "Berilgen",
       "verify": "Tastıyıqlanǵan",
-      "returned": "Qaytarıp alınǵan"
+      "returned": "Qaytarıp alınǵan",
+      "searchPlaceholder": "F.A.Á, JSHSHIR yamasa gúwalıq nomeri"
     },
     "modal": {
-      "notVerified": "Tastıyıqlanbaǵan"
-    }
+      "notVerified": "Tastıyıqlanbaǵan",
+      "latest": "Házirgi",
+      "kind": "Gúwalıq"
+    },
+    "empty": "Xızmetkerler dizimi bos",
+    "emptyHint": "Sizge biriktirilgen shólkemlerde shtattaǵı aktiv xızmetker joq"
   },
   "dbBackup": {
     "name": "Baza rezervleri",
