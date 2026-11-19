@@ -766,6 +766,12 @@
       "cancelSpam": "Are you sure you want to unblock?"
     },
     "no-roles": "No roles assigned!",
+    "assignMode": "Assignment type",
+    "assignToOrg": "Assign to organization",
+    "assignGlobal": "Make global",
+    "globalHint": "Sees all organizations",
+    "globalBadge": "Global — all organizations",
+    "assignedRoles": "Assigned roles",
     "passwordChangedAt": "Password changed",
     "eimzoSkip": "E-IMZO",
     "eimzoSkipDirect": "Personally exempt from E-IMZO verification",
@@ -1809,6 +1815,8 @@
           "pending": "Pending"
         },
         "events": {
+          "submitted": "Confirmed",
+          "created": "Created the application",
           "sent": "Document sent",
           "viewed": "Viewed the document",
           "approved": "Approved",
@@ -1825,6 +1833,7 @@
         "yourTurnSub": "The document is approved via E-IMZO",
         "notForYouSub": "You can only view this document",
         "roles": {
+          "hr": "HR",
           "w": "Employee",
           "s": "Approver",
           "d": "Director"
@@ -1834,6 +1843,8 @@
           "resent": "Resent to {count}"
         },
         "verbs": {
+          "submitted": "confirmed — the application was sent to HR",
+          "created": "created the application (draft)",
           "sent": "— sent for signing",
           "viewed": "viewed",
           "approved": "approved",
@@ -1847,6 +1858,8 @@
           "route_closed": "closed the application"
         },
         "badges": {
+          "submitted": "Confirmed",
+          "created": "Created",
           "sent": "Sent",
           "viewed": "Viewed",
           "approved": "Approved",
@@ -3341,6 +3354,28 @@
     }
   },
   "applicationPage": {
+    "statuses": {
+      "draft": "Draft",
+      "checking": "Under review",
+      "process": "In progress",
+      "rejected": "Rejected",
+      "approved": "Approved"
+    },
+    "draftBarTitle": "Confirm the application",
+    "draftBarSub": "After you sign, the application is sent to HR",
+    "ownRejectTitle": "Do you really want to reject it?",
+    "ownRejectDesc": "The application will be rejected and not sent to HR.",
+    "schema": {
+      "other": "Other",
+      "otherText": "Enter text",
+      "otherOrganization": "Not in the list (type manually)",
+      "childFromList": "From the list",
+      "childManual": "Enter manually",
+      "childName": "Child's full name",
+      "childBirthday": "Date of birth",
+      "days": "Days: {n}",
+      "months": "Months: {n}"
+    },
     "draft": "Draft",
     "draftSignTitle": "Application is a draft",
     "draftSignBody": "After you sign it, the application is sent to HR.",
@@ -6467,7 +6502,8 @@
       "all": "All",
       "locationState": "Place status",
       "hasLocation": "Assigned",
-      "noLocation": "Not assigned"
+      "noLocation": "Not assigned",
+      "place": "Turnstile location"
     },
     "source": {
       "department": "Department place",
@@ -6933,7 +6969,9 @@
       "status": "Certificate status",
       "issued": "Issued",
       "verify": "Verified",
-      "returned": "Returned"
+      "returned": "Returned",
+      "notIssued": "Not issued",
+      "expired": "Expired"
     },
     "modal": {
       "notVerified": "Not verified"

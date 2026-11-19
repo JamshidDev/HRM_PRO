@@ -34,15 +34,21 @@
     )
   }
 
-  // Ariza holati 6 = Qoralama; UIStatus'da 6 «Active» (yashil) — neytral ko'rinishga almashtiramiz.
-  const confirmationStatus = (conf) =>
-    conf?.id === DRAFT_CONFIRMATION
-      ? { id: 2, name: conf?.name || t('applicationPage.draft') }
-      : conf
+  // O'chirish: o'z arizasi — Qoralama, Tekshiruvda yoki Rad etilgan (backend bilan bir xil qoida).
+  const canDelete = (row) => {
+    const app = row?.worker_application
+    if (app?.worker?.id !== accountStore.account?.worker?.id) return false
+    const conf = app?.confirmation?.id
+    const hr = Number(app?.status)
+    return conf === 4 || hr === 2 || (hr === 0 && conf !== 3)
+  }
 
+  // Ariza holati 6 = Qoralama; UIStatus'da 6 «Active» (yashil) — neytral ko'rinishga almashtiramiz.
   const emits = defineEmits(['openOffice'])
 
   const editResponse = (v) => {
+    // Tavsifli tur maydonlari (bo'lmasa — eski ariza).
+    store.payload.data = v.data && typeof v.data === 'object' ? { ...v.data } : {}
     store.payload.director_id = v.director_id
     store.payload.worker_position_id = v.worker_position_id
     store.payload.type = v.type
@@ -58,7 +64,8 @@
     store.payload.univer_date = Utils.datePickerFormatter(v.univer_date)
     store.payload.application_date = Utils.datePickerFormatter(v.application_date)
     store.payload.reason = v.reason
-    store.payload.rate = v.rate
+    // Select qiymati son — backend JSON'idan "0.5" satr kelishi mumkin.
+    store.payload.rate = v.rate != null && v.rate !== '' ? Number(v.rate) : 1
     store.payload.department_position_id = v.department_position_id
     store.payload.temporarily_absent = v.temporarily_absent
     store.payload.education_type = v.education_type
@@ -104,32 +111,19 @@
     store._index()
   }
 
-  // Yopilgan: HR rad etib yopgan (qizil) yoki rahbar imzolagan (yashil).
-  const closedApproved = { id: 3, name: t('applicationPage.hrCheck.closed') }
-  const checkingStatus = {
-    0: {
-      id: 1,
-      name: t('content.Process')
-    },
-    1: {
-      id: 3,
-      name: t('content.checked')
-    },
-    2: {
-      id: 4,
-      name: t('applicationPage.hrCheck.closed')
-    }
-  }
-
-  // Kelishuvchi rad etgan, HR hali yopmagan/qayta yubormagan ariza — «Jarayonda» emas,
-  // HR qarori kutilmoqda (DAS-14208). HR yopsa status 2 → «Yopilgan».
+  // Kelishuvchi rad etgan ariza.
   const REJECTED_CONFIRMATION = 4
-  const awaitingDecision = { id: 2, name: t('applicationPage.hrCheck.awaiting') }
-  const checkStatus = (app) => {
-    if (app?.confirmation?.id === 3) return closedApproved
-    if (app?.confirmation?.id === REJECTED_CONFIRMATION && Number(app?.status) === 0)
-      return awaitingDecision
-    return checkingStatus[Number(app?.status)]
+
+  // Bitta holat: Qoralama → Tekshiruvda (HR) → Jarayonda (kelishuvchilar) → Tasdiqlangan / Rad etilgan.
+  const appStatus = (app) => {
+    const conf = app?.confirmation?.id
+    const hr = Number(app?.status)
+    if (conf === DRAFT_CONFIRMATION) return { id: 2, name: t('applicationPage.statuses.draft') }
+    if (conf === 3) return { id: 3, name: t('applicationPage.statuses.approved') }
+    if (conf === REJECTED_CONFIRMATION || hr === 2)
+      return { id: 4, name: t('applicationPage.statuses.rejected') }
+    if (hr === 1) return { id: 1, name: t('applicationPage.statuses.process') }
+    return { id: 9, name: t('applicationPage.statuses.checking') }
   }
 
   const columns = computed(() => [
@@ -153,11 +147,6 @@
       key: 'worker_application.worker',
       title: t('content.worker'),
       minWidth: 200
-    },
-    {
-      key: 'worker_application.status',
-      title: t('content.checkLabel'),
-      width: 120
     },
     {
       key: 'worker_application.confirmation',
@@ -194,7 +183,7 @@
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete20Regular),
-      visible: canEdit,
+      visible: canDelete,
       action: onDelete
     }
   ])
@@ -238,12 +227,9 @@
       />
     </template>
 
-    <template #[`cell-worker_application.status`]="{ row }">
-      <UIStatus :status="checkStatus(row?.worker_application)" />
-    </template>
 
     <template #[`cell-worker_application.confirmation`]="{ row }">
-      <UIStatus :status="confirmationStatus(row?.worker_application.confirmation)" />
+      <UIStatus :status="appStatus(row?.worker_application)" />
     </template>
 
     <template #[`cell-worker_application.generate`]="{ row }">

@@ -8,7 +8,8 @@ import {
   Attach16Regular,
   Delete16Regular,
   PeopleTeam16Regular,
-  DocumentDismiss16Regular
+  DocumentDismiss16Regular,
+  DocumentAdd16Regular
 } from '@vicons/fluent'
 import { EVENT, STATUS } from './approvalHistory.js'
 
@@ -59,6 +60,23 @@ export const eventMeta = {
     badge: 'documentPage.signature.approval.badges.file_removed',
     text: 'text-fig-text-red',
     dot: 'bg-fig-red-100 text-fig-text-red'
+  },
+  // Ariza: xodim qoralamani yaratdi / imzolab tasdiqladi (keyin ariza HR'ga ketadi).
+  created: {
+    icon: DocumentAdd16Regular,
+    label: 'documentPage.signature.approval.events.created',
+    action: 'documentPage.signature.approval.verbs.created',
+    badge: 'documentPage.signature.approval.badges.created',
+    text: 'text-fig-chip-brand-text',
+    dot: 'bg-fig-chip-brand text-fig-chip-brand-text'
+  },
+  submitted: {
+    icon: Checkmark16Filled,
+    label: 'documentPage.signature.approval.events.submitted',
+    action: 'documentPage.signature.approval.verbs.submitted',
+    badge: 'documentPage.signature.approval.badges.submitted',
+    text: 'text-fig-chip-green-text',
+    dot: 'bg-fig-chip-green text-fig-chip-green-text'
   },
   [EVENT.sent]: {
     icon: Send16Regular,

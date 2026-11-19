@@ -1,4 +1,5 @@
 <script setup>
+  import { selectWrap } from '@/utils/selectWrap.js'
   import { useComponentStore, useConfApplicationStore } from '@/store/modules/index.js'
   import UIDepartmentSelect from '@/components/ui/UIDepartmentSelect.vue'
   import { useAppSetting } from '@/utils/index.js'
@@ -33,6 +34,7 @@
     <div class="col-span-12">
       <n-form-item :label="$t(`documentPage.form.position`)" path="department_position_id">
         <n-select
+          v-bind="selectWrap"
           :disabled="!Boolean(store.department_id)"
           v-model:value="store.payload.department_position_id"
           filterable

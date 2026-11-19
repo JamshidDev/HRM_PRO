@@ -42,6 +42,7 @@
   import { useRoute } from 'vue-router'
   import PdfViewer from '@/components/pdfSignature/PdfViewer.vue'
   import ConformAndRejectModal from '@/components/pdfSignature/ui/ConformAndRejectModal.vue'
+  import DangerConfirm from '@/components/pdfSignature/ui/DangerConfirm.vue'
   import DocumentFileModal from '@/components/pdfSignature/ui/DocumentFileModal.vue'
   import ForwardApplicationModal from '@/components/pdfSignature/ui/ForwardApplicationModal.vue'
   const pdfViewerRef = ref(null)
@@ -275,6 +276,8 @@
   const isLegacy = computed(() => hasDirector.value && !hrSigned.value)
   // HR paneli: yangi (imzolash) / jarayonda (o'zgartirish) / rad etilgan (qayta yuborish) — HR yopmagan bo'lsa.
   const docConfirmation = computed(() => store.document?.document?.confirmation?.id)
+  // Xodimning qoralama arizasi (6): imzolab tasdiqlagach kadrlar bo'limiga yuboriladi.
+  const isOwnDraftApplication = computed(() => isApplication.value && docConfirmation.value === 6)
   const hrStage = computed(() => {
     // Arizalar sahifasida buyruq PDF'i ham ochiladi — HR paneli faqat arizaga.
     if (route.path !== '/hrm/application' || !isApplication.value || store.document?.document?.closed) return null
@@ -369,8 +372,13 @@
         const accountOrgId = accountStore?.account?.organization?.id
         const documentOrgId = v.document.organization_id
 
+        // Rad etilgan ariza yakuniy — tahrirlanmaydi.
+        const appRejected =
+          model === Utils.documentModels.workerApplication &&
+          (v.document.confirmation.id === 4 || v.document.closed)
         store.permissions.canEdit =
           !v.document.is_legacy &&
+          !appRejected &&
           v.document.confirmation.id !== 3 &&
           (accountRoleName === 'Admin' || accountOrgId === documentOrgId)
         store.permissions.canSignature = v.signature.signature
@@ -511,6 +519,17 @@
 
   const onRejected = () => {
     emits('signatureEv')
+  }
+
+  // Xodim o'z qoralamasini sababsiz rad etadi.
+  const rejectOwnDraft = () => {
+    signatureStore._rejectDocument(
+      { status: 4, confirmation_id: store.signatureId, model: store.model },
+      () => {
+        getDocument(store.document_id, store.model)
+        onRejected()
+      }
+    )
   }
 
   // Buyruq / shartnoma / qo'shimcha kelishuv: kelishuvchilar marshruti (parallel / ketma-ket).
@@ -1031,14 +1050,40 @@
                         </div>
                         <div class="hidden sm:block min-w-0 leading-tight mr-2">
                           <div class="text-[13px] font-semibold text-textColor0 whitespace-nowrap">
-                            {{ $t('documentPage.signature.approval.yourTurn') }}
+                            {{ $t(isOwnDraftApplication ? 'applicationPage.draftBarTitle' : 'documentPage.signature.approval.yourTurn') }}
                           </div>
                           <div class="text-[11px] text-textColor3 mt-0.5 whitespace-nowrap">
-                            {{ $t('documentPage.signature.approval.yourTurnSub') }}
+                            {{ $t(isOwnDraftApplication ? 'applicationPage.draftBarSub' : 'documentPage.signature.approval.yourTurnSub') }}
                           </div>
                         </div>
                         <div class="flex items-center gap-1.5 shrink-0">
+                          <!-- O'z qoralamasi: sababsiz, faqat tasdiqlash. -->
+                          <DangerConfirm
+                            v-if="isOwnDraftApplication"
+                            :title="$t('applicationPage.ownRejectTitle')"
+                            :description="$t('applicationPage.ownRejectDesc')"
+                            :confirm-text="$t('documentPage.signature.rejectSubmit')"
+                            :icon="Dismiss20Regular"
+                            placement="top-end"
+                            @confirm="rejectOwnDraft"
+                          >
+                            <template #trigger>
+                              <n-button
+                                type="error"
+                                secondary
+                                round
+                                class="px-3!"
+                                :disabled="signatureStore.loading"
+                              >
+                                <template #icon>
+                                  <n-icon><Dismiss20Regular /></n-icon>
+                                </template>
+                                {{ $t('documentPage.signature.rejectSubmit') }}
+                              </n-button>
+                            </template>
+                          </DangerConfirm>
                           <n-button
+                            v-else
                             type="error"
                             secondary
                             round
