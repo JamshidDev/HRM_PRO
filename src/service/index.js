@@ -6,7 +6,12 @@ import i18n from '@/i18n/index.js'
 import { reportApiError } from '@/utils/errorReporter.js'
 import { getDeviceUuid } from '@/utils/webPush.js'
 import { showAlert, alertFromAxiosError, isToastOnlyPage } from '@/components/notify/alertDialog.js'
-import { endSessionIfForeign, isSessionEnded, sessionSignal } from '@/features/sessionEnded/sessionEnded.js'
+import {
+  endSessionIfForeign,
+  isSessionEnded,
+  markSessionConfirmed,
+  sessionSignal
+} from '@/features/sessionEnded/sessionEnded.js'
 import { dpopProof, syncServerClock } from '@/service/dpop.js'
 const apiUrl = import.meta.env.VITE_API_URL
 console.log(apiUrl)
@@ -62,6 +67,7 @@ instance.interceptors.request.use(async function (config) {
 instance.interceptors.response.use(
   (response) => {
     syncServerClock(response.headers?.date)
+    if (response.config?.headers?.Authorization) markSessionConfirmed()
     if (
       [Utils.methodTypes.PUT, Utils.methodTypes.POST, Utils.methodTypes.DELETE].includes(
         response.config.method

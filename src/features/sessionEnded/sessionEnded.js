@@ -13,6 +13,13 @@ export const sessionSignal = () => controller.signal
 
 export const isSessionEnded = () => sessionEndedState.active
 
+// Shu sahifa yuklanganidan beri token bilan kamida bitta so'rov muvaffaqiyatli o'tganmi.
+// Yo'q bo'lsa — foydalanuvchi saytni endi ochdi va token allaqachon eskirgan: alert emas, darhol login.
+let sessionConfirmed = false
+export const markSessionConfirmed = () => {
+  sessionConfirmed = true
+}
+
 export function endSession(info = {}) {
   if (sessionEndedState.active) return
   sessionEndedState.active = true
@@ -42,6 +49,13 @@ export const currentTokenId = () => (localStorage.getItem(useAppSetting.tokenKey
 export function endSessionIfForeign(info = {}, tokenId) {
   if (['logout', 'relogin'].includes(info.reason)) return
   if (!tokenId || String(tokenId) !== currentTokenId()) return
+  if (!sessionConfirmed) {
+    localStorage.removeItem(useAppSetting.tokenKey)
+    import('@/router/index').then(({ default: router }) => {
+      if (router.currentRoute.value.path !== AppPaths.Login) router.push(AppPaths.Login)
+    })
+    return
+  }
   setTimeout(() => {
     if (String(tokenId) === currentTokenId()) endSession(info)
   }, RELOGIN_GRACE_MS)
