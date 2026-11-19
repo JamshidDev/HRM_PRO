@@ -129,9 +129,11 @@
       },
       xAxis: {
         type: 'value',
+        min: 0,
         max: 100,
-        splitNumber: 5,
-        axisLabel: { color: th.text, formatter: '{value}%', hideOverlap: true },
+        // DAS-16735: foiz o'qi 0/20/40/60/80/100 — qat'iy qadam.
+        interval: 20,
+        axisLabel: { color: th.text, formatter: '{value}%' },
         splitLine: { lineStyle: { color: th.line } }
       },
       yAxis: {
@@ -277,6 +279,13 @@
         (!query || r.fio.toLowerCase().includes(query))
     )
   })
+
+  // DAS-16735: c14c izohi davr + kalendar me'yoriga (norm) bog'liq (CHART.c14c.sub — funksiya).
+  const c14cInfo = computed(() =>
+    typeof CHART.c14c.sub === 'function'
+      ? CHART.c14c.sub(store.params.year, store.params.month, store.dashNorm)
+      : CHART.c14c.sub
+  )
 </script>
 
 <template>
@@ -302,8 +311,8 @@
     <!-- c14c -->
     <Card
       :title="CHART.c14c.title"
-      :sub="store.dashNorm ? $t('salaryControl.common.norm', { norm: store.dashNorm }) : CHART.c14c.sub"
-      :info="CHART.c14c.sub"
+      :sub="store.dashNorm ? $t('salaryControl.common.norm', { norm: store.dashNorm }) : c14cInfo"
+      :info="c14cInfo"
     >
       <EChart :option="hoursOption" height="300px" />
     </Card>
@@ -333,7 +342,8 @@
         <table class="sc-tbl">
           <thead>
             <tr>
-              <th>{{ $t('salaryControl.common.count') }}</th>
+              <!-- DAS-16735: ustun risk RAQAMINI ko'rsatadi, "Soni" emas → "Risk №". -->
+              <th>{{ $t('salaryControl.common.riskNo') }}</th>
               <th>{{ $t('salaryControl.risk.table.fio') }}</th>
               <th>Risk nomi</th>
               <th>{{ $t('salaryControl.risk.table.detail') }}</th>
@@ -349,7 +359,9 @@
               </td>
               <td>{{ r.riskTitle }}</td>
               <td class="sc-muted">{{ r.detail }}</td>
-              <td class="num">{{ r.summa != null ? money2(r.summa) : '—' }}</td>
+              <!-- DAS-16735: faqat sanoqqa asoslangan risklar (masalan Risk 9) — pul
+                   summasi yo'q, "0.00" o'rniga "—" ko'rsatiladi. -->
+              <td class="num">{{ r.summa ? money2(r.summa) : '—' }}</td>
             </tr>
             <tr v-if="!rows.length">
               <td colspan="5" class="sc-empty">{{ $t('salaryControl.common.empty') }}</td>

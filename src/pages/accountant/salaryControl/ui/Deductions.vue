@@ -142,13 +142,14 @@
       },
       xAxis: {
         type: 'value',
+        min: 0,
         max: 100,
-        // splitNumber + hideOverlap: «20%40%60%» yorliqlari yopishib qolmasin.
-        splitNumber: 5,
+        // DAS-16735: 0/20/40/60/80/100 — qat'iy qadam (interval), hideOverlap EMAS
+        // (u yorliqlarni tashlab yuborib «20% 60%» qoldirardi).
+        interval: 20,
         axisLabel: {
           color: th.text,
-          formatter: '{value}%',
-          hideOverlap: true
+          formatter: '{value}%'
         },
         splitLine: { lineStyle: { color: th.line } }
       },

@@ -31,6 +31,18 @@
 
   const flagged = computed(() => new Set(store.scFindings.map((f) => f.fio)))
 
+  // DAS-16735: stk (Top 20 tarkibi) sarlavha/izohi davrga bog'liq (CHART.stk — funksiya).
+  const stkTitle = computed(() =>
+    typeof CHART.stk.title === 'function'
+      ? CHART.stk.title(store.params.year, store.params.month)
+      : CHART.stk.title
+  )
+  const stkSub = computed(() =>
+    typeof CHART.stk.sub === 'function'
+      ? CHART.stk.sub(store.params.year, store.params.month)
+      : CHART.stk.sub
+  )
+
   // —— KPI qatori ——————————————————————————————————————————————————————————
   // «Tekshirilishi kerak» — mukofot anomaliyasi bo'lgan xodimlar (scatter/strip qizil
   // qoidasi): 011/ok > 004/ok, YOKI findings'da bor va 011/004 > 1.05.
@@ -140,18 +152,19 @@
 
   // Jadval ustunlari (n-data-table).
   const columns = computed(() => [
-    { title: t('salaryControl.vids.colCode'), key: 'k', width: 68 },
+    { title: t('salaryControl.vids.colCode'), key: 'k', width: 56 },
     {
       title: t('salaryControl.vids.colName'),
       key: 'name',
-      minWidth: 200,
+      minWidth: 160,
       ellipsis: { tooltip: true },
       render: (r) => h('span', { title: r.full || r.name }, r.name)
     },
     {
       title: t('salaryControl.vids.colCat'),
       key: 'cat',
-      width: 160,
+      width: 140,
+      ellipsis: { tooltip: true },
       render: (r) =>
         r.cat
           ? h('span', { class: 'vid-cat-tag' }, [
@@ -167,7 +180,7 @@
       title: t('salaryControl.vids.colSum'),
       key: 's',
       align: 'right',
-      width: 200,
+      width: 150,
       sorter: (a, b) => a.s - b.s,
       render: (r) =>
         h('div', { class: 'vid-sum-cell' }, [
@@ -184,7 +197,7 @@
       title: t('salaryControl.vids.colShare'),
       key: 'sharePct',
       align: 'right',
-      width: 92,
+      width: 80,
       sorter: (a, b) => a.sharePct - b.sharePct,
       render: (r) => `${r.sharePct.toFixed(1)}%`
     },
@@ -192,7 +205,7 @@
       title: t('salaryControl.vids.colRecipients'),
       key: 'c',
       align: 'right',
-      width: 118,
+      width: 100,
       sorter: (a, b) => a.c - b.c,
       render: (r) => (r.c || 0).toLocaleString('ru-RU')
     },
@@ -200,7 +213,7 @@
       title: t('salaryControl.vids.colAvg'),
       key: 'avg',
       align: 'right',
-      width: 150,
+      width: 130,
       sorter: (a, b) => a.avg - b.avg,
       render: (r) => formatMoney(r.avg, { unit: 'full' })
     },
@@ -208,7 +221,7 @@
       title: t('salaryControl.vids.colDelta'),
       key: 'delta',
       align: 'right',
-      width: 100,
+      width: 92,
       sorter: (a, b) => (a.delta ?? -Infinity) - (b.delta ?? -Infinity),
       render: (r) =>
         r.delta == null
@@ -612,13 +625,12 @@
           :pagination="showAll || search ? tablePagination : false"
           :bordered="false"
           size="small"
-          :scroll-x="1120"
         />
         <p class="vid-hint">{{ $t('salaryControl.vids.rowHint') }}</p>
       </Card>
 
       <!-- Top 20 xodim oyligi tarkibi (stacked) -->
-      <Card :title="CHART.stk.title" :sub="CHART.stk.sub" :info="CHART.stk.sub">
+      <Card :title="stkTitle" :sub="stkSub" :info="stkSub">
         <EChart :option="stkOption" height="520px" />
       </Card>
 

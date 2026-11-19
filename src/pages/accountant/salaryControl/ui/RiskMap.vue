@@ -13,6 +13,9 @@
 
   const store = useSalaryControlStore()
 
+  // DAS-16735: bo'lim sub-matni davrga bog'liq (SECTION.risks.sub — funksiya).
+  const risksSub = computed(() => SECTION.risks.sub(store.params.year, store.params.month))
+
   // Status -> vizual meta (badge rangi, plita rangi/ikonka, matn kaliti).
   const statusMeta = {
     bad: { tone: 'red', icon: 'warn', label: 'salaryControl.risk.status.bad' },
@@ -156,7 +159,7 @@
     <template v-else>
       <!-- Bo'lim izohi -->
       <p class="sc-intro">
-        {{ SECTION.risks.sub }}
+        {{ risksSub }}
         <InfoHint :text="SECTION.risks.info" />
       </p>
 
