@@ -11,7 +11,16 @@
 //   2) Maketdagi `e.kas` = kasaba uyushma badali (902); bizda `emps.kas`=897(omonat).
 //      Kasaba badali kerak bo'lsa xom `ded['902']` o'qiladi.
 
-import { positionCategory, positionGroup, pinAgeSex } from './engine-helpers.js'
+import {
+  positionCategory,
+  positionGroup,
+  pinAgeSex,
+  isNightPosition,
+  isShiftPosition,
+  monthNormHours,
+  UZ_HOLIDAYS,
+  HOURS_ERROR_THRESHOLD
+} from './engine-helpers.js'
 
 // —— Konstantalar (HUJJAT §12/§14) ————————————————————————————————————————
 // 🔧 BUXGALTERIYA: bu qiymatlar auditlik uchun markazda. Rasmiy hujjat/sana bilan
@@ -41,8 +50,10 @@ export const CHK = {
   AID_FULL_RATIO: 0.99, // 8-t: moddiy yordam (278) / oklad ("to'liq oklad miqdorida")
   UNION_RATE: 0.01, // 9-t: kasaba badali (902) — MHTF ning 1% i (1C: "взносов 1%")
   UNION_MIN_DIFF: 100, // 9-t: badal farqi bardoshi (so'm)
-  TAX_MIN_DIFF: 1000, // 10-t: soliq kam ushlangani bardoshi (so'm)
-  DED_OVER_SHARE: 0.505 // 11-t: soliqdan keyin ushlanmalar ulushi chegarasi (50% + bardosh)
+  TAX_MIN_DIFF: 50000, // 10-t: soliq kam ushlangani minimal farqi (so'm) — mayda shovqin filtri
+  TAX_UNDER_RATIO: 0.1, // 10-t: kutilgan soliqning kamida 10% i kam ushlansagina belgilanadi
+  DED_OVER_SHARE: 0.505, // 11-t: soliqdan keyin ushlanmalar ulushi chegarasi (50% + bardosh)
+  DED_OVER_ACCRUED: 1.0 // 5-topshiriq: ushlanmalar hisoblangan summadan oshsa (>100%) — yuqori xavf
 }
 
 // Davr uchun MHTEKM (2026-09 dan 1 360 000).
@@ -363,10 +374,13 @@ export function computeFindings(emps = [], { fmt } = {}) {
       add('O‘rta', 'To‘lov turi lavozimga mos emas (055)', e, v055, `Kasb mahorati ustamasi (055) ${f(v055)} — lavozim ${cat.toLowerCase()} (ishchi/yo‘riqchi emas).`, "055 tur tavsifiga mos lavozimligini tekshiring.")
     }
 
-    // 6. Tungi ish haqi kuzatuvchi bo'lmagan lavozimga: 023 bor, lavozim kuzatuvchi emas.
+    // 6. Tungi ish haqi tungi ishlamaydigan lavozimga: 023 bor, lekin lavozim tungi
+    //    smenali emas. DAS-16733: tungi lavozimlar ro'yxati kengaytirildi (qorovul,
+    //    navbatchi, elektromexanik/montyor, mashinist, dispetcher...) — soxta "Past"
+    //    holatlar (~3000) keskin kamaydi; faqat chindan shubhali lavozimlar qoladi.
     const v023 = V(e, '023')
-    if (v023 > 0 && !isInspector) {
-      add('Past', 'Tungi ish haqi (023) — kuzatuvchi bo‘lmagan lavozim', e, v023, `Tungi vaqt uchun (023) ${f(v023)} so‘m, lavozim: ${e.lav || '—'}.`, "Tungi smena grafigi va tabeldagi tungi soatlarni tekshiring.")
+    if (v023 > 0 && !isNightPosition(e.lav)) {
+      add('Past', 'Tungi ish haqi (023) — tungi bo‘lmagan lavozim', e, v023, `Tungi vaqt uchun (023) ${f(v023)} so‘m, lavozim: ${e.lav || '—'} (tungi smenali lavozimlar ro‘yxatida yo‘q).`, "Tungi smena grafigi va tabeldagi tungi soatlarni tekshiring.")
     }
 
     // 7. Ishlayotgan xodimga ta'til kompensatsiyasi: 040 bor.
@@ -394,16 +408,20 @@ export function computeFindings(emps = [], { fmt } = {}) {
       }
     }
 
-    // 10. Daromad solig'i kam ushlangan: (soliq+inps) ≠ 12%×(jami−061−278imtiyoz), farq>1000.
+    // 10. Daromad solig'i kam ushlangan: (soliq+inps) ≈ 12%×(soliqqa tortiladigan baza).
     //     Bizda tax=max(0,882−883), inps=883 → tax+inps = 882(xom) = JShDS+INPS.
+    //     DAS-16733: soliqdan OZOD daromadlar bazadan chiqariladi (278/250 moddiy yordam
+    //     chegaragacha, 061 nafaqa) — aks holda deyarli har 278 oluvchi soxta "kam
+    //     ushlangan" chiqardi. Bo'sag'a nisbiy (10% + 50k) — mayda farqlar shovqin qilmaydi.
     const taxInps = num(e.tax) + num(e.inps)
     const v061 = V(e, '061')
     const imtiyoz278 = Math.min(v278, CONST.IMTIYOZ_278)
-    const base = num(e.tot) - v061 - imtiyoz278
+    const v250 = V(e, '250')
+    const base = num(e.tot) - v061 - imtiyoz278 - v250
     if (base > 0) {
       const expected = base * CONST.TAX_RATE
       const farq = expected - taxInps
-      if (farq > CHK.TAX_MIN_DIFF) {
+      if (farq > Math.max(CHK.TAX_MIN_DIFF, expected * CHK.TAX_UNDER_RATIO)) {
         add('Yuqori', "Daromad solig'i kam ushlangan", e, farq, `Soliq+INPS ${f(taxInps)} — soliqqa tortiladigan (${f(base)}) ning 12% i (${f(expected)}) dan ${f(farq)} kam.`, "Imtiyozlar va soliq bazasini qayta hisoblang.")
       }
     }
@@ -418,14 +436,32 @@ export function computeFindings(emps = [], { fmt } = {}) {
       }
     }
 
-    // 12. Bitta JSHSHIR — bir necha qator. summa=0: bu STRUKTURAVIY belgi (dubl/ikki
-    //     lavozim), pul «buzilish miqdori» EMAS — «shubhali summa» KPI'ни shishirmasin.
-    if (e.j && (pinCount.get(e.j) || 0) > 1 && !dupReported.has(e.j)) {
-      dupReported.add(e.j)
-      add('Yuqori', 'Bitta JSHSHIR — bir necha qator', e, 0, `Bitta JSHSHIR vedomostda ${pinCount.get(e.j)} marta uchraydi.`, "Ikki lavozim/korxona yoki dubl yozuv ekanini aniqlang.")
+    // 12. Ushlanmalar HISOBLANGAN summadan oshgan (>100%). DAS-16734: soliqdan tashqari
+    //     ushlanmalar jami hisoblangandan katta — odatda o'tgan oy qarzi / qayta hisob /
+    //     minus qatorlar (1C import) belgisi. Yuqori xavf — alohida tekshiriladi.
+    const totalDed = totalWithheld(e)
+    if (num(e.tot) > 0 && totalDed > num(e.tot) * CHK.DED_OVER_ACCRUED) {
+      add('Yuqori', 'Ushlanmalar hisoblangandan oshgan (>100%)', e, totalDed - num(e.tot), `Soliqdan tashqari ushlanmalar ${f(totalDed)} — hisoblangan ${f(e.tot)} ning ${Math.round((totalDed / num(e.tot)) * 100)}% i. O'tgan oy qarzi / qayta hisob / minus qatorlar bo'lishi mumkin — 1C importini tekshiring.`, "1C: o'tgan oy qoldig'i, qayta hisob yoki minus qatorlar to'g'ri import qilinganini tekshiring.")
     }
 
-    // 13 va 14 — NDFL-4/5 va INPS hisoboti kerak (rc ulanganda qo'shiladi).
+    // 13. Bitta JSHSHIR — bir necha qator. DAS-16731: bu XAVF emas, MA'LUMOT belgisi
+    //     (bir shaxs asosiy ish + o'rindoshlik/ikki lavozimda). `info:true` → KPI
+    //     (shubhali summa / belgilangan holatlar) buni sanaMAYDI. summa=0.
+    if (e.j && (pinCount.get(e.j) || 0) > 1 && !dupReported.has(e.j)) {
+      dupReported.add(e.j)
+      F.push({
+        sev: 'Past',
+        cat: 'Bitta JSHSHIR — bir necha qator',
+        fio: e.fio,
+        lav: e.lav,
+        summa: 0,
+        txt: `Bitta JSHSHIR vedomostda ${pinCount.get(e.j)} marta uchraydi (asosiy ish / o'rindoshlik).`,
+        chk: "Ikki lavozim/o'rindoshlik yoki dubl yozuv ekanini aniqlang.",
+        info: true
+      })
+    }
+
+    // 14 — NDFL-4/5 va INPS hisoboti kerak (rc ulanganda qo'shiladi).
   }
   return F
 }
@@ -444,7 +480,8 @@ export function computeRisks(emps = [], kpi = {}, { year, month, fmt } = {}) {
   const f = fmt || ((n) => String(Math.round(num(n))))
   const mlnf = (n) => (num(n) / 1e6).toLocaleString('ru-RU', { maximumFractionDigits: 1 }) + ' mln'
   const MW = minWage(year, month)
-  const NORM = num(kpi.norm) || 168
+  // DAS-16730: oy me'yori kalendardan (176/168 qotirilgan emas) — bayram kunlari ayriladi.
+  const NORM = monthNormHours(year, month, UZ_HOLIDAYS) || num(kpi.norm) || 168
   const E = emps.filter((e) => num(e.tot) > 0)
   const registry = []
   const r2 = (x) => Math.round(num(x) * 100) / 100
@@ -471,16 +508,47 @@ export function computeRisks(emps = [], kpi = {}, { year, month, fmt } = {}) {
   const low5 = E.filter((e) => num(e.ok) > 0 && num(e.ok) < MW)
   low5.forEach((e) => add(5, e, `Oklad ${f(e.ok)} < MHTEKM ${f(MW)}`, MW - num(e.ok)))
 
-  // 6 — 160+ soat, 004 < oklad×99.5%
-  const r6 = E.filter((e) => num(e.ok) > 0 && num(e.t) >= 160 && V(e, '004') > 0 && V(e, '004') < num(e.ok) * 0.995)
-  r6.forEach((e) => add(6, e, `${e.t} soat ishlagan, vaqtbay haq ${f(V(e, '004'))} — okladdan ${f(num(e.ok) - V(e, '004'))} kam`, num(e.ok) - V(e, '004')))
+  // 6 — vaqtbay haq ishlangan vaqtga MUTANOSIB okladdan kam (DAS-16730). Ilgari
+  //     `004 < oklad×99.5%` qotirilgan edi — to'liq ishlamagan (160 soat) xodim ham
+  //     "kam to'langan" chiqardi. Endi: kutilgan = oklad × (ishlangan/me'yor), 5% bardosh.
+  //     Smenali (sutkalik) lavozimlar va 250+ soat (tabel xatosi) chiqarib tashlanadi.
+  const norm6 = NORM || 168
+  const expected6 = (e) => num(e.ok) * Math.min(1, num(e.t) / norm6)
+  const r6 = E.filter((e) => {
+    if (num(e.ok) <= 0 || isShiftPosition(e.lav)) return false
+    const t = num(e.t)
+    const v004 = V(e, '004')
+    if (v004 <= 0 || t <= 0 || t >= HOURS_ERROR_THRESHOLD) return false
+    return v004 < expected6(e) * 0.95
+  })
+  r6.forEach((e) =>
+    add(
+      6,
+      e,
+      `${e.t} soat ishlagan (me'yor ${norm6}), vaqtbay haq ${f(V(e, '004'))} — mutanosib kutilgan ${f(expected6(e))} dan ${f(expected6(e) - V(e, '004'))} kam`,
+      expected6(e) - V(e, '004')
+    )
+  )
 
   // 7 — o'rtacha (yashirin bandlik)
   const avg = E.length ? E.reduce((a, e) => a + num(e.tot), 0) / E.length : 0
 
-  // 9 — me'yordan ortiq soat, 072/073 yo'q
-  const r9 = E.filter((e) => num(e.t) > NORM && !V(e, '072') && !V(e, '073'))
+  // 9 — me'yordan ortiq soat, 072/073 yo'q. DAS-16730: smenali (sutkalik navbat)
+  //     lavozimlar — qorovul, navbatchi, dispetcher, pereyezd — jamlangan ish vaqti
+  //     hisobida me'yordan ko'p ishlashi NORMAL → ular chiqarib tashlanadi. 250+ soat
+  //     alohida "tabel xatosi" sifatida belgilanadi (real emas).
+  const r9 = E.filter(
+    (e) =>
+      num(e.t) > NORM &&
+      num(e.t) < HOURS_ERROR_THRESHOLD &&
+      !isShiftPosition(e.lav) &&
+      !V(e, '072') &&
+      !V(e, '073')
+  )
   r9.forEach((e) => add(9, e, `${e.t} soat — me’yoridan (${NORM}) ${e.t - NORM} soat ko‘p; 072/073 bo‘yicha oshirilgan haq yo‘q`, 0))
+  // 250+ soat — tabel/import xatosi (DAS-16730). Masalan Hazratov 311, Shaymatov 264.
+  const rHrsErr = E.filter((e) => num(e.t) >= HOURS_ERROR_THRESHOLD)
+  rHrsErr.forEach((e) => add(9, e, `${e.t} soat — real emas (${HOURS_ERROR_THRESHOLD}+ soat); tabel yoki 1C import xatosi bo‘lishi mumkin`, 0))
 
   // 10 — ta'til puli / kompensatsiya (032/040)
   const r10 = E.filter((e) => V(e, '032') || V(e, '040'))
@@ -505,9 +573,20 @@ export function computeRisks(emps = [], kpi = {}, { year, month, fmt } = {}) {
     if (D(e, '875')) add(11, e, `Ortiqcha to‘langan moddiy yordam ushlab qolingan (875): ${f(D(e, '875'))} so‘m`, D(e, '875'))
   })
   const n875 = E.filter((e) => D(e, '875')).length
+  // Ushlanmalar HISOBLANGANDAN oshgan (>100%) — DAS-16734. Yuqori xavf: odatda o'tgan
+  //  oy qarzi / qayta hisob / minus qatorlar (1C import). Alohida ro'yxatga chiqariladi.
+  const r100 = E.filter((e) => num(e.tot) > 0 && totalWithheld(e) > num(e.tot))
+  r100.forEach((e) =>
+    add(
+      11,
+      e,
+      `Ushlanmalar ${Math.round((totalWithheld(e) / num(e.tot)) * 100)}% — HISOBLANGANDAN oshgan (${f(totalWithheld(e))} > ${f(e.tot)}); o'tgan oy qarzi / qayta hisob / minus qator bo'lishi mumkin`,
+      totalWithheld(e) - num(e.tot)
+    )
+  )
 
   const cards = [
-    { b: "1-blok: To‘lov muddatlari va davriyligi", n: 1, t: "Ish haqining oyiga bir marta to‘lanishi", st: av ? 'ok' : 'bad', f: av ? `Avans ushlanmasi (880) bor: ${mlnf(av)}.` : `Vedomostda avans (880) hech kimga ko‘rsatilmagan, kartaga oylik bitta summada o‘tkazilgan (${mlnf(kpi.card)}). Ish haqi oyiga bir marta to‘langan bo‘lishi mumkin.`, a: "MK 253-modda: ish haqi yarim oyda kamida bir marta (avans va qolgan qismi, oraliq 16 kundan oshmasin). Bank to‘lov topshiriqnomalari bilan tasdiqlang." },
+    { b: "1-blok: To‘lov muddatlari va davriyligi", n: 1, t: "Ish haqining oyiga bir marta to‘lanishi", st: av ? 'ok' : 'na', f: av ? `Avans ushlanmasi (880) bor: ${mlnf(av)}.` : `Vedomostda avans (880) ko‘rinmaydi, ammo bank to‘lov ma’lumoti yo‘q — oyiga bir yoki ikki marta to‘langanini VEDOMOST bo‘yicha tasdiqlab bo‘lmaydi (DAS-16733).`, a: "MK 253-modda: ish haqi yarim oyda kamida bir marta. Bank to‘lov topshiriqnomalari (sanalar) ulangach aniq baholanadi." },
     { b: "1-blok: To‘lov muddatlari va davriyligi", n: 2, t: "To‘lovlarning kechiktirilishi", st: 'na', f: "Vedomostda to‘lov sanasi yo‘q — kechikishni aniqlab bo‘lmaydi.", a: "MK 333-modda: kechiktirilgan har bir kun uchun MB qayta moliyalash stavkasining 10% miqdorida kompensatsiya. Bank to‘lov sanalarini qo‘shish kerak." },
     { b: "1-blok: To‘lov muddatlari va davriyligi", n: 3, t: "Dam olish kuni arafasida to‘lanmaslik", st: 'na', f: "To‘lov sanalari ma’lumoti yo‘q.", a: "To‘lov kuni dam olish/bayramga to‘g‘ri kelsa, oldingi ish kunida to‘lash. To‘lov kalendarini yuriting." },
     { b: "2-blok: Kamsitish va tariflarga nomuvofiqlik", n: 4, t: "Bir xil lavozimga turlicha maosh", st: g4.length ? 'chk' : 'ok', f: g4.length ? `${g4.length} ta lavozimda turlicha oklad: ` + g4.slice(0, 4).map((g) => `${g.n} — ${g.ok.length} xil (${mlnf(g.ok[0])}–${mlnf(g.ok[g.ok.length - 1])})`).join('; ') + '.' : "Bir xil lavozimlarda oklad bir xil.", a: "Farq razryad, toifa yoki staj bilan asoslanganini shtat jadvali va buyruqlar bilan tekshiring." },
@@ -517,11 +596,11 @@ export function computeRisks(emps = [], kpi = {}, { year, month, fmt } = {}) {
     { b: "3-blok: Bandlikning yashirin shakllari", n: 8, t: "Mehnat shartnomasini FHSh bilan almashtirish", st: 'na', f: "NDFL-4 shartnoma turi va 047-tur to‘lovi kerak (hisobot ulangach aniqlanadi).", a: "Barcha shartnomalar Yagona milliy mehnat tizimida ro‘yxatdan o‘tganini tekshiring." },
     { b: "4-blok: Ish vaqti hisobi va ushlanmalar", n: 9, t: "Ish vaqtidan tashqari ish uchun oshirilgan haq", st: r9.length ? 'chk' : 'ok', f: r9.length ? `${r9.length} xodim me’yordan (${NORM} soat) ko‘p ishlagan, 072/073-turlar bo‘yicha to‘lov yo‘q.` : "Topilmadi.", a: "Jamlangan ish vaqti hisobi qo‘llanmagan bo‘lsa, ortiqcha soatlar ikki hissa to‘lanadi. Grafik va tabelni tekshiring." },
     { b: "4-blok: Ish vaqti hisobi va ushlanmalar", n: 10, t: "O‘rtacha ish haqining noto‘g‘ri hisoblanishi", st: r10.length ? 'chk' : 'ok', f: `${r10.length} xodimga ta’til puli yoki kompensatsiya (032/040) hisoblangan — jami ${mlnf(r10.reduce((a, e) => a + V(e, '032') + V(e, '040'), 0))}.`, a: "12 oylik o‘rtacha ish haqiga mukofot, ustama va indeksatsiya to‘g‘ri kiritilganini qayta hisoblang." },
-    { b: "4-blok: Ish vaqti hisobi va ushlanmalar", n: 11, t: "Ish haqidan ortiqcha ushlab qolish", st: r11.length || n875 ? 'bad' : 'ok', f: (r11.length ? `${r11.length} xodimda ushlanmalar chegaradan (50%, aliment/ijro hujjatida 70%) oshgan.` : "Hech bir xodimda ushlanmalar chegaradan oshmagan.") + ` Lekin ${n875} xodimdan ortiqcha to‘langan moddiy yordam ushlab qolingan (875).`, a: "Ortiqcha to‘langan summa faqat hisoblash xatosi yoki xodim aybi isbotlanganda ushlanadi — asos hujjatini tekshiring." },
+    { b: "4-blok: Ish vaqti hisobi va ushlanmalar", n: 11, t: "Ish haqidan ortiqcha ushlab qolish", st: r100.length || r11.length || n875 ? 'bad' : 'ok', f: (r100.length ? `⚠ ${r100.length} xodimda ushlanmalar HISOBLANGANDAN oshgan (>100%) — o‘tgan oy qarzi/qayta hisob/minus qatorlar ehtimoli, 1C importini tekshiring. ` : '') + (r11.length ? `${r11.length} xodimda ushlanmalar chegaradan (50%, aliment/ijro hujjatida 70%) oshgan. ` : "Chegaradan oshgan ushlanma yo‘q. ") + `${n875} xodimdan ortiqcha to‘langan moddiy yordam ushlab qolingan (875).`, a: "Ortiqcha to‘langan summa faqat hisoblash xatosi yoki xodim aybi isbotlanganda ushlanadi. >100% holatlar odatda 1C import (qarz/qayta hisob) — asos hujjatini tekshiring." },
     { b: "4-blok: Ish vaqti hisobi va ushlanmalar", n: 12, t: "Hisob-kitob varaqalarining berilmasligi", st: 'na', f: "Vedomostda ma’lumot yo‘q.", a: "Har to‘lovda hisoblangan va ushlangan summalar ko‘rsatilgan hisob-kitob varaqasini berish (HRM PRO orqali elektron)." },
     { b: "5-blok: Institutsional va sug‘urta risklari", n: 13, t: "Ish haqining indeksatsiya qilinmasligi", st: 'na', f: "Bir oylik ma’lumot — oklad o‘zgarishini kuzatib bo‘lmaydi. 2026-yil 1-sentyabrdan davlat sektorida ish haqi 7% oshirilgan.", a: "Indeksatsiya tartibini ichki hujjatda belgilash va bajarilishini oylar kesimida nazorat qilish." },
     { b: "5-blok: Institutsional va sug‘urta risklari", n: 14, t: "Ish beruvchi javobgarligini majburiy sug‘urta qilish", st: 'na', f: "Sug‘urta polisi ma’lumoti yo‘q.", a: "Majburiy sug‘urta polisi amalda ekanini tekshirish; mehnatda shikastlanish (274) to‘lovini sug‘urta orqali qoplash imkoniyatini ko‘rish." }
   ]
 
-  return { cards, registry, derived: { av, g4, minOk, low5, r6, avg, r9, r10, r11, n875, NORM, MW, E } }
+  return { cards, registry, derived: { av, g4, minOk, low5, r6, avg, r9, rHrsErr, r10, r11, r100, n875, NORM, MW, E } }
 }
