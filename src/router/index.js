@@ -29,6 +29,8 @@ const beforeLogin = async (to, from, next) => {
       // 401 bo'lsa axios interceptor Login'ga o'zi yo'naltiradi (service/index.js);
       // shu yerda xatoni yutib, navigatsiyani "osilib qolishdan" saqlaymiz.
       await accountStore._index().catch(() => {})
+      // Token eskirgan (401 uni o'chirdi) — sahifa emas, login.
+      if (!localStorage.getItem(useAppSetting.tokenKey)) return next(AppPaths.Login)
     }
     next()
   } else {

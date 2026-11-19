@@ -7021,19 +7021,27 @@
       "expiryDate": "Muddat",
       "verify": "Tasdiqlangan",
       "returned": "Qaytarib olingan",
-      "noCertificate": "Berilmagan"
+      "noCertificate": "Berilmagan",
+      "status": "Holati",
+      "expired": "Muddati o'tgan",
+      "extended": "uzaytirilgan"
     },
     "filter": {
       "status": "Guvohnoma holati",
       "issued": "Berilgan",
       "verify": "Tasdiqlangan",
       "returned": "Qaytarib olingan",
+      "searchPlaceholder": "F.I.Sh, JSHSHIR yoki guvohnoma raqami",
       "notIssued": "Berilmagan",
       "expired": "Muddati o'tgan"
     },
     "modal": {
-      "notVerified": "Tasdiqlanmagan"
-    }
+      "notVerified": "Tasdiqlanmagan",
+      "latest": "Joriy",
+      "kind": "Guvohnoma"
+    },
+    "empty": "Xodimlar ro'yxati bo'sh",
+    "emptyHint": "Sizga biriktirilgan tashkilotlarda shtatdagi faol xodim yo'q"
   },
   "dbBackup": {
     "name": "Baza zaxiralari",

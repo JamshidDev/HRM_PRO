@@ -781,9 +781,9 @@
       "cancelSpam": "Haqiqatan ham blokdan çiqarmoqçimisiz?"
     },
     "no-roles": "Biriktirilgan rollar yöq!",
-    "assignMode": "Berish turi",
-    "assignToOrg": "Korxonaga berish",
-    "assignGlobal": "Global qilish",
+    "assignMode": "Beriş turi",
+    "assignToOrg": "Korxonaga beriş",
+    "assignGlobal": "Global qiliş",
     "globalHint": "Barça korxonalarni köradi",
     "globalBadge": "Global — barça korxonalar",
     "assignedRoles": "Biriktirilgan rollar",
@@ -3376,23 +3376,23 @@
   "applicationPage": {
     "statuses": {
       "draft": "Qoralama",
-      "checking": "Tekshiruvda",
+      "checking": "Tekşiruvda",
       "process": "Jarayonda",
       "rejected": "Rad etilgan",
       "approved": "Tasdiqlangan"
     },
     "draftBarTitle": "Arizani tasdiqlang",
     "draftBarSub": "Imzolaganingizdan keyin ariza kadrlar bölimiga yuboriladi",
-    "ownRejectTitle": "Haqiqatan ham rad etmoqchimisiz?",
+    "ownRejectTitle": "Haqiqatan ham rad etmoqçimisiz?",
     "ownRejectDesc": "Ariza rad etiladi va kadrlar bölimiga yuborilmaydi.",
     "schema": {
-      "other": "Boshqa",
+      "other": "Boşqa",
       "otherText": "Matnni kiriting",
-      "otherOrganization": "Ro'yxatda yo'q (qo'lda yozish)",
-      "childFromList": "Ro'yxatdan",
-      "childManual": "Qo'lda kiritish",
-      "childName": "Farzandning F.I.Sh.",
-      "childBirthday": "Tug'ilgan sanasi",
+      "otherOrganization": "Röyxatda yöq (qölda yoziş)",
+      "childFromList": "Röyxatdan",
+      "childManual": "Qölda kiritiş",
+      "childName": "Farzandning F.I.Ş.",
+      "childBirthday": "Tuğilgan sanasi",
       "days": "Kunlar soni: {n}",
       "months": "Oylar soni: {n}"
     },
@@ -7021,19 +7021,27 @@
       "expiryDate": "Muddat",
       "verify": "Tasdiqlangan",
       "returned": "Qaytarib olingan",
-      "noCertificate": "Berilmagan"
+      "noCertificate": "Berilmagan",
+      "status": "Holati",
+      "expired": "Muddati ötgan",
+      "extended": "uzaytirilgan"
     },
     "filter": {
       "status": "Guvohnoma holati",
       "issued": "Berilgan",
       "verify": "Tasdiqlangan",
       "returned": "Qaytarib olingan",
+      "searchPlaceholder": "F.I.Ş, JŞŞIR yoki guvohnoma raqami",
       "notIssued": "Berilmagan",
       "expired": "Muddati ötgan"
     },
     "modal": {
-      "notVerified": "Tasdiqlanmagan"
-    }
+      "notVerified": "Tasdiqlanmagan",
+      "latest": "Joriy",
+      "kind": "Guvohnoma"
+    },
+    "empty": "Xodimlar röyxati böş",
+    "emptyHint": "Sizga biriktirilgan taşkilotlarda ştatdagi faol xodim yöq"
   },
   "dbBackup": {
     "name": "Baza zaxiralari",

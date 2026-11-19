@@ -6652,19 +6652,27 @@
       "expiryDate": "Муддат",
       "verify": "Тасдиқланган",
       "returned": "Қайтариб олинган",
-      "noCertificate": "Берилмаган"
+      "noCertificate": "Берилмаган",
+      "status": "Ҳолати",
+      "expired": "Муддати ўтган",
+      "extended": "узайтирилган"
     },
     "filter": {
       "status": "Гувоҳнома ҳолати",
       "issued": "Берилган",
       "verify": "Тасдиқланган",
       "returned": "Қайтариб олинган",
+      "searchPlaceholder": "Ф.И.Ш, ЖШШИР ёки гувоҳнома рақами",
       "notIssued": "Берилмаган",
       "expired": "Муддати ўтган"
     },
     "modal": {
-      "notVerified": "Тасдиқланмаган"
-    }
+      "notVerified": "Тасдиқланмаган",
+      "latest": "Жорий",
+      "kind": "Гувоҳнома"
+    },
+    "empty": "Ходимлар рўйхати бўш",
+    "emptyHint": "Сизга бириктирилган ташкилотларда штатдаги фаол ходим йўқ"
   },
   "languageCertificatePage": {
     "title": "Тил сертификат маълумот"

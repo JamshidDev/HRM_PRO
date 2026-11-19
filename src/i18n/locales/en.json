@@ -6963,19 +6963,27 @@
       "expiryDate": "Validity",
       "verify": "Verified",
       "returned": "Returned",
-      "noCertificate": "Not issued"
+      "noCertificate": "Not issued",
+      "status": "Status",
+      "expired": "Expired",
+      "extended": "extended"
     },
     "filter": {
       "status": "Certificate status",
       "issued": "Issued",
       "verify": "Verified",
       "returned": "Returned",
+      "searchPlaceholder": "Full name, PINFL or certificate number",
       "notIssued": "Not issued",
       "expired": "Expired"
     },
     "modal": {
-      "notVerified": "Not verified"
-    }
+      "notVerified": "Not verified",
+      "latest": "Current",
+      "kind": "Certificate"
+    },
+    "empty": "The employee list is empty",
+    "emptyHint": "There are no active staff employees in your organizations"
   },
   "dbBackup": {
     "name": "DB backups",
