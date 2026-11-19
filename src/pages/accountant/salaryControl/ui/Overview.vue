@@ -273,13 +273,10 @@
 <style scoped>
   .sc-grid2 {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    /* DAS-16735: kontent kengligiga qarab stack (window/sidebar'ga bog'liq emas) —
+       MacBook kabi tor kontentda grafiklar siqilmaydi, o'zi bir ustunga tushadi. */
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
     gap: 16px;
-  }
-  @media (max-width: 900px) {
-    .sc-grid2 {
-      grid-template-columns: 1fr;
-    }
   }
   .sc-legend {
     display: flex;

@@ -483,12 +483,8 @@
 <style scoped>
   .sc-grid2 {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    /* DAS-16735: kontentga qarab stack (MacBook kabi tor kontent xavfsiz). */
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
     gap: 16px;
-  }
-  @media (max-width: 900px) {
-    .sc-grid2 {
-      grid-template-columns: 1fr;
-    }
   }
 </style>

@@ -36,7 +36,11 @@ export const CONST = {
   DED_LIMIT: 0.5, // ushlanmalar standart chegarasi (MK 164-modda)
   DED_LIMIT_ALIMENT: 0.7, // aliment/ijro hujjati bo'lsa
   RETIRE_F: 54, // ayollar pensiya yoshi
-  RETIRE_M: 60 // erkaklar pensiya yoshi
+  RETIRE_M: 60, // erkaklar pensiya yoshi
+  // Risk 6 (DAS-16730): "implied me'yor" = oklad×ishlangan/vaqtbay. Real oylik me'yor
+  // 5-kunlik ~168, 6-kunlik ~176; shunga marja qo'shib 200. Bundan oshsa vaqtbay
+  // haqiqatan kam (mutanosib emas) — faqat shunda Risk 6 belgilanadi.
+  MAX_PLAUSIBLE_NORM: 200
 }
 
 // —— Tekshiruv bo'sag'alari (computeFindings) — markazda, izohli (auditlik). ———
@@ -508,27 +512,33 @@ export function computeRisks(emps = [], kpi = {}, { year, month, fmt } = {}) {
   const low5 = E.filter((e) => num(e.ok) > 0 && num(e.ok) < MW)
   low5.forEach((e) => add(5, e, `Oklad ${f(e.ok)} < MHTEKM ${f(MW)}`, MW - num(e.ok)))
 
-  // 6 — vaqtbay haq ishlangan vaqtga MUTANOSIB okladdan kam (DAS-16730). Ilgari
-  //     `004 < oklad×99.5%` qotirilgan edi — to'liq ishlamagan (160 soat) xodim ham
-  //     "kam to'langan" chiqardi. Endi: kutilgan = oklad × (ishlangan/me'yor), 5% bardosh.
-  //     Smenali (sutkalik) lavozimlar va 250+ soat (tabel xatosi) chiqarib tashlanadi.
-  const norm6 = NORM || 168
-  const expected6 = (e) => num(e.ok) * Math.min(1, num(e.t) / norm6)
+  // 6 — vaqtbay haq ishlangan vaqtga MUTANOSIB okladdan kam (DAS-16730).
+  //     Task: `vaqtbay < oklad × (ishlangan soat / SHAXSIY me'yor)`. Shaxsiy me'yor
+  //     (5-kunlik 168 / 6-kunlik 176 / smenali) tabelda — hozircha yo'q. Shuning uchun
+  //     to'lovning O'ZIDAN izchillikni tekshiramiz: haqiqatan mutanosib to'langan bo'lsa
+  //     `oklad × ishlangan / vaqtbay` = shaxsiy me'yorga teng chiqadi. Shu "implied
+  //     me'yor" real oylik me'yor doirasida (≤ MAX) bo'lsa — mutanosib, belgilanMAYDI
+  //     (Ulmasova→168, Sayfiddinov→176 ikkalasi ham to'g'ri o'tadi). Faqat vaqtbay
+  //     chindan kam bo'lsa (implied me'yor haqiqiy bo'lmaydigan darajada katta) belgilanadi.
+  //     Smenali lavozimlar va 250+ soat (tabel xatosi) chiqarib tashlanadi.
+  const impliedNorm = (e) => (num(e.ok) * num(e.t)) / (V(e, '004') || 1)
   const r6 = E.filter((e) => {
     if (num(e.ok) <= 0 || isShiftPosition(e.lav)) return false
     const t = num(e.t)
     const v004 = V(e, '004')
     if (v004 <= 0 || t <= 0 || t >= HOURS_ERROR_THRESHOLD) return false
-    return v004 < expected6(e) * 0.95
+    return impliedNorm(e) > CONST.MAX_PLAUSIBLE_NORM
   })
-  r6.forEach((e) =>
+  r6.forEach((e) => {
+    // Eng katta ishonchli me'yor (176) bo'yicha kutilgan vaqtbay — "qancha kam" izohi uchun.
+    const expected = num(e.ok) * Math.min(1, num(e.t) / 176)
     add(
       6,
       e,
-      `${e.t} soat ishlagan (me'yor ${norm6}), vaqtbay haq ${f(V(e, '004'))} — mutanosib kutilgan ${f(expected6(e))} dan ${f(expected6(e) - V(e, '004'))} kam`,
-      expected6(e) - V(e, '004')
+      `${e.t} soat, oklad ${f(e.ok)}, vaqtbay ${f(V(e, '004'))} — mutanosib emas (hatto 176 soatlik me'yorda ham kutilgan ${f(expected)} dan kam)`,
+      Math.max(0, expected - V(e, '004'))
     )
-  )
+  })
 
   // 7 — o'rtacha (yashirin bandlik)
   const avg = E.length ? E.reduce((a, e) => a + num(e.tot), 0) / E.length : 0
