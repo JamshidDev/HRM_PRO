@@ -781,6 +781,12 @@
       "cancelSpam": "Haqıyqattan da bloktan shıǵarmaqshısız ba?"
     },
     "no-roles": "Biriktirilgen roller joq!",
+    "assignMode": "Beriw túri",
+    "assignToOrg": "Kárxanaǵa beriw",
+    "assignGlobal": "Global etiw",
+    "globalHint": "Barlıq kárxanalardı kóredi",
+    "globalBadge": "Global — barlıq kárxanalar",
+    "assignedRoles": "Biriktirilgen roller",
     "passwordChangedAt": "Parol jańalanǵan",
     "eimzoSkip": "E-IMZO",
     "eimzoSkipDirect": "Jeke ózi E-IMZO tastıyıǵınan azat",
@@ -1825,6 +1831,8 @@
           "pending": "Kútilmekte"
         },
         "events": {
+          "submitted": "Tastıyıqladı",
+          "created": "Arzanı jarattı",
           "sent": "Hújjet jiberildi",
           "viewed": "Hújjetti kórip shıqtı",
           "approved": "Tastıyıqladı",
@@ -1841,6 +1849,7 @@
         "yourTurnSub": "Hújjet E-IMZO arqalı tastıyıqlanadı",
         "notForYouSub": "Siz hújjetti tek kórip shıǵıwıńız múmkin",
         "roles": {
+          "hr": "Kadrlar bólimi",
           "w": "Xızmetker",
           "s": "Kelisiwshi",
           "d": "Basshı"
@@ -1850,6 +1859,8 @@
           "resent": "{count} adamǵa qayta jiberildi"
         },
         "verbs": {
+          "submitted": "tastıyıqladı — arza kadrlar bólimine jiberildi",
+          "created": "arzanı jarattı (qaralama)",
           "sent": "— qol qoyıwǵa jiberildi",
           "viewed": "kórip shıqtı",
           "approved": "tastıyıqladı",
@@ -1863,6 +1874,8 @@
           "route_closed": "arzanı japtı"
         },
         "badges": {
+          "submitted": "Tastıyıqladı",
+          "created": "Jarattı",
           "sent": "Jiberildi",
           "viewed": "Kórdi",
           "approved": "Tastıyıqladı",
@@ -3361,6 +3374,28 @@
     }
   },
   "applicationPage": {
+    "statuses": {
+      "draft": "Qaralama",
+      "checking": "Tekseriwde",
+      "process": "Processte",
+      "rejected": "Biykarlanǵan",
+      "approved": "Tastıyıqlanǵan"
+    },
+    "draftBarTitle": "Arzanı tastıyıqlań",
+    "draftBarSub": "Qol qoyǵannan keyin arza kadrlar bólimine jiberiledi",
+    "ownRejectTitle": "Haqıyqatında da biykarlamaqshısız ba?",
+    "ownRejectDesc": "Arza biykarlanadı hám kadrlar bólimine jiberilmeydi.",
+    "schema": {
+      "other": "Basqa",
+      "otherText": "Tekstti kiritiń",
+      "otherOrganization": "Dizimde joq (qolda jazıw)",
+      "childFromList": "Dizimnen",
+      "childManual": "Qolda kiritiw",
+      "childName": "Perzenttiń F.A.Á.",
+      "childBirthday": "Tuwılǵan sánesi",
+      "days": "Kúnler sanı: {n}",
+      "months": "Aylar sanı: {n}"
+    },
     "draft": "Qaralama",
     "draftSignTitle": "Arza qaralama jaǵdayında",
     "draftSignBody": "Qol qoyǵanıńızdan keyin arza HR ǵa jiberiledi.",
@@ -6525,7 +6560,8 @@
       "all": "Barlıǵı",
       "locationState": "Jaylasıw jaǵdayı",
       "hasLocation": "Belgilengen",
-      "noLocation": "Belgilenbegen"
+      "noLocation": "Belgilenbegen",
+      "place": "Turniket lokaciyası"
     },
     "source": {
       "department": "Bólim ornı",
@@ -6995,7 +7031,9 @@
       "issued": "Berilgen",
       "verify": "Tastıyıqlanǵan",
       "returned": "Qaytarıp alınǵan",
-      "searchPlaceholder": "F.A.Á, JSHSHIR yamasa gúwalıq nomeri"
+      "searchPlaceholder": "F.A.Á, JSHSHIR yamasa gúwalıq nomeri",
+      "notIssued": "Berilmegen",
+      "expired": "Múddeti ótken"
     },
     "modal": {
       "notVerified": "Tastıyıqlanbaǵan",

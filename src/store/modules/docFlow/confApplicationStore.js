@@ -39,6 +39,8 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
     // Muddatli ishga kirish turi: 1 - ta'tildagi xodim, 2 - muddatli shartnoma
     employmentSelectedType: 1,
     payload: {
+      // Tavsifli turlar maydonlari (kalit — shablon o'zgaruvchisi).
+      data: {},
       director_id: null,
       worker_position_id: null,
       type: null,
@@ -64,7 +66,9 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
       page: 1,
       per_page: 15,
       search: null,
-      application_confirmation: 0
+      application_confirmation: 0,
+      // Yagona holat tabi: all | draft | checking | process | approved | rejected.
+      app_state: 'all'
     },
     // Yangi yaratilgan qoralama qatori — sahifa uni ochib imzolashni so'raydi.
     signPromptRow: null,
@@ -144,6 +148,43 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
     isToDateDisabled(ts) {
       return this.isPastDay(ts) || (!!this.payload.from && ts < this.payload.from)
     },
+    // Tanlangan turning tavsifi (eski 2, 3, 5, 7 — null).
+    schemaDef() {
+      const def = useComponentStore().workerApplicationSchema?.types?.find(
+        (v) => v.id === this.payload.type
+      )
+      return def && !def.legacy ? def : null
+    },
+    // Tavsifli tur so'rovi: faqat tur, o'z lavozimi, sana va `data` (eski tekis maydonlar yuborilmaydi).
+    schemaPayload() {
+      const orgId = this.organization_id?.[0]?.id ?? this.organization_id?.[0]
+      return {
+        type: this.payload.type,
+        worker_position_id: this.isOrgPlace() ? null : this.payload.worker_position_id,
+        application_date: Utils.timeToZone(this.payload.application_date),
+        data: { ...this.payload.data, ...(this.isOrgPlace() && orgId ? { organization_id: orgId } : {}) },
+        // Tahrir formasi korxona tanlovini tiklashi uchun.
+        organization_id: this.organization_id
+      }
+    },
+    // Korxonani 1-qadamda tanlaydigan tur (nomzod — ishga qabul).
+    isOrgPlace() {
+      const def = this.schemaDef()
+      return def ? def.place === 'organization' : this.typeList.includes(this.payload.type)
+    },
+    // Korxona/lavozim/tur almashsa — eski korxonaning bo'lim va lavozimi qolib ketmasin.
+    resetPlace() {
+      this.department_id = []
+      this.departmentCheck = []
+      this.allPositions = []
+      this.payload.department_position_id = null
+      this.payload.temporarily_absent = null
+      if (this.payload.data) {
+        delete this.payload.data.department_id
+        delete this.payload.data.department_position_id
+      }
+      useComponentStore().departmentPositionList = []
+    },
     _directors(id = undefined, callback) {
       this.directorLoading = true
       $ApiService.componentService
@@ -168,7 +209,12 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
     _index(callback) {
       this.loading = true
       $ApiService.applicationService
-        ._confIndex({ params: this.params })
+        ._confIndex({
+          params: {
+            ...this.params,
+            app_state: this.params.app_state === 'all' ? undefined : this.params.app_state
+          }
+        })
         .then((res) => {
           this.list = res.data.data.data
           this.totalItems = res.data.data.total
@@ -215,6 +261,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
         organization_id: this.organization_id,
         department_id: this.department_id
       }
+      if (this.schemaDef()) data = this.schemaPayload()
       $ApiService.applicationService
         ._workerApplication({ data })
         .then((res) => {
@@ -228,7 +275,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
           // Qoralama: modal yopiladi, hujjat ochilib imzolash so'raladi.
           this.visible = false
           this.params.page = 1
-          this.params.application_confirmation = 6
+          this.params.app_state = 'draft'
           this._index(() => {
             this.signPromptRow =
               this.list.find((v) => v.worker_application?.id === createdId) ?? null
@@ -246,7 +293,8 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
           this.myPositionList = res.data.data.map((v) => ({
             ...v,
             position: Utils.combineFullName(v.worker),
-            name: v.post_short_name
+            // Qisqa nom bo'sh bo'lishi mumkin — to'liq nom yoki korxona nomi (ID emas).
+            name: v.post_short_name || v.post_name || v.organization?.name || ''
           }))
           callback?.(res.data.data)
         })
@@ -349,6 +397,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
         organization_id: this.organization_id,
         department_id: this.department_id
       }
+      if (this.schemaDef()) data = this.schemaPayload()
       $ApiService.applicationService
         ._updateWorkerApplication({ data, id: this.elementId })
         .then((res) => {
@@ -386,6 +435,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
     },
     resetForm() {
       const now = new Date().getTime()
+      this.payload.data = {}
       this.payload.director_id = null
       this.payload.type = null
       this.payload.confirmations = []

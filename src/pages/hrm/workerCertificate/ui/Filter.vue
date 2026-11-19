@@ -2,6 +2,7 @@
   import { useWorkerCertificateStore, useComponentStore, useAccountStore } from '@stores'
   import { UIPageFilter, UISelect } from '@/components/index.js'
   import { useDebounce } from '@/utils/index.js'
+  import { ArrowDownload24Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -33,12 +34,22 @@
     store.params.organizations = v
   }
 
-  // Guvohnoma holati — ko'rinayotgan (oxirgi) guvohnoma bo'yicha.
+  // Guvohnoma holati — oxirgi guvohnoma bo'yicha; tanlanmasa barchasi.
   const statusOptions = computed(() => [
     { id: 'issued', name: t('workerCertificatePage.filter.issued') },
     { id: 'verify', name: t('workerCertificatePage.filter.verify') },
-    { id: 'returned', name: t('workerCertificatePage.filter.returned') }
+    { id: 'returned', name: t('workerCertificatePage.filter.returned') },
+    { id: 'not_issued', name: t('workerCertificatePage.filter.notIssued') },
+    { id: 'expired', name: t('workerCertificatePage.filter.expired') }
   ])
+
+  const { proxy } = getCurrentInstance()
+  const exportBtnRef = ref(null)
+  const onExport = () => {
+    if (!accStore.checkAction(accStore.pn.hrCertificatesRead)) return
+    const btnEl = exportBtnRef.value?.$el || exportBtnRef.value
+    store._export(() => proxy.$flyUpload?.(btnEl))
+  }
 
   const filterCount = computed(
     () =>
@@ -83,6 +94,20 @@
       borderRadius: '20px'
     }"
   >
+    <template #filterAction>
+      <n-button
+        v-if="accStore.checkPermission(accStore.pn.hrCertificatesRead)"
+        ref="exportBtnRef"
+        type="success"
+        :loading="store.exportLoading"
+        @click="onExport"
+      >
+        {{ $t('content.download') }}
+        <template #icon>
+          <n-icon><ArrowDownload24Regular /></n-icon>
+        </template>
+      </n-button>
+    </template>
     <template #filterContent>
       <div class="worker-certificate-filter-panel grid grid-cols-12 gap-x-5 gap-y-4">
         <div class="col-span-12">
@@ -109,7 +134,7 @@
             :options="statusOptions"
             label-field="name"
             value-field="id"
-            :placeholder="$t('workerCertificatePage.filter.status')"
+            :placeholder="$t('content.all')"
             @update:value="filterEvent"
           />
         </div>

@@ -31,6 +31,11 @@ const _myPositions = async (payload) => {
   return await axios.get(`/v1/worker-application/positions`, { params: payload?.params })
 }
 
+// 16-ariza: ariza beruvchining o'z farzandlari.
+const _myChildren = async () => {
+  return await axios.get(`/v1/worker-application/children`)
+}
+
 const _confirmation = async (payload) => {
   return await axios.get(`/v1/worker-application/confirmations`, { params: payload?.params })
 }
@@ -102,5 +107,6 @@ export default {
   _forward,
   _documentApplication,
   _commandPrefill,
-  _deleteWorkerApplication
+  _deleteWorkerApplication,
+  _myChildren
 }

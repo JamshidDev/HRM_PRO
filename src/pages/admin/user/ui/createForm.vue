@@ -1,12 +1,43 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
   const formRef = ref(null)
-  import { useUserStore, useComponentStore } from '@/store/modules/index.js'
-  import { UIMenuButton, UISelect } from '@/components/index.js'
+  import { useUserStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
+  import { UIMenuButton, UISelect, UISegmentTabs } from '@/components/index.js'
+  import { Globe16Regular, Building16Regular, ShieldKeyhole16Regular } from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
   import Utils from '@/utils/Utils.js'
 
   const componentStore = useComponentStore()
   const store = useUserStore()
+  const accStore = useAccountStore()
+
+  // «Global qilish» — faqat tarkibi bilan ko'radigan (global) rol va faqat Admin uchun.
+  const selectedRole = computed(() => store.roleList.find((r) => r.id === store.payload.role_id))
+  const canGlobal = computed(
+    () =>
+      selectedRole.value?.scope_type === 'global' &&
+      accStore.checkPermission(accStore.pn.organizationAdmin)
+  )
+  watch(canGlobal, (v) => {
+    if (!v) store.payload.is_global = false
+  })
+
+  const { t } = i18n.global
+  const modeTabs = computed(() => [
+    { id: 'org', name: t('userPage.assignToOrg') },
+    { id: 'global', name: t('userPage.assignGlobal') }
+  ])
+  const mode = computed({
+    get: () => (store.payload.is_global ? 'global' : 'org'),
+    set: (v) => (store.payload.is_global = v === 'global')
+  })
+
+  // Global tanlansa korxona majburiy emas.
+  const rules = computed(() =>
+    store.payload.is_global
+      ? { role_id: validationRules.userForm.role_id }
+      : validationRules.userForm
+  )
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {
@@ -36,6 +67,7 @@
   }
 
   onMounted(() => {
+    getRoles()
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
     }
@@ -43,10 +75,28 @@
 </script>
 
 <template>
-  <n-form ref="formRef" :rules="validationRules.userForm" :model="store.payload">
-    <div style="min-height: calc(100vh - 120px)">
+  <n-form ref="formRef" :rules="rules" :model="store.payload">
+    <!-- Tugmalar drawer pastida turishi uchun kontent kamida ekran balandligida. -->
+    <div style="min-height: calc(100vh - 150px)">
+      <n-form-item :label="$t(`userRole.form.name`)" path="role_id">
+        <n-select
+          v-model:value="store.payload.role_id"
+          filterable
+          :options="store.roleList"
+          label-field="name"
+          value-field="id"
+          :loading="store.roleLoading"
+          @focus="getRoles"
+        />
+      </n-form-item>
+
+      <n-form-item v-if="canGlobal" :label="$t('userPage.assignMode')" :show-feedback="false" class="mb-5">
+        <UISegmentTabs v-model="mode" :tabs="modeTabs" />
+      </n-form-item>
+
       <n-form-item
-        class="w-full mr-4"
+        v-if="!store.payload.is_global"
+        class="w-full"
         :label="$t(`documentPage.form.organization`)"
         path="organization_id"
       >
@@ -63,41 +113,70 @@
           :multiple="false"
         />
       </n-form-item>
-      <n-form-item :label="$t(`userRole.form.name`)" path="role_id">
-        <n-select
-          v-model:value="store.payload.role_id"
-          filterable
-          :options="store.roleList"
-          label-field="name"
-          value-field="id"
-          :loading="store.roleLoading"
-          @focus="getRoles"
-        />
-      </n-form-item>
+      <div
+        v-else
+        class="mb-6 flex items-center gap-2 rounded-xl bg-fig-chip-brand px-3 py-2.5 text-sm text-fig-chip-brand-text"
+      >
+        <n-icon size="16"><Globe16Regular /></n-icon>
+        {{ $t('userPage.globalHint') }}
+      </div>
 
-      <n-spin class="w-full min-h-[200px]" :show="store.myRoleLoading">
-        <div
-          v-for="(item, idx) in store.myRoleList"
-          :key="idx"
-          class="px-3 py-2 border border-surface-line rounded-md mb-2 flex"
+      <div class="mb-2 flex items-center gap-1.5">
+        <span class="text-[11px] font-medium uppercase text-textColor2">
+          {{ $t('userPage.assignedRoles') }}
+        </span>
+        <span
+          v-if="store.myRoleList.length"
+          class="rounded-full bg-surface-ground px-1.5 text-[11px] font-medium text-textColor1"
         >
-          <div class="flex flex-col" style="width: calc(100% - 40px)">
-            <div class="font-semibold">{{ item.organization.name }}</div>
-            <div class="text-textColor1">{{ item.name }}</div>
-          </div>
-          <div class="w-[40px] flex justify-center items-center">
+          {{ store.myRoleList.length }}
+        </span>
+      </div>
+      <n-spin class="min-h-[120px] w-full" :show="store.myRoleLoading">
+        <div class="flex flex-col gap-2">
+          <div
+            v-for="(item, idx) in store.myRoleList"
+            :key="idx"
+            class="flex items-center gap-3 rounded-xl border border-surface-line px-3 py-2.5 transition-colors hover:bg-surface-ground"
+          >
+            <span
+              class="flex size-9 shrink-0 items-center justify-center rounded-lg"
+              :class="
+                item.is_global
+                  ? 'bg-fig-chip-brand text-fig-chip-brand-text'
+                  : 'bg-fig-chip-indigo text-fig-chip-indigo-text'
+              "
+            >
+              <n-icon size="18">
+                <Globe16Regular v-if="item.is_global" />
+                <ShieldKeyhole16Regular v-else />
+              </n-icon>
+            </span>
+            <div class="flex min-w-0 flex-1 flex-col gap-0.5">
+              <span class="truncate text-sm font-semibold text-textColor0">{{ item.name }}</span>
+              <span v-if="item.is_global" class="text-xs font-medium text-fig-chip-brand-text">
+                {{ $t('userPage.globalBadge') }}
+              </span>
+              <span v-else class="flex min-w-0 items-center gap-1 text-xs text-textColor2">
+                <n-icon size="12" class="shrink-0"><Building16Regular /></n-icon>
+                <n-ellipsis>{{ item.organization.name }}</n-ellipsis>
+              </span>
+            </div>
             <UIMenuButton :data="item" @selectEv="onSelect" />
           </div>
         </div>
-        <span
+        <div
           v-if="store.myRoleList.length === 0 && !store.myRoleLoading"
-          class="block text-center text-xs text-textColor1"
-          >{{ $t('userPage.no-roles') }}</span
+          class="rounded-xl border border-dashed border-surface-line py-6 text-center text-xs text-textColor2"
         >
+          {{ $t('userPage.no-roles') }}
+        </div>
       </n-spin>
     </div>
 
-    <div class="grid grid-cols-2 gap-2">
+    <div
+      class="sticky bottom-0 -mx-4 -mb-3 mt-4 grid grid-cols-2 gap-2 border-t border-surface-line bg-surface-section px-4 py-3"
+    >
       <n-button @click="store.openVisible(false)" type="error" ghost>
         {{ $t('content.cancel') }}
       </n-button>

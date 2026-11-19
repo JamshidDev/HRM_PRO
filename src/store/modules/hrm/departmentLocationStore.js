@@ -38,7 +38,8 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       // Swagger'da bor: `department_id`.
       department_id: null,
       has_location: null,
-      is_free: null
+      is_free: null,
+      place_id: null
     },
     stats: null,
     statsLoading: false,
@@ -58,6 +59,9 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     },
     placeOptions: [],
     placeOptionsLoading: false,
+    // Bo'limlar/Xodimlar filtridagi lokatsiya tanlovi.
+    placeFilterOptions: [],
+    placeFilterLoading: false,
     deletingPlaceId: null,
     payload: {
       department_id: null,
@@ -84,7 +88,8 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       search: null,
       organizations: [],
       has_location: null,
-      is_free: null
+      is_free: null,
+      place_id: null
     },
     // BACKEND: GET /v1/extra/department/locations — joylashuv turi bo'yicha filtr kerak:
     // `geo_type` (false — nuqta+radius, true — hudud/polygon) va `is_free=true` (erkin rejim).
@@ -463,6 +468,27 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       }
       this.visibleType = !place
       this.visible = true
+    },
+    // Filtr uchun lokatsiyalar — tanlangan korxona(lar) doirasida.
+    _placeFilterIndex(organizations = []) {
+      this.placeFilterLoading = true
+      $ApiService.departmentLocationService
+        ._places({
+          params: {
+            page: 1,
+            per_page: 1000,
+            organizations: organizations.map((v) => v.id).toString() || undefined
+          }
+        })
+        .then((res) => {
+          this.placeFilterOptions = res.data.data.data.map((p) => ({
+            value: p.id,
+            label: p.organization?.name ? `${p.name} — ${p.organization.name}` : p.name
+          }))
+        })
+        .finally(() => {
+          this.placeFilterLoading = false
+        })
     },
     _deletePlace(id) {
       this.deletingPlaceId = id

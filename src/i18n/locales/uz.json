@@ -781,6 +781,12 @@
       "cancelSpam": "Haqiqatan ham blokdan chiqarmoqchimisiz?"
     },
     "no-roles": "Biriktirilgan rollar yo'q!",
+    "assignMode": "Berish turi",
+    "assignToOrg": "Korxonaga berish",
+    "assignGlobal": "Global qilish",
+    "globalHint": "Barcha korxonalarni ko'radi",
+    "globalBadge": "Global — barcha korxonalar",
+    "assignedRoles": "Biriktirilgan rollar",
     "passwordChangedAt": "Parol yangilangan",
     "eimzoSkip": "E-IMZO",
     "eimzoSkipDirect": "Shaxsan E-IMZO tasdig'idan ozod",
@@ -1825,6 +1831,8 @@
           "pending": "Kutilmoqda"
         },
         "events": {
+          "submitted": "Tasdiqladi",
+          "created": "Arizani yaratdi",
           "sent": "Hujjat yuborildi",
           "viewed": "Hujjatni ko'rib chiqdi",
           "approved": "Tasdiqladi",
@@ -1841,6 +1849,7 @@
         "yourTurnSub": "Hujjat E-IMZO orqali tasdiqlanadi",
         "notForYouSub": "Siz hujjatni faqat ko'rib chiqishingiz mumkin",
         "roles": {
+          "hr": "Kadrlar bo'limi",
           "w": "Xodim",
           "s": "Kelishuvchi",
           "d": "Rahbar"
@@ -1850,6 +1859,8 @@
           "resent": "{count} kishiga qayta yuborildi"
         },
         "verbs": {
+          "submitted": "tasdiqladi — ariza kadrlar bo'limiga yuborildi",
+          "created": "arizani yaratdi (qoralama)",
           "sent": "— imzolashga yuborildi",
           "viewed": "ko'rib chiqdi",
           "approved": "tasdiqladi",
@@ -1863,6 +1874,8 @@
           "route_closed": "arizani yopdi"
         },
         "badges": {
+          "submitted": "Tasdiqladi",
+          "created": "Yaratdi",
           "sent": "Yuborildi",
           "viewed": "Ko'rdi",
           "approved": "Tasdiqladi",
@@ -3361,6 +3374,28 @@
     }
   },
   "applicationPage": {
+    "statuses": {
+      "draft": "Qoralama",
+      "checking": "Tekshiruvda",
+      "process": "Jarayonda",
+      "rejected": "Rad etilgan",
+      "approved": "Tasdiqlangan"
+    },
+    "draftBarTitle": "Arizani tasdiqlang",
+    "draftBarSub": "Imzolaganingizdan keyin ariza kadrlar bo'limiga yuboriladi",
+    "ownRejectTitle": "Haqiqatan ham rad etmoqchimisiz?",
+    "ownRejectDesc": "Ariza rad etiladi va kadrlar bo'limiga yuborilmaydi.",
+    "schema": {
+      "other": "Boshqa",
+      "otherText": "Matnni kiriting",
+      "otherOrganization": "Ro'yxatda yo'q (qo'lda yozish)",
+      "childFromList": "Ro'yxatdan",
+      "childManual": "Qo'lda kiritish",
+      "childName": "Farzandning F.I.Sh.",
+      "childBirthday": "Tug'ilgan sanasi",
+      "days": "Kunlar soni: {n}",
+      "months": "Oylar soni: {n}"
+    },
     "draft": "Qoralama",
     "draftSignTitle": "Ariza qoralama holatida",
     "draftSignBody": "Imzolaganingizdan keyin ariza HR ga yuboriladi.",
@@ -6525,7 +6560,8 @@
       "all": "Hammasi",
       "locationState": "Joylashuv holati",
       "hasLocation": "Belgilangan",
-      "noLocation": "Belgilanmagan"
+      "noLocation": "Belgilanmagan",
+      "place": "Turniket lokatsiyasi"
     },
     "source": {
       "department": "Bo'lim joyi",
@@ -6995,7 +7031,9 @@
       "issued": "Berilgan",
       "verify": "Tasdiqlangan",
       "returned": "Qaytarib olingan",
-      "searchPlaceholder": "F.I.Sh, JSHSHIR yoki guvohnoma raqami"
+      "searchPlaceholder": "F.I.Sh, JSHSHIR yoki guvohnoma raqami",
+      "notIssued": "Berilmagan",
+      "expired": "Muddati o'tgan"
     },
     "modal": {
       "notVerified": "Tasdiqlanmagan",

@@ -223,6 +223,7 @@ export const useComponentStore = defineStore('componentStore', {
     baseTypeLoading: false,
 
     workerApplicationTypes: [],
+    workerApplicationSchema: null,
     educationTypes: [],
     workerApplicationLoading: false,
 
@@ -1028,10 +1029,12 @@ export const useComponentStore = defineStore('componentStore', {
       $ApiService.componentService
         ._workerApplicationEnum()
         .then((res) => {
-          this.workerApplicationTypes = res.data.data.application_types.map((v) => ({
-            ...v,
-            name: v.id + ' - ' + v.name
-          }))
+          // Tavsif bor bo'lsa — 29 tur guruhlari bilan; bo'lmasa eski 10 tur.
+          const schema = res.data.data.application_schema
+          this.workerApplicationSchema = schema || null
+          this.workerApplicationTypes = (schema?.types || res.data.data.application_types).map(
+            (v) => ({ ...v, name: v.id + ' - ' + v.name })
+          )
           this.educationTypes = res.data.data.education_types
         })
         .finally(() => {

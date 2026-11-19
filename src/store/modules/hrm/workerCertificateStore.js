@@ -10,7 +10,7 @@ const initialParams = () => ({
   per_page: 15,
   search: null,
   organizations: [],
-  // 'verify' | 'returned' | null — OXIRGI guvohnoma holati bo'yicha filtr.
+  // issued | verify | returned | not_issued | expired | null — guvohnoma holati filtri.
   certificate_status: null
 })
 
@@ -18,6 +18,7 @@ export const useWorkerCertificateStore = defineStore('workerCertificateStore', {
   state: () => ({
     list: [],
     loading: false,
+    exportLoading: false,
     totalItems: 0,
     // Qidiruv/filtr berilganmi — bo'sh ro'yxatda «topilmadi» yoki «ro'yxat bo'sh» matni uchun.
     searched: false,
@@ -30,6 +31,26 @@ export const useWorkerCertificateStore = defineStore('workerCertificateStore', {
     showWorker: null
   }),
   actions: {
+    filterParams() {
+      return {
+        search: this.params.search || undefined,
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
+        certificate_status: this.params.certificate_status || undefined
+      }
+    },
+    // Ro'yxat Excel'i joriy filtr bo'yicha — fon vazifasi.
+    _export(onSuccess) {
+      this.exportLoading = true
+      $ApiService.workerCertificateService
+        ._export({ params: this.filterParams() })
+        .then((res) => {
+          onSuccess?.()
+          window.$message?.success(res.data?.message)
+        })
+        .finally(() => {
+          this.exportLoading = false
+        })
+    },
     _index() {
       this.loading = true
       this.searched =
@@ -37,9 +58,9 @@ export const useWorkerCertificateStore = defineStore('workerCertificateStore', {
         this.params.organizations.length > 0 ||
         !!this.params.certificate_status
       const params = {
-        ...this.params,
-        organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
-        certificate_status: this.params.certificate_status || undefined
+        page: this.params.page,
+        per_page: this.params.per_page,
+        ...this.filterParams()
       }
       $ApiService.workerCertificateService
         ._index({ params })

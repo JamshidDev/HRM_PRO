@@ -1,4 +1,5 @@
 <script setup>
+  import { selectWrap } from '@/utils/selectWrap.js'
   import { useComponentStore, useConfApplicationStore } from '@/store/modules/index.js'
   import { UISelect } from '@/components/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -7,7 +8,19 @@
   const store = useConfApplicationStore()
   const componentStore = useComponentStore()
 
-  const isPosition = computed(() => ![1, 2].includes(store.payload.type))
+  const isPosition = computed(() => !store.isOrgPlace())
+
+  // Tavsif bo'lsa — turlar guruhlab (5 guruh), aks holda eski tekis ro'yxat.
+  const typeOptions = computed(() => {
+    const schema = componentStore.workerApplicationSchema
+    if (!schema) return componentStore.workerApplicationTypes
+    return schema.groups.map((g) => ({
+      type: 'group',
+      key: `g${g.id}`,
+      name: g.name,
+      children: componentStore.workerApplicationTypes.filter((v) => v.group === g.id)
+    }))
+  })
 
   const onFocusPosition = () => {
     if (store.myPositionList.length === 0) {
@@ -25,6 +38,8 @@
 
   // Rahbar va kelishuvchilarni xodim tanlamaydi: rahbar backendda lavozimdan, kelishuvchilarni HR belgilaydi.
   const onSelectApplication = (v) => {
+    store.resetPlace()
+    store.payload.data = {}
     if (isPosition.value) {
       onFocusPosition()
     } else {
@@ -34,6 +49,7 @@
   }
 
   const onChangeStructure = (v) => {
+    if (v?.[0]?.id !== store.confirmParams.organization_id) store.resetPlace()
     store.organization_id = v
     store.orgError = false
     if (v.length > 0) store.confirmParams.organization_id = v[0].id
@@ -43,6 +59,7 @@
     let index = store.myPositionList.findIndex((v) => v.id === id)
     if (index !== -1) {
       const org = store.myPositionList[index]?.organization  // org - to'liq object
+      if (org?.id !== store.confirmParams.organization_id) store.resetPlace()
       store.organization_id = org ? [org] : []
       store.confirmParams.organization_id = org?.id
     }
@@ -63,9 +80,10 @@
     <div class="col-span-12">
       <n-form-item :label="$t(`applicationPage.form.type`)" path="type">
         <n-select
+          v-bind="selectWrap"
           v-model:value="store.payload.type"
           filterable
-          :options="componentStore.workerApplicationTypes"
+          :options="typeOptions"
           label-field="name"
           value-field="id"
           :loading="componentStore.workerApplicationLoading"
@@ -76,8 +94,10 @@
     <div class="col-span-12" v-if="isPosition && store.payload.type">
       <n-form-item :label="$t(`applicationPage.form.worker_position_id`)" path="worker_position_id">
         <n-select
+          v-bind="selectWrap"
           @focus="onFocusPosition"
           v-model:value="store.payload.worker_position_id"
+          :fallback-option="(v) => ({ id: v, name: '' })"
           :options="store.myPositionList"
           :loading="store.positionLoading"
           :render-label="UIHelper.selectRender.label"
