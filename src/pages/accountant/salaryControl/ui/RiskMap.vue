@@ -94,7 +94,8 @@
     }))
   })
 
-  const hasData = computed(() => store.emps.length > 0)
+  // GIBRID: risk xaritasi (audit) tanlangan OY bo'yicha — ma'lumot bor-yo'qligi ham oylikdan.
+  const hasData = computed(() => store.empsMonth.length > 0)
 
   // «Hisoblash usuli» — kartaga bosilganda ochiladi (qaysi risklar ochiq).
   const openMethods = ref(new Set())

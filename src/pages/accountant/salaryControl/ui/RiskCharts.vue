@@ -1,6 +1,6 @@
 <script setup>
   // «14 ta risk» tab — RiskMap'dan keyingi tahliliy grafiklar + ta'sirlangan
-  // xodimlar reestri. Manba: store.emps (grafiklar) + store.risks (reestr).
+  // xodimlar reestri. Manba: store.empsMonth (grafiklar) + store.risks (reestr).
   // Maket: oylik_nazorat_dashboard_5.html (c14a/c14b/c14c/t14) — echarts ko'chirmasi.
   import { ref, computed } from 'vue'
   import i18n from '@/i18n/index.js'
@@ -27,7 +27,7 @@
   // ————————————————————————————————————————————————————————————————————
   const spreadGroups = computed(() => {
     const byLav = new Map()
-    for (const e of store.emps ?? []) {
+    for (const e of store.empsMonth ?? []) {
       const lav = e.lav || '—'
       const ok = Math.round(Number(e.ok) || 0)
       if (!ok) continue
@@ -104,7 +104,7 @@
   const shareOption = computed(() => {
     appStore.isDark
     const th = chartTheme()
-    const list = (store.emps ?? [])
+    const list = (store.empsMonth ?? [])
       .map((e) => {
         const tot = Number(e.tot) || 0
         const ded = totalWithheld(e)
@@ -174,7 +174,7 @@
     const th = chartTheme()
     const norm = Number(store.dashNorm) || 0
     const hist = {}
-    for (const e of store.emps ?? []) {
+    for (const e of store.empsMonth ?? []) {
       const h = Math.round(Number(e.t) || 0)
       if (h <= 0) continue
       hist[h] = (hist[h] || 0) + 1

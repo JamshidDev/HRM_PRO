@@ -41,7 +41,10 @@ export const useSalaryControlStore = defineStore('salaryControl', {
       organizations: [],
       ones_code: null,
       year: null,
-      month: null
+      month: null,
+      // Yil boshidan joriy oygacha (kumulyativ): butun dashboard shu yil 1-oydan
+      // `month`gacha jamlanadi. false — faqat tanlangan oy.
+      cumulative: false
     },
     structureCheck2: [],
     summary: {},
@@ -63,6 +66,9 @@ export const useSalaryControlStore = defineStore('salaryControl', {
   }),
   getters: {
     emps: (s) => s.dashboard.emps ?? [],
+    // GIBRID: audit (Xavflar/Mezonlar) uchun TANLANGAN OY emps — kumulyativда backend
+    // alohida `emps_month` qaytaradi; oddiy rejimda `emps` (= oylik).
+    empsMonth: (s) => s.dashboard.emps_month ?? s.dashboard.emps ?? [],
     vids: (s) => s.dashboard.vids ?? [],
     findings: (s) => s.dashboard.F ?? [],
     rc: (s) => s.dashboard.rc ?? {},
@@ -85,7 +91,7 @@ export const useSalaryControlStore = defineStore('salaryControl', {
         .map((v) => v.id)
         .sort()
         .join(',')
-      return `${this.params.year}|${this.params.month}|${orgs}|${this.params.ones_code || ''}`
+      return `${this.params.year}|${this.params.month}|${orgs}|${this.params.ones_code || ''}|${this.params.cumulative ? 'cum' : ''}`
     },
     // API query paramlari (CSV id).
     _params() {
@@ -93,7 +99,8 @@ export const useSalaryControlStore = defineStore('salaryControl', {
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
         ones_code: this.params.ones_code || undefined,
         year: this.params.year || undefined,
-        month: this.params.month || undefined
+        month: this.params.month || undefined,
+        cumulative: this.params.cumulative ? 1 : undefined
       }
     },
     _canRead() {
@@ -235,8 +242,11 @@ export const useSalaryControlStore = defineStore('salaryControl', {
       // klon bo'lmaydi (postMessage DataCloneError → sync fallback). dashCache plain
       // (axios javobi); toRaw qo'shimcha kafolat.
       const raw = toRaw(dashCache.get(key) || this.dashboard) || {}
+      // GIBRID: people (pul tablari) KUMULYATIV `emps`'dan; risk/findings (audit) esa
+      // OYLIK `emps_month`'dan (kumulyativда). Oddiy rejimda ikkisi bir xil.
       computeDashboard({
         emps: toRaw(raw.emps) ?? [],
+        empsAudit: toRaw(raw.emps_month ?? raw.emps) ?? [],
         kpi: { ...(raw.kpi ?? {}), norm: raw.norm },
         year: this.params.year,
         month: this.params.month

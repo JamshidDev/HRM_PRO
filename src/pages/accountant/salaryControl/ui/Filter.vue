@@ -27,6 +27,13 @@
     filterEvent()
   }
 
+  // Yil boshidan joriy oygacha (kumulyativ) — butun dashboard shu yil 1-oydan
+  // tanlangan oygacha jamlanadi.
+  const onToggleCumulative = (v) => {
+    store.params.cumulative = v
+    filterEvent()
+  }
+
   const selectedOrgIds = computed(() =>
     (store.params.organizations || []).map((o) => o?.id ?? o)
   )
@@ -34,12 +41,14 @@
   const filterCount = computed(
     () =>
       Number(Boolean(store.params.organizations.length)) +
-      Number(Boolean(store.params.ones_code))
+      Number(Boolean(store.params.ones_code)) +
+      Number(Boolean(store.params.cumulative))
   )
 
   const resetFilter = () => {
     store.params.organizations = []
     store.params.ones_code = null
+    store.params.cumulative = false
     store.structureCheck2 = []
     filterEvent()
   }
@@ -81,6 +90,9 @@
         $t('content.organization')
       }}</label>
       <UISelect
+        placement="bottom-start"
+        :flip="false"
+        body-height="min(320px, 42vh)"
         :options="componentStore.structureList"
         :model-v="store.params.organizations"
         @defaultValue="(v) => (store.params.organizations = v)"
@@ -97,6 +109,16 @@
         v-model="store.params.ones_code"
         @change="filterEvent"
       />
+      <div class="mt-4 flex items-center justify-between gap-3">
+        <label class="text-xs text-textColor3 font-medium !mb-0">
+          {{ $t('salaryControl.employees.ytd') }}
+        </label>
+        <n-switch
+          size="small"
+          :value="store.params.cumulative"
+          @update:value="onToggleCumulative"
+        />
+      </div>
     </template>
   </UIPageFilter>
 </template>
