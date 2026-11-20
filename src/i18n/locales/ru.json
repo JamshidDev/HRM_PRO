@@ -2644,6 +2644,7 @@
     "name": "Экзамены",
     "updateTitle": "Редактировать экзамен",
     "scope": "Область",
+    "languagesCount": "Кол-во языков",
     "deadline": "Активен до",
     "noDeadline": "Без срока",
     "scope_all": "Глобально",

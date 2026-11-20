@@ -2636,6 +2636,7 @@
     "name": "Exams",
     "updateTitle": "Edit exam",
     "scope": "Scope",
+    "languagesCount": "Languages",
     "deadline": "Active until",
     "noDeadline": "No deadline",
     "scope_all": "Global",

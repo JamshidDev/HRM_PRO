@@ -56,7 +56,7 @@
     },
     {
       key: 'exams_count',
-      title: t('topicDetailsPage.exams.name'),
+      title: t('topicPage.languagesCount'),
       width: 140,
       align: 'center'
     },

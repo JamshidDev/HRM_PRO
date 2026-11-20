@@ -2659,6 +2659,7 @@
     "name": "Imtihonlar",
     "updateTitle": "Imtihonni tahrirlash",
     "scope": "Doira",
+    "languagesCount": "Tillar soni",
     "deadline": "Faol muddati",
     "noDeadline": "Muddatsiz",
     "scope_all": "Global",

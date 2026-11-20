@@ -2422,6 +2422,7 @@
     "name": "Имтиҳонлар",
     "updateTitle": "Имтиҳонни таҳрирлаш",
     "scope": "Доира",
+    "languagesCount": "Тиллар сони",
     "deadline": "Фаол муддати",
     "noDeadline": "Муддатсиз",
     "scope_all": "Глобал",
