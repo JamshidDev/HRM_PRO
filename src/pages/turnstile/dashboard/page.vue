@@ -7,6 +7,8 @@
     WorkTimeCard,
     InfoGraph,
     WorkerAnalyticPanel,
+    PlanCard,
+    PrivilegeCard,
     DeviceCard,
     MonthlyCard,
     FaceCard
@@ -103,12 +105,14 @@
         </div>
 
         <div class="flex flex-wrap items-stretch gap-4">
-          <InfoGraph @onPreview="onPreview" class="flex-1 min-w-[320px]" />
-          <DeviceCard
-            @onPreview="onPreview"
-            class="flex-1 xl:flex-none xl:w-[280px] min-w-[260px]"
-          />
-          <FaceCard @onPreview="onPreview" class="flex-1 xl:flex-none xl:w-[280px] min-w-[260px]" />
+          <DeviceCard @onPreview="onPreview" class="flex-1 min-w-[260px]" />
+          <FaceCard @onPreview="onPreview" class="flex-1 min-w-[260px]" />
+        </div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
+          <PlanCard @onPreview="onPreview" />
+          <PrivilegeCard @onPreview="onPreview" />
+          <InfoGraph @onPreview="onPreview" />
         </div>
 
         <!-- Pastdagi bo'shliq kontent oqimining o'zida: skroll konteynerining
