@@ -2,7 +2,8 @@
   // «14 ta risk» tab — RiskMap'dan keyingi tahliliy grafiklar + ta'sirlangan
   // xodimlar reestri. Manba: store.empsMonth (grafiklar) + store.risks (reestr).
   // Maket: oylik_nazorat_dashboard_5.html (c14a/c14b/c14c/t14) — echarts ko'chirmasi.
-  import { ref, computed } from 'vue'
+  import { ref, computed, watch } from 'vue'
+  import { useChartDefer } from '../useChartDefer.js'
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore, useAppStore } from '@/store/modules/index.js'
   import { money, money2, mln, chartTheme, tokenColor, normText } from '../helpers.js'
@@ -15,6 +16,10 @@
   const { t } = i18n.global
   const store = useSalaryControlStore()
   const appStore = useAppStore()
+
+  // DAS-16729 perf: grafiklarni ketma-ket (progressive) render — UI qotmaydi.
+  const { defer, reset } = useChartDefer()
+  watch(() => store.dashboardLoading, (l) => { if (!l) reset() }, { immediate: true })
 
   // —— Yordamchi: matnni qisqartirish ————————————————————————————————————
   const trunc = (s, n = 22) => {
@@ -299,12 +304,12 @@
     <!-- c14a + c14b -->
     <div class="sc-grid2">
       <Card :title="CHART.c14a.title" :sub="CHART.c14a.sub" :info="CHART.c14a.sub">
-        <EChart :option="spreadOption" height="320px" />
+        <EChart v-if="defer(1)" :option="spreadOption" height="320px" />
         <p v-if="!spreadGroups.length" class="sc-empty">{{ $t('salaryControl.common.empty') }}</p>
       </Card>
 
       <Card :title="CHART.c14b.title" :sub="CHART.c14b.sub" :info="CHART.c14b.sub">
-        <EChart :option="shareOption" height="320px" />
+        <EChart v-if="defer(2)" :option="shareOption" height="320px" />
       </Card>
     </div>
 
@@ -314,7 +319,7 @@
       :sub="store.dashNorm ? $t('salaryControl.common.norm', { norm: store.dashNorm }) : c14cInfo"
       :info="c14cInfo"
     >
-      <EChart :option="hoursOption" height="300px" />
+      <EChart v-if="defer(3)" :option="hoursOption" height="300px" />
     </Card>
 
     <!-- t14 -->

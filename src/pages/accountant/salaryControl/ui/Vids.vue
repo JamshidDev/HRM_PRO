@@ -2,7 +2,8 @@
   // «To'lov turlari (vidlar)» tab — vidlar tarkibi (horizontal bar), mukofot/
   // ishlangan vaqt (scatter) va mukofot foizi strip-plot (lavozim guruhlari).
   // Manba: store.vids + store.emps + store.scFindings. Maketning echarts ko'chirmasi.
-  import { computed, ref, h, onMounted } from 'vue'
+  import { computed, ref, h, onMounted, watch } from 'vue'
+  import { useChartDefer } from '../useChartDefer.js'
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore, useAppStore } from '@/store/modules/index.js'
   import {
@@ -28,6 +29,10 @@
   const { t } = i18n.global
   const store = useSalaryControlStore()
   const appStore = useAppStore()
+
+  // DAS-16729 perf: grafiklarni ketma-ket (progressive) render — UI qotmaydi.
+  const { defer, reset } = useChartDefer()
+  watch(() => store.dashboardLoading, (l) => { if (!l) reset() }, { immediate: true })
 
   const flagged = computed(() => new Set(store.scFindings.map((f) => f.fio)))
 
@@ -631,7 +636,7 @@
 
       <!-- Top 20 xodim oyligi tarkibi (stacked) -->
       <Card :title="stkTitle" :sub="stkSub" :info="stkSub">
-        <EChart :option="stkOption" height="520px" />
+        <EChart v-if="defer(1)" :option="stkOption" height="520px" />
       </Card>
 
       <!-- Mukofot tahlili bo'limi -->
@@ -646,7 +651,7 @@
               {{ $t('salaryControl.vids.kpiFlagged') }}: {{ scatterRedCount }}
             </span>
           </template>
-          <EChart :option="scatterOption" height="340px" @chart-click="onPointClick" />
+          <EChart v-if="defer(2)" :option="scatterOption" height="340px" @chart-click="onPointClick" />
           <div class="sc-legend">
             <span><i class="sw" :style="{ background: 'var(--fig-icon-brand)' }"></i>Me'yorda</span>
             <span><i class="sw" :style="{ background: 'var(--fig-icon-red)' }"></i>Tekshirilishi kerak</span>
@@ -656,7 +661,7 @@
           <p class="vid-rule">{{ $t('salaryControl.vids.scatterRule') }}</p>
         </Card>
         <Card :title="$t('salaryControl.vids.strip')" :sub="$t('salaryControl.vids.stripSub')" :info="CHART.strip.sub">
-          <EChart :option="stripOption" height="340px" @chart-click="onPointClick" />
+          <EChart v-if="defer(3)" :option="stripOption" height="340px" @chart-click="onPointClick" />
           <div class="vid-stripstats">
             <span v-for="s in stripStats" :key="s.g" class="vid-stripstat">
               <b>{{ s.g }}</b> · n={{ s.n }} · med {{ s.med }}%<span

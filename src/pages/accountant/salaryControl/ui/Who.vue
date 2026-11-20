@@ -2,11 +2,12 @@
   // «Kimga ko'p to'lanyapti» bo'limi — top hisoblangan/YTD, keskin o'sish, oklad↔jami
   // scatter, taqsimot histogrammasi va lavozim guruhlari oralig'i.
   // Manba: store.people, store.findings. Maket: oylik_nazorat_dashboard_5.html (267–360).
-  import { computed } from 'vue'
+  import { computed, watch } from 'vue'
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore, useAppStore } from '@/store/modules/index.js'
   import { money, mln, positionGroup, chartTheme, tokenColor, normText } from '../helpers.js'
   import { elapsedMonths } from '../engine.js'
+  import { useChartDefer } from '../useChartDefer.js'
   import { CHART } from '../explain.js'
   import Card from './Card.vue'
   import EChart from './EChart.vue'
@@ -16,6 +17,11 @@
   const { t } = i18n.global
   const store = useSalaryControlStore()
   const appStore = useAppStore()
+
+  // DAS-16729 perf: 6 ta grafikni ketma-ket (progressive) render qilamiz — tab darhol
+  // ochiladi, grafiklar birin-ketin paydo bo'ladi (6 grafik bir vaqtda = ~2.6s qotish).
+  const { defer, reset } = useChartDefer()
+  watch(() => store.dashboardLoading, (l) => { if (!l) reset() }, { immediate: true })
 
   // DAS-16735: davrga bog'liq izoh (i) matnlari — CHART.*.sub funksiyalarini tanlangan
   // davr bilan yechamiz (qotirilgan «avgust»/«yanvar–avgust» o'rniga).
@@ -461,30 +467,30 @@
     <template v-else>
       <div class="sc-grid2">
         <Card :title="$t('salaryControl.who.topAccrued')" :sub="$t('salaryControl.who.topAccruedSub')" :info="topInfo">
-          <EChart :option="topOption" height="340px" />
+          <EChart v-if="defer(1)" :option="topOption" height="340px" />
         </Card>
         <Card :title="$t('salaryControl.who.ytd')" :sub="$t('salaryControl.who.ytdSub')" :info="ytdInfo">
-          <EChart :option="ytdOption" height="340px" />
+          <EChart v-if="defer(2)" :option="ytdOption" height="340px" />
         </Card>
       </div>
 
       <div class="sc-grid2">
         <Card :title="$t('salaryControl.who.spike')" :sub="$t('salaryControl.who.spikeSub')" :info="spikeInfo">
-          <EChart :option="spikeOption" height="340px" />
+          <EChart v-if="defer(3)" :option="spikeOption" height="340px" />
         </Card>
         <Card :title="$t('salaryControl.who.okx')" :sub="$t('salaryControl.who.okxSub')" :info="CHART.okx.sub">
           <EmptyState v-if="okxEmpty" :text="$t('salaryControl.common.empty')" />
-          <EChart v-else :option="okxOption" height="340px" />
+          <EChart v-else-if="defer(4)" :option="okxOption" height="340px" />
         </Card>
       </div>
 
       <div class="sc-grid2">
         <Card :title="$t('salaryControl.who.hist')" :sub="$t('salaryControl.who.histSub')" :info="histInfo">
           <EmptyState v-if="!histReady" :text="$t('salaryControl.common.empty')" />
-          <EChart v-else :option="histOption" height="340px" />
+          <EChart v-else-if="defer(5)" :option="histOption" height="340px" />
         </Card>
         <Card :title="$t('salaryControl.who.grp')" :sub="$t('salaryControl.who.grpSub')" :info="grpInfo">
-          <EChart :option="grpOption" height="340px" />
+          <EChart v-if="defer(6)" :option="grpOption" height="340px" />
         </Card>
       </div>
     </template>
