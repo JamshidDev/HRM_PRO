@@ -104,9 +104,8 @@ export function syncDeptScopePermission(permissionIds, level, allPermissions) {
   return level === 'department' ? [...rest, id] : rest
 }
 
-// Backend scope_level qaytarguncha mavjud rollar shu kalitlar bo'yicha aniqlanadi.
+// Backend scope_level qaytarguncha bo'linma rollari shu kalitlar bo'yicha aniqlanadi.
 const LEGACY_DEPARTMENT_KEYS = ['HRAsistent', 'onlyViewer', 'TimesheetHR']
-const LEGACY_ALL_KEYS = ['Admin', 'super-admin']
 
 // API qatori → forma maydonlari.
 export function fromApiRole(row) {
@@ -119,7 +118,7 @@ export function fromApiRole(row) {
   let type = row.scope_kind ?? null
   if (!type) {
     if (level === 'department') type = 'selected'
-    else if (LEGACY_ALL_KEYS.includes(key)) type = 'all'
+    else if (row.scope_type === 'all') type = 'all'
     else type = row.scope_type === 'global' ? 'subtree' : 'single'
   }
   return {
@@ -133,11 +132,12 @@ export function fromApiRole(row) {
 // Forma → API. Hozirgi backend `name`ni kalit sifatida va `scope_type`ni local/global sifatida tushunadi.
 export function toApiPayload(p) {
   const integration = p.guard_name === 'integration'
+  // Backend scope_type: local — o'z korxonasi, global — quyi korxonalar bilan, all — barcha korxonalar.
   const legacyScope = integration
     ? null
-    : p.scope_level === 'organization' && p.scope_type !== 'single'
-      ? 'global'
-      : 'local'
+    : p.scope_level !== 'organization'
+      ? 'local'
+      : ({ single: 'local', subtree: 'global', all: 'all' }[p.scope_type] ?? 'local')
   return {
     name: p.key,
     guard_name: p.guard_name,
@@ -157,4 +157,7 @@ export const isRoleKeyInvalid = (key, isCreate) => !!(isCreate && key && !ROLE_K
 
 // 1-qadam to'liqmi: kalit, nom, to'g'ri kalit va hal qilinmagan kesim tasdig'i yo'q.
 export const isRoleSettingsValid = (payload, isCreate, pendingLevel) =>
-  !!payload.key && !!payload.name?.trim() && !isRoleKeyInvalid(payload.key, isCreate) && !pendingLevel
+  !!payload.key &&
+  !!payload.name?.trim() &&
+  !isRoleKeyInvalid(payload.key, isCreate) &&
+  !pendingLevel

@@ -15,7 +15,9 @@ const STATS_URLS = {
   attendance: '/v1/turnstile/dashboard/attendance',
   two: '/v1/turnstile/schedule/stats-two',
   four: '/v1/turnstile/schedule/stats-four',
-  seven: '/v1/turnstile/schedule/stats-seven'
+  seven: '/v1/turnstile/schedule/stats-seven',
+  six: '/v1/turnstile/schedule/stats-six',
+  preview: '/v1/turnstile/schedule/stats-preview'
 }
 const ATTENDANCE_WORKERS_URL = '/v1/turnstile/dashboard/attendance/workers'
 
@@ -27,6 +29,9 @@ export const ATTENDANCE_PREVIEW = {
   att_left_office: 'left_office',
   att_came_mobile: 'came_mobile',
   att_came_turnstile: 'came_turnstile',
+  att_plan_came: 'plan_came',
+  att_plan_absent: 'plan_absent',
+  att_plan_excused: 'plan_excused',
   att_vacation: 'vacation',
   att_day_off: 'day_off',
   att_excused: 'excused'
@@ -99,6 +104,9 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
       att_vacation: { name: 'turnStileDashboard.attendance.vacation', key: 'att_vacation' },
       att_day_off: { name: 'turnStileDashboard.attendance.day_off', key: 'att_day_off' },
       att_excused: { name: 'turnStileDashboard.attendance.excused', key: 'att_excused' },
+      att_plan_came: { name: 'turnStileDashboard.plan.came', key: 'att_plan_came' },
+      att_plan_absent: { name: 'turnStileDashboard.plan.absent', key: 'att_plan_absent' },
+      att_plan_excused: { name: 'turnStileDashboard.plan.excused', key: 'att_plan_excused' },
       late_come: {
         name: 'turnStileDashboard.cards.late_come',
         key: 'late_come'
@@ -208,6 +216,13 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
 
     workTime: null,
     workTimeLoading: false,
+    // «Davomat» tabi: xodimlar kesimida oy bo'yicha keldi/kelmadi.
+    activeTab: 'report',
+    month: { list: [], total: 0, daysInMonth: 31, today: null, loading: false },
+    monthParams: { page: 1, per_page: 20, search: null, month: null },
+    privilegeCount: 0,
+    privilegeTop: [],
+    privilegeLoading: false,
 
     monthlyList: [],
     monthlyWorkers: [],
@@ -220,13 +235,47 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
   }),
 
   actions: {
+    _attendanceMonth() {
+      this.month.loading = true
+      // Oy tanlagichi bo'lmasa — dashboard sanasining oyi.
+      const date = new Date(this.monthParams.month ?? this.dashboardParams.date ?? Date.now())
+      const month = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+      const params = {
+        page: this.monthParams.page,
+        per_page: this.monthParams.per_page,
+        search: this.monthParams.search || undefined,
+        month,
+        organizations: this.dashboardParams.organizations.map((v) => v.id).toString() || undefined,
+        departments: this.dashboardParams.departments.toString() || undefined
+      }
+      $ApiService.eventService
+        ._allDashboard({ url: '/v1/turnstile/dashboard/attendance/month', params })
+        .then((res) => {
+          const data = res.data.data
+          this.month.list = data.data.map((v) => ({
+            ...v,
+            user: this._userContructor(v, v.position_name),
+            cameSet: new Set(v.came_days)
+          }))
+          this.month.total = data.total
+          this.month.daysInMonth = data.days_in_month
+          this.month.today = data.today
+          this.month.monthKey = data.month
+        })
+        .finally(() => {
+          this.month.loading = false
+        })
+    },
+
     async _dashboard() {
+      if (this.activeTab === 'attendance') return this._attendanceMonth()
       this.dashboardLoading = true
       this.dailyAttendanceLoading = true
       this.workerStatsLoading = true
       this.devicesLoading = true
       this.monthlyLoading = true
       this.workTimeLoading = true
+      this.privilegeLoading = true
       this.grandLoading = true
       this.mainChartLoading = true
 
@@ -281,6 +330,21 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         load(STATS_URLS.seven).then((data) => {
           this.workTime = data
           this.workTimeLoading = false
+        }),
+        // Turniket imtiyozi (kelish/ketish daqiqasi) berilganlar: soni va dastlabki 5 tasi.
+        load(STATS_URLS.six).then((data) => {
+          this.privilegeCount = data?.privilege_turnstile_workers_count || 0
+        }),
+        load(STATS_URLS.preview, {
+          type: 'privilege_turnstile_workers',
+          page: 1,
+          per_page: 10
+        }).then((data) => {
+          this.privilegeTop = (data?.data || []).map((v) => ({
+            ...v,
+            user: this._userContructor(v, v.organization_name)
+          }))
+          this.privilegeLoading = false
         })
       ]
 
@@ -293,6 +357,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         this.devicesLoading = false
         this.monthlyLoading = false
         this.workTimeLoading = false
+        this.privilegeLoading = false
         this.grandLoading = false
         this.mainChartLoading = false
       }
@@ -425,11 +490,21 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
           return {
             ...v,
             user: this._userContructor(v, v.position_name),
+            // Buyruqqa asoslangan sabab: «Ta'til: Mehnat ta'tili berish (№15, 01.08.2026)».
             reasons: (v.reasons || [])
-              .map((r) => t(`turnStileDashboard.attendanceReason.${r}`))
+              .map((r) => {
+                const label = t(`turnStileDashboard.attendanceReason.${r}`)
+                const doc = (v.documents || []).find((d) => d.reason === r)
+                if (!doc) return label
+                const meta = [doc.number ? `№${doc.number}` : null, doc.date].filter(Boolean)
+                return `${label}: ${doc.name || ''}${meta.length ? ` (${meta.join(', ')})` : ''}`
+              })
               .join(', '),
             first_event: v.first_event ? Utils.timeWithMonth(v.first_event) : null,
-            last_event: v.last_event ? Utils.timeWithMonth(v.last_event) : null
+            last_event: v.last_event ? Utils.timeWithMonth(v.last_event) : null,
+            last_direction: v.last_direction
+              ? t(`turnStileDashboard.attendance.direction_${v.last_direction}`)
+              : null
           }
         } else if (cardType === 'not_come') {
           return {

@@ -891,16 +891,29 @@ export const getTableConfig = (cardType) => {
   const reasonColumn = [
     { headerName: 'turnStileDashboard.attendance.reasons', key: 'reasons', minWidth: '200px' }
   ]
-  for (const type of [
-    'att_came',
-    'att_in_office',
-    'att_left_office',
-    'att_came_mobile',
-    'att_came_turnstile'
-  ]) {
+  for (const type of ['att_came', 'att_came_mobile', 'att_came_turnstile', 'att_plan_came']) {
     configs[type] = { columns: [...attendanceBase, ...eventColumns] }
   }
-  for (const type of ['att_absent', 'att_vacation', 'att_day_off', 'att_excused']) {
+  // Ishxonada / ishxonada yo'q — faqat oxirgi hodisa vaqti va yo'nalishi.
+  const lastEventColumns = [
+    { headerName: 'turnStileDashboard.attendance.lastEvent', key: 'last_event', minWidth: '150px' },
+    {
+      headerName: 'turnStileDashboard.attendance.direction',
+      key: 'last_direction',
+      minWidth: '120px'
+    }
+  ]
+  for (const type of ['att_in_office', 'att_left_office']) {
+    configs[type] = { columns: [...attendanceBase, ...lastEventColumns] }
+  }
+  for (const type of [
+    'att_absent',
+    'att_vacation',
+    'att_day_off',
+    'att_excused',
+    'att_plan_absent',
+    'att_plan_excused'
+  ]) {
     configs[type] = { columns: [...attendanceBase, ...reasonColumn] }
   }
 
