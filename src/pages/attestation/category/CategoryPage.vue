@@ -3,7 +3,6 @@
   import Table from './ui/Table.vue'
   import Form from './ui/Form.vue'
   import { useAccountStore, useCategoryStore } from '@/store/modules/index.js'
-  import { ArrowDownload24Regular } from '@vicons/fluent'
 
   const store = useCategoryStore()
   const accStore = useAccountStore()
@@ -42,22 +41,7 @@
       :search-loading="store.loading"
       @onSearch="onSearch"
       @onAdd="onAdd"
-    >
-      <template #filterAction>
-        <n-button
-          type="success"
-          ghost
-          class="w-full! md:w-auto!"
-          :loading="store.templateLoading"
-          @click="store._template()"
-        >
-          <template #icon>
-            <n-icon :component="ArrowDownload24Regular" />
-          </template>
-          {{ $t('categoryPage.downloadTemplate') }}
-        </n-button>
-      </template>
-    </UIPageFilter>
+    />
     <Table />
     <UIModal
       v-model:visible="store.visible"
