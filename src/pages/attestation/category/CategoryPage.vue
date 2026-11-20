@@ -2,15 +2,10 @@
   import { UIModal, UIPageContent, UIPageFilter } from '@/components/index.js'
   import Table from './ui/Table.vue'
   import Form from './ui/Form.vue'
-  import UploadExcel from './categoryQuestion/ui/UploadExcel.vue'
-  import {
-    useAccountStore,
-    useCategoryStore,
-    useCategoryQuestionStore
-  } from '@/store/modules/index.js'
+  import { useAccountStore, useCategoryStore } from '@/store/modules/index.js'
+  import { ArrowDownload24Regular } from '@vicons/fluent'
 
   const store = useCategoryStore()
-  const categoryQuestionStore = useCategoryQuestionStore()
   const accStore = useAccountStore()
 
   // Saqlash/Bekor qilish tugmalari modal footer'ida turadi, forma esa faqat
@@ -47,7 +42,22 @@
       :search-loading="store.loading"
       @onSearch="onSearch"
       @onAdd="onAdd"
-    />
+    >
+      <template #filterAction>
+        <n-button
+          type="success"
+          ghost
+          class="w-full! md:w-auto!"
+          :loading="store.templateLoading"
+          @click="store._template()"
+        >
+          <template #icon>
+            <n-icon :component="ArrowDownload24Regular" />
+          </template>
+          {{ $t('categoryPage.downloadTemplate') }}
+        </n-button>
+      </template>
+    </UIPageFilter>
     <Table />
     <UIModal
       v-model:visible="store.visible"
@@ -72,13 +82,6 @@
           </n-button>
         </div>
       </template>
-    </UIModal>
-    <UIModal
-      :width="'90%'"
-      v-model:visible="categoryQuestionStore.excelVisible"
-      :title="$t('categoryPage.uploadExcel')"
-    >
-      <UploadExcel />
     </UIModal>
   </UIPageContent>
 </template>
