@@ -11,31 +11,25 @@ export const useTopicExamStore = defineStore('topicExamStore', {
     deleteLoading: false,
     showLoading: false,
     visible: false,
-    attachCategoryVisible: false,
-    attachCategoryVisibleType: true,
-    categoryLoading: false,
     visibleType: true,
     elementId: null,
     topicId: null,
     totalItems: 0,
     allPermissionList: [],
     structureCheck: [],
-    categoryPayload: {
-      category_ids: [],
-      categories: []
-    },
     payload: {
-      name: null,
+      language: null,
       whom: null,
       deadline: null,
       active: false,
+      unlimited: false,
       minute: 45,
       variant: 4,
       tests_count: 36,
-      chances: 3,
+      chances: 2,
       description: null,
       whom_ids: [],
-      camera: false
+      questions: []
     },
     params: {
       page: 1,
@@ -155,11 +149,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
       this.saveLoading = true
       $ApiService.topicExamService
         ._create({
-          data: {
-            ...this.payload,
-            deadline: Utils.timeToZone(this.payload.deadline),
-            description: this.payload.description || undefined
-          },
+          data: this._body(),
           id: this.topicId
         })
         .then((res) => {
@@ -175,10 +165,7 @@ export const useTopicExamStore = defineStore('topicExamStore', {
       this.saveLoading = true
       $ApiService.topicExamService
         ._update({
-          data: {
-            ...this.payload,
-            deadline: this.payload?.deadline && Utils.timeToZone(this.payload.deadline)
-          },
+          data: this._body(),
           id: this.topicId,
           exam_id: this.elementId
         })
@@ -210,12 +197,21 @@ export const useTopicExamStore = defineStore('topicExamStore', {
           const data = res.data.data
           this.workerPin = null
           this.payload = {
-            ...data,
-            active: !!data.active,
-            whom_ids: data?.positions?.map((i) => i.id) || data?.workers?.map((i) => i.id) || [],
+            language: data.language ?? null,
             whom: data.whom.id,
-            deadline: new Date(data.deadline).getTime(),
-            camera: Boolean(data.camera)
+            deadline: data.deadline ? new Date(data.deadline).getTime() : null,
+            active: !!data.active,
+            unlimited: data.minute == null,
+            minute: data.minute ?? 45,
+            variant: data.variant,
+            tests_count: data.tests_count,
+            chances: data.chances,
+            description: data.description ?? null,
+            whom_ids: data?.positions?.map((i) => i.id) || data?.workers?.map((i) => i.id) || [],
+            questions: (data.questions ?? []).map((q) => ({
+              exam_category_id: q.exam_category_id,
+              count: q.count
+            }))
           }
           if (res.data.data.whom.id === 2) {
             this._position()
@@ -239,62 +235,39 @@ export const useTopicExamStore = defineStore('topicExamStore', {
           this.showLoading = false
         })
     },
-    _attach_category() {
-      this.saveLoading = true
+    // Faol/nofaol — faqat active maydoni yuboriladi.
+    _toggleActive(row) {
       $ApiService.topicExamService
-        ._attach_category({
-          data: {
-            questions: [...this.categoryPayload.categories]
-          },
-          id: this.topicId,
-          exam_id: this.elementId
-        })
-        .then((res) => {
-          this.attachCategoryVisible = false
-          // Xato bo'lsa tanlov saqlanib qolsin — foydalanuvchi sonni tuzatib qayta saqlaydi.
-          this.resetCategoryPayload()
-        })
-        .finally(() => {
-          this.saveLoading = false
-        })
+        ._update({ data: { active: !row.active }, id: this.topicId, exam_id: row.id })
+        .then(() => this._index())
     },
-    _get_attached_categories() {
-      this.categoryLoading = true
-      $ApiService.topicExamService
-        ._get_attached_category({
-          id: this.topicId,
-          exam_id: this.elementId
-        })
-        .then((res) => {
-          this.categoryPayload.category_ids = res.data.data.map((i) => i.category.id)
-          this.categoryPayload.categories = res.data.data.map((i) => ({
-            count: i.count,
-            exam_category_id: i.category.id
-          }))
-        })
-        .finally(() => {
-          this.categoryLoading = false
-        })
+    // Muddat/kimlarga/urinish katta imtihondan; cheksiz vaqt — minute null.
+    _body() {
+      const p = this.payload
+      return {
+        language: p.language,
+        minute: p.unlimited ? null : p.minute,
+        variant: p.variant,
+        tests_count: p.tests_count,
+        questions: p.questions.filter((q) => q.exam_category_id && q.count)
+      }
     },
     openVisible(data) {
       this.visible = data
     },
     resetForm() {
-      this.payload.name = null
+      this.payload.language = null
       this.payload.whom = null
       this.payload.deadline = null
+      this.payload.unlimited = false
       this.payload.minute = 45
       this.payload.variant = 4
       this.payload.active = false
       this.payload.whom_ids = []
-      this.payload.chances = 3
+      this.payload.chances = 2
       this.payload.tests_count = 36
       this.payload.description = null
-      this.payload.camera = false
-    },
-    resetCategoryPayload() {
-      this.categoryPayload.category_ids = []
-      this.categoryPayload.categories = []
+      this.payload.questions = []
     }
   }
 })
