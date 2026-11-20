@@ -94,14 +94,7 @@ export const useDepartmentStore = defineStore('departmentStore', {
           this.loading = false
         })
     },
-    // BACKEND: `GET /v1/hr/departments/{id}` → `children[]` faqat id, name, level, name_ru, name_en,
-    // comment, organization qaytaradi. Ro'yxatdagi (`GET /v1/hr/departments`) kabi quyidagilar ham kerak:
-    //   - `worker_rate` — jadvaldagi «F» (fakt) ustuni ichki bo'limlarda bo'sh qolyapti;
-    //   - `children` (true/false) — ichki bo'limning o'z bolalari bormi; busiz 3-darajali
-    //     bo'limlar ochilmaydi (strelka chiqmaydi);
-    //   - `region`, `city` — tahrirlash oynasida viloyat/tuman bo'sh ochiladi;
-    //   - `parent` ({id, name}) — hozircha frontend daraxtdan to'ldiradi (`mapNode`).
-    // Tekshirildi dev'da (2026-11-06): bo'lim 3508 → bolalari 3510, 16, 17.
+    // `GET /v1/hr/departments/{id}` children'i ro'yxat qatori bilan bir xil (children, worker_rate, parent, region, city).
     _loadChildren(row) {
       return $ApiService.departmentService._show({ id: row.id }).then((res) => {
         row.children = res.data.data.children.map((v) => this.mapNode(v, row))
