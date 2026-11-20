@@ -3,6 +3,7 @@
   import { useMedWorkerStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
+  import { Copy20Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
   const store = useMedWorkerStore()
@@ -12,6 +13,8 @@
     store.params.per_page = v.per_page
     store._index()
   }
+
+  const copyPin = (pin) => Utils.copyToClipboard(pin, () => $Toast.success(t('content.copied')))
 
   const columns = computed(() => [
     {
@@ -68,7 +71,24 @@
           middleName: row?.middle_name,
           position: row?.contract_type
         }"
-      />
+      >
+        <template #position>
+          <div class="flex items-center gap-1 text-xs text-textColor3">
+            <span>{{ row?.contract_type }}</span>
+            <template v-if="row?.pin">
+              <span>·</span>
+              <span>{{ row.pin }}</span>
+              <n-icon
+                size="14"
+                class="cursor-pointer hover:text-primary"
+                @click.stop="copyPin(row.pin)"
+              >
+                <Copy20Regular />
+              </n-icon>
+            </template>
+          </div>
+        </template>
+      </UIUser>
     </template>
 
     <template #cell-position_date="{ row }">
