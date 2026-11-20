@@ -6,7 +6,7 @@
   import { Delete20Regular, Edit32Regular, RibbonStar24Filled } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
   import { useEimzoGate } from './useEimzoGate.js'
-  import { fromApiRole, isAdminOnlyScope } from '../roleScope.js'
+  import { fromApiRole } from '../roleScope.js'
 
   const { t } = i18n.global
   const accStore = useAccountStore()
@@ -58,20 +58,26 @@
       width: 140
     },
     {
+      key: 'scope_level',
+      title: t('userRole.form.scopeLevel'),
+      minWidth: 140,
+      width: 170
+    },
+    {
       key: 'scope_type',
-      title: t('userRole.form.scopeKind'),
+      title: 'Scope',
       minWidth: 220,
       width: 260
     },
     // E-IMZO ozodligi — faqat Admin'ga (endpoint 403 bersa ustun yo'q).
-    ...(gate.available.value
-      ? [{ key: 'eimzo_exempt', title: 'E-imzo', width: 90 }]
-      : [])
+    ...(gate.available.value ? [{ key: 'eimzo_exempt', title: 'E-imzo', width: 90 }] : [])
   ])
 
   // Doira yorliqlari: kesim + tur; faqat Admin beradigan keng doira — qizil.
   const scopeOf = (row) => (row.guard_name === 'integration' ? null : fromApiRole(row))
-  const scopeTagType = (s) => (isAdminOnlyScope(s.scope_level, s.scope_type) ? 'error' : 'info')
+  // Scope rangi: Global — qizil, o'z korxonasi va quyi korxonalar — yashil, qolgani — ko'k.
+  const SCOPE_TAG = { all: 'error', subtree: 'success' }
+  const scopeTagType = (s) => SCOPE_TAG[s.scope_type] ?? 'info'
 
   const actions = computed(() => [
     {
@@ -115,26 +121,28 @@
     </template>
 
     <template #cell-guard_name="{ row }">
-      <n-tag size="small" round :type="row.guard_name === 'integration' ? 'warning' : 'default'">
-        {{
-          row.guard_name === 'integration'
-            ? t('userRole.form.typeIntegration')
-            : t('userRole.form.typeSanctum')
-        }}
+      <div class="inline-block">
+        <UIBadge
+          v-if="row.guard_name === 'integration'"
+          :label="t('userRole.form.typeIntegration')"
+          :type="Utils.colorTypes.dark"
+        />
+        <n-tag v-else size="small" round>{{ t('userRole.form.typeSanctum') }}</n-tag>
+      </div>
+    </template>
+
+    <!-- Kesim: korxona | bo'linma; integration — bo'sh. -->
+    <template #cell-scope_level="{ row }">
+      <n-tag v-if="scopeOf(row)" size="small" round>
+        {{ t(`userRole.form.level_${scopeOf(row).scope_level}`) }}
       </n-tag>
     </template>
 
-    <!-- Doira: kesim + tur yorliqlari; integration → "—". -->
+    <!-- Scope: doira turi; faqat Admin beradigani qizil; integration — bo'sh. -->
     <template #cell-scope_type="{ row }">
-      <div v-if="scopeOf(row)" class="flex gap-1 flex-wrap">
-        <n-tag size="small" round>
-          {{ t(`userRole.form.level_${scopeOf(row).scope_level}`) }}
-        </n-tag>
-        <n-tag size="small" round :type="scopeTagType(scopeOf(row))">
-          {{ t(`userRole.form.scope_${scopeOf(row).scope_type}`) }}
-        </n-tag>
-      </div>
-      <span v-else class="text-gray-400">—</span>
+      <n-tag v-if="scopeOf(row)" size="small" round :type="scopeTagType(scopeOf(row))">
+        {{ t(`userRole.form.scope_${scopeOf(row).scope_type}`) }}
+      </n-tag>
     </template>
 
     <!-- Iqtisod bo'limiga E-IMZO tasdig'isiz kirish (faqat sanctum rollar). -->
