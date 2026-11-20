@@ -524,8 +524,8 @@ export const navigations = withRawIcons([
     permission: appPermissions.exam,
     children: [
       {
-        label: 'topicPage.name', // Mavzular
-        path: Utils.routeAttestationPathMaker(AppPaths.Topic),
+        label: 'topicPage.name', // Imtihonlar
+        path: Utils.routeAttestationPathMaker(AppPaths.Exams),
         icon: AttestationTopicIcon,
         color: 'bg-warning',
         permission: appPermissions.examTopicsRead
@@ -538,8 +538,8 @@ export const navigations = withRawIcons([
         permission: appPermissions.examCategoriesRead
       },
       {
-        label: 'examPage.name', // Imtihonlar
-        path: Utils.routeAttestationPathMaker(AppPaths.Exam),
+        label: 'examPage.myExams', // Mening imtihonlarim
+        path: Utils.routeAttestationPathMaker(AppPaths.MyExams),
         icon: AttestationExamIcon,
         color: 'bg-secondary',
         permission: appPermissions.examExamsRead

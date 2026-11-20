@@ -72,6 +72,9 @@ export const AppPaths = {
   ConfAdContract: '/conf-ad-contract',
   ConfEmployeeDocuments: '/conf-employee-documents',
   Topic: '/topic',
+  // Attestatsiya: imtihonlar (admin) va xodimning imtihonlari; eski /topic va /exam — redirect.
+  Exams: '/exams',
+  MyExams: '/my-exams',
   DrawingSignature: '/drawing-signature',
   DocViewer: '/doc-viewer',
   DocumentViewer: '/document-viewer',
