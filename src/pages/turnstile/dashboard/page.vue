@@ -1,6 +1,7 @@
 <script setup>
-  import { UIModal, UIPageContent } from '@/components/index.js'
+  import { UIModal, UIPageContent, UISegmentTabs } from '@/components/index.js'
   import { useAccountStore, useTurnstileDashboardStore } from '@/store/modules/index.js'
+  import i18n from '@/i18n/index.js'
   import {
     Filter,
     PreviewList,
@@ -11,9 +12,11 @@
     PrivilegeCard,
     DeviceCard,
     MonthlyCard,
-    FaceCard
+    FaceCard,
+    AttendanceMonth
   } from './ui/index.js'
 
+  const { t } = i18n.global
   const dashboardStore = useTurnstileDashboardStore()
   const accStore = useAccountStore()
   import { computed, onMounted } from 'vue'
@@ -24,6 +27,18 @@
     const type = dashboardStore.previewParams.type
     return dashboardStore.cardTypes[type].name
   })
+
+  const tabs = computed(() => [
+    { id: 'report', name: t('turnStileDashboard.tabs.report') },
+    { id: 'attendance', name: t('turnStileDashboard.tabs.attendance') }
+  ])
+
+  // Tab almashganda shu tab ma'lumoti yuklanadi (filtr ikkala tab uchun umumiy).
+  const onChangeTab = (v) => {
+    dashboardStore.activeTab = v
+    if (!accStore.canView(accStore.pn.turnstileDashboard)) return
+    dashboardStore._dashboard()
+  }
 
   const onPreview = (v) => {
     dashboardStore.yesterday = false
@@ -54,10 +69,21 @@
          `min-h-full`: sahifa kontenti bo'yicha o'sadi, skrollni `.main-content`
          boshqaradi, pastdagi padding esa o'z joyida ko'rinadi. -->
     <div>
-      <Filter />
+      <!-- Chapda tablar, o'ngda umumiy filtr (bir qatorda). -->
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <UISegmentTabs
+          :model-value="dashboardStore.activeTab"
+          :tabs="tabs"
+          variant="elevated"
+          @update:model-value="onChangeTab"
+        />
+        <Filter class="flex-1 min-w-0" />
+      </div>
+
+      <AttendanceMonth v-if="dashboardStore.activeTab === 'attendance'" class="mt-4" />
 
       <!-- Maketdagi tartib: o'ng ustunlar qat'iy 280px, chapdagilar cho'ziladi -->
-      <div class="flex flex-col gap-4 mt-4">
+      <div v-if="dashboardStore.activeTab === 'report'" class="flex flex-col gap-4 mt-4">
         <div class="flex flex-wrap items-stretch gap-4">
           <SimpleCardSketlon
             v-if="dashboardStore.mainChartLoading"
@@ -99,14 +125,12 @@
 
         <WorkerAnalyticPanel @onPreview="onPreview" />
 
-        <div class="flex flex-wrap items-stretch gap-4">
-          <WorkTimeCard @onPreview="onPreview" class="flex-1 min-w-[320px]" />
-          <MonthlyCard @onPreview="onPreview" class="w-full xl:w-[280px] xl:shrink-0" />
-        </div>
+        <WorkTimeCard @onPreview="onPreview" />
 
-        <div class="flex flex-wrap items-stretch gap-4">
-          <DeviceCard @onPreview="onPreview" class="flex-1 min-w-[260px]" />
-          <FaceCard @onPreview="onPreview" class="flex-1 min-w-[260px]" />
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <MonthlyCard @onPreview="onPreview" />
+          <DeviceCard @onPreview="onPreview" />
+          <FaceCard @onPreview="onPreview" />
         </div>
 
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
