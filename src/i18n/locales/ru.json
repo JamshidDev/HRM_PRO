@@ -1,4 +1,12 @@
 {
+  "examLanguages": {
+    "uz": "На узбекском (латиница)",
+    "uz_new": "На узбекском (новая латиница)",
+    "uz_kr": "На узбекском (кириллица)",
+    "ru": "На русском",
+    "kaa": "На каракалпакском",
+    "en": "На английском"
+  },
   "applicationCommand": {
     "column": "Приказ",
     "create": "Приказ",
@@ -2588,6 +2596,14 @@
       "updateTitle": "Редактировать файл"
     },
     "exams": {
+      "hidden": "Скрыт",
+      "language": "Язык вопросов",
+      "time": "Время",
+      "minuteShort": "мин",
+      "unlimited": "Без ограничения",
+      "questionSets": "Наборы вопросов",
+      "addQuestionSet": "Добавить набор",
+      "questionsSumError": "Сумма вопросов в наборах должна равняться общему числу вопросов",
       "createTitle": "Создать экзамен",
       "name": "Экзамены",
       "updateTitle": "Редактировать экзамен",
@@ -2624,9 +2640,22 @@
     "isActive": "Статус активности"
   },
   "topicPage": {
-    "createTitle": "Добавить тему",
-    "name": "Темы",
-    "updateTitle": "Редактировать тему"
+    "createTitle": "Добавить экзамен",
+    "name": "Экзамены",
+    "updateTitle": "Редактировать экзамен",
+    "scope": "Область",
+    "deadline": "Активен до",
+    "noDeadline": "Без срока",
+    "scope_all": "Глобально",
+    "scope_local": "Моё предприятие",
+    "scope_global": "Моё и подчинённые предприятия",
+    "scope_department": "Для подразделений",
+    "departments": "Подразделения",
+    "settings": "Настройки сдачи",
+    "mobileAllowed": "Можно сдавать в мобильном приложении",
+    "cameraRequired": "Камера обязательна",
+    "screenShareRequired": "Демонстрация экрана обязательна",
+    "strictMode": "Строгий режим"
   },
   "workerView": {
     "general": {
@@ -2788,6 +2817,7 @@
     "finishedProcess": "Завершить",
     "finishedDescription": "Завершить просроченные экзамены",
     "name": "Экзамены",
+    "myExams": "Мои экзамены",
     "history": "История экзаменов",
     "topic": "Тема",
     "exam": "Экзамен",

@@ -1,4 +1,12 @@
 {
+  "examLanguages": {
+    "uz": "Ózbek tilinde (latın)",
+    "uz_new": "Ózbek tilinde (jańa latın)",
+    "uz_kr": "Ózbek tilinde (kirill)",
+    "ru": "Orıs tilinde",
+    "kaa": "Qaraqalpaq tilinde",
+    "en": "Inglis tilinde"
+  },
   "applicationCommand": {
     "column": "Buyrıq",
     "create": "Buyrıq",
@@ -2603,6 +2611,14 @@
       "updateTitle": "Fayldı ózgertiw"
     },
     "exams": {
+      "hidden": "Kórinbeydi",
+      "language": "Sorawlar tili",
+      "time": "Waqıt",
+      "minuteShort": "min",
+      "unlimited": "Sheksiz",
+      "questionSets": "Sorawlar toplamı",
+      "addQuestionSet": "Toplam qosıw",
+      "questionsSumError": "Toplamlardaǵı sorawlar jıyındısı ulıwma sorawlar sanına teń bolıwı kerek",
       "createTitle": "Imtixan jaratıw",
       "name": "Imtixanlar",
       "updateTitle": "Imtixandı ózgertiw",
@@ -2639,9 +2655,22 @@
     "isActive": "Aktivlik jaǵdayı"
   },
   "topicPage": {
-    "createTitle": "Tema qosıw",
-    "name": "Temalar",
-    "updateTitle": "Temanı ózgertiw"
+    "createTitle": "Imtixan qosıw",
+    "name": "Imtixanlar",
+    "updateTitle": "Imtixandı ózgertiw",
+    "scope": "Sheńber",
+    "deadline": "Aktiv múddeti",
+    "noDeadline": "Múddetsiz",
+    "scope_all": "Global",
+    "scope_local": "Óz kárxanam",
+    "scope_global": "Óz kárxanam hám tómengi kárxanalar",
+    "scope_department": "Bólimler ushın",
+    "departments": "Bólimler",
+    "settings": "Tapsırıw sazlamaları",
+    "mobileAllowed": "Mobil qosımshada sheshiw múmkin",
+    "cameraRequired": "Kamera mindetli",
+    "screenShareRequired": "Ekrandı bólisiw mindetli",
+    "strictMode": "Qatań tártip"
   },
   "workerView": {
     "general": {
@@ -2800,6 +2829,7 @@
     "finishedProcess": "Tamamlaw",
     "finishedDescription": "Juwmaqlaw waqtınan ótken imtixanlardı juwmaqlaw",
     "name": "Imtixanlar",
+    "myExams": "Meniń imtixanlarım",
     "history": "Imtixan tariyxı",
     "topic": "Tema",
     "exam": "Imtixan",

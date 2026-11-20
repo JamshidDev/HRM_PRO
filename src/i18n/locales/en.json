@@ -1,4 +1,12 @@
 {
+  "examLanguages": {
+    "uz": "In Uzbek (Latin)",
+    "uz_new": "In Uzbek (new Latin)",
+    "uz_kr": "In Uzbek (Cyrillic)",
+    "ru": "In Russian",
+    "kaa": "In Karakalpak",
+    "en": "In English"
+  },
   "applicationCommand": {
     "column": "Command",
     "create": "Command",
@@ -2580,6 +2588,14 @@
       "updateTitle": "Edit file"
     },
     "exams": {
+      "hidden": "Hidden",
+      "language": "Questions language",
+      "time": "Time",
+      "minuteShort": "min",
+      "unlimited": "Unlimited",
+      "questionSets": "Question sets",
+      "addQuestionSet": "Add set",
+      "questionsSumError": "Total questions in sets must equal the overall question count",
       "createTitle": "Create exam",
       "name": "Exams",
       "updateTitle": "Edit exam",
@@ -2616,9 +2632,22 @@
     "isActive": "Active status"
   },
   "topicPage": {
-    "createTitle": "Add topic",
-    "name": "Topics",
-    "updateTitle": "Edit topic"
+    "createTitle": "Add exam",
+    "name": "Exams",
+    "updateTitle": "Edit exam",
+    "scope": "Scope",
+    "deadline": "Active until",
+    "noDeadline": "No deadline",
+    "scope_all": "Global",
+    "scope_local": "My organization",
+    "scope_global": "My and subordinate organizations",
+    "scope_department": "For departments",
+    "departments": "Departments",
+    "settings": "Taking settings",
+    "mobileAllowed": "Can be taken in the mobile app",
+    "cameraRequired": "Camera required",
+    "screenShareRequired": "Screen sharing required",
+    "strictMode": "Strict mode"
   },
   "workerView": {
     "general": {
@@ -2780,6 +2809,7 @@
     "finishedProcess": "Finish",
     "finishedDescription": "Finish overdue exams",
     "name": "Exams",
+    "myExams": "My exams",
     "history": "Exam history",
     "topic": "Topic",
     "exam": "Exam",

@@ -1,4 +1,12 @@
 {
+  "examLanguages": {
+    "uz": "O'zbek tilida (lotin)",
+    "uz_new": "O'zbek tilida (yangi lotin)",
+    "uz_kr": "O'zbek tilida (kirill)",
+    "ru": "Rus tilida",
+    "kaa": "Qoraqalpoq tilida",
+    "en": "Ingliz tilida"
+  },
   "applicationCommand": {
     "column": "Buyruq",
     "create": "Buyruq",
@@ -2603,6 +2611,14 @@
       "updateTitle": "Faylni tahrirlash"
     },
     "exams": {
+      "hidden": "Ko'rinmas",
+      "language": "Savollar tili",
+      "time": "Vaqt",
+      "minuteShort": "daq",
+      "unlimited": "Cheksiz",
+      "questionSets": "Savollar to'plami",
+      "addQuestionSet": "To'plam qo'shish",
+      "questionsSumError": "To'plamlardagi savollar yig'indisi umumiy savollar soniga teng bo'lishi kerak",
       "createTitle": "Imtihon yaratish",
       "name": "Imtihonlar",
       "updateTitle": "Imtihonni tahrirlash",
@@ -2639,9 +2655,22 @@
     "isActive": "Aktivlik holati"
   },
   "topicPage": {
-    "createTitle": "Mavzu qo'shish",
-    "name": "Mavzular",
-    "updateTitle": "Mavzuni tahrirlash"
+    "createTitle": "Imtihon qo'shish",
+    "name": "Imtihonlar",
+    "updateTitle": "Imtihonni tahrirlash",
+    "scope": "Doira",
+    "deadline": "Faol muddati",
+    "noDeadline": "Muddatsiz",
+    "scope_all": "Global",
+    "scope_local": "O'z korxonam",
+    "scope_global": "O'z korxonam va quyi korxonalar",
+    "scope_department": "Bo'linmalar uchun",
+    "departments": "Bo'linmalar",
+    "settings": "Topshirish sozlamalari",
+    "mobileAllowed": "Mobil ilovada yechish mumkin",
+    "cameraRequired": "Kamera majburiy",
+    "screenShareRequired": "Ekran ulashish majburiy",
+    "strictMode": "Qat'iy tartib"
   },
   "workerView": {
     "general": {
@@ -2800,6 +2829,7 @@
     "finishedProcess": "Tugatish",
     "finishedDescription": "Yakunlash vaqtidan o'tgan imtihonlarni yakunlash",
     "name": "Imtihonlar",
+    "myExams": "Mening imtihonlarim",
     "history": "Imtihon tarixi",
     "topic": "Mavzu",
     "exam": "Imtihon",

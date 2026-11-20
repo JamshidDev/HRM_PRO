@@ -1,4 +1,12 @@
 {
+  "examLanguages": {
+    "uz": "Ўзбек тилида (лотин)",
+    "uz_new": "Ўзбек тилида (янги лотин)",
+    "uz_kr": "Ўзбек тилида (кирилл)",
+    "ru": "Рус тилида",
+    "kaa": "Қорақалпоқ тилида",
+    "en": "Инглиз тилида"
+  },
   "applicationCommand": {
     "column": "Буйруқ",
     "create": "Буйруқ",
@@ -2366,6 +2374,14 @@
       "updateTitle": "Файлни таҳрирлаш"
     },
     "exams": {
+      "hidden": "Кўринмас",
+      "language": "Саволлар тили",
+      "time": "Вақт",
+      "minuteShort": "дақ",
+      "unlimited": "Чексиз",
+      "questionSets": "Саволлар тўплами",
+      "addQuestionSet": "Тўплам қўшиш",
+      "questionsSumError": "Тўпламлардаги саволлар йиғиндиси умумий саволлар сонига тенг бўлиши керак",
       "createTitle": "Имтиҳон яратиш",
       "name": "Имтиҳонлар",
       "updateTitle": "Имтиҳонни таҳрирлаш",
@@ -2402,9 +2418,22 @@
     "isActive": "Активлик ҳолати"
   },
   "topicPage": {
-    "createTitle": "Мавзу қўшиш",
-    "name": "Мавзулар",
-    "updateTitle": "Мавзуни таҳрирлаш"
+    "createTitle": "Имтиҳон қўшиш",
+    "name": "Имтиҳонлар",
+    "updateTitle": "Имтиҳонни таҳрирлаш",
+    "scope": "Доира",
+    "deadline": "Фаол муддати",
+    "noDeadline": "Муддатсиз",
+    "scope_all": "Глобал",
+    "scope_local": "Ўз корхонам",
+    "scope_global": "Ўз корхонам ва қуйи корхоналар",
+    "scope_department": "Бўлинмалар учун",
+    "departments": "Бўлинмалар",
+    "settings": "Топшириш созламалари",
+    "mobileAllowed": "Мобил иловада ечиш мумкин",
+    "cameraRequired": "Камера мажбурий",
+    "screenShareRequired": "Экран улашиш мажбурий",
+    "strictMode": "Қатъий тартиб"
   },
   "workerView": {
     "general": {
@@ -2537,6 +2566,7 @@
     "finishedProcess": "Тугатиш",
     "finishedDescription": "Якунлаш вақтидан ўтган имтиҳонларни якунлаш",
     "name": "Имтиҳонлар",
+    "myExams": "Менинг имтиҳонларим",
     "history": "Имтиҳон тарихи",
     "topic": "Мавзу",
     "exam": "Имтиҳон",
