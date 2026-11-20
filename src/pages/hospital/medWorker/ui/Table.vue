@@ -23,14 +23,9 @@
       minWidth: 300
     },
     {
-      key: 'organization.name',
-      title: t('content.organization'),
-      minWidth: 160
-    },
-    {
-      key: 'department',
-      title: t('medWorker.form.department'),
-      minWidth: 160
+      key: 'organization',
+      title: `${t('content.organization')} / ${t('medWorker.form.department')}`,
+      minWidth: 240
     },
     {
       key: 'position',
@@ -68,27 +63,42 @@
           photo: row?.photo,
           lastName: row?.last_name,
           firstName: row?.first_name,
-          middleName: row?.middle_name,
-          position: row?.contract_type
+          middleName: row?.middle_name
         }"
       >
         <template #position>
-          <div class="flex items-center gap-1 text-xs text-textColor3">
-            <span>{{ row?.contract_type }}</span>
-            <template v-if="row?.pin">
-              <span>·</span>
-              <span>{{ row.pin }}</span>
+          <div v-if="row?.pin" class="flex">
+            <span
+              class="inline-flex items-center gap-1 rounded bg-primary/10 px-1.5 py-[1px] text-xs font-semibold text-primary"
+            >
+              {{ row.pin }}
               <n-icon
-                size="14"
-                class="cursor-pointer hover:text-primary"
+                size="12"
+                class="cursor-pointer opacity-70 hover:opacity-100"
                 @click.stop="copyPin(row.pin)"
               >
                 <Copy20Regular />
               </n-icon>
-            </template>
+            </span>
           </div>
         </template>
       </UIUser>
+    </template>
+
+    <template #cell-organization="{ row }">
+      <div class="flex flex-col">
+        <n-ellipsis class="text-sm text-textColor2 leading-[1.2]">{{
+          row?.organization?.name
+        }}</n-ellipsis>
+        <n-ellipsis class="text-xs text-textColor3">{{ row?.department }}</n-ellipsis>
+      </div>
+    </template>
+
+    <template #cell-position="{ row }">
+      <div class="flex flex-col">
+        <n-ellipsis class="text-sm text-textColor2 leading-[1.2]">{{ row?.position }}</n-ellipsis>
+        <n-ellipsis class="text-xs text-textColor3">{{ row?.contract_type }}</n-ellipsis>
+      </div>
     </template>
 
     <template #cell-position_date="{ row }">
