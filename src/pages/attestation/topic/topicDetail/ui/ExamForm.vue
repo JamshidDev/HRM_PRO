@@ -10,10 +10,22 @@
   const store = useTopicExamStore()
   const componentStore = useComponentStore()
 
-  // Savollar tili — ilova tillari bilan bir xil.
+  // Savollar tili — ilova tillari bilan bir xil; shu katta imtihonda bor tillar o'chiq.
   const LANGUAGES = ['uz', 'uz_new', 'uz_kr', 'ru', 'kaa', 'en']
+  const usedLanguages = computed(
+    () =>
+      new Set(
+        store.list
+          .filter((e) => store.visibleType || e.id !== store.elementId)
+          .map((e) => e.language)
+      )
+  )
   const languageOptions = computed(() =>
-    LANGUAGES.map((value) => ({ value, label: t(`examLanguages.${value}`) }))
+    LANGUAGES.map((value) => ({
+      value,
+      label: t(`examLanguages.${value}`),
+      disabled: usedLanguages.value.has(value)
+    }))
   )
 
   // Savollar to'plamlari: tanlangan to'plam boshqa qatorda qayta chiqmaydi.
@@ -121,7 +133,7 @@
         <template #label>
           <div class="flex items-center justify-between w-full gap-2">
             <span>{{ $t('topicDetailsPage.exams.questionSets') }}</span>
-            <span class="text-xs" :class="sumMatches ? 'text-success' : 'text-error'">
+            <span class="text-xs" :class="sumMatches ? 'text-success' : 'text-danger'">
               {{ questionsSum }} / {{ store.payload.tests_count ?? 0 }}
             </span>
           </div>

@@ -28,6 +28,12 @@
 
   const onAdd = onAddExam
 
+  // Ro'yxatga qaytishda tillar soni va holat yangilanadi.
+  const onBack = () => {
+    store.activeTab = 'list'
+    store._index()
+  }
+
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.examTopicsRead)) return
     examStore.topicId = store.elementId
@@ -39,7 +45,7 @@
   <div class="grow min-h-0 flex flex-col gap-3">
     <div class="shrink-0 flex flex-col gap-3">
       <div>
-        <n-button size="small" class="rounded-lg!" @click="store.activeTab = 'list'">
+        <n-button size="small" class="rounded-lg!" @click="onBack">
           <template #icon>
             <n-icon :component="ArrowLeft24Regular" />
           </template>
