@@ -131,7 +131,7 @@ export const useCategoryQuestionStore = defineStore('categoryQuestionStore', {
     _delete() {
       this.deleteLoading = true
       $ApiService.categoryQuestionService
-        ._delete({ id: this.elementId })
+        ._delete({ category_id: this.category_id, question_id: this.elementId })
         .then((res) => {
           this.list = this.list.filter((i) => i.id !== this.elementId)
           this.totalItems--
