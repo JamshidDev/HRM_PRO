@@ -10,6 +10,7 @@
     ENFORCED,
   } from '@/utils/permissionGroups.js'
   import { OWNER_USER_ID } from '@/utils/privileged.js'
+  import { isDeptScopedGroup } from '../roleScope.js'
   // Modul tab iconlari — sidebardagi (navigations.js) bilan bir xil SVG'lar.
   import { Apps24Filled, Search24Regular } from '@vicons/fluent'
   import HrModIcon from '@assets/icons/HrManagement.svg'
@@ -151,6 +152,13 @@
     return out
   }
 
+  // Bo'linma kesimida bo'linma doirasini qo'llamaydigan guruh berilmaydi.
+  const isDeptLevel = computed(
+    () => !isIntegrationGuard.value && store.payload.scope_level === 'department'
+  )
+  const groupOff = (g) => isDeptLevel.value && !isDeptScopedGroup(g.prefix)
+  const moduleOff = (mod) => isDeptLevel.value && mod.groups.every((g) => !isDeptScopedGroup(g.prefix))
+
   // Switch yoqilgan hisoblanadi, agar nomlaridan BIRORTASI tanlangan bo'lsa;
   // o'chirilganda esa BARCHASI olib tashlanadi (grant-all / revoke-all).
   const switchOn = (sw) => sw.names.some((n) => isOn(n))
@@ -184,7 +192,10 @@
     const sw = groupSwitches(g)
     return sw.length > 0 && sw.every(switchOn)
   }
-  const toggleGroup = (g, val) => groupSwitches(g).forEach((sw) => setSwitch(sw, val))
+  const toggleGroup = (g, val) => {
+    if (val && groupOff(g)) return
+    groupSwitches(g).forEach((sw) => setSwitch(sw, val))
+  }
 
   // modulda yoqilgan switchlar soni — tab badge
   const moduleCount = (mod) => {
@@ -334,6 +345,7 @@
                   <span v-if="moduleCount(mod) > 0" class="perm-count">{{
                     moduleCount(mod)
                   }}</span>
+                  <span v-if="moduleOff(mod)" class="perm-off-mark" :title="$t('userRole.form.deptOffNote')">⊘</span>
                 </span>
               </template>
 
@@ -344,15 +356,18 @@
                   v-for="g in visibleGroups(mod)"
                   :key="g.prefix"
                   class="border border-surface-line rounded-lg p-2"
+                  :class="{ 'perm-group-off': groupOff(g) }"
                 >
                   <div class="flex items-center justify-between mb-1.5 pb-1.5 border-b border-surface-line">
                     <div class="flex flex-col min-w-0">
                       <span class="font-semibold text-sm">{{ $t(g.label) }}</span>
                       <span class="perm-slug">{{ groupReadSlug(g) }}</span>
+                      <span v-if="groupOff(g)" class="perm-off-note">{{ $t('userRole.form.deptOffNote') }}</span>
                     </div>
                     <n-switch
                       size="small"
                       :value="groupAllOn(g)"
+                      :disabled="groupOff(g) && !groupAllOn(g)"
                       @update:value="(v) => toggleGroup(g, v)"
                     />
                   </div>
@@ -369,6 +384,7 @@
                       <n-switch
                         size="small"
                         :value="switchOn(sw)"
+                        :disabled="groupOff(g) && !switchOn(sw)"
                         @update:value="(v) => setSwitch(sw, v)"
                       />
                     </div>
@@ -396,6 +412,7 @@
                       v-for="p in otherPerms"
                       :key="p.id"
                       :value="p.id"
+                      :disabled="isDeptLevel && !selectedSet.has(p.id)"
                     >
                       <span class="leading-[1.2] text-secondary text-sm">{{ p.name }}</span>
                     </n-checkbox>
@@ -465,6 +482,21 @@
     overflow: hidden;
     text-overflow: ellipsis;
     padding-right: 4px;
+  }
+  /* Bo'linma kesimida berilmaydigan guruh — xira; yoqilgan qolgan switch faqat o'chiriladi. */
+  .perm-group-off {
+    background: var(--surface-ground-soft);
+    opacity: 0.65;
+  }
+  .perm-off-note {
+    font-size: 11px;
+    color: var(--textColor3);
+    margin-top: 2px;
+  }
+  .perm-off-mark {
+    margin-left: 4px;
+    font-size: 12px;
+    opacity: 0.7;
   }
   /* Label ostidagi permission slug (key) — kichik, mono, xira. */
   .perm-slug {
