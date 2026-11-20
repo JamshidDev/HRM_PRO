@@ -260,6 +260,9 @@
           type: 'scatter',
           data: norm,
           symbolSize: 8,
+          // PERF (DAS-16729): ko'p nuqtada (kumulyativ ~2600 xodim) ECharts large rejimi.
+          large: true,
+          largeThreshold: 400,
           itemStyle: { color: tokenColor('--fig-icon-brand'), opacity: 0.8 },
           markLine: {
             silent: true,
@@ -288,6 +291,8 @@
           type: 'scatter',
           data: susp,
           symbolSize: 10,
+          large: true,
+          largeThreshold: 400,
           itemStyle: { color: tokenColor('--fig-icon-red') }
         }
       ]
