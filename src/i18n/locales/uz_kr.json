@@ -685,6 +685,7 @@
       "scope_subtree": "Ўз корхонаси ва қуйи корхоналар",
       "scope_subtree_desc": "Корхона ва унга бўйсунувчи корхоналар",
       "scope_all": "Глобал",
+      "integrationScopeInfo": "Integration роллари ташқи тизимлар учун — кўриниш доираси танланмайди.",
       "scope_all_desc": "Бутун тизим",
       "scope_selected": "Танланган бўлинмалар",
       "scope_selected_desc": "Пастки бўлинмалар автоматик кирмайди",

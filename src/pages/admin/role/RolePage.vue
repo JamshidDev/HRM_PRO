@@ -9,7 +9,11 @@
   import { isRoleSettingsValid } from './roleScope.js'
   import i18n from '@/i18n/index.js'
   import {
+    ArrowLeft20Regular,
+    ArrowRight20Regular,
     Checkmark16Filled,
+    Dismiss20Regular,
+    Save20Regular,
     Search24Regular,
     Settings20Regular,
     ShieldKeyhole20Regular
@@ -86,7 +90,7 @@
     <UIModal
       v-model:visible="store.visible"
       :width="1200"
-      :height="onSettingsStep ? null : '85vh'"
+      height="85vh"
       card-class="relative"
       :title="store.visibleType ? $t('userRole.createTitle') : $t('userRole.updateTitle')"
     >
@@ -139,9 +143,11 @@
           </n-input>
           <div class="flex-1"></div>
           <n-button type="error" ghost class="w-[130px]" @click="store.openVisible(false)">
+            <template #icon><n-icon :component="Dismiss20Regular" /></template>
             {{ $t('content.cancel') }}
           </n-button>
           <n-button v-if="!onSettingsStep" class="w-[130px]" @click="step = 'settings'">
+            <template #icon><n-icon :component="ArrowLeft20Regular" /></template>
             {{ $t('userRole.form.back') }}
           </n-button>
           <n-button
@@ -149,8 +155,10 @@
             :type="store.visibleType ? 'primary' : 'default'"
             :disabled="!settingsValid"
             class="w-[130px]"
+            icon-placement="right"
             @click="step = 'permissions'"
           >
+            <template #icon><n-icon :component="ArrowRight20Regular" /></template>
             {{ $t('userRole.form.next') }}
           </n-button>
           <n-button
@@ -161,6 +169,7 @@
             :disabled="!settingsValid"
             @click="onSave"
           >
+            <template #icon><n-icon :component="Save20Regular" /></template>
             {{ $t('content.save') }}
           </n-button>
         </div>

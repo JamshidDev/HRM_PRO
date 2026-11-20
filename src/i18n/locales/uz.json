@@ -761,6 +761,7 @@
       "type": "Rol turi",
       "typeSanctum": "Foydalanuvchi",
       "typeIntegration": "Integration",
+      "integrationScopeInfo": "Integration rollari tashqi tizimlar uchun — ko'rinish doirasi tanlanmaydi.",
       "orphanWarning": "Ushbu rolda ro'yxatda ko'rinmaydigan {n} ta ruxsat bor (ruxsatlar ro'yxati to'liq yuklanmagan bo'lishi mumkin). Ular saqlashda o'zgarishsiz qoladi.",
       "scopeType": "Korxona ko'lami",
       "scopeLocal": "Local (faqat shu korxona)",

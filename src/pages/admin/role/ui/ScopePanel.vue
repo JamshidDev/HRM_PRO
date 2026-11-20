@@ -1,7 +1,8 @@
 <script setup>
   import { computed } from 'vue'
+  import { UIModal } from '@/components/index.js'
   import { useUserRoleStore } from '@/store/modules/index.js'
-  import { Warning16Regular } from '@vicons/fluent'
+  import { Info16Regular, Warning16Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
   import {
     SCOPE_LEVELS,
@@ -11,9 +12,10 @@
   } from '../roleScope.js'
   import { PERMISSION_GROUPS } from '@/utils/permissionGroups.js'
 
-  // Doira: kesim + doira turi select'lari; kesim almashganda ruxsat tozalash tasdig'i.
+  // Doira: kesim + doira turi select'lari; kesim almashganda ruxsat tozalash tasdig'i (alohida oynada).
   const { t } = i18n.global
   const store = useUserRoleStore()
+  defineProps({ disabled: { type: Boolean, default: false } })
 
   const levelOptions = computed(() =>
     SCOPE_LEVELS.map((value) => ({ value, label: t(`userRole.form.level_${value}`) }))
@@ -29,7 +31,7 @@
   }
 
   const level = computed({
-    get: () => store.pendingLevel?.level ?? store.payload.scope_level,
+    get: () => store.payload.scope_level,
     set: (v) => store.setScopeLevel(v, v === 'department' ? incompatibleIds() : [])
   })
 
@@ -56,43 +58,48 @@
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+  <!-- Integration: doira o'rnida izoh, balandlik ikki maydonniki bilan bir xil. -->
+  <div v-if="disabled" class="h-[166px] flex items-center justify-center pb-4">
+    <div class="flex items-start gap-2 rounded-lg px-3 py-2 text-sm scope-info">
+      <n-icon size="18" class="mt-0.5 flex-none"><Info16Regular /></n-icon>
+      <span>{{ $t('userRole.form.integrationScopeInfo') }}</span>
+    </div>
+  </div>
+  <div v-else class="grid grid-cols-1">
     <n-form-item :label="$t('userRole.form.scopeLevel')">
       <n-select v-model:value="level" :options="levelOptions" />
     </n-form-item>
     <n-form-item :label="$t('userRole.form.scopeKind')">
       <n-select v-model:value="store.payload.scope_type" :options="typeOptions" />
     </n-form-item>
+  </div>
 
-    <div v-if="store.pendingLevel" class="md:col-span-2 scope-warn">
-      <div class="flex gap-2">
-        <n-icon size="16" class="mt-0.5 flex-none"><Warning16Regular /></n-icon>
-        <span>
-          <b>{{ $t('userRole.form.pruneTitle', { n: store.pendingLevel.ids.length }) }}</b>
-          {{ $t('userRole.form.pruneBody') }} {{ pendingGroups.join(', ') }}.
-        </span>
-      </div>
-      <div class="flex gap-2 justify-end">
-        <n-button size="small" @click="store.cancelPendingLevel()">{{
-          $t('content.cancel')
-        }}</n-button>
-        <n-button size="small" type="primary" @click="store.confirmPendingLevel()">
+  <UIModal
+    :visible="!!store.pendingLevel"
+    :width="460"
+    :title="$t('userRole.form.pruneTitle', { n: store.pendingLevel?.ids.length ?? 0 })"
+    @update:visible="(v) => !v && store.cancelPendingLevel()"
+  >
+    <div class="flex gap-2 text-sm">
+      <n-icon size="18" class="mt-0.5 flex-none text-warning"><Warning16Regular /></n-icon>
+      <span>{{ $t('userRole.form.pruneBody') }} {{ pendingGroups.join(', ') }}.</span>
+    </div>
+    <template #footer>
+      <div class="flex justify-end gap-2 px-4 pb-3">
+        <n-button class="w-[130px]" @click="store.cancelPendingLevel()">
+          {{ $t('content.cancel') }}
+        </n-button>
+        <n-button type="primary" class="w-[130px]" @click="store.confirmPendingLevel()">
           {{ $t('userRole.form.pruneConfirm') }}
         </n-button>
       </div>
-    </div>
-  </div>
+    </template>
+  </UIModal>
 </template>
 
 <style scoped>
-  .scope-warn {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    font-size: 13px;
-    padding: 10px 12px;
-    border-radius: 10px;
-    border: 1px solid color-mix(in srgb, var(--warning-color, #f79009) 45%, transparent);
-    background: color-mix(in srgb, var(--warning-color, #f79009) 10%, transparent);
+  .scope-info {
+    background: var(--fig-chip-brand-bg);
+    color: var(--fig-chip-brand-text);
   }
 </style>

@@ -761,6 +761,7 @@
       "type": "Rol turi",
       "typeSanctum": "Foydalanuvçi",
       "typeIntegration": "Integration",
+      "integrationScopeInfo": "Integration rollari tashqi tizimlar uchun — körinish doirasi tanlanmaydi.",
       "orphanWarning": "Uşbu rolda röyxatda körinmaydigan {n} ta ruxsat bor (ruxsatlar röyxati töliq yuklanmagan bölişi mumkin). Ular saqlaşda özgarişsiz qoladi.",
       "scopeType": "Korxona kölami",
       "scopeLocal": "Local (faqat şu korxona)",

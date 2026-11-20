@@ -766,6 +766,7 @@
       "scope_subtree": "Own and subordinate organizations",
       "scope_subtree_desc": "The organization and its subordinate organizations",
       "scope_all": "Global",
+      "integrationScopeInfo": "Integration roles are for external systems — no visibility scope is selected.",
       "scope_all_desc": "The whole system",
       "scope_selected": "Selected departments",
       "scope_selected_desc": "Sub-departments are not included automatically",
