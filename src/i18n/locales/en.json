@@ -6074,6 +6074,12 @@
   "publicPage": {
     "authentication": "View exam questions",
     "invalidDocument": "Document not found or deleted!",
+    "portalLabel": "Document check",
+    "verifiedTitle": "Important",
+    "verifiedPoint1": "The QR code on the paper document brought you to this page",
+    "verifiedPoint2": "The original is stored in HRM PRO and cannot be changed",
+    "verifiedPoint3": "Compare it with the document in your hands — if the text matches, the document is genuine",
+    "invalidHint": "Check the link or QR code and try again.",
     "closeQuestion": "Close question list"
   },
   "socketPage": {

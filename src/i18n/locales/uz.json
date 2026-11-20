@@ -6161,6 +6161,12 @@
   "publicPage": {
     "authentication": "Imtihon savollarini ko'rish",
     "invalidDocument": "Hujjat topilmadi yoki o'chirib tashlangan!",
+    "portalLabel": "Hujjatni tekshirish",
+    "verifiedTitle": "Muhim ma'lumot",
+    "verifiedPoint1": "Qog'oz hujjatdagi QR-kod sizni shu sahifaga olib keldi",
+    "verifiedPoint2": "Asl nusxa HRM PRO tizimida saqlanadi va o'zgartirib bo'lmaydi",
+    "verifiedPoint3": "Qo'lingizdagi hujjat bilan solishtiring — matn bir xil bo'lsa, hujjat haqiqiy",
+    "invalidHint": "Havolani yoki QR-kodni tekshirib, qaytadan urinib ko'ring.",
     "closeQuestion": "Savollar ro'yxatini yopish"
   },
   "socketPage": {

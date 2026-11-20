@@ -6161,6 +6161,12 @@
   "publicPage": {
     "authentication": "Imtixan sorawların kóriw",
     "invalidDocument": "Hújjet tabılmadı yamasa óshirip taslanǵan!",
+    "portalLabel": "Hújjetti tekseriw",
+    "verifiedTitle": "Áhmiyetli maǵlıwmat",
+    "verifiedPoint1": "Qaǵaz hújjettegi QR-kod sizdi usı betke alıp keldi",
+    "verifiedPoint2": "Túp nusqa HRM PRO sistemasında saqlanadı hám onı ózgertip bolmaydı",
+    "verifiedPoint3": "Qolıńızdaǵı hújjet penen salıstırıń — tekst birdey bolsa, hújjet haqıyqıy",
+    "invalidHint": "Siltemeni yamasa QR-kodtı tekserip, qaytadan urınıp kóriń.",
     "closeQuestion": "Sorawlar dizimin jabıw"
   },
   "socketPage": {
