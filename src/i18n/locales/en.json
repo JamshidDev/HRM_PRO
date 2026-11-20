@@ -563,14 +563,14 @@
     "changeRoleConfirm": "Select the desired account to switch and wait 20 seconds"
   },
   "sidebar": {
-    "hrm": "HR Menu",
-    "admin": "Admin Menu",
-    "chat": "Messages & Announcements Menu",
-    "docflow": "Documents Menu",
-    "attestation": "Certification Menu",
+    "hrm": "My Organization Module",
+    "admin": "Admin Module",
+    "chat": "Messages & Announcements Module",
+    "docflow": "My Documents",
+    "attestation": "Certification Module",
     "timesheet": "Timesheet",
-    "accountant": "Accountant Menu",
-    "hospital": "Medical Examination Menu",
+    "accountant": "Accountant Module",
+    "hospital": "Medical Examination Module",
     "lms": "LMS",
     "pin": "Pin",
     "unpin": "Unpin",
@@ -5603,6 +5603,8 @@
   "navigation": {
     "hrm": "HR Management",
     "docFlow": "Document Flow",
+    "myOrg": "My Organization",
+    "myDocs": "My Documents",
     "attestation": "Certification",
     "turnstile": "Turnstile",
     "general": "General",
@@ -6074,6 +6076,12 @@
   "publicPage": {
     "authentication": "View exam questions",
     "invalidDocument": "Document not found or deleted!",
+    "portalLabel": "Document check",
+    "verifiedTitle": "Important",
+    "verifiedPoint1": "The QR code on the paper document brought you to this page",
+    "verifiedPoint2": "The original is stored in HRM PRO and cannot be changed",
+    "verifiedPoint3": "Compare it with the document in your hands — if the text matches, the document is genuine",
+    "invalidHint": "Check the link or QR code and try again.",
     "closeQuestion": "Close question list"
   },
   "socketPage": {
@@ -6963,19 +6971,27 @@
       "expiryDate": "Validity",
       "verify": "Verified",
       "returned": "Returned",
-      "noCertificate": "Not issued"
+      "noCertificate": "Not issued",
+      "status": "Status",
+      "expired": "Expired",
+      "extended": "extended"
     },
     "filter": {
       "status": "Certificate status",
       "issued": "Issued",
       "verify": "Verified",
       "returned": "Returned",
+      "searchPlaceholder": "Full name, PINFL or certificate number",
       "notIssued": "Not issued",
       "expired": "Expired"
     },
     "modal": {
-      "notVerified": "Not verified"
-    }
+      "notVerified": "Not verified",
+      "latest": "Current",
+      "kind": "Certificate"
+    },
+    "empty": "The employee list is empty",
+    "emptyHint": "There are no active staff employees in your organizations"
   },
   "dbBackup": {
     "name": "DB backups",

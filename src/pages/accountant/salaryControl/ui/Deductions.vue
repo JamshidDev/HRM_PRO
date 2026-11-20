@@ -142,13 +142,14 @@
       },
       xAxis: {
         type: 'value',
+        min: 0,
         max: 100,
-        // splitNumber + hideOverlap: «20%40%60%» yorliqlari yopishib qolmasin.
-        splitNumber: 5,
+        // DAS-16735: 0/20/40/60/80/100 — qat'iy qadam (interval), hideOverlap EMAS
+        // (u yorliqlarni tashlab yuborib «20% 60%» qoldirardi).
+        interval: 20,
         axisLabel: {
           color: th.text,
-          formatter: '{value}%',
-          hideOverlap: true
+          formatter: '{value}%'
         },
         splitLine: { lineStyle: { color: th.line } }
       },
@@ -202,13 +203,9 @@
 <style scoped>
   .sc-grid2 {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    /* DAS-16735: kontentga qarab stack (MacBook kabi tor kontent xavfsiz). */
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
     gap: 16px;
-  }
-  @media (max-width: 900px) {
-    .sc-grid2 {
-      grid-template-columns: 1fr;
-    }
   }
   .sc-legend {
     display: flex;

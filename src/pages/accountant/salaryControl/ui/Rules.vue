@@ -50,8 +50,10 @@
   }
 
   // —— Baholash natijalari (har xodim × har mezon) ————————————————————————
+  // GIBRID: mezon baholashi (audit) TANLANGAN OY bo'yicha — kumulyativ summani oylik
+  // oklad/me'yorga solishtirish yolg'on natija berardi. `empsMonth` = oylik emps.
   const results = computed(() =>
-    evalRules(store.emps, { lists: listsSets.value, cap: cap.value, fmt: money })
+    evalRules(store.empsMonth, { lists: listsSets.value, cap: cap.value, fmt: money })
   )
 
   // —— KPI qatori: Asosli / Qo'shimcha tekshirish / Asossiz / Jami ——————————

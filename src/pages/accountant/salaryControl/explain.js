@@ -4,6 +4,13 @@
 //   info — (i) belgisi tooltipi: "bu nima, qanday hisoblangan, nimaga e'tibor berish".
 // Maqsad (foydalanuvchi talabi): ko'rgan odam "bu nima?" deb so'rashiga hojat qolmasin.
 // Manba: oylik_nazorat_dashboard_5.html `.sub` matnlari + HUJJAT.md.
+//
+// DAS-16735: davrga bog'liq matnlar (qotirilgan «avgust» / «168 soat» o'rniga) —
+// tanlangan davr (store.params.year/month) bo'yicha DINAMIK. Shu sabab ayrim
+// `sub`/`info` qiymatlari — funksiya `(year, month, norm) => string`. Komponent
+// `periodName`/`ytdPeriodName` (helpers.js) bilan chaqiradi.
+
+import { periodName, ytdPeriodName } from './helpers.js'
 
 // —— Bo'lim (tab) darajasidagi izohlar ————————————————————————————————————
 export const SECTION = {
@@ -19,7 +26,9 @@ export const SECTION = {
   },
   risks: {
     title: 'Ish haqi bo‘yicha 14 ta risk',
-    sub: '5 blok, 14 risk. Har biri avgust ma’lumoti bilan tekshirildi; ma’lumot yetmagan joyda nima kerakligi ko‘rsatilgan.',
+    // DAS-16735: «avgust» o'rniga tanlangan davr nomi.
+    sub: (year, month) =>
+      `5 blok, 14 risk. Har biri ${periodName(year, month) || 'tanlangan davr'} ma’lumoti bilan tekshirildi; ma’lumot yetmagan joyda nima kerakligi ko‘rsatilgan.`,
     info: 'Manba: "Xodimlarga ish haqini hisoblash va to‘lashda mavjud risklar". Holatlar: Xavf aniqlandi (qizil), Tekshirish kerak (sariq), Me’yorda (yashil), Ma’lumot yetarli emas (kulrang).'
   },
   who: {
@@ -53,11 +62,11 @@ export const SECTION = {
 // «Boy» (korxona tanlanганда, per-xodim) KPI'lar:
 export const KPI = {
   tot: { label: 'Jami hisoblangan', info: 'Nima: tanlangan davrda barcha xodimlarga hisoblangan umumiy ish haqi (soliq va ushlanmalardan OLDIN). Qanday: har xodimning jami hisoblanmasi (accrual_total) yig‘indisi. MHTF — mehnatga haq to‘lash fondi (jami − nafaqa/moddiy yordam kabi MHTFga kirmaydigan to‘lovlar); MHTFdan tashqari — qolgan qismi.' },
-  n: { label: 'Xodimlar soni', info: 'Nima: davrda hisoblanma olgan xodimlar soni. Qanday: noyob JSHSHIR (pinfl) soni. “To‘liq oy ishlaganlar” — vaqtbay haqi (004) okladning ~100% idan yuqori bo‘lganlar.' },
+  n: { label: 'Xodimlar soni', info: 'Nima: davrda hisoblanma olgan NOYOB xodimlar soni (unikal JSHSHIR). Eslatma: “To‘lov turlari” tabidagi “oluvchilar” — bu boshqa ko‘rsatkich: bir xodim bir necha to‘lov turi (vedomost qatori) bo‘yicha sanaladi, shuning uchun u xodimlar sonidan ko‘proq bo‘lishi mumkin. “To‘liq oy ishlaganlar” — vaqtbay haqi (004) okladning ~100% idan yuqori bo‘lganlar.' },
   avg: { label: 'O‘rtacha oylik', info: 'Nima: bitta xodimga o‘rtacha hisoblangan summa. Qanday: Jami hisoblangan ÷ xodimlar soni. Median — ro‘yxatning o‘rtasidagi xodim oyligi (bir nechta juda katta summa o‘rtachani sun’iy ko‘tarib yubormaydi).' },
   card: { label: 'Kartaga o‘tkazildi', info: 'Nima: ushlanmalardan keyin plastik kartaga o‘tkazilgan sof summa. Qanday: 885 (karta) kodi yig‘indisi, bo‘lmasa net_total. Qolgani = daromad solig‘i (882) + boshqa ushlanmalar.' },
-  suspicious: { label: 'Shubhali to‘lovlar', info: 'Nima: yuqori xavfli belgilangan holatlardagi jami summa. Qanday: faqat “Yuqori” darajali holatlar summasi; takroriy JSHSHIR va soliq/INPS holatlari QO‘SHILMAYDI (ular summa dublikatsiyasi/soliq kamomadi — boshqa tabiat). Yakuniy xulosa emas — tekshirish kerak.' },
-  flagged: { label: 'Belgilangan holatlar', info: 'Nima: 14 avtomatik tekshiruv aniqlagan jami holatlar soni. Qanday: har tekshiruv shartiga tushgan xodim-holatlari yig‘indisi, xavf darajasi (Yuqori/O‘rta/Past) bo‘yicha.' }
+  suspicious: { label: 'Shubhali to‘lovlar', info: 'Nima: belgilangan (xavf) holatlardagi jami summa. Qanday: barcha xavf darajalaridagi (Yuqori/O‘rta/Past) holatlar summasi yig‘indisi — pastdagi “Shubhali summa — muammo turi bo‘yicha” grafigi bilan AYNAN bir xil. MA’LUMOT belgisi (masalan “bitta JSHSHIR — bir necha qator”) xavf emas, shuning uchun summaga QO‘SHILMAYDI. Yakuniy xulosa emas — tekshirish kerak.' },
+  flagged: { label: 'Belgilangan holatlar', info: 'Nima: avtomatik tekshiruvlar aniqlagan XAVF holatlar soni. Qanday: har tekshiruv shartiga tushgan xodim-holatlari yig‘indisi (Yuqori/O‘rta/Past). MA’LUMOT belgilari (xavf emas) sanalMAYDI — shu bois “Holatlar turi bo‘yicha” grafigi va jadval soni bilan mos keladi. Eslatma: bu HOLATLAR soni (bitta xodim bir necha holatda bo‘lishi mumkin), xodimlar soni emas.' }
 }
 
 // «Yengil» (korxona tanlanmaganda — summary endpoint) KPI'lar:
@@ -74,15 +83,29 @@ export const CHART = {
   // Umumiy
   catc: { title: 'Holatlar turi bo‘yicha', sub: 'Har bir muammo turidagi holatlar soni, xavf darajasi kesimida (Yuqori/O‘rta/Past).' },
   cats: { title: 'Shubhali summa — muammo turi bo‘yicha', sub: 'Belgilangan holatlardagi summa, mln so‘m. Bir xodim bir necha turda bo‘lishi mumkin.' },
-  // Kimga ko'p
-  top: { title: 'Eng ko‘p hisoblangan — avgust', sub: 'Jami hisoblangan summa, top 15 · ⚠ — tekshirilishi kerak bo‘lgan holati bor.' },
-  ytd: { title: 'Eng ko‘p daromad — yil boshidan', sub: 'NDFL-4 va NDFL-5 bo‘yicha yanvar–avgust, top 15.' },
-  spike: { title: 'Keskin o‘sish: avgust / yillik o‘rtacha', sub: 'Avgustdagi summa yillik oylik o‘rtachasiga necha barobar (top 15). Yil davomida yangi kelganlar hisobga olinmagan.' },
+  // Kimga ko'p (DAS-16735: «avgust» → tanlangan davr)
+  top: {
+    title: (year, month) => `Eng ko‘p hisoblangan — ${periodName(year, month) || 'tanlangan davr'}`,
+    sub: 'Jami hisoblangan summa, top 15 · ⚠ — tekshirilishi kerak bo‘lgan holati bor.'
+  },
+  ytd: {
+    title: 'Eng ko‘p daromad — yil boshidan',
+    sub: (year, month) => `NDFL-4 va NDFL-5 bo‘yicha ${ytdPeriodName(year, month) || 'yil boshidan'}, top 15.`
+  },
+  spike: {
+    title: (year, month) => `Keskin o‘sish: ${periodName(year, month) || 'oy'} / yillik o‘rtacha`,
+    sub: (year, month) =>
+      `${periodName(year, month) || 'Tanlangan oy'}dagi summa yillik oylik o‘rtachasiga necha barobar (top 15). Yil davomida yangi kelganlar hisobga olinmagan.`
+  },
   okx: { title: 'Oklad va jami hisoblangan', sub: 'Chiziqlar: jami = 1×, 2×, 3× oklad. 2× dan yuqoridagi nuqtalar alohida e’tiborga loyiq.' },
   // To'lov turlari
   hist: { title: 'Oylik taqsimoti', sub: 'Jami hisoblangan summa bo‘yicha xodimlar soni, 2 mln so‘mlik oraliqlar.' },
   grp: { title: 'Lavozim guruhlari', sub: 'Jami hisoblangan: eng kam – eng ko‘p oraliq va o‘rtacha (nuqta). Qavsda — xodimlar soni.' },
-  stk: { title: 'Top 20 xodim oyligi tarkibi', sub: 'Avgust, jami hisoblangan summa to‘lov guruhlari (vaqtbay, mukofot, ustama, ta’til, oziq-ovqat, moddiy yordam) bo‘yicha.' },
+  stk: {
+    title: 'Top 20 xodim oyligi tarkibi',
+    sub: (year, month) =>
+      `${periodName(year, month) || 'Tanlangan davr'}: jami hisoblangan summa to‘lov guruhlari (vaqtbay, mukofot, ustama, ta’til, oziq-ovqat, moddiy yordam) bo‘yicha.`
+  },
   sc: { title: 'Mukofot va ishlangan vaqt', sub: 'X: vaqtbay haq / oklad (ishlangan ulush) · Y: mukofot / oklad. Chiziqdan yuqoridagi nuqtalarda mukofot ishlangan vaqtdan ortiq.' },
   vid: { title: 'To‘lov turlari (vidlar) tarkibi', sub: 'Avgust bo‘yicha har bir to‘lov turining jami summasi va oluvchilar soni.' },
   strip: { title: 'Mukofot foizi — lavozim guruhlari bo‘yicha', sub: 'Har bir nuqta — bitta xodim: mukofot (011) / vaqtbay haq (004). Guruh ichida tarqoqlik — mukofot bir xil qoidada hisoblanmayotganining belgisi.' },
@@ -94,7 +117,12 @@ export const CHART = {
   // 14 risk grafiklari
   c14a: { title: 'Risk 4 · Bir xil lavozim — turlicha oklad', sub: 'Har bir nuqta — lavozimdagi alohida oklad miqdori, mln so‘m. Qavsda — xodimlar soni.' },
   c14b: { title: 'Risk 11 · Ushlanmalar ulushi', sub: 'Soliq bilan birga barcha ushlanmalar / hisoblangan ish haqi, top 15. Qizil chiziqlar: 50% va 70% chegaralar (* — aliment yoki ijro hujjati bor).' },
-  c14c: { title: 'Risk 9 · Ishlangan soatlar taqsimoti', sub: 'Avgust: 21 ish kuni × 8 = 168 soat me’yor. Sariq ustunlar — me’yordan ko‘p ishlaganlar.' }
+  c14c: {
+    title: 'Risk 9 · Ishlangan soatlar taqsimoti',
+    // DAS-16735: «168 soat» qotirilmaydi — tanlangan oy kalendar me'yori (norm) uzatiladi.
+    sub: (year, month, norm) =>
+      `${periodName(year, month) || 'Tanlangan oy'}${norm ? ` me’yori ${norm} soat` : ''}. Sariq ustunlar — me’yordan ko‘p ishlaganlar.`
+  }
 }
 
 // —— Jadval ustunlari (Barcha xodimlar) ——————————————————————————————————
@@ -102,7 +130,9 @@ export const COLUMN = {
   fio: 'Xodimning familiyasi, ismi, otasining ismi (JSHSHIR bo‘yicha birlashtirilgan).',
   lav: 'Lavozim(lar). Bir shaxs bir necha lavozimda bo‘lsa — " / " bilan birlashtiriladi.',
   ok: 'Oklad — tarif stavkasi bo‘yicha oylik asosiy maosh.',
-  t: 'Avgustda ishlangan soat. Me’yor: 168 soat (21 ish kuni × 8).',
+  // DAS-16735: «Avgust» va «168 soat» qotirilmaydi — davr + kalendar me'yori (norm).
+  t: (year, month, norm) =>
+    `${periodName(year, month) || 'Tanlangan oy'}da ishlangan soat.${norm ? ` Me’yor: ${norm} soat (5 kunlik hafta × 8, bayram kunlari ayriladi).` : ''}`,
   b004: 'Vaqtbay to‘lov (004) — ishlangan vaqt uchun tarif bo‘yicha haq.',
   b011: 'Mukofot (011) — vaqtbay ishchilarga oylik mukofot.',
   oth: 'Boshqa to‘lovlar — ustama, ta’til, moddiy yordam va h.k. (jami − 004 − 011).',

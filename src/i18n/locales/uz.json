@@ -578,14 +578,14 @@
     "changeRoleConfirm": "Bu hisobdan chiqib boshqa hisobga kirish uchun kerakli hisobni tanlang va 20 soniya kuting"
   },
   "sidebar": {
-    "hrm": "Xodimlar menyusi",
-    "admin": "Admin menyusi",
-    "chat": "Xabar va e'lonlar menyusi",
-    "docflow": "Hujjatlar menyusi",
-    "attestation": "Attestatsiya menyusi",
+    "hrm": "Mening korxonam moduli",
+    "admin": "Admin moduli",
+    "chat": "Xabar va e'lonlar moduli",
+    "docflow": "Mening hujjatlarim",
+    "attestation": "Attestatsiya moduli",
     "timesheet": "Tabel",
-    "accountant": "Hisobchi menyusi",
-    "hospital": "Tibbiy ko'rik menyusi",
+    "accountant": "Hisobchi moduli",
+    "hospital": "Tibbiy ko'rik moduli",
     "lms": "LMS",
     "pin": "Pin qilish",
     "unpin": "Pinni olib tashlash",
@@ -5648,6 +5648,8 @@
   "navigation": {
     "hrm": "Kadrlar boshqaruvi",
     "docFlow": "Hujjat aylanishi",
+    "myOrg": "Mening korxonam",
+    "myDocs": "Mening hujjatlarim",
     "attestation": "Attestatsiya",
     "turnstile": "Turniket",
     "general": "Umumiy",
@@ -6161,6 +6163,12 @@
   "publicPage": {
     "authentication": "Imtihon savollarini ko'rish",
     "invalidDocument": "Hujjat topilmadi yoki o'chirib tashlangan!",
+    "portalLabel": "Hujjatni tekshirish",
+    "verifiedTitle": "Muhim ma'lumot",
+    "verifiedPoint1": "Qog'oz hujjatdagi QR-kod sizni shu sahifaga olib keldi",
+    "verifiedPoint2": "Asl nusxa HRM PRO tizimida saqlanadi va o'zgartirib bo'lmaydi",
+    "verifiedPoint3": "Qo'lingizdagi hujjat bilan solishtiring — matn bir xil bo'lsa, hujjat haqiqiy",
+    "invalidHint": "Havolani yoki QR-kodni tekshirib, qaytadan urinib ko'ring.",
     "closeQuestion": "Savollar ro'yxatini yopish"
   },
   "socketPage": {
@@ -7021,19 +7029,27 @@
       "expiryDate": "Muddat",
       "verify": "Tasdiqlangan",
       "returned": "Qaytarib olingan",
-      "noCertificate": "Berilmagan"
+      "noCertificate": "Berilmagan",
+      "status": "Holati",
+      "expired": "Muddati o'tgan",
+      "extended": "uzaytirilgan"
     },
     "filter": {
       "status": "Guvohnoma holati",
       "issued": "Berilgan",
       "verify": "Tasdiqlangan",
       "returned": "Qaytarib olingan",
+      "searchPlaceholder": "F.I.Sh, JSHSHIR yoki guvohnoma raqami",
       "notIssued": "Berilmagan",
       "expired": "Muddati o'tgan"
     },
     "modal": {
-      "notVerified": "Tasdiqlanmagan"
-    }
+      "notVerified": "Tasdiqlanmagan",
+      "latest": "Joriy",
+      "kind": "Guvohnoma"
+    },
+    "empty": "Xodimlar ro'yxati bo'sh",
+    "emptyHint": "Sizga biriktirilgan tashkilotlarda shtatdagi faol xodim yo'q"
   },
   "dbBackup": {
     "name": "Baza zaxiralari",
@@ -7521,6 +7537,7 @@
       "sum": "Summa, so'm",
       "sumMln": "Summa, mln so'm",
       "count": "Soni",
+      "riskNo": "Risk №",
       "employee": "Xodim",
       "position": "Lavozim",
       "total": "Jami",

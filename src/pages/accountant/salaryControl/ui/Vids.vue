@@ -2,7 +2,8 @@
   // «To'lov turlari (vidlar)» tab — vidlar tarkibi (horizontal bar), mukofot/
   // ishlangan vaqt (scatter) va mukofot foizi strip-plot (lavozim guruhlari).
   // Manba: store.vids + store.emps + store.scFindings. Maketning echarts ko'chirmasi.
-  import { computed, ref, h, onMounted } from 'vue'
+  import { computed, ref, h, onMounted, watch } from 'vue'
+  import { useChartDefer } from '../useChartDefer.js'
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore, useAppStore } from '@/store/modules/index.js'
   import {
@@ -29,7 +30,23 @@
   const store = useSalaryControlStore()
   const appStore = useAppStore()
 
+  // DAS-16729 perf: grafiklarni ketma-ket (progressive) render — UI qotmaydi.
+  const { defer, reset } = useChartDefer()
+  watch(() => store.dashboardLoading, (l) => { if (!l) reset() }, { immediate: true })
+
   const flagged = computed(() => new Set(store.scFindings.map((f) => f.fio)))
+
+  // DAS-16735: stk (Top 20 tarkibi) sarlavha/izohi davrga bog'liq (CHART.stk — funksiya).
+  const stkTitle = computed(() =>
+    typeof CHART.stk.title === 'function'
+      ? CHART.stk.title(store.params.year, store.params.month)
+      : CHART.stk.title
+  )
+  const stkSub = computed(() =>
+    typeof CHART.stk.sub === 'function'
+      ? CHART.stk.sub(store.params.year, store.params.month)
+      : CHART.stk.sub
+  )
 
   // —— KPI qatori ——————————————————————————————————————————————————————————
   // «Tekshirilishi kerak» — mukofot anomaliyasi bo'lgan xodimlar (scatter/strip qizil
@@ -140,18 +157,19 @@
 
   // Jadval ustunlari (n-data-table).
   const columns = computed(() => [
-    { title: t('salaryControl.vids.colCode'), key: 'k', width: 68 },
+    { title: t('salaryControl.vids.colCode'), key: 'k', width: 56 },
     {
       title: t('salaryControl.vids.colName'),
       key: 'name',
-      minWidth: 200,
+      minWidth: 160,
       ellipsis: { tooltip: true },
       render: (r) => h('span', { title: r.full || r.name }, r.name)
     },
     {
       title: t('salaryControl.vids.colCat'),
       key: 'cat',
-      width: 160,
+      width: 140,
+      ellipsis: { tooltip: true },
       render: (r) =>
         r.cat
           ? h('span', { class: 'vid-cat-tag' }, [
@@ -167,7 +185,7 @@
       title: t('salaryControl.vids.colSum'),
       key: 's',
       align: 'right',
-      width: 200,
+      width: 150,
       sorter: (a, b) => a.s - b.s,
       render: (r) =>
         h('div', { class: 'vid-sum-cell' }, [
@@ -184,7 +202,7 @@
       title: t('salaryControl.vids.colShare'),
       key: 'sharePct',
       align: 'right',
-      width: 92,
+      width: 80,
       sorter: (a, b) => a.sharePct - b.sharePct,
       render: (r) => `${r.sharePct.toFixed(1)}%`
     },
@@ -192,7 +210,7 @@
       title: t('salaryControl.vids.colRecipients'),
       key: 'c',
       align: 'right',
-      width: 118,
+      width: 100,
       sorter: (a, b) => a.c - b.c,
       render: (r) => (r.c || 0).toLocaleString('ru-RU')
     },
@@ -200,7 +218,7 @@
       title: t('salaryControl.vids.colAvg'),
       key: 'avg',
       align: 'right',
-      width: 150,
+      width: 130,
       sorter: (a, b) => a.avg - b.avg,
       render: (r) => formatMoney(r.avg, { unit: 'full' })
     },
@@ -208,7 +226,7 @@
       title: t('salaryControl.vids.colDelta'),
       key: 'delta',
       align: 'right',
-      width: 100,
+      width: 92,
       sorter: (a, b) => (a.delta ?? -Infinity) - (b.delta ?? -Infinity),
       render: (r) =>
         r.delta == null
@@ -612,14 +630,13 @@
           :pagination="showAll || search ? tablePagination : false"
           :bordered="false"
           size="small"
-          :scroll-x="1120"
         />
         <p class="vid-hint">{{ $t('salaryControl.vids.rowHint') }}</p>
       </Card>
 
       <!-- Top 20 xodim oyligi tarkibi (stacked) -->
-      <Card :title="CHART.stk.title" :sub="CHART.stk.sub" :info="CHART.stk.sub">
-        <EChart :option="stkOption" height="520px" />
+      <Card :title="stkTitle" :sub="stkSub" :info="stkSub">
+        <EChart v-if="defer(1)" :option="stkOption" height="520px" />
       </Card>
 
       <!-- Mukofot tahlili bo'limi -->
@@ -634,7 +651,7 @@
               {{ $t('salaryControl.vids.kpiFlagged') }}: {{ scatterRedCount }}
             </span>
           </template>
-          <EChart :option="scatterOption" height="340px" @chart-click="onPointClick" />
+          <EChart v-if="defer(2)" :option="scatterOption" height="340px" @chart-click="onPointClick" />
           <div class="sc-legend">
             <span><i class="sw" :style="{ background: 'var(--fig-icon-brand)' }"></i>Me'yorda</span>
             <span><i class="sw" :style="{ background: 'var(--fig-icon-red)' }"></i>Tekshirilishi kerak</span>
@@ -644,7 +661,7 @@
           <p class="vid-rule">{{ $t('salaryControl.vids.scatterRule') }}</p>
         </Card>
         <Card :title="$t('salaryControl.vids.strip')" :sub="$t('salaryControl.vids.stripSub')" :info="CHART.strip.sub">
-          <EChart :option="stripOption" height="340px" @chart-click="onPointClick" />
+          <EChart v-if="defer(3)" :option="stripOption" height="340px" @chart-click="onPointClick" />
           <div class="vid-stripstats">
             <span v-for="s in stripStats" :key="s.g" class="vid-stripstat">
               <b>{{ s.g }}</b> · n={{ s.n }} · med {{ s.med }}%<span
@@ -707,13 +724,10 @@
 <style scoped>
   .sc-grid2 {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    /* DAS-16735: kontentga qarab stack (MacBook kabi tor kontent xavfsiz) — ilgari
+       @media max-width:1280 window bo'yicha edi, MacBook'da 2 ustun tushib qolardi. */
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
     gap: 16px;
-  }
-  @media (max-width: 1280px) {
-    .sc-grid2 {
-      grid-template-columns: 1fr;
-    }
   }
   .sc-legend {
     display: flex;

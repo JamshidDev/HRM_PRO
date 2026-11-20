@@ -578,14 +578,14 @@
     "changeRoleConfirm": "Bu hisobdan çiqib boşqa hisobga kiriş uçun kerakli hisobni tanlang va 20 soniya kuting"
   },
   "sidebar": {
-    "hrm": "Xodimlar menyusi",
-    "admin": "Admin menyusi",
-    "chat": "Xabar va e'lonlar menyusi",
-    "docflow": "Hujjatlar menyusi",
-    "attestation": "Attestatsiya menyusi",
+    "hrm": "Mening korxonam moduli",
+    "admin": "Admin moduli",
+    "chat": "Xabar va e'lonlar moduli",
+    "docflow": "Mening hujjatlarim",
+    "attestation": "Attestatsiya moduli",
     "timesheet": "Tabel",
-    "accountant": "Hisobçi menyusi",
-    "hospital": "Tibbiy körik menyusi",
+    "accountant": "Hisobçi moduli",
+    "hospital": "Tibbiy körik moduli",
     "lms": "LMS",
     "pin": "Pin qiliş",
     "unpin": "Pinni olib taşlaş",
@@ -781,9 +781,9 @@
       "cancelSpam": "Haqiqatan ham blokdan çiqarmoqçimisiz?"
     },
     "no-roles": "Biriktirilgan rollar yöq!",
-    "assignMode": "Berish turi",
-    "assignToOrg": "Korxonaga berish",
-    "assignGlobal": "Global qilish",
+    "assignMode": "Beriş turi",
+    "assignToOrg": "Korxonaga beriş",
+    "assignGlobal": "Global qiliş",
     "globalHint": "Barça korxonalarni köradi",
     "globalBadge": "Global — barça korxonalar",
     "assignedRoles": "Biriktirilgan rollar",
@@ -3376,23 +3376,23 @@
   "applicationPage": {
     "statuses": {
       "draft": "Qoralama",
-      "checking": "Tekshiruvda",
+      "checking": "Tekşiruvda",
       "process": "Jarayonda",
       "rejected": "Rad etilgan",
       "approved": "Tasdiqlangan"
     },
     "draftBarTitle": "Arizani tasdiqlang",
     "draftBarSub": "Imzolaganingizdan keyin ariza kadrlar bölimiga yuboriladi",
-    "ownRejectTitle": "Haqiqatan ham rad etmoqchimisiz?",
+    "ownRejectTitle": "Haqiqatan ham rad etmoqçimisiz?",
     "ownRejectDesc": "Ariza rad etiladi va kadrlar bölimiga yuborilmaydi.",
     "schema": {
-      "other": "Boshqa",
+      "other": "Boşqa",
       "otherText": "Matnni kiriting",
-      "otherOrganization": "Ro'yxatda yo'q (qo'lda yozish)",
-      "childFromList": "Ro'yxatdan",
-      "childManual": "Qo'lda kiritish",
-      "childName": "Farzandning F.I.Sh.",
-      "childBirthday": "Tug'ilgan sanasi",
+      "otherOrganization": "Röyxatda yöq (qölda yoziş)",
+      "childFromList": "Röyxatdan",
+      "childManual": "Qölda kiritiş",
+      "childName": "Farzandning F.I.Ş.",
+      "childBirthday": "Tuğilgan sanasi",
       "days": "Kunlar soni: {n}",
       "months": "Oylar soni: {n}"
     },
@@ -5648,6 +5648,8 @@
   "navigation": {
     "hrm": "Kadrlar boşqaruvi",
     "docFlow": "Hujjat aylanişi",
+    "myOrg": "Mening korxonam",
+    "myDocs": "Mening hujjatlarim",
     "attestation": "Attestatsiya",
     "turnstile": "Turniket",
     "general": "Umumiy",
@@ -6161,6 +6163,12 @@
   "publicPage": {
     "authentication": "Imtihon savollarini köriş",
     "invalidDocument": "Hujjat topilmadi yoki öçirib taşlangan!",
+    "portalLabel": "Hujjatni tekşiriş",
+    "verifiedTitle": "Muhim ma'lumot",
+    "verifiedPoint1": "Qoğoz hujjatdagi QR-kod sizni şu sahifaga olib keldi",
+    "verifiedPoint2": "Asl nusxa HRM PRO tizimida saqlanadi va özgartirib bölmaydi",
+    "verifiedPoint3": "Qölingizdagi hujjat bilan soliştiring — matn bir xil bölsa, hujjat haqiqiy",
+    "invalidHint": "Havolani yoki QR-kodni tekşirib, qaytadan urinib köring.",
     "closeQuestion": "Savollar röyxatini yopiş"
   },
   "socketPage": {
@@ -7021,19 +7029,27 @@
       "expiryDate": "Muddat",
       "verify": "Tasdiqlangan",
       "returned": "Qaytarib olingan",
-      "noCertificate": "Berilmagan"
+      "noCertificate": "Berilmagan",
+      "status": "Holati",
+      "expired": "Muddati ötgan",
+      "extended": "uzaytirilgan"
     },
     "filter": {
       "status": "Guvohnoma holati",
       "issued": "Berilgan",
       "verify": "Tasdiqlangan",
       "returned": "Qaytarib olingan",
+      "searchPlaceholder": "F.I.Ş, JŞŞIR yoki guvohnoma raqami",
       "notIssued": "Berilmagan",
       "expired": "Muddati ötgan"
     },
     "modal": {
-      "notVerified": "Tasdiqlanmagan"
-    }
+      "notVerified": "Tasdiqlanmagan",
+      "latest": "Joriy",
+      "kind": "Guvohnoma"
+    },
+    "empty": "Xodimlar röyxati böş",
+    "emptyHint": "Sizga biriktirilgan taşkilotlarda ştatdagi faol xodim yöq"
   },
   "dbBackup": {
     "name": "Baza zaxiralari",
@@ -7521,6 +7537,7 @@
       "sum": "Summa, söm",
       "sumMln": "Summa, mln söm",
       "count": "Soni",
+      "riskNo": "Risk №",
       "employee": "Xodim",
       "position": "Lavozim",
       "total": "Jami",

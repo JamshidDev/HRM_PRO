@@ -578,14 +578,14 @@
     "changeRoleConfirm": "Bul akkaunttan shıǵıp basqa akkauntqa kiriw ushın kerekli akkaunttı tańlań hám 20 sekund kútiń"
   },
   "sidebar": {
-    "hrm": "Xızmetkerler menyusı",
-    "admin": "Admin menyusı",
-    "chat": "Xabar hám daǵazalar menyusı",
-    "docflow": "Hújjetler menyusı",
-    "attestation": "Attestaciya menyusı",
+    "hrm": "Meniń kárxanam moduli",
+    "admin": "Admin moduli",
+    "chat": "Xabar hám daǵazalar moduli",
+    "docflow": "Meniń hújjetlerim",
+    "attestation": "Attestaciya moduli",
     "timesheet": "Tabel",
-    "accountant": "Buxgalter menyusı",
-    "hospital": "Medicinalıq kórik menyusı",
+    "accountant": "Buxgalter moduli",
+    "hospital": "Medicinalıq kórik moduli",
     "lms": "LMS",
     "pin": "Pin etiw",
     "unpin": "Pindi alıp taslaw",
@@ -5648,6 +5648,8 @@
   "navigation": {
     "hrm": "Kadrlar basqarıwı",
     "docFlow": "Hújjet aylanısı",
+    "myOrg": "Meniń kárxanam",
+    "myDocs": "Meniń hújjetlerim",
     "attestation": "Attestaciya",
     "turnstile": "Turniket",
     "general": "Ulıwma",
@@ -6161,6 +6163,12 @@
   "publicPage": {
     "authentication": "Imtixan sorawların kóriw",
     "invalidDocument": "Hújjet tabılmadı yamasa óshirip taslanǵan!",
+    "portalLabel": "Hújjetti tekseriw",
+    "verifiedTitle": "Áhmiyetli maǵlıwmat",
+    "verifiedPoint1": "Qaǵaz hújjettegi QR-kod sizdi usı betke alıp keldi",
+    "verifiedPoint2": "Túp nusqa HRM PRO sistemasında saqlanadı hám onı ózgertip bolmaydı",
+    "verifiedPoint3": "Qolıńızdaǵı hújjet penen salıstırıń — tekst birdey bolsa, hújjet haqıyqıy",
+    "invalidHint": "Siltemeni yamasa QR-kodtı tekserip, qaytadan urınıp kóriń.",
     "closeQuestion": "Sorawlar dizimin jabıw"
   },
   "socketPage": {
@@ -7021,19 +7029,27 @@
       "expiryDate": "Múddet",
       "verify": "Tastıyıqlanǵan",
       "returned": "Qaytarıp alınǵan",
-      "noCertificate": "Berilmegen"
+      "noCertificate": "Berilmegen",
+      "status": "Jaǵdayı",
+      "expired": "Múddeti ótken",
+      "extended": "uzartılǵan"
     },
     "filter": {
       "status": "Gúwalıq jaǵdayı",
       "issued": "Berilgen",
       "verify": "Tastıyıqlanǵan",
       "returned": "Qaytarıp alınǵan",
+      "searchPlaceholder": "F.A.Á, JSHSHIR yamasa gúwalıq nomeri",
       "notIssued": "Berilmegen",
       "expired": "Múddeti ótken"
     },
     "modal": {
-      "notVerified": "Tastıyıqlanbaǵan"
-    }
+      "notVerified": "Tastıyıqlanbaǵan",
+      "latest": "Házirgi",
+      "kind": "Gúwalıq"
+    },
+    "empty": "Xızmetkerler dizimi bos",
+    "emptyHint": "Sizge biriktirilgen shólkemlerde shtattaǵı aktiv xızmetker joq"
   },
   "dbBackup": {
     "name": "Baza rezervleri",
@@ -7521,6 +7537,7 @@
       "sum": "Summa, sum",
       "sumMln": "Summa, mln sum",
       "count": "Sanı",
+      "riskNo": "Risk №",
       "employee": "Xızmetker",
       "position": "Lawazım",
       "total": "Jámi",

@@ -122,7 +122,7 @@ const withRawIcons = (items) =>
 
 export const navigations = withRawIcons([
   {
-    label: 'navigation.hrm', // Kadrlar boshqaruvi
+    label: 'navigation.myOrg', // Mening korxonam
     path: AppPaths.Hrm,
     icon: HrSidebarIcon,
     permission: appPermissions.hr,
@@ -431,7 +431,7 @@ export const navigations = withRawIcons([
     ]
   },
   {
-    label: 'navigation.docFlow', // Hujjat aylanishi
+    label: 'navigation.myDocs', // Mening hujjatlarim
     path: '/docflow',
     icon: DocFlowSidebarIcon,
     permission: appPermissions.confirmation,

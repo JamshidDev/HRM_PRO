@@ -1,15 +1,38 @@
 <script setup>
   import { useArchiveDocumentStore } from '@/store/modules/index.js'
+  import { UIDocumentCard } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
-  import icons from '@/assets/icons'
-  import { ArrowDownload16Regular, Eye16Regular } from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
 
+  const { t } = i18n.global
   const emit = defineEmits(['open'])
   const store = useArchiveDocumentStore()
 
   const fio = (w) => Utils.shortFio(w.last_name, w.first_name, w.middle_name)
   const workerNames = (doc) => (doc.workers || []).map(fio).join(', ')
   const docKey = (doc) => `${doc.kind}-${doc.id}`
+
+  // Karta qatorlari: «№123 · UTY-…» | holat; xodim (+N); tashkilot.
+  const rowsOf = (doc) => {
+    const number = doc.number ? `№${doc.number}` : '—'
+    const workers = doc.workers || []
+    return [
+      {
+        text: doc.electronic_number ? `${number} · ${doc.electronic_number}` : number,
+        title: t('archive.documents.number'),
+        status: doc.cancelled
+          ? { text: t('archive.documents.cancelled'), tone: 'red' }
+          : { text: t('archive.documents.approved'), tone: 'green' }
+      },
+      {
+        text: workers.length
+          ? `${fio(workers[0])}${workers.length > 1 ? ` +${workers.length - 1}` : ''}`
+          : '—',
+        title: workerNames(doc)
+      },
+      { text: doc.organization?.name || '—', title: doc.organization?.name }
+    ]
+  }
 
   const onPage = (p) => {
     store.params.page = p
@@ -28,97 +51,24 @@
         v-if="store.list.length"
         class="grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 pt-2 pb-2 pr-2"
       >
-        <div
+        <!-- Karta ko'rinishi — umumiy `UIDocumentCard` (Guvohnomalar oynasi ham shuni ishlatadi) -->
+        <UIDocumentCard
           v-for="doc in store.list"
           :key="docKey(doc)"
-          class="doc-card relative flex flex-col rounded-2xl border border-surface-line bg-surface-section cursor-pointer"
-          :class="doc.cancelled ? 'doc-card--cancelled' : 'doc-card--approved'"
-          @click="emit('open', doc)"
-        >
-          <!-- Yuqori: PDF ikonkasi (qutisiz), guruh nomi + sana, hujjat turi -->
-          <div class="flex items-start gap-2 p-4 pb-2">
-            <n-icon size="42" class="shrink-0 flex"><component :is="icons.pdfFileIcon" /></n-icon>
-            <div class="min-w-0 flex-1">
-              <div
-                class="flex items-center gap-2 text-[13px] font-medium leading-5 text-textColor3"
-              >
-                <!-- Sig'maganini «...» bilan kesamiz, to'liq matn — hover'da -->
-                <n-ellipsis class="block! min-w-0 flex-1">
-                  {{ $t(`archive.documents.groups.${doc.type?.group || 'others'}`) }}
-                </n-ellipsis>
-                <span class="shrink-0" :title="$t('archive.documents.date')">
-                  {{ Utils.timeOnlyDate(doc.date) || '—' }}
-                </span>
-              </div>
-              <n-ellipsis class="block! text-sm font-semibold leading-5 text-textColor0">
-                {{ doc.type?.name || '—' }}
-              </n-ellipsis>
-            </div>
-          </div>
-
-          <!-- Ma'lumotlar: har qator bir xil balandlik (26px), bir xil shrift (14px, 500) -->
-          <div class="flex flex-col gap-1 px-4 pb-3">
-            <div class="doc-row justify-between">
-              <span class="doc-line text-textColor0" :title="$t('archive.documents.number')">
-                <span class="truncate">
-                  <span>{{ doc.number ? `№${doc.number}` : '—' }}</span>
-                  <template v-if="doc.electronic_number">
-                    <span> · {{ doc.electronic_number }}</span>
-                  </template>
-                </span>
-              </span>
-              <span
-                class="doc-status"
-                :class="
-                  doc.cancelled
-                    ? 'bg-fig-red-50 text-fig-text-red'
-                    : 'bg-fig-chip-green text-fig-chip-green-text'
-                "
-              >
-                {{
-                  doc.cancelled
-                    ? $t('archive.documents.cancelled')
-                    : $t('archive.documents.approved')
-                }}
-              </span>
-            </div>
-            <div class="doc-row">
-              <span class="doc-line text-textColor0" :title="workerNames(doc)">
-                <span class="truncate">
-                  {{ doc.workers?.length ? fio(doc.workers[0]) : '—' }}
-                  <span v-if="doc.workers?.length > 1"> +{{ doc.workers.length - 1 }} </span>
-                </span>
-              </span>
-            </div>
-            <div class="doc-row">
-              <span class="doc-line text-textColor0" :title="doc.organization?.name">
-                <span class="truncate">{{ doc.organization?.name || '—' }}</span>
-              </span>
-            </div>
-          </div>
-
-          <!-- Amallar -->
-          <div class="mt-auto flex items-center gap-2 border-t border-surface-line px-4 py-2.5">
-            <n-button secondary class="doc-btn flex-1" @click.stop="emit('open', doc)">
-              <template #icon>
-                <n-icon><Eye16Regular /></n-icon>
-              </template>
-              {{ $t('archive.documents.view') }}
-            </n-button>
-            <n-button
-              type="primary"
-              class="doc-btn flex-1"
-              :loading="store.downloadId === docKey(doc)"
-              :disabled="!!store.downloadId && store.downloadId !== docKey(doc)"
-              @click.stop="store._download(doc)"
-            >
-              <template #icon>
-                <n-icon><ArrowDownload16Regular /></n-icon>
-              </template>
-              {{ $t('archive.documents.download') }}
-            </n-button>
-          </div>
-        </div>
+          :subtitle="$t(`archive.documents.groups.${doc.type?.group || 'others'}`)"
+          :date="Utils.timeOnlyDate(doc.date) || '—'"
+          :date-title="$t('archive.documents.date')"
+          :title="doc.type?.name"
+          :rows="rowsOf(doc)"
+          :tone="doc.cancelled ? 'red' : 'green'"
+          :view-text="$t('archive.documents.view')"
+          :download-text="$t('archive.documents.download')"
+          :downloading="store.downloadId === docKey(doc)"
+          :download-disabled="!!store.downloadId && store.downloadId !== docKey(doc)"
+          @open="emit('open', doc)"
+          @view="emit('open', doc)"
+          @download="store._download(doc)"
+        />
       </div>
       <n-empty
         v-else-if="!store.loading"
@@ -149,93 +99,5 @@
   /* Silliq skroll: skroll ichki ro'yxatda qoladi, sahifaga o'tmaydi */
   .doc-scroll {
     overscroll-behavior: contain;
-  }
-
-  .doc-card {
-    transition: transform 0.2s;
-  }
-  /* Hover soyasi alohida qatlamda — faqat opacity animatsiya bo'ladi (arzon).
-     box-shadow'ni o'zini animatsiya qilish skroll paytida (kartalar kursor ostidan
-     o'tib turganda) har kadrda qayta chizishga olib kelardi → skroll tutilardi. */
-  .doc-card::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    box-shadow:
-      0 8px 24px -12px rgb(15 23 42 / 0.18),
-      0 2px 6px -2px rgb(15 23 42 / 0.06);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .doc-card:hover {
-    transform: translateY(-2px);
-  }
-  .doc-card:hover::after {
-    opacity: 1;
-  }
-
-  /* Ma'lumot qatorlari — bir xil balandlik va shrift */
-  .doc-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-height: 26px;
-  }
-  .doc-line {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    min-width: 0;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 20px;
-  }
-
-  /* Amal tugmalari — medium (34px) va small (28px) orasida */
-  .doc-btn {
-    --n-height: 30px !important;
-    --n-font-size: 13px !important;
-  }
-
-  /* Holat chipi — raqam qatorida o'ngda (pill, 22px) */
-  .doc-status {
-    display: inline-flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    height: 22px;
-    min-width: 108px;
-    padding: 0 8px;
-    /* Gradient fonida ko'rinib turishi uchun chegara (o'z rangida) */
-    border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 500;
-    white-space: nowrap;
-  }
-
-  /* Gradient: o'ng yuqoridan chap pastga sekin yo'qoladi; tasdiqlangan — ko'k, bekor qilingan — qizil */
-  .doc-card--approved {
-    background-image: linear-gradient(
-      to bottom left,
-      color-mix(in srgb, var(--primary-color) 7%, transparent),
-      transparent 70%
-    );
-  }
-  .doc-card--cancelled {
-    background-image: linear-gradient(
-      to bottom left,
-      color-mix(in srgb, var(--fig-text-red) 7%, transparent),
-      transparent 70%
-    );
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .doc-card:hover {
-      transform: none;
-    }
   }
 </style>

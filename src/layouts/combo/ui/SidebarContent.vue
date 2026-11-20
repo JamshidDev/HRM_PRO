@@ -714,7 +714,11 @@
                   >
                     <Search20Regular />
                   </n-icon>
-                  <span class="text-sm text-textColor2 truncate font-semibold flex-1 min-w-0">
+                  <!-- Uzun modul nomi kesilmasin — 2 qatorgacha, to'liq nom hover'da -->
+                  <span
+                    class="text-sm text-textColor2 font-semibold flex-1 min-w-0 leading-tight line-clamp-2 break-words"
+                    :title="menuName"
+                  >
                     {{ menuName }}
                   </span>
                   <!-- Tiklash qaytarib bo'lmaydi — tasdiqsiz bajarilmaydi -->

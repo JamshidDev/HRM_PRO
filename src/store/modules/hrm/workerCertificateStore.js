@@ -20,6 +20,8 @@ export const useWorkerCertificateStore = defineStore('workerCertificateStore', {
     loading: false,
     exportLoading: false,
     totalItems: 0,
+    // Qidiruv/filtr berilganmi — bo'sh ro'yxatda «topilmadi» yoki «ro'yxat bo'sh» matni uchun.
+    searched: false,
     params: initialParams(),
     structureCheck: [],
     // "Ko'rish" modali — xodimning BARCHA guvohnomalari (ro'yxatda faqat oxirgisi).
@@ -51,6 +53,10 @@ export const useWorkerCertificateStore = defineStore('workerCertificateStore', {
     },
     _index() {
       this.loading = true
+      this.searched =
+        !!this.params.search?.trim() ||
+        this.params.organizations.length > 0 ||
+        !!this.params.certificate_status
       const params = {
         page: this.params.page,
         per_page: this.params.per_page,

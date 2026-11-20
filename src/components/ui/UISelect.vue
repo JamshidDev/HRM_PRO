@@ -20,6 +20,14 @@
     // qirrasidan boshlanib o'ngga cho'ziladi. Default o'zgarmaydi — 99 ta
     // sahifadagi mavjud ko'rinish saqlanadi.
     placement: { type: String, default: 'bottom' },
+    // Naive popover default `flip: true` — pastda joy yetmasa yuqoriga ag'dariladi.
+    // Tor/baland kontekstda (masalan filtr paneli laptop ekranda) bu "tepaga ochilib
+    // ketish" ko'rinadi. `false` berilsa doim `placement` yo'nalishida ochiladi.
+    // Default o'zgarmaydi — mavjud sahifalar avvalgidek.
+    flip: { type: Boolean, default: true },
+    // Daraxt qismi balandligi (TreeSelectPanel.bodyHeight). Tor kontekstda pasaytirib,
+    // popover pastga ochilganda viewport'dan oshmasligini ta'minlash uchun berib bo'ladi.
+    bodyHeight: { type: String, default: 'min(400px, 55vh)' },
     // true bo'lsa katta (trigger) input ham qidiruv sifatida yoziladi.
     searchableInput: { type: Boolean, default: false },
     // Berilmasa avvalgi default matn ishlatiladi (content.search / content.choose).
@@ -239,6 +247,7 @@
   <n-popover
     v-model:show="show"
     :placement="placement"
+    :flip="flip"
     trigger="click"
     class="py-0! px-0!"
     :style="popoverStyle"
@@ -267,6 +276,7 @@
         ref="searchInputRef"
         v-model:search="searchModel"
         :loading="loading"
+        :body-height="bodyHeight"
         :selected-count="multiple ? modelV.length : 0"
         :footer="multiple"
         :empty="!options?.length"

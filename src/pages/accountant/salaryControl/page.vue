@@ -151,6 +151,15 @@
     if (!year || !month) return ''
     return `${year} · ${String(month).padStart(2, '0')}`
   })
+
+  // DAS-16735: tanlangan korxonalar (filtr) sahifada ko'rinib tursin — foydalanuvchi
+  // ma'lumot qaysi korxonalarga filtrlanganini davr yonida ko'radi.
+  const selectedOrgs = computed(() =>
+    (store.params.organizations || []).map((o) => o?.name).filter(Boolean)
+  )
+  const MAX_ORG_CHIPS = 4
+  const orgChips = computed(() => selectedOrgs.value.slice(0, MAX_ORG_CHIPS))
+  const orgOverflow = computed(() => Math.max(0, selectedOrgs.value.length - MAX_ORG_CHIPS))
 </script>
 
 <template>
@@ -174,6 +183,12 @@
         <p v-if="periodLabel" class="mt-0.5 text-[12px] leading-4 text-textColor3">
           {{ periodLabel }}
         </p>
+        <!-- DAS-16735: faol filtr — tanlangan korxona nomlari (davr yonida). -->
+        <div v-if="selectedOrgs.length" class="sc-orgchips">
+          <span class="sc-orgchips__lbl">{{ $t('content.organization') }}:</span>
+          <span v-for="name in orgChips" :key="name" class="sc-orgchip">{{ name }}</span>
+          <span v-if="orgOverflow" class="sc-orgchip sc-orgchip--more">+{{ orgOverflow }}</span>
+        </div>
       </div>
     </div>
 
@@ -241,5 +256,38 @@
     font-size: 12.5px;
     line-height: 1.45;
     color: var(--fig-text-secondary);
+  }
+
+  /* Faol filtr — tanlangan korxona chiplar (DAS-16735). */
+  .sc-orgchips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .sc-orgchips__lbl {
+    font-size: 12px;
+    color: var(--fig-text-tertiary);
+  }
+  .sc-orgchip {
+    display: inline-flex;
+    align-items: center;
+    max-width: 220px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--fig-bg-brand-surface);
+    border: 0.8px solid var(--fig-blue-300);
+    color: var(--fig-text-secondary);
+    font-size: 12px;
+    line-height: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sc-orgchip--more {
+    background: var(--fig-bg-tertiary);
+    border-color: var(--fig-br-disable);
+    color: var(--fig-text-tertiary);
   }
 </style>

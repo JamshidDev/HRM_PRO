@@ -1,10 +1,13 @@
 <script setup>
-  import { openSafeUrl } from '@/utils/sanitize.js'
-  import { UIBadge, UIModal } from '@/components/index.js'
-  import { ArrowCircleDown24Regular } from '@vicons/fluent'
+  import { openSafeUrl, safeUrl } from '@/utils/sanitize.js'
+  import { UIDocumentCard, UIModal } from '@/components/index.js'
   import { useWorkerCertificateStore } from '@stores'
   import { Utils } from '@utils'
+  import i18n from '@/i18n/index.js'
+  import icons from '@/assets/icons'
+  import { certificateStatus, isExpired, validUntil } from './certificateStatus.js'
 
+  const { t } = i18n.global
   const store = useWorkerCertificateStore()
 
   const fullName = computed(() => {
@@ -13,8 +16,71 @@
     return [w.last_name, w.first_name, w.middle_name].filter(Boolean).join(' ')
   })
 
-  const onDownload = (item) => {
-    openSafeUrl(item.file)
+  // Ro'yxatda ko'rinadigan (oxirgi) guvohnoma — kartada «Joriy» belgisi.
+  const isLatest = (item) => item.id != null && item.id === store.showWorker?.certificate?.id
+
+  const date = (v) => (v ? Utils.timeOnlyDate(v) : '—')
+
+  // Holat chipi — jadvaldagi bilan bir xil matn va rang.
+  const statusOf = (item) => {
+    const s = certificateStatus(item)
+    return { text: s.status.name, tone: s.tone }
+  }
+
+  // Gradient — holat chipi rangida (Arxivdagi kabi): tasdiqlangan yashil, tasdiqlanmagan ko'k, ...
+  const toneOf = (item) => certificateStatus(item).tone
+
+  // Sanalar yorliqsiz, bitta qatorda: «berilgan → amal qiladi» (uzaytirilgan bo'lsa — yangi sana).
+  // To'liq izoh (asl muddat ham) — hover'da.
+  const dateTitle = (item) =>
+    [
+      `${t('workerPositionCertificatePage.form.issueDate')}: ${date(item.issue_date)}`,
+      `${t('workerPositionCertificatePage.form.expiryDate')}: ${date(item.expiry_date)}`,
+      item.extended_date &&
+        `${t('workerPositionCertificatePage.form.extendedDate')}: ${date(item.extended_date)}`
+    ]
+      .filter(Boolean)
+      .join('\n')
+
+  const rowsOf = (item) => [
+    {
+      text: item.number ? `№${item.number}` : '—',
+      title: t('workerPositionCertificatePage.form.number'),
+      status: statusOf(item)
+    },
+    {
+      text: `${date(item.issue_date)} → ${date(validUntil(item))}`,
+      title: dateTitle(item),
+      textClass: isExpired(item) ? 'text-fig-text-red' : 'text-textColor0',
+      note: item.extended_date ? t('workerCertificatePage.table.extended') : ''
+    }
+  ]
+
+  // Fayl yangi oynada emas, ilova ichidagi ko'rish oynasida ochiladi.
+  const fileExt = (url) => (url || '').split('?')[0].split('.').pop().toLowerCase()
+  const onView = (item) => {
+    const url = safeUrl(item.file)
+    if (!url) return
+    window.$MediaViewer.showMediaViewer(url, fileExt(url), { title: item.number })
+  }
+
+  // «Yuklash» — faylni SAQLAYDI (yangi oynada ochmaydi), Arxivdagi `_download` kabi:
+  // fetch → blob → saqlash. Server bloklasa (CORS / tarmoq) — eski yo'l: yangi oynada ochiladi.
+  const downloadingId = ref(null)
+  const onDownload = async (item) => {
+    const url = safeUrl(item.file)
+    if (!url || downloadingId.value) return
+    downloadingId.value = item.id
+    try {
+      const resp = await fetch(url)
+      if (!resp.ok) throw new Error(String(resp.status))
+      const blob = await resp.blob()
+      Utils.blobFileDownload(blob, blob.type, `${item.number || 'guvohnoma'}.${fileExt(url)}`)
+    } catch {
+      openSafeUrl(url)
+    } finally {
+      downloadingId.value = null
+    }
   }
 </script>
 
@@ -27,161 +93,37 @@
   >
     <n-spin :show="store.showLoading">
       <!-- Ro'yxat sahifasida faqat OXIRGI guvohnoma ko'rinadi — bu yerda hammasi.
-           Jadval o'rniga kartalar: lavozim nomi uzun, jadval kataklarida qisilib
-           o'qilmay qolardi. Keng ekranda 2 ustun, telefonda 1 ustun. -->
+           Kartalar — Arxivdagi bilan bir xil (`UIDocumentCard`). Keng ekranda 2 ustun. -->
       <div
         v-if="store.showList.length > 0"
-        class="grid grid-cols-1 md:grid-cols-2 gap-4 min-h-[120px]"
+        class="grid grid-cols-1 md:grid-cols-2 gap-4 min-h-[120px] pt-2"
       >
-        <div
+        <UIDocumentCard
           v-for="(item, idx) in store.showList"
           :key="item.id ?? idx"
-          class="certificate-card"
-        >
-          <div class="certificate-card__head">
-            <span class="certificate-card__number">{{ item.number }}</span>
-            <div class="flex flex-wrap items-center gap-1">
-              <UIBadge
-                :show-icon="false"
-                :label="
-                  item.verify
-                    ? $t('workerPositionCertificatePage.form.verify')
-                    : $t('workerCertificatePage.modal.notVerified')
-                "
-                :type="item.verify ? Utils.colorTypes.success : Utils.colorTypes.dark"
-              />
-              <!-- «Qaytarib olingan» faqat HA bo'lganda — bu istisno holat, yo'qligi
-                   normal, shu bois "yo'q" tegi qo'yilmaydi. -->
-              <UIBadge
-                v-if="item.returned"
-                :show-icon="false"
-                :label="$t('workerPositionCertificatePage.form.returned')"
-                :type="Utils.colorTypes.warning"
-              />
-            </div>
-          </div>
-
-          <div class="certificate-card__section">
-            <div class="certificate-card__label">
-              {{ $t('workerPositionCertificatePage.form.postName') }}
-            </div>
-            <div class="certificate-card__post">{{ item.post_name }}</div>
-          </div>
-
-          <div class="certificate-card__section">
-            <div class="certificate-card__row">
-              <span class="certificate-card__label">
-                {{ $t('workerPositionCertificatePage.form.issueDate') }}
-              </span>
-              <span class="certificate-card__value">
-                {{ Utils.timeOnlyDate(item.issue_date) }}
-              </span>
-            </div>
-            <div class="certificate-card__row">
-              <span class="certificate-card__label">
-                {{ $t('workerPositionCertificatePage.form.expiryDate') }}
-              </span>
-              <span class="certificate-card__value">
-                {{ Utils.timeOnlyDate(item.expiry_date) }}
-              </span>
-            </div>
-            <div class="certificate-card__row">
-              <span class="certificate-card__label">
-                {{ $t('workerPositionCertificatePage.form.extendedDate') }}
-              </span>
-              <!-- Qiymat yo'q bo'lsa BO'SH qoladi (to'ldiruvchi belgi yo'q). -->
-              <span class="certificate-card__value">
-                {{ item.extended_date ? Utils.timeOnlyDate(item.extended_date) : '' }}
-              </span>
-            </div>
-          </div>
-
-          <div v-if="item.file" class="certificate-card__footer">
-            <n-button size="small" round @click="onDownload(item)">
-              <template #icon>
-                <ArrowCircleDown24Regular />
-              </template>
-              {{ $t('content.download') }}
-            </n-button>
-          </div>
-        </div>
+          :icon="icons.figCertificateBadge"
+          :icon-size="42"
+          icon-color="var(--primary-color)"
+          :subtitle="$t('workerCertificatePage.modal.kind')"
+          :badge="isLatest(item) ? $t('workerCertificatePage.modal.latest') : ''"
+          :title="item.post_name"
+          :rows="rowsOf(item)"
+          :tone="toneOf(item)"
+          :clickable="false"
+          :show-actions="!!item.file"
+          :downloading="downloadingId === item.id"
+          :download-disabled="!!downloadingId && downloadingId !== item.id"
+          @view="onView(item)"
+          @download="onDownload(item)"
+        />
       </div>
 
       <div
         v-else-if="!store.showLoading"
-        class="w-full py-10 text-center text-sm text-gray-400"
+        class="w-full py-10 text-center text-sm text-textColor3"
       >
         {{ $t('workerPositionCertificatePage.no-data') }}
       </div>
     </n-spin>
   </UIModal>
 </template>
-
-<style scoped>
-  .certificate-card {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--surface-line, #e5e7eb);
-    border-radius: 16px;
-    overflow: hidden;
-  }
-
-  /* Bo'limlar ustma-ust, chegara bilan ajratilgan — jadval qatorlari kabi. */
-  .certificate-card__head,
-  .certificate-card__section {
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--surface-line, #e5e7eb);
-  }
-
-  .certificate-card__head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    background-color: var(--surface-ground, #f7f8fa);
-  }
-
-  .certificate-card__number {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--textColor1);
-  }
-
-  .certificate-card__label {
-    font-size: 12px;
-    color: var(--textColor2);
-  }
-
-  .certificate-card__post {
-    margin-top: 2px;
-    font-size: 13px;
-    line-height: 1.35;
-    color: var(--textColor1);
-  }
-
-  .certificate-card__row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-    min-height: 22px;
-  }
-
-  .certificate-card__value {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--textColor1);
-  }
-
-  .certificate-card__footer {
-    padding: 10px 14px;
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  /* Oxirgi bo'lim ostidagi ortiqcha chiziq — fayl tugmasi bo'lmasa. */
-  .certificate-card > *:last-child {
-    border-bottom: none;
-  }
-</style>
