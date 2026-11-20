@@ -264,16 +264,22 @@
           markLine: {
             silent: true,
             symbol: 'none',
+            // ECharts markLine 2-nuqtali formatni kutadi: [{coord:[x,y]},{coord:[x,y]}].
+            // Ilgari {coords:...} berilgan edi → "Invalid markLine data"/coord xatosi.
             label: {
-              formatter: (o) => o.data.k + '×',
+              formatter: (o) => o.name || '',
               color: th.text,
-              fontSize: 10
+              fontSize: 10,
+              position: 'end'
             },
             lineStyle: { type: 'dashed', color: th.line },
             data: [
-              { k: 1, coords: line(1) },
-              { k: 2, coords: line(2), lineStyle: { color: th.text } },
-              { k: 3, coords: line(3) }
+              [{ coord: line(1)[0] }, { coord: line(1)[1], name: '1×' }],
+              [
+                { coord: line(2)[0], lineStyle: { color: th.text } },
+                { coord: line(2)[1], name: '2×' }
+              ],
+              [{ coord: line(3)[0] }, { coord: line(3)[1], name: '3×' }]
             ]
           }
         },
