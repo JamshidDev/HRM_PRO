@@ -42,6 +42,13 @@ export const attestationRoutes = [
     }
   },
   {
+    path: Utils.routeAttestationPathMaker(AppPaths.ExamMonitoring),
+    component: () => import('@/pages/attestation/examMonitoring/ExamMonitoringPage.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
     path: Utils.routeAttestationPathMaker(`${AppPaths.Result}`),
     component: () => import('@/pages/attestation/examResult/ResultPage.vue'),
     meta: {

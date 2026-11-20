@@ -25,6 +25,7 @@ import AttestationTopicIcon from '@assets/icons/Topics.svg'
 import AttestationCategoryIcon from '@assets/icons/dashboard.svg'
 import AttestationExamIcon from '@assets/icons/Exams.svg'
 import AttestationResultIcon from '@assets/icons/Results.svg'
+import AttestationMonitoringIcon from '@assets/icons/ExamMonitoring.svg'
 import TurnstileDashboardIcon from '@assets/icons/dashboard.svg'
 import TurnstileAccessLevelsIcon from '@assets/icons/groups.svg'
 import TurnstileOrgAccessLevelsIcon from '@assets/icons/Organizations.svg'
@@ -543,6 +544,13 @@ export const navigations = withRawIcons([
         icon: AttestationExamIcon,
         color: 'bg-secondary',
         permission: appPermissions.examExamsRead
+      },
+      {
+        label: 'examMonitoringPage.name', // Imtihon kuzatuvi
+        path: Utils.routeAttestationPathMaker(AppPaths.ExamMonitoring),
+        icon: AttestationMonitoringIcon,
+        color: 'bg-dark',
+        permission: appPermissions.examMonitoringRead
       },
       {
         label: 'examPage.result', // Natijalar

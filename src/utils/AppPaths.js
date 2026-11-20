@@ -41,6 +41,7 @@ export const AppPaths = {
   Exam: '/exam',
   Camera: '/camera',
   Result: '/result',
+  ExamMonitoring: '/exam-monitoring',
   Certificate: '/certificate',
   Audit: '/audit',
   Department: '/department',
