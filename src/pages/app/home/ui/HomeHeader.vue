@@ -6,7 +6,7 @@
    * Bu sarlavha layout'ning `AppHeader` iga qo'shimcha: maketda u sahifa
    * kontenti ichida, birinchi karta qatoridan yuqorida turadi.
    */
-  import { useAppSetting, AppPaths } from '@/utils/index.js'
+  import { AppPaths } from '@/utils/index.js'
   import { LogoutButton } from '@/components/index.js'
   import { Headphones20Filled } from '@vicons/fluent'
 
@@ -19,8 +19,9 @@
 <template>
   <div class="flex w-full shrink-0 items-center justify-between gap-4">
     <div class="flex min-w-0 items-center gap-2.5">
-      <img :src="useAppSetting.appLogoUrl" alt="" class="h-11 w-12 shrink-0 object-contain" />
-      <span class="truncate text-[18px] leading-6 font-semibold text-fig-text-brand">
+      <!-- Rangli (ko'k) logo — oq `appLogoUrl` faqat qorong'i sidebar uchun, och sarlavhada ko'rinmasdi -->
+      <img src="/logo-new.png" alt="" class="h-11 w-12 shrink-0 object-contain" />
+      <span class="truncate text-[18px] leading-6 font-semibold text-fig-brand">
         {{ $t('homePage.appName') }}
       </span>
     </div>

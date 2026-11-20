@@ -2,9 +2,9 @@
   /**
    * Elektron imzolash sahifasi sarlavhasi. Chapda logo va kim uchun link (ism, rol),
    * o'ngda holat: imzolash uchun qolgan vaqt chipi yoki «Tasdiqlagan» / «Rad etgan»,
-   * «Imzolash» tugmasi va til. Telefonda ism qisqaradi, rol yashiriladi.
+   * «Imzolash» tugmasi, mavzu almashtirgich (kunduzgi / tungi) va til. Telefonda ism qisqaradi, rol yashiriladi.
    */
-  import { UILanguage } from '@/components/index.js'
+  import { UILanguage, UIThemeSwitch } from '@/components/index.js'
   import {
     DrawText24Regular,
     Timer24Regular,
@@ -143,6 +143,7 @@
           </template>
           <span class="hidden sm:inline">{{ $t('signature.goSignature') }}</span>
         </n-button>
+        <UIThemeSwitch />
         <UILanguage />
       </div>
     </div>
