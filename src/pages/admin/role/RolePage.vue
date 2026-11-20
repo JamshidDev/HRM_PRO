@@ -1,5 +1,5 @@
 <script setup>
-  import { UIModal, UIPageContent, UIPageFilter, UISegmentTabs } from '@/components/index.js'
+  import { UIModal, UIPageContent, UIPageFilter } from '@/components/index.js'
   import Table from './ui/Table.vue'
   import { useUserRoleStore, useAccountStore } from '@/store/modules/index.js'
   import createFrom from './ui/createForm.vue'
@@ -8,7 +8,12 @@
   import RoleSettings from './ui/RoleSettings.vue'
   import { isRoleSettingsValid } from './roleScope.js'
   import i18n from '@/i18n/index.js'
-  import { Search24Regular } from '@vicons/fluent'
+  import {
+    Checkmark16Filled,
+    Search24Regular,
+    Settings20Regular,
+    ShieldKeyhole20Regular
+  } from '@vicons/fluent'
   const { t } = i18n.global
 
   const store = useUserRoleStore()
@@ -20,14 +25,10 @@
   const settingsValid = computed(() =>
     isRoleSettingsValid(store.payload, store.visibleType, store.pendingLevel)
   )
-  const stepTabs = computed(() => [
-    { id: 'settings', name: `1. ${t('userRole.form.stepSettings')}` },
-    {
-      id: 'permissions',
-      name: `2. ${t('userRole.form.stepPermissions')}`,
-      disabled: !settingsValid.value
-    }
-  ])
+  const steps = [
+    { id: 'settings', icon: Settings20Regular, label: 'userRole.form.stepSettings' },
+    { id: 'permissions', icon: ShieldKeyhole20Regular, label: 'userRole.form.stepPermissions' }
+  ]
   const step = computed({
     get: () => store.formTab,
     set: (v) => {
@@ -91,9 +92,29 @@
     >
       <template #header-title>
         {{ store.visibleType ? $t('userRole.createTitle') : $t('userRole.updateTitle') }}
-        <!-- Qadamlar header markazida (card relative). -->
-        <div class="absolute left-1/2 -translate-x-1/2 top-[6px] z-10 font-normal">
-          <UISegmentTabs v-model="step" :tabs="stepTabs" />
+        <!-- Qadamlar header markazida (card relative): ikonka + chiziq. -->
+        <div class="role-steps absolute left-1/2 -translate-x-1/2 top-[8px] z-10">
+          <template v-for="(s, i) in steps" :key="s.id">
+            <span v-if="i > 0" class="role-steps__line" :class="{ done: !onSettingsStep }"></span>
+            <button
+              type="button"
+              class="role-steps__item"
+              :class="{
+                active: step === s.id,
+                done: s.id === 'settings' && !onSettingsStep,
+                disabled: s.id === 'permissions' && !settingsValid
+              }"
+              @click="step = s.id"
+            >
+              <span class="role-steps__icon">
+                <n-icon size="16">
+                  <Checkmark16Filled v-if="s.id === 'settings' && !onSettingsStep" />
+                  <component :is="s.icon" v-else />
+                </n-icon>
+              </span>
+              <span class="role-steps__label">{{ $t(s.label) }}</span>
+            </button>
+          </template>
         </div>
       </template>
       <template #default>
@@ -147,3 +168,58 @@
     </UIModal>
   </UIPageContent>
 </template>
+
+<style scoped>
+  .role-steps {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+  }
+  .role-steps__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--textColor3);
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .role-steps__item.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  .role-steps__icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid var(--surface-line);
+    background: var(--surface-section);
+    transition: all 0.15s;
+  }
+  .role-steps__item.active {
+    color: var(--textColor0);
+    font-weight: 600;
+  }
+  .role-steps__item.active .role-steps__icon {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+  }
+  .role-steps__item.done .role-steps__icon {
+    background: var(--success-color, #12b76a);
+    border-color: var(--success-color, #12b76a);
+    color: #fff;
+  }
+  .role-steps__line {
+    width: 64px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--surface-line);
+  }
+  .role-steps__line.done {
+    background: var(--success-color, #12b76a);
+  }
+</style>
