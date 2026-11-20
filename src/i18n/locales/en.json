@@ -7879,5 +7879,64 @@
   "onlyOfficeEditor": {
     "tokenError": "Could not open the document editor",
     "tokenErrorHint": "The server did not issue a security token for this document. Try again later or contact the administrator."
+  },
+  "examMonitoringPage": {
+    "name": "Exam monitoring",
+    "topic": "Topic",
+    "languages": "Languages",
+    "questions": "Questions",
+    "solvingNow": "Solving now",
+    "monitoring": "Monitoring",
+    "none": "Not enabled",
+    "camera": "Camera",
+    "screen": "Screen",
+    "connecting": "Connecting...",
+    "noStream": "Waiting for stream",
+    "failed": {
+      "timeout": "Candidate did not connect — exam page is not open or no network",
+      "lost": "Connection lost",
+      "error": "Connection error",
+      "finished": "Candidate finished the exam"
+    },
+    "nobodySolving": "Nobody is solving now",
+    "selectWorker": "Select a candidate to watch",
+    "notEnabled": "Screen or camera monitoring is not enabled for this exam",
+    "cameraNotEnabled": "Camera monitoring is not enabled for this exam",
+    "screenNotEnabled": "Screen monitoring is not enabled for this exam",
+    "screenRequiredTitle": "Screen monitoring is required",
+    "screenRequiredText": "Share your entire screen to continue the exam. If sharing stops, the exam window closes again.",
+    "shareScreen": "Share screen",
+    "statusLive": "Live",
+    "statusLost": "Connection lost",
+    "remaining": "Left",
+    "reconnect": "Reconnect",
+    "tabLive": "Live",
+    "tabFinished": "Finished",
+    "nobodyFinished": "Nobody has finished yet",
+    "loadMore": "Load more",
+    "selectFinished": "Select a worker to see the result",
+    "result": "Result",
+    "correct": "Correct answers",
+    "startedAt": "Started",
+    "endedAt": "Finished",
+    "sendAlert": "Alert",
+    "alertTemplates": "Ready messages",
+    "alertCustom": "Write your own message",
+    "alertSend": "Send",
+    "alertSent": "Alert sent",
+    "alertTitle": "Alert from the proctor",
+    "alertOk": "OK",
+    "alertText": {
+      "lookCamera": "Please look at the camera and keep your face visible",
+      "noOtherWindows": "Do not open other windows or programs",
+      "noPhone": "Do not use a phone or other devices",
+      "alone": "You must be alone in the room",
+      "noTalk": "Do not talk or use outside help",
+      "lastWarning": "Final warning: if the violation repeats, the exam will be cancelled"
+    },
+    "screenError": {
+      "denied": "Screen sharing was not allowed",
+      "not_monitor": "Select the entire screen (not a window or tab)"
+    }
   }
 }

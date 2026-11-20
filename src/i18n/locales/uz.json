@@ -8075,5 +8075,64 @@
   "onlyOfficeEditor": {
     "tokenError": "Hujjat muharririni ochib bo'lmadi",
     "tokenErrorHint": "Server hujjat uchun xavfsizlik tokenini bermadi. Birozdan so'ng qayta urinib ko'ring yoki administratorga murojaat qiling."
+  },
+  "examMonitoringPage": {
+    "name": "Imtihon kuzatuvi",
+    "topic": "Mavzu",
+    "languages": "Tillar",
+    "questions": "Savollar soni",
+    "solvingNow": "Hozir yechayotganlar",
+    "monitoring": "Kuzatuv",
+    "none": "Tadbiq etilmagan",
+    "camera": "Kamera",
+    "screen": "Ekran",
+    "connecting": "Ulanmoqda...",
+    "noStream": "Oqim kutilmoqda",
+    "failed": {
+      "timeout": "Nomzod ulanmadi — imtihon sahifasi ochiq emas yoki tarmoq yo'q",
+      "lost": "Ulanish uzildi",
+      "error": "Ulanishda xatolik",
+      "finished": "Nomzod imtihonni yakunladi"
+    },
+    "nobodySolving": "Hozir hech kim yechmayapti",
+    "selectWorker": "Kuzatish uchun nomzodni tanlang",
+    "notEnabled": "Bu imtihon uchun Ekran kuzatuvi yoki Kamera kuzatuvi tadbiq etilmagan",
+    "cameraNotEnabled": "Bu imtihon uchun Kamera kuzatuvi tadbiq etilmagan",
+    "screenNotEnabled": "Bu imtihon uchun Ekran kuzatuvi tadbiq etilmagan",
+    "screenRequiredTitle": "Ekran kuzatuvi majburiy",
+    "screenRequiredText": "Imtihonni davom ettirish uchun butun ekraningizni ulashing. Ulashish to'xtatilsa, imtihon oynasi yana yopiladi.",
+    "shareScreen": "Ekranni ulashish",
+    "statusLive": "Jonli",
+    "statusLost": "Ulanish uzildi",
+    "remaining": "Qoldi",
+    "reconnect": "Qayta ulanish",
+    "tabLive": "Jonli",
+    "tabFinished": "Yechganlar",
+    "nobodyFinished": "Hali hech kim yechib bo'lmagan",
+    "loadMore": "Yana yuklash",
+    "selectFinished": "Natijani ko'rish uchun xodimni tanlang",
+    "result": "Natija",
+    "correct": "To'g'ri javoblar",
+    "startedAt": "Boshlagan",
+    "endedAt": "Tugatgan",
+    "sendAlert": "Ogohlantirish",
+    "alertTemplates": "Tayyor matnlar",
+    "alertCustom": "O'z matningizni yozing",
+    "alertSend": "Yuborish",
+    "alertSent": "Ogohlantirish yuborildi",
+    "alertTitle": "Kuzatuvchidan ogohlantirish",
+    "alertOk": "Tushundim",
+    "alertText": {
+      "lookCamera": "Iltimos, kameraga qarang va yuzingiz ko'rinib tursin",
+      "noOtherWindows": "Boshqa oyna va dasturlarni ochmang",
+      "noPhone": "Telefon va boshqa qurilmalardan foydalanmang",
+      "alone": "Xonada yolg'iz bo'lishingiz kerak",
+      "noTalk": "Gaplashmang va tashqi yordamdan foydalanmang",
+      "lastWarning": "Oxirgi ogohlantirish: qoidabuzarlik takrorlansa, imtihon bekor qilinadi"
+    },
+    "screenError": {
+      "denied": "Ekran ulashishga ruxsat berilmadi",
+      "not_monitor": "Faqat butun ekranni tanlang (oyna yoki tab emas)"
+    }
   }
 }
