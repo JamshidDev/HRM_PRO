@@ -5,12 +5,14 @@
   import { useLanguageAdminStore } from '@/store/modules/admin/languageAdminStore.js'
   import { useAccountStore } from '@/store/modules/index.js'
   const accStore = useAccountStore()
+  import { useEducationReadPermission } from '../readPermission.js'
+  const readPermission = useEducationReadPermission()
 
   const store = useLanguageAdminStore()
   const createFormRef = ref(null)
 
   onMounted(() => {
-    if (!accStore.checkAction(accStore.pn.educationsStructureMenu)) return
+    if (!accStore.checkAction(readPermission(3))) return
     store._index()
   })
 </script>

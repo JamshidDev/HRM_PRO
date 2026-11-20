@@ -6,11 +6,13 @@
   import createForm from './ui/createForm.vue'
   import { useAccountStore } from '@/store/modules/index.js'
   const accStore = useAccountStore()
+  import { useEducationReadPermission } from '../readPermission.js'
+  const readPermission = useEducationReadPermission()
 
   const createFormRef = ref(null)
 
   onMounted(() => {
-    if (!accStore.checkAction(accStore.pn.educationsStructureMenu)) return
+    if (!accStore.checkAction(readPermission(2))) return
     store._index()
   })
 </script>

@@ -6161,6 +6161,12 @@
   "publicPage": {
     "authentication": "Imtihon savollarini köriş",
     "invalidDocument": "Hujjat topilmadi yoki öçirib taşlangan!",
+    "portalLabel": "Hujjatni tekşiriş",
+    "verifiedTitle": "Muhim ma'lumot",
+    "verifiedPoint1": "Qoğoz hujjatdagi QR-kod sizni şu sahifaga olib keldi",
+    "verifiedPoint2": "Asl nusxa HRM PRO tizimida saqlanadi va özgartirib bölmaydi",
+    "verifiedPoint3": "Qölingizdagi hujjat bilan soliştiring — matn bir xil bölsa, hujjat haqiqiy",
+    "invalidHint": "Havolani yoki QR-kodni tekşirib, qaytadan urinib köring.",
     "closeQuestion": "Savollar röyxatini yopiş"
   },
   "socketPage": {
