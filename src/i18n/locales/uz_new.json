@@ -578,10 +578,10 @@
     "changeRoleConfirm": "Bu hisobdan çiqib boşqa hisobga kiriş uçun kerakli hisobni tanlang va 20 soniya kuting"
   },
   "sidebar": {
-    "hrm": "Xodimlar menyusi",
+    "hrm": "Mening korxonam",
     "admin": "Admin menyusi",
     "chat": "Xabar va e'lonlar menyusi",
-    "docflow": "Hujjatlar menyusi",
+    "docflow": "Mening hujjatlarim",
     "attestation": "Attestatsiya menyusi",
     "timesheet": "Tabel",
     "accountant": "Hisobçi menyusi",
@@ -5648,6 +5648,8 @@
   "navigation": {
     "hrm": "Kadrlar boşqaruvi",
     "docFlow": "Hujjat aylanişi",
+    "myOrg": "Mening korxonam",
+    "myDocs": "Mening hujjatlarim",
     "attestation": "Attestatsiya",
     "turnstile": "Turniket",
     "general": "Umumiy",

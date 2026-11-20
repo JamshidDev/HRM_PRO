@@ -563,10 +563,10 @@
     "changeRoleConfirm": "Select the desired account to switch and wait 20 seconds"
   },
   "sidebar": {
-    "hrm": "HR Menu",
+    "hrm": "My Organization",
     "admin": "Admin Menu",
     "chat": "Messages & Announcements Menu",
-    "docflow": "Documents Menu",
+    "docflow": "My Documents",
     "attestation": "Certification Menu",
     "timesheet": "Timesheet",
     "accountant": "Accountant Menu",
@@ -5603,6 +5603,8 @@
   "navigation": {
     "hrm": "HR Management",
     "docFlow": "Document Flow",
+    "myOrg": "My Organization",
+    "myDocs": "My Documents",
     "attestation": "Certification",
     "turnstile": "Turnstile",
     "general": "General",

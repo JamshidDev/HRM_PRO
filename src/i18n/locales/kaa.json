@@ -578,10 +578,10 @@
     "changeRoleConfirm": "Bul akkaunttan shıǵıp basqa akkauntqa kiriw ushın kerekli akkaunttı tańlań hám 20 sekund kútiń"
   },
   "sidebar": {
-    "hrm": "Xızmetkerler menyusı",
+    "hrm": "Meniń kárxanam",
     "admin": "Admin menyusı",
     "chat": "Xabar hám daǵazalar menyusı",
-    "docflow": "Hújjetler menyusı",
+    "docflow": "Meniń hújjetlerim",
     "attestation": "Attestaciya menyusı",
     "timesheet": "Tabel",
     "accountant": "Buxgalter menyusı",
@@ -5648,6 +5648,8 @@
   "navigation": {
     "hrm": "Kadrlar basqarıwı",
     "docFlow": "Hújjet aylanısı",
+    "myOrg": "Meniń kárxanam",
+    "myDocs": "Meniń hújjetlerim",
     "attestation": "Attestaciya",
     "turnstile": "Turniket",
     "general": "Ulıwma",
