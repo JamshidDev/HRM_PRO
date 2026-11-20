@@ -7,12 +7,12 @@
     PERMISSION_GROUPS,
     ACTION_LABELS,
     MEANINGFUL,
-    ENFORCED,
+    ENFORCED
   } from '@/utils/permissionGroups.js'
   import { OWNER_USER_ID } from '@/utils/privileged.js'
   import { isDeptScopedGroup } from '../roleScope.js'
   // Modul tab iconlari — sidebardagi (navigations.js) bilan bir xil SVG'lar.
-  import { Apps24Filled, Search24Regular } from '@vicons/fluent'
+  import { Apps24Filled } from '@vicons/fluent'
   import HrModIcon from '@assets/icons/HrManagement.svg'
   import DocFlowModIcon from '@assets/icons/DocumentFlow.svg'
   import AttestationModIcon from '@assets/icons/Attestation.svg'
@@ -39,7 +39,7 @@
     chat: ChatModIcon,
     extra: ExtraModIcon,
     admin: AdminModIcon,
-    profile: ProfileModIcon,
+    profile: ProfileModIcon
   }
   const moduleIcon = (mod) => MODULE_ICONS[mod.module] || Apps24Filled
 
@@ -85,8 +85,7 @@
   // guruhidan 33 tasi filtrdan o'tmay, tab amalda bo'sh qolardi. API allaqachon
   // faqat shu guard'ning sluglarini qaytaradi — `has()` ning o'zi yetarli.
   const isIntegrationGuard = computed(() => store.payload.guard_name === 'integration')
-  const grantable = (name) =>
-    isIntegrationGuard.value || MEANINGFUL.has(name) || ENFORCED.has(name)
+  const grantable = (name) => isIntegrationGuard.value || MEANINGFUL.has(name) || ENFORCED.has(name)
   const mutable = (name) => (isIntegrationGuard.value ? true : ENFORCED.has(name))
 
   /**
@@ -157,7 +156,8 @@
     () => !isIntegrationGuard.value && store.payload.scope_level === 'department'
   )
   const groupOff = (g) => isDeptLevel.value && !isDeptScopedGroup(g.prefix)
-  const moduleOff = (mod) => isDeptLevel.value && mod.groups.every((g) => !isDeptScopedGroup(g.prefix))
+  const moduleOff = (mod) =>
+    isDeptLevel.value && mod.groups.every((g) => !isDeptScopedGroup(g.prefix))
 
   // Switch yoqilgan hisoblanadi, agar nomlaridan BIRORTASI tanlangan bo'lsa;
   // o'chirilganda esa BARCHASI olib tashlanadi (grant-all / revoke-all).
@@ -320,21 +320,12 @@
           <n-alert v-if="orphanCount" type="warning" class="mb-3" :bordered="false">
             {{ $t('userRole.form.orphanWarning', { n: orphanCount }) }}
           </n-alert>
-          <UITabs
-            v-model:value="activeTab"
-            size="large"
-            animated
-            class="perm-tabs"
-          >
+          <UITabs v-model:value="activeTab" size="large" animated class="perm-tabs">
             <!-- Tanlangan modul nomi tab qatorining o'ng tomonida -->
             <template #suffix>
               <span class="perm-active-label">{{ activeTabLabel }}</span>
             </template>
-            <n-tab-pane
-              v-for="mod in visibleModules"
-              :key="mod.label"
-              :name="mod.label"
-            >
+            <n-tab-pane v-for="mod in visibleModules" :key="mod.label" :name="mod.label">
               <template #tab>
                 <span
                   class="perm-tab-ico"
@@ -342,27 +333,32 @@
                   :title="$t(mod.label)"
                 >
                   <n-icon :component="moduleIcon(mod)" :size="26" />
-                  <span v-if="moduleCount(mod) > 0" class="perm-count">{{
-                    moduleCount(mod)
-                  }}</span>
-                  <span v-if="moduleOff(mod)" class="perm-off-mark" :title="$t('userRole.form.deptOffNote')">⊘</span>
+                  <span v-if="moduleCount(mod) > 0" class="perm-count">{{ moduleCount(mod) }}</span>
+                  <span
+                    v-if="moduleOff(mod)"
+                    class="perm-off-mark"
+                    :title="$t('userRole.form.deptOffNote')"
+                    >⊘</span
+                  >
                 </span>
               </template>
 
-              <div
-                class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 pt-1 pr-1"
-              >
+              <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 pt-1 pr-1">
                 <div
                   v-for="g in visibleGroups(mod)"
                   :key="g.prefix"
                   class="border border-surface-line rounded-lg p-2"
                   :class="{ 'perm-group-off': groupOff(g) }"
                 >
-                  <div class="flex items-center justify-between mb-1.5 pb-1.5 border-b border-surface-line">
+                  <div
+                    class="flex items-center justify-between mb-1.5 pb-1.5 border-b border-surface-line"
+                  >
                     <div class="flex flex-col min-w-0">
                       <span class="font-semibold text-sm">{{ $t(g.label) }}</span>
                       <span class="perm-slug">{{ groupReadSlug(g) }}</span>
-                      <span v-if="groupOff(g)" class="perm-off-note">{{ $t('userRole.form.deptOffNote') }}</span>
+                      <span v-if="groupOff(g)" class="perm-off-note">{{
+                        $t('userRole.form.deptOffNote')
+                      }}</span>
                     </div>
                     <n-switch
                       size="small"
@@ -395,11 +391,7 @@
 
             <n-tab-pane v-if="otherPerms.length" name="__other">
               <template #tab>
-                <span
-                  class="perm-tab-ico"
-                  :class="{ 'has-perms': otherCount > 0 }"
-                  title="Boshqa"
-                >
+                <span class="perm-tab-ico" :class="{ 'has-perms': otherCount > 0 }" title="Boshqa">
                   <n-icon :component="Apps24Filled" :size="26" />
                   <span v-if="otherCount > 0" class="perm-count">{{ otherCount }}</span>
                 </span>
@@ -425,18 +417,6 @@
       </n-form-item>
     </div>
   </n-form>
-
-  <!-- Qidiruv — modalga (card-class="relative") nisbatan absolute: scroll'dan tashqarida,
-       doim pastki-markazda, kontent kam bo'lsa ham surilmaydi. -->
-  <div class="perm-search-fixed">
-    <div class="perm-search-box">
-      <n-input v-model:value="store.query" clearable round :placeholder="$t('content.search')">
-        <template #prefix>
-          <n-icon :component="Search24Regular" />
-        </template>
-      </n-input>
-    </div>
-  </div>
 </template>
 
 <style scoped>
@@ -506,30 +486,5 @@
     opacity: 0.55;
     font-family: ui-monospace, 'SF Mono', Menlo, monospace;
     word-break: break-all;
-  }
-  /* Qidiruv — modalga (card-class="relative") nisbatan absolute, pastki-markazda fixed.
-     Scroll'dan tashqarida turadi, kontent kam bo'lsa ham surilmaydi. */
-  .perm-search-fixed {
-    position: absolute;
-    bottom: 16px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 30;
-  }
-  .perm-search-box {
-    width: 360px;
-    max-width: 90%;
-    border-radius: 999px;
-    background: var(--surface-section);
-    border: 2px solid var(--primary-color, #2080f0);
-    box-shadow: 0 8px 24px rgba(32, 128, 240, 0.3);
-  }
-  /* Ichki n-input chegarasini o'chiramiz — faqat ko'k wrapper border ko'rinsin. */
-  .perm-search-box :deep(.n-input) {
-    background: transparent;
-    --n-border: none;
-    --n-border-hover: none;
-    --n-border-focus: none;
-    --n-box-shadow-focus: none;
   }
 </style>
