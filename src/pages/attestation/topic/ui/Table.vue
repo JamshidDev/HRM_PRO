@@ -1,5 +1,5 @@
 <script setup>
-  import { UIBadge, UITable, UITableNameCell, UITablePagination } from '@/components/index.js'
+  import { UITable, UITableNameCell, UITablePagination } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useTopicStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -24,6 +24,11 @@
     if (!accStore.checkAction(accStore.pn.examTopicsWrite)) return
     store.elementId = row.id
     store._delete()
+  }
+
+  const onToggleActive = (row, v) => {
+    if (!accStore.checkAction(accStore.pn.examTopicsWrite)) return
+    store._setActive(row, v)
   }
 
   const onRowClick = (row) => {
@@ -111,11 +116,14 @@
     </template>
 
     <template #cell-active="{ row }">
-      <UIBadge
-        :label="row.active ? $t('content.active') : $t('topicDetailsPage.exams.hidden')"
-        :type="row.active ? Utils.colorTypes.success : Utils.colorTypes.secondary"
-        :show-icon="false"
-      />
+      <div class="flex justify-center" @click.stop>
+        <n-switch
+          :value="row.active"
+          :loading="row.activeLoading"
+          :disabled="!row.active && !row.exams_count"
+          @update:value="(v) => onToggleActive(row, v)"
+        />
+      </div>
     </template>
 
     <template #footer>

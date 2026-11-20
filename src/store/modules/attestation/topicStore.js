@@ -118,6 +118,18 @@ export const useTopicStore = defineStore('topicStore', {
           this.saveLoading = false
         })
     },
+    // Jadvaldagi switch: ichida imtihon bo'lmasa backend rad etadi va qiymat qaytariladi.
+    _setActive(row, active) {
+      row.activeLoading = true
+      $ApiService.topicService
+        ._setActive({ id: row.id, active })
+        .then(() => {
+          row.active = active
+        })
+        .finally(() => {
+          row.activeLoading = false
+        })
+    },
     _delete() {
       this.deleteLoading = true
       $ApiService.topicService

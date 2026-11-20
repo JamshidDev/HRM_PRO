@@ -29,7 +29,13 @@ const _audienceWorkers = async (payload) => {
   return await axios.get(`/v1/exam/topic-audience/workers`, { params: payload.params })
 }
 
+// Faqat holat (faol / ko'rinmas).
+const _setActive = async (payload) => {
+  return await axios.patch(`/v1/exam/topics/${payload.id}/active`, { active: payload.active })
+}
+
 export default {
+  _setActive,
   _audiencePositions,
   _audienceWorkers,
   _index,
