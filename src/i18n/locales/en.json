@@ -5760,6 +5760,7 @@
       "onlineDevices": "Online devices",
       "offlineDevices": "Offline devices",
       "graphAnalytic": "Schedule analysis",
+      "withoutScheduleInfo": "Active workers without a schedule this month (share of active)",
       "mobileFace": "Passed via mobile device",
       "startTime": "Shift time",
       "firstComeToWork": "Arrival time",
@@ -5823,6 +5824,17 @@
       "all": "Show all",
       "empty": "No privileged workers"
     },
+    "tabs": {
+      "report": "Report",
+      "attendance": "Attendance"
+    },
+    "month": {
+      "title": "Attendance for {month} (by turnstile and mobile events)",
+      "came": "Came",
+      "absent": "Absent",
+      "total": "Total",
+      "pick": "Select month"
+    },
     "attendanceReason": {
       "sick_leave": "Sick leave",
       "business_trip": "Business trip",
@@ -5831,6 +5843,7 @@
       "vacation": "Vacation",
       "day_off": "Day off",
       "no_schedule": "No work schedule",
+      "no_event": "No turnstile events",
       "not_started": "Shift not started yet",
       "after_night_shift": "After night shift"
     }

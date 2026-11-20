@@ -5806,6 +5806,7 @@
       "onlineDevices": "Onlayn qurilmalar soni",
       "offlineDevices": "Oflayn qurilmalar soni",
       "graphAnalytic": "Grafik bo'yicha tahlil",
+      "withoutScheduleInfo": "Joriy oyda grafikka kiritilmagan faol xodimlar (faol xodimlarga nisbatan)",
       "mobileFace": "Mobil qurilmadan o'tganlar",
       "startTime": "Smena vaqti",
       "firstComeToWork": "Ishga kelgan vaqt",
@@ -5869,6 +5870,17 @@
       "all": "Barchasini ko'rish",
       "empty": "Imtiyozli xodim yo'q"
     },
+    "tabs": {
+      "report": "Hisobot",
+      "attendance": "Davomat"
+    },
+    "month": {
+      "title": "{month} oyi davomati (turniket va mobil hodisalari bo'yicha)",
+      "came": "Keldi",
+      "absent": "Kelmadi",
+      "total": "Jami",
+      "pick": "Oyni tanlang"
+    },
     "attendanceReason": {
       "sick_leave": "Kasallik varaqasi",
       "business_trip": "Xizmat safari",
@@ -5877,6 +5889,7 @@
       "vacation": "Ta'til",
       "day_off": "Dam olish kuni",
       "no_schedule": "Ish grafigi yo'q",
+      "no_event": "Turniket hodisasi yo'q",
       "not_started": "Ish vaqti boshlanmagan",
       "after_night_shift": "Tungi smenadan keyin"
     }

@@ -5806,6 +5806,7 @@
       "onlineDevices": "Onlayn úskeneler sanı",
       "offlineDevices": "Oflayn úskeneler sanı",
       "graphAnalytic": "Grafik boyınsha analiz",
+      "withoutScheduleInfo": "Usı ayda grafikke kirgizilmegen aktiv xızmetkerler (aktivlerge salıstırǵanda)",
       "mobileFace": "Mobil úskeneden ótkenler",
       "startTime": "Smena waqtı",
       "firstComeToWork": "Jumısqa kelgen waqıt",
@@ -5869,6 +5870,17 @@
       "all": "Barlıǵın kóriw",
       "empty": "Imtiyazlı xızmetker joq"
     },
+    "tabs": {
+      "report": "Esabat",
+      "attendance": "Qatnas"
+    },
+    "month": {
+      "title": "{month} ayı qatnası (turniket hám mobil hádiyseleri boyınsha)",
+      "came": "Keldi",
+      "absent": "Kelmedi",
+      "total": "Jámi",
+      "pick": "Aydı tańlań"
+    },
     "attendanceReason": {
       "sick_leave": "Kesellik paraǵı",
       "business_trip": "Xızmet saparı",
@@ -5877,6 +5889,7 @@
       "vacation": "Miynet dem alısı",
       "day_off": "Dem alıw kúni",
       "no_schedule": "Jumıs grafigi joq",
+      "no_event": "Turniket hádiysesi joq",
       "not_started": "Jumıs waqtı baslanbaǵan",
       "after_night_shift": "Túngi smenadan keyin"
     }
