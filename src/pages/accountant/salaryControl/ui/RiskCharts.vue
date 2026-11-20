@@ -1,8 +1,9 @@
 <script setup>
   // «14 ta risk» tab — RiskMap'dan keyingi tahliliy grafiklar + ta'sirlangan
-  // xodimlar reestri. Manba: store.emps (grafiklar) + store.risks (reestr).
+  // xodimlar reestri. Manba: store.empsMonth (grafiklar) + store.risks (reestr).
   // Maket: oylik_nazorat_dashboard_5.html (c14a/c14b/c14c/t14) — echarts ko'chirmasi.
-  import { ref, computed } from 'vue'
+  import { ref, computed, watch } from 'vue'
+  import { useChartDefer } from '../useChartDefer.js'
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore, useAppStore } from '@/store/modules/index.js'
   import { money, money2, mln, chartTheme, tokenColor, normText } from '../helpers.js'
@@ -16,6 +17,10 @@
   const store = useSalaryControlStore()
   const appStore = useAppStore()
 
+  // DAS-16729 perf: grafiklarni ketma-ket (progressive) render — UI qotmaydi.
+  const { defer, reset } = useChartDefer()
+  watch(() => store.dashboardLoading, (l) => { if (!l) reset() }, { immediate: true })
+
   // —— Yordamchi: matnni qisqartirish ————————————————————————————————————
   const trunc = (s, n = 22) => {
     const str = String(s || '')
@@ -27,7 +32,7 @@
   // ————————————————————————————————————————————————————————————————————
   const spreadGroups = computed(() => {
     const byLav = new Map()
-    for (const e of store.emps ?? []) {
+    for (const e of store.empsMonth ?? []) {
       const lav = e.lav || '—'
       const ok = Math.round(Number(e.ok) || 0)
       if (!ok) continue
@@ -104,7 +109,7 @@
   const shareOption = computed(() => {
     appStore.isDark
     const th = chartTheme()
-    const list = (store.emps ?? [])
+    const list = (store.empsMonth ?? [])
       .map((e) => {
         const tot = Number(e.tot) || 0
         const ded = totalWithheld(e)
@@ -129,9 +134,11 @@
       },
       xAxis: {
         type: 'value',
+        min: 0,
         max: 100,
-        splitNumber: 5,
-        axisLabel: { color: th.text, formatter: '{value}%', hideOverlap: true },
+        // DAS-16735: foiz o'qi 0/20/40/60/80/100 — qat'iy qadam.
+        interval: 20,
+        axisLabel: { color: th.text, formatter: '{value}%' },
         splitLine: { lineStyle: { color: th.line } }
       },
       yAxis: {
@@ -174,7 +181,7 @@
     const th = chartTheme()
     const norm = Number(store.dashNorm) || 0
     const hist = {}
-    for (const e of store.emps ?? []) {
+    for (const e of store.empsMonth ?? []) {
       const h = Math.round(Number(e.t) || 0)
       if (h <= 0) continue
       hist[h] = (hist[h] || 0) + 1
@@ -277,6 +284,13 @@
         (!query || r.fio.toLowerCase().includes(query))
     )
   })
+
+  // DAS-16735: c14c izohi davr + kalendar me'yoriga (norm) bog'liq (CHART.c14c.sub — funksiya).
+  const c14cInfo = computed(() =>
+    typeof CHART.c14c.sub === 'function'
+      ? CHART.c14c.sub(store.params.year, store.params.month, store.dashNorm)
+      : CHART.c14c.sub
+  )
 </script>
 
 <template>
@@ -290,22 +304,22 @@
     <!-- c14a + c14b -->
     <div class="sc-grid2">
       <Card :title="CHART.c14a.title" :sub="CHART.c14a.sub" :info="CHART.c14a.sub">
-        <EChart :option="spreadOption" height="320px" />
+        <EChart v-if="defer(1)" :option="spreadOption" height="320px" />
         <p v-if="!spreadGroups.length" class="sc-empty">{{ $t('salaryControl.common.empty') }}</p>
       </Card>
 
       <Card :title="CHART.c14b.title" :sub="CHART.c14b.sub" :info="CHART.c14b.sub">
-        <EChart :option="shareOption" height="320px" />
+        <EChart v-if="defer(2)" :option="shareOption" height="320px" />
       </Card>
     </div>
 
     <!-- c14c -->
     <Card
       :title="CHART.c14c.title"
-      :sub="store.dashNorm ? $t('salaryControl.common.norm', { norm: store.dashNorm }) : CHART.c14c.sub"
-      :info="CHART.c14c.sub"
+      :sub="store.dashNorm ? $t('salaryControl.common.norm', { norm: store.dashNorm }) : c14cInfo"
+      :info="c14cInfo"
     >
-      <EChart :option="hoursOption" height="300px" />
+      <EChart v-if="defer(3)" :option="hoursOption" height="300px" />
     </Card>
 
     <!-- t14 -->
@@ -333,7 +347,8 @@
         <table class="sc-tbl">
           <thead>
             <tr>
-              <th>{{ $t('salaryControl.common.count') }}</th>
+              <!-- DAS-16735: ustun risk RAQAMINI ko'rsatadi, "Soni" emas → "Risk №". -->
+              <th>{{ $t('salaryControl.common.riskNo') }}</th>
               <th>{{ $t('salaryControl.risk.table.fio') }}</th>
               <th>Risk nomi</th>
               <th>{{ $t('salaryControl.risk.table.detail') }}</th>
@@ -349,7 +364,9 @@
               </td>
               <td>{{ r.riskTitle }}</td>
               <td class="sc-muted">{{ r.detail }}</td>
-              <td class="num">{{ r.summa != null ? money2(r.summa) : '—' }}</td>
+              <!-- DAS-16735: faqat sanoqqa asoslangan risklar (masalan Risk 9) — pul
+                   summasi yo'q, "0.00" o'rniga "—" ko'rsatiladi. -->
+              <td class="num">{{ r.summa ? money2(r.summa) : '—' }}</td>
             </tr>
             <tr v-if="!rows.length">
               <td colspan="5" class="sc-empty">{{ $t('salaryControl.common.empty') }}</td>
@@ -367,13 +384,9 @@
   }
   .sc-grid2 {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    /* DAS-16735: kontentga qarab stack (MacBook kabi tor kontent xavfsiz). */
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
     gap: 16px;
-  }
-  @media (max-width: 900px) {
-    .sc-grid2 {
-      grid-template-columns: 1fr;
-    }
   }
   .sc-filters {
     display: flex;

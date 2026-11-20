@@ -4,7 +4,15 @@
   import { ref, computed, h } from 'vue'
   import i18n from '@/i18n/index.js'
   import { useAppStore, useSalaryControlStore } from '@/store/modules/index.js'
-  import { money, money2, mln, chartTheme, tokenColor } from '../helpers.js'
+  import {
+    money,
+    money2,
+    mln,
+    chartTheme,
+    tokenColor,
+    riskFindings,
+    suspiciousByCat
+  } from '../helpers.js'
   import { CHART, SECTION } from '../explain.js'
   import Card from './Card.vue'
   import EChart from './EChart.vue'
@@ -35,7 +43,9 @@
   // (eng katta olinadi). JSHSHIR (f.j) bo'yicha aniq guruhlash; yo'q bo'lsa F.I.O.+lavozim.
   const grouped = computed(() => {
     const map = new Map()
-    for (const f of store.scFindings) {
+    // DAS-16732: jadval "Belgilangan holatlar" KPI bilan mos — info:true (ma'lumot)
+    // holatlar chiqariladi (riskFindings).
+    for (const f of riskFindings(store.scFindings)) {
       const key = f.j || `${f.fio || ''}||${f.lav || ''}`
       let g = map.get(key)
       if (!g) {
@@ -99,7 +109,9 @@
       title: t('salaryControl.common.sum'),
       key: 'summa',
       align: 'right',
-      width: 150,
+      width: 160,
+      // DAS-16735: Summa ustuni teglar ostida ko'rinmay qolmasin — o'ngga mahkamlanadi.
+      fixed: 'right',
       className: 'sc-num',
       render: (r) => money2(r.summa)
     }
@@ -111,9 +123,12 @@
   const catCountOption = computed(() => {
     appStore.isDark
     const th = chartTheme()
-    const cats = [...new Set(store.scFindings.map((f) => f.cat))]
+    // DAS-16732: info:true (ma'lumot) holatlar belgilangan holatlar sonidan chiqariladi —
+    // KPI "Belgilangan holatlar" bilan bir xil manba (riskFindings).
+    const risks = riskFindings(store.scFindings)
+    const cats = [...new Set(risks.map((f) => f.cat))]
     const byCat = cats.map((c) => {
-      const items = store.scFindings.filter((f) => f.cat === c)
+      const items = risks.filter((f) => f.cat === c)
       return { c, n: SEV.map((s) => items.filter((f) => f.sev === s).length), total: items.length }
     })
     byCat.sort((a, b) => b.total - a.total)
@@ -121,7 +136,14 @@
       grid: { top: 12, left: 4, right: 24, bottom: 4, containLabel: true },
       tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
       legend: { show: false },
-      xAxis: { type: 'value', axisLabel: { color: th.text }, splitLine: { lineStyle: { color: th.line } } },
+      // DAS-16735: X o'q sonlari yopishib ketmasin — kam tik + ixcham format.
+      xAxis: {
+        type: 'value',
+        minInterval: 1,
+        splitNumber: 4,
+        axisLabel: { color: th.text, hideOverlap: true },
+        splitLine: { lineStyle: { color: th.line } }
+      },
       yAxis: {
         type: 'category',
         inverse: true,
@@ -144,11 +166,8 @@
   const catSumOption = computed(() => {
     appStore.isDark
     const th = chartTheme()
-    const map = {}
-    for (const f of store.scFindings) map[f.cat] = (map[f.cat] || 0) + (f.summa || 0)
-    const arr = Object.entries(map)
-      .map(([c, v]) => ({ c, v: mln(v) }))
-      .sort((a, b) => b.v - a.v)
+    // DAS-16732: Shubhali summa KPI bilan AYNAN bir manba (suspiciousByCat — info emas).
+    const arr = suspiciousByCat(store.scFindings).map((r) => ({ c: r.c, v: mln(r.v) }))
     return {
       grid: { top: 12, left: 4, right: 24, bottom: 4, containLabel: true },
       tooltip: {
@@ -156,7 +175,17 @@
         axisPointer: { type: 'shadow' },
         valueFormatter: (v) => v.toFixed(1) + ' mln'
       },
-      xAxis: { type: 'value', axisLabel: { color: th.text }, splitLine: { lineStyle: { color: th.line } } },
+      // DAS-16735: X o'q (mln) sonlari yopishmasin — kam tik + ixcham «… mln» format.
+      xAxis: {
+        type: 'value',
+        splitNumber: 4,
+        axisLabel: {
+          color: th.text,
+          hideOverlap: true,
+          formatter: (v) => (Math.abs(v) >= 100 ? Math.round(v) : v.toFixed(0)) + ' mln'
+        },
+        splitLine: { lineStyle: { color: th.line } }
+      },
       yAxis: {
         type: 'category',
         inverse: true,
@@ -234,7 +263,7 @@
         :data="rows"
         :pagination="pagination"
         :bordered="false"
-        :scroll-x="790"
+        :scroll-x="800"
         size="small"
       />
     </Card>
@@ -244,13 +273,10 @@
 <style scoped>
   .sc-grid2 {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    /* DAS-16735: kontent kengligiga qarab stack (window/sidebar'ga bog'liq emas) —
+       MacBook kabi tor kontentda grafiklar siqilmaydi, o'zi bir ustunga tushadi. */
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
     gap: 16px;
-  }
-  @media (max-width: 900px) {
-    .sc-grid2 {
-      grid-template-columns: 1fr;
-    }
   }
   .sc-legend {
     display: flex;

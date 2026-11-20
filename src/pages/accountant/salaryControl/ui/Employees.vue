@@ -14,13 +14,21 @@
   const store = useSalaryControlStore()
 
   // Ustun sarlavhasi + (i) izoh (COLUMN dan) — har ustun "qanday hisoblangani" tushunarli.
+  // DAS-16735: COLUMN qiymati funksiya bo'lsa (davrga bog'liq, masalan `t`) — tanlangan
+  // davr va kalendar me'yori (norm) bilan yechamiz.
+  const colInfo = (key) => {
+    const c = COLUMN[key]
+    return typeof c === 'function'
+      ? c(store.params.year, store.params.month, store.dashNorm)
+      : c
+  }
   const th = (label, key) =>
     COLUMN[key]
       ? () =>
           h(
             'span',
             { style: 'display:inline-flex;align-items:center;gap:4px' },
-            [label, h(InfoHint, { text: COLUMN[key] })]
+            [label, h(InfoHint, { text: colInfo(key) })]
           )
       : label
 

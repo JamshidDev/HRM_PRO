@@ -26,6 +26,41 @@ export const formatHours = (v) => {
 export const formatPercent = (v, digits = 0) => `${(Number(v) || 0).toFixed(digits)}%`
 // Mln so'mda, 1 kasr xona (grafik o'qlari/tooltip uchun).
 export const mln = (v) => (Number(v) || 0) / 1e6
+
+// —— Davr nomi (DAS-16735) ——————————————————————————————————————————————
+// Tanlangan davr (store.params.year/month) → o'qiladigan oy nomi. Grafik/bo'lim
+// sub-matnlarida qotirilgan «avgust» o'rniga ishlatiladi.
+export const monthName = (month) => Utils.getMonthNameById(Number(month)) || ''
+// «Avgust 2026» ko'rinishi (bosh harf katta).
+export const periodName = (year, month) => {
+  const m = monthName(month)
+  const cap = m ? m.charAt(0).toUpperCase() + m.slice(1) : ''
+  return [cap, year].filter(Boolean).join(' ')
+}
+// «yanvar–avgust 2026» (yil boshidan tanlangan oygacha) — ytd grafiklari uchun.
+export const ytdPeriodName = (year, month) => {
+  const from = monthName(1)
+  const to = monthName(month)
+  const range = from && to ? `${from}–${to}` : to || ''
+  return [range, year].filter(Boolean).join(' ')
+}
+
+// —— Findings (holatlar) agregatsiyasi — KPI va grafik BIR xil manbadan (DAS-16732) ——
+// info:true — MA'LUMOT belgisi (xavf emas): shubhali summa va belgilangan holatlar
+// KPI/grafigidan CHIQARILADI. Bitta joyda hisoblanadi → KPI va jadval/grafik mos keladi.
+export const isRiskFinding = (f) => !f?.info
+export const riskFindings = (F = []) => F.filter(isRiskFinding)
+// Shubhali summa — barcha xavf (info emas) holatlar summasi (modul bo'yicha).
+export const suspiciousSum = (F = []) =>
+  riskFindings(F).reduce((a, f) => a + Math.abs(Number(f.summa) || 0), 0)
+// Muammo turi bo'yicha shubhali summa [{c, v(mln)}] — Overview grafigi va KPI uchun.
+export const suspiciousByCat = (F = []) => {
+  const map = {}
+  for (const f of riskFindings(F)) map[f.cat] = (map[f.cat] || 0) + Math.abs(Number(f.summa) || 0)
+  return Object.entries(map)
+    .map(([c, v]) => ({ c, v }))
+    .sort((a, b) => b.v - a.v)
+}
 export const mlnText = (v) => {
   const m = mln(v)
   return (Math.abs(m) >= 100 ? Math.round(m) : m.toFixed(1)) + ' mln'

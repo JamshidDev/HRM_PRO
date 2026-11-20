@@ -44,10 +44,12 @@ function ensureWorker() {
 
 function computeSync(payload) {
   const list = payload.emps || []
+  // GIBRID: people (pul) KUMULYATIV emps'dan; findings/risks (audit) OYLIK empsAudit'dan.
+  const audit = payload.empsAudit || list
   return {
     people: buildPeople(list),
-    findings: computeFindings(list, { fmt: moneyFmt }),
-    risks: computeRisks(list, payload.kpi || {}, {
+    findings: computeFindings(audit, { fmt: moneyFmt }),
+    risks: computeRisks(audit, payload.kpi || {}, {
       year: payload.year,
       month: payload.month,
       fmt: moneyFmt

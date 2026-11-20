@@ -4,6 +4,7 @@
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore } from '@/store/modules/index.js'
   import { money } from '../helpers.js'
+  import { mhtfFot } from '../engine.js'
   import { SECTION } from '../explain.js'
   import Card from './Card.vue'
   import ScSkeleton from './ScSkeleton.vue'
@@ -12,6 +13,27 @@
   const store = useSalaryControlStore()
 
   const rc = computed(() => store.rc || {})
+
+  // DAS-16732: vedomost tomoni «Umumiy» tab bilan AYNAN bir manbadan (store.people +
+  // mhtfFot) hisoblanadi — backend `rc.fot` (= jami hisoblangan) MHTF deb noto'g'ri
+  // ko'rsatilardi, `rc.non` esa doim 0 edi. Endi:
+  //   MHTF = Σ mhtfFot(p)                    — Umumiy MHTF bilan mos
+  //   MHTFga kirmaydigan = jami − MHTF       — bo'sh qolmaydi
+  //   Daromad solig'i + INPS = Σ tax + Σ inps — INPS (883) ham qo'shiladi
+  const ved = computed(() => {
+    const people = store.people || []
+    const kpi = store.dashKpi || {}
+    const tot = Number(kpi.tot) || people.reduce((a, p) => a + (Number(p.tot) || 0), 0)
+    const fot = people.reduce((a, p) => a + mhtfFot(p), 0)
+    const tax = people.reduce((a, p) => a + (Number(p.tax) || 0), 0)
+    const inps = people.reduce((a, p) => a + (Number(p.inps) || 0), 0)
+    return {
+      fot,
+      non: Math.max(0, tot - fot),
+      tax: tax + inps, // Daromad solig'i (882−883) + INPS (883)
+      inps
+    }
+  })
 
   // Tashqi hisobotlar (NDFL-4/5, INPS) tomoni ulanganmi — hammasi 0 bo'lsa, solishtiruv
   // mumkin emas (farq = butun vedomost bo'lib SOXTA ⚠ chiqardi). Shu holda faqat
@@ -25,12 +47,13 @@
   // benign=true — farq bo'lsa ham xato deb belgilanmaydi (me'yorda).
   const rows = computed(() => {
     const r = rc.value
+    const v = ved.value
     const hasRep = hasReportSide.value
     return [
-      { label: t('salaryControl.reports.rowFot'), ved: r.fot || 0, rep: r.n4 || 0, src: t('salaryControl.reports.withN4') },
-      { label: t('salaryControl.reports.rowNon'), ved: r.non || 0, rep: r.n5 || 0, src: t('salaryControl.reports.withN5'), benign: true },
-      { label: t('salaryControl.reports.rowTax'), ved: r.tax || 0, rep: r.ntax || 0, src: t('salaryControl.reports.withN4') },
-      { label: t('salaryControl.reports.rowInps'), ved: r.inps || 0, rep: r.ip || 0, src: t('salaryControl.reports.withInps') }
+      { label: t('salaryControl.reports.rowFot'), ved: v.fot || 0, rep: r.n4 || 0, src: t('salaryControl.reports.withN4') },
+      { label: t('salaryControl.reports.rowNon'), ved: v.non || 0, rep: r.n5 || 0, src: t('salaryControl.reports.withN5'), benign: true },
+      { label: t('salaryControl.reports.rowTax'), ved: v.tax || 0, rep: r.ntax || 0, src: t('salaryControl.reports.withN4') },
+      { label: t('salaryControl.reports.rowInps'), ved: v.inps || 0, rep: r.ip || 0, src: t('salaryControl.reports.withInps') }
     ].map((x) => {
       const diff = x.ved - x.rep
       // Tashqi tomon yo'q bo'lsa farq belgilanmaydi (solishtiradigan narsa yo'q).

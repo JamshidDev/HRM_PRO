@@ -6,7 +6,7 @@
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
-  import { mlnText } from '../helpers.js'
+  import { mlnText, riskFindings, suspiciousSum } from '../helpers.js'
   import { mhtfFot } from '../engine.js'
   import { KPI, KPI_BASIC } from '../explain.js'
   import ScSkeleton from './ScSkeleton.vue'
@@ -22,7 +22,10 @@
   // —— Boy 6 KPI (maket `// KPIs`, satr 234-249) ——————————————————————————
   const richCards = computed(() => {
     const people = store.people
-    const F = store.scFindings
+    // DAS-16732: KPI va Overview grafik/jadval BIR manbadan — info:true (ma'lumot)
+    // holatlar shubhali summa va belgilangan holatlardan CHIQARILADI (riskFindings).
+    const Fall = store.scFindings
+    const F = riskFindings(Fall)
     const kpi = store.dashKpi || {}
     const tots = people.filter((p) => (p.tot || 0) > 0).map((p) => p.tot).sort((a, b) => a - b)
     const n = tots.length
@@ -34,16 +37,17 @@
     const maxTot = n ? tots[n - 1] : 0
     const nW = people.filter((p) => (p.tot || 0) > 0 && (p.b004 || 0) > 0 && p.ok && p.b004 >= p.ok * 0.99).length
     const sevc = (s) => F.filter((f) => f.sev === s).length
-    // Shubhali summa — takroriy/soliq holatlari hisobga olinmaydi (summa dublikatsiyasi).
-    const hiSum = F.filter((f) => f.sev === 'Yuqori' && !/qator|INPS|Daromad solig/.test(f.cat)).reduce((a, f) => a + Math.abs(f.summa || 0), 0)
-    const hiPeople = new Set(F.filter((f) => f.sev === 'Yuqori').map((f) => f.fio)).size
+    // Shubhali summa — barcha xavf (info emas) holatlar summasi; Overview "Shubhali
+    // summa" grafigi bilan AYNAN bir xil (suspiciousSum helperi).
+    const hiSum = suspiciousSum(Fall)
+    const hiPeople = new Set(F.map((f) => f.fio)).size
 
     return [
       { key: 'tot', tint: 'blue', icon: 'money', label: KPI.tot.label, info: KPI.tot.info, value: mlnText(tot), rows: [['MHTF', mlnText(fot)], ['MHTFdan tashqari', mlnText(tot - fot)]] },
       { key: 'n', tint: 'indigo', icon: 'users', label: KPI.n.label, info: KPI.n.info, value: String(n), rows: [["To'liq oy ishlaganlar", String(nW)], ["Qolganlar (ta'til, qisman)", String(n - nW)]] },
       { key: 'avg', tint: 'green', icon: 'avg', label: KPI.avg.label, info: KPI.avg.info, value: mlnText(n ? tot / n : 0), rows: [['Median', mlnText(med)], ['Eng yuqori', mlnText(maxTot)]] },
       { key: 'card', tint: 'amber', icon: 'card', label: KPI.card.label, info: KPI.card.info, value: mlnText(card), rows: [["Daromad solig'i", mlnText(tax)], ['Boshqa ushlanmalar', mlnText(tot - card - tax)]] },
-      { key: 'susp', tint: 'red', icon: 'warn', label: KPI.suspicious.label, info: KPI.suspicious.info, value: mlnText(hiSum), rows: [['Yuqori xavfli holatlar', String(sevc('Yuqori'))], ['Xodimlar soni', String(hiPeople)]] },
+      { key: 'susp', tint: 'red', icon: 'warn', label: KPI.suspicious.label, info: KPI.suspicious.info, value: mlnText(hiSum), rows: [['Belgilangan holatlar', String(F.length)], ['Xodimlar soni', String(hiPeople)]] },
       { key: 'flag', tint: 'orange', icon: 'flag', label: KPI.flagged.label, info: KPI.flagged.info, value: String(F.length), rows: [["Yuqori / O'rta", `${sevc('Yuqori')} / ${sevc('O‘rta')}`], ['Past', String(sevc('Past'))]] }
     ]
   })
