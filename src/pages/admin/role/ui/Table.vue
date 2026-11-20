@@ -192,3 +192,10 @@
     </template>
   </UITable>
 </template>
+
+<style scoped>
+  /* Guard/Kesim/Scope badge ikonkalari kattaroq (UIBadge standarti 12px). */
+  :deep(.ui--badge-icon) {
+    font-size: 16px !important;
+  }
+</style>
