@@ -5806,13 +5806,13 @@
       "onlineDevices": "Onlayn úskeneler sanı",
       "offlineDevices": "Oflayn úskeneler sanı",
       "graphAnalytic": "Grafik boyınsha analiz",
-      "mobileFace": "Mobil úskene",
+      "mobileFace": "Mobil úskeneden ótkenler",
       "startTime": "Smena waqtı",
       "firstComeToWork": "Jumısqa kelgen waqıt",
       "lastGoOut": "Jumıstan shıǵıw waqtı",
       "delay": "Keshigiw",
       "earlyTimeFromWorkTime": "Jumıs waqtınan aldın ketiw",
-      "turnstileFace": "Turniket úskenesi",
+      "turnstileFace": "Turniket úskenesinen ótkenler",
       "allWorkerOfFace": "Ulıwma xızmetkerler sanı",
       "turnstileAnalytic": "Face ID analizi",
       "vacations": "Miynet dem alısındaǵı xızmetkerler",
@@ -5843,7 +5843,31 @@
       "excused": "Sebepli",
       "firstEvent": "Birinshi hádiyse",
       "lastEvent": "Aqırǵı hádiyse",
-      "reasons": "Belgiler"
+      "direction": "Hádiyse túri",
+      "direction_in": "Kiriw",
+      "direction_out": "Shığıw",
+      "reasons": "Sebep",
+      "vacationInfo": "Tastıyıqlanǵan buyrıq penen dem alıstaǵı xızmetkerler",
+      "day_offInfo": "Grafik boyınsha usı kúni dem alıs kúni",
+      "excusedInfo": "Xızmet saparı, keselik, turniketten azat hám basqa sebepler"
+    },
+    "plan": {
+      "title": "Reje boyınsha qatnas",
+      "expected": "Keliwi kerek",
+      "came": "Kelgenler",
+      "absent": "Kelmegenler",
+      "excused": "Sebepli",
+      "expectedInfo": "Grafik boyınsha usı kúni jumıs kúni bolǵan xızmetkerler",
+      "cameInfo": "Turniket yamasa mobil úskene arqalı ótkenler",
+      "absentInfo": "Jumıs kúni bolsa da turniket hám mobil hádiysesi joq",
+      "excusedInfo": "Dem alıs, xızmet saparı, keselik yamasa basqa ruqsat penen"
+    },
+    "privilegeCard": {
+      "title": "Turniket imtiyazı berilgen xızmetkerler",
+      "arrive": "Keliw",
+      "leave": "Ketiw",
+      "all": "Barlıǵın kóriw",
+      "empty": "Imtiyazlı xızmetker joq"
     },
     "attendanceReason": {
       "sick_leave": "Kesellik paraǵı",

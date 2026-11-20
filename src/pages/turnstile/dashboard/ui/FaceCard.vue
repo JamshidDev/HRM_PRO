@@ -16,18 +16,24 @@
   const turnstileCount = computed(() => store.attendance?.came_turnstile || 0)
   const mobileCount = computed(() => store.attendance?.came_mobile || 0)
   const totalCount = computed(() => turnstileCount.value + mobileCount.value)
+  // Har qurilma turining umumiy kelganlardagi ulushi (%).
+  const share = (v) => (totalCount.value ? Math.round((v / totalCount.value) * 100) : 0)
 
   const cells = computed(() => [
     {
       previewType: 'att_came_turnstile',
       label: 'turnStileDashboard.cards.turnstileFace',
       count: turnstileCount.value,
+      percent: share(turnstileCount.value),
+      barClass: 'bg-primary',
       icon: markRaw(FaceTurnstileIcon)
     },
     {
       previewType: 'att_came_mobile',
       label: 'turnStileDashboard.cards.mobileFace',
       count: mobileCount.value,
+      percent: share(mobileCount.value),
+      barClass: 'bg-fig-orange',
       icon: markRaw(FaceMobileIcon)
     }
   ])
@@ -36,7 +42,9 @@
 </script>
 
 <template>
-  <div class="bg-surface-section shadow-card rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col">
+  <div
+    class="bg-surface-section shadow-card rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col"
+  >
     <FaceCardSkeleton v-if="store.mainChartLoading" />
 
     <template v-else>
@@ -58,6 +66,20 @@
           <p class="text-[12px] text-fig-text-tertiary text-center">
             {{ $t('turnStileDashboard.cards.allWorkerOfFace') }}
           </p>
+        </div>
+
+        <!-- turniket / mobil ulushi -->
+        <div class="px-3">
+          <div class="h-2 w-full rounded-full bg-fig-neutral-300 overflow-hidden flex gap-0.5">
+            <div
+              v-for="(cell, idx) in cells"
+              v-show="cell.percent"
+              :key="idx"
+              class="h-full rounded-full transition-all duration-500"
+              :class="cell.barClass"
+              :style="{ width: cell.percent + '%' }"
+            ></div>
+          </div>
         </div>
 
         <div
@@ -90,6 +112,9 @@
                 class="font-grotesk font-semibold text-[20px] leading-[24px] text-fig-text-primary"
               >
                 <UICountUp :value="formatCount(cell.count)" />
+              </span>
+              <span class="text-[12px] leading-[16px] text-fig-text-tertiary whitespace-nowrap">
+                <UICountUp :value="cell.percent" />%
               </span>
             </div>
           </div>

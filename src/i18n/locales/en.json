@@ -5760,13 +5760,13 @@
       "onlineDevices": "Online devices",
       "offlineDevices": "Offline devices",
       "graphAnalytic": "Schedule analysis",
-      "mobileFace": "Mobile device",
+      "mobileFace": "Passed via mobile device",
       "startTime": "Shift time",
       "firstComeToWork": "Arrival time",
       "lastGoOut": "Departure time",
       "delay": "Delay",
       "earlyTimeFromWorkTime": "Early departure",
-      "turnstileFace": "Turnstile device",
+      "turnstileFace": "Passed via turnstile",
       "allWorkerOfFace": "Total employees",
       "turnstileAnalytic": "Face ID analysis",
       "vacations": "On vacation",
@@ -5797,7 +5797,31 @@
       "excused": "Excused",
       "firstEvent": "First event",
       "lastEvent": "Last event",
-      "reasons": "Flags"
+      "direction": "Direction",
+      "direction_in": "Entry",
+      "direction_out": "Exit",
+      "reasons": "Reason",
+      "vacationInfo": "Workers on leave by an approved order",
+      "day_offInfo": "Day off by schedule",
+      "excusedInfo": "Business trip, sick leave, turnstile exemption and other reasons"
+    },
+    "plan": {
+      "title": "Attendance by plan",
+      "expected": "Expected",
+      "came": "Came",
+      "absent": "Absent",
+      "excused": "Excused",
+      "expectedInfo": "Workers with a working day by schedule",
+      "cameInfo": "Passed via turnstile or mobile device",
+      "absentInfo": "Working day, but no turnstile or mobile events",
+      "excusedInfo": "Vacation, business trip, sick leave or other permission"
+    },
+    "privilegeCard": {
+      "title": "Workers with turnstile privilege",
+      "arrive": "Arrival",
+      "leave": "Leave",
+      "all": "Show all",
+      "empty": "No privileged workers"
     },
     "attendanceReason": {
       "sick_leave": "Sick leave",

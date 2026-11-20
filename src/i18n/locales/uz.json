@@ -5806,13 +5806,13 @@
       "onlineDevices": "Onlayn qurilmalar soni",
       "offlineDevices": "Oflayn qurilmalar soni",
       "graphAnalytic": "Grafik bo'yicha tahlil",
-      "mobileFace": "Mobil qurilma",
+      "mobileFace": "Mobil qurilmadan o'tganlar",
       "startTime": "Smena vaqti",
       "firstComeToWork": "Ishga kelgan vaqt",
       "lastGoOut": "Ishdan chiqish vaqti",
       "delay": "Kechikish",
       "earlyTimeFromWorkTime": "Ish vaqtidan oldin ketish",
-      "turnstileFace": "Turniket qurilmasi",
+      "turnstileFace": "Turniket qurilmasidan o'tganlar",
       "allWorkerOfFace": "Umumiy xodimlar soni",
       "turnstileAnalytic": "Face ID tahlili",
       "vacations": "Ta'tildagi xodimlar",
@@ -5843,7 +5843,31 @@
       "excused": "Sababli",
       "firstEvent": "Birinchi hodisa",
       "lastEvent": "Oxirgi hodisa",
-      "reasons": "Belgilar"
+      "direction": "Hodisa turi",
+      "direction_in": "Kirish",
+      "direction_out": "Chiqish",
+      "reasons": "Sabab",
+      "vacationInfo": "Tasdiqlangan buyruq bilan ta'tildagi xodimlar",
+      "day_offInfo": "Grafik bo'yicha shu kun dam olish kuni",
+      "excusedInfo": "Xizmat safari, kasallik, turniketdan ozod va boshqa sabablar"
+    },
+    "plan": {
+      "title": "Reja bo'yicha davomat",
+      "expected": "Kelishi kerak",
+      "came": "Kelganlar",
+      "absent": "Kelmaganlar",
+      "excused": "Sababli",
+      "expectedInfo": "Grafik bo'yicha shu kun ish kuni bo'lgan xodimlar",
+      "cameInfo": "Turniket yoki mobil qurilma orqali o'tganlar",
+      "absentInfo": "Ish kuni bo'lsa ham turniket va mobil hodisasi yo'q",
+      "excusedInfo": "Ta'til, xizmat safari, kasallik yoki boshqa ruxsat bilan"
+    },
+    "privilegeCard": {
+      "title": "Turniket imtiyozi berilgan xodimlar",
+      "arrive": "Kelish",
+      "leave": "Ketish",
+      "all": "Barchasini ko'rish",
+      "empty": "Imtiyozli xodim yo'q"
     },
     "attendanceReason": {
       "sick_leave": "Kasallik varaqasi",
