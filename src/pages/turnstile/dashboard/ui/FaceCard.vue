@@ -25,7 +25,7 @@
       label: 'turnStileDashboard.cards.turnstileFace',
       count: turnstileCount.value,
       percent: share(turnstileCount.value),
-      barClass: 'bg-primary',
+      barClass: 'bg-fig-brand',
       icon: markRaw(FaceTurnstileIcon)
     },
     {
@@ -33,7 +33,7 @@
       label: 'turnStileDashboard.cards.mobileFace',
       count: mobileCount.value,
       percent: share(mobileCount.value),
-      barClass: 'bg-fig-orange',
+      barClass: 'bg-fig-indigo',
       icon: markRaw(FaceMobileIcon)
     }
   ])

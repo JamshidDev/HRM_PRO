@@ -18,7 +18,7 @@
       label: 'turnStileDashboard.attendance.vacation',
       info: 'turnStileDashboard.attendance.vacationInfo',
       count: store.attendance?.vacation || 0,
-      color: '--fig-icon-purple'
+      color: '--fig-icon-brand'
     },
     {
       previewType: 'att_day_off',
@@ -67,7 +67,7 @@
             v-for="(cell, idx) in cells"
             :key="idx"
             :title="$t(cell.info)"
-            class="group border border-fig-neutral-300 rounded-xl px-2.5 py-2 cursor-pointer transition-colors duration-200 hover:bg-surface-ground-soft"
+            class="group border border-fig-br-secondary rounded-xl px-2.5 py-2 cursor-pointer transition-colors duration-200 hover:bg-surface-ground-soft"
             @click="emits('onPreview', cell.previewType)"
           >
             <div class="flex items-center gap-1.5">

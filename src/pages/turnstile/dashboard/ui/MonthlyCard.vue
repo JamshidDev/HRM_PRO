@@ -1,21 +1,28 @@
 <script setup>
-  import { Eye20Filled } from '@vicons/fluent'
+  import { CalendarCancel24Regular, ChevronRight20Regular } from '@vicons/fluent'
   import { Utils } from '@/utils/index.js'
   import { UICountUp } from '@/components/index.js'
   import CardHeader from './CardHeader.vue'
   import { MonthlyCardSkeleton } from './skeleton/index.js'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
   import HeadTableRowsIcon from '@/assets/icons/dashboard/head-table-rows.svg'
-  import GraphWatermark from '@/assets/icons/dashboard/graph-watermark.svg'
 
   const store = useTurnstileDashboardStore()
   const emits = defineEmits(['onPreview'])
 
   const formatted = computed(() => Utils.formatNumberToMoney(store.monthlyTotalWorkerCount) || '0')
+  // Faol xodimlar ichidagi ulushi (%).
+  const percent = computed(() => {
+    const total = store.attendance?.total || 0
+    return total ? Math.round(((store.monthlyTotalWorkerCount || 0) / total) * 100) : 0
+  })
+  const openList = () => emits('onPreview', 'notIncludedSchedule')
 </script>
 
 <template>
-  <div class="bg-surface-section shadow-card rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col">
+  <div
+    class="bg-surface-section shadow-card rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col"
+  >
     <MonthlyCardSkeleton v-if="store.monthlyLoading" />
 
     <template v-else>
@@ -25,46 +32,52 @@
         :title="$t('turnStileDashboard.cards.graphAnalytic')"
       />
 
-      <!-- markazdagi qiyshaytirilgan dekor + pastdan oq gradient niqob -->
-      <div class="flex-1 min-h-[160px] relative overflow-hidden p-2">
-        <div
-          aria-hidden="true"
-          class="absolute left-[30px] top-[11px] rotate-[17.7deg] rounded-[48.286px] bg-fig-red-100 opacity-60 p-[24.143px] flex items-center"
-        >
-          <span class="w-[120.714px] h-[120.714px] flex items-center justify-center">
-            <GraphWatermark />
+      <!-- jami son + ulush -->
+      <div class="flex-1 flex flex-col justify-center gap-3 px-3 py-3">
+        <div class="flex items-center gap-3">
+          <span
+            class="w-11 h-11 shrink-0 rounded-xl bg-fig-red-100 text-fig-text-red flex items-center justify-center"
+          >
+            <n-icon size="24"><CalendarCancel24Regular /></n-icon>
           </span>
-        </div>
-        <div
-          aria-hidden="true"
-          class="absolute left-0 bottom-0 w-full h-[125px] bg-gradient-to-b from-transparent to-surface-section"
-        ></div>
-      </div>
-
-      <div
-        @click="emits('onPreview', 'notIncludedSchedule')"
-        class="bg-fig-red-50 rounded-xl px-3 py-1.5 min-h-[78px] flex flex-col justify-center gap-2 cursor-pointer relative group"
-      >
-        <div
-          class="z-10 transition-all duration-500 scale-0 absolute left-1/2 top-1/2 -translate-1/2 text-fig-red opacity-0 group-hover:opacity-100 group-hover:scale-100"
-        >
-          <n-icon size="28">
-            <Eye20Filled />
-          </n-icon>
-        </div>
-
-        <div class="transition-all duration-300 group-hover:opacity-[0.2] pl-1">
-          <div class="flex items-center gap-1 flex-wrap">
-            <span class="text-[12px] leading-[16px] text-fig-text-secondary">
+          <div class="min-w-0">
+            <p class="text-[12px] leading-[16px] text-fig-text-secondary truncate">
               {{ $t('turnStileDashboard.compare.withoutSchedule') }}
-            </span>
-            <span
-              class="font-grotesk font-semibold text-[20px] leading-[30px] text-fig-text-primary"
+            </p>
+            <p
+              class="font-grotesk font-semibold text-[28px] leading-[34px] text-fig-text-primary whitespace-nowrap"
             >
               <UICountUp :value="formatted" />
-            </span>
+            </p>
           </div>
+          <span
+            class="ml-auto shrink-0 rounded-full bg-fig-chip-amber px-2 py-0.5 text-[12px] leading-[16px] font-semibold text-fig-chip-amber-text whitespace-nowrap"
+          >
+            <UICountUp :value="percent" />%
+          </span>
         </div>
+        <p class="text-[12px] leading-[16px] text-fig-text-tertiary">
+          {{ $t('turnStileDashboard.cards.withoutScheduleInfo') }}
+        </p>
+      </div>
+
+      <div class="bg-surface-ground-soft rounded-xl p-1.5 flex flex-col">
+        <button
+          type="button"
+          class="group w-full flex items-center gap-2.5 rounded-lg px-2 py-2 text-left cursor-pointer transition-colors duration-200 hover:bg-surface-section"
+          @click="openList"
+        >
+          <span class="w-2.5 h-2.5 rounded-full shrink-0 bg-fig-red"></span>
+          <span class="flex-1 min-w-0 text-[14px] leading-[20px] text-fig-text-secondary truncate">
+            {{ $t('turnStileDashboard.privilegeCard.all') }}
+          </span>
+          <n-icon
+            size="16"
+            class="shrink-0 text-fig-text-tertiary transition-transform duration-200 group-hover:translate-x-0.5"
+          >
+            <ChevronRight20Regular />
+          </n-icon>
+        </button>
       </div>
     </template>
   </div>

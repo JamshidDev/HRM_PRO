@@ -56,7 +56,7 @@
       <div
         v-for="(cell, idx) in cells"
         :key="idx"
-        class="group relative border border-fig-neutral-300 rounded-xl px-3 py-2.5 transition-colors duration-200"
+        class="group relative border border-fig-br-secondary rounded-xl px-3 py-2.5 transition-colors duration-200"
         :class="cell.previewType ? 'cursor-pointer hover:bg-surface-ground-soft' : ''"
         @click="cell.previewType && emits('onPreview', cell.previewType)"
       >

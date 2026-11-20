@@ -45,11 +45,11 @@
     <div class="flex items-center justify-between gap-2 pr-3">
       <CardHeader
         :icon="HeadChartUserIcon"
-        tint="teal"
+        tint="indigo"
         :title="$t('turnStileDashboard.privilegeCard.title')"
       />
       <span
-        class="shrink-0 rounded-full bg-fig-teal-100 px-2.5 py-0.5 font-grotesk font-semibold text-[14px] leading-[20px] text-fig-text-primary"
+        class="shrink-0 rounded-full bg-fig-chip-brand px-2.5 py-0.5 font-grotesk font-semibold text-[14px] leading-[20px] text-fig-chip-brand-text"
       >
         <UICountUp :value="formatCount(store.privilegeCount)" />
       </span>
@@ -80,13 +80,13 @@
             />
             <div class="shrink-0 flex flex-col items-end gap-1">
               <span
-                class="rounded-full bg-fig-green-100 px-2 py-0.5 text-[12px] leading-[16px] text-fig-text-green whitespace-nowrap"
+                class="rounded-full bg-fig-chip-green px-2 py-0.5 text-[12px] leading-[16px] text-fig-chip-green-text whitespace-nowrap"
               >
                 {{ $t('turnStileDashboard.privilegeCard.arrive') }}: +{{ row.start_minute || 0 }}
                 {{ $t('date.minute') }}
               </span>
               <span
-                class="rounded-full bg-fig-orange-100 px-2 py-0.5 text-[12px] leading-[16px] text-fig-text-primary whitespace-nowrap"
+                class="rounded-full bg-fig-chip-amber px-2 py-0.5 text-[12px] leading-[16px] text-fig-chip-amber-text whitespace-nowrap"
               >
                 {{ $t('turnStileDashboard.privilegeCard.leave') }}: −{{ row.end_minute || 0 }}
                 {{ $t('date.minute') }}
