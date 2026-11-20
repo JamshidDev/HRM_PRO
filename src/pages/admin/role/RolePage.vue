@@ -8,6 +8,7 @@
   import RoleSettings from './ui/RoleSettings.vue'
   import { isRoleSettingsValid } from './roleScope.js'
   import i18n from '@/i18n/index.js'
+  import { Search24Regular } from '@vicons/fluent'
   const { t } = i18n.global
 
   const store = useUserRoleStore()
@@ -21,7 +22,11 @@
   )
   const stepTabs = computed(() => [
     { id: 'settings', name: `1. ${t('userRole.form.stepSettings')}` },
-    { id: 'permissions', name: `2. ${t('userRole.form.stepPermissions')}`, disabled: !settingsValid.value }
+    {
+      id: 'permissions',
+      name: `2. ${t('userRole.form.stepPermissions')}`,
+      disabled: !settingsValid.value
+    }
   ])
   const step = computed({
     get: () => store.formTab,
@@ -31,16 +36,6 @@
     }
   })
   const onSettingsStep = computed(() => store.formTab === 'settings')
-
-  // Qisqa xulosa — 2-qadam tepasida.
-  const summary = computed(() => {
-    const p = store.payload
-    const parts = [p.key, p.name].filter(Boolean)
-    if (p.guard_name === 'integration') parts.push(t('userRole.form.typeIntegration'))
-    else if (p.scope_level)
-      parts.push(t(`userRole.form.level_${p.scope_level}`), t(`userRole.form.scope_${p.scope_type}`))
-    return parts
-  })
 
   // Yangi rol faqat 2-qadamda saqlanadi; tahrirda istalgan qadamdan saqlash mumkin.
   const showSave = computed(() => !onSettingsStep.value || !store.visibleType)
@@ -87,46 +82,18 @@
     />
     <!-- E-IMZO ustuni ruxsat aniqlangach qo'shiladi — jadval ustunlarini qayta hisoblasin. -->
     <Table :key="eimzoGate.available.value ? 'with-eimzo' : 'plain'" />
-    <UIModal v-model:visible="store.visible" :width="1200" height="85vh" card-class="relative">
-      <template #header>
-        <!-- Sarlavha + qadamlar + tugmalar -->
-        <div class="flex items-center gap-3 px-4 pt-3 pb-3 flex-wrap">
-          <span class="role-title">
-            {{ store.visibleType ? $t('userRole.createTitle') : $t('userRole.updateTitle') }}
-          </span>
-          <UISegmentTabs v-model="step" :tabs="stepTabs" size="sm" />
-          <div class="flex-1"></div>
-          <n-button @click="store.openVisible(false)" type="error" ghost class="w-[110px]">
-            {{ $t('content.cancel') }}
-          </n-button>
-          <n-button v-if="!onSettingsStep" class="w-[110px]" @click="step = 'settings'">
-            {{ $t('userRole.form.back') }}
-          </n-button>
-          <n-button
-            v-if="onSettingsStep"
-            :type="store.visibleType ? 'primary' : 'default'"
-            :disabled="!settingsValid"
-            class="w-[110px]"
-            @click="step = 'permissions'"
-          >
-            {{ $t('userRole.form.next') }}
-          </n-button>
-          <n-button
-            v-if="showSave"
-            @click="onSave"
-            :loading="store.saveLoading"
-            :disabled="!settingsValid"
-            type="primary"
-            class="w-[110px]"
-          >
-            {{ $t('content.save') }}
-          </n-button>
-        </div>
-        <div v-if="!onSettingsStep" class="role-summary">
-          <span v-for="(s, i) in summary" :key="i" class="role-chip" :class="{ mono: i === 0 }">{{ s }}</span>
-          <n-button text type="primary" size="small" @click="step = 'settings'">
-            {{ $t('userRole.form.summaryEdit') }}
-          </n-button>
+    <UIModal
+      v-model:visible="store.visible"
+      :width="1200"
+      :height="onSettingsStep ? null : '85vh'"
+      card-class="relative"
+      :title="store.visibleType ? $t('userRole.createTitle') : $t('userRole.updateTitle')"
+    >
+      <template #header-title>
+        {{ store.visibleType ? $t('userRole.createTitle') : $t('userRole.updateTitle') }}
+        <!-- Qadamlar header markazida (card relative). -->
+        <div class="absolute left-1/2 -translate-x-1/2 top-[6px] z-10 font-normal">
+          <UISegmentTabs v-model="step" :tabs="stepTabs" />
         </div>
       </template>
       <template #default>
@@ -136,34 +103,47 @@
           <createFrom ref="createFormRef" />
         </div>
       </template>
+      <template #footer>
+        <div class="flex items-center gap-2 px-4 py-2 border-t border-surface-line">
+          <n-input
+            v-if="!onSettingsStep"
+            v-model:value="store.query"
+            clearable
+            style="width: 320px; max-width: 40%"
+            :placeholder="$t('content.search')"
+          >
+            <template #prefix>
+              <n-icon :component="Search24Regular" />
+            </template>
+          </n-input>
+          <div class="flex-1"></div>
+          <n-button type="error" ghost class="w-[130px]" @click="store.openVisible(false)">
+            {{ $t('content.cancel') }}
+          </n-button>
+          <n-button v-if="!onSettingsStep" class="w-[130px]" @click="step = 'settings'">
+            {{ $t('userRole.form.back') }}
+          </n-button>
+          <n-button
+            v-if="onSettingsStep"
+            :type="store.visibleType ? 'primary' : 'default'"
+            :disabled="!settingsValid"
+            class="w-[130px]"
+            @click="step = 'permissions'"
+          >
+            {{ $t('userRole.form.next') }}
+          </n-button>
+          <n-button
+            v-if="showSave"
+            type="primary"
+            class="w-[130px]"
+            :loading="store.saveLoading"
+            :disabled="!settingsValid"
+            @click="onSave"
+          >
+            {{ $t('content.save') }}
+          </n-button>
+        </div>
+      </template>
     </UIModal>
   </UIPageContent>
 </template>
-
-<style scoped>
-  .role-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--textColor0);
-  }
-  .role-summary {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding: 8px 16px;
-    border-top: 1px solid var(--surface-line);
-    background: var(--surface-ground-soft);
-  }
-  .role-chip {
-    font-size: 12px;
-    font-weight: 500;
-    padding: 2px 10px;
-    border-radius: 999px;
-    background: var(--fig-chip-brand-bg);
-    color: var(--fig-chip-brand-text);
-  }
-  .role-chip.mono {
-    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-  }
-</style>
