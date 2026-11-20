@@ -3,7 +3,15 @@
   import { useAccountStore, useUserRoleStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import { Delete20Regular, Edit32Regular, RibbonStar24Filled } from '@vicons/fluent'
+  import {
+    Building16Regular,
+    Delete20Regular,
+    Edit32Regular,
+    Organization16Regular,
+    Person16Regular,
+    PlugConnected20Regular,
+    RibbonStar24Filled
+  } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
   import { useEimzoGate } from './useEimzoGate.js'
   import { fromApiRole } from '../roleScope.js'
@@ -75,9 +83,17 @@
 
   // Doira yorliqlari: kesim + tur; faqat Admin beradigan keng doira — qizil.
   const scopeOf = (row) => (row.guard_name === 'integration' ? null : fromApiRole(row))
-  // Scope rangi: Global — qizil, o'z korxonasi va quyi korxonalar — yashil, qolgani — ko'k.
-  const SCOPE_TAG = { all: 'error', subtree: 'success' }
-  const scopeTagType = (s) => SCOPE_TAG[s.scope_type] ?? 'info'
+  // Badge turlari (umumiy UIBadge ranglari).
+  const LEVEL_BADGE = {
+    organization: Utils.colorTypes.info,
+    department: Utils.colorTypes.warning
+  }
+  const SCOPE_BADGE = {
+    all: Utils.colorTypes.error,
+    subtree: Utils.colorTypes.success,
+    single: Utils.colorTypes.info,
+    selected: Utils.colorTypes.warning
+  }
 
   const actions = computed(() => [
     {
@@ -120,29 +136,41 @@
       </div>
     </template>
 
+    <!-- Guard: umumiy UIBadge — foydalanuvchi primary, integration secondary. -->
     <template #cell-guard_name="{ row }">
-      <div class="inline-block">
-        <UIBadge
-          v-if="row.guard_name === 'integration'"
-          :label="t('userRole.form.typeIntegration')"
-          :type="Utils.colorTypes.dark"
-        />
-        <n-tag v-else size="small" round>{{ t('userRole.form.typeSanctum') }}</n-tag>
-      </div>
+      <UIBadge
+        v-if="row.guard_name === 'integration'"
+        :label="t('userRole.form.typeIntegration')"
+        :type="Utils.colorTypes.secondary"
+        :icon="PlugConnected20Regular"
+      />
+      <UIBadge
+        v-else
+        :label="t('userRole.form.typeSanctum')"
+        :type="Utils.colorTypes.primary"
+        :icon="Person16Regular"
+      />
     </template>
 
-    <!-- Kesim: korxona | bo'linma; integration — bo'sh. -->
+    <!-- Kesim: korxona info, bo'linma warning; integration — bo'sh. -->
     <template #cell-scope_level="{ row }">
-      <n-tag v-if="scopeOf(row)" size="small" round>
-        {{ t(`userRole.form.level_${scopeOf(row).scope_level}`) }}
-      </n-tag>
+      <UIBadge
+        v-if="scopeOf(row)"
+        :label="t(`userRole.form.level_${scopeOf(row).scope_level}`)"
+        :type="LEVEL_BADGE[scopeOf(row).scope_level]"
+        :icon="
+          scopeOf(row).scope_level === 'department' ? Organization16Regular : Building16Regular
+        "
+      />
     </template>
 
-    <!-- Scope: doira turi; faqat Admin beradigani qizil; integration — bo'sh. -->
+    <!-- Scope: Global error, quyi korxonalar bilan success, o'z korxonasi info, bo'linmalar warning. -->
     <template #cell-scope_type="{ row }">
-      <n-tag v-if="scopeOf(row)" size="small" round :type="scopeTagType(scopeOf(row))">
-        {{ t(`userRole.form.scope_${scopeOf(row).scope_type}`) }}
-      </n-tag>
+      <UIBadge
+        v-if="scopeOf(row)"
+        :label="t(`userRole.form.scope_${scopeOf(row).scope_type}`)"
+        :type="SCOPE_BADGE[scopeOf(row).scope_type] ?? Utils.colorTypes.info"
+      />
     </template>
 
     <!-- Iqtisod bo'limiga E-IMZO tasdig'isiz kirish (faqat sanctum rollar). -->
