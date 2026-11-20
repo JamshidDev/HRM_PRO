@@ -91,7 +91,6 @@ export const useExamMonitoringStore = defineStore('examMonitoringStore', {
             !this.solving.some((s) => s.worker_exam_id === this.active.worker_exam_id)
           ) {
             this.closeWatch()
-            this.status = 'failed'
             this.message = 'finished'
           }
         })

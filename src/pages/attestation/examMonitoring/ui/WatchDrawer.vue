@@ -212,7 +212,7 @@
           >
             <div class="h-full overflow-y-auto p-2 flex flex-col gap-1.5">
               <div
-                v-if="!filtered.length"
+                v-if="!filtered.length && !store.solvingLoading"
                 class="h-full flex flex-col items-center justify-center gap-2 py-10 text-center"
               >
                 <span
@@ -515,7 +515,9 @@
                 {{
                   store.status === 'unavailable'
                     ? $t('examMonitoringPage.notEnabled')
-                    : $t('examMonitoringPage.selectWorker')
+                    : store.message === 'finished'
+                      ? $t('examMonitoringPage.failed.finished')
+                      : $t('examMonitoringPage.selectWorker')
                 }}
               </p>
             </div>
