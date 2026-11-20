@@ -1,6 +1,5 @@
-x
 <script setup>
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIDepartmentSelect, UIPageFilter, UISelect } from '@/components/index.js'
   import { useComponentStore, useMedWorkerStore } from '@/store/modules/index.js'
 
   const store = useMedWorkerStore()
@@ -13,21 +12,26 @@ x
 
   const onChange = (v) => {
     store.params.organizations = v
+    store.params.departments = []
     filterEvent()
   }
 
   const onShow = () => {
-    if (componentStore.structureList.length === 0) {
+    if (componentStore.allStructureList.length === 0) {
       componentStore._allStructures()
     }
   }
 
   const onClear = () => {
     store.params.organizations = []
+    store.params.departments = []
     filterEvent()
   }
 
-  const filterCount = computed(() => Number(store.params.organizations.length > 0))
+  const filterCount = computed(
+    () =>
+      Number(store.params.organizations.length > 0) + Number(store.params.departments.length > 0)
+  )
 </script>
 
 <template>
@@ -57,6 +61,18 @@ x
             @onSearch="componentStore._allStructures"
             :loading="componentStore.allStructureLoading"
             @onSubmit="filterEvent"
+          />
+        </div>
+        <div class="col-span-12 mt-3">
+          <label class="text-xs text-gray-500 mb-1 font-medium">{{
+            $t('medWorker.form.department')
+          }}</label>
+          <UIDepartmentSelect
+            v-model="store.params.departments"
+            :organization="store.params.organizations"
+            source="all"
+            multiple
+            @update:model-value="filterEvent"
           />
         </div>
       </div>
