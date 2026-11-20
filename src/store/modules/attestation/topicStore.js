@@ -47,14 +47,21 @@ export const useTopicStore = defineStore('topicStore', {
     params: {
       page: 1,
       per_page: 15,
-      search: null
-    }
+      search: null,
+      organizations: []
+    },
+    // Filtr daraxtida belgilangan tugunlar (UISelect).
+    filterStructureCheck: []
   }),
   actions: {
     _index() {
       this.loading = true
+      const params = {
+        ...this.params,
+        organizations: this.params.organizations.map((v) => v.id).toString() || undefined
+      }
       $ApiService.topicService
-        ._index({ params: this.params })
+        ._index({ params })
         .then((res) => {
           this.list = res.data.data.data
           this.totalItems = res.data.data.total
