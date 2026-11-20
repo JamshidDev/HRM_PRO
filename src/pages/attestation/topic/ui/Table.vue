@@ -1,5 +1,5 @@
 <script setup>
-  import { UITable, UITableNameCell, UITablePagination } from '@/components/index.js'
+  import { UIBadge, UITable, UITableNameCell, UITablePagination } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useTopicStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -54,6 +54,17 @@
       title: t('topicDetailsPage.exams.name'),
       width: 140,
       align: 'center'
+    },
+    {
+      key: 'deadline',
+      title: t('topicPage.deadline'),
+      width: 170
+    },
+    {
+      key: 'active',
+      title: t('content.status'),
+      width: 130,
+      align: 'center'
     }
   ])
 
@@ -93,6 +104,18 @@
 
     <template #[`cell-exams_count`]="{ row }">
       <span class="text-sm font-semibold text-textColor0">{{ row.exams_count ?? 0 }}</span>
+    </template>
+
+    <template #cell-deadline="{ row }">
+      {{ Utils.dateTimeShortLabel(row.deadline) ?? $t('topicPage.noDeadline') }}
+    </template>
+
+    <template #cell-active="{ row }">
+      <UIBadge
+        :label="row.active ? $t('content.active') : $t('topicDetailsPage.exams.hidden')"
+        :type="row.active ? Utils.colorTypes.success : Utils.colorTypes.secondary"
+        :show-icon="false"
+      />
     </template>
 
     <template #footer>

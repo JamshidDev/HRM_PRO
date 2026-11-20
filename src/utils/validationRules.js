@@ -1727,9 +1727,15 @@ export default {
       message: t(`rules.requiredField`),
       trigger: triggerEvents
     },
-    organizations: {
+    scope: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
+    department_ids: {
       type: 'array',
       required: true,
+      min: 1,
       message: t(`rules.requiredField`),
       trigger: triggerEvents
     }
