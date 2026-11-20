@@ -93,7 +93,7 @@ export const adminRoutes = [
   {
     path: Utils.routePathMaker(AppPaths.AdminOther),
     name: AppPaths.AdminOther.substring(1),
-    component: () => import('@/pages/admin/others/OthersPage.vue'),
+    component: () => import('@/pages/extra/educationDirectory/EducationDirectoryPage.vue'),
     meta: {
       layout: AppLayouts.main
     }
