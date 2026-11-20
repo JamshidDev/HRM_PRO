@@ -1,4 +1,9 @@
 import { defineStore } from 'pinia'
+import {
+  defaultScopeType,
+  syncDeptScopePermission,
+  toApiPayload
+} from '@/pages/admin/role/roleScope.js'
 export const useUserRoleStore = defineStore('userRole', {
   state: () => ({
     list: [],
@@ -12,15 +17,23 @@ export const useUserRoleStore = defineStore('userRole', {
     allPermissionList: [],
     originAllPermissionList: [],
     payload: {
+      // Kodda ishlatiladigan kalit (masalan HRAsistent) — yaratilgandan keyin o'zgarmaydi.
+      key: null,
+      // Foydalanuvchiga ko'rinadigan nom (masalan "HR yordamchisi").
       name: null,
       // Rol turi: 'sanctum' (foydalanuvchi roli) yoki 'integration' (client roli).
       // Guard rolning permission olamini belgilaydi (ikkovidan bittasi).
       guard_name: 'sanctum',
-      // Org-scope: rol egasi qaysi korxonaларни ko'radi.
-      // 'local' = faqat shu korxona; 'global' = korxona + tarkibi. Integration'da null.
-      scope_type: 'local',
+      // Kesim: 'organization' | 'department'. Integration'da null.
+      scope_level: 'organization',
+      // Doira: organization → single | subtree | all; department → selected.
+      scope_type: 'single',
       permissions: []
     },
+    // Kesim almashganda olib tashlanadigan ruxsatlar tasdig'i: { level, ids }.
+    pendingLevel: null,
+    // Forma qadami: 'settings' (rol sozlamalari) | 'permissions' (ruxsatlar).
+    formTab: 'settings',
     params: {
       page: 1,
       per_page: 15,
@@ -29,6 +42,13 @@ export const useUserRoleStore = defineStore('userRole', {
     query: null
   }),
   actions: {
+    // Saqlanadigan body: kesimga mos `scope-departments` bilan (sanctum rollarda).
+    _body() {
+      const p = { ...this.payload }
+      if (p.guard_name === 'sanctum')
+        p.permissions = syncDeptScopePermission(p.permissions, p.scope_level, this.originAllPermissionList)
+      return toApiPayload(p)
+    },
     _index() {
       this.loading = true
       $ApiService.userRoleService
@@ -44,7 +64,7 @@ export const useUserRoleStore = defineStore('userRole', {
     _create() {
       this.saveLoading = true
       $ApiService.userRoleService
-        ._create({ data: this.payload })
+        ._create({ data: this._body() })
         .then(() => {
           this.visible = false
           this._index()
@@ -57,7 +77,7 @@ export const useUserRoleStore = defineStore('userRole', {
     _update() {
       this.saveLoading = true
       $ApiService.userRoleService
-        ._update({ data: this.payload, id: this.elementId })
+        ._update({ data: this._body(), id: this.elementId })
         .then(() => {
           this.visible = false
           this._index()
@@ -117,21 +137,55 @@ export const useUserRoleStore = defineStore('userRole', {
     openVisible(data) {
       this.visible = data
     },
-    // Guard almashganda: permissionlar tozalanadi, scope moslanadi, ro'yxat qayta yuklanadi.
+    // Guard almashganda: permissionlar tozalanadi, doira moslanadi, ro'yxat qayta yuklanadi.
     onGuardChange() {
       this.payload.permissions = []
       this.query = null
-      // Integration scope ishlatmaydi → null; sanctum uchun aniq holat → default local.
-      this.payload.scope_type =
-        this.payload.guard_name === 'integration' ? null : this.payload.scope_type || 'local'
+      this.pendingLevel = null
+      // Integration doira ishlatmaydi.
+      if (this.payload.guard_name === 'integration') {
+        this.payload.scope_level = null
+        this.payload.scope_type = null
+      } else if (!this.payload.scope_level) {
+        this.payload.scope_level = 'organization'
+        this.payload.scope_type = defaultScopeType('organization')
+      }
       this._getAllPermission()
+    },
+    // Kesim almashtirish; `incompatibleIds` — yangi kesimda ishlamaydigan tanlangan ruxsatlar.
+    setScopeLevel(level, incompatibleIds = []) {
+      if (level === this.payload.scope_level) return
+      if (incompatibleIds.length) {
+        this.pendingLevel = { level, ids: incompatibleIds }
+        return
+      }
+      this.applyScopeLevel(level)
+    },
+    applyScopeLevel(level, removeIds = []) {
+      if (removeIds.length) {
+        const drop = new Set(removeIds)
+        this.payload.permissions = this.payload.permissions.filter((id) => !drop.has(id))
+      }
+      this.payload.scope_level = level
+      this.payload.scope_type = defaultScopeType(level)
+      this.pendingLevel = null
+    },
+    confirmPendingLevel() {
+      if (this.pendingLevel) this.applyScopeLevel(this.pendingLevel.level, this.pendingLevel.ids)
+    },
+    cancelPendingLevel() {
+      this.pendingLevel = null
     },
     resetForm() {
       this.elementId = null
+      this.payload.key = null
       this.payload.name = null
       this.payload.guard_name = 'sanctum'
-      this.payload.scope_type = 'local'
+      this.payload.scope_level = 'organization'
+      this.payload.scope_type = defaultScopeType('organization')
       this.payload.permissions = []
+      this.pendingLevel = null
+      this.formTab = 'settings'
       this.query = null
     }
   }

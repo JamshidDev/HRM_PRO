@@ -3,6 +3,7 @@
   import { useMedWorkerStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
+  import { Copy20Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
   const store = useMedWorkerStore()
@@ -13,6 +14,8 @@
     store._index()
   }
 
+  const copyPin = (pin) => Utils.copyToClipboard(pin, () => $Toast.success(t('content.copied')))
+
   const columns = computed(() => [
     {
       key: 'worker',
@@ -20,14 +23,9 @@
       minWidth: 300
     },
     {
-      key: 'organization.name',
-      title: t('content.organization'),
-      minWidth: 160
-    },
-    {
-      key: 'department',
-      title: t('medWorker.form.department'),
-      minWidth: 160
+      key: 'organization',
+      title: `${t('content.organization')} / ${t('medWorker.form.department')}`,
+      minWidth: 240
     },
     {
       key: 'position',
@@ -65,10 +63,42 @@
           photo: row?.photo,
           lastName: row?.last_name,
           firstName: row?.first_name,
-          middleName: row?.middle_name,
-          position: row?.contract_type
+          middleName: row?.middle_name
         }"
-      />
+      >
+        <template #position>
+          <div v-if="row?.pin" class="flex">
+            <span
+              class="inline-flex items-center gap-1 rounded bg-primary/10 px-1.5 py-[1px] text-xs font-semibold text-primary"
+            >
+              {{ row.pin }}
+              <n-icon
+                size="12"
+                class="cursor-pointer opacity-70 hover:opacity-100"
+                @click.stop="copyPin(row.pin)"
+              >
+                <Copy20Regular />
+              </n-icon>
+            </span>
+          </div>
+        </template>
+      </UIUser>
+    </template>
+
+    <template #cell-organization="{ row }">
+      <div class="flex flex-col">
+        <n-ellipsis class="text-sm text-textColor2 leading-[1.2]">{{
+          row?.organization?.name
+        }}</n-ellipsis>
+        <n-ellipsis class="text-xs text-textColor3">{{ row?.department }}</n-ellipsis>
+      </div>
+    </template>
+
+    <template #cell-position="{ row }">
+      <div class="flex flex-col">
+        <n-ellipsis class="text-sm text-textColor2 leading-[1.2]">{{ row?.position }}</n-ellipsis>
+        <n-ellipsis class="text-xs text-textColor3">{{ row?.contract_type }}</n-ellipsis>
+      </div>
     </template>
 
     <template #cell-position_date="{ row }">

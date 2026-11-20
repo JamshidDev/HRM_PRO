@@ -6,6 +6,7 @@
   import { Delete20Regular, Edit32Regular, RibbonStar24Filled } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
   import { useEimzoGate } from './useEimzoGate.js'
+  import { fromApiRole, isAdminOnlyScope } from '../roleScope.js'
 
   const { t } = i18n.global
   const accStore = useAccountStore()
@@ -16,11 +17,16 @@
     if (!accStore.checkAction(accStore.pn.rolesWrite)) return
     store.visibleType = false
     store.elementId = row.id
-    store.payload.name = row.name
     // Rol guard'i — permission olamini belgilaydi; shu guard bo'yicha ro'yxat qayta yuklanadi.
     store.payload.guard_name = row.guard_name || 'sanctum'
-    // Org-scope (0080) — mavjud rolning ko'lamini to'ldirish.
-    store.payload.scope_type = row.scope_type ?? null
+    const r = fromApiRole(row)
+    store.payload.key = r.key
+    store.payload.name = r.name
+    const integration = store.payload.guard_name === 'integration'
+    store.payload.scope_level = integration ? null : r.scope_level
+    store.payload.scope_type = integration ? null : r.scope_type
+    store.pendingLevel = null
+    store.formTab = 'settings'
     store.payload.permissions = row.permissions.map((x) => x.id)
     store.query = null
     store._getAllPermission()
@@ -53,9 +59,9 @@
     },
     {
       key: 'scope_type',
-      title: 'Scope',
-      minWidth: 140,
-      width: 160
+      title: t('userRole.form.scopeKind'),
+      minWidth: 220,
+      width: 260
     },
     // E-IMZO ozodligi — faqat Admin'ga (endpoint 403 bersa ustun yo'q).
     ...(gate.available.value
@@ -63,10 +69,9 @@
       : [])
   ])
 
-  // Org-scope yorlig'i: local=faqat shu korxona, global=korxona+tarkibi (tree).
-  const scopeLabel = (v) => (v === 'local' ? 'Local' : v === 'global' ? 'Global' : '—')
-  // Global keng ko'lam — error (qizil) badge; local — info (ko'k).
-  const scopeTagType = (v) => (v === 'global' ? 'error' : v === 'local' ? 'info' : 'default')
+  // Doira yorliqlari: kesim + tur; faqat Admin beradigan keng doira — qizil.
+  const scopeOf = (row) => (row.guard_name === 'integration' ? null : fromApiRole(row))
+  const scopeTagType = (s) => (isAdminOnlyScope(s.scope_level, s.scope_type) ? 'error' : 'info')
 
   const actions = computed(() => [
     {
@@ -119,16 +124,16 @@
       </n-tag>
     </template>
 
-    <!-- Org-scope: local/global rollarda badge; integration (null) → "—". -->
+    <!-- Doira: kesim + tur yorliqlari; integration → "—". -->
     <template #cell-scope_type="{ row }">
-      <n-tag
-        v-if="row.scope_type === 'local' || row.scope_type === 'global'"
-        size="small"
-        round
-        :type="scopeTagType(row.scope_type)"
-      >
-        {{ scopeLabel(row.scope_type) }}
-      </n-tag>
+      <div v-if="scopeOf(row)" class="flex gap-1 flex-wrap">
+        <n-tag size="small" round>
+          {{ t(`userRole.form.level_${scopeOf(row).scope_level}`) }}
+        </n-tag>
+        <n-tag size="small" round :type="scopeTagType(scopeOf(row))">
+          {{ t(`userRole.form.scope_${scopeOf(row).scope_type}`) }}
+        </n-tag>
+      </div>
       <span v-else class="text-gray-400">—</span>
     </template>
 

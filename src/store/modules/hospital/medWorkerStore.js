@@ -22,7 +22,8 @@ export const useMedWorkerStore = defineStore('medWorkerStore', {
       page: 1,
       per_page: 15,
       search: null,
-      organizations: []
+      organizations: [],
+      departments: []
     },
     organizationList: [],
     orgLoading: false
@@ -32,7 +33,8 @@ export const useMedWorkerStore = defineStore('medWorkerStore', {
       this.loading = true
       const params = {
         ...this.params,
-        organizations: this.params.organizations.map((v) => v.id).toString()
+        organizations: this.params.organizations.map((v) => v.id).toString(),
+        departments: this.params.departments.toString() || undefined
       }
       $ApiService.medWorkerService
         ._index({ params })
