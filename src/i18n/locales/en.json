@@ -5857,23 +5857,75 @@
       "day_offInfo": "Day off by schedule",
       "excusedInfo": "Business trip, sick leave, turnstile exemption and other reasons"
     },
+    "live": {
+      "now": "Now"
+    },
+    "hourly": {
+      "title": "Passes during the day",
+      "hint": "Employees who passed via turnstile or mobile app, in {n}-hour intervals",
+      "peak": "Peak time",
+      "active": "Active hours",
+      "people": "employees",
+      "total": "Total passes"
+    },
+    "rate": {
+      "title": "Today's attendance rate",
+      "titleDay": "Attendance rate",
+      "hint": "How many of those required to come on the selected day by schedule actually came. Excused employees (leave, sick, business trip) are not counted",
+      "mobile": "mobile",
+      "good": "Good",
+      "medium": "Average",
+      "low": "Low",
+      "mustCome": "Required"
+    },
+    "kpi": {
+      "cameHint": "Employees who passed at least once on the selected day via turnstile or mobile app",
+      "absentHint": "Employees with no pass on the selected day: those scheduled to come and those without a schedule. Leave, days off and excused absences are not counted here",
+      "inOfficeHint": "Of those who came — last pass was «in»: inside now",
+      "leftOfficeHint": "Of those who came — last pass was «out»: came and left",
+      "turnstile": "Via turnstile",
+      "mobile": "Via mobile app",
+      "noEvent": "Were scheduled",
+      "noSchedule": "No schedule",
+      "came": "Came",
+      "left": "Left",
+      "early": "Left early",
+      "turnstileShort": "Turnstile",
+      "mobileShort": "Mobile app",
+      "coverage": "Covered by schedule",
+      "needSchedule": "{n} employees still need a schedule",
+      "devGood": "Running stable",
+      "devWarn": "Needs attention",
+      "devBad": "Many devices offline",
+      "devOffline": "{n} devices offline",
+      "notComingReasons": "Reasons for absence"
+    },
     "plan": {
       "title": "Attendance by plan",
       "expected": "Expected",
       "came": "Came",
       "absent": "Absent",
-      "excused": "Excused",
+      "excused": "Excused or on leave",
       "expectedInfo": "Workers with a working day by schedule",
       "cameInfo": "Passed via turnstile or mobile device",
       "absentInfo": "Working day, but no turnstile or mobile events",
-      "excusedInfo": "Vacation, business trip, sick leave or other permission"
+      "excusedInfo": "Vacation, business trip, sick leave or other permission",
+      "cameTitle": "Came (scheduled)",
+      "absentTitle": "Absent (scheduled)"
     },
     "privilegeCard": {
-      "title": "Workers with turnstile privilege",
+      "title": "Employees with schedule allowances",
       "arrive": "Arrival",
       "leave": "Leave",
       "all": "Show all",
-      "empty": "No privileged workers"
+      "empty": "No privileged workers",
+      "hint": "Employees allowed to arrive late or leave early by N minutes relative to their schedule",
+      "late": "Late arrival",
+      "early": "Early leave",
+      "minutes": "{n} min",
+      "none": "none",
+      "minutesShort": "{n} min",
+      "subtitle": "Allowed to arrive late or leave early"
     },
     "tabs": {
       "report": "Report",

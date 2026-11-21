@@ -1,84 +1,105 @@
 <script setup>
-  import { CalendarCancel24Regular, ChevronRight20Regular } from '@vicons/fluent'
+  // «Grafik bo'yicha tahlil» — umumiy `StatCard` qolipida.
+  import { Warning16Regular, ChevronRight20Regular } from '@vicons/fluent'
   import { Utils } from '@/utils/index.js'
-  import { UICountUp } from '@/components/index.js'
-  import CardHeader from './CardHeader.vue'
-  import { MonthlyCardSkeleton } from './skeleton/index.js'
+  import StatCard from './StatCard.vue'
+  import { PALETTE, TINT } from './palette.js'
+  import { percentText } from './format.js'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
-  import HeadTableRowsIcon from '@/assets/icons/dashboard/head-table-rows.svg'
+  import i18n from '@/i18n/index.js'
+  import { CalendarEdit20Regular } from '@vicons/fluent'
 
+  const { t } = i18n.global
   const store = useTurnstileDashboardStore()
   const emits = defineEmits(['onPreview'])
 
-  const formatted = computed(() => Utils.formatNumberToMoney(store.monthlyTotalWorkerCount) || '0')
-  // Faol xodimlar ichidagi ulushi (%).
-  const percent = computed(() => {
-    const total = store.attendance?.total || 0
-    return total ? Math.round(((store.monthlyTotalWorkerCount || 0) / total) * 100) : 0
-  })
-  const openList = () => emits('onPreview', 'notIncludedSchedule')
+  const total = computed(() => store.attendance?.total || 0)
+  // BACKEND: `stats-two.count` (joriy oy bo'yicha grafik tuzilmaganlar, dev'da 28 197) va
+  // `dashboard/attendance.absent_by_reason.no_schedule` (bugun grafigi yo'q, dev'da 34 466) farq qiladi —
+  // ta'riflar bir xil emas. Shu sabab karta yorlig'ida «Joriy oyda» deb aniq yozilgan.
+  // Ko'rsatiladigan son — backenddagi oylik son o'zi. Hisob-kitoblarda esa u bugungi jamidan oshmaydi
+  // (oylik va kunlik ta'rif farq qiladi) — ulush 100% dan oshmasin, «grafikda bor» manfiy bo'lmasin.
+  const without = computed(() => store.monthlyTotalWorkerCount || 0)
+  const withoutCapped = computed(() => Math.min(without.value, total.value))
+  // Grafikka biriktirilganlar = faol xodimlar − grafik tuzilmaganlar.
+  const withSchedule = computed(() => total.value - withoutCapped.value)
+  const percent = computed(() => percentText(withoutCapped.value, total.value))
+
+  // Qamrov: grafikka biriktirilganlar ulushi (ko'k), qolgani — grafigi yo'qlar (qizil).
+  const coverage = computed(() => percentText(withSchedule.value, total.value))
+  const coverageWidth = computed(() => (total.value ? (withSchedule.value / total.value) * 100 : 0))
+
+  const rows = computed(() => [
+    {
+      label: t('turnStileDashboard.work_durations.workerCountWithSchedule'),
+      count: withSchedule.value,
+      token: PALETTE.main
+    },
+    {
+      label: t('turnStileDashboard.compare.withoutSchedule'),
+      count: without.value,
+      token: PALETTE.bad,
+      previewType: 'notIncludedSchedule'
+    }
+  ])
 </script>
 
 <template>
-  <div
-    class="bg-surface-section shadow-card rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col"
+  <StatCard
+    :icon="CalendarEdit20Regular"
+    :tint="TINT.bad"
+    :title="$t('turnStileDashboard.cards.graphAnalytic')"
+    :loading="store.monthlyLoading"
+    :label="$t('turnStileDashboard.cards.currentMonthWorkerCount')"
+    :label-hint="$t('turnStileDashboard.cards.withoutScheduleInfo')"
+    :value="without"
+    :chip="{ text: `${percent}%`, tone: 'bad' }"
+    :rows="rows"
+    @on-preview="emits('onPreview', $event)"
   >
-    <MonthlyCardSkeleton v-if="store.monthlyLoading" />
-
-    <template v-else>
-      <CardHeader
-        :icon="HeadTableRowsIcon"
-        tint="lime"
-        :title="$t('turnStileDashboard.cards.graphAnalytic')"
-      />
-
-      <!-- jami son + ulush -->
-      <div class="flex-1 flex flex-col justify-center gap-3 px-3 py-3">
-        <div class="flex items-center gap-3">
-          <span
-            class="w-11 h-11 shrink-0 rounded-xl bg-fig-red-100 text-fig-text-red flex items-center justify-center"
-          >
-            <n-icon size="24"><CalendarCancel24Regular /></n-icon>
+    <template #visual>
+      <!-- «Grafik bilan qamrab olingan 55,4%» + ustun (ko'k qamrov, qizil — grafigi yo'q) + nima qilish kerak -->
+      <div v-if="total" class="w-full">
+        <div class="flex items-baseline justify-between gap-2">
+          <span class="text-[13px] leading-[18px] text-fig-text-secondary">
+            {{ $t('turnStileDashboard.kpi.coverage') }}
           </span>
-          <div class="min-w-0">
-            <p class="text-[12px] leading-[16px] text-fig-text-secondary truncate">
-              {{ $t('turnStileDashboard.compare.withoutSchedule') }}
-            </p>
-            <p
-              class="font-grotesk font-semibold text-[28px] leading-[34px] text-fig-text-primary whitespace-nowrap"
-            >
-              <UICountUp :value="formatted" />
-            </p>
-          </div>
-          <span
-            class="ml-auto shrink-0 rounded-full bg-fig-chip-amber px-2 py-0.5 text-[12px] leading-[16px] font-semibold text-fig-chip-amber-text whitespace-nowrap"
-          >
-            <UICountUp :value="percent" />%
-          </span>
+          <span class="text-[22px] leading-7 font-bold text-fig-text-primary">{{ coverage }}%</span>
         </div>
-        <p class="text-[12px] leading-[16px] text-fig-text-tertiary">
-          {{ $t('turnStileDashboard.cards.withoutScheduleInfo') }}
-        </p>
-      </div>
-
-      <div class="bg-surface-ground-soft rounded-xl p-1.5 flex flex-col">
-        <button
-          type="button"
-          class="group w-full flex items-center gap-2.5 rounded-lg px-2 py-2 text-left cursor-pointer transition-colors duration-200 hover:bg-surface-section"
-          @click="openList"
+        <div
+          class="mt-2 h-3.5 w-full overflow-hidden rounded-full"
+          :style="{ backgroundColor: `var(${PALETTE.bad})` }"
         >
-          <span class="w-2.5 h-2.5 rounded-full shrink-0 bg-fig-red"></span>
-          <span class="flex-1 min-w-0 text-[14px] leading-[20px] text-fig-text-secondary truncate">
-            {{ $t('turnStileDashboard.privilegeCard.all') }}
+          <div
+            class="coverage-bar h-full rounded-full"
+            :style="{ width: `${coverageWidth}%`, backgroundColor: `var(${PALETTE.main})` }"
+          ></div>
+        </div>
+        <button
+          v-if="without"
+          type="button"
+          class="mt-3 flex w-full cursor-pointer items-center gap-1.5 rounded-lg px-2 py-1.5 text-left text-[12px] leading-4 font-semibold text-fig-text-red transition-colors hover:bg-fig-red-100"
+          @click="emits('onPreview', 'notIncludedSchedule')"
+        >
+          <n-icon size="16"><Warning16Regular /></n-icon>
+          <span class="min-w-0 flex-1 truncate">
+            {{ $t('turnStileDashboard.kpi.needSchedule', { n: Utils.formatNumberToMoney(without) }) }}
           </span>
-          <n-icon
-            size="16"
-            class="shrink-0 text-fig-text-tertiary transition-transform duration-200 group-hover:translate-x-0.5"
-          >
-            <ChevronRight20Regular />
-          </n-icon>
+          <n-icon size="14"><ChevronRight20Regular /></n-icon>
         </button>
       </div>
     </template>
-  </div>
+  </StatCard>
 </template>
+
+<style scoped>
+  .coverage-bar {
+    transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .coverage-bar {
+      transition: none;
+    }
+  }
+</style>

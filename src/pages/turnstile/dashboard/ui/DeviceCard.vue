@@ -1,121 +1,55 @@
 <script setup>
-  import { ChevronRight20Regular } from '@vicons/fluent'
-  import { Utils } from '@/utils/index.js'
-  import { UICountUp } from '@/components/index.js'
-  import CardHeader from './CardHeader.vue'
-  import { DeviceCardSkeleton } from './skeleton/index.js'
+  // «Qurilmalar tahlili» — umumiy `DonutCard` qolipida: onlayn / oflayn. Ostida holat pill'i
+  // (≥95% onlayn — barqaror, 80–95% — e'tibor talab qiladi, <80% — ko'p qurilma aloqasiz).
+  import DonutCard from './DonutCard.vue'
+  import { PALETTE, TINT, CHIP_CLASS } from './palette.js'
+  import { percentOf } from './format.js'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
-  import HeadDesktopIcon from '@/assets/icons/dashboard/head-desktop.svg'
+  import { Utils } from '@/utils/index.js'
+  import i18n from '@/i18n/index.js'
+  import { DesktopPulse20Regular } from '@vicons/fluent'
 
+  const { t } = i18n.global
   const store = useTurnstileDashboardStore()
   const emits = defineEmits(['onPreview'])
 
-  const formatCount = (v) => Utils.formatNumberToMoney(v) || '0'
-
   const total = computed(() => store.deviceData?.all || 0)
-  const share = (v) => (total.value ? Math.round((v / total.value) * 100) : 0)
-
-  const rows = computed(() => {
-    const online = store.deviceData?.online || 0
-    const offline = store.deviceData?.offline || 0
-    return [
-      {
-        previewType: 'online_devices',
-        label: 'content.online',
-        count: online,
-        percent: share(online),
-        dotClass: 'bg-fig-green'
-      },
-      {
-        previewType: 'offline_devices',
-        label: 'content.offline',
-        count: offline,
-        percent: share(offline),
-        dotClass: 'bg-fig-red'
-      }
-    ]
+  const online = computed(() => store.deviceData?.online || 0)
+  const offline = computed(() => store.deviceData?.offline || 0)
+  const health = computed(() => {
+    const p = percentOf(online.value, total.value)
+    if (p >= 95) return { key: 'devGood', tone: 'main' }
+    if (p >= 80) return { key: 'devWarn', tone: 'warn' }
+    return { key: 'devBad', tone: 'bad' }
   })
 
-  // Bar segmentlari: onlayn + oflayn ulushi (jami 0 bo'lsa bar bo'sh trek bo'lib qoladi).
-  const onlineWidth = computed(() => (total.value ? (rows.value[0].count / total.value) * 100 : 0))
-  const offlineWidth = computed(() => (total.value ? (rows.value[1].count / total.value) * 100 : 0))
+  const items = computed(() => [
+    { label: 'content.online', count: online.value, token: PALETTE.main, previewType: 'online_devices' },
+    { label: 'content.offline', count: offline.value, token: PALETTE.bad, previewType: 'offline_devices' }
+  ])
 </script>
 
 <template>
-  <div class="bg-surface-section shadow-card rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col">
-    <DeviceCardSkeleton v-if="store.devicesLoading" />
-
-    <template v-else>
-      <CardHeader
-        :icon="HeadDesktopIcon"
-        tint="indigo"
-        :title="$t('turnStileDashboard.cards.deviceAnalytic')"
-      />
-
-      <!-- jami son + onlayn ulushi -->
-      <div class="flex-1 flex flex-col justify-center gap-3 px-3 py-3">
-        <div class="flex items-end justify-between gap-2">
-          <div class="min-w-0">
-            <p class="text-[12px] leading-[16px] text-fig-text-secondary truncate">
-              {{ $t('turnStileDashboard.compare.totalDevices') }}
-            </p>
-            <p
-              class="font-grotesk font-semibold text-[28px] leading-[34px] text-fig-text-primary whitespace-nowrap"
-            >
-              <UICountUp :value="formatCount(total)" />
-            </p>
-          </div>
-          <span
-            class="shrink-0 mb-1 rounded-full bg-fig-green-100 px-2 py-0.5 text-[12px] leading-[16px] font-semibold text-fig-text-green whitespace-nowrap"
-          >
-            <UICountUp :value="rows[0].percent" />% {{ $t('content.online').toLowerCase() }}
-          </span>
-        </div>
-
-        <!-- onlayn / oflayn taqsimoti -->
-        <div class="h-2.5 w-full rounded-full bg-fig-neutral-300 overflow-hidden flex gap-0.5">
-          <div
-            class="h-full rounded-full bg-fig-green transition-all duration-500"
-            :style="{ width: onlineWidth + '%' }"
-          ></div>
-          <div
-            v-if="offlineWidth"
-            class="h-full rounded-full bg-fig-red transition-all duration-500"
-            :style="{ width: offlineWidth + '%' }"
-          ></div>
-        </div>
-      </div>
-
-      <div class="bg-surface-ground-soft rounded-xl p-1.5 flex flex-col">
-        <button
-          v-for="row in rows"
-          :key="row.previewType"
-          type="button"
-          class="group w-full flex items-center gap-2.5 rounded-lg px-2 py-2 text-left cursor-pointer transition-colors duration-200 hover:bg-surface-section"
-          @click="emits('onPreview', row.previewType)"
-        >
-          <span class="w-2.5 h-2.5 rounded-full shrink-0" :class="row.dotClass"></span>
-          <span class="flex-1 min-w-0 text-[14px] leading-[20px] text-fig-text-secondary truncate">
-            {{ $t(row.label) }}
-          </span>
-          <span
-            class="font-grotesk font-semibold text-[16px] leading-[20px] text-fig-text-primary whitespace-nowrap"
-          >
-            <UICountUp :value="formatCount(row.count)" />
-          </span>
-          <span
-            class="w-10 text-right text-[12px] leading-[16px] text-fig-text-tertiary whitespace-nowrap"
-          >
-            <UICountUp :value="row.percent" />%
-          </span>
-          <n-icon
-            size="16"
-            class="shrink-0 text-fig-text-tertiary transition-transform duration-200 group-hover:translate-x-0.5"
-          >
-            <ChevronRight20Regular />
-          </n-icon>
-        </button>
+  <DonutCard
+    :icon="DesktopPulse20Regular"
+    :tint="TINT.second"
+    :title="$t('turnStileDashboard.cards.deviceAnalytic')"
+    :subtitle="$t('turnStileDashboard.compare.totalDevices')"
+    :loading="store.devicesLoading"
+    :items="items"
+    :center-label="t('turnStileDashboard.month.total')"
+    :total="total"
+    @on-preview="emits('onPreview', $event)"
+  >
+    <template v-if="total" #footer>
+      <div class="mt-1 flex flex-wrap items-center gap-2 pl-2">
+        <span class="rounded-full px-2 py-0.5 text-[11px] leading-4 font-semibold" :class="CHIP_CLASS[health.tone]">
+          {{ $t(`turnStileDashboard.kpi.${health.key}`) }}
+        </span>
+        <span v-if="offline" class="text-[12px] leading-4 font-medium text-fig-text-red">
+          {{ $t('turnStileDashboard.kpi.devOffline', { n: Utils.formatNumberToMoney(offline) }) }}
+        </span>
       </div>
     </template>
-  </div>
+  </DonutCard>
 </template>

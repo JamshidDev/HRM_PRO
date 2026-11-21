@@ -5903,23 +5903,75 @@
       "day_offInfo": "Grafik bo'yicha shu kun dam olish kuni",
       "excusedInfo": "Xizmat safari, kasallik, turniketdan ozod va boshqa sabablar"
     },
+    "live": {
+      "now": "Hozir"
+    },
+    "hourly": {
+      "title": "Kun davomida o'tishlar",
+      "hint": "Turniket yoki mobil orqali o'tgan xodimlar soni, {n} soatlik oraliqlarda",
+      "peak": "Eng gavjum vaqt",
+      "active": "Faol vaqt",
+      "people": "xodim",
+      "total": "Jami o'tishlar"
+    },
+    "rate": {
+      "title": "Bugungi davomat darajasi",
+      "titleDay": "Davomat darajasi",
+      "hint": "Grafik bo'yicha tanlangan kunda kelishi shart bo'lganlardan nechtasi keldi. Ta'til, kasallik, xizmat safari kabi sababli xodimlar hisobga olinmaydi",
+      "mobile": "mobil",
+      "good": "Yaxshi",
+      "medium": "O'rtacha",
+      "low": "Past",
+      "mustCome": "Kelishi shart"
+    },
+    "kpi": {
+      "cameHint": "Tanlangan kunda kamida bir marta turniket yoki mobil ilova orqali o'tgan xodimlar",
+      "absentHint": "Tanlangan kunda umuman o'tmagan xodimlar: grafik bo'yicha kelishi kerak bo'lganlar va grafigi yo'qlar. Ta'til, dam olish kuni va sababli xodimlar bu songa kirmaydi",
+      "inOfficeHint": "Kelganlardan oxirgi o'tishi «kirish» bo'lganlar — hozir ichkarida",
+      "leftOfficeHint": "Kelganlardan oxirgi o'tishi «chiqish» bo'lganlar — kelib, keyin chiqib ketgan",
+      "turnstile": "Turniket orqali",
+      "mobile": "Mobil ilova orqali",
+      "noEvent": "Kelishi kerak edi",
+      "noSchedule": "Grafigi yo'q",
+      "came": "Kelganlar",
+      "left": "Chiqib ketganlar",
+      "early": "Erta ketganlar",
+      "turnstileShort": "Turniket",
+      "mobileShort": "Mobil ilova",
+      "coverage": "Grafik bilan qamrab olingan",
+      "needSchedule": "{n} xodimga grafik tuzish kerak",
+      "devGood": "Barqaror ishlayapti",
+      "devWarn": "E'tibor talab qiladi",
+      "devBad": "Ko'p qurilma aloqasiz",
+      "devOffline": "{n} ta qurilma aloqada emas",
+      "notComingReasons": "Kelmaslik sabablari"
+    },
     "plan": {
       "title": "Reja bo'yicha davomat",
       "expected": "Kelishi kerak",
       "came": "Kelganlar",
       "absent": "Kelmaganlar",
-      "excused": "Sababli",
+      "excused": "Sababli yoki ta'tilda",
       "expectedInfo": "Grafik bo'yicha shu kun ish kuni bo'lgan xodimlar",
       "cameInfo": "Turniket yoki mobil qurilma orqali o'tganlar",
       "absentInfo": "Ish kuni bo'lsa ham turniket va mobil hodisasi yo'q",
-      "excusedInfo": "Ta'til, xizmat safari, kasallik yoki boshqa ruxsat bilan"
+      "excusedInfo": "Ta'til, xizmat safari, kasallik yoki boshqa ruxsat bilan",
+      "cameTitle": "Grafik bo'yicha kelganlar",
+      "absentTitle": "Grafik bo'yicha kelmaganlar"
     },
     "privilegeCard": {
-      "title": "Turniket imtiyozi berilgan xodimlar",
+      "title": "Ish grafigiga imtiyoz berilgan xodimlar",
       "arrive": "Kelish",
       "leave": "Ketish",
       "all": "Barchasini ko'rish",
-      "empty": "Imtiyozli xodim yo'q"
+      "empty": "Imtiyozli xodim yo'q",
+      "hint": "Ish vaqtiga nisbatan necha daqiqa kech kelish yoki erta ketishga ruxsat berilgan xodimlar",
+      "late": "Kech kelishga",
+      "early": "Erta ketishga",
+      "minutes": "{n} daqiqa",
+      "none": "yo'q",
+      "minutesShort": "{n} daq",
+      "subtitle": "Kech kelish yoki erta ketishga ruxsat berilgan"
     },
     "tabs": {
       "report": "Hisobot",
