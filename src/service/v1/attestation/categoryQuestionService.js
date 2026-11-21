@@ -16,7 +16,9 @@ const _update = async (payload) => {
 }
 
 const _delete = async (payload) => {
-  return await axios.delete(`/v1/exam/categories/${payload.id}/questions/${payload.id}`)
+  return await axios.delete(
+    `/v1/exam/categories/${payload.category_id}/questions/${payload.question_id}`
+  )
 }
 
 const _show = async (payload) => {

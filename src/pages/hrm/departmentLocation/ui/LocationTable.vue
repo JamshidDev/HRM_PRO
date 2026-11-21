@@ -83,8 +83,6 @@
     Utils.copyToClipboard(coordsText(row), () => $Toast.success(t('content.copied')))
   }
 
-  // BACKEND: GET /v1/extra/department/locations qatorida yaratilgan sana (`created_at`) yo'q —
-  // shuning uchun «Sana» ustuni olib tashlandi. Qo'shilsa, ustunni qaytarish mumkin.
   // Hamma ustun moslashuvchan (`minWidth`): ortiqcha joy ustunlar o'rtasida teng bo'linadi,
   // bitta ustun hammasini olib, orada katta bo'shliq qolmaydi.
   // «Hudud»: nuqtada — radius, polygonda — nuqtalar soni (polygonda radius ishlatilmaydi —
@@ -94,7 +92,13 @@
     { key: 'geo_type', title: t('departmentLocationPage.table.geoType'), minWidth: 130 },
     { key: 'zone', title: t('departmentLocationPage.table.zone'), minWidth: 110 },
     { key: 'coords', title: t('departmentLocationPage.table.coords'), minWidth: 200 },
-    { key: 'accuracy_limit', title: t('departmentLocationPage.table.accuracy'), minWidth: 90 }
+    { key: 'accuracy_limit', title: t('departmentLocationPage.table.accuracy'), minWidth: 90 },
+    {
+      key: 'created_at',
+      title: t('content.date'),
+      minWidth: 140,
+      render: (row) => Utils.dateTimeShortLabel(row.created_at) ?? '—'
+    }
   ])
 
   const actions = computed(() => [

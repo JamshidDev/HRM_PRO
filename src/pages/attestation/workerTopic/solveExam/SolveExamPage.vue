@@ -95,11 +95,11 @@
 
   const backToList = () => {
     examVideoStore.isFinished = true
-    router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
+    router.push(Utils.routeAttestationPathMaker(AppPaths.MyExams))
   }
 
   const goBack = () => {
-    router.push(Utils.routeAttestationPathMaker(AppPaths.Exam))
+    router.push(Utils.routeAttestationPathMaker(AppPaths.MyExams))
   }
 
   const onChangeVisible = (v) => {
@@ -287,7 +287,13 @@
 
           <!-- Row 2: timer + progress (imtihon davom etayotganda) -->
           <div v-if="!store.result" class="flex items-center gap-2 sm:gap-3 mt-2">
-            <ExamTimer class="shrink-0" :time="leftTime * 1000" @end="endAttempt" />
+            <!-- Cheksiz vaqt (minute null) — taymer yo'q. -->
+            <ExamTimer
+              v-if="store.exam_detail.minute != null"
+              class="shrink-0"
+              :time="leftTime * 1000"
+              @end="endAttempt"
+            />
             <n-progress
               class="grow"
               type="line"

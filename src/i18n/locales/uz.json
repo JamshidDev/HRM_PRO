@@ -1,4 +1,12 @@
 {
+  "examLanguages": {
+    "uz": "O'zbek tilida (lotin)",
+    "uz_new": "O'zbek tilida (yangi lotin)",
+    "uz_kr": "O'zbek tilida (kirill)",
+    "ru": "Rus tilida",
+    "kaa": "Qoraqalpoq tilida",
+    "en": "Ingliz tilida"
+  },
   "applicationCommand": {
     "column": "Buyruq",
     "create": "Buyruq",
@@ -2603,6 +2611,14 @@
       "updateTitle": "Faylni tahrirlash"
     },
     "exams": {
+      "hidden": "Ko'rinmas",
+      "language": "Savollar tili",
+      "time": "Vaqt",
+      "minuteShort": "daq",
+      "unlimited": "Cheksiz",
+      "questionSets": "Savollar to'plami",
+      "addQuestionSet": "To'plam qo'shish",
+      "questionsSumError": "To'plamlardagi savollar yig'indisi umumiy savollar soniga teng bo'lishi kerak",
       "createTitle": "Imtihon yaratish",
       "name": "Imtihonlar",
       "updateTitle": "Imtihonni tahrirlash",
@@ -2639,9 +2655,23 @@
     "isActive": "Aktivlik holati"
   },
   "topicPage": {
-    "createTitle": "Mavzu qo'shish",
-    "name": "Mavzular",
-    "updateTitle": "Mavzuni tahrirlash"
+    "createTitle": "Imtihon qo'shish",
+    "name": "Imtihonlar",
+    "updateTitle": "Imtihonni tahrirlash",
+    "scope": "Doira",
+    "languagesCount": "Tillar soni",
+    "deadline": "Faol muddati",
+    "noDeadline": "Muddatsiz",
+    "scope_all": "Global",
+    "scope_local": "O'z korxonam",
+    "scope_global": "O'z korxonam va quyi korxonalar",
+    "scope_department": "Bo'linmalar uchun",
+    "departments": "Bo'linmalar",
+    "settings": "Topshirish sozlamalari",
+    "mobileAllowed": "Mobil ilovada yechish mumkin",
+    "cameraRequired": "Kamera majburiy",
+    "screenShareRequired": "Ekran ulashish majburiy",
+    "strictMode": "Qat'iy tartib"
   },
   "workerView": {
     "general": {
@@ -2755,13 +2785,13 @@
     }
   },
   "categoryPage": {
-    "createCategory": "Kategoriya yaratish",
-    "editCategory": "Kategoriyani tahrirlash",
-    "name": "Kategoriyalar",
+    "createCategory": "To'plam yaratish",
+    "editCategory": "To'plamni tahrirlash",
+    "name": "Savollar to'plami",
     "addQuestion": "Savol qo'shish",
     "editQuestion": "Savolni tahrirlash",
     "questionCount": "Savollar soni",
-    "categoryName": "Kategoriya nomi",
+    "categoryName": "To'plam nomi",
     "clearWarning": "Kategoriyadagi barcha savollar o'chiriladi. Davom etasizmi?",
     "uploadExcel": "Test savollarini yuklash",
     "pressUpload": "Yuklash uchun bosing!",
@@ -2770,7 +2800,27 @@
     "upload": "Savol yuklash",
     "answer": "Javob",
     "correctAnswer": "To'g'ri javob",
-    "warning": "Tanlangan savol va javob ustunlari to'g'riligini tekshiring!"
+    "warning": "Tanlangan savol va javob ustunlari to'g'riligini tekshiring!",
+    "scope": "Turi",
+    "scopePublic": "Ommaviy",
+    "scopeOrganization": "Korxona uchun",
+    "scopePublicHint": "Barcha korxonalar ko'radi va imtihonda ishlata oladi",
+    "scopeOrganizationHint": "Faqat o'z korxonangiz ko'radi",
+    "createdAt": "Sana",
+    "author": "Yaratgan",
+    "downloadTemplate": "Shablonni yuklash",
+    "addByFile": "Fayl orqali",
+    "addByForm": "Forma orqali",
+    "importTitle": "Savollarni fayldan yuklash",
+    "chooseFile": "Shablon bo'yicha to'ldirilgan Excel (.xlsx) faylni tanlang",
+    "importConfirm": "Bazaga yuklash",
+    "previewSummary": "{valid} ta savol yuklanadi, {skipped} ta qator o'tkaziladi",
+    "rowNo": "Qator",
+    "status": "Holati",
+    "ok": "Tayyor",
+    "importDone": "{n} ta savol yuklandi",
+    "readOnly": "Boshqa korxona to'plami — faqat ko'rish mumkin",
+    "wrongAnswers": "Noto'g'ri javoblar"
   },
   "examPage": {
     "downloadResult": "Natijalarni yuklash",
@@ -2780,6 +2830,7 @@
     "finishedProcess": "Tugatish",
     "finishedDescription": "Yakunlash vaqtidan o'tgan imtihonlarni yakunlash",
     "name": "Imtihonlar",
+    "myExams": "Mening imtihonlarim",
     "history": "Imtihon tarixi",
     "topic": "Mavzu",
     "exam": "Imtihon",
@@ -6299,7 +6350,11 @@
     "verifiedPoint2": "Asl nusxa HRM PRO tizimida saqlanadi va o'zgartirib bo'lmaydi",
     "verifiedPoint3": "Qo'lingizdagi hujjat bilan solishtiring — matn bir xil bo'lsa, hujjat haqiqiy",
     "invalidHint": "Havolani yoki QR-kodni tekshirib, qaytadan urinib ko'ring.",
-    "closeQuestion": "Savollar ro'yxatini yopish"
+    "closeQuestion": "Savollar ro'yxatini yopish",
+    "documentInfo": "Hujjat ma'lumotlari",
+    "electronicNumber": "Elektron raqam",
+    "cancelled": "Bekor qilingan",
+    "cancelledBy": "{number}-sonli buyruq bilan bekor qilingan ({date})"
   },
   "socketPage": {
     "usersMOdalTitle": "Barcha onlayn foydalanuvchilar ro'yxati"
@@ -8076,5 +8131,68 @@
   "onlyOfficeEditor": {
     "tokenError": "Hujjat muharririni ochib bo'lmadi",
     "tokenErrorHint": "Server hujjat uchun xavfsizlik tokenini bermadi. Birozdan so'ng qayta urinib ko'ring yoki administratorga murojaat qiling."
+  },
+  "examMonitoringPage": {
+    "name": "Imtihon kuzatuvi",
+    "topic": "Mavzu",
+    "languages": "Tillar",
+    "questions": "Savollar soni",
+    "solvingNow": "Hozir yechayotganlar",
+    "monitoring": "Kuzatuv",
+    "none": "Tadbiq etilmagan",
+    "camera": "Kamera",
+    "screen": "Ekran",
+    "connecting": "Ulanmoqda...",
+    "noStream": "Oqim kutilmoqda",
+    "failed": {
+      "timeout": "Nomzod ulanmadi — imtihon sahifasi ochiq emas yoki tarmoq yo'q",
+      "lost": "Ulanish uzildi",
+      "error": "Ulanishda xatolik",
+      "finished": "Nomzod imtihonni yakunladi",
+      "not_shared": "Nomzod kamera yoki ekranni hali ulashmagan"
+    },
+    "nobodySolving": "Hozir hech kim yechmayapti",
+    "selectWorker": "Kuzatish uchun nomzodni tanlang",
+    "notEnabled": "Bu imtihon uchun Ekran kuzatuvi yoki Kamera kuzatuvi tatbiq etilmagan",
+    "cameraNotEnabled": "Bu imtihon uchun Kamera kuzatuvi tatbiq etilmagan",
+    "screenNotEnabled": "Bu imtihon uchun Ekran kuzatuvi tatbiq etilmagan",
+    "screenRequiredTitle": "Ekran kuzatuvi majburiy",
+    "screenRequiredText": "Imtihonni davom ettirish uchun butun ekraningizni ulashing. Ulashish to'xtatilsa, imtihon oynasi yana yopiladi.",
+    "shareScreen": "Ekranni ulashish",
+    "statusLive": "Jonli",
+    "statusLost": "Ulanish uzildi",
+    "statusNotShared": "Ulashilmagan",
+    "remaining": "Qoldi",
+    "reconnect": "Qayta ulanish",
+    "screenMissing": "Nomzod ekranni hali ulashmagan",
+    "cameraMissing": "Nomzod kamerani hali yoqmagan",
+    "tabLive": "Jonli",
+    "tabFinished": "Yechganlar",
+    "nobodyFinished": "Hali hech kim yechib bo'lmagan",
+    "loadMore": "Yana yuklash",
+    "selectFinished": "Natijani ko'rish uchun xodimni tanlang",
+    "result": "Natija",
+    "correct": "To'g'ri javoblar",
+    "startedAt": "Boshlagan",
+    "endedAt": "Tugatgan",
+    "sendAlert": "Ogohlantirish",
+    "alertTemplates": "Tayyor matnlar",
+    "alertCustom": "O'z matningizni yozing",
+    "alertSend": "Yuborish",
+    "alertSent": "Ogohlantirish yuborildi",
+    "alertTitle": "Kuzatuvchidan ogohlantirish",
+    "alertOk": "Tushundim",
+    "alertText": {
+      "lookCamera": "Iltimos, kameraga qarang va yuzingiz ko'rinib tursin",
+      "noOtherWindows": "Boshqa oyna va dasturlarni ochmang",
+      "noPhone": "Telefon va boshqa qurilmalardan foydalanmang",
+      "alone": "Xonada yolg'iz bo'lishingiz kerak",
+      "noTalk": "Gaplashmang va tashqi yordamdan foydalanmang",
+      "lastWarning": "Oxirgi ogohlantirish: qoidabuzarlik takrorlansa, imtihon bekor qilinadi"
+    },
+    "screenError": {
+      "denied": "Ekran ulashishga ruxsat berilmadi",
+      "not_monitor": "Faqat butun ekranni tanlang (oyna yoki tab emas)"
+    }
   }
 }

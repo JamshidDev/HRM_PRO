@@ -25,6 +25,7 @@ import AttestationTopicIcon from '@assets/icons/Topics.svg'
 import AttestationCategoryIcon from '@assets/icons/dashboard.svg'
 import AttestationExamIcon from '@assets/icons/Exams.svg'
 import AttestationResultIcon from '@assets/icons/Results.svg'
+import AttestationMonitoringIcon from '@assets/icons/ExamMonitoring.svg'
 import TurnstileDashboardIcon from '@assets/icons/dashboard.svg'
 import TurnstileAccessLevelsIcon from '@assets/icons/groups.svg'
 import TurnstileOrgAccessLevelsIcon from '@assets/icons/Organizations.svg'
@@ -524,8 +525,8 @@ export const navigations = withRawIcons([
     permission: appPermissions.exam,
     children: [
       {
-        label: 'topicPage.name', // Mavzular
-        path: Utils.routeAttestationPathMaker(AppPaths.Topic),
+        label: 'topicPage.name', // Imtihonlar
+        path: Utils.routeAttestationPathMaker(AppPaths.Exams),
         icon: AttestationTopicIcon,
         color: 'bg-warning',
         permission: appPermissions.examTopicsRead
@@ -538,11 +539,18 @@ export const navigations = withRawIcons([
         permission: appPermissions.examCategoriesRead
       },
       {
-        label: 'examPage.name', // Imtihonlar
-        path: Utils.routeAttestationPathMaker(AppPaths.Exam),
+        label: 'examPage.myExams', // Mening imtihonlarim
+        path: Utils.routeAttestationPathMaker(AppPaths.MyExams),
         icon: AttestationExamIcon,
         color: 'bg-secondary',
         permission: appPermissions.examExamsRead
+      },
+      {
+        label: 'examMonitoringPage.name', // Imtihon kuzatuvi
+        path: Utils.routeAttestationPathMaker(AppPaths.ExamMonitoring),
+        icon: AttestationMonitoringIcon,
+        color: 'bg-dark',
+        permission: appPermissions.examMonitoringRead
       },
       {
         label: 'examPage.result', // Natijalar

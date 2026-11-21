@@ -1,10 +1,9 @@
 <script setup>
-  import { UIBadge, UITable, UITablePagination } from '@/components/index.js'
+  import { UITable, UITablePagination } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useTopicExamStore, useTopicStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import question from '@/assets/icons/question.svg'
   import editRefreshIcon from '@/assets/icons/editRefreshIcon.svg'
   import trash from '@/assets/icons/trash.svg'
 
@@ -34,21 +33,6 @@
     store._delete()
   }
 
-  const onAttachQuestion = (row) => {
-    if (!accStore.checkAction(accStore.pn.examTopicsWrite)) return
-    selectExam(row)
-    store.attachCategoryVisible = true
-    store.attachCategoryVisibleType = true
-    store._get_attached_categories()
-  }
-
-  const onToggleActive = (row) => {
-    if (!accStore.checkAction(accStore.pn.examTopicsWrite)) return
-    selectExam(row)
-    store.payload = { active: !row.active }
-    store._update()
-  }
-
   const changePage = (v) => {
     store.topicId = topicStore.elementId
     store.params.page = v.page
@@ -64,9 +48,9 @@
       render: (row) => Utils.timeOnlyDate(row.created)
     },
     {
-      key: 'name',
-      title: t('content.name'),
-      minWidth: 220
+      key: 'language',
+      title: t('topicDetailsPage.exams.language'),
+      minWidth: 200
     },
     {
       key: 'tests_count',
@@ -85,24 +69,6 @@
       title: t('examPage.duration'),
       width: 130,
       align: 'center'
-    },
-    {
-      key: 'whom.name',
-      title: t('examPage.toWhom'),
-      minWidth: 200
-    },
-    {
-      key: 'deadline',
-      title: t('examPage.deadlineTitle'),
-      width: 130
-    },
-    {
-      // Keng jadvalda skroll ortida qolmasin — amallar yonida mahkamlangan.
-      key: 'active',
-      title: t('content.status'),
-      width: 130,
-      align: 'center',
-      fixed: 'right'
     }
   ])
 
@@ -118,12 +84,6 @@
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(trash),
       action: onDelete
-    },
-    {
-      label: t('topicDetailsPage.questions.name'),
-      key: Utils.ActionTypes.attachment,
-      icon: UIHelper.renderIcon(question),
-      action: onAttachQuestion
     }
   ])
 </script>
@@ -145,27 +105,16 @@
       {{ Utils.timeOnlyDate(row.created) }}
     </template>
 
+    <template #cell-language="{ row }">
+      {{ row.language ? $t(`examLanguages.${row.language}`) : row.name }}
+    </template>
+
     <template #cell-minute="{ row }">
-      {{ $t('examPage.nMinute', { n: row.minute }) }}
-    </template>
-
-    <template #cell-deadline="{ row }">
-      {{ Utils.timeOnlyDate(row.deadline) }}
-    </template>
-
-    <template #cell-active="{ row }">
-      <button
-        type="button"
-        class="inline-flex cursor-pointer border-0 bg-transparent p-0"
-        :title="$t('topicDetailsPage.exams.isActive')"
-        @click.stop="onToggleActive(row)"
-      >
-        <UIBadge
-          :label="row.active ? $t('content.active') : $t('content.noActive')"
-          :type="row.active ? Utils.colorTypes.success : Utils.colorTypes.secondary"
-          :show-icon="false"
-        />
-      </button>
+      {{
+        row.minute == null
+          ? $t('topicDetailsPage.exams.unlimited')
+          : $t('examPage.nMinute', { n: row.minute })
+      }}
     </template>
 
     <template #footer>

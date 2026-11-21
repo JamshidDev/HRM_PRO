@@ -20,7 +20,24 @@ const _delete = async (payload) => {
   return await axios.delete(`/v1/exam/topics/${payload.id}`)
 }
 
+// Hali saqlanmagan katta imtihon doirasi bo'yicha lavozim/xodimlar (scope, department_ids).
+const _audiencePositions = async (payload) => {
+  return await axios.get(`/v1/exam/topic-audience/positions`, { params: payload.params })
+}
+
+const _audienceWorkers = async (payload) => {
+  return await axios.get(`/v1/exam/topic-audience/workers`, { params: payload.params })
+}
+
+// Faqat holat (faol / ko'rinmas).
+const _setActive = async (payload) => {
+  return await axios.patch(`/v1/exam/topics/${payload.id}/active`, { active: payload.active })
+}
+
 export default {
+  _setActive,
+  _audiencePositions,
+  _audienceWorkers,
   _index,
   _create,
   _update,

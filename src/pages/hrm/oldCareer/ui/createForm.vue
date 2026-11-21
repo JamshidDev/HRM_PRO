@@ -10,8 +10,7 @@
 
   // Oldingi ish joyi — sanalar kelajakda bo'lmaydi, tugash sanasi boshlanishdan oldin emas (QA-22).
   // Kalendarda kelajak kunlari yopiq; qo'lda yozilgan sana qoidalar orqali tekshiriladi.
-  // BACKEND: POST/PUT /v1/hr/worker-old-careers ham to_date >= from_date va kelajak sanani tekshirsin —
-  // hozir mantiqsiz yozuvni 201 bilan saqlaydi (QA-22).
+  // Server ham to_date >= from_date va kelajak sanani tekshiradi (QA-22).
   const endOfToday = () => new Date().setHours(23, 59, 59, 999)
   const isFutureDay = (ts) => ts > endOfToday()
   const isToDateDisabled = (ts) =>

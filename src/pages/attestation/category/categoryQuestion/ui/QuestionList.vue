@@ -1,5 +1,5 @@
 <script setup>
-  import { useCategoryQuestionStore } from '@/store/modules'
+  import { useCategoryQuestionStore, useCategoryStore } from '@/store/modules'
   import {
     NoDataPicture,
     UIEditorViewer,
@@ -8,6 +8,7 @@
   } from '@/components/index.js'
 
   const store = useCategoryQuestionStore()
+  const categoryStore = useCategoryStore()
 
   const onClickAction = (v) => {
     if (v.key === 'edit') {
@@ -55,8 +56,9 @@
               <UIEditorViewer :html="item.ques" />
             </div>
             <n-spin v-if="item.id === store.elementId && store.deleteLoading" size="small" />
+            <!-- Boshqa korxonaning ommaviy to'plami — tahrir/o'chirish yo'q. -->
             <UIMenuButton
-              v-else
+              v-else-if="categoryStore.current?.can_edit"
               class="shrink-0"
               :data="item"
               permission-prefix="exam-categories"

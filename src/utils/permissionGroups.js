@@ -916,7 +916,8 @@ export const PERMISSION_GROUPS = [
       { prefix: 'exam-topics', label: 'topicPage.name' },
       { prefix: 'exam-categories', label: 'categoryPage.name' },
       { prefix: 'exam-exams', label: 'examPage.name' },
-      { prefix: 'exam-results', label: 'examPage.result' }
+      { prefix: 'exam-results', label: 'examPage.result' },
+      { prefix: 'exam-monitoring', label: 'examMonitoringPage.name' }
     ]
   },
   {
