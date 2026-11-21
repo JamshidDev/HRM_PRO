@@ -5,6 +5,10 @@
 <script setup>
   import { ref, onMounted, onUnmounted, watch } from 'vue'
   import * as echarts from 'echarts'
+  import i18n from '@/i18n/index.js'
+  import { useAppStore } from '@/store/modules/index.js'
+
+  const appStore = useAppStore()
 
   const props = defineProps({
     // [{ value, name, color }] — color CSS token nomi (--fig-icon-green va h.k.)
@@ -19,56 +23,44 @@
   const tokenColor = (name) =>
     getComputedStyle(document.documentElement).getPropertyValue(name).trim()
 
+  // HRM dashboard donutlari kabi: qalin halqa, bo'laklar orasida karta rangidagi
+  // chegara, yorliqsiz; hover'da bo'lak kattalashmaydi — qolganlari xiralashadi.
   const getOption = () => ({
     tooltip: {
+      appendTo: 'body',
       trigger: 'item',
       backgroundColor: tokenColor('--surface-section'),
       borderColor: tokenColor('--surface-line'),
-      textStyle: { color: tokenColor('--fig-text-primary') }
+      textStyle: { color: tokenColor('--fig-text-primary'), fontSize: 12 }
     },
     series: [
-      // orqa fon halqasi — segmentlar shu yo'lak ichida joylashadi
       {
         type: 'pie',
-        radius: ['44%', '94%'],
-        silent: true,
-        animation: false,
+        radius: ['62%', '100%'],
+        emphasis: { scale: false, focus: 'self' },
+        blur: { itemStyle: { opacity: 0.35 } },
+        avoidLabelOverlap: false,
         label: { show: false },
         labelLine: { show: false },
-        emphasis: { disabled: true },
-        tooltip: { show: false },
-        data: [{ value: 1, itemStyle: { color: tokenColor('--fig-br-disable') } }]
-      },
-      {
-        type: 'pie',
-        radius: ['52%', '86%'],
-        avoidLabelOverlap: false,
-        padAngle: 4,
         itemStyle: {
-          borderRadius: 8
+          borderRadius: 6,
+          borderColor: tokenColor('--fig-block-bg'),
+          borderWidth: 3
         },
-        // Maketdagi oq "pill" yorliqlar: fon oq, radius to'liq, matn segment rangida
-        label: {
-          show: true,
-          position: 'inside',
-          formatter: ({ percent }) => `${percent.toFixed(0)}%`,
-          fontSize: 10,
-          lineHeight: 12,
-          fontWeight: 500,
-          backgroundColor: '#ffffff',
-          borderRadius: 9999,
-          padding: [2, 6]
-        },
-        labelLine: { show: false },
         data: props.data.map((v) => ({
           value: v.value,
-          name: v.name,
-          itemStyle: { color: tokenColor(v.color) },
-          label: { color: tokenColor(v.color) }
+          name: i18n.global.t(v.name),
+          itemStyle: { color: tokenColor(v.color) }
         }))
       }
     ]
   })
+
+  // Mavzu almashganda ranglar tokenlardan qayta o'qiladi.
+  watch(
+    () => appStore.isDark,
+    () => nextTick(() => chart?.setOption(getOption(), true))
+  )
 
   const handleResize = () => chart?.resize()
 

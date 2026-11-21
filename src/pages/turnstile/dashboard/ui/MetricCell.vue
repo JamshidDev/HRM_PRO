@@ -1,4 +1,8 @@
 <script setup>
+  /**
+   * Grafik legendasi — HRM dashboard «Ishga qabul / bo'shatish» kartasidagi kabi:
+   * bitta qatorda nuqta + nom + qalin son. Bosiladigan bo'lsa hover'da ko'z belgisi.
+   */
   import { Eye20Filled } from '@vicons/fluent'
   import { Utils } from '@/utils/index.js'
   import { UICountUp } from '@/components/index.js'
@@ -9,7 +13,7 @@
       type: [Number, String],
       default: 0
     },
-    // Maketdagi legenda nuqtasi rangi (CSS o'zgaruvchi nomi)
+    // Legenda nuqtasi rangi (CSS o'zgaruvchi nomi)
     dotColor: {
       type: String,
       default: '--fig-icon-indigo'
@@ -22,33 +26,25 @@
 
 <template>
   <div
-    class="relative group flex-1 min-w-0 flex flex-col justify-center gap-1 px-4 transition-all duration-300"
-    :class="clickable ? 'cursor-pointer' : ''"
+    class="relative group flex items-center gap-2 rounded-lg px-3 py-1 transition-colors duration-200"
+    :class="clickable ? 'cursor-pointer hover:bg-fig-bg-secondary' : ''"
   >
-    <div
+    <span
+      class="h-2.5 w-2.5 shrink-0 rounded-full"
+      :style="{ backgroundColor: `var(${dotColor})` }"
+    ></span>
+    <p class="text-[14px] leading-5 whitespace-nowrap text-fig-text-muted">
+      {{ label }}
+    </p>
+    <p class="text-[18px] leading-6 font-bold whitespace-nowrap text-fig-text-primary">
+      <UICountUp :value="formatted" />
+    </p>
+    <n-icon
       v-if="clickable"
-      class="z-10 transition-all duration-500 scale-0 absolute left-1/2 top-1/2 -translate-1/2 text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100"
+      size="16"
+      class="shrink-0 text-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100"
     >
-      <n-icon size="28">
-        <Eye20Filled />
-      </n-icon>
-    </div>
-
-    <div class="transition-all duration-300" :class="clickable ? 'group-hover:opacity-[0.2]' : ''">
-      <div class="flex items-center gap-2.5">
-        <span
-          class="w-2.5 h-2.5 rounded-full shrink-0"
-          :style="{ backgroundColor: `var(${dotColor})` }"
-        ></span>
-        <span class="text-[14px] leading-[20px] text-fig-text-tertiary truncate">
-          {{ label }}
-        </span>
-      </div>
-      <p
-        class="font-grotesk font-semibold text-[20px] leading-[24px] text-fig-text-primary whitespace-nowrap mt-1"
-      >
-        <UICountUp :value="formatted" />
-      </p>
-    </div>
+      <Eye20Filled />
+    </n-icon>
   </div>
 </template>

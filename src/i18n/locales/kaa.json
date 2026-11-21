@@ -5852,23 +5852,75 @@
       "day_offInfo": "Grafik boyınsha usı kúni dem alıs kúni",
       "excusedInfo": "Xızmet saparı, keselik, turniketten azat hám basqa sebepler"
     },
+    "live": {
+      "now": "Házir"
+    },
+    "hourly": {
+      "title": "Kún dawamında ótiwler",
+      "hint": "Turniket yamasa mobil arqalı ótken xızmetkerler sanı, {n} saatlıq aralıqlarda",
+      "peak": "Eń kóp waqıt",
+      "active": "Aktiv waqıt",
+      "people": "xızmetker",
+      "total": "Jámi ótiwler"
+    },
+    "rate": {
+      "title": "Búgingi qatnasıw dárejesi",
+      "titleDay": "Qatnasıw dárejesi",
+      "hint": "Grafik boyınsha tańlanǵan kúni keliwi shárt bolǵanlardan neshewi keldi. Dem alıs, kesellik, xızmet sapari sıyaqlı sebepli xızmetkerler esapqa alınbaydı",
+      "mobile": "mobil",
+      "good": "Jaqsı",
+      "medium": "Ortasha",
+      "low": "Tómen",
+      "mustCome": "Keliwi shárt"
+    },
+    "kpi": {
+      "cameHint": "Tańlanǵan kúni keminde bir ret turniket yamasa mobil qosımsha arqalı ótken xızmetkerler",
+      "absentHint": "Tańlanǵan kúni pútkilley ótpegen xızmetkerler: grafik boyınsha keliwi kerek bolǵanlar hám grafigi joqlar. Dem alıs, dem alıw kúni hám sebepli xızmetkerler bul sanǵa kirmeydi",
+      "inOfficeHint": "Kelgenlerden sońǵı ótiwi «kiriw» bolǵanlar — házir ishte",
+      "leftOfficeHint": "Kelgenlerden sońǵı ótiwi «shıǵıw» bolǵanlar — kelip, keyin shıǵıp ketken",
+      "turnstile": "Turniket arqalı",
+      "mobile": "Mobil qosımsha arqalı",
+      "noEvent": "Keliwi kerek edi",
+      "noSchedule": "Grafigi joq",
+      "came": "Kelgenler",
+      "left": "Shıǵıp ketkenler",
+      "early": "Erte ketkenler",
+      "turnstileShort": "Turniket",
+      "mobileShort": "Mobil qosımsha",
+      "coverage": "Grafik penen qamtılǵan",
+      "needSchedule": "{n} xızmetkerge grafik dúziw kerek",
+      "devGood": "Turaqlı islep tur",
+      "devWarn": "Itibar talap etedi",
+      "devBad": "Kóp qurılma baylanıssız",
+      "devOffline": "{n} qurılma baylanısta emes",
+      "notComingReasons": "Kelmew sebepleri"
+    },
     "plan": {
       "title": "Reje boyınsha qatnas",
       "expected": "Keliwi kerek",
       "came": "Kelgenler",
       "absent": "Kelmegenler",
-      "excused": "Sebepli",
+      "excused": "Sebepli yamasa dem alısta",
       "expectedInfo": "Grafik boyınsha usı kúni jumıs kúni bolǵan xızmetkerler",
       "cameInfo": "Turniket yamasa mobil úskene arqalı ótkenler",
       "absentInfo": "Jumıs kúni bolsa da turniket hám mobil hádiysesi joq",
-      "excusedInfo": "Dem alıs, xızmet saparı, keselik yamasa basqa ruqsat penen"
+      "excusedInfo": "Dem alıs, xızmet saparı, keselik yamasa basqa ruqsat penen",
+      "cameTitle": "Grafik boyınsha kelgenler",
+      "absentTitle": "Grafik boyınsha kelmegenler"
     },
     "privilegeCard": {
-      "title": "Turniket imtiyazı berilgen xızmetkerler",
+      "title": "Jumıs grafigine jeńillik berilgen xızmetkerler",
       "arrive": "Keliw",
       "leave": "Ketiw",
       "all": "Barlıǵın kóriw",
-      "empty": "Imtiyazlı xızmetker joq"
+      "empty": "Imtiyazlı xızmetker joq",
+      "hint": "Jumıs waqıtına salıstırǵanda neshe minut keshigip keliw yamasa erte ketiwge ruxsat berilgen xızmetkerler",
+      "late": "Keshigip keliwge",
+      "early": "Erte ketiwge",
+      "minutes": "{n} minut",
+      "none": "joq",
+      "minutesShort": "{n} min",
+      "subtitle": "Keshigip keliw yamasa erte ketiwge ruxsat berilgen"
     },
     "tabs": {
       "report": "Esabat",

@@ -1,10 +1,13 @@
 <script setup>
+  /**
+   * Yuqoridagi KPI kartasi — HRM dashboard `FigKpiCard` ko'rinishida:
+   * tint chip + sarlavha, 20px son (o'ngda avatarlar), pastda `bg-secondary`
+   * blokda «nom — qiymat» qatorlari. Butun karta bosiladi (ro'yxat oynasi).
+   */
+  import { Info16Regular, ChevronRight20Regular } from '@vicons/fluent'
   import { UICountUp, UIUserGroup } from '@/components/index.js'
   import { Utils } from '@/utils/index.js'
-  import Watermark1 from '@/assets/icons/dashboard/card-watermark-1.svg'
-  import Watermark2 from '@/assets/icons/dashboard/card-watermark-2.svg'
-  import Watermark3 from '@/assets/icons/dashboard/card-watermark-3.svg'
-  import Watermark4 from '@/assets/icons/dashboard/card-watermark-4.svg'
+  import { TINT, TINT_STYLE } from './palette.js'
 
   const props = defineProps({
     count: Number,
@@ -15,84 +18,112 @@
       type: Number,
       default: null
     },
-    // Chip foni: green | orange | yellow | red
+    // Chip foni va ikonka rangi — palitra roli: main | second | warn | bad
     tint: {
       type: String,
-      default: 'green'
+      default: 'main'
     },
-    // Yuqori o'ng burchakdagi dekorativ rasm: 1 | 2 | 3 | 4
-    decor: {
-      type: Number,
+    // Pastki blok: [{ label, value, previewType? }] — `previewType` bo'lsa qator bosiladi
+    rows: {
+      type: Array,
+      default: () => []
+    },
+    // Sarlavha yonidagi ⓘ — son qanday hisoblanishi
+    hint: {
+      type: String,
       default: null
     }
   })
 
-  const tintClass = computed(
-    () =>
-      ({
-        green: 'bg-fig-green-100',
-        orange: 'bg-fig-orange-100',
-        yellow: 'bg-fig-yellow-100',
-        red: 'bg-fig-red-100'
-      })[props.tint] || 'bg-fig-green-100'
-  )
+  const emits = defineEmits(['rowPreview'])
 
-  const decorIcons = { 1: Watermark1, 2: Watermark2, 3: Watermark3, 4: Watermark4 }
-  const decorIcon = computed(() => decorIcons[props.decor] || null)
+  // `tint` — palitra roli (main | second | warn | bad).
+  const tint = computed(() => TINT_STYLE[TINT[props.tint] || props.tint] || TINT_STYLE.blue)
 
-  const formatted = computed(() => Utils.formatNumberToMoney(props.count) || '0')
+  const formatCount = (v) => Utils.formatNumberToMoney(v) || '0'
 </script>
 
 <template>
   <div
-    class="flex flex-col gap-3 cursor-pointer hover-effect-card pt-4 px-1 pb-1 rounded-2xl bg-surface-section shadow-card relative overflow-hidden"
+    class="hover-effect-card relative flex flex-col gap-2 overflow-hidden rounded-2xl bg-fig-block shadow-card px-1 pt-1.5 pb-1"
   >
-    <!-- yuqori o'ng burchakdagi xira dekor -->
-    <span
-      v-if="decorIcon"
-      aria-hidden="true"
-      class="absolute top-0 right-0 w-16 h-16 flex items-center justify-center pointer-events-none select-none"
-    >
-      <component :is="decorIcon" />
-    </span>
-
-    <!-- ikonka + sarlavha -->
     <div class="relative flex items-center gap-1 px-2">
-      <div class="shrink-0 rounded-lg p-1" :class="tintClass">
-        <span class="w-5 h-5 flex items-center justify-center">
+      <span class="shrink-0 rounded-lg p-1" :class="tint[0]">
+        <span
+          class="kpi-icon flex h-5 w-5 items-center justify-center"
+          :style="{ color: `var(${tint[1]})` }"
+        >
           <component :is="icon" />
         </span>
-      </div>
-      <p class="text-[14px] leading-[18px] font-medium text-fig-text-primary truncate">
+      </span>
+      <p
+        class="min-w-0 flex-1 truncate text-[14px] leading-[18px] font-medium text-fig-text-tertiary"
+      >
         {{ title }}
       </p>
+      <n-tooltip v-if="hint" :style="{ maxWidth: '280px' }">
+        <template #trigger>
+          <n-icon size="16" class="shrink-0 cursor-help text-fig-text-tertiary" @click.stop>
+            <Info16Regular />
+          </n-icon>
+        </template>
+        {{ hint }}
+      </n-tooltip>
     </div>
 
-    <!-- katta raqam + o'zgarish, o'ngda avatarlar -->
-    <div class="relative flex items-center justify-between gap-3 px-2 pb-3 min-h-[40px]">
-      <div class="flex items-center gap-2 min-w-0">
-        <p
-          class="font-grotesk font-semibold text-[20px] leading-[24px] text-fig-text-primary whitespace-nowrap"
-        >
-          <UICountUp :value="formatted" />
-        </p>
-      </div>
-      <span class="shrink-0 card-avatars" v-if="listMore">
-        <UIUserGroup
-          @click.stop
-          :max="3"
-          :size="28"
-          :data="listMore > 3 ? [...list, ...list] : list"
-          :has-more="listMore - 3"
-        />
+    <div class="flex min-h-[28px] items-center justify-between gap-3 px-2">
+      <p class="text-[20px] leading-6 font-semibold whitespace-nowrap text-fig-text-primary">
+        <UICountUp :value="formatCount(count)" />
+      </p>
+      <span v-if="listMore && list?.length" class="card-avatars shrink-0">
+        <!-- Faqat dastlabki 3 xodim (namuna); jami son chapda yozilgan, «+39 101»
+             kabi katta son 28px doirachaga sig'masdi. -->
+        <UIUserGroup @click.stop :max="4" :size="28" :data="list.slice(0, 3)" hide-more />
       </span>
+    </div>
+
+    <!-- `mt-auto` — qo'shni karta balandroq bo'lsa ham blok pastda qoladi.
+         Har qator hisobning bir qismi; bosilsa o'sha ro'yxat ochiladi. -->
+    <div v-if="rows.length" class="mt-auto flex flex-col rounded-xl bg-fig-bg-secondary p-1">
+      <component
+        :is="row.previewType ? 'button' : 'div'"
+        v-for="(row, idx) in rows"
+        :key="idx"
+        type="button"
+        class="group/row flex h-7 w-full items-center gap-2 rounded-lg px-2 text-left transition-colors duration-200"
+        :class="row.previewType ? 'cursor-pointer hover:bg-fig-block' : 'cursor-default'"
+        @click.stop="row.previewType && emits('rowPreview', row.previewType)"
+      >
+        <p class="min-w-0 flex-1 truncate text-[12px] leading-4 text-fig-text-tertiary" :title="row.label">
+          {{ row.label }}
+        </p>
+        <p class="shrink-0 text-right text-[12px] leading-4 font-semibold whitespace-nowrap text-fig-text-primary">
+          <UICountUp :value="formatCount(row.value)" />
+        </p>
+        <n-icon
+          size="14"
+          class="shrink-0 text-fig-text-tertiary transition-transform duration-200 group-hover/row:translate-x-0.5"
+          :class="row.previewType ? '' : 'invisible'"
+        >
+          <ChevronRight20Regular />
+        </n-icon>
+      </component>
     </div>
   </div>
 </template>
 
 <style scoped>
-  /* Maketda avatarlar 28px, 1px oq-kulrang halqa va 8px ustma-ust.
-     Global `.ui__user-group` 36×42 rasm beradi — bu yerda 28×28 ga qaytaramiz. */
+  .kpi-icon :deep(path[fill]:not([fill='none'])) {
+    fill: currentColor;
+  }
+
+  /* Fluent (vicons) ikonkalarida o'lcham yo'q — 20px; o'z o'lchamli SVG'lar o'zgarmaydi. */
+  .kpi-icon :deep(svg:not([width])) {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Avatarlar 28px, 1px halqa. Global `.ui__user-group` 36×42 rasm beradi. */
   .card-avatars :deep(.ui__user-group > img) {
     width: 28px !important;
     height: 28px !important;
