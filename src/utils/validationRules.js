@@ -1707,8 +1707,7 @@ export default {
     }
   },
   topicPage: {
-    // BACKEND: POST /v1/exam/categories va /v1/exam/topics nomida HTML teg (`<script>…`) saqlanadi — serverda ham
-    // `<`/`>` taqiqlansin, dev bazadagi test yozuvlari tozalansin (QA-40, DAS-14233).
+    // `<`/`>` taqiqlangan — server ham rad etadi (QA-40).
     name: [
       {
         required: true,

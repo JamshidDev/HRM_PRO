@@ -109,6 +109,21 @@
 
   const isExam = computed(() => route.path.includes('worker-exams'))
 
+  // YYYY-MM-DD → DD.MM.YYYY
+  const fmtDate = (v) => (v ? String(v).slice(0, 10).split('-').reverse().join('.') : '')
+  const metaRows = computed(() => {
+    const m = store.meta
+    if (!m) return []
+    const t = i18n.global.t
+    return [
+      { label: t('publicPage.electronicNumber'), value: m.electronic_number },
+      { label: t('content.number'), value: m.number },
+      { label: t('content.date'), value: fmtDate(m.date) },
+      { label: t('content.type'), value: m.type?.name },
+      { label: t('content.organization'), value: m.organization?.name }
+    ].filter((r) => r.value)
+  })
+
   // Hujjat topilmadi (yoki fayli yo'q) — panel va varaq o'rniga bitta karta.
   const notFound = computed(() => store.loaded && !store.existFile)
 </script>
@@ -166,6 +181,37 @@
             <p class="mt-1.5 text-[13px] leading-snug text-textColor2 lg:mt-3 lg:text-sm lg:leading-relaxed">
               {{ infoText }}
             </p>
+          </div>
+          <!-- Hujjat rekvizitlari va holati (bekor qilingan bo'lsa ogohlantirish) -->
+          <div v-if="store.loaded && store.meta" class="public-card px-3.5 py-3 lg:p-5">
+            <div class="flex items-center justify-between gap-2">
+              <h3 class="text-base font-semibold text-textColor0">
+                {{ $t('publicPage.documentInfo') }}
+              </h3>
+              <n-tag v-if="store.meta.is_cancelled" type="error" size="small" round>
+                {{ $t('publicPage.cancelled') }}
+              </n-tag>
+              <n-tag v-else-if="store.meta.status?.name" type="info" size="small" round>
+                {{ store.meta.status.name }}
+              </n-tag>
+            </div>
+            <div
+              v-if="store.meta.is_cancelled && store.meta.cancelled_by"
+              class="mt-2 rounded-lg bg-danger/10 px-3 py-2 text-[13px] text-danger"
+            >
+              {{
+                $t('publicPage.cancelledBy', {
+                  number: store.meta.cancelled_by.number ?? '—',
+                  date: fmtDate(store.meta.cancelled_by.date)
+                })
+              }}
+            </div>
+            <dl class="mt-2 flex flex-col gap-1.5 text-[13px] lg:text-sm">
+              <div v-for="r in metaRows" :key="r.label" class="flex justify-between gap-3">
+                <dt class="shrink-0 text-textColor2">{{ r.label }}</dt>
+                <dd class="text-right font-medium text-textColor0">{{ r.value }}</dd>
+              </div>
+            </dl>
           </div>
           <!-- Kompyuterda ro'yxat panelda; telefonda — ekranning o'ng chetidagi qotgan tugma (pastda) -->
           <Confirmations v-if="isDesktop" />

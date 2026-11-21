@@ -27,9 +27,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     workerList: [],
     workerLoading: false,
     workerTotal: 0,
-    // BACKEND: GET /v1/extra/mobile-face/workers — `has_location=false` hozir 0 ta qaytaradi
-    // (joysiz xodimlar 63 mingdan ortiq), ya'ni "false" satri true deb o'qilyapti. Shuningdek
-    // `is_free=true` (erkin rejimdagi xodimlar) parametri yo'q. Ikkalasi «Joy holati» filtri uchun kerak.
+    // `has_location` va `is_free` — «Joy holati» filtri.
     workerParams: {
       page: 1,
       per_page: 15,
@@ -79,9 +77,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       polygon: [],
       accuracy_limit: 3
     },
-    // BACKEND: GET /v1/extra/department/list hozir `has_location` (true — joyi bor, false — joysiz)
-    // va `is_free` (true — erkin rejimdagi bo'limlar) parametrlarini e'tiborsiz qoldiradi.
-    // «Filterlar» → «Joy holati» tanlanganda ro'yxat shular bilan filtrlanadi.
+    // `has_location` va `is_free` — «Joy holati» filtri.
     params: {
       page: 1,
       per_page: 15,
@@ -91,9 +87,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       is_free: null,
       place_id: null
     },
-    // BACKEND: GET /v1/extra/department/locations — joylashuv turi bo'yicha filtr kerak:
-    // `geo_type` (false — nuqta+radius, true — hudud/polygon) va `is_free=true` (erkin rejim).
-    // Hozir swagger'da faqat page, per_page, search, organization_id, department_id bor.
+    // `geo_type` (false — nuqta+radius, true — hudud) va `is_free` filtrlari.
     locationParams: {
       page: 1,
       per_page: 15,

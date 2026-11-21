@@ -6298,7 +6298,11 @@
     "verifiedPoint2": "Asl nusxa HRM PRO tizimida saqlanadi va o'zgartirib bo'lmaydi",
     "verifiedPoint3": "Qo'lingizdagi hujjat bilan solishtiring — matn bir xil bo'lsa, hujjat haqiqiy",
     "invalidHint": "Havolani yoki QR-kodni tekshirib, qaytadan urinib ko'ring.",
-    "closeQuestion": "Savollar ro'yxatini yopish"
+    "closeQuestion": "Savollar ro'yxatini yopish",
+    "documentInfo": "Hujjat ma'lumotlari",
+    "electronicNumber": "Elektron raqam",
+    "cancelled": "Bekor qilingan",
+    "cancelledBy": "{number}-sonli buyruq bilan bekor qilingan ({date})"
   },
   "socketPage": {
     "usersMOdalTitle": "Barcha onlayn foydalanuvchilar ro'yxati"

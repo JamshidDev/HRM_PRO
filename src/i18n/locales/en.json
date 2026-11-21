@@ -6211,7 +6211,11 @@
     "verifiedPoint2": "The original is stored in HRM PRO and cannot be changed",
     "verifiedPoint3": "Compare it with the document in your hands — if the text matches, the document is genuine",
     "invalidHint": "Check the link or QR code and try again.",
-    "closeQuestion": "Close question list"
+    "closeQuestion": "Close question list",
+    "documentInfo": "Document details",
+    "electronicNumber": "Electronic number",
+    "cancelled": "Cancelled",
+    "cancelledBy": "Cancelled by order No. {number} ({date})"
   },
   "socketPage": {
     "usersMOdalTitle": "All online users list"

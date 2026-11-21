@@ -17,6 +17,8 @@ export const usePublicStore = defineStore('usePublicStore', {
     detailLoading: false,
     confirmations: [],
     existFile: false,
+    // QR sahifa uchun hujjat rekvizitlari (raqam, sana, tur, korxona, holat, bekor qilinganlik)
+    meta: null,
     // Javob keldi (topildi yoki yo'q) — «topilmadi» kartasi faqat shundan keyin ko'rinadi
     loaded: false
   }),
@@ -41,16 +43,6 @@ export const usePublicStore = defineStore('usePublicStore', {
           $Toast.error(error.response?.data?.message)
         })
     },
-    // BACKEND: `POST /v1/document/view/{model}/{uuid}` (QR-kod ochadigan ommaviy sahifa) hozir faqat
-    // `uuid`, `file`, `confirmations`, `files` qaytaradi. Sahifada hujjatni aniqlash uchun quyidagilar kerak:
-    //   - `electronic_number` — «UTY-768425» (ro'yxatdagi kabi)
-    //   - `number` — hujjat raqami («№123», buyruqda `command_number`)
-    //   - `date` — hujjat sanasi (`YYYY-MM-DD`), `type: { id, name }` — hujjat turi
-    //   - `organization: { id, name }`
-    //   - `status: { id, name }` — hujjatning umumiy holati (Tasdiqlangan / Jarayonda / Rad etilgan)
-    //   - `is_cancelled` + `cancelled_by: { number, date }` — boshqa buyruq bilan bekor qilingan bo'lsa
-    // Shuningdek: dev'da Tasdiqlangan buyruqda (id 92685) barcha `confirmations[].status` hali «Jarayonda» —
-    // imzolagan kelishuvchi uchun haqiqiy holat (va `histories` da imzo sanasi) kelishi kerak.
     _getDocument(callback) {
       this.loading = true
       $ApiService.publicService
@@ -63,6 +55,17 @@ export const usePublicStore = defineStore('usePublicStore', {
           }
           this.existFile = true
           this.confirmations = res.data.data?.confirmations ?? []
+          const d = res.data.data ?? {}
+          this.meta = {
+            electronic_number: d.electronic_number ?? null,
+            number: d.number ?? null,
+            date: d.date ?? null,
+            type: d.type ?? null,
+            organization: d.organization ?? null,
+            status: d.status ?? null,
+            is_cancelled: !!d.is_cancelled,
+            cancelled_by: d.cancelled_by ?? null
+          }
           callback?.(file)
         })
         .catch(() => {

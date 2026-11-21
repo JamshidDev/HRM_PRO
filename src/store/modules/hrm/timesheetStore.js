@@ -33,9 +33,10 @@ export const useTimesheetStore = defineStore('timesheetStore', {
       search: null,
       organizations: [],
       // Yil va oy alohida: faqat yil bo'yicha ham qidirish mumkin (API `year`, `month` ni alohida oladi).
-      // BACKEND: `GET /v1/timesheet` da tabel holati (ochiq / yopilgan / yakunlangan) bo'yicha filter yo'q.
       year: null,
-      month: null
+      month: null,
+      // Holat: finished | sent | locked | open (backend `state`).
+      state: null
     },
     structureCheck2: [],
     lockLoadingId: null
@@ -47,7 +48,8 @@ export const useTimesheetStore = defineStore('timesheetStore', {
         ...this.params,
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
         year: this.params.year || undefined,
-        month: this.params.month || undefined
+        month: this.params.month || undefined,
+        state: this.params.state || undefined
       }
       $ApiService.timesheetService
         ._index({ params })

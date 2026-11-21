@@ -6298,7 +6298,11 @@
     "verifiedPoint2": "Túp nusqa HRM PRO sistemasında saqlanadı hám onı ózgertip bolmaydı",
     "verifiedPoint3": "Qolıńızdaǵı hújjet penen salıstırıń — tekst birdey bolsa, hújjet haqıyqıy",
     "invalidHint": "Siltemeni yamasa QR-kodtı tekserip, qaytadan urınıp kóriń.",
-    "closeQuestion": "Sorawlar dizimin jabıw"
+    "closeQuestion": "Sorawlar dizimin jabıw",
+    "documentInfo": "Hújjet maǵlıwmatları",
+    "electronicNumber": "Elektron nomer",
+    "cancelled": "Biykar etilgen",
+    "cancelledBy": "{number}-sanlı buyrıq penen biykar etilgen ({date})"
   },
   "socketPage": {
     "usersMOdalTitle": "Barlıq onlayn paydalanıwshılar dizimi"

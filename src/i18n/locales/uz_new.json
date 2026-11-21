@@ -6298,7 +6298,11 @@
     "verifiedPoint2": "Asl nusxa HRM PRO tizimida saqlanadi va özgartirib bölmaydi",
     "verifiedPoint3": "Qölingizdagi hujjat bilan soliştiring — matn bir xil bölsa, hujjat haqiqiy",
     "invalidHint": "Havolani yoki QR-kodni tekşirib, qaytadan urinib köring.",
-    "closeQuestion": "Savollar röyxatini yopiş"
+    "closeQuestion": "Savollar röyxatini yopiş",
+    "documentInfo": "Hujjat ma'lumotlari",
+    "electronicNumber": "Elektron raqam",
+    "cancelled": "Bekor qilingan",
+    "cancelledBy": "{number}-sonli buyruq bilan bekor qilingan ({date})"
   },
   "socketPage": {
     "usersMOdalTitle": "Barça onlayn foydalanuvçilar röyxati"
