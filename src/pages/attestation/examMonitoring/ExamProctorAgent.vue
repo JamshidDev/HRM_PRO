@@ -3,6 +3,7 @@
   import { DesktopArrowRight24Regular, Warning24Regular } from '@vicons/fluent'
   import { useSocketStore } from '@/store/modules/app/socketStore.js'
   import { useExamProctorStore } from '@/store/modules/attestation/examProctorStore.js'
+  import { useExamAttemptStore } from '@/store/modules/attestation/examAttemptStore.js'
 
   // Global agent: yechish sahifasida ekran ulashish talabi va kuzatuvchiga oqim uzatish.
   const route = useRoute()
@@ -22,6 +23,16 @@
   )
 
   const blocked = computed(() => route.name === 'solve_exam' && store.needScreen)
+
+  // Imtihon davomida sahifani yangilash/yopishdan oldin brauzer tasdig'i.
+  const attemptStore = useExamAttemptStore()
+  const onBeforeUnload = (e) => {
+    if (route.name !== 'solve_exam' || attemptStore.result) return
+    e.preventDefault()
+    e.returnValue = ''
+  }
+  onMounted(() => window.addEventListener('beforeunload', onBeforeUnload))
+  onBeforeUnmount(() => window.removeEventListener('beforeunload', onBeforeUnload))
 </script>
 
 <template>
