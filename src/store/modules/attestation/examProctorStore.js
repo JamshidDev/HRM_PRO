@@ -114,7 +114,15 @@ export const useExamProctorStore = defineStore('examProctorStore', {
         scr.getVideoTracks().forEach((t) => pc.addTrack(t, scr))
         streams.screen = scr.id
       }
-      this.emit(d.session_id, { meta: { streams } })
+      // Talab qilingan, lekin hali yo'q oqimlar kuzatuvchiga aytiladi (masalan ekran ulashilmagan).
+      const missing = []
+      if (d.screen && !scr) missing.push('screen')
+      if (d.camera && !cam) missing.push('camera')
+      this.emit(d.session_id, { meta: { streams, missing } })
+      if (!streams.camera && !streams.screen) {
+        this.closeSession(d.session_id)
+        return
+      }
       const offer = await pc.createOffer()
       await pc.setLocalDescription(offer)
       this.emit(d.session_id, { sdp: pc.localDescription.toJSON() })
@@ -134,7 +142,11 @@ export const useExamProctorStore = defineStore('examProctorStore', {
     },
 
     emit(sessionId, payload) {
-      this._socket?.emit('exam:watch:signal', { session_id: sessionId, payload })
+      this._socket?.emit('exam:watch:signal', {
+        session_id: sessionId,
+        role: 'candidate',
+        payload
+      })
     },
 
     dismissAlert() {

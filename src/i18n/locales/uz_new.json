@@ -8092,7 +8092,8 @@
       "timeout": "Nomzod ulanmadi — imtihon sahifasi ochiq emas yoki tarmoq yo'q",
       "lost": "Ulanish uzildi",
       "error": "Ulanishda xatolik",
-      "finished": "Nomzod imtihonni yakunladi"
+      "finished": "Nomzod imtihonni yakunladi",
+      "not_shared": "Nomzod kamera yoki ekranni hali ulashmagan"
     },
     "nobodySolving": "Hozir hech kim yechmayapti",
     "selectWorker": "Kuzatish uchun nomzodni tanlang",
@@ -8104,8 +8105,11 @@
     "shareScreen": "Ekranni ulashish",
     "statusLive": "Jonli",
     "statusLost": "Ulanish uzildi",
+    "statusNotShared": "Ulashilmagan",
     "remaining": "Qoldi",
     "reconnect": "Qayta ulanish",
+    "screenMissing": "Nomzod ekranni hali ulashmagan",
+    "cameraMissing": "Nomzod kamerani hali yoqmagan",
     "tabLive": "Jonli",
     "tabFinished": "Yechganlar",
     "nobodyFinished": "Hali hech kim yechib bo'lmagan",

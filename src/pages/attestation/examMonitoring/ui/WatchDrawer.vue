@@ -126,19 +126,24 @@
         : 'examMonitoringPage.noStream'
   )
 
-  const statusChip = computed(
-    () =>
-      ({
-        live: {
-          text: 'examMonitoringPage.statusLive',
-          cls: 'bg-fig-chip-green text-fig-chip-green-text'
-        },
-        connecting: {
-          text: 'examMonitoringPage.connecting',
+  // Nomzod oqimni ulashmagan bo'lsa — «uzildi» emas, kutish holati.
+  const statusChip = computed(() =>
+    store.message === 'not_shared'
+      ? {
+          text: 'examMonitoringPage.statusNotShared',
           cls: 'bg-fig-chip-amber text-fig-chip-amber-text'
-        },
-        failed: { text: 'examMonitoringPage.statusLost', cls: 'bg-fig-red-100 text-fig-text-red' }
-      })[store.status] || null
+        }
+      : {
+          live: {
+            text: 'examMonitoringPage.statusLive',
+            cls: 'bg-fig-chip-green text-fig-chip-green-text'
+          },
+          connecting: {
+            text: 'examMonitoringPage.connecting',
+            cls: 'bg-fig-chip-amber text-fig-chip-amber-text'
+          },
+          failed: { text: 'examMonitoringPage.statusLost', cls: 'bg-fig-red-100 text-fig-text-red' }
+        }[store.status] || null
   )
 </script>
 
@@ -531,7 +536,11 @@
                 :enabled="scrOn"
                 :connecting="connecting"
                 :disabled-text="$t('examMonitoringPage.screenNotEnabled')"
-                :waiting-text="$t(waiting)"
+                :waiting-text="
+                  store.missing.includes('screen')
+                    ? $t('examMonitoringPage.screenMissing')
+                    : $t(waiting)
+                "
               />
               <VideoPane
                 kind="camera"
@@ -540,7 +549,11 @@
                 :enabled="camOn"
                 :connecting="connecting"
                 :disabled-text="$t('examMonitoringPage.cameraNotEnabled')"
-                :waiting-text="$t(waiting)"
+                :waiting-text="
+                  store.missing.includes('camera')
+                    ? $t('examMonitoringPage.cameraMissing')
+                    : $t(waiting)
+                "
               />
             </div>
           </template>

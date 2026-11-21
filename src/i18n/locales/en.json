@@ -7896,7 +7896,8 @@
       "timeout": "Candidate did not connect — exam page is not open or no network",
       "lost": "Connection lost",
       "error": "Connection error",
-      "finished": "Candidate finished the exam"
+      "finished": "Candidate finished the exam",
+      "not_shared": "The candidate has not shared camera or screen yet"
     },
     "nobodySolving": "Nobody is solving now",
     "selectWorker": "Select a candidate to watch",
@@ -7908,8 +7909,11 @@
     "shareScreen": "Share screen",
     "statusLive": "Live",
     "statusLost": "Connection lost",
+    "statusNotShared": "Not shared",
     "remaining": "Left",
     "reconnect": "Reconnect",
+    "screenMissing": "The candidate has not shared the screen yet",
+    "cameraMissing": "The candidate has not turned on the camera yet",
     "tabLive": "Live",
     "tabFinished": "Finished",
     "nobodyFinished": "Nobody has finished yet",

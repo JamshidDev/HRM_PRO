@@ -8092,7 +8092,8 @@
       "timeout": "Kandidat jalǵanbadı — imtixan beti ashıq emes yamasa tarmaq joq",
       "lost": "Baylanıs úzildi",
       "error": "Jalǵanıwda qátelik",
-      "finished": "Kandidat imtixandı tamamladı"
+      "finished": "Kandidat imtixandı tamamladı",
+      "not_shared": "Kandidat kamera yamasa ekrandı ele bólispegen"
     },
     "nobodySolving": "Házir hesh kim sheshpey atır",
     "selectWorker": "Baqlaw ushın kandidattı tańlań",
@@ -8104,8 +8105,11 @@
     "shareScreen": "Ekrandı bóliśiw",
     "statusLive": "Jonlı",
     "statusLost": "Baylanıs úzildi",
+    "statusNotShared": "Bólispegen",
     "remaining": "Qaldı",
     "reconnect": "Qayta jalǵaw",
+    "screenMissing": "Kandidat ekrandı ele bólispegen",
+    "cameraMissing": "Kandidat kameranı ele qospaǵan",
     "tabLive": "Jonlı",
     "tabFinished": "Sheshkenler",
     "nobodyFinished": "Ele hesh kim sheship bolmadı",

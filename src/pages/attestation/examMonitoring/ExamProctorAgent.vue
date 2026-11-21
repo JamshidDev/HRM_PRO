@@ -42,7 +42,7 @@
         {{ $t('examMonitoringPage.alertTitle') }}
       </p>
       <p class="text-sm text-fig-text-secondary whitespace-pre-line">{{ store.alerts[0].text }}</p>
-      <n-button type="primary" class="w-full" @click="store.dismissAlert()">
+      <n-button type="primary" block @click="store.dismissAlert()">
         {{ $t('examMonitoringPage.alertOk') }}
       </n-button>
     </div>
@@ -70,7 +70,7 @@
       <p v-if="store.screenError" class="text-[12px] text-fig-text-red">
         {{ $t(`examMonitoringPage.screenError.${store.screenError}`) }}
       </p>
-      <n-button type="primary" class="w-full" @click="store.shareScreen()">
+      <n-button type="primary" block @click="store.shareScreen()">
         {{ $t('examMonitoringPage.shareScreen') }}
       </n-button>
     </div>

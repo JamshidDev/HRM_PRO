@@ -27,6 +27,8 @@ export const useExamMonitoringStore = defineStore('examMonitoringStore', {
     finishedParams: { page: 1, per_page: 20 },
     selectedFinished: null,
     alertLoading: false,
+    // Nomzodda yo'q oqimlar: ['screen', 'camera'].
+    missing: [],
     active: null,
     // idle | connecting | live | failed | unavailable
     status: 'idle',
@@ -206,6 +208,13 @@ export const useExamMonitoringStore = defineStore('examMonitoringStore', {
       const pc = this._pc
       try {
         if (p.meta?.streams) this._streams = p.meta.streams
+        if (p.meta?.missing) this.missing = p.meta.missing
+        // Hech bir oqim yo'q — ulanish kutilmaydi.
+        if (p.meta && !p.meta.streams?.camera && !p.meta.streams?.screen) {
+          clearTimeout(this._timer)
+          this.status = 'failed'
+          this.message = 'not_shared'
+        }
         if (p.sdp?.type === 'offer') {
           await pc.setRemoteDescription(p.sdp)
           const answer = await pc.createAnswer()
@@ -219,7 +228,11 @@ export const useExamMonitoringStore = defineStore('examMonitoringStore', {
     },
 
     emit(payload) {
-      this._socket?.emit('exam:watch:signal', { session_id: this._session, payload })
+      this._socket?.emit('exam:watch:signal', {
+        session_id: this._session,
+        role: 'watcher',
+        payload
+      })
     },
 
     closeWatch() {
@@ -230,6 +243,7 @@ export const useExamMonitoringStore = defineStore('examMonitoringStore', {
       this._session = null
       this.cameraStream = null
       this.screenStream = null
+      this.missing = []
       this.active = null
       this.status = 'idle'
     },
