@@ -41,7 +41,11 @@
     >
       <div class="flex gap-2 items-center w-full">
         <n-button size="large" tertiary type="primary">
-          {{ $t('examPage.nMinute', { n: exam.minute }) }}
+          {{
+            exam.minute == null
+              ? $t('topicDetailsPage.exams.unlimited')
+              : $t('examPage.nMinute', { n: exam.minute })
+          }}
           <template #icon>
             <n-icon :component="Clock32Filled" />
           </template>

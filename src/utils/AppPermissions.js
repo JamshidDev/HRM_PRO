@@ -250,6 +250,7 @@ export const appPermissions = {
   examResults: 'exam-results',
   examResultsWrite: 'exam-results-write',
   examResultsRead: 'exam-results-read',
+  examMonitoringRead: 'exam-monitoring-read',
 
   turnstile: 'turnstile',
   turnstileBuilding: 'turnstile-building',

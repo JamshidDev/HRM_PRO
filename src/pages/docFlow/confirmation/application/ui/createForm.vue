@@ -32,8 +32,6 @@
   // Tugash sanasi boshlanishdan oldin bo'lmasin. Kalendar `is-date-disabled` bilan buni faqat
   // bosishda to'sadi — klaviaturadan yozilgan sana (masalan 01.10.2026) to'g'ridan-to'g'ri
   // modelga tushadi va backend'ga borardi (DAS-14201).
-  // BACKEND: POST /v1/worker-application/applications 422 xatosida `to` maydoni «Tugash sanasi»
-  // deb ataladi, formada esa «Ta'tildan qaytish sanasi» — xato matnidagi nomni label bilan bir xil qiling.
   const notBefore = (startKey) => ({
     key: 'range',
     trigger: ['input', 'blur'],

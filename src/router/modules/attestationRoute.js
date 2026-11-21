@@ -3,12 +3,26 @@ import Utils from '@/utils/Utils.js'
 
 export const attestationRoutes = [
   {
-    path: Utils.routeAttestationPathMaker(AppPaths.Topic),
-    name: AppPaths.Topic.substring(1),
+    path: Utils.routeAttestationPathMaker(AppPaths.Exams),
+    name: AppPaths.Exams.substring(1),
     component: () => import('@/pages/attestation/topic/TopicPage.vue'),
     meta: {
       layout: AppLayouts.main
     }
+  },
+  // Eski manzillar (mavzular / xodim imtihonlari) yangisiga yo'naltiriladi.
+  {
+    path: Utils.routeAttestationPathMaker(AppPaths.Topic),
+    redirect: Utils.routeAttestationPathMaker(AppPaths.Exams)
+  },
+  {
+    path: Utils.routeAttestationPathMaker(AppPaths.Exam),
+    redirect: Utils.routeAttestationPathMaker(AppPaths.MyExams)
+  },
+  {
+    path: Utils.routeAttestationPathMaker(`${AppPaths.Exam}/:exam_id/solve`),
+    redirect: (to) =>
+      Utils.routeAttestationPathMaker(`${AppPaths.MyExams}/${to.params.exam_id}/solve`)
   },
   {
     path: Utils.routeAttestationPathMaker(AppPaths.Category),
@@ -28,6 +42,13 @@ export const attestationRoutes = [
     }
   },
   {
+    path: Utils.routeAttestationPathMaker(AppPaths.ExamMonitoring),
+    component: () => import('@/pages/attestation/examMonitoring/ExamMonitoringPage.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
     path: Utils.routeAttestationPathMaker(`${AppPaths.Result}`),
     component: () => import('@/pages/attestation/examResult/ResultPage.vue'),
     meta: {
@@ -35,14 +56,14 @@ export const attestationRoutes = [
     }
   },
   {
-    path: Utils.routeAttestationPathMaker(AppPaths.Exam),
+    path: Utils.routeAttestationPathMaker(AppPaths.MyExams),
     component: () => import('@/pages/attestation/workerTopic/WorkerTopic.vue'),
     meta: {
       layout: AppLayouts.main
     }
   },
   {
-    path: Utils.routeAttestationPathMaker(`${AppPaths.Exam}/:exam_id/solve`),
+    path: Utils.routeAttestationPathMaker(`${AppPaths.MyExams}/:exam_id/solve`),
     name: 'solve_exam',
     component: () => import('@/pages/attestation/workerTopic/solveExam/SolveExamPage.vue'),
     meta: {

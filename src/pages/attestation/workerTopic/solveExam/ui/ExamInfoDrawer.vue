@@ -57,7 +57,9 @@
           </tr>
           <tr>
             <th>{{ $t('solveExamPage.totalTime') }}</th>
-            <td>{{ examDetail.minute }}</td>
+            <td>
+              {{ examDetail.minute ?? $t('topicDetailsPage.exams.unlimited') }}
+            </td>
           </tr>
           <tr>
             <th>{{ $t('solveExamPage.deadline') }}</th>

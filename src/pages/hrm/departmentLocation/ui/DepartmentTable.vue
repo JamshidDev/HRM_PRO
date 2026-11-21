@@ -15,10 +15,7 @@
 
   const canWrite = computed(() => accStore.checkPermission(accStore.pn.departmentLocationWrite))
 
-  // BACKEND: GET /v1/extra/department/list qatorida joy faqat `location: true/false` bo'lib keladi —
-  // soni yo'q, shuning uchun jadvalda «Joy bor» yoziladi. `locations_count` (soni) va `free`
-  // (bo'limda erkin rejimli joy bormi) qo'shilsa, chipda «3 ta joylashuv» va «Erkin» chiqadi.
-  // Eski shakllar (`locations` massivi / `location` obyekti) ham qo'llab-quvvatlanadi.
+  // `locations_count` — chipda soni, `free` — erkin rejim; eski shakllar ham qo'llanadi.
   const locationCount = (row) => {
     if (typeof row?.locations_count === 'number') return row.locations_count
     if (Array.isArray(row?.locations)) return row.locations.length
