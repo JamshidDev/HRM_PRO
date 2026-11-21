@@ -406,6 +406,8 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
     //   total = came + absent + vacation + day_off + excused
     //   absent = absent_by_reason.no_event (grafik bo'yicha kelishi kerak edi) + .no_schedule (grafigi yo'q)
     //   came = in_office (oxirgi o'tishi «kirish») + left_office (oxirgi o'tishi «chiqish»)
+    // BACKEND: `in_office + left_office = came` dev'da tekshirib bo'lmadi (o'tishlar yo'q) — shunday ekanini
+    // tasdiqlash kerak. Aks holda «Ishxonadagi» kartasidagi «Kelganlar / Chiqib ketganlar» qatorlari mos kelmaydi.
     // Har kartaning ostidagi 2 qator shu hisobni ko'rsatadi va bosilsa ro'yxat ochiladi.
     // Ranglar — dashboard palitrasi rollari (ui/palette.js).
     _buildAttendanceCards() {

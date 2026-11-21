@@ -44,6 +44,10 @@
     const { y, m } = monthParts.value
     return y && m ? new Date(y, m - 1, day).getDay() : null
   }
+  // Shanba / yakshanba hamma uchun dam olish kuni deb olinadi.
+  // BACKEND: `/v1/turnstile/dashboard/attendance/month` da xodimning grafik bo'yicha dam olish kunlari yo'q —
+  // smenada ishlovchining ish kunidagi dam olishi «Kelmadi» bo'lib ko'rinadi. Har xodimga `day_off_days: [..]`
+  // (yoki kun holati) qo'shilsa — shu kunlar «Dam olish kunida» bo'lib, «Kelmadi» ga sanalmaydi.
   const isWeekend = (day) => [0, 6].includes(weekday(day))
 
   // Sarlavhadagi oy: «2026 Noyabr» («2026-11» o'rniga). Nom tarjimadan — til almashsa ham to'g'ri.
