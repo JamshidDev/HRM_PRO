@@ -166,16 +166,19 @@
       :rows="guestRows"
       @row-preview="openGuests"
     >
-      <template #footer>
-        <button
-          v-if="canWriteGuests"
-          type="button"
-          class="flex h-8 w-full items-center justify-center gap-1.5 rounded-xl bg-fig-chip-brand text-[13px] font-semibold text-fig-chip-brand-text transition-colors duration-200 hover:bg-primary hover:text-white"
-          @click="openGuests"
-        >
-          <n-icon size="16" :component="AddCircle16Regular" />
+      <template #action>
+        <n-tooltip v-if="canWriteGuests">
+          <template #trigger>
+            <button
+              type="button"
+              class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-fig-chip-brand text-fig-chip-brand-text transition-colors duration-200 hover:bg-primary hover:text-white"
+              @click.stop="openGuests"
+            >
+              <n-icon size="18" :component="AddCircle16Regular" />
+            </button>
+          </template>
           {{ $t('guestPage.attach') }}
-        </button>
+        </n-tooltip>
       </template>
     </StatRowsCard>
   </div>
