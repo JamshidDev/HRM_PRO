@@ -6023,17 +6023,8 @@
       "minutesShort": "{n} min",
       "subtitle": "Keshigip keliw yamasa erte ketiwge ruxsat berilgen"
     },
-    "tabs": {
-      "report": "Esabat",
-      "attendance": "Qatnas"
-    },
     "month": {
-      "title": "{month} ayı qatnası (turniket hám mobil hádiyseleri boyınsha)",
-      "came": "Keldi",
-      "absent": "Kelmedi",
-      "total": "Jámi",
-      "pick": "Aydı tańlań",
-      "dayOff": "Dem alıs kúni"
+      "total": "Jámi"
     },
     "attendanceReason": {
       "sick_leave": "Kesellik paraǵı",

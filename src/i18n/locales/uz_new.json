@@ -6023,17 +6023,8 @@
       "minutesShort": "{n} daq",
       "subtitle": "Keç keliş yoki erta ketişga ruxsat berilgan"
     },
-    "tabs": {
-      "report": "Hisobot",
-      "attendance": "Davomat"
-    },
     "month": {
-      "title": "{month} oyi davomati (turniket va mobil hodisalari böyiça)",
-      "came": "Keldi",
-      "absent": "Kelmadi",
-      "total": "Jami",
-      "pick": "Oyni tanlang",
-      "dayOff": "Dam oliş kuni"
+      "total": "Jami"
     },
     "attendanceReason": {
       "sick_leave": "Kasallik varaqasi",

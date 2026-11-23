@@ -5977,17 +5977,8 @@
       "minutesShort": "{n} min",
       "subtitle": "Allowed to arrive late or leave early"
     },
-    "tabs": {
-      "report": "Report",
-      "attendance": "Attendance"
-    },
     "month": {
-      "title": "Attendance for {month} (by turnstile and mobile events)",
-      "came": "Came",
-      "absent": "Absent",
-      "total": "Total",
-      "pick": "Select month",
-      "dayOff": "Day off"
+      "total": "Total"
     },
     "attendanceReason": {
       "sick_leave": "Sick leave",

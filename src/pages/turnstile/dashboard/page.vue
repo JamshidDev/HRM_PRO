@@ -1,5 +1,5 @@
 <script setup>
-  import { UIModal, UIPageContent, UISegmentTabs } from '@/components/index.js'
+  import { UIModal, UIPageContent } from '@/components/index.js'
   import { useAccountStore, useTurnstileDashboardStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import {
@@ -11,8 +11,7 @@
     PrivilegeCard,
     DeviceCard,
     MonthlyCard,
-    FaceCard,
-    AttendanceMonth
+    FaceCard
   } from './ui/index.js'
 
   const { t } = i18n.global
@@ -27,18 +26,6 @@
     const type = dashboardStore.previewParams.type
     return dashboardStore.cardTypes[type].name
   })
-
-  const tabs = computed(() => [
-    { id: 'report', name: t('turnStileDashboard.tabs.report') },
-    { id: 'attendance', name: t('turnStileDashboard.tabs.attendance') }
-  ])
-
-  // Tab almashganda shu tab ma'lumoti yuklanadi (filtr ikkala tab uchun umumiy).
-  const onChangeTab = (v) => {
-    dashboardStore.activeTab = v
-    if (!accStore.canView(accStore.pn.turnstileDashboard)) return
-    dashboardStore._dashboard()
-  }
 
   const onPreview = (v) => {
     dashboardStore.yesterday = false
@@ -84,21 +71,10 @@
          `min-h-full`: sahifa kontenti bo'yicha o'sadi, skrollni `.main-content`
          boshqaradi, pastdagi padding esa o'z joyida ko'rinadi. -->
     <div>
-      <!-- Chapda tablar, o'ngda umumiy filtr (bir qatorda). -->
-      <div class="flex flex-wrap items-center justify-between gap-3">
-        <UISegmentTabs
-          :model-value="dashboardStore.activeTab"
-          :tabs="tabs"
-          variant="elevated"
-          @update:model-value="onChangeTab"
-        />
-        <Filter class="flex-1 min-w-0" />
-      </div>
-
-      <AttendanceMonth v-if="dashboardStore.activeTab === 'attendance'" class="mt-4" />
+      <Filter class="min-w-0" />
 
       <!-- Maketdagi tartib: o'ng ustunlar qat'iy 280px, chapdagilar cho'ziladi -->
-      <div v-if="dashboardStore.activeTab === 'report'" class="flex flex-col gap-4 mt-4">
+      <div class="flex flex-col gap-4 mt-4">
         <!-- KPI: 976px dan 4 ta bir qatorda, undan kichikda 2 tadan (3+1 bo'lib qolmasin) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <SimpleCardSketlon

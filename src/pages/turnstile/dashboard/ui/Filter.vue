@@ -65,15 +65,12 @@
     }
   })
 
-  // Yangilash tugmasi: «Hisobot» — butun dashboard; «Davomat» — shu oy, shu sahifa (1-sahifaga qaytmaydi).
-  const refreshing = computed(() =>
-    dashboardStore.activeTab === 'attendance' ? dashboardStore.month.loading : dashboardStore.dashboardLoading
-  )
+  // Yangilash tugmasi — butun dashboard qayta yuklanadi.
+  const refreshing = computed(() => dashboardStore.dashboardLoading)
   const onRefresh = () => {
     if (!accStore.canView(accStore.pn.turnstileDashboard)) return
     clearTimeout(timer)
-    if (dashboardStore.activeTab === 'attendance') dashboardStore._attendanceMonth()
-    else dashboardStore._dashboard()
+    dashboardStore._dashboard()
   }
 
   onBeforeUnmount(() => {
