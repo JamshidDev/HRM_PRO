@@ -8,7 +8,7 @@
     "attachedTitle": "Added",
     "detachConfirm": "Detach {name} from the guest list? Turnstile events are kept.",
     "emptyTitle": "No guests added yet",
-    "emptyHint": "Find the person in HikCentral by PINFL on the left, set work hours and add.",
+    "emptyHint": "Find a person from the turnstile employees list via the PINFL search on the left and add them with working hours.",
     "addByPin": "Find by PINFL and add",
     "search": "Search",
     "accessLevels": "Turnstile access levels",
@@ -34,7 +34,7 @@
     "out": "Out",
     "pin": "PINFL",
     "pinPlaceholder": "14 digits",
-    "pinHint": "The person must be registered in HikCentral with this PINFL",
+    "pinHint": "The person must be in Turnstile → Employees with this PINFL",
     "pinRule": "PINFL must be 14 digits",
     "workStart": "Work start",
     "workEnd": "Work end",
@@ -3529,7 +3529,8 @@
         "6": "Saturday",
         "7": "Sunday"
       },
-      "recordTitle": "Additional details (not printed in the document)"
+      "recordTitle": "Additional details (not printed in the document)",
+      "noNotices": "You have no demand letters of this type"
     },
     "draft": "Draft",
     "draftSignTitle": "Application is a draft",
@@ -7485,7 +7486,8 @@
     "audience": {
       "all_staff": "All employees",
       "selected": "Selected employees",
-      "med_reminder": "Medical exam reminder"
+      "med_reminder": "Medical exam reminder",
+      "cert_reminder": "Position certificate reminder"
     },
     "sentOf": "sent",
     "blocked": "blocked",
@@ -8079,7 +8081,16 @@
       "ack": "Employee acknowledges",
       "consent": "Employee agrees or declines",
       "explain": "Employee gives a written explanation"
-    }
+    },
+    "tabs": {
+      "inbox": "Received",
+      "sent": "Sent by me",
+      "outbox": "Sent to employees",
+      "fromWorkers": "From employees"
+    },
+    "createWorkerNotice": "Create notice",
+    "updateWorkerNotice": "Edit notice",
+    "date": "Notice date"
   },
   "privacyPage": {
     "toc": "Contents",

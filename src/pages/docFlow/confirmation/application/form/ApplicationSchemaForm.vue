@@ -5,6 +5,7 @@
   import { UIDepartmentSelect, UISelect } from '@/components/index.js'
   import { useAppSetting } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
+  import Utils from '@/utils/Utils.js'
 
   const { t } = i18n.global
   const store = useConfApplicationStore()
@@ -127,6 +128,24 @@
     data.value.child_birthday = null
   }
 
+  // ---- Tushuntirish xati: xodimga kelgan talabnoma ----
+  const notices = ref([])
+  const noticesLoading = ref(false)
+  const loadNotices = (f) => {
+    noticesLoading.value = true
+    $ApiService.applicationService
+      ._myNotices({ params: { types: (f.notice_types ?? []).join(',') } })
+      .then((res) => {
+        notices.value = (res.data.data ?? []).map((v) => ({
+          id: v.id,
+          name: [v.date ? Utils.timeOnlyDate(v.date) : null, v.number ? `№${v.number}` : null, v.title]
+            .filter(Boolean)
+            .join(' · ')
+        }))
+      })
+      .finally(() => (noticesLoading.value = false))
+  }
+
   // ---- Oraliqlar: [boshi, oxiri] ↔ data[keys] ----
   const rangeValue = (f) => {
     const [a, b] = f.keys
@@ -200,6 +219,9 @@
       errors.value = {}
       positions.value = []
       if (allFields.value.some((f) => f.kind === 'child')) loadChildren()
+      const noticeF = allFields.value.find((f) => f.kind === 'notice_ref')
+      notices.value = []
+      if (noticeF) loadNotices(noticeF)
       if (data.value.department_id) loadPositions(data.value.department_id)
       if (componentStore.allStructureList.length === 0) componentStore._allStructures()
       else restoreOrgs()
@@ -291,6 +313,25 @@
             label-field="name"
             value-field="id"
             :loading="positionsLoading"
+          />
+        </n-form-item>
+      </div>
+
+      <!-- Talabnoma (tushuntirish xati shunga javob) -->
+      <div class="col-span-12" v-else-if="f.kind === 'notice_ref'">
+        <n-form-item
+          :label="f.label"
+          :show-require-mark="f.required"
+          :validation-status="status(f.key)"
+          :feedback="feedback(f.key) ?? (!noticesLoading && !notices.length ? $t('applicationPage.schema.noNotices') : undefined)"
+        >
+          <n-select
+            v-bind="selectWrap"
+            v-model:value="data[f.key]"
+            :options="notices"
+            label-field="name"
+            value-field="id"
+            :loading="noticesLoading"
           />
         </n-form-item>
       </div>
