@@ -9,6 +9,10 @@
   import { AddCircle24Regular, History20Regular, Search16Regular } from '@vicons/fluent'
   import GuestForm from './GuestForm.vue'
   import GuestEvents from './GuestEvents.vue'
+  import GuestLookup from './GuestLookup.vue'
+
+  // `embedded` — Hodisalar kartasidagi modal: tepada JSHSHIR qidiruvi, alohida «biriktirish» tugmasi yo'q.
+  const props = defineProps({ embedded: { type: Boolean, default: false } })
 
   const { t } = i18n.global
   const store = useGuestStore()
@@ -93,6 +97,7 @@
 
 <template>
   <UIPageContent>
+    <GuestLookup v-if="props.embedded && canWrite" class="mb-3" />
     <div class="flex flex-wrap items-center gap-2 mb-3">
       <n-input
         v-model:value="store.params.search"
@@ -114,7 +119,12 @@
         @update:formatted-value="onDate"
       />
       <div class="flex-1"></div>
-      <n-button v-if="canWrite" type="primary" class="rounded-lg!" @click="store.openCreate()">
+      <n-button
+        v-if="canWrite && !props.embedded"
+        type="primary"
+        class="rounded-lg!"
+        @click="store.openCreate()"
+      >
         <template #icon>
           <n-icon :component="AddCircle24Regular" />
         </template>

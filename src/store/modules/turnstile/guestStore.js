@@ -6,6 +6,14 @@ const { t } = i18n.global
 // Shtatdan tashqari mehmonlar ro'yxati, biriktirish va hodisalar.
 export const useGuestStore = defineStore('guestStore', {
   state: () => ({
+    // Hodisalar sahifasidagi «Mehmonlar» kartasi: son va ro'yxat modali.
+    listVisible: false,
+    // Modal ichida JSHSHIR bo'yicha qidirib qo'shish.
+    lookupPin: '',
+    lookupLoading: false,
+    lookupResult: null,
+    summary: null,
+    summaryLoading: false,
     list: [],
     total: 0,
     loading: false,
@@ -31,6 +39,46 @@ export const useGuestStore = defineStore('guestStore', {
         })
         .finally(() => {
           this.loading = false
+        })
+    },
+    _summary(date) {
+      this.summaryLoading = true
+      $ApiService.guestService
+        ._summary({ params: { date } })
+        .then((res) => {
+          this.summary = res.data.data
+        })
+        .finally(() => {
+          this.summaryLoading = false
+        })
+    },
+    _lookup() {
+      if (!/^\d{14}$/.test(this.lookupPin)) return
+      this.lookupLoading = true
+      this.lookupResult = null
+      $ApiService.guestService
+        ._lookup({ params: { pin: this.lookupPin } })
+        .then((res) => {
+          this.lookupResult = res.data.data
+        })
+        .finally(() => {
+          this.lookupLoading = false
+        })
+    },
+    // Topilgan odamni ish vaqti bilan biriktirish.
+    _attachFound(workStart, workEnd) {
+      this.saveLoading = true
+      $ApiService.guestService
+        ._create({ data: { pin: this.lookupPin, work_start: workStart, work_end: workEnd } })
+        .then(() => {
+          $Toast.success(t('message.successDone'))
+          this.lookupPin = ''
+          this.lookupResult = null
+          this._index()
+          this._summary(this.params.date)
+        })
+        .finally(() => {
+          this.saveLoading = false
         })
     },
     openCreate() {
@@ -59,6 +107,7 @@ export const useGuestStore = defineStore('guestStore', {
           this.visible = false
           $Toast.success(t('message.successDone'))
           this._index()
+          this._summary(this.params.date)
         })
         .finally(() => {
           this.saveLoading = false
