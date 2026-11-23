@@ -6769,8 +6769,8 @@
       "detailTitle": "Mobile pass",
       "info": "Details",
       "placeTitle": "Pass location",
-      "livePhoto": "Verified photo",
-      "refPhoto": "Official photo",
+      "livePhoto": "Captured photo",
+      "refPhoto": "Verified photo",
       "appName": "HR Rail app",
       "matchHigh": "Face matches",
       "matchMid": "Partial match — compare the photos",
@@ -8066,5 +8066,10 @@
       "consent": "Employee agrees or declines",
       "explain": "Employee gives a written explanation"
     }
+  },
+  "privacyPage": {
+    "toc": "Contents",
+    "pdf": "Download PDF",
+    "backToLogin": "Back to login"
   }
 }

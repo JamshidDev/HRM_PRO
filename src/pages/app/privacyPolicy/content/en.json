@@ -1,0 +1,583 @@
+{
+ "title": "PRIVACY POLICY",
+ "subtitle": "“HRM PRO” Human Resources Management Information System",
+ "meta": "Approval date: July 1, 2026. Version: 1.0",
+ "sections": [
+  {
+   "n": 1,
+   "title": "General Provisions and Purpose",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "1.1",
+     "text": "This Privacy Policy (hereinafter — the “Policy”) establishes the procedure for the collection, storage, processing, use, and protection of personal data of users of the “HRM PRO” human resources management information system (hereinafter — the “System”), developed by JSC “Uzbekistan Railways” (hereinafter — the “Company” or “We”)."
+    },
+    {
+     "t": "p",
+     "n": "1.2",
+     "text": "The primary legal basis for processing a user's personal data is the employment relationship and obligations established by legislation. By logging into or otherwise using the System, the user confirms that they have fully read and understood the terms of this Policy."
+    },
+    {
+     "t": "p",
+     "n": "1.3",
+     "text": "“HRM PRO” is a closed corporate system used only by employees registered by the organization and granted the relevant access rights. Open (free) registration in the System is not provided."
+    },
+    {
+     "t": "p",
+     "n": "1.4",
+     "text": "A person who does not agree with the terms of this Policy must stop using the System and contact the System administrator accordingly."
+    },
+    {
+     "t": "p",
+     "n": "1.5",
+     "text": "This Policy is an integral part of the terms of use of the “HRM PRO” information system."
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "title": "Legal Basis",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "2.1",
+     "text": "The Policy has been developed in accordance with the requirements of the following regulatory legal acts:"
+    },
+    {
+     "t": "li",
+     "text": "Law of the Republic of Uzbekistan “On Personal Data” No. ZRU-547 of July 2, 2019 (as subsequently amended and supplemented);"
+    },
+    {
+     "t": "li",
+     "text": "Labor Code of the Republic of Uzbekistan;"
+    },
+    {
+     "t": "li",
+     "text": "Law of the Republic of Uzbekistan “On Informatization” No. 560-II of December 11, 2003;"
+    },
+    {
+     "t": "li",
+     "text": "Law of the Republic of Uzbekistan “On Electronic Document Circulation” No. 611-II of April 29, 2004;"
+    },
+    {
+     "t": "li",
+     "text": "Law of the Republic of Uzbekistan “On Cybersecurity” No. ZRU-764 of April 15, 2022;"
+    },
+    {
+     "t": "li",
+     "text": "other regulatory legal acts currently in force in the field of personal data protection and personnel records management."
+    },
+    {
+     "t": "p",
+     "n": "2.2",
+     "text": "The legal grounds for processing employees' personal data are:"
+    },
+    {
+     "t": "li",
+     "text": "the employment relationship between the employee and the organization, as well as the obligation to maintain personnel records provided for in the Labor Code;"
+    },
+    {
+     "t": "li",
+     "text": "fulfillment of obligations imposed on the Company by legislation (tax, statistical, social security, etc.);"
+    },
+    {
+     "t": "li",
+     "text": "the user's consent — in cases of processing that is not mandatory under legislation (voluntary)."
+    },
+    {
+     "t": "p",
+     "n": "2.3",
+     "text": "The Company maintains the personal data database in the manner established by legislation, registers it with the authorized state body, and assumes all obligations of the database owner."
+    },
+    {
+     "t": "p",
+     "n": "2.4",
+     "text": "Within the Company, a responsible person (structural unit) is designated for the protection of personal data. The responsible person monitors the lawfulness of data processing and reviews users' inquiries in this area."
+    },
+    {
+     "t": "p",
+     "n": "2.5",
+     "text": "Where the System is used by employees of organizations within the Company's system, each organization is the owner of the database with respect to the personal data of its own employees, while the Company processes such data as an operator based on an agreement concluded with the relevant organization and on its instructions. All protection requirements provided for in this Policy fully apply to such processing as well."
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "title": "Data Collected",
+   "blocks": [
+    {
+     "t": "h",
+     "n": "3.1",
+     "text": "Data entered by the user and the HR department"
+    },
+    {
+     "t": "p",
+     "text": "During the process of registering an employee and maintaining personnel records, the System may record the following data:"
+    },
+    {
+     "t": "li",
+     "text": "Personal data — surname, first name, patronymic, date of birth, gender;"
+    },
+    {
+     "t": "li",
+     "text": "Identity verification data — passport (ID card) data, PINFL;"
+    },
+    {
+     "t": "li",
+     "text": "Contact data — phone number, email address, residential address;"
+    },
+    {
+     "t": "li",
+     "text": "Education and qualifications — level of education, specialty, professional development data;"
+    },
+    {
+     "t": "li",
+     "text": "Employment activity — position, department, length of service, employment contract, orders;"
+    },
+    {
+     "t": "li",
+     "text": "Family and social status — marital status, number of children, and other categories established by law;"
+    },
+    {
+     "t": "li",
+     "text": "Working time and attendance — clock-in and clock-out times, leave, sick leave (incapacity) data, days off;"
+    },
+    {
+     "t": "li",
+     "text": "Account data — login, user role, and level of access rights."
+    },
+    {
+     "t": "h",
+     "n": "3.2",
+     "text": "Handling of special-category data"
+    },
+    {
+     "t": "p",
+     "text": "During personnel record-keeping, in cases provided for by legislation, certain special-category data (e.g., data related to a sick-leave certificate) may be processed. Such data is processed only within the scope of fulfilling obligations established by the Labor Code and other legislation, on the basis of the “need to know” principle, and by a strictly limited circle of authorized employees. In other cases, the Company does not collect special-category data (racial or ethnic origin, political views, religious beliefs, etc.)."
+    },
+    {
+     "t": "h",
+     "n": "3.3",
+     "text": "Automatically collected data"
+    },
+    {
+     "t": "p",
+     "text": "During use of the System, the following technical data may be collected automatically:"
+    },
+    {
+     "t": "li",
+     "text": "device type and operating system version;"
+    },
+    {
+     "t": "li",
+     "text": "browser type and system (application) version;"
+    },
+    {
+     "t": "li",
+     "text": "IP address;"
+    },
+    {
+     "t": "li",
+     "text": "date and time of login to the System, as well as significant actions within the System (audit logs);"
+    },
+    {
+     "t": "li",
+     "text": "technical session cookies necessary for the System's operation (see clause 10.3);"
+    },
+    {
+     "t": "li",
+     "text": "technical data on errors and malfunctions (solely for the purpose of improving the System)."
+    },
+    {
+     "t": "h",
+     "n": "3.4",
+     "text": "Data not collected"
+    },
+    {
+     "t": "p",
+     "text": "The Company does not collect the following data:"
+    },
+    {
+     "t": "li",
+     "text": "the user's continuous geolocation (GPS tracking);"
+    },
+    {
+     "t": "li",
+     "text": "data obtained through cookies for tracking, analytics, or advertising purposes, or through thirdparty tracking technologies;"
+    },
+    {
+     "t": "li",
+     "text": "microphone or camera data (without the user's explicit permission);"
+    },
+    {
+     "t": "li",
+     "text": "data obtained from third-party applications;"
+    },
+    {
+     "t": "li",
+     "text": "data for advertising or commercial purposes. The System does not store passwords in plain text — they are stored securely using one-way encryption (hashing) algorithms."
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "title": "System Access and Permissions",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "4.1",
+     "text": "For the System to function properly, the following permissions may be used on the user's device or browser:"
+    },
+    {
+     "t": "li",
+     "text": "Internet — to establish communication with the server and exchange data;"
+    },
+    {
+     "t": "li",
+     "text": "Push notifications — to deliver important messages and alerts;"
+    },
+    {
+     "t": "li",
+     "text": "Device status — to ensure the stable operation of the System."
+    },
+    {
+     "t": "p",
+     "n": "4.2",
+     "text": "All permissions are requested solely for the purpose of enabling the System's functions. The user has the right to revoke any permission through their device or browser settings."
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "title": "Purposes of Data Processing",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "5.1",
+     "text": "Collected data is processed solely for the following purposes:"
+    },
+    {
+     "t": "li",
+     "text": "Personnel records — registering the employee and maintaining their personal file;"
+    },
+    {
+     "t": "li",
+     "text": "Working time records — automatic calculation of attendance, leave, and working time;"
+    },
+    {
+     "t": "li",
+     "text": "Reporting — compiling personnel reports and multi-stage approval;"
+    },
+    {
+     "t": "li",
+     "text": "Document circulation — creating, coordinating, and approving orders, contracts, and documents;"
+    },
+    {
+     "t": "li",
+     "text": "Identification — identifying, authenticating, and authorizing the user;"
+    },
+    {
+     "t": "li",
+     "text": "Security — preventing unauthorized access and ensuring the security of the System;"
+    },
+    {
+     "t": "li",
+     "text": "Technical support — reviewing user inquiries and resolving issues;"
+    },
+    {
+     "t": "li",
+     "text": "Notifications — informing users about important messages, deadlines, and system news;"
+    },
+    {
+     "t": "li",
+     "text": "Legal obligations — fulfilling obligations established by labor, tax, and other legislation."
+    },
+    {
+     "t": "p",
+     "n": "5.2",
+     "text": "The System does not use personal data for advertising or commercial purposes and does not transfer it to marketing organizations."
+    },
+    {
+     "t": "p",
+     "n": "5.3",
+     "text": "Decisions entailing legal consequences for employees (hiring, dismissal, disciplinary action, etc.) are never made in the System solely through automated means (without human involvement) — such decisions are always made by authorized persons."
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "title": "Push Notifications",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "6.1",
+     "text": "The System may send the user push notifications in the following cases:"
+    },
+    {
+     "t": "li",
+     "text": "when a reporting deadline is approaching;"
+    },
+    {
+     "t": "li",
+     "text": "when a new document arrives for signature (approval) or a document's status changes;"
+    },
+    {
+     "t": "li",
+     "text": "for significant changes related to attendance or working time;"
+    },
+    {
+     "t": "li",
+     "text": "for alerts related to account security;"
+    },
+    {
+     "t": "li",
+     "text": "for important system messages and news."
+    },
+    {
+     "t": "p",
+     "n": "6.2",
+     "text": "The user has the right to turn off notifications at any time through their device or System settings."
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "title": "Data Storage and Protection",
+   "blocks": [
+    {
+     "t": "h",
+     "n": "7.1",
+     "text": "Storage location and localization"
+    },
+    {
+     "t": "p",
+     "text": "All personal data is stored and processed exclusively on servers and databases located within the territory of the Republic of Uzbekistan. Personal data is not transferred outside the territory of the Republic of Uzbekistan (cross-border transfer). Data processing is carried out in full compliance with the requirements of Law No. ZRU-547 “On Personal Data.” Where third-party notification services are used to deliver push notifications to mobile devices, the content of such notifications does not include personal data, and this is not considered a cross-border transfer of personal data."
+    },
+    {
+     "t": "h",
+     "n": "7.2",
+     "text": "Retention period"
+    },
+    {
+     "t": "p",
+     "text": "An employee's data is retained for the duration of their employment relationship with the organization. After the employment relationship ends, the data is retained for the archiving periods established by legislation for personnel documents, after which it is deleted in the prescribed manner or transferred to the state archive."
+    },
+    {
+     "t": "h",
+     "n": "7.3",
+     "text": "Security measures"
+    },
+    {
+     "t": "p",
+     "text": "To prevent the loss, alteration, disclosure, and unauthorized use of data, the Company takes the following organizational and technical measures:"
+    },
+    {
+     "t": "li",
+     "text": "use of SSL/TLS encryption technologies when transmitting data;"
+    },
+    {
+     "t": "li",
+     "text": "protection of passwords using one-way hashing algorithms;"
+    },
+    {
+     "t": "li",
+     "text": "granting limited access to data through role-based access control (RBAC) — each employee sees only the data relevant to their authority;"
+    },
+    {
+     "t": "li",
+     "text": "restricting and controlling physical and logical access to servers;"
+    },
+    {
+     "t": "li",
+     "text": "maintaining audit logs recording significant actions within the System;"
+    },
+    {
+     "t": "li",
+     "text": "regularly creating backup copies of the database;"
+    },
+    {
+     "t": "li",
+     "text": "regularly conducting security reviews and vulnerability assessments;"
+    },
+    {
+     "t": "li",
+     "text": "applying additional protective measures to special-category data (sick-leave certificates, etc.) — restricting access to it to a strictly limited circle of authorized employees and separately logging such access."
+    }
+   ]
+  },
+  {
+   "n": 8,
+   "title": "Responsibility for Login and Password",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "8.1",
+     "text": "The user is provided with an individual account (login) and password to access the System."
+    },
+    {
+     "t": "p",
+     "n": "8.2",
+     "text": "The user is personally and fully responsible for maintaining the confidentiality of their login and password. Disclosing the login and password to third parties, revealing them, or sharing them jointly with others is strictly prohibited."
+    },
+    {
+     "t": "p",
+     "n": "8.3",
+     "text": "All actions performed in the System through the user's account are deemed to have been performed by the user themselves, and full responsibility for such actions rests with the user."
+    },
+    {
+     "t": "p",
+     "n": "8.4",
+     "text": "If the login or password is disclosed, or unauthorized use of the account is detected, the user must immediately change the password and notify the Company's System administrator."
+    },
+    {
+     "t": "p",
+     "n": "8.5",
+     "text": "The Company is not liable for any damage caused as a result of the user's violation of the rules for safeguarding the login and password."
+    }
+   ]
+  },
+  {
+   "n": 9,
+   "title": "Data Breach",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "9.1",
+     "text": "In the event of unauthorized access to user data or a data breach, the Company will take the following actions:"
+    },
+    {
+     "t": "li",
+     "text": "an internal investigation begins immediately upon detection of the breach, but no later than 72 hours;"
+    },
+    {
+     "t": "li",
+     "text": "affected users are notified within 5 business days by email or through a System notification;"
+    },
+    {
+     "t": "li",
+     "text": "information is provided on the cause, scope, and measures taken in response to the breach;"
+    },
+    {
+     "t": "li",
+     "text": "necessary changes are made to the System to prevent recurrence of the breach;"
+    },
+    {
+     "t": "li",
+     "text": "the authorized state body is notified in the cases and within the time limits provided for by legislation."
+    }
+   ]
+  },
+  {
+   "n": 10,
+   "title": "Disclosure of Data to Third Parties and Cookies",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "10.1",
+     "text": "The Company does not share employees' personal data with any third party, organization, or individual for commercial purposes. Data may be disclosed only in the following cases:"
+    },
+    {
+     "t": "li",
+     "text": "At the request of law — based on an official, legally grounded request from a court of the Republic of Uzbekistan, law enforcement authorities, or state bodies (tax, statistical, social security, etc.);"
+    },
+    {
+     "t": "li",
+     "text": "With the user's consent — where the user has given explicit consent;"
+    },
+    {
+     "t": "li",
+     "text": "Within the organization — among authorized employees, within the scope of performing official duties and on the basis of the “need to know” principle."
+    },
+    {
+     "t": "p",
+     "n": "10.2",
+     "text": "The System may occasionally contain links to external websites or services. Such external sources are not controlled by the Company, and the Company assumes no responsibility for them. Before following an external link, it is recommended to review the privacy policy of the relevant service."
+    },
+    {
+     "t": "p",
+     "n": "10.3",
+     "text": "The System uses only technical (session) cookies necessary to maintain the user's session and ensure security. Cookies for tracking, analytics, or advertising purposes are not used. Disabling technical cookies may affect the proper functioning of the System."
+    }
+   ]
+  },
+  {
+   "n": 11,
+   "title": "Privacy of Minors",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "11.1",
+     "text": "The “HRM PRO” System is not intended for persons under 18 years of age and is used only by adult employees of the organization. The Company does not knowingly collect data from users under 18 years of age. Should such a case be identified, the relevant data will be deleted immediately. Data concerning employees' children is processed within the scope of personnel records solely for the purpose of applying the benefits and guarantees provided for by law."
+    }
+   ]
+  },
+  {
+   "n": 12,
+   "title": "User Rights",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "12.1",
+     "text": "In accordance with Law of the Republic of Uzbekistan “On Personal Data” No. ZRU-547, the user has the following rights:"
+    },
+    {
+     "t": "li",
+     "text": "Right of access — to obtain information about the processing of their personal data and to view it;"
+    },
+    {
+     "t": "li",
+     "text": "Right of rectification — to request the correction of inaccurate, incomplete, or outdated data;"
+    },
+    {
+     "t": "li",
+     "text": "Right of erasure — to submit a request for the deletion of data in cases established by law;"
+    },
+    {
+     "t": "li",
+     "text": "Withdrawal of consent — to withdraw consent to data processing within the limits of the law (in which case personnel record-keeping that is mandatory under the law may continue);"
+    },
+    {
+     "t": "li",
+     "text": "Right to lodge a complaint — to apply to the authorized state body in the field of personal data or to a court in the event their rights are violated."
+    },
+    {
+     "t": "p",
+     "n": "12.2",
+     "text": "To exercise these rights, the user may contact the organization's HR department, the System administrator, or the Company's official address in written or electronic form (including through the communication channels specified in clause 14.1)."
+    },
+    {
+     "t": "p",
+     "n": "12.3",
+     "text": "A user's inquiry is reviewed and answered within 15 business days from the date of its registration. If reviewing the inquiry requires additional investigation, this period may be extended up to 30 business days, of which the user will be notified."
+    }
+   ]
+  },
+  {
+   "n": 13,
+   "title": "Amendments to the Policy",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "13.1",
+     "text": "The Company reserves the right to unilaterally amend and supplement this Policy. When material changes are made, users are notified through an in-System notification or by email."
+    },
+    {
+     "t": "p",
+     "n": "13.2",
+     "text": "The new version of the Policy takes effect from the moment it is published in the System. Continued use of the System after changes are made is deemed acceptance of the new version."
+    }
+   ]
+  },
+  {
+   "n": 14,
+   "title": "Contact",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "14.1",
+     "text": "Feedback, inquiries, requests, complaints, and suggestions regarding the System and the services provided through it are accepted through the official communication channels of JSC “Uzbekistan Railways.”"
+    }
+   ]
+  }
+ ]
+}
