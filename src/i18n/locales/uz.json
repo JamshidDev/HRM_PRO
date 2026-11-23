@@ -625,7 +625,7 @@
     "signUp": "Ro'yxatdan o'tish",
     "description": {
       "title": "HRMS",
-      "subtitle": "Xodimlarni boshqarishning zamonaviy tizimi\n",
+      "subtitle": "HRM PRO — «O'zbekiston temir yo'llari» AJ kadrlar boshqaruvi tizimi",
       "text": "Xodimlaringizni samarali boshqarish, ish vaqtini nazorat qilish va hujjatlarni avtomatlashtirish uchun qulay yechim. HR jarayonlarini optimallashtiring va biznesingizni yangi bosqichga olib chiqing!"
     },
     "login": "Kirish",
@@ -2666,8 +2666,18 @@
     "scope_local": "O'z korxonam",
     "scope_global": "O'z korxonam va quyi korxonalar",
     "scope_department": "Bo'linmalar uchun",
+    "departmentsOptional": "Bo'linmalar (ixtiyoriy)",
+    "whom_1": "Barchaga",
+    "whom_2": "Tanlangan lavozimlarga",
+    "whom_3": "Tanlangan xodimlarga",
+    "audienceTitle": "Kimlar uchun",
+    "audienceTotal": "Jami: {n} xodim",
+    "allDepartments": "Barcha bo'linmalar",
+    "loadMore": "Yana yuklash",
+    "whomPositionsCount": "{n} lavozim",
+    "whomWorkersCount": "{n} xodim",
     "departments": "Bo'linmalar",
-    "settings": "Topshirish sozlamalari",
+    "settings": "Xavfsizlik sozlamalari",
     "mobileAllowed": "Mobil ilovada yechish mumkin",
     "cameraRequired": "Kamera majburiy",
     "screenShareRequired": "Ekran ulashish majburiy",
@@ -8205,5 +8215,9 @@
       "denied": "Ekran ulashishga ruxsat berilmadi",
       "not_monitor": "Faqat butun ekranni tanlang (oyna yoki tab emas)"
     }
+  },
+  "seo": {
+    "loginTitle": "HRM PRO — kadrlar boshqaruvi va elektron hujjat aylanishi {'|'} O'zbekiston temir yo'llari",
+    "modulesLink": "HRM PRO modullari va imkoniyatlari"
   }
 }

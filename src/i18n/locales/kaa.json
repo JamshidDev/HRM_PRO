@@ -625,7 +625,7 @@
     "signUp": "Dizimnen ótiw",
     "description": {
       "title": "HRMS",
-      "subtitle": "Xızmetkerlerdi basqarıwdıń zamanagóy sisteması\n",
+      "subtitle": "HRM PRO — «Ózbekstan temir jolları» AJ kadrlar basqarıw sisteması",
       "text": "Xızmetkerlerińizdi nátiyjeli basqarıw, jumıs waqıtın qadaǵalaw hám hújjetlerdi avtomatlastırıw ushın qolaylı sheshim. HR processlerin optimallastırıń hám biznesińizdi jańa basqıshqa alıp shıǵıń!"
     },
     "login": "Kiriw",
@@ -2666,8 +2666,18 @@
     "scope_local": "Óz kárxanam",
     "scope_global": "Óz kárxanam hám tómengi kárxanalar",
     "scope_department": "Bólimler ushın",
+    "departmentsOptional": "Bólimler (ixtiyariy)",
+    "whom_1": "Hámmege",
+    "whom_2": "Tańlanǵan lawazımlarǵa",
+    "whom_3": "Tańlanǵan xızmetkerlerge",
+    "audienceTitle": "Kimler ushın",
+    "audienceTotal": "Jámi: {n} xızmetker",
+    "allDepartments": "Barlıq bólimler",
+    "loadMore": "Jáne júklew",
+    "whomPositionsCount": "{n} lawazım",
+    "whomWorkersCount": "{n} xızmetker",
     "departments": "Bólimler",
-    "settings": "Tapsırıw sazlamaları",
+    "settings": "Qáwipsizlik sazlamaları",
     "mobileAllowed": "Mobil qosımshada sheshiw múmkin",
     "cameraRequired": "Kamera mindetli",
     "screenShareRequired": "Ekrandı bólisiw mindetli",
@@ -8205,5 +8215,9 @@
       "denied": "Ekrandı bóliśiwge ruxsat berilmedi",
       "not_monitor": "Tek pútkil ekrandı tańlań (ayna yamasa tab emes)"
     }
+  },
+  "seo": {
+    "loginTitle": "HRM PRO — kadrlar basqarıwı hám elektron hújjet aylanısı {'|'} Ózbekstan temir jolları",
+    "modulesLink": "HRM PRO modulleri hám múmkinshilikleri"
   }
 }

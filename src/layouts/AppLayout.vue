@@ -1,6 +1,6 @@
 <script setup>
   import { useRoute } from 'vue-router'
-  import { AppLayouts } from '@/utils/index.js'
+  import { AppLayouts, AppPaths } from '@/utils/index.js'
   import Combo from './combo/Combo.vue'
   import Empty from './empty/Empty.vue'
   import { useAccountStore } from '@/store/modules/app/accountStore.js'
@@ -24,7 +24,10 @@
   watchEffect(() => {
     const list = navigations.flatMap((v) => v.children)
     const currentItem = [...list, ...otherNavigations].filter((v) => v.path === route.path)
-    if (currentItem.length > 0) {
+    // Login sahifasi Google'da ko'rinadi — «Xush kelibsiz» emas, kalit so'zli sarlavha.
+    if (route.path === AppPaths.Login) {
+      window.document.title = t('seo.loginTitle')
+    } else if (currentItem.length > 0) {
       window.document.title = 'HRM PRO | ' + t(currentItem[0].label)
     }
   })

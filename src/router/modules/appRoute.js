@@ -76,6 +76,22 @@ export const appRoutes = [
     }
   },
   {
+    path: AppPaths.Modules,
+    name: 'modules',
+    component: () => import('@/pages/app/modules/ModulesPage.vue'),
+    meta: {
+      layout: AppLayouts.empty
+    }
+  },
+  {
+    path: `${AppPaths.Modules}/:slug`,
+    name: 'module-detail',
+    component: () => import('@/pages/app/modules/ModuleDetailPage.vue'),
+    meta: {
+      layout: AppLayouts.empty
+    }
+  },
+  {
     path: AppPaths.PrivacyPolicy,
     name: 'privacy-policy',
     component: () => import('@/pages/app/privacyPolicy/PrivacyPolicyPage.vue'),

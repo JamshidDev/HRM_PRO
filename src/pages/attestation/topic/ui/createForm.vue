@@ -1,5 +1,5 @@
 <script setup>
-  import { UIDepartmentSelect } from '@/components/index.js'
+  import { SuperSelect, UIDepartmentSelect, UINSelect } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import i18n from '@/i18n/index.js'
   import { useTopicStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
@@ -15,12 +15,7 @@
 
   // Global — faqat Admin (organization-admin); qolganlarini backend rol doirasi bo'yicha tekshiradi.
   const scopeOptions = computed(() =>
-    [
-      accStore.checkPermission(accStore.pn.organizationAdmin) && 'all',
-      'local',
-      'global',
-      'department'
-    ]
+    [accStore.checkPermission(accStore.pn.organizationAdmin) && 'all', 'local', 'global']
       .filter(Boolean)
       .map((value) => ({ value, label: t(`topicPage.scope_${value}`) }))
   )
@@ -39,6 +34,41 @@
     { key: 'screen_share_required', label: 'topicPage.screenShareRequired' },
     { key: 'strict_mode', label: 'topicPage.strictMode' }
   ]
+
+  // Kimlarga: barchaga, lavozimlarga, tanlangan xodimlarga.
+  const whomOptions = computed(() =>
+    [1, 2, 3].map((value) => ({ value, label: t(`topicPage.whom_${value}`) }))
+  )
+
+  // «Kimlarga» ro'yxatlari doiraga bog'liq — doira yoki bo'linmalar o'zgarsa qayta yuklanadi.
+  const loadAudience = () => {
+    if (store.payload.whom === 2) store._audiencePositions()
+    else if (store.payload.whom === 3) {
+      store.workerParams.page = 1
+      store._audienceWorkers()
+    }
+  }
+  const onWhomChange = () => {
+    store.payload.whom_ids = []
+    loadAudience()
+  }
+  watch(
+    () => [store.payload.scope, store.payload.department_ids.join(',')],
+    (_, old) => {
+      if (!old || store.showLoading) return
+      store.payload.whom_ids = []
+      loadAudience()
+    }
+  )
+
+  const onWorkerSearch = () => {
+    store.workerParams.page = 1
+    store._audienceWorkers()
+  }
+  const onWorkerScroll = () => {
+    store.workerParams.page += 1
+    store._audienceWorkers(true)
+  }
 
   // Faollashtirish faqat tahrirda va ichida kamida bitta imtihon bo'lsa.
   const canActivate = computed(() => !store.visibleType && store.examsCount > 0)
@@ -99,17 +129,60 @@
         />
       </n-form-item>
       <n-form-item
-        v-if="store.payload.scope === 'department'"
         class="col-span-12 md:col-span-6"
-        :label="$t('topicPage.departments')"
+        :label="$t('topicPage.departmentsOptional')"
         path="department_ids"
       >
         <UIDepartmentSelect
           v-model="store.payload.department_ids"
           :organization="ownOrgId"
+          :disabled="!store.payload.scope"
           multiple
         />
       </n-form-item>
+
+      <n-form-item class="col-span-12 md:col-span-6" :label="$t('topicDetailsPage.exams.toWhom')">
+        <n-select
+          v-model:value="store.payload.whom"
+          :options="whomOptions"
+          :disabled="!store.payload.scope"
+          @update:value="onWhomChange"
+        />
+      </n-form-item>
+      <n-form-item
+        v-if="store.payload.whom === 2"
+        class="col-span-12 md:col-span-6"
+        :label="$t('topicDetailsPage.exams.positions')"
+        path="whom_ids"
+      >
+        <UINSelect
+          multiple
+          v-model:value="store.payload.whom_ids"
+          :options="store.positionList"
+          :loading="store.positionLoading"
+          :max-tag-count="1"
+          value-field="id"
+        />
+      </n-form-item>
+      <n-form-item
+        v-else-if="store.payload.whom === 3"
+        class="col-span-12 md:col-span-6"
+        :label="$t('topicDetailsPage.exams.workers')"
+        path="whom_ids"
+      >
+        <SuperSelect
+          multiple
+          :options="store.workerList"
+          :loading="store.workerLoading"
+          :total-count="store.workerTotal"
+          :per-page="store.workerParams.per_page"
+          v-model:value="store.payload.whom_ids"
+          v-model:search="store.workerParams.search"
+          @onSearch="onWorkerSearch"
+          @onScrollEv="onWorkerScroll"
+        />
+      </n-form-item>
+      <div v-else class="hidden md:block md:col-span-6"></div>
 
       <n-form-item class="col-span-12 md:col-span-6" :label="$t('topicPage.deadline')">
         <n-date-picker
@@ -130,7 +203,8 @@
         <n-input-number class="w-full" :min="1" :max="10" v-model:value="store.payload.chances" />
       </n-form-item>
 
-      <n-form-item class="col-span-12" :label="$t('topicPage.settings')" :show-feedback="false">
+      <div class="col-span-12 rounded-xl border border-surface-line p-3 flex flex-col gap-2.5">
+        <p class="text-sm font-semibold text-textColor0">{{ $t('topicPage.settings') }}</p>
         <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-2">
           <div
             v-for="s in settings"
@@ -154,7 +228,7 @@
             </n-switch>
           </div>
         </div>
-      </n-form-item>
+      </div>
     </n-form>
   </n-spin>
 </template>
