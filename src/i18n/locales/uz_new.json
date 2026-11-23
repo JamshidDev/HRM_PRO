@@ -586,7 +586,7 @@
     "changeRoleConfirm": "Bu hisobdan çiqib boşqa hisobga kiriş uçun kerakli hisobni tanlang va 20 soniya kuting"
   },
   "sidebar": {
-    "hrm": "Mening korxonam moduli",
+    "hrm": "Kadr boşqaruvi moduli",
     "admin": "Admin moduli",
     "chat": "Xabar va e'lonlar moduli",
     "docflow": "Mening hujjatlarim",
@@ -3486,7 +3486,17 @@
       "childName": "Farzandning F.I.Ş.",
       "childBirthday": "Tuğilgan sanasi",
       "days": "Kunlar soni: {n}",
-      "months": "Oylar soni: {n}"
+      "months": "Oylar soni: {n}",
+      "weekdays": {
+        "1": "Dushanba",
+        "2": "Seshanba",
+        "3": "Chorshanba",
+        "4": "Payshanba",
+        "5": "Juma",
+        "6": "Shanba",
+        "7": "Yakshanba"
+      },
+      "recordTitle": "Qoʻshimcha maʼlumotlar (hujjatga yozilmaydi)"
     },
     "draft": "Qoralama",
     "draftSignTitle": "Ariza qoralama holatida",
@@ -5740,7 +5750,7 @@
   "navigation": {
     "hrm": "Kadrlar boşqaruvi",
     "docFlow": "Hujjat aylanişi",
-    "myOrg": "Mening korxonam",
+    "myOrg": "Kadr boşqaruvi",
     "myDocs": "Mening hujjatlarim",
     "attestation": "Attestatsiya",
     "turnstile": "Turniket",
@@ -5908,10 +5918,10 @@
     },
     "hourly": {
       "title": "Kun davomida ötişlar",
-      "hint": "Turniket yoki mobil orqali ötgan xodimlar soni, {n} soatlik oraliqlarda",
+      "hint": "Turniket yoki mobil orqali ötishlar soni, {n} soatlik oraliqlarda",
       "peak": "Eng gavjum vaqt",
       "active": "Faol vaqt",
-      "people": "xodim",
+      "people": "ta ötish",
       "total": "Jami ötişlar"
     },
     "rate": {
@@ -5982,7 +5992,8 @@
       "came": "Keldi",
       "absent": "Kelmadi",
       "total": "Jami",
-      "pick": "Oyni tanlang"
+      "pick": "Oyni tanlang",
+      "dayOff": "Dam olish kuni"
     },
     "attendanceReason": {
       "sick_leave": "Kasallik varaqasi",

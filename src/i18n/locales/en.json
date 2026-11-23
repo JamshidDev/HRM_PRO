@@ -571,7 +571,7 @@
     "changeRoleConfirm": "Select the desired account to switch and wait 20 seconds"
   },
   "sidebar": {
-    "hrm": "My Organization Module",
+    "hrm": "HR Management Module",
     "admin": "Admin Module",
     "chat": "Messages & Announcements Module",
     "docflow": "My Documents",
@@ -3466,7 +3466,17 @@
       "childName": "Child's full name",
       "childBirthday": "Date of birth",
       "days": "Days: {n}",
-      "months": "Months: {n}"
+      "months": "Months: {n}",
+      "weekdays": {
+        "1": "Monday",
+        "2": "Tuesday",
+        "3": "Wednesday",
+        "4": "Thursday",
+        "5": "Friday",
+        "6": "Saturday",
+        "7": "Sunday"
+      },
+      "recordTitle": "Additional details (not printed in the document)"
     },
     "draft": "Draft",
     "draftSignTitle": "Application is a draft",
@@ -5695,7 +5705,7 @@
   "navigation": {
     "hrm": "HR Management",
     "docFlow": "Document Flow",
-    "myOrg": "My Organization",
+    "myOrg": "HR Management",
     "myDocs": "My Documents",
     "attestation": "Certification",
     "turnstile": "Turnstile",
@@ -5862,10 +5872,10 @@
     },
     "hourly": {
       "title": "Passes during the day",
-      "hint": "Employees who passed via turnstile or mobile app, in {n}-hour intervals",
+      "hint": "Passes via turnstile or mobile app, in {n}-hour intervals",
       "peak": "Peak time",
       "active": "Active hours",
-      "people": "employees",
+      "people": "passes",
       "total": "Total passes"
     },
     "rate": {
@@ -5936,7 +5946,8 @@
       "came": "Came",
       "absent": "Absent",
       "total": "Total",
-      "pick": "Select month"
+      "pick": "Select month",
+      "dayOff": "Day off"
     },
     "attendanceReason": {
       "sick_leave": "Sick leave",

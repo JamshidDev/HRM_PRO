@@ -1,7 +1,7 @@
 <script setup>
   /**
-   * «Soatlik o'tishlar» — tanlangan kunda har soatda turniket/mobil orqali o'tgan
-   * xodimlar soni (ustunli grafik, backend oraliqlari — dev'da 2 soatlik). Tepada 3 ko'rsatkich:
+   * «Soatlik o'tishlar» — tanlangan kunda har soatda turniket/mobil orqali
+   * o'tishlar soni (ustunli grafik, backend oraliqlari — dev'da 2 soatlik). Tepada 3 ko'rsatkich:
    * eng gavjum oraliq, jami o'tishlar va faol vaqt.
    * (Ilgari bu yerda jami/reja/kelgan/kelmagan legendasi turardi — grafikka aloqasi
    * yo'q edi, bu sonlar yuqori kartalar va «Reja bo'yicha davomat» da bor.)
@@ -40,8 +40,7 @@
     events.value.reduce((best, v) => (v.count > (best?.count || 0) ? v : best), null)
   )
   // «Jami o'tishlar» = oraliqlar `count` yig'indisi.
-  // BACKEND: `daily_attendance_chart[].count` — oraliqdagi o'tishlar sonimi yoki o'tgan xodimlar soni (bir xodim
-  // bir necha oraliqda sanaladi)? Tasdiqlash kerak; xodimlar soni bo'lsa yorliq «Jami o'tishlar» noaniq.
+  // `count` — oraliqdagi o'tishlar (hodisalar) soni, xodimlar emas.
   const total = computed(() => events.value.reduce((s, v) => s + (v.count || 0), 0))
   // Faol vaqt — o'tishlar cho'qqining 5% idan ko'p bo'lgan birinchi oraliq boshi va oxirgi oraliq oxiri.
   const activeRange = computed(() => {

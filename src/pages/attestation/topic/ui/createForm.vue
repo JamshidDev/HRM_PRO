@@ -1,5 +1,5 @@
 <script setup>
-  import { SuperSelect, UIDepartmentSelect, UINSelect } from '@/components/index.js'
+  import { UIDepartmentSelect } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import i18n from '@/i18n/index.js'
   import { useTopicStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
@@ -39,43 +39,6 @@
     { key: 'screen_share_required', label: 'topicPage.screenShareRequired' },
     { key: 'strict_mode', label: 'topicPage.strictMode' }
   ]
-
-  // «Kimlarga» ro'yxatlari doiraga bog'liq — doira yoki bo'linmalar o'zgarsa qayta yuklanadi.
-  const loadAudience = () => {
-    if (store.payload.whom === 2) store._audiencePositions()
-    else if (store.payload.whom === 3) {
-      store.workerParams.page = 1
-      store._audienceWorkers()
-    }
-  }
-  const onWhomChange = () => {
-    store.payload.whom_ids = []
-    loadAudience()
-  }
-  watch(
-    () => [store.payload.scope, store.payload.department_ids.join(',')],
-    (_, old) => {
-      if (!old || store.showLoading) return
-      store.payload.whom_ids = []
-      loadAudience()
-    }
-  )
-
-  const onWorkerSearch = () => {
-    store.workerParams.page = 1
-    store._audienceWorkers()
-  }
-  const onWorkerScroll = () => {
-    store.workerParams.page += 1
-    store._audienceWorkers(true)
-  }
-
-  let pinTimer = null
-  const onPinSearch = (v) => {
-    if (v?.toString().length !== 17) return
-    clearTimeout(pinTimer)
-    pinTimer = setTimeout(() => store._checkWorker(v.split('-').join('')), 600)
-  }
 
   // Faollashtirish faqat tahrirda va ichida kamida bitta imtihon bo'lsa.
   const canActivate = computed(() => !store.visibleType && store.examsCount > 0)
@@ -165,67 +128,6 @@
         path="chances"
       >
         <n-input-number class="w-full" :min="1" :max="10" v-model:value="store.payload.chances" />
-      </n-form-item>
-
-      <n-form-item class="col-span-12 md:col-span-6" :label="$t('topicDetailsPage.exams.toWhom')">
-        <n-select
-          v-model:value="store.payload.whom"
-          :options="componentStore.topicWhomList"
-          label-field="name"
-          value-field="id"
-          :loading="componentStore.enumExamLoading"
-          :disabled="!store.payload.scope"
-          @update:value="onWhomChange"
-        />
-      </n-form-item>
-      <n-form-item
-        v-if="store.payload.whom === 2"
-        class="col-span-12 md:col-span-6"
-        :label="$t('topicDetailsPage.exams.positions')"
-        path="whom_ids"
-      >
-        <UINSelect
-          multiple
-          v-model:value="store.payload.whom_ids"
-          :options="store.positionList"
-          :loading="store.positionLoading"
-          :max-tag-count="1"
-          value-field="id"
-        />
-      </n-form-item>
-      <n-form-item
-        v-else-if="store.payload.whom === 3"
-        class="col-span-12 md:col-span-6"
-        :label="$t('topicDetailsPage.exams.workers')"
-        path="whom_ids"
-      >
-        <SuperSelect
-          multiple
-          :options="store.workerList"
-          :loading="store.workerLoading"
-          :total-count="store.workerTotal"
-          :per-page="store.workerParams.per_page"
-          v-model:value="store.payload.whom_ids"
-          v-model:search="store.workerParams.search"
-          @onSearch="onWorkerSearch"
-          @onScrollEv="onWorkerScroll"
-        />
-      </n-form-item>
-      <n-form-item
-        v-else-if="store.payload.whom === 5"
-        class="col-span-12 md:col-span-6"
-        :label="$t('topicDetailsPage.exams.workers')"
-        path="whom_ids"
-      >
-        <UINSelect
-          v-model:value="store.payload.whom_ids"
-          value-field="id"
-          :loading="store.checkWorkerLoading"
-          :options="store.checkedWorkers"
-          @onSearch="onPinSearch"
-          multiple
-          pin-select
-        />
       </n-form-item>
 
       <n-form-item class="col-span-12" :label="$t('topicPage.settings')" :show-feedback="false">

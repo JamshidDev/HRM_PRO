@@ -586,7 +586,7 @@
     "changeRoleConfirm": "Bul akkaunttan shıǵıp basqa akkauntqa kiriw ushın kerekli akkaunttı tańlań hám 20 sekund kútiń"
   },
   "sidebar": {
-    "hrm": "Meniń kárxanam moduli",
+    "hrm": "Kadr basqarıwı moduli",
     "admin": "Admin moduli",
     "chat": "Xabar hám daǵazalar moduli",
     "docflow": "Meniń hújjetlerim",
@@ -3486,7 +3486,17 @@
       "childName": "Perzenttiń F.A.Á.",
       "childBirthday": "Tuwılǵan sánesi",
       "days": "Kúnler sanı: {n}",
-      "months": "Aylar sanı: {n}"
+      "months": "Aylar sanı: {n}",
+      "weekdays": {
+        "1": "Dúyshembi",
+        "2": "Siyshembi",
+        "3": "Sárshembi",
+        "4": "Piyshembi",
+        "5": "Juma",
+        "6": "Shembi",
+        "7": "Ekshembi"
+      },
+      "recordTitle": "Qosımsha maǵlıwmatlar (hújjetke jazılmaydı)"
     },
     "draft": "Qaralama",
     "draftSignTitle": "Arza qaralama jaǵdayında",
@@ -5740,7 +5750,7 @@
   "navigation": {
     "hrm": "Kadrlar basqarıwı",
     "docFlow": "Hújjet aylanısı",
-    "myOrg": "Meniń kárxanam",
+    "myOrg": "Kadr basqarıwı",
     "myDocs": "Meniń hújjetlerim",
     "attestation": "Attestaciya",
     "turnstile": "Turniket",
@@ -5908,10 +5918,10 @@
     },
     "hourly": {
       "title": "Kún dawamında ótiwler",
-      "hint": "Turniket yamasa mobil arqalı ótken xızmetkerler sanı, {n} saatlıq aralıqlarda",
+      "hint": "Turniket yamasa mobil arqalı ótiwler sanı, {n} saatlıq aralıqlarda",
       "peak": "Eń kóp waqıt",
       "active": "Aktiv waqıt",
-      "people": "xızmetker",
+      "people": "ótiw",
       "total": "Jámi ótiwler"
     },
     "rate": {
@@ -5982,7 +5992,8 @@
       "came": "Keldi",
       "absent": "Kelmedi",
       "total": "Jámi",
-      "pick": "Aydı tańlań"
+      "pick": "Aydı tańlań",
+      "dayOff": "Dem alıs kúni"
     },
     "attendanceReason": {
       "sick_leave": "Kesellik paraǵı",

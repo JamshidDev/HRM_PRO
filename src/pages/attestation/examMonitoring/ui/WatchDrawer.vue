@@ -176,12 +176,14 @@
             </div>
           </div>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="shrink-0 flex items-center gap-2 lg:gap-3">
           <span
-            class="inline-flex items-center gap-1.5 rounded-full bg-fig-chip-green text-fig-chip-green-text px-3 py-1 text-sm font-semibold"
+            class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-fig-chip-green text-fig-chip-green-text px-3 py-1 text-sm font-semibold"
+            :title="$t('examMonitoringPage.solvingNow')"
           >
             <span class="w-2 h-2 rounded-full bg-fig-green animate-pulse"></span>
-            {{ $t('examMonitoringPage.solvingNow') }}: {{ store.solving.length }}
+            <span class="hidden sm:inline">{{ $t('examMonitoringPage.solvingNow') }}:</span>
+            {{ store.solving.length }}
           </span>
           <n-button quaternary circle @click="store.closeDrawer()">
             <template #icon>
@@ -191,10 +193,12 @@
         </div>
       </div>
 
-      <div class="flex-1 min-h-0 flex gap-4 p-4">
+      <div
+        class="flex-1 min-h-0 flex flex-col lg:flex-row gap-4 p-3 lg:p-4 overflow-y-auto lg:overflow-hidden"
+      >
         <!-- Yechayotganlar -->
         <aside
-          class="w-[340px] shrink-0 bg-surface-section rounded-2xl border border-surface-line flex flex-col min-h-0"
+          class="w-full lg:w-[340px] h-[320px] lg:h-auto shrink-0 bg-surface-section rounded-2xl border border-surface-line flex flex-col min-h-0"
         >
           <div class="p-3 border-b border-surface-line flex flex-col gap-2.5">
             <UISegmentTabs
@@ -226,7 +230,7 @@
                   <n-icon size="24"><PeopleAudience24Regular /></n-icon>
                 </span>
                 <p class="text-sm text-fig-text-tertiary">
-                  {{ $t('examMonitoringPage.nobodySolving') }}
+                  {{ search.trim() ? $t('content.notFoundData') : $t('examMonitoringPage.nobodySolving') }}
                 </p>
               </div>
               <button
@@ -294,7 +298,7 @@
                   <n-icon size="24"><PeopleAudience24Regular /></n-icon>
                 </span>
                 <p class="text-sm text-fig-text-tertiary">
-                  {{ $t('examMonitoringPage.nobodyFinished') }}
+                  {{ search.trim() ? $t('content.notFoundData') : $t('examMonitoringPage.nobodyFinished') }}
                 </p>
               </div>
               <button
@@ -343,7 +347,7 @@
         </aside>
 
         <!-- Tanlangan nomzod: kamera va ekran -->
-        <section class="flex-1 min-w-0 flex flex-col gap-3">
+        <section class="flex-1 min-w-0 min-h-[520px] lg:min-h-0 flex flex-col gap-3">
           <!-- Yechganlar: tanlangan xodim natijasi -->
           <template v-if="store.tab === 'finished'">
             <div
@@ -426,7 +430,7 @@
                 :short="false"
                 :avatar-clickable="false"
               />
-              <div class="flex items-center gap-2">
+              <div class="flex flex-wrap items-center gap-2">
                 <span
                   v-if="statusChip"
                   class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"

@@ -913,7 +913,8 @@ export const getTableConfig = (cardType) => {
     'att_day_off',
     'att_excused',
     'att_plan_absent',
-    'att_plan_excused'
+    'att_plan_excused',
+    'att_no_schedule'
   ]) {
     configs[type] = { columns: [...attendanceBase, ...reasonColumn] }
   }

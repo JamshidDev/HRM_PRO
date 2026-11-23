@@ -153,11 +153,7 @@
     if (!accStore.checkAction(accStore.pn.turnstileSheetsGroupsWrite)) return
     const plan = editPlan.value
     if (!plan) return
-    // BACKEND (docs/api/turnstile-day-break.md): `plan` ichida endi `break_start_time` /
-    // `break_end_time` ("HH:mm" yoki null — tanaffussiz) ham bor. UI'da «Tanaffus (ovqatlanish uchun)».
-    // schedule-day ularni kun bilan saqlashi va `daily_minutes = (end − start) − tanaffus` deb hisoblashi kerak.
-    // `null` = tanaffus yo'q («Tanaffus bor» belgisi olingan); maydon umuman kelmasa — smena turidan olinsin.
-    // Dam kuni uchun bu maydonlar yuborilmaydi.
+    // Tanaffus kun bilan saqlanadi: null — tanaffussiz, maydon yo'q — smena turidan (docs/api/turnstile-day-break.md).
     const data = {
       worker_position_id: store.selectedWorker.workerPositionId,
       date: dayDate.value,

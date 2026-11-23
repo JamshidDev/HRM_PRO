@@ -123,7 +123,7 @@ const withRawIcons = (items) =>
 
 export const navigations = withRawIcons([
   {
-    label: 'navigation.myOrg', // Mening korxonam
+    label: 'navigation.myOrg', // Kadr boshqaruvi
     path: AppPaths.Hrm,
     icon: HrSidebarIcon,
     permission: appPermissions.hr,

@@ -38,6 +38,7 @@ export const ATTENDANCE_PREVIEW = {
   att_plan_came: 'plan_came',
   att_plan_absent: 'plan_absent',
   att_plan_excused: 'plan_excused',
+  att_no_schedule: 'no_schedule',
   att_vacation: 'vacation',
   att_day_off: 'day_off',
   att_excused: 'excused'
@@ -113,6 +114,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
       att_plan_came: { name: 'turnStileDashboard.plan.cameTitle', key: 'att_plan_came' },
       att_plan_absent: { name: 'turnStileDashboard.plan.absentTitle', key: 'att_plan_absent' },
       att_plan_excused: { name: 'turnStileDashboard.plan.excused', key: 'att_plan_excused' },
+      att_no_schedule: { name: 'turnStileDashboard.kpi.noSchedule', key: 'att_no_schedule' },
       late_come: {
         name: 'turnStileDashboard.cards.late_come',
         key: 'late_come'
@@ -272,7 +274,9 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
           this.month.list = data.data.map((v) => ({
             ...v,
             user: this._userContructor(v, v.position_name),
-            cameSet: new Set(v.came_days)
+            cameSet: new Set(v.came_days),
+            // Grafik bo'yicha dam olish kunlari — «Kelmadi» ga sanalmaydi.
+            offSet: new Set(v.day_off_days ?? [])
           }))
           this.month.total = data.total
           this.month.daysInMonth = data.days_in_month
@@ -406,8 +410,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
     //   total = came + absent + vacation + day_off + excused
     //   absent = absent_by_reason.no_event (grafik bo'yicha kelishi kerak edi) + .no_schedule (grafigi yo'q)
     //   came = in_office (oxirgi o'tishi «kirish») + left_office (oxirgi o'tishi «chiqish»)
-    // BACKEND: `in_office + left_office = came` dev'da tekshirib bo'lmadi (o'tishlar yo'q) — shunday ekanini
-    // tasdiqlash kerak. Aks holda «Ishxonadagi» kartasidagi «Kelganlar / Chiqib ketganlar» qatorlari mos kelmaydi.
+    // Backendda in_office + left_office = came (oxirgi hodisa yo'nalishi bo'yicha bo'linadi).
     // Har kartaning ostidagi 2 qator shu hisobni ko'rsatadi va bosilsa ro'yxat ochiladi.
     // Ranglar — dashboard palitrasi rollari (ui/palette.js).
     _buildAttendanceCards() {
@@ -443,9 +446,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
           previewType: 'att_absent',
           rows: [
             row('noEvent', noEvent, 'att_plan_absent'),
-            // BACKEND: `/v1/turnstile/dashboard/attendance/workers` da `status=no_schedule` yo'q
-            // (422 «Holati noto'g'ri tanlangan»). Qo'shilsa — shu qator ham bosiladigan bo'ladi.
-            row('noSchedule', noSchedule)
+            row('noSchedule', noSchedule, 'att_no_schedule')
           ]
         }
       ]

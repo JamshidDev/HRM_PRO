@@ -44,10 +44,8 @@
     const { y, m } = monthParts.value
     return y && m ? new Date(y, m - 1, day).getDay() : null
   }
-  // Shanba / yakshanba hamma uchun dam olish kuni deb olinadi.
-  // BACKEND: `/v1/turnstile/dashboard/attendance/month` da xodimning grafik bo'yicha dam olish kunlari yo'q —
-  // smenada ishlovchining ish kunidagi dam olishi «Kelmadi» bo'lib ko'rinadi. Har xodimga `day_off_days: [..]`
-  // (yoki kun holati) qo'shilsa — shu kunlar «Dam olish kunida» bo'lib, «Kelmadi» ga sanalmaydi.
+  // Shanba / yakshanba — faqat ustun foni; xodimning dam kuni grafikdan (`day_off_days`).
+  const isOff = (row, day) => row.offSet?.has(day) && !row.cameSet.has(day)
   const isWeekend = (day) => [0, 6].includes(weekday(day))
 
   // Sarlavhadagi oy: «2026 Noyabr» («2026-11» o'rniga). Nom tarjimadan — til almashsa ham to'g'ri.
@@ -65,7 +63,7 @@
   const counts = (row) => {
     let absent = 0
     for (const day of days.value) {
-      if (isFutureDay(day) || row.cameSet.has(day) || day === todayDay.value) continue
+      if (isFutureDay(day) || row.cameSet.has(day) || isOff(row, day) || day === todayDay.value) continue
       absent++
     }
     return { came: row.came_days.length, absent }
@@ -320,7 +318,12 @@
                     <template v-if="!isFutureDay(day)">
                       <!-- bugun, hali kelmagan — kutilmoqda -->
                       <span
-                        v-if="isPendingToday(row, day)"
+                        v-if="isOff(row, day)"
+                        class="inline-flex h-[22px] w-[22px] items-center justify-center rounded-[6px] bg-fig-br-disable text-[10px] text-textColor2"
+                        :title="$t('turnStileDashboard.month.dayOff')"
+                      >—</span>
+                      <span
+                        v-else-if="isPendingToday(row, day)"
                         class="inline-block h-[22px] w-[22px] rounded-[6px] border-2 border-dashed border-fig-br-disable"
                         :title="$t('turnStileDashboard.attendanceReason.not_started')"
                       ></span>
