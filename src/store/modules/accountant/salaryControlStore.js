@@ -215,24 +215,77 @@ export const useSalaryControlStore = defineStore('salaryControl', {
       const reqId = ++dashReq
       this.dashboardLoading = true
       this.dashboardError = false
-      $ApiService.salaryControlService
-        ._salaryControlDashboard({ params: this._params() })
-        .then((res) => {
-          const data = res.data.data ?? {}
-          dashCache.set(key, data)
-          if (reqId === dashReq && key === this._key()) {
-            this.dashboard = markRaw(data)
-            this._deriveDashboard(reqId, key)
-          } else if (reqId === dashReq) {
-            this.dashboardLoading = false
-          }
+      this._loadDashboardPaged(reqId, key)
+    },
+
+    // Dashboard'ni BO'LAK-BO'LAK (progressiv paginatsiya) yuklaydi — katta payload
+    // bitta bo'lib kelmaydi (parse bloki kichik), har yangi yuklash eng so'nggi
+    // ma'lumot (kesh-eskiligi yo'q). 1-sahifa: agregatlar (kpi/vids/rc/norm/rules) +
+    // total + birinchi emps bo'lagi (backend fresh rebuild). 2..N sahifalar: faqat
+    // emps/emps_month bo'laklari — PARALLEL (concurrency cheklangan), backend snapshot'dan
+    // tez keladi. Hammasi yig'ilgach — bir marta engine derive (findings/risks butun
+    // ma'lumotga tayanadi, shuning uchun oxirida).
+    async _loadDashboardPaged(reqId, key) {
+      const PER = 1200
+      const POOL = 6 // bir vaqtda ochiladigan maksimal sahifa so'rovi
+      const svc = $ApiService.salaryControlService
+      const fetchPage = (p) =>
+        svc._salaryControlDashboard({
+          params: { ...this._params(), emps_page: p, emps_per_page: PER }
         })
-        .catch(() => {
-          if (reqId === dashReq) {
-            this.dashboardError = true
-            this.dashboardLoading = false
+      try {
+        const r1 = await fetchPage(1)
+        if (reqId !== dashReq) return
+        const d1 = r1.data.data ?? {}
+        const total = Number(d1.total) || 0
+        const acc = {
+          kpi: d1.kpi ?? {},
+          vids: d1.vids ?? [],
+          rc: d1.rc ?? {},
+          norm: d1.norm ?? null,
+          rules: d1.rules,
+          emps: Array.isArray(d1.emps) ? d1.emps.slice() : [],
+          // emps_month faqat kumulyativда keladi; undefined bo'lsa getter emps'ga tushadi.
+          emps_month: Array.isArray(d1.emps_month) ? d1.emps_month.slice() : undefined
+        }
+        const pages = PER > 0 ? Math.ceil(total / PER) : 1
+        if (pages > 1 && !d1.done) {
+          // 2..N sahifalarni POOL concurrency bilan yuklaymiz (tartibsiz — yig'ish
+          // tartib talab qilmaydi; findings/risks butun to'plamdan hisoblanadi).
+          const queue = []
+          for (let p = 2; p <= pages; p++) queue.push(p)
+          const appendPage = (d) => {
+            const es = Array.isArray(d.emps) ? d.emps : []
+            for (let i = 0; i < es.length; i++) acc.emps.push(es[i])
+            if (acc.emps_month && Array.isArray(d.emps_month)) {
+              for (let i = 0; i < d.emps_month.length; i++) acc.emps_month.push(d.emps_month[i])
+            }
           }
-        })
+          let qi = 0
+          const worker = async () => {
+            while (qi < queue.length) {
+              const p = queue[qi++]
+              const r = await fetchPage(p)
+              if (reqId !== dashReq) return
+              appendPage(r.data.data ?? {})
+            }
+          }
+          await Promise.all(Array.from({ length: Math.min(POOL, queue.length) }, worker))
+          if (reqId !== dashReq) return
+        }
+        if (key !== this._key()) {
+          this.dashboardLoading = false
+          return
+        }
+        dashCache.set(key, acc)
+        this.dashboard = markRaw(acc)
+        this._deriveDashboard(reqId, key)
+      } catch {
+        if (reqId === dashReq) {
+          this.dashboardError = true
+          this.dashboardLoading = false
+        }
+      }
     },
 
     // Og'ir derivatsiya (buildPeople / computeFindings / computeRisks — minglab
