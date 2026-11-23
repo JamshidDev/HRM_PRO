@@ -4,8 +4,11 @@
   import { UILanguage, UIThemeSwitch } from '@/components/index.js'
   import { useRouter } from 'vue-router'
   import { AppPaths } from '@/utils/index.js'
+  import { usePublicStore } from '@stores'
 
   const router = useRouter()
+  // Hujjatning UTY raqami (backend `electronic_number`) — «Hujjatni tekshirish» ostida; telefonda ham ko'rinadi
+  const store = usePublicStore()
 </script>
 
 <template>
@@ -23,9 +26,19 @@
           </span>
         </button>
         <span class="hidden h-6 w-px shrink-0 bg-surface-line sm:block"></span>
-        <span class="hidden truncate text-sm font-medium text-textColor2 sm:inline">
-          {{ $t('publicPage.portalLabel') }}
-        </span>
+        <!-- «Hujjatni tekshirish», ostida kichik UTY raqami (telefonda yozuv yashirin — faqat raqam) -->
+        <div class="flex min-w-0 flex-col gap-0.5">
+          <span class="hidden truncate text-sm font-medium leading-tight text-textColor2 sm:inline">
+            {{ $t('publicPage.portalLabel') }}
+          </span>
+          <span
+            v-if="store.existFile && store.meta?.electronic_number"
+            class="max-w-full self-start truncate rounded-full bg-surface-ground px-2 text-[11px] font-semibold leading-[18px] tabular-nums text-textColor2"
+            :title="$t('publicPage.electronicNumber')"
+          >
+            {{ store.meta.electronic_number }}
+          </span>
+        </div>
       </div>
       <!-- Mavzu (kunduzgi / tungi) va til -->
       <div class="flex shrink-0 items-center gap-2 sm:gap-3">

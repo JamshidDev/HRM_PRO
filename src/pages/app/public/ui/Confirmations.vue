@@ -32,7 +32,7 @@
         class="flex items-center gap-3 border-t border-surface-line py-3 first:border-t-0 first:pt-0 last:pb-0"
       >
         <UIUser
-          class="min-w-0 flex-1"
+          class="min-w-0 flex-1 !items-start"
           :hide-tooltip="true"
           :short="false"
           :data="{
@@ -42,7 +42,17 @@
             middleName: item.worker?.middle_name ?? '',
             position: item.position
           }"
-        />
+        >
+          <!-- Ism va lavozim to'liq ko'rinadi (kesilmaydi, kerak bo'lsa keyingi qatorga o'tadi) — telefonda hover yo'q -->
+          <template #name="{ title }">
+            <span class="text-sm leading-[1.25] text-textColor2 [overflow-wrap:anywhere]">{{ title }}</span>
+          </template>
+          <template #position>
+            <span class="mt-0.5 text-xs leading-snug text-textColor3 [overflow-wrap:anywhere]">
+              {{ item.position }}
+            </span>
+          </template>
+        </UIUser>
         <div class="flex shrink-0 flex-col items-end gap-1">
           <span v-if="ROLES.includes(item.type)" class="text-xs text-textColor3">
             {{ $t(`documentPage.signature.approval.roles.${item.type}`) }}
