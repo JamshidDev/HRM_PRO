@@ -2,12 +2,10 @@
 import { h, computed } from 'vue'
 import { NIcon } from 'naive-ui'
 import { useRouter } from 'vue-router'
-import { PeopleLock24Filled } from '@vicons/fluent'
 import icons from '@assets/icons'
 import { useAppStore, useAccountStore, useSocketStore } from '@/store/modules/index.js'
 import i18n from '@/i18n/index.js'
 import { AppPaths, useAppSetting } from '@/utils/index.js'
-import { getActivePinia } from 'pinia'
 import { useThemeMenu } from '@/components/general/ThemeDropDown.vue'
 import { useLangMenu } from '@/components/general/LangDropDownSecond.vue'
 
@@ -42,15 +40,6 @@ const options = computed(() => {
     { label: t('content.logOutSystem'), key: 'logout', icon: renderIcon(icons.logoutSystemIcon) }
   ]
 
-  // Admin «user sifatida kirish»dan qaytish — faqat vaqtinchalik admin tokeni bo'lsa.
-  if (sessionStorage.getItem(useAppSetting.temporaryToken)) {
-    opts.unshift({
-      label: t('content.asAdmin'),
-      key: 'asAdmin',
-      icon: renderIcon(PeopleLock24Filled)
-    })
-  }
-
   return opts
 })
 
@@ -63,25 +52,11 @@ const changeOption = (v) => {
     accountStore.openRoleModal()
   } else if (v === 'setting') {
     store.openProfileSettings()
-  } else if (v === 'asAdmin') {
-    const token = sessionStorage.getItem(useAppSetting.temporaryToken)
-    if (token) {
-      loginAsAdmin(token)
-    }
   } else {
     selectTheme(v) || selectLang(v)
   }
 }
 
-const loginAsAdmin = (token) => {
-  store._loginAsAdmin(token, (tkn) => {
-    localStorage.setItem(useAppSetting.tokenKey, tkn)
-    accountStore._index(() => {
-      getActivePinia().reset()
-      router.push(AppPaths.Home)
-    })
-  })
-}
 const onLogOutEv = () => {
   accountStore._logOut(() => {
     socketStore.disconnect()
