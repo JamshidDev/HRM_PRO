@@ -1,9 +1,8 @@
 <script setup>
   import { UITable, UIUser, UIBadge } from '@/components/index.js'
-  import { useUserStore, useAccountStore, useSocketStore } from '@/store/modules/index.js'
+  import { useUserStore, useAccountStore } from '@/store/modules/index.js'
   import {
     RibbonStar24Filled,
-    ShieldLock20Regular,
     LockClosed12Filled,
     LockOpen16Filled,
     Add20Regular,
@@ -14,15 +13,11 @@
   } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
-  import { AppPaths, useAppSetting } from '@/utils/index.js'
-  import router from '@/router/index.js'
-  import { getActivePinia } from 'pinia'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
   const store = useUserStore()
   const accStore = useAccountStore()
-  const socketStore = useSocketStore()
 
   const onAttachment = (row) => {
     if (!accStore.checkAction(accStore.pn.usersWrite)) return
@@ -63,22 +58,6 @@
     store._index()
   }
 
-  const onSuccessEv = (token) => {
-    localStorage.setItem(useAppSetting.tokenKey, token)
-    accStore._index((data) => {
-      socketStore.disconnect()
-      getActivePinia().reset()
-      localStorage.setItem(useAppSetting.accountUserId, data.id)
-      socketStore.initSocket(token, data?.id)
-      router.push(AppPaths.Home)
-    })
-  }
-
-  const onLogin = (row) => {
-    store._getTemporaryToken({ user_uuid: row.uuid })
-    store._loginById(row.uuid, onSuccessEv)
-  }
-
   const clickPermissionsEv = (row) => {
     if (!accStore.checkAction(accStore.pn.usersWrite)) return
     store.elementId = row.uuid
@@ -102,12 +81,6 @@
       key: 'worker',
       title: t('content.worker'),
       minWidth: 200
-    },
-    {
-      key: 'login',
-      title: '',
-      width: 160,
-      minWidth: 140
     },
     {
       key: 'workplace',
@@ -217,20 +190,6 @@
       </UIUser>
     </template>
 
-    <template #cell-login="{ row }">
-      <n-button
-        secondary
-        type="error"
-        @click="onLogin(row)"
-        size="tiny"
-        :loading="store.loginLoading"
-      >
-        {{ $t('content.loginById') }}
-        <template #icon>
-          <ShieldLock20Regular />
-        </template>
-      </n-button>
-    </template>
 
     <template #cell-workplace="{ row }">
       <template v-if="row?.organization">{{ row.organization.name }}</template>

@@ -293,7 +293,7 @@
   const showKeys = ref(false)
   const keyView = ref({ id: null, name: '', public_key: '', secret_key: null, revealed: false })
 
-  // Menyudan "Kalitlar": public + secret (backend deshifrlab qaytaradi) ko'rsatiladi.
+  // Menyudan «Kalitlar»: faqat public; secret serverdan olinmaydi (faqat yaratish/almashtirishda bir marta).
   const openKeys = (item) => {
     keyView.value = {
       id: item.id,
@@ -303,10 +303,6 @@
       revealed: false
     }
     showKeys.value = true
-    $ApiService.integrationClientsService._secret(item.id).then((res) => {
-      keyView.value.secret_key = res.data.data.secret_key
-      keyView.value.revealed = true
-    })
   }
 
   // Create/rotate'dan keyin: yangi secret BIR MARTA ochiq ko'rsatiladi.

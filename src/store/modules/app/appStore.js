@@ -98,11 +98,6 @@ export const useAppStore = defineStore('appStore', {
           this.wrongPinsLoading = false
         })
     },
-    _loginAsAdmin(token, callback) {
-      $ApiService.userService._accessForAdmin({ data: { token } }).then((res) => {
-        callback(res.data.data.access_token)
-      })
-    },
     _logOutApp() {
       localStorage.removeItem('telegramPopup')
       localStorage.removeItem(useAppSetting.tokenKey)
