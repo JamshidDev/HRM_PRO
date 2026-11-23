@@ -610,7 +610,7 @@
     "signUp": "Sign up",
     "description": {
       "title": "HRMS",
-      "subtitle": "Modern employee management system\n",
+      "subtitle": "HRM PRO — HR management system of «Uzbekistan Railways» JSC",
       "text": "Convenient solution for efficient employee management, time tracking, and document automation. Optimize HR processes and take your business to the next level!"
     },
     "login": "Login",
@@ -8019,5 +8019,9 @@
       "denied": "Screen sharing was not allowed",
       "not_monitor": "Select the entire screen (not a window or tab)"
     }
+  },
+  "seo": {
+    "loginTitle": "HRM PRO — HR management and electronic document workflow {'|'} Uzbekistan Railways",
+    "modulesLink": "HRM PRO modules and features"
   }
 }
