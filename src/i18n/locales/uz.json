@@ -3486,7 +3486,17 @@
       "childName": "Farzandning F.I.Sh.",
       "childBirthday": "Tug'ilgan sanasi",
       "days": "Kunlar soni: {n}",
-      "months": "Oylar soni: {n}"
+      "months": "Oylar soni: {n}",
+      "weekdays": {
+        "1": "Dushanba",
+        "2": "Seshanba",
+        "3": "Chorshanba",
+        "4": "Payshanba",
+        "5": "Juma",
+        "6": "Shanba",
+        "7": "Yakshanba"
+      },
+      "recordTitle": "Qo'shimcha ma'lumotlar (hujjatga yozilmaydi)"
     },
     "draft": "Qoralama",
     "draftSignTitle": "Ariza qoralama holatida",
