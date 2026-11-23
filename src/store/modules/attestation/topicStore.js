@@ -87,12 +87,11 @@ export const useTopicStore = defineStore('topicStore', {
           this.payload.strict_mode = !!d.strict_mode
           this.payload.deadline = d.deadline ?? null
           this.payload.chances = d.chances ?? 2
-          this.payload.whom = d.whom ?? 1
-          this.payload.whom_ids = d.whom_ids ?? []
+          // Auditoriya faqat «Doira» bo'yicha — «Kimlarga» olib tashlangan.
+          this.payload.whom = 1
+          this.payload.whom_ids = []
           this.payload.active = !!d.active
           this.examsCount = this.list.find((v) => v.id === this.elementId)?.exams_count ?? 0
-          if (this.payload.whom === 2) this._audiencePositions()
-          if (this.payload.whom === 3) this._audienceWorkers()
         })
         .finally(() => {
           this.showLoading = false
