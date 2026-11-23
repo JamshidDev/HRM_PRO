@@ -117,7 +117,7 @@
     if (!m) return []
     const t = i18n.global.t
     return [
-      { label: t('publicPage.electronicNumber'), value: m.electronic_number },
+      // UTY raqami sarlavhada (ToolBar), bu yerda takrorlanmaydi
       { label: t('content.number'), value: m.number },
       { label: t('content.date'), value: fmtDate(m.date) },
       { label: t('content.type'), value: m.type?.name },

@@ -16,10 +16,14 @@
   import { AppPaths } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
+  import { useAppBreakpoints } from '@/composables/useBreakpoint.js'
 
   const { t } = i18n.global
 
   const store = usePdfViewerStore()
+  // Telefon/planshetda (< 768px) til — faqat bayroq: o'ngda vaqt, «Imzolash» va mavzu bor, to'liq til tugmasi
+  // (90px) imzolovchining ismini butunlay siqib yuborardi (mavzu almashtirgich qo'shilgach, DAS-16822).
+  const { isMobile } = useAppBreakpoints()
   const router = useRouter()
 
   const goSignature = () => {
@@ -144,7 +148,7 @@
           <span class="hidden sm:inline">{{ $t('signature.goSignature') }}</span>
         </n-button>
         <UIThemeSwitch />
-        <UILanguage />
+        <UILanguage :compact="isMobile" />
       </div>
     </div>
   </div>
