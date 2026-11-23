@@ -87,14 +87,15 @@
         </button>
         <!-- Ism va rol endi sahifa sarlavhasida (Document.vue) — bu yerda faqat portal nomi -->
         <span class="hidden h-6 w-px shrink-0 bg-surface-line md:block"></span>
-        <!-- Portal nomi, ostida imzolanayotgan hujjatning UTY raqami (QR sahifadagi kabi) -->
+        <!-- Portal nomi, ostida imzolanayotgan hujjatning UTY raqami (QR sahifadagi kabi). Faqat ≥ 976px (lg):
+             undan torroqda o'ngda vaqt, «Imzolash» tugmasi, mavzu va til — joy yo'q, raqam va ism ustma-ust tushardi. -->
         <div class="flex min-w-0 flex-col gap-0.5">
           <span class="hidden truncate text-sm font-medium leading-tight text-textColor2 md:inline">
             {{ $t('signature.portalLabel') }}
           </span>
           <span
             v-if="isSignPage && store.electronicNumber"
-            class="max-w-full self-start truncate rounded-full bg-surface-ground px-2 text-[11px] font-semibold leading-[18px] tabular-nums text-textColor2"
+            class="hidden max-w-full self-start truncate rounded-full bg-surface-ground px-2 text-[11px] font-semibold leading-[18px] tabular-nums text-textColor2 lg:inline-block"
             :title="$t('publicPage.electronicNumber')"
           >
             {{ store.electronicNumber }}

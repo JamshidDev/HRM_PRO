@@ -6797,8 +6797,8 @@
       "detailTitle": "Mobil ótiw",
       "info": "Maǵlıwmatlar",
       "placeTitle": "Ótiw ornı",
-      "livePhoto": "Tastıyıqlanǵan súwret",
-      "refPhoto": "Rásmiy súwret",
+      "livePhoto": "Alınǵan súwret",
+      "refPhoto": "Tastıyıqlanǵan súwret",
       "appName": "HR Rail qosımshası",
       "matchHigh": "Júz sáykes keldi",
       "matchMid": "Ortasha sáykeslik — súwretlerdi salıstırıń",
@@ -8219,5 +8219,10 @@
   "seo": {
     "loginTitle": "HRM PRO — kadrlar basqarıwı hám elektron hújjet aylanısı {'|'} Ózbekstan temir jolları",
     "modulesLink": "HRM PRO modulleri hám múmkinshilikleri"
+  },
+  "privacyPage": {
+    "toc": "Mazmunı",
+    "pdf": "PDF júklew",
+    "backToLogin": "Kiriw betine qaytıw"
   }
 }

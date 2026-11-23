@@ -6739,8 +6739,8 @@
       "detailTitle": "Mobile pass",
       "info": "Details",
       "placeTitle": "Pass location",
-      "livePhoto": "Verified photo",
-      "refPhoto": "Official photo",
+      "livePhoto": "Captured photo",
+      "refPhoto": "Verified photo",
       "appName": "HR Rail app",
       "matchHigh": "Face matches",
       "matchMid": "Partial match — compare the photos",
@@ -8023,5 +8023,10 @@
   "seo": {
     "loginTitle": "HRM PRO — HR management and electronic document workflow {'|'} Uzbekistan Railways",
     "modulesLink": "HRM PRO modules and features"
+  },
+  "privacyPage": {
+    "toc": "Contents",
+    "pdf": "Download PDF",
+    "backToLogin": "Back to login"
   }
 }
