@@ -51,7 +51,7 @@
   const audienceLabel = (row) => t(`telegramBroadcast.audience.${row.audience}`)
   // Tibbiy ko'rik eslatmasi — cron yuboradi, qo'lda yuborilganlardan ajralib tursin.
   const audienceType = (row) =>
-    ({ all_staff: 'info', med_reminder: 'warning' })[row.audience] ?? 'default'
+    ({ all_staff: 'info', med_reminder: 'warning', cert_reminder: 'warning' })[row.audience] ?? 'default'
 
   // «2316 / 15532» o'qilishi qiyin — ming ajratgich + foiz + tooltip bilan beramiz.
   const num = (v) => String(v ?? 0).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')

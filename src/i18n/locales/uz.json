@@ -7544,7 +7544,8 @@
     "audience": {
       "all_staff": "Barcha xodimlarga",
       "selected": "Tanlangan xodimlarga",
-      "med_reminder": "Tibbiy ko'rik eslatmasi"
+      "med_reminder": "Tibbiy ko'rik eslatmasi",
+      "cert_reminder": "Lavozim guvohnomasi eslatmasi"
     },
     "sentOf": "yuborildi",
     "blocked": "bloklagan",

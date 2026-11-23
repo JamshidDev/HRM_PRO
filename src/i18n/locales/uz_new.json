@@ -7544,7 +7544,8 @@
     "audience": {
       "all_staff": "Barça xodimlarga",
       "selected": "Tanlangan xodimlarga",
-      "med_reminder": "Tibbiy körik eslatmasi"
+      "med_reminder": "Tibbiy körik eslatmasi",
+      "cert_reminder": "Lavozim guvohnomasi eslatmasi"
     },
     "sentOf": "yuborildi",
     "blocked": "bloklagan",

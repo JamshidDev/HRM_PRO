@@ -7486,7 +7486,8 @@
     "audience": {
       "all_staff": "All employees",
       "selected": "Selected employees",
-      "med_reminder": "Medical exam reminder"
+      "med_reminder": "Medical exam reminder",
+      "cert_reminder": "Position certificate reminder"
     },
     "sentOf": "sent",
     "blocked": "blocked",

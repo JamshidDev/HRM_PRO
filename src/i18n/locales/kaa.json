@@ -7544,7 +7544,8 @@
     "audience": {
       "all_staff": "Barlıq xızmetkerlerge",
       "selected": "Tańlanǵan xızmetkerlerge",
-      "med_reminder": "Medicinalıq kórik eskertpesi"
+      "med_reminder": "Medicinalıq kórik eskertpesi",
+      "cert_reminder": "Lawazım gúwalıǵı eskertpesi"
     },
     "sentOf": "jiberildi",
     "blocked": "bloklaǵan",
