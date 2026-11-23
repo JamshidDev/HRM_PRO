@@ -1,4 +1,34 @@
 {
+  "guestPage": {
+    "tabWorkers": "Employees",
+    "tabGuests": "Guests",
+    "fullName": "Full name",
+    "workTime": "Work hours",
+    "cameAt": "Arrived",
+    "leftAt": "Left",
+    "lastEvent": "Last event",
+    "events": "Events",
+    "detach": "Detach",
+    "searchPlaceholder": "Name or PINFL",
+    "attach": "Attach guest",
+    "attachTitle": "Attach guest",
+    "editTitle": "Edit guest",
+    "eventsTitle": "Guest events",
+    "lateMin": "{n} min late",
+    "earlyMin": "{n} min early",
+    "notCame": "Absent",
+    "in": "In",
+    "out": "Out",
+    "pin": "PINFL",
+    "pinPlaceholder": "14 digits",
+    "pinHint": "The person must be registered in HikCentral with this PINFL",
+    "pinRule": "PINFL must be 14 digits",
+    "workStart": "Work start",
+    "workEnd": "Work end",
+    "endAfterStart": "End must be after start",
+    "note": "Note",
+    "noEvents": "No events in this period"
+  },
   "examLanguages": {
     "uz": "In Uzbek (Latin)",
     "uz_new": "In Uzbek (new Latin)",
@@ -8024,6 +8054,19 @@
   "seo": {
     "loginTitle": "HRM PRO — HR management and electronic document workflow {'|'} Uzbekistan Railways",
     "modulesLink": "HRM PRO modules and features"
+  },
+  "noticesPage": {
+    "name": "Notices",
+    "item": "Notice",
+    "createTitle": "Create notice",
+    "updateTitle": "Edit notice",
+    "type": "Notice type",
+    "term": "Notice period",
+    "response": {
+      "ack": "Employee acknowledges",
+      "consent": "Employee agrees or declines",
+      "explain": "Employee gives a written explanation"
+    }
   },
   "privacyPage": {
     "toc": "Contents",

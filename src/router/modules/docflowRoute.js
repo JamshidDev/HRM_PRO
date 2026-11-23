@@ -31,6 +31,14 @@ export const docFlowRoutes = [
     }
   },
   {
+    path: Utils.routeDocFlowPathMaker(AppPaths.ConfNotices),
+    component: () => import('@/pages/docFlow/confirmation/employeeDocuments/page.vue'),
+    meta: {
+      layout: AppLayouts.main,
+      notice: true
+    }
+  },
+  {
     path: Utils.routeDocFlowPathMaker(AppPaths.ConfApplication),
     component: () => import('@/pages/docFlow/confirmation/application/ConfApplication.vue'),
     meta: {

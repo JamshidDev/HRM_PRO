@@ -213,6 +213,14 @@ export const navigations = withRawIcons([
             name: 'documents'
           },
           {
+            label: 'noticesPage.name', // Bildirgilar (HR → xodim)
+            path: Utils.routeHrmPathMaker(AppPaths.Notices),
+            icon: contractIcon,
+            color: 'bg-warning',
+            permission: appPermissions.hrContractsRead,
+            name: 'notices'
+          },
+          {
             label: 'applicationPage.name', // Arizalar
             path: Utils.routeHrmPathMaker(AppPaths.Application),
             icon: applicationsIcon,
@@ -469,6 +477,14 @@ export const navigations = withRawIcons([
         color: 'bg-info',
         permission: appPermissions.confirmationContracts,
         name: 'documents'
+      },
+      {
+        label: 'noticesPage.name', // Bildirgilar (xodimga kelgan)
+        path: Utils.routeDocFlowPathMaker(AppPaths.ConfNotices),
+        icon: DocFlowContractIcon,
+        color: 'bg-warning',
+        permission: appPermissions.confirmationContracts,
+        name: 'notices'
       },
       {
         label: 'applicationPage.name', // Arizalar

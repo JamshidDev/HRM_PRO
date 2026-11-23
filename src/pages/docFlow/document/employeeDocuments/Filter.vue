@@ -25,7 +25,8 @@
     () =>
       Number(Boolean(store.params.organizations.length)) +
       Number(Boolean(store.params.confirmation)) +
-      Number(Boolean(store.params.type))
+      // Bildirgi rejimida tur qat'iy — filtr hisoblanmaydi.
+      Number(Boolean(store.params.type) && !store.noticeMode)
   )
 
   const filterEvent = () => {
@@ -41,7 +42,7 @@
   const resetFilter = () => {
     store.params.organizations = []
     store.params.confirmation = null
-    store.params.type = null
+    store.params.type = store.noticeMode ? 'notice' : null
     filterEvent()
   }
 
@@ -92,7 +93,7 @@
             @onSubmit="filterEvent"
           />
         </div>
-        <div class="col-span-12">
+        <div v-if="!store.noticeMode" class="col-span-12">
           <label>{{ $t('employeeDocumentsPage.form.type') }}</label>
           <n-select
             v-model:value="store.params.type"

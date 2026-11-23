@@ -1,28 +1,36 @@
 <script setup>
+  import { UISegmentTabs } from '@/components/index.js'
+  import i18n from '@/i18n/index.js'
   import { useEventStore } from '@/store/modules/index.js'
   import HcEventPage from '@/pages/turnstile/events/page.vue'
+  import GuestsPage from '@/pages/turnstile/events/guests/GuestsPage.vue'
 
+  const { t } = i18n.global
   const store = useEventStore()
 
-  // «Qurilmalar» tabi olib tashlandi — faqat hodisalar.
+  // Xodimlar — turniket hodisalari; Mehmonlar — korxonaga biriktirilgan shtatdan tashqari odamlar.
+  const tab = ref('workers')
+  const tabs = computed(() => [
+    { id: 'workers', name: t('guestPage.tabWorkers') },
+    { id: 'guests', name: t('guestPage.tabGuests') }
+  ])
+
   onBeforeMount(() => {
     store.activeTab = store.tabs[0]
   })
 </script>
 
 <template>
-  <n-tabs
-    animated
-    v-model:value="store.activeTab"
-    class="hidden-tab-header flex-1 flex flex-col"
-    pane-wrapper-class="flex-1 flex flex-col"
-    type="segment"
-  >
-    <!-- `flex-1 flex flex-col` zanjiri (tabs -> pane-wrapper -> pane): busiz n-tabs
-         balandligi kontent bo'yicha aniqlanib, ichidagi `.ui-page-content` ning
-         `height: 100%` i `auto` ga aylanardi va jadval sahifa tubiga yetmasdi. -->
-    <n-tab-pane :name="store.tabs[0]" class="!pt-0 flex-1 flex flex-col">
+  <div class="flex-1 flex flex-col min-h-0 gap-3">
+    <div class="shrink-0">
+      <UISegmentTabs v-model="tab" :tabs="tabs" />
+    </div>
+    <!-- `flex-1 flex flex-col` zanjiri: jadval sahifa tubiga yetishi uchun. -->
+    <div v-if="tab === 'workers'" class="flex-1 flex flex-col min-h-0">
       <HcEventPage />
-    </n-tab-pane>
-  </n-tabs>
+    </div>
+    <div v-else class="flex-1 flex flex-col min-h-0">
+      <GuestsPage />
+    </div>
+  </div>
 </template>
