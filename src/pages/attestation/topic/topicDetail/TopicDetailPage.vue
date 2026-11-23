@@ -5,6 +5,7 @@
   import { AddCircle24Regular, ArrowLeft24Regular } from '@vicons/fluent'
   import ExamsTable from './ui/ExamsTable.vue'
   import ExamForm from './ui/ExamForm.vue'
+  import AudienceCard from './ui/AudienceCard.vue'
   import { useAccountStore } from '@/store/modules/index.js'
 
   const accStore = useAccountStore()
@@ -67,6 +68,7 @@
           {{ $t('content.add') }}
         </n-button>
       </div>
+      <AudienceCard :topic="currentTopic" />
     </div>
 
     <div class="grow basis-auto overflow-hidden min-h-0">
