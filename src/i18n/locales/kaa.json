@@ -3549,7 +3549,8 @@
         "6": "Shembi",
         "7": "Ekshembi"
       },
-      "recordTitle": "Qosımsha maǵlıwmatlar (hújjetke jazılmaydı)"
+      "recordTitle": "Qosımsha maǵlıwmatlar (hújjetke jazılmaydı)",
+      "noNotices": "Sizge bul túrdegi talapnama kelmegen"
     },
     "draft": "Qaralama",
     "draftSignTitle": "Arza qaralama jaǵdayında",
@@ -8275,7 +8276,16 @@
       "ack": "Xızmetker tanısadı",
       "consent": "Xızmetker razılıq yamasa biykar juwabın beredi",
       "explain": "Xızmetker jazba túsinik beredi"
-    }
+    },
+    "tabs": {
+      "inbox": "Maǵan kelgen",
+      "sent": "Men jibergen",
+      "outbox": "Xızmetkerlerge jiberilgen",
+      "fromWorkers": "Xızmetkerlerden kelgen"
+    },
+    "createWorkerNotice": "Bildirge jaratıw",
+    "updateWorkerNotice": "Bildirgeni ózgertiw",
+    "date": "Bildirge sánesi"
   },
   "privacyPage": {
     "toc": "Mazmunı",

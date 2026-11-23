@@ -3549,7 +3549,8 @@
         "6": "Shanba",
         "7": "Yakshanba"
       },
-      "recordTitle": "Qo'shimcha ma'lumotlar (hujjatga yozilmaydi)"
+      "recordTitle": "Qo'shimcha ma'lumotlar (hujjatga yozilmaydi)",
+      "noNotices": "Sizga bu turdagi talabnoma kelmagan"
     },
     "draft": "Qoralama",
     "draftSignTitle": "Ariza qoralama holatida",
@@ -8275,7 +8276,16 @@
       "ack": "Xodim tanishadi",
       "consent": "Xodim rozilik yoki rad javobini beradi",
       "explain": "Xodim yozma tushuntirish beradi"
-    }
+    },
+    "tabs": {
+      "inbox": "Menga kelgan",
+      "sent": "Men yuborgan",
+      "outbox": "Xodimlarga yuborilgan",
+      "fromWorkers": "Xodimlardan kelgan"
+    },
+    "createWorkerNotice": "Bildirgi yaratish",
+    "updateWorkerNotice": "Bildirgini tahrirlash",
+    "date": "Bildirgi sanasi"
   },
   "privacyPage": {
     "toc": "Mundarija",

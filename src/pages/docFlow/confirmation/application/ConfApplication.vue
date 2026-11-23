@@ -10,6 +10,8 @@
   import i18n from '@/i18n'
 
   const t = i18n.global.t
+  // notice — Bildirgilar menyusidan: xodim bildirgilari (ro'yxat, tur tanlovi, sarlavha).
+  const props = defineProps({ notice: { type: Boolean, default: false } })
 
   const accStore = useAccountStore()
 
@@ -66,6 +68,9 @@
   }
 
   onMounted(() => {
+    store.noticeMode = props.notice
+    store.params.page = 1
+    store.list = []
     eventBus.on(Events.APPLICATION_GENERATED, onUpdateItem)
     if (!accStore.checkAction(accStore.pn.confirmationWorkerApplications)) return
     store._index()
@@ -78,6 +83,7 @@
 
 <template>
   <UIPageContent>
+    <slot name="top" />
     <!-- Sarlavhadagi banner (Xush kelibsiz + pie chart) olib tashlandi — ariza boshqa sahifalardagi
          kabi qidiruv qatoridagi «Qo'shish» tugmasi bilan yaratiladi. -->
     <UIPageFilter
@@ -92,9 +98,11 @@
       :visible="store.visible"
       @update:visible="(v) => (store.visible = v)"
       :title="
-        store.visibleType
-          ? $t('applicationPage.createWorkerApplication')
-          : $t('applicationPage.updateWorkerApplication')
+        props.notice
+          ? $t(store.visibleType ? 'noticesPage.createWorkerNotice' : 'noticesPage.updateWorkerNotice')
+          : store.visibleType
+            ? $t('applicationPage.createWorkerApplication')
+            : $t('applicationPage.updateWorkerApplication')
       "
     >
       <template #default>

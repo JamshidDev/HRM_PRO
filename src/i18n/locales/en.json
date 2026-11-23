@@ -3529,7 +3529,8 @@
         "6": "Saturday",
         "7": "Sunday"
       },
-      "recordTitle": "Additional details (not printed in the document)"
+      "recordTitle": "Additional details (not printed in the document)",
+      "noNotices": "You have no demand letters of this type"
     },
     "draft": "Draft",
     "draftSignTitle": "Application is a draft",
@@ -8079,7 +8080,16 @@
       "ack": "Employee acknowledges",
       "consent": "Employee agrees or declines",
       "explain": "Employee gives a written explanation"
-    }
+    },
+    "tabs": {
+      "inbox": "Received",
+      "sent": "Sent by me",
+      "outbox": "Sent to employees",
+      "fromWorkers": "From employees"
+    },
+    "createWorkerNotice": "Create notice",
+    "updateWorkerNotice": "Edit notice",
+    "date": "Notice date"
   },
   "privacyPage": {
     "toc": "Contents",
