@@ -38,6 +38,9 @@ export const useEmployeeDocumentStore = defineStore('employeeDocumentStore', {
       type: null
     },
     editId: null,
+    // «Bildirgilar» menyusi: ro'yxat va forma faqat `notice` turi bilan.
+    noticeMode: false,
+    noticeSchema: null,
     resendVisible: false,
     resendRows: [],
     resendLoading: false
@@ -89,8 +92,25 @@ export const useEmployeeDocumentStore = defineStore('employeeDocumentStore', {
     _delete(id) {
       $ApiService.employeeDocumentService._delete({ id }).then(() => this._index())
     },
+    // Sahifa ochilganda rejim: bildirgilar yoki xodim hujjatlari.
+    setMode(notice) {
+      this.noticeMode = notice
+      this.params.type = notice ? 'notice' : null
+      this.params.page = 1
+      this.list = []
+      this.payload = emptyPayload(notice ? 'notice' : DEFAULT_TYPE)
+      if (notice && !this.noticeSchema) this._noticeSchema()
+    },
+    _noticeSchema() {
+      $ApiService.employeeDocumentService._noticeSchema().then((res) => {
+        this.noticeSchema = res.data.data
+      })
+    },
+    noticeDef() {
+      return this.noticeSchema?.types?.find((v) => v.id === this.payload.data?.notice_type) ?? null
+    },
     openCreate() {
-      this.resetForm(this.payload.type)
+      this.resetForm(this.noticeMode ? 'notice' : this.payload.type)
       this.visible = true
     },
     // Tur almashsa faqat turga xos maydonlar tozalanadi.
