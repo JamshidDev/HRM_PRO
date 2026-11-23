@@ -91,28 +91,6 @@
           </template>
         </UIPageFilter>
         <Table />
-        <UIModal
-          v-model:visible="store.visible"
-          :title="store.visibleType ? $t('topicPage.createTitle') : $t('topicPage.updateTitle')"
-          width="min(700px, calc(100vw - 32px))"
-        >
-          <createFrom ref="createFormRef" />
-          <template #footer>
-            <div class="flex justify-end gap-2 px-4 pb-2">
-              <n-button type="error" ghost class="w-[130px]" @click="store.openVisible(false)">
-                {{ $t('content.cancel') }}
-              </n-button>
-              <n-button
-                type="primary"
-                class="w-[130px]"
-                :loading="store.saveLoading"
-                @click="createFormRef?.submit()"
-              >
-                {{ $t('content.save') }}
-              </n-button>
-            </div>
-          </template>
-        </UIModal>
       </UIPageContent>
     </n-tab-pane>
     <n-tab-pane name="detail" style="height: 100%">
@@ -123,6 +101,29 @@
       </UIPageContent>
     </n-tab-pane>
   </n-tabs>
+  <!-- Tahrir oynasi ro'yxat va mavzu sahifasidan ham ochiladi. -->
+  <UIModal
+    v-model:visible="store.visible"
+    :title="store.visibleType ? $t('topicPage.createTitle') : $t('topicPage.updateTitle')"
+    width="min(700px, calc(100vw - 32px))"
+  >
+    <createFrom ref="createFormRef" />
+    <template #footer>
+      <div class="flex justify-end gap-2 px-4 pb-2">
+        <n-button type="error" ghost class="w-[130px]" @click="store.openVisible(false)">
+          {{ $t('content.cancel') }}
+        </n-button>
+        <n-button
+          type="primary"
+          class="w-[130px]"
+          :loading="store.saveLoading"
+          @click="createFormRef?.submit()"
+        >
+          {{ $t('content.save') }}
+        </n-button>
+      </div>
+    </template>
+  </UIModal>
 </template>
 
 <style scoped>
