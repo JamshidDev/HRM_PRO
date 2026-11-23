@@ -29,12 +29,23 @@ const _audienceWorkers = async (payload) => {
   return await axios.get(`/v1/exam/topic-audience/workers`, { params: payload.params })
 }
 
+// Saqlangan mavzu: «Kimlar uchun» xulosasi va tanlangan xodimlar (ids).
+const _audience = async (payload) => {
+  return await axios.get(`/v1/exam/topics/${payload.id}/audience`)
+}
+
+const _topicWorkers = async (payload) => {
+  return await axios.get(`/v1/exam/topics/${payload.id}/workers`, { params: payload.params })
+}
+
 // Faqat holat (faol / ko'rinmas).
 const _setActive = async (payload) => {
   return await axios.patch(`/v1/exam/topics/${payload.id}/active`, { active: payload.active })
 }
 
 export default {
+  _audience,
+  _topicWorkers,
   _setActive,
   _audiencePositions,
   _audienceWorkers,

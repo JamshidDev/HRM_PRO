@@ -15,12 +15,7 @@
 
   // Global — faqat Admin (organization-admin); qolganlarini backend rol doirasi bo'yicha tekshiradi.
   const scopeOptions = computed(() =>
-    [
-      accStore.checkPermission(accStore.pn.organizationAdmin) && 'all',
-      'local',
-      'global',
-      'department'
-    ]
+    [accStore.checkPermission(accStore.pn.organizationAdmin) && 'all', 'local', 'global']
       .filter(Boolean)
       .map((value) => ({ value, label: t(`topicPage.scope_${value}`) }))
   )
@@ -39,6 +34,11 @@
     { key: 'screen_share_required', label: 'topicPage.screenShareRequired' },
     { key: 'strict_mode', label: 'topicPage.strictMode' }
   ]
+
+  // Kimlarga: barchaga, lavozimlarga, tanlangan xodimlarga.
+  const whomOptions = computed(() =>
+    [1, 2, 3].map((value) => ({ value, label: t(`topicPage.whom_${value}`) }))
+  )
 
   // «Kimlarga» ro'yxatlari doiraga bog'liq — doira yoki bo'linmalar o'zgarsa qayta yuklanadi.
   const loadAudience = () => {
@@ -68,13 +68,6 @@
   const onWorkerScroll = () => {
     store.workerParams.page += 1
     store._audienceWorkers(true)
-  }
-
-  let pinTimer = null
-  const onPinSearch = (v) => {
-    if (v?.toString().length !== 17) return
-    clearTimeout(pinTimer)
-    pinTimer = setTimeout(() => store._checkWorker(v.split('-').join('')), 600)
   }
 
   // Faollashtirish faqat tahrirda va ichida kamida bitta imtihon bo'lsa.
@@ -136,44 +129,22 @@
         />
       </n-form-item>
       <n-form-item
-        v-if="store.payload.scope === 'department'"
         class="col-span-12 md:col-span-6"
-        :label="$t('topicPage.departments')"
+        :label="$t('topicPage.departmentsOptional')"
         path="department_ids"
       >
         <UIDepartmentSelect
           v-model="store.payload.department_ids"
           :organization="ownOrgId"
+          :disabled="!store.payload.scope"
           multiple
         />
-      </n-form-item>
-
-      <n-form-item class="col-span-12 md:col-span-6" :label="$t('topicPage.deadline')">
-        <n-date-picker
-          class="w-full"
-          type="datetime"
-          clearable
-          format="dd.MM.yyyy HH:mm"
-          value-format="yyyy-MM-dd HH:mm:ss"
-          v-model:formatted-value="store.payload.deadline"
-          :placeholder="$t('topicPage.noDeadline')"
-        />
-      </n-form-item>
-      <n-form-item
-        class="col-span-12 md:col-span-6"
-        :label="$t('topicDetailsPage.exams.chances')"
-        path="chances"
-      >
-        <n-input-number class="w-full" :min="1" :max="10" v-model:value="store.payload.chances" />
       </n-form-item>
 
       <n-form-item class="col-span-12 md:col-span-6" :label="$t('topicDetailsPage.exams.toWhom')">
         <n-select
           v-model:value="store.payload.whom"
-          :options="componentStore.topicWhomList"
-          label-field="name"
-          value-field="id"
-          :loading="componentStore.enumExamLoading"
+          :options="whomOptions"
           :disabled="!store.payload.scope"
           @update:value="onWhomChange"
         />
@@ -211,24 +182,29 @@
           @onScrollEv="onWorkerScroll"
         />
       </n-form-item>
-      <n-form-item
-        v-else-if="store.payload.whom === 5"
-        class="col-span-12 md:col-span-6"
-        :label="$t('topicDetailsPage.exams.workers')"
-        path="whom_ids"
-      >
-        <UINSelect
-          v-model:value="store.payload.whom_ids"
-          value-field="id"
-          :loading="store.checkWorkerLoading"
-          :options="store.checkedWorkers"
-          @onSearch="onPinSearch"
-          multiple
-          pin-select
+      <div v-else class="hidden md:block md:col-span-6"></div>
+
+      <n-form-item class="col-span-12 md:col-span-6" :label="$t('topicPage.deadline')">
+        <n-date-picker
+          class="w-full"
+          type="datetime"
+          clearable
+          format="dd.MM.yyyy HH:mm"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          v-model:formatted-value="store.payload.deadline"
+          :placeholder="$t('topicPage.noDeadline')"
         />
       </n-form-item>
+      <n-form-item
+        class="col-span-12 md:col-span-6"
+        :label="$t('topicDetailsPage.exams.chances')"
+        path="chances"
+      >
+        <n-input-number class="w-full" :min="1" :max="10" v-model:value="store.payload.chances" />
+      </n-form-item>
 
-      <n-form-item class="col-span-12" :label="$t('topicPage.settings')" :show-feedback="false">
+      <div class="col-span-12 rounded-xl border border-surface-line p-3 flex flex-col gap-2.5">
+        <p class="text-sm font-semibold text-textColor0">{{ $t('topicPage.settings') }}</p>
         <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-2">
           <div
             v-for="s in settings"
@@ -252,7 +228,7 @@
             </n-switch>
           </div>
         </div>
-      </n-form-item>
+      </div>
     </n-form>
   </n-spin>
 </template>

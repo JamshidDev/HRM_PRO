@@ -1,4 +1,34 @@
 {
+  "guestPage": {
+    "tabWorkers": "Xodimlar",
+    "tabGuests": "Mehmonlar",
+    "fullName": "F.I.Sh",
+    "workTime": "Ish vaqti",
+    "cameAt": "Keldi",
+    "leftAt": "Ketdi",
+    "lastEvent": "Oxirgi hodisa",
+    "events": "Hodisalar",
+    "detach": "Ajratish",
+    "searchPlaceholder": "F.I.Sh yoki JSHSHIR",
+    "attach": "Mehmon biriktirish",
+    "attachTitle": "Mehmonni biriktirish",
+    "editTitle": "Mehmonni tahrirlash",
+    "eventsTitle": "Mehmon hodisalari",
+    "lateMin": "{n} daq kech",
+    "earlyMin": "{n} daq erta",
+    "notCame": "Kelmadi",
+    "in": "Kirish",
+    "out": "Chiqish",
+    "pin": "JSHSHIR",
+    "pinPlaceholder": "14 raqam",
+    "pinHint": "Odam HikCentral'da shu JSHSHIR bilan ro'yxatdan o'tgan bo'lishi kerak",
+    "pinRule": "JSHSHIR 14 ta raqamdan iborat",
+    "workStart": "Ish boshlanishi",
+    "workEnd": "Ish tugashi",
+    "endAfterStart": "Tugash vaqti boshlanishdan keyin bo'lsin",
+    "note": "Izoh",
+    "noEvents": "Bu oraliqda hodisa yo'q"
+  },
   "examLanguages": {
     "uz": "O'zbek tilida (lotin)",
     "uz_new": "O'zbek tilida (yangi lotin)",
@@ -586,7 +616,7 @@
     "changeRoleConfirm": "Bu hisobdan chiqib boshqa hisobga kirish uchun kerakli hisobni tanlang va 20 soniya kuting"
   },
   "sidebar": {
-    "hrm": "Mening korxonam moduli",
+    "hrm": "Kadr boshqaruvi moduli",
     "admin": "Admin moduli",
     "chat": "Xabar va e'lonlar moduli",
     "docflow": "Mening hujjatlarim",
@@ -625,7 +655,7 @@
     "signUp": "Ro'yxatdan o'tish",
     "description": {
       "title": "HRMS",
-      "subtitle": "Xodimlarni boshqarishning zamonaviy tizimi\n",
+      "subtitle": "HRM PRO — «O'zbekiston temir yo'llari» AJ kadrlar boshqaruvi tizimi",
       "text": "Xodimlaringizni samarali boshqarish, ish vaqtini nazorat qilish va hujjatlarni avtomatlashtirish uchun qulay yechim. HR jarayonlarini optimallashtiring va biznesingizni yangi bosqichga olib chiqing!"
     },
     "login": "Kirish",
@@ -2666,8 +2696,18 @@
     "scope_local": "O'z korxonam",
     "scope_global": "O'z korxonam va quyi korxonalar",
     "scope_department": "Bo'linmalar uchun",
+    "departmentsOptional": "Bo'linmalar (ixtiyoriy)",
+    "whom_1": "Barchaga",
+    "whom_2": "Tanlangan lavozimlarga",
+    "whom_3": "Tanlangan xodimlarga",
+    "audienceTitle": "Kimlar uchun",
+    "audienceTotal": "Jami: {n} xodim",
+    "allDepartments": "Barcha bo'linmalar",
+    "loadMore": "Yana yuklash",
+    "whomPositionsCount": "{n} lavozim",
+    "whomWorkersCount": "{n} xodim",
     "departments": "Bo'linmalar",
-    "settings": "Topshirish sozlamalari",
+    "settings": "Xavfsizlik sozlamalari",
     "mobileAllowed": "Mobil ilovada yechish mumkin",
     "cameraRequired": "Kamera majburiy",
     "screenShareRequired": "Ekran ulashish majburiy",
@@ -3486,7 +3526,17 @@
       "childName": "Farzandning F.I.Sh.",
       "childBirthday": "Tug'ilgan sanasi",
       "days": "Kunlar soni: {n}",
-      "months": "Oylar soni: {n}"
+      "months": "Oylar soni: {n}",
+      "weekdays": {
+        "1": "Dushanba",
+        "2": "Seshanba",
+        "3": "Chorshanba",
+        "4": "Payshanba",
+        "5": "Juma",
+        "6": "Shanba",
+        "7": "Yakshanba"
+      },
+      "recordTitle": "Qo'shimcha ma'lumotlar (hujjatga yozilmaydi)"
     },
     "draft": "Qoralama",
     "draftSignTitle": "Ariza qoralama holatida",
@@ -5740,7 +5790,7 @@
   "navigation": {
     "hrm": "Kadrlar boshqaruvi",
     "docFlow": "Hujjat aylanishi",
-    "myOrg": "Mening korxonam",
+    "myOrg": "Kadr boshqaruvi",
     "myDocs": "Mening hujjatlarim",
     "attestation": "Attestatsiya",
     "turnstile": "Turniket",
@@ -5892,7 +5942,7 @@
     "attendance": {
       "vacation": "Ta'tilda",
       "day_off": "Dam olish kunida",
-      "excused": "Sababli",
+      "excused": "Boshqa sabablar",
       "firstEvent": "Birinchi hodisa",
       "lastEvent": "Oxirgi hodisa",
       "direction": "Hodisa turi",
@@ -5908,16 +5958,17 @@
     },
     "hourly": {
       "title": "Kun davomida o'tishlar",
-      "hint": "Turniket yoki mobil orqali o'tgan xodimlar soni, {n} soatlik oraliqlarda",
+      "hint": "Turniket yoki mobil orqali o'tishlar soni, {n} soatlik oraliqlarda",
       "peak": "Eng gavjum vaqt",
       "active": "Faol vaqt",
-      "people": "xodim",
+      "people": "ta o'tish",
       "total": "Jami o'tishlar"
     },
     "rate": {
       "title": "Bugungi davomat darajasi",
       "titleDay": "Davomat darajasi",
       "hint": "Grafik bo'yicha tanlangan kunda kelishi shart bo'lganlardan nechtasi keldi. Ta'til, kasallik, xizmat safari kabi sababli xodimlar hisobga olinmaydi",
+      "levels": "Daraja: {good}% va undan yuqori — Yaxshi, {medium}–{good}% — O'rtacha, {medium}% dan past — Past",
       "mobile": "mobil",
       "good": "Yaxshi",
       "medium": "O'rtacha",
@@ -5982,7 +6033,8 @@
       "came": "Keldi",
       "absent": "Kelmadi",
       "total": "Jami",
-      "pick": "Oyni tanlang"
+      "pick": "Oyni tanlang",
+      "dayOff": "Dam olish kuni"
     },
     "attendanceReason": {
       "sick_leave": "Kasallik varaqasi",
@@ -6776,8 +6828,8 @@
       "detailTitle": "Mobil o'tish",
       "info": "Ma'lumotlar",
       "placeTitle": "O'tish joyi",
-      "livePhoto": "Tasdiqlangan rasm",
-      "refPhoto": "Rasmiy rasm",
+      "livePhoto": "Olingan rasm",
+      "refPhoto": "Tasdiqlangan rasm",
       "appName": "HR Rail ilovasi",
       "matchHigh": "Yuz mos keldi",
       "matchMid": "O'rtacha moslik — rasmlarni solishtiring",
@@ -8194,5 +8246,27 @@
       "denied": "Ekran ulashishga ruxsat berilmadi",
       "not_monitor": "Faqat butun ekranni tanlang (oyna yoki tab emas)"
     }
+  },
+  "seo": {
+    "loginTitle": "HRM PRO — kadrlar boshqaruvi va elektron hujjat aylanishi {'|'} O'zbekiston temir yo'llari",
+    "modulesLink": "HRM PRO modullari va imkoniyatlari"
+  },
+  "noticesPage": {
+    "name": "Bildirgilar",
+    "item": "Bildirgi",
+    "createTitle": "Bildirgi yaratish",
+    "updateTitle": "Bildirgini tahrirlash",
+    "type": "Bildirgi turi",
+    "term": "Ogohlantirish muddati",
+    "response": {
+      "ack": "Xodim tanishadi",
+      "consent": "Xodim rozilik yoki rad javobini beradi",
+      "explain": "Xodim yozma tushuntirish beradi"
+    }
+  },
+  "privacyPage": {
+    "toc": "Mundarija",
+    "pdf": "PDF yuklash",
+    "backToLogin": "Kirish sahifasiga qaytish"
   }
 }

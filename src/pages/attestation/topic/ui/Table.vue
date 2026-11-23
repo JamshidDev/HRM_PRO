@@ -61,6 +61,11 @@
       align: 'center'
     },
     {
+      key: 'whom',
+      title: t('topicDetailsPage.exams.toWhom'),
+      width: 170
+    },
+    {
       key: 'deadline',
       title: t('topicPage.deadline'),
       width: 170
@@ -109,6 +114,25 @@
 
     <template #[`cell-exams_count`]="{ row }">
       <span class="text-sm font-semibold text-textColor0">{{ row.exams_count ?? 0 }}</span>
+    </template>
+
+    <template #cell-whom="{ row }">
+      <span
+        class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium"
+        :class="
+          row.whom === 2 || row.whom === 3
+            ? 'bg-fig-chip-brand text-fig-chip-brand-text'
+            : 'bg-fig-chip-green text-fig-chip-green-text'
+        "
+      >
+        {{
+          row.whom === 2
+            ? $t('topicPage.whomPositionsCount', { n: row.whom_ids?.length ?? 0 })
+            : row.whom === 3
+              ? $t('topicPage.whomWorkersCount', { n: row.whom_ids?.length ?? 0 })
+              : $t('topicPage.whom_1')
+        }}
+      </span>
     </template>
 
     <template #cell-deadline="{ row }">

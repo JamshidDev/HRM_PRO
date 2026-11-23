@@ -43,7 +43,7 @@
       <n-skeleton
         v-if="store.loading || !pdfViewerStore.totalPdfPage"
         height="1100px"
-        style="border-radius: 20px"
+        style="border-radius: 0"
       />
       <PdfViewer :container="false" />
     </template>
@@ -57,7 +57,7 @@
     height: auto;
     margin: 0 auto 20px;
     border: 0 !important;
-    border-radius: 20px;
+    border-radius: 0; /* haqiqiy qog'oz varaq kabi — burchaklar to'g'ri, yumaloq emas */
     background: #fff;
     box-shadow:
       0 1px 3px rgb(16 24 40 / 10%),

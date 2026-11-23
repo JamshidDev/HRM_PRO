@@ -84,6 +84,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     expiredLink: false,
     documentUrl: null,
     signatureWorker: null,
+    // Imzolash havolasidagi hujjatning UTY raqami (backend `electronic_number`).
+    electronicNumber: null,
     errorMessage: null,
     isSigned: false,
     saveLoading: false,
@@ -363,12 +365,15 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
       this.documentUrl = null
       this.pdfUrl = null
       this.signedNow = false
+      this.electronicNumber = null
       this.checkLoading = true
       $ApiService.documentService
         ._signature({ params, data: { status: 'check' }, silentError: true })
         .then((res) => {
           const d = res.data.data
           this.pdfUrl = d.url
+          // Sarlavhada imzolanayotgan hujjatning UTY raqami.
+          this.electronicNumber = d.electronic_number ?? null
           this.signatureWorker = `${d?.worker.last_name} ${d?.worker.first_name} ${d?.worker.middle_name}`
           this.isSigned = d.status === 3
           this.signerType = d.type ?? null

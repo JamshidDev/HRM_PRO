@@ -6,10 +6,13 @@
   } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import Table from './Table.vue'
+  import { useRoute } from 'vue-router'
 
   const store = useConfirmationEmployeeDocumentStore()
   const accStore = useAccountStore()
   const officeAppRef = ref(null)
+  // «Bildirgilar» menyusi — faqat bildirgilar; «Xodim hujjatlari» — qolganlari (backend bildirgini chiqarmaydi).
+  const route = useRoute()
 
   const openOffice = (v) => {
     officeAppRef.value.openPdf(v.documentId, Utils.documentModels.documents, v.signatureId)
@@ -22,6 +25,9 @@
   }
 
   onMounted(() => {
+    store.params.type = route.meta?.notice ? 'notice' : null
+    store.params.page = 1
+    store.list = []
     if (!accStore.checkAction(accStore.pn.confirmationContracts)) return
     store._index()
   })

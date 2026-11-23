@@ -10,6 +10,7 @@
   import MaterialLiabilityFields from './types/MaterialLiabilityFields.vue'
   import BitimFields from './types/BitimFields.vue'
   import DeclarationFields from './types/DeclarationFields.vue'
+  import NoticeFields from './types/NoticeFields.vue'
 
   const { t } = i18n.global
   const store = useEmployeeDocumentStore()
@@ -20,8 +21,10 @@
   const TYPE_FIELDS = {
     'material-liability': MaterialLiabilityFields,
     bitim: BitimFields,
-    declaration: DeclarationFields
+    declaration: DeclarationFields,
+    notice: NoticeFields
   }
+  const typeFieldsRef = ref(null)
   const typeDef = computed(() => DOCUMENT_TYPES[store.payload.type])
   const typeOptions = computed(() => documentTypeOptions(t))
 
@@ -33,7 +36,11 @@
     document_date: { ...required(t('rules.requiredField')), type: 'number' },
     director_id: { ...required(t('rules.requiredField')), type: 'number' },
     data: Object.fromEntries(
-      (typeDef.value?.requiredData ?? []).map((k) => [k, required(t('rules.requiredField'))])
+      // Bildirgi turi — son.
+      (typeDef.value?.requiredData ?? []).map((k) => [
+        k,
+        k === 'notice_type' ? { ...required(t('rules.requiredField')), type: 'number' } : required(t('rules.requiredField'))
+      ])
     )
   }))
 
@@ -119,7 +126,9 @@
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {
-      if (error) return
+      // Tavsifli maydonlar (bildirgi) o'z tekshiruvi bilan.
+      const fieldsOk = typeFieldsRef.value?.validate?.() ?? true
+      if (error || !fieldsOk) return
       if (store.editId) return store._submitEdit()
       store._create()
     })
@@ -137,7 +146,8 @@
     <div style="height: calc(100vh - 220px)" class="overflow-y-auto overflow-x-hidden pb-4 pr-1">
       <!-- 1. Hujjat turi -->
       <div class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground mt-2 mb-4">
-        <div class="col-span-12">
+        <NoticeFields v-if="store.noticeMode" class="col-span-12" part="type" />
+        <div v-else class="col-span-12">
           <n-form-item :label="$t('employeeDocumentsPage.form.type')" path="type">
             <n-select
               :value="store.payload.type"
@@ -258,10 +268,10 @@
 
       <!-- 3. Turga xos qism -->
       <div
-        v-if="TYPE_FIELDS[store.payload.type]"
+        v-if="TYPE_FIELDS[store.payload.type] && (!store.noticeMode || store.noticeDef())"
         class="grid grid-cols-12 gap-x-4 border border-dashed p-2 rounded-xl border-surface-line bg-surface-ground"
       >
-        <component :is="TYPE_FIELDS[store.payload.type]" />
+        <component :is="TYPE_FIELDS[store.payload.type]" ref="typeFieldsRef" class="col-span-12" />
       </div>
     </div>
 

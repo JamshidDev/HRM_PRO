@@ -1,7 +1,7 @@
 <script setup>
 import LangDropdown from '@/components/general/LangDropdown.vue'
 import { UIThemeSwitch } from '@/components/index.js'
-import { useAppSetting } from '@/utils/index.js'
+import { AppPaths, useAppSetting } from '@/utils/index.js'
 import {
   useAppStore,
   useLoginNewStore,
@@ -345,8 +345,16 @@ const onDone = () => {
           </template>
         </div>
 
+        <!-- Ochiq «Modullar» sahifasiga havola (SEO: Google modullarni shu orqali topadi) -->
+        <RouterLink
+          :to="AppPaths.Modules"
+          class="relative z-10 mt-6 text-sm font-medium text-primary hover:underline"
+        >
+          {{ $t('seo.modulesLink') }} →
+        </RouterLink>
+
         <!-- Mualliflik huquqi -->
-        <p class="relative z-10 w-full mt-8 px-2 text-center text-xs text-login-foot">
+        <p class="relative z-10 w-full mt-4 px-2 text-center text-xs text-login-foot">
           {{ $t('loginPage.copyright') }}
         </p>
       </div>

@@ -1,4 +1,34 @@
 {
+  "guestPage": {
+    "tabWorkers": "Xodimlar",
+    "tabGuests": "Mehmonlar",
+    "fullName": "F.I.Ş",
+    "workTime": "Iş vaqti",
+    "cameAt": "Keldi",
+    "leftAt": "Ketdi",
+    "lastEvent": "Oxirgi hodisa",
+    "events": "Hodisalar",
+    "detach": "Ajratiş",
+    "searchPlaceholder": "F.I.Ş yoki JŞŞIR",
+    "attach": "Mehmon biriktiriş",
+    "attachTitle": "Mehmonni biriktiriş",
+    "editTitle": "Mehmonni tahrirlaş",
+    "eventsTitle": "Mehmon hodisalari",
+    "lateMin": "{n} daq keç",
+    "earlyMin": "{n} daq erta",
+    "notCame": "Kelmadi",
+    "in": "Kiriş",
+    "out": "Çiqiş",
+    "pin": "JŞŞIR",
+    "pinPlaceholder": "14 raqam",
+    "pinHint": "Odam HikCentral'da şu JŞŞIR bilan ro'yxatdan ötgan bölişi kerak",
+    "pinRule": "JŞŞIR 14 ta raqamdan iborat",
+    "workStart": "Iş boşlaniși",
+    "workEnd": "Iş tugaşi",
+    "endAfterStart": "Tugaş vaqti boşlanişdan keyin bölsin",
+    "note": "Izoh",
+    "noEvents": "Bu oraliqda hodisa yöq"
+  },
   "examLanguages": {
     "uz": "Özbek tilida (lotin)",
     "uz_new": "Özbek tilida (yangi lotin)",
@@ -586,7 +616,7 @@
     "changeRoleConfirm": "Bu hisobdan çiqib boşqa hisobga kiriş uçun kerakli hisobni tanlang va 20 soniya kuting"
   },
   "sidebar": {
-    "hrm": "Mening korxonam moduli",
+    "hrm": "Kadr boşqaruvi moduli",
     "admin": "Admin moduli",
     "chat": "Xabar va e'lonlar moduli",
     "docflow": "Mening hujjatlarim",
@@ -625,7 +655,7 @@
     "signUp": "Röyxatdan ötiş",
     "description": {
       "title": "HRMS",
-      "subtitle": "Xodimlarni boşqarişning zamonaviy tizimi\n",
+      "subtitle": "HRM PRO — «Özbekiston temir yöllari» AJ kadrlar boşqaruvi tizimi",
       "text": "Xodimlaringizni samarali boşqariş, iş vaqtini nazorat qiliş va hujjatlarni avtomatlaştiriş uçun qulay yeçim. HR jarayonlarini optimallaştiring va biznesingizni yangi bosqiçga olib çiqing!"
     },
     "login": "Kiriş",
@@ -2666,8 +2696,18 @@
     "scope_local": "Öz korxonam",
     "scope_global": "Öz korxonam va quyi korxonalar",
     "scope_department": "Bölinmalar uçun",
+    "departmentsOptional": "Bölinmalar (ixtiyoriy)",
+    "whom_1": "Barçaga",
+    "whom_2": "Tanlangan lavozimlarga",
+    "whom_3": "Tanlangan xodimlarga",
+    "audienceTitle": "Kimlar uçun",
+    "audienceTotal": "Jami: {n} xodim",
+    "allDepartments": "Barça bölinmalar",
+    "loadMore": "Yana yuklaş",
+    "whomPositionsCount": "{n} lavozim",
+    "whomWorkersCount": "{n} xodim",
     "departments": "Bölinmalar",
-    "settings": "Topşiriş sozlamalari",
+    "settings": "Xavfsizlik sozlamalari",
     "mobileAllowed": "Mobil ilovada yeçiş mumkin",
     "cameraRequired": "Kamera majburiy",
     "screenShareRequired": "Ekran ulaşiş majburiy",
@@ -3486,7 +3526,17 @@
       "childName": "Farzandning F.I.Ş.",
       "childBirthday": "Tuğilgan sanasi",
       "days": "Kunlar soni: {n}",
-      "months": "Oylar soni: {n}"
+      "months": "Oylar soni: {n}",
+      "weekdays": {
+        "1": "Duşanba",
+        "2": "Seşanba",
+        "3": "Çorşanba",
+        "4": "Payşanba",
+        "5": "Juma",
+        "6": "Şanba",
+        "7": "Yakşanba"
+      },
+      "recordTitle": "Qöşimça ma'lumotlar (hujjatga yozilmaydi)"
     },
     "draft": "Qoralama",
     "draftSignTitle": "Ariza qoralama holatida",
@@ -5740,7 +5790,7 @@
   "navigation": {
     "hrm": "Kadrlar boşqaruvi",
     "docFlow": "Hujjat aylanişi",
-    "myOrg": "Mening korxonam",
+    "myOrg": "Kadr boşqaruvi",
     "myDocs": "Mening hujjatlarim",
     "attestation": "Attestatsiya",
     "turnstile": "Turniket",
@@ -5892,7 +5942,7 @@
     "attendance": {
       "vacation": "Ta'tilda",
       "day_off": "Dam oliş kunida",
-      "excused": "Sababli",
+      "excused": "Boşqa sabablar",
       "firstEvent": "Birinçi hodisa",
       "lastEvent": "Oxirgi hodisa",
       "direction": "Hodisa turi",
@@ -5908,16 +5958,17 @@
     },
     "hourly": {
       "title": "Kun davomida ötişlar",
-      "hint": "Turniket yoki mobil orqali ötgan xodimlar soni, {n} soatlik oraliqlarda",
+      "hint": "Turniket yoki mobil orqali ötişlar soni, {n} soatlik oraliqlarda",
       "peak": "Eng gavjum vaqt",
       "active": "Faol vaqt",
-      "people": "xodim",
+      "people": "ta ötiş",
       "total": "Jami ötişlar"
     },
     "rate": {
       "title": "Bugungi davomat darajasi",
       "titleDay": "Davomat darajasi",
       "hint": "Grafik böyiça tanlangan kunda kelişi şart bölganlardan neçtasi keldi. Ta'til, kasallik, xizmat safari kabi sababli xodimlar hisobga olinmaydi",
+      "levels": "Daraja: {good}% va undan yuqori — Yaxşi, {medium}–{good}% — Örtaça, {medium}% dan past — Past",
       "mobile": "mobil",
       "good": "Yaxşi",
       "medium": "Örtaça",
@@ -5982,7 +6033,8 @@
       "came": "Keldi",
       "absent": "Kelmadi",
       "total": "Jami",
-      "pick": "Oyni tanlang"
+      "pick": "Oyni tanlang",
+      "dayOff": "Dam oliş kuni"
     },
     "attendanceReason": {
       "sick_leave": "Kasallik varaqasi",
@@ -6776,8 +6828,8 @@
       "detailTitle": "Mobil ötiş",
       "info": "Ma'lumotlar",
       "placeTitle": "Ötiş joyi",
-      "livePhoto": "Tasdiqlangan rasm",
-      "refPhoto": "Rasmiy rasm",
+      "livePhoto": "Olingan rasm",
+      "refPhoto": "Tasdiqlangan rasm",
       "appName": "HR Rail ilovasi",
       "matchHigh": "Yuz mos keldi",
       "matchMid": "Örtaça moslik — rasmlarni soliştiring",
@@ -8194,5 +8246,27 @@
       "denied": "Ekran ulaşişga ruxsat berilmadi",
       "not_monitor": "Faqat butun ekranni tanlang (oyna yoki tab emas)"
     }
+  },
+  "seo": {
+    "loginTitle": "HRM PRO — kadrlar boşqaruvi va elektron hujjat aylanişi {'|'} Özbekiston temir yöllari",
+    "modulesLink": "HRM PRO modullari va imkoniyatlari"
+  },
+  "noticesPage": {
+    "name": "Bildirgilar",
+    "item": "Bildirgi",
+    "createTitle": "Bildirgi yaratiş",
+    "updateTitle": "Bildirgini tahrirlaş",
+    "type": "Bildirgi turi",
+    "term": "Ogohlantiriş muddati",
+    "response": {
+      "ack": "Xodim tanişadi",
+      "consent": "Xodim rozilik yoki rad javobini beradi",
+      "explain": "Xodim yozma tuşuntiriş beradi"
+    }
+  },
+  "privacyPage": {
+    "toc": "Mundarija",
+    "pdf": "PDF yuklaş",
+    "backToLogin": "Kiriş sahifasiga qaytiş"
   }
 }

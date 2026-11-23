@@ -8,6 +8,7 @@ export { default as turnstileHikCentralWorkerService } from './hikCentralWorkers
 export { default as hcServerService } from './hcServer.js'
 export { default as eventService } from './events.js'
 export { default as telegramUserService } from './telegramUser.js'
+export { default as guestService } from './guestService.js'
 export { default as syncLogService } from './syncLogService.js'
 export { default as turnstileDashboardService } from './dashboardService.js'
 export { default as userImageLogsService } from './userImageLogsService.js'

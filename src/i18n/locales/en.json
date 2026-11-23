@@ -1,4 +1,34 @@
 {
+  "guestPage": {
+    "tabWorkers": "Employees",
+    "tabGuests": "Guests",
+    "fullName": "Full name",
+    "workTime": "Work hours",
+    "cameAt": "Arrived",
+    "leftAt": "Left",
+    "lastEvent": "Last event",
+    "events": "Events",
+    "detach": "Detach",
+    "searchPlaceholder": "Name or PINFL",
+    "attach": "Attach guest",
+    "attachTitle": "Attach guest",
+    "editTitle": "Edit guest",
+    "eventsTitle": "Guest events",
+    "lateMin": "{n} min late",
+    "earlyMin": "{n} min early",
+    "notCame": "Absent",
+    "in": "In",
+    "out": "Out",
+    "pin": "PINFL",
+    "pinPlaceholder": "14 digits",
+    "pinHint": "The person must be registered in HikCentral with this PINFL",
+    "pinRule": "PINFL must be 14 digits",
+    "workStart": "Work start",
+    "workEnd": "Work end",
+    "endAfterStart": "End must be after start",
+    "note": "Note",
+    "noEvents": "No events in this period"
+  },
   "examLanguages": {
     "uz": "In Uzbek (Latin)",
     "uz_new": "In Uzbek (new Latin)",
@@ -571,7 +601,7 @@
     "changeRoleConfirm": "Select the desired account to switch and wait 20 seconds"
   },
   "sidebar": {
-    "hrm": "My Organization Module",
+    "hrm": "HR Management Module",
     "admin": "Admin Module",
     "chat": "Messages & Announcements Module",
     "docflow": "My Documents",
@@ -610,7 +640,7 @@
     "signUp": "Sign up",
     "description": {
       "title": "HRMS",
-      "subtitle": "Modern employee management system\n",
+      "subtitle": "HRM PRO — HR management system of «Uzbekistan Railways» JSC",
       "text": "Convenient solution for efficient employee management, time tracking, and document automation. Optimize HR processes and take your business to the next level!"
     },
     "login": "Login",
@@ -2643,8 +2673,18 @@
     "scope_local": "My organization",
     "scope_global": "My and subordinate organizations",
     "scope_department": "For departments",
+    "departmentsOptional": "Departments (optional)",
+    "whom_1": "Everyone",
+    "whom_2": "Selected positions",
+    "whom_3": "Selected employees",
+    "audienceTitle": "Audience",
+    "audienceTotal": "Total: {n} employees",
+    "allDepartments": "All departments",
+    "loadMore": "Load more",
+    "whomPositionsCount": "{n} positions",
+    "whomWorkersCount": "{n} employees",
     "departments": "Departments",
-    "settings": "Taking settings",
+    "settings": "Security settings",
     "mobileAllowed": "Can be taken in the mobile app",
     "cameraRequired": "Camera required",
     "screenShareRequired": "Screen sharing required",
@@ -3466,7 +3506,17 @@
       "childName": "Child's full name",
       "childBirthday": "Date of birth",
       "days": "Days: {n}",
-      "months": "Months: {n}"
+      "months": "Months: {n}",
+      "weekdays": {
+        "1": "Monday",
+        "2": "Tuesday",
+        "3": "Wednesday",
+        "4": "Thursday",
+        "5": "Friday",
+        "6": "Saturday",
+        "7": "Sunday"
+      },
+      "recordTitle": "Additional details (not printed in the document)"
     },
     "draft": "Draft",
     "draftSignTitle": "Application is a draft",
@@ -5695,7 +5745,7 @@
   "navigation": {
     "hrm": "HR Management",
     "docFlow": "Document Flow",
-    "myOrg": "My Organization",
+    "myOrg": "HR Management",
     "myDocs": "My Documents",
     "attestation": "Certification",
     "turnstile": "Turnstile",
@@ -5846,7 +5896,7 @@
     "attendance": {
       "vacation": "On vacation",
       "day_off": "Day off",
-      "excused": "Excused",
+      "excused": "Other reasons",
       "firstEvent": "First event",
       "lastEvent": "Last event",
       "direction": "Direction",
@@ -5862,16 +5912,17 @@
     },
     "hourly": {
       "title": "Passes during the day",
-      "hint": "Employees who passed via turnstile or mobile app, in {n}-hour intervals",
+      "hint": "Passes via turnstile or mobile app, in {n}-hour intervals",
       "peak": "Peak time",
       "active": "Active hours",
-      "people": "employees",
+      "people": "passes",
       "total": "Total passes"
     },
     "rate": {
       "title": "Today's attendance rate",
       "titleDay": "Attendance rate",
       "hint": "How many of those required to come on the selected day by schedule actually came. Excused employees (leave, sick, business trip) are not counted",
+      "levels": "Level: {good}% and above — Good, {medium}–{good}% — Average, below {medium}% — Low",
       "mobile": "mobile",
       "good": "Good",
       "medium": "Average",
@@ -5936,7 +5987,8 @@
       "came": "Came",
       "absent": "Absent",
       "total": "Total",
-      "pick": "Select month"
+      "pick": "Select month",
+      "dayOff": "Day off"
     },
     "attendanceReason": {
       "sick_leave": "Sick leave",
@@ -6718,8 +6770,8 @@
       "detailTitle": "Mobile pass",
       "info": "Details",
       "placeTitle": "Pass location",
-      "livePhoto": "Verified photo",
-      "refPhoto": "Official photo",
+      "livePhoto": "Captured photo",
+      "refPhoto": "Verified photo",
       "appName": "HR Rail app",
       "matchHigh": "Face matches",
       "matchMid": "Partial match — compare the photos",
@@ -7998,5 +8050,27 @@
       "denied": "Screen sharing was not allowed",
       "not_monitor": "Select the entire screen (not a window or tab)"
     }
+  },
+  "seo": {
+    "loginTitle": "HRM PRO — HR management and electronic document workflow {'|'} Uzbekistan Railways",
+    "modulesLink": "HRM PRO modules and features"
+  },
+  "noticesPage": {
+    "name": "Notices",
+    "item": "Notice",
+    "createTitle": "Create notice",
+    "updateTitle": "Edit notice",
+    "type": "Notice type",
+    "term": "Notice period",
+    "response": {
+      "ack": "Employee acknowledges",
+      "consent": "Employee agrees or declines",
+      "explain": "Employee gives a written explanation"
+    }
+  },
+  "privacyPage": {
+    "toc": "Contents",
+    "pdf": "Download PDF",
+    "backToLogin": "Back to login"
   }
 }

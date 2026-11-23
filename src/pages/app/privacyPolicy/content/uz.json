@@ -1,0 +1,583 @@
+{
+ "title": "MAXFIYLIK SIYOSATI",
+ "subtitle": "«HRM PRO» kadrlar boshqaruvi axborot tizimi",
+ "meta": "Tasdiqlangan sana: 2026-yil 1-iyul. Versiya: 1.0",
+ "sections": [
+  {
+   "n": 1,
+   "title": "Umumiy qoidalar va maqsad",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "1.1",
+     "text": "Ushbu Maxfiylik siyosati (keyingi o'rinlarda — «Siyosat») «O'zbekiston temir yo'llari» AJ (keyingi o'rinlarda — «Jamiyat» yoki «Biz») tomonidan ishlab chiqilgan «HRM PRO» kadrlar boshqaruvi axborot tizimi (keyingi o'rinlarda — «Tizim») foydalanuvchilarining shaxsga doir ma'lumotlarini yig'ish, saqlash, qayta ishlash, ulardan foydalanish va ularni himoya qilish tartibini belgilaydi."
+    },
+    {
+     "t": "p",
+     "n": "1.2",
+     "text": "Foydalanuvchining shaxsga doir ma'lumotlarini qayta ishlashning asosiy huquqiy asosi mehnat munosabatlari hamda qonun hujjatlarida belgilangan majburiyatlardir. Tizimga kirish yoki undan har qanday tarzda foydalanish orqali foydalanuvchi ushbu Siyosat shartlarini to'liq o'qib chiqqanini va tushunganini tasdiqlaydi."
+    },
+    {
+     "t": "p",
+     "n": "1.3",
+     "text": "«HRM PRO» — yopiq korporativ tizim bo'lib, undan faqat tashkilot tomonidan ro'yxatga olingan va tegishli kirish huquqi berilgan xodimlar foydalanadi. Tizimda ommaviy (erkin) ro'yxatdan o'tish nazarda tutilmagan."
+    },
+    {
+     "t": "p",
+     "n": "1.4",
+     "text": "Ushbu Siyosat shartlariga rozi bo'lmagan shaxs Tizimdan foydalanishni to'xtatishi va bu haqda Tizim administratoriga murojaat qilishi shart."
+    },
+    {
+     "t": "p",
+     "n": "1.5",
+     "text": "Ushbu Siyosat «HRM PRO» axborot tizimidan foydalanish shartlarining ajralmas qismi hisoblanadi."
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "title": "Huquqiy asoslar",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "2.1",
+     "text": "Siyosat quyidagi normativ-huquqiy hujjatlar talablariga muvofiq ishlab chiqilgan:"
+    },
+    {
+     "t": "li",
+     "text": "O'zbekiston Respublikasining «Shaxsga doir ma'lumotlar to'g'risida»gi 2019-yil 2-iyuldagi O'RQ-547-son Qonuni (keyingi o'zgartirish va qo'shimchalar bilan);"
+    },
+    {
+     "t": "li",
+     "text": "O'zbekiston Respublikasining Mehnat kodeksi;"
+    },
+    {
+     "t": "li",
+     "text": "O'zbekiston Respublikasining «Axborotlashtirish to'g'risida»gi 2003-yil 11-dekabrdagi 560-IIson Qonuni;"
+    },
+    {
+     "t": "li",
+     "text": "O'zbekiston Respublikasining «Elektron hujjat aylanishi to'g'risida»gi 2004-yil 29-apreldagi 611-II-son Qonuni;"
+    },
+    {
+     "t": "li",
+     "text": "O'zbekiston Respublikasining «Kiberxavfsizlik to'g'risida»gi 2022-yil 15-apreldagi O'RQ764-son Qonuni;"
+    },
+    {
+     "t": "li",
+     "text": "shaxsga doir ma'lumotlarni himoya qilish va kadrlar ish yuritish sohasidagi boshqa amaldagi normativ-huquqiy hujjatlar."
+    },
+    {
+     "t": "p",
+     "n": "2.2",
+     "text": "Xodimlarning shaxsga doir ma'lumotlarini qayta ishlashning huquqiy asoslari quyidagilardan iborat:"
+    },
+    {
+     "t": "li",
+     "text": "xodim bilan tashkilot o'rtasidagi mehnat munosabatlari hamda Mehnat kodeksida nazarda tutilgan kadrlar hisobini yuritish majburiyati;"
+    },
+    {
+     "t": "li",
+     "text": "Jamiyat zimmasiga qonun hujjatlari (soliq, statistika, ijtimoiy ta'minot va boshq.) bilan yuklangan majburiyatlarni bajarish;"
+    },
+    {
+     "t": "li",
+     "text": "qonun hujjatlari bilan majburiy bo'lmagan (ixtiyoriy) qayta ishlash hollarida — foydalanuvchining roziligi."
+    },
+    {
+     "t": "p",
+     "n": "2.3",
+     "text": "Jamiyat shaxsga doir ma'lumotlar bazasini qonun hujjatlarida belgilangan tartibda yuritadi, uni vakolatli davlat organida ro'yxatdan o'tkazadi hamda ma'lumotlar bazasi mulkdori sifatidagi barcha majburiyatlarni o'z zimmasiga oladi."
+    },
+    {
+     "t": "p",
+     "n": "2.4",
+     "text": "Jamiyat tarkibida shaxsga doir ma'lumotlarni himoya qilish uchun mas'ul shaxs (tarkibiy bo'linma) belgilanadi. Mas'ul shaxs ma'lumotlarni qayta ishlashning qonuniyligini nazorat qiladi va foydalanuvchilarning ushbu sohadagi murojaatlarini ko'rib chiqadi."
+    },
+    {
+     "t": "p",
+     "n": "2.5",
+     "text": "Tizimdan Jamiyat tizimidagi tashkilotlarning xodimlari foydalanadigan hollarda, har bir tashkilot o'z xodimlarining shaxsga doir ma'lumotlariga nisbatan ma'lumotlar bazasi mulkdori hisoblanadi, Jamiyat esa bunday ma'lumotlarga tegishli tashkilot bilan tuzilgan kelishuv asosida va uning topshirig'iga binoan operator sifatida ishlov beradi. Ushbu Siyosatda nazarda tutilgan barcha himoya talablari bunday ishlov berishga ham to'liq tatbiq etiladi."
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "title": "Yig'iladigan ma'lumotlar",
+   "blocks": [
+    {
+     "t": "h",
+     "n": "3.1",
+     "text": "Foydalanuvchi va kadrlar bo'limi tomonidan kiritiladigan ma'lumotlar"
+    },
+    {
+     "t": "p",
+     "text": "Tizimda xodimni ro'yxatga olish va kadrlar hisobini yuritish jarayonida quyidagi ma'lumotlar kiritilishi mumkin:"
+    },
+    {
+     "t": "li",
+     "text": "Shaxsiy ma'lumotlar — familiya, ism, otasining ismi, tug'ilgan sana, jinsi;"
+    },
+    {
+     "t": "li",
+     "text": "Shaxsni tasdiqlovchi ma'lumotlar — pasport (ID-karta) ma'lumotlari, JSHSHIR;"
+    },
+    {
+     "t": "li",
+     "text": "Aloqa ma'lumotlari — telefon raqami, elektron pochta, yashash manzili;"
+    },
+    {
+     "t": "li",
+     "text": "Ta'lim va malaka — ma'lumot darajasi, mutaxassislik, malaka oshirish ma'lumotlari;"
+    },
+    {
+     "t": "li",
+     "text": "Mehnat faoliyati — lavozim, bo'lim, ish staji, mehnat shartnomasi, buyruqlar;"
+    },
+    {
+     "t": "li",
+     "text": "Oilaviy va ijtimoiy holat — oilaviy holati, bolalar soni va qonun bilan belgilangan boshqa toifalar;"
+    },
+    {
+     "t": "li",
+     "text": "Ish vaqti va davomat — ishga kelish va ketish vaqti, ta'til, kasallik varaqasi (mehnatga layoqatsizlik) ma'lumotlari, dam olish kunlari;"
+    },
+    {
+     "t": "li",
+     "text": "Hisob yozuvi ma'lumotlari — login, foydalanuvchi roli va kirish huquqlari darajasi."
+    },
+    {
+     "t": "h",
+     "n": "3.2",
+     "text": "Maxsus toifadagi ma'lumotlar bilan ishlash"
+    },
+    {
+     "t": "p",
+     "text": "Kadrlar hisobini yuritish jarayonida qonun hujjatlarida nazarda tutilgan hollarda ayrim maxsus toifadagi ma'lumotlar (masalan, mehnatga layoqatsizlik varaqasi bilan bog'liq ma'lumotlar) qayta ishlanishi mumkin. Bunday ma'lumotlar faqat Mehnat kodeksi va boshqa qonun hujjatlarida belgilangan majburiyatlarni bajarish doirasida, «bilish zarurati» tamoyili asosida, qat'iy cheklangan doiradagi vakolatli xodimlar tomonidan qayta ishlanadi. Boshqa hollarda Jamiyat maxsus toifadagi ma'lumotlarni (irqiy yoki etnik mansublik, siyosiy qarashlar, diniy e'tiqod va boshq.) yig'maydi."
+    },
+    {
+     "t": "h",
+     "n": "3.3",
+     "text": "Avtomatik yig'iladigan ma'lumotlar"
+    },
+    {
+     "t": "p",
+     "text": "Tizimdan foydalanish jarayonida quyidagi texnik ma'lumotlar avtomatik ravishda yig'ilishi mumkin:"
+    },
+    {
+     "t": "li",
+     "text": "qurilma turi va operatsion tizim versiyasi;"
+    },
+    {
+     "t": "li",
+     "text": "brauzer turi va tizim (ilova) versiyasi;"
+    },
+    {
+     "t": "li",
+     "text": "IP-manzil;"
+    },
+    {
+     "t": "li",
+     "text": "Tizimga kirish sanasi, vaqti hamda Tizimdagi muhim harakatlar (audit jurnallari — loglar);"
+    },
+    {
+     "t": "li",
+     "text": "Tizim ishlashi uchun zarur bo'lgan texnik sessiya cookie-fayllari (10.3-bandga qarang);"
+    },
+    {
+     "t": "li",
+     "text": "xato va nosozliklar haqidagi texnik ma'lumotlar (faqat Tizimni takomillashtirish maqsadida)."
+    },
+    {
+     "t": "h",
+     "n": "3.4",
+     "text": "Yig'ilmaydigan ma'lumotlar"
+    },
+    {
+     "t": "p",
+     "text": "Jamiyat quyidagi ma'lumotlarni yig'maydi:"
+    },
+    {
+     "t": "li",
+     "text": "foydalanuvchining doimiy geolokatsiyasi (GPS orqali kuzatuv);"
+    },
+    {
+     "t": "li",
+     "text": "kuzatuv, tahlil (analitika) yoki reklama maqsadidagi cookie-fayllar va uchinchi tomon kuzatuv texnologiyalari orqali olinadigan ma'lumotlar;"
+    },
+    {
+     "t": "li",
+     "text": "mikrofon yoki kamera ma'lumotlari (foydalanuvchining aniq ruxsatisiz);"
+    },
+    {
+     "t": "li",
+     "text": "uchinchi tomon ilovalaridan olinadigan ma'lumotlar;"
+    },
+    {
+     "t": "li",
+     "text": "reklama yoki tijoriy maqsaddagi ma'lumotlar. Tizim parollarni ochiq matn ko'rinishida saqlamaydi — ular bir tomonlama shifrlash (xeshlash) algoritmlari yordamida himoyalangan holda saqlanadi."
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "title": "Tizimga kirish va ruxsatlar",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "4.1",
+     "text": "Tizim to'g'ri ishlashi uchun foydalanuvchining qurilmasida yoki brauzerida quyidagi ruxsatlardan foydalanishi mumkin:"
+    },
+    {
+     "t": "li",
+     "text": "Internet — server bilan aloqa o'rnatish va ma'lumot almashish uchun;"
+    },
+    {
+     "t": "li",
+     "text": "Tezkor bildirishnomalar — muhim xabarlar va ogohlantirishlarni yetkazish uchun;"
+    },
+    {
+     "t": "li",
+     "text": "Qurilma holati — Tizimning barqaror ishlashini ta'minlash uchun."
+    },
+    {
+     "t": "p",
+     "n": "4.2",
+     "text": "Barcha ruxsatlar faqat Tizim funksiyalarini ta'minlash maqsadida so'raladi. Foydalanuvchi qurilma yoki brauzer sozlamalari orqali istalgan ruxsatni bekor qilish huquqiga ega."
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "title": "Ma'lumotlarni qayta ishlash maqsadlari",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "5.1",
+     "text": "Yig'ilgan ma'lumotlar faqat quyidagi maqsadlarda qayta ishlanadi:"
+    },
+    {
+     "t": "li",
+     "text": "Kadrlar hisobi — xodimni ro'yxatga olish va shaxsiy kartochkasini yuritish;"
+    },
+    {
+     "t": "li",
+     "text": "Ish vaqti hisobi — davomat, ta'til va ish vaqtini avtomatik hisoblash;"
+    },
+    {
+     "t": "li",
+     "text": "Hisobotlar — kadrlar hisobotlarini tuzish va ko'p bosqichli tasdiqlash;"
+    },
+    {
+     "t": "li",
+     "text": "Hujjat aylanishi — buyruq, shartnoma va hujjatlarni yaratish, kelishish hamda tasdiqlash;"
+    },
+    {
+     "t": "li",
+     "text": "Identifikatsiya — foydalanuvchini aniqlash, autentifikatsiya va avtorizatsiya qilish;"
+    },
+    {
+     "t": "li",
+     "text": "Xavfsizlik — ruxsatsiz kirishlarning oldini olish va Tizim xavfsizligini ta'minlash;"
+    },
+    {
+     "t": "li",
+     "text": "Texnik yordam — foydalanuvchi murojaatlarini ko'rib chiqish va muammolarni hal qilish;"
+    },
+    {
+     "t": "li",
+     "text": "Bildirishnomalar — muhim xabarlar, muddatlar va tizim yangiliklari haqida xabardor qilish;"
+    },
+    {
+     "t": "li",
+     "text": "Qonuniy majburiyatlar — mehnat, soliq va boshqa qonun hujjatlarida belgilangan majburiyatlarni bajarish."
+    },
+    {
+     "t": "p",
+     "n": "5.2",
+     "text": "Tizim shaxsga doir ma'lumotlardan reklama yoki tijoriy maqsadlarda foydalanmaydi va ularni marketing tashkilotlariga bermaydi."
+    },
+    {
+     "t": "p",
+     "n": "5.3",
+     "text": "Tizimda xodimlarga nisbatan yuridik oqibat keltirib chiqaruvchi qarorlar (ishga qabul qilish, lavozimdan ozod etish, intizomiy jazo va boshq.) faqat avtomatlashtirilgan tarzda (inson ishtirokisiz) qabul qilinmaydi — bunday qarorlar har doim vakolatli shaxslar tomonidan qabul qilinadi."
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "title": "Tezkor bildirishnomalar",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "6.1",
+     "text": "Tizim foydalanuvchiga quyidagi hollarda tezkor bildirishnoma yuborishi mumkin:"
+    },
+    {
+     "t": "li",
+     "text": "hisobot topshirish muddati yaqinlashganda;"
+    },
+    {
+     "t": "li",
+     "text": "yangi hujjat imzoga (tasdiqqa) kelganda yoki hujjat holati o'zgarganda;"
+    },
+    {
+     "t": "li",
+     "text": "davomat yoki ish vaqtiga oid muhim o'zgarishlarda;"
+    },
+    {
+     "t": "li",
+     "text": "hisob yozuvi xavfsizligiga oid ogohlantirishlarda;"
+    },
+    {
+     "t": "li",
+     "text": "muhim tizim xabarlari va yangiliklarida."
+    },
+    {
+     "t": "p",
+     "n": "6.2",
+     "text": "Foydalanuvchi qurilma yoki Tizim sozlamalari orqali bildirishnomalarni istalgan vaqtda o'chirib qo'yish huquqiga ega."
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "title": "Ma'lumotlarni saqlash va himoya qilish",
+   "blocks": [
+    {
+     "t": "h",
+     "n": "7.1",
+     "text": "Saqlash joyi va lokalizatsiya"
+    },
+    {
+     "t": "p",
+     "text": "Barcha shaxsga doir ma'lumotlar faqat O'zbekiston Respublikasi hududida joylashgan serverlar va ma'lumotlar bazalarida saqlanadi hamda qayta ishlanadi. Shaxsga doir ma'lumotlarning O'zbekiston Respublikasi hududidan tashqariga (transchegaraviy) uzatilishi amalga oshirilmaydi. Ma'lumotlarga ishlov berish «Shaxsga doir ma'lumotlar to'g'risida»gi O'RQ-547-son Qonuni talablariga to'liq muvofiq amalga oshiriladi. Mobil qurilmalarga tezkor bildirishnomalarni yetkazishda uchinchi tomon bildirishnoma xizmatlaridan foydalanilgan taqdirda, bildirishnomalar tarkibiga shaxsga doir ma'lumotlar kiritilmaydi va bu shaxsga doir ma'lumotlarning transchegaraviy uzatilishi hisoblanmaydi."
+    },
+    {
+     "t": "h",
+     "n": "7.2",
+     "text": "Saqlash muddati"
+    },
+    {
+     "t": "p",
+     "text": "Xodim ma'lumotlari u tashkilotda mehnat munosabatlarida bo'lgan davr mobaynida saqlanadi. Mehnat munosabatlari tugaganidan so'ng ma'lumotlar kadrlar hujjatlari uchun qonunchilikda belgilangan arxivlash muddatlari davomida saqlanadi, so'ngra belgilangan tartibda o'chiriladi yoki davlat arxiviga o'tkaziladi."
+    },
+    {
+     "t": "h",
+     "n": "7.3",
+     "text": "Xavfsizlik choralari"
+    },
+    {
+     "t": "p",
+     "text": "Jamiyat ma'lumotlarning yo'qotilishi, o'zgartirilishi, tarqatilishi va ruxsatsiz foydalanilishining oldini olish uchun quyidagi tashkiliy va texnik choralarni ko'radi:"
+    },
+    {
+     "t": "li",
+     "text": "ma'lumotlarni uzatishda SSL/TLS shifrlash texnologiyalaridan foydalanish;"
+    },
+    {
+     "t": "li",
+     "text": "parollarni bir tomonlama xeshlash algoritmlari bilan himoyalash;"
+    },
+    {
+     "t": "li",
+     "text": "rolga asoslangan kirish huquqlari (RBAC) orqali ma'lumotlarga cheklangan ruxsat berish — har bir xodim faqat o'z vakolatiga tegishli ma'lumotlarni ko'radi;"
+    },
+    {
+     "t": "li",
+     "text": "serverlarga jismoniy va mantiqiy kirishni cheklash hamda nazorat qilish;"
+    },
+    {
+     "t": "li",
+     "text": "Tizimdagi muhim harakatlarni qayd etuvchi audit jurnallarini (loglar) yuritish;"
+    },
+    {
+     "t": "li",
+     "text": "ma'lumotlar bazasining muntazam zaxira nusxalarini (backup) yaratish;"
+    },
+    {
+     "t": "li",
+     "text": "muntazam ravishda xavfsizlik tekshiruvlari va zaifliklarni baholashni o'tkazish;"
+    },
+    {
+     "t": "li",
+     "text": "maxsus toifadagi ma'lumotlarga (mehnatga layoqatsizlik varaqasi va boshq.) nisbatan qo'shimcha himoya choralarini qo'llash — ularga kirishni faqat qat'iy cheklangan doiradagi vakolatli xodimlar bilan chegaralash va bunday kirishlarni alohida qayd etib borish."
+    }
+   ]
+  },
+  {
+   "n": 8,
+   "title": "Login va parol uchun mas'uliyat",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "8.1",
+     "text": "Foydalanuvchiga Tizimga kirish uchun individual hisob yozuvi (login) va parol taqdim etiladi."
+    },
+    {
+     "t": "p",
+     "n": "8.2",
+     "text": "Foydalanuvchi o'z login va parolining maxfiyligini ta'minlash uchun shaxsan va to'liq mas'uldir. Login va parolni uchinchi shaxslarga berish, oshkor qilish yoki ulardan birgalikda foydalanish qat'iyan taqiqlanadi."
+    },
+    {
+     "t": "p",
+     "n": "8.3",
+     "text": "Foydalanuvchining hisob yozuvi orqali Tizimda amalga oshirilgan barcha harakatlar foydalanuvchining o'zi tomonidan amalga oshirilgan deb hisoblanadi va ular uchun mas'uliyat to'liq foydalanuvchi zimmasiga yuklanadi."
+    },
+    {
+     "t": "p",
+     "n": "8.4",
+     "text": "Login yoki parol oshkor bo'lganligi yoxud hisob yozuvidan ruxsatsiz foydalanilganligi aniqlangan taqdirda, foydalanuvchi darhol parolni almashtirishi va Jamiyatning Tizim administratoriga xabar berishi shart."
+    },
+    {
+     "t": "p",
+     "n": "8.5",
+     "text": "Foydalanuvchi tomonidan login va parolni saqlash qoidalari buzilishi natijasida yetkazilgan har qanday zarar uchun Jamiyat javobgar bo'lmaydi."
+    }
+   ]
+  },
+  {
+   "n": 9,
+   "title": "Ma'lumotlar buzilishi holati",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "9.1",
+     "text": "Foydalanuvchi ma'lumotlariga ruxsatsiz kirish yoki ma'lumotlar buzilishi holati yuzaga kelsa, Jamiyat quyidagicha harakat qiladi:"
+    },
+    {
+     "t": "li",
+     "text": "buzilish aniqlangach darhol, biroq 72 soatdan kechiktirmay ichki tekshiruv boshlanadi;"
+    },
+    {
+     "t": "li",
+     "text": "jabrlangan foydalanuvchilar 5 ish kuni ichida elektron pochta yoki Tizim bildirishnomasi orqali xabardor qilinadi;"
+    },
+    {
+     "t": "li",
+     "text": "buzilishning sababi, ko'lami va ko'rilgan choralar haqida ma'lumot beriladi;"
+    },
+    {
+     "t": "li",
+     "text": "takroriy buzilishning oldini olish uchun Tizimda zarur o'zgartirishlar amalga oshiriladi;"
+    },
+    {
+     "t": "li",
+     "text": "qonun hujjatlarida nazarda tutilgan hollarda va muddatlarda vakolatli davlat organi xabardor qilinadi."
+    }
+   ]
+  },
+  {
+   "n": 10,
+   "title": "Ma'lumotlarni uchinchi shaxslarga taqdim etish va cookie-fayllar",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "10.1",
+     "text": "Jamiyat xodimlarning shaxsga doir ma'lumotlarini hech qanday uchinchi tomon, tashkilot yoki shaxs bilan tijoriy maqsadda ulashmaydi. Ma'lumotlar faqat quyidagi hollarda taqdim etilishi mumkin:"
+    },
+    {
+     "t": "li",
+     "text": "Qonun talabi bo'yicha — O'zbekiston Respublikasi sudi, huquqni muhofaza qiluvchi organlar yoki davlat organlarining (soliq, statistika, ijtimoiy ta'minot va boshq.) qonunga asoslangan rasmiy talabi asosida;"
+    },
+    {
+     "t": "li",
+     "text": "Foydalanuvchi roziligi bilan — foydalanuvchining aniq ifodalangan roziligi mavjud bo'lganda;"
+    },
+    {
+     "t": "li",
+     "text": "Tashkilot ichida — vakolatli xodimlar o'rtasida, rasmiy vazifalarni bajarish doirasida va «bilish zarurati» tamoyili asosida."
+    },
+    {
+     "t": "p",
+     "n": "10.2",
+     "text": "Tizim ichida ba'zan tashqi veb-saytlar yoki xizmatlarga havolalar mavjud bo'lishi mumkin. Ushbu tashqi manbalar Jamiyat tomonidan boshqarilmaydi va ular uchun Jamiyat mas'uliyat olmaydi. Tashqi havolaga o'tishdan oldin tegishli xizmatning o'z maxfiylik siyosati bilan tanishib chiqish tavsiya etiladi."
+    },
+    {
+     "t": "p",
+     "n": "10.3",
+     "text": "Tizim faqat foydalanuvchi sessiyasini ushlab turish va xavfsizlikni ta'minlash uchun zarur bo'lgan texnik (sessiya) cookie-fayllaridan foydalanadi. Kuzatuv, tahlil (analitika) yoki reklama maqsadidagi cookie-fayllar ishlatilmaydi. Texnik cookie-fayllarni o'chirish Tizimning to'g'ri ishlashiga ta'sir qilishi mumkin."
+    }
+   ]
+  },
+  {
+   "n": 11,
+   "title": "Voyaga yetmaganlarning maxfiyligi",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "11.1",
+     "text": "«HRM PRO» tizimi 18 yoshdan kichik shaxslarga mo'ljallanmagan va undan faqat tashkilotning voyaga yetgan xodimlari foydalanadi. Jamiyat bilgan holda 18 yoshdan kichik foydalanuvchilardan ma'lumot yig'maydi. Bunday holat aniqlansa, tegishli ma'lumotlar darhol o'chiriladi. Xodimlarning bolalari haqidagi ma'lumotlar faqat qonunda nazarda tutilgan imtiyoz va kafolatlarni qo'llash maqsadida, kadrlar hisobi doirasida qayta ishlanadi."
+    }
+   ]
+  },
+  {
+   "n": 12,
+   "title": "Foydalanuvchining huquqlari",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "12.1",
+     "text": "O'zbekiston Respublikasining «Shaxsga doir ma'lumotlar to'g'risida»gi O'RQ-547-son Qonuniga muvofiq foydalanuvchi quyidagi huquqlarga ega:"
+    },
+    {
+     "t": "li",
+     "text": "Ko'rish huquqi — o'ziga tegishli shaxsga doir ma'lumotlarning qayta ishlanishi haqida axborot olish va ularni ko'rish;"
+    },
+    {
+     "t": "li",
+     "text": "Tahrirlash huquqi — noto'g'ri, to'liq bo'lmagan yoki eskirgan ma'lumotlarni tuzatishni talab qilish;"
+    },
+    {
+     "t": "li",
+     "text": "O'chirish huquqi — qonunda belgilangan hollarda ma'lumotlarni o'chirish talabini yuborish;"
+    },
+    {
+     "t": "li",
+     "text": "Rozilikni bekor qilish — ma'lumotlarni qayta ishlashga roziligini qonun doirasida qaytarib olish (bunda qonun bo'yicha majburiy bo'lgan kadrlar hisobi davom etishi mumkin);"
+    },
+    {
+     "t": "li",
+     "text": "Shikoyat yuborish — o'z huquqlari buzilgan taqdirda shaxsga doir ma'lumotlar sohasidagi vakolatli davlat organiga yoki sudga murojaat qilish."
+    },
+    {
+     "t": "p",
+     "n": "12.2",
+     "text": "Ushbu huquqlarni amalga oshirish uchun foydalanuvchi tashkilotning kadrlar bo'limi, Tizim administratori yoki Jamiyatning rasmiy manziliga yozma yoki elektron shaklda (shu jumladan 14.1bandda ko'rsatilgan aloqa kanallari orqali) murojaat qilishi mumkin."
+    },
+    {
+     "t": "p",
+     "n": "12.3",
+     "text": "Foydalanuvchining murojaati ro'yxatga olingan kundan boshlab 15 ish kuni ichida ko'rib chiqiladi va javob beriladi. Murojaatni ko'rib chiqish qo'shimcha o'rganishni talab qilsa, bu muddat 30 ish kunigacha uzaytirilishi mumkin, bu haqda foydalanuvchi xabardor qilinadi."
+    }
+   ]
+  },
+  {
+   "n": 13,
+   "title": "Siyosatga o'zgartirish kiritish",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "13.1",
+     "text": "Jamiyat ushbu Siyosatga bir tomonlama tartibda o'zgartirish va qo'shimchalar kiritish huquqini o'zida saqlab qoladi. Muhim o'zgartirishlar kiritilganda foydalanuvchilar Tizim ichidagi bildirishnoma yoki elektron pochta orqali xabardor qilinadi."
+    },
+    {
+     "t": "p",
+     "n": "13.2",
+     "text": "Siyosatning yangi tahriri Tizimda e'lon qilingan paytdan boshlab kuchga kiradi. O'zgartirishlardan keyin Tizimdan foydalanishni davom ettirish yangi tahrirga rozilik sifatida qabul qilinadi."
+    }
+   ]
+  },
+  {
+   "n": 14,
+   "title": "Bog'lanish",
+   "blocks": [
+    {
+     "t": "p",
+     "n": "14.1",
+     "text": "Tizim hamda u orqali ko'rsatiladigan xizmatlar yuzasidan fikr-mulohazalar, so'rovlar, murojaatlar, shikoyatlar hamda takliflar «O'zbekiston temir yo'llari» AJning rasmiy aloqa kanallari orqali qabul qilinadi."
+    }
+   ]
+  }
+ ]
+}

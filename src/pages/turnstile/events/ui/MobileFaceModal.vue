@@ -46,6 +46,25 @@
   const revealed = ref(false)
   const isVeiled = (p) => p.key === 'photo' && Boolean(p.src) && !revealed.value
 
+  // Rasm ochilganda pastdagi asboblar: kattaroq dumaloq tugmalar, orasi bo'sh, guruhlar ingichka chiziq bilan
+  // ajratilgan (aylantirish | o'lcham va kattalashtirish | yuklab olish | yopish).
+  const renderToolbar = ({ nodes }) => {
+    const btn = (node) => h('span', { class: 'mf-tool' }, [node])
+    const sep = () => h('span', { class: 'mf-tool-sep' })
+    return h('div', { class: 'mf-toolbar' }, [
+      btn(nodes.rotateCounterclockwise),
+      btn(nodes.rotateClockwise),
+      sep(),
+      btn(nodes.resizeToOriginalSize),
+      btn(nodes.zoomOut),
+      btn(nodes.zoomIn),
+      sep(),
+      btn(nodes.download),
+      sep(),
+      btn(nodes.close)
+    ])
+  }
+
   // O'xshashlik chegaralari: 90%+ mos, 70–89% solishtirib ko'rish kerak, <70% boshqa odam bo'lishi mumkin.
   // Frontend tanlovi — backend jamoasi hozircha muhim emas dedi (2026-11-04); kerak bo'lsa shu yerda o'zgartiriladi.
   const similarity = computed(() =>
@@ -131,6 +150,7 @@
               v-if="p.src"
               :src="p.src"
               object-fit="cover"
+              :render-toolbar="renderToolbar"
               class="block w-full h-full"
               :img-props="{ class: 'w-full h-full object-cover' }"
               @error="broken[p.key] = true"
@@ -141,7 +161,6 @@
             </div>
             <Transition name="mf-veil">
               <button v-if="isVeiled(p)" type="button" class="mf-veil" @click="revealed = true">
-                <span class="mf-veil__noise" />
                 <span class="mf-veil__label">
                   <n-icon size="16"><Eye20Regular /></n-icon>
                   {{ $t('departmentLocationPage.events.tapToReveal') }}
@@ -249,15 +268,12 @@
     width: 100%;
     height: 100%;
   }
-  /* Yopiq rasm: ostida kuchli xira, ustida televizor shovqini («vjir-vjir»). */
+  /* Yopiq rasm — yumshoq xira (yuz ko'rinmaydi); bosilganda ochiladi. */
   .mf-photo :deep(img) {
-    transition:
-      filter 0.3s ease,
-      transform 0.3s ease;
+    transition: filter 0.3s ease;
   }
   .mf-photo.is-veiled :deep(img) {
-    filter: blur(24px);
-    transform: scale(1.2);
+    filter: blur(14px);
   }
   .mf-veil {
     position: absolute;
@@ -270,14 +286,7 @@
     cursor: pointer;
     border: 0;
     padding: 0;
-    background: #6b7280;
-  }
-  .mf-veil__noise {
-    position: absolute;
-    inset: -50%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    opacity: 0.9;
-    animation: mf-static 0.4s steps(4) infinite;
+    background: transparent;
   }
   .mf-veil__label {
     position: relative;
@@ -295,34 +304,11 @@
   .mf-veil:hover .mf-veil__label {
     background: rgba(0, 0, 0, 0.75);
   }
-  /* Shovqin qatlami sakrab siljiydi — televizordagi «vjir-vjir» kabi jonli ko'rinadi. */
-  @keyframes mf-static {
-    0% {
-      transform: translate(0, 0);
-    }
-    25% {
-      transform: translate(-12%, 8%);
-    }
-    50% {
-      transform: translate(9%, -14%);
-    }
-    75% {
-      transform: translate(-6%, -9%);
-    }
-    100% {
-      transform: translate(13%, 11%);
-    }
-  }
   .mf-veil-leave-active {
     transition: opacity 0.3s ease;
   }
   .mf-veil-leave-to {
     opacity: 0;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .mf-veil__noise {
-      animation: none;
-    }
   }
   /* Kichik kartada xarita o'z balandligida — marker markazda turadi. */
   .mf-map :deep(.map-container) {
@@ -331,5 +317,49 @@
   .mf-map :deep(.location-map-wrapper) {
     border: 0;
     border-radius: 0;
+  }
+</style>
+
+<style>
+  /* Rasm ochilganda pastdagi asboblar (teleport — scoped emas). `:has(.mf-toolbar)` — faqat shu oynaning rasmlari. */
+  .n-image-preview-toolbar:has(.mf-toolbar) {
+    bottom: 32px;
+    height: auto;
+    padding: 6px;
+    border-radius: 999px;
+    background: rgb(17 24 39 / 78%);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 10px 30px -10px rgb(0 0 0 / 50%);
+  }
+  .mf-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .mf-tool {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    color: #fff;
+    transition: background 0.15s ease;
+  }
+  .mf-tool:hover {
+    background: rgb(255 255 255 / 14%);
+  }
+  .mf-tool .n-base-icon {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 22px !important;
+    width: 22px;
+    height: 22px;
+  }
+  .mf-tool-sep {
+    width: 1px;
+    height: 22px;
+    margin: 0 4px;
+    background: rgb(255 255 255 / 22%);
   }
 </style>

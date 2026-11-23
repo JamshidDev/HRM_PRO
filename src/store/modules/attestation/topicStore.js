@@ -87,12 +87,14 @@ export const useTopicStore = defineStore('topicStore', {
           this.payload.strict_mode = !!d.strict_mode
           this.payload.deadline = d.deadline ?? null
           this.payload.chances = d.chances ?? 2
-          this.payload.whom = d.whom ?? 1
-          this.payload.whom_ids = d.whom_ids ?? []
+          // Eski 4/5 turlari formada yo'q — «Barchaga» deb ochiladi.
+          const whom = [1, 2, 3].includes(d.whom) ? d.whom : 1
+          this.payload.whom = whom
+          this.payload.whom_ids = whom === 1 ? [] : (d.whom_ids ?? [])
           this.payload.active = !!d.active
           this.examsCount = this.list.find((v) => v.id === this.elementId)?.exams_count ?? 0
-          if (this.payload.whom === 2) this._audiencePositions()
-          if (this.payload.whom === 3) this._audienceWorkers()
+          if (whom === 2) this._audiencePositions()
+          if (whom === 3) this._audienceWorkers(false, this.payload.whom_ids)
         })
         .finally(() => {
           this.showLoading = false
@@ -148,14 +150,14 @@ export const useTopicStore = defineStore('topicStore', {
           this.deleteLoading = false
         })
     },
-    // Doira tanlangan mavzu — korxonalar ro'yxatisiz; bo'linmalar faqat «Bo'linmalar uchun» da.
+    // Doira tanlangan mavzu — korxonalar ro'yxatisiz; bo'linmalar ixtiyoriy filtr.
     _body() {
       const p = this.payload
       return {
         name: p.name,
         type: p.type,
         scope: p.scope,
-        department_ids: p.scope === 'department' ? p.department_ids : [],
+        department_ids: p.department_ids,
         mobile_allowed: p.mobile_allowed && !p.screen_share_required && !p.strict_mode,
         camera_required: p.camera_required,
         screen_share_required: p.screen_share_required,
@@ -191,7 +193,7 @@ export const useTopicStore = defineStore('topicStore', {
       const p = this.payload
       return {
         scope: p.scope,
-        department_ids: p.scope === 'department' ? p.department_ids.join(',') : undefined
+        department_ids: p.department_ids.join(',') || undefined
       }
     },
     _audiencePositions() {
@@ -206,11 +208,15 @@ export const useTopicStore = defineStore('topicStore', {
           this.positionLoading = false
         })
     },
-    _audienceWorkers(append = false) {
+    // `ids` — tahrirda tanlangan xodimlarni ismi bilan ko'rsatish uchun avval ularni yuklaydi.
+    _audienceWorkers(append = false, ids = null) {
       if (!this.payload.scope) return
       this.workerLoading = true
+      const extra = ids?.length ? { ids: ids.join(','), page: 1, per_page: ids.length } : {}
       $ApiService.topicService
-        ._audienceWorkers({ params: { ...this.workerParams, ...this._audienceParams() } })
+        ._audienceWorkers({
+          params: { ...this.workerParams, ...this._audienceParams(), ...extra }
+        })
         .then((res) => {
           const rows = res.data.data.data.map((v) => ({
             id: v.id,
@@ -220,12 +226,19 @@ export const useTopicStore = defineStore('topicStore', {
             position: v.position?.name,
             photo: v.worker?.photo
           }))
-          this.workerTotal = res.data.data.total
-          const merged = append ? [...this.workerList, ...rows] : rows
+          // Tanlanganlar ro'yxatda qoladi (sahifalash/qidiruvda yo'qolmasin).
+          const picked = this.workerList.filter((v) => this.payload.whom_ids.includes(v.id))
+          const merged =
+            append || ids?.length ? [...this.workerList, ...rows] : [...picked, ...rows]
           this.workerList = Array.from(new Map(merged.map((v) => [v.id, v])).values())
+          if (ids?.length) {
+            this.workerLoading = false
+            return this._audienceWorkers(true)
+          }
+          this.workerTotal = res.data.data.total
         })
         .finally(() => {
-          this.workerLoading = false
+          if (!ids?.length) this.workerLoading = false
         })
     },
     openVisible(data) {

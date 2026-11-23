@@ -123,7 +123,7 @@ const withRawIcons = (items) =>
 
 export const navigations = withRawIcons([
   {
-    label: 'navigation.myOrg', // Mening korxonam
+    label: 'navigation.myOrg', // Kadr boshqaruvi
     path: AppPaths.Hrm,
     icon: HrSidebarIcon,
     permission: appPermissions.hr,
@@ -211,6 +211,14 @@ export const navigations = withRawIcons([
             color: 'bg-info',
             permission: appPermissions.hrContractsRead,
             name: 'documents'
+          },
+          {
+            label: 'noticesPage.name', // Bildirgilar (HR → xodim)
+            path: Utils.routeHrmPathMaker(AppPaths.Notices),
+            icon: contractIcon,
+            color: 'bg-warning',
+            permission: appPermissions.hrContractsRead,
+            name: 'notices'
           },
           {
             label: 'applicationPage.name', // Arizalar
@@ -469,6 +477,14 @@ export const navigations = withRawIcons([
         color: 'bg-info',
         permission: appPermissions.confirmationContracts,
         name: 'documents'
+      },
+      {
+        label: 'noticesPage.name', // Bildirgilar (xodimga kelgan)
+        path: Utils.routeDocFlowPathMaker(AppPaths.ConfNotices),
+        icon: DocFlowContractIcon,
+        color: 'bg-warning',
+        permission: appPermissions.confirmationContracts,
+        name: 'notices'
       },
       {
         label: 'applicationPage.name', // Arizalar

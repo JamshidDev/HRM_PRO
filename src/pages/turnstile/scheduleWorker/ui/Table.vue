@@ -68,9 +68,7 @@
           startTime: e.start_time || null,
           endTime: e.end_time || null,
           workTime: e.daily_minutes,
-          // Kunning o'z tushligi. BACKEND: schedule-workers → days[] har bir kunda
-          // `break_start_time` / `break_end_time` ("HH:mm" yoki null) qaytarishi kerak —
-          // docs/api/turnstile-day-break.md. Hozircha kelmaydi → null, UI smena turidagi tushlikni ko'rsatadi.
+          // Kunning o'z tushligi (days[].break_start_time / break_end_time), bo'lmasa smena turidagi.
           breakStart: e.break_start_time ? String(e.break_start_time).slice(0, 5) : null,
           breakEnd: e.break_end_time ? String(e.break_end_time).slice(0, 5) : null,
           isEmpty: e.id === null,

@@ -1731,7 +1731,8 @@ export default {
       message: t(`rules.requiredField`),
       trigger: triggerEvents
     },
-    department_ids: {
+    // Lavozim/xodim maydoni faqat «Kimlarga» 2 yoki 3 bo'lganda ko'rinadi.
+    whom_ids: {
       type: 'array',
       required: true,
       min: 1,

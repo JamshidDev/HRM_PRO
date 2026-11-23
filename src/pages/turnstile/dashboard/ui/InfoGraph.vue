@@ -30,6 +30,8 @@
     {
       label: 'turnStileDashboard.attendance.excused',
       info: 'turnStileDashboard.attendance.excusedInfo',
+      // «Boshqa sabablar» noaniq — ichida nima borligi ⓘ da (kasallik, safar…)
+      infoIcon: true,
       count: store.attendance?.excused || 0,
       token: PALETTE.warn,
       previewType: 'att_excused'
