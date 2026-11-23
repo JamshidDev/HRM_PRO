@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { toRaw } from 'vue'
+import { toRaw, markRaw } from 'vue'
 import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
 import { useAccountStore } from '@/store/modules/app/accountStore.js'
@@ -197,7 +197,9 @@ export const useSalaryControlStore = defineStore('salaryControl', {
       if (!this._canRead()) return
       const key = this._key()
       if (dashCache.has(key)) {
-        this.dashboard = dashCache.get(key)
+        // markRaw: minglab xodimli `emps` arrayni chuqur-reaktiv qilmaymiz (yuklash + har
+        // render iteratsiyasi tez bo'ladi). Qayta tayinlash baribir reaktivlikni uyg'otadi.
+        this.dashboard = markRaw(dashCache.get(key))
         this.dashboardError = false
         // Shu kalit uchun derive allaqachon bajarilган (tab almashish) — qayta hisob
         // va state reassign QILMAYMIZ (keep-alive grafiklar qayta render bo'lmasin).
@@ -219,7 +221,7 @@ export const useSalaryControlStore = defineStore('salaryControl', {
           const data = res.data.data ?? {}
           dashCache.set(key, data)
           if (reqId === dashReq && key === this._key()) {
-            this.dashboard = data
+            this.dashboard = markRaw(data)
             this._deriveDashboard(reqId, key)
           } else if (reqId === dashReq) {
             this.dashboardLoading = false
@@ -253,9 +255,11 @@ export const useSalaryControlStore = defineStore('salaryControl', {
       })
         .then((d) => {
           if (reqId !== dashReq) return
-          this.people = d.people
-          this.scFindings = d.findings
-          this.scRisks = d.risks
+          // markRaw: derive natijalari ham yirik arraylar — chuqur-reaktivlik shart emas
+          // (faqat o'qiladi). Qayta tayinlash reaktivlikni uyg'otib, render yangilanadi.
+          this.people = markRaw(d.people)
+          this.scFindings = markRaw(d.findings)
+          this.scRisks = markRaw(d.risks)
           derivedKey = key // shu kalit uchun derive bajarildi — tab almashishda takror yo'q
         })
         .finally(() => {
