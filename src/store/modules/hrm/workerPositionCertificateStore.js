@@ -18,7 +18,8 @@ export const useWorkerPositionCertificateStore = defineStore('workerPositionCert
       issue_date: null,
       expiry_date: null,
       extended_date: null,
-      // verify/returned hozircha formada YO'Q — backend default false qo'yadi.
+      verify: false,
+      returned: false,
       file: null
     },
     uuid: null
@@ -80,6 +81,8 @@ export const useWorkerPositionCertificateStore = defineStore('workerPositionCert
       this.payload.expiry_date = null
       this.payload.extended_date = null
       this.payload.post_name = null
+      this.payload.verify = false
+      this.payload.returned = false
       this.payload.file = null
     }
   }
