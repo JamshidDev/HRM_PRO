@@ -8249,5 +8249,18 @@
   "seo": {
     "loginTitle": "HRM PRO — kadrlar boşqaruvi va elektron hujjat aylanişi {'|'} Oʻzbekiston temir yoʻllari",
     "modulesLink": "HRM PRO modullari va imkoniyatlari"
+  },
+  "noticesPage": {
+    "name": "Bildirgilar",
+    "item": "Bildirgi",
+    "createTitle": "Bildirgi yaratiş",
+    "updateTitle": "Bildirgini tahrirlaş",
+    "type": "Bildirgi turi",
+    "term": "Ogohlantiriş muddati",
+    "response": {
+      "ack": "Xodim tanişadi",
+      "consent": "Xodim rozilik yoki rad javobini beradi",
+      "explain": "Xodim yozma tuşuntiriş beradi"
+    }
   }
 }

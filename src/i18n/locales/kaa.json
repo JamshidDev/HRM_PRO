@@ -8249,5 +8249,18 @@
   "seo": {
     "loginTitle": "HRM PRO — kadrlar basqarıwı hám elektron hújjet aylanısı {'|'} Ózbekstan temir jolları",
     "modulesLink": "HRM PRO modulleri hám múmkinshilikleri"
+  },
+  "noticesPage": {
+    "name": "Bildirgiler",
+    "item": "Bildirgi",
+    "createTitle": "Bildirgi jaratıw",
+    "updateTitle": "Bildirgini redaktorlaw",
+    "type": "Bildirgi túri",
+    "term": "Eskertiw múddeti",
+    "response": {
+      "ack": "Xızmetker tanısadı",
+      "consent": "Xızmetker razılıq yamasa biykar juwabın beredi",
+      "explain": "Xızmetker jazba túsinik beredi"
+    }
   }
 }

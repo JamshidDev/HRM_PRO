@@ -8053,5 +8053,18 @@
   "seo": {
     "loginTitle": "HRM PRO — HR management and electronic document workflow {'|'} Uzbekistan Railways",
     "modulesLink": "HRM PRO modules and features"
+  },
+  "noticesPage": {
+    "name": "Notices",
+    "item": "Notice",
+    "createTitle": "Create notice",
+    "updateTitle": "Edit notice",
+    "type": "Notice type",
+    "term": "Notice period",
+    "response": {
+      "ack": "Employee acknowledges",
+      "consent": "Employee agrees or declines",
+      "explain": "Employee gives a written explanation"
+    }
   }
 }
