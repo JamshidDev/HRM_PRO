@@ -5942,7 +5942,7 @@
     "attendance": {
       "vacation": "Ta'tilda",
       "day_off": "Dam oliş kunida",
-      "excused": "Sababli",
+      "excused": "Boşqa sabablar",
       "firstEvent": "Birinçi hodisa",
       "lastEvent": "Oxirgi hodisa",
       "direction": "Hodisa turi",
@@ -5968,6 +5968,7 @@
       "title": "Bugungi davomat darajasi",
       "titleDay": "Davomat darajasi",
       "hint": "Grafik böyiça tanlangan kunda kelişi şart bölganlardan neçtasi keldi. Ta'til, kasallik, xizmat safari kabi sababli xodimlar hisobga olinmaydi",
+      "levels": "Daraja: {good}% va undan yuqori — Yaxşi, {medium}–{good}% — Örtaça, {medium}% dan past — Past",
       "mobile": "mobil",
       "good": "Yaxşi",
       "medium": "Örtaça",
