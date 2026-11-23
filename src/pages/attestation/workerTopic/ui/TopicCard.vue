@@ -128,7 +128,8 @@
     const total = item?.tests_count || 0
     const percent = total ? (Number(result?.result) / total) * 100 : 0
     if (percent >= 86) return 'text-[var(--exam-badge-green-text)] bg-[var(--exam-badge-green-bg)]'
-    if (percent >= 56) return 'text-[var(--exam-badge-orange-text)] bg-[var(--exam-badge-orange-bg)]'
+    if (percent >= 56)
+      return 'text-[var(--exam-badge-orange-text)] bg-[var(--exam-badge-orange-bg)]'
     return 'text-danger bg-danger/10'
   }
 </script>
@@ -145,7 +146,9 @@
           <p class="font-bold text-textColor0 leading-tight line-clamp-1">
             {{ item?.name }}
           </p>
-          <p class="text-xs text-textColor1 leading-tight mt-1 line-clamp-1 flex items-center gap-1.5">
+          <p
+            class="text-xs text-textColor1 leading-tight mt-1 line-clamp-1 flex items-center gap-1.5"
+          >
             <span v-if="item.camera" class="relative flex size-2 shrink-0">
               <span
                 class="absolute inline-flex h-full w-full animate-ping rounded-full bg-danger opacity-75"
@@ -192,7 +195,11 @@
         <div class="flex items-center gap-3 flex-wrap text-sm text-textColor1 min-w-0">
           <span class="flex items-center gap-1.5 shrink-0">
             <n-icon :component="Clock20Filled" :size="16" class="text-textColor3" />
-            {{ $t('examPage.totalMinute', { n: item.minute }) }}
+            {{
+              item.minute == null
+                ? $t('topicDetailsPage.exams.unlimited')
+                : $t('examPage.totalMinute', { n: item.minute })
+            }}
           </span>
           <span class="flex items-center gap-1.5 shrink-0">
             <img :src="questionIconUrl" alt="" class="w-4 h-4" />

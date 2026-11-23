@@ -104,7 +104,6 @@ import confirmationReportService from '@/service/v1/docFlow/confirmationReportSe
 
 import topicService from '@/service/v1/attestation/topicService.js'
 import examVideoService from '@/service/v1/attestation/examVideoService.js'
-import topicFilesService from '@/service/v1/attestation/topicFilesService.js'
 import categoryService from '@/service/v1/attestation/categoryService.js'
 import categoryQuestionService from '@/service/v1/attestation/categoryQuestionService.js'
 import topicExamService from '@/service/v1/attestation/topicExamService.js'
@@ -147,6 +146,7 @@ import {
   hcServerService,
   eventService,
   telegramUserService,
+  guestService,
   workerImageService,
   devicesService,
   syncLogService,
@@ -232,7 +232,6 @@ export default {
   topicExamService,
   topicExamResultService,
   examDashboardService,
-  topicFilesService,
   workerExamService,
   categoryService,
   categoryQuestionService,
@@ -282,6 +281,7 @@ export default {
   vacancyService,
   eventService,
   telegramUserService,
+  guestService,
   workerImageService,
   devicesService,
   learningCenterService,

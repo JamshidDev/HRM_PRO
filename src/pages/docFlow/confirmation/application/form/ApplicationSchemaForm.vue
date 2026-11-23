@@ -13,13 +13,21 @@
   const DATE_FMT = 'yyyy-MM-dd'
 
   const def = computed(() => store.schemaDef())
-  const fields = computed(() => def.value?.fields ?? [])
   const data = computed(() => store.payload.data)
+  // Shartli maydon faqat tanlangan variantda ko'rinadi; hujjatga yozilmaydiganlari oxirida alohida.
+  const isShown = (f) =>
+    !f.show_if || f.show_if.in.some((v) => String(v) === String(data.value[f.show_if.key]))
+  const allFields = computed(() => def.value?.fields ?? [])
+  const fields = computed(() => {
+    const visible = allFields.value.filter(isShown)
+    return [...visible.filter((f) => !f.record), ...visible.filter((f) => f.record)]
+  })
+  const firstRecordKey = computed(() => fields.value.find((f) => f.record)?.key ?? null)
   const errors = ref({})
 
   // Bo'lim qaysi korxonadan: tanlangan korxona (1), formadagi korxona (11) yoki o'z lavozimi.
   const deptOrg = computed(() => {
-    if (fields.value.some((f) => f.kind === 'organization' && f.key === 'organization_id')) {
+    if (allFields.value.some((f) => f.kind === 'organization' && f.key === 'organization_id')) {
       return data.value.organization_id || null
     }
     if (def.value?.place === 'organization') {
@@ -41,7 +49,7 @@
     return null
   }
   const restoreOrgs = () => {
-    for (const f of fields.value.filter((x) => x.kind === 'organization')) {
+    for (const f of allFields.value.filter((x) => x.kind === 'organization')) {
       const id = Number(data.value[f.key])
       if (id > 0 && !orgModel.value[f.key]?.length) {
         const o = findOrg(componentStore.allStructureList, id)
@@ -156,6 +164,10 @@
       }
       if (!f.required) continue
       const keys = f.keys ?? [f.key]
+      if (f.kind === 'weekdays') {
+        if (!Array.isArray(data.value[f.key]) || !data.value[f.key].length) e[f.key] = true
+        continue
+      }
       if (keys.some((k) => isBlank(data.value[k]))) e[f.key] = true
       else if (
         (f.kind === 'select' || f.kind === 'organization') &&
@@ -187,7 +199,7 @@
     () => {
       errors.value = {}
       positions.value = []
-      if (fields.value.some((f) => f.kind === 'child')) loadChildren()
+      if (allFields.value.some((f) => f.kind === 'child')) loadChildren()
       if (data.value.department_id) loadPositions(data.value.department_id)
       if (componentStore.allStructureList.length === 0) componentStore._allStructures()
       else restoreOrgs()
@@ -199,6 +211,9 @@
 <template>
   <div class="grid grid-cols-12 gap-x-4" v-if="def">
     <template v-for="f in fields" :key="f.key">
+      <div v-if="f.key === firstRecordKey" class="col-span-12 mt-2 mb-1 border-t border-surface-line pt-3 text-sm text-textColor2">
+        {{ $t('applicationPage.schema.recordTitle') }}
+      </div>
       <!-- Korxona (daraxt), «Boshqa» bo'lsa — matn -->
       <div class="col-span-12 pr-3" v-if="f.kind === 'organization'">
         <n-form-item
@@ -421,6 +436,22 @@
               :placeholder="$t('applicationPage.schema.otherText')"
             />
           </div>
+        </n-form-item>
+      </div>
+
+      <!-- Hafta kunlari (1 — dushanba) -->
+      <div class="col-span-12" v-else-if="f.kind === 'weekdays'">
+        <n-form-item
+          :label="f.label"
+          :show-require-mark="f.required"
+          :validation-status="status(f.key)"
+          :feedback="feedback(f.key)"
+        >
+          <n-checkbox-group :value="data[f.key] ?? []" @update:value="(v) => (data[f.key] = v)">
+            <div class="flex flex-wrap gap-x-4 gap-y-2">
+              <n-checkbox v-for="d in 7" :key="d" :value="d" :label="$t(`applicationPage.schema.weekdays.${d}`)" />
+            </div>
+          </n-checkbox-group>
         </n-form-item>
       </div>
 

@@ -1,183 +1,153 @@
 <script setup>
   import VChart from 'vue-echarts'
-  import { useTurnstileDashboardStore } from '@/store/modules/index.js'
+  import { useTurnstileDashboardStore, useAppStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
-  import { use } from 'echarts/core'
-  import { LineChart } from 'echarts/charts'
+  import { use, graphic } from 'echarts/core'
+  import { BarChart } from 'echarts/charts'
   import { TooltipComponent, GridComponent, MarkLineComponent } from 'echarts/components'
   import { CanvasRenderer } from 'echarts/renderers'
-  import { onMounted, nextTick } from 'vue'
+  import { PALETTE } from './palette.js'
+  import { Utils } from '@/utils/index.js'
 
-  use([TooltipComponent, GridComponent, MarkLineComponent, LineChart, CanvasRenderer])
+  use([TooltipComponent, GridComponent, MarkLineComponent, BarChart, CanvasRenderer])
 
   const store = useTurnstileDashboardStore()
+  const appStore = useAppStore()
 
   const tokenColor = (name) =>
     getComputedStyle(document.documentElement).getPropertyValue(name).trim()
 
-  const emit = defineEmits(['barClick'])
   const dashboardStore = useTurnstileDashboardStore()
   const { t } = i18n.global
-  const chartRef = ref(null)
 
-  // Method to get start_time and end_time for a given hour
-  const getTimeRange = (hour) => {
-    // Parse the hour (e.g., "07:00" -> 7)
-    const hourNum = parseInt(hour.split(':')[0])
+  // Har daqiqada yangilanadigan soat — «Hozir» chizig'i vaqt o'tishi bilan siljiydi.
+  const clock = ref(Date.now())
+  let clockTimer = null
+  onMounted(() => (clockTimer = setInterval(() => (clock.value = Date.now()), 60 * 1000)))
+  onBeforeUnmount(() => clearInterval(clockTimer))
 
-    // Calculate start_time (previous hour)
-    const startHour = hourNum - 1
-    const startTime = `${startHour.toString().padStart(2, '0')}:00`
-
-    return {
-      start_time: startTime,
-      end_time: hour
-    }
-  }
-
-  const onPointClick = (params) => {
-    const timeRange = getTimeRange(params.name)
-    emit('barClick', timeRange)
-  }
-
-  // Grafik endi skeleton o'rniga kech (yuklanish tugagach) mount bo'ladi — shuning
-  // uchun click ulanishini bitta joyga yig'amiz va har mount'dan keyin qayta chaqiramiz.
-  const bindChartClick = () => {
-    nextTick(() => {
-      if (!chartRef.value) return
-      // Grafik to'liq chizilishini kutamiz
-      setTimeout(() => {
-        const chartInstance = chartRef.value?.chart
-        if (!chartInstance) return
-        chartInstance.off('click')
-        chartInstance.on('click', onPointClick)
-      }, 100)
-    })
-  }
-
-  const option = ref({
-    tooltip: {
-      // `body` ga ko'chiriladi: aks holda `.main-content` dagi
-      // `overflow-x: hidden` tooltipni kontent chegarasida kesadi.
-      appendTo: 'body',
-      trigger: 'axis',
-      axisPointer: {
-        type: 'line',
-        lineStyle: { color: tokenColor('--fig-br-secondary') }
-      },
-      backgroundColor: tokenColor('--surface-section'),
-      borderColor: tokenColor('--surface-line'),
-      textStyle: {
-        color: tokenColor('--fig-text-primary')
-      }
-    },
-    grid: {
-      left: '1%',
-      top: '8%',
-      right: '1%',
-      bottom: '3%',
-      containLabel: true
-    },
-    xAxis: {
-      type: 'category',
-      boundaryGap: false,
-      data: [],
-      axisLabel: {
-        show: true,
-        fontSize: 10,
-        lineHeight: 15,
-        color: tokenColor('--fig-text-secondary'),
-        // Maketda x o'qi yorliqlari 0.2px harf oralig'i bilan
-        rich: {},
-        padding: [0, 0, 0, 0]
-      },
-      axisTick: { show: false },
-      axisLine: {
-        lineStyle: {
-          color: tokenColor('--fig-br-disable'),
-          width: 1
-        }
-      },
-      splitLine: {
-        show: true,
-        lineStyle: {
-          type: [3, 3],
-          color: tokenColor('--fig-br-secondary')
-        }
-      }
-    },
-    yAxis: {
-      type: 'value',
-      axisLabel: {
-        fontSize: 10,
-        color: tokenColor('--fig-text-primary')
-      },
-      splitLine: {
-        show: true,
-        lineStyle: {
-          type: [3, 3],
-          color: tokenColor('--fig-br-secondary')
-        }
-      }
-    },
-    series: [
-      {
-        name: t('turnStileDashboard.form.workerCount'),
-        type: 'line',
-        smooth: true,
-        symbol: 'circle',
-        symbolSize: 6,
-        showSymbol: false,
-        // Chiziqning o'zi bosilganda ham `click` hodisasi chiqishi uchun.
-        triggerLineEvent: true,
-        data: [],
-        lineStyle: {
-          width: 2,
-          color: tokenColor('--fig-icon-green')
-        },
-        itemStyle: {
-          color: tokenColor('--fig-icon-green')
-        },
-        // Maketdagi ko'k punktir mos'yor chizig'i
-        markLine: {
-          silent: true,
-          symbol: 'none',
-          label: { show: false },
-          lineStyle: {
-            color: '#1570ef',
-            width: 1,
-            type: [3, 3]
-          },
-          data: [{ type: 'average' }]
-        }
-      }
-    ]
+  // «Hozir» — hozirgi vaqt tushgan oraliq yorlig'i (oraliq boshi bo'yicha: 2 soatlikda 11:40 → «10:00»).
+  const nowHour = computed(() => {
+    const now = new Date(clock.value)
+    const picked = new Date(dashboardStore.dashboardParams.date || clock.value)
+    if (picked.toDateString() !== now.toDateString()) return null
+    const list = Array.isArray(dashboardStore.dailyEvents) ? dashboardStore.dailyEvents : []
+    const nowMin = now.getHours() * 60 + now.getMinutes()
+    const started = list.filter((v) => toMinutes(v.hour) <= nowMin)
+    return started.length ? started[started.length - 1].hour : null
   })
 
-  watch(
-    () => dashboardStore.dailyEvents,
-    (newValue) => {
-      if (!newValue || !Array.isArray(newValue)) return
+  // Oraliq: yorliq = oraliq BOSHI (backend 2 soatlik: 00:00 … 22:00 kunni to'liq qoplaydi).
+  // `hour` — 2 soatlik oraliq boshi (00:00 = 00:00–01:59).
+  const toMinutes = (hour) => {
+    const [h, m] = String(hour).split(':').map(Number)
+    return (h || 0) * 60 + (m || 0)
+  }
+  const bucketEnd = (hour, list) => {
+    const step = list.length > 1 ? toMinutes(list[1].hour) - toMinutes(list[0].hour) : 60
+    const sum = toMinutes(hour) + step
+    if (sum === 24 * 60) return '24:00'
+    const end = sum % (24 * 60)
+    return `${String(Math.floor(end / 60)).padStart(2, '0')}:${String(end % 60).padStart(2, '0')}`
+  }
 
-      option.value.xAxis.data = newValue.map((v) => v.hour)
-      option.value.series[0].data = newValue.map((v) => v.count)
+  const alpha = (hex, a) => (/^#[0-9a-f]{6}$/i.test(hex) ? `${hex}${a}` : hex)
+  const option = computed(() => {
+    appStore.isDark
+    const axis = tokenColor('--fig-text-tertiary')
+    const split = tokenColor('--fig-br-disable')
+    const main = tokenColor(PALETTE.main)
+    const events = Array.isArray(dashboardStore.dailyEvents) ? dashboardStore.dailyEvents : []
+    const peak = Math.max(0, ...events.map((v) => v.count || 0))
+    const fill = (top, bottom) =>
+      new graphic.LinearGradient(0, 0, 0, 1, [
+        { offset: 0, color: top },
+        { offset: 1, color: bottom }
+      ])
 
-      bindChartClick()
-    },
-    {
-      immediate: true
+    return {
+      tooltip: {
+        // `body` ga ko'chiriladi: aks holda `.main-content` dagi
+        // `overflow-x: hidden` tooltipni kontent chegarasida kesadi.
+        appendTo: 'body',
+        trigger: 'axis',
+        axisPointer: { type: 'shadow' },
+        // «08:00 – 10:00» va «9 620 ta o'tish» — oraliq aniq ko'rinsin.
+        formatter: (params) => {
+          const p = Array.isArray(params) ? params[0] : params
+          const next = bucketEnd(p.name, events)
+          const count = Utils.formatNumberToMoney(p.value) || 0
+          return `${p.name} – ${next}<br/>${p.marker}<b>${count}</b> ${t('turnStileDashboard.hourly.people')}`
+        },
+        backgroundColor: tokenColor('--surface-section'),
+        borderColor: tokenColor('--surface-line'),
+        textStyle: { color: tokenColor('--fig-text-primary'), fontSize: 12 }
+      },
+      // O'ngda 20px — oxirgi «23:00» yorlig'i chetda kesilmasin.
+      grid: { top: 22, left: 4, right: 20, bottom: 0, containLabel: true },
+      xAxis: {
+        type: 'category',
+        data: events.map((v) => v.hour),
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { color: axis, fontSize: 11, margin: 12 }
+      },
+      yAxis: {
+        type: 'value',
+        axisLabel: { color: axis, fontSize: 11 },
+        splitLine: { lineStyle: { color: split, type: 'dashed' } }
+      },
+      series: [
+        {
+          name: t('turnStileDashboard.form.workerCount'),
+          type: 'bar',
+          barMaxWidth: 22,
+          barCategoryGap: '30%',
+          data: events.map((v) => ({
+            value: v.count,
+            itemStyle: {
+              borderRadius: [6, 6, 2, 2],
+              color:
+                peak && v.count === peak
+                  ? fill(main, alpha(main, '99'))
+                  : fill(alpha(main, '73'), alpha(main, '26'))
+            }
+          })),
+          emphasis: { itemStyle: { color: main } },
+          // O'rtacha qiymat — uzuq chiziq; bugun bo'lsa joriy soatda «Hozir» chizig'i.
+          markLine: {
+            silent: true,
+            symbol: 'none',
+            label: { show: false },
+            lineStyle: { color: axis, width: 1, type: 'dashed' },
+            data: [
+              { type: 'average' },
+              ...(nowHour.value
+                ? [
+                    {
+                      xAxis: nowHour.value,
+                      lineStyle: { color: tokenColor('--fig-text-primary'), width: 1.5, type: 'solid' },
+                      label: {
+                        show: true,
+                        position: 'end',
+                        formatter: t('turnStileDashboard.live.now'),
+                        color: tokenColor('--fig-block-bg'),
+                        backgroundColor: tokenColor('--fig-text-primary'),
+                        borderRadius: 6,
+                        padding: [2, 6],
+                        fontSize: 10,
+                        fontWeight: 600
+                      }
+                    }
+                  ]
+                : [])
+            ]
+          }
+        }
+      ]
     }
-  )
+  })
 
-  // Skeleton olib tashlangach grafik yangidan mount bo'ladi — click qayta ulanadi.
-  watch(
-    () => store.dailyAttendanceLoading,
-    (loading) => {
-      if (!loading) bindChartClick()
-    }
-  )
-
-  onMounted(bindChartClick)
 </script>
 
 <template>
@@ -189,6 +159,6 @@
       :sharp="false"
       class="rounded-lg"
     />
-    <v-chart v-else autoresize class="w-full h-full" :option="option" ref="chartRef" />
+    <v-chart v-else autoresize class="w-full h-full" :option="option" />
   </div>
 </template>

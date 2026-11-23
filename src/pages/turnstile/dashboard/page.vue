@@ -5,7 +5,6 @@
   import {
     Filter,
     PreviewList,
-    WorkTimeCard,
     InfoGraph,
     WorkerAnalyticPanel,
     PlanCard,
@@ -19,9 +18,10 @@
   const { t } = i18n.global
   const dashboardStore = useTurnstileDashboardStore()
   const accStore = useAccountStore()
-  import { computed, onMounted } from 'vue'
+  import { computed, onMounted, onBeforeUnmount } from 'vue'
   import SimpleCard from '@/pages/turnstile/dashboard/ui/SimpleCard.vue'
   import SimpleCardSketlon from '@/pages/turnstile/dashboard/ui/SimpleCardSketlon.vue'
+  import AttendanceRateCard from '@/pages/turnstile/dashboard/ui/AttendanceRateCard.vue'
 
   const typeTitle = computed(() => {
     const type = dashboardStore.previewParams.type
@@ -53,11 +53,26 @@
     // ui/Filter.vue da esa `-read` tekshirilardi: faqat `-read` olgan rol sahifani
     // ochar, lekin kartalar yuklanmasdi.
     if (!accStore.canView(accStore.pn.turnstileDashboard)) return
-    if (!dashboardStore.dashboardParams.date) {
+    // Store sahifalar orasida saqlanadi: «bugunni kuzatish» yoqiq bo'lsa, kecha ochilgan sahifaga bugun
+    // qaytilganda ham sana bugunga suriladi (eski kun ko'rinib qolmasin).
+    if (!dashboardStore.dashboardParams.date || dashboardStore.followToday) {
       dashboardStore.dashboardParams.date = new Date().getTime()
     }
     dashboardStore._dashboard()
+    dayTimer = setInterval(rollToToday, 60 * 1000)
   })
+
+  // Yarim tun: «bugunni kuzatish» yoqiq va sana kechagi bo'lib qolgan bo'lsa — bugunga o'tib, qayta yuklanadi
+  // (devor ekranida kecha-kunduz ochiq turgan holat).
+  let dayTimer = null
+  const rollToToday = () => {
+    if (!dashboardStore.followToday) return
+    const picked = new Date(dashboardStore.dashboardParams.date || Date.now())
+    if (picked.toDateString() === new Date().toDateString()) return
+    dashboardStore.dashboardParams.date = new Date().getTime()
+    if (accStore.canView(accStore.pn.turnstileDashboard)) dashboardStore._dashboard()
+  }
+  onBeforeUnmount(() => clearInterval(dayTimer))
 </script>
 
 <template>
@@ -84,59 +99,70 @@
 
       <!-- Maketdagi tartib: o'ng ustunlar qat'iy 280px, chapdagilar cho'ziladi -->
       <div v-if="dashboardStore.activeTab === 'report'" class="flex flex-col gap-4 mt-4">
-        <div class="flex flex-wrap items-stretch gap-4">
+        <!-- KPI: 976px dan 4 ta bir qatorda, undan kichikda 2 tadan (3+1 bo'lib qolmasin) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <SimpleCardSketlon
             v-if="dashboardStore.mainChartLoading"
             :count="2"
-            class="flex-1 min-w-[240px]"
+            class="min-w-0"
           />
           <template v-else v-for="(item, idx) in dashboardStore.mainCards" :key="idx">
             <SimpleCard
-              class="flex-1 min-w-[240px]"
+              class="min-w-0"
               :title="item.title"
               :count="item.count"
               :icon="item.icon"
               :tint="item.tint"
               :list="item.list"
               :list-more="item.listMore"
-              :decor="item.decor"
+              :rows="item.rows"
+              :hint="item.hint"
+              @row-preview="onPreview"
               @click="onPreview(item.previewType)"
             />
           </template>
           <SimpleCardSketlon
             v-if="dashboardStore.workerStatsLoading"
             :count="2"
-            class="flex-1 min-w-[240px]"
+            class="min-w-0"
           />
           <template v-else v-for="(item, idx) in dashboardStore.currentWorkers" :key="idx">
             <SimpleCard
-              class="flex-1 min-w-[240px]"
+              class="min-w-0"
               :title="item.title"
               :count="item.count"
               :icon="item.icon"
               :tint="item.tint"
               :list="item.list"
               :list-more="item.listMore"
-              :decor="item.decor"
+              :rows="item.rows"
+              :hint="item.hint"
+              @row-preview="onPreview"
               @click="onPreview(item.previewType)"
             />
           </template>
         </div>
 
-        <WorkerAnalyticPanel @onPreview="onPreview" />
-
-        <WorkTimeCard @onPreview="onPreview" />
-
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          <MonthlyCard @onPreview="onPreview" />
-          <DeviceCard @onPreview="onPreview" />
-          <FaceCard @onPreview="onPreview" />
+        <!-- 1-qator: kun davomida o'tishlar + bugungi davomat darajasi.
+             Ustunlar 976px (`lg`) dan — loyihada `xl` = 1440px, undan kichik ekranda
+             kartalar ostida bo'sh joy qolardi. 2 ustunli ekranda 3-karta to'liq enda. -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <WorkerAnalyticPanel class="lg:col-span-2" />
+          <AttendanceRateCard @onPreview="onPreview" />
         </div>
 
-        <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
+        <!-- 2-qator: uchta pie (bir xil `DonutCard` qolipi) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <PlanCard @onPreview="onPreview" />
-          <PrivilegeCard @onPreview="onPreview" />
           <InfoGraph @onPreview="onPreview" />
+          <DeviceCard class="md:col-span-2 lg:col-span-1" @onPreview="onPreview" />
+        </div>
+
+        <!-- 3-qator: grafik qamrovi, imtiyozli xodimlar ro'yxati, Face ID -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <MonthlyCard @onPreview="onPreview" />
+          <PrivilegeCard @onPreview="onPreview" />
+          <FaceCard class="md:col-span-2 lg:col-span-1" @onPreview="onPreview" />
         </div>
 
         <!-- Pastdagi bo'shliq kontent oqimining o'zida: skroll konteynerining
@@ -163,6 +189,16 @@
 </template>
 
 <style lang="scss">
+  // Dashboard palitrasidagi «neytral» rang (ui/palette.js `soft`): yorug'da och ko'k,
+  // qorong'ida kulrang — `--fig-blue-300` qorong'ida shaffof bo'lib xira ko'rinardi.
+  :root {
+    --ts-soft: var(--fig-blue-300);
+  }
+
+  [data-theme='dark'] {
+    --ts-soft: var(--fig-text-disable);
+  }
+
   // `hover-effect-card` global uslubi hozircha faqat HRM dashboard sahifasida
   // e'lon qilingan — bu sahifa mustaqil ochilganda ham ishlashi uchun takrorlanadi.
   .hover-effect-card {

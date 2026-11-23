@@ -13,9 +13,7 @@
   onMounted(async () => {
     const baseConfig = JSON.parse(JSON.stringify(store.config))
     baseConfig.editorConfig.callbackUrl = store.callBackUrl
-    // BACKEND: POST /v1/document/office-config-token dev'da 200 + `data.token: null` qaytaryapti
-    // (2026-11-04, DAS-14198) — config imzolanmayapti, ehtimol OnlyOffice JWT siri sozlanmagan.
-    // Token har doim qaytishi kerak; imzolab bo'lmasa 200 emas, xato qaytsin.
+    // Sir sozlanmagan bo'lsa backend xato qaytaradi — token null bo'ladi.
     const token = await $ApiService.documentService
       ._officeConfigToken({ data: { config: baseConfig } })
       .then((res) => res.data.data?.token)

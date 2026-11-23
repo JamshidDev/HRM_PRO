@@ -2,8 +2,18 @@
   import { UIPageFilter, UISelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useTimesheetStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
+  import i18n from '@/i18n/index.js'
 
   const store = useTimesheetStore()
+  const { t } = i18n.global
+
+  // Holat — jadvaldagi chip bilan bir xil nom va tartib (yakunlangan → yuborilgan → yopilgan → ochiq).
+  const stateOptions = computed(() => [
+    { id: 'finished', name: t('timesheetPage.accessFinished') },
+    { id: 'sent', name: t('timesheetPage.accessSent') },
+    { id: 'locked', name: t('timesheetPage.lockedTag') },
+    { id: 'open', name: t('timesheetPage.statusOpen') }
+  ])
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
 
@@ -25,7 +35,8 @@
     () =>
       Number(Boolean(store.params.organizations.length)) +
       Number(Boolean(store.params.year)) +
-      Number(Boolean(store.params.month))
+      Number(Boolean(store.params.month)) +
+      Number(Boolean(store.params.state))
   )
 
   const beforeShow = () => {
@@ -44,6 +55,7 @@
     store.structureCheck2 = []
     store.params.year = null
     store.params.month = null
+    store.params.state = null
     filterEvent()
   }
 </script>
@@ -94,6 +106,18 @@
           <n-select
             v-model:value="store.params.month"
             :options="Utils.monthList"
+            :placeholder="$t('content.all')"
+            label-field="name"
+            value-field="id"
+            clearable
+            @update:value="filterEvent"
+          />
+        </div>
+        <div class="col-span-12">
+          <label>{{ $t('content.status') }}</label>
+          <n-select
+            v-model:value="store.params.state"
+            :options="stateOptions"
             :placeholder="$t('content.all')"
             label-field="name"
             value-field="id"

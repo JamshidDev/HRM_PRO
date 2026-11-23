@@ -25,6 +25,7 @@ import AttestationTopicIcon from '@assets/icons/Topics.svg'
 import AttestationCategoryIcon from '@assets/icons/dashboard.svg'
 import AttestationExamIcon from '@assets/icons/Exams.svg'
 import AttestationResultIcon from '@assets/icons/Results.svg'
+import AttestationMonitoringIcon from '@assets/icons/ExamMonitoring.svg'
 import TurnstileDashboardIcon from '@assets/icons/dashboard.svg'
 import TurnstileAccessLevelsIcon from '@assets/icons/groups.svg'
 import TurnstileOrgAccessLevelsIcon from '@assets/icons/Organizations.svg'
@@ -122,7 +123,7 @@ const withRawIcons = (items) =>
 
 export const navigations = withRawIcons([
   {
-    label: 'navigation.myOrg', // Mening korxonam
+    label: 'navigation.myOrg', // Kadr boshqaruvi
     path: AppPaths.Hrm,
     icon: HrSidebarIcon,
     permission: appPermissions.hr,
@@ -210,6 +211,14 @@ export const navigations = withRawIcons([
             color: 'bg-info',
             permission: appPermissions.hrContractsRead,
             name: 'documents'
+          },
+          {
+            label: 'noticesPage.name', // Bildirgilar (HR → xodim)
+            path: Utils.routeHrmPathMaker(AppPaths.Notices),
+            icon: contractIcon,
+            color: 'bg-warning',
+            permission: appPermissions.hrContractsRead,
+            name: 'notices'
           },
           {
             label: 'applicationPage.name', // Arizalar
@@ -470,6 +479,14 @@ export const navigations = withRawIcons([
         name: 'documents'
       },
       {
+        label: 'noticesPage.name', // Bildirgilar (xodimga kelgan)
+        path: Utils.routeDocFlowPathMaker(AppPaths.ConfNotices),
+        icon: DocFlowContractIcon,
+        color: 'bg-warning',
+        permission: appPermissions.confirmationContracts,
+        name: 'notices'
+      },
+      {
         label: 'applicationPage.name', // Arizalar
         path: Utils.routeDocFlowPathMaker(AppPaths.ConfApplication),
         icon: DocFlowApplicationIcon,
@@ -524,8 +541,8 @@ export const navigations = withRawIcons([
     permission: appPermissions.exam,
     children: [
       {
-        label: 'topicPage.name', // Mavzular
-        path: Utils.routeAttestationPathMaker(AppPaths.Topic),
+        label: 'topicPage.name', // Imtihonlar
+        path: Utils.routeAttestationPathMaker(AppPaths.Exams),
         icon: AttestationTopicIcon,
         color: 'bg-warning',
         permission: appPermissions.examTopicsRead
@@ -538,11 +555,18 @@ export const navigations = withRawIcons([
         permission: appPermissions.examCategoriesRead
       },
       {
-        label: 'examPage.name', // Imtihonlar
-        path: Utils.routeAttestationPathMaker(AppPaths.Exam),
+        label: 'examPage.myExams', // Mening imtihonlarim
+        path: Utils.routeAttestationPathMaker(AppPaths.MyExams),
         icon: AttestationExamIcon,
         color: 'bg-secondary',
         permission: appPermissions.examExamsRead
+      },
+      {
+        label: 'examMonitoringPage.name', // Imtihon kuzatuvi
+        path: Utils.routeAttestationPathMaker(AppPaths.ExamMonitoring),
+        icon: AttestationMonitoringIcon,
+        color: 'bg-dark',
+        permission: appPermissions.examMonitoringRead
       },
       {
         label: 'examPage.result', // Natijalar

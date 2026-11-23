@@ -1,4 +1,42 @@
 {
+  "guestPage": {
+    "tabWorkers": "Xızmetkerler",
+    "tabGuests": "Miymanlar",
+    "fullName": "F.A.Á",
+    "workTime": "Jumıs waqtı",
+    "cameAt": "Keldi",
+    "leftAt": "Ketti",
+    "lastEvent": "Sońǵı waqıya",
+    "events": "Waqıyalar",
+    "detach": "Ajıratıw",
+    "searchPlaceholder": "F.A.Á yamasa JShShIR",
+    "attach": "Miymandı biriktiriw",
+    "attachTitle": "Miymandı biriktiriw",
+    "editTitle": "Miymandı redaktorlaw",
+    "eventsTitle": "Miyman waqıyaları",
+    "lateMin": "{n} min kesh",
+    "earlyMin": "{n} min erte",
+    "notCame": "Kelmedi",
+    "in": "Kiriw",
+    "out": "Shıǵıw",
+    "pin": "JShShIR",
+    "pinPlaceholder": "14 san",
+    "pinHint": "Adam HikCentral'da usı JShShIR menen dizimnen ótken bolıwı kerek",
+    "pinRule": "JShShIR 14 sannan ibarat",
+    "workStart": "Jumıs baslanıwı",
+    "workEnd": "Jumıs tamamlanıwı",
+    "endAfterStart": "Tamamlanıw waqtı baslanıwdan keyin bolsın",
+    "note": "Túsinik",
+    "noEvents": "Bul aralıqta waqıya joq"
+  },
+  "examLanguages": {
+    "uz": "Ózbek tilinde (latın)",
+    "uz_new": "Ózbek tilinde (jańa latın)",
+    "uz_kr": "Ózbek tilinde (kirill)",
+    "ru": "Orıs tilinde",
+    "kaa": "Qaraqalpaq tilinde",
+    "en": "Inglis tilinde"
+  },
   "applicationCommand": {
     "column": "Buyrıq",
     "create": "Buyrıq",
@@ -578,7 +616,7 @@
     "changeRoleConfirm": "Bul akkaunttan shıǵıp basqa akkauntqa kiriw ushın kerekli akkaunttı tańlań hám 20 sekund kútiń"
   },
   "sidebar": {
-    "hrm": "Meniń kárxanam moduli",
+    "hrm": "Kadr basqarıwı moduli",
     "admin": "Admin moduli",
     "chat": "Xabar hám daǵazalar moduli",
     "docflow": "Meniń hújjetlerim",
@@ -617,7 +655,7 @@
     "signUp": "Dizimnen ótiw",
     "description": {
       "title": "HRMS",
-      "subtitle": "Xızmetkerlerdi basqarıwdıń zamanagóy sisteması\n",
+      "subtitle": "HRM PRO — «Ózbekstan temir jolları» AJ kadrlar basqarıw sisteması",
       "text": "Xızmetkerlerińizdi nátiyjeli basqarıw, jumıs waqıtın qadaǵalaw hám hújjetlerdi avtomatlastırıw ushın qolaylı sheshim. HR processlerin optimallastırıń hám biznesińizdi jańa basqıshqa alıp shıǵıń!"
     },
     "login": "Kiriw",
@@ -2603,6 +2641,14 @@
       "updateTitle": "Fayldı ózgertiw"
     },
     "exams": {
+      "hidden": "Kórinbeydi",
+      "language": "Sorawlar tili",
+      "time": "Waqıt",
+      "minuteShort": "min",
+      "unlimited": "Sheksiz",
+      "questionSets": "Sorawlar toplamı",
+      "addQuestionSet": "Toplam qosıw",
+      "questionsSumError": "Toplamlardaǵı sorawlar jıyındısı ulıwma sorawlar sanına teń bolıwı kerek",
       "createTitle": "Imtixan jaratıw",
       "name": "Imtixanlar",
       "updateTitle": "Imtixandı ózgertiw",
@@ -2639,9 +2685,33 @@
     "isActive": "Aktivlik jaǵdayı"
   },
   "topicPage": {
-    "createTitle": "Tema qosıw",
-    "name": "Temalar",
-    "updateTitle": "Temanı ózgertiw"
+    "createTitle": "Imtixan qosıw",
+    "name": "Imtixanlar",
+    "updateTitle": "Imtixandı ózgertiw",
+    "scope": "Sheńber",
+    "languagesCount": "Tiller sanı",
+    "deadline": "Aktiv múddeti",
+    "noDeadline": "Múddetsiz",
+    "scope_all": "Global",
+    "scope_local": "Óz kárxanam",
+    "scope_global": "Óz kárxanam hám tómengi kárxanalar",
+    "scope_department": "Bólimler ushın",
+    "departmentsOptional": "Bólimler (ixtiyariy)",
+    "whom_1": "Hámmege",
+    "whom_2": "Tańlanǵan lawazımlarǵa",
+    "whom_3": "Tańlanǵan xızmetkerlerge",
+    "audienceTitle": "Kimler ushın",
+    "audienceTotal": "Jámi: {n} xızmetker",
+    "allDepartments": "Barlıq bólimler",
+    "loadMore": "Jáne júklew",
+    "whomPositionsCount": "{n} lawazım",
+    "whomWorkersCount": "{n} xızmetker",
+    "departments": "Bólimler",
+    "settings": "Qáwipsizlik sazlamaları",
+    "mobileAllowed": "Mobil qosımshada sheshiw múmkin",
+    "cameraRequired": "Kamera mindetli",
+    "screenShareRequired": "Ekrandı bólisiw mindetli",
+    "strictMode": "Qatań tártip"
   },
   "workerView": {
     "general": {
@@ -2755,13 +2825,13 @@
     }
   },
   "categoryPage": {
-    "createCategory": "Kategoriya jaratıw",
-    "editCategory": "Kategoriyanı ózgertiw",
-    "name": "Kategoriyalar",
+    "createCategory": "Toplam jaratıw",
+    "editCategory": "Toplamdı ózgertiw",
+    "name": "Sorawlar toplamı",
     "addQuestion": "Soraw qosıw",
     "editQuestion": "Sorawdı ózgertiw",
     "questionCount": "Sorawlar sanı",
-    "categoryName": "Kategoriya atı",
+    "categoryName": "Toplam atı",
     "clearWarning": "Kategoriyadaǵı barlıq sorawlar óshiriledi. Dawam etesiz be?",
     "uploadExcel": "Test sorawların júklew",
     "pressUpload": "Júklew ushın basıń!",
@@ -2770,7 +2840,27 @@
     "upload": "Soraw júklew",
     "answer": "Juwap",
     "correctAnswer": "Durıs juwap",
-    "warning": "Tańlanǵan soraw hám juwap baǵanalarınıń durıslıǵın tekseriń!"
+    "warning": "Tańlanǵan soraw hám juwap baǵanalarınıń durıslıǵın tekseriń!",
+    "scope": "Túri",
+    "scopePublic": "Ulıwma",
+    "scopeOrganization": "Kárxana ushın",
+    "scopePublicHint": "Barlıq kárxanalar kóredi hám imtixanda paydalana aladı",
+    "scopeOrganizationHint": "Tek óz kárxanańız kóredi",
+    "createdAt": "Sáne",
+    "author": "Jaratqan",
+    "downloadTemplate": "Úlgini júklep alıw",
+    "addByFile": "Fayl arqalı",
+    "addByForm": "Forma arqalı",
+    "importTitle": "Sorawlardı fayldan júklew",
+    "chooseFile": "Úlgi boyınsha toltırılǵan Excel (.xlsx) fayldı tańlań",
+    "importConfirm": "Bazaǵa júklew",
+    "previewSummary": "{valid} soraw júklenedi, {skipped} qatar ótkeriledi",
+    "rowNo": "Qatar",
+    "status": "Jaǵdayı",
+    "ok": "Tayar",
+    "importDone": "{n} soraw júklendi",
+    "readOnly": "Basqa kárxana toplamı — tek kóriw múmkin",
+    "wrongAnswers": "Nadurıs juwaplar"
   },
   "examPage": {
     "downloadResult": "Nátiyjelerdi júklew",
@@ -2780,6 +2870,7 @@
     "finishedProcess": "Tamamlaw",
     "finishedDescription": "Juwmaqlaw waqtınan ótken imtixanlardı juwmaqlaw",
     "name": "Imtixanlar",
+    "myExams": "Meniń imtixanlarım",
     "history": "Imtixan tariyxı",
     "topic": "Tema",
     "exam": "Imtixan",
@@ -3435,7 +3526,17 @@
       "childName": "Perzenttiń F.A.Á.",
       "childBirthday": "Tuwılǵan sánesi",
       "days": "Kúnler sanı: {n}",
-      "months": "Aylar sanı: {n}"
+      "months": "Aylar sanı: {n}",
+      "weekdays": {
+        "1": "Dúyshembi",
+        "2": "Siyshembi",
+        "3": "Sárshembi",
+        "4": "Piyshembi",
+        "5": "Juma",
+        "6": "Shembi",
+        "7": "Ekshembi"
+      },
+      "recordTitle": "Qosımsha maǵlıwmatlar (hújjetke jazılmaydı)"
     },
     "draft": "Qaralama",
     "draftSignTitle": "Arza qaralama jaǵdayında",
@@ -5689,7 +5790,7 @@
   "navigation": {
     "hrm": "Kadrlar basqarıwı",
     "docFlow": "Hújjet aylanısı",
-    "myOrg": "Meniń kárxanam",
+    "myOrg": "Kadr basqarıwı",
     "myDocs": "Meniń hújjetlerim",
     "attestation": "Attestaciya",
     "turnstile": "Turniket",
@@ -5852,23 +5953,75 @@
       "day_offInfo": "Grafik boyınsha usı kúni dem alıs kúni",
       "excusedInfo": "Xızmet saparı, keselik, turniketten azat hám basqa sebepler"
     },
+    "live": {
+      "now": "Házir"
+    },
+    "hourly": {
+      "title": "Kún dawamında ótiwler",
+      "hint": "Turniket yamasa mobil arqalı ótiwler sanı, {n} saatlıq aralıqlarda",
+      "peak": "Eń kóp waqıt",
+      "active": "Aktiv waqıt",
+      "people": "ótiw",
+      "total": "Jámi ótiwler"
+    },
+    "rate": {
+      "title": "Búgingi qatnasıw dárejesi",
+      "titleDay": "Qatnasıw dárejesi",
+      "hint": "Grafik boyınsha tańlanǵan kúni keliwi shárt bolǵanlardan neshewi keldi. Dem alıs, kesellik, xızmet sapari sıyaqlı sebepli xızmetkerler esapqa alınbaydı",
+      "mobile": "mobil",
+      "good": "Jaqsı",
+      "medium": "Ortasha",
+      "low": "Tómen",
+      "mustCome": "Keliwi shárt"
+    },
+    "kpi": {
+      "cameHint": "Tańlanǵan kúni keminde bir ret turniket yamasa mobil qosımsha arqalı ótken xızmetkerler",
+      "absentHint": "Tańlanǵan kúni pútkilley ótpegen xızmetkerler: grafik boyınsha keliwi kerek bolǵanlar hám grafigi joqlar. Dem alıs, dem alıw kúni hám sebepli xızmetkerler bul sanǵa kirmeydi",
+      "inOfficeHint": "Kelgenlerden sońǵı ótiwi «kiriw» bolǵanlar — házir ishte",
+      "leftOfficeHint": "Kelgenlerden sońǵı ótiwi «shıǵıw» bolǵanlar — kelip, keyin shıǵıp ketken",
+      "turnstile": "Turniket arqalı",
+      "mobile": "Mobil qosımsha arqalı",
+      "noEvent": "Keliwi kerek edi",
+      "noSchedule": "Grafigi joq",
+      "came": "Kelgenler",
+      "left": "Shıǵıp ketkenler",
+      "early": "Erte ketkenler",
+      "turnstileShort": "Turniket",
+      "mobileShort": "Mobil qosımsha",
+      "coverage": "Grafik penen qamtılǵan",
+      "needSchedule": "{n} xızmetkerge grafik dúziw kerek",
+      "devGood": "Turaqlı islep tur",
+      "devWarn": "Itibar talap etedi",
+      "devBad": "Kóp qurılma baylanıssız",
+      "devOffline": "{n} qurılma baylanısta emes",
+      "notComingReasons": "Kelmew sebepleri"
+    },
     "plan": {
       "title": "Reje boyınsha qatnas",
       "expected": "Keliwi kerek",
       "came": "Kelgenler",
       "absent": "Kelmegenler",
-      "excused": "Sebepli",
+      "excused": "Sebepli yamasa dem alısta",
       "expectedInfo": "Grafik boyınsha usı kúni jumıs kúni bolǵan xızmetkerler",
       "cameInfo": "Turniket yamasa mobil úskene arqalı ótkenler",
       "absentInfo": "Jumıs kúni bolsa da turniket hám mobil hádiysesi joq",
-      "excusedInfo": "Dem alıs, xızmet saparı, keselik yamasa basqa ruqsat penen"
+      "excusedInfo": "Dem alıs, xızmet saparı, keselik yamasa basqa ruqsat penen",
+      "cameTitle": "Grafik boyınsha kelgenler",
+      "absentTitle": "Grafik boyınsha kelmegenler"
     },
     "privilegeCard": {
-      "title": "Turniket imtiyazı berilgen xızmetkerler",
+      "title": "Jumıs grafigine jeńillik berilgen xızmetkerler",
       "arrive": "Keliw",
       "leave": "Ketiw",
       "all": "Barlıǵın kóriw",
-      "empty": "Imtiyazlı xızmetker joq"
+      "empty": "Imtiyazlı xızmetker joq",
+      "hint": "Jumıs waqıtına salıstırǵanda neshe minut keshigip keliw yamasa erte ketiwge ruxsat berilgen xızmetkerler",
+      "late": "Keshigip keliwge",
+      "early": "Erte ketiwge",
+      "minutes": "{n} minut",
+      "none": "joq",
+      "minutesShort": "{n} min",
+      "subtitle": "Keshigip keliw yamasa erte ketiwge ruxsat berilgen"
     },
     "tabs": {
       "report": "Esabat",
@@ -5879,7 +6032,8 @@
       "came": "Keldi",
       "absent": "Kelmedi",
       "total": "Jámi",
-      "pick": "Aydı tańlań"
+      "pick": "Aydı tańlań",
+      "dayOff": "Dem alıs kúni"
     },
     "attendanceReason": {
       "sick_leave": "Kesellik paraǵı",
@@ -6247,7 +6401,11 @@
     "verifiedPoint2": "Túp nusqa HRM PRO sistemasında saqlanadı hám onı ózgertip bolmaydı",
     "verifiedPoint3": "Qolıńızdaǵı hújjet penen salıstırıń — tekst birdey bolsa, hújjet haqıyqıy",
     "invalidHint": "Siltemeni yamasa QR-kodtı tekserip, qaytadan urınıp kóriń.",
-    "closeQuestion": "Sorawlar dizimin jabıw"
+    "closeQuestion": "Sorawlar dizimin jabıw",
+    "documentInfo": "Hújjet maǵlıwmatları",
+    "electronicNumber": "Elektron nomer",
+    "cancelled": "Biykar etilgen",
+    "cancelledBy": "{number}-sanlı buyrıq penen biykar etilgen ({date})"
   },
   "socketPage": {
     "usersMOdalTitle": "Barlıq onlayn paydalanıwshılar dizimi"
@@ -6669,8 +6827,8 @@
       "detailTitle": "Mobil ótiw",
       "info": "Maǵlıwmatlar",
       "placeTitle": "Ótiw ornı",
-      "livePhoto": "Tastıyıqlanǵan súwret",
-      "refPhoto": "Rásmiy súwret",
+      "livePhoto": "Alınǵan súwret",
+      "refPhoto": "Tastıyıqlanǵan súwret",
       "appName": "HR Rail qosımshası",
       "matchHigh": "Júz sáykes keldi",
       "matchMid": "Ortasha sáykeslik — súwretlerdi salıstırıń",
@@ -8024,5 +8182,90 @@
   "onlyOfficeEditor": {
     "tokenError": "Hújjet redaktorın ashıw múmkin bolmadı",
     "tokenErrorHint": "Server hújjet ushın qáwipsizlik tokenin bermedi. Azdan soń qaytadan urınıp kóriń yamasa administratorǵa múrájat etiń."
+  },
+  "examMonitoringPage": {
+    "name": "Imtixan baqlawı",
+    "topic": "Tema",
+    "languages": "Tiller",
+    "questions": "Sorawlar sanı",
+    "solvingNow": "Házir sheship atırǵanlar",
+    "monitoring": "Baqlaw",
+    "none": "Engizilmegen",
+    "camera": "Kamera",
+    "screen": "Ekran",
+    "connecting": "Jalǵanbaqta...",
+    "noStream": "Aǵım kútilmekte",
+    "failed": {
+      "timeout": "Kandidat jalǵanbadı — imtixan beti ashıq emes yamasa tarmaq joq",
+      "lost": "Baylanıs úzildi",
+      "error": "Jalǵanıwda qátelik",
+      "finished": "Kandidat imtixandı tamamladı",
+      "not_shared": "Kandidat kamera yamasa ekrandı ele bólispegen"
+    },
+    "nobodySolving": "Házir hesh kim sheshpey atır",
+    "selectWorker": "Baqlaw ushın kandidattı tańlań",
+    "notEnabled": "Bul imtixan ushın Ekran yamasa Kamera baqlawı engizilmegen",
+    "cameraNotEnabled": "Bul imtixan ushın Kamera baqlawı engizilmegen",
+    "screenNotEnabled": "Bul imtixan ushın Ekran baqlawı engizilmegen",
+    "screenRequiredTitle": "Ekran baqlawı májbúriy",
+    "screenRequiredText": "Imtixandı dawam ettiriw ushın pútkil ekranıńızdı bóliśiń. Bóliśiw toqtasa, imtixan aynası qayta jabıladı.",
+    "shareScreen": "Ekrandı bóliśiw",
+    "statusLive": "Jonlı",
+    "statusLost": "Baylanıs úzildi",
+    "statusNotShared": "Bólispegen",
+    "remaining": "Qaldı",
+    "reconnect": "Qayta jalǵaw",
+    "screenMissing": "Kandidat ekrandı ele bólispegen",
+    "cameraMissing": "Kandidat kameranı ele qospaǵan",
+    "tabLive": "Jonlı",
+    "tabFinished": "Sheshkenler",
+    "nobodyFinished": "Ele hesh kim sheship bolmadı",
+    "loadMore": "Jáne júklew",
+    "selectFinished": "Nátiyjeni kóriw ushın xızmetkerdi tańlań",
+    "result": "Nátiyje",
+    "correct": "Durıs juwaplar",
+    "startedAt": "Baslaǵan",
+    "endedAt": "Tamamlaǵan",
+    "sendAlert": "Eskertiw",
+    "alertTemplates": "Tayar tekstler",
+    "alertCustom": "Óz tekstińizdi jazıń",
+    "alertSend": "Jiberiw",
+    "alertSent": "Eskertiw jiberildi",
+    "alertTitle": "Baqlawshıdan eskertiw",
+    "alertOk": "Túsindim",
+    "alertText": {
+      "lookCamera": "Iltimas, kameraǵa qarań hám júzińiz kórinip tursın",
+      "noOtherWindows": "Basqa ayna hám baǵdarlamalardı ashpań",
+      "noPhone": "Telefon hám basqa úskenelerden paydalanbań",
+      "alone": "Bólmede jalǵız bolıwıńız kerek",
+      "noTalk": "Sóylespeń hám sırttan járdem almań",
+      "lastWarning": "Aqırǵı eskertiw: qaǵıydanı buzıw qaytalansa, imtixan biykar etiledi"
+    },
+    "screenError": {
+      "denied": "Ekrandı bóliśiwge ruxsat berilmedi",
+      "not_monitor": "Tek pútkil ekrandı tańlań (ayna yamasa tab emes)"
+    }
+  },
+  "seo": {
+    "loginTitle": "HRM PRO — kadrlar basqarıwı hám elektron hújjet aylanısı {'|'} Ózbekstan temir jolları",
+    "modulesLink": "HRM PRO modulleri hám múmkinshilikleri"
+  },
+  "noticesPage": {
+    "name": "Bildirgiler",
+    "item": "Bildirgi",
+    "createTitle": "Bildirgi jaratıw",
+    "updateTitle": "Bildirgini redaktorlaw",
+    "type": "Bildirgi túri",
+    "term": "Eskertiw múddeti",
+    "response": {
+      "ack": "Xızmetker tanısadı",
+      "consent": "Xızmetker razılıq yamasa biykar juwabın beredi",
+      "explain": "Xızmetker jazba túsinik beredi"
+    }
+  },
+  "privacyPage": {
+    "toc": "Mazmunı",
+    "pdf": "PDF júklew",
+    "backToLogin": "Kiriw betine qaytıw"
   }
 }

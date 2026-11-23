@@ -26,6 +26,11 @@
     store._delete()
   }
 
+  const onToggleActive = (row, v) => {
+    if (!accStore.checkAction(accStore.pn.examTopicsWrite)) return
+    store._setActive(row, v)
+  }
+
   const onRowClick = (row) => {
     if (!accStore.checkAction(accStore.pn.examTopicsRead)) return
     store.elementId = row.id
@@ -51,8 +56,24 @@
     },
     {
       key: 'exams_count',
-      title: t('topicDetailsPage.exams.name'),
+      title: t('topicPage.languagesCount'),
       width: 140,
+      align: 'center'
+    },
+    {
+      key: 'whom',
+      title: t('topicDetailsPage.exams.toWhom'),
+      width: 170
+    },
+    {
+      key: 'deadline',
+      title: t('topicPage.deadline'),
+      width: 170
+    },
+    {
+      key: 'active',
+      title: t('content.status'),
+      width: 130,
       align: 'center'
     }
   ])
@@ -93,6 +114,40 @@
 
     <template #[`cell-exams_count`]="{ row }">
       <span class="text-sm font-semibold text-textColor0">{{ row.exams_count ?? 0 }}</span>
+    </template>
+
+    <template #cell-whom="{ row }">
+      <span
+        class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium"
+        :class="
+          row.whom === 2 || row.whom === 3
+            ? 'bg-fig-chip-brand text-fig-chip-brand-text'
+            : 'bg-fig-chip-green text-fig-chip-green-text'
+        "
+      >
+        {{
+          row.whom === 2
+            ? $t('topicPage.whomPositionsCount', { n: row.whom_ids?.length ?? 0 })
+            : row.whom === 3
+              ? $t('topicPage.whomWorkersCount', { n: row.whom_ids?.length ?? 0 })
+              : $t('topicPage.whom_1')
+        }}
+      </span>
+    </template>
+
+    <template #cell-deadline="{ row }">
+      {{ Utils.dateTimeShortLabel(row.deadline) ?? $t('topicPage.noDeadline') }}
+    </template>
+
+    <template #cell-active="{ row }">
+      <div class="flex justify-center" @click.stop>
+        <n-switch
+          :value="row.active"
+          :loading="row.activeLoading"
+          :disabled="!row.active && !row.exams_count"
+          @update:value="(v) => onToggleActive(row, v)"
+        />
+      </div>
     </template>
 
     <template #footer>

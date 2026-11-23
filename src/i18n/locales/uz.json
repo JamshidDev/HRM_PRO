@@ -1,4 +1,42 @@
 {
+  "guestPage": {
+    "tabWorkers": "Xodimlar",
+    "tabGuests": "Mehmonlar",
+    "fullName": "F.I.Sh",
+    "workTime": "Ish vaqti",
+    "cameAt": "Keldi",
+    "leftAt": "Ketdi",
+    "lastEvent": "Oxirgi hodisa",
+    "events": "Hodisalar",
+    "detach": "Ajratish",
+    "searchPlaceholder": "F.I.Sh yoki JSHSHIR",
+    "attach": "Mehmon biriktirish",
+    "attachTitle": "Mehmonni biriktirish",
+    "editTitle": "Mehmonni tahrirlash",
+    "eventsTitle": "Mehmon hodisalari",
+    "lateMin": "{n} daq kech",
+    "earlyMin": "{n} daq erta",
+    "notCame": "Kelmadi",
+    "in": "Kirish",
+    "out": "Chiqish",
+    "pin": "JSHSHIR",
+    "pinPlaceholder": "14 raqam",
+    "pinHint": "Odam HikCentral'da shu JSHSHIR bilan ro'yxatdan o'tgan bo'lishi kerak",
+    "pinRule": "JSHSHIR 14 ta raqamdan iborat",
+    "workStart": "Ish boshlanishi",
+    "workEnd": "Ish tugashi",
+    "endAfterStart": "Tugash vaqti boshlanishdan keyin bo'lsin",
+    "note": "Izoh",
+    "noEvents": "Bu oraliqda hodisa yo'q"
+  },
+  "examLanguages": {
+    "uz": "O'zbek tilida (lotin)",
+    "uz_new": "O'zbek tilida (yangi lotin)",
+    "uz_kr": "O'zbek tilida (kirill)",
+    "ru": "Rus tilida",
+    "kaa": "Qoraqalpoq tilida",
+    "en": "Ingliz tilida"
+  },
   "applicationCommand": {
     "column": "Buyruq",
     "create": "Buyruq",
@@ -578,7 +616,7 @@
     "changeRoleConfirm": "Bu hisobdan chiqib boshqa hisobga kirish uchun kerakli hisobni tanlang va 20 soniya kuting"
   },
   "sidebar": {
-    "hrm": "Mening korxonam moduli",
+    "hrm": "Kadr boshqaruvi moduli",
     "admin": "Admin moduli",
     "chat": "Xabar va e'lonlar moduli",
     "docflow": "Mening hujjatlarim",
@@ -617,7 +655,7 @@
     "signUp": "Ro'yxatdan o'tish",
     "description": {
       "title": "HRMS",
-      "subtitle": "Xodimlarni boshqarishning zamonaviy tizimi\n",
+      "subtitle": "HRM PRO — «O'zbekiston temir yo'llari» AJ kadrlar boshqaruvi tizimi",
       "text": "Xodimlaringizni samarali boshqarish, ish vaqtini nazorat qilish va hujjatlarni avtomatlashtirish uchun qulay yechim. HR jarayonlarini optimallashtiring va biznesingizni yangi bosqichga olib chiqing!"
     },
     "login": "Kirish",
@@ -2603,6 +2641,14 @@
       "updateTitle": "Faylni tahrirlash"
     },
     "exams": {
+      "hidden": "Ko'rinmas",
+      "language": "Savollar tili",
+      "time": "Vaqt",
+      "minuteShort": "daq",
+      "unlimited": "Cheksiz",
+      "questionSets": "Savollar to'plami",
+      "addQuestionSet": "To'plam qo'shish",
+      "questionsSumError": "To'plamlardagi savollar yig'indisi umumiy savollar soniga teng bo'lishi kerak",
       "createTitle": "Imtihon yaratish",
       "name": "Imtihonlar",
       "updateTitle": "Imtihonni tahrirlash",
@@ -2639,9 +2685,33 @@
     "isActive": "Aktivlik holati"
   },
   "topicPage": {
-    "createTitle": "Mavzu qo'shish",
-    "name": "Mavzular",
-    "updateTitle": "Mavzuni tahrirlash"
+    "createTitle": "Imtihon qo'shish",
+    "name": "Imtihonlar",
+    "updateTitle": "Imtihonni tahrirlash",
+    "scope": "Doira",
+    "languagesCount": "Tillar soni",
+    "deadline": "Faol muddati",
+    "noDeadline": "Muddatsiz",
+    "scope_all": "Global",
+    "scope_local": "O'z korxonam",
+    "scope_global": "O'z korxonam va quyi korxonalar",
+    "scope_department": "Bo'linmalar uchun",
+    "departmentsOptional": "Bo'linmalar (ixtiyoriy)",
+    "whom_1": "Barchaga",
+    "whom_2": "Tanlangan lavozimlarga",
+    "whom_3": "Tanlangan xodimlarga",
+    "audienceTitle": "Kimlar uchun",
+    "audienceTotal": "Jami: {n} xodim",
+    "allDepartments": "Barcha bo'linmalar",
+    "loadMore": "Yana yuklash",
+    "whomPositionsCount": "{n} lavozim",
+    "whomWorkersCount": "{n} xodim",
+    "departments": "Bo'linmalar",
+    "settings": "Xavfsizlik sozlamalari",
+    "mobileAllowed": "Mobil ilovada yechish mumkin",
+    "cameraRequired": "Kamera majburiy",
+    "screenShareRequired": "Ekran ulashish majburiy",
+    "strictMode": "Qat'iy tartib"
   },
   "workerView": {
     "general": {
@@ -2755,13 +2825,13 @@
     }
   },
   "categoryPage": {
-    "createCategory": "Kategoriya yaratish",
-    "editCategory": "Kategoriyani tahrirlash",
-    "name": "Kategoriyalar",
+    "createCategory": "To'plam yaratish",
+    "editCategory": "To'plamni tahrirlash",
+    "name": "Savollar to'plami",
     "addQuestion": "Savol qo'shish",
     "editQuestion": "Savolni tahrirlash",
     "questionCount": "Savollar soni",
-    "categoryName": "Kategoriya nomi",
+    "categoryName": "To'plam nomi",
     "clearWarning": "Kategoriyadagi barcha savollar o'chiriladi. Davom etasizmi?",
     "uploadExcel": "Test savollarini yuklash",
     "pressUpload": "Yuklash uchun bosing!",
@@ -2770,7 +2840,27 @@
     "upload": "Savol yuklash",
     "answer": "Javob",
     "correctAnswer": "To'g'ri javob",
-    "warning": "Tanlangan savol va javob ustunlari to'g'riligini tekshiring!"
+    "warning": "Tanlangan savol va javob ustunlari to'g'riligini tekshiring!",
+    "scope": "Turi",
+    "scopePublic": "Ommaviy",
+    "scopeOrganization": "Korxona uchun",
+    "scopePublicHint": "Barcha korxonalar ko'radi va imtihonda ishlata oladi",
+    "scopeOrganizationHint": "Faqat o'z korxonangiz ko'radi",
+    "createdAt": "Sana",
+    "author": "Yaratgan",
+    "downloadTemplate": "Shablonni yuklash",
+    "addByFile": "Fayl orqali",
+    "addByForm": "Forma orqali",
+    "importTitle": "Savollarni fayldan yuklash",
+    "chooseFile": "Shablon bo'yicha to'ldirilgan Excel (.xlsx) faylni tanlang",
+    "importConfirm": "Bazaga yuklash",
+    "previewSummary": "{valid} ta savol yuklanadi, {skipped} ta qator o'tkaziladi",
+    "rowNo": "Qator",
+    "status": "Holati",
+    "ok": "Tayyor",
+    "importDone": "{n} ta savol yuklandi",
+    "readOnly": "Boshqa korxona to'plami — faqat ko'rish mumkin",
+    "wrongAnswers": "Noto'g'ri javoblar"
   },
   "examPage": {
     "downloadResult": "Natijalarni yuklash",
@@ -2780,6 +2870,7 @@
     "finishedProcess": "Tugatish",
     "finishedDescription": "Yakunlash vaqtidan o'tgan imtihonlarni yakunlash",
     "name": "Imtihonlar",
+    "myExams": "Mening imtihonlarim",
     "history": "Imtihon tarixi",
     "topic": "Mavzu",
     "exam": "Imtihon",
@@ -3435,7 +3526,17 @@
       "childName": "Farzandning F.I.Sh.",
       "childBirthday": "Tug'ilgan sanasi",
       "days": "Kunlar soni: {n}",
-      "months": "Oylar soni: {n}"
+      "months": "Oylar soni: {n}",
+      "weekdays": {
+        "1": "Dushanba",
+        "2": "Seshanba",
+        "3": "Chorshanba",
+        "4": "Payshanba",
+        "5": "Juma",
+        "6": "Shanba",
+        "7": "Yakshanba"
+      },
+      "recordTitle": "Qo'shimcha ma'lumotlar (hujjatga yozilmaydi)"
     },
     "draft": "Qoralama",
     "draftSignTitle": "Ariza qoralama holatida",
@@ -5689,7 +5790,7 @@
   "navigation": {
     "hrm": "Kadrlar boshqaruvi",
     "docFlow": "Hujjat aylanishi",
-    "myOrg": "Mening korxonam",
+    "myOrg": "Kadr boshqaruvi",
     "myDocs": "Mening hujjatlarim",
     "attestation": "Attestatsiya",
     "turnstile": "Turniket",
@@ -5852,23 +5953,75 @@
       "day_offInfo": "Grafik bo'yicha shu kun dam olish kuni",
       "excusedInfo": "Xizmat safari, kasallik, turniketdan ozod va boshqa sabablar"
     },
+    "live": {
+      "now": "Hozir"
+    },
+    "hourly": {
+      "title": "Kun davomida o'tishlar",
+      "hint": "Turniket yoki mobil orqali o'tishlar soni, {n} soatlik oraliqlarda",
+      "peak": "Eng gavjum vaqt",
+      "active": "Faol vaqt",
+      "people": "ta o'tish",
+      "total": "Jami o'tishlar"
+    },
+    "rate": {
+      "title": "Bugungi davomat darajasi",
+      "titleDay": "Davomat darajasi",
+      "hint": "Grafik bo'yicha tanlangan kunda kelishi shart bo'lganlardan nechtasi keldi. Ta'til, kasallik, xizmat safari kabi sababli xodimlar hisobga olinmaydi",
+      "mobile": "mobil",
+      "good": "Yaxshi",
+      "medium": "O'rtacha",
+      "low": "Past",
+      "mustCome": "Kelishi shart"
+    },
+    "kpi": {
+      "cameHint": "Tanlangan kunda kamida bir marta turniket yoki mobil ilova orqali o'tgan xodimlar",
+      "absentHint": "Tanlangan kunda umuman o'tmagan xodimlar: grafik bo'yicha kelishi kerak bo'lganlar va grafigi yo'qlar. Ta'til, dam olish kuni va sababli xodimlar bu songa kirmaydi",
+      "inOfficeHint": "Kelganlardan oxirgi o'tishi «kirish» bo'lganlar — hozir ichkarida",
+      "leftOfficeHint": "Kelganlardan oxirgi o'tishi «chiqish» bo'lganlar — kelib, keyin chiqib ketgan",
+      "turnstile": "Turniket orqali",
+      "mobile": "Mobil ilova orqali",
+      "noEvent": "Kelishi kerak edi",
+      "noSchedule": "Grafigi yo'q",
+      "came": "Kelganlar",
+      "left": "Chiqib ketganlar",
+      "early": "Erta ketganlar",
+      "turnstileShort": "Turniket",
+      "mobileShort": "Mobil ilova",
+      "coverage": "Grafik bilan qamrab olingan",
+      "needSchedule": "{n} xodimga grafik tuzish kerak",
+      "devGood": "Barqaror ishlayapti",
+      "devWarn": "E'tibor talab qiladi",
+      "devBad": "Ko'p qurilma aloqasiz",
+      "devOffline": "{n} ta qurilma aloqada emas",
+      "notComingReasons": "Kelmaslik sabablari"
+    },
     "plan": {
       "title": "Reja bo'yicha davomat",
       "expected": "Kelishi kerak",
       "came": "Kelganlar",
       "absent": "Kelmaganlar",
-      "excused": "Sababli",
+      "excused": "Sababli yoki ta'tilda",
       "expectedInfo": "Grafik bo'yicha shu kun ish kuni bo'lgan xodimlar",
       "cameInfo": "Turniket yoki mobil qurilma orqali o'tganlar",
       "absentInfo": "Ish kuni bo'lsa ham turniket va mobil hodisasi yo'q",
-      "excusedInfo": "Ta'til, xizmat safari, kasallik yoki boshqa ruxsat bilan"
+      "excusedInfo": "Ta'til, xizmat safari, kasallik yoki boshqa ruxsat bilan",
+      "cameTitle": "Grafik bo'yicha kelganlar",
+      "absentTitle": "Grafik bo'yicha kelmaganlar"
     },
     "privilegeCard": {
-      "title": "Turniket imtiyozi berilgan xodimlar",
+      "title": "Ish grafigiga imtiyoz berilgan xodimlar",
       "arrive": "Kelish",
       "leave": "Ketish",
       "all": "Barchasini ko'rish",
-      "empty": "Imtiyozli xodim yo'q"
+      "empty": "Imtiyozli xodim yo'q",
+      "hint": "Ish vaqtiga nisbatan necha daqiqa kech kelish yoki erta ketishga ruxsat berilgan xodimlar",
+      "late": "Kech kelishga",
+      "early": "Erta ketishga",
+      "minutes": "{n} daqiqa",
+      "none": "yo'q",
+      "minutesShort": "{n} daq",
+      "subtitle": "Kech kelish yoki erta ketishga ruxsat berilgan"
     },
     "tabs": {
       "report": "Hisobot",
@@ -5879,7 +6032,8 @@
       "came": "Keldi",
       "absent": "Kelmadi",
       "total": "Jami",
-      "pick": "Oyni tanlang"
+      "pick": "Oyni tanlang",
+      "dayOff": "Dam olish kuni"
     },
     "attendanceReason": {
       "sick_leave": "Kasallik varaqasi",
@@ -6247,7 +6401,11 @@
     "verifiedPoint2": "Asl nusxa HRM PRO tizimida saqlanadi va o'zgartirib bo'lmaydi",
     "verifiedPoint3": "Qo'lingizdagi hujjat bilan solishtiring — matn bir xil bo'lsa, hujjat haqiqiy",
     "invalidHint": "Havolani yoki QR-kodni tekshirib, qaytadan urinib ko'ring.",
-    "closeQuestion": "Savollar ro'yxatini yopish"
+    "closeQuestion": "Savollar ro'yxatini yopish",
+    "documentInfo": "Hujjat ma'lumotlari",
+    "electronicNumber": "Elektron raqam",
+    "cancelled": "Bekor qilingan",
+    "cancelledBy": "{number}-sonli buyruq bilan bekor qilingan ({date})"
   },
   "socketPage": {
     "usersMOdalTitle": "Barcha onlayn foydalanuvchilar ro'yxati"
@@ -6669,8 +6827,8 @@
       "detailTitle": "Mobil o'tish",
       "info": "Ma'lumotlar",
       "placeTitle": "O'tish joyi",
-      "livePhoto": "Tasdiqlangan rasm",
-      "refPhoto": "Rasmiy rasm",
+      "livePhoto": "Olingan rasm",
+      "refPhoto": "Tasdiqlangan rasm",
       "appName": "HR Rail ilovasi",
       "matchHigh": "Yuz mos keldi",
       "matchMid": "O'rtacha moslik — rasmlarni solishtiring",
@@ -8024,5 +8182,90 @@
   "onlyOfficeEditor": {
     "tokenError": "Hujjat muharririni ochib bo'lmadi",
     "tokenErrorHint": "Server hujjat uchun xavfsizlik tokenini bermadi. Birozdan so'ng qayta urinib ko'ring yoki administratorga murojaat qiling."
+  },
+  "examMonitoringPage": {
+    "name": "Imtihon kuzatuvi",
+    "topic": "Mavzu",
+    "languages": "Tillar",
+    "questions": "Savollar soni",
+    "solvingNow": "Hozir yechayotganlar",
+    "monitoring": "Kuzatuv",
+    "none": "Tadbiq etilmagan",
+    "camera": "Kamera",
+    "screen": "Ekran",
+    "connecting": "Ulanmoqda...",
+    "noStream": "Oqim kutilmoqda",
+    "failed": {
+      "timeout": "Nomzod ulanmadi — imtihon sahifasi ochiq emas yoki tarmoq yo'q",
+      "lost": "Ulanish uzildi",
+      "error": "Ulanishda xatolik",
+      "finished": "Nomzod imtihonni yakunladi",
+      "not_shared": "Nomzod kamera yoki ekranni hali ulashmagan"
+    },
+    "nobodySolving": "Hozir hech kim yechmayapti",
+    "selectWorker": "Kuzatish uchun nomzodni tanlang",
+    "notEnabled": "Bu imtihon uchun Ekran kuzatuvi yoki Kamera kuzatuvi tatbiq etilmagan",
+    "cameraNotEnabled": "Bu imtihon uchun Kamera kuzatuvi tatbiq etilmagan",
+    "screenNotEnabled": "Bu imtihon uchun Ekran kuzatuvi tatbiq etilmagan",
+    "screenRequiredTitle": "Ekran kuzatuvi majburiy",
+    "screenRequiredText": "Imtihonni davom ettirish uchun butun ekraningizni ulashing. Ulashish to'xtatilsa, imtihon oynasi yana yopiladi.",
+    "shareScreen": "Ekranni ulashish",
+    "statusLive": "Jonli",
+    "statusLost": "Ulanish uzildi",
+    "statusNotShared": "Ulashilmagan",
+    "remaining": "Qoldi",
+    "reconnect": "Qayta ulanish",
+    "screenMissing": "Nomzod ekranni hali ulashmagan",
+    "cameraMissing": "Nomzod kamerani hali yoqmagan",
+    "tabLive": "Jonli",
+    "tabFinished": "Yechganlar",
+    "nobodyFinished": "Hali hech kim yechib bo'lmagan",
+    "loadMore": "Yana yuklash",
+    "selectFinished": "Natijani ko'rish uchun xodimni tanlang",
+    "result": "Natija",
+    "correct": "To'g'ri javoblar",
+    "startedAt": "Boshlagan",
+    "endedAt": "Tugatgan",
+    "sendAlert": "Ogohlantirish",
+    "alertTemplates": "Tayyor matnlar",
+    "alertCustom": "O'z matningizni yozing",
+    "alertSend": "Yuborish",
+    "alertSent": "Ogohlantirish yuborildi",
+    "alertTitle": "Kuzatuvchidan ogohlantirish",
+    "alertOk": "Tushundim",
+    "alertText": {
+      "lookCamera": "Iltimos, kameraga qarang va yuzingiz ko'rinib tursin",
+      "noOtherWindows": "Boshqa oyna va dasturlarni ochmang",
+      "noPhone": "Telefon va boshqa qurilmalardan foydalanmang",
+      "alone": "Xonada yolg'iz bo'lishingiz kerak",
+      "noTalk": "Gaplashmang va tashqi yordamdan foydalanmang",
+      "lastWarning": "Oxirgi ogohlantirish: qoidabuzarlik takrorlansa, imtihon bekor qilinadi"
+    },
+    "screenError": {
+      "denied": "Ekran ulashishga ruxsat berilmadi",
+      "not_monitor": "Faqat butun ekranni tanlang (oyna yoki tab emas)"
+    }
+  },
+  "seo": {
+    "loginTitle": "HRM PRO — kadrlar boshqaruvi va elektron hujjat aylanishi {'|'} O'zbekiston temir yo'llari",
+    "modulesLink": "HRM PRO modullari va imkoniyatlari"
+  },
+  "noticesPage": {
+    "name": "Bildirgilar",
+    "item": "Bildirgi",
+    "createTitle": "Bildirgi yaratish",
+    "updateTitle": "Bildirgini tahrirlash",
+    "type": "Bildirgi turi",
+    "term": "Ogohlantirish muddati",
+    "response": {
+      "ack": "Xodim tanishadi",
+      "consent": "Xodim rozilik yoki rad javobini beradi",
+      "explain": "Xodim yozma tushuntirish beradi"
+    }
+  },
+  "privacyPage": {
+    "toc": "Mundarija",
+    "pdf": "PDF yuklash",
+    "backToLogin": "Kirish sahifasiga qaytish"
   }
 }

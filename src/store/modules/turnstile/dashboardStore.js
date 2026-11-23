@@ -1,8 +1,11 @@
 import { defineStore } from 'pinia'
-import TurnstileIcon1 from '@/assets/icons/turnstileIcon1.svg'
-import TurnstileIcon2 from '@/assets/icons/turnstileIcon2.svg'
-import TurnstileIcon3 from '@/assets/icons/turnstileIcon3.svg'
-import TurnstileIcon4 from '@/assets/icons/turnstileIcon4.svg'
+// KPI ikonkalari ma'noga mos: kelgan — odam ✓, kelmagan — odam ✗, ishxonada — bino, chiqib ketgan — eshikdan chiqish.
+import {
+  PersonAvailable20Regular,
+  PersonDelete20Regular,
+  Building20Regular,
+  DoorArrowRight20Regular
+} from '@vicons/fluent'
 import i18n from '@/i18n/index.js'
 import Utils from '@/utils/Utils.js'
 import router from '@/router/index.js'
@@ -21,6 +24,9 @@ const STATS_URLS = {
 }
 const ATTENDANCE_WORKERS_URL = '/v1/turnstile/dashboard/attendance/workers'
 
+// `_dashboard` ichida eskirgan yoki tashlangan javob belgisi (xato emas).
+const STALE = Symbol('stale')
+
 // Preview turi → yangi API `status` qiymati.
 export const ATTENDANCE_PREVIEW = {
   att_came: 'came',
@@ -32,6 +38,7 @@ export const ATTENDANCE_PREVIEW = {
   att_plan_came: 'plan_came',
   att_plan_absent: 'plan_absent',
   att_plan_excused: 'plan_excused',
+  att_no_schedule: 'no_schedule',
   att_vacation: 'vacation',
   att_day_off: 'day_off',
   att_excused: 'excused'
@@ -95,18 +102,19 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
       att_came: { name: 'turnStileDashboard.cards.come', key: 'att_came' },
       att_absent: { name: 'turnStileDashboard.cards.not_come', key: 'att_absent' },
       att_in_office: { name: 'turnStileDashboard.form.current_in', key: 'att_in_office' },
-      att_left_office: { name: 'turnStileDashboard.form.current_out', key: 'att_left_office' },
+      att_left_office: { name: 'turnStileDashboard.form.leftWorkplace', key: 'att_left_office' },
       att_came_mobile: { name: 'turnStileDashboard.cards.mobileFace', key: 'att_came_mobile' },
       att_came_turnstile: {
         name: 'turnStileDashboard.cards.turnstileFace',
         key: 'att_came_turnstile'
       },
-      att_vacation: { name: 'turnStileDashboard.attendance.vacation', key: 'att_vacation' },
-      att_day_off: { name: 'turnStileDashboard.attendance.day_off', key: 'att_day_off' },
+      att_vacation: { name: 'turnStileDashboard.cards.vacations', key: 'att_vacation' },
+      att_day_off: { name: 'turnStileDashboard.cards.casual_workers', key: 'att_day_off' },
       att_excused: { name: 'turnStileDashboard.attendance.excused', key: 'att_excused' },
-      att_plan_came: { name: 'turnStileDashboard.plan.came', key: 'att_plan_came' },
-      att_plan_absent: { name: 'turnStileDashboard.plan.absent', key: 'att_plan_absent' },
+      att_plan_came: { name: 'turnStileDashboard.plan.cameTitle', key: 'att_plan_came' },
+      att_plan_absent: { name: 'turnStileDashboard.plan.absentTitle', key: 'att_plan_absent' },
       att_plan_excused: { name: 'turnStileDashboard.plan.excused', key: 'att_plan_excused' },
+      att_no_schedule: { name: 'turnStileDashboard.kpi.noSchedule', key: 'att_no_schedule' },
       late_come: {
         name: 'turnStileDashboard.cards.late_come',
         key: 'late_come'
@@ -158,7 +166,8 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         key: 'offline_devices'
       },
       privilege_turnstile_workers: {
-        name: 'turnStileDashboard.cards.privilege_turnstile_workers',
+        // Oyna sarlavhasi karta nomi bilan bir xil.
+        name: 'turnStileDashboard.privilegeCard.title',
         key: 'privilege_turnstile_workers'
       },
       not_passed_turnstile_workers: {
@@ -181,7 +190,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         name: 'turnStileDashboard.cards.not_come_yesterday'
       },
       notIncludedSchedule: {
-        name: 'turnStileDashboard.cards.notIncludedSchedule',
+        name: 'turnStileDashboard.compare.withoutSchedule',
         key: 'notIncludedSchedule'
       },
       ACSEventFaceVerifyPass: {
@@ -230,12 +239,21 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
     monthlyLoading: false,
 
     grandWorkerData: null,
+    // `_dashboard` chaqiruvlari raqami — eskirgan javoblarni tashlash uchun.
+    dashboardRequestId: 0,
+    // `true` — foydalanuvchi bugungi sanani ko'ryapti: sahifaga qaytganda va yarim tunda sana o'zi bugunga suriladi.
+    // O'tgan kun tanlansa `false` — sana joyida qoladi.
+    followToday: true,
+    monthRequestId: 0,
+    previewRequestId: 0,
     grandLoading: false,
     faceIdData: null
   }),
 
   actions: {
     _attendanceMonth() {
+      // Oy / sahifa / qidiruv tez almashsa — eskiroq javob yangisining ustiga yozilmasin.
+      const requestId = ++this.monthRequestId
       this.month.loading = true
       // Oy tanlagichi bo'lmasa — dashboard sanasining oyi.
       const date = new Date(this.monthParams.month ?? this.dashboardParams.date ?? Date.now())
@@ -251,11 +269,14 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
       $ApiService.eventService
         ._allDashboard({ url: '/v1/turnstile/dashboard/attendance/month', params })
         .then((res) => {
+          if (requestId !== this.monthRequestId) return
           const data = res.data.data
           this.month.list = data.data.map((v) => ({
             ...v,
             user: this._userContructor(v, v.position_name),
-            cameSet: new Set(v.came_days)
+            cameSet: new Set(v.came_days),
+            // Grafik bo'yicha dam olish kunlari — «Kelmadi» ga sanalmaydi.
+            offSet: new Set(v.day_off_days ?? [])
           }))
           this.month.total = data.total
           this.month.daysInMonth = data.days_in_month
@@ -263,12 +284,17 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
           this.month.monthKey = data.month
         })
         .finally(() => {
-          this.month.loading = false
+          if (requestId === this.monthRequestId) this.month.loading = false
         })
     },
 
     async _dashboard() {
-      if (this.activeTab === 'attendance') return this._attendanceMonth()
+      // Filtr (tashkilot / bo'lim / sana) yoki tab almashganda «Davomat» birinchi sahifadan —
+      // eski sahifa raqami kichik tashkilotda bo'sh ro'yxat berardi. Sahifalash `_attendanceMonth` ni o'zi chaqiradi.
+      if (this.activeTab === 'attendance') {
+        this.monthParams.page = 1
+        return this._attendanceMonth()
+      }
       this.dashboardLoading = true
       this.dailyAttendanceLoading = true
       this.workerStatsLoading = true
@@ -279,18 +305,29 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
       this.grandLoading = true
       this.mainChartLoading = true
 
+      // Faqat dashboard filtrlari (tashkilot, bo'lim, sana). Ilgari `_previewQueryParams()` yoyilardi —
+      // ro'yxat oynasida yozilgan qidiruv / sahifa / holat yopilgandan keyin ham dashboard so'rovlariga
+      // tushib qolardi (masalan, «Ali» qidirilgach keyingi yangilanishda kartalar shu bo'yicha kelishi mumkin edi).
       const params = {
-        ...this._previewQueryParams(),
+        organizations: this.dashboardParams.organizations.map((v) => v.id).toString() || undefined,
+        departments: this.dashboardParams.departments.toString() || undefined,
         start_time: this.dashboardParams.start_time,
         end_time: this.dashboardParams.end_time,
-        date: Utils.timeToZone(this.dashboardParams.date),
-        type: undefined
+        date: Utils.timeToZone(this.dashboardParams.date)
       }
+      // Har yuklash o'z raqamini oladi: eskiroq so'rov (masalan, filtr tez-tez o'zgarganda
+      // oldingi yuklash) keyinroq qaytsa — javobi tashlanadi, yangi filtr ma'lumoti ustiga yozilmaydi.
+      const requestId = ++this.dashboardRequestId
+      const isStale = () => requestId !== this.dashboardRequestId
       const load = (url, extra = {}) =>
         $ApiService.eventService
           ._allDashboard({ url, params: { ...params, ...extra } })
           .then((res) => res.data.data)
           .catch(() => null)
+          .then((data) => {
+            if (isStale()) throw STALE
+            return data
+          })
 
       // Har karta o'z javobi kelishi bilan chiziladi — sekin so'rov boshqalarini kutdirmaydi.
       const tasks = [
@@ -330,6 +367,8 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         load(STATS_URLS.seven).then((data) => {
           this.workTime = data
           this.workTimeLoading = false
+          // «Ishxonada yo'q» kartasidagi «Erta ketgan» qatori shu javobdan olinadi.
+          if (this.attendance) this._buildAttendanceCards()
         }),
         // Turniket imtiyozi (kelish/ketish daqiqasi) berilganlar: soni va dastlabki 5 tasi.
         load(STATS_URLS.six).then((data) => {
@@ -349,72 +388,114 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
       ]
 
       try {
-        await Promise.all(tasks)
+        // Eskirgan javoblar `STALE` bilan rad etiladi — bu xato emas.
+        await Promise.allSettled(tasks)
       } finally {
-        this.dashboardLoading = false
-        this.dailyAttendanceLoading = false
-        this.workerStatsLoading = false
-        this.devicesLoading = false
-        this.monthlyLoading = false
-        this.workTimeLoading = false
-        this.privilegeLoading = false
-        this.grandLoading = false
-        this.mainChartLoading = false
+        // Eskirgan so'rov yangi yuklashning skeletonlarini o'chirib yubormasin.
+        if (!isStale()) {
+          this.dashboardLoading = false
+          this.dailyAttendanceLoading = false
+          this.workerStatsLoading = false
+          this.devicesLoading = false
+          this.monthlyLoading = false
+          this.workTimeLoading = false
+          this.privilegeLoading = false
+          this.grandLoading = false
+          this.mainChartLoading = false
+        }
       }
     },
 
-    // Yuqoridagi 4 karta — kelgan/kelmagan va ishxonada/ishxonada yo'q (kelgan = ikkalasining yig'indisi).
+    // Yuqoridagi 4 karta. Hisob (dev javobi bo'yicha tekshirilgan, 2026-11-21):
+    //   total = came + absent + vacation + day_off + excused
+    //   absent = absent_by_reason.no_event (grafik bo'yicha kelishi kerak edi) + .no_schedule (grafigi yo'q)
+    //   came = in_office (oxirgi o'tishi «kirish») + left_office (oxirgi o'tishi «chiqish»)
+    // Backendda in_office + left_office = came (oxirgi hodisa yo'nalishi bo'yicha bo'linadi).
+    // Har kartaning ostidagi 2 qator shu hisobni ko'rsatadi va bosilsa ro'yxat ochiladi.
+    // Ranglar — dashboard palitrasi rollari (ui/palette.js).
     _buildAttendanceCards() {
       const a = this.attendance
       this.totalWorkerCount = a?.total || 0
+      const earlyGo = this.countForDate(this.workTime?.late_and_early?.early)
+      const noEvent = a?.absent_by_reason?.no_event ?? a?.plan?.absent ?? 0
+      const noSchedule = a?.absent_by_reason?.no_schedule ?? Math.max((a?.absent || 0) - noEvent, 0)
+      const row = (key, value, previewType = null) => ({
+        label: t(`turnStileDashboard.kpi.${key}`),
+        value: value || 0,
+        previewType
+      })
       this.mainCards = [
         {
           title: t('turnStileDashboard.cards.come'),
+          hint: t('turnStileDashboard.kpi.cameHint'),
           count: a?.came || 0,
-          icon: markRaw(TurnstileIcon1),
-          tint: 'green',
+          icon: markRaw(PersonAvailable20Regular),
+          tint: 'main',
           previewType: 'att_came',
-          decor: 1
+          rows: [
+            row('turnstile', a?.came_turnstile, 'att_came_turnstile'),
+            row('mobile', a?.came_mobile, 'att_came_mobile')
+          ]
         },
         {
           title: t('turnStileDashboard.cards.not_come'),
+          hint: t('turnStileDashboard.kpi.absentHint'),
           count: a?.absent || 0,
-          icon: markRaw(TurnstileIcon2),
-          tint: 'orange',
+          icon: markRaw(PersonDelete20Regular),
+          tint: 'bad',
           previewType: 'att_absent',
-          decor: 2
+          rows: [
+            row('noEvent', noEvent, 'att_plan_absent'),
+            row('noSchedule', noSchedule, 'att_no_schedule')
+          ]
         }
       ]
       this.currentWorkers = [
         {
           title: t('turnStileDashboard.form.current_in'),
+          hint: t('turnStileDashboard.kpi.inOfficeHint'),
           count: a?.in_office || 0,
-          icon: markRaw(TurnstileIcon3),
-          tint: 'yellow',
+          icon: markRaw(Building20Regular),
+          tint: 'second',
           listMore: a?.in_office || 0,
           list: this.officeTop.in_office,
           previewType: 'att_in_office',
-          decor: 3
+          rows: [row('came', a?.came, 'att_came'), row('left', a?.left_office, 'att_left_office')]
         },
         {
-          title: t('turnStileDashboard.form.current_out'),
+          // «Ishxonada yo'q» emas — bu faqat kelib, keyin chiqib ketganlar (kelmaganlar bu songa kirmaydi).
+          title: t('turnStileDashboard.form.leftWorkplace'),
+          hint: t('turnStileDashboard.kpi.leftOfficeHint'),
           count: a?.left_office || 0,
-          icon: markRaw(TurnstileIcon4),
-          tint: 'red',
+          icon: markRaw(DoorArrowRight20Regular),
+          tint: 'warn',
           listMore: a?.left_office || 0,
           list: this.officeTop.left_office,
           previewType: 'att_left_office',
-          decor: 4
+          rows: [row('came', a?.came, 'att_came'), row('early', earlyGo, 'early_leave')]
         }
       ]
+    },
+
+    // stats-seven ro'yxatidan TANLANGAN sana soni (ro'yxat bosilganda ham shu sana ochiladi).
+    // Sana ro'yxatda bo'lmasa — 0 (boshqa kunning soni ko'rsatilmasin).
+    countForDate(list) {
+      if (!Array.isArray(list)) return 0
+      const date = Utils.timeToZone(this.dashboardParams.date)
+      return list.find((v) => v.date === date)?.count || 0
     },
 
     _preview(isPagination = false) {
       if (!isPagination) {
         this.previewList = []
+        // Oldingi ro'yxatning jami soni yangi ro'yxat yuklanguncha ko'rinib turmasin.
+        this.previewTotal = 0
       }
       const params = this._previewQueryParams()
       this.previewLoading = true
+      // Qidiruv / sahifa / karta tez almashsa — eskiroq javob yangisining ustiga yozilmasin.
+      const requestId = ++this.previewRequestId
+      const cardType = this.previewParams.type
 
       const status = ATTENDANCE_PREVIEW[this.previewParams.type]
       const request = status
@@ -425,12 +506,13 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
         : $ApiService.eventService._preview({ params })
       request
         .then((res) => {
+          if (requestId !== this.previewRequestId) return
           let rawData = res.data.data.data
           this.previewTotal = res.data.data.total
-          this.previewList = this._formatPreviewResponse(rawData, this.previewParams.type)
+          this.previewList = this._formatPreviewResponse(rawData, cardType)
         })
         .finally(() => {
-          this.previewLoading = false
+          if (requestId === this.previewRequestId) this.previewLoading = false
         })
     },
 
@@ -451,8 +533,21 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
       responseDate = rawData
       if (!responseDate || !Array.isArray(responseDate)) return []
 
+      // Imtiyoz daqiqasi: «10 daqiqa» yoki «yo'q» (kartadagi kabi; xom «10» / «0» tushunarsiz edi).
+      const minutesText = (m) =>
+        m
+          ? t('turnStileDashboard.privilegeCard.minutes', { n: m })
+          : t('turnStileDashboard.privilegeCard.none')
+
       const data = responseDate.map((v, index) => {
-        if (cardType === 'late_come') {
+        if (cardType === 'privilege_turnstile_workers') {
+          return {
+            ...v,
+            user: this._userContructor(v, v.position_name),
+            start_minute_text: minutesText(v.start_minute),
+            end_minute_text: minutesText(v.end_minute)
+          }
+        } else if (cardType === 'late_come') {
           return {
             ...v,
             user: this._userContructor(v, v.position_name),
@@ -536,13 +631,6 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
             ...v,
             user: this._userContructor(v, v?.position_name)
           }
-        } else if (cardType === 'privilege_turnstile_workers') {
-          return {
-            ...v,
-            user: this._userContructor(v, v.position_name),
-            start_minute: v.start_minute + ' ' + t('date.minute'),
-            end_minute: v.end_minute + ' ' + t('date.minute')
-          }
         } else return v
       })
 
@@ -578,7 +666,15 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
       const request = status
         ? $ApiService.eventService._allDashboard({
             url: `${ATTENDANCE_WORKERS_URL}/export`,
-            params: { ...params, type: undefined, download: undefined, status }
+            // Eksport — butun ro'yxat: sahifa parametrlari yuborilmaydi.
+            params: {
+              ...params,
+              type: undefined,
+              download: undefined,
+              page: undefined,
+              per_page: undefined,
+              status
+            }
           })
         : $ApiService.eventService._download({ params })
       request

@@ -16,10 +16,14 @@
   import { AppPaths } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
+  import { useAppBreakpoints } from '@/composables/useBreakpoint.js'
 
   const { t } = i18n.global
 
   const store = usePdfViewerStore()
+  // Telefon/planshetda (< 768px) til — faqat bayroq: o'ngda vaqt, «Imzolash» va mavzu bor, to'liq til tugmasi
+  // (90px) imzolovchining ismini butunlay siqib yuborardi (mavzu almashtirgich qo'shilgach, DAS-16822).
+  const { isMobile } = useAppBreakpoints()
   const router = useRouter()
 
   const goSignature = () => {
@@ -83,9 +87,20 @@
         </button>
         <!-- Ism va rol endi sahifa sarlavhasida (Document.vue) — bu yerda faqat portal nomi -->
         <span class="hidden h-6 w-px shrink-0 bg-surface-line md:block"></span>
-        <span class="hidden truncate text-sm font-medium text-textColor2 md:inline">
-          {{ $t('signature.portalLabel') }}
-        </span>
+        <!-- Portal nomi, ostida imzolanayotgan hujjatning UTY raqami (QR sahifadagi kabi). Faqat ≥ 976px (lg):
+             undan torroqda o'ngda vaqt, «Imzolash» tugmasi, mavzu va til — joy yo'q, raqam va ism ustma-ust tushardi. -->
+        <div class="flex min-w-0 flex-col gap-0.5">
+          <span class="hidden truncate text-sm font-medium leading-tight text-textColor2 md:inline">
+            {{ $t('signature.portalLabel') }}
+          </span>
+          <span
+            v-if="isSignPage && store.electronicNumber"
+            class="hidden max-w-full self-start truncate rounded-full bg-surface-ground px-2 text-[11px] font-semibold leading-[18px] tabular-nums text-textColor2 lg:inline-block"
+            :title="$t('publicPage.electronicNumber')"
+          >
+            {{ store.electronicNumber }}
+          </span>
+        </div>
       </div>
 
       <!-- Holat, imzolash va til -->
@@ -144,7 +159,7 @@
           <span class="hidden sm:inline">{{ $t('signature.goSignature') }}</span>
         </n-button>
         <UIThemeSwitch />
-        <UILanguage />
+        <UILanguage :compact="isMobile" />
       </div>
     </div>
   </div>

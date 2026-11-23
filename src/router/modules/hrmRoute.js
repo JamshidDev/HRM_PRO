@@ -150,6 +150,12 @@ export const hrmRoutes = [
     meta: { layout: AppLayouts.main }
   },
   {
+    path: Utils.routeHrmPathMaker(AppPaths.Notices),
+    name: AppPaths.Notices.substring(1),
+    component: () => import('@pages/docFlow/document/employeeDocuments/page.vue'),
+    meta: { layout: AppLayouts.main, notice: true }
+  },
+  {
     path: Utils.routeHrmPathMaker(AppPaths.Contract),
     name: AppPaths.Contract.substring(1),
     component: () => import('@/pages/docFlow/document/contract/ContractPage.vue'),

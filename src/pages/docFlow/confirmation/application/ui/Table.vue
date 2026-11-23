@@ -209,8 +209,7 @@
       <UITableNameCell :name="row?.worker_application?.type.name" @click="onPreview(row)" />
     </template>
 
-    <!-- BACKEND: `worker_application.number` takrorlanadi (dev'da ikki ariza ham №1, DAS-14208).
-         Raqam serverda beriladi — har ariza uchun noyob/ketma-ket raqam kerak. -->
+    <!-- Raqam korxona+yil bo'yicha ketma-ket; takroriylari eski (2026-07 gacha) yozuvlar. -->
     <template #[`cell-worker_application.number`]="{ row }">
       <UITableBadgeCell :number="row?.worker_application?.number" type="primary" />
     </template>

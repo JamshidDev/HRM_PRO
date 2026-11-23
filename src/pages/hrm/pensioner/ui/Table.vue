@@ -48,8 +48,7 @@
     store._index()
   }
 
-  // JSHSHIR, pasport, manzil ro'yxatda niqoblangan (QA-50). BACKEND: ro'yxat javobida to'liq qiymat
-  // kelmasligi kerak (ruxsatga qarab) — frontend niqobi faqat ekranni yopadi.
+  // JSHSHIR, pasport, manzil niqoblangan (QA-50); to'liq qiymat faqat hr-pensioners-write ruxsatida keladi.
   const columns = computed(() => [
     {
       key: 'worker',

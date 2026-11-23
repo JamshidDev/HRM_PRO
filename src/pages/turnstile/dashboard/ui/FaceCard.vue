@@ -1,125 +1,105 @@
 <script setup>
-  import { Eye20Filled } from '@vicons/fluent'
-  import { Utils } from '@/utils/index.js'
-  import { UICountUp } from '@/components/index.js'
-  import CardHeader from './CardHeader.vue'
-  import { FaceCardSkeleton } from './skeleton/index.js'
-  import { useTurnstileDashboardStore } from '@/store/modules/index.js'
-  import HeadAiScanIcon from '@/assets/icons/dashboard/head-ai-scan.svg'
+  // «Face ID tahlili» — umumiy `StatCard` qolipida: kelganlar turniket / mobil bo'yicha.
+  import { Phone20Regular } from '@vicons/fluent'
   import FaceTurnstileIcon from '@/assets/icons/dashboard/face-turnstile.svg'
-  import FaceMobileIcon from '@/assets/icons/dashboard/face-mobile.svg'
+  import StatCard from './StatCard.vue'
+  import { PALETTE, TINT } from './palette.js'
+  import { percentText } from './format.js'
+  import { useTurnstileDashboardStore } from '@/store/modules/index.js'
+  import i18n from '@/i18n/index.js'
+  import HeadAiScanIcon from '@/assets/icons/dashboard/head-ai-scan.svg'
 
+  const { t } = i18n.global
   const store = useTurnstileDashboardStore()
   const emits = defineEmits(['onPreview'])
 
-  // «Kelgan» xodimlarning bo'linishi: kun davomida mobil orqali o'tgan / faqat turniket.
-  const turnstileCount = computed(() => store.attendance?.came_turnstile || 0)
-  const mobileCount = computed(() => store.attendance?.came_mobile || 0)
-  const totalCount = computed(() => turnstileCount.value + mobileCount.value)
-  // Har qurilma turining umumiy kelganlardagi ulushi (%).
-  const share = (v) => (totalCount.value ? Math.round((v / totalCount.value) * 100) : 0)
+  const turnstile = computed(() => store.attendance?.came_turnstile || 0)
+  const mobile = computed(() => store.attendance?.came_mobile || 0)
+  // Jami — backenddagi `came` (yuqoridagi «Ishga kelgan» kartasi bilan bir xil son). Ilgari
+  // turniket + mobil yig'indisi edi — backend ikki kanaldan o'tganni ikkala guruhga qo'shsa, farq qilardi.
+  const total = computed(() => store.attendance?.came || 0)
+  const mobilePercent = computed(() => percentText(mobile.value, total.value))
 
-  const cells = computed(() => [
+  // Vizual: ikki plitka (turniket / mobil) — ikonka, ulush, qisqa nom; bosilsa ro'yxat.
+  const tiles = computed(() => [
     {
-      previewType: 'att_came_turnstile',
-      label: 'turnStileDashboard.cards.turnstileFace',
-      count: turnstileCount.value,
-      percent: share(turnstileCount.value),
-      barClass: 'bg-fig-brand',
-      icon: markRaw(FaceTurnstileIcon)
+      icon: markRaw(FaceTurnstileIcon),
+      label: t('turnStileDashboard.kpi.turnstileShort'),
+      share: percentText(turnstile.value, total.value),
+      token: PALETTE.main,
+      previewType: 'att_came_turnstile'
     },
     {
-      previewType: 'att_came_mobile',
-      label: 'turnStileDashboard.cards.mobileFace',
-      count: mobileCount.value,
-      percent: share(mobileCount.value),
-      barClass: 'bg-fig-indigo',
-      icon: markRaw(FaceMobileIcon)
+      icon: markRaw(Phone20Regular),
+      label: t('turnStileDashboard.kpi.mobileShort'),
+      share: percentText(mobile.value, total.value),
+      token: PALETTE.second,
+      previewType: 'att_came_mobile'
     }
   ])
 
-  const formatCount = (v) => Utils.formatNumberToMoney(v) || '0'
+  const rows = computed(() => [
+    {
+      label: t('turnStileDashboard.cards.turnstileFace'),
+      count: turnstile.value,
+      token: PALETTE.main,
+      previewType: 'att_came_turnstile'
+    },
+    {
+      label: t('turnStileDashboard.cards.mobileFace'),
+      count: mobile.value,
+      token: PALETTE.second,
+      previewType: 'att_came_mobile'
+    }
+  ])
 </script>
 
 <template>
-  <div
-    class="bg-surface-section shadow-card rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col"
+  <StatCard
+    :icon="HeadAiScanIcon"
+    :tint="TINT.main"
+    :title="$t('turnStileDashboard.compare.faceIdTitle')"
+    :loading="store.mainChartLoading"
+    :label="$t('turnStileDashboard.cards.come')"
+    :value="total"
+    :chip="{ text: `${mobilePercent}% ${$t('turnStileDashboard.rate.mobile')}`, tone: 'second' }"
+    :rows="rows"
+    @on-preview="emits('onPreview', $event)"
   >
-    <FaceCardSkeleton v-if="store.mainChartLoading" />
-
-    <template v-else>
-      <CardHeader
-        :icon="HeadAiScanIcon"
-        tint="teal"
-        :title="$t('turnStileDashboard.compare.faceIdTitle')"
-      />
-
-      <div class="flex-1 flex flex-col justify-center gap-2">
-        <div class="h-[65px] py-2 flex flex-col items-center justify-center">
-          <div class="flex items-center justify-center gap-2.5 flex-wrap">
-            <span
-              class="font-grotesk font-semibold text-[20px] leading-[24px] text-fig-text-primary"
-            >
-              <UICountUp :value="formatCount(totalCount)" />
-            </span>
-          </div>
-          <p class="text-[12px] text-fig-text-tertiary text-center">
-            {{ $t('turnStileDashboard.cards.allWorkerOfFace') }}
-          </p>
-        </div>
-
-        <!-- turniket / mobil ulushi -->
-        <div class="px-3">
-          <div class="h-2 w-full rounded-full bg-fig-neutral-300 overflow-hidden flex gap-0.5">
-            <div
-              v-for="(cell, idx) in cells"
-              v-show="cell.percent"
-              :key="idx"
-              class="h-full rounded-full transition-all duration-500"
-              :class="cell.barClass"
-              :style="{ width: cell.percent + '%' }"
-            ></div>
-          </div>
-        </div>
-
-        <div
-          v-for="(cell, idx) in cells"
-          :key="idx"
-          @click="emits('onPreview', cell.previewType)"
-          class="bg-surface-ground-soft rounded-xl px-4 py-1.5 flex flex-1 items-center gap-2 cursor-pointer relative group"
+    <template #visual>
+      <div v-if="total" class="grid w-full grid-cols-2 gap-2">
+        <button
+          v-for="tile in tiles"
+          :key="tile.previewType"
+          type="button"
+          class="flex h-20 cursor-pointer items-center gap-3 rounded-xl px-3 text-left transition-transform duration-200 hover:-translate-y-0.5"
+          :style="{ backgroundColor: `color-mix(in srgb, var(${tile.token}) 12%, transparent)` }"
+          @click="emits('onPreview', tile.previewType)"
         >
-          <div
-            class="z-10 transition-all duration-500 scale-0 absolute left-1/2 top-1/2 -translate-1/2 text-primary opacity-0 group-hover:opacity-100 group-hover:scale-100"
-          >
-            <n-icon size="26">
-              <Eye20Filled />
-            </n-icon>
-          </div>
-
           <span
-            class="w-5 h-5 shrink-0 flex items-center justify-center transition-all duration-300 group-hover:opacity-[0.2]"
+            class="face-tile__icon flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white"
+            :style="{ backgroundColor: `var(${tile.token})` }"
           >
-            <component :is="cell.icon" />
+            <component :is="tile.icon" />
           </span>
-          <div
-            class="flex-1 min-w-0 flex flex-col gap-1 justify-center transition-all duration-300 group-hover:opacity-[0.2]"
-          >
-            <p class="text-[12px] leading-[16px] text-fig-text-secondary truncate">
-              {{ $t(cell.label) }}
-            </p>
-            <div class="flex items-center gap-1 flex-wrap">
-              <span
-                class="font-grotesk font-semibold text-[20px] leading-[24px] text-fig-text-primary"
-              >
-                <UICountUp :value="formatCount(cell.count)" />
-              </span>
-              <span class="text-[12px] leading-[16px] text-fig-text-tertiary whitespace-nowrap">
-                <UICountUp :value="cell.percent" />%
-              </span>
-            </div>
-          </div>
-        </div>
+          <span class="min-w-0">
+            <span class="block text-[20px] leading-6 font-bold text-fig-text-primary">{{ tile.share }}%</span>
+            <span class="block truncate text-[12px] leading-4 text-fig-text-tertiary">{{ tile.label }}</span>
+          </span>
+        </button>
       </div>
     </template>
-  </div>
+  </StatCard>
 </template>
+
+<style scoped>
+  /* SVG ikonkalar o'z rangida chizilgan — plitkada oq bo'lishi uchun currentColor. */
+  .face-tile__icon :deep(svg) {
+    width: 20px;
+    height: 20px;
+  }
+
+  .face-tile__icon :deep(path[fill]:not([fill='none'])) {
+    fill: currentColor;
+  }
+</style>

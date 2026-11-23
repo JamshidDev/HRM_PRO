@@ -97,9 +97,7 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
           this.creator.loading = false
         })
     },
-    // BACKEND: GET /v1/hr/vacation-schedule `search` ni e'tiborsiz qoldiradi (2026-11-17, dev: «zzzzqq» bilan ham
-    // hamma 4 ta grafik qaytdi; `year` ham ishlamaydi). Faqat `organizations` filtri ishlaydi. Kerak: `search` —
-    // tashkilot nomi / rahbar / tuzuvchi F.I.Sh. bo'yicha; `year` filtri (grafiklar yil bo'yicha qidiriladi).
+    // `search` — korxona / rahbar / tuzuvchi F.I.Sh. (backend `year` filtrini ham qabul qiladi).
     _index() {
       this.loading = true
       this.searched = !!this.params.search?.trim() || this.params.organizations.length > 0
@@ -189,9 +187,7 @@ export const useVacationScheduleStore = defineStore('vacationScheduleStore', {
         this.grid.summary = res.data.data
       })
     },
-    // BACKEND: grafik xodimlari `search` i juda «yumshoq» (2026-11-17, dev, grafik 2): «Bobo» → Begaliyev, Buriyev,
-    // Majidov… ham qaytadi; «zzzz» → Zuvayitov. To'liq familiya to'g'ri ishlaydi. Kerak: F.I.Sh. boshidan / ichidan
-    // aniq moslik (ILIKE '%…%'), noaniq (trigram) qidiruv emas.
+    // Qidiruv: raqam — JSHSHIR/tabel, matn — F.I.Sh. bo'yicha aniq moslik.
     _gridRows() {
       this.grid.loading = true
       const params = Object.fromEntries(

@@ -1,4 +1,42 @@
 {
+  "guestPage": {
+    "tabWorkers": "Employees",
+    "tabGuests": "Guests",
+    "fullName": "Full name",
+    "workTime": "Work hours",
+    "cameAt": "Arrived",
+    "leftAt": "Left",
+    "lastEvent": "Last event",
+    "events": "Events",
+    "detach": "Detach",
+    "searchPlaceholder": "Name or PINFL",
+    "attach": "Attach guest",
+    "attachTitle": "Attach guest",
+    "editTitle": "Edit guest",
+    "eventsTitle": "Guest events",
+    "lateMin": "{n} min late",
+    "earlyMin": "{n} min early",
+    "notCame": "Absent",
+    "in": "In",
+    "out": "Out",
+    "pin": "PINFL",
+    "pinPlaceholder": "14 digits",
+    "pinHint": "The person must be registered in HikCentral with this PINFL",
+    "pinRule": "PINFL must be 14 digits",
+    "workStart": "Work start",
+    "workEnd": "Work end",
+    "endAfterStart": "End must be after start",
+    "note": "Note",
+    "noEvents": "No events in this period"
+  },
+  "examLanguages": {
+    "uz": "In Uzbek (Latin)",
+    "uz_new": "In Uzbek (new Latin)",
+    "uz_kr": "In Uzbek (Cyrillic)",
+    "ru": "In Russian",
+    "kaa": "In Karakalpak",
+    "en": "In English"
+  },
   "applicationCommand": {
     "column": "Command",
     "create": "Command",
@@ -563,7 +601,7 @@
     "changeRoleConfirm": "Select the desired account to switch and wait 20 seconds"
   },
   "sidebar": {
-    "hrm": "My Organization Module",
+    "hrm": "HR Management Module",
     "admin": "Admin Module",
     "chat": "Messages & Announcements Module",
     "docflow": "My Documents",
@@ -602,7 +640,7 @@
     "signUp": "Sign up",
     "description": {
       "title": "HRMS",
-      "subtitle": "Modern employee management system\n",
+      "subtitle": "HRM PRO — HR management system of «Uzbekistan Railways» JSC",
       "text": "Convenient solution for efficient employee management, time tracking, and document automation. Optimize HR processes and take your business to the next level!"
     },
     "login": "Login",
@@ -2580,6 +2618,14 @@
       "updateTitle": "Edit file"
     },
     "exams": {
+      "hidden": "Hidden",
+      "language": "Questions language",
+      "time": "Time",
+      "minuteShort": "min",
+      "unlimited": "Unlimited",
+      "questionSets": "Question sets",
+      "addQuestionSet": "Add set",
+      "questionsSumError": "Total questions in sets must equal the overall question count",
       "createTitle": "Create exam",
       "name": "Exams",
       "updateTitle": "Edit exam",
@@ -2616,9 +2662,33 @@
     "isActive": "Active status"
   },
   "topicPage": {
-    "createTitle": "Add topic",
-    "name": "Topics",
-    "updateTitle": "Edit topic"
+    "createTitle": "Add exam",
+    "name": "Exams",
+    "updateTitle": "Edit exam",
+    "scope": "Scope",
+    "languagesCount": "Languages",
+    "deadline": "Active until",
+    "noDeadline": "No deadline",
+    "scope_all": "Global",
+    "scope_local": "My organization",
+    "scope_global": "My and subordinate organizations",
+    "scope_department": "For departments",
+    "departmentsOptional": "Departments (optional)",
+    "whom_1": "Everyone",
+    "whom_2": "Selected positions",
+    "whom_3": "Selected employees",
+    "audienceTitle": "Audience",
+    "audienceTotal": "Total: {n} employees",
+    "allDepartments": "All departments",
+    "loadMore": "Load more",
+    "whomPositionsCount": "{n} positions",
+    "whomWorkersCount": "{n} employees",
+    "departments": "Departments",
+    "settings": "Security settings",
+    "mobileAllowed": "Can be taken in the mobile app",
+    "cameraRequired": "Camera required",
+    "screenShareRequired": "Screen sharing required",
+    "strictMode": "Strict mode"
   },
   "workerView": {
     "general": {
@@ -2735,13 +2805,13 @@
     }
   },
   "categoryPage": {
-    "createCategory": "Create category",
-    "editCategory": "Edit category",
-    "name": "Categories",
+    "createCategory": "Create set",
+    "editCategory": "Edit set",
+    "name": "Question sets",
     "addQuestion": "Add question",
     "editQuestion": "Edit question",
     "questionCount": "Number of questions",
-    "categoryName": "Category name",
+    "categoryName": "Set name",
     "clearWarning": "All questions in this category will be deleted. Continue?",
     "uploadExcel": "Upload test questions",
     "pressUpload": "Click to upload!",
@@ -2750,7 +2820,27 @@
     "upload": "Upload questions",
     "answer": "Answer",
     "correctAnswer": "Correct answer",
-    "warning": "Check selected question and answer columns!"
+    "warning": "Check selected question and answer columns!",
+    "scope": "Type",
+    "scopePublic": "Public",
+    "scopeOrganization": "For organization",
+    "scopePublicHint": "Visible to all organizations and usable in exams",
+    "scopeOrganizationHint": "Visible only to your organization",
+    "createdAt": "Date",
+    "author": "Author",
+    "downloadTemplate": "Download template",
+    "addByFile": "From file",
+    "addByForm": "Via form",
+    "importTitle": "Import questions from file",
+    "chooseFile": "Select an Excel (.xlsx) file filled in by the template",
+    "importConfirm": "Import",
+    "previewSummary": "{valid} questions will be imported, {skipped} rows skipped",
+    "rowNo": "Row",
+    "status": "Status",
+    "ok": "Ready",
+    "importDone": "{n} questions imported",
+    "readOnly": "Another organization's set — view only",
+    "wrongAnswers": "Wrong answers"
   },
   "examPage": {
     "downloadResult": "Download results",
@@ -2760,6 +2850,7 @@
     "finishedProcess": "Finish",
     "finishedDescription": "Finish overdue exams",
     "name": "Exams",
+    "myExams": "My exams",
     "history": "Exam history",
     "topic": "Topic",
     "exam": "Exam",
@@ -3415,7 +3506,17 @@
       "childName": "Child's full name",
       "childBirthday": "Date of birth",
       "days": "Days: {n}",
-      "months": "Months: {n}"
+      "months": "Months: {n}",
+      "weekdays": {
+        "1": "Monday",
+        "2": "Tuesday",
+        "3": "Wednesday",
+        "4": "Thursday",
+        "5": "Friday",
+        "6": "Saturday",
+        "7": "Sunday"
+      },
+      "recordTitle": "Additional details (not printed in the document)"
     },
     "draft": "Draft",
     "draftSignTitle": "Application is a draft",
@@ -5644,7 +5745,7 @@
   "navigation": {
     "hrm": "HR Management",
     "docFlow": "Document Flow",
-    "myOrg": "My Organization",
+    "myOrg": "HR Management",
     "myDocs": "My Documents",
     "attestation": "Certification",
     "turnstile": "Turnstile",
@@ -5806,23 +5907,75 @@
       "day_offInfo": "Day off by schedule",
       "excusedInfo": "Business trip, sick leave, turnstile exemption and other reasons"
     },
+    "live": {
+      "now": "Now"
+    },
+    "hourly": {
+      "title": "Passes during the day",
+      "hint": "Passes via turnstile or mobile app, in {n}-hour intervals",
+      "peak": "Peak time",
+      "active": "Active hours",
+      "people": "passes",
+      "total": "Total passes"
+    },
+    "rate": {
+      "title": "Today's attendance rate",
+      "titleDay": "Attendance rate",
+      "hint": "How many of those required to come on the selected day by schedule actually came. Excused employees (leave, sick, business trip) are not counted",
+      "mobile": "mobile",
+      "good": "Good",
+      "medium": "Average",
+      "low": "Low",
+      "mustCome": "Required"
+    },
+    "kpi": {
+      "cameHint": "Employees who passed at least once on the selected day via turnstile or mobile app",
+      "absentHint": "Employees with no pass on the selected day: those scheduled to come and those without a schedule. Leave, days off and excused absences are not counted here",
+      "inOfficeHint": "Of those who came — last pass was «in»: inside now",
+      "leftOfficeHint": "Of those who came — last pass was «out»: came and left",
+      "turnstile": "Via turnstile",
+      "mobile": "Via mobile app",
+      "noEvent": "Were scheduled",
+      "noSchedule": "No schedule",
+      "came": "Came",
+      "left": "Left",
+      "early": "Left early",
+      "turnstileShort": "Turnstile",
+      "mobileShort": "Mobile app",
+      "coverage": "Covered by schedule",
+      "needSchedule": "{n} employees still need a schedule",
+      "devGood": "Running stable",
+      "devWarn": "Needs attention",
+      "devBad": "Many devices offline",
+      "devOffline": "{n} devices offline",
+      "notComingReasons": "Reasons for absence"
+    },
     "plan": {
       "title": "Attendance by plan",
       "expected": "Expected",
       "came": "Came",
       "absent": "Absent",
-      "excused": "Excused",
+      "excused": "Excused or on leave",
       "expectedInfo": "Workers with a working day by schedule",
       "cameInfo": "Passed via turnstile or mobile device",
       "absentInfo": "Working day, but no turnstile or mobile events",
-      "excusedInfo": "Vacation, business trip, sick leave or other permission"
+      "excusedInfo": "Vacation, business trip, sick leave or other permission",
+      "cameTitle": "Came (scheduled)",
+      "absentTitle": "Absent (scheduled)"
     },
     "privilegeCard": {
-      "title": "Workers with turnstile privilege",
+      "title": "Employees with schedule allowances",
       "arrive": "Arrival",
       "leave": "Leave",
       "all": "Show all",
-      "empty": "No privileged workers"
+      "empty": "No privileged workers",
+      "hint": "Employees allowed to arrive late or leave early by N minutes relative to their schedule",
+      "late": "Late arrival",
+      "early": "Early leave",
+      "minutes": "{n} min",
+      "none": "none",
+      "minutesShort": "{n} min",
+      "subtitle": "Allowed to arrive late or leave early"
     },
     "tabs": {
       "report": "Report",
@@ -5833,7 +5986,8 @@
       "came": "Came",
       "absent": "Absent",
       "total": "Total",
-      "pick": "Select month"
+      "pick": "Select month",
+      "dayOff": "Day off"
     },
     "attendanceReason": {
       "sick_leave": "Sick leave",
@@ -6160,7 +6314,11 @@
     "verifiedPoint2": "The original is stored in HRM PRO and cannot be changed",
     "verifiedPoint3": "Compare it with the document in your hands — if the text matches, the document is genuine",
     "invalidHint": "Check the link or QR code and try again.",
-    "closeQuestion": "Close question list"
+    "closeQuestion": "Close question list",
+    "documentInfo": "Document details",
+    "electronicNumber": "Electronic number",
+    "cancelled": "Cancelled",
+    "cancelledBy": "Cancelled by order No. {number} ({date})"
   },
   "socketPage": {
     "usersMOdalTitle": "All online users list"
@@ -6611,8 +6769,8 @@
       "detailTitle": "Mobile pass",
       "info": "Details",
       "placeTitle": "Pass location",
-      "livePhoto": "Verified photo",
-      "refPhoto": "Official photo",
+      "livePhoto": "Captured photo",
+      "refPhoto": "Verified photo",
       "appName": "HR Rail app",
       "matchHigh": "Face matches",
       "matchMid": "Partial match — compare the photos",
@@ -7828,5 +7986,90 @@
   "onlyOfficeEditor": {
     "tokenError": "Could not open the document editor",
     "tokenErrorHint": "The server did not issue a security token for this document. Try again later or contact the administrator."
+  },
+  "examMonitoringPage": {
+    "name": "Exam monitoring",
+    "topic": "Topic",
+    "languages": "Languages",
+    "questions": "Questions",
+    "solvingNow": "Solving now",
+    "monitoring": "Monitoring",
+    "none": "Not enabled",
+    "camera": "Camera",
+    "screen": "Screen",
+    "connecting": "Connecting...",
+    "noStream": "Waiting for stream",
+    "failed": {
+      "timeout": "Candidate did not connect — exam page is not open or no network",
+      "lost": "Connection lost",
+      "error": "Connection error",
+      "finished": "Candidate finished the exam",
+      "not_shared": "The candidate has not shared camera or screen yet"
+    },
+    "nobodySolving": "Nobody is solving now",
+    "selectWorker": "Select a candidate to watch",
+    "notEnabled": "Screen or camera monitoring is not enabled for this exam",
+    "cameraNotEnabled": "Camera monitoring is not enabled for this exam",
+    "screenNotEnabled": "Screen monitoring is not enabled for this exam",
+    "screenRequiredTitle": "Screen monitoring is required",
+    "screenRequiredText": "Share your entire screen to continue the exam. If sharing stops, the exam window closes again.",
+    "shareScreen": "Share screen",
+    "statusLive": "Live",
+    "statusLost": "Connection lost",
+    "statusNotShared": "Not shared",
+    "remaining": "Left",
+    "reconnect": "Reconnect",
+    "screenMissing": "The candidate has not shared the screen yet",
+    "cameraMissing": "The candidate has not turned on the camera yet",
+    "tabLive": "Live",
+    "tabFinished": "Finished",
+    "nobodyFinished": "Nobody has finished yet",
+    "loadMore": "Load more",
+    "selectFinished": "Select a worker to see the result",
+    "result": "Result",
+    "correct": "Correct answers",
+    "startedAt": "Started",
+    "endedAt": "Finished",
+    "sendAlert": "Alert",
+    "alertTemplates": "Ready messages",
+    "alertCustom": "Write your own message",
+    "alertSend": "Send",
+    "alertSent": "Alert sent",
+    "alertTitle": "Alert from the proctor",
+    "alertOk": "OK",
+    "alertText": {
+      "lookCamera": "Please look at the camera and keep your face visible",
+      "noOtherWindows": "Do not open other windows or programs",
+      "noPhone": "Do not use a phone or other devices",
+      "alone": "You must be alone in the room",
+      "noTalk": "Do not talk or use outside help",
+      "lastWarning": "Final warning: if the violation repeats, the exam will be cancelled"
+    },
+    "screenError": {
+      "denied": "Screen sharing was not allowed",
+      "not_monitor": "Select the entire screen (not a window or tab)"
+    }
+  },
+  "seo": {
+    "loginTitle": "HRM PRO — HR management and electronic document workflow {'|'} Uzbekistan Railways",
+    "modulesLink": "HRM PRO modules and features"
+  },
+  "noticesPage": {
+    "name": "Notices",
+    "item": "Notice",
+    "createTitle": "Create notice",
+    "updateTitle": "Edit notice",
+    "type": "Notice type",
+    "term": "Notice period",
+    "response": {
+      "ack": "Employee acknowledges",
+      "consent": "Employee agrees or declines",
+      "explain": "Employee gives a written explanation"
+    }
+  },
+  "privacyPage": {
+    "toc": "Contents",
+    "pdf": "Download PDF",
+    "backToLogin": "Back to login"
   }
 }

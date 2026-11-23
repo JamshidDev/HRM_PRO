@@ -64,8 +64,9 @@ export const getTableConfig = (cardType) => {
           component: 'UIUser'
         },
         {
-          headerName: 'turnStileDashboard.preview.startTime',
-          key: 'start_minute',
+          // Karta bilan bir xil: «Kech kelishga: 10 daqiqa»
+          headerName: 'turnStileDashboard.privilegeCard.late',
+          key: 'start_minute_text',
           width: '180px',
           minWidth: '140px',
           component: 'UIBadge',
@@ -75,8 +76,8 @@ export const getTableConfig = (cardType) => {
           }
         },
         {
-          headerName: 'turnStileDashboard.preview.endTime',
-          key: 'end_minute',
+          headerName: 'turnStileDashboard.privilegeCard.early',
+          key: 'end_minute_text',
           width: '160px',
           minWidth: '140px',
           component: 'UIBadge',
@@ -912,7 +913,8 @@ export const getTableConfig = (cardType) => {
     'att_day_off',
     'att_excused',
     'att_plan_absent',
-    'att_plan_excused'
+    'att_plan_excused',
+    'att_no_schedule'
   ]) {
     configs[type] = { columns: [...attendanceBase, ...reasonColumn] }
   }

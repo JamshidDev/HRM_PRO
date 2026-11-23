@@ -1,15 +1,23 @@
 <script setup>
   import { ChevronRight20Regular } from '@vicons/fluent'
-  import { Utils } from '@/utils/index.js'
-  import { UICountUp, UIUser } from '@/components/index.js'
+  import { UIUser } from '@/components/index.js'
   import CardHeader from './CardHeader.vue'
+  import { PALETTE, TINT, CHIP_CLASS } from './palette.js'
   import { useTurnstileDashboardStore } from '@/store/modules/index.js'
-  import HeadChartUserIcon from '@/assets/icons/dashboard/head-chart-user.svg'
+  import { PersonClock20Regular } from '@vicons/fluent'
 
   const store = useTurnstileDashboardStore()
   const emits = defineEmits(['onPreview'])
 
-  const formatCount = (v) => Utils.formatNumberToMoney(v) || '0'
+  // `start_minute` — ish boshlanishidan necha daqiqa kech kelishga ruxsat,
+  // `end_minute` — ish tugashidan necha daqiqa oldin ketishga ruxsat (dev javobida tekshirilgan).
+  // Chiziqda: 120 daqiqa = chiziqning yarmi (chap yoki o'ng), kamida 6% — kichik ruxsat ham ko'rinsin.
+  const allowanceWidth = (minutes) =>
+    minutes ? `${Math.max(Math.min(minutes / 120, 1) * 50, 6)}%` : '0%'
+  const allowances = (row) => [
+    { key: 'late', minutes: row.start_minute || 0, chip: CHIP_CLASS.main },
+    { key: 'early', minutes: row.end_minute || 0, chip: CHIP_CLASS.second }
+  ]
   const openList = () => emits('onPreview', 'privilege_turnstile_workers')
 
   // Skrollsiz: ro'yxat maydoniga nechta qator sig'sa, shuncha ko'rsatiladi.
@@ -40,22 +48,31 @@
 <template>
   <!-- Balandlik qo'shni «Reja bo'yicha davomat» kartasidan olinadi. -->
   <div
-    class="bg-surface-section shadow-card rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col xl:h-0 xl:min-h-full"
+    class="bg-fig-block shadow-card rounded-2xl px-1 pb-1 relative overflow-hidden flex flex-col lg:h-0 lg:min-h-full"
   >
-    <div class="flex items-center justify-between gap-2 pr-3">
-      <CardHeader
-        :icon="HeadChartUserIcon"
-        tint="indigo"
-        :title="$t('turnStileDashboard.privilegeCard.title')"
-      />
-      <span
-        class="shrink-0 rounded-full bg-fig-chip-brand px-2.5 py-0.5 font-grotesk font-semibold text-[14px] leading-[20px] text-fig-chip-brand-text"
-      >
-        <UICountUp :value="formatCount(store.privilegeCount)" />
+    <!-- soni sarlavha qatorining o'ngida, izoh sarlavha ostida (boshqa kartalar bilan bir xil) -->
+    <CardHeader
+      :icon="PersonClock20Regular"
+      :tint="TINT.second"
+      :title="$t('turnStileDashboard.privilegeCard.title')"
+      :subtitle="$t('turnStileDashboard.privilegeCard.subtitle')"
+      :subtitle-hint="$t('turnStileDashboard.privilegeCard.hint')"
+      :value="store.privilegeCount"
+    />
+
+    <!-- chiziq legendasi -->
+    <div class="flex items-center justify-end gap-3 px-3 pb-2 text-[11px] leading-4 text-fig-text-tertiary">
+      <span class="flex items-center gap-1">
+        <span class="h-2 w-3 rounded-full" :style="{ backgroundColor: `var(${PALETTE.main})` }"></span>
+        {{ $t('turnStileDashboard.privilegeCard.late') }}
+      </span>
+      <span class="flex items-center gap-1">
+        <span class="h-2 w-3 rounded-full" :style="{ backgroundColor: `var(${PALETTE.second})` }"></span>
+        {{ $t('turnStileDashboard.privilegeCard.early') }}
       </span>
     </div>
 
-    <div class="bg-surface-ground-soft rounded-xl p-1.5 flex flex-col flex-1 min-h-0">
+    <div class="bg-fig-bg-secondary rounded-xl p-1.5 flex flex-col flex-1 min-h-0">
       <n-spin :show="store.privilegeLoading" class="flex-1 min-h-0" content-class="h-full">
         <div ref="listRef" class="h-full min-h-[120px] overflow-hidden">
           <p
@@ -69,7 +86,7 @@
             :key="row.id"
             data-row
             type="button"
-            class="w-full flex items-center gap-3 rounded-lg px-2 py-2 text-left cursor-pointer transition-colors duration-200 hover:bg-surface-section"
+            class="w-full flex items-center gap-3 rounded-lg px-2 py-2 text-left cursor-pointer transition-colors duration-200 hover:bg-fig-block"
             @click="openList"
           >
             <UIUser
@@ -78,27 +95,47 @@
               :avatar-clickable="false"
               class="flex-1 min-w-0"
             />
-            <div class="shrink-0 flex flex-col items-end gap-1">
-              <span
-                class="rounded-full bg-fig-chip-green px-2 py-0.5 text-[12px] leading-[16px] text-fig-chip-green-text whitespace-nowrap"
-              >
-                {{ $t('turnStileDashboard.privilegeCard.arrive') }}: +{{ row.start_minute || 0 }}
-                {{ $t('date.minute') }}
-              </span>
-              <span
-                class="rounded-full bg-fig-chip-amber px-2 py-0.5 text-[12px] leading-[16px] text-fig-chip-amber-text whitespace-nowrap"
-              >
-                {{ $t('turnStileDashboard.privilegeCard.leave') }}: −{{ row.end_minute || 0 }}
-                {{ $t('date.minute') }}
-              </span>
-            </div>
+            <!-- Ish kuni chizig'i: chapdagi ko'k bo'lak — kech kelishga ruxsat, o'ngdagi indigo —
+                 erta ketishga ruxsat (120 daqiqa = chiziqning yarmi). Ostida daqiqalar; 0 — «—». -->
+            <n-tooltip>
+              <template #trigger>
+                <div class="w-[128px] shrink-0">
+                  <div class="relative h-2.5 overflow-hidden rounded-full bg-fig-br-disable">
+                    <div
+                      class="absolute inset-y-0 left-0 rounded-full"
+                      :style="{ width: allowanceWidth(row.start_minute), backgroundColor: `var(${PALETTE.main})` }"
+                    ></div>
+                    <div
+                      class="absolute inset-y-0 right-0 rounded-full"
+                      :style="{ width: allowanceWidth(row.end_minute), backgroundColor: `var(${PALETTE.second})` }"
+                    ></div>
+                  </div>
+                  <div class="mt-1 flex justify-between text-[11px] leading-4 font-semibold">
+                    <span :style="{ color: row.start_minute ? `var(${PALETTE.main})` : 'var(--fig-text-disable)' }">
+                      {{ row.start_minute ? `+${$t('turnStileDashboard.privilegeCard.minutesShort', { n: row.start_minute })}` : '—' }}
+                    </span>
+                    <span :style="{ color: row.end_minute ? `var(${PALETTE.second})` : 'var(--fig-text-disable)' }">
+                      {{ row.end_minute ? `−${$t('turnStileDashboard.privilegeCard.minutesShort', { n: row.end_minute })}` : '—' }}
+                    </span>
+                  </div>
+                </div>
+              </template>
+              <div v-for="item in allowances(row)" :key="item.key">
+                {{ $t(`turnStileDashboard.privilegeCard.${item.key}`) }}:
+                {{
+                  item.minutes
+                    ? $t('turnStileDashboard.privilegeCard.minutes', { n: item.minutes })
+                    : $t('turnStileDashboard.privilegeCard.none')
+                }}
+              </div>
+            </n-tooltip>
           </button>
         </div>
       </n-spin>
       <button
         v-if="store.privilegeCount"
         type="button"
-        class="shrink-0 w-full flex items-center justify-center gap-1 rounded-lg px-2 py-2 text-[13px] text-primary cursor-pointer hover:bg-surface-section"
+        class="shrink-0 w-full flex items-center justify-center gap-1 rounded-lg px-2 py-2 text-[13px] text-primary cursor-pointer hover:bg-fig-block"
         @click="openList"
       >
         {{ $t('turnStileDashboard.privilegeCard.all') }}

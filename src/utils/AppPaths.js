@@ -41,6 +41,7 @@ export const AppPaths = {
   Exam: '/exam',
   Camera: '/camera',
   Result: '/result',
+  ExamMonitoring: '/exam-monitoring',
   Certificate: '/certificate',
   Audit: '/audit',
   Department: '/department',
@@ -72,6 +73,9 @@ export const AppPaths = {
   ConfAdContract: '/conf-ad-contract',
   ConfEmployeeDocuments: '/conf-employee-documents',
   Topic: '/topic',
+  // Attestatsiya: imtihonlar (admin) va xodimning imtihonlari; eski /topic va /exam — redirect.
+  Exams: '/exams',
+  MyExams: '/my-exams',
   DrawingSignature: '/drawing-signature',
   DocViewer: '/doc-viewer',
   DocumentViewer: '/document-viewer',
@@ -80,6 +84,9 @@ export const AppPaths = {
   Command: '/command',
   AdContract: '/ad-contract',
   EmployeeDocuments: '/employee-documents',
+  // Bildirgilar (HR → xodim) va xodim kabinetidagi kiruvchi bildirgilar.
+  Notices: '/notices',
+  ConfNotices: '/conf-notices',
   Contract: '/contract',
   Vacation: '/vacation',
   Application: '/application',
@@ -151,6 +158,8 @@ export const AppPaths = {
   Devices: '/devices',
   Other: '/other',
   PrivacyPolicy: '/privacy-policy',
+  // Ochiq «Modullar» sahifalari (SEO).
+  Modules: '/modules',
   News: '/news',
   NewsCategory: '/news-category',
   View: '/view',

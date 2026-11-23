@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import i18n from '@/i18n/index.js'
+import Utils from '@/utils/Utils.js'
 const { t } = i18n.global
 export const useCategoryStore = defineStore('categoryStore', {
   state: () => ({
@@ -13,8 +14,13 @@ export const useCategoryStore = defineStore('categoryStore', {
     totalItems: 0,
     allPermissionList: [],
     structureCheck: [],
+    templateLoading: false,
+    // Savollar sahifasidagi to'plam (nomi, can_edit).
+    current: null,
     payload: {
-      name: null
+      name: null,
+      // 1 — ommaviy, 2 — korxona uchun
+      scope: 2
     },
     params: {
       page: 1,
@@ -95,6 +101,28 @@ export const useCategoryStore = defineStore('categoryStore', {
     resetForm() {
       this.elementId = null
       this.payload.name = null
+      this.payload.scope = 2
+    },
+    _template() {
+      this.templateLoading = true
+      $ApiService.categoryService
+        ._template()
+        .then((res) => {
+          Utils.blobFileDownload(
+            res.data,
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'savollar-shabloni.xlsx'
+          )
+        })
+        .finally(() => {
+          this.templateLoading = false
+        })
+    },
+    _show(id) {
+      this.current = null
+      return $ApiService.categoryService._show({ id }).then((res) => {
+        this.current = res.data.data
+      })
     }
   }
 })
