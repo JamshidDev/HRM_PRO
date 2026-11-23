@@ -84,6 +84,9 @@ export const AppPaths = {
   Command: '/command',
   AdContract: '/ad-contract',
   EmployeeDocuments: '/employee-documents',
+  // Bildirgilar (HR → xodim) va xodim kabinetidagi kiruvchi bildirgilar.
+  Notices: '/notices',
+  ConfNotices: '/conf-notices',
   Contract: '/contract',
   Vacation: '/vacation',
   Application: '/application',

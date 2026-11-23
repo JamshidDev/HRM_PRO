@@ -21,6 +21,11 @@ const _update = async (payload) => {
   return await axios.put(`/v1/hr/documents/${payload.id}`, payload.data)
 }
 
+// Bildirgi turlari tavsifi (forma shundan chiziladi).
+const _noticeSchema = async () => {
+  return await axios.get(`/v1/hr/documents/notice-schema`)
+}
+
 const _delete = async (payload) => {
   return await axios.delete(`/v1/hr/documents/${payload.id}`)
 }
@@ -31,5 +36,6 @@ export default {
   _form,
   _signersPreview,
   _update,
-  _delete
+  _delete,
+  _noticeSchema
 }

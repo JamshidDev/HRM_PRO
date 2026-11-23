@@ -10,17 +10,22 @@
   import Filter from './Filter.vue'
   import Table from './Table.vue'
   import Form from './Form.vue'
+  import { useRoute } from 'vue-router'
 
   const store = useEmployeeDocumentStore()
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
   const officeAppRef = ref(null)
+  // «Bildirgilar» menyusi shu sahifani `meta.notice` bilan ochadi.
+  const route = useRoute()
+  const notice = computed(() => Boolean(route.meta?.notice))
 
   const openDocument = (id) => {
     officeAppRef.value.openPdf(id, Utils.documentModels.documents)
   }
 
   onMounted(() => {
+    store.setMode(notice.value)
     if (!accStore.checkAction(accStore.pn.hrContractsRead)) return
     store._index()
   })
@@ -35,7 +40,11 @@
     <Filter />
     <Table @openOffice="openDocument" />
     <UIModal
-      :title="store.editId ? $t('employeeDocumentsPage.updateTitle') : $t('employeeDocumentsPage.createTitle')"
+      :title="
+        notice
+          ? $t(store.editId ? 'noticesPage.updateTitle' : 'noticesPage.createTitle')
+          : $t(store.editId ? 'employeeDocumentsPage.updateTitle' : 'employeeDocumentsPage.createTitle')
+      "
       :width="1000"
       v-model:visible="store.visible"
     >
