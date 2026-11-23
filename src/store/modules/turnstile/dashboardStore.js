@@ -41,7 +41,10 @@ export const ATTENDANCE_PREVIEW = {
   att_no_schedule: 'no_schedule',
   att_vacation: 'vacation',
   att_day_off: 'day_off',
-  att_excused: 'excused'
+  att_excused: 'excused',
+  att_waiting: 'waiting',
+  att_reasoned: 'reasoned',
+  att_scheduled: 'scheduled'
 }
 
 export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore', {
@@ -111,6 +114,9 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
       att_vacation: { name: 'turnStileDashboard.cards.vacations', key: 'att_vacation' },
       att_day_off: { name: 'turnStileDashboard.cards.casual_workers', key: 'att_day_off' },
       att_excused: { name: 'turnStileDashboard.attendance.excused', key: 'att_excused' },
+      att_waiting: { name: 'turnStileDashboard.attendance.waiting', key: 'att_waiting' },
+      att_reasoned: { name: 'turnStileDashboard.attendance.reasoned', key: 'att_reasoned' },
+      att_scheduled: { name: 'turnStileDashboard.attendance.planned', key: 'att_scheduled' },
       att_plan_came: { name: 'turnStileDashboard.plan.cameTitle', key: 'att_plan_came' },
       att_plan_absent: { name: 'turnStileDashboard.plan.absentTitle', key: 'att_plan_absent' },
       att_plan_excused: { name: 'turnStileDashboard.plan.excused', key: 'att_plan_excused' },
