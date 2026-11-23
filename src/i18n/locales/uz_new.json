@@ -5908,10 +5908,10 @@
     },
     "hourly": {
       "title": "Kun davomida ötişlar",
-      "hint": "Turniket yoki mobil orqali ötgan xodimlar soni, {n} soatlik oraliqlarda",
+      "hint": "Turniket yoki mobil orqali ötishlar soni, {n} soatlik oraliqlarda",
       "peak": "Eng gavjum vaqt",
       "active": "Faol vaqt",
-      "people": "xodim",
+      "people": "ta ötish",
       "total": "Jami ötişlar"
     },
     "rate": {

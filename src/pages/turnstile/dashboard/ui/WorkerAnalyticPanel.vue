@@ -1,7 +1,7 @@
 <script setup>
   /**
-   * «Soatlik o'tishlar» — tanlangan kunda har soatda turniket/mobil orqali o'tgan
-   * xodimlar soni (ustunli grafik, backend oraliqlari — dev'da 2 soatlik). Tepada 3 ko'rsatkich:
+   * «Soatlik o'tishlar» — tanlangan kunda har soatda turniket/mobil orqali
+   * o'tishlar soni (ustunli grafik, backend oraliqlari — dev'da 2 soatlik). Tepada 3 ko'rsatkich:
    * eng gavjum oraliq, jami o'tishlar va faol vaqt.
    * (Ilgari bu yerda jami/reja/kelgan/kelmagan legendasi turardi — grafikka aloqasi
    * yo'q edi, bu sonlar yuqori kartalar va «Reja bo'yicha davomat» da bor.)

@@ -72,7 +72,7 @@
         appendTo: 'body',
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
-        // «08:00 – 10:00» va «9 620 xodim» — oraliq aniq ko'rinsin.
+        // «08:00 – 10:00» va «9 620 ta o'tish» — oraliq aniq ko'rinsin.
         formatter: (params) => {
           const p = Array.isArray(params) ? params[0] : params
           const next = bucketEnd(p.name, events)

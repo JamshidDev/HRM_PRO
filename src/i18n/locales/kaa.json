@@ -5908,10 +5908,10 @@
     },
     "hourly": {
       "title": "Kún dawamında ótiwler",
-      "hint": "Turniket yamasa mobil arqalı ótken xızmetkerler sanı, {n} saatlıq aralıqlarda",
+      "hint": "Turniket yamasa mobil arqalı ótiwler sanı, {n} saatlıq aralıqlarda",
       "peak": "Eń kóp waqıt",
       "active": "Aktiv waqıt",
-      "people": "xızmetker",
+      "people": "ótiw",
       "total": "Jámi ótiwler"
     },
     "rate": {

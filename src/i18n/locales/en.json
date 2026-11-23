@@ -5862,10 +5862,10 @@
     },
     "hourly": {
       "title": "Passes during the day",
-      "hint": "Employees who passed via turnstile or mobile app, in {n}-hour intervals",
+      "hint": "Passes via turnstile or mobile app, in {n}-hour intervals",
       "peak": "Peak time",
       "active": "Active hours",
-      "people": "employees",
+      "people": "passes",
       "total": "Total passes"
     },
     "rate": {
