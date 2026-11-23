@@ -5982,7 +5982,8 @@
       "came": "Keldi",
       "absent": "Kelmadi",
       "total": "Jami",
-      "pick": "Oyni tanlang"
+      "pick": "Oyni tanlang",
+      "dayOff": "Dam olish kuni"
     },
     "attendanceReason": {
       "sick_leave": "Kasallik varaqasi",

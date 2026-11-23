@@ -64,9 +64,7 @@ export const useKpiStore = defineStore('kpiStore', {
           this.selectedPeriod = this.pickInitialPeriod(d.kpi)
         })
         .catch((e) => {
-          // BACKEND: tashqi KPI tizimi (kpi.das-uty.uz) javob bermasa `GET /v1/hr/kpi/positions/{id}`
-          // 503 qaytaradi (dev'da 13521 uchun, QA 03.11.2026). Bu backend/KPI tomonining holati —
-          // frontend faqat foydalanuvchiga tushunarli xabar va «Qayta urinish» ko'rsatadi.
+          // Tashqi KPI tizimi javob bermasa backend 503 qaytaradi — xabar va «Qayta urinish».
           const status = e?.response?.status
           this.showError =
             !status || status >= 500

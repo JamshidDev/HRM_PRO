@@ -5982,7 +5982,8 @@
       "came": "Keldi",
       "absent": "Kelmedi",
       "total": "Jámi",
-      "pick": "Aydı tańlań"
+      "pick": "Aydı tańlań",
+      "dayOff": "Dem alıs kúni"
     },
     "attendanceReason": {
       "sick_leave": "Kesellik paraǵı",

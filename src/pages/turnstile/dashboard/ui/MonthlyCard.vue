@@ -14,11 +14,7 @@
   const emits = defineEmits(['onPreview'])
 
   const total = computed(() => store.attendance?.total || 0)
-  // BACKEND: `stats-two.count` (joriy oy bo'yicha grafik tuzilmaganlar, dev'da 28 197) va
-  // `dashboard/attendance.absent_by_reason.no_schedule` (bugun grafigi yo'q, dev'da 34 466) farq qiladi —
-  // ta'riflar bir xil emas. Shu sabab karta yorlig'ida «Joriy oyda» deb aniq yozilgan.
-  // Ko'rsatiladigan son — backenddagi oylik son o'zi. Hisob-kitoblarda esa u bugungi jamidan oshmaydi
-  // (oylik va kunlik ta'rif farq qiladi) — ulush 100% dan oshmasin, «grafikda bor» manfiy bo'lmasin.
+  // Oylik «grafik tuzilmagan» kunlik no_schedule dan farq qiladi — ulush 100% dan oshmasin.
   const without = computed(() => store.monthlyTotalWorkerCount || 0)
   const withoutCapped = computed(() => Math.min(without.value, total.value))
   // Grafikka biriktirilganlar = faol xodimlar − grafik tuzilmaganlar.

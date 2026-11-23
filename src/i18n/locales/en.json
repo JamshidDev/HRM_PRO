@@ -5936,7 +5936,8 @@
       "came": "Came",
       "absent": "Absent",
       "total": "Total",
-      "pick": "Select month"
+      "pick": "Select month",
+      "dayOff": "Day off"
     },
     "attendanceReason": {
       "sick_leave": "Sick leave",

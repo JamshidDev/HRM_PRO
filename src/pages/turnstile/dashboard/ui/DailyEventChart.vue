@@ -38,7 +38,7 @@
   })
 
   // Oraliq: yorliq = oraliq BOSHI (backend 2 soatlik: 00:00 … 22:00 kunni to'liq qoplaydi).
-  // BACKEND: `daily_attendance_chart[].hour` oraliq boshimi yoki oxirimi — tasdiqlash kerak.
+  // `hour` — 2 soatlik oraliq boshi (00:00 = 00:00–01:59).
   const toMinutes = (hour) => {
     const [h, m] = String(hour).split(':').map(Number)
     return (h || 0) * 60 + (m || 0)
