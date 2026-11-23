@@ -5955,7 +5955,7 @@
     "attendance": {
       "vacation": "Ta'tilda",
       "day_off": "Dam olish kunida",
-      "excused": "Sababli",
+      "excused": "Boshqa sabablar",
       "came": "Kelganlar",
       "absent": "Kelmaganlar",
       "planned": "Rejalashtirilgan",
@@ -5994,7 +5994,8 @@
       "good": "Yaxshi",
       "medium": "O'rtacha",
       "low": "Past",
-      "mustCome": "Kelishi shart"
+      "mustCome": "Kelishi shart",
+      "levels": "Daraja: {good}% va undan yuqori — Yaxshi, {medium}–{good}% — O'rtacha, {medium}% dan past — Past"
     },
     "kpi": {
       "cameHint": "Tanlangan kunda kamida bir marta turniket yoki mobil ilova orqali o'tgan xodimlar",

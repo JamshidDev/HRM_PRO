@@ -67,7 +67,8 @@
     @on-preview="emits('onPreview', $event)"
   >
     <template #visual>
-      <div v-if="total" class="grid w-full grid-cols-2 gap-2">
+      <!-- Ma'lumot bo'lmasa ham plitkalar ko'rinadi (0%) — karta bo'sh kulrang chiziqqa tushib qolmasin. -->
+      <div class="grid w-full grid-cols-2 gap-2">
         <button
           v-for="tile in tiles"
           :key="tile.previewType"

@@ -5955,7 +5955,7 @@
     "attendance": {
       "vacation": "Miynet dem alısında",
       "day_off": "Dem alıw kúninde",
-      "excused": "Sebepli",
+      "excused": "Basqa sebepler",
       "came": "Kelgenler",
       "absent": "Kelmegenler",
       "planned": "Rejelestirilgen",
@@ -5994,7 +5994,8 @@
       "good": "Jaqsı",
       "medium": "Ortasha",
       "low": "Tómen",
-      "mustCome": "Keliwi shárt"
+      "mustCome": "Keliwi shárt",
+      "levels": "Dáreje: {good}% hám onnan joqarı — Jaqsı, {medium}–{good}% — Ortasha, {medium}% dan tómen — Tómen"
     },
     "kpi": {
       "cameHint": "Tańlanǵan kúni keminde bir ret turniket yamasa mobil qosımsha arqalı ótken xızmetkerler",

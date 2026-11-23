@@ -225,7 +225,8 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
     workerStatsData: null,
     mainCards: [],
     attendance: null,
-    officeTop: { in_office: [], left_office: [] },
+    // 4 karta avatarlari — har holatdan dastlabki 3 xodim (`attendance/workers`, per_page 3)
+    officeTop: { came: [], absent: [], in_office: [], left_office: [] },
     mainChartLoading: false,
     totalWorkerCount: 0,
 
@@ -296,7 +297,7 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
           this.workerStatsLoading = false
           this.grandLoading = false
         }),
-        ...['in_office', 'left_office'].map((status) =>
+        ...['came', 'absent', 'in_office', 'left_office'].map((status) =>
           load(ATTENDANCE_WORKERS_URL, { status, per_page: 3, page: 1 }).then((data) => {
             this.officeTop[status] = (data?.data || []).map((v) => ({
               ...v,
@@ -389,6 +390,8 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
           count: a?.came || 0,
           icon: markRaw(PersonAvailable20Regular),
           tint: 'main',
+          listMore: a?.came || 0,
+          list: this.officeTop.came,
           previewType: 'att_came',
           rows: [
             row('turnstile', a?.came_turnstile, 'att_came_turnstile'),
@@ -401,6 +404,8 @@ export const useTurnstileDashboardStore = defineStore('turnstileDashboardStore',
           count: a?.absent || 0,
           icon: markRaw(PersonDelete20Regular),
           tint: 'bad',
+          listMore: a?.absent || 0,
+          list: this.officeTop.absent,
           previewType: 'att_absent',
           rows: [
             row('noEvent', noEvent, 'att_plan_absent'),

@@ -18,6 +18,7 @@
   const emits = defineEmits(['onPreview'])
 
   const GOOD = 90 // shu foizdan «Yaxshi»
+  const MEDIUM = 70 // shu foizdan «O'rtacha», undan past — «Past»
   // Sarlavha «Bugungi …» faqat bugungi sana tanlanganda — o'tgan kun tanlansa «Davomat darajasi».
   const isToday = computed(
     () => new Date(store.dashboardParams.date || Date.now()).toDateString() === new Date().toDateString()
@@ -44,7 +45,7 @@
   // Daraja: rang roli va pill matni.
   const level = computed(() => {
     if (percent.value >= GOOD) return { role: 'main', key: 'good' }
-    if (percent.value >= 70) return { role: 'warn', key: 'medium' }
+    if (percent.value >= MEDIUM) return { role: 'warn', key: 'medium' }
     return { role: 'bad', key: 'low' }
   })
   const arcColors = computed(() =>
@@ -118,7 +119,9 @@
               <Info16Regular />
             </n-icon>
           </template>
-          {{ $t('turnStileDashboard.rate.hint') }}
+          <p>{{ $t('turnStileDashboard.rate.hint') }}</p>
+          <!-- Chip darajalari (Yaxshi / O'rtacha / Past) qaysi foizdan ekani -->
+          <p class="mt-1.5">{{ $t('turnStileDashboard.rate.levels', { good: GOOD, medium: MEDIUM }) }}</p>
         </n-tooltip>
       </template>
     </CardHeader>

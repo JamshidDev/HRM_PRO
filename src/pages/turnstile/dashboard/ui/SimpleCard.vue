@@ -71,14 +71,14 @@
       </n-tooltip>
     </div>
 
-    <div class="flex min-h-[28px] items-center justify-between gap-3 px-2">
+    <div class="flex min-h-[34px] items-center justify-between gap-3 px-2">
       <p class="text-[20px] leading-6 font-semibold whitespace-nowrap text-fig-text-primary">
         <UICountUp :value="formatCount(count)" />
       </p>
       <span v-if="listMore && list?.length" class="card-avatars shrink-0">
         <!-- Faqat dastlabki 3 xodim (namuna); jami son chapda yozilgan, «+39 101»
-             kabi katta son 28px doirachaga sig'masdi. -->
-        <UIUserGroup @click.stop :max="4" :size="28" :data="list.slice(0, 3)" hide-more />
+             kabi katta son doirachaga sig'masdi. -->
+        <UIUserGroup @click.stop :max="4" :size="34" :data="list.slice(0, 3)" hide-more />
       </span>
     </div>
 
@@ -123,10 +123,10 @@
     height: 20px;
   }
 
-  /* Avatarlar 28px, 1px halqa. Global `.ui__user-group` 36×42 rasm beradi. */
+  /* Avatarlar 34px, 1px halqa. Global `.ui__user-group` 36×42 rasm beradi. */
   .card-avatars :deep(.ui__user-group > img) {
-    width: 28px !important;
-    height: 28px !important;
+    width: 34px !important;
+    height: 34px !important;
     aspect-ratio: 1 / 1;
     object-fit: cover;
   }
