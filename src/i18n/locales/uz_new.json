@@ -8219,5 +8219,10 @@
   "seo": {
     "loginTitle": "HRM PRO — kadrlar boşqaruvi va elektron hujjat aylanişi {'|'} Özbekiston temir yöllari",
     "modulesLink": "HRM PRO modullari va imkoniyatlari"
+  },
+  "privacyPage": {
+    "toc": "Mundarija",
+    "pdf": "PDF yuklaş",
+    "backToLogin": "Kiriş sahifasiga qaytiş"
   }
 }
