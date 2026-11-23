@@ -586,7 +586,7 @@
     "changeRoleConfirm": "Bu hisobdan chiqib boshqa hisobga kirish uchun kerakli hisobni tanlang va 20 soniya kuting"
   },
   "sidebar": {
-    "hrm": "Mening korxonam moduli",
+    "hrm": "Kadr boshqaruvi moduli",
     "admin": "Admin moduli",
     "chat": "Xabar va e'lonlar moduli",
     "docflow": "Mening hujjatlarim",
@@ -5750,7 +5750,7 @@
   "navigation": {
     "hrm": "Kadrlar boshqaruvi",
     "docFlow": "Hujjat aylanishi",
-    "myOrg": "Mening korxonam",
+    "myOrg": "Kadr boshqaruvi",
     "myDocs": "Mening hujjatlarim",
     "attestation": "Attestatsiya",
     "turnstile": "Turniket",

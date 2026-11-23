@@ -571,7 +571,7 @@
     "changeRoleConfirm": "Select the desired account to switch and wait 20 seconds"
   },
   "sidebar": {
-    "hrm": "My Organization Module",
+    "hrm": "HR Management Module",
     "admin": "Admin Module",
     "chat": "Messages & Announcements Module",
     "docflow": "My Documents",
@@ -5705,7 +5705,7 @@
   "navigation": {
     "hrm": "HR Management",
     "docFlow": "Document Flow",
-    "myOrg": "My Organization",
+    "myOrg": "HR Management",
     "myDocs": "My Documents",
     "attestation": "Certification",
     "turnstile": "Turnstile",
