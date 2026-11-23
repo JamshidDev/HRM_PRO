@@ -52,5 +52,16 @@ export const DOCUMENT_TYPES = {
   }
 }
 
+// Bildirgi (HR → xodim): NTF turi va shu turning maydonlari — «Bildirgilar» menyusida.
+DOCUMENT_TYPES.notice = {
+  label: 'noticesPage.item',
+  numberRequired: false,
+  emptyData: () => ({ notice_type: null, fields: {} }),
+  requiredData: ['notice_type']
+}
+
+// «Xodim hujjatlari» tur tanlovida bildirgi yo'q (u alohida menyuda).
 export const documentTypeOptions = (t) =>
-  Object.entries(DOCUMENT_TYPES).map(([id, v]) => ({ id, name: t(v.label) }))
+  Object.entries(DOCUMENT_TYPES)
+    .filter(([id]) => id !== 'notice')
+    .map(([id, v]) => ({ id, name: t(v.label) }))
