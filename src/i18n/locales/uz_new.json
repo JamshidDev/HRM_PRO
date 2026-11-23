@@ -625,7 +625,7 @@
     "signUp": "Röyxatdan ötiş",
     "description": {
       "title": "HRMS",
-      "subtitle": "HRM PRO — «Oʻzbekiston temir yoʻllari» AJ kadrlar boşqaruvi tizimi",
+      "subtitle": "HRM PRO — «Özbekiston temir yöllari» AJ kadrlar boşqaruvi tizimi",
       "text": "Xodimlaringizni samarali boşqariş, iş vaqtini nazorat qiliş va hujjatlarni avtomatlaştiriş uçun qulay yeçim. HR jarayonlarini optimallaştiring va biznesingizni yangi bosqiçga olib çiqing!"
     },
     "login": "Kiriş",
@@ -3498,15 +3498,15 @@
       "days": "Kunlar soni: {n}",
       "months": "Oylar soni: {n}",
       "weekdays": {
-        "1": "Dushanba",
-        "2": "Seshanba",
-        "3": "Chorshanba",
-        "4": "Payshanba",
+        "1": "Duşanba",
+        "2": "Seşanba",
+        "3": "Çorşanba",
+        "4": "Payşanba",
         "5": "Juma",
-        "6": "Shanba",
-        "7": "Yakshanba"
+        "6": "Şanba",
+        "7": "Yakşanba"
       },
-      "recordTitle": "Qoʻshimcha maʼlumotlar (hujjatga yozilmaydi)"
+      "recordTitle": "Qöşimça ma'lumotlar (hujjatga yozilmaydi)"
     },
     "draft": "Qoralama",
     "draftSignTitle": "Ariza qoralama holatida",
@@ -5928,10 +5928,10 @@
     },
     "hourly": {
       "title": "Kun davomida ötişlar",
-      "hint": "Turniket yoki mobil orqali ötishlar soni, {n} soatlik oraliqlarda",
+      "hint": "Turniket yoki mobil orqali ötişlar soni, {n} soatlik oraliqlarda",
       "peak": "Eng gavjum vaqt",
       "active": "Faol vaqt",
-      "people": "ta ötish",
+      "people": "ta ötiş",
       "total": "Jami ötişlar"
     },
     "rate": {
@@ -6003,7 +6003,7 @@
       "absent": "Kelmadi",
       "total": "Jami",
       "pick": "Oyni tanlang",
-      "dayOff": "Dam olish kuni"
+      "dayOff": "Dam oliş kuni"
     },
     "attendanceReason": {
       "sick_leave": "Kasallik varaqasi",
@@ -8217,7 +8217,7 @@
     }
   },
   "seo": {
-    "loginTitle": "HRM PRO — kadrlar boşqaruvi va elektron hujjat aylanişi {'|'} Oʻzbekiston temir yoʻllari",
+    "loginTitle": "HRM PRO — kadrlar boşqaruvi va elektron hujjat aylanişi {'|'} Özbekiston temir yöllari",
     "modulesLink": "HRM PRO modullari va imkoniyatlari"
   }
 }
