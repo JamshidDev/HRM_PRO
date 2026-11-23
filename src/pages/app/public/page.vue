@@ -11,6 +11,7 @@
     Person24Filled
   } from '@vicons/fluent'
   import { useAppBreakpoints } from '@/composables/useBreakpoint.js'
+  import { UIStatus } from '@components'
   import i18n from '@/i18n/index.js'
 
   const store = usePublicStore()
@@ -188,12 +189,21 @@
               <h3 class="text-base font-semibold text-textColor0">
                 {{ $t('publicPage.documentInfo') }}
               </h3>
-              <n-tag v-if="store.meta.is_cancelled" type="error" size="small" round>
-                {{ $t('publicPage.cancelled') }}
-              </n-tag>
-              <n-tag v-else-if="store.meta.status?.name" type="info" size="small" round>
-                {{ store.meta.status.name }}
-              </n-tag>
+              <!-- Kelishuvchilardagi bilan bir xil chip (UIStatus fig) -->
+              <UIStatus
+                v-if="store.meta.is_cancelled"
+                class="shrink-0"
+                :status="{ id: 4, name: $t('publicPage.cancelled') }"
+                fig
+                :tooltip="false"
+              />
+              <UIStatus
+                v-else-if="store.meta.status?.name"
+                class="shrink-0"
+                :status="store.meta.status"
+                fig
+                :tooltip="false"
+              />
             </div>
             <div
               v-if="store.meta.is_cancelled && store.meta.cancelled_by"
