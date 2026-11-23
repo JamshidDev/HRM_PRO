@@ -117,6 +117,7 @@ export const useGuestStore = defineStore('guestStore', {
       $ApiService.guestService._delete({ id }).then(() => {
         $Toast.success(t('message.successDone'))
         this._index()
+        this._summary(this.params.date)
       })
     },
     openEvents(row) {

@@ -1,5 +1,10 @@
 <script setup>
-  import { Search16Regular, CheckmarkCircle16Filled, ErrorCircle16Filled } from '@vicons/fluent'
+  import {
+    CheckmarkCircle16Filled,
+    ErrorCircle16Filled,
+    PersonAdd20Regular,
+    Search16Regular
+  } from '@vicons/fluent'
   import { useGuestStore } from '@/store/modules/index.js'
 
   // JSHSHIR bo'yicha HikCentral'dan qidirish: ism va ruxsat darajalari ko'rinadi, keyin ish vaqti bilan qo'shiladi.
@@ -23,11 +28,21 @@
 </script>
 
 <template>
-  <div class="rounded-xl border border-surface-line p-3 flex flex-col gap-3">
-    <p class="text-sm font-semibold text-textColor0">{{ $t('guestPage.addByPin') }}</p>
-    <div class="flex flex-wrap items-center gap-2">
+  <div class="flex flex-col gap-3">
+    <div class="flex items-center gap-2">
+      <span
+        class="flex h-8 w-8 items-center justify-center rounded-lg bg-fig-chip-brand text-fig-chip-brand-text"
+      >
+        <n-icon size="18" :component="PersonAdd20Regular" />
+      </span>
+      <div>
+        <p class="text-sm font-semibold text-textColor0">{{ $t('guestPage.attachTitle') }}</p>
+        <p class="text-xs text-fig-text-tertiary">{{ $t('guestPage.addByPin') }}</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
       <n-input
-        class="w-[240px]!"
+        class="flex-1"
         :value="store.lookupPin"
         :maxlength="14"
         :allow-input="(v) => /^\d*$/.test(v)"
@@ -55,7 +70,7 @@
     </div>
 
     <div v-if="r?.found" class="flex flex-col gap-3">
-      <div class="rounded-lg bg-surface-ground-soft px-3 py-2">
+      <div class="rounded-xl border border-surface-line bg-surface-section px-3 py-2">
         <p class="text-sm font-semibold text-textColor0">{{ fullName || '—' }}</p>
         <p class="text-xs text-fig-text-tertiary">{{ r.pin }}</p>
       </div>
@@ -72,7 +87,7 @@
           <div
             v-for="al in r.access_levels"
             :key="al.id"
-            class="flex items-start gap-2 rounded-lg border border-surface-line px-3 py-2"
+            class="flex items-start gap-2 rounded-lg border border-surface-line bg-surface-section px-3 py-2"
           >
             <n-icon
               size="16"

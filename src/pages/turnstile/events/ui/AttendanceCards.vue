@@ -10,7 +10,7 @@
   import i18n from '@/i18n/index.js'
   import Utils from '@/utils/Utils.js'
   import SimpleCardSketlon from '@/pages/turnstile/dashboard/ui/SimpleCardSketlon.vue'
-  import GuestsPage from '@/pages/turnstile/events/guests/GuestsPage.vue'
+  import GuestsModal from '@/pages/turnstile/events/guests/GuestsModal.vue'
   import StatRowsCard from './StatRowsCard.vue'
   import { UIModal } from '@/components/index.js'
   import {
@@ -184,11 +184,9 @@
   </div>
   <UIModal
     v-model:visible="guestStore.listVisible"
-    :width="1200"
+    :width="1180"
     :title="$t('guestPage.listTitle')"
   >
-    <div class="h-[70vh] flex flex-col min-h-0">
-      <GuestsPage embedded />
-    </div>
+    <GuestsModal />
   </UIModal>
 </template>
