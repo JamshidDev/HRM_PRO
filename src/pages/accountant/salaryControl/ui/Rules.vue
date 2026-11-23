@@ -8,6 +8,7 @@
   import { useSalaryControlStore, useAppStore } from '@/store/modules/index.js'
   import { money, mln, chartTheme, tokenColor, normText } from '../helpers.js'
   import { RULES, evalRules, loadLists, saveList, saveCap } from '../engine.js'
+  import { usePaged } from '../usePaged.js'
   import { SECTION, CHART } from '../explain.js'
   import Card from './Card.vue'
   import EChart from './EChart.vue'
@@ -157,6 +158,9 @@
       )
       .sort((a, b) => (RES_RANK[a.res] - RES_RANK[b.res]) || b.s - a.s)
   })
+  // DAS-16729: reestr minglab qator — client-side pagination (qotmasin).
+  const { page: regPage, pageSize: regPageSize, paged: regPaged, pageCount: regPageCount } =
+    usePaged(registry, 50)
 
   // —— Client-side CSV (maket bilan bir xil — natija reestri) ————————————————
   const onExport = () => {
@@ -329,8 +333,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(x, i) in registry" :key="i">
-                <td class="num">{{ i + 1 }}</td>
+              <tr v-for="(x, i) in regPaged" :key="i">
+                <td class="num">{{ (regPage - 1) * regPageSize + i + 1 }}</td>
                 <td><b class="sc-name">{{ x.fio || '—' }}</b></td>
                 <td class="sc-muted">{{ x.lav || '—' }}</td>
                 <td>{{ normText(x.t) }} <span class="sc-muted">({{ x.k }})</span></td>
@@ -343,6 +347,14 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        <div v-if="regPageCount > 1" class="sc-pager">
+          <n-pagination
+            v-model:page="regPage"
+            :page-count="regPageCount"
+            :page-slot="7"
+            size="small"
+          />
         </div>
       </Card>
     </template>
@@ -525,6 +537,11 @@
     max-height: 560px;
     border-radius: 12px;
     border: 0.8px solid var(--fig-br-disable);
+  }
+  .sc-pager {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 4px 2px;
   }
   .sc-tbl {
     width: 100%;
