@@ -42,7 +42,7 @@
     <template v-else>
       <!-- Sahifalar chizilguncha — sahifa shaklidagi skeleton -->
       <div v-if="!store.totalPdfPage" class="w-full">
-        <n-skeleton height="1100px" style="border-radius: 20px" />
+        <n-skeleton height="1100px" style="border-radius: 0" />
       </div>
       <PdfViewer :container="false" />
     </template>
@@ -57,7 +57,7 @@
     height: auto;
     margin: 0 auto 20px;
     border: 0 !important;
-    border-radius: 20px; /* o'ng paneldagi `.sign-card` bilan bir xil */
+    border-radius: 0; /* haqiqiy qog'oz varaq kabi — burchaklar to'g'ri, yumaloq emas */
     background: #fff;
     box-shadow:
       0 1px 3px rgb(16 24 40 / 10%),
