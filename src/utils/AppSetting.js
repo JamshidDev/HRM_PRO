@@ -15,7 +15,6 @@ export const useAppSetting = {
     pfx: 'pfx'
   },
   appPermission: 'appPermission',
-  temporaryToken: 'temporarySecretKey',
   mustChangeKey: 'must-change-password',
   soundEnabledKey: 'app-sound-enabled',
   // Brauzer qurilma id — push shu qatorga bog'lanadi (login + logout header'i).

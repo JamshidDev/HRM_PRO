@@ -16,18 +16,6 @@ const _update = async (payload) => {
   return await axios.put(`/v1/admin/users/${payload?.id}/roles/detach`, payload.data)
 }
 
-const _loginByIdToSystem = async (payload) => {
-  return await axios.get(`/v1/admin/users/${payload?.id}/login`, { params: payload.params })
-}
-
-const _temporaryToken = async (payload) => {
-  return await axios.get(`/v1/admin/access-for-admin`, { params: payload?.params })
-}
-
-const _accessForAdmin = async (payload) => {
-  return await axios.post(`/v1/user/access-for-admin`, payload?.data)
-}
-
 // Asosiy (login) telefon raqami — xodim kartochkasidagi mos raqam ham almashadi.
 const _updatePhone = async (payload) => {
   return await axios.put(`/v1/admin/users/${payload?.id}/phone`, payload.data)
@@ -74,9 +62,6 @@ export default {
   _create,
   _myRoles,
   _update,
-  _loginByIdToSystem,
-  _temporaryToken,
-  _accessForAdmin,
   _onSpam,
   _updatePin,
   _updatePhone,

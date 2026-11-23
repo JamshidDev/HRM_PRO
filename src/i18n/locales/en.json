@@ -2,6 +2,19 @@
   "guestPage": {
     "tabWorkers": "Employees",
     "tabGuests": "Guests",
+    "attachedTotal": "Total attached",
+    "lateToday": "Late today",
+    "listTitle": "Attached guests",
+    "attachedTitle": "Added",
+    "detachConfirm": "Detach {name} from the guest list? Turnstile events are kept.",
+    "emptyTitle": "No guests added yet",
+    "emptyHint": "Find the person in HikCentral by PINFL on the left, set work hours and add.",
+    "addByPin": "Find by PINFL and add",
+    "search": "Search",
+    "accessLevels": "Turnstile access levels",
+    "accessUnknown": "Could not reach the HikCentral database — access levels unknown",
+    "accessNone": "Not assigned to any turnstile",
+    "cameToday": "Arrived today",
     "fullName": "Full name",
     "workTime": "Work hours",
     "cameAt": "Arrived",
@@ -5896,7 +5909,16 @@
     "attendance": {
       "vacation": "On vacation",
       "day_off": "Day off",
-      "excused": "Excused",
+      "excused": "Other reasons",
+      "came": "Arrived",
+      "absent": "Absent",
+      "planned": "Scheduled",
+      "lateCome": "Late arrivals",
+      "earlyLeave": "Left early",
+      "waiting": "Expected",
+      "waitingInfo": "Shift (with grace) hasn't started yet, no other reason — moves to absent once it passes",
+      "reasoned": "Excused",
+      "reasonedInfo": "On vacation, day off and excused (sick leave, business trip, no turnstile, exempt)",
       "firstEvent": "First event",
       "lastEvent": "Last event",
       "direction": "Direction",
@@ -5926,7 +5948,8 @@
       "good": "Good",
       "medium": "Average",
       "low": "Low",
-      "mustCome": "Required"
+      "mustCome": "Required",
+      "levels": "Level: {good}% and above — Good, {medium}–{good}% — Average, below {medium}% — Low"
     },
     "kpi": {
       "cameHint": "Employees who passed at least once on the selected day via turnstile or mobile app",
@@ -5977,17 +6000,8 @@
       "minutesShort": "{n} min",
       "subtitle": "Allowed to arrive late or leave early"
     },
-    "tabs": {
-      "report": "Report",
-      "attendance": "Attendance"
-    },
     "month": {
-      "title": "Attendance for {month} (by turnstile and mobile events)",
-      "came": "Came",
-      "absent": "Absent",
-      "total": "Total",
-      "pick": "Select month",
-      "dayOff": "Day off"
+      "total": "Total"
     },
     "attendanceReason": {
       "sick_leave": "Sick leave",

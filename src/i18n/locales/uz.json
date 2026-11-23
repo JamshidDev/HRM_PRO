@@ -2,6 +2,19 @@
   "guestPage": {
     "tabWorkers": "Xodimlar",
     "tabGuests": "Mehmonlar",
+    "attachedTotal": "Jami biriktirilgan",
+    "lateToday": "Bugun kech qolgan",
+    "listTitle": "Biriktirilgan mehmonlar",
+    "attachedTitle": "Qo'shilganlar",
+    "detachConfirm": "{name} mehmonlar ro'yxatidan ajratilsinmi? Turniket hodisalari saqlanib qoladi.",
+    "emptyTitle": "Hali mehmon qo'shilmagan",
+    "emptyHint": "Chapdagi JSHSHIR qidiruvi orqali HikCentral'dagi odamni toping va ish vaqtini belgilab qo'shing.",
+    "addByPin": "JSHSHIR bo'yicha qidirib qo'shish",
+    "search": "Izlash",
+    "accessLevels": "Turniket ruxsat darajalari",
+    "accessUnknown": "HikCentral bazasiga ulanib bo'lmadi — ruxsat darajalari noma'lum",
+    "accessNone": "Turniketlarga biriktirilmagan",
+    "cameToday": "Bugun kelgan",
     "fullName": "F.I.Sh",
     "workTime": "Ish vaqti",
     "cameAt": "Keldi",
@@ -5942,7 +5955,16 @@
     "attendance": {
       "vacation": "Ta'tilda",
       "day_off": "Dam olish kunida",
-      "excused": "Sababli",
+      "excused": "Boshqa sabablar",
+      "came": "Kelganlar",
+      "absent": "Kelmaganlar",
+      "planned": "Rejalashtirilgan",
+      "lateCome": "Kech kelganlar",
+      "earlyLeave": "Erta ketganlar",
+      "waiting": "Kutilayotganlar",
+      "waitingInfo": "Smenasi (imtiyoz bilan) hali boshlanmagan, boshqa sababi yo'q — vaqt o'tsa kelmaganlarga o'tadi",
+      "reasoned": "Sabablilar",
+      "reasonedInfo": "Ta'tildagilar, dam olish kunidagilar va sababli (varaqa, safar, turniketsiz, ozod)",
       "firstEvent": "Birinchi hodisa",
       "lastEvent": "Oxirgi hodisa",
       "direction": "Hodisa turi",
@@ -5972,7 +5994,8 @@
       "good": "Yaxshi",
       "medium": "O'rtacha",
       "low": "Past",
-      "mustCome": "Kelishi shart"
+      "mustCome": "Kelishi shart",
+      "levels": "Daraja: {good}% va undan yuqori — Yaxshi, {medium}–{good}% — O'rtacha, {medium}% dan past — Past"
     },
     "kpi": {
       "cameHint": "Tanlangan kunda kamida bir marta turniket yoki mobil ilova orqali o'tgan xodimlar",
@@ -6023,17 +6046,8 @@
       "minutesShort": "{n} daq",
       "subtitle": "Kech kelish yoki erta ketishga ruxsat berilgan"
     },
-    "tabs": {
-      "report": "Hisobot",
-      "attendance": "Davomat"
-    },
     "month": {
-      "title": "{month} oyi davomati (turniket va mobil hodisalari bo'yicha)",
-      "came": "Keldi",
-      "absent": "Kelmadi",
-      "total": "Jami",
-      "pick": "Oyni tanlang",
-      "dayOff": "Dam olish kuni"
+      "total": "Jami"
     },
     "attendanceReason": {
       "sick_leave": "Kasallik varaqasi",

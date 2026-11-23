@@ -6,7 +6,7 @@
    *   (rangli chiziq, nom, son, ulush, ›) → ixtiyoriy `#footer` (masalan, holat pill'i).
    * Tor kartada donut tepaga, legenda ostiga tushadi.
    */
-  import { ChevronRight20Regular } from '@vicons/fluent'
+  import { ChevronRight20Regular, Info16Regular } from '@vicons/fluent'
   import { Utils } from '@/utils/index.js'
   import { UICountUp } from '@/components/index.js'
   import CardHeader from './CardHeader.vue'
@@ -20,7 +20,8 @@
     subtitle: String,
     subtitleHint: String,
     loading: Boolean,
-    // [{ label (i18n kalit), info? (i18n kalit), count, token, previewType? }]
+    // [{ label (i18n kalit), info? (i18n kalit), infoIcon?, count, token, previewType? }]
+    // `infoIcon: true` — `info` nom yonidagi ⓘ tooltipda ko'rinadi (aks holda faqat brauzer `title`).
     items: { type: Array, default: () => [] },
     // Donut markazidagi kichik yozuv (masalan, «jami»)
     centerLabel: { type: String, default: null },
@@ -74,7 +75,7 @@
           type="button"
           class="group flex w-full items-center gap-2.5 rounded-xl py-1.5 pr-1 pl-2 text-left transition-colors duration-200"
           :class="item.previewType ? 'cursor-pointer hover:bg-fig-bg-secondary' : ''"
-          :title="item.info ? $t(item.info) : undefined"
+          :title="item.info && !item.infoIcon ? $t(item.info) : undefined"
           @click="item.previewType && emits('onPreview', item.previewType)"
         >
           <span
@@ -82,8 +83,19 @@
             :style="{ backgroundColor: `var(${item.token})` }"
           ></span>
           <span class="min-w-0 flex-1">
-            <span class="block truncate text-[13px] leading-[18px] font-semibold text-fig-text-primary">
-              {{ $t(item.label) }}
+            <span class="flex min-w-0 items-center gap-1">
+              <span class="truncate text-[13px] leading-[18px] font-semibold text-fig-text-primary">
+                {{ $t(item.label) }}
+              </span>
+              <n-tooltip v-if="item.infoIcon && item.info" :style="{ maxWidth: '260px' }">
+                <template #trigger>
+                  <!-- ⓘ bosilsa ro'yxat ochilmasin -->
+                  <n-icon size="14" class="shrink-0 cursor-help text-fig-text-tertiary" @click.stop>
+                    <Info16Regular />
+                  </n-icon>
+                </template>
+                {{ $t(item.info) }}
+              </n-tooltip>
             </span>
             <span class="block text-[12px] leading-4 font-medium" :style="{ color: `var(${item.token})` }">
               {{ share(item.count) }}%

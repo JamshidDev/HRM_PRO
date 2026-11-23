@@ -17,8 +17,16 @@ const _delete = async (payload) => {
   return await axios.delete(`/v1/turnstile/guests/${payload.id}`)
 }
 
+const _summary = async (payload) => {
+  return await axios.get(`/v1/turnstile/guests/summary`, { params: payload?.params })
+}
+
+const _lookup = async (payload) => {
+  return await axios.get(`/v1/turnstile/guests/lookup`, { params: payload.params })
+}
+
 const _events = async (payload) => {
   return await axios.get(`/v1/turnstile/guests/${payload.id}/events`, { params: payload.params })
 }
 
-export default { _index, _create, _update, _delete, _events }
+export default { _index, _summary, _lookup, _create, _update, _delete, _events }

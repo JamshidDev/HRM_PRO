@@ -21,6 +21,20 @@
     })
   }
 
+  // Otasi/Onasi/Qaynotasi/Qaynonasi bittadan — qo'shilganlari turlar ro'yxatidan yashiriladi (tahrirlanayotganidan tashqari).
+  const UNIQUE_TYPES = [1, 2, 10, 11]
+  const relativeOptions = computed(() => {
+    const editing = store.visibleType ? null : store.elementId
+    const own = store.list.find((v) => v.id === editing)?.relative?.id
+    const taken = new Set(
+      store.list
+        .filter((v) => v.id !== editing && UNIQUE_TYPES.includes(v.relative?.id))
+        .map((v) => v.relative.id)
+    )
+    taken.delete(own)
+    return componentStore.relativesList.filter((o) => !taken.has(o.id))
+  })
+
   // Vafot etgan qarindoshda tug'ilgan sana majburiy emas (ko'pincha aniq ma'lum emas).
   const rules = computed(() => {
     if (!store.payload.died) return validationRules.relativePage
@@ -28,13 +42,12 @@
     return rest
   })
 
-  // «Vafot etgan» — tirik odamga tegishli maydonlar tozalanadi; tug'ilgan sana/joy qoladi (obyektivkada chiqadi).
+  // «Vafot etgan» — JSHSHIR va yashash manzili tozalanadi; lavozim yozsa bo'ladi (obyektivkada chiqadi).
   watch(
     () => store.payload.died,
     (died) => {
       if (!died) return
       store.payload.pin = null
-      store.payload.post_name = null
       store.payload.address = null
     }
   )
@@ -53,7 +66,7 @@
         <n-select
           v-model:value="store.payload.relative"
           filterable
-          :options="componentStore.relativesList"
+          :options="relativeOptions"
           label-field="name"
           value-field="id"
           :loading="componentStore.enumLoading"
@@ -82,7 +95,7 @@
         />
       </n-form-item>
       <n-form-item :label="$t(`relativePage.form.post_name`)" path="post_name">
-        <n-input type="text" v-model:value="store.payload.post_name" :disabled="store.payload.died" />
+        <n-input type="text" v-model:value="store.payload.post_name" />
       </n-form-item>
       <n-form-item :label="$t(`relativePage.form.birth_place`)" path="birth_place">
         <n-input type="text" v-model:value="store.payload.birth_place" />

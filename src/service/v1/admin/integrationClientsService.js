@@ -19,7 +19,6 @@ const _list = async (params) => await axios.get('/v1/admin/integration-clients',
 const _export = async (params) =>
   await axios.get('/v1/admin/integration-clients/export', { params, responseType: 'blob' })
 const _show = async (id) => await axios.get(`/v1/admin/integration-clients/${id}`)
-const _secret = async (id) => await axios.get(`/v1/admin/integration-clients/${id}/secret`)
 const _create = async (data) => await axios.post('/v1/admin/integration-clients', data)
 const _update = async (id, data) => await axios.put(`/v1/admin/integration-clients/${id}`, data)
 const _organizations = async (id, data) => await axios.put(`/v1/admin/integration-clients/${id}/organizations`, data)
@@ -30,5 +29,5 @@ const _apiCatalog = async () => await axios.get('/v1/admin/integration-clients/a
 
 export default {
   _summary, _timeline, _topClients, _topEndpoints, _methods, _statuses, _logs,
-  _meta, _list, _export, _show, _secret, _create, _update, _organizations, _rotate, _delete, _apiCatalog
+  _meta, _list, _export, _show, _create, _update, _organizations, _rotate, _delete, _apiCatalog
 }

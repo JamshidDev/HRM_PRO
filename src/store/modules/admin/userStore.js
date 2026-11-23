@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useAccountStore } from '@/store/modules/index.js'
-import { AppPaths, useAppSetting } from '@/utils/index.js'
+import { AppPaths } from '@/utils/index.js'
 import router from '@/router/index.js'
 
 export const useUserStore = defineStore('user', {
@@ -37,7 +37,6 @@ export const useUserStore = defineStore('user', {
 
     myRoleList: [],
     myRoleLoading: false,
-    loginLoading: false,
     confirmVisible: false,
     isSpam: false,
     isPermissionsVisible: false,
@@ -144,22 +143,6 @@ export const useUserStore = defineStore('user', {
         .finally(() => {
           row.eimzoLoading = false
         })
-    },
-    _loginById(id, callback) {
-      this.loginLoading = true
-      $ApiService.userService
-        ._loginByIdToSystem({ id })
-        .then((res) => {
-          callback(res.data.access_token)
-        })
-        .finally(() => {
-          this.loginLoading = false
-        })
-    },
-    _getTemporaryToken(params) {
-      $ApiService.userService._temporaryToken({ params }).then((res) => {
-        sessionStorage.setItem(useAppSetting.temporaryToken, res.data.data.token)
-      })
     },
     _roles() {
       this.roleLoading = true

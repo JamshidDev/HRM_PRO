@@ -82,7 +82,7 @@
     }
   }
 
-  // Ochilganda: katalog + (qatordan bo'lsa) mijoz kalitlari.
+  // Ochilganda: katalog + (qatordan bo'lsa) mijozning public kaliti.
   watch(
     () => props.visible,
     async (v) => {
@@ -91,15 +91,8 @@
       loadCatalog()
       if (props.client?.id) {
         publicKey.value = props.client.public_key ?? ''
+        // Secret serverdan olinmaydi — integrator o'zi kiritadi.
         secretKey.value = ''
-        try {
-          const res = await $ApiService.integrationClientsService._secret(props.client.id)
-          secretKey.value = res.data.data?.secret_key ?? ''
-          await nextTick()
-          checkKeys()
-        } catch {
-          secretKey.value = ''
-        }
       }
     }
   )
