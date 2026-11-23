@@ -5912,7 +5912,7 @@
     "attendance": {
       "vacation": "Miynet dem alısında",
       "day_off": "Dem alıw kúninde",
-      "excused": "Sebepli",
+      "excused": "Basqa sebepler",
       "firstEvent": "Birinshi hádiyse",
       "lastEvent": "Aqırǵı hádiyse",
       "direction": "Hádiyse túri",
@@ -5938,6 +5938,7 @@
       "title": "Búgingi qatnasıw dárejesi",
       "titleDay": "Qatnasıw dárejesi",
       "hint": "Grafik boyınsha tańlanǵan kúni keliwi shárt bolǵanlardan neshewi keldi. Dem alıs, kesellik, xızmet sapari sıyaqlı sebepli xızmetkerler esapqa alınbaydı",
+      "levels": "Dáreje: {good}% hám onnan joqarı — Jaqsı, {medium}–{good}% — Ortasha, {medium}% dan tómen — Tómen",
       "mobile": "mobil",
       "good": "Jaqsı",
       "medium": "Ortasha",

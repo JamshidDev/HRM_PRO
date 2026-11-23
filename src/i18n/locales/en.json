@@ -5866,7 +5866,7 @@
     "attendance": {
       "vacation": "On vacation",
       "day_off": "Day off",
-      "excused": "Excused",
+      "excused": "Other reasons",
       "firstEvent": "First event",
       "lastEvent": "Last event",
       "direction": "Direction",
@@ -5892,6 +5892,7 @@
       "title": "Today's attendance rate",
       "titleDay": "Attendance rate",
       "hint": "How many of those required to come on the selected day by schedule actually came. Excused employees (leave, sick, business trip) are not counted",
+      "levels": "Level: {good}% and above — Good, {medium}–{good}% — Average, below {medium}% — Low",
       "mobile": "mobile",
       "good": "Good",
       "medium": "Average",
