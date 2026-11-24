@@ -21,6 +21,7 @@ import SeasonEffect from './ui/SeasonEffect.vue'
 import OfferModal from '@/components/OfferModal.vue'
 import SsoRedirectOverlay from './ui/SsoRedirectOverlay.vue'
 import AppChooser from './ui/AppChooser.vue'
+import EimzoNoticeBar from '@/components/general/EimzoNoticeBar.vue'
 import { useRoute } from 'vue-router'
 import loginPatternUrl from '@/assets/images/svg/login-pattern.png?url'
 import loginPatternBottomUrl from '@/assets/images/svg/pattern-bottom.png?url'
@@ -212,7 +213,12 @@ const onDone = () => {
 </script>
 
 <template>
-  <div class="login-new min-h-screen w-full flex items-stretch text-login-ink bg-login-page gap-4 lg:gap-8">
+  <!-- Tepada qotirilgan «faqat E-IMZO» ogohlantirishi + taymer (muddat o'tgach yo'qoladi).
+       Sahifa balandligidan panel balandligi (`--eimzo-bar-h`) ayriladi — ortiqcha scroll bo'lmasin. -->
+  <EimzoNoticeBar />
+  <div
+    class="login-new min-h-[calc(100vh-var(--eimzo-bar-h,0px))] w-full flex items-stretch text-login-ink bg-login-page gap-4 lg:gap-8"
+  >
     <!-- Left brand / hero panel -->
     <div class="login-new__hero relative hidden lg:flex flex-col overflow-hidden p-12 xl:px-14">
       <div

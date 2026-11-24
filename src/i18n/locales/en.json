@@ -8116,5 +8116,13 @@
     "toc": "Contents",
     "pdf": "Download PDF",
     "backToLogin": "Back to login"
+  },
+  "eimzoNotice": {
+    "text": "Attention! In {days} days, sign-in will be available only via E-IMZO.",
+    "soon": "Attention! Soon sign-in will be available only via E-IMZO.",
+    "days": "days",
+    "hours": "hrs",
+    "minutes": "min",
+    "seconds": "sec"
   }
 }

@@ -8312,5 +8312,13 @@
     "toc": "Mundarija",
     "pdf": "PDF yuklaş",
     "backToLogin": "Kiriş sahifasiga qaytiş"
+  },
+  "eimzoNotice": {
+    "text": "Diqqat! {days} kundan söng tizimga faqat E-IMZO orqali kiriş mumkin böladi.",
+    "soon": "Diqqat! Tez orada tizimga faqat E-IMZO orqali kiriş mumkin böladi.",
+    "days": "kun",
+    "hours": "soat",
+    "minutes": "daqiqa",
+    "seconds": "soniya"
   }
 }
