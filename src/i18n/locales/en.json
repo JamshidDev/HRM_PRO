@@ -3507,6 +3507,14 @@
       "approved": "Approved"
     },
     "draftBarTitle": "Confirm the application",
+    "returnBtn": "Return",
+    "returnTitle": "Return application for correction",
+    "returnReason": "Reason for returning",
+    "returnPlaceholder": "What should the employee correct?",
+    "returnHint": "The application goes back to the employee as a draft. After they fix and sign it, it comes back to you.",
+    "returnDone": "Application returned to the employee for correction",
+    "returnedTitle": "Application returned for correction",
+    "returnedBy": "Returned by",
     "draftBarSub": "After you sign, the application is sent to HR",
     "ownRejectTitle": "Do you really want to reject it?",
     "ownRejectDesc": "The application will be rejected and not sent to HR.",
@@ -3639,6 +3647,7 @@
     },
     "hrCheck": {
       "new": "New",
+      "done": "Reviewed",
       "forwarded": "Forwarded",
       "closed": "Closed",
       "awaiting": "Awaiting decision"

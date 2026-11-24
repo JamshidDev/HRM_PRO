@@ -24,24 +24,17 @@
 
   const DRAFT_CONFIRMATION = 6
 
-  // Tahrir faqat o'z arizasi, HR ko'rib chiqmagan va qoralama/jarayondagi holatda (backend bilan bir xil qoida).
-  const canEdit = (row) => {
+  // Tahrir va o'chirish — faqat o'z arizasi va faqat Qoralama (backend bilan bir xil qoida).
+  const isOwnDraft = (row) => {
     const app = row?.worker_application
     return (
       app?.worker?.id === accountStore.account?.worker?.id &&
-      app?.status === 0 &&
-      [1, DRAFT_CONFIRMATION].includes(app?.confirmation?.id)
+      Number(app?.status) === 0 &&
+      app?.confirmation?.id === DRAFT_CONFIRMATION
     )
   }
-
-  // O'chirish: o'z arizasi — Qoralama, Tekshiruvda yoki Rad etilgan (backend bilan bir xil qoida).
-  const canDelete = (row) => {
-    const app = row?.worker_application
-    if (app?.worker?.id !== accountStore.account?.worker?.id) return false
-    const conf = app?.confirmation?.id
-    const hr = Number(app?.status)
-    return conf === 4 || hr === 2 || (hr === 0 && conf !== 3)
-  }
+  const canEdit = isOwnDraft
+  const canDelete = isOwnDraft
 
   // Ariza holati 6 = Qoralama; UIStatus'da 6 «Active» (yashil) — neytral ko'rinishga almashtiramiz.
   const emits = defineEmits(['openOffice'])

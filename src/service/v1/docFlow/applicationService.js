@@ -81,6 +81,10 @@ const _resend = async (payload) => {
 const _forward = async (payload) => {
   return await axios.post(`/v1/hr/applications/${payload.id}/forward`, payload.data)
 }
+// HR arizani xodimga tuzatish uchun qaytaradi.
+const _returnToOwner = async (payload) => {
+  return await axios.post(`/v1/hr/applications/${payload.id}/return`, payload.data)
+}
 
 const _documentApplication = async (payload) => {
   return await axios.get(`/v1/document/applications`, { params: payload?.params })
@@ -110,6 +114,7 @@ export default {
   _updateRoute,
   _resend,
   _forward,
+  _returnToOwner,
   _documentApplication,
   _commandPrefill,
   _deleteWorkerApplication,

@@ -35,8 +35,8 @@
     1: { id: 3, name: t('applicationPage.hrCheck.forwarded') },
     2: { id: 4, name: t('applicationPage.hrCheck.closed') }
   }))
-  // Rahbar imzolagan ariza ham yopilgan (yashil).
-  const closedApproved = computed(() => ({ id: 3, name: t('applicationPage.hrCheck.closed') }))
+  // Rahbar imzolagan ariza — HR uchun ko'rib chiqilgan (yashil).
+  const closedApproved = computed(() => ({ id: 3, name: t('applicationPage.hrCheck.done') }))
 
   const onOpenFile = (v) => {
     emits('openOffice', v)

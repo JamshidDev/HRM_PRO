@@ -235,6 +235,18 @@ export const useApplicationStore = defineStore('applicationStore', {
           this.forwardLoading = false
         })
     },
+    // HR arizani xodimga tuzatish uchun qaytaradi (Qoralama).
+    _returnToOwner(comment, id, callback) {
+      this.modalLoading = true
+      $ApiService.applicationService
+        ._returnToOwner({ id, data: { comment } })
+        .then(() => {
+          callback?.()
+        })
+        .finally(() => {
+          this.modalLoading = false
+        })
+    },
     _accept(data, id, loadingKey = 'acceptLoading', callback) {
       this[loadingKey] = true
       const payload = {

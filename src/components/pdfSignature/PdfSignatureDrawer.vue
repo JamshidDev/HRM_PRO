@@ -8,7 +8,8 @@
     Eye20Regular,
     DocumentCheckmark20Regular,
     Attach20Regular,
-    People20Regular
+    People20Regular,
+    ArrowUndo20Regular
   } from '@vicons/fluent'
   import { useMediaQuery } from '@vueuse/core'
   import { useAppBreakpoints } from '@/composables/useBreakpoint.js'
@@ -42,7 +43,7 @@
   import { useRoute } from 'vue-router'
   import PdfViewer from '@/components/pdfSignature/PdfViewer.vue'
   import ConformAndRejectModal from '@/components/pdfSignature/ui/ConformAndRejectModal.vue'
-  import DangerConfirm from '@/components/pdfSignature/ui/DangerConfirm.vue'
+  import ReturnApplicationModal from '@/components/pdfSignature/ui/ReturnApplicationModal.vue'
   import DocumentFileModal from '@/components/pdfSignature/ui/DocumentFileModal.vue'
   import ForwardApplicationModal from '@/components/pdfSignature/ui/ForwardApplicationModal.vue'
   const pdfViewerRef = ref(null)
@@ -521,16 +522,10 @@
     emits('signatureEv')
   }
 
-  // Xodim o'z qoralamasini sababsiz rad etadi.
-  const rejectOwnDraft = () => {
-    signatureStore._rejectDocument(
-      { status: 4, confirmation_id: store.signatureId, model: store.model },
-      () => {
-        getDocument(store.document_id, store.model)
-        onRejected()
-      }
-    )
-  }
+  // HR qaytargan qoralama — sabab xodimga ko'rinadi.
+  const returnedInfo = computed(() =>
+    isOwnDraftApplication.value ? store.document?.document?.returned || null : null
+  )
 
   // Buyruq / shartnoma / qo'shimcha kelishuv: kelishuvchilar marshruti (parallel / ketma-ket).
   const isRouteDoc = computed(() =>
@@ -988,6 +983,23 @@
                           </div>
                         </div>
                         <div class="flex items-center gap-1.5 shrink-0">
+                          <!-- Yo'naltirilmagan ariza — xodimga tuzatish uchun qaytarish. -->
+                          <n-button
+                            v-if="hrStage === 'new'"
+                            type="warning"
+                            secondary
+                            round
+                            class="px-3!"
+                            :disabled="
+                              applicationStore.modalLoading || applicationStore.signStartLoading
+                            "
+                            @click="store.returnVisible = true"
+                          >
+                            <template #icon>
+                              <n-icon><ArrowUndo20Regular /></n-icon>
+                            </template>
+                            {{ $t('applicationPage.returnBtn') }}
+                          </n-button>
                           <n-button
                             v-if="canClose"
                             type="error"
@@ -1045,41 +1057,35 @@
                           <n-icon size="18"><Signature20Regular /></n-icon>
                         </div>
                         <div class="hidden sm:block min-w-0 leading-tight mr-2">
-                          <div class="text-[13px] font-semibold text-textColor0 whitespace-nowrap">
-                            {{ $t(isOwnDraftApplication ? 'applicationPage.draftBarTitle' : 'documentPage.signature.approval.yourTurn') }}
+                          <div
+                            class="text-[13px] font-semibold whitespace-nowrap"
+                            :class="returnedInfo ? 'text-fig-orange' : 'text-textColor0'"
+                          >
+                            {{
+                              $t(
+                                returnedInfo
+                                  ? 'applicationPage.returnedTitle'
+                                  : isOwnDraftApplication
+                                    ? 'applicationPage.draftBarTitle'
+                                    : 'documentPage.signature.approval.yourTurn'
+                              )
+                            }}
                           </div>
-                          <div class="text-[11px] text-textColor3 mt-0.5 whitespace-nowrap">
+                          <div
+                            v-if="returnedInfo"
+                            class="text-[11px] text-textColor2 mt-0.5 max-w-[420px] truncate"
+                            :title="returnedInfo.reason"
+                          >
+                            {{ returnedInfo.reason }}
+                          </div>
+                          <div v-else class="text-[11px] text-textColor3 mt-0.5 whitespace-nowrap">
                             {{ $t(isOwnDraftApplication ? 'applicationPage.draftBarSub' : 'documentPage.signature.approval.yourTurnSub') }}
                           </div>
                         </div>
                         <div class="flex items-center gap-1.5 shrink-0">
-                          <!-- O'z qoralamasi: sababsiz, faqat tasdiqlash. -->
-                          <DangerConfirm
-                            v-if="isOwnDraftApplication"
-                            :title="$t('applicationPage.ownRejectTitle')"
-                            :description="$t('applicationPage.ownRejectDesc')"
-                            :confirm-text="$t('documentPage.signature.rejectSubmit')"
-                            :icon="Dismiss20Regular"
-                            placement="top-end"
-                            @confirm="rejectOwnDraft"
-                          >
-                            <template #trigger>
-                              <n-button
-                                type="error"
-                                secondary
-                                round
-                                class="px-3!"
-                                :disabled="signatureStore.loading"
-                              >
-                                <template #icon>
-                                  <n-icon><Dismiss20Regular /></n-icon>
-                                </template>
-                                {{ $t('documentPage.signature.rejectSubmit') }}
-                              </n-button>
-                            </template>
-                          </DangerConfirm>
+                          <!-- Ariza egasi rad etmaydi — faqat tasdiqlaydi. -->
                           <n-button
-                            v-else
+                            v-if="!isOwnDraftApplication"
                             type="error"
                             secondary
                             round
@@ -1220,6 +1226,7 @@
       </div>
     </n-drawer>
     <ConformAndRejectModal @rejected="onRejected" />
+    <ReturnApplicationModal @returned="onRejected" />
     <ForwardApplicationModal @forwarded="onForwarded" />
     <ForwardApplicationModal
       v-if="isRouteDoc"
