@@ -2,6 +2,7 @@
   import { ref, computed } from 'vue'
   import { useSalaryControlStore } from '@/store/modules/index.js'
   import { RISK_STATUS } from '../engine.js'
+  import { usePaged } from '../usePaged.js'
   import { SECTION, RISK_METHOD } from '../explain.js'
   import { normText, money2 } from '../helpers.js'
   import { People24Regular, Search20Regular, ArrowRight16Filled } from '@vicons/fluent'
@@ -143,6 +144,9 @@
         String(e.position || '').toLowerCase().includes(q)
     )
   })
+  // DAS-16729: ta'sirlangan xodimlar minglab bo'lishi mumkin — client-side pagination.
+  const { page: affPage, pageSize: affPageSize, paged: affPaged, pageCount: affPageCount } =
+    usePaged(filteredAffected, 50)
 </script>
 
 <template>
@@ -302,8 +306,8 @@
       </n-input>
 
       <div class="sc-list-rows">
-        <div v-for="(emp, idx) in filteredAffected" :key="idx" class="sc-list-row">
-          <span class="sc-list-idx">{{ idx + 1 }}</span>
+        <div v-for="(emp, idx) in affPaged" :key="idx" class="sc-list-row">
+          <span class="sc-list-idx">{{ (affPage - 1) * affPageSize + idx + 1 }}</span>
           <span class="sc-list-avatar" :class="`sc-list-avatar--${activeRisk ? statusTone(activeRisk.status) : 'indigo'}`">
             {{ initials(emp.fio) }}
           </span>
@@ -320,6 +324,14 @@
         <p v-if="!filteredAffected.length" class="sc-list-empty">
           {{ $t('salaryControl.risk.noMatch') }}
         </p>
+        <div v-if="affPageCount > 1" class="sc-list-pager">
+          <n-pagination
+            v-model:page="affPage"
+            :page-count="affPageCount"
+            :page-slot="7"
+            size="small"
+          />
+        </div>
       </div>
     </div>
   </UIModal>
@@ -725,6 +737,11 @@
     display: flex;
     flex-direction: column;
     margin: 0 -4px;
+  }
+  .sc-list-pager {
+    display: flex;
+    justify-content: center;
+    padding: 12px 4px 4px;
   }
   .sc-list-row {
     display: flex;
