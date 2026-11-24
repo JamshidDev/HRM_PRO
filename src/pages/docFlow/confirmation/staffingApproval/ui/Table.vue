@@ -49,8 +49,8 @@
                 (store.params.page - 1) * store.params.per_page + idx + 1
               }}</span>
             </td>
-            <!-- Raqam — oddiy chip; hujjatni ochish ⋮ menyu → «Ko'rish». -->
-            <td>
+            <!-- Raqam chipi bosilsa — hujjat ochiladi (⋮ menyu → «Ko'rish» ham bor). -->
+            <td class="cursor-pointer" @click="onOpen(item.id)">
               <div class="flex justify-center">
                 <UIChip tone="primary" class="font-medium" compact>{{
                   item?.staffing_approve?.number
