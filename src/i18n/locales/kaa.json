@@ -7435,6 +7435,13 @@
     "verified": "Tastıyıqlandı"
   },
   "documentTemplate": {
+    "upload": "Júklew",
+    "uploadHint": "Tayın DOCX blankanı júklep, ámeldegi shablondı almastırıw",
+    "uploadTitle": "Shablondı júklew",
+    "uploadText": "«{name}» faylı ámeldegi shablon ornına qoyıladı hám keyingi hújjetlerge qollanıladı. Redaktordaǵı saqlanbaǵan ózgerisler biykar boladı. Fayldaǵı ózgeriwshiler, bloklar hám blanka ornı tekseriledi.",
+    "uploadConfirm": "Júklew",
+    "uploadOnlyDocx": "Tek .docx fayl júklenedi.",
+    "uploaded": "Shablon júklendi",
     "name": "Shablon",
     "subtitle": "Hújjet shablonın tańlań, tekstin ózgertiń hám jańa hújjetler ushın saqlań.",
     "selectPlaceholder": "Hújjet shablonın tańlań",

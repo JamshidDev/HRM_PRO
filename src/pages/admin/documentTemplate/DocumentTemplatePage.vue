@@ -17,7 +17,8 @@
     CheckmarkCircle16Filled,
     ErrorCircle16Filled,
     ErrorCircle20Regular,
-    Save20Regular
+    Save20Regular,
+    ArrowUpload20Regular
   } from '@vicons/fluent'
   import VariablePanel from './ui/VariablePanel.vue'
   import DocumentSettingsCard from './ui/DocumentSettingsCard.vue'
@@ -154,6 +155,25 @@
       onConfirm: () => store._discard()
     })
 
+  // Tayyor DOCX blankani yuklash: fayl tanlanadi, tasdiqdan keyin joriy shablon almashtiriladi.
+  const uploadInput = ref(null)
+  const pickUpload = () => uploadInput.value?.click()
+  const onUploadPicked = (e) => {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+    if (!/\.docx$/i.test(file.name)) {
+      showAlert({ title: t('documentTemplate.uploadTitle'), message: t('documentTemplate.uploadOnlyDocx') })
+      return
+    }
+    confirmDialog({
+      title: t('documentTemplate.uploadTitle'),
+      message: t('documentTemplate.uploadText', { name: file.name }),
+      confirmText: t('documentTemplate.uploadConfirm'),
+      onConfirm: () => store._upload(file)
+    })
+  }
+
   // Muharrir xatosi turi bo'yicha sarlavha va izoh.
   const errorText = computed(() => {
     const kind = store.configError ?? 'failed'
@@ -251,6 +271,22 @@
               {{ statusChip.text }}
             </button>
             <template v-if="store.canEdit && store.editorConfig">
+              <input
+                ref="uploadInput"
+                type="file"
+                accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                class="hidden"
+                @change="onUploadPicked"
+              />
+              <n-button
+                :loading="store.uploading"
+                :disabled="store.saving || store.discarding"
+                :title="$t('documentTemplate.uploadHint')"
+                @click="pickUpload"
+              >
+                <template #icon><n-icon><ArrowUpload20Regular /></n-icon></template>
+                {{ $t('documentTemplate.upload') }}
+              </n-button>
               <n-button
                 :disabled="!['dirty', 'rejected'].includes(store.saveState) || store.saving"
                 :loading="store.discarding"

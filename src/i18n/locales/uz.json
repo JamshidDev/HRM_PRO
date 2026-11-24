@@ -7435,6 +7435,13 @@
     "verified": "Tasdiqlandi"
   },
   "documentTemplate": {
+    "upload": "Yuklash",
+    "uploadHint": "Tayyor DOCX blankani yuklab, joriy shablonni almashtirish",
+    "uploadTitle": "Shablonni yuklash",
+    "uploadText": "«{name}» fayli joriy shablon o'rniga qo'yiladi va keyingi hujjatlarga qo'llanadi. Muharrirdagi saqlanmagan tahrir bekor bo'ladi. Fayldagi o'zgaruvchilar, bloklar va blanka joyi tekshiriladi.",
+    "uploadConfirm": "Yuklash",
+    "uploadOnlyDocx": "Faqat .docx fayl yuklanadi.",
+    "uploaded": "Shablon yuklandi",
     "name": "Shablon",
     "subtitle": "Hujjat shablonini tanlang, matnini tahrirlang va yangi hujjatlar uchun saqlang.",
     "selectPlaceholder": "Hujjat shablonini tanlang",
