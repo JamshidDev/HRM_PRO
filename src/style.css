@@ -153,6 +153,102 @@
   }
 }
 
+/*
+  «Asosiy» bo'limi (bosh sahifa, Aloqa, ...) — qorong'i rejada Figma «Asosiy - Dark» (node 5121:3631)
+  palitrasi. FAQAT shu bo'lim ichida (`.asosiy-dark` sinfi) — boshqa sahifalarning qorong'i ranglari
+  o'zgarmaydi (u tanlagan). `@theme` dagi `--color-*` lar `:root` da hisoblangani uchun ikkalasi ham
+  qayta beriladi.
+*/
+[data-theme='dark'] .asosiy-dark {
+  --fig-block-bg: #131c2e; /* BG/bg-primary */
+  --color-fig-block: #131c2e;
+  --fig-bg-secondary: #19243a; /* BG/bg-secondary */
+  --color-fig-bg-secondary: #19243a;
+  --fig-bg-tertiary: #212d45; /* BG/bg-tertiary */
+  --color-fig-bg-tertiary: #212d45;
+  --fig-bg-brand-surface: rgba(46, 144, 250, 0.16); /* BG/bg-brand-surface */
+  --color-fig-bg-brand-surface: rgba(46, 144, 250, 0.16);
+  --fig-bg-red-fill: #ca1f29; /* BG/bg-red-fill */
+  --color-fig-bg-red: #ca1f29;
+  --fig-text-brand: #53b1fd; /* Text/text-brand */
+  --color-fig-text-brand: #53b1fd;
+  --fig-icon-brand: #53b1fd; /* Icon/icon-brand */
+  --color-fig-brand: #53b1fd;
+  --fig-text-primary: #f9fafb; /* Text/text-primary */
+  --color-fig-text-primary: #f9fafb;
+  --fig-br-secondary: #2a3851; /* Border/br-tertiary */
+  --color-fig-br-secondary: #2a3851;
+  --fig-blue-100: rgba(46, 144, 250, 0.16); /* story muqovasi foni (bg-brand-surface) */
+  --color-fig-blue-100: rgba(46, 144, 250, 0.16);
+  --fig-br-disable: #2a3851; /* Border/br-tertiary */
+  --color-fig-br-disable: #2a3851;
+  /* Rangli ikonka + yumshoq fon juftliklari («Kim bilan bog'lanish», 5121:3859) */
+  --color-fig-green: #50c576;
+  --color-fig-amber: #f5b800;
+  --color-fig-red: #ff6f69;
+  --color-fig-indigo: #7b78f0;
+  --color-fig-purple: #cf57e6;
+  --color-fig-pink: #ed6b9f;
+  --color-fig-green-100: rgba(80, 197, 118, 0.12); /* BG/bg-green-surface */
+  --color-fig-amber-100: rgba(245, 184, 0, 0.12); /* BG/bg-amber-surface */
+  --color-fig-red-100: rgba(255, 111, 105, 0.12); /* BG/bg-red-surface */
+  --color-fig-indigo-100: rgba(123, 120, 240, 0.16); /* BG/bg-indigo-surface */
+  --color-fig-pink-100: rgba(237, 107, 159, 0.14); /* BG/bg-pink-surface */
+}
+
+/* Modal kartasi (`card-class="asosiy-dark"`) — bg-primary + br-tertiary chegara */
+[data-theme='dark'] .n-card.asosiy-dark {
+  border: 1px solid #2a3851;
+  background-color: #131c2e !important;
+}
+
+/* Ikonkalarning qorong'i maketdagi varianti (bir rangli) — faqat `.asosiy-dark` ichida, qorong'i rejada */
+.asosiy-icon--dark {
+  display: none !important;
+}
+[data-theme='dark'] .asosiy-dark .asosiy-icon--light {
+  display: none !important;
+}
+[data-theme='dark'] .asosiy-dark .asosiy-icon--dark {
+  display: block !important;
+}
+/* Maketdan olingan SVG ikonkalar rangi qat'iy yozilgan (yorug' palitra): kulrang #667085
+   (icon-tertiary) va ko'k #2E90FA (icon-brand). Qorong'i maketda ular icon-secondary #d0d5dd
+   va icon-brand #53b1fd — faqat `.asosiy-dark` ichida, faqat qorong'i rejada. */
+[data-theme='dark'] .asosiy-dark svg [fill='#667085'] {
+  fill: #d0d5dd;
+}
+[data-theme='dark'] .asosiy-dark svg [fill='#2E90FA'] {
+  fill: #53b1fd;
+}
+
+/* «Orqaga» tugmasi (UIBackButton) — maketda bg-tertiary + text-secondary (5121:4024) */
+[data-theme='dark'] .asosiy-dark .ui-back-button {
+  color: #d0d5dd !important;
+  background-color: #212d45 !important;
+}
+
+/* «Bog'lanish» qorong'i maketida bezak (ornament) yo'q */
+[data-theme='dark'] .contact-page .contact-page__ornament {
+  display: none;
+}
+
+/* Ob-havo ikonkalari: qorong'i maketda Icon/icon-secondary (#d0d5dd) */
+[data-theme='dark'] .asosiy-dark .asosiy-weather-icon {
+  color: #d0d5dd;
+}
+
+/* «Bog'lanish» sahifasi: qorong'i maketda (5121:3765) panel YO'Q — kontent to'g'ridan-to'g'ri sahifa
+   fonida (bosh sahifadagi gradient panel bu yerda chizilmaydi). */
+[data-theme='dark'] .contact-page.bg-fig-page-gradient {
+  background: transparent;
+}
+
+/* Bosh sahifa paneli — qorong'i maketdagi gradient (node 5121:3635) */
+[data-theme='dark'] .bg-fig-page-gradient {
+  background-image: linear-gradient(-9.063deg, #0a1830 4.44%, #081a20 32.67%, #0a1428 100.24%);
+}
+
 html,
 body {
   background-color: var(--app-bg);

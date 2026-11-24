@@ -13,7 +13,7 @@
 </script>
 
 <template>
-  <UIPageContent class="!h-auto !gap-6">
+  <UIPageContent class="asosiy-dark !h-auto !gap-6">
     <div class="flex w-full shrink-0 flex-wrap items-center gap-4">
       <UIBackButton @click="goBack" />
       <h1 class="text-[24px] leading-[30px] font-semibold text-fig-text-primary">

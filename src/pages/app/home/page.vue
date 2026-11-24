@@ -45,7 +45,7 @@
 </script>
 
 <template>
-  <UIPageContent class="home-page bg-fig-page-gradient !h-[calc(100%-2rem)] m-4 !p-3 md:!p-4">
+  <UIPageContent class="home-page asosiy-dark bg-fig-page-gradient !h-[calc(100%-2rem)] m-4 !p-3 md:!p-4">
     <!--
       `m-4` — maketdagi kabi to'rt tomondan bir xil 16px masofa (Boddy ichida
       Empty State har chetdan 16px ichkarida).

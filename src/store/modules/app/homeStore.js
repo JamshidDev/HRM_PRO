@@ -256,7 +256,12 @@ export const useHomeStore = defineStore('homeStore', {
       return $ApiService.storyService
         ._index({ silentError: true })
         .then((res) => {
-          this.stories = unwrapList(res).filter((v) => v.slides?.length)
+          // BACKEND: `GET /v1/mobile/stories` javobida `sort` (admin'dagi «Tartib») kelmaydi —
+          // hozir tartib serverning o'z tartibiga tayanadi. `sort` qo'shilsa, shu yerda u bo'yicha
+          // saralanadi (kichigi oldin), qo'shilmaguncha tartib o'zgarmaydi.
+          this.stories = unwrapList(res)
+            .filter((v) => v.slides?.length)
+            .sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0))
         })
         .catch(() => {
           this.stories = []

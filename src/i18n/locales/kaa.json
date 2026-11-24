@@ -8312,5 +8312,13 @@
     "toc": "Mazmunı",
     "pdf": "PDF júklew",
     "backToLogin": "Kiriw betine qaytıw"
+  },
+  "eimzoNotice": {
+    "text": "Dıqqat! {days} künnen soń sistemaǵa tek E-IMZO arqalı kiriw múmkin boladı.",
+    "soon": "Dıqqat! Jaqın arada sistemaǵa tek E-IMZO arqalı kiriw múmkin boladı.",
+    "days": "kún",
+    "hours": "saat",
+    "minutes": "minut",
+    "seconds": "sekund"
   }
 }

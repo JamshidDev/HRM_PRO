@@ -97,7 +97,7 @@
     height="auto"
     :persistent="false"
     fullscreen-on-mobile
-    card-class="!rounded-none md:!rounded-[32px] !max-h-[calc(100dvh-4rem)]"
+    card-class="asosiy-dark !rounded-none md:!rounded-[32px] !max-h-[calc(100dvh-4rem)]"
   >
     <!-- Maketdagi sarlavha (node 3291:79371): kulrang fon, 32px yon chet va
          oq doiradagi yopish tugmasi — `UIModal` ning standart sarlavhasidan

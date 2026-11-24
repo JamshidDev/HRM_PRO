@@ -953,7 +953,7 @@
 
   [data-theme='dark'] {
     .sidebar-card {
-      border: 1px solid #2b3d55;
+      border: 1px solid #2a3851;
     }
   }
 
@@ -965,8 +965,8 @@
     }
   }
 
-  /* Mint — och panelli tema: oq border ko'rinmaydi, to'q shaffof kerak */
-  [data-sidebar-theme='mint'] {
+  /* Mint — och panelli tema: oq border ko'rinmaydi, to'q shaffof kerak (faqat yorug' rejada) */
+  :root:not([data-theme='dark'])[data-sidebar-theme='mint'] {
     .sidebar-card {
       border-color: rgba(16, 24, 40, 0.08);
     }

@@ -40,7 +40,7 @@
             v-if="homeStore.weather"
             class="flex items-center gap-1 rounded-full bg-fig-bg-tertiary px-3 py-2"
           >
-            <span class="flex h-[18px] w-[18px] shrink-0 items-center justify-center">
+            <span class="asosiy-weather-icon flex h-[18px] w-[18px] shrink-0 items-center justify-center text-fig-text-tertiary">
               <SunIcon />
             </span>
             <span
@@ -57,7 +57,7 @@
             v-if="homeStore.weather?.city"
             class="flex items-center gap-1.5 rounded-full bg-fig-bg-tertiary px-3 py-2"
           >
-            <span class="flex h-[18px] w-[18px] shrink-0 items-center justify-center">
+            <span class="asosiy-weather-icon flex h-[18px] w-[18px] shrink-0 items-center justify-center text-fig-text-tertiary">
               <LocationPinIcon />
             </span>
             <span
