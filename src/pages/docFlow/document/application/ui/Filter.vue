@@ -68,7 +68,8 @@
   >
     <template #filterContent>
       <div class="ui-filter-grid grid grid-cols-12 gap-x-5 gap-y-4">
-        <div class="col-span-12 md:col-span-6">
+        <!-- 3 ta filtr: korxona butun kenglikda, qolgan ikkitasi yonma-yon. -->
+        <div class="col-span-12">
           <label>{{ $t('actionLog.table.structure') }}</label>
           <UISelect
             :options="componentStore.structureList"

@@ -93,17 +93,6 @@
             @onSubmit="filterEvent"
           />
         </div>
-        <div v-if="!store.noticeMode" class="col-span-12">
-          <label>{{ $t('employeeDocumentsPage.form.type') }}</label>
-          <n-select
-            v-model:value="store.params.type"
-            :options="typeOptions"
-            label-field="name"
-            value-field="id"
-            clearable
-            @update:value="filterEvent"
-          />
-        </div>
         <div class="col-span-12 md:col-span-6">
           <label>{{ $t('content.status') }}</label>
           <n-select
@@ -114,6 +103,18 @@
             clearable
             @update:value="filterEvent"
             :loading="componentStore.enumAdminLoading"
+          />
+        </div>
+        <!-- Korxona va holat yonma-yon, tur butun kenglikda. -->
+        <div v-if="!store.noticeMode" class="col-span-12">
+          <label>{{ $t('employeeDocumentsPage.form.type') }}</label>
+          <n-select
+            v-model:value="store.params.type"
+            :options="typeOptions"
+            label-field="name"
+            value-field="id"
+            clearable
+            @update:value="filterEvent"
           />
         </div>
       </div>
