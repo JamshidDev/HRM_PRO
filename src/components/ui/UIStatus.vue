@@ -11,8 +11,11 @@
     ArrowUndo24Filled
   } from '@vicons/fluent'
   import icons from '@/assets/icons'
+  import UIChip from './UIChip.vue'
   const props = defineProps({
     status: Object,
+    // Eski (n-button) ko'rinishdan qolgan proplar — endi hamma joyda chip chiziladi,
+    // `size` / `pill` / `fig` e'tiborga olinmaydi (chaqiruvlar buzilmasligi uchun qoldirildi).
     size: {
       type: String,
       default: 'tiny'
@@ -21,14 +24,9 @@
       type: Boolean,
       default: false
     },
-    /**
-     * Maketdagi (Figma) "Status" chipi: yumshoq fon + rangli matn + 16px ikonka.
-     * OPT-IN — berilmasa komponent avvalgidek `n-button` chizadi, shu bois
-     * UIStatus ishlatadigan qolgan ~45 sahifa o'zgarishsiz qoladi.
-     */
     fig: {
       type: Boolean,
-      default: false
+      default: true
     },
     /**
      * `fig` chip rangini status turidan QAT'IY NAZAR majburlash uchun:
@@ -162,66 +160,21 @@
     default: 'neutral'
   }
 
-  // Ranglar `assets/scss/variables.scss` dagi `--fig-chip-*` / `--fig-bg-*`
-  // tokenlaridan keladi — qorong'i mavzu variantlari o'sha yerda berilgan.
-  const figToneClass = {
-    green: 'bg-fig-chip-green text-fig-chip-green-text',
-    brand: 'bg-fig-chip-brand text-fig-chip-brand-text',
-    amber: 'bg-fig-chip-amber text-fig-chip-amber-text',
-    red: 'bg-fig-red-50 text-fig-text-red',
-    neutral: 'bg-fig-bg-disable text-fig-text-tertiary'
-  }
-
-  const figClass = computed(
-    () => figToneClass[props.tone] || figToneClass[toneByType[type.value]] || figToneClass.brand
-  )
+  // Chip rangi: `tone` berilsa o'sha, aks holda status turidan.
+  const chipTone = computed(() => props.tone || toneByType[type.value] || 'brand')
 
   // Maketda tasdiqlangan holat "badge-check" ikonkasi bilan chiziladi — bu aynan
-  // eksport qilingan `figBadgeCheck.svg`. Qolgan holatlar uchun statusning o'z
-  // ikonkasi qoladi (ular maketda ko'rsatilmagan).
+  // eksport qilingan `figBadgeCheck.svg`. Qolgan holatlar uchun statusning o'z ikonkasi.
   const figIcon = computed(() => (type.value === 'success' ? icons.figBadgeCheck : icon.value))
 </script>
 
 <template>
-  <!-- Maket varianti (node 2511:18119): rounded-full, 12/4 padding, 4px gap,
-       16px ikonka, 12px semibold matn. -->
-  <n-tooltip v-if="fig" trigger="hover" :disabled="!tooltip || !status?.name">
-    <template #trigger>
-      <span
-        class="inline-flex max-w-full items-center justify-center rounded-full font-semibold"
-        :class="[
-          figClass,
-          compact ? 'gap-0.5 px-2 py-0.5 text-[10px] leading-3' : 'gap-1 px-3 py-1 text-[12px] leading-4'
-        ]"
-      >
-        <component
-          :is="figIcon"
-          class="shrink-0"
-          :width="compact ? 12 : 16"
-          :height="compact ? 12 : 16"
-        />
-        <span class="truncate">{{ status?.name }}</span>
-      </span>
-    </template>
-    <span>{{ status?.name }}</span>
-  </n-tooltip>
-
-  <div v-else class="inline-flex items-center">
-    <n-button
-      :type="type"
-      :size="size"
-      :dashed="!pill"
-      :secondary="pill"
-      :round="pill"
-      class="truncate max-w-full"
-    >
-      <template #icon>
-        <component :is="icon" />
-      </template>
-
-      <n-ellipsis :tooltip="{ style: { maxWidth: '300px' } }">
-        {{ status?.name }}
-      </n-ellipsis>
-    </n-button>
-  </div>
+  <!-- Hamma joyda bitta chip ko'rinishi (UIChip) — buyruqlar sahifasidagi maket chipi. -->
+  <UIChip
+    :label="status?.name"
+    :tone="chipTone"
+    :icon="figIcon"
+    :compact="compact"
+    :tooltip="tooltip"
+  />
 </template>
