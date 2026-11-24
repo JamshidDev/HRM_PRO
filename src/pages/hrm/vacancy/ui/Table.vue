@@ -1,5 +1,5 @@
 <script setup>
-  import { UIBadge, UITable } from '@/components/index.js'
+  import { UIBadge, UITable, UIChip } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useVacancyStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -163,7 +163,7 @@
       <span class="text-sm font-medium">{{ row.organization?.name }}</span>
       <template v-if="row.organization?.group">
         <br />
-        <n-tag size="tiny" type="warning" round>group</n-tag>
+        <UIChip tone="warning" compact>group</UIChip>
       </template>
     </template>
 
@@ -178,9 +178,9 @@
     </template>
 
     <template #cell-rate="{ row }">
-      <n-button size="small" type="primary" circle bordered dashed>
+      <UIChip tone="primary">
         {{ row.rate }}
-      </n-button>
+      </UIChip>
     </template>
 
     <template #cell-to="{ row }">
@@ -205,17 +205,8 @@
     </template>
 
     <template #cell-applications_count="{ row }">
-      <n-button
-        v-if="row.applications_count > 0"
-        size="small"
-        type="primary"
-        circle
-        bordered
-        dashed
-        @click="store.openViewModal(row)"
-      >
-        {{ row.applications_count }}
-      </n-button>
+      <!-- Arizalar soni — oddiy chip; ro'yxat ⋮ menyu → «Ko'rish». -->
+      <UIChip v-if="row.applications_count > 0" tone="primary" compact>{{ row.applications_count }}</UIChip>
       <span v-else></span>
     </template>
   </UITable>

@@ -1,6 +1,8 @@
 <script setup>
   // Bazaviy summa KO'RISH + qiymat tahriri (yangi versiya) + versiya tarixi (sana oralig'i) + tasdiqlash.
-  import { Edit16Filled } from '@vicons/fluent'
+  import { Edit16Filled, Timer16Regular } from '@vicons/fluent'
+  import icons from '@/assets/icons'
+  import { UIChip } from '@/components/index.js'
   import { useAccountStore, useTariffBaseStore } from '@/store/modules/index.js'
 
   const store = useTariffBaseStore()
@@ -105,9 +107,9 @@
               @click="store._version(store.elementId, v.id)">
               <div class="flex items-center gap-2 min-w-0">
                 <span class="font-semibold shrink-0">v{{ v.version }}</span>
-                <n-tag v-if="v.status === 1" type="warning" size="tiny" round>{{ $t('tariffGrid.status.pending') }}</n-tag>
-                <n-tag v-else-if="v.is_active" type="success" size="tiny" round>{{ $t('content.active') }}</n-tag>
-                <n-tag v-else type="default" size="tiny" round>{{ $t('tariffGrid.status.confirmed') }}</n-tag>
+                <UIChip v-if="v.status === 1" tone="warning" :icon="Timer16Regular" compact>{{ $t('tariffGrid.status.pending') }}</UIChip>
+                <UIChip v-else-if="v.is_active" tone="success" :icon="icons.figBadgeCheck" compact>{{ $t('content.active') }}</UIChip>
+                <UIChip v-else tone="default" compact>{{ $t('tariffGrid.status.confirmed') }}</UIChip>
                 <span class="text-xs text-surface-600 shrink-0 font-medium">{{ fmtNum(v.base_amount) }} so'm</span>
                 <span class="text-xs text-surface-500 truncate">
                   <template v-if="v.status === 1">{{ $t('tariffGrid.form.effectiveDate') }}: {{ v.effective_date }}</template>

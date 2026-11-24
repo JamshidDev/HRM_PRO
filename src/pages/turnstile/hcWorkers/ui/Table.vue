@@ -1,17 +1,16 @@
 <script setup>
-  import { UIBadge, UITable, UIUser } from '@/components/index.js'
+  import { UIBadge, UITable, UIUser, UIChip } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useTurnstileHikCentralWorkerStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import {
     AddSquareMultiple20Regular,
-    ArrowSync24Filled,
     Delete20Regular,
     Edit32Regular,
     ErrorCircle24Filled,
     Stethoscope20Regular,
-    MoreHorizontal24Regular
+    ErrorCircle12Filled
   } from '@vicons/fluent'
   import { useMessage } from 'naive-ui'
   import AccessLevelModal from './AccessLevelModal.vue'
@@ -138,6 +137,21 @@
       icon: UIHelper.renderIcon(Edit32Regular),
       action: onEdit
     },
+    // Jadval kataklarida bosiladigan narsa yo'q — guruhlar (har birini yangilash, xatosi) oynada, xatolar ro'yxati shu yerdan.
+    {
+      label: t('turnstile.hcWorkersPage.access_levels'),
+      key: 'accessLevels',
+      icon: UIHelper.renderIcon(AddSquareMultiple20Regular),
+      visible: (row) => Boolean(row?.hcpPerson?.access_levels?.length),
+      action: onSelect
+    },
+    {
+      label: t('content.error'),
+      key: 'errors',
+      icon: UIHelper.renderIcon(ErrorCircle24Filled),
+      visible: (row) => Boolean(row?.errorMessage),
+      action: (row) => onShowErrorEv(row.id)
+    },
     {
       label: t('turnstile.diagnose.action'),
       key: 'diagnose',
@@ -201,14 +215,14 @@
               {{ row.card }}
             </n-button>
 
-            <n-tag
+            <UIChip
               v-if="store.params.workerType === 'guest' && !row.organization"
-              size="tiny"
-              type="error"
-              :bordered="false"
+              tone="error"
+              :icon="ErrorCircle12Filled"
+              compact
             >
               {{ $t('turnstile.hcWorkersPage.notWorking') }}
-            </n-tag>
+            </UIChip>
             <n-ellipsis tooltip>
               {{ store.params.workerType === 'guest' && row.organization ? `${row.organization.name} — ${row.post_name}` : row.post_name }}
             </n-ellipsis>
@@ -218,44 +232,20 @@
     </template>
 
     <template #cell-access_levels="{ row }">
-      <div class="flex flex-wrap gap-2" v-if="row.hcpPerson">
-        <template v-for="level in row.hcpPerson.access_levels.slice(0, 3)" :key="level.id">
-          <n-button class="!px-1" dashed :type="level.type || 'default'">
-            <div class="flex flex-col px-4 relative group overflow-hidden min-w-[100px]">
-              <span class="font-semibold"> {{ level.name }}</span>
-              <span
-                v-if="accStore.checkPermission(accStore.pn.turnstileHikCentralWorkersWrite)"
-                @click.stop="onRefresh(level)"
-                class="px-1 bottom-0 absolute w-full h-full text-success flex justify-center items-center gap-2 top-0 right-[-200px] group-hover:right-[4px] transition-all duration-300 z-[999] bg-surface-ground"
-              >
-                <n-icon size="16">
-                  <ArrowSync24Filled />
-                </n-icon>
-                {{ $t('content.refresh') }}
-              </span>
-            </div>
-
-            <template #icon>
-              <n-icon size="19">
-                <ErrorCircle24Filled
-                  @click.stop="onShowErrorEv(undefined, level.id)"
-                  v-if="level.type === 'error'"
-                />
-                <AddSquareMultiple20Regular v-else />
-              </n-icon>
-            </template>
-          </n-button>
-        </template>
-        <n-button
-          @click="onSelect(row)"
-          round
-          secondary
-          v-if="row.hcpPerson.access_levels.length > 3"
+      <div class="flex flex-wrap items-center gap-1.5" v-if="row.hcpPerson">
+        <!-- Guruh — oddiy chip (xatolisi qizil). Yangilash / xato tafsiloti — ⋮ menyu → «Guruhlar» oynasida. -->
+        <UIChip
+          v-for="level in row.hcpPerson.access_levels.slice(0, 3)"
+          :key="level.id"
+          :tone="level.type || 'default'"
+          :icon="level.type === 'error' ? ErrorCircle12Filled : null"
+          tooltip
         >
-          <template #icon>
-            <MoreHorizontal24Regular />
-          </template>
-        </n-button>
+          {{ level.name }}
+        </UIChip>
+        <UIChip v-if="row.hcpPerson.access_levels.length > 3">
+          +{{ row.hcpPerson.access_levels.length - 3 }}
+        </UIChip>
       </div>
     </template>
 
@@ -272,20 +262,9 @@
     </template>
 
     <template #cell-errorMessage="{ row }">
-      <n-button
-        @click="onShowErrorEv(row.id)"
-        v-if="row.errorMessage"
-        type="error"
-        secondary
-        size="small"
-      >
-        <template #icon>
-          <n-icon size="24" class="text-danger">
-            <ErrorCircle24Filled />
-          </n-icon>
-        </template>
+      <UIChip v-if="row.errorMessage" tone="error" :icon="ErrorCircle12Filled">
         {{ $t('content.error') }}
-      </n-button>
+      </UIChip>
     </template>
   </UITable>
 

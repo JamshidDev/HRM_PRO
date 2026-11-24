@@ -1,7 +1,7 @@
 <script setup>
   import { computed, h } from 'vue'
   import { NTag, NIcon } from 'naive-ui'
-  import { UIModal, UIYearMonth } from '@/components/index.js'
+  import { UIChip, UIModal, UIYearMonth } from '@/components/index.js'
   import { useUploadReportStore } from '@/store/modules/index.js'
   import {
     Search24Regular,
@@ -107,12 +107,12 @@
         >
           <div class="text-sm font-medium truncate">{{ s.type }}</div>
           <div class="flex items-center gap-2 text-xs">
-            <n-tag size="tiny" type="success" round>
+            <UIChip tone="success" compact>
               {{ $t('uploadReport.reportStatus.uploaded') }}: {{ s.uploaded_orgs }}
-            </n-tag>
-            <n-tag size="tiny" type="error" round>
+            </UIChip>
+            <UIChip tone="error" compact>
               {{ $t('uploadReport.reportStatus.notUploaded') }}: {{ s.not_uploaded_orgs }}
-            </n-tag>
+            </UIChip>
           </div>
           <div class="text-xs text-secondary">
             {{ $t('uploadReport.reportStatus.confirmed') }}: {{ s.confirmed_orgs }}

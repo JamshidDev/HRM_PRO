@@ -2,6 +2,7 @@
   // Ikki versiyani solishtirish — skalyar maydonlar (baza / min_floor / amal sanasi)
   // + katak koeffitsientlari farqi (annex × ustun × guruh × razryad). Salary-1c compare kabi.
   import { useTariffGridStore } from '@/store/modules/index.js'
+  import { UIChip } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -92,7 +93,7 @@
                   {{ c.diff == null ? '—' : signed(c.diff) }}
                 </td>
                 <td>
-                  <n-tag :type="statusType(c.status)" size="tiny" round>{{ statusLabel(c.status) }}</n-tag>
+                  <UIChip :tone="statusType(c.status)" compact>{{ statusLabel(c.status) }}</UIChip>
                 </td>
               </tr>
             </tbody>

@@ -1,5 +1,6 @@
 <script setup>
-  import { UITable } from '@/components/index.js'
+  import { UIChip, UITable } from '@/components/index.js'
+  import icons from '@/assets/icons'
   import { useHolidayGreetingStore, useAccountStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -7,7 +8,8 @@
     CheckmarkCircle16Filled,
     DismissCircle16Regular,
     Delete20Regular,
-    Edit32Regular
+    Edit32Regular,
+    ErrorCircle12Filled
   } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
@@ -114,9 +116,12 @@
     </template>
 
     <template #cell-is_active="{ row }">
-      <n-tag :type="row.is_active ? 'success' : 'error'" size="small" round>
+      <UIChip
+        :tone="row.is_active ? 'success' : 'error'"
+        :icon="row.is_active ? icons.figBadgeCheck : ErrorCircle12Filled"
+      >
         {{ row.is_active ? $t('content.active') : $t('content.noActive') }}
-      </n-tag>
+      </UIChip>
     </template>
 
     <template #cell-banner_url="{ row }">

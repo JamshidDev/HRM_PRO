@@ -1,5 +1,5 @@
 <script setup>
-  import { UIUser, UIModal, UITable } from '@components'
+  import { UIUser, UIModal, UITable, UIChip } from '@components'
   import { useNotificationStore } from '@stores'
   import { Utils } from '@utils'
   import UIHelper from '@/utils/UIHelper.js'
@@ -10,8 +10,11 @@
     Globe20Regular,
     Person20Regular,
     CalendarLtr20Regular,
-    DocumentCheckmark20Regular
+    DocumentCheckmark20Regular,
+    Timer16Regular,
+    ErrorCircle12Filled
   } from '@vicons/fluent'
+  import icons from '@/assets/icons'
 
   const { t } = i18n.global
   const store = useNotificationStore()
@@ -49,6 +52,14 @@
     const m = STATUS_MAP[s] || { key: 'pending', type: 'default' }
     return { label: t(`notificationPage.st.${m.key}`), type: m.type }
   }
+  // Holat chipi ikonkasi (turiga qarab).
+  const statusIcon = (s) =>
+    ({
+      success: icons.figBadgeCheck,
+      info: Timer16Regular,
+      warning: Timer16Regular,
+      error: ErrorCircle12Filled
+    })[statusView(s).type] ?? null
   const dotClass = (s) => {
     const type = (STATUS_MAP[s] || {}).type
     return {
@@ -169,15 +180,17 @@
             placement="top"
           >
             <template #trigger>
-              <n-tag type="error" size="small" round class="cursor-help" @click.stop>
-                {{ statusView(row.status).label }}
-              </n-tag>
+              <span class="cursor-help" @click.stop>
+                <UIChip tone="error" :icon="ErrorCircle12Filled">
+                  {{ statusView(row.status).label }}
+                </UIChip>
+              </span>
             </template>
             <span class="max-w-xs break-words">{{ friendlyError(row.error) }}</span>
           </n-tooltip>
-          <n-tag v-else :type="statusView(row.status).type" size="small" round>
+          <UIChip v-else :tone="statusView(row.status).type" :icon="statusIcon(row.status)">
             {{ statusView(row.status).label }}
-          </n-tag>
+          </UIChip>
         </template>
 
         <template #cell-title="{ row }">
@@ -222,9 +235,11 @@
               {{ viewRow.message }}
             </p>
           </div>
-          <n-tag :type="statusView(viewRow.status).type" size="small" round class="shrink-0">
-            {{ statusView(viewRow.status).label }}
-          </n-tag>
+          <span class="shrink-0">
+            <UIChip :tone="statusView(viewRow.status).type" :icon="statusIcon(viewRow.status)">
+              {{ statusView(viewRow.status).label }}
+            </UIChip>
+          </span>
         </div>
 
         <!-- Xato bo'lsa — tushunarli xabar banneri -->

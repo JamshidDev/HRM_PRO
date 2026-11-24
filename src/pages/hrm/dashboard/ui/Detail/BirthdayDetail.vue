@@ -1,5 +1,5 @@
 <script setup>
-  import { UIUser, UITable } from '@/components/index.js'
+  import { UIUser, UITable, UIChip } from '@/components/index.js'
   import { useDashboardStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
 
@@ -79,7 +79,7 @@
     </template>
 
     <template #cell-birthday="{ row }">
-      <n-button type="primary" dashed round size="small">{{ row.worker.birthday }}</n-button>
+      <UIChip tone="primary">{{ row.worker.birthday }}</UIChip>
     </template>
 
     <template #cell-age="{ row }">

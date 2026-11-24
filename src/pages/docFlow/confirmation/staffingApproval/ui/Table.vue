@@ -1,5 +1,5 @@
 <script setup>
-  import { NoDataPicture, UIMenuButton, UIPagination, UIStatus } from '@/components/index.js'
+  import { NoDataPicture, UIMenuButton, UIPagination, UIStatus, UIChip } from '@/components/index.js'
   import { useAccountStore, useConfStaffingApprovalStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
 
@@ -49,11 +49,12 @@
                 (store.params.page - 1) * store.params.per_page + idx + 1
               }}</span>
             </td>
-            <td @click="onOpen(item.id)">
+            <!-- Raqam — oddiy chip; hujjatni ochish ⋮ menyu → «Ko'rish». -->
+            <td>
               <div class="flex justify-center">
-                <n-button type="primary" class="font-medium" round dashed size="tiny">{{
+                <UIChip tone="primary" class="font-medium" compact>{{
                   item?.staffing_approve?.number
-                }}</n-button>
+                }}</UIChip>
               </div>
             </td>
 

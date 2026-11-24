@@ -8,7 +8,8 @@
    * Backend: GET `/hr/worker-positions/{uuid}/roles` (o'qish),
    * `edit/attach-role` va `edit/detach-role` (hr-workers-write).
    */
-  import { UIModal, UISelect } from '@components'
+  import { UIModal, UISelect, UIChip } from '@components'
+  import icons from '@/assets/icons'
   import { useAccountStore, useComponentStore, useWorkerStore } from '@stores'
   import { Delete20Regular, Edit20Regular } from '@vicons/fluent'
   import RoleDepartmentsField from './RoleDepartmentsField.vue'
@@ -184,9 +185,9 @@
             {{ $t('workerRole.dept.editTitle') }}
           </n-tooltip>
           <!-- Faol rol — effektiv ruxsat manbai (har userda bittasi). -->
-          <n-tag v-if="row.is_active" type="success" size="small" round>
+          <UIChip v-if="row.is_active" tone="success" :icon="icons.figBadgeCheck" compact>
             {{ $t('content.active') }}
-          </n-tag>
+          </UIChip>
           <n-tooltip trigger="hover">
             <template #trigger>
               <n-button

@@ -1,7 +1,8 @@
 <script setup>
   // Setka/bazani lavozimlarga qo'llash: ta'sir preview (joriy vs yangi + farq + foiz) +
   // lavozim tanlash (checkbox) + qidiruv + faqat-o'zgaradiganlar + sabab + ixtiyoriy hujjat.
-  import { UIUpload, NoDataPicture } from '@/components/index.js'
+  import { UIChip, UIUpload, NoDataPicture } from '@/components/index.js'
+  import { ErrorCircle12Filled } from '@vicons/fluent'
   import { useTariffGridStore } from '@/store/modules/index.js'
 
   const store = useTariffGridStore()
@@ -59,11 +60,11 @@
     <n-spin :show="store.applyPreviewLoading" style="min-height: 200px">
       <!-- Xulosa -->
       <div class="flex flex-wrap items-center gap-2 mb-3">
-        <n-tag type="info" round>{{ $t('tariffGrid.apply.totalLabel') }}: {{ store.applyData?.total ?? 0 }}</n-tag>
-        <n-tag type="warning" round>{{ $t('tariffGrid.apply.changedLabel') }}: {{ store.applyData?.changed ?? 0 }}</n-tag>
-        <n-tag v-if="store.applyData?.base_amount != null" type="default" round>
+        <UIChip tone="info">{{ $t('tariffGrid.apply.totalLabel') }}: {{ store.applyData?.total ?? 0 }}</UIChip>
+        <UIChip tone="warning">{{ $t('tariffGrid.apply.changedLabel') }}: {{ store.applyData?.changed ?? 0 }}</UIChip>
+        <UIChip v-if="store.applyData?.base_amount != null" tone="default">
           {{ $t('tariffGrid.table.baseAmount') }}: {{ fmtNum(store.applyData?.base_amount) }} so'm
-        </n-tag>
+        </UIChip>
       </div>
 
       <n-alert type="info" :bordered="false" class="mb-3" style="border-radius: 12px">
@@ -107,9 +108,9 @@
               </td>
               <td class="text-xs">
                 {{ p.rank ?? '—' }} / {{ p.group }}
-                <n-tag v-if="!p.matched" type="error" size="tiny" round class="ml-1">
+                <UIChip v-if="!p.matched" tone="error" :icon="ErrorCircle12Filled" compact class="ml-1">
                   {{ $t('tariffGrid.apply.notMatched') }}
-                </n-tag>
+                </UIChip>
               </td>
               <td class="text-right! tnum">{{ fmtNum(p.current_salary) }}</td>
               <td class="text-right! tnum">{{ fmtNum(p.new_salary) }}</td>

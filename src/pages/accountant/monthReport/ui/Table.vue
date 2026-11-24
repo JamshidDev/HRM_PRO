@@ -1,7 +1,8 @@
 <script setup>
-  import { UITable, UIUser } from '@/components/index.js'
+  import { UITable, UIUser, UIChip } from '@/components/index.js'
   import { useMonthReportStore } from '@/store/modules/index.js'
-  import { CheckmarkCircle24Filled, ErrorCircle24Filled } from '@vicons/fluent'
+  import { CheckmarkCircle24Filled, ErrorCircle24Filled, Eye16Regular, Clock20Regular } from '@vicons/fluent'
+  import UIHelper from '@/utils/UIHelper.js'
   import i18n from '@/i18n/index.js'
   import SystemHoursModal from './SystemHoursModal.vue'
 
@@ -37,6 +38,23 @@
     sysHoursId.value = row.id
     sysHoursVisible.value = true
   }
+
+  // Kataklarda bosiladigan narsa yo'q — «Batafsil» va «Tizim soati» qatorning ⋮ menyusida.
+  const actions = computed(() => [
+    {
+      label: t('content.detail'),
+      key: 'detail',
+      icon: UIHelper.renderIcon(Eye16Regular),
+      action: onShow
+    },
+    {
+      label: t('monthReport.systemHours.column'),
+      key: 'systemHours',
+      icon: UIHelper.renderIcon(Clock20Regular),
+      visible: (row) => Boolean(row.worker),
+      action: onSystemHours
+    }
+  ])
 
   const columns = computed(() => [
     {
@@ -110,6 +128,7 @@
 <template>
   <UITable
     :columns="columns"
+    :actions="actions"
     :data="store.list"
     :loading="store.loading"
     :page="store.params.page"
@@ -117,7 +136,7 @@
     :total="store.totalItems"
     :sort-by="store.params.sort_by"
     :sort-order="store.params.sort_order"
-    storage-key="accountant-month-report"
+    storage-key="accountant-month-report-v2"
     @change-page="changePage"
     @sort="onSort"
   >
@@ -162,22 +181,12 @@
     </template>
 
     <template #cell-total_four="{ row }">
-      <n-button size="tiny" :type="row.diff ? 'success' : 'error'" dashed @click="onShow(row)">
-        {{ row.total_four }}
-      </n-button>
+      <UIChip :tone="row.diff ? 'success' : 'error'" compact>{{ row.total_four }}</UIChip>
     </template>
 
-    <!-- Tizim soati: xodim bazada bo'lmasa 0, bosilsa kunlar kesimi -->
+    <!-- Tizim soati: xodim bazada bo'lmasa 0; kunlar kesimi — ⋮ menyu → «Tizim soati» -->
     <template #cell-system_hours="{ row }">
-      <button
-        v-if="row.worker"
-        type="button"
-        class="text-sm tabular-nums text-textColor1 underline decoration-dotted underline-offset-4 hover:text-primary cursor-pointer"
-        @click="onSystemHours(row)"
-      >
-        {{ row.system_hours ?? 0 }}
-      </button>
-      <span v-else class="text-sm tabular-nums text-textColor1">0</span>
+      <span class="text-sm tabular-nums text-textColor1">{{ row.worker ? (row.system_hours ?? 0) : 0 }}</span>
     </template>
   </UITable>
   <SystemHoursModal v-model:visible="sysHoursVisible" :statement-id="sysHoursId" />

@@ -1,6 +1,8 @@
 <script setup>
   import { Desktop20Regular, Dismiss16Regular, Phone20Regular } from '@vicons/fluent'
   import SectionHeader from '@/components/worker/ui/shared/SectionHeader.vue'
+  import { UIChip } from '@/components/index.js'
+  import icons from '@/assets/icons'
   import DeviceIcon from '@/assets/icons/figKey.svg'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
@@ -133,9 +135,9 @@
           <div class="min-w-0">
             <div class="flex items-center gap-2 min-w-0">
               <p class="text-sm font-semibold text-textColor0 truncate">{{ title(s) }}</p>
-              <n-tag v-if="s.is_current" size="small" type="success" round>
+              <UIChip v-if="s.is_current" tone="success" :icon="icons.figBadgeCheck">
                 {{ $t('deviceSessions.current') }}
-              </n-tag>
+              </UIChip>
             </div>
             <div class="flex flex-wrap items-center gap-x-3 gap-y-0.5 mt-1 text-xs text-textColor3">
               <span>{{ $t(`deviceSessions.kind.${s.kind}`) }}</span>

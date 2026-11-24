@@ -1,7 +1,7 @@
 <script setup>
   // Telegram broadcast tarixi — Push tarixi bilan bir xil uslubda (UITable).
   // Asosiy ko'rsatkich: «nechtadan nechtasi yuborildi, nechtasi bloklandi».
-  import { UIUser, UIModal, UITable } from '@components'
+  import { UIUser, UIModal, UITable, UIChip } from '@components'
   import { useTelegramBroadcastStore } from '@stores'
   import { Utils } from '@utils'
   import UIHelper from '@/utils/UIHelper.js'
@@ -19,8 +19,11 @@
     Send20Regular,
     CalendarLtr20Regular,
     Person20Regular,
-    Prohibited20Regular
+    Prohibited20Regular,
+    Timer16Regular,
+    ErrorCircle12Filled
   } from '@vicons/fluent'
+  import icons from '@/assets/icons'
 
   const { t } = i18n.global
   const store = useTelegramBroadcastStore()
@@ -39,6 +42,13 @@
   }
   const statusLabel = (s) => t(`telegramBroadcast.st.${s}`)
   const statusType = (s) => STATUS_TYPE[s] ?? 'default'
+  // Holat chipi ikonkasi («sending» — o'z aylanuvchi ikonkasi slotda).
+  const statusIcon = (s) =>
+    s === 'sending'
+      ? null
+      : ({ success: icons.figBadgeCheck, info: Timer16Regular, warning: Timer16Regular, error: ErrorCircle12Filled })[
+          statusType(s)
+        ] ?? null
   const dotClass = (s) =>
     ({
       info: 'bg-info',
@@ -176,17 +186,12 @@
             <span class="tg-track" />
             <span class="tg-fill" :style="{ width: progressWidth(row) }" />
           </template>
-          <n-tag
-            :type="statusType(row.status)"
-            size="small"
-            round
-            :bordered="false"
-          >
+          <UIChip :tone="statusType(row.status)" :icon="statusIcon(row.status)">
             <template v-if="row.status === 'sending'" #icon>
               <n-icon class="animate-spin"><ArrowSync16Regular /></n-icon>
             </template>
             {{ statusLabel(row.status) }}
-          </n-tag>
+          </UIChip>
         </template>
 
         <template #cell-message="{ row }">
@@ -201,14 +206,9 @@
         </template>
 
         <template #cell-audience="{ row }">
-          <n-tag
-            :type="audienceType(row)"
-            size="small"
-            round
-            :bordered="false"
-          >
+          <UIChip :tone="audienceType(row)">
             {{ audienceLabel(row) }}
-          </n-tag>
+          </UIChip>
         </template>
 
         <!-- «Nechtadan nechtasi» — asosiy ko'rsatkich -->
@@ -218,18 +218,22 @@
           <div v-else class="flex flex-wrap items-center justify-center gap-1">
             <n-tooltip trigger="hover">
               <template #trigger>
-                <n-tag type="success" size="small" round :bordered="false" @click.stop>
-                  {{ num(row.sent) }}
-                  <span class="opacity-60">/ {{ num(row.total) }}</span>
-                </n-tag>
+                <span @click.stop>
+                  <UIChip tone="success">
+                    {{ num(row.sent) }}
+                    <span class="opacity-60">/ {{ num(row.total) }}</span>
+                  </UIChip>
+                </span>
               </template>
               <span class="text-xs">{{ resultHint(row) }}</span>
             </n-tooltip>
             <n-tooltip v-if="row.failed" trigger="hover">
               <template #trigger>
-                <n-tag type="error" size="small" round :bordered="false" @click.stop>
-                  {{ row.failed }}
-                </n-tag>
+                <span @click.stop>
+                  <UIChip tone="error">
+                    {{ row.failed }}
+                  </UIChip>
+                </span>
               </template>
               <span class="text-xs">{{ $t('telegramBroadcast.failed') }}</span>
             </n-tooltip>
@@ -239,9 +243,9 @@
         <!-- Botni bloklaganlar — alohida ustun. Nol bo'lsa katak BO'SH qoladi
              (badge ichida «0» ko'z tortadi, lekin hech qanday ma'no bermaydi). -->
         <template #cell-blocked="{ row }">
-          <n-tag v-if="row.blocked" type="error" size="small" round :bordered="false">
+          <UIChip v-if="row.blocked" tone="error">
             {{ num(row.blocked) }}
-          </n-tag>
+          </UIChip>
         </template>
 
         <template #cell-time="{ row }">
@@ -266,25 +270,15 @@
           <template v-if="store.viewRow">
             <!-- 1. Sarlavha: holat + auditoriya + yaratilgan vaqt -->
             <div class="flex shrink-0 flex-wrap items-center gap-2">
-              <n-tag
-                :type="statusType(store.viewRow.status)"
-                size="small"
-                round
-                :bordered="false"
-              >
+              <UIChip :tone="statusType(store.viewRow.status)" :icon="statusIcon(store.viewRow.status)">
                 <template v-if="store.viewRow.status === 'sending'" #icon>
                   <n-icon class="animate-spin"><ArrowSync16Regular /></n-icon>
                 </template>
                 {{ statusLabel(store.viewRow.status) }}
-              </n-tag>
-              <n-tag
-                :type="audienceType(store.viewRow)"
-                size="small"
-                round
-                :bordered="false"
-              >
+              </UIChip>
+              <UIChip :tone="audienceType(store.viewRow)">
                 {{ audienceLabel(store.viewRow) }}
-              </n-tag>
+              </UIChip>
               <span class="ml-auto text-xs text-textColor3">
                 {{ fmtDateTime(store.viewRow.created_at) }}
               </span>

@@ -1,6 +1,7 @@
 <script setup>
   // Bildirgi: NTF turi (guruhlangan) va shu turning maydonlari; javob turi va ogohlantirish muddati — ma'lumot uchun.
   import { selectWrap } from '@/utils/selectWrap.js'
+  import { UIChip } from '@/components/index.js'
   import { useEmployeeDocumentStore } from '@/store/modules/index.js'
   import SchemaFields from './SchemaFields.vue'
 
@@ -41,8 +42,8 @@
       />
     </n-form-item>
     <div v-if="def && props.part === 'type'" class="col-span-12 mb-1 flex flex-wrap gap-2 text-xs">
-      <n-tag size="small" round :bordered="false">{{ $t('noticesPage.term') }}: {{ def.term }}</n-tag>
-      <n-tag size="small" round :bordered="false" type="info">{{ $t(`noticesPage.response.${def.response}`) }}</n-tag>
+      <UIChip>{{ $t('noticesPage.term') }}: {{ def.term }}</UIChip>
+      <UIChip tone="info">{{ $t(`noticesPage.response.${def.response}`) }}</UIChip>
     </div>
     <div v-if="def && props.part === 'fields'" class="col-span-12">
       <SchemaFields ref="fieldsRef" :key="def.id" :fields="def.fields" :data="store.payload.data.fields" />

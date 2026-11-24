@@ -1,7 +1,7 @@
 <script setup>
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import { useComponentStore } from '@/store/modules/index.js'
-  import { SuperSelect, UIDepartmentSelect } from '@/components/index.js'
+  import { SuperSelect, UIDepartmentSelect, UIChip } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
   import { useAppSetting } from '@/utils/index.js'
   import ApiService from '@/service/ApiService.js'
@@ -302,9 +302,9 @@
     <div class="col-span-12 ot-list">
       <div class="ot-head">
         <span class="ot-title">{{ $t('commandPage.form_26.selected') }}</span>
-        <n-tag size="small" round :bordered="false" :type="store.payload.workers.length >= MAX_WORKERS ? 'warning' : 'default'">
+        <UIChip :tone="store.payload.workers.length >= MAX_WORKERS ? 'warning' : 'default'">
           {{ store.payload.workers.length }} / {{ MAX_WORKERS }}
-        </n-tag>
+        </UIChip>
         <n-spin v-if="checking" :size="14" />
       </div>
 

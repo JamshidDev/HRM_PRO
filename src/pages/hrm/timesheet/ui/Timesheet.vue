@@ -21,8 +21,11 @@
     MoreVertical20Filled,
     Save20Filled,
     Search20Regular,
-    Wand20Filled
+    Wand20Filled,
+    Timer16Regular,
+    ErrorCircle12Filled
   } from '@vicons/fluent'
+  import icons from '@/assets/icons'
   import {
     useComponentStore,
     useTimesheetConfirmStore,
@@ -36,7 +39,8 @@
     UIPagination,
     UISegmentTabs,
     UITable,
-    UIUser
+    UIUser,
+    UIChip
   } from '@/components/index.js'
   import dayjs from 'dayjs'
   import Utils from '@/utils/Utils.js'
@@ -274,6 +278,15 @@
 
   const confirmationTagType = (id) =>
     id === 3 ? 'success' : id === 4 ? 'error' : id === 2 ? 'info' : 'warning'
+
+  // Holat chipi ikonkasi (chip turiga qarab).
+  const tagIcon = (type) =>
+    ({
+      success: icons.figBadgeCheck,
+      info: Timer16Regular,
+      warning: Timer16Regular,
+      error: ErrorCircle12Filled
+    })[type] ?? null
 
   // Holat chipi — ro'yxatdagi «Tabel holati» ustuni bilan bir xil rang va ikonka (`Table.vue` `STATE`).
   const timesheetStatus = computed(() => {
@@ -984,9 +997,9 @@
                   :short="false"
                 />
                 <div class="ts-history-meta">
-                  <n-tag :bordered="false" :type="historyTagType(log?.status?.id)" round size="small">
+                  <UIChip :tone="historyTagType(log?.status?.id)" :icon="tagIcon(historyTagType(log?.status?.id))">
                     {{ log?.status?.name }}
-                  </n-tag>
+                  </UIChip>
                   <span class="ts-history-date">{{ log?.created_at }}</span>
                 </div>
               </div>
@@ -1008,14 +1021,14 @@
                   :short="false"
                 />
                 <div class="ts-approver-meta">
-                  <n-tag
-                    :bordered="false"
-                    :type="confirmationTagType(c?.status?.id)"
-                    round
-                    size="small"
-                  >
-                    {{ c?.status?.name }}
-                  </n-tag>
+                  <span class="shrink-0">
+                    <UIChip
+                      :tone="confirmationTagType(c?.status?.id)"
+                      :icon="tagIcon(confirmationTagType(c?.status?.id))"
+                    >
+                      {{ c?.status?.name }}
+                    </UIChip>
+                  </span>
                   <n-button
                     v-if="c?.status?.id !== 3 && !timesheetLocked"
                     :title="$t('content.delete')"
@@ -1686,9 +1699,6 @@
     overflow: visible;
     white-space: normal;
     text-overflow: clip;
-  }
-  .ts-approver :deep(.n-tag) {
-    flex: 0 0 auto;
   }
   .ts-approver:last-child {
     border-bottom: none;

@@ -1,7 +1,7 @@
 <script setup>
   import { openSafeUrl } from '@/utils/sanitize.js'
-  import { UITable, UIProfileSection, UIProfileEmpty, UIFileDownload } from '@/components/index.js'
-  import { Edit32Regular, Delete20Regular } from '@vicons/fluent'
+  import { UITable, UIProfileSection, UIProfileEmpty, UIFileDownload, UIChip } from '@/components/index.js'
+  import { Edit32Regular, Delete20Regular, ErrorCircle12Filled } from '@vicons/fluent'
   import { useLanguageCertificateStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -106,9 +106,9 @@
       <template #empty><UIProfileEmpty /></template>
 
       <template #cell-cefr_level="{ value }">
-        <n-tag v-if="value" size="small" type="info" round>
+        <UIChip v-if="value" tone="info">
           {{ value }}
-        </n-tag>
+        </UIChip>
       </template>
 
       <template #cell-issue_date="{ value }">
@@ -117,9 +117,9 @@
 
       <template #cell-expiry_date="{ row }">
         <!-- Muddati tugaganini server hisoblaydi (is_expired). Bo'sh = muddatsiz. -->
-        <n-tag v-if="row.is_expired" size="small" type="error" round>
+        <UIChip v-if="row.is_expired" tone="error" :icon="ErrorCircle12Filled">
           {{ Utils.timeOnlyDate(row.expiry_date) }}
-        </n-tag>
+        </UIChip>
         <span v-else-if="row.expiry_date" class="text-sm">{{
           Utils.timeOnlyDate(row.expiry_date)
         }}</span>

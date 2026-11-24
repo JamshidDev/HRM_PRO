@@ -120,19 +120,8 @@
             :loading="componentStore.enumAdminLoading"
           />
         </div>
-        <div class="col-span-12 md:col-span-6">
-          <label>{{ $t('content.status') }}</label>
-          <n-select
-            v-model:value="store.params.status"
-            :options="componentStore.confirmationStatusList"
-            label-field="name"
-            value-field="id"
-            clearable
-            @update:value="filterEvent"
-            :loading="componentStore.enumAdminLoading"
-          />
-        </div>
-        <div class="col-span-12 md:col-span-6">
+        <!-- Tur nomlari uzun — butun kenglikda; qolganlari juft-juft. -->
+        <div class="col-span-12">
           <label>{{ $t('content.type') }}</label>
           <n-select
             v-model:value="store.params.type"
@@ -141,6 +130,18 @@
             value-field="id"
             clearable
             filterable
+            @update:value="filterEvent"
+            :loading="componentStore.enumAdminLoading"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('content.status') }}</label>
+          <n-select
+            v-model:value="store.params.status"
+            :options="componentStore.confirmationStatusList"
+            label-field="name"
+            value-field="id"
+            clearable
             @update:value="filterEvent"
             :loading="componentStore.enumAdminLoading"
           />

@@ -6802,6 +6802,7 @@
       "matchHigh": "Face matches",
       "matchMid": "Partial match — compare the photos",
       "matchLow": "Low match — may be another person",
+      "lowMatchHint": "We suggest updating the approved photo.",
       "matchUnknown": "Similarity not available",
       "placeUnknown": "Location unknown",
       "accuracyGood": "precise",

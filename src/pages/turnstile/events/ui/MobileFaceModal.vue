@@ -1,6 +1,6 @@
 <script setup>
   // Mobil o'tishni ko'rish: kim/qachon, ikki rasmni solishtirish va o'tish joyi (xaritada aniqlik aylanasi).
-  import { UIModal } from '@/components/index.js'
+  import { UIModal, UIChip } from '@/components/index.js'
   import LocationMap from '@/pages/hrm/departmentLocation/ui/LocationMap.vue'
   import {
     ArrowCircleDownRight20Regular,
@@ -79,6 +79,9 @@
     return m('bg-danger/10 text-danger', ErrorCircle20Filled, 'matchLow')
   })
 
+  // Past moslikda (<70%) — tasdiqlangan rasmni yangilashni taklif qilamiz (qisqa izoh).
+  const isLowMatch = computed(() => similarity.value != null && similarity.value < 70)
+
   // --- O'tish joyi: nomi + turi, turini oddiy tilda tushuntiruvchi izoh.
   const source = computed(() => face.value?.place_source || null)
   const sourceLabel = computed(() => (source.value ? t(`departmentLocationPage.source.${source.value}`) : null))
@@ -128,15 +131,17 @@
           <div class="text-base font-semibold text-textColor0 truncate">{{ workerName }}</div>
           <div class="text-xs text-textColor3 mt-0.5">{{ whenLine }}</div>
         </div>
-        <n-tag round :type="event?.direction ? 'primary' : 'error'" :bordered="false" class="shrink-0">
-          <template #icon>
-            <n-icon>
-              <ArrowCircleDownRight20Regular v-if="event?.direction" />
-              <ArrowCircleUpLeft20Regular v-else />
-            </n-icon>
-          </template>
-          {{ event?.direction ? $t('departmentLocationPage.events.in') : $t('departmentLocationPage.events.out') }}
-        </n-tag>
+        <span class="shrink-0">
+          <UIChip :tone="event?.direction ? 'primary' : 'error'">
+            <template #icon>
+              <n-icon>
+                <ArrowCircleDownRight20Regular v-if="event?.direction" />
+                <ArrowCircleUpLeft20Regular v-else />
+              </n-icon>
+            </template>
+            {{ event?.direction ? $t('departmentLocationPage.events.in') : $t('departmentLocationPage.events.out') }}
+          </UIChip>
+        </span>
       </div>
 
       <!-- Rasmlarni solishtirish: tasdiqlangan rasm | rasmiy rasm -->
@@ -151,6 +156,7 @@
               :src="p.src"
               object-fit="cover"
               :render-toolbar="renderToolbar"
+              :previewed-img-props="{ class: 'mf-preview-img' }"
               class="block w-full h-full"
               :img-props="{ class: 'w-full h-full object-cover' }"
               @error="broken[p.key] = true"
@@ -173,10 +179,16 @@
       </div>
 
       <!-- O'xshashlik holati: rang + ikonka + oddiy izoh -->
-      <div class="flex items-center gap-2 rounded-xl px-3 py-2 text-[13px]" :class="match.cls">
-        <n-icon size="18" class="shrink-0"><component :is="match.icon" /></n-icon>
-        <span class="font-medium text-textColor0">{{ match.text }}</span>
-        <span v-if="similarity != null" class="ml-auto shrink-0 font-semibold">{{ similarity }}%</span>
+      <div class="rounded-xl px-3 py-2 text-[13px]" :class="match.cls">
+        <div class="flex items-center gap-2">
+          <n-icon size="18" class="shrink-0"><component :is="match.icon" /></n-icon>
+          <span class="font-medium text-textColor0">{{ match.text }}</span>
+          <span v-if="similarity != null" class="ml-auto shrink-0 font-semibold">{{ similarity }}%</span>
+        </div>
+        <!-- Past moslik: tasdiqlangan rasmni yangilash taklifi -->
+        <div v-if="isLowMatch" class="mt-1 pl-[26px] text-xs text-textColor2">
+          {{ $t('departmentLocationPage.events.lowMatchHint') }}
+        </div>
       </div>
 
       <!-- O'tish joyi -->
@@ -188,7 +200,7 @@
           <div class="flex items-center gap-2">
             <n-icon size="16" class="text-primary shrink-0"><Location20Filled /></n-icon>
             <span class="text-sm font-medium text-textColor0 truncate">{{ placeTitle }}</span>
-            <n-tag v-if="sourceLabel && face.place_name" size="tiny" round>{{ sourceLabel }}</n-tag>
+            <UIChip v-if="sourceLabel && face.place_name" compact>{{ sourceLabel }}</UIChip>
           </div>
           <div v-if="placeHint" class="text-xs text-textColor3 mt-0.5 pl-6">{{ placeHint }}</div>
 
@@ -330,6 +342,14 @@
     background: rgb(17 24 39 / 78%);
     backdrop-filter: blur(8px);
     box-shadow: 0 10px 30px -10px rgb(0 0 0 / 50%);
+  }
+  /* Ochilgan rasm: ikkala rasm (katta selfi va kichik rasmiy rasm) BIR XIL ramkada — asl o'lchami va
+     nisbatidan qat'iy nazar. Ramka 3:4 (telefon rasmi), rasm uni to'ldiradi (yuz markazda, chetlari kesiladi). */
+  .n-image-preview.mf-preview-img {
+    --mf-preview-h: min(72vh, 640px, calc((100vw - 32px) * 4 / 3));
+    width: calc(var(--mf-preview-h) * 3 / 4);
+    height: var(--mf-preview-h);
+    object-fit: cover;
   }
   .mf-toolbar {
     display: flex;

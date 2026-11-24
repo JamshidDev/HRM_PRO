@@ -1,7 +1,7 @@
 <script setup>
   import { computed, ref, watch } from 'vue'
   import { Edit16Regular, People16Regular } from '@vicons/fluent'
-  import { UIUser } from '@/components/index.js'
+  import { UIChip, UIUser } from '@/components/index.js'
   import { useAccountStore, useTopicStore } from '@/store/modules/index.js'
 
   // Mavzu kimlar uchun: doira, bo'linmalar, «Kimlarga» va auditoriyadagi xodimlar soni.
@@ -121,9 +121,9 @@
         <div class="rounded-xl border border-surface-line p-3">
           <p class="text-xs text-fig-text-tertiary">{{ $t('topicPage.departments') }}</p>
           <div v-if="info?.departments?.length" class="mt-1 flex flex-wrap gap-1">
-            <n-tag v-for="d in info.departments" :key="d.id" size="small" round>
+            <UIChip v-for="d in info.departments" :key="d.id">
               {{ d.name }}
-            </n-tag>
+            </UIChip>
           </div>
           <p v-else class="mt-1 text-sm text-fig-text-secondary">
             {{ $t('topicPage.allDepartments') }}
@@ -138,9 +138,9 @@
       </div>
 
       <div v-if="info?.whom === 2 && info.positions?.length" class="mt-3 flex flex-wrap gap-1.5">
-        <n-tag v-for="p in info.positions" :key="p.id" size="small" round type="info">
+        <UIChip v-for="p in info.positions" :key="p.id" tone="info">
           {{ p.name }}
-        </n-tag>
+        </UIChip>
       </div>
 
       <div v-if="info?.whom === 3" class="mt-3 flex flex-col gap-2">

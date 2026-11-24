@@ -1,5 +1,5 @@
 <script setup>
-  import { UIBadge, UIStatus, UITable, UIUser } from '@/components/index.js'
+  import { UIBadge, UIStatus, UITable, UIUser, UIChip } from '@/components/index.js'
   import MobileFaceModal from './MobileFaceModal.vue'
   import i18n from '@/i18n/index.js'
   import { useEventStore, useEventV2Store } from '@/store/modules/index.js'
@@ -225,9 +225,9 @@
         <span class="flex flex-col">
           <span class="flex items-center gap-2 text-primary hover:underline">
             {{ deviceLabel(row) }}
-            <n-tag v-if="row.mobile_face.photo_missing" size="tiny" round type="warning">
+            <UIChip v-if="row.mobile_face.photo_missing" tone="warning" compact>
               {{ $t('departmentLocationPage.events.noPhoto') }}
-            </n-tag>
+            </UIChip>
           </span>
           <span v-if="row.mobile_face.place_name" class="text-xs text-textColor3">
             {{ row.mobile_face.place_name }}
