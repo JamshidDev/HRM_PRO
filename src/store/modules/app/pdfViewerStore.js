@@ -7,6 +7,9 @@ import { loadPdfDocument, renderPageToCanvas } from '@/utils/pdfjs.js'
 // Rahbar QR'ini preview'da sudrab joylash — o'chiq: QR shablondagi joyiga tushadi (avvalgidek).
 export const QR_PLACEMENT_ENABLED = false
 
+// Sahifa bo'yicha render navbati (reaktiv emas) — eskirgan chaqiruvlar chizmaydi.
+const renderSeq = {}
+
 export const usePdfViewerStore = defineStore('pdfViewerStore', {
   state: () => ({
     visible: false,
@@ -151,6 +154,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         this.pdfDocument = await loadPdfDocument(pdfUrl)
         this.pdfDocumentUrl = pdfUrl
         this.totalPdfPage = this.pdfDocument.numPages
+        await this.fitScaleToWidth()
         for (let pageNumber = 1; pageNumber <= this.totalPdfPage; pageNumber++) {
           await this.renderPdf(pageNumber)
         }
@@ -159,14 +163,29 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         this.loadError = true
       }
     },
+    // Ochilganda sahifa markaziy ustun kengligiga moslanadi (1.2–1.4); keyin zoom tugmalari boshqaradi.
+    async fitScaleToWidth() {
+      const root = document.querySelector('[data-pdf-root]')
+      const page = await this.pdfDocument?.getPage(1)
+      if (!root || !page) return
+      const available = root.getBoundingClientRect().width - 32
+      const base = page.getViewport({ scale: 1 }).width
+      if (available > 0) this.scale = Math.min(1.4, Math.max(1.2, available / base))
+    },
     async renderPdf(pageNumber) {
       const page = await this.pdfDocument?.getPage(pageNumber)
       const canvas = document.querySelector(`#pdfCanvas${pageNumber}`)
       if (!page || !canvas) return
 
-      if (this.renderTasks[pageNumber]) {
-        this.renderTasks[pageNumber].cancel()
+      // Faqat oxirgi chaqiruv chizadi; oldingi render to'xtaguncha kutiladi (bir canvas'da ikki render — sahifa qismi bo'sh qoladi).
+      renderSeq[pageNumber] = (renderSeq[pageNumber] || 0) + 1
+      const mySeq = renderSeq[pageNumber]
+      const prev = this.renderTasks[pageNumber]
+      if (prev) {
+        prev.cancel()
+        await prev.promise.catch(() => {})
       }
+      if (renderSeq[pageNumber] !== mySeq) return
 
       const { viewport, task, dpr } = renderPageToCanvas(page, canvas, this.scale)
       // pdfWidth/pdfHeight — CSS o'lchami (QR overlay shu koordinatalarda ishlaydi).
