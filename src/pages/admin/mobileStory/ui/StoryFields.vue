@@ -73,6 +73,11 @@
         <n-select v-model:value="store.payload.status" :options="statusOptions" />
       </n-form-item>
 
+      <!-- Tartib: ilovadagi story qatorida shu raqam bo'yicha (kichigi oldin). -->
+      <n-form-item :label="$t('mobileStoryPage.form.sort')">
+        <n-input-number v-model:value="store.payload.sort" :min="1" :precision="0" class="w-full" />
+      </n-form-item>
+
       <n-form-item :label="$t('mobileStoryPage.form.publishedAt')">
         <n-date-picker
           type="datetime"

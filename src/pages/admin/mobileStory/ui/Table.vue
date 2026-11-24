@@ -48,6 +48,12 @@
       title: t('content.name'),
       minWidth: 260
     },
+    // Ilovada story'lar shu tartibda chiqadi (kichigi oldin).
+    {
+      key: 'sort',
+      title: t('mobileStoryPage.form.sort'),
+      width: 100
+    },
     {
       key: 'status',
       title: t('content.status'),
@@ -95,7 +101,7 @@
     :per-page="store.params.per_page"
     :total="store.totalItems"
     :delete-warning="t('mobileStoryPage.deleteConfirm')"
-    storage-key="admin-mobile-story"
+    storage-key="admin-mobile-story-v2"
     @change-page="changePage"
   >
     <template #header-title>
@@ -127,6 +133,10 @@
             : $t('mobileStoryPage.status.draft')
         }}
       </UIChip>
+    </template>
+
+    <template #cell-sort="{ row }">
+      {{ row.sort ?? '—' }}
     </template>
 
     <template #cell-published_at="{ row }">
