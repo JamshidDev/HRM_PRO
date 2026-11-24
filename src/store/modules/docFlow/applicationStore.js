@@ -42,7 +42,7 @@ export const useApplicationStore = defineStore('applicationStore', {
     forwardMode: 'parallel',
     forwardIds: [],
     forwardViewerIds: [],
-    // 'forward' — birinchi yo'naltirish, 'edit' — jarayonda o'zgartirish, 'resend' — rad etilgandan keyin qayta yuborish.
+    // 'forward' — birinchi yo'naltirish, 'edit' — jarayonda o'zgartirish.
     forwardAction: 'forward',
     forwardPrefill: [],
     routeLoading: false,
@@ -52,10 +52,6 @@ export const useApplicationStore = defineStore('applicationStore', {
     viewerList: [],
     viewerLoading: false,
     viewerParams: { page: 1, per_page: 50, search: null, director_id: null },
-    tabList: [1, 2, 3],
-    activeTab: 1,
-    applicationLink: null,
-
     form: {
       first_name: null,
       last_name: null,
@@ -88,7 +84,6 @@ export const useApplicationStore = defineStore('applicationStore', {
     liveCityList: [],
 
     checkLoading: false,
-    applicationData: null,
 
     acceptLoading: false,
     modalLoading: false
@@ -111,29 +106,6 @@ export const useApplicationStore = defineStore('applicationStore', {
         })
         .finally(() => {
           this.loading = false
-        })
-    },
-    _create() {
-      this.saveLoading = true
-      let data = {
-        ...this.payload,
-        ...{
-          department_id: this.payload.department_id?.[0]?.id || null,
-          from_date: Utils.timeToZone(this.payload.from_date)
-        }
-      }
-      $ApiService.applicationService
-        ._generateUrl({ data })
-        .then((res) => {
-          this.applicationLink = Utils.convertFromUrlToQuery(
-            res.data.data.url,
-            Utils.viewerStatus.applicationDocument
-          )
-          this.activeTab = 2
-          this._index()
-        })
-        .finally(() => {
-          this.saveLoading = false
         })
     },
     _signStart(id, callback) {
@@ -215,8 +187,7 @@ export const useApplicationStore = defineStore('applicationStore', {
       this.forwardLoading = true
       const method = {
         forward: '_forward',
-        edit: '_updateRoute',
-        resend: '_resend'
+        edit: '_updateRoute'
       }[this.forwardAction]
       const send = $ApiService.applicationService[method]
       send({
@@ -233,6 +204,18 @@ export const useApplicationStore = defineStore('applicationStore', {
         })
         .finally(() => {
           this.forwardLoading = false
+        })
+    },
+    // HR arizani xodimga tuzatish uchun qaytaradi (Qoralama).
+    _returnToOwner(comment, id, callback) {
+      this.modalLoading = true
+      $ApiService.applicationService
+        ._returnToOwner({ id, data: { comment } })
+        .then(() => {
+          callback?.()
+        })
+        .finally(() => {
+          this.modalLoading = false
         })
     },
     _accept(data, id, loadingKey = 'acceptLoading', callback) {
@@ -310,47 +293,6 @@ export const useApplicationStore = defineStore('applicationStore', {
         })
         .finally(() => {
           this.liveCityLoading = false
-        })
-    },
-
-    _checkApplication(params) {
-      const store = usePdfViewerStore()
-      store.errorMessage = null
-      store.checkLoading = true
-      $ApiService.applicationService
-        ._checkApplication({ params, data: { status: 'check' } })
-        .then((res) => {
-          this.applicationData = res.data.data
-        })
-        .catch((err) => {
-          store.errorMessage = err.response.data.message
-        })
-        .finally(() => {
-          store.checkLoading = false
-        })
-    },
-    _sendApp(params) {
-      const store = usePdfViewerStore()
-      this.saveLoading = true
-
-      let data = {
-        ...this.form,
-        ...{
-          pin: this.form.pin.split('-').join(''),
-          birthday: Utils.timeToZone(this.form.birthday),
-          phones: this.form.phones.map((v) => v.phone.split('-').join('').slice(4)),
-          user_phone: this.form.phones
-            .filter((v) => v.main)[0]
-            .phone.split('-')
-            .join('')
-            .slice(4)
-        }
-      }
-      $ApiService.applicationService
-        ._checkApplication({ params, data })
-        .then((res) => {})
-        .finally(() => {
-          this.saveLoading = false
         })
     },
 

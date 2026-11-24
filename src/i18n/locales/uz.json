@@ -3521,12 +3521,21 @@
   "applicationPage": {
     "statuses": {
       "draft": "Qoralama",
+      "returned": "Qaytarildi",
       "checking": "Tekshiruvda",
       "process": "Jarayonda",
       "rejected": "Rad etilgan",
       "approved": "Tasdiqlangan"
     },
     "draftBarTitle": "Arizani tasdiqlang",
+    "returnBtn": "Qaytarish",
+    "returnTitle": "Arizani tuzatish uchun qaytarish",
+    "returnReason": "Qaytarish sababi",
+    "returnPlaceholder": "Xodim nimani tuzatishi kerak?",
+    "returnHint": "Ariza xodimga qoralama bo'lib qaytadi. Xodim tuzatib, qayta tasdiqlagach yana sizga keladi.",
+    "returnDone": "Ariza xodimga tuzatish uchun qaytarildi",
+    "returnedTitle": "Ariza tuzatish uchun qaytarildi",
+    "returnedBy": "Qaytardi",
     "draftBarSub": "Imzolaganingizdan keyin ariza kadrlar bo'limiga yuboriladi",
     "ownRejectTitle": "Haqiqatan ham rad etmoqchimisiz?",
     "ownRejectDesc": "Ariza rad etiladi va kadrlar bo'limiga yuborilmaydi.",
@@ -3659,6 +3668,7 @@
     },
     "hrCheck": {
       "new": "Yangi",
+      "done": "Ko'rib chiqildi",
       "forwarded": "Yo'naltirilgan",
       "closed": "Yopilgan",
       "awaiting": "Qaror kutilmoqda"

@@ -109,6 +109,8 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       per_page: 15,
       search: null,
       organizations: [],
+      // Bo'lim id'lari — backend ichki bo'limlarni ham qamraydi.
+      departments: [],
       role: null,
       // null = hammasi; 'with' | 'without' — hisob holati bo'yicha filtr.
       account: null
@@ -571,6 +573,7 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
       const params = {
         ...this.userRoleParams,
         organizations: this.userRoleParams.organizations.map((v) => v.id).toString() || undefined,
+        departments: this.userRoleParams.departments.toString() || undefined,
         role: this.userRoleParams.role || undefined,
         account: this.userRoleParams.account || undefined
       }

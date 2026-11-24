@@ -3521,12 +3521,21 @@
   "applicationPage": {
     "statuses": {
       "draft": "Qaralama",
+      "returned": "Qaytarıldı",
       "checking": "Tekseriwde",
       "process": "Processte",
       "rejected": "Biykarlanǵan",
       "approved": "Tastıyıqlanǵan"
     },
     "draftBarTitle": "Arzanı tastıyıqlań",
+    "returnBtn": "Qaytarıw",
+    "returnTitle": "Arzanı dúzetiw ushın qaytarıw",
+    "returnReason": "Qaytarıw sebebi",
+    "returnPlaceholder": "Xızmetker neni dúzetiwi kerek?",
+    "returnHint": "Arza xızmetkerge qaralama bolıp qaytadı. Dúzetip, qayta tastıyıqlaǵannan keyin sizge keledi.",
+    "returnDone": "Arza xızmetkerge dúzetiw ushın qaytarıldı",
+    "returnedTitle": "Arza dúzetiw ushın qaytarıldı",
+    "returnedBy": "Qaytarǵan",
     "draftBarSub": "Qol qoyǵannan keyin arza kadrlar bólimine jiberiledi",
     "ownRejectTitle": "Haqıyqatında da biykarlamaqshısız ba?",
     "ownRejectDesc": "Arza biykarlanadı hám kadrlar bólimine jiberilmeydi.",
@@ -3659,6 +3668,7 @@
     },
     "hrCheck": {
       "new": "Jańa",
+      "done": "Kórip shıǵıldı",
       "forwarded": "Baǵdarlanǵan",
       "closed": "Jabılǵan",
       "awaiting": "Qarar kútilmekte"

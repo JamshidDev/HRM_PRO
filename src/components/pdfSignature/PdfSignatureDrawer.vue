@@ -8,7 +8,8 @@
     Eye20Regular,
     DocumentCheckmark20Regular,
     Attach20Regular,
-    People20Regular
+    People20Regular,
+    ArrowUndo20Regular
   } from '@vicons/fluent'
   import { useMediaQuery } from '@vueuse/core'
   import { useAppBreakpoints } from '@/composables/useBreakpoint.js'
@@ -42,7 +43,7 @@
   import { useRoute } from 'vue-router'
   import PdfViewer from '@/components/pdfSignature/PdfViewer.vue'
   import ConformAndRejectModal from '@/components/pdfSignature/ui/ConformAndRejectModal.vue'
-  import DangerConfirm from '@/components/pdfSignature/ui/DangerConfirm.vue'
+  import ReturnApplicationModal from '@/components/pdfSignature/ui/ReturnApplicationModal.vue'
   import DocumentFileModal from '@/components/pdfSignature/ui/DocumentFileModal.vue'
   import ForwardApplicationModal from '@/components/pdfSignature/ui/ForwardApplicationModal.vue'
   const pdfViewerRef = ref(null)
@@ -139,9 +140,14 @@
   )
   // Ro'yxatdan o'tkazilgan (qog'ozdagi) buyruq — tizimda imzolanmagan.
   const isLegacyDoc = computed(() => !!store.document?.document?.is_legacy)
+  // Joriy foydalanuvchining shu hujjatdagi qatori turi (w — hujjat xodimi).
+  const mineType = computed(
+    () => store.confirmations?.find((c) => c.id === store.signatureId)?.type
+  )
   const signState = computed(() => {
     if (isLegacyDoc.value) return 'registered'
-    if (store.permissions?.canSignature && !isSigned.value) return 'sign'
+    // Xodim (`w`) bildirgi/moddiy javobgarlikni rahbar tasdiqlagach imzolaydi — backend flagi hal qiladi.
+    if (store.permissions?.canSignature && (!isSigned.value || mineType.value === 'w')) return 'sign'
     if (selfConfirmation.value?.status?.id === 3) return 'signed'
     if (selfConfirmation.value?.status?.id === 4) return 'rejected'
     return 'none'
@@ -274,7 +280,7 @@
   const isForwarded = computed(() => hasDirector.value && hrSigned.value)
   // Eski tartib: rahbar yaratishda qo'shilgan, HR marshruti yo'q — faqat yopish mumkin.
   const isLegacy = computed(() => hasDirector.value && !hrSigned.value)
-  // HR paneli: yangi (imzolash) / jarayonda (o'zgartirish) / rad etilgan (qayta yuborish) — HR yopmagan bo'lsa.
+  // HR paneli: yangi (imzolash/qaytarish) / jarayonda (o'zgartirish) — HR yopmagan bo'lsa.
   const docConfirmation = computed(() => store.document?.document?.confirmation?.id)
   // Xodimning qoralama arizasi (6): imzolab tasdiqlagach kadrlar bo'limiga yuboriladi.
   const isOwnDraftApplication = computed(() => isApplication.value && docConfirmation.value === 6)
@@ -283,7 +289,6 @@
     if (route.path !== '/hrm/application' || !isApplication.value || store.document?.document?.closed) return null
     if (isLegacy.value && [1, 4].includes(docConfirmation.value)) return 'legacy'
     if (docConfirmation.value === 1) return isForwarded.value ? 'process' : 'new'
-    if (docConfirmation.value === 4 && isForwarded.value) return 'rejected'
     return null
   })
   const showConfirmButtons = computed(() => hrStage.value !== null)
@@ -295,7 +300,6 @@
   )
   const canClose = computed(
     () =>
-      hrStage.value === 'rejected' ||
       (hrStage.value === 'legacy' && (docConfirmation.value === 4 || !approverSigned.value)) ||
       (hrStage.value === 'new' && !hrSigned.value) ||
       (hrStage.value === 'process' && !approverSigned.value)
@@ -305,7 +309,6 @@
       ({
         new: 'documentPage.signature.approval.yourTurn',
         process: 'applicationPage.forward.panelProcessTitle',
-        rejected: 'applicationPage.forward.panelRejectedTitle',
         legacy: 'applicationPage.forward.panelLegacyTitle'
       })[hrStage.value]
   )
@@ -314,7 +317,6 @@
       ({
         new: 'applicationPage.forward.panelSub',
         process: 'applicationPage.forward.panelProcess',
-        rejected: 'applicationPage.forward.panelRejected',
         legacy: 'applicationPage.forward.panelLegacy'
       })[hrStage.value]
   )
@@ -327,7 +329,7 @@
     if (hrStage.value === 'new') return openConfirmModal(true)
     applicationStore._openRoute(
       store.document_id,
-      hrStage.value === 'rejected' ? 'resend' : 'edit',
+      'edit',
       hrDirector()
     )
   }
@@ -521,16 +523,10 @@
     emits('signatureEv')
   }
 
-  // Xodim o'z qoralamasini sababsiz rad etadi.
-  const rejectOwnDraft = () => {
-    signatureStore._rejectDocument(
-      { status: 4, confirmation_id: store.signatureId, model: store.model },
-      () => {
-        getDocument(store.document_id, store.model)
-        onRejected()
-      }
-    )
-  }
+  // HR qaytargan qoralama — sabab xodimga ko'rinadi.
+  const returnedInfo = computed(() =>
+    isOwnDraftApplication.value ? store.document?.document?.returned || null : null
+  )
 
   // Buyruq / shartnoma / qo'shimcha kelishuv: kelishuvchilar marshruti (parallel / ketma-ket).
   const isRouteDoc = computed(() =>
@@ -842,8 +838,8 @@
                         </div>
                       </div>
                     </div>
-                    <!-- Arizani qayta yuborish — faqat HR panelidan (pastda) -->
-                    <template v-if="isApplication" />
+                    <!-- Arizani qayta yuborish — faqat HR panelidan (pastda); hujjat xodimiga ko'rinmaydi -->
+                    <template v-if="isApplication || mineType === 'w'" />
                     <n-button
                       v-else-if="!resendActionsVisible"
                       type="success"
@@ -988,6 +984,23 @@
                           </div>
                         </div>
                         <div class="flex items-center gap-1.5 shrink-0">
+                          <!-- Yo'naltirilmagan ariza — xodimga tuzatish uchun qaytarish. -->
+                          <n-button
+                            v-if="hrStage === 'new'"
+                            type="warning"
+                            secondary
+                            round
+                            class="px-3!"
+                            :disabled="
+                              applicationStore.modalLoading || applicationStore.signStartLoading
+                            "
+                            @click="store.returnVisible = true"
+                          >
+                            <template #icon>
+                              <n-icon><ArrowUndo20Regular /></n-icon>
+                            </template>
+                            {{ $t('applicationPage.returnBtn') }}
+                          </n-button>
                           <n-button
                             v-if="canClose"
                             type="error"
@@ -1026,13 +1039,11 @@
                               <n-icon><Signature20Regular /></n-icon>
                             </template>
                             {{
-                              hrStage === 'rejected'
-                                ? $t('applicationPage.forward.resendTitle')
-                                : hrStage === 'process'
-                                  ? $t('applicationPage.forward.editTitle')
-                                  : hrSigned
-                                    ? $t('applicationPage.forward.setApprovers')
-                                    : $t('documentPage.signature.approval.sign')
+                              hrStage === 'process'
+                                ? $t('applicationPage.forward.editTitle')
+                                : hrSigned
+                                  ? $t('applicationPage.forward.setApprovers')
+                                  : $t('documentPage.signature.approval.sign')
                             }}
                           </n-button>
                         </div>
@@ -1045,41 +1056,35 @@
                           <n-icon size="18"><Signature20Regular /></n-icon>
                         </div>
                         <div class="hidden sm:block min-w-0 leading-tight mr-2">
-                          <div class="text-[13px] font-semibold text-textColor0 whitespace-nowrap">
-                            {{ $t(isOwnDraftApplication ? 'applicationPage.draftBarTitle' : 'documentPage.signature.approval.yourTurn') }}
+                          <div
+                            class="text-[13px] font-semibold whitespace-nowrap"
+                            :class="returnedInfo ? 'text-fig-orange' : 'text-textColor0'"
+                          >
+                            {{
+                              $t(
+                                returnedInfo
+                                  ? 'applicationPage.returnedTitle'
+                                  : isOwnDraftApplication
+                                    ? 'applicationPage.draftBarTitle'
+                                    : 'documentPage.signature.approval.yourTurn'
+                              )
+                            }}
                           </div>
-                          <div class="text-[11px] text-textColor3 mt-0.5 whitespace-nowrap">
+                          <div
+                            v-if="returnedInfo"
+                            class="text-[11px] text-textColor2 mt-0.5 max-w-[420px] truncate"
+                            :title="returnedInfo.reason"
+                          >
+                            {{ returnedInfo.reason }}
+                          </div>
+                          <div v-else class="text-[11px] text-textColor3 mt-0.5 whitespace-nowrap">
                             {{ $t(isOwnDraftApplication ? 'applicationPage.draftBarSub' : 'documentPage.signature.approval.yourTurnSub') }}
                           </div>
                         </div>
                         <div class="flex items-center gap-1.5 shrink-0">
-                          <!-- O'z qoralamasi: sababsiz, faqat tasdiqlash. -->
-                          <DangerConfirm
-                            v-if="isOwnDraftApplication"
-                            :title="$t('applicationPage.ownRejectTitle')"
-                            :description="$t('applicationPage.ownRejectDesc')"
-                            :confirm-text="$t('documentPage.signature.rejectSubmit')"
-                            :icon="Dismiss20Regular"
-                            placement="top-end"
-                            @confirm="rejectOwnDraft"
-                          >
-                            <template #trigger>
-                              <n-button
-                                type="error"
-                                secondary
-                                round
-                                class="px-3!"
-                                :disabled="signatureStore.loading"
-                              >
-                                <template #icon>
-                                  <n-icon><Dismiss20Regular /></n-icon>
-                                </template>
-                                {{ $t('documentPage.signature.rejectSubmit') }}
-                              </n-button>
-                            </template>
-                          </DangerConfirm>
+                          <!-- Ariza egasi rad etmaydi — faqat tasdiqlaydi. -->
                           <n-button
-                            v-else
+                            v-if="!isOwnDraftApplication"
                             type="error"
                             secondary
                             round
@@ -1220,6 +1225,7 @@
       </div>
     </n-drawer>
     <ConformAndRejectModal @rejected="onRejected" />
+    <ReturnApplicationModal @returned="onRejected" />
     <ForwardApplicationModal @forwarded="onForwarded" />
     <ForwardApplicationModal
       v-if="isRouteDoc"
