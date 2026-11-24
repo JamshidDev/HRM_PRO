@@ -6848,6 +6848,7 @@
       "matchHigh": "Yuz mos keldi",
       "matchMid": "O'rtacha moslik — rasmlarni solishtiring",
       "matchLow": "Past moslik — boshqa odam bo'lishi mumkin",
+      "lowMatchHint": "Tasdiqlangan rasmni yangilash tavsiya etiladi.",
       "matchUnknown": "O'xshashlik aniqlanmagan",
       "placeUnknown": "Joylashuv aniqlanmagan",
       "accuracyGood": "aniq",
