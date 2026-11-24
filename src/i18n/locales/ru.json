@@ -3509,6 +3509,7 @@
   "applicationPage": {
     "statuses": {
       "draft": "Черновик",
+      "returned": "Возвращено",
       "checking": "На проверке",
       "process": "В процессе",
       "rejected": "Отклонено",

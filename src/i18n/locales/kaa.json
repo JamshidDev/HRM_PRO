@@ -3521,6 +3521,7 @@
   "applicationPage": {
     "statuses": {
       "draft": "Qaralama",
+      "returned": "Qaytarıldı",
       "checking": "Tekseriwde",
       "process": "Processte",
       "rejected": "Biykarlanǵan",

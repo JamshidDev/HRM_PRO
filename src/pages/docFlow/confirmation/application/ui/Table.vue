@@ -111,6 +111,9 @@
   const appStatus = (app) => {
     const conf = app?.confirmation?.id
     const hr = Number(app?.status)
+    // HR tuzatish uchun qaytargan qoralama.
+    if (conf === DRAFT_CONFIRMATION && app?.returned)
+      return { id: 11, name: t('applicationPage.statuses.returned') }
     if (conf === DRAFT_CONFIRMATION) return { id: 2, name: t('applicationPage.statuses.draft') }
     if (conf === 3) return { id: 3, name: t('applicationPage.statuses.approved') }
     if (conf === REJECTED_CONFIRMATION || hr === 2)

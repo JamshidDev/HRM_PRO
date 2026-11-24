@@ -3258,6 +3258,7 @@
   "applicationPage": {
     "statuses": {
       "draft": "Қоралама",
+      "returned": "Қайтарилди",
       "checking": "Текширувда",
       "process": "Жараёнда",
       "rejected": "Рад этилган",
