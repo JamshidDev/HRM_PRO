@@ -1,5 +1,5 @@
 <script setup>
-  import { UIPageFilter, UISelect } from '@components'
+  import { UIPageFilter, UISelect, UIDepartmentSelect } from '@components'
   import {
     useComponentStore,
     useWorkerProfileStore
@@ -23,6 +23,7 @@
   const filterCount = computed(() => {
     let count = 0
     if (store.userRoleParams.organizations.length) count++
+    if (store.userRoleParams.departments.length) count++
     if (store.userRoleParams.role) count++
     if (store.userRoleParams.account) count++
     return count
@@ -49,8 +50,16 @@
     }
   }
 
+  // Korxona almashsa bo'lim tanlovi tozalanadi (bo'limlar korxonaga tegishli).
   const onChangeStructure = (v) => {
     store.userRoleParams.organizations = v
+    store.userRoleParams.departments = []
+    store.userRoleParams.page = 1
+    filterEvent()
+  }
+
+  const onChangeDepartment = () => {
+    store.userRoleParams.page = 1
     filterEvent()
   }
 
@@ -62,6 +71,7 @@
 
   const resetFilter = () => {
     store.userRoleParams.organizations = []
+    store.userRoleParams.departments = []
     store.userRoleParams.role = null
     store.userRoleParams.account = null
     filterEvent()
@@ -117,6 +127,15 @@
             @onSearch="componentStore._structures"
             :loading="componentStore.structureLoading"
             @onSubmit="filterEvent"
+          />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('workerPage.filter.department') }}</label>
+          <UIDepartmentSelect
+            v-model="store.userRoleParams.departments"
+            :organization="store.userRoleParams.organizations"
+            multiple
+            @update:model-value="onChangeDepartment"
           />
         </div>
       </div>
