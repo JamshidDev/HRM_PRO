@@ -36,8 +36,11 @@
     }
   })
 
+  // Ko'rish oynasi sarlavhasi — «№2 — Bildirgi» (shartnomalardagi kabi; berilmasa UUID chiqardi).
   const openDocument = (id) => {
-    officeAppRef.value.openPdf(id, Utils.documentModels.documents)
+    const row = store.list.find((x) => x.id === id)
+    const title = Utils.documentTitle(row?.number, row?.type?.name)
+    officeAppRef.value.openPdf(id, Utils.documentModels.documents, undefined, title)
   }
 
   onMounted(() => {

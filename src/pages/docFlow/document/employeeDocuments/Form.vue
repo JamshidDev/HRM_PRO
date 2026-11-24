@@ -93,6 +93,8 @@
   }
   const onChangeDirector = (id) => {
     store.payload.director_id = id
+    // Faqat yangi hujjatda eslab qolinadi (tahrirdagi tanlov keyingi yangi hujjatga o'tmaydi).
+    if (!store.editId) store.lastDirectorId = id
     onChangeApprovers(store.payload.confirmations.filter((v) => v !== id))
   }
 

@@ -20,8 +20,11 @@
   const accStore = useAccountStore()
   const officeAppRef = ref(null)
 
+  // Ko'rish oynasi sarlavhasi — «№1 — Ariza turi» (berilmasa UUID chiqardi).
   const openApplication = (id) => {
-    officeAppRef.value.openPdf(id, Utils.documentModels.workerApplication)
+    const row = store.list.find((x) => x.id === id)
+    const title = Utils.documentTitle(row?.number, row?.type?.name)
+    officeAppRef.value.openPdf(id, Utils.documentModels.workerApplication, undefined, title)
   }
 
   const commandStore = useCommandStore()
