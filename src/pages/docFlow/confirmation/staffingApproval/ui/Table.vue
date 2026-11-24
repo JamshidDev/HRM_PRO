@@ -49,7 +49,8 @@
                 (store.params.page - 1) * store.params.per_page + idx + 1
               }}</span>
             </td>
-            <td @click="onOpen(item.id)">
+            <!-- Raqam — oddiy chip; hujjatni ochish ⋮ menyu → «Ko'rish». -->
+            <td>
               <div class="flex justify-center">
                 <UIChip tone="primary" class="font-medium" compact>{{
                   item?.staffing_approve?.number

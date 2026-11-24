@@ -144,7 +144,8 @@
     </template>
 
     <template #cell-number="{ row }">
-      <div @click="onOpen(row.id)" class="flex justify-center">
+      <!-- Raqam — oddiy chip; hujjatni ochish ⋮ menyu → «Ko'rish». -->
+      <div class="flex justify-center">
         <UIChip tone="primary" class="font-medium" compact>
           {{ row.serial + '-' + row?.number }}
         </UIChip>

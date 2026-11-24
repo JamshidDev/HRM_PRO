@@ -205,17 +205,8 @@
     </template>
 
     <template #cell-applications_count="{ row }">
-      <n-button
-        v-if="row.applications_count > 0"
-        size="small"
-        type="primary"
-        circle
-        bordered
-        dashed
-        @click="store.openViewModal(row)"
-      >
-        {{ row.applications_count }}
-      </n-button>
+      <!-- Arizalar soni — oddiy chip; ro'yxat ⋮ menyu → «Ko'rish». -->
+      <UIChip v-if="row.applications_count > 0" tone="primary" compact>{{ row.applications_count }}</UIChip>
       <span v-else></span>
     </template>
   </UITable>
