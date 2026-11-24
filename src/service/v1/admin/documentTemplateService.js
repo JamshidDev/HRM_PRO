@@ -29,7 +29,13 @@ const _discard = async (payload) => {
   return await axios.post(`/v1/admin/document-templates/discard`, payload.data)
 }
 
+// Tayyor DOCX blankani yuklash (multipart: file, category, type, key).
+const _upload = async (payload) => {
+  return await axios.post(`/v1/admin/document-templates/upload`, payload.data)
+}
+
 export default {
+  _upload,
   _index,
   _variables,
   _editorConfig,
