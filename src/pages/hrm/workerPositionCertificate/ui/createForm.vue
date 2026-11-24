@@ -67,7 +67,8 @@
       formData.append('expiry_date', p.expiry_date)
       // Bo'sh maydonlarni yubormaymiz — backend `@IsOptional` kutadi.
       if (p.extended_date) formData.append('extended_date', p.extended_date)
-      // verify/returned YUBORILMAYDI — backend default false qo'yadi.
+      formData.append('verify', p.verify ? '1' : '0')
+      formData.append('returned', p.returned ? '1' : '0')
 
       // Fayl FAQAT yangi tanlangan bo'lsa (`size` bor) yuboriladi. Bo'sh qiymat
       // yuborilsa backend uni "fayl yo'q" deb tushunib eski yo'lni o'chirardi.
@@ -200,6 +201,15 @@
             <input @change="onUpload" type="file" v-show="false" ref="inputFileRef" />
           </n-form-item>
         </div>
+      </div>
+      <!-- Holat belgilari: tasdiqlangan va qaytarib olingan. -->
+      <div class="flex flex-wrap gap-x-6 gap-y-2 mb-4">
+        <n-checkbox v-model:checked="store.payload.verify">
+          {{ $t('workerCertificatePage.table.verify') }}
+        </n-checkbox>
+        <n-checkbox v-model:checked="store.payload.returned">
+          {{ $t('workerCertificatePage.table.returned') }}
+        </n-checkbox>
       </div>
     </n-form>
   </div>

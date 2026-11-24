@@ -36,6 +36,11 @@ const _myChildren = async () => {
   return await axios.get(`/v1/worker-application/children`)
 }
 
+// Tushuntirish xati: xodimga kelgan talabnomalar (types — NTF turlari).
+const _myNotices = async (payload) => {
+  return await axios.get(`/v1/worker-application/notices`, { params: payload?.params })
+}
+
 const _confirmation = async (payload) => {
   return await axios.get(`/v1/worker-application/confirmations`, { params: payload?.params })
 }
@@ -108,5 +113,6 @@ export default {
   _documentApplication,
   _commandPrefill,
   _deleteWorkerApplication,
-  _myChildren
+  _myChildren,
+  _myNotices
 }

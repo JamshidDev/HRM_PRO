@@ -12,6 +12,8 @@
   } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
+  // notice — HR «Bildirgilar» menyusidan: xodimlardan kelgan bildirgilar.
+  const props = defineProps({ notice: { type: Boolean, default: false } })
   const route = useRoute()
   const store = useApplicationStore()
   const componentStore = useComponentStore()
@@ -63,6 +65,9 @@
   }
 
   onMounted(() => {
+    store.params.kind = props.notice ? 'notice' : null
+    store.params.page = 1
+    store.list = []
     if (!accStore.checkAction(accStore.pn.hrWorkerApplicationsRead)) return
     if (route.query.confirmation) {
       store.params.confirmation = Number(route.query.confirmation)
@@ -77,6 +82,7 @@
 
 <template>
   <UIPageContent>
+    <slot name="top" />
     <Filter />
     <UISegmentTabs
       v-model="store.params.stage"

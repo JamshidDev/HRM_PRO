@@ -70,6 +70,8 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
       // Yagona holat tabi: all | draft | checking | process | approved | rejected.
       app_state: 'all'
     },
+    // Bildirgilar menyusi: faqat xodim bildirgilari (46–49) — ro'yxat va tur tanlovi.
+    noticeMode: false,
     // Yangi yaratilgan qoralama qatori — sahifa uni ochib imzolashni so'raydi.
     signPromptRow: null,
     confirmParams: {
@@ -212,7 +214,8 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
         ._confIndex({
           params: {
             ...this.params,
-            app_state: this.params.app_state === 'all' ? undefined : this.params.app_state
+            app_state: this.params.app_state === 'all' ? undefined : this.params.app_state,
+            kind: this.noticeMode ? 'notice' : undefined
           }
         })
         .then((res) => {
