@@ -40,7 +40,7 @@
       type="button"
       @click="store.sendMessage()"
       :disabled="store.loading || !store.payload.question?.trim()"
-      class="w-14 h-14 shrink-0 rounded-full bg-primary hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center cursor-pointer transition-opacity"
+      class="kb-send w-14 h-14 shrink-0 rounded-full bg-primary hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center cursor-pointer transition-opacity"
     >
       <n-icon size="20" class="text-white">
         <Aitelegram />

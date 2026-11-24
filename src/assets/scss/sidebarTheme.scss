@@ -203,7 +203,9 @@
   --sidebar-icon-active-filter: none;
 }
 
-[data-sidebar-theme='mint'] {
+// «mint» faqat YORUG' rejada: qorong'i rejada u «Odatiy» kabi Figma «Asosiy - Dark» ko'rinishini
+// oladi (organizationLayout.scss oxiri) — och mint panel va to'q matn qorong'i sahifada begona edi.
+:root:not([data-theme='dark'])[data-sidebar-theme='mint'] {
   --sidebar-icon-gradient: url(#sidebarIconDeep);
   --sidebar-icon-active-filter: brightness(1.6) saturate(1.1);
 }
@@ -224,8 +226,8 @@
 // Tanlangan element ($accent) ilgari OQ edi — och mint panelda u guruh bloki
 // va hover foni (ikkalasi ham oq-shaffof) bilan chalkashib, "tanlangan"ligi
 // bilinmasdi. Endi to'q teal to'ldirish + oq matn: panel palitrasiga mos,
-// lekin aniq ajralib turadi.
-[data-sidebar-theme='mint'] {
+// lekin aniq ajralib turadi. Faqat yorug' rejada (yuqoridagi izohga qarang).
+:root:not([data-theme='dark'])[data-sidebar-theme='mint'] {
   @include sidebar-color-theme(
     // Rail — tekis #111111 (ilgari #1f1f1f → #0d0d0d gradienti edi).
     #111111,

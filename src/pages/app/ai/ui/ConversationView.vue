@@ -81,16 +81,16 @@
 </script>
 
 <template>
-  <div class="w-full h-full flex">
+  <div class="ai-chat w-full h-full flex">
     <div
       v-if="showPanel"
-      class="hidden md:block w-[280px] h-full shrink-0 overflow-hidden bg-surface-section border-r border-surface-line"
+      class="ai-chat__side hidden md:block w-[280px] h-full shrink-0 overflow-hidden bg-surface-section border-r border-surface-line"
     >
       <Panel />
     </div>
 
     <div
-      class="flex flex-col h-full flex-1 min-w-0 relative isolate"
+      class="ai-chat__main flex flex-col h-full flex-1 min-w-0 relative isolate"
       :class="showPanel ? 'bg-surface-ground py-6' : 'bg-surface-section'"
     >
       <div
@@ -191,5 +191,39 @@
 
   [data-theme='dark'] .ai-page-bg :deep(svg g) {
     opacity: 0.1;
+  }
+</style>
+
+<style>
+  /* Qorong'i rejim — Figma «Full Chatbot» (5121:4179 / 5121:4540) */
+  [data-theme='dark'] .ai-chat {
+    --surface-section: #131c2e;
+    --surface-line: #2a3851;
+  }
+  [data-theme='dark'] .ai-chat .ai-chat__main.bg-surface-ground {
+    background: linear-gradient(152.86deg, #080d18 0%, #0a111e 50%, #0c1628 100%);
+  }
+  [data-theme='dark'] .ai-chat .history-item:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+  [data-theme='dark'] .ai-chat .search-input {
+    --n-color: #212d45 !important;
+    --n-color-focus: #212d45 !important;
+  }
+  [data-theme='dark'] .ai-chat .new-chat-btn {
+    background: #1570ef;
+  }
+  [data-theme='dark'] .ai-chat .suggestion-chip,
+  [data-theme='dark'] .ai-chat .suggestion-chip-page {
+    background: rgba(46, 144, 250, 0.16);
+  }
+  [data-theme='dark'] .ai-chat .keyboard-input--page {
+    --n-color: #131c2e !important;
+    --n-color-focus: #131c2e !important;
+    border-color: #0a4a8a !important;
+    box-shadow: 0 8px 25px rgba(46, 144, 250, 0.12);
+  }
+  [data-theme='dark'] .ai-chat .kb-send {
+    background: linear-gradient(to bottom, #0a4a8a, #053561);
   }
 </style>
