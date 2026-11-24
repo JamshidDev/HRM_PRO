@@ -15,6 +15,9 @@
   const { t } = i18n.global
   const store = useEmployeeDocumentStore()
   const componentStore = useComponentStore()
+  // To'liq ekranda forma balandligi oynaga moslanadi.
+  defineProps({ fullscreen: { type: Boolean, default: false } })
+
   const formRef = ref(null)
 
   // Tanlangan turga xos forma bloki.
@@ -136,6 +139,9 @@
     })
   }
 
+  // Saqlash tugmasi oyna sarlavhasida (page.vue) — shu yerdan chaqiriladi.
+  defineExpose({ onSubmit })
+
   onMounted(() => {
     if (componentStore.structureList.length === 0) componentStore._structures()
     if (componentStore.confirmationList.length === 0) componentStore._confirmations()
@@ -144,8 +150,12 @@
 
 <template>
   <n-form ref="formRef" :rules="rules" :model="store.payload">
-    <!-- Balandlik qat'iy: tur almashganda oyna sakramaydi, ichi aylanadi. -->
-    <div style="height: calc(100vh - 220px)" class="overflow-y-auto overflow-x-hidden pb-4 pr-1">
+    <!-- Balandlik qat'iy: tur almashganda oyna sakramaydi, ichi aylanadi
+         (tugmalar oyna sarlavhasida — pastki qator yo'q). -->
+    <div
+      :style="{ height: fullscreen ? 'calc(100dvh - 90px)' : 'calc(100vh - 100px)' }"
+      class="overflow-y-auto overflow-x-hidden pb-4 pr-1"
+    >
       <!-- 1. Hujjat turi -->
       <div class="grid grid-cols-12 gap-x-4 border border-surface-line border-dashed p-2 rounded-md bg-surface-ground mt-2 mb-4">
         <NoticeFields v-if="store.noticeMode" class="col-span-12" part="type" />
@@ -275,15 +285,6 @@
       >
         <component :is="TYPE_FIELDS[store.payload.type]" ref="typeFieldsRef" class="col-span-12" />
       </div>
-    </div>
-
-    <div class="grid grid-cols-2 gap-2 mt-3">
-      <n-button @click="store.visible = false" type="error" ghost>
-        {{ $t('content.cancel') }}
-      </n-button>
-      <n-button @click="onSubmit" :loading="store.saveLoading" type="primary">
-        {{ $t('content.save') }}
-      </n-button>
     </div>
   </n-form>
 </template>
