@@ -3,18 +3,8 @@ import axios from '@/service/index.js'
 const _index = async (payload) => {
   return await axios.get(`/v1/hr/applications`, { params: payload.params })
 }
-const _generateUrl = async (payload) => {
-  return await axios.post(`/v1/hr/applications/generate-url`, payload.data, {
-    params: payload.params
-  })
-}
 const _confIndex = async (payload) => {
   return await axios.get(`/v1/confirmation/applications`, { params: payload.params })
-}
-const _checkApplication = async (payload) => {
-  return await axios.post(`/v1/document/application-confirmation`, payload.data, {
-    params: payload.params
-  })
 }
 const _workerApplication = async (payload) => {
   return await axios.post(`/v1/worker-application/applications`, payload.data, {
@@ -75,9 +65,6 @@ const _route = async (payload) => {
 const _updateRoute = async (payload) => {
   return await axios.put(`/v1/hr/applications/${payload.id}/approvers`, payload.data)
 }
-const _resend = async (payload) => {
-  return await axios.post(`/v1/hr/applications/${payload.id}/resend`, payload.data)
-}
 const _forward = async (payload) => {
   return await axios.post(`/v1/hr/applications/${payload.id}/forward`, payload.data)
 }
@@ -97,9 +84,7 @@ const _commandPrefill = async (payload) => {
 
 export default {
   _index,
-  _generateUrl,
   _confIndex,
-  _checkApplication,
   _workerApplication,
   _myPositions,
   _confirmation,
@@ -112,7 +97,6 @@ export default {
   _approverOptions,
   _route,
   _updateRoute,
-  _resend,
   _forward,
   _returnToOwner,
   _documentApplication,

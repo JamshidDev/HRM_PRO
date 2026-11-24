@@ -275,7 +275,7 @@
   const isForwarded = computed(() => hasDirector.value && hrSigned.value)
   // Eski tartib: rahbar yaratishda qo'shilgan, HR marshruti yo'q — faqat yopish mumkin.
   const isLegacy = computed(() => hasDirector.value && !hrSigned.value)
-  // HR paneli: yangi (imzolash) / jarayonda (o'zgartirish) / rad etilgan (qayta yuborish) — HR yopmagan bo'lsa.
+  // HR paneli: yangi (imzolash/qaytarish) / jarayonda (o'zgartirish) — HR yopmagan bo'lsa.
   const docConfirmation = computed(() => store.document?.document?.confirmation?.id)
   // Xodimning qoralama arizasi (6): imzolab tasdiqlagach kadrlar bo'limiga yuboriladi.
   const isOwnDraftApplication = computed(() => isApplication.value && docConfirmation.value === 6)
@@ -284,7 +284,6 @@
     if (route.path !== '/hrm/application' || !isApplication.value || store.document?.document?.closed) return null
     if (isLegacy.value && [1, 4].includes(docConfirmation.value)) return 'legacy'
     if (docConfirmation.value === 1) return isForwarded.value ? 'process' : 'new'
-    if (docConfirmation.value === 4 && isForwarded.value) return 'rejected'
     return null
   })
   const showConfirmButtons = computed(() => hrStage.value !== null)
@@ -296,7 +295,6 @@
   )
   const canClose = computed(
     () =>
-      hrStage.value === 'rejected' ||
       (hrStage.value === 'legacy' && (docConfirmation.value === 4 || !approverSigned.value)) ||
       (hrStage.value === 'new' && !hrSigned.value) ||
       (hrStage.value === 'process' && !approverSigned.value)
@@ -306,7 +304,6 @@
       ({
         new: 'documentPage.signature.approval.yourTurn',
         process: 'applicationPage.forward.panelProcessTitle',
-        rejected: 'applicationPage.forward.panelRejectedTitle',
         legacy: 'applicationPage.forward.panelLegacyTitle'
       })[hrStage.value]
   )
@@ -315,7 +312,6 @@
       ({
         new: 'applicationPage.forward.panelSub',
         process: 'applicationPage.forward.panelProcess',
-        rejected: 'applicationPage.forward.panelRejected',
         legacy: 'applicationPage.forward.panelLegacy'
       })[hrStage.value]
   )
@@ -328,7 +324,7 @@
     if (hrStage.value === 'new') return openConfirmModal(true)
     applicationStore._openRoute(
       store.document_id,
-      hrStage.value === 'rejected' ? 'resend' : 'edit',
+      'edit',
       hrDirector()
     )
   }
@@ -1038,13 +1034,11 @@
                               <n-icon><Signature20Regular /></n-icon>
                             </template>
                             {{
-                              hrStage === 'rejected'
-                                ? $t('applicationPage.forward.resendTitle')
-                                : hrStage === 'process'
-                                  ? $t('applicationPage.forward.editTitle')
-                                  : hrSigned
-                                    ? $t('applicationPage.forward.setApprovers')
-                                    : $t('documentPage.signature.approval.sign')
+                              hrStage === 'process'
+                                ? $t('applicationPage.forward.editTitle')
+                                : hrSigned
+                                  ? $t('applicationPage.forward.setApprovers')
+                                  : $t('documentPage.signature.approval.sign')
                             }}
                           </n-button>
                         </div>
