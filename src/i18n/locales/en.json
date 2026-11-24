@@ -52,7 +52,9 @@
   },
   "applicationCommand": {
     "column": "Command",
-    "create": "Command",
+    "create": "Create order",
+    "needApproved": "An order can be created after the application is approved",
+    "typeNotSupported": "Orders are not yet supported for this application type",
     "basedOn": "Based on application: №{number} ({electronic}) — {type}",
     "locked": "Organization, command type and employee come from the application and cannot be changed.",
     "openCommand": "Open command"

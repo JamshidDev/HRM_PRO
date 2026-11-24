@@ -22,12 +22,18 @@
 
   const emits = defineEmits(['openOffice', 'openCommand', 'createCommand'])
 
-  // Tasdiqlangan, buyruqqa mos turdagi va hali buyruqsiz ariza — «Buyruq +».
+  // Tasdiqlangan, buyruqqa mos turdagi va hali buyruqsiz ariza — «Buyruq qilish».
   const canCreateCommand = (row) =>
     !row?.command &&
     row?.confirmation?.id === 3 &&
     row?.command_types?.length > 0 &&
     accStore.checkPermission(accStore.pn.hrCommandsWrite)
+
+  // O'chirilgan tugma izohi: ariza tasdiqlanmagan yoki tur uchun buyruq hali yo'q.
+  const disabledCommandHint = (row) =>
+    row?.confirmation?.id !== 3
+      ? t('applicationCommand.needApproved')
+      : t('applicationCommand.typeNotSupported')
 
   // HR holati (worker_applications.status): 0 yangi, 1 kelishuvchilarga yo'naltirilgan, 2 HR yopgan.
   const checkingStatus = computed(() => ({
@@ -193,7 +199,9 @@
         <span class="text-sm font-medium text-primary hover:underline">
           №{{ row.command.command_number || row.command.id }}
         </span>
-        <span class="text-xs text-secondary">{{ row.command.confirmation?.name }}</span>
+        <span class="text-xs text-secondary">
+          {{ Utils.timeOnlyDate(row.command.command_date) || row.command.confirmation?.name }}
+        </span>
       </button>
       <n-button
         v-else-if="canCreateCommand(row)"
@@ -207,7 +215,15 @@
         </template>
         {{ $t('applicationCommand.create') }}
       </n-button>
-      <span v-else class="text-secondary">—</span>
+      <!-- O'chirilgan tugmada title ko'rinmaydi — izoh o'rab turgan span'da. -->
+      <span v-else class="inline-block" :title="disabledCommandHint(row)">
+        <n-button size="small" dashed disabled>
+          <template #icon>
+            <Add16Regular />
+          </template>
+          {{ $t('applicationCommand.create') }}
+        </n-button>
+      </span>
     </template>
 
     <template #cell-generate="{ row }">

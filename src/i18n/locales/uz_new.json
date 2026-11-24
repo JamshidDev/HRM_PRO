@@ -52,7 +52,9 @@
   },
   "applicationCommand": {
     "column": "Buyruq",
-    "create": "Buyruq",
+    "create": "Buyruq qilish",
+    "needApproved": "Ariza tasdiqlangach buyruq qilish mumkin",
+    "typeNotSupported": "Bu ariza turi uçun buyruq hozirça qo'şilmagan",
     "basedOn": "Ariza asosida: №{number} ({electronic}) — {type}",
     "locked": "Korxona, buyruq turi va xodim arizadan olingan, özgartirib bölmaydi.",
     "openCommand": "Buyruqni oçiş"
