@@ -1,5 +1,5 @@
 <script setup>
-  import { UIStatus, UITable } from '@/components/index.js'
+  import { UIStatus, UITable, UIChip } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useComponentStore, useStructureReportStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -135,9 +135,9 @@
     </template>
 
     <template #cell-count="{ row }">
-      <n-button type="primary" class="font-medium" round dashed size="tiny">
+      <UIChip tone="primary" class="font-medium" compact>
         {{ row.details_count }}
-      </n-button>
+      </UIChip>
     </template>
 
     <template #cell-confirmation="{ row }">

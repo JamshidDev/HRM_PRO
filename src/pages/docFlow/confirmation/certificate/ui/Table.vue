@@ -4,7 +4,8 @@
     UIMenuButton,
     UIPagination,
     UIStatus,
-    UIUser
+    UIUser,
+    UIChip
   } from '@/components/index.js'
   import { useAccountStore, useConfCertificateStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
@@ -77,9 +78,9 @@
             </td>
             <td @click="onOpen(item?.certificate?.id, item.id)">
               <div class="flex justify-center">
-                <n-button type="primary" class="font-medium" round dashed size="tiny">{{
+                <UIChip tone="primary" class="font-medium" compact>{{
                   item?.certificate?.serial + '-' + item?.certificate?.number
-                }}</n-button>
+                }}</UIChip>
               </div>
             </td>
             <td>

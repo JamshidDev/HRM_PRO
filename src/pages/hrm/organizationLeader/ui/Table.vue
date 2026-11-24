@@ -1,5 +1,5 @@
 <script setup>
-  import { UITable, UIUser } from '@/components/index.js'
+  import { UITable, UIUser, UIChip } from '@/components/index.js'
 import i18n from '@/i18n/index.js'
 import { useAccountStore, useOrganizationLeaderStore } from '@/store/modules/index.js'
 import UIHelper from '@/utils/UIHelper.js'
@@ -94,9 +94,9 @@ import { Mask } from 'maska'
 
     <template #cell-phone="{ row }">
       <div class="flex gap-2 flex-wrap">
-        <n-button v-for="(i, idx) in row.phone" :key="idx" type="primary" dashed size="tiny">
+        <UIChip v-for="(i, idx) in row.phone" :key="idx" tone="primary" compact>
           {{ mask.masked(i) }}
-        </n-button>
+        </UIChip>
       </div>
     </template>
   </UITable>

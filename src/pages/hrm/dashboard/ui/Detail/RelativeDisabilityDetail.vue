@@ -103,9 +103,9 @@
     </template>
 
     <template #cell-number="{ row }">
-      <n-button dashed type="primary" round size="small">
+      <UIChip tone="primary">
         {{ row.number }}
-      </n-button>
+      </UIChip>
     </template>
 
     <template #cell-from="{ row }">

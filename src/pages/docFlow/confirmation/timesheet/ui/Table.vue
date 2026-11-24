@@ -154,12 +154,12 @@
     </template>
 
     <template #cell-status="{ row }">
-      <n-button v-if="!!row?.status" type="primary" size="tiny" dashed>
+      <UIChip v-if="!!row?.status" tone="primary" compact>
         <template #icon>
           <n-icon :component="CheckmarkCircle24Filled" />
         </template>
         {{ $t('timesheet.finished') }}
-      </n-button>
+      </UIChip>
       <UIChip v-else-if="row?.locked" tone="warning">
         <template #icon>
           <n-icon :component="LockClosed20Regular" />

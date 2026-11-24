@@ -1,5 +1,5 @@
 <script setup>
-  import { UIStatus, UITable, UIUser } from '@/components/index.js'
+  import { UIStatus, UITable, UIUser, UIChip } from '@/components/index.js'
   import { useAccountStore, useLmsCertificateStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -145,9 +145,9 @@
 
     <template #cell-number="{ row }">
       <div @click="onOpen(row.id)" class="flex justify-center">
-        <n-button type="primary" class="font-medium" round dashed size="tiny">
+        <UIChip tone="primary" class="font-medium" compact>
           {{ row.serial + '-' + row?.number }}
-        </n-button>
+        </UIChip>
       </div>
     </template>
 

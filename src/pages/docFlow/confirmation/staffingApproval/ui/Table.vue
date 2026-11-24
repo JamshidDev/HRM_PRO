@@ -1,5 +1,5 @@
 <script setup>
-  import { NoDataPicture, UIMenuButton, UIPagination, UIStatus } from '@/components/index.js'
+  import { NoDataPicture, UIMenuButton, UIPagination, UIStatus, UIChip } from '@/components/index.js'
   import { useAccountStore, useConfStaffingApprovalStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
 
@@ -51,9 +51,9 @@
             </td>
             <td @click="onOpen(item.id)">
               <div class="flex justify-center">
-                <n-button type="primary" class="font-medium" round dashed size="tiny">{{
+                <UIChip tone="primary" class="font-medium" compact>{{
                   item?.staffing_approve?.number
-                }}</n-button>
+                }}</UIChip>
               </div>
             </td>
 

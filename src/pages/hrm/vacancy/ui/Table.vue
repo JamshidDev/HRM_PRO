@@ -178,9 +178,9 @@
     </template>
 
     <template #cell-rate="{ row }">
-      <n-button size="small" type="primary" circle bordered dashed>
+      <UIChip tone="primary">
         {{ row.rate }}
-      </n-button>
+      </UIChip>
     </template>
 
     <template #cell-to="{ row }">
