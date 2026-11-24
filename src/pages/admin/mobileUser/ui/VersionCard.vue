@@ -5,7 +5,7 @@
     Edit20Regular,
     Phone20Regular
   } from '@vicons/fluent'
-  import { UIFigBlock } from '@/components/index.js'
+  import { UIChip, UIFigBlock } from '@/components/index.js'
   import { useMobileUserStore, useAccountStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import { confirmDialog } from '@/components/notify/alertDialog.js'
@@ -178,18 +178,15 @@
           <!-- Pastga ochiladi — tepadagi tahrirlash tugmasini yopmasin. -->
           <n-tooltip trigger="hover" placement="bottom">
             <template #trigger>
-              <n-tag
-                size="small"
-                round
-                :bordered="false"
-                :type="rowByPlatform(platform)?.force_update ? 'error' : 'success'"
-              >
-                {{
-                  rowByPlatform(platform)?.force_update
-                    ? $t('mobileUserPage.forced')
-                    : $t('mobileUserPage.optional')
-                }}
-              </n-tag>
+              <span class="inline-flex">
+                <UIChip :tone="rowByPlatform(platform)?.force_update ? 'error' : 'success'">
+                  {{
+                    rowByPlatform(platform)?.force_update
+                      ? $t('mobileUserPage.forced')
+                      : $t('mobileUserPage.optional')
+                  }}
+                </UIChip>
+              </span>
             </template>
             {{ forceHint(platform) }}
           </n-tooltip>

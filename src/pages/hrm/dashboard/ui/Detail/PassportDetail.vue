@@ -1,6 +1,6 @@
 <script setup>
   import { computed, onMounted } from 'vue'
-  import { UIUser, UIBadge, UIModal, UITable } from '@/components/index.js'
+  import { UIUser, UIBadge, UIModal, UITable, UIChip } from '@/components/index.js'
   import { useDashboardStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import { Edit32Regular } from '@vicons/fluent'
@@ -112,9 +112,9 @@
       </template>
 
       <template #cell-password="{ row }">
-        <n-button dashed type="primary" round size="small">
+        <UIChip tone="primary">
           {{ row.passport.serial_number }}
-        </n-button>
+        </UIChip>
       </template>
     </UITable>
 

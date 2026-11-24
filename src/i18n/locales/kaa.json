@@ -52,7 +52,9 @@
   },
   "applicationCommand": {
     "column": "Buyrıq",
-    "create": "Buyrıq",
+    "create": "Buyrıq jasaw",
+    "needApproved": "Arza tastıyıqlanǵannan keyin buyrıq jasaw múmkin",
+    "typeNotSupported": "Bul arza túri ushın buyrıq házirshe qosılmaǵan",
     "basedOn": "Arza tiykarında: №{number} ({electronic}) — {type}",
     "locked": "Kárxana, buyrıq túri hám xızmetker arzadan alınǵan, ózgertiw múmkin emes.",
     "openCommand": "Buyrıqtı ashıw"
@@ -3521,12 +3523,21 @@
   "applicationPage": {
     "statuses": {
       "draft": "Qaralama",
+      "returned": "Qaytarıldı",
       "checking": "Tekseriwde",
       "process": "Processte",
       "rejected": "Biykarlanǵan",
       "approved": "Tastıyıqlanǵan"
     },
     "draftBarTitle": "Arzanı tastıyıqlań",
+    "returnBtn": "Qaytarıw",
+    "returnTitle": "Arzanı dúzetiw ushın qaytarıw",
+    "returnReason": "Qaytarıw sebebi",
+    "returnPlaceholder": "Xızmetker neni dúzetiwi kerek?",
+    "returnHint": "Arza xızmetkerge qaralama bolıp qaytadı. Dúzetip, qayta tastıyıqlaǵannan keyin sizge keledi.",
+    "returnDone": "Arza xızmetkerge dúzetiw ushın qaytarıldı",
+    "returnedTitle": "Arza dúzetiw ushın qaytarıldı",
+    "returnedBy": "Qaytarǵan",
     "draftBarSub": "Qol qoyǵannan keyin arza kadrlar bólimine jiberiledi",
     "ownRejectTitle": "Haqıyqatında da biykarlamaqshısız ba?",
     "ownRejectDesc": "Arza biykarlanadı hám kadrlar bólimine jiberilmeydi.",
@@ -3659,6 +3670,7 @@
     },
     "hrCheck": {
       "new": "Jańa",
+      "done": "Kórip shıǵıldı",
       "forwarded": "Baǵdarlanǵan",
       "closed": "Jabılǵan",
       "awaiting": "Qarar kútilmekte"
@@ -6848,6 +6860,7 @@
       "matchHigh": "Júz sáykes keldi",
       "matchMid": "Ortasha sáykeslik — súwretlerdi salıstırıń",
       "matchLow": "Tómen sáykeslik — basqa adam bolıwı múmkin",
+      "lowMatchHint": "Tastıyıqlanǵan súwretti jańalaw usınıladı.",
       "matchUnknown": "Uqsaslıq anıqlanbaǵan",
       "placeUnknown": "Jaylasıw anıqlanbaǵan",
       "accuracyGood": "anıq",

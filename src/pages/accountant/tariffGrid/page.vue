@@ -1,6 +1,7 @@
 <script setup>
-  import { History24Regular, Link24Regular, Money24Regular, ReceiptMoney24Regular } from '@vicons/fluent'
-  import { UIMenuButton, UIModal, UIPageContent, UIPageFilter, UIPagination } from '@/components/index.js'
+  import { History24Regular, Link24Regular, Money24Regular, ReceiptMoney24Regular, Timer16Regular } from '@vicons/fluent'
+  import icons from '@/assets/icons'
+  import { UIChip, UIMenuButton, UIModal, UIPageContent, UIPageFilter, UIPagination } from '@/components/index.js'
   import { useAccountStore, useTariffGridStore, useTariffBaseStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import GridForm from './ui/GridForm.vue'
@@ -146,10 +147,10 @@
               <div class="min-w-0">
                 <div class="flex items-center gap-2 flex-wrap">
                   <span class="text-base font-semibold text-primary cursor-pointer" @click="openView(g.id)">{{ g.name }}</span>
-                  <n-tag :type="g.active ? 'success' : 'default'" size="small" round>
+                  <UIChip :tone="g.active ? 'success' : 'default'" :icon="g.active ? icons.figBadgeCheck : null">
                     {{ g.active ? $t('content.active') : $t('tariffGrid.inactive') }}
-                  </n-tag>
-                  <n-tag v-if="g.pending" type="warning" size="small" round>{{ $t('tariffGrid.status.pending') }}</n-tag>
+                  </UIChip>
+                  <UIChip v-if="g.pending" tone="warning" :icon="Timer16Regular">{{ $t('tariffGrid.status.pending') }}</UIChip>
                 </div>
                 <p v-if="g.note" class="text-xs text-surface-500 mt-0.5 line-clamp-1">{{ g.note }}</p>
                 <div class="flex flex-wrap gap-x-5 gap-y-1 mt-2 text-sm">
@@ -187,10 +188,10 @@
               <div class="min-w-0">
                 <div class="flex items-center gap-2 flex-wrap">
                   <span class="text-base font-semibold text-primary cursor-pointer" @click="openBaseView(b.id)">{{ b.name }}</span>
-                  <n-tag :type="b.active ? 'success' : 'default'" size="small" round>
+                  <UIChip :tone="b.active ? 'success' : 'default'" :icon="b.active ? icons.figBadgeCheck : null">
                     {{ b.active ? $t('content.active') : $t('tariffGrid.inactive') }}
-                  </n-tag>
-                  <n-tag v-if="b.pending" type="warning" size="small" round>{{ $t('tariffGrid.status.pending') }}</n-tag>
+                  </UIChip>
+                  <UIChip v-if="b.pending" tone="warning" :icon="Timer16Regular">{{ $t('tariffGrid.status.pending') }}</UIChip>
                 </div>
                 <p v-if="b.note" class="text-xs text-surface-500 mt-0.5 line-clamp-1">{{ b.note }}</p>
                 <div class="flex flex-wrap gap-x-5 gap-y-1 mt-2 text-sm">

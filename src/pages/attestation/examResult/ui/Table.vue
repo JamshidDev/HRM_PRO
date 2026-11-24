@@ -1,5 +1,5 @@
 <script setup>
-  import { UITable, UIUser } from '@/components/index.js'
+  import { UIChip, UITable, UIUser } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useExamAttemptStore, useTopicExamResultStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -138,15 +138,15 @@
     </template>
 
     <template #cell-created="{ row }">
-      <n-tag round size="small" type="primary">
+      <UIChip tone="primary">
         {{ Utils.dateTimeLabel(row?.created) }}
-      </n-tag>
+      </UIChip>
     </template>
 
     <template #cell-ended="{ row }">
-      <n-tag v-if="row?.ended" round size="small" type="error">
+      <UIChip v-if="row?.ended" tone="error">
         {{ Utils.dateTimeLabel(row?.ended) }}
-      </n-tag>
+      </UIChip>
     </template>
 
     <template #cell-result="{ row }">

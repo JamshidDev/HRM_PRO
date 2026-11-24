@@ -38,22 +38,33 @@
       delay: 150,
       timeout: 20000
     })
-  const Rules = asyncTab(() => import('./ui/Rules.vue'))
-  const Who = asyncTab(() => import('./ui/Who.vue'))
-  const Vids = asyncTab(() => import('./ui/Vids.vue'))
-  const Deductions = asyncTab(() => import('./ui/Deductions.vue'))
-  const Reports = asyncTab(() => import('./ui/Reports.vue'))
-  const Employees = asyncTab(() => import('./ui/Employees.vue'))
+  // Lazy tab chunk loaderlari — AYNI funksiyalar prefetch uchun ham ishlatiladi
+  // (DAS-16729 perf: tab o'tishda chunk allaqachon yuklangan bo'lsin).
+  const TAB_LOADERS = {
+    rules: () => import('./ui/Rules.vue'),
+    who: () => import('./ui/Who.vue'),
+    vids: () => import('./ui/Vids.vue'),
+    deductions: () => import('./ui/Deductions.vue'),
+    reports: () => import('./ui/Reports.vue'),
+    employees: () => import('./ui/Employees.vue')
+  }
 
   const TAB_COMPONENTS = {
     summary: SummaryTab,
     risks: RisksTab,
-    rules: Rules,
-    who: Who,
-    vids: Vids,
-    deductions: Deductions,
-    reports: Reports,
-    employees: Employees
+    rules: asyncTab(TAB_LOADERS.rules),
+    who: asyncTab(TAB_LOADERS.who),
+    vids: asyncTab(TAB_LOADERS.vids),
+    deductions: asyncTab(TAB_LOADERS.deductions),
+    reports: asyncTab(TAB_LOADERS.reports),
+    employees: asyncTab(TAB_LOADERS.employees)
+  }
+
+  // Boy tab chunk'larini bo'sh vaqtda (idle) oldindan yuklaymiz — foydalanuvchi tabga
+  // o'tganda chunk tayyor (tarmoq kutilmaydi), faqat render qolади. Keep-alive bilan
+  // birga tab o'tish sezilarli tezlashadi.
+  const prefetchTabs = () => {
+    for (const load of Object.values(TAB_LOADERS)) load().catch(() => {})
   }
 
   const store = useSalaryControlStore()
@@ -112,6 +123,9 @@
     if (accStore.checkAction(accStore.pn.economistSalaryControlRead)) {
       store._loadForTab(activeTab.value)
     }
+    // Boy tab chunk'larini bo'sh vaqtda oldindan yuklaymiz (tab o'tishni tezlashtiradi).
+    const ric = window.requestIdleCallback || ((fn) => setTimeout(fn, 1200))
+    ric(prefetchTabs)
   })
   onBeforeUnmount(() => window.removeEventListener('vite:preloadError', onPreloadError))
 

@@ -1,7 +1,8 @@
 <script setup>
   // Versiya tarixi — ALOHIDA modal. Ikki holat: LIST (sahifalangan jadval) / MATRIX (versiya matritsasi).
-  import { Eye16Regular, Attach16Regular, ArrowLeft16Regular, EyeOff16Regular } from '@vicons/fluent'
-  import { UIPagination, NoDataPicture } from '@/components/index.js'
+  import { Eye16Regular, Attach16Regular, ArrowLeft16Regular, EyeOff16Regular, Timer16Regular } from '@vicons/fluent'
+  import icons from '@/assets/icons'
+  import { UIChip, UIPagination, NoDataPicture } from '@/components/index.js'
   import { useAccountStore, useTariffGridStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import DocMatrix from './DocMatrix.vue'
@@ -66,9 +67,9 @@
                 </td>
                 <td class="font-semibold">v{{ v.version }}</td>
                 <td>
-                  <n-tag v-if="v.status === 1" type="warning" size="tiny" round>{{ $t('tariffGrid.status.pending') }}</n-tag>
-                  <n-tag v-else-if="v.is_active" type="success" size="tiny" round>{{ $t('content.active') }}</n-tag>
-                  <n-tag v-else type="default" size="tiny" round>{{ $t('tariffGrid.status.confirmed') }}</n-tag>
+                  <UIChip v-if="v.status === 1" tone="warning" :icon="Timer16Regular" compact>{{ $t('tariffGrid.status.pending') }}</UIChip>
+                  <UIChip v-else-if="v.is_active" tone="success" :icon="icons.figBadgeCheck" compact>{{ $t('content.active') }}</UIChip>
+                  <UIChip v-else tone="default" compact>{{ $t('tariffGrid.status.confirmed') }}</UIChip>
                 </td>
                 <td class="text-xs">
                   <template v-if="v.status === 1">{{ v.effective_date }}</template>

@@ -52,7 +52,9 @@
   },
   "applicationCommand": {
     "column": "Command",
-    "create": "Command",
+    "create": "Create order",
+    "needApproved": "An order can be created after the application is approved",
+    "typeNotSupported": "Orders are not yet supported for this application type",
     "basedOn": "Based on application: №{number} ({electronic}) — {type}",
     "locked": "Organization, command type and employee come from the application and cannot be changed.",
     "openCommand": "Open command"
@@ -3501,12 +3503,21 @@
   "applicationPage": {
     "statuses": {
       "draft": "Draft",
+      "returned": "Returned",
       "checking": "Under review",
       "process": "In progress",
       "rejected": "Rejected",
       "approved": "Approved"
     },
     "draftBarTitle": "Confirm the application",
+    "returnBtn": "Return",
+    "returnTitle": "Return application for correction",
+    "returnReason": "Reason for returning",
+    "returnPlaceholder": "What should the employee correct?",
+    "returnHint": "The application goes back to the employee as a draft. After they fix and sign it, it comes back to you.",
+    "returnDone": "Application returned to the employee for correction",
+    "returnedTitle": "Application returned for correction",
+    "returnedBy": "Returned by",
     "draftBarSub": "After you sign, the application is sent to HR",
     "ownRejectTitle": "Do you really want to reject it?",
     "ownRejectDesc": "The application will be rejected and not sent to HR.",
@@ -3639,6 +3650,7 @@
     },
     "hrCheck": {
       "new": "New",
+      "done": "Reviewed",
       "forwarded": "Forwarded",
       "closed": "Closed",
       "awaiting": "Awaiting decision"
@@ -6790,6 +6802,7 @@
       "matchHigh": "Face matches",
       "matchMid": "Partial match — compare the photos",
       "matchLow": "Low match — may be another person",
+      "lowMatchHint": "We suggest updating the approved photo.",
       "matchUnknown": "Similarity not available",
       "placeUnknown": "Location unknown",
       "accuracyGood": "precise",

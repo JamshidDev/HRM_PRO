@@ -1,5 +1,5 @@
 <script setup>
-  import { UITable } from '@/components/index.js'
+  import { UITable, UIChip } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useTurnstileHikCentralStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -76,25 +76,23 @@
     @change-page="changePage"
   >
     <template #cell-devices_count="{ row }">
-      <n-button bordered size="small" circle dashed>{{ row.devices_count }}</n-button>
+      <UIChip>{{ row.devices_count }}</UIChip>
     </template>
 
     <template #[`cell-department.name`]="{ row }">
-      <n-button v-if="row.department" size="tiny" type="primary" dashed border>
+      <UIChip v-if="row.department" tone="primary" compact>
         {{ row.department?.name }}
-      </n-button>
+      </UIChip>
     </template>
 
     <template #cell-devices="{ row }">
       {{ row.description }}
       <p class="flex flex-wrap">
         <template v-for="device in row.devices" :key="device.id">
-          <n-button
-            :type="device.status === 1 ? 'success' : 'error'"
+          <UIChip
+            :tone="device.status === 1 ? 'success' : 'error'"
             class="mr-1! mt-[2px]!"
-            size="tiny"
-            dashed
-            bordered
+            compact
           >
             {{ device.name }}
             <template #icon>
@@ -109,7 +107,7 @@
                 ></span>
               </span>
             </template>
-          </n-button>
+          </UIChip>
         </template>
       </p>
     </template>

@@ -1,5 +1,5 @@
 <script setup>
-  import { UITable, UIUser, UIBadge } from '@/components/index.js'
+  import { UITable, UIUser, UIBadge, UIChip } from '@/components/index.js'
   import { useUserStore, useAccountStore } from '@/store/modules/index.js'
   import {
     RibbonStar24Filled,
@@ -193,12 +193,12 @@
 
     <template #cell-workplace="{ row }">
       <template v-if="row?.organization">{{ row.organization.name }}</template>
-      <n-tag v-else-if="row?.has_position" type="warning" size="small" round>
+      <UIChip v-else-if="row?.has_position" tone="warning">
         {{ $t('content.archive') }}
-      </n-tag>
-      <n-tag v-else type="info" size="small" round>
+      </UIChip>
+      <UIChip v-else tone="info">
         {{ $t('content.candidate') }}
-      </n-tag>
+      </UIChip>
     </template>
 
     <template #cell-role="{ row }">
@@ -263,9 +263,11 @@
       <template v-if="daysSince(row) !== null && daysSince(row) > 0">
         <n-tooltip placement="top">
           <template #trigger>
-            <n-tag :type="daysSince(row) > 30 ? 'error' : 'default'" size="small" round>
-              {{ daysSince(row) }} {{ $t('userPage.daysAgo') }}
-            </n-tag>
+            <span class="inline-flex">
+              <UIChip :tone="daysSince(row) > 30 ? 'error' : 'default'">
+                {{ daysSince(row) }} {{ $t('userPage.daysAgo') }}
+              </UIChip>
+            </span>
           </template>
           {{ row.password_changed_at?.slice(0, 10) }}
         </n-tooltip>

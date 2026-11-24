@@ -1,7 +1,7 @@
 <script setup>
   import { computed, onMounted, ref } from 'vue'
   import { useTopicExamStore, useTopicStore } from '@/store/modules/index.js'
-  import { UIModal } from '@/components/index.js'
+  import { UIChip, UIModal } from '@/components/index.js'
   import { AddCircle24Regular, ArrowLeft24Regular } from '@vicons/fluent'
   import ExamsTable from './ui/ExamsTable.vue'
   import ExamForm from './ui/ExamForm.vue'
@@ -57,9 +57,9 @@
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2 min-w-0">
           <p class="text-lg font-semibold text-textColor0 truncate">{{ currentTopic?.name }}</p>
-          <n-tag v-if="currentTopic?.type" size="small" round type="info">
+          <UIChip v-if="currentTopic?.type" tone="info">
             {{ currentTopic.type.name }}
-          </n-tag>
+          </UIChip>
         </div>
         <n-button type="primary" class="rounded-lg!" icon-placement="left" @click="onAdd">
           <template #icon>

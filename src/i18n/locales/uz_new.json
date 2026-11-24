@@ -6,9 +6,9 @@
     "lateToday": "Bugun keç qolgan",
     "listTitle": "Biriktirilgan mehmonlar",
     "attachedTitle": "Qöşilganlar",
-    "detachConfirm": "{name} mehmonlar ro'yxatidan ajratilsinmi? Turniket hodisalari saqlanib qoladi.",
+    "detachConfirm": "{name} mehmonlar röyxatidan ajratilsinmi? Turniket hodisalari saqlanib qoladi.",
     "emptyTitle": "Hali mehmon qöşilmagan",
-    "emptyHint": "Chapdagi JSHSHIR qidiruvi orqali Turniket xodimlari ro'yxatidagi odamni toping va ish vaqtini belgilab qo'shing.",
+    "emptyHint": "Çapdagi JŞŞIR qidiruvi orqali Turniket xodimlari röyxatidagi odamni toping va iş vaqtini belgilab qöşing.",
     "addByPin": "JŞŞIR böyiça qidirib qöşiş",
     "search": "Izlaş",
     "accessLevels": "Turniket ruxsat darajalari",
@@ -34,9 +34,9 @@
     "out": "Çiqiş",
     "pin": "JŞŞIR",
     "pinPlaceholder": "14 raqam",
-    "pinHint": "Odam Turniket → Xodimlar ro'yxatida shu JSHSHIR bilan bo'lishi kerak",
+    "pinHint": "Odam Turniket → Xodimlar röyxatida şu JŞŞIR bilan bölişi kerak",
     "pinRule": "JŞŞIR 14 ta raqamdan iborat",
-    "workStart": "Iş boşlaniși",
+    "workStart": "Iş boşlanişi",
     "workEnd": "Iş tugaşi",
     "endAfterStart": "Tugaş vaqti boşlanişdan keyin bölsin",
     "note": "Izoh",
@@ -52,7 +52,9 @@
   },
   "applicationCommand": {
     "column": "Buyruq",
-    "create": "Buyruq",
+    "create": "Buyruq qilish",
+    "needApproved": "Ariza tasdiqlangach buyruq qilish mumkin",
+    "typeNotSupported": "Bu ariza turi uçun buyruq hozirça qo'şilmagan",
     "basedOn": "Ariza asosida: №{number} ({electronic}) — {type}",
     "locked": "Korxona, buyruq turi va xodim arizadan olingan, özgartirib bölmaydi.",
     "openCommand": "Buyruqni oçiş"
@@ -3521,12 +3523,21 @@
   "applicationPage": {
     "statuses": {
       "draft": "Qoralama",
+      "returned": "Qaytarildi",
       "checking": "Tekşiruvda",
       "process": "Jarayonda",
       "rejected": "Rad etilgan",
       "approved": "Tasdiqlangan"
     },
     "draftBarTitle": "Arizani tasdiqlang",
+    "returnBtn": "Qaytarish",
+    "returnTitle": "Arizani tuzatish uchun qaytarish",
+    "returnReason": "Qaytarish sababi",
+    "returnPlaceholder": "Xodim nimani tuzatishi kerak?",
+    "returnHint": "Ariza xodimga qoralama bo'lib qaytadi. Xodim tuzatib, qayta tasdiqlagach yana sizga keladi.",
+    "returnDone": "Ariza xodimga tuzatish uchun qaytarildi",
+    "returnedTitle": "Ariza tuzatish uchun qaytarildi",
+    "returnedBy": "Qaytardi",
     "draftBarSub": "Imzolaganingizdan keyin ariza kadrlar bölimiga yuboriladi",
     "ownRejectTitle": "Haqiqatan ham rad etmoqçimisiz?",
     "ownRejectDesc": "Ariza rad etiladi va kadrlar bölimiga yuborilmaydi.",
@@ -3659,6 +3670,7 @@
     },
     "hrCheck": {
       "new": "Yangi",
+      "done": "Ko'rib chiqildi",
       "forwarded": "Yönaltirilgan",
       "closed": "Yopilgan",
       "awaiting": "Qaror kutilmoqda"
@@ -6848,6 +6860,7 @@
       "matchHigh": "Yuz mos keldi",
       "matchMid": "Örtaça moslik — rasmlarni soliştiring",
       "matchLow": "Past moslik — boşqa odam bölişi mumkin",
+      "lowMatchHint": "Tasdiqlangan rasmni yangilaş tavsiya etiladi.",
       "matchUnknown": "Öxşaşlik aniqlanmagan",
       "placeUnknown": "Joylaşuv aniqlanmagan",
       "accuracyGood": "aniq",
@@ -8284,8 +8297,8 @@
       "outbox": "Xodimlarga yuborilgan",
       "fromWorkers": "Xodimlardan kelgan"
     },
-    "createWorkerNotice": "Bildirgi yaratish",
-    "updateWorkerNotice": "Bildirgini tahrirlash",
+    "createWorkerNotice": "Bildirgi yaratiş",
+    "updateWorkerNotice": "Bildirgini tahrirlaş",
     "date": "Bildirgi sanasi"
   },
   "privacyPage": {

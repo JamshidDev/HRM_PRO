@@ -1,6 +1,7 @@
 <script setup>
   import { Edit32Regular, Delete20Regular } from '@vicons/fluent'
-  import { UITable, UIProfileSection, UIProfileEmpty, UIFileDownload } from '@/components/index.js'
+  import { UITable, UIProfileSection, UIProfileEmpty, UIFileDownload, UIChip } from '@/components/index.js'
+  import icons from '@/assets/icons'
   import { useWorkerPositionCertificateStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -97,15 +98,15 @@
       </template>
 
       <template #cell-verify="{ value }">
-        <n-tag :type="value ? 'success' : 'default'" size="small" round>
+        <UIChip :tone="value ? 'success' : 'default'" :icon="value ? icons.figBadgeCheck : null">
           {{ value ? $t('content.yes') : $t('content.no') }}
-        </n-tag>
+        </UIChip>
       </template>
 
       <template #cell-returned="{ value }">
-        <n-tag :type="value ? 'warning' : 'default'" size="small" round>
+        <UIChip :tone="value ? 'warning' : 'default'">
           {{ value ? $t('content.yes') : $t('content.no') }}
-        </n-tag>
+        </UIChip>
       </template>
 
       <template #cell-file="{ row }">

@@ -8,6 +8,7 @@
   } from '@vicons/fluent'
   import { useAccountStore } from '@/store/modules/app/accountStore.js'
   import SectionHeader from '@/components/worker/ui/shared/SectionHeader.vue'
+  import { UIChip } from '@/components/index.js'
   import ShieldIcon from '@/assets/icons/lock.svg'
   import i18n from '@/i18n/index.js'
 
@@ -97,9 +98,9 @@
             <h3 class="text-base font-semibold text-textColor0">
               {{ $t(`loginMethods.${item.key}.title`) }}
             </h3>
-            <n-tag v-if="!stateOf(item.key).editable" size="small" type="info" round>
+            <UIChip v-if="!stateOf(item.key).editable" tone="info">
               {{ $t('loginMethods.comingSoon') }}
-            </n-tag>
+            </UIChip>
           </div>
           <p class="text-sm text-textColor2 mt-0.5">
             {{ $t(`loginMethods.${item.key}.hint`) }}

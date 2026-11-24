@@ -1,8 +1,9 @@
 <script setup>
   import { useLmsCertificateStore } from '@stores'
   import { useAppSetting, validationRules } from '@utils'
-  import { UIModal, UIUser } from '@components'
-  import { ArrowSyncCircle20Regular } from '@vicons/fluent'
+  import { UIModal, UIUser, UIChip } from '@components'
+  import { ArrowSyncCircle20Regular, Timer16Regular } from '@vicons/fluent'
+  import icons from '@/assets/icons'
   import UIHelper from '@utils/UIHelper.js'
   import { Utils } from '@utils'
   import i18n from '@/i18n/index.js'
@@ -185,20 +186,20 @@
           />
         </n-form-item>
         <div class="col-span-12 flex flex-wrap gap-2 mb-2 text-sm">
-          <n-tag :bordered="false">
+          <UIChip>
             {{ $t('lmsCertificate.stats.members', { n: store.workerStats.members }) }}
-          </n-tag>
-          <n-tag :bordered="false" type="info">
+          </UIChip>
+          <UIChip tone="info">
             {{
               $t('lmsCertificate.stats.withCertificate', { n: store.workerStats.with_certificate })
             }}
-          </n-tag>
-          <n-tag :bordered="false" type="success">
+          </UIChip>
+          <UIChip tone="success">
             {{ $t('lmsCertificate.stats.signed', { n: store.workerStats.signed }) }}
-          </n-tag>
-          <n-tag :bordered="false" type="primary">
+          </UIChip>
+          <UIChip tone="primary">
             {{ $t('lmsCertificate.stats.selected', { n: selectedCount }) }}
-          </n-tag>
+          </UIChip>
         </div>
         <n-spin :show="store.workerLoading" class="col-span-12">
           <div
@@ -226,22 +227,21 @@
                     :disabled="worker.certificate?.signed"
                   />
                   <UIUser :hide-tooltip="true" :short="false" :data="worker.data" />
-                  <n-tag
-                    v-if="worker.certificate"
-                    size="small"
-                    :bordered="false"
-                    :type="worker.certificate.signed ? 'success' : 'info'"
-                    class="ml-auto shrink-0"
-                  >
-                    {{
-                      worker.certificate.signed
-                        ? $t('lmsCertificate.status.signed')
-                        : $t('lmsCertificate.status.generated')
-                    }}
-                    <template v-if="worker.certificate.number">
-                      №{{ worker.certificate.number }}
-                    </template>
-                  </n-tag>
+                  <span v-if="worker.certificate" class="ml-auto shrink-0">
+                    <UIChip
+                      :tone="worker.certificate.signed ? 'success' : 'info'"
+                      :icon="worker.certificate.signed ? icons.figBadgeCheck : Timer16Regular"
+                    >
+                      {{
+                        worker.certificate.signed
+                          ? $t('lmsCertificate.status.signed')
+                          : $t('lmsCertificate.status.generated')
+                      }}
+                      <template v-if="worker.certificate.number">
+                        №{{ worker.certificate.number }}
+                      </template>
+                    </UIChip>
+                  </span>
                 </div>
                 <div class="col-span-4">
                   <n-input-group>

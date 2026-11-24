@@ -1,5 +1,5 @@
 <script setup>
-  import { UIStatus, UITable } from '@/components/index.js'
+  import { UIStatus, UITable, UIChip } from '@/components/index.js'
   import { useAccountStore, useStaffingApprovalStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -93,10 +93,11 @@
     @change-page="changePage"
   >
     <template #cell-number="{ row }">
-      <div @click="onOpen(row.id)" class="flex justify-center">
-        <n-button type="primary" class="font-medium" round dashed size="tiny">
+      <!-- Raqam — oddiy chip; hujjatni ochish ⋮ menyu → «Ko'rish». -->
+      <div class="flex justify-center">
+        <UIChip tone="primary" class="font-medium" compact>
           {{ row?.number }}
-        </n-button>
+        </UIChip>
       </div>
     </template>
 

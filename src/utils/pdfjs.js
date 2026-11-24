@@ -8,8 +8,8 @@ pdfjsLib.GlobalWorkerOptions.workerPort = new PdfWorker()
 
 export { pdfjsLib }
 
-// Ekran zichligi (Retina/2x); 3 dan yuqorisi xotirani behuda yeydi.
-export const outputScale = () => Math.min(window.devicePixelRatio || 1, 3)
+// Kamida 2x (oddiy monitorda ham matn tiniq — supersampling), 3 dan yuqorisi xotirani behuda yeydi.
+export const outputScale = () => Math.min(Math.max(window.devicePixelRatio || 1, 2), 3)
 
 // markRaw — pdf.js private field'lari Vue/Pinia reaktiv Proxy orqali o'qilmaydi.
 export const loadPdfDocument = async (url) =>

@@ -52,7 +52,9 @@
   },
   "applicationCommand": {
     "column": "Buyruq",
-    "create": "Buyruq",
+    "create": "Buyruq qilish",
+    "needApproved": "Ariza tasdiqlangach buyruq qilish mumkin",
+    "typeNotSupported": "Bu ariza turi uchun buyruq hozircha qo'shilmagan",
     "basedOn": "Ariza asosida: №{number} ({electronic}) — {type}",
     "locked": "Korxona, buyruq turi va xodim arizadan olingan, o'zgartirib bo'lmaydi.",
     "openCommand": "Buyruqni ochish"
@@ -3521,12 +3523,21 @@
   "applicationPage": {
     "statuses": {
       "draft": "Qoralama",
+      "returned": "Qaytarildi",
       "checking": "Tekshiruvda",
       "process": "Jarayonda",
       "rejected": "Rad etilgan",
       "approved": "Tasdiqlangan"
     },
     "draftBarTitle": "Arizani tasdiqlang",
+    "returnBtn": "Qaytarish",
+    "returnTitle": "Arizani tuzatish uchun qaytarish",
+    "returnReason": "Qaytarish sababi",
+    "returnPlaceholder": "Xodim nimani tuzatishi kerak?",
+    "returnHint": "Ariza xodimga qoralama bo'lib qaytadi. Xodim tuzatib, qayta tasdiqlagach yana sizga keladi.",
+    "returnDone": "Ariza xodimga tuzatish uchun qaytarildi",
+    "returnedTitle": "Ariza tuzatish uchun qaytarildi",
+    "returnedBy": "Qaytardi",
     "draftBarSub": "Imzolaganingizdan keyin ariza kadrlar bo'limiga yuboriladi",
     "ownRejectTitle": "Haqiqatan ham rad etmoqchimisiz?",
     "ownRejectDesc": "Ariza rad etiladi va kadrlar bo'limiga yuborilmaydi.",
@@ -3659,6 +3670,7 @@
     },
     "hrCheck": {
       "new": "Yangi",
+      "done": "Ko'rib chiqildi",
       "forwarded": "Yo'naltirilgan",
       "closed": "Yopilgan",
       "awaiting": "Qaror kutilmoqda"
@@ -6848,6 +6860,7 @@
       "matchHigh": "Yuz mos keldi",
       "matchMid": "O'rtacha moslik — rasmlarni solishtiring",
       "matchLow": "Past moslik — boshqa odam bo'lishi mumkin",
+      "lowMatchHint": "Tasdiqlangan rasmni yangilash tavsiya etiladi.",
       "matchUnknown": "O'xshashlik aniqlanmagan",
       "placeUnknown": "Joylashuv aniqlanmagan",
       "accuracyGood": "aniq",

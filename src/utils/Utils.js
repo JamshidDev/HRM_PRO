@@ -412,8 +412,7 @@ const maskText = (text, start, end, sign = '*') => {
   return startText + masked + endText
 }
 const viewerStatus = {
-  signatureDocument: 'document-signature',
-  applicationDocument: 'application-document'
+  signatureDocument: 'document-signature'
 }
 
 const debouncedFn = useDebounceFn(

@@ -5,6 +5,7 @@
     ChevronRight12Regular,
     Checkmark16Filled
   } from '@vicons/fluent'
+  import { UIChip } from '@/components/index.js'
 
   const props = defineProps({
     item: {
@@ -91,22 +92,22 @@
               </div>
               <div class="flex justify-between gap-2 w-full mt-2">
                 <div class="flex gap-2">
-                  <n-tag round size="tiny">{{
+                  <UIChip compact>{{
                     $t('departmentPositionPage.form.rate') + ' - ' + position.rate
-                  }}</n-tag>
-                  <n-tag round size="tiny">{{
+                  }}</UIChip>
+                  <UIChip compact>{{
                     $t('departmentPositionPage.form.group') + ' - ' + position.group
-                  }}</n-tag>
-                  <n-tag round size="tiny">{{
+                  }}</UIChip>
+                  <UIChip compact>{{
                     $t('departmentPositionPage.form.rank') + ' - ' + position.rank
-                  }}</n-tag>
-                  <n-tag round size="tiny">{{
+                  }}</UIChip>
+                  <UIChip compact>{{
                     $t('departmentPositionPage.form.salary') +
                     ' - ' +
                     position.amount +
                     ' ' +
                     $t('content.sum')
-                  }}</n-tag>
+                  }}</UIChip>
                 </div>
               </div>
             </n-checkbox>

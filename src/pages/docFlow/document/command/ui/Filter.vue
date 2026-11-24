@@ -64,6 +64,8 @@
   // (`virtual-scroll` o'chirilmasa naive-ui option balandligini qotirib qo'yadi).
   const renderWrapLabel = (option) =>
     h('div', { class: 'whitespace-normal break-words leading-snug py-1' }, option.name)
+  // Tanlangan qiymat maydonda bitta qatorda, sig'masa «…» bilan (to'liq matn — hover'da).
+  const renderEllipsisTag = ({ option }) => h('span', { class: 'block truncate', title: option.name }, option.name)
 
   const beforeShow = (v) => {
     if (v && componentStore.confirmationStatusList.length === 0) {
@@ -125,6 +127,7 @@
             v-model:value="store.params.confirmation"
             :options="componentStore.confirmationStatusList"
             :render-label="renderWrapLabel"
+            :render-tag="renderEllipsisTag"
             :virtual-scroll="false"
             label-field="name"
             value-field="id"
@@ -133,12 +136,14 @@
             :loading="componentStore.enumAdminLoading"
           />
         </div>
-        <div class="col-span-12 md:col-span-6">
+        <!-- Tur nomlari uzun — butun kenglikda. -->
+        <div class="col-span-12">
           <label>{{ $t('content.type') }}</label>
           <n-select
             v-model:value="store.params.type"
             :options="componentStore.commandTypes"
             :render-label="renderWrapLabel"
+            :render-tag="renderEllipsisTag"
             :virtual-scroll="false"
             label-field="name"
             value-field="id"

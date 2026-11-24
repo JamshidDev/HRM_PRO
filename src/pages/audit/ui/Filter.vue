@@ -5,7 +5,7 @@
     EyeOff20Regular,
     LockClosed20Regular
   } from '@vicons/fluent'
-  import { UIPageFilter } from '@/components/index.js'
+  import { UIChip, UIPageFilter } from '@/components/index.js'
   import { AppPaths } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
   import { useAccountStore, useAuditStore } from '@/store/modules/index.js'
@@ -146,9 +146,9 @@
           </template>
           {{ store.params.unmask ? $t('audit.hideMasked') : $t('audit.showMasked') }}
         </n-button>
-        <n-tag v-if="store.pageTitle" size="small" round :bordered="false">
+        <UIChip v-if="store.pageTitle">
           {{ store.pageTitle }}
-        </n-tag>
+        </UIChip>
       </div>
     </template>
 
