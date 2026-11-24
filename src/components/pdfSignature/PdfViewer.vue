@@ -204,7 +204,7 @@
 </script>
 
 <template>
-  <div class="w-full flex">
+  <div class="w-full flex" data-pdf-root>
     <div
       ref="scrollElementRef"
       class="flex flex-col mx-auto overflow-y-auto relative pb-8 max-md:max-w-full"

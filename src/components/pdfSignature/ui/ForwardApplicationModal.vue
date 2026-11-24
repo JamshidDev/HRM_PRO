@@ -52,16 +52,14 @@
     () =>
       ({
         forward: 'applicationPage.forward.title',
-        edit: 'applicationPage.forward.editTitle',
-        resend: 'applicationPage.forward.resendTitle'
+        edit: 'applicationPage.forward.editTitle'
       })[app.forwardAction]
   )
   const submitKey = computed(
     () =>
       ({
         forward: 'applicationPage.forward.submit',
-        edit: 'content.save',
-        resend: 'applicationPage.forward.resendSubmit'
+        edit: 'content.save'
       })[app.forwardAction]
   )
 
