@@ -27,6 +27,7 @@ export const useDocumentTemplateStore = defineStore('documentTemplateStore', {
     // «Saqlash» bosildi — OnlyOffice natijasi kelguncha tugma band.
     saving: false,
     discarding: false,
+    uploading: false,
     savedAt: null,
     rejectMessage: null,
 
@@ -202,6 +203,30 @@ export const useDocumentTemplateStore = defineStore('documentTemplateStore', {
         return false
       } finally {
         this.discarding = false
+      }
+    },
+
+    // Tayyor DOCX blankani yuklaydi; muvaffaqiyatda muharrir yangi fayl bilan qayta ochiladi.
+    async _upload(file) {
+      const sel = this.selected
+      if (!sel || !file || this.uploading) return false
+      this.uploading = true
+      try {
+        const form = new FormData()
+        form.append('file', file)
+        form.append('category', sel.category)
+        form.append('type', String(sel.type))
+        if (this.docKey) form.append('key', this.docKey)
+        await $ApiService.documentTemplateService._upload({ data: form })
+        $Toast.success(t('documentTemplate.uploaded'))
+        this._resetSaveState()
+        await Promise.all([this._index(), this._loadEditor(), this._loadVariables()])
+        await this._syncLastSave()
+        return true
+      } catch {
+        return false
+      } finally {
+        this.uploading = false
       }
     },
 

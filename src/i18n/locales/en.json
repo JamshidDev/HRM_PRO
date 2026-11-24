@@ -7377,6 +7377,13 @@
     "verified": "Verified"
   },
   "documentTemplate": {
+    "upload": "Upload",
+    "uploadHint": "Upload a ready DOCX letterhead to replace the current template",
+    "uploadTitle": "Upload template",
+    "uploadText": "The file «{name}» will replace the current template and apply to new documents. Unsaved edits in the editor will be discarded. Variables, blocks and the letterhead area are checked.",
+    "uploadConfirm": "Upload",
+    "uploadOnlyDocx": "Only .docx files can be uploaded.",
+    "uploaded": "Template uploaded",
     "name": "Template",
     "subtitle": "Select a template, edit its content, and save it for new documents.",
     "selectPlaceholder": "Select a document template",
