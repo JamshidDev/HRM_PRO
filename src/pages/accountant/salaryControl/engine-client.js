@@ -67,22 +67,59 @@ function mark(mode) {
   }
 }
 
+// Katta `emps` arrayni bitta postMessage'da klonlash asosiy thread'ni ~1s qotiradi.
+// Shuning uchun BO'LAK-BO'LAK (chunk) yuboramiz va har bo'lak orasida event-loop'ga
+// yield beramiz → bitta uzun blok o'rniga qisqa bo'laklar, UI javob berib turadi.
+const CHUNK = 400
+
+function yieldToLoop() {
+  return new Promise((r) => setTimeout(r, 0))
+}
+
+async function sendChunked(w, id, payload) {
+  const emps = payload.emps || []
+  const auditRaw = payload.empsAudit || emps
+  const auditSame = auditRaw === emps // oddiy rejimda audit === emps → ikki marta yubormaymiz
+  w.postMessage({
+    id,
+    type: 'init',
+    auditSame,
+    kpi: payload.kpi || {},
+    year: payload.year,
+    month: payload.month
+  })
+  for (let i = 0; i < emps.length; i += CHUNK) {
+    w.postMessage({ id, type: 'emps', chunk: emps.slice(i, i + CHUNK) })
+    if (i + CHUNK < emps.length) await yieldToLoop()
+  }
+  if (!auditSame) {
+    for (let i = 0; i < auditRaw.length; i += CHUNK) {
+      w.postMessage({ id, type: 'audit', chunk: auditRaw.slice(i, i + CHUNK) })
+      if (i + CHUNK < auditRaw.length) await yieldToLoop()
+    }
+  }
+  w.postMessage({ id, type: 'done' })
+}
+
 export function computeDashboard(payload) {
   const w = ensureWorker()
   if (!w) {
     mark('sync')
     return Promise.resolve(computeSync(payload))
   }
-  return new Promise((resolve, reject) => {
-    const id = ++seq
+  const id = ++seq
+  const p = new Promise((resolve, reject) => {
     pending.set(id, { resolve, reject })
-    try {
-      w.postMessage({ id, ...payload })
-    } catch {
+  })
+  // Bo'laklarni ketma-ket yuboramiz; yuborishda xato bo'lsa — shu id'ni rad etamiz.
+  sendChunked(w, id, payload).catch((err) => {
+    const r = pending.get(id)
+    if (r) {
       pending.delete(id)
-      reject(new Error('postMessage failed'))
+      r.reject(err instanceof Error ? err : new Error('postMessage failed'))
     }
   })
+  return p
     .then((r) => {
       mark('worker')
       return r

@@ -4,6 +4,7 @@
   // Maket: oylik_nazorat_dashboard_5.html (c14a/c14b/c14c/t14) — echarts ko'chirmasi.
   import { ref, computed, watch } from 'vue'
   import { useChartDefer } from '../useChartDefer.js'
+  import { usePaged } from '../usePaged.js'
   import i18n from '@/i18n/index.js'
   import { useSalaryControlStore, useAppStore } from '@/store/modules/index.js'
   import { money, money2, mln, chartTheme, tokenColor, normText } from '../helpers.js'
@@ -284,6 +285,8 @@
         (!query || r.fio.toLowerCase().includes(query))
     )
   })
+  // DAS-16729: reestr minglab qator bo'lishi mumkin — client-side pagination (qotmasin).
+  const { page: regPage, paged: regPaged, pageCount: regPageCount } = usePaged(rows, 50)
 
   // DAS-16735: c14c izohi davr + kalendar me'yoriga (norm) bog'liq (CHART.c14c.sub — funksiya).
   const c14cInfo = computed(() =>
@@ -356,7 +359,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(r, i) in rows" :key="i">
+            <tr v-for="(r, i) in regPaged" :key="i">
               <td><span class="sc-rn">{{ r.riskN }}</span></td>
               <td>
                 <b class="sc-fio">{{ r.fio }}</b>
@@ -373,6 +376,14 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      <div v-if="regPageCount > 1" class="sc-pager">
+        <n-pagination
+          v-model:page="regPage"
+          :page-count="regPageCount"
+          :page-slot="7"
+          size="small"
+        />
       </div>
     </Card>
   </template>
@@ -424,6 +435,11 @@
     max-height: 560px;
     border-radius: 12px;
     border: 0.8px solid var(--fig-br-disable);
+  }
+  .sc-pager {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 4px 2px;
   }
   .sc-tbl {
     width: 100%;
