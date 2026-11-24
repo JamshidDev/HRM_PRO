@@ -1,7 +1,8 @@
 <script setup>
-  import { UIModal, UIYearMonth } from '@/components/index.js'
+  import { UIChip, UIModal, UIYearMonth } from '@/components/index.js'
   import { useUploadReportStore, useComponentStore } from '@/store/modules/index.js'
-  import { Search24Regular } from '@vicons/fluent'
+  import { Search24Regular, Timer16Regular, ErrorCircle12Filled } from '@vicons/fluent'
+  import icons from '@/assets/icons'
   import Utils from '@/utils/Utils.js'
 
   const store = useUploadReportStore()
@@ -166,30 +167,30 @@
                 </div>
               </div>
               <div class="shrink-0">
-                <n-tag
+                <UIChip
                   v-if="resultOf(o.organization_id)?.status === 'uploading'"
-                  size="small"
-                  type="warning"
-                  round
+                  tone="warning"
+                  :icon="Timer16Regular"
                 >
                   {{ $t('uploadReport.bulkOnes.uploading') }}
-                </n-tag>
-                <n-tag
+                </UIChip>
+                <UIChip
                   v-else-if="resultOf(o.organization_id)?.status === 'done'"
-                  size="small"
-                  type="success"
-                  round
+                  tone="success"
+                  :icon="icons.figBadgeCheck"
                 >
                   {{ $t('uploadReport.bulkOnes.done') }}
-                </n-tag>
+                </UIChip>
                 <n-tooltip
                   v-else-if="resultOf(o.organization_id)?.status === 'failed'"
                   trigger="hover"
                 >
                   <template #trigger>
-                    <n-tag size="small" type="error" round>
-                      {{ $t('uploadReport.bulkOnes.failed') }}
-                    </n-tag>
+                    <span class="inline-flex">
+                      <UIChip tone="error" :icon="ErrorCircle12Filled">
+                        {{ $t('uploadReport.bulkOnes.failed') }}
+                      </UIChip>
+                    </span>
                   </template>
                   {{ resultOf(o.organization_id)?.message }}
                 </n-tooltip>

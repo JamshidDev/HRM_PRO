@@ -2,7 +2,7 @@
   // «Qo'llash tarixi» (audit jurnali) — har qo'llash hodisasi: sana, kim, o'zgardi/o'tkazildi,
   // sabab, hujjat. Setka va baza uchun umumiy.
   import { Attach16Regular } from '@vicons/fluent'
-  import { UIPagination, NoDataPicture } from '@/components/index.js'
+  import { UIChip, UIPagination, NoDataPicture } from '@/components/index.js'
   import { useTariffGridStore } from '@/store/modules/index.js'
 
   const store = useTariffGridStore()
@@ -29,10 +29,10 @@
               <td class="text-xs text-textColor3">{{ dt(r.created_at) }}</td>
               <td class="text-xs">{{ r.changed_by_name || '—' }}</td>
               <td class="text-center!">
-                <n-tag type="success" size="tiny" round>{{ r.updated }}</n-tag>
+                <UIChip tone="success" compact>{{ r.updated }}</UIChip>
               </td>
               <td class="text-center!">
-                <n-tag :type="r.skipped ? 'warning' : 'default'" size="tiny" round>{{ r.skipped }}</n-tag>
+                <UIChip :tone="r.skipped ? 'warning' : 'default'" compact>{{ r.skipped }}</UIChip>
               </td>
               <td class="text-xs text-textColor2">{{ r.reason || '—' }}</td>
               <td class="text-center!">

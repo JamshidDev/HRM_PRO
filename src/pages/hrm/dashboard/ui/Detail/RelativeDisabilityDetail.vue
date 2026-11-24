@@ -1,5 +1,5 @@
 <script setup>
-  import { UIUser, UITable, UIBadge } from '@/components/index.js'
+  import { UIUser, UITable, UIBadge, UIChip } from '@/components/index.js'
   import { useDashboardStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
 
@@ -97,9 +97,9 @@
     </template>
 
     <template #cell-level="{ row }">
-      <n-tag type="warning" size="small" round>
+      <UIChip tone="warning">
         {{ row.level }}-{{ $t('dashboardPage.disability.group') }}
-      </n-tag>
+      </UIChip>
     </template>
 
     <template #cell-number="{ row }">

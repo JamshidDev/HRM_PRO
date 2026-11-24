@@ -1,5 +1,5 @@
 <script setup>
-  import { UIStatus, UITable } from '@/components/index.js'
+  import { UIStatus, UITable, UIChip } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useConfTimesheetStore, useTimesheetWorkerStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -160,12 +160,12 @@
         </template>
         {{ $t('timesheet.finished') }}
       </n-button>
-      <n-tag v-else-if="row?.locked" type="warning" size="small" round :bordered="false">
+      <UIChip v-else-if="row?.locked" tone="warning">
         <template #icon>
           <n-icon :component="LockClosed20Regular" />
         </template>
         {{ $t('timesheetPage.lockedTag') }}
-      </n-tag>
+      </UIChip>
     </template>
 
     <template #cell-confirmation="{ row }">

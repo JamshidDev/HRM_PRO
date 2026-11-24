@@ -3,6 +3,7 @@
   import { NAvatar, NIcon } from 'naive-ui'
   import Utils from '@utils/Utils.js'
   import { Checkmark16Filled, DismissCircle20Filled } from '@vicons/fluent'
+  import { UIChip } from '@/components/index.js'
   const store = useNotificationStore()
 
   const userRoleParams = reactive({
@@ -238,7 +239,7 @@
       class="flex items-center gap-2 absolute top-0 left-0 bottom-0 pl-4"
     >
       <span class="text-[15px]">{{ $t('content.allSelected') }}</span>
-      <n-tag>+{{ totalUserRolesCount - store.payload.unCheck.length }}</n-tag>
+      <UIChip>+{{ totalUserRolesCount - store.payload.unCheck.length }}</UIChip>
     </div>
   </div>
 </template>

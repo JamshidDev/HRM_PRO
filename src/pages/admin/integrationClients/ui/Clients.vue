@@ -1,6 +1,6 @@
 <script setup>
   import { useIntegrationClientsStore, useComponentStore } from '@/store/modules/index.js'
-  import { UIModal, UISelect, UITable } from '@/components/index.js'
+  import { UIChip, UIModal, UISelect, UITable } from '@/components/index.js'
   import {
     Checkmark16Regular,
     Dismiss16Regular,
@@ -383,7 +383,7 @@
     <template #cell-name="{ row }">
       <p class="text-sm font-semibold text-textColor0">
         {{ row.name }}
-        <n-tag v-if="row.sso_enabled" type="info" size="tiny" round class="ml-1 align-middle">SSO</n-tag>
+        <UIChip v-if="row.sso_enabled" tone="info" compact class="ml-1 align-middle">SSO</UIChip>
       </p>
       <p v-if="row.description" class="text-[11px] text-textColor3">{{ row.description }}</p>
     </template>
@@ -393,9 +393,9 @@
     </template>
 
     <template #cell-role="{ row }">
-      <n-tag v-if="row.role" type="info" size="small" round :bordered="false">
+      <UIChip v-if="row.role" tone="info">
         {{ row.role.name }}
-      </n-tag>
+      </UIChip>
       <span v-else class="text-xs text-textColor3">—</span>
     </template>
 
@@ -409,12 +409,12 @@
     </template>
 
     <template #cell-is_active="{ row }">
-      <n-tag :type="row.is_active ? 'success' : 'default'" size="small" round>
+      <UIChip :tone="row.is_active ? 'success' : 'default'">
         <template #icon>
           <n-icon :component="row.is_active ? Checkmark16Regular : Dismiss16Regular" />
         </template>
         {{ row.is_active ? $t('content.active') : $t('content.noActive') }}
-      </n-tag>
+      </UIChip>
     </template>
   </UITable>
 

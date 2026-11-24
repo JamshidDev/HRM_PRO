@@ -1,6 +1,6 @@
 <script setup>
   // Mobil o'tishni ko'rish: kim/qachon, ikki rasmni solishtirish va o'tish joyi (xaritada aniqlik aylanasi).
-  import { UIModal } from '@/components/index.js'
+  import { UIModal, UIChip } from '@/components/index.js'
   import LocationMap from '@/pages/hrm/departmentLocation/ui/LocationMap.vue'
   import {
     ArrowCircleDownRight20Regular,
@@ -128,15 +128,17 @@
           <div class="text-base font-semibold text-textColor0 truncate">{{ workerName }}</div>
           <div class="text-xs text-textColor3 mt-0.5">{{ whenLine }}</div>
         </div>
-        <n-tag round :type="event?.direction ? 'primary' : 'error'" :bordered="false" class="shrink-0">
-          <template #icon>
-            <n-icon>
-              <ArrowCircleDownRight20Regular v-if="event?.direction" />
-              <ArrowCircleUpLeft20Regular v-else />
-            </n-icon>
-          </template>
-          {{ event?.direction ? $t('departmentLocationPage.events.in') : $t('departmentLocationPage.events.out') }}
-        </n-tag>
+        <span class="shrink-0">
+          <UIChip :tone="event?.direction ? 'primary' : 'error'">
+            <template #icon>
+              <n-icon>
+                <ArrowCircleDownRight20Regular v-if="event?.direction" />
+                <ArrowCircleUpLeft20Regular v-else />
+              </n-icon>
+            </template>
+            {{ event?.direction ? $t('departmentLocationPage.events.in') : $t('departmentLocationPage.events.out') }}
+          </UIChip>
+        </span>
       </div>
 
       <!-- Rasmlarni solishtirish: tasdiqlangan rasm | rasmiy rasm -->
@@ -188,7 +190,7 @@
           <div class="flex items-center gap-2">
             <n-icon size="16" class="text-primary shrink-0"><Location20Filled /></n-icon>
             <span class="text-sm font-medium text-textColor0 truncate">{{ placeTitle }}</span>
-            <n-tag v-if="sourceLabel && face.place_name" size="tiny" round>{{ sourceLabel }}</n-tag>
+            <UIChip v-if="sourceLabel && face.place_name" compact>{{ sourceLabel }}</UIChip>
           </div>
           <div v-if="placeHint" class="text-xs text-textColor3 mt-0.5 pl-6">{{ placeHint }}</div>
 

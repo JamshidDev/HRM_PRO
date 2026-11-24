@@ -2,6 +2,7 @@
   import { ref, computed } from 'vue'
   import { useUserRoleStore, useUserStore } from '@/store/modules/index.js'
   import { DismissCircle24Regular } from '@vicons/fluent'
+  import { UIChip } from '@/components/index.js'
 
   const userStore = useUserStore()
   const roleStore = useUserRoleStore()
@@ -82,7 +83,7 @@
             <span class="text-sm font-medium text-textColor1">{{
               $t('userPage.availablePermissions')
             }}</span>
-            <n-tag size="small" type="primary" round>{{ leftList.length }}</n-tag>
+            <UIChip tone="primary">{{ leftList.length }}</UIChip>
           </div>
           <n-input
             v-model:value="leftSearch"
@@ -118,7 +119,7 @@
             <span class="text-sm font-medium text-textColor1">{{
               $t('userPage.attachedPermissions')
             }}</span>
-            <n-tag size="small" type="success" round>{{ clonedPermissions.length }}</n-tag>
+            <UIChip tone="success">{{ clonedPermissions.length }}</UIChip>
           </div>
           <n-input
             v-model:value="rightSearch"

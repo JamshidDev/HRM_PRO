@@ -1,5 +1,5 @@
 <script setup>
-  import { UIBadge, UITable } from '@/components/index.js'
+  import { UIBadge, UITable, UIChip } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useVacancyStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -163,7 +163,7 @@
       <span class="text-sm font-medium">{{ row.organization?.name }}</span>
       <template v-if="row.organization?.group">
         <br />
-        <n-tag size="tiny" type="warning" round>group</n-tag>
+        <UIChip tone="warning" compact>group</UIChip>
       </template>
     </template>
 

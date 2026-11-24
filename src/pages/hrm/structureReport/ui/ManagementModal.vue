@@ -1,5 +1,5 @@
 <script setup>
-  import { UIModal, UIPagination, NoDataPicture, UISelect, UIYearMonth } from '@/components/index.js'
+  import { UIModal, UIPagination, NoDataPicture, UISelect, UIYearMonth, UIChip } from '@/components/index.js'
   import { useStructureReportStore, useComponentStore } from '@/store/modules/index.js'
   import { Delete20Regular, Building20Regular, Add20Regular } from '@vicons/fluent'
   import { confirmDelete } from '@/components/notify/alertDialog.js'
@@ -134,9 +134,9 @@
 
               <div class="flex-1 min-w-0 flex items-center gap-2">
                 <span class="text-[13px] text-textColor0 truncate">{{ item.organization?.name }}</span>
-                <n-tag v-if="item.organization?.group" type="info" size="tiny" round>
+                <UIChip v-if="item.organization?.group" tone="info" compact>
                   {{ $t('structureReport.managementGroup') }}
-                </n-tag>
+                </UIChip>
               </div>
 
               <n-button

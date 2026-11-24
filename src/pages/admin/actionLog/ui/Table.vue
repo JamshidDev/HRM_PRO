@@ -1,6 +1,6 @@
 <script setup>
   import { CodeCircle20Regular, DismissCircle24Regular } from '@vicons/fluent'
-  import { UITable, UIUser } from '@/components/index.js'
+  import { UIChip, UITable, UIUser } from '@/components/index.js'
   import { useActionLogStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
@@ -77,9 +77,9 @@
 
     <template #cell-description="{ row }">
       <div class="flex justify-center">
-        <n-tag :type="descriptionType(row.description)" size="small" round>
+        <UIChip :tone="descriptionType(row.description)">
           {{ $t(`actionLog.status.${row.description}`) }}
-        </n-tag>
+        </UIChip>
       </div>
     </template>
 

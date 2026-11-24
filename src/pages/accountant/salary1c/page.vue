@@ -1,6 +1,7 @@
 <script setup>
   import { CloudArrowDown24Regular, CloudArrowUp24Regular, Eye16Regular, History24Regular, Search24Regular, ArrowDownload24Regular, Calculator24Regular, ArrowSync24Regular } from '@vicons/fluent'
-  import { NoDataPicture, OnesCodeFilter, UIBadge, UIModal, UIPageContent, UIPageFilter, UIPagination, UITable, UIYearMonth, UISelect } from '@/components/index.js'
+  import icons from '@/assets/icons'
+  import { NoDataPicture, OnesCodeFilter, UIBadge, UIChip, UIModal, UIPageContent, UIPageFilter, UIPagination, UITable, UIYearMonth, UISelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useSalary1cStore, useUploadReportStore } from '@/store/modules/index.js'
   import BulkOnesModal from '@/pages/accountant/report/ui/BulkOnesModal.vue'
   import { OnesCodesManager } from '@/components/index.js'
@@ -566,9 +567,9 @@
                   <td class="font-mono text-xs">{{ v.paying_code ?? '—' }}</td>
                   <td class="text-xs">{{ v.paying_name || '—' }}</td>
                   <td class="text-center!">
-                    <n-tag :type="v.type === 2 ? 'error' : 'success'" size="tiny" round>
+                    <UIChip :tone="v.type === 2 ? 'error' : 'success'" compact>
                       {{ v.type === 2 ? $t('salary1c.veds.deduction') : $t('salary1c.veds.accrual') }}
-                    </n-tag>
+                    </UIChip>
                   </td>
                   <td class="text-right! tnum">{{ fmt(v.total_summa) }}</td>
                   <td class="text-center! text-textColor3">{{ v.worker_count }}</td>
@@ -669,9 +670,12 @@
             <div class="s1-rec-info">
               <span>{{ store.reconcile.organization }}
                 <b v-if="store.reconcile.ones_org_code">({{ store.reconcile.ones_org_code }})</b></span>
-              <n-tag :type="store.reconcile.has_diff ? 'warning' : 'success'" round size="small">
+              <UIChip
+                :tone="store.reconcile.has_diff ? 'warning' : 'success'"
+                :icon="store.reconcile.has_diff ? icons.figAlertCircle : icons.figBadgeCheck"
+              >
                 {{ store.reconcile.has_diff ? $t('salary1c.reconcile.hasDiff') : $t('salary1c.reconcile.match') }}
-              </n-tag>
+              </UIChip>
             </div>
             <div class="s1-stats mb-3">
               <div class="s1-stat">
@@ -717,9 +721,9 @@
                     <td class="font-mono text-xs">{{ r.code || '—' }}</td>
                     <td class="text-xs">{{ r.name || '—' }}</td>
                     <td class="text-center!">
-                      <n-tag :type="r.type === 2 ? 'error' : 'success'" size="tiny" round>
+                      <UIChip :tone="r.type === 2 ? 'error' : 'success'" compact>
                         {{ r.type === 2 ? $t('salary1c.veds.deduction') : $t('salary1c.veds.accrual') }}
-                      </n-tag>
+                      </UIChip>
                     </td>
                     <td class="text-right! tnum">
                       <span v-if="r.ours" class="s1-drill" @click="store.openVedWorkers(r)"
@@ -909,9 +913,9 @@
                 </td>
                 <td>v{{ v.version }}</td>
                 <td>
-                  <n-tag :type="v.is_current ? 'success' : 'default'" size="tiny" round>
+                  <UIChip :tone="v.is_current ? 'success' : 'default'" :icon="v.is_current ? icons.figBadgeCheck : null" compact>
                     {{ v.is_current ? $t('salary1c.current') : $t('salary1c.archived') }}
-                  </n-tag>
+                  </UIChip>
                 </td>
                 <td class="text-xs">
                   <span class="tnum">{{ (v.valid_from || v.first_synced_at || '').slice(0, 16) }}</span>
@@ -989,7 +993,7 @@
                   <td class="text-right! tnum">{{ fmt(a.from) }}</td>
                   <td class="text-right! tnum">{{ fmt(a.to) }}</td>
                   <td class="text-right! tnum font-semibold" :class="diffClass(a.diff)">{{ signed(a.diff) }}</td>
-                  <td><n-tag :type="cmpStatusType(a.status)" size="tiny" round>{{ cmpStatusLabel(a.status) }}</n-tag></td>
+                  <td><UIChip :tone="cmpStatusType(a.status)" compact>{{ cmpStatusLabel(a.status) }}</UIChip></td>
                 </tr>
               </tbody>
             </n-table>
@@ -1014,7 +1018,7 @@
                   <td class="text-right! tnum">{{ fmt(d.from) }}</td>
                   <td class="text-right! tnum">{{ fmt(d.to) }}</td>
                   <td class="text-right! tnum font-semibold" :class="diffClass(d.diff)">{{ signed(d.diff) }}</td>
-                  <td><n-tag :type="cmpStatusType(d.status)" size="tiny" round>{{ cmpStatusLabel(d.status) }}</n-tag></td>
+                  <td><UIChip :tone="cmpStatusType(d.status)" compact>{{ cmpStatusLabel(d.status) }}</UIChip></td>
                 </tr>
               </tbody>
             </n-table>

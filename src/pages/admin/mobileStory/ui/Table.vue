@@ -1,5 +1,5 @@
 <script setup>
-  import { UITable, UITableNameCell } from '@/components/index.js'
+  import { UIChip, UITable, UITableNameCell } from '@/components/index.js'
   import { useAccountStore, useMobileStoryStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
@@ -117,16 +117,16 @@
     </template>
 
     <template #cell-status="{ row }">
-      <n-tag round :bordered="false" size="small" :type="row.status === 2 ? 'success' : 'default'">
-        <span class="inline-flex items-center gap-1.5 font-medium">
+      <UIChip :tone="row.status === 2 ? 'success' : 'default'">
+        <template #icon>
           <n-icon :size="14" :component="row.status === 2 ? CheckmarkCircle16Filled : Folder16Filled" />
-          {{
-            row.status === 2
-              ? $t('mobileStoryPage.status.published')
-              : $t('mobileStoryPage.status.draft')
-          }}
-        </span>
-      </n-tag>
+        </template>
+        {{
+          row.status === 2
+            ? $t('mobileStoryPage.status.published')
+            : $t('mobileStoryPage.status.draft')
+        }}
+      </UIChip>
     </template>
 
     <template #cell-published_at="{ row }">

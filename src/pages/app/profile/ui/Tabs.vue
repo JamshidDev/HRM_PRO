@@ -1,6 +1,7 @@
 <script setup>
   import { useAccountStore } from '@/store/modules/app/accountStore.js'
   import SectionHeader from '@/components/worker/ui/shared/SectionHeader.vue'
+  import { UIChip } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import UserIcon from '@/assets/icons/user.svg'
   import OrdersIcon from '@/assets/icons/Orders.svg'
@@ -94,7 +95,7 @@
               large
             >
               <template v-if="store.mustChangePassword" #title-suffix>
-                <n-tag type="warning" size="small" round>{{ $t('passwordForm.required') }}</n-tag>
+                <UIChip tone="warning">{{ $t('passwordForm.required') }}</UIChip>
               </template>
               <PasswordForm />
             </SectionHeader>

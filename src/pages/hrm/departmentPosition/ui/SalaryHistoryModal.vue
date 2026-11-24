@@ -1,7 +1,7 @@
 <script setup>
   // Lavozim oklad o'zgarish tarixi — eski→yangi, manba, sabab, hujjat, kim/qachon.
   import { Attach16Regular } from '@vicons/fluent'
-  import { UIPagination, NoDataPicture } from '@/components/index.js'
+  import { UIPagination, NoDataPicture, UIChip } from '@/components/index.js'
   import { useDepartmentPositionStore } from '@stores'
   import { Utils } from '@utils'
   import i18n from '@/i18n/index.js'
@@ -38,7 +38,7 @@
             <tr v-for="r in store.salaryHistory.list" :key="r.id">
               <td class="text-xs text-textColor3">{{ dt(r.created_at) }}</td>
               <td>
-                <n-tag :type="sourceTag(r.source).type" size="tiny" round>{{ sourceTag(r.source).label }}</n-tag>
+                <UIChip :tone="sourceTag(r.source).type" compact>{{ sourceTag(r.source).label }}</UIChip>
               </td>
               <td class="text-right! tnum">
                 <span class="text-textColor3">{{ fmt(r.old_salary) }}</span>

@@ -1,5 +1,5 @@
 <script setup>
-  import { UIBadge, UITable, UIUser } from '@/components/index.js'
+  import { UIBadge, UITable, UIUser, UIChip } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useTurnstileHikCentralWorkerStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -11,7 +11,8 @@
     Edit32Regular,
     ErrorCircle24Filled,
     Stethoscope20Regular,
-    MoreHorizontal24Regular
+    MoreHorizontal24Regular,
+    ErrorCircle12Filled
   } from '@vicons/fluent'
   import { useMessage } from 'naive-ui'
   import AccessLevelModal from './AccessLevelModal.vue'
@@ -201,14 +202,14 @@
               {{ row.card }}
             </n-button>
 
-            <n-tag
+            <UIChip
               v-if="store.params.workerType === 'guest' && !row.organization"
-              size="tiny"
-              type="error"
-              :bordered="false"
+              tone="error"
+              :icon="ErrorCircle12Filled"
+              compact
             >
               {{ $t('turnstile.hcWorkersPage.notWorking') }}
-            </n-tag>
+            </UIChip>
             <n-ellipsis tooltip>
               {{ store.params.workerType === 'guest' && row.organization ? `${row.organization.name} — ${row.post_name}` : row.post_name }}
             </n-ellipsis>

@@ -1,5 +1,5 @@
 <script setup>
-  import { UITable } from '@/components/index.js'
+  import { UIChip, UITable } from '@/components/index.js'
   import { useVacancyApproveStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
   import Utils from '@/utils/Utils.js'
@@ -54,14 +54,14 @@
     <template #cell-from="{ row }">
       <div class="flex items-center gap-1">
         <span class="text-sm font-medium">{{ row.from?.name }}</span>
-        <n-tag v-if="row.from?.group" size="tiny" type="warning" round>group</n-tag>
+        <UIChip v-if="row.from?.group" tone="warning" compact>group</UIChip>
       </div>
     </template>
 
     <template #cell-to="{ row }">
       <div class="flex items-center gap-1">
         <span class="text-sm font-medium">{{ row.to?.name }}</span>
-        <n-tag v-if="row.to?.group" size="tiny" type="warning" round>group</n-tag>
+        <UIChip v-if="row.to?.group" tone="warning" compact>group</UIChip>
       </div>
     </template>
   </UITable>
