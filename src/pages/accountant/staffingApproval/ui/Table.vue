@@ -93,8 +93,8 @@
     @change-page="changePage"
   >
     <template #cell-number="{ row }">
-      <!-- Raqam — oddiy chip; hujjatni ochish ⋮ menyu → «Ko'rish». -->
-      <div class="flex justify-center">
+      <!-- Raqam chipi bosilsa — hujjat ochiladi (⋮ menyu → «Ko'rish» ham bor). -->
+      <div @click="onOpen(row.id)" class="flex justify-center cursor-pointer">
         <UIChip tone="primary" class="font-medium" compact>
           {{ row?.number }}
         </UIChip>

@@ -76,8 +76,8 @@
                 }"
               />
             </td>
-            <!-- Raqam — oddiy chip; hujjatni ochish ⋮ menyu → «Ko'rish». -->
-            <td>
+            <!-- Raqam chipi bosilsa — hujjat ochiladi (⋮ menyu → «Ko'rish» ham bor). -->
+            <td class="cursor-pointer" @click="onOpen(item?.certificate?.id, item.id)">
               <div class="flex justify-center">
                 <UIChip tone="primary" class="font-medium" compact>{{
                   item?.certificate?.serial + '-' + item?.certificate?.number

@@ -6,6 +6,7 @@
   import Utils from '@/utils/Utils.js'
   import {
     AddSquareMultiple20Regular,
+    ArrowSync24Filled,
     Delete20Regular,
     Edit32Regular,
     ErrorCircle24Filled,
@@ -87,6 +88,9 @@
   const onRefreshAccessLevel = async (v) => {
     onRefresh(v)
   }
+
+  // Guruh chipida «Yangilash» faqat yozish ruxsati bo'lsa ko'rinadi.
+  const canRefresh = computed(() => accStore.checkPermission(accStore.pn.turnstileHikCentralWorkersWrite))
 
   const onRefresh = (v) => {
     if (!accStore.checkAction(accStore.pn.turnstileHikCentralWorkersWrite)) return
@@ -233,17 +237,39 @@
 
     <template #cell-access_levels="{ row }">
       <div class="flex flex-wrap items-center gap-1.5" v-if="row.hcpPerson">
-        <!-- Guruh — oddiy chip (xatolisi qizil). Yangilash / xato tafsiloti — ⋮ menyu → «Guruhlar» oynasida. -->
+        <!-- Guruh chipi: ustiga kelganda «Yangilash» (yozish ruxsati bo'lsa), xato ikonkasi — xato tafsiloti.
+             Xuddi shu amallar ⋮ menyu → «Guruhlar» oynasida ham bor. -->
         <UIChip
           v-for="level in row.hcpPerson.access_levels.slice(0, 3)"
           :key="level.id"
           :tone="level.type || 'default'"
-          :icon="level.type === 'error' ? ErrorCircle12Filled : null"
-          tooltip
+          :title="level.name"
+          class="group"
         >
-          {{ level.name }}
+          <template v-if="level.type === 'error'" #icon>
+            <n-icon size="16" class="cursor-pointer" @click.stop="onShowErrorEv(undefined, level.id)">
+              <ErrorCircle12Filled />
+            </n-icon>
+          </template>
+          <span class="inline-grid">
+            <span class="[grid-area:1/1] truncate" :class="{ 'group-hover:invisible': canRefresh }">
+              {{ level.name }}
+            </span>
+            <span
+              v-if="canRefresh"
+              class="[grid-area:1/1] invisible flex cursor-pointer items-center justify-center gap-1 text-success group-hover:visible"
+              @click.stop="onRefresh(level)"
+            >
+              <n-icon size="14"><ArrowSync24Filled /></n-icon>
+              {{ $t('content.refresh') }}
+            </span>
+          </span>
         </UIChip>
-        <UIChip v-if="row.hcpPerson.access_levels.length > 3">
+        <UIChip
+          v-if="row.hcpPerson.access_levels.length > 3"
+          class="cursor-pointer"
+          @click="onSelect(row)"
+        >
           +{{ row.hcpPerson.access_levels.length - 3 }}
         </UIChip>
       </div>
@@ -262,7 +288,13 @@
     </template>
 
     <template #cell-errorMessage="{ row }">
-      <UIChip v-if="row.errorMessage" tone="error" :icon="ErrorCircle12Filled">
+      <UIChip
+        v-if="row.errorMessage"
+        tone="error"
+        :icon="ErrorCircle12Filled"
+        class="cursor-pointer"
+        @click="onShowErrorEv(row.id)"
+      >
         {{ $t('content.error') }}
       </UIChip>
     </template>

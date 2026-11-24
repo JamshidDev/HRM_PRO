@@ -181,12 +181,20 @@
     </template>
 
     <template #cell-total_four="{ row }">
-      <UIChip :tone="row.diff ? 'success' : 'error'" compact>{{ row.total_four }}</UIChip>
+      <UIChip :tone="row.diff ? 'success' : 'error'" compact class="cursor-pointer" @click="onShow(row)">{{ row.total_four }}</UIChip>
     </template>
 
-    <!-- Tizim soati: xodim bazada bo'lmasa 0; kunlar kesimi — ⋮ menyu → «Tizim soati» -->
+    <!-- Tizim soati: xodim bazada bo'lmasa 0, bosilsa kunlar kesimi (⋮ menyu → «Tizim soati» ham bor) -->
     <template #cell-system_hours="{ row }">
-      <span class="text-sm tabular-nums text-textColor1">{{ row.worker ? (row.system_hours ?? 0) : 0 }}</span>
+      <button
+        v-if="row.worker"
+        type="button"
+        class="text-sm tabular-nums text-textColor1 underline decoration-dotted underline-offset-4 hover:text-primary cursor-pointer"
+        @click="onSystemHours(row)"
+      >
+        {{ row.system_hours ?? 0 }}
+      </button>
+      <span v-else class="text-sm tabular-nums text-textColor1">0</span>
     </template>
   </UITable>
   <SystemHoursModal v-model:visible="sysHoursVisible" :statement-id="sysHoursId" />
