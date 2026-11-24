@@ -7,7 +7,7 @@
   } from '@vicons/fluent'
   import { useGuestStore } from '@/store/modules/index.js'
 
-  // JSHSHIR bo'yicha HikCentral'dan qidirish: ism va ruxsat darajalari ko'rinadi, keyin ish vaqti bilan qo'shiladi.
+  // JSHSHIR bo'yicha Turniket xodimlaridan qidirish: ism va ruxsat darajalari ko'rinadi, keyin ish vaqti bilan qo'shiladi.
   const store = useGuestStore()
   const workStart = ref('09:00')
   const workEnd = ref('18:00')

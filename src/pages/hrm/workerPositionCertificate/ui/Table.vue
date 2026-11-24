@@ -24,7 +24,8 @@
     store.payload.issue_date = v.issue_date
     store.payload.expiry_date = v.expiry_date
     store.payload.extended_date = v.extended_date
-    // verify/returned formada YO'Q — jadvalda ko'rsatiladi, tahrirda o'zgartirilmaydi.
+    store.payload.verify = !!v.verify
+    store.payload.returned = !!v.returned
     store.payload.file = v.file ? { name: v.file } : null
     store.visible = true
   }

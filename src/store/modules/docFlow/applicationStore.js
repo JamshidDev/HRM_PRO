@@ -30,7 +30,9 @@ export const useApplicationStore = defineStore('applicationStore', {
       created: null,
       confirmation: null,
       // HR bo'limi: new | process | rejected | approved | closed | all
-      stage: 'all'
+      stage: 'all',
+      // 'notice' — faqat xodim bildirgilari (Bildirgilar menyusi); null — arizalar.
+      kind: null
     },
     // HR: imzolab kelishuvchilarga yo'naltirish modali.
     signStartLoading: false,
@@ -98,7 +100,8 @@ export const useApplicationStore = defineStore('applicationStore', {
         ...this.params,
         created: Utils.timeToZone(this.params.created),
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
-        stage: this.params.stage === 'all' ? undefined : this.params.stage
+        stage: this.params.stage === 'all' ? undefined : this.params.stage,
+        kind: this.params.kind || undefined
       }
       $ApiService.applicationService
         ._index({ params })

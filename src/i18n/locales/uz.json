@@ -8,7 +8,7 @@
     "attachedTitle": "Qo'shilganlar",
     "detachConfirm": "{name} mehmonlar ro'yxatidan ajratilsinmi? Turniket hodisalari saqlanib qoladi.",
     "emptyTitle": "Hali mehmon qo'shilmagan",
-    "emptyHint": "Chapdagi JSHSHIR qidiruvi orqali HikCentral'dagi odamni toping va ish vaqtini belgilab qo'shing.",
+    "emptyHint": "Chapdagi JSHSHIR qidiruvi orqali Turniket xodimlari ro'yxatidagi odamni toping va ish vaqtini belgilab qo'shing.",
     "addByPin": "JSHSHIR bo'yicha qidirib qo'shish",
     "search": "Izlash",
     "accessLevels": "Turniket ruxsat darajalari",
@@ -34,7 +34,7 @@
     "out": "Chiqish",
     "pin": "JSHSHIR",
     "pinPlaceholder": "14 raqam",
-    "pinHint": "Odam HikCentral'da shu JSHSHIR bilan ro'yxatdan o'tgan bo'lishi kerak",
+    "pinHint": "Odam Turniket → Xodimlar ro'yxatida shu JSHSHIR bilan bo'lishi kerak",
     "pinRule": "JSHSHIR 14 ta raqamdan iborat",
     "workStart": "Ish boshlanishi",
     "workEnd": "Ish tugashi",
@@ -3549,7 +3549,8 @@
         "6": "Shanba",
         "7": "Yakshanba"
       },
-      "recordTitle": "Qo'shimcha ma'lumotlar (hujjatga yozilmaydi)"
+      "recordTitle": "Qo'shimcha ma'lumotlar (hujjatga yozilmaydi)",
+      "noNotices": "Sizga bu turdagi talabnoma kelmagan"
     },
     "draft": "Qoralama",
     "draftSignTitle": "Ariza qoralama holatida",
@@ -7543,7 +7544,8 @@
     "audience": {
       "all_staff": "Barcha xodimlarga",
       "selected": "Tanlangan xodimlarga",
-      "med_reminder": "Tibbiy ko'rik eslatmasi"
+      "med_reminder": "Tibbiy ko'rik eslatmasi",
+      "cert_reminder": "Lavozim guvohnomasi eslatmasi"
     },
     "sentOf": "yuborildi",
     "blocked": "bloklagan",
@@ -8275,7 +8277,16 @@
       "ack": "Xodim tanishadi",
       "consent": "Xodim rozilik yoki rad javobini beradi",
       "explain": "Xodim yozma tushuntirish beradi"
-    }
+    },
+    "tabs": {
+      "inbox": "Menga kelgan",
+      "sent": "Men yuborgan",
+      "outbox": "Xodimlarga yuborilgan",
+      "fromWorkers": "Xodimlardan kelgan"
+    },
+    "createWorkerNotice": "Bildirgi yaratish",
+    "updateWorkerNotice": "Bildirgini tahrirlash",
+    "date": "Bildirgi sanasi"
   },
   "privacyPage": {
     "toc": "Mundarija",

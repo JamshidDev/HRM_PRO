@@ -1,5 +1,7 @@
 <script setup>
-  import { UIModal, UIOfficeApp, UIPageContent } from '@/components/index.js'
+  import { UIModal, UIOfficeApp, UIPageContent, UISegmentTabs } from '@/components/index.js'
+  import ApplicationPage from '@/pages/docFlow/document/application/page.vue'
+  import i18n from '@/i18n/index.js'
   import {
     useAccountStore,
     useComponentStore,
@@ -19,6 +21,20 @@
   // «Bildirgilar» menyusi shu sahifani `meta.notice` bilan ochadi.
   const route = useRoute()
   const notice = computed(() => Boolean(route.meta?.notice))
+  // Bildirgilar: «Xodimlarga yuborilgan» (HR yaratadi) va «Xodimlardan kelgan» (ariza oqimi).
+  const { t } = i18n.global
+  const tab = ref('outbox')
+  const tabs = computed(() => [
+    { id: 'outbox', name: t('noticesPage.tabs.outbox') },
+    { id: 'fromWorkers', name: t('noticesPage.tabs.fromWorkers') }
+  ])
+  // Tab qaytganda ro'yxat qayta yuklanadi (store holati ariza sahifasi bilan almashmaydi).
+  watch(tab, (v) => {
+    if (v === 'outbox') {
+      store.setMode(true)
+      if (accStore.checkAction(accStore.pn.hrContractsRead)) store._index()
+    }
+  })
 
   const openDocument = (id) => {
     officeAppRef.value.openPdf(id, Utils.documentModels.documents)
@@ -36,7 +52,11 @@
 </script>
 
 <template>
-  <UIPageContent>
+  <ApplicationPage v-if="notice && tab === 'fromWorkers'" notice>
+    <template #top><UISegmentTabs v-model="tab" :tabs="tabs" /></template>
+  </ApplicationPage>
+  <UIPageContent v-else>
+    <UISegmentTabs v-if="notice" v-model="tab" :tabs="tabs" />
     <Filter />
     <Table @openOffice="openDocument" />
     <UIModal

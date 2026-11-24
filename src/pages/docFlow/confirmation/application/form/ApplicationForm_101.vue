@@ -11,15 +11,19 @@
   const isPosition = computed(() => !store.isOrgPlace())
 
   // Tavsif bo'lsa — turlar guruhlab (5 guruh), aks holda eski tekis ro'yxat.
+  // Bildirgilar menyusida — faqat xodim bildirgilari, Arizalarda — ular chiqmaydi.
   const typeOptions = computed(() => {
     const schema = componentStore.workerApplicationSchema
-    if (!schema) return componentStore.workerApplicationTypes
-    return schema.groups.map((g) => ({
-      type: 'group',
-      key: `g${g.id}`,
-      name: g.name,
-      children: componentStore.workerApplicationTypes.filter((v) => v.group === g.id)
-    }))
+    const types = componentStore.workerApplicationTypes.filter((v) => !!v.notice === store.noticeMode)
+    if (!schema) return types
+    return schema.groups
+      .map((g) => ({
+        type: 'group',
+        key: `g${g.id}`,
+        name: g.name,
+        children: types.filter((v) => v.group === g.id)
+      }))
+      .filter((g) => g.children.length)
   })
 
   const onFocusPosition = () => {
@@ -78,7 +82,7 @@
 <template>
   <div class="grid grid-cols-12 gap-x-4">
     <div class="col-span-12">
-      <n-form-item :label="$t(`applicationPage.form.type`)" path="type">
+      <n-form-item :label="$t(store.noticeMode ? 'noticesPage.type' : `applicationPage.form.type`)" path="type">
         <n-select
           v-bind="selectWrap"
           v-model:value="store.payload.type"
@@ -131,7 +135,7 @@
       </n-form-item>
     </div>
     <div class="col-span-12">
-      <n-form-item :label="$t(`applicationPage.form.application_date`)" path="application_date">
+      <n-form-item :label="$t(store.noticeMode ? 'noticesPage.date' : `applicationPage.form.application_date`)" path="application_date">
         <n-date-picker
           class="w-full"
           v-model:value="store.payload.application_date"
