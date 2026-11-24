@@ -59,16 +59,19 @@
       icon: UIHelper.renderIcon(Eye16Regular),
       action: onView
     },
+    // Tasdiqlangan hujjat tahrirlanmaydi va o'chirilmaydi (backend ham bloklaydi).
     {
       label: t('content.edit'),
       key: Utils.ActionTypes.edit,
       icon: UIHelper.renderIcon(Edit32Regular),
+      visible: (row) => row?.confirmation?.id !== 3,
       action: onEdit
     },
     {
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete20Regular),
+      visible: (row) => row?.confirmation?.id !== 3,
       action: onDelete
     }
   ])

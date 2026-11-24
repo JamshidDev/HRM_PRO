@@ -140,11 +140,14 @@
   )
   // Ro'yxatdan o'tkazilgan (qog'ozdagi) buyruq — tizimda imzolanmagan.
   const isLegacyDoc = computed(() => !!store.document?.document?.is_legacy)
+  // Joriy foydalanuvchining shu hujjatdagi qatori turi (w — hujjat xodimi).
+  const mineType = computed(
+    () => store.confirmations?.find((c) => c.id === store.signatureId)?.type
+  )
   const signState = computed(() => {
     if (isLegacyDoc.value) return 'registered'
     // Xodim (`w`) bildirgi/moddiy javobgarlikni rahbar tasdiqlagach imzolaydi — backend flagi hal qiladi.
-    const mineType = store.confirmations?.find((c) => c.id === store.signatureId)?.type
-    if (store.permissions?.canSignature && (!isSigned.value || mineType === 'w')) return 'sign'
+    if (store.permissions?.canSignature && (!isSigned.value || mineType.value === 'w')) return 'sign'
     if (selfConfirmation.value?.status?.id === 3) return 'signed'
     if (selfConfirmation.value?.status?.id === 4) return 'rejected'
     return 'none'
@@ -835,8 +838,8 @@
                         </div>
                       </div>
                     </div>
-                    <!-- Arizani qayta yuborish — faqat HR panelidan (pastda) -->
-                    <template v-if="isApplication" />
+                    <!-- Arizani qayta yuborish — faqat HR panelidan (pastda); hujjat xodimiga ko'rinmaydi -->
+                    <template v-if="isApplication || mineType === 'w'" />
                     <n-button
                       v-else-if="!resendActionsVisible"
                       type="success"
