@@ -142,7 +142,9 @@
   const isLegacyDoc = computed(() => !!store.document?.document?.is_legacy)
   const signState = computed(() => {
     if (isLegacyDoc.value) return 'registered'
-    if (store.permissions?.canSignature && !isSigned.value) return 'sign'
+    // Xodim (`w`) bildirgi/moddiy javobgarlikni rahbar tasdiqlagach imzolaydi — backend flagi hal qiladi.
+    const mineType = store.confirmations?.find((c) => c.id === store.signatureId)?.type
+    if (store.permissions?.canSignature && (!isSigned.value || mineType === 'w')) return 'sign'
     if (selfConfirmation.value?.status?.id === 3) return 'signed'
     if (selfConfirmation.value?.status?.id === 4) return 'rejected'
     return 'none'
