@@ -1,19 +1,29 @@
 // Sozlamalar → «Dizayn uslubi: Minimal» (Grow uslubi) — faqat yorug' rejim; tokenlar ustiga yoziladi.
 :root:not([data-theme='dark'])[data-ui-style='minimal'] {
   --app-bg: #f7f8fa;
-  --surface-line: #d5dae1;
-  --table-border: #dde2e8;
+  --surface-line: #e4e7ec;
+  --table-border: #edf0f3;
   --table-header: #f9fafb;
   --table-striped: #ffffff;
   --input-fill: #ffffff;
-  --input-border: #d5dae1;
-  --input-border-hover: #b9c0ca;
+  --input-border: #e4e7ec;
+  --input-border-hover: #cdd3db;
   --seg-track: #f3f4f6;
   --seg-thumb: #ffffff;
   --seg-active-text: #111827;
   --sidebar-icon-gradient: #6b7280;
   --sidebar-icon-active-filter: none;
   --chip-radius: 6px;
+  // Matn: ko'kliksiz neytral kulrang (Grow); kontrast oq fonda 17.7 / 7.6 / 4.8 : 1.
+  --textColor0: #111827;
+  --textColor1: #4b5563;
+  --textColor2: #111827;
+  --textColor3: #6b7280;
+  --fig-text-primary: #111827;
+  --fig-text-secondary: #4b5563;
+  --fig-text-tertiary: #6b7280;
+  --fig-text-muted: #6b7280;
+  --table-th-text: #6b7280;
 }
 
 // Jadval kartasi: Grow kabi aniq 1px chegara va kichikroq radius.
@@ -32,5 +42,9 @@
   }
   .n-data-table-th {
     border-bottom: 1px solid var(--surface-line) !important;
+
+    .text-textColor2 {
+      color: var(--table-th-text) !important;
+    }
   }
 }

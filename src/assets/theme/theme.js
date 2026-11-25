@@ -134,14 +134,14 @@ export const customTheme = () => {
       thColor: getValueOfCssVariable('--table-header'),
       tdColor: getValueOfCssVariable('--surface-section'),
       borderColor: getValueOfCssVariable('--table-border'),
-      thTextColor: getValueOfCssVariable('--textColor2'),
+      thTextColor: getValueOfCssVariable('--table-th-text') || getValueOfCssVariable('--textColor2'),
       tdTextColor: getValueOfCssVariable('--textColor2')
     },
     DataTable: {
       thColor: getValueOfCssVariable('--table-header'),
       tdColor: getValueOfCssVariable('--surface-section'),
       borderColor: getValueOfCssVariable('--table-border'),
-      thTextColor: getValueOfCssVariable('--textColor2'),
+      thTextColor: getValueOfCssVariable('--table-th-text') || getValueOfCssVariable('--textColor2'),
       tdTextColor: getValueOfCssVariable('--textColor2')
     },
     Pagination: {
