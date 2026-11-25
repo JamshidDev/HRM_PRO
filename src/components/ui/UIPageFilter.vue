@@ -1,5 +1,5 @@
 <script setup>
-  import { AddCircle24Regular, Dismiss16Regular } from '@vicons/fluent'
+  import { AddCircle24Regular, Dismiss16Regular, Filter20Regular } from '@vicons/fluent'
   import clearFilterIcon from '@/assets/icons/clear_filter.svg?url'
   import filterIcon from '@/assets/icons/filter.svg?url'
   import searchIcon from '@/assets/icons/search.svg?url'
@@ -264,13 +264,11 @@
         <template v-if="isMobile">
           <n-button
             class="ui-page-filter-button"
-            type="primary"
-            ghost
             :aria-label="filterButtonTitle || $t('content.filters')"
             @click="filterOpen = true"
           >
             <template #icon>
-              <img class="ui-page-filter-icon" :src="filterIcon" alt="" />
+              <n-icon class="ui-page-filter-icon" :component="Filter20Regular" />
             </template>
             <span class="ui-page-filter-label">
               {{ filterButtonTitle || $t('content.filters') }}
@@ -344,12 +342,10 @@
             <n-button
               ref="filterTriggerRef"
               class="ui-page-filter-button md:w-auto!"
-              type="primary"
-              ghost
               :aria-label="filterButtonTitle || $t('content.filters')"
             >
               <template #icon>
-                <img class="ui-page-filter-icon" :src="filterIcon" alt="" />
+                <n-icon class="ui-page-filter-icon" :component="Filter20Regular" />
               </template>
               <span class="ui-page-filter-label">
                 {{ filterButtonTitle || $t('content.filters') }}

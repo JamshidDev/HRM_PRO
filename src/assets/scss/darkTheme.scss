@@ -13,18 +13,18 @@
   --sidebar-panel: #111111;
   --sidebar-border: #232323;
 
-  // Matn: title / ikkilamchi / subtitle (#141414 kartada 18 / 9.3 / 7.0 : 1)
-  --textColor0: #fafafa;
-  --textColor1: #b4b4b4;
-  --textColor2: #f0f0f0;
-  --textColor3: #a0a0a0;
-  --table-th-text: #a0a0a0;
-  --fig-text-primary: #fafafa;
-  --fig-text-secondary: #b4b4b4;
-  --fig-text-tertiary: #a0a0a0;
-  --fig-text-muted: #a0a0a0;
+  // Matn: title / ikkilamchi / subtitle — sof oq emas, ko'zni charchatmaydigan och kulrang (#161616 kartada 14 / 8.3 / 6.6 : 1)
+  --textColor0: #e4e4e7;
+  --textColor1: #a8a8ae;
+  --textColor2: #dcdce0;
+  --textColor3: #9a9aa0;
+  --table-th-text: #9a9aa0;
+  --fig-text-primary: #e4e4e7;
+  --fig-text-secondary: #a8a8ae;
+  --fig-text-tertiary: #9a9aa0;
+  --fig-text-muted: #9a9aa0;
   --fig-text-disable: #7a7a7a;
-  --secondary-color: #a0a0a0; // text-secondary (sanalar, izohlar) — neytral
+  --secondary-color: #9a9aa0; // text-secondary (sanalar, izohlar) — neytral
 
   // Kiritish maydonlari
   --input-fill: #141414;
@@ -40,6 +40,8 @@
   --fig-block-header-bg: #161616;
   --card-bg: #161616;
   --card-border: #2b2b2b;
+  --popover-bg: #1f1f22;
+  --tooltip-bg: #2a2a2e;
   --fig-br-disable: #262626;
   --fig-br-secondary: #2e2e2e;
   --fig-neutral-300: #3d3d3d;
@@ -78,8 +80,8 @@
   --color-fig-br-secondary: #262626;
   --fig-br-disable: #262626;
   --color-fig-br-disable: #262626;
-  --fig-text-primary: #fafafa;
-  --color-fig-text-primary: #fafafa;
+  --fig-text-primary: #e4e4e7;
+  --color-fig-text-primary: #e4e4e7;
 }
 
 :root[data-theme='dark'] .bg-fig-page-gradient {
@@ -128,5 +130,13 @@
 // Karta sarlavhalari (font-medium + tertiary) — subtitle emas, title darajasiga yaqin.
 :root[data-theme='dark'] .font-medium.text-fig-text-tertiary,
 :root[data-theme='dark'] .font-semibold.text-fig-text-tertiary {
-  color: #d4d4d4 !important;
+  color: #c8c8cd !important;
+}
+
+
+// Tooltip / popover / dropdown — ko'tarilgan qatlam: chegara va soya bilan kartalardan ajraladi.
+:root[data-theme='dark'] .n-popover:not(.n-popover--raw) {
+  box-shadow:
+    0 0 0 1px #3a3a3f,
+    0 8px 24px rgb(0 0 0 / 55%) !important;
 }

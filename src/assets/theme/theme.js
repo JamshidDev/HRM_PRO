@@ -109,7 +109,7 @@ export const customTheme = () => {
 
       cardColor: getValueOfCssVariable('--surface-section'), // Karta tipidagi komponentlar uchun fon rangi (masalan, <n-card>)
       modalColor: getValueOfCssVariable('--surface-section'), // Modal oynalar uchun fon rangi
-      popoverColor: getValueOfCssVariable('--surface-section'), // Qalqib chiquvchi oynalar uchun fon rangi
+      popoverColor: getValueOfCssVariable('--popover-bg') || getValueOfCssVariable('--surface-section'), // Popover/dropdown foni (qorong'ida ko'tarilgan)
       tableColor: getValueOfCssVariable('--surface-section'), // Jadvallar uchun fon rangi
       tableColorHover: getValueOfCssVariable('--surface-ground'), // Jadval qatori hover fon rangi
       // Juft qatorlar — jadval sarlavhasi bilan BIR XIL sirt (#f8fafc).
@@ -207,6 +207,10 @@ export const customTheme = () => {
             border: `1px solid ${getValueOfCssVariable('--surface-line')}`
           }
         }),
+    // Tooltip — faqat qorong'ida (--tooltip-bg bor bo'lsa) kartadan ajralib turadigan fon.
+    ...(getValueOfCssVariable('--tooltip-bg')
+      ? { Tooltip: { color: getValueOfCssVariable('--tooltip-bg'), textColor: getValueOfCssVariable('--textColor0') } }
+      : {}),
     Dropdown: {
       optionTextColorHover: '#2E90FA'
     },
