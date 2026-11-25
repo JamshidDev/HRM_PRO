@@ -1,7 +1,7 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import { useEduPlanStore, useComponentStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
 
   const formRef = ref(null)
   const store = useEduPlanStore()
@@ -127,11 +127,10 @@
         path="start_date"
         rule-path="requiredNumberField"
       >
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.payload.start_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
 
@@ -176,11 +175,10 @@
         />
       </n-form-item>
       <n-form-item class="col-span-12" :label="$t(`eduPlanPage.form.end_date`)">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.payload.end_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>

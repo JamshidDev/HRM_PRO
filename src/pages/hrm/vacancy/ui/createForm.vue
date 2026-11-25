@@ -2,8 +2,7 @@
   import validationRules from '@/utils/validationRules.js'
   import { useComponentStore, useVacancyStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
-  import { useAppSetting } from '@/utils/index.js'
-  import { UIEditor } from '@/components/index.js'
+  import { UIDayPicker, UIEditor } from '@/components/index.js'
 
   const formRef = ref(null)
 
@@ -186,11 +185,10 @@
               path="to"
               :rule-path="validationRules.rulesNames.requiredNumberField"
             >
-              <n-date-picker
+              <UIDayPicker
                 class="w-full"
                 v-model:value="store.payload.to"
-                type="date"
-                :format="useAppSetting.datePicketFormat"
+                mode="day"
               />
             </n-form-item>
           </div>

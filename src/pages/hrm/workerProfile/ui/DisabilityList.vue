@@ -2,8 +2,7 @@
   import { ref, computed, watch } from 'vue'
   import { Edit32Regular, Delete20Regular } from '@vicons/fluent'
   import { useWorkerProfileStore } from '@/store/modules/index.js'
-  import { UIModal, UITable, UIProfileSection, UIProfileEmpty } from '@/components/index.js'
-  import { useAppSetting } from '@/utils/index.js'
+  import { UIDayPicker, UIModal, UITable, UIProfileSection, UIProfileEmpty } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -162,21 +161,19 @@
         <div class="grid grid-cols-12 gap-4">
           <div class="col-span-6">
             <n-form-item :label="$t('relativePage.disability.from')" path="from">
-              <n-date-picker
+              <UIDayPicker
                 class="w-full"
                 v-model:value="store.workerDisabilityPayload.from"
-                type="date"
-                :format="useAppSetting.datePicketFormat"
+                mode="day"
               />
             </n-form-item>
           </div>
           <div class="col-span-6">
             <n-form-item :label="$t('relativePage.disability.to')" path="to">
-              <n-date-picker
+              <UIDayPicker
                 class="w-full"
                 v-model:value="store.workerDisabilityPayload.to"
-                type="date"
-                :format="useAppSetting.datePicketFormat"
+                mode="day"
                 :disabled="store.workerDisabilityPayload.is_lifelong"
               />
             </n-form-item>

@@ -1,9 +1,8 @@
 <script setup>
   import { useAccountStore, useWorkerImageStore } from '@/store/modules/index.js'
-  import { UINSelect } from '@/components/index.js'
+  import { UIDayPicker, UINSelect } from '@/components/index.js'
 
   import validationRules from '@/utils/validationRules.js'
-  import { useAppSetting } from '@/utils/index.js'
   import Utils from '@/utils/Utils'
   import { SuperSelect } from '@components'
 
@@ -70,14 +69,11 @@
         </n-form-item>
 
         <n-form-item :label="$t('content.deadline')" path="end_time" rule-path="requiredDateField">
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.payload.end_time"
-            type="date"
-            update-value-on-close
-            :actions="null"
+            mode="day"
             clearable
-            :format="useAppSetting.datePicketFormat"
           />
         </n-form-item>
       </n-collapse-transition>

@@ -1,10 +1,9 @@
 <script setup>
   import { NAvatar } from 'naive-ui'
-  import { UISegmentTabs, UISelect, UISignerList } from '@/components/index.js'
+  import { UIDayPicker, UISegmentTabs, UISelect, UISignerList } from '@/components/index.js'
   import { useComponentStore, useEmployeeDocumentStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
-  import { useAppSetting } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
   import { DOCUMENT_TYPES, documentTypeOptions } from './documentTypes.js'
   import MaterialLiabilityFields from './types/MaterialLiabilityFields.vue'
@@ -216,11 +215,10 @@
         </div>
         <div class="col-span-12 sm:col-span-6 md:col-span-3">
           <n-form-item :label="$t('employeeDocumentsPage.form.date')" path="document_date">
-            <n-date-picker
+            <UIDayPicker
               class="w-full"
               v-model:value="store.payload.document_date"
-              type="date"
-              :format="useAppSetting.datePicketFormat"
+              mode="day"
             />
           </n-form-item>
         </div>

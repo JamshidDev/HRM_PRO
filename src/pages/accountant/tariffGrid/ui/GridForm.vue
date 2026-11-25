@@ -1,4 +1,5 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import { useTariffGridStore, useTariffBaseStore } from '@/store/modules/index.js'
   import ColumnsMatrix from './ColumnsMatrix.vue'
 
@@ -50,8 +51,12 @@
                 :placeholder="$t('tariffGrid.form.baseSelect')" filterable @update:value="onBaseChange" />
             </n-form-item>
             <n-form-item class="col-span-12 md:col-span-4" :label="$t('tariffGrid.form.effectiveDate')">
-              <n-date-picker class="w-full" type="date"
-                v-model:formatted-value="store.gridPayload.effective_date" value-format="yyyy-MM-dd" />
+              <UIDayPicker
+                class="w-full"
+                v-model:formatted-value="store.gridPayload.effective_date"
+                mode="day"
+                value-format="yyyy-MM-dd"
+              />
             </n-form-item>
           </div>
         </n-tab-pane>

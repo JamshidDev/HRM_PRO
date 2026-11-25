@@ -1,7 +1,7 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import { useComponentStore, useTurnstileTerminalUserStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
   import PhoneForm from '@/pages/hrm/candidate/ui/PhoneForm.vue'
   import PhotoForm from '@/pages/hrm/candidate/ui/PhotoForm.vue'
@@ -175,11 +175,10 @@
         :rule-path="validationRules.rulesNames.requiredDateTimeField"
         path="birthday"
       >
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.userPayload.birthday"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
       <n-form-item
@@ -267,11 +266,10 @@
         :rule-path="validationRules.rulesNames.requiredDateTimeField"
         path="experience_date"
       >
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.userPayload.experience_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
       <n-form-item

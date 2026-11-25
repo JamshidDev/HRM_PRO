@@ -2,7 +2,7 @@
   // Bazaviy summa KO'RISH + qiymat tahriri (yangi versiya) + versiya tarixi (sana oralig'i) + tasdiqlash.
   import { Edit16Filled, Timer16Regular } from '@vicons/fluent'
   import icons from '@/assets/icons'
-  import { UIChip } from '@/components/index.js'
+  import { UIDayPicker, UIChip } from '@/components/index.js'
   import { useAccountStore, useTariffBaseStore } from '@/store/modules/index.js'
 
   const store = useTariffBaseStore()
@@ -77,8 +77,14 @@
         </div>
         <div class="tb-meta-item">
           <p class="tb-meta-lbl">{{ $t('tariffBase.form.effectiveDate') }}</p>
-          <n-date-picker v-if="store.detailEditing" class="w-full" size="small" type="date"
-            v-model:formatted-value="store.versionPayload.effective_date" value-format="yyyy-MM-dd" />
+          <UIDayPicker
+            v-if="store.detailEditing"
+            class="w-full"
+            size="small"
+            v-model:formatted-value="store.versionPayload.effective_date"
+            mode="day"
+            value-format="yyyy-MM-dd"
+          />
           <p v-else class="tb-meta-val">{{ shownVersion?.effective_date ?? '—' }}</p>
         </div>
         <div class="tb-meta-item">

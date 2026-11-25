@@ -1,6 +1,6 @@
 <script setup>
   import { useAccountStore, useScheduleTableStore } from '@stores'
-  import { UIModal } from '@components'
+  import { UIDayPicker, UIModal } from '@components'
   import validationRules from '@/utils/validationRules.js'
   import Utils from '@/utils/Utils.js'
   import { SuperSelect } from '@components'
@@ -91,10 +91,10 @@
         path="date"
         :rule-path="validationRules.rulesNames.requiredNumberField"
       >
-        <n-date-picker
+        <UIDayPicker
           clearable
           v-model:value="store.replace.payload.date"
-          type="date"
+          mode="day"
           class="w-full"
         />
       </n-form-item>

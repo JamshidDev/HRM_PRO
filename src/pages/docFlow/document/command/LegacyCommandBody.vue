@@ -1,11 +1,10 @@
 <script setup>
   // Eski (qog'oz) buyruqni ro'yxatdan o'tkazish: PDF yuklanadi, generatsiya/imzo yo'q.
   import { Info16Regular } from '@vicons/fluent'
-  import { UISelect, SuperSelect } from '@/components/index.js'
+  import { UIDayPicker, UISelect, SuperSelect } from '@/components/index.js'
   import FileTiles from './ui/FileTiles.vue'
   import { OTHER_AWARD_ID, useIncentiveAwards } from './useIncentiveAwards.js'
   import { useCommandStore, useComponentStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -257,11 +256,10 @@
           :label="$t('documentPage.command.form.command_date')"
           path="command_date"
         >
-          <n-date-picker
+          <UIDayPicker
             v-model:value="form.command_date"
-            type="date"
+            mode="day"
             class="w-full"
-            :format="useAppSetting.datePicketFormat"
             :is-date-disabled="isDateDisabled"
             :default-calendar-start-time="new Date(2024, 11, 1).getTime()"
           />

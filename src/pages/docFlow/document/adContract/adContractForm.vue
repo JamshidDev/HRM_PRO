@@ -1,6 +1,6 @@
 <script setup>
   import { useDocumentDateLimit } from '@/composables/useDocumentDateLimit.js'
-  import { UISegmentTabs, UISelect, UISignerList } from '@/components/index.js'
+  import { UIDayPicker, UISegmentTabs, UISelect, UISignerList } from '@/components/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import validationRules from '@/utils/validationRules.js'
   // Hujjat sanasi: yaratishda sozlamadagi oyna, tahrirda o'zgarmaydi.
@@ -11,7 +11,6 @@
   import { NAvatar } from 'naive-ui'
   import Utils from '@/utils/Utils.js'
   import UIDepartmentSelect from '@/components/ui/UIDepartmentSelect.vue'
-  import { useAppSetting } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
   import ApiService from '@/service/ApiService.js'
   import { SuperSelect } from '@/components/index.js'
@@ -487,11 +486,10 @@
             </div>
             <div class="col-span-12 md:col-span-6 lg:col-span-4">
               <n-form-item :label="$t(`documentPage.form.contractDate`)" path="contract_date">
-                <n-date-picker
+                <UIDayPicker
                   class="w-full"
                   v-model:value="store.payload.contract_date"
-                  type="date"
-                  :format="useAppSetting.datePicketFormat"
+                  mode="day"
                   :is-date-disabled="isDateDisabled"
                   :disabled="Boolean(store.editId)"
                 />
@@ -563,10 +561,12 @@
                 <template v-else>
                   <div class="col-span-12 md:col-span-6 lg:col-span-6">
                     <n-form-item :label="$t(`documentPage.form.department`)" path="department_id">
+                      <!-- own: HRAsistent faqat o'z bo'limlarini ko'radi; HR — butun korxona. -->
                       <UIDepartmentSelect
                         :model-value="store.payload.department_id"
                         @update:model-value="onChangeDepartment"
                         :organization="store.payload.organization_id"
+                        own
                         return-object
                       />
                     </n-form-item>
@@ -660,11 +660,10 @@
               </div>
               <div class="col-span-12 md:col-span-6 lg:col-span-4" v-if="showPositionDate">
                 <n-form-item :label="$t(`documentPage.form.position_date`)" path="position_date">
-                  <n-date-picker
+                  <UIDayPicker
                     class="w-full"
                     v-model:value="store.payload.position_date"
-                    type="date"
-                    :format="useAppSetting.datePicketFormat"
+                    mode="day"
                   />
                 </n-form-item>
               </div>
@@ -686,11 +685,10 @@
                 :label="$t(`documentPage.form.contract_to_date`)"
                 path="contract_to_date"
               >
-                <n-date-picker
+                <UIDayPicker
                   class="w-full"
                   v-model:value="store.payload.contract_to_date"
-                  type="date"
-                  :format="useAppSetting.datePicketFormat"
+                  mode="day"
                 />
               </n-form-item>
             </div>
@@ -736,11 +734,10 @@
                 :label="$t(`commandPage.form_80.civil_contract_date`)"
                 path="civil_contract_date"
               >
-                <n-date-picker
+                <UIDayPicker
                   class="w-full"
                   v-model:value="store.payload.civil_contract_date"
-                  type="date"
-                  :format="useAppSetting.datePicketFormat"
+                  mode="day"
                 />
               </n-form-item>
             </div>
@@ -749,11 +746,10 @@
                 :label="$t(`commandPage.form_80.civil_cancel_date`)"
                 path="contract_to_date"
               >
-                <n-date-picker
+                <UIDayPicker
                   class="w-full"
                   v-model:value="store.payload.contract_to_date"
-                  type="date"
-                  :format="useAppSetting.datePicketFormat"
+                  mode="day"
                 />
               </n-form-item>
             </div>
@@ -834,11 +830,10 @@
                 :label="$t(`documentPage.command.form.command_date`)"
                 path="command_date"
               >
-                <n-date-picker
+                <UIDayPicker
                   class="w-full"
                   v-model:value="store.payload.command_date"
-                  type="date"
-                  :format="useAppSetting.datePicketFormat"
+                  mode="day"
                   :is-date-disabled="isDateDisabled"
                   :disabled="Boolean(store.editId)"
                 />

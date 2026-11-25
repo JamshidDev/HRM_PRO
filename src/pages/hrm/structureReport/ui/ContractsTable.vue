@@ -1,7 +1,6 @@
 <script setup>
-  import { NoDataPicture } from '@/components/index.js'
+  import { UIDayPicker, NoDataPicture } from '@/components/index.js'
   import { useStructureReportStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
 
   const props = defineProps({
     organizationId: {
@@ -72,12 +71,11 @@
           <div class="flex gap-3">
             <div class="flex flex-col gap-1 w-1/4">
               <label class="contract-label">{{ $t('structureReport.oldPositionDate') }}</label>
-              <n-date-picker
+              <UIDayPicker
                 v-model:value="item.old_position_date"
-                type="date"
+                mode="day"
                 size="small"
                 class="w-full"
-                :format="useAppSetting.datePicketFormat"
                 clearable
                 :status="!item.old_position_date ? 'warning' : undefined"
               />

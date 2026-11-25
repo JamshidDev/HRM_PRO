@@ -1,10 +1,9 @@
 <script setup>
   import { openSafeUrl } from '@/utils/sanitize.js'
   import Utils from '@/utils/Utils.js'
-  import { useAppSetting } from '@/utils/index.js'
   import icons from '@/assets/icons'
   import i18n from '@/i18n/index.js'
-  import { UIDeleteConfirm, UIProfileButton, UIFigBlock, UIFigField } from '@/components/index.js'
+  import { UIDayPicker, UIDeleteConfirm, UIProfileButton, UIFigBlock, UIFigField } from '@/components/index.js'
   import { useWorkerProfileStore } from '@/store/modules/index.js'
 
   /**
@@ -182,12 +181,11 @@
         :value="Utils.timeOnlyDate(row.from_date)"
         :editing="editing"
       >
-        <n-date-picker
+        <UIDayPicker
           v-model:value="row.from_date"
+          mode="day"
           class="w-full"
           @update:value="onFromDateChange"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
         />
       </UIFigField>
 
@@ -198,11 +196,10 @@
         :value="Utils.timeOnlyDate(row.to_date)"
         :editing="editing"
       >
-        <n-date-picker
+        <UIDayPicker
           v-model:value="row.to_date"
+          mode="day"
           class="w-full"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
         />
       </UIFigField>
 

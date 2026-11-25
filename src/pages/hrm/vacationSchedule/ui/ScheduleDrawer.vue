@@ -1,8 +1,8 @@
 <script setup>
   // Grafik ichi: tepada filtrlar, sahifalangan xodimlar; o'zgarishlar to'planadi va tepadagi bitta «Saqlash» bilan saqlanadi.
   import { useComponentStore, useVacationScheduleStore } from '@stores'
-  import { useAppSetting, Utils } from '@utils'
-  import { UIDepartmentSelect, UIPageFilter, UITable, UIUser } from '@components'
+  import { Utils } from '@utils'
+  import { UIDayPicker, UIDepartmentSelect, UIPageFilter, UITable, UIUser } from '@components'
   import {
     ArrowDownload20Regular,
     ArrowSync20Regular,
@@ -294,23 +294,21 @@
           </template>
 
           <template #cell-period_from="{ row }">
-            <n-date-picker
+            <UIDayPicker
               :value="row.period_from"
+              mode="day"
               :status="isInvalid(row) && !row.period_from ? 'error' : undefined"
-              type="date"
               :disabled="locked"
-              :format="useAppSetting.datePicketFormat"
               @update:value="(v) => onPeriodFrom(row, v)"
             />
           </template>
 
           <template #cell-period_to="{ row }">
-            <n-date-picker
+            <UIDayPicker
               :value="row.period_to"
+              mode="day"
               :status="isInvalid(row) && !row.period_to ? 'error' : undefined"
-              type="date"
               :disabled="locked"
-              :format="useAppSetting.datePicketFormat"
               @update:value="(v) => onPeriodTo(row, v)"
             />
           </template>

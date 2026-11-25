@@ -1,7 +1,7 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import { useAccountStore, useEventStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
   import UINSelect from '@/components/ui/UINSelect.vue'
   import { useMessage } from 'naive-ui'
   import i18n from '@/i18n/index.js'
@@ -64,13 +64,10 @@
           path="from_date"
           :rule-path="validationRules.rulesNames.requiredNumberField"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.syncPayload.from_date"
-            type="date"
-            update-value-on-close
-            :actions="null"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
             clearable
           />
         </n-form-item>
@@ -80,13 +77,10 @@
           path="to_date"
           :rule-path="validationRules.rulesNames.requiredNumberField"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.syncPayload.to_date"
-            type="date"
-            update-value-on-close
-            :actions="null"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
             clearable
           />
         </n-form-item>

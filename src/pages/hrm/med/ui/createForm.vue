@@ -1,9 +1,8 @@
 <script setup>
-  import { UIAutoComplete, UISelect, UIUpload } from '@/components/index.js'
+  import { UIDayPicker, UIAutoComplete, UISelect, UIUpload } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   const formRef = ref(null)
   import { useMedStore, useComponentStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
 
@@ -166,19 +165,17 @@
           <n-input rows="2" type="textarea" v-model:value="store.payload.comment" />
         </n-form-item>
         <n-form-item :label="$t(`medPage.form.from`)" path="from">
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.payload.from"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
           />
         </n-form-item>
         <n-form-item :label="$t(`medPage.form.to`)" path="to">
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.payload.to"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
             :is-date-disabled="(v) => Utils.disablePasteDate(v, store.payload.from)"
           />
         </n-form-item>

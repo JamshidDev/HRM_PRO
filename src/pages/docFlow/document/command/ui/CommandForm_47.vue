@@ -1,7 +1,8 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import { useComponentStore } from '@stores'
-  import { useAppSetting, Utils } from '@utils'
+  import { Utils } from '@utils'
   import validationRules from '@/utils/validationRules.js'
   import i18n from '@/i18n/index.js'
 
@@ -70,11 +71,10 @@
         path="to"
         :rule-path="validationRules.rulesNames.requiredNumberField"
       >
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_47.to"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
@@ -114,11 +114,10 @@
         path="work_day"
         :rule-path="validationRules.rulesNames.requiredNumberField"
       >
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_47.work_day"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>

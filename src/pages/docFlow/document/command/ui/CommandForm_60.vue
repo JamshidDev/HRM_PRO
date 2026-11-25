@@ -1,8 +1,8 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
-  import { useAppSetting } from '@/utils/index.js'
 
   // 60 — Harbiy yig'inga yuborish (hujjatgina; muddat from–to).
   const store = useCommandFormStore()
@@ -43,21 +43,19 @@
   >
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
       <n-form-item :label="$t(`commandPage.form_60.from`)" path="from">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_60.from"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
       <n-form-item :label="$t(`commandPage.form_60.to`)" path="to">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_60.to"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
           :is-date-disabled="(ts) => Boolean(store.form_60.from) && ts < store.form_60.from"
         />
       </n-form-item>
@@ -74,11 +72,10 @@
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
       <n-form-item :label="$t(`commandPage.form_60.reference_date`)" path="reference_date">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_60.reference_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>

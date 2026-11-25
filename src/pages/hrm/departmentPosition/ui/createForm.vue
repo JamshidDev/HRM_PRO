@@ -5,7 +5,7 @@
   import { useDepartmentPositionStore, useComponentStore, useAccountStore } from '@/store/modules/index.js'
   import Utils, { generateUUIDKey } from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
-  import { UISelect, UIDepartmentSelect } from '@/components/index.js'
+  import { UIDayPicker, UISelect, UIDepartmentSelect } from '@/components/index.js'
   
   const store = useDepartmentPositionStore()
   const componentStore = useComponentStore()
@@ -388,19 +388,19 @@
               v-model:value="c.reason"
               :placeholder="$t('departmentPositionPage.form.reason')"
             />
-            <n-date-picker
+            <UIDayPicker
               class="col-span-6 md:col-span-2"
-              type="date"
               clearable
               v-model:formatted-value="c.valid_from"
+              mode="day"
               value-format="yyyy-MM-dd"
               :placeholder="$t('departmentPositionPage.form.validFrom')"
             />
-            <n-date-picker
+            <UIDayPicker
               class="col-span-6 md:col-span-3"
-              type="date"
               clearable
               v-model:formatted-value="c.valid_to"
+              mode="day"
               value-format="yyyy-MM-dd"
               :placeholder="$t('departmentPositionPage.form.validTo')"
             />

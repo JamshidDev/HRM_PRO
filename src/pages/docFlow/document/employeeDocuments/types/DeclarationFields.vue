@@ -1,7 +1,7 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import { Add20Regular, Delete20Regular } from '@vicons/fluent'
   import { useEmployeeDocumentStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
   import { isValidPinfl, isValidStir, onlyDigits } from '@/utils/pinfl.js'
 
@@ -166,12 +166,11 @@
   </div>
   <div class="col-span-12 md:col-span-6">
     <n-form-item :label="$t('employeeDocumentsPage.declaration.registryDate')">
-      <n-date-picker
+      <UIDayPicker
         class="w-full"
         v-model:value="store.payload.data.registry_date"
-        type="date"
+        mode="day"
         clearable
-        :format="useAppSetting.datePicketFormat"
       />
     </n-form-item>
   </div>

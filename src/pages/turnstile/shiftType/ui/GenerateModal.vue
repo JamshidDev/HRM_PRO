@@ -1,10 +1,9 @@
 <script setup>
   import dayjs from 'dayjs'
   import { useAccountStore, useShiftTypeStore } from '@/store/modules/index.js'
-  import { UIModal } from '@/components/index.js'
+  import { UIDayPicker, UIModal } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import Utils from '@/utils/Utils.js'
-  import { useAppSetting } from '@/utils/index.js'
   import { crewSizeOf, cycleDays, isRotating } from '@/pages/turnstile/scheduleWorker/ui/navbat.js'
 
   const store = useShiftTypeStore()
@@ -130,10 +129,9 @@
           path="end_date"
           :rule-path="validationRules.rulesNames.requiredNumberField"
         >
-          <n-date-picker
-            :format="useAppSetting.datePicketFormat"
+          <UIDayPicker
             v-model:value="store.generatePayload.end_date"
-            type="date"
+            mode="day"
             class="w-full"
             :is-date-disabled="isEndDateDisabled"
           />
