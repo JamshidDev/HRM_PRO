@@ -518,8 +518,9 @@ const documentStatus = {
     id: 1,
     name: t('enum.working')
   },
+  // 15 = UIStatus «DocumentReady» (ko'k) — yashil «Tasdiqlangan» bilan bir xil ko'rinmasin.
   3: {
-    id: 3,
+    id: 15,
     name: t('enum.done')
   },
   4: {

@@ -1,5 +1,5 @@
 <script setup>
-  import { UIStatus, UITable, UITableBadgeCell, UITableNameCell, UIUser, UIElectronicNumber } from '@/components/index.js'
+  import { UIChip, UIStatus, UITable, UITableBadgeCell, UITableNameCell, UIUser, UIElectronicNumber } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useContractStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -79,7 +79,7 @@
     {
       key: 'command_status',
       title: t('contractPage.table.command'),
-      width: 140,
+      width: 165,
     },
     {
       key: 'confirmation',
@@ -123,6 +123,14 @@
       action: onDelete
     }
   ])
+  // Backend shartnoma holati (1 Jarayonda, 2 Aktiv, 3 Yakunlangan) → UIStatus id.
+  const contractStatusUi = { 1: 1, 2: 6, 3: 16 }
+  // «Buyruq» ustuni (command_status) → chip rangi va ikonkasi.
+  const commandStatusUi = {
+    1: { tone: 'amber', icon: ReceiptAdd24Regular },
+    2: { tone: 'brand', icon: ArrowSyncCheckmark20Filled },
+    3: { tone: 'neutral', icon: DocumentCheckmark24Regular }
+  }
 </script>
 
 <template>
@@ -135,7 +143,7 @@
     :page="store.params.page"
     :per-page="store.params.per_page"
     :total="store.totalItems"
-    storage-key="hrm-contract"
+    storage-key="hrm-contract-v2"
     @change-page="changePage"
   >
     <template #cell-type="{ row }">
@@ -151,7 +159,7 @@
     </template>
 
     <template #cell-number="{ row }">
-      <UITableBadgeCell :number="row?.number" type="info" />
+      <UITableBadgeCell :number="row?.number" type="primary" />
     </template>
 
     <template #cell-worker="{ row }">
@@ -167,19 +175,16 @@
     </template>
 
     <template #cell-command_status="{ row }">
-      <n-button
-        dashed
-        :type="row?.command_status.id === 1 ? 'primary' : 'default'"
+      <!-- Umumiy chip (UIChip). Backend: 1 — buyruq kerak (sariq, bosilsa buyruq ochiladi), 2 — Shakllantirildi
+           (ko'k, bosilmaydi — buyruq bor), 3 — Majburiy emas (kulrang, bosilsa baribir buyruq qilsa bo'ladi). -->
+      <UIChip
+        :label="row?.command_status?.name"
+        :tone="commandStatusUi[row?.command_status?.id]?.tone ?? 'neutral'"
+        :icon="commandStatusUi[row?.command_status?.id]?.icon"
+        :class="row?.command_status?.id !== 2 ? 'cursor-pointer transition hover:brightness-95' : ''"
+        tooltip
         @click="onOpenCommand(row)"
-        size="tiny"
-      >
-        <template #icon>
-          <ReceiptAdd24Regular v-if="row?.command_status.id === 1" />
-          <ArrowSyncCheckmark20Filled v-else-if="row?.command_status.id === 2" />
-          <DocumentCheckmark24Regular v-else-if="row?.command_status.id === 3" />
-        </template>
-        {{ row?.command_status?.name }}
-      </n-button>
+      />
     </template>
 
     <template #cell-confirmation="{ row }">
@@ -187,12 +192,9 @@
     </template>
 
     <template #cell-status="{ row }">
-      <UIStatus
-        :status="{
-          name: row?.status.name,
-          id: row?.status.id === 2 ? 3 : 2
-        }"
-      />
+      <!-- Shartnoma holati: 1 Jarayonda → sariq soat (boshqa ustunlardagi «Jarayonda» bilan bir xil),
+           2 Aktiv → yashil nuqta (✓ «Tasdiqlangan» bilan adashmasin), 3 Yakunlangan → kulrang ✓. -->
+      <UIStatus :status="{ name: row?.status?.name, id: contractStatusUi[row?.status?.id] ?? 2 }" />
     </template>
 
     <template #cell-generate="{ row }">

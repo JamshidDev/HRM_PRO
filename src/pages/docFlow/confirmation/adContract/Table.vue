@@ -156,7 +156,7 @@
     </template>
 
     <template #[`cell-contract_additional.number`]="{ row }">
-      <UITableBadgeCell :number="doc(row)?.number" type="error" />
+      <UITableBadgeCell :number="doc(row)?.number" type="primary" />
     </template>
 
     <template #cell-status="{ row }">
