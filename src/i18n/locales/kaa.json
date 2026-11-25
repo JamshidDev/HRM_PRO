@@ -2589,6 +2589,9 @@
     "form": {
       "postName": "Lawazım",
       "number": "Gúwalıq nomeri",
+      "numberShort": "Nomeri",
+      "period": "Múddeti",
+      "status": "Jaǵdayı",
       "issueDate": "Berilgen sáne",
       "expiryDate": "Ámel etiw múddeti",
       "extendedDate": "Uzaytırılǵan sáne",

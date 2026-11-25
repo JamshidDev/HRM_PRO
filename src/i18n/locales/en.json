@@ -2682,6 +2682,9 @@
     "form": {
       "postName": "Position",
       "number": "Certificate number",
+      "numberShort": "Number",
+      "period": "Validity",
+      "status": "Status",
       "issueDate": "Issue date",
       "expiryDate": "Expiry date",
       "extendedDate": "Extended date",

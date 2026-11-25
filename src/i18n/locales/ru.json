@@ -2690,6 +2690,9 @@
     "form": {
       "postName": "Должность",
       "number": "Номер удостоверения",
+      "numberShort": "Номер",
+      "period": "Срок",
+      "status": "Статус",
       "issueDate": "Дата выдачи",
       "expiryDate": "Срок действия",
       "extendedDate": "Дата продления",

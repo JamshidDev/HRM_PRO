@@ -2705,6 +2705,9 @@
     "form": {
       "postName": "Lavozim",
       "number": "Guvohnoma raqami",
+      "numberShort": "Raqami",
+      "period": "Muddati",
+      "status": "Holati",
       "issueDate": "Berilgan sana",
       "expiryDate": "Amal qilish muddati",
       "extendedDate": "Uzaytirilgan sana",

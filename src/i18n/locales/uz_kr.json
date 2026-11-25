@@ -6988,6 +6988,9 @@
     "form": {
       "postName": "Лавозим",
       "number": "Гувоҳнома рақами",
+      "numberShort": "Рақами",
+      "period": "Муддати",
+      "status": "Ҳолати",
       "issueDate": "Берилган сана",
       "expiryDate": "Амал қилиш муддати",
       "extendedDate": "Узайтирилган сана",

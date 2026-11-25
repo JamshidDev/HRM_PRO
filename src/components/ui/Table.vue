@@ -185,13 +185,30 @@
     onResize: (key, width) => tableColumns?.setColumnWidth(key, width)
   })
 
+  // «|» bilan sudrab o'zgartirish chegaralari — HAMMA jadvallar uchun bir xil qoida (ustun o'zi bermagan bo'lsa):
+  //  • kengligi qat'iy ustun: min = kengligining 60% (kamida 60px), max = 2.5 baravar (kamida +150px), 1000px dan oshmaydi;
+  //  • moslashuvchan (keng) ustun: min = o'z minWidth i (yo'q bo'lsa 100px), max = 1000px.
+  // Ichki «№» va «amallar» ustunlariga tegilmaydi.
+  const RESIZE_MAX = 1000
+  const resizeLimits = (col) => {
+    if (col.key === '__actions' || col.key === '__index') return { min: col.minWidth ?? col.width, max: col.maxWidth }
+    if (col.width) {
+      return {
+        min: col.minWidth ?? Math.min(col.width, Math.max(60, Math.round(col.width * 0.6))),
+        max: col.maxWidth ?? Math.min(RESIZE_MAX, Math.max(col.width + 150, Math.round(col.width * 2.5)))
+      }
+    }
+    return { min: col.minWidth ?? 100, max: col.maxWidth ?? RESIZE_MAX }
+  }
+
   const ndtColumns = computed(() => {
     return allCols.value.map((col) => {
+      const limits = resizeLimits(col)
       return {
         key: getKey(col),
         width: getWidth(col),
-        minWidth: col.minWidth ?? col.width,
-        maxWidth: col.maxWidth,
+        minWidth: limits.min,
+        maxWidth: limits.max,
         className: col.className,
         resizable: col.resizable ?? true,
         ellipsis:
