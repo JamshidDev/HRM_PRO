@@ -7,8 +7,9 @@ const _confirmationDocument = async (payload) => {
   })
 }
 // Rad etish sabablari (so'rov tilida) — web va mobil uchun umumiy ro'yxat.
-const _rejectReasons = async () => {
-  return await axios.get(`/v1/confirmation/reject-reasons`)
+// kind: 'notice' — bildirgi rad etish sabablari.
+const _rejectReasons = async (kind) => {
+  return await axios.get(`/v1/confirmation/reject-reasons`, { params: kind ? { kind } : undefined })
 }
 const _documentBase64 = async (payload) => {
   return await axios.get(`/v1/confirmation/document/base64`, { params: payload.params })
