@@ -975,6 +975,7 @@
         "copySuccess": "Link copied!",
         "copyError": "Copy error!"
       },
+      "signatures": "Signature history",
       "ssoLogins": "Sign-in history (SSO)",
       "activity": "Activity"
     },

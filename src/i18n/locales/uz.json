@@ -990,6 +990,7 @@
         "copySuccess": "Link nusxa olindi!",
         "copyError": "Nusxa olishda xatolik!"
       },
+      "signatures": "Imzolar tarixi",
       "ssoLogins": "Kirishlar tarixi (SSO)",
       "activity": "Faollik"
     },

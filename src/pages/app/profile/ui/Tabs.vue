@@ -19,6 +19,7 @@
   import MySalary from './MySalary.vue'
   import SecurityPage from './SecurityPage.vue'
   import LoginActivity from './LoginActivity.vue'
+  import MySignatures from './MySignatures.vue'
   import CalendarDaysIcon from '@/assets/icons/calendarDaysIcon.svg'
 
   const { t } = i18n.global
@@ -43,6 +44,7 @@
       { id: store.tabs[1], name: t('profilePage.tabs.notification'), icon: RingIcon },
       { id: store.tabs[3], name: t('salary1c.mySalary'), icon: FileEditIcon },
       { id: store.tabs[5], name: t('profilePage.tabs.secure'), icon: ShieldIcon },
+      { id: store.tabs[8], name: t('profilePage.tabs.signatures'), icon: FileEditIcon },
       canSeeActivity.value
         ? { id: store.tabs[7], name: t('profilePage.tabs.activity'), icon: CalendarDaysIcon }
         : null
@@ -119,6 +121,8 @@
           <SecurityPage v-else-if="store.activeTab === store.tabs[5]" />
 
           <LoginActivity v-else-if="store.activeTab === store.tabs[7] && canSeeActivity" />
+
+          <MySignatures v-else-if="store.activeTab === store.tabs[8]" />
         </div>
       </Transition>
     </div>
