@@ -957,6 +957,17 @@
     }
   },
   "profilePage": {
+    "orgInfo": {
+      "title": "Korxona ma'lumotlari",
+      "name": "Tashkilot nomi",
+      "fullName": "To'liq nomi",
+      "code": "Kodi",
+      "inn": "STIR",
+      "address": "Manzil",
+      "region": "Hudud",
+      "parent": "Yuqori tashkilot",
+      "empty": "Korxona biriktirilmagan"
+    },
     "copy": "Nusxalash",
     "copied": "Nusxalandi",
     "roles": {

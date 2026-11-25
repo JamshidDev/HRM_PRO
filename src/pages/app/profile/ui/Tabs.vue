@@ -20,6 +20,8 @@
   import SecurityPage from './SecurityPage.vue'
   import LoginActivity from './LoginActivity.vue'
   import MySignatures from './MySignatures.vue'
+  import OrganizationInfo from './OrganizationInfo.vue'
+  import BriefcaseIcon from '@/assets/icons/figBriefcase.svg'
   import CalendarDaysIcon from '@/assets/icons/calendarDaysIcon.svg'
 
   const { t } = i18n.global
@@ -30,6 +32,9 @@
   const canEditCommandBlank = computed(() =>
     store.checkPermission(store.pn.hrCommandsBlank)
   )
+
+  // «Korxona ma'lumotlari» — rol orqali yoqiladi (Rollar > Profil bo'limlari).
+  const canSeeOrgInfo = computed(() => store.checkPermission(store.pn.profileOrganizationInfo))
 
   // Faollik xaritasi — rol orqali yoqiladi (Rollar > Profil bo'limlari > Faollik).
   const canSeeActivity = computed(() => store.checkPermission(store.pn.profileActivity))
@@ -43,6 +48,9 @@
       { id: store.tabs[4], name: t('profilePage.tabs.social.title'), icon: TelegramIcon },
       { id: store.tabs[1], name: t('profilePage.tabs.notification'), icon: RingIcon },
       { id: store.tabs[3], name: t('salary1c.mySalary'), icon: FileEditIcon },
+      canSeeOrgInfo.value
+        ? { id: store.tabs[9], name: t('profilePage.orgInfo.title'), icon: BriefcaseIcon }
+        : null,
       { id: store.tabs[5], name: t('profilePage.tabs.secure'), icon: ShieldIcon },
       { id: store.tabs[8], name: t('profilePage.tabs.signatures'), icon: FileEditIcon },
       canSeeActivity.value
@@ -123,6 +131,8 @@
           <LoginActivity v-else-if="store.activeTab === store.tabs[7] && canSeeActivity" />
 
           <MySignatures v-else-if="store.activeTab === store.tabs[8]" />
+
+          <OrganizationInfo v-else-if="store.activeTab === store.tabs[9] && canSeeOrgInfo" />
         </div>
       </Transition>
     </div>

@@ -942,6 +942,17 @@
     }
   },
   "profilePage": {
+    "orgInfo": {
+      "title": "Organization details",
+      "name": "Organization name",
+      "fullName": "Full name",
+      "code": "Code",
+      "inn": "TIN",
+      "address": "Address",
+      "region": "Region",
+      "parent": "Parent organization",
+      "empty": "No organization assigned"
+    },
     "copy": "Copy",
     "copied": "Copied",
     "roles": {
