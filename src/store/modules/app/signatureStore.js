@@ -54,6 +54,8 @@ export const useSignatureStore = defineStore('signatureStore', {
     rejectLoading: null,
     usbVisible: false,
     usbKeyId: null,
+    // Imzolashda ishlatilgan kalit turi («Imzo tarixi»): pfx | ckc | baikey | idcard.
+    signedKeyType: null,
     keyType: useAppSetting.signatureUseType.pfx,
     signatureBtnLoading: false
   }),
@@ -190,7 +192,11 @@ export const useSignatureStore = defineStore('signatureStore', {
           $ApiService.documentService
             ._linkEimzo({
               params: { token: this.linkToken },
-              data: { code: pkcs7, qr_position: qrPositionForSign() }
+              data: {
+                code: pkcs7,
+                key_type: this.signedKeyType,
+                qr_position: qrPositionForSign()
+              }
             })
             .then(() => {
               this.loading = false
@@ -259,8 +265,10 @@ export const useSignatureStore = defineStore('signatureStore', {
 
         // PIN'ni E-IMZO o'zi so'raydi — load_key kerak emas.
         key = this.usbKeyId || useAppSetting.signatureUseType.idCard
+        this.signedKeyType = key
       } else {
         key = this.allKeys[idx]
+        this.signedKeyType = 'pfx'
         this.workerPin = key?.pinfl
         if (key.expired) {
           $Alert.warning(t('signature.expiredKey'))
@@ -399,6 +407,7 @@ export const useSignatureStore = defineStore('signatureStore', {
         confirmation_id: this.confirmationId,
         model: this.documentType,
         pin: this.workerPin,
+        key_type: this.signedKeyType,
         qr_position: qrPositionForSign()
       }
       $ApiService.documentService

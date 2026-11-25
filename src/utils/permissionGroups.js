@@ -13,6 +13,7 @@ export const ACTION_ORDER = ['read', 'write', 'delete']
 // switch faqat shu to'plamda bo'lsa ko'rsatiladi (mutatsiya real API talab qiladi).
 export const ENFORCED = new Set([
   'activity-logs-read',
+  'signature-history-read',
   'admin',
   'authentication-logs-read',
   'chat',
@@ -334,6 +335,7 @@ export const ENFORCED = new Set([
 export const MEANINGFUL = new Set([
   'activity-logs',
   'activity-logs-read',
+  'signature-history-read',
   'admin',
   'ai',
   'authentication-logs-read',
@@ -1201,6 +1203,11 @@ export const PERMISSION_GROUPS = [
       { prefix: 'work-day', label: 'workdayPage.name' },
       { prefix: 'organizations', label: 'organizationPage.name' },
       { prefix: 'activity-logs', label: 'actionLog.name' },
+      {
+        prefix: 'signature-history',
+        label: 'signatureHistory.name',
+        actions: [{ slug: 'signature-history-read', label: "Ko'rish" }]
+      },
       { prefix: 'document-examples', label: 'documentSetting.name' },
       { prefix: 'document-templates', label: 'documentTemplate.name' },
       { prefix: 'holidays', label: 'holidayPage.name' },

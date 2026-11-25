@@ -15,7 +15,7 @@
       type: 'group',
       key: `g${g.id}`,
       label: g.name,
-      children: store.noticeSchema.types.filter((v) => v.group === g.id).map((v) => ({ value: v.id, label: v.name }))
+      children: store.noticeSchema.types.filter((v) => v.group === g.id).map((v) => ({ value: v.id, label: `${v.id} - ${v.name}` }))
     }))
   )
   const def = computed(() => store.noticeDef())
