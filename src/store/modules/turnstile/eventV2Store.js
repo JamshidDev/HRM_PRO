@@ -109,7 +109,7 @@ export const useEventV2Store = defineStore('eventV2Store', {
       },
       2: {
         name: t('hcEvent.form.noNormal'),
-        id: 4
+        id: 8
       },
       3: {
         name: t('hcEvent.form.unknown'),

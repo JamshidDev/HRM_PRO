@@ -1,8 +1,7 @@
 <script setup>
-  import { UIPageFilter, UISegmentTabs } from '@/components/index.js'
+  import { UIDayPicker, UIPageFilter, UISegmentTabs } from '@/components/index.js'
   import { useIntegrationClientsStore } from '@/store/modules/index.js'
   import { ArrowSync24Filled } from '@vicons/fluent'
-  import { useAppSetting } from '@/utils/AppSetting.js'
   import i18n from '@/i18n/index.js'
 
   const store = useIntegrationClientsStore()
@@ -82,24 +81,21 @@
     </template>
     <template #filterAction>
       <template v-if="isDashboardTab">
-        <n-date-picker
+        <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek, store o'zgarmaydi. -->
+        <UIDayPicker
           v-model:value="store.dashboardParams.date_from"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
           :is-date-disabled="isDateFromDisabled"
           clearable
-          update-value-on-close
           class="max-w-[160px]"
           :placeholder="$t('integrationLog.filter.dateFrom')"
           @update:value="dashboardFilterEvent"
         />
-        <n-date-picker
+        <UIDayPicker
           v-model:value="store.dashboardParams.date_to"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
           :is-date-disabled="isDateToDisabled"
           clearable
-          update-value-on-close
           class="max-w-[160px]"
           :placeholder="$t('integrationLog.filter.dateTo')"
           @update:value="dashboardFilterEvent"

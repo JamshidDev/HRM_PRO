@@ -77,7 +77,7 @@
     </template>
 
     <template #cell-number="{ row }">
-      <UITableBadgeCell :number="row.document?.number" type="error" />
+      <UITableBadgeCell :number="row.document?.number" type="primary" />
     </template>
 
     <template #cell-electronic_number="{ row }">

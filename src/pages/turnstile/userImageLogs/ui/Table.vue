@@ -13,19 +13,18 @@
   }
 
   const statusTypes = {
+    // Audit sahifasidagi bilan bir xil: yaratildi ➕ yashil, o'zgartirildi ✎ sariq, o'chirildi 🗑 qizil.
     create: {
       name: t('userImageLogs.status.create'),
-      type: 'success',
-      id: 3
+      id: 10
     },
     update: {
       name: t('userImageLogs.status.update'),
-      type: 'warning',
-      id: 9
+      id: 11
     },
     delete: {
       name: t('userImageLogs.status.delete'),
-      type: 'error'
+      id: 12
     }
   }
 </script>

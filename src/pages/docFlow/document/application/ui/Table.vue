@@ -37,7 +37,8 @@
 
   // HR holati (worker_applications.status): 0 yangi, 1 kelishuvchilarga yo'naltirilgan, 2 HR yopgan.
   const checkingStatus = computed(() => ({
-    0: { id: 1, name: t('applicationPage.hrCheck.new') },
+    // 14 = «Yangi» (ko'k) — «Holati» ustunidagi sariq «Jarayonda» bilan bir xil bo'lmasin.
+    0: { id: 14, name: t('applicationPage.hrCheck.new') },
     1: { id: 3, name: t('applicationPage.hrCheck.forwarded') },
     2: { id: 4, name: t('applicationPage.hrCheck.closed') }
   }))
@@ -165,7 +166,7 @@
     </template>
 
     <template #cell-number="{ row }">
-      <UITableBadgeCell :number="row?.number" type="error" />
+      <UITableBadgeCell :number="row?.number" type="primary" />
     </template>
 
     <template #cell-worker="{ row }">

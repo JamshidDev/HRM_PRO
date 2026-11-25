@@ -7,7 +7,7 @@
 
 <template>
   <div class="grid grid-cols-12 gap-x-4">
-    <div class="col-span-12">
+    <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.contract_to_date`)" path="contract_to_date">
         <n-date-picker
           class="w-full"

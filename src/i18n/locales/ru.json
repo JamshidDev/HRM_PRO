@@ -8251,5 +8251,25 @@
     "hours": "ч",
     "minutes": "мин",
     "seconds": "сек"
+  },
+  "dayPicker": {
+    "placeholder": "Выберите дату",
+    "period": "Выбрать период",
+    "pickDay": "Выбрать день",
+    "clear": "Очистить",
+    "days": "{n} день | {n} дн.",
+    "today": "Сегодня",
+    "yesterday": "Вчера",
+    "tomorrow": "Завтра",
+    "twoDaysAgo": "Позавчера",
+    "inTwoDays": "Послезавтра",
+    "weekStart": "Начало недели",
+    "monthStart": "Начало месяца",
+    "thisWeek": "Эта неделя",
+    "lastWeek": "Прошлая неделя",
+    "thisMonth": "Этот месяц",
+    "lastMonth": "Прошлый месяц",
+    "last7": "Последние 7 дней",
+    "last30": "Последние 30 дней"
   }
 }

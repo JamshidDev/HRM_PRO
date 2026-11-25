@@ -41,13 +41,11 @@ export const useIntegrationClientsStore = defineStore('integrationClients', {
     // ---- dashboard ----
     _dashboard() {
       this.dashboardLoading = true
+      // Mahalliy sana (YYYY-MM-DD). `toISOString()` UTC'ga o'girib, Toshkent yarim tunini oldingi kunga aylantirardi
+      // (10.11 tanlansa 2026-11-09 ketardi).
       const params = {
-        date_from: this.dashboardParams.date_from
-          ? new Date(this.dashboardParams.date_from).toISOString().slice(0, 10)
-          : undefined,
-        date_to: this.dashboardParams.date_to
-          ? new Date(this.dashboardParams.date_to).toISOString().slice(0, 10)
-          : undefined
+        date_from: Utils.timeToZone(this.dashboardParams.date_from) ?? undefined,
+        date_to: Utils.timeToZone(this.dashboardParams.date_to) ?? undefined
       }
       Promise.all([
         $ApiService.integrationClientsService._summary(params),

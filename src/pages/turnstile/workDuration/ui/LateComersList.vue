@@ -4,9 +4,8 @@
     ArrowCircleUpLeft20Regular,
     ClockArrowDownload24Regular
   } from '@vicons/fluent'
-  import { NoDataPicture, UIPageFilter, UIPagination, UIUser } from '@/components/index.js'
+  import { UIDayPicker, NoDataPicture, UIPageFilter, UIPagination, UIUser } from '@/components/index.js'
   import { useTurnstileWorkDurationStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
 
   const store = useTurnstileWorkDurationStore()
@@ -82,25 +81,17 @@
           </div>
           <div class="w-[300px]">
             <label class="text-textColor3 ml-1">{{ $t('content.from') }}</label>
-            <n-date-picker
-              clearable
-              class="w-full"
-              v-model:value="store.lateParams.from"
-              type="date"
-              :format="useAppSetting.datePicketFormat"
-              @update:value="filterEvent"
-            />
+            <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek, store o'zgarmaydi. -->
+            <UIDayPicker v-model:value="store.lateParams.from" mode="day" clearable @update:value="filterEvent" />
           </div>
           <div class="w-[300px]">
             <label class="text-textColor3 ml-1">{{ $t('content.to') }}</label>
-            <n-date-picker
-              clearable
-              class="w-full"
+            <UIDayPicker
               v-model:value="store.lateParams.to"
-              type="date"
-              :format="useAppSetting.datePicketFormat"
-              @update:value="filterEvent"
+              mode="day"
+              clearable
               :is-date-disabled="(v) => Utils.disablePasteDate(v, store.lateParams.from)"
+              @update:value="filterEvent"
             />
           </div>
         </template>

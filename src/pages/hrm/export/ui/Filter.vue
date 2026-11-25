@@ -1,7 +1,6 @@
 <script setup>
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIDayPicker, UIPageFilter, UISelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useExportStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
   import { ArrowSync16Regular } from '@vicons/fluent'
 
   const store = useExportStore()
@@ -84,14 +83,8 @@
         @onSubmit="filterEvent"
       />
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.created') }}</label>
-      <n-date-picker
-        class="w-full"
-        v-model:value="store.params.created"
-        type="date"
-        :format="useAppSetting.datePicketFormat"
-        @update:value="filterEvent"
-        clearable
-      />
+      <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek, store o'zgarmaydi. -->
+      <UIDayPicker v-model:value="store.params.created" mode="day" clearable @update:value="filterEvent" />
     </template>
   </UIPageFilter>
 </template>

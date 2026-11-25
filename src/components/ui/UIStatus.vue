@@ -2,8 +2,9 @@
   import {
     Timer16Regular,
     Eye16Filled,
+    Sparkle16Filled,
+    Info16Filled,
     CheckmarkCircle24Filled,
-    Circle20Filled,
     ErrorCircle12Filled,
     AddCircle24Filled,
     Edit24Filled,
@@ -82,13 +83,14 @@
       id: 5,
       name: 'Deleted',
       type: 'error',
-      icon: Eye16Filled
+      icon: Delete24Filled
     },
     {
       id: 6,
       name: 'Active',
       type: 'success',
-      icon: Circle20Filled
+      // «Aktiv» — kichik nuqta (jonli holat); ✓ belgisi faqat «Tasdiqlangan» (3) da — ikkalasi yonma-yon farqlansin.
+      icon: icons.figDot
     },
     {
       id: 7,
@@ -107,7 +109,8 @@
       id: 9,
       name: 'Primary',
       type: 'primary',
-      icon: ErrorCircle12Filled
+      // Ko'k «ma'lumot» holati (Tekshiruvda, Qabul qilindi…) — «!» xato belgisi emas.
+      icon: Info16Filled
     },
     // ── Audit (o'zgarishlar tarixi) holatlari ────────────────────────────────
     // Yangi ID'lar QO'SHILDI, mavjudlari (1..9) o'zgarmadi — boshqa sahifalarga
@@ -135,6 +138,28 @@
       name: 'AuditRestore',
       type: 'info',
       icon: ArrowUndo24Filled
+    },
+    // «Yangi» (hali ko'rilmagan) — ko'k; «Jarayonda» (1, sariq soat) bilan adashmasin.
+    {
+      id: 14,
+      name: 'New',
+      type: 'info',
+      icon: Sparkle16Filled
+    },
+    // Hujjat yaratilgan (`Utils.documentStatus[3]`) — buyruqlar maketidagidek ko'k chip, yashil emas:
+    // bu holat emas, hujjat borligini bildiradi; yonidagi yashil «Tasdiqlangan» bilan adashmasin.
+    {
+      id: 15,
+      name: 'DocumentReady',
+      type: 'primary',
+      icon: icons.figBadgeCheck
+    },
+    // Tugagan (masalan shartnoma «Yakunlangan») — kulrang ✓: tugadi, lekin endi faol emas.
+    {
+      id: 16,
+      name: 'Finished',
+      type: 'default',
+      icon: CheckmarkCircle24Filled
     }
   ]
 
@@ -163,9 +188,9 @@
   // Chip rangi: `tone` berilsa o'sha, aks holda status turidan.
   const chipTone = computed(() => props.tone || toneByType[type.value] || 'brand')
 
-  // Maketda tasdiqlangan holat "badge-check" ikonkasi bilan chiziladi — bu aynan
-  // eksport qilingan `figBadgeCheck.svg`. Qolgan holatlar uchun statusning o'z ikonkasi.
-  const figIcon = computed(() => (type.value === 'success' ? icons.figBadgeCheck : icon.value))
+  // Maketda tasdiqlangan holat (3) "badge-check" ikonkasi bilan chiziladi — `figBadgeCheck.svg`.
+  // Boshqa yashil holatlar (Aktiv, audit «Yaratildi»…) o'z ikonkasini saqlaydi — hammasi bir xil ✓ bo'lib qolmasin.
+  const figIcon = computed(() => (props.status?.id === 3 ? icons.figBadgeCheck : icon.value))
 </script>
 
 <template>

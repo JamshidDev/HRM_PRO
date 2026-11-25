@@ -44,13 +44,14 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12">
+    <!-- Qisqa maydonlar (stavka, sana) yarim qatordan joy oladi -->
+    <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`documentPage.form.rate`)" path="rate">
         <n-select v-model:value="store.payload.rate" :options="rateOptions" />
       </n-form-item>
     </div>
 
-    <div class="col-span-12">
+    <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.from_date`)" path="from_date">
         <n-date-picker
           class="w-full"
