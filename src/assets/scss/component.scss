@@ -215,3 +215,28 @@
     background-color: var(--surface-ground-soft, var(--surface-ground)) !important;
   }
 }
+
+// «Tarix» — faqat ikonkali kvadrat tugma (matn title/aria-label'da), chegarali.
+.n-button.ui-history-btn {
+  --n-height: 34px !important;
+  --n-padding: 0 !important;
+  --n-border-radius: 8px !important;
+  --n-icon-size: 18px !important;
+  width: 34px;
+  flex-shrink: 0;
+  background-color: transparent !important;
+  box-shadow: inset 0 0 0 1px var(--surface-line);
+
+  .n-button__icon {
+    margin: 0 !important;
+  }
+
+  &:hover {
+    background-color: var(--surface-ground-soft, var(--surface-ground)) !important;
+  }
+}
+
+// Jadval footeri (sahifalash) — qatorlardan ingichka chiziq bilan ajraladi.
+.ui-table__footer {
+  border-top: 1px solid var(--table-border);
+}

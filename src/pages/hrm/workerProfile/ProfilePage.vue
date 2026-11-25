@@ -4,7 +4,7 @@
   import { UISegmentTabs } from '@/components/index.js'
   import { useWorkerProfileStore, useComponentStore } from '@/store/modules/index.js'
   import icons from '@/assets/icons'
-  import { ArrowCounterclockwise20Regular } from '@vicons/fluent'
+  import { History20Regular } from '@vicons/fluent'
   import { AppPaths } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
 
@@ -77,11 +77,12 @@
 
       <UISegmentTabs :tabs="tabList" v-model="store.activeTab" variant="elevated" />
 
-      <n-button secondary class="profile-history" :disabled="!store.workerId" @click="onHistory">
+      <n-button
+        :title="$t('audit.historyBtn')"
+        :aria-label="$t('audit.historyBtn')" secondary class="ui-history-btn profile-history" :disabled="!store.workerId" @click="onHistory">
         <template #icon>
-          <n-icon><ArrowCounterclockwise20Regular /></n-icon>
+          <n-icon><History20Regular /></n-icon>
         </template>
-        {{ $t('audit.historyBtn') }}
       </n-button>
     </div>
 
@@ -123,8 +124,6 @@
   // Tarix tugmasi qator oxirida (boblardan keyin) turadi; balandligi tab yo'lagi bilan bir xil.
   .profile-history {
     margin-left: auto;
-    height: 36px;
-    border-radius: 10px;
   }
 
   .profile-back {
