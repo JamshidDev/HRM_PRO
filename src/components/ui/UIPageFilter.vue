@@ -312,10 +312,12 @@
               </div>
 
               <template #footer>
-                <button type="button" class="ui-filter-clear" @click="emits('onClear')">
-                  <img :src="clearFilterIcon" alt="" />
-                  <span>{{ $t('content.clearFilters') }}</span>
-                </button>
+                <n-button class="ui-filter-clear" size="small" type="error" secondary @click="emits('onClear')">
+                  <template #icon>
+                    <img class="ui-filter-clear__icon" :src="clearFilterIcon" alt="" />
+                  </template>
+                  {{ $t('content.clearFilters') }}
+                </n-button>
               </template>
             </n-drawer-content>
           </n-drawer>
@@ -360,10 +362,12 @@
                     <img :src="filterIcon" alt="" />
                     <span>{{ $t('content.filterSetting') }}</span>
                   </div>
-                  <button type="button" class="ui-filter-clear" @click="emits('onClear')">
-                    <img :src="clearFilterIcon" alt="" />
-                    <span>{{ $t('content.clearFilters') }}</span>
-                  </button>
+                  <n-button class="ui-filter-clear" size="small" type="error" secondary @click="emits('onClear')">
+                    <template #icon>
+                      <img class="ui-filter-clear__icon" :src="clearFilterIcon" alt="" />
+                    </template>
+                    {{ $t('content.clearFilters') }}
+                  </n-button>
                 </div>
               </slot>
             </div>
@@ -496,39 +500,35 @@
     padding: 4px 4px 0;
   }
 
-  .ui-filter-header-title,
-  .ui-filter-clear {
+  .ui-filter-header-title {
     display: flex;
     align-items: center;
     gap: 8px;
   }
 
-  .ui-filter-header-title img,
-  .ui-filter-clear img {
+  .ui-filter-header-title img {
     width: 14px;
     height: 14px;
     flex-shrink: 0;
   }
 
-  .ui-filter-header-title,
-  .ui-filter-clear {
+  .ui-filter-header-title {
     font-size: 14px;
   }
 
+  /* «Tozalash» — haqiqiy tugma (qizil ikkilamchi), matnli havola emas. */
   .ui-filter-clear {
     flex-shrink: 0;
-    padding: 4px 6px;
-    border: 0;
-    border-radius: 8px;
-    color: #e5383b;
-    background: transparent;
-    cursor: pointer;
-    font: inherit;
-    transition: background-color 0.2s ease;
+    --n-height: 30px !important;
+    --n-border-radius: 8px !important;
+    --n-font-size: 13px !important;
+    --n-padding: 0 10px !important;
+    font-weight: 500;
   }
 
-  .ui-filter-clear:hover {
-    background: rgba(229, 56, 59, 0.08);
+  .ui-filter-clear__icon {
+    width: 14px;
+    height: 14px;
   }
 
   .ui-filter-content {
@@ -626,28 +626,28 @@
 
   :global([data-theme='dark'] .ui-filter-panel-shell) {
     overflow: hidden;
-    border: 1px solid #1d2939;
+    border: 1px solid var(--surface-line);
     border-radius: 20px;
-    background: #101828;
+    background: var(--popover-bg, var(--surface-section));
   }
 
   :global([data-theme='dark'] .ui-filter-header) {
     color: var(--primary-color);
-    background: #344054;
+    background: var(--fig-bg-tertiary);
   }
 
   :global([data-theme='dark'] .ui-filter-content) {
-    background: #101828;
+    background: var(--popover-bg, var(--surface-section));
   }
 
   :global([data-theme='dark'] .ui-filter-content label) {
-    color: #f2f4f7;
+    color: var(--textColor0);
   }
 
   :global([data-theme='dark'] .ui-filter-content .n-base-selection-placeholder),
   :global([data-theme='dark'] .ui-filter-content .n-input__placeholder),
   :global([data-theme='dark'] .ui-filter-content .n-input__input-el::placeholder) {
-    color: #98a2b3;
+    color: var(--textColor3);
     opacity: 1;
   }
 
@@ -807,7 +807,7 @@
 
   :global([data-theme='dark'] .ui-filter-drawer__head) {
     color: var(--primary-color);
-    background: #344054;
-    border-bottom-color: #1d2939;
+    background: var(--fig-bg-tertiary);
+    border-bottom-color: var(--surface-line);
   }
 </style>
