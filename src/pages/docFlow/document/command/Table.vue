@@ -211,7 +211,7 @@
         :data="
           row.workers.map((v) => ({
             photo: v?.worker?.photo,
-            fullName: v?.worker?.last_name + ' ' + v?.worker?.first_name
+            fullName: [v?.worker?.last_name, v?.worker?.first_name].filter(Boolean).join(' ')
           }))
         "
       />

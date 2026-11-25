@@ -8342,5 +8342,25 @@
     "hours": "saat",
     "minutes": "minut",
     "seconds": "sekund"
+  },
+  "dayPicker": {
+    "placeholder": "Sáneni saylań",
+    "period": "Dáwir saylaw",
+    "pickDay": "Kún saylaw",
+    "clear": "Tazalaw",
+    "days": "{n} kún",
+    "today": "Búgin",
+    "yesterday": "Keshe",
+    "tomorrow": "Erteń",
+    "twoDaysAgo": "2 kún aldın",
+    "inTwoDays": "2 kúnnen keyin",
+    "weekStart": "Hápte bası",
+    "monthStart": "Ay bası",
+    "thisWeek": "Usı hápte",
+    "lastWeek": "Ótken hápte",
+    "thisMonth": "Usı ay",
+    "lastMonth": "Ótken ay",
+    "last7": "Aqırǵı 7 kún",
+    "last30": "Aqırǵı 30 kún"
   }
 }

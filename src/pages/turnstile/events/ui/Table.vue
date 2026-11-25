@@ -150,7 +150,7 @@
     {
       key: 'temperature',
       title: t('hcEvent.form.temperature'),
-      width: 120
+      width: 140
     }
   ])
 
@@ -179,7 +179,7 @@
     :page="store.params.page"
     :per-page="store.params.per_page"
     :total="store.totalItems"
-    storage-key="turnstile-hc-events"
+    storage-key="turnstile-hc-events-v2"
     @change-page="changePage"
   >
     <template #cell-worker="{ row }">
@@ -238,11 +238,12 @@
     </template>
 
     <template #cell-auth_type="{ row }">
-      <UIStatus :status="eventStatus[row.auth_type]" />
+      <!-- Kirish usuli — holat emas, yorliq: bitta ko'k chip, ikonkasiz (holat belgilari — soat, ✓ — bu yerda ma'nosiz). -->
+      <UIChip v-if="eventStatus[row.auth_type]" :label="eventStatus[row.auth_type].name" tone="brand" />
     </template>
 
     <template #cell-mask_status="{ row }">
-      <UIStatus :status="maskStatus[row.mask_status] ?? maskStatus.unknown" />
+      <UIChip :label="(maskStatus[row.mask_status] ?? maskStatus.unknown).name" tone="neutral" />
     </template>
 
     <template #cell-temperature="{ row }">
@@ -250,7 +251,7 @@
         <UIStatus :status="store.temperatureStatus[row.temperature]" />
       </template>
       <template v-else>
-        <UIStatus :status="store.temperatureStatus[3]" />
+        <UIChip :label="store.temperatureStatus[3].name" tone="neutral" />
       </template>
     </template>
   </UITable>

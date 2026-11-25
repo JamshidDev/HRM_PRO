@@ -182,6 +182,8 @@ export const useMobileStoryStore = defineStore('mobileStory', {
         subtitle: cleanLang(this.payload.subtitle),
         action_type: this.payload.action_type || undefined,
         status: this.payload.status,
+        // BACKEND: kelajak sana tanlansa ham story darhol chiqadi — ommaviy ro'yxat shu sanani
+        // hisobga olsin (docs/api/mobile-stories-schedule.md).
         published_at: this.payload.published_at || undefined,
         sort: this.payload.sort ?? 1
       }

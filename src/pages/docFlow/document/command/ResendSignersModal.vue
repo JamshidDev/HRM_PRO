@@ -148,13 +148,14 @@
           </div>
           <!-- Holatlar bitta ustunda, chapdan tekislangan — hammasi bir chiziqda turadi -->
           <div class="flex flex-col items-start gap-1 shrink-0 w-28">
-            <!-- «Yangi» — yangi qo'shilgan imzolovchi, «Jarayonda» dan ajralib tursin -->
-            <span
+            <!-- «Yangi» — yangi qo'shilgan imzolovchi: hamma joydagi «Yangi» chipi (UIStatus 14, ko'k) -->
+            <UIStatus
               v-if="row.status === null"
-              class="text-[11px] font-semibold rounded-full px-2 py-0.5 whitespace-nowrap bg-fig-chip-brand text-fig-chip-brand-text"
-            >
-              {{ $t('documentPage.command.dataTab.resend.status.new') }}
-            </span>
+              fig
+              compact
+              :tooltip="false"
+              :status="{ id: 14, name: $t('documentPage.command.dataTab.resend.status.new') }"
+            />
             <UIStatus v-else fig compact :tooltip="false" :status="statusOf(row)" />
             <span v-if="row.forced && row.status !== null" class="text-[10px] text-textColor3 pl-1">
               {{ $t('documentPage.command.dataTab.resend.required') }}

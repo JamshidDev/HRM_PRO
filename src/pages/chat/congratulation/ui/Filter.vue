@@ -1,8 +1,7 @@
 <script setup>
 
 import {useCongratulationStore, useComponentStore} from "@stores"
-import {UIPageFilter} from "@components"
-import {useAppSetting} from "@utils"
+import {UIDayPicker, UIPageFilter} from "@components"
 
 const store = useCongratulationStore()
 const componentStore = useComponentStore()
@@ -60,15 +59,8 @@ const onShow = (v) =>{
         @update:value="filterEvent"
       />
       <label class="mt-3 text-xs text-gray-500">{{ $t('content.date') }}</label>
-      <n-date-picker
-        class="mt-1"
-        v-model:value="store.params.date"
-        @update:value="filterEvent"
-        type="date"
-        :actions="null"
-        :format="useAppSetting.datePicketFormat"
-        clearable
-      />
+      <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek, store o'zgarmaydi. -->
+      <UIDayPicker class="mt-1" v-model:value="store.params.date" mode="day" clearable @update:value="filterEvent" />
     </template>
   </UIPageFilter>
 </template>

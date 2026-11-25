@@ -572,6 +572,12 @@
     border-radius: 12px !important;
   }
 
+  /* UIDayPicker — boshqa filtr maydonlari bilan bir xil o'lcham va burchak. */
+  .ui-filter-content :deep(.ui-day-picker) {
+    --udp-h: 36px;
+    --udp-r: 12px;
+  }
+
   .ui-filter-content :deep(.n-select) {
     --n-padding-single: 0 12px !important;
     --n-padding-multiple: 0 12px !important;

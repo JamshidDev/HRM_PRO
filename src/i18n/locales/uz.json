@@ -8474,5 +8474,25 @@
     "hours": "soat",
     "minutes": "daqiqa",
     "seconds": "soniya"
+  },
+  "dayPicker": {
+    "placeholder": "Sanani tanlang",
+    "period": "Davr tanlash",
+    "pickDay": "Kun tanlash",
+    "clear": "Tozalash",
+    "days": "{n} kun",
+    "today": "Bugun",
+    "yesterday": "Kecha",
+    "tomorrow": "Ertaga",
+    "twoDaysAgo": "2 kun oldin",
+    "inTwoDays": "2 kundan keyin",
+    "weekStart": "Hafta boshi",
+    "monthStart": "Oy boshi",
+    "thisWeek": "Shu hafta",
+    "lastWeek": "O'tgan hafta",
+    "thisMonth": "Shu oy",
+    "lastMonth": "O'tgan oy",
+    "last7": "Oxirgi 7 kun",
+    "last30": "Oxirgi 30 kun"
   }
 }

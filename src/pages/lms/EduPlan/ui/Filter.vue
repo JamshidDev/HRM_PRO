@@ -1,9 +1,8 @@
 <script setup>
   import { useAccountStore, useComponentStore, useEduPlanStore } from '@/store/modules/index.js'
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIDayPicker, UIPageFilter, UISelect } from '@/components/index.js'
   import { ArrowDownload24Regular } from '@vicons/fluent'
   import Utils from '@utils/Utils.js'
-  import { useAppSetting } from '@/utils/index.js'
   const store = useEduPlanStore()
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
@@ -148,14 +147,8 @@
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
         $t('eduPlanPage.form.start_date')
       }}</label>
-      <n-date-picker
-        class="w-full"
-        v-model:value="store.params.start_date"
-        type="date"
-        clearable
-        :format="useAppSetting.datePicketFormat"
-        @update:value="filterEvent"
-      />
+      <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek, store o'zgarmaydi. -->
+      <UIDayPicker v-model:value="store.params.start_date" mode="day" clearable @update:value="filterEvent" />
     </template>
   </UIPageFilter>
 </template>

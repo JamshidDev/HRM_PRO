@@ -6,9 +6,8 @@
     useEventV2Store
   } from '@/store/modules/index.js'
   import { ArrowSync24Filled, ArrowCircleDown32Regular } from '@vicons/fluent'
-  import { UIPageFilter, UISelect, UIDepartmentSelect } from '@/components/index.js'
+  import { UIDayPicker, UIPageFilter, UISelect, UIDepartmentSelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
-  import { useAppSetting } from '@utils'
 
   const { t } = i18n.global
   const store = useEventStore()
@@ -228,15 +227,8 @@
         @update:value="filterEvent"
       />
       <label class="mt-3 text-xs text-gray-500">{{ $t('content.date') }}</label>
-      <n-date-picker
-        class="mt-1"
-        v-model:value="store.params.date"
-        @update:value="onChangeDate"
-        type="date"
-        :actions="null"
-        :format="useAppSetting.datePicketFormat"
-        clearable
-      />
+      <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek, store o'zgarmaydi. -->
+      <UIDayPicker class="mt-1" v-model:value="store.params.date" mode="day" clearable @update:value="onChangeDate" />
     </template>
     <template #filterAction>
       <!-- `checkAction` yon ta'sirli (toast chiqaradi) — template'da chaqirilsa

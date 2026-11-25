@@ -2,7 +2,7 @@
   import { useAccountStore, useTurnstileDashboardStore } from '@/store/modules/index.js'
   import { ArrowCircleDown48Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
-  import { useAppSetting } from '@/utils/index.js'
+  import { UIDayPicker } from '@/components/index.js'
   import { onMounted } from 'vue'
   import { useDebounce } from '@/utils/index.js'
 
@@ -126,14 +126,13 @@
     </div>
     <div v-if="filterVisible.date" class="col-span-2">
       <label class="mt-3 text-xs text-textColor3">{{ $t('content.date') }}</label>
-      <n-date-picker
+      <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek, store o'zgarmaydi. -->
+      <UIDayPicker
         v-model:value="dashboardStore.previewParams.date"
-        @update:value="filterEvent"
-        type="date"
-        :format="useAppSetting.datePicketFormat"
+        mode="day"
         :loading="dashboardStore.previewLoading"
         :disabled="dashboardStore.previewLoading"
-        :actions="[]"
+        @update:value="filterEvent"
       />
     </div>
 

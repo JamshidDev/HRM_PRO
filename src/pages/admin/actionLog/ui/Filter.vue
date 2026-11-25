@@ -1,5 +1,5 @@
 <script setup>
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIDayPicker, UIPageFilter, UISelect } from '@/components/index.js'
   import { useComponentStore, useActionLogStore } from '@/store/modules/index.js'
   import { useDebounceFn } from '@vueuse/core'
   import { useAccountStore } from '@/store/modules/index.js'
@@ -91,12 +91,8 @@
       />
       <template v-if="store.activeTab === 1">
         <label class="mt-3 text-xs text-gray-500">{{ $t('content.date') }}</label>
-        <n-date-picker
-          clearable
-          v-model:value="store.params.created_at"
-          type="date"
-          @update:value="filterEvent"
-        />
+        <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek, store o'zgarmaydi. -->
+        <UIDayPicker v-model:value="store.params.created_at" mode="day" clearable @update:value="filterEvent" />
       </template>
       <template v-if="store.activeTab === 1">
         <label class="mt-3 text-xs text-gray-500">{{ $t('actionLog.table.status') }}</label>
@@ -120,12 +116,7 @@
       <template v-if="store.activeTab === 2">
         <label class="mt-3 text-xs text-gray-500">{{ $t('actionLog.table.loginAt') }}</label>
 
-        <n-date-picker
-          clearable
-          v-model:value="store.params.login_at"
-          type="date"
-          @update:value="filterEvent"
-        />
+        <UIDayPicker v-model:value="store.params.login_at" mode="day" clearable @update:value="filterEvent" />
       </template>
     </template>
   </UIPageFilter>
