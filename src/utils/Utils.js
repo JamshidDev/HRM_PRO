@@ -297,9 +297,10 @@ const ActionTypes = {
   send: 'send',
   applications: 'applications'
 }
+// «Familiya Ism Sharif» — bo'sh qismlar tashlab ketiladi (aks holda maydonda «undefined undefined» chiqadi).
 const combineFullName = (user) => {
   if (!user) return
-  return `${user?.last_name} ${user?.first_name} ${user?.middle_name}`
+  return [user.last_name, user.first_name, user.middle_name].filter(Boolean).join(' ')
 }
 const monthList = [
   {

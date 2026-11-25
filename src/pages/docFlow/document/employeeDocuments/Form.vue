@@ -127,7 +127,7 @@
     ])
   ]
   const renderPersonValue = ({ option }) =>
-    h('div', { class: 'flex gap-2 my-1 items-center' }, `${option?.last_name} ${option?.first_name} ${option?.middle_name}`)
+    h('div', { class: 'flex gap-2 my-1 items-center' }, Utils.combineFullName(option) || option?.label || '')
 
   const onSubmit = () => {
     formRef.value?.validate((error) => {

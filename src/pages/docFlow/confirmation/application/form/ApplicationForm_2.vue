@@ -33,7 +33,7 @@
             h(
               'div',
               { class: 'text-xs font-medium text-secondary line-clamp-1' },
-              `${option.worker.last_name}.${option.worker.last_name[0]}.${option.worker.middle_name[0]}`
+              Utils.shortFio(option.worker?.last_name, option.worker?.first_name, option.worker?.middle_name)
             ),
             h('div', { class: 'text-xs text-secondary line-clamp-1' }, option.post_name)
           ])
@@ -48,7 +48,7 @@
         {
           class: 'flex gap-2 my-1 items-center'
         },
-        `${option?.worker?.last_name} ${option?.worker?.first_name} ${option?.worker?.middle_name}`
+        Utils.combineFullName(option?.worker) || option?.label || ''
       )
     ]
   }

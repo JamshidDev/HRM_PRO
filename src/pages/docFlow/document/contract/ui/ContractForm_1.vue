@@ -44,7 +44,7 @@
             h(
               'div',
               { class: 'text-xs font-medium text-fig-text-secondary leading-[1.2]' },
-              `${option.last_name}.${option.first_name[0]}.${option.middle_name[0]}`
+              Utils.shortFio(option.last_name, option.first_name, option.middle_name)
             ),
             h('div', { class: 'text-xs text-primary leading-[1.2]' }, option.position)
           ])
@@ -59,7 +59,7 @@
         {
           class: 'flex gap-2 my-1 items-center'
         },
-        `${option?.last_name} ${option?.first_name} ${option?.middle_name}`
+        Utils.combineFullName(option) || option?.label || ''
       )
     ]
   }

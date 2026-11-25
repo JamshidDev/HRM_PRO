@@ -69,7 +69,7 @@
         {
           class: 'flex gap-2 my-1 items-center'
         },
-        `${option?.last_name} ${option?.first_name} ${option?.middle_name}`
+        Utils.combineFullName(option) || option?.label || ''
       )
     ]
   }
