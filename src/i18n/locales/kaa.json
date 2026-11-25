@@ -3037,6 +3037,12 @@
       "durationDay": "Dem alıs dawamlılıǵı {n} kún",
       "workDay": "Jumısqa shıǵıw sánesi",
       "duration": "Qashannan - Qashanǵa shekem"
+    },
+    "status": {
+      "label": "Jaǵdayı",
+      "active": "Házir dem alısta",
+      "upcoming": "Keleshektegi dem alıslar",
+      "all": "Barlıǵı"
     }
   },
   "dashboardPage": {

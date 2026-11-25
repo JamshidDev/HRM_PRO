@@ -3157,6 +3157,12 @@
       "durationDay": "Ta'til davomiyligi {n} kun",
       "workDay": "Ishga chiqish sanasi",
       "duration": "Qachondan - Qachongacha"
+    },
+    "status": {
+      "label": "Holati",
+      "active": "Hozir ta'tilda",
+      "upcoming": "Kelgusi ta'tillar",
+      "all": "Hammasi"
     }
   },
   "dashboardPage": {

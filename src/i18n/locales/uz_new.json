@@ -3157,6 +3157,12 @@
       "durationDay": "Ta'til davomiyligi {n} kun",
       "workDay": "Işga çiqiş sanasi",
       "duration": "Qaçondan - Qaçongaça"
+    },
+    "status": {
+      "label": "Holati",
+      "active": "Hozir ta'tilda",
+      "upcoming": "Kelgusi ta'tillar",
+      "all": "Hammasi"
     }
   },
   "dashboardPage": {

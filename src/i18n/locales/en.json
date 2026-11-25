@@ -3137,6 +3137,12 @@
       "durationDay": "Vacation duration {n} days",
       "workDay": "Return to work date",
       "duration": "From - To"
+    },
+    "status": {
+      "label": "Status",
+      "active": "On leave now",
+      "upcoming": "Upcoming leaves",
+      "all": "All"
     }
   },
   "dashboardPage": {
