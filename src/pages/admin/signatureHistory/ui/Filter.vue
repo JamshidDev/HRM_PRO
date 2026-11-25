@@ -37,6 +37,13 @@
 
   const onDocumentIdInput = useDebounceFn(filterEvent, 500)
 
+  // Korxona tanlovi o'zgarsa filtr avtomatik qo'llanadi (UISelect faqat Enter'da submit qiladi).
+  const onOrganizationsChange = useDebounceFn(filterEvent, 600)
+  watch(
+    () => store.params.organizations.map((o) => o.id).join(','),
+    () => onOrganizationsChange()
+  )
+
   const onClear = () => {
     store._clearFilters()
     filterEvent()
