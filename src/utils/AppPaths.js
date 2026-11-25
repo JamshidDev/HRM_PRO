@@ -53,6 +53,7 @@ export const AppPaths = {
   Edit: '/edit',
   Document: '/document',
   ActionLog: '/action-logs',
+  SignatureHistory: '/signature-history',
   Confirmation: '/confirmation',
   Responsible: '/responsible',
   Documents: '/documents',

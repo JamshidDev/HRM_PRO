@@ -2468,6 +2468,107 @@
       "sign-in": "Вход в систему"
     }
   },
+  "signatureHistory": {
+    "name": "История подписей",
+    "searchPlaceholder": "Поиск по Ф.И.О. сотрудника",
+    "table": {
+      "signer": "Подписант",
+      "document": "Документ",
+      "method": "Способ",
+      "via": "Путь входа",
+      "keyType": "Тип ключа",
+      "ip": "IP адрес",
+      "device": "Устройство",
+      "signingTime": "Время подписи",
+      "createdAt": "Время записи",
+      "actions": "Действия",
+      "pin": "ПИНФЛ",
+      "details": "Подробнее"
+    },
+    "filter": {
+      "method": "Способ подписи",
+      "via": "Путь входа",
+      "documentModel": "Тип документа",
+      "documentId": "ID документа",
+      "date": "Период",
+      "structure": "Организации"
+    },
+    "method": {
+      "eimzo_pc": "E-IMZO на компьютере",
+      "eimzo_mobile_qr": "Мобильный E-IMZO — QR",
+      "eimzo_mobile_deeplink": "Мобильный E-IMZO — на телефоне",
+      "drawn": "Нарисованная от руки",
+      "face": "Face ID",
+      "unknown": "Неизвестно (старая запись)"
+    },
+    "via": {
+      "system": "Через систему",
+      "link": "Через ссылку"
+    },
+    "keyType": {
+      "pfx": "PFX файл",
+      "idcard": "ID-карта",
+      "baikey": "BAIK токен",
+      "ckc": "USB токен"
+    },
+    "documentModel": {
+      "commands": "Приказ",
+      "contracts": "Трудовой договор",
+      "contract-additional": "Дополнительное соглашение",
+      "documents": "Документ",
+      "timesheet": "Табель",
+      "vacation-schedule": "График отпусков",
+      "worker-application": "Заявление",
+      "med": "Медосмотр",
+      "staffing-approve": "Утверждение штатного расписания",
+      "lms-certificate": "Сертификат LMS",
+      "report": "Отчёт"
+    },
+    "detail": {
+      "title": "Данные подписи",
+      "signer": "Подписант",
+      "organization": "Организация",
+      "phone": "Телефон",
+      "document": "Документ",
+      "confirmationId": "ID подтверждения",
+      "userAgent": "Устройство (полный User-Agent)",
+      "certificate": "Сертификат",
+      "certificateCode": "Серийный номер сертификата",
+      "certificateExpired": "Срок действия сертификата",
+      "drawnImage": "Нарисованная подпись",
+      "secDocument": "Документ",
+      "secSignature": "Подпись и сертификат",
+      "secDevice": "Устройство",
+      "secTechnical": "Технические данные",
+      "signedFile": "Копия подписанного документа",
+      "openSignedFile": "Открыть PDF копию",
+      "noSignedFile": "Копия не сохранена",
+      "downloadPkcs7": "Скачать PKCS7",
+      "verify": "Проверить заново",
+      "meta": "Дополнительные данные",
+      "hasPkcs7": "Подпись PKCS7",
+      "yes": "Есть",
+      "no": "Нет"
+    },
+    "verify": {
+      "title": "Результат проверки",
+      "valid": "Подпись действительна",
+      "invalid": "Подпись недействительна",
+      "notChecked": "Не удалось проверить",
+      "noPkcs7": "В этой записи нет подписи PKCS7 — проверена только копия документа",
+      "status": "Статус",
+      "signer": "Владелец подписи",
+      "serial": "Серийный номер сертификата",
+      "validity": "Срок сертификата",
+      "signingTime": "Время подписи",
+      "certificateVerified": "Сертификат подтверждён",
+      "fileIntact": "Копия документа не изменена",
+      "documentMatches": "Документ внутри PKCS7 совпадает с копией",
+      "fileNotStored": "Копия документа не сохранена",
+      "yes": "Да",
+      "no": "Нет"
+    }
+  },
   "relativePage": {
     "createTitle": "Добавить родственника",
     "updateTitle": "Редактировать родственника",

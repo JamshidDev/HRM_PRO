@@ -2460,6 +2460,107 @@
       "sign-in": "Login"
     }
   },
+  "signatureHistory": {
+    "name": "Signature history",
+    "searchPlaceholder": "Search by employee name",
+    "table": {
+      "signer": "Signer",
+      "document": "Document",
+      "method": "Method",
+      "via": "Entry point",
+      "keyType": "Key type",
+      "ip": "IP address",
+      "device": "Device",
+      "signingTime": "Signing time",
+      "createdAt": "Recorded at",
+      "actions": "Actions",
+      "pin": "PINFL",
+      "details": "Details"
+    },
+    "filter": {
+      "method": "Signing method",
+      "via": "Entry point",
+      "documentModel": "Document type",
+      "documentId": "Document ID",
+      "date": "Date range",
+      "structure": "Organizations"
+    },
+    "method": {
+      "eimzo_pc": "E-IMZO on computer",
+      "eimzo_mobile_qr": "Mobile E-IMZO — QR",
+      "eimzo_mobile_deeplink": "Mobile E-IMZO — on phone",
+      "drawn": "Hand-drawn",
+      "face": "Face ID",
+      "unknown": "Unknown (old record)"
+    },
+    "via": {
+      "system": "Via system",
+      "link": "Via link"
+    },
+    "keyType": {
+      "pfx": "PFX file",
+      "idcard": "ID card",
+      "baikey": "BAIK token",
+      "ckc": "USB token"
+    },
+    "documentModel": {
+      "commands": "Order",
+      "contracts": "Employment contract",
+      "contract-additional": "Additional agreement",
+      "documents": "Document",
+      "timesheet": "Timesheet",
+      "vacation-schedule": "Vacation schedule",
+      "worker-application": "Application",
+      "med": "Medical check",
+      "staffing-approve": "Staffing approval",
+      "lms-certificate": "LMS certificate",
+      "report": "Report"
+    },
+    "detail": {
+      "title": "Signature details",
+      "signer": "Signer",
+      "organization": "Organization",
+      "phone": "Phone",
+      "document": "Document",
+      "confirmationId": "Confirmation ID",
+      "userAgent": "Device (full User-Agent)",
+      "certificate": "Certificate",
+      "certificateCode": "Certificate serial number",
+      "certificateExpired": "Certificate valid until",
+      "drawnImage": "Drawn signature",
+      "secDocument": "Document",
+      "secSignature": "Signature and certificate",
+      "secDevice": "Device",
+      "secTechnical": "Technical data",
+      "signedFile": "Signed document copy",
+      "openSignedFile": "Open PDF copy",
+      "noSignedFile": "Copy not stored",
+      "downloadPkcs7": "Download PKCS7",
+      "verify": "Verify again",
+      "meta": "Extra data",
+      "hasPkcs7": "PKCS7 signature",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "verify": {
+      "title": "Verification result",
+      "valid": "Signature is valid",
+      "invalid": "Signature is invalid",
+      "notChecked": "Could not be checked",
+      "noPkcs7": "This record has no PKCS7 signature — only the document copy was checked",
+      "status": "Status",
+      "signer": "Signature owner",
+      "serial": "Certificate serial number",
+      "validity": "Certificate validity",
+      "signingTime": "Signing time",
+      "certificateVerified": "Certificate verified",
+      "fileIntact": "Document copy is unchanged",
+      "documentMatches": "Document inside PKCS7 matches the copy",
+      "fileNotStored": "Document copy not stored",
+      "yes": "Yes",
+      "no": "No"
+    }
+  },
   "relativePage": {
     "createTitle": "Add relative",
     "updateTitle": "Edit relative",

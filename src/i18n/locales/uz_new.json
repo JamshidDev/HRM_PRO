@@ -2483,6 +2483,107 @@
       "sign-in": "Tizimga kiriş"
     }
   },
+  "signatureHistory": {
+    "name": "Imzo tarixi",
+    "searchPlaceholder": "Xodim F.I.Ş böyiça qidiriş",
+    "table": {
+      "signer": "Imzolovçi",
+      "document": "Hujjat",
+      "method": "Usul",
+      "via": "Kiriş yöli",
+      "keyType": "Kalit turi",
+      "ip": "IP manzil",
+      "device": "Qurilma",
+      "signingTime": "Imzo vaqti",
+      "createdAt": "Yozilgan vaqt",
+      "actions": "Amallar",
+      "pin": "JŞŞIR",
+      "details": "Batafsil"
+    },
+    "filter": {
+      "method": "Imzolaş usuli",
+      "via": "Kiriş yöli",
+      "documentModel": "Hujjat turi",
+      "documentId": "Hujjat ID",
+      "date": "Sana oraliği",
+      "structure": "Korxonalar"
+    },
+    "method": {
+      "eimzo_pc": "Kompyuterdagi E-IMZO",
+      "eimzo_mobile_qr": "Mobil E-IMZO — QR",
+      "eimzo_mobile_deeplink": "Mobil E-IMZO — telefonda",
+      "drawn": "Qölda çizilgan",
+      "face": "Face ID",
+      "unknown": "Noma'lum (eski yozuv)"
+    },
+    "via": {
+      "system": "Tizim orqali",
+      "link": "Link orqali"
+    },
+    "keyType": {
+      "pfx": "PFX fayl",
+      "idcard": "ID-karta",
+      "baikey": "BAIK token",
+      "ckc": "USB token"
+    },
+    "documentModel": {
+      "commands": "Buyruq",
+      "contracts": "Mehnat şartnomasi",
+      "contract-additional": "Qöşimça kelişuv",
+      "documents": "Hujjat",
+      "timesheet": "Tabel",
+      "vacation-schedule": "Ta'tillar grafigi",
+      "worker-application": "Ariza",
+      "med": "Tibbiy körik",
+      "staffing-approve": "Ştat jadvali tasdiği",
+      "lms-certificate": "LMS sertifikati",
+      "report": "Hisobot"
+    },
+    "detail": {
+      "title": "Imzo ma'lumotlari",
+      "signer": "Imzolovçi",
+      "organization": "Korxona",
+      "phone": "Telefon",
+      "document": "Hujjat",
+      "confirmationId": "Tasdiqlaş ID",
+      "userAgent": "Qurilma (töliq User-Agent)",
+      "certificate": "Sertifikat",
+      "certificateCode": "Sertifikat seriya raqami",
+      "certificateExpired": "Sertifikat amal qiliş muddati",
+      "drawnImage": "Çizilgan imzo",
+      "secDocument": "Hujjat",
+      "secSignature": "Imzo va sertifikat",
+      "secDevice": "Qurilma",
+      "secTechnical": "Texnik ma'lumot",
+      "signedFile": "Imzolangan hujjat nusxasi",
+      "openSignedFile": "PDF nusxani oçiş",
+      "noSignedFile": "Nusxa saqlanmagan",
+      "downloadPkcs7": "PKCS7 yuklab oliş",
+      "verify": "Qayta tekşiriş",
+      "meta": "Qöşimça ma'lumot",
+      "hasPkcs7": "PKCS7 imzo",
+      "yes": "Bor",
+      "no": "Yöq"
+    },
+    "verify": {
+      "title": "Tekşiruv natijasi",
+      "valid": "Imzo haqiqiy",
+      "invalid": "Imzo haqiqiy emas",
+      "notChecked": "Tekşirib bölmadi",
+      "noPkcs7": "Bu yozuvda PKCS7 imzo yöq — faqat hujjat nusxasi tekşirildi",
+      "status": "Holat",
+      "signer": "Imzo egasi",
+      "serial": "Sertifikat seriya raqami",
+      "validity": "Sertifikat muddati",
+      "signingTime": "Imzo vaqti",
+      "certificateVerified": "Sertifikat tasdiqlandi",
+      "fileIntact": "Hujjat nusxasi özgarmagan",
+      "documentMatches": "PKCS7 içidagi hujjat nusxaga mos",
+      "fileNotStored": "Hujjat nusxasi saqlanmagan",
+      "yes": "Ha",
+      "no": "Yöq"
+    }
+  },
   "relativePage": {
     "createTitle": "Qarindoş ma'lumotini qöşiş",
     "updateTitle": "Qarindoş ma'lumotini tahrirlaş",

@@ -2286,6 +2286,107 @@
       "sign-in": "Тизимга кириш"
     }
   },
+  "signatureHistory": {
+    "name": "Имзо тарихи",
+    "searchPlaceholder": "Ходим Ф.И.Ш бўйича қидириш",
+    "table": {
+      "signer": "Имзоловчи",
+      "document": "Ҳужжат",
+      "method": "Усул",
+      "via": "Кириш йўли",
+      "keyType": "Калит тури",
+      "ip": "IP манзил",
+      "device": "Қурилма",
+      "signingTime": "Имзо вақти",
+      "createdAt": "Ёзилган вақт",
+      "actions": "Амаллар",
+      "pin": "ЖШШИР",
+      "details": "Батафсил"
+    },
+    "filter": {
+      "method": "Имзолаш усули",
+      "via": "Кириш йўли",
+      "documentModel": "Ҳужжат тури",
+      "documentId": "Ҳужжат ID",
+      "date": "Сана оралиғи",
+      "structure": "Корхоналар"
+    },
+    "method": {
+      "eimzo_pc": "Компьютердаги E-IMZO",
+      "eimzo_mobile_qr": "Мобил E-IMZO — QR",
+      "eimzo_mobile_deeplink": "Мобил E-IMZO — телефонда",
+      "drawn": "Қўлда чизилган",
+      "face": "Face ID",
+      "unknown": "Номаълум (эски ёзув)"
+    },
+    "via": {
+      "system": "Тизим орқали",
+      "link": "Линк орқали"
+    },
+    "keyType": {
+      "pfx": "PFX файл",
+      "idcard": "ID-карта",
+      "baikey": "BAIK токен",
+      "ckc": "USB токен"
+    },
+    "documentModel": {
+      "commands": "Буйруқ",
+      "contracts": "Меҳнат шартномаси",
+      "contract-additional": "Қўшимча келишув",
+      "documents": "Ҳужжат",
+      "timesheet": "Табел",
+      "vacation-schedule": "Таътиллар графиги",
+      "worker-application": "Ариза",
+      "med": "Тиббий кўрик",
+      "staffing-approve": "Штат жадвали тасдиғи",
+      "lms-certificate": "LMS сертификати",
+      "report": "Ҳисобот"
+    },
+    "detail": {
+      "title": "Имзо маълумотлари",
+      "signer": "Имзоловчи",
+      "organization": "Корхона",
+      "phone": "Телефон",
+      "document": "Ҳужжат",
+      "confirmationId": "Тасдиқлаш ID",
+      "userAgent": "Қурилма (тўлиқ User-Agent)",
+      "certificate": "Сертификат",
+      "certificateCode": "Сертификат серия рақами",
+      "certificateExpired": "Сертификат амал қилиш муддати",
+      "drawnImage": "Чизилган имзо",
+      "secDocument": "Ҳужжат",
+      "secSignature": "Имзо ва сертификат",
+      "secDevice": "Қурилма",
+      "secTechnical": "Техник маълумот",
+      "signedFile": "Имзоланган ҳужжат нусхаси",
+      "openSignedFile": "PDF нусхани очиш",
+      "noSignedFile": "Нусха сақланмаган",
+      "downloadPkcs7": "PKCS7 юклаб олиш",
+      "verify": "Қайта текшириш",
+      "meta": "Қўшимча маълумот",
+      "hasPkcs7": "PKCS7 имзо",
+      "yes": "Бор",
+      "no": "Йўқ"
+    },
+    "verify": {
+      "title": "Текширув натижаси",
+      "valid": "Имзо ҳақиқий",
+      "invalid": "Имзо ҳақиқий эмас",
+      "notChecked": "Текшириб бўлмади",
+      "noPkcs7": "Бу ёзувда PKCS7 имзо йўқ — фақат ҳужжат нусхаси текширилди",
+      "status": "Ҳолат",
+      "signer": "Имзо эгаси",
+      "serial": "Сертификат серия рақами",
+      "validity": "Сертификат муддати",
+      "signingTime": "Имзо вақти",
+      "certificateVerified": "Сертификат тасдиқланди",
+      "fileIntact": "Ҳужжат нусхаси ўзгармаган",
+      "documentMatches": "PKCS7 ичидаги ҳужжат нусхага мос",
+      "fileNotStored": "Ҳужжат нусхаси сақланмаган",
+      "yes": "Ҳа",
+      "no": "Йўқ"
+    }
+  },
   "relativePage": {
     "createTitle": "Қариндош маълумотини қўшиш",
     "updateTitle": "Қариндош маълумотини таҳрирлаш",

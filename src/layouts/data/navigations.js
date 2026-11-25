@@ -1154,6 +1154,13 @@ export const navigations = withRawIcons([
         permission: appPermissions.activityLogsRead
       },
       {
+        label: 'signatureHistory.name', // Imzo tarixi
+        path: Utils.routePathMaker(AppPaths.SignatureHistory),
+        icon: AdminFolderIcon,
+        color: 'bg-dark',
+        permission: appPermissions.signatureHistoryRead
+      },
+      {
         label: 'documentSetting.name', // Hujjat sozlamalari
         path: Utils.routePathMaker(AppPaths.DocumentSetting),
         icon: AdminFolderIcon,
