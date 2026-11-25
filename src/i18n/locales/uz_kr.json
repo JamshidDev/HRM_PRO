@@ -2304,6 +2304,7 @@
       "details": "Батафсил"
     },
     "filter": {
+      "department": "Бўлим",
       "method": "Имзолаш усули",
       "via": "Кириш йўли",
       "documentModel": "Ҳужжат тури",
@@ -2358,6 +2359,7 @@
       "secSignature": "Имзо ва сертификат",
       "secDevice": "Қурилма",
       "secTechnical": "Техник маълумот",
+      "eimzoResponse": "E-IMZO жавоби",
       "signedFile": "Имзоланган ҳужжат нусхаси",
       "openSignedFile": "PDF нусхани очиш",
       "noSignedFile": "Нусха сақланмаган",

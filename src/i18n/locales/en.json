@@ -2478,6 +2478,7 @@
       "details": "Details"
     },
     "filter": {
+      "department": "Department",
       "method": "Signing method",
       "via": "Entry point",
       "documentModel": "Document type",
@@ -2532,6 +2533,7 @@
       "secSignature": "Signature and certificate",
       "secDevice": "Device",
       "secTechnical": "Technical data",
+      "eimzoResponse": "E-IMZO response",
       "signedFile": "Signed document copy",
       "openSignedFile": "Open PDF copy",
       "noSignedFile": "Copy not stored",

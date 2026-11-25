@@ -28,8 +28,16 @@
   const d = computed(() => store.detail)
   const v = computed(() => store.verifyResult)
   const drawn = computed(() => imageSrc(d.value?.image))
-  const hasMeta = computed(() => d.value?.meta && Object.keys(d.value.meta).length > 0)
-  const metaText = computed(() => (hasMeta.value ? JSON.stringify(d.value.meta, null, 2) : ''))
+  // E-IMZO javobi alohida bo'limda, qolgan meta «Texnik ma'lumot» da.
+  const eimzoResponse = computed(() => d.value?.meta?.eimzo_response ?? null)
+  const eimzoText = computed(() =>
+    eimzoResponse.value ? JSON.stringify(eimzoResponse.value, null, 2) : ''
+  )
+  const restMeta = computed(() =>
+    Object.fromEntries(Object.entries(d.value?.meta ?? {}).filter(([k]) => k !== 'eimzo_response'))
+  )
+  const hasMeta = computed(() => Object.keys(restMeta.value).length > 0)
+  const metaText = computed(() => (hasMeta.value ? JSON.stringify(restMeta.value, null, 2) : ''))
 
   // Bo'limlar: hujjat, imzo/sertifikat, qurilma.
   const sections = computed(() => {
@@ -256,8 +264,22 @@
             </div>
           </div>
 
-          <n-collapse v-if="hasMeta">
-            <n-collapse-item :title="$t('signatureHistory.detail.secTechnical')" name="meta">
+          <n-collapse v-if="eimzoResponse || hasMeta" :default-expanded-names="['eimzo']">
+            <n-collapse-item
+              v-if="eimzoResponse"
+              :title="$t('signatureHistory.detail.eimzoResponse')"
+              name="eimzo"
+            >
+              <div
+                class="text-xs font-mono whitespace-pre-wrap break-all rounded-lg bg-surface-section p-2 max-h-[420px] overflow-auto"
+                v-text="eimzoText"
+              />
+            </n-collapse-item>
+            <n-collapse-item
+              v-if="hasMeta"
+              :title="$t('signatureHistory.detail.secTechnical')"
+              name="meta"
+            >
               <div
                 class="text-xs font-mono whitespace-pre-wrap break-all rounded-lg bg-surface-section p-2"
                 v-text="metaText"

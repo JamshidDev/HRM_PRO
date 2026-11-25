@@ -2501,6 +2501,7 @@
       "details": "Batafsil"
     },
     "filter": {
+      "department": "Bo'lim",
       "method": "Imzolaş usuli",
       "via": "Kiriş yöli",
       "documentModel": "Hujjat turi",
@@ -2555,6 +2556,7 @@
       "secSignature": "Imzo va sertifikat",
       "secDevice": "Qurilma",
       "secTechnical": "Texnik ma'lumot",
+      "eimzoResponse": "E-IMZO javobi",
       "signedFile": "Imzolangan hujjat nusxasi",
       "openSignedFile": "PDF nusxani oçiş",
       "noSignedFile": "Nusxa saqlanmagan",

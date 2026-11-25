@@ -2486,6 +2486,7 @@
       "details": "Подробнее"
     },
     "filter": {
+      "department": "Подразделение",
       "method": "Способ подписи",
       "via": "Путь входа",
       "documentModel": "Тип документа",
@@ -2540,6 +2541,7 @@
       "secSignature": "Подпись и сертификат",
       "secDevice": "Устройство",
       "secTechnical": "Технические данные",
+      "eimzoResponse": "Ответ E-IMZO",
       "signedFile": "Копия подписанного документа",
       "openSignedFile": "Открыть PDF копию",
       "noSignedFile": "Копия не сохранена",

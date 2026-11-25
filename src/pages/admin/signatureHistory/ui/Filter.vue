@@ -1,5 +1,5 @@
 <script setup>
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIDepartmentSelect, UIPageFilter, UISelect } from '@/components/index.js'
   import {
     useAccountStore,
     useComponentStore,
@@ -24,6 +24,7 @@
   const filterCount = computed(
     () =>
       Number(Boolean(store.params.organizations.length)) +
+      Number(Boolean(store.params.departments.length)) +
       Number(Boolean(store.params.method)) +
       Number(Boolean(store.params.document_model)) +
       Number(Boolean(store.params.document_id)) +
@@ -41,7 +42,10 @@
   const onOrganizationsChange = useDebounceFn(filterEvent, 600)
   watch(
     () => store.params.organizations.map((o) => o.id).join(','),
-    () => onOrganizationsChange()
+    () => {
+      store.params.departments = []
+      onOrganizationsChange()
+    }
   )
 
   const onClear = () => {
@@ -87,6 +91,16 @@
         @updateCheck="(v) => (store.structureCheck = v)"
         :loading="compStore.structureLoading"
         @onSubmit="filterEvent"
+      />
+      <label class="mt-3 text-xs text-gray-500">{{
+        $t('signatureHistory.filter.department')
+      }}</label>
+      <UIDepartmentSelect
+        v-model="store.params.departments"
+        :organization="store.params.organizations"
+        source="all"
+        multiple
+        @update:model-value="filterEvent"
       />
       <label class="mt-3 text-xs text-gray-500">{{ $t('signatureHistory.filter.method') }}</label>
       <n-select

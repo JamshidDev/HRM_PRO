@@ -41,7 +41,8 @@ const defaultParams = () => ({
   document_model: null,
   document_id: null,
   date_range: null,
-  organizations: []
+  organizations: [],
+  departments: []
 })
 
 export const useSignatureHistoryStore = defineStore('signatureHistory', {
@@ -72,7 +73,8 @@ export const useSignatureHistoryStore = defineStore('signatureHistory', {
         document_id: this.params.document_id || null,
         date_from: Utils.timeToZone(from),
         date_to: Utils.timeToZone(to),
-        organizations: this.params.organizations.map((v) => v.id).toString() || null
+        organizations: this.params.organizations.map((v) => v.id).toString() || null,
+        departments: this.params.departments.toString() || null
       }
       $ApiService.logService
         ._signatureHistory({ params })
