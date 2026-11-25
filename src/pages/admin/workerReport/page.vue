@@ -1,6 +1,6 @@
 <script setup>
   import { useComponentStore } from '@/store/modules/index.js'
-  import { UIModal, UISelect } from '@/components/index.js'
+  import { UIDayPicker, UIModal, UISelect } from '@/components/index.js'
   import {
     ArrowDownload24Regular,
     CalendarClock24Regular,
@@ -11,7 +11,6 @@
     BuildingMultiple24Regular
   } from '@vicons/fluent'
   import { useMessage } from 'naive-ui'
-  import { useAppSetting } from '@/utils/AppSetting.js'
   import i18n from '@/i18n/index.js'
 
   const componentStore = useComponentStore()
@@ -526,24 +525,22 @@
             <label class="text-xs text-textColor3 mb-1 block">
               {{ $t('workerReport.from') }}
             </label>
-            <n-date-picker
+            <UIDayPicker
               v-model:value="d1.from"
-              type="date"
+              mode="day"
               clearable
               class="w-full"
-              :format="useAppSetting.datePicketFormat"
             />
           </div>
           <div>
             <label class="text-xs text-textColor3 mb-1 block">
               {{ $t('workerReport.to') }}
             </label>
-            <n-date-picker
+            <UIDayPicker
               v-model:value="d1.to"
-              type="date"
+              mode="day"
               clearable
               class="w-full"
-              :format="useAppSetting.datePicketFormat"
             />
           </div>
         </div>

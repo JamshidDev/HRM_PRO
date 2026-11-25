@@ -1,7 +1,7 @@
 <script setup>
   // Setka/bazani lavozimlarga qo'llash: ta'sir preview (joriy vs yangi + farq + foiz) +
   // lavozim tanlash (checkbox) + qidiruv + faqat-o'zgaradiganlar + sabab + ixtiyoriy hujjat.
-  import { UIChip, UIUpload, NoDataPicture } from '@/components/index.js'
+  import { UIDayPicker, UIChip, UIUpload, NoDataPicture } from '@/components/index.js'
   import { ErrorCircle12Filled } from '@vicons/fluent'
   import { useTariffGridStore } from '@/store/modules/index.js'
 
@@ -148,8 +148,13 @@
         </n-form-item>
 
         <n-form-item :label="$t('tariffGrid.form.effectiveDate')">
-          <n-date-picker class="w-full" type="date" clearable
-            v-model:formatted-value="store.applyPayload.effective_date" value-format="yyyy-MM-dd" />
+          <UIDayPicker
+            class="w-full"
+            clearable
+            v-model:formatted-value="store.applyPayload.effective_date"
+            mode="day"
+            value-format="yyyy-MM-dd"
+          />
         </n-form-item>
 
         <n-form-item :label="$t('tariffGrid.apply.file')">

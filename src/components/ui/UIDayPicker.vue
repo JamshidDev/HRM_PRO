@@ -42,17 +42,37 @@
     endPlaceholder: { type: String, default: null },
     clearable: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
+    // Naive kabi: 'error' | 'warning' | 'success'. Berilmasa — n-form-item validatsiya holatidan olinadi.
+    status: { type: String, default: null },
     loading: { type: Boolean, default: false },
     isDateDisabled: { type: Function, default: null },
     placement: { type: String, default: 'bottom-start' },
     // Shu kundan keyingi kunlar tanlanmaydi. ms / Date / null.
     maxDate: { type: [Number, Date], default: null },
+    // Naive kabi o'lcham: 'small' (28px) | 'medium' (34px) | 'large' (40px). Filtr / forma o'z o'zgaruvchisi bilan ustun.
+    size: { type: String, default: null },
+    // Qiymat bo'sh bo'lsa kalendar shu oydan ochiladi (Naive `default-calendar-start-time`). ms.
+    defaultCalendarStartTime: { type: Number, default: null },
     // Naive'dan qolgan — qabul qilinadi, ishlatilmaydi.
     format: { type: String, default: null },
     actions: { type: [Array, null], default: undefined },
     updateValueOnClose: { type: Boolean, default: false }
   })
   const emit = defineEmits(['update:value', 'update:formatted-value'])
+
+  // ---- n-form-item bilan bog'lanish (Naive o'z inputlari kabi) ----
+  // Kalit oddiy satr ('n-form-item'): forma xatosida qizil hoshiya, tanlanganda «change/input», oyna yopilganda «blur»
+  // — validatsiya shu signallar bilan ishlaydi. Ichkariga null beramiz (ichki komponentlar formaga ulanmasin).
+  const NFormItem = inject('n-form-item', null)
+  provide('n-form-item', null)
+  const mergedStatus = computed(() => props.status || NFormItem?.mergedValidationStatus?.value || null)
+  const mergedDisabled = computed(() => props.disabled || Boolean(NFormItem?.disabled?.value))
+  const notifyChange = () => {
+    NFormItem?.handleContentInput?.()
+    NFormItem?.handleContentChange?.()
+  }
+  const notifyBlur = () => NFormItem?.handleContentBlur?.()
+  onBeforeUnmount(() => NFormItem?.restoreValidation?.())
 
   const MONTH_KEYS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
   const WEEK_KEYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -94,7 +114,7 @@
   const page = ref('quick') // 'quick' | 'calendar'
   const quickAnimKey = ref(0) // tugmalar har ochilganda ketma-ket paydo bo'lsin
   const monthDir = ref('next') // oy almashganda siljish yo'nalishi
-  const calView = ref('days') // kalendar ichida: 'days' | 'months'
+  const calView = ref('days') // kalendar ichida: 'days' | 'months' | 'years'
   const view = ref(today().startOf('month'))
   const pickStart = ref(null)
   const hoverDay = ref(null)
@@ -195,6 +215,7 @@
     const fm = [s.format(dayjsFormat.value), e.format(dayjsFormat.value)]
     emit('update:value', outArray.value ? ts : ts[0])
     emit('update:formatted-value', outArray.value ? fm : fm[0])
+    notifyChange()
   }
 
   const reset = () => {
@@ -221,6 +242,7 @@
     reset()
     emit('update:value', null)
     emit('update:formatted-value', null)
+    notifyChange()
   }
 
   // Bo'sh maydon matni: berilgani, aks holda davr uchun «Boshlanish – Tugash», bo'lmasa umumiy.
@@ -231,11 +253,12 @@
   })
 
   const onShowChange = (v) => {
-    if (v && (props.disabled || props.loading)) return
+    if (v && (mergedDisabled.value || props.loading)) return
+    if (!v && show.value) notifyBlur()
     // Davr rejimida faqat boshlanish tanlanib oyna yopilsa — bitta kun sifatida qo'llanadi.
     if (!v && pickStart.value) emitRange(pickStart.value, pickStart.value)
     if (v) {
-      view.value = (from.value ?? today()).startOf('month')
+      view.value = (from.value ?? (props.defaultCalendarStartTime != null ? dayjs(props.defaultCalendarStartTime) : today())).startOf('month')
       calView.value = 'days'
       // Ixtiyoriy qiymat tanlangan bo'lsa — to'g'ri kalendarga; aks holda tez tanlash.
       page.value = hasValue.value && !presetKey.value ? 'calendar' : 'quick'
@@ -263,15 +286,32 @@
   }
 
   // `maxDate` dan keyingi oy / yilga o'tib bo'lmaydi — u yerda hamma kun yopiq bo'lardi.
+  // Ko'rinish bo'yicha qadam: kunlar → 1 oy, oylar → 1 yil, yillar → 12 yil.
+  const stepOf = () => (calView.value === 'days' ? [1, 'month'] : calView.value === 'months' ? [1, 'year'] : [12, 'year'])
+  const yearBlockStart = computed(() => view.value.year() - (view.value.year() % 12))
   const canNext = computed(() => {
     if (!max.value) return true
+    if (calView.value === 'years') return yearBlockStart.value + 12 <= max.value.year()
     const unit = calView.value === 'days' ? 'month' : 'year'
     return !view.value.add(1, unit).startOf(unit).isAfter(max.value, 'day')
   })
   const step = (dir) => {
     if (dir > 0 && !canNext.value) return
     monthDir.value = dir > 0 ? 'next' : 'prev'
-    view.value = view.value.add(dir, calView.value === 'days' ? 'month' : 'year')
+    const [n, unit] = stepOf()
+    view.value = view.value.add(dir * n, unit)
+  }
+  // Sarlavha bosilganda bir pog'ona yuqoriga: kunlar → oylar → yillar (yillardan — kunlarga qaytadi).
+  const onTitle = () => {
+    calView.value = calView.value === 'days' ? 'months' : calView.value === 'months' ? 'years' : 'days'
+  }
+  const years = computed(() => Array.from({ length: 12 }, (_, i) => yearBlockStart.value + i))
+  const isYearDisabled = (y) => Boolean(max.value && y > max.value.year())
+  const onYear = (y) => {
+    if (isYearDisabled(y)) return
+    monthDir.value = y >= view.value.year() ? 'next' : 'prev'
+    view.value = view.value.year(y)
+    calView.value = 'months'
   }
   const isMonthDisabled = (m) => isDisabled(view.value.month(m).startOf('month'))
   const onMonth = (m) => {
@@ -281,7 +321,10 @@
     calView.value = 'days'
   }
   // Oy / yil ko'rinishi almashganda Transition shu kalit bo'yicha siljitadi.
-  const gridKey = computed(() => `${calView.value}-${calView.value === 'days' ? view.value.format('YYYY-MM') : view.value.year()}`)
+  const gridKey = computed(
+    () =>
+      `${calView.value}-${calView.value === 'days' ? view.value.format('YYYY-MM') : calView.value === 'months' ? view.value.year() : yearBlockStart.value}`
+  )
 
   // Davr tanlash paytida kursor turgan kun ustida «N kun» belgisi.
   const countDay = computed(() => (pickStart.value ? (hoverDay.value ?? pickStart.value) : null))
@@ -290,9 +333,73 @@
     if (pickStart.value && !isDisabled(d)) hoverDay.value = d
   }
 
-  const title = computed(() =>
-    calView.value === 'days' ? `${t(`month.${MONTH_KEYS[view.value.month()]}`)} ${view.value.year()}` : String(view.value.year())
-  )
+  const title = computed(() => {
+    if (calView.value === 'days') return `${t(`month.${MONTH_KEYS[view.value.month()]}`)} ${view.value.year()}`
+    if (calView.value === 'months') return String(view.value.year())
+    return `${yearBlockStart.value} – ${yearBlockStart.value + 11}`
+  })
+
+  // ---- Kun rejimida yozib kiritish: DD.MM.YYYY niqobi (nuqtalar o'zi qo'yiladi) ----
+  // To'liq va to'g'ri sana yozilsa — darhol qo'llanadi; chala / noto'g'ri qolsa — chiqishda oldingi qiymatga qaytadi;
+  // butunlay o'chirilsa — qiymat tozalanadi.
+  const inputRef = ref(null)
+  const inputText = ref('')
+  const inputFocused = ref(false)
+  const syncInput = () => {
+    if (!inputFocused.value) inputText.value = hasValue.value ? fmtFull(from.value) : ''
+  }
+  watch(() => [from.value?.valueOf(), isDay.value], syncInput, { immediate: true })
+  const maskDate = (raw) => {
+    const d = raw.replace(/\D/g, '').slice(0, 8)
+    return [d.slice(0, 2), d.slice(2, 4), d.slice(4, 8)].filter(Boolean).join('.')
+  }
+  const parseTyped = (txt) => {
+    const m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(txt)
+    if (!m) return null
+    const [dd, mm, yy] = [Number(m[1]), Number(m[2]), Number(m[3])]
+    const d = dayjs(new Date(yy, mm - 1, dd))
+    // Haqiqiy sana bo'lsin (31.02 kabi emas) va oqilona yil.
+    if (yy < 1900 || yy > 2100 || d.date() !== dd || d.month() !== mm - 1) return null
+    return d.startOf('day')
+  }
+  const onTyping = (e) => {
+    inputText.value = maskDate(e.target.value)
+    e.target.value = inputText.value
+    const d = parseTyped(inputText.value)
+    if (d && !isDisabled(d)) {
+      emitRange(d, d)
+      view.value = d.startOf('month')
+      calView.value = 'days'
+    }
+  }
+  const onInputFocus = () => {
+    inputFocused.value = true
+  }
+  // Oyna ichida bosilganda input fokusni yo'qotadi — buni «chiqib ketish» deb hisoblamaymiz.
+  let panelPressed = false
+  const onPanelPress = () => {
+    panelPressed = true
+    setTimeout(() => (panelPressed = false), 0)
+  }
+  const onInputBlur = () => {
+    inputFocused.value = false
+    if (!inputText.value) {
+      if (hasValue.value) onClear()
+    } else if (!parseTyped(inputText.value)) {
+      syncInput()
+    }
+    // Klaviatura bilan (Tab) maydondan chiqilsa — oyna yopiladi (Naive kabi); oyna ichidagi bosish — yopmaydi.
+    if (show.value && !panelPressed) onShowChange(false)
+    else if (!show.value) notifyBlur()
+  }
+  const onInputClick = () => {
+    if (!show.value) onShowChange(true)
+  }
+  const onInputEnter = () => {
+    onInputBlur()
+    onShowChange(false)
+    inputRef.value?.blur()
+  }
   const weekNames = computed(() => WEEK_KEYS.map((k) => t(`shortWeek.${k}`)))
   const monthNames = computed(() => MONTH_KEYS.map((k) => t(`month.${k}`)))
 
@@ -363,7 +470,7 @@
 <template>
   <n-popover
     :show="show"
-    :disabled="disabled || loading"
+    :disabled="mergedDisabled || loading"
     trigger="click"
     :placement="placement"
     :show-arrow="false"
@@ -374,14 +481,37 @@
       <div
         v-bind="$attrs"
         class="ui-day-picker"
-        :class="{ 'is-open': show, 'is-disabled': disabled }"
-        :tabindex="disabled ? -1 : 0"
+        :class="{
+          'is-open': show,
+          'is-disabled': mergedDisabled,
+          'is-error': mergedStatus === 'error',
+          'is-warning': mergedStatus === 'warning',
+          [`udp-size-${size}`]: !!size
+        }"
+        :tabindex="mergedDisabled || isDay ? -1 : 0"
         role="button"
-        :aria-disabled="disabled || undefined"
+        :aria-disabled="mergedDisabled || undefined"
         @keydown.enter.prevent="onShowChange(!show)"
       >
         <span class="udp-text">
-          <template v-if="hasValue">
+          <!-- Kun rejimi: sanani yozib ham kiritish mumkin (DD.MM.YYYY). -->
+          <input
+            v-if="isDay"
+            ref="inputRef"
+            class="udp-input"
+            :value="inputText"
+            :placeholder="placeholderText"
+            :disabled="mergedDisabled || loading"
+            inputmode="numeric"
+            maxlength="10"
+            autocomplete="off"
+            @input="onTyping"
+            @focus="onInputFocus"
+            @blur="onInputBlur"
+            @click.stop="onInputClick"
+            @keydown.enter.stop.prevent="onInputEnter"
+          />
+          <template v-else-if="hasValue">
             <!-- Matn sig'masa (kesilsa) — hover'da to'liq sana; kesilmagan matn takrorlanmaydi. -->
             <n-tooltip trigger="manual" :show="tipShow" placement="top">
               <template #trigger>
@@ -399,7 +529,7 @@
           <n-spin v-if="loading" :size="14" />
           <n-icon v-else class="udp-icon" :size="16"><CalendarLtr20Regular /></n-icon>
           <button
-            v-if="clearable && hasValue && !disabled && !loading"
+            v-if="clearable && hasValue && !mergedDisabled && !loading"
             type="button"
             class="udp-clear"
             :aria-label="$t('dayPicker.clear')"
@@ -411,7 +541,7 @@
       </div>
     </template>
 
-    <div class="udp-panel">
+    <div class="udp-panel" @mousedown="onPanelPress">
       <div class="udp-pages" :style="pagesH ? { height: `${pagesH}px` } : null">
         <!-- ===== 1. Tez tanlash ===== -->
         <section
@@ -463,9 +593,9 @@
               <button type="button" class="udp-nav udp-back" @click="goPage('quick')">
                 <n-icon :size="15"><ArrowLeft16Regular /></n-icon>
               </button>
-              <button type="button" class="udp-title" @click="calView = calView === 'days' ? 'months' : 'days'">
+              <button type="button" class="udp-title" @click="onTitle">
                 {{ title }}
-                <n-icon :size="12" :class="{ 'rotate-180': calView === 'months' }"><ChevronDown16Regular /></n-icon>
+                <n-icon :size="12" :class="{ 'rotate-180': calView !== 'days' }"><ChevronDown16Regular /></n-icon>
               </button>
             </div>
             <div class="flex items-center gap-0.5">
@@ -505,7 +635,7 @@
               </button>
             </div>
 
-            <div v-else :key="gridKey" class="udp-months">
+            <div v-else-if="calView === 'months'" :key="gridKey" class="udp-months">
               <button
                 v-for="(m, i) in monthNames"
                 :key="m"
@@ -516,6 +646,21 @@
                 @click="onMonth(i)"
               >
                 {{ m }}
+              </button>
+            </div>
+
+            <!-- Yillar: 12 tadan; ‹ › — 12 yilga suriladi. Yil tanlansa — o'sha yilning oylari. -->
+            <div v-else :key="gridKey" class="udp-months">
+              <button
+                v-for="y in years"
+                :key="y"
+                type="button"
+                class="udp-month"
+                :class="{ 'is-current': view.year() === y, 'is-this-year': y === today().year() }"
+                :disabled="isYearDisabled(y)"
+                @click="onYear(y)"
+              >
+                {{ y }}
               </button>
             </div>
           </Transition>
@@ -552,6 +697,14 @@
       border-color 0.2s,
       background-color 0.2s,
       box-shadow 0.2s;
+  }
+  .ui-day-picker.udp-size-small {
+    --udp-h: 28px;
+    --udp-r: 8px;
+    font-size: 13px;
+  }
+  .ui-day-picker.udp-size-large {
+    --udp-h: 40px;
   }
   .ui-day-picker:hover {
     border-color: var(--input-border-hover);
@@ -591,6 +744,43 @@
   }
   .udp-ph {
     color: var(--textColor3);
+  }
+  /* Kun rejimidagi yozish maydoni — tashqi ko'rinish o'zgarmaydi (oddiy matn kabi). */
+  .udp-input {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--textColor0);
+    font: inherit;
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+  .udp-input::placeholder {
+    color: var(--textColor3);
+    opacity: 1;
+  }
+  .udp-input:disabled {
+    cursor: not-allowed;
+  }
+  /* Forma xatosi / ogohlantirish (n-form-item) — Naive inputlari kabi */
+  .ui-day-picker.is-error {
+    border-color: var(--danger-color);
+  }
+  .ui-day-picker.is-error.is-open,
+  .ui-day-picker.is-error:focus-within {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger-color) 18%, transparent);
+  }
+  .ui-day-picker.is-warning {
+    border-color: var(--warning-color, #f0a020);
+  }
+  .ui-day-picker:focus-within:not(.is-error) {
+    border-color: var(--primary-color);
+    background: var(--input-fill-focus);
+    box-shadow: 0 0 0 3px var(--input-ring);
   }
   .udp-suffix {
     position: relative;
@@ -893,6 +1083,9 @@
   }
   .udp-month:hover {
     background: var(--surface-ground-soft);
+  }
+  .udp-month.is-this-year:not(.is-current) {
+    color: var(--primary-color);
   }
   .udp-month.is-current {
     background: color-mix(in srgb, var(--primary-color) 13%, transparent);

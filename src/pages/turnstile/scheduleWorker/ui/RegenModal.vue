@@ -1,6 +1,6 @@
 <script setup>
   import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
-  import { UIFigField, UIModal } from '@/components/index.js'
+  import { UIDayPicker, UIFigField, UIModal } from '@/components/index.js'
   import WorkerCard from './WorkerCard.vue'
   import QuickDates from './QuickDates.vue'
   import Utils from '@/utils/Utils.js'
@@ -119,11 +119,10 @@
       </WorkerCard>
 
       <UIFigField :label="$t('shiftType.groupView.regenFrom')" editing>
-        <n-date-picker
+        <UIDayPicker
           v-model:value="date"
-          type="date"
+          mode="day"
           class="w-full"
-          format="dd.MM.yyyy"
           :clearable="false"
           :is-date-disabled="disabledDate"
         />

@@ -1,9 +1,9 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import { CloudLink16Regular } from '@vicons/fluent'
   import { useLanguageCertificateStore, useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
-  import { useAppSetting } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -170,11 +170,10 @@
         <div class="grid grid-cols-12 gap-2">
           <div class="col-span-12 md:col-span-6">
             <n-form-item :label="$t(`languageCertificatePage.form.issueDate`)" path="issue_date">
-              <n-date-picker
+              <UIDayPicker
                 v-model:formatted-value="store.payload.issue_date"
+                mode="day"
                 value-format="yyyy-MM-dd"
-                :format="useAppSetting.datePicketFormat"
-                type="date"
                 class="w-full"
                 clearable
               />
@@ -183,11 +182,10 @@
 
           <div class="col-span-12 md:col-span-6">
             <n-form-item :label="$t(`languageCertificatePage.form.expiryDate`)" path="expiry_date">
-              <n-date-picker
+              <UIDayPicker
                 v-model:formatted-value="store.payload.expiry_date"
+                mode="day"
                 value-format="yyyy-MM-dd"
-                :format="useAppSetting.datePicketFormat"
-                type="date"
                 class="w-full"
                 clearable
               />

@@ -2,12 +2,12 @@
   import { useDocumentDateLimit } from '@/composables/useDocumentDateLimit.js'
   import { useContractFormStore } from '../contractFormStore.js'
   import Utils from '@/utils/Utils.js'
-  import { UIAutoComplete, UIUser, UISelect, UIFigField } from '@/components/index.js'
+  import { UIDayPicker, UIAutoComplete, UIUser, UISelect, UIFigField } from '@/components/index.js'
   import { useComponentStore, useContractStore } from '@/store/modules/index.js'
   import { useRouter } from 'vue-router'
   import { NAvatar } from 'naive-ui'
   import UIHelper from '@/utils/UIHelper.js'
-  import { AppPaths, useAppSetting } from '@/utils/index.js'
+  import { AppPaths } from '@/utils/index.js'
 
   // Hujjat sanasi: yaratishda sozlamadagi oyna, tahrirda o'zgarmaydi.
   const { isDateDisabled } = useDocumentDateLimit()
@@ -172,11 +172,10 @@
         </UIFigField>
 
         <UIFigField editing :label="$t('documentPage.form.contractDate')" path="contract_date">
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.payload.contract_date"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
             :is-date-disabled="isDateDisabled"
             :disabled="Boolean(store.editId)"
           />
@@ -188,20 +187,18 @@
           :label="$t('documentPage.form.contract_to_date')"
           path="contract_to_date"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.payload.contract_to_date"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
           />
         </UIFigField>
 
         <UIFigField editing :label="$t('documentPage.form.position_date')" path="position_date">
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.payload.position_date"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
           />
         </UIFigField>
 

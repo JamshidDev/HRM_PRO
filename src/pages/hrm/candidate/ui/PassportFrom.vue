@@ -1,7 +1,6 @@
 <script setup>
   import { useCreateWorkerStore } from '@/store/modules/index.js'
-  import { UIFigBlock, UIFigField, UIModal } from '@/components/index.js'
-  import { useAppSetting } from '@/utils/index.js'
+  import { UIDayPicker, UIFigBlock, UIFigField, UIModal } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import icons from '@/assets/icons'
   import { Eye20Regular } from '@vicons/fluent'
@@ -88,11 +87,10 @@
         path="from_date"
         :rule-path="rules.requiredDateTimeField"
       >
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.payload.from_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </UIFigField>
 
@@ -102,11 +100,10 @@
         path="to_date"
         :rule-path="rules.requiredDateTimeField"
       >
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.payload.to_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </UIFigField>
 

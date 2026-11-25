@@ -1,9 +1,9 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import { useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
-  import { useAppSetting } from '@/utils/index.js'
   import LastVacationItem from '@/pages/docFlow/document/command/ui/LastVacationItem.vue'
   import { Eye24Regular } from '@vicons/fluent'
 
@@ -198,11 +198,10 @@
           "
           path="warning_date"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.form_32.warning_date"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
           />
         </n-form-item>
       </div>
@@ -214,11 +213,10 @@
         :label="$t(`documentPage.command.form.contract_to_date`)"
         path="contract_to_date"
       >
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_32.contract_to_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
@@ -341,21 +339,19 @@
             :label="$t(`content.from`)"
             path="compensation.period1"
           >
-            <n-date-picker
+            <UIDayPicker
               class="w-full"
               v-model:value="store.form_32.compensation.period1"
-              type="date"
-              :format="useAppSetting.datePicketFormat"
+              mode="day"
             />
           </n-form-item>
         </div>
         <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
           <n-form-item :show-feedback="false" :label="$t(`content.to`)" path="compensation.period2">
-            <n-date-picker
+            <UIDayPicker
               class="w-full"
               v-model:value="store.form_32.compensation.period2"
-              type="date"
-              :format="useAppSetting.datePicketFormat"
+              mode="day"
             />
           </n-form-item>
         </div>
@@ -406,11 +402,10 @@
             :label="$t(`content.from`)"
             path="salary_withholding.period1"
           >
-            <n-date-picker
+            <UIDayPicker
               class="w-full"
               v-model:value="store.form_32.salary_withholding.period1"
-              type="date"
-              :format="useAppSetting.datePicketFormat"
+              mode="day"
             />
           </n-form-item>
         </div>
@@ -420,11 +415,10 @@
             :label="$t(`content.to`)"
             path="salary_withholding.period2"
           >
-            <n-date-picker
+            <UIDayPicker
               class="w-full"
               v-model:value="store.form_32.salary_withholding.period2"
-              type="date"
-              :format="useAppSetting.datePicketFormat"
+              mode="day"
             />
           </n-form-item>
         </div>

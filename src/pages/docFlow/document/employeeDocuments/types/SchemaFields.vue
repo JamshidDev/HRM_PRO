@@ -1,7 +1,7 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   // Tavsifdan (backend schema) chiziladigan forma maydonlari: sana, oraliq, vaqt, variant, son, matn, hafta kunlari.
   import { selectWrap } from '@/utils/selectWrap.js'
-  import { useAppSetting } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
   import { useComponentStore } from '@/store/modules/index.js'
 
@@ -106,13 +106,12 @@
       <n-form-item :label="f.label" :show-require-mark="f.required" :validation-status="status(f.key)" :feedback="feedback(f.key)">
         <!-- Sana oralig'i (+ kunlar soni) -->
         <div v-if="f.kind === 'daterange'" class="w-full flex flex-col gap-1">
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
-            type="daterange"
             :formatted-value="rangeValue(f)"
+            mode="period"
             @update:formatted-value="(v) => setRange(f, v)"
             :value-format="DATE_FMT"
-            :format="useAppSetting.datePicketFormat"
           />
           <span v-if="f.days_key && daysOf(f)" class="text-xs text-textColor3">
             {{ $t('applicationPage.schema.days', { n: daysOf(f) }) }}
@@ -130,13 +129,12 @@
           />
         </div>
         <!-- Sana -->
-        <n-date-picker
+        <UIDayPicker
           v-else-if="f.kind === 'date'"
           class="w-full"
-          type="date"
           v-model:formatted-value="form[f.key]"
+          mode="day"
           :value-format="DATE_FMT"
-          :format="useAppSetting.datePicketFormat"
         />
         <!-- Variantlar (+ «Boshqa» → matn) -->
         <div v-else-if="f.kind === 'select'" class="w-full flex flex-col gap-2">

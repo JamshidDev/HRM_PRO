@@ -1,8 +1,8 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import { ChevronRight12Regular } from '@vicons/fluent'
   import { useConfApplicationStore } from '@/store/modules/index.js'
   import Utils from '../../../../../utils/Utils.js'
-  import { useAppSetting } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
   const { t } = i18n.global
 
@@ -65,47 +65,43 @@
     </div>
     <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.period_from`)" path="period_from">
-        <n-date-picker
+        <UIDayPicker
           :disabled="disabledPeriod"
           class="w-full"
           v-model:value="store.payload.period_from"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
     <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.period_to`)" path="period_to">
-        <n-date-picker
+        <UIDayPicker
           :disabled="disabledPeriod"
           class="w-full"
           v-model:value="store.payload.period_to"
+          mode="day"
           :is-date-disabled="(ts) => !!store.payload.period_from && ts < store.payload.period_from"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
     </div>
 
     <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.from`)" path="from">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.payload.from"
+          mode="day"
           :is-date-disabled="store.isPastDay"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
     </div>
     <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.to`)" path="to">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.payload.to"
+          mode="day"
           :is-date-disabled="store.isToDateDisabled"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
     </div>

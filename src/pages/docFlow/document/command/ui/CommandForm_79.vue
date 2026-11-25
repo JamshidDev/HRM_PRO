@@ -1,9 +1,8 @@
 <script setup>
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
-  import { SuperSelect } from '@/components/index.js'
+  import { UIDayPicker, SuperSelect } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
-  import { useAppSetting } from '@/utils/index.js'
   import ApiService from '@/service/ApiService.js'
 
   // 79 — Murabbiylik: shogird asosiy «Xodim» maydonida, murabbiy shu korxona xodimlaridan (hujjatgina).
@@ -129,11 +128,10 @@
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_79.mentor_date`)" path="mentor_date">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_79.mentor_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
@@ -153,21 +151,19 @@
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_79.from`)" path="from">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_79.from"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_79.to`)" path="to">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_79.to"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
           :is-date-disabled="(ts) => Boolean(store.form_79.from) && ts < store.form_79.from"
         />
       </n-form-item>

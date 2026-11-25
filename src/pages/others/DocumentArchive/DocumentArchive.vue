@@ -2,8 +2,7 @@
   import { useDocumentArchiveStore } from '@/store/modules/index.js'
   import Table from './Table.vue'
   import { ArrowSyncCircle16Regular, ArrowLeft20Filled } from '@vicons/fluent'
-  import { useAppSetting } from '@/utils/index.js'
-  import { UIPageFilter, UIPageTitle } from '@components'
+  import { UIDayPicker, UIPageFilter, UIPageTitle } from '@components'
 
   const emit = defineEmits(['back'])
 
@@ -63,12 +62,11 @@
                   <template #filterContent>
                     <div class="flex flex-col pb-6">
                       <p class="text-secondary">{{ $t('content.date') }}</p>
-                      <n-date-picker
+                      <UIDayPicker
                         clearable
                         class="w-full"
                         v-model:value="store.params.date"
-                        type="date"
-                        :format="useAppSetting.datePicketFormat"
+                        mode="day"
                       />
                     </div>
                   </template>

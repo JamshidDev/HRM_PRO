@@ -6,7 +6,7 @@
     PeopleTeam20Regular,
     Search16Regular
   } from '@vicons/fluent'
-  import { UIModal, UITablePagination } from '@/components/index.js'
+  import { UIDayPicker, UIModal, UITablePagination } from '@/components/index.js'
   import { confirmDialog } from '@/components/notify/alertDialog.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useGuestStore } from '@/store/modules/index.js'
@@ -114,12 +114,11 @@
             <n-icon :component="Search16Regular" />
           </template>
         </n-input>
-        <n-date-picker
+        <UIDayPicker
           size="small"
           class="w-[140px]"
-          type="date"
-          format="dd.MM.yyyy"
           value-format="yyyy-MM-dd"
+          mode="day"
           :formatted-value="store.params.date"
           @update:formatted-value="onDate"
         />

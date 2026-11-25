@@ -1,7 +1,7 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import { ref, watch, computed } from 'vue'
   import { useRelativeStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
   import validationRules from '@/utils/validationRules.js'
   import i18n from '@/i18n/index.js'
 
@@ -71,21 +71,19 @@
       <div class="grid grid-cols-12 gap-4">
         <div class="col-span-6">
           <n-form-item :label="$t('relativePage.disability.from')" path="from">
-            <n-date-picker
+            <UIDayPicker
               class="w-full"
               v-model:value="store.disabilityPayload.from"
-              type="date"
-              :format="useAppSetting.datePicketFormat"
+              mode="day"
             />
           </n-form-item>
         </div>
         <div class="col-span-6">
           <n-form-item :label="$t('relativePage.disability.to')" path="to">
-            <n-date-picker
+            <UIDayPicker
               class="w-full"
               v-model:value="store.disabilityPayload.to"
-              type="date"
-              :format="useAppSetting.datePicketFormat"
+              mode="day"
               :disabled="store.disabilityPayload.is_lifelong"
             />
           </n-form-item>

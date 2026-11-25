@@ -1,11 +1,11 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import { Calculator24Regular, DismissCircle20Filled, Info20Filled } from '@vicons/fluent'
   import { useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
   import i18n from '@/i18n/index.js'
-  import { useAppSetting } from '@/utils/index.js'
   import LastVacationItem from '@/pages/docFlow/document/command/ui/LastVacationItem.vue'
 
   const store = useCommandFormStore()
@@ -194,11 +194,10 @@
         :rule-path="validationRules.rulesNames.requiredNumberField"
         path="from"
       >
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_46.from"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
           @update:value="autoCalculateTo"
         />
       </n-form-item>
@@ -271,11 +270,10 @@
           path="result.period_from"
           :rule-path="validationRules.rulesNames.requiredNumberField"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.form_46.result.period_from"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
           />
         </n-form-item>
       </div>
@@ -286,11 +284,10 @@
           path="result.period_to"
           :rule-path="validationRules.rulesNames.requiredNumberField"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.form_46.result.period_to"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
           />
         </n-form-item>
       </div>
@@ -361,11 +358,10 @@
           path="result.to"
           :rule-path="validationRules.rulesNames.requiredNumberField"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.form_46.result.to"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
             @update:value="autoCalculateWorkDay"
           />
         </n-form-item>
@@ -377,11 +373,10 @@
           path="result.work_day"
           :rule-path="validationRules.rulesNames.requiredNumberField"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.form_46.result.work_day"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
           />
         </n-form-item>
       </div>
@@ -393,11 +388,10 @@
             path="half_two_date"
             :rule-path="validationRules.rulesNames.requiredNumberField"
           >
-            <n-date-picker
+            <UIDayPicker
               class="w-full"
               v-model:value="store.form_46.half_two_date"
-              type="date"
-              :format="useAppSetting.datePicketFormat"
+              mode="day"
             />
           </n-form-item>
         </div>

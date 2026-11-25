@@ -1,12 +1,12 @@
 <script setup>
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import { useAccountStore, useComponentStore } from '@/store/modules/index.js'
-  import { SuperSelect } from '@/components/index.js'
+  import { UIDayPicker, SuperSelect } from '@/components/index.js'
   import UIDepartmentSelect from '@/components/ui/UIDepartmentSelect.vue'
   import UIHelper from '@utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
-  import { useAppSetting, AppPaths } from '@/utils/index.js'
+  import { AppPaths } from '@/utils/index.js'
   import { useRouter } from 'vue-router'
   import { Warning24Filled, PersonAdd20Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
@@ -310,11 +310,10 @@
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
       <n-form-item :label="$t('commandPage.form_5.superior_order_date')" path="superior_order_date">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_5.superior_order_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
@@ -328,21 +327,19 @@
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
       <n-form-item :label="$t('commandPage.form_5.position_date')" path="position_date">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_5.position_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
       <n-form-item :label="$t('commandPage.form_5.contract_date')" path="contract_date">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_5.contract_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>

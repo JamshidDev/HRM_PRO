@@ -6,7 +6,7 @@
   import { NAvatar, NSwitch } from 'naive-ui'
   import Utils from '@/utils/Utils.js'
   import VacationForm_41 from '@/pages/docFlow/document/command/ui/VacationForm_41.vue'
-  import { UISelect, SuperSelect } from '@/components/index.js'
+  import { UIDayPicker, UISelect, SuperSelect } from '@/components/index.js'
   import EmptyForm from '@/pages/docFlow/document/command/ui/EmptyForm.vue'
   import CancelForm_32 from '@/pages/docFlow/document/command/ui/CancelForm_32.vue'
   import CancelCommandForm_34 from '@/pages/docFlow/document/command/ui/CancelCommandForm_34.vue'
@@ -38,7 +38,6 @@
   import CommandForm_75 from './ui/CommandForm_75.vue'
   import CommandForm_5 from './ui/CommandForm_5.vue'
   import CommandForm_8 from './ui/CommandForm_8.vue'
-  import { useAppSetting } from '@/utils/index.js'
   import CommandSigners from './CommandSigners.vue'
   import CommandSignersSummary from './CommandSignersSummary.vue'
   import { Checkmark16Regular } from '@vicons/fluent'
@@ -843,11 +842,10 @@
             </div>
             <div class="col-span-6 @4xl:col-span-2">
               <n-form-item :label="$t(`documentPage.command.form.command_date`)" path="command_date">
-                <n-date-picker
+                <UIDayPicker
                   class="w-full"
                   v-model:value="store.payload.command_date"
-                  type="date"
-                  :format="useAppSetting.datePicketFormat"
+                  mode="day"
                   :is-date-disabled="isDateDisabled"
                   :disabled="isEdit"
                 />

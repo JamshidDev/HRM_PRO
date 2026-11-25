@@ -1,10 +1,10 @@
 <script setup>
   import { useComponentStore, useStaffingApprovalStore } from '@stores'
-  import { SuperSelect, UIModal, UISelect } from '@components'
+  import { UIDayPicker, SuperSelect, UIModal, UISelect } from '@components'
   import validationRules from '@utils/validationRules.js'
   import DepartmentItem from './DepartmentItem.vue'
   import i18n from '@/i18n/index.js'
-  import { useAppSetting, Utils } from '@utils'
+  import { Utils } from '@utils'
   import { VueDraggable } from 'vue-draggable-plus'
   import { Drag24Filled, DismissCircle28Filled } from '@vicons/fluent'
 
@@ -225,11 +225,10 @@
                     path="date"
                     :rule-path="validationRules.rulesNames.requiredNumberField"
                   >
-                    <n-date-picker
+                    <UIDayPicker
                       class="w-full"
                       v-model:value="store.payload.date"
-                      type="date"
-                      :format="useAppSetting.datePicketFormat"
+                      mode="day"
                     />
                   </n-form-item>
                 </div>

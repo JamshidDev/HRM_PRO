@@ -1,7 +1,7 @@
 <script setup>
   import { useLmsCertificateStore } from '@stores'
-  import { useAppSetting, validationRules } from '@utils'
-  import { UIModal, UIUser, UIChip } from '@components'
+  import { validationRules } from '@utils'
+  import { UIDayPicker, UIModal, UIUser, UIChip } from '@components'
   import { ArrowSyncCircle20Regular, Timer16Regular } from '@vicons/fluent'
   import icons from '@/assets/icons'
   import UIHelper from '@utils/UIHelper.js'
@@ -151,11 +151,10 @@
           path="protocol_date"
           :rule-path="validationRules.rulesNames.requiredNumberField"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.payload.protocol_date"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
           />
         </n-form-item>
         <n-form-item
@@ -164,11 +163,10 @@
           path="protocol_date"
           :rule-path="validationRules.rulesNames.requiredNumberField"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.payload.cert_from"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
             @update:value="onDateChange"
           />
         </n-form-item>
@@ -178,11 +176,10 @@
           path="cert_to"
           :rule-path="validationRules.rulesNames.requiredNumberField"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.payload.cert_to"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
           />
         </n-form-item>
         <div class="col-span-12 flex flex-wrap gap-2 mb-2 text-sm">

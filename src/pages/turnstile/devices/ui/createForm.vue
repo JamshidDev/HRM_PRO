@@ -1,8 +1,7 @@
 <script setup>
   import { useDevicesStore, useComponentStore } from '@/store/modules/index.js'
   import validationRules from '@/utils/validationRules.js'
-  import { UINSelect, UISelect } from '@/components/index.js'
-  import { useAppSetting } from '@/utils/index.js'
+  import { UIDayPicker, UINSelect, UISelect } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
 
   const formRef = ref(null)
@@ -168,14 +167,11 @@
                 :label="$t('documentPage.form.contractDate')"
                 path="contract_date"
               >
-                <n-date-picker
+                <UIDayPicker
                   class="w-full"
                   v-model:value="store.payload.contract_date"
-                  type="date"
-                  update-value-on-close
-                  :actions="null"
+                  mode="day"
                   clearable
-                  :format="useAppSetting.datePicketFormat"
                 />
               </n-form-item>
               <n-form-item class="col-span-12" :label="$t('content.price')" path="price">

@@ -1,8 +1,8 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   const formRef = ref(null)
   import { useOldCareerStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -63,22 +63,20 @@
   <div style="height: calc(100vh - 120px)" class="overflow-y-auto">
     <n-form ref="formRef" :rules="rules" :model="store.payload">
       <n-form-item :label="$t(`oldCareerPage.form.from_date`)" path="from_date">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.payload.from_date"
-          type="date"
+          mode="day"
           :is-date-disabled="isFutureDay"
           @update:value="onFromDateChange"
-          :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
       <n-form-item :label="$t(`oldCareerPage.form.to_date`)" path="to_date">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.payload.to_date"
-          type="date"
+          mode="day"
           :is-date-disabled="isToDateDisabled"
-          :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
       <n-form-item :label="$t(`oldCareerPage.form.post_name`)" path="post_name">

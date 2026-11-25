@@ -1,6 +1,6 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import { useConfApplicationStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
 
   const store = useConfApplicationStore()
 </script>
@@ -9,23 +9,21 @@
   <div class="grid grid-cols-12 gap-x-4">
     <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.from`)" path="from">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.payload.from"
+          mode="day"
           :is-date-disabled="store.isPastDay"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
     </div>
     <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.to`)" path="to">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.payload.to"
+          mode="day"
           :is-date-disabled="store.isToDateDisabled"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
         />
       </n-form-item>
     </div>

@@ -1,9 +1,8 @@
 <script setup>
   import { selectWrap } from '@/utils/selectWrap.js'
   import { useComponentStore, useConfApplicationStore } from '@/store/modules/index.js'
-  import { UISelect } from '@/components/index.js'
+  import { UIDayPicker, UISelect } from '@/components/index.js'
   import UIHelper from '@/utils/UIHelper.js'
-  import { useAppSetting } from '@/utils/index.js'
 
   const store = useConfApplicationStore()
   const componentStore = useComponentStore()
@@ -137,11 +136,10 @@
     </div>
     <div class="col-span-12" :class="isPosition ? 'md:col-span-6' : 'md:col-span-4'">
       <n-form-item :label="$t(store.noticeMode ? 'noticesPage.date' : `applicationPage.form.application_date`)" path="application_date">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.payload.application_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>

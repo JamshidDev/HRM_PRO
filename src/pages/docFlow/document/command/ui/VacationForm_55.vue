@@ -1,10 +1,10 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import { useComponentStore } from '@/store/modules/index.js'
   import { PersonNote20Regular, DismissCircle16Regular, Eye24Regular } from '@vicons/fluent'
   import Utils from '../../../../../utils/Utils.js'
   import i18n from '@/i18n/index.js'
-  import { useAppSetting } from '@/utils/index.js'
   import UIHelper from '@utils/UIHelper.js'
 
   const store = useCommandFormStore()
@@ -230,11 +230,10 @@
 
     <div v-if="item.from !== 0" class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item :show-feedback="false" :label="$t(`commandPage.form_55.from`)" path="from">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="item.from"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
           @update:value="onChangeDate(idx)"
         />
       </n-form-item>
@@ -250,11 +249,10 @@
     </div>
     <div v-if="item.to !== 0" class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item :show-feedback="false" :label="$t(`commandPage.form_55.to`)" path="to">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="item.to"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
           @update:value="onChangeDate(idx)"
         />
       </n-form-item>
@@ -270,11 +268,10 @@
         :label="$t(`commandPage.form_55.work_day`)"
         path="work_date"
       >
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="item.work_day"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>

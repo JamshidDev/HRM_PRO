@@ -1,4 +1,5 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import { useHolidayGreetingStore } from '@/store/modules/index.js'
   import ImageUploader from '@/components/ImageUploader/ImageUploader.vue'
@@ -35,7 +36,7 @@
         <n-input type="textarea" :rows="4" v-model:value="store.payload.text" />
       </n-form-item>
       <n-form-item :label="$t('holidayGreetingPage.form.holiday_date')" path="holiday_date">
-        <n-date-picker class="w-full" v-model:value="store.payload.holiday_date" type="date" />
+        <UIDayPicker class="w-full" v-model:value="store.payload.holiday_date" mode="day" />
       </n-form-item>
       <div class="grid grid-cols-2 gap-4">
         <n-form-item path="is_recurring">

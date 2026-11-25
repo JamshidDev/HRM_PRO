@@ -1,5 +1,5 @@
 <script setup>
-  import { UIDepartmentSelect, UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIDayPicker, UIDepartmentSelect, UIPageFilter, UISelect } from '@/components/index.js'
   import {
     useAccountStore,
     useComponentStore,
@@ -128,9 +128,9 @@
         @update:value="onDocumentIdInput"
       />
       <label class="mt-3 text-xs text-gray-500">{{ $t('signatureHistory.filter.date') }}</label>
-      <n-date-picker
+      <UIDayPicker
         v-model:value="store.params.date_range"
-        type="daterange"
+        mode="period"
         clearable
         @update:value="filterEvent"
       />

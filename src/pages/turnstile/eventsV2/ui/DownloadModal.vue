@@ -1,7 +1,7 @@
 <script setup>
   import { useEventV2Store, useEventStore, useComponentStore, useAccountStore } from '@stores'
-  import { UIModal, UISelect, SuperSelect, UIDepartmentSelect } from '@components'
-  import { useAppSetting, validationRules } from '@utils'
+  import { UIDayPicker, UIModal, UISelect, SuperSelect, UIDepartmentSelect } from '@components'
+  import { validationRules } from '@utils'
   import { LockClosed20Regular } from '@vicons/fluent'
 
   const store = useEventV2Store()
@@ -150,11 +150,9 @@
         path="from"
         :rule-path="validationRules.rulesNames.requiredNumberField"
       >
-        <n-date-picker
+        <UIDayPicker
           v-model:value="store.download.payload.from"
-          type="date"
-          :actions="null"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
           class="w-full"
         />
       </n-form-item>
@@ -164,11 +162,9 @@
         path="to"
         :rule-path="validationRules.rulesNames.requiredNumberField"
       >
-        <n-date-picker
+        <UIDayPicker
           v-model:value="store.download.payload.to"
-          type="date"
-          :actions="null"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
           class="w-full"
         />
       </n-form-item>
@@ -201,11 +197,9 @@
         path="from_date"
         :rule-path="validationRules.rulesNames.requiredNumberField"
       >
-        <n-date-picker
+        <UIDayPicker
           v-model:value="store.absent.payload.from_date"
-          type="date"
-          :actions="null"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
           class="w-full"
         />
       </n-form-item>
@@ -215,11 +209,9 @@
         path="to_date"
         :rule-path="validationRules.rulesNames.requiredNumberField"
       >
-        <n-date-picker
+        <UIDayPicker
           v-model:value="store.absent.payload.to_date"
-          type="date"
-          :actions="null"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
           class="w-full"
         />
       </n-form-item>

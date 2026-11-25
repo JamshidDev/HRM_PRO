@@ -1,9 +1,8 @@
 <script setup>
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
-  import { SuperSelect } from '@/components/index.js'
+  import { UIDayPicker, SuperSelect } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
-  import { useAppSetting } from '@/utils/index.js'
   import ApiService from '@/service/ApiService.js'
   import i18n from '@/i18n/index.js'
 
@@ -166,11 +165,10 @@
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_80.civil_contract_date`)" path="civil_contract_date">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_80.civil_contract_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
@@ -181,11 +179,10 @@
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_80.civil_cancel_date`)" path="civil_cancel_date">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_80.civil_cancel_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>

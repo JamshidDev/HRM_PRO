@@ -1,10 +1,10 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
   import { Eye24Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
-  import { useAppSetting } from '@/utils/index.js'
   const { t } = i18n.global
 
   const store = useCommandFormStore()
@@ -122,21 +122,19 @@
 
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_45.from`)" path="from">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_45.from"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_45.to`)" path="to">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_45.to"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
           :disabled="!store.form_45.from && !store.form_45.to"
           :is-date-disabled="(v) => Utils.disablePasteDate(v, store.form_45.from)"
         />
@@ -144,11 +142,10 @@
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_45.work_day`)" path="work_day">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_45.work_day"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
           :disabled="!store.form_45.to && !store.form_45.work_day"
           :is-date-disabled="(v) => Utils.disablePasteDate(v, store.form_45.to)"
         />

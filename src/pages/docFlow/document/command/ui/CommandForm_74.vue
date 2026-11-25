@@ -1,8 +1,8 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
-  import { useAppSetting } from '@/utils/index.js'
 
   const store = useCommandFormStore()
   const formRef = ref(null)
@@ -70,11 +70,10 @@
     <!-- Kuchga kirish sanasi -->
     <div class="col-span-12 @xl:col-span-4">
       <n-form-item :label="$t(`documentPage.command.form.change_date`)" path="change_date">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_74.change_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
@@ -95,11 +94,10 @@
     </div>
     <div class="col-span-12 @xl:col-span-4">
       <n-form-item :label="$t(`documentPage.command.form.passport_date`)" path="passport_date">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_74.passport_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
@@ -118,11 +116,10 @@
         :label="$t(`documentPage.command.form.certificate_date`)"
         path="certificate_date"
       >
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_74.certificate_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
