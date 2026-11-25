@@ -95,6 +95,7 @@ export const appPermissions = {
   activityLogs: 'activity-logs',
   activityLogsWrite: 'activity-logs-write',
   activityLogsRead: 'activity-logs-read',
+  signatureHistoryRead: 'signature-history-read',
   instructions: 'instructions',
   instructionsWrite: 'instructions-write',
   instructionsRead: 'instructions-read',
