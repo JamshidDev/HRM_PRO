@@ -223,10 +223,9 @@
       <!--            clearable />-->
       <!--      </div>-->
       <div class="col-span-2">
-        <n-button
+        <n-button type="primary"
           @click="store._download()"
           :loading="store.previewLoading"
-          type="success"
           class="!mt-5 !w-full"
         >
           {{ $t('content.download') }}

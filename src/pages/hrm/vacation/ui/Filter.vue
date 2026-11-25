@@ -93,7 +93,6 @@
         class="vacation-download-button w-full! md:w-auto!"
         @click="store._download()"
         :loading="store.loading"
-        type="success"
       >
         <template #icon>
           <ArrowCircleDown32Regular />

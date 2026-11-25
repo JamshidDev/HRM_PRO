@@ -98,7 +98,6 @@
       <n-button
         v-if="accStore.checkPermission(accStore.pn.hrCertificatesRead)"
         ref="exportBtnRef"
-        type="success"
         :loading="store.exportLoading"
         @click="onExport"
       >

@@ -55,11 +55,10 @@
         @onSearch="onSearch"
       >
         <template #filterAction>
-          <n-button
+          <n-button type="primary"
             @click="store._download()"
             :loading="store.downloadLoading"
             class="!mt-5"
-            type="success"
           >
             {{ $t('content.download') }}
             <template #icon>

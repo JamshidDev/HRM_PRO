@@ -150,8 +150,7 @@
         <!-- Ikkita yuklash tugmasi bitta tugmaga birlashtirildi — tur va filtr
              modal ichida tanlanadi (`DownloadModal.vue`). -->
         <n-button
-          class="col-span-2 h-[32px]!"
-          type="success"
+          class="col-span-2"
           :loading="store.downloadLoading || store.loading"
           @click="openDownload"
         >

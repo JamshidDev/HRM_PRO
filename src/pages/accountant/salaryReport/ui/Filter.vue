@@ -64,7 +64,6 @@
       </div>
       <n-button
         v-fly-upload
-        type="success"
         :loading="store.downloadLoading"
         @click="store._downloadExcel()"
       >

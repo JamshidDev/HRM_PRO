@@ -127,8 +127,6 @@
     <template #cell-certificate="{ row }">
       <n-button
         v-if="row?.certificate?.confirmation_file"
-        type="success"
-        secondary
         @click="onDownload(row?.certificate?.confirmation_file)"
       >
         <template #icon>

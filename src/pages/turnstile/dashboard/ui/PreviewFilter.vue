@@ -186,12 +186,11 @@
       />
     </div>
     <div class="col-span-2">
-      <n-button
+      <n-button type="primary"
         v-if="accStore.checkPermission(accStore.pn.turnstileDashboardExport)"
         v-fly-upload
         @click="onDownload"
         :loading="dashboardStore.previewLoading"
-        type="default"
         class="!mt-5 !w-full"
       >
         {{ $t('content.download') }}

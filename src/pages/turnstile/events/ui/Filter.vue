@@ -257,7 +257,6 @@
         v-if="accStore.checkPermission(accStore.pn.turnstileAbsentWorkersExport)"
         @click="onOpenDownloadModal"
         :loading="storeV2.download.loading"
-        type="success"
       >
         <template #icon>
           <ArrowCircleDown32Regular />

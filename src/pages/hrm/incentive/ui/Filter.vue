@@ -94,10 +94,8 @@
     <template #filterAction>
       <n-button
         v-fly-upload
-        class="h-[32px]!"
         @click="store._download()"
         :loading="store.loading"
-        type="success"
       >
         <template #icon>
           <ArrowCircleDown32Regular />

@@ -40,9 +40,8 @@
           </n-input>
         </div>
         <div class="col-span-12 md:col-span-6 flex justify-end gap-2">
-          <n-button
+          <n-button type="primary"
             v-if="accStore.checkPermission(accStore.pn.turnstileDevicesExport)"
-            type="success"
             @click="store._downloadDevices()"
             :loading="store.downloading"
           >
