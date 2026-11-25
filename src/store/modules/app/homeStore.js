@@ -169,6 +169,10 @@ const resolveOrganizationCity = async (language) => {
   }
 }
 
+// Story'lar: yangisi oldin — chop etilgan vaqti, bo'lmasa id bo'yicha (kattasi = yangisi).
+const storyTime = (v) => Date.parse(v?.published_at ?? v?.created_at ?? '') || 0
+const newestFirst = (a, b) => storyTime(b) - storyTime(a) || (Number(b.id) || 0) - (Number(a.id) || 0)
+
 export const useHomeStore = defineStore('homeStore', {
   state: () => ({
     // ── Story'lar (mobil e'lonlar) ──
@@ -256,12 +260,13 @@ export const useHomeStore = defineStore('homeStore', {
       return $ApiService.storyService
         ._index({ silentError: true })
         .then((res) => {
-          // BACKEND: `GET /v1/mobile/stories` javobida `sort` (admin'dagi «Tartib») kelmaydi —
-          // hozir tartib serverning o'z tartibiga tayanadi. `sort` qo'shilsa, shu yerda u bo'yicha
-          // saralanadi (kichigi oldin), qo'shilmaguncha tartib o'zgarmaydi.
+          // BACKEND: `GET /v1/mobile/stories` javobida `sort` (admin'dagi «Tartib») kelmaydi va
+          // yangi story oxirida keladi. Server o'zi «sort ↑, keyin yangisi oldin» (published_at / id ↓)
+          // tartibida bersin. Hozircha frontend o'zi saralaydi: `sort` bo'yicha (kichigi oldin), teng
+          // bo'lsa — yangisi oldin.
           this.stories = unwrapList(res)
             .filter((v) => v.slides?.length)
-            .sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0))
+            .sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0) || newestFirst(a, b))
         })
         .catch(() => {
           this.stories = []

@@ -15,6 +15,10 @@ const cleanLang = (obj) => {
   return Object.keys(out).length ? out : null
 }
 
+// Yangisi oldin: yaratilgan vaqti, bo'lmasa id bo'yicha (kattasi = yangisi).
+const storyTime = (v) => Date.parse(v?.created_at ?? v?.published_at ?? '') || 0
+const newestFirst = (a, b) => storyTime(b) - storyTime(a) || (Number(b.id) || 0) - (Number(a.id) || 0)
+
 const emptyPayload = () => ({
   title: makeLang(),
   subtitle: makeLang(),
@@ -62,7 +66,10 @@ export const useMobileStoryStore = defineStore('mobileStory', {
       $ApiService.mobileStoryService
         ._index({ params: this.params })
         .then((res) => {
-          this.list = res.data.data.data
+          // BACKEND: `GET /v1/admin/mobile-stories` yangi story'ni oxirida beradi — server ro'yxatni
+          // «yangisi oldin» (created_at / id ↓) tartibida bersin, shunda sahifalash ham to'g'ri ishlaydi.
+          // Hozircha frontend shu sahifa ichida saralaydi (yangisi oldin).
+          this.list = [...(res.data.data.data ?? [])].sort(newestFirst)
           this.totalItems = res.data.data.total
         })
         .finally(() => {
