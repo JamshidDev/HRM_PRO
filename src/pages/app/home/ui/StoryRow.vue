@@ -8,8 +8,9 @@
    * presigned havolasi).
    *
    * Muqovaga bosilganda to'liq ekran ko'ruvchisi ochiladi (`StoryViewer.vue`,
-   * Figma node 2098:66567) va story `seen` deb belgilanadi. Maketda ko'rilgan/
-   * ko'rilmagan holati ajratilmagani uchun hoshiya hamma vaqt yashil.
+   * Figma node 4054:30039) va story `seen` deb belgilanadi.
+   * Hoshiya: ko'rilmagan (`is_seen: false`) — yashil, ko'rilgan — kulrang.
+   * Tartib — serverdan kelgani (admin'dagi «Tartib» maydoni bo'yicha).
    */
   import { useHomeStore } from '@/store/modules/index.js'
   import { useAppSetting, Utils } from '@/utils/index.js'
@@ -38,13 +39,17 @@
       :key="story.id"
       :title="story.title || ''"
       role="button"
-      class="h-[109px] w-[90px] shrink-0 cursor-pointer overflow-hidden rounded-2xl border-[3px] border-fig-green-400 bg-fig-bg-brand-surface transition-transform hover:scale-[1.03]"
+      class="relative h-[109px] w-[90px] shrink-0 cursor-pointer overflow-hidden rounded-2xl border-[3px] bg-fig-blue-100 transition-[transform,border-color] hover:scale-[1.03]"
+      :class="story.is_seen ? 'border-fig-br-secondary' : 'border-fig-green-400'"
       @click="store.openStory(index)"
     >
+      <!-- Maket (3257:112486): fon `bg-brand-surface` (#d1e9ff), rasm 96px (111:135), vertikal markazda.
+           Figma'da hoshiya ICHKARIDA va rasm ramkadan 3px chiqadi; CSS'da hoshiya tashqarida, shuning
+           uchun -6px. -->
       <img
         :src="coverOf(story)"
         alt=""
-        class="h-full w-full object-cover"
+        class="absolute top-1/2 -left-[6px] aspect-[111/135] w-[calc(100%+12px)] max-w-none -translate-y-1/2 object-cover"
         @error="Utils.onImgError"
       />
     </div>

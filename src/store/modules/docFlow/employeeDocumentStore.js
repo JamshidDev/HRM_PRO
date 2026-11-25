@@ -38,6 +38,9 @@ export const useEmployeeDocumentStore = defineStore('employeeDocumentStore', {
       type: null
     },
     editId: null,
+    // Yangi hujjatda oxirgi TANLANGAN rahbar — keyingi yangi hujjatga taklif qilinadi.
+    // Tahrir oynasi ochilganda o'zgarmaydi (avval tahrirlangan hujjat rahbari yangi formaga o'tib qolardi).
+    lastDirectorId: null,
     // «Bildirgilar» menyusi: ro'yxat va forma faqat `notice` turi bilan.
     noticeMode: false,
     noticeSchema: null,
@@ -195,7 +198,7 @@ export const useEmployeeDocumentStore = defineStore('employeeDocumentStore', {
       this.structureCheck = []
       this.sortableConfirmations = []
       this.oneByOne = false
-      this.payload = emptyPayload(type, this.payload.director_id)
+      this.payload = emptyPayload(type, this.lastDirectorId)
     }
   }
 })

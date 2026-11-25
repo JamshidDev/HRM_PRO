@@ -60,7 +60,7 @@
 
 <template>
   <UIPageContent
-    class="contact-page bg-fig-page-gradient m-4 !h-auto !min-h-[calc(100%-2rem)] rounded-3xl !gap-6 !p-3 md:!p-4"
+    class="contact-page asosiy-dark bg-fig-page-gradient m-4 !h-auto !min-h-[calc(100%-2rem)] rounded-3xl !gap-6 !p-3 md:!p-4"
   >
     <!-- DIQQAT: bu izoh ildiz elementning ICHIDA turishi shart. `<template>` dan
          keyin, ildizdan oldin qo'yilsa komponent fragment ildizga aylanadi va

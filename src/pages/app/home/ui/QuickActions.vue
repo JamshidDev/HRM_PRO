@@ -14,13 +14,19 @@
   import { AppPaths } from '@/utils/index.js'
   import WalletAltIcon from '@/assets/icons/home/wallet-alt.svg'
   import DoorOpenIcon from '@/assets/icons/home/door-open.svg'
+  // Qorong'i maket (5121:3632) ikonkalari — bir rangli, yarim shaffof qatlamsiz.
+  import PlaneDepartureDarkIcon from '@/assets/icons/home/plane-departure-dark.svg'
+  import CertificateCheckDarkIcon from '@/assets/icons/home/certificate-check-dark.svg'
+  import VideoGuideDarkIcon from '@/assets/icons/home/video-guide-dark.svg'
+  import WalletAltDarkIcon from '@/assets/icons/home/wallet-alt-dark.svg'
+  import DoorOpenDarkIcon from '@/assets/icons/home/door-open-dark.svg'
 
   const actions = [
-    { key: 'vacation', icon: markRaw(PlaneDepartureIcon) },
-    { key: 'reference', icon: markRaw(CertificateCheckIcon) },
-    { key: 'guides', icon: markRaw(VideoGuideIcon), to: AppPaths.Guides },
-    { key: 'income', icon: markRaw(WalletAltIcon) },
-    { key: 'turnstile', icon: markRaw(DoorOpenIcon) }
+    { key: 'vacation', icon: markRaw(PlaneDepartureIcon), darkIcon: markRaw(PlaneDepartureDarkIcon) },
+    { key: 'reference', icon: markRaw(CertificateCheckIcon), darkIcon: markRaw(CertificateCheckDarkIcon) },
+    { key: 'guides', icon: markRaw(VideoGuideIcon), darkIcon: markRaw(VideoGuideDarkIcon), to: AppPaths.Guides },
+    { key: 'income', icon: markRaw(WalletAltIcon), darkIcon: markRaw(WalletAltDarkIcon) },
+    { key: 'turnstile', icon: markRaw(DoorOpenIcon), darkIcon: markRaw(DoorOpenDarkIcon) }
   ]
 </script>
 
@@ -34,8 +40,9 @@
       class="flex flex-col gap-3 overflow-hidden rounded-2xl bg-fig-block shadow-card p-4"
       :class="action.to ? 'cursor-pointer transition hover:-translate-y-0.5 hover:shadow-lg' : 'cursor-default'"
     >
-      <span class="flex h-9 w-9 shrink-0 items-center justify-center">
-        <component :is="action.icon" />
+      <span class="flex h-9 w-9 shrink-0 items-center justify-center text-fig-brand">
+        <component :is="action.icon" class="asosiy-icon--light" />
+        <component :is="action.darkIcon" class="asosiy-icon--dark" />
       </span>
       <div class="flex flex-col gap-0.5">
         <p class="truncate text-[16px] leading-5 font-semibold text-fig-text-primary">

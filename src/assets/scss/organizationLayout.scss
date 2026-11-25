@@ -751,3 +751,25 @@ $mobile_device_screen_size: 900px;
     }
   }
 }
+
+// Qorong'i rejada sahifa foni va «Odatiy» sidebar — Figma «Asosiy - Dark» (node 5121:3632):
+// fon 150° gradient, rail pastdan tepaga #041428 → #08284d, ochiq panel kartasi bg-primary #131c2e,
+// chiziqlar br-tertiary #2a3851. «mint» ham qorong'i rejada shu ko'rinishda; indigo/blue/green o'zgarmaydi.
+[data-theme='dark'] .organization-layout {
+  background: linear-gradient(150.02deg, #080d18 0%, #0a111e 50%, #0c1628 100%);
+
+  .sidebar-content {
+    background: transparent;
+  }
+}
+
+[data-theme='dark']:is([data-sidebar-theme='default'], [data-sidebar-theme='mint'])
+  .organization-layout
+  .sidebar-content {
+  --surface-section: #131c2e;
+  --surface-line: #2a3851;
+
+  .mini-content {
+    background: linear-gradient(to top, #041428, #08284d);
+  }
+}

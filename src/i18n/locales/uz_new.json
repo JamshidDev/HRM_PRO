@@ -52,9 +52,9 @@
   },
   "applicationCommand": {
     "column": "Buyruq",
-    "create": "Buyruq qilish",
-    "needApproved": "Ariza tasdiqlangach buyruq qilish mumkin",
-    "typeNotSupported": "Bu ariza turi uçun buyruq hozirça qo'şilmagan",
+    "create": "Buyruq qiliş",
+    "needApproved": "Ariza tasdiqlangaç buyruq qiliş mumkin",
+    "typeNotSupported": "Bu ariza turi uçun buyruq hozirça qöşilmagan",
     "basedOn": "Ariza asosida: №{number} ({electronic}) — {type}",
     "locked": "Korxona, buyruq turi va xodim arizadan olingan, özgartirib bölmaydi.",
     "openCommand": "Buyruqni oçiş"
@@ -3530,13 +3530,13 @@
       "approved": "Tasdiqlangan"
     },
     "draftBarTitle": "Arizani tasdiqlang",
-    "returnBtn": "Qaytarish",
-    "returnTitle": "Arizani tuzatish uchun qaytarish",
-    "returnReason": "Qaytarish sababi",
-    "returnPlaceholder": "Xodim nimani tuzatishi kerak?",
-    "returnHint": "Ariza xodimga qoralama bo'lib qaytadi. Xodim tuzatib, qayta tasdiqlagach yana sizga keladi.",
-    "returnDone": "Ariza xodimga tuzatish uchun qaytarildi",
-    "returnedTitle": "Ariza tuzatish uchun qaytarildi",
+    "returnBtn": "Qaytariş",
+    "returnTitle": "Arizani tuzatiş uçun qaytariş",
+    "returnReason": "Qaytariş sababi",
+    "returnPlaceholder": "Xodim nimani tuzatişi kerak?",
+    "returnHint": "Ariza xodimga qoralama bölib qaytadi. Xodim tuzatib, qayta tasdiqlagaç yana sizga keladi.",
+    "returnDone": "Ariza xodimga tuzatiş uçun qaytarildi",
+    "returnedTitle": "Ariza tuzatiş uçun qaytarildi",
     "returnedBy": "Qaytardi",
     "draftBarSub": "Imzolaganingizdan keyin ariza kadrlar bölimiga yuboriladi",
     "ownRejectTitle": "Haqiqatan ham rad etmoqçimisiz?",
@@ -3670,7 +3670,7 @@
     },
     "hrCheck": {
       "new": "Yangi",
-      "done": "Ko'rib chiqildi",
+      "done": "Körib çiqildi",
       "forwarded": "Yönaltirilgan",
       "closed": "Yopilgan",
       "awaiting": "Qaror kutilmoqda"
@@ -7435,13 +7435,13 @@
     "verified": "Tasdiqlandi"
   },
   "documentTemplate": {
-    "upload": "Yuklash",
-    "uploadHint": "Tayyor DOCX blankani yuklab, joriy shablonni almashtiriş",
-    "uploadTitle": "Shablonni yuklash",
-    "uploadText": "«{name}» fayli joriy shablon o'rniga qo'yiladi va keyingi hujjatlarga qo'llanadi. Muharrirdagi saqlanmagan tahrir bekor bo'ladi. Fayldagi o'zgaruvchilar, bloklar va blanka joyi tekşiriladi.",
-    "uploadConfirm": "Yuklash",
+    "upload": "Yuklaş",
+    "uploadHint": "Tayyor DOCX blankani yuklab, joriy şablonni almaştiriş",
+    "uploadTitle": "Şablonni yuklaş",
+    "uploadText": "«{name}» fayli joriy şablon örniga qöyiladi va keyingi hujjatlarga qöllanadi. Muharrirdagi saqlanmagan tahrir bekor böladi. Fayldagi özgaruvçilar, bloklar va blanka joyi tekşiriladi.",
+    "uploadConfirm": "Yuklaş",
     "uploadOnlyDocx": "Faqat .docx fayl yuklanadi.",
-    "uploaded": "Shablon yuklandi",
+    "uploaded": "Şablon yuklandi",
     "name": "Şablon",
     "subtitle": "Hujjat şablonini tanlang, matnini tahrirlang va yangi hujjatlar uçun saqlang.",
     "selectPlaceholder": "Hujjat şablonini tanlang",
@@ -8312,5 +8312,13 @@
     "toc": "Mundarija",
     "pdf": "PDF yuklaş",
     "backToLogin": "Kiriş sahifasiga qaytiş"
+  },
+  "eimzoNotice": {
+    "text": "Diqqat! {days} kundan söng tizimga faqat E-IMZO orqali kiriş mumkin böladi.",
+    "soon": "Diqqat! Tez orada tizimga faqat E-IMZO orqali kiriş mumkin böladi.",
+    "days": "kun",
+    "hours": "soat",
+    "minutes": "daqiqa",
+    "seconds": "soniya"
   }
 }

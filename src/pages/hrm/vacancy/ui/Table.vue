@@ -205,8 +205,14 @@
     </template>
 
     <template #cell-applications_count="{ row }">
-      <!-- Arizalar soni — oddiy chip; ro'yxat ⋮ menyu → «Ko'rish». -->
-      <UIChip v-if="row.applications_count > 0" tone="primary" compact>{{ row.applications_count }}</UIChip>
+      <!-- Arizalar soni chipi bosilsa — arizalar ro'yxati (⋮ menyu → «Ko'rish» ham bor). -->
+      <UIChip
+        v-if="row.applications_count > 0"
+        tone="primary"
+        compact
+        class="cursor-pointer"
+        @click="store.openViewModal(row)"
+      >{{ row.applications_count }}</UIChip>
       <span v-else></span>
     </template>
   </UITable>
