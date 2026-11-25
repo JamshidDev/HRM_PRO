@@ -93,7 +93,8 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12">
+    <!-- Qisqa maydonlar (sana) yarim qatordan joy oladi -->
+    <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.from_date`)" path="from_date">
         <n-date-picker
           class="w-full"
@@ -120,7 +121,7 @@
           </n-form-item>
         </n-tab-pane>
         <n-tab-pane :name="2" :tab="$t('applicationPage.form.contract_option')">
-          <n-form-item :label="$t(`applicationPage.form.contract_to_date`)" path="contract_to_date">
+          <n-form-item class="md:w-1/2 md:pr-2" :label="$t(`applicationPage.form.contract_to_date`)" path="contract_to_date">
             <n-date-picker
               class="w-full"
               v-model:value="store.payload.contract_to_date"

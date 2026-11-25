@@ -112,7 +112,8 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12 pr-3" v-if="!isPosition">
+    <!-- Korxona keng, sana qisqa — bir qatorda -->
+    <div class="col-span-12 md:col-span-8 pr-3" v-if="!isPosition">
       <n-form-item
         :label="$t(`documentPage.form.organization`)"
         :show-require-mark="true"
@@ -134,7 +135,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12">
+    <div class="col-span-12" :class="isPosition ? 'md:col-span-6' : 'md:col-span-4'">
       <n-form-item :label="$t(store.noticeMode ? 'noticesPage.date' : `applicationPage.form.application_date`)" path="application_date">
         <n-date-picker
           class="w-full"
