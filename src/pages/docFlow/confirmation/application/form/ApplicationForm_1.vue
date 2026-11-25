@@ -1,7 +1,6 @@
 <script setup>
   import { useComponentStore, useConfApplicationStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
-  import { UIDepartmentSelect } from '@/components/index.js'
+  import { UIDayPicker, UIDepartmentSelect } from '@/components/index.js'
   import { rateOptions } from '@/utils/rateOptions.js'
 
   const store = useConfApplicationStore()
@@ -52,11 +51,10 @@
     </div>
     <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.from_date`)" path="from_date">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.payload.from_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>

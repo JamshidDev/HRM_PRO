@@ -2,8 +2,7 @@
   import { selectWrap } from '@/utils/selectWrap.js'
   // Ariza turi tavsifidan (backend application_schema) chiziladigan umumiy forma.
   import { useComponentStore, useConfApplicationStore } from '@/store/modules/index.js'
-  import { UIDepartmentSelect, UISelect } from '@/components/index.js'
-  import { useAppSetting } from '@/utils/index.js'
+  import { UIDayPicker, UIDepartmentSelect, UISelect } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import Utils from '@/utils/Utils.js'
 
@@ -380,12 +379,11 @@
           :validation-status="status('child_birthday')"
           :feedback="feedback('child_birthday')"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
-            type="date"
             v-model:formatted-value="data.child_birthday"
+            mode="day"
             :value-format="DATE_FMT"
-            :format="useAppSetting.datePicketFormat"
             :disabled="childMode === 'list' && childHasBirthday"
           />
         </n-form-item>
@@ -400,13 +398,12 @@
           :feedback="feedback(f.key)"
         >
           <div class="w-full flex flex-col gap-1">
-            <n-date-picker
+            <UIDayPicker
               class="w-full"
-              type="daterange"
               :formatted-value="rangeValue(f)"
+              mode="period"
               @update:formatted-value="(v) => setRange(f, v)"
               :value-format="DATE_FMT"
-              :format="useAppSetting.datePicketFormat"
             />
             <span v-if="(f.days_key || f.months_key) && countOf(f)" class="text-xs text-gray-500">
               {{
@@ -448,12 +445,11 @@
           :validation-status="status(f.key)"
           :feedback="feedback(f.key)"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
-            type="date"
             v-model:formatted-value="data[f.key]"
+            mode="day"
             :value-format="DATE_FMT"
-            :format="useAppSetting.datePicketFormat"
           />
         </n-form-item>
       </div>

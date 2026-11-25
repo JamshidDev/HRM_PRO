@@ -1,4 +1,5 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import { useSickLeaveStore, SICK_LEAVE_CLOSE_TYPE } from '@/store/modules/index.js'
   import CloseTypePicker from './CloseTypePicker.vue'
   import PdfPicker from './PdfPicker.vue'
@@ -44,12 +45,11 @@
 
     <n-form class="mt-3" :model="store.closePayload">
       <n-form-item :label="$t('sickLeave.form.toDate')" required>
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:formatted-value="store.closePayload.to_date"
+          mode="day"
           value-format="yyyy-MM-dd"
-          format="dd.MM.yyyy"
-          type="date"
           clearable
           :is-date-disabled="toDisabled"
         />
@@ -61,12 +61,11 @@
             <n-input v-model:value="store.closePayload.number" clearable />
           </n-form-item>
           <n-form-item :label="$t('sickLeave.form.issuedDate')" required>
-            <n-date-picker
+            <UIDayPicker
               class="w-full"
               v-model:formatted-value="store.closePayload.issued_date"
+              mode="day"
               value-format="yyyy-MM-dd"
-              format="dd.MM.yyyy"
-              type="date"
               clearable
             />
           </n-form-item>

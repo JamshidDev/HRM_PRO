@@ -1,6 +1,6 @@
 <script setup>
   import { useAccountStore, useScheduleGroupWorkerStore } from '@/store/modules/index.js'
-  import { RubberSegment, UIFigField, UIModal, UINSelect } from '@/components/index.js'
+  import { UIDayPicker, RubberSegment, UIFigField, UIModal, UINSelect } from '@/components/index.js'
   import WorkerCard from './WorkerCard.vue'
   import { RUBBER_THEME } from '@/components/ui/rubberSegmentTheme.js'
   import validationRules from '@/utils/validationRules.js'
@@ -305,11 +305,10 @@
           <WorkerCard :name="store.selectedWorker.fullName" :position="store.selectedWorker.position" />
 
           <UIFigField :label="$t('content.date')" editing>
-            <n-date-picker
+            <UIDayPicker
               v-model:value="store.replacePayload.date"
-              type="date"
+              mode="day"
               class="w-full"
-              format="dd.MM.yyyy"
               :is-date-disabled="disabledDate"
             />
           </UIFigField>
@@ -495,11 +494,10 @@
           <WorkerCard :name="store.selectedWorker.fullName" :position="store.selectedWorker.position" />
 
           <UIFigField :label="$t('shiftType.groupView.transferFrom')" editing>
-            <n-date-picker
+            <UIDayPicker
               v-model:value="store.replacePayload.date"
-              type="date"
+              mode="day"
               class="w-full"
-              format="dd.MM.yyyy"
               :clearable="false"
               :is-date-disabled="disabledDate"
             />
@@ -561,11 +559,10 @@
           </div>
 
           <UIFigField v-if="isPeriod" :label="$t('shiftType.groupView.subPeriod')" editing>
-            <n-date-picker
+            <UIDayPicker
               v-model:value="store.replacePayload.range"
-              type="daterange"
+              mode="period"
               class="w-full"
-              format="dd.MM.yyyy"
               :clearable="false"
               :is-date-disabled="disabledPeriodDate"
             />
@@ -577,11 +574,10 @@
             path="date"
             :rule-path="validationRules.rulesNames.requiredNumberField"
           >
-            <n-date-picker
+            <UIDayPicker
               v-model:value="store.replacePayload.date"
-              type="date"
+              mode="day"
               class="w-full"
-              format="dd.MM.yyyy"
               :placeholder="$t('shiftType.groupView.subDate')"
               :is-date-disabled="disabledDate"
             />

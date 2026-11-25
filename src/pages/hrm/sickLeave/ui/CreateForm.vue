@@ -1,6 +1,6 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
-  import { SuperSelect } from '@/components/index.js'
+  import { UIDayPicker, SuperSelect } from '@/components/index.js'
   import CloseTypePicker from './CloseTypePicker.vue'
   import PdfPicker from './PdfPicker.vue'
   import { useSickLeaveStore, SICK_LEAVE_CLOSE_TYPE } from '@/store/modules/index.js'
@@ -116,12 +116,11 @@
           :rule-path="validationRules.rulesNames.requiredStringField"
         >
           <div class="w-full">
-            <n-date-picker
+            <UIDayPicker
               class="w-full"
               v-model:formatted-value="store.payload.from_date"
+              mode="day"
               value-format="yyyy-MM-dd"
-              format="dd.MM.yyyy"
-              type="date"
               clearable
               :is-date-disabled="fromDisabled"
             />
@@ -133,12 +132,11 @@
 
         <n-form-item :label="$t('sickLeave.form.toDateOptional')">
           <div class="w-full">
-            <n-date-picker
+            <UIDayPicker
               class="w-full"
               v-model:formatted-value="store.payload.to_date"
+              mode="day"
               value-format="yyyy-MM-dd"
-              format="dd.MM.yyyy"
-              type="date"
               clearable
               :disabled="!store.payload.from_date"
               :is-date-disabled="toDisabled"
@@ -192,12 +190,11 @@
                 path="issued_date"
                 :rule-path="validationRules.rulesNames.requiredStringField"
               >
-                <n-date-picker
+                <UIDayPicker
                   class="w-full"
                   v-model:formatted-value="store.payload.issued_date"
+                  mode="day"
                   value-format="yyyy-MM-dd"
-                  format="dd.MM.yyyy"
-                  type="date"
                   clearable
                   :is-date-disabled="issuedDisabled"
                 />

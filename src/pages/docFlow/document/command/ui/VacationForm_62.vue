@@ -4,8 +4,7 @@
   import { PersonNote20Regular, DismissCircle16Regular, Eye24Regular, Copy16Regular, ClipboardPaste20Regular } from '@vicons/fluent'
   import Utils from '../../../../../utils/Utils.js'
   import i18n from '@/i18n/index.js'
-  import { UISelect, UIDepartmentSelect } from '@/components/index.js'
-  import { useAppSetting } from '@/utils/index.js'
+  import { UIDayPicker, UISelect, UIDepartmentSelect } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
 
   const store = useCommandFormStore()
@@ -205,21 +204,19 @@
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item :label="$t(`commandPage.form_62.from`)" path="from">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="item.from"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item :label="$t(`commandPage.form_62.to`)" path="to">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="item.to"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>

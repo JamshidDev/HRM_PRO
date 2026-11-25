@@ -1,8 +1,8 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   const formRef = ref(null)
   import { useRelativeStore, useComponentStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
 
   const store = useRelativeStore()
   const componentStore = useComponentStore()
@@ -87,11 +87,10 @@
         <n-input type="text" v-model:value="store.payload.middle_name" />
       </n-form-item>
       <n-form-item :label="$t(`createWorkerPage.form.birthday`)" path="birthday">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.payload.birthday"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
       <n-form-item :label="$t(`relativePage.form.post_name`)" path="post_name">

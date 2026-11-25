@@ -1,4 +1,5 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   const formRef = ref(null)
   import { useHolidayStore, useComponentStore } from '@/store/modules/index.js'
@@ -30,7 +31,7 @@
   <n-form ref="formRef" :rules="validationRules.holidayPage" :model="store.payload">
     <div>
       <n-form-item :label="$t(`holidayPage.form.holiday_date`)" path="holiday_date">
-        <n-date-picker class="w-full" v-model:value="store.payload.holiday_date" type="date" />
+        <UIDayPicker class="w-full" v-model:value="store.payload.holiday_date" mode="day" />
       </n-form-item>
       <n-form-item :label="$t(`holidayPage.form.type`)" path="type">
         <n-select

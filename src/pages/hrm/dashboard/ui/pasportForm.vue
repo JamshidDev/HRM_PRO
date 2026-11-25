@@ -1,7 +1,7 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import { useComponentStore, useDashboardStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
   import { CloudArrowUp24Regular } from '@vicons/fluent'
 
@@ -93,11 +93,10 @@
       :label="$t(`createWorkerPage.form.from_date`)"
       path="from_date"
     >
-      <n-date-picker
+      <UIDayPicker
         class="w-full"
         v-model:value="store.passportPayload.from_date"
-        type="date"
-        :format="useAppSetting.datePicketFormat"
+        mode="day"
       />
     </n-form-item>
     <n-form-item
@@ -106,11 +105,10 @@
       :label="$t(`createWorkerPage.form.to_date`)"
       path="to_date"
     >
-      <n-date-picker
+      <UIDayPicker
         class="w-full"
         v-model:value="store.passportPayload.to_date"
-        type="date"
-        :format="useAppSetting.datePicketFormat"
+        mode="day"
       />
     </n-form-item>
 

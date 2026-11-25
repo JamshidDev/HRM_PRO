@@ -237,32 +237,42 @@
 
     <template #cell-access_levels="{ row }">
       <div class="flex flex-wrap items-center gap-1.5" v-if="row.hcpPerson">
-        <!-- Guruh chipi: ustiga kelganda «Yangilash» (yozish ruxsati bo'lsa), xato ikonkasi — xato tafsiloti.
+        <!-- Guruh chipi: nomi doim ko'rinadi (o'z kengligida). Oxirida ↻ «Yangilash» — joy egallamaydi, ustiga
+             kelganda siljib ochiladi (faqat yozish ruxsati bo'lsa). Xato bo'lsa chapdagi ⓘ — xato tafsiloti.
              Xuddi shu amallar ⋮ menyu → «Guruhlar» oynasida ham bor. -->
         <UIChip
           v-for="level in row.hcpPerson.access_levels.slice(0, 3)"
           :key="level.id"
           :tone="level.type || 'default'"
-          :title="level.name"
           class="group"
         >
           <template v-if="level.type === 'error'" #icon>
-            <n-icon size="16" class="cursor-pointer" @click.stop="onShowErrorEv(undefined, level.id)">
-              <ErrorCircle12Filled />
-            </n-icon>
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <n-icon size="16" class="hcw-chip-action" @click.stop="onShowErrorEv(undefined, level.id)">
+                  <ErrorCircle12Filled />
+                </n-icon>
+              </template>
+              {{ $t('turnstile.hcWorkersPage.showError') }}
+            </n-tooltip>
           </template>
-          <span class="inline-grid">
-            <span class="[grid-area:1/1] truncate" :class="{ 'group-hover:invisible': canRefresh }">
-              {{ level.name }}
-            </span>
-            <span
-              v-if="canRefresh"
-              class="[grid-area:1/1] invisible flex cursor-pointer items-center justify-center gap-1 text-success group-hover:visible"
-              @click.stop="onRefresh(level)"
-            >
-              <n-icon size="14"><ArrowSync24Filled /></n-icon>
+          <span class="inline-flex min-w-0 items-center">
+            <span class="truncate" :title="level.name">{{ level.name }}</span>
+            <n-tooltip v-if="canRefresh" trigger="hover">
+              <template #trigger>
+                <span
+                  class="hcw-chip-action hcw-chip-refresh"
+                  role="button"
+                  tabindex="0"
+                  :aria-label="$t('content.refresh')"
+                  @click.stop="onRefresh(level)"
+                  @keydown.enter.stop="onRefresh(level)"
+                >
+                  <n-icon size="14"><ArrowSync24Filled /></n-icon>
+                </span>
+              </template>
               {{ $t('content.refresh') }}
-            </span>
+            </n-tooltip>
           </span>
         </UIChip>
         <UIChip
@@ -308,3 +318,36 @@
   />
   <DiagnoseModal />
 </template>
+
+<style scoped>
+  /* Chip ichidagi bosiladigan belgilar (↻ yangilash, ⓘ xato): kursor + hover'da biroz kattalashadi. */
+  .hcw-chip-action {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    transition:
+      opacity 0.15s,
+      transform 0.15s;
+  }
+  .hcw-chip-action:hover {
+    transform: scale(1.15);
+  }
+  /* ↻ — yopiq holatda kengligi 0 (joy egallamaydi); chip ustiga kelganda o'ngga siljib ochiladi. */
+  .hcw-chip-refresh {
+    max-width: 0;
+    margin-left: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      max-width 0.22s ease,
+      margin-left 0.22s ease,
+      opacity 0.18s ease 0.04s,
+      transform 0.15s;
+  }
+  :global(.group:hover .hcw-chip-refresh),
+  .hcw-chip-refresh:focus-visible {
+    max-width: 18px;
+    margin-left: 4px;
+    opacity: 1;
+  }
+</style>

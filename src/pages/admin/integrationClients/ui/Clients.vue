@@ -1,6 +1,6 @@
 <script setup>
   import { useIntegrationClientsStore, useComponentStore } from '@/store/modules/index.js'
-  import { UIChip, UIModal, UISelect, UITable } from '@/components/index.js'
+  import { UIDayPicker, UIChip, UIModal, UISelect, UITable } from '@/components/index.js'
   import {
     Checkmark16Regular,
     Dismiss16Regular,
@@ -15,7 +15,6 @@
   import { useMessage } from 'naive-ui'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
-  import { useAppSetting } from '@/utils/AppSetting.js'
   import i18n from '@/i18n/index.js'
   import { confirmDialog } from '@/components/notify/alertDialog.js'
   import ApiTester from './ApiTester.vue'
@@ -472,12 +471,11 @@
           path="expires_at"
           :show-feedback="false"
         >
-          <n-date-picker
+          <UIDayPicker
             v-model:value="form.expires_at"
-            type="date"
+            mode="day"
             clearable
             class="w-full"
-            :format="useAppSetting.datePicketFormat"
             :placeholder="$t('integrationClients.clients.expiresPlaceholder')"
           />
         </n-form-item>

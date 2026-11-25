@@ -3886,7 +3886,8 @@
       "membershipOwn": "Ишчи ходимлар",
       "membershipGuest": "Меҳмонлар",
       "membershipNotAdded": "Бириктирилмаганлар",
-      "notWorking": "Ишламайди"
+      "notWorking": "Ишламайди",
+      "showError": "Хатоликни кўриш"
     },
     "workDurationPage": {
       "name": "Иш вақти",
@@ -7025,6 +7026,9 @@
     "form": {
       "postName": "Лавозим",
       "number": "Гувоҳнома рақами",
+      "numberShort": "Рақами",
+      "period": "Муддати",
+      "status": "Ҳолати",
       "issueDate": "Берилган сана",
       "expiryDate": "Амал қилиш муддати",
       "extendedDate": "Узайтирилган сана",

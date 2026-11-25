@@ -1,7 +1,6 @@
 <script setup>
-  import { Edit32Regular, Delete20Regular } from '@vicons/fluent'
-  import { UITable, UIProfileSection, UIProfileEmpty, UIFileDownload, UIChip } from '@/components/index.js'
-  import icons from '@/assets/icons'
+  import { Edit32Regular, Delete20Regular, ArrowSync16Regular, ArrowUndo16Regular } from '@vicons/fluent'
+  import { UITable, UIProfileSection, UIProfileEmpty, UIFileDownload, UIChip, UIStatus } from '@/components/index.js'
   import { useWorkerPositionCertificateStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -36,30 +35,20 @@
     store._delete()
   }
 
+  // Ixcham jadval: lavozim kesiladi («…»), to'liq matn va tafsilotlar — hover tooltip'da.
+  // Hamma ustun qat'iy kenglikda — bo'sh joy ular orasida mutanosib bo'linadi («Lavozim» hammasini olmaydi).
+  // «|» bilan sudrab o'zgartirish chegaralari: minWidth / maxWidth (lavozim — 1000px gacha).
+  // Sanalar bitta «Muddati» ustuniga, tasdiq/qaytarish — bitta «Holati» chipiga yig'ilgan.
   const columns = computed(() => [
-    { key: 'post_name', title: t('workerPositionCertificatePage.form.postName'), minWidth: 220 },
-    { key: 'number', title: t('workerPositionCertificatePage.form.number'), width: 120 },
-    { key: 'issue_date', title: t('workerPositionCertificatePage.form.issueDate'), width: 130 },
-    { key: 'expiry_date', title: t('workerPositionCertificatePage.form.expiryDate'), width: 130 },
-    {
-      key: 'extended_date',
-      title: t('workerPositionCertificatePage.form.extendedDate'),
-      width: 140
-    },
-    {
-      key: 'verify',
-      title: t('workerPositionCertificatePage.form.verify'),
-      width: 100,
-      align: 'center'
-    },
-    {
-      key: 'returned',
-      title: t('workerPositionCertificatePage.form.returned'),
-      width: 110,
-      align: 'center'
-    },
-    { key: 'file', title: t('content.file'), width: 90 }
+    { key: 'post_name', title: t('workerPositionCertificatePage.form.postName'), width: 400, minWidth: 260, maxWidth: 1000 },
+    { key: 'number', title: t('workerPositionCertificatePage.form.numberShort'), width: 130, minWidth: 100, maxWidth: 220 },
+    { key: 'period', title: t('workerPositionCertificatePage.form.period'), width: 210, minWidth: 180, maxWidth: 320 },
+    { key: 'status', title: t('workerPositionCertificatePage.form.status'), width: 170, minWidth: 140, maxWidth: 260 },
+    { key: 'file', title: t('content.file'), width: 100, minWidth: 80, maxWidth: 160 }
   ])
+
+  // Muddat oxiri: uzaytirilgan bo'lsa — uzaytirilgan sana
+  const endDate = (row) => row.extended_date || row.expiry_date
 
   // Faqat o'z korxonasi guvohnomasi tahrirlanadi (backend `editable`)
   const actions = computed(() => [
@@ -91,22 +80,46 @@
     >
       <template #empty><UIProfileEmpty /></template>
 
-      <template #cell-issue_date="{ value }">{{ Utils.timeOnlyDate(value) }}</template>
-      <template #cell-expiry_date="{ value }">{{ Utils.timeOnlyDate(value) }}</template>
-      <template #cell-extended_date="{ value }">
-        {{ value ? Utils.timeOnlyDate(value) : '—' }}
+      <template #cell-post_name="{ row }">
+        <n-tooltip placement="top-start" :style="{ maxWidth: '380px' }">
+          <template #trigger>
+            <span class="block truncate">{{ row.post_name }}</span>
+          </template>
+          <div class="font-semibold mb-1">{{ row.post_name }}</div>
+          <div class="text-xs opacity-90 grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5">
+            <span>{{ $t('workerPositionCertificatePage.form.number') }}:</span>
+            <span>{{ row.number || '—' }}</span>
+            <span>{{ $t('workerPositionCertificatePage.form.issueDate') }}:</span>
+            <span>{{ Utils.timeOnlyDate(row.issue_date) }}</span>
+            <span>{{ $t('workerPositionCertificatePage.form.expiryDate') }}:</span>
+            <span>{{ Utils.timeOnlyDate(row.expiry_date) }}</span>
+            <template v-if="row.extended_date">
+              <span>{{ $t('workerPositionCertificatePage.form.extendedDate') }}:</span>
+              <span>{{ Utils.timeOnlyDate(row.extended_date) }}</span>
+            </template>
+          </div>
+        </n-tooltip>
       </template>
 
-      <template #cell-verify="{ value }">
-        <UIChip :tone="value ? 'success' : 'default'" :icon="value ? icons.figBadgeCheck : null">
-          {{ value ? $t('content.yes') : $t('content.no') }}
-        </UIChip>
+      <template #cell-period="{ row }">
+        <span class="inline-flex items-center gap-1 whitespace-nowrap">
+          {{ Utils.timeOnlyDate(row.issue_date) }} – {{ Utils.timeOnlyDate(endDate(row)) }}
+          <!-- Uzaytirilgan — kichik belgi, sana tafsiloti lavozim tooltip'ida -->
+          <n-icon v-if="row.extended_date" :size="14" color="var(--primary-color)">
+            <ArrowSync16Regular />
+          </n-icon>
+        </span>
       </template>
 
-      <template #cell-returned="{ value }">
-        <UIChip :tone="value ? 'warning' : 'default'">
-          {{ value ? $t('content.yes') : $t('content.no') }}
+      <template #cell-status="{ row }">
+        <UIChip v-if="row.returned" tone="warning" :icon="ArrowUndo16Regular">
+          {{ $t('workerPositionCertificatePage.form.returned') }}
         </UIChip>
+        <UIStatus
+          v-else-if="row.verify"
+          :status="{ id: 3, name: $t('workerPositionCertificatePage.form.verify') }"
+        />
+        <span v-else class="text-textColor3">—</span>
       </template>
 
       <template #cell-file="{ row }">

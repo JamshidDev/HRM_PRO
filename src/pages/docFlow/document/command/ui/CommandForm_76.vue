@@ -1,9 +1,8 @@
 <script setup>
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
-  import { SuperSelect } from '@/components/index.js'
+  import { UIDayPicker, SuperSelect } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
-  import { useAppSetting } from '@/utils/index.js'
   import { ArrowSyncCircle20Regular } from '@vicons/fluent'
   import { useDebounceFn } from '@vueuse/core'
   import ApiService from '@/service/ApiService.js'
@@ -170,21 +169,19 @@
   >
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_76.from_${periodKey}`)" path="from">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_76.from"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-3">
       <n-form-item :label="$t(`commandPage.form_76.to_${periodKey}`)" path="to">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_76.to"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
           :is-date-disabled="(ts) => Boolean(store.form_76.from) && ts < store.form_76.from"
         />
       </n-form-item>

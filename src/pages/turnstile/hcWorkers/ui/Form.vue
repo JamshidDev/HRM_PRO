@@ -5,8 +5,8 @@
     useTurnstileHikCentralWorkerStore,
     useTurnstileTerminalUserStore
   } from '@stores'
-  import { UISelect, NoDataIllustration, UINSelect, SuperSelect, UICropper } from '@components'
-  import { useAppSetting, Utils } from '@utils'
+  import { UIDayPicker, UISelect, NoDataIllustration, UINSelect, SuperSelect, UICropper } from '@components'
+  import { Utils } from '@utils'
   import { Checkmark16Filled, AddCircle16Filled, AddCircle28Regular } from '@vicons/fluent'
 
   const formRef = ref(null)
@@ -233,13 +233,10 @@
           :rule="validationRules.common.requiredDateTimeField"
           path="end_time"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.payload.end_time"
-            type="date"
-            update-value-on-close
-            :actions="null"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
           />
         </n-form-item>
         <n-form-item

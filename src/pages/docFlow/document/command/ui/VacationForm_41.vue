@@ -1,4 +1,5 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import { useComponentStore } from '@/store/modules/index.js'
   import {
@@ -10,7 +11,6 @@
   } from '@vicons/fluent'
   import Utils from '../../../../../utils/Utils.js'
   import i18n from '@/i18n/index.js'
-  import { useAppSetting } from '@/utils/index.js'
   import LastVacationItem from '@/pages/docFlow/document/command/ui/LastVacationItem.vue'
 
   const store = useCommandFormStore()
@@ -147,11 +147,10 @@
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-2">
       <n-form-item :show-feedback="false" :label="$t(`documentPage.command.form.from`)" path="from">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="item.from"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
@@ -222,11 +221,10 @@
               :label="$t(`documentPage.command.form.to`)"
               path="to"
             >
-              <n-date-picker
+              <UIDayPicker
                 class="w-full"
                 v-model:value="item.result.to"
-                type="date"
-                :format="useAppSetting.datePicketFormat"
+                mode="day"
               />
             </n-form-item>
           </div>
@@ -236,11 +234,10 @@
               :label="$t(`documentPage.command.form.work_day`)"
               path="work_day"
             >
-              <n-date-picker
+              <UIDayPicker
                 class="w-full"
                 v-model:value="item.result.work_day"
-                type="date"
-                :format="useAppSetting.datePicketFormat"
+                mode="day"
               />
             </n-form-item>
           </div>
@@ -250,11 +247,10 @@
               :label="$t(`documentPage.command.form.period_from`)"
               path="period_from"
             >
-              <n-date-picker
+              <UIDayPicker
                 class="w-full"
                 v-model:value="item.result.period_from"
-                type="date"
-                :format="useAppSetting.datePicketFormat"
+                mode="day"
               />
             </n-form-item>
           </div>
@@ -264,11 +260,10 @@
               :label="$t(`documentPage.command.form.period_to`)"
               path="period_to"
             >
-              <n-date-picker
+              <UIDayPicker
                 class="w-full"
                 v-model:value="item.result.period_to"
-                type="date"
-                :format="useAppSetting.datePicketFormat"
+                mode="day"
               />
             </n-form-item>
           </div>

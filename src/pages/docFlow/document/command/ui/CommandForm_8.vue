@@ -1,12 +1,11 @@
 <script setup>
   import { useCommandFormStore } from '@/pages/docFlow/document/command/commandFormStore.js'
   import { useComponentStore } from '@/store/modules/index.js'
-  import { SuperSelect } from '@/components/index.js'
+  import { UIDayPicker, SuperSelect } from '@/components/index.js'
   import UIDepartmentSelect from '@/components/ui/UIDepartmentSelect.vue'
   import UIHelper from '@utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
   import validationRules from '@/utils/validationRules.js'
-  import { useAppSetting } from '@/utils/index.js'
   import { Warning24Filled, DocumentDismiss20Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
 
@@ -285,31 +284,28 @@
 
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
       <n-form-item :label="$t('commandPage.form_8.position_date')" path="position_date">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_8.position_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
       <n-form-item :label="$t('commandPage.form_8.from')" path="from">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_8.from"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
       <n-form-item :label="$t('commandPage.form_8.to')" path="to">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_8.to"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>
@@ -323,11 +319,10 @@
     </div>
     <div class="col-span-12 @xl:col-span-6 @4xl:col-span-4">
       <n-form-item :label="$t('commandPage.form_8.court_decision_date')" path="court_decision_date">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.form_8.court_decision_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>

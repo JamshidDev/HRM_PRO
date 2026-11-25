@@ -80,20 +80,17 @@
     </template>
 
     <template #[`cell-department.name`]="{ row }">
-      <UIChip v-if="row.department" tone="primary" compact>
+      <UIChip v-if="row.department" tone="primary">
         {{ row.department?.name }}
       </UIChip>
     </template>
 
     <template #cell-devices="{ row }">
       {{ row.description }}
-      <p class="flex flex-wrap">
+      <!-- Hamma sahifadagi kabi oddiy o'lchamdagi chip (compact emas); nuqta — qurilma onlayn / oflayn. -->
+      <p class="flex flex-wrap gap-1.5">
         <template v-for="device in row.devices" :key="device.id">
-          <UIChip
-            :tone="device.status === 1 ? 'success' : 'error'"
-            class="mr-1! mt-[2px]!"
-            compact
-          >
+          <UIChip :tone="device.status === 1 ? 'success' : 'error'">
             {{ device.name }}
             <template #icon>
               <span class="relative flex size-2">

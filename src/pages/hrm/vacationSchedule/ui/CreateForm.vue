@@ -1,9 +1,9 @@
 <script setup>
   // Grafik sarlavhasi: yaratishda barcha xodimlar serverda qo'shiladi, keyin grafik ichi ochiladi.
   import { useComponentStore, useVacationScheduleStore } from '@stores'
-  import { useAppSetting, Utils, validationRules } from '@utils'
+  import { Utils, validationRules } from '@utils'
   import UIHelper from '@utils/UIHelper.js'
-  import { SuperSelect } from '@components'
+  import { UIDayPicker, SuperSelect } from '@components'
 
   const formRef = ref(null)
 
@@ -70,11 +70,10 @@
       path="date"
       :rule-path="validationRules.rulesNames.requiredNumberField"
     >
-      <n-date-picker
+      <UIDayPicker
         class="w-full"
         v-model:value="store.payload.date"
-        type="date"
-        :format="useAppSetting.datePicketFormat"
+        mode="day"
       />
     </n-form-item>
     <n-form-item

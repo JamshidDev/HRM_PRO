@@ -2737,6 +2737,9 @@
     "form": {
       "postName": "Lavozim",
       "number": "Guvohnoma raqami",
+      "numberShort": "Raqami",
+      "period": "Muddati",
+      "status": "Holati",
       "issueDate": "Berilgan sana",
       "expiryDate": "Amal qiliş muddati",
       "extendedDate": "Uzaytirilgan sana",
@@ -4153,7 +4156,8 @@
       "membershipOwn": "Işçi xodimlar",
       "membershipGuest": "Mehmonlar",
       "membershipNotAdded": "Biriktirilmaganlar",
-      "notWorking": "Işlamaydi"
+      "notWorking": "Işlamaydi",
+      "showError": "Xatolikni köriş"
     },
     "workDurationPage": {
       "name": "Iş vaqti",

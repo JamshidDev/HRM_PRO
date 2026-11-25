@@ -1,7 +1,7 @@
 <script setup>
   // Yangi versiyani saqlash: izoh + amal qilish sanasi + ixtiyoriy asos-hujjat.
   // Sanadan yangi o'zgarish amal qiladi; joriy versiya tarixga o'tadi.
-  import { UIModal, UIUpload } from '@/components/index.js'
+  import { UIDayPicker, UIModal, UIUpload } from '@/components/index.js'
   import { useTariffGridStore } from '@/store/modules/index.js'
 
   const store = useTariffGridStore()
@@ -20,8 +20,12 @@
       </n-alert>
 
       <n-form-item :label="$t('tariffGrid.form.effectiveDate')" required>
-        <n-date-picker class="w-full" type="date"
-          v-model:formatted-value="store.versionPayload.effective_date" value-format="yyyy-MM-dd" />
+        <UIDayPicker
+          class="w-full"
+          v-model:formatted-value="store.versionPayload.effective_date"
+          mode="day"
+          value-format="yyyy-MM-dd"
+        />
       </n-form-item>
 
       <n-form-item :label="$t('tariffGrid.form.note')">

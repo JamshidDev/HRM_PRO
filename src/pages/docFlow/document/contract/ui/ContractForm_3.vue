@@ -4,9 +4,8 @@
   import { useComponentStore } from '@/store/modules/index.js'
   import { NAvatar } from 'naive-ui'
   import Utils from '@/utils/Utils.js'
-  import { useAppSetting } from '@/utils/index.js'
   import UIHelper from '@/utils/UIHelper.js'
-  import { UIFigField, UISegmentTabs, UISignerList } from '@/components/index.js'
+  import { UIDayPicker, UIFigField, UISegmentTabs, UISignerList } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -181,11 +180,10 @@
           :label="$t('documentPage.command.form.command_date')"
           path="command_date"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.payload.command_date"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
             :is-date-disabled="isDateDisabled"
             :disabled="Boolean(store.editId)"
           />
@@ -216,11 +214,10 @@
             :label="$t('documentPage.command.form.competition_decision_date')"
             path="competition_decision_date"
           >
-            <n-date-picker
+            <UIDayPicker
               class="w-full"
               v-model:value="store.payload.competition_decision_date"
-              type="date"
-              :format="useAppSetting.datePicketFormat"
+              mode="day"
             />
           </UIFigField>
 

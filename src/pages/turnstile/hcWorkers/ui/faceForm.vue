@@ -1,10 +1,9 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
   import { useComponentStore, useTurnstileHikCentralWorkerStore } from '@/store/modules/index.js'
-  import { NoDataIllustration, UITransferSelect } from '@/components/index.js'
+  import { UIDayPicker, NoDataIllustration, UITransferSelect } from '@/components/index.js'
   import { Checkmark16Filled, AddCircle16Filled, LockClosed16Filled } from '@vicons/fluent'
   import { UICropper } from '@/components/index.js'
-  import { useAppSetting } from '@/utils/index.js'
   import Utils from '@/utils/Utils'
   import { NIcon, NTag } from 'naive-ui'
   import i18n from '@/i18n/index.js'
@@ -194,13 +193,10 @@
           :rule="validationRules.common.requiredDateTimeField"
           path="end_time"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.payload.end_time"
-            type="date"
-            update-value-on-close
-            :actions="null"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
           />
         </n-form-item>
       </n-form>

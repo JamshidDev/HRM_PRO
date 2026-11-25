@@ -1,9 +1,9 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import { CloudLink16Regular } from '@vicons/fluent'
   import { useUniversityStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
-  import { useAppSetting } from '@/utils/index.js'
   import UIHelper from "@utils/UIHelper.js"
 
   const store = useUniversityStore()
@@ -105,11 +105,10 @@
         path="from_date"
         :rule-path="validationRules.rulesNames.requiredDateTimeField"
       >
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.payload.from_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
       <n-form-item
@@ -117,11 +116,10 @@
         path="to_date"
         :rule-path="validationRules.rulesNames.requiredDateTimeField"
       >
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.payload.to_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
       <n-form-item :label="$t(`content.file`)" path="file">

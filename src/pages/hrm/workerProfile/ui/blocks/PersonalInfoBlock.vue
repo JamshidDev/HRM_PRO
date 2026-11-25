@@ -1,9 +1,8 @@
 <script setup>
   import { useWorkerProfileStore, useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
-  import { useAppSetting } from '@/utils/index.js'
   import icons from '@/assets/icons'
-  import { UIProfileButton, UIFigBlock, UIFigField } from '@/components/index.js'
+  import { UIDayPicker, UIProfileButton, UIFigBlock, UIFigField } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
 
   /** Figma "Shaxsiy ma'lumotlar" bloki (node 2586:200189) */
@@ -81,11 +80,10 @@
           :value="Utils.timeOnlyDate(store.payload.birthday)"
           :editing="editing"
         >
-          <n-date-picker
+          <UIDayPicker
             v-model:value="store.payload.birthday"
+            mode="day"
             class="w-full"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
           />
         </UIFigField>
 
@@ -168,11 +166,10 @@
             </span>
           </template>
           <div class="flex w-full min-w-0 flex-col gap-1">
-            <n-date-picker
+            <UIDayPicker
               v-model:value="store.payload.experience_date"
+              mode="day"
               class="w-full"
-              type="date"
-              :format="useAppSetting.datePicketFormat"
               :is-date-disabled="isFutureDate"
             />
             <span v-if="railwayExperience" class="pl-1 text-xs text-textColor2">

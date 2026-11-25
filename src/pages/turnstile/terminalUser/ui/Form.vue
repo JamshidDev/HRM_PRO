@@ -5,11 +5,11 @@
     useTurnstileOrganizationStore,
     useTurnstileTerminalUserStore
   } from '@/store/modules/index.js'
-  import { UISelect, NoDataIllustration } from '@/components/index.js'
+  import { UIDayPicker, UISelect, NoDataIllustration } from '@/components/index.js'
   import { Checkmark16Filled, CheckmarkCircle20Filled, AddCircle16Filled } from '@vicons/fluent'
   import checkWorkerSelect from '@/pages/lms/Teacher/ui/checkWorkerSelect.vue'
   import { UICropper } from '@/components/index.js'
-  import { useAppSetting, Utils } from '@/utils/index.js'
+  import { Utils } from '@/utils/index.js'
 
   const formRef = ref(null)
   const store = useTurnstileTerminalUserStore()
@@ -227,13 +227,10 @@
           :label="$t(`content.deadline`)"
           :feedback="$t('turnstile.terminalUser.deadline_feedback')"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.payload.to"
-            type="date"
-            update-value-on-close
-            :actions="null"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
             clearable
           />
         </n-form-item>

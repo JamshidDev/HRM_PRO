@@ -1,10 +1,9 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
-  import { UIUpload } from '@/components/index.js'
+  import { UIDayPicker, UIUpload } from '@/components/index.js'
 
   const formRef = ref(null)
   import { useComponentStore, useDocumentArchiveStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
 
   const store = useDocumentArchiveStore()
@@ -92,11 +91,10 @@
         />
       </n-form-item>
       <n-form-item :label="$t(`documentArchive.form.document_date`)" path="document_date">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.payload.document_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>

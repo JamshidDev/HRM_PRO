@@ -1,4 +1,5 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import { useTariffBaseStore } from '@/store/modules/index.js'
 
   const store = useTariffBaseStore()
@@ -38,8 +39,12 @@
               </n-input-number>
             </n-form-item>
             <n-form-item class="col-span-12 md:col-span-4" :label="$t('tariffBase.form.effectiveDate')">
-              <n-date-picker class="w-full" type="date"
-                v-model:formatted-value="store.payload.effective_date" value-format="yyyy-MM-dd" />
+              <UIDayPicker
+                class="w-full"
+                v-model:formatted-value="store.payload.effective_date"
+                mode="day"
+                value-format="yyyy-MM-dd"
+              />
             </n-form-item>
           </template>
           <n-form-item v-else class="col-span-12 md:col-span-4" :label="$t('tariffGrid.table.active')">

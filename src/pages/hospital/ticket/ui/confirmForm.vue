@@ -1,8 +1,8 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   const formRef = ref(null)
   import { useTicketStore, useComponentStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
 
   const store = useTicketStore()
   const componentStore = useComponentStore()
@@ -43,11 +43,10 @@
         :rule-path="validationRules.rulesNames.requiredNumberField"
         path="med_date"
       >
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.confirmPayload.med_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
       <n-form-item
@@ -55,11 +54,10 @@
         :rule-path="validationRules.rulesNames.requiredNumberField"
         path="to"
       >
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.confirmPayload.to"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
 

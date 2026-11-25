@@ -1,5 +1,5 @@
 <script setup>
-  import { UIUser } from '@/components/index.js'
+  import { UIDayPicker, UIUser } from '@/components/index.js'
   import Utils from '@/utils/Utils.js'
   import { useGuestStore } from '@/store/modules/index.js'
   import { ArrowCircleDownRight20Regular, ArrowCircleUpLeft20Regular } from '@vicons/fluent'
@@ -23,11 +23,10 @@
   <div class="flex flex-col gap-3">
     <div class="flex flex-wrap items-center justify-between gap-2">
       <UIUser :data="guestUser" :short="false" :avatar-clickable="false" />
-      <n-date-picker
-        type="daterange"
-        format="dd.MM.yyyy"
+      <UIDayPicker
         class="w-[260px]"
         :value="store.eventsRange"
+        mode="period"
         @update:value="onRange"
       />
     </div>

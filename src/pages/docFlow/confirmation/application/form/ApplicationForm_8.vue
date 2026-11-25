@@ -1,6 +1,6 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import { useComponentStore, useConfApplicationStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
 
   const store = useConfApplicationStore()
   const componentStore = useComponentStore()
@@ -27,11 +27,10 @@
     </div>
     <div class="col-span-12 md:col-span-6">
       <n-form-item :label="$t(`applicationPage.form.univer_date`)" path="univer_date">
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.payload.univer_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
     </div>

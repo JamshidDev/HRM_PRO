@@ -1,7 +1,8 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import UIModal from '@/components/ui/UIModal.vue'
   import { useTurnstileDownload } from '@/composables/useTurnstileDownload.js'
-  import { useAppSetting, validationRules } from '@utils'
+  import { validationRules } from '@utils'
 
   const { state, submit } = useTurnstileDownload()
   const { proxy } = getCurrentInstance()
@@ -46,11 +47,9 @@
         path="from"
         :rule-path="validationRules.rulesNames.requiredNumberField"
       >
-        <n-date-picker
+        <UIDayPicker
           v-model:value="state.payload.from"
-          type="date"
-          :actions="null"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
           class="w-full"
         />
       </n-form-item>
@@ -61,11 +60,9 @@
         path="to"
         :rule-path="validationRules.rulesNames.requiredNumberField"
       >
-        <n-date-picker
+        <UIDayPicker
           v-model:value="state.payload.to"
-          type="date"
-          :actions="null"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
           class="w-full"
         />
       </n-form-item>

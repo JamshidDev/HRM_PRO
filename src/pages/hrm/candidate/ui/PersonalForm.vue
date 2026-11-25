@@ -1,9 +1,8 @@
 <script setup>
   import { useComponentStore, useCreateWorkerStore } from '@/store/modules/index.js'
-  import { UIFigBlock, UIFigField } from '@/components/index.js'
+  import { UIDayPicker, UIFigBlock, UIFigField } from '@/components/index.js'
   import validationRules from '@/utils/validationRules.js'
   import Utils from '@/utils/Utils.js'
-  import { useAppSetting } from '@/utils/index.js'
   import icons from '@/assets/icons'
 
   /** Figma "Shaxsiy ma'lumotlar" bloki (node 3132:61807) */
@@ -56,11 +55,10 @@
           path="birthday"
           :rule-path="rules.requiredDateTimeField"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.payload.birthday"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
           />
         </UIFigField>
 
@@ -146,11 +144,10 @@
           path="experience_date"
           :rule-path="rules.requiredDateTimeField"
         >
-          <n-date-picker
+          <UIDayPicker
             class="w-full"
             v-model:value="store.payload.experience_date"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
           />
         </UIFigField>
 

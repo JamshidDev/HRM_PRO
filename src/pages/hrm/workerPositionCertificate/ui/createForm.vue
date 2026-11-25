@@ -1,11 +1,11 @@
 <script setup>
+  import { UIDayPicker } from '@/components/index.js'
   import { ArrowSync16Regular, CloudLink16Regular } from '@vicons/fluent'
   import {
     useWorkerPositionCertificateStore,
     useWorkerProfileStore
   } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
-  import { useAppSetting } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -139,14 +139,8 @@
             :label="$t(`workerPositionCertificatePage.form.issueDate`)"
             path="issue_date"
           >
-            <n-date-picker
-              v-model:formatted-value="store.payload.issue_date"
-              value-format="yyyy-MM-dd"
-              :format="useAppSetting.datePicketFormat"
-              type="date"
-              class="w-full"
-              clearable
-            />
+            <!-- Yangi kun tanlagich (DAS-17755): qiymat avvalgidek 'yyyy-MM-dd' satr; forma validatsiyasi bilan ishlaydi. -->
+            <UIDayPicker v-model:formatted-value="store.payload.issue_date" value-format="yyyy-MM-dd" mode="day" clearable />
           </n-form-item>
         </div>
 
@@ -155,14 +149,7 @@
             :label="$t(`workerPositionCertificatePage.form.expiryDate`)"
             path="expiry_date"
           >
-            <n-date-picker
-              v-model:formatted-value="store.payload.expiry_date"
-              value-format="yyyy-MM-dd"
-              :format="useAppSetting.datePicketFormat"
-              type="date"
-              class="w-full"
-              clearable
-            />
+            <UIDayPicker v-model:formatted-value="store.payload.expiry_date" value-format="yyyy-MM-dd" mode="day" clearable />
           </n-form-item>
         </div>
       </div>
@@ -171,14 +158,7 @@
       <div class="grid grid-cols-12 gap-2">
         <div class="col-span-12 md:col-span-6">
           <n-form-item :label="$t(`workerPositionCertificatePage.form.extendedDate`)">
-            <n-date-picker
-              v-model:formatted-value="store.payload.extended_date"
-              value-format="yyyy-MM-dd"
-              :format="useAppSetting.datePicketFormat"
-              type="date"
-              class="w-full"
-              clearable
-            />
+            <UIDayPicker v-model:formatted-value="store.payload.extended_date" value-format="yyyy-MM-dd" mode="day" clearable />
           </n-form-item>
         </div>
 

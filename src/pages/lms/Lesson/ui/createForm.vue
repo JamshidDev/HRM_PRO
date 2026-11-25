@@ -1,8 +1,7 @@
 <script setup>
   import validationRules from '@/utils/validationRules.js'
-  import { UIMultipleLangItems } from '@/components/index.js'
+  import { UIDayPicker, UIMultipleLangItems } from '@/components/index.js'
   import { useLmsLessonStore, useComponentStore } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
 
   const formRef = ref(null)
@@ -169,11 +168,10 @@
         path="lesson_date"
         rule-path="requiredNumberField"
       >
-        <n-date-picker
+        <UIDayPicker
           class="w-full"
           v-model:value="store.payload.lesson_date"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
+          mode="day"
         />
       </n-form-item>
       <n-form-item
