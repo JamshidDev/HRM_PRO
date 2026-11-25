@@ -1,5 +1,5 @@
 <script setup>
-  import { NoDataPicture, UIPagination, UIUser, UIBadge, UIStatus } from '@/components/index.js'
+  import { NoDataPicture, UIPagination, UIUser, UIBadge, UIStatus, UIChip } from '@/components/index.js'
   import { useComponentStore, useEventStore } from '@/store/modules/index.js'
   import {
     ArrowCircleDownRight20Regular,
@@ -223,10 +223,9 @@
       <!--            clearable />-->
       <!--      </div>-->
       <div class="col-span-2">
-        <n-button
+        <n-button type="primary"
           @click="store._download()"
           :loading="store.previewLoading"
-          type="success"
           class="!mt-5 !w-full"
         >
           {{ $t('content.download') }}
@@ -329,17 +328,17 @@
                     </td>
                     <td v-if="isHideColumn">{{ item.device }}</td>
                     <td v-if="isHideColumn">
-                      <UIStatus :status="eventStatus[item.auth_type]" />
+                      <UIChip v-if="eventStatus[item.auth_type]" :label="eventStatus[item.auth_type].name" tone="brand" />
                     </td>
                     <td v-if="isHideColumn" class="!text-center">
-                      <UIStatus :status="maskStatus[item.mask_status]" />
+                      <UIChip v-if="maskStatus[item.mask_status]" :label="maskStatus[item.mask_status].name" tone="neutral" />
                     </td>
                     <td v-if="isHideColumn" class="!text-center">
                       <template v-if="[1, 2].includes(item.temperature)">
                         <UIStatus :status="store.temperatureStatus[item.temperature]" />
                       </template>
                       <template v-else>
-                        <UIStatus :status="store.temperatureStatus[3]" />
+                        <UIChip :label="store.temperatureStatus[3].name" tone="neutral" />
                       </template>
                     </td>
 

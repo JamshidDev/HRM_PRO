@@ -5,7 +5,7 @@
     EyeOff20Regular,
     LockClosed20Regular
   } from '@vicons/fluent'
-  import { UIChip, UIPageFilter } from '@/components/index.js'
+  import { UIDayPicker, UIChip, UIPageFilter } from '@/components/index.js'
   import { AppPaths } from '@/utils/index.js'
   import Utils from '@/utils/Utils.js'
   import { useAccountStore, useAuditStore } from '@/store/modules/index.js'
@@ -15,7 +15,7 @@
   const store = useAuditStore()
   const accStore = useAccountStore()
 
-  // Sana oralig'i — n-date-picker `daterange` [ms, ms] qaytaradi, backend esa
+  // Sana oralig'i — UIDayPicker (davr rejimi) [ms, ms] qaytaradi, backend esa
   // `YYYY-MM-DD` kutadi. IKKALA CHEKKA HAM INKLYUZIV (backend `date_to` ga
   // +1 kun qo'shib eksklyuziv chegara yasaydi).
   const dateValue = computed({
@@ -196,11 +196,11 @@
 
         <div class="col-span-12">
           <label>{{ $t('audit.filter.period') }}</label>
-          <n-date-picker
+          <!-- Yangi kun tanlagich, DAVR rejimi (DAS-17755): qiymat avvalgidek [ms, ms] → date_from / date_to. -->
+          <UIDayPicker
             v-model:value="dateValue"
-            type="daterange"
+            mode="period"
             clearable
-            format="dd.MM.yyyy"
             :start-placeholder="$t('audit.filter.from')"
             :end-placeholder="$t('audit.filter.to')"
             @update:value="filterEvent"
@@ -221,8 +221,7 @@
   }
 
   .audit-filter-panel :deep(.n-select),
-  .audit-filter-panel :deep(.n-input),
-  .audit-filter-panel :deep(.n-date-picker) {
+  .audit-filter-panel :deep(.n-input) {
     width: 100%;
     --n-height: 40px !important;
     --n-border-radius: 16px !important;

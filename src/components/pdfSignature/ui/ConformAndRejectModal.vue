@@ -25,11 +25,20 @@
     () => tried.value && commentRequired.value && !store.applicationComment?.trim()
   )
 
+  // Bildirgi sabablari faqat xodimga (w); rahbar — umumiy ro'yxat. Tur almashsa qayta olinadi.
+  const reasonsKind = computed(() =>
+    store.document?.document?.kind === 'notice' &&
+    store.document?.signature?.current_user?.type === 'w'
+      ? 'notice'
+      : null
+  )
+  let loadedKind
   const loadReasons = () => {
-    if (reasons.value.length) return
+    if (reasons.value.length && loadedKind === reasonsKind.value) return
+    loadedKind = reasonsKind.value
     reasonsLoading.value = true
     $ApiService.documentService
-      ._rejectReasons()
+      ._rejectReasons(reasonsKind.value)
       .then((res) => {
         reasons.value = res.data.data || []
       })
@@ -117,7 +126,9 @@
             :rows="3"
             :maxlength="500"
             show-count
-            :status="commentError ? 'error' : !store.applicationComment?.trim() ? 'warning' : undefined"
+            :status="
+              commentError ? 'error' : !store.applicationComment?.trim() ? 'warning' : undefined
+            "
             :placeholder="$t('documentPage.signature.rejectReasonPlaceholder')"
             v-model:value="store.applicationComment"
           />
@@ -134,11 +145,7 @@
           >
             {{ $t('content.cancel') }}
           </n-button>
-          <n-button
-            type="error"
-            :loading="applicationStore.modalLoading"
-            @click="onSubmit"
-          >
+          <n-button type="error" :loading="applicationStore.modalLoading" @click="onSubmit">
             {{ $t('documentPage.signature.rejectSubmit') }}
           </n-button>
         </div>

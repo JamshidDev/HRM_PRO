@@ -297,9 +297,10 @@ const ActionTypes = {
   send: 'send',
   applications: 'applications'
 }
+// «Familiya Ism Sharif» — bo'sh qismlar tashlab ketiladi (aks holda maydonda «undefined undefined» chiqadi).
 const combineFullName = (user) => {
   if (!user) return
-  return `${user?.last_name} ${user?.first_name} ${user?.middle_name}`
+  return [user.last_name, user.first_name, user.middle_name].filter(Boolean).join(' ')
 }
 const monthList = [
   {
@@ -518,8 +519,9 @@ const documentStatus = {
     id: 1,
     name: t('enum.working')
   },
+  // 15 = UIStatus «DocumentReady» (ko'k) — yashil «Tasdiqlangan» bilan bir xil ko'rinmasin.
   3: {
-    id: 3,
+    id: 15,
     name: t('enum.done')
   },
   4: {

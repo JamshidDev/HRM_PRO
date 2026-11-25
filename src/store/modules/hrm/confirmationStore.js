@@ -31,6 +31,7 @@ export const useConfirmationStore = defineStore('confirmationStore', {
       this.loading = true
       const params = {
         ...this.params,
+        // BACKEND: davr filtri uchun created_from / created_to kerak — docs/api/date-range-filters.md (hozir faqat bitta kun).
         created: Utils.timeToZone(this.params.created),
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined
       }

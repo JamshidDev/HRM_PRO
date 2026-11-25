@@ -1,5 +1,5 @@
 <script setup>
-  import { UITable, UIUser } from '@/components/index.js'
+  import { UIChip, UITable, UIUser } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useTeacherStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -104,16 +104,7 @@
     <template #cell-subjects="{ row }">
       <template v-if="row.subjects.length > 0">
         <div class="flex flex-wrap gap-2">
-          <n-button
-            v-for="subject in row.subjects"
-            :key="subject.id"
-            dashed
-            ghost
-            size="tiny"
-            type="primary"
-          >
-            {{ subject.name }}
-          </n-button>
+          <UIChip v-for="subject in row.subjects" :key="subject.id" :label="subject.name" tone="brand" tooltip />
         </div>
       </template>
     </template>

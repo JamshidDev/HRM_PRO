@@ -1,0 +1,172 @@
+// Yangi qorong'i rejim: qora asos, neytral kulranglar (ko'kliksiz), aniq matn ierarxiyasi; eski navy tokenlar ustidan yoziladi.
+:root[data-theme='dark'] {
+  // Sirtlar: fon → karta → ko'tarilgan
+  --app-bg: #0a0a0a;
+  --surface-ground: #0a0a0a;
+  --surface-ground-soft: #0a0a0a;
+  --surface-section: #141414;
+  --surface-line: #262626;
+  --table-header: #141414;
+  --table-striped: #141414;
+  --table-border: #1f1f1f;
+  --sidebar-color: #0a0a0a;
+  --sidebar-panel: #111111;
+  --sidebar-border: #232323;
+
+  // Matn: title / ikkilamchi / subtitle — sof oq emas, ko'zni charchatmaydigan och kulrang (#161616 kartada 14 / 8.3 / 6.6 : 1)
+  --textColor0: #e4e4e7;
+  --textColor1: #a8a8ae;
+  --textColor2: #dcdce0;
+  --textColor3: #9a9aa0;
+  --table-th-text: #9a9aa0;
+  --fig-text-primary: #e4e4e7;
+  --fig-text-secondary: #a8a8ae;
+  --fig-text-tertiary: #9a9aa0;
+  --fig-text-muted: #9a9aa0;
+  --fig-text-disable: #7a7a7a;
+  --secondary-color: #9a9aa0; // text-secondary (sanalar, izohlar) — neytral
+
+  // Kiritish maydonlari
+  --input-fill: #141414;
+  --input-fill-focus: #1a1a1a;
+  --input-border: #2e2e2e;
+  --input-border-hover: #3d3d3d;
+
+  // Figma bloklari
+  --fig-bg-secondary: #0a0a0a;
+  --fig-bg-tertiary: #262626;
+  --fig-bg-disable: #262626;
+  --fig-block-bg: #161616;
+  --fig-block-header-bg: #161616;
+  --card-bg: #161616;
+  --card-border: #2b2b2b;
+  --modal-bg: #18181b;
+  --popover-bg: #1f1f22;
+  --tooltip-bg: #2a2a2e;
+  --fig-br-disable: #262626;
+  --fig-br-secondary: #2e2e2e;
+  --fig-neutral-300: #3d3d3d;
+  --card-shadow: 0 1px 2px 0 rgb(0 0 0 / 40%);
+
+  // Chat
+  --chat-bubble-own-bg: #1d2b3d;
+  --chat-bubble-in-bg: #1c1c1c;
+}
+
+// Layout foni va sidebar (odatiy/mint tema) — navy gradient o'rniga qora.
+:root[data-theme='dark'] .organization-layout {
+  background: #0a0a0a;
+}
+
+:root[data-theme='dark']:is([data-sidebar-theme='default'], [data-sidebar-theme='mint'])
+  .organization-layout
+  .sidebar-content {
+  --surface-section: #111111;
+  --surface-line: #232323;
+
+  .mini-content {
+    background: #000000;
+  }
+}
+
+// «Asosiy» sahifa bloklari (style.css dagi navy qiymatlar o'rniga).
+:root[data-theme='dark'] .asosiy-dark {
+  --fig-block-bg: #141414;
+  --color-fig-block: #141414;
+  --fig-bg-secondary: #1a1a1a;
+  --color-fig-bg-secondary: #1a1a1a;
+  --fig-bg-tertiary: #262626;
+  --color-fig-bg-tertiary: #262626;
+  --fig-br-secondary: #262626;
+  --color-fig-br-secondary: #262626;
+  --fig-br-disable: #262626;
+  --color-fig-br-disable: #262626;
+  --fig-text-primary: #e4e4e7;
+  --color-fig-text-primary: #e4e4e7;
+}
+
+:root[data-theme='dark'] .bg-fig-page-gradient {
+  background-image: none;
+  background-color: #0a0a0a;
+}
+
+// Jadval: zebra yo'q, qatorlar ingichka chiziq bilan, sarlavha kulrang.
+:root[data-theme='dark'] .ui-table__wrapper {
+  border: 1px solid var(--surface-line);
+}
+
+:root[data-theme='dark'] .ui-table__table {
+  .n-data-table-tbody .n-data-table-td {
+    border-bottom: 1px solid var(--table-border) !important;
+  }
+  .n-data-table-tbody .n-data-table-tr:last-child .n-data-table-td {
+    border-bottom: none !important;
+  }
+  .n-data-table-th {
+    background-color: var(--surface-section) !important;
+    border-bottom: 1px solid var(--surface-line) !important;
+
+    .text-textColor2 {
+      color: var(--table-th-text) !important;
+    }
+  }
+}
+
+// Rasmsiz xodim avatari (oq fonli no-picture.png) — qorong'ida to'q doira, och siluet.
+:root[data-theme='dark'] img[src$='/no-picture.png'] {
+  filter: invert(0.88);
+}
+
+// Kartalar (n-card, Figma bloklari) — fondan ingichka chegara bilan ajraladi.
+:root[data-theme='dark'] .n-card {
+  border-color: var(--surface-line) !important;
+}
+
+// Kartalar fondan aniq ajralsin: ichki 1px chegara (joylashuv siljimaydi) + biroz ochroq fon.
+:root[data-theme='dark'] :is(.fig-block, .fig-soon__card, .bg-fig-block, .shadow-card) {
+  background-color: var(--card-bg) !important;
+  box-shadow: inset 0 0 0 1px var(--card-border) !important;
+}
+
+// Karta sarlavhalari (font-medium + tertiary) — subtitle emas, title darajasiga yaqin.
+:root[data-theme='dark'] .font-medium.text-fig-text-tertiary,
+:root[data-theme='dark'] .font-semibold.text-fig-text-tertiary {
+  color: #c8c8cd !important;
+}
+
+
+// Tooltip / popover / dropdown — ko'tarilgan qatlam: chegara va soya bilan kartalardan ajraladi.
+:root[data-theme='dark'] .n-popover:not(.n-popover--raw) {
+  box-shadow:
+    0 0 0 1px #3a3a3f,
+    0 8px 24px rgb(0 0 0 / 55%) !important;
+}
+
+// Modal va drawer — sahifadan ajralib turadigan qatlam: kuchli mask, ko'tarilgan fon, chegara va soya.
+:root[data-theme='dark'] :is(.n-modal-mask, .n-drawer-mask) {
+  background-color: rgb(0 0 0 / 72%) !important;
+}
+
+:root[data-theme='dark'] .n-card.n-modal,
+:root[data-theme='dark'] .n-drawer {
+  box-shadow:
+    0 0 0 1px #2e2e33,
+    0 24px 64px rgb(0 0 0 / 70%) !important;
+}
+
+// Jadval footeri — qatorlardan to'qroq, chiziq bilan ajraladi.
+:root[data-theme='dark'] .ui-table__footer {
+  background: #101012 !important;
+  border-top-color: var(--surface-line);
+}
+
+// Xodim profili ko'rish oynasi: oyna → bo'lim kartasi → maydon, har qatlam ochroq.
+:root[data-theme='dark'] .ui-preview-window {
+  --surface-section: #18181b;
+  --surface-ground: #222226;
+  --surface-line: #2e2e33;
+  background-color: #111113 !important;
+  box-shadow:
+    0 0 0 1px #2e2e33,
+    0 24px 64px rgb(0 0 0 / 70%);
+}

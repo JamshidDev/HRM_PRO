@@ -1,8 +1,8 @@
 <script setup>
-  import { ArrowCounterclockwise20Regular } from '@vicons/fluent'
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { History20Regular } from '@vicons/fluent'
+  import { UIDayPicker, UIPageFilter, UISelect } from '@/components/index.js'
   import { useAccountStore, useCommandStore, useComponentStore } from '@/store/modules/index.js'
-  import { AppPaths, useAppSetting } from '@/utils/index.js'
+  import { AppPaths } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -166,10 +166,13 @@
         </div>
         <div class="col-span-12 md:col-span-6">
           <label>{{ $t('content.created') }}</label>
-          <n-date-picker
+          <!-- Kun rejimi: backend hozircha bitta sana (`created`) qabul qiladi. `created_from` / `created_to` qo'shilgach
+               (docs/api/command-date-range.md) — `mode="period"` ga o'tkaziladi; store ikkalasini ham biladi. -->
+          <UIDayPicker
             v-model:value="store.params.created"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+            mode="day"
+            clearable
+            placement="bottom-end"
             @update:value="filterEvent"
           />
         </div>
@@ -177,16 +180,16 @@
     </template>
     <template #filterEnd>
       <n-button
+        :title="$t('audit.historyBtn')"
+        :aria-label="$t('audit.historyBtn')"
         v-if="accStore.checkPermission(accStore.pn.hrCommandsRead)"
-        class="ui-page-action-button w-full! md:w-auto!"
+        class="ui-history-btn ui-page-action-button"
         secondary
-        icon-placement="right"
         @click="onHistory"
       >
         <template #icon>
-          <n-icon><ArrowCounterclockwise20Regular /></n-icon>
+          <n-icon><History20Regular /></n-icon>
         </template>
-        {{ $t('audit.historyBtn') }}
       </n-button>
     </template>
   </UIPageFilter>

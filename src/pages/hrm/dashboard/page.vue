@@ -12,6 +12,10 @@
   import ActivityTab from './ui/activity/ActivityTab.vue'
 
   import { DashboardTab, tabCards } from './constants.js'
+
+  // Uyg'un palitra (dashboardPalette.scss) faqat Dashboard ochiq turganda — grafiklar ranglarni <html> dan o'qiydi.
+  onBeforeMount(() => document.documentElement.classList.add('hrm-dash-active'))
+  onBeforeUnmount(() => document.documentElement.classList.remove('hrm-dash-active'))
   import { buildKpiCards } from './kpi.js'
 
   const { t } = i18n.global

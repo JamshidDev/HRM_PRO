@@ -1,5 +1,5 @@
 <script setup>
-  import { ArrowCounterclockwise20Regular } from '@vicons/fluent'
+  import { History20Regular } from '@vicons/fluent'
   import { UIDrawer, UIPageContent, UIPageFilter } from '@/components/index.js'
   import Table from './ui/Table.vue'
   import { usePositionStore } from '@/store/modules/index.js'
@@ -52,15 +52,15 @@
     >
       <template #filterEnd>
         <n-button
-          class="ui-page-action-button w-full! md:w-auto!"
+        :title="$t('audit.historyBtn')"
+        :aria-label="$t('audit.historyBtn')"
+          class="ui-history-btn ui-page-action-button"
           secondary
-          icon-placement="right"
           @click="onHistory"
         >
           <template #icon>
-            <n-icon><ArrowCounterclockwise20Regular /></n-icon>
+            <n-icon><History20Regular /></n-icon>
           </template>
-          {{ $t('audit.historyBtn') }}
         </n-button>
       </template>
     </UIPageFilter>

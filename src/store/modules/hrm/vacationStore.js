@@ -27,7 +27,9 @@ export const useVacationStore = defineStore('vacationStore', {
       per_page: 15,
       search: null,
       organizations: [],
-      vacation_type: null
+      vacation_type: null,
+      // Sukut — faqat hozir ta'tilda bo'lganlar.
+      status: 'active'
     },
     uuid: null
   }),

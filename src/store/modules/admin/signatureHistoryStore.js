@@ -57,9 +57,24 @@ export const useSignatureHistoryStore = defineStore('signatureHistory', {
     detail: null,
     pkcs7Loading: false,
     verifyLoading: false,
-    verifyResult: null
+    verifyResult: null,
+    // 'admin' — korxona jurnali; 'own' — profil «Imzolar tarixi» (faqat o'z imzolari).
+    scope: 'admin'
   }),
   actions: {
+    // Endpoint nomi: own rejimda `_mySignatureHistory…`.
+    api(name) {
+      const own = this.scope === 'own'
+      return $ApiService.logService[own ? name.replace('_signatureHistory', '_mySignatureHistory') : name]
+    },
+    setScope(scope) {
+      if (this.scope === scope) return
+      this.scope = scope
+      this.list = []
+      this.totalItems = 0
+      this.params = defaultParams()
+      this.structureCheck = []
+    },
     _index() {
       this.loading = true
       const [from, to] = this.params.date_range || []
@@ -76,8 +91,7 @@ export const useSignatureHistoryStore = defineStore('signatureHistory', {
         organizations: this.params.organizations.map((v) => v.id).toString() || null,
         departments: this.params.departments.toString() || null
       }
-      $ApiService.logService
-        ._signatureHistory({ params })
+      this.api('_signatureHistory')({ params })
         .then((res) => {
           this.list = res.data.data.data
           this.totalItems = res.data.data.total
@@ -100,8 +114,7 @@ export const useSignatureHistoryStore = defineStore('signatureHistory', {
       this.detailLoading = true
       this.detail = null
       this.verifyResult = null
-      $ApiService.logService
-        ._signatureHistoryShow({ id })
+      this.api('_signatureHistoryShow')({ id })
         .then((res) => {
           this.detail = res.data.data
         })
@@ -111,8 +124,7 @@ export const useSignatureHistoryStore = defineStore('signatureHistory', {
     },
     _downloadPkcs7(id) {
       this.pkcs7Loading = true
-      $ApiService.logService
-        ._signatureHistoryPkcs7({ id })
+      this.api('_signatureHistoryPkcs7')({ id })
         .then((res) => {
           const { file_name, content } = res.data.data || {}
           if (!content) return
@@ -137,8 +149,7 @@ export const useSignatureHistoryStore = defineStore('signatureHistory', {
     _verify(id) {
       this.verifyLoading = true
       this.verifyResult = null
-      $ApiService.logService
-        ._signatureHistoryVerify({ id })
+      this.api('_signatureHistoryVerify')({ id })
         .then((res) => {
           this.verifyResult = res.data.data
         })

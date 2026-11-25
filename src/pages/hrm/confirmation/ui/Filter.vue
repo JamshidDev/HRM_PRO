@@ -1,11 +1,10 @@
 <script setup>
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIDayPicker, UIPageFilter, UISelect } from '@/components/index.js'
   import {
     useAccountStore,
     useComponentStore,
     useConfirmationStore
   } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
 
   const store = useConfirmationStore()
   const accStore = useAccountStore()
@@ -91,13 +90,8 @@
         </div>
         <div class="col-span-12 md:col-span-6">
           <label>{{ $t('content.created') }}</label>
-          <n-date-picker
-            v-model:value="store.params.created"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
-            @update:value="filterEvent"
-            clearable
-          />
+          <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek, store o'zgarmaydi. -->
+          <UIDayPicker v-model:value="store.params.created" mode="day" clearable @update:value="filterEvent" />
         </div>
       </div>
     </template>

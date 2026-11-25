@@ -1,8 +1,8 @@
 <script setup>
-  import { ArrowCounterclockwise20Regular } from '@vicons/fluent'
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { History20Regular } from '@vicons/fluent'
+  import { UIDayPicker, UIPageFilter, UISelect } from '@/components/index.js'
   import { useComponentStore, useAdContractStore, useAccountStore } from '@/store/modules/index.js'
-  import { AppPaths, useAppSetting } from '@/utils/index.js'
+  import { AppPaths } from '@/utils/index.js'
 
   const store = useAdContractStore()
   const accStore = useAccountStore()
@@ -107,27 +107,23 @@
         </div>
         <div class="col-span-12 md:col-span-6">
           <label>{{ $t('content.created') }}</label>
-          <n-date-picker
-            v-model:value="store.params.created"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
-            @update:value="filterEvent"
-          />
+          <!-- Yangi kun tanlagich (DAS-17755): qiymat avvalgidek son (ms) — store o'zgarmaydi. -->
+          <UIDayPicker v-model:value="store.params.created" mode="day" clearable @update:value="filterEvent" />
         </div>
       </div>
     </template>
     <template #filterEnd>
       <n-button
+        :title="$t('audit.historyBtn')"
+        :aria-label="$t('audit.historyBtn')"
         v-if="accStore.checkPermission(accStore.pn.hrContractAdditionalRead)"
-        class="ui-page-action-button w-full! md:w-auto!"
+        class="ui-history-btn ui-page-action-button"
         secondary
-        icon-placement="right"
         @click="onHistory"
       >
         <template #icon>
-          <n-icon><ArrowCounterclockwise20Regular /></n-icon>
+          <n-icon><History20Regular /></n-icon>
         </template>
-        {{ $t('audit.historyBtn') }}
       </n-button>
     </template>
   </UIPageFilter>

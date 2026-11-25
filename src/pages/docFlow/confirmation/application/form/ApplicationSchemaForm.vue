@@ -440,8 +440,8 @@
         </n-form-item>
       </div>
 
-      <!-- Sana -->
-      <div class="col-span-12" v-else-if="f.kind === 'date'">
+      <!-- Sana — qisqa, yarim qator (yonidagi sana/son bilan bir qatorga tushadi) -->
+      <div class="col-span-12 md:col-span-6" v-else-if="f.kind === 'date'">
         <n-form-item
           :label="f.label"
           :show-require-mark="f.required"
@@ -496,8 +496,8 @@
         </n-form-item>
       </div>
 
-      <!-- Son -->
-      <div class="col-span-12" v-else-if="f.kind === 'number'">
+      <!-- Son — qisqa, yarim qator -->
+      <div class="col-span-12 md:col-span-6" v-else-if="f.kind === 'number'">
         <n-form-item
           :label="f.label"
           :show-require-mark="f.required"

@@ -45,6 +45,7 @@ export const useActionLogStore = defineStore('actionLog', {
         search: this.params.search,
         description: this.params.description,
         subject_type: this.params.subject_type,
+        // BACKEND: davr filtri uchun created_at_from / created_at_to kerak — docs/api/date-range-filters.md (hozir faqat bitta kun).
         created_at: Utils.timeToZone(this.params.created_at),
         organizations: this.params.organizations.map((v) => v.id).toString() || null
       }
@@ -65,6 +66,7 @@ export const useActionLogStore = defineStore('actionLog', {
         per_page: this.params.per_page,
         search: this.params.search,
         ip_address: this.params.ip_address,
+        // BACKEND: davr filtri uchun login_at_from / login_at_to kerak — docs/api/date-range-filters.md (hozir faqat bitta kun).
         login_at: Utils.timeToZone(this.params.login_at),
         organizations: this.params.organizations.map((v) => v.id).toString() || null
       }
