@@ -3999,7 +3999,8 @@
       "membershipOwn": "Jumısshı xızmetkerler",
       "membershipGuest": "Miyman",
       "membershipNotAdded": "Biriktirilmegenler",
-      "notWorking": "Islemeydi"
+      "notWorking": "Islemeydi",
+      "showError": "Qátelikti kóriw"
     },
     "workDurationPage": {
       "name": "Jumıs waqtı",

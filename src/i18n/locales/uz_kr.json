@@ -3848,7 +3848,8 @@
       "membershipOwn": "Ишчи ходимлар",
       "membershipGuest": "Меҳмонлар",
       "membershipNotAdded": "Бириктирилмаганлар",
-      "notWorking": "Ишламайди"
+      "notWorking": "Ишламайди",
+      "showError": "Хатоликни кўриш"
     },
     "workDurationPage": {
       "name": "Иш вақти",

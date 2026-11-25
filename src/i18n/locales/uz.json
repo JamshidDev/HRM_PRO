@@ -4115,7 +4115,8 @@
       "membershipOwn": "Ishchi xodimlar",
       "membershipGuest": "Mehmonlar",
       "membershipNotAdded": "Biriktirilmaganlar",
-      "notWorking": "Ishlamaydi"
+      "notWorking": "Ishlamaydi",
+      "showError": "Xatolikni ko'rish"
     },
     "workDurationPage": {
       "name": "Ish vaqti",

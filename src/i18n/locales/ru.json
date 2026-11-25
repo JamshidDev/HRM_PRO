@@ -4103,7 +4103,8 @@
       "membershipOwn": "Работники",
       "membershipGuest": "Гости",
       "membershipNotAdded": "Не привязанные",
-      "notWorking": "Не работает"
+      "notWorking": "Не работает",
+      "showError": "Посмотреть ошибку"
     },
     "workDurationPage": {
       "name": "Рабочее время",
