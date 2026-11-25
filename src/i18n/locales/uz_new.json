@@ -1317,7 +1317,8 @@
       "education": "Ma'lumot va malaka",
       "career": "Iş faoliyati",
       "relative": "Qarindoşlar",
-      "others": "Qöşimça"
+      "others": "Qöşimça",
+      "documents": "Hujjatlar"
     },
     "personal": {
       "additionalContract": "Qöşimça kelişuv tuziş",
@@ -1353,6 +1354,21 @@
     "disability": {
       "title": "Nogironlik ma'lumotlari",
       "noData": "Ma'lumot yöq"
+    },
+    "documents": {
+      "title": "Hujjatlar",
+      "hint": "Barça korxonalardagi tasdiqlangan hujjatlar",
+      "type": "Turi",
+      "number": "Raqami",
+      "date": "Sana",
+      "organization": "Korxona",
+      "kinds": {
+        "commands": "Buyruqlar",
+        "contracts": "Şartnomalar",
+        "contract-additional": "Qöş. kelişuvlar",
+        "worker-application": "Arizalar",
+        "documents": "Bildirgilar va boşqa"
+      }
     }
   },
   "departmentPage": {

@@ -69,8 +69,23 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
         name: 'workerProfile.tabs.others',
         key: 'others',
         id: 5
+      },
+      {
+        name: 'workerProfile.tabs.documents',
+        key: 'documents',
+        id: 6
       }
     ],
+    // «Hujjatlar» tabi — tasdiqlangan hujjatlar (barcha korxonalar).
+    docs: {
+      kind: 'commands',
+      page: 1,
+      perPage: 15,
+      list: [],
+      total: 0,
+      counts: {},
+      loading: false
+    },
     activeTab: 1,
     data: null,
 
@@ -157,6 +172,23 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
     }
   }),
   actions: {
+    _documents() {
+      this.docs.loading = true
+      $ApiService.workerService
+        ._documents({
+          id: this.elementId,
+          params: { kind: this.docs.kind, page: this.docs.page, per_page: this.docs.perPage }
+        })
+        .then((res) => {
+          const d = res.data.data
+          this.docs.list = d.data ?? []
+          this.docs.total = d.total ?? 0
+          this.docs.counts = d.counts ?? {}
+        })
+        .finally(() => {
+          this.docs.loading = false
+        })
+    },
     _index() {
       const componentStore = useComponentStore()
       this.loading = true
@@ -517,11 +549,9 @@ export const useWorkerProfileStore = defineStore('workerProfileStore', {
         })
     },
     _detachUserRole(data) {
-      return $ApiService.workerService
-        ._detachUserRole({ data })
-        .then(() => {
-          this._userRole()
-        })
+      return $ApiService.workerService._detachUserRole({ data }).then(() => {
+        this._userRole()
+      })
     },
     _updatePassword(workerId) {
       this.roleLoading = true

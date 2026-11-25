@@ -1217,7 +1217,8 @@
       "education": "Маълумот ва малака",
       "career": "Иш фаолияти",
       "relative": "Қариндошлар",
-      "others": "Қўшимча"
+      "others": "Қўшимча",
+      "documents": "Ҳужжатлар"
     },
     "personal": {
       "additionalContract": "Қўшимча келишув тузиш",
@@ -1250,6 +1251,21 @@
     "disability": {
       "title": "Ногиронлик маълумотлари",
       "noData": "Маълумот йўқ"
+    },
+    "documents": {
+      "title": "Ҳужжатлар",
+      "hint": "Барча корхоналардаги тасдиқланган ҳужжатлар",
+      "type": "Тури",
+      "number": "Рақами",
+      "date": "Сана",
+      "organization": "Корхона",
+      "kinds": {
+        "commands": "Буйруқлар",
+        "contracts": "Шартномалар",
+        "contract-additional": "Қўш. келишувлар",
+        "worker-application": "Аризалар",
+        "documents": "Билдиргилар ва бошқа"
+      }
     }
   },
   "departmentPage": {

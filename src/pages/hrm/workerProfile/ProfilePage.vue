@@ -20,7 +20,8 @@
     career: icons.figBriefcase,
     education: icons.figGraduationHat,
     relative: icons.figUsers,
-    others: icons.figDotsHorizontal
+    others: icons.figDotsHorizontal,
+    documents: icons.figFile
   }
 
   const tabList = computed(() =>

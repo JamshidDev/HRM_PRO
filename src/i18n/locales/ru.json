@@ -1303,7 +1303,8 @@
       "education": "Образование и квалификация",
       "career": "Трудовая деятельность",
       "relative": "Родственники",
-      "others": "Дополнительно"
+      "others": "Дополнительно",
+      "documents": "Документы"
     },
     "personal": {
       "additionalContract": "Создать доп. соглашение",
@@ -1339,6 +1340,21 @@
     "disability": {
       "title": "Данные об инвалидности",
       "noData": "Нет данных"
+    },
+    "documents": {
+      "title": "Документы",
+      "hint": "Утверждённые документы во всех организациях",
+      "type": "Тип",
+      "number": "Номер",
+      "date": "Дата",
+      "organization": "Организация",
+      "kinds": {
+        "commands": "Приказы",
+        "contracts": "Договоры",
+        "contract-additional": "Доп. соглашения",
+        "worker-application": "Заявления",
+        "documents": "Уведомления и др."
+      }
     }
   },
   "departmentPage": {

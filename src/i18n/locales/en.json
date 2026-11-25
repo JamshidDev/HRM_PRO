@@ -1301,7 +1301,8 @@
       "education": "Education and skills",
       "career": "Work history",
       "relative": "Relatives",
-      "others": "Additional"
+      "others": "Additional",
+      "documents": "Documents"
     },
     "personal": {
       "additionalContract": "Create additional agreement",
@@ -1337,6 +1338,21 @@
     "disability": {
       "title": "Disability information",
       "noData": "No data"
+    },
+    "documents": {
+      "title": "Documents",
+      "hint": "Approved documents across all organizations",
+      "type": "Type",
+      "number": "Number",
+      "date": "Date",
+      "organization": "Organization",
+      "kinds": {
+        "commands": "Orders",
+        "contracts": "Contracts",
+        "contract-additional": "Supplementary agreements",
+        "worker-application": "Applications",
+        "documents": "Notices & other"
+      }
     }
   },
   "departmentPage": {

@@ -1317,7 +1317,8 @@
       "education": "Ma'lumot va malaka",
       "career": "Ish faoliyati",
       "relative": "Qarindoshlar",
-      "others": "Qo'shimcha"
+      "others": "Qo'shimcha",
+      "documents": "Hujjatlar"
     },
     "personal": {
       "additionalContract": "Qo'shimcha kelishuv tuzish",
@@ -1353,6 +1354,21 @@
     "disability": {
       "title": "Nogironlik ma'lumotlari",
       "noData": "Ma'lumot yo'q"
+    },
+    "documents": {
+      "title": "Hujjatlar",
+      "hint": "Barcha korxonalardagi tasdiqlangan hujjatlar",
+      "type": "Turi",
+      "number": "Raqami",
+      "date": "Sana",
+      "organization": "Korxona",
+      "kinds": {
+        "commands": "Buyruqlar",
+        "contracts": "Shartnomalar",
+        "contract-additional": "Qo'sh. kelishuvlar",
+        "worker-application": "Arizalar",
+        "documents": "Bildirgilar va boshqa"
+      }
     }
   },
   "departmentPage": {
