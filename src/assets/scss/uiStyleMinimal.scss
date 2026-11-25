@@ -1,6 +1,6 @@
 // Sozlamalar → «Dizayn uslubi: Minimal» (Grow uslubi) — faqat yorug' rejim; tokenlar ustiga yoziladi.
 :root:not([data-theme='dark'])[data-ui-style='minimal'] {
-  --app-bg: #f7f8fa;
+  --app-bg: #ffffff;
   --surface-line: #e4e7ec;
   --table-border: #edf0f3;
   --table-header: #f9fafb;
@@ -26,9 +26,12 @@
   --table-th-text: #6b7280;
 }
 
-// Jadval kartasi: Grow kabi aniq 1px chegara va kichikroq radius.
+// Jadval kartasi: oq fonda ham ko'rinsin — yorug' rejimda ingichka chegara (Minimal'da radius 12px).
+:root:not([data-theme='dark']) .ui-table__wrapper {
+  border: 1px solid var(--table-border);
+}
 :root:not([data-theme='dark'])[data-ui-style='minimal'] .ui-table__wrapper {
-  border: 1px solid var(--surface-line);
+  border-color: var(--surface-line);
   border-radius: 12px !important;
 }
 
@@ -40,11 +43,18 @@
   .n-data-table-tbody .n-data-table-tr:last-child .n-data-table-td {
     border-bottom: none !important;
   }
+  // Sarlavha qatori ham oq — ostidagi chiziq ajratadi.
   .n-data-table-th {
+    background-color: var(--surface-section) !important;
     border-bottom: 1px solid var(--surface-line) !important;
 
     .text-textColor2 {
       color: var(--table-th-text) !important;
     }
   }
+}
+
+// Jadval sarlavhasi matni kulrang (yorug' rejim, barcha uslublar).
+:root:not([data-theme='dark']) .ui-table__table .n-data-table-th .text-textColor2 {
+  color: var(--table-th-text) !important;
 }

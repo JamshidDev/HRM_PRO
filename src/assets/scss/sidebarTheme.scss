@@ -251,14 +251,14 @@
   );
 }
 
-// «Minimal» dizayn uslubi: tekis och kulrang panel, tanlangan element oq + chegara (sidebar temasidan ustun).
+// «Minimal» dizayn uslubi: oq panel, tanlangan element och kulrang + chegara (sidebar temasidan ustun).
 :root:not([data-theme='dark'])[data-ui-style='minimal'] {
   @include sidebar-color-theme(
     #111827,
     #111827,
-    #f7f8fa,
-    #f7f8fa,
     #ffffff,
+    #ffffff,
+    #f3f4f6,
     #374151,
     #6b7280,
     rgba(17, 24, 39, 0.03),
@@ -270,7 +270,7 @@
   );
 
   .organization-layout .sidebar-content .panel-content .active-panel-item-single {
-    background-color: #ffffff !important;
+    background-color: #f3f4f6 !important;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     border: 1px solid #e4e7ec;
