@@ -260,6 +260,9 @@ export const useHomeStore = defineStore('homeStore', {
       return $ApiService.storyService
         ._index({ silentError: true })
         .then((res) => {
+          // BACKEND: `GET /v1/mobile/stories` kelajak sanali (`published_at` > hozir) story'ni ham darhol
+          // beradi — faqat `status = 2` va `published_at <= now()` (bo'sh = darhol) qaytarsin.
+          // Javobda `published_at` yo'q, frontend o'zi yashira olmaydi (docs/api/mobile-stories-schedule.md).
           // BACKEND: `GET /v1/mobile/stories` javobida `sort` (admin'dagi «Tartib») kelmaydi va
           // yangi story oxirida keladi. Server o'zi «sort ↑, keyin yangisi oldin» (published_at / id ↓)
           // tartibida bersin. Hozircha frontend o'zi saralaydi: `sort` bo'yicha (kichigi oldin), teng
