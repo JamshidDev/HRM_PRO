@@ -215,7 +215,7 @@
                   :class="
                     store.sidebarTheme === item.key
                       ? item.darkLabel
-                        ? 'text-textColor0'
+                        ? 'text-[#101828]'
                         : 'text-white'
                       : 'text-textColor3'
                   "

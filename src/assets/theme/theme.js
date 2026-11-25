@@ -108,7 +108,7 @@ export const customTheme = () => {
       textColorDisabled: getValueOfCssVariable('--surface-text'), // Nogiron holatdagi matn rangi
 
       cardColor: getValueOfCssVariable('--surface-section'), // Karta tipidagi komponentlar uchun fon rangi (masalan, <n-card>)
-      modalColor: getValueOfCssVariable('--surface-section'), // Modal oynalar uchun fon rangi
+      modalColor: getValueOfCssVariable('--modal-bg') || getValueOfCssVariable('--surface-section'), // Modal/drawer foni (qorong'ida ko'tarilgan)
       popoverColor: getValueOfCssVariable('--popover-bg') || getValueOfCssVariable('--surface-section'), // Popover/dropdown foni (qorong'ida ko'tarilgan)
       tableColor: getValueOfCssVariable('--surface-section'), // Jadvallar uchun fon rangi
       tableColorHover: getValueOfCssVariable('--surface-ground'), // Jadval qatori hover fon rangi

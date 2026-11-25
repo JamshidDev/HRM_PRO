@@ -40,6 +40,7 @@
   --fig-block-header-bg: #161616;
   --card-bg: #161616;
   --card-border: #2b2b2b;
+  --modal-bg: #18181b;
   --popover-bg: #1f1f22;
   --tooltip-bg: #2a2a2e;
   --fig-br-disable: #262626;
@@ -139,4 +140,16 @@
   box-shadow:
     0 0 0 1px #3a3a3f,
     0 8px 24px rgb(0 0 0 / 55%) !important;
+}
+
+// Modal va drawer — sahifadan ajralib turadigan qatlam: kuchli mask, ko'tarilgan fon, chegara va soya.
+:root[data-theme='dark'] :is(.n-modal-mask, .n-drawer-mask) {
+  background-color: rgb(0 0 0 / 72%) !important;
+}
+
+:root[data-theme='dark'] .n-card.n-modal,
+:root[data-theme='dark'] .n-drawer {
+  box-shadow:
+    0 0 0 1px #2e2e33,
+    0 24px 64px rgb(0 0 0 / 70%) !important;
 }
