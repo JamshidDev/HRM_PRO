@@ -256,7 +256,9 @@
 
     <div class="col-span-12 @xl:col-span-6">
       <n-form-item :label="$t('documentPage.form.department')" path="department_id">
+        <!-- own: HRAsistent faqat o'z bo'limlariga oladi; HR — butun korxona. -->
         <UIDepartmentSelect
+          own
           :model-value="store.form_8.department_id"
           @update:model-value="onChangeDepartment"
           :organization="store.payload.organization_id"

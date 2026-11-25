@@ -3,10 +3,10 @@
  * CSS o'zgaruvchilar orqali, shuning uchun light/dark mavzuda o'zi almashadi.
  */
 export const RUBBER_THEME = {
-  trackColor: 'var(--fig-bg-tertiary)',
-  thumbColor: 'var(--fig-bg-brand-fill)',
+  trackColor: 'var(--seg-track, var(--fig-bg-tertiary))',
+  thumbColor: 'var(--seg-thumb, var(--fig-bg-brand-fill))',
   textColor: 'var(--fig-text-primary)',
-  activeTextColor: '#ffffff',
+  activeTextColor: 'var(--seg-active-text, #ffffff)',
   radius: 10,
   inset: 3,
   // Har bo'lim o'z matni kengligida — uzun va qisqa matnga bir xil joy berilmaydi

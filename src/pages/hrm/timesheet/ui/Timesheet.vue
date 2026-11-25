@@ -828,7 +828,7 @@
           </template>
           {{ $t('timesheetPage.infoShort') }}
         </n-button>
-        <n-button secondary type="success" @click="onDownload">
+        <n-button @click="onDownload">
           <template #icon>
             <n-icon :component="ArrowDownload20Filled" />
           </template>

@@ -27,7 +27,8 @@
   const onView = (row) => store._show(row.id)
 
   const columns = computed(() => [
-    { key: 'signer', title: t('signatureHistory.table.signer'), minWidth: 260 },
+    // Profilda (own) imzolovchi doim o'zi — ustun kerak emas.
+    ...(store.scope === 'own' ? [] : [{ key: 'signer', title: t('signatureHistory.table.signer'), minWidth: 260 }]),
     { key: 'document', title: t('signatureHistory.table.document'), width: 190 },
     { key: 'method', title: t('signatureHistory.table.method'), width: 210, align: 'center' },
     { key: 'key_type', title: t('signatureHistory.table.keyType'), width: 120, align: 'center' },

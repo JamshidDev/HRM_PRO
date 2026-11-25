@@ -108,14 +108,14 @@ export const customTheme = () => {
       textColorDisabled: getValueOfCssVariable('--surface-text'), // Nogiron holatdagi matn rangi
 
       cardColor: getValueOfCssVariable('--surface-section'), // Karta tipidagi komponentlar uchun fon rangi (masalan, <n-card>)
-      modalColor: getValueOfCssVariable('--surface-section'), // Modal oynalar uchun fon rangi
-      popoverColor: getValueOfCssVariable('--surface-section'), // Qalqib chiquvchi oynalar uchun fon rangi
+      modalColor: getValueOfCssVariable('--modal-bg') || getValueOfCssVariable('--surface-section'), // Modal/drawer foni (qorong'ida ko'tarilgan)
+      popoverColor: getValueOfCssVariable('--popover-bg') || getValueOfCssVariable('--surface-section'), // Popover/dropdown foni (qorong'ida ko'tarilgan)
       tableColor: getValueOfCssVariable('--surface-section'), // Jadvallar uchun fon rangi
       tableColorHover: getValueOfCssVariable('--surface-ground'), // Jadval qatori hover fon rangi
       // Juft qatorlar — jadval sarlavhasi bilan BIR XIL sirt (#f8fafc).
       // Ilgari `--surface-ground-soft` (#f9fafb, neytral kulrang) edi va
       // jadval ichida ikkita boshqa-boshqa och tus aralashib turardi.
-      tableColorStriped: getValueOfCssVariable('--table-header'), // Juft qatorlar fon rangi
+      tableColorStriped: getValueOfCssVariable('--table-striped') || getValueOfCssVariable('--table-header'), // Juft qatorlar (Minimal — oq)
 
       // Joylashtiruvchi va kiritish ranglari
       placeholderColor: getValueOfCssVariable('--textColor3'), // Kiritish maydonlaridagi joylashtiruvchi matn rangi
@@ -134,14 +134,14 @@ export const customTheme = () => {
       thColor: getValueOfCssVariable('--table-header'),
       tdColor: getValueOfCssVariable('--surface-section'),
       borderColor: getValueOfCssVariable('--table-border'),
-      thTextColor: getValueOfCssVariable('--textColor2'),
+      thTextColor: getValueOfCssVariable('--table-th-text') || getValueOfCssVariable('--textColor2'),
       tdTextColor: getValueOfCssVariable('--textColor2')
     },
     DataTable: {
       thColor: getValueOfCssVariable('--table-header'),
       tdColor: getValueOfCssVariable('--surface-section'),
       borderColor: getValueOfCssVariable('--table-border'),
-      thTextColor: getValueOfCssVariable('--textColor2'),
+      thTextColor: getValueOfCssVariable('--table-th-text') || getValueOfCssVariable('--textColor2'),
       tdTextColor: getValueOfCssVariable('--textColor2')
     },
     Pagination: {
@@ -207,10 +207,20 @@ export const customTheme = () => {
             border: `1px solid ${getValueOfCssVariable('--surface-line')}`
           }
         }),
+    // Tooltip — faqat qorong'ida (--tooltip-bg bor bo'lsa) kartadan ajralib turadigan fon.
+    ...(getValueOfCssVariable('--tooltip-bg')
+      ? { Tooltip: { color: getValueOfCssVariable('--tooltip-bg'), textColor: getValueOfCssVariable('--textColor0') } }
+      : {}),
     Dropdown: {
       optionTextColorHover: '#2E90FA'
     },
     Button: {
+      // Yagona o'lcham: 34px, radius 8, shrift 14/500, ikonka 16.
+      heightMedium: '34px',
+      borderRadiusMedium: '8px',
+      fontSizeMedium: '14px',
+      iconSizeMedium: '16px',
+      fontWeight: '500',
       textColorPrimary: '#ffffff',
       textColorHoverPrimary: '#ffffff',
       textColorPressedPrimary: '#ffffff',

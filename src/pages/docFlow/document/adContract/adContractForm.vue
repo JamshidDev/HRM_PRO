@@ -561,10 +561,12 @@
                 <template v-else>
                   <div class="col-span-12 md:col-span-6 lg:col-span-6">
                     <n-form-item :label="$t(`documentPage.form.department`)" path="department_id">
+                      <!-- own: HRAsistent faqat o'z bo'limlarini ko'radi; HR — butun korxona. -->
                       <UIDepartmentSelect
                         :model-value="store.payload.department_id"
                         @update:model-value="onChangeDepartment"
                         :organization="store.payload.organization_id"
+                        own
                         return-object
                       />
                     </n-form-item>

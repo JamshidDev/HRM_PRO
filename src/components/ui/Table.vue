@@ -550,7 +550,7 @@
 
       <div
         v-if="total !== null || slots.footer"
-        class="rounded-b-2xl px-5 h-[52px] flex items-center justify-end"
+        class="ui-table__footer rounded-b-2xl px-5 h-[52px] flex items-center justify-end"
         style="background: var(--table-header)"
       >
         <n-skeleton height="16px" width="200px" round />
@@ -597,7 +597,7 @@
 
       <div
         v-if="total !== null || slots.footer"
-        class="rounded-b-2xl px-5"
+        class="ui-table__footer rounded-b-2xl px-5"
         style="background: var(--table-header)"
       >
         <slot name="footer">

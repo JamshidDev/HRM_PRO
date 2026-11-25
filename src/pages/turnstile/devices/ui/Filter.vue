@@ -180,8 +180,7 @@
       <div class="flex flex-wrap justify-end gap-2 w-full md:w-auto md:flex-nowrap">
         <n-button
           v-if="accStore.checkPermission(accStore.pn.turnstileDevicesStatExport)"
-          class="h-[32px]! grow basis-[calc(50%-4px)] md:grow-0 md:basis-auto"
-          type="success"
+          class="grow basis-[calc(50%-4px)] md:grow-0 md:basis-auto"
           @click="store._downloadReport()"
           :loading="store.downloading"
         >
@@ -192,8 +191,7 @@
         </n-button>
         <n-button
           v-if="accStore.checkPermission(accStore.pn.turnstileDevicesExport)"
-          class="h-[32px]! grow basis-[calc(50%-4px)] md:grow-0 md:basis-auto"
-          type="success"
+          class="grow basis-[calc(50%-4px)] md:grow-0 md:basis-auto"
           @click="store._downloadDevices()"
           :loading="store.downloading"
         >

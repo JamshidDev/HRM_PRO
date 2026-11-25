@@ -1,5 +1,5 @@
 <script setup>
-  import { ArrowCounterclockwise20Regular } from '@vicons/fluent'
+  import { History20Regular } from '@vicons/fluent'
   import { UIDayPicker, UIPageFilter, UISelect } from '@/components/index.js'
   import { useAccountStore, useApplicationStore, useComponentStore } from '@/store/modules/index.js'
   import { AppPaths } from '@/utils/index.js'
@@ -105,16 +105,16 @@
     </template>
     <template #filterEnd>
       <n-button
+        :title="$t('audit.historyBtn')"
+        :aria-label="$t('audit.historyBtn')"
         v-if="accStore.checkPermission(accStore.pn.hrWorkerApplicationsRead)"
-        class="ui-page-action-button w-full! md:w-auto!"
+        class="ui-history-btn ui-page-action-button"
         secondary
-        icon-placement="right"
         @click="onHistory"
       >
         <template #icon>
-          <n-icon><ArrowCounterclockwise20Regular /></n-icon>
+          <n-icon><History20Regular /></n-icon>
         </template>
-        {{ $t('audit.historyBtn') }}
       </n-button>
     </template>
   </UIPageFilter>

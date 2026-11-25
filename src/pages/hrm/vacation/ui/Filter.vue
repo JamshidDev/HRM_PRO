@@ -2,6 +2,9 @@
   import { UIPageFilter, UISelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useVacationStore } from '@/store/modules/index.js'
   import { ArrowCircleDown32Regular } from '@vicons/fluent'
+  import i18n from '@/i18n/index.js'
+
+  const { t } = i18n.global
 
   const store = useVacationStore()
   const accStore = useAccountStore()
@@ -20,8 +23,16 @@
   const filterCount = computed(
     () =>
       Number(Boolean(store.params.organizations.length)) +
-      Number(Boolean(store.params.vacation_type))
+      Number(Boolean(store.params.vacation_type)) +
+      Number(store.params.status !== 'active')
   )
+
+  // Holat: faol (sukut), kelgusi yoki hammasi.
+  const statusOptions = computed(() => [
+    { id: 'active', name: t('vacationPage.status.active') },
+    { id: 'upcoming', name: t('vacationPage.status.upcoming') },
+    { id: 'all', name: t('vacationPage.status.all') }
+  ])
 
   const beforeShow = (v) => {
     if (v && componentStore.vacationTypes.length === 0) {
@@ -40,6 +51,7 @@
   const resetFilter = () => {
     store.params.organizations = []
     store.params.vacation_type = null
+    store.params.status = 'active'
     filterEvent()
   }
 </script>
@@ -54,7 +66,12 @@
     :search-loading="store.loading"
     :show-add-button="false"
     filter-placement="bottom-end"
-    :popover-style="{ width: '560px', maxWidth: 'calc(100vw - 32px)', padding: '0', borderRadius: '20px' }"
+    :popover-style="{
+      width: '560px',
+      maxWidth: 'calc(100vw - 32px)',
+      padding: '0',
+      borderRadius: '20px'
+    }"
   >
     <template #filterContent>
       <div class="ui-filter-grid grid grid-cols-12 gap-x-5 gap-y-4">
@@ -85,6 +102,16 @@
             clearable
           />
         </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('vacationPage.status.label') }}</label>
+          <n-select
+            v-model:value="store.params.status"
+            :options="statusOptions"
+            @update:value="filterEvent"
+            label-field="name"
+            value-field="id"
+          />
+        </div>
       </div>
     </template>
     <template #filterAction>
@@ -93,7 +120,6 @@
         class="vacation-download-button w-full! md:w-auto!"
         @click="store._download()"
         :loading="store.loading"
-        type="success"
       >
         <template #icon>
           <ArrowCircleDown32Regular />

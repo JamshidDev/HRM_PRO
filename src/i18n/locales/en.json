@@ -250,6 +250,10 @@
     "deviceMobile": "Mobile"
   },
   "content": {
+    "uiStyle": "Interface style",
+    "uiStyleDefault": "Standard",
+    "uiStyleMinimal": "Minimal",
+    "uiStyleHint": "Minimal style works in light mode only; replaces the sidebar color with a white-gray panel",
     "user": "User",
     "title": "Title",
     "deleted": "Deleted",
@@ -938,6 +942,17 @@
     }
   },
   "profilePage": {
+    "orgInfo": {
+      "title": "Organization details",
+      "name": "Organization name",
+      "fullName": "Full name",
+      "code": "Code",
+      "inn": "TIN",
+      "address": "Address",
+      "region": "Region",
+      "parent": "Parent organization",
+      "empty": "No organization assigned"
+    },
     "copy": "Copy",
     "copied": "Copied",
     "roles": {
@@ -971,6 +986,7 @@
         "copySuccess": "Link copied!",
         "copyError": "Copy error!"
       },
+      "signatures": "Signature history",
       "ssoLogins": "Sign-in history (SSO)",
       "activity": "Activity"
     },
@@ -1296,7 +1312,8 @@
       "education": "Education and skills",
       "career": "Work history",
       "relative": "Relatives",
-      "others": "Additional"
+      "others": "Additional",
+      "documents": "Documents"
     },
     "personal": {
       "additionalContract": "Create additional agreement",
@@ -1332,6 +1349,21 @@
     "disability": {
       "title": "Disability information",
       "noData": "No data"
+    },
+    "documents": {
+      "title": "Documents",
+      "hint": "Approved documents across all organizations",
+      "type": "Type",
+      "number": "Number",
+      "date": "Date",
+      "organization": "Organization",
+      "kinds": {
+        "commands": "Orders",
+        "contracts": "Contracts",
+        "contract-additional": "Supplementary agreements",
+        "worker-application": "Applications",
+        "documents": "Notices & other"
+      }
     }
   },
   "departmentPage": {
@@ -3136,6 +3168,12 @@
       "durationDay": "Vacation duration {n} days",
       "workDay": "Return to work date",
       "duration": "From - To"
+    },
+    "status": {
+      "label": "Status",
+      "active": "On leave now",
+      "upcoming": "Upcoming leaves",
+      "all": "All"
     }
   },
   "dashboardPage": {

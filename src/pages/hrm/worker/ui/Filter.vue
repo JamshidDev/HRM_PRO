@@ -11,7 +11,8 @@
     ArrowCounterclockwise20Regular,
     ChevronDown20Regular,
     ChevronUp20Regular,
-    Checkmark12Filled
+    Checkmark12Filled,
+    History20Regular
   } from '@vicons/fluent'
   import Utils from '@/utils/Utils.js'
   import { AppPaths, appPermissions, useDebounce } from '@/utils/index.js'
@@ -297,13 +298,6 @@
           {{ $t('workerPage.filter.contract') }}
         </n-button>
 
-        <n-button v-if="!isMobile" secondary @click="onHistory">
-          <template #icon>
-            <n-icon><ArrowCounterclockwise20Regular /></n-icon>
-          </template>
-          {{ $t('audit.historyBtn') }}
-        </n-button>
-
         <!-- «Hisobot olish» → belgilash rejimida yashil «Yuklash | ×» (bitta quti o'zgaradi). -->
         <ReportMorphButton
           v-if="canExport"
@@ -315,6 +309,22 @@
           @close="closeReportPanel"
         />
       </div>
+    </template>
+
+    <!-- «Tarix» — boshqa sahifalardagi kabi panelning eng o'ngida. -->
+    <template #filterEnd>
+      <n-button
+        v-if="!isMobile"
+        class="ui-history-btn"
+        :title="$t('audit.historyBtn')"
+        :aria-label="$t('audit.historyBtn')"
+        secondary
+        @click="onHistory"
+      >
+        <template #icon>
+          <n-icon><History20Regular /></n-icon>
+        </template>
+      </n-button>
     </template>
 
     <template #filterContent>

@@ -222,7 +222,6 @@
     <template #filterAction>
       <n-button
         v-fly-upload
-        type="success"
         :loading="store.zipLoading || store.loading"
         @click="store._downloadCertificates()"
       >

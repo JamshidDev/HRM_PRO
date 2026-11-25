@@ -4,6 +4,7 @@
   import EducationTab from '../tabs/EducationTab.vue'
   import RelativeTab from '../tabs/RelativeTab.vue'
   import OtherTab from '../tabs/OtherTab.vue'
+  import DocumentsTab from '../tabs/DocumentsTab.vue'
   import { useWorkerProfileStore } from '@/store/modules/index.js'
 
   const store = useWorkerProfileStore()
@@ -14,7 +15,8 @@
     2: CareerTab,
     3: EducationTab,
     4: RelativeTab,
-    5: OtherTab
+    5: OtherTab,
+    6: DocumentsTab
   }
 </script>
 

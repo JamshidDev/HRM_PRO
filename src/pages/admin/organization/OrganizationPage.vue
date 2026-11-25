@@ -55,7 +55,7 @@
       @on-add="onAdd"
     >
       <template #filterAction>
-        <n-button type="success" :loading="store.exportLoading" @click="store._export()">
+        <n-button :loading="store.exportLoading" @click="store._export()">
           <template #icon>
             <n-icon size="24">
               <ArrowDownload24Regular />
