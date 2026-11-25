@@ -83,6 +83,14 @@ export const adminRoutes = [
     }
   },
   {
+    path: Utils.routePathMaker(AppPaths.SignatureHistory),
+    name: AppPaths.SignatureHistory.substring(1),
+    component: () => import('@/pages/admin/signatureHistory/SignatureHistoryPage.vue'),
+    meta: {
+      layout: AppLayouts.main
+    }
+  },
+  {
     path: Utils.routePathMaker(AppPaths.DocumentSetting),
     name: AppPaths.DocumentSetting.substring(1),
     component: () => import('@/pages/admin/document/DocumentTemplate.vue'),

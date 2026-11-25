@@ -3,6 +3,7 @@
   import { selectWrap } from '@/utils/selectWrap.js'
   import { useAppSetting } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
+  import { useComponentStore } from '@/store/modules/index.js'
 
   const props = defineProps({
     fields: { type: Array, default: () => [] },
@@ -10,6 +11,7 @@
   })
 
   const { t } = i18n.global
+  const componentStore = useComponentStore()
   const OTHER = 0
   const DATE_FMT = 'yyyy-MM-dd'
   const errors = ref({})
@@ -36,6 +38,30 @@
   }
   const selectOptions = (f) =>
     f.other ? [...f.options, { value: OTHER, label: t('applicationPage.schema.other') }] : f.options
+
+  // Qisqa F.I.Sh. (J.Sh.Raximov) — backend shortName bilan bir xil (o', g', sh, ch, yu ikki harf).
+  const DIGRAPHS = /^(sh|ch|yu|[og]['ʻ’?])/i
+  const initial = (n) => (n ? (n.match(DIGRAPHS)?.[0] ?? n[0]) : '')
+  const shortName = (w) => `${initial(w.first_name)}.${initial(w.middle_name)}.${w.last_name ?? ''}`
+  // picker='confirmation': kelishuvchilar ro'yxati, qiymat — hujjatga yoziladigan qisqa F.I.Sh.
+  const confirmationOptions = computed(() =>
+    componentStore.confirmationList.map((v) => ({ value: shortName(v), label: v.fullName, position: v.position?.name ?? v.position }))
+  )
+  const renderConfirmation = (o) =>
+    h('span', { class: 'truncate' }, [o.label, o.position ? h('span', { class: 'ml-2 text-xs opacity-60' }, o.position) : null])
+  watch(
+    () => props.fields.some((f) => f.picker === 'confirmation'),
+    (need) => need && !componentStore.confirmationList.length && componentStore._confirmations(),
+    { immediate: true }
+  )
+
+  // Ixcham kenglik: sana/son — 1/4, qisqa matn — 1/3, tanlov va oraliqlar — 1/2, uzun matn — to'liq.
+  const widthOf = (f) => {
+    if (f.kind === 'textarea') return ''
+    if (f.kind === 'date' || f.kind === 'number') return 'sm:col-span-6 md:col-span-3'
+    if (f.kind === 'text' && !f.picker) return 'sm:col-span-6 md:col-span-4'
+    return 'md:col-span-6'
+  }
 
   const isBlank = (v) => v === undefined || v === null || (typeof v === 'string' && !v.trim())
 
@@ -76,7 +102,7 @@
 
 <template>
   <div class="grid grid-cols-12 gap-x-4">
-    <div v-for="f in visible" :key="f.key" class="col-span-12" :class="f.kind === 'textarea' ? '' : 'md:col-span-6'">
+    <div v-for="f in visible" :key="f.key" class="col-span-12" :class="widthOf(f)">
       <n-form-item :label="f.label" :show-require-mark="f.required" :validation-status="status(f.key)" :feedback="feedback(f.key)">
         <!-- Sana oralig'i (+ kunlar soni) -->
         <div v-if="f.kind === 'daterange'" class="w-full flex flex-col gap-1">
@@ -124,6 +150,16 @@
             :placeholder="$t('applicationPage.schema.otherText')"
           />
         </div>
+        <!-- Kelishuvchilardan tanlash -->
+        <n-select
+          v-else-if="f.picker === 'confirmation'"
+          v-bind="selectWrap"
+          filterable
+          v-model:value="form[f.key]"
+          :options="confirmationOptions"
+          :render-label="renderConfirmation"
+          :loading="componentStore.confirmationLoading"
+        />
         <!-- Hafta kunlari -->
         <n-checkbox-group v-else-if="f.kind === 'weekdays'" :value="form[f.key] ?? []" @update:value="(v) => (form[f.key] = v)">
           <div class="flex flex-wrap gap-x-4 gap-y-2">

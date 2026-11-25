@@ -267,6 +267,12 @@ export const hrmRoutes = [
     meta: { layout: AppLayouts.main }
   },
   {
+    path: Utils.routeHrmPathMaker(AppPaths.Candidates),
+    name: AppPaths.Candidates.substring(1),
+    component: () => import('@/pages/hrm/candidates/CandidatesPage.vue'),
+    meta: { layout: AppLayouts.main, permission: appPermissions.hrWorkersRead }
+  },
+  {
     path: Utils.routeHrmPathMaker(AppPaths.StructureReport),
     name: AppPaths.StructureReport.substring(1),
     component: () => import('@/pages/hrm/structureReport/page.vue'),

@@ -208,12 +208,12 @@
             />
           </n-form-item>
         </div>
-        <div class="col-span-12 md:col-span-6">
+        <div class="col-span-12 sm:col-span-6 md:col-span-3">
           <n-form-item :label="$t('employeeDocumentsPage.form.number')" path="number">
             <n-input v-model:value="store.payload.number" :maxlength="50" />
           </n-form-item>
         </div>
-        <div class="col-span-12 md:col-span-6">
+        <div class="col-span-12 sm:col-span-6 md:col-span-3">
           <n-form-item :label="$t('employeeDocumentsPage.form.date')" path="document_date">
             <n-date-picker
               class="w-full"
@@ -223,7 +223,7 @@
             />
           </n-form-item>
         </div>
-        <div class="col-span-12">
+        <div class="col-span-12 md:col-span-6">
           <n-form-item :label="$t('documentPage.form.director')" path="director_id">
             <n-select
               value-field="id"

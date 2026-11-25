@@ -9,6 +9,10 @@ const _checkWorker = async (payload) => {
 const _index = async (payload) => {
   return await axios.get(`/v1/hr/worker-positions`, { params: payload.params })
 }
+// Nomzodlar — lavozimsiz, foydalanuvchi korxonasidan kiritilgan xodimlar.
+const _candidates = async (payload) => {
+  return await axios.get(`/v1/hr/worker-candidates`, { params: payload.params })
+}
 const _search = async (payload) => {
   return await axios.get(`/v1/hr/search-workers`, { params: payload.params })
 }
@@ -109,6 +113,7 @@ const _updateUserPassword = async (payload) => {
 export default {
   _checkWorker,
   _index,
+  _candidates,
   _show,
   _create,
   _update,

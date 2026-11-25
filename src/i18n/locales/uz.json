@@ -1142,6 +1142,19 @@
     "work_place": "Tashkilot/Bo'lim"
   },
   "workerPage": {
+    "candidates": {
+      "name": "Nomzodlar",
+      "hint": "Lavozimga hali qabul qilinmagan, korxonangizdan kiritilgan xodimlar",
+      "fullName": "F.I.Sh.",
+      "pin": "JSHSHIR",
+      "birthday": "Tug'ilgan sana",
+      "phone": "Telefon",
+      "organization": "Kiritgan korxona",
+      "createdBy": "Kim kiritgan",
+      "createdAt": "Kiritilgan sana",
+      "empty": "Nomzodlar yo'q",
+      "edit": "Tahrirlash"
+    },
     "name": "Xodimlar",
     "filter": {
       "contract": "Shartnoma tuzish",
@@ -2481,6 +2494,109 @@
       "deleted": "O'chirilgan",
       "subject_type": "Model",
       "sign-in": "Tizimga kirish"
+    }
+  },
+  "signatureHistory": {
+    "name": "Imzo tarixi",
+    "searchPlaceholder": "Xodim F.I.Sh bo'yicha qidirish",
+    "table": {
+      "signer": "Imzolovchi",
+      "document": "Hujjat",
+      "method": "Usul",
+      "via": "Kirish yo'li",
+      "keyType": "Kalit turi",
+      "ip": "IP manzil",
+      "device": "Qurilma",
+      "signingTime": "Imzo vaqti",
+      "createdAt": "Yozilgan vaqt",
+      "actions": "Amallar",
+      "pin": "JSHSHIR",
+      "details": "Batafsil"
+    },
+    "filter": {
+      "department": "Bo'lim",
+      "method": "Imzolash usuli",
+      "via": "Kirish yo'li",
+      "documentModel": "Hujjat turi",
+      "documentId": "Hujjat ID",
+      "date": "Sana oralig'i",
+      "structure": "Korxonalar"
+    },
+    "method": {
+      "eimzo_pc": "Kompyuterdagi E-IMZO",
+      "eimzo_mobile_qr": "Mobil E-IMZO — QR",
+      "eimzo_mobile_deeplink": "Mobil E-IMZO — telefonda",
+      "drawn": "Qo'lda chizilgan",
+      "face": "Face ID",
+      "unknown": "Noma'lum (eski yozuv)"
+    },
+    "via": {
+      "system": "Tizim orqali",
+      "link": "Link orqali"
+    },
+    "keyType": {
+      "pfx": "PFX fayl",
+      "idcard": "ID-karta",
+      "baikey": "BAIK token",
+      "ckc": "USB token"
+    },
+    "documentModel": {
+      "commands": "Buyruq",
+      "contracts": "Mehnat shartnomasi",
+      "contract-additional": "Qo'shimcha kelishuv",
+      "documents": "Hujjat",
+      "timesheet": "Tabel",
+      "vacation-schedule": "Ta'tillar grafigi",
+      "worker-application": "Ariza",
+      "med": "Tibbiy ko'rik",
+      "staffing-approve": "Shtat jadvali tasdig'i",
+      "lms-certificate": "LMS sertifikati",
+      "report": "Hisobot"
+    },
+    "detail": {
+      "title": "Imzo ma'lumotlari",
+      "signer": "Imzolovchi",
+      "organization": "Korxona",
+      "phone": "Telefon",
+      "document": "Hujjat",
+      "confirmationId": "Tasdiqlash ID",
+      "userAgent": "Qurilma (to'liq User-Agent)",
+      "certificate": "Sertifikat",
+      "certificateCode": "Sertifikat seriya raqami",
+      "certificateExpired": "Sertifikat amal qilish muddati",
+      "drawnImage": "Chizilgan imzo",
+      "secDocument": "Hujjat",
+      "secSignature": "Imzo va sertifikat",
+      "secDevice": "Qurilma",
+      "secTechnical": "Texnik ma'lumot",
+      "eimzoResponse": "E-IMZO javobi",
+      "signedFile": "Imzolangan hujjat nusxasi",
+      "openSignedFile": "PDF nusxani ochish",
+      "noSignedFile": "Nusxa saqlanmagan",
+      "downloadPkcs7": "PKCS7 yuklab olish",
+      "verify": "Qayta tekshirish",
+      "meta": "Qo'shimcha ma'lumot",
+      "hasPkcs7": "PKCS7 imzo",
+      "yes": "Bor",
+      "no": "Yo'q"
+    },
+    "verify": {
+      "title": "Tekshiruv natijasi",
+      "valid": "Imzo haqiqiy",
+      "invalid": "Imzo haqiqiy emas",
+      "notChecked": "Tekshirib bo'lmadi",
+      "noPkcs7": "Bu yozuvda PKCS7 imzo yo'q — faqat hujjat nusxasi tekshirildi",
+      "status": "Holat",
+      "signer": "Imzo egasi",
+      "serial": "Sertifikat seriya raqami",
+      "validity": "Sertifikat muddati",
+      "signingTime": "Imzo vaqti",
+      "certificateVerified": "Sertifikat tasdiqlandi",
+      "fileIntact": "Hujjat nusxasi o'zgarmagan",
+      "documentMatches": "PKCS7 ichidagi hujjat nusxaga mos",
+      "fileNotStored": "Hujjat nusxasi saqlanmagan",
+      "yes": "Ha",
+      "no": "Yo'q"
     }
   },
   "relativePage": {
