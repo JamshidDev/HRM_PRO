@@ -5,8 +5,8 @@
     useTurnstileDashboardStore
   } from '@/store/modules/index.js'
   import { ArrowSync20Regular } from '@vicons/fluent'
-  import { UISelect, UIDepartmentSelect } from '@/components/index.js'
-  import { generateUUIDKey, useAppSetting, useDebounce } from '@/utils/index.js'
+  import { UIDayPicker, UISelect, UIDepartmentSelect } from '@/components/index.js'
+  import { generateUUIDKey, useDebounce } from '@/utils/index.js'
 
   const dashboardStore = useTurnstileDashboardStore()
   const accStore = useAccountStore()
@@ -122,14 +122,8 @@
         />
       </div>
       <div class="md:w-[160px] w-full">
-        <n-date-picker
-          v-model:value="dashboardStore.dashboardParams.date"
-          @update:value="onChangeDate"
-          type="date"
-          update-value-on-close
-          :actions="null"
-          :format="useAppSetting.datePicketFormat"
-        />
+        <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek, store o'zgarmaydi. -->
+        <UIDayPicker v-model:value="dashboardStore.dashboardParams.date" mode="day" @update:value="onChangeDate" />
       </div>
     </div>
   </div>

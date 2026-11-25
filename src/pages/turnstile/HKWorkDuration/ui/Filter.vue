@@ -1,11 +1,10 @@
 <script setup>
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIDayPicker, UIPageFilter, UISelect } from '@/components/index.js'
   import {
     useAccountStore,
     useComponentStore,
     useHKWorkDurationStore
   } from '@/store/modules/index.js'
-  import { useAppSetting } from '@/utils/index.js'
 
   const store = useHKWorkDurationStore()
   const componentStore = useComponentStore()
@@ -91,13 +90,8 @@
       />
     </template>
     <template #filterAction>
-      <n-date-picker
-        class="w-[160px]"
-        v-model:value="store.params.date"
-        @update:value="filterEvent"
-        type="date"
-        :format="useAppSetting.datePicketFormat"
-      />
+      <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek, store o'zgarmaydi. -->
+      <UIDayPicker class="w-[160px]" v-model:value="store.params.date" mode="day" @update:value="filterEvent" />
     </template>
   </UIPageFilter>
 </template>

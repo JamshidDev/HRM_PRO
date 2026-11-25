@@ -1,7 +1,6 @@
 <script setup>
   import { useAccountStore, useDeviceEventStore, useEventStore } from '@/store/modules/index.js'
-  import { UIPageFilter, UISegmentTabs } from '@/components/index.js'
-  import { useAppSetting } from '@utils'
+  import { UIDayPicker, UIPageFilter, UISegmentTabs } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -98,26 +97,23 @@
         @update:value="filterEvent"
       />
       <label class="mt-3 text-xs text-gray-500">{{ $t('content.from') }}</label>
-      <n-date-picker
+      <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek 'yyyy-MM-dd' satr, store o'zgarmaydi. -->
+      <UIDayPicker
         class="mt-1"
         v-model:formatted-value="store.params.from"
         value-format="yyyy-MM-dd"
-        @update:formatted-value="filterEvent"
-        type="date"
-        :actions="null"
-        :format="useAppSetting.datePicketFormat"
+        mode="day"
         clearable
+        @update:formatted-value="filterEvent"
       />
       <label class="mt-3 text-xs text-gray-500">{{ $t('content.to') }}</label>
-      <n-date-picker
+      <UIDayPicker
         class="mt-1"
         v-model:formatted-value="store.params.to"
         value-format="yyyy-MM-dd"
-        @update:formatted-value="filterEvent"
-        type="date"
-        :actions="null"
-        :format="useAppSetting.datePicketFormat"
+        mode="day"
         clearable
+        @update:formatted-value="filterEvent"
       />
     </template>
     <template #filterSearch>

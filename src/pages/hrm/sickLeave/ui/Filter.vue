@@ -1,5 +1,5 @@
 <script setup>
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIDayPicker, UIPageFilter, UISelect } from '@/components/index.js'
   import { useSickLeaveStore, useAccountStore, useComponentStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
 
@@ -104,12 +104,11 @@
           <label class="mt-3 block text-xs text-gray-500 mb-1 font-medium">
             {{ $t('sickLeave.filter.fromDate') }}
           </label>
-          <n-date-picker
-            class="w-full"
+          <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek 'yyyy-MM-dd' satr, store o'zgarmaydi. -->
+          <UIDayPicker
             v-model:formatted-value="store.params.from_date"
             value-format="yyyy-MM-dd"
-            format="dd.MM.yyyy"
-            type="date"
+            mode="day"
             clearable
             @update:formatted-value="filterEvent"
           />
@@ -118,12 +117,10 @@
           <label class="mt-3 block text-xs text-gray-500 mb-1 font-medium">
             {{ $t('sickLeave.filter.toDate') }}
           </label>
-          <n-date-picker
-            class="w-full"
+          <UIDayPicker
             v-model:formatted-value="store.params.to_date"
             value-format="yyyy-MM-dd"
-            format="dd.MM.yyyy"
-            type="date"
+            mode="day"
             clearable
             @update:formatted-value="filterEvent"
           />

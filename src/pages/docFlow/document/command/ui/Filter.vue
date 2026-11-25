@@ -1,8 +1,8 @@
 <script setup>
   import { ArrowCounterclockwise20Regular } from '@vicons/fluent'
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIDayPicker, UIPageFilter, UISelect } from '@/components/index.js'
   import { useAccountStore, useCommandStore, useComponentStore } from '@/store/modules/index.js'
-  import { AppPaths, useAppSetting } from '@/utils/index.js'
+  import { AppPaths } from '@/utils/index.js'
   import i18n from '@/i18n/index.js'
 
   const { t } = i18n.global
@@ -43,6 +43,17 @@
   const filterEvent = () => {
     store.params.page = 1
     store._index()
+  }
+
+  // TEMP TEST (DAS-17755): kun picker rejimi. Almashtirilganda tanlangan sana tozalanadi.
+  const dpMode = ref('period')
+  const setDpMode = (m) => {
+    if (dpMode.value === m) return
+    dpMode.value = m
+    if (store.params.created) {
+      store.params.created = null
+      filterEvent()
+    }
   }
 
   const resetFilter = () => {
@@ -165,11 +176,20 @@
           />
         </div>
         <div class="col-span-12 md:col-span-6">
-          <label>{{ $t('content.created') }}</label>
-          <n-date-picker
+          <!-- TEMP TEST (DAS-17755): ikki rejimni sinash uchun «Kun | Davr» almashtirgich — keyin olib tashlanadi. -->
+          <div class="flex items-center justify-between">
+            <label>{{ $t('content.created') }}</label>
+            <div class="dp-test-switch">
+              <button type="button" :class="{ 'is-on': dpMode === 'day' }" @click="setDpMode('day')">Kun</button>
+              <button type="button" :class="{ 'is-on': dpMode === 'period' }" @click="setDpMode('period')">Davr</button>
+            </div>
+          </div>
+          <!-- Kelajak kunlar ham tanlanadi (`max-date` yo'q) — ma'lumot bo'lmasa ro'yxat shunchaki bo'sh. -->
+          <UIDayPicker
             v-model:value="store.params.created"
-            type="date"
-            :format="useAppSetting.datePicketFormat"
+            :mode="dpMode"
+            clearable
+            placement="bottom-end"
             @update:value="filterEvent"
           />
         </div>
@@ -199,6 +219,30 @@
     color: var(--textColor1);
     font-size: 13px;
     font-weight: 500;
+  }
+
+  /* TEMP TEST (DAS-17755) */
+  .dp-test-switch {
+    display: inline-flex;
+    margin-bottom: 6px;
+    padding: 2px;
+    border-radius: 8px;
+    background: var(--input-fill);
+  }
+  .dp-test-switch button {
+    padding: 1px 8px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--textColor3);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .dp-test-switch button.is-on {
+    background: var(--surface-section);
+    color: var(--primary-color);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
   }
 
   .command-filter-panel :deep(:where(.n-select, .n-date-picker)) {

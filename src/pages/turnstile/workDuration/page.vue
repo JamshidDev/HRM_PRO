@@ -1,9 +1,8 @@
 <script setup>
-  import { UIDrawer, UIModal, UIPageContent, UIPageFilter } from '@/components/index.js'
+  import { UIDayPicker, UIDrawer, UIModal, UIPageContent, UIPageFilter } from '@/components/index.js'
   import { useTurnstileWorkDurationStore, useAccountStore } from '@/store/modules/index.js'
   import { ClockToolbox20Regular } from '@vicons/fluent'
   import Table from './ui/Table.vue'
-  import { useAppSetting } from '@/utils/index.js'
   import WorkerCalendar from './ui/WorkerCalendar.vue'
   import LateComersList from './ui/LateComersList.vue'
   // import createForm from "./ui/createForm.vue"
@@ -48,23 +47,10 @@
       </template>
       <template #filterContent>
         <label class="mt-3 text-xs text-gray-500">{{ $t('content.from') }}</label>
-        <n-date-picker
-          class="mt-1"
-          v-model:value="store.params.start"
-          @update:value="filterEvent"
-          type="date"
-          :format="useAppSetting.datePicketFormat"
-          clearable
-        />
+        <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek, store o'zgarmaydi. -->
+        <UIDayPicker class="mt-1" v-model:value="store.params.start" mode="day" clearable @update:value="filterEvent" />
         <label class="mt-3 text-xs text-gray-500">{{ $t('content.to') }}</label>
-        <n-date-picker
-          class="mt-1"
-          v-model:value="store.params.end"
-          @update:value="filterEvent"
-          :format="useAppSetting.datePicketFormat"
-          type="date"
-          clearable
-        />
+        <UIDayPicker class="mt-1" v-model:value="store.params.end" mode="day" clearable @update:value="filterEvent" />
       </template>
     </UIPageFilter>
     <Table />

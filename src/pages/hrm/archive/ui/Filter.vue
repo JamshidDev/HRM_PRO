@@ -1,6 +1,6 @@
 <script setup>
   import { useArchiveStore, useComponentStore } from '@/store/modules/index.js'
-  import { UIPageFilter, UISelect } from '@/components/index.js'
+  import { UIDayPicker, UIPageFilter, UISelect } from '@/components/index.js'
   const store = useArchiveStore()
   const componentStore = useComponentStore()
 
@@ -81,20 +81,9 @@
         {{ $t('archive.filter.dismissedPeriod') }}
       </label>
       <div class="flex items-center gap-2">
-        <n-date-picker
-          class="w-full"
-          v-model:value="store.params.date_from"
-          type="date"
-          clearable
-          @update:value="filterEvent"
-        />
-        <n-date-picker
-          class="w-full"
-          v-model:value="store.params.date_to"
-          type="date"
-          clearable
-          @update:value="filterEvent"
-        />
+        <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek, store o'zgarmaydi. -->
+        <UIDayPicker v-model:value="store.params.date_from" mode="day" clearable @update:value="filterEvent" />
+        <UIDayPicker v-model:value="store.params.date_to" mode="day" clearable @update:value="filterEvent" />
       </div>
     </template>
   </UIPageFilter>

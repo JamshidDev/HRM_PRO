@@ -8124,5 +8124,25 @@
     "hours": "hrs",
     "minutes": "min",
     "seconds": "sec"
+  },
+  "dayPicker": {
+    "placeholder": "Select date",
+    "period": "Custom period",
+    "pickDay": "Pick a day",
+    "clear": "Clear",
+    "days": "{n} day | {n} days",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "tomorrow": "Tomorrow",
+    "twoDaysAgo": "2 days ago",
+    "inTwoDays": "In 2 days",
+    "weekStart": "Start of week",
+    "monthStart": "Start of month",
+    "thisWeek": "This week",
+    "lastWeek": "Last week",
+    "thisMonth": "This month",
+    "lastMonth": "Last month",
+    "last7": "Last 7 days",
+    "last30": "Last 30 days"
   }
 }

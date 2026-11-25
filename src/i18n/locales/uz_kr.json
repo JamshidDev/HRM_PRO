@@ -7850,5 +7850,25 @@
     "hours": "соат",
     "minutes": "дақиқа",
     "seconds": "сония"
+  },
+  "dayPicker": {
+    "placeholder": "Санани танланг",
+    "period": "Давр танлаш",
+    "pickDay": "Кун танлаш",
+    "clear": "Тозалаш",
+    "days": "{n} кун",
+    "today": "Бугун",
+    "yesterday": "Кеча",
+    "tomorrow": "Эртага",
+    "twoDaysAgo": "2 кун олдин",
+    "inTwoDays": "2 кундан кейин",
+    "weekStart": "Ҳафта боши",
+    "monthStart": "Ой боши",
+    "thisWeek": "Шу ҳафта",
+    "lastWeek": "Ўтган ҳафта",
+    "thisMonth": "Шу ой",
+    "lastMonth": "Ўтган ой",
+    "last7": "Охирги 7 кун",
+    "last30": "Охирги 30 кун"
   }
 }
