@@ -147,6 +147,7 @@ export const appPermissions = {
   hrCommandsBlank: 'hr-commands-blank',
   // Profil > Faollik (kirishlar xaritasi) — rol bo'yicha yoqiladi.
   profileActivity: 'profile-activity-read',
+  profileOrganizationInfo: 'profile-organization-info-read',
 
   hrContractAdditional: 'hr-contract-additional',
   hrContractAdditionalWrite: 'hr-contract-additional-write',

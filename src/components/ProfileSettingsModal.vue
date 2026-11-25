@@ -64,6 +64,12 @@
     }
   ]
 
+  // «Dizayn uslubi»: Standart yoki Minimal (Grow — oq-kulrang, ingichka chegaralar).
+  const uiStyles = [
+    { key: 'default', labelKey: 'content.uiStyleDefault', panel: '#C9F5E7', active: '#111111', activeText: '#ffffff' },
+    { key: 'minimal', labelKey: 'content.uiStyleMinimal', panel: '#F7F8FA', active: '#ffffff', activeText: '#111827' }
+  ]
+
   const screenFilters = [
     { key: 'grayscale', labelKey: 'content.filterGrayscale', icon: ColorlessIcon },
     { key: 'low-brightness', labelKey: 'content.filterLowBrightness', icon: HalfBrightnessIcon },
@@ -151,6 +157,41 @@
           <n-divider class="!my-0" />
 
           <div class="flex flex-col gap-3">
+            <span class="text-sm text-textColor0 font-medium">{{ t('content.uiStyle') }}</span>
+            <div class="grid grid-cols-2 gap-4">
+              <button
+                v-for="item in uiStyles"
+                :key="item.key"
+                type="button"
+                class="flex flex-col items-center gap-2 p-3 rounded-xl border transition-all cursor-pointer"
+                :class="store.uiStyle === item.key ? 'border-primary bg-primary/10' : 'border-surface-line'"
+                @click="store.setUiStyle(item.key)"
+              >
+                <div class="flex w-full h-14 rounded-lg overflow-hidden border border-surface-line bg-white">
+                  <div class="w-1/3 flex flex-col gap-1 p-1.5" :style="{ background: item.panel }">
+                    <span
+                      class="h-2.5 rounded"
+                      :style="{ background: item.active, border: item.key === 'minimal' ? '1px solid #e5e7eb' : 'none' }"
+                    ></span>
+                    <span class="h-1.5 w-3/4 rounded bg-black/10"></span>
+                    <span class="h-1.5 w-2/3 rounded bg-black/10"></span>
+                  </div>
+                  <div class="flex-1 flex flex-col gap-1 p-1.5">
+                    <span class="h-2 w-1/2 rounded bg-black/15"></span>
+                    <span class="h-full rounded border border-black/10"></span>
+                  </div>
+                </div>
+                <span class="text-xs font-medium" :class="store.uiStyle === item.key ? 'text-primary' : 'text-textColor3'">
+                  {{ t(item.labelKey) }}
+                </span>
+              </button>
+            </div>
+            <span class="text-xs text-textColor3">{{ t('content.uiStyleHint') }}</span>
+          </div>
+
+          <n-divider class="!my-0" />
+
+          <div class="flex flex-col gap-3">
             <span class="text-sm text-textColor0 font-medium">{{ t('content.sidebarColor') }}</span>
             <div class="grid grid-cols-2 gap-4">
               <div
@@ -174,7 +215,7 @@
                   :class="
                     store.sidebarTheme === item.key
                       ? item.darkLabel
-                        ? 'text-textColor0'
+                        ? 'text-[#101828]'
                         : 'text-white'
                       : 'text-textColor3'
                   "

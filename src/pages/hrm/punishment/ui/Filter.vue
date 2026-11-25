@@ -70,9 +70,7 @@
     <template #filterAction>
       <n-button
         v-fly-upload
-        class="h-[32px]!"
         :loading="store.downloading"
-        type="success"
         @click="store._download()"
       >
         <template #icon>

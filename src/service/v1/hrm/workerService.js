@@ -17,6 +17,13 @@ const _search = async (payload) => {
   return await axios.get(`/v1/hr/search-workers`, { params: payload.params })
 }
 
+// Profil «Hujjatlar» tabi — xodimning tasdiqlangan hujjatlari (kind bo'yicha).
+const _documents = async (payload) => {
+  return await axios.get(`/v1/hr/worker-positions/${payload.id}/documents`, {
+    params: payload.params
+  })
+}
+
 const _show = async (payload) => {
   return await axios.get(`/v1/hr/worker-positions/${payload.id}/edit`, { params: payload.params })
 }
@@ -109,12 +116,12 @@ const _updateUserPassword = async (payload) => {
   return await axios.post(`/v1/extra/users/update-password`, payload.data, { silentSuccess: true })
 }
 
-
 export default {
   _checkWorker,
   _index,
   _candidates,
   _show,
+  _documents,
   _create,
   _update,
   _updateWorkerPassword,

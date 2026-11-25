@@ -13,6 +13,7 @@ export const ACTION_ORDER = ['read', 'write', 'delete']
 // switch faqat shu to'plamda bo'lsa ko'rsatiladi (mutatsiya real API talab qiladi).
 export const ENFORCED = new Set([
   'activity-logs-read',
+  'profile-organization-info-read',
   'signature-history-read',
   'admin',
   'authentication-logs-read',
@@ -773,6 +774,8 @@ export const MEANINGFUL = new Set([
   'tariff-grid-access-delete',
   // Profil > Faollik tabi (faqat frontend ko'rinishi; ma'lumot — foydalanuvchining o'zi).
   'profile-activity-read',
+  // Profil > Korxona ma'lumotlari tabi (migr 0247; backend @Permission bilan).
+  'profile-organization-info-read',
   // 2026-10-14 — Oylik yashirish (salary_hidden, migr 0160).
   'salary-hidden-read',
   'salary-hidden-write',
@@ -1184,7 +1187,10 @@ export const PERMISSION_GROUPS = [
   {
     module: 'profile',
     label: 'profilePage.sidebar.title',
-    groups: [{ prefix: 'profile-activity', label: 'profilePage.tabs.activity' }]
+    groups: [
+      { prefix: 'profile-activity', label: 'profilePage.tabs.activity' },
+      { prefix: 'profile-organization-info', label: 'profilePage.orgInfo.title' }
+    ]
   },
   {
     module: 'admin',

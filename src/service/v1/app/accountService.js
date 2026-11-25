@@ -24,6 +24,11 @@ const _orgInfo = async (payload) => {
   })
 }
 
+// Profil «Korxona ma'lumotlari» — faol roldagi korxona rekvizitlari.
+const _myOrganization = async () => {
+  return await axios.get(`/v1/user/organization`)
+}
+
 const _updateOrgInfo = async (payload) => {
   return await axios.put(`/v1/user/organization-info`, payload?.data)
 }
@@ -77,6 +82,7 @@ const _revokeOtherSessions = async () => {
 }
 
 export default {
+  _myOrganization,
   _index,
   _update,
   _logOut,

@@ -85,7 +85,7 @@
         v-bind="$attrs"
         @mouseenter="onEnter"
         @mouseleave="showTip = false"
-        class="inline-flex max-w-full items-center justify-center rounded-full font-semibold whitespace-nowrap align-middle"
+        class="inline-flex max-w-full items-center justify-center rounded-[var(--chip-radius,9999px)] font-semibold whitespace-nowrap align-middle"
         :class="[
           chipClass,
           compact ? 'gap-0.5 px-2 py-0.5 text-[10px] leading-3' : 'gap-1 px-3 py-1 text-[12px] leading-4'

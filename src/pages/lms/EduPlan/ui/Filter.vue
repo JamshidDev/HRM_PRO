@@ -88,8 +88,6 @@
         ref="exportBtnRef"
         :loading="store.exportLoading"
         @click="onExport"
-        type="primary"
-        ghost
       >
         {{ $t('content.download') }}
         <template #icon>

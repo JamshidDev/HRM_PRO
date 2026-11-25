@@ -254,6 +254,10 @@
     "deviceMobile": "Mobil"
   },
   "content": {
+    "uiStyle": "Dizayn uslubi",
+    "uiStyleDefault": "Standart",
+    "uiStyleMinimal": "Minimal",
+    "uiStyleHint": "Minimal uslub faqat yoruğ rejimda işlaydi; sidebar rangi örniga oq-kulrang panel",
     "user": "Foydalanuvçi",
     "title": "Sarlavha",
     "deleted": "Öçirilgan",
@@ -953,6 +957,17 @@
     }
   },
   "profilePage": {
+    "orgInfo": {
+      "title": "Korxona ma'lumotlari",
+      "name": "Taşkilot nomi",
+      "fullName": "Töliq nomi",
+      "code": "Kodi",
+      "inn": "STIR",
+      "address": "Manzil",
+      "region": "Hudud",
+      "parent": "Yuqori taşkilot",
+      "empty": "Korxona biriktirilmagan"
+    },
     "copy": "Nusxalaş",
     "copied": "Nusxalandi",
     "roles": {
@@ -986,6 +1001,7 @@
         "copySuccess": "Link nusxa olindi!",
         "copyError": "Nusxa olişda xatolik!"
       },
+      "signatures": "Imzolar tarixi",
       "ssoLogins": "Kirişlar tarixi (SSO)",
       "activity": "Faollik"
     },
@@ -1312,7 +1328,8 @@
       "education": "Ma'lumot va malaka",
       "career": "Iş faoliyati",
       "relative": "Qarindoşlar",
-      "others": "Qöşimça"
+      "others": "Qöşimça",
+      "documents": "Hujjatlar"
     },
     "personal": {
       "additionalContract": "Qöşimça kelişuv tuziş",
@@ -1348,6 +1365,21 @@
     "disability": {
       "title": "Nogironlik ma'lumotlari",
       "noData": "Ma'lumot yöq"
+    },
+    "documents": {
+      "title": "Hujjatlar",
+      "hint": "Barça korxonalardagi tasdiqlangan hujjatlar",
+      "type": "Turi",
+      "number": "Raqami",
+      "date": "Sana",
+      "organization": "Korxona",
+      "kinds": {
+        "commands": "Buyruqlar",
+        "contracts": "Şartnomalar",
+        "contract-additional": "Qöş. kelişuvlar",
+        "worker-application": "Arizalar",
+        "documents": "Bildirgilar va boşqa"
+      }
     }
   },
   "departmentPage": {
@@ -3153,6 +3185,12 @@
       "durationDay": "Ta'til davomiyligi {n} kun",
       "workDay": "Işga çiqiş sanasi",
       "duration": "Qaçondan - Qaçongaça"
+    },
+    "status": {
+      "label": "Holati",
+      "active": "Hozir ta'tilda",
+      "upcoming": "Kelgusi ta'tillar",
+      "all": "Hammasi"
     }
   },
   "dashboardPage": {

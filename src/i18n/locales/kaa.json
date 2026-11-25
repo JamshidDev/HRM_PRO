@@ -1299,7 +1299,8 @@
       "education": "Maǵlıwmat hám kvalifikaciya",
       "career": "Jumıs iskerligi",
       "relative": "Tuwısqanlar",
-      "others": "Qosımsha"
+      "others": "Qosımsha",
+      "documents": "Hújjetler"
     },
     "personal": {
       "additionalContract": "Qosımsha kelisim dúziw",
@@ -1335,6 +1336,21 @@
     "disability": {
       "title": "Mayıplıq maǵlıwmatları",
       "noData": "Maǵlıwmat joq"
+    },
+    "documents": {
+      "title": "Hújjetler",
+      "hint": "Barlıq kárxanalardaǵı tastıyıqlanǵan hújjetler",
+      "type": "Túri",
+      "number": "Nomeri",
+      "date": "Sáne",
+      "organization": "Kárxana",
+      "kinds": {
+        "commands": "Buyrıqlar",
+        "contracts": "Shártnamalar",
+        "contract-additional": "Qosımsha kelisimler",
+        "worker-application": "Arzalar",
+        "documents": "Bildirgiler hám basqa"
+      }
     }
   },
   "departmentPage": {
@@ -3037,6 +3053,12 @@
       "durationDay": "Dem alıs dawamlılıǵı {n} kún",
       "workDay": "Jumısqa shıǵıw sánesi",
       "duration": "Qashannan - Qashanǵa shekem"
+    },
+    "status": {
+      "label": "Jaǵdayı",
+      "active": "Házir dem alısta",
+      "upcoming": "Keleshektegi dem alıslar",
+      "all": "Barlıǵı"
     }
   },
   "dashboardPage": {

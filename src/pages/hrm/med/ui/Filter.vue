@@ -96,7 +96,6 @@
       <n-button
         v-if="accStore.checkPermission(accStore.pn.hrMedRead)"
         ref="exportBtnRef"
-        type="success"
         :loading="store.exportLoading"
         @click="onExport"
       >

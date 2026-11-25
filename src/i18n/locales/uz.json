@@ -254,6 +254,10 @@
     "deviceMobile": "Mobil"
   },
   "content": {
+    "uiStyle": "Dizayn uslubi",
+    "uiStyleDefault": "Standart",
+    "uiStyleMinimal": "Minimal",
+    "uiStyleHint": "Minimal uslub faqat yorug' rejimda ishlaydi; sidebar rangi o'rniga oq-kulrang panel",
     "user": "Foydalanuvchi",
     "title": "Sarlavha",
     "deleted": "O'chirilgan",
@@ -953,6 +957,17 @@
     }
   },
   "profilePage": {
+    "orgInfo": {
+      "title": "Korxona ma'lumotlari",
+      "name": "Tashkilot nomi",
+      "fullName": "To'liq nomi",
+      "code": "Kodi",
+      "inn": "STIR",
+      "address": "Manzil",
+      "region": "Hudud",
+      "parent": "Yuqori tashkilot",
+      "empty": "Korxona biriktirilmagan"
+    },
     "copy": "Nusxalash",
     "copied": "Nusxalandi",
     "roles": {
@@ -986,6 +1001,7 @@
         "copySuccess": "Link nusxa olindi!",
         "copyError": "Nusxa olishda xatolik!"
       },
+      "signatures": "Imzolar tarixi",
       "ssoLogins": "Kirishlar tarixi (SSO)",
       "activity": "Faollik"
     },
@@ -1312,7 +1328,8 @@
       "education": "Ma'lumot va malaka",
       "career": "Ish faoliyati",
       "relative": "Qarindoshlar",
-      "others": "Qo'shimcha"
+      "others": "Qo'shimcha",
+      "documents": "Hujjatlar"
     },
     "personal": {
       "additionalContract": "Qo'shimcha kelishuv tuzish",
@@ -1348,6 +1365,21 @@
     "disability": {
       "title": "Nogironlik ma'lumotlari",
       "noData": "Ma'lumot yo'q"
+    },
+    "documents": {
+      "title": "Hujjatlar",
+      "hint": "Barcha korxonalardagi tasdiqlangan hujjatlar",
+      "type": "Turi",
+      "number": "Raqami",
+      "date": "Sana",
+      "organization": "Korxona",
+      "kinds": {
+        "commands": "Buyruqlar",
+        "contracts": "Shartnomalar",
+        "contract-additional": "Qo'sh. kelishuvlar",
+        "worker-application": "Arizalar",
+        "documents": "Bildirgilar va boshqa"
+      }
     }
   },
   "departmentPage": {
@@ -3153,6 +3185,12 @@
       "durationDay": "Ta'til davomiyligi {n} kun",
       "workDay": "Ishga chiqish sanasi",
       "duration": "Qachondan - Qachongacha"
+    },
+    "status": {
+      "label": "Holati",
+      "active": "Hozir ta'tilda",
+      "upcoming": "Kelgusi ta'tillar",
+      "all": "Hammasi"
     }
   },
   "dashboardPage": {
