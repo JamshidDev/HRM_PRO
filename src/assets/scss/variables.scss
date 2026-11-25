@@ -58,14 +58,14 @@
    * Nisbatlar oq fonga (#ffffff) nisbatan: primary va secondary AAA (7:1) dan,
    * tertiary AA (4.5:1) dan o'tadi.
    */
-  --textColor0: #111827; // 17.7:1 — primary (neytral, ko'kliksiz)
+  --textColor0: #030712; // 20:1 — primary (deyarli qora)
   --textColor1: #4b5563; // 7.6:1 — secondary
-  --textColor2: #111827; // 17.7:1 — primary
+  --textColor2: #030712; // 20:1 — primary
   --textColor3: #6b7280; // 4.8:1 — tertiary (subtitle)
   --table-th-text: #6b7280; // jadval sarlavhalari — kulrang
 
   // Figma palitrasidagi matn tokenlari ham shu uch pog'onaga tenglangan.
-  --fig-text-primary: #111827;
+  --fig-text-primary: #030712;
   --fig-text-secondary: #4b5563;
   --fig-text-tertiary: #6b7280; // `--textColor3` bilan bir xil
   --fig-text-muted: #6b7280;
