@@ -153,3 +153,20 @@
     0 0 0 1px #2e2e33,
     0 24px 64px rgb(0 0 0 / 70%) !important;
 }
+
+// Jadval footeri — qatorlardan to'qroq, chiziq bilan ajraladi.
+:root[data-theme='dark'] .ui-table__footer {
+  background: #101012 !important;
+  border-top-color: var(--surface-line);
+}
+
+// Xodim profili ko'rish oynasi: oyna → bo'lim kartasi → maydon, har qatlam ochroq.
+:root[data-theme='dark'] .ui-preview-window {
+  --surface-section: #18181b;
+  --surface-ground: #222226;
+  --surface-line: #2e2e33;
+  background-color: #111113 !important;
+  box-shadow:
+    0 0 0 1px #2e2e33,
+    0 24px 64px rgb(0 0 0 / 70%);
+}
