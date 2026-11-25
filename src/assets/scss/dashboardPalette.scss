@@ -1,0 +1,27 @@
+// HR Dashboard uyg'un palitrasi: ko'k oila + teal + sariq; ma'noli yashil/qizil saqlanadi; faqat html.hrm-dash-active da.
+:root.hrm-dash-active {
+  --fig-icon-indigo: #1f5fd1;
+  --fig-icon-purple: #7db8fb;
+  --fig-icon-pink: #0ea5a4;
+  --fig-icon-orange: #f59e0b;
+  --fig-icon-yellow: #fcd34d;
+  --fig-indigo-100: var(--fig-blue-100);
+  --fig-amber-100: var(--fig-blue-100);
+  --fig-pink-100: var(--fig-blue-100);
+  --color-fig-indigo-100: var(--fig-blue-100);
+  --color-fig-amber-100: var(--fig-blue-100);
+  --color-fig-pink-100: var(--fig-blue-100);
+}
+
+:root.hrm-dash-active[data-theme='dark'] {
+  --fig-icon-indigo: #5b8def;
+  --fig-icon-purple: #9cc8fd;
+  --fig-icon-pink: #2dd4bf;
+  --fig-icon-orange: #fbbf24;
+  --fig-icon-yellow: #fde68a;
+}
+
+// Karta va bo'lim ikonkalari — bitta brand rangda (SVG'larda rang qattiq yozilgan).
+:root.hrm-dash-active .fig-soon__card svg :is([fill='#5550E5'], [fill='#D7A000'], [fill='#00A652'], [fill='#2E90FA']) {
+  fill: var(--fig-icon-brand);
+}
