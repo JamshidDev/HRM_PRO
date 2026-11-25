@@ -375,7 +375,8 @@ export const navigations = withRawIcons([
           appPermissions.hrMonthlyReport,
           appPermissions.hrArchiveRead,
           appPermissions.hrCertificatesRead,
-          appPermissions.hrDocumentsRead
+          appPermissions.hrDocumentsRead,
+          appPermissions.hrWorkersRead
         ],
         children: [
           {
@@ -399,6 +400,13 @@ export const navigations = withRawIcons([
             icon: reportIcon,
             color: 'bg-primary',
             permission: appPermissions.hrReportExport
+          },
+          {
+            label: 'workerPage.candidates.name', // Nomzodlar
+            path: Utils.routeHrmPathMaker(AppPaths.Candidates),
+            icon: ExtraWorkerRoleIcon,
+            color: 'bg-info',
+            permission: appPermissions.hrWorkersRead
           },
           {
             label: 'structureReport.name', // Hisobot aylanmasi

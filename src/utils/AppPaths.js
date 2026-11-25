@@ -121,6 +121,7 @@ export const AppPaths = {
   Report: '/report',
   Approval: '/approval',
   SpecialReport: '/spectial-report',
+  Candidates: '/candidates',
   WorkDuration: '/work-duration',
   HCWorkDuration: '/hc-work-duration',
   AccessLevels: '/access-levels',

@@ -1142,6 +1142,19 @@
     "work_place": "Tashkilot/Bo'lim"
   },
   "workerPage": {
+    "candidates": {
+      "name": "Nomzodlar",
+      "hint": "Lavozimga hali qabul qilinmagan, korxonangizdan kiritilgan xodimlar",
+      "fullName": "F.I.Sh.",
+      "pin": "JSHSHIR",
+      "birthday": "Tug'ilgan sana",
+      "phone": "Telefon",
+      "organization": "Kiritgan korxona",
+      "createdBy": "Kim kiritgan",
+      "createdAt": "Kiritilgan sana",
+      "empty": "Nomzodlar yo'q",
+      "edit": "Tahrirlash"
+    },
     "name": "Xodimlar",
     "filter": {
       "contract": "Shartnoma tuzish",

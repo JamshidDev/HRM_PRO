@@ -1127,6 +1127,19 @@
     "work_place": "Organization/Department"
   },
   "workerPage": {
+    "candidates": {
+      "name": "Candidates",
+      "hint": "People added by your organization who have not been hired yet",
+      "fullName": "Full name",
+      "pin": "PINFL",
+      "birthday": "Birth date",
+      "phone": "Phone",
+      "organization": "Organization",
+      "createdBy": "Added by",
+      "createdAt": "Added on",
+      "empty": "No candidates",
+      "edit": "Edit"
+    },
     "name": "Employees",
     "filter": {
       "contract": "Contract creation",
