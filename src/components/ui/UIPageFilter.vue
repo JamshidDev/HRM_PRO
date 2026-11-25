@@ -240,7 +240,6 @@
           v-if="showAddButton"
           :disabled="addDisabled"
           type="primary"
-          icon-placement="right"
           @click="addEvent"
         >
           <template #icon>
@@ -439,7 +438,7 @@
 
   .ui-page-action-button,
   .ui-page-filter-button {
-    --n-height: 32px !important;
+    --n-height: 34px !important;
     --n-border-radius: 8px !important;
   }
 
@@ -448,11 +447,11 @@
   }
 
   .ui-page-filter-button {
-    --n-height: 32px !important;
+    --n-height: 34px !important;
     --n-border-radius: 8px !important;
-    --n-padding: 0 16px !important;
-    --n-font-size: 12px !important;
-    font-weight: 600;
+    --n-padding: 0 14px !important;
+    --n-font-size: 14px !important;
+    font-weight: 500;
   }
 
   .ui-page-filter-button :deep(.n-button__content) {

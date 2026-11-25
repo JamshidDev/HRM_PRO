@@ -215,6 +215,12 @@ export const customTheme = () => {
       optionTextColorHover: '#2E90FA'
     },
     Button: {
+      // Yagona o'lcham: 34px, radius 8, shrift 14/500, ikonka 16.
+      heightMedium: '34px',
+      borderRadiusMedium: '8px',
+      fontSizeMedium: '14px',
+      iconSizeMedium: '16px',
+      fontWeight: '500',
       textColorPrimary: '#ffffff',
       textColorHoverPrimary: '#ffffff',
       textColorPressedPrimary: '#ffffff',
