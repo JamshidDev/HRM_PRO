@@ -64,6 +64,7 @@ export const useAppStore = defineStore('appStore', {
     theme: customTheme(),
     themeMode: 'system',
     sidebarTheme: useAppSetting.defaultSidebarTheme,
+    uiStyle: useAppSetting.defaultUiStyle,
     soundEnabled: true,
     screenFilter: useAppSetting.defaultScreenFilter,
     fontScale: useAppSetting.defaultFontScale,
@@ -138,6 +139,16 @@ export const useAppStore = defineStore('appStore', {
       localStorage.setItem(useAppSetting.sidebarThemeKey, theme)
       this.applySidebarTheme()
     },
+    // «Dizayn uslubi»: data-ui-style atributi CSS tokenlarini almashtiradi, naive tema qayta hisoblanadi.
+    applyUiStyle() {
+      document.documentElement.setAttribute('data-ui-style', this.uiStyle)
+      this.theme = customTheme()
+    },
+    setUiStyle(style) {
+      this.uiStyle = style
+      localStorage.setItem(useAppSetting.uiStyleKey, style)
+      this.applyUiStyle()
+    },
     setSoundEnabled(value) {
       this.soundEnabled = value
       localStorage.setItem(useAppSetting.soundEnabledKey, value ? '1' : '0')
@@ -187,6 +198,7 @@ export const useAppStore = defineStore('appStore', {
       this.setFontScale(useAppSetting.defaultFontScale)
       this.setFontFamily(useAppSetting.defaultFontFamily)
       this.setSidebarTheme(useAppSetting.defaultSidebarTheme)
+      this.setUiStyle(useAppSetting.defaultUiStyle)
     },
 
     openProfileSettings() {
@@ -204,6 +216,9 @@ export const useAppStore = defineStore('appStore', {
       this.sidebarTheme =
         localStorage.getItem(useAppSetting.sidebarThemeKey) || useAppSetting.defaultSidebarTheme
       this.applySidebarTheme()
+
+      this.uiStyle = localStorage.getItem(useAppSetting.uiStyleKey) || useAppSetting.defaultUiStyle
+      this.applyUiStyle()
 
       this.soundEnabled = localStorage.getItem(useAppSetting.soundEnabledKey) !== '0'
 

@@ -115,7 +115,7 @@ export const customTheme = () => {
       // Juft qatorlar — jadval sarlavhasi bilan BIR XIL sirt (#f8fafc).
       // Ilgari `--surface-ground-soft` (#f9fafb, neytral kulrang) edi va
       // jadval ichida ikkita boshqa-boshqa och tus aralashib turardi.
-      tableColorStriped: getValueOfCssVariable('--table-header'), // Juft qatorlar fon rangi
+      tableColorStriped: getValueOfCssVariable('--table-striped') || getValueOfCssVariable('--table-header'), // Juft qatorlar (Minimal — oq)
 
       // Joylashtiruvchi va kiritish ranglari
       placeholderColor: getValueOfCssVariable('--textColor3'), // Kiritish maydonlaridagi joylashtiruvchi matn rangi

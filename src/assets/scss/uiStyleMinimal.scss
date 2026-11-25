@@ -1,0 +1,36 @@
+// Sozlamalar → «Dizayn uslubi: Minimal» (Grow uslubi) — faqat yorug' rejim; tokenlar ustiga yoziladi.
+:root:not([data-theme='dark'])[data-ui-style='minimal'] {
+  --app-bg: #f7f8fa;
+  --surface-line: #d5dae1;
+  --table-border: #dde2e8;
+  --table-header: #f9fafb;
+  --table-striped: #ffffff;
+  --input-fill: #ffffff;
+  --input-border: #d5dae1;
+  --input-border-hover: #b9c0ca;
+  --seg-track: #f3f4f6;
+  --seg-thumb: #ffffff;
+  --seg-active-text: #111827;
+  --sidebar-icon-gradient: #6b7280;
+  --sidebar-icon-active-filter: none;
+  --chip-radius: 6px;
+}
+
+// Jadval kartasi: Grow kabi aniq 1px chegara va kichikroq radius.
+:root:not([data-theme='dark'])[data-ui-style='minimal'] .ui-table__wrapper {
+  border: 1px solid var(--surface-line);
+  border-radius: 12px !important;
+}
+
+// Qatorlar orasida ingichka chiziq (Grow kabi), oxirgi qatorda yo'q.
+:root:not([data-theme='dark'])[data-ui-style='minimal'] .ui-table__table {
+  .n-data-table-tbody .n-data-table-td {
+    border-bottom: 1px solid var(--table-border) !important;
+  }
+  .n-data-table-tbody .n-data-table-tr:last-child .n-data-table-td {
+    border-bottom: none !important;
+  }
+  .n-data-table-th {
+    border-bottom: 1px solid var(--surface-line) !important;
+  }
+}

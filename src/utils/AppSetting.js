@@ -23,6 +23,8 @@ export const useAppSetting = {
   pushAskedKey: 'app-push-asked',
   pushTokenKey: 'app-push-token',
   sidebarThemeKey: 'app-sidebar-theme',
+  uiStyleKey: 'app-ui-style',
+  defaultUiStyle: 'default',
   // Joriy (rol + tashkilot) juftligi — `accountStore._index()` yozadi, chiqishda
   // o'chiriladi. Sidebar sozlamalari shu bo'yicha ajratiladi: bitta foydalanuvchi
   // ikki rol bilan ishlaganda menyu tartibi aralashib ketmasin.

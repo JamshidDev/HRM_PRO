@@ -254,6 +254,10 @@
     "deviceMobile": "Mobil"
   },
   "content": {
+    "uiStyle": "Dizayn uslubi",
+    "uiStyleDefault": "Standart",
+    "uiStyleMinimal": "Minimal",
+    "uiStyleHint": "Minimal uslub faqat yoruğ rejimda işlaydi; sidebar rangi örniga oq-kulrang panel",
     "user": "Foydalanuvçi",
     "title": "Sarlavha",
     "deleted": "Öçirilgan",

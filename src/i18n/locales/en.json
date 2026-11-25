@@ -250,6 +250,10 @@
     "deviceMobile": "Mobile"
   },
   "content": {
+    "uiStyle": "Interface style",
+    "uiStyleDefault": "Standard",
+    "uiStyleMinimal": "Minimal",
+    "uiStyleHint": "Minimal style works in light mode only; replaces the sidebar color with a white-gray panel",
     "user": "User",
     "title": "Title",
     "deleted": "Deleted",
