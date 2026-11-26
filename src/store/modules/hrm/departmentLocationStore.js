@@ -57,6 +57,11 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     },
     placeOptions: [],
     placeOptionsLoading: false,
+    // Formadagi joy select'i sahifalab yuklanadi (scroll).
+    placeOptionsPage: 1,
+    placeOptionsPerPage: 50,
+    placeOptionsTotal: 0,
+    placeOptionsSearch: null,
     // Bo'limlar/Xodimlar filtridagi lokatsiya tanlovi.
     placeFilterOptions: [],
     placeFilterLoading: false,
@@ -408,8 +413,12 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
         })
     },
     // Biriktirish formasi: bo'lim/xodim korxonasining joylari; tanlangani ro'yxatda bo'lmasa qo'shiladi.
-    _placeOptions(search = null) {
-      const params = { per_page: 50, search: search || undefined }
+    _placeOptions(search = null, append = false) {
+      if (!append) {
+        this.placeOptionsPage = 1
+        this.placeOptionsSearch = search || null
+      }
+      const params = { page: this.placeOptionsPage, per_page: this.placeOptionsPerPage, search: this.placeOptionsSearch || undefined }
       if (this.target === 'worker') params.worker_id = this.payload.worker_id
       else params.department_id = this.payload.department_id
       if (!params.worker_id && !params.department_id) {
@@ -421,9 +430,11 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       return api
         ._places({ params })
         .then(async (res) => {
-          const list = res.data.data.data
+          this.placeOptionsTotal = res.data.data.total ?? 0
+          const page = res.data.data.data
+          const list = append ? [...this.placeOptions, ...page.filter((p) => !this.placeOptions.some((o) => o.id === p.id))] : page
           const id = this.payload.place_id
-          if (id && !list.some((p) => p.id === id)) {
+          if (!append && id && !list.some((p) => p.id === id)) {
             const one = await api._showPlace({ id }).catch(() => null)
             if (one?.data?.data) list.unshift(one.data.data)
           }
@@ -434,6 +445,13 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
         })
     },
     // Tanlangan joy shakli xaritada ko'rinadi (faqat ko'rish).
+    onScrollPlaceOptions(e) {
+      const el = e.currentTarget
+      if (el.scrollTop + el.offsetHeight < el.scrollHeight - 10 || this.placeOptionsLoading) return
+      if (this.placeOptionsPage * this.placeOptionsPerPage >= this.placeOptionsTotal) return
+      this.placeOptionsPage += 1
+      this._placeOptions(null, true)
+    },
     // Ko'p tanlovda xaritada oxirgi tanlangan joy ko'rinadi.
     selectPlaces(ids) {
       this.payload.place_ids = ids ?? []

@@ -412,6 +412,8 @@
                   remote
                   clearable
                   @search="onPlaceSearch"
+                  @scroll="store.onScrollPlaceOptions"
+                  :reset-menu-on-options-change="false"
                   @update:value="(v) => store.selectPlaces(v)"
                 />
                 <n-select
@@ -425,6 +427,8 @@
                   remote
                   clearable
                   @search="onPlaceSearch"
+                  @scroll="store.onScrollPlaceOptions"
+                  :reset-menu-on-options-change="false"
                   @update:value="(v) => store.selectPlace(v)"
                 />
               </n-form-item>
