@@ -7085,7 +7085,8 @@
       "noCertificate": "Берилмаган",
       "status": "Ҳолати",
       "expired": "Муддати ўтган",
-      "extended": "узайтирилган"
+      "extended": "узайтирилган",
+      "extendedChip": "Узайтирилган"
     },
     "filter": {
       "status": "Гувоҳнома ҳолати",

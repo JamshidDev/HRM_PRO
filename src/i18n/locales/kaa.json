@@ -7322,7 +7322,8 @@
       "noCertificate": "Berilmegen",
       "status": "Jaǵdayı",
       "expired": "Múddeti ótken",
-      "extended": "uzartılǵan"
+      "extended": "uzartılǵan",
+      "extendedChip": "Uzartılǵan"
     },
     "filter": {
       "status": "Gúwalıq jaǵdayı",

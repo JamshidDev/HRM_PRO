@@ -7454,7 +7454,8 @@
       "noCertificate": "Berilmagan",
       "status": "Holati",
       "expired": "Muddati ötgan",
-      "extended": "uzaytirilgan"
+      "extended": "uzaytirilgan",
+      "extendedChip": "Uzaytirilgan"
     },
     "filter": {
       "status": "Guvohnoma holati",

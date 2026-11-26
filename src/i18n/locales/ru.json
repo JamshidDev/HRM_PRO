@@ -7407,7 +7407,8 @@
       "noCertificate": "Не выдано",
       "status": "Статус",
       "expired": "Срок истёк",
-      "extended": "продлено"
+      "extended": "продлено",
+      "extendedChip": "Продлено"
     },
     "filter": {
       "status": "Статус удостоверения",

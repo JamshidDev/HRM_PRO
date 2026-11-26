@@ -13,16 +13,16 @@ export const isExpired = (c) => {
 }
 
 /**
- * Guvohnomaning BITTA holati (jadval va «Ko'rish» oynasi uchun bir xil chip).
+ * Guvohnomaning BITTA holati — jadval, «Ko'rish» kartalari va Lavozim guvohnomalarida bir xil chip.
  * Muhimlik tartibi: qaytarib olingan → muddati o'tgan → tasdiqlangan / tasdiqlanmagan.
- * `status.id` — UIStatus ikonkasi uchun, `tone` — chip rangi.
+ * `status.id` — UIStatus belgisi (17 / 18 — guvohnomaning o'z belgilari), `tone` — chip rangi va karta gradienti.
  */
 export const certificateStatus = (c) => {
   if (!c) {
     return { status: { id: 8, name: t('workerCertificatePage.table.noCertificate') }, tone: 'neutral' }
   }
   if (c.returned) {
-    return { status: { id: 13, name: t('workerCertificatePage.table.returned') }, tone: 'amber' }
+    return { status: { id: 18, name: t('workerCertificatePage.table.returned') }, tone: 'amber' }
   }
   if (isExpired(c)) {
     return { status: { id: 7, name: t('workerCertificatePage.table.expired') }, tone: 'red' }
@@ -30,5 +30,5 @@ export const certificateStatus = (c) => {
   if (c.verify) {
     return { status: { id: 3, name: t('workerCertificatePage.table.verify') }, tone: 'green' }
   }
-  return { status: { id: 1, name: t('workerCertificatePage.modal.notVerified') }, tone: 'brand' }
+  return { status: { id: 17, name: t('workerCertificatePage.modal.notVerified') }, tone: 'brand' }
 }

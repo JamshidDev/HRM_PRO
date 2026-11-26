@@ -21,10 +21,10 @@
 
   const date = (v) => (v ? Utils.timeOnlyDate(v) : '—')
 
-  // Holat chipi — jadvaldagi bilan bir xil matn va rang.
+  // Holat chipi — jadvaldagi bilan bir xil (UIStatus id → rang va belgi).
   const statusOf = (item) => {
     const s = certificateStatus(item)
-    return { text: s.status.name, tone: s.tone }
+    return { id: s.status.id, text: s.status.name, tone: s.tone }
   }
 
   // Gradient — holat chipi rangida (Arxivdagi kabi): tasdiqlangan yashil, tasdiqlanmagan ko'k, ...
@@ -44,15 +44,16 @@
 
   const rowsOf = (item) => [
     {
-      text: item.number ? `№${item.number}` : '—',
+      text: item.number || '—',
       title: t('workerPositionCertificatePage.form.number'),
       status: statusOf(item)
     },
     {
-      text: `${date(item.issue_date)} → ${date(validUntil(item))}`,
+      // Jadvaldagi kabi: «berilgan – amal qiladi», uzaytirilgan bo'lsa ⓘ «Uzaytirilgan».
+      text: `${date(item.issue_date)} – ${date(validUntil(item))}`,
       title: dateTitle(item),
       textClass: isExpired(item) ? 'text-fig-text-red' : 'text-textColor0',
-      note: item.extended_date ? t('workerCertificatePage.table.extended') : ''
+      hint: item.extended_date ? t('workerCertificatePage.table.extendedChip') : ''
     }
   ]
 
@@ -88,11 +89,13 @@
   <UIModal
     v-model:visible="store.showVisible"
     :title="fullName"
-    width="900px"
+    width="min(900px, calc(100vw - 32px))"
+    height="min(560px, calc(100vh - 64px))"
     :persistent="false"
   >
-    <n-spin :show="store.showLoading">
-      <!-- Ro'yxat sahifasida faqat OXIRGI guvohnoma ko'rinadi — bu yerda hammasi.
+    <n-spin :show="store.showLoading" class="h-full" content-class="h-full">
+      <!-- Oyna o'lchami qat'iy (900 × 560): ~3 qator karta sig'adi, ko'pi bo'lsa ichida skroll (UIModal `height`).
+           Ro'yxat sahifasida faqat OXIRGI guvohnoma ko'rinadi — bu yerda hammasi.
            Kartalar — Arxivdagi bilan bir xil (`UIDocumentCard`). Keng ekranda 2 ustun. -->
       <div
         v-if="store.showList.length > 0"
@@ -120,7 +123,7 @@
 
       <div
         v-else-if="!store.showLoading"
-        class="w-full py-10 text-center text-sm text-textColor3"
+        class="w-full h-full flex items-center justify-center text-sm text-textColor3"
       >
         {{ $t('workerPositionCertificatePage.no-data') }}
       </div>

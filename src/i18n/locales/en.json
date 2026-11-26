@@ -7396,7 +7396,8 @@
       "noCertificate": "Not issued",
       "status": "Status",
       "expired": "Expired",
-      "extended": "extended"
+      "extended": "extended",
+      "extendedChip": "Extended"
     },
     "filter": {
       "status": "Certificate status",
