@@ -1953,6 +1953,11 @@
         "Process": "Jarayonda"
       },
       "approval": {
+        "extra": {
+          "cancelledSigns": "{n} ta imzo bekor qilindi — qayta imzolanadi",
+          "snapshot": "Qaytarişgaça bölgan nusxa",
+          "resubmitted": "Tuzatilgandan keyin qayta yuborildi"
+        },
         "title": "Imzolaş jarayoni",
         "signers": "Kelişuvçilar",
         "history": "Harakatlar tarixi",
@@ -1998,6 +2003,11 @@
           "resent": "{count} kişiga qayta yuborildi"
         },
         "verbs": {
+          "route_created": "arizani yaratdi",
+          "route_edited": "arizani tahrirladi",
+          "route_submitted": "tasdiqlab yubordi",
+          "route_returned": "tuzatiş uçun qaytardi",
+          "route_approved": "tasdiqladi — ariza kuçga kirdi",
           "submitted": "tasdiqladi — ariza kadrlar bölimiga yuborildi",
           "created": "arizani yaratdi (qoralama)",
           "sent": "— imzolaşga yuborildi",
@@ -2013,6 +2023,11 @@
           "route_closed": "arizani yopdi"
         },
         "badges": {
+          "route_created": "Yaratildi",
+          "route_edited": "Tahrirlandi",
+          "route_submitted": "Yuborildi",
+          "route_returned": "Qaytarildi",
+          "route_approved": "Tasdiqlandi",
           "submitted": "Tasdiqladi",
           "created": "Yaratdi",
           "sent": "Yuborildi",
@@ -3680,8 +3695,8 @@
   "applicationPage": {
     "statuses": {
       "draft": "Qoralama",
-      "returned": "Qaytarildi",
-      "checking": "Tekşiruvda",
+      "returned": "Qaytarilgan",
+      "checking": "Tekşiruv",
       "process": "Jarayonda",
       "rejected": "Rad etilgan",
       "approved": "Tasdiqlangan"
@@ -3691,7 +3706,7 @@
     "returnTitle": "Arizani tuzatiş uçun qaytariş",
     "returnReason": "Qaytariş sababi",
     "returnPlaceholder": "Xodim nimani tuzatişi kerak?",
-    "returnHint": "Ariza xodimga qoralama bölib qaytadi. Xodim tuzatib, qayta tasdiqlagaç yana sizga keladi.",
+    "returnHint": "Ariza xodimga tuzatiş uçun qaytadi va kelişuvçilar hamda rahbarga körinmaydi. Xodim tasdiqlagaç yana sizga keladi; qayta yuborsangiz, barça kelişuvçilar qaytadan imzolaydi.",
     "returnDone": "Ariza xodimga tuzatiş uçun qaytarildi",
     "returnedTitle": "Ariza tuzatiş uçun qaytarildi",
     "returnedBy": "Qaytardi",

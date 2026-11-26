@@ -305,18 +305,10 @@
     return null
   })
   const showConfirmButtons = computed(() => hrStage.value !== null)
-  // Kelishuvchi yoki rahbar tasdiqlagan bo'lsa, rad etilmaguncha HR yopa olmaydi.
-  const approverSigned = computed(() =>
-    store.confirmations?.some(
-      (c) => c.status?.id === 3 && (c.type === 'd' || (c.type === 's' && c.order >= 3))
-    )
-  )
-  const canClose = computed(
-    () =>
-      (hrStage.value === 'legacy' && (docConfirmation.value === 4 || !approverSigned.value)) ||
-      (hrStage.value === 'new' && !hrSigned.value) ||
-      (hrStage.value === 'process' && !approverSigned.value)
-  )
+  // HR rahbar tasdiqlamaguncha istalgan vaqt rad etadi (kelishuvchi roziligi to'smaydi).
+  const canClose = computed(() => hrStage.value !== null && docConfirmation.value !== 3)
+  // Qaytarish — Tekshiruv yoki Jarayonda (rahbar tasdiqlamaguncha).
+  const canReturn = computed(() => ['new', 'process'].includes(hrStage.value))
   const hrPanelTitle = computed(
     () =>
       ({
@@ -516,7 +508,7 @@
   // HR imzolaydi (imzolagan bo'lsa o'tkazib yuboriladi), so'ng kelishuvchilar modali ochiladi.
   const onHrSign = () => {
     applicationStore._signStart(store.document_id, (res) => {
-      if (res.signed) return applicationStore.openForward(res.director)
+      if (res.signed) return applicationStore._openForwardWithPrevious(store.document_id, res.director)
       signatureStore.confirmationId = res.confirmation_id
       signatureStore.documentType = store.model
       signatureStore._signatureDocument(
@@ -526,7 +518,7 @@
           signatureStore.visible = false
           notify.success(t('documentPage.signature.confirmedNotification'))
           getDocument(store.document_id, store.model)
-          applicationStore.openForward(res.director)
+          applicationStore._openForwardWithPrevious(store.document_id, res.director)
         }
       )
     })
@@ -997,9 +989,9 @@
                           </div>
                         </div>
                         <div class="flex items-center gap-1.5 shrink-0">
-                          <!-- Yo'naltirilmagan ariza — xodimga tuzatish uchun qaytarish. -->
+                          <!-- Xodimga tuzatish uchun qaytarish — rahbar tasdiqlamaguncha. -->
                           <n-button
-                            v-if="hrStage === 'new'"
+                            v-if="canReturn"
                             type="warning"
                             secondary
                             round

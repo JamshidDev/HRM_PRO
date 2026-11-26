@@ -55,13 +55,14 @@
   )
 
   const { t } = i18n.global
-  // HR bo'limlari — backend `stage` filtri; standart «Hammasi».
-  const stageTabs = computed(() =>
-    ['all', 'new', 'process', 'rejected', 'approved', 'closed'].map((id) => ({
+  // Yagona holat tablari (xodim tomoni bilan bir xil) — backend `stage` filtri.
+  const stageTabs = computed(() => [
+    { id: 'all', name: t('applicationPage.hrTabs.all') },
+    ...['returned', 'checking', 'process', 'approved', 'rejected'].map((id) => ({
       id,
-      name: t(`applicationPage.hrTabs.${id}`)
+      name: t(`applicationPage.statuses.${id}`)
     }))
-  )
+  ])
   const onStageChange = () => {
     store.params.page = 1
     store._index()

@@ -175,6 +175,17 @@ export const useApplicationStore = defineStore('applicationStore', {
       this._viewers(true)
     },
     // Joriy marshrut (tahrir/qayta yuborish uchun) + rahbar → modal.
+    // Yangi yo'naltirish: qaytarilgan ariza bo'lsa — eski marshrut oldindan tanlanadi.
+    _openForwardWithPrevious(id, director) {
+      this.routeLoading = true
+      $ApiService.applicationService
+        ._previousRoute({ id })
+        .then((res) => this.openForward(director, 'forward', res.data.data))
+        .catch(() => this.openForward(director))
+        .finally(() => {
+          this.routeLoading = false
+        })
+    },
     _openRoute(id, action, director) {
       this.routeLoading = true
       $ApiService.applicationService

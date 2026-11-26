@@ -1953,6 +1953,11 @@
         "Process": "Jarayonda"
       },
       "approval": {
+        "extra": {
+          "cancelledSigns": "{n} ta imzo bekor qilindi — qayta imzolanadi",
+          "snapshot": "Qaytarishgacha bo'lgan nusxa",
+          "resubmitted": "Tuzatilgandan keyin qayta yuborildi"
+        },
         "title": "Imzolash jarayoni",
         "signers": "Kelishuvchilar",
         "history": "Harakatlar tarixi",
@@ -1998,6 +2003,11 @@
           "resent": "{count} kishiga qayta yuborildi"
         },
         "verbs": {
+          "route_created": "arizani yaratdi",
+          "route_edited": "arizani tahrirladi",
+          "route_submitted": "tasdiqlab yubordi",
+          "route_returned": "tuzatish uchun qaytardi",
+          "route_approved": "tasdiqladi — ariza kuchga kirdi",
           "submitted": "tasdiqladi — ariza kadrlar bo'limiga yuborildi",
           "created": "arizani yaratdi (qoralama)",
           "sent": "— imzolashga yuborildi",
@@ -2013,6 +2023,11 @@
           "route_closed": "arizani yopdi"
         },
         "badges": {
+          "route_created": "Yaratildi",
+          "route_edited": "Tahrirlandi",
+          "route_submitted": "Yuborildi",
+          "route_returned": "Qaytarildi",
+          "route_approved": "Tasdiqlandi",
           "submitted": "Tasdiqladi",
           "created": "Yaratdi",
           "sent": "Yuborildi",
@@ -3680,8 +3695,8 @@
   "applicationPage": {
     "statuses": {
       "draft": "Qoralama",
-      "returned": "Qaytarildi",
-      "checking": "Tekshiruvda",
+      "returned": "Qaytarilgan",
+      "checking": "Tekshiruv",
       "process": "Jarayonda",
       "rejected": "Rad etilgan",
       "approved": "Tasdiqlangan"
@@ -3691,7 +3706,7 @@
     "returnTitle": "Arizani tuzatish uchun qaytarish",
     "returnReason": "Qaytarish sababi",
     "returnPlaceholder": "Xodim nimani tuzatishi kerak?",
-    "returnHint": "Ariza xodimga qoralama bo'lib qaytadi. Xodim tuzatib, qayta tasdiqlagach yana sizga keladi.",
+    "returnHint": "Ariza xodimga tuzatish uchun qaytadi va kelishuvchilar hamda rahbarga ko'rinmaydi. Xodim tasdiqlagach yana sizga keladi; qayta yuborsangiz, barcha kelishuvchilar qaytadan imzolaydi.",
     "returnDone": "Ariza xodimga tuzatish uchun qaytarildi",
     "returnedTitle": "Ariza tuzatish uchun qaytarildi",
     "returnedBy": "Qaytardi",

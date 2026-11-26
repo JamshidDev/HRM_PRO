@@ -1937,6 +1937,11 @@
         "Process": "In progress"
       },
       "approval": {
+        "extra": {
+          "cancelledSigns": "{n} signature(s) cancelled — will be signed again",
+          "snapshot": "Copy before return",
+          "resubmitted": "Re-submitted after correction"
+        },
         "title": "Signing process",
         "signers": "Approvers",
         "history": "Action history",
@@ -1982,6 +1987,11 @@
           "resent": "Resent to {count}"
         },
         "verbs": {
+          "route_created": "created the application",
+          "route_edited": "edited the application",
+          "route_submitted": "confirmed and submitted",
+          "route_returned": "returned for correction",
+          "route_approved": "approved — the application took effect",
           "submitted": "confirmed — the application was sent to HR",
           "created": "created the application (draft)",
           "sent": "— sent for signing",
@@ -1997,6 +2007,11 @@
           "route_closed": "closed the application"
         },
         "badges": {
+          "route_created": "Created",
+          "route_edited": "Edited",
+          "route_submitted": "Submitted",
+          "route_returned": "Returned",
+          "route_approved": "Approved",
           "submitted": "Confirmed",
           "created": "Created",
           "sent": "Sent",
@@ -3661,7 +3676,7 @@
     "statuses": {
       "draft": "Draft",
       "returned": "Returned",
-      "checking": "Under review",
+      "checking": "Review",
       "process": "In progress",
       "rejected": "Rejected",
       "approved": "Approved"
@@ -3671,7 +3686,7 @@
     "returnTitle": "Return application for correction",
     "returnReason": "Reason for returning",
     "returnPlaceholder": "What should the employee correct?",
-    "returnHint": "The application goes back to the employee as a draft. After they fix and sign it, it comes back to you.",
+    "returnHint": "The application returns to the employee for correction and is hidden from approvers and the manager. After the employee confirms it comes back to you; on re-sending, all approvers sign again.",
     "returnDone": "Application returned to the employee for correction",
     "returnedTitle": "Application returned for correction",
     "returnedBy": "Returned by",
