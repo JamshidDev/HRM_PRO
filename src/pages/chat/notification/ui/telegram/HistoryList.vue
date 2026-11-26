@@ -82,7 +82,7 @@
     })
 
   // Sana ko'rinishi: `DD.MM.YYYY` + ostida soat (jadval), modalda bitta qatorda.
-  const fmtDate = (v) => Utils.timeOnlyDate(v) ?? '—'
+  const fmtDate = (v) => Utils.timeOnlyDate(v) ?? ''
   const fmtTime = (v) => Utils.timeOnlyHour(v) ?? ''
   const fmtDateTime = (v) => (v ? `${Utils.timeOnlyDate(v)} ${Utils.timeOnlyHour(v)}` : '—')
 
@@ -199,7 +199,7 @@
             <div class="flex min-w-0 items-center gap-2">
               <span class="h-2 w-2 shrink-0 rounded-full" :class="dotClass(row.status)" />
               <span class="truncate font-medium text-textColor0">
-                {{ row.message_preview || '—' }}
+                {{ row.message_preview }}
               </span>
             </div>
           </div>
@@ -214,8 +214,7 @@
         <!-- «Nechtadan nechtasi» — asosiy ko'rsatkich -->
         <template #cell-result="{ row }">
           <!-- Rejalashtirilganda kadr hali olinmagan — `0 / 0` chalg'itadi. -->
-          <span v-if="row.status === 'scheduled'" class="text-textColor3">—</span>
-          <div v-else class="flex flex-wrap items-center justify-center gap-1">
+          <div v-if="row.status !== 'scheduled'" class="flex flex-wrap items-center justify-center gap-1">
             <n-tooltip trigger="hover">
               <template #trigger>
                 <span @click.stop>
@@ -253,7 +252,6 @@
             <div class="whitespace-nowrap text-textColor0">{{ fmtDate(rowTime(row)) }}</div>
             <div class="text-[11px] text-textColor3">{{ fmtTime(rowTime(row)) }}</div>
           </div>
-          <span v-else class="text-textColor3">—</span>
         </template>
       </UITable>
     </div>

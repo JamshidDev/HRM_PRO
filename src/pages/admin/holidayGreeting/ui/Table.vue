@@ -132,7 +132,6 @@
         @error="Utils.onImgError"
         class="w-[40px] h-[40px] object-cover rounded-sm cursor-pointer inline-block"
       />
-      <span v-else>—</span>
     </template>
   </UITable>
 </template>

@@ -93,13 +93,14 @@
   <n-form ref="formRef" :rules="validationRules.medFrom" :model="store.payload">
     <n-spin class="w-full" :show="store.showLoading">
       <div>
-        <UITabs v-model:value="store.activeTab" type="segment" animated>
-          <template v-for="(item, index) in store.tabs">
+        <!-- Xodimni tanlash faqat qo'shishda; tahrirlashda tablar bo'sh bo'lardi — yashiriladi. -->
+        <UITabs v-if="store.visibleType" v-model:value="store.activeTab" type="segment" animated>
+          <template v-for="item in store.tabs" :key="item.id">
             <n-tab-pane :name="item.id" :tab="$t(item.name)">
               <template v-if="item.id === store.tabs[0].id">
                 <template v-if="store.visibleType">
                   <n-form-item
-                    class="w-full mr-4"
+                    class="w-full"
                     :label="$t(`documentPage.form.organization`)"
                     path="organization_id"
                   >
@@ -136,7 +137,6 @@
                       @scroll="componentStore.onScrollWorker"
                       @search="componentStore.onSearchWorker"
                       @focus="onFocusEv"
-                      :default-value="'Jamshid'"
                     />
                   </n-form-item>
                 </template>
@@ -164,21 +164,20 @@
         >
           <n-input rows="2" type="textarea" v-model:value="store.payload.comment" />
         </n-form-item>
-        <n-form-item :label="$t(`medPage.form.from`)" path="from">
-          <UIDayPicker
-            class="w-full"
-            v-model:value="store.payload.from"
-            mode="day"
-          />
-        </n-form-item>
-        <n-form-item :label="$t(`medPage.form.to`)" path="to">
-          <UIDayPicker
-            class="w-full"
-            v-model:value="store.payload.to"
-            mode="day"
-            :is-date-disabled="(v) => Utils.disablePasteDate(v, store.payload.from)"
-          />
-        </n-form-item>
+        <!-- Qisqa maydonlar — yarim qatorda, yonma-yon -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+          <n-form-item :label="$t(`medPage.form.from`)" path="from">
+            <UIDayPicker class="w-full" v-model:value="store.payload.from" mode="day" />
+          </n-form-item>
+          <n-form-item :label="$t(`medPage.form.to`)" path="to">
+            <UIDayPicker
+              class="w-full"
+              v-model:value="store.payload.to"
+              mode="day"
+              :is-date-disabled="(v) => Utils.disablePasteDate(v, store.payload.from)"
+            />
+          </n-form-item>
+        </div>
         <n-form-item :label="$t(`medPage.form.file`)" path="file">
           <UIUpload
             :multiple="false"
@@ -192,4 +191,3 @@
   </n-form>
 </template>
 
-<style scoped></style>

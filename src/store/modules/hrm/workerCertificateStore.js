@@ -5,6 +5,8 @@ import { defineStore } from 'pinia'
 // org-scope ichida; har xodimga OXIRGI guvohnoma (`id DESC`), yo'q bo'lsa `null`.
 // Qidiruv F.I.Sh (PIN/tabel ham) YOKI guvohnoma raqami bo'yicha ishlaydi.
 
+let showRequestId = 0
+
 const initialParams = () => ({
   page: 1,
   per_page: 15,
@@ -80,13 +82,15 @@ export const useWorkerCertificateStore = defineStore('workerCertificateStore', {
       this.showVisible = true
       if (!row?.uuid) return
       this.showLoading = true
+      // Oldingi xodimning kech kelgan javobi yangisini bosib ketmasin.
+      const requestId = ++showRequestId
       $ApiService.workerPositionCertificateService
         ._index({ params: { uuid: row.uuid } })
         .then((res) => {
-          this.showList = res.data.data
+          if (requestId === showRequestId) this.showList = res.data.data
         })
         .finally(() => {
-          this.showLoading = false
+          if (requestId === showRequestId) this.showLoading = false
         })
     },
     resetFilter() {

@@ -7109,7 +7109,8 @@
       "noCertificate": "Берилмаган",
       "status": "Ҳолати",
       "expired": "Муддати ўтган",
-      "extended": "узайтирилган"
+      "extended": "узайтирилган",
+      "extendedChip": "Узайтирилган"
     },
     "filter": {
       "status": "Гувоҳнома ҳолати",
@@ -8050,6 +8051,9 @@
     "thisMonth": "Шу ой",
     "lastMonth": "Ўтган ой",
     "last7": "Охирги 7 кун",
-    "last30": "Охирги 30 кун"
+    "last30": "Охирги 30 кун",
+    "nextMonth": "Кейинги ой",
+    "pickMonth": "Ой танлаш",
+    "monthPlaceholder": "Ойни танланг"
   }
 }

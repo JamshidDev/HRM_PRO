@@ -14,7 +14,7 @@ export const SIGN_METHOD_TONES = {
   eimzo_mobile_qr: 'green',
   eimzo_mobile_deeplink: 'green',
   drawn: 'amber',
-  face: 'info'
+  face: 'neutral'
 }
 export const SIGN_VIA = ['system', 'link']
 export const SIGN_KEY_TYPES = ['pfx', 'idcard', 'baikey', 'ckc']

@@ -85,7 +85,6 @@
           @error="Utils.onImgError"
           class="w-[32px] h-[32px] object-cover rounded-sm inline-block"
         />
-        <span v-else>—</span>
       </template>
     </UITable>
 

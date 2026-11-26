@@ -63,8 +63,8 @@
     <UIModal
       v-model:visible="store.visible"
       :title="store.visibleType ? $t('medPage.createTitle') : $t('medPage.updateTitle')"
-      width="min(700px, calc(100vw - 32px))"
-      height="min(85vh, 800px)"
+      width="min(600px, calc(100vw - 32px))"
+      height="min(560px, calc(100vh - 64px))"
     >
       <createForm ref="createFormRef" />
 

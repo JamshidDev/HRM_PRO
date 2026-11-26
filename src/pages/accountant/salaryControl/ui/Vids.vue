@@ -142,7 +142,7 @@
     return [
       ...top,
       {
-        k: '—',
+        k: '',
         name: `${t('salaryControl.vids.others')} (${rest.length})`,
         full: '',
         cat: '',
@@ -230,7 +230,7 @@
       sorter: (a, b) => (a.delta ?? -Infinity) - (b.delta ?? -Infinity),
       render: (r) =>
         r.delta == null
-          ? h('span', { style: { color: 'var(--fig-text-tertiary)' } }, '—')
+          ? null
           : h(
               'span',
               {
@@ -253,7 +253,7 @@
   const drawerOpen = ref(false)
   const drawerVid = ref(null)
   const openVid = (row) => {
-    if (!row || row._isOther || row.k === '—') return
+    if (!row || row._isOther || !row.k) return
     drawerVid.value = row
     drawerOpen.value = true
   }
@@ -263,9 +263,9 @@
     return store.emps
       .filter((e) => (e.v?.[v.k] || 0) > 0)
       .map((e) => ({
-        fio: normText(e.fio) || '—',
-        lav: e.lav || '—',
-        dep: e.dep || '—',
+        fio: normText(e.fio) || '',
+        lav: e.lav || '',
+        dep: e.dep || '',
         amount: e.v[v.k]
       }))
       .sort((a, b) => b.amount - a.amount)

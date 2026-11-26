@@ -7478,7 +7478,8 @@
       "noCertificate": "Berilmagan",
       "status": "Holati",
       "expired": "Muddati o'tgan",
-      "extended": "uzaytirilgan"
+      "extended": "uzaytirilgan",
+      "extendedChip": "Uzaytirilgan"
     },
     "filter": {
       "status": "Guvohnoma holati",
@@ -8520,6 +8521,9 @@
     "thisMonth": "Shu oy",
     "lastMonth": "O'tgan oy",
     "last7": "Oxirgi 7 kun",
-    "last30": "Oxirgi 30 kun"
+    "last30": "Oxirgi 30 kun",
+    "nextMonth": "Keyingi oy",
+    "pickMonth": "Oy tanlash",
+    "monthPlaceholder": "Oyni tanlang"
   }
 }

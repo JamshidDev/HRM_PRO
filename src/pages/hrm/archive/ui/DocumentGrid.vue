@@ -21,8 +21,8 @@
         text: doc.electronic_number ? `${number} · ${doc.electronic_number}` : number,
         title: t('archive.documents.number'),
         status: doc.cancelled
-          ? { text: t('archive.documents.cancelled'), tone: 'red' }
-          : { text: t('archive.documents.approved'), tone: 'green' }
+          ? { id: 4, text: t('archive.documents.cancelled'), tone: 'red' }
+          : { id: 3, text: t('archive.documents.approved'), tone: 'green' }
       },
       {
         text: workers.length

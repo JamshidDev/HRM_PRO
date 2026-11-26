@@ -7,8 +7,10 @@
    * ma'lumot qatorlari (`rows`, har biri 26px) → «Ko'rish» | «Yuklash».
    */
   import icons from '@/assets/icons'
-  import { ArrowDownload16Regular, Eye16Regular } from '@vicons/fluent'
+  import { ArrowDownload16Regular, Eye16Regular, Info16Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
+  import UIStatus from './UIStatus.vue'
+  import UIChip from './UIChip.vue'
 
   const { t } = i18n.global
 
@@ -26,7 +28,8 @@
     dateTitle: { type: String, default: '' },
     title: { type: String, default: '' },
     /**
-     * Ma'lumot qatorlari: `{ text, title?, textClass?, status?: { text, tone }, note? }`.
+     * Ma'lumot qatorlari: `{ text, title?, textClass?, hint?, status?: { id?, text, tone }, note? }`.
+     * `hint` — matn yonida kulrang ⓘ (hover'da shu matn).
      * `status` — o'ngda chip, `note` — o'ngda kulrang kichik matn.
      */
     rows: { type: Array, default: () => [] },
@@ -42,14 +45,6 @@
   })
 
   const emit = defineEmits(['open', 'view', 'download'])
-
-  const chipClass = {
-    green: 'bg-fig-chip-green text-fig-chip-green-text',
-    brand: 'bg-fig-chip-brand text-fig-chip-brand-text',
-    amber: 'bg-fig-chip-amber text-fig-chip-amber-text',
-    red: 'bg-fig-red-50 text-fig-text-red',
-    neutral: 'bg-fig-bg-disable text-fig-text-tertiary'
-  }
 
   const onOpen = () => {
     if (props.clickable) emit('open')
@@ -71,7 +66,7 @@
         <div class="flex items-center gap-2 text-[13px] font-medium leading-5 text-textColor3">
           <!-- Sig'maganini «...» bilan kesamiz, to'liq matn — hover'da -->
           <n-ellipsis class="block! min-w-0 flex-1">{{ subtitle }}</n-ellipsis>
-          <span v-if="badge" class="doc-badge">{{ badge }}</span>
+          <UIChip v-if="badge" tone="brand" compact class="shrink-0">{{ badge }}</UIChip>
           <span v-if="date" class="shrink-0" :title="dateTitle || undefined">{{ date }}</span>
         </div>
         <n-ellipsis class="block! text-sm font-semibold leading-5 text-textColor0">
@@ -90,10 +85,26 @@
       >
         <span class="doc-line" :class="row.textClass || 'text-textColor0'" :title="row.title || undefined">
           <span class="truncate">{{ row.text || '—' }}</span>
+          <!-- `hint` — jadvallardagi kabi kulrang ⓘ, matn hover'da -->
+          <n-tooltip v-if="row.hint">
+            <template #trigger>
+              <n-icon size="16" class="shrink-0 cursor-help text-fig-text-tertiary">
+                <Info16Regular />
+              </n-icon>
+            </template>
+            {{ row.hint }}
+          </n-tooltip>
         </span>
-        <span v-if="row.status" class="doc-status" :class="chipClass[row.status.tone] || chipClass.brand">
+        <!-- Holat chipi — jadvallardagi bilan bir xil (UIStatus: id → rang va belgi). -->
+        <UIStatus
+          v-if="row.status && row.status.id"
+          :status="{ id: row.status.id, name: row.status.text }"
+          :tone="row.status.tone"
+          class="shrink-0"
+        />
+        <UIChip v-else-if="row.status" :tone="row.status.tone || 'brand'" class="shrink-0">
           {{ row.status.text }}
-        </span>
+        </UIChip>
         <span v-else-if="row.note" class="shrink-0 text-xs text-textColor3">{{ row.note }}</span>
       </div>
     </div>
@@ -173,36 +184,6 @@
   .doc-btn {
     --n-height: 30px !important;
     --n-font-size: 13px !important;
-  }
-
-  /* Holat chipi — qatorda o'ngda (pill, 22px) */
-  .doc-status {
-    display: inline-flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    height: 22px;
-    min-width: 108px;
-    padding: 0 8px;
-    /* Gradient fonida ko'rinib turishi uchun chegara (o'z rangida) */
-    border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 500;
-    white-space: nowrap;
-  }
-
-  /* Kichik belgi kulrang qator yonida («Joriy») */
-  .doc-badge {
-    flex-shrink: 0;
-    padding: 0 8px;
-    border: 1px solid color-mix(in srgb, var(--primary-color) 35%, transparent);
-    border-radius: 999px;
-    color: var(--primary-color);
-    font-size: 11px;
-    font-weight: 600;
-    line-height: 18px;
   }
 
   /* Gradient: o'ng yuqoridan chap pastga sekin yo'qoladi, rang — `tone` (holat chipi rangi bilan bir xil).

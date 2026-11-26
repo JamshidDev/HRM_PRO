@@ -92,14 +92,15 @@
     </template>
 
     <template #cell-device_model="{ row }">
-      <UIBadge :show-icon="false" :type="Utils.colorTypes.info" :label="row?.device_model || '-'" />
+      <UIBadge v-if="row?.device_model" :show-icon="false" :type="Utils.colorTypes.info" :label="row.device_model" />
     </template>
 
     <template #cell-platform="{ row }">
       <UIBadge
+        v-if="row?.platform"
         :show-icon="false"
         :type="row?.platform === 'ios' ? Utils.colorTypes.error : Utils.colorTypes.success"
-        :label="row?.platform || '-'"
+        :label="row.platform"
       />
     </template>
 

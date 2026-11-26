@@ -136,11 +136,11 @@
     </template>
 
     <template #cell-sort="{ row }">
-      {{ row.sort ?? '—' }}
+      {{ row.sort }}
     </template>
 
     <template #cell-published_at="{ row }">
-      {{ row.published_at ?? '—' }}
+      {{ row.published_at }}
     </template>
 
     <template #cell-views_count="{ row }">

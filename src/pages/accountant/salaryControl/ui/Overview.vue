@@ -49,7 +49,7 @@
       const key = f.j || `${f.fio || ''}||${f.lav || ''}`
       let g = map.get(key)
       if (!g) {
-        g = { fio: f.fio || '—', lav: f.lav || '', cats: [], sev: f.sev, summa: 0, txt: f.txt }
+        g = { fio: f.fio || '', lav: f.lav || '', cats: [], sev: f.sev, summa: 0, txt: f.txt }
         map.set(key, g)
       }
       if (!g.cats.includes(f.cat)) g.cats.push(f.cat)

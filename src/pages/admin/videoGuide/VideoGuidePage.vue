@@ -152,7 +152,7 @@
       title: '',
       key: 'poster',
       width: 120,
-      render: (r) => (r.poster_url ? h(NImage, { src: r.poster_url, width: 104, height: 58, objectFit: 'cover', style: 'border-radius:8px' }) : '—')
+      render: (r) => (r.poster_url ? h(NImage, { src: r.poster_url, width: 104, height: 58, objectFit: 'cover', style: 'border-radius:8px' }) : '')
     },
     { title: t('videoGuidePage.form.title'), key: 'title', render: (r) => r.title?.uz },
     { title: t('videoGuidePage.form.platform'), key: 'platform', width: 120, render: (r) => t(`videoGuidePage.platform.${r.platform}`) },

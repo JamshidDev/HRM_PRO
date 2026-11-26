@@ -7346,7 +7346,8 @@
       "noCertificate": "Berilmegen",
       "status": "Jaǵdayı",
       "expired": "Múddeti ótken",
-      "extended": "uzartılǵan"
+      "extended": "uzartılǵan",
+      "extendedChip": "Uzartılǵan"
     },
     "filter": {
       "status": "Gúwalıq jaǵdayı",
@@ -8388,6 +8389,9 @@
     "thisMonth": "Usı ay",
     "lastMonth": "Ótken ay",
     "last7": "Aqırǵı 7 kún",
-    "last30": "Aqırǵı 30 kún"
+    "last30": "Aqırǵı 30 kún",
+    "nextMonth": "Keyingi ay",
+    "pickMonth": "Ay saylaw",
+    "monthPlaceholder": "Aydı saylań"
   }
 }

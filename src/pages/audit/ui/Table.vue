@@ -25,14 +25,14 @@
   // Sana va vaqt ALOHIDA ustunlarda, sana `dd.MM.yyyy` formatida.
   const dateOf = (row) => {
     const [d] = String(row.created_at || '').split(' ')
-    if (!d) return '—'
+    if (!d) return ''
     const [y, m, day] = d.split('-')
     return `${day}.${m}.${y}`
   }
 
   const timeOf = (row) => {
     const [, tm] = String(row.created_at || '').split(' ')
-    return tm || '—'
+    return tm || ''
   }
 
   // Bitta hodisa (bitta "Saqlash", `request_id` bilan guruhlangan) bir necha
@@ -92,7 +92,7 @@
          bir xil; page filtri ochilganda ajratuvchi bo'ladi. -->
     <template #cell-page="{ row }">
       <div class="flex flex-col leading-tight">
-        <span class="text-sm">{{ row.page?.title || '—' }}</span>
+        <span class="text-sm">{{ row.page?.title }}</span>
         <span class="text-xs opacity-50">{{ row.page?.key }}</span>
       </div>
     </template>

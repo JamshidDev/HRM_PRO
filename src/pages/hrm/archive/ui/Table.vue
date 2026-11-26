@@ -49,7 +49,7 @@
       .map((part) => part[0].toUpperCase())
       .join('.')
 
-    return [worker?.last_name, initials].filter(Boolean).join(' ') || '—'
+    return [worker?.last_name, initials].filter(Boolean).join(' ')
   }
 
   // Login raqami (users.phone, 9 raqam) → «+998 90 123 45 67».
@@ -138,7 +138,7 @@
       </UIUser>
     </template>
 
-    <template #cell-pin="{ row }">{{ row?.worker?.pin || '—' }}</template>
+    <template #cell-pin="{ row }">{{ row?.worker?.pin }}</template>
 
     <!--
       Maketda (node 3332:66247) bu ustun "pill" ko'rinishida: xodim tarmoqdagi
@@ -164,12 +164,12 @@
       <div class="flex min-w-0 flex-col gap-0.5 leading-tight">
         <n-tooltip trigger="hover" :disabled="!row?.contract_type?.name">
           <template #trigger>
-            <span class="truncate text-sm text-textColor2">{{ row?.contract_type?.name || '—' }}</span>
+            <span class="truncate text-sm text-textColor2">{{ row?.contract_type?.name }}</span>
           </template>
           {{ row?.contract_type?.name }}
         </n-tooltip>
-        <span class="text-xs text-secondary">
-          {{ $t('archive.table.startDate') }}: {{ Utils.timeOnlyDate(row?.start_date) || '—' }}
+        <span v-if="row?.start_date" class="text-xs text-secondary">
+          {{ $t('archive.table.startDate') }}: {{ Utils.timeOnlyDate(row?.start_date) }}
         </span>
       </div>
     </template>
@@ -177,7 +177,7 @@
     <!-- Bo'shagan sana va bo'shatish buyrug'i (bosilsa buyruq PDF'i ochiladi). -->
     <template #cell-dismissed_at="{ row }">
       <div class="flex flex-col gap-0.5 leading-tight">
-        <span class="text-sm text-textColor2">{{ Utils.timeOnlyDate(row?.dismissed_at) || '—' }}</span>
+        <span class="text-sm text-textColor2">{{ Utils.timeOnlyDate(row?.dismissed_at) }}</span>
         <n-button
           v-if="row?.dismissal_command"
           text

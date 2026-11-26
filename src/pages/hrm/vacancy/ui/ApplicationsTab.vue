@@ -159,7 +159,7 @@
     </template>
 
     <template #cell-education="{ row }">
-      {{ educationLevels[row.user?.education] || '-' }}
+      {{ educationLevels[row.user?.education] }}
     </template>
 
     <template #cell-address="{ row }">
@@ -200,7 +200,6 @@
             <n-icon :component="Attach16Regular" />
           </template>
         </n-button>
-        <span v-if="!row.files?.length">-</span>
       </div>
     </template>
   </UITable>

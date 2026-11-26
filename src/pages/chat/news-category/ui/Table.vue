@@ -79,15 +79,15 @@
     @change-page="changePage"
   >
     <template #[`cell-name.uz`]="{ row }">
-      {{ row.name?.uz ?? '—' }}
+      {{ row.name?.uz }}
     </template>
 
     <template #[`cell-name.ru`]="{ row }">
-      {{ row.name?.ru ?? '—' }}
+      {{ row.name?.ru }}
     </template>
 
     <template #[`cell-name.en`]="{ row }">
-      {{ row.name?.en ?? '—' }}
+      {{ row.name?.en }}
     </template>
   </UITable>
 </template>

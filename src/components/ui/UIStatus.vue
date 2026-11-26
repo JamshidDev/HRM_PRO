@@ -9,7 +9,9 @@
     AddCircle24Filled,
     Edit24Filled,
     Delete24Filled,
-    ArrowUndo24Filled
+    ArrowUndo24Filled,
+    QuestionCircle16Filled,
+    DocumentArrowLeft16Filled
   } from '@vicons/fluent'
   import icons from '@/assets/icons'
   import UIChip from './UIChip.vue'
@@ -160,6 +162,21 @@
       name: 'Finished',
       type: 'default',
       icon: CheckmarkCircle24Filled
+    },
+    // Guvohnomalar: «Tasdiqlanmagan» va «Qaytarib olingan» — o'z belgilari (boshqa holat ikonkasini boshqa rangda
+    // qayta ishlatmaslik uchun).
+    {
+      id: 17,
+      name: 'Unverified',
+      type: 'info',
+      icon: QuestionCircle16Filled
+    },
+    {
+      id: 18,
+      name: 'Returned',
+      type: 'warning',
+      // Hujjat + orqaga strelka — «Jarayonda» soati va audit «Tiklandi» ↶ dan farqli.
+      icon: DocumentArrowLeft16Filled
     }
   ]
 

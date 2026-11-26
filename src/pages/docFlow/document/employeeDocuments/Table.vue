@@ -102,7 +102,6 @@
             middleName: row.worker.middle_name
           }"
         />
-        <span v-else class="text-textColor3">—</span>
       </div>
     </template>
 
