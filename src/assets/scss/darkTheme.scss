@@ -224,3 +224,21 @@
     0 0 0 1px #2e2e33,
     0 24px 64px rgb(0 0 0 / 70%);
 }
+
+// Ochiq guruh (sub menyu) — sidebar panelidan ochroq fon va aniq border, sarlavha bilan bitta blok.
+:root[data-theme='dark']:is([data-sidebar-theme='default'], [data-sidebar-theme='mint'])
+  .organization-layout
+  .sidebar-content
+  .panel-item-multiple {
+  &.is-open .panel-header {
+    background-color: #1c1c20;
+    box-shadow: inset 0 0 0 1px #2c2c32;
+  }
+
+  .panel-body-inner {
+    background-color: #18181b;
+    box-shadow:
+      inset 0 0 0 1px #2c2c32,
+      0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+}
