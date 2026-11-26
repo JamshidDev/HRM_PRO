@@ -140,6 +140,8 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     workerApplications: [],
 
     viewerLoading: false,
+    // PDF yuklanib birinchi sahifa chizilguncha — sahifa skeletoni ko'rinadi.
+    pdfRendering: false,
 
     loadError: false
   }),
@@ -147,6 +149,7 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
     async loadPdf() {
       this.totalPdfPage = 0
       this.loadError = false
+      this.pdfRendering = true
       this.pageViewports = {}
       const pdfUrl = this.pdfUrl
       // const pdfUrl = "https://s3.dasuty.com/docflow/documents/timesheets/c4ca4238a0b923820dcc509a6f75849b.pdf"
@@ -157,10 +160,13 @@ export const usePdfViewerStore = defineStore('pdfViewerStore', {
         await this.fitScaleToWidth()
         for (let pageNumber = 1; pageNumber <= this.totalPdfPage; pageNumber++) {
           await this.renderPdf(pageNumber)
+          if (pageNumber === 1) this.pdfRendering = false
         }
       } catch (err) {
         console.error('Error loading PDF:', err)
         this.loadError = true
+      } finally {
+        this.pdfRendering = false
       }
     },
     // Ochilganda sahifa markaziy ustun kengligiga moslanadi (1.2–1.4); keyin zoom tugmalari boshqaradi.

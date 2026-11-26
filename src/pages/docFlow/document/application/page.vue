@@ -55,13 +55,15 @@
   )
 
   const { t } = i18n.global
-  // HR bo'limlari — backend `stage` filtri; standart «Hammasi».
-  const stageTabs = computed(() =>
-    ['all', 'new', 'process', 'rejected', 'approved', 'closed'].map((id) => ({
+  // Yagona holat tablari (xodim tomoni bilan bir xil) — backend `stage` filtri.
+  const stageTabs = computed(() => [
+    { id: 'all', name: t('applicationPage.hrTabs.all'), badge: store.stageCounts.all ?? 0 },
+    ...['returned', 'checking', 'process', 'approved', 'rejected'].map((id) => ({
       id,
-      name: t(`applicationPage.hrTabs.${id}`)
+      name: t(`applicationPage.statuses.${id}`),
+      badge: store.stageCounts[id] ?? 0
     }))
-  )
+  ])
   const onStageChange = () => {
     store.params.page = 1
     store._index()
@@ -86,12 +88,17 @@
 <template>
   <UIPageContent>
     <slot name="top" />
-    <Filter />
-    <UISegmentTabs
-      v-model="store.params.stage"
-      :tabs="stageTabs"
-      @update:model-value="onStageChange"
-    />
+    <Filter>
+      <template #afterSearch>
+        <div class="min-w-0 overflow-x-auto">
+          <UISegmentTabs
+            v-model="store.params.stage"
+            :tabs="stageTabs"
+            @update:model-value="onStageChange"
+          />
+        </div>
+      </template>
+    </Filter>
     <Table
       @openOffice="openApplication"
       @openCommand="openCommand"

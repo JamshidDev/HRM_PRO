@@ -13,6 +13,7 @@
     useConfApplicationStore
   } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
+  import { applicationStatus } from '@/utils/applicationStatus.js'
   import UIHelper from '@/utils/UIHelper.js'
   import { Delete20Regular, Edit32Regular, Eye16Regular } from '@vicons/fluent'
   import i18n from '@/i18n'
@@ -102,24 +103,6 @@
     store.params.page = v.page
     store.params.per_page = v.per_page
     store._index()
-  }
-
-  // Kelishuvchi rad etgan ariza.
-  const REJECTED_CONFIRMATION = 4
-
-  // Bitta holat: Qoralama → Tekshiruvda (HR) → Jarayonda (kelishuvchilar) → Tasdiqlangan / Rad etilgan.
-  const appStatus = (app) => {
-    const conf = app?.confirmation?.id
-    const hr = Number(app?.status)
-    // HR tuzatish uchun qaytargan qoralama.
-    if (conf === DRAFT_CONFIRMATION && app?.returned)
-      return { id: 11, name: t('applicationPage.statuses.returned') }
-    if (conf === DRAFT_CONFIRMATION) return { id: 2, name: t('applicationPage.statuses.draft') }
-    if (conf === 3) return { id: 3, name: t('applicationPage.statuses.approved') }
-    if (conf === REJECTED_CONFIRMATION || hr === 2)
-      return { id: 4, name: t('applicationPage.statuses.rejected') }
-    if (hr === 1) return { id: 1, name: t('applicationPage.statuses.process') }
-    return { id: 9, name: t('applicationPage.statuses.checking') }
   }
 
   const columns = computed(() => [
@@ -224,7 +207,7 @@
 
 
     <template #[`cell-worker_application.confirmation`]="{ row }">
-      <UIStatus :status="appStatus(row?.worker_application)" />
+      <UIStatus :status="applicationStatus(row?.worker_application)" />
     </template>
 
     <template #[`cell-worker_application.generate`]="{ row }">

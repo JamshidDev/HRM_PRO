@@ -147,6 +147,7 @@
         <div class="col-span-12 md:col-span-6">
           <label>{{ $t('workerPage.filter.department') }}</label>
           <UIDepartmentSelect
+            own
             v-model="store.params.departments"
             :organization="store.params.organizations"
             multiple

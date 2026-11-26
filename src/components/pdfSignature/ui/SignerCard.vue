@@ -47,7 +47,7 @@
          `pl-2`: navbatdagi tugun to'lqini ro'yxatning `overflow-x: clip` chetida kesilmasin -->
     <div class="flex flex-col items-center shrink-0 pt-2 pl-2">
       <div
-        class="relative size-5.5 rounded-full border flex items-center justify-center"
+        class="signer-node relative size-5.5 rounded-full border flex items-center justify-center"
         :class="current ? 'border-primary bg-primary text-white' : tone.node"
       >
         <!-- Navbati kelgan kelishuvchi tugunidan tarqaladigan to'lqin (ripple) -->
@@ -58,11 +58,11 @@
         <span v-if="showStep" class="relative text-[10px] font-bold tabular-nums">{{ step }}</span>
         <n-icon v-else size="12" class="relative"><component :is="tone.icon" /></n-icon>
       </div>
-      <div v-if="!isLast" class="w-0.5 flex-1 mt-1 rounded-full" :class="tone.line"></div>
+      <div v-if="!isLast" class="signer-line w-0.5 flex-1 mt-1 rounded-full" :class="tone.line"></div>
     </div>
 
     <div
-      class="flex-1 min-w-0 mb-1.5 rounded-xl border overflow-hidden shadow-[0_1px_2px_rgb(16_24_40/0.04)]"
+      class="signer-card flex-1 min-w-0 mb-1.5 rounded-xl border overflow-hidden shadow-[0_1px_2px_rgb(16_24_40/0.04)]"
       :class="[
         tone.card,
         isDirector ? 'signer-card--director' : 'bg-surface-section',
@@ -105,7 +105,7 @@
       <!-- Pastki qator: chapda holat va belgilar, o'ngda harakatlar.
            Harakatlar va rad etish sababi «Harakatlar tarixi» tabida -->
       <div
-        class="flex items-center gap-1.5 px-2 py-1 border-t border-surface-line/60 bg-surface-ground/40"
+        class="signer-card__foot flex items-center gap-1.5 px-2 py-1 border-t border-surface-line/60 bg-surface-ground/40"
       >
         <div class="flex flex-wrap items-center gap-1 min-w-0">
           <!-- Harakat vaqti badge ustiga olib borilganda ko'rinadi -->

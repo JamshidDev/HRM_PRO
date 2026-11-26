@@ -12,6 +12,11 @@ const _update = async (payload) => {
   return await axios.put(`/v1/hr/confirmation-workers/${payload.id}`, payload.data)
 }
 
+// Korxonaning asosiy rahbari qilish.
+const _makeMain = async (payload) => {
+  return await axios.put(`/v1/hr/confirmation-workers/${payload.id}/main`)
+}
+
 const _delete = async (payload) => {
   return await axios.delete(`/v1/hr/confirmation-workers/${payload.id}`)
 }
@@ -20,5 +25,6 @@ export default {
   _index,
   _create,
   _update,
+  _makeMain,
   _delete
 }

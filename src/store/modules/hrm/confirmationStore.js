@@ -16,8 +16,14 @@ export const useConfirmationStore = defineStore('confirmationStore', {
     payload: {
       pin: null,
       position: null,
-      level: null
+      level: null,
+      // Faqat rahbar: ariza va bildirgilar sarlavhasidagi to'liq lavozim.
+      full_position: null,
+      // Faqat rahbar: korxonaning asosiy rahbari (arizalar shunga yoziladi).
+      is_main: false
     },
+    // Tahrirlanayotgan rahbar allaqachon asosiy — switch o'chirilmaydi (doim bitta asosiy bo'ladi).
+    editingIsMain: false,
     params: {
       page: 1,
       per_page: 15,
@@ -79,6 +85,9 @@ export const useConfirmationStore = defineStore('confirmationStore', {
           this.saveLoading = false
         })
     },
+    _makeMain(id) {
+      $ApiService.confirmationService._makeMain({ id }).then(() => this._index())
+    },
     _delete() {
       this.deleteLoading = true
       $ApiService.confirmationService
@@ -98,6 +107,9 @@ export const useConfirmationStore = defineStore('confirmationStore', {
       this.payload.pin = null
       this.payload.position = null
       this.payload.level = null
+      this.payload.full_position = null
+      this.payload.is_main = false
+      this.editingIsMain = false
     }
   }
 })

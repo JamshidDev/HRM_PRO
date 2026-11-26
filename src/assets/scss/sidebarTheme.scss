@@ -281,3 +281,46 @@
     }
   }
 }
+
+// Yorug' rejim, «Odatiy» va «Mint»: tanlangan modul va qator — brend gradienti (qora pill o'rniga).
+:root:not([data-theme='dark']):not([data-ui-style='minimal']):is(
+    [data-sidebar-theme='default'],
+    [data-sidebar-theme='mint']
+  )
+  .organization-layout
+  .sidebar-content {
+  .mini-content .active-mini-content {
+    background: linear-gradient(145deg, #2563eb 0%, #7c3aed 100%) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.28),
+      0 4px 14px rgba(79, 70, 229, 0.35) !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    .n-icon svg {
+      filter: none;
+    }
+    .n-icon svg :is(path, circle, rect, polygon, ellipse) {
+      fill: #ffffff;
+    }
+  }
+
+  .panel-content .active-panel-item-single {
+    background-image: linear-gradient(100deg, #2563eb 0%, #7c3aed 100%) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      0 4px 12px rgba(79, 70, 229, 0.22) !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    .item-title {
+      color: #ffffff !important;
+    }
+    .item-icon .n-icon svg {
+      filter: none;
+    }
+    .item-icon .n-icon svg :is(path, circle, rect, polygon, ellipse) {
+      fill: #ffffff;
+    }
+  }
+}

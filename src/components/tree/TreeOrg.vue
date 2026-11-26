@@ -281,9 +281,9 @@
        birinchi qator bilan bir chiziqda qoladi (har biri 20px balandlikda). */
     align-items: flex-start;
     gap: 6px;
-    min-height: 28px;
+    min-height: 24px;
     margin: 0;
-    padding: 4px 6px 4px 4px;
+    padding: 2px 6px 2px 4px;
     border-radius: 8px;
     cursor: pointer;
     outline: none;
@@ -323,7 +323,7 @@
   .tso-guide {
     position: relative;
     align-self: stretch;
-    margin: -4px 0;
+    margin: -2px 0;
     width: 20px;
     flex-shrink: 0;
   }
@@ -347,7 +347,7 @@
     content: '';
     position: absolute;
     left: 9.5px;
-    top: 14px;
+    top: 12px;
     width: 16.5px;
     height: 1px;
     background: var(--tso-line);
@@ -361,7 +361,7 @@
      gorizontalga buriladi (bitta element — uzilish yo'q). */
   .tso-guide--end::before {
     bottom: auto;
-    height: 15px;
+    height: 13px;
     width: 16.5px;
     background: none;
     border-left: 1px solid var(--tso-line);
@@ -373,11 +373,11 @@
     width: 38.5px;
   }
 
-  /* Ochiq ota qatori: strelka tagidan (4px chekka + 20px strelka) qator tubigacha.
+  /* Ochiq ota qatori: strelka tagidan (2px chekka + 20px strelka) qator tubigacha.
      Chap: 4px chekka + ajdod ustunlari (har biri 26px) + strelka markazi (9.5px). */
   .tso-stem {
     position: absolute;
-    top: 24px;
+    top: 22px;
     bottom: 0;
     left: calc(4px + var(--tso-depth, 0) * 26px + 9.5px);
     width: 1px;
@@ -478,6 +478,19 @@
     height: 20px;
     display: inline-flex;
     align-items: center;
+  }
+
+  /* Qorong'ida checkbox paneldan qoraroq «chuqur» bo'lib, chegarasi ko'rinmasdi. */
+  /* Qorong'ida daraxt chiziqlari (#262626) panel fonida (#1f1f22) ko'rinmasdi. */
+  :global([data-theme='dark'] .tso-row) {
+    --tso-line: #3f3f46;
+  }
+
+  :global([data-theme='dark'] .tso-check) {
+    --n-color: transparent !important;
+    --n-border: 1px solid #52525b !important;
+    --n-color-disabled: rgba(255, 255, 255, 0.04) !important;
+    --n-border-disabled: 1px solid #3f3f46 !important;
   }
 
   .tso-hit {
