@@ -2280,8 +2280,12 @@
       "docFullPosition": "Tolıq lawazım"
     },
     "docFullPositionPlaceholder": "Mısalı: Samarqand temir jol aralıǵı filialı baslıǵı",
-    "docFullPositionHint": "Arza hám bildirgiler sarlawhasında basshı atınan aldın usı tekst shıǵadı. Bos qalsa — avtomat túrde jıynaladı.",
-    "positionHint": "Qısqa lawazım: buyrıq, shártnama, qosımsha kelisim hám basqa hújjetlerde qol qoyıwshı janında hám kelisim dizimlerinde shıǵadı."
+    "docFullPositionHint": "Arza hám bildirgilerde usı tekst shıǵadı: basshı ushın sarlawhada atınan aldın, kelisiwshi ushın qol qatarında. Bos qalsa — qısqa lawazım (basshı ushın avtomat jıynalǵan tekst).",
+    "positionHint": "Qısqa lawazım: buyrıq, shártnama, qosımsha kelisim hám basqa hújjetlerde qol qoyıwshı janında hám kelisim dizimlerinde shıǵadı.",
+    "main": "Tiykarǵı",
+    "mainLabel": "Tiykarǵı basshı",
+    "mainHint": "Xızmetkerler arzası usı basshı atına jazıladı. Kárxanada tek bir tiykarǵı basshı boladı — basqasın tiykarǵı etseńiz, aldıńǵısınan belgi alınadı.",
+    "makeMain": "Tiykarǵı etiw"
   },
   "contractPage": {
     "edit": {

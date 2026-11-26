@@ -61,8 +61,8 @@
         </template>
         <n-input type="text" v-model:value="store.payload.position" />
       </n-form-item>
-      <!-- Faqat rahbar: ariza va bildirgilar sarlavhasida shu matn chiqadi -->
-      <n-form-item v-if="store.payload.level === 1" path="full_position">
+      <!-- Ariza va bildirgilarda: rahbar — sarlavha, kelishuvchi — imzo qatori -->
+      <n-form-item v-if="store.payload.level" path="full_position">
         <template #label>
           <span class="inline-flex items-center gap-1">
             {{ $t('confirmationPage.table.docFullPosition') }}
@@ -78,11 +78,26 @@
           v-model:value="store.payload.full_position"
           type="textarea"
           :autosize="{ minRows: 2, maxRows: 4 }"
-          :maxlength="500"
+          :maxlength="255"
           show-count
           clearable
           :placeholder="$t('confirmationPage.docFullPositionPlaceholder')"
         />
+      </n-form-item>
+      <n-form-item v-if="store.payload.level === 1" :show-feedback="false">
+        <div class="flex w-full items-center justify-between gap-3">
+          <span class="inline-flex items-center gap-1">
+            {{ $t('confirmationPage.mainLabel') }}
+            <n-tooltip trigger="hover" placement="top" :style="{ maxWidth: '320px' }">
+              <template #trigger>
+                <n-icon size="16" class="cursor-help text-textColor3"><Info16Regular /></n-icon>
+              </template>
+              {{ $t('confirmationPage.mainHint') }}
+            </n-tooltip>
+          </span>
+          <!-- Yagona rahbar bo'lsa asosiylik olinmaydi; aks holda belgi boshqa rahbarga o'tadi -->
+          <n-switch v-model:value="store.payload.is_main" :disabled="store.editingIsMain" />
+        </div>
       </n-form-item>
     </div>
   </n-form>

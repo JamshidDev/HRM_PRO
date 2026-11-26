@@ -2293,8 +2293,12 @@
       "docFullPosition": "Full position"
     },
     "docFullPositionPlaceholder": "E.g.: Head of the Samarkand track distance branch",
-    "docFullPositionHint": "This exact text appears before the manager's name in application and notice headers. If empty, it is built automatically.",
-    "positionHint": "Short position: shown next to the signer in orders, contracts, additional agreements and other documents, and in approval lists."
+    "docFullPositionHint": "Shown in applications and notices: for the manager — in the header before the name, for an approver — in the signature line. If empty — the short position (for the manager, an auto-built text).",
+    "positionHint": "Short position: shown next to the signer in orders, contracts, additional agreements and other documents, and in approval lists.",
+    "main": "Main",
+    "mainLabel": "Main manager",
+    "mainHint": "Employee applications are addressed to this manager. An organization has exactly one main manager — assigning another removes the mark from the previous one.",
+    "makeMain": "Make main"
   },
   "contractPage": {
     "edit": {

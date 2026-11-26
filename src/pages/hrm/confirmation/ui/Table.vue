@@ -8,7 +8,7 @@ import {
 } from '@/store/modules/index.js'
 import UIHelper from '@/utils/UIHelper.js'
 import Utils from '@/utils/Utils.js'
-import { Copy20Regular, Delete20Regular, Edit32Regular } from '@vicons/fluent'
+import { Copy20Regular, Delete20Regular, Edit32Regular, Star20Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
 
@@ -32,6 +32,11 @@ import { Copy20Regular, Delete20Regular, Edit32Regular } from '@vicons/fluent'
     store.payload.pin = row.worker.id.toString()
     store.payload.level = row.level.id
     store.payload.full_position = row.full_position ?? null
+    store.payload.is_main = !!row.is_main
+    // Korxonada boshqa rahbar bo'lmasa — asosiylikni olib bo'lmaydi.
+    store.editingIsMain =
+      !!row.is_main &&
+      !store.list.some((x) => x.id !== row.id && x.level?.id === 1 && x.organization?.id === row.organization?.id)
     store.visible = true
   }
 
@@ -65,12 +70,14 @@ import { Copy20Regular, Delete20Regular, Edit32Regular } from '@vicons/fluent'
     {
       key: 'position',
       title: t('confirmationPage.table.position'),
-      minWidth: 200
+      minWidth: 200,
+      ellipsis: { tooltip: { style: { maxWidth: '400px' } } }
     },
     {
       key: 'full_position',
       title: t('confirmationPage.table.docFullPosition'),
-      minWidth: 280
+      minWidth: 280,
+      ellipsis: { tooltip: { style: { maxWidth: '400px' } } }
     }
   ])
 
@@ -80,6 +87,13 @@ import { Copy20Regular, Delete20Regular, Edit32Regular } from '@vicons/fluent'
       key: Utils.ActionTypes.edit,
       icon: UIHelper.renderIcon(Edit32Regular),
       action: onEdit
+    },
+    {
+      label: t('confirmationPage.makeMain'),
+      key: 'make-main',
+      icon: UIHelper.renderIcon(Star20Regular),
+      visible: (row) => row?.level?.id === 1 && !row?.is_main && accStore.checkPermission(accStore.pn.hrConfirmationsWrite),
+      action: (row) => store._makeMain(row.id)
     },
     {
       label: t('content.delete'),
@@ -118,6 +132,13 @@ import { Copy20Regular, Delete20Regular, Edit32Regular } from '@vicons/fluent'
           position: row?.position
         }"
       >
+        <!-- Ismdan keyin «Asosiy» — korxonaning asosiy rahbari (doim bitta) -->
+        <template #name="{ title }">
+          <div class="flex min-w-0 items-center gap-1.5">
+            <span class="truncate text-sm leading-[1.2] text-textColor2">{{ title }}</span>
+            <UIChip v-if="row?.is_main" class="shrink-0" :label="$t('confirmationPage.main')" tone="green" compact />
+          </div>
+        </template>
         <!-- Ism ostida JSHSHIR — bosilsa nusxalanadi -->
         <template #position>
           <div

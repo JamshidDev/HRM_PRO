@@ -2309,8 +2309,12 @@
       "docFullPosition": "To'liq lavozim"
     },
     "docFullPositionPlaceholder": "Masalan: Samarqand temir yo'l masofasi filiali boshlig'i",
-    "docFullPositionHint": "Ariza va bildirgilar sarlavhasida rahbar ismidan oldin aynan shu matn chiqadi. Bo'sh qolsa — avtomatik yig'iladi.",
-    "positionHint": "Qisqa lavozim: buyruq, shartnoma, qo'shimcha kelishuv va boshqa hujjatlarda imzo qo'yuvchi yonida hamda kelishuv ro'yxatlarida chiqadi."
+    "docFullPositionHint": "Ariza va bildirgilarda shu matn chiqadi: rahbar uchun sarlavhada ismidan oldin, kelishuvchi uchun imzo qatorida. Bo'sh qolsa — qisqa lavozim (rahbar uchun avtomatik yig'ilgan matn).",
+    "positionHint": "Qisqa lavozim: buyruq, shartnoma, qo'shimcha kelishuv va boshqa hujjatlarda imzo qo'yuvchi yonida hamda kelishuv ro'yxatlarida chiqadi.",
+    "main": "Asosiy",
+    "mainLabel": "Asosiy rahbar",
+    "mainHint": "Xodimlar arizasi shu rahbar nomiga yoziladi. Korxonada faqat bitta asosiy rahbar bo'ladi — boshqasini asosiy qilsangiz, avvalgisidan belgi olinadi.",
+    "makeMain": "Asosiy qilish"
   },
   "contractPage": {
     "edit": {
