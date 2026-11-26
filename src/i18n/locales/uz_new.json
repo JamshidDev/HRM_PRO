@@ -812,6 +812,8 @@
     "createTitle": "Role qöşiş",
     "updateTitle": "Role tahrirlaş",
     "form": {
+      "mobileTab": "Mobil",
+      "mobileServices": "Mobil ilova xizmatlari (Turniketlar)",
       "name": "Role nomi",
       "permissions": "Permission",
       "moduleAccess": "Modul ruxsati",
@@ -5995,6 +5997,8 @@
     "name": "Tinglovçilar"
   },
   "navigation": {
+    "structureGroup": "Tuzilma",
+    "management": "Boshqaruv",
     "hrm": "Kadrlar boşqaruvi",
     "docFlow": "Hujjat aylanişi",
     "myOrg": "Kadr boşqaruvi",

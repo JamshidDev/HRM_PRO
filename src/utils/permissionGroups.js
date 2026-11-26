@@ -12,6 +12,7 @@ export const ACTION_ORDER = ['read', 'write', 'delete']
 // Backend @Permission bilan HAQIQATAN enforce qilinadigan sluglar. write/delete
 // switch faqat shu to'plamda bo'lsa ko'rsatiladi (mutatsiya real API talab qiladi).
 export const ENFORCED = new Set([
+  'mobile-services',
   'activity-logs-read',
   'profile-organization-info-read',
   'signature-history-read',
@@ -334,6 +335,7 @@ export const ENFORCED = new Set([
 // (haqiqatan ishlatilgan) sluglar birlashmasi. Forma faqat SHU sluglarga switch
 // ko'rsatadi — DB'da bor-u hech qayerda ishlatilmaydigan (spurious) sluglar yashiriladi.
 export const MEANINGFUL = new Set([
+  'mobile-services',
   'activity-logs',
   'activity-logs-read',
   'signature-history-read',
@@ -1191,6 +1193,12 @@ export const PERMISSION_GROUPS = [
       { prefix: 'profile-activity', label: 'profilePage.tabs.activity' },
       { prefix: 'profile-organization-info', label: 'profilePage.orgInfo.title' }
     ]
+  },
+  // Mobil ilova: Xizmatlar bo'limini ochish; ma'lumot doirasi rol kesimidan.
+  {
+    module: 'mobile',
+    label: 'userRole.form.mobileTab',
+    groups: [{ prefix: 'mobile-services', label: 'userRole.form.mobileServices' }]
   },
   {
     module: 'admin',

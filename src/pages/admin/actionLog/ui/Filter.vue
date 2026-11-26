@@ -92,7 +92,7 @@
       <template v-if="store.activeTab === 1">
         <label class="mt-3 text-xs text-gray-500">{{ $t('content.date') }}</label>
         <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek, store o'zgarmaydi. -->
-        <UIDayPicker v-model:value="store.params.created_at" mode="day" clearable @update:value="filterEvent" />
+        <UIDayPicker v-model:value="store.params.created_at" mode="period" clearable @update:value="filterEvent" />
       </template>
       <template v-if="store.activeTab === 1">
         <label class="mt-3 text-xs text-gray-500">{{ $t('actionLog.table.status') }}</label>
@@ -116,7 +116,7 @@
       <template v-if="store.activeTab === 2">
         <label class="mt-3 text-xs text-gray-500">{{ $t('actionLog.table.loginAt') }}</label>
 
-        <UIDayPicker v-model:value="store.params.login_at" mode="day" clearable @update:value="filterEvent" />
+        <UIDayPicker v-model:value="store.params.login_at" mode="period" clearable @update:value="filterEvent" />
       </template>
     </template>
   </UIPageFilter>

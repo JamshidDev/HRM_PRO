@@ -37,7 +37,11 @@ export const useUserRoleStore = defineStore('userRole', {
     params: {
       page: 1,
       per_page: 15,
-      search: null
+      search: null,
+      guard: null,
+      scope_level: null,
+      scope_type: null,
+      permission_id: null
     },
     query: null
   }),

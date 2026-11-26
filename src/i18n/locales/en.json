@@ -797,6 +797,8 @@
     "createTitle": "Add role",
     "updateTitle": "Edit role",
     "form": {
+      "mobileTab": "Mobile",
+      "mobileServices": "Mobile app services (Turnstiles)",
       "name": "Role name",
       "permissions": "Permissions",
       "moduleAccess": "Module access",
@@ -5950,6 +5952,8 @@
     "name": "Listeners"
   },
   "navigation": {
+    "structureGroup": "Structure",
+    "management": "Management",
     "hrm": "HR Management",
     "docFlow": "Document Flow",
     "myOrg": "HR Management",

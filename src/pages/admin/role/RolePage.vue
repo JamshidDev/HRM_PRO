@@ -56,6 +56,32 @@
     store._index()
   }
 
+  // Filtr: rol turi, kesim, doira (API scope_type), ruxsat.
+  const guardOptions = computed(() => [
+    { id: 'sanctum', name: t('userRole.form.typeSanctum') },
+    { id: 'integration', name: t('userRole.form.typeIntegration') }
+  ])
+  const levelOptions = computed(() =>
+    ['organization', 'department'].map((id) => ({ id, name: t(`userRole.form.level_${id}`) }))
+  )
+  const scopeOptions = computed(() =>
+    [
+      ['local', 'single'],
+      ['global', 'subtree'],
+      ['all', 'all']
+    ].map(([id, k]) => ({ id, name: t(`userRole.form.scope_${k}`) }))
+  )
+  const filterKeys = ['guard', 'scope_level', 'scope_type', 'permission_id']
+  const filterCount = computed(() => filterKeys.filter((k) => store.params[k] != null).length)
+  const onFilter = () => {
+    store.params.page = 1
+    store._index()
+  }
+  const resetFilter = () => {
+    filterKeys.forEach((k) => (store.params[k] = null))
+    onFilter()
+  }
+
   const onAdd = () => {
     if (!accStore.checkAction(accStore.pn.rolesWrite)) return
     store.resetForm()
@@ -83,8 +109,59 @@
       @on-search="onSearch"
       :search-loading="store.loading"
       @on-add="onAdd"
-      :show-filter-button="false"
-    />
+      :filter-count="filterCount"
+      @onClear="resetFilter"
+    >
+      <template #filterContent>
+        <div class="ui-filter-grid grid grid-cols-12 gap-x-5 gap-y-4">
+          <div class="col-span-12 md:col-span-6">
+            <label>{{ $t('userRole.form.type') }}</label>
+            <n-select
+              v-model:value="store.params.guard"
+              clearable
+              :options="guardOptions"
+              label-field="name"
+              value-field="id"
+              @update:value="onFilter"
+            />
+          </div>
+          <div class="col-span-12 md:col-span-6">
+            <label>{{ $t('userRole.form.scopeLevel') }}</label>
+            <n-select
+              v-model:value="store.params.scope_level"
+              clearable
+              :options="levelOptions"
+              label-field="name"
+              value-field="id"
+              @update:value="onFilter"
+            />
+          </div>
+          <div class="col-span-12 md:col-span-6">
+            <label>{{ $t('userRole.form.scopeKind') }}</label>
+            <n-select
+              v-model:value="store.params.scope_type"
+              clearable
+              :options="scopeOptions"
+              label-field="name"
+              value-field="id"
+              @update:value="onFilter"
+            />
+          </div>
+          <div class="col-span-12 md:col-span-6">
+            <label>{{ $t('userRole.form.permissions') }}</label>
+            <n-select
+              v-model:value="store.params.permission_id"
+              filterable
+              clearable
+              :options="store.originAllPermissionList"
+              label-field="name"
+              value-field="id"
+              @update:value="onFilter"
+            />
+          </div>
+        </div>
+      </template>
+    </UIPageFilter>
     <!-- E-IMZO ustuni ruxsat aniqlangach qo'shiladi — jadval ustunlarini qayta hisoblasin. -->
     <Table :key="eimzoGate.available.value ? 'with-eimzo' : 'plain'" />
     <UIModal

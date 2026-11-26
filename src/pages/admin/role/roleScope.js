@@ -62,7 +62,8 @@ export const DEPT_SCOPED_PREFIXES = new Set([
   'turnstile-sheets',
   'turnstile-work-duration',
   'turnstile-worker-image',
-  'useful'
+  'useful',
+  'mobile-services'
 ])
 
 export const isDeptScopedGroup = (prefix) => DEPT_SCOPED_PREFIXES.has(prefix)

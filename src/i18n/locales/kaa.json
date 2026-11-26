@@ -808,6 +808,8 @@
     "createTitle": "Rol qosıw",
     "updateTitle": "Rol ózgertiw",
     "form": {
+      "mobileTab": "Mobil",
+      "mobileServices": "Mobil qosımsha xızmetleri (Turniketler)",
       "name": "Rol atı",
       "permissions": "Permission",
       "moduleAccess": "Modul ruqsatı",
@@ -5863,6 +5865,8 @@
     "name": "Tıńlawshılar"
   },
   "navigation": {
+    "structureGroup": "Dúzilis",
+    "management": "Basqarıw",
     "hrm": "Kadrlar basqarıwı",
     "docFlow": "Hújjet aylanısı",
     "myOrg": "Kadr basqarıwı",

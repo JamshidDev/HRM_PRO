@@ -134,9 +134,6 @@
       <template #empty><UIProfileEmpty /></template>
 
       <template #cell-fullName="{ row }">{{ fullNameOf(row) }}</template>
-      <!-- BACKEND: QA-25 — ko'chirilgan (migratsiya) qarindoshlarda `birthday` bo'sh, tug'ilgan yil esa
-           `birth_place` matni ichida («1933-yil, Sirdaryo viloyati, …»). Ma'lumotni ajratib, yilni
-           `birthday` ga yozish kerak — frontend ikkalasini ham kelganicha ko'rsatadi. -->
       <template #cell-birthday="{ row }">{{ Utils.timeOnlyDate(row.birthday) }}</template>
 
       <!-- Faqat qiymat: toifalar. Qo'shish/tahrirlash — qator menyusida -->

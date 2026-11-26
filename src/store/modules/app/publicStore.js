@@ -43,7 +43,6 @@ export const usePublicStore = defineStore('usePublicStore', {
           $Toast.error(error.response?.data?.message)
         })
     },
-    // BACKEND: tasdiqlangan hujjatda ham confirmations[].status «Jarayonda» — imzolaganlar uchun haqiqiy holat kerak.
     _getDocument(callback) {
       this.loading = true
       $ApiService.publicService

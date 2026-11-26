@@ -108,7 +108,7 @@
         <div class="col-span-12 md:col-span-6">
           <label>{{ $t('content.created') }}</label>
           <!-- Yangi kun tanlagich (DAS-17755): qiymat avvalgidek son (ms) — store o'zgarmaydi. -->
-          <UIDayPicker v-model:value="store.params.created" mode="day" clearable @update:value="filterEvent" />
+          <UIDayPicker v-model:value="store.params.created" mode="period" clearable @update:value="filterEvent" />
         </div>
       </div>
     </template>

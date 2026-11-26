@@ -124,8 +124,7 @@ const storeOptions = {
       const params = {
         ...this.params,
         organizations: this.params.organizations.map((v) => v.id).toString(),
-        // BACKEND: davr filtri uchun created_from / created_to kerak — docs/api/date-range-filters.md (hozir faqat bitta kun).
-        created: Utils.timeToZone(this.params.created)
+        ...Utils.dateRangeParams(this.params.created),
       }
       $ApiService.contractService
         ._index({ params })

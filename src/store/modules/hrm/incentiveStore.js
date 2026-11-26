@@ -30,8 +30,7 @@ export const useIncentiveStore = defineStore('incentiveStore', {
       this.loading = true
       const params = {
         ...this.params,
-        // BACKEND: davr filtri uchun created_from / created_to kerak — docs/api/date-range-filters.md (hozir faqat bitta kun).
-        created: Utils.timeToZone(this.params.created),
+        ...Utils.dateRangeParams(this.params.created),
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
         year: this.params.year || undefined,
         month: this.params.month || undefined,
@@ -63,8 +62,7 @@ export const useIncentiveStore = defineStore('incentiveStore', {
       this.downloading = true
       const params = {
         ...this.params,
-        // BACKEND: davr filtri uchun created_from / created_to kerak — docs/api/date-range-filters.md (hozir faqat bitta kun).
-        created: Utils.timeToZone(this.params.created),
+        ...Utils.dateRangeParams(this.params.created),
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined,
         year: this.params.year || undefined,
         month: this.params.month || undefined,
