@@ -414,7 +414,7 @@
             position
           }
         })
-      : h('span', { class: 'ts-hist-empty' }, '—')
+      : null
   const historyColumns = computed(() => [
     { title: t('timesheetPage.changes.at'), key: 'at', width: 128, render: (r) => dayjs(r.at).format('DD.MM.YYYY HH:mm') },
     { title: t('timesheetPage.changes.worker'), key: 'worker', minWidth: 280, render: (r) => personCell(r.worker, r.worker?.position) },
@@ -427,7 +427,7 @@
       width: 64,
       render: (r) => {
         const diff = hoursOf(r.after) - hoursOf(r.before)
-        if (!diff) return '—'
+        if (!diff) return ''
         return h('b', { class: diff > 0 ? 'ts-hist-more' : 'ts-hist-less' }, `${diff > 0 ? '+' : ''}${diff}`)
       }
     },
@@ -1483,7 +1483,6 @@
                     >
                       {{ r.timesheet_key }}
                     </span>
-                    <span v-else class="ts-rules-dash">—</span>
                   </td>
                 </tr>
               </tbody>

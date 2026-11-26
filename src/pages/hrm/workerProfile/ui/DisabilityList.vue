@@ -129,7 +129,7 @@
       </template>
 
       <template #cell-comment="{ value }">
-        <span class="line-clamp-2">{{ value || '—' }}</span>
+        <span class="line-clamp-2">{{ value }}</span>
       </template>
     </UITable>
   </UIProfileSection>

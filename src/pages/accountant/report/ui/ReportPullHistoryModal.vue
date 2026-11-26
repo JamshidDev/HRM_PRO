@@ -63,7 +63,7 @@
   // 1C qayta tortish o'zgarish chiplari (faqat source=2 va sonlar bor bo'lsa).
   const renderChanges = (row) => {
     if (row.source !== 2 || row.added_count == null) {
-      return h('span', { class: 'text-secondary' }, '—')
+      return null
     }
     const chip = (val, type) =>
       h(NTag, { size: 'tiny', round: true, type, bordered: false }, () => String(val ?? 0))
@@ -88,7 +88,7 @@
       title: t('uploadReport.pullHistory.columns.date'),
       key: 'created_at',
       width: 150,
-      render: (row) => (row.created_at ? dayjs(row.created_at).format('YYYY-MM-DD HH:mm') : '—')
+      render: (row) => (row.created_at ? dayjs(row.created_at).format('YYYY-MM-DD HH:mm') : '')
     },
     {
       title: t('uploadReport.pullHistory.columns.organization'),
@@ -158,7 +158,7 @@
               },
               () => h(NIcon, { size: 18 }, () => h(ArrowDownload20Regular))
             )
-          : h('span', { class: 'text-secondary' }, '—')
+          : null
     },
     {
       title: t('uploadReport.pullHistory.columns.comment'),
@@ -174,7 +174,7 @@
                 ),
               default: () => row.comment
             })
-          : h('span', { class: 'text-secondary' }, '—')
+          : null
     }
   ])
 
@@ -192,7 +192,7 @@
       title: t('uploadReport.pullHistory.columns.date'),
       key: 'created_at',
       width: 150,
-      render: (row) => (row.created_at ? dayjs(row.created_at).format('YYYY-MM-DD HH:mm') : '—')
+      render: (row) => (row.created_at ? dayjs(row.created_at).format('YYYY-MM-DD HH:mm') : '')
     },
     {
       title: t('uploadReport.pullHistory.columns.organization'),
@@ -211,7 +211,7 @@
       key: 'user',
       minWidth: 160,
       ellipsis: { tooltip: true },
-      render: (row) => row.user || '—'
+      render: (row) => row.user || ''
     },
     {
       title: t('uploadReport.pullHistory.columns.files'),

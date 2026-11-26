@@ -128,11 +128,11 @@
     </template>
 
     <template #cell-source_organization="{ row }">
-      {{ row.source_organization?.name ?? '—' }}
+      {{ row.source_organization?.name }}
     </template>
 
     <template #cell-destination_department="{ row }">
-      {{ row.destination_department?.name ?? '—' }}
+      {{ row.destination_department?.name }}
     </template>
 
     <template #cell-type="{ row }">

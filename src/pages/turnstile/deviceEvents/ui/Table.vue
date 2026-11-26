@@ -70,8 +70,8 @@
   >
     <template #cell-door="{ row }">
       <div class="leading-tight">
-        <p class="text-xs font-bold">{{ row?.door_name || '-' }}</p>
-        <span class="text-[11px] text-secondary">{{ row?.access_level?.name || '-' }}</span>
+        <p class="text-xs font-bold">{{ row?.door_name }}</p>
+        <span class="text-[11px] text-secondary">{{ row?.access_level?.name }}</span>
       </div>
     </template>
 
@@ -81,12 +81,12 @@
       <UIUser :short="false" :data="{ photo: row?.matched_worker?.photo }">
         <template #name>
           <n-ellipsis class="w-full text-sm text-textColor2 leading-[1.2]">
-            {{ row?.person_name || '-' }}
+            {{ row?.person_name }}
           </n-ellipsis>
         </template>
         <template #position>
-          <span class="text-xs text-textColor3">
-            {{ $t('deviceEvent.card') }}: {{ row?.card_no || '-' }}
+          <span v-if="row?.card_no" class="text-xs text-textColor3">
+            {{ $t('deviceEvent.card') }}: {{ row?.card_no }}
           </span>
         </template>
       </UIUser>
@@ -97,7 +97,7 @@
     <template #cell-person_id="{ row }">
       <div class="flex items-center gap-1">
         <span class="font-mono text-xs font-bold text-primary">
-          {{ row?.hik_central_person_id ?? '-' }}
+          {{ row?.hik_central_person_id }}
         </span>
         <n-icon
           v-if="row?.hik_central_person_id != null"

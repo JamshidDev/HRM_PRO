@@ -41,9 +41,9 @@
   // Har bir qatorning o'z staji — shu davrdagi to'liq oylar (QA-24). Ilgari har qatorda
   // xodimning umumiy staji (`work_experience`) takrorlanardi.
   const rowMonths = (row) => {
-    if (!row.from_date || !row.to_date) return '—'
+    if (!row.from_date || !row.to_date) return ''
     const months = dayjs(row.to_date).diff(dayjs(row.from_date), 'month')
-    return months >= 0 ? months : '—'
+    return months >= 0 ? months : ''
   }
 
   // Xodim darajasidagi qiymatlar — jadval ustida, sarlavha yonida bir marta

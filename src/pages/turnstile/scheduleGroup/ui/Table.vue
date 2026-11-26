@@ -77,7 +77,7 @@
     const start = String(row.start_date || '').slice(0, 10)
     const end = String(row.end_date || '').slice(0, 10)
     const [y, m] = start.split('-').map(Number)
-    if (!y || !m) return '—'
+    if (!y || !m) return ''
     const lastDay = new Date(y, m, 0).getDate()
     const fullMonth = start.endsWith('-01') && end === `${start.slice(0, 8)}${lastDay}`
     return fullMonth
@@ -135,7 +135,7 @@
     </template>
 
     <template #cell-organization="{ row }">
-      <span class="line-clamp-2 leading-[1.3]">{{ row.organization?.name || '—' }}</span>
+      <span class="line-clamp-2 leading-[1.3]">{{ row.organization?.name }}</span>
     </template>
     <template #cell-workers_count="{ row }">
       <UIBadge :show-icon="false" :type="Utils.colorTypes.secondary" :label="String(row.workers_count)" />

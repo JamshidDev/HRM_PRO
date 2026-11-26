@@ -395,7 +395,6 @@
       <UIChip v-if="row.role" tone="info">
         {{ row.role.name }}
       </UIChip>
-      <span v-else class="text-xs text-textColor3">—</span>
     </template>
 
     <template #cell-scope_mode="{ row }">

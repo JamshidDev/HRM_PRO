@@ -196,7 +196,7 @@
         <template #cell-title="{ row }">
           <div class="flex items-center gap-2 min-w-0">
             <span class="h-2 w-2 shrink-0 rounded-full" :class="dotClass(row.status)" />
-            <span class="truncate font-medium text-textColor0">{{ row.title || '—' }}</span>
+            <span class="truncate font-medium text-textColor0">{{ row.title }}</span>
           </div>
         </template>
 
@@ -212,7 +212,6 @@
           <span v-if="rowTime(row)" class="whitespace-nowrap text-textColor2">
             {{ Utils.dateTimeShortLabel(rowTime(row)) }}
           </span>
-          <span v-else>—</span>
         </template>
       </UITable>
     </div>

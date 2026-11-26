@@ -84,7 +84,7 @@
         @change-page="onPage"
       >
         <template #empty><UIProfileEmpty /></template>
-        <template #cell-number="{ row }">{{ row.number ? `№${row.number}` : '—' }}</template>
+        <template #cell-number="{ row }">{{ row.number ? `№${row.number}` : '' }}</template>
         <template #cell-date="{ row }">{{ Utils.timeOnlyDate(row.date) }}</template>
       </UITable>
     </UIProfileSection>

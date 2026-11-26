@@ -19,7 +19,7 @@
   ])
 
   const humanSize = (bytes) => {
-    if (!bytes) return '—'
+    if (!bytes) return ''
     const gb = bytes / 1024 ** 3
     if (gb >= 1) return gb.toFixed(2) + ' GB'
     const mb = bytes / 1024 ** 2
@@ -28,7 +28,7 @@
   }
 
   const humanDuration = (ms) => {
-    if (!ms) return '—'
+    if (!ms) return ''
     if (ms < 60000) return (ms / 1000).toFixed(1) + ' s'
     return (ms / 60000).toFixed(1) + ' min'
   }
@@ -68,7 +68,7 @@
 
     <!-- Fayl nomi — serverda aynan shu nom bilan qidiriladi (scp uchun) -->
     <template #[`cell-file_name`]="{ row }">
-      <span class="font-mono text-xs">{{ row.file_name || '—' }}</span>
+      <span class="font-mono text-xs">{{ row.file_name }}</span>
     </template>
 
     <!-- Siqilmagan: dump boshlanishidagi baza hajmi (`pg_database_size`) -->

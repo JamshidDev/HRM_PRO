@@ -97,7 +97,7 @@
       key: 'created_at',
       title: t('content.date'),
       minWidth: 140,
-      render: (row) => Utils.dateTimeShortLabel(row.created_at) ?? '—'
+      render: (row) => Utils.dateTimeShortLabel(row.created_at) ?? ''
     }
   ])
 
@@ -168,18 +168,16 @@
 
       <!-- Hudud: nuqtada — radius, polygonda — nuqtalar soni, erkin rejimda yo'q -->
       <template #cell-zone="{ row }">
-        <span v-if="typeOf(row) === 'free'" class="text-textColor3">—</span>
-        <span v-else-if="typeOf(row) === 'area'" class="text-textColor1">
+        <span v-if="typeOf(row) === 'area'" class="text-textColor1">
           {{ $t('departmentLocationPage.pointsCount', { n: (row.polygon || []).length }) }}
         </span>
-        <span v-else class="text-textColor1">{{ row.radius }} m</span>
+        <span v-else-if="typeOf(row) !== 'free'" class="text-textColor1">{{ row.radius }} m</span>
       </template>
 
       <template #cell-coords="{ row }">
-        <span v-if="row.is_free || !coordsText(row)" class="text-textColor3">—</span>
         <!-- Jadvaldagi yagona bosiladigan element (Shahriyor so'rovi): koordinatani nusxalash -->
         <!-- Ko'rinishi ishchi profilidagi nusxalash ikonkasi bilan bir xil (`WorkerStatsGrid.vue`) -->
-        <div v-else class="flex min-w-0 items-center gap-1.5">
+        <div v-if="!row.is_free && coordsText(row)" class="flex min-w-0 items-center gap-1.5">
           <span class="truncate font-mono text-[13px] text-textColor1">{{ coordsText(row) }}</span>
           <n-icon
             size="16"
@@ -193,8 +191,7 @@
       </template>
 
       <template #cell-accuracy_limit="{ row }">
-        <span v-if="row.is_free" class="text-textColor3">—</span>
-        <span v-else class="text-textColor1">{{ row.accuracy_limit }}</span>
+        <span v-if="!row.is_free" class="text-textColor1">{{ row.accuracy_limit }}</span>
       </template>
 
       <template #empty>
