@@ -242,3 +242,62 @@
       0 1px 0 rgba(255, 255, 255, 0.03);
   }
 }
+
+// Hujjat ko'rish oynasi (imzolash): fon → panel → karta qatlamlari aniq ajralib tursin.
+:root[data-theme='dark'] .ui__onlyOffice-drawer {
+  .n-drawer-content .bg-gradient-to-b {
+    background: #09090b;
+  }
+
+  // Yuqori sarlavha qatori
+  .n-drawer-content .bg-gradient-to-b > .border-b {
+    background-color: #111113;
+    border-bottom-color: #26262b;
+  }
+
+  .section-header {
+    background-color: #151518;
+    box-shadow: inset 0 0 0 1px #2c2c32;
+  }
+
+  .section-header-bar {
+    background-color: #1c1c20;
+    border-bottom: 1px solid #2c2c32;
+  }
+
+  .border-dashed {
+    border-color: #3f3f46;
+  }
+
+  .signer-card {
+    background-color: #1f1f23;
+    border-color: #36363d !important;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.5);
+  }
+
+  .signer-card--director {
+    background:
+      linear-gradient(135deg, rgb(59 130 246 / 0.18) 0%, rgb(59 130 246 / 0.04) 70%),
+      #1f1f23;
+    border-color: rgb(96 165 250 / 0.45) !important;
+  }
+
+  .signer-card__foot {
+    background-color: #1a1a1e;
+    border-top-color: #2f2f35;
+  }
+
+  .signer-card.opacity-70 {
+    opacity: 0.9;
+  }
+
+  .signer-node:not(.bg-primary) {
+    background-color: rgb(59 130 246 / 0.18);
+    border-color: rgb(96 165 250 / 0.65);
+    color: #93c5fd;
+  }
+
+  .signer-line {
+    background-color: rgb(96 165 250 / 0.4);
+  }
+}
