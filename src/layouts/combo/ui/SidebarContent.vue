@@ -620,6 +620,11 @@
           <stop offset="0%" stop-color="#84caff" />
           <stop offset="100%" stop-color="#c3b5fd" />
         </linearGradient>
+        <!-- Qorong'i rejim rail'i (qora fon) — to'yinganroq ko'kdan binafshaga -->
+        <linearGradient id="sidebarIconDark" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#7cb7ff" />
+          <stop offset="100%" stop-color="#b69cff" />
+        </linearGradient>
       </defs>
     </svg>
 
@@ -953,7 +958,7 @@
 
   [data-theme='dark'] {
     .sidebar-card {
-      border: 1px solid #2a3851;
+      border: 1px solid var(--surface-line, #232323);
     }
   }
 
