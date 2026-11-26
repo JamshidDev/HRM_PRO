@@ -1,5 +1,5 @@
 <script setup>
-  import { UIPageFilter, UISelect, UIDepartmentSelect } from '@/components/index.js'
+  import { UIDayPicker, UIPageFilter, UISelect, UIDepartmentSelect } from '@/components/index.js'
   import { useAccountStore, useComponentStore, useMedStore } from '@/store/modules/index.js'
   import { ArrowDownload24Regular } from '@vicons/fluent'
   import i18n from '@/i18n/index.js'
@@ -144,12 +144,10 @@
         </div>
         <div class="col-span-12 md:col-span-6">
           <label>{{ $t('medPage.form.dueMonth') }}</label>
-          <n-date-picker
-            class="w-full"
+          <UIDayPicker
             v-model:formatted-value="store.params.month"
             value-format="yyyy-MM"
-            type="month"
-            format="MMMM yyyy"
+            mode="month"
             clearable
             @update:formatted-value="filterEvent"
           />

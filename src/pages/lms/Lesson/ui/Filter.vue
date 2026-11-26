@@ -1,6 +1,6 @@
 <script setup>
   import { useAccountStore, useComponentStore, useLmsLessonStore } from '@/store/modules/index.js'
-  import { UIPageFilter } from '@/components/index.js'
+  import { UIDayPicker, UIPageFilter } from '@/components/index.js'
   const store = useLmsLessonStore()
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
@@ -62,15 +62,8 @@
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{
         $t('eduPlanPage.form.learning_center')
       }}</label>
-      <n-date-picker
-        v-model:value="store.currentTime"
-        type="month"
-        format="y MMM"
-        month-format="MMM"
-        clearable
-        :actions="['confirm']"
-        @update-value="onChangeMonth"
-      />
+      <!-- Dars kalendari doim bitta oyni ko'rsatadi — tozalab bo'lmaydi. -->
+      <UIDayPicker :value="store.currentTime" mode="month" @update:value="onChangeMonth" />
     </template>
   </UIPageFilter>
 </template>

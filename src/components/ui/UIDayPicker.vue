@@ -1,7 +1,9 @@
 <script setup>
-  // Kun / davr tanlagich. Ikki rejim (`mode`):
+  // Kun / davr / oy tanlagich. Uch rejim (`mode`):
   //  • 'day'    — bitta kun: tez tanlash (Bugun, Kecha, Ertaga, 2 kun oldin / keyin, Hafta / Oy boshi) + kalendarda bitta bosish;
-  //  • 'period' — davr: tez tanlash (Shu/O'tgan hafta, Shu/O'tgan oy, Oxirgi 7/30 kun) + kalendarda 2 bosish.
+  //  • 'period' — davr: tez tanlash (Shu/O'tgan hafta, Shu/O'tgan oy, Oxirgi 7/30 kun) + kalendarda 2 bosish;
+  //  • 'month'  — oy: tez tanlash (Shu / O'tgan / Keyingi oy) + oylar to'ri (yil ‹ ›) da bitta bosish.
+  //    `n-date-picker type="month"` o'rniga: qiymat — oy boshi (ms) yoki satr (`value-format`, default 'yyyy-MM').
   // Oyna ikki sahifali (yonma-yon siljiydi): tez tanlash ⇄ kalendar. Tez tanlash bosilsa — qo'llanadi va yopiladi.
   //
   // `n-date-picker` (type="date" / "daterange") o'rniga TO'G'RIDAN-TO'G'RI qo'yiladi — bir xil API:
@@ -33,9 +35,10 @@
     value: { type: [Array, Number], default: null },
     // Berilmasa `undefined` qoladi — shunda bog'lanmagan deb hisoblanadi.
     formattedValue: { type: [Array, String], default: undefined },
-    valueFormat: { type: String, default: 'yyyy-MM-dd' },
-    // 'day' | 'period'. Berilmasa: `type="daterange"` → 'period', aks holda 'day'.
-    mode: { type: String, default: null, validator: (v) => v == null || ['day', 'period'].includes(v) },
+    // Berilmasa: oy rejimida 'yyyy-MM', aks holda 'yyyy-MM-dd'.
+    valueFormat: { type: String, default: null },
+    // 'day' | 'period' | 'month'. Berilmasa: `type="daterange"` → 'period', `type="month"` → 'month', aks holda 'day'.
+    mode: { type: String, default: null, validator: (v) => v == null || ['day', 'period', 'month'].includes(v) },
     type: { type: String, default: 'date' },
     placeholder: { type: String, default: null },
     startPlaceholder: { type: String, default: null },
@@ -105,10 +108,20 @@
       },
       { key: 'last7', range: () => [today().subtract(6, 'day'), today()] },
       { key: 'last30', range: () => [today().subtract(29, 'day'), today()] }
+    ],
+    // Oy rejimi: qiymat — oy boshi (ikkala chet bir xil).
+    month: [
+      { key: 'thisMonth', range: () => [today().startOf('month'), today().startOf('month')] },
+      { key: 'lastMonth', range: () => [today().subtract(1, 'month').startOf('month'), today().subtract(1, 'month').startOf('month')] },
+      { key: 'nextMonth', range: () => [today().add(1, 'month').startOf('month'), today().add(1, 'month').startOf('month')] }
     ]
   }
-  const isDay = computed(() => (props.mode ?? (props.type === 'daterange' ? 'period' : 'day')) === 'day')
-  const presets = computed(() => PRESETS[isDay.value ? 'day' : 'period'])
+  const mode = computed(
+    () => props.mode ?? (props.type === 'daterange' ? 'period' : props.type === 'month' ? 'month' : 'day')
+  )
+  const isDay = computed(() => mode.value === 'day')
+  const isMonth = computed(() => mode.value === 'month')
+  const presets = computed(() => PRESETS[mode.value])
 
   const show = ref(false)
   const page = ref('quick') // 'quick' | 'calendar'
@@ -122,13 +135,12 @@
   // ---- Qiymat: kirish / chiqish (Naive `n-date-picker` bilan bir xil shakllar) ----
   const usesFormatted = computed(() => props.formattedValue !== undefined)
   const rawValue = computed(() => (usesFormatted.value ? props.formattedValue : props.value))
+  const valueFmt = computed(() => props.valueFormat || (isMonth.value ? 'yyyy-MM' : 'yyyy-MM-dd'))
   // date-fns tokenlari (yyyy, MM, dd, HH, mm, ss) → dayjs format satri.
-  const dayjsFormat = computed(() =>
-    props.valueFormat.replace(/yyyy/g, 'YYYY').replace(/dd/g, 'DD')
-  )
+  const dayjsFormat = computed(() => valueFmt.value.replace(/yyyy/g, 'YYYY').replace(/dd/g, 'DD'))
   // Satrni `value-format` bo'yicha o'qish (customParseFormat plaginisiz).
   const parseFormatted = (str) => {
-    const fmt = props.valueFormat
+    const fmt = valueFmt.value
     const tokens = []
     const re = new RegExp(
       '^' +
@@ -150,15 +162,20 @@
     const arr = Array.isArray(v) ? v : [v, v]
     if (arr[0] == null || arr[1] == null || arr[0] === '' || arr[1] === '') return null
     const d = arr.map(toDay)
-    return d[0].isValid() && d[1].isValid() ? d.map((x) => x.startOf('day')) : null
+    if (!d[0].isValid() || !d[1].isValid()) return null
+    return d.map((x) => x.startOf(isMonth.value ? 'month' : 'day'))
   })
   const hasValue = computed(() => !!range.value)
   const from = computed(() => range.value?.[0] ?? null)
   const to = computed(() => range.value?.[1] ?? null)
-  // Chiqish shakli: hozirgi qiymat massiv bo'lsa massiv; bo'sh bo'lsa — rejimdan (davr → massiv, kun → son/satr).
-  const outArray = computed(() => (rawValue.value == null || rawValue.value === '' ? !isDay.value : Array.isArray(rawValue.value)))
+  // Chiqish shakli: hozirgi qiymat massiv bo'lsa massiv; bo'sh bo'lsa — rejimdan (davr → massiv, kun / oy → son/satr).
+  const outArray = computed(() =>
+    rawValue.value == null || rawValue.value === '' ? mode.value === 'period' : Array.isArray(rawValue.value)
+  )
 
   const fmtShort = (d) => d.format('DD.MM')
+  // Oy rejimi: «Noyabr 2026».
+  const fmtMonth = (d) => `${t(`month.${MONTH_KEYS[d.month()]}`)} ${d.year()}`
   const fmtFull = (d) => d.format('DD.MM.YYYY')
   const rangeHint = (a, b) => (a.isSame(b, 'day') ? fmtShort(a) : `${fmtShort(a)} – ${fmtShort(b)}`)
   // Davr uzunligi (ikkala chet ham kiradi): «7 kun».
@@ -177,7 +194,8 @@
     return presets.value
       .map((p) => {
         const [a, b] = p.range()
-        return { key: p.key, label: t(`dayPicker.${p.key}`), hint: rangeHint(a, b), id: `${a.valueOf()}-${b.valueOf()}`, off: isDisabled(a) }
+        const hint = isMonth.value ? fmtMonth(a) : rangeHint(a, b)
+        return { key: p.key, label: t(`dayPicker.${p.key}`), hint, id: `${a.valueOf()}-${b.valueOf()}`, off: isDisabled(a) }
       })
       .filter((r) => {
         if (r.off || seen.has(r.id)) return false
@@ -200,6 +218,7 @@
   // davr → «23.11 – 29.11» + kulrang «7 kun» (yil faqat joriy yil bo'lmasa: «20.12.2025 – 05.01.2026»).
   const fieldMain = computed(() => {
     if (!hasValue.value) return ''
+    if (isMonth.value) return fmtMonth(from.value)
     if (from.value.isSame(to.value, 'day')) return fmtFull(from.value)
     const thisYear = today().year()
     const fmt = from.value.year() === thisYear && to.value.year() === thisYear ? fmtShort : fmtFull
@@ -207,10 +226,14 @@
   })
   const fieldSub = computed(() => (hasValue.value && !from.value.isSame(to.value, 'day') ? dayCount(from.value, to.value) : ''))
   // «Kun / Davr tanlash» tugmasi ostidagi sana — faqat ixtiyoriy (tez tanlashda yo'q) qiymat bo'lsa.
-  const customHint = computed(() => (hasValue.value && !presetKey.value ? rangeHint(from.value, to.value) : ''))
+  const customHint = computed(() => {
+    if (!hasValue.value || presetKey.value) return ''
+    return isMonth.value ? fmtMonth(from.value) : rangeHint(from.value, to.value)
+  })
 
   const emitRange = (a, b) => {
-    const [s, e] = (a.isAfter(b) ? [b, a] : [a, b]).map((x) => x.startOf('day'))
+    const unit = isMonth.value ? 'month' : 'day'
+    const [s, e] = (a.isAfter(b) ? [b, a] : [a, b]).map((x) => x.startOf(unit))
     const ts = [s.valueOf(), e.valueOf()]
     const fm = [s.format(dayjsFormat.value), e.format(dayjsFormat.value)]
     emit('update:value', outArray.value ? ts : ts[0])
@@ -248,6 +271,7 @@
   // Bo'sh maydon matni: berilgani, aks holda davr uchun «Boshlanish – Tugash», bo'lmasa umumiy.
   const placeholderText = computed(() => {
     if (props.placeholder) return props.placeholder
+    if (isMonth.value) return t('dayPicker.monthPlaceholder')
     if (!isDay.value && props.startPlaceholder && props.endPlaceholder) return `${props.startPlaceholder} – ${props.endPlaceholder}`
     return t('dayPicker.placeholder')
   })
@@ -259,7 +283,8 @@
     if (!v && pickStart.value) emitRange(pickStart.value, pickStart.value)
     if (v) {
       view.value = (from.value ?? (props.defaultCalendarStartTime != null ? dayjs(props.defaultCalendarStartTime) : today())).startOf('month')
-      calView.value = 'days'
+      // Oy rejimida kalendar — darhol oylar to'ri.
+      calView.value = baseView.value
       // Ixtiyoriy qiymat tanlangan bo'lsa — to'g'ri kalendarga; aks holda tez tanlash.
       page.value = hasValue.value && !presetKey.value ? 'calendar' : 'quick'
       quickAnimKey.value++
@@ -285,6 +310,9 @@
     show.value = false
   }
 
+  // Kalendarning asosiy ko'rinishi: kun / davr — kunlar, oy — oylar.
+  const baseView = computed(() => (isMonth.value ? 'months' : 'days'))
+
   // `maxDate` dan keyingi oy / yilga o'tib bo'lmaydi — u yerda hamma kun yopiq bo'lardi.
   // Ko'rinish bo'yicha qadam: kunlar → 1 oy, oylar → 1 yil, yillar → 12 yil.
   const stepOf = () => (calView.value === 'days' ? [1, 'month'] : calView.value === 'months' ? [1, 'year'] : [12, 'year'])
@@ -302,7 +330,12 @@
     view.value = view.value.add(dir * n, unit)
   }
   // Sarlavha bosilganda bir pog'ona yuqoriga: kunlar → oylar → yillar (yillardan — kunlarga qaytadi).
+  // Oy rejimida: oylar ⇄ yillar.
   const onTitle = () => {
+    if (isMonth.value) {
+      calView.value = calView.value === 'months' ? 'years' : 'months'
+      return
+    }
     calView.value = calView.value === 'days' ? 'months' : calView.value === 'months' ? 'years' : 'days'
   }
   const years = computed(() => Array.from({ length: 12 }, (_, i) => yearBlockStart.value + i))
@@ -316,6 +349,13 @@
   const isMonthDisabled = (m) => isDisabled(view.value.month(m).startOf('month'))
   const onMonth = (m) => {
     if (isMonthDisabled(m)) return
+    // Oy rejimi: bitta bosish — tanlandi va yopiladi.
+    if (isMonth.value) {
+      const d = view.value.month(m).startOf('month')
+      emitRange(d, d)
+      show.value = false
+      return
+    }
     monthDir.value = m >= view.value.month() ? 'next' : 'prev'
     view.value = view.value.month(m).startOf('month')
     calView.value = 'days'
@@ -402,6 +442,10 @@
   }
   const weekNames = computed(() => WEEK_KEYS.map((k) => t(`shortWeek.${k}`)))
   const monthNames = computed(() => MONTH_KEYS.map((k) => t(`month.${k}`)))
+  // Oylar to'rida belgilanadigan oy: oy rejimida — tanlangan oy (shu yilda bo'lsa), aks holda ko'rinib turgan oy.
+  const isMonthCurrent = (i) =>
+    isMonth.value ? !!from.value && from.value.year() === view.value.year() && from.value.month() === i : view.value.month() === i
+  const isThisMonth = (i) => isMonth.value && view.value.year() === today().year() && today().month() === i
 
   const days = computed(() => {
     const first = weekStart(view.value)
@@ -573,7 +617,7 @@
             >
               <span class="udp-tile-label">
                 <n-icon :size="15"><CalendarLtr16Regular /></n-icon>
-                {{ isDay ? $t('dayPicker.pickDay') : $t('dayPicker.period') }}
+                {{ isDay ? $t('dayPicker.pickDay') : isMonth ? $t('dayPicker.pickMonth') : $t('dayPicker.period') }}
               </span>
               <span v-if="customHint" class="udp-tile-hint">{{ customHint }}</span>
             </button>
@@ -595,7 +639,7 @@
               </button>
               <button type="button" class="udp-title" @click="onTitle">
                 {{ title }}
-                <n-icon :size="12" :class="{ 'rotate-180': calView !== 'days' }"><ChevronDown16Regular /></n-icon>
+                <n-icon :size="12" :class="{ 'rotate-180': calView !== baseView }"><ChevronDown16Regular /></n-icon>
               </button>
             </div>
             <div class="flex items-center gap-0.5">
@@ -641,7 +685,7 @@
                 :key="m"
                 type="button"
                 class="udp-month"
-                :class="{ 'is-current': view.month() === i }"
+                :class="{ 'is-current': isMonthCurrent(i), 'is-this-year': isThisMonth(i) }"
                 :disabled="isMonthDisabled(i)"
                 @click="onMonth(i)"
               >
@@ -899,12 +943,13 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: 14px;
-    font-weight: 600;
+    /* Oddiy qalinlik (uchala rejimda) — qalin yozuv tugmalarni og'irlashtirardi. */
+    font-weight: 400;
   }
   .udp-tile-hint {
     color: var(--textColor3);
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 400;
     font-variant-numeric: tabular-nums;
   }
   /* «Kun / Davr tanlash» — kalendarni ochuvchi amal: belgisi bilan, chiziqli hoshiya, ko'k matn. */

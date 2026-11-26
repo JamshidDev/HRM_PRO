@@ -8302,6 +8302,9 @@
     "thisMonth": "This month",
     "lastMonth": "Last month",
     "last7": "Last 7 days",
-    "last30": "Last 30 days"
+    "last30": "Last 30 days",
+    "nextMonth": "Next month",
+    "pickMonth": "Pick a month",
+    "monthPlaceholder": "Select month"
   }
 }

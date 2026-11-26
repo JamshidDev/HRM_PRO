@@ -8366,6 +8366,9 @@
     "thisMonth": "Usı ay",
     "lastMonth": "Ótken ay",
     "last7": "Aqırǵı 7 kún",
-    "last30": "Aqırǵı 30 kún"
+    "last30": "Aqırǵı 30 kún",
+    "nextMonth": "Keyingi ay",
+    "pickMonth": "Ay saylaw",
+    "monthPlaceholder": "Aydı saylań"
   }
 }

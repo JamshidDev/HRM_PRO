@@ -610,13 +610,13 @@
             <label class="text-xs text-textColor3 mb-1 block">
               {{ $t('workerReport.fromMonth') }}
             </label>
-            <n-date-picker v-model:value="d2.from" type="month" clearable class="w-full" />
+            <UIDayPicker v-model:value="d2.from" mode="month" clearable />
           </div>
           <div>
             <label class="text-xs text-textColor3 mb-1 block">
               {{ $t('workerReport.toMonth') }}
             </label>
-            <n-date-picker v-model:value="d2.to" type="month" clearable class="w-full" />
+            <UIDayPicker v-model:value="d2.to" mode="month" clearable />
           </div>
         </div>
         <div>

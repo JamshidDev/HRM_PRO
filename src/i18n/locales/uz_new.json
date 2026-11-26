@@ -8498,6 +8498,9 @@
     "thisMonth": "Şu oy",
     "lastMonth": "Ötgan oy",
     "last7": "Oxirgi 7 kun",
-    "last30": "Oxirgi 30 kun"
+    "last30": "Oxirgi 30 kun",
+    "nextMonth": "Keyingi oy",
+    "pickMonth": "Oy tanlaş",
+    "monthPlaceholder": "Oyni tanlang"
   }
 }
