@@ -9,7 +9,8 @@
     DocumentCheckmark20Regular,
     Attach20Regular,
     People20Regular,
-    ArrowUndo20Regular
+    ArrowUndo20Regular,
+    LockClosed20Regular
   } from '@vicons/fluent'
   import { useMediaQuery } from '@vueuse/core'
   import { useAppBreakpoints } from '@/composables/useBreakpoint.js'
@@ -114,8 +115,15 @@
       })[store.model] ?? null
   )
   const hasDataTab = computed(() => isCommand.value || !!dataTabKind.value)
+  // «Ma'lumotlar» faqat HR (o'qish ruxsati) uchun — imzolovchida qulf, forma so'ralmaydi.
+  const DATA_READ = {
+    [Utils.documentModels.command]: accountStore.pn.hrCommandsRead,
+    [Utils.documentModels.contract]: accountStore.pn.hrContractsRead,
+    [Utils.documentModels.adContract]: accountStore.pn.hrContractAdditionalRead
+  }
+  const canViewData = computed(() => accountStore.checkPermission(DATA_READ[store.model]))
   const activeTab = computed({
-    get: () => store.centerTab,
+    get: () => (canViewData.value ? store.centerTab : 'document'),
     set: (v) => (store.centerTab = v)
   })
   // «Ma'lumotlar»ga o'tishda chapga, «Hujjat»ga qaytishda o'ngga suriladi.
@@ -124,7 +132,12 @@
   )
   const tabs = computed(() => [
     { id: 'document', name: t('documentPage.command.dataTab.tabDocument') },
-    { id: 'data', name: t('documentPage.command.dataTab.tabData') }
+    {
+      id: 'data',
+      name: t('documentPage.command.dataTab.tabData'),
+      icon: canViewData.value ? undefined : LockClosed20Regular,
+      disabled: !canViewData.value
+    }
   ])
 
   // Qayta rasmiylashtirilgach — hujjat yangi PDF bilan qayta ochiladi.
@@ -748,7 +761,7 @@
             <div class="flex-1 min-w-0 h-full flex flex-col relative overflow-hidden">
               <Transition :name="tabTransition" mode="out-in">
                 <div
-                  v-if="hasDataTab && activeTab === 'data'"
+                  v-if="hasDataTab && canViewData && activeTab === 'data'"
                   key="data"
                   class="h-full flex flex-col"
                 >
