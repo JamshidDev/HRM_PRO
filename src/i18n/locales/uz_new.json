@@ -5997,6 +5997,8 @@
     "name": "Tinglovçilar"
   },
   "navigation": {
+    "structureGroup": "Tuzilma",
+    "management": "Boshqaruv",
     "hrm": "Kadrlar boşqaruvi",
     "docFlow": "Hujjat aylanişi",
     "myOrg": "Kadr boşqaruvi",

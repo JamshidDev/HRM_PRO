@@ -5997,6 +5997,8 @@
     "name": "Tinglovchilar"
   },
   "navigation": {
+    "structureGroup": "Tuzilma",
+    "management": "Boshqaruv",
     "hrm": "Kadrlar boshqaruvi",
     "docFlow": "Hujjat aylanishi",
     "myOrg": "Kadr boshqaruvi",

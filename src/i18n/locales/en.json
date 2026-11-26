@@ -5952,6 +5952,8 @@
     "name": "Listeners"
   },
   "navigation": {
+    "structureGroup": "Structure",
+    "management": "Management",
     "hrm": "HR Management",
     "docFlow": "Document Flow",
     "myOrg": "HR Management",
