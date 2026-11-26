@@ -328,14 +328,14 @@
   .ui-select-seg {
     display: inline-flex;
     flex-shrink: 0;
-    height: 34px;
-    padding: 3px;
+    height: 30px;
+    padding: 2px;
     border-radius: 9999px;
     background: var(--surface-ground);
   }
 
   .ui-select-seg button {
-    padding: 0 12px;
+    padding: 0 10px;
     border-radius: 9999px;
     font-size: 12px;
     font-weight: 500;
@@ -349,5 +349,16 @@
     color: var(--textColor0);
     background: var(--surface-section);
     box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+  }
+
+  /* Qorong'ida trek va faol tugma bir xil qora edi — tanlangani sezilmasdi. */
+  :global([data-theme='dark'] .ui-select-seg) {
+    background: #2a2a2e;
+    border: 1px solid #3f3f46;
+  }
+
+  :global([data-theme='dark'] .ui-select-seg button.ui-select-seg--on) {
+    color: #fff;
+    background: #46464f;
   }
 </style>
