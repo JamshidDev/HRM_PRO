@@ -812,6 +812,8 @@
     "createTitle": "Role qo'shish",
     "updateTitle": "Role tahrirlash",
     "form": {
+      "mobileTab": "Mobil",
+      "mobileServices": "Mobil ilova xizmatlari (Turniketlar)",
       "name": "Role nomi",
       "permissions": "Permission",
       "moduleAccess": "Modul ruxsati",

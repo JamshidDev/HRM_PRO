@@ -799,6 +799,8 @@
     "createTitle": "Добавить роль",
     "updateTitle": "Редактировать роль",
     "form": {
+      "mobileTab": "Мобильное",
+      "mobileServices": "Сервисы мобильного приложения (Турникеты)",
       "name": "Название роли",
       "permissions": "Права",
       "moduleAccess": "Доступ к модулю",
