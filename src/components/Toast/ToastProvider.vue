@@ -24,13 +24,36 @@
     warning: 'notice',
     info: 'notice'
   }
+  // Ekranda turgan toastlar (tur + matn → instance). Bir vaqtda ketgan bir nechta so'rov bir xil xato
+  // qaytarsa (masalan, xodim profili: xodim + pasport + xorijiy pasport), bir xil toast 2–3 marta
+  // chiqardi — endi xuddi shu matnli toast ko'rinib turganda yangisi (va ovozi) chiqmaydi.
+  // `$Alert` ham shunday ishlaydi (alertDialog.js `key`).
+  const openToasts = new Map()
+
   Object.entries(soundByMessageType).forEach(([type, sound]) => {
     const original = message[type].bind(message)
-    message[type] = (...args) => {
+    message[type] = (content, options = {}) => {
+      const key = typeof content === 'string' ? `${type}|${content}` : null
+      if (key && openToasts.has(key)) return openToasts.get(key)
+
       if (appStore.soundEnabled) {
         notificationSound.play(sound)
       }
-      return original(...args)
+      if (!key) return original(content, options)
+
+      const forget = () => openToasts.delete(key)
+      const instance = original(content, {
+        ...options,
+        onAfterLeave: () => {
+          forget()
+          options?.onAfterLeave?.()
+        }
+      })
+      openToasts.set(key, instance)
+      // Zaxira: onAfterLeave biror sababdan chaqirilmasa ham matn «abadiy bloklanib» qolmasin.
+      const duration = options?.duration ?? 3000
+      if (duration > 0) setTimeout(() => openToasts.get(key) === instance && forget(), duration + 1500)
+      return instance
     }
   })
 
