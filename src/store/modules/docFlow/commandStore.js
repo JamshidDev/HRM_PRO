@@ -572,16 +572,9 @@ const commandStoreOptions = {
     },
     _index() {
       this.loading = true
-      // `created` (UIDayPicker): kun rejimida son (ms), davr rejimida [boshlanish, tugash]. Bitta kun — eski `created` param bilan.
-      const c = this.params.created
-      const [createdFrom, createdTo] = Array.isArray(c) ? c : c != null ? [c, c] : []
       const params = {
         ...this.params,
-        created: createdFrom != null && createdFrom === createdTo ? Utils.timeToZone(createdFrom) : undefined,
-        // BACKEND: davr bo'yicha filtr (`created_from` / `created_to`) hali yo'q —
-        // docs/api/command-date-range.md (umumiy ro'yxat: docs/api/date-range-filters.md). Hozir filtr «Kun» rejimida.
-        created_from: Utils.timeToZone(createdFrom) ?? undefined,
-        created_to: Utils.timeToZone(createdTo) ?? undefined,
+        ...Utils.dateRangeParams(this.params.created),
         organizations: this.params.organizations.map((v) => v.id).toString() || undefined
       }
       $ApiService.commandService

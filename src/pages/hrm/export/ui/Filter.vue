@@ -84,7 +84,7 @@
       />
       <label class="mt-3 text-xs text-gray-500 mb-1 font-medium">{{ $t('content.created') }}</label>
       <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek, store o'zgarmaydi. -->
-      <UIDayPicker v-model:value="store.params.created" mode="day" clearable @update:value="filterEvent" />
+      <UIDayPicker v-model:value="store.params.created" mode="period" clearable @update:value="filterEvent" />
     </template>
   </UIPageFilter>
 </template>

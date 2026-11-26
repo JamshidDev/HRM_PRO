@@ -33,8 +33,7 @@ export const useCongratulationStore = defineStore('congratulationStore', {
            this.loading = true
            const params = {
                ...this.params,
-               // BACKEND: davr filtri uchun date_from / date_to kerak — docs/api/date-range-filters.md (hozir faqat bitta kun).
-               date: Utils.timeToZone(this.params.date),
+               ...Utils.dateRangeParams(this.params.date, 'date'),
            }
            $ApiService.congratulationService._index({params}).then((res) => {
                this.list = res.data.data.data

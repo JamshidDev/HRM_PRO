@@ -60,7 +60,7 @@ const onShow = (v) =>{
       />
       <label class="mt-3 text-xs text-gray-500">{{ $t('content.date') }}</label>
       <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek, store o'zgarmaydi. -->
-      <UIDayPicker class="mt-1" v-model:value="store.params.date" mode="day" clearable @update:value="filterEvent" />
+      <UIDayPicker class="mt-1" v-model:value="store.params.date" mode="period" clearable @update:value="filterEvent" />
     </template>
   </UIPageFilter>
 </template>
