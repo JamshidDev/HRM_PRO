@@ -12,6 +12,7 @@
   import { useAccountStore, useApplicationStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
   import Utils from '@/utils/Utils.js'
+  import { applicationStatus } from '@/utils/applicationStatus.js'
   import { Add16Regular, ArrowDownload20Regular, Eye16Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
@@ -34,16 +35,6 @@
     row?.confirmation?.id !== 3
       ? t('applicationCommand.needApproved')
       : t('applicationCommand.typeNotSupported')
-
-  // HR holati (worker_applications.status): 0 yangi, 1 kelishuvchilarga yo'naltirilgan, 2 HR yopgan.
-  const checkingStatus = computed(() => ({
-    // 14 = «Yangi» (ko'k) — «Holati» ustunidagi sariq «Jarayonda» bilan bir xil bo'lmasin.
-    0: { id: 14, name: t('applicationPage.hrCheck.new') },
-    1: { id: 3, name: t('applicationPage.hrCheck.forwarded') },
-    2: { id: 4, name: t('applicationPage.hrCheck.closed') }
-  }))
-  // Rahbar imzolagan ariza — HR uchun ko'rib chiqilgan (yashil).
-  const closedApproved = computed(() => ({ id: 3, name: t('applicationPage.hrCheck.done') }))
 
   const onOpenFile = (v) => {
     emits('openOffice', v)
@@ -97,13 +88,8 @@
     },
     {
       key: 'status',
-      title: t('content.checkLabel'),
-      width: 120
-    },
-    {
-      key: 'confirmation',
       title: t('content.status'),
-      width: 120
+      width: 130
     },
     {
       key: 'command',
@@ -182,11 +168,7 @@
     </template>
 
     <template #cell-status="{ row }">
-      <UIStatus :status="row?.confirmation?.id === 3 ? closedApproved : checkingStatus[Number(row?.status)]" />
-    </template>
-
-    <template #cell-confirmation="{ row }">
-      <UIStatus :status="row.confirmation" />
+      <UIStatus :status="applicationStatus(row)" />
     </template>
 
     <template #cell-command="{ row }">

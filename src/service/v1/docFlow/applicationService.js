@@ -62,6 +62,10 @@ const _approverOptions = async (payload) => {
 const _route = async (payload) => {
   return await axios.get(`/v1/hr/applications/${payload.id}/route`)
 }
+// Oxirgi qaytarishgacha bo'lgan marshrut — qayta yuborishda oldindan tanlanadi.
+const _previousRoute = async (payload) => {
+  return await axios.get(`/v1/hr/applications/${payload.id}/previous-route`)
+}
 const _updateRoute = async (payload) => {
   return await axios.put(`/v1/hr/applications/${payload.id}/approvers`, payload.data)
 }
@@ -96,6 +100,7 @@ export default {
   _signStart,
   _approverOptions,
   _route,
+  _previousRoute,
   _updateRoute,
   _forward,
   _returnToOwner,

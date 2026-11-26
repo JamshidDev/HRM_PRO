@@ -66,6 +66,10 @@
     filter-placement="bottom-end"
     :popover-style="{ width: '560px', maxWidth: 'calc(100vw - 32px)', padding: '0', borderRadius: '20px' }"
   >
+    <!-- Qidiruvdan keyin, bir qatorda (sahifadan holat tablari) -->
+    <template #filterSearch>
+      <slot name="afterSearch" />
+    </template>
     <template #filterContent>
       <div class="ui-filter-grid grid grid-cols-12 gap-x-5 gap-y-4">
         <!-- 3 ta filtr: korxona butun kenglikda, qolgan ikkitasi yonma-yon. -->

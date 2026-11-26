@@ -210,6 +210,23 @@
       class="flex flex-col mx-auto overflow-y-auto relative pb-8 max-md:max-w-full"
       :style="{ height: container ? `calc(100vh - 50px)` : '100%' }"
     >
+      <!-- PDF yuklanguncha A4 sahifa skeleti -->
+      <div v-if="store.pdfRendering" class="pdf-skeleton" aria-busy="true">
+        <div class="pdf-skeleton__head">
+          <span class="pdf-skel w-[38%]"></span>
+          <span class="pdf-skel w-[30%]"></span>
+          <span class="pdf-skel w-[34%]"></span>
+        </div>
+        <span class="pdf-skel pdf-skel--title"></span>
+        <span class="pdf-skel w-[46%] mx-auto"></span>
+        <div class="pdf-skeleton__body">
+          <span v-for="i in 9" :key="i" class="pdf-skel" :class="i % 4 === 0 ? 'w-[62%]' : 'w-full'"></span>
+        </div>
+        <div class="pdf-skeleton__sign">
+          <span class="pdf-skel w-[28%]"></span>
+          <span class="pdf-skel w-[18%]"></span>
+        </div>
+      </div>
       <div ref="pagesRef" class="relative">
         <div v-for="idx in store.totalPdfPage" :key="idx" :ref="(el) => setPageRef(el, idx - 1)">
           <!-- Mobil'da sahifa ekran kengligiga sig'adi (gorizontal skrolsiz); desktop'da
@@ -238,3 +255,82 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+  .pdf-skeleton {
+    --skel-page: #ffffff;
+    --skel-border: var(--surface-line);
+    --skel-bar: #eceef2;
+    --skel-shine: #f6f7f9;
+    /* Ota blok kontentga qarab kengayadi — foizli kenglik 0 bo'lib qolardi */
+    width: 760px;
+    max-width: calc(100vw - 32px);
+    aspect-ratio: 210 / 297;
+    margin: 0 auto;
+    padding: 9% 9%;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: var(--skel-page);
+    border: 1px solid var(--skel-border);
+    border-radius: 4px;
+  }
+
+  :root[data-theme='dark'] .pdf-skeleton {
+    --skel-page: #18181b;
+    --skel-border: #2f2f35;
+    --skel-bar: #27272c;
+    --skel-shine: #34343a;
+  }
+
+  .pdf-skeleton__head {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .pdf-skeleton__body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .pdf-skeleton__sign {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+  }
+
+  .pdf-skel {
+    display: block;
+    height: 12px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, var(--skel-bar) 25%, var(--skel-shine) 50%, var(--skel-bar) 75%);
+    background-size: 200% 100%;
+    animation: pdf-skel-shimmer 1.4s ease-in-out infinite;
+  }
+
+  .pdf-skel--title {
+    width: 22%;
+    height: 18px;
+    margin: 10px auto 0;
+  }
+
+  @keyframes pdf-skel-shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pdf-skel {
+      animation: none;
+    }
+  }
+</style>

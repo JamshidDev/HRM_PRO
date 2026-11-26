@@ -9,7 +9,8 @@
     DocumentCheckmark20Regular,
     Attach20Regular,
     People20Regular,
-    ArrowUndo20Regular
+    ArrowUndo20Regular,
+    LockClosed20Regular
   } from '@vicons/fluent'
   import { useMediaQuery } from '@vueuse/core'
   import { useAppBreakpoints } from '@/composables/useBreakpoint.js'
@@ -114,8 +115,15 @@
       })[store.model] ?? null
   )
   const hasDataTab = computed(() => isCommand.value || !!dataTabKind.value)
+  // «Ma'lumotlar» faqat HR (o'qish ruxsati) uchun — imzolovchida qulf, forma so'ralmaydi.
+  const DATA_READ = {
+    [Utils.documentModels.command]: accountStore.pn.hrCommandsRead,
+    [Utils.documentModels.contract]: accountStore.pn.hrContractsRead,
+    [Utils.documentModels.adContract]: accountStore.pn.hrContractAdditionalRead
+  }
+  const canViewData = computed(() => accountStore.checkPermission(DATA_READ[store.model]))
   const activeTab = computed({
-    get: () => store.centerTab,
+    get: () => (canViewData.value ? store.centerTab : 'document'),
     set: (v) => (store.centerTab = v)
   })
   // «Ma'lumotlar»ga o'tishda chapga, «Hujjat»ga qaytishda o'ngga suriladi.
@@ -124,7 +132,12 @@
   )
   const tabs = computed(() => [
     { id: 'document', name: t('documentPage.command.dataTab.tabDocument') },
-    { id: 'data', name: t('documentPage.command.dataTab.tabData') }
+    {
+      id: 'data',
+      name: t('documentPage.command.dataTab.tabData'),
+      icon: canViewData.value ? undefined : LockClosed20Regular,
+      disabled: !canViewData.value
+    }
   ])
 
   // Qayta rasmiylashtirilgach — hujjat yangi PDF bilan qayta ochiladi.
@@ -292,18 +305,10 @@
     return null
   })
   const showConfirmButtons = computed(() => hrStage.value !== null)
-  // Kelishuvchi yoki rahbar tasdiqlagan bo'lsa, rad etilmaguncha HR yopa olmaydi.
-  const approverSigned = computed(() =>
-    store.confirmations?.some(
-      (c) => c.status?.id === 3 && (c.type === 'd' || (c.type === 's' && c.order >= 3))
-    )
-  )
-  const canClose = computed(
-    () =>
-      (hrStage.value === 'legacy' && (docConfirmation.value === 4 || !approverSigned.value)) ||
-      (hrStage.value === 'new' && !hrSigned.value) ||
-      (hrStage.value === 'process' && !approverSigned.value)
-  )
+  // HR rahbar tasdiqlamaguncha istalgan vaqt rad etadi (kelishuvchi roziligi to'smaydi).
+  const canClose = computed(() => hrStage.value !== null && docConfirmation.value !== 3)
+  // Qaytarish — Tekshiruv yoki Jarayonda (rahbar tasdiqlamaguncha).
+  const canReturn = computed(() => ['new', 'process'].includes(hrStage.value))
   const hrPanelTitle = computed(
     () =>
       ({
@@ -503,7 +508,7 @@
   // HR imzolaydi (imzolagan bo'lsa o'tkazib yuboriladi), so'ng kelishuvchilar modali ochiladi.
   const onHrSign = () => {
     applicationStore._signStart(store.document_id, (res) => {
-      if (res.signed) return applicationStore.openForward(res.director)
+      if (res.signed) return applicationStore._openForwardWithPrevious(store.document_id, res.director)
       signatureStore.confirmationId = res.confirmation_id
       signatureStore.documentType = store.model
       signatureStore._signatureDocument(
@@ -513,7 +518,7 @@
           signatureStore.visible = false
           notify.success(t('documentPage.signature.confirmedNotification'))
           getDocument(store.document_id, store.model)
-          applicationStore.openForward(res.director)
+          applicationStore._openForwardWithPrevious(store.document_id, res.director)
         }
       )
     })
@@ -748,7 +753,7 @@
             <div class="flex-1 min-w-0 h-full flex flex-col relative overflow-hidden">
               <Transition :name="tabTransition" mode="out-in">
                 <div
-                  v-if="hasDataTab && activeTab === 'data'"
+                  v-if="hasDataTab && canViewData && activeTab === 'data'"
                   key="data"
                   class="h-full flex flex-col"
                 >
@@ -984,9 +989,9 @@
                           </div>
                         </div>
                         <div class="flex items-center gap-1.5 shrink-0">
-                          <!-- Yo'naltirilmagan ariza — xodimga tuzatish uchun qaytarish. -->
+                          <!-- Xodimga tuzatish uchun qaytarish — rahbar tasdiqlamaguncha. -->
                           <n-button
-                            v-if="hrStage === 'new'"
+                            v-if="canReturn"
                             type="warning"
                             secondary
                             round

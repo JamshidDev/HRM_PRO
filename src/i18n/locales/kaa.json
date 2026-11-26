@@ -1924,6 +1924,11 @@
         "Process": "Processte"
       },
       "approval": {
+        "extra": {
+          "cancelledSigns": "{n} qol biykar etildi — qayta qol qoyıladı",
+          "snapshot": "Qaytarıwǵa shekemgi nusqa",
+          "resubmitted": "Dúzetilgennen keyin qayta jiberildi"
+        },
         "title": "Qol qoyıw procesi",
         "signers": "Kelisiwshiler",
         "history": "Háreketler tariyxı",
@@ -1969,6 +1974,11 @@
           "resent": "{count} adamǵa qayta jiberildi"
         },
         "verbs": {
+          "route_created": "arzanı jarattı",
+          "route_edited": "arzanı ózgertti",
+          "route_submitted": "tastıyıqlap jiberdi",
+          "route_returned": "dúzetiw ushın qaytardı",
+          "route_approved": "tastıyıqladı — arza kúshke kirdi",
           "submitted": "tastıyıqladı — arza kadrlar bólimine jiberildi",
           "created": "arzanı jarattı (qaralama)",
           "sent": "— qol qoyıwǵa jiberildi",
@@ -1984,6 +1994,11 @@
           "route_closed": "arzanı japtı"
         },
         "badges": {
+          "route_created": "Jaratıldı",
+          "route_edited": "Ózgertildi",
+          "route_submitted": "Jiberildi",
+          "route_returned": "Qaytarıldı",
+          "route_approved": "Tastıyıqlandı",
           "submitted": "Tastıyıqladı",
           "created": "Jarattı",
           "sent": "Jiberildi",
@@ -2255,14 +2270,22 @@
   },
   "confirmationPage": {
     "name": "Kelisiwshiler",
-    "createTitle": "Tastıyıqlawshı qosıw",
-    "updateTitle": "Tastıyıqlawshını ózgertiw",
+    "createTitle": "Kelisiwshi qosıw",
+    "updateTitle": "Kelisiwshini ózgertiw",
     "table": {
       "worker": "Xızmetker",
       "full_position": "Lawazımnıń tolıq atı (Shólkem atı menen tolıq atı)",
       "level": "Túri",
-      "position": "Lawazım"
-    }
+      "position": "Lawazım",
+      "docFullPosition": "Tolıq lawazım"
+    },
+    "docFullPositionPlaceholder": "Mısalı: Samarqand temir jol aralıǵı filialı baslıǵı",
+    "docFullPositionHint": "Arza hám bildirgilerde usı tekst shıǵadı: basshı ushın sarlawhada atınan aldın, kelisiwshi ushın qol qatarında. Bos qalsa — qısqa lawazım (basshı ushın avtomat jıynalǵan tekst).",
+    "positionHint": "Qısqa lawazım: buyrıq, shártnama, qosımsha kelisim hám basqa hújjetlerde qol qoyıwshı janında hám kelisim dizimlerinde shıǵadı.",
+    "main": "Tiykarǵı",
+    "mainLabel": "Tiykarǵı basshı",
+    "mainHint": "Xızmetkerler arzası usı basshı atına jazıladı. Kárxanada tek bir tiykarǵı basshı boladı — basqasın tiykarǵı etseńiz, aldıńǵısınan belgi alınadı.",
+    "makeMain": "Tiykarǵı etiw"
   },
   "contractPage": {
     "edit": {
@@ -3548,8 +3571,8 @@
   "applicationPage": {
     "statuses": {
       "draft": "Qaralama",
-      "returned": "Qaytarıldı",
-      "checking": "Tekseriwde",
+      "returned": "Qaytarılǵan",
+      "checking": "Tekseriw",
       "process": "Processte",
       "rejected": "Biykarlanǵan",
       "approved": "Tastıyıqlanǵan"
@@ -3559,7 +3582,7 @@
     "returnTitle": "Arzanı dúzetiw ushın qaytarıw",
     "returnReason": "Qaytarıw sebebi",
     "returnPlaceholder": "Xızmetker neni dúzetiwi kerek?",
-    "returnHint": "Arza xızmetkerge qaralama bolıp qaytadı. Dúzetip, qayta tastıyıqlaǵannan keyin sizge keledi.",
+    "returnHint": "Arza xızmetkerge dúzetiw ushın qaytadı hám kelisiwshiler menen basshıǵa kórinbeydi. Xızmetker tastıyıqlaǵannan keyin qaytadan sizge keledi; qayta jibersez, barlıq kelisiwshiler qaytadan qol qoyadı.",
     "returnDone": "Arza xızmetkerge dúzetiw ushın qaytarıldı",
     "returnedTitle": "Arza dúzetiw ushın qaytarıldı",
     "returnedBy": "Qaytarǵan",
@@ -6928,6 +6951,7 @@
       "sourceNewHint": "Kartada jańa orın belgileń — ol turniket lokaciyaları dizimine de qosıladı.",
       "place": "Turniket lokaciyası",
       "placePlaceholder": "Atı boyınsha izleń",
+      "placeMaxHint": "Bir mártede kóbi menen {n} orın tańlanadı ({count}/{n})",
       "freeMode": "Erkin rejim",
       "freeModeHint": "Aymaq sheklewi joq — xızmetker qálegen jerden ótedi, tek koordinatası hám júz súwreti jazıladı.",
       "department": "Bólim",
@@ -8309,8 +8333,7 @@
     }
   },
   "seo": {
-    "loginTitle": "HRM PRO — kadrlar basqarıwı hám elektron hújjet aylanısı {'|'} Ózbekstan temir jolları",
-    "modulesLink": "HRM PRO modulleri hám múmkinshilikleri"
+    "loginTitle": "HRM PRO — kadrlar basqarıwı hám elektron hújjet aylanısı {'|'} Ózbekstan temir jolları"
   },
   "noticesPage": {
     "name": "Bildirgiler",

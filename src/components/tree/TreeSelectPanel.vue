@@ -91,13 +91,13 @@
   .tsp-head {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 10px 6px;
+    gap: 6px;
+    padding: 6px 6px 4px;
   }
 
   .tsp-search {
     flex: 1;
-    --n-height: 34px !important;
+    --n-height: 30px !important;
     --n-color: var(--surface-ground) !important;
     --n-border: 1px solid transparent !important;
   }
@@ -106,7 +106,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 0 12px 4px;
+    padding: 0 10px 2px;
     font-size: 12px;
     color: var(--textColor2);
   }
@@ -115,9 +115,9 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    height: 34px;
+    height: 28px;
     flex-shrink: 0;
-    padding: 0 10px;
+    padding: 0 8px;
   }
 
   .tsp-chip-enter-active,
@@ -166,7 +166,13 @@
 
   .tsp-body {
     overflow-y: auto;
-    padding: 2px 6px 8px;
+    padding: 0 4px 4px;
+  }
+
+  /* Qorong'ida qidiruv panel fonidan qoraroq «chuqur» bo'lib sezilmasdi. */
+  :global([data-theme='dark'] .tsp-search) {
+    --n-color: #2a2a2e !important;
+    --n-border: 1px solid #3f3f46 !important;
   }
 
   .tsp-empty {

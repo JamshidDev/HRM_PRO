@@ -1953,6 +1953,11 @@
         "Process": "Jarayonda"
       },
       "approval": {
+        "extra": {
+          "cancelledSigns": "{n} ta imzo bekor qilindi — qayta imzolanadi",
+          "snapshot": "Qaytarishgacha bo'lgan nusxa",
+          "resubmitted": "Tuzatilgandan keyin qayta yuborildi"
+        },
         "title": "Imzolash jarayoni",
         "signers": "Kelishuvchilar",
         "history": "Harakatlar tarixi",
@@ -1998,6 +2003,11 @@
           "resent": "{count} kishiga qayta yuborildi"
         },
         "verbs": {
+          "route_created": "arizani yaratdi",
+          "route_edited": "arizani tahrirladi",
+          "route_submitted": "tasdiqlab yubordi",
+          "route_returned": "tuzatish uchun qaytardi",
+          "route_approved": "tasdiqladi — ariza kuchga kirdi",
           "submitted": "tasdiqladi — ariza kadrlar bo'limiga yuborildi",
           "created": "arizani yaratdi (qoralama)",
           "sent": "— imzolashga yuborildi",
@@ -2013,6 +2023,11 @@
           "route_closed": "arizani yopdi"
         },
         "badges": {
+          "route_created": "Yaratildi",
+          "route_edited": "Tahrirlandi",
+          "route_submitted": "Yuborildi",
+          "route_returned": "Qaytarildi",
+          "route_approved": "Tasdiqlandi",
           "submitted": "Tasdiqladi",
           "created": "Yaratdi",
           "sent": "Yuborildi",
@@ -2284,14 +2299,22 @@
   },
   "confirmationPage": {
     "name": "Kelishuvchilar",
-    "createTitle": "Tasdiqlovchi qo'shish",
-    "updateTitle": "Tasdiqlovchini tahrirlash",
+    "createTitle": "Kelishuvchi qo'shish",
+    "updateTitle": "Kelishuvchini tahrirlash",
     "table": {
       "worker": "Xodim",
       "full_position": "Lavozim to'liq nomi (Tashkilot nomi bilan to'liq nomi)",
       "level": "Turi",
-      "position": "Lavozim"
-    }
+      "position": "Lavozim",
+      "docFullPosition": "To'liq lavozim"
+    },
+    "docFullPositionPlaceholder": "Masalan: Samarqand temir yo'l masofasi filiali boshlig'i",
+    "docFullPositionHint": "Ariza va bildirgilarda shu matn chiqadi: rahbar uchun sarlavhada ismidan oldin, kelishuvchi uchun imzo qatorida. Bo'sh qolsa — qisqa lavozim (rahbar uchun avtomatik yig'ilgan matn).",
+    "positionHint": "Qisqa lavozim: buyruq, shartnoma, qo'shimcha kelishuv va boshqa hujjatlarda imzo qo'yuvchi yonida hamda kelishuv ro'yxatlarida chiqadi.",
+    "main": "Asosiy",
+    "mainLabel": "Asosiy rahbar",
+    "mainHint": "Xodimlar arizasi shu rahbar nomiga yoziladi. Korxonada faqat bitta asosiy rahbar bo'ladi — boshqasini asosiy qilsangiz, avvalgisidan belgi olinadi.",
+    "makeMain": "Asosiy qilish"
   },
   "contractPage": {
     "edit": {
@@ -3680,8 +3703,8 @@
   "applicationPage": {
     "statuses": {
       "draft": "Qoralama",
-      "returned": "Qaytarildi",
-      "checking": "Tekshiruvda",
+      "returned": "Qaytarilgan",
+      "checking": "Tekshiruv",
       "process": "Jarayonda",
       "rejected": "Rad etilgan",
       "approved": "Tasdiqlangan"
@@ -3691,7 +3714,7 @@
     "returnTitle": "Arizani tuzatish uchun qaytarish",
     "returnReason": "Qaytarish sababi",
     "returnPlaceholder": "Xodim nimani tuzatishi kerak?",
-    "returnHint": "Ariza xodimga qoralama bo'lib qaytadi. Xodim tuzatib, qayta tasdiqlagach yana sizga keladi.",
+    "returnHint": "Ariza xodimga tuzatish uchun qaytadi va kelishuvchilar hamda rahbarga ko'rinmaydi. Xodim tasdiqlagach yana sizga keladi; qayta yuborsangiz, barcha kelishuvchilar qaytadan imzolaydi.",
     "returnDone": "Ariza xodimga tuzatish uchun qaytarildi",
     "returnedTitle": "Ariza tuzatish uchun qaytarildi",
     "returnedBy": "Qaytardi",
@@ -7060,6 +7083,7 @@
       "sourceNewHint": "Xaritada yangi joy belgilang — u turniket lokatsiyalari ro'yxatiga ham qo'shiladi.",
       "place": "Turniket lokatsiyasi",
       "placePlaceholder": "Nomi bo'yicha qidiring",
+      "placeMaxHint": "Bir martada ko'pi bilan {n} ta joy tanlanadi ({count}/{n})",
       "freeMode": "Erkin rejim",
       "freeModeHint": "Hudud cheklovi yo'q — xodim istalgan joydan o'tadi, faqat koordinatasi va yuz rasmi yoziladi.",
       "department": "Bo'lim",
@@ -8441,8 +8465,7 @@
     }
   },
   "seo": {
-    "loginTitle": "HRM PRO — kadrlar boshqaruvi va elektron hujjat aylanishi {'|'} O'zbekiston temir yo'llari",
-    "modulesLink": "HRM PRO modullari va imkoniyatlari"
+    "loginTitle": "HRM PRO — kadrlar boshqaruvi va elektron hujjat aylanishi {'|'} O'zbekiston temir yo'llari"
   },
   "noticesPage": {
     "name": "Bildirgilar",

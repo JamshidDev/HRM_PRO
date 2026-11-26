@@ -6,6 +6,8 @@ import { usePdfViewerStore } from '@/store/modules/index.js'
 export const useApplicationStore = defineStore('applicationStore', {
   state: () => ({
     list: [],
+    // Tab badge'lari: holatlar bo'yicha soni (backend `stage_counts`).
+    stageCounts: {},
     loading: false,
     saveLoading: false,
     deleteLoading: false,
@@ -104,6 +106,7 @@ export const useApplicationStore = defineStore('applicationStore', {
         .then((res) => {
           this.list = res.data.data.data
           this.totalItems = res.data.data.total
+          this.stageCounts = res.data.data.stage_counts ?? {}
         })
         .finally(() => {
           this.loading = false
@@ -175,6 +178,17 @@ export const useApplicationStore = defineStore('applicationStore', {
       this._viewers(true)
     },
     // Joriy marshrut (tahrir/qayta yuborish uchun) + rahbar → modal.
+    // Yangi yo'naltirish: qaytarilgan ariza bo'lsa — eski marshrut oldindan tanlanadi.
+    _openForwardWithPrevious(id, director) {
+      this.routeLoading = true
+      $ApiService.applicationService
+        ._previousRoute({ id })
+        .then((res) => this.openForward(director, 'forward', res.data.data))
+        .catch(() => this.openForward(director))
+        .finally(() => {
+          this.routeLoading = false
+        })
+    },
     _openRoute(id, action, director) {
       this.routeLoading = true
       $ApiService.applicationService

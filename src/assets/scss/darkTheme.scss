@@ -65,7 +65,61 @@
   --surface-line: #232323;
 
   .mini-content {
-    background: #000000;
+    background: linear-gradient(180deg, #121419 0%, #0a0b0e 55%, #050506 100%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  }
+
+  // Modul tugmalari: yorqin gradient ikona, hover'da chegara, tanlanganda ko'k-binafsha gradient.
+  .mini-content .main-menu-item {
+    border: 1px solid transparent;
+    transition:
+      background 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+
+    .n-icon svg :is(path, circle, rect, polygon, ellipse) {
+      fill: url(#sidebarIconDark);
+    }
+
+    &:hover:not(.active-mini-content) {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  .mini-content .active-mini-content {
+    background: linear-gradient(145deg, #1d4ed8 0%, #6d28d9 100%);
+    border-color: rgba(165, 180, 252, 0.35);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      0 4px 16px rgba(99, 102, 241, 0.35);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    .n-icon svg :is(path, circle, rect, polygon, ellipse) {
+      fill: #ffffff;
+    }
+  }
+
+  // Panel menyusi: rail bilan bir xil ikona gradienti, tanlangan qator ko'k-binafsha gradientda.
+  .item-icon .n-icon svg :is(path, circle, rect, polygon, ellipse) {
+    fill: url(#sidebarIconDark);
+  }
+
+  .active-panel-item-single {
+    background: linear-gradient(100deg, #1d4ed8 0%, #6d28d9 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.16),
+      0 4px 14px rgba(99, 102, 241, 0.28);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    .item-icon .n-icon svg {
+      filter: none;
+    }
+    .item-icon .n-icon svg :is(path, circle, rect, polygon, ellipse) {
+      fill: #ffffff;
+    }
   }
 }
 
@@ -169,4 +223,81 @@
   box-shadow:
     0 0 0 1px #2e2e33,
     0 24px 64px rgb(0 0 0 / 70%);
+}
+
+// Ochiq guruh (sub menyu) — sidebar panelidan ochroq fon va aniq border, sarlavha bilan bitta blok.
+:root[data-theme='dark']:is([data-sidebar-theme='default'], [data-sidebar-theme='mint'])
+  .organization-layout
+  .sidebar-content
+  .panel-item-multiple {
+  &.is-open .panel-header {
+    background-color: #1c1c20;
+    box-shadow: inset 0 0 0 1px #2c2c32;
+  }
+
+  .panel-body-inner {
+    background-color: #18181b;
+    box-shadow:
+      inset 0 0 0 1px #2c2c32,
+      0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+}
+
+// Hujjat ko'rish oynasi (imzolash): fon → panel → karta qatlamlari aniq ajralib tursin.
+:root[data-theme='dark'] .ui__onlyOffice-drawer {
+  .n-drawer-content .bg-gradient-to-b {
+    background: #09090b;
+  }
+
+  // Yuqori sarlavha qatori
+  .n-drawer-content .bg-gradient-to-b > .border-b {
+    background-color: #111113;
+    border-bottom-color: #26262b;
+  }
+
+  .section-header {
+    background-color: #151518;
+    box-shadow: inset 0 0 0 1px #2c2c32;
+  }
+
+  .section-header-bar {
+    background-color: #1c1c20;
+    border-bottom: 1px solid #2c2c32;
+  }
+
+  .border-dashed {
+    border-color: #3f3f46;
+  }
+
+  .signer-card {
+    background-color: #1f1f23;
+    border-color: #36363d !important;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.5);
+  }
+
+  .signer-card--director {
+    background:
+      linear-gradient(135deg, rgb(59 130 246 / 0.18) 0%, rgb(59 130 246 / 0.04) 70%),
+      #1f1f23;
+    border-color: rgb(96 165 250 / 0.45) !important;
+  }
+
+  .signer-card__foot {
+    background-color: #1a1a1e;
+    border-top-color: #2f2f35;
+  }
+
+  .signer-card.opacity-70 {
+    opacity: 0.9;
+  }
+
+  .signer-node:not(.bg-primary) {
+    background-color: rgb(59 130 246 / 0.18);
+    border-color: rgb(96 165 250 / 0.65);
+    color: #93c5fd;
+  }
+
+  .signer-line {
+    background-color: rgb(96 165 250 / 0.4);
+  }
 }

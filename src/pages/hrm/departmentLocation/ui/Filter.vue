@@ -187,6 +187,7 @@
         <div v-if="isWorkersTab" class="col-span-12 md:col-span-6">
           <label>{{ $t('departmentLocationPage.table.department') }}</label>
           <UIDepartmentSelect
+            own
             v-model="store.workerParams.department_id"
             :organization="store.workerParams.organizations"
             :placeholder="$t('departmentLocationPage.filter.all')"
