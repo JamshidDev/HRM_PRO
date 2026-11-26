@@ -2299,14 +2299,18 @@
   },
   "confirmationPage": {
     "name": "Kelişuvçilar",
-    "createTitle": "Tasdiqlovçi qöşiş",
-    "updateTitle": "Tasdiqlovçini tahrirlaş",
+    "createTitle": "Kelişuvçi qöşiş",
+    "updateTitle": "Kelişuvçini tahrirlaş",
     "table": {
       "worker": "Xodim",
       "full_position": "Lavozim töliq nomi (Taşkilot nomi bilan töliq nomi)",
       "level": "Turi",
-      "position": "Lavozim"
-    }
+      "position": "Lavozim",
+      "docFullPosition": "To'liq lavozim"
+    },
+    "docFullPositionPlaceholder": "Masalan: Samarqand temir yo'l masofasi filiali boshlig'i",
+    "docFullPositionHint": "Ariza va bildirgilar sarlavhasida rahbar ismidan oldin aynan shu matn chiqadi. Bo'sh qolsa — avtomatik yig'iladi.",
+    "positionHint": "Qisqa lavozim: buyruq, shartnoma, qo'shimcha kelishuv va boshqa hujjatlarda imzo qo'yuvchi yonida hamda kelishuv ro'yxatlarida chiqadi."
   },
   "contractPage": {
     "edit": {

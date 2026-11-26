@@ -16,7 +16,9 @@ export const useConfirmationStore = defineStore('confirmationStore', {
     payload: {
       pin: null,
       position: null,
-      level: null
+      level: null,
+      // Faqat rahbar: ariza va bildirgilar sarlavhasidagi to'liq lavozim.
+      full_position: null
     },
     params: {
       page: 1,
@@ -98,6 +100,7 @@ export const useConfirmationStore = defineStore('confirmationStore', {
       this.payload.pin = null
       this.payload.position = null
       this.payload.level = null
+      this.payload.full_position = null
     }
   }
 })

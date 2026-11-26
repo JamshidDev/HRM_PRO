@@ -2270,14 +2270,18 @@
   },
   "confirmationPage": {
     "name": "Kelisiwshiler",
-    "createTitle": "Tastıyıqlawshı qosıw",
-    "updateTitle": "Tastıyıqlawshını ózgertiw",
+    "createTitle": "Kelisiwshi qosıw",
+    "updateTitle": "Kelisiwshini ózgertiw",
     "table": {
       "worker": "Xızmetker",
       "full_position": "Lawazımnıń tolıq atı (Shólkem atı menen tolıq atı)",
       "level": "Túri",
-      "position": "Lawazım"
-    }
+      "position": "Lawazım",
+      "docFullPosition": "Tolıq lawazım"
+    },
+    "docFullPositionPlaceholder": "Mısalı: Samarqand temir jol aralıǵı filialı baslıǵı",
+    "docFullPositionHint": "Arza hám bildirgiler sarlawhasında basshı atınan aldın usı tekst shıǵadı. Bos qalsa — avtomat túrde jıynaladı.",
+    "positionHint": "Qısqa lawazım: buyrıq, shártnama, qosımsha kelisim hám basqa hújjetlerde qol qoyıwshı janında hám kelisim dizimlerinde shıǵadı."
   },
   "contractPage": {
     "edit": {

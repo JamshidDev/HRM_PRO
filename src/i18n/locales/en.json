@@ -2289,8 +2289,12 @@
       "worker": "Employee",
       "full_position": "Full position name (with organization)",
       "level": "Type",
-      "position": "Position"
-    }
+      "position": "Position",
+      "docFullPosition": "Full position"
+    },
+    "docFullPositionPlaceholder": "E.g.: Head of the Samarkand track distance branch",
+    "docFullPositionHint": "This exact text appears before the manager's name in application and notice headers. If empty, it is built automatically.",
+    "positionHint": "Short position: shown next to the signer in orders, contracts, additional agreements and other documents, and in approval lists."
   },
   "contractPage": {
     "edit": {
