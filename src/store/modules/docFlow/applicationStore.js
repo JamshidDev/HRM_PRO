@@ -6,6 +6,8 @@ import { usePdfViewerStore } from '@/store/modules/index.js'
 export const useApplicationStore = defineStore('applicationStore', {
   state: () => ({
     list: [],
+    // Tab badge'lari: holatlar bo'yicha soni (backend `stage_counts`).
+    stageCounts: {},
     loading: false,
     saveLoading: false,
     deleteLoading: false,
@@ -104,6 +106,7 @@ export const useApplicationStore = defineStore('applicationStore', {
         .then((res) => {
           this.list = res.data.data.data
           this.totalItems = res.data.data.total
+          this.stageCounts = res.data.data.stage_counts ?? {}
         })
         .finally(() => {
           this.loading = false
