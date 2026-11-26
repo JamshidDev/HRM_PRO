@@ -135,37 +135,42 @@
         <n-input :value="store.fixedOrganization?.name ?? ''" disabled />
       </n-form-item>
 
-      <n-form-item
-        :label="$t(`departmentPage.form.name`)"
-        path="name"
-        :rule-path="validationRules.rulesNames.requiredStringField"
-      >
-        <UIMultipleLangItems>
-          <template #uz-content>
-            <n-input type="text" v-model:value="store.payload.name" :maxlength="NAME_MAX" />
-          </template>
-          <template #ru-content>
-            <n-input class="skip-format" type="text" v-model:value="store.payload.name_ru" :maxlength="NAME_MAX" />
-          </template>
-          <template #en-content>
-            <n-input type="text" v-model:value="store.payload.name_en" :maxlength="NAME_MAX" />
-          </template>
-        </UIMultipleLangItems>
-      </n-form-item>
-      <n-form-item
-        :label="$t(`departmentPage.form.level`)"
-        path="level"
-        :rule-path="validationRules.rulesNames.requiredNumberField"
-      >
-        <n-select
-          v-model:value="store.payload.level"
-          filterable
-          :options="store.levelList"
-          label-field="name"
-          value-field="id"
-          :loading="store.levelLoading"
-        />
-      </n-form-item>
+      <!-- 2-qator: Bo'lim nomi | Bo'lim turi — yonma-yon (telefonda ustma-ust) -->
+      <div class="grid grid-cols-12 gap-x-4">
+        <n-form-item
+          class="col-span-12 md:col-span-6"
+          :label="$t(`departmentPage.form.name`)"
+          path="name"
+          :rule-path="validationRules.rulesNames.requiredStringField"
+        >
+          <UIMultipleLangItems>
+            <template #uz-content>
+              <n-input type="text" v-model:value="store.payload.name" :maxlength="NAME_MAX" />
+            </template>
+            <template #ru-content>
+              <n-input class="skip-format" type="text" v-model:value="store.payload.name_ru" :maxlength="NAME_MAX" />
+            </template>
+            <template #en-content>
+              <n-input type="text" v-model:value="store.payload.name_en" :maxlength="NAME_MAX" />
+            </template>
+          </UIMultipleLangItems>
+        </n-form-item>
+        <n-form-item
+          class="col-span-12 md:col-span-6"
+          :label="$t(`departmentPage.form.level`)"
+          path="level"
+          :rule-path="validationRules.rulesNames.requiredNumberField"
+        >
+          <n-select
+            v-model:value="store.payload.level"
+            filterable
+            :options="store.levelList"
+            label-field="name"
+            value-field="id"
+            :loading="store.levelLoading"
+          />
+        </n-form-item>
+      </div>
       <template v-if="!Boolean(store.parentElement)">
         <n-checkbox
           class="border border-surface-line w-full px-2 py-1 rounded-lg mb-4"
@@ -188,39 +193,43 @@
       </n-form-item>
 
       <!-- Backend `city_id` ni majburiy qiladi (422), Tuman esa Viloyatsiz tanlanmaydi —
-           shuning uchun ikkalasi ham shu yerda majburiy. -->
-      <n-form-item
-        :label="$t(`departmentPage.form.region`)"
-        path="region_id"
-        :rule-path="validationRules.rulesNames.requiredNumberField"
-      >
-        <n-select
-          v-model:value="store.payload.region_id"
-          @update:value="store.changeRegion"
-          filterable
-          clearable
-          :options="componentStore.regionList"
-          label-field="name"
-          value-field="id"
-          :loading="componentStore.regionLoading"
-        />
-      </n-form-item>
-      <n-form-item
-        :label="$t(`departmentPage.form.city`)"
-        path="city_id"
-        :rule-path="validationRules.rulesNames.requiredNumberField"
-      >
-        <n-select
-          :disabled="!store.payload.region_id"
-          v-model:value="store.payload.city_id"
-          filterable
-          clearable
-          :options="store.districtList"
-          label-field="name"
-          value-field="id"
-          :loading="store.districtLoading"
-        />
-      </n-form-item>
+           shuning uchun ikkalasi ham shu yerda majburiy. Viloyat | Tuman — yonma-yon. -->
+      <div class="grid grid-cols-12 gap-x-4">
+        <n-form-item
+          class="col-span-12 md:col-span-6"
+          :label="$t(`departmentPage.form.region`)"
+          path="region_id"
+          :rule-path="validationRules.rulesNames.requiredNumberField"
+        >
+          <n-select
+            v-model:value="store.payload.region_id"
+            @update:value="store.changeRegion"
+            filterable
+            clearable
+            :options="componentStore.regionList"
+            label-field="name"
+            value-field="id"
+            :loading="componentStore.regionLoading"
+          />
+        </n-form-item>
+        <n-form-item
+          class="col-span-12 md:col-span-6"
+          :label="$t(`departmentPage.form.city`)"
+          path="city_id"
+          :rule-path="validationRules.rulesNames.requiredNumberField"
+        >
+          <n-select
+            :disabled="!store.payload.region_id"
+            v-model:value="store.payload.city_id"
+            filterable
+            clearable
+            :options="store.districtList"
+            label-field="name"
+            value-field="id"
+            :loading="store.districtLoading"
+          />
+        </n-form-item>
+      </div>
     </div>
   </n-form>
 </template>
