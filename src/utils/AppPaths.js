@@ -161,7 +161,6 @@ export const AppPaths = {
   Other: '/other',
   PrivacyPolicy: '/privacy-policy',
   // Ochiq «Modullar» sahifalari (SEO).
-  Modules: '/modules',
   News: '/news',
   NewsCategory: '/news-category',
   View: '/view',
