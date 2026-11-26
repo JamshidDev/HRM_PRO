@@ -66,9 +66,7 @@ export const useMobileStoryStore = defineStore('mobileStory', {
       $ApiService.mobileStoryService
         ._index({ params: this.params })
         .then((res) => {
-          // BACKEND: `GET /v1/admin/mobile-stories` yangi story'ni oxirida beradi — server ro'yxatni
-          // «yangisi oldin» (created_at / id ↓) tartibida bersin, shunda sahifalash ham to'g'ri ishlaydi.
-          // Hozircha frontend shu sahifa ichida saralaydi (yangisi oldin).
+          // Server «yangisi oldin» beradi; bu — sahifa ichidagi zaxira saralash.
           this.list = [...(res.data.data.data ?? [])].sort(newestFirst)
           this.totalItems = res.data.data.total
         })
@@ -182,8 +180,7 @@ export const useMobileStoryStore = defineStore('mobileStory', {
         subtitle: cleanLang(this.payload.subtitle),
         action_type: this.payload.action_type || undefined,
         status: this.payload.status,
-        // BACKEND: kelajak sana tanlansa ham story darhol chiqadi — ommaviy ro'yxat shu sanani
-        // hisobga olsin (docs/api/mobile-stories-schedule.md).
+        // Kelajak sana — story shu vaqtgacha ommaviy ro'yxatda chiqmaydi.
         published_at: this.payload.published_at || undefined,
         sort: this.payload.sort ?? 1
       }

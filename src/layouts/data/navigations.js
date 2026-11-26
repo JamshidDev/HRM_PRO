@@ -1078,60 +1078,104 @@ export const navigations = withRawIcons([
     permission: appPermissions.admin,
     children: [
       {
-        label: 'userPage.name', // Foydalanuvchilar
-        path: Utils.routePathMaker(AppPaths.User),
+        // «Boshqaruv» guruhi — ichidagilardan kamida bittasiga ruxsat bo'lsa ko'rinadi.
+        label: 'navigation.management', // Boshqaruv
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.usersRead
+        permission: [
+          appPermissions.rolesRead,
+          appPermissions.permissionsRead,
+          appPermissions.usersRead,
+          appPermissions.integrationClientsRead
+        ],
+        children: [
+          {
+            label: 'userRole.name', // Rollar
+            path: Utils.routePathMaker(AppPaths.UserRole),
+            icon: AdminFolderIcon,
+            color: 'bg-dark',
+            permission: appPermissions.rolesRead
+          },
+          {
+            label: 'userPermission.name', // Huquqlar
+            path: Utils.routePathMaker(AppPaths.UserPermission),
+            icon: AdminFolderIcon,
+            color: 'bg-dark',
+            permission: appPermissions.permissionsRead
+          },
+          {
+            label: 'userPage.name', // Foydalanuvchilar
+            path: Utils.routePathMaker(AppPaths.User),
+            icon: AdminFolderIcon,
+            color: 'bg-dark',
+            permission: appPermissions.usersRead
+          },
+          {
+            label: 'integrationClients.name', // Integratsiya clientlari
+            path: Utils.routePathMaker(AppPaths.IntegrationClients),
+            icon: AdminFolderIcon,
+            color: 'bg-dark',
+            permission: appPermissions.integrationClientsRead
+          }
+        ]
       },
       {
-        label: 'userRole.name', // Rollar
-        path: Utils.routePathMaker(AppPaths.UserRole),
+        // «Tuzilma» guruhi — ichidagilardan kamida bittasiga ruxsat bo'lsa ko'rinadi.
+        label: 'navigation.structureGroup', // Tuzilma
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.rolesRead
-      },
-      {
-        label: 'userPermission.name', // Huquqlar
-        path: Utils.routePathMaker(AppPaths.UserPermission),
-        icon: AdminFolderIcon,
-        color: 'bg-dark',
-        permission: appPermissions.permissionsRead
-      },
-      {
-        label: 'countryPage.name', // Davlatlar
-        path: Utils.routePathMaker(AppPaths.Country),
-        icon: AdminFolderIcon,
-        color: 'bg-dark',
-        permission: appPermissions.countriesRead
-      },
-      {
-        label: 'regionPage.name', // Viloyatlar
-        path: Utils.routePathMaker(AppPaths.Region),
-        icon: AdminFolderIcon,
-        color: 'bg-dark',
-        permission: appPermissions.regionsRead
-      },
-      {
-        label: 'districtPage.name', // Tumanlar
-        path: Utils.routePathMaker(AppPaths.District),
-        icon: AdminFolderIcon,
-        color: 'bg-dark',
-        permission: appPermissions.citiesRead
-      },
-      {
-        label: 'nationalityPage.name', // Millatlar
-        path: Utils.routePathMaker(AppPaths.Nationality),
-        icon: AdminFolderIcon,
-        color: 'bg-dark',
-        permission: appPermissions.nationalitiesRead
-      },
-      {
-        label: 'positionPage.name', // Lavozimlar
-        path: Utils.routePathMaker(AppPaths.Position),
-        icon: AdminFolderIcon,
-        color: 'bg-dark',
-        permission: appPermissions.positionsRead
+        permission: [
+          appPermissions.countriesRead,
+          appPermissions.regionsRead,
+          appPermissions.citiesRead,
+          appPermissions.positionsRead,
+          appPermissions.organizationsRead,
+          appPermissions.nationalitiesRead
+        ],
+        children: [
+          {
+            label: 'countryPage.name', // Davlatlar
+            path: Utils.routePathMaker(AppPaths.Country),
+            icon: AdminFolderIcon,
+            color: 'bg-dark',
+            permission: appPermissions.countriesRead
+          },
+          {
+            label: 'regionPage.name', // Viloyatlar
+            path: Utils.routePathMaker(AppPaths.Region),
+            icon: AdminFolderIcon,
+            color: 'bg-dark',
+            permission: appPermissions.regionsRead
+          },
+          {
+            label: 'districtPage.name', // Tumanlar
+            path: Utils.routePathMaker(AppPaths.District),
+            icon: AdminFolderIcon,
+            color: 'bg-dark',
+            permission: appPermissions.citiesRead
+          },
+          {
+            label: 'positionPage.name', // Lavozimlar
+            path: Utils.routePathMaker(AppPaths.Position),
+            icon: AdminFolderIcon,
+            color: 'bg-dark',
+            permission: appPermissions.positionsRead
+          },
+          {
+            label: 'organizationPage.name', // Tashkilotlar
+            path: Utils.routePathMaker(AppPaths.Organizations),
+            icon: AdminFolderIcon,
+            color: 'bg-dark',
+            permission: appPermissions.organizationsRead
+          },
+          {
+            label: 'nationalityPage.name', // Millatlar
+            path: Utils.routePathMaker(AppPaths.Nationality),
+            icon: AdminFolderIcon,
+            color: 'bg-dark',
+            permission: appPermissions.nationalitiesRead
+          }
+        ]
       },
       {
         label: 'schedulePage.name', // Ish jadvali
@@ -1146,13 +1190,6 @@ export const navigations = withRawIcons([
         icon: AdminFolderIcon,
         color: 'bg-dark',
         permission: appPermissions.workDayRead
-      },
-      {
-        label: 'organizationPage.name', // Tashkilotlar
-        path: Utils.routePathMaker(AppPaths.Organizations),
-        icon: AdminFolderIcon,
-        color: 'bg-dark',
-        permission: appPermissions.organizationsRead
       },
       {
         label: 'actionLog.name', // Amallar tarixi
@@ -1238,13 +1275,6 @@ export const navigations = withRawIcons([
         icon: AdminFolderIcon,
         color: 'bg-dark',
         permission: appPermissions.dbBackupRead
-      },
-      {
-        label: 'integrationClients.name', // Integratsiya clientlari
-        path: Utils.routePathMaker(AppPaths.IntegrationClients),
-        icon: AdminFolderIcon,
-        color: 'bg-dark',
-        permission: appPermissions.integrationClientsRead
       },
       {
         label: 'workerReport.name', // Xodim hisobotlari

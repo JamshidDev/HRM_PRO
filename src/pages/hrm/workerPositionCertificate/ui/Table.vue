@@ -1,6 +1,6 @@
 <script setup>
-  import { Edit32Regular, Delete20Regular, ArrowSync16Regular, ArrowUndo16Regular } from '@vicons/fluent'
-  import { UITable, UIProfileSection, UIProfileEmpty, UIFileDownload, UIChip, UIStatus } from '@/components/index.js'
+  import { Edit32Regular, Delete20Regular, Info16Regular } from '@vicons/fluent'
+  import { UITable, UIProfileSection, UIProfileEmpty, UIFileDownload, UIStatus } from '@/components/index.js'
   import { useWorkerPositionCertificateStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -42,7 +42,7 @@
   const columns = computed(() => [
     { key: 'post_name', title: t('workerPositionCertificatePage.form.postName'), width: 400, minWidth: 260, maxWidth: 1000 },
     { key: 'number', title: t('workerPositionCertificatePage.form.numberShort'), width: 130, minWidth: 100, maxWidth: 220 },
-    { key: 'period', title: t('workerPositionCertificatePage.form.period'), width: 210, minWidth: 180, maxWidth: 320 },
+    { key: 'period', title: t('workerPositionCertificatePage.form.period'), width: 230, minWidth: 200, maxWidth: 360 },
     { key: 'status', title: t('workerPositionCertificatePage.form.status'), width: 170, minWidth: 140, maxWidth: 260 },
     { key: 'file', title: t('content.file'), width: 100, minWidth: 80, maxWidth: 160 }
   ])
@@ -88,7 +88,7 @@
           <div class="font-semibold mb-1">{{ row.post_name }}</div>
           <div class="text-xs opacity-90 grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5">
             <span>{{ $t('workerPositionCertificatePage.form.number') }}:</span>
-            <span>{{ row.number || '—' }}</span>
+            <span>{{ row.number }}</span>
             <span>{{ $t('workerPositionCertificatePage.form.issueDate') }}:</span>
             <span>{{ Utils.timeOnlyDate(row.issue_date) }}</span>
             <span>{{ $t('workerPositionCertificatePage.form.expiryDate') }}:</span>
@@ -104,22 +104,28 @@
       <template #cell-period="{ row }">
         <span class="inline-flex items-center gap-1 whitespace-nowrap">
           {{ Utils.timeOnlyDate(row.issue_date) }} – {{ Utils.timeOnlyDate(endDate(row)) }}
-          <!-- Uzaytirilgan — kichik belgi, sana tafsiloti lavozim tooltip'ida -->
-          <n-icon v-if="row.extended_date" :size="14" color="var(--primary-color)">
-            <ArrowSync16Regular />
-          </n-icon>
+          <!-- Uzaytirilgan — kichik ⓘ, hover'da «Uzaytirilgan» -->
+          <n-tooltip v-if="row.extended_date">
+            <template #trigger>
+              <n-icon size="16" class="shrink-0 cursor-help text-fig-text-tertiary">
+                <Info16Regular />
+              </n-icon>
+            </template>
+            {{ $t('workerCertificatePage.table.extendedChip') }}
+          </n-tooltip>
         </span>
       </template>
 
       <template #cell-status="{ row }">
-        <UIChip v-if="row.returned" tone="warning" :icon="ArrowUndo16Regular">
-          {{ $t('workerPositionCertificatePage.form.returned') }}
-        </UIChip>
+        <!-- Guvohnomalar sahifasidagi bilan bir xil holat chiplari (UIStatus 18 / 3). -->
+        <UIStatus
+          v-if="row.returned"
+          :status="{ id: 18, name: $t('workerPositionCertificatePage.form.returned') }"
+        />
         <UIStatus
           v-else-if="row.verify"
           :status="{ id: 3, name: $t('workerPositionCertificatePage.form.verify') }"
         />
-        <span v-else class="text-textColor3">—</span>
       </template>
 
       <template #cell-file="{ row }">

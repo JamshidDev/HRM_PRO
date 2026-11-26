@@ -39,7 +39,7 @@
     if (componentStore.maritalList.length === 0) componentStore._enums()
   })
 
-  const maritalStatusName = (id) => componentStore.maritalList.find((v) => v.id === id)?.name ?? '-'
+  const maritalStatusName = (id) => componentStore.maritalList.find((v) => v.id === id)?.name ?? ''
 
   const onPreview = (row) => {
     if (!accStore.checkAction(accStore.pn.hrWorkersRead)) return

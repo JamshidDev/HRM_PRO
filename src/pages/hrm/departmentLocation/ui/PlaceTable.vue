@@ -156,7 +156,6 @@
 
       <template #cell-owner="{ row }">
         <n-ellipsis v-if="row.owner?.name" class="text-textColor1">{{ row.owner.name }}</n-ellipsis>
-        <span v-else class="text-textColor3">—</span>
       </template>
 
       <template #empty>

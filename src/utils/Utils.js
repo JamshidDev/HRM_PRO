@@ -83,6 +83,14 @@ const getMyLocation = () => {
   })
 }
 
+// Filtr sanasi → so'rov parametrlari: kun (son) — `key`, davr ([ms, ms]) — `key_from` / `key_to`.
+const dateRangeParams = (value, key = 'created') => {
+  if (Array.isArray(value)) {
+    return { [key]: undefined, [`${key}_from`]: timeToZone(value[0]) ?? undefined, [`${key}_to`]: timeToZone(value[1]) ?? undefined }
+  }
+  return { [key]: timeToZone(value) ?? undefined, [`${key}_from`]: undefined, [`${key}_to`]: undefined }
+}
+
 const timeToZone = (time) => {
   if (time === null || time === undefined) return null
   // `dayjs('')` yoki yaroqsiz qiymat `.format()` da tom ma'noda "Invalid Date"
@@ -637,6 +645,7 @@ export default {
   formatPin,
   getMyLocation,
   timeToZone,
+  dateRangeParams,
   timeWithMonth,
   dateTimeLabel,
   dateTimeShortLabel,

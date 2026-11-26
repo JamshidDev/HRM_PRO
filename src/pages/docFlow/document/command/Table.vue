@@ -61,7 +61,7 @@
       .map((part) => part[0].toUpperCase())
       .join('.')
 
-    return [worker?.last_name, initials].filter(Boolean).join(' ') || '—'
+    return [worker?.last_name, initials].filter(Boolean).join(' ')
   }
 
   const changePage = (v) => {
@@ -183,7 +183,7 @@
 
     <template #cell-command_number="{ row }">
       <span class="text-sm leading-5 text-fig-text-secondary">
-        {{ row?.command_number || '—' }}
+        {{ row?.command_number }}
       </span>
     </template>
 

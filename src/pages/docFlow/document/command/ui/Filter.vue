@@ -166,11 +166,9 @@
         </div>
         <div class="col-span-12 md:col-span-6">
           <label>{{ $t('content.created') }}</label>
-          <!-- Kun rejimi: backend hozircha bitta sana (`created`) qabul qiladi. `created_from` / `created_to` qo'shilgach
-               (docs/api/command-date-range.md) — `mode="period"` ga o'tkaziladi; store ikkalasini ham biladi. -->
           <UIDayPicker
             v-model:value="store.params.created"
-            mode="day"
+            mode="period"
             clearable
             placement="bottom-end"
             @update:value="filterEvent"

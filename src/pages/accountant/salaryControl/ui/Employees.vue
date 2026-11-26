@@ -45,7 +45,7 @@
       .filter((p) => (p.tot || 0) > 0 || (p.ytd || 0) > 0)
       .filter((p) => !query || (p.fio || '').toLowerCase().includes(query))
       .map((p) => ({
-        fio: p.fio || '—',
+        fio: p.fio || '',
         flagged: flagged.value.has(p.fio),
         lav: p.lav || '—',
         ok: p.ok || 0,
@@ -99,7 +99,7 @@
       minWidth: 120,
       className: 'sc-num',
       sorter: num('t'),
-      render: (row) => (row.t ? row.t : '—')
+      render: (row) => (row.t ? row.t : '')
     },
     {
       title: th(t('salaryControl.employees.b004'), 'b004'),
@@ -125,7 +125,7 @@
       align: 'right',
       minWidth: 120,
       className: 'sc-num',
-      render: (row) => (row.other ? money(row.other) : '—')
+      render: (row) => (row.other ? money(row.other) : '')
     },
     {
       title: th(t('salaryControl.common.total'), 'tot'),

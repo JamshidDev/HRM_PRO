@@ -148,7 +148,6 @@
           position: worker(row).position || $t('content.no-data')
         }"
       />
-      <span v-else class="text-textColor3">—</span>
     </template>
 
     <template #[`cell-contract_additional.organization.name`]="{ row }">

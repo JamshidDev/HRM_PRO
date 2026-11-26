@@ -4,7 +4,7 @@
   import { useWorkerCertificateStore } from '@stores'
   import { Utils } from '@utils'
   import UIHelper from '@/utils/UIHelper.js'
-  import { Eye16Regular } from '@vicons/fluent'
+  import { Eye16Regular, Info16Regular } from '@vicons/fluent'
   import { certificateStatus, isExpired, validUntil } from './certificateStatus.js'
 
   const { t } = i18n.global
@@ -16,17 +16,19 @@
     store._index()
   }
 
-  // UITable bo'sh joyni `minWidth` ustunlar orasida TENG bo'ladi — shunda «Xodim» qisilib, ism kesilardi.
-  // Shu bois faqat «Xodim» moslashuvchan (qolgan joy unga), qisqa ustunlar — qat'iy `width`.
+  // Hamma ustun qat'iy kenglikda — bo'sh joy proporsional taqsimlanadi. Bitta moslashuvchan
+  // ustun (avval «Xodim» minWidth) butun bo'sh joyni olib, keng ekranda juda cho'zilib ketardi.
   const columns = computed(() => [
-    { key: 'worker', title: t('workerCertificatePage.table.worker'), minWidth: 320 },
-    { key: 'number', title: t('workerCertificatePage.table.number'), width: 180 },
-    { key: 'issue_date', title: t('workerCertificatePage.table.issueDate'), width: 150 },
     {
-      key: 'expiry_date',
-      title: t('workerPositionCertificatePage.form.expiryDate'),
-      width: 180
+      key: 'worker',
+      title: t('workerCertificatePage.table.worker'),
+      width: 340,
+      minWidth: 260,
+      maxWidth: 560
     },
+    { key: 'number', title: t('workerCertificatePage.table.number'), width: 160 },
+    // Berilgan va amal qilish sanasi bitta ustunda (Lavozim guvohnomalari jadvalidagi kabi).
+    { key: 'period', title: t('workerPositionCertificatePage.form.period'), width: 240 },
     { key: 'status', title: t('workerCertificatePage.table.status'), width: 190 }
   ])
 
@@ -53,7 +55,7 @@
     :page="store.params.page"
     :per-page="store.params.per_page"
     :total="store.totalItems"
-    storage-key="hrm-worker-certificate-v3"
+    storage-key="hrm-worker-certificate-v6"
     @change-page="changePage"
   >
     <!-- Qidiruv/filtrsiz bo'sh bo'lsa — «topilmadi» emas, «ro'yxat bo'sh». -->
@@ -82,31 +84,30 @@
       <span v-if="row.certificate" class="font-medium text-textColor0 tabular-nums">
         {{ row.certificate.number }}
       </span>
-      <span v-else class="text-textColor3">—</span>
     </template>
 
-    <template #cell-issue_date="{ row }">
-      <span v-if="row.certificate" class="tabular-nums text-textColor1">
-        {{ Utils.timeOnlyDate(row.certificate.issue_date) }}
-      </span>
-      <span v-else class="text-textColor3">—</span>
-    </template>
-
-    <!-- Uzaytirilgan bo'lsa — yangi sana, ostida kulrang «uzaytirilgan».
+    <!-- «berilgan – amal qiladi»; uzaytirilgan bo'lsa kichik ⓘ (hover'da «Uzaytirilgan»).
          Muddati o'tgan bo'lsa sana qizil. -->
-    <template #cell-expiry_date="{ row }">
-      <div v-if="validUntil(row.certificate)" class="flex flex-col leading-tight">
-        <span
-          class="tabular-nums"
-          :class="isExpired(row.certificate) ? 'text-fig-text-red' : 'text-textColor1'"
-        >
-          {{ Utils.timeOnlyDate(validUntil(row.certificate)) }}
-        </span>
-        <span v-if="row.certificate.extended_date" class="text-[11px] text-textColor3">
-          {{ $t('workerCertificatePage.table.extended') }}
-        </span>
-      </div>
-      <span v-else class="text-textColor3">—</span>
+    <template #cell-period="{ row }">
+      <span
+        v-if="row.certificate"
+        class="inline-flex items-center gap-1 whitespace-nowrap tabular-nums"
+        :class="isExpired(row.certificate) ? 'text-fig-text-red' : 'text-textColor1'"
+      >
+        {{
+          [Utils.timeOnlyDate(row.certificate.issue_date), Utils.timeOnlyDate(validUntil(row.certificate))]
+            .filter(Boolean)
+            .join(' – ')
+        }}
+        <n-tooltip v-if="row.certificate.extended_date">
+          <template #trigger>
+            <n-icon size="16" class="shrink-0 cursor-help text-fig-text-tertiary">
+              <Info16Regular />
+            </n-icon>
+          </template>
+          {{ $t('workerCertificatePage.table.extendedChip') }}
+        </n-tooltip>
+      </span>
     </template>
 
     <!-- Bitta chip: Tasdiqlangan / Tasdiqlanmagan / Muddati o'tgan / Qaytarib olingan / Berilmagan. -->

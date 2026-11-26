@@ -22,7 +22,9 @@
   })
 
   watchEffect(() => {
-    const list = navigations.flatMap((v) => v.children)
+    // Guruh ichidagi sahifalar ham sarlavha olsin (ichma-ich children).
+    const flat = (items) => items.flatMap((v) => [v, ...flat(v.children ?? [])])
+    const list = flat(navigations.flatMap((v) => v.children ?? []))
     const currentItem = [...list, ...otherNavigations].filter((v) => v.path === route.path)
     // Login sahifasi Google'da ko'rinadi — «Xush kelibsiz» emas, kalit so'zli sarlavha.
     if (route.path === AppPaths.Login) {

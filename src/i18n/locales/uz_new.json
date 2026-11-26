@@ -812,6 +812,8 @@
     "createTitle": "Role qöşiş",
     "updateTitle": "Role tahrirlaş",
     "form": {
+      "mobileTab": "Mobil",
+      "mobileServices": "Mobil ilova xizmatlari (Turniketlar)",
       "name": "Role nomi",
       "permissions": "Permission",
       "moduleAccess": "Modul ruxsati",
@@ -2306,14 +2308,14 @@
       "full_position": "Lavozim töliq nomi (Taşkilot nomi bilan töliq nomi)",
       "level": "Turi",
       "position": "Lavozim",
-      "docFullPosition": "To'liq lavozim"
+      "docFullPosition": "Töliq lavozim"
     },
-    "docFullPositionPlaceholder": "Masalan: Samarqand temir yo'l masofasi filiali boshlig'i",
-    "docFullPositionHint": "Ariza va bildirgilarda shu matn chiqadi: rahbar uchun sarlavhada ismidan oldin, kelishuvchi uchun imzo qatorida. Bo'sh qolsa — qisqa lavozim (rahbar uchun avtomatik yig'ilgan matn).",
-    "positionHint": "Qisqa lavozim: buyruq, shartnoma, qo'shimcha kelishuv va boshqa hujjatlarda imzo qo'yuvchi yonida hamda kelishuv ro'yxatlarida chiqadi.",
+    "docFullPositionPlaceholder": "Masalan: Samarqand temir yöl masofasi filiali boşliği",
+    "docFullPositionHint": "Ariza va bildirgilarda şu matn çiqadi: rahbar uçun sarlavhada ismidan oldin, kelişuvçi uçun imzo qatorida. Böş qolsa — qisqa lavozim (rahbar uçun avtomatik yiğilgan matn).",
+    "positionHint": "Qisqa lavozim: buyruq, şartnoma, qöşimça kelişuv va boşqa hujjatlarda imzo qöyuvçi yonida hamda kelişuv röyxatlarida çiqadi.",
     "main": "Asosiy",
     "mainLabel": "Asosiy rahbar",
-    "mainHint": "Xodimlar arizasi shu rahbar nomiga yoziladi. Korxonada faqat bitta asosiy rahbar bo'ladi — boshqasini asosiy qilsangiz, avvalgisidan belgi olinadi.",
+    "mainHint": "Xodimlar arizasi şu rahbar nomiga yoziladi. Korxonada faqat bitta asosiy rahbar böladi — boşqasini asosiy qilsangiz, avvalgisidan belgi olinadi.",
     "makeMain": "Asosiy qiliş"
   },
   "contractPage": {
@@ -5995,6 +5997,8 @@
     "name": "Tinglovçilar"
   },
   "navigation": {
+    "structureGroup": "Tuzilma",
+    "management": "Boshqaruv",
     "hrm": "Kadrlar boşqaruvi",
     "docFlow": "Hujjat aylanişi",
     "myOrg": "Kadr boşqaruvi",
@@ -7083,7 +7087,7 @@
       "sourceNewHint": "Xaritada yangi joy belgilang — u turniket lokatsiyalari röyxatiga ham qöşiladi.",
       "place": "Turniket lokatsiyasi",
       "placePlaceholder": "Nomi böyiça qidiring",
-      "placeMaxHint": "Bir martada ko'pi bilan {n} ta joy tanlanadi ({count}/{n})",
+      "placeMaxHint": "Bir martada köpi bilan {n} ta joy tanlanadi ({count}/{n})",
       "freeMode": "Erkin rejim",
       "freeModeHint": "Hudud çeklovi yöq — xodim istalgan joydan ötadi, faqat koordinatasi va yuz rasmi yoziladi.",
       "department": "Bölim",
@@ -7478,7 +7482,8 @@
       "noCertificate": "Berilmagan",
       "status": "Holati",
       "expired": "Muddati ötgan",
-      "extended": "uzaytirilgan"
+      "extended": "uzaytirilgan",
+      "extendedChip": "Uzaytirilgan"
     },
     "filter": {
       "status": "Guvohnoma holati",
@@ -8520,6 +8525,9 @@
     "thisMonth": "Şu oy",
     "lastMonth": "Ötgan oy",
     "last7": "Oxirgi 7 kun",
-    "last30": "Oxirgi 30 kun"
+    "last30": "Oxirgi 30 kun",
+    "nextMonth": "Keyingi oy",
+    "pickMonth": "Oy tanlaş",
+    "monthPlaceholder": "Oyni tanlang"
   }
 }

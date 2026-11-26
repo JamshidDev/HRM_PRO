@@ -249,12 +249,12 @@
       </div>
     </template>
 
-    <!-- Telefon + ostida JSHSHIR (bo'lmasa — chiziqcha). -->
+    <!-- Telefon + ostida JSHSHIR (bo'lmasa — bo'sh). -->
     <template #cell-phone="{ row }">
       <div class="leading-tight">
-        <div class="text-textColor0">{{ row?.phone || '—' }}</div>
+        <div class="text-textColor0">{{ row?.phone }}</div>
         <div class="text-[11px] tabular-nums text-textColor3">
-          {{ row?.worker?.pin || '—' }}
+          {{ row?.worker?.pin }}
         </div>
       </div>
     </template>

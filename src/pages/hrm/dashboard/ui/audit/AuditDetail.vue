@@ -107,15 +107,15 @@
         }"
       >
         <template #position>
-          <span class="text-xs text-textColor3">
-            {{ $t('dashboardPage.audit.pin') }}: {{ row?.pin ?? '—' }}
+          <span v-if="row?.pin" class="text-xs text-textColor3">
+            {{ $t('dashboardPage.audit.pin') }}: {{ row?.pin }}
           </span>
         </template>
       </UIUser>
     </template>
 
     <template #cell-position="{ row }">
-      <span class="text-textColor0">{{ row?.position ?? '—' }}</span>
+      <span class="text-textColor0">{{ row?.position }}</span>
     </template>
 
     <template #cell-reasons="{ row }">

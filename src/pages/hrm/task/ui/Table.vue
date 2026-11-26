@@ -111,7 +111,6 @@
           pill
         />
       </div>
-      <span v-else>—</span>
     </template>
 
     <template #cell-deadline="{ row }">

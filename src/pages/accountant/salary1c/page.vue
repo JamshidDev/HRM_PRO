@@ -137,13 +137,13 @@
       key: 'department_name',
       title: t('salary1c.department'),
       minWidth: 170,
-      render: (row) => row.department_name || '—'
+      render: (row) => row.department_name
     },
     {
       key: 'organization_name',
       title: t('salary1c.organization'),
       minWidth: 200,
-      render: (row) => row.organization_name || '—'
+      render: (row) => row.organization_name
     },
     { key: 'oklad', title: t('salary1c.oklad'), width: 130, align: 'right', sortable: true },
     { key: 'accrual_total', title: t('salary1c.accrual'), width: 130, align: 'right', sortable: true },
@@ -240,7 +240,7 @@
     store._reloadPullLog()
   }, 400)
   const fmtDur = (ms) => {
-    if (ms == null) return '—'
+    if (ms == null) return ''
     if (ms < 1000) return ms + ' ms'
     const s = ms / 1000
     if (s < 60) return s.toFixed(1) + ' s'
@@ -564,8 +564,8 @@
                     <n-checkbox :checked="store.selectedVedCodes.includes(v.paying_code)"
                       :disabled="v.paying_code == null" @update:checked="store.toggleVed(v.paying_code)" />
                   </td>
-                  <td class="font-mono text-xs">{{ v.paying_code ?? '—' }}</td>
-                  <td class="text-xs">{{ v.paying_name || '—' }}</td>
+                  <td class="font-mono text-xs">{{ v.paying_code }}</td>
+                  <td class="text-xs">{{ v.paying_name }}</td>
                   <td class="text-center!">
                     <UIChip :tone="v.type === 2 ? 'error' : 'success'" compact>
                       {{ v.type === 2 ? $t('salary1c.veds.deduction') : $t('salary1c.veds.accrual') }}
@@ -614,9 +614,9 @@
                 </thead>
                 <tbody>
                   <tr v-for="o in store.vedMatrix.data" :key="o.organization_id">
-                    <td class="s1-sticky-col">{{ o.organization || '—' }}</td>
+                    <td class="s1-sticky-col">{{ o.organization }}</td>
                     <td v-for="c in store.vedMatrix.columns" :key="c.paying_code" class="text-right! tnum">
-                      {{ o.cells[c.paying_code] ? fmt(o.cells[c.paying_code]) : '—' }}
+                      {{ o.cells[c.paying_code] ? fmt(o.cells[c.paying_code]) : '' }}
                     </td>
                     <td class="text-right! tnum font-semibold">{{ fmt(o.row_total) }}</td>
                   </tr>
@@ -718,8 +718,8 @@
                 </thead>
                 <tbody>
                   <tr v-for="(r, i) in reconcileRows" :key="i" :class="{ 's1-rec-diff': r.diff !== 0 }">
-                    <td class="font-mono text-xs">{{ r.code || '—' }}</td>
-                    <td class="text-xs">{{ r.name || '—' }}</td>
+                    <td class="font-mono text-xs">{{ r.code }}</td>
+                    <td class="text-xs">{{ r.name }}</td>
                     <td class="text-center!">
                       <UIChip :tone="r.type === 2 ? 'error' : 'success'" compact>
                         {{ r.type === 2 ? $t('salary1c.veds.deduction') : $t('salary1c.veds.accrual') }}
@@ -783,12 +783,12 @@
                   <td class="text-center! text-textColor3">
                     {{ (store.vedWorkersParams.page - 1) * store.vedWorkersParams.per_page + i + 1 }}
                   </td>
-                  <td>{{ w.fio || '—' }}</td>
-                  <td>{{ w.pinfl || '—' }}</td>
-                  <td>{{ w.tab_nomer || '—' }}</td>
-                  <td class="text-xs">{{ w.position || '—' }}</td>
-                  <td class="text-xs text-textColor2">{{ w.department || '—' }}</td>
-                  <td class="text-xs text-textColor2">{{ w.organization || '—' }}</td>
+                  <td>{{ w.fio }}</td>
+                  <td>{{ w.pinfl }}</td>
+                  <td>{{ w.tab_nomer }}</td>
+                  <td class="text-xs">{{ w.position }}</td>
+                  <td class="text-xs text-textColor2">{{ w.department }}</td>
+                  <td class="text-xs text-textColor2">{{ w.organization }}</td>
                   <td class="text-right! tnum">{{ fmt(w.summa) }}</td>
                 </tr>
               </tbody>
@@ -840,9 +840,9 @@
             </tr></thead>
             <tbody>
               <tr v-for="(a, i) in store.payslip.accruals" :key="'a' + i">
-                <td>{{ a.paying_code || '—' }}</td>
+                <td>{{ a.paying_code }}</td>
                 <td>{{ a.paying_name }}</td>
-                <td class="text-right! tnum">{{ a.hours_worked ? fmt(a.hours_worked) : '—' }}</td>
+                <td class="text-right! tnum">{{ a.hours_worked ? fmt(a.hours_worked) : '' }}</td>
                 <td class="text-right! tnum">{{ fmt(a.summa) }}</td>
               </tr>
               <tr>
@@ -964,10 +964,10 @@
               <tbody>
                 <tr v-for="(f, i) in store.compareData.fields" :key="'f' + i">
                   <td>{{ fieldLabel(f.field) }}</td>
-                  <td class="text-right! tnum">{{ isNum(f.from) ? fmt(f.from) : (f.from || '—') }}</td>
-                  <td class="text-right! tnum">{{ isNum(f.to) ? fmt(f.to) : (f.to || '—') }}</td>
+                  <td class="text-right! tnum">{{ isNum(f.from) ? fmt(f.from) : f.from }}</td>
+                  <td class="text-right! tnum">{{ isNum(f.to) ? fmt(f.to) : f.to }}</td>
                   <td class="text-right! tnum font-semibold" :class="diffClass(f.diff)">
-                    {{ f.diff == null ? '—' : signed(f.diff) }}
+                    {{ f.diff == null ? '' : signed(f.diff) }}
                   </td>
                 </tr>
               </tbody>
@@ -988,8 +988,8 @@
               </tr></thead>
               <tbody>
                 <tr v-for="(a, i) in store.compareData.accruals" :key="'ca' + i">
-                  <td class="tnum">{{ a.paying_code || '—' }}</td>
-                  <td class="text-xs">{{ a.paying_name || '—' }}</td>
+                  <td class="tnum">{{ a.paying_code }}</td>
+                  <td class="text-xs">{{ a.paying_name }}</td>
                   <td class="text-right! tnum">{{ fmt(a.from) }}</td>
                   <td class="text-right! tnum">{{ fmt(a.to) }}</td>
                   <td class="text-right! tnum font-semibold" :class="diffClass(a.diff)">{{ signed(a.diff) }}</td>
@@ -1013,8 +1013,8 @@
               </tr></thead>
               <tbody>
                 <tr v-for="(d, i) in store.compareData.deductions" :key="'cd' + i">
-                  <td class="tnum">{{ d.paying_code || '—' }}</td>
-                  <td class="text-xs">{{ d.paying_name || '—' }}</td>
+                  <td class="tnum">{{ d.paying_code }}</td>
+                  <td class="text-xs">{{ d.paying_name }}</td>
                   <td class="text-right! tnum">{{ fmt(d.from) }}</td>
                   <td class="text-right! tnum">{{ fmt(d.to) }}</td>
                   <td class="text-right! tnum font-semibold" :class="diffClass(d.diff)">{{ signed(d.diff) }}</td>

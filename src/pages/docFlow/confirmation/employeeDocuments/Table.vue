@@ -73,7 +73,6 @@
           position: row.document.position_name || $t('content.no-data')
         }"
       />
-      <span v-else class="text-textColor3">—</span>
     </template>
 
     <template #cell-number="{ row }">

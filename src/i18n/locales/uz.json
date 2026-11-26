@@ -812,6 +812,8 @@
     "createTitle": "Role qo'shish",
     "updateTitle": "Role tahrirlash",
     "form": {
+      "mobileTab": "Mobil",
+      "mobileServices": "Mobil ilova xizmatlari (Turniketlar)",
       "name": "Role nomi",
       "permissions": "Permission",
       "moduleAccess": "Modul ruxsati",
@@ -5995,6 +5997,8 @@
     "name": "Tinglovchilar"
   },
   "navigation": {
+    "structureGroup": "Tuzilma",
+    "management": "Boshqaruv",
     "hrm": "Kadrlar boshqaruvi",
     "docFlow": "Hujjat aylanishi",
     "myOrg": "Kadr boshqaruvi",
@@ -7478,7 +7482,8 @@
       "noCertificate": "Berilmagan",
       "status": "Holati",
       "expired": "Muddati o'tgan",
-      "extended": "uzaytirilgan"
+      "extended": "uzaytirilgan",
+      "extendedChip": "Uzaytirilgan"
     },
     "filter": {
       "status": "Guvohnoma holati",
@@ -8520,6 +8525,9 @@
     "thisMonth": "Shu oy",
     "lastMonth": "O'tgan oy",
     "last7": "Oxirgi 7 kun",
-    "last30": "Oxirgi 30 kun"
+    "last30": "Oxirgi 30 kun",
+    "nextMonth": "Keyingi oy",
+    "pickMonth": "Oy tanlash",
+    "monthPlaceholder": "Oyni tanlang"
   }
 }

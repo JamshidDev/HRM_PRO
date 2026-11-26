@@ -139,16 +139,15 @@
     </template>
 
     <template #[`cell-organization.name`]="{ row }">
-      <span class="text-textColor1">{{ row.organization?.name || '—' }}</span>
+      <span class="text-textColor1">{{ row.organization?.name }}</span>
     </template>
 
     <template #cell-date="{ row }">
-      <span class="tabular-nums text-textColor1">{{ Utils.timeOnlyDate(row.date) || '—' }}</span>
+      <span class="tabular-nums text-textColor1">{{ Utils.timeOnlyDate(row.date) }}</span>
     </template>
 
     <template #cell-confirmation="{ row }">
       <UIStatus v-if="row.confirmation" fig :tooltip="false" :status="row.confirmation" />
-      <span v-else class="text-textColor3">—</span>
     </template>
 
     <template #cell-director="{ row }">

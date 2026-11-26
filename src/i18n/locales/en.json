@@ -797,6 +797,8 @@
     "createTitle": "Add role",
     "updateTitle": "Edit role",
     "form": {
+      "mobileTab": "Mobile",
+      "mobileServices": "Mobile app services (Turnstiles)",
       "name": "Role name",
       "permissions": "Permissions",
       "moduleAccess": "Module access",
@@ -5950,6 +5952,8 @@
     "name": "Listeners"
   },
   "navigation": {
+    "structureGroup": "Structure",
+    "management": "Management",
     "hrm": "HR Management",
     "docFlow": "Document Flow",
     "myOrg": "HR Management",
@@ -7420,7 +7424,8 @@
       "noCertificate": "Not issued",
       "status": "Status",
       "expired": "Expired",
-      "extended": "extended"
+      "extended": "extended",
+      "extendedChip": "Extended"
     },
     "filter": {
       "status": "Certificate status",
@@ -8324,6 +8329,9 @@
     "thisMonth": "This month",
     "lastMonth": "Last month",
     "last7": "Last 7 days",
-    "last30": "Last 30 days"
+    "last30": "Last 30 days",
+    "nextMonth": "Next month",
+    "pickMonth": "Pick a month",
+    "monthPlaceholder": "Select month"
   }
 }

@@ -42,6 +42,8 @@
   const formRef = ref(null)
   const captchaRef = ref(null)
   const captchaError = ref(false)
+  // Lokal dev: VITE_CAPTCHA_ENABLED=false bo'lsa captcha ko'rsatilmaydi (backend CAPTCHA_ENABLED=false bilan).
+  const captchaOn = import.meta.env.VITE_CAPTCHA_ENABLED !== 'false'
 
   const onCaptchaAnswer = (val) => {
     store.captchaAnswer = val
@@ -54,8 +56,9 @@
 
   const onSubmit = () => {
     formRef.value?.validate((_error) => {
-      if (!store.captchaAnswer) captchaError.value = true
-      if (!_error && store.captchaAnswer) {
+      const captchaOk = !captchaOn || !!store.captchaAnswer
+      if (!captchaOk) captchaError.value = true
+      if (!_error && captchaOk) {
         captchaError.value = false
         store._auth(() => captchaRef.value?.reset())
       }
@@ -203,6 +206,7 @@
                 </n-input>
               </n-form-item>
               <n-form-item
+                v-if="captchaOn"
                 :validation-status="captchaError ? 'error' : undefined"
                 :feedback="captchaError ? $t('rules.captchaRequired') : undefined"
                 style="--n-blank-height: 0px; --n-item-padding-bottom: 4px"
