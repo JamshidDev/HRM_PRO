@@ -6928,6 +6928,7 @@
       "sourceNewHint": "Kartada jańa orın belgileń — ol turniket lokaciyaları dizimine de qosıladı.",
       "place": "Turniket lokaciyası",
       "placePlaceholder": "Atı boyınsha izleń",
+      "placeMaxHint": "Bir mártede kóbi menen {n} orın tańlanadı ({count}/{n})",
       "freeMode": "Erkin rejim",
       "freeModeHint": "Aymaq sheklewi joq — xızmetker qálegen jerden ótedi, tek koordinatası hám júz súwreti jazıladı.",
       "department": "Bólim",

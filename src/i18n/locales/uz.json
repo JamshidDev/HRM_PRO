@@ -7060,6 +7060,7 @@
       "sourceNewHint": "Xaritada yangi joy belgilang — u turniket lokatsiyalari ro'yxatiga ham qo'shiladi.",
       "place": "Turniket lokatsiyasi",
       "placePlaceholder": "Nomi bo'yicha qidiring",
+      "placeMaxHint": "Bir martada ko'pi bilan {n} ta joy tanlanadi ({count}/{n})",
       "freeMode": "Erkin rejim",
       "freeModeHint": "Hudud cheklovi yo'q — xodim istalgan joydan o'tadi, faqat koordinatasi va yuz rasmi yoziladi.",
       "department": "Bo'lim",

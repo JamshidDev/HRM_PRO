@@ -48,10 +48,14 @@
       }
     }
   })
+  // Yaratishda bir martada ko'pi bilan 10 ta joy.
+  const PLACE_MAX = 10
+  const placeLimitReached = computed(() => store.visibleType && store.payload.place_ids.length >= PLACE_MAX)
   const placeSelectOptions = computed(() =>
     store.placeOptions.map((p) => ({
       label: p.name,
       value: p.id,
+      disabled: placeLimitReached.value && !store.payload.place_ids.includes(p.id),
       hint: p.geo_type
         ? proxy.$t('departmentLocationPage.pointsCount', { n: p.polygon?.length ?? 0 })
         : `${p.radius} m`
@@ -399,23 +403,30 @@
                 :label="$t('departmentLocationPage.form.place')"
                 path="place_id"
               >
-                <n-select
-                  v-if="store.visibleType"
-                  :value="store.payload.place_ids"
-                  :options="placeSelectOptions"
-                  :loading="store.placeOptionsLoading"
-                  :render-label="renderPlaceLabel"
-                  :placeholder="$t('departmentLocationPage.form.placePlaceholder')"
-                  multiple
-                  max-tag-count="responsive"
-                  filterable
-                  remote
-                  clearable
-                  @search="onPlaceSearch"
-                  @scroll="store.onScrollPlaceOptions"
-                  :reset-menu-on-options-change="false"
-                  @update:value="(v) => store.selectPlaces(v)"
-                />
+                <div v-if="store.visibleType" class="flex w-full flex-col gap-1">
+                  <n-select
+                    :value="store.payload.place_ids"
+                    :options="placeSelectOptions"
+                    :loading="store.placeOptionsLoading"
+                    :render-label="renderPlaceLabel"
+                    :placeholder="$t('departmentLocationPage.form.placePlaceholder')"
+                    multiple
+                    max-tag-count="responsive"
+                    filterable
+                    remote
+                    clearable
+                    @search="onPlaceSearch"
+                    @scroll="store.onScrollPlaceOptions"
+                    :reset-menu-on-options-change="false"
+                    @update:value="(v) => store.selectPlaces(v)"
+                  />
+                  <span
+                    class="block text-xs leading-4"
+                    :class="placeLimitReached ? 'text-warning' : 'text-textColor3'"
+                  >
+                    {{ $t('departmentLocationPage.form.placeMaxHint', { n: PLACE_MAX, count: store.payload.place_ids.length }) }}
+                  </span>
+                </div>
                 <n-select
                   v-else
                   :value="store.payload.place_id"

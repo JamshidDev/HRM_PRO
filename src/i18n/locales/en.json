@@ -7002,6 +7002,7 @@
       "sourceNewHint": "Mark a new place on the map — it is also added to the turnstile locations list.",
       "place": "Turnstile location",
       "placePlaceholder": "Search by name",
+      "placeMaxHint": "Up to {n} places per save ({count}/{n})",
       "freeMode": "Free mode",
       "freeModeHint": "No area restriction — the employee can pass from anywhere; only coordinates and the face photo are recorded.",
       "department": "Department",

@@ -454,7 +454,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
     },
     // Ko'p tanlovda xaritada oxirgi tanlangan joy ko'rinadi.
     selectPlaces(ids) {
-      this.payload.place_ids = ids ?? []
+      this.payload.place_ids = (ids ?? []).slice(0, 10)
       if (!this.payload.place_ids.length) {
         Object.assign(this.payload, { place_id: null, lat: null, lng: null, polygon: [], geo_type: false })
         return
