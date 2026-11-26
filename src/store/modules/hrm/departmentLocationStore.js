@@ -68,6 +68,8 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       // existing — ro'yxatdan tanlanadi, new — yangi joy (ro'yxatga ham qo'shiladi).
       source: 'existing',
       place_id: null,
+      // Yaratishda ro'yxatdan bir nechta joy.
+      place_ids: [],
       name: null,
       is_free: false,
       geo_type: false,
@@ -157,6 +159,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
         }
       }
       if (!free && this.payload.source === 'existing') {
+        if (this.visibleType) return { is_free: false, place_ids: this.payload.place_ids }
         return { is_free: false, place_id: this.payload.place_id }
       }
       return {
@@ -431,6 +434,15 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
         })
     },
     // Tanlangan joy shakli xaritada ko'rinadi (faqat ko'rish).
+    // Ko'p tanlovda xaritada oxirgi tanlangan joy ko'rinadi.
+    selectPlaces(ids) {
+      this.payload.place_ids = ids ?? []
+      if (!this.payload.place_ids.length) {
+        Object.assign(this.payload, { place_id: null, lat: null, lng: null, polygon: [], geo_type: false })
+        return
+      }
+      this.selectPlace(this.payload.place_ids.at(-1))
+    },
     selectPlace(id) {
       this.payload.place_id = id
       const p = this.placeOptions.find((v) => v.id === id)
@@ -503,6 +515,7 @@ export const useDepartmentLocationStore = defineStore('departmentLocationStore',
       this.payload.organization_name = null
       this.payload.source = 'existing'
       this.payload.place_id = null
+      this.payload.place_ids = []
       this.placeOptions = []
       this.payload.is_free = false
       this.payload.department_id = null

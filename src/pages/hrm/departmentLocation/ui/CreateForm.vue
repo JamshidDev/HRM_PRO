@@ -41,6 +41,8 @@
         store.payload.lng = null
         store.payload.polygon = []
         store.payload.geo_type = false
+      } else if (store.visibleType && store.payload.place_ids.length) {
+        store.selectPlaces(store.payload.place_ids)
       } else if (store.payload.place_id) {
         store.selectPlace(store.payload.place_id)
       }
@@ -189,7 +191,9 @@
     },
     place_id: {
       required: isExisting.value,
-      validator: (_rule, value) => !isExisting.value || !!value,
+      // Yaratishda ko'p tanlov (place_ids), tahrirda bitta joy.
+      validator: (_rule, value) =>
+        !isExisting.value || (store.visibleType ? store.payload.place_ids.length > 0 : !!value),
       message: proxy.$t('departmentLocationPage.validation.placeRequired'),
       trigger: ['blur', 'change']
     },
@@ -396,6 +400,22 @@
                 path="place_id"
               >
                 <n-select
+                  v-if="store.visibleType"
+                  :value="store.payload.place_ids"
+                  :options="placeSelectOptions"
+                  :loading="store.placeOptionsLoading"
+                  :render-label="renderPlaceLabel"
+                  :placeholder="$t('departmentLocationPage.form.placePlaceholder')"
+                  multiple
+                  max-tag-count="responsive"
+                  filterable
+                  remote
+                  clearable
+                  @search="onPlaceSearch"
+                  @update:value="(v) => store.selectPlaces(v)"
+                />
+                <n-select
+                  v-else
                   :value="store.payload.place_id"
                   :options="placeSelectOptions"
                   :loading="store.placeOptionsLoading"
