@@ -15,13 +15,16 @@
   const orgModel = ref([])
   const orgCheck = ref([])
 
-  // Tahlil qilinadigan barcha to'lov kodlari (hisobot jadvalidagi 9 tur).
+  // Tahlil qilinadigan to'lov kodlari — buxgalteriya tanlovi (11 tur), backend
+  // WATCHED_CODES bilan mos.
   const payingCodeOptions = [
-    { label: '11', value: '011' },
-    { label: '12', value: '012' },
+    { label: '42', value: '042' },
+    { label: '43', value: '043' },
     { label: '47', value: '047' },
     { label: '50', value: '050' },
     { label: '55', value: '055' },
+    { label: '72', value: '072' },
+    { label: '73', value: '073' },
     { label: '250', value: '250' },
     { label: '263', value: '263' },
     { label: '270', value: '270' },

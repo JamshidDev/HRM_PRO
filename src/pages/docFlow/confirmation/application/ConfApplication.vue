@@ -38,6 +38,7 @@
   const statusTabs = computed(() => [
     { id: 'all', name: t('applicationPage.hrTabs.all') },
     { id: 'draft', name: t('applicationPage.statuses.draft') },
+    { id: 'returned', name: t('applicationPage.statuses.returned') },
     { id: 'checking', name: t('applicationPage.statuses.checking') },
     { id: 'process', name: t('applicationPage.statuses.process') },
     { id: 'approved', name: t('applicationPage.statuses.approved') },

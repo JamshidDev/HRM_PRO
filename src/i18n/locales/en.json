@@ -1937,6 +1937,11 @@
         "Process": "In progress"
       },
       "approval": {
+        "extra": {
+          "cancelledSigns": "{n} signature(s) cancelled — will be signed again",
+          "snapshot": "Copy before return",
+          "resubmitted": "Re-submitted after correction"
+        },
         "title": "Signing process",
         "signers": "Approvers",
         "history": "Action history",
@@ -1982,6 +1987,11 @@
           "resent": "Resent to {count}"
         },
         "verbs": {
+          "route_created": "created the application",
+          "route_edited": "edited the application",
+          "route_submitted": "confirmed and submitted",
+          "route_returned": "returned for correction",
+          "route_approved": "approved — the application took effect",
           "submitted": "confirmed — the application was sent to HR",
           "created": "created the application (draft)",
           "sent": "— sent for signing",
@@ -1997,6 +2007,11 @@
           "route_closed": "closed the application"
         },
         "badges": {
+          "route_created": "Created",
+          "route_edited": "Edited",
+          "route_submitted": "Submitted",
+          "route_returned": "Returned",
+          "route_approved": "Approved",
           "submitted": "Confirmed",
           "created": "Created",
           "sent": "Sent",
@@ -2274,8 +2289,16 @@
       "worker": "Employee",
       "full_position": "Full position name (with organization)",
       "level": "Type",
-      "position": "Position"
-    }
+      "position": "Position",
+      "docFullPosition": "Full position"
+    },
+    "docFullPositionPlaceholder": "E.g.: Head of the Samarkand track distance branch",
+    "docFullPositionHint": "Shown in applications and notices: for the manager — in the header before the name, for an approver — in the signature line. If empty — the short position (for the manager, an auto-built text).",
+    "positionHint": "Short position: shown next to the signer in orders, contracts, additional agreements and other documents, and in approval lists.",
+    "main": "Main",
+    "mainLabel": "Main manager",
+    "mainHint": "Employee applications are addressed to this manager. An organization has exactly one main manager — assigning another removes the mark from the previous one.",
+    "makeMain": "Make main"
   },
   "contractPage": {
     "edit": {
@@ -3661,7 +3684,7 @@
     "statuses": {
       "draft": "Draft",
       "returned": "Returned",
-      "checking": "Under review",
+      "checking": "Review",
       "process": "In progress",
       "rejected": "Rejected",
       "approved": "Approved"
@@ -3671,7 +3694,7 @@
     "returnTitle": "Return application for correction",
     "returnReason": "Reason for returning",
     "returnPlaceholder": "What should the employee correct?",
-    "returnHint": "The application goes back to the employee as a draft. After they fix and sign it, it comes back to you.",
+    "returnHint": "The application returns to the employee for correction and is hidden from approvers and the manager. After the employee confirms it comes back to you; on re-sending, all approvers sign again.",
     "returnDone": "Application returned to the employee for correction",
     "returnedTitle": "Application returned for correction",
     "returnedBy": "Returned by",
@@ -7002,6 +7025,7 @@
       "sourceNewHint": "Mark a new place on the map — it is also added to the turnstile locations list.",
       "place": "Turnstile location",
       "placePlaceholder": "Search by name",
+      "placeMaxHint": "Up to {n} places per save ({count}/{n})",
       "freeMode": "Free mode",
       "freeModeHint": "No area restriction — the employee can pass from anywhere; only coordinates and the face photo are recorded.",
       "department": "Department",
@@ -8246,8 +8270,7 @@
     }
   },
   "seo": {
-    "loginTitle": "HRM PRO — HR management and electronic document workflow {'|'} Uzbekistan Railways",
-    "modulesLink": "HRM PRO modules and features"
+    "loginTitle": "HRM PRO — HR management and electronic document workflow {'|'} Uzbekistan Railways"
   },
   "noticesPage": {
     "name": "Notices",

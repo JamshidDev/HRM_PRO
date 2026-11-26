@@ -1953,6 +1953,11 @@
         "Process": "Jarayonda"
       },
       "approval": {
+        "extra": {
+          "cancelledSigns": "{n} ta imzo bekor qilindi — qayta imzolanadi",
+          "snapshot": "Qaytarişgaça bölgan nusxa",
+          "resubmitted": "Tuzatilgandan keyin qayta yuborildi"
+        },
         "title": "Imzolaş jarayoni",
         "signers": "Kelişuvçilar",
         "history": "Harakatlar tarixi",
@@ -1998,6 +2003,11 @@
           "resent": "{count} kişiga qayta yuborildi"
         },
         "verbs": {
+          "route_created": "arizani yaratdi",
+          "route_edited": "arizani tahrirladi",
+          "route_submitted": "tasdiqlab yubordi",
+          "route_returned": "tuzatiş uçun qaytardi",
+          "route_approved": "tasdiqladi — ariza kuçga kirdi",
           "submitted": "tasdiqladi — ariza kadrlar bölimiga yuborildi",
           "created": "arizani yaratdi (qoralama)",
           "sent": "— imzolaşga yuborildi",
@@ -2013,6 +2023,11 @@
           "route_closed": "arizani yopdi"
         },
         "badges": {
+          "route_created": "Yaratildi",
+          "route_edited": "Tahrirlandi",
+          "route_submitted": "Yuborildi",
+          "route_returned": "Qaytarildi",
+          "route_approved": "Tasdiqlandi",
           "submitted": "Tasdiqladi",
           "created": "Yaratdi",
           "sent": "Yuborildi",
@@ -2284,14 +2299,22 @@
   },
   "confirmationPage": {
     "name": "Kelişuvçilar",
-    "createTitle": "Tasdiqlovçi qöşiş",
-    "updateTitle": "Tasdiqlovçini tahrirlaş",
+    "createTitle": "Kelişuvçi qöşiş",
+    "updateTitle": "Kelişuvçini tahrirlaş",
     "table": {
       "worker": "Xodim",
       "full_position": "Lavozim töliq nomi (Taşkilot nomi bilan töliq nomi)",
       "level": "Turi",
-      "position": "Lavozim"
-    }
+      "position": "Lavozim",
+      "docFullPosition": "To'liq lavozim"
+    },
+    "docFullPositionPlaceholder": "Masalan: Samarqand temir yo'l masofasi filiali boshlig'i",
+    "docFullPositionHint": "Ariza va bildirgilarda shu matn chiqadi: rahbar uchun sarlavhada ismidan oldin, kelishuvchi uchun imzo qatorida. Bo'sh qolsa — qisqa lavozim (rahbar uchun avtomatik yig'ilgan matn).",
+    "positionHint": "Qisqa lavozim: buyruq, shartnoma, qo'shimcha kelishuv va boshqa hujjatlarda imzo qo'yuvchi yonida hamda kelishuv ro'yxatlarida chiqadi.",
+    "main": "Asosiy",
+    "mainLabel": "Asosiy rahbar",
+    "mainHint": "Xodimlar arizasi shu rahbar nomiga yoziladi. Korxonada faqat bitta asosiy rahbar bo'ladi — boshqasini asosiy qilsangiz, avvalgisidan belgi olinadi.",
+    "makeMain": "Asosiy qiliş"
   },
   "contractPage": {
     "edit": {
@@ -3680,8 +3703,8 @@
   "applicationPage": {
     "statuses": {
       "draft": "Qoralama",
-      "returned": "Qaytarildi",
-      "checking": "Tekşiruvda",
+      "returned": "Qaytarilgan",
+      "checking": "Tekşiruv",
       "process": "Jarayonda",
       "rejected": "Rad etilgan",
       "approved": "Tasdiqlangan"
@@ -3691,7 +3714,7 @@
     "returnTitle": "Arizani tuzatiş uçun qaytariş",
     "returnReason": "Qaytariş sababi",
     "returnPlaceholder": "Xodim nimani tuzatişi kerak?",
-    "returnHint": "Ariza xodimga qoralama bölib qaytadi. Xodim tuzatib, qayta tasdiqlagaç yana sizga keladi.",
+    "returnHint": "Ariza xodimga tuzatiş uçun qaytadi va kelişuvçilar hamda rahbarga körinmaydi. Xodim tasdiqlagaç yana sizga keladi; qayta yuborsangiz, barça kelişuvçilar qaytadan imzolaydi.",
     "returnDone": "Ariza xodimga tuzatiş uçun qaytarildi",
     "returnedTitle": "Ariza tuzatiş uçun qaytarildi",
     "returnedBy": "Qaytardi",
@@ -7060,6 +7083,7 @@
       "sourceNewHint": "Xaritada yangi joy belgilang — u turniket lokatsiyalari röyxatiga ham qöşiladi.",
       "place": "Turniket lokatsiyasi",
       "placePlaceholder": "Nomi böyiça qidiring",
+      "placeMaxHint": "Bir martada ko'pi bilan {n} ta joy tanlanadi ({count}/{n})",
       "freeMode": "Erkin rejim",
       "freeModeHint": "Hudud çeklovi yöq — xodim istalgan joydan ötadi, faqat koordinatasi va yuz rasmi yoziladi.",
       "department": "Bölim",
@@ -8442,8 +8466,7 @@
     }
   },
   "seo": {
-    "loginTitle": "HRM PRO — kadrlar boşqaruvi va elektron hujjat aylanişi {'|'} Özbekiston temir yöllari",
-    "modulesLink": "HRM PRO modullari va imkoniyatlari"
+    "loginTitle": "HRM PRO — kadrlar boşqaruvi va elektron hujjat aylanişi {'|'} Özbekiston temir yöllari"
   },
   "noticesPage": {
     "name": "Bildirgilar",

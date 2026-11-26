@@ -2,7 +2,6 @@ User-agent: *
 Allow: /$
 Allow: /login
 Allow: /privacy-policy
-Allow: /modules
 Allow: /og-image.jpg
 Allow: /terms/
 # Logotip / favicon — Google qidiruv natijasida ko'rsatishi uchun ochiq bo'lishi shart.

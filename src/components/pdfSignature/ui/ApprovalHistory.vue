@@ -24,6 +24,9 @@
   // Bir vaqtda (bir daqiqada) ko'pchilikka bo'lgan yuborish — bitta qator bo'lib birlashadi.
   const GROUPABLE = [EVENT.sent, EVENT.resent]
 
+  // Qaytarishda bekor qilingan imzolar soni (HR va kelishuvchilar).
+  const signedCount = (route) => (route?.cancelled || []).filter((c) => c.status === 3).length
+
   const shortName = (w) => Utils.shortFio(w?.last_name, w?.first_name, w?.middle_name)
 
   const groups = computed(() => {
@@ -47,6 +50,7 @@
         date: dayjs(ev.date),
         file: ev.name,
         route: ev.route || null,
+        fileUrl: ev.file_url || null,
         signer: { worker: ev.actor, type: ev.route ? 's' : null }
       })
     }
@@ -165,7 +169,7 @@
               </div>
               <!-- Marshrut: rejim, qo'shilgan / olib tashlangan kelishuvchi va tanishuvchilar, yopish sababi -->
               <div v-if="row.route" class="mt-1.5 flex flex-col gap-1 text-[11px] leading-snug">
-                <div v-if="row.route.event !== 'closed' && (row.route.event !== 'changed' || row.route.mode_changed)" class="text-textColor3">
+                <div v-if="row.route.mode && row.route.event !== 'closed' && (row.route.event !== 'changed' || row.route.mode_changed)" class="text-textColor3">
                   {{ $t('applicationPage.forward.mode') }}:
                   <span class="font-medium text-textColor1">
                     {{ $t(`applicationPage.forward.${row.route.mode}`) }}
@@ -190,6 +194,23 @@
                 </div>
                 <div v-if="row.route.reason" class="rounded-lg border-l-2 border-fig-red bg-fig-red-50 px-2 py-1 text-fig-text-red">
                   {{ row.route.reason }}
+                </div>
+                <!-- Qaytarish: bekor qilingan imzolar va qaytarishgacha bo'lgan nusxa -->
+                <div v-if="row.route.event === 'returned' && signedCount(row.route)" class="text-textColor3">
+                  {{ $t('documentPage.signature.approval.extra.cancelledSigns', { n: signedCount(row.route) }) }}
+                </div>
+                <a
+                  v-if="row.fileUrl"
+                  :href="row.fileUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex w-fit items-center gap-1 rounded-md border border-surface-line bg-fig-bg-secondary px-1.5 py-0.5 text-textColor1 hover:text-primary"
+                >
+                  <n-icon size="12" class="text-fig-text-red"><component :is="PdfFileIcon" /></n-icon>
+                  {{ $t('documentPage.signature.approval.extra.snapshot') }}
+                </a>
+                <div v-if="row.route.event === 'submitted' && row.route.resubmitted" class="text-textColor3">
+                  {{ $t('documentPage.signature.approval.extra.resubmitted') }}
                 </div>
               </div>
               <div v-else-if="row.file" class="mt-1.5 min-w-0">
