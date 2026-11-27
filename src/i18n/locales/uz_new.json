@@ -4252,7 +4252,8 @@
     "name": "Rahbariyat",
     "invalidPhone": "Telefon raqami notöğri!",
     "addLeader": "Rahbariyatni qöşiş",
-    "editLeader": "Rahbariyatni tahrirlaş"
+    "editLeader": "Rahbariyatni tahrirlaş",
+    "addPhone": "Raqam qöşiş"
   },
   "reportPage": {
     "name": "Hisobotlar",
@@ -5998,7 +5999,7 @@
   },
   "navigation": {
     "structureGroup": "Tuzilma",
-    "management": "Boshqaruv",
+    "management": "Boşqaruv",
     "hrm": "Kadrlar boşqaruvi",
     "docFlow": "Hujjat aylanişi",
     "myOrg": "Kadr boşqaruvi",

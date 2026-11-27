@@ -29,6 +29,28 @@
     data: { type: Object, required: true }
   })
 
+  // Blanka sarlavhasi (tashkilot nomi, 3 qator) endi rasmda emas — backenddan keladi.
+  // BACKEND: `certificate.header` hali yuborilmaydi (docs/api/position-certificate-header.md),
+  // kelmaguncha avvalgi blankadagi matn ko'rsatiladi
+  const DEFAULT_HEADER = {
+    top: '“O‘ZBEKISTON TEMIR YO‘LLARI” AJ',
+    name: '“TEMIRYO‘LINFRATUZILMA”',
+    bottom: 'AKSIYADORLIK JAMIYATI'
+  }
+
+  // top — qator harflarining o'rtasi (blankada y 51 / 79.5 / 108 dan 467 ga)
+  const HEADER_LINES = [
+    { key: 'top', top: '10.92%', cls: 'cert-head' },
+    { key: 'name', top: '17.02%', cls: 'cert-head cert-head--name' },
+    { key: 'bottom', top: '23.13%', cls: 'cert-head' }
+  ]
+
+  const header = computed(() => {
+    const h = props.data.header
+    if (!h || !(h.top || h.name || h.bottom)) return DEFAULT_HEADER
+    return { top: h.top || '', name: h.name || '', bottom: h.bottom || '' }
+  })
+
   const isFlipped = ref(false)
   const isAnimating = ref(false)
 
@@ -97,6 +119,7 @@
       qrDataUrl: qrDataUrl.value,
       data: d,
       fields: {
+        header: header.value,
         issueDay: dayOf(d.issueDate),
         issueMonth: monthOf(d.issueDate),
         issueYear: fullYear(d.issueDate),
@@ -133,6 +156,17 @@
         class="absolute inset-0 [backface-visibility:hidden] rounded-2xl overflow-hidden shadow-lg bg-cover bg-center text-[#1c2b22]"
         :style="{ backgroundImage: `url(${frontSide})` }"
       >
+        <!-- Sarlavha: tashkilot nomi (o'rtadagi qator katta va qalin) -->
+        <span
+          v-for="line in HEADER_LINES"
+          v-show="header[line.key]"
+          :key="line.key"
+          :class="line.cls"
+          :style="{ top: line.top }"
+          :title="header[line.key]"
+          >{{ header[line.key] }}</span
+        >
+
         <!-- Guvohnoma № -->
         <span
           class="absolute left-[16%] top-[30%] max-w-[20%] cert-text font-medium sm:font-bold font-mono tracking-wide truncate"
@@ -278,6 +312,29 @@
     font-size: 13px;
   }
 
+  /* Sarlavha qatorlari chap varaq (x 20–718 / 1489) markazida; top — harflar o'rtasi */
+  .cert-head {
+    position: absolute;
+    left: 1.34%;
+    width: 46.88%;
+    padding: 0 2%;
+    transform: translateY(-50%);
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+    font-weight: 500;
+    font-size: 9px;
+    color: #101828;
+  }
+
+  .cert-head--name {
+    font-weight: 700;
+    font-size: 11px;
+  }
+
   /* Blankadagi ikkita chiziq orasidagi masofa: 45/467 balandlik = 3.02cqw */
   .post-name {
     line-height: 19px;
@@ -298,6 +355,15 @@
 
     .post-name {
       line-height: 3.02cqw;
+    }
+
+    /* Blankada: 20.5px va 25px (1489px kenglikda) */
+    .cert-head {
+      font-size: 1.38cqw;
+    }
+
+    .cert-head--name {
+      font-size: 1.68cqw;
     }
   }
 

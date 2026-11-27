@@ -10,6 +10,13 @@ export const useOrganizationLeaderStore = defineStore('organizationLeaderStore',
     visible: false,
     visibleType: true,
     elementId: null,
+    // Tahrirlanayotgan qator — oynada kim ekanligini ko'rsatish uchun (ism + tashkilot)
+    editRow: null,
+    // Filter uchun TO'LIQ tashkilotlar daraxti (qidiruvsiz, bir marta yuklanadi) — tanlangan
+    // tugunning barcha ichki tashkilotlarini shundan olamiz. Select'dagi daraxt qidiruv bilan
+    // qisqargan bo'lishi mumkin (faqat topilgan shoxlar qoladi).
+    orgTree: null,
+    indexReqId: 0,
     totalItems: 0,
     structureCheck: [],
     params: {
@@ -26,24 +33,57 @@ export const useOrganizationLeaderStore = defineStore('organizationLeaderStore',
     structureCheck2: []
   }),
   actions: {
-    _index() {
+    async _loadOrgTree() {
+      if (this.orgTree) return
+      const res = await $ApiService.componentService._structure({
+        params: { page: 1, per_page: 1000 }
+      })
+      this.orgTree = res.data.data || []
+    },
+    async _index() {
       this.loading = true
+      // Eskirgan javob yangisini bosib ketmasin (filtr tez-tez bosilganda)
+      const reqId = ++this.indexReqId
+      // BACKEND: `organizations` faqat aynan berilgan tashkilotni filtrlaydi (ichidagilarni emas) —
+      // shu bois tanlangan tugunning barcha ichki tashkilotlari ham yuboriladi
+      // (docs/api/organization-leaders.md). Ichki tashkilotlar TO'LIQ daraxtdan olinadi.
+      if (this.params.organizations.length) {
+        await this._loadOrgTree().catch(() => {})
+      }
+      if (reqId !== this.indexReqId) return
+      const byId = new Map()
+      const index = (nodes) =>
+        (nodes || []).forEach((n) => {
+          byId.set(n.id, n)
+          index(n.children)
+        })
+      index(this.orgTree)
+      const ids = new Set()
+      const collect = (node) => {
+        if (!node || ids.has(node.id)) return
+        ids.add(node.id)
+        ;((byId.get(node.id) || node).children || []).forEach(collect)
+      }
+      this.params.organizations.forEach(collect)
       const params = {
         ...this.params,
-        organizations: this.params.organizations.map((v) => v.id).toString() || undefined
+        organizations: [...ids].toString() || undefined
       }
       $ApiService.organizationLeaderService
         ._index({ params })
         .then((res) => {
+          if (reqId !== this.indexReqId) return
           this.list = res.data.data.data
           this.totalItems = res.data.data.total
         })
         .finally(() => {
-          this.loading = false
+          if (reqId === this.indexReqId) this.loading = false
         })
     },
     _create() {
       this.saveLoading = true
+      // BACKEND: yuborilgan `organization_id` saqlanmayapti — yozuv xodimning o'z tashkilotiga
+      // tushadi (docs/api/organization-leaders.md, 2-bo'lim)
       const data = {
         ...this.payload,
         organization_id: this.payload.organization_id[0].id
@@ -86,6 +126,7 @@ export const useOrganizationLeaderStore = defineStore('organizationLeaderStore',
         })
     },
     resetForm() {
+      this.editRow = null
       this.payload = {
         organization_id: [],
         worker_position_id: null,

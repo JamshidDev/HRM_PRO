@@ -4232,7 +4232,8 @@
     "name": "Management",
     "invalidPhone": "Invalid phone number!",
     "addLeader": "Add management",
-    "editLeader": "Edit management"
+    "editLeader": "Edit management",
+    "addPhone": "Add number"
   },
   "reportPage": {
     "name": "Reports",
