@@ -46,6 +46,9 @@
 </template>
 
 <style lang="scss" scoped>
+  // Umumiy bo'lim uslublari (`@use` blok boshida turishi shart).
+  @use './contractFormSections';
+
   .contract-form {
     display: flex;
     flex-direction: column;
@@ -63,5 +66,4 @@
     pointer-events: none;
   }
 
-  @import './contractFormSections.scss';
 </style>

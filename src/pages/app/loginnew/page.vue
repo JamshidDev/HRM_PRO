@@ -214,8 +214,9 @@ const onDone = () => {
 
 <template>
   <!-- Tepada qotirilgan «faqat E-IMZO» ogohlantirishi + taymer (muddat o'tgach yo'qoladi).
-       Sahifa balandligidan panel balandligi (`--eimzo-bar-h`) ayriladi — ortiqcha scroll bo'lmasin. -->
-  <EimzoNoticeBar />
+       Sahifa balandligidan panel balandligi (`--eimzo-bar-h`) ayriladi — ortiqcha scroll bo'lmasin.
+       Panel qatoriga sahifa foni beriladi — uning ortidagi chiziq oq bo'lib qolmasin. -->
+  <EimzoNoticeBar class="bg-login-page" />
   <div
     class="login-new min-h-[calc(100vh-var(--eimzo-bar-h,0px))] w-full flex items-stretch text-login-ink bg-login-page gap-4 lg:gap-8"
   >
