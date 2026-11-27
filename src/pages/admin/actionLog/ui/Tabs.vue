@@ -6,6 +6,8 @@
   const accStore = useAccountStore()
 
   const store = useActionLogStore()
+  // «Kirishlar tarixi» alohida ruxsat bilan (authentication-logs-read).
+  const canSeeAuth = computed(() => accStore.canView('authentication-logs-read'))
 
   const changeTab = () => {
     if (!accStore.checkAction(accStore.pn.activityLogsRead)) return
@@ -25,7 +27,7 @@
     <n-tab-pane :name="1" :tab="$t('actionLog.tab.action')" class="flex-1 overflow-auto">
       <Table />
     </n-tab-pane>
-    <n-tab-pane :name="2" :tab="$t('actionLog.tab.auth')" class="flex-1 overflow-auto">
+    <n-tab-pane v-if="canSeeAuth" :name="2" :tab="$t('actionLog.tab.auth')" class="flex-1 overflow-auto">
       <AuthTable />
     </n-tab-pane>
   </UITabs>

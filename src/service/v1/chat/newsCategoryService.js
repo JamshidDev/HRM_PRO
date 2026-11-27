@@ -9,7 +9,7 @@ const _create = async (payload) => {
 }
 
 const _update = async (payload) => {
-  return await axios.post(`/v1/chat/categories/${payload.id}`, payload.data, {
+  return await axios.put(`/v1/chat/categories/${payload.id}`, payload.data, {
     params: payload.params
   })
 }

@@ -16,6 +16,14 @@
   const universityStore = useUniversityAdminStore()
   const specialtyStore = useSpecialityStore()
 
+  // «Qo'shish» faqat joriy bob uchun yozish ruxsati bo'lsa ko'rinadi.
+  const WRITE = {
+    1: accStore.pn.universitiesWrite,
+    2: accStore.pn.specialitiesWrite,
+    3: accStore.pn.languagesWrite
+  }
+  const canAdd = computed(() => accStore.checkPermission(WRITE[store.activeTab]))
+
   const onAdd = () => {
     if (store.activeTab === 3) {
       if (!accStore.checkAction(accStore.pn.languagesWrite)) return
@@ -72,6 +80,7 @@
       v-model:search="universityStore.params.search"
       @onSearch="onSearch"
       @onAdd="onAdd"
+      :show-add-button="canAdd"
       :show-filter-button="false"
     />
     <Tabs />

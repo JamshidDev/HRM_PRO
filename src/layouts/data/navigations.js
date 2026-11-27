@@ -329,7 +329,7 @@ export const navigations = withRawIcons([
         path: Utils.routeHrmPathMaker(AppPaths.Med),
         icon: medicalExaminationIcon,
         color: 'bg-success',
-        permission: appPermissions.hrMedRead
+        permission: [appPermissions.hrMedRead, appPermissions.hrSickLeaveRead]
       },
       // {
       //     label: 'reportPage.name',
@@ -371,6 +371,7 @@ export const navigations = withRawIcons([
         color: 'bg-warning',
         permission: [
           appPermissions.hrReportRead,
+          appPermissions.hrPensionersRead,
           appPermissions.hrReportExport,
           appPermissions.hrMonthlyReport,
           appPermissions.hrArchiveRead,
@@ -387,12 +388,12 @@ export const navigations = withRawIcons([
             permission: appPermissions.hrReportRead
           },
           {
-            // Tabli sahifada ham AYNAN shu ruxsat edi — «Plan va Fakt» bilan bitta.
+            // API `hr-pensioners-read` talab qiladi — menyu ham shu ruxsat bilan.
             label: 'pensioner.name', // Pensionerlar
             path: Utils.routeHrmPathMaker(AppPaths.Pensioner),
             icon: pensionaryIcon,
             color: 'bg-secondary',
-            permission: appPermissions.hrReportRead
+            permission: appPermissions.hrPensionersRead
           },
           {
             label: 'reports.tabs.special', // Maxsus hisobot
@@ -708,7 +709,12 @@ export const navigations = withRawIcons([
         path: Utils.routeTurnstilePathMaker(AppPaths.Others),
         icon: TurnstileOthersIcon,
         color: 'bg-primary',
-        permission: appPermissions.turnstileOthers
+        // Sahifa — uchta tab; birortasi ruxsat etilgan bo'lsa ko'rinadi (bo'sh sahifa chiqmasin).
+        permission: [
+          appPermissions.turnstileHikCentralSync,
+          appPermissions.turnstileHikCentralJobRead,
+          appPermissions.turnstileHikCentralTgUserRead
+        ]
       },
       {
         label: 'schedule.name', // Navbatchilik grafigi
@@ -1000,7 +1006,8 @@ export const navigations = withRawIcons([
         path: Utils.routeChatPathMaker(AppPaths.Notification),
         icon: ChatNotificationIcon,
         color: 'bg-dark',
-        permission: appPermissions.chatNotification
+        // Sahifa — Push (instructions) va Telegram tablari; chat-notification uchun karta yo'q edi.
+        permission: [appPermissions.instructionsRead, appPermissions.chatTelegramBroadcastRead]
       },
       {
         label: 'newsPage.name', // Yangiliklar
@@ -1225,7 +1232,11 @@ export const navigations = withRawIcons([
         path: Utils.routePathMaker(AppPaths.AdminOther),
         icon: AdminFolderIcon,
         color: 'bg-dark',
-        permission: appPermissions.universitiesRead
+        permission: [
+          appPermissions.universitiesRead,
+          appPermissions.specialitiesRead,
+          appPermissions.languagesRead
+        ]
       },
       {
         label: 'telegramPage.name', // Telegram

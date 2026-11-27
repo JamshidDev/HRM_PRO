@@ -11,14 +11,13 @@
   const componentStore = useComponentStore()
   const accStore = useAccountStore()
   const createFormRef = ref(null)
-  const activeTab = ref('med')
-
-  // Kasallik varaqasi tabi o'z ruxsati bilan ochiladi.
+  // Har tab o'z ruxsati bilan; faqat kasallik varaqasi ruxsati bo'lsa sahifa shu tabdan ochiladi.
+  const canSeeMed = computed(() => accStore.canView(accStore.pn.hrMedRead))
   const canSeeSickLeave = computed(() => accStore.checkPermission(accStore.pn.hrSickLeaveRead))
+  const activeTab = ref(canSeeMed.value ? 'med' : 'sick-leave')
 
   onMounted(() => {
-    if (!accStore.checkAction(accStore.pn.hrMedRead)) return
-    store._index()
+    if (canSeeMed.value) store._index()
   })
 
   onUnmounted(() => {
@@ -36,7 +35,7 @@
       type="line"
       class="ui-pill-tabs ui-pill-tabs--inline"
     >
-      <n-tab-pane name="med">
+      <n-tab-pane v-if="canSeeMed" name="med">
         <template #tab>
           <span class="flex items-center gap-1.5">
             <n-icon size="17"><DocumentHeartPulse24Regular /></n-icon>
