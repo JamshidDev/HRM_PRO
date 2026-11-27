@@ -13,6 +13,15 @@
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
   const formRef = ref(null)
+  // UIModal yopilganda forma yo'q qilinmaydi — har ochilishda `:key` bilan qayta yaratamiz,
+  // aks holda oldingi validatsiya xatolari ~1 s ko'rinib qoladi
+  const formKey = ref(0)
+  watch(
+    () => store.visible,
+    (v) => {
+      if (v) formKey.value++
+    }
+  )
 
   onMounted(() => {
     if (!accStore.checkAction(accStore.pn.hrLeadersRead)) return
@@ -41,7 +50,7 @@
       "
       width="min(700px, calc(100vw - 32px))"
     >
-      <Form ref="formRef" />
+      <Form ref="formRef" :key="formKey" />
 
       <template #footer>
         <div class="flex justify-end gap-2 px-4 pb-2">

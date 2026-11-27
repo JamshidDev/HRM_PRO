@@ -4252,7 +4252,8 @@
     "name": "Rahbariyat",
     "invalidPhone": "Telefon raqami noto'g'ri!",
     "addLeader": "Rahbariyatni qo'shish",
-    "editLeader": "Rahbariyatni tahrirlash"
+    "editLeader": "Rahbariyatni tahrirlash",
+    "addPhone": "Raqam qo'shish"
   },
   "reportPage": {
     "name": "Hisobotlar",
