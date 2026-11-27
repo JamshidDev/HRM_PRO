@@ -1,6 +1,6 @@
 <script setup>
   import { safeUrl } from '@/utils/sanitize.js'
-  import { UIStatus, UITable, UIUser } from '@/components/index.js'
+  import { UIChip, UIStatus, UITable, UIUser } from '@/components/index.js'
   import i18n from '@/i18n/index.js'
   import { useAccountStore, useMedStore } from '@/store/modules/index.js'
   import UIHelper from '@/utils/UIHelper.js'
@@ -91,7 +91,7 @@
     { key: 'organization.name', title: t('medPage.form.organization'), width: 240 },
     { key: 'status', title: t('medPage.form.status'), width: 170 },
     { key: 'period', title: t('medPage.form.expiry'), width: 210 },
-    { key: 'days', title: t('date.day'), width: 150 }
+    { key: 'days', title: t('date.day'), width: 200 }
   ])
 
   const actions = computed(() => [
@@ -127,7 +127,7 @@
     :page="store.params.page"
     :per-page="store.params.per_page"
     :total="store.totalItems"
-    storage-key="hrm-med-v3"
+    storage-key="hrm-med-v4"
     @change-page="changePage"
   >
     <template #cell-worker="{ row }">
@@ -164,14 +164,17 @@
       </div>
     </template>
 
-    <!-- Kun — oddiy matn (Muddati ustunidagi sanalar kabi), rang: o'tgan qizil, ≤30 kun sariq. -->
+    <!-- Kun — oddiy matn (Muddati ustunidagi sanalar kabi), rang: o'tgan qizil, ≤30 kun sariq.
+         Ta'tildagi xodim — kun ustida ko'k chip (eski joyi) «… gacha ta'tilda» (foydalanuvchilar so'radi: kulrang matn ko'rinmasdi). -->
     <template #cell-days="{ row }">
-      <div class="flex flex-col leading-tight">
+      <div class="flex flex-col items-start gap-1 leading-tight">
+        <UIChip
+          v-if="row.vacation"
+          tone="brand"
+          :label="`${Utils.timeOnlyDate(row.vacation)} ${$t('medPage.form.onVacation')}`"
+        />
         <span class="whitespace-nowrap tabular-nums font-medium" :class="daysClass(row)">
           {{ daysLabel(row) }}
-        </span>
-        <span v-if="row.vacation" class="text-xs text-textColor3">
-          {{ Utils.timeOnlyDate(row.vacation) }} {{ $t('medPage.form.onVacation') }}
         </span>
       </div>
     </template>
