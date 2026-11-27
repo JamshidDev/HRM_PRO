@@ -57,7 +57,6 @@ export const DEPT_SCOPED_PREFIXES = new Set([
   'turnstile-hik-central-job',
   'turnstile-hik-central-tg-user',
   'turnstile-hik-central-workers',
-  'turnstile-others',
   'turnstile-schedule',
   'turnstile-sheets',
   'turnstile-work-duration',

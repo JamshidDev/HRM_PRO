@@ -43,8 +43,6 @@
     }
   }
 
-  // BACKEND: filtr to'liq ishlashi uchun `GET /v1/hr/leaders` `organizations` ichki tashkilotlar va
-  // guruhlarni o'zi qamrab olishi kerak — talablar: docs/api/organization-leaders.md, 3-bo'lim
   const onChangeStructure = (v) => {
     store.params.organizations = v
     filterEvent()

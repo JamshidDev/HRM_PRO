@@ -22,6 +22,7 @@ export const ENFORCED = new Set([
   'hospital-ticket-read',
   'hospital-ticket-write',
   'mobile-services',
+  'hr-responsible',
   'activity-logs-read',
   'profile-organization-info-read',
   'signature-history-read',
@@ -34,7 +35,6 @@ export const ENFORCED = new Set([
   'cities-delete',
   'cities-write',
   'confirmation-documents-delete',
-  'confirmation-worker-applications-delete',
   'countries-delete',
   'countries-write',
   'department-location-delete',
@@ -364,6 +364,7 @@ export const MEANINGFUL = new Set([
   'hr-report-export-write',
   'exam-results-write',
   'mobile-services',
+  'hr-responsible',
   'activity-logs',
   'activity-logs-read',
   'signature-history-read',
@@ -391,7 +392,6 @@ export const MEANINGFUL = new Set([
   'confirmation-staffing-approval',
   'confirmation-table',
   'confirmation-worker-applications',
-  'confirmation-worker-applications-delete',
   'countries',
   'countries-delete',
   'countries-read',
@@ -751,7 +751,6 @@ export const MEANINGFUL = new Set([
   'turnstile-organization-access-levels-write',
   'turnstile-organization-read',
   'turnstile-organization-write',
-  'turnstile-others',
   'turnstile-sheets',
   'turnstile-sheets-delete',
   'turnstile-sheets-groups',
@@ -890,6 +889,8 @@ export const PERMISSION_GROUPS = [
         ]
       },
       { prefix: 'hr-med', label: 'medPage.name' },
+      // Korxonaning mas'ul HR'i — xodim kartasida HR kontakti sifatida chiqadi.
+      { prefix: 'hr-responsible', label: 'userRole.form.hrResponsible' },
       {
         prefix: 'hr-sick-leave',
         label: 'sickLeave.name',
@@ -1040,9 +1041,7 @@ export const PERMISSION_GROUPS = [
       // (2026-08-13 audit) — grantable bo'lishi uchun guruh (slug'lar ENFORCED'da bor).
       { prefix: 'turnstile-building', label: 'turnstile.buildingPage.title' },
       { prefix: 'turnstile-terminal', label: 'turnstile.terminalPage.title' },
-      // «Qo'shimcha» menyusi — tab-konteyner. Menyu-kirish + har tab alohida karta
-      // (o'z sahifa ruxsatlari bilan): Sinxronizatsiya loglari, HC server, Telegram.
-      { prefix: 'turnstile-others', label: 'additionalPage.name' },
+      // «Qo'shimcha» menyusi tablar ruxsati bilan ochiladi (alohida menyu-kartasi yo'q).
       { prefix: 'turnstile-hik-central-sync', label: 'hcEvent.syncTitle' },
       { prefix: 'turnstile-hik-central-job', label: 'hcServer.name' },
       { prefix: 'turnstile-hik-central-tg-user', label: 'notification.name' },
