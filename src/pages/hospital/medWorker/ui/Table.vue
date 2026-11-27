@@ -25,12 +25,7 @@
     {
       key: 'organization',
       title: t('content.organization'),
-      minWidth: 200
-    },
-    {
-      key: 'department',
-      title: t('medWorker.form.department'),
-      minWidth: 200
+      minWidth: 260
     },
     {
       key: 'position',
@@ -90,18 +85,20 @@
       </UIUser>
     </template>
 
-    <!-- Qisqa nom; to'liq nom tooltip'da. -->
+    <!-- (qisqa nom) korxona nomi, to'liq nom tooltip'da; tagida bo'lim. -->
     <template #cell-organization="{ row }">
-      <n-tooltip :disabled="!row?.organization?.full_name" placement="top-start">
-        <template #trigger>
-          <div class="truncate text-sm text-textColor2">{{ row?.organization?.name }}</div>
-        </template>
-        {{ row?.organization?.full_name }}
-      </n-tooltip>
-    </template>
-
-    <template #cell-department="{ row }">
-      <n-ellipsis class="text-sm text-textColor2">{{ row?.department }}</n-ellipsis>
+      <div class="flex flex-col min-w-0">
+        <n-tooltip :disabled="!row?.organization?.full_name" placement="top-start">
+          <template #trigger>
+            <div class="truncate text-sm text-textColor2 leading-[1.2]">
+              <span v-if="row?.organization?.code" class="text-textColor3">({{ row.organization.code }})</span>
+              {{ row?.organization?.name }}
+            </div>
+          </template>
+          {{ row?.organization?.full_name }}
+        </n-tooltip>
+        <n-ellipsis class="text-xs text-textColor3">{{ row?.department }}</n-ellipsis>
+      </div>
     </template>
 
     <template #cell-position="{ row }">
