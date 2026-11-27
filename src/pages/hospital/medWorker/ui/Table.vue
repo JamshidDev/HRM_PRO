@@ -24,8 +24,13 @@
     },
     {
       key: 'organization',
-      title: `${t('content.organization')} / ${t('medWorker.form.department')}`,
-      minWidth: 240
+      title: t('content.organization'),
+      minWidth: 200
+    },
+    {
+      key: 'department',
+      title: t('medWorker.form.department'),
+      minWidth: 200
     },
     {
       key: 'position',
@@ -85,13 +90,18 @@
       </UIUser>
     </template>
 
+    <!-- Qisqa nom; to'liq nom tooltip'da. -->
     <template #cell-organization="{ row }">
-      <div class="flex flex-col">
-        <n-ellipsis class="text-sm text-textColor2 leading-[1.2]">{{
-          row?.organization?.name
-        }}</n-ellipsis>
-        <n-ellipsis class="text-xs text-textColor3">{{ row?.department }}</n-ellipsis>
-      </div>
+      <n-tooltip :disabled="!row?.organization?.full_name" placement="top-start">
+        <template #trigger>
+          <div class="truncate text-sm text-textColor2">{{ row?.organization?.name }}</div>
+        </template>
+        {{ row?.organization?.full_name }}
+      </n-tooltip>
+    </template>
+
+    <template #cell-department="{ row }">
+      <n-ellipsis class="text-sm text-textColor2">{{ row?.department }}</n-ellipsis>
     </template>
 
     <template #cell-position="{ row }">
