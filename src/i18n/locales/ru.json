@@ -801,6 +801,7 @@
     "form": {
       "mobileTab": "Мобильное",
       "mobileServices": "Сервисы мобильного приложения (Турникеты)",
+      "hrResponsible": "Ответственный HR организации",
       "name": "Название роли",
       "permissions": "Права",
       "moduleAccess": "Доступ к модулю",

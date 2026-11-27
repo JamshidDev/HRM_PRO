@@ -22,6 +22,7 @@ export const ENFORCED = new Set([
   'hospital-ticket-read',
   'hospital-ticket-write',
   'mobile-services',
+  'hr-responsible',
   'activity-logs-read',
   'profile-organization-info-read',
   'signature-history-read',
@@ -364,6 +365,7 @@ export const MEANINGFUL = new Set([
   'hr-report-export-write',
   'exam-results-write',
   'mobile-services',
+  'hr-responsible',
   'activity-logs',
   'activity-logs-read',
   'signature-history-read',
@@ -890,6 +892,8 @@ export const PERMISSION_GROUPS = [
         ]
       },
       { prefix: 'hr-med', label: 'medPage.name' },
+      // Korxonaning mas'ul HR'i — xodim kartasida HR kontakti sifatida chiqadi.
+      { prefix: 'hr-responsible', label: 'userRole.form.hrResponsible' },
       {
         prefix: 'hr-sick-leave',
         label: 'sickLeave.name',

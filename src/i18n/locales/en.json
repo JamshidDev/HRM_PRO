@@ -799,6 +799,7 @@
     "form": {
       "mobileTab": "Mobile",
       "mobileServices": "Mobile app services (Turnstiles)",
+      "hrResponsible": "Responsible HR of organization",
       "name": "Role name",
       "permissions": "Permissions",
       "moduleAccess": "Module access",
