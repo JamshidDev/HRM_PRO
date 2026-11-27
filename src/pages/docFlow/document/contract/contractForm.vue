@@ -93,6 +93,9 @@
 </template>
 
 <style lang="scss" scoped>
+  // Umumiy bo'lim uslublari (`@use` blok boshida turishi shart).
+  @use './contractFormSections';
+
   /*
     Modal sarlavhasi — tanadan ajratuvchi CHIZIQ emas, ochroq fon bilan ajraladi.
     Karta `n-modal` orqali `body` ga teleport qilinadi, shu bois `:global` va
@@ -143,5 +146,4 @@
     padding: 0 12px 0 0;
   }
 
-  @import './contractFormSections.scss';
 </style>
