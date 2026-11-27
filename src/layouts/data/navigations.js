@@ -1006,8 +1006,12 @@ export const navigations = withRawIcons([
         path: Utils.routeChatPathMaker(AppPaths.Notification),
         icon: ChatNotificationIcon,
         color: 'bg-dark',
-        // Sahifa — Push (instructions) va Telegram tablari; chat-notification uchun karta yo'q edi.
-        permission: [appPermissions.instructionsRead, appPermissions.chatTelegramBroadcastRead]
+        // Sahifa — Push (instructions yoki eski chat-notification) va Telegram tablari.
+        permission: [
+          appPermissions.chatNotification,
+          appPermissions.instructionsRead,
+          appPermissions.chatTelegramBroadcastRead
+        ]
       },
       {
         label: 'newsPage.name', // Yangiliklar

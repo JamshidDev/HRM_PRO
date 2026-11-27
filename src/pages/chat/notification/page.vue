@@ -23,7 +23,11 @@
   )
 
   // Push tabi instructions ruxsati bilan; faqat Telegram ruxsati bo'lsa shu tabdan ochiladi.
-  const canSeePush = computed(() => accStore.canView(accStore.pn.instructionsRead))
+  const canSeePush = computed(
+    () =>
+      accStore.canView(accStore.pn.instructionsRead) ||
+      accStore.checkPermission(accStore.pn.chatNotification)
+  )
   // Tab: 'push' (FCM) yoki 'telegram' («HRM PRO» boti orqali ommaviy xabar).
   const activeTab = ref(canSeePush.value ? 'push' : 'telegram')
 
