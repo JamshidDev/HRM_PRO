@@ -49,7 +49,7 @@
         key: store.tabs[3],
         // Ilgari `turnstile-hik-central-events` (BOSHQA feature — «Hodisalar»
         // sahifasi) bilan ko'rsatilardi; endi o'z slugi.
-        visible: accStore.checkPermission(accStore.pn.turnstileHikCentralSync),
+        visible: accStore.canView(accStore.pn.turnstileHikCentralSync),
         color: 'primary'
       },
       {
@@ -57,7 +57,7 @@
         icon: markRaw(CellularData124Filled),
         component: markRaw(HCServerPage),
         key: store.tabs[4],
-        visible: accStore.checkPermission(accStore.pn.turnstileHikCentralJobRead),
+        visible: accStore.canView(accStore.pn.turnstileHikCentralJobRead),
         color: 'primary'
       },
       {
@@ -65,7 +65,7 @@
         icon: markRaw(AlertUrgent16Filled),
         component: markRaw(TelegramUserPage),
         key: store.tabs[2],
-        visible: accStore.checkPermission(accStore.pn.turnstileHikCentralTgUserRead),
+        visible: accStore.canView(accStore.pn.turnstileHikCentralTgUserRead),
         color: 'warning'
       }
     ]

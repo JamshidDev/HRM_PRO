@@ -7,7 +7,12 @@
   import { useSpecialityStore, useUniversityAdminStore } from '@/store/modules/index.js'
   import i18n from '@/i18n/index.js'
 
+  import { useAccountStore } from '@/store/modules/index.js'
+  import { useEducationReadPermission } from '../readPermission.js'
+
   const { t } = i18n.global
+  const accStore = useAccountStore()
+  const readPermission = useEducationReadPermission()
   const store = useLanguageAdminStore()
   const universityStore = useUniversityAdminStore()
   const specialtyStore = useSpecialityStore()
@@ -24,9 +29,17 @@
     3: 'educationDirectory.tabs.language'
   }
 
+  // Faqat ko'rish ruxsati bor boblar (admin menyusida har bob o'z ruxsati bilan).
   const tabs = computed(() =>
-    store.tabList.map((item) => ({ id: item.id, name: t(tabLabels[item.id] ?? item.name) }))
+    store.tabList
+      .filter((item) => accStore.canView(readPermission(item.id)))
+      .map((item) => ({ id: item.id, name: t(tabLabels[item.id] ?? item.name) }))
   )
+  // Joriy bob ruxsatsiz bo'lsa — birinchi ruxsatli bobga o'tiladi.
+  watchEffect(() => {
+    const ids = tabs.value.map((x) => x.id)
+    if (ids.length && !ids.includes(store.activeTab)) store.activeTab = ids[0]
+  })
 
   const pages = {
     1: UniversityPage,

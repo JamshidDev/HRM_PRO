@@ -12,8 +12,9 @@ const _index = async (payload) => {
 //     return await axios.put(`/v1/structure/specialities/${payload.id}`, payload.data)
 // }
 
+// Backend'da o'chirish yo'q — botdan uzish (deaktivatsiya) chat_id bo'yicha.
 const _delete = async (payload) => {
-  return await axios.delete(`/v1/telegram/users/${payload.id}`)
+  return await axios.post(`/v1/admin/telegram/bot/users-detach`, { chat_ids: [payload.id] })
 }
 
 export default {

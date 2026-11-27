@@ -11,12 +11,13 @@
   import DisciplinaryInfo from './ui/DisciplinaryInfo.vue'
   import ExamInfo from './ui/ExamInfo.vue'
   import i18n from '@/i18n/index.js'
-  import { useComponentStore } from '@/store/modules/index.js'
+  import { useAccountStore, useComponentStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
   import Edocument from './ui/Edocument.vue'
   import TurnstileInfo from './ui/TurnstileInfo.vue'
 
   const store = useComponentStore()
+  const accStore = useAccountStore()
   const masked = ref(true)
   const activeTab = ref(1)
   const previewPanelRef = ref(null)
@@ -58,7 +59,10 @@
     { name: t('workerView.tabs.punishment'), id: 7, icon: icons.punishmentIcon },
     { name: t('workerView.tabs.exams'), id: 8, icon: icons.examIcon },
     { name: t('workerView.tabs.e_documents'), id: 9, icon: icons.jshirIcon },
-    { name: t('workerView.tabs.turnstile'), id: 10, icon: icons.turnstileIcon }
+    // Turniket bo'limi API'si alohida ruxsat talab qiladi — ruxsatsizga ko'rsatilmaydi.
+    ...(accStore.canView(accStore.pn.turnstileHikCentralEventsRead)
+      ? [{ name: t('workerView.tabs.turnstile'), id: 10, icon: icons.turnstileIcon }]
+      : [])
   ])
 
   const openPreview = (id) => {
@@ -156,16 +160,16 @@
             >
               <Transition name="tab-fade" mode="out-in">
                 <div :key="activeTab">
-                  <GeneralInfo v-if="activeTab === tabList[0].id" />
-                  <CareerInfo v-else-if="activeTab === tabList[1].id" />
-                  <RelativeInfo v-else-if="activeTab === tabList[2].id" />
-                  <MedList v-else-if="activeTab === tabList[3].id" />
-                  <VacationView v-else-if="activeTab === tabList[4].id" />
-                  <IncentiveInfo v-else-if="activeTab === tabList[5].id" />
-                  <DisciplinaryInfo v-else-if="activeTab === tabList[6].id" />
-                  <ExamInfo v-else-if="activeTab === tabList[7].id" />
-                  <Edocument v-else-if="activeTab === tabList[8].id" />
-                  <TurnstileInfo v-else-if="activeTab === tabList[9].id" />
+                  <GeneralInfo v-if="activeTab === 1" />
+                  <CareerInfo v-else-if="activeTab === 2" />
+                  <RelativeInfo v-else-if="activeTab === 3" />
+                  <MedList v-else-if="activeTab === 4" />
+                  <VacationView v-else-if="activeTab === 5" />
+                  <IncentiveInfo v-else-if="activeTab === 6" />
+                  <DisciplinaryInfo v-else-if="activeTab === 7" />
+                  <ExamInfo v-else-if="activeTab === 8" />
+                  <Edocument v-else-if="activeTab === 9" />
+                  <TurnstileInfo v-else-if="activeTab === 10" />
                 </div>
               </Transition>
             </div>

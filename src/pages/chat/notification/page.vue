@@ -22,8 +22,14 @@
     accStore.checkPermission(accStore.pn.chatTelegramBroadcastWrite)
   )
 
+  // Push tabi instructions ruxsati bilan; faqat Telegram ruxsati bo'lsa shu tabdan ochiladi.
+  const canSeePush = computed(
+    () =>
+      accStore.canView(accStore.pn.instructionsRead) ||
+      accStore.checkPermission(accStore.pn.chatNotification)
+  )
   // Tab: 'push' (FCM) yoki 'telegram' («HRM PRO» boti orqali ommaviy xabar).
-  const activeTab = ref('push')
+  const activeTab = ref(canSeePush.value ? 'push' : 'telegram')
 
   // Joriy tabda forma ko'rsatiladimi (Push — instructions, Telegram — o'z slug'i).
   const canSendActive = computed(() =>
@@ -31,9 +37,8 @@
   )
 
   onMounted(() => {
-    // Bildirishnomalar `instructions` slug'i bilan qo'riqlanadi.
-    if (!accStore.checkAction(accStore.pn.instructionsRead)) return
-    store._push_logs()
+    if (canSeePush.value) store._push_logs()
+    else if (canSeeTelegram.value) tgStore._index()
   })
 
   // Telegram tabiga birinchi kirganda ro'yxat yuklanadi (keyin o'zi yangilanadi).
@@ -48,7 +53,7 @@
          o'rnida Push / Telegram almashtirgichi turadi. -->
     <div class="w-full max-w-[200px] shrink-0">
       <UITabs v-model:value="activeTab" type="segment" size="small">
-        <n-tab name="push">{{ $t('telegramBroadcast.pushTab') }}</n-tab>
+        <n-tab v-if="canSeePush" name="push">{{ $t('telegramBroadcast.pushTab') }}</n-tab>
         <n-tab v-if="canSeeTelegram" name="telegram">{{ $t('telegramBroadcast.tab') }}</n-tab>
       </UITabs>
     </div>

@@ -70,7 +70,12 @@
     @onSearch="filterEvent"
   >
     <template #filterAction>
-      <n-button :loading="store.logViewerLoading" @click="store._generateLogViewer()" type="primary">
+      <n-button
+        v-if="accStore.canView('log-viewer-read')"
+        :loading="store.logViewerLoading"
+        @click="store._generateLogViewer()"
+        type="primary"
+      >
         <template #icon><n-icon><BookOpen24Regular /></n-icon></template>
         {{ $t('actionLog.logViewer') }}
       </n-button>

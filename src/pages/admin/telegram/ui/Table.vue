@@ -13,7 +13,7 @@
 
   const onDelete = (row) => {
     if (!accStore.checkAction(accStore.pn.telegramWrite)) return
-    store.elementId = row.id
+    store.elementId = row.chat_id
     store._delete()
   }
 

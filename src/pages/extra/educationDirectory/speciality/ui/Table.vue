@@ -59,13 +59,15 @@
       label: t('content.edit'),
       key: Utils.ActionTypes.edit,
       icon: UIHelper.renderIcon(Edit32Regular),
-      action: onEdit
+      action: onEdit,
+      visible: accStore.checkPermission(accStore.pn.specialitiesWrite)
     },
     {
       label: t('content.delete'),
       key: Utils.ActionTypes.delete,
       icon: UIHelper.renderIcon(Delete20Regular),
-      action: onDelete
+      action: onDelete,
+      visible: accStore.checkPermission(accStore.pn.specialitiesWrite)
     }
   ])
 </script>
