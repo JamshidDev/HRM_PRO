@@ -12,6 +12,15 @@ export const ACTION_ORDER = ['read', 'write', 'delete']
 // Backend @Permission bilan HAQIQATAN enforce qilinadigan sluglar. write/delete
 // switch faqat shu to'plamda bo'lsa ko'rsatiladi (mutatsiya real API talab qiladi).
 export const ENFORCED = new Set([
+  // 2026-11-26 QA: backend enforce qiladi, lekin rol formasidan berib bo'lmasdi.
+  'hr-report-export-read',
+  'hr-report-export-write',
+  'exam-results-write',
+  'exam-monitoring-read',
+  'turnstile-worker-image-read',
+  'hospital-expired-read',
+  'hospital-ticket-read',
+  'hospital-ticket-write',
   'mobile-services',
   'activity-logs-read',
   'profile-organization-info-read',
@@ -335,6 +344,25 @@ export const ENFORCED = new Set([
 // (haqiqatan ishlatilgan) sluglar birlashmasi. Forma faqat SHU sluglarga switch
 // ko'rsatadi — DB'da bor-u hech qayerda ishlatilmaydigan (spurious) sluglar yashiriladi.
 export const MEANINGFUL = new Set([
+  // 2026-11-26 QA: frontend/backend tekshiradi — rol formasida beriladigan bo'lsin.
+  'exam-monitoring-read',
+  'turnstile-worker-image-read',
+  'turnstile-worker-image-write',
+  'economist-payment-analysis-read',
+  'economist-payment-analysis-write',
+  'economist-payment-analysis-export',
+  'turnstile-access-levels-sync',
+  'turnstile-hik-central-events-write',
+  'turnstile-sheets-turnstile',
+  'turnstile-sheets-copy',
+  'turnstile-sheets-replace',
+  'turnstile-schedule-check',
+  'hospital-expired-read',
+  'hospital-ticket-read',
+  'hospital-ticket-write',
+  'hr-report-export-read',
+  'hr-report-export-write',
+  'exam-results-write',
   'mobile-services',
   'activity-logs',
   'activity-logs-read',
@@ -975,6 +1003,7 @@ export const PERMISSION_GROUPS = [
         label: 'hcEvent.name',
         actions: [
           { slug: 'turnstile-hik-central-events-read', label: "Ko'rish" },
+          { slug: 'turnstile-hik-central-events-write', label: "Mehmon qo'shish / o'chirish" },
           { slug: 'turnstile-absent-workers-export', label: 'Yuklab olish' }
         ]
       },
@@ -1118,6 +1147,16 @@ export const PERMISSION_GROUPS = [
           { slug: 'economist-salary-control-export', label: 'Eksport (Excel)' }
         ]
       },
+      // Asossiz to'lovlarni aniqlash — sahifa bor edi, karta yo'q edi (ruxsatni berib bo'lmasdi).
+      {
+        prefix: 'economist-payment-analysis',
+        label: 'paymentAnalysis.name',
+        actions: [
+          { slug: 'economist-payment-analysis-read', label: "Ko'rish" },
+          { slug: 'economist-payment-analysis-write', label: 'Oq ro\'yxat (qo\'shish/o\'chirish)' },
+          { slug: 'economist-payment-analysis-export', label: 'Eksport (Excel)' }
+        ]
+      },
       // Tarif setkasi — TOR ruxsat (migr 0080/0081). Read/write/delete; bazaviy
       // `tariff-grid-access` (menyu) o'rniga frontend/route `-read` tekshiradi.
       { prefix: 'tariff-grid-access', label: 'tariffGrid.name' },
@@ -1216,7 +1255,15 @@ export const PERMISSION_GROUPS = [
       { prefix: 'schedules', label: 'schedulePage.name' },
       { prefix: 'work-day', label: 'workdayPage.name' },
       { prefix: 'organizations', label: 'organizationPage.name' },
-      { prefix: 'activity-logs', label: 'actionLog.name' },
+      {
+        prefix: 'activity-logs',
+        label: 'actionLog.name',
+        actions: [
+          { slug: 'activity-logs-read', label: "Ko'rish" },
+          // «Kirishlar tarixi» tabi — ilgari kartada yo'q edi.
+          { slug: 'authentication-logs-read', label: 'Kirishlar tarixi' }
+        ]
+      },
       {
         prefix: 'signature-history',
         label: 'signatureHistory.name',
