@@ -89,12 +89,44 @@ function coverYear(ctx, top) {
   ctx.fillRect(pct(35.73, CARD_W), pct(top, FRONT_H), pct(2.62, CARD_W), pct(4.93, FRONT_H))
 }
 
+// Sarlavha (tashkilot nomi): chap varaq markazida, y — qatorning asos chizig'i (blankadagi kabi)
+const HEADER_CENTER_X = 369
+const HEADER_MAX_W = 640
+const HEADER_LINES = [
+  { key: 'top', baseline: 58.5, size: 20.5, weight: 500 },
+  { key: 'name', baseline: 88.5, size: 25, weight: 700 },
+  { key: 'bottom', baseline: 115.5, size: 20.5, weight: 500 }
+]
+
+function drawHeader(ctx, header) {
+  if (!header) return
+  const family = getComputedStyle(document.body).fontFamily || 'sans-serif'
+  ctx.save()
+  ctx.fillStyle = '#101828'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'alphabetic'
+  for (const { key, baseline, size, weight } of HEADER_LINES) {
+    const text = (header[key] || '').toUpperCase()
+    if (!text) continue
+    let fontSize = size
+    ctx.font = `${weight} ${fontSize}px ${family}`
+    while (fontSize > size * MIN_SHRINK && ctx.measureText(text).width > HEADER_MAX_W) {
+      fontSize -= 0.5
+      ctx.font = `${weight} ${fontSize}px ${family}`
+    }
+    ctx.fillText(fitText(ctx, text, HEADER_MAX_W), HEADER_CENTER_X, baseline)
+  }
+  ctx.restore()
+}
+
 function renderFront({ background, photo, qr, data, fields }) {
   const { canvas, ctx } = createCardCanvas(background, {
     width: CARD_W,
     height: FRONT_H,
     radius: RADIUS
   })
+
+  drawHeader(ctx, fields.header)
 
   // Guvohnoma №
   if (data.cardNumber) {

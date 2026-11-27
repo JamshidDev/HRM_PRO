@@ -129,7 +129,9 @@
       issueDate: certificate.issue_date,
       expiryDate: certificate.expiry_date,
       extendedDate: certificate.extended_date,
-      managerName: certificate.director?.name
+      managerName: certificate.director?.name,
+      // BACKEND: blanka sarlavhasi { top, name, bottom } — hali kelmaydi (docs/api/position-certificate-header.md)
+      header: certificate.header
     }))
   })
 </script>
