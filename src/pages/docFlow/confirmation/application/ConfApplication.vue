@@ -36,13 +36,12 @@
 
   // Yagona holat tablari (jadvaldagi «Holati» bilan bir xil).
   const statusTabs = computed(() => [
-    { id: 'all', name: t('applicationPage.hrTabs.all') },
-    { id: 'draft', name: t('applicationPage.statuses.draft') },
-    { id: 'returned', name: t('applicationPage.statuses.returned') },
-    { id: 'checking', name: t('applicationPage.statuses.checking') },
-    { id: 'process', name: t('applicationPage.statuses.process') },
-    { id: 'approved', name: t('applicationPage.statuses.approved') },
-    { id: 'rejected', name: t('applicationPage.statuses.rejected') }
+    { id: 'all', name: t('applicationPage.hrTabs.all'), badge: store.stateCounts.all ?? 0 },
+    ...['draft', 'returned', 'checking', 'process', 'approved', 'rejected'].map((id) => ({
+      id,
+      name: t(`applicationPage.statuses.${id}`),
+      badge: store.stateCounts[id] ?? 0
+    }))
   ])
   const onFilterChange = () => {
     store.params.page = 1
@@ -93,7 +92,18 @@
       :show-filter-button="false"
       @onSearch="onSearch"
       @onAdd="onAdd"
-    />
+    >
+      <!-- Holat tablari qidiruv bilan bir qatorda. -->
+      <template #filterSearch>
+        <div class="conf-app-tabs min-w-0 overflow-x-auto">
+          <UISegmentTabs
+            v-model="store.params.app_state"
+            :tabs="statusTabs"
+            @update:model-value="onFilterChange"
+          />
+        </div>
+      </template>
+    </UIPageFilter>
     <UIModal
       :width="600"
       :visible="store.visible"
@@ -110,12 +120,14 @@
         <createForm />
       </template>
     </UIModal>
-    <UISegmentTabs
-      v-model="store.params.app_state"
-      :tabs="statusTabs"
-      @update:model-value="onFilterChange"
-    />
     <Table @openOffice="openOffice" />
     <UIOfficeApp ref="officeAppRef" />
   </UIPageContent>
 </template>
+
+<style scoped>
+  /* Sig'masa tablar siqilmaydi (matn ustma-ust tushmaydi) — yon tomonga suriladi. */
+  .conf-app-tabs :deep(.seg-tabs > div) {
+    min-width: max-content;
+  }
+</style>

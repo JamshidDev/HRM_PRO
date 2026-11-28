@@ -6,6 +6,7 @@ import i18n from '@/i18n/index.js'
 const { t } = i18n.global
 export const useConfApplicationStore = defineStore('confApplicationStore', {
   state: () => ({
+    stateCounts: {},
     list: [],
     loading: false,
     saveLoading: false,
@@ -221,6 +222,7 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
         .then((res) => {
           this.list = res.data.data.data
           this.totalItems = res.data.data.total
+          this.stateCounts = res.data.data.state_counts ?? {}
           callback?.()
         })
         .finally(() => {
