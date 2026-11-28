@@ -254,6 +254,7 @@
     "deviceMobile": "Мобильный"
   },
   "content": {
+    "viewPhoto": "Просмотреть фото",
     "uiStyle": "Стиль интерфейса",
     "uiStyleDefault": "Стандартный",
     "uiStyleMinimal": "Минималистичный",
@@ -5806,15 +5807,6 @@
       "asFile": "Нажмите для экспорта в файл",
       "error": "Ошибка"
     }
-  },
-  "workerImage": {
-    "name": "Изображения Telegram",
-    "photo": "Фото",
-    "status": "Статус",
-    "viewPhoto": "Просмотреть фото",
-    "createTitle": "Добавить фото сотрудника",
-    "requiredCommentForRejection": "Добавьте комментарий для отклонения и сохраните",
-    "updateTitle": "Редактировать фото сотрудника"
   },
   "syncLog": {
     "name": "Перезагрузка",

@@ -250,6 +250,7 @@
     "deviceMobile": "Mobile"
   },
   "content": {
+    "viewPhoto": "View photo",
     "uiStyle": "Interface style",
     "uiStyleDefault": "Standard",
     "uiStyleMinimal": "Minimal",
@@ -5795,15 +5796,6 @@
       "asFile": "Click to export to file",
       "error": "Error"
     }
-  },
-  "workerImage": {
-    "name": "Telegram images",
-    "photo": "Photo",
-    "status": "Status",
-    "viewPhoto": "View photo",
-    "createTitle": "Add employee photo",
-    "requiredCommentForRejection": "Add comment for rejection and save",
-    "updateTitle": "Edit employee photo"
   },
   "syncLog": {
     "name": "Reload",

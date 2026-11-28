@@ -254,6 +254,7 @@
     "deviceMobile": "Mobil"
   },
   "content": {
+    "viewPhoto": "Súwretti kóriw",
     "user": "Paydalanıwshı",
     "title": "Sarlawha",
     "deleted": "Óshirilgen",
@@ -5708,15 +5709,6 @@
       "asFile": "Faylǵa júklew ushın basıń",
       "error": "Qátelik"
     }
-  },
-  "workerImage": {
-    "name": "Telegram súwretleri",
-    "photo": "Súwret",
-    "status": "Jaǵdayı",
-    "viewPhoto": "Súwretti kóriw",
-    "createTitle": "Xızmetker súwretin qosıw",
-    "requiredCommentForRejection": "Biykarlaw ushın túsindirme kiritip, saqlaw túymesin basıń",
-    "updateTitle": "Xızmetker súwretin ózgertiw"
   },
   "syncLog": {
     "name": "Qayta júklew",

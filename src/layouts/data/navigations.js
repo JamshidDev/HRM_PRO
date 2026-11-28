@@ -31,7 +31,6 @@ import TurnstileAccessLevelsIcon from '@assets/icons/groups.svg'
 import TurnstileOrgAccessLevelsIcon from '@assets/icons/Organizations.svg'
 import TurnstileHcWorkersIcon from '@assets/icons/Employees.svg'
 import TurnstileHcEventsIcon from '@assets/icons/Events.svg'
-import TurnstileWorkerImageIcon from '@assets/icons/TelegramImages.svg'
 import TurnstileDevicesIcon from '@assets/icons/Devices.svg'
 import TurnstileOthersIcon from '@assets/icons/Additional.svg'
 import TurnstileDutyScheduleIcon from '@assets/icons/DutySchedule.svg'
@@ -607,13 +606,6 @@ export const navigations = withRawIcons([
       //     permission: appPermissions.turnstileBuildingRead,
       // },
       // {
-      //     label: 'turnstile.terminalPage.title',
-      //     path: Utils.routeTurnstilePathMaker(AppPaths.Terminal),
-      //     icon: ScanObject24Filled,
-      //     color: 'bg-secondary',
-      //     permission: appPermissions.turnstileTerminalRead,
-      // },
-      // {
       //     label: 'turnstile.organization.title',
       //     path: Utils.routeTurnstilePathMaker(AppPaths.Organizations),
       //     icon: Organization12Filled,
@@ -683,13 +675,6 @@ export const navigations = withRawIcons([
       //     color: 'bg-success',
       //     permission: appPermissions.turnstileHikCentralSync,
       // },
-      {
-        label: 'workerImage.name', // Telegram rasmlari
-        path: Utils.routeTurnstilePathMaker(AppPaths.WorkerImage),
-        icon: TurnstileWorkerImageIcon,
-        color: 'bg-primary',
-        permission: appPermissions.turnstileWorkerImageRead
-      },
       // {
       //     label: 'hcWorkDuration.name',
       //     path: Utils.routeTurnstilePathMaker(AppPaths.HCWorkDuration),

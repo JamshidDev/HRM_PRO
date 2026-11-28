@@ -17,7 +17,6 @@ export const ENFORCED = new Set([
   'hr-report-export-write',
   'exam-results-write',
   'exam-monitoring-read',
-  'turnstile-worker-image-read',
   'hospital-expired-read',
   'hospital-ticket-read',
   'hospital-ticket-write',
@@ -294,7 +293,6 @@ export const ENFORCED = new Set([
   'turnstile-devices-sync',
   // Audit 2026-08-12 — frontend gate qiladigan, lekin rol formasida yashirin qolgan
   // write toggle'lar (oddiy kartada ENFORCED'da bo'lmagani uchun ko'rinmasdi):
-  'turnstile-worker-image-write',
   'hr-vacations-write',
   'hr-business-trip-write',
   'hr-report-write',
@@ -346,8 +344,6 @@ export const ENFORCED = new Set([
 export const MEANINGFUL = new Set([
   // 2026-11-26 QA: frontend/backend tekshiradi — rol formasida beriladigan bo'lsin.
   'exam-monitoring-read',
-  'turnstile-worker-image-read',
-  'turnstile-worker-image-write',
   'economist-payment-analysis-read',
   'economist-payment-analysis-write',
   'economist-payment-analysis-export',
@@ -770,7 +766,6 @@ export const MEANINGFUL = new Set([
   'turnstile-terminal-write',
   'turnstile-work-duration',
   'turnstile-work-duration-read',
-  'turnstile-worker-image',
   'turnstile-workers',
   'turnstile-workers-read',
   'turnstile-workers-write',
@@ -1006,14 +1001,6 @@ export const PERMISSION_GROUPS = [
           { slug: 'turnstile-hik-central-events-read', label: "Ko'rish" },
           { slug: 'turnstile-hik-central-events-write', label: "Mehmon qo'shish / o'chirish" },
           { slug: 'turnstile-absent-workers-export', label: 'Yuklab olish' }
-        ]
-      },
-      {
-        prefix: 'turnstile-worker-image',
-        label: 'workerImage.name',
-        actions: [
-          { slug: 'turnstile-worker-image-read', label: "Ko'rish" },
-          { slug: 'turnstile-worker-image-write', label: 'Tasdiqlash / Rad etish' }
         ]
       },
       {

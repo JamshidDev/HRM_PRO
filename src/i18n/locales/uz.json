@@ -254,6 +254,7 @@
     "deviceMobile": "Mobil"
   },
   "content": {
+    "viewPhoto": "Rasmni ko'rish",
     "uiStyle": "Dizayn uslubi",
     "uiStyleDefault": "Standart",
     "uiStyleMinimal": "Minimal",
@@ -5840,15 +5841,6 @@
       "asFile": "Faylga yuklash uchun bosing",
       "error": "Xatolik"
     }
-  },
-  "workerImage": {
-    "name": "Telegram rasmlari",
-    "photo": "Rasm",
-    "status": "Holati",
-    "viewPhoto": "Rasmni ko'rish",
-    "createTitle": "Xodim rasmini qo'shish",
-    "requiredCommentForRejection": "Rad qilish uchun izoh kiritib saqlash tugmasini bosing",
-    "updateTitle": "Xodim rasmini tahrirlash"
   },
   "syncLog": {
     "name": "Qayta yuklash",

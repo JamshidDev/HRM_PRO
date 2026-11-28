@@ -60,7 +60,6 @@ export const DEPT_SCOPED_PREFIXES = new Set([
   'turnstile-schedule',
   'turnstile-sheets',
   'turnstile-work-duration',
-  'turnstile-worker-image',
   'useful',
   'mobile-services'
 ])

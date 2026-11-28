@@ -80,7 +80,6 @@ export const STORE_PERMISSIONS = {
 
   // ── Turniket
   turnstileBuildingStore: 'turnstile-building',
-  turnstileTerminalStore: 'turnstile-terminal',
   turnstileTerminalUserStore: 'turnstile-workers',
   turnstileHikCentralWorkerStore: 'turnstile-hik-central-workers',
   devicesStore: 'turnstile-devices',

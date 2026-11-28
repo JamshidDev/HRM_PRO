@@ -179,6 +179,7 @@
     "deviceMobile": "Мобил"
   },
   "content": {
+    "viewPhoto": "Расмни кўриш",
     "uiStyle": "Дизайн услуби",
     "uiStyleDefault": "Стандарт",
     "uiStyleMinimal": "Минимал",
@@ -5535,15 +5536,6 @@
       "asFile": "Файлга юклаш учун босинг",
       "error": "Хатолик"
     }
-  },
-  "workerImage": {
-    "name": "Телеграм расмлари",
-    "photo": "Расм",
-    "status": "Ҳолати",
-    "viewPhoto": "Расмни кўриш",
-    "createTitle": "Ходим расмини қўшиш",
-    "requiredCommentForRejection": "Рад қилиш учун изоҳ киритиб сақлаш тугмасини босинг",
-    "updateTitle": "Ходим расмини таҳрирлаш"
   },
   "syncLog": {
     "name": "Қайта юклаш",

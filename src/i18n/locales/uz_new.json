@@ -254,6 +254,7 @@
     "deviceMobile": "Mobil"
   },
   "content": {
+    "viewPhoto": "Rasmni köriş",
     "uiStyle": "Dizayn uslubi",
     "uiStyleDefault": "Standart",
     "uiStyleMinimal": "Minimal",
@@ -5840,15 +5841,6 @@
       "asFile": "Faylga yuklaş uçun bosing",
       "error": "Xatolik"
     }
-  },
-  "workerImage": {
-    "name": "Telegram rasmlari",
-    "photo": "Rasm",
-    "status": "Holati",
-    "viewPhoto": "Rasmni köriş",
-    "createTitle": "Xodim rasmini qöşiş",
-    "requiredCommentForRejection": "Rad qiliş uçun izoh kiritib saqlaş tugmasini bosing",
-    "updateTitle": "Xodim rasmini tahrirlaş"
   },
   "syncLog": {
     "name": "Qayta yuklaş",

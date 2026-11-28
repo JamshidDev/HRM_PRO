@@ -15,14 +15,6 @@ export const turnstileRoutes = [
     }
   },
   {
-    path: Utils.routeTurnstilePathMaker(AppPaths.Terminal),
-    component: () => import('@turnstile/terminal/page.vue'),
-    meta: {
-      layout: AppLayouts.main,
-      permission: appPermissions.turnstileTerminalRead
-    }
-  },
-  {
     path: Utils.routeTurnstilePathMaker(AppPaths.Organizations),
     component: () => import('@turnstile/organizationTerminal/page.vue'),
     meta: {
@@ -78,13 +70,6 @@ export const turnstileRoutes = [
   {
     path: Utils.routeTurnstilePathMaker(AppPaths.HcEvents),
     component: () => import('@turnstile/events/ui/Tabs.vue'),
-    meta: {
-      layout: AppLayouts.main
-    }
-  },
-  {
-    path: Utils.routeTurnstilePathMaker(AppPaths.WorkerImage),
-    component: () => import('@turnstile/workerImage/page.vue'),
     meta: {
       layout: AppLayouts.main
     }

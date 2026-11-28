@@ -131,7 +131,7 @@
               <template v-if="sideFile(side)">
                 <span class="flex items-center gap-1 text-xs font-semibold text-fig-text-brand">
                   <n-icon :size="16"><Eye20Regular /></n-icon>
-                  {{ isPdf(sideFile(side)) ? $t('content.view') : $t('workerImage.viewPhoto') }}
+                  {{ isPdf(sideFile(side)) ? $t('content.view') : $t('content.viewPhoto') }}
                 </span>
                 <span
                   class="text-[11px] leading-4 text-center truncate w-full text-fig-text-tertiary"
