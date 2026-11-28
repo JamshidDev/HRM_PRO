@@ -25,6 +25,8 @@ export const AppPaths = {
   District: '/district',
   Nationality: '/nationality',
   Profile: '/profile',
+  // Ariza havolasi (tizimga kirishsiz)
+  ApplicationLink: '/apply',
   Position: '/position',
   Organizations: '/organizations',
   Worker: '/worker',

@@ -24,14 +24,17 @@
   const signStore = useSignatureStore()
   const route = useRoute()
   const isPhone = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
-  // Telefonda odatda E-IMZO ilovasi, kompyuterda — chizish.
-  const tab = ref(isPhone ? 'mobile' : 'draw')
+  // Ariza havolasidan kelgan — faqat E-IMZO (chizish faqat lokal sinovda), rad etish yo'q.
+  const fromLink = route.query.from === 'link'
+  const allowDraw = !fromLink || import.meta.env.DEV
+  // Telefonda odatda E-IMZO ilovasi, kompyuterda — chizish (havolada — E-IMZO).
+  const tab = ref(isPhone ? 'mobile' : fromLink ? 'eimzo' : 'draw')
 
   const boxRef = ref(null)
   const mobileRef = ref(null)
   const rejectRef = ref(null)
 
-  const methods = [
+  const allMethods = [
     {
       key: 'draw',
       icon: Signature20Regular,
@@ -51,6 +54,8 @@
       hint: 'signature.methodMobileHint'
     }
   ]
+
+  const methods = allMethods.filter((m) => m.key !== 'draw' || allowDraw)
 
   const onEimzo = () => {
     signStore._signatureLink(route.query.token, () => store.markLinkSigned())
@@ -93,7 +98,7 @@
     <div class="sign-short-hide mt-5 text-xs font-semibold uppercase tracking-wide text-textColor3">
       {{ $t('signature.methodTitle') }}
     </div>
-    <div class="mt-2 grid grid-cols-3 gap-2" role="radiogroup">
+    <div class="mt-2 grid gap-2" :class="methods.length === 3 ? 'grid-cols-3' : 'grid-cols-2'" role="radiogroup">
       <button
         v-for="m in methods"
         :key="m.key"
@@ -142,7 +147,7 @@
       </n-button>
     </div>
     <!-- Rad etish — aniq tugma (havola emas): asosiy tugma ostida, qizil chiziqli -->
-    <div class="mt-3">
+    <div v-if="!fromLink" class="mt-3">
       <n-button type="error" secondary size="large" block @click="rejectRef?.open()">
         <template #icon><DismissCircle20Regular /></template>
         {{ $t('documentPage.signature.rejectTitle') }}

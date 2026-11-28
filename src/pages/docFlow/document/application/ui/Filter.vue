@@ -1,10 +1,12 @@
 <script setup>
-  import { History20Regular } from '@vicons/fluent'
+  import { History20Regular, Link20Regular } from '@vicons/fluent'
+  import ApplicationLinkModal from './ApplicationLinkModal.vue'
   import { UIDayPicker, UIPageFilter, UISelect } from '@/components/index.js'
   import { useAccountStore, useApplicationStore, useComponentStore } from '@/store/modules/index.js'
   import { AppPaths } from '@/utils/index.js'
 
   const store = useApplicationStore()
+  const linkVisible = ref(false)
   const accStore = useAccountStore()
   const componentStore = useComponentStore()
   const onSearch = () => {
@@ -108,18 +110,34 @@
       </div>
     </template>
     <template #filterEnd>
-      <n-button
-        :title="$t('audit.historyBtn')"
-        :aria-label="$t('audit.historyBtn')"
-        v-if="accStore.checkPermission(accStore.pn.hrWorkerApplicationsRead)"
-        class="ui-history-btn ui-page-action-button"
-        secondary
-        @click="onHistory"
-      >
-        <template #icon>
-          <n-icon><History20Regular /></n-icon>
-        </template>
-      </n-button>
+      <div class="flex items-center gap-2">
+        <!-- Muddatli ariza havolasi (faqat Arizalar, Bildirgilarda emas) -->
+        <n-button
+          v-if="store.params.kind !== 'notice' && accStore.checkPermission(accStore.pn.hrWorkerApplicationsWrite)"
+          :title="$t('applicationLink.modalTitle')"
+          :aria-label="$t('applicationLink.modalTitle')"
+          class="ui-history-btn ui-page-action-button"
+          secondary
+          @click="linkVisible = true"
+        >
+          <template #icon>
+            <n-icon><Link20Regular /></n-icon>
+          </template>
+        </n-button>
+        <n-button
+          :title="$t('audit.historyBtn')"
+          :aria-label="$t('audit.historyBtn')"
+          v-if="accStore.checkPermission(accStore.pn.hrWorkerApplicationsRead)"
+          class="ui-history-btn ui-page-action-button"
+          secondary
+          @click="onHistory"
+        >
+          <template #icon>
+            <n-icon><History20Regular /></n-icon>
+          </template>
+        </n-button>
+      </div>
     </template>
   </UIPageFilter>
+  <ApplicationLinkModal v-model:visible="linkVisible" />
 </template>

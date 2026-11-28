@@ -97,6 +97,7 @@ import documentFileService from '@/service/v1/docFlow/documentFileService.js'
 import adContractService from '@/service/v1/docFlow/adContractService.js'
 import employeeDocumentService from '@/service/v1/docFlow/employeeDocumentService.js'
 import applicationService from '@/service/v1/docFlow/applicationService.js'
+import applicationLinkService from '@/service/v1/docFlow/applicationLinkService.js'
 import confVacationScheduleService from '@/service/v1/docFlow/vacationScheduleService.js'
 import confCertificateService from '@/service/v1/docFlow/confCertificateService.js'
 import confStaffingApprovalService from '@/service/v1/docFlow/confStaffingApprovalService.js'
@@ -248,6 +249,7 @@ export default {
   holidayService,
   holidayGreetingService,
   applicationService,
+  applicationLinkService,
   vacationService,
   timesheetService,
   timesheetWorkerService,

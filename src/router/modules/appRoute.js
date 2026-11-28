@@ -10,6 +10,14 @@ export const appRoutes = [
     }
   },
   {
+    path: AppPaths.ApplicationLink + '/:token',
+    name: AppPaths.ApplicationLink.substring(1),
+    component: () => import('@/pages/app/applicationLink/ApplicationLinkPage.vue'),
+    meta: {
+      layout: AppLayouts.empty
+    }
+  },
+  {
     path: AppPaths.Profile,
     name: AppPaths.Profile.substring(1),
     component: () => import('@/pages/app/profile/ProfilePage.vue'),
