@@ -424,6 +424,11 @@ export default {
       message: t(`rules.requiredWorker`),
       trigger: triggerEvents
     },
+    kind: {
+      required: true,
+      message: t(`rules.requiredField`),
+      trigger: triggerEvents
+    },
     position: {
       required: true,
       message: t(`rules.requiredField`),

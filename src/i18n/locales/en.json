@@ -2292,10 +2292,15 @@
       "worker": "Employee",
       "full_position": "Full position name (with organization)",
       "level": "Type",
-      "position": "Position",
-      "docFullPosition": "Full position"
+      "position": "Short position",
+      "docFullPosition": "Full position",
+      "kind": "Approver type"
     },
     "docFullPositionPlaceholder": "E.g.: Head of the Samarkand track distance branch",
+    "positionPlaceholder": "E.g.: Head of branch",
+    "missingTitle": "Approvers are not fully configured — new documents, applications, timesheets and vacation schedules cannot be created",
+    "missingKinds": "Missing: {kinds}",
+    "missingMore": "… {n} more organizations",
     "docFullPositionHint": "Shown in applications and notices: for the manager — in the header before the name, for an approver — in the signature line. If empty — the short position (for the manager, an auto-built text).",
     "positionHint": "Short position: shown next to the signer in orders, contracts, additional agreements and other documents, and in approval lists.",
     "main": "Main",

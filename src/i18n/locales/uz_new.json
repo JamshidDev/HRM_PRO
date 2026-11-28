@@ -2308,10 +2308,15 @@
       "worker": "Xodim",
       "full_position": "Lavozim töliq nomi (Taşkilot nomi bilan töliq nomi)",
       "level": "Turi",
-      "position": "Lavozim",
-      "docFullPosition": "Töliq lavozim"
+      "position": "Qisqa lavozim",
+      "docFullPosition": "Töliq lavozim",
+      "kind": "Kelishuvchi turi"
     },
     "docFullPositionPlaceholder": "Masalan: Samarqand temir yöl masofasi filiali boşliği",
+    "positionPlaceholder": "Masalan: Filial boşliği",
+    "missingTitle": "Kelishuvchilar to'liq sozlanmagan — yangi hujjat, ariza, tabel va ta'tillar grafigi yaratilmaydi",
+    "missingKinds": "Qo'shilmagan: {kinds}",
+    "missingMore": "… yana {n} ta korxona",
     "docFullPositionHint": "Ariza va bildirgilarda şu matn çiqadi: rahbar uçun sarlavhada ismidan oldin, kelişuvçi uçun imzo qatorida. Böş qolsa — qisqa lavozim (rahbar uçun avtomatik yiğilgan matn).",
     "positionHint": "Qisqa lavozim: buyruq, şartnoma, qöşimça kelişuv va boşqa hujjatlarda imzo qöyuvçi yonida hamda kelişuv röyxatlarida çiqadi.",
     "main": "Asosiy",

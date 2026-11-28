@@ -12,24 +12,24 @@ export const useConfirmationStore = defineStore('confirmationStore', {
     visibleType: true,
     elementId: null,
     totalItems: 0,
+    // Majburiy kelishuvchilari to'liq bo'lmagan korxonalar (sahifa ogohlantirishi).
+    missing: [],
     allPermissionList: [],
     payload: {
       pin: null,
       position: null,
-      level: null,
-      // Faqat rahbar: ariza va bildirgilar sarlavhasidagi to'liq lavozim.
-      full_position: null,
-      // Faqat rahbar: korxonaning asosiy rahbari (arizalar shunga yoziladi).
-      is_main: false
+      // Turi: director (rahbar), approver, accountant, economist, lawyer, hr.
+      kind: null,
+      // Ariza va bildirgilardagi to'liq lavozim.
+      full_position: null
     },
-    // Tahrirlanayotgan rahbar allaqachon asosiy — switch o'chirilmaydi (doim bitta asosiy bo'ladi).
-    editingIsMain: false,
     params: {
       page: 1,
       per_page: 15,
       search: null,
       organizations: [],
-      created: null
+      created: null,
+      kind: null
     }
   }),
   actions: {
@@ -45,6 +45,7 @@ export const useConfirmationStore = defineStore('confirmationStore', {
         .then((res) => {
           this.list = res.data.data.data
           this.totalItems = res.data.data.total
+          this.missing = res.data.data.missing || []
         })
         .finally(() => {
           this.loading = false
@@ -84,9 +85,6 @@ export const useConfirmationStore = defineStore('confirmationStore', {
           this.saveLoading = false
         })
     },
-    _makeMain(id) {
-      $ApiService.confirmationService._makeMain({ id }).then(() => this._index())
-    },
     _delete() {
       this.deleteLoading = true
       $ApiService.confirmationService
@@ -105,10 +103,8 @@ export const useConfirmationStore = defineStore('confirmationStore', {
       this.elementId = null
       this.payload.pin = null
       this.payload.position = null
-      this.payload.level = null
+      this.payload.kind = null
       this.payload.full_position = null
-      this.payload.is_main = false
-      this.editingIsMain = false
     }
   }
 })

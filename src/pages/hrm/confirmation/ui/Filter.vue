@@ -33,12 +33,16 @@
     () =>
       Number(Boolean(store.params.organizations.length)) +
       Number(Boolean(store.params.confirmation)) +
-      Number(Boolean(store.params.created))
+      Number(Boolean(store.params.created)) +
+      Number(Boolean(store.params.kind))
   )
 
   const beforeShow = (v) => {
     if (v && componentStore.confirmationStatusList.length === 0) {
       componentStore._enumsAdmin()
+    }
+    if (v && componentStore.confirmationKinds.length === 0) {
+      componentStore._enums()
     }
     if (componentStore.structureList.length === 0) {
       componentStore._structures()
@@ -54,6 +58,7 @@
     store.params.organizations = []
     store.params.confirmation = null
     store.params.created = null
+    store.params.kind = null
     filterEvent()
   }
 </script>
@@ -92,6 +97,18 @@
           <label>{{ $t('content.created') }}</label>
           <!-- Yangi kun tanlagich (DAS-17755) — qiymat avvalgidek, store o'zgarmaydi. -->
           <UIDayPicker v-model:value="store.params.created" mode="period" clearable @update:value="filterEvent" />
+        </div>
+        <div class="col-span-12 md:col-span-6">
+          <label>{{ $t('confirmationPage.table.kind') }}</label>
+          <n-select
+            v-model:value="store.params.kind"
+            clearable
+            :options="componentStore.confirmationKinds"
+            label-field="name"
+            value-field="id"
+            :loading="componentStore.enumLoading"
+            @update:value="filterEvent"
+          />
         </div>
       </div>
     </template>

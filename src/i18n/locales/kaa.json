@@ -2279,10 +2279,15 @@
       "worker": "Xızmetker",
       "full_position": "Lawazımnıń tolıq atı (Shólkem atı menen tolıq atı)",
       "level": "Túri",
-      "position": "Lawazım",
-      "docFullPosition": "Tolıq lawazım"
+      "position": "Qısqa lawazım",
+      "docFullPosition": "Tolıq lawazım",
+      "kind": "Kelisiwshi túri"
     },
     "docFullPositionPlaceholder": "Mısalı: Samarqand temir jol aralıǵı filialı baslıǵı",
+    "positionPlaceholder": "Mısalı: Filial baslıǵı",
+    "missingTitle": "Kelisiwshiler tolıq sazlanbaǵan — jańa hújjet, arza, tabel hám dem alıs grafigi jaratılmaydı",
+    "missingKinds": "Qosılmaǵan: {kinds}",
+    "missingMore": "… jáne {n} kárxana",
     "docFullPositionHint": "Arza hám bildirgilerde usı tekst shıǵadı: basshı ushın sarlawhada atınan aldın, kelisiwshi ushın qol qatarında. Bos qalsa — qısqa lawazım (basshı ushın avtomat jıynalǵan tekst).",
     "positionHint": "Qısqa lawazım: buyrıq, shártnama, qosımsha kelisim hám basqa hújjetlerde qol qoyıwshı janında hám kelisim dizimlerinde shıǵadı.",
     "main": "Tiykarǵı",

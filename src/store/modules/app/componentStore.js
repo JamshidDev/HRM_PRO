@@ -106,6 +106,7 @@ export const useComponentStore = defineStore('componentStore', {
     maritalList: [],
     languageList: [],
     confirmationLevels: [],
+    confirmationKinds: [],
 
     structureList: [],
     structureLoading: false,
@@ -489,6 +490,7 @@ export const useComponentStore = defineStore('componentStore', {
           this.languageList = res.data.data.languages
           this.militaryStatuses = res.data.data.military_statuses
           this.confirmationLevels = res.data.data.confirmation_worker
+          this.confirmationKinds = res.data.data.confirmation_worker_kind || []
           this.applicationTypes = res.data.data.contract_application_types
           this.workTypes = res.data.data.create_application_types
           this.vacationAdditional = res.data.data.vacation_additional
