@@ -25,18 +25,15 @@
       .filter((g) => g.children.length)
   })
 
+  // Lavozim doim tanlangan turadi: backend asosiy lavozimni birinchi beradi (bitta yoki bir nechta bo'lsa ham).
+  const selectMainPosition = () => {
+    if (store.payload.worker_position_id !== null || !store.myPositionList.length) return
+    store.payload.worker_position_id = store.myPositionList[0].id
+    changePosition(store.payload.worker_position_id)
+  }
   const onFocusPosition = () => {
-    if (store.myPositionList.length === 0) {
-      store._myPositions((list) => {
-        if (list.length === 1) {
-          store.payload.worker_position_id = list[0].id
-          changePosition(list[0].id)
-        }
-      })
-    } else if (store.myPositionList.length === 1 && store.payload.worker_position_id === null) {
-      store.payload.worker_position_id = store.myPositionList[0].id
-      changePosition(store.payload.worker_position_id)
-    }
+    if (store.myPositionList.length === 0) store._myPositions(selectMainPosition)
+    else selectMainPosition()
   }
 
   // Rahbar va kelishuvchilarni xodim tanlamaydi: rahbar backendda lavozimdan, kelishuvchilarni HR belgilaydi.
@@ -68,6 +65,13 @@
     }
   }
 
+  // Forma har ochilganda (va 1/2-turdan qaytganda) lavozim qayta tanlanadi.
+  watch(
+    () => [store.visible, isPosition.value],
+    ([visible, pos]) => visible && pos && onFocusPosition(),
+    { immediate: true }
+  )
+
   onMounted(() => {
     if (componentStore.workerApplicationTypes.length === 0) {
       componentStore._workerApplicationEnums()
@@ -94,7 +98,7 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12" v-if="isPosition && store.payload.type">
+    <div class="col-span-12" v-if="isPosition">
       <n-form-item :label="$t(`applicationPage.form.worker_position_id`)" path="worker_position_id">
         <n-select
           v-bind="selectWrap"

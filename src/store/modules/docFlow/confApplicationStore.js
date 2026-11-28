@@ -295,7 +295,8 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
         .then((res) => {
           this.myPositionList = res.data.data.map((v) => ({
             ...v,
-            position: Utils.combineFullName(v.worker),
+            // Ikkinchi qator: lavozim turi (Asosiy / O'rindosh …) va korxona.
+            position: [v.type_name, v.organization?.name].filter(Boolean).join(' · '),
             // Qisqa nom bo'sh bo'lishi mumkin — to'liq nom yoki korxona nomi (ID emas).
             name: v.post_short_name || v.post_name || v.organization?.name || ''
           }))
