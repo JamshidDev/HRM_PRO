@@ -130,7 +130,7 @@
     {
       key: 'worker_application.confirmation',
       title: t('content.status'),
-      width: 120
+      width: 140
     },
     {
       key: 'worker_application.generate',
@@ -207,7 +207,29 @@
 
 
     <template #[`cell-worker_application.confirmation`]="{ row }">
-      <UIStatus :status="applicationStatus(row?.worker_application)" />
+      <!-- Qaytarilgan: «orqaga» ikonkasi, ustiga borilsa sabab, kim va qachon qaytargani. -->
+      <n-tooltip v-if="row?.worker_application?.returned" placement="top" :style="{ maxWidth: '320px' }">
+        <template #trigger>
+          <span class="inline-flex">
+            <UIStatus
+              :status="{ id: 13, name: applicationStatus(row.worker_application).name }"
+              tone="amber"
+              :tooltip="false"
+            />
+          </span>
+        </template>
+        <div class="text-xs leading-5">
+          <div class="font-semibold">{{ $t('applicationPage.returnedTitle') }}</div>
+          <div v-if="row.worker_application.return_info?.reason">
+            {{ $t('applicationPage.returnReason') }}: {{ row.worker_application.return_info.reason }}
+          </div>
+          <div v-if="row.worker_application.return_info?.by" class="opacity-80">
+            {{ $t('applicationPage.returnedBy') }}: {{ row.worker_application.return_info.by }} ·
+            {{ Utils.timeOnlyDate(row.worker_application.return_info.at) }}
+          </div>
+        </div>
+      </n-tooltip>
+      <UIStatus v-else :status="applicationStatus(row?.worker_application)" />
     </template>
 
     <template #[`cell-worker_application.generate`]="{ row }">
