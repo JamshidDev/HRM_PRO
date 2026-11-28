@@ -195,7 +195,7 @@
       </div>
 
       <!-- Sana -->
-      <div class="col-span-12 md:col-span-6" v-else-if="f.kind === 'date'">
+      <div class="col-span-12" v-else-if="f.kind === 'date'">
         <n-form-item :label="f.label" :show-require-mark="f.required" :validation-status="status(f.key)" :feedback="feedback(f.key)">
           <UIDayPicker class="w-full" v-model:formatted-value="data[f.key]" mode="day" :value-format="DATE_FMT" />
         </n-form-item>
@@ -230,7 +230,7 @@
       </div>
 
       <!-- Son -->
-      <div class="col-span-12 md:col-span-6" v-else-if="f.kind === 'number'">
+      <div class="col-span-12" v-else-if="f.kind === 'number'">
         <n-form-item :label="f.label" :show-require-mark="f.required" :validation-status="status(f.key)" :feedback="feedback(f.key)">
           <n-input-number class="w-full" v-model:value="data[f.key]" :min="1" :show-button="false" />
         </n-form-item>

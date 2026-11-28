@@ -6,7 +6,8 @@
   import Utils from '@/utils/Utils.js'
   import i18n from '@/i18n/index.js'
   import LinkSchemaForm from './ui/LinkSchemaForm.vue'
-  import { Clock20Regular, Building20Regular } from '@vicons/fluent'
+  import LinkTopBar from './ui/LinkTopBar.vue'
+  import { Clock20Regular } from '@vicons/fluent'
 
   const { t } = i18n.global
   const route = useRoute()
@@ -35,11 +36,6 @@
       }
     }, 1000)
   }
-  const leftText = computed(() => {
-    const m = Math.floor(left.value / 60)
-    const s = left.value % 60
-    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
-  })
 
   onMounted(async () => {
     try {
@@ -149,7 +145,7 @@
         path: `${AppPaths.DocumentViewer}/${Utils.viewerStatus.signatureDocument}`,
         query: { token: res.data.data.sign_token, from: 'link' }
       })
-    } catch (e) {
+    } catch {
       // Xato oynasi axios interceptor'da ko'rsatiladi.
     } finally {
       saving.value = false
@@ -158,75 +154,65 @@
 </script>
 
 <template>
-  <div class="link-bg flex min-h-screen w-full justify-center px-4 py-8">
-    <div class="w-full max-w-[720px]">
-      <n-spin :show="loading">
-        <!-- Havola yaroqsiz / muddati tugagan -->
-        <div v-if="error" class="link-card p-8 text-center">
-          <n-icon size="40" class="text-warning"><Clock20Regular /></n-icon>
-          <h2 class="mt-3 text-lg font-semibold text-textColor0">{{ $t('applicationLink.unavailable') }}</h2>
-          <p class="mt-2 text-sm text-textColor2">{{ error }}</p>
-        </div>
+  <div>
+    <!-- Bitta ildiz element (izoh ham ichida) — layout'dagi <transition> uchun shart, aks holda keyingi sahifa chizilmaydi -->
+    <LinkTopBar :organization="info?.organization?.name || ''" :left="left" :show-timer="!!info && !error" />
+    <div class="link-bg flex min-h-screen w-full justify-center px-4 pb-8 pt-[88px]">
+      <div class="w-full max-w-[720px]">
+        <n-spin :show="loading">
+          <!-- Havola yaroqsiz / muddati tugagan -->
+          <div v-if="error" class="link-card p-8 text-center">
+            <n-icon size="40" class="text-warning"><Clock20Regular /></n-icon>
+            <h2 class="mt-3 text-lg font-semibold text-textColor0">{{ $t('applicationLink.unavailable') }}</h2>
+            <p class="mt-2 text-sm text-textColor2">{{ error }}</p>
+          </div>
 
-        <template v-else-if="info">
-          <div class="link-card mb-4 flex flex-wrap items-center justify-between gap-3 p-5">
-            <div class="min-w-0">
-              <div class="text-xs font-semibold uppercase tracking-wide text-textColor3">{{ $t('applicationLink.title') }}</div>
-              <div class="mt-1 flex items-center gap-1.5 text-base font-semibold text-textColor0">
-                <n-icon size="18" class="text-primary"><Building20Regular /></n-icon>
-                <span class="truncate">{{ info.organization?.name }}</span>
+          <template v-else-if="info">
+            <div class="link-card p-5 sm:p-6">
+              <n-form label-placement="top">
+                <n-form-item :label="$t('applicationLink.worker')" :show-require-mark="true" :validation-status="missing.worker_id ? 'error' : undefined" :feedback="missing.worker_id ? $t('rules.requiredField') : undefined">
+                  <n-select
+                    v-bind="selectWrap"
+                    v-model:value="form.worker_id"
+                    filterable
+                    remote
+                    clearable
+                    :options="workerOptions"
+                    :loading="workerLoading"
+                    :placeholder="$t('applicationLink.workerPlaceholder')"
+                    @search="onWorkerSearch"
+                  />
+                </n-form-item>
+
+                <n-form-item :label="$t('applicationPage.form.type')" :show-require-mark="true" :validation-status="missing.type ? 'error' : undefined" :feedback="missing.type ? $t('rules.requiredField') : undefined">
+                  <n-input v-if="info.type" :value="info.type.name" readonly />
+                  <n-select v-else v-bind="selectWrap" v-model:value="form.type" filterable :options="typeOptions" />
+                </n-form-item>
+
+                <n-form-item v-if="form.worker_id" :label="$t('applicationLink.position')" :show-require-mark="true" :validation-status="missing.worker_position_id ? 'error' : undefined" :feedback="missing.worker_position_id ? $t('rules.requiredField') : undefined">
+                  <n-select v-bind="selectWrap" v-model:value="form.worker_position_id" :options="positions" />
+                </n-form-item>
+
+                <LinkSchemaForm
+                  v-if="typeDef && form.worker_id"
+                  :key="`${form.type}-${form.worker_id}`"
+                  ref="formRef"
+                  :def="typeDef"
+                  :data="data"
+                  :load-children="loadChildren"
+                  :load-notices="loadNotices"
+                />
+              </n-form>
+
+              <div class="mt-4">
+                <n-button type="primary" size="large" block :loading="saving" :disabled="!canSubmit" @click="submit">
+                  {{ $t('applicationLink.submit') }}
+                </n-button>
               </div>
             </div>
-            <div class="flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm font-semibold" :class="left < 120 ? 'bg-danger/10 text-danger' : 'bg-primary/10 text-primary'">
-              <n-icon size="18"><Clock20Regular /></n-icon>
-              {{ leftText }}
-            </div>
-          </div>
-
-          <div class="link-card p-5 sm:p-6">
-            <n-form label-placement="top">
-              <n-form-item :label="$t('applicationLink.worker')" :show-require-mark="true" :validation-status="missing.worker_id ? 'error' : undefined" :feedback="missing.worker_id ? $t('rules.requiredField') : undefined">
-                <n-select
-                  v-bind="selectWrap"
-                  v-model:value="form.worker_id"
-                  filterable
-                  remote
-                  clearable
-                  :options="workerOptions"
-                  :loading="workerLoading"
-                  :placeholder="$t('applicationLink.workerPlaceholder')"
-                  @search="onWorkerSearch"
-                />
-              </n-form-item>
-
-              <n-form-item :label="$t('applicationPage.form.type')" :show-require-mark="true" :validation-status="missing.type ? 'error' : undefined" :feedback="missing.type ? $t('rules.requiredField') : undefined">
-                <n-input v-if="info.type" :value="info.type.name" readonly />
-                <n-select v-else v-bind="selectWrap" v-model:value="form.type" filterable :options="typeOptions" />
-              </n-form-item>
-
-              <n-form-item v-if="form.worker_id" :label="$t('applicationLink.position')" :show-require-mark="true" :validation-status="missing.worker_position_id ? 'error' : undefined" :feedback="missing.worker_position_id ? $t('rules.requiredField') : undefined">
-                <n-select v-bind="selectWrap" v-model:value="form.worker_position_id" :options="positions" />
-              </n-form-item>
-
-              <LinkSchemaForm
-                v-if="typeDef && form.worker_id"
-                :key="`${form.type}-${form.worker_id}`"
-                ref="formRef"
-                :def="typeDef"
-                :data="data"
-                :load-children="loadChildren"
-                :load-notices="loadNotices"
-              />
-            </n-form>
-
-            <div class="mt-4">
-              <n-button type="primary" size="large" block :loading="saving" :disabled="!canSubmit" @click="submit">
-                {{ $t('applicationLink.submit') }}
-              </n-button>
-            </div>
-          </div>
-        </template>
-      </n-spin>
+          </template>
+        </n-spin>
+      </div>
     </div>
   </div>
 </template>
