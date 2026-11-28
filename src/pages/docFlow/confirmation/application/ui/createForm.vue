@@ -50,7 +50,13 @@
     ...validationRules.applicationPage,
     from: [validationRules.applicationPage.from, notPast],
     to: [validationRules.applicationPage.to, notPast, notBefore('from')],
-    period_to: [validationRules.applicationPage.period_to, notBefore('period_from')]
+    period_to: [validationRules.applicationPage.period_to, notBefore('period_from')],
+    // 1/2 (korxona tanlanadigan tur) da lavozim ixtiyoriy — nomzodda faol lavozim bo'lmasligi mumkin.
+    worker_position_id: {
+      trigger: ['change', 'blur'],
+      validator: (_rule, value) =>
+        store.isOrgPlace() || value != null || new Error(i18n.global.t('rules.requiredField'))
+    }
   }
   // Boshlanish sanasi keyin o'zgarsa, allaqachon tanlangan tugash sanasi qayta tekshiriladi.
   watch(
@@ -70,6 +76,10 @@
           if (store.orgError) return
           // Tavsifli tur — umumiy forma; eski 2, 3, 5, 7 — o'z formasi.
           store.activeTab = store.schemaDef() ? 'schema' : store.payload.type
+          // Eski formalarda (1, 2, 6, 7) «Sana» bo'sh bo'lsa — bugungi kun.
+          if (!store.schemaDef() && [1, 2, 6, 7].includes(store.payload.type) && store.payload.from_date == null) {
+            store.payload.from_date = new Date().setHours(0, 0, 0, 0)
+          }
           if (store.typeList.includes(store.payload.type) && !store.visibleType) {
             componentStore._departmentPosition(store.department_id?.[0]?.id)
           }
@@ -153,7 +163,6 @@
             :loading="store.saveLoading"
             style="width: 100%"
             @click="goBack()"
-            type="warning"
           >
             <template #icon>
               <ArrowCircleLeft28Regular />
@@ -174,7 +183,7 @@
             <template #icon>
               <ArrowCircleRight20Regular />
             </template>
-            {{ store.activeTab === 101 ? $t('content.next') : $t('content.send') }}
+            {{ store.activeTab === 101 ? $t('content.next') : $t('content.save') }}
           </n-button>
         </div>
         <div class="col-span-2">

@@ -105,7 +105,9 @@
         </div>
       </template>
     </UIPageFilter>
+    <!-- Ko'p qadamli forma: Esc (masalan ochiq ro'yxatni yopmoqchi bo'lganda) kiritilganlarni yo'qotmasin. -->
     <UIModal
+      :close-on-esc="false"
       :width="600"
       :visible="store.visible"
       @update:visible="(v) => (store.visible = v)"

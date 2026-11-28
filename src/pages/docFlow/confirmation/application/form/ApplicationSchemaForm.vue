@@ -217,6 +217,11 @@
     () => {
       errors.value = {}
       positions.value = []
+      // «Sana» (from_date) bo'sh bo'lsa — bugungi kun tanlangan turadi.
+      if (allFields.value.some((f) => f.key === 'from_date' && f.kind === 'date') && !data.value.from_date) {
+        const d = new Date()
+        data.value.from_date = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+      }
       if (allFields.value.some((f) => f.kind === 'child')) loadChildren()
       const noticeF = allFields.value.find((f) => f.kind === 'notice_ref')
       notices.value = []
@@ -339,9 +344,11 @@
       <div class="col-span-12" v-else-if="f.kind === 'child'">
         <n-form-item :label="f.label" :show-require-mark="true">
           <n-radio-group :value="childMode" @update:value="onChildMode">
-            <n-radio value="list" :disabled="!children.length">{{
-              $t('applicationPage.schema.childFromList')
-            }}</n-radio>
+            <n-radio value="list" :disabled="!children.length">
+              {{
+                $t('applicationPage.schema.childFromList')
+              }}
+            </n-radio>
             <n-radio value="manual">{{ $t('applicationPage.schema.childManual') }}</n-radio>
           </n-radio-group>
         </n-form-item>
@@ -454,8 +461,12 @@
         </n-form-item>
       </div>
 
-      <!-- Variantlar (+ «Boshqa» → matn) -->
-      <div class="col-span-12" v-else-if="f.kind === 'select'">
+      <!-- Variantlar (+ «Boshqa» → matn); stavka sana bilan bir qatorda (yarim kenglik). -->
+      <div
+        class="col-span-12"
+        :class="{ 'md:col-span-6': f.key === 'rate' }"
+        v-else-if="f.kind === 'select'"
+      >
         <n-form-item
           :label="f.label"
           :show-require-mark="f.required"
