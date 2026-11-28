@@ -14,7 +14,10 @@
     store._index()
   }
 
-  const copyPin = (pin) => Utils.copyToClipboard(pin, () => $Toast.success(t('content.copied')))
+  const copyText = (v) => Utils.copyToClipboard(v, () => $Toast.success(t('content.copied')))
+
+  // Backend aniq moslikni beradi (JSHSHIR yoki telefon); mos kelmasa qator ajratilmaydi.
+  const rowClass = (row) => (row?.search_match ? 'search-match-row' : '')
 
   const columns = computed(() => [
     {
@@ -54,6 +57,7 @@
     :per-page="store.params.per_page"
     :total="store.totalItems"
     storage-key="hospital-med-worker"
+    :row-class-name="rowClass"
     @change-page="changePage"
   >
     <template #cell-worker="{ row }">
@@ -69,13 +73,13 @@
         <template #position>
           <div v-if="row?.pin" class="flex">
             <span
-              class="inline-flex items-center gap-1 rounded bg-primary/10 px-1.5 py-[1px] text-xs font-semibold text-primary"
+              class="inline-flex items-center gap-1 rounded bg-surface-ground px-1.5 py-[1px] text-xs font-medium text-textColor2"
             >
               {{ row.pin }}
               <n-icon
                 size="12"
                 class="cursor-pointer opacity-70 hover:opacity-100"
-                @click.stop="copyPin(row.pin)"
+                @click.stop="copyText(row.pin)"
               >
                 <Copy20Regular />
               </n-icon>
@@ -103,7 +107,17 @@
 
     <template #cell-position="{ row }">
       <div class="flex flex-col">
-        <n-ellipsis class="text-sm text-textColor2 leading-[1.2]">{{ row?.position }}</n-ellipsis>
+        <div class="flex items-center gap-1 min-w-0">
+          <n-icon
+            v-if="row?.position"
+            size="14"
+            class="shrink-0 cursor-pointer text-textColor3 opacity-70 hover:opacity-100"
+            @click.stop="copyText(row.position)"
+          >
+            <Copy20Regular />
+          </n-icon>
+          <n-ellipsis class="text-sm text-textColor2 leading-[1.2]">{{ row?.position }}</n-ellipsis>
+        </div>
         <n-ellipsis class="text-xs text-textColor3">{{ row?.contract_type }}</n-ellipsis>
       </div>
     </template>
@@ -113,3 +127,16 @@
     </template>
   </UITable>
 </template>
+
+<style>
+  /* UITable bir nechta ildizli — scoped :deep yetib bormaydi. */
+  .n-data-table-tr.search-match-row {
+    --match-row-bg: color-mix(in srgb, var(--primary-color) 8%, var(--surface-section));
+  }
+  .n-data-table-tr.search-match-row > td {
+    background: var(--match-row-bg);
+  }
+  .n-data-table-tr.search-match-row > td:first-child {
+    box-shadow: inset 3px 0 0 var(--primary-color);
+  }
+</style>
