@@ -87,14 +87,15 @@
     'month.december'
   ]
 
+  // Nomlar va tartib dashboard kartasidagi qatorlar bilan bir xil (DocumentStatusCard).
   const medTypes = [
     {
-      name: t('dashboardPage.medical.finished'),
-      id: 'finished'
+      name: t('dashboardPage.medical.deadline'),
+      id: 'approaching'
     },
     {
-      name: t('dashboardPage.medical.approaching'),
-      id: 'approaching'
+      name: t('dashboardPage.medical.expired'),
+      id: 'finished'
     },
     // Kartochkadagi «Kiritilmagan» soni — ko'rik yozuvi umuman yo'q xodimlar.
     {
@@ -103,20 +104,34 @@
     }
   ]
 
+  // Nomlar va tartib dashboard kartasidagi qatorlar bilan bir xil (DocumentStatusCard).
   const passportFilter = [
+    {
+      label: t('dashboardPage.password.deadline'),
+      value: 'approaching'
+    },
     {
       label: t('dashboardPage.password.expired'),
       value: 'expired'
     },
+    // Kartochkadagi «Yuklanmagan» soni.
     {
-      label: t('dashboardPage.password.approaching'),
-      value: 'approaching'
-    },
-    {
-      label: t('dashboardPage.password.not_included'),
+      label: t('dashboardPage.password.missing'),
       value: 'not_included'
     }
   ]
+
+  // Ta'lim turi: nomlar dashboard kartasidagidek (backend `education.levels` label'i).
+  // Enum id → karta kaliti (sonlar dev'da tekshirilgan: 1 → higher, 2 → secondary_special, 3 → general_secondary).
+  const EDU_LEVEL_KEYS = { 1: 'higher', 2: 'secondary_special', 3: 'general_secondary' }
+  const educationOptions = computed(() => {
+    const levels = store.overview?.education?.levels || []
+    return componentStore.educationList.map((option) => {
+      const level = levels.find((item) => item.key === EDU_LEVEL_KEYS[option.id])
+      const label = level ? (level.label ?? t(`dashboardPage.eduLevel.${level.key}`)) : null
+      return label ? { ...option, name: label } : option
+    })
+  })
 
   onMounted(() => {
     if (!componentStore.educationList.length) {
@@ -130,7 +145,16 @@
   // })
 
   // Jins: «Barchasi» (ikkala jins) + erkak/ayol.
-  const sexOptions = computed(() => [{ id: 'all', name: t('content.all') }, ...componentStore.genderList])
+  // Karta o'z nomlarini bersa (`sexLabels`, masalan pensiya: «Erkaklar» / «Ayollar») — o'shalar.
+  const sexOptions = computed(() => {
+    const labels = store.activeDetail?.sexLabels || {}
+    return [
+      { id: 'all', name: t('content.all') },
+      ...componentStore.genderList.map((option) =>
+        labels[option.id] ? { ...option, name: t(labels[option.id]) } : option
+      )
+    ]
+  })
 </script>
 <template>
   <UIPageFilter
@@ -302,7 +326,7 @@
               v-model:value="store.params.type"
               @update:value="filterEvent"
               clearable
-              :options="componentStore.educationList"
+              :options="educationOptions"
               label-field="name"
               value-field="id"
             />

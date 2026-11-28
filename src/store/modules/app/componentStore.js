@@ -282,6 +282,16 @@ export const useComponentStore = defineStore('componentStore', {
     chatEnumLoading: false,
     chatEnums: []
   }),
+  getters: {
+    // Hujjat ro'yxatlari filtri uchun holatlar: enum'da 7 «Muammoli» yo'q, lekin ro'yxat
+    // `confirmation=7` ni qabul qiladi va dashboard «Hujjatlar holati» plitkasi shu id bilan ochadi.
+    // BACKEND: `confirmation_statuses` ga {id: 7, name: «Muammoli»} qo'shilsa, bu qo'shimcha kerak bo'lmaydi.
+    documentStatusList(state) {
+      const list = state.confirmationStatusList || []
+      if (!list.length || list.some((item) => item.id === 7)) return list
+      return [...list, { id: 7, name: t('dashboardPage.documents.problem') }]
+    }
+  },
   actions: {
     fetchChatEnums() {
       this.chatEnumLoading = true

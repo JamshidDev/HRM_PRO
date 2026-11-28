@@ -125,7 +125,7 @@
           <label>{{ $t('content.status') }}</label>
           <n-select
             v-model:value="store.params.confirmation"
-            :options="componentStore.confirmationStatusList"
+            :options="componentStore.documentStatusList"
             :render-label="renderWrapLabel"
             :render-tag="renderEllipsisTag"
             :virtual-scroll="false"
