@@ -37,15 +37,10 @@
   }
 
   // Rahbar va kelishuvchilarni xodim tanlamaydi: rahbar backendda lavozimdan, kelishuvchilarni HR belgilaydi.
-  const onSelectApplication = (v) => {
+  const onSelectApplication = () => {
     store.resetPlace()
     store.payload.data = {}
-    if (isPosition.value) {
-      onFocusPosition()
-    } else {
-      // 1/2 — yangi ishga kirish: mavjud lavozim yuborilmaydi (backend rad etadi).
-      store.payload.worker_position_id = null
-    }
+    onFocusPosition()
   }
 
   const onChangeStructure = (v) => {
@@ -56,6 +51,8 @@
   }
 
   const changePosition = (id) => {
+    // 1/2 — korxona alohida tanlanadi, lavozim uni o'zgartirmaydi.
+    if (store.isOrgPlace()) return
     let index = store.myPositionList.findIndex((v) => v.id === id)
     if (index !== -1) {
       const org = store.myPositionList[index]?.organization  // org - to'liq object
@@ -65,10 +62,10 @@
     }
   }
 
-  // Forma har ochilganda (va 1/2-turdan qaytganda) lavozim qayta tanlanadi.
+  // Forma har ochilganda lavozim qayta tanlanadi (har qanday ariza turida).
   watch(
-    () => [store.visible, isPosition.value],
-    ([visible, pos]) => visible && pos && onFocusPosition(),
+    () => store.visible,
+    (visible) => visible && onFocusPosition(),
     { immediate: true }
   )
 
@@ -98,8 +95,13 @@
         />
       </n-form-item>
     </div>
-    <div class="col-span-12" v-if="isPosition">
-      <n-form-item :label="$t(`applicationPage.form.worker_position_id`)" path="worker_position_id">
+    <!-- Lavozim har qanday turda, ariza turidan keyin; 1/2 da ixtiyoriy. -->
+    <div class="col-span-12">
+      <n-form-item
+        :label="$t(`applicationPage.form.worker_position_id`)"
+        path="worker_position_id"
+        :show-require-mark="isPosition"
+      >
         <n-select
           v-bind="selectWrap"
           @focus="onFocusPosition"
@@ -115,8 +117,18 @@
         />
       </n-form-item>
     </div>
-    <!-- Korxona keng, sana qisqa — bir qatorda -->
-    <div class="col-span-12 md:col-span-8 pr-3" v-if="!isPosition">
+    <!-- Sana doim bir joyda (tur tanlanganda siljimaydi). -->
+    <div class="col-span-12">
+      <n-form-item :label="$t(store.noticeMode ? 'noticesPage.date' : `applicationPage.form.application_date`)" path="application_date">
+        <UIDayPicker
+          class="w-full"
+          v-model:value="store.payload.application_date"
+          mode="day"
+        />
+      </n-form-item>
+    </div>
+    <!-- 1/2: korxona sanadan keyin, alohida qatorda. -->
+    <div class="col-span-12" v-if="!isPosition">
       <n-form-item
         :label="$t(`documentPage.form.organization`)"
         :show-require-mark="true"
@@ -135,15 +147,6 @@
           @onSubmit="componentStore._allStructures"
           :loading="componentStore.allStructureLoading"
           :multiple="false"
-        />
-      </n-form-item>
-    </div>
-    <div class="col-span-12" :class="isPosition ? 'md:col-span-6' : 'md:col-span-4'">
-      <n-form-item :label="$t(store.noticeMode ? 'noticesPage.date' : `applicationPage.form.application_date`)" path="application_date">
-        <UIDayPicker
-          class="w-full"
-          v-model:value="store.payload.application_date"
-          mode="day"
         />
       </n-form-item>
     </div>

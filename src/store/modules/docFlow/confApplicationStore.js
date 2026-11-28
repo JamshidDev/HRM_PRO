@@ -163,7 +163,8 @@ export const useConfApplicationStore = defineStore('confApplicationStore', {
       const orgId = this.organization_id?.[0]?.id ?? this.organization_id?.[0]
       return {
         type: this.payload.type,
-        worker_position_id: this.isOrgPlace() ? null : this.payload.worker_position_id,
+        // 1/2 da ham yuboriladi — backend faqat saqlaydi, korxona tanlangan korxonadan.
+        worker_position_id: this.payload.worker_position_id,
         application_date: Utils.timeToZone(this.payload.application_date),
         data: { ...this.payload.data, ...(this.isOrgPlace() && orgId ? { organization_id: orgId } : {}) },
         // Tahrir formasi korxona tanlovini tiklashi uchun.
