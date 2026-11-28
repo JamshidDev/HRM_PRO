@@ -5,8 +5,6 @@
     ArrowCircleRight20Regular,
     ArrowCircleLeft28Regular,
     DismissCircle28Regular,
-    DocumentBulletList24Regular,
-    CheckmarkCircle12Filled,
     DocumentRibbon28Regular
   } from '@vicons/fluent'
   const formRef = ref(null)
@@ -88,10 +86,6 @@
     })
   }
 
-  const applicationName = computed(() => {
-    return componentStore.workerApplicationTypes.filter((v) => v.id === store.payload.type)?.[0]
-      ?.name
-  })
 
   const goBack = () => {
     if (store.activeTab !== 100) {
@@ -106,30 +100,6 @@
 
 <template>
   <n-form ref="formRef" :rules="rules" :model="store.payload">
-    <n-space vertical class="w-full mb-4 hidden! md:inline-block!">
-      <n-steps :status="store.stepStatus" :current="store.stepNumber">
-        <template #finish-icon>
-          <n-icon>
-            <CheckmarkCircle12Filled />
-          </n-icon>
-        </template>
-        <template #error-icon>
-          <n-icon>
-            <DocumentBulletList24Regular />
-          </n-icon>
-        </template>
-        <n-step :title="$t('applicationPage.step.stepOne')" />
-        <n-step :title="$t('applicationPage.step.stepTwo')" />
-        <n-step :title="$t('applicationPage.step.stepThree')" />
-      </n-steps>
-    </n-space>
-    <div
-      v-if="store.activeTab !== 101 && store.activeTab !== 100"
-      class="mb-4 flex gap-2 text-xs items-center px-2 py-1 border-dashed border-t border-surface-line justify-center"
-    >
-      <span class="text-gray-400">{{ $t('applicationPage.form.type') }}:</span>
-      <span class="font-medium text-gray-500">{{ applicationName }}</span>
-    </div>
     <!-- Qadamlar almashganda oyna balandligi o'zgarmaydi — ichki qism aylantiriladi. -->
     <div class="app-application-body">
       <n-tabs animated v-model:value="store.activeTab" class="hidden-tab-header" type="segment">
@@ -174,7 +144,8 @@
         </n-tab-pane>
       </n-tabs>
     </div>
-    <div class="col-span-12 flex justify-center mb-4 mt-6">
+    <!-- Tugmalar modal tubida. -->
+    <div class="app-form-footer col-span-12 flex justify-center">
       <div class="grid grid-cols-2 w-full gap-4">
         <div>
           <n-button
@@ -225,6 +196,9 @@
 </template>
 
 <style scoped>
+  .app-form-footer {
+    margin-top: 12px;
+  }
   .app-application-body {
     height: min(480px, calc(100vh - 320px));
     overflow-y: auto;

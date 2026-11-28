@@ -1,6 +1,7 @@
 <script setup>
   import { UIModal, UIOfficeApp, UIPageContent, UIPageFilter, UISegmentTabs } from '@/components/index.js'
   import createForm from './ui/createForm.vue'
+  import ApplicationSteps from './ui/ApplicationSteps.vue'
   import Table from './ui/Table.vue'
   import { useConfApplicationStore } from '@/store/modules/index.js'
   import Utils from '@/utils/Utils.js'
@@ -116,6 +117,10 @@
             : $t('applicationPage.updateWorkerApplication')
       "
     >
+      <!-- Sarlavha o'rnida qadamlar (ariza); bildirgida — oddiy sarlavha. -->
+      <template v-if="!props.notice" #header-title>
+        <ApplicationSteps />
+      </template>
       <template #default>
         <createForm />
       </template>
