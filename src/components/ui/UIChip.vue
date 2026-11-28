@@ -15,7 +15,7 @@
       default: ''
     },
     /**
-     * Rang oilasi: 'brand' | 'green' | 'amber' | 'red' | 'neutral'.
+     * Rang oilasi: 'brand' | 'green' | 'amber' | 'red' | 'pink' | 'indigo' | 'neutral'.
      * naive-ui turlari ham qabul qilinadi: success / warning / error / info / primary / default.
      */
     tone: {
@@ -57,6 +57,8 @@
     green: 'bg-fig-chip-green text-fig-chip-green-text',
     brand: 'bg-fig-chip-brand text-fig-chip-brand-text',
     amber: 'bg-fig-chip-amber text-fig-chip-amber-text',
+    pink: 'bg-fig-chip-pink text-fig-chip-pink-text',
+    indigo: 'bg-fig-chip-indigo text-fig-chip-indigo-text',
     red: 'bg-fig-red-50 text-fig-text-red',
     neutral: 'bg-fig-bg-disable text-fig-text-tertiary'
   }

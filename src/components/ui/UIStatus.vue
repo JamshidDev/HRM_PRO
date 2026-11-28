@@ -186,7 +186,9 @@
     else return 'primary'
   })
 
+  // `status.icon` / `status.tone` berilsa — o'sha (masalan ariza holatlari), aks holda id bo'yicha.
   const icon = computed(() => {
+    if (props.status?.icon) return props.status.icon
     const v = statusList.filter((x) => x.id === props.status?.id)
     if (v.length) return v[0].icon
     else return Eye16Filled
@@ -203,7 +205,7 @@
   }
 
   // Chip rangi: `tone` berilsa o'sha, aks holda status turidan.
-  const chipTone = computed(() => props.tone || toneByType[type.value] || 'brand')
+  const chipTone = computed(() => props.tone || props.status?.tone || toneByType[type.value] || 'brand')
 
   // Maketda tasdiqlangan holat (3) "badge-check" ikonkasi bilan chiziladi — `figBadgeCheck.svg`.
   // Boshqa yashil holatlar (Aktiv, audit «Yaratildi»…) o'z ikonkasini saqlaydi — hammasi bir xil ✓ bo'lib qolmasin.

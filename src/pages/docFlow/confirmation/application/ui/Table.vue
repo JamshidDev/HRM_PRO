@@ -211,11 +211,7 @@
       <n-tooltip v-if="row?.worker_application?.returned" placement="top" :style="{ maxWidth: '320px' }">
         <template #trigger>
           <span class="inline-flex">
-            <UIStatus
-              :status="{ id: 13, name: applicationStatus(row.worker_application).name }"
-              tone="amber"
-              :tooltip="false"
-            />
+            <UIStatus :status="applicationStatus(row.worker_application)" :tooltip="false" />
           </span>
         </template>
         <div class="text-xs leading-5">
