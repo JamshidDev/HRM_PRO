@@ -157,7 +157,9 @@ export const tabCards = {
       detail: markRaw(PensionDetail),
       filters: ['sex'],
       filterCallback: ApiService.dashboardService._pensionDetail,
-      defaultValues: { sex: 'all' }
+      defaultValues: { sex: 'all' },
+      // Filtrdagi jins nomlari kartadagidek (genderList id: 1 erkak, 0 ayol).
+      sexLabels: { 1: 'dashboardPage.pension.men', 0: 'dashboardPage.pension.women' }
     }
   ],
 
