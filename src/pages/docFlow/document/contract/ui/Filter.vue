@@ -112,7 +112,7 @@
           <label>{{ $t('content.confirmStatus') }}</label>
           <n-select
             v-model:value="store.params.confirmation"
-            :options="componentStore.confirmationStatusList"
+            :options="componentStore.documentStatusList"
             label-field="name"
             value-field="id"
             clearable
